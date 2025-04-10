@@ -1,247 +1,330 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from MA0PR01CU012.outbound.protection.outlook.com (mail-southindiaazon11021142.outbound.protection.outlook.com [40.107.57.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E671E3793
-	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 07:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744271912; cv=none; b=HNsmI3IiqgBYjKZ7f5hj5f04IxGheN5e59s0zFfAAMU62rVu73eiHNjl+lu2D0iCo7egoQQL1paRLdXQTKM0e/MmAb8pqslRT3XAWKZXWOCDuTopKxuVONK5liJQoJzlAvybMHOzOcccXJCZx4sFrDVtMGFYpu/JlaYWp/xEUO0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744271912; c=relaxed/simple;
-	bh=DovWtlhKvd9w+lfAWZ137lAaHHPmYJpLQxTYVIIPt14=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jGetHAEPZ2DiD8eBB3czduEPwmTyT9Mzum7PA8xeqeZlSZwtY21MigwtbLSMAYPBSJg8KnoLGu1idGX7vj4jue1I31iqZShcSLf9k1aF78jervh6GxKvCD6QxY81QsDPHz3j+66D7Ww3hWadF3UI6Ncy3EEwAcIewZBYypY3skA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=iyKfZ2yc; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="iyKfZ2yc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1744271902; x=1744876702; i=wahrenst@gmx.net;
-	bh=9dFfzgLAT79EkKFqJT8YM5dhdAcxg2mTdjPzJjTzA0A=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=iyKfZ2yct2eN0KxeUtHplj0niIItrILhLk+MqnPrxWuZo6RbpW2Pi7ybi5RaqsXT
-	 5AByhclrK8BWSQWHdCL2TuSUASWUZKhQq3Opj6Acrmv+/kNf2gS1/6QQa6TEOD/e1
-	 YGtC5MPg6kW+sbKOJzHKx8737nFnxeDqpW2NHlzsSoHKrV/CpTfwAeAeP97vxAl5n
-	 BjXxKQ42htCqDdYOwJVKOKBklnAUJlDWIox1HrP3uU6OeNP8nLdT3wtNNMVVq3Sh2
-	 PWG/km0JyoqTKHQLLXFRvhM3zUuKz/T2JJuRZn7ModcXhGSmUUz13bXhrjbDWVMio
-	 Uo2CIdNRoudjqfPL2Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MzyuS-1t5zi42o0U-017n8M; Thu, 10
- Apr 2025 09:58:22 +0200
-Message-ID: <0afc4cc5-5402-4746-907a-6cd92aa8889a@gmx.net>
-Date: Thu, 10 Apr 2025 09:58:20 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD9013C695
+	for <imx@lists.linux.dev>; Thu, 10 Apr 2025 08:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.57.142
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744272809; cv=fail; b=M2z65yGqpccLD/mZ/DCPf8f/IxJAtWMt9rLMa9cortQO7b5jhChRhCewjRMqs+gps3mNKIHLkS+unNNEWNt5ZtQo7Yi1MZJce4YWHlgicQMQe6SYeJwp02AQNBS+LqGQOzZvX8nEuvxQVPLSHaGchHiaxNYDOd8oU69Nlqe02uQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744272809; c=relaxed/simple;
+	bh=B049eUlRpdcw8VByXMYUcBu8Y/yRpBgEzWJjN1W8Qtc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tBhSlOL3uUv/ZTXnFzsc3LRoj2g5/uIfwGkH5/W5XomsqP191m+bjZhh8ZkskDxHE1ZTZzuRugkrS2p1QxA88ldVWWxxg+Z49jkIv1zcTrffY4tvkNLQ5tC1ls/srUxQC4AaMI6apnFzdXCh0n3maoyvyW5lZPmc1VIwbDUaVAE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.57.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AIugoIrfC8stVIVm9+sMThO5BUMX7pKaKdrs/LsES0yWt+ELzvl2kcw77rcf2TE2j0MT+IxZlVsXnM+9fddKtigVszNlXdzUGGPXbdCKFb4ukvUo8OhaGCHopY0sVlOu6EDWpumJOVdOjqAB+pn2xl6jaoTEDCdeGrR1eZkR5770+tMGg7UFCPZqhQRNJKe0IMkAxcaaVqBAhwkqd8eC3If0Sr4XOkNzRyaUcelfFa5UaiAgTbio3BtjaDG8+wl1lZsqUNS0XTZcDK+pIXwV0wF889mF+4aZx7FVtI7kdOTmkQmZOxMDXkBXM6T9MnKDrMT4VuppMRbBf/TQ59+DmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MxHsacE84Y5gCZ/iphJQmTC7gkW07aXFwpo2fpLd5Tg=;
+ b=CoRDdi69/7suwACWhHoYOy/DMWlM4MhV4wo0jUHVh5obCYv57LPFZ7GDIVu3jeWMFtpnivOPEJ5F72uBMh8V5Sb1JrnL+/rlFuFjvODqPCifjADN06vROfkdL4Nn7QDQh0g4wnpnl1xyLmZA5/DrMXfqosA0Y9ckFTf2HTio+eJcIzKlf5fdYH8Wdh7TEdKb4Rjfqx8tcqxzJxvqOOK2jZY2FemjnwQsXR6Qyz2rZiqdeZ047ed1sG4PGcQ37WxLTEfi3Izu0wjR2GgGh2EMinIhPzZDYIkg5sCzp0J76FZsnl9Wkv4iasoGWCHGOVrW6qes6QWzUPSAX4R/0e3QRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
+ header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
+Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:199::7)
+ by MA0P287MB0348.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:aa::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.23; Thu, 10 Apr
+ 2025 08:13:17 +0000
+Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+ ([fe80::58ec:81a0:9454:689f]) by PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+ ([fe80::58ec:81a0:9454:689f%2]) with mapi id 15.20.8606.033; Thu, 10 Apr 2025
+ 08:13:17 +0000
+From: Tarang Raval <tarang.raval@siliconsignals.io>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+CC: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: Need Help Enabling HDMI on Debix Model A
+Thread-Topic: Need Help Enabling HDMI on Debix Model A
+Thread-Index: AQHbp61bJ8rSy9+zQkebTS5KwgzRBLOYK2mAgAAM5vOAA553AIAAsMEx
+Date: Thu, 10 Apr 2025 08:13:17 +0000
+Message-ID:
+ <PN3P287MB18297239252C1032A05686558BB72@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+References:
+ <PN3P287MB1829E84B6B79E9C7189D7CB78BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+ <20250407130257.GD3924@pendragon.ideasonboard.com>
+ <PN3P287MB1829692B4C3D5AD273CB62DE8BAA2@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+ <20250409210504.GB12162@pendragon.ideasonboard.com>
+In-Reply-To: <20250409210504.GB12162@pendragon.ideasonboard.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siliconsignals.io;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PN3P287MB1829:EE_|MA0P287MB0348:EE_
+x-ms-office365-filtering-correlation-id: 4114d3c5-e2e1-4656-2f81-08dd78078c88
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?Windows-1252?Q?HnDkkPQE2e83c3beUJLpU7iQhsynMJI4wN0KhtlOJEHWubmrVqBozi2e?=
+ =?Windows-1252?Q?/3dzubU8dUzJPkl5eFeVZ5lOmi8yRasoPgo8NLpr6OLodKNkUh0ITmsg?=
+ =?Windows-1252?Q?Uc67RaOh6f2Xwezz94fajd6BAicVH/cCGQdtXGsyOACF9iDDD7RZBWmf?=
+ =?Windows-1252?Q?bMb6WN8jm4MNrTbk+3DR8eu+u3p0oXPmYaqHiKx/j34x1bVuNEa0tYnY?=
+ =?Windows-1252?Q?qKkhQSviuHHVNyEIIuxYD7+phB03+vRLsGbV2+aOvzHtwdDHszcre0p3?=
+ =?Windows-1252?Q?f30dDClla32gKGHjMlZSjyUA9OsSkcG6EfaZz51XrXHbGNVcbR7qvgWh?=
+ =?Windows-1252?Q?MFM3ZseMtCgjjSbNgvbx/RmcrFAh+iJJEfRtq4mnfLjp9Kxyy/JPeJ0/?=
+ =?Windows-1252?Q?aUDOHFGGV+jil0fLTYf7mcC1ruD4B1mxE1f352lbUSZE9+tW6lGcn77u?=
+ =?Windows-1252?Q?8TEe+2/+6vfbMkoUqfVfwvFqk7r9w06o2JTvPW2P6zwxpsLn4ySPsuIB?=
+ =?Windows-1252?Q?+jk45xzcu+PwomPGD2zFhwG6k9RG7o7bPK6hmPMRO07qmR/Zadp/hk+b?=
+ =?Windows-1252?Q?YD5x58GqP9ib625fUjGB0w6HqeRr5t16+0ZHhXh2LzHZeeomb0jW/eN0?=
+ =?Windows-1252?Q?zo4EtvdFFlAGlTHygk9/JRj1SJUulzE3OvRuHNe8R3T9fxjuNnPmj4Ku?=
+ =?Windows-1252?Q?yxOLQFF2mWcDblIFWelLxO0TNFZST6awaLA8gnVbuXIrpQktx8LZBZbX?=
+ =?Windows-1252?Q?feJOWbnjUo/ucBiGmYWLAQuag2Wa4/Rr49fvLYIFSnqd16m0ZXrrwYNy?=
+ =?Windows-1252?Q?1+Q3n4nuAa/daReAgzAft7TlBaJWIQ4rWIfZl0T1KQlQU3RcpHLvoVJg?=
+ =?Windows-1252?Q?QwvwtVxgxEObKY42EJXiDWt0MO/zi8Q79H7FqsLdK3Uq66OkFtZSA0A9?=
+ =?Windows-1252?Q?p2unyFhbUE0KLD8mBmncb4BxdLfnmtFTsXx5GKx51NIUuf01D0q/6gzr?=
+ =?Windows-1252?Q?E+FWNNOiHwb9P8GFTzASpMHXBbyqiuamMxeTQuU+5JIrJU5k2Fv+D3bD?=
+ =?Windows-1252?Q?t5MIY23Dirvn8qHvfCjJrfhRpmKag3AWdYVYT1vrmh4If1F2OSWFCb81?=
+ =?Windows-1252?Q?hZArOZ7u/AOiU2N1NX8DDcRZHCrQIXCzBY6JHiHqaWOiLLQgCWiZcG5t?=
+ =?Windows-1252?Q?SvKT2ZOSkfntV+6Yepq0PS57r/V+CpcNVliUKtcAxZIkexp4mZQM5VyS?=
+ =?Windows-1252?Q?RRTFXtQKlFJIMEj7rY3IJM7n/IX8iiu/u7mWDwxSyOYNubgPZadJTt67?=
+ =?Windows-1252?Q?mLeN/E5uSKHvxR6kuh/M7nJTtdJlIDmCN6/KyhxPJBRqGdPrhzOgb9Oo?=
+ =?Windows-1252?Q?+KIwRytp2hfO0XhDs/53x/1sIVqp5VfGIrtlGKRBthE/YZ95Uy3NlTFT?=
+ =?Windows-1252?Q?tyf9AN5GGBq4c1Dm4o+zrboeIFGXjq0zNTZa/WZARMczfBAN3zq7PWxj?=
+ =?Windows-1252?Q?RB+4B4Gri7Xz1+GQNxNRx+IWWEQiq+qxZoT05r0TEemaCgHBc1Bbu2Y6?=
+ =?Windows-1252?Q?0TJdQ/wZcIzxnuUjDJhgNSaGdJ2OJJxPt/LORg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1829.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?Windows-1252?Q?aJo+pitKeEEYeX3fWG/V/6tL5s9NyOV9L1ib4MOZ5LBCka78r+b0IUSU?=
+ =?Windows-1252?Q?BiUlM4ZtS7L2+68u5j0clL++M6BXLlAdYvXYu38yfYy9ZjhbEwyfF+3A?=
+ =?Windows-1252?Q?PR2XStR7lVuz6ubtRFr4akWe0kxKa+Yrz/IEUei8UambHtxJG4NeDG1J?=
+ =?Windows-1252?Q?uOe0idr9jyanFSlaRGXH8LXCJ4R0IOTHHg9LYcCx9Cti3OHVOr83w0QP?=
+ =?Windows-1252?Q?qW3Ue68ullE8O8Rr0i9EJr6QN0BNfT5xwYSivCt9dqmHkTHRDbzwiTBu?=
+ =?Windows-1252?Q?Ojb0j+impvotkh3GNtibCxj1r1lbqaQteprjpNCln0RsexhVHbSbvWUJ?=
+ =?Windows-1252?Q?agoH5lFmMWagTsXvnxriRlmkQ7MDmsWb7mXbgE/CErtQ7Vvu4hOaBqyG?=
+ =?Windows-1252?Q?kbZ3kc7wmtWm4uy4bxd/EPTZiFeLLKDYAas6zobsEX2fywMsTdGmRTW0?=
+ =?Windows-1252?Q?3c8d56YL8vdK2a7DugmE86CSXy3f7LRzXgxkxHrg7/kvGycbb6/z4Jaz?=
+ =?Windows-1252?Q?LUhSlwW/9UDPvtObnb6IcuEkn9Vi794Xwsbh2993/Un1mfTf1aLoVUHt?=
+ =?Windows-1252?Q?ox0pN8PqYosyEpZLuBG/9v8uAs/rSt6SXSgQhJjhjyes8kXr6sMzeVUf?=
+ =?Windows-1252?Q?tMLNR6ysf8nXHIykKm0com8WunbXqa8mm64Zn46YJ0SP7ceSesECStX7?=
+ =?Windows-1252?Q?UeJ6y9avU1cEKHvMNUqPJA2mYxre69mf+ofsrSmgWhM0PQ5zgSQh0/AE?=
+ =?Windows-1252?Q?sKEa7veeNTf99fgDu4L/BuXbPdF9u92/ozEQto6yl5qLVLvAGwilm23D?=
+ =?Windows-1252?Q?vzAiKNFkhNAaLgKuO9fQJZRMd8f75kMGNX3K/AARz0AA6WrRbpJGyoKy?=
+ =?Windows-1252?Q?0rvKeUV//S4mgl4RCysccKXoymGhI/J/7fBCRPLVzuKS5VTNJr/r2eur?=
+ =?Windows-1252?Q?OkiGGMDOIkLna/iVCSHhZQLBjfB8gZIeQ8IYxjl+OhL6keFzVNAIMDNW?=
+ =?Windows-1252?Q?a3e/76JtFm36O5l+J8hqkk+4vetcZSSCcs2WKaOa3lOc4kQe7vtYCeqS?=
+ =?Windows-1252?Q?0DTZkOm0s567CG9trAwvr/T5C/FN2vnt9X4VGlskYWOV68GTnxRrWalT?=
+ =?Windows-1252?Q?B5dzUUxHPSdzKRxdr7nIBLJmOZm/lQgt1QQ2OoJNJjF/kFfCW2ZoCWiv?=
+ =?Windows-1252?Q?gMvrZ4zKtC2IeLbCpjwdpIwC1lFZQ/s4L1sopUSBS5ONirauToTtwn/d?=
+ =?Windows-1252?Q?1eMceVsZmDGcnx+DD5ItnvK3afrCp4MCLzWBlttLK/aAt4IP+DcnKhuf?=
+ =?Windows-1252?Q?5Nn7aaH6MI/CggtDS53qvzPh6p+2iBdUVP7Bt1qodbTaN7q/cdO5ukJv?=
+ =?Windows-1252?Q?wEo6DSEEDith/9ORDnl7MwFtKPlsttG8+7R5JuiGLtPldHBrflZI5uO+?=
+ =?Windows-1252?Q?w5sKBLyZYQf/PVozMzw0Cc9DOnVqVbag72uuqBH3+S5BpGNjIp7nnw3X?=
+ =?Windows-1252?Q?SsYkAHFiaoSRjg0KVALxWZb7vsNTtWdYXsp1nvzmm3ijF844LdgVbxWK?=
+ =?Windows-1252?Q?z05TCj/uIt9xWR+PVawXPJ4oB5I2RSg7fxJtZ5bFuYAIq4wSB0MgTLi7?=
+ =?Windows-1252?Q?S14zu4dx3ThCN9l2eGAr4uXeLByGjnYcboVkxZlOOF9+CfPgpMSJDb09?=
+ =?Windows-1252?Q?cZw2Y+q5I4hdKbsudY/ZYhInmPUkyRbMJx1slSzHkZgMo8HB9gzBPA?=
+ =?Windows-1252?Q?=3D=3D?=
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v4 5/5] ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW
- to support MTIP L2 switch
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20250407145157.3626463-1-lukma@denx.de>
- <20250407145157.3626463-6-lukma@denx.de>
- <c67ad9fa-6255-48e8-9537-2fceb0510127@gmx.net> <20250410090122.0e4cadef@wsk>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <20250410090122.0e4cadef@wsk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cPIOw8grf/C+YPYVB8MDkjqrTOJSqTfHkLLXd0a42+rIMJFLyWL
- TvfLgV2JhGqL7LN/cAVnkaGEQMuKcXqzrgNiywILNl42zGI170m2EgIveupA3vfPKIKce8G
- JBkTI0rakl5y6fXhIjZEb6wVDJ2m8sc7xS0e8PXQmc8GpPZyV4RLbWbpeOtlUJS2UbVUw4p
- yFkG0KaGSyGW0K63i3glw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:hPwS8a0ZSYA=;zvPcYipWzqPu0hy+T0wjZG4wvaG
- MfIO7xrdoa2RpTMM81GnbbiC6t1dmZNoZ0U+1V6KwocC4dQ9i0JPqJHZ72msZjn4OMJxx+ezo
- 1AUL7KKWqaQyufD7L8zjOIbuUmbAx1mo8hLw5qXGMHII1NkxPfeuH3GfajOhuEhaQfguDIyAz
- ywyzuk7Wzq/3L3F0ixSt3CaZfTWHEhizJeD8gVn70B+u2+HP9nCjZts8kNG/olDT4tq9SP1AV
- Jmlc7GVLq+Z45+47PzPsItHgbMNncjwqH+/+2sLmiMB50gyTcfJyL2IdTCkbqZ1VXsfyKUVke
- znXAkJ7zTqjmZUsevc11Xh3CkCNz4re03e9orc9eBEIn6RlRSiUjkDUBy8GK98tXvjTltmhxW
- evh5oBBwza92QwGQ6miLj5s1wW5ofZU1P3WJpP02FYylei9tIwmFYKNWsKpmymspsOzGm/2nv
- 7BiDaHtYP/WqHT10LYpYdNDgrlgh/j1jZ41x0yZ8l9i0P3scKmUY0gk5Md0W1x0+8zGp7t0GC
- yP+7pbi2cbjEMV4VhAEBti9iBrErltCxLJOcyjRuChN1blEvPhiyIs43KsaGDP7BMLwYZ3T45
- WaaQuVL0O3mCCAHu4W18NUjaQ9j4mQb9dVfmtRMLHyMBoeKuKbTzqjsTv0nJhiD9avx4jUtK8
- aNFlU4DzYb/tiilasuBOJavC4JGz6spoDKQqEbnASsHQDPtmCa5Qp7hKmsI8FxGMPtKCJoDzA
- dEItTmVL2mUFCD/zSolm4cbXZYO6vI4XisudtlsO8Med9OLPg8wo12OQVGKul0Ac4pgLRDvSi
- 1i+7gZ35X92AopJd3w1qxFqeXbKt8OvUnkQJAw5/tuF7HoxzXExvhWM7j8OdHtBOqK40+38pX
- PdpX1JlDI09C+WqpK6DMpgbbmzceW9upMUhmIb0+Ky2wBM2wh3rCgaGdAw1tAefuhxy9qKJeX
- HPrwsVSx0V9IqwUFRsegfC2euAXUvmS1YqeyqiHJsTBAF7xn2atMZvoJ5t5WmMmVF2ylsGBud
- LkZV/DizyGsybThNiqNr2x4vU5tKA1n1/52Zox5DqTWe+Co+nVwrNXeFdoTp9HnY+zaF4IG7v
- TjNNORgJt38qc0l6cQh4kYtO4drg+tq542qxFI/b9qmqnqhwTAeJssBWuSJCX3bAUlMhu9/5p
- iUFo8wjr9d73uYykac742/BvGq0J1biPzQz1pOfKQH9IqqgnL2vgN33VaSvJrks9k3lly+pcq
- IIxGV4L1eECpkOWFBu5dTffTG+ZD5+rbbTQpZpI+AbSZAfTyYLLlKIFhO+uS7oq/ehYvNCner
- BoXmiLR7wPKPSpfbj3LXF/btbzxtUPjRUj86RON92rmbFGAmqnmyLnFjMlqZnvaBI3cYv9BKi
- 2G6rrUXlgVlmfhQpSqaIK3dAIBixAowPp7XVugPNuLUOn8lhqZBVwKxDCm6cTV2QUODpGqgdZ
- iOpZRH8oM9ZXh1ywgd1TAAkzBrot84IMlCzmu4RzLJ0NNTKpZ
+X-OriginatorOrg: siliconsignals.io
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4114d3c5-e2e1-4656-2f81-08dd78078c88
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Apr 2025 08:13:17.3915
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ci/LU9XCwcmqeh2h5sdj3qg+1hJQUJv81Vx5QdrKDf+US3amImwXbZkmsUHU+CD7NlAuzrretjdwsgClL6lXdEAC6+9xMTTkBo5rHNTIwcg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0P287MB0348
 
-Am 10.04.25 um 09:01 schrieb Lukasz Majewski:
-> Hi Stefan,
->
->> Hi Lukasz,
->>
->> Am 07.04.25 um 16:51 schrieb Lukasz Majewski:
->>> This patch enables support for More Than IP switch available on some
->>> imx28[7] devices.
->>>
->>> Signed-off-by: Lukasz Majewski <lukma@denx.de>
->> thanks adding the driver to mxs_defconfig. Unfortunately it's not
->> possible for reviewers to identify the relevant changes,
-> Could you be more specific here?
-> As fair as I see - there is only 14 LOCs changed for review.
-Yes, this is exactly the problem. The subject suggests enable one
-driver, but the changes are not self-explaining.
-> Please also be aware that MTIP L2 switch driver has some dependencies -
-> on e.g. SWITCHDEV and BRIDGE, which had to be enabled to allow the
-> former one to be active.
-This should be part of the commit message.
->
->> also the
->> commit messages doesn't provide further information.
->>
-> What kind of extra information shall I provide? IMHO the patch is
-> self-explaining.
-No, it is not. How should a reviewer know that
-
-CONFIG_MTD_M25P80=3Dy
-
-should be dropped? This is completely unrelated to the change.
->
->> In general there are two approaches to solves this:
->> 1) prepend an additional patch which synchronizes mxs_defconfig with
->> current mainline
->> 2) manually create the relevant changes against mxs_defconfig
->>
->> The decision about the approaches is up to the maintainer.
-> I took the linux-next's (or net-next) mxs defconfig (cp it to be
-> .config)
->
-> Then run CROSS_COMPILE=3D ... make ARCH=3Darm menuconfig
-> Enabled all the relevant Kconfig options and run
->
-> CROSS_COMPILE=3D ... make ARCH=3Darm savedefconfig
-> and copy defconfig to mxs_defconfig.
-> Then I used git to prepare the patch.
->
-> Isn't the above procedure correct?
-The problem here is that you send a patch for two steps. First is to
-synchronize mxs_defconfig against current tree and the second is to
-enable the driver.
-
-Regards
->
->
->> Btw driver review will follow ...
->>
->> Regards
->>> ---
->>> Changes for v4:
->>> - New patch
->>> ---
->>>    arch/arm/configs/mxs_defconfig | 14 +++-----------
->>>    1 file changed, 3 insertions(+), 11 deletions(-)
->>>
->>> diff --git a/arch/arm/configs/mxs_defconfig
->>> b/arch/arm/configs/mxs_defconfig index d8a6e43c401e..4dc4306c035f
->>> 100644 --- a/arch/arm/configs/mxs_defconfig
->>> +++ b/arch/arm/configs/mxs_defconfig
->>> @@ -32,11 +32,10 @@ CONFIG_INET=3Dy
->>>    CONFIG_IP_PNP=3Dy
->>>    CONFIG_IP_PNP_DHCP=3Dy
->>>    CONFIG_SYN_COOKIES=3Dy
->>> -# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
->>> -# CONFIG_INET_XFRM_MODE_TUNNEL is not set
->>> -# CONFIG_INET_XFRM_MODE_BEET is not set
->>>    # CONFIG_INET_DIAG is not set
->>>    # CONFIG_IPV6 is not set
->>> +CONFIG_BRIDGE=3Dy
->>> +CONFIG_NET_SWITCHDEV=3Dy
->>>    CONFIG_CAN=3Dm
->>>    # CONFIG_WIRELESS is not set
->>>    CONFIG_DEVTMPFS=3Dy
->>> @@ -45,7 +44,6 @@ CONFIG_MTD=3Dy
->>>    CONFIG_MTD_CMDLINE_PARTS=3Dy
->>>    CONFIG_MTD_BLOCK=3Dy
->>>    CONFIG_MTD_DATAFLASH=3Dy
->>> -CONFIG_MTD_M25P80=3Dy
->>>    CONFIG_MTD_SST25L=3Dy
->>>    CONFIG_MTD_RAW_NAND=3Dy
->>>    CONFIG_MTD_NAND_GPMI_NAND=3Dy
->>> @@ -56,11 +54,11 @@ CONFIG_EEPROM_AT24=3Dy
->>>    CONFIG_SCSI=3Dy
->>>    CONFIG_BLK_DEV_SD=3Dy
->>>    CONFIG_NETDEVICES=3Dy
->>> +CONFIG_FEC_MTIP_L2SW=3Dy
->>>    CONFIG_ENC28J60=3Dy
->>>    CONFIG_ICPLUS_PHY=3Dy
->>>    CONFIG_MICREL_PHY=3Dy
->>>    CONFIG_REALTEK_PHY=3Dy
->>> -CONFIG_SMSC_PHY=3Dy
->>>    CONFIG_CAN_FLEXCAN=3Dm
->>>    CONFIG_USB_USBNET=3Dy
->>>    CONFIG_USB_NET_SMSC95XX=3Dy
->>> @@ -77,13 +75,11 @@ CONFIG_SERIAL_AMBA_PL011=3Dy
->>>    CONFIG_SERIAL_AMBA_PL011_CONSOLE=3Dy
->>>    CONFIG_SERIAL_MXS_AUART=3Dy
->>>    # CONFIG_HW_RANDOM is not set
->>> -# CONFIG_I2C_COMPAT is not set
->>>    CONFIG_I2C_CHARDEV=3Dy
->>>    CONFIG_I2C_MXS=3Dy
->>>    CONFIG_SPI=3Dy
->>>    CONFIG_SPI_GPIO=3Dm
->>>    CONFIG_SPI_MXS=3Dy
->>> -CONFIG_GPIO_SYSFS=3Dy
->>>    # CONFIG_HWMON is not set
->>>    CONFIG_WATCHDOG=3Dy
->>>    CONFIG_STMP3XXX_RTC_WATCHDOG=3Dy
->>> @@ -138,10 +134,6 @@ CONFIG_PWM_MXS=3Dy
->>>    CONFIG_NVMEM_MXS_OCOTP=3Dy
->>>    CONFIG_EXT4_FS=3Dy
->>>    # CONFIG_DNOTIFY is not set
->>> -CONFIG_NETFS_SUPPORT=3Dm
->>> -CONFIG_FSCACHE=3Dy
->>> -CONFIG_FSCACHE_STATS=3Dy
->>> -CONFIG_CACHEFILES=3Dm
->>>    CONFIG_VFAT_FS=3Dy
->>>    CONFIG_TMPFS=3Dy
->>>    CONFIG_TMPFS_POSIX_ACL=3Dy
->
->
->
-> Best regards,
->
-> Lukasz Majewski
->
-> --
->
-> DENX Software Engineering GmbH,      Managing Director: Erika Unter
-> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-> Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
+Hi Laurent,=0A=
+=0A=
+> On Mon, Apr 07, 2025 at 02:06:35PM +0000, Tarang Raval wrote:=0A=
+> > > On Mon, Apr 07, 2025 at 11:10:23AM +0000, Tarang Raval wrote:=0A=
+> > > > Hi Laurent,=0A=
+> > > >=0A=
+> > > > I=92m trying to bring up HDMI on the Debix Model A board using the=
+=0A=
+> > > > mainline kernel, but I=92m currently facing issues.=0A=
+> > > >=0A=
+> > > > I saw that you tested the patch for HDMI support on this board in=
+=0A=
+> > > > mainline, so I am hoping you could help me figure out what might be=
+=0A=
+> > > > missing.=0A=
+> > > >=0A=
+> > > > To clarify =97 I'm using the prebuilt image provided by Debix, but =
+I replaced=0A=
+> > > > the kernel image and the device tree (DTS) file in the /boot direct=
+ory with=0A=
+> > > > ones built from the mainline kernel.=0A=
+> > > >=0A=
+> > > > I=92ve enabled the following configurations in the kernel:=0A=
+> > > > CONFIG_DRM_DISPLAY_CONNECTOR=3Dy=0A=
+> > > > CONFIG_DRM_IMX8MP_DW_HDMI_BRIDGE=3Dy=0A=
+> > > > CONFIG_DRM_IMX8MP_HDMI_PVI=3Dy=0A=
+> > > > CONFIG_DRM_IMX_LCDIF=3Dy=0A=
+> > > > CONFIG_PHY_FSL_SAMSUNG_HDMI_PHY=3Dy=0A=
+> > > >=0A=
+> > > > When I boot the board, I see the following HDMI/DRM related logs:=
+=0A=
+> > > > debix@imx8mp-debix:~$ dmesg | grep -iE "drm|hdmi"=0A=
+> > > > [ =A0 =A00.121979] /soc@0/bus@32c00000/display-bridge@32fc4000: Fix=
+ed dependency cycle(s) with /soc@0/bus@32c00000/hdmi@32fd8000=0A=
+> > > > [ =A0 =A00.122164] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed depende=
+ncy cycle(s) with /soc@0/bus@32c00000/display-bridge@32fc4000=0A=
+> > > > [ =A0 =A00.127417] /soc@0/bus@32c00000/hdmi@32fd8000: Fixed depende=
+ncy cycle(s) with /hdmi-connector=0A=
+> > > > [ =A0 =A00.127608] /hdmi-connector: Fixed dependency cycle(s) with =
+/soc@0/bus@32c00000/hdmi@32fd8000=0A=
+> > > > [ =A0 =A01.947962] imx8mp-dw-hdmi-tx 32fd8000.hdmi: Detected HDMI T=
+X controller v2.13a with HDCP (SAMSUNG HDMI TX PHY)=0A=
+> > > > [ =A0 =A01.949220] imx8mp-dw-hdmi-tx 32fd8000.hdmi: registered Desi=
+gnWare HDMI I2C bus driver=0A=
+> > > > [ =A0 =A01.956365] [drm] Initialized imx-lcdif 1.0.0 for 32fc6000.d=
+isplay-controller on minor 0=0A=
+> > > > [ =A0 =A02.016601] imx-lcdif 32fc6000.display-controller: [drm] fb0=
+: imx-lcdifdrmfb frame buffer device=0A=
+> > > > [ =A0 =A08.380915] systemd[1]: Starting Load Kernel Module drm...=
+=0A=
+> > > >=0A=
+> > > >=0A=
+> > > > I also checked that the display's modeline is recognized under sysf=
+s :=0A=
+> > > >=0A=
+> > > > root@imx8mp-debix:~# ls /sys/class/drm/card0-HDMI-A-1/=0A=
+> > > > connector_id =A0dpms =A0 =A0 =A0 =A0 =A0modes =A0 =A0 =A0 =A0 subsy=
+stem/=0A=
+> > > > ddc/ =A0 =A0 =A0 =A0 =A0edid =A0 =A0 =A0 =A0 =A0power/ =A0 =A0 =A0 =
+=A0uevent=0A=
+> > > > device/ =A0 =A0 =A0 enabled =A0 =A0 =A0 status=0A=
+> > > >=0A=
+> > > > However, there is still no HDMI output on the display. Instead,=0A=
+> > > > I only see a white blinking cursor on the screen.. I'm not sure=0A=
+> > > > what I'm missing.=0A=
+> > >=A0=0A=
+> > > The white blinking cursor means the display is working from the kerne=
+l=0A=
+> > > point of view. What are you expecting, are you running an X server or=
+=0A=
+> > > Wayland compositor ?=0A=
+> >=0A=
+> > I'm expecting to see the Ubuntu desktop environment on the HDMI=0A=
+> > display =97 just like how it appears with the original prebuilt image p=
+rovided=0A=
+> > by Debix. I'm running the default Ubuntu 22.04 LTS prebuilt image, and =
+I only=0A=
+> > replaced the Image and .dtb file=0A=
+> >=0A=
+> > I'm not explicitly launching an X server or Wayland compositor myself=
+=0A=
+> >=0A=
+> > However, based on your response, I now realize that I may also need to=
+=0A=
+> > enable GPU support in the mainline device tree. Specifically, I believe=
+ I=0A=
+> > need to enable the gpu2D and gpu3D nodes to allow the graphical=0A=
+> > environment to start properly and render the desktop over HDMI.=0A=
+> >=0A=
+> > Does that sound correct, or is there anything else I should check or=0A=
+> > enable?=0A=
+>=A0=0A=
+> That's a plausible explanation. The 2D GPU is probably not used by the=0A=
+> compositor, but a 3D GPU could be required. I'd recommend checking the=0A=
+> system logs to see why the compositor (or session manager) failed to=0A=
+> start.=0A=
+=0A=
+I reviewed the system logs for more context regarding the failure of the =
+=0A=
+compositor (or session manager) to start.=0A=
+=0A=
+Here are some relevant log entries from journalctl -b -p err:=0A=
+=0A=
+debix@imx8mp-debix:~$ journalctl -b -p err=0A=
+Hint: You are currently not seeing messages from other users and the system=
+.=0A=
+      Users in groups 'adm', 'systemd-journal' can see all messages.=0A=
+      Pass -q to turn off this notice.=0A=
+Apr 10 06:37:29 imx8mp-debix pulseaudio[766]: GetManagedObjects() failed: o=
+rg.freedesktop.systemd1.NoSuchUnit: Unit dbus-org.bluez.serv>=0A=
+Apr 10 06:37:29 imx8mp-debix systemd[757]: Failed to start Application laun=
+ched by gnome-session-binary.=0A=
+Apr 10 06:37:29 imx8mp-debix systemd[757]: Failed to start Application laun=
+ched by gnome-session-binary.=0A=
+Apr 10 06:37:30 imx8mp-debix systemd[757]: Failed to start GNOME Shell on W=
+ayland.=0A=
+=0A=
+Additionally, from journalctl -b | grep -i gnome, the following lines appea=
+r to be significant:=0A=
+=0A=
+Apr 10 06:37:29 imx8mp-debix systemd[757]: org.gnome.Shell@x11.service: Ski=
+pped due to 'exec-condition'.=0A=
+Apr 10 06:37:29 imx8mp-debix systemd[757]: Started GNOME Shell on X11.=0A=
+Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: Running GNOME Shell (using m=
+utter 42.9) as a Wayland display server=0A=
+Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: g_hash_table_destroy: assert=
+ion 'hash_table !=3D NULL' failed=0A=
+Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: Failed to open gpu '/dev/dri=
+/card0': No suitable mode setting backend found=0A=
+Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: Added device '/dev/dri/card1=
+' (imx-lcdif) using atomic mode setting.=0A=
+Apr 10 06:37:30 imx8mp-debix gnome-shell[873]: Failed to setup: No GPUs wit=
+h outputs found=0A=
+=0A=
+the GNOME Shell logs indicate that no GPUs with outputs were found but the =
+dmesg =0A=
+output suggests that the GPU is successfully probed and initialized:=0A=
+=0A=
+debix@imx8mp-debix:~$ dmesg | grep -i -e drm -e gpu -e galcore -e etnaviv=
+=0A=
+[    2.156784] etnaviv etnaviv: bound 38000000.gpu (ops gpu_ops)=0A=
+[    2.157294] etnaviv etnaviv: bound 38008000.gpu (ops gpu_ops)=0A=
+[    2.157753] etnaviv etnaviv: bound 38500000.npu (ops gpu_ops)=0A=
+[    2.157852] etnaviv-gpu 38000000.gpu: model: GC7000, revision: 6204=0A=
+[    2.157986] etnaviv-gpu 38008000.gpu: model: GC520, revision: 5341=0A=
+[    2.158111] etnaviv-gpu 38500000.npu: model: GC8000, revision: 8002=0A=
+[    2.158118] etnaviv-gpu 38500000.npu: etnaviv has been instantiated on a=
+ NPU, for which the UAPI is still experimental=0A=
+[    2.158905] [drm] Initialized etnaviv 1.4.0 for etnaviv on minor 0=0A=
+[    2.161597] [drm] Initialized imx-lcdif 1.0.0 for 32fc6000.display-contr=
+oller on minor 1=0A=
+[    2.161637] imx-lcdif 32fc6000.display-controller: [drm] Cannot find any=
+ crtc or sizes=0A=
+[   10.201152] systemd[1]: Starting Load Kernel Module drm...=0A=
+=0A=
+I have not yet identified a conclusive reason for GNOME Shell's failure to =
+start.  =0A=
+=0A=
+However, since my primary objective was to preview the camera output =0A=
+on the display, I initially suspected the issue might be related to the HDM=
+I =0A=
+display, as I encountered errors while using autovideosink. After your =0A=
+confirmation that the display was functioning correctly, I explored alterna=
+tive =0A=
+video sinks and was able to successfully achieve a working preview using =
+=0A=
+fbdevsink.=0A=
+=0A=
+I may revisit the GNOME Shell issue when time permits. If you have any =0A=
+suggestions or insights regarding the compositor or GPU setup failure, I=92=
+d be =0A=
+happy to take them into consideration.=0A=
+=0A=
+Best regards,=0A=
+Tarang=0A=
+=0A=
+> > > > Could you please help me out or point me in the right direction?=0A=
+> > > >=0A=
+> > > > Thank you for your time.=0A=
+>=A0=0A=
+> --=0A=
+> Regards,=0A=
+>=A0=0A=
+> Laurent Pinchart=
