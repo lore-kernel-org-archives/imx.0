@@ -1,27 +1,27 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5C81E0B86
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 06:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC87927CCDE
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 06:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744352951; cv=none; b=LMli9tGRDZFKdr6UH4BQubp39hj5scO2eI7zB/BmhypjoGbAlDavEhn97ffulcTP4L3cWJ1wAmUJ8l/1HnPU0Ps0JTXwDCVNIxS+mqbdyF5fCFQBNBiH4JS3Cw1xXzHTzuBqzOtBwLntnWqEvgSBjMpHQ7VX1lh/umiGB8E6FUI=
+	t=1744354283; cv=none; b=HUVt6Pp+E8TM/IY6oitKVM3emTCifXGKhEgxvhkHuO758XmhPxBtSfc8CXDzjvLdnBONzeLN6YrfxvIYAn9gDByhr5PKvMyPlGXil7n2yDrTFSLcP/bqb5AlvvdQ5BHHyzqBp7TE4cIZ+dM3AOGGnuXI5WpbxfTLMz579PpjcxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744352951; c=relaxed/simple;
-	bh=RNF67hXYbIj7AuiBeY9z8+U88Il7RL5JK188qv9/XdI=;
+	s=arc-20240116; t=1744354283; c=relaxed/simple;
+	bh=HDXDrlVt+FGDxrjS5VgTAI4hnyLXPAN2IU8yC7FA2pI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ft9vMZCZRZqy4G+hlXNgbnJVypxAIW2rreHTqkG6heXJQM/0sxU6+O8kmuag2E1KAcdEw3KPn2UfkMMtMfhse1Yl8Uo4MqQL9cTF9bHAg2OvxobxlB11aJXpIo8c8kDm+MglvpPrhdZwc70HVy3yj22iV5yKPnLV87xjZvmJYLM=
+	 In-Reply-To:Content-Type; b=qXiq0Nm7zFa4upgsKx76ttNtZLg7h2OwkjyUfW9UW8T85wMMQ5x+Jj8HPUdeM8ZQfGLj14LUpM9HuD9owK1ruHrFuq8GJCRdeXol7IbSwzqzFQJf7ACBtQEgVOJ78xX4Ro7ah0FGL4aeCcaKd3We1nMOZKMrIGzy8TwodLPUi6k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-Received: from [89.212.21.243] (port=57560 helo=[192.168.69.116])
+Received: from [89.212.21.243] (port=39246 helo=[192.168.69.116])
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96.2)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1u37sx-003VJz-29;
-	Fri, 11 Apr 2025 08:29:07 +0200
-Message-ID: <d68df49c-222a-445d-b29c-f9ad962b87aa@norik.com>
-Date: Fri, 11 Apr 2025 08:29:05 +0200
+	id 1u38ES-003Yz0-13;
+	Fri, 11 Apr 2025 08:51:19 +0200
+Message-ID: <cffdcd6c-88c5-43c1-9f00-d1c84af73f4c@norik.com>
+Date: Fri, 11 Apr 2025 08:51:18 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,8 +29,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/13] arm64: dts: freescale: imx93-phycore-som: Enhance
- eMMC pinctrl
+Subject: Re: [PATCH 05/13] arm64: dts: freescale: imx93-phycore-som: Add eMMC
+ no-1-8-v by default
 To: Frank Li <Frank.li@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -40,8 +40,8 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, upstream@lists.phytec.de
 References: <20250410090251.1103979-1-primoz.fiser@norik.com>
- <20250410090251.1103979-5-primoz.fiser@norik.com>
- <Z/fcFPrHdI8/IBRC@lizhi-Precision-Tower-5810>
+ <20250410090251.1103979-6-primoz.fiser@norik.com>
+ <Z/fdR2C0IRUfUv4U@lizhi-Precision-Tower-5810>
 Content-Language: en-US
 From: Primoz Fiser <primoz.fiser@norik.com>
 Autocrypt: addr=primoz.fiser@norik.com; keydata=
@@ -54,7 +54,7 @@ Autocrypt: addr=primoz.fiser@norik.com; keydata=
  TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
  AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
 Organization: Norik systems d.o.o.
-In-Reply-To: <Z/fcFPrHdI8/IBRC@lizhi-Precision-Tower-5810>
+In-Reply-To: <Z/fdR2C0IRUfUv4U@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -70,114 +70,56 @@ X-Source-Dir:
 
 Hi Frank,
 
-On 10. 04. 25 16:56, Frank Li wrote:
-> On Thu, Apr 10, 2025 at 11:02:42AM +0200, Primoz Fiser wrote:
->> Improve eMMC on phyCORE-i.MX93 SOM by adding 100MHz and 200MHz pinctrl
->> modes. This enables to use eMMC at enhanced data rates (e.g. HS400).
->>
->> While at it, apply a workaround for the i.MX93 chip errata ERR052021.
->>
->> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
->> ---
->>  .../boot/dts/freescale/imx93-phycore-som.dtsi | 57 +++++++++++++++----
->>  1 file changed, 47 insertions(+), 10 deletions(-)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
->> index 82f680d891c2..3d84eed33074 100644
->> --- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
->> @@ -166,8 +166,10 @@ eeprom@50 {
->>
->>  /* eMMC */
->>  &usdhc1 {
->> -	pinctrl-names = "default";
->> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
->>  	pinctrl-0 = <&pinctrl_usdhc1>;
->> +	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
->> +	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
->>  	bus-width = <8>;
->>  	non-removable;
->>  	status = "okay";
->> @@ -213,18 +215,53 @@ MX93_PAD_ENET2_RD3__GPIO4_IO27		0x31e
->>  		>;
->>  	};
->>
->> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
->>  	pinctrl_usdhc1: usdhc1grp {
->>  		fsl,pins = <
->>  			MX93_PAD_SD1_CLK__USDHC1_CLK		0x179e
->> -			MX93_PAD_SD1_CMD__USDHC1_CMD		0x1386
->> -			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x138e
->> -			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x1386
->> -			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x138e
->> -			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x1386
->> -			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x1386
->> -			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x1386
->> -			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x1386
->> -			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x1386
->> +			MX93_PAD_SD1_CMD__USDHC1_CMD		0x40001386
->> +			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000138e
->> +			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x40001386
->> +			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x4000138e
->> +			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x40001386
->> +			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x40001386
->> +			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x40001386
->> +			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x40001386
->> +			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x40001386
->> +			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x179e
->> +		>;
->> +	};
->> +
->> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
->> +	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
->> +		fsl,pins = <
->> +			MX93_PAD_SD1_CLK__USDHC1_CLK		0x17be
->> +			MX93_PAD_SD1_CMD__USDHC1_CMD		0x4000139e
->> +			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000138e
+On 10. 04. 25 17:01, Frank Li wrote:
+> On Thu, Apr 10, 2025 at 11:02:43AM +0200, Primoz Fiser wrote:
+>> Add property 'no-1-8-v' by default to usdhc1 (eMMC) node. Bootloader
+>> will take care of deleting the property in case SOM supports HS400 mode
+>> (1.8V IO voltage feature flag has to be set in the EEPROM).
 > 
-> any reason why DATA0 is difference with other one?
+> what means of EEPROM here?
 > 
->> +			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x4000139e
->> +			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x400013be
->> +			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x4000139e
->> +			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x4000139e
->> +			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x4000139e
->> +			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x4000139e
->> +			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x4000139e
->> +			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x179e
->> +		>;
->> +	};
->> +
->> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
->> +	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
->> +		fsl,pins = <
->> +			MX93_PAD_SD1_CLK__USDHC1_CLK		0x17be
->> +			MX93_PAD_SD1_CMD__USDHC1_CMD		0x4000139e
->> +			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000139e
-> 
-> any reason why DATA0/DATA1 is difference with other one
+> Generally eMMC worked fixed voltage, why need 'no-1-8-v' here, even no
+> HS400 support.
 
-Bus signal integrity envelope was measured and drive-strengths adjusted
-accordingly by the PHYTEC hardware department to conform to the specs.
+The phyCORE-i.MX93 SoM comes in two variants, one with 3.3V VDD_IO and
+the other one with 1.8V VDD_IO voltage set.
 
-Values were thus determined empirically to adjust for differences in
-signal impedance due to PCB layout.
+The 3.3V variant can only support DDR52 mode, while 1.8V variant will
+support HS400ES eMMC mode.
+
+The information about VDD_IO option is encoded in the SoM's EEPROM. We
+read EEPROM in the bootloader and clear "no-1-8-v" flag in case of 1.8V
+SOM variant is detected.
+
+In case of EEPROM error (erased or read error) the fall-back option has
+to support both SoM variants, hence the "no-1-8-v" flag has to be set by
+default.
 
 BR,
 Primoz
 
+
+
 > 
 > Frank
->> +			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x400013be
->> +			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x400013be
->> +			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x400013be
->> +			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x400013be
->> +			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x400013be
->> +			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x400013be
->> +			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x400013be
->>  			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x179e
->>  		>;
->>  	};
+>>
+>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+>> ---
+>>  arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>> index 3d84eed33074..d6589d26c875 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>> +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>> @@ -172,6 +172,7 @@ &usdhc1 {
+>>  	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
+>>  	bus-width = <8>;
+>>  	non-removable;
+>> +	no-1-8-v;
+>>  	status = "okay";
+>>  };
+>>
 >> --
 >> 2.34.1
 >>
