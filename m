@@ -1,90 +1,157 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBAD2367A2
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 12:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8644E2367C8
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 12:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744375298; cv=none; b=ELsnqgHQQTcPHQKwIA83cQbATNOc2wVFWY7ClwD9/jGLvbMMOMo+vEmt738rcxJp4MWahpyWKrcg2iM7hfQI9jkLQdCNcJwD55Lnq9EHg/jQo565dNO/bDu5yijD4mwqusZ4YFPJ8jcJubcqPF0W6pCEFcH/SIA6rlDt4osnpeU=
+	t=1744376081; cv=none; b=bV7y6pPPRNoMpYQS8d6fdmToPdy0BwyXedfJBER8UjPaRbo/2fto1DJhsWM0wD9xeTmsaY49LQ3RrkRUnyFzhHhmnd39FOXGldK2TRvVkEReZJzLZNUY87QtJaNOS/zwUPht2YILydiIA7h6zwRzx9puwgSRHmmfLV9gk5kaFb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744375298; c=relaxed/simple;
-	bh=zDL/ObZQj8eM62TAxARSjoBDC8yqTO1LrkfozSlxMZs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S9f/gqsl7t3C798l6iQWZOFchLNNVVwUiYM7ebssJYmm9VVYFiFVS0bz7XP1YZpra6+IDkG/jOB4skOJQ1oeX8Z0x3GJyOVwZbRv/Wlp/dk3qWXq3vOmxqHncHp01+4OQEd3evwqLs4WWiGcXUBpztzh9+bd5+9BxoN4ZqzvHmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=E3btRzli; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1744376081; c=relaxed/simple;
+	bh=Q4jxB9ZrVGxAJUQQh1yJ586UOZiG9G2p9tGKu+B+EwE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gum/IXR8Tmc57ROXN1MNtIBceGZPApSIEivYlZCjLB5kkXnQPFvGPumkX+j8bna9O2QPPIvrx09iYnT9Fth4yVFYVqK58gCB4R84xpEnCczjZYNX8/VK7Olvy6PF1wce5ZouSb3d4TLEiFsYTORi505NsBww/DrU//JFnWMmj1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ORXkI7Ty; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="E3btRzli"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 2D7CA1FEC1;
-	Fri, 11 Apr 2025 14:41:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1744375294;
-	bh=EOH8CIdz65AlaprFUzkJc8PL6lMT1kHFZ8SCjFlHZ9c=; h=From:To:Subject;
-	b=E3btRzlir8gNK+aXDl3vPeVu4yeZ/AEtyTxwgKCsw8IULkGr+8Wid5/IKqHV6MMhs
-	 coudJUidzaoGjnYB/rZMq/WPqLgms0I7TMW2KyPmoLu2RIvwbQssuA8exOmAGPGCq1
-	 zTbZfp708FVTHIDztLVGSehqjJHi2fRFWoKhJ+tVPh/7wAhAfPIaMxlbUUg5URzSNv
-	 4+1SZhkjzFgr0hLM8bIbZL3R1TMtnpC4XHpegMk/T9rVWg2IrZhGSCdneamI2OvcER
-	 tNLxDjAF1Z8xMtxEKdaed9CxUIIL21V1OVYaWCODqs49g8HwRU8xQ4/AA6JkoUJn7n
-	 qklDoVJJhmGnw==
-Date: Fri, 11 Apr 2025 14:41:29 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Aisheng Dong <aisheng.dong@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v1] i2c: lpi2c: implement master_xfer_atomic callback
-Message-ID: <20250411124129.GA48732@francesco-nb>
-References: <20250319145114.50771-1-francesco@dolcini.it>
- <20250411114738.GA43965@francesco-nb>
- <FRWPR04MB11150B555044300A70102DAF5E8B62@FRWPR04MB11150.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ORXkI7Ty"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B916C102E4621;
+	Fri, 11 Apr 2025 14:54:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1744376076; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=hAJSv9h5wRcXrptqovOOWtspStxTbyq+MpU6paZIMew=;
+	b=ORXkI7Tys/+aHAwaPzH3zrM4L5cGkNhSVzUbIDX0YfMWN2nmpnVIdNGWdw1/8legxzCPD1
+	wtxw+ELgb18/QG6eSReH1fXjuApQuStP+GTgStG2YHP2bngukJjBylJWSNlGZnVTHVDxUC
+	RrGPy0ilcuVPtmar0YlqFU1otWHJv3I8NLc3CN8bq8J+9JV1x3q6S+yGHvI9GjcISdlgwT
+	SoA3YKJFln0pH9iS36F/46RRRzRKIxuzOrXxN7x1xISn4EM4ZRQ8cCSysEFxMeHI1TFoN5
+	o5Sno3HBfomj0RLS+u1bhaQIAtaxERGudlso5SFwuuZq/u59w/0Jbe/vftu0vw==
+Date: Fri, 11 Apr 2025 14:54:30 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Simon Horman <horms@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>
+Subject: Re: [net-next v4 4/5] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250411145430.3001f1db@wsk>
+In-Reply-To: <20250409162854.069abe88@wsk>
+References: <20250407145157.3626463-1-lukma@denx.de>
+	<20250407145157.3626463-5-lukma@denx.de>
+	<20250408151447.GX395307@horms.kernel.org>
+	<20250409162854.069abe88@wsk>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <FRWPR04MB11150B555044300A70102DAF5E8B62@FRWPR04MB11150.eurprd04.prod.outlook.com>
+Content-Type: multipart/signed; boundary="Sig_/EDd9PYuJ_JPMOcH6VsFq/w0";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello,
+--Sig_/EDd9PYuJ_JPMOcH6VsFq/w0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 11, 2025 at 11:55:31AM +0000, Carlos Song wrote:
-> > On Wed, Mar 19, 2025 at 03:51:14PM +0100, Francesco Dolcini wrote:
-> > > From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> > >
-> > > Rework the read and write code paths in the driver to support
-> > > operation in atomic contexts. To achieve this, the driver must not
-> > > rely on IRQs or perform any scheduling, e.g., via a sleep or schedule
-> > > routine. Even jiffies do not advance in atomic contexts, so timeouts
-> > > based on them are substituted with delays.
-> > >
-> > > Implement atomic, sleep-free, and IRQ-less operation. This increases
-> > > complexity but is necessary for atomic I2C transfers required by some
-> > > hardware configurations, e.g., to trigger reboots on an external PMIC chip.
-> > >
-> > > Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> > > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > 
-> > Any comment on this?
-> Looks good. Thank you for your work!
-> Do you test it at some board? How can we test simply?
+Hi Simon,
 
-It was tested on Toradex SMARC iMX95, there to power-off/reset the board
-we have some I2C communication required [1].
+> > It is unclear why hwentry, which is a pointer, is being cast to an
+> > integer and then back to a pointer. I see pointer arithmetic, but
+> > that can operate on pointers just as well as integers, without
+> > making assumptions about how wide pointers are with respect to
+> > longs.
+> >=20
+> > And in any case, can't the types be used to directly access the
+> > offsets needed like this?
+> >=20
+> > 	atable =3D fep->hwentry.mtip_table64b_entry;
+> >=20
+> > 	*read_lo =3D readl(&atable[index].lo);
+> > 	*read_hi =3D readl(&atable[index].hi);
+> >  =20
+>=20
+> The code as is seems to be OK.
+>=20
+> The (atable) memory structure is as follows:
+>=20
+> 1. You can store 2048 MAC addresses (2x32 bit each).
+>=20
+> 2. Memory from point 1 is addressed as follows:
+> 	2.1 -> from MAC address the CRC8 is calculated (0x00 - 0xFF).
+> 	This is the 'index' in the original code.
+> 	2.2 -> as it may happen that for two different MAC address the
+> 	same CRC8 is calculated (i.e. 'index' is the same), each
+> 	'index' can store 8 entries for MAC addresses (and it is
+> 	searched in a linear way if needed).
+>=20
+> IMHO, the index above shall be multiplied by 8.
 
-[1] https://lore.kernel.org/all/20250407114947.41421-3-francesco@dolcini.it/
+I've double check it and it turned out that you were right :-)
 
-Francesco
+The following code:
 
+struct addr_table64b_entry *atable_base =3D
+fep->hwentry->mtip_table64b_entry;
+
+*read_lo =3D readl(&atable_base[index].lo);
+*read_hi =3D readl(&atable_base[index].hi);
+
+Is more readable than the current code.
+
+The same would be used for atable_write()
+
+I will change it for v5.
+
+>=20
+> > Also, and perhaps more importantly, readl expects to be passed
+> > a pointer to __iomem. But the appropriate annotations seem
+> > to be missing (forcing them with a cast is not advisable here IMHO).
+> >  =20
+>=20
+> I think that the code below:
+> unsigned long atable_base =3D (unsigned long)fep->hwentry;
+>=20
+> could be replaced with
+> void __iomem *atable_base =3D fep->hwentry;
+>=20
+> and the (index << 3) with (index * ATABLE_ENTRY_PER_SLOT)
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/EDd9PYuJ_JPMOcH6VsFq/w0
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmf5EQYACgkQAR8vZIA0
+zr3A6Qf9GXE29Y/XpPCVSfPKZ01QAhFm6OWDn29Hd19Xc5zaiBO3NFgCJzxJpCM/
+hv949OWXQbxs2glV9RSPxw1OJAIUL+Kub2pt23XEMkkobCV0XzuAW/VqPfjjv8in
+Za9ur5L7E840u1z8uu24NbWBDdoRJBCxLy7Z9YSSxPA9UDMytwLWDwelSQADb1lj
+FhdpA0swhuzHJsTUfu0NL9NZcbQbVapyKUsNZ+OzZJV682VIOSw7DGrwazG9NWYX
+KpHcwfAMp2iiEbVVjjjl5n0VXMXO/Lth4LuGGJaAUd+4ZyZk7n8qoTRldy/PjdJZ
+WPYNyrpUjZEEzphLwmzo6N/RRxxp3Q==
+=QEuc
+-----END PGP SIGNATURE-----
+
+--Sig_/EDd9PYuJ_JPMOcH6VsFq/w0--
