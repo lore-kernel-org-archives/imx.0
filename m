@@ -1,332 +1,105 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013003.outbound.protection.outlook.com [52.101.67.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE57E1F03EF
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 20:09:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744402165; cv=fail; b=m07jriZ+o4t4d8TlZP+NpO9RaQ4xqXxawvSof7xfJQTTbmMdpYFWFrB42DeqXH3mCXuCdsgWYre5ULyaRDPlZA+Fi8Pe/41l8D5xC2vrZsKHS6ZPydr5E9YBcBCnyhi+FY56pg6RcRmLmNWa9e8Sx5ftIKP3E7eeSankVOZr2Uk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744402165; c=relaxed/simple;
-	bh=Wb6d8pyknwab14Fpw2VzEKZUo1FmF2F1CE52AWYawH4=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=f+0y4+Y/CKlx+PrBOiCGnPYiJYIPCwG0n5Ryz76Ac0zmsxgFYhJ2I+EdYJqeOcY2PI98XIh/BuSwnqdyWv59HJjljY0JgxSryKKTenqVKBgzr9VsP33u7Ugricblez85BSZM/9L0QmrTSMT02g4TCBb8oiCmmNls3SO7KFZn+jg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eM3oApI0; arc=fail smtp.client-ip=52.101.67.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE84E268C48;
+	Fri, 11 Apr 2025 20:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744403224; cv=none; b=KnJG7QH8GOL8Osktcul49ZIDUW9P4qHZnjEZIpKzxI86yG1Q2tnVo4xfo9zYbgW0ZlGpnf/eiwItDQ9daqnETQAPhqB4DaHgmCALbz5xqjGAsuyJiXmz1JIRwEf3uM2jMPwKrm8szFkexIc0RBBEXMfmURMf/NlsGYtTQrejUL4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744403224; c=relaxed/simple;
+	bh=0db2ZvvEaBiYWW5dZn01u/FW+dk6clupic3ccg4s29U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SWv/GVNR7ICMiJ5IYQ6k3L94cN07QxKTG6+DwGXNezJR+PTrPD2AMNoU+QHeoVRJFozlV8plHZePu0wKzVTcG+Df6t/yXG79g9FesGDHg/jXAdrTPyar7g74jM3g56frYJfoNAQ1XIa9wqc8gAh2dA/MFFmbjf2LVcLk06v4Bck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=esDdo68Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eM3oApI0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sVFuuk8mWuNINi1Lk35jLQI4xk7LBBUazhtPdExUNzbb3kGZbcdrm3ONLCSPY7hBu0wCfCmjBAh7iNQ64UhoqordBcXNOtleopNaBod94ty6aPduYvwvydD4OcWQlAJCynouqLsFn6rjW3kMpMoEUmiidOE8Yc+uiqgAPg63KxFG32VT2skmgXV55ZzdrU3YWU/OvTUy3SkbC4al1uaDRZ2YvzxxGzDB2NP8tHVUcox+2TklgG/L7E14PHfRaObeCZwnlc60EVCwMi534ZQdN3CrCWKKDHotK4xMzNabcu9VUwc6mX+B0J5nCKqPNqK9ar6kwvb8DVFrvSX/KgNK5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E7g/IZ8frgnKkeAnyvygKxshp2ICmyVxWQWJz8F7Yqg=;
- b=VoDU2Ab3Nxs9Bt3pSEWfo3EWCHJWfHJZaxqlibVAXrKIT/EJzRpVy/aItgO026KA9l66Ebqc+i1FP6k/z6P179TZHkwE7xgi6eKPM9qSScfVBjCrVJLLXn8UoylksJS+is+ZWqVJ6K3q3JON+E6YzEhTETeDsY1IbgAovgFHCJORAAWNtuNWNVU191KTtef6PMVXUswkfG23F692jQwrRmkgkot8L3yyRcckleEayGGSQON7rMjVhvlZvLDXzv5tk8vow4StMuWc2SYlyRBEptMytE8LF4rsARXXH+xiLoRzuMOXXayS3b52izPFVTxMCuVGHhZcgXaGYMOQx+ctmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E7g/IZ8frgnKkeAnyvygKxshp2ICmyVxWQWJz8F7Yqg=;
- b=eM3oApI0QryXHS4gXQcvKVXE+CTaRkJ/8Xextb6188X+RRRJjEOEwy6895WnRoJsawD7iSvy64kNa3Xg7TW+2KJEKDInpU3szRCTvN95Mndmy60kA6I/iHehR7H+ytXANGX9+Os5sEep9tmRVvZ7fkY5qWdhRsBtilXLo/8HCt8Fajo/zf8/G1mtyh3DT2pQsSp8vaJc3q0db0FD/zuYbFFuGnrijCkYvAitZPME/O1J0j88Q2mAZUPIMLy7bdlw1MvliOsZn9ig4CFU2PFEEiNXWs/YYoouLPS5hcp3iHkXV8/xGRiXqx7tDFZrcLT4O/Txc596soSKFAyaa2K6oQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB7633.eurprd04.prod.outlook.com (2603:10a6:20b:2d9::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.27; Fri, 11 Apr
- 2025 20:09:19 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.025; Fri, 11 Apr 2025
- 20:09:17 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: robh@kernel.org
-Cc: Frank.Li@nxp.com,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	krzk+dt@kernel.org,
-	linux-mtd@lists.infradead.org,
-	masahiroy@kernel.org,
-	miquel.raynal@bootlin.com,
-	nathan@kernel.org,
-	nicolas.schier@linux.dev,
-	richard@nod.at,
-	vigneshr@ti.com
-Subject: [PATCH v2 1/1] dt-bindings: mtd: convert vf610-nfc to yaml format
-Date: Fri, 11 Apr 2025 16:08:58 -0400
-Message-Id: <20250411200858.3266447-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0135.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::20) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="esDdo68Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D289C4CEE9;
+	Fri, 11 Apr 2025 20:27:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744403223;
+	bh=0db2ZvvEaBiYWW5dZn01u/FW+dk6clupic3ccg4s29U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=esDdo68Z+d4Hv2xTg9bir7moDVY9WA5ZHNQOQQSuaSqpK4ZVZ5TYCII/bn4RwxMZr
+	 v91Fy4ZOoM0+/Jt/kJz+hHTDBH5Y7cgorkg7hKJYfMEaAtyYm0yo7TVsyLDYP8X8Yr
+	 lbBolizfkYoMybinoxMnQeO4z15ssNsGWjbJWaCNcXXhLeL8+wXdXh4bxQDVNpBy+W
+	 16U0UR3T/W7DwHyxqusjQCSezbEnBHt3oAODHEOXBlDZ57rr7uw2sGTGNNSPwztmgs
+	 OP7R18BP7Fw67uyJpytSsPPFA8F8LJPW2roAjchwrwdUeX0R1tYzq+HQy0G41GmtXm
+	 oaWZ2H87kVc8g==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5ed1ac116e3so3674222a12.3;
+        Fri, 11 Apr 2025 13:27:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUMCKbOBWUY5qNp4KZOAEWj+Eqpa/BiyNXgAsY3vxFyAhUpI20IFhBuPDotYrlvjlcsqE7LeNxtpVyi7UU=@lists.linux.dev, AJvYcCXKAWLTfhoM82heKtqgOJt8+LKLKJefou0fP168jYE/lVxgiup6Qlka7LX1ZE7YSmRTSyw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyXakkEPd8Y9cq9kABePRBQ8ZZYjHZNIsxRksg4u1widhOajaxP
+	s41lQZcmneI2PFU0YkxIg4eyod5oxDtTiOd6Qa3F22o2AGlFKSatXGZNzev1a4/pCjHVXke9omQ
+	vqZa+Cb2is9Naw8779PeSn3ybyw==
+X-Google-Smtp-Source: AGHT+IHTq9IynIF/z4Ryd9XhwviquzTS623VvUxbOB2plMDWlWmVxnnGmioMBYPRMrNx5/qrse/N9OEq7aX0hV7vQRQ=
+X-Received: by 2002:a05:6402:1d54:b0:5e0:49e4:2180 with SMTP id
+ 4fb4d7f45d1cf-5f37001322cmr3235456a12.25.1744403222033; Fri, 11 Apr 2025
+ 13:27:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7633:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c2f348d-3623-47f0-b899-08dd7934bcd3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?eGHUaUhpE1/aO/rk0dLm2nWifLVQplM1k1q37dV4mRel84TwbCxS8uujE3ya?=
- =?us-ascii?Q?+fmub6JwBmWK41FbA7dBV8jWcEpzkPGKWhe0r/GYy9fHmamdHuNt2GEBmQyB?=
- =?us-ascii?Q?550ytCkszNlUd2jyZSOlfHXUoEgrd67lxIF5iLREuOH7DQwGMIHXobdrAaOa?=
- =?us-ascii?Q?4qRrnc1A7OJAA5Z52+p5siKTc9C8+tAjkujaXnJIEmK3DOSdw5xARtFFs1+5?=
- =?us-ascii?Q?o8H+7OCwhy9TaDzjuBi9FEnRyPSK4Y7cloVqC/kwhptHzAt3+L4btKTfEbNB?=
- =?us-ascii?Q?Em02NSClv/+nMU9rDKUUiktSCNsS7HEJJakccBPGO8GlP6iT1KYehC5PcoxX?=
- =?us-ascii?Q?bX/8jojm8OiZmBjEtmbdyVV79aE2TMi+r/h/k+h99e4WJ3qUPVz5vbhTSMge?=
- =?us-ascii?Q?jqEPhcelMj1/VVYV/H5C56KSihyWvYwZ6TWVc4moUSxeOolJFkaR5rJhjPuG?=
- =?us-ascii?Q?nnNYUizCtmBvzWEj1xC8jLZVTQxKKJCOVpRXslJlrbDJa/jY1AdIQMwm0H35?=
- =?us-ascii?Q?3l1BtipvpvDd3Tm9i3IYaXxRb7QQzTqUB/gawHF8gKZ2KruahdphqoJtWlw/?=
- =?us-ascii?Q?wZDvwC6FeTF1EaOSf19edzCegYHvWFRY9+IQejqeKNBV4Djz3SWTFWWTuabi?=
- =?us-ascii?Q?3OfgydARvY3UFPr7Z58PIA1k++V1HqykqBf6qdq9NSIcxxBan/vtk1W2bgTJ?=
- =?us-ascii?Q?EoEmMdZzhYS07Wmka990yjzK8fXA2JQofS6NH67RBVOkRbUA6mMfZx/rqhIY?=
- =?us-ascii?Q?VC4w884zCYfXdlY6k7ejPOn+XhXzui3VeyCHgjE/ll7nIhuYO243NzZUYyQt?=
- =?us-ascii?Q?otTY/bt4RZlshonb63ui8r1W7AJvf36awJkXOJ//lQdLl0WJJzT+PjX+xZJT?=
- =?us-ascii?Q?7dz4ugqzXJa/5y0zA7M4KeuGyZAB8s3v4bR91fCqtN+x2upy203rnlOL8S52?=
- =?us-ascii?Q?uqsQG76Yx3f5S25CD6aIDe/RDiaSxeZYGwnFnZKpHiSWGofWqbC9M7ZK6rYO?=
- =?us-ascii?Q?WaweOxFjxX+F+hIpmPeXYsSqbm8PtL7owF0mOl3bL6gt/l64KHcLXHzYl5P2?=
- =?us-ascii?Q?BnqV8cFIxKrv5M067rpfGwLtVqZThGPUTxkfIJ1sDhOW9l1/BhjA/hsow0bf?=
- =?us-ascii?Q?uyiwgrDa26jyZJEipRA2/1hiewJxy7IQcn6rSScE4PXxfu5O52z2Cpfn6BUB?=
- =?us-ascii?Q?Mx/Dd7R2WX0ZdwAnLSEVmVWC7avK60ifEZvGqZTefvKAllhvdC1k5Nr7G2Cb?=
- =?us-ascii?Q?xQYaMJS/RMp9XU2sfTq0F50Ds+uPl8dIqyiFJOQnHKI1cCKw1wt9lIsTZtkD?=
- =?us-ascii?Q?u93XbiqLVWqOWKV72y9RlD6pqffcajZIwdW+CJR27SP5OogxiTnF4IijtghB?=
- =?us-ascii?Q?yDPwL2XLnxcNr03535Ggs0l+fFyyk+24pshwo/+S4uo9HurC/U3QwLiBsRpT?=
- =?us-ascii?Q?piAh9CHaPyU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KdkzUX4zZVp/4QxOVQ4uYaCVwknfEVq44w1us8uQ6QDV0iD3h1Jvm5q/GPTP?=
- =?us-ascii?Q?vnnjYKbCz2Jw8YQWJ1DcV33SUhRh3LLLPNCBBJmdognKpT85s6OsSescgEmr?=
- =?us-ascii?Q?0tvmqb0bYsXi8Ph1cA4vwdPq4DozgBWLHr46AHFV1gspvqSPZHPbqItlGkl/?=
- =?us-ascii?Q?aHZj9hSq1/e/89JTGqmLdUWDR/MfWRyWFozvL3bGhEpiKalm4C4LXiKbtvpQ?=
- =?us-ascii?Q?5nVUEs8q7NRUvbTAt3+V1EK+NlZVRmsu0HTdUJRBdUth0tOlHF/9krm6jhjm?=
- =?us-ascii?Q?b/+ZNp0s9ggijB29tHrmjfJHOJct18jard3FfBmuGPFL0dq4jLaHofCd6UfF?=
- =?us-ascii?Q?cUXJMTAIbHIFWtL5MXvz9ocDSKkNCT4bgFJK0Ln7IxtD+GtTWL5wk5Fx9gaJ?=
- =?us-ascii?Q?aOLlPDBTx8Q6ty69ytEgE2m+d8k83w4dn3EWD7zDonsQ1jp5Ge1kbrtsxduC?=
- =?us-ascii?Q?L6qWnYsFgUoRkV04MZEM5UuK0wV1st0Mn96Xh/wR2JOrGGqMWovvC9lgVljw?=
- =?us-ascii?Q?B0BfReOjPPWp5Qs01LIJUELv+39qV287vEmp+TeXZaNVsIQbVdBQREWWGNgf?=
- =?us-ascii?Q?JPPcquzFY6AZgRfA8CPfROHW2r/TXHJJ1XT9qw67bcm8IyKbdn5CCommgHue?=
- =?us-ascii?Q?Zbz39MyMevFNpktn9Z2l+4zn48F6lYzGrTcyIvJ6Z7zZN7WlrcJ0fwUih9DF?=
- =?us-ascii?Q?4GxStBN8SPea0q/4Ey7v9ApcnXowFo8RV2J63fs2qRHrzV5gzhCQ2r2YFWwq?=
- =?us-ascii?Q?CVybVNh9AB4Y7ZNNAf+iBE8jyhIYWUHQbGnLp0dkrmu3sesC1pvXXFP1M94s?=
- =?us-ascii?Q?CjU55VolDNvqLBid/y2FqdW1UAXFXLbiwvKH5QVLZ+182ysSqUutnneV0KJ2?=
- =?us-ascii?Q?72d+yvtLkYSSK41GxPBaTBDAmjMT4sv0tlXDBM+Ehicw4h00XlWCX+qp1+z0?=
- =?us-ascii?Q?8QUcoRATVfpqf4oy9D/updLTVIayphT4LOmg0dJOVgyeb8yxpqzbHsRTfKmx?=
- =?us-ascii?Q?GsWXjk3H7doz7oUsY/UeDlok0bHRyDvzmQEyQitIWnSLg0r9GuQVA8w+OFzQ?=
- =?us-ascii?Q?bxAJ5o1OUMiyHCHVeU1cYHCa6Kq+k9flwsO2GTL1eiKyHizch8mitoOwwoCs?=
- =?us-ascii?Q?GAHGslMF4HS1FJ9ztm5ETD4ZLi5+szKAugEpgmfIXLLoWPaRt4u34uv7nPA1?=
- =?us-ascii?Q?OWSU0AkyeVd+L4kS/+vX7faJAt8CQX6/H91KTGEFVCE4qyZzwxNvPgV/xIqM?=
- =?us-ascii?Q?XPzmEgSOxmzo0mcshyd4ewAbfPBF4upgrYaj1p8/o6TnN5NowuLTkEhVoFw4?=
- =?us-ascii?Q?55qQ/azf4a6oX4j7rHupH01jfQ1D/DG//THgVTvrtGLJroPTYcUkWg3yg2a2?=
- =?us-ascii?Q?1dzpCgnTo0uALTA8qGXTxM1DGY8qk/x1dYz8e7oDXYNkGX3GPjyHN/ZCwPWd?=
- =?us-ascii?Q?ZZglEm3GZZ475f0TQsD/gMKdEtvJM8fiolE7SD1H2/D1MbNmRdvrv95PK/lw?=
- =?us-ascii?Q?Hha/4mJVTqbHTJiZLh0VQdP0KVv8kO7X02zo3HDbn0+rcOatqznY4yWHJvOe?=
- =?us-ascii?Q?RJE2vQOr5sGmcXTZrr0/Dzj4vF7dcgGXAr3Fqwzv?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c2f348d-3623-47f0-b899-08dd7934bcd3
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 20:09:17.2167
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VskcPikWMHejJMwkuQjcUsABi9kLTYB/yENPfN8FUChJi7BavJtMSbXe4lLK0WNU8kF9uu7Ofb+ufmTSxYg6Rg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7633
+References: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
+ <20250410-dt-cpu-schema-v2-3-63d7dc9ddd0a@kernel.org> <20250411-ebay-exerciser-392c42daf5ba@spud>
+In-Reply-To: <20250411-ebay-exerciser-392c42daf5ba@spud>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 11 Apr 2025 15:26:50 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJza-bufzjZ415THyDDQaOfk8F+JRFvFxzNwObG=NKVJQ@mail.gmail.com>
+X-Gm-Features: ATxdqUHjYgk-N2yFwfhKqPvFMPb1Jj4TAQ2QQ1AYg4EXz2sFdyWD0eKD2bEivlI
+Message-ID: <CAL_JsqJza-bufzjZ415THyDDQaOfk8F+JRFvFxzNwObG=NKVJQ@mail.gmail.com>
+Subject: Re: [PATCH v2 03/17] arm64: dts: microchip: sparx5: Fix CPU node
+ "enable-method" property dependencies
+To: Conor Dooley <conor@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
+	Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Andy Gross <agross@kernel.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Viresh Kumar <vireshk@kernel.org>, 
+	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+	Stephan Gerhold <stephan.gerhold@linaro.org>, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Convert binding doc vf610-nfc to yaml format.
+On Fri, Apr 11, 2025 at 11:22=E2=80=AFAM Conor Dooley <conor@kernel.org> wr=
+ote:
+>
+> On Thu, Apr 10, 2025 at 10:47:24AM -0500, Rob Herring (Arm) wrote:
+> > The "spin-table" enable-method requires "cpu-release-addr" property,
+> > so add a dummy entry. It is assumed the bootloader will fill in the
+> > correct values.
+> >
+> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+> > Tested-by: Daniel Machon <daniel.machon@microchip.com>
+>
+> This is already applied, guess I forgot to merge it into the branch that
+> appears in linux next. I'll do that now..
 
-Additional changes:
-- ref to nand-controller.yaml.
-- include arm-gic.h and vf610-clock.h in examples.
-- add clocks and clock-names description.
-- remove #address-cells, #size-cells assigned-clocks and
-assigned-clock-rates.
+Sometimes I check next, but in this case I just looked at replies for
+which there were none. I dislike submitting dts changes because it's a
+range of AWOL maintainers, only applying around some rcN (so up to 2
+months later), silently applying, and applied but never in linux-next
+(until in soc tree).
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change from v1 to v2
-- add blank line
-- remove accident change makefile
-- correct head file name in commit message
----
- .../bindings/mtd/fsl,vf610-nfc.yaml           | 89 +++++++++++++++++++
- .../devicetree/bindings/mtd/vf610-nfc.txt     | 59 ------------
- 2 files changed, 89 insertions(+), 59 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mtd/fsl,vf610-nfc.yaml
- delete mode 100644 Documentation/devicetree/bindings/mtd/vf610-nfc.txt
-
-diff --git a/Documentation/devicetree/bindings/mtd/fsl,vf610-nfc.yaml b/Documentation/devicetree/bindings/mtd/fsl,vf610-nfc.yaml
-new file mode 100644
-index 0000000000000..480a5c87859d3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mtd/fsl,vf610-nfc.yaml
-@@ -0,0 +1,89 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mtd/fsl,vf610-nfc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale's NAND flash controller (NFC)
-+
-+description:
-+  This variant of the Freescale NAND flash controller (NFC) can be found on
-+  Vybrid (vf610), MPC5125, MCF54418 and Kinetis K70.
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,vf610-nfc
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    items:
-+      - const: nfc
-+
-+patternProperties:
-+  "^nand@[a-f0-9]$":
-+    type: object
-+    $ref: raw-nand-chip.yaml
-+
-+    properties:
-+      compatible:
-+        const: fsl,vf610-nfc-nandcs
-+
-+      reg:
-+        const: 0
-+
-+      nand-ecc-strength:
-+        enum: [24, 32]
-+
-+      nand-ecc-step-size:
-+        const: 2048
-+
-+    unevaluatedProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+allOf:
-+  - $ref: nand-controller.yaml
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/clock/vf610-clock.h>
-+
-+    nand-controller@400e0000 {
-+        compatible = "fsl,vf610-nfc";
-+        reg = <0x400e0000 0x4000>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
-+        clocks = <&clks VF610_CLK_NFC>;
-+        clock-names = "nfc";
-+        assigned-clocks = <&clks VF610_CLK_NFC>;
-+        assigned-clock-rates = <33000000>;
-+
-+        nand@0 {
-+            compatible = "fsl,vf610-nfc-nandcs";
-+            reg = <0>;
-+            nand-bus-width = <8>;
-+            nand-ecc-mode = "hw";
-+            nand-ecc-strength = <32>;
-+            nand-ecc-step-size = <2048>;
-+            nand-on-flash-bbt;
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/mtd/vf610-nfc.txt b/Documentation/devicetree/bindings/mtd/vf610-nfc.txt
-deleted file mode 100644
-index 7db5e6e609df6..0000000000000
---- a/Documentation/devicetree/bindings/mtd/vf610-nfc.txt
-+++ /dev/null
-@@ -1,59 +0,0 @@
--Freescale's NAND flash controller (NFC)
--
--This variant of the Freescale NAND flash controller (NFC) can be found on
--Vybrid (vf610), MPC5125, MCF54418 and Kinetis K70.
--
--Required properties:
--- compatible: Should be set to "fsl,vf610-nfc".
--- reg: address range of the NFC.
--- interrupts: interrupt of the NFC.
--- #address-cells: shall be set to 1. Encode the nand CS.
--- #size-cells : shall be set to 0.
--- assigned-clocks: main clock from the SoC, for Vybrid <&clks VF610_CLK_NFC>;
--- assigned-clock-rates: The NAND bus timing is derived from this clock
--    rate and should not exceed maximum timing for any NAND memory chip
--    in a board stuffing. Typical NAND memory timings derived from this
--    clock are found in the SoC hardware reference manual. Furthermore,
--    there might be restrictions on maximum rates when using hardware ECC.
--
--- #address-cells, #size-cells : Must be present if the device has sub-nodes
--  representing partitions.
--
--Required children nodes:
--Children nodes represent the available nand chips. Currently the driver can
--only handle one NAND chip.
--
--Required properties:
--- compatible: Should be set to "fsl,vf610-nfc-cs".
--- nand-bus-width: see nand-controller.yaml
--- nand-ecc-mode: see nand-controller.yaml
--
--Required properties for hardware ECC:
--- nand-ecc-strength: supported strengths are 24 and 32 bit (see nand-controller.yaml)
--- nand-ecc-step-size: step size equals page size, currently only 2k pages are
--    supported
--- nand-on-flash-bbt: see nand-controller.yaml
--
--Example:
--
--	nfc: nand@400e0000 {
--		compatible = "fsl,vf610-nfc";
--		#address-cells = <1>;
--		#size-cells = <0>;
--		reg = <0x400e0000 0x4000>;
--		interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&clks VF610_CLK_NFC>;
--		clock-names = "nfc";
--		assigned-clocks = <&clks VF610_CLK_NFC>;
--		assigned-clock-rates = <33000000>;
--
--		nand@0 {
--			compatible = "fsl,vf610-nfc-nandcs";
--			reg = <0>;
--			nand-bus-width = <8>;
--			nand-ecc-mode = "hw";
--			nand-ecc-strength = <32>;
--			nand-ecc-step-size = <2048>;
--			nand-on-flash-bbt;
--		};
--	};
--- 
-2.34.1
-
+Rob
