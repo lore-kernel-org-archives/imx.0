@@ -1,94 +1,149 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA461F7575
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 13:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC38B1F1507;
+	Fri, 11 Apr 2025 13:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744378366; cv=none; b=LyxhnX5l4U3Lvc3pViEg5S5nKp+NELhmZVCqpvmmcH8/Xmxa5+gKW0sxg51EXMagpUKQIT3kU7kYDHPs8qUiOYWn3FbFKPtgQBF80injPXB9vKi6M9Ps4MFyu7gjzayTw7m2q0C8g1HqAFJu8OFE1Kc1Z7CmYj2gtJNuNVn+aa4=
+	t=1744378374; cv=none; b=PwEnzXn/+zBxbGYVaK+fD6M10BXyG6qkmIUVy3DkJh1HdJH3LnSh9P+MIud8N8S9qup+3GK6u/tbfzZrUXgkq+eEcyU7Zhaks6hf7WmR+hK5A1KP6zELwcwQCLyZXiZixUzhlmOLPHLT6hAZPHrvfF/758c/IYwzHk5xAXL3fo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744378366; c=relaxed/simple;
-	bh=T8OPPQ63sB53cKU/lE9eCiUIlHMKwl45r6Cu0slEsfM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y+mqEbGYfMHbtJ7B+1WYOdPPmwcnpeS//46gyPprdGth27ZuX08aPKOUN5knSExFl91W6890PF1k2g25I24xvRwKF5OeL7NREDF0Z8K27Qf7oLVz5HErxpgZOrmdWJIPiw7oZUmZzr0oN6hrGhk8u+icxtHh+3KXqf14WGRPo5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L3EPJPuI; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744378374; c=relaxed/simple;
+	bh=az4A2h4Fh8Qax5uqmPNNmxM9dROSi+JrFtVmdCqudbU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VEtf6G5FabkyrxeREcOMtyyGJ1IFW+ekm46PrWgIWpVghleEv1jTaG760RBFDbM9Ja84fi040w9GJA66mkp2UJ9O4bS4Falag6vLwHxw+Wo4fyOuYcvIV9p4VpoDgVMPYWrDAb9hQbedS9+C8aqPijkmvkf3ird76+h+2hVsVUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ubbbPPRo; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L3EPJPuI"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54d42884842so1670568e87.2
-        for <imx@lists.linux.dev>; Fri, 11 Apr 2025 06:32:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744378363; x=1744983163; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3HdsNeALPBRl7TJQey6t9d/l1PV0RD8jB7VsA4lZuNc=;
-        b=L3EPJPuILm0Tb3BBI4ks9kTsvxpvGp32OUqO7kyB36JQbgG694GnbArq7vvrNlom2K
-         NYNdWYI2Rr2tmxflSHw5wmwe8w8xFO9Hpmfna+XxTehgpco5VyW/QS74dFewYfZYe3ow
-         vfCMrIHdahj1RItrobxcQmobihqClVNfn+c2KG7icgUXwHta7dAdZJY/muqOKPZjyg9j
-         cQHMRBnyk9Ok3ik3A349wOrcGShQlg8XWPz1f41ydOEJuKpk2o2kjXgqxgupc3PCF3ad
-         D7NZ2eAtvCau6hyld2bLOiSSOlCttkD3MtmjcMEEySVz4K8TjCJ1IJi3vnL9QXwf8B/6
-         Z7lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744378363; x=1744983163;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3HdsNeALPBRl7TJQey6t9d/l1PV0RD8jB7VsA4lZuNc=;
-        b=ZjWl1xAuk6xGhWnV6k7liTByveb4Q+lN31j9mvFSJu6y4bSM1HYc7pkPgMIioNRPnk
-         qwRT0YkXkRWK3wf0SW2TiC5VCvYOYShfoXujhizjbuX8Pb6P6YcZpRuUulHBLJ6TkQxD
-         OjQzx9NuOeW744w8/oxboOoPoR0SojmZAvnVhSTQlj/Fs3EU61aQguYUmqgaKX4rVR/O
-         AkY42iZo5GgwhFWxLXRs75UPvSA2wPgx8PjUmJUiI2HO45kICOpH2vktBdnuN4qrxHG1
-         zucQJ87AT2gWzVOT73sK5yTkLGnqTiMSdiGEtZEgzdjRW9Adlod4yd2r6AFBGx3/9KVj
-         Zq5A==
-X-Forwarded-Encrypted: i=1; AJvYcCW2Le34pks5/gOLf2An9Hlhgeo4/AuRtS5rOjgqfmVEluJrrFS0AEXnBxgJZPuOPanfyEs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwD3Lwc8eVmN2sFOVkXOlzCnLIy0h/9DIUGkpo8M941c6Xxgm1k
-	QNXoS79JpfX5BhX9qXQLSGf/kAwYvvBImJuSguQ6pcApAhkmn6CJuXi+PtnNdK6zMyFNrGgCoi7
-	OLicAdDK7Ve86MmoayH0pOtxzs7M=
-X-Gm-Gg: ASbGncuPaX24LwSW26cXnT96pEmiiOQ9aHO3IZdinC5mWQbUWWQjufmH4xibzpxggDK
-	jGKKS8d3v5oUP8PnSAe/IKCtA1irazYZPMDIGQZMpl1H6XwuNwSu0nkh+UFs0m3xie8n9S9cFcX
-	IIYf99MQ1Jv3HQQKCrEz/van1fXwOVWixCzwHZppLYlCUGCpd/fgCQGA==
-X-Google-Smtp-Source: AGHT+IE33NDJqid6qPgYC+c0Q5rSljAhPbuipqNwWv+AwO2kvaeyl/9m5RUa6zx/o/+6PMIcz7x+vDzf+xQLmDGeeMs=
-X-Received: by 2002:a05:6512:1095:b0:545:aaf:13fd with SMTP id
- 2adb3069b0e04-54d452e33e4mr939323e87.51.1744378362995; Fri, 11 Apr 2025
- 06:32:42 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ubbbPPRo"
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDWWYb2086133
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Apr 2025 08:32:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1744378352;
+	bh=Gboexee6mD0L1jweFt2EEXBwApJzHNO1ztWVUzHiKoM=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=ubbbPPRoTePNDMPdfLtMBZpmJTGOITP771vSjv2qNk/m54WJmWZEd6mPuKrciEIaC
+	 DeNzEG0VetxaLfgDHEtM/94Js/4z87J1JVfg1lt0fE71nLWA6oCsnCd9p+GslJqQHC
+	 9uLnFeAhmC/jK+P1OqRzsORAQ94R1tTyhlg3Q4D4=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDWW1p021039
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 11 Apr 2025 08:32:32 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
+ Apr 2025 08:32:31 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 11 Apr 2025 08:32:31 -0500
+Received: from [10.249.136.157] ([10.249.136.157])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53BDWQDe107922;
+	Fri, 11 Apr 2025 08:32:27 -0500
+Message-ID: <9d0f7fc5-070d-4475-8569-d3e0e9421313@ti.com>
+Date: Fri, 11 Apr 2025 19:02:26 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250407145157.3626463-1-lukma@denx.de> <20250407145157.3626463-4-lukma@denx.de>
-In-Reply-To: <20250407145157.3626463-4-lukma@denx.de>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Fri, 11 Apr 2025 10:32:31 -0300
-X-Gm-Features: ATxdqUHrNbX-n4olVG1x03xQyfka5HcmTFZKe3_PzzPGFy-GrmPZgKlTzpzOW2Q
-Message-ID: <CAOMZO5B6q06nvk3+hzbioGpcW8_JXPZGEebApTU5JZbKvMLzxA@mail.gmail.com>
-Subject: Re: [net-next v4 3/5] ARM: dts: nxp: mxs: Adjust XEA board's DTS to
- support L2 switch
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Stefan Wahren <wahrenst@gmx.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/7] arm64: dts: ti: j721e-sk: Add DT nodes for power
+ regulators
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>, <nm@ti.com>,
+        <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <u-kumar1@ti.com>, <stable@vger.kernel.org>
+References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
+ <20250409134128.2098195-2-y-abhilashchandra@ti.com>
+Content-Language: en-US
+From: "Francis, Neha" <n-francis@ti.com>
+In-Reply-To: <20250409134128.2098195-2-y-abhilashchandra@ti.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Lukasz,
+Hi Abhilash
 
-On Mon, Apr 7, 2025 at 11:52=E2=80=AFAM Lukasz Majewski <lukma@denx.de> wro=
-te:
+On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
+> Add device tree nodes for two power regulators on the J721E SK board.
+> vsys_5v0: A fixed regulator representing the 5V supply output from the
+> LM61460 and vdd_sd_dv: A GPIO-controlled TLV71033 regulator.
+> 
+> J721E-SK schematics: https://www.ti.com/lit/zip/sprr438
+> Fixes: 1bfda92a3a36 ("arm64: dts: ti: Add support for J721E SK")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+> ---
+>  arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 31 ++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> index 440ef57be294..4965957e6545 100644
+> --- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> +++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+> @@ -184,6 +184,17 @@ vsys_3v3: fixedregulator-vsys3v3 {
+>  		regulator-boot-on;
+>  	};
+>  
+> +	vsys_5v0: fixedregulator-vsys5v0 {
+> +		/* Output of LM61460 */
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vsys_5v0";
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		vin-supply = <&vusb_main>;
+> +		regulator-always-on;
+> +		regulator-boot-on;
+> +	};
+> +
+>  	vdd_mmc1: fixedregulator-sd {
+>  		compatible = "regulator-fixed";
+>  		pinctrl-names = "default";
+> @@ -211,6 +222,20 @@ vdd_sd_dv_alt: gpio-regulator-tps659411 {
+>  			 <3300000 0x1>;
+>  	};
+>  
+> +	vdd_sd_dv: gpio-regulator-TLV71033 {
+> +		compatible = "regulator-gpio";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&vdd_sd_dv_pins_default>;
+> +		regulator-name = "tlv71033";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-boot-on;
+> +		vin-supply = <&vsys_5v0>;
+> +		gpios = <&main_gpio0 118 GPIO_ACTIVE_HIGH>;
+> +		states = <1800000 0x0>,
+> +			 <3300000 0x1>;
+> +	};
+> +
+>  	transceiver1: can-phy1 {
+>  		compatible = "ti,tcan1042";
+>  		#phy-cells = <0>;
+> @@ -613,6 +638,12 @@ J721E_WKUP_IOPAD(0xd4, PIN_OUTPUT, 7) /* (G26) WKUP_GPIO0_9 */
+>  		>;
+>  	};
+>  
+> +	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
+> +		pinctrl-single,pins = <
+> +			J721E_IOPAD(0x1dc, PIN_INPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
+> +		>;
+> +	};
+> +
+>  	wkup_uart0_pins_default: wkup-uart0-default-pins {
+>  		pinctrl-single,pins = <
+>  			J721E_WKUP_IOPAD(0xa0, PIN_INPUT, 0) /* (J29) WKUP_UART0_RXD */
 
-> +               ethphy0: ethernet-phy@0 {
-> +                       reg =3D <0>;
-> +                       smsc,disable-energy-detect;
-> +                       /* Both PHYs (i.e. 0,1) have the same, single GPI=
-O, */
-> +                       /* line to handle both, their interrupts (OR'ed) =
-*/
+Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
 
-Please fix the multi-line comment style.
+-- 
+Thanking You
+Neha Malcom Francis
+
