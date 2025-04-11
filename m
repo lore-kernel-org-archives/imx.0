@@ -1,201 +1,173 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C13427EC7D
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 06:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E8F1E9B38
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 07:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744354404; cv=none; b=f9si/Bh/POvF2mUodcH7EAXjdsLOUh6d5hAFFDuc31F/msfUwZrn8eCrd52uf1VqtUEr+EFEGZTkx8vawLznKmTvxQlbOyQ9v9xkQe5CaLfijfvtaa36xa9WBzCpZptzc1icx/f+QzefOGif1s18+WjxClBsj/R65e4G+/mAeoM=
+	t=1744355225; cv=none; b=qQZ/lOcUbPsPdkTQ8zdS3T5s1KY8YDOph+hiX0sbS3w7mbTXRH36KHUac0r4zLT2BCqJwHfLA0HhJT8b6fijvvssvN6VrXK/h15WMikzG9LpJQmg/CY2c+Eh1BhtIWM9ecU58Z1FE5NOHwx4zarF4rTgYj99kjoIVGHZQ8rOC1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744354404; c=relaxed/simple;
-	bh=0s0s8V6FqulB244TMU5h7c8JoFobYb31JUt0QhZva9Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b3AN0JL0tR52Mkp6HKs3xxQadqYIQnWQ00l4LXUWi7Ay4FCyyVq19rteimCJDpb+6sHBI/EbAxVF/aIPSTmLGR37UEZTttEHVqyHglGrNVmKrT10Tla0dAX75Wcm9axa5SZt4jRF/OepRaNR47WTTL6KUo781aD+7BsyUPQuIKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Eusy+zkn; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ObxHs5bm reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1744355225; c=relaxed/simple;
+	bh=e5Off40XHFoCO/BOw8hIt3VBxArBQ9+c579hYcqw91M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XGXepQllxHqHUpV29RIaTlAs1frxMQHKGkU5FHtJegJAuf4hSLYLrI/n2jeXJvRjwbyf25z8E6MZbXuarkFJIiOKU2s1Mj52g5CFhven5w4upYLddx1FAMfDgQHwfKhJP3l2CW+U7HQNfp9tbeS0KYApwOmdOOvlr9GVnctChEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i3fG2ip7; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Eusy+zkn";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ObxHs5bm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i3fG2ip7"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4768f90bf36so15141651cf.0
+        for <imx@lists.linux.dev>; Fri, 11 Apr 2025 00:07:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1744354400; x=1775890400;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/PE1UT1vGb/hTcLrz4p41JHU3RYkVqbBAbl7yr7Gp8o=;
-  b=Eusy+zknRs3FSoxD5byTPfzyFKsyQtYhXFGJ4wgGaTnIN55fB0+0mkzg
-   eMknBf+eFhPNpg6FuAdz48qa0YYH+I+W1YxOchuwincxq0Hll7cr3lvDe
-   SqyQyLfnn6cd2LAHHX3f5BFDOmdFoEZTsS32ijvEQ5P/b0B/6QQlyopwT
-   +JDNN5RP3CLsOd4meDnjtkMhKhUg/seOz0gwH5eJV2zdX6tEfA/xNAS1Z
-   sLefNCWpcf2BxDHzRtOdOyOsXLSJ2PLX3JhpH3om30bAqpJfdTs9cn24Y
-   K6DYDsqNGMceMZlenZ78pVbrKJEKsjGxaaRHVRnWaAfsrearxg/RcnHT2
-   A==;
-X-CSE-ConnectionGUID: bEW0VtO/RoCQkufVuKYI6w==
-X-CSE-MsgGUID: +UQt4EtqRP2L26xK+qmaUw==
-X-IronPort-AV: E=Sophos;i="6.15,203,1739833200"; 
-   d="scan'208";a="43471096"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 11 Apr 2025 08:53:17 +0200
-X-CheckPoint: {67F8BC5D-10-903EAEAC-E04C76C8}
-X-MAIL-CPID: 7DB6D4A40A213011B16BFC23CBDF85ED_5
-X-Control-Analysis: str=0001.0A006372.67F8BC61.007F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C38D01697E2;
-	Fri, 11 Apr 2025 08:53:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1744354392;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/PE1UT1vGb/hTcLrz4p41JHU3RYkVqbBAbl7yr7Gp8o=;
-	b=ObxHs5bmtUyUlJ5potmtAPxPKmKZKcFpev9omi6tSvtVIVNuwbVrQnFnHYKLCyx2OWrfyu
-	Qgsg49VfJTjkSq3Yi8SH9oA03AsUGTVxgxq31IoQPnDxmwejWb1aXgAKyMOBOed3fi5v1Z
-	LuxBVn5GVwFNJFNZwhM5YBSm8wE45uct+JHa32BRVjXQK44Aw6yh/f9szr0ERSPUGyV9MH
-	rWb8294wFjuhCPi5NMfYFOHMwZ/zQA2WrNDkSvJIctExfJYElraZRzBN1Wo6J5pJ2BAg/1
-	8LxcNSfGsdFSgocQrsfg/PM0WoFoRKekjU70ua3Z9aesmXe+JqlVTmiduwmfzg==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>, hongxing.zhu@nxp.com
-Subject:
- Re: [PATCH 4/5] arm64: dts: imx95: add PCIe's msi-map and iommu-map property
-Date: Fri, 11 Apr 2025 08:53:02 +0200
-Message-ID: <1970445.taCxCBeP46@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <Z/aLSWGP4mimMNlv@lizhi-Precision-Tower-5810>
-References:
- <20250128211559.1582598-1-Frank.Li@nxp.com> <10643619.nUPlyArG6x@steina-w>
- <Z/aLSWGP4mimMNlv@lizhi-Precision-Tower-5810>
+        d=gmail.com; s=20230601; t=1744355222; x=1744960022; darn=lists.linux.dev;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iuEiiuDbtuItZWmpzYJ6Hp9H23sHGSswKm1wezRu+84=;
+        b=i3fG2ip7II5y8onQGyZjaAnoiJq6DuCACW7iXjwHbpVUjaNll6wiHwvJSlErFcOhT6
+         W6JK5t5keAvxT2+EnoFwLdUMBcmO37/GOrBJRbWJxmYJmfMtuPdrZDCAzyqP1canloLb
+         ff0Mb2vPEV6kvSm9Dzq2L1KNIlljGgZiiBoIqGQHdWedrqqzG5PhPneNNucjhxBLyU3z
+         N9H5JQC4hKBmC/2/QRA3vUNXx86m5zd30TrEC+2/b9WC3p70lnqS8BMvZkkmXqYTYv7L
+         vJOO4XKMxqYHmcA/Xc9sF3YE7tvwkp7c9qtFUao6omEYJ/D11m06+eDr0ivXqDrcfuDf
+         j5xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744355222; x=1744960022;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iuEiiuDbtuItZWmpzYJ6Hp9H23sHGSswKm1wezRu+84=;
+        b=Y0D2+W1AC/rfjZt7A9PhVsLOXV67+4phF5aJwKWooxciJaUxsV/ZkK5Q0LmybFjm/j
+         L8yebwHWkmWy2fY/Tm+k/rpbBDjWHB/wdFl4Oubh6J4P5MYhGSB3zfqFbpeVFy7sbIyZ
+         7ELN6FdIv2Er/u9YP2mhbjABSn9fl2vhXYJgjtqonrMWLNbdmJC8X8F+lV7g33w57rjp
+         4X962Ar01Tvj+YFnQ3MkouBvBdAKGOSlgiWCGat3KKzGI/ouAuvdzUykgLK4w8wABwq3
+         zUDqPJn+qbzfKYFYoPXikVsE91yItlQm8X2LRW+oDMRUB75hp9j6md6OVzwokIT8E6IO
+         Ih6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXvCi0u1w+uZd1EEZpCntc3FbZrQXLCAopgfQy6cfQ3Am6b/xEMmiFHWb+LOVBnw0BQLBw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzhkJRn/nRLPaMKkYTIihiT1mlL7fHBvdv96hVEdicni094dDEe
+	hMoMt7ShsWPMaoTzTHiBmMlvz1Tk5ByCXGuRSxJXx2kOivxlntrQ
+X-Gm-Gg: ASbGnctLwUooZgQd6/hRKG2XOWmCJUMgD2TKC+M5kPJw0hVhCU6NQxoLeqqZWlfVnOt
+	eFA53Xv733X2F9seKvf+2xqQuApdyeVUgQryoUQX6jsOx1dFBwk76hwa/Di9jb8xjVZJEigTpEr
+	gWD6dJ9criZJdZ8OBz4oFX4Igz2RoGtSKpilxSGU7ASCvWQQYEVq70z5vAnslx8oL+/FSp+JRr7
+	mnxeEFtjOGoRNMPZ3GDcqHoU4fWShKZ63Ue1gvShPw5OSp3AVIayZ5EbIMgIW/Sgz0NDpkHIMQa
+	iFXBlLD1H3mpme1HAADF3hmDS3B8cKyC3im/AzJyh6i7a2uLpRE=
+X-Google-Smtp-Source: AGHT+IGEFOBHu6HsvrQPL+zpG/VqrkoP9xU7Cgn8q5fgPDXNyPnCad1feQZCkHrTe2gAZJAQoHpBNw==
+X-Received: by 2002:ac8:5f95:0:b0:476:5fd5:4de6 with SMTP id d75a77b69052e-479775b92dcmr23015011cf.40.1744355222463;
+        Fri, 11 Apr 2025 00:07:02 -0700 (PDT)
+Received: from localhost.localdomain ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796ed9bd77sm21694891cf.51.2025.04.11.00.06.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 00:07:02 -0700 (PDT)
+From: Kevin Hao <haokexin@gmail.com>
+Date: Fri, 11 Apr 2025 15:06:41 +0800
+Subject: [PATCH v2] spi: fsl-qspi: Optimize fsl_qspi struct
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250411-spi-v1-1-8d6dfb1a9262@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAIC/+GcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDE0ND3eKCTF2TpBRjo2SL1FQDi2QloMqCotS0zAqwKdFKZUZKsbW1ANP
+ 5gopZAAAA
+X-Change-ID: 20250411-spi-4bd32c8ee08c
+To: linux-spi@vger.kernel.org
+Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, 
+ imx@lists.linux.dev, Kevin Hao <haokexin@gmail.com>
+X-Mailer: b4 0.14.2
 
-Hi,
+Reorgize the members of the fsl_qspi struct to:
+  - Reduce a hole in the struct.
+  - Group members required by each op (e.g., iobase, ahb_addr,
+    devtype_data and lock) into the same cacheline.
 
-Am Mittwoch, 9. April 2025, 16:59:21 CEST schrieb Frank Li:
-> On Wed, Apr 09, 2025 at 12:14:48PM +0200, Alexander Stein wrote:
-> > Hi Frank,
-> >
-> > Am Donnerstag, 27. M=E4rz 2025, 19:48:33 CEST schrieb Frank Li:
-> > > [snip]
-> > > Finially we get realtek PCI card
-> > >
-> > > it quite complex, there are one PCIe switch to split it to two pci bu=
-s.
-> > >
-> > >  lspci -t
-> > > -[0000:00]---00.0-[01-ff]----00.0-[02-04]--+-03.0-[03]----00.0
-> > >                                            \-07.0-[04]----00.0
-> >
-> > Interesting. Mine looks slightly different:
-> >
-> > $ lspci -t
-> > -[0000:00]---00.0-[01-ff]----00.0-[02-04]--+-01.0-[03]----00.0
-> >                                            \-02.0-[04]----00.0
-> >
-> > >
-> > >
-> > > 0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
-> > > 0000:01:00.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port PCIe=
- x1 Gen2 Packet Switch
-> > > 0000:02:03.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port PCIe=
- x1 Gen2 Packet Switch
-> > > 0000:02:07.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port PCIe=
- x1 Gen2 Packet Switch
-> >
-> > It seems you have a newer hardware revision. I have
-> > 0000:01:00.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
-> > 0000:02:01.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
-> > 0000:02:02.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
-> >
-> > PCIe bridges.
-> >
-> > > 0000:03:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL=
-8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 09)
-> > > 0000:04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL=
-8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 09)
-> > >
-> > > It need below change
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/bo=
-ot/dts/freescale/imx95.dtsi
-> > > index 9bb26b466a061..9dbf395b9a67b 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> > > @@ -1660,10 +1660,18 @@ pcie0: pcie@4c300000 {
-> > >                         power-domains =3D <&scmi_devpd IMX95_PD_HSIO_=
-TOP>;
-> > >                         /* pcie0's Devid(BIT[7:6]) is 0x00, stream id=
-(BIT[5:0]) is 0x10~0x17 */
-> > >                         msi-map =3D <0x0 &its 0x10 0x1>,
-> > > -                                 <0x100 &its 0x11 0x7>;
-> > > +                                 <0x100 &its 0x11 0x1>,
-> > > +                                 <0x218 &its 0x12 0x1>,
-> > > +                                 <0x238 &its 0x13 0x1>,
-> > > +                                 <0x300 &its 0x14 0x1>,
-> > > +                                 <0x400 &its 0x15 0x1>;
-> > >                         iommu-map =3D <0x000 &smmu 0x10 0x1>,
-> > > -                                   <0x100 &smmu 0x11 0x7>;
-> > > -                       iommu-map-mask =3D <0x1ff>;
-> > > +                                   <0x100 &smmu 0x11 0x1>,
-> > > +                                   <0x218 &smmu 0x12 0x1>,
-> > > +                                   <0x238 &smmu 0x13 0x1>,
-> > > +                                   <0x300 &smmu 0x14 0x1>,
-> > > +                                   <0x400 &smmu 0x15 0x1>;
-> > > +                       //iommu-map-mask =3D <0x1ff>;
-> > >                         fsl,max-link-speed =3D <3>;
-> > >                         status =3D "disabled";
-> > >
-> > >
-> > > Only 8 stream id assign to PCIe0 device, it is hard to dynamaic alloc=
-e one,
-> > > or need extra works
-> >
-> > Uh, this looks awefully complicated. Even worse this doesn't work on
-> > my hardware. I need mappings for IDs 0x208 and 0x210, so I replaced 0x2=
-18
-> > and 0x238 from your diff into my numbers.
-> >
-> > So I take that PCIe bridges are not supported properly. What would be
-> > necessary to support this?
->=20
-> I remember bridge use msi to do port power managements.
->=20
-> ITS msi-map can distribute difference irq to difference cores beside iommu
-> address protection. It is quite userful for nvme or network devices, which
-> have multi queues. Of course, we need more elegant solution.
->=20
-> My card use difference pcie switch chip. But suppose it should work after
-> you update RID information.
+Before:
+struct fsl_qspi {
+	[...]
 
-Yep, after adjusting RID mapping, it works here.
+	/* size: 176, cachelines: 3, members: 11 */
+	/* sum members: 168, holes: 1, sum holes: 4 */
+	/* padding: 4 */
+	/* member types with holes: 1, total: 1 */
+	/* last cacheline: 48 bytes */
+};
 
-> which kernel version do you base on?
+after:
+struct fsl_qspi {
+	void *                     iobase;               /*     0     8 */
+	void *                     ahb_addr;             /*     8     8 */
+	const struct fsl_qspi_devtype_data  * devtype_data; /*    16     8 */
+	struct mutex               lock;                 /*    24    32 */
+	struct completion          c;                    /*    56    32 */
 
-My development is usually based on current linux-next versions, so it's
-based on v6.15-rc1.
+	/* XXX last struct has 1 hole */
+
+	/* --- cacheline 1 boundary (64 bytes) was 24 bytes ago --- */
+	struct clk *               clk;                  /*    88     8 */
+	struct clk *               clk_en;               /*    96     8 */
+	struct pm_qos_request      pm_qos_req;           /*   104    48 */
+	/* --- cacheline 2 boundary (128 bytes) was 24 bytes ago --- */
+	struct device *            dev;                  /*   152     8 */
+	int                        selected;             /*   160     4 */
+	u32                        memmap_phy;           /*   164     4 */
+
+	/* size: 168, cachelines: 3, members: 11 */
+	/* member types with holes: 1, total: 1 */
+	/* last cacheline: 40 bytes */
+};
+
+Reviewed-by: Han Xu <han.xu@nxp.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+---
+v2:
+  - Fix a typo in subject.
+  - Add Reviewed-by from Han Xu.
+
+Background:
+This patch was originally created while I was working on a bug in
+fsl-qspi [1]. However, we eventually adopted an alternative
+implementation [2] to address this issue, leaving this patch dangling
+in the patch queue.
+
+While this patch is a minor optimization and may not result in
+measurable improvements, it is still harmless and could be beneficial.
+Please consider applying it.
+
+[1] https://lore.kernel.org/r/20250321-spi-v1-0-b9939baa64b6@gmail.com
+[2] https://lore.kernel.org/r/20250326224152.2147099-1-han.xu@nxp.com
+---
+ drivers/spi/spi-fsl-qspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index 5c59fddb32c1b9cc030e7abb49484662ec7b382c..8f45d43bc502ac516ffa357f36acc7eece65ae9b 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -264,14 +264,14 @@ static const struct fsl_qspi_devtype_data ls2080a_data = {
+ struct fsl_qspi {
+ 	void __iomem *iobase;
+ 	void __iomem *ahb_addr;
+-	u32 memmap_phy;
+-	struct clk *clk, *clk_en;
+-	struct device *dev;
+-	struct completion c;
+ 	const struct fsl_qspi_devtype_data *devtype_data;
+ 	struct mutex lock;
++	struct completion c;
++	struct clk *clk, *clk_en;
+ 	struct pm_qos_request pm_qos_req;
++	struct device *dev;
+ 	int selected;
++	u32 memmap_phy;
+ };
+ 
+ static inline int needs_swap_endian(struct fsl_qspi *q)
+
+---
+base-commit: 29e7bf01ed8033c9a14ed0dc990dfe2736dbcd18
+change-id: 20250411-spi-4bd32c8ee08c
 
 Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+-- 
+Kevin Hao <haokexin@gmail.com>
 
