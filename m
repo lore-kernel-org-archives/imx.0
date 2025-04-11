@@ -1,111 +1,116 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9A220E03C
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 15:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799CE1DE2DB;
+	Fri, 11 Apr 2025 16:22:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744386338; cv=none; b=svjIsITF89v0t09hWT0e81KwldoikFzkAJME9p2YYiBjAP1pfs1RA9sf4HwDZTUFC3EJlSbB/aU8N/rZ2TBTuQp9cBM7KBQlptSFQTlzmNdXf25R5IMtnh6aPA9xlj5XUQ+KRL5maJ6P+OGPZ/6ntuZbhRO4C91bJjfw3LAdGy8=
+	t=1744388529; cv=none; b=KW6T93NL9QEO1TNHU/FEn/jBXF1j8PgaaVyzXLVCSnDAIwvRc0mvkPvbxd4We68pZq24ig4gjhDyd5laZT0RlFga7W0bXrFYUCEpzD//Y3WKuH8Pm7178xkxv56eBD+kSF/GwwVhO4Ajoopxi9GQhOsGSyIerVdu2240uS3oQ2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744386338; c=relaxed/simple;
-	bh=P6bHlax7gtaFOXyBlmDivlwl4i2XuFH3nXhBHUOMVX0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Stv55MIM82vaCpUnF1dowsfirS3DRbE0Y13FAcAlyutKmvI+ASCQGRUVYl1BrK9Fz32J0pSY0SWNMEkbrbhWWpBw2TK5XtFDgoaclQ6gn7ScglNrqQlaWup7gyoSNVkO1BWqjDuWevkS1fp2kfTpPHWYxy8ZSDekzYOPS5NUC10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=PKfuqoTB; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1744388529; c=relaxed/simple;
+	bh=wzAQATy54vCpkwt37K9i8fVvLuJ9F3HtOZNJF5NfmuI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KHKEb5SXA+J8bcWDhGZhDLdzdr2JfB8X8wzNkp4go7CQelGiyx6i1+743QCUuS61VECelSF+8qlo45JYgLzOAuwC8XdPkYSKsRg2rhyP2srBIJkfPMdY0iiJ36DDNUDBxEwH3Gagn+sOfu096j+p42/EPYBwnFIQdi5gIOxKerk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUDwvmlm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="PKfuqoTB"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0A915103B92D7;
-	Fri, 11 Apr 2025 17:45:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744386333; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=+Upffkr9Yy13DmAWHLsmplXaonISPjC+YsZOOcmdckk=;
-	b=PKfuqoTBF8hjxW1TDHptk6vQF1Na4fKu97/graZ1upeWhnoUHjsLEoWYFxyC8VPu6oyC99
-	9Uto9JRbj8FkfXTq/K2/OC0pPMDnatJ/j0bxpB7riTgd/Jqke49Bgzflc6fdFcHFOanZJn
-	IiVZ+p8nvpYIH3+z3iY0V2MWcYw78Xee0+ek4V462morBil0Sys8qMkL8eyjcbd+psxghK
-	gzS33Lz3HveHbzpPwh1qjeHaGodlFLGGQlBO99IBW//nRUwfcn4Ljj+OZ9ZMAweKB4HhLx
-	qzgbqyXNiZ/XBU8hl79FMd3XYTtb3Se3FpwE2iOyV9P099yoH20PPiJxKrHfKQ==
-Date: Fri, 11 Apr 2025 17:45:27 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>
-Subject: Re: [net-next v4 3/5] ARM: dts: nxp: mxs: Adjust XEA board's DTS to
- support L2 switch
-Message-ID: <20250411174527.14a175d1@wsk>
-In-Reply-To: <CAOMZO5B6q06nvk3+hzbioGpcW8_JXPZGEebApTU5JZbKvMLzxA@mail.gmail.com>
-References: <20250407145157.3626463-1-lukma@denx.de>
-	<20250407145157.3626463-4-lukma@denx.de>
-	<CAOMZO5B6q06nvk3+hzbioGpcW8_JXPZGEebApTU5JZbKvMLzxA@mail.gmail.com>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUDwvmlm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B53EC4CEE2;
+	Fri, 11 Apr 2025 16:22:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744388528;
+	bh=wzAQATy54vCpkwt37K9i8fVvLuJ9F3HtOZNJF5NfmuI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fUDwvmlmGNEOE6UiCuFajisN/+N0W4PsppgK3YKQxxblTRgJXcyGl2fDX3uKbdkJr
+	 2+V+sMZvOsWOB80R99rxGcKZe/jhqzm0hntMRCAIy4yRtUp3Z4QdbvxGA5YqfA03A3
+	 rYUgo1Y+GdFxYB1N83XbBdrM4GXSFVjUhy41gNQt4vi776Nz1z2pujd5vBTWwcchh0
+	 LwBeY4i9+9HM515v7PIK0hiLxAtE6fjRjKg39JQ2sB/mENgOkt6gYw9FHfBK8gy26+
+	 5tArMU4Hk5fUZbPjg7m9cwn4VJ8htSVvHAG7uy6YUzsnNBC5x0t8iefCYpo59D3X6t
+	 SfC0haIi7PSxQ==
+Date: Fri, 11 Apr 2025 17:21:58 +0100
+From: Conor Dooley <conor@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Andy Gross <agross@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev,
+	linux-rockchip@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH v2 03/17] arm64: dts: microchip: sparx5: Fix CPU node
+ "enable-method" property dependencies
+Message-ID: <20250411-ebay-exerciser-392c42daf5ba@spud>
+References: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
+ <20250410-dt-cpu-schema-v2-3-63d7dc9ddd0a@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/RjsyxtHSE6bgRB8ADC.4s63";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="gXwATB6SbIWbLkFw"
+Content-Disposition: inline
+In-Reply-To: <20250410-dt-cpu-schema-v2-3-63d7dc9ddd0a@kernel.org>
 
---Sig_/RjsyxtHSE6bgRB8ADC.4s63
-Content-Type: text/plain; charset=UTF-8
+
+--gXwATB6SbIWbLkFw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Fabio,
-
-> Hi Lukasz,
+On Thu, Apr 10, 2025 at 10:47:24AM -0500, Rob Herring (Arm) wrote:
+> The "spin-table" enable-method requires "cpu-release-addr" property,
+> so add a dummy entry. It is assumed the bootloader will fill in the
+> correct values.
 >=20
-> On Mon, Apr 7, 2025 at 11:52=E2=80=AFAM Lukasz Majewski <lukma@denx.de> w=
-rote:
->=20
-> > +               ethphy0: ethernet-phy@0 {
-> > +                       reg =3D <0>;
-> > +                       smsc,disable-energy-detect;
-> > +                       /* Both PHYs (i.e. 0,1) have the same,
-> > single GPIO, */
-> > +                       /* line to handle both, their interrupts
-> > (OR'ed) */ =20
->=20
-> Please fix the multi-line comment style.
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+> Tested-by: Daniel Machon <daniel.machon@microchip.com>
 
-Ok, I will fix it.
+This is already applied, guess I forgot to merge it into the branch that
+appears in linux next. I'll do that now..
 
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/RjsyxtHSE6bgRB8ADC.4s63
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+--gXwATB6SbIWbLkFw
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmf5ORcACgkQAR8vZIA0
-zr2oJwf8Ck6aJmjSk5FB00W4YTIEgy2n/BJVaK1BTJCll5U54B+Hlrwra2iixLwh
-jvZqm01bg4Qncx7bYbcHaUeyiW7B7SBc/ikaBi56eDthprdbKS0r3s5wFHTEW8vg
-V2JzJjT6jeGJT+nMW7wRouLuZ5EQvi2rrUWbbi8gCKaztEHwEVqbc8BOJ4Kbhinz
-gB1OakDJzWZPtgadY8QOUYQMdLx68vBOG9tsttGiiKQG0+s0a4Tih0jqbQCfBgwJ
-CQAYHWX11CLdPW7yNvJFKO7nTdw3fNRmFQf3+fk5LbkeLKt7IWNHBPoiB3m3bUZh
-YFEUvNsexJb+gquBquCl/bIpp/AVCQ==
-=OHjq
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ/lBpgAKCRB4tDGHoIJi
+0h05APsEcaA5n4MeMUDF1Ullyde98iLkYYAFaHTFR+km537NdgEAxwuhCZvt2UZz
+n9hkciE6jwyE29jkNaUkkhNiH534NAA=
+=8lEZ
 -----END PGP SIGNATURE-----
 
---Sig_/RjsyxtHSE6bgRB8ADC.4s63--
+--gXwATB6SbIWbLkFw--
