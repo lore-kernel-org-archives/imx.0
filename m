@@ -1,27 +1,27 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BFB28F931
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 07:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214111DDC04
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 08:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744357896; cv=none; b=nxnCeaVk02sYwYyvS+V089wRcFW2ZYhH2kdPsb0sd0eQyrosm6sI1Rlligoj/BXpjJ9zOppMgKWcgMnOdfY4UoS0xDbNP6OSeQLmGvkXTycT1mT/RcU9pkwZlI+1dcA6+9N6SEYyD/Be6+fJp9UPavVitc/Iw4VT/yfBvIRYqQc=
+	t=1744358906; cv=none; b=n/+fzncALexXOzxJRbmPHE02G+3HUhUyNMsC0b6hAeRg1CfHoxdXMc208pnmeg+6tab8AAWQOPbhRy/2yGDimbn2wdqPNCRsjUojzzoHIEWWcGvZihv8wK5Ke8OBcK5G2fUmPn8mON1nRQF7yOvcx/Rgk6Mc8mb/DRt7WoFelpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744357896; c=relaxed/simple;
-	bh=LpyY1HmKB5P1TZETFUc27hEubUH+I0U3rTI0Tnjwluk=;
+	s=arc-20240116; t=1744358906; c=relaxed/simple;
+	bh=eV3bP+q0vvjkWsAWiAx37XV+yljcdTUB8mBUVr/qcqE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cGNjZHP6VYrP6wqJg6QyYwWL5I4lk5/PqCjQU3DiHN0KAUD/uP5D62tI9TGqLRVRRXgzmThm2djRJWxVB91jAKIpg53MM1pL7XtUE2dLmLscAlCONHLLxo3azyYNKQwgGZweMnLZNh/WsTdcmIJXrk4uGzisAidH57420zeTIbM=
+	 In-Reply-To:Content-Type; b=dAE/NDiqzXashIuJISJPl17Y1Q8A5uvCxK9RVyotwl5jbr3lq8g0Ewxx+pylogED1fLCz4BMmLaalEMfjNYKBdwhMp0AhWGP9JYkAX68PZkvlOkVsqQDvSQmncoprl//qw1frIoSnjzaTZSv3Bmn9XLxJGUm3FSO58mKgmro2To=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-Received: from [89.212.21.243] (port=53044 helo=[192.168.69.116])
+Received: from [89.212.21.243] (port=57494 helo=[192.168.69.116])
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96.2)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1u39Ai-003jxP-2O;
-	Fri, 11 Apr 2025 09:51:32 +0200
-Message-ID: <8c41e55a-1fcd-4bac-9e1b-3dfdcc7d3e9d@norik.com>
-Date: Fri, 11 Apr 2025 09:51:30 +0200
+	id 1u39R0-003nq0-1x;
+	Fri, 11 Apr 2025 10:08:22 +0200
+Message-ID: <ef74e49d-c413-4719-a174-42df91384469@norik.com>
+Date: Fri, 11 Apr 2025 10:08:21 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,8 +29,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/13] arm64: dts: freescale: imx93-phyboard-segin: Add
- RTC support
+Subject: Re: [PATCH 10/13] arm64: dts: freescale: imx93-phyboard-segin: Add
+ CAN support
 To: Frank Li <Frank.li@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -40,8 +40,8 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, upstream@lists.phytec.de
 References: <20250410090251.1103979-1-primoz.fiser@norik.com>
- <20250410090251.1103979-10-primoz.fiser@norik.com>
- <Z/ff8rQ7wGzKiX+d@lizhi-Precision-Tower-5810>
+ <20250410090251.1103979-11-primoz.fiser@norik.com>
+ <Z/fifUQ4M2doQbHx@lizhi-Precision-Tower-5810>
 Content-Language: en-US
 From: Primoz Fiser <primoz.fiser@norik.com>
 Autocrypt: addr=primoz.fiser@norik.com; keydata=
@@ -54,7 +54,7 @@ Autocrypt: addr=primoz.fiser@norik.com; keydata=
  TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
  AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
 Organization: Norik systems d.o.o.
-In-Reply-To: <Z/ff8rQ7wGzKiX+d@lizhi-Precision-Tower-5810>
+In-Reply-To: <Z/fifUQ4M2doQbHx@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -70,102 +70,92 @@ X-Source-Dir:
 
 Hi Frank,
 
-On 10. 04. 25 17:12, Frank Li wrote:
-> On Thu, Apr 10, 2025 at 11:02:47AM +0200, Primoz Fiser wrote:
->> Add support for RTC clock connected via I2C on phyBOARD-Segin-i.MX93.
->> Make I2C RTC the default clock by configuring the aliases.
+On 10. 04. 25 17:23, Frank Li wrote:
+> On Thu, Apr 10, 2025 at 11:02:48AM +0200, Primoz Fiser wrote:
+>> Add support for CAN networking on phyBOARD-Segin-i.MX93 via the flexcan1
+>> interface. The CAN1_EN regulator enables the SN65HVD234 CAN transceiver
+>> chip.
 > 
-> "Add support for RTC connected via I2C on phyBOARD-Segin-i.MX93. Set
-> default RTC by configuring the aliases."
+> Can you use drivers/phy/phy-can-transceiver.c to enable CAN phy instead
+> of use hacked regulator-flexcan1-en.
+
+Sorry can't do.
+
+This doesn't align with other i.MX PHYTEC products using flexcan such as
+imx8mp-phyboard-pollux-rdk.dts.
+
+Even the i.MX93 EVK uses the same mechanism.
+
+BR,
+Primoz
+
+
 > 
 > Frank
+> 
 >>
 >> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 >> ---
->>  .../dts/freescale/imx93-phyboard-segin.dts    | 36 +++++++++++++++++++
->>  1 file changed, 36 insertions(+)
+>>  .../dts/freescale/imx93-phyboard-segin.dts    | 32 +++++++++++++++++++
+>>  1 file changed, 32 insertions(+)
 >>
 >> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
->> index 525f52789f8b..38b89398e646 100644
+>> index 38b89398e646..027a34dbaf04 100644
 >> --- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
 >> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
->> @@ -17,6 +17,11 @@ /{
->>  	compatible = "phytec,imx93-phyboard-segin", "phytec,imx93-phycore-som",
->>  		     "fsl,imx93";
->>
->> +	aliases {
->> +		rtc0 = &i2c_rtc;
->> +		rtc1 = &bbnsm_rtc;
->> +	};
->> +
->>  	chosen {
+>> @@ -26,6 +26,17 @@ chosen {
 >>  		stdout-path = &lpuart1;
 >>  	};
->> @@ -33,6 +38,24 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+>>
+>> +	reg_flexcan1_en: regulator-flexcan1-en {
+>> +		compatible = "regulator-fixed";
+>> +		enable-active-high;
+>> +		gpio = <&gpio4 16 GPIO_ACTIVE_HIGH>;
+>> +		pinctrl-names = "default";
+>> +		pinctrl-0 = <&pinctrl_reg_flexcan1_en>;
+>> +		regulator-max-microvolt = <3300000>;
+>> +		regulator-min-microvolt = <3300000>;
+>> +		regulator-name = "CAN1_EN";
+>> +	};
+>> +
+>>  	reg_usdhc2_vmmc: regulator-usdhc2 {
+>>  		compatible = "regulator-fixed";
+>>  		enable-active-high;
+>> @@ -38,6 +49,14 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
 >>  	};
 >>  };
 >>
->> +/* I2C2 */
->> +&lpi2c2 {
->> +	clock-frequency = <400000>;
+>> +/* CAN */
+>> +&flexcan1 {
 >> +	pinctrl-names = "default";
->> +	pinctrl-0 = <&pinctrl_lpi2c2>;
+>> +	pinctrl-0 = <&pinctrl_flexcan1>;
+>> +	xceiver-supply = <&reg_flexcan1_en>;
 >> +	status = "okay";
->> +
->> +	/* RTC */
->> +	i2c_rtc: rtc@68 {
->> +		compatible = "microcrystal,rv4162";
->> +		reg = <0x68>;
->> +		pinctrl-names = "default";
->> +		pinctrl-0 = <&pinctrl_rtc>;
->> +		interrupt-parent = <&gpio4>;
->> +		interrupts = <26 IRQ_TYPE_LEVEL_LOW>;
->> +	};
 >> +};
 >> +
->>  /* Console */
->>  &lpuart1 {
->>  	pinctrl-names = "default";
->> @@ -56,6 +79,13 @@ &usdhc2 {
+>>  /* I2C2 */
+>>  &lpi2c2 {
+>>  	clock-frequency = <400000>;
+>> @@ -79,6 +98,19 @@ &usdhc2 {
 >>  };
 >>
 >>  &iomuxc {
->> +	pinctrl_lpi2c2: lpi2c2grp {
+>> +	pinctrl_flexcan1: flexcan1grp {
 >> +		fsl,pins = <
->> +			MX93_PAD_I2C2_SCL__LPI2C2_SCL		0x40000b9e
->> +			MX93_PAD_I2C2_SDA__LPI2C2_SDA		0x40000b9e
+>> +			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
+>> +			MX93_PAD_PDM_CLK__CAN1_TX		0x139e
 >> +		>;
 >> +	};
 >> +
->>  	pinctrl_uart1: uart1grp {
->>  		fsl,pins = <
->>  			MX93_PAD_UART1_RXD__LPUART1_RX		0x31e
->> @@ -69,6 +99,12 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
->>  		>;
->>  	};
->>
->> +	pinctrl_rtc: rtcgrp {
+>> +	pinctrl_reg_flexcan1_en: regflexcan1engrp {
 >> +		fsl,pins = <
->> +			MX93_PAD_ENET2_RD2__GPIO4_IO26		0x31e
+>> +			MX93_PAD_ENET2_TD3__GPIO4_IO16		0x31e
 >> +		>;
 >> +	};
 >> +
-> 
-> keep order by node name.
-> 
-
-pinctrl_uart1 was out of order since beginning.
-
-I will create a separate patch to this series ordering nodes
-alphabetically as a last step.
-
-OK?
-
-
-> Frank
->>  	pinctrl_usdhc2_cd: usdhc2cdgrp {
+>>  	pinctrl_lpi2c2: lpi2c2grp {
 >>  		fsl,pins = <
->>  			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
+>>  			MX93_PAD_I2C2_SCL__LPI2C2_SCL		0x40000b9e
 >> --
 >> 2.34.1
 >>
