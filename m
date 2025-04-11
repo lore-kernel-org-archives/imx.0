@@ -1,173 +1,178 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013061.outbound.protection.outlook.com [52.101.67.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E8F1E9B38
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 07:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744355225; cv=none; b=qQZ/lOcUbPsPdkTQ8zdS3T5s1KY8YDOph+hiX0sbS3w7mbTXRH36KHUac0r4zLT2BCqJwHfLA0HhJT8b6fijvvssvN6VrXK/h15WMikzG9LpJQmg/CY2c+Eh1BhtIWM9ecU58Z1FE5NOHwx4zarF4rTgYj99kjoIVGHZQ8rOC1U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744355225; c=relaxed/simple;
-	bh=e5Off40XHFoCO/BOw8hIt3VBxArBQ9+c579hYcqw91M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XGXepQllxHqHUpV29RIaTlAs1frxMQHKGkU5FHtJegJAuf4hSLYLrI/n2jeXJvRjwbyf25z8E6MZbXuarkFJIiOKU2s1Mj52g5CFhven5w4upYLddx1FAMfDgQHwfKhJP3l2CW+U7HQNfp9tbeS0KYApwOmdOOvlr9GVnctChEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i3fG2ip7; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F924285409
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 07:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744357466; cv=fail; b=q7jHwz80d8er4KPFFWw3f+Us3sUIzdSFkNgDwn3LduEXqL7hw3xxmu9Lg90EILL+NyrZP+cVGTIpWhK1aHBBSwQcDBUSclDZdFY+qtqZs/rAsopYUy3AtnHQD8K+Vwdd1hCOR5mKFqOqwTa+2Gdwd/tebh/q2cQZDkhCoyY7ifE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744357466; c=relaxed/simple;
+	bh=uLZkDebR0QH8JMrAkvn/qtp0EKXj47Jn1HYsgPbqXwY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=RX81mR6t70+Doo6hW3W/cPW/QoytJCfxiDznUlAt9g0Rg6n+9npD7fEoh6W5z0MhtpTU7ktqaKahwQuIqoImtkQnLPPJxE9cLBDAvkDCvMSH3XFevyyt0e7CvsWwi6bI9KJeayhbcEho7YyBpS3+jtWnbSdcr0hPs2T6tpSK6D0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bI9FHnKy; arc=fail smtp.client-ip=52.101.67.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i3fG2ip7"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4768f90bf36so15141651cf.0
-        for <imx@lists.linux.dev>; Fri, 11 Apr 2025 00:07:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744355222; x=1744960022; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iuEiiuDbtuItZWmpzYJ6Hp9H23sHGSswKm1wezRu+84=;
-        b=i3fG2ip7II5y8onQGyZjaAnoiJq6DuCACW7iXjwHbpVUjaNll6wiHwvJSlErFcOhT6
-         W6JK5t5keAvxT2+EnoFwLdUMBcmO37/GOrBJRbWJxmYJmfMtuPdrZDCAzyqP1canloLb
-         ff0Mb2vPEV6kvSm9Dzq2L1KNIlljGgZiiBoIqGQHdWedrqqzG5PhPneNNucjhxBLyU3z
-         N9H5JQC4hKBmC/2/QRA3vUNXx86m5zd30TrEC+2/b9WC3p70lnqS8BMvZkkmXqYTYv7L
-         vJOO4XKMxqYHmcA/Xc9sF3YE7tvwkp7c9qtFUao6omEYJ/D11m06+eDr0ivXqDrcfuDf
-         j5xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744355222; x=1744960022;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iuEiiuDbtuItZWmpzYJ6Hp9H23sHGSswKm1wezRu+84=;
-        b=Y0D2+W1AC/rfjZt7A9PhVsLOXV67+4phF5aJwKWooxciJaUxsV/ZkK5Q0LmybFjm/j
-         L8yebwHWkmWy2fY/Tm+k/rpbBDjWHB/wdFl4Oubh6J4P5MYhGSB3zfqFbpeVFy7sbIyZ
-         7ELN6FdIv2Er/u9YP2mhbjABSn9fl2vhXYJgjtqonrMWLNbdmJC8X8F+lV7g33w57rjp
-         4X962Ar01Tvj+YFnQ3MkouBvBdAKGOSlgiWCGat3KKzGI/ouAuvdzUykgLK4w8wABwq3
-         zUDqPJn+qbzfKYFYoPXikVsE91yItlQm8X2LRW+oDMRUB75hp9j6md6OVzwokIT8E6IO
-         Ih6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXvCi0u1w+uZd1EEZpCntc3FbZrQXLCAopgfQy6cfQ3Am6b/xEMmiFHWb+LOVBnw0BQLBw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzhkJRn/nRLPaMKkYTIihiT1mlL7fHBvdv96hVEdicni094dDEe
-	hMoMt7ShsWPMaoTzTHiBmMlvz1Tk5ByCXGuRSxJXx2kOivxlntrQ
-X-Gm-Gg: ASbGnctLwUooZgQd6/hRKG2XOWmCJUMgD2TKC+M5kPJw0hVhCU6NQxoLeqqZWlfVnOt
-	eFA53Xv733X2F9seKvf+2xqQuApdyeVUgQryoUQX6jsOx1dFBwk76hwa/Di9jb8xjVZJEigTpEr
-	gWD6dJ9criZJdZ8OBz4oFX4Igz2RoGtSKpilxSGU7ASCvWQQYEVq70z5vAnslx8oL+/FSp+JRr7
-	mnxeEFtjOGoRNMPZ3GDcqHoU4fWShKZ63Ue1gvShPw5OSp3AVIayZ5EbIMgIW/Sgz0NDpkHIMQa
-	iFXBlLD1H3mpme1HAADF3hmDS3B8cKyC3im/AzJyh6i7a2uLpRE=
-X-Google-Smtp-Source: AGHT+IGEFOBHu6HsvrQPL+zpG/VqrkoP9xU7Cgn8q5fgPDXNyPnCad1feQZCkHrTe2gAZJAQoHpBNw==
-X-Received: by 2002:ac8:5f95:0:b0:476:5fd5:4de6 with SMTP id d75a77b69052e-479775b92dcmr23015011cf.40.1744355222463;
-        Fri, 11 Apr 2025 00:07:02 -0700 (PDT)
-Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796ed9bd77sm21694891cf.51.2025.04.11.00.06.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Apr 2025 00:07:02 -0700 (PDT)
-From: Kevin Hao <haokexin@gmail.com>
-Date: Fri, 11 Apr 2025 15:06:41 +0800
-Subject: [PATCH v2] spi: fsl-qspi: Optimize fsl_qspi struct
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bI9FHnKy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dS4tDKfiELb/fWcrQauSpyWHX77EdsND4nsU4UPsFMo5E+e8RZje4n6Q63kkUF7HVBAY640mCvQycTw5BCSdcZ1Uwt3/Dc6DgZJNcUUVQc+CleOyWCir6sgccKgYzQ8ghuq9yxj4VILCFv9XP9soPp8VdzIfVqWULM5baqmy60T6oxsHEd2H5VhgGBwCgJBq0YHWF/CwVBQFp0CMXQz0qqm8lQZYzfZA4prnVnXmzxqycRDxaWtR6N/g17FNz9VQi9q0TZ+LX6sdbCSttqFSf6T13P6Ds0S7KDOW7/zYddrbCXUOqSgYt+zMqoSwByCIPmbg2sEOsUabIEu0rl5N7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E08vKhOf2WuIC9zih/brsm2bNqPGo7Fbm/Mk1ai+ErE=;
+ b=dY15KwpX//ObuMhCmxu2OueP4lD8q/WCmRcpCtxC2490nHS17hhY5LtiH1xkVoDmBR/HzPcVZQZ6x8MS6sZzsuJpuAkEMAgFwg9GU6sGXRnn3L/bMu+0/N+IibOweCBQEcUuPiNJ+ZJMrniJHShRvj8R5tdK48/ZsKPrOap1TRzO47JkmWLhMWvik9RfqkK92lQTYln60q2WU8Quhz8SAetznsief0OaLBD6AR4aR8GyteG0Z6kwPAQdUWmwxJ1rzG0+iAEFlmXi95adk9L9hv4k4grJK5TFg+CGbnxJyh/c0y6s5+qEpoDHDc9lCQtJT2SVoLrZHDlU6WHOG/BLVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E08vKhOf2WuIC9zih/brsm2bNqPGo7Fbm/Mk1ai+ErE=;
+ b=bI9FHnKySEiFDuRplVj21QSrIBYW+GMkhQICbXmWCF5n7JKrHEbpIZ8ZFotIAStUyICQrEq1B2D6e3x5WXS+SOgQwU5R+27vsVE6MvewE3WwrdMZPBfrDmRS8BnHVIE2zkDZByraZNarUlIF+TzI5AZS7u5wTTzRnzgeyK4YQp/OWTZjIVpp6xma7qRHBRiZZ+h8+G1aLR/IVLcVI2Z8Q5edEomuuqif97Zza/R/Uc5SmqBBXTWZiClYW78cgCTIuUPBRPo8s2NngDW/IqBDdz8SXpn/RK8kkX0eb6z1sMbBh7EbYUr8SM3mQI3xvQvOI4Wb2387CEE/0+Bco3GWJQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by DBBPR04MB7737.eurprd04.prod.outlook.com (2603:10a6:10:1e5::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.34; Fri, 11 Apr
+ 2025 07:44:21 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%4]) with mapi id 15.20.8632.025; Fri, 11 Apr 2025
+ 07:44:20 +0000
+From: ming.qian@oss.nxp.com
+To: mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl,
+	mirela.rabulea@oss.nxp.com
+Cc: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	xiahong.bao@nxp.com,
+	eagle.zhou@nxp.com,
+	linux-imx@nxp.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 0/4] media: imx-jpeg: Fix some motion-jpeg decoding
+Date: Fri, 11 Apr 2025 15:43:39 +0800
+Message-ID: <20250411074347.809-1-ming.qian@oss.nxp.com>
+X-Mailer: git-send-email 2.48.1.windows.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0016.apcprd02.prod.outlook.com
+ (2603:1096:4:194::9) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250411-spi-v1-1-8d6dfb1a9262@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAIC/+GcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDE0ND3eKCTF2TpBRjo2SL1FQDi2QloMqCotS0zAqwKdFKZUZKsbW1ANP
- 5gopZAAAA
-X-Change-ID: 20250411-spi-4bd32c8ee08c
-To: linux-spi@vger.kernel.org
-Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, 
- imx@lists.linux.dev, Kevin Hao <haokexin@gmail.com>
-X-Mailer: b4 0.14.2
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|DBBPR04MB7737:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27329c9c-08d7-427f-0291-08dd78ccab6b
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?6/4+c4PhqdKq90MSA4+NXY2V9JBHcFcV8lOAuHqQHGFKpHmNx6WXwOqWvkFy?=
+ =?us-ascii?Q?KJPD50Sn+wUi6jYFQ5xKAkDFY8IqFbLnxB04zxmewUwFScIpLtdJ1i1C3d5S?=
+ =?us-ascii?Q?PlVJq8Z7h1QfBr9R6xB9UyOeQB0waTdicBy88/J+L1WWgjYtTRgbaC1PJye3?=
+ =?us-ascii?Q?atmhzS49TCdDNDDJRPlSAeCslW+dUl3+obpaY5XDr2y29778QwcEkrTtUmu8?=
+ =?us-ascii?Q?l2j6oF7/9USCwBc4mxvBfhIVDWlGBjF1DbkYUGFpqNmx+cRdiGB0VSnq/Z0v?=
+ =?us-ascii?Q?HXXk26y8QnJ6SaNqQB/W4NG4h0sj14IBJCAVKwJzSo6ttwjv7m2ipNZln3Ih?=
+ =?us-ascii?Q?01x74YOS9MQdLQnvrhAMVZqcW8tGWUrLk9KlmBfOQqUd+XeJGZjyuiT3dhpl?=
+ =?us-ascii?Q?jtOLYlQ91tCHMzWb8JPRNC5Ydn7f3et+uFD97YXi2cQQ87M4NTzo4CokWAj1?=
+ =?us-ascii?Q?sgf7uuQRl2tdtdUNgJAfbijWDf68oUoHJcfrbd3bLkHw/GCa8D5PVzRCDM+a?=
+ =?us-ascii?Q?nHrMTkYBvC070e1jYoc8OdWizpkAgxQoReDpswmy1O4Iin+M404389NrO7wC?=
+ =?us-ascii?Q?5iUCA1LCOzP7xHD1wvBOHDUHptn5hsUcBvjCmv+A6gOuFPlHzrb6kJ4wICci?=
+ =?us-ascii?Q?R55ZQlWiKm7WsivAZ8dPl52E5VcOuu6/6V0Rq6DXoS8SUfA0WcUyfgOfU9o7?=
+ =?us-ascii?Q?9PMs5WIxM0kVvIH2GFeXYle1dTQjsjo/DAhy9g3TunBuOce5Wabqon+AOH6b?=
+ =?us-ascii?Q?bScUu+0XK1mWb7AFGHhEgHzIrksQyiOknOQD2wN0cZFNYZeG5zyizB79Dtbw?=
+ =?us-ascii?Q?yeuCGlqll2ualD5C9uPIg4par6TTiZLANzG3VbZ8mZl3rgxlo3AMowg1RZFG?=
+ =?us-ascii?Q?iKLT6kYz9v/Nnt61r3HRhQ7tPl4BJYjYpgR9RlKYgdXmRpji5Be6/d3Vl88Z?=
+ =?us-ascii?Q?4OgGM+TeH6vyBhH4ETeMmMnuK7i6TfQDUExOT7ChnTMi0i1ykJcl4tylN9eT?=
+ =?us-ascii?Q?9aP8k8DA3N4g7R4sM94bsGQkrmBIv/6cA18vNpmyeKJxcxtmiNgtsrikah+P?=
+ =?us-ascii?Q?3m9vuQY8RIhNBBsnA1xjHc3pBBEBOJSDmUexCx9NBJXc2Y/eLZDGV44RbCTZ?=
+ =?us-ascii?Q?j4aL+zq3xRt0e6UNsUtxl+E9dMtBZ4MdHV+O7fxIdwpjByZU73U3rWP7aetR?=
+ =?us-ascii?Q?vcHzpw84aafniTcU7ShuChZw7KaVBq/j8DU39mbQ5wpFwSESnJTS/v4ap5mt?=
+ =?us-ascii?Q?BO8zsfJ8kRJH08xFbbYiXElSwN07t17OC828GVrESFf64aEosP1uI8VqxVoY?=
+ =?us-ascii?Q?+11WMGp0eyS7Z7stmDgVFov+EeLvMXON7IM7f///6IEtFa22SX56nKjbdPMY?=
+ =?us-ascii?Q?RE6GuHQv78KNTfzbtZKtTXz20en085JBK8jtoan8fGsg9BY1emDukPyartgd?=
+ =?us-ascii?Q?g97Jea24ECsbd8BjwvxD89VzdHGZKjXyTc7QEgo2f4LmIIngX1Y8ZBnWb4cC?=
+ =?us-ascii?Q?kxwxibBkgsBP8II=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LDP4yCPes2xpd21ApkbCOuNKVDVMycODhPEWVWXjxGFTjG2mEmnf7nueZc3i?=
+ =?us-ascii?Q?Qxj6tNCT+RCEbYdDBLr8uD5juDj8k98yy+qwUbMpRPCgCgvTP21xG19Mzx9+?=
+ =?us-ascii?Q?iDnxaxb+sPK16iypv7DhP23mMO2KEBnPi6UxxpGJqFNtJEj08QFu4m0wgzLd?=
+ =?us-ascii?Q?Rv1VK6iEIAPTdIWey4/RlswcQZPb8qzZYKdQCsUs/oYbYGEK4nZbVgawwliO?=
+ =?us-ascii?Q?JhpbKkMgrQ3A3TPbi0nkkIYLBZyjIhS1qW0aX7WWlmuNw5mr4w5v8A1JLQvm?=
+ =?us-ascii?Q?OPgCbieX9lViyh8eLnkpcN6PqmGa+n/nI5hXHFOC+XRkI5JnePTu6tFw6nc/?=
+ =?us-ascii?Q?vG2XC76pXHWRDJwl7r91b9A03k0CMfhv75xGC4500L/zZsA0fTJkXCX/bvUI?=
+ =?us-ascii?Q?6YguMC4/nEO9tL+hR3P1R/FpTFy2DPEiV2jHGzjU+GjdadIGbxB+FF8ryuS/?=
+ =?us-ascii?Q?Ianl9+FKFzvO9vUbWQ9GFf5/l+VPIOWu67C+6iSGd+xV6DMMzIM+PCzzOl2/?=
+ =?us-ascii?Q?4e5I7YlTS0b4q+GQ6ttarCTNtDeyorGa0tko1iR9cNb63CEuf/kDsQyEN6tV?=
+ =?us-ascii?Q?r6YiA5zjkYJyPGqgrAmLDOwKXQHVFZYFXIS3GC1HalrXOQ+cVgiKpCiVqibb?=
+ =?us-ascii?Q?hi/HhdwuHr3y/GsYpnEyB9U/oxXNeNdA1425flcFC7JSTeTgzNz5yZ1WTP6Q?=
+ =?us-ascii?Q?rwtePn+nkKD3VS8nnAyM0YrhBk/6a9jsQz297tPrmOG39j6NTCXaxyQbzhGj?=
+ =?us-ascii?Q?iPBZ44nqaeUY6E1q3nPXjZHyTbUkX3yf9NkdGWdWxvk17TgJD2LsLlvrZciz?=
+ =?us-ascii?Q?beWHv80z8+gx1iQz76NQdSVhkoYTYOJUZin2koWFStWIMSy/hr+4OU/LUE8u?=
+ =?us-ascii?Q?3zs6Rg+pPJZ9vobKtnQUyzQYx2jAHZySxIUTH52Yq8SdYmU5DP9iLTnTbIxm?=
+ =?us-ascii?Q?E9y+xLDbQ+2rkOoY1REVE9ndqFfwoK7ybH5JsdzLRW9blWpJEYNBvAtf2Hy/?=
+ =?us-ascii?Q?icOXrKslNQ+Q2KRzHRxKPtWXUom8rl75jT3Gq98QBEC9LEMhAfBDnUfN8nI2?=
+ =?us-ascii?Q?tQDPbia/CIrA/zDa/SClrNMA0ghdzuDb/sA0NJOZZRzhrCAKr7XETZ6EPmIG?=
+ =?us-ascii?Q?1s7atZEGmE9UD8/2u86/8g0UWYWe++Cyl1PKcir8xBwIaUDjA61DPSx2MTIE?=
+ =?us-ascii?Q?YWO6On+5cpvLzUz27GVir4xSJlhZU4tFHrlXZ41s+fKVaPZ8otq3981PEXWO?=
+ =?us-ascii?Q?vkBxqFye+ZEj+EXvs1PTMEDqhVjkFovAnffH9gTT/n/QK6UM5g+nZtP2l++U?=
+ =?us-ascii?Q?yTwx6Rs8rm4WmHjCFWJyyXPBmFMMPfTtgCpwjfViEhHeP4Bqg1Njy8u2uN22?=
+ =?us-ascii?Q?I+r/iaQ9UhB+QO8Ki60GKMfew9TEwtDY3Hjaf10N1DGoZzckejD+aufNDjNN?=
+ =?us-ascii?Q?nKqDhymS+ZKjIlqwDF8SaphQSyqVYQoJFxQ27dHcrhKITokuqvtZKTZ6rUX7?=
+ =?us-ascii?Q?Q62/hoKrLctqzowlkdcR8iyFjA7tI6AzYvExfuAQtAFFSbxQlEROiiGppVB4?=
+ =?us-ascii?Q?1Nq6zei8yyl/xVroyqPUMan+KifXxrK82zNf+kB0?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27329c9c-08d7-427f-0291-08dd78ccab6b
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 07:44:20.7996
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: a9IHHjNITj0uLjP0uaWni4sqEYIBLsIsPKUTaU57Yd1EDPODIXPCwsb9drW06qAU+8PWXws46EtAXpR2zzSbZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7737
 
-Reorgize the members of the fsl_qspi struct to:
-  - Reduce a hole in the struct.
-  - Group members required by each op (e.g., iobase, ahb_addr,
-    devtype_data and lock) into the same cacheline.
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-Before:
-struct fsl_qspi {
-	[...]
+To support decoding motion-jpeg without DHT, driver will try to decode a
+pattern jpeg before actual jpeg frame by use of linked descriptors
+(This is called "repeat mode"), then the DHT in the pattern jpeg can be
+used for decoding the motion-jpeg.
 
-	/* size: 176, cachelines: 3, members: 11 */
-	/* sum members: 168, holes: 1, sum holes: 4 */
-	/* padding: 4 */
-	/* member types with holes: 1, total: 1 */
-	/* last cacheline: 48 bytes */
-};
+But there is some hardware limitation in the repeat mode, that may cause
+corruption or decoding timeout.
 
-after:
-struct fsl_qspi {
-	void *                     iobase;               /*     0     8 */
-	void *                     ahb_addr;             /*     8     8 */
-	const struct fsl_qspi_devtype_data  * devtype_data; /*    16     8 */
-	struct mutex               lock;                 /*    24    32 */
-	struct completion          c;                    /*    56    32 */
+Try to make workaround for these limitation in this patchset.
 
-	/* XXX last struct has 1 hole */
+Ming Qian (4):
+  media: imx-jpeg: Move mxc_jpeg_free_slot_data() ahead
+  media: imx-jpeg: Cleanup after an allocation error
+  media: imx-jpeg: Change the pattern size to 128x64
+  media: imx-jpeg: Check decoding is ongoing for motion-jpeg
 
-	/* --- cacheline 1 boundary (64 bytes) was 24 bytes ago --- */
-	struct clk *               clk;                  /*    88     8 */
-	struct clk *               clk_en;               /*    96     8 */
-	struct pm_qos_request      pm_qos_req;           /*   104    48 */
-	/* --- cacheline 2 boundary (128 bytes) was 24 bytes ago --- */
-	struct device *            dev;                  /*   152     8 */
-	int                        selected;             /*   160     4 */
-	u32                        memmap_phy;           /*   164     4 */
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h |   1 +
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 120 +++++++++++++-----
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg.h    |   5 +
+ 3 files changed, 97 insertions(+), 29 deletions(-)
 
-	/* size: 168, cachelines: 3, members: 11 */
-	/* member types with holes: 1, total: 1 */
-	/* last cacheline: 40 bytes */
-};
-
-Reviewed-by: Han Xu <han.xu@nxp.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
----
-v2:
-  - Fix a typo in subject.
-  - Add Reviewed-by from Han Xu.
-
-Background:
-This patch was originally created while I was working on a bug in
-fsl-qspi [1]. However, we eventually adopted an alternative
-implementation [2] to address this issue, leaving this patch dangling
-in the patch queue.
-
-While this patch is a minor optimization and may not result in
-measurable improvements, it is still harmless and could be beneficial.
-Please consider applying it.
-
-[1] https://lore.kernel.org/r/20250321-spi-v1-0-b9939baa64b6@gmail.com
-[2] https://lore.kernel.org/r/20250326224152.2147099-1-han.xu@nxp.com
----
- drivers/spi/spi-fsl-qspi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 5c59fddb32c1b9cc030e7abb49484662ec7b382c..8f45d43bc502ac516ffa357f36acc7eece65ae9b 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -264,14 +264,14 @@ static const struct fsl_qspi_devtype_data ls2080a_data = {
- struct fsl_qspi {
- 	void __iomem *iobase;
- 	void __iomem *ahb_addr;
--	u32 memmap_phy;
--	struct clk *clk, *clk_en;
--	struct device *dev;
--	struct completion c;
- 	const struct fsl_qspi_devtype_data *devtype_data;
- 	struct mutex lock;
-+	struct completion c;
-+	struct clk *clk, *clk_en;
- 	struct pm_qos_request pm_qos_req;
-+	struct device *dev;
- 	int selected;
-+	u32 memmap_phy;
- };
- 
- static inline int needs_swap_endian(struct fsl_qspi *q)
-
----
-base-commit: 29e7bf01ed8033c9a14ed0dc990dfe2736dbcd18
-change-id: 20250411-spi-4bd32c8ee08c
-
-Best regards,
 -- 
-Kevin Hao <haokexin@gmail.com>
+2.43.0-rc1
 
