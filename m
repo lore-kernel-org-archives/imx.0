@@ -1,219 +1,349 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2040.outbound.protection.outlook.com [40.107.22.40])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D71238C3A
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 10:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744366691; cv=fail; b=OF7tjk+obcbaWGv2tu8e7aG/8BtAJfT7QLM9zY3WDCgDWRezZHyttT97McjWqm3th1i/fBBSP+28nItxOih/c946/dfhSHa65nhqf08gWPW64zqMhcRbRFuJARA/mCwN0BZ1Np2NFdTWeYdE+YSO6IDJet7KZpr203/ud5WXR3w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744366691; c=relaxed/simple;
-	bh=SfpsWoEi3LKx9DywX5ZH2ixwYC2RV6Voo4oD29CxHhU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Fakt2naofQlW02hp+hEh0FXuCJugfLfwVIB5btEhEEuhSRhX7/je/M8HmWuZDLiZefDpeUC1rXAamZnrkt3NT5a3fAy0X79Jh9wFOL3tiwaLR3upjlG0WGXcFPkxOnSDlsKXy9ENqAsHMCXxkmmDHdb1Zc1ujVj7ihM4xgw1kXo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BuwcbAtj; arc=fail smtp.client-ip=40.107.22.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A089D238C31
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 10:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744367833; cv=none; b=tdRK8nNHoLcK23x5XuFO1QSgo4UuLpQFee2zJ+9xQmoKN8zQOMoIDMqe3jbuonaONmHCsbiiSIKxu8g1gZ/zNyKPDyoG/zkqbGD//IOV0pNzu8YoWap5PRuBpcn2VXsqWA0+yVL5SW2ktiul8ogjixI10h1rH7FsVGloHbzAovs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744367833; c=relaxed/simple;
+	bh=pUIml0VjgQvYLw/I3MbZxyiPLU4wyR56Bp7cCG0fmEA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eRwgoIjPdgwtHkD8MraRl+g2w2V6kjNP6BlIFi7GzGv2kEeVOZyAW2NwowhuzqxZBnd4IdF6cwRCk3ip06SesT4ly2JUC5xfoPCAwup6kngYtfnDVWbIW9cu8+Tc8GdM3C+xC6PtAvFT/a+zI1FTE4OzcUKNcns2seUrSPs4yf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=LsUrmkQg; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BuwcbAtj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Up1EJNDi4VzuUusf8r81Sa772TqE+bXfzRzGjDPNurAh3POixGPiRU4n/Pr1NeflfiYrjo/JpYCPAs2SkY2ZLcfPRJXnzfR3ce6I9+OGFiKPKVq7dFAYrzwXx5AbTUmet2MPBTmegTY7BJUy4yvNxa7tDxmGv9Q7ummqWGRdFhaTeqWzzPhnjYWVZdYgMpR0axqdJ7IaGhqhQoSbIKbf/C0ksRbovBBwvHd+Cx+QG5IWu/ilT3kHtx456Ane2J7Gp6hv6VD0ERPxATuY3BdC+duBEtifcEik0HmmEWgCEOkGc3YAolpz7CXPvOpKBA2aACaBHhzTFHWlr9iXHb8A7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x5qTXJDZPp4S7AwHuNkJ4fICSW1yygF+ddd8uCRnfZg=;
- b=qc/N6RCQtnPR3adfBEZELCfSHdInUBE6ToBqAWHNnAAHU03A8tc560Dchl7EaRef12ZPqDaUgQT4qBkW0iOMtduytM/zDeRIW8sCx5dFGrsjC2PdR8fqz+7DIRb56uHnh1fin83vkWnEnFSiWQvYB11FY06QtY5VrNsNagIQ+nrMMjjfrVS3I8TTZ/th/s7CSDWKw8k5WuxkTT8oKjlEU2vJe2QCLBC0d3pgWohFc6sxh5Qp1wNaVf7NEGtYebeRLjaqQ9b6s0gMwj9l++S98AKNzvR2SU/YfUdDE/7DZ+uSOZKpWCJdt8Z4tJLlogqy6ByA6GUarKvjU2TXkcq2NA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x5qTXJDZPp4S7AwHuNkJ4fICSW1yygF+ddd8uCRnfZg=;
- b=BuwcbAtjsf4EApyVbiTUm+5hzbZQrt/sQtHtdPguVH7l46I0dZyWgazsczjsXE3F3E2TWLoDAAEnms9ch9AQncYiRoYhji67/KKbT+20HxNFFdZWTnubneRzaxjdtpl40uKU9vXQMIU3jPMTkZEnE8bsR8OY6rFtn5nEq5Sf5uaAfOyDzV2qlTBMSG3lC/x74J/GpXHE/aCxo99UKa4YP+nV7BQyq/WleYkflCUAhByv4TYv1CFMYgPvb/JVwMUlOst+0zdpqRBoEFloKMCURwQ8WH2IJC9prvSuv6LQjeyZiq/5oCJtX+VqOxu6C0BL6AarveRlhFDYJJV7F3yeSg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com (2603:10a6:20b:40a::14)
- by AS8PR04MB8900.eurprd04.prod.outlook.com (2603:10a6:20b:42f::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.27; Fri, 11 Apr
- 2025 10:18:07 +0000
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::bb21:d7c8:f7f7:7868]) by AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::bb21:d7c8:f7f7:7868%3]) with mapi id 15.20.8606.028; Fri, 11 Apr 2025
- 10:18:07 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: christophe.leroy@csgroup.eu,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v5 net-next 14/14] net: enetc: add loopback support for i.MX95 ENETC PF
-Date: Fri, 11 Apr 2025 17:57:52 +0800
-Message-Id: <20250411095752.3072696-15-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250411095752.3072696-1-wei.fang@nxp.com>
-References: <20250411095752.3072696-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0021.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::19) To AM9PR04MB8505.eurprd04.prod.outlook.com
- (2603:10a6:20b:40a::14)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="LsUrmkQg"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D95BB1026A388;
+	Fri, 11 Apr 2025 12:36:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1744367822; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=mLnLOSlhtLpb0tEj9yUCdGtla2q99b0iozFagK1gjew=;
+	b=LsUrmkQgXZOdDCNfeN/NeVHoVZ8ajgk/cioXWtuc1GDsAA0Gswyux/NCtO+KjxeztTBUTp
+	DRq78JIC4lPqHo49PB4IkJhcNVm4zqiCwKCEC3n4k5hnt6KQc2pW+Elmh1Jkr4q/aSVe6+
+	TnSLD2c3pgMb2RfTqr1ZpSIStYFOazbkq8KzMReZKPlZ9jOtmVWIn66I8ryxpS8DYl3or2
+	L9JV3M7EO+ATnGihFUMOPA5NOXbeWf+8diAyRn+oV5LTxUXWf8rLdOgp53qYD4pAcv0rrV
+	441Fw4+7K4vhbx+9f3HoLroYjtnoWnejBWT6qOKWfGOMU5pp1Z6YU9HVQ2VVEA==
+Date: Fri, 11 Apr 2025 12:36:54 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Rob Herring <robh@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>
+Subject: Re: [net-next v4 1/5] dt-bindings: net: Add MTIP L2 switch
+ description
+Message-ID: <20250411123654.04cfff4a@wsk>
+In-Reply-To: <20250410205925.GA1041840-robh@kernel.org>
+References: <20250407145157.3626463-1-lukma@denx.de>
+	<20250407145157.3626463-2-lukma@denx.de>
+	<20250410205925.GA1041840-robh@kernel.org>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8505:EE_|AS8PR04MB8900:EE_
-X-MS-Office365-Filtering-Correlation-Id: 938f7920-2460-47e3-93b6-08dd78e2273f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jGQtE9QNEW4WGk1hmKcMHPNLFvzeXM6u+0d7eEXtGyyJ+O9AjBnyc4ZN4KHf?=
- =?us-ascii?Q?Lq+tYLzi3z3GspuTcMDJPcdF9EArLTDzY77FNdnRKVVD/LXa3btSIq+krbea?=
- =?us-ascii?Q?haQ5XReq6hRoPKZ+2aeGqjKpU37J8gT18YRdlew9qJpJRAq8V2E6VHFjfTW8?=
- =?us-ascii?Q?5dX1n1R/q76/jTsbxpNrA6TUVKg6roTjzORh6mgA5fWF1D45U8iL3UfZMolZ?=
- =?us-ascii?Q?KPlciFWuFBWqZN86g0aUDXPrQfq6CuvZWhRAen2djs+v9Q9OtAa6vrszfGeo?=
- =?us-ascii?Q?T5vWMbdcOJ//ThU3yJkV2i8b3k7vAaFOgLrT36xWx5bWPrs4NOtIDt4VYBrr?=
- =?us-ascii?Q?GG8Ii3UfpFeLZ9VnsiUAs0rrvApocjHzeWpPIPqqlmzRtNYzSqpOJ9TtGkbp?=
- =?us-ascii?Q?LlWtaW2AdrnFz+rsYcAZkejqJLSF+VHFHD8GLbHRITWrIwhgyBawdf915J8K?=
- =?us-ascii?Q?Kl8SuUV2CxCO87RJ7PsSW1Z8uenY1MvjaxeIccwgJVcCWkBImnvVH8z7g+w7?=
- =?us-ascii?Q?gnO21q/CHt3q199KzV73JrjeQjt9BbDSNxYchtWVN+QBL7D3tjog1qUjmpvB?=
- =?us-ascii?Q?WwVbJk7qL6+kBO8HNU8ng8vlyc44VoDGsfUzzfZeWBFYtGeWJLIm5pMoZjfL?=
- =?us-ascii?Q?FofjNZTx6rah4vtOIDn8/KowBvnIbARM95DOTjxUsJqeJH+MSmCZzEmk0qdV?=
- =?us-ascii?Q?fijyoIHYrxIjPza1djigm9dQ5vGKnBmhcywc8yBAUJq44mXfee0oTOF/FaBY?=
- =?us-ascii?Q?w19uI4oAcGaNAGlIqt1v/v48YpkpxIQT3D21pJF6vzRca2G5nzh1CI+2uMw3?=
- =?us-ascii?Q?2Jg+QYARNTRuxeBS3+QTRFpIeuOc/vS/XOGP00ifJOUJmENBiImO79l8zfWL?=
- =?us-ascii?Q?ot9BcoVqOHBqXtBfyM5vlrBP6vmHxAJ8X2VDmklYK12PQIMWjLT3jFDT2mJh?=
- =?us-ascii?Q?RSEh3yu4vUoLWWTG2O1WRDxcCT4cB+afOyQi2fOB5IlNmPd5+sC+UpK1yN+c?=
- =?us-ascii?Q?7p29nvxLO3opo225zX62LtshK733+TjX4FcLXNWq7+vsB8V2gFPsCO1rAD/L?=
- =?us-ascii?Q?3/ZRMbLhNZlLlaRzVk3NAhMGLNWpYRu69qiUp3hYcabAnVq1CGPHD0Ph3kqn?=
- =?us-ascii?Q?kfSZ2cgtUnb8O1/M4u88uOre2w7W27J+tuSDL/Gh9+nmLgX6h7Rl/z12gKiB?=
- =?us-ascii?Q?holT8iIBG+7ow6CPyzRUuY0AXwmKvs7TgDOUacMaCknP/H9mGFnOV2bHv1lF?=
- =?us-ascii?Q?+j8TXGRzQus7vA6CtBjb0MUD04Fy/7A6gXqD8IIXS7I6M7m1dGa7Q2jm513V?=
- =?us-ascii?Q?2PxGxH9WzS4mhCaezPn+j4P9q/XC6rUfzIKdROowRmFOUT737GBr2lJKZQYL?=
- =?us-ascii?Q?0dd4jfm8PQbhHYGUXL2PsS6EJ5FbKPod2xlWi0FUdTid2TtVRb4kIKpk9cKW?=
- =?us-ascii?Q?2/cddYzCcZhDMEHnluyEBCE6+b+qXVUxPcVg3Qxq91LjLyJEeTCCbg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8505.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YdzRGZ41BqRewFvY18/dgozjBaRz3hvIGMlLUgHuMwdA1LKEPOiHlAkY3neS?=
- =?us-ascii?Q?8H7eXNL+J8Ygx36Mec9rij3Q09YGpAA0O2UlDDKGO5gBJIo9h4ZJI9Ru740v?=
- =?us-ascii?Q?+1kL6ladjE+N3oLB4pyAhYh5OXfwtYziiQ4v7jbvqdL4UU9+eyh9lQYqNOAS?=
- =?us-ascii?Q?xuuEHa6GkU+Vv0PpB0qnIOqWbxOLvy2v010gBOycRCnVVLIxdZlt4IYsYeoz?=
- =?us-ascii?Q?OplPDmhqMfmMy2YqwJVpSowwcGmy5nGOBI4UQnjEE29yg5PL0O6XbHaiSsIl?=
- =?us-ascii?Q?uzD2pZScW62UuDniOI7ePXmZzK8XQSETm2XfWtPh1SojvdXI6CCZmisT8o3y?=
- =?us-ascii?Q?ZozTUW8sHnYguwXjDv9Oi+Ks5TsGrbYrgw7De1P99XvLqrN63M87CvyACaMN?=
- =?us-ascii?Q?Z3dAuzHpAj0wX7mV8VQEc3JZSONRmhRfOOWp1nJTSSZNR0zamkYuuYgfQ7BE?=
- =?us-ascii?Q?2HH7PvGt7eVvXiINOP+X8yJSBgKMq3WrTUimnEL20G3RtTtfbPFs58WBYNrC?=
- =?us-ascii?Q?iDRpV21M76n7sHlXzRNukf2rpNUvO57fxvIETAEMPR+tj1GkmmVwHH/ljKff?=
- =?us-ascii?Q?rRiEJExYmdEh4HaPFGKkJ8BDaEh0/D6iP8cz0xsldbrP1oOwQnerZnm7eQja?=
- =?us-ascii?Q?4uLrAmQn+qE9k+r7Ox3z0I2F4ioV/dIAci89MAZPygW+UN0exs7KninUp+AJ?=
- =?us-ascii?Q?RRxM6Mx0wKPU3J9vaL/TuAPzmnHS4rTVdUQ15yeaoohDZRm48DCzraNuwOVc?=
- =?us-ascii?Q?yDKHO+84/sddUHfaW6FUFeGBAV2z8FdbM4ROuKdb2Q6AFkhe8qbbw+Btig6f?=
- =?us-ascii?Q?bN4AXpoF4p9bRMLG3jLuO23icpAc2Jxvd6jbRaqpEHhEoUGyFnV8ZfdRmj+y?=
- =?us-ascii?Q?NEUf89U29RHvMv+MsrvNFDprcR3TP5oTXRk6HcA2cE47ZNMDMT+pAgoxlFs6?=
- =?us-ascii?Q?ICU03fn8aCRU1HnKcvZzyHfl+ygm8WxpIbWX7pcURgGI/y2kPdj+fIO9PtkY?=
- =?us-ascii?Q?8rwyIkCF6UsqcCVAcPqTHbJWrttUiQDo9OeyWU7TokX7KbnRlpcoVwGgCGSa?=
- =?us-ascii?Q?4z99EMosap5PtdhAkYm6qdaMx3SKxTVwztrVVVnuQg/0AYXmHVzX1pVnGChh?=
- =?us-ascii?Q?Sml1x2BO9AEQQFAGb2hKe3zk24yW618JmESS0Jmv6dI4AATfJ308PB5ZRx/F?=
- =?us-ascii?Q?mWDxJLKup6C/e7RZV7ekGuXf+n5YlF+9ZiOojk2rWG/+NAG4Y9VrKJbjtg6S?=
- =?us-ascii?Q?tGkNK3lRTOAYu5fF2jQ3/9onp/jGm0EqfiAV8nEyRq4ye5UR+SWce+cf+2HY?=
- =?us-ascii?Q?Ar/hNChsGwthr0ZZupLCXJaflbzDUqHpmFZXEHR15Igd6HKkI8HXAENXt5tc?=
- =?us-ascii?Q?vMflglDxMop3RxP4tPTl7aJdtvMEObTD6Ufe5WllfHbagqJwwK9XEDKaaQa5?=
- =?us-ascii?Q?kP8Lm49IbsYGXHCsKx5MqHG9/7iQvRZFD5ehmEhd7fgBNKiyyb3cgdJ5O0/O?=
- =?us-ascii?Q?ubPhvsJrnuBa/GqYWi0d/2dagxvEQm1O7C+FX1aX/eh61VE1EqqPVPN+5sFH?=
- =?us-ascii?Q?RCKUOrUJTQ/R1qN3RpfOMY3i7iHS7X9GZb2ySThL?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 938f7920-2460-47e3-93b6-08dd78e2273f
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8505.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 10:18:07.5522
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E6AqOvKdmI+27xA/pc8iC0vMv3YJGSHkkdBsaf4IlJPLDWUCY66aaJW3DPa8AIoSHFa+EjatNaPmb/9PSpzg9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8900
+Content-Type: multipart/signed; boundary="Sig_/pHINZLvXGmujDrt1h/8BuJ7";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add internal loopback support for i.MX95 ENETC PF, the default loopback
-mode is MAC level loopback, the MAC Tx data is looped back onto the Rx.
-The MAC interface runs at a fixed 1:8 ratio of NETC clock in MAC-level
-loopback mode, with no dependency on Tx clock.
+--Sig_/pHINZLvXGmujDrt1h/8BuJ7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
-v5: no changes
----
- .../net/ethernet/freescale/enetc/enetc4_pf.c   | 18 ++++++++++++++++++
- .../ethernet/freescale/enetc/enetc_pf_common.c |  4 +---
- 2 files changed, 19 insertions(+), 3 deletions(-)
+Hi Rob,
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-index 421378212a73..711047f7074b 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -101,6 +101,21 @@ static void enetc4_pf_set_si_mc_hash_filter(struct enetc_hw *hw, int si,
- 	enetc_port_wr(hw, ENETC4_PSIMMHFR1(si), upper_32_bits(hash));
- }
- 
-+static void enetc4_pf_set_loopback(struct net_device *ndev, bool en)
-+{
-+	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-+	struct enetc_si *si = priv->si;
-+	u32 val;
-+
-+	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
-+	val = u32_replace_bits(val, en ? 1 : 0, PM_CMD_CFG_LOOP_EN);
-+	/* Default to select MAC level loopback mode if loopback is enabled. */
-+	val = u32_replace_bits(val, en ? LPBCK_MODE_MAC_LEVEL : 0,
-+			       PM_CMD_CFG_LPBK_MODE);
-+
-+	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
-+}
-+
- static void enetc4_pf_clear_maft_entries(struct enetc_pf *pf)
- {
- 	int i;
-@@ -527,6 +542,9 @@ static int enetc4_pf_set_features(struct net_device *ndev,
- 		enetc4_pf_set_si_vlan_promisc(hw, 0, promisc_en);
- 	}
- 
-+	if (changed & NETIF_F_LOOPBACK)
-+		enetc4_pf_set_loopback(ndev, !!(features & NETIF_F_LOOPBACK));
-+
- 	enetc_set_features(ndev, features);
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-index 8c563e552021..edf14a95cab7 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-@@ -134,10 +134,8 @@ void enetc_pf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
- 	}
- 
- 	/* TODO: currently, i.MX95 ENETC driver does not support advanced features */
--	if (!is_enetc_rev1(si)) {
--		ndev->hw_features &= ~NETIF_F_LOOPBACK;
-+	if (!is_enetc_rev1(si))
- 		goto end;
--	}
- 
- 	ndev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
- 			     NETDEV_XDP_ACT_NDO_XMIT | NETDEV_XDP_ACT_RX_SG |
--- 
-2.34.1
+> On Mon, Apr 07, 2025 at 04:51:53PM +0200, Lukasz Majewski wrote:
+> > This patch provides description of the MTIP L2 switch available in
+> > some NXP's SOCs - e.g. imx287.
+> >=20
+> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> > ---
+> > Changes for v2:
+> > - Rename the file to match exactly the compatible
+> >   (nxp,imx287-mtip-switch)
+> >=20
+> > Changes for v3:
+> > - Remove '-' from const:'nxp,imx287-mtip-switch'
+> > - Use '^port@[12]+$' for port patternProperties
+> > - Drop status =3D "okay";
+> > - Provide proper indentation for 'example' binding (replace 8
+> >   spaces with 4 spaces)
+> > - Remove smsc,disable-energy-detect; property
+> > - Remove interrupt-parent and interrupts properties as not required
+> > - Remove #address-cells and #size-cells from required properties
+> > check
+> > - remove description from reg:
+> > - Add $ref: ethernet-switch.yaml#
+> >=20
+> > Changes for v4:
+> > - Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove
+> > already referenced properties
+> > - Rename file to nxp,imx28-mtip-switch.yaml
+> > ---
+> >  .../bindings/net/nxp,imx28-mtip-switch.yaml   | 126
+> > ++++++++++++++++++ 1 file changed, 126 insertions(+)
+> >  create mode 100644
+> > Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+> >=20
+> > diff --git
+> > a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+> > b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+> > new file mode 100644 index 000000000000..1afaf8029725 --- /dev/null
+> > +++
+> > b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+> > @@ -0,0 +1,126 @@ +# SPDX-License-Identifier: (GPL-2.0-only OR
+> > BSD-2-Clause) +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
+> > +
+> > +maintainers:
+> > +  - Lukasz Majewski <lukma@denx.de>
+> > +
+> > +description:
+> > +  The 2-port switch ethernet subsystem provides ethernet packet
+> > (L2)
+> > +  communication and can be configured as an ethernet switch. It
+> > provides the
+> > +  reduced media independent interface (RMII), the management data
+> > input
+> > +  output (MDIO) for physical layer device (PHY) management.
+> > +
+> > +$ref: ethernet-switch.yaml#/$defs/ethernet-ports
+> > + =20
+>=20
+> > +patternProperties:
+> > +  "^(ethernet-)?ports$": =20
+>=20
+> New bindings should only use 'ethernet-ports'.
 
+Ok.
+
+>=20
+> > +    type: object
+> > +    additionalProperties: true =20
+>=20
+> But what's this for? I thought you had some constrants for phy-mode
+> and phy-handle?
+>=20
+
+I've prepared following changes:
+
+--- a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
++++ b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+@@ -17,11 +17,6 @@ description:
+=20
+ $ref: ethernet-switch.yaml#/$defs/ethernet-ports
+=20
+-patternProperties:
+-  "^(ethernet-)?ports$":
+-    type: object
+-    additionalProperties: true
+-
+ properties:
+   compatible:
+     const: nxp,imx28-mtip-switch
+@@ -55,6 +50,26 @@ properties:
+=20
+   pinctrl-names: true
+=20
++  ethernet-ports:
++    type: object
++    additionalProperties: true
++    properties:
++      ethernet-port:
++        type: object
++        unevaluatedProperties: false
++
++        properties:
++          reg:
++            items:
++              - enum: [1, 2]
++            description: MTIP L2 switch port number
++
++        required:
++          - reg
++          - label
++          - phy-mode
++          - phy-handle
++
+   mdio:
+     type: object
+     $ref: mdio.yaml#
+@@ -71,7 +86,7 @@ required:
+   - mdio
+   - ethernet-ports
+=20
+-additionalProperties: false
++unevaluatedProperties: false
+=20
+ examples:
+
+To be applied on top of this patch. It takes into account the
+"required:" for 'ethernet-port' and also reuses the=20
+$ref: ethernet-switch.yaml#/$defs/ethernet-ports
+
+Last, but not least:
+make dt_binding_check DT_SCHEMA_FILES=3Dnxp,imx28-mtip-switch.yaml
+make CHECK_DTBS=3Dy DT_SCHEMA_FILES=3Dnxp,imx28-mtip-switch.yaml
+nxp/mxs/imx28-xea.dtb
+
+show no errors.
+
+
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: nxp,imx28-mtip-switch
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  phy-supply:
+> > +    description:
+> > +      Regulator that powers Ethernet PHYs.
+> > +
+> > +  clocks:
+> > +    items:
+> > +      - description: Register accessing clock
+> > +      - description: Bus access clock
+> > +      - description: Output clock for external device - e.g. PHY
+> > source clock
+> > +      - description: IEEE1588 timer clock
+> > +
+> > +  clock-names:
+> > +    items:
+> > +      - const: ipg
+> > +      - const: ahb
+> > +      - const: enet_out
+> > +      - const: ptp
+> > +
+> > +  interrupts:
+> > +    items:
+> > +      - description: Switch interrupt
+> > +      - description: ENET0 interrupt
+> > +      - description: ENET1 interrupt
+> > +
+> > +  pinctrl-names: true
+> > +
+> > +  mdio:
+> > +    type: object
+> > +    $ref: mdio.yaml#
+> > +    unevaluatedProperties: false
+> > +    description:
+> > +      Specifies the mdio bus in the switch, used as a container
+> > for phy nodes. +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - clocks
+> > +  - clock-names
+> > +  - interrupts
+> > +  - mdio
+> > +  - ethernet-ports
+> > +
+> > +additionalProperties: false =20
+>=20
+> unevaluatedProperties: false
+
+Ok.
+
+>=20
+> > +
+> > +examples:
+> > +  - |
+> > +    #include<dt-bindings/interrupt-controller/irq.h>
+> > +    switch@800f0000 {
+> > +        compatible =3D "nxp,imx28-mtip-switch";
+> > +        reg =3D <0x800f0000 0x20000>;
+> > +        pinctrl-names =3D "default";
+> > +        pinctrl-0 =3D <&mac0_pins_a>, <&mac1_pins_a>;
+> > +        phy-supply =3D <&reg_fec_3v3>;
+> > +        interrupts =3D <100>, <101>, <102>;
+> > +        clocks =3D <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
+> > +        clock-names =3D "ipg", "ahb", "enet_out", "ptp";
+> > +
+> > +        ethernet-ports {
+> > +            #address-cells =3D <1>;
+> > +            #size-cells =3D <0>;
+> > +
+> > +            mtip_port1: ethernet-port@1 {
+> > +                reg =3D <1>;
+> > +                label =3D "lan0";
+> > +                local-mac-address =3D [ 00 00 00 00 00 00 ];
+> > +                phy-mode =3D "rmii";
+> > +                phy-handle =3D <&ethphy0>;
+> > +            };
+> > +
+> > +            mtip_port2: ethernet-port@2 {
+> > +                reg =3D <2>;
+> > +                label =3D "lan1";
+> > +                local-mac-address =3D [ 00 00 00 00 00 00 ];
+> > +                phy-mode =3D "rmii";
+> > +                phy-handle =3D <&ethphy1>;
+> > +            };
+> > +        };
+> > +
+> > +        mdio_sw: mdio {
+> > +            #address-cells =3D <1>;
+> > +            #size-cells =3D <0>;
+> > +
+> > +            reset-gpios =3D <&gpio2 13 0>;
+> > +            reset-delay-us =3D <25000>;
+> > +            reset-post-delay-us =3D <10000>;
+> > +
+> > +            ethphy0: ethernet-phy@0 {
+> > +                reg =3D <0>;
+> > +            };
+> > +
+> > +            ethphy1: ethernet-phy@1 {
+> > +                reg =3D <1>;
+> > +            };
+> > +        };
+> > +    };
+> > --=20
+> > 2.39.5
+> >  =20
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/pHINZLvXGmujDrt1h/8BuJ7
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEyBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmf48MYACgkQAR8vZIA0
+zr3LEwf4oZ8G6avjAzXGZNtwQoJnqXaGrxBTt50eP6lxNSRlA1NWE7Ey+52LI5MD
+eD1tWPzQYjrIprD5a2n7GL9ot7s46olO+T4Qzm5wWiBfmUyL+I4TsUCIHgKZb1fd
+sCv8dbYQCHkc8I5um7WEVf/ubo6dBoViXhGbOc4JB7Z7Jm0/TbgOOPSeuusx36md
+ffp1o2r0Dh3tfqQUBcvovTUHUDiqctNTV5OWbZbFWronzVBOPyK5AktCcZ9NhPNm
+rD9wZK/KSL8ZjJEE89DzprcKbvKgRNr3a5JFau64elrGBlDcByjqGWI1EFiNpN+W
+6D2ltGdLv7kIjmfwwsP2A430ye3J
+=5i4m
+-----END PGP SIGNATURE-----
+
+--Sig_/pHINZLvXGmujDrt1h/8BuJ7--
