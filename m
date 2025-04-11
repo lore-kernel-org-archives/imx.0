@@ -1,49 +1,49 @@
 Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2CE1D95B3;
-	Fri, 11 Apr 2025 13:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB39E1C3BEB;
+	Fri, 11 Apr 2025 13:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744379183; cv=none; b=Ry97x6ZZiiorFGdQLAGNJmYUsmLz5oQ7zucTdZxdqTgAtBsU6KnLckY228ghelTm05Vt0ykbNpdcX77gMtVTMAUuhRrKYKjWa9/JIN8SNP2I9dC38ESBimqMoK5r0EPB1zTspw7baA46L5tXZZZtYakGiNZupBjY/kvD1NB0PFM=
+	t=1744379431; cv=none; b=j57aPpqVlcoYM+zhahnyJdX9H8lvcoQuf1eny39R2dkpbyTh2smU/VcVSFVsusoQeys46+N6uvUBsv0pxtK3LPbmMEvUqcs45VFAleKGXgRDhWgFkeh1jYEGxioSGVjUMR9Vf6bardMWmivf1uXuJqHGnnXNuqiAx0bXoM6zLX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744379183; c=relaxed/simple;
-	bh=zw6iXtHpECB8AOe7/FVi+IgvgSypoJ2Ji1MLxsLtHx4=;
+	s=arc-20240116; t=1744379431; c=relaxed/simple;
+	bh=fBMPce3nXkTzC5YitcBdnnxth6H4sTrD9RAuJ+F4s38=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=YXF3usQq66Z2dSnxt/QkpKspUNMC1+ZJsgDYRHj9m2FktwGHR2MTAZrSH5wWWKyUoD8Jq/KGhXrNL4AppFjkWGFFPs5xDP+SPUjGOXQwBgXVp7yx/oTfAG9VvPFDuTjDtFtTOny5FIh/EIICMDUsqF6NOxMY2lEFR/KkKcUJXok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Gk2uQTcH; arc=none smtp.client-ip=198.47.19.246
+	 In-Reply-To:Content-Type; b=iYWtGeUcXBFoJDcbDwDaY7R9CdcVTMz0T+J0s3dL/X92rW+n3wv9c1GmDgDLHIq/raVvKhF9ZnHmGy9w4XExmAXvCcUXJD0lsS6+2qpP9AsVpYthrlmd52jQTV/NE7TnivWpvI3+GJAkNBIVcjMP5eWyTJK1Lnqgo1a6ZneGKyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=SR5jd+om; arc=none smtp.client-ip=198.47.19.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Gk2uQTcH"
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDkB0a2140146
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="SR5jd+om"
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDoJUS2141356
 	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Apr 2025 08:46:11 -0500
+	Fri, 11 Apr 2025 08:50:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1744379171;
-	bh=dyl4VJ4NFKTvxc57ODEOoVjJmEfMQrs8ZXag1cIaiu0=;
+	s=ti-com-17Q1; t=1744379419;
+	bh=qQDSFd0KgWBYuvyGNC6FIuW3TAEXHe3afLsrb7vpjYk=;
 	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=Gk2uQTcHeH4nzT6Glj0uV8LS0iUAda68IF4ZwTF0mGzcW11qGTDUo24Emn6kLRBpX
-	 SWehkYMfkE968s7ORvuFuh0P903Qp2G/RFTtyq1cC6n9wg2WqfZsaKjJK/BZh3/pob
-	 QFJTH+KUz9kIz9uawiCPq+jWGG3BNxwZHwU+ub40=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDkBlG054534
+	b=SR5jd+omWQxFX6UsqjsPKJ90ihXVqD9unyjxmpgtOwxUWqzaiAGqu+/+jjisWUfZk
+	 +WE12+qo/scn+FIl4BsRZoTY1FrVvLWk7j5+i8bflzxwUroKQX+ExD41QTVPhB2l8L
+	 qlrxRuy3vo36UxIaEBzPUACKcMxqdba+I8Hu2sRw=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53BDoJCD031578
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 11 Apr 2025 08:46:11 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+	Fri, 11 Apr 2025 08:50:19 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 11
- Apr 2025 08:46:10 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ Apr 2025 08:50:19 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 11 Apr 2025 08:46:10 -0500
-Received: from [10.249.141.75] ([10.249.141.75])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53BDk6S7109624;
-	Fri, 11 Apr 2025 08:46:07 -0500
-Message-ID: <6b730f33-9d83-4ced-839d-dc03b2eb8e4c@ti.com>
-Date: Fri, 11 Apr 2025 19:16:05 +0530
+ Frontend Transport; Fri, 11 Apr 2025 08:50:18 -0500
+Received: from [10.249.136.157] ([10.249.136.157])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53BDoDJO001396;
+	Fri, 11 Apr 2025 08:50:14 -0500
+Message-ID: <293dfbda-841b-4a5a-85ac-6a6c2df5df09@ti.com>
+Date: Fri, 11 Apr 2025 19:20:12 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,38 +58,37 @@ CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
         <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
         <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
+        <u-kumar1@ti.com>, <stable@vger.kernel.org>
 References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
  <20250409134128.2098195-3-y-abhilashchandra@ti.com>
 Content-Language: en-US
-From: "Kumar, Udit" <u-kumar1@ti.com>
+From: "Francis, Neha" <n-francis@ti.com>
 In-Reply-To: <20250409134128.2098195-3-y-abhilashchandra@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-
 
 On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
 > Update the vin-supply of the TLV71033 regulator from LM5141 (vsys_3v3) to
 > LM61460 (vsys_5v0) to match the schematics. Add a fixed regulator node for
 > the LM61460 5V supply to support this change.
->
+> 
 > AM68-SK schematics: https://www.ti.com/lit/zip/sprr463
 > Fixes: a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 > ---
->   arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts | 13 ++++++++++++-
->   1 file changed, 12 insertions(+), 1 deletion(-)
->
+>  arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
 > diff --git a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
 > index 11522b36e0ce..5fa70a874d7b 100644
 > --- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
 > +++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
 > @@ -44,6 +44,17 @@ vusb_main: regulator-vusb-main5v0 {
->   		regulator-boot-on;
->   	};
->   
+>  		regulator-boot-on;
+>  	};
+>  
 > +	vsys_5v0: regulator-vsys5v0 {
 > +		/* Output of LM61460 */
 > +		compatible = "regulator-fixed";
@@ -101,27 +100,22 @@ On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
 > +		regulator-boot-on;
 > +	};
 > +
->   	vsys_3v3: regulator-vsys3v3 {
->   		/* Output of LM5141 */
->   		compatible = "regulator-fixed";
+>  	vsys_3v3: regulator-vsys3v3 {
+>  		/* Output of LM5141 */
+>  		compatible = "regulator-fixed";
 > @@ -76,7 +87,7 @@ vdd_sd_dv: regulator-tlv71033 {
->   		regulator-min-microvolt = <1800000>;
->   		regulator-max-microvolt = <3300000>;
->   		regulator-boot-on;
+>  		regulator-min-microvolt = <1800000>;
+>  		regulator-max-microvolt = <3300000>;
+>  		regulator-boot-on;
 > -		vin-supply = <&vsys_3v3>;
 > +		vin-supply = <&vsys_5v0>;
+>  		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
+>  		states = <1800000 0x0>,
+>  			 <3300000 0x1>;
 
-Looking at schematic page -3
+Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
 
-USB PD Controller is giving input to LM61460 , LM5141(3V3), and TPS62177.
+-- 
+Thanking You
+Neha Malcom Francis
 
-Could you please recheck this, vin-supply for 3v3 regulator
-
-Thanks
-
-Udit
-
-
->   		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
->   		states = <1800000 0x0>,
->   			 <3300000 0x1>;
