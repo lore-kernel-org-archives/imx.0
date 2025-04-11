@@ -1,148 +1,194 @@
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5F527D797
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 05:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5C81E0B86
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 06:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744350361; cv=none; b=r8p1t3OB4pcBkv8zutmWn0ux6rgnBZ3D+8itv2D7KupQW9CJgsOPdssH9AdEqRaEVXv3iPrY6w2VObbwI56j7kQqyp16T0z+b+sQ4U/5Nf1kTbOPb5yc1LjbVns/B+3GizKMOK+e44uVInkcuWBuXiC+8/3yRc7dauOWkfx+MD0=
+	t=1744352951; cv=none; b=LMli9tGRDZFKdr6UH4BQubp39hj5scO2eI7zB/BmhypjoGbAlDavEhn97ffulcTP4L3cWJ1wAmUJ8l/1HnPU0Ps0JTXwDCVNIxS+mqbdyF5fCFQBNBiH4JS3Cw1xXzHTzuBqzOtBwLntnWqEvgSBjMpHQ7VX1lh/umiGB8E6FUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744350361; c=relaxed/simple;
-	bh=rMjfAsbcAJJM6gcHLNJW6BIqfE6bVq7MmRShQ+goMPo=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=WghlQpS0XtMjDhKPwfVCO/EHzpBNyNSq8CRrUXC+PXDv24EDwOjZeTneq0Wc7pep9nTIftr8vP49YnnZyVzmLbzitzDWbWtJT2dhbgfTc274tssseEdeHXAk4F3X8Q07cMFp7zxUEQKfBRyzsdxkYs2uobcdtwPUUz6/hlecO/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Eb0uxLN+; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=izazvTEl; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Eb0uxLN+";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="izazvTEl"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 55F281380264;
-	Fri, 11 Apr 2025 01:45:58 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-05.internal (MEProxy); Fri, 11 Apr 2025 01:45:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1744350358;
-	 x=1744436758; bh=2r2Xn9Oh7pnBWDirUE0pyEjDwsfdPFlcNad3ZBGW7dY=; b=
-	Eb0uxLN+O72VQ+q7KFJ3YlgWIdkWmATJpMozu2JDxUE7FtJaRKB351qHfpXSFkr8
-	nVd/XM+D9+Anxp1C+LScXKMX8WL5RY/R38tf21Ma+RU0sdM4XHu3HUNSXHA5y9sy
-	F+i5xIK6wk73+NKsAesaHmewB0pDVQT11V8t+03Y3iK61wD+dzT+CTAO4a1tV+6J
-	BJVd6qOtbzVtIA3bOe3jHpDzkIn9D6hZBsH8N8yrX4MmL7I1V6MMybtazUGly8zn
-	sJyJ2LkTi63cia+nPXE8nqzULX+nFD+n1yPTvYeQTVcC6BaS5Scrvl3KRQwkj5TC
-	TOFS4Ou08SdZXWV96P3q3A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1744350358; x=
-	1744436758; bh=2r2Xn9Oh7pnBWDirUE0pyEjDwsfdPFlcNad3ZBGW7dY=; b=i
-	zazvTElxv8CI8vOmns6RjFlqtcmY2/93bgV8Nsmkg8CEIBw0D20onSN5Y0pVsPaB
-	kbOsm8c6/t7Dmx1AmAE4RysQGbuwBWhMs0Nr2ocA6hxgcF7GlFNyzE7BXGeUA7Pt
-	QjYBDYHPvk9/HWscq97fIKP+xrKZ0FMF/aWND9XNgOGG+pSsO2QR7yXqM8QAl65X
-	/4/VSpmzkTTKqo8PkJgnHpKcnikjbIMvvtKnUx0izzLGVYizGdoQPSRFXYy5lH1o
-	no94/F3S5w3Ll16qcsFCNhUyTBa0cDRHrW7kuGxNL3P4y3PszMxVztz0Xg3lL2E4
-	Ok3bDdE155/M8bxYH396A==
-X-ME-Sender: <xms:laz4ZyE-WfziFgzEyIzFgM6Xz73tdB0Cchr7CG82eMKKAtKnTbQZPw>
-    <xme:laz4ZzU2M8zmAq88YWf9g6Cj9eG4z54rMpmC_0HD-m4uF4Kr0ipf_vWmXGrYFtMUe
-    VmMAGtqBv6eSgjrRNE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvuddutdduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
-    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    udeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrg
-    hilhdrtghomhdprhgtphhtthhopegrughrihgrnhdrhhhunhhtvghrsehinhhtvghlrdgt
-    ohhmpdhrtghpthhtoheprghrnhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshh
-    grfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuhhlfhdrhhgrnhhsshho
-    nheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvg
-    hlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepihhmgieslhhi
-    shhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehsfedvsehngihprdgtohhmpdhrtg
-    hpthhtohephhgrihgsohdrtghhvghnsehngihprdgtohhm
-X-ME-Proxy: <xmx:laz4Z8IKvtoJqP56ctv3tQyAKSd7BtieQ4tgLLVIy6ByyFoPpgyhLg>
-    <xmx:laz4Z8FMUExgb0xf-CacLLzo4AEApBXcGmKJe8X8TsUhI4ltZrXxOQ>
-    <xmx:laz4Z4XYVf-VFMExVq50OsEBUVVkTPtr92r2gO4wrxJDvP5PUb7TXQ>
-    <xmx:laz4Z_NKl0ld5HPAIfhWc_Fa218TVCWTr-81H6Ld-os7JUziAEO1KA>
-    <xmx:lqz4Zx8I5GdkKpQsOWsXl2aMlcHCLE_dZPMN1vZ11m1-Zw3x16RxVP9r>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id B19172220073; Fri, 11 Apr 2025 01:45:57 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1744352951; c=relaxed/simple;
+	bh=RNF67hXYbIj7AuiBeY9z8+U88Il7RL5JK188qv9/XdI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ft9vMZCZRZqy4G+hlXNgbnJVypxAIW2rreHTqkG6heXJQM/0sxU6+O8kmuag2E1KAcdEw3KPn2UfkMMtMfhse1Yl8Uo4MqQL9cTF9bHAg2OvxobxlB11aJXpIo8c8kDm+MglvpPrhdZwc70HVy3yj22iV5yKPnLV87xjZvmJYLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+Received: from [89.212.21.243] (port=57560 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1u37sx-003VJz-29;
+	Fri, 11 Apr 2025 08:29:07 +0200
+Message-ID: <d68df49c-222a-445d-b29c-f9ad962b87aa@norik.com>
+Date: Fri, 11 Apr 2025 08:29:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: Taf7f561cc211b9f6
-Date: Fri, 11 Apr 2025 07:45:27 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Haibo Chen" <haibo.chen@nxp.com>, "Arnd Bergmann" <arnd@kernel.org>,
- "Adrian Hunter" <adrian.hunter@intel.com>,
- "Ulf Hansson" <ulf.hansson@linaro.org>, "Shawn Guo" <shawnguo@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, "Luke Wang" <ziniu.wang_1@nxp.com>
-Cc: "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Fabio Estevam" <festevam@gmail.com>,
- "Ciprian Costea" <ciprianmarian.costea@oss.nxp.com>,
- "Josua Mayer" <josua@solid-run.com>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
- "NXP S32 Linux Team" <S32@nxp.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Message-Id: <cda876c9-7dbf-4af1-9fc1-cbd9f379252d@app.fastmail.com>
-In-Reply-To: 
- <DU0PR04MB9496EAB4A567BDA8948D434690B62@DU0PR04MB9496.eurprd04.prod.outlook.com>
-References: <20250410140921.849213-1-arnd@kernel.org>
- <DU0PR04MB9496EAB4A567BDA8948D434690B62@DU0PR04MB9496.eurprd04.prod.outlook.com>
-Subject: Re: [PATCH] mmc: esdhc-imx: convert to modern PM_OPS
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/13] arm64: dts: freescale: imx93-phycore-som: Enhance
+ eMMC pinctrl
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+References: <20250410090251.1103979-1-primoz.fiser@norik.com>
+ <20250410090251.1103979-5-primoz.fiser@norik.com>
+ <Z/fcFPrHdI8/IBRC@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <Z/fcFPrHdI8/IBRC@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Fri, Apr 11, 2025, at 04:45, Bough Chen wrote:
->> From: Arnd Bergmann <arnd@kernel.org>
->> drivers/mmc/host/sdhci-esdhc-imx.c:1586:13: error: unused function
->> 'sdhc_esdhc_tuning_save' [-Werror,-Wunused-function]
->>  1586 | static void sdhc_esdhc_tuning_save(struct sdhci_host *host)
->>       |             ^~~~~~~~~~~~~~~~~~~~~~
->> drivers/mmc/host/sdhci-esdhc-imx.c:1608:13: error: unused function
->> 'sdhc_esdhc_tuning_restore' [-Werror,-Wunused-function]
->>  1608 | static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
->>       |             ^~~~~~~~~~~~~~~~~~~~~~~~~
->> 
->> Remove the #ifdef checks and instead use the better macros that silently drop
->> the unused functions when PM is disabled.
->
-> Thanks for this catching.
->
-> How about add __maybe_unused to define this tuning_save/retore function?
+Hi Frank,
 
-That sounds counterproductive.
+On 10. 04. 25 16:56, Frank Li wrote:
+> On Thu, Apr 10, 2025 at 11:02:42AM +0200, Primoz Fiser wrote:
+>> Improve eMMC on phyCORE-i.MX93 SOM by adding 100MHz and 200MHz pinctrl
+>> modes. This enables to use eMMC at enhanced data rates (e.g. HS400).
+>>
+>> While at it, apply a workaround for the i.MX93 chip errata ERR052021.
+>>
+>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+>> ---
+>>  .../boot/dts/freescale/imx93-phycore-som.dtsi | 57 +++++++++++++++----
+>>  1 file changed, 47 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>> index 82f680d891c2..3d84eed33074 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>> +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>> @@ -166,8 +166,10 @@ eeprom@50 {
+>>
+>>  /* eMMC */
+>>  &usdhc1 {
+>> -	pinctrl-names = "default";
+>> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+>>  	pinctrl-0 = <&pinctrl_usdhc1>;
+>> +	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
+>> +	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
+>>  	bus-width = <8>;
+>>  	non-removable;
+>>  	status = "okay";
+>> @@ -213,18 +215,53 @@ MX93_PAD_ENET2_RD3__GPIO4_IO27		0x31e
+>>  		>;
+>>  	};
+>>
+>> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+>>  	pinctrl_usdhc1: usdhc1grp {
+>>  		fsl,pins = <
+>>  			MX93_PAD_SD1_CLK__USDHC1_CLK		0x179e
+>> -			MX93_PAD_SD1_CMD__USDHC1_CMD		0x1386
+>> -			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x138e
+>> -			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x1386
+>> -			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x138e
+>> -			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x1386
+>> -			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x1386
+>> -			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x1386
+>> -			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x1386
+>> -			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x1386
+>> +			MX93_PAD_SD1_CMD__USDHC1_CMD		0x40001386
+>> +			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000138e
+>> +			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x40001386
+>> +			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x4000138e
+>> +			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x40001386
+>> +			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x40001386
+>> +			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x40001386
+>> +			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x40001386
+>> +			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x40001386
+>> +			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x179e
+>> +		>;
+>> +	};
+>> +
+>> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+>> +	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
+>> +		fsl,pins = <
+>> +			MX93_PAD_SD1_CLK__USDHC1_CLK		0x17be
+>> +			MX93_PAD_SD1_CMD__USDHC1_CMD		0x4000139e
+>> +			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000138e
+> 
+> any reason why DATA0 is difference with other one?
+> 
+>> +			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x4000139e
+>> +			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x400013be
+>> +			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x4000139e
+>> +			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x4000139e
+>> +			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x4000139e
+>> +			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x4000139e
+>> +			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x4000139e
+>> +			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x179e
+>> +		>;
+>> +	};
+>> +
+>> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+>> +	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
+>> +		fsl,pins = <
+>> +			MX93_PAD_SD1_CLK__USDHC1_CLK		0x17be
+>> +			MX93_PAD_SD1_CMD__USDHC1_CMD		0x4000139e
+>> +			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000139e
+> 
+> any reason why DATA0/DATA1 is difference with other one
 
-The new macros were introduced to allow removing all the pointless
-__maybe_unused annotations, I see no reason to stick with the
-legacy helpers here.
+Bus signal integrity envelope was measured and drive-strengths adjusted
+accordingly by the PHYTEC hardware department to conform to the specs.
 
-I did make a small mistake and ran into another warning later,
-but this fixup should address that:
+Values were thus determined empirically to adjust for differences in
+signal impedance due to PCB layout.
 
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -2112,7 +2112,7 @@ static struct platform_driver sdhci_esdhc_imx_driver = {
-                .name   = "sdhci-esdhc-imx",
-                .probe_type = PROBE_PREFER_ASYNCHRONOUS,
-                .of_match_table = imx_esdhc_dt_ids,
--               .pm     = &sdhci_esdhc_pmops,
-+               .pm     = pm_ptr(&sdhci_esdhc_pmops),
-        },
-        .probe          = sdhci_esdhc_imx_probe,
-        .remove         = sdhci_esdhc_imx_remove,
+BR,
+Primoz
 
+> 
+> Frank
+>> +			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x400013be
+>> +			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x400013be
+>> +			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x400013be
+>> +			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x400013be
+>> +			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x400013be
+>> +			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x400013be
+>> +			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x400013be
+>>  			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x179e
+>>  		>;
+>>  	};
+>> --
+>> 2.34.1
+>>
 
-     Arnd
+-- 
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
