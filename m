@@ -1,105 +1,271 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2079.outbound.protection.outlook.com [40.107.21.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE84E268C48;
-	Fri, 11 Apr 2025 20:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744403224; cv=none; b=KnJG7QH8GOL8Osktcul49ZIDUW9P4qHZnjEZIpKzxI86yG1Q2tnVo4xfo9zYbgW0ZlGpnf/eiwItDQ9daqnETQAPhqB4DaHgmCALbz5xqjGAsuyJiXmz1JIRwEf3uM2jMPwKrm8szFkexIc0RBBEXMfmURMf/NlsGYtTQrejUL4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744403224; c=relaxed/simple;
-	bh=0db2ZvvEaBiYWW5dZn01u/FW+dk6clupic3ccg4s29U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SWv/GVNR7ICMiJ5IYQ6k3L94cN07QxKTG6+DwGXNezJR+PTrPD2AMNoU+QHeoVRJFozlV8plHZePu0wKzVTcG+Df6t/yXG79g9FesGDHg/jXAdrTPyar7g74jM3g56frYJfoNAQ1XIa9wqc8gAh2dA/MFFmbjf2LVcLk06v4Bck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=esDdo68Z; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11D028137D
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 21:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744406644; cv=fail; b=rhwb3dyq2lf5X8WwDmJcarKIVr98qTULDaOu8NWggi4MxzWVMI9NSCBd7VEOC2VxUuG2edXnDlfM8ipuhHhoN0CoCBddO/wL9cY9B9dTj7BeYgiHIlVpY/zV/dDPhZc7wJ6e+9mKABsoDY8u45t7Ga1c/ic2sbt6Jc5b4WREq5E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744406644; c=relaxed/simple;
+	bh=EWZDHpYoN914Q+mL+PGPJ4G20yl9kzHuXt1Q2rkSkYM=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iTBS+WfQLzNPBQFN9kkaUAuSA+jo5nRGVLTVXdiDUybNZiciud0JIQNcPKyVPY/DkaFLniAlHIkeD91judySWx/Slbkf2NH86K8KsUnlj0uZaFVsOfyEROWOYcIUbLGM6y7j/l3krdMbl/PB8QAXxcoAinBtjKCE+amGI2muPWM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RNGK8vj4; arc=fail smtp.client-ip=40.107.21.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="esDdo68Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D289C4CEE9;
-	Fri, 11 Apr 2025 20:27:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744403223;
-	bh=0db2ZvvEaBiYWW5dZn01u/FW+dk6clupic3ccg4s29U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=esDdo68Z+d4Hv2xTg9bir7moDVY9WA5ZHNQOQQSuaSqpK4ZVZ5TYCII/bn4RwxMZr
-	 v91Fy4ZOoM0+/Jt/kJz+hHTDBH5Y7cgorkg7hKJYfMEaAtyYm0yo7TVsyLDYP8X8Yr
-	 lbBolizfkYoMybinoxMnQeO4z15ssNsGWjbJWaCNcXXhLeL8+wXdXh4bxQDVNpBy+W
-	 16U0UR3T/W7DwHyxqusjQCSezbEnBHt3oAODHEOXBlDZ57rr7uw2sGTGNNSPwztmgs
-	 OP7R18BP7Fw67uyJpytSsPPFA8F8LJPW2roAjchwrwdUeX0R1tYzq+HQy0G41GmtXm
-	 oaWZ2H87kVc8g==
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5ed1ac116e3so3674222a12.3;
-        Fri, 11 Apr 2025 13:27:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUMCKbOBWUY5qNp4KZOAEWj+Eqpa/BiyNXgAsY3vxFyAhUpI20IFhBuPDotYrlvjlcsqE7LeNxtpVyi7UU=@lists.linux.dev, AJvYcCXKAWLTfhoM82heKtqgOJt8+LKLKJefou0fP168jYE/lVxgiup6Qlka7LX1ZE7YSmRTSyw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyXakkEPd8Y9cq9kABePRBQ8ZZYjHZNIsxRksg4u1widhOajaxP
-	s41lQZcmneI2PFU0YkxIg4eyod5oxDtTiOd6Qa3F22o2AGlFKSatXGZNzev1a4/pCjHVXke9omQ
-	vqZa+Cb2is9Naw8779PeSn3ybyw==
-X-Google-Smtp-Source: AGHT+IHTq9IynIF/z4Ryd9XhwviquzTS623VvUxbOB2plMDWlWmVxnnGmioMBYPRMrNx5/qrse/N9OEq7aX0hV7vQRQ=
-X-Received: by 2002:a05:6402:1d54:b0:5e0:49e4:2180 with SMTP id
- 4fb4d7f45d1cf-5f37001322cmr3235456a12.25.1744403222033; Fri, 11 Apr 2025
- 13:27:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RNGK8vj4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Lj8SOwYnnyYddMsW+EaRcczmznEQRmdOslhP3OFEaSleAXT5C+pXOT/NNB/iGyGXefX2QDK8bxUa6iMqCfKqCkZpK6Q2dn72ZBC9wJBY6PAag7aqTbWHP9xs+PkqrTefObVewl3v4ZCH7TYjRFt7KF70rH4pW7R8SYL4QKVEQdqYupHogrhnqCYNsQNcM5ggBahAFxHZDxQhq8X255RpbYqyALf7URTrLG5vbmqFUYM8Fh01MSmi4/FqzV8Z5lPGBMthsEYj1BTu5dXcw5Ml0iCuKt7KeOA6HiRrQSD8w2VKR+IjZgbjNQSAV3IYpR/O+l1DDbFrhubgaFJ7R9MkjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RkU+DzXGJYV+I09MCnhKZkDKbhO9q03Q7OQCBOLVPCw=;
+ b=VH6ttKnkWdQ1PHrPfcRRhImrfkU0pvsOXOKu5UkI6VqcdD3omMQTzCvlkE83D7caQ1zwWutrj9vTtOYraMdGmU0bWOlgaN+ymnoJ1wDXAftN0yrtSKjGtaxqeNNOFevMU7IgAz6mjl9qA48TMvjVdBfKk9DfRcjoc/WN/kbcUk9Rvqts4CsG6DaXSzE90x6DnN0KRAkHseHwNNRvyoSEUy56xYibOQiT0+vkZo4vGcm2yzlh0P47+ftHper8Kvv6EuP2HVyBvUpP9XgZVjrFFghW8hJ1uesIMouvYlzBChSJhdbacL3tVzYyUO1NjOcdmiHJsWxctHlSnFyn4CWu1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RkU+DzXGJYV+I09MCnhKZkDKbhO9q03Q7OQCBOLVPCw=;
+ b=RNGK8vj43XXvW1S5h/Kf8TrslfCajwhMHwNcOlnHqoJqirF/4jfUyfl3I5zBSG4kgxHz2S3OmXw6Q4k47GTBlX6b55j9U9ieJTQ+cohPhB4EeqGXZeunuv8z4pdJSuCEg8MWky7C5PjoIlhYmth0mXbFWSmEqZ08YqbcBU/Qmtm+BbcWR1Esz4kjFXgLJWIdkiJbvV/bizFVWN9UZ9WMFMU3qwKusoyPqiJWHEgJkQZcppRT9dLuk8E1n0iU2bHTsVE/0r5ztVK+N/EeMdErhUvclSqov8H+XIVsaMnhawLwsHYifJ9yQ35jpHPbeae4IBUgTJH5+EQpcrnOsSnDFQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU2PR04MB8983.eurprd04.prod.outlook.com (2603:10a6:10:2e2::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.27; Fri, 11 Apr
+ 2025 21:23:58 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.025; Fri, 11 Apr 2025
+ 21:23:58 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-clk@vger.kernel.org (open list:COMMON CLK FRAMEWORK),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: clock: convert vf610-clock.txt to yaml format
+Date: Fri, 11 Apr 2025 17:23:38 -0400
+Message-Id: <20250411212339.3273202-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AM0PR10CA0131.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:e6::48) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
- <20250410-dt-cpu-schema-v2-3-63d7dc9ddd0a@kernel.org> <20250411-ebay-exerciser-392c42daf5ba@spud>
-In-Reply-To: <20250411-ebay-exerciser-392c42daf5ba@spud>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 11 Apr 2025 15:26:50 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJza-bufzjZ415THyDDQaOfk8F+JRFvFxzNwObG=NKVJQ@mail.gmail.com>
-X-Gm-Features: ATxdqUHjYgk-N2yFwfhKqPvFMPb1Jj4TAQ2QQ1AYg4EXz2sFdyWD0eKD2bEivlI
-Message-ID: <CAL_JsqJza-bufzjZ415THyDDQaOfk8F+JRFvFxzNwObG=NKVJQ@mail.gmail.com>
-Subject: Re: [PATCH v2 03/17] arm64: dts: microchip: sparx5: Fix CPU node
- "enable-method" property dependencies
-To: Conor Dooley <conor@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
-	Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Andy Gross <agross@kernel.org>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Viresh Kumar <vireshk@kernel.org>, 
-	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	Stephan Gerhold <stephan.gerhold@linaro.org>, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-rockchip@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB8983:EE_
+X-MS-Office365-Filtering-Correlation-Id: be6042ed-9148-43a0-701f-08dd793f289f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?x1dnXM7wNanAKEUvzKfskMXIgAIjxq96JOWNXt24Ii6Lge5qJE4jXPEy7/5+?=
+ =?us-ascii?Q?YSBvnSYiQuqX3Uy6E/jOKJmfDEV8M5nKa9NNdrLwxDUYJLdkfzpZTtSSSqWQ?=
+ =?us-ascii?Q?7++1dY4vROHBJUOYRcsZXuLaLTihtxhFIzNgJtEyUgKFiVFTC2qErPXXMfaT?=
+ =?us-ascii?Q?eXIwcvdXY9dG3UZqP0gn5x0veUbyPIY9Mgzy1X5szlGYyiTtvVit6CawmRy6?=
+ =?us-ascii?Q?cb/Rp4enzHjeZI9SqLlQHy/0zTSy8rjGECb0FyA2fD4xL1s+YbrS6SXNb1QW?=
+ =?us-ascii?Q?moFIoyVqR96Onw54jZ4LLdUgOTSuQSkR1rqY/hPoKTWnjQs+efnwWCG8CvcA?=
+ =?us-ascii?Q?Dd0mt3YyqV5rCX5laHMnKaEwag2BuHUCSb9E+rkADJ/KRJ/E388s01p3ZITm?=
+ =?us-ascii?Q?kvtk2lA3RbJS1ijHAC0sgHn3Q+GwAu0Roj+kMd80Uj8drQD07pHv3qjdCVZd?=
+ =?us-ascii?Q?t71VrhUpk6vUTsyG3VbekYE4q7Lg/9amhpvyKUZKK2TLzAfQXxLZBYAMoPUc?=
+ =?us-ascii?Q?bE6lD+XwpMFG+s4ZSka3kMSQLLxtKf8SnIMAfL4P31PmDBA5UJJVlcA5+QWH?=
+ =?us-ascii?Q?bTufvW/TKItkzlAoeBmFhLpi+xqB4WFBJywZC7z8aHAZEGRfVULwcsAWI501?=
+ =?us-ascii?Q?YtUyoFHgIKL3pEp46N+1uZF28Vt9TLn0zfE/2v2k9/pqqm5dHUvtaa875gSs?=
+ =?us-ascii?Q?cmKalz4pFLD3z9AiR78sQ4rqR9+WVylk8qhFaxwAUiQR6fBKjo5VTreX3VQV?=
+ =?us-ascii?Q?DVJqZvV4Iyp23qEFYf/U/VT1UozDOdpm72tB+37mLV/E6J/U+5BIiy9DQTg0?=
+ =?us-ascii?Q?+kcEbDBnXkNAluih8JKC7WRugIssIZYf3ZCx4jXRkPFH1h6vP6UjgnaSw6qE?=
+ =?us-ascii?Q?Sh4FvKAWWoXiOWf12+oAWz8woO0UAkBVXaRBgAxErLLuCTTnH8I/D+GMgSB4?=
+ =?us-ascii?Q?Q/i19I5voum+/77Iz/0xmQFVqis0TrtbXDZb/6qmBaUl4rqibLPvzDedVjqt?=
+ =?us-ascii?Q?TP+93nITO//Y8jWLC8dyk91q4qhRpj/KCS9CL3v54YMxzNWE6tzuND05LRig?=
+ =?us-ascii?Q?hbQqvim7J+Nsn6DmtEKJ1+XUYVJMerAVfPPJJyXMod986kJjJkLZ+hsZ33gz?=
+ =?us-ascii?Q?3RA6EkaL43lLBFQg+7K9+Dmxz4GVQAiwht33daFdrzq8t1Cga20zlbjfPZsR?=
+ =?us-ascii?Q?2EmP5JHAFZ1ipD+qqzKwcraBttmOasEYdNFtIYqRMipxGKovjx8EegugHzfu?=
+ =?us-ascii?Q?4UqbOM5VccOIqunxeudMODT71FbLCXg8BmiA2Xwlfr22+Da5N2c3VNU2oy4M?=
+ =?us-ascii?Q?OM+lOlRQVRVvzfWAk7F9BhKjZIhTF7BU8LGIowOo/TFi1I/YLpQdhSduO7Sm?=
+ =?us-ascii?Q?PpsDOK8Klukpb5KtFDROQPjMUWvZ0dgIUXSxBarWN7vcyKXkrcR97pWP+467?=
+ =?us-ascii?Q?pviDmCE75mI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?T6Tcdxg8wXsAPkBBlX6PNXAKUJnzNn3xKoyMoIhfOM8taplW2OZiIfEyjMP5?=
+ =?us-ascii?Q?SVtYb65bsD+VQ0+tgg4vVHHbE35n1wfYvaCY4m2iv6uor5T+wNeBWXhwE3LE?=
+ =?us-ascii?Q?hiR4vXe/OzoCX2wGVbXwCZ1vDdbJCI9XyoI+nMqgpuoe84mVDpSWda2uYpjO?=
+ =?us-ascii?Q?B7UIkdYl7Vqfa8xFtIXLwuN1tGV0rrxpTfJvG+6hCc/Dphj/V0x51wDLLED8?=
+ =?us-ascii?Q?krxR5AubVSqn4Rc8qP4hZQAX4ED0gIjrb8hFYPFlgYyKXZlWQQ+wNSkhbpBE?=
+ =?us-ascii?Q?ZsYD40An4G7igLX8liNa9vv/dqkbhy7t77Xd5SHaemPj50FFw9DjoKysBpI8?=
+ =?us-ascii?Q?JJEApbCa9aB4Ezi+MReEogb/lgxe0dgDiENrZjpMnRgif/XC45be/oGJpNZT?=
+ =?us-ascii?Q?DFCAmoS2yq189dgzukd3GaHFbiHr3cnPK1kH7v0BEUN/YR4+wSJkAYT0ynay?=
+ =?us-ascii?Q?W/jf+Vu84t+SW4nNo+zukfI9vTe5YkORZK1pQtvM3UZlMnwoNXnfKazscnJ0?=
+ =?us-ascii?Q?z5byJrMmXGQW17ATQ0p888eGO+ONZw4DmLyKy3AE6x5ffOiLXanFD8UMyDTr?=
+ =?us-ascii?Q?iXF4+HHWOffA8OYtlWWfikXAsGasyjEF4ASKYXaE3YjA0Di4JSGj2POjwtfU?=
+ =?us-ascii?Q?RKoE77vl5aTTRfvAu2d1JE4St577b64oH8WGKo/PLM82lzPCTG+68IBz73l4?=
+ =?us-ascii?Q?mRitH/X9O/VUcS+K4bRiRxMeJ3X6LdFNg8Jw7zIG3GwIYtvyh9zaAnlA7mh8?=
+ =?us-ascii?Q?SkYJ+7ZLnmWCRyF3MsWN3cLNwwrOD5O8j5tniAuivb2CFhXyf5Vmn7BO4GPc?=
+ =?us-ascii?Q?LSbNa4uew8d147PnDPMIZIrHhPG8HY9Cp/xcOCdaVeNLgCYTHZ1zbHtYQlSZ?=
+ =?us-ascii?Q?WE/pMzLy9q4uZu5uZHp8Qx/cs7hOvK6GDIduQyVObD7WNHlE3sHwjKj6SG+j?=
+ =?us-ascii?Q?+3yfkFdmnMLoBHT/oe7cmZLqSpSXUzsgJ+rLMwTSIjIJUnbPeuKmdlq3MbtQ?=
+ =?us-ascii?Q?1kv/eIbqr/FRkqsp/8USTmHegj9aiEyKGld+Y9HZneYzGiIJxR1vm9O0XYxq?=
+ =?us-ascii?Q?rOEGaQsZ716WMgA43Txi4Y81Mc/EUuW6DSYrde3574vc8g/g+vz96c3Q0BQ0?=
+ =?us-ascii?Q?GDOnsMYiGggwjHe3zky8A8tKHByDPMz8pTVflVMcrKNl5umZhseAbxElQZ0E?=
+ =?us-ascii?Q?WCqFCb8PbLM3bkxg5neIfn9qL/VRGTo4EuacYtnuYusiwvrchVeJ4n/24V0U?=
+ =?us-ascii?Q?Cgcljzg1JUO8nBAJZjRgKBQeMwrS9MgKwISA3XblHsCxtMxgXMHrWDFt/Uuy?=
+ =?us-ascii?Q?5B2hxoCquxOY9drmMXMOUYVjJdUYYC0aazFlfDabXFzgKycXoiSrBavNMsDM?=
+ =?us-ascii?Q?TfGhE49SQpGRtbesXqeA3/ezUgChnpCTljypI2Fq4Tka8SJTfSCfqVAeu1eb?=
+ =?us-ascii?Q?KVXMsiAtEqFDpXtZtF/I8Nd9FYHa0hVsA3FYgXTdZqWS/uk0uNrN+sV8zl51?=
+ =?us-ascii?Q?57wuwAHjAl90EsR7WCAeT8vPfKTbEn5XVEi+z/LAoFXik+vAEOTO7qgoByA6?=
+ =?us-ascii?Q?pTa++8Dcs0jZOvTHGSSMYC1OGo/mzlQIVm0tDJgt?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: be6042ed-9148-43a0-701f-08dd793f289f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 21:23:58.6183
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RbFIj38W00xsQHWRmkz2MQNLjmzLs26oqSu5dt1CG8gRr6G0+c/UyqOxjUxH8dFfXWmE8JFHL3eSQOFaT9kGHw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8983
 
-On Fri, Apr 11, 2025 at 11:22=E2=80=AFAM Conor Dooley <conor@kernel.org> wr=
-ote:
->
-> On Thu, Apr 10, 2025 at 10:47:24AM -0500, Rob Herring (Arm) wrote:
-> > The "spin-table" enable-method requires "cpu-release-addr" property,
-> > so add a dummy entry. It is assumed the bootloader will fill in the
-> > correct values.
-> >
-> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-> > Tested-by: Daniel Machon <daniel.machon@microchip.com>
->
-> This is already applied, guess I forgot to merge it into the branch that
-> appears in linux next. I'll do that now..
+Convert vf610-clock.txt to yaml format.
 
-Sometimes I check next, but in this case I just looked at replies for
-which there were none. I dislike submitting dts changes because it's a
-range of AWOL maintainers, only applying around some rcN (so up to 2
-months later), silently applying, and applied but never in linux-next
-(until in soc tree).
+Additional changes:
+- swap audio_ext and enet_ext to match existed dts order
+- remove clock consumer in example
 
-Rob
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../bindings/clock/fsl,vf610-ccm.yaml         | 58 +++++++++++++++++++
+ .../devicetree/bindings/clock/vf610-clock.txt | 41 -------------
+ 2 files changed, 58 insertions(+), 41 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/fsl,vf610-ccm.yaml
+ delete mode 100644 Documentation/devicetree/bindings/clock/vf610-clock.txt
+
+diff --git a/Documentation/devicetree/bindings/clock/fsl,vf610-ccm.yaml b/Documentation/devicetree/bindings/clock/fsl,vf610-ccm.yaml
+new file mode 100644
+index 0000000000000..29ae5be51acf8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/fsl,vf610-ccm.yaml
+@@ -0,0 +1,58 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/clock/fsl,vf610-ccm.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Clock for Freescale Vybrid VF610 SOC
++
++description:
++  The clock consumer should specify the desired clock by having the clock
++  ID in its "clocks" phandle cell. See include/dt-bindings/clock/vf610-clock.h
++  for the full list of VF610 clock IDs
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    const: fsl,vf610-ccm
++
++  reg:
++    maxItems: 1
++
++  '#clock-cells':
++    const: 1
++
++  clocks:
++    items:
++      - description: external crystal oscillator 32KHz, recommended
++      - description: external crystal oscillator 24MHz, recommended
++      - description: audio
++      - description: enet
++    minItems: 2
++
++  clock-names:
++    items:
++      - const: sxosc
++      - const: fxosc
++      - const: enet_ext
++      - const: audio_ext
++    minItems: 2
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    clock-controller@4006b000 {
++        compatible = "fsl,vf610-ccm";
++        reg = <0x4006b000 0x1000>;
++        #clock-cells = <1>;
++        clocks = <&sxosc>, <&fxosc>;
++        clock-names = "sxosc", "fxosc";
++    };
++
+diff --git a/Documentation/devicetree/bindings/clock/vf610-clock.txt b/Documentation/devicetree/bindings/clock/vf610-clock.txt
+deleted file mode 100644
+index 109ffa3a5b661..0000000000000
+--- a/Documentation/devicetree/bindings/clock/vf610-clock.txt
++++ /dev/null
+@@ -1,41 +0,0 @@
+-* Clock bindings for Freescale Vybrid VF610 SOC
+-
+-Required properties:
+-- compatible: Should be "fsl,vf610-ccm"
+-- reg: Address and length of the register set
+-- #clock-cells: Should be <1>
+-
+-Optional properties:
+-- clocks: list of clock identifiers which are external input clocks to the
+-	given clock controller. Please refer the next section to find
+-	the input clocks for a given controller.
+-- clock-names: list of names of clocks which are external input clocks to the
+-	given clock controller.
+-
+-Input clocks for top clock controller:
+-	- sxosc (external crystal oscillator 32KHz, recommended)
+-	- fxosc (external crystal oscillator 24MHz, recommended)
+-	- audio_ext
+-	- enet_ext
+-
+-The clock consumer should specify the desired clock by having the clock
+-ID in its "clocks" phandle cell. See include/dt-bindings/clock/vf610-clock.h
+-for the full list of VF610 clock IDs.
+-
+-Examples:
+-
+-clks: ccm@4006b000 {
+-	compatible = "fsl,vf610-ccm";
+-	reg = <0x4006b000 0x1000>;
+-	#clock-cells = <1>;
+-	clocks = <&sxosc>, <&fxosc>;
+-	clock-names = "sxosc", "fxosc";
+-};
+-
+-uart1: serial@40028000 {
+-	compatible = "fsl,vf610-uart";
+-	reg = <0x40028000 0x1000>;
+-	interrupts = <0 62 0x04>;
+-	clocks = <&clks VF610_CLK_UART1>;
+-	clock-names = "ipg";
+-};
+-- 
+2.34.1
+
