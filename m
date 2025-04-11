@@ -1,110 +1,155 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080B9293472
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 08:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59F2293B49
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 08:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744359711; cv=none; b=BAMqT4PHh0eQrxPL8BqIwPF+gTRiyxCo1RWkCDGKVvxOHB3NUFYooCPYIjgSUX2SjNFNeANNQPkZATQlf0irKkKT3OAJMWYUw9Ymw9gHyJ0DOv5wtYnJEGQcgS0ZN6Gz5GS5En0XlfIG4T6TQRjG+0Jf/Rv+uNpkZBBJLh8ylNk=
+	t=1744360678; cv=none; b=KYVmgzXq46racbjynytpLY+taehW9JnjfsZODSOJioMlMqhk1vLmrPqsA/jLPt7UfZkPKly82DoS4M9yFaOXNn53DZN87auzkHcwJJum/2rKr9uvjVAlHL4pUJkWqBZO1rzsJnioZ1GvJt2Q3KhrgjVoesuTeR4s8glrYUfxYUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744359711; c=relaxed/simple;
-	bh=2DvWBQ9yOXFxUOCe5zNzMFNh6hjobZtSgyoeVn6y7M8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VXlz+SRr6PyQB3dJAki/zAactiCAFnPe2kB0w5HwKzQdMU3h/Z5922gKU1v+CCQo//KM5L/kFFX7TjIsbkvdWT1RVQMwDoxsVzpo6VXI87Pch2ocXBbdUOV2ztx4urbT5htxGEECZTGEwujhLoqjdFX1TgIqkrAD7H1I4GSO30k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u39dm-0007rF-5N; Fri, 11 Apr 2025 10:21:34 +0200
-Message-ID: <f11dd5bc-1753-4685-8385-397ab9c28475@pengutronix.de>
-Date: Fri, 11 Apr 2025 10:21:34 +0200
+	s=arc-20240116; t=1744360678; c=relaxed/simple;
+	bh=5kt3MWtin3KNwdzDbJU//7Uxuz+S1QGZ/maTZ/hrbSs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=BWkaJAMJYeL8RMIZsGf8Wg7FmCSHRGFrJUObGralL4zkBBneid1jrhn4kiEeZiPpHzLYSTjvmZcWUo2zF5P8VCMyrXSr721ZFnIaF/75DkVRHYhzcrlq/EXQDH467LLaYy/FPGq9XgF5oi25D14+MZnxwqobQtIpHHRBAaaXU0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Afpbh03Z; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Afpbh03Z"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3914a5def6bso967586f8f.1
+        for <imx@lists.linux.dev>; Fri, 11 Apr 2025 01:37:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744360674; x=1744965474; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wH2ZPuzfR/sU9gtELQf1xx9ouW+DErODBwUT5LwG1mM=;
+        b=Afpbh03ZDgmUP7ColgL+PJg5GGAOkV1HsXMw7MLdou9cwfYQYsjEjPHfMh0D5GIgv4
+         uwZKGIo0mkyaDnKkBxNzeEXGTi9JhpWhdyNRykd+r2mZgXOLruwMi98AJ4IwnpLscRCA
+         uNEIk9JxRrZJZIEhwSnLakzpuiTL2rizuHcjCVw57wKip2LEN/sDWAUeZzv6P6FEnm/c
+         vIKK3/BilQYdcHO3ujEgu7kKKPRBUiPV9bTIHLKm1uVq5DdhYAbvhcqkVC6h/5eFPe1+
+         8YfR7Q1s0GXEfYB1873++N8Z7rh6WEzkxld0R5LZ6zTsGpw6nE0WY19o3ILwaaHmmG0m
+         zx/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744360674; x=1744965474;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wH2ZPuzfR/sU9gtELQf1xx9ouW+DErODBwUT5LwG1mM=;
+        b=fT2VYbfHVC+sRfANMfqvH7fYESvWuNan8hyIYgU+spX9Rq4sePlToJ/u6afYEoNb+S
+         ZjcdSxFvWMMTGH3mr2XvvwcET/ye07fTB2KVnZlgPwH4T/tSJQRBx/jy7xSNyXBZRt6v
+         Ojk3Gd05oGG1uCNpLCVxAPoEs8vdLt8KKQ0E3dHnARLpQ0ub2Xu6a+c6OGFJsT0jsSnH
+         7VR3RU4fBZJEqwhw7oGNXZlxtLndTowc1Y0oPRZOLgGlHE1GvyjVJrKA7NBJn+/UE0nK
+         E8ZCXyE/aKy+soc/ZYa1v9GJ8IBkuU3msfEMAmiZnVlAYP+72x2r64bbpb7s4HvmscP6
+         L6Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCVWmYiycwysJXwdEdqnBEphILfyf0M47p98wSl6PqT9z+Wr3IZO6cvJLO5cRVyijetSVII=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyIHQAn6cDhc3Vx2b32hJWAcMp7FPwNsNexYJQ0+cGGcBvsU2+L
+	rrEJf+Jp3iZIlLOLLeiA5ObOACXBK387DAOWEFU1YdaLx4Q/ebxWOmjyob54NQc=
+X-Gm-Gg: ASbGncuUIOm+hfxgstUEoY1CZMncwnJOshm1/TE2OTQICcqa5bCMZiKG6xqUa90AT/L
+	/Td9fQL3ezHPf2AVsZqPO7AR9DJJzjGrkM9nawZNNzQ2D1HJhSMVj2OXQuc0be3BX4ZW7OX2Hmc
+	ZNe8mcksUlIbBoOXJ2uYBuAmbEY1vUSfbnNyRMjyZGdpS5gTwZkwXRuAGd4Vjomnp5x1rst9bAV
+	2VD2FFNLFcl5ivgRr8bkjfM1+mmImM3XhFTCgP7rZf07Qn68PwGyt6KFvLSxVD3F1zT88XV8p0D
+	5ceN8CFrH3Zlf/BsWAiJH1lyG6PTWAcoSYvmS8NdBA6CsVh+l9kX3Vq8GhREYQ==
+X-Google-Smtp-Source: AGHT+IESQEmfqjjVD+jC6dd63FDfAGrpItTMGFb0BJ+4OP4VGIDucBWUqxZDD69YlSOe5qeibdfp9g==
+X-Received: by 2002:a05:6000:2c5:b0:38f:3224:65ff with SMTP id ffacd0b85a97d-39ea51ecb8bmr1357243f8f.5.1744360673907;
+        Fri, 11 Apr 2025 01:37:53 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:3d9:2080:52eb:f6ff:feb3:451a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae9777a0sm1326282f8f.43.2025.04.11.01.37.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 01:37:53 -0700 (PDT)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Conor Dooley <conor@kernel.org>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Steen Hegelund <Steen.Hegelund@microchip.com>, 
+ Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Andy Gross <agross@kernel.org>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+ Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Stephan Gerhold <stephan.gerhold@linaro.org>, 
+ "Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
+ linux-rockchip@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+ linux-renesas-soc@vger.kernel.org, linux-mips@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+ Andre Przywara <andre.przywara@arm.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Sudeep Holla <sudeep.holla@arm.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+ Ulf Hansson <ulf.hansson@linaro.org>
+In-Reply-To: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
+References: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
+Subject: Re: (subset) [PATCH v2 00/17] Arm cpu schema clean-ups
+Message-Id: <174436067236.3436338.6767561918297500530.b4-ty@linaro.org>
+Date: Fri, 11 Apr 2025 10:37:52 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/13] arm64: dts: freescale: imx93-phyboard-segin: Add
- USB support
-To: Frank Li <Frank.li@nxp.com>, Primoz Fiser <primoz.fiser@norik.com>
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, upstream@lists.phytec.de,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- linux-arm-kernel@lists.infradead.org
-References: <20250410090251.1103979-1-primoz.fiser@norik.com>
- <20250410090251.1103979-12-primoz.fiser@norik.com>
- <Z/fi2W9UdFkwKpSa@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Z/fi2W9UdFkwKpSa@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-Mailer: b4 0.14.2
 
-On 10.04.25 17:25, Frank Li wrote:
-> On Thu, Apr 10, 2025 at 11:02:49AM +0200, Primoz Fiser wrote:
->> Add support for both USB controllers. Set first controller in OTG mode
->> (USB micro-AB connector X8) and the second one in host mode (USB type A
->> connector X7) by default. Note, the second controller is not OTG capable
->> due to HW design choice.
+Hi,
+
+On Thu, 10 Apr 2025 10:47:21 -0500, Rob Herring (Arm) wrote:
+> The Arm cpu.yaml schema fails to restrict allowed properties in 'cpu'
+> nodes. The result, not surprisely, is a number of additional properties
+> and errors in .dts files. This series resolves those issues.
 > 
-> I think note is reduntant. USB type A connector means host only.
-
-It's not uncommon for flashing to happen via a USB-A to USB-A cable, even
-if it's against the spec. I'd say the note is useful.
-
-Thanks,
-Ahmad
-
-> Frank
->>
->> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
->> ---
->>  .../boot/dts/freescale/imx93-phyboard-segin.dts     | 13 +++++++++++++
->>  1 file changed, 13 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
->> index 027a34dbaf04..faad3c3e627c 100644
->> --- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
->> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
->> @@ -82,6 +82,19 @@ &lpuart1 {
->>  	status = "okay";
->>  };
->>
->> +/* USB  */
->> +&usbotg1 {
->> +	disable-over-current;
->> +	dr_mode = "otg";
->> +	status = "okay";
->> +};
->> +
->> +&usbotg2 {
->> +	disable-over-current;
->> +	dr_mode = "host";
->> +	status = "okay";
->> +};
->> +
->>  /* SD-Card */
->>  &usdhc2 {
->>  	pinctrl-names = "default", "state_100mhz", "state_200mhz";
->> --
->> 2.34.1
->>
+> There's still more properties in arm32 DTS files which I have not
+> documented. Mostly yet more supply names and "fsl,soc-operating-points".
+> What's a few more warnings on the 10000s of warnings...
 > 
-> 
+> [...]
 
+Thanks, Applied to https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git (v6.16/arm64-dt)
+
+[11/17] arm64: dts: amlogic: Drop redundant CPU "clock-latency"
+        https://git.kernel.org/amlogic/c/4bc28af2da876531e5183d25ae807e608c816d18
+
+These changes has been applied on the intermediate git tree [1].
+
+The v6.16/arm64-dt branch will then be sent via a formal Pull Request to the Linux SoC maintainers
+for inclusion in their intermediate git branches in order to be sent to Linus during
+the next merge window, or sooner if it's a set of fixes.
+
+In the cases of fixes, those will be merged in the current release candidate
+kernel and as soon they appear on the Linux master branch they will be
+backported to the previous Stable and Long-Stable kernels [2].
+
+The intermediate git branches are merged daily in the linux-next tree [3],
+people are encouraged testing these pre-release kernels and report issues on the
+relevant mailing-lists.
+
+If problems are discovered on those changes, please submit a signed-off-by revert
+patch followed by a corrective changeset.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Neil
+
