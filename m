@@ -1,136 +1,201 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC87927CCDE
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 06:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C13427EC7D
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 06:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744354283; cv=none; b=HUVt6Pp+E8TM/IY6oitKVM3emTCifXGKhEgxvhkHuO758XmhPxBtSfc8CXDzjvLdnBONzeLN6YrfxvIYAn9gDByhr5PKvMyPlGXil7n2yDrTFSLcP/bqb5AlvvdQ5BHHyzqBp7TE4cIZ+dM3AOGGnuXI5WpbxfTLMz579PpjcxI=
+	t=1744354404; cv=none; b=f9si/Bh/POvF2mUodcH7EAXjdsLOUh6d5hAFFDuc31F/msfUwZrn8eCrd52uf1VqtUEr+EFEGZTkx8vawLznKmTvxQlbOyQ9v9xkQe5CaLfijfvtaa36xa9WBzCpZptzc1icx/f+QzefOGif1s18+WjxClBsj/R65e4G+/mAeoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744354283; c=relaxed/simple;
-	bh=HDXDrlVt+FGDxrjS5VgTAI4hnyLXPAN2IU8yC7FA2pI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qXiq0Nm7zFa4upgsKx76ttNtZLg7h2OwkjyUfW9UW8T85wMMQ5x+Jj8HPUdeM8ZQfGLj14LUpM9HuD9owK1ruHrFuq8GJCRdeXol7IbSwzqzFQJf7ACBtQEgVOJ78xX4Ro7ah0FGL4aeCcaKd3We1nMOZKMrIGzy8TwodLPUi6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-Received: from [89.212.21.243] (port=39246 helo=[192.168.69.116])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1u38ES-003Yz0-13;
-	Fri, 11 Apr 2025 08:51:19 +0200
-Message-ID: <cffdcd6c-88c5-43c1-9f00-d1c84af73f4c@norik.com>
-Date: Fri, 11 Apr 2025 08:51:18 +0200
+	s=arc-20240116; t=1744354404; c=relaxed/simple;
+	bh=0s0s8V6FqulB244TMU5h7c8JoFobYb31JUt0QhZva9Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=b3AN0JL0tR52Mkp6HKs3xxQadqYIQnWQ00l4LXUWi7Ay4FCyyVq19rteimCJDpb+6sHBI/EbAxVF/aIPSTmLGR37UEZTttEHVqyHglGrNVmKrT10Tla0dAX75Wcm9axa5SZt4jRF/OepRaNR47WTTL6KUo781aD+7BsyUPQuIKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Eusy+zkn; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ObxHs5bm reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Eusy+zkn";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ObxHs5bm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1744354400; x=1775890400;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=/PE1UT1vGb/hTcLrz4p41JHU3RYkVqbBAbl7yr7Gp8o=;
+  b=Eusy+zknRs3FSoxD5byTPfzyFKsyQtYhXFGJ4wgGaTnIN55fB0+0mkzg
+   eMknBf+eFhPNpg6FuAdz48qa0YYH+I+W1YxOchuwincxq0Hll7cr3lvDe
+   SqyQyLfnn6cd2LAHHX3f5BFDOmdFoEZTsS32ijvEQ5P/b0B/6QQlyopwT
+   +JDNN5RP3CLsOd4meDnjtkMhKhUg/seOz0gwH5eJV2zdX6tEfA/xNAS1Z
+   sLefNCWpcf2BxDHzRtOdOyOsXLSJ2PLX3JhpH3om30bAqpJfdTs9cn24Y
+   K6DYDsqNGMceMZlenZ78pVbrKJEKsjGxaaRHVRnWaAfsrearxg/RcnHT2
+   A==;
+X-CSE-ConnectionGUID: bEW0VtO/RoCQkufVuKYI6w==
+X-CSE-MsgGUID: +UQt4EtqRP2L26xK+qmaUw==
+X-IronPort-AV: E=Sophos;i="6.15,203,1739833200"; 
+   d="scan'208";a="43471096"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 11 Apr 2025 08:53:17 +0200
+X-CheckPoint: {67F8BC5D-10-903EAEAC-E04C76C8}
+X-MAIL-CPID: 7DB6D4A40A213011B16BFC23CBDF85ED_5
+X-Control-Analysis: str=0001.0A006372.67F8BC61.007F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C38D01697E2;
+	Fri, 11 Apr 2025 08:53:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1744354392;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/PE1UT1vGb/hTcLrz4p41JHU3RYkVqbBAbl7yr7Gp8o=;
+	b=ObxHs5bmtUyUlJ5potmtAPxPKmKZKcFpev9omi6tSvtVIVNuwbVrQnFnHYKLCyx2OWrfyu
+	Qgsg49VfJTjkSq3Yi8SH9oA03AsUGTVxgxq31IoQPnDxmwejWb1aXgAKyMOBOed3fi5v1Z
+	LuxBVn5GVwFNJFNZwhM5YBSm8wE45uct+JHa32BRVjXQK44Aw6yh/f9szr0ERSPUGyV9MH
+	rWb8294wFjuhCPi5NMfYFOHMwZ/zQA2WrNDkSvJIctExfJYElraZRzBN1Wo6J5pJ2BAg/1
+	8LxcNSfGsdFSgocQrsfg/PM0WoFoRKekjU70ua3Z9aesmXe+JqlVTmiduwmfzg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>, hongxing.zhu@nxp.com
+Subject:
+ Re: [PATCH 4/5] arm64: dts: imx95: add PCIe's msi-map and iommu-map property
+Date: Fri, 11 Apr 2025 08:53:02 +0200
+Message-ID: <1970445.taCxCBeP46@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <Z/aLSWGP4mimMNlv@lizhi-Precision-Tower-5810>
+References:
+ <20250128211559.1582598-1-Frank.Li@nxp.com> <10643619.nUPlyArG6x@steina-w>
+ <Z/aLSWGP4mimMNlv@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/13] arm64: dts: freescale: imx93-phycore-som: Add eMMC
- no-1-8-v by default
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, upstream@lists.phytec.de
-References: <20250410090251.1103979-1-primoz.fiser@norik.com>
- <20250410090251.1103979-6-primoz.fiser@norik.com>
- <Z/fdR2C0IRUfUv4U@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <Z/fdR2C0IRUfUv4U@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frank,
+Hi,
 
-On 10. 04. 25 17:01, Frank Li wrote:
-> On Thu, Apr 10, 2025 at 11:02:43AM +0200, Primoz Fiser wrote:
->> Add property 'no-1-8-v' by default to usdhc1 (eMMC) node. Bootloader
->> will take care of deleting the property in case SOM supports HS400 mode
->> (1.8V IO voltage feature flag has to be set in the EEPROM).
-> 
-> what means of EEPROM here?
-> 
-> Generally eMMC worked fixed voltage, why need 'no-1-8-v' here, even no
-> HS400 support.
+Am Mittwoch, 9. April 2025, 16:59:21 CEST schrieb Frank Li:
+> On Wed, Apr 09, 2025 at 12:14:48PM +0200, Alexander Stein wrote:
+> > Hi Frank,
+> >
+> > Am Donnerstag, 27. M=E4rz 2025, 19:48:33 CEST schrieb Frank Li:
+> > > [snip]
+> > > Finially we get realtek PCI card
+> > >
+> > > it quite complex, there are one PCIe switch to split it to two pci bu=
+s.
+> > >
+> > >  lspci -t
+> > > -[0000:00]---00.0-[01-ff]----00.0-[02-04]--+-03.0-[03]----00.0
+> > >                                            \-07.0-[04]----00.0
+> >
+> > Interesting. Mine looks slightly different:
+> >
+> > $ lspci -t
+> > -[0000:00]---00.0-[01-ff]----00.0-[02-04]--+-01.0-[03]----00.0
+> >                                            \-02.0-[04]----00.0
+> >
+> > >
+> > >
+> > > 0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
+> > > 0000:01:00.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port PCIe=
+ x1 Gen2 Packet Switch
+> > > 0000:02:03.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port PCIe=
+ x1 Gen2 Packet Switch
+> > > 0000:02:07.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port PCIe=
+ x1 Gen2 Packet Switch
+> >
+> > It seems you have a newer hardware revision. I have
+> > 0000:01:00.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
+> > 0000:02:01.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
+> > 0000:02:02.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
+> >
+> > PCIe bridges.
+> >
+> > > 0000:03:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL=
+8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 09)
+> > > 0000:04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL=
+8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 09)
+> > >
+> > > It need below change
+> > >
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/bo=
+ot/dts/freescale/imx95.dtsi
+> > > index 9bb26b466a061..9dbf395b9a67b 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > @@ -1660,10 +1660,18 @@ pcie0: pcie@4c300000 {
+> > >                         power-domains =3D <&scmi_devpd IMX95_PD_HSIO_=
+TOP>;
+> > >                         /* pcie0's Devid(BIT[7:6]) is 0x00, stream id=
+(BIT[5:0]) is 0x10~0x17 */
+> > >                         msi-map =3D <0x0 &its 0x10 0x1>,
+> > > -                                 <0x100 &its 0x11 0x7>;
+> > > +                                 <0x100 &its 0x11 0x1>,
+> > > +                                 <0x218 &its 0x12 0x1>,
+> > > +                                 <0x238 &its 0x13 0x1>,
+> > > +                                 <0x300 &its 0x14 0x1>,
+> > > +                                 <0x400 &its 0x15 0x1>;
+> > >                         iommu-map =3D <0x000 &smmu 0x10 0x1>,
+> > > -                                   <0x100 &smmu 0x11 0x7>;
+> > > -                       iommu-map-mask =3D <0x1ff>;
+> > > +                                   <0x100 &smmu 0x11 0x1>,
+> > > +                                   <0x218 &smmu 0x12 0x1>,
+> > > +                                   <0x238 &smmu 0x13 0x1>,
+> > > +                                   <0x300 &smmu 0x14 0x1>,
+> > > +                                   <0x400 &smmu 0x15 0x1>;
+> > > +                       //iommu-map-mask =3D <0x1ff>;
+> > >                         fsl,max-link-speed =3D <3>;
+> > >                         status =3D "disabled";
+> > >
+> > >
+> > > Only 8 stream id assign to PCIe0 device, it is hard to dynamaic alloc=
+e one,
+> > > or need extra works
+> >
+> > Uh, this looks awefully complicated. Even worse this doesn't work on
+> > my hardware. I need mappings for IDs 0x208 and 0x210, so I replaced 0x2=
+18
+> > and 0x238 from your diff into my numbers.
+> >
+> > So I take that PCIe bridges are not supported properly. What would be
+> > necessary to support this?
+>=20
+> I remember bridge use msi to do port power managements.
+>=20
+> ITS msi-map can distribute difference irq to difference cores beside iommu
+> address protection. It is quite userful for nvme or network devices, which
+> have multi queues. Of course, we need more elegant solution.
+>=20
+> My card use difference pcie switch chip. But suppose it should work after
+> you update RID information.
 
-The phyCORE-i.MX93 SoM comes in two variants, one with 3.3V VDD_IO and
-the other one with 1.8V VDD_IO voltage set.
+Yep, after adjusting RID mapping, it works here.
 
-The 3.3V variant can only support DDR52 mode, while 1.8V variant will
-support HS400ES eMMC mode.
+> which kernel version do you base on?
 
-The information about VDD_IO option is encoded in the SoM's EEPROM. We
-read EEPROM in the bootloader and clear "no-1-8-v" flag in case of 1.8V
-SOM variant is detected.
+My development is usually based on current linux-next versions, so it's
+based on v6.15-rc1.
 
-In case of EEPROM error (erased or read error) the fall-back option has
-to support both SoM variants, hence the "no-1-8-v" flag has to be set by
-default.
-
-BR,
-Primoz
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
 
-
-> 
-> Frank
->>
->> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
->> ---
->>  arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
->> index 3d84eed33074..d6589d26c875 100644
->> --- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
->> +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
->> @@ -172,6 +172,7 @@ &usdhc1 {
->>  	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
->>  	bus-width = <8>;
->>  	non-removable;
->> +	no-1-8-v;
->>  	status = "okay";
->>  };
->>
->> --
->> 2.34.1
->>
-
--- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
