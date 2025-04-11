@@ -1,155 +1,137 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59F2293B49
-	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 08:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FF42980CC
+	for <imx@lists.linux.dev>; Fri, 11 Apr 2025 08:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744360678; cv=none; b=KYVmgzXq46racbjynytpLY+taehW9JnjfsZODSOJioMlMqhk1vLmrPqsA/jLPt7UfZkPKly82DoS4M9yFaOXNn53DZN87auzkHcwJJum/2rKr9uvjVAlHL4pUJkWqBZO1rzsJnioZ1GvJt2Q3KhrgjVoesuTeR4s8glrYUfxYUI=
+	t=1744360711; cv=none; b=aQ2Kook0nntgRXdFvof7AQXo2NWLotS03cbJvzplIm+PUeB9ptSYGgTGusF3WOav66LMnQ8vVnJ8UcpghEKf6tlfwCST3r1Hs/bi2ncOu2X7uVX0XkGvfxLCdm5ylC2vvvcZPlzA9TKcuv15y69ITF8hw5djXR2Xa95xYka5En8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744360678; c=relaxed/simple;
-	bh=5kt3MWtin3KNwdzDbJU//7Uxuz+S1QGZ/maTZ/hrbSs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=BWkaJAMJYeL8RMIZsGf8Wg7FmCSHRGFrJUObGralL4zkBBneid1jrhn4kiEeZiPpHzLYSTjvmZcWUo2zF5P8VCMyrXSr721ZFnIaF/75DkVRHYhzcrlq/EXQDH467LLaYy/FPGq9XgF5oi25D14+MZnxwqobQtIpHHRBAaaXU0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Afpbh03Z; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1744360711; c=relaxed/simple;
+	bh=D7R9oFDs5xYoXN43Ulwrouo3nLF61el6kbjtNoLpuyw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HVjbnTj4gYBQIlcx79o8xJbmEcL/JztLgMuGI2LlGWqws8QjMWy7V6HaHRjF/JjfsNhzN15t4ahd6U4h1MjzD2ARUAZx5wtjmlC7FMKxs+Ac7ji1cx/9xbZs2uPUlaD3mo2yerojC9Kwtu6oQPMdc4tDBIpiLlml4ReGt2BwTJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=mwhGPbJn; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Afpbh03Z"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3914a5def6bso967586f8f.1
-        for <imx@lists.linux.dev>; Fri, 11 Apr 2025 01:37:55 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="mwhGPbJn"
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e589c258663so1652453276.1
+        for <imx@lists.linux.dev>; Fri, 11 Apr 2025 01:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744360674; x=1744965474; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+        d=amarulasolutions.com; s=google; t=1744360708; x=1744965508; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wH2ZPuzfR/sU9gtELQf1xx9ouW+DErODBwUT5LwG1mM=;
-        b=Afpbh03ZDgmUP7ColgL+PJg5GGAOkV1HsXMw7MLdou9cwfYQYsjEjPHfMh0D5GIgv4
-         uwZKGIo0mkyaDnKkBxNzeEXGTi9JhpWhdyNRykd+r2mZgXOLruwMi98AJ4IwnpLscRCA
-         uNEIk9JxRrZJZIEhwSnLakzpuiTL2rizuHcjCVw57wKip2LEN/sDWAUeZzv6P6FEnm/c
-         vIKK3/BilQYdcHO3ujEgu7kKKPRBUiPV9bTIHLKm1uVq5DdhYAbvhcqkVC6h/5eFPe1+
-         8YfR7Q1s0GXEfYB1873++N8Z7rh6WEzkxld0R5LZ6zTsGpw6nE0WY19o3ILwaaHmmG0m
-         zx/A==
+        bh=RtU+pOoZbsLOnPjUI7YZ5FGGjZ40GzcCM59B/7LbYr4=;
+        b=mwhGPbJnYTIQMcpCIXVgIx/Gs0eD+81an2fVsoklFW9ImyVFnKrHtDLE7+LctHVsjk
+         ts+iFPDbNBAuGt96y7TKMrEJ+ACv7P13HczEdzaciM8ab+VgNXBgjYRfBwXtWSOylh6u
+         x+aMl/1mL8e4AqTuHV69kJvg33j6SB+Quct/Y=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744360674; x=1744965474;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1744360708; x=1744965508;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wH2ZPuzfR/sU9gtELQf1xx9ouW+DErODBwUT5LwG1mM=;
-        b=fT2VYbfHVC+sRfANMfqvH7fYESvWuNan8hyIYgU+spX9Rq4sePlToJ/u6afYEoNb+S
-         ZjcdSxFvWMMTGH3mr2XvvwcET/ye07fTB2KVnZlgPwH4T/tSJQRBx/jy7xSNyXBZRt6v
-         Ojk3Gd05oGG1uCNpLCVxAPoEs8vdLt8KKQ0E3dHnARLpQ0ub2Xu6a+c6OGFJsT0jsSnH
-         7VR3RU4fBZJEqwhw7oGNXZlxtLndTowc1Y0oPRZOLgGlHE1GvyjVJrKA7NBJn+/UE0nK
-         E8ZCXyE/aKy+soc/ZYa1v9GJ8IBkuU3msfEMAmiZnVlAYP+72x2r64bbpb7s4HvmscP6
-         L6Vg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWmYiycwysJXwdEdqnBEphILfyf0M47p98wSl6PqT9z+Wr3IZO6cvJLO5cRVyijetSVII=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyIHQAn6cDhc3Vx2b32hJWAcMp7FPwNsNexYJQ0+cGGcBvsU2+L
-	rrEJf+Jp3iZIlLOLLeiA5ObOACXBK387DAOWEFU1YdaLx4Q/ebxWOmjyob54NQc=
-X-Gm-Gg: ASbGncuUIOm+hfxgstUEoY1CZMncwnJOshm1/TE2OTQICcqa5bCMZiKG6xqUa90AT/L
-	/Td9fQL3ezHPf2AVsZqPO7AR9DJJzjGrkM9nawZNNzQ2D1HJhSMVj2OXQuc0be3BX4ZW7OX2Hmc
-	ZNe8mcksUlIbBoOXJ2uYBuAmbEY1vUSfbnNyRMjyZGdpS5gTwZkwXRuAGd4Vjomnp5x1rst9bAV
-	2VD2FFNLFcl5ivgRr8bkjfM1+mmImM3XhFTCgP7rZf07Qn68PwGyt6KFvLSxVD3F1zT88XV8p0D
-	5ceN8CFrH3Zlf/BsWAiJH1lyG6PTWAcoSYvmS8NdBA6CsVh+l9kX3Vq8GhREYQ==
-X-Google-Smtp-Source: AGHT+IESQEmfqjjVD+jC6dd63FDfAGrpItTMGFb0BJ+4OP4VGIDucBWUqxZDD69YlSOe5qeibdfp9g==
-X-Received: by 2002:a05:6000:2c5:b0:38f:3224:65ff with SMTP id ffacd0b85a97d-39ea51ecb8bmr1357243f8f.5.1744360673907;
-        Fri, 11 Apr 2025 01:37:53 -0700 (PDT)
-Received: from arrakeen.starnux.net ([2a01:e0a:3d9:2080:52eb:f6ff:feb3:451a])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae9777a0sm1326282f8f.43.2025.04.11.01.37.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Apr 2025 01:37:53 -0700 (PDT)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, Conor Dooley <conor@kernel.org>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Steen Hegelund <Steen.Hegelund@microchip.com>, 
- Daniel Machon <daniel.machon@microchip.com>, UNGLinuxDriver@microchip.com, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Andy Gross <agross@kernel.org>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
- Stephen Boyd <sboyd@kernel.org>, zhouyanjie@wanyeetech.com, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Stephan Gerhold <stephan.gerhold@linaro.org>, 
- "Rob Herring (Arm)" <robh@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
- linux-rockchip@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- linux-renesas-soc@vger.kernel.org, linux-mips@vger.kernel.org, 
- linux-pm@vger.kernel.org, linux-mediatek@lists.infradead.org, 
- Andre Przywara <andre.przywara@arm.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Sudeep Holla <sudeep.holla@arm.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
- Ulf Hansson <ulf.hansson@linaro.org>
-In-Reply-To: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
-References: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
-Subject: Re: (subset) [PATCH v2 00/17] Arm cpu schema clean-ups
-Message-Id: <174436067236.3436338.6767561918297500530.b4-ty@linaro.org>
-Date: Fri, 11 Apr 2025 10:37:52 +0200
+        bh=RtU+pOoZbsLOnPjUI7YZ5FGGjZ40GzcCM59B/7LbYr4=;
+        b=lMahwdp3LDT233Q+hFCctmGTD7WAz8htuMYGJUzouEDXQSVTV6oqTkUOSGOvZfwd+e
+         CDxveaaL5Y38Iy7dkueyIwXleOEPrzG/N4RPz3DF+V5sP1EzAuyb0j+iubqktULJqzxB
+         IUu8ISrByKRmoFK2HzS423H6ut9xk1H8HeIubiEJDKgbxEyNEaSQZ42ILQDoJ5iHwoyA
+         osIC8IgtligkVuLabUs+Wk0I4olAu0Otx4Wo756fe/zvb1yriy6NJ0r64pWMiUx+SDo3
+         BM3RRes5OB1qX5OKSSC1s1F5Hvbx07Um6aOg5sKdH9WuA6kOaJtcu4foiv2LKdaeCv9M
+         VoPg==
+X-Forwarded-Encrypted: i=1; AJvYcCXjfJzkWSwXF0BR+JeahqJU0Fgf0hlCVWKl6pmuZHelPfevIhL5TZmKe1JlTuR/pfV/ETA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwrI6LUXPM6PVq8IQAPHIqh7NwI/ikVHaX+iCxoPGxqVem2J/o+
+	rdsAiLZ5vBnLu3VflDw+qJ+Ld56DVQqQebd1k1gpuQr6KFC5fmaXGgnZ3Ou1oYjkpxZgOM/MzG9
+	MCryTjfyxTYzCkepKtw+tQKABARK7kT/wX8kR5A==
+X-Gm-Gg: ASbGnctuGM2uVPIGK9WbiSYNnGms6r5Y8d3G/z4f/qtIXJWYT3xPBppG6qiQMoqvzgQ
+	/NtQc8rhGYsDv8/1dU5Yl6RN1o397NuJ5hDAmhNVWHxRoPXiLoaKSIOzM807+mBlCw19z/hFmp4
+	o9NOMUkfkigEM/sAa4bXk=
+X-Google-Smtp-Source: AGHT+IHCodNLsYqxPgYy8KacCIFQ8uMbF8eAgpfHHABuPW/r+cXCzHR5Dy1G6JiUbudEZgEzb8V1wt8pBrFYRs9UU4s=
+X-Received: by 2002:a05:6902:2012:b0:e6d:dfea:8f09 with SMTP id
+ 3f1490d57ef6-e704decd54bmr3276455276.26.1744360708185; Fri, 11 Apr 2025
+ 01:38:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+References: <20250306112959.242131-1-dario.binacchi@amarulasolutions.com> <20250314093503.GD12210@nxa18884-linux>
+In-Reply-To: <20250314093503.GD12210@nxa18884-linux>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date: Fri, 11 Apr 2025 10:38:17 +0200
+X-Gm-Features: ATxdqUF7idGp2hnH8dEoppZJLC3ZC9jhgwG1uStDtkKfsGzYjzpE_DfoJqtsu9k
+Message-ID: <CABGWkvq2X9L6P39K5OeQW4+c2OmSYGHN03mUW-96U5okO1CK5A@mail.gmail.com>
+Subject: Re: [PATCH v10 00/18] Support spread spectrum clocking for i.MX8M PLLs
+To: Peng Fan <peng.fan@oss.nxp.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Abel Vesa <abelvesa@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, 
+	linux-amarula@amarulasolutions.com, Conor Dooley <conor+dt@kernel.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Fabio Estevam <festevam@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Fri, Mar 14, 2025 at 9:27=E2=80=AFAM Peng Fan <peng.fan@oss.nxp.com> wro=
+te:
+>
+> On Thu, Mar 06, 2025 at 12:27:49PM +0100, Dario Binacchi wrote:
+> >This version keeps the version v9 patches that can be merged and
+> >removes the patches that will need to be modified in case Peng's
+> >PR https://github.com/devicetree-org/dt-schema/pull/154 is accepted.
+> >The idea is to speed up the merging of the patches in the series
+> >that have already been reviewed and are not dependent on the
+> >introduction of the assigned-clocks-sscs property, and postpone
+> >the patches for spread spectrum to a future series once it becomes
+> >clear what needs to be done.
+> >
+> Although I give R-b, there is an idea just come out in my mind that this
+> might break OS distribution that use firmware(e.g. U-Boot) to publish
+> device tree for Linux Kernel, such as ARM System-Ready complaint OS.
+> I overlooked this point in previous patchset reviewing.
+>
+> Since this patchset is to move anatop stuff to a new driver to reflect
+> the HW truth.  And requires new entries in CCM node, so old bootloader
+> with new kernel will not boot for OS distribution, such as Fedora/openSus=
+e.
+>
+> Not sure how to keep backwards support as before. Leave to maintainers
+> to say if they are ok with this.
 
-On Thu, 10 Apr 2025 10:47:21 -0500, Rob Herring (Arm) wrote:
-> The Arm cpu.yaml schema fails to restrict allowed properties in 'cpu'
-> nodes. The result, not surprisely, is a number of additional properties
-> and errors in .dts files. This series resolves those issues.
-> 
-> There's still more properties in arm32 DTS files which I have not
-> documented. Mostly yet more supply names and "fsl,soc-operating-points".
-> What's a few more warnings on the 10000s of warnings...
-> 
-> [...]
+Many thanks to Peng for the review, and a gentle ping to the maintainers.
+This series has been ongoing for a few months and has reached version 10,
+thanks to the reviews from Krzysztof and Peng.
+I kindly ask you to consider it as well.
 
-Thanks, Applied to https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git (v6.16/arm64-dt)
+Thanks and regards,
+Dario
 
-[11/17] arm64: dts: amlogic: Drop redundant CPU "clock-latency"
-        https://git.kernel.org/amlogic/c/4bc28af2da876531e5183d25ae807e608c816d18
+>
+> Regards,
+> Peng
 
-These changes has been applied on the intermediate git tree [1].
 
-The v6.16/arm64-dt branch will then be sent via a formal Pull Request to the Linux SoC maintainers
-for inclusion in their intermediate git branches in order to be sent to Linus during
-the next merge window, or sooner if it's a set of fixes.
 
-In the cases of fixes, those will be merged in the current release candidate
-kernel and as soon they appear on the Linux master branch they will be
-backported to the previous Stable and Long-Stable kernels [2].
+--=20
 
-The intermediate git branches are merged daily in the linux-next tree [3],
-people are encouraged testing these pre-release kernels and report issues on the
-relevant mailing-lists.
+Dario Binacchi
 
-If problems are discovered on those changes, please submit a signed-off-by revert
-patch followed by a corrective changeset.
+Senior Embedded Linux Developer
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-[3] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+dario.binacchi@amarulasolutions.com
 
--- 
-Neil
+__________________________________
 
+
+Amarula Solutions SRL
+
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
+
+T. +39 042 243 5310
+info@amarulasolutions.com
+
+www.amarulasolutions.com
