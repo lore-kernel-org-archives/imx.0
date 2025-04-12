@@ -1,118 +1,132 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8361C186E54
-	for <imx@lists.linux.dev>; Sat, 12 Apr 2025 14:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D4A1C7009
+	for <imx@lists.linux.dev>; Sat, 12 Apr 2025 16:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744467493; cv=none; b=WBHha6XS7oNSC3MFehvbgYtIOnvgvZpzHNpd6qsDYXZiSS+T07kg+Yc2ceMJMSI3DFkGfiEqQZTFaefOiz0kvRGiUQoL2FXQ4ywLEeJOBQr33RiNrda2gyyiLK6yH2/GIwJ3OFsWqKoiOsOsYfBTcZ0Za2JnxyC1qCZSK9FsvJA=
+	t=1744475029; cv=none; b=CQeYfu+uxZ2+OCErXFl/beUvCL+cBYDVyDNSmv9IQWj20GLfB6LjZptEyNM5DSnPTHr98wYB+QMK2kZ9hqV4SVctGnW7TLnzh6VOCNEp3DBNwW8cynrm4/1dcnKrpeh1quTh1xdF7JjSjmnab/ucoMU5o6y7IoSX29qfTtkL5p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744467493; c=relaxed/simple;
-	bh=JR6tyXY1gvpl41cRWbqroRS7xCj4V4ElwNXBpV0ykRg=;
-	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
-	 Message-Id:Date; b=BQTqOnHpnT2kez9Do9jWItlrISfHNWm5iDKGycTqJVMjkn4py0OSLK7RamsvIZGec3Y5P1UBrF8Q4N1JH+rz2wz6BXRB8SrWJDUCGS8u1xQzS9AwFPUAGjAZsvLgjJNt1UZiCHXZ7czz/UYMer37f2dQPM3Vd728VmAGPjGAAag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Ry9twFid; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1744475029; c=relaxed/simple;
+	bh=PvUE6GMdBjQKSB34c1XhQ5rGBFyvBxnz0x3KiY/8Q1I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FiDg6KvsshDypUISHwhsqFnbMV3ye/nz78zghSb8hoaZgvSJgwe2wzAhws2UnOrw1yO7jBOpyc6ovbvXmMDuOHD2n0HdYpeXm3W1JpjCsOOYHHOCM0MKaHT99hKwwkd2f7hL+C6I8hdXBN46EbJ6fJ3BmKfO3L03ATmgM9BmQCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=AlQNiOjH; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Ry9twFid"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+J4kgIiOlyNlscSmyi+M0ndzlA6RBERVMIHPWwh9j+o=; b=Ry9twFidwSXnbS6fXWRxRsLBZB
-	PUPEgc0BboLgzsr6LszdT47ZcKA9kQqcK3YA6nhBDBDaBQb5D0WUNVgnNCb1dCO8XE1MITHTuQtVa
-	mLrnFaWh2NU7DTLo6htzPaiNd56p/HPjRqT7H1brXYrO4ZznO61ton3ZBwFbE/KmvWU0NFbk5A4YI
-	QyTOjmYoH3K64IpH1JdwUywLJk6e/MrHgtvxos9qABZ7RMZ4TgQLZHaNBvoHwVUUrUV9JRnwX+RFL
-	7pIx6i8Z5B8jDZixdEKmzTM1BeFkXxBdzYtR26u+MWIs+sqVAj3kLy7es1NjAAHtPCaVQGSoN/85c
-	ISHIv8fg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:41112 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1u3bgN-0004d8-30;
-	Sat, 12 Apr 2025 15:18:07 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1u3bfm-000Enq-MC; Sat, 12 Apr 2025 15:17:30 +0100
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH net-next] net: stmmac: imx: use stmmac_pltfr_probe()
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="AlQNiOjH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1744475003; x=1745079803; i=wahrenst@gmx.net;
+	bh=5Pz1KeHSutEHo6ZeIRclN0+VHj4FuPcwU7j5yxRlr/o=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=AlQNiOjH0jrUAjAgnxpnQYFY+lyutrptPsAUZQsD6oeZ/qnv+kPxPHBNDtwjli/X
+	 H8BBbMm0sP1bwHdcHqdMUyBR/Y+yi6QYxpwNCikiIIlwvSc5lE1cRR9SMeNATfA7A
+	 uG88A2S9doiB5xBVKiwRdXEEGTHJVqq7RLTQw5XV9ouxVGAeIoWIIirEMxEiiwukS
+	 s0NpWtXZhXbwzWJy3GQijmsqQqMaHjUaa4dv4K16TSYosEYMvNYRzD/3BaUo/5sX3
+	 2pfBSRSRiQkXpaBd7TmAhk/wDCRwNeSojMVEsG8O12D7ePMHBnsx+Gt7O5Oh43cLj
+	 h4N57QAxtUkjkyjoSQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbzuH-1tSwEu24Mx-00iqvQ; Sat, 12
+ Apr 2025 18:23:23 +0200
+Message-ID: <254efe04-09c6-4225-a869-126026642091@gmx.net>
+Date: Sat, 12 Apr 2025 18:23:22 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1u3bfm-000Enq-MC@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Sat, 12 Apr 2025 15:17:30 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/13] arm64: dts: freescale: imx93-phyboard-segin: Drop
+ eMMC no-1-8-v flag
+To: Primoz Fiser <primoz.fiser@norik.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ upstream@lists.phytec.de
+References: <20250410090251.1103979-1-primoz.fiser@norik.com>
+ <20250410090251.1103979-7-primoz.fiser@norik.com>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20250410090251.1103979-7-primoz.fiser@norik.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:60Fc69wF0pl4ADtd5hbuaSXONJ6EtEVuk/I2husPfDJp1ZWkvmq
+ FVhQnzb/8PSyq498sWSzfKzHgjmbtzvwkECNMeqG2Lp0e+0E7qGWVmA7S1DlZBhT+0ikjsL
+ 1EvdLKBQIHdbx9J5mup25S3q6QSnfC23usLjOlCihy1qZSbUaSFN/ZTpec6YWgnLgZakpDR
+ XIhoDjYC6uXDs/6nJNDBQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Y1Kwbl/C9bI=;WqRPJ7SgX478p///iWuzZ2LbRFG
+ uYMvgmID6RWhDbk2ha/WRaOCcv2Yoeq6LLKFOekgWcrN2ESB2Myv8WJhN7X2Nw47eYTDfA1RT
+ 9NgEyDHGju9BqhmNiIZhdjBbS7uIJCIC2sy6ZqQcMzYgwJVQNmkAA4UTcH30JJf1uydhE3EMI
+ 06E/LKh7XUOCAnvCNMCHe90PgJVoHClLqOaSUs6JIkJCRXjLSNILHQAzkCsJD2Ozdr7RV+f5J
+ oTqwR89EYDUcmmLDKnhuW8DKZQW3A8H7CwRPdH/izsgo4wmQOBE/dvWk15vt+Dqznv2njqvsc
+ +rOLSv1HDNcVs9Xi4htyPC0u90m0R2ELwkJD973f3p3TckpO7ifGG8Vu5u9w/02153m0xFiWx
+ 8hNzl7Q7xi1HUFin7IjGPI8methbbITcvR9rMCYseDiADC/prqCSmg8q+hnWmxQsBHy82h7Pw
+ jRoeGXtlOKPDP/CaCvymrsGsnimjJXoVCvuAGzMSQg1kjigxE4WGAvqI3ri7EeFCkkpyUJaur
+ EcW07fk+PaaDzqXB9Ln7azr81FlO1P8/eWJ76O+Nc4ZbxUyRRcfAXMUmz5d2rJemeUmoiHtFd
+ ++MUWCKDMKMFY3yo1HAZkQFR8EFerQ6L7CXm5KF3GgfKcy9erpXvQ6A/vfMh9GWE2Me/8SDYw
+ Kne4dm+BI4xWPVEzRRYZOzbekxIffXdmcgvLzMt95MPTFJ37m+6KxMU+P9zRdHNrXuTJlcyda
+ FEPTLI7Omh7PiNnfc3JV6gXwjr9b2Qwp1GlRExWLcZvePRjtNpqUkfiljZqAxFqpq6ft7o0BY
+ s3yQEQWuS0RJzMiqJuGBVuKYkfGwymUFw9DQC5lNJT5mvmriwEPyh2qXBKXp8UUlMzKWB1s+/
+ McLzDEqlr+MG/+Qf/f+ph3BTAQfCWpGt30Djrx06KggN/AmQ6yn0Ek0KvDhLOGGZL5Z4XcgMN
+ MeatLS65jDX/R3mglPRwHOUUOrzzpnf57gGHZDRudCO85HeL2Hki1M/y2c8Jy0AqSAdZ7F0tq
+ h1jjrsUtmNDeSqWiJPnDyvtcQ7FLhCXrEdLrKl6zQDQHvqlpKnuW7u1zV+kQkezWqs028OWcZ
+ Gb2CCFU/H7CzKxcVNrv6fe/Z6iFMpVfLo9ioIkSutl9yGqIjZPx6iDQpWORISegW6hs2F77jX
+ 6k7YYJGsazOAEwo+sKiIwJp/TKiUaHHb+VlfBnPXz0BFKwPXlFHp7Ubk2ayXN+A62ptBVNwZs
+ 003eQOq3JdRXEKyrYDjt+B2bwi9bwsezZ8KAQ6yx+P1TX//+A7Nla9s2CC7zLcxhsnbL9wOUf
+ wASf5vZNHmX3mOVurK2mcqvY5uom/c6Fe2ThAX+2lGIlCs7SM54eg4cj+jtYHXlMY4dE2prjl
+ eYJWmPsM8z/hJt5+XglZugzp0na5aD4BCLVzdc65H15ZFKuY9zhExT40/tmzVAhqLv8VCkBZF
+ DXUYP1mXu46wabf6+LQyqwzBUGSE=
 
-Using stmmac_pltfr_probe() simplifies the probe function. This will not
-only call plat_dat->init (imx_dwmac_init), but also plat_dat->exit
-(imx_dwmac_exit) appropriately if stmmac_dvr_probe() fails. This
-results in an overall simplification of the glue driver.
+Hi Primoz,
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+Am 10.04.25 um 11:02 schrieb Primoz Fiser:
+> Drop redundant 'no-1-8-v' flag from usdhc1 (eMMC) node. Flag is now set
+> by default in the SOM include file (imx93-phycore-som.dtsi).
+>
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+i think, Patch 5 and this one should be squashed together.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index 5d279fa54b3e..b07d6f85ea90 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -379,10 +379,6 @@ static int imx_dwmac_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	ret = imx_dwmac_init(pdev, dwmac);
--	if (ret)
--		goto err_dwmac_init;
--
- 	if (dwmac->ops->fix_mac_speed) {
- 		plat_dat->fix_mac_speed = dwmac->ops->fix_mac_speed;
- 	} else if (!dwmac->ops->mac_rgmii_txclk_auto_adj) {
-@@ -392,16 +388,10 @@ static int imx_dwmac_probe(struct platform_device *pdev)
- 
- 	dwmac->plat_dat->fix_soc_reset = dwmac->ops->fix_soc_reset;
- 
--	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
-+	ret = stmmac_pltfr_probe(&pdev->dev, plat_dat, &stmmac_res);
- 	if (ret)
--		goto err_drv_probe;
--
--	return 0;
-+		imx_dwmac_clks_config(dwmac, false);
- 
--err_drv_probe:
--	imx_dwmac_exit(pdev, plat_dat->bsp_priv);
--err_dwmac_init:
--	imx_dwmac_clks_config(dwmac, false);
- 	return ret;
- }
- 
--- 
-2.30.2
+Regards
+> ---
+>   arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts | 5 -----
+>   1 file changed, 5 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/ar=
+ch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+> index 85fb188b057f..902b523fc92c 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+> @@ -40,11 +40,6 @@ &lpuart1 {
+>   	status =3D "okay";
+>   };
+>
+> -/* eMMC */
+> -&usdhc1 {
+> -	no-1-8-v;
+> -};
+> -
+>   /* SD-Card */
+>   &usdhc2 {
+>   	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
 
