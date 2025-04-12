@@ -1,132 +1,69 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D4A1C7009
-	for <imx@lists.linux.dev>; Sat, 12 Apr 2025 16:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2A4204C2E;
+	Sat, 12 Apr 2025 18:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744475029; cv=none; b=CQeYfu+uxZ2+OCErXFl/beUvCL+cBYDVyDNSmv9IQWj20GLfB6LjZptEyNM5DSnPTHr98wYB+QMK2kZ9hqV4SVctGnW7TLnzh6VOCNEp3DBNwW8cynrm4/1dcnKrpeh1quTh1xdF7JjSjmnab/ucoMU5o6y7IoSX29qfTtkL5p0=
+	t=1744481026; cv=none; b=KtFOK1/DkjHqUf4EDOX9voc/GfEVIGHuNNDDZoniiLpv/TTsQjy1pcYvlbfan4SZFic1xJ8xbPlh9ZlXQEaP/OqK+vq5oOXNYF0Yzd4HQ55rBG+BFC7F7vOIQ5sBLn6exehEZdUjrsaEaDD56dmjW4IeSYaCdvrEQw6LSj2bXqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744475029; c=relaxed/simple;
-	bh=PvUE6GMdBjQKSB34c1XhQ5rGBFyvBxnz0x3KiY/8Q1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FiDg6KvsshDypUISHwhsqFnbMV3ye/nz78zghSb8hoaZgvSJgwe2wzAhws2UnOrw1yO7jBOpyc6ovbvXmMDuOHD2n0HdYpeXm3W1JpjCsOOYHHOCM0MKaHT99hKwwkd2f7hL+C6I8hdXBN46EbJ6fJ3BmKfO3L03ATmgM9BmQCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=AlQNiOjH; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1744481026; c=relaxed/simple;
+	bh=1AUMW9p2rIBFD6BguK3C9owmSBdUU41XGSu13NVq6cM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rvHCIKmNOnl+3zMB2lGfRNRla/J8tyrWYfdRDPIpf/TU+lCptnYtJBiDBPF5NX4cVOJuPJspMZCFin538HFbXSouW0hXSHb579zx/8AxDpD6XK2/LFCnlDdT+lfKnwS77ALQf8+4/NBGbfw1CrBfSxEkGtmILvx1Ez5AruMmeFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4KT3su+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="AlQNiOjH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1744475003; x=1745079803; i=wahrenst@gmx.net;
-	bh=5Pz1KeHSutEHo6ZeIRclN0+VHj4FuPcwU7j5yxRlr/o=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=AlQNiOjH0jrUAjAgnxpnQYFY+lyutrptPsAUZQsD6oeZ/qnv+kPxPHBNDtwjli/X
-	 H8BBbMm0sP1bwHdcHqdMUyBR/Y+yi6QYxpwNCikiIIlwvSc5lE1cRR9SMeNATfA7A
-	 uG88A2S9doiB5xBVKiwRdXEEGTHJVqq7RLTQw5XV9ouxVGAeIoWIIirEMxEiiwukS
-	 s0NpWtXZhXbwzWJy3GQijmsqQqMaHjUaa4dv4K16TSYosEYMvNYRzD/3BaUo/5sX3
-	 2pfBSRSRiQkXpaBd7TmAhk/wDCRwNeSojMVEsG8O12D7ePMHBnsx+Gt7O5Oh43cLj
-	 h4N57QAxtUkjkyjoSQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbzuH-1tSwEu24Mx-00iqvQ; Sat, 12
- Apr 2025 18:23:23 +0200
-Message-ID: <254efe04-09c6-4225-a869-126026642091@gmx.net>
-Date: Sat, 12 Apr 2025 18:23:22 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4KT3su+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4A3C4CEE3;
+	Sat, 12 Apr 2025 18:03:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744481024;
+	bh=1AUMW9p2rIBFD6BguK3C9owmSBdUU41XGSu13NVq6cM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c4KT3su+5+9E+s+sPOXj0mNLmgsawjS+tTAYXNLAIXRmHyJTZb7tk9t2niSFY4SxC
+	 ug22xkcMhk4SKuj1cszRFtAgPXn6DQRkJALaT1ln6QJw+z98bkMasZyYcor+hPBreu
+	 Fap+KZnQOUJ820yKUtI+RTKiWst0dYts74Vf9pZkxUpp3zOJoQBdkPEWR4Cc0+KVJ8
+	 USJLUyiZW6IUzSSXSRYACJ5lC3HvayAYyyCU/UTIMAUdezXGMopCUInDMKXo/Fs275
+	 S1zUOmyTGwwc4QP24znAnQsFoiySQVaxfutKfgmY1jB1SuaAWWwuw0xcoM01CWJR/3
+	 UDo7dELIz7kbw==
+Date: Sat, 12 Apr 2025 13:03:43 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+	devicetree@vger.kernel.org,
+	Michael Turquette <mturquette@baylibre.com>, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 1/1] dt-bindings: clock: convert vf610-clock.txt to yaml
+ format
+Message-ID: <174448102270.1415062.15572681322070189263.robh@kernel.org>
+References: <20250411212339.3273202-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/13] arm64: dts: freescale: imx93-phyboard-segin: Drop
- eMMC no-1-8-v flag
-To: Primoz Fiser <primoz.fiser@norik.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- upstream@lists.phytec.de
-References: <20250410090251.1103979-1-primoz.fiser@norik.com>
- <20250410090251.1103979-7-primoz.fiser@norik.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <20250410090251.1103979-7-primoz.fiser@norik.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:60Fc69wF0pl4ADtd5hbuaSXONJ6EtEVuk/I2husPfDJp1ZWkvmq
- FVhQnzb/8PSyq498sWSzfKzHgjmbtzvwkECNMeqG2Lp0e+0E7qGWVmA7S1DlZBhT+0ikjsL
- 1EvdLKBQIHdbx9J5mup25S3q6QSnfC23usLjOlCihy1qZSbUaSFN/ZTpec6YWgnLgZakpDR
- XIhoDjYC6uXDs/6nJNDBQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Y1Kwbl/C9bI=;WqRPJ7SgX478p///iWuzZ2LbRFG
- uYMvgmID6RWhDbk2ha/WRaOCcv2Yoeq6LLKFOekgWcrN2ESB2Myv8WJhN7X2Nw47eYTDfA1RT
- 9NgEyDHGju9BqhmNiIZhdjBbS7uIJCIC2sy6ZqQcMzYgwJVQNmkAA4UTcH30JJf1uydhE3EMI
- 06E/LKh7XUOCAnvCNMCHe90PgJVoHClLqOaSUs6JIkJCRXjLSNILHQAzkCsJD2Ozdr7RV+f5J
- oTqwR89EYDUcmmLDKnhuW8DKZQW3A8H7CwRPdH/izsgo4wmQOBE/dvWk15vt+Dqznv2njqvsc
- +rOLSv1HDNcVs9Xi4htyPC0u90m0R2ELwkJD973f3p3TckpO7ifGG8Vu5u9w/02153m0xFiWx
- 8hNzl7Q7xi1HUFin7IjGPI8methbbITcvR9rMCYseDiADC/prqCSmg8q+hnWmxQsBHy82h7Pw
- jRoeGXtlOKPDP/CaCvymrsGsnimjJXoVCvuAGzMSQg1kjigxE4WGAvqI3ri7EeFCkkpyUJaur
- EcW07fk+PaaDzqXB9Ln7azr81FlO1P8/eWJ76O+Nc4ZbxUyRRcfAXMUmz5d2rJemeUmoiHtFd
- ++MUWCKDMKMFY3yo1HAZkQFR8EFerQ6L7CXm5KF3GgfKcy9erpXvQ6A/vfMh9GWE2Me/8SDYw
- Kne4dm+BI4xWPVEzRRYZOzbekxIffXdmcgvLzMt95MPTFJ37m+6KxMU+P9zRdHNrXuTJlcyda
- FEPTLI7Omh7PiNnfc3JV6gXwjr9b2Qwp1GlRExWLcZvePRjtNpqUkfiljZqAxFqpq6ft7o0BY
- s3yQEQWuS0RJzMiqJuGBVuKYkfGwymUFw9DQC5lNJT5mvmriwEPyh2qXBKXp8UUlMzKWB1s+/
- McLzDEqlr+MG/+Qf/f+ph3BTAQfCWpGt30Djrx06KggN/AmQ6yn0Ek0KvDhLOGGZL5Z4XcgMN
- MeatLS65jDX/R3mglPRwHOUUOrzzpnf57gGHZDRudCO85HeL2Hki1M/y2c8Jy0AqSAdZ7F0tq
- h1jjrsUtmNDeSqWiJPnDyvtcQ7FLhCXrEdLrKl6zQDQHvqlpKnuW7u1zV+kQkezWqs028OWcZ
- Gb2CCFU/H7CzKxcVNrv6fe/Z6iFMpVfLo9ioIkSutl9yGqIjZPx6iDQpWORISegW6hs2F77jX
- 6k7YYJGsazOAEwo+sKiIwJp/TKiUaHHb+VlfBnPXz0BFKwPXlFHp7Ubk2ayXN+A62ptBVNwZs
- 003eQOq3JdRXEKyrYDjt+B2bwi9bwsezZ8KAQ6yx+P1TX//+A7Nla9s2CC7zLcxhsnbL9wOUf
- wASf5vZNHmX3mOVurK2mcqvY5uom/c6Fe2ThAX+2lGIlCs7SM54eg4cj+jtYHXlMY4dE2prjl
- eYJWmPsM8z/hJt5+XglZugzp0na5aD4BCLVzdc65H15ZFKuY9zhExT40/tmzVAhqLv8VCkBZF
- DXUYP1mXu46wabf6+LQyqwzBUGSE=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250411212339.3273202-1-Frank.Li@nxp.com>
 
-Hi Primoz,
 
-Am 10.04.25 um 11:02 schrieb Primoz Fiser:
-> Drop redundant 'no-1-8-v' flag from usdhc1 (eMMC) node. Flag is now set
-> by default in the SOM include file (imx93-phycore-som.dtsi).
->
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-i think, Patch 5 and this one should be squashed together.
-
-Regards
+On Fri, 11 Apr 2025 17:23:38 -0400, Frank Li wrote:
+> Convert vf610-clock.txt to yaml format.
+> 
+> Additional changes:
+> - swap audio_ext and enet_ext to match existed dts order
+> - remove clock consumer in example
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->   arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts | 5 -----
->   1 file changed, 5 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/ar=
-ch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
-> index 85fb188b057f..902b523fc92c 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
-> @@ -40,11 +40,6 @@ &lpuart1 {
->   	status =3D "okay";
->   };
->
-> -/* eMMC */
-> -&usdhc1 {
-> -	no-1-8-v;
-> -};
-> -
->   /* SD-Card */
->   &usdhc2 {
->   	pinctrl-names =3D "default", "state_100mhz", "state_200mhz";
+>  .../bindings/clock/fsl,vf610-ccm.yaml         | 58 +++++++++++++++++++
+>  .../devicetree/bindings/clock/vf610-clock.txt | 41 -------------
+>  2 files changed, 58 insertions(+), 41 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/clock/fsl,vf610-ccm.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/clock/vf610-clock.txt
+> 
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
