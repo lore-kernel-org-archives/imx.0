@@ -1,131 +1,118 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00F1190685
-	for <imx@lists.linux.dev>; Sat, 12 Apr 2025 13:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8361C186E54
+	for <imx@lists.linux.dev>; Sat, 12 Apr 2025 14:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744465310; cv=none; b=jrIy35+rjhmMZfN4zboZiEs0UVHQxnFaG4Lj+M0XlcibfD7KMMnev1ZIPBG3tG/qSXXOG/IrnsYuAQtEW0p0MrXZjgxHyGf3Gt0JZPTAVWVBf3t4or08/JuNCGkDaikliDcrs8feHPlAjOiEGsoXlOGbSvWxtj1+9MLPasaZyV0=
+	t=1744467493; cv=none; b=WBHha6XS7oNSC3MFehvbgYtIOnvgvZpzHNpd6qsDYXZiSS+T07kg+Yc2ceMJMSI3DFkGfiEqQZTFaefOiz0kvRGiUQoL2FXQ4ywLEeJOBQr33RiNrda2gyyiLK6yH2/GIwJ3OFsWqKoiOsOsYfBTcZ0Za2JnxyC1qCZSK9FsvJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744465310; c=relaxed/simple;
-	bh=N8HcNW9CyPWC3bVBg970kSePn67+9k+JEyZ2haoX0WA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EWeu8n4VScz4uU5WGj6ZYEhxrj0Iki3H4XECpFo1uoi6TGTEMTqwrtB8thNnrvTYu5MH3jrkS897d4NMbjQ27WtIY/D7dFSwWiykDAucMn9kglsqydZCkgFSXEUudN1iZ1ZT1CplWoBuWJCNsBTv6uGvQbAdLQM9NkK/KPXBRDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1u3b6o-0001Jb-4t; Sat, 12 Apr 2025 15:41:22 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	s=arc-20240116; t=1744467493; c=relaxed/simple;
+	bh=JR6tyXY1gvpl41cRWbqroRS7xCj4V4ElwNXBpV0ykRg=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=BQTqOnHpnT2kez9Do9jWItlrISfHNWm5iDKGycTqJVMjkn4py0OSLK7RamsvIZGec3Y5P1UBrF8Q4N1JH+rz2wz6BXRB8SrWJDUCGS8u1xQzS9AwFPUAGjAZsvLgjJNt1UZiCHXZ7czz/UYMer37f2dQPM3Vd728VmAGPjGAAag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Ry9twFid; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Ry9twFid"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+J4kgIiOlyNlscSmyi+M0ndzlA6RBERVMIHPWwh9j+o=; b=Ry9twFidwSXnbS6fXWRxRsLBZB
+	PUPEgc0BboLgzsr6LszdT47ZcKA9kQqcK3YA6nhBDBDaBQb5D0WUNVgnNCb1dCO8XE1MITHTuQtVa
+	mLrnFaWh2NU7DTLo6htzPaiNd56p/HPjRqT7H1brXYrO4ZznO61ton3ZBwFbE/KmvWU0NFbk5A4YI
+	QyTOjmYoH3K64IpH1JdwUywLJk6e/MrHgtvxos9qABZ7RMZ4TgQLZHaNBvoHwVUUrUV9JRnwX+RFL
+	7pIx6i8Z5B8jDZixdEKmzTM1BeFkXxBdzYtR26u+MWIs+sqVAj3kLy7es1NjAAHtPCaVQGSoN/85c
+	ISHIv8fg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:41112 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1u3b6k-004b7M-3B;
-	Sat, 12 Apr 2025 15:41:19 +0200
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 7F9563F66F8;
-	Sat, 12 Apr 2025 13:41:18 +0000 (UTC)
-Date: Sat, 12 Apr 2025 15:41:17 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Primoz Fiser <primoz.fiser@norik.com>, Rob Herring <robh@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, upstream@lists.phytec.de, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 10/13] arm64: dts: freescale: imx93-phyboard-segin: Add
- CAN support
-Message-ID: <20250412-tentacled-rugged-bee-fd7e9c-mkl@pengutronix.de>
-References: <20250410090251.1103979-1-primoz.fiser@norik.com>
- <20250410090251.1103979-11-primoz.fiser@norik.com>
- <Z/fifUQ4M2doQbHx@lizhi-Precision-Tower-5810>
- <ef74e49d-c413-4719-a174-42df91384469@norik.com>
- <Z/knehHQeTTUXgr3@lizhi-Precision-Tower-5810>
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1u3bgN-0004d8-30;
+	Sat, 12 Apr 2025 15:18:07 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1u3bfm-000Enq-MC; Sat, 12 Apr 2025 15:17:30 +0100
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH net-next] net: stmmac: imx: use stmmac_pltfr_probe()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gxqnwwxty7chqrbx"
 Content-Disposition: inline
-In-Reply-To: <Z/knehHQeTTUXgr3@lizhi-Precision-Tower-5810>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1u3bfm-000Enq-MC@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Sat, 12 Apr 2025 15:17:30 +0100
 
+Using stmmac_pltfr_probe() simplifies the probe function. This will not
+only call plat_dat->init (imx_dwmac_init), but also plat_dat->exit
+(imx_dwmac_exit) appropriately if stmmac_dvr_probe() fails. This
+results in an overall simplification of the glue driver.
 
---gxqnwwxty7chqrbx
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 10/13] arm64: dts: freescale: imx93-phyboard-segin: Add
- CAN support
-MIME-Version: 1.0
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-On 11.04.2025 10:30:18, Frank Li wrote:
-> On Fri, Apr 11, 2025 at 10:08:21AM +0200, Primoz Fiser wrote:
-> > Hi Frank,
-> >
-> > On 10. 04. 25 17:23, Frank Li wrote:
-> > > On Thu, Apr 10, 2025 at 11:02:48AM +0200, Primoz Fiser wrote:
-> > >> Add support for CAN networking on phyBOARD-Segin-i.MX93 via the flex=
-can1
-> > >> interface. The CAN1_EN regulator enables the SN65HVD234 CAN transcei=
-ver
-> > >> chip.
-> > >
-> > > Can you use drivers/phy/phy-can-transceiver.c to enable CAN phy inste=
-ad
-> > > of use hacked regulator-flexcan1-en.
-> >
-> > Sorry can't do.
-> >
-> > This doesn't align with other i.MX PHYTEC products using flexcan such as
-> > imx8mp-phyboard-pollux-rdk.dts.
-> >
-> > Even the i.MX93 EVK uses the same mechanism.
->=20
-> I think previous method is NOT good enough. Suggest involve CAN and PHY
-> maintainer to discuss these.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+index 5d279fa54b3e..b07d6f85ea90 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+@@ -379,10 +379,6 @@ static int imx_dwmac_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = imx_dwmac_init(pdev, dwmac);
+-	if (ret)
+-		goto err_dwmac_init;
+-
+ 	if (dwmac->ops->fix_mac_speed) {
+ 		plat_dat->fix_mac_speed = dwmac->ops->fix_mac_speed;
+ 	} else if (!dwmac->ops->mac_rgmii_txclk_auto_adj) {
+@@ -392,16 +388,10 @@ static int imx_dwmac_probe(struct platform_device *pdev)
+ 
+ 	dwmac->plat_dat->fix_soc_reset = dwmac->ops->fix_soc_reset;
+ 
+-	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
++	ret = stmmac_pltfr_probe(&pdev->dev, plat_dat, &stmmac_res);
+ 	if (ret)
+-		goto err_drv_probe;
+-
+-	return 0;
++		imx_dwmac_clks_config(dwmac, false);
+ 
+-err_drv_probe:
+-	imx_dwmac_exit(pdev, plat_dat->bsp_priv);
+-err_dwmac_init:
+-	imx_dwmac_clks_config(dwmac, false);
+ 	return ret;
+ }
+ 
+-- 
+2.30.2
 
-Since d80bfde3c57a ("can: flexcan: add transceiver capabilities"), which
-git mainline with v6.15-rc1 there is proper PHY support in the flexcan
-driver. So from my point of view, there's no need to stick to regulator
-hack.
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---gxqnwwxty7chqrbx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmf6bXoACgkQDHRl3/mQ
-kZwtKQf/UtcudIKJDifikEV0AghboYKzi7fNrlv6P2KToZkTzAEVzcIRd+nmtol3
-I1/xj7uJeFMIXZcjIFT/jvdLx7xot2SkQS0p1y3C96NMbeh6aAj9rtA0VYFN7y0C
-PIQXb1K5YC4a4bZjcJO+JaJ2yE3PlZbwOKLP668zJyc+QCrg0bkLVsoYR4/x6liQ
-nKQ2+qV40GzfUf00Z6qX4fCjZbRo7g49HWktiizh4pkbryBu7A1+f2Nrl3AN2ZCM
-C7wafDh0zsN0DedbscwTJTVR1tQ1yP3YDwmQ2bYw2qs4wXqfnGTawgu7G38C4JO9
-UM3PFskg4VWWndjcTNIKkc6L6VryyA==
-=mCyB
------END PGP SIGNATURE-----
-
---gxqnwwxty7chqrbx--
