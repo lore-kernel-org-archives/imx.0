@@ -1,75 +1,85 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF1F1A9B3D
-	for <imx@lists.linux.dev>; Sun, 13 Apr 2025 15:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414F01A23A5
+	for <imx@lists.linux.dev>; Sun, 13 Apr 2025 15:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744558417; cv=none; b=WBNB6C/3mwe4iFcZyZFaacAyuGVAR4x9EJMqTA9lVDSfuYAXzDbrtkyYqhXhi5RjZASstewZTsYgJPqzayJqPei+ZZiWxAK6I8+k6F9Obb2QYUGIen3omxZE8ZnXjIywHDYz1L4bxGC8ATjQutWNafqDeqtcWGUH63TYmvwT4ro=
+	t=1744558734; cv=none; b=fVi1kdhuwuxQu7pVb27K8o4FitgnNYUp2fDubkUf9NT2VfaT3JPkNccGYh01qiI7Rj6GFs1//970mhgkny1EHF91hk3iWh4Iq2DXW+yQitpGHbTWSwYk+0jQNq95jjAwZcTzFN4+bSje87jI7wxwEQtDz2r+94hKbYWhQxvHehk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744558417; c=relaxed/simple;
-	bh=QkQ35FzU1yifEsiO2de7qOQR7aY4ClASH7PHwPz5MAs=;
+	s=arc-20240116; t=1744558734; c=relaxed/simple;
+	bh=NEFQkTV6HWbWySDV1gYFlTQgKHF1fM8Q2eL5vnHMCvs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L64eXDvnR3GBOzyYtOFLM2t6kJliA6kPlewquKjimnITU2oHEOD+E9u84LPLkGv+YDPO/XJqQTtk/zh4FoiXHBYKGpgSHB0kB5Q1PMA9l2Ly6iB027b8SWJQiXH594BbDMec1Cg3W0LYpjdynrepWIZw0XsvYiY6Gs3EKgGM8PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EwL18Ck9; arc=none smtp.client-ip=209.85.210.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=rJ2bKzTNHxxLR6YaxY87KVPX2gnvVoM/XHXxkjma4s6pm5Wf4nNWapJrk0MxPnTLhbwtPU+fUghCCbSM5HFcj2bLqL5tyAChOnx4rJYxtNhWUwkBAUwpvrZhXfoSUnTc5J8TwVII4blsA2ZyxAntH8FJBEkVft68lbwB31wcBx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iz/Mylwq; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EwL18Ck9"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-739525d4e12so3074705b3a.3
-        for <imx@lists.linux.dev>; Sun, 13 Apr 2025 08:33:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iz/Mylwq"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-224019ad9edso45592965ad.1
+        for <imx@lists.linux.dev>; Sun, 13 Apr 2025 08:38:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744558415; x=1745163215; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1744558732; x=1745163532; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Y72/tqUmhTX4OF/q+yEQ8DxW/l3SBJIjmbILZthaGB8=;
-        b=EwL18Ck9I8m4fe6H+0OuopFrsYMggmsSJNYhQF3Q5RW5+BFlfTbNbphW0Pfne6WPh0
-         CviSWr2NARSdpwaDcuF/h7jaesvtCyDJwmR7XZ+ynQbsLMgmPuO+TypZV9VUcfJCsF24
-         Wd8MSwO2GDMiDSIRethwxM5DziI1Q6LMKxqmuXPZGrYLXDncBeeOnswqNVGxcUwpj2kc
-         T2P4PUj4nknAJySHemBnDOet6Pr35iIVywQ4Xb7Aerl0F0ktJI1phNM1mmWen7fbcszG
-         cwwIAm5wSjlYzOyQoo2vtNQ4QqTC9h2jq2O53nYas5TKoPlOyOvmlJYGVZDWVLUICCY3
-         2uiA==
+        bh=wJxSIAZXO2C4Zhd9fy6/iiyMv7oQ8uqx9BwDDb/UO4o=;
+        b=iz/MylwqQJj/UD7VhNgCox+WNXvo/kBhM4ZU3xBdYl53P7TuC4bK0y2Yda3EDB87fV
+         KYyhjT3SdWgqog8jz6rbxxurc86ZRntsp8SESBcOtSvro5gPz/YoXe6mtBlYfhrrJPNX
+         NoFjaPeCcNSIHf5KFN8mLwwR/RaH3OIVZrfpbzLRw9qJUil0L4jPwBvqfx2oR40HMnRx
+         4A50yJIGvhTt0ll5Zk2qezr3d9CJtQ3sVUjVWDFmrdeu/zgxdjH16WPrTjPJoljAaS/8
+         IloCoS6WolMUHMi953CjfjM5jVNMR8U+2LsJg9FYEXSKyMWrVXWzC0voXIkIJgBbgsYY
+         ezhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744558415; x=1745163215;
+        d=1e100.net; s=20230601; t=1744558732; x=1745163532;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y72/tqUmhTX4OF/q+yEQ8DxW/l3SBJIjmbILZthaGB8=;
-        b=T/lKOqUCYDZpjLDWkwGEbgSC93DmU9WVysnWMo5LJAysLcxsSS/hGr7kqrEp1AX8LD
-         Y44CzeycDAqcXFki8iwhyd2ZNwpkUPDR1pmOZ8dp9i4HwO69bkmS5YqCitaCb8kgdDxS
-         drCUrWYAkTZowm/IDikr2UTl+QkpoGj/vGj26oebCILLmADVXPlS52NWZb26TpXjKH3M
-         rwZiogI/akGNSvfXbJ+VPY9KZ6U5f/+NOWno0Ut9sAI4ASavsnmR6XmrQroyz09Ot7AV
-         xBn3mSQbAnMOhOQrrTSikiFqWMLgrGlE2IUdJsDfW25Odq+1Xtxwx0Z0xPefMFqueEXE
-         JbKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVwHZ05q81VIwI43Oew2TMA8Ev3Q/aRlIxapkXWnKHd6BqdO5qit956OIL1FLl4bL9PDU4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwfzmqoksrA8qoX7TOO9qMAhP0tuxIMD/BnrEne2eO00B4GlpnQ
-	WHwGeBleWU4GqJexk/4dOmD2pMCzhG+3aw5JwzPiS2P+AHK2Se9M0btP/VLk5A==
-X-Gm-Gg: ASbGncsThYLSUbn4ylwLCFWZni6b21foi2eCODnz7gNKNI534kx2gOf2xziDrSXnrPU
-	uSlrSbY1ItbIwfrHWiZrZJv0xhPEiMn99BOzdHMeSQ87GFo/lu9UfpCHEVRcU0loRD/EcusePTo
-	7uEuxUlI/QXZ4L0hCqmJnDtzoTJH9/spopQ1wkyNyO5JyuxBmuPQ2ON1+xrB9WBQTEvsiYegadV
-	5ugUaljZfKUbrKHqhZgBk10ZHzn+PN9dtB7yJw2JXddS2NBoI6ibSunyPV+eNboupgNzSYpLiuc
-	iKXl/6C57/f5Gh3Kz+hYuuocuaSYm19txbEBq8Tv40yPE34pbHUj
-X-Google-Smtp-Source: AGHT+IGvabAafKDG9hWtMQ/mt33loVlPQcrjfAy+WuQVWFVLw+b1d0XyCzCWqgYy+BHZJDGXRxcaiA==
-X-Received: by 2002:a05:6a00:a89:b0:730:4c55:4fdf with SMTP id d2e1a72fcca58-73bd11e6d55mr12724724b3a.7.1744558415257;
-        Sun, 13 Apr 2025 08:33:35 -0700 (PDT)
+        bh=wJxSIAZXO2C4Zhd9fy6/iiyMv7oQ8uqx9BwDDb/UO4o=;
+        b=AXljIX/pzEsCY1fKK32+nciTywYFqqHYLgkTtkmclWBKIUgVvwrxFAaFo0W2glf4/P
+         d3aPPYz9QY4vfGwOZGOu9EZOC0EHE766vwsDDAEZfxKmL0+bEQDc1GvfovyKZlXF7HAm
+         +4pt7WiHY8en6DmWJf55Wh2AMuz/mxk9L3F4oyK5Sm8h7Q4fMoYSbClNVaxtq/dNiMq6
+         lXmoO3yuXU8QIJQZ1yRDozFkS0MxmXmr/XrlkajH4MaZ05sNDuZOMMPiiyzirjs525lj
+         /bP2Q7X5tu+JhMXaJf/Uvx6KPoqnRGZtIW35hoOyre1m14vsjAAFxD0/OvkLxfzrLfYU
+         UJ5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUYzpA3cnMnCg7w5QQKzijOBVGSA28Fi3Swpp/DqFobyyumqdsdv5/NvyECcya0y0oul/s=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw8m86mz3Fn/ccY7Pof4TZMXkJ3tHf9Y5dvLIOIq+j6VdPgkpI2
+	8YY97G4XCn3sS8HTtSC7bQMkRcuqHIUVXYMyhUzEiB8fTSE2/8aFywQLM3k7qA==
+X-Gm-Gg: ASbGnctXcRwAEQQwmunGJiXZfOig2aSjg10/88R8ihzw72f2jniHa6P8fP5x2EHyJ1M
+	dRj6+rqN75ZnZIytRfeoyVo4my1WNls13mixhHwwf8y3l5zngOAjbqPXL0NF9WhHon6UPAUTSav
+	dbIlxkWbWH1Mo3UpjlFuleLc+i+XjeNVDaEoT1Qx89xtApHlUevDF6lvY60rmLlwdJDpvjjNQVo
+	dvGtsZkwNbRx1x7hROZbvh+qpBYbCxm0gKbkQY7rnVLaLWFlJinH01uyKK+vlZVyEmZz91+DCGX
+	EWhSAsmcOj1t6kJqbRNBsQL993R20uAQ1nftafdXl3pNeRodVu4k
+X-Google-Smtp-Source: AGHT+IF144jyIPz4NUFnuSSDcuxFolD9nML5zcTpAccGjMR/wBPaVGXigppgwKhzhmzy2ywG7rsfww==
+X-Received: by 2002:a17:903:1905:b0:223:65a9:ab86 with SMTP id d9443c01a7336-22bea4aab88mr160177565ad.12.1744558732319;
+        Sun, 13 Apr 2025 08:38:52 -0700 (PDT)
 Received: from thinkpad ([120.60.137.231])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd22f883asm5237044b3a.107.2025.04.13.08.33.30
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306df09071fsm9507767a91.25.2025.04.13.08.38.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Apr 2025 08:33:34 -0700 (PDT)
-Date: Sun, 13 Apr 2025 21:03:29 +0530
+        Sun, 13 Apr 2025 08:38:51 -0700 (PDT)
+Date: Sun, 13 Apr 2025 21:08:45 +0530
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kw@linux.com, robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 6/7] PCI: imx6: Add PLL clock lock check for i.MX95
- PCIe
-Message-ID: <uqrhqkmtp4yudmt4ys635vg3gh5sibhevu7gjtbbbizuheuk45@lhxywqhtbpak>
-References: <20250408025930.1863551-1-hongxing.zhu@nxp.com>
- <20250408025930.1863551-7-hongxing.zhu@nxp.com>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, 
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
+	"kw@linux.com" <kw@linux.com>, "robh@kernel.org" <robh@kernel.org>, 
+	"bhelgaas@google.com" <bhelgaas@google.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
+	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not exit
+ L23 ready
+Message-ID: <h7pja24zffl4t7653rjaamp6v2j5nmukbzq7rdajynemlyb6l6@3e37ggkparjg>
+References: <20250328030213.1650990-1-hongxing.zhu@nxp.com>
+ <20250328030213.1650990-4-hongxing.zhu@nxp.com>
+ <ovaomfvo7b3uxoss3tzhrkgdy6cvxi4kr2zxmqsfjxds5qfohl@t6kc4rswq6gp>
+ <AS8PR04MB8676687332C78840B927E7568CAF2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+ <rqgl5jjauppyudgmugp34fillkeli3qkwf4uf2djghi6nslebg@pyi6rbwyduxd>
+ <AS8PR04MB8676BB3EDFCF3E5A490AC0628CAE2@AS8PR04MB8676.eurprd04.prod.outlook.com>
+ <AS8PR04MB8676C5D0DB84975D34C4C65A8CB52@AS8PR04MB8676.eurprd04.prod.outlook.com>
+ <4qrfkx3ckywcbk7qbjplal5j7v6sjs3zebeehe5dnrgjz2ej2t@krdwjb4xm2sx>
+ <AS8PR04MB8676221C998474EF5A9B94288CB72@AS8PR04MB8676.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,67 +89,126 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250408025930.1863551-7-hongxing.zhu@nxp.com>
+In-Reply-To: <AS8PR04MB8676221C998474EF5A9B94288CB72@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-On Tue, Apr 08, 2025 at 10:59:29AM +0800, Richard Zhu wrote:
-> Add PLL clock lock check for i.MX95 PCIe.
+On Thu, Apr 10, 2025 at 02:45:51AM +0000, Hongxing Zhu wrote:
+> > -----Original Message-----
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > Sent: 2025年4月10日 0:44
+> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de; lpieralisi@kernel.org;
+> > kw@linux.com; robh@kernel.org; bhelgaas@google.com;
+> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > festevam@gmail.com; linux-pci@vger.kernel.org;
+> > linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
+> > linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may not exit L23
+> > ready
+> > 
+> > On Tue, Apr 08, 2025 at 03:02:42AM +0000, Hongxing Zhu wrote:
+> > > > -----Original Message-----
+> > > > From: Hongxing Zhu
+> > > > Sent: 2025年4月3日 11:23
+> > > > To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > > > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de;
+> > > > lpieralisi@kernel.org; kw@linux.com; robh@kernel.org;
+> > > > bhelgaas@google.com; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> > > > kernel@pengutronix.de; festevam@gmail.com;
+> > > > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
+> > > > imx@lists.linux.dev; linux-kernel@vger.kernel.org
+> > > > Subject: RE: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may
+> > > > not exit
+> > > > L23 ready
+> > > >
+> > > > > -----Original Message-----
+> > > > > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > > > > Sent: 2025年4月2日 23:18
+> > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > > > > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de;
+> > > > > lpieralisi@kernel.org; kw@linux.com; robh@kernel.org;
+> > > > > bhelgaas@google.com; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> > > > > kernel@pengutronix.de; festevam@gmail.com;
+> > > > > linux-pci@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
+> > > > > imx@lists.linux.dev; linux-kernel@vger.kernel.org
+> > > > > Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe may
+> > > > > not exit L23 ready
+> > > > >
+> > > > > On Wed, Apr 02, 2025 at 07:59:26AM +0000, Hongxing Zhu wrote:
+> > > > > > > -----Original Message-----
+> > > > > > > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > > > > > > Sent: 2025年4月2日 15:08
+> > > > > > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > > > > > > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de;
+> > > > > > > lpieralisi@kernel.org; kw@linux.com; robh@kernel.org;
+> > > > > > > bhelgaas@google.com; shawnguo@kernel.org;
+> > > > > > > s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > > > > > > festevam@gmail.com; linux-pci@vger.kernel.org;
+> > > > > > > linux-arm-kernel@lists.infradead.org;
+> > > > > > > imx@lists.linux.dev; linux-kernel@vger.kernel.org
+> > > > > > > Subject: Re: [PATCH v3 3/6] PCI: imx6: Workaround i.MX95 PCIe
+> > > > > > > may not exit L23 ready
+> > > > > > >
+> > > > > > > On Fri, Mar 28, 2025 at 11:02:10AM +0800, Richard Zhu wrote:
+> > > > > > > > ERR051624: The Controller Without Vaux Cannot Exit L23 Ready
+> > > > > > > > Through Beacon or PERST# De-assertion
+> > > > > > >
+> > > > > > > Is it possible to share the link to the erratum?
+> > > > > > >
+> > > > > > Sorry, the erratum document isn't ready to be published yet.
+> > > > > > > >
+> > > > > > > > When the auxiliary power is not available, the controller
+> > > > > > > > cannot exit from
+> > > > > > > > L23 Ready with beacon or PERST# de-assertion when main power
+> > > > > > > > is not removed.
+> > > > > > > >
+> > > > > > >
+> > > > > > > I don't understand how the presence of Vaux affects the controller.
+> > > > > > > Same goes for PERST# deassertion. How does that relate to
+> > > > > > > Vaux? Is this erratum for a specific endpoint behavior?
+> > > > > > IMHO I don't know the exact details of the power supplies in this IP
+> > design.
+> > > > > > Refer to my guess , maybe the beacon detect or wake-up logic in
+> > > > > > designs is  relied on the status of SYS_AUX_PWR_DET signals in this
+> > case.
+> > > > >
+> > > > > Can you please try to get more details? I couldn't understand the errata.
+> > > > >
+> > > > Sure. Will contact designer and try to get more details.
+> > > Hi Mani:
+> > > Get some information from designs, the internal design logic is relied
+> > > on the  status of SYS_AUX_PWR_DET signal to handle the low power stuff.
+> > > So, the SYS_AUX_PWR_DET is required to be 1b'1 in the SW workaround.
+> > >
+> > 
+> > Ok. So due to the errata, when the link enters L23 Ready state, it cannot
+> > transition to L3 when Vaux is not available. And the workaround requires setting
+> > SYS_AUX_PWR_DET bit?
+> > 
+> Refer to the description of this errata, it just mentions the exist from
+>  L23 Ready state.
+
+Exiting from L23 Ready == entering L2/L3. And since you mentioned that Vaux is
+not available, it is definitely entering L3.
+
+> Yes, the workaround requires setting SYS_AUX_PWR_DET bit to 1b'1.
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 28 +++++++++++++++++++++++++--
->  1 file changed, 26 insertions(+), 2 deletions(-)
+> > IIUC, the issue here is that the controller is not able to detect the presence of
+> > Vaux in the L23 Ready state. So it relies on the SYS_AUX_PWR_DET bit. But even
+> > in that case, how would you support the endpoint *with* Vaux?
+> > 
+> This errata is only applied for i.MX95 dual PCIe mode controller.
+> The Vaux is not present for i.MX95 PCIe EP mode either.
 > 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 7dcc9d88740d..c1d128ec255d 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -45,6 +45,9 @@
->  #define IMX95_PCIE_PHY_GEN_CTRL			0x0
->  #define IMX95_PCIE_REF_USE_PAD			BIT(17)
->  
-> +#define IMX95_PCIE_PHY_MPLLA_CTRL		0x10
-> +#define IMX95_PCIE_PHY_MPLL_STATE		BIT(30)
-> +
->  #define IMX95_PCIE_SS_RW_REG_0			0xf0
->  #define IMX95_PCIE_REF_CLKEN			BIT(23)
->  #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
-> @@ -479,6 +482,23 @@ static void imx7d_pcie_wait_for_phy_pll_lock(struct imx_pcie *imx_pcie)
->  		dev_err(dev, "PCIe PLL lock timeout\n");
->  }
->  
-> +static int imx95_pcie_wait_for_phy_pll_lock(struct imx_pcie *imx_pcie)
-> +{
-> +	u32 val;
-> +	struct device *dev = imx_pcie->pci->dev;
-> +
-> +	if (regmap_read_poll_timeout(imx_pcie->iomuxc_gpr,
-> +				     IMX95_PCIE_PHY_MPLLA_CTRL, val,
-> +				     val & IMX95_PCIE_PHY_MPLL_STATE,
-> +				     PHY_PLL_LOCK_WAIT_USLEEP_MAX,
-> +				     PHY_PLL_LOCK_WAIT_TIMEOUT)) {
-> +		dev_err(dev, "PCIe PLL lock timeout\n");
-> +		return -ETIMEDOUT;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int imx_setup_phy_mpll(struct imx_pcie *imx_pcie)
->  {
->  	unsigned long phy_rate = 0;
-> @@ -824,6 +844,8 @@ static int imx95_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
->  		regmap_read_bypassed(imx_pcie->iomuxc_gpr, IMX95_PCIE_RST_CTRL,
->  				     &val);
->  		udelay(10);
-> +	} else {
-> +		return imx95_pcie_wait_for_phy_pll_lock(imx_pcie);
 
-Is this PLL lock related to COLD_RESET? It doesn't look like it. If unrelated,
-it should be called wherever required. imx95_pcie_core_reset() is supposed to
-only assert/deassert the COLD_RESET.
+First of all, does the controller really know whether Vaux is supplied to the
+endpoint or not? AFAIK, it is up to the board designers to route Vaux and only
+endpoint should care about it.
 
-If related, please explain how.
+I still feel that this specific erratum is for fixing the issue with some
+endpoints where Vaux is not supplied and the link doesn't exit L23 Ready. Again,
+what would be the behavior if Vaux is supplied to the endpoint? You cannot just
+say that the controller doesn't support Vaux, which is not a valid statement
+IMO.
 
 - Mani
 
