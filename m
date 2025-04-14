@@ -1,74 +1,127 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F37194A6C
-	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 11:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79617296173
+	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 11:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744629462; cv=none; b=OFUhLYRdoXX53x2IeNw8b+PDqPTsKE9sHDJKw6loS5Kjuc0+ps8lLeNJf4d5ar62MqUZnvUWqsOtbcASpMsaNxDn/Lw4Yo4cijdnBEbIeIuYlVQyTiNBPRkd3X66l79HxoCGD1IwyeyrZpTFbGB6ap9+Bvun6hwIEq3d6pqsoYI=
+	t=1744630294; cv=none; b=NSCL6uASB6QD5LFA576eDbMGy/blDpDp7TGLMAsqIAEHSRUGeRLzLVn9vJ4j1/doN4LRNY9+IgjvvbCLh9Itfq8vRmpqSbSNHJUr7zB96Ik7lNY9cmCx3tHQ2qErk5gkGRsjf9PYR56K0kXlB6h8Flr8C+ghQS2O1iRrM1Z6yJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744629462; c=relaxed/simple;
-	bh=n+hwV9+d77KoICPvUIsZbu9cRcd26P5Ng0WQswrgyyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YzevmnGM4GQWuuAaYLWKWOYM8gY5KQ/7B7DnAGNQx7b9OEwKHy5qAQgyc1AoIs7e1vxgVv0xCiOGDdUL6Gre8XwqplB9Ixd/05UbrYT79PpgH5ftt1ok8fW6UQmYhysZnYIxzNh2TGNPb8C/RFmdOY7yBjdvs0BE04U39uUvXqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EFB4E1007;
-	Mon, 14 Apr 2025 04:17:38 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C4413F66E;
-	Mon, 14 Apr 2025 04:17:37 -0700 (PDT)
-Date: Mon, 14 Apr 2025 12:17:34 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	"Krzysztof Kozlowski" <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Dan Carpenter" <dan.carpenter@linaro.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v4 5/7] firmware: imx: Add i.MX95 SCMI LMM driver
-Message-ID: <20250414-ebony-slug-of-felicity-421b0f@sudeepholla>
-References: <20250408-imx-lmm-cpu-v4-0-4c5f4a456e49@nxp.com>
- <20250408-imx-lmm-cpu-v4-5-4c5f4a456e49@nxp.com>
- <20250414-wonderful-cute-bandicoot-accb6b@sudeepholla>
- <PAXPR04MB8459195AAF65D38AFA1D4F9688B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <20250414-tiny-classic-barnacle-5f8c8f@sudeepholla>
- <PAXPR04MB84593BB91063D13BB05BEB5988B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <PAXPR04MB84598733FA39A7402E91DA1988B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1744630294; c=relaxed/simple;
+	bh=WV9Lg9KdigyCbT3yAnkKOwQml4wZ2a5JUT55rNq+EBw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WsSaihhtPUhUNLwxgw8o0VdvT5dlAp4jdlxi2zMKmcps50faTuVVVODrWTFGpVbvD9k2cqBsz89QkpUf3wZjzL/0Nz58FxkhlNkHUZfU0Xrcxp2Ur9tqABoOfEOKkDT41rQgr5wddGef79fSlWzgQP6q2HVFqtf5ymFECLOkkBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=fpv/HNql; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="fpv/HNql"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1744630285; x=1745235085; i=wahrenst@gmx.net;
+	bh=WV9Lg9KdigyCbT3yAnkKOwQml4wZ2a5JUT55rNq+EBw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=fpv/HNqlhCOIIV+L6g2rYC3hBhJ4RrFqYJ6ssDcWFyGYhyty/yXXEOiLoHSaGlRa
+	 WIriDO6v+6xT+NCCMdo9KggawMofuKJHZWjdS/ACzyMYJ6P/CT43OLZBqOWuZ04To
+	 Q5tcdkQqUatn0pJJNwY0AowZ2f27l+cr7Nm35DgxA/6G8Ek9Cc1CUU9O+3wb/c/ND
+	 FR5J6Gz2bB+ZtkHaH2fwThxwSu1CN4Lv/0oQlwxX5Zye7dVs5zEOJMbdR09/FNU1n
+	 sc3bFdr2/EahHNOnnURNd49KhkIKX8sXesuvYZ+9LHNIGpS0/apiEMVEhhCq7mFG9
+	 x17/ShgI/CPn3D7iyg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MTzfG-1teKw31g38-00TEdY; Mon, 14
+ Apr 2025 13:31:25 +0200
+Message-ID: <f49d9b14-cba9-4ded-a10d-ec6372ec66f8@gmx.net>
+Date: Mon, 14 Apr 2025 13:31:24 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB84598733FA39A7402E91DA1988B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/13] arm64: dts: freescale: imx93-phyboard-segin: Drop
+ eMMC no-1-8-v flag
+To: Primoz Fiser <primoz.fiser@norik.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ upstream@lists.phytec.de
+References: <20250410090251.1103979-1-primoz.fiser@norik.com>
+ <20250410090251.1103979-7-primoz.fiser@norik.com>
+ <254efe04-09c6-4225-a869-126026642091@gmx.net>
+ <ff6320e5-1c83-4cab-9cfe-4df6877952b8@norik.com>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <ff6320e5-1c83-4cab-9cfe-4df6877952b8@norik.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:RJMvt0XB27uGQoIAY1JcgwIawKHcjRmeMhIV+Ei3Y6S4Smqy6+W
+ PuL35heCPSiLeXcFF+iwlZuwZ+o/6gegVV/4osLZb3EqRt2fgZfGevz1TfAlr0GLrhf4f6G
+ law7+oeSYNDNsE6Z7Ng/hPJgn4rYT6CXk4gxZkHrhAzKjSlJf/ycU2rcKw3+XDCMK2hjOBS
+ cK9NiLg52nqnUBangI/lg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Sq9ECAB1CuA=;EL/Qh00jqFz4J9tOdnZbIe21BBD
+ BZlD0MAxetKSkBjremEzYHqESgva3XCyd07jM6AX4ULN0WoDXcc0yOE+00cVpptMjg0xrsGky
+ WfkHGPwL+plNkkF/MmLVarzfHsnk7c6+zNkeT5LB+p0ir9zrBLUn/gKYAm5U71PoF/Mc0OKci
+ QtGQbP7na+3f+7+ybQwDeYE9AR6Ivr9R+JVdzby+ior8LzZ0COtYBZvJi4eLwoH/kDVRu6zYJ
+ kbBTcgQfQA2gkZJbwNqBk3LjFo5HTGw176ExBgZ4oYYBYBtK91f5KPfSC1GlUdafjyi3Av0Fb
+ OVMezs3t078EnREeha0Igp8wgeJk0OKVIngnYdd1YtTdzh/hRrhDWlpcfLTM3jQDtjue72bI3
+ xsP3ICHq+VBa7/2fRwLMJc4YHFvd22qrQCHMigYUbLlrvmIDk1YwDuR95b08tXXff2eBNQJna
+ 9Mt6AOPiSaCKadqGWdUP9IrKi7an/S9/tN66AtYecPH2s0wSmj+sbsE5doIvNsGOUmnX9xYOp
+ sEKfDX0u/gPcl6WcvDYe/WnkZVTEhLsGgreInywB8xFcThXJm5LHNm+injQZrSPFi99T73YFA
+ Vi1jNEGfomT6+iAIUnUJS0jlEGmr45cy1iGDeju4+X5qQfZHdMPMk9tHzfWHoESlGf8n08jhc
+ rBmq7ejA4B64G2TfYCvUUXkVYKK3ZRuwH5WnS/wpXGv4KWnuPBFCoBMf4qBDI9VVHAFQGDROe
+ dldCQJi0ooV5wKa35/CkIUnDHDkZjZ/Fbrui773iK+wLCqdniOoFhe05vbhSBZ/g2VEcP7vTa
+ OioivQMUmh+pL+KUQqMklwjiJpLj5xVSfmasAsLRPxVDnZgyAlkSWNiBubdyKvjxKmfdRBX5b
+ yn8xEXJCBQsq1JrIIszTZLKS8v+P2nhfR2Tb0wnmKcyivPIO8Nfb9y0/QtgUXMclWdtQqwA3P
+ jf+ueU9WUwAKJ2ltou5oUKDm+vjlZCEECwcLfzRPSN48e9e6UB/coT4Vw+XbQYZzCSWPqzXkk
+ mYpuS2limVWmT8Hr0lOXGvdBBDWtDrh+oX3JMRnGUOlXWzcYiXH3ezxxQZ+Oh+LGZsz0+4o0L
+ GeBCVEWtHOcMiwNKctrD0DcHSPGkKIH9w/Tggp/C1Kmj3y2MnqkUFGFvgeX69/aYDBCkZAN6S
+ O+zalLEe05ZCY33xMsw3wFVdpirbqnM+L/QECrFsjUeVOS2IHHO+EWyQvH2XpTCtM/ibdvrFX
+ QQie39H+ZljKQhZifrkE/DFhFStxKiKERdoqzoPLUieBP/aoc9Q1qqN1UBA1MQVFqwusgrmxN
+ rPEKCgqQAg4q+zhCckSB4NKTT/B1EjBbf7VaQ9pyXUxO0ZZmtS1IwsZJgvaVxVeCIIYqMbHrB
+ OyA605Zdrt7wsQ62AqoLZ38eUBKOxecQVPNMlYKWBwY40ggQ6hDAsJoDE+sG7R5CJnvkfRIRY
+ 44USwfcMyssmNErD89XvfaAXhf5Q=
 
-On Mon, Apr 14, 2025 at 11:00:20AM +0000, Peng Fan wrote:
-> 
-> Oops, I just checked wrong Kconfig under drivers/firmware/arm_scmi/
-> vendors/imx
-> 
-> Build this for ARM32 i.MX is ok, I just think no need. So add
-> a ARM64 dependency.
-> 
+Hi Primoz,
 
-OK, I will drop the ARM64 dependency when applying. I also don't understand
-the dependency on i.MX firmware LMM and CPU drivers in the scmi vendor
-protocol as the dependency should be other way around. But I see Arnd had
-fixed it so I will keep it as you have posted to keep them all aligned.
+Am 14.04.25 um 12:39 schrieb Primoz Fiser:
+> Hi Stefan,
+>
+> On 12. 04. 25 18:23, Stefan Wahren wrote:
+>> Hi Primoz,
+>>
+>> Am 10.04.25 um 11:02 schrieb Primoz Fiser:
+>>> Drop redundant 'no-1-8-v' flag from usdhc1 (eMMC) node. Flag is now se=
+t
+>>> by default in the SOM include file (imx93-phycore-som.dtsi).
+>>>
+>>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+>> i think, Patch 5 and this one should be squashed together.
+> I intentionally split these series into SoM and board related patches.
+>
+> I see no benefit in squashing #5 and #6.
+ From my understanding both changes belong together, because you=20
+actually moved the property from board to SoM level. Otherwise in case=20
+there is something wrong later, both patches need to be reverted.
+> Also, I already got Frank's Reviewed-by tag on this patch.
+This wouldn't invalidate Frank's review.
 
--- 
-Regards,
-Sudeep
+Just my two cents
