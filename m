@@ -1,164 +1,215 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD45119924E;
-	Mon, 14 Apr 2025 11:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3420F1684AE
+	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 12:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744631436; cv=none; b=lLNzqlJEVdKAqkXPJul1gOXKpK+cPNHQFSSzUnbQ3b4r6SaecDuGn5a09tyTYi9ZPK3TMWGVO1xfwMSs6AYL7BjKdYVLB0Fc41oNgzynskN2WMyAJRk9H0A7Al1Tmhsyya+cyVuAAvgQF5P/udxSSiJR6GYmC3VMyclxL/APpRQ=
+	t=1744632417; cv=none; b=VjZO2YdrCAZemTMrO9rzUXFMPL9ss3VEoR0DSZnF0uxLgldBDso5QFOd/VwTn4hTtVwceFy41DAmaOpg21LQQZkyV8p5LLtYJck7LX5IrdRl3a3m/QmzSe1Y28fA8REmaXrI3NomBR1V4vm85mxyfotjQUSaE0zAF/ercXC3Yow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744631436; c=relaxed/simple;
-	bh=ZrzXp43neMTktJlC5UlCc6/EXuIAX9V8IWG+IqHuM7s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=no7T1X4/zWAz7/1orOc7fArVD6UlMGbos0srZMZZMIGwOOEi+ah+IFURaEymTHXvlSxZJCOPaeJfgD9P6zg8KrjlTojyN021yajBuQQGxprF75Js/s+cjmEUW66w3sZwWLu+LCuCcz7S9k50dYa7vZLmvQen5jET0r18QQW4f+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=pPvENMRg; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1744632417; c=relaxed/simple;
+	bh=WcLtvxpwzwPgtQtkLcpRaZQLmb6t05vi+h9aREg9uzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sL6RqLP9dqH7anHnGdmb80CARVZ2IALen70ifxnE9Nz6sgy6BcE2A/J51uINHtettTezljMYo+Nx39aIDF2+mlTB6ybc0fAuKAX8gdY3SFYay6OzWGGAGgieSWKTMcE9PB+YNbFQXDE8XVVTZ6YeIPFeMOmAcag8ZlWfU30xkBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=lg/kMsby; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Tl4qp1yp reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="pPvENMRg"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53EBo9lp2048113
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Apr 2025 06:50:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1744631409;
-	bh=y5ACmq3Yrzj3X9LtXUICStUphd4BBh7NKKwspPcqHa0=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=pPvENMRg+2qi8WZHRAJ+9bEgDdLWUfvZ0fxDdW/IK49AZLeXQf9sU6sL2RdMksh3O
-	 bE4SGKB+lR8N43aalUVftuBBtZpujL5kWWuAzHqiEGtvB3lbf2ojRKcsX43+reUKWg
-	 aoJMD2UFL8RTaI31oMiK6Dzo8TMVqVao8Tn6BEoE=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53EBo9WB010676
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 14 Apr 2025 06:50:09 -0500
-Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 14
- Apr 2025 06:50:08 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 14 Apr 2025 06:50:08 -0500
-Received: from [172.24.227.115] (abhilash-hp.dhcp.ti.com [172.24.227.115])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53EBo4rA059109;
-	Mon, 14 Apr 2025 06:50:05 -0500
-Message-ID: <e08b7127-4f9b-433e-b0f3-e2c4ef279b78@ti.com>
-Date: Mon, 14 Apr 2025 17:20:04 +0530
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="lg/kMsby";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Tl4qp1yp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1744632413; x=1776168413;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0qRngjH5NfK8k3qCBdkRYGMa0moa4Ms3X3uCZG/AMm0=;
+  b=lg/kMsbyuGx1Ws0rHxwaJWElv9SSKX+ZYssJzZihLs/sC0bUSeJxuiKZ
+   DAIKha5vbqVScW//bOIlzxHQu9PFaZUm0dKhfYerIpg7i1ryHXyP4wzCv
+   rohBl1Adma6faMFv+K1wuxU9BaGA5V0FC2FCyh5f4TDapYilPvWbVzcKY
+   VtE78nwM1HEjSVi7weaUirEVNoOELUCSTKSflg0I6nquaiUSmxQM0f6Co
+   trKkB6ZQc6TcvazrE19OPBV/bYvfI6Kl6rTLqdcxejIKkuWUrvM0+6H3j
+   R0AmSMu+5UZxfQ7EI0Oo8uznfrILv2EDFBet/mD6MBO7TzRap/GPdh0z3
+   Q==;
+X-CSE-ConnectionGUID: kH924yWkRCymE1jkCKaZGw==
+X-CSE-MsgGUID: tgjbru6kQT2ztrblDagr2w==
+X-IronPort-AV: E=Sophos;i="6.15,212,1739833200"; 
+   d="scan'208";a="43513528"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 14 Apr 2025 14:06:44 +0200
+X-CheckPoint: {67FCFA54-F-903EAEAC-E04C76C8}
+X-MAIL-CPID: E1346D004478E871A011FAD80CD6DD9E_5
+X-Control-Analysis: str=0001.0A006378.67FCFA53.003E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 60C11160F74;
+	Mon, 14 Apr 2025 14:06:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1744632399;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0qRngjH5NfK8k3qCBdkRYGMa0moa4Ms3X3uCZG/AMm0=;
+	b=Tl4qp1ypBg1TFonNEIdoGASEqRt8LFOamSTfyjhS+4n69oR0qt2D3mwv0+5Jr8UlF3oi/z
+	prGKl+D49I9qlAX5db8g94IB5w81Qi0OMxBymjretiwb+ihk9UAK4DnoZLmM0HBe1NXsSh
+	QxPt3L5X6lX3S7v0qPIGcm2tPFMQxjo2mx+x9+IeaCDOOpOMQWYRhbYEmQGpMrKnxQ9vRh
+	TFgMthFmB7TbTC4Lht3SoL1tL9Zy57kYlrRGie57ZQ63+D7+KHMfmIMwU3D8YztSbjZUAe
+	XxnlRkWhTeOoMuEAFdOQ4VjtbZykuYYgxMPbwAcz5EoXEzVfcfDyYEyFP4eLfw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>, hongxing.zhu@nxp.com
+Subject:
+ Re: [PATCH 4/5] arm64: dts: imx95: add PCIe's msi-map and iommu-map property
+Date: Mon, 14 Apr 2025 14:06:37 +0200
+Message-ID: <2778503.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <Z/kqVYPOV1Em+6H2@lizhi-Precision-Tower-5810>
+References:
+ <20250128211559.1582598-1-Frank.Li@nxp.com> <1970445.taCxCBeP46@steina-w>
+ <Z/kqVYPOV1Em+6H2@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] arm64: dts: ti: j721e-sk: Add DT nodes for power
- regulators
-To: "Kumar, Udit" <u-kumar1@ti.com>, <nm@ti.com>, <vigneshr@ti.com>
-CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
- <20250409134128.2098195-2-y-abhilashchandra@ti.com>
- <44c3ec3d-2fa3-4a61-8c93-5ef4791fcf8a@ti.com>
-Content-Language: en-US
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-In-Reply-To: <44c3ec3d-2fa3-4a61-8c93-5ef4791fcf8a@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Udit,
+Hi,
 
-On 11/04/25 19:04, Kumar, Udit wrote:
-> 
-> On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
->> Add device tree nodes for two power regulators on the J721E SK board.
->> vsys_5v0: A fixed regulator representing the 5V supply output from the
->> LM61460 and vdd_sd_dv: A GPIO-controlled TLV71033 regulator.
->>
->> J721E-SK schematics: https://www.ti.com/lit/zip/sprr438
->> Fixes: 1bfda92a3a36 ("arm64: dts: ti: Add support for J721E SK")
-> 
-> For me does not looks like a fix, you can adding missing nodes
-> 
+Am Freitag, 11. April 2025, 16:42:29 CEST schrieb Frank Li:
+> On Fri, Apr 11, 2025 at 08:53:02AM +0200, Alexander Stein wrote:
+> > Hi,
+> >
+> > Am Mittwoch, 9. April 2025, 16:59:21 CEST schrieb Frank Li:
+> > > On Wed, Apr 09, 2025 at 12:14:48PM +0200, Alexander Stein wrote:
+> > > > Hi Frank,
+> > > >
+> > > > Am Donnerstag, 27. M=E4rz 2025, 19:48:33 CEST schrieb Frank Li:
+> > > > > [snip]
+> > > > > Finially we get realtek PCI card
+> > > > >
+> > > > > it quite complex, there are one PCIe switch to split it to two pc=
+i bus.
+> > > > >
+> > > > >  lspci -t
+> > > > > -[0000:00]---00.0-[01-ff]----00.0-[02-04]--+-03.0-[03]----00.0
+> > > > >                                            \-07.0-[04]----00.0
+> > > >
+> > > > Interesting. Mine looks slightly different:
+> > > >
+> > > > $ lspci -t
+> > > > -[0000:00]---00.0-[01-ff]----00.0-[02-04]--+-01.0-[03]----00.0
+> > > >                                            \-02.0-[04]----00.0
+> > > >
+> > > > >
+> > > > >
+> > > > > 0000:00:00.0 PCI bridge: Philips Semiconductors Device 0000
+> > > > > 0000:01:00.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port =
+PCIe x1 Gen2 Packet Switch
+> > > > > 0000:02:03.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port =
+PCIe x1 Gen2 Packet Switch
+> > > > > 0000:02:07.0 PCI bridge: ASMedia Technology Inc. ASM1182e 2-Port =
+PCIe x1 Gen2 Packet Switch
+> > > >
+> > > > It seems you have a newer hardware revision. I have
+> > > > 0000:01:00.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
+> > > > 0000:02:01.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
+> > > > 0000:02:02.0 PCI bridge: Pericom Semiconductor Device a303 (rev 03)
+> > > >
+> > > > PCIe bridges.
+> > > >
+> > > > > 0000:03:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd.=
+ RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 09)
+> > > > > 0000:04:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd.=
+ RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 09)
+> > > > >
+> > > > > It need below change
+> > > > >
+> > > > > diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx95.dtsi
+> > > > > index 9bb26b466a061..9dbf395b9a67b 100644
+> > > > > --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > > > +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> > > > > @@ -1660,10 +1660,18 @@ pcie0: pcie@4c300000 {
+> > > > >                         power-domains =3D <&scmi_devpd IMX95_PD_H=
+SIO_TOP>;
+> > > > >                         /* pcie0's Devid(BIT[7:6]) is 0x00, strea=
+m id(BIT[5:0]) is 0x10~0x17 */
+> > > > >                         msi-map =3D <0x0 &its 0x10 0x1>,
+> > > > > -                                 <0x100 &its 0x11 0x7>;
+> > > > > +                                 <0x100 &its 0x11 0x1>,
+> > > > > +                                 <0x218 &its 0x12 0x1>,
+> > > > > +                                 <0x238 &its 0x13 0x1>,
+> > > > > +                                 <0x300 &its 0x14 0x1>,
+> > > > > +                                 <0x400 &its 0x15 0x1>;
+> > > > >                         iommu-map =3D <0x000 &smmu 0x10 0x1>,
+> > > > > -                                   <0x100 &smmu 0x11 0x7>;
+> > > > > -                       iommu-map-mask =3D <0x1ff>;
+> > > > > +                                   <0x100 &smmu 0x11 0x1>,
+> > > > > +                                   <0x218 &smmu 0x12 0x1>,
+> > > > > +                                   <0x238 &smmu 0x13 0x1>,
+> > > > > +                                   <0x300 &smmu 0x14 0x1>,
+> > > > > +                                   <0x400 &smmu 0x15 0x1>;
+> > > > > +                       //iommu-map-mask =3D <0x1ff>;
+> > > > >                         fsl,max-link-speed =3D <3>;
+> > > > >                         status =3D "disabled";
+> > > > >
+> > > > >
+> > > > > Only 8 stream id assign to PCIe0 device, it is hard to dynamaic a=
+lloce one,
+> > > > > or need extra works
+> > > >
+> > > > Uh, this looks awefully complicated. Even worse this doesn't work on
+> > > > my hardware. I need mappings for IDs 0x208 and 0x210, so I replaced=
+ 0x218
+> > > > and 0x238 from your diff into my numbers.
+> > > >
+> > > > So I take that PCIe bridges are not supported properly. What would =
+be
+> > > > necessary to support this?
+> > >
+> > > I remember bridge use msi to do port power managements.
+> > >
+> > > ITS msi-map can distribute difference irq to difference cores beside =
+iommu
+> > > address protection. It is quite userful for nvme or network devices, =
+which
+> > > have multi queues. Of course, we need more elegant solution.
+> > >
+> > > My card use difference pcie switch chip. But suppose it should work a=
+fter
+> > > you update RID information.
+> >
+> > Yep, after adjusting RID mapping, it works here.
+>=20
+> Are you sure it work after adjusting RID mapping? you said
+> "I take that PCIe bridges are not supported properly"
+>=20
+> So I am confused. If it works, I can think how to allocate a stream elega=
+nt.
 
-Since we are adding the regulator nodes in the sensor overlay, (Patch 4 
-of this series) which in turn references these regulator nodes, I have
-included the Fixes tag in this patch as well.
+Sorry, this sounded misleading. I was referring to the current state.
+Without additional adjustments PCIe bridges might not work, AFAIU.
+If I adjust the RID mapping, the Ethernet hardware having 2 bridges works on
+my platforms.
 
-> 
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
->> ---
->>   arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 31 ++++++++++++++++++++++++++
->>   1 file changed, 31 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts 
->> b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
->> index 440ef57be294..4965957e6545 100644
->> --- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
->> +++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
->> @@ -184,6 +184,17 @@ vsys_3v3: fixedregulator-vsys3v3 {
->>           regulator-boot-on;
->>       };
->> +    vsys_5v0: fixedregulator-vsys5v0 {
->> +        /* Output of LM61460 */
->> +        compatible = "regulator-fixed";
->> +        regulator-name = "vsys_5v0";
->> +        regulator-min-microvolt = <5000000>;
->> +        regulator-max-microvolt = <5000000>;
->> +        vin-supply = <&vusb_main>;
->> +        regulator-always-on;
->> +        regulator-boot-on;
->> +    };
->> +
->>       vdd_mmc1: fixedregulator-sd {
->>           compatible = "regulator-fixed";
->>           pinctrl-names = "default";
->> @@ -211,6 +222,20 @@ vdd_sd_dv_alt: gpio-regulator-tps659411 {
->>                <3300000 0x1>;
->>       };
->> +    vdd_sd_dv: gpio-regulator-TLV71033 {
->> +        compatible = "regulator-gpio";
->> +        pinctrl-names = "default";
->> +        pinctrl-0 = <&vdd_sd_dv_pins_default>;
->> +        regulator-name = "tlv71033";
->> +        regulator-min-microvolt = <1800000>;
->> +        regulator-max-microvolt = <3300000>;
->> +        regulator-boot-on;
->> +        vin-supply = <&vsys_5v0>;
->> +        gpios = <&main_gpio0 118 GPIO_ACTIVE_HIGH>;
->> +        states = <1800000 0x0>,
->> +             <3300000 0x1>;
->> +    };
->> +
->>       transceiver1: can-phy1 {
->>           compatible = "ti,tcan1042";
->>           #phy-cells = <0>;
->> @@ -613,6 +638,12 @@ J721E_WKUP_IOPAD(0xd4, PIN_OUTPUT, 7) /* (G26) 
->> WKUP_GPIO0_9 */
->>           >;
->>       };
->> +    vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
->> +        pinctrl-single,pins = <
->> +            J721E_IOPAD(0x1dc, PIN_INPUT, 7) /* (Y1) 
->> SPI1_CLK.GPIO0_118 */
-> 
-> Shouldn't be this pin be output to control regulator ?
-> 
+Best regards
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-Yes, I will correct this in the next revision.
 
-Thanks and Regards
-Yemike Abhilash Chandra
-
-> 
->> +        >;
->> +    };
->> +
->>       wkup_uart0_pins_default: wkup-uart0-default-pins {
->>           pinctrl-single,pins = <
->>               J721E_WKUP_IOPAD(0xa0, PIN_INPUT, 0) /* (J29) 
->> WKUP_UART0_RXD */
