@@ -1,119 +1,118 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF86625E826
-	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 09:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECAE25D212
+	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 09:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744621644; cv=none; b=ip7QQKAfv2sIIbEZ88UGLbWhGte+uYqW70p8BDTAm7RbjJSmpBQ+yV6ieTfoBBYa8D74UmrTI8p9klrXtW/5zf4zTLI2gWAjm8WXgR5n1Jec6rFLBkR5ZtPMiJN0pH9LqRxusV1Oa+S6OSfZWXx+fhVku51HBIQo61P8nSKG0/w=
+	t=1744622261; cv=none; b=Az/ivBN3su/NOWkIOqfTRFTS9OF8oU4+M7g1GXXTJl37sPupQzRGIIwfAfwO6tSdqOWS5vmcsatn2dynSjQHKPVVesJt1Q9d69eWLopHlPiyah+z1UpKtT2lrLOZMxjt2niW/SbHc2a5oo1lro68EYcDFMmEZdZcDdjUxxcsuzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744621644; c=relaxed/simple;
-	bh=ZcbWImZBypCh0kuuSNE1lRrvhJFZbz3OtZ1UUwrbgMM=;
-	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
-	 Message-Id:Date; b=pC3ZBjbu/yakbTEzNmvgf9Dg8C0sxbt5dcdpnL9VUc6YcOjqzemXokryguaLkWme+MWIQbuuP3su1Ngzq5dnyCf5ZgA8Cym+zPaf6W/0eoB5vGkOetn+hj7VJX+Ffa8KGHvRjy4eCnDq1SQpNsdH7zfSYgZrwHlvd0GVG6KW7yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=xcSBKWI5; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1744622261; c=relaxed/simple;
+	bh=FbKOtCMqZgcAKMzOa3aCVbOG2huZ2szHO6TumeZFplk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nNHbxjGYWAKWni+2UYGtBFN1hR1BDyD6H3xcvnfLJxLGjt4hHJ1dpNZGw1pY62RFyihvZdkvdsQwdwCThMMM8b5sYllVYza0Rlw5h5wAMSS46vNCq1jZGZBmB5nn8UiqTVAg1Ykjp0g4a8VK3h6TG3xQHgMwT3XMkLQpBiQZl98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jv2HLX1T; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="xcSBKWI5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Px4QFGrKJWtbtdsi+c1vt/WEwND1NnX28cuVBKiVNEk=; b=xcSBKWI5TmOKz5Gxr4tNMhNkFJ
-	ZhioFfRMcU/hVAvkR85LhHSFVEQCvlffVyrCyVtrSvPveuN6lqePKWqa8Qkd9tWVNpYsjUh0DzoLq
-	9FXkDibIBeIXB+2QcCRDpZhWhWGtii2O2WpusvjsbMg13FLWSZt++7E2U+m3Ym6hNbinzhIy46dZP
-	pmmkbyzsoVt81xYlkVeNpP3xpV2Z9dkyP5Q1a05Gzq/FAPT65pcFqqdrxH8LspqVgGAhsXv2DRLs3
-	k99CQoicutHze6S4rlcZihKhweeoIKaLB1ncAsGnHqfLjbQLu314UVuM/8r9IhQmH0BfoYnXUovCI
-	McJVv1iQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:57824 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1u4Fmc-0006Da-1k;
-	Mon, 14 Apr 2025 10:07:14 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1u4Flp-000XlM-Tb; Mon, 14 Apr 2025 10:06:25 +0100
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jv2HLX1T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744622260; x=1776158260;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FbKOtCMqZgcAKMzOa3aCVbOG2huZ2szHO6TumeZFplk=;
+  b=Jv2HLX1TTpWwC0LlxGp007dCYhKYB+pQnpO0tsA5dAMGOFNetqdQ3nIl
+   5suzmOc4ApFkPIuPE9A+r4bIpuFWtPxmCG/QT5npwLiIqfC3ivE2qBS9B
+   7lg2R9+0tNzRP/J1HImTk9Kz4zA0nRIMop1LYNtIuAsZhxa8ZxY5+xynL
+   tw9BgxrIT7pA+dL+oVaVyEFMWLpKguJQX8Ewji8avq59FT7MgojTi4M1x
+   sRoqWmKq2hyltFqDUWslOco0K+OPIZmJOgiEF6JjNyVBTtp+QjD4c3TkU
+   37YOS/HIK52kzN325sxO6LPo0rJ6vwhIM0gQd1IRNS3O1KSuIPUGz1DhG
+   g==;
+X-CSE-ConnectionGUID: EPDccImATxOhGMYzEFQKeQ==
+X-CSE-MsgGUID: CKzOUn3LTSKoBZAuaCHizA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="46216232"
+X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
+   d="scan'208";a="46216232"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 02:17:38 -0700
+X-CSE-ConnectionGUID: ZpzJNJ+pSmuuXsIrJKj1NA==
+X-CSE-MsgGUID: o3xVxsGWSF+AnWyAWEwlkg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
+   d="scan'208";a="130744733"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 02:17:35 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id CA0F111F871;
+	Mon, 14 Apr 2025 12:17:31 +0300 (EEST)
+Date: Mon, 14 Apr 2025 09:17:31 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: michael.riesch@collabora.com
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH net-next v2] net: stmmac: imx: use stmmac_pltfr_probe()
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Collabora Kernel Team <kernel@collabora.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: Re: [PATCH 1/3] MAINTAINERS: add exclude for dt-bindings to imx entry
+Message-ID: <Z_zSqzwJS4gkneMy@kekkonen.localdomain>
+References: <20250410-maintainer-mriesch-v1-0-cdc5c6c68238@collabora.com>
+ <20250410-maintainer-mriesch-v1-1-cdc5c6c68238@collabora.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1u4Flp-000XlM-Tb@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 14 Apr 2025 10:06:25 +0100
+In-Reply-To: <20250410-maintainer-mriesch-v1-1-cdc5c6c68238@collabora.com>
 
-Using stmmac_pltfr_probe() simplifies the probe function. This will not
-only call plat_dat->init (imx_dwmac_init), but also plat_dat->exit
-(imx_dwmac_exit) appropriately if stmmac_dvr_probe() fails. This
-results in an overall simplification of the glue driver.
+Hi Michael,
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+Thanks for the patch.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index 5d279fa54b3e..889e2bb6f7f5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -379,10 +379,6 @@ static int imx_dwmac_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	ret = imx_dwmac_init(pdev, dwmac);
--	if (ret)
--		goto err_dwmac_init;
--
- 	if (dwmac->ops->fix_mac_speed) {
- 		plat_dat->fix_mac_speed = dwmac->ops->fix_mac_speed;
- 	} else if (!dwmac->ops->mac_rgmii_txclk_auto_adj) {
-@@ -392,16 +388,10 @@ static int imx_dwmac_probe(struct platform_device *pdev)
- 
- 	dwmac->plat_dat->fix_soc_reset = dwmac->ops->fix_soc_reset;
- 
--	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
-+	ret = stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
- 	if (ret)
--		goto err_drv_probe;
--
--	return 0;
-+		imx_dwmac_clks_config(dwmac, false);
- 
--err_drv_probe:
--	imx_dwmac_exit(pdev, plat_dat->bsp_priv);
--err_dwmac_init:
--	imx_dwmac_clks_config(dwmac, false);
- 	return ret;
- }
- 
+On Thu, Apr 10, 2025 at 09:41:30PM +0200, Michael Riesch via B4 Relay wrote:
+> From: Michael Riesch <michael.riesch@collabora.com>
+> 
+> Since the IMX (as in i.MX, the NXP SoCs) MAINTAINERS entry claims
+> everything that contains the name "imx", hanges to device tree
+> bindings for any Sony IMX image sensor are likely to be sent to the
+> maintainers listed therein. Add the missing exclude to fix that.
+> 
+> Fixes: da8b7f0fb02b ("MAINTAINERS: add all files matching "imx" and "mxs" to the IMX entry")
+> Suggested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
+
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 96b827049501..c87b26eada7b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2519,6 +2519,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
+>  F:	arch/arm/boot/dts/nxp/imx/
+>  F:	arch/arm/boot/dts/nxp/mxs/
+>  F:	arch/arm64/boot/dts/freescale/
+> +X:	Documentation/devicetree/bindings/media/i2c/
+>  X:	arch/arm64/boot/dts/freescale/fsl-*
+>  X:	arch/arm64/boot/dts/freescale/qoriq-*
+>  X:	drivers/media/i2c/
+> 
+
 -- 
-2.30.2
+Regards,
 
+Sakari Ailus
