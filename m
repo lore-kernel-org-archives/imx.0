@@ -1,142 +1,269 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6351B424A
-	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 08:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0ED4258CF2;
+	Mon, 14 Apr 2025 08:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744617767; cv=none; b=JSmf+MYygiTwgtgGS/A2KGjCTiOb3PkO/vSRpbez4e2cCaX4CNon1641j3XiQy61/eyHR/24YcfJFzQoLLYm9n2HEVm0OF6ilCkRKj8vQWR71Z+av8YGMYZKs8xoRhuKVjeYth2cjy0+X8FIMmzlhVNI4JG7PJ6e2tuwdULKGjg=
+	t=1744618177; cv=none; b=t8d45btx2+HHrnzEP0OWM6Tmij2HFZViUNEIoZmWuKhsFl1lxls3T5Bj3v/qeuwGpp/kPGvpwP7+bJIjMg1N/lB+TVzUbEGTHDWXVVI06/AmEsbOYN/z1LKaO8E8tyBD1XUm47LGhs73rHquCSh3v4VNPJ28Uo7SSEynEX+C4/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744617767; c=relaxed/simple;
-	bh=ZuoDYhZgQ9D/0t1zWRqqcz1yH1nnJRZLbD2PvZP3Xxc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DR8YhM3Kt4/rndpJDGt+PT0QyBxUwGIaddf/Ozu48pmZ+s/nRo2kuTqWbZ/tYX/Xv3gZQTSV80uq66W5OO6vqO65Uek6VYp/tJzdH4Ck3D45GBDtXTPTJuBuZ8WhacizCl1M0uix+1mkLAzpmLNRf8oGLJ/Y2hb4Ly/6lVUFNRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=ROakJ9Y+; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1744618177; c=relaxed/simple;
+	bh=h0j1Hfu+P4Ik7wn30u2UB2Z6uWgvo3dBsKVHdecR3uE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GihPtHjlUyClWijOd2qsCpqdFLs7uGK35up08sy2QRPq0hNSl9nUYGa8yMo8gw0El/uoOVMVDFZBEwGdHCEeS3G1J9TSwSZRVviRm9SFme1/fs/roN3319yfPUNz8uEcYer87U2J6HtBzPw2YRioNviiayDUlePWoRcuzYgQ5nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nGk2Asg/; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="ROakJ9Y+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=YpQSiQvy1hnifDQxt9SKOFDxpRliEXMBm8AYZHweb8Q=; b=ROakJ9Y+q0ECieFlwrTFMktMUn
-	XLNOr33NXrnIQeB14gm0uUCA6yzpUweg29px4LkdTzZ4qWXJWTM2MFRD9OQYgiGIiHAoPsaOTzgRO
-	sEGBACSi06vZsRTX2sZeDdutQyIwOCGke1qG03xmWu2wgZ5cTtxEVO3yJHNtCcdCKqZ2E5reJHCdk
-	FWn2sdFUvpI5rVisCRgrJTT4wxaN1CwSSuGBFnwuyzhHgdfW4UE5lUTctgEW80PLBC3w3GtnvGv0l
-	/AbJS9f8ZA+U0S3WsINIzpenutc/rqRf/LXlcEcXsT08fisRL87BwLJCJK7POFeLsC0ra3dngUu/l
-	bgmvZDbQ==;
-Received: from [89.212.21.243] (port=49436 helo=[192.168.69.116])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1u4Em7-00DMch-1a;
-	Mon, 14 Apr 2025 10:02:38 +0200
-Message-ID: <1571414e-5e7d-4c9e-b69d-11a6fdf454e2@norik.com>
-Date: Mon, 14 Apr 2025 10:02:37 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nGk2Asg/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744618174; x=1776154174;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=h0j1Hfu+P4Ik7wn30u2UB2Z6uWgvo3dBsKVHdecR3uE=;
+  b=nGk2Asg/XlFN1GEZg9NIPfKZ/POr27KDjT5Ijlf3CztjG+WMghXjzV25
+   OcZXlGkXusZ1+/s0E5tmEAi9KcjHx4jh4vwLvSmXXriLMAS6SXgxi1Szt
+   2cBSSnOSL2bTEMP7PTZYz3iF9zYnLkOgN4yf2/SvWVNJGFLfh40EAoITl
+   LikWR4JzEENdCZZnT46MhWZqDcWaPGVn3Z5Y03f5gjyKUkWTuHE2yk92G
+   V2gt0gXCmWrm04Wj1nKrGxtXzpIr4CVP7Ms7g/UzEPMzHivxXYtHkhjKu
+   AuxaI0WfMPwjOJro/F0MYhJu+VRtGzq1rGfCf0wqN2aiJfgyBhUj1SDa2
+   w==;
+X-CSE-ConnectionGUID: GfZ0srvuSNOJqoPy52k0Vw==
+X-CSE-MsgGUID: 9dxsONv3Smatpdq/5/ySPg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11402"; a="46239542"
+X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
+   d="scan'208";a="46239542"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2025 01:09:34 -0700
+X-CSE-ConnectionGUID: HS0x0csZR3WR491+o8WFfw==
+X-CSE-MsgGUID: 5AiuT9BLSwOJ7JRHOjoxdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,211,1739865600"; 
+   d="scan'208";a="129691082"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 14 Apr 2025 01:09:30 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u4Esh-000DvK-09;
+	Mon, 14 Apr 2025 08:09:27 +0000
+Date: Mon, 14 Apr 2025 16:08:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Arnd Bergmann <arnd@kernel.org>, Haibo Chen <haibo.chen@nxp.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Luke Wang <ziniu.wang_1@nxp.com>
+Cc: oe-kbuild-all@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Josua Mayer <josua@solid-run.com>, imx@lists.linux.dev,
+	linux-mmc@vger.kernel.org, s32@nxp.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [v2] mmc: esdhc-imx: convert to modern PM_OPS
+Message-ID: <202504141551.hdiQj4os-lkp@intel.com>
+References: <20250411085932.1902662-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/13] arm64: dts: freescale: imx93-phyboard-segin: Add
- CAN support
-To: Marc Kleine-Budde <mkl@pengutronix.de>, Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, upstream@lists.phytec.de,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- linux-arm-kernel@lists.infradead.org
-References: <20250410090251.1103979-1-primoz.fiser@norik.com>
- <20250410090251.1103979-11-primoz.fiser@norik.com>
- <Z/fifUQ4M2doQbHx@lizhi-Precision-Tower-5810>
- <ef74e49d-c413-4719-a174-42df91384469@norik.com>
- <Z/knehHQeTTUXgr3@lizhi-Precision-Tower-5810>
- <20250412-tentacled-rugged-bee-fd7e9c-mkl@pengutronix.de>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <20250412-tentacled-rugged-bee-fd7e9c-mkl@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250411085932.1902662-1-arnd@kernel.org>
 
-Hi Marc and Frank,
+Hi Arnd,
 
-On 12. 04. 25 15:41, Marc Kleine-Budde wrote:
-> On 11.04.2025 10:30:18, Frank Li wrote:
->> On Fri, Apr 11, 2025 at 10:08:21AM +0200, Primoz Fiser wrote:
->>> Hi Frank,
->>>
->>> On 10. 04. 25 17:23, Frank Li wrote:
->>>> On Thu, Apr 10, 2025 at 11:02:48AM +0200, Primoz Fiser wrote:
->>>>> Add support for CAN networking on phyBOARD-Segin-i.MX93 via the flexcan1
->>>>> interface. The CAN1_EN regulator enables the SN65HVD234 CAN transceiver
->>>>> chip.
->>>>
->>>> Can you use drivers/phy/phy-can-transceiver.c to enable CAN phy instead
->>>> of use hacked regulator-flexcan1-en.
->>>
->>> Sorry can't do.
->>>
->>> This doesn't align with other i.MX PHYTEC products using flexcan such as
->>> imx8mp-phyboard-pollux-rdk.dts.
->>>
->>> Even the i.MX93 EVK uses the same mechanism.
->>
->> I think previous method is NOT good enough. Suggest involve CAN and PHY
->> maintainer to discuss these.
-> 
-> Since d80bfde3c57a ("can: flexcan: add transceiver capabilities"), which
-> git mainline with v6.15-rc1 there is proper PHY support in the flexcan
-> driver. So from my point of view, there's no need to stick to regulator
-> hack.
+kernel test robot noticed the following build errors:
 
-This arrived at the perfect moment. Just in time :)
+[auto build test ERROR on v6.15-rc2]
+[also build test ERROR on linus/master next-20250411]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I will switch to this mechanism in v2.
+url:    https://github.com/intel-lab-lkp/linux/commits/Arnd-Bergmann/mmc-esdhc-imx-convert-to-modern-PM_OPS/20250414-092134
+base:   v6.15-rc2
+patch link:    https://lore.kernel.org/r/20250411085932.1902662-1-arnd%40kernel.org
+patch subject: [PATCH] [v2] mmc: esdhc-imx: convert to modern PM_OPS
+config: i386-buildonly-randconfig-006-20250414 (https://download.01.org/0day-ci/archive/20250414/202504141551.hdiQj4os-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250414/202504141551.hdiQj4os-lkp@intel.com/reproduce)
 
-Thank you both for your input.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504141551.hdiQj4os-lkp@intel.com/
 
-BR,
-Primoz
+All errors (new ones prefixed by >>):
 
-> 
-> regards,
-> Marc
-> 
+   drivers/mmc/host/sdhci-esdhc-imx.c: In function 'sdhci_esdhc_suspend':
+>> drivers/mmc/host/sdhci-esdhc-imx.c:1902:15: error: implicit declaration of function 'sdhci_suspend_host'; did you mean 'sdhci_add_host'? [-Werror=implicit-function-declaration]
+    1902 |         ret = sdhci_suspend_host(host);
+         |               ^~~~~~~~~~~~~~~~~~
+         |               sdhci_add_host
+   drivers/mmc/host/sdhci-esdhc-imx.c: In function 'sdhci_esdhc_resume':
+>> drivers/mmc/host/sdhci-esdhc-imx.c:1927:15: error: implicit declaration of function 'sdhci_resume_host'; did you mean 'sdhci_remove_host'? [-Werror=implicit-function-declaration]
+    1927 |         ret = sdhci_resume_host(host);
+         |               ^~~~~~~~~~~~~~~~~
+         |               sdhci_remove_host
+   drivers/mmc/host/sdhci-esdhc-imx.c: In function 'sdhci_esdhc_runtime_suspend':
+>> drivers/mmc/host/sdhci-esdhc-imx.c:1953:15: error: implicit declaration of function 'sdhci_runtime_suspend_host' [-Werror=implicit-function-declaration]
+    1953 |         ret = sdhci_runtime_suspend_host(host);
+         |               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/mmc/host/sdhci-esdhc-imx.c: In function 'sdhci_esdhc_runtime_resume':
+>> drivers/mmc/host/sdhci-esdhc-imx.c:1999:15: error: implicit declaration of function 'sdhci_runtime_resume_host' [-Werror=implicit-function-declaration]
+    1999 |         err = sdhci_runtime_resume_host(host, 0);
+         |               ^~~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +1902 drivers/mmc/host/sdhci-esdhc-imx.c
+
+95f25efe0ce22e Wolfram Sang      2010-10-15  1879  
+04143fbaeb5799 Dong Aisheng      2016-07-12  1880  static int sdhci_esdhc_suspend(struct device *dev)
+04143fbaeb5799 Dong Aisheng      2016-07-12  1881  {
+3e3274ab9ff37f Ulf Hansson       2016-07-27  1882  	struct sdhci_host *host = dev_get_drvdata(dev);
+a26a4f1baca55a Haibo Chen        2020-02-19  1883  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+a26a4f1baca55a Haibo Chen        2020-02-19  1884  	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1885  	int ret;
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1886  
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1887  	if (host->mmc->caps2 & MMC_CAP2_CQE) {
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1888  		ret = cqhci_suspend(host->mmc);
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1889  		if (ret)
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1890  			return ret;
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1891  	}
+3e3274ab9ff37f Ulf Hansson       2016-07-27  1892  
+a26a4f1baca55a Haibo Chen        2020-02-19  1893  	if ((imx_data->socdata->flags & ESDHC_FLAG_STATE_LOST_IN_LPMODE) &&
+a26a4f1baca55a Haibo Chen        2020-02-19  1894  		(host->tuning_mode != SDHCI_TUNING_MODE_1)) {
+a26a4f1baca55a Haibo Chen        2020-02-19  1895  		mmc_retune_timer_stop(host->mmc);
+a26a4f1baca55a Haibo Chen        2020-02-19  1896  		mmc_retune_needed(host->mmc);
+a26a4f1baca55a Haibo Chen        2020-02-19  1897  	}
+a26a4f1baca55a Haibo Chen        2020-02-19  1898  
+d38dcad4e7b48f Adrian Hunter     2017-03-20  1899  	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
+d38dcad4e7b48f Adrian Hunter     2017-03-20  1900  		mmc_retune_needed(host->mmc);
+d38dcad4e7b48f Adrian Hunter     2017-03-20  1901  
+af8fade4bd7bc7 Haibo Chen        2020-02-19 @1902  	ret = sdhci_suspend_host(host);
+f6140462611308 Haibo Chen        2020-05-27  1903  	if (ret)
+f6140462611308 Haibo Chen        2020-05-27  1904  		return ret;
+f6140462611308 Haibo Chen        2020-05-27  1905  
+f6140462611308 Haibo Chen        2020-05-27  1906  	ret = pinctrl_pm_select_sleep_state(dev);
+f6140462611308 Haibo Chen        2020-05-27  1907  	if (ret)
+f6140462611308 Haibo Chen        2020-05-27  1908  		return ret;
+f6140462611308 Haibo Chen        2020-05-27  1909  
+f6140462611308 Haibo Chen        2020-05-27  1910  	ret = mmc_gpio_set_cd_wake(host->mmc, true);
+af8fade4bd7bc7 Haibo Chen        2020-02-19  1911  
+af8fade4bd7bc7 Haibo Chen        2020-02-19  1912  	return ret;
+04143fbaeb5799 Dong Aisheng      2016-07-12  1913  }
+04143fbaeb5799 Dong Aisheng      2016-07-12  1914  
+04143fbaeb5799 Dong Aisheng      2016-07-12  1915  static int sdhci_esdhc_resume(struct device *dev)
+04143fbaeb5799 Dong Aisheng      2016-07-12  1916  {
+cc17e1294b8aeb Dong Aisheng      2016-07-12  1917  	struct sdhci_host *host = dev_get_drvdata(dev);
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1918  	int ret;
+cc17e1294b8aeb Dong Aisheng      2016-07-12  1919  
+af8fade4bd7bc7 Haibo Chen        2020-02-19  1920  	ret = pinctrl_pm_select_default_state(dev);
+af8fade4bd7bc7 Haibo Chen        2020-02-19  1921  	if (ret)
+af8fade4bd7bc7 Haibo Chen        2020-02-19  1922  		return ret;
+af8fade4bd7bc7 Haibo Chen        2020-02-19  1923  
+19dbfdd3d5152d Dong Aisheng      2016-07-12  1924  	/* re-initialize hw state in case it's lost in low power mode */
+19dbfdd3d5152d Dong Aisheng      2016-07-12  1925  	sdhci_esdhc_imx_hwinit(host);
+cc17e1294b8aeb Dong Aisheng      2016-07-12  1926  
+bb6e358169bf62 BOUGH CHEN        2019-01-07 @1927  	ret = sdhci_resume_host(host);
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1928  	if (ret)
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1929  		return ret;
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1930  
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1931  	if (host->mmc->caps2 & MMC_CAP2_CQE)
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1932  		ret = cqhci_resume(host->mmc);
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1933  
+f6140462611308 Haibo Chen        2020-05-27  1934  	if (!ret)
+f6140462611308 Haibo Chen        2020-05-27  1935  		ret = mmc_gpio_set_cd_wake(host->mmc, false);
+f6140462611308 Haibo Chen        2020-05-27  1936  
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1937  	return ret;
+04143fbaeb5799 Dong Aisheng      2016-07-12  1938  }
+04143fbaeb5799 Dong Aisheng      2016-07-12  1939  
+89d7e5c131228a Dong Aisheng      2013-11-04  1940  static int sdhci_esdhc_runtime_suspend(struct device *dev)
+89d7e5c131228a Dong Aisheng      2013-11-04  1941  {
+89d7e5c131228a Dong Aisheng      2013-11-04  1942  	struct sdhci_host *host = dev_get_drvdata(dev);
+89d7e5c131228a Dong Aisheng      2013-11-04  1943  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+070e6d3ff5a696 Jisheng Zhang     2016-02-16  1944  	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+89d7e5c131228a Dong Aisheng      2013-11-04  1945  	int ret;
+89d7e5c131228a Dong Aisheng      2013-11-04  1946  
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1947  	if (host->mmc->caps2 & MMC_CAP2_CQE) {
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1948  		ret = cqhci_suspend(host->mmc);
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1949  		if (ret)
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1950  			return ret;
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1951  	}
+bb6e358169bf62 BOUGH CHEN        2019-01-07  1952  
+89d7e5c131228a Dong Aisheng      2013-11-04 @1953  	ret = sdhci_runtime_suspend_host(host);
+371d39fabcebc3 Michael Trimarchi 2018-01-04  1954  	if (ret)
+371d39fabcebc3 Michael Trimarchi 2018-01-04  1955  		return ret;
+89d7e5c131228a Dong Aisheng      2013-11-04  1956  
+d38dcad4e7b48f Adrian Hunter     2017-03-20  1957  	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
+d38dcad4e7b48f Adrian Hunter     2017-03-20  1958  		mmc_retune_needed(host->mmc);
+d38dcad4e7b48f Adrian Hunter     2017-03-20  1959  
+3602785b341a95 Michael Trimarchi 2018-01-04  1960  	imx_data->actual_clock = host->mmc->actual_clock;
+3602785b341a95 Michael Trimarchi 2018-01-04  1961  	esdhc_pltfm_set_clock(host, 0);
+89d7e5c131228a Dong Aisheng      2013-11-04  1962  	clk_disable_unprepare(imx_data->clk_per);
+89d7e5c131228a Dong Aisheng      2013-11-04  1963  	clk_disable_unprepare(imx_data->clk_ipg);
+89d7e5c131228a Dong Aisheng      2013-11-04  1964  	clk_disable_unprepare(imx_data->clk_ahb);
+89d7e5c131228a Dong Aisheng      2013-11-04  1965  
+1c4989b000aeac BOUGH CHEN        2019-04-29  1966  	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+d1b98305916bc0 Rafael J. Wysocki 2020-02-12  1967  		cpu_latency_qos_remove_request(&imx_data->pm_qos_req);
+1c4989b000aeac BOUGH CHEN        2019-04-29  1968  
+89d7e5c131228a Dong Aisheng      2013-11-04  1969  	return ret;
+89d7e5c131228a Dong Aisheng      2013-11-04  1970  }
+89d7e5c131228a Dong Aisheng      2013-11-04  1971  
+89d7e5c131228a Dong Aisheng      2013-11-04  1972  static int sdhci_esdhc_runtime_resume(struct device *dev)
+89d7e5c131228a Dong Aisheng      2013-11-04  1973  {
+89d7e5c131228a Dong Aisheng      2013-11-04  1974  	struct sdhci_host *host = dev_get_drvdata(dev);
+89d7e5c131228a Dong Aisheng      2013-11-04  1975  	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+070e6d3ff5a696 Jisheng Zhang     2016-02-16  1976  	struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  1977  	int err;
+89d7e5c131228a Dong Aisheng      2013-11-04  1978  
+1c4989b000aeac BOUGH CHEN        2019-04-29  1979  	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+d1b98305916bc0 Rafael J. Wysocki 2020-02-12  1980  		cpu_latency_qos_add_request(&imx_data->pm_qos_req, 0);
+1c4989b000aeac BOUGH CHEN        2019-04-29  1981  
+5c11f1ffb02244 Haibo Chen        2020-02-19  1982  	if (imx_data->socdata->flags & ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME)
+5c11f1ffb02244 Haibo Chen        2020-02-19  1983  		clk_set_rate(imx_data->clk_per, pltfm_host->clock);
+5c11f1ffb02244 Haibo Chen        2020-02-19  1984  
+a0ad3087586d09 Michael Trimarchi 2018-01-04  1985  	err = clk_prepare_enable(imx_data->clk_ahb);
+a0ad3087586d09 Michael Trimarchi 2018-01-04  1986  	if (err)
+1c4989b000aeac BOUGH CHEN        2019-04-29  1987  		goto remove_pm_qos_request;
+a0ad3087586d09 Michael Trimarchi 2018-01-04  1988  
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  1989  	err = clk_prepare_enable(imx_data->clk_per);
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  1990  	if (err)
+a0ad3087586d09 Michael Trimarchi 2018-01-04  1991  		goto disable_ahb_clk;
+af5d2b7b0d24f5 Ulf Hansson       2019-09-08  1992  
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  1993  	err = clk_prepare_enable(imx_data->clk_ipg);
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  1994  	if (err)
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  1995  		goto disable_per_clk;
+af5d2b7b0d24f5 Ulf Hansson       2019-09-08  1996  
+3602785b341a95 Michael Trimarchi 2018-01-04  1997  	esdhc_pltfm_set_clock(host, imx_data->actual_clock);
+a0ad3087586d09 Michael Trimarchi 2018-01-04  1998  
+c6303c5d52d5ec Baolin Wang       2019-07-25 @1999  	err = sdhci_runtime_resume_host(host, 0);
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  2000  	if (err)
+a0ad3087586d09 Michael Trimarchi 2018-01-04  2001  		goto disable_ipg_clk;
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  2002  
+bb6e358169bf62 BOUGH CHEN        2019-01-07  2003  	if (host->mmc->caps2 & MMC_CAP2_CQE)
+bb6e358169bf62 BOUGH CHEN        2019-01-07  2004  		err = cqhci_resume(host->mmc);
+bb6e358169bf62 BOUGH CHEN        2019-01-07  2005  
+bb6e358169bf62 BOUGH CHEN        2019-01-07  2006  	return err;
+89d7e5c131228a Dong Aisheng      2013-11-04  2007  
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  2008  disable_ipg_clk:
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  2009  	clk_disable_unprepare(imx_data->clk_ipg);
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  2010  disable_per_clk:
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  2011  	clk_disable_unprepare(imx_data->clk_per);
+a0ad3087586d09 Michael Trimarchi 2018-01-04  2012  disable_ahb_clk:
+a0ad3087586d09 Michael Trimarchi 2018-01-04  2013  	clk_disable_unprepare(imx_data->clk_ahb);
+1c4989b000aeac BOUGH CHEN        2019-04-29  2014  remove_pm_qos_request:
+1c4989b000aeac BOUGH CHEN        2019-04-29  2015  	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+d1b98305916bc0 Rafael J. Wysocki 2020-02-12  2016  		cpu_latency_qos_remove_request(&imx_data->pm_qos_req);
+17b1eb7f0bf3dc Fabio Estevam     2017-05-16  2017  	return err;
+89d7e5c131228a Dong Aisheng      2013-11-04  2018  }
+89d7e5c131228a Dong Aisheng      2013-11-04  2019  
 
 -- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
