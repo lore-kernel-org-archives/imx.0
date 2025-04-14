@@ -1,41 +1,49 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79617296173
-	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 11:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B642989AA;
+	Mon, 14 Apr 2025 11:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744630294; cv=none; b=NSCL6uASB6QD5LFA576eDbMGy/blDpDp7TGLMAsqIAEHSRUGeRLzLVn9vJ4j1/doN4LRNY9+IgjvvbCLh9Itfq8vRmpqSbSNHJUr7zB96Ik7lNY9cmCx3tHQ2qErk5gkGRsjf9PYR56K0kXlB6h8Flr8C+ghQS2O1iRrM1Z6yJk=
+	t=1744630882; cv=none; b=FDGHyqe/vUj3/9kZEl+7qS7rlIgHIaE6T6Y6kaPNgDtDXS1Z3AfeE+1aXWz+b3/Xj81ARfyTrcrMmSilKuR0haDWFwL8VUU5DgUZ8UMQZkKHAk+JnT/VIZjgxijiPQq+f6owZqq8+/lir8fzIefbW5rJBXjUBv+Do898mt9OSr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744630294; c=relaxed/simple;
-	bh=WV9Lg9KdigyCbT3yAnkKOwQml4wZ2a5JUT55rNq+EBw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WsSaihhtPUhUNLwxgw8o0VdvT5dlAp4jdlxi2zMKmcps50faTuVVVODrWTFGpVbvD9k2cqBsz89QkpUf3wZjzL/0Nz58FxkhlNkHUZfU0Xrcxp2Ur9tqABoOfEOKkDT41rQgr5wddGef79fSlWzgQP6q2HVFqtf5ymFECLOkkBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=fpv/HNql; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1744630882; c=relaxed/simple;
+	bh=ChNHziXZOA2FpaIGY9w+vgsO8XllfkcXrxbG4utZ4bs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=f6QRKNTMH/anK2o+NvWzAipiOcqzw3gQnP9LFSSBX2un6zzA8YGYVvEadJ00BpiQf3/Dp4szm/UETXtieHzW48IuGb8gflNgI8oHAcsYeXr34YcvYchPbIV3UjBkB5fYsLPDfACckViU+4Y0gSb7IjqZEghMcpnfGoF5JMy/GAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=xfUZB7np; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="fpv/HNql"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1744630285; x=1745235085; i=wahrenst@gmx.net;
-	bh=WV9Lg9KdigyCbT3yAnkKOwQml4wZ2a5JUT55rNq+EBw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=fpv/HNqlhCOIIV+L6g2rYC3hBhJ4RrFqYJ6ssDcWFyGYhyty/yXXEOiLoHSaGlRa
-	 WIriDO6v+6xT+NCCMdo9KggawMofuKJHZWjdS/ACzyMYJ6P/CT43OLZBqOWuZ04To
-	 Q5tcdkQqUatn0pJJNwY0AowZ2f27l+cr7Nm35DgxA/6G8Ek9Cc1CUU9O+3wb/c/ND
-	 FR5J6Gz2bB+ZtkHaH2fwThxwSu1CN4Lv/0oQlwxX5Zye7dVs5zEOJMbdR09/FNU1n
-	 sc3bFdr2/EahHNOnnURNd49KhkIKX8sXesuvYZ+9LHNIGpS0/apiEMVEhhCq7mFG9
-	 x17/ShgI/CPn3D7iyg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MTzfG-1teKw31g38-00TEdY; Mon, 14
- Apr 2025 13:31:25 +0200
-Message-ID: <f49d9b14-cba9-4ded-a10d-ec6372ec66f8@gmx.net>
-Date: Mon, 14 Apr 2025 13:31:24 +0200
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="xfUZB7np"
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53EBekXw2046321
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Apr 2025 06:40:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1744630846;
+	bh=z2v2YqDM9wvESESnYHXaNZpR11dPLsmv6R7Z15lYtSc=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=xfUZB7npYQOpoB54c4TURLLSpjiSlMy8CTSi5P27KH4fLe3UbByHjGqDXcxWveT6W
+	 cUClb1Xcl+4td+jDQzvDUzL4rEz70rsnu5gtBYjIp6FjXN5maISUSsHe0UXO5fZusg
+	 gvrTGJjo3JO+CEq5C7QbtGbQQpF9FZAvUepIjfRk=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53EBekMm102049
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 14 Apr 2025 06:40:46 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 14
+ Apr 2025 06:40:46 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 14 Apr 2025 06:40:45 -0500
+Received: from [172.24.227.115] (abhilash-hp.dhcp.ti.com [172.24.227.115])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53EBefOi038625;
+	Mon, 14 Apr 2025 06:40:42 -0500
+Message-ID: <28fa61b8-15a6-40c6-96b8-268939226a03@ti.com>
+Date: Mon, 14 Apr 2025 17:10:41 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,85 +51,117 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/13] arm64: dts: freescale: imx93-phyboard-segin: Drop
- eMMC no-1-8-v flag
-To: Primoz Fiser <primoz.fiser@norik.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- upstream@lists.phytec.de
-References: <20250410090251.1103979-1-primoz.fiser@norik.com>
- <20250410090251.1103979-7-primoz.fiser@norik.com>
- <254efe04-09c6-4225-a869-126026642091@gmx.net>
- <ff6320e5-1c83-4cab-9cfe-4df6877952b8@norik.com>
+Subject: Re: [PATCH v2 4/7] arm64: dts: ti: k3-j721e-sk: Add requiried voltage
+ supplies for IMX219
+To: "Francis, Neha" <n-francis@ti.com>, <nm@ti.com>, <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <jai.luthra@linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <u-kumar1@ti.com>, <stable@vger.kernel.org>
+References: <20250409134128.2098195-1-y-abhilashchandra@ti.com>
+ <20250409134128.2098195-5-y-abhilashchandra@ti.com>
+ <16713a1b-1e74-4b08-bd4c-12dc0a9d32df@ti.com>
 Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <ff6320e5-1c83-4cab-9cfe-4df6877952b8@norik.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:RJMvt0XB27uGQoIAY1JcgwIawKHcjRmeMhIV+Ei3Y6S4Smqy6+W
- PuL35heCPSiLeXcFF+iwlZuwZ+o/6gegVV/4osLZb3EqRt2fgZfGevz1TfAlr0GLrhf4f6G
- law7+oeSYNDNsE6Z7Ng/hPJgn4rYT6CXk4gxZkHrhAzKjSlJf/ycU2rcKw3+XDCMK2hjOBS
- cK9NiLg52nqnUBangI/lg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Sq9ECAB1CuA=;EL/Qh00jqFz4J9tOdnZbIe21BBD
- BZlD0MAxetKSkBjremEzYHqESgva3XCyd07jM6AX4ULN0WoDXcc0yOE+00cVpptMjg0xrsGky
- WfkHGPwL+plNkkF/MmLVarzfHsnk7c6+zNkeT5LB+p0ir9zrBLUn/gKYAm5U71PoF/Mc0OKci
- QtGQbP7na+3f+7+ybQwDeYE9AR6Ivr9R+JVdzby+ior8LzZ0COtYBZvJi4eLwoH/kDVRu6zYJ
- kbBTcgQfQA2gkZJbwNqBk3LjFo5HTGw176ExBgZ4oYYBYBtK91f5KPfSC1GlUdafjyi3Av0Fb
- OVMezs3t078EnREeha0Igp8wgeJk0OKVIngnYdd1YtTdzh/hRrhDWlpcfLTM3jQDtjue72bI3
- xsP3ICHq+VBa7/2fRwLMJc4YHFvd22qrQCHMigYUbLlrvmIDk1YwDuR95b08tXXff2eBNQJna
- 9Mt6AOPiSaCKadqGWdUP9IrKi7an/S9/tN66AtYecPH2s0wSmj+sbsE5doIvNsGOUmnX9xYOp
- sEKfDX0u/gPcl6WcvDYe/WnkZVTEhLsGgreInywB8xFcThXJm5LHNm+injQZrSPFi99T73YFA
- Vi1jNEGfomT6+iAIUnUJS0jlEGmr45cy1iGDeju4+X5qQfZHdMPMk9tHzfWHoESlGf8n08jhc
- rBmq7ejA4B64G2TfYCvUUXkVYKK3ZRuwH5WnS/wpXGv4KWnuPBFCoBMf4qBDI9VVHAFQGDROe
- dldCQJi0ooV5wKa35/CkIUnDHDkZjZ/Fbrui773iK+wLCqdniOoFhe05vbhSBZ/g2VEcP7vTa
- OioivQMUmh+pL+KUQqMklwjiJpLj5xVSfmasAsLRPxVDnZgyAlkSWNiBubdyKvjxKmfdRBX5b
- yn8xEXJCBQsq1JrIIszTZLKS8v+P2nhfR2Tb0wnmKcyivPIO8Nfb9y0/QtgUXMclWdtQqwA3P
- jf+ueU9WUwAKJ2ltou5oUKDm+vjlZCEECwcLfzRPSN48e9e6UB/coT4Vw+XbQYZzCSWPqzXkk
- mYpuS2limVWmT8Hr0lOXGvdBBDWtDrh+oX3JMRnGUOlXWzcYiXH3ezxxQZ+Oh+LGZsz0+4o0L
- GeBCVEWtHOcMiwNKctrD0DcHSPGkKIH9w/Tggp/C1Kmj3y2MnqkUFGFvgeX69/aYDBCkZAN6S
- O+zalLEe05ZCY33xMsw3wFVdpirbqnM+L/QECrFsjUeVOS2IHHO+EWyQvH2XpTCtM/ibdvrFX
- QQie39H+ZljKQhZifrkE/DFhFStxKiKERdoqzoPLUieBP/aoc9Q1qqN1UBA1MQVFqwusgrmxN
- rPEKCgqQAg4q+zhCckSB4NKTT/B1EjBbf7VaQ9pyXUxO0ZZmtS1IwsZJgvaVxVeCIIYqMbHrB
- OyA605Zdrt7wsQ62AqoLZ38eUBKOxecQVPNMlYKWBwY40ggQ6hDAsJoDE+sG7R5CJnvkfRIRY
- 44USwfcMyssmNErD89XvfaAXhf5Q=
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+In-Reply-To: <16713a1b-1e74-4b08-bd4c-12dc0a9d32df@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Primoz,
+Hi Neha,
 
-Am 14.04.25 um 12:39 schrieb Primoz Fiser:
-> Hi Stefan,
->
-> On 12. 04. 25 18:23, Stefan Wahren wrote:
->> Hi Primoz,
+On 11/04/25 19:08, Francis, Neha wrote:
+> On 4/9/2025 7:11 PM, Yemike Abhilash Chandra wrote:
+>> The device tree overlay for the IMX219 sensor requires three voltage
+>> supplies to be defined: VANA (analog), VDIG (digital core), and VDDL
+>> (digital I/O). Add the corresponding voltage supply definitions to avoid
+>> dtbs_check warnings.
 >>
->> Am 10.04.25 um 11:02 schrieb Primoz Fiser:
->>> Drop redundant 'no-1-8-v' flag from usdhc1 (eMMC) node. Flag is now se=
-t
->>> by default in the SOM include file (imx93-phycore-som.dtsi).
->>>
->>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
->> i think, Patch 5 and this one should be squashed together.
-> I intentionally split these series into SoM and board related patches.
->
-> I see no benefit in squashing #5 and #6.
- From my understanding both changes belong together, because you=20
-actually moved the property from board to SoM level. Otherwise in case=20
-there is something wrong later, both patches need to be reverted.
-> Also, I already got Frank's Reviewed-by tag on this patch.
-This wouldn't invalidate Frank's review.
+>> Fixes: f767eb918096 ("arm64: dts: ti: k3-j721e-sk: Add overlay for IMX219")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+>> ---
+>>   .../dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso  | 33 +++++++++++++++++++
+>>   1 file changed, 33 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
+>> index 4a395d1209c8..4eb3cffab032 100644
+>> --- a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
+>> +++ b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
+> 
+> The link to the schematics seems to need updation, would like to see where these
+> regulators are mentioned, can't find them in [0] which I assume is the latest link.
+> 
 
-Just my two cents
+Yes, It seems that the link to the schematics has been changed.
+I will submit a separate patch to fix that.
+
+While the regulators are not clearly documented in the schematics,
+the voltage levels can be observed in the top-right corner of the 
+schematics.
+
+However, the required regulators are explicitly described in the device 
+tree bindings.
+Please refer: ./Documentation/devicetree/bindings/media/i2c/imx219.yaml
+
+Thanks and Regards
+Yemike Abhilash Chandra
+
+
+>> @@ -19,6 +19,33 @@ clk_imx219_fixed: imx219-xclk {
+>>   		#clock-cells = <0>;
+>>   		clock-frequency = <24000000>;
+>>   	};
+>> +
+>> +	reg_2p8v: regulator-2p8v {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "2P8V";
+>> +		regulator-min-microvolt = <2800000>;
+>> +		regulator-max-microvolt = <2800000>;
+>> +		vin-supply = <&vdd_sd_dv>;
+>> +		regulator-always-on;
+>> +	};
+>> +
+>> +	reg_1p8v: regulator-1p8v {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "1P8V";
+>> +		regulator-min-microvolt = <1800000>;
+>> +		regulator-max-microvolt = <1800000>;
+>> +		vin-supply = <&vdd_sd_dv>;
+>> +		regulator-always-on;
+>> +	};
+>> +
+>> +	reg_1p2v: regulator-1p2v {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "1P2V";
+>> +		regulator-min-microvolt = <1200000>;
+>> +		regulator-max-microvolt = <1200000>;
+>> +		vin-supply = <&vdd_sd_dv>;
+>> +		regulator-always-on;
+>> +	};
+>>   };
+>>   
+>>   &csi_mux {
+>> @@ -34,6 +61,9 @@ imx219_0: imx219-0@10 {
+>>   		reg = <0x10>;
+>>   
+>>   		clocks = <&clk_imx219_fixed>;
+>> +		VANA-supply = <&reg_2p8v>;
+>> +		VDIG-supply = <&reg_1p8v>;
+>> +		VDDL-supply = <&reg_1p2v>;
+>>   
+>>   		port {
+>>   			csi2_cam0: endpoint {
+>> @@ -55,6 +85,9 @@ imx219_1: imx219-1@10 {
+>>   		reg = <0x10>;
+>>   
+>>   		clocks = <&clk_imx219_fixed>;
+>> +		VANA-supply = <&reg_2p8v>;
+>> +		VDIG-supply = <&reg_1p8v>;
+>> +		VDDL-supply = <&reg_1p2v>;
+>>   
+>>   		port {
+>>   			csi2_cam1: endpoint {
+> [0] https://datasheets.raspberrypi.com/camera/camera-module-2-schematics.pdf
+> 
