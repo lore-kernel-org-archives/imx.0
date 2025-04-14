@@ -1,224 +1,142 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2071.outbound.protection.outlook.com [40.107.241.71])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BAB25C6E8
-	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 07:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744616218; cv=fail; b=jK6TPcMtM+2W9bfqYOJimZQBzlJxcONtio4vPDcJF9fBX2YyyQ2uaBqDbNyn6l4i/XdmtRdoJplRK0DQv/K++8Okght76hOGQUPwSnQNKy9JvjBmMOo1XvqPAXZZcf8ViA6/F6nBS9pHfZFuSMI7UONSB8yovPUB1yliYxOWjw8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744616218; c=relaxed/simple;
-	bh=wUPT14BMEx5rx+Wvx2fK3OtrdpzAfbg96ZWJpHgUDEk=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=IfhJ6WPZSAHRJNFwNzDQZ/V4yV5LlG/tRclSfu+21ReDdI9O6UD49l042aXRenEuuu49BFDE1s+yD0X/I48xRog0Y6AkzSI9YNykOD1YVvwTIbeA+3i+W3GBpaOPla1BbLOI/giJHtzuz0Ink1JUoBUYJfXj0B7GMJlcO8RxK7c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=fkixBYcf; arc=fail smtp.client-ip=40.107.241.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6351B424A
+	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 08:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744617767; cv=none; b=JSmf+MYygiTwgtgGS/A2KGjCTiOb3PkO/vSRpbez4e2cCaX4CNon1641j3XiQy61/eyHR/24YcfJFzQoLLYm9n2HEVm0OF6ilCkRKj8vQWR71Z+av8YGMYZKs8xoRhuKVjeYth2cjy0+X8FIMmzlhVNI4JG7PJ6e2tuwdULKGjg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744617767; c=relaxed/simple;
+	bh=ZuoDYhZgQ9D/0t1zWRqqcz1yH1nnJRZLbD2PvZP3Xxc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DR8YhM3Kt4/rndpJDGt+PT0QyBxUwGIaddf/Ozu48pmZ+s/nRo2kuTqWbZ/tYX/Xv3gZQTSV80uq66W5OO6vqO65Uek6VYp/tJzdH4Ck3D45GBDtXTPTJuBuZ8WhacizCl1M0uix+1mkLAzpmLNRf8oGLJ/Y2hb4Ly/6lVUFNRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=ROakJ9Y+; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="fkixBYcf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GYcirIVeRoACBSlyJJd4cFxMC3AqgUHDkZH1gDvG14zlMk0pAB+EF/LVJagufbSkp39ywQ7hYxqSy1r5WpDhClRBL8dLr5lxjvAbHf7mnBhC3gAM7s3BOnW5/O+JYrAcfxn5sZO+ChAvBvM5jwxai7VOlILm7BejMBIXSz5PCY3ppm8PzV1gpE5CjVY4N/pQopCUy4HZjBZe2hGt2Bmb8YkxquVRK3TlTL25IfYD2DhmVLMTIcsy7Btaimo+9N4NV64QUUxeGf+YaBIGS55Rr/eOrnUj8zp2xDiGd0blK2H12m46tl0elGNY/l5GenhBgnRAkpj5rUaiqCMTNftq3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g7fSoTKXavvdHX21LHLfKGVZVYFRq8E0bA/KNt9ddeU=;
- b=m9gzLYHG2ulMmifRAG9tmiiFzTuQBpqsgjGo4s08BAugxKNBRVwymLI41EnAyF773SQDTl5cgfNnDZpA8V4M2opJLB6UFLJH2t91KFC4Wdkz7LRgVF2t+is53k6wOCnwacnsTyaY8wzz3x7235nOGy5eQgh0KPaV+UQ6/ONWO2wfm0Yfm6ARJuYGqASWnAkQF3wu/QdB3ykeRrHNccoQCubxKzRNH40GXzReNo0wXMaDGq/kyL72EnapYlhw+n9an/5cA+Bh1PxuYN0SXCWU97yfBqoy0gIdvC1voDkjKPPNRAtZlIAm7Ab91N4h+CmNm5t9IPRLqiPvNwQqXqhbDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g7fSoTKXavvdHX21LHLfKGVZVYFRq8E0bA/KNt9ddeU=;
- b=fkixBYcfXiKg4Qi+1GkNxORzjUI0jXkeokbRIYtS8TToxIzBVPUjxNSMn5ctzn9Vm4z2oAV/fO13NL8ENGOKwficTjx/a7kwyKYfFAGES/KjTmk9R6VQpestM9KNMJbbAp4x0VhoYriVShr6GRJml384ZsHculLd4Q0dLPUghRNzKicFVjaanJjVJOTThY7dDROza9GfZ0T4cfT+cvonwwz5j8Oy+/gfHA+zFLPrdypxtP4MIKgT3A2M1Wbi3rP5RmIYFoXJZSlsA7Fjv/59ds/XBV4VjPic/trOVEeQ7FSvnb4ZWM9ONWuhItW23n0/tucIWUepX+9LHiy+GWKrmA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
- by AS1PR04MB9286.eurprd04.prod.outlook.com (2603:10a6:20b:4de::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.33; Mon, 14 Apr
- 2025 07:36:51 +0000
-Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
- ([fe80::708f:69ee:15df:6ebd%4]) with mapi id 15.20.8632.030; Mon, 14 Apr 2025
- 07:36:51 +0000
-From: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Cc: linux-can@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>,
-	imx@lists.linux.dev,
-	Christophe Lizzi <clizzi@redhat.com>,
-	Alberto Ruiz <aruizrui@redhat.com>,
-	Enric Balletbo <eballetb@redhat.com>,
-	Eric Chanudet <echanude@redhat.com>,
-	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-Subject: [PATCH] can: flexcan: enable PER clock before obtaining its rate
-Date: Mon, 14 Apr 2025 10:36:46 +0300
-Message-ID: <20250414073646.1473157-1-ciprianmarian.costea@oss.nxp.com>
-X-Mailer: git-send-email 2.45.2
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AS4P190CA0024.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d0::15) To DU0PR04MB9251.eurprd04.prod.outlook.com
- (2603:10a6:10:352::15)
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="ROakJ9Y+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=YpQSiQvy1hnifDQxt9SKOFDxpRliEXMBm8AYZHweb8Q=; b=ROakJ9Y+q0ECieFlwrTFMktMUn
+	XLNOr33NXrnIQeB14gm0uUCA6yzpUweg29px4LkdTzZ4qWXJWTM2MFRD9OQYgiGIiHAoPsaOTzgRO
+	sEGBACSi06vZsRTX2sZeDdutQyIwOCGke1qG03xmWu2wgZ5cTtxEVO3yJHNtCcdCKqZ2E5reJHCdk
+	FWn2sdFUvpI5rVisCRgrJTT4wxaN1CwSSuGBFnwuyzhHgdfW4UE5lUTctgEW80PLBC3w3GtnvGv0l
+	/AbJS9f8ZA+U0S3WsINIzpenutc/rqRf/LXlcEcXsT08fisRL87BwLJCJK7POFeLsC0ra3dngUu/l
+	bgmvZDbQ==;
+Received: from [89.212.21.243] (port=49436 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1u4Em7-00DMch-1a;
+	Mon, 14 Apr 2025 10:02:38 +0200
+Message-ID: <1571414e-5e7d-4c9e-b69d-11a6fdf454e2@norik.com>
+Date: Mon, 14 Apr 2025 10:02:37 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|AS1PR04MB9286:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8603b883-55d8-422b-9526-08dd7b271eee
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UXEybnZHeWxwd3FCRWlNWmFrZUpiYUR3VXZqd2xLMHpXUFUyZTNPR2FQaEQ1?=
- =?utf-8?B?bDhBV3VwWVdhVzNYOVRVMXFJZnRmem02a09iMXlXdnZUVmx6dFJTWUpRZDd5?=
- =?utf-8?B?Mml1Z1g2SElaRjhjRFYxem9wZEdPY0FzR09WbkxJSTAzYkV2KyttVmxlSjNM?=
- =?utf-8?B?bnRKdVZPajBMaG5ocVVhSUh3c0hRKzFMVE1OSmIxSmdBQ2txVjdmcmRqdHM5?=
- =?utf-8?B?UThLcE4zVmJhNTVwVWYyUG5OOENNbHl0WUZCV2t2a0YwcWJ4L0dWS25lL0JQ?=
- =?utf-8?B?ZjdTV2ZkRTBsajlwZVlIQ0FSUnNiSTF0KzdOQjYyYVFlbXBDYUNDSERhRmdQ?=
- =?utf-8?B?Q1pkdnR6UUhWbzd6bi9DWjBwQjNhS2RHZWJ6eFhWVjJjMlQ0akJhK2xrakVv?=
- =?utf-8?B?WnhTU1JIeFlxN204VzhpSmNXR25FS1cxTGZJcnFsVVkvV1k4Mng3YldsUGtB?=
- =?utf-8?B?Sjl3MG8xVWZrS0l6bVM4QjNKdUt1K05WaWlLbHhmSWJ4a2RLdjdYcjNZYTJ6?=
- =?utf-8?B?YU5ZeDFHdVpscmJyZEw1a05KdzBaSDR2TnRsRVkyaGsvdWdwek5ZdXZnVmtJ?=
- =?utf-8?B?QkUxNmsyVjBrZWNoMDNWL2hmUGNTRUF5Y3JkSmcrTSs5OU5udnh6QzlYMmRD?=
- =?utf-8?B?Q29rYU1rUGpyQWVxSnVXQk43aWpzMFhiTTlTWlNXMGlGNjZIbldqR0xkR1Zt?=
- =?utf-8?B?ZHNiS3dNUTl0OFVnZ1dzcXRMWXlXN29KVFBZV2IwcW5lTFBteGhQMVNqNFZN?=
- =?utf-8?B?Wk9DTEs2czFqVWM5eUtvUWU3ZXRySWhPY1VuVnc4Nys1VkxHQzBGVVE0dUtW?=
- =?utf-8?B?MnYyUkVWSTV6cDVVU2pWYWlRYitWeHc5L0c1dldFdUdBY0l6VUJZKzI4bTBK?=
- =?utf-8?B?V0ppc3hVQllrTXFDZktaaHp4OWVoK3pKeTFUaXp5WHdFOVh6eHZUeHlJZXl4?=
- =?utf-8?B?bXN5ZWwvTU9UdkpqOGRsblRyNE8rRGpqejR2WHFheVc1b0V2azRlU2Y1SVJv?=
- =?utf-8?B?dmM4UnpkbWR1bGoxR05LTHhPTVBQT044ZkVpbE1HOTd5cUdFcTNhdkF2TzdZ?=
- =?utf-8?B?QVRWcTVvSDF1RklJU3dmM3hUVmpCdzVSWUJvenVQR1F3RGd1WjZqbFFmK2Nj?=
- =?utf-8?B?NDBaWW83OVcrcHNtek9TMzVhTHE3UnMzcXFEUEIwaUVldnJ0VHNSYVdJbEJF?=
- =?utf-8?B?dUh4VlBzZmROMkdLcXdNYmNXYURuRmpLeVprVDhxOGxwY3l4RWJIVGlhald2?=
- =?utf-8?B?NVVId3FROXltL25UQzhQY2did0d3YUdZbEdnak1LMkpNTFFpTitISlhtR1NM?=
- =?utf-8?B?VmhTOElTaS8wM1BqT0orL3U4ZkFTUjM5eUE2ZzMyOSt4TUxvcHBqcW1zaDBO?=
- =?utf-8?B?Yk5FcFpwcUZoTThwdDdxdjM1dkh1dGVvNVgzeGc5OXFQaysyTzNQZXNJUy93?=
- =?utf-8?B?TkJlTUx2TzRvMkRIL0lTK2N0ajJJUEx0ZnR3cVo4TC9HOUF0M1RZc3dwUVA5?=
- =?utf-8?B?Z0I3VUdWQU51TXhSdlNsODlqMm9VMDJQb1R0UzVGM1ZYU0QzalM4anVIeTRP?=
- =?utf-8?B?TFRvR3JNSWdkdEQxMzM3c0tGVzIxQkZrZTZ5d2RITGIzZ29WcFpkZHFIV21m?=
- =?utf-8?B?ZlJTdjRhdUxFMVplR3Q2K1FsZXpRbkZTSjlqbjdOU2pCMi8xUzVWc1JydkUv?=
- =?utf-8?B?NEVSZlA3ZXIrdFh0OTB1LytDR2xqaXhXSEJPVTd0VThTbm1rZUFPVFNJdXB4?=
- =?utf-8?B?cTdPOFVxbFcrTEtNOXZBNTRicGNFTjBxUnpndFNUYmhaZXRwc3ZyTWt4L0Z5?=
- =?utf-8?B?ZDlDYXo4T2dqaGpoK0RvZTJwRmJLVW1VdTR3K0pvVXczN1YvZDd6RFlHSGdD?=
- =?utf-8?B?OGFINElScmVlbjRVZTlBeU1ZOGtUQU9mQlpZRThSQW1QdU5HS1lEaHk3OGZD?=
- =?utf-8?Q?zUhBYAVR2ho=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WVBMUVhKVkFUUDR0RnVnRjhnWWtON3lwdHBVMVhWTzJlSXBkV3dvbVo4Y1c4?=
- =?utf-8?B?THVvZmJQYno5enlUOGprT3J3aE44OWVnZFNWdVN3cmx5Mk0rZ2NpWnplakxH?=
- =?utf-8?B?bGJkRlBTcXBEMXdFRlJ1b2RaZVRoVnNkMXZ6TTFjSHBFK3NuTWVqN3lFdmYx?=
- =?utf-8?B?cXFHaU93OGY2cEFlSllkcEZNUUIvT2MveEgwbkNTYTVhTExyMFZJbVhmc3ZS?=
- =?utf-8?B?T0V1OWk1bmNxUHEvWlVqb3JPMHNnL0JYMlBJZjRBa0ZxdWkvV1FDQ1RXZzZO?=
- =?utf-8?B?ZnMyQjh0bmZIS2hwWUFMUHA0dzdaeDlJcmYvWG1uL0RaTU5PUm5YamR5ODNw?=
- =?utf-8?B?U0FidXl2TUdDWDY3ZmJFeHd3ZXdDSVZwMEd1ZkZlVThPL1FsUWZsdjRJZ3JN?=
- =?utf-8?B?UVFESWxteS9rTHhuZlNBM1BuNzk5bmZ6QVVrVEQ1WCtmYTdUVHQvVGY3cnFK?=
- =?utf-8?B?czFXblFyZWhTRFUzQnpTb2hvallpZzRjMGRmOFBoaXBKV0o3bVY5bnZKRkd4?=
- =?utf-8?B?c2NxeXhxNHV2Q1F0TzhDb2VJdmw3d3NWY0k2RXNRYW1qSU01M3BiNTlFRGZw?=
- =?utf-8?B?V2Nja3c2OStPR0VxVVUzNCt0a2M5TUp1cmVjZktzRWhkNWZaSG80U085ZkpE?=
- =?utf-8?B?SVEvd1BDQTVtSG1NYVM4Wk9NaEszU2dWc0ZDbnBIUEdYNkoyak5DTjBlKzhx?=
- =?utf-8?B?QktVQkI4dXB1ZndXanVwOStQMHVuTjdPa1hwVWZtQllKNmlHTCtlWWxoL3lE?=
- =?utf-8?B?ek9PNGJ4NEtsTUNENUhwMXc4cnI3emxrQk1NaTdadDB3dDh6elk2WnVsL3dr?=
- =?utf-8?B?K2Q0WjY2MmlydGVnU3dHbXpNcnNneGdITCsyZjN5QTZ0VExxNi80VlE0K1pK?=
- =?utf-8?B?Yjl4YTJhd2JneXJXUkVvRjJCSmZvQXltNHVPMXh4Z3BjU1VheWdEaTluWlpP?=
- =?utf-8?B?M0ROTm1HeTVrdXdvVHpQcjYrUExpZEk3b3hFMEplUWc3WTNJVEFEWFFSK0Y0?=
- =?utf-8?B?dzJYcUlKcFZTZ3Zma29aY0ZLYUxOUkVsVkR4VDJ6clprek50OU9PT0JVQXFP?=
- =?utf-8?B?dzZvVTV3R3JWQWhVcGhGKzUzZGpiYlgwcGpuc1dKZ2NMYUZ1TldVbURTTzJm?=
- =?utf-8?B?TWhwREJqOHBiNDlGV0JqRUJiUjdsYWdLTHFjTmZrS3RVV3pkVlRzSzlSYnhi?=
- =?utf-8?B?UloyWUVKOEU3amtVM2ZqV3FvbkJHM0JadVVQUDd2R0VZSWpCUURtUDZGdG9B?=
- =?utf-8?B?Q01kY0U0d1RzR1FvVTJnWTE0RFBsZmhRUk5lY2ZXVVZmNlQwZkF0blJXbkVi?=
- =?utf-8?B?M3VFT1lEaHNSams3ZFZiUitqRU5yOHRjeWxJWjVnREdPRWdsMUJDWWFzd012?=
- =?utf-8?B?Y3Fua2lLenNicG4vSThnd0FsdEVDL3M0eEUwQ0NraWpWYUtYV3ZVUkNhMzBO?=
- =?utf-8?B?T2U4OEpJdGdCNCtUU1pOT3g2ZDl4VVEvTGQ3ZnVrNTFsNy9CZTFNRVhuNkpX?=
- =?utf-8?B?Y2pWZ1FhSjljQ2RSKzhQeTZXN0gyL0dpL1FRR2xKdUd4aTIrYUt2VDJRcWVa?=
- =?utf-8?B?b0kxS3I3MEoyQURMR0YyWmcyakh2bTVVQ000OUx5cTBTN0puZ0pFU0N4NFJu?=
- =?utf-8?B?UVhXc2p4anpWV0ZzS3FMZkdJZlNLVWdUTE4xUWhsdU50Wnl1ZXBDblYrNnNE?=
- =?utf-8?B?SkdiOW1GTHE1RGhkN1plbTY3dUxuZ2FBY0NvQkhQckRJWTdQYmlLUGVOOW5k?=
- =?utf-8?B?T29LQnRKaXpZZTd1TGlOb1Y1UWd6RG53am4rYkNvQlY4SUxQZU1jNXJQZERi?=
- =?utf-8?B?bTVMTHYrNzFDVUFmdk5EV2RKcUJrZ1c4SzVlcXFQZkNlU2czM0M1YTJPVHVM?=
- =?utf-8?B?cmoyZ3YybkxGSG5naFo5NGdDaS82dHpLTDRwVHJnaUg5djlqUFdSNWc3dGlI?=
- =?utf-8?B?ZkdtVG10eXpGMWhxTkRjdlU4UWFZSlB5M2t1eWFxUlo1QXBaZ21LWFpPenlr?=
- =?utf-8?B?bzBIMU9GcExpRlViRFNlMnFiMDZPSWd5Umd6cjBGMzRucExZTVVFT0N6OGlm?=
- =?utf-8?B?TWNnQ0JkcHMxRjQrek94N1RUZFdzVnhXZWRoSWZZeHRZaTE0ZCt5TS9zc09q?=
- =?utf-8?B?eExyZ2U3bDFsdytiQm9HcExSM1IvZFdVRTc1RkkwYllRM3JTbGlDb3BsckNy?=
- =?utf-8?B?cXc9PQ==?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8603b883-55d8-422b-9526-08dd7b271eee
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Apr 2025 07:36:51.2356
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AqIT13pKl677gC/IjmLRX+lyVJGt6XraVg1Ktin+qja8HZ3/FeLlbdb4MHp/EZ6hYIKQv8rLN5DAJxTqBe2P6pkHDYzS1nB/cVj08vPRn1c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9286
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/13] arm64: dts: freescale: imx93-phyboard-segin: Add
+ CAN support
+To: Marc Kleine-Budde <mkl@pengutronix.de>, Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, upstream@lists.phytec.de,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
+References: <20250410090251.1103979-1-primoz.fiser@norik.com>
+ <20250410090251.1103979-11-primoz.fiser@norik.com>
+ <Z/fifUQ4M2doQbHx@lizhi-Precision-Tower-5810>
+ <ef74e49d-c413-4719-a174-42df91384469@norik.com>
+ <Z/knehHQeTTUXgr3@lizhi-Precision-Tower-5810>
+ <20250412-tentacled-rugged-bee-fd7e9c-mkl@pengutronix.de>
+Content-Language: en-US
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <20250412-tentacled-rugged-bee-fd7e9c-mkl@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Hi Marc and Frank,
 
-The FlexCan driver assumes that the frequency of the 'per' clock can be
-obtained even on disabled clocks, which is not always true.
+On 12. 04. 25 15:41, Marc Kleine-Budde wrote:
+> On 11.04.2025 10:30:18, Frank Li wrote:
+>> On Fri, Apr 11, 2025 at 10:08:21AM +0200, Primoz Fiser wrote:
+>>> Hi Frank,
+>>>
+>>> On 10. 04. 25 17:23, Frank Li wrote:
+>>>> On Thu, Apr 10, 2025 at 11:02:48AM +0200, Primoz Fiser wrote:
+>>>>> Add support for CAN networking on phyBOARD-Segin-i.MX93 via the flexcan1
+>>>>> interface. The CAN1_EN regulator enables the SN65HVD234 CAN transceiver
+>>>>> chip.
+>>>>
+>>>> Can you use drivers/phy/phy-can-transceiver.c to enable CAN phy instead
+>>>> of use hacked regulator-flexcan1-en.
+>>>
+>>> Sorry can't do.
+>>>
+>>> This doesn't align with other i.MX PHYTEC products using flexcan such as
+>>> imx8mp-phyboard-pollux-rdk.dts.
+>>>
+>>> Even the i.MX93 EVK uses the same mechanism.
+>>
+>> I think previous method is NOT good enough. Suggest involve CAN and PHY
+>> maintainer to discuss these.
+> 
+> Since d80bfde3c57a ("can: flexcan: add transceiver capabilities"), which
+> git mainline with v6.15-rc1 there is proper PHY support in the flexcan
+> driver. So from my point of view, there's no need to stick to regulator
+> hack.
 
-According to 'clk_get_rate' documentation, it is only valid once the clock
-source has been enabled.
+This arrived at the perfect moment. Just in time :)
 
-Co-developed-by: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-Signed-off-by: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
----
- drivers/net/can/flexcan/flexcan-core.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+I will switch to this mechanism in v2.
 
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index 6d80c341b26f..b142aa60620e 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -2056,6 +2056,26 @@ static int flexcan_setup_stop_mode(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static unsigned long get_per_clk_rate(struct clk *clk)
-+{
-+	unsigned long rate;
-+	int err;
-+
-+	rate = clk_get_rate(clk);
-+	if (rate)
-+		return rate;
-+
-+	/* Just in case this clock is disabled by default */
-+	err = clk_prepare_enable(clk);
-+	if (err)
-+		return 0;
-+
-+	rate = clk_get_rate(clk);
-+	clk_disable_unprepare(clk);
-+
-+	return rate;
-+}
-+
- static const struct of_device_id flexcan_of_match[] = {
- 	{ .compatible = "fsl,imx8qm-flexcan", .data = &fsl_imx8qm_devtype_data, },
- 	{ .compatible = "fsl,imx8mp-flexcan", .data = &fsl_imx8mp_devtype_data, },
-@@ -2137,7 +2157,7 @@ static int flexcan_probe(struct platform_device *pdev)
- 			dev_err(&pdev->dev, "no per clock defined\n");
- 			return PTR_ERR(clk_per);
- 		}
--		clock_freq = clk_get_rate(clk_per);
-+		clock_freq = get_per_clk_rate(clk_per);
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
+Thank you both for your input.
+
+BR,
+Primoz
+
+> 
+> regards,
+> Marc
+> 
+
 -- 
-2.45.2
-
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
