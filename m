@@ -1,90 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8062750FA;
-	Mon, 14 Apr 2025 13:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913C627F74C
+	for <imx@lists.linux.dev>; Mon, 14 Apr 2025 14:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744638996; cv=none; b=JMiooa6/i2LAhKJZSIekbvG9H/XwlE8d2fzksYSW62HyEgJn9QyaTQ7bbXv9HzFoZSnYttoidb6u4xAnhN/MpFivsa1qEmMwqIgpzH5iSpnFAKu3CKbrmCV9toIga5DK5vewgQa0e8N18utBt5s0sM59xrpq19ADkurkbuad9T0=
+	t=1744639327; cv=none; b=BAOybdwWfXyZKBZ8Kur3Wlr3RGzsFv5bhufaLFZAqhd2nf8B4/8s9mcHsnU45reCQyO0NACGPFYJ7n5inBeg0XzGqPvjZ2MXwRm12krXpWMLYQ2EQo554I7DHvubHAdWsFJ2EuGm9GQHXbGiaCoeAzgBjs//ewd5RGAMHAA1bDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744638996; c=relaxed/simple;
-	bh=29CBNrmVgcleWs/1i5/OqniYiRJUuyIR6MeG209LKl4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ffbFfneVVlPEQplebMlHdByfP2Pi0TIDTH2a/VBZocfnNHxgbXGq6DOQ3N3ISci5PwTnz8+QqLipQ4fCdBorTAwi3DpOH+p7RzXvALqAVu+76SvWGOR3TfNsy06YVPem2UbsY3G0yBIpzMHUMStfVhEfHtL3ryys7vNwJ06yaW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dB9UyK6S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744639327; c=relaxed/simple;
+	bh=sNefBMxH9d05RBIiV8BbvUq1auotHkfFm+DadS6lVlI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W6e/r4v94Ue3NPErZqTf+H02BPVPf6ztWBf6ox+ZCY49w54CmLL/yiySHhOowBVfDczS9MXPZTv2BgnLZzgF9t8sZt4ZZLcDolxMOsHLUiwR81w2pPhupXmQPlGG+kV4bQtGotmo/ShNV4/VyQVav1Tnip437FRTPLoVgcHm7Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=fRECQpnR; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dB9UyK6S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C9CC4CEE9;
-	Mon, 14 Apr 2025 13:56:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744638996;
-	bh=29CBNrmVgcleWs/1i5/OqniYiRJUuyIR6MeG209LKl4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=dB9UyK6SQsNlLJcabiwyJemljW95vqKAZb2O+9EN0pHJJD4rbL9lQ4Ohw/AfdmmgN
-	 CMnJDLQwZpaoY8YuzyQKS2rY6NCLm3dkEyxdKkL87/xntcZLoFiUZ42XgjxPDc/pya
-	 q4GaI+GpiTLItc6p744cWrh3e8g939GMhB9+0wPAd4vDR0/qsNfiBbMJczwiwO0E5X
-	 9pu5CPEBYpATSg+mXYSodFS8TppSG98JDRpO9gGuKwERLnaRm3L/Mn0l7hkCTlaxDP
-	 gIz21jKkd5wmWERLAuw/Q6muYYbq8k7vM/otixiVJRe7nJObgG5h/oiC7oEMdhvqdl
-	 /8ofSeiRwUdMA==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
- Chenyuan Yang <chenyuan0y@gmail.com>
-Cc: linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250406210854.149316-1-chenyuan0y@gmail.com>
-References: <20250406210854.149316-1-chenyuan0y@gmail.com>
-Subject: Re: [PATCH] ASoC: imx-card: Adjust over allocation of memory in
- imx_card_parse_of()
-Message-Id: <174463899312.86688.17897930299767743328.b4-ty@kernel.org>
-Date: Mon, 14 Apr 2025 14:56:33 +0100
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="fRECQpnR"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C875103801B7;
+	Mon, 14 Apr 2025 16:01:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1744639317; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=sVSzr9MoLYQLsnfqPt+wdg+ZWOABKxQrKv/DSGRxEPI=;
+	b=fRECQpnRvPqd36QtTIYfN6O/MfPloi9Vjzq9Mjg852cVw1r73K1Aqw8QHAk25dl7cWaEU6
+	3riWVS4KGgsWH1fyzijljiBAfye/o0avBEcd8dWEZZA95zofZYuWeQbLAQBSKjuaNWrUGw
+	MH1M3F0vqbgT50sZjDxL+3tZLIDDiRYnaTpw32neqEC/VqA7bfkTQqDkqNzxfiGfXN3WI5
+	9aJVldgVqNW4fqpxYVLabgFZHVaLCtkhQWewJLD0tNqX+dg8Mx829ydNqFXAVKbZjrrpup
+	wfvl59KI5A2Qn3mXnKV6AZhvKDoFLDkqwgH0kF9Y2ON46lKZL4HI6NwnSXNpKw==
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [net-next v5 0/6] net: mtip: Add support for MTIP imx287 L2 switch driver
+Date: Mon, 14 Apr 2025 16:01:22 +0200
+Message-Id: <20250414140128.390400-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-c25d1
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, 06 Apr 2025 16:08:54 -0500, Chenyuan Yang wrote:
-> Incorrect types are used as sizeof() arguments in devm_kcalloc().
-> It should be sizeof(dai_link_data) for link_data instead of
-> sizeof(snd_soc_dai_link).
-> 
-> This is found by our static analysis tool.
-> 
-> 
-> [...]
+This patch series adds support for More Than IP's L2 switch driver embedded
+in some NXP's SoCs. This one has been tested on imx287, but is also available
+in the vf610.
 
-Applied to
+In the past there has been performed some attempts to upstream this driver:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+1. The 4.19-cip based one [1]
+2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
+   with NO tag appended.
+3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
+   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
+   the driver uses already configured MAC and PHY to also configure PHY.
 
-Thanks!
+All three approaches were not accepted as eligible for upstreaming.
 
-[1/1] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
-      commit: a9a69c3b38c89d7992fb53db4abb19104b531d32
+The driver from this series has floowing features:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+1. It is fully separated from fec_main - i.e. can be used interchangeable
+   with it. To be more specific - one can build them as modules and
+   if required switch between them when e.g. bridge offloading is required.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+   To be more specific:
+        - Use FEC_MAIN: When one needs support for two ETH ports with separate
+          uDMAs used for both and bridging can be realized in SW.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
+          attached to switch and bridging shall be offloaded to HW. 
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
+   separation at boot time. Port separation is disabled when bridging is
+   required.
 
-Thanks,
-Mark
+3. Example usage:
+        Configuration:
+        ip link set lan0 up; sleep 1;
+        ip link set lan1 up; sleep 1;
+        ip link add name br0 type bridge;
+        ip link set br0 up; sleep 1;
+        ip link set lan0 master br0;
+        ip link set lan1 master br0;
+        bridge link;
+        ip addr add 192.168.2.17/24 dev br0;
+        ping -c 5 192.168.2.222
+
+        Removal:
+        ip link set br0 down;
+        ip link delete br0 type bridge;
+        ip link set dev lan1 down
+        ip link set dev lan0 down
+
+4. Limitations:
+        - Driver enables and disables switch operation with learning and ageing.
+        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
+          on purpose, as up till now we didn't had consensus about how the driver
+          shall be added to Linux.
+
+Links:
+[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
+[3] - https://source.denx.de/linux/linux-imx28-l2switch/-/tree/imx28-v5.12-L2-upstream-switchdev-RFC_v1?ref_type=heads
+
+Lukasz Majewski (6):
+  dt-bindings: net: Add MTIP L2 switch description
+  ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2 switch description
+  ARM: dts: nxp: mxs: Adjust XEA board's DTS to support L2 switch
+  net: mtip: The L2 switch driver for imx287
+  ARM: mxs_defconfig: Update mxs_defconfig to 6.15-rc1
+  ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2
+    switch
+
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   |  141 ++
+ MAINTAINERS                                   |    7 +
+ arch/arm/boot/dts/nxp/mxs/imx28-xea.dts       |   56 +
+ arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |    8 +-
+ arch/arm/configs/mxs_defconfig                |   14 +-
+ drivers/net/ethernet/freescale/Kconfig        |    1 +
+ drivers/net/ethernet/freescale/Makefile       |    1 +
+ drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+ .../net/ethernet/freescale/mtipsw/Makefile    |    3 +
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 1990 +++++++++++++++++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  788 +++++++
+ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  120 +
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  449 ++++
+ 13 files changed, 3578 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
+
+-- 
+2.39.5
 
