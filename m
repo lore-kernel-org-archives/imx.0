@@ -1,52 +1,50 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87405289357
-	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 14:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA8520E003;
+	Tue, 15 Apr 2025 15:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744728505; cv=none; b=DVKuPnPfV6e16PhOns0wLdA2QpQPY9xAVhkHF2HxsBbcf5mticJLTdeLzIrGD6AygsCGKdmatsYPxu2dTR8qX5PE/0YaacVcTu5+SJ8bBzstrki7vAxl/SKvcrlPso3gZWjUJiJ1Ubi9LJjKPby52y/l6YWwMvRgje329302YIs=
+	t=1744730866; cv=none; b=Zcpv4BQc/YrO58LJy2P2mdxojtwIHSF5YDfaYjuCm+afrgu1TvzlIQKFuCIcR+Mm/JBGry6i/n2r+4MTrzMwaH85AVmzwtIA9rF3GwNSkbZPKRU/b1rkfosbR5aEFg0+rXK/+kZjiWBf6DmnUAfT/uiTD7x8PuctiWUQLkdpn4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744728505; c=relaxed/simple;
-	bh=dL3GBIFDMlroIuYc/uiPg97dQ44gPEpRL5p9zMC4w/A=;
+	s=arc-20240116; t=1744730866; c=relaxed/simple;
+	bh=VErCuvMt2wWRUemVF5KwKivhZmgRpbT0ckqDN43FWYw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sTTTPm7bW5gy0yXG7TZVLeva8TMrKVen7ERsCCRCXcwwZxuBpgGHJsdAYtYeKAWgaF5BDz60K3/nfMG/XPh8HKZhLqPuvZb0qJ6GKZhLp5JGabnQyU4IxRRDBkYgJvhP7k1aSaD57vnf6icZKjiBfTTgGRzsfMQDbWdf8RojaHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0DB9C15A1;
-	Tue, 15 Apr 2025 07:48:21 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F45B3F694;
-	Tue, 15 Apr 2025 07:48:19 -0700 (PDT)
-Date: Tue, 15 Apr 2025 15:48:17 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=EVAg/+mEBs/+5er+Fcd/blILhbRSIAQbIQGxFWptjLqcrXwa/slfkJiHKt5zqO4cxRCAt9bzpw3b0Cpn0rZ9Ski0YRP8je2xApnMAQTDJVRK0yNl3WS2GD4eUQVZUUP265KXAs3hm8FlFAs7/sGnEi1a7WX7ugdQDy9Xyz/yoiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=f96StIq7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="f96StIq7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=oml1Mrnp47RusR5d0ApAKkTSky1zT7/Gd1S7AMinXF0=; b=f96StIq7u2cg4/MtulmKNAp16A
+	1OO3m/xvx3je0VnrZwj+YB4U8Civ6zLKNI1Pucg9kLD/hU0/wiD11+A0p7CP++SyR98rp4KN+EfaE
+	wz5adawaEkkukTZnuA0pAJIyACMaWt3JJkgjKwLPlNiccEJESrZjkZhZx7+k43yeTNlE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u4iCH-009TLQ-L9; Tue, 15 Apr 2025 17:27:37 +0200
+Date: Tue, 15 Apr 2025 17:27:37 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v4 5/7] firmware: imx: Add i.MX95 SCMI LMM driver
-Message-ID: <20250415-exotic-scarlet-seriema-c0e223@sudeepholla>
-References: <20250408-imx-lmm-cpu-v4-0-4c5f4a456e49@nxp.com>
- <20250408-imx-lmm-cpu-v4-5-4c5f4a456e49@nxp.com>
- <20250414-wonderful-cute-bandicoot-accb6b@sudeepholla>
- <PAXPR04MB8459195AAF65D38AFA1D4F9688B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <20250414-tiny-classic-barnacle-5f8c8f@sudeepholla>
- <PAXPR04MB84593BB91063D13BB05BEB5988B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <PAXPR04MB84598733FA39A7402E91DA1988B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <20250414-ebony-slug-of-felicity-421b0f@sudeepholla>
- <20250415091016.GB10243@nxa18884-linux>
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH 2/2] arm64: dts: freescale: add initial device tree for
+ TQMa8XxS
+Message-ID: <aa21556c-8c79-4d03-b6db-3b4cf450fc3a@lunn.ch>
+References: <20250415133301.443511-1-alexander.stein@ew.tq-group.com>
+ <20250415133301.443511-2-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,38 +53,38 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250415091016.GB10243@nxa18884-linux>
+In-Reply-To: <20250415133301.443511-2-alexander.stein@ew.tq-group.com>
 
-On Tue, Apr 15, 2025 at 05:10:16PM +0800, Peng Fan wrote:
-> On Mon, Apr 14, 2025 at 12:17:34PM +0100, Sudeep Holla wrote:
-> >On Mon, Apr 14, 2025 at 11:00:20AM +0000, Peng Fan wrote:
-> >> 
-> >> Oops, I just checked wrong Kconfig under drivers/firmware/arm_scmi/
-> >> vendors/imx
-> >> 
-> >> Build this for ARM32 i.MX is ok, I just think no need. So add
-> >> a ARM64 dependency.
-> >> 
-> >
-> >OK, I will drop the ARM64 dependency when applying. I also don't understand
-> 
-> Thanks for helping on this.
-> 
-> >the dependency on i.MX firmware LMM and CPU drivers in the scmi vendor
-> >protocol as the dependency should be other way around. But I see Arnd had
-> >fixed it so I will keep it as you have posted to keep them all aligned.
-> Not dig into much on this.
-> I just followed what Arnd did when I prepared the patchset to avoid
-> potential build issue as reported before.
-> 
+> +&fec1 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_fec1>;
+> +	phy-mode = "rgmii-id";
+> +	phy-handle = <&ethphy0>;
+> +	fsl,magic-packet;
+> +	mac-address = [ 00 00 00 00 00 00 ];
+> +
+> +	mdio {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		ethphy0: ethernet-phy@0 {
+> +			compatible = "ethernet-phy-ieee802.3-c22";
+> +			reg = <0>;
+> +			pinctrl-names = "default";
+> +			pinctrl-0 = <&pinctrl_ethphy0>;
+> +			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_50_NS>;
+> +			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_50_NS>;
+> +			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
+> +			ti,dp83867-rxctrl-strap-quirk;
+> +			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
+> +			reset-gpios = <&lsio_gpio3 22 GPIO_ACTIVE_LOW>;
+> +			reset-assert-us = <500000>;
+> +			reset-deassert-us = <50000>;
+> +			enet-phy-lane-no-swap;
+> +			interrupt-parent = <&lsio_gpio1>;
+> +			interrupts = <30 IRQ_TYPE_EDGE_FALLING>;
 
-Yes, I am keeping it based on those changes. I need to spend sometime to
-understand why it was done so and see if anything can be improved. It is
-not straightforward to understand that dependency, for me looks like it
-is in reverse direction.
+EDGE_FALLING is very likely to be wrong. PHYs are generally level
+triggered, not edge.
 
-Anyway I have pushed it tentatively, will let you know once it is finalised.
-
--- 
-Regards,
-Sudeep
+	Andrew
