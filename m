@@ -1,248 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017A02797A8;
-	Tue, 15 Apr 2025 06:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6472798F6
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 06:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744700069; cv=none; b=kHCXwlWPWMoiesuH0Nk5/XquOlLOGbnCRnRLPpmYCAwOvHGkJbKcdlP4B2EnBP87UN1HiusreMjtMyu1ctJr4KDg9nT8HwOLNKbh8fs8Crjw0VKVoNnrQKq4C6u3/YIJ2RM6r/xs8akshxC6vmnyt+4uLmviFlWg/QL2iwcySr4=
+	t=1744700072; cv=none; b=VGIpa9/FAZ91kyS21PlV/0G6TKnQp3LuGf/85VqPniE11YxrrkT2C3CnngtuRr70ZQHTYR2U1NJpfTHKtbBQNruhJlc1oZBKNhelaw7XHOX+K7nrGA4VLiGKM5To4rHKZDWmM0Fz2HA/83S2OBNTrBbrrXfQ8jkVnPtLxcg7LoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744700069; c=relaxed/simple;
-	bh=U/HBmPy+GDcafhGGDUmjDBSu34YLOVYx2WKJyUrGsIc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XVCV5exmM/XBBBWhywiY8vdyaVm3HVMPBxQKnZpTj9ohtzvW1dW3n5/GD4ZP4ZS5dcss0cGjF6q6P1rcSWobgswc+DYKMu5XgaxcFMsRetaUpKVGdtPfRCSeNh/OIUYRxc1F4L7HbUrvMA15eGV0z85VRn/10clpRFfy7Pkqlys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFebsdwD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744700072; c=relaxed/simple;
+	bh=k9OqEDY3JEcssGMHTHMMKW2DIA2hSwtYUS+Auc8BG6o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E7vC1tpuXvA6XO3XZjEA9MJ9X/iX5rmUX14qlyhfPIr5R21hj3zr6uZq6YEgR9x5KAVl4eHb+4LmKt4lGcuR/CiBIpCG5/9NMJdYtrrCkkg8jXqvsZ2DksUsPoduYlVadU67j88ETfg8TBo2JhYg+ILHa8kmB6kxPM54ytme1Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gdw3vbyb; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFebsdwD"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6F3BDC4CEED;
-	Tue, 15 Apr 2025 06:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744700068;
-	bh=U/HBmPy+GDcafhGGDUmjDBSu34YLOVYx2WKJyUrGsIc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=hFebsdwD8gIlKe0Rp+R5oOWd6/9C6UZyd+x1BHaMHi1r3zRe2BKMoQ29Tzrg8XBKD
-	 1BFw1BWNRNISr4j/6IdGZzSn76xNGYEliD2f8vrlpF0pxhIwUdxbWc3jIBK6zKPA48
-	 RavL5Rkt8JOEALoDtDJLLDYNJ6FDugyfpb2HxOpQw1xe9c5XR75tHkOLDVE3rtcJM9
-	 0dgtzsgFhXUyH9ykNChGaVLXrJKGGNJW3I9RYZoCc9LXPV4c78EJ0ednLLrM51H3Um
-	 1qicGctsjnLASFttE2XkIlT6Ysb/jErUYOUl0wUKcjyCush9iaRs6JJksg0vxIY4jo
-	 ZRAO9JqGZ/ipw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6644BC369AB;
-	Tue, 15 Apr 2025 06:54:28 +0000 (UTC)
-From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Tue, 15 Apr 2025 08:54:31 +0200
-Subject: [PATCH v5 8/8] arm64: dts: freescale: Add the BOE av123z7m-n17
- variant of the Moduline Display
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gdw3vbyb"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-af28bc68846so4615666a12.1
+        for <imx@lists.linux.dev>; Mon, 14 Apr 2025 23:54:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744700068; x=1745304868; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k9OqEDY3JEcssGMHTHMMKW2DIA2hSwtYUS+Auc8BG6o=;
+        b=gdw3vbybFRhhj2LUUiFud+4BTkBaD+NO+/rd2lO5EJCjAPkn/Ss6Sud7o1luy5dHew
+         FasopLXPo8uvxY7tqbR3y5MzTc3stdR4BimRHm9HwrwBn/+jbmn4xof7i/LsaIHkTMIo
+         90I+14Ho+nBGBx6jfo6J+VtFC3hkMaUraQVNoJkvZ7TxVuvL0RJHPi1C+R7E+1Lkyh0f
+         9GpFhM6fdPJqgojLApQ4BYZviWy9mZIDADeFdaQoTtWziD6eaiBNVEplOhWR5tsaIP2K
+         Uiq2SaYQlADvOIHR6I/4JJn13Jh88S0oeEGccVrRXFRFPqV5FOdxnpxINLK1BqgBOBbF
+         kdtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744700068; x=1745304868;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=k9OqEDY3JEcssGMHTHMMKW2DIA2hSwtYUS+Auc8BG6o=;
+        b=bMT4NXXKSiUMtGHvrF4msul4NX3L04W9ac/al9dn+PVlekZUGzvGzbplFqyms+URgd
+         R9OKyhcJeB/W5N3lx6V0vKana9yowMmy0BkbJAhdrojQZnsn6CnhPRWUbCPzjWidLTun
+         E5IN0O6O/9bB6derhX1ItdEqHni3fHmEIGRvxExvn0lJBpmFh029cHb8K/FPd/68S1Cg
+         6EBbg0S7xIGlX0FiJfD6/jrztSG3DJL2KmCRXkgEX2BySBrlvYtwIrJkwv1U1kddJzPK
+         x5nko6SyFO1YsRRT5CZ3uInbaFT2nZ8reWSXrIzih+dCVUcOPfXWnoMp6jDK1I8fmCan
+         CNsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0jJazFen4RRbOZY14fQn+Erd7b/XzDTHD5TUb01vG6tUDwmcJGVpwgvXrNol2hnslHlE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YznZxGhFTITiZH525xmTJ1O9bEqq9q2aY0vfMhU10jGEO6q1tqA
+	tyKfalFus+6extiwRSwf7C0MrDN95j0Io10t+cx8mV00Ogafm5IVBOV0Z5H7GTxX9X2oBTRxZ2z
+	YNGs48G3a64qZt+zzH6JOvKmNXmQ=
+X-Gm-Gg: ASbGncte+bVlh0chOFZ9N1egGDurjCGEllqxtbIeoc2+BbxK90OSsR43LVxDXLCgql5
+	GqEiKCCuparxOWz+xzvHnA+JXEUQEliokb5QkXHLz2+qBccXk0Rze66lI9HZL9/0cjvtCSHbVXs
+	qSeeV2DLRtq0UJqTpH/w==
+X-Google-Smtp-Source: AGHT+IGsWWhYe9e4mWSJsic/j7kKIeW7DfXwjL4Jb4i7m9zXmuDIJPuuX3HEnkVvhnsbqUdqK2dIfJphOjrZOmuAgmI=
+X-Received: by 2002:a17:90b:2811:b0:2ee:c291:765a with SMTP id
+ 98e67ed59e1d1-30823639c94mr21764256a91.8.1744700068456; Mon, 14 Apr 2025
+ 23:54:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250415-initial_display-v5-8-f309f8d71499@gocontroll.com>
-References: <20250415-initial_display-v5-0-f309f8d71499@gocontroll.com>
-In-Reply-To: <20250415-initial_display-v5-0-f309f8d71499@gocontroll.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Maud Spierings <maudspierings@gocontroll.com>, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744700066; l=4676;
- i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=LByPw/mrn8RNYJR8lwlP3ksUPIStEdKRG9cNVPBNlbg=;
- b=Haprc5ZGPJdAK4aRf7mhxTyB9H52YbUECVB0FoeaKrXsOtQKJQAoxvateeFNFNKwTJCy+gWDs
- /B7sHT+lityA4pdvwzlHx3zC+IZfDmbE0PZWSKKFUNQVg336hNz5ZLc
-X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
- pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
-X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
- with auth_id=341
-X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
-Reply-To: maudspierings@gocontroll.com
+References: <20250414123827.428339-1-ivitro@gmail.com> <20250414123827.428339-3-ivitro@gmail.com>
+In-Reply-To: <20250414123827.428339-3-ivitro@gmail.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 15 Apr 2025 09:56:14 +0300
+X-Gm-Features: ATxdqUGxqJNdcd-JZaoJQzqSGgpBMKry2SLqzTD77e0YfcWpcDRWqQ9RF6-oALY
+Message-ID: <CAEnQRZBt7mgi2ep8j5U=8DWA+KfO_nGfczXrSxAy_HaSeGNTMA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: add Toradex SMARC iMX8MP
+To: Vitor Soares <ivitro@gmail.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Vitor Soares <vitor.soares@toradex.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Hiago De Franco <hiago.franco@toradex.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+On Mon, Apr 14, 2025 at 3:39=E2=80=AFPM Vitor Soares <ivitro@gmail.com> wro=
+te:
+>
+> From: Vitor Soares <vitor.soares@toradex.com>
+>
+> Add DT support for Toradex SMARC iMX8MP SoM and Toradex SMARC Development
+> carrier board.
+>
+> Link: https://www.toradex.com/computer-on-modules/smarc-arm-family/nxp-im=
+x-8m-plus
+> Link: https://www.toradex.com/products/carrier-board/smarc-development-bo=
+ard-kit
+> Co-developed-by: Hiago De Franco <hiago.franco@toradex.com>
+> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
 
-Add the BOE av123z7m-n17 variant of the Moduline Display, this variant
-comes with a 12.3" 1920x720 display.
+Audio part looks good to me.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-
----
-Currently the backlight driver is not available, this will be upstreamed
-in a future patch series. It is a Maxim max25014atg.
----
- arch/arm64/boot/dts/freescale/Makefile             |   3 +
- ...x8p-ml81-moduline-display-106-av123z7m-n17.dtso | 139 +++++++++++++++++++++
- 2 files changed, 142 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index ca3255aa9e18187b33d54c836992aca5dd5d0465..c821f9eda332abd1db1867dab196c09929316728 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -217,7 +217,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314.dtb
- 
- imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10-dtbs += imx8mp-tx8p-ml81-moduline-display-106.dtb \
- 	imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtbo
-+imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17-dtbs += imx8mp-tx8p-ml81-moduline-display-106.dtb \
-+	imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw71xx-2x.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtso b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtso
-new file mode 100644
-index 0000000000000000000000000000000000000000..c723d13b95a61fa5ff0e41516f8a053f9d0b7768
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtso
-@@ -0,0 +1,139 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Copyright 2025 GOcontroll B.V.
-+ * Author: Maud Spierings <maudspierings@gocontroll.com>
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+#include "imx8mp-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&{/} {
-+	model = "GOcontroll Moduline Display with BOE av123z7m-n17 display";
-+
-+	panel {
-+		compatible = "boe,av123z7m-n17";
-+		enable-gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&pinctrl_panel>;
-+		pinctrl-names = "default";
-+		power-supply = <&reg_3v3_per>;
-+		reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+				dual-lvds-odd-pixels;
-+
-+				panel_in0: endpoint {
-+					remote-endpoint = <&lvds1_out>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+				dual-lvds-even-pixels;
-+
-+				panel_in1: endpoint {
-+					remote-endpoint = <&lvds0_out>;
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&i2c4 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	/* sn65dsi85 */
-+	bridge@2d {
-+		compatible = "ti,sn65dsi84";
-+		reg = <0x2d>;
-+		enable-gpios = <&gpio4 14 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&pinctrl_lvds_bridge>;
-+		pinctrl-names = "default";
-+		vcc-supply = <&reg_1v8_per>;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				dsi_lvds_bridge_in: endpoint {
-+					data-lanes = <1 2 3 4>;
-+					remote-endpoint = <&mipi_dsi_out>;
-+				};
-+			};
-+
-+			port@2 {
-+				reg = <2>;
-+
-+				lvds0_out: endpoint {
-+					remote-endpoint = <&panel_in1>;
-+				};
-+			};
-+
-+			port@3 {
-+				reg = <3>;
-+
-+				lvds1_out: endpoint {
-+					remote-endpoint = <&panel_in0>;
-+				};
-+			};
-+		};
-+	};
-+
-+	/* max25014 @ 0x6f */
-+};
-+
-+&iomuxc {
-+	pinctrl_lvds_bridge: lvdsbridgegrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI1_TXD2__GPIO4_IO14
-+			MX8MP_DSE_X1
-+		>;
-+	};
-+
-+	pinctrl_panel: panelgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07
-+			MX8MP_DSE_X1
-+			MX8MP_IOMUXC_GPIO1_IO09__GPIO1_IO09
-+			MX8MP_DSE_X1
-+		>;
-+	};
-+};
-+
-+&lcdif1 {
-+	status = "okay";
-+};
-+
-+&mipi_dsi {
-+	/*
-+	 * burst has to be at least 2x dsi clock that the sn65dsi85 expects
-+	 * display pixelclock * bpp / lanes / 2 = dsi clock
-+	 * 88.000.000 * 24 / 4 / 2 = 264.000.000
-+	 * range gets rounded up to 265.000.000 - 270.000.000
-+	 * 267.500.000 * 2 = 535.000.000
-+	 */
-+	samsung,burst-clock-frequency = <535000000>;
-+	samsung,esc-clock-frequency = <12000000>;
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			mipi_dsi_out: endpoint {
-+				data-lanes = <1 2 3 4>;
-+				remote-endpoint = < &dsi_lvds_bridge_in>;
-+			};
-+		};
-+	};
-+};
-
--- 
-2.49.0
-
-
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
