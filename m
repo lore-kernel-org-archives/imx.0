@@ -1,774 +1,689 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011050.outbound.protection.outlook.com [40.107.130.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5AD14885B
-	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 19:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744745637; cv=none; b=TG89Ts37iD/intHgNJMU7oK9/7CYtF7vqqa1HmCFRMBGFxDFlp74w8Qkyf4KhVZ/Skiv66lG6A6hasJV8aJoio4/BHWdmNv9Ss+zkhckhtlJk60rXShGmrx/ErHWe2iuS0zc0PpHPUUwmXr3BZItFjVNogTMLsj0Gr2KX1ICH9Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744745637; c=relaxed/simple;
-	bh=usQASHtGoq/XSwEkR2jDg/rRAv7r1myDUUHwVM551EA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FTBsf1/FMwCLJjAiPu2Ux0L5jgl0Guero9NNRJI//V/xyRZTvJRFaIibX+BUR7eLVu42emrnYyWYOd6HzQGO4GTElWCzfWapifMZ5K4XKep9RvhQhGypFdziSgsghdLk803Qn/s+JXeJ4GJxtgsGXKwi6AMNpDOYj2WMmcN+Oc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rFeIk9S3; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78603255E47
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 21:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744752607; cv=fail; b=Gq/k5fxYkWBuzeu+Q8MZK6Y47shVszjPL3Cq8rjxdn+mREwhKstep829N+5iAMyaFCp9Em2/JeFXuVu7IAcf51fAcYMaYjCHFXvpYBpxpILTCN5RBKZYuGrBpAHUgRZR1pIeI1PWL+stYSROS9VzVZRc5YJ2z3+C0gDXcZuTxSo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744752607; c=relaxed/simple;
+	bh=G1X2VwCL5WtatAoNX7zC0n+RmOF5RHMxZBv4FofibFk=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Gj1GvMa/SMOXOYtYz12vueKp3lL1394RBEoc8ysJfT0zepj3IZcgWj7H+ZoxxTHe32Ac9fFSZfuaVoVfwhKyM/MxLxhpgXneQT35snE+OKOOkCIlGosepqD5zf2K8jnPObobthb1R+ce8vEFOYEWhJkFiuQjlx+b8MwaWiiEaNA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VDbN52LM; arc=fail smtp.client-ip=40.107.130.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rFeIk9S3"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744745632;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zCsSEcNf+XWWx29rQfWMF0kTGKbU4JyjH5se1d+aWuo=;
-	b=rFeIk9S3zkpA4aBNH6iYmyS7RcPKnvF6E9r4Qa68KiSi5cMc9lultFQ1Y0UW/RJBoyi5sL
-	JWC4xqK9wWGvWY6sVDuNTas9wrvDHLwUfFOZ2WJCvlZ6kqdsLLScS9kswWHQrqSFhFWJx0
-	515dnKzBeqK/cjhoM7Ye1RCXyBHqZVw=
-From: Sean Anderson <sean.anderson@linux.dev>
-To: netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: upstream@airoha.com,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Joyce Ooi <joyce.ooi@intel.com>,
-	Madalin Bucur <madalin.bucur@nxp.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	UNGLinuxDriver@microchip.com,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [net-next PATCH v3 05/11] net: pcs: lynx: Convert to an MDIO driver
-Date: Tue, 15 Apr 2025 15:33:17 -0400
-Message-Id: <20250415193323.2794214-6-sean.anderson@linux.dev>
-In-Reply-To: <20250415193323.2794214-1-sean.anderson@linux.dev>
-References: <20250415193323.2794214-1-sean.anderson@linux.dev>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VDbN52LM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W/7E5FAcbQDgO1Kry+uRVsTP0tJYhZKmywXv79GC931zGFhEI/uJlOHxSJmQGh7+XSXt0kMnfKHEMW0SspsQ0Ex0a8e3PQk6Jfml2BHZJPhILOQ8qTWfJJh755HDOTvDJPOeydqhBR6t08dSxQVUo02vZw0w9M2elQ5YN3fPhOEte5cA5E4eW2y8859v6Gf6+WACzmaK7KU81GYhu8AUulnVDLYPqZzJBowEZKnI3kaRqwdx6sJX/1ER4LNpIsQ8bJNK+X/fjiI4uCSNiSAIhyz+wMMKDStJ/D/Kuv7OTm12/B0FNkSJrVyNRUzmRz/6gZzSYxl0iHbA0zCPONhwSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CrVQAq1baSOeuNjRCkVasSr2b5/PDXoNjMnqS/jPGYc=;
+ b=eJBGrHQCOI7a803oTF6GE36j5ETPulUa9sYzoisjacQhccqQ1a6DardL4+FXhiOldLnv+KfUatdWNhcS95Ai1snEb6qm8BjWBmfJ3Tec95s5MTFW9liWRCZcF98YDsOkVa9EUpy/WjpJOS17vlzvIw9DvGzAksbiuTA/Kd743VxdJh9CUD8hJYAa7mJdNnFdtT+uweRxxRKTtGHj3C0J9BYXw1ZYEcxYoTOXAoFJPDhj3oarys1kMxn2lHjE/jbPrSfigvn14gaEj4BxWIfeOqWpXTdXAXUVGWD2yFPrT/Q9tT5oO8I2dLm68BTWnYc49C6G4NlKKpyXEDQtWxqfzw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CrVQAq1baSOeuNjRCkVasSr2b5/PDXoNjMnqS/jPGYc=;
+ b=VDbN52LMX77mkQqwZs74mLHEvP1jUwqLghyjCjQD/dr5ZtKPidJYK61Q21Ip9HrRrri2yjtl2XE9NHQR05bUi+TWpneOZnZe8We87gORFJGQZ+XG7fLqU72YMbGDSaxJBzzBnbRVNAyBIxN5eRNNVxssoQsF2v/+euCUYBW+97T4U+0f4IHrhy/JZzZ4x4qmbfJugIiMwGWQYiwcK8EkhPy4f4f2yWrG8M2PUM23S3ngn516vvvW/kmCN267BRAgr1yLwfq1f1RAZcVMJBq2i1iRQhCu+0vMxRaxFsyCqyMGjNcBju6aGxvzQbgY3Ixa1YjuhNz+Kv/jtTQHXzZFPg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by DU2PR04MB9523.eurprd04.prod.outlook.com (2603:10a6:10:2f6::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.36; Tue, 15 Apr
+ 2025 21:30:01 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%4]) with mapi id 15.20.8632.030; Tue, 15 Apr 2025
+ 21:30:01 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR FREESCALE IMX 5/6),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: display: imx: convert fsl-imx-drm.txt to yaml format
+Date: Tue, 15 Apr 2025 17:29:42 -0400
+Message-Id: <20250415212943.3400852-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH8P220CA0005.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:345::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DU2PR04MB9523:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5ab83f6-5313-4a56-5739-08dd7c64ad0e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|7416014|366016|921020|38350700014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?gq8mr5lq7JaPAWfTFY35m5RVA+SkVW4M5igFVyPSZaQTi/C/UtL+6FboAqbi?=
+ =?us-ascii?Q?earzcYq8mgQPAsbNGYuwBaYI7Et8p4CU0cEOuzTwD78t1TJcxosA14iFD8Er?=
+ =?us-ascii?Q?04kBRxqkSy0nuWxIFwtNT9jhMaNX+hTj94P8vwJPeT1KvJDssxuj0J3OO7Kx?=
+ =?us-ascii?Q?n5p0iTl9zFH9kVsKbooqu9G/DmWOwOBpoXQ/TlwBabQA8XG3feh8GDBH2cxp?=
+ =?us-ascii?Q?Y1ETnbrEBkrmNI/JgKEvjM6u/old2Ti5O5FZiP8dS5SwhI/dbnX6TOr98g7m?=
+ =?us-ascii?Q?LMAROLDocGHrC4Nsxiro1w7jE/GeaIowJhTT7fArxyEFuff6geXsUhxsi9ce?=
+ =?us-ascii?Q?xd+k24eXopfbUnwpjpuFVYDaQczjVaseYy+sUZPOg6pNjOns/KkqPuPh8E1j?=
+ =?us-ascii?Q?Hh9XW2OpwQYyuHQfaSBy1iJDRrQYoiy3R1cwb0nkOiuUJp6teRcKoBWfSJ1h?=
+ =?us-ascii?Q?YI72PD9CtGkLeZg6nVpE9CZCDSNJeyf1nU8MSYVC/voDhhh5Cq/oskYdy5om?=
+ =?us-ascii?Q?4i4JhCWnPOObHppuKUYTTRWA7tWtlN3TDn+lld8rd4qxW5p/l62lvJUb8kFa?=
+ =?us-ascii?Q?4eVOeZIuzF1V4yGFII73A9SksglrVDOIwToNKeSh9pLEmIpF3Nk8nfHHKmTU?=
+ =?us-ascii?Q?6tSh2VlbiCS9HnwCCuwoWyr7m5cUbHbbXm1/J91XIgNFiytkhsUluJjmlshQ?=
+ =?us-ascii?Q?w878uFPB3ZTEwUNvbQzbtA/459O5muZupCJ4MahRF5ja/unZ3laxNv/tdTp3?=
+ =?us-ascii?Q?BTP8XiiT3Wp5wASL2Q5VybogKRftTEZEffdlsuzJ/qQRbvlW3lgmo6Z6SrPj?=
+ =?us-ascii?Q?EhC5+FIbvw2vVAvCYZTn3jU2lZy9cIvW+OVvfosRQ8APMoOF1EyVaSpOiJbx?=
+ =?us-ascii?Q?BCbv/N/vCrejWd8Ylayxk7FsMKMPwvACgpOgyQ44d8o/lkjlf/briKwy4l5P?=
+ =?us-ascii?Q?Iyjh0xHEOe/lM6MTObBMis9Kx0H1K8hxItaUANNROGSnnms0WJeJSOYhJXcX?=
+ =?us-ascii?Q?6X0XYDoebWa5cFDKC5ZBrv7O6HQFgKrPEd7CJwiuHRRlI09lbjVIAmfkYwqr?=
+ =?us-ascii?Q?n8+MDEt+vBuJPLtd3qupRnb1YaDViY1ZrbhH+zXKaBavyOXSbD2D8yi/46Be?=
+ =?us-ascii?Q?S4iwBA9YeJRCzr0tX31sM2wUxGJijuIQTvm+GWRB+GCXMJZF3rhx9+EngRTZ?=
+ =?us-ascii?Q?BYtzoTzOOhyH2SP2s1uX2V7gBz3XMiBVLrCntwnbuMV8q+DGUPunZu+yQKiA?=
+ =?us-ascii?Q?7nroED2tAXUHvUsRo54t0DUtL8+UN9MC8N2agxj3n86fSr/jX3p1y0TpSPjq?=
+ =?us-ascii?Q?e7Up6WGQV7QKWQZzQxUypyeDQ4meotgR7I6C9Wh48y7sQTXfzLWh5OOBJyaH?=
+ =?us-ascii?Q?AtVqMVUMjtnSJi+D9d0SdIsVCZjOQr3pWc8V9A+6UjiKOdUgt4g8DiMzUE7m?=
+ =?us-ascii?Q?vVM3tDB/d5OndqU7Irc2Vf7ZjBW9nzfG?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(7416014)(366016)(921020)(38350700014)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1joh6Knr+cBIHXSWtgr0dEWEP4Elu6Kw0UxwGpoI0TGfLwbQMc5baAvpeWcG?=
+ =?us-ascii?Q?pDfXWtQxjTrZsIikhwRbnAEEMLKNaxl6BfrGUCaDIW23rd1HM0KpFlPOLU/R?=
+ =?us-ascii?Q?hxiBPuMdqXSwVmTp1VnDDZeIgSbXGqJgSOR5TSxxGorRjLYrBm4M+Dc+FSmj?=
+ =?us-ascii?Q?BcHoaEnHBNcC3gVxvgft4ondFdBBBT5L7pt4InrKQuSsx32p/oH1IX3+C2x1?=
+ =?us-ascii?Q?NMcsbIR3BaMJnq3wJSJ+MjQ4Fc+VfA9OXyLj/oNgPwSlbEVBvngzWZExBB70?=
+ =?us-ascii?Q?cVT4+Iv+4ugNiwJd2MRJkP/Hmv9t3C8h4Y8rwhwbwZb96qmMkdvpq3e0sO5n?=
+ =?us-ascii?Q?rXHcO2QpvqyZsr8ZZ6+kERpOpluexxvumL+nW80gzphCL8pbEDFiEmqDnlPS?=
+ =?us-ascii?Q?eUa3Br9jHeFBG8OE1bplGqBrxoZP0KrQLhDpPUuUY1NqVOp28KrAQhvgk/2G?=
+ =?us-ascii?Q?PMRtHpRjki7T3ONs3jJ2pJ2qSTO/odasiv+7xCi/bbKwlkMmfOJK0ggMDYrj?=
+ =?us-ascii?Q?d2mGR6kQuo+Xv0bVSiobPEY4dkGRWkKkXZILVJ1gNdOdZkmCFjc95y6W1bmL?=
+ =?us-ascii?Q?q5G3j10PZGt7sP+G0Y7vV2SkEsc0SyiaB0vZnGFbOrKTgmPkyccfvo97YTZw?=
+ =?us-ascii?Q?rOOHRayuMxjUI0YJ6D6Oj/TPspDCeKcfP/+8MidM8FZdDFjpks9VlRhCc//J?=
+ =?us-ascii?Q?NIq9KX3T065F3JHymjrrYO8fRkblUEts4dfbBQMpmbPAV8jEEfK5z3doPcvH?=
+ =?us-ascii?Q?Z3+CW9ZtZYFxGSkdmGZ7UPnRQOv62G8HzbyTEdZq7NRnT83kdLJp8b+CtR3j?=
+ =?us-ascii?Q?hP4ozYK7lVdJVpEdkXAlvVPF/WiOx4c6Q8tQJflUMmF73wsW4fudwyHbJtKA?=
+ =?us-ascii?Q?9X7ynmhs16iURXcuEuncFpWIJob59cmw/k7z0/ifjP03Ikt9cLYHw3a2A6qy?=
+ =?us-ascii?Q?sDPhdfnebaoC/kYDj5fuXZ87A1ZR7X+uuEO2vNvIFhfcuQN6n88+8leEO8yu?=
+ =?us-ascii?Q?zP4GY4dMGA86YM5ftJCnO16z7Va4ITJDUK4zKQ0MeHni+vTNjZ15VGE5Hfjl?=
+ =?us-ascii?Q?a0LRkdGnRcUQZhyrIcAN45TiCIZAXyUzE8+Ivz+6udUHp+pCHi0NltBTlm4g?=
+ =?us-ascii?Q?27oCwLHIcCvN/ET4ZZVEWuyeCPHlJPdlsmV/c4FD6riywUrFTRGkzIcKE1qm?=
+ =?us-ascii?Q?Ykrs26vQcF3XV/5ePPoeOMFU4iP3DJC5a2taeccsbV89XjRRi15zAaYWbHy5?=
+ =?us-ascii?Q?QGweSZEja1r3o7tL28+qBzJPEJdhJaUQhDzoVfismYCc/e2RojrqbW1H0zMO?=
+ =?us-ascii?Q?j5Z7Lo7aVstSz2D+jJTrPnbjWO8KIGJFhpGpX9tb6uJFRkjLGHhjfDY2OeIh?=
+ =?us-ascii?Q?mrndhIkergz5lwaKhyrmlW5M6VMTxQoygEJUSxGV5/6bkR76oSHlL74iRNeH?=
+ =?us-ascii?Q?YADIgEdoDNM9NMI5qI0cIrp0EsyE6CqELuQ9wyIRpxn7cWbyz9Nr+VGppLFf?=
+ =?us-ascii?Q?emVoriKTFZfGFVLOab5t9rxIqPWVNhJmyw4asq6J0CM4VUhje+rxOAWGzn9Y?=
+ =?us-ascii?Q?H7RWjSoRPFUAqqeO5vU=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5ab83f6-5313-4a56-5739-08dd7c64ad0e
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2025 21:30:00.9874
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x40x/TJBvMbPVQLqO3yKRc+5XMOHSEkO5FCk7GmxP0Q3KWj4cyikX2D7UQpzzjeo+x9hxkSZwyE/QH0K3WnK4w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9523
 
-This converts the lynx PCS driver to a proper MDIO driver.
-This allows using a more conventional driver lifecycle (e.g. with a
-probe and remove). It will also make it easier to add interrupt support.
+Convert fsl-imx-drm.txt to yaml format and create 5 yaml files for
+differences purpose.
 
-The existing helpers are converted to bind the MDIO driver instead of
-creating the PCS directly. As lynx_pcs_create_mdiodev creates the PCS
-device, we can just set the modalias. For lynx_pcs_create_fwnode, we try
-to get the PCS the usual way, and if that fails we edit the devicetree
-to add a compatible and reprobe the device.
+Additional changes:
+- add missed include file in examples.
+- add clocks, clock-names for ipu.
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
+ .../imx/fsl,imx-display-subsystem.yaml        |  36 ++++
+ .../display/imx/fsl,imx-parallel-display.yaml |  74 ++++++++
+ .../bindings/display/imx/fsl,imx6q-ipu.yaml   |  97 +++++++++++
+ .../bindings/display/imx/fsl,imx6qp-pre.yaml  |  55 ++++++
+ .../bindings/display/imx/fsl,imx6qp-prg.yaml  |  52 ++++++
+ .../bindings/display/imx/fsl-imx-drm.txt      | 160 ------------------
+ 6 files changed, 314 insertions(+), 160 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx-display-subsystem.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx-parallel-display.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx6q-ipu.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx6qp-pre.yaml
+ create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx6qp-prg.yaml
+ delete mode 100644 Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
 
-Changes in v3:
-- Call devm_pcs_register instead of devm_pcs_register_provider
-
-Changes in v2:
-- Add support for #pcs-cells
-- Remove unused variable lynx_properties
-
- drivers/net/dsa/ocelot/Kconfig                |   4 +
- drivers/net/dsa/ocelot/felix_vsc9959.c        |  11 +-
- drivers/net/dsa/ocelot/seville_vsc9953.c      |  11 +-
- drivers/net/ethernet/altera/Kconfig           |   2 +
- drivers/net/ethernet/altera/altera_tse_main.c |   7 +-
- drivers/net/ethernet/freescale/dpaa/Kconfig   |   2 +-
- drivers/net/ethernet/freescale/dpaa2/Kconfig  |   3 +
- .../net/ethernet/freescale/dpaa2/dpaa2-mac.c  |  11 +-
- drivers/net/ethernet/freescale/enetc/Kconfig  |   2 +
- .../net/ethernet/freescale/enetc/enetc_pf.c   |   8 +-
- .../net/ethernet/freescale/enetc/enetc_pf.h   |   1 -
- .../freescale/enetc/enetc_pf_common.c         |   4 +-
- drivers/net/ethernet/freescale/fman/Kconfig   |   4 +-
- .../net/ethernet/freescale/fman/fman_memac.c  |  27 +++--
- drivers/net/ethernet/stmicro/stmmac/Kconfig   |   3 +
- .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |   6 +-
- drivers/net/pcs/Kconfig                       |  11 +-
- drivers/net/pcs/pcs-lynx.c                    | 110 ++++++++++--------
- include/linux/pcs-lynx.h                      |  13 ++-
- 19 files changed, 130 insertions(+), 110 deletions(-)
-
-diff --git a/drivers/net/dsa/ocelot/Kconfig b/drivers/net/dsa/ocelot/Kconfig
-index 081e7a88ea02..e879f82537db 100644
---- a/drivers/net/dsa/ocelot/Kconfig
-+++ b/drivers/net/dsa/ocelot/Kconfig
-@@ -42,7 +42,9 @@ config NET_DSA_MSCC_FELIX
- 	select NET_DSA_TAG_OCELOT_8021Q
- 	select NET_DSA_TAG_OCELOT
- 	select FSL_ENETC_MDIO
-+	select PCS
- 	select PCS_LYNX
-+	select MDIO_DEVICE
- 	help
- 	  This driver supports the VSC9959 (Felix) switch, which is embedded as
- 	  a PCIe function of the NXP LS1028A ENETC RCiEP.
-@@ -58,7 +60,9 @@ config NET_DSA_MSCC_SEVILLE
- 	select NET_DSA_MSCC_FELIX_DSA_LIB
- 	select NET_DSA_TAG_OCELOT_8021Q
- 	select NET_DSA_TAG_OCELOT
-+	select PCS
- 	select PCS_LYNX
-+	select MDIO_DEVICE
- 	help
- 	  This driver supports the VSC9953 (Seville) switch, which is embedded
- 	  as a platform device on the NXP T1040 SoC.
-diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
-index 2de12611ab57..a67fc2f8528c 100644
---- a/drivers/net/dsa/ocelot/felix_vsc9959.c
-+++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
-@@ -12,6 +12,7 @@
- #include <net/tc_act/tc_gate.h>
- #include <soc/mscc/ocelot.h>
- #include <linux/dsa/ocelot.h>
-+#include <linux/pcs.h>
- #include <linux/pcs-lynx.h>
- #include <net/pkt_sched.h>
- #include <linux/iopoll.h>
-@@ -1033,7 +1034,7 @@ static int vsc9959_mdio_bus_alloc(struct ocelot *ocelot)
- 		if (ocelot_port->phy_mode == PHY_INTERFACE_MODE_INTERNAL)
- 			continue;
- 
--		phylink_pcs = lynx_pcs_create_mdiodev(felix->imdio, port);
-+		phylink_pcs = lynx_pcs_create_mdiodev(dev, felix->imdio, port);
- 		if (IS_ERR(phylink_pcs))
- 			continue;
- 
-@@ -1050,12 +1051,8 @@ static void vsc9959_mdio_bus_free(struct ocelot *ocelot)
- 	struct felix *felix = ocelot_to_felix(ocelot);
- 	int port;
- 
--	for (port = 0; port < ocelot->num_phys_ports; port++) {
--		struct phylink_pcs *phylink_pcs = felix->pcs[port];
--
--		if (phylink_pcs)
--			lynx_pcs_destroy(phylink_pcs);
--	}
-+	for (port = 0; port < ocelot->num_phys_ports; port++)
-+		pcs_put(ocelot->dev, felix->pcs[port]);
- 	mdiobus_unregister(felix->imdio);
- 	mdiobus_free(felix->imdio);
- }
-diff --git a/drivers/net/dsa/ocelot/seville_vsc9953.c b/drivers/net/dsa/ocelot/seville_vsc9953.c
-index 28bcdef34a6c..0e61bd8bc7cd 100644
---- a/drivers/net/dsa/ocelot/seville_vsc9953.c
-+++ b/drivers/net/dsa/ocelot/seville_vsc9953.c
-@@ -10,6 +10,7 @@
- #include <linux/mdio/mdio-mscc-miim.h>
- #include <linux/mod_devicetable.h>
- #include <linux/of_mdio.h>
-+#include <linux/pcs.h>
- #include <linux/pcs-lynx.h>
- #include <linux/dsa/ocelot.h>
- #include <linux/iopoll.h>
-@@ -926,7 +927,7 @@ static int vsc9953_mdio_bus_alloc(struct ocelot *ocelot)
- 		if (ocelot_port->phy_mode == PHY_INTERFACE_MODE_INTERNAL)
- 			continue;
- 
--		phylink_pcs = lynx_pcs_create_mdiodev(felix->imdio, addr);
-+		phylink_pcs = lynx_pcs_create_mdiodev(dev, felix->imdio, addr);
- 		if (IS_ERR(phylink_pcs))
- 			continue;
- 
-@@ -943,12 +944,8 @@ static void vsc9953_mdio_bus_free(struct ocelot *ocelot)
- 	struct felix *felix = ocelot_to_felix(ocelot);
- 	int port;
- 
--	for (port = 0; port < ocelot->num_phys_ports; port++) {
--		struct phylink_pcs *phylink_pcs = felix->pcs[port];
--
--		if (phylink_pcs)
--			lynx_pcs_destroy(phylink_pcs);
--	}
-+	for (port = 0; port < ocelot->num_phys_ports; port++)
-+		pcs_put(ocelot->dev, felix->pcs[port]);
- 
- 	/* mdiobus_unregister and mdiobus_free handled by devres */
- }
-diff --git a/drivers/net/ethernet/altera/Kconfig b/drivers/net/ethernet/altera/Kconfig
-index 4ef819a9a1ad..daf508a195a5 100644
---- a/drivers/net/ethernet/altera/Kconfig
-+++ b/drivers/net/ethernet/altera/Kconfig
-@@ -5,7 +5,9 @@ config ALTERA_TSE
- 	depends on HAS_IOMEM
- 	select PHYLIB
- 	select PHYLINK
-+	select PCS
- 	select PCS_LYNX
-+	select MDIO_DEVICE
- 	select MDIO_REGMAP
- 	select REGMAP_MMIO
- 	help
-diff --git a/drivers/net/ethernet/altera/altera_tse_main.c b/drivers/net/ethernet/altera/altera_tse_main.c
-index 3f6204de9e6b..7b34b6dc521e 100644
---- a/drivers/net/ethernet/altera/altera_tse_main.c
-+++ b/drivers/net/ethernet/altera/altera_tse_main.c
-@@ -32,6 +32,7 @@
- #include <linux/of.h>
- #include <linux/of_mdio.h>
- #include <linux/of_net.h>
-+#include <linux/pcs.h>
- #include <linux/pcs-lynx.h>
- #include <linux/phy.h>
- #include <linux/platform_device.h>
-@@ -1412,7 +1413,7 @@ static int altera_tse_probe(struct platform_device *pdev)
- 		goto err_init_pcs;
- 	}
- 
--	priv->pcs = lynx_pcs_create_mdiodev(pcs_bus, 0);
-+	priv->pcs = lynx_pcs_create_mdiodev(&pdev->dev, pcs_bus, 0);
- 	if (IS_ERR(priv->pcs)) {
- 		ret = PTR_ERR(priv->pcs);
- 		goto err_init_pcs;
-@@ -1444,7 +1445,7 @@ static int altera_tse_probe(struct platform_device *pdev)
- 
- 	return 0;
- err_init_phylink:
--	lynx_pcs_destroy(priv->pcs);
-+	pcs_put(&pdev->dev, priv->pcs);
- err_init_pcs:
- 	unregister_netdev(ndev);
- err_register_netdev:
-@@ -1466,7 +1467,7 @@ static void altera_tse_remove(struct platform_device *pdev)
- 	altera_tse_mdio_destroy(ndev);
- 	unregister_netdev(ndev);
- 	phylink_destroy(priv->phylink);
--	lynx_pcs_destroy(priv->pcs);
-+	pcs_put(&pdev->dev, priv->pcs);
- 
- 	free_netdev(ndev);
- }
-diff --git a/drivers/net/ethernet/freescale/dpaa/Kconfig b/drivers/net/ethernet/freescale/dpaa/Kconfig
-index 2b560661c82a..3129f029445b 100644
---- a/drivers/net/ethernet/freescale/dpaa/Kconfig
-+++ b/drivers/net/ethernet/freescale/dpaa/Kconfig
-@@ -3,7 +3,7 @@ menuconfig FSL_DPAA_ETH
- 	tristate "DPAA Ethernet"
- 	depends on FSL_DPAA && FSL_FMAN
- 	select PHYLINK
--	select PCS_LYNX
-+	select MDIO_DEVICE
- 	help
- 	  Data Path Acceleration Architecture Ethernet driver,
- 	  supporting the Freescale QorIQ chips.
-diff --git a/drivers/net/ethernet/freescale/dpaa2/Kconfig b/drivers/net/ethernet/freescale/dpaa2/Kconfig
-index d029b69c3f18..28e63dc4acbf 100644
---- a/drivers/net/ethernet/freescale/dpaa2/Kconfig
-+++ b/drivers/net/ethernet/freescale/dpaa2/Kconfig
-@@ -2,8 +2,11 @@
- config FSL_DPAA2_ETH
- 	tristate "Freescale DPAA2 Ethernet"
- 	depends on FSL_MC_BUS && FSL_MC_DPIO
-+	select OF_DYNAMIC
- 	select PHYLINK
-+	select PCS
- 	select PCS_LYNX
-+	select MDIO_DEVICE
- 	select FSL_XGMAC_MDIO
- 	select NET_DEVLINK
- 	help
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
-index 422ce13a7c94..26accbe7e736 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
-@@ -2,6 +2,7 @@
- /* Copyright 2019 NXP */
- 
- #include <linux/acpi.h>
-+#include <linux/pcs.h>
- #include <linux/pcs-lynx.h>
- #include <linux/phy/phy.h>
- #include <linux/property.h>
-@@ -262,7 +263,7 @@ static int dpaa2_pcs_create(struct dpaa2_mac *mac,
- 		return 0;
- 	}
- 
--	pcs = lynx_pcs_create_fwnode(node);
-+	pcs = lynx_pcs_create_fwnode(&mac->mc_dev->dev, node);
- 	fwnode_handle_put(node);
- 
- 	if (pcs == ERR_PTR(-EPROBE_DEFER)) {
-@@ -288,12 +289,8 @@ static int dpaa2_pcs_create(struct dpaa2_mac *mac,
- 
- static void dpaa2_pcs_destroy(struct dpaa2_mac *mac)
- {
--	struct phylink_pcs *phylink_pcs = mac->pcs;
--
--	if (phylink_pcs) {
--		lynx_pcs_destroy(phylink_pcs);
--		mac->pcs = NULL;
--	}
-+	pcs_put(&mac->mc_dev->dev, mac->pcs);
-+	mac->pcs = NULL;
- }
- 
- static void dpaa2_mac_set_supported_interfaces(struct dpaa2_mac *mac)
-diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
-index 6c2779047dcd..6a58254b9a5f 100644
---- a/drivers/net/ethernet/freescale/enetc/Kconfig
-+++ b/drivers/net/ethernet/freescale/enetc/Kconfig
-@@ -24,7 +24,9 @@ config FSL_ENETC
- 	select FSL_ENETC_MDIO
- 	select NXP_ENETC_PF_COMMON
- 	select PHYLINK
-+	select PCS
- 	select PCS_LYNX
-+	select MDIO_DEVICE
- 	select DIMLIB
- 	help
- 	  This driver supports NXP ENETC gigabit ethernet controller PCIe
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-index 203862ec1114..737797b541a0 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -34,12 +34,7 @@ static void enetc_pf_set_primary_mac_addr(struct enetc_hw *hw, int si,
- static struct phylink_pcs *enetc_pf_create_pcs(struct enetc_pf *pf,
- 					       struct mii_bus *bus)
- {
--	return lynx_pcs_create_mdiodev(bus, 0);
--}
--
--static void enetc_pf_destroy_pcs(struct phylink_pcs *pcs)
--{
--	lynx_pcs_destroy(pcs);
-+	return lynx_pcs_create_mdiodev(&pf->si->pdev->dev, bus, 0);
- }
- 
- static void enetc_set_vlan_promisc(struct enetc_hw *hw, char si_map)
-@@ -1003,7 +998,6 @@ static const struct enetc_pf_ops enetc_pf_ops = {
- 	.set_si_primary_mac = enetc_pf_set_primary_mac_addr,
- 	.get_si_primary_mac = enetc_pf_get_primary_mac_addr,
- 	.create_pcs = enetc_pf_create_pcs,
--	.destroy_pcs = enetc_pf_destroy_pcs,
- 	.enable_psfp = enetc_psfp_enable,
- };
- 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.h b/drivers/net/ethernet/freescale/enetc/enetc_pf.h
-index a26a12863855..d5e02d02c7a8 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.h
-@@ -42,7 +42,6 @@ struct enetc_pf_ops {
- 	void (*set_si_primary_mac)(struct enetc_hw *hw, int si, const u8 *addr);
- 	void (*get_si_primary_mac)(struct enetc_hw *hw, int si, u8 *addr);
- 	struct phylink_pcs *(*create_pcs)(struct enetc_pf *pf, struct mii_bus *bus);
--	void (*destroy_pcs)(struct phylink_pcs *pcs);
- 	int (*enable_psfp)(struct enetc_ndev_priv *priv);
- };
- 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-index 3fd9b0727875..f5b75d40f7c5 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-@@ -4,6 +4,7 @@
- #include <linux/fsl/enetc_mdio.h>
- #include <linux/of_mdio.h>
- #include <linux/of_net.h>
-+#include <linux/pcs.h>
- 
- #include "enetc_pf_common.h"
- 
-@@ -248,8 +249,7 @@ static int enetc_imdio_create(struct enetc_pf *pf)
- 
- static void enetc_imdio_remove(struct enetc_pf *pf)
- {
--	if (pf->pcs && pf->ops->destroy_pcs)
--		pf->ops->destroy_pcs(pf->pcs);
-+	pcs_put(&pf->si->pdev->dev, pf->pcs);
- 
- 	if (pf->imdio) {
- 		mdiobus_unregister(pf->imdio);
-diff --git a/drivers/net/ethernet/freescale/fman/Kconfig b/drivers/net/ethernet/freescale/fman/Kconfig
-index a55542c1ad65..b87b22220972 100644
---- a/drivers/net/ethernet/freescale/fman/Kconfig
-+++ b/drivers/net/ethernet/freescale/fman/Kconfig
-@@ -3,10 +3,12 @@ config FSL_FMAN
- 	tristate "FMan support"
- 	depends on FSL_SOC || ARCH_LAYERSCAPE || COMPILE_TEST
- 	select GENERIC_ALLOCATOR
-+	select OF_DYNAMIC
-+	select MDIO_DEVICE
- 	select PHYLINK
-+	select PCS
- 	select PCS_LYNX
- 	select CRC32
--	default n
- 	help
- 		Freescale Data-Path Acceleration Architecture Frame Manager
- 		(FMan) support
-diff --git a/drivers/net/ethernet/freescale/fman/fman_memac.c b/drivers/net/ethernet/freescale/fman/fman_memac.c
-index 3925441143fa..fc12f3e44824 100644
---- a/drivers/net/ethernet/freescale/fman/fman_memac.c
-+++ b/drivers/net/ethernet/freescale/fman/fman_memac.c
-@@ -11,6 +11,7 @@
- 
- #include <linux/slab.h>
- #include <linux/io.h>
-+#include <linux/pcs.h>
- #include <linux/pcs-lynx.h>
- #include <linux/phy.h>
- #include <linux/phy_fixed.h>
-@@ -972,21 +973,23 @@ static int memac_init(struct fman_mac *memac)
- 	return 0;
- }
- 
--static void pcs_put(struct phylink_pcs *pcs)
-+static void memac_pcs_put(struct device *dev, struct phylink_pcs *pcs)
- {
- 	if (IS_ERR_OR_NULL(pcs))
- 		return;
- 
--	lynx_pcs_destroy(pcs);
-+	pcs_put(dev, pcs);
- }
- 
- static int memac_free(struct fman_mac *memac)
- {
-+	struct device *dev = memac->dev_id->dev;
+diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx-display-subsystem.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx-display-subsystem.yaml
+new file mode 100644
+index 0000000000000..92a0a797d099a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/imx/fsl,imx-display-subsystem.yaml
+@@ -0,0 +1,36 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/imx/fsl,imx-display-subsystem.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 	free_init_resources(memac);
- 
--	pcs_put(memac->sgmii_pcs);
--	pcs_put(memac->qsgmii_pcs);
--	pcs_put(memac->xfi_pcs);
-+	memac_pcs_put(dev, memac->sgmii_pcs);
-+	memac_pcs_put(dev, memac->qsgmii_pcs);
-+	memac_pcs_put(dev, memac->xfi_pcs);
- 	kfree(memac->memac_drv_param);
- 	kfree(memac);
- 
-@@ -1033,7 +1036,8 @@ static struct fman_mac *memac_config(struct mac_device *mac_dev,
- 	return memac;
- }
- 
--static struct phylink_pcs *memac_pcs_create(struct device_node *mac_node,
-+static struct phylink_pcs *memac_pcs_create(struct device *dev,
-+					    struct device_node *mac_node,
- 					    int index)
- {
- 	struct device_node *node;
-@@ -1043,7 +1047,7 @@ static struct phylink_pcs *memac_pcs_create(struct device_node *mac_node,
- 	if (!node)
- 		return ERR_PTR(-ENODEV);
- 
--	pcs = lynx_pcs_create_fwnode(of_fwnode_handle(node));
-+	pcs = lynx_pcs_create_fwnode(dev, of_fwnode_handle(node));
- 	of_node_put(node);
- 
- 	return pcs;
-@@ -1100,7 +1104,7 @@ int memac_initialization(struct mac_device *mac_dev,
- 
- 	err = of_property_match_string(mac_node, "pcs-handle-names", "xfi");
- 	if (err >= 0) {
--		memac->xfi_pcs = memac_pcs_create(mac_node, err);
-+		memac->xfi_pcs = memac_pcs_create(mac_dev->dev, mac_node, err);
- 		if (IS_ERR(memac->xfi_pcs)) {
- 			err = PTR_ERR(memac->xfi_pcs);
- 			dev_err_probe(mac_dev->dev, err, "missing xfi pcs\n");
-@@ -1112,7 +1116,8 @@ int memac_initialization(struct mac_device *mac_dev,
- 
- 	err = of_property_match_string(mac_node, "pcs-handle-names", "qsgmii");
- 	if (err >= 0) {
--		memac->qsgmii_pcs = memac_pcs_create(mac_node, err);
-+		memac->qsgmii_pcs = memac_pcs_create(mac_dev->dev, mac_node,
-+						     err);
- 		if (IS_ERR(memac->qsgmii_pcs)) {
- 			err = PTR_ERR(memac->qsgmii_pcs);
- 			dev_err_probe(mac_dev->dev, err,
-@@ -1128,11 +1133,11 @@ int memac_initialization(struct mac_device *mac_dev,
- 	 */
- 	err = of_property_match_string(mac_node, "pcs-handle-names", "sgmii");
- 	if (err == -EINVAL || err == -ENODATA)
--		pcs = memac_pcs_create(mac_node, 0);
-+		pcs = memac_pcs_create(mac_dev->dev, mac_node, 0);
- 	else if (err < 0)
- 		goto _return_fm_mac_free;
- 	else
--		pcs = memac_pcs_create(mac_node, err);
-+		pcs = memac_pcs_create(mac_dev->dev, mac_node, err);
- 
- 	if (IS_ERR(pcs)) {
- 		err = PTR_ERR(pcs);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index 3c820ef56775..3df23331c726 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -170,9 +170,12 @@ config DWMAC_SOCFPGA
- 	tristate "SOCFPGA dwmac support"
- 	default ARCH_INTEL_SOCFPGA
- 	depends on OF && (ARCH_INTEL_SOCFPGA || COMPILE_TEST)
-+	select OF_DYNAMIC
- 	select MFD_SYSCON
-+	select MDIO_DEVICE
- 	select MDIO_REGMAP
- 	select REGMAP_MMIO
-+	select PCS
- 	select PCS_LYNX
- 	help
- 	  Support for ethernet controller on Altera SOCFPGA
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index 116855658559..2c2fb820752b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -8,6 +8,7 @@
- #include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/of_net.h>
-+#include <linux/pcs.h>
- #include <linux/phy.h>
- #include <linux/regmap.h>
- #include <linux/mdio/mdio-regmap.h>
-@@ -415,7 +416,7 @@ static int socfpga_dwmac_pcs_init(struct stmmac_priv *priv)
- 	if (IS_ERR(pcs_bus))
- 		return PTR_ERR(pcs_bus);
- 
--	pcs = lynx_pcs_create_mdiodev(pcs_bus, 0);
-+	pcs = lynx_pcs_create_mdiodev(priv->device, pcs_bus, 0);
- 	if (IS_ERR(pcs))
- 		return PTR_ERR(pcs);
- 
-@@ -425,8 +426,7 @@ static int socfpga_dwmac_pcs_init(struct stmmac_priv *priv)
- 
- static void socfpga_dwmac_pcs_exit(struct stmmac_priv *priv)
- {
--	if (priv->hw->phylink_pcs)
--		lynx_pcs_destroy(priv->hw->phylink_pcs);
-+	pcs_put(priv->device, priv->hw->phylink_pcs);
- }
- 
- static struct phylink_pcs *socfpga_dwmac_select_pcs(struct stmmac_priv *priv,
-diff --git a/drivers/net/pcs/Kconfig b/drivers/net/pcs/Kconfig
-index b764770063cc..91ff59899aaf 100644
---- a/drivers/net/pcs/Kconfig
-+++ b/drivers/net/pcs/Kconfig
-@@ -25,10 +25,15 @@ config PCS_XPCS
- 	  DesignWare XPCS controllers.
- 
- config PCS_LYNX
--	tristate
-+	tristate "NXP Lynx PCS driver"
-+	depends on PCS && MDIO_DEVICE
- 	help
--	  This module provides helpers to phylink for managing the Lynx PCS
--	  which is part of the Layerscape and QorIQ Ethernet SERDES.
-+	  This module provides driver support for the PCSs in Lynx 10g and 28g
-+	  SerDes devices. These devices are present in NXP QorIQ SoCs,
-+	  including the Layerscape series.
++title: Freescale i.MX DRM master device
 +
-+	  If you want to use Ethernet on a QorIQ SoC, say "Y". If compiled as a
-+	  module, it will be called "pcs-lynx".
- 
- config PCS_MTK_LYNXI
- 	tristate
-diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
-index 23b40e9eacbb..bacba1dd52e2 100644
---- a/drivers/net/pcs/pcs-lynx.c
-+++ b/drivers/net/pcs/pcs-lynx.c
-@@ -1,11 +1,15 @@
--// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
--/* Copyright 2020 NXP
-+// SPDX-License-Identifier: GPL-2.0+
-+/* Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
-+ * Copyright 2020 NXP
-  * Lynx PCS MDIO helpers
-  */
- 
- #include <linux/mdio.h>
- #include <linux/phylink.h>
-+#include <linux/of.h>
-+#include <linux/pcs.h>
- #include <linux/pcs-lynx.h>
-+#include <linux/phylink.h>
- #include <linux/property.h>
- 
- #define SGMII_CLOCK_PERIOD_NS		8 /* PCS is clocked at 125 MHz */
-@@ -343,16 +347,16 @@ static const phy_interface_t lynx_interfaces[] = {
- 	PHY_INTERFACE_MODE_USXGMII,
- };
- 
--static struct phylink_pcs *lynx_pcs_create(struct mdio_device *mdio)
-+static int lynx_pcs_probe(struct mdio_device *mdio)
- {
-+	struct device *dev = &mdio->dev;
- 	struct lynx_pcs *lynx;
--	int i;
-+	int i, ret;
- 
--	lynx = kzalloc(sizeof(*lynx), GFP_KERNEL);
-+	lynx = devm_kzalloc(dev, sizeof(*lynx), GFP_KERNEL);
- 	if (!lynx)
--		return ERR_PTR(-ENOMEM);
-+		return -ENOMEM;
- 
--	mdio_device_get(mdio);
- 	lynx->mdio = mdio;
- 	lynx->pcs.ops = &lynx_pcs_phylink_ops;
- 	lynx->pcs.poll = true;
-@@ -360,32 +364,64 @@ static struct phylink_pcs *lynx_pcs_create(struct mdio_device *mdio)
- 	for (i = 0; i < ARRAY_SIZE(lynx_interfaces); i++)
- 		__set_bit(lynx_interfaces[i], lynx->pcs.supported_interfaces);
- 
--	return lynx_to_phylink_pcs(lynx);
-+	ret = devm_pcs_register(dev, &lynx->pcs);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "could not register PCS\n");
-+	dev_info(dev, "probed\n");
-+	return 0;
- }
- 
--struct phylink_pcs *lynx_pcs_create_mdiodev(struct mii_bus *bus, int addr)
-+static const struct of_device_id lynx_pcs_of_match[] = {
-+	{ .compatible = "fsl,lynx-pcs" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, lynx_pcs_of_match);
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
 +
-+static struct mdio_driver lynx_pcs_driver = {
-+	.probe = lynx_pcs_probe,
-+	.mdiodrv.driver = {
-+		.name = "lynx-pcs",
-+		.of_match_table = of_match_ptr(lynx_pcs_of_match),
-+	},
-+};
-+mdio_module_driver(lynx_pcs_driver);
++description:
++  The freescale i.MX DRM master device is a virtual device needed to list all
++  IPU or other display interface nodes that comprise the graphics subsystem.
 +
-+struct phylink_pcs *lynx_pcs_create_mdiodev(struct device *dev,
-+					    struct mii_bus *bus, int addr)
- {
- 	struct mdio_device *mdio;
- 	struct phylink_pcs *pcs;
-+	int err;
- 
- 	mdio = mdio_device_create(bus, addr);
- 	if (IS_ERR(mdio))
- 		return ERR_CAST(mdio);
- 
--	pcs = lynx_pcs_create(mdio);
--
--	/* lynx_create() has taken a refcount on the mdiodev if it was
--	 * successful. If lynx_create() fails, this will free the mdio
--	 * device here. In any case, we don't need to hold our reference
--	 * anymore, and putting it here will allow mdio_device_put() in
--	 * lynx_destroy() to automatically free the mdio device.
--	 */
--	mdio_device_put(mdio);
-+	mdio->bus_match = mdio_device_bus_match;
-+	strscpy(mdio->modalias, "lynx-pcs");
-+	err = mdio_device_register(mdio);
-+	if (err) {
-+		mdio_device_free(mdio);
-+		return ERR_PTR(err);
-+	}
- 
-+	pcs = pcs_get_by_dev(dev, &mdio->dev);
-+	mdio_device_free(mdio);
- 	return pcs;
- }
- EXPORT_SYMBOL(lynx_pcs_create_mdiodev);
- 
-+static int lynx_pcs_fixup(struct of_changeset *ocs,
-+			  struct device_node *np, void *data)
-+{
-+#ifdef CONFIG_OF_DYNAMIC
-+	return of_changeset_add_prop_string(ocs, np, "compatible",
-+					    "fsl,lynx-pcs");
-+#else
-+	return -ENODEV;
-+#endif
-+}
++properties:
++  compatible:
++    const: fsl,imx-display-subsystem
 +
- /*
-  * lynx_pcs_create_fwnode() creates a lynx PCS instance from the fwnode
-  * device indicated by node.
-@@ -396,40 +432,12 @@ EXPORT_SYMBOL(lynx_pcs_create_mdiodev);
-  *  -ENOMEM if we fail to allocate memory
-  *  pointer to a phylink_pcs on success
-  */
--struct phylink_pcs *lynx_pcs_create_fwnode(struct fwnode_handle *node)
-+struct phylink_pcs *lynx_pcs_create_fwnode(struct device *dev,
-+					   struct fwnode_handle *node)
- {
--	struct mdio_device *mdio;
--	struct phylink_pcs *pcs;
++  ports:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    description:
++      Should contain a list of phandles pointing to camera
++      sensor interface ports of IPU devices.
++
++required:
++  - compatible
++
++additionalProperties: false
++
++examples:
++  - |
++    display-subsystem {
++        compatible = "fsl,imx-display-subsystem";
++        ports = <&ipu_di0>;
++    };
+diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx-parallel-display.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx-parallel-display.yaml
+new file mode 100644
+index 0000000000000..bbcfe7e2958b7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/imx/fsl,imx-parallel-display.yaml
+@@ -0,0 +1,74 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/imx/fsl,imx-parallel-display.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Parallel display support
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    const: fsl,imx-parallel-display
++
++  interface-pix-fmt:
++    $ref: /schemas/types.yaml#/definitions/string
++    enum:
++      - rgb24
++      - rgb565
++      - bgr666
++      - lvds666
++
++  ddc:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      phandle describing the i2c bus handling the display data channel
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  port@0:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++    description: input port connected to the IPU display interface
++
++  port@1:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++    description: output port connected to a panel
++
++required:
++  - compatible
++
++additionalProperties: false
++
++examples:
++  - |
++    display {
++        compatible = "fsl,imx-parallel-display";
++        #address-cells = <1>;
++        #size-cells = <0>;
++        interface-pix-fmt = "rgb24";
++
++        port@0 {
++            reg = <0>;
++
++            endpoint {
++                remote-endpoint = <&ipu_di0_disp0>;
++            };
++        };
++
++        port@1 {
++            reg = <1>;
++
++            endpoint {
++                remote-endpoint = <&panel_in>;
++            };
++        };
++    };
++
+diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ipu.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ipu.yaml
+new file mode 100644
+index 0000000000000..ec78645d4de00
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ipu.yaml
+@@ -0,0 +1,97 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/imx/fsl,imx6q-ipu.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale i.MX IPUv3
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    oneOf:
++      - enum:
++          - fsl,imx51-ipu
++          - fsl,imx53-ipu
++          - fsl,imx6q-ipu
++      - items:
++          - const: fsl,imx6qp-ipu
++          - const: fsl,imx6q-ipu
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    minItems: 1
++    maxItems: 2
++
++  clocks:
++    maxItems: 3
++
++  clock-names:
++    items:
++      - const: bus
++      - const: di0
++      - const: di1
++
++  resets:
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  fsl,prg:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: phandle to prg node associated with this IPU instance
++
++  port@0:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++    description: CSI0
++
++  port@1:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++    description: CSI1
++
++  port@2:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++    description: DI0
++
++  port@3:
++    $ref: /schemas/graph.yaml#/$defs/port-base
++    unevaluatedProperties: false
++    description: DI1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - resets
++
++additionalProperties: false
++
++examples:
++  - |
++    display-controller@18000000 {
++        compatible = "fsl,imx53-ipu";
++        reg = <0x18000000 0x080000000>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        interrupts = <11 10>;
++        resets = <&src 2>;
++
++        port@2 {
++            reg = <2>;
++
++            endpoint {
++                remote-endpoint = <&display_in>;
++            };
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx6qp-pre.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx6qp-pre.yaml
+new file mode 100644
+index 0000000000000..73bc73ff6e693
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/imx/fsl,imx6qp-pre.yaml
+@@ -0,0 +1,55 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/imx/fsl,imx6qp-pre.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale i.MX PRE (Prefetch Resolve Engine)
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    const: fsl,imx6qp-pre
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    items:
++      - const: axi
++  fsl,iram:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      phandle pointing to the mmio-sram device node, that should be
++      used for the PRE SRAM double buffer.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/imx6qdl-clock.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    pre@21c8000 {
++        compatible = "fsl,imx6qp-pre";
++        reg = <0x021c8000 0x1000>;
++        interrupts = <GIC_SPI 90 IRQ_TYPE_EDGE_RISING>;
++        clocks = <&clks IMX6QDL_CLK_PRE0>;
++        clock-names = "axi";
++        fsl,iram = <&ocram2>;
++    };
+diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx6qp-prg.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx6qp-prg.yaml
+new file mode 100644
+index 0000000000000..dea9d3ad43c97
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/imx/fsl,imx6qp-prg.yaml
+@@ -0,0 +1,52 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/imx/fsl,imx6qp-prg.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale i.MX PRG (Prefetch Resolve Gasket)
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    const: fsl,imx6qp-prg
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 2
++
++  clock-names:
++    items:
++      - const: ipg
++      - const: axi
++
++  fsl,pres:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    description:
++      phandles to the PRE units attached to this PRG, with the fixed
++      PRE as the first entry and the muxable PREs following.
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/clock/imx6qdl-clock.h>
++
++    prg@21cc000 {
++        compatible = "fsl,imx6qp-prg";
++        reg = <0x021cc000 0x1000>;
++        clocks = <&clks IMX6QDL_CLK_PRG0_APB>, <&clks IMX6QDL_CLK_PRG0_AXI>;
++        clock-names = "ipg", "axi";
++        fsl,pres = <&pre1>, <&pre2>, <&pre3>;
++    };
++
+diff --git a/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt b/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
+deleted file mode 100644
+index 269b1ae2fca99..0000000000000
+--- a/Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
++++ /dev/null
+@@ -1,160 +0,0 @@
+-Freescale i.MX DRM master device
+-================================
 -
--	if (!fwnode_device_is_available(node))
--		return ERR_PTR(-ENODEV);
+-The freescale i.MX DRM master device is a virtual device needed to list all
+-IPU or other display interface nodes that comprise the graphics subsystem.
 -
--	mdio = fwnode_mdio_find_device(node);
--	if (!mdio)
--		return ERR_PTR(-EPROBE_DEFER);
+-Required properties:
+-- compatible: Should be "fsl,imx-display-subsystem"
+-- ports: Should contain a list of phandles pointing to display interface ports
+-  of IPU devices
 -
--	pcs = lynx_pcs_create(mdio);
+-example:
 -
--	/* lynx_create() has taken a refcount on the mdiodev if it was
--	 * successful. If lynx_create() fails, this will free the mdio
--	 * device here. In any case, we don't need to hold our reference
--	 * anymore, and putting it here will allow mdio_device_put() in
--	 * lynx_destroy() to automatically free the mdio device.
--	 */
--	mdio_device_put(mdio);
+-display-subsystem {
+-	compatible = "fsl,imx-display-subsystem";
+-	ports = <&ipu_di0>;
+-};
 -
--	return pcs;
-+	return pcs_get_by_fwnode_compat(dev, node, lynx_pcs_fixup, NULL);
- }
- EXPORT_SYMBOL_GPL(lynx_pcs_create_fwnode);
- 
--void lynx_pcs_destroy(struct phylink_pcs *pcs)
--{
--	struct lynx_pcs *lynx = phylink_pcs_to_lynx(pcs);
 -
--	mdio_device_put(lynx->mdio);
--	kfree(lynx);
--}
--EXPORT_SYMBOL(lynx_pcs_destroy);
+-Freescale i.MX IPUv3
+-====================
 -
--MODULE_DESCRIPTION("NXP Lynx PCS phylink library");
--MODULE_LICENSE("Dual BSD/GPL");
-+MODULE_DESCRIPTION("NXP Lynx PCS phylink driver");
-+MODULE_LICENSE("GPL");
-diff --git a/include/linux/pcs-lynx.h b/include/linux/pcs-lynx.h
-index 7958cccd16f2..a95801337205 100644
---- a/include/linux/pcs-lynx.h
-+++ b/include/linux/pcs-lynx.h
-@@ -6,12 +6,13 @@
- #ifndef __LINUX_PCS_LYNX_H
- #define __LINUX_PCS_LYNX_H
- 
--#include <linux/mdio.h>
--#include <linux/phylink.h>
-+struct device;
-+struct mii_bus;
-+struct phylink_pcs;
- 
--struct phylink_pcs *lynx_pcs_create_mdiodev(struct mii_bus *bus, int addr);
--struct phylink_pcs *lynx_pcs_create_fwnode(struct fwnode_handle *node);
+-Required properties:
+-- compatible: Should be "fsl,<chip>-ipu" where <chip> is one of
+-  - imx51
+-  - imx53
+-  - imx6q
+-  - imx6qp
+-- reg: should be register base and length as documented in the
+-  datasheet
+-- interrupts: Should contain sync interrupt and error interrupt,
+-  in this order.
+-- resets: phandle pointing to the system reset controller and
+-          reset line index, see reset/fsl,imx-src.txt for details
+-Additional required properties for fsl,imx6qp-ipu:
+-- fsl,prg: phandle to prg node associated with this IPU instance
+-Optional properties:
+-- port@[0-3]: Port nodes with endpoint definitions as defined in
+-  Documentation/devicetree/bindings/media/video-interfaces.txt.
+-  Ports 0 and 1 should correspond to CSI0 and CSI1,
+-  ports 2 and 3 should correspond to DI0 and DI1, respectively.
 -
--void lynx_pcs_destroy(struct phylink_pcs *pcs);
-+struct phylink_pcs *lynx_pcs_create_mdiodev(struct device *dev,
-+					    struct mii_bus *bus, int addr);
-+struct phylink_pcs *lynx_pcs_create_fwnode(struct device *dev,
-+					   struct fwnode_handle *node);
- 
- #endif /* __LINUX_PCS_LYNX_H */
+-example:
+-
+-ipu: ipu@18000000 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	compatible = "fsl,imx53-ipu";
+-	reg = <0x18000000 0x080000000>;
+-	interrupts = <11 10>;
+-	resets = <&src 2>;
+-
+-	ipu_di0: port@2 {
+-		reg = <2>;
+-
+-		ipu_di0_disp0: endpoint {
+-			remote-endpoint = <&display_in>;
+-		};
+-	};
+-};
+-
+-Freescale i.MX PRE (Prefetch Resolve Engine)
+-============================================
+-
+-Required properties:
+-- compatible: should be "fsl,imx6qp-pre"
+-- reg: should be register base and length as documented in the
+-  datasheet
+-- clocks : phandle to the PRE axi clock input, as described
+-  in Documentation/devicetree/bindings/clock/clock-bindings.txt and
+-  Documentation/devicetree/bindings/clock/imx6q-clock.yaml.
+-- clock-names: should be "axi"
+-- interrupts: should contain the PRE interrupt
+-- fsl,iram: phandle pointing to the mmio-sram device node, that should be
+-  used for the PRE SRAM double buffer.
+-
+-example:
+-
+-pre@21c8000 {
+-	compatible = "fsl,imx6qp-pre";
+-	reg = <0x021c8000 0x1000>;
+-	interrupts = <GIC_SPI 90 IRQ_TYPE_EDGE_RISING>;
+-	clocks = <&clks IMX6QDL_CLK_PRE0>;
+-	clock-names = "axi";
+-	fsl,iram = <&ocram2>;
+-};
+-
+-Freescale i.MX PRG (Prefetch Resolve Gasket)
+-============================================
+-
+-Required properties:
+-- compatible: should be "fsl,imx6qp-prg"
+-- reg: should be register base and length as documented in the
+-  datasheet
+-- clocks : phandles to the PRG ipg and axi clock inputs, as described
+-  in Documentation/devicetree/bindings/clock/clock-bindings.txt and
+-  Documentation/devicetree/bindings/clock/imx6q-clock.yaml.
+-- clock-names: should be "ipg" and "axi"
+-- fsl,pres: phandles to the PRE units attached to this PRG, with the fixed
+-  PRE as the first entry and the muxable PREs following.
+-
+-example:
+-
+-prg@21cc000 {
+-	compatible = "fsl,imx6qp-prg";
+-	reg = <0x021cc000 0x1000>;
+-	clocks = <&clks IMX6QDL_CLK_PRG0_APB>,
+-		 <&clks IMX6QDL_CLK_PRG0_AXI>;
+-	clock-names = "ipg", "axi";
+-	fsl,pres = <&pre1>, <&pre2>, <&pre3>;
+-};
+-
+-Parallel display support
+-========================
+-
+-Required properties:
+-- compatible: Should be "fsl,imx-parallel-display"
+-Optional properties:
+-- interface-pix-fmt: How this display is connected to the
+-  display interface. Currently supported types: "rgb24", "rgb565", "bgr666"
+-  and "lvds666".
+-- ddc: phandle describing the i2c bus handling the display data
+-  channel
+-- port@[0-1]: Port nodes with endpoint definitions as defined in
+-  Documentation/devicetree/bindings/media/video-interfaces.txt.
+-  Port 0 is the input port connected to the IPU display interface,
+-  port 1 is the output port connected to a panel.
+-
+-example:
+-
+-disp0 {
+-	compatible = "fsl,imx-parallel-display";
+-	interface-pix-fmt = "rgb24";
+-
+-	port@0 {
+-		reg = <0>;
+-
+-		display_in: endpoint {
+-			remote-endpoint = <&ipu_di0_disp0>;
+-		};
+-	};
+-
+-	port@1 {
+-		reg = <1>;
+-
+-		display_out: endpoint {
+-			remote-endpoint = <&panel_in>;
+-		};
+-	};
+-};
+-
+-panel {
+-	...
+-
+-	port {
+-		panel_in: endpoint {
+-			remote-endpoint = <&display_out>;
+-		};
+-	};
+-};
 -- 
-2.35.1.1320.gc452695387.dirty
+2.34.1
 
