@@ -1,128 +1,94 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C7122FF55
-	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 04:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0BA21171C;
+	Tue, 15 Apr 2025 06:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744691614; cv=none; b=axd9PVxvfaqfYeG48vMiYsKK03fZzX6oMc4AtWlqtkrUtodlaUw+FQZstVG0xc8jcutQN+U17SzjRpkEGi3H67Q6386xHlfLTOmPWKJoQxZ5XaXaMEHhuR2hKq8B3ANL/m8CcwR/Lu5PSjLF8XBEmZEqzrR+eMTR85RAhtn+/y0=
+	t=1744700068; cv=none; b=G4p/LwXnj26VPWTlbdPLpCw8ycayVLSwL1FdgLPg/OX9OPSC8R1gmbTOkWmG2YjaY/ELlkcq0oOq22F7WDmlap8GsNkzOU9s3W/gjrUPpGP3rNYiGwQEqPoUZCCRWLlQDlfx1gJ5do+saykQ62+GGSWbGsNdf1fNlLcaBPzk3jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744691614; c=relaxed/simple;
-	bh=Dv7+86hsQA4bpTEzxShKnXFWUKRdPbrGhgeGRok23VY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=i6UXVtD00h6BDWWndxt/QGaZxLsqkyoIWDkQGkVa6upWuVodYtVLefu9hFz5183ITLPFIwKAHoKZZ8MlCj4HNepNSvF3mjEw032HlP8sHcjLnjjq5e1Wm4YLS+o2q/fselnpiC46nv0/q9FTYPNm5fI+L3Ng1WIixlxmfMH26nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-Received: from [89.212.21.243] (port=52324 helo=localhost.localdomain)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1u4XzG-00Gb4I-00;
-	Tue, 15 Apr 2025 06:33:29 +0200
-From: Primoz Fiser <primoz.fiser@norik.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de
-Subject: [PATCH v2 14/15] arm64: dts: freescale: imx93-phyboard-segin: Add EQOS Ethernet
-Date: Tue, 15 Apr 2025 06:33:10 +0200
-Message-Id: <20250415043311.3385835-15-primoz.fiser@norik.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250415043311.3385835-1-primoz.fiser@norik.com>
-References: <20250415043311.3385835-1-primoz.fiser@norik.com>
+	s=arc-20240116; t=1744700068; c=relaxed/simple;
+	bh=xj1/d4nkyU14Uz0z2ygXiCJS8S9VEH7Pg1iUVkAGGlY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GCwlYqDpK4UvbrgMDGpnPIDo7/TC6ZuK7t+E436mr+/NVrNoCqaunVabzGSwnz3+yqM+Dr2ozGRFyhFBn0Bfn2kWyUXXhazEk5QsM9HfWNnXPVwCJLPDO/zkkpAyaycgzk8X1L0aAaU3wZ1CYA+FoArYD7EnlyQcfAxKk3Ag/0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PcA0pFHS; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PcA0pFHS"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E37C5C4CEEB;
+	Tue, 15 Apr 2025 06:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744700068;
+	bh=xj1/d4nkyU14Uz0z2ygXiCJS8S9VEH7Pg1iUVkAGGlY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=PcA0pFHS3ONR5KsMUsVVXJUR3F7Xsr6rf7BUYP868zzzuhGcLFTkCwS8WJn8c7q0+
+	 xe8heMLwm1V4aMpJrVc6PMbC8SHt/+Lx71R0dzVixQEtv6+tyDWGx1azlSzD/C1Oej
+	 Dl0tFTD3oMQNf7+PNrkjRbGE+oVzyc5IUE77m0GcMGzUH7XvshsEdXFpUUE6++5PN+
+	 KZaJRCR+h0eueUfaD+yVvWq+4bttJL+qH43AS/S1InxcXWBhX13eLA5NYMvnqC1/dJ
+	 7DVk9sFZfvdi9UDuEQY1w1LUqjPy9NctweMbHL80LeQcUyBoJ0E2veWiW9//mt94Qk
+	 rq+pE490OoZnA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3DB6C369B9;
+	Tue, 15 Apr 2025 06:54:27 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Date: Tue, 15 Apr 2025 08:54:24 +0200
+Subject: [PATCH v5 1/8] dt-bindings: arm: fsl: Add GOcontroll Moduline
+ Display
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Message-Id: <20250415-initial_display-v5-1-f309f8d71499@gocontroll.com>
+References: <20250415-initial_display-v5-0-f309f8d71499@gocontroll.com>
+In-Reply-To: <20250415-initial_display-v5-0-f309f8d71499@gocontroll.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744700066; l=1206;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=7LK5io9tXyJrf5fT7pNPykcX/YAUSsMUIEqjia8Pbmw=;
+ b=ACiLF+8gGRCfbw7wNIsrQyjR31okP/EFz6jYkJhE9Irn3cvQ0nAW0nJATvJXFrWurXbpc/JAl
+ MyI6Aj/fSxtDNEBweBCOLj1WEOkryULUPMxyZeOP9GXUKTLJEjEm6tj
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-Add support for the carrier-board Micrel KSZ8081 Ethernet PHY. This is a
-10/100Mbit PHY connected to the EQOS interface and shares MDIO bus with
-the Ethernet PHY located on the SoM (FEC interface).
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Document the compatible strings for the Moduline Display controller.
+
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
-Changes in v2:
-- add Reviewed-by tag
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
- .../dts/freescale/imx93-phyboard-segin.dts    | 35 +++++++++++++++++++
- 1 file changed, 35 insertions(+)
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 1b90870958a22e49355dd1f932bf3d84cd864b5f..ecde2123ea0fae38ef233929c7ad343812851a58 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1095,6 +1095,7 @@ properties:
+               - gateworks,imx8mp-gw74xx   # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw75xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw82xx-2x # i.MX8MP Gateworks Board
++              - gocontroll,moduline-display # GOcontroll Moduline Display controller
+               - skov,imx8mp-skov-basic # SKOV i.MX8MP baseboard without frontplate
+               - skov,imx8mp-skov-revb-hdmi # SKOV i.MX8MP climate control without panel
+               - skov,imx8mp-skov-revb-lt6 # SKOV i.MX8MP climate control with 7” panel
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
-index 54e084e69706..c62cc06fad4b 100644
---- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
-@@ -89,6 +89,28 @@ dailink_master: simple-audio-card,codec {
- 	};
- };
- 
-+/* Ethernet */
-+&eqos {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_eqos>;
-+	phy-mode = "rmii";
-+	phy-handle = <&ethphy2>;
-+	assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
-+				 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
-+	assigned-clock-rates = <100000000>, <50000000>;
-+	status = "okay";
-+};
-+
-+&mdio {
-+	ethphy2: ethernet-phy@2 {
-+		compatible = "ethernet-phy-id0022.1561";
-+		reg = <2>;
-+		clocks = <&clk IMX93_CLK_ENET_REF_PHY>;
-+		clock-names = "rmii-ref";
-+		micrel,led-mode = <1>;
-+	};
-+};
-+
- /* CAN */
- &flexcan1 {
- 	pinctrl-names = "default";
-@@ -173,6 +195,19 @@ &usdhc2 {
- };
- 
- &iomuxc {
-+	pinctrl_eqos: eqosgrp {
-+		fsl,pins = <
-+			MX93_PAD_ENET1_TD2__CCM_ENET_QOS_CLOCK_GENERATE_REF_CLK	0x4000050e
-+			MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0		0x57e
-+			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1		0x57e
-+			MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0		0x50e
-+			MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1		0x50e
-+			MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL	0x57e
-+			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL	0x50e
-+			MX93_PAD_ENET1_RXC__ENET_QOS_RX_ER		0x57e
-+		>;
-+	};
-+
- 	pinctrl_flexcan1: flexcan1grp {
- 		fsl,pins = <
- 			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
 -- 
-2.34.1
+2.49.0
+
 
