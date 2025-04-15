@@ -1,128 +1,206 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2074.outbound.protection.outlook.com [40.107.22.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E698C29A3EB
-	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 15:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744732049; cv=none; b=Lw7sStBjykIggpUOq+GXjTFmR+WjHbD+/60Qpgw2qH/V037t7PRNOKoljR3SxnYW5RIwJR4pH9dkPhTsekTznnZdiUszxbyL5EML26K68AYcdZblJWvxL2U2YH9cfJHu8BlXgPzOSn/0/0xhcQRycDJXrzaJwyKwGiVZIhFgHWw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744732049; c=relaxed/simple;
-	bh=bbkjmiJcxIoYe1Svw2F1maJ0updDHydTwr2isqonX3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EG7EABHCiw3tzJkKCrE3g674Mn3y01KwnfYwbEz0zu0ncFV8Vs/QyL1nVrCtzZga+DJu6Hyz0LIu6WiMID2CHjzGyIFSPRNFpOqEXjKR15047DSjW4jiqldcF0Q9o0b8usAZHrYPbWlrj5bvMz0PisddKfxdhdhSVjv1U1rs7sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=SUOUXvKe; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1033D14830A
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 15:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744732162; cv=fail; b=LzaeCu1zCcoy+T1JRhblMGbvxuMOa3SZpMymyfEf+1kaKuBA5KBgIhaFGkSPd8NsMQ17g7EtzGjzyk6ThLITZ3+61B/cZb69jIMaAp/ofyuRmtkjo4lqYwxjfb4gCmLocgC57tJEDeFB2K0WPoD8q2iOg+4uSRAgtCfAGsNJv0o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744732162; c=relaxed/simple;
+	bh=KDFp3xF3OVftmpJsFZeJDMZYxgZ6U+8UlhhPA+L0+bA=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=RA3OrKdutUYLVBao5pjpP4SnFiUlm5muwXBSd492YLdVa6m2By7ZvPG3cjQ4jp+pjleJk85mPhesYc7NXvrX+TJxeXfIIY9sp8usB4V6Qw9xiUylQegDfKnmggywAUziRZRCsU+EUqhgaJK7h0rdpJc3xURS4Nik0njvddHOo/8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hQkwtl1j; arc=fail smtp.client-ip=40.107.22.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="SUOUXvKe"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7B29C725;
-	Tue, 15 Apr 2025 17:45:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1744731923;
-	bh=bbkjmiJcxIoYe1Svw2F1maJ0updDHydTwr2isqonX3U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SUOUXvKeXcxohklxFHUkWWXRp0PbligOUf+58jeoCTYXSLluDxiPm7W4J1mvx7zGT
-	 7Gic2UrUhA7FZTS7I/HHcCQy+S+f6KVM5mJ1B069/KntDGu2FYaENisZg7C3J33xWd
-	 +3dsmvNnfTy/N+W5ih9LAzE/vMibEOVXybehxp4k=
-Date: Tue, 15 Apr 2025 18:47:24 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: POPESCU Catalin <catalin.popescu@leica-geosystems.com>
-Cc: Jai Luthra <jai.luthra@ideasonboard.com>,
-	Shawn Guo <shawnguo2@yeah.net>, "robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"m.felsch@pengutronix.de" <m.felsch@pengutronix.de>,
-	GEO-CHHER-bsp-development <bsp-development.geo@leica-geosystems.com>,
-	"stefan.klug@ideasonboard.com" <stefan.klug@ideasonboard.com>
-Subject: Re: [PATCH] arm64: dts: imx8mp: add cpuidle state "cpu-pd-wait"
-Message-ID: <20250415154724.GG9439@pendragon.ideasonboard.com>
-References: <20241007134424.859467-1-catalin.popescu@leica-geosystems.com>
- <ZxYiCv6SpLq9uh08@dragon>
- <qqi2z7wutuy7e6o5fhpzsgfwkyn4quqmdeftl24meld72sudpg@lo3qpk4x7lbv>
- <d6852cf6-e8a0-49b8-a565-2d94eeef67d9@leica-geosystems.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hQkwtl1j"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IpwKSTleP8OqUU+duHcTX/9iZYJWR+6t8JfJrTcB0PW0zISx3L/ngLFAbZhva6JNUz4f6MllJ4977YpN+NOR+GJRydLoePPAwDWg05Cyx2t6I7M6un9xFF+fjr3FzZo+QxeBgv1opbac4PGqUyrFSYVfNmwHvE/IBQwv3rnl+IYITDBWenam44t0rCZOV6CXn83/hTEBxsD1pytPyxODCQeLi1/1EXGX+z9DJWF1BVAtvjsygtLFvLjQw7HqFf6WKJr5l5f+Zx9oPdDUXW4GWP4C+rOLLU3S80O2Kt9YXcClGY/R9jvPTN1vP1Qlkkhct06uWwJIddMJ85qkavSDBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TOib8Yg5arhhjBlq0DPplC8uYkK7g+mdmKw7dQ6lFVo=;
+ b=HKnt+KQbrDn7Xkpz5l6zRAUfMVNrtJNcBnjhZr+zxVdKJxK0ge8yqMgSWVnjCJ1+dwXd3U+6pKOzNNlTLKFeqeXacsfi852ULRffx7tJ3dFW9Hdc0BSFlKrRxAoRefQ+BSLv+zajaaI8kUa1wNzYfYl10zsULI+XTecrKGVtaxCybd9C4wk0MY9OpLOWJycQmvLC/qPNc6lJ1E6SLJbh2i+W3SSizrWaaosbx2sZDgzTjEfQZR586P3XWFlHYmgzIzAk6uUrb4eg8wu8cIVoJFV+g8SBLTZ1jE4aAg49LhNPbJ0gL3bkpDwTLSkxW1zKf49DpcqhhkGiNatS64BC5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TOib8Yg5arhhjBlq0DPplC8uYkK7g+mdmKw7dQ6lFVo=;
+ b=hQkwtl1jSVH7OdplUSCQFFq/Ni4rnVXRkqpTYenfpdt8V+ePSDxgIrgRv67UYH8xT6T0HQZnUauKCXlnI2HMcAIlch7LRNITr2sQw1NZCixLfsx/I2DN1CBi8+ya59RP8NQmoeccLwkvXVNaSgYWBjDScTbQkC6s9za4uQa0kATlFEnumZnjVxj//wtNiUxv3IuQVtdDJfL9nVvyqBYhk/qF3B7aU60uCnAl3vy+gSlrNInk+QzUGvpqH3awJjmCmRrprYzKSG4CeeIFPj9mSlmTOQNvfsqxw4RelOn+KI31UPZ5KEhhBSpYNL7V3Osq6Y7iPgdLQ+jP5qQyMgSXEw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by DU0PR04MB9323.eurprd04.prod.outlook.com (2603:10a6:10:356::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.32; Tue, 15 Apr
+ 2025 15:49:15 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::e81:b393:ebc5:bc3d%4]) with mapi id 15.20.8632.030; Tue, 15 Apr 2025
+ 15:49:15 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-kernel@vger.kernel.org (open list:IRQCHIP DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: interrupt-controller: Add missed fsl tzic controller
+Date: Tue, 15 Apr 2025 11:48:58 -0400
+Message-Id: <20250415154859.3381515-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0113.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::28) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <d6852cf6-e8a0-49b8-a565-2d94eeef67d9@leica-geosystems.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DU0PR04MB9323:EE_
+X-MS-Office365-Filtering-Correlation-Id: b563a7fc-9801-4605-b31b-08dd7c351319
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Twt2tqaq6HbnPRlTSySsroN88AhJ1aID7W4pavj8kaIBSgAwRh+ath21Oi5u?=
+ =?us-ascii?Q?9+hBao699L0U89/uq1rkf9nc+ABK/ZdeFf2w5MESHSb3nWy9T1jopugmKLLj?=
+ =?us-ascii?Q?aZf+6+mKApmJENCJPIsAR7ZTRH96kBc8XhBtTMkYX0RopG9RpAo01IDwU186?=
+ =?us-ascii?Q?COlVuCASki7CSY1ZMXBjp2WvKjr9nV8ZIvjlL5TYmKGl2iyZY9YZ5wZeC+zI?=
+ =?us-ascii?Q?TGI+iWLoNCgQE+XXDvMRCrJ+LmOLnJtnrbB9SI/GO834NR2JcqTagzFIGEht?=
+ =?us-ascii?Q?xBch0GQDjr92gUJu2XOlu2j69Rk5g3nCL2ULY3aDPg+vKbfT3x+yhFMqyQEQ?=
+ =?us-ascii?Q?Ky5YdqvsD1zHZsMli25FCTXy7tlYbDl2LljDjO84ccIASwfwhuBLyfS7tg3m?=
+ =?us-ascii?Q?DM2xtWsSFNAEdHxyUvdzQ+Of0Y18vpwfWS5S+5tMvDc7d2ey6xYxde0zrH7y?=
+ =?us-ascii?Q?SkOcA9CtN/941m4R6NikxyrmzMmjwVTHxZU+qsxu1td+tJHxKee0l8eb5yB5?=
+ =?us-ascii?Q?5UOYe8jzcLnYNPy+QUxJkO9r1HFuyodJfUJh9jqbTOU/8wn0ztFv4538x6w0?=
+ =?us-ascii?Q?wwpZAzhHZZZ7aEwXkSUFVucxPQoTIm5/PF5RJqaoKVLIJ2b8kEbgKtDlUzmi?=
+ =?us-ascii?Q?o+gxtBYSJLJvxrftArSzFX4mfRWR+VxgFaBcOlIcu73tzAiNGR4KUMF4B7v2?=
+ =?us-ascii?Q?tS32ya74qbUiCZZNi/mofNjkFwbuoZwt4Xs+4eHkRRDwWhMSFQcmVeaBCcb9?=
+ =?us-ascii?Q?qudFrmYG4Qi/AmH2DpHO85ZHmioagWmR7iAjRjoQHXdTGH6J7aUGvyFJZJLv?=
+ =?us-ascii?Q?69nrgMHeOyZKVI9ZMBwDD9Lkh255UwQeT9r5RhuspeZiB23zKhCN64RLAxRj?=
+ =?us-ascii?Q?By2bXB8LmZddgyw2JxbxpBzZkjgditnHi1igiemffcF4zdBdGdntFSMpsiUr?=
+ =?us-ascii?Q?cB4fD8BHyTuX3Q+ju7LLb7KeO9njvuz9TIJBsVZkkwC5OIinYBmmxCX9aHyM?=
+ =?us-ascii?Q?QJvEu25dVD0I6qcOHGQW3+SSlLhJ8AfInxrxstvTHnoiIO1UaZVZZfFG7qfL?=
+ =?us-ascii?Q?4s0mYug23Jr1jLPq95n8uvjZeG74GNztbdr/Z647zsf0K0zLgvHr90gle+Fh?=
+ =?us-ascii?Q?crJkAJhr11DzFFvZNzl8yXKCiRmIKj7xhnZVL6Ly4HnFCDP7AwD3o6bYjQm8?=
+ =?us-ascii?Q?IUg/sotSoxNc0JsHDV9xb9ThvwSCNbJ8xIk1B7ZO2wEnGOzwCtCdx4MJ0oUw?=
+ =?us-ascii?Q?4pXziduMSn7HFkJo2C3I135M8fJXOiWkiYeFU8fR471pPLsEmhMebTrjV+Iu?=
+ =?us-ascii?Q?VLV1qNEsI6WuW+K3GzPai+bFP2aB1BD91tY6xctWqDnbBfMxtpoxS1jfri10?=
+ =?us-ascii?Q?N0Jux4kA/hlqbPgkJePWkh4m41Le2SrQgpd7Uiaik+hxFkTvXaxJ+Rcp92vn?=
+ =?us-ascii?Q?NW5TPTEZHH8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dFcOrcORboVpnyBO+cHpVuWFD+y1CRISr2wQyJEp0ZBuF+P93qpdE39UPBNx?=
+ =?us-ascii?Q?u0DThcHgesiqxfpEf26k4V94Guk0waruO9nOwGKDt7dPhIQ96YMmN+skWmzn?=
+ =?us-ascii?Q?DTEnwMS6lP98narM2Q+sR19q5dI6g/gKwimD5ljmr+t8Rb3VFu34bMGpXQlx?=
+ =?us-ascii?Q?Ld4SWdhpKQsb1Fn82E2RpyuwJ6jR2wxYsKWAg30MOH6Pybgy6Hwv9Z/aQcLi?=
+ =?us-ascii?Q?tafYeefnx/RkLvL3I3C4JUmHPg131aEvZulc3YZB3mDpPz4LmixVzF1skRz2?=
+ =?us-ascii?Q?/BYVXDh5lzoSrZKdok16h+yPhhfWkJoXMf4Z4b7r95Sf8hvp8QNh9FaMSTBn?=
+ =?us-ascii?Q?i1rZUfrJxOEcWNZeJkX7cBskZuJenYdOiUaR/ksaAMmjEUmMp49R+SfuNPQJ?=
+ =?us-ascii?Q?pAnt6/AkbT4XsopVm04vs//rny72lgAY+kyt8Z7IV7KSE8f/YF6U5xHaOrIW?=
+ =?us-ascii?Q?togqFEW9YWSmrKGO7K1dHOXmPBYyARNd/ysXWkglNJuB83o0hLvbnPbbaNk0?=
+ =?us-ascii?Q?v1LGCXCT8l4JpaK/nA4sA8PlLIufBa5Mbo2vjbSQk+EKNG06S16mNcQYkK+8?=
+ =?us-ascii?Q?ijP0Gj5jFnJ5tcRf0dyTJUnqwk0qD2/v4YSfrwliHcnXUFiuFZQr8RwoHiAv?=
+ =?us-ascii?Q?MZ3lGEiBL22m4riZWcr1J6NzrYJHaEFtVUp5H6O25Zkd9Vimtv+XH/GmHomN?=
+ =?us-ascii?Q?2JL7y/ioWJjq5++B0EhIA0i+pSs6bshvpqQJCWvgzPsuRfsCBdpzGrFuhKsK?=
+ =?us-ascii?Q?od1Wy2tc2ylnKc9RaqhoV955OIoLmxYMYDY3JOmBNWhk5mNlvPnawgARRLyo?=
+ =?us-ascii?Q?w0E82IcXRDKhrfdc6mmAu552L0CVx7Suz4T1sevN3z4aeAxN5RMb92Xp9ZrS?=
+ =?us-ascii?Q?67/4T3cp/Mx9Dg/kNZ3NTYhKIIS1taHfrYVJnUePelNpp+uSZ3gFKnKNaLJF?=
+ =?us-ascii?Q?IiQQ3BXKUPdImOegSev3l6TEEVUPlJ6xKkJogcektgFn3rq7q++sMXEBKN7v?=
+ =?us-ascii?Q?zqevDKQ2cD8Dl1KS3qCzOkA+ly/wAN6ZHMDLGdpx4LFrUunD7NLM+5em9qET?=
+ =?us-ascii?Q?ik1178lB/1DfRPGrVKkOrasTl3LB3LtCLt8fuMHN8UYU5UPub1rZokeGkIFT?=
+ =?us-ascii?Q?vWJA3TwcFvN0KVGBgGXULOKgqjIt5u6Lyq487+sYhBKy/It5D+RngRV9u2FJ?=
+ =?us-ascii?Q?2F8f4PRak2Buyjn0jrHHIV1+QdrAfmR1mqW6QGpx7KVePSsctUFX5pUwsdDy?=
+ =?us-ascii?Q?aAUZY+7FgZCEl8Fr0kUpu30Gf1sw3U/f/4QmO+CiSWyIWGkTgc/vgDjwm5s+?=
+ =?us-ascii?Q?Asona6JyZaQPX25V//uXtuGNypcdWJ18inZ5vxol2RrC6709dCntzWz0Vc1R?=
+ =?us-ascii?Q?/XJqQcM66tBQr53Hs5fMyIarfKsO+tb7cvHEsuAgsY8PiAfOirOdmNnvJPVU?=
+ =?us-ascii?Q?nxvuhffdpaflbNPZwFr/3i4bwfddrGUL4moSSuqW35pn7jKSPPcJIBrH/htn?=
+ =?us-ascii?Q?cob1gDx0mfc/kgwmk8CLenyec4owHGFgKItUP8jwMQ96y83V9o98zV9ALIXb?=
+ =?us-ascii?Q?vSQXz+cxXKITpFGepE8=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b563a7fc-9801-4605-b31b-08dd7c351319
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Apr 2025 15:49:15.4534
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CimLDqczdS3EyQqrUSVGAFlywuBzqjkOEcdsUYTNmMFnISxzGP87dgKV9f/bxpPjAyjIIBDxX/Z+qncNfCUQ1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9323
 
-Hi Catalin,
+Add missed fsl tzic interrupt controller binding doc.
 
-On Tue, Apr 15, 2025 at 03:42:22PM +0000, POPESCU Catalin wrote:
-> Hi Jai,
-> 
-> This issue was already reported by Stefan. The problem is that I don't 
-> have a Debix board to investigate.
-> The main difference b/w WFI and cpu-pd-wait is that the first doesn't 
-> call PSCI/TF-A. So, the issue looks to be related to some settings in 
-> the TF-A.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../interrupt-controller/fsl,tzic.yaml        | 48 +++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/fsl,tzic.yaml
 
-Jai, are you using mainline U-Boot and TF-A, or a downstream version of
-either (or both) ?
-
-> What I don't get is why I don't see this issue neither on our IMX8MP 
-> specific design nor on the EVK, which uses the same PHY as the Debix board.
->
-> On 14/04/2025 14:07, Jai Luthra wrote:
-> > On Oct 21, 2024 at 17:42:34 +0800, Shawn Guo wrote:
-> >> On Mon, Oct 07, 2024 at 03:44:24PM +0200, Catalin Popescu wrote:
-> >>> So far, only WFI is supported on i.MX8mp platform. Add support for
-> >>> deeper cpuidle state "cpu-pd-wait" that would allow for better power
-> >>> usage during runtime. This is a port from NXP downstream kernel.
-> >>>
-> > Since the introduction of this patch in mainline, I am facing sluggish
-> > network performance with my Debix Model-A board with i.MX8mp SoC.
-> >
-> > The network latency jumps to >1s after almost every other packet:
-> >
-> > PING debix (10.0.42.5) 56(84) bytes of data.
-> > 64 bytes from debix (10.0.42.5): icmp_seq=1 ttl=64 time=1008 ms
-> > 64 bytes from debix (10.0.42.5): icmp_seq=2 ttl=64 time=0.488 ms
-> > 64 bytes from debix (10.0.42.5): icmp_seq=3 ttl=64 time=1025 ms
-> > 64 bytes from debix (10.0.42.5): icmp_seq=4 ttl=64 time=0.810 ms
-> > 64 bytes from debix (10.0.42.5): icmp_seq=5 ttl=64 time=590 ms
-> > 64 bytes from debix (10.0.42.5): icmp_seq=6 ttl=64 time=0.351 ms
-> > ^C
-> > --- debix ping statistics ---
-> > 7 packets transmitted, 6 received, 14.2857% packet loss, time 6126ms
-> > rtt min/avg/max/mdev = 0.351/437.416/1024.755/459.370 ms, pipe 2
-> > darkapex at freya in ~
-> >
-> > If I revert the patch, or disable the deeper cpuidle state through
-> > sysfs, the issue goes away.
-> >
-> > # echo 1 > /sys/devices/system/cpu/cpu$i/cpuidle/state1/disable
-> >
-> > PING debix (10.0.42.5) 56(84) bytes of data.
-> > 64 bytes from debix (10.0.42.5): icmp_seq=1 ttl=64 time=0.482 ms
-> > 64 bytes from debix (10.0.42.5): icmp_seq=2 ttl=64 time=2.28 ms
-> > 64 bytes from debix (10.0.42.5): icmp_seq=3 ttl=64 time=2.26 ms
-> > 64 bytes from debix (10.0.42.5): icmp_seq=4 ttl=64 time=0.848 ms
-> > 64 bytes from debix (10.0.42.5): icmp_seq=5 ttl=64 time=0.406 ms
-> > ^C
-> > --- debix ping statistics ---
-> > 5 packets transmitted, 5 received, 0% packet loss, time 4051ms
-> > rtt min/avg/max/mdev = 0.406/1.255/2.280/0.842 ms
-> >
-> >>> Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
-> >>
-> >> Applied, thanks!
-
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,tzic.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,tzic.yaml
+new file mode 100644
+index 0000000000000..5f2c8761a31de
+--- /dev/null
++++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,tzic.yaml
+@@ -0,0 +1,48 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/interrupt-controller/fsl,tzic.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale tzic Interrupt controller
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - enum:
++              - fsl,imx51-tzic
++              - fsl,imx53-tzic
++          - const: fsl,tzic
++      - items:
++          - const: fsl,imx50-tzic
++          - const: fsl,imx53-tzic
++          - const: fsl,tzic
++
++  reg:
++    maxItems: 1
++
++  interrupt-controller: true
++
++  '#interrupt-cells':
++    const: 1
++
++required:
++  - compatible
++  - reg
++  - interrupt-controller
++  - '#interrupt-cells'
++
++additionalProperties: false
++
++examples:
++  - |
++    tz-interrupt-controller@fffc000 {
++        compatible = "fsl,imx53-tzic", "fsl,tzic";
++        reg = <0x0fffc000 0x4000>;
++        interrupt-controller;
++        #interrupt-cells = <1>;
++    };
 -- 
-Regards,
+2.34.1
 
-Laurent Pinchart
