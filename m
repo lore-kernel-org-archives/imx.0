@@ -1,111 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF3D15ADB4
-	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 13:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87405289357
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 14:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744724606; cv=none; b=RqjlcO2Fah6ec9FES3Ag0aubiMoaualu8XsKstYOkIJlVNIWPG4npStTgm47vyfIt47bg+u9qjBm5mjoB2QLtmGMecjUjy/xqShTZ6VHolaRIvlZn5guC1gxU4/bCkrLhZwnKTU70LmjibuYbsokCKfgjbWNEa8Kgr1HGbI3zPI=
+	t=1744728505; cv=none; b=DVKuPnPfV6e16PhOns0wLdA2QpQPY9xAVhkHF2HxsBbcf5mticJLTdeLzIrGD6AygsCGKdmatsYPxu2dTR8qX5PE/0YaacVcTu5+SJ8bBzstrki7vAxl/SKvcrlPso3gZWjUJiJ1Ubi9LJjKPby52y/l6YWwMvRgje329302YIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744724606; c=relaxed/simple;
-	bh=Kr1AFDD5BTer6jIrOh1jS8j+MJa8b+J/by2OIVffdRY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hCCM8vpH/2rhYcIU8VE02P1AgYA1lhNMWiiGlBQVmfcGMFpOgDBm189c80pdCRWhMMuAzji7BiHXxD5O95kQBkDRgEIaKIzU5rqDO/SlDa/4SmyavF0M8ztZOlLPqJhdQS9spsWqNyq/gu+8ca/EZHpjHUteef3VRQHbzxF+iTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WMmzlYBS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WMmzlYBS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744724602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/BknlwHAWOUIUSD2VyjY9YAAgdtDCJlgRixChgK4ykw=;
-	b=WMmzlYBSrwZ+KRghqcR7jFTOQVKVT0sWPoRaAPu2AKaHmK/HJX5sJh86O122izMYDKVUVE
-	RrrTvBmCaWRsJhMzQrk5RvngdVF9ggoIrv8iEabYe3YxyfPWV/7alR7PuFNMavcBjjnHbF
-	lv+4WscPMl8viJVSj//zsDR9ZVxnSc8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-QrNOI3YyOyWaQLk_3kHGEQ-1; Tue, 15 Apr 2025 09:43:19 -0400
-X-MC-Unique: QrNOI3YyOyWaQLk_3kHGEQ-1
-X-Mimecast-MFC-AGG-ID: QrNOI3YyOyWaQLk_3kHGEQ_1744724598
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-39d917b105bso3174953f8f.2
-        for <imx@lists.linux.dev>; Tue, 15 Apr 2025 06:43:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744724598; x=1745329398;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/BknlwHAWOUIUSD2VyjY9YAAgdtDCJlgRixChgK4ykw=;
-        b=OT+BEoIgIVhOAv98/SKoGlGW46WhRIArtIEyQnmyDMjV/JEqMtTGU2Zt9temjVzpHK
-         YQscLCYZB+UrTcV4tI57JG37egtwGDen8FlyTq17i6KD6u1VbwI4aRxx5/8351CedTO0
-         wKdF1C6+p80RIUFAFmvziX5Qw6TzjY0FIehvdo5xVmuc7fxBKQmER/12HuDwDeEDpp1Q
-         82m9Dfr34La8VlR48ebmeb1XSxIb9M2dl2p8fLqfcr/FYhu1uoFl6UHQEJ9OfezUv/H5
-         wbR71WCB/kaPavh+/r5FpigoGiYQkfmaIlsO4IWHYsc9Fy//rtBC5SmbelpVbPsMNVYB
-         8i4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVSEp+CZt7Bx8sheecPf/OWcgyNedsSL5H8tlrZaz6nGgTiuMSQYc9bDWEXXP9evdMwdnc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx17UAg4NU327ZSeplSgVtDtNMM5/n0JLqsZDy6zMRE7fciD7UH
-	O4bpAI6r/EyeRybxlcMTmRaN53WyeHgFmyj5mB/yT8MJ/5fAgJ6cKUIOHpctUxJoEkKUxxVVtO3
-	VSh1/YEuSyAk5SbkcJE0bYZsHAXh4vLm609PwSpUOFznEBBR9Mg==
-X-Gm-Gg: ASbGncuQxVsN6ArQE1/LJHQxEKdGRgIHkqhAi1TuS5QM0iJ67uwNCz0KqbGC2TVmg4Z
-	3j97Gn2k07jG0/B4Iz4pW3ycumyyaLlkVSkwgVaYeYi2JpyHnnBlj4tOHHs85VhNfC0J46p+mAL
-	i6Qaj+uXqLrvCviSRzlR8ZI9NXX7A7A06NoQHRHHcgKWT+k3L9s8UDrgArIrmRFEmP9PeDe81Nt
-	VopWNDcYY665rpxGPRpo7VT44DF+ZWFd0UeNK4AqP0gCKJxNaVNDh5VRl6WTCDOL6eKcJx3YxfX
-	PfYzF3uuo+wgjjN9ZleBXQSdj0WjefUCQaGCfis=
-X-Received: by 2002:a5d:59a3:0:b0:390:e1e0:1300 with SMTP id ffacd0b85a97d-39eaaea4548mr13282370f8f.33.1744724597995;
-        Tue, 15 Apr 2025 06:43:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG0JyZk7iu1Ps9aWjZNEP8lEOiYdz+v1T/ibFseJb/dw7p9p9LOXvKaUssvdPPF8RDwWIrTgw==
-X-Received: by 2002:a5d:59a3:0:b0:390:e1e0:1300 with SMTP id ffacd0b85a97d-39eaaea4548mr13282344f8f.33.1744724597586;
-        Tue, 15 Apr 2025 06:43:17 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-34-52.dyn.eolo.it. [146.241.34.52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae96c02esm14065754f8f.23.2025.04.15.06.43.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Apr 2025 06:43:17 -0700 (PDT)
-Message-ID: <4ffd3630-bc75-47db-b63c-3dcb7af8249c@redhat.com>
-Date: Tue, 15 Apr 2025 15:43:15 +0200
+	s=arc-20240116; t=1744728505; c=relaxed/simple;
+	bh=dL3GBIFDMlroIuYc/uiPg97dQ44gPEpRL5p9zMC4w/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sTTTPm7bW5gy0yXG7TZVLeva8TMrKVen7ERsCCRCXcwwZxuBpgGHJsdAYtYeKAWgaF5BDz60K3/nfMG/XPh8HKZhLqPuvZb0qJ6GKZhLp5JGabnQyU4IxRRDBkYgJvhP7k1aSaD57vnf6icZKjiBfTTgGRzsfMQDbWdf8RojaHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0DB9C15A1;
+	Tue, 15 Apr 2025 07:48:21 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F45B3F694;
+	Tue, 15 Apr 2025 07:48:19 -0700 (PDT)
+Date: Tue, 15 Apr 2025 15:48:17 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Peng Fan <peng.fan@nxp.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v4 5/7] firmware: imx: Add i.MX95 SCMI LMM driver
+Message-ID: <20250415-exotic-scarlet-seriema-c0e223@sudeepholla>
+References: <20250408-imx-lmm-cpu-v4-0-4c5f4a456e49@nxp.com>
+ <20250408-imx-lmm-cpu-v4-5-4c5f4a456e49@nxp.com>
+ <20250414-wonderful-cute-bandicoot-accb6b@sudeepholla>
+ <PAXPR04MB8459195AAF65D38AFA1D4F9688B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <20250414-tiny-classic-barnacle-5f8c8f@sudeepholla>
+ <PAXPR04MB84593BB91063D13BB05BEB5988B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <PAXPR04MB84598733FA39A7402E91DA1988B32@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <20250414-ebony-slug-of-felicity-421b0f@sudeepholla>
+ <20250415091016.GB10243@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 net-next 06/14] net: enetc: add set/get_rss_table()
- hooks to enetc_si_ops
-To: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org
-Cc: christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20250411095752.3072696-1-wei.fang@nxp.com>
- <20250411095752.3072696-7-wei.fang@nxp.com>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250411095752.3072696-7-wei.fang@nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: bSbXvY6jZ7cumrcTsnfHmGracABPEJZmqlaaTHfBF-I_1744724598
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250415091016.GB10243@nxa18884-linux>
 
-On 4/11/25 11:57 AM, Wei Fang wrote:
-> Since i.MX95 ENETC (v4) uses NTMP 2.0 to manage the RSS table, which is
-> different from LS1028A ENETC (v1). In order to reuse some functions
-> related to the RSS table, so add .get_rss_table() and .set_rss_table()
-> hooks to enetc_si_ops.
+On Tue, Apr 15, 2025 at 05:10:16PM +0800, Peng Fan wrote:
+> On Mon, Apr 14, 2025 at 12:17:34PM +0100, Sudeep Holla wrote:
+> >On Mon, Apr 14, 2025 at 11:00:20AM +0000, Peng Fan wrote:
+> >> 
+> >> Oops, I just checked wrong Kconfig under drivers/firmware/arm_scmi/
+> >> vendors/imx
+> >> 
+> >> Build this for ARM32 i.MX is ok, I just think no need. So add
+> >> a ARM64 dependency.
+> >> 
+> >
+> >OK, I will drop the ARM64 dependency when applying. I also don't understand
 > 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v5 changes:
-> Add enetc_set_default_rss_key() to enetc_pf_common.c and use it in both
-> enetc v1 and v4 drivers
+> Thanks for helping on this.
+> 
+> >the dependency on i.MX firmware LMM and CPU drivers in the scmi vendor
+> >protocol as the dependency should be other way around. But I see Arnd had
+> >fixed it so I will keep it as you have posted to keep them all aligned.
+> Not dig into much on this.
+> I just followed what Arnd did when I prepared the patchset to avoid
+> potential build issue as reported before.
+> 
 
-Note for the reviewers: this changelog actually applies to the next
-(07/14) patch.
+Yes, I am keeping it based on those changes. I need to spend sometime to
+understand why it was done so and see if anything can be improved. It is
+not straightforward to understand that dependency, for me looks like it
+is in reverse direction.
 
-/P
+Anyway I have pushed it tentatively, will let you know once it is finalised.
 
+-- 
+Regards,
+Sudeep
