@@ -1,15 +1,16 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A232192F3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AB62192FD
 	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 04:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744691597; cv=none; b=M/qKBDVVe8khMt5ZqKfwVqm5djbyDhcWUxGTkSwNR3iMD6ZAyz6XDg6Ue3XogTr3gZRshkCqgubTm+4K5p+cYl+IouujJAKrJqw+ilfMpJEuoynJeocbrLRk+1IWu4edQ14d2qUbr3ZduxYzyAxwMF218JdH979SldDADgqigqs=
+	t=1744691598; cv=none; b=DZmc3MBFCnve7GZDPfOi5AJ1r2TlTjT1fnPtMqwNz/8sTbbNrKNz+xPLkwzVjuXQryg/cHMxccFsbPQRb22NhwtP+NFLq2iHF3nC2HBg97KZPtyzkjXvkFtIzSTRv/6bkL+r5Lg7AvpKI92aHbj4Eh9stt+QZm0/oKnGix5zKlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744691597; c=relaxed/simple;
-	bh=Ka9uiHCrZuJOKyLB39qARQnmC3pH9Lj0iGiRIvDRGQM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kbibfIziceM2CEA7aFNOrlr4NFa02QnMCpHPDtWPjnT5WXN2gT4ABBK3ssAeBukRta3fI55iCDC1MVqAMf9oh6mPc8+UXVEOjBEzytL5nbdr4KqF2LO7ex1WNga6rEx4mgm9MgFi2ImSJHpbsMkeXMECxrboo2GjbeStTJdSjbg=
+	s=arc-20240116; t=1744691598; c=relaxed/simple;
+	bh=o1UC/CUCU4iL+fAOMQ5zd+yNz9FBdQ4/TB7BbrG0fq4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AnQwmfFAplJCzW5Guz1z8JbgKKLNQyZsk/ol1YHoDDyDRweE+36mJJkNyoJaLPZWrXgV7Gr7apBbvjvaHMOGuWfQrqt1XwMucWUyHTWch05G1hGDEeXcb5xBkQk6/DA7rYWbp8a/dQmnan8nuo+jmnzNN9JOg5XmmTPeeHDuFG0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
@@ -17,8 +18,8 @@ Received: from [89.212.21.243] (port=52324 helo=localhost.localdomain)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1u4Xyz-00Gb4I-25;
-	Tue, 15 Apr 2025 06:33:12 +0200
+	id 1u4Xyz-00Gb4I-2l;
+	Tue, 15 Apr 2025 06:33:13 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -32,10 +33,12 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v2 00/15] Update PHYTEC i.MX93 DTS
-Date: Tue, 15 Apr 2025 06:32:56 +0200
-Message-Id: <20250415043311.3385835-1-primoz.fiser@norik.com>
+Subject: [PATCH v2 02/15] arm64: dts: freescale: imx93-phycore-som: Add EEPROM support
+Date: Tue, 15 Apr 2025 06:32:58 +0200
+Message-Id: <20250415043311.3385835-3-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250415043311.3385835-1-primoz.fiser@norik.com>
+References: <20250415043311.3385835-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,98 +57,36 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-Update i.MX93 device-tree sources in mainline for phyCORE-i.MX93 SoM and
-phyBOARD-Segin-i.MX93 board with changes from the downstream kernel.
+Add support for the EEPROM chip available on I2C3 bus (address 0x50),
+used for the PHYTEC SOM detection.
 
-New SoM features:
- - PMIC support
- - EEPROM support
- - enhanced eMMC support
- - fix eMMC for ERR052021
-
-New board features:
- - RTC support
- - CAN support
- - USB support
- - I2S audio support
- - 2nd Ethernet (EQOS interface)
- - enhanced SD-card support
- - fix SD-card for ERR052021
-
-Link to v1: https://lore.kernel.org/all/20250410090251.1103979-1-primoz.fiser@norik.com/
-
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
 Changes in v2:
-
-Patch #1:
-- add Reviewed-by tag
-
-Patch #2:
 - move reg property ahead of pagesize
 
-Patch #3:
-- add Reviewed-by tag
+ arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Patch #4:
-- no changes
-
-Patch #5:
-- reword commit message (add more info)
-
-Patch #6:
-- add Reviewed-by tag
-
-Patch #7:
-- reword commit message
-
-Patch #8:
-- reword commit msg
-- split errata changes into separate patch
-
-Patch #9:
-- new patch in v2 (split from #8)
-
-Patch #10:
-- reword commit message
-
-Patch #11:
-- drop CAN regulator hack in favor or "can-transceiver-phy" mechanism
-- reword commit message
-
-Patch #12:
-- reword commit message
-
-Patch #13:
-- add Reviewed-by tag
-- remove empty line
-
-Patch #14:
-- add Reviewed-by tag
-
-Patch #15:
-- new patch in v2
-
-Primoz Fiser (15):
-  arm64: dts: freescale: imx93-phycore-som: Add PMIC support
-  arm64: dts: freescale: imx93-phycore-som: Add EEPROM support
-  arm64: dts: freescale: imx93-phycore-som: Disable LED pull-up
-  arm64: dts: freescale: imx93-phycore-som: Enhance eMMC pinctrl
-  arm64: dts: freescale: imx93-phycore-som: Add eMMC no-1-8-v by default
-  arm64: dts: freescale: imx93-phyboard-segin: Drop eMMC no-1-8-v flag
-  arm64: dts: freescale: imx93-phyboard-segin: Disable SD-card
-    write-protect
-  arm64: dts: freescale: imx93-phyboard-segin: Fix SD-card pinctrl
-  arm64: dts: freescale: imx93-phyboard-segin: Fix for ERR052021 errata
-  arm64: dts: freescale: imx93-phyboard-segin: Add RTC support
-  arm64: dts: freescale: imx93-phyboard-segin: Add CAN support
-  arm64: dts: freescale: imx93-phyboard-segin: Add USB support
-  arm64: dts: freescale: imx93-phyboard-segin: Add I2S audio
-  arm64: dts: freescale: imx93-phyboard-segin: Add EQOS Ethernet
-  arm64: dts: freescale: imx93-phyboard-segin: Order node alphabetically
-
- .../dts/freescale/imx93-phyboard-segin.dts    | 243 ++++++++++++++++--
- .../boot/dts/freescale/imx93-phycore-som.dtsi | 165 +++++++++++-
- 2 files changed, 369 insertions(+), 39 deletions(-)
-
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+index 507a71f9294b..0528e293c03d 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+@@ -154,6 +154,14 @@ ldo5: LDO5 {
+ 			};
+ 		};
+ 	};
++
++	/* EEPROM */
++	eeprom@50 {
++		compatible = "atmel,24c32";
++		reg = <0x50>;
++		pagesize = <32>;
++		vcc-supply = <&buck4>;
++	};
+ };
+ 
+ /* eMMC */
 -- 
 2.34.1
 
