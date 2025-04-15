@@ -1,97 +1,90 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6472798F6
-	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 06:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FF427991E
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 06:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744700072; cv=none; b=VGIpa9/FAZ91kyS21PlV/0G6TKnQp3LuGf/85VqPniE11YxrrkT2C3CnngtuRr70ZQHTYR2U1NJpfTHKtbBQNruhJlc1oZBKNhelaw7XHOX+K7nrGA4VLiGKM5To4rHKZDWmM0Fz2HA/83S2OBNTrBbrrXfQ8jkVnPtLxcg7LoM=
+	t=1744700180; cv=none; b=nCLSrQXgZvxfhOMoF+jHPMv0U2TeutDX0eKyyjJulQCXH2U5QNRx7b1HDTfgpClVuyYIX5aBwz8A9hR1gj9DDeSsAFuejb2Y2Vzf9cnSBtscjXiNJSjP58WO02uFKVkkN6K/RzabmkIbUWlVZZ1XhveQHvlh/P//5p+H/vbxPWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744700072; c=relaxed/simple;
-	bh=k9OqEDY3JEcssGMHTHMMKW2DIA2hSwtYUS+Auc8BG6o=;
+	s=arc-20240116; t=1744700180; c=relaxed/simple;
+	bh=uv7i/A+xKRCxebwBNDHz/b4HBL+FjuvQmgw0J3Ek2tk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E7vC1tpuXvA6XO3XZjEA9MJ9X/iX5rmUX14qlyhfPIr5R21hj3zr6uZq6YEgR9x5KAVl4eHb+4LmKt4lGcuR/CiBIpCG5/9NMJdYtrrCkkg8jXqvsZ2DksUsPoduYlVadU67j88ETfg8TBo2JhYg+ILHa8kmB6kxPM54ytme1Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gdw3vbyb; arc=none smtp.client-ip=209.85.215.175
+	 To:Cc:Content-Type; b=P3DTxE1zqRi3hdWSzKnDls6bWOuozEWq/EeI2iF1OgRHa1eEuUfFyrLyK9Fo+eoty+A451bpkp/fjpMfB75zHwWyIMoS6XfF/+FaF37f3yROd2LjC9cOuwmy8b/nu3C1YsYGnR8MdqGoONh0izXf0LmtWFANO0j94IZPt9P1nIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MFielKDf; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gdw3vbyb"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-af28bc68846so4615666a12.1
-        for <imx@lists.linux.dev>; Mon, 14 Apr 2025 23:54:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MFielKDf"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-736c277331eso5654378b3a.1
+        for <imx@lists.linux.dev>; Mon, 14 Apr 2025 23:56:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744700068; x=1745304868; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1744700178; x=1745304978; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=k9OqEDY3JEcssGMHTHMMKW2DIA2hSwtYUS+Auc8BG6o=;
-        b=gdw3vbybFRhhj2LUUiFud+4BTkBaD+NO+/rd2lO5EJCjAPkn/Ss6Sud7o1luy5dHew
-         FasopLXPo8uvxY7tqbR3y5MzTc3stdR4BimRHm9HwrwBn/+jbmn4xof7i/LsaIHkTMIo
-         90I+14Ho+nBGBx6jfo6J+VtFC3hkMaUraQVNoJkvZ7TxVuvL0RJHPi1C+R7E+1Lkyh0f
-         9GpFhM6fdPJqgojLApQ4BYZviWy9mZIDADeFdaQoTtWziD6eaiBNVEplOhWR5tsaIP2K
-         Uiq2SaYQlADvOIHR6I/4JJn13Jh88S0oeEGccVrRXFRFPqV5FOdxnpxINLK1BqgBOBbF
-         kdtA==
+        bh=uv7i/A+xKRCxebwBNDHz/b4HBL+FjuvQmgw0J3Ek2tk=;
+        b=MFielKDf8GTbTEvSOFSb9nhjDUZ5i4G/ir3pVaLoeZHr+d2Jxu3Gunu04msIXuY/UZ
+         q+UVJqtQIEaobwWsjt0u+hbksi+Kfog3IHXbc6JDrTzFlrQ8Sfa+V+4Z8IGpOOkdF5wf
+         9xYdomQOT8pdA0D8vGdGZ7D71wCtBpvOJb+2+t6kCXG/d47AFzMHu3o4g8ZoQbxU+i1L
+         oVCP37Z2G9GvzOZOfzBt+kYoDiCmT5cFmDlWPPSBFwm8rE8egwiAz9pa3wRcrrweaM9f
+         dD1yjX0MSHLetf71zPewkaZYqkkb0igoLXi6RNdpX0bfQEaAc+MA/6wGD1WzlEZH0c6j
+         mz0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744700068; x=1745304868;
+        d=1e100.net; s=20230601; t=1744700178; x=1745304978;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=k9OqEDY3JEcssGMHTHMMKW2DIA2hSwtYUS+Auc8BG6o=;
-        b=bMT4NXXKSiUMtGHvrF4msul4NX3L04W9ac/al9dn+PVlekZUGzvGzbplFqyms+URgd
-         R9OKyhcJeB/W5N3lx6V0vKana9yowMmy0BkbJAhdrojQZnsn6CnhPRWUbCPzjWidLTun
-         E5IN0O6O/9bB6derhX1ItdEqHni3fHmEIGRvxExvn0lJBpmFh029cHb8K/FPd/68S1Cg
-         6EBbg0S7xIGlX0FiJfD6/jrztSG3DJL2KmCRXkgEX2BySBrlvYtwIrJkwv1U1kddJzPK
-         x5nko6SyFO1YsRRT5CZ3uInbaFT2nZ8reWSXrIzih+dCVUcOPfXWnoMp6jDK1I8fmCan
-         CNsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0jJazFen4RRbOZY14fQn+Erd7b/XzDTHD5TUb01vG6tUDwmcJGVpwgvXrNol2hnslHlE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YznZxGhFTITiZH525xmTJ1O9bEqq9q2aY0vfMhU10jGEO6q1tqA
-	tyKfalFus+6extiwRSwf7C0MrDN95j0Io10t+cx8mV00Ogafm5IVBOV0Z5H7GTxX9X2oBTRxZ2z
-	YNGs48G3a64qZt+zzH6JOvKmNXmQ=
-X-Gm-Gg: ASbGncte+bVlh0chOFZ9N1egGDurjCGEllqxtbIeoc2+BbxK90OSsR43LVxDXLCgql5
-	GqEiKCCuparxOWz+xzvHnA+JXEUQEliokb5QkXHLz2+qBccXk0Rze66lI9HZL9/0cjvtCSHbVXs
-	qSeeV2DLRtq0UJqTpH/w==
-X-Google-Smtp-Source: AGHT+IGsWWhYe9e4mWSJsic/j7kKIeW7DfXwjL4Jb4i7m9zXmuDIJPuuX3HEnkVvhnsbqUdqK2dIfJphOjrZOmuAgmI=
-X-Received: by 2002:a17:90b:2811:b0:2ee:c291:765a with SMTP id
- 98e67ed59e1d1-30823639c94mr21764256a91.8.1744700068456; Mon, 14 Apr 2025
- 23:54:28 -0700 (PDT)
+        bh=uv7i/A+xKRCxebwBNDHz/b4HBL+FjuvQmgw0J3Ek2tk=;
+        b=e6tAKm0z5n7wj2mbcDw9DbT98VqDddyZuyjFaOh7oGg1hu2nX9aGZKWDbF1rdsMsDF
+         SlXkAMQWv2l4j9jOBBGGpQI3rEjy+abk1Lx/1K6yrYA1w/VQTbdFDQEsCz0jXEw9gTaa
+         mXy44pylttlc7R8nnwPl//GyqJSt9hnxgKeuJ/p1+PdRXdYrAvFeiI5Wwo0fX8BQLjCt
+         FhpeTF+3jfzEuwr3BxaCMXBreUGhV/jEiko/MmQacO5uzBBIO42X3tk7Tt2gYYhnP9Ok
+         Ag+800hX5ejJuG98WFphgb3V0eoq9FVrkEykS5owPZORXPYN8rfbRe1sk6djAmB/ut69
+         H3qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUdKZP9AzloZEfhXZpjzlYnz8751XA26PXU7vgnVDlIgqh6Bl0czbwEsWOsCZ6tYcy0LDQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxvrcyBkGYhjX+7VEkNn/xAA20YcGtJ7dbw226gjwZi5Gs6VZYt
+	muafb1O2cCcbQ+ECu9GttdKx3CgaUzlGjtvXKrKZO0Hjfr2r5G6Nw6skvHoLkD0fF6wUW53RJug
+	O4HzqSQ8465EKli0jC5N4qOr0zW8=
+X-Gm-Gg: ASbGncvG6HnWxC8de2J29SsB99R4Ye1ijdYNSDs+9oiGcZ0bH1TEOb33lQtPObLlelZ
+	Uk4mleI2FO9D4kMUB6Rdq8nCzrVgzpvZjItqTvdI/b5jClSnALsmQQiWZdG42TBnpbVRkPWhKkk
+	CcoS7HufEOLzK4PoYkwg==
+X-Google-Smtp-Source: AGHT+IG6NnOFJlKScP+Wamh79XovR7K0CPgG97m4Wp+PToKHbCYOR7nSiLCr5HD0lc3ekUswv3GSc/IBDvySxyjSaD4=
+X-Received: by 2002:a17:90b:58c5:b0:2fc:aaf:74d3 with SMTP id
+ 98e67ed59e1d1-3084f2fbb88mr3226588a91.4.1744700178357; Mon, 14 Apr 2025
+ 23:56:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250414123827.428339-1-ivitro@gmail.com> <20250414123827.428339-3-ivitro@gmail.com>
-In-Reply-To: <20250414123827.428339-3-ivitro@gmail.com>
+References: <20250415043311.3385835-1-primoz.fiser@norik.com> <20250415043311.3385835-14-primoz.fiser@norik.com>
+In-Reply-To: <20250415043311.3385835-14-primoz.fiser@norik.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 15 Apr 2025 09:56:14 +0300
-X-Gm-Features: ATxdqUGxqJNdcd-JZaoJQzqSGgpBMKry2SLqzTD77e0YfcWpcDRWqQ9RF6-oALY
-Message-ID: <CAEnQRZBt7mgi2ep8j5U=8DWA+KfO_nGfczXrSxAy_HaSeGNTMA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: add Toradex SMARC iMX8MP
-To: Vitor Soares <ivitro@gmail.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Vitor Soares <vitor.soares@toradex.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Hiago De Franco <hiago.franco@toradex.com>
+Date: Tue, 15 Apr 2025 09:58:04 +0300
+X-Gm-Features: ATxdqUFzmx2uRpXUocIpbqqLeApK-nJ7IdkiHEJrpoo6ZYi5WSR7a6jQ2PJwfmo
+Message-ID: <CAEnQRZDtHWTEHMkhd6BqtqYXCkOcAEj1eNYDdkQ2FV3a4QDbvg@mail.gmail.com>
+Subject: Re: [PATCH v2 13/15] arm64: dts: freescale: imx93-phyboard-segin: Add
+ I2S audio
+To: Primoz Fiser <primoz.fiser@norik.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	upstream@lists.phytec.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 14, 2025 at 3:39=E2=80=AFPM Vitor Soares <ivitro@gmail.com> wro=
-te:
+On Tue, Apr 15, 2025 at 7:37=E2=80=AFAM Primoz Fiser <primoz.fiser@norik.co=
+m> wrote:
 >
-> From: Vitor Soares <vitor.soares@toradex.com>
+> Add support for I2S audio found on phyBOARD-Segin-i.MX93. Audio codec
+> TLV320AIC3007 is connected to SAI1 interface as a DAI master. MCLK is
+> provided from the SAI's internal audio PLL (19.2 MHz).
 >
-> Add DT support for Toradex SMARC iMX8MP SoM and Toradex SMARC Development
-> carrier board.
->
-> Link: https://www.toradex.com/computer-on-modules/smarc-arm-family/nxp-im=
-x-8m-plus
-> Link: https://www.toradex.com/products/carrier-board/smarc-development-bo=
-ard-kit
-> Co-developed-by: Hiago De Franco <hiago.franco@toradex.com>
-> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-
-Audio part looks good to me.
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
 Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
