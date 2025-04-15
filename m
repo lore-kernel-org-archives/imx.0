@@ -1,125 +1,173 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C894D221FDB
-	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 17:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CBE21ABAE
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 18:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744737674; cv=none; b=KXhEkmM+gHSMIq+8ZcIbVWI7mJpwi4eOoYQQytVGWken/N4+HhUjh3rCtraJwaYfGFVKJmzBD/59O6Lc4/+3Y/cncX4cWUjiMlUWUnIDJgp/5TpwPdxDW9k+SZxGxBcIvk7EOhFQJR6j6VhabmsPysk/HzoxL8A/RNjBveLQTAw=
+	t=1744740882; cv=none; b=nZFLGn3kNIHa3TNP3jwsUq+yHph+jaLSaq1kFDbrAmLdQ+e6dGSdLCuj/wvYbjq9RLag4/tb9m3bWQk+82rZImpOoJP+uUOele/0DkkrxmTVWTbS7X1wN3X41Ekkthj+OTMc8Ds3dzbO0TuhGZRBQj959wZirJM0PBZxlB+Fmu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744737674; c=relaxed/simple;
-	bh=NfgaXQBvNUUvr0jFlV9J8eVtkLOh24tR5qYNGiYdAo8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fzpnmsHT3MiVxvjvwcJBl2yjGODBEGRubWlUSyOe0IaRPJdt6UFLPvy0qCt5bvuo6j+y5kubBk4DdFDUY8yTgIu0iKbDqpaTU1mrIP+y9MQJWjTZ4O1O+/oE+QFnCtUiUAD3re/ugfGwtfZzxASgW7doJxItkVrR0dme9QfsQzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sdw6uIJ2; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sdw6uIJ2"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43cf034d4abso64237325e9.3
-        for <imx@lists.linux.dev>; Tue, 15 Apr 2025 10:21:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744737671; x=1745342471; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HBQF3LhiaELkhAhvThHHQLxtoJjXQ7QMmkLPCh9kTRw=;
-        b=Sdw6uIJ27dbApNkV01mgGqG/23HxUbNb/zvbJuLWBhY5yWomYb3CQmKkcpq7SBEihb
-         LLeOrK4w8UUtAq6Enoqxe8wTc4fwZAvDZWBejiq4sQDYs2FYKIRGLFU+fUfwkgF/Qks+
-         gw8pdQAglWWqSqvtQLCUUDbV8ClP7oXNK9VtMRizxIhj6anYqXqLFe9TCSFW/I2SVMgU
-         Mg6z/dDa9APpDd5fi/5JDVAmGw2BpKxiOhQR7g8edV2F0Zy/xlXJZUrEBodj21Hmro8m
-         w3L8e+doQw9ZwPle8N1G58Wv1r6448W0ffbgb2F33seMpnUhri0AebEJhcabyDdC3LLj
-         Dj7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744737671; x=1745342471;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HBQF3LhiaELkhAhvThHHQLxtoJjXQ7QMmkLPCh9kTRw=;
-        b=vdkF7ThOLoKwRw7q9CXF7rCrNXWovV/xHttL/PNpqzG9Qw0R8gmDAOr6CTbBDpaiy5
-         nOxt9uXYnSINNcG97qHttfRjX9xKZFZHGP4O+S4HjRr/1wD8LWfqnJWD/s0zWX4lMiua
-         LwOZiF88RPad9Hq1c9eJ6svOQyAwj0w5glVLbgY1klSz4AnKnHgc3nm1DTMSOyR6P+3t
-         vkF2LUFexZU3ALyGqKy05ZdNptz96xRDHofixnZFaMV09Rh58h4Bmn9wtDps5vrKHex/
-         EQIUh9louqJFuewq8lNUhw8pJS1/fUKAj0nn9rNQS/2GGYLmBNBXXs1QkMU8nRe7ibEa
-         cI8w==
-X-Forwarded-Encrypted: i=1; AJvYcCU5TpFBh6J3zvEhRhrz087kHHreBfUjCSO8qZf+uPAMVxxQIktMBT4z2wmLS/VxGVOCdvY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwBN8P92UmCWG8I62XWZ68hCSuptflSl1kik7ruBwf0OSD6TW5o
-	QVtpgIzYDwKni/HeSRyAT0jfcBdR2VPQjqgELLSAKQO/9hVVliSn
-X-Gm-Gg: ASbGncsHeBP2F3M+x6fI+CeSeYSL8kgvUYifB9pFYRhjEH8U42/3PdZixqIcflGEe+Z
-	gGQ0YaMQIH2n7iYBc/SO9IVXJkHhgN0RRuIQ+tvvLevpKqbl9s/T6W4ZeWQ+c56LQpBVW8lTib7
-	Gvn0d3AdvLdYN3S05LFiWxnmUQ9Eve1wgjqHU9+2+aVLjvEvUBejyZxLPuW0YSjDIMyCFLSKgbG
-	lLGOtr86HvJssOweBs/jedzerKova7mq2caPaoK49PvmLCaG3gA/567/bsD0pR/mRogvbEHKehD
-	Ae0/ReAO52KK40IRp3+VZdWnL4xnrh6EMHyQhM3QeMwDEW51I4VHlfSPim9NhwkfyrzYi0eEbtx
-	ep8w=
-X-Google-Smtp-Source: AGHT+IHmlSKDjijdhVP4MsrrIOmDn69e4RJTHJc1yap6d2BaTmoYqDqW9yK+cYJfmW31Obrp3rSSKA==
-X-Received: by 2002:a05:6000:4310:b0:39c:268b:8b66 with SMTP id ffacd0b85a97d-39ee27632c2mr255465f8f.43.1744737671070;
-        Tue, 15 Apr 2025 10:21:11 -0700 (PDT)
-Received: from playground.localdomain ([82.79.237.157])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae963f4asm14987714f8f.16.2025.04.15.10.21.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 10:21:10 -0700 (PDT)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Frank Li <Frank.li@nxp.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 6/6] arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
-Date: Tue, 15 Apr 2025 13:19:19 -0400
-Message-Id: <20250415171919.5623-7-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250415171919.5623-1-laurentiumihalcea111@gmail.com>
-References: <20250415171919.5623-1-laurentiumihalcea111@gmail.com>
+	s=arc-20240116; t=1744740882; c=relaxed/simple;
+	bh=suRdQ8oXsaVY2by3Z5KklOy/pBkYGfnc2NUcm12XVkg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p0HwMz0V+Jy9B1t6Vvab/byfOTdLT1xgQlRViregPjF08gSa9G02zPzSG8WAQZFOiUK/SHcakdXtjlSMMlW16sEME6tFnWbu7KmmBwYhrnjlb6ETwepK1MielncT2rcU6By8qEu/XJ6jGVIikef4iJ+zGYBGRnm7gn46q7cYVs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u4knh-0005IM-7K; Tue, 15 Apr 2025 20:14:25 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u4knf-000Sd0-2o;
+	Tue, 15 Apr 2025 20:14:23 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u4knf-002Fnx-2L;
+	Tue, 15 Apr 2025 20:14:23 +0200
+Date: Tue, 15 Apr 2025 20:14:23 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: POPESCU Catalin <catalin.popescu@leica-geosystems.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Shawn Guo <shawnguo2@yeah.net>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	GEO-CHHER-bsp-development <bsp-development.geo@leica-geosystems.com>,
+	"stefan.klug@ideasonboard.com" <stefan.klug@ideasonboard.com>
+Subject: Re: [PATCH] arm64: dts: imx8mp: add cpuidle state "cpu-pd-wait"
+Message-ID: <20250415181423.qderfey4wpmp2bjm@pengutronix.de>
+References: <20241007134424.859467-1-catalin.popescu@leica-geosystems.com>
+ <ZxYiCv6SpLq9uh08@dragon>
+ <qqi2z7wutuy7e6o5fhpzsgfwkyn4quqmdeftl24meld72sudpg@lo3qpk4x7lbv>
+ <d6852cf6-e8a0-49b8-a565-2d94eeef67d9@leica-geosystems.com>
+ <20250415154724.GG9439@pendragon.ideasonboard.com>
+ <20250415155239.GH9439@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250415155239.GH9439@pendragon.ideasonboard.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+Hi Laurent,
 
-The DSP needs to access peripherals on AIPSTZ5 (to communicate with
-the AP using AUDIOMIX MU, for instance). To do so, the security-related
-registers of the bridge have to be configured before the DSP is started.
-Enforce a dependency on AIPSTZ5 by adding the 'access-controllers'
-property to the 'dsp' node.
+On 25-04-15, Laurent Pinchart wrote:
+> On Tue, Apr 15, 2025 at 06:47:26PM +0300, Laurent Pinchart wrote:
+> > Hi Catalin,
+> > 
+> > On Tue, Apr 15, 2025 at 03:42:22PM +0000, POPESCU Catalin wrote:
+> > > Hi Jai,
+> > > 
+> > > This issue was already reported by Stefan. The problem is that I don't 
+> > > have a Debix board to investigate.
+> > > The main difference b/w WFI and cpu-pd-wait is that the first doesn't 
+> > > call PSCI/TF-A. So, the issue looks to be related to some settings in 
+> > > the TF-A.
+> > 
+> > Jai, are you using mainline U-Boot and TF-A, or a downstream version of
+> > either (or both) ?
+> 
+> Actually, same question for Calatin :-)
+> 
+> I'm running mainline U-Boot 2025.01 and TF-A rel_imx_5.4.70_2.3.6 (from
+> https://github.com/nxp-imx/imx-atf) and don't seem to experience the
+> issue:
 
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+Interessting, can you share your imx-atf build-config please?
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index ebbc99f9ceba..d0d24fe92c3e 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -2425,6 +2425,11 @@ dsp: dsp@3b6e8000 {
- 			mboxes = <&mu2 2 0>, <&mu2 2 1>,
- 				<&mu2 3 0>, <&mu2 3 1>;
- 			memory-region = <&dsp_reserved>;
-+			access-controllers = <&aips5
-+				IMX8MP_AIPSTZ_HIFI4
-+				IMX8MP_AIPSTZ_MASTER
-+				(IMX8MP_AIPSTZ_MPL | IMX8MP_AIPSTZ_MTW | IMX8MP_AIPSTZ_MTR)
-+			>;
- 			status = "disabled";
- 		};
- 	};
--- 
-2.34.1
+I checked the code base and found a missing SLPCR_A53_FASTWUP_STOP_MODE
+during the imx_set_sys_lpm() which is called during
+.pwr_domain_suspend(). Can you check/trace if pwr_domain_suspend() was
+entered?
 
+Regards,
+  Marco
+
+> # cat /sys/devices/system/cpu/cpu*/cpuidle/state1/disable
+> 0
+> 0
+> 0
+> 0
+> 
+> $ ping debix
+> PING debix.farm.ideasonboard.com (192.168.2.230) 56(84) bytes of data.
+> 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=1 ttl=64 time=1.03 ms
+> 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=2 ttl=64 time=0.800 ms
+> 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=3 ttl=64 time=0.935 ms
+> 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=4 ttl=64 time=0.902 ms
+> 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=5 ttl=64 time=0.738 ms
+> 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=6 ttl=64 time=0.939 ms
+> 
+> > > What I don't get is why I don't see this issue neither on our IMX8MP 
+> > > specific design nor on the EVK, which uses the same PHY as the Debix board.
+> > >
+> > > On 14/04/2025 14:07, Jai Luthra wrote:
+> > > > On Oct 21, 2024 at 17:42:34 +0800, Shawn Guo wrote:
+> > > >> On Mon, Oct 07, 2024 at 03:44:24PM +0200, Catalin Popescu wrote:
+> > > >>> So far, only WFI is supported on i.MX8mp platform. Add support for
+> > > >>> deeper cpuidle state "cpu-pd-wait" that would allow for better power
+> > > >>> usage during runtime. This is a port from NXP downstream kernel.
+> > > >>>
+> > > > Since the introduction of this patch in mainline, I am facing sluggish
+> > > > network performance with my Debix Model-A board with i.MX8mp SoC.
+> > > >
+> > > > The network latency jumps to >1s after almost every other packet:
+> > > >
+> > > > PING debix (10.0.42.5) 56(84) bytes of data.
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=1 ttl=64 time=1008 ms
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=2 ttl=64 time=0.488 ms
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=3 ttl=64 time=1025 ms
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=4 ttl=64 time=0.810 ms
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=5 ttl=64 time=590 ms
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=6 ttl=64 time=0.351 ms
+> > > > ^C
+> > > > --- debix ping statistics ---
+> > > > 7 packets transmitted, 6 received, 14.2857% packet loss, time 6126ms
+> > > > rtt min/avg/max/mdev = 0.351/437.416/1024.755/459.370 ms, pipe 2
+> > > > darkapex at freya in ~
+> > > >
+> > > > If I revert the patch, or disable the deeper cpuidle state through
+> > > > sysfs, the issue goes away.
+> > > >
+> > > > # echo 1 > /sys/devices/system/cpu/cpu$i/cpuidle/state1/disable
+> > > >
+> > > > PING debix (10.0.42.5) 56(84) bytes of data.
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=1 ttl=64 time=0.482 ms
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=2 ttl=64 time=2.28 ms
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=3 ttl=64 time=2.26 ms
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=4 ttl=64 time=0.848 ms
+> > > > 64 bytes from debix (10.0.42.5): icmp_seq=5 ttl=64 time=0.406 ms
+> > > > ^C
+> > > > --- debix ping statistics ---
+> > > > 5 packets transmitted, 5 received, 0% packet loss, time 4051ms
+> > > > rtt min/avg/max/mdev = 0.406/1.255/2.280/0.842 ms
+> > > >
+> > > >>> Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+> > > >>
+> > > >> Applied, thanks!
+> 
+> -- 
+> Regards,
+> 
+> Laurent Pinchart
+> 
