@@ -1,90 +1,81 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA8520E003;
-	Tue, 15 Apr 2025 15:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2E129E07C;
+	Tue, 15 Apr 2025 15:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744730866; cv=none; b=Zcpv4BQc/YrO58LJy2P2mdxojtwIHSF5YDfaYjuCm+afrgu1TvzlIQKFuCIcR+Mm/JBGry6i/n2r+4MTrzMwaH85AVmzwtIA9rF3GwNSkbZPKRU/b1rkfosbR5aEFg0+rXK/+kZjiWBf6DmnUAfT/uiTD7x8PuctiWUQLkdpn4c=
+	t=1744731610; cv=none; b=RcGoQIqrnWwSUek/diQOLGIoWll7+PsEobf4Pe+tFd+erQf85NXbtoPqVny3fDbBw4D+iO+o3Bt/hAMfjU3bZabsYqNxYrYVrbuoWIZ5Q2LltX5TgJu2zsOnXt7mb5jz34qSB8n2HDOAuxrU7PzKKxUqYglijU4hWbsFstkonzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744730866; c=relaxed/simple;
-	bh=VErCuvMt2wWRUemVF5KwKivhZmgRpbT0ckqDN43FWYw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EVAg/+mEBs/+5er+Fcd/blILhbRSIAQbIQGxFWptjLqcrXwa/slfkJiHKt5zqO4cxRCAt9bzpw3b0Cpn0rZ9Ski0YRP8je2xApnMAQTDJVRK0yNl3WS2GD4eUQVZUUP265KXAs3hm8FlFAs7/sGnEi1a7WX7ugdQDy9Xyz/yoiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=f96StIq7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1744731610; c=relaxed/simple;
+	bh=dzwTkeVW3m8NZo5p+8+xPOs71OcTG5vKrAZ0wG5pETs=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=XgaTKQDmEZioQc7oTk4NBEZpCa3RNF4WANWC3C/vccwCoL5PFH2MsOylZpNsuEVVi1PZl2cWlA6cjPG3PYeaZgW0JlxM+HTsI3JYd6OlUlLL7fBYkfuXiJdVL5sB4TxiJCypD4ATVFSCj/8Bb1jPTC0USrmIY0WUAl49FfKRWeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYO4VTGq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="f96StIq7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=oml1Mrnp47RusR5d0ApAKkTSky1zT7/Gd1S7AMinXF0=; b=f96StIq7u2cg4/MtulmKNAp16A
-	1OO3m/xvx3je0VnrZwj+YB4U8Civ6zLKNI1Pucg9kLD/hU0/wiD11+A0p7CP++SyR98rp4KN+EfaE
-	wz5adawaEkkukTZnuA0pAJIyACMaWt3JJkgjKwLPlNiccEJESrZjkZhZx7+k43yeTNlE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1u4iCH-009TLQ-L9; Tue, 15 Apr 2025 17:27:37 +0200
-Date: Tue, 15 Apr 2025 17:27:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com,
-	linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: add initial device tree for
- TQMa8XxS
-Message-ID: <aa21556c-8c79-4d03-b6db-3b4cf450fc3a@lunn.ch>
-References: <20250415133301.443511-1-alexander.stein@ew.tq-group.com>
- <20250415133301.443511-2-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYO4VTGq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8538CC4CEED;
+	Tue, 15 Apr 2025 15:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744731609;
+	bh=dzwTkeVW3m8NZo5p+8+xPOs71OcTG5vKrAZ0wG5pETs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lYO4VTGqisxqq2ozajFWSqr3ercrEOC8Wwga3+2rt4jygg4ysPzvQWpVqrr/fv4GM
+	 9eQxL9axGqSdqERr97ccZQcI3oB6Cnx0KayrR7JgtoETApG/n/6A1bNmRRDCUa2eWq
+	 szOJu3GdtjV8QQ/oDnvO/hq776avp0CNhrwH09r+dGFlg16aYG7J3A083VGoT+eHz3
+	 Kz2wDPARZYr8KzzgXBcR7sSw88GIB3oCW66knHOOpVJcdxKzxPpMDrNxzbZ8QOxsIi
+	 6eKlUfNxxInkyPwpjzd6C10DbgRo02+FUOw5MhAgsnS21XzXLiOVmvOjBK+0dQHdzc
+	 t+5hqqwodb1IA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADBDC3822D55;
+	Tue, 15 Apr 2025 15:40:48 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250415133301.443511-2-alexander.stein@ew.tq-group.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2] net: stmmac: imx: use stmmac_pltfr_probe()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174473164749.2680773.17264687658771021637.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Apr 2025 15:40:47 +0000
+References: <E1u4Flp-000XlM-Tb@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1u4Flp-000XlM-Tb@rmk-PC.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ festevam@gmail.com, imx@lists.linux.dev, kuba@kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, mcoquelin.stm32@gmail.com,
+ netdev@vger.kernel.org, pabeni@redhat.com, kernel@pengutronix.de,
+ s.hauer@pengutronix.de, shawnguo@kernel.org
 
-> +&fec1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_fec1>;
-> +	phy-mode = "rgmii-id";
-> +	phy-handle = <&ethphy0>;
-> +	fsl,magic-packet;
-> +	mac-address = [ 00 00 00 00 00 00 ];
-> +
-> +	mdio {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		ethphy0: ethernet-phy@0 {
-> +			compatible = "ethernet-phy-ieee802.3-c22";
-> +			reg = <0>;
-> +			pinctrl-names = "default";
-> +			pinctrl-0 = <&pinctrl_ethphy0>;
-> +			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_50_NS>;
-> +			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_50_NS>;
-> +			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
-> +			ti,dp83867-rxctrl-strap-quirk;
-> +			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
-> +			reset-gpios = <&lsio_gpio3 22 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us = <500000>;
-> +			reset-deassert-us = <50000>;
-> +			enet-phy-lane-no-swap;
-> +			interrupt-parent = <&lsio_gpio1>;
-> +			interrupts = <30 IRQ_TYPE_EDGE_FALLING>;
+Hello:
 
-EDGE_FALLING is very likely to be wrong. PHYs are generally level
-triggered, not edge.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-	Andrew
+On Mon, 14 Apr 2025 10:06:25 +0100 you wrote:
+> Using stmmac_pltfr_probe() simplifies the probe function. This will not
+> only call plat_dat->init (imx_dwmac_init), but also plat_dat->exit
+> (imx_dwmac_exit) appropriately if stmmac_dvr_probe() fails. This
+> results in an overall simplification of the glue driver.
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2] net: stmmac: imx: use stmmac_pltfr_probe()
+    https://git.kernel.org/netdev/net-next/c/b2ee4451c1d4
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
