@@ -1,16 +1,16 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD9C20C487
-	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 04:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F07E2192E4
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 04:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744691602; cv=none; b=IitdD50JnRUYzOGR+qSQQjD0UvRbtho3myuG+yoPRa+mS/cmufYcce0nUYMJBUQ1vKXJUP8zhBtWHBKYwkeyWyB2cNzfflRrViL4qisY3R57df8H4Wj53rKEJRi+QpWxd2XouwhAB7trGOln+JTpZ8bbqEN8D1HhbZD+Vo476pI=
+	t=1744691606; cv=none; b=Sp+U+M7Sd0R5XXCpmZorDjSrlP7mUodxqpgR44jpb/4vZyshgazWylDniViRZg3+jr30Wxdc54aSTM8rpmxHv8pHTS/T+muwqY7cx2C+hqhRwPUv1K/A/pxR6I5bTho1ew+pB+enFs0hiVTIy1Yre/pTvMXLsEVsD8IozoiksvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744691602; c=relaxed/simple;
-	bh=iExqCb+habPpTVewyoLREcwcokcu1CkbyxhDMsb4Z54=;
+	s=arc-20240116; t=1744691606; c=relaxed/simple;
+	bh=FgNxbDpfmSoc1qEXpeTHcL16GEbfnCfWQUlHrHALqHk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VH9iPse08ASzG/YjS4A2mqkmKShF85GzvgDLlGE+eOhOdfwE09QOwWOKkNFXofKtoCFd28IOs9cmNAD+I5SMjmZFCpoG+OUac87vmBIirw2G/Rjl+C536vzW96HBvglyfIrwdCq7igFxLpWGurjLG2GRRXTsxb67/yw33JmmFq4=
+	 MIME-Version; b=en0GUHKD36FcdCk1zFbCB+RXs+7M/yMR+5EZgKsmRoldrZyM0UlI9+qpCA020DYNK33k3z2h3PLH2CaHMaDaJ1EziTtgpwIwOtwl2tFnaZiCJ82TB5+nSRkrgfWpEicel4fbkaipQuUXz0mGCQSZpeKpQMY1ySwvi9Dxxg7LZW4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
@@ -18,7 +18,7 @@ Received: from [89.212.21.243] (port=52324 helo=localhost.localdomain)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1u4Xz5-00Gb4I-0X;
+	id 1u4Xz5-00Gb4I-1N;
 	Tue, 15 Apr 2025 06:33:18 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Rob Herring <robh@kernel.org>,
@@ -33,9 +33,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v2 05/15] arm64: dts: freescale: imx93-phycore-som: Add eMMC no-1-8-v by default
-Date: Tue, 15 Apr 2025 06:33:01 +0200
-Message-Id: <20250415043311.3385835-6-primoz.fiser@norik.com>
+Subject: [PATCH v2 08/15] arm64: dts: freescale: imx93-phyboard-segin: Fix SD-card pinctrl
+Date: Tue, 15 Apr 2025 06:33:04 +0200
+Message-Id: <20250415043311.3385835-9-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250415043311.3385835-1-primoz.fiser@norik.com>
 References: <20250415043311.3385835-1-primoz.fiser@norik.com>
@@ -57,36 +57,60 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-The phyCORE-i.MX93 SoM comes in two variants, one with VDD_IO set to
-3.3V and the other variant to 1.8V. The 3.3V variant can only support
-DDR52 mode, while 1.8V variant is capable of HS400ES eMMC mode. The
-information about VDD_IO option is encoded in the SoM's EEPROM. EEPROM
-is read in the bootloader and bootloader clears the "no-1-8-v" flag in
-case of 1.8V SoM variant is detected. Thus add property 'no-1-8-v' by
-default to usdhc1 (eMMC) node and let bootloader handle the flag. In
-case EEPROM is erased or read-out fails, flag "no-1-8-v" also ensures
-fall-back compatibility with both SoM variants.
+Until now, all usdhc2 (SD-card) pinctrl labels pointed to one pinctrl
+group "usdhc2grp" which was overwritten twice by the 100 and 200 MHz
+modes. Fix this by using unique pinctrl names.
+
+Additionally, adjust MX93_PAD_SD2_CLK__USDHC2_CLK pad drive-strength
+according to values obtained by measurements from the PHYTEC hardware
+department to improve signal integrity.
 
 Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 ---
 Changes in v2:
-- reword commit message (add more info)
- 
- arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+- reword commit msg
+- split errata changes into separate patch
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-index 663530a7e2bb..22dbcc89e311 100644
---- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-@@ -172,6 +172,7 @@ &usdhc1 {
- 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
- 	bus-width = <8>;
- 	non-removable;
-+	no-1-8-v;
- 	status = "okay";
- };
+ arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+index 3d5cd0561362..541297052b62 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+@@ -77,7 +77,7 @@ MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
  
+ 	pinctrl_usdhc2_default: usdhc2grp {
+ 		fsl,pins = <
+-			MX93_PAD_SD2_CLK__USDHC2_CLK		0x179e
++			MX93_PAD_SD2_CLK__USDHC2_CLK		0x159e
+ 			MX93_PAD_SD2_CMD__USDHC2_CMD		0x139e
+ 			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x138e
+ 			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x138e
+@@ -87,9 +87,9 @@ MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x51e
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_100mhz: usdhc2grp {
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 		fsl,pins = <
+-			MX93_PAD_SD2_CLK__USDHC2_CLK            0x179e
++			MX93_PAD_SD2_CLK__USDHC2_CLK		0x159e
+ 			MX93_PAD_SD2_CMD__USDHC2_CMD            0x139e
+ 			MX93_PAD_SD2_DATA0__USDHC2_DATA0        0x138e
+ 			MX93_PAD_SD2_DATA1__USDHC2_DATA1        0x138e
+@@ -99,9 +99,9 @@ MX93_PAD_SD2_VSELECT__USDHC2_VSELECT    0x51e
+ 		>;
+ 	};
+ 
+-	pinctrl_usdhc2_200mhz: usdhc2grp {
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+ 		fsl,pins = <
+-			MX93_PAD_SD2_CLK__USDHC2_CLK            0x178e
++			MX93_PAD_SD2_CLK__USDHC2_CLK		0x158e
+ 			MX93_PAD_SD2_CMD__USDHC2_CMD            0x139e
+ 			MX93_PAD_SD2_DATA0__USDHC2_DATA0        0x139e
+ 			MX93_PAD_SD2_DATA1__USDHC2_DATA1        0x139e
 -- 
 2.34.1
 
