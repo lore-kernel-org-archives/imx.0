@@ -1,90 +1,93 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FC927A133
-	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 07:42:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426A92798F8
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 07:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744702977; cv=none; b=X/hY5Tq01qI1ef5KXu7v8FH7fGE0otiB0eXvXfUV9k5FzMHfqOZWuvFb5zIbLUBoYz0al7IA/HPrvUVtQxc77UQ2zj3kTemA2+0rL6PEI9NeQM2mcTf/KVEIDNNAe2cCgxX3MRLm9gP3GEZk2VesdTFiLnBH6ZXj5NXfOqM8w4c=
+	t=1744703627; cv=none; b=jc940BevE4I+cWyMI3baxAx0ioQlfKsZ/zbiiJrnEh4z+vjWKLAkV2/o0m3ji+4dckkH2cBnHz7qJsp3A/yAO0LVK+2LIPtewYJZyouoendevTSmST0FF10SHveJdKvaIvmfgTlKNtz4xpvqzJSmYkWT7fuI0UdJSfa4V4vZ5co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744702977; c=relaxed/simple;
-	bh=FrsM9iiedOM/M5mnaIv6iS/9Qia3AnBQr85/ywInp/4=;
+	s=arc-20240116; t=1744703627; c=relaxed/simple;
+	bh=D8NpYL/6xc4mr7rrNU+oPdbCsWAv+ESU6uE3kXfaDzI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eK/PSgFfy/LD9mlfh2MVwxwyZ1MfHVDjoPgIMJzYSLy7S9mzDs6Sn3YtundSf2docQHQE/gNa0M8WfExgJvjmmHmuzP/CauYHqQm4dAX3Wm4j33XBg2H5CZbbGHy5ak6PKn4LYgrxMrYB4iNmcqVv/Sm6dtb+J0YceelZeN+aVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aE29gBUP; arc=none smtp.client-ip=209.85.167.48
+	 To:Cc:Content-Type; b=Q7KAUHqjRVhy9xiwHTnrENAoLDaHvGFoD+3itqRXKlo1HQwWBSSf7wH98PUSuwBJjLiv0CO24D4DZzEMOEoiEfzGsFIoyN841abHIcnJFyEZFqhXXXcP9Ljs2k/Vy2FtJ7x/YIBPOg/fSGkE3EJzVzQe+GubMTUYxN8ESKtnEg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=P3vkkpqK; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aE29gBUP"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5499c5d9691so5574538e87.2
-        for <imx@lists.linux.dev>; Tue, 15 Apr 2025 00:42:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="P3vkkpqK"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-30bfb6ab47cso48321151fa.3
+        for <imx@lists.linux.dev>; Tue, 15 Apr 2025 00:53:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744702973; x=1745307773; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1744703623; x=1745308423; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FrsM9iiedOM/M5mnaIv6iS/9Qia3AnBQr85/ywInp/4=;
-        b=aE29gBUPGJPWnUn4C/r9Av1OILitKIVMrumXqet6d4FKpnV/2Pbp5b2wOdf1YXoA4n
-         j7Z5P3QMg2pn0RzEgLgHsyXAZAyiVeuwmKWi+FmGSGLvifdlOFm0QD1EE/iqOQf7MLl6
-         10TOkh1LNw5Po3li8OGgRR7eDoCyE9e7MwQAbFLIrDt84jpgDiy8QZgTjj048CxfYUV7
-         kV02XNEREW3P4GE+0wJk58r126vVoYLf216kYRwz4oghcvRkPddSJziBE2xN8SHtVMmv
-         X3/DpGoEFMO8s1Srqb8RRqz8DR6XFYyGv60GSMVc8wqKT/ol130lscUb/4iG8SISu1VO
-         0sKA==
+        bh=STeju+4F1b95dfzySAiJo7cZAG36EwjiVO/ehg7xZ2s=;
+        b=P3vkkpqKfNtt/cKr6jY96udFMKCGzsp0RP1mu/5xiD32NQpM831TFeGO0wXYpTc+vb
+         BhGKyLPMi4X2QITrQfXaRHpa5KiLBajRoatQr9halELAlnKRZfERCEV+PkAC/AEXmk6h
+         vxG0o92xlnnG7D3IjqqAm2qOBig+oTgAgHwX9u7gUA0+5JBYtCad8DjWWplCeZGZYOJa
+         GaY6vxgju5onOKuzZROOH07Cj07ZnYpf4nBlBUXIM4xbuwz3+lgMhIT+cLrtlOScZNWG
+         79sGj0YT/zoYEfX8RCU9pdiIeghgF3T7mM8bvqNGuzszdY0n2T8DJPx7RJcG/J0SiXwa
+         TlZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744702973; x=1745307773;
+        d=1e100.net; s=20230601; t=1744703623; x=1745308423;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FrsM9iiedOM/M5mnaIv6iS/9Qia3AnBQr85/ywInp/4=;
-        b=DK6XSGv4dG+aKKTQWnmgAbdyIbi840PCKKzZaebVB8O75TyF713X9XmlBXkOGECpG2
-         4ffMmX+m61mEumizvDMBNBZjRARdb6/yfWIdBNZLLlWMfvmAEIOPb5P7Imhohx6zxYmv
-         N2dxFPFcj/WFd/S5tjYm4uTn6EZwQi4gVwhBS1s6gJjTevqGSAebePIPPFTCGVFiBASA
-         7bXe8U1H5qUnw6oz9VfuqvvcLOao+9N8+KEF7P1bRZH1CfNvzRT3mye3wTx53w9icNDl
-         tLTgPo3utZwF54Ui2hGmaF3eFMnghjkCyQguV4B6c7lZf1S5j61DJ7y5EyZ1ti9M2Hzt
-         dNAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVuTRJ85SQQ4egJiMEU+AaGoaT01QbMD+oRFPPPQd6nomQkEeWh4h5qcCChcTY0cGEctR4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwJIKFHEHkfh8NmjQBI5ulGgTc+QahBIWnF1OwzPXQXSbfE6GHw
-	o8+MZjtwgnxgGdgqrHp/Ff1f0DQdKxi1rquCvjGWGyje+rgcnZfk3nUQ8WgrYofEzApUgSQWeGc
-	s2yuwsaVdMSLSfA6lfK+uul8ffevrWmFXq9gzz9wBEKJ4KcTA
-X-Gm-Gg: ASbGncvQlytVpCoHDcLs0ww2ahkKB0Aqe0j3g3zZKAiwoiuh/FSM7ggs86cyanZgHsT
-	CqxkCe49y7UYh5r8vhmpap78CULNQEHthSUPY2oKwYpfBbpAyiYIojq1tlSWFuEmZWJcQdhGkjF
-	Qk4XsBpi69USWOS2GMnZoPkA==
-X-Google-Smtp-Source: AGHT+IHgalo+jgjuU4utc2ZA9vkCjPT6mKMoSs9gFwa/t2RC/E/zR4Ajm6IRPAJoOEy7VIxNy+yoZ6pnwQHeZXy+WQ0=
-X-Received: by 2002:a05:651c:1464:b0:30b:e3d9:37e5 with SMTP id
- 38308e7fff4ca-310499f5f26mr42974901fa.13.1744702973134; Tue, 15 Apr 2025
- 00:42:53 -0700 (PDT)
+        bh=STeju+4F1b95dfzySAiJo7cZAG36EwjiVO/ehg7xZ2s=;
+        b=mxCN/bqxtBwiNxWeNsDS6lr1KgZljKp384GxZ9Zh0zDwvGQJm+biu28jGibdqLnlLk
+         37ir5TG3ePGsEZ93vJG07oL/mTirP/Ng17n9FQIGifqiD9fjYZrSY5hznMN9jPmqjk2m
+         Y0ufuF4+ieemqAXnxq5EeOQbxV2Mlf++oUIEpXu33dOioDPrsz8lb3gS+1/1F7PU7Ocw
+         hqlnujPE3VwSIz8oYBEIhRuBUAv0tTdwLRSPI1yXWzt78mawQaPj0ePF0KhsMiFsR8xe
+         Ev9oVFGdNLg7EvxMGXbH0PFFWM9NwmI6QXF4p0VIesWOT/xNrnYTOgO6td6+jJ06HN47
+         tVaw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9qc3XDczqM8edgc3TZ4BECe2Sn6mtU260P+Utk28h9QOUjyoqsnULot4Ypo8upuQjKmw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwgUT/Ecsl/NROwYdqYSTKWmt/tD5cBbs7/G2MqBRsXUDc3ysLT
+	kUNgOIbbWwM0a/TC5f/ZOr7OrUwzSnGN+F7psZkTdePGBjcBQB+TM/bL+gPxCHkH2tnui69cNTo
+	IXLZ24pqfvW1Cu2vHnxBVgVH77Zp3WxngKiqXJw==
+X-Gm-Gg: ASbGncuEexqOz9u0WkwsP9K9BU5iblYbOyjUSkfYfjXudAQX1wZooEJctRoNddziJSV
+	TOxPfoX58iZBrm4LbQnSOSPNKfp3om+fMuqLEYNpKBCoLAcuufQY91sItzT/IWLc+uL2KFhV1ay
+	7118efx/syntXNkbm5SjrHlQ==
+X-Google-Smtp-Source: AGHT+IFJ5QnEuy843kC3TQMpuk9QiZ+X6rbvXcL4GPOFqhedgkU8pg1nIDK1g44GiFTp9uNBiCz3X/eFYBa7DllDIzw=
+X-Received: by 2002:a2e:bccc:0:b0:308:e54d:61b1 with SMTP id
+ 38308e7fff4ca-31049aadff2mr53751861fa.34.1744703623274; Tue, 15 Apr 2025
+ 00:53:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250327031600.99723-1-hui.wang@canonical.com>
-In-Reply-To: <20250327031600.99723-1-hui.wang@canonical.com>
+References: <20250401072725.1141083-1-ping.bai@nxp.com>
+In-Reply-To: <20250401072725.1141083-1-ping.bai@nxp.com>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 15 Apr 2025 09:42:41 +0200
-X-Gm-Features: ATxdqUFq6sWueB9SaIFT69Cg8--gm5UGb4eJdUIGm1zGwfAodpETvC1tP1jdc-8
-Message-ID: <CACRpkdYSSN6OFAfCoPeW50a3hiDJWv3huBaEopuprgJa+kVZ7w@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: imx: Return NULL if no group is matched and found
-To: Hui Wang <hui.wang@canonical.com>
-Cc: linux-gpio@vger.kernel.org, imx@lists.linux.dev, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, festevam@gmail.com, aisheng.dong@nxp.com, 
-	gary.bisson@boundarydevices.com
+Date: Tue, 15 Apr 2025 09:53:31 +0200
+X-Gm-Features: ATxdqUF6WJDaLjHdYSkCvv_YDIUzSOmPWDnDqBmf7i0pLM0MKIXzIz4bzkS8nS4
+Message-ID: <CACRpkdY5XdzVxbNhw-nv5EL00NNqrJLiwc0B4O6somUo1gjNxA@mail.gmail.com>
+Subject: Re: [PATCH RFC] pinctrl: freescale: Add support for imx943 pinctrl
+To: Jacky Bai <ping.bai@nxp.com>
+Cc: sudeep.holla@arm.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	cristian.marussi@arm.com, aisheng.dong@nxp.com, festevam@gmail.com, 
+	kernel@pengutronix.de, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, arm-scmi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 27, 2025 at 4:17=E2=80=AFAM Hui Wang <hui.wang@canonical.com> w=
-rote:
+Hi Jacky,
 
-> Currently if no group is matched and found, this function will return
-> the last grp to the caller, this is not expected, it is supposed to
-> return NULL in this case.
+On Tue, Apr 1, 2025 at 9:25=E2=80=AFAM Jacky Bai <ping.bai@nxp.com> wrote:
+
+> Add support for i.MX943 pinctrl.
 >
-> Fixes: e566fc11ea76 ("pinctrl: imx: use generic pinctrl helpers for manag=
-ing groups")
-> Signed-off-by: Hui Wang <hui.wang@canonical.com>
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+(...)
+>  static const char * const scmi_pinctrl_imx_allowlist[] =3D {
+>         "fsl,imx95",
+> +       "fsl,imx94",
 
-Patch applied for fixes.
+This binding is missing upstream, can you send a patch to
+add this compatible to the right yaml file as well?
 
 Yours,
 Linus Walleij
