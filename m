@@ -1,79 +1,118 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2401A5BA8;
-	Tue, 15 Apr 2025 01:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BFB1B0412;
+	Tue, 15 Apr 2025 02:52:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744681448; cv=none; b=bgjLPt0Y7XyVDLCEv+6DC+LMf2T9EZkpXnCkdWtWdzQd2s8ygooQnCRIPVoEEeJ914MUN5xEFu4TeqyNKcDFCOOjQ2acyiYhRh3kh45ZpnkPGQFhhmAKVGKznqL7EVS08J3YVt5RZIK1ec+VaA56tk6wV2AapQCNf8brsj71frY=
+	t=1744685571; cv=none; b=q9a79mnJvkXSiwBZTQzLNXEpwp2ZcsDHw7pRIF0Sw/TA+L7fPa/QfTqsrDa3vaCcpogDMSzrhgoNrQtUpoL0I3BK9c50Dp0xsGfgAwYDalwWw01SMEOVIdtl2jJk0MuvtYAIfcU6L6/iHSVml+1KHm6lWMUoKsKa5OQJF1vmQ2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744681448; c=relaxed/simple;
-	bh=5/BeXwKcj97t82jM+9oYwA9IQD7JHFcv3WYKpcXTkHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OkvF7n2MGT5RjMy0eYKgDPgCkD1367YKbGVW4WE9Avrr+xqsDn+dkEEuyayqHfqzKtqmKN5ulX9XDSFPcptGq/BMWgGG7MA8Lh1SdvsBaTZpnBGMgM0QBOKbeb1P7KoRz21VSQQqvHFChF0PPWoukVlRT/SmT1pJ0Pd1KYDBvCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=gkT1XCiF; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1744685571; c=relaxed/simple;
+	bh=S7Tbw1ancnS17xgUm3xXxIxS9F8JptfwmG5wu66abzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=okMMXCT+FpDgkFzG4te7v4ajjlk7YLouav/7YrnEgqmUNuln18a5eAhbfpq75KDVlYKr5jpLovznHD5bGcCUOf9dF4K3Zf8teGb/SGil8vIKruMEHNbXN/uvTbn+Mk27oTWbvoZIW8aDyehLoBXYC0CAlW71AGtx3trlzWRL6iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/FGjbrP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="gkT1XCiF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=wGR7nK8EU+Cj5W9ySk84JYng8rysMk1dgDF+70d6Bc8=; b=gkT1XCiFMPbPvAozaSPSIi2XnW
-	7ylKKmYfn5zEZNYYZb8vFvCYJOsVlqoJAYTK9KVIxklBr4X/NwyS2mkh+jVnyd8898ni4BXUR3UOE
-	ut9/u80pzzVHjE5+nrAGEWQ7cBye7POaHgaQOP/YdOv0Orw03jhVVcnp4WQZKyqWeLK0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1u4VL9-009Jyv-LS; Tue, 15 Apr 2025 03:43:55 +0200
-Date: Tue, 15 Apr 2025 03:43:55 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/FGjbrP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD8BC4CEF0;
+	Tue, 15 Apr 2025 02:52:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744685570;
+	bh=S7Tbw1ancnS17xgUm3xXxIxS9F8JptfwmG5wu66abzI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=J/FGjbrP7Ps3XNUKwsWzzHkZY95xSQCDX8olOmOvxlT1iR8OfpXsqVRk2+I8BhfvM
+	 jNKv/vl+F5DfRRUqSLuijvoU9lChcs+FYUWw5x5OB+/i6kjOMgcgpmQkbYb5L71jyZ
+	 zQjmeo69gXP6+BKQ7Oq6R1gyNQzC4Z+oxPciHVYcYnYiPQ2sX1/mzJ2zjyqHZ35T7U
+	 EAJwKKed5e8zZcYJyGBEdRcd7hP+xq60hv5l0SlXbh6uO7hp+IP45/wSfpNiUNUNNv
+	 hMREt00OicERarFeGV8p4FADAYRtbGx7z4sB8NJH0edzPYWnPRx13Sexa78HuowgtJ
+	 M1HqL+QTLN+qA==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Conor Dooley <conor@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v5 4/6] net: mtip: The L2 switch driver for imx287
-Message-ID: <45a4fe47-d590-442a-9073-39472a49d52d@lunn.ch>
-References: <20250414140128.390400-1-lukma@denx.de>
- <20250414140128.390400-5-lukma@denx.de>
+	Heiko Stuebner <heiko@sntech.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Andy Gross <agross@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	zhouyanjie@wanyeetech.com,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Cc: devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-rockchip@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Andre Przywara <andre.przywara@arm.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: (subset) [PATCH v2 00/17] Arm cpu schema clean-ups
+Date: Mon, 14 Apr 2025 21:52:40 -0500
+Message-ID: <174468553423.331095.11490981905578175154.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
+References: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250414140128.390400-5-lukma@denx.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 14, 2025 at 04:01:26PM +0200, Lukasz Majewski wrote:
-> This patch series provides support for More Than IP L2 switch embedded
-> in the imx287 SoC.
-> 
-> This is a two port switch (placed between uDMA[01] and MAC-NET[01]),
-> which can be used for offloading the network traffic.
-> 
-> It can be used interchangeably with current FEC driver - to be more
-> specific: one can use either of it, depending on the requirements.
-> 
-> The biggest difference is the usage of DMA - when FEC is used, separate
-> DMAs are available for each ENET-MAC block.
-> However, with switch enabled - only the DMA0 is used to send/receive data
-> to/form switch (and then switch sends them to respecitive ports).
-> 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+On Thu, 10 Apr 2025 10:47:21 -0500, Rob Herring (Arm) wrote:
+> The Arm cpu.yaml schema fails to restrict allowed properties in 'cpu'
+> nodes. The result, not surprisely, is a number of additional properties
+> and errors in .dts files. This series resolves those issues.
+> 
+> There's still more properties in arm32 DTS files which I have not
+> documented. Mostly yet more supply names and "fsl,soc-operating-points".
+> What's a few more warnings on the 10000s of warnings...
+> 
+> [...]
 
-    Andrew
+Applied, thanks!
+
+[07/17] arm: dts: qcom: sdx55/sdx65: Fix CPU power-domain-names
+        commit: ae33b874fc81bfb60bdda5a350c0635f98e6d747
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
