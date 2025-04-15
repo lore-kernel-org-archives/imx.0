@@ -1,177 +1,211 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AAF126C02;
-	Tue, 15 Apr 2025 22:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D21242935
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 23:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744754937; cv=none; b=q4JCJiMEs+h+ZUpaCklAco9f73ScY7CxQWZaMjYiCvp66SUXdX+9mdbEZxOrYY2BJxpLNgLTXSbVG+zC5cm9JKDevgWm307VR8CY/VppdvbcaNbr+6Drltl2m+gRqdA1FKHFQdzZBBp2jfntG94Ljxa8VGb9QHAPKFpHf7t+t4M=
+	t=1744758089; cv=none; b=JjA4HEtKE5RYf831cNmX3GXqCAZvt8LXbP85RjkRrO1A59619RrNq83O94iNz9Z5T3iPkiQNdEtwlVvW+M+1VVYgRG0/QlrosLc6vu56GXTmjbzerhVeh/Sbve3koyWM4RFdGuKs8afK9rVHUOB2zqS1qAyD9pZflqBDvFIl3mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744754937; c=relaxed/simple;
-	bh=tyVsM8sNu2PCOz+arnoETnAj/qNuujBFl5CZuIgb6qU=;
+	s=arc-20240116; t=1744758089; c=relaxed/simple;
+	bh=reONu9DCX8yIdj7GLfXXkccHOkCnNJe0Ef9D9h6QGQk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QvFgtjSWK8VEqzNW8mAItku5OuV4j1FEnPynFHXFPJYHQqDA58yPagu9soxJYqMZGRGOkRY1NMyFntfwjCsEbMX2lQ6xzQPu7I4qEer4j56uMgQt6P68eXJKJrEhNVgUY2dueGRL99M+TCLQqD2QyFwJd9sypc7uASsRej0j/9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LUL+er06; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=C1ifjyJ51UhTty0Rn9oos38J/7Oqj7f5Bo4b+Du9ineY0/SC/dH8fGCJR8C4efna77tzHNKDa/ip3R9ju31vMGlIdgaL8hWJyRUI1rH/0sKRwVYDa60jYlfn16cPOrY/FJSa6BzOGJFq/12Veu6fnviwx0297X7WuRb5rDV24IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=LNinphU2; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LUL+er06"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E63C4CEE7;
-	Tue, 15 Apr 2025 22:08:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744754935;
-	bh=tyVsM8sNu2PCOz+arnoETnAj/qNuujBFl5CZuIgb6qU=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="LNinphU2"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 16373353;
+	Wed, 16 Apr 2025 00:59:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1744757963;
+	bh=reONu9DCX8yIdj7GLfXXkccHOkCnNJe0Ef9D9h6QGQk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LUL+er06cdomuT2To0Vp+vl3RezE21eS9FHO39xYrxl13ItAS72cgNN1YDbw2sDoI
-	 jZUM/ht2DCGfCQaOp4g3ktg4fzLibFvaacZA5KDdh4rrxDAhJnGlOgRTyfsjnfVGOZ
-	 rfLw4v57o6nzJQXAMX1FG97HnypSpNKjwJ/AvgDZKW8bmOjgWAsz8OFRckuSetUJbF
-	 h0KpuhqmWYAaBuooEoYERzR+4RL9c7X/EHqyMPCfwCRh1ZVi7tFK0Tqgki7uWm4FP5
-	 OmXmrl5M1eFTenfphFKy6xfN4WQrh6WhZSGrw5NtFjPXPxj7ExiMR1Btj2Agl3onuA
-	 i9k7R/0At5mgg==
-Date: Tue, 15 Apr 2025 17:08:53 -0500
-From: Rob Herring <robh@kernel.org>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v5 1/6] dt-bindings: net: Add MTIP L2 switch
- description
-Message-ID: <20250415220853.GA903775-robh@kernel.org>
-References: <20250414140128.390400-1-lukma@denx.de>
- <20250414140128.390400-2-lukma@denx.de>
+	b=LNinphU21VM8OFnnSnZNbt5K+oDpNQ119G58IJinl3fPGKbpdtvWtuwTZNeC4uVwP
+	 zDUZYnkigre8k9BnHfz0utab+c0D7EoR7/Bq2dh/mlLw9pv+KOD0yWcF4k9fYySv4X
+	 g0VC6PFm+O/41wyVA4Q2yQinKO8r452Bwp7rsM8U=
+Date: Wed, 16 Apr 2025 02:01:24 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: POPESCU Catalin <catalin.popescu@leica-geosystems.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Shawn Guo <shawnguo2@yeah.net>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	GEO-CHHER-bsp-development <bsp-development.geo@leica-geosystems.com>,
+	"stefan.klug@ideasonboard.com" <stefan.klug@ideasonboard.com>
+Subject: Re: [PATCH] arm64: dts: imx8mp: add cpuidle state "cpu-pd-wait"
+Message-ID: <20250415230124.GJ9439@pendragon.ideasonboard.com>
+References: <20241007134424.859467-1-catalin.popescu@leica-geosystems.com>
+ <ZxYiCv6SpLq9uh08@dragon>
+ <qqi2z7wutuy7e6o5fhpzsgfwkyn4quqmdeftl24meld72sudpg@lo3qpk4x7lbv>
+ <d6852cf6-e8a0-49b8-a565-2d94eeef67d9@leica-geosystems.com>
+ <20250415154724.GG9439@pendragon.ideasonboard.com>
+ <20250415155239.GH9439@pendragon.ideasonboard.com>
+ <20250415181423.qderfey4wpmp2bjm@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250414140128.390400-2-lukma@denx.de>
+In-Reply-To: <20250415181423.qderfey4wpmp2bjm@pengutronix.de>
 
-On Mon, Apr 14, 2025 at 04:01:23PM +0200, Lukasz Majewski wrote:
-> This patch provides description of the MTIP L2 switch available in some
-> NXP's SOCs - e.g. imx287.
-> 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> ---
-> Changes for v2:
-> - Rename the file to match exactly the compatible
->   (nxp,imx287-mtip-switch)
-> 
-> Changes for v3:
-> - Remove '-' from const:'nxp,imx287-mtip-switch'
-> - Use '^port@[12]+$' for port patternProperties
-> - Drop status = "okay";
-> - Provide proper indentation for 'example' binding (replace 8
->   spaces with 4 spaces)
-> - Remove smsc,disable-energy-detect; property
-> - Remove interrupt-parent and interrupts properties as not required
-> - Remove #address-cells and #size-cells from required properties check
-> - remove description from reg:
-> - Add $ref: ethernet-switch.yaml#
-> 
-> Changes for v4:
-> - Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove already
->   referenced properties
-> - Rename file to nxp,imx28-mtip-switch.yaml
-> 
-> Changes for v5:
-> - Provide proper description for 'ethernet-port' node
-> ---
->  .../bindings/net/nxp,imx28-mtip-switch.yaml   | 141 ++++++++++++++++++
->  1 file changed, 141 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> new file mode 100644
-> index 000000000000..6f2b5a277ac2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> @@ -0,0 +1,141 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
-> +
-> +maintainers:
-> +  - Lukasz Majewski <lukma@denx.de>
-> +
-> +description:
-> +  The 2-port switch ethernet subsystem provides ethernet packet (L2)
-> +  communication and can be configured as an ethernet switch. It provides the
-> +  reduced media independent interface (RMII), the management data input
-> +  output (MDIO) for physical layer device (PHY) management.
-> +
-> +$ref: ethernet-switch.yaml#/$defs/ethernet-ports
-> +
-> +properties:
-> +  compatible:
-> +    const: nxp,imx28-mtip-switch
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  phy-supply:
-> +    description:
-> +      Regulator that powers Ethernet PHYs.
-> +
-> +  clocks:
-> +    items:
-> +      - description: Register accessing clock
-> +      - description: Bus access clock
-> +      - description: Output clock for external device - e.g. PHY source clock
-> +      - description: IEEE1588 timer clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: ipg
-> +      - const: ahb
-> +      - const: enet_out
-> +      - const: ptp
-> +
-> +  interrupts:
-> +    items:
-> +      - description: Switch interrupt
-> +      - description: ENET0 interrupt
-> +      - description: ENET1 interrupt
-> +
-> +  pinctrl-names: true
-> +
-> +  ethernet-ports:
-> +    type: object
-> +    additionalProperties: true
-> +    properties:
-> +      ethernet-port:
-> +        type: object
-> +        unevaluatedProperties: false
+Hi Marco,
 
-This is going to fail if you have any property other than 'reg'. But 
-then it will never be applied because you never have a node called
-'ethernet-port' since you have more than 1 child node. You need this 
-under 'patternProperties' and 'additionalProperties: true' instead. And 
-please test some of the requirements here. Like a reg value of 3 or 
-remove 'phy-mode'.
+On Tue, Apr 15, 2025 at 08:14:23PM +0200, Marco Felsch wrote:
+> On 25-04-15, Laurent Pinchart wrote:
+> > On Tue, Apr 15, 2025 at 06:47:26PM +0300, Laurent Pinchart wrote:
+> > > On Tue, Apr 15, 2025 at 03:42:22PM +0000, POPESCU Catalin wrote:
+> > > > Hi Jai,
+> > > > 
+> > > > This issue was already reported by Stefan. The problem is that I don't 
+> > > > have a Debix board to investigate.
+> > > > The main difference b/w WFI and cpu-pd-wait is that the first doesn't 
+> > > > call PSCI/TF-A. So, the issue looks to be related to some settings in 
+> > > > the TF-A.
+> > > 
+> > > Jai, are you using mainline U-Boot and TF-A, or a downstream version of
+> > > either (or both) ?
+> > 
+> > Actually, same question for Calatin :-)
+> > 
+> > I'm running mainline U-Boot 2025.01 and TF-A rel_imx_5.4.70_2.3.6 (from
+> > https://github.com/nxp-imx/imx-atf) and don't seem to experience the
+> > issue:
+> 
+> Interessting, can you share your imx-atf build-config please?
 
-> +
-> +        properties:
-> +          reg:
-> +            items:
-> +              - enum: [1, 2]
-> +            description: MTIP L2 switch port number
-> +
-> +        required:
-> +          - reg
-> +          - label
-> +          - phy-mode
-> +          - phy-handle
+I've followed the instructions in the doc/board/nxp/imx8mp_evk.rst file
+(in the U-Boot source):
+
+```
+Get and Build the ARM Trusted firmware
+--------------------------------------
+
+Get ATF from: https://github.com/nxp-imx/imx-atf
+branch: imx_5.4.70_2.3.0
+
+.. code-block:: bash
+
+   $ make PLAT=imx8mp bl31
+```
+
+I had to patch the TF-A makefile as follows to fix errors with recent
+versions of gcc:
+
+```
+diff --git a/Makefile b/Makefile
+index 2ae12fda741a..46512993c6e0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -285,7 +285,8 @@ ASFLAGS			+=	$(CPPFLAGS) $(ASFLAGS_$(ARCH))			\
+ 				-ffreestanding -Wa,--fatal-warnings
+ TF_CFLAGS		+=	$(CPPFLAGS) $(TF_CFLAGS_$(ARCH))		\
+ 				-ffreestanding -fno-builtin -Wall -std=gnu99	\
+-				-Os -ffunction-sections -fdata-sections
++				-Os -ffunction-sections -fdata-sections		\
++				-Wno-error=array-bounds
+
+ ifeq (${SANITIZE_UB},on)
+ TF_CFLAGS		+=	-fsanitize=undefined -fno-sanitize-recover
+@@ -300,9 +301,11 @@ GCC_V_OUTPUT		:=	$(shell $(CC) -v 2>&1)
+ ifneq ($(findstring armlink,$(notdir $(LD))),)
+ TF_LDFLAGS		+=	--diag_error=warning --lto_level=O1
+ TF_LDFLAGS		+=	--remove --info=unused,unusedsymbols
++TF_LDFLAGS		+=	-Wl,--no-warn-rwx-segment
+ else
+ TF_LDFLAGS		+=	--fatal-warnings -O1
+ TF_LDFLAGS		+=	--gc-sections
++TF_LDFLAGS		+=	--no-warn-rwx-segment
+ endif
+ TF_LDFLAGS		+=	$(TF_LDFLAGS_$(ARCH))
+
+```
+
+> I checked the code base and found a missing SLPCR_A53_FASTWUP_STOP_MODE
+> during the imx_set_sys_lpm() which is called during
+> .pwr_domain_suspend(). Can you check/trace if pwr_domain_suspend() was
+> entered?
+
+I'm no TF-A expert, can you tell me how to check/trace that ?
+
+> > # cat /sys/devices/system/cpu/cpu*/cpuidle/state1/disable
+> > 0
+> > 0
+> > 0
+> > 0
+> > 
+> > $ ping debix
+> > PING debix.farm.ideasonboard.com (192.168.2.230) 56(84) bytes of data.
+> > 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=1 ttl=64 time=1.03 ms
+> > 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=2 ttl=64 time=0.800 ms
+> > 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=3 ttl=64 time=0.935 ms
+> > 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=4 ttl=64 time=0.902 ms
+> > 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=5 ttl=64 time=0.738 ms
+> > 64 bytes from debix.farm.ideasonboard.com (192.168.2.230): icmp_seq=6 ttl=64 time=0.939 ms
+> > 
+> > > > What I don't get is why I don't see this issue neither on our IMX8MP 
+> > > > specific design nor on the EVK, which uses the same PHY as the Debix board.
+> > > >
+> > > > On 14/04/2025 14:07, Jai Luthra wrote:
+> > > > > On Oct 21, 2024 at 17:42:34 +0800, Shawn Guo wrote:
+> > > > >> On Mon, Oct 07, 2024 at 03:44:24PM +0200, Catalin Popescu wrote:
+> > > > >>> So far, only WFI is supported on i.MX8mp platform. Add support for
+> > > > >>> deeper cpuidle state "cpu-pd-wait" that would allow for better power
+> > > > >>> usage during runtime. This is a port from NXP downstream kernel.
+> > > > >>>
+> > > > > Since the introduction of this patch in mainline, I am facing sluggish
+> > > > > network performance with my Debix Model-A board with i.MX8mp SoC.
+> > > > >
+> > > > > The network latency jumps to >1s after almost every other packet:
+> > > > >
+> > > > > PING debix (10.0.42.5) 56(84) bytes of data.
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=1 ttl=64 time=1008 ms
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=2 ttl=64 time=0.488 ms
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=3 ttl=64 time=1025 ms
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=4 ttl=64 time=0.810 ms
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=5 ttl=64 time=590 ms
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=6 ttl=64 time=0.351 ms
+> > > > > ^C
+> > > > > --- debix ping statistics ---
+> > > > > 7 packets transmitted, 6 received, 14.2857% packet loss, time 6126ms
+> > > > > rtt min/avg/max/mdev = 0.351/437.416/1024.755/459.370 ms, pipe 2
+> > > > > darkapex at freya in ~
+> > > > >
+> > > > > If I revert the patch, or disable the deeper cpuidle state through
+> > > > > sysfs, the issue goes away.
+> > > > >
+> > > > > # echo 1 > /sys/devices/system/cpu/cpu$i/cpuidle/state1/disable
+> > > > >
+> > > > > PING debix (10.0.42.5) 56(84) bytes of data.
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=1 ttl=64 time=0.482 ms
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=2 ttl=64 time=2.28 ms
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=3 ttl=64 time=2.26 ms
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=4 ttl=64 time=0.848 ms
+> > > > > 64 bytes from debix (10.0.42.5): icmp_seq=5 ttl=64 time=0.406 ms
+> > > > > ^C
+> > > > > --- debix ping statistics ---
+> > > > > 5 packets transmitted, 5 received, 0% packet loss, time 4051ms
+> > > > > rtt min/avg/max/mdev = 0.406/1.255/2.280/0.842 ms
+> > > > >
+> > > > >>> Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
+> > > > >>
+> > > > >> Applied, thanks!
+
+-- 
+Regards,
+
+Laurent Pinchart
