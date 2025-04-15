@@ -1,118 +1,260 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010060.outbound.protection.outlook.com [52.101.69.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BFB1B0412;
-	Tue, 15 Apr 2025 02:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744685571; cv=none; b=q9a79mnJvkXSiwBZTQzLNXEpwp2ZcsDHw7pRIF0Sw/TA+L7fPa/QfTqsrDa3vaCcpogDMSzrhgoNrQtUpoL0I3BK9c50Dp0xsGfgAwYDalwWw01SMEOVIdtl2jJk0MuvtYAIfcU6L6/iHSVml+1KHm6lWMUoKsKa5OQJF1vmQ2o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744685571; c=relaxed/simple;
-	bh=S7Tbw1ancnS17xgUm3xXxIxS9F8JptfwmG5wu66abzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=okMMXCT+FpDgkFzG4te7v4ajjlk7YLouav/7YrnEgqmUNuln18a5eAhbfpq75KDVlYKr5jpLovznHD5bGcCUOf9dF4K3Zf8teGb/SGil8vIKruMEHNbXN/uvTbn+Mk27oTWbvoZIW8aDyehLoBXYC0CAlW71AGtx3trlzWRL6iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/FGjbrP; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2FA2DFA2E
+	for <imx@lists.linux.dev>; Tue, 15 Apr 2025 03:15:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744686911; cv=fail; b=XHlX/cYMNRcyr9Gh2uIIsys5od0rz1onD7rO3RLU4tOPNGJuuHCVVta4QrIO5lMTT1tjLhJRqt7DTZ3YIO/WwImqZ95Qk0iFalMjPeOXvojPo9YrvTyxdU5wHfO5wrJb3xQIx1KOxAp8KDlS0+6PHlKXEgLlU1/5lQEPS0hwilA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744686911; c=relaxed/simple;
+	bh=Hrsk+MkxNk94AK25NWPQUDSV3pl5ySdVSzF7dasVC0k=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NGtzuPTAANP8hZcZAGnf3Cltiel8nP/ctQp8BIln+6KJGXYYPR+zjAzejhz8CvHgzfQrA9iSqImsjHRD6cmwePzBEAjp/Dz+vTkuMvZMBVWtkKQRd/N1nKCJp3rmSzrV7Jp7aIb54AaOmdRZ4HqCB3oFHPs6jdBjjbumesNSsX0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oXXjQw4O; arc=fail smtp.client-ip=52.101.69.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/FGjbrP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD8BC4CEF0;
-	Tue, 15 Apr 2025 02:52:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744685570;
-	bh=S7Tbw1ancnS17xgUm3xXxIxS9F8JptfwmG5wu66abzI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/FGjbrP7Ps3XNUKwsWzzHkZY95xSQCDX8olOmOvxlT1iR8OfpXsqVRk2+I8BhfvM
-	 jNKv/vl+F5DfRRUqSLuijvoU9lChcs+FYUWw5x5OB+/i6kjOMgcgpmQkbYb5L71jyZ
-	 zQjmeo69gXP6+BKQ7Oq6R1gyNQzC4Z+oxPciHVYcYnYiPQ2sX1/mzJ2zjyqHZ35T7U
-	 EAJwKKed5e8zZcYJyGBEdRcd7hP+xq60hv5l0SlXbh6uO7hp+IP45/wSfpNiUNUNNv
-	 hMREt00OicERarFeGV8p4FADAYRtbGx7z4sB8NJH0edzPYWnPRx13Sexa78HuowgtJ
-	 M1HqL+QTLN+qA==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Conor Dooley <conor@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Andy Gross <agross@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	zhouyanjie@wanyeetech.com,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Cc: devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-rockchip@lists.infradead.org,
-	linux-amlogic@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Andre Przywara <andre.przywara@arm.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: (subset) [PATCH v2 00/17] Arm cpu schema clean-ups
-Date: Mon, 14 Apr 2025 21:52:40 -0500
-Message-ID: <174468553423.331095.11490981905578175154.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
-References: <20250410-dt-cpu-schema-v2-0-63d7dc9ddd0a@kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oXXjQw4O"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dA60SRmGXjOnKAEQLOpLGx+OlWcnlxgopmyFrIY9V+idMNg5iJzm2RXax9GQ+BHMKiR/byBWfON/M90SlX6oxERKdYN58wBsknNU37lolrFJjUTh8m18elziNO4grCl4vkXdSQU3KbeL8I0TlipIVaLCApzrM+AuPmCIDU/2kYzNoAvTQxEGWf7zmHPp6M2adLhPAxawtQFXDX1QN90PXJ//kOZg78E+4OaIhX3Gd6JxU2PItEbounyPE+fjtNMOoWJVLRQq4PBX8tfnrDj+EkbxfaoUHa1xmYMrLUwukag5H/+WUtcfpHOJVcouO3EZ1HdAZ/8F2HbAVXpP41cqLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SzyG1JGf8tfQk4QKtEB+0KqtlKR1gGiH5FklZYY6hC8=;
+ b=iGtfeMZV6IbnxtwNcIQz4HH2LDOKfHS8MvL3osbMF0sQLD6dfiki9ZGvVaY8plACUD7BOzIw+A/QfcSUSJtlbcUNMWAKOb3e3npYd7qARi2OKwMloroKfjpw3A4CeoqNcXBSecP5/JzmJX0cyhRViPlQT97QJurDQ4zUh/MaqMaEiYrZEq1zmSYM6fYPFVWROMXtfoOdJmp9/zAESru0EoXLQjaZcM7baNvMMsbLSnc2fnx9cAZsJ1NO+bGt7vrzx5wA34h+SIMN9YMQBH5Tu5admqOFv66/uc8CnlmLFzQRFtM7WBBT4/rdLSmoCKnAgTYoYekJ3DJkKhWIx+DsLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SzyG1JGf8tfQk4QKtEB+0KqtlKR1gGiH5FklZYY6hC8=;
+ b=oXXjQw4Od2YOWF3vrswpoTadR+ppKMLdJbEVx4GKdDIiZyii1vJIqg+v+9svqXclPpD6h1+HYXZYV7kr6MfxP9aXLmLCidcYnp6WCvDeudh/uyUK3ApLbRhFPcaSNq2bRfIoVYHJpFJdu83tKGr7W/W+5CJU+0PlByYMO5xJ7rSruD2txHNeetMMdngCSGK/0tvvoWrzzpLGCekqpWJA3z5rTV2/hgZkQ5mll6JqumNWT3q8kHJIgQ2v8Tg61kXE7VaCg2YqxgYj6qBKX+4+Lu2x96axb/1C3ZXMtOQpw64hNI6naL0JYlYD+OLTiYrBdhi3+BscBL3YLHDzWJ7SHg==
+Received: from DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
+ by GV1PR04MB9101.eurprd04.prod.outlook.com (2603:10a6:150:20::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.31; Tue, 15 Apr
+ 2025 03:15:02 +0000
+Received: from DU2PR04MB8567.eurprd04.prod.outlook.com
+ ([fe80::4db:3dc0:c292:493a]) by DU2PR04MB8567.eurprd04.prod.outlook.com
+ ([fe80::4db:3dc0:c292:493a%5]) with mapi id 15.20.8632.030; Tue, 15 Apr 2025
+ 03:15:02 +0000
+From: Luke Wang <ziniu.wang_1@nxp.com>
+To: Arnd Bergmann <arnd@kernel.org>, Bough Chen <haibo.chen@nxp.com>, Adrian
+ Hunter <adrian.hunter@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
+CC: Arnd Bergmann <arnd@arndb.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Josua Mayer
+	<josua@solid-run.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, dl-S32
+	<S32@nxp.com>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [EXT] [PATCH] [v2] mmc: esdhc-imx: convert to modern PM_OPS
+Thread-Topic: [EXT] [PATCH] [v2] mmc: esdhc-imx: convert to modern PM_OPS
+Thread-Index: AQHbqsAQEeWYoKBe402OH8kq6kt3qrOkEfDA
+Date: Tue, 15 Apr 2025 03:15:02 +0000
+Message-ID:
+ <DU2PR04MB856729305860ED5C3C545771EDB22@DU2PR04MB8567.eurprd04.prod.outlook.com>
+References: <20250411085932.1902662-1-arnd@kernel.org>
+In-Reply-To: <20250411085932.1902662-1-arnd@kernel.org>
+Accept-Language: en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU2PR04MB8567:EE_|GV1PR04MB9101:EE_
+x-ms-office365-filtering-correlation-id: 6aac0855-aa65-4c3a-4b38-08dd7bcbb638
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?Q2BNeMUlgiSf8bDiz3Cbmi3ZEAd8ex5clNDsl4/TMRz3O9VN6k6yRNvllcKr?=
+ =?us-ascii?Q?5OsRgddUr0368RVwGcdVhLGrm6+fr6Ue7bQSgo1dO1M6yijigDikb7wqcQ3O?=
+ =?us-ascii?Q?U7ldRJFtulu4Q1dlgMAQa0oUYdU57WTVRIj3HxAkph99MbMvd2lnGY/IkXlu?=
+ =?us-ascii?Q?CxqF6CENUIYDV0PSne4hbKvIcwx2ZJ7n5YPyBMoL/uKYSXohblHoxzUWt1p4?=
+ =?us-ascii?Q?YBkOUkMxuITp+0IEW+hlXkPcJLED71+j7YY0LvPH372QT+nGvJU/C3syColi?=
+ =?us-ascii?Q?EsskkqG3dnz4H5gB0uX98DV1522MU/C88eowAqfSvcB7lvxkmCqwOgXI8Xky?=
+ =?us-ascii?Q?8pnPSvDsMc6A0GeGnntFr9Dr84IQjjgs25nbofwynmL++b/3wo8I3ZDwoq8D?=
+ =?us-ascii?Q?7vEPzC/pEhC0Bb6h0kqNNYzJu1Us+xheg1HeSTZIhdkCHFYPuWHiQr4a0b3p?=
+ =?us-ascii?Q?iopn0QBrllRZtmDlQU7+cDnTNBzDrjXxMRcWDFY8dJBVwmha5WmG1ilvNyZn?=
+ =?us-ascii?Q?KNsfBe3hwR3nkpzUvzsA352Hdln99Y2ECfrSfhM789QKWjx8NxA1E9L4lSGR?=
+ =?us-ascii?Q?8gARBGvB/LAcDCWQQxbO0fs8pikchKiQlM6GXOMok9UoarbS5Azfq0zJMgPH?=
+ =?us-ascii?Q?1idvChCmY77gtb4pTEw+e5vrS3Gc4RyWnxWYbmJDO3jQ/hfutvzo0mkXUFm9?=
+ =?us-ascii?Q?2Qrxzuwe2RAjREyZF2vAR0sEysHFgunwrPWzOJJwJNj7RZA4xR6urY74vqfk?=
+ =?us-ascii?Q?1KtJ2wB/KWnduMDcSxTVhpFu8s4RwLS3T91nMjlIUkveYqMrZpqaH25rEsNO?=
+ =?us-ascii?Q?Bvw82cPzbzVBEyawRd1Ea2PzEMGQL68zidQsPRhmWZctqdwjMcWKAofMBTyt?=
+ =?us-ascii?Q?neBskyYPakwIlKGQbW/J97UGN24GSwdKOiWKW64aeROjP7+jE6B7O8DavOpE?=
+ =?us-ascii?Q?cAkO3l57EqgnSXAdrme8QznqjWQGxIcucWdeUFM40ICwCeByCqL17Qop1bwG?=
+ =?us-ascii?Q?0GY0ekBSn3ueoDeA4TGu+U9ir+Z+FoNMl8sKu7EPE9iGqrVZucHYszpZV9Iw?=
+ =?us-ascii?Q?BlAUZSl/Q7ZoUNvBJJJ6NrFzGuAp26VPQWOAgKy5AeezEm9zkHBz2aPb/my8?=
+ =?us-ascii?Q?A8kYOSGELudOm6sOoIv9sIFNDrkg7LzIA+fqFnqJwW9bKkTTNMcF4HIKI0sC?=
+ =?us-ascii?Q?ZakYRpuuokU9XzMQQkgyVAsk9Q1efvwRRwLH6hS4+7lvKaEEAdtgCqGF3GUP?=
+ =?us-ascii?Q?ws4/7XvnRoyuLPqGxuXR7HEiHpL7aYNFDt6PAMBiqPyJQj06tMKKkmx/I0u0?=
+ =?us-ascii?Q?spvwg9fqJEPaUmNLoQGeea3EXpixXG+Yjt9Oh3RhXKIKYK26isbj5aMkpZ3S?=
+ =?us-ascii?Q?GRrVonEJmReIIIb3RXous83X9qYj0p6K/nc0k5nzc3sFT4hEIEpMO/OkOeJt?=
+ =?us-ascii?Q?WAma1u/A7R+AwPEzm+1eveek55PpHI8fy1fJtfPjXz95I0jNcFj71A=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8567.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?E6N0+UvsGE9Uzurb1pG2O7BYmzG15pUX//y4fbT9nZWHbl4B4lk7xKQGfaBQ?=
+ =?us-ascii?Q?cPcwzA9DB9DAleZVUYz3FrYI/kZYrKMqoiF9yMnQs91EenKyLrhXyq424KhU?=
+ =?us-ascii?Q?hyxDF/gBJaGKpsrwuSE7IDSLgpJ2REjuA0PinXF+4hApEBdUTKaYD6Ga1xN+?=
+ =?us-ascii?Q?u3QLRMaD0zxnf39APnGvf8tlMSCdFYvwDh5XE8m3uta9Jnwx/lbEMzR/oeaZ?=
+ =?us-ascii?Q?qNyvBzT0lxf6mlccrkw4fP3us+kvtrHZ06xnF+pZ2EzRWTS2mhOAHVfRnEYg?=
+ =?us-ascii?Q?1iXJe4AFA3MuLFeOUF0G250d04K9niwmq0jZUX1/QC+zf75vVaprhJAFdi+J?=
+ =?us-ascii?Q?VKKlVmLpARrrnlvufyg6U4EitzZLMCHK/evJ5q8Y+ZfSeOSZtuqDnc+508R1?=
+ =?us-ascii?Q?OAekNvKEGyiGC4U+2yxINL6NPjetqqhFD1CBl1Pl7wJd5d7lJ4g6bLJMkr/U?=
+ =?us-ascii?Q?1R28HSGwrw7xy0a7nCDMwclKEBKpCYnt/kE13WnkE/jXhhjKfwg26kWsxmn8?=
+ =?us-ascii?Q?eRasv6RseXqL2j4o3M9V3UXtCy2yK/2fvroJvlLWx12nsp+7EN07G2ViJU2t?=
+ =?us-ascii?Q?kuY9IhwMe8Wqy5FCEY9KJFqhZiUKvkZaqBNgV/wqvLLYwsogUj7SeqKsVX+V?=
+ =?us-ascii?Q?yaYqJ1PWmrwXlxRVqq/AkEhVU4s11Iw/HyN1dJ5z9+hoO9DpzAFEm5NGZeVW?=
+ =?us-ascii?Q?LQRtGbRrrM3vLjZ2B3XBtsMy/fc1oGE7lEkzd5Rx0EgcbzoWdqLe8EovgHVv?=
+ =?us-ascii?Q?qoqs0i9p3caO6kufTwIrKUxGiIHkMdBC71eNGzJ0rXgqZjSPX5fsgEQ/TqTM?=
+ =?us-ascii?Q?Yw5ag7SWTm68mSLb8g4KwpRYNiWiRPUgL+jaU7PDAgpTeoe1OE0zYIB7Kkt8?=
+ =?us-ascii?Q?n/1M9zb6D1DMaCOg66HoyxYRDi0n8Hs92hF1aG4iC9kUtz/9AJHJwuwgeOTX?=
+ =?us-ascii?Q?W/nFkk9Zncet95svBk/Xf0JwEF5Q+oIWteAI5U2Ta6xL5LCeGsbUUQbxOJrh?=
+ =?us-ascii?Q?RvW8tBr4ciYdWXaOmULnRTA9nWWiVwGme49CywWMI0v3Mcu2x4eoDpXk4w+6?=
+ =?us-ascii?Q?1RCokjK1C4kz7it7NrqRoP3qyTgwCOwex8CknFNnCOJ2Il1A6ku4zhSMvs/x?=
+ =?us-ascii?Q?7ejLEfQNgAtgS/M2r8THyr9GhAbHMjew+De/SP2klJOQ6KkONnB/iYmSwOVj?=
+ =?us-ascii?Q?JQCKX30PF8obn9eWow9h1dc0ghRMUXc55knLW4OVPdBPfxs3AORtGZieCNLd?=
+ =?us-ascii?Q?AJ+jv48JNSSvj8+8bQk0Uy+qRPkMkW4/IWWFew1BrsEFSZ/s3hbiV7e61tS/?=
+ =?us-ascii?Q?IZ3qo4cHZah7UgWld7OcGy94+Giss8Mf7JIwgg2I3iLNzbMLeZ+0RAIMAyUn?=
+ =?us-ascii?Q?YuWuXvM+/E9DWsNSH9u8K7ru1xbcuwpDvyRaGIJmkXF/PydR1h1suV07PcT7?=
+ =?us-ascii?Q?NXqwYg8tmF5FCBoVkwXkGdThCHLh67wM7jHjVUPHFJ1mZHsH+hXZ+AXvdjd0?=
+ =?us-ascii?Q?Wkw7MXSzWTH7Q/TN46xG+9f9fw+pZgJNh0ObK52B9qYj3ycGv7lWsp8hDJZ7?=
+ =?us-ascii?Q?AoM0obmBw+RK5tAGEWxAi8n7mLasSUvFcWpdQ1dB?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8567.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6aac0855-aa65-4c3a-4b38-08dd7bcbb638
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Apr 2025 03:15:02.1578
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qUE33dTT9gzepWmfstGIwAZEJ+hPRYQ0adzvNt6A1q8zmtLxs6lRFj/LfhSqhz3P3mH36ugxAL1k+C4mHK0K2A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9101
 
+Hi Arnd,
 
-On Thu, 10 Apr 2025 10:47:21 -0500, Rob Herring (Arm) wrote:
-> The Arm cpu.yaml schema fails to restrict allowed properties in 'cpu'
-> nodes. The result, not surprisely, is a number of additional properties
-> and errors in .dts files. This series resolves those issues.
-> 
-> There's still more properties in arm32 DTS files which I have not
-> documented. Mostly yet more supply names and "fsl,soc-operating-points".
-> What's a few more warnings on the 10000s of warnings...
-> 
-> [...]
+This patch has compilation issue because sdhci.c still uses #ifdef CONFIG_P=
+M. Do you plan to send a new patch to fix? If not, I can send a patch to fi=
+x the compilation warning.
 
-Applied, thanks!
+Regards
+Luke
 
-[07/17] arm: dts: qcom: sdx55/sdx65: Fix CPU power-domain-names
-        commit: ae33b874fc81bfb60bdda5a350c0635f98e6d747
+> -----Original Message-----
+> From: Arnd Bergmann <arnd@kernel.org>
+> Sent: Friday, April 11, 2025 4:59 PM
+> To: Bough Chen <haibo.chen@nxp.com>; Adrian Hunter
+> <adrian.hunter@intel.com>; Ulf Hansson <ulf.hansson@linaro.org>; Shawn
+> Guo <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>;
+> Luke Wang <ziniu.wang_1@nxp.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>; Pengutronix Kernel Team
+> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Josua
+> Mayer <josua@solid-run.com>; imx@lists.linux.dev; linux-
+> mmc@vger.kernel.org; dl-S32 <S32@nxp.com>; linux-arm-
+> kernel@lists.infradead.org; linux-kernel@vger.kernel.org
+> Subject: [EXT] [PATCH] [v2] mmc: esdhc-imx: convert to modern PM_OPS
+>=20
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report
+> this email' button
+>=20
+>=20
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> Two newly added functions are unused in configurations without
+> power management support:
+>=20
+> drivers/mmc/host/sdhci-esdhc-imx.c:1586:13: error: unused function
+> 'sdhc_esdhc_tuning_save' [-Werror,-Wunused-function]
+>  1586 | static void sdhc_esdhc_tuning_save(struct sdhci_host *host)
+>       |             ^~~~~~~~~~~~~~~~~~~~~~
+> drivers/mmc/host/sdhci-esdhc-imx.c:1608:13: error: unused function
+> 'sdhc_esdhc_tuning_restore' [-Werror,-Wunused-function]
+>  1608 | static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
+>       |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+>=20
+> Remove the #ifdef checks and instead use the better macros that
+> silently drop the unused functions when PM is disabled. This also
+> requires using pm_ptr() to eliminate both the runtime and pm_sleep
+> operations.
+>=20
+> Fixes: 3d1eea493894 ("mmc: sdhci-esdhc-imx: Save tuning value when card
+> stays powered in suspend")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> v2: add pm_ptr()
+> ---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-
+> esdhc-imx.c
+> index 7e8addaed697..3c2e50d0260d 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1942,7 +1942,6 @@ static void sdhci_esdhc_imx_remove(struct
+> platform_device *pdev)
+>         sdhci_pltfm_free(pdev);
+>  }
+>=20
+> -#ifdef CONFIG_PM_SLEEP
+>  static int sdhci_esdhc_suspend(struct device *dev)
+>  {
+>         struct sdhci_host *host =3D dev_get_drvdata(dev);
+> @@ -2021,9 +2020,7 @@ static int sdhci_esdhc_resume(struct device *dev)
+>=20
+>         return ret;
+>  }
+> -#endif
+>=20
+> -#ifdef CONFIG_PM
+>  static int sdhci_esdhc_runtime_suspend(struct device *dev)
+>  {
+>         struct sdhci_host *host =3D dev_get_drvdata(dev);
+> @@ -2103,11 +2100,10 @@ static int sdhci_esdhc_runtime_resume(struct
+> device *dev)
+>                 cpu_latency_qos_remove_request(&imx_data->pm_qos_req);
+>         return err;
+>  }
+> -#endif
+>=20
+>  static const struct dev_pm_ops sdhci_esdhc_pmops =3D {
+> -       SET_SYSTEM_SLEEP_PM_OPS(sdhci_esdhc_suspend,
+> sdhci_esdhc_resume)
+> -       SET_RUNTIME_PM_OPS(sdhci_esdhc_runtime_suspend,
+> +       SYSTEM_SLEEP_PM_OPS(sdhci_esdhc_suspend, sdhci_esdhc_resume)
+> +       RUNTIME_PM_OPS(sdhci_esdhc_runtime_suspend,
+>                                 sdhci_esdhc_runtime_resume, NULL)
+>  };
+>=20
+> @@ -2116,7 +2112,7 @@ static struct platform_driver
+> sdhci_esdhc_imx_driver =3D {
+>                 .name   =3D "sdhci-esdhc-imx",
+>                 .probe_type =3D PROBE_PREFER_ASYNCHRONOUS,
+>                 .of_match_table =3D imx_esdhc_dt_ids,
+> -               .pm     =3D &sdhci_esdhc_pmops,
+> +               .pm     =3D pm_ptr(&sdhci_esdhc_pmops),
+>         },
+>         .probe          =3D sdhci_esdhc_imx_probe,
+>         .remove         =3D sdhci_esdhc_imx_remove,
+> --
+> 2.39.5
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
