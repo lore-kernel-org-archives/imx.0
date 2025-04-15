@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D9A274FDE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CEA275852;
 	Tue, 15 Apr 2025 06:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744700068; cv=none; b=J2WBJn5TJgMtdTsMtfZ2aNUb5HTKy9eHu0jNBqPCefsHD7yTfs5cLvxXUN1wJmOz/85y08qoYySXam8/pAMz+Q+1KcLkOnwUVMsj7jSoEy+bHyJpC8kw2mtV4Udd+yxFqTWuNTeAfuj/K8lsI1VRSU0VYwzox3ii0UcvvGvtP1M=
+	t=1744700068; cv=none; b=Q1hfrPKsPKmUDs1pAJvAkIkpM1iqZB0OpWKAaYHgfNBJ3Cum22kzO43GD8v88k1xaL/7hUdJfKwSrp7NYtj87kyxdy+0SoEru1XpzVo+40rUymhq71+gDPM9LATk/qkH1YHgamCAq8piw9c7ayyznGutGrGhKSv5FVFXt58F3pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744700068; c=relaxed/simple;
-	bh=hrPSQeENU4uIDE2eHQ2o1WCsLDaulSSH1VdJmPvBaVg=;
+	bh=t81Qw4Tdq4zyeXM0XoGcLedwtexGRTgw9YTa5p4hlw4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gpgJraNIe+v4XTd4rwxcw8oy+mEVwwXkSHYg1o46JIxnHP26Y/YXIwzPsYnwoz3/fxC83HoecnEyTS1SK+lmDj0m5Uhz+ar9I5SeC6e/hE3labyR9eqtTV1yTDuYJd05Nm/rjL0S4b0qL5IdMok0TMB+o7VzMswA4T4Ir1y7CP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJW3BvVr; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=SLWm4t1TuXVXlJKsQMq1NbWNrLLcuyo6hQBzKd6YJN7z7BR+lTnxEV9BccqoZP8GjKJ7tNSI9xyfCyLRs/ZnYPS1Y932XZG9UBkN+wdiPQnOqg7vXSbui7fCNFkCpxwZY80YNzb3b/pKkODgMtnS/p0/htXNvn6sCafpIfjkbHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIokKPYK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJW3BvVr"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 291EEC4CEEF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIokKPYK"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6050AC4AF16;
 	Tue, 15 Apr 2025 06:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1744700068;
-	bh=hrPSQeENU4uIDE2eHQ2o1WCsLDaulSSH1VdJmPvBaVg=;
+	bh=t81Qw4Tdq4zyeXM0XoGcLedwtexGRTgw9YTa5p4hlw4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=oJW3BvVrZjK63rHZrFWVLPrVFAcoBh17mEQ0AdKUDZVThtcfz7PVJ1DhedSfmJo9C
-	 8r5t3FNynBnwGNZ83V29a3Bjh3NxIK4nCMlx21qx41xZTqeo6L78jN/4YgXGKSM8hz
-	 zUMGYXGlCPMYfmACaDba5t2TqWAJrv24pjNflZaJiCDD4ul+P0+ZMm/BefAAe9k6GM
-	 CZqtUv5/CKVCAxSRd9SiRP/h93N0f72HQoQfJffAH6Q5QnAUFiSQZJazGXTjADLZ1w
-	 tAgbjDMEnW6oHYdHUDbqcxQ3AfKB6cyo+Q/yLniHZBat7nFphGPrIiPlAhbOle+CEy
-	 WjzajXZK7YWHg==
+	b=TIokKPYKzdIES7LeXP29mDsm5n5p7xYJblY/c+wpKozb+CYnNScGRUlo+cd1G5hD8
+	 Jwjlq52Hg34hylva+JbMcEstRnOYanLVh7gJizIH96g1TxhL8mWniIffExaoUb62C5
+	 rXkhhpQ+OZVg98t0v5RXJ5nMLae9QeLrtydx00N9kkRkQyPpdezkY15v2Un44qIF/D
+	 2lmtX3v4vZTb9GvWauwSz1HPAr0JS2Mk9ZmkZQ34jybf8YF++rwQbfmIgDQ0T1k+sd
+	 i0o4j9OxZf6fSyUfsPFKgPdh8cXoltmxgJvsKuiPsaFKVFTPueZ67b9aoindGnzlGl
+	 EkkNcAeVWNdtA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A984C369B9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 571E5C369B9;
 	Tue, 15 Apr 2025 06:54:28 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Tue, 15 Apr 2025 08:54:27 +0200
-Subject: [PATCH v5 4/8] MAINTAINERS: add maintainer for the GOcontroll
- Moduline controllers
+Date: Tue, 15 Apr 2025 08:54:30 +0200
+Subject: [PATCH v5 7/8] arm64: dts: freescale: Add the BOE av101hdt-a10
+ variant of the Moduline Display
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250415-initial_display-v5-4-f309f8d71499@gocontroll.com>
+Message-Id: <20250415-initial_display-v5-7-f309f8d71499@gocontroll.com>
 References: <20250415-initial_display-v5-0-f309f8d71499@gocontroll.com>
 In-Reply-To: <20250415-initial_display-v5-0-f309f8d71499@gocontroll.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -53,11 +53,11 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
  Maud Spierings <maudspierings@gocontroll.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744700066; l=777;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744700066; l=4109;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=U+cI301uttTYTg6gAR1QRerlXekISKPf4H+SFf8T4EI=;
- b=8R9Qv7eVCATXQybZcqW6FXRKqRe/5yNEdrsJZ2Dv122cIscipOZULbmyu5hncag/7FC6wiRFU
- 4Q3S6elRmxGAGTbtD7d1bbI5Ul4TawZXTjlgiu/oY7L6oTvB9fD6Vv3
+ bh=s+YSWWHZ/qWjR5g3Aj0fP/WU0u7E8mEW6X2vsCVzyKY=;
+ b=w4aTIeB1PGcNKrtNZlrn6+QEL/R5AfdfAIuUND5G1muYX3zbuwVOEzhx+wpxdqp9p+b8FUr8l
+ DjcCsD8C7JrBCvpsCUa/O8OVCvqIMPByAIPUVXLtpm0Hj1iKWrb6ZyF
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
@@ -67,30 +67,140 @@ Reply-To: maudspierings@gocontroll.com
 
 From: Maud Spierings <maudspierings@gocontroll.com>
 
-Add a maintainer for the GOcontroll Moduline series of controllers.
+Add the BOE av101hdt-a10 variant of the Moduline Display, this variant
+comes with a 10.1 1280x720 display with a touchscreen (not working in
+mainline).
 
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1ca022081bcf564c8ec91fb6431570045495ec23..3c94e530d0784d90b50109d4f9e7e6ced40f08b0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10060,6 +10060,12 @@ L:	linux-media@vger.kernel.org
- S:	Maintained
- F:	drivers/media/usb/go7007/
- 
-+GOCONTROLL MODULINE CONTROLLERS
-+M:	Maud Spierings <maudspierings@gocontroll.com>
-+L:	imx@lists.linux.dev
-+S:	Maintained
-+F:	arch/arm64/boot/dts/freescale/*moduline*.dts*
+---
+Currently the backlight driver is not available, this will be upstreamed
+in a future patch series. It is a Maxim max25014atg.
+
+The touchscreen has a Cypress CYAT81658-64AS48 controller which as far as
+I know is not supported upstream, the driver we currently use for this is
+a mess and I doubt we will be able to get it in an upstreamable state.
+---
+ arch/arm64/boot/dts/freescale/Makefile             |  5 ++
+ ...x8p-ml81-moduline-display-106-av101hdt-a10.dtso | 94 ++++++++++++++++++++++
+ 2 files changed, 99 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index b6d3fe26d621234ab84353165d20af9d2536f839..ca3255aa9e18187b33d54c836992aca5dd5d0465 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -214,6 +214,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-bd500.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-tian-g07017.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314.dtb
 +
- GOCONTROLL MODULINE MODULE SLOT
- M:	Maud Spierings <maudspierings@gocontroll.com>
- S:	Maintained
++imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10-dtbs += imx8mp-tx8p-ml81-moduline-display-106.dtb \
++	imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtbo
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtb
++
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-som-symphony.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw71xx-2x.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw72xx-2x.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso
+new file mode 100644
+index 0000000000000000000000000000000000000000..b3bbbd69f671493c809bbf043807a22adda5024a
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso
+@@ -0,0 +1,94 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/*
++ * Copyright 2025 GOcontroll B.V.
++ * Author: Maud Spierings <maudspierings@gocontroll.com>
++ */
++
++#include <dt-bindings/clock/imx8mp-clock.h>
++#include <dt-bindings/gpio/gpio.h>
++
++#include "imx8mp-pinfunc.h"
++
++/dts-v1/;
++/plugin/;
++
++&{/} {
++	model = "GOcontroll Moduline Display with BOE av101hdt-a10 display";
++
++	panel {
++		compatible = "boe,av101hdt-a10";
++		enable-gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
++		pinctrl-0 = <&pinctrl_panel>;
++		pinctrl-names = "default";
++		power-supply = <&reg_3v3_per>;
++		reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
++
++		port {
++			panel_lvds_in: endpoint {
++				remote-endpoint = <&ldb_lvds_ch0>;
++			};
++		};
++	};
++
++	reg_vbus: regulator-vbus {
++		compatible = "regulator-fixed";
++		power-supply = <&reg_6v4>;
++		regulator-always-on;
++		regulator-max-microvolt = <5000000>;
++		regulator-min-microvolt = <5000000>;
++		regulator-name = "usb-c-vbus";
++	};
++};
++
++&iomuxc {
++	pinctrl_panel: panelgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07
++			MX8MP_DSE_X1
++			MX8MP_IOMUXC_GPIO1_IO09__GPIO1_IO09
++			MX8MP_DSE_X1
++		>;
++	};
++};
++
++&lcdif2 {
++	status = "okay";
++};
++
++&lvds_bridge {
++	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>, <&clk IMX8MP_VIDEO_PLL1>;
++	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 2 * 7 */
++	assigned-clock-rates = <0>, <1054620000>;
++	status = "okay";
++
++	ports {
++		port@1 {
++			ldb_lvds_ch0: endpoint {
++				remote-endpoint = <&panel_lvds_in>;
++			};
++		};
++	};
++};
++
++&usb_dwc3_1 {
++	dr_mode = "host";
++
++	connector {
++		compatible = "usb-c-connector";
++		data-role = "host";
++		pd-disable;
++		vbus-supply = <&reg_vbus>;
++
++		port {
++			high_speed_ep: endpoint {
++				remote-endpoint = <&usb1_hs_ep>;
++			};
++		};
++	};
++
++	port {
++		usb1_hs_ep: endpoint {
++			remote-endpoint = <&high_speed_ep>;
++		};
++	};
++};
 
 -- 
 2.49.0
