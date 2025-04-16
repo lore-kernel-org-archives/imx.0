@@ -1,261 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012069.outbound.protection.outlook.com [52.101.66.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DD58528E;
-	Wed, 16 Apr 2025 12:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744807348; cv=none; b=sQ6+Pvoi2pC2wTF0icmK8Nh/A6Pr9lhDjVfmU6fmka8+kK8B6CqeahGCaemNqpumT9SGApLPDSfAXcrKK7buttl9zDN+US4PEdslfkkKyxKW3pSGA2df3trRz/bQqJyJCPBPEIQJun7XtjUPucGLUMCAr8xomm2PNC2KtZUwwTY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744807348; c=relaxed/simple;
-	bh=YaLyJ2LyojkdkHa6UjzZZ5YY5cd2AoOll8QQL7QvgqE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uUNR7CsAbgkXF0M8evT2tVrXNEL+gTf0XPSDP+WuMzp6N9oeRjtmx7nt0m/k+wFUorwmMkjn+GLxrGBfr2kU5Z6lDiO5FJ3KtXmagoBRvFpx+WzgNdrpkLx1NQiWgrIdhvgO8tiSsQmZvGy19zBPsBL6o510kzkPuEuWSzGbzsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vQf7FTiL; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42881B87E9
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 14:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744813400; cv=fail; b=IXpP4jYV8sSpttUO2Y5smTL7mB974nO5WNPml4a46r0MH2Ktjb3LaT1qjm0je0+5DKld3Q6ksLjJhD9STAmbw5vyjr8ILE74s7lS9DuVQ3w0M/y1DdXtIWZ+NYlEdSJ+alUw6aRdErJVswImDIXrvY+ZVV4rl4+9vDFH7qZu2iw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744813400; c=relaxed/simple;
+	bh=k/rhTGyptMKWa8tH+16coeZnEDDHWkcx1SBsriIR1Zw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=X+/3umj49uMzasEwAryISbrKTHpEockB1NR/7HOlufZAEftFJajY0lmgAyDlClR/AxpP4OAaSNEsn3MWoqgGee0cnI05uN7aIjL6AKElJcbZ92pcV6W1s/46VT1YorlONk8n66KjkZaPmpgISbJ8EPvS++eJS1gFc+GQknu6qfI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gRTnibSg; arc=fail smtp.client-ip=52.101.66.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQf7FTiL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1CEC4CEE2;
-	Wed, 16 Apr 2025 12:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744807347;
-	bh=YaLyJ2LyojkdkHa6UjzZZ5YY5cd2AoOll8QQL7QvgqE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vQf7FTiLueTna3mVqCVJ04IS1e4UW2CrQdmeBOPzquGZ5diNSIX8FAxdcU8mYoxrR
-	 mBoNq4BK0HYCEzl+yInEai3zaXntIGCoLgrszNd6pqh+vKdITUUL6Kvw0sa4WHOAMC
-	 VFlJM0Yq0Wuqyr7MHvO6gapNWev6kQC4tx1Cpa98wtzEz391rx9H23RTW7gqwxJabT
-	 RbUlMSu3SEO5xx+fmo17D7Q6FMhetFapfP/Ry204hkndMr0hRjtAtEDtvmF/jycTR6
-	 De4CQ5fO5g3pQMAl2v54Lg4auQmztCiPsX9JYou38B5zn+p3BmEbmaF1IvkBFhXRWM
-	 UR4MoCeRknWRg==
-Date: Wed, 16 Apr 2025 07:42:26 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: media: convert imx.txt to yaml format
-Message-ID: <20250416124226.GA2498696-robh@kernel.org>
-References: <20250414210720.3359301-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gRTnibSg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=laEivRa4Fq2+rXntG7jocTeRmq3Qn0CnGZjY1oNlfePswMLmGTy14SUg2WsJo8Fx0p0qXHvPd5QovHVN7uUTZo1dS91SKF857QJNB2wLDn1YrKCf5kD+FIBsTMzUeXVxXEOy+IJcscksQmSl/SUnz4jtYpseq+5wAhxXShfcDnRv1g+BrpNfiIAWZxL23mbu9u+IQEo++cND8iDo01J3APlCCnSz2WHuwS9cpgRFZ/RGEtq++cbZVetlU+W/55vzr1e983F94t+py/svLDLZSU6WwP5LVGS+xsY8f53/6iRGtT/KOckGPCUEBHMJDrbQvcTv9TNqfMoXj3MNm/KVKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Auk5O5xpUdtp+vAUolHpRtIKZrWwsUq3Z6ui/xa9tHs=;
+ b=qXOuZu37i1OzdVHYDvgde2mqKuOtI72y5nEug2cBFTHEZMST797hGwASdB0l1srVIkV/T+cJhJY3/p85vcT7lMndIurpj3xLA6UdDZ7UNmBEavIEPuDElyJhbcqRcxp+mlZPclSJT/hnlULpfJas1XGbxUNtTUUi1ZGGUAYitpF6R7Td49UUzxWrXQytd0eFM17SeFdCQyy3wz+FkCs97JUgN1K/sf/hgrH7EuaRwvs57JLCxLGh2sSZFH3UyAS+az99ruPN+POSuK0REeNsz324pPvIC1YuI0fgWRddANs2/wr6zcujxeudrIN/6DUAbt99kFdOkMjvJFQi4trTKg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Auk5O5xpUdtp+vAUolHpRtIKZrWwsUq3Z6ui/xa9tHs=;
+ b=gRTnibSgWY+7kBgbb2am5NeSHA+rMQyZX8tf3OvyzwaZP/wTVa8x3Vu/PTaI4wzTXTVnQAKTRVD9Yq9S1a0xA+AgTLL6lk0uMokZMdqMpsuaLj81mO/RQFeKJ4dAGsPlRKpXEFBRfmkwpt6qQKSBKpRrLxrPeeb9LO58ZEakW2PjiuNPe5vinf2fzHvyqWoy5OcYCwNCdedoBhxO7oma5sRUh0/3/wkPHhZE7T9muQ38SKGUxCKwsmmJMTrj8tEYIDpCTThsnlH014BrColot3dbN4DfYhnwgjneYuUW3AoT4KM52ygkRIufTbgW1axw4vTz8RXMESn9i8pPIlGmIQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AS8PR04MB7847.eurprd04.prod.outlook.com (2603:10a6:20b:2ad::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.36; Wed, 16 Apr
+ 2025 14:23:15 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.035; Wed, 16 Apr 2025
+ 14:23:14 +0000
+Date: Wed, 16 Apr 2025 10:23:08 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: krzk@kernel.org, myungjoo.ham@samsung.com, cw00.choi@samsung.com,
+	robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH 1/3] dt-bindings: extcon: ptn5150: Allow "connector" node
+ to present
+Message-ID: <Z/+9TFLcIBXvlhNY@lizhi-Precision-Tower-5810>
+References: <20250416105940.1572672-1-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250416105940.1572672-1-xu.yang_2@nxp.com>
+X-ClientProxiedBy: PH7P221CA0077.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:328::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250414210720.3359301-1-Frank.Li@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7847:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a3abc2a-1b6c-4411-b7da-08dd7cf23988
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?s8BtEySq9k6S/B3A3/eo3w9G0funj1esrRvyfrax+PLkN0UUyKOviSWY0Db9?=
+ =?us-ascii?Q?MoiW7ipgGsW8X8hrom/qE+RJqkWuGnChQ2VegLnHG6wthhP33WvE2L4o5tKo?=
+ =?us-ascii?Q?DWEM6ALq5uhV0i7SOjzGeZV0+3fTkeXAr8M2UD+zCoM3dxVnD6tXeJksfH+v?=
+ =?us-ascii?Q?m9t9iePXsOW//76AsM6ts95hTe6Efu35g3y8irYIXtD2X5sEQ4uYDexlyp8X?=
+ =?us-ascii?Q?h/8LdGeOT+31d+l8fAxnJ9zeuZDHs+3Y9jUdyd9mJrToh+bV6SPQCb2Ir7Zm?=
+ =?us-ascii?Q?67rgNeD3NJdy9gXdFFMf1qD2lRpmcOxE6jHX+3x88bZGPrTMioW4795mB/e3?=
+ =?us-ascii?Q?NQHaWzMFzGXVxR+eblsyxxW60SPD7SAcaxCSzfFzuwaJhGJhYnfqXKiW1WxZ?=
+ =?us-ascii?Q?woSDA6hFmppR/d4fOfZsfohgoSyGgPjwRJLUHh/HEyjiBrxA/qi0aKs0vQyE?=
+ =?us-ascii?Q?D3lQioQIK1+tssMY+7aWNi4QPYSxe5Ncgfmarr0x0AGJDN7nnqhQCablgkVw?=
+ =?us-ascii?Q?0t3xaPfgbTFeTNfAzVReECCKzMqbSF9meDQqzU12LSFuUZVuaXo+bb9z/slU?=
+ =?us-ascii?Q?NogTLI6dVwNXsivxe3sRGrf3vNcMTOmVhzEtdPUmGB7vU3iBGBnbAaC6adgJ?=
+ =?us-ascii?Q?vuhOZepvp+kLogCst0ks76tR60vR8SG/0YslLVN6T0juBC7h4cnEgC5n5a+l?=
+ =?us-ascii?Q?mLixdP2/ZIlNpDF3fQKvH45cx+aUIKr9jOXQ760Qnbkk2nwqv2VJDKLKdYYJ?=
+ =?us-ascii?Q?dQorYtwrAuhtLRQh5wgyYGMXwGvNgzzBXlzCfzK6D+1aO8DsEG85AiNCHTLa?=
+ =?us-ascii?Q?ftEYkd1rHt1P8mmSOKRvaUBPcASacL8DoY5769pFNXLWMNjlahn/SfgqCPsr?=
+ =?us-ascii?Q?7B/65IcFZEJXbhDJs5k9fHUxB4AW3+CBHCL+RK7MGzLZbjGSVeGeRMkAaXX5?=
+ =?us-ascii?Q?NVMYFW+o9zVNHOnYRlgg70cqqrzUXNaafbV6euZbvnUkfHEQYK2vK8YC1PBN?=
+ =?us-ascii?Q?30U2LpZL+heisYlLhnk2WRpu0wE8BhjGknZ0m3PHbyNEdQYWXRDzA7+9zzwI?=
+ =?us-ascii?Q?uLYsZgC6Mdn2LmLinjO+VepGry59D7/RAmU1aUrfkT/yGC1nf5jU3t25eX1H?=
+ =?us-ascii?Q?qs+BNWH4x+PfflPGnrbAgYGOkHKL3hoyAKC1qAGPcsX4+EhxWpVg+PnVw0ed?=
+ =?us-ascii?Q?LPv0yTO1t/QUcVSOLTlkpmeWFi7wu6ygcZtdN9r7bCCaRZ5DeQP0LgJwDND+?=
+ =?us-ascii?Q?7mQlBKEQ1PxvDun5TonzjnZAlnM+/5OeIhDMsYKuvRCXEcXHgyulMO/UURfc?=
+ =?us-ascii?Q?fpRArk+bEhYL4YmWIvNBxla95J0XQ2ok6iLVarvvPadBVCk3iJnO01wrAYJ5?=
+ =?us-ascii?Q?NcD2PqpckkeT/xby0jRbCHMN6cMuOHFafzbD1aZWPqEl3vez5MWF7BmCyTzP?=
+ =?us-ascii?Q?NQBg27gOktQ1e++Tiy6bCbeBwaOiaYiA1UG66Mm8fOm+9dZXfP5M0w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GemsiDqlPpewhqOHGkEoZ2StestGqbX3fNe3KzoZuECXQU8/nEErRhEzQsM2?=
+ =?us-ascii?Q?hE4rmQtULcHA9K/5wkqDqSU2xC/KKMA/0k/pHTvIuQKlSEHZybCw8OA2Jo/I?=
+ =?us-ascii?Q?I1KYVqLJyDMQ2XEsDalHcM7vpnC+PuM1IRn4u5tLM0cNLWsNRDUYLLbwfTbc?=
+ =?us-ascii?Q?cTxSp7HtrdJETj5f/FgSl99Ua2/VBVD/S1iEuJ6Jz2DrbmQrAuF4GK7zzrNY?=
+ =?us-ascii?Q?Q6UhbymaipNNb6NQOdT10QDI4I0yKfvfu2HCRE1LoTah/qq3I6r8/78I7rRL?=
+ =?us-ascii?Q?9oIPK731KLZ1PJTDx43JKnhH4L8LqaBxR1+8H87po45LLFzJBtzLkTSak+gm?=
+ =?us-ascii?Q?4EpzNjuJv6UQ7/ybuOzDgv8kVl/z9ylHGsUkmIkN587dXE1CNMT0i/gR7tVk?=
+ =?us-ascii?Q?v2L+cUs6vnjW3uX4uYVPOWDdJHl19duJkHsGsq4yKNwuJSPe3gfLOm6+tRqS?=
+ =?us-ascii?Q?2W6pGfh2/rgg+qDuUhqLOw4vr97h/69Fc+AP2qXqz6xAApAYSTExc7AS+7J1?=
+ =?us-ascii?Q?LFCkGOVoGXKdXNJgUho5+xt8bLaZeuTQBhgY/9jhFR44Re+VOYEQM4qjmNax?=
+ =?us-ascii?Q?5r6DWF80Lc7tgPbJV9e+0nBMrUAY3RZFf3YvMRzFF2YGLZfdKVeg4ePy8jPY?=
+ =?us-ascii?Q?L03Mr8kCF6JqPDlyoriqIDl8/Ho4N4YWDnRSLmdawlhJQcJl65Kwy80CeBVe?=
+ =?us-ascii?Q?oxdHD8QXWDZsMPnivaqcuvZ8tGqYIODVN9On4QJI1PPWDKBaMBXaXnTxXCN9?=
+ =?us-ascii?Q?ymV7OV6aIM3FUoyKJ5ynFShNq2okTMgDTYAAEmruZpraB9ihnU8H0eQiP4G9?=
+ =?us-ascii?Q?NgpbbYKa7c4dJLJEa26tKEiC3GW+bsxbNXlCLsYXypvma/KjvFF8G3hE5FxI?=
+ =?us-ascii?Q?gj1os4ZO2Y/bMbblAqq92Noj4LAUtVCFHi1HAQzKSXFC7jOzGqW+qIuwy20b?=
+ =?us-ascii?Q?IVIbcsblCQiVbi5fpSBNbNSKN68g7YNydNP+Q2xoBzQeGabzj/WWRdXozZA9?=
+ =?us-ascii?Q?fADoleNfjz8qLVvF2vVt+dXF9PABXEToHyeWVfJHKblPM0fRUCphZnHAQDYY?=
+ =?us-ascii?Q?4fg0xWe67O4zjKeM/4bADgNQtm/DWFDogZr9zi/AUD7fYwtP3LmjtAdEuhHc?=
+ =?us-ascii?Q?Mynry+QDmG5DwLMJA0zZQnTZlVDdCdy1OvgAwwo0V0gHT4IH0mvADD3fDdf0?=
+ =?us-ascii?Q?HiIfr9glrVIrHtL6QZP/TNeJnQ7iaU5+vhbUctHqyn4SmuwFpch+NAbE8ymr?=
+ =?us-ascii?Q?jyenbh0e0aGrUoV1hZ+RBCYcbEo5KwQjZWJ41EsSibuiAKTIoCCvVB8Z7+KP?=
+ =?us-ascii?Q?WZDl9ksxc7P5ajGd9270qUGRa5Qv83H0b0ujcmyce/b34k8gGLwgesnzwv/W?=
+ =?us-ascii?Q?Ify+NOoytjEOmhtSyjY/nEdtNaUVRBntH72GaZB9uQXU+FvuYu4AR6e+sp3Y?=
+ =?us-ascii?Q?Sx54y5fRrrb7nWzbU1MhqrDLn/tVALEIulsqWKwIq0+RZTruPYD/H81PNgmW?=
+ =?us-ascii?Q?xHWbo4Dkjj+OUr980DwE8qN38Q3MfD3pL0wHv1s6WYbiwrs6r7iSs+94aGkf?=
+ =?us-ascii?Q?bDMu8fcMR1G25B+MM31Jz3Q+7AwhyyajV3AxiaoI?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a3abc2a-1b6c-4411-b7da-08dd7cf23988
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 14:23:14.8119
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FtW+8rJaK6Fd9gOllz6lBjQ9lof2M2yDnym005B/by6u6drlfh1MgB3/oQaYannTuY+PqdVI+2FxN+Yu0O103g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7847
 
-On Mon, Apr 14, 2025 at 05:07:18PM -0400, Frank Li wrote:
-> Convert binding doc imx.txt to yaml format. Create two yaml files:
-> fsl,imx6-mipi-csi2.yaml and fsl,imx-capture-subsystem.yaml.
-> 
-> Additional changes:
-> - add example for fsl,imx6-mipi-csi2
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Wed, Apr 16, 2025 at 06:59:38PM +0800, Xu Yang wrote:
+> PTN5150 Type-C chip normally binds to a Type-C connector, so allow
+> "connector" node to present under it.
+
+Suggest commit message:
+
+PTN5150 is usually used with a Type-C connector, so allow a "connector"
+node to be defined under it.
+
+Frank
+>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 > ---
->  .../media/fsl,imx-capture-subsystem.yaml      |  38 ++++++
->  .../bindings/media/fsl,imx6-mipi-csi2.yaml    | 126 ++++++++++++++++++
->  .../devicetree/bindings/media/imx.txt         |  53 --------
->  3 files changed, 164 insertions(+), 53 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml
->  create mode 100644 Documentation/devicetree/bindings/media/fsl,imx6-mipi-csi2.yaml
->  delete mode 100644 Documentation/devicetree/bindings/media/imx.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml b/Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml
-> new file mode 100644
-> index 0000000000000..77be3c1f37c5b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml
-> @@ -0,0 +1,38 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/fsl,imx-capture-subsystem.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>  Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml b/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
+> index 072b3c0c5fd0..79f88b5f4e5c 100644
+> --- a/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
+> +++ b/Documentation/devicetree/bindings/extcon/extcon-ptn5150.yaml
+> @@ -42,6 +42,9 @@ properties:
+>      description:
+>        A port node to link the usb controller for the dual role switch.
+>
+> +  connector:
+> +    $ref: /schemas/connector/usb-connector.yaml#
 > +
-> +title: Freescale i.MX Media Video Device
-> +
-> +description:
-> +  This is the media controller node for video capture support. It is a
-> +  virtual device that lists the camera serial interface nodes that the
-> +  media device will control
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: fsl,imx-capture-subsystem
-> +
-> +  ports:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    description:
-> +      Should contain a list of phandles pointing to camera
-> +      sensor interface ports of IPU devices.
-> +
-> +required:
-> +  - compatible
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    capture-subsystem {
-> +        compatible = "fsl,imx-capture-subsystem";
-> +        ports = <&ipu1_csi0>, <&ipu1_csi1>;
-> +    };
-> +
-> diff --git a/Documentation/devicetree/bindings/media/fsl,imx6-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/fsl,imx6-mipi-csi2.yaml
-> new file mode 100644
-> index 0000000000000..1e69a1ff868cd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/media/fsl,imx6-mipi-csi2.yaml
-> @@ -0,0 +1,126 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/media/fsl,imx6-mipi-csi2.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: MIPI CSI-2 Receiver core in the i.MX SoC
-> +
-> +description:
-> +  This is the device node for the MIPI CSI-2 Receiver core in the i.MX
-> +  SoC. This is a Synopsys Designware MIPI CSI-2 host controller core
-> +  combined with a D-PHY core mixed into the same register block. In
-> +  addition this device consists of an i.MX-specific "CSI2IPU gasket"
-> +  glue logic, also controlled from the same register block. The CSI2IPU
-> +  gasket demultiplexes the four virtual channel streams from the host
-> +  controller's 32-bit output image bus onto four 16-bit parallel busses
-> +  to the i.MX IPU CSIs.
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: fsl,imx6-mipi-csi2
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: hsi_tx (the D-PHY clock)
-> +      - description: video_27m (D-PHY PLL reference clock)
-> +      - description: eim_podf;
-> +
-> +  clock-names:
-> +    items:
-> +      - const: dphy
-> +      - const: ref
-> +      - const: pix
-> +
-> +  interrupts:
-> +    maxItems: 2
-
-Need to define each entry though the original binding is not too helpful 
-there.
-
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  port@0:
-> +    $ref: /schemas/graph.yaml#/$defs/port-base
-> +    unevaluatedProperties: false
-> +    description:
-> +      Input port node, single endpoint describing the CSI-2 transmitter.
-> +
-> +    properties:
-> +      endpoint:
-> +        $ref: video-interfaces.yaml#
-> +        unevaluatedProperties: false
-> +
-> +        properties:
-> +          clock-lanes:
-> +            const: 0
-> +
-> +          data-lanes:
-> +            minItems: 1
-> +            items:
-> +              - const: 1
-> +              - const: 2
-> +              - const: 3
-> +              - const: 4
-> +
-> +        required:
-> +          - data-lanes
-> +
-> +patternProperties:
-> +  '^port@[1-4]':
-
-'^port@[1-4]$'
-
-> +    $ref: /schemas/graph.yaml#/$defs/port-base
-> +    unevaluatedProperties: false
-> +    description:
-> +      ports 1 through 4 are output ports connecting with parallel bus sink
-> +      endpoint nodes and correspond to the four MIPI CSI-2 virtual channel
-> +      outputs.
-> +
-> +    properties:
-> +      endpoint@0:
-> +        $ref: video-interfaces.yaml#
-> +        unevaluatedProperties: false
-> +
-> +      endpoint@1:
-> +        $ref: video-interfaces.yaml#
-> +        unevaluatedProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/imx6qdl-clock.h>
-> +
-> +    mipi@21dc000 {
-> +        compatible = "fsl,imx6-mipi-csi2";
-> +        reg = <0x021dc000 0x4000>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        clocks = <&clks IMX6QDL_CLK_HSI_TX>,
-> +                 <&clks IMX6QDL_CLK_VIDEO_27M>,
-> +                 <&clks IMX6QDL_CLK_EIM_PODF>;
-> +        clock-names = "dphy", "ref", "pix";
-> +
-> +        port@0 {
-> +            reg = <0>;
-> +
-> +            endpoint {
-> +                remote-endpoint = <&ov5640_to_mipi_csi2>;
-> +                clock-lanes = <0>;
-> +                data-lanes = <1 2>;
-> +            };
-> +        };
-
-I would think at least 1 output port is required?
-
-
-> +    };
-> +
+>  required:
+>    - compatible
+>    - interrupts
+> --
+> 2.34.1
+>
