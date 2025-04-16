@@ -1,42 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127161AB50D;
-	Wed, 16 Apr 2025 18:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EBC18870C;
+	Wed, 16 Apr 2025 18:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744826891; cv=none; b=CJ3j0AD8zil0RUmb3OYKfzOZf6UuPn2EidzZz913gDliddtwWW50YBjMg4CqzAM9TWOaJjLA1yRWGaV4kdGNG4YR3SSgoxb1rAaRtGQkwJpBYKgMewIDWO5UHHs/s0+mtJr+L5GIDDwWh7hHqZKJ1rpX+5OCjTupQXt9vkVqL0A=
+	t=1744827238; cv=none; b=YEYIB6TsEXheBNUv/PgcKnLb8YdXEzt7CmOWwbUCNRb0agMJQeEYJfoc2oMNol3YQNF6uuvKr2UaLpSl5fYDJmDzClNarpjXHTRewItXLO4wYkX1mMwPI+A6vrgL6Rb42MO441bxh0e0ZWc1xHt8bBRNj8kQS7SBXFY/U8m1+h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744826891; c=relaxed/simple;
-	bh=r6PfxA0wKbws+QG5h1LuzMmXPKODCY725E6NfTH1YNM=;
+	s=arc-20240116; t=1744827238; c=relaxed/simple;
+	bh=E4ZCn18zFjw6q5PMnJTlMEpj3cHQAfhZ5PeKZVr6sKw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jr+d4z6mm4SVjlohPNjQD3ajJAjM7xAKdhx51jVLGyqxQh/UvLflcSHMlnzSqhkWo63RmvJrghh4fhkghKtpCrp1IW+sRofOD2g2dCeEUlH9RLS+PW5wXpaqKYyBGMXfN3LuDm4S37WFJVZOT1YKW8IjMfNUNXcOVzgtyVzY4AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPWyYmnj; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=f/FhSQgZlQUKzJ1BCi9cbej+3+sBOlBL2D/bHAmOhfFRSueVG2iuY6+T8W1wlQ2RecC0m9GUt4ANO+cD7HKgMpmuAFUaGgJ2HnR87mldo1MiUVTz4C5YvqOjOr0hc7emRTbydA5hdW71ZNRV1s3VkJkne62WTxmeTHr80VOx4f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vFwg2W7u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPWyYmnj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BDDC4CEE4;
-	Wed, 16 Apr 2025 18:08:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vFwg2W7u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98A1C4CEE2;
+	Wed, 16 Apr 2025 18:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744826889;
-	bh=r6PfxA0wKbws+QG5h1LuzMmXPKODCY725E6NfTH1YNM=;
+	s=k20201202; t=1744827238;
+	bh=E4ZCn18zFjw6q5PMnJTlMEpj3cHQAfhZ5PeKZVr6sKw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IPWyYmnjffc7SlioSRT3M2pbdw2gR3ngRnDbPwl6MLkW/eEGZCITQqmFNS0c1xymP
-	 LoMtqVZFT01oeMSXwXNGHsIKCSGEZ+2kJiynhx/PF+AtUhAK9cPNpr7ngGRbYqtvNu
-	 wt1QTJwh2gBiv56c1G/vkNmFnIdCR1c6Ip2o72jm7f3fNILtqfsh9nBJaui0m/djQR
-	 ZjN1gS4MFOg97tNo/iyxRvfV4DVVQ6KxIxdK/Ab4OeWR+hjLLN7hJy9OeRfLOIVRG0
-	 XIn7cFgxRZfLgYUB8RITX97pRc6TXWfa0ahSOLSUJFSy2j7RiOHk2fw+2Ndz9DO3+5
-	 48ZGoGB0DpgYw==
-Date: Wed, 16 Apr 2025 13:08:07 -0500
+	b=vFwg2W7ulzfpoDWHo1BLmWMkAnQCxVGe2j5NOi6tePl5s07giWZMkhjfYjNaGhc+E
+	 DoBfd+PAHJHY/uyGUOngwGsQdhpWJHeDC6rfW5EjIw+t0fUgVImU6oGJEL7ADtGIxP
+	 6XJk9xzY9LEnlV+XZRLm/mfjI0maPA5jnsuQoRLQD7zcaiTgFVGcbomv13di2oNWOD
+	 CRvFOfgosj6N16eIFvBGl8ilBctjMJxXdAbEcVnGTxSMAnidclUHGCLaB9Qu8f16rt
+	 Rwpf8jN2dNbArsyt3fhr1k6LvGZP6RYSu6VLJDX54u6I0+4BdCLquqlRV0xVUbi3ZQ
+	 Fp+tph9YwLL/g==
+Date: Wed, 16 Apr 2025 13:13:56 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Conor Dooley <conor+dt@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>, devicetree@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] dt-bindings: interrupt-controller: Add missed fsl
- tzic controller
-Message-ID: <174482688607.3538222.303139918100748355.robh@kernel.org>
-References: <20250415154859.3381515-1-Frank.Li@nxp.com>
+Cc: David Airlie <airlied@gmail.com>, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Shawn Guo <shawnguo@kernel.org>, Maxime Ripard <mripard@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	imx@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+	Simona Vetter <simona@ffwll.ch>, Conor Dooley <conor+dt@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>
+Subject: Re: [PATCH 1/1] dt-bindings: display: imx: convert fsl-imx-drm.txt
+ to yaml format
+Message-ID: <174482723439.3590548.522151644513682982.robh@kernel.org>
+References: <20250415212943.3400852-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,17 +53,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250415154859.3381515-1-Frank.Li@nxp.com>
+In-Reply-To: <20250415212943.3400852-1-Frank.Li@nxp.com>
 
 
-On Tue, 15 Apr 2025 11:48:58 -0400, Frank Li wrote:
-> Add missed fsl tzic interrupt controller binding doc.
+On Tue, 15 Apr 2025 17:29:42 -0400, Frank Li wrote:
+> Convert fsl-imx-drm.txt to yaml format and create 5 yaml files for
+> differences purpose.
+> 
+> Additional changes:
+> - add missed include file in examples.
+> - add clocks, clock-names for ipu.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../interrupt-controller/fsl,tzic.yaml        | 48 +++++++++++++++++++
->  1 file changed, 48 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/interrupt-controller/fsl,tzic.yaml
+>  .../imx/fsl,imx-display-subsystem.yaml        |  36 ++++
+>  .../display/imx/fsl,imx-parallel-display.yaml |  74 ++++++++
+>  .../bindings/display/imx/fsl,imx6q-ipu.yaml   |  97 +++++++++++
+>  .../bindings/display/imx/fsl,imx6qp-pre.yaml  |  55 ++++++
+>  .../bindings/display/imx/fsl,imx6qp-prg.yaml  |  52 ++++++
+>  .../bindings/display/imx/fsl-imx-drm.txt      | 160 ------------------
+>  6 files changed, 314 insertions(+), 160 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx-display-subsystem.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx-parallel-display.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx6q-ipu.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx6qp-pre.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx6qp-prg.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/display/imx/fsl-imx-drm.txt
 > 
 
 Applied, thanks!
