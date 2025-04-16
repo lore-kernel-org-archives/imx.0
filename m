@@ -1,294 +1,355 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012069.outbound.protection.outlook.com [52.101.66.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907F217BBF
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 07:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744788996; cv=none; b=RWJ8irtH4xDw1g0n2EEXyK+dfU0zvu9f5M0DbFX0RhQt5/spjpr7wThcXd5HyPf4sWmoQ5L5vquWBQXcLF3uUYn9yfRBAmjBRy1acEz+zTTs2J7gG6CZPpNjgsQwotoLFvZbxX2Iy2J6kK14+krYj4RTWbbZaMNAZvcdpQNjOcU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744788996; c=relaxed/simple;
-	bh=0/Am+LhYfAV4nH0Da9mQx+t7aay+VUzZy8x+9CyuxYs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kbOlYnk6/35ms4dbG8LEnJd+BzYFPqRqYPTe+VcnuAj21Yn9ZaznILx1OKRV/cZymRwJTO2bsWSPjuD44bKuzOVyuEJaYEtxKdC466ZsFCxJ2HOP1L7IJ0B+GTpTXuwSzo1URVppmwKmoIXGHWxhkV1/jb3CRNcQZiLfGpf3ueY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=JzOjblXd; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30F717A2E0
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 07:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744790197; cv=fail; b=AboQfQcZ7fpisyMo1uV7iSyCKjxgzfhMLgYUOQFTVUU6yb6veIylCIlui6ZkGZIBhYV+CiU43B6TFpRu2HOR3KJ2uFyYbT34tn+VcA/gFwljVRCqFqAfZYsoOOBCnmAHtyv6x/ZDSGaChXgLJAisolWjI6DcgA42Xw/YcPQmQmQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744790197; c=relaxed/simple;
+	bh=P29BVkWMQ0U126e5d4Vmrq/HKpRYSanfYWBm6McUo80=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=f+WtvGE1aXK/wwyBI1q7548yE8tkEMAMwnOUH/9aYIsJbXZvPsCKkqVrQB+55RqwPkt9lygctXoYJNNrAIYKUOsd4fGPX54+3yFmJJogx3cqneAj1R+XEXiJc4S83+oMMFwineD3DMv1ubsP7Gl5PA2vdsXlVn4S3tsbxCFt4YQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=o/ziyvWd; arc=fail smtp.client-ip=52.101.66.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="JzOjblXd"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2EC4E1039EF29;
-	Wed, 16 Apr 2025 09:36:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744788986; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=Sc8sq8yhI+eFhQYdluameP+NynQUgnB1EXAG4gA7e5Y=;
-	b=JzOjblXdlaekTamo8vCfUy3Ccow5WSv7kuJMoqEphQvpslF7jgaW2BA7J2Qb+roH1s+ial
-	vcJ8xp3FUvObAG4mBYArwOhUASkLeJYZzOuYhVJJWd7XUqdrfRyzz4HI24J3Zh4brxITY9
-	5AWwam9y4nvogEQzuEquNnvBLUkAzjcPvDdbkkFYSLzKauk8rEUyciJqgitEt5BpYczfFk
-	WPrKe1+3lF8mBlc0stvH8IodYsJfbd7jSxmRrCsaGGrGYftW6wlVvjJ+z6eyaPrLStuosJ
-	CEd06l5IUlWCk84OMgNl8Ctb2sU1Xv0zQF1LSPq1N6D37Q1oxAVQNgFKoCSI2Q==
-Date: Wed, 16 Apr 2025 09:36:18 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Rob Herring <robh@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v5 1/6] dt-bindings: net: Add MTIP L2 switch
- description
-Message-ID: <20250416093618.6269ae22@wsk>
-In-Reply-To: <20250415220853.GA903775-robh@kernel.org>
-References: <20250414140128.390400-1-lukma@denx.de>
-	<20250414140128.390400-2-lukma@denx.de>
-	<20250415220853.GA903775-robh@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="o/ziyvWd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=udtfEraFdYba+jukNfzK7WOXdxPcYVTLlq+L0SI/k6YqRNRfTXFezG0cRpH8arTGKdUztLJHkoG/JRsv+a+89sUsAAFMW0TZHjdARURe+S4lkFK4/73JhQiPufIWwvh/mPw5MAdLYPqjrSMMv2dqPEFe4XN9TrHF04cRIUiOig4ZKaYmt6AOC+kCi/X5C9Pu8/yDrTWt9LNpuWQHiaMlCZ5UiClvevgrAmv8wa0rD8vzCf6beBr4XiSS1aqGW/5GGttlSPlNLVNviqilBZeMi+N9S74R+nFXZxAKT+VOuXSw49czNlrq8zbboktBolAOlbFdrwVOpP/h5E6uJPJXvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rrK/3gydfyljUWHEZ0Q+GUAy+HtTJBCqJpwAwHAQcKE=;
+ b=UOSbCNufTSBXKh0xBcFVKNITu4Yw8rgF7DCCuvQT/0IotRfN9ZzDY8tOMntXmzQAebuYdARGjiQmOKx9e/wAdj1bC758anDhFo9Qf7mWDEo3uj6nKNHrr+6kGHIy5uHoWRU972RLcIshWYc/FNwc+fXWGtyR4PjQ7KbZrMb/VlDyVwXlYv7qdwo5Fg33unO5xJb7BZtgUzPLfR1+k3Tv5JtFNAWMcl06kz6BBD7sWFWI3LeMpMXe0tVHSvIUIEDHmMuluVtg8SRzMgh1//gADN4YzKi/AgW9ZnfB7xibeVHUx2ul/RCqNoXPgWvWHnwCVOArdFBnlkENcJkwo3A/AA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rrK/3gydfyljUWHEZ0Q+GUAy+HtTJBCqJpwAwHAQcKE=;
+ b=o/ziyvWd/kQAdmQazxnhlbNsYwtAn1bmeYpy4B5dafPiNov+xo3yqlPUO3PtHWMKQZF8qJilf2cEQOF43xnCAfI6cjlCv7SkGtqtqhMnmtsA+bQPE+0X3POgBpvorJZdZcfXVC28lonJa/MgGtOPoq6i2pM11A1eZkGnPZ3GdlJcKq/SND+TOiTI0i22tzDkCdLFWHebDlmya3SkpoiSgeAS9RbN0WQ7lrc1xUek+Zcn7rJa1BTfleq3LR4oQsFsP2oXcYVdtYhyGOGKrlUxhC2cneBC954R7+KRru9Kzb2aEmtkdkglQKa+ZuKsuKAIzgepvgqgHvcthmQtQf/7mQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com (2603:10a6:10:2e1::21)
+ by AS8PR04MB7912.eurprd04.prod.outlook.com (2603:10a6:20b:2ae::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.36; Wed, 16 Apr
+ 2025 07:56:31 +0000
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1]) by DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1%7]) with mapi id 15.20.8655.022; Wed, 16 Apr 2025
+ 07:56:30 +0000
+From: "Iuliana Prodan (OSS)" <iuliana.prodan@oss.nxp.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	"S.J. Wang" <shengjiu.wang@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mpuaudiosw <Mpuaudiosw@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>
+Cc: imx@lists.linux.dev,
+	linux-remoteproc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH v5] remoteproc: imx_dsp_rproc: Add support for DSP-specific features
+Date: Wed, 16 Apr 2025 10:56:13 +0300
+Message-Id: <20250416075613.2116792-1-iuliana.prodan@oss.nxp.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P190CA0019.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d0::18) To DU2PR04MB8774.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/E+Y3p4p0EiminI1G.eDIyI2";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8774:EE_|AS8PR04MB7912:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a53732e-568f-4a40-06a5-08dd7cbc32f1
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?VQvccfcLfXhLxGHODIt6tNAilR8g+0uF8EwHcnrdFCrfYjMdD8Q+1vBXosCE?=
+ =?us-ascii?Q?iQItSLUDjLh88xgjuywLTHbPBuUE3wpTvN7JeeyyNR1On1OPka42cZgO19x1?=
+ =?us-ascii?Q?o6Ix6dWDJKl6EI0ggOJQroYGuD75QdKNPXkHGeYtCNPgFJXrR1sduQ4vVUIy?=
+ =?us-ascii?Q?TSNpy11H+tqHC2AxhYCe1gFl+r7apkU9ZsLyaTsOWkx5Dso/0SuwMzED1NPq?=
+ =?us-ascii?Q?Y7HNz2CpKshJ9Nhta/wESLzaYrIIVkbOnSJSIJbElOQ60/AJU6xZOexP/xNT?=
+ =?us-ascii?Q?8ortj0wdAJNKgKKhfzBmhSAa65J7zwd1JBxNZuVBu2nOmzvdGgl1Jr7koodc?=
+ =?us-ascii?Q?tnkd0PZ3kJOcBGdt4N+nYRRbmCBncAQ6rRZSCxTUpxDDceDlFQMlsWvehc7H?=
+ =?us-ascii?Q?r5er8b9oWuWvJfuPaG120l5Rb3H+kQxGAm85+2bvCYccRrw+SIClUtDloaRg?=
+ =?us-ascii?Q?/uE99l1orAEKm9zzacrAuLJEYkjunEdpt9QV2fAS0KEAeJ6MeJ1m9WKmGkVc?=
+ =?us-ascii?Q?i8ulip0+jfvMS9PZStJhDlubxf02+tSoGRo6oxXzYMQfzNKw4jVrQlTTqSn+?=
+ =?us-ascii?Q?pibhl99nLVC7e/BjFVz6wBJVfv/LVkgM1bh3bnqdCkz/LyxuVxknvOnfsLWY?=
+ =?us-ascii?Q?PivIag/dTuajCzoJAvmT/uoolh+y199wcDJ+al7mHlv9/0/Refu76KO9LXPv?=
+ =?us-ascii?Q?tLKS+hdN8OrO6GmPDWtiySUOFzIMX/O6mULIYNVtIrutXGA7r//giGi/94ZQ?=
+ =?us-ascii?Q?JRncWchyoQiXlxRBxAXPO2THBDtL6LMDjWGnHOoZMGWpJe8dYDQ5lgTRwD3P?=
+ =?us-ascii?Q?qmRFxQRPdkRTwTGNdvODhBfkSJTYstM9z4kYYlWabazMjGb6c8q1IZtQwwxt?=
+ =?us-ascii?Q?2XjnOdkX9V/kAOzmalIgwGemxnQaUh6Y8UT+vbaIqk8hGy5SBNM4ecTGxfap?=
+ =?us-ascii?Q?KHOq9erVrvpQ28knmEmBWUhY426KCdjH0AA3+flCREBxxzYEBTgVeKTVzHZw?=
+ =?us-ascii?Q?WAbZKiHNS5WWe31pV3AVIlh+FA5h+7D/pxAwQht52pLiLscn0I1lAZKN/i8I?=
+ =?us-ascii?Q?/4nNkTBNpxhaXxxWLhRTYMhCKQOWZgWy12hMW6p3vTmnW98eILhy0RgC8WWa?=
+ =?us-ascii?Q?uWXOQkJFZcpmZHoBtTT77TNd0/LrEMu2fHBf8j6BLJF0YnkMrLsYKF8Chhz0?=
+ =?us-ascii?Q?AgIapTYe+sCmalzr/p9rKImRv7JMFWeCLz1en2h+BN+ehjOrTFC0/C6P+Emf?=
+ =?us-ascii?Q?i0iHMn7Tb3WPHWywvrM+z6xODEvYhOA+YOTV+PGRukkCb9CKmnMqWr7yXqpi?=
+ =?us-ascii?Q?G4yagMvupF1tpipswwDLGs7f/DdlIx99To4wGWkSAH1R46BhybPMI+OxVLj/?=
+ =?us-ascii?Q?B8f+cMeTQS5crPHC56WE51PzSHxmarTlhsbGtmqBCqWVOjvR7YsgKUmAVNNW?=
+ =?us-ascii?Q?B4riH0QaqJ9dHfxdMLxcVbJWwn4NKEdmCuO/w0ZKHOGU8oWxqxsyMdoMJOIk?=
+ =?us-ascii?Q?hxmdgb9WBjqcOiA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8774.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GVw/lXVLBvGU/K/zUAuwebmcDvuLyXDliUhyDFVyVoUfwEGqKS0oTAn1HnKD?=
+ =?us-ascii?Q?U7FMCKBzJs3Qx7WuqjgCJlrIkcpy6tm4jLSaaQnWrnGtQ2flvIBW+lfvykjO?=
+ =?us-ascii?Q?wz7N6y3C5ueGndnP5NOF1QDARvZ3b8ZZe51p2gs3tRtF6nRk90YfU0DDklEk?=
+ =?us-ascii?Q?imOyRP81HFABUunIQGiNCLvr3x5KYjuJ6hoKHe7cuCeE5CMB0u2+k61pklgM?=
+ =?us-ascii?Q?EOcu2C2hY5ZBmTGf2NjDmVrAlz9MHyg0fk0DZtAnIwnn2oSqH6Iydv6BiLEv?=
+ =?us-ascii?Q?dlw59et83rjB8xSBkQVS1PZMJTerFZkoukuJAUzZzt8HmBOOVOfoUYDOhLn2?=
+ =?us-ascii?Q?TEf2K+2Vnijle0/gRjKWpBjSgC4L1lRTxlKY6ZGcsV1qNrnBhR7j8mH2Qh7M?=
+ =?us-ascii?Q?6eKsMfphNHc0VAx8U2tKjZCQtQ669r4t7ftMYc8EXxAp9pe9b24LMcNCbI62?=
+ =?us-ascii?Q?JVWsJf298yILSJMF6XoSqqynqVobGrQZNoASdxN4WkhNaYuuyQjKOP/M1RSW?=
+ =?us-ascii?Q?Lu72/Zk5yMg0YtIkkgYEouCnZMrh30BHyuhjfjyn+prnqdQjERLMTyExmCEP?=
+ =?us-ascii?Q?Bvw7IX+uZwFuhFA3sNCtECSgi7OQjPGdkcAw+v4PRCqhfZGcpNTm1o0QNbir?=
+ =?us-ascii?Q?zPvZ8sdtGl0b/wrZLrs7TGBaUXmlRccHGuaAO88SuIha3FV/JQwSk9gT2pST?=
+ =?us-ascii?Q?S9lWcfZXHvVCr8Zyzx6zAV+7nIRBZR5thsyu4Gg5jVucIscPHg24xasQmtx7?=
+ =?us-ascii?Q?gghY1J6Lr6WVrieTqIGCnzlvdcAgrBSSNZaBmaMmqhOvwAl7pMs61BpIPDDK?=
+ =?us-ascii?Q?TgWcKlQbmuS7ZryqqW73KId9ZROEQnBARgwcrnuDsefEq7277ZHp+9fkH5Oy?=
+ =?us-ascii?Q?KEvRS964KlSURpfIAzjo/q/l8KKJzzo68PGsgpuChSZNXIY8QC8fWkHA1xXC?=
+ =?us-ascii?Q?EwUAxobYECetnXAMsF9Hi97PEmiL0e40TdK/if2LtJZqmFsx3HVfQMzn1hfM?=
+ =?us-ascii?Q?J+mMIDcYvadR/NpS84SS1NPBNNzIUd64qE0u/SE6m8+sV3bONcHLp3XSG5fm?=
+ =?us-ascii?Q?nis6SS2p1T4jfFyAX8GluevP4Xz8+Tt2Cut1cpIuCYbJuMAXrWeHZFOfvP/E?=
+ =?us-ascii?Q?a7ixUucQn6pjAxcRqJ2XM2NVHy1WpnY/zKxQXqbr1X2ClMaBLH4XsfSeXAHR?=
+ =?us-ascii?Q?ocwgAkav5N9a0XwTqc3PscVdUyyKuptMw5GdNfoyK6U21oQr6sQgZ8EAImTx?=
+ =?us-ascii?Q?EXCslIzeniycqK9TcJkIQ/kkClBt4Ymks8CymfV8GV1Ir2Txy8URAg4Na9UK?=
+ =?us-ascii?Q?o6lgwavf0oQk09vJDvsUWeqnPwH1X8byY4t7tfiCpQ0EgC6udg0N+98aMAS8?=
+ =?us-ascii?Q?T6vbTMkYfZ/xI9v005v4AKeitCBdsVMiUS5plLu3soIaCCdNqsITmsIKuJZx?=
+ =?us-ascii?Q?s3UUoFDyjS03IDSXCPgVS1vESE9r80LEJON7pd23308sXaWPiqay9ggB4GXP?=
+ =?us-ascii?Q?YGVO8pCTY3GoevHh6BxpjfnQlO87oiw5Mmq8vFshFxcOcrUGQbMjFA+PU+ee?=
+ =?us-ascii?Q?l6PyZtgNKBpfYrlVn3o9v3UpnaHFvg8BaWrCwCJNzz6SanN0bPeiom5yb/Jy?=
+ =?us-ascii?Q?yw=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a53732e-568f-4a40-06a5-08dd7cbc32f1
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8774.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 07:56:30.8856
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UzAK4izEFKFC9aWjuyeErJSrqVoVAbFRuBMZ0K/iqXhV7jTlPVlkpMy1+79b2oE/Pa3+oK/8I6kBErWfnP5OYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7912
 
---Sig_/E+Y3p4p0EiminI1G.eDIyI2
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: Iuliana Prodan <iuliana.prodan@nxp.com>
 
-Hi Rob,
+Some DSP firmware requires a FW_READY signal before proceeding, while
+others do not.
+Therefore, add support to handle i.MX DSP-specific features.
 
-> On Mon, Apr 14, 2025 at 04:01:23PM +0200, Lukasz Majewski wrote:
-> > This patch provides description of the MTIP L2 switch available in
-> > some NXP's SOCs - e.g. imx287.
-> >=20
-> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > ---
-> > Changes for v2:
-> > - Rename the file to match exactly the compatible
-> >   (nxp,imx287-mtip-switch)
-> >=20
-> > Changes for v3:
-> > - Remove '-' from const:'nxp,imx287-mtip-switch'
-> > - Use '^port@[12]+$' for port patternProperties
-> > - Drop status =3D "okay";
-> > - Provide proper indentation for 'example' binding (replace 8
-> >   spaces with 4 spaces)
-> > - Remove smsc,disable-energy-detect; property
-> > - Remove interrupt-parent and interrupts properties as not required
-> > - Remove #address-cells and #size-cells from required properties
-> > check
-> > - remove description from reg:
-> > - Add $ref: ethernet-switch.yaml#
-> >=20
-> > Changes for v4:
-> > - Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove
-> > already referenced properties
-> > - Rename file to nxp,imx28-mtip-switch.yaml
-> >=20
-> > Changes for v5:
-> > - Provide proper description for 'ethernet-port' node
-> > ---
-> >  .../bindings/net/nxp,imx28-mtip-switch.yaml   | 141
-> > ++++++++++++++++++ 1 file changed, 141 insertions(+)
-> >  create mode 100644
-> > Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> >=20
-> > diff --git
-> > a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> > b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> > new file mode 100644 index 000000000000..6f2b5a277ac2 --- /dev/null
-> > +++
-> > b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> > @@ -0,0 +1,141 @@ +# SPDX-License-Identifier: (GPL-2.0-only OR
-> > BSD-2-Clause) +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
-> > +
-> > +maintainers:
-> > +  - Lukasz Majewski <lukma@denx.de>
-> > +
-> > +description:
-> > +  The 2-port switch ethernet subsystem provides ethernet packet
-> > (L2)
-> > +  communication and can be configured as an ethernet switch. It
-> > provides the
-> > +  reduced media independent interface (RMII), the management data
-> > input
-> > +  output (MDIO) for physical layer device (PHY) management.
-> > +
-> > +$ref: ethernet-switch.yaml#/$defs/ethernet-ports
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: nxp,imx28-mtip-switch
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  phy-supply:
-> > +    description:
-> > +      Regulator that powers Ethernet PHYs.
-> > +
-> > +  clocks:
-> > +    items:
-> > +      - description: Register accessing clock
-> > +      - description: Bus access clock
-> > +      - description: Output clock for external device - e.g. PHY
-> > source clock
-> > +      - description: IEEE1588 timer clock
-> > +
-> > +  clock-names:
-> > +    items:
-> > +      - const: ipg
-> > +      - const: ahb
-> > +      - const: enet_out
-> > +      - const: ptp
-> > +
-> > +  interrupts:
-> > +    items:
-> > +      - description: Switch interrupt
-> > +      - description: ENET0 interrupt
-> > +      - description: ENET1 interrupt
-> > +
-> > +  pinctrl-names: true
-> > +
-> > +  ethernet-ports:
-> > +    type: object
-> > +    additionalProperties: true
-> > +    properties:
-> > +      ethernet-port:
-> > +        type: object
-> > +        unevaluatedProperties: false =20
->=20
-> This is going to fail if you have any property other than 'reg'.
+Implement handle_rsc callback to handle resource table parsing and to
+process DSP-specific resource, to determine if waiting is needed.
 
-The DT schema check shall fail when reg is not equal to 1 or 2, as this
-switch has only two ports.
+Update imx_dsp_rproc_start() to handle this condition accordingly.
 
-> But=20
-> then it will never be applied because you never have a node called
-> 'ethernet-port' since you have more than 1 child node.
-> You need this=20
-> under 'patternProperties' and 'additionalProperties: true' instead.
-> And please test some of the requirements here. Like a reg value of 3
-> or remove 'phy-mode'.
+Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+---
+Changes in v5:
+- Reviews from Mathieu Poirier:
+  - ensure resource length matches struct size exactly.
+- Link to v4: https://lore.kernel.org/all/20250409213030.3489481-1-iuliana.prodan@oss.nxp.com/
 
-In linux-next we now also have realtek,rtl9301-switch.yaml which uses
-just:
+Changes in v4:
+- Reviews from Mathieu Poirier:
+  - Adjusted len to include the size of struct fw_rsc_imx_dsp.
+  - Updated len validation checks.
+- Review from Frank Li:
+  - In imx_dsp_rproc_handle_rsc(), removed the goto ignored statement.
+- In probe(), set flags to WAIT_FW_READY to ensure the host waits
+for fw_ready when no vendor-specific resource is defined.
+- Link to v3: https://lore.kernel.org/all/20250403100124.637889-1-iuliana.prodan@oss.nxp.com/
 
-properties:
-  ethernet-ports:
-    type: object
+Changes in v3:
+- Reviews from Mathieu Poirier:
+  - Added version and magic number to vendor-specific resource table entry.
+  - Updated defines to maintain backward compatibility with a resource table that doesn't have a vendor-specific resource.
+    - By default, wait for `fw_ready`, unless specified otherwise.
+- Link to v2: https://lore.kernel.org/all/20250318215007.2109726-1-iuliana.prodan@oss.nxp.com
 
-but when in "examples" I do remove for example "phy-handle" the command:
-make dt_binding_check DT_SCHEMA_FILES=3Drealtek,rtl9301-switch.yaml
+Changes in v2:
+- Reviews from Mathieu Poirier:
+  - Use vendor-specific resource table entry.
+  - Implement resource handler specific to the i.MX DSP.
+- Revise commit message to include recent updates.
+- Link to v1: https://lore.kernel.org/all/20250305123923.514386-1-iuliana.prodan@oss.nxp.com/
 
-is executed without errors.
+ drivers/remoteproc/imx_dsp_rproc.c | 98 +++++++++++++++++++++++++++++-
+ 1 file changed, 96 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+index b9bb15970966..a16d9c4238ed 100644
+--- a/drivers/remoteproc/imx_dsp_rproc.c
++++ b/drivers/remoteproc/imx_dsp_rproc.c
+@@ -35,9 +35,18 @@ module_param_named(no_mailboxes, no_mailboxes, int, 0644);
+ MODULE_PARM_DESC(no_mailboxes,
+ 		 "There is no mailbox between cores, so ignore remote proc reply after start, default is 0 (off).");
+ 
++/* Flag indicating that the remote is up and running */
+ #define REMOTE_IS_READY				BIT(0)
++/* Flag indicating that the host should wait for a firmware-ready response */
++#define WAIT_FW_READY				BIT(1)
+ #define REMOTE_READY_WAIT_MAX_RETRIES		500
+ 
++/*
++ * This flag is set in the DSP resource table's features field to indicate
++ * that the firmware requires the host NOT to wait for a FW_READY response.
++ */
++#define FEATURE_DONT_WAIT_FW_READY		BIT(0)
++
+ /* att flags */
+ /* DSP own area */
+ #define ATT_OWN					BIT(31)
+@@ -72,6 +81,10 @@ MODULE_PARM_DESC(no_mailboxes,
+ 
+ #define IMX8ULP_SIP_HIFI_XRDC			0xc200000e
+ 
++#define FW_RSC_NXP_S_MAGIC			((uint32_t)'n' << 24 |	\
++						 (uint32_t)'x' << 16 |	\
++						 (uint32_t)'p' << 8 |	\
++						 (uint32_t)'s')
+ /*
+  * enum - Predefined Mailbox Messages
+  *
+@@ -136,6 +149,24 @@ struct imx_dsp_rproc_dcfg {
+ 	int (*reset)(struct imx_dsp_rproc *priv);
+ };
+ 
++/**
++ * struct fw_rsc_imx_dsp - i.MX DSP specific info
++ *
++ * @len: length of the resource entry
++ * @magic_num: 32-bit magic number
++ * @version: version of data structure
++ * @features: feature flags supported by the i.MX DSP firmware
++ *
++ * This represents a DSP-specific resource in the firmware's
++ * resource table, providing information on supported features.
++ */
++struct fw_rsc_imx_dsp {
++	uint32_t len;
++	uint32_t magic_num;
++	uint32_t version;
++	uint32_t features;
++} __packed;
++
+ static const struct imx_rproc_att imx_dsp_rproc_att_imx8qm[] = {
+ 	/* dev addr , sys addr  , size	    , flags */
+ 	{ 0x596e8000, 0x556e8000, 0x00008000, ATT_OWN },
+@@ -300,6 +331,66 @@ static int imx_dsp_rproc_ready(struct rproc *rproc)
+ 	return -ETIMEDOUT;
+ }
+ 
++/**
++ * imx_dsp_rproc_handle_rsc() - Handle DSP-specific resource table entries
++ * @rproc: remote processor instance
++ * @rsc_type: resource type identifier
++ * @rsc: pointer to the resource entry
++ * @offset: offset of the resource entry
++ * @avail: available space in the resource table
++ *
++ * Parse the DSP-specific resource entry and update flags accordingly.
++ * If the WAIT_FW_READY feature is set, the host must wait for the firmware
++ * to signal readiness before proceeding with execution.
++ *
++ * Return: RSC_HANDLED if processed successfully, RSC_IGNORED otherwise.
++ */
++static int imx_dsp_rproc_handle_rsc(struct rproc *rproc, u32 rsc_type,
++				    void *rsc, int offset, int avail)
++{
++	struct imx_dsp_rproc *priv = rproc->priv;
++	struct fw_rsc_imx_dsp *imx_dsp_rsc = rsc;
++	struct device *dev = rproc->dev.parent;
++
++	if (!imx_dsp_rsc) {
++		dev_dbg(dev, "Invalid fw_rsc_imx_dsp.\n");
++		return RSC_IGNORED;
++	}
++
++	/* Make sure resource isn't truncated */
++	if (sizeof(struct fw_rsc_imx_dsp) > avail ||
++	    sizeof(struct fw_rsc_imx_dsp) != imx_dsp_rsc->len) {
++		dev_dbg(dev, "Resource fw_rsc_imx_dsp is truncated.\n");
++		return RSC_IGNORED;
++	}
++
++	/*
++	 * If FW_RSC_NXP_S_MAGIC number is not found then
++	 * wait for fw_ready reply (default work flow)
++	 */
++	if (imx_dsp_rsc->magic_num != FW_RSC_NXP_S_MAGIC) {
++		dev_dbg(dev, "Invalid resource table magic number.\n");
++		return RSC_IGNORED;
++	}
++
++	/*
++	 * For now, in struct fw_rsc_imx_dsp, version 0,
++	 * only FEATURE_DONT_WAIT_FW_READY is valid.
++	 *
++	 * When adding new features, please upgrade version.
++	 */
++	if (imx_dsp_rsc->version > 0) {
++		dev_warn(dev, "Unexpected fw_rsc_imx_dsp version %d.\n",
++			 imx_dsp_rsc->version);
++		return RSC_IGNORED;
++	}
++
++	if (imx_dsp_rsc->features & FEATURE_DONT_WAIT_FW_READY)
++		priv->flags &= ~WAIT_FW_READY;
++
++	return RSC_HANDLED;
++}
++
+ /*
+  * Start function for rproc_ops
+  *
+@@ -335,8 +426,8 @@ static int imx_dsp_rproc_start(struct rproc *rproc)
+ 
+ 	if (ret)
+ 		dev_err(dev, "Failed to enable remote core!\n");
+-	else
+-		ret = imx_dsp_rproc_ready(rproc);
++	else if (priv->flags & WAIT_FW_READY)
++		return imx_dsp_rproc_ready(rproc);
+ 
+ 	return ret;
+ }
+@@ -936,6 +1027,7 @@ static const struct rproc_ops imx_dsp_rproc_ops = {
+ 	.kick		= imx_dsp_rproc_kick,
+ 	.load		= imx_dsp_rproc_elf_load_segments,
+ 	.parse_fw	= imx_dsp_rproc_parse_fw,
++	.handle_rsc	= imx_dsp_rproc_handle_rsc,
+ 	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
+ 	.sanity_check	= rproc_elf_sanity_check,
+ 	.get_boot_addr	= rproc_elf_get_boot_addr,
+@@ -1053,6 +1145,8 @@ static int imx_dsp_rproc_probe(struct platform_device *pdev)
+ 	priv = rproc->priv;
+ 	priv->rproc = rproc;
+ 	priv->dsp_dcfg = dsp_dcfg;
++	/* By default, host waits for fw_ready reply */
++	priv->flags |= WAIT_FW_READY;
+ 
+ 	if (no_mailboxes)
+ 		imx_dsp_rproc_mbox_init = imx_dsp_rproc_mbox_no_alloc;
+-- 
+2.25.1
 
-IMHO the problem is with proper usage of
-$ref: ethernet-switch.yaml#/$defs/ethernet-ports
-
-which shall in my case be extended to have:
-$ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
-
-In the case of MTIP - the following SCHEMA description shall be used:
-
-  ethernet-ports:
-    type: object
-    $ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
-    additionalProperties: true
-
-    patternProperties:
-      '^ethernet-port@[12]$':
-        type: object
-        additionalProperties: true
-        properties:
-          reg:
-            items:
-              - enum: [1, 2]
-            description: MTIP L2 switch port number
-
-        required:
-          - reg
-          - label
-          - phy-mode
-          - phy-handle
-
-
-And then, when I remove from 'example:' the 'label':
-
-make dt_binding_check DT_SCHEMA_FILES=3Dnxp,imx28-mtip-switch.yaml
-/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.example.dtb:
-switch@800f0000: ethernet-ports:ethernet-port@2: 'label' is a required
-property from schema $id:
-http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
-/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.example.dtb:
-switch@800f0000: Unevaluated properties are not allowed
-('ethernet-ports' was unexpected) from schema $id:
-http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
-
-or when reg =3D <3>;
-
-Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.example.dtb:
-switch@800f0000: ethernet-ports:ethernet-port@2:reg:0:0: 3 is not one
-of [1, 2]
-
-When I do use the untouched example: node - it compiles without errors.
-
-I do guess that this is the expected behaviour... :-)
-
->=20
-> > +
-> > +        properties:
-> > +          reg:
-> > +            items:
-> > +              - enum: [1, 2]
-> > +            description: MTIP L2 switch port number
-> > +
-> > +        required:
-> > +          - reg
-> > +          - label
-> > +          - phy-mode
-> > +          - phy-handle =20
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/E+Y3p4p0EiminI1G.eDIyI2
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmf/XfIACgkQAR8vZIA0
-zr1GTwf/b33OaBe5N9vRxgAOvVMNfYHagLQoWiI/DqsxTokp7CwJmXhQnAF1wQQX
-5NRUw5pMohXvR4hJmOQ5ME+14OH0GkvxVWje/CfobWpV65pdXZA20IYztqaoLgQn
-QeBVZZgsEhQShUd/Ksy64CnSMjD3Ln4cDffE+8Ep7uST7fNwncVbFkEHjuGch4XK
-zXx7DrkfUyrDhBQU6GS9DNELju4NaK6lEPEATOV9tCQ5AfGmcPIZ9oWho84aLg9/
-XSzStIBJThE3XKK8w+DkDx9CYWMUUqT+tRrKktqK8ad3ASLMvRICe41L0ovly1Ng
-GBZVi8lIMMneCqM7qFyYDVg46xk++g==
-=tuno
------END PGP SIGNATURE-----
-
---Sig_/E+Y3p4p0EiminI1G.eDIyI2--
