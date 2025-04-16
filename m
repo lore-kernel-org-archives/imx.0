@@ -1,63 +1,63 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D595420DD75
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 01:01:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DF220F066
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 01:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744765320; cv=none; b=u9p4nq9FKP7xzDC9nYlcV1hQdw5iL1vazshpy0+ewDGf/OtX6pW83MAU5vXBPVkzAv224hl6txG9JPOfs8H5SmuyipUHVUZ3pe2rgF0RwPdeDqoFhmsct5hHwmuAINfED1OmK8hpVPrW/NUVxC9vLlk81yBK8H+xLpY9Tx5WHHI=
+	t=1744765322; cv=none; b=ZlOaFKAW6DYmDrMJQEsuey9sAh0ZMJwK9VrGYtdYYTPla9bUxbPDFkIHpt3/sSLZvI09LCaQ4HraetLB5hhxJMeBNUfiHlFv/mnKKJiwk4CaD85pvPRjurUBPnkIceDhm4cx0PD4/9h30wzoVx1Z2HEdR1FVjPka353gYoySJ8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744765320; c=relaxed/simple;
-	bh=FPvd4mqFKus4PL6m7SnM6RmFtUcggaxSYz3gm9nlBi0=;
+	s=arc-20240116; t=1744765322; c=relaxed/simple;
+	bh=22MEmFz5mc3jlZMDV3CcSBulqEhIbycuA2+KNYtCSe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBlmdYAcMlqdxr5b5ZQPY4HFDjHJGZelkGq114FNk20P4yKhXgws3wxRS7edX8/tLCwD6JYgXrFhUJZ3kUy0gAj0SlKRM8cNmZ8S1+jGBWl6BXU1wpbk/W4MIwpClmeY2L7udAZec8LVA6T2gcfTaLEJSiJecFlYDJ2MPcR9K/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sl0APmV3; arc=none smtp.client-ip=209.85.160.182
+	 MIME-Version; b=EMi89wVFlUdlMQt8AAeLDSdxeA2MMU8VsyDO3dAztxQ0h4bxekYKeDXN7MczfNEddRsjS9p7bg7wcx/aQAZgNx8GUhA+5ya23YnNq+YCUoXHPuvEARdMyNPTgDdqvclUm3Yn2iQMOW9mhzcOtBsWdL0Pvw6Bhcu0kBlL9Ayu8OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cPNCSWgZ; arc=none smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sl0APmV3"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4769b16d4fbso34641001cf.2
-        for <imx@lists.linux.dev>; Tue, 15 Apr 2025 18:01:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cPNCSWgZ"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-47690a4ec97so60348241cf.2
+        for <imx@lists.linux.dev>; Tue, 15 Apr 2025 18:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744765318; x=1745370118; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1744765319; x=1745370119; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AFICO/f3GRYnQyGnM8JAgOAEAAxAb7Le1DtrMpG+6/M=;
-        b=Sl0APmV3ZcpZnJtpXbUVJSWGswVTjILhgFil28V+pJxLL8kvTdFOu0F1KYl3aAXRzk
-         6nsZP9MkPaRylNlgmwDVYD01JGcSOc74XcZGVGVbEtLQUkkR0NMoTDftVqGaf/CoMbPI
-         uv0J7dbetWIQDa+pmCeXI9CffgbIKq0e54y7ZevvvkRI+5cRI3KSwMP/pYm8slqFK1fx
-         Pu+DIrqB+Ctsk+dAS2eMfuEr8jvxb+FL5xrNIjqv02AsgNdcH1PTryr8O/d8Yv5vG/HB
-         94m88Drkbyw6mnP3PMqwWhg/qymeM1ikwbowB+CeCWFGqup+6aQOjpFGA4hcPth7XBgh
-         pp1A==
+        bh=tjo4xki33zyLm0/Rt5Gsx8yphQcMjzMQ28GgPBYaW9s=;
+        b=cPNCSWgZQzrEW63dTaN5u8XkYQASu+NT73RmlW17pxXBiE71QOZp3jFMaNoYzUW8Ps
+         c0aP8YZ9M16d1uS3FSv7QIgrHCvlPTxRt/aCWooyM3Xi5QjjR8mC8dbJcUq1DAXBF6xC
+         KeTgc/P65/p4Uedrow1DodKjRx84fkn8eBjhNfkg+QN3kS+puzeh6viTrQPeqFD3bE6/
+         wwnJ/kstg/rU8DSFJl7hl9a51WN0IN5YVZ+7hyb5WAo3coig6LgD4lF22kjtvWKagn0U
+         yEDlLRo60wjob1N0AK4dbItuBNt840KLH7Ei+u/G8ndwibpzm85ouo9FzDfjFc1sFhkT
+         +iTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744765318; x=1745370118;
+        d=1e100.net; s=20230601; t=1744765319; x=1745370119;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AFICO/f3GRYnQyGnM8JAgOAEAAxAb7Le1DtrMpG+6/M=;
-        b=ad3xvMzLeUaYayr+SsuXZqoIGcBoDr0dGQpW0tCIaBliUvVZ3uB8ZlRODWClv1meaB
-         TBDpf3Yv13F1l4nhJXq7FKZkxm1p476cX/eZDpeN+34sZ1b5a3aWeq9qostTvOPPQbS/
-         /JgPcjicHEXrX/LOacUHnZptHAPiOgJ3qYbX5FlXsN/R2+keZDTJaJi6KVaAEWhaOBo8
-         JHgcg2pi5k2QIfSBm4BmEohiYpfD2UZLywf06z707NOe9264n5FNkh9Ksg2lzEko6YTF
-         +pvDxuL2vf2fbJLtKjaD11OSUDsXludqsk+ePMOI8MXU0xEqZPnhvcSCY0rWBdQBHsn6
-         FWXg==
-X-Forwarded-Encrypted: i=1; AJvYcCWuwELqL8b4zEIjexJxdsTRVi2rwcu5Qzy5EtRz+SS7FxVSJoPamF6i1PFGm8ApmZGi9Fg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyBPTmguVIIpA17iM1bStA8klU66qNBz/gGshyZS/s8rnLO4yW7
-	VViTZT9VH3iHlz+Lnnzbow6YouCMYSUZOR19KaScke2tz7az7mCt
-X-Gm-Gg: ASbGncsTW177BINB+PLvz1JGkpxDGukz6CVFyci3RExdZu7j8XhU6VjQS8GdwNtLvGt
-	dslr0TW7v+UwpPlr29b52d8ByGhjTaX69p5+Z6Hmmo6Gz1f3qrEh2B+raS4e2zMeYSxPCY8KKBY
-	gDtubvdnPHlmsa1pNy4hOnW1Qs6DJX01qHNwI7SoSxw8fbyXHp7sVT31YLDrUq4nmOad8F7ySxc
-	2XenyAjq9KUrwW5KFO3cHngNnjkPHPrdNPAHXNFF2Wn79N2Wdi7u3RuXg7l+K9yiPEPEeVjerRM
-	E5pEsqHFzih77JFzaoXzkEFww/KuI3MuFzyXH9cbqfxXI8J2a+vtVXVFP78NF9oPnMtw3Qf+U0e
-	go7K9YilYYkR96lE=
-X-Google-Smtp-Source: AGHT+IE5vymre3jMvOIqMTFZOIcLz3gAqcPHBCaqYI7xneF2ijTBn4EouQOs7gqt1Ik+3CpFQFHmTw==
-X-Received: by 2002:a05:622a:114:b0:476:8cef:4f0e with SMTP id d75a77b69052e-47ad3a3b807mr19517671cf.29.1744765317693;
-        Tue, 15 Apr 2025 18:01:57 -0700 (PDT)
+        bh=tjo4xki33zyLm0/Rt5Gsx8yphQcMjzMQ28GgPBYaW9s=;
+        b=kJdTditir01Zurrq+CUovaNLJNKI01nchPezLr775metYMWWAHIg5hO+e2F5wH17Fz
+         eXOcOFJsFtU/vp1nABlA9+mUOFd1mR9dF0V7zeUo0+Eymc/jLcF6vmCmOs6YY4fmRVaw
+         KvIWbOHLK68ySSGXQCxOdtDybR7+wRQVh0HfC2CK9jlwSLiedhxvdlp7LR+7lHBqeuCX
+         xhBO6xqqIlIFQN57tlGIMb8V4WfCPSkF981MsVW24me7VwtuuGmzb7pqDXjtdpFkKCJ7
+         7NSHGrIV+xrk8Hze8fKXAVJhf0HDzLgGIoUL7kd17LHfUmnDRhyNmIhhrPc+hCtsF/t7
+         KcoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUABAfOmJYqsG+2H3kIMHVvME1KuRuVasEmCdLoZ2BlpSC3QAGhy3dvlZZNKKVfburXNVM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yws3LQT9LkEsgYBw7q7ks9jscN3ixMXVv7Tcxb167VkSyzh1LWV
+	91icKl0yTYMzJ7MnBzmMbc4dJtYOjmtBTurBDVJgaoSti98UqL1Z
+X-Gm-Gg: ASbGncvoUg2ogRZnv64NFkdSRMFsYFq/t+SUk+d7m/5Eq5nD+PcCblMt6++J73ocfa0
+	UGoOnMYlVA5OnyMz11NxezOjhGepTEjTR4VUT9nirYSZaw03JM6Hj3+FhuhPx0LAuDAsxIrKIw3
+	KyIBWi86zFl/FbzsU2ABfszHb3fBtK2zNO3m+WgIjMLJKmzsz65BTA9Oxw/Cd6FG/43OPjJcOA2
+	sHTTM5FFBqTk2jzJ2eM2FRkDiEUPOk0jOBaHYgzh/Gtb/PvKLMsTWH5wDerwKYBP0gjnSixsMvN
+	9JLESwFWRHWjF91BTYLbIHDYOAyecHOeYRX3JWca055n4ehHY4hfqz9EBS675xGs6dP8Z9gk80H
+	X7+RJ+4ghv/RWmSU=
+X-Google-Smtp-Source: AGHT+IGSMllLvdBmoO21PrxCrBybdmOg5B+CK/K/ej/O/jMGk3bZh3tsbpTy6til3V66e2jkSmJD/Q==
+X-Received: by 2002:a05:622a:1e0c:b0:477:64b0:6a2a with SMTP id d75a77b69052e-47ad3a404aamr25266811cf.26.1744765319578;
+        Tue, 15 Apr 2025 18:01:59 -0700 (PDT)
 Received: from aford-System-Version.. (c-75-72-162-184.hsd1.mn.comcast.net. [75.72.162.184])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796edc29ccsm99746291cf.77.2025.04.15.18.01.55
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796edc29ccsm99746291cf.77.2025.04.15.18.01.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 18:01:57 -0700 (PDT)
+        Tue, 15 Apr 2025 18:01:59 -0700 (PDT)
 From: Adam Ford <aford173@gmail.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: aford@beaconembedded.com,
@@ -73,9 +73,9 @@ Cc: aford@beaconembedded.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH V2 06/10] arm64: dts: imx8mm-beacon: Configure Ethernet PHY reset and GPIO IRQ
-Date: Tue, 15 Apr 2025 20:01:32 -0500
-Message-ID: <20250416010141.1785841-6-aford173@gmail.com>
+Subject: [PATCH V2 07/10] arm64: dts: imx8mn-beacon: Configure Ethernet PHY reset and GPIO IRQ
+Date: Tue, 15 Apr 2025 20:01:33 -0500
+Message-ID: <20250416010141.1785841-7-aford173@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250416010141.1785841-1-aford173@gmail.com>
 References: <20250416010141.1785841-1-aford173@gmail.com>
@@ -102,14 +102,14 @@ Signed-off-by: Adam Ford <aford173@gmail.com>
 ---
 V2:  Update commit message. No active changes.
 
- arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-index 9ba0cb89fa24..ed7a1be4a1a6 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-@@ -78,6 +78,9 @@ mdio {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+index bb11590473a4..b3692b367a42 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+@@ -88,6 +88,9 @@ mdio {
  		ethphy0: ethernet-phy@0 {
  			compatible = "ethernet-phy-ieee802.3-c22";
  			reg = <0>;
@@ -119,12 +119,12 @@ index 9ba0cb89fa24..ed7a1be4a1a6 100644
  		};
  	};
  };
-@@ -315,6 +318,7 @@ MX8MM_IOMUXC_ENET_TXC_ENET1_RGMII_TXC	0x1f
- 			MX8MM_IOMUXC_ENET_RXC_ENET1_RGMII_RXC	0x91
- 			MX8MM_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x91
- 			MX8MM_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x1f
-+			MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10             0x146
- 			MX8MM_IOMUXC_SAI2_RXC_GPIO4_IO22	0x19
+@@ -326,6 +329,7 @@ MX8MN_IOMUXC_ENET_TXC_ENET1_RGMII_TXC	0x1f
+ 			MX8MN_IOMUXC_ENET_RXC_ENET1_RGMII_RXC	0x91
+ 			MX8MN_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x91
+ 			MX8MN_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x1f
++			MX8MN_IOMUXC_GPIO1_IO10_GPIO1_IO10             0x146
+ 			MX8MN_IOMUXC_SAI2_RXC_GPIO4_IO22	0x19
  		>;
  	};
 -- 
