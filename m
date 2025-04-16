@@ -1,204 +1,124 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2086.outbound.protection.outlook.com [40.107.237.86])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0E5235361
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 09:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744794888; cv=fail; b=Y+aS+A7uzTf+8bYGbaTb/FBaZTpsrwzbtqulBnAQ/J2JoPUL0tMC6P6jk+j+uw4N2HsAB2ZEa3qSyV21H6lyaTHy6s9oXdt5AUH3t24I4DAWXQKAU4xwmzQW+e25bT+14G7ek5aIT7ylLolr3duaz0LpwUM7J+PiTLxMk8qwiJ0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744794888; c=relaxed/simple;
-	bh=y4/Z5MF3iVp/Hr2RTMkwL1W7fk2XjvCTuAkug8i65so=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=brirO8AbeaayPGDqGXwhOkzrxe5RkqOvc90duWA2qpKD+Q8TEqNW/bGOd5G72EtSIatJROk/r3ntghj083YSG1xhpSb0mFHQ7zWQ3oxNDpyvUcXXBnX1DzMKEANTYJcn851Y/fuhouTvZ/rR4aeQTEGAHTj96PePgY6NGwgdmQE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hvZG7Py+; arc=fail smtp.client-ip=40.107.237.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250E622FDEC
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 09:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744795108; cv=none; b=Rer0lBfvy/2HuZzmTmqpsDZhLawMaxkZFMddh6ktf/ZC7K8AA6gAtoniUB4fMBbYY+y7ISJd09GAguB4+6XIkVBEiOwzw3OSqWd1oNYK4slR0QBUwtAK5kSaw5mjUH8H9BNK+h87be8gXuNXYIk3/KZWUf+E0p7Nhg848pWadf4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744795108; c=relaxed/simple;
+	bh=XVpXGxl2fXHpOXZZcDAodwwPWK0sRmyWRilpTGEVAiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BqigDYfLbdWWTDqtX4n43NpTZcHWWZ76jyby6DQGvbhZzTlbXZg0OLQv5RC8vrqQ46jrJ3oh7fkFZXi1/jSejj8TdC39o+FR6JC4LcLvKSTekkbal5XZZFDsHoMBU+m4ClUbFyEghjOBDa6kBNef1VNvIfkWImP9zbffzRb+uBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nunaxTzV; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hvZG7Py+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yvKe6l/p8KKfZJQzu1pyG51fkOWJf+/TfNyeqqWZ53vFkuq4DHTouDvCFpWbPKeWGkM1elpUgKBeyeSttpL/fc+cTFJepuRdDNKP9Gry0JtVh5ug+UCnZdFuvy6KKAmPEEUQWW7jnam5H7MkRNA7fA63X+UL82ZkkYDrA7X+YY80EaaHSFmkBuUjlSpgg+SLtbvdnn5eadwwNbOJ7DoZisgAd02RyBHFw+euaHKG8+t/s9Onw3HA4B2FvjKSOnfAG/du5qyJH+fPgstTAD/th/nLTmSUcYpScWGoREEYILeafuC1TAqVYxUxjpe/HzIzBKPhinnll7PtAwkLuklR9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hk9PGgfOtu94j5OcKo0DWr17MjPll5iaiddo3FnLpWM=;
- b=JorJMz1SimWApaliqad1SxtvUxiKVkyc2K/7yKCa4Ug5xuFf/Anmhyl573cS5JIfGH6xfagegRPc7AjuNaPIR84+b8Dpzt1MEWc6y+kinmSxFckWAupun/6IWt+fN8yAyDLJ3/HWidypx0wxf9GsG+QCsG79djfcora+hdg0DESiaJjh+oJFO5/bRob/xY2xh22UApr8btewVU7bzbzqEuKhMvDuDksy11QXizeXdKNW8kAfK54VjVuNR82PadFuwnR+GmDvGS/Af0DUZDQYmcoASE0/uLsYEiG7n8SLoy2LWB4u89eMYYzCJze7s3h3BDK4lLecquG5Kfl6sSbv/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hk9PGgfOtu94j5OcKo0DWr17MjPll5iaiddo3FnLpWM=;
- b=hvZG7Py+H7TdLA5QXBIJPIY4Xnu+L/GZ+8Xj1eUeBtk45LPRSk+uUVLLRMlZzHHnRXBTUdHEYpIpPvkuM/beA3fJaAR4AoW0WM+AWxBc+idtO96/x2XknQaNRV04KPoddyUgB5AH85vqbtL/Kgfulmc+COmOCVSiJGnA8NUUJ+5/HcOldfZ+ZdMvzTDWCHCpXTB7bi92iyOqn38lOYJXyIUVsDjYJ+xcHBwnm2HoTnSFQZ6nwST4DVS/sx44lllSMRVhE/1g0M/BUpizxhU7NwR2xx89lGoz7FMiksfUmF6youusawtLa/jPFRv1KXyYzFJAkHoxKjePplZ09pVEWw==
-Received: from BN9PR03CA0742.namprd03.prod.outlook.com (2603:10b6:408:110::27)
- by MN0PR12MB5881.namprd12.prod.outlook.com (2603:10b6:208:379::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.32; Wed, 16 Apr
- 2025 09:14:40 +0000
-Received: from MN1PEPF0000F0DF.namprd04.prod.outlook.com
- (2603:10b6:408:110:cafe::83) by BN9PR03CA0742.outlook.office365.com
- (2603:10b6:408:110::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.34 via Frontend Transport; Wed,
- 16 Apr 2025 09:14:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- MN1PEPF0000F0DF.mail.protection.outlook.com (10.167.242.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8655.12 via Frontend Transport; Wed, 16 Apr 2025 09:14:40 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 16 Apr
- 2025 02:14:21 -0700
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 16 Apr
- 2025 02:14:07 -0700
-References: <20250416010210.work.904-kees@kernel.org>
-User-agent: mu4e 1.8.14; emacs 29.4
-From: Petr Machata <petrm@nvidia.com>
-To: Kees Cook <kees@kernel.org>
-CC: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, Jeroen de Borst <jeroendb@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>, Ido Schimmel
-	<idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Simon Horman <horms@kernel.org>, Geoff Levand <geoff@infradead.org>, Wolfram
- Sang <wsa+renesas@sang-engineering.com>, Alexander Lobakin
-	<aleksander.lobakin@intel.com>, Praveen Kaligineedi
-	<pkaligineedi@google.com>, Willem de Bruijn <willemb@google.com>, "Joshua
- Washington" <joshwash@google.com>, Furong Xu <0x1207@gmail.com>, "Russell
- King (Oracle)" <rmk+kernel@armlinux.org.uk>, Jisheng Zhang
-	<jszhang@kernel.org>, Petr Tesarik <petr@tesarici.cz>,
-	<netdev@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, Richard Cochran
-	<richardcochran@gmail.com>, Jacob Keller <jacob.e.keller@intel.com>, "Shannon
- Nelson" <shannon.nelson@amd.com>, Ziwei Xiao <ziweixiao@google.com>,
-	"Shailend Chand" <shailend@google.com>, Choong Yong Liang
-	<yong.liang.choong@linux.intel.com>, Andrew Halaney <ahalaney@redhat.com>,
-	Kory Maincent <kory.maincent@bootlin.com>, <linux-kernel@vger.kernel.org>,
-	<linux-hardening@vger.kernel.org>
-Subject: Re: [PATCH] net: ethtool: Adjust exactly ETH_GSTRING_LEN-long stats
- to use memcpy
-Date: Wed, 16 Apr 2025 11:09:43 +0200
-In-Reply-To: <20250416010210.work.904-kees@kernel.org>
-Message-ID: <87ecxswjs4.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nunaxTzV"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6D0D61FCF1;
+	Wed, 16 Apr 2025 09:18:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1744795104;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dllKgwcLha1xL/vp7a/BLD+IvTjOmLEdGFp4zUwZcgg=;
+	b=nunaxTzVBV3n6npKioC4tkVt5qyJ/0ovo+X8BcdX9YasgCi5MZmYPXEYmZQLlVcbXUapoU
+	/YW+9QKRf1K7y+ySRHWe80jMUkTndaRM8MOjvKCQyRoTQwPNs9rC5OBGm8mx+ZxtuFTS0M
+	Mh+JZq330W/CcxlMqhLY9sUb27AkokWn+pB6L4aFnGPvahVNli93kPUcEwJ9DtSixG4nMG
+	P1sEhO6BOAsiptpbuVq7KGWaNNBphmoJglgknx9T1i6XMbdUohCbAbO6ZiHQumVwZs6Zly
+	BGVahasiNILSThVKRNFpHbojxJF6fnoFTX/w8G6I6tYPNy9h7p/XJv+V6hbqyA==
+Date: Wed, 16 Apr 2025 11:18:19 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Andrew Lunn
+ <andrew@lunn.ch>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
+ Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
+ Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 15/16] misc: lan966x_pci: Add dtso nodes in order to
+ support SFPs
+Message-ID: <20250416111819.4fd7b364@bootlin.com>
+In-Reply-To: <20250410084809.1829dc65@windsurf>
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+	<20250407145546.270683-16-herve.codina@bootlin.com>
+	<19f1a382-1b6b-42bd-a548-a1a5644c9a1b@lunn.ch>
+	<20250408162603.02d6c3a1@bootlin.com>
+	<D91CSNC07NYM.3KC467K0OZ4GG@bootlin.com>
+	<c14dd5c6-2dae-4398-89a9-342e7a25bb30@lunn.ch>
+	<D91XV1I4CY37.20T12FMZ5QLQ5@bootlin.com>
+	<b1b33000-4c10-43cd-bcf4-d24fc73902b1@lunn.ch>
+	<20250409161444.6158d388@windsurf>
+	<c6257afe-36bb-46d8-8c22-da3b85028105@lunn.ch>
+	<20250410084809.1829dc65@windsurf>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0DF:EE_|MN0PR12MB5881:EE_
-X-MS-Office365-Filtering-Correlation-Id: 300d342e-1bfd-4e03-32c0-08dd7cc71e3d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?j7IgJbEdesxIdWEYyXpqUrAtgUraiDFgEetdgiKxehUy2vSABUctMFwNZlf2?=
- =?us-ascii?Q?gzXdRMTIGveOZ94zE0JH3BO9Vyt6l37NHF9leljHHfURP4y6ydMvmpu5RGeb?=
- =?us-ascii?Q?6n0hNEV5+oyKqUTW4jWXjBg5bvCWgKaAOX5bIBznE9YN/80R1jVng9mJ2rWp?=
- =?us-ascii?Q?X3JWKkbaBa3Nl3ggOgIElrrc+gsDmJo+7rjvJlW8Lu83GwJe6QPc06rriS+u?=
- =?us-ascii?Q?iypv2Xa+dKj0MofYDNOwaO+eAA8+5lGjL/2ulXpi897P6BJMg3PsuyA7OFCP?=
- =?us-ascii?Q?l6Eg0tTzGKUOe1XXbWA0zJe6qyUB8+GnTlkVW+prUPYw/x33+exPT3fvFxJZ?=
- =?us-ascii?Q?VvM2Hfsw4MQIP+TBn4ikKmukqf/ANfTJ8Jh1tQRITDU/HSQP1xjte3glnfLg?=
- =?us-ascii?Q?0oJ2bV/6eUF1SeFa0LWsRGUhAntXWL1t7RyGwqHfiUFnJ/m/XLYqhslZlWhH?=
- =?us-ascii?Q?FvSe3zunouSc6/PjsnJuiC3Mb40TX3Kq5j9pZ8mTETh/fsw96xCwa1ewjai9?=
- =?us-ascii?Q?04+irs6FTKd+uU8AFzwwq8N7tMgUE3Es1t7pTHrDaleCKmnaivew9/sCd+Bz?=
- =?us-ascii?Q?bx+OP5K8KnCA2JGEF8a+vIuAwxxrNWrsIdIRBtg/httCV8qpuLMTCeiMchWX?=
- =?us-ascii?Q?M4F8cO0DKyobU376zMNa9dzma+CeGOr4jDun2LLEnr2twq52TlsWy313ESIh?=
- =?us-ascii?Q?b7A+W6OnwDI6D1Cz1jJOVG1XDQ25y2YbMvSQWLpMat3eTkVcMs+hXWTQdaqu?=
- =?us-ascii?Q?aV8Fl3IEzwV5ISBS4bLDOgovQVCEpWfhSlwEAbTW8oG5PcwoRXSUUqqYxZT4?=
- =?us-ascii?Q?eRXuvrxF0SKZOQ2fiVtn3tfA5ITt8Wi9sFSLncZ/QsOvX906mT5x4uEzUVHy?=
- =?us-ascii?Q?1fMF+L6ZpCbtSHNZNsZz8kK6NxQdGdicYDZlpHyKliIwtZD4F8rH9vvn2J70?=
- =?us-ascii?Q?f+fSFqkiaEotoJoajiAhPCL63aV5JDm1kgnKCFKB8p4sCUtqCxJ+hT1nB9Ga?=
- =?us-ascii?Q?rawCxiaKwo6TimXmDlg0BDHDD0mW8argYA/ShGGfFJ7sb/awFVCWaGsPqReN?=
- =?us-ascii?Q?biJpTUrn2Tvvxlrf87aafLRzB29OpVvEooLMXAjoChGLAZy2gssIzBltqAqc?=
- =?us-ascii?Q?+GRI7hY9exe/VE9QNRYIN6bLtONDvKa/Hpb8OvvtxYCWkobEa5GpO0NfvnvU?=
- =?us-ascii?Q?vHEMOGXvfGTiyedgVjplY4N8y8myclyeMjCRZZF2lp+LWb/l/JF14EEtj2gZ?=
- =?us-ascii?Q?/1hJBoNZY93KinjF+Wb2OOzJmWAO0b7Qp7EEOM1+F1iM4UOUzhBYsibTTkzo?=
- =?us-ascii?Q?umNFcgTzvBRuQLC7G65Bq5zfZQRZbzBz+JJcd++bqORIJXaA8ITDU1bf67lV?=
- =?us-ascii?Q?j1T6+mGBGtHBZIIvHAViHb5mh4tjQx9qcg5oULOXK/y6FzKIu0NeCBpLGQ5D?=
- =?us-ascii?Q?7lmwnrcfygX6HlM+0dz7OTXiqMotpkYd+SUJa9LLBj+R2rg4Alq9TYOYwTrc?=
- =?us-ascii?Q?3Lsinw0Lw4JaMAs9GA7ISsNRP7qHrqM5ezgx?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 09:14:40.2423
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 300d342e-1bfd-4e03-32c0-08dd7cc71e3d
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000F0DF.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5881
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdehleelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppedvrgdtudemvgdtrgemvdegieemjeejledtmedviegtgeemvgdvvdemiedtfegumeehkegrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvgeeimeejjeeltdemvdeitgegmegvvddvmeeitdefugemheekrgdphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeguddprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlhesk
+ hgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
+X-GND-Sasl: herve.codina@bootlin.com
 
+Hi Thomas, Andrew,
 
-Kees Cook <kees@kernel.org> writes:
+On Thu, 10 Apr 2025 08:48:09 +0200
+Thomas Petazzoni <thomas.petazzoni@bootlin.com> wrote:
 
-> Many drivers populate the stats buffer using C-String based APIs (e.g.
-> ethtool_sprintf() and ethtool_puts()), usually when building up the
-> list of stats individually (i.e. with a for() loop). This, however,
-> requires that the source strings be populated in such a way as to have
-> a terminating NUL byte in the source.
->
-> Other drivers populate the stats buffer directly using one big memcpy()
-> of an entire array of strings. No NUL termination is needed here, as the
-> bytes are being directly passed through. Yet others will build up the
-> stats buffer individually, but also use memcpy(). This, too, does not
-> need NUL termination of the source strings.
->
-> However, there are cases where the strings that populate the
-> source stats strings are exactly ETH_GSTRING_LEN long, and GCC
-> 15's -Wunterminated-string-initialization option complains that the
-> trailing NUL byte has been truncated. This situation is fine only if the
-> driver is using the memcpy() approach. If the C-String APIs are used,
-> the destination string name will have its final byte truncated by the
-> required trailing NUL byte applied by the C-string API.
->
-> For drivers that are already using memcpy() but have initializers that
-> truncate the NUL terminator, mark their source strings as __nonstring to
-> silence the GCC warnings.
+> On Wed, 9 Apr 2025 17:03:45 +0200
+> Andrew Lunn <andrew@lunn.ch> wrote:
+> 
+> > So it only supports a single .dtbo. In its current form it does not
+> > scale to multiple .dtso files for multiple different boards built
+> > around the PCIe chip.
+> > 
+> > At the moment, that is not really an issue, but when the second board
+> > comes along, some refactoring will be needed.  
+> 
+> Indeed, but that's really an implementation detail. It doesn't change
+> anything to the overall approach. The only thing that would have to
+> change is how the driver gets the .dtbo. We could bundle several .dtbos
+> in the driver, we could fall back to request_firmware(), etc.
+> 
 
-> Specifically the following warnings were investigated and addressed:
->
-> ../drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c:328:24: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (33 chars into 32 available) [-Wunterminated-string-initialization]
->   328 |                 .str = "a_mac_control_frames_transmitted",
->       |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> ../drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c:340:24: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (33 chars into 32 available) [-Wunterminated-string-initialization]
->   340 |                 .str = "a_pause_mac_ctrl_frames_received",
->       |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Not sure we need to split right now the existing dtso file nor rename it
+even if it is updated in the series.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
-> index 3f64cdbabfa3..0a8fb9c842d3 100644
-> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
-> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
-> @@ -262,7 +262,7 @@ static int mlxsw_sp_port_set_pauseparam(struct net_device *dev,
->  }
->  
->  struct mlxsw_sp_port_hw_stats {
-> -	char str[ETH_GSTRING_LEN];
-> +	char str[ETH_GSTRING_LEN] __nonstring;
->  	u64 (*getter)(const char *payload);
->  	bool cells_bytes;
->  };
+This could be done later when an other user of the LAN996x PCI chip is
+there.
 
-Reviewed-by: Petr Machata <petrm@nvidia.com> # for mlxsw
+Doing something right now will probably need other modification when this
+potential other user comes in. Indeed, depending on specificities of this
+future user, what is done now could not match the need of this future user.
+
+Any opinion?
+
+Best regards,
+Hervé
