@@ -1,134 +1,128 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F7D247292
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 11:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014F12472B9;
+	Wed, 16 Apr 2025 12:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744804447; cv=none; b=UhMJmdYlrqxEzJ7a0hAyoL/u5418dK7J9xyfa8kuL/gmR8zFTu/HDP6lyW9QNDSGJMRWI44JcWb+5zBTOz4mjPy/ZeWJD+c3n4GgneVofgzhZhZTrt2XeoGmQnU2skYoUq1+EXuo5Dn51aQLCS94I8VfsEbudTYeF9oU2Qkl1nQ=
+	t=1744805178; cv=none; b=mWjyJwAQRxuOJIppO+/E9QMSkDVOBnm3/tWZgtV1xHIiUp2l1fuSlcQUtwuPtlPoWfNwuUU1YXubC5n2+q5C9ELKzaWzkSRVviscVBmZFNp13KwAiHSqaL5RqVMnCzPNZuiklyvdx7EkL4InLJFYYboQAAo+dZJWGeh6vQfT+IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744804447; c=relaxed/simple;
-	bh=Kx9vZ2nOZKWmMvSzfG5+ZeIJH2O5fKX/k65+E4EY3Zo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f3s2vNg/5rDoJoDVUxRatOb28on240TyFEdtiz8d9Lq828nNjOU8Hnmpf0vZtvXERtuihfjGt9/9tefT9BPm/hqQQk00bay9jj9/HAafwB8wgWl4V+YIO7V/k89t6KMQk5OGCRoix/dxpY/aBnRmCwYd2gtltYHRkX8QUPoNrYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=JjfcIS8D; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Ms/MGLW9 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1744805178; c=relaxed/simple;
+	bh=z+35z4Xm7Qmu1+l6vMV68bBCRCqlu/kIyQ/IweF1fDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lsXy/9vTYDK1NS0vCR6xlIRKFdssUBV/iRk8JXmQD85jeocKZ8beV7DbPgq5mYT6prA7ukDONX9++xQjRRdED4CQEtrFGjToJYzTadp6Jf0akMki1hLY+d9lFadDSPVopUIturITfyMhBOMvljPYk5L9taLV6y3Iw8iB6NJVNW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Uf1PAeeN; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="JjfcIS8D";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Ms/MGLW9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1744804445; x=1776340445;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=m+AwIw+jiqBoahqy5bMs4qA16bD3AY0+KgeeCB5/7BE=;
-  b=JjfcIS8DBKbzlV6G2rlhxAKrdvQbr/Tj4/8JJUgmCBH9mQKCsFv5XyZ4
-   VWnTUHJH6doYJTNCQO9Z4DNYbxiNZFTeFsrlz4YMDAn4e+sjE5Bmr7DG1
-   V0emNcOItA+VlTLZRJtcy9KuTWqVXGkyA1lnko8/cGxMLPSmslOmqog57
-   WWZ7AY3w0EVMBky70yHv57PZvXdbj5UvqUyp6j7UmXPoE4+eFjxv3cPeu
-   Pyx25gyoxnUWETbwQnDZq2M3+7Lj/+M5AblrOVL9dNw8HKxf3P4D+BwYe
-   ZCkEZxeaPYzMqLiFzoJKKXKuXKo5M0m1roVR6L9apBthzM80o8I/waFnj
-   w==;
-X-CSE-ConnectionGUID: ylHedra1QWKFeZvyz3KQ9A==
-X-CSE-MsgGUID: /0P0VCQATqu5/tkUK4dy+w==
-X-IronPort-AV: E=Sophos;i="6.15,216,1739833200"; 
-   d="scan'208";a="43567665"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 16 Apr 2025 13:54:01 +0200
-X-CheckPoint: {67FF9A58-43-DC4DC9A0-F4F29281}
-X-MAIL-CPID: 13CF670CCFADCC07300DFA99EC2DE8BF_0
-X-Control-Analysis: str=0001.0A006396.67FF9A55.000D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 412DA16B203;
-	Wed, 16 Apr 2025 13:53:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1744804436;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m+AwIw+jiqBoahqy5bMs4qA16bD3AY0+KgeeCB5/7BE=;
-	b=Ms/MGLW954pIAQt0KFwUZmPM7HVemUqZtJhiEGJKcsy1qOf+b5UXcqWjQZc60JnHqW9QB+
-	QzXdK0hVd8ipAiVOLv3ubGPC11lAuGLtTOIHQxScE6hdNkqXUczd1o1Lt4eMc7L9yFA599
-	m1Jl+wOWPsRsmRFDzMG0TLL0MySqHMMD9VAbgJZ4zbtHS2m+fWti7qHSwY2UPwGgOPcfoU
-	IT/mF2x+Lfeer3fCYXllTtj5/Ql3srf88doRFDs46AcXnyq5zpOhDf/DX81pg4ZZHdjI7L
-	TtBiLXKCggYNppeZdGeF9rfZfkvsc8+1MYLprQ4u/pUffLyKqSqYhfdnQvma9A==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com,
- linux-renesas-soc@vger.kernel.org
-Subject:
- Re: [PATCH 2/2] arm64: dts: freescale: add initial device tree for TQMa8XxS
-Date: Wed, 16 Apr 2025 13:53:52 +0200
-Message-ID: <4975795.GXAFRqVoOG@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <aa21556c-8c79-4d03-b6db-3b4cf450fc3a@lunn.ch>
-References:
- <20250415133301.443511-1-alexander.stein@ew.tq-group.com>
- <20250415133301.443511-2-alexander.stein@ew.tq-group.com>
- <aa21556c-8c79-4d03-b6db-3b4cf450fc3a@lunn.ch>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Uf1PAeeN"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=48rObYaeZ/USnSNxnjEIUdReTs2PvkcUzFPZ3od5ozQ=; b=Uf1PAeeNB7mtGRr9XeqT+lWOsk
+	tU/VlmKveq7vFIay9Q57fAfy2osB/m5R1soDdnon8DLivpYkDTVTN4JNGXBHfNH521M+lfQLHBuMv
+	th6fTqdKgseLY7FfLCKg5Gz/1l1WR3qZm5b53xVUgQD+DFQE2KYw/OzgerrpF0pmvjkQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u51WY-009c9k-0K; Wed, 16 Apr 2025 14:05:50 +0200
+Date: Wed, 16 Apr 2025 14:05:49 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 15/16] misc: lan966x_pci: Add dtso nodes in order to
+ support SFPs
+Message-ID: <97cf068f-3770-4df9-a60a-30761ffcb03d@lunn.ch>
+References: <19f1a382-1b6b-42bd-a548-a1a5644c9a1b@lunn.ch>
+ <20250408162603.02d6c3a1@bootlin.com>
+ <D91CSNC07NYM.3KC467K0OZ4GG@bootlin.com>
+ <c14dd5c6-2dae-4398-89a9-342e7a25bb30@lunn.ch>
+ <D91XV1I4CY37.20T12FMZ5QLQ5@bootlin.com>
+ <b1b33000-4c10-43cd-bcf4-d24fc73902b1@lunn.ch>
+ <20250409161444.6158d388@windsurf>
+ <c6257afe-36bb-46d8-8c22-da3b85028105@lunn.ch>
+ <20250410084809.1829dc65@windsurf>
+ <20250416111819.4fd7b364@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250416111819.4fd7b364@bootlin.com>
 
-Hi Andrew,
+On Wed, Apr 16, 2025 at 11:18:19AM +0200, Herve Codina wrote:
+> Hi Thomas, Andrew,
+> 
+> On Thu, 10 Apr 2025 08:48:09 +0200
+> Thomas Petazzoni <thomas.petazzoni@bootlin.com> wrote:
+> 
+> > On Wed, 9 Apr 2025 17:03:45 +0200
+> > Andrew Lunn <andrew@lunn.ch> wrote:
+> > 
+> > > So it only supports a single .dtbo. In its current form it does not
+> > > scale to multiple .dtso files for multiple different boards built
+> > > around the PCIe chip.
+> > > 
+> > > At the moment, that is not really an issue, but when the second board
+> > > comes along, some refactoring will be needed.  
+> > 
+> > Indeed, but that's really an implementation detail. It doesn't change
+> > anything to the overall approach. The only thing that would have to
+> > change is how the driver gets the .dtbo. We could bundle several .dtbos
+> > in the driver, we could fall back to request_firmware(), etc.
+> > 
+> 
+> Not sure we need to split right now the existing dtso file nor rename it
+> even if it is updated in the series.
+> 
+> This could be done later when an other user of the LAN996x PCI chip is
+> there.
+> 
+> Doing something right now will probably need other modification when this
+> potential other user comes in. Indeed, depending on specificities of this
+> future user, what is done now could not match the need of this future user.
+> 
+> Any opinion?
 
-Am Dienstag, 15. April 2025, 17:27:37 CEST schrieb Andrew Lunn:
-> > +&fec1 {
-> > +	pinctrl-names =3D "default";
-> > +	pinctrl-0 =3D <&pinctrl_fec1>;
-> > +	phy-mode =3D "rgmii-id";
-> > +	phy-handle =3D <&ethphy0>;
-> > +	fsl,magic-packet;
-> > +	mac-address =3D [ 00 00 00 00 00 00 ];
-> > +
-> > +	mdio {
-> > +		#address-cells =3D <1>;
-> > +		#size-cells =3D <0>;
-> > +
-> > +		ethphy0: ethernet-phy@0 {
-> > +			compatible =3D "ethernet-phy-ieee802.3-c22";
-> > +			reg =3D <0>;
-> > +			pinctrl-names =3D "default";
-> > +			pinctrl-0 =3D <&pinctrl_ethphy0>;
-> > +			ti,rx-internal-delay =3D <DP83867_RGMIIDCTL_2_50_NS>;
-> > +			ti,tx-internal-delay =3D <DP83867_RGMIIDCTL_2_50_NS>;
-> > +			ti,fifo-depth =3D <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
-> > +			ti,dp83867-rxctrl-strap-quirk;
-> > +			ti,clk-output-sel =3D <DP83867_CLK_O_SEL_OFF>;
-> > +			reset-gpios =3D <&lsio_gpio3 22 GPIO_ACTIVE_LOW>;
-> > +			reset-assert-us =3D <500000>;
-> > +			reset-deassert-us =3D <50000>;
-> > +			enet-phy-lane-no-swap;
-> > +			interrupt-parent =3D <&lsio_gpio1>;
-> > +			interrupts =3D <30 IRQ_TYPE_EDGE_FALLING>;
->=20
-> EDGE_FALLING is very likely to be wrong. PHYs are generally level
-> triggered, not edge.
+I agree support for multiple .dtso can be done later.
 
-Thanks for that comment. I checked with my colleagues and it is
-indeed level-low. Will fix in v2.
+But i would do the split between the .dtsi file for the PCIe device,
+and the .dtso file for the board now. That is a pretty fundamental
+concept in Linux DT support.
 
-Thanks
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+	Andrew
