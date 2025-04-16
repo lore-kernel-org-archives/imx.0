@@ -1,63 +1,63 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8206920FAB4
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 01:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6163211A26
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 01:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744765324; cv=none; b=h8y6xp0dPp3UqxNwyrf9BjrnQB9bCb2WVP7336rh25sfpq2CuNgK5hlcWH9Vr7OR9zXfnopkJwTMoNWw4SiCPd66W+XIu7szEmPfBRm9j119D6rIPDhgClMOHrjhQzz8nPI7/+ZX6aZd2OAQ1ne+0qcCl2PsVeDbH+9cIp+4bq0=
+	t=1744765326; cv=none; b=aXWOMHIjXT8sNDhSNtt/iRMJu+W8ngesXtG37cKkxOY+eYAeSVEas0eVtsbcdxNBb1QAhClGqF3TVH4bd8kw+aIFn7j1wJc2C3O8IgusH468Z08aRI4Y/TNWysmF8lF64xB7YigjNP3CLIHbqUWFOeOLbETCznvCYzo1zaLfgqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744765324; c=relaxed/simple;
-	bh=wrNk5hl91Nx0/hhcEKOiV1QTtEVWIAnPCPdBZO1w5UY=;
+	s=arc-20240116; t=1744765326; c=relaxed/simple;
+	bh=2YD2jBYzpPEnztLRYvPwkJtYaviF9h1IlLac7IXBp0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UiOEpk5hN0SlbW7O8jNy18U+WxzbbEfjqeJkjQli6YOjAHNW8/0TJfnMBdf0DyGFmlhNmsTYoQh2XvyPbGgChIRCMiViabjnQ5yZxFIIjCk69tNsznRjiL06sVfEt8ElcofV69YyTjA6SfkxHYKpYXRYuyUcOwP8Ce6rYxfFP7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aTIt6HfY; arc=none smtp.client-ip=209.85.160.170
+	 MIME-Version; b=abo0umxX9BCrF38t9U0/XXeXfh3b5fe38/9LLLjdR5dyCQ7G4s5fqRaLhdNHq7TCpyPs+1AdyAspCRm2aYF1ypZ/BQQjwIHiZhsfeoq5i8COf2kT+CE76QbXnkLW5MjzcXdtFgOB+Kw/L96Ekrd0rDykgqLIEjAmqmrFQtFx6zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mVY7td+d; arc=none smtp.client-ip=209.85.160.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aTIt6HfY"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-476964b2c1dso100890651cf.3
-        for <imx@lists.linux.dev>; Tue, 15 Apr 2025 18:02:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mVY7td+d"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-476ac73c76fso62495871cf.0
+        for <imx@lists.linux.dev>; Tue, 15 Apr 2025 18:02:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744765321; x=1745370121; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1744765324; x=1745370124; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=INCYZW3hzgKSK4AliiojJjATw3Q2KBub6aarsjSNZ2g=;
-        b=aTIt6HfYjF07zwPLKWyDWda5+DgyywzaQHRHH4P9b7NlmkDt7MpSlh6P+9Io+jE7N/
-         AFDeLdJAWRFFsg0NEy1BkAGjC6YUZ9DBxKhgajOpXKyKGJMmYrgqEFDE0X6WRG5SG/3q
-         8Fs965VQX+UETOt9/RBnsNut7txhZ4kSD4X5Kc0xWIOjUI4ZR07GwH/dLqZjPxZ7f99k
-         mxGgYo7RDnKhuPdAXGJx8hr7Js4TJorXY87l4v0GmLtDnGJSTuXSbmxiukEUQ209qT9V
-         wJ4hM1Pw4Ikf8fVY/0UrgrPJvpha+LJaMFJoJ4trGuM97KedEwH386Yf/UGi3T29b3gI
-         m1Gw==
+        bh=TYDNr8z0j6kvzKO3dAyJ0NuELH4gcjDFUxtK8W/MH+0=;
+        b=mVY7td+dIu5XTJ7U/udd82hwPlnSP4J+a9Fk0FifQAsZWBWOgAYTMSL+mRmrjAU92/
+         DcCUU5UXv4dyhTEg08X3/WZkVcsbdD2OFg5HemQcnZUL9dRPwHlH5loIHmHgbWkV6Z2p
+         hxHraoHlj6H73VHT5bBu4psLk+tnPS2cmu9v7lN5rOFs2YMn2u0ZLuuXRBvzaxs8ynCI
+         b+6eoCZcFw55uizGWJsd7LIIYkjEWokjEPZK9GT4Jt+ny71O6cWNH3q573RRhFBpjM+y
+         xoeroGnDeWV/y6Sz0ioTMtty/Ha51iiuzWSRne6e9JGZcwho0+eFhVHzlGc+lV3K/Nxy
+         2klw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744765321; x=1745370121;
+        d=1e100.net; s=20230601; t=1744765324; x=1745370124;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=INCYZW3hzgKSK4AliiojJjATw3Q2KBub6aarsjSNZ2g=;
-        b=nZbDnzmBGKBipj6vG9Ji3CjEa8pB0QCpghjcJKzGB22xKulzMr0DjNyiEaxg3YIS2M
-         FB7iqrVaYe3ZP/lmkoCjoHIdpzj1zJ6ULjud5QHjCUkfp+SDKE39b//MXtKjMDFtOuXO
-         bpYHh3kd66UxoWlsdooLI2wbXUqy1yQ7+qP0R2RZFZE8AtBnqyQZOVzZov4B35pQYp5N
-         8KomOyMjZnnjB9GZoj87yv6eKu4ASSoHsHDmnkOdStDDwEX56LT7oB8HAqB1B6Kd3W5A
-         make125/2NZ3zcYfeEi4eEWM6wG58hVcHFp/vuzRT7t6qk6Wx5oNnmEjyVcXAehZWygq
-         jsDw==
-X-Forwarded-Encrypted: i=1; AJvYcCUkg3Anvcmgg9ah0p2MC6nB8O/i9U7HXnZq+TIfGgJEer50vh+kSQlxefqB6biL9YyIPj4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzFKRLLHQcubJgS9M8UB0EOZ9ZVPRRNwVg2Grp5LH6a3Juc2EF7
-	lVyu5VFbYp4AqKXwMAIUIktXOKgyysZ06jokFeGI+Z/yakhPp5jr
-X-Gm-Gg: ASbGnctuQkq7OUbZNQLfck7EhrOCZ+uckKO/gmS46QDnwBgN6Ts/NB67x+kZBTdeSC2
-	JYmYFyI7vQvnqPWD8TQL8tQuiS0/GaCcmNztBz1oFFVLlk7XYLBqDHIu1wu1mrUvLHNJs+b9qT9
-	kaHkVLWOovS6NzYaEtzKpyB+LtCnAzPXhFjZ+SLINMNJRmpyYBfGIeVJkosK18qxfcpe3eg4jIL
-	d/m2zPe8T2pvEABqWmd1PDsuxhPH4bisgKVWdLdiItt08wxagygyX5wLSiWfQZaXN2zU2lQ0uQH
-	lwzJ3XNDGMuU7W5gr+I+AVDj8eWasTaVcptrOjVEa11oBeAAuJqdnDzvjTW5mbC1p2TllsvpIr5
-	J29tSQjDsWUq8ykQ=
-X-Google-Smtp-Source: AGHT+IGxhkCmvbvhdNDyJBr3gKgLsE1Y/iVTIpUOgdp7ylffmNMMo/b6PF6ouKPTqYWmOf1JNxqzBQ==
-X-Received: by 2002:a05:622a:24b:b0:476:bb72:f429 with SMTP id d75a77b69052e-47ad3ac0f4fmr21814201cf.42.1744765321404;
-        Tue, 15 Apr 2025 18:02:01 -0700 (PDT)
+        bh=TYDNr8z0j6kvzKO3dAyJ0NuELH4gcjDFUxtK8W/MH+0=;
+        b=AhnSGnncoAtxi6vSH5Gj5JkyIkP1CDydm2Gt1lETDrglaAzvpx9VXaX2E3PWr2BEwN
+         4Mrpv+ZxPlbuNJXf9rpkTcO83MGSf5am8uSlDxyxwm2jbO71t9Ez2gZujyK7P3QY7s9B
+         5G4QfIf4peTrVgUa61/lwPaR24eJkuBhp5viyJ1H95tMJL1N27crIpxV/t077jv/6vdL
+         SRjITboIP6RKbhF3Xw/24WRYeyDkIo9P+W2QtcCwP9rHRtGi4As7nmtUOJ91hlITvGo7
+         jsolGVi1/e+u5UWYdZnPylgdYtLrwkheK+aZO9YIRHJ8IakxYp+KDH3ZzlxrwHqQuZ2U
+         n40A==
+X-Forwarded-Encrypted: i=1; AJvYcCUXVLNQ+Da44+EXKaYUp7g8quFfY9/4vx9onhh5duuv+s1jEUDdngNFGdXMCW4ftfS0HbY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwovUwgpNlTOEXskuMGKMx+f8Lyw5S/1BhOEVnYHtMwea9EGx41
+	npEv2Rc6sO7bIb0fZpYI1fdap17r81bt0XS6Ak7S2tpHt+F9ye73
+X-Gm-Gg: ASbGncshAcllsHaSmAhrGC5cccBYGBtu5NuJyBPLoRHfkQzt+vmVm5EZhlmoli0uEML
+	sKFHeLt6HsVLg1qfNNUkmnGpJEYRVlWjM2j4V79ogaRdwpx0LJYHXCTGb8iECYht6spcvOQRly9
+	88YsK4i79akd0Nqzt2x+9UkuPpKqkOA6X6WETtDhXRIJRhv8Ib9IGcO14TUx6DkEkxiQzOgHa2B
+	jq2mL/tdbhqDzadedPK5SV/ix7DBnLkdagU41PhOr+EtlrEY7tkaRRRcs2puD7OgIQW5XX6XmqE
+	Wvs2gSSltO7GgrArGX8qhRMKKIVc3RNkx7EU+UlXlptu+XzwnU4epU+Z9bWHpfGlNWqY+woFsP+
+	M6FWqCeO9V/fyl1Q=
+X-Google-Smtp-Source: AGHT+IEepn+UeOPUMPtQ+Vo5vkRhE7eJ7bdIjEaG8YR8t+Jzk2PtaJNwLyufGdL/vXQbzGFnzLR9Qg==
+X-Received: by 2002:a05:622a:18a7:b0:476:a90b:986b with SMTP id d75a77b69052e-47ad3a40319mr23332801cf.28.1744765323709;
+        Tue, 15 Apr 2025 18:02:03 -0700 (PDT)
 Received: from aford-System-Version.. (c-75-72-162-184.hsd1.mn.comcast.net. [75.72.162.184])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796edc29ccsm99746291cf.77.2025.04.15.18.02.00
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796edc29ccsm99746291cf.77.2025.04.15.18.02.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 18:02:00 -0700 (PDT)
+        Tue, 15 Apr 2025 18:02:02 -0700 (PDT)
 From: Adam Ford <aford173@gmail.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: aford@beaconembedded.com,
@@ -73,9 +73,9 @@ Cc: aford@beaconembedded.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH V2 08/10] arm64: dts: imx8mm-beacon: Enable RTC interrupt and wakeup-source
-Date: Tue, 15 Apr 2025 20:01:34 -0500
-Message-ID: <20250416010141.1785841-8-aford173@gmail.com>
+Subject: [PATCH V2 09/10] arm64: dts: imx8mn-beacon: Enable RTC interrupt and wakeup-source
+Date: Tue, 15 Apr 2025 20:01:35 -0500
+Message-ID: <20250416010141.1785841-9-aford173@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250416010141.1785841-1-aford173@gmail.com>
 References: <20250416010141.1785841-1-aford173@gmail.com>
@@ -92,16 +92,16 @@ used as an alarm.
 
 Signed-off-by: Adam Ford <aford173@gmail.com>
 ---
-V2:  Update commit message. Re-order node
+V2:  Update commit message. No active changes
 
- arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 11 +++++++++++
+ arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 11 +++++++++++
  1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-index ed7a1be4a1a6..c7a8f2a6fe90 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-@@ -236,7 +236,12 @@ eeprom@50 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+index b3692b367a42..987c14d3af9d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+@@ -245,7 +245,12 @@ eeprom@50 {
  	rtc: rtc@51 {
  		compatible = "nxp,pcf85263";
  		reg = <0x51>;
@@ -114,19 +114,19 @@ index ed7a1be4a1a6..c7a8f2a6fe90 100644
  	};
  };
  
-@@ -354,6 +359,12 @@ MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3	0x141
+@@ -365,6 +370,12 @@ MX8MN_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x141
  		>;
  	};
  
 +	pinctrl_rtc: rtcgrp {
 +		fsl,pins = <
-+			MX8MM_IOMUXC_GPIO1_IO13_GPIO1_IO13	0x146
++			MX8MN_IOMUXC_GPIO1_IO13_GPIO1_IO13	0x146
 +		>;
 +	};
 +
  	pinctrl_uart1: uart1grp {
  		fsl,pins = <
- 			MX8MM_IOMUXC_UART1_RXD_UART1_DCE_RX	0x140
+ 			MX8MN_IOMUXC_UART1_RXD_UART1_DCE_RX	0x140
 -- 
 2.48.1
 
