@@ -1,337 +1,213 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011020.outbound.protection.outlook.com [52.101.70.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4EF206F19
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 15:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744816524; cv=none; b=B0pGrc0GydpE5HMeTKoeSHt4dGXrxdlfj8MN7ArBnrdXZoDULjfSVXB5O1ZXdYPC2/vSBST3K/gDMGfxnRbaigKHN6XvLbXxzONgJOYUN+1/rhSQ7PJ/R3XGJ50rt3eQjS3nr5qcFBDDHwDSvgl6tB5hkbgZIyi+HPOGU/7zrI4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744816524; c=relaxed/simple;
-	bh=HpU6VloERQNeMMx8yqX2bXPiTYCq+K5EnDiKMZtvK64=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B+9TdKyqfSZdm1dpxRjGQpD4uPnvER63HzO3AuOTQ6buXljrwzZiGOGuJksJ4I9Y5PhhdkJBZJ6KKkQ3b6wrkNGFu0of0oxdv0ZrZiiL1Zmujdi7QT4MwSGDCWFDn1JyAar4R8sHfbfC9Jwab0zvz3u2rxnES19xLNuW7zYHSy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H4MDYX8x; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A3A189BB5
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 15:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744816662; cv=fail; b=Hlk558NfsxZH+gTj9Ydhp03LNtck+Lt/UteY0//hBH6YvOCSfqneZVHSpcn+JIvlrjyXLyiUq5tkTGuJnmsgebnc/zOP4k2Jv3vAJHg5ulqTP6ecI05rAwyJF+obtl/V5KEe2sPIsq53cq8q2VL2DiXjwTDII2EL+7vpxYsHAEA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744816662; c=relaxed/simple;
+	bh=xoYS2x73IvvjFZIXyng+jkHX6MFeYM1Dzskz9c4g9Us=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GhllsIM8gCYUdZb48CbDrNwde+1c7Nq8hYl99TZFHkZpxaIM3QmkPz5ZV5seugc/PRIWUUf3rMfO/RjBd9SLC3X2hyHqmQg3gerblgBiUbi69CiCGiJvPX6lNGKpyW4LZREXSLWvkrTF4ouGEd/t9cy06WV+c6lxfhZSU0iLDN8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aDdFMSg7; arc=fail smtp.client-ip=52.101.70.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H4MDYX8x"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac6e8cf9132so1305406266b.2
-        for <imx@lists.linux.dev>; Wed, 16 Apr 2025 08:15:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744816521; x=1745421321; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=f54xB8jAzZGxPN+eurWEBlbBBztYq662AJjtmWBvOs8=;
-        b=H4MDYX8xLITBmDp/BP43KBrRI19iMhteTi+Nc/PkQ0/sHczyY01CO2s/WrvSFNcCsS
-         AI5QPnxwPMGjdcCsWeUacbU3vEaoDz0YzvPWB7ot9kPqc+vKkJPh5bLrWTyzCBCY66M7
-         EjmO8Vm7QYhchSZOb4vMMP2FmiPRpg1LZrpcYn+hi4ZyvB8KJlc1efoO5Okn+pR4a3aF
-         6597tTlplIY0pnDbqWVyupFwUzCa74oLTUHenV+vd18G1iicYhpi3VmKTNRQUQf8PFBv
-         b5qARH2Lw7mhT8naxGOZtJSOuQ3II/GBol5jgTGLNpajL5UbuU8KZjeFuK8aQbD6ee+i
-         KjHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744816521; x=1745421321;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=f54xB8jAzZGxPN+eurWEBlbBBztYq662AJjtmWBvOs8=;
-        b=sNfSxg8/4R4KM47nDF0Vs2ZsQbDm3t3pUIR1c6+V/JzeV6jwzIVI8eRkWM4BjMGcSF
-         R6fmYhoRTSIxBAgUNXrRgtNfsKfv6n2M6DVdL5R15lWqcnuBceO586E2DFIPy4Lz9idL
-         JFS4qZjQwceKDlvrWl1VLNzCz+F879JmygtFPJ7mwTdE0wsArMLgV9PQi/e8DMsu+pPG
-         MG00vIEZBdK4l1RcQSqN+UH6tSV9zry5Z++1Lk92RkyxWBQ/3giJznvo5K855U1c+L+0
-         Qgwwd1LmsUJqLolGTR5hizyghMOw2KTntC6I1rYWsGyg9GSl0icwfCzsoCJBgltbX2pO
-         ZB6g==
-X-Forwarded-Encrypted: i=1; AJvYcCXUMDnPUuL8deja39qWvmPPw05Ewh7aRwWNCVGA/4yO+gv9eoojsWQOzRCTxQZ75Ccpx5k=@lists.linux.dev
-X-Gm-Message-State: AOJu0YypsZKqGYoQOlsPPFNAmcCN2tKwiNn0RY6c+Fo45VfwcRPP1byn
-	JXL+3+zdr5pWpT82ZBM30ix6MN2JEDGd3rX3i72FwmqQTIatrY6C
-X-Gm-Gg: ASbGncszP179mIXhj5VeEJwmfUfw4/MNgZceZQfDi26jbk+h7PcVZOd+eYgx4WZcHAp
-	rpiSMbYQl8Q41qSvJd5exVZLTgHmezqWrZo7lkO3NK2Vzvgh3Z9teXpAyjeYy0WELFjsTrAEXvX
-	m0JsBaURflBQw6slmubmUIOgX5dU1MPgTn2lXJ7z/hNuildCxMgJ3QdNfcrn7l7WP4uPLVgeln5
-	c6LywCNcfzJzC6ujEDRqJ1oL15gGKrV6xKYRTxzp1WAZb/1K37PX8ds+0RieM4IrUxvvMZr5tJv
-	sOB6zLwh4GCMu2UJFw3mFyEET3Jyjhp5CLR2PWmBlPXQVWGJMJh1Fg8CBUJZJQynTX9xBD/1TXI
-	38rxOwbJfraXZa9ZjjK4=
-X-Google-Smtp-Source: AGHT+IEYDMPTAVgdmlNNu9P4Oui1LjNbVBOfvMZvnfG/4JzHe+Ej8lmr2fDQnm8jtO40TBJR4xN3QQ==
-X-Received: by 2002:a17:907:3e03:b0:ac8:16fb:7c85 with SMTP id a640c23a62f3a-acb42bffb7fmr219117566b.41.1744816520410;
-        Wed, 16 Apr 2025 08:15:20 -0700 (PDT)
-Received: from toolbox.int.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb3ce5dbaesm143286166b.85.2025.04.16.08.15.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Apr 2025 08:15:20 -0700 (PDT)
-From: max.oss.09@gmail.com
-To: max.krummenacher@toradex.com
-Cc: Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aDdFMSg7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xhh9ZlntnbGFmb6/weg3+GVnyi671FozO1t9e/WyaBWbheRcdj1U/+uzDgghu6+juRt0Or6JOC4FZ6AzI8S03j+MZprAJ5wgY/lakLt6leUVdFPCXjqeF6af89A7fLcUvOWVi8rMiCct5EtqMCtqSJFpYUjrYOjIwSQWx1A7GYCqFyuxWHukO92cgemY8WwFBXWMGM3NqaFzYOizdAY8YptTuTLcWGg5/w3tSlx2VY72T/pVyEanA9zW4FzfClnViaCtO+9+PsRpAhfoUUCe87wX0i4BVBva6mrd/A43rapyN+N2szr2xpqZypaLEse3Yjfc78AbQBJiGFdNza9aPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BYOJAoK2NuUN+tza69jiI1nykQ5fVuGwSFNms88yJKE=;
+ b=XephPj97i11WeoKN2jAOWkSG+F6gXqeu7l41pthm8nVba0NgIWvQeoOtLLEhIVlfY5e1iPXCgAPZ8wY5qaJjQaP9E4sb3RU2P//a+BDmZa5WXEKfMdCbncb2YNWKQft7privICjWBtBgpEQa9Hro3GYX4KAd8HqCOTlp2orULTEQhIrsY7V3G3pV+D47UqpsY5pArxHXQK68PqnVx9laZEX+v3TpV3fxos4yZPFX8dQJbJbXLTbEuTojIkizEkL9gjqNlVaA9OAb7xC7VjEqr2agn4tJi4piguyQYVItJdw1Cbdjj0h/G6REqJtTDMgjQdfsRlSi3v38WsUApbJobw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BYOJAoK2NuUN+tza69jiI1nykQ5fVuGwSFNms88yJKE=;
+ b=aDdFMSg7r0EwDLvXyg383Wguto1AmXQqy+sqJ/Epyo8afU2YyqOPJZ+D2BqOPmDoSltG3cZPWU1VPife22K5agcyTxc4X+qiXrqgYHSGvHB1lLBGkncAc3lEpSBqtn7q1JNC9wrF4qSYseaMUJ5S6Vi5cRLrpR65MxuMIZWfkNimRfChWZKWJhAVNiug2hZhOK+CqJ1B7kGjtiGCK3eogrgElwkfw7FIRx9TLQ4gde2oJix5Bl+faq4PTqWK7oLqBgmm3R4LsqC1DqxuzRKw86gvMOu8YvRL8oNXPfHIVtuZIRhYrowXOnYi/LLzLKQAY7Alk2ApiK4MEc79hMDifg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB8588.eurprd04.prod.outlook.com (2603:10a6:20b:43b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.33; Wed, 16 Apr
+ 2025 15:17:36 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.035; Wed, 16 Apr 2025
+ 15:17:36 +0000
+Date: Wed, 16 Apr 2025 11:17:28 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] arm64: dts: imx8-apalis: Add PCIe and SATA support
-Date: Wed, 16 Apr 2025 17:13:41 +0200
-Message-ID: <20250416151353.1692373-1-max.oss.09@gmail.com>
-X-Mailer: git-send-email 2.42.0
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: media: convert imx.txt to yaml format
+Message-ID: <Z//KCLUWlTMdsyd3@lizhi-Precision-Tower-5810>
+References: <20250414210720.3359301-1-Frank.Li@nxp.com>
+ <20250416124226.GA2498696-robh@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250416124226.GA2498696-robh@kernel.org>
+X-ClientProxiedBy: SJ0PR03CA0095.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::10) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8588:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd8d27a0-ea26-4b24-815b-08dd7cf9d1b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?1jmunIj2TOn3MENlUEGmW7wTfsno539HQuoIS2Zim0f/q5EGigmH5XNzMV/X?=
+ =?us-ascii?Q?6rcdN3Zf+zPigwn1W9PdvnvhAsNXaZhL0K72PgXYyeb9j9IQGFPH7fyAJIr1?=
+ =?us-ascii?Q?24hjCAGMmXuFXMpsf5a2We5gPmZR/c0H+78D0rJ6m9XsvnqBz/VjEy3Pfjz4?=
+ =?us-ascii?Q?f2HCson0ZIJIlMPdFlOjMhXh+ag019HVxXqefxJzIAAXdpAhVq5sivzgtDLM?=
+ =?us-ascii?Q?Op1tx29uZ8tcnAnss2jYgSM3UNngDGl9RisphiDBY9PYxxwGIo5LX/kA4oQ3?=
+ =?us-ascii?Q?VMv9xWoX6iHbGDR4utICkVUE0TBYvBY3gXROQ4x6VwrVH/pbRCf+0VbCsBPn?=
+ =?us-ascii?Q?xcFkR6zaEoSJ6lGlZsUD0JTIn96X8IfiidJ7ufnoYthIEaGg/tDwBHpC6XUU?=
+ =?us-ascii?Q?xLmbTMZmXdvVrJJyIyjrCuL9vgDa7TwDawifVHRhwba/LntOcivY2cUYvrGP?=
+ =?us-ascii?Q?GHYdgMwHgDs8RCXiVtDKlpbX0D4OlhzrTZkCA73IobiVyufh53LCvB2IApf1?=
+ =?us-ascii?Q?yJbIJnxK3htLz8Gk9l3xPj66ZAAqutkD3QWGWlS6vT4VDpelohVPoMkH6dc1?=
+ =?us-ascii?Q?Iz5OgN1DegMZuCWeJOog7oRCfsdMjHxyyGPnTHoOYWwQxVx1+pM8FjirEERN?=
+ =?us-ascii?Q?HI5JnxFUQ7/b9CzfE5YT12mWQAuqw8I2ZCu6SxIpbMCq0ZD6k9tLLViZ5Efd?=
+ =?us-ascii?Q?BkIvkEAcMnIb/APIEigQIG15uGzzC/UiiLgp0+BbaYEXv98s5yl6b3XrAX81?=
+ =?us-ascii?Q?u2kSJN9CTtxWZczew326CvVAI9NB9PGWNqjWHcZMGrVqa7Tod21Shjy0ziW/?=
+ =?us-ascii?Q?3agqXOVconbBQ/oK3JTcTlLSAVvOi9IXdw2YVobxaZXBVEcJyO7wfMEGBEve?=
+ =?us-ascii?Q?NftvS8unaul1Tp3UCrcVh9+pXMZbRbS+8kD7mMiKtt4+xUq5NVA1pWXToOIo?=
+ =?us-ascii?Q?/d2bK2zFjEfOt0lOLRgXCK1VuY5BfPTNWr6iMjM+47ohYIojTOZqeIJVjKw0?=
+ =?us-ascii?Q?vbA/XdKpng4CWEEoMP7rZLF5CFFVxGnYzR+Np/x8586UuqIHwzJSnQmYy+IA?=
+ =?us-ascii?Q?pqXJRTqQoYLJxPp924fEFFYl6Zb0aeTooclD8u8FL1vdcQO8BGE10jlbm/Ov?=
+ =?us-ascii?Q?84a5Hk2aC7RjFvAll1Jl1FehnocnV8pnDLv/sPEdoas5IRf/SJKUZO7pWy0N?=
+ =?us-ascii?Q?hBn69C28rhcC3k8b6xzihPUPmfBbLj7iZH5hKrkUy+tHP4Wl3aq0cEPsUA4H?=
+ =?us-ascii?Q?2mLGl46XKcidBDjRpd8JVVfT2qOnn1zvtz4DYC/zBUhn6zykVRcqX+feEt2d?=
+ =?us-ascii?Q?XsHymsG0WvjQMKXPZ+egDnsgiII0hh9EyT9ECTMO6fYu81Xzz9wToh1NjO5K?=
+ =?us-ascii?Q?AwJylTFRYDO2hJxS1PEz+ys7YTVQ/9V8JKOlfv+e/FdlieG1z2oucMdkKzet?=
+ =?us-ascii?Q?nUj2idLgxW0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?W4FSW0GLEUoLrecFj/28Q5iRCP49XaVQcyLu3eceGiqEE99EQaUtI6dqvAX9?=
+ =?us-ascii?Q?mlUHO5YdAu0lKQUrsz5Rbq6uY5Fr/o+NrCCOWuoYsxAYBup5waOdoDFY6SHS?=
+ =?us-ascii?Q?kbUeAocKN2kYmiI65z3xk4tLnIeWLSoE1lltE+mU3PyKWFK7/jewrYJ1SpMP?=
+ =?us-ascii?Q?9dZsJyfx6PBhvv3P0ysRUH378Hi/2aR6pa/7Y6Z831jesi9iMMJkodMD6L52?=
+ =?us-ascii?Q?fi/GtnM83R17mSr/iKVyspGzQ+PWZzixsUPtrpbv0+KLgezXuhIXzm0ZBV6T?=
+ =?us-ascii?Q?Ag0mDKcxgt04OnYOYX5wfRGzV8IEk00RUAb6NnXFkFjqiGSFh3dBfNfK3Vtt?=
+ =?us-ascii?Q?2wg3phthgOEpUaceQwqEX3ilYbSK5wiM3tJxcDsh1dGqfds95cqaAmnyOp/S?=
+ =?us-ascii?Q?/n6H/WBl7X9nAVIBH+AX8VEVqO6CfpjL5Bl9FBqOgZFt5jZ6keXwV/DgZ+or?=
+ =?us-ascii?Q?vlZRrk1oBP27H0MlJqXJ/DAEa4o9E5fzGMU/4aYhtSQGxqJLQya7VwpbfKZV?=
+ =?us-ascii?Q?X/TRkEZU4Y6s2Kgy8mHi4nYo9ZSlMRG4WClX/EHyuvXaC+RocIlzjm4k03Fj?=
+ =?us-ascii?Q?JQVO5ULrB0Vx1xJXhILg34TH5PKSDdjkghoutZFwnG32oF8zv0dg28LRuyiB?=
+ =?us-ascii?Q?KMAKcaAeL9Q3Br5Jtj2Fza7fjDu5rLIE556YtVeVvV7YNMn8UlWn+cyONf12?=
+ =?us-ascii?Q?aGJviNzQ99O+nY/4m7IgueKhUlQIwk28ViH8mRJknb2Gfi/vVVlDSqjCWU2U?=
+ =?us-ascii?Q?3tqPpgFp+SyoLQu5fQrTfqXitXFY4+ZSSMk2RpDSqPVjzXFdjL7avVdNrjFC?=
+ =?us-ascii?Q?jTfp2bh+8ZZfPeRs6uElwhEIXGf70ujDjiKXCsSl9vcXZtE4t52Ci/UVl4LQ?=
+ =?us-ascii?Q?AgRFZdevVqhiWz5SJr3qfcwCSE6Ag/rNRoRaGMJQxEoAVxDXXK2nRPv/0PcL?=
+ =?us-ascii?Q?luIBOfiiy6lsWnsm61xtUJaKYZhRBcJ3CAwd/1RxA+AzQMRSMx0BWxmtBRaN?=
+ =?us-ascii?Q?0f97hKddj2k+9EQuYDpUpHDQ5xzoU1EPXnl/dsueKGr/tvzsTf8DI2BfO7+H?=
+ =?us-ascii?Q?8T9pqzPAgK2AVksp6J0g/7nP9vseq5gcyIDkNJMbAYNm61L3M6ncCx8x5Ip9?=
+ =?us-ascii?Q?RKRPgBvFM6UjSDdJ5/ge0IFA0KhbwvWZorrdo7gGO5XluyAzblNCg/6UJdOn?=
+ =?us-ascii?Q?MliNXhrLqfsiLoedFOC0UXtlFvTLFoqPiYMnR5KhASlTrWDqW4U3Ae4wUAkO?=
+ =?us-ascii?Q?bYFitIDowRk/rnVvp5e91pnKKHu0dpsUSsZKQYA7p7ndQLdJwAqv/9YcRe2d?=
+ =?us-ascii?Q?rHRI1STy4rFD3h2zdhxxIkhvYGkp8G0Z33ogzWVk89pu7B0gOkeI5PRnyWql?=
+ =?us-ascii?Q?KrJlhAIVzvQ57CHhy/Iwls3K+V9FKk2GT/Sf5XmbvTiEmu4cZyQfQg3yYaQO?=
+ =?us-ascii?Q?AdpI3hheZSrlxQhR7R9b5Tzw/bLQUD4FRYNeBVYfvsNGX+YnWnMUqknAI6Nv?=
+ =?us-ascii?Q?s4RqqjtsNtF58trVrzGdWTHMdnGyQ38HJ1IflsoUP00bENYHOttopIMEXAuA?=
+ =?us-ascii?Q?kWpKVE4z2ZzNK18jLUEq9iVHhn5Cul4bmgJIS5Gc?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd8d27a0-ea26-4b24-815b-08dd7cf9d1b7
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 15:17:36.5992
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kx9Z3NInQQZSeqb4R0sd+WMQ+z4vxTkewS200XMrzifUe5VWW53CMS8WVQddwpWWhYEXCTi9aepKW+Ypjm0jPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8588
 
-From: Max Krummenacher <max.krummenacher@toradex.com>
+On Wed, Apr 16, 2025 at 07:42:26AM -0500, Rob Herring wrote:
+> On Mon, Apr 14, 2025 at 05:07:18PM -0400, Frank Li wrote:
+> > Convert binding doc imx.txt to yaml format. Create two yaml files:
+> > fsl,imx6-mipi-csi2.yaml and fsl,imx-capture-subsystem.yaml.
+> >
+> > Additional changes:
+> > - add example for fsl,imx6-mipi-csi2
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  .../media/fsl,imx-capture-subsystem.yaml      |  38 ++++++
+> >  .../bindings/media/fsl,imx6-mipi-csi2.yaml    | 126 ++++++++++++++++++
+> >  .../devicetree/bindings/media/imx.txt         |  53 --------
+> >  3 files changed, 164 insertions(+), 53 deletions(-)
+> >  create mode 100644 Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml
+> >  create mode 100644 Documentation/devicetree/bindings/media/fsl,imx6-mipi-csi2.yaml
+> >  delete mode 100644 Documentation/devicetree/bindings/media/imx.txt
+> >
+> > diff --git a/Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml b/Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml
+> > new file mode 100644
+> > index 0000000000000..77be3c1f37c5b
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml
+> > @@ -0,0 +1,38 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/media/fsl,imx-capture-subsystem.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Freescale i.MX Media Video Device
+> > +
+...
+> > +        reg = <0x021dc000 0x4000>;
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +        clocks = <&clks IMX6QDL_CLK_HSI_TX>,
+> > +                 <&clks IMX6QDL_CLK_VIDEO_27M>,
+> > +                 <&clks IMX6QDL_CLK_EIM_PODF>;
+> > +        clock-names = "dphy", "ref", "pix";
+> > +
+> > +        port@0 {
+> > +            reg = <0>;
+> > +
+> > +            endpoint {
+> > +                remote-endpoint = <&ov5640_to_mipi_csi2>;
+> > +                clock-lanes = <0>;
+> > +                data-lanes = <1 2>;
+> > +            };
+> > +        };
+>
+> I would think at least 1 output port is required?
 
-The needed drivers to support PCIe and SATA for i.MX 8QM have been
-added.
-Configure them for the Apalis iMX8 SoM.
+I checked dts file, only input port. I think old csi2 only need get data
+from camera. csi's dma should save to memory.
 
-The pciea and pcieb blocks each get a single PCIe lane, pciea is
-available on the carrier boards while pcieb is connected to the
-on module Wi-Fi/BT module.
-The SATA lane is available on the carrier boards.
+Frank
 
-Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
-
----
-
- .../boot/dts/freescale/imx8-apalis-eval.dtsi  | 10 ++-
- .../dts/freescale/imx8-apalis-ixora-v1.1.dtsi | 10 ++-
- .../dts/freescale/imx8-apalis-ixora-v1.2.dtsi | 10 ++-
- .../boot/dts/freescale/imx8-apalis-v1.1.dtsi  | 70 ++++++++++++-------
- .../boot/dts/freescale/imx8qm-apalis.dtsi     | 10 ++-
- 5 files changed, 74 insertions(+), 36 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-index dc127298715b..311d4950793c 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
-@@ -104,7 +104,10 @@ &lsio_pwm3 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis PCIE1 */
-+/* Apalis PCIE1 */
-+&pciea {
-+	status = "okay";
-+};
- 
- /* TODO: Apalis BKL1_PWM */
- 
-@@ -121,7 +124,10 @@ &sai5_lpcg {
- 	status = "okay";
- };
- 
--/* TODO: Apalis SATA1 */
-+/* Apalis SATA1 */
-+&sata {
-+	status = "okay";
-+};
- 
- /* Apalis SPDIF1 */
- &spdif0 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-index d4a1ad528f65..3d8731504ce1 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
-@@ -191,7 +191,10 @@ &lsio_pwm3 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis PCIE1 */
-+/* Apalis PCIE1 */
-+&pciea {
-+	status = "okay";
-+};
- 
- /* TODO: Apalis BKL1_PWM */
- 
-@@ -208,7 +211,10 @@ &sai5_lpcg {
- 	status = "okay";
- };
- 
--/* TODO: Apalis SATA1 */
-+/* Apalis SATA1 */
-+&sata {
-+	status = "okay";
-+};
- 
- /* Apalis SPDIF1 */
- &spdif0 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-index 5e132c83e1b2..106e802a68ba 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
-@@ -240,7 +240,10 @@ &lsio_pwm3 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis PCIE1 */
-+/* Apalis PCIE1 */
-+&pciea {
-+	status = "okay";
-+};
- 
- /* TODO: Apalis BKL1_PWM */
- 
-@@ -257,7 +260,10 @@ &sai5_lpcg {
- 	status = "okay";
- };
- 
--/* TODO: Apalis SATA1 */
-+/* Apalis SATA1 */
-+&sata {
-+	status = "okay";
-+};
- 
- /* Apalis SPDIF1 */
- &spdif0 {
-diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-index dbea1eefdeec..6f27a9cc2494 100644
---- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
-@@ -339,6 +339,25 @@ &flexcan3 {
- 	pinctrl-0 = <&pinctrl_flexcan3>;
- };
- 
-+&hsio_phy {
-+	fsl,hsio-cfg = "pciea-pcieb-sata";
-+	fsl,refclk-pad-mode = "input";
-+	status = "okay";
-+};
-+
-+&hsio_refa_clk {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pcie_sata_refclk>;
-+	enable-gpios = <&lsio_gpio4 11 GPIO_ACTIVE_HIGH>;
-+};
-+
-+&hsio_refb_clk {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pcie_wifi_refclk>;
-+	clocks = <&hsio_refa_clk>;
-+	enable-gpios = <&lsio_gpio2 11 GPIO_ACTIVE_HIGH>;
-+};
-+
- /* TODO: Apalis HDMI1 */
- 
- &gpu_alert0 {
-@@ -514,7 +533,10 @@ &lsio_gpio0 {
- 			  "MXM3_112",
- 			  "MXM3_118",
- 			  "MXM3_114",
--			  "MXM3_116";
-+			  "MXM3_116",
-+			  "",
-+			  "",
-+			  "MXM3_26";
- };
- 
- &lsio_gpio1 {
-@@ -586,15 +608,6 @@ &lsio_gpio2 {
- 			  "MXM3_183",
- 			  "MXM3_185",
- 			  "MXM3_187";
--
--	pcie-wifi-hog {
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_pcie_wifi_refclk>;
--		gpio-hog;
--		gpios = <11 GPIO_ACTIVE_HIGH>;
--		line-name = "PCIE_WIFI_CLK";
--		output-high;
--	};
- };
- 
- &lsio_gpio3 {
-@@ -660,16 +673,6 @@ &lsio_gpio4 {
- 			  "MXM3_291",
- 			  "MXM3_289",
- 			  "MXM3_287";
--
--	/* Enable pcie root / sata ref clock unconditionally */
--	pcie-sata-hog {
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_pcie_sata_refclk>;
--		gpio-hog;
--		gpios = <11 GPIO_ACTIVE_HIGH>;
--		line-name = "PCIE_SATA_CLK";
--		output-high;
--	};
- };
- 
- &lsio_gpio5 {
-@@ -771,9 +774,30 @@ &mu2_m0 {
- 	status = "okay";
- };
- 
--/* TODO: Apalis PCIE1 */
-+/* Apalis PCIE1 */
-+&pciea {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_reset_moci>;
-+	phys = <&hsio_phy 0 PHY_TYPE_PCIE 0>;
-+	phy-names = "pcie-phy";
-+	reset-gpio = <&lsio_gpio0 30 GPIO_ACTIVE_LOW>;
-+	vpcie-supply = <&reg_pcie_switch>;
-+};
-+
-+/* On-module Wi-Fi */
-+&pcieb {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pcieb>, <&pinctrl_wifi>;
-+	phys = <&hsio_phy 1 PHY_TYPE_PCIE 1>;
-+	phy-names = "pcie-phy";
-+	reset-gpio = <&lsio_gpio5 0 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+};
- 
--/* TODO: On-module Wi-Fi */
-+&phyx2_lpcg {
-+	clocks = <&hsio_refa_clk>, <&hsio_refb_clk>,
-+		 <&hsio_refa_clk>, <&hsio_per_clk>;
-+};
- 
- /* TODO: Apalis BKL1_PWM */
- 
-@@ -806,8 +830,6 @@ &sai5 {
- 			       <722534400>, <45158400>, <11289600>, <49152000>;
- };
- 
--/* TODO: Apalis SATA1 */
--
- /* Apalis SPDIF1 */
- &spdif0 {
- 	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi
-index c18f57039f6e..f97feee52c81 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi
-@@ -22,6 +22,10 @@ &fec1 {
- 	phy-mode = "rgmii-rxid";
- };
- 
-+&hsio_refa_clk {
-+	enable-gpios = <&lsio_gpio4 27 GPIO_ACTIVE_HIGH>;
-+};
-+
- /* TODO: Apalis HDMI1 */
- 
- /* Apalis I2C2 (DDC) */
-@@ -188,12 +192,6 @@ &lsio_gpio4 {
- 			  "MXM3_291",
- 			  "MXM3_289",
- 			  "MXM3_287";
--
--	/* Enable pcie root / sata ref clock unconditionally */
--	pcie-sata-hog {
--		gpios = <27 GPIO_ACTIVE_HIGH>;
--	};
--
- };
- 
- &lsio_gpio5 {
--- 
-2.42.0
-
+>
+>
+> > +    };
+> > +
