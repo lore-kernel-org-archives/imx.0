@@ -1,41 +1,41 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C42B23FC7D
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 22:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2877E248869
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 22:49:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744843182; cv=none; b=FQze59BreDkGmQezqa3hp/8kKBJEzLOGe3wwJbxQdouKYDak8Enb1mSDbXM0DNVP2/eFOX7k3hybw1/9PA+SqK+4JsyFUlFoMmUnDi76xUKYcVYQyhShpEugxw1vZ/wDJl2qYFVSz4hniPM3CoYDwQohVT7G00P22C/e6Z9ZlZc=
+	t=1744843785; cv=none; b=iInLGCfy8AFbVJnlweoSn+jvLdysZTILCpqy+O4eegdHZKCC9gKzhLkC3wU/I9rqt7+2YQcOI7nOTQMl8j6hFiSgm5r1uxJeG/DSt5OFoNlZg9xZjgg5aIpXeUCSrPmailOasledxah5cz8/UfwrAHr+zZ9YR5Wes1FqaRbn1QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744843182; c=relaxed/simple;
-	bh=dfjUkTnkooHdLbSe39GjQQ+oQfKghxIpVIt8JBXsuHI=;
+	s=arc-20240116; t=1744843785; c=relaxed/simple;
+	bh=zhARHuIhbLTyXHkW6CXECsYiL9+R0A5TAIw+AjmN5vs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oyinvURPjgsCn86HOef9lMqEDq1LhvqeItOLcm3FlKv7JD4ixAItxiNl5QlpFpRrviPHz8G68Q3E2BCIKShivG9vQIznKsLXug4Iv6GA401PTWG1A+JN8Yr0xpyj9tmhvCJ4WyTiQdUrpXvznVYtUfinVnl6m7ZUSjqMLNevxGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=XQqh+P8+; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=uRQBCJddiC3TL3o4VI7xP3qouuX/QEGNaotna8VSTRuqDi1vs5k1ZlnHOiInzbWcWcEIQrRY/vMbcRRmWaLSU6ea9+vpcdMtrI0WskU0mAjo3kjYyGjNApLV6vv5IZZ2MiCxQaJm6fr8a0jOErWzscpDhBGLgrKnBUpuNcWr9MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=iG9QV8HT; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="XQqh+P8+"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="iG9QV8HT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1744843165; x=1745447965; i=wahrenst@gmx.net;
-	bh=Nlwas3DwFjCfvrdUu+/G6DY1kui3FvZP2pV8o9eVc3Q=;
+	s=s31663417; t=1744843771; x=1745448571; i=wahrenst@gmx.net;
+	bh=zhARHuIhbLTyXHkW6CXECsYiL9+R0A5TAIw+AjmN5vs=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=XQqh+P8+PkSdW9SX48kqfAlucl0K3a6YymgcUaxN1fgYS7QrQZSOyE4pAMmapFNe
-	 byCBEH0rbY/CVi23wW341uJN5hhs5qsuCptNc/X8MFPBZ4nzMI+tOGuennfIZK74T
-	 2edCdekf4DzkylGq/U+Xrad8njWKS4H3djFXHGOw8wadGGazzKIx8TnlZLdh64/M1
-	 Qe2OHKeQ+bTkryF5gol/eb1q9meEHL0U5bN/ttVZeCCzZVLxZ0FiVCfYElChTRF4d
-	 cx4MRwkUYvuNbY+MAkeWwpEclanOmGYmOPQUJiE/obd7X1o9FHoRA2wK8qTfRQg3G
-	 RX70WJ2jxqsCjO+YnA==
+	b=iG9QV8HTd3rUGkA48XDBauUafE5EH4g0rcbxil7U9wnhzDzxH0TGNSBox+tp6En5
+	 LQNCsudckMAssmXMdY+GbWkau3ClsQ6frrlo/sVn1OKpPdTKHKEmg1IXTej/ZzkuB
+	 XcMHt+vAJ9hzpG4UjUTBFdpzo2BAsJQLj0BcDvpidVy4h6JhKbEdASqJY7B9KQ5cL
+	 0CRcoEk99hQYxSSIL0aW3mlRULFxp30aFWiW8NjBiiZioKoLjrT67/Co11/rwuRsn
+	 qwjw5VQIq/dSMGs1oW9XktOSI7uIMekawXPHhsHX3wkXz1IL607xVRUbJ7mTAqpmo
+	 a5znv696IHb7emeb5A==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MbzuB-1uielG0VGp-00gVPk; Thu, 17
- Apr 2025 00:39:25 +0200
-Message-ID: <6511c88d-7876-4f69-81f1-1206056d061a@gmx.net>
-Date: Thu, 17 Apr 2025 00:39:22 +0200
+Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mzyuc-1v2Dq13NdW-00xVLq; Thu, 17
+ Apr 2025 00:49:31 +0200
+Message-ID: <2d5c6d41-90ee-4f33-866f-a8454162e41a@gmx.net>
+Date: Thu, 17 Apr 2025 00:49:30 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,25 +43,15 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v5 2/6] ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2
- switch description
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Simon Horman <horms@kernel.org>
-References: <20250414140128.390400-1-lukma@denx.de>
- <20250414140128.390400-3-lukma@denx.de>
- <06c21281-565a-4a2e-a209-9f811409fbaf@gmx.net>
- <2c9a5438-40f1-4196-ada9-bfb572052122@lunn.ch>
+Subject: Re: fsl_lpuart: imx93: Rare dataloss during DMA receive
+To: Sherry Sun <sherry.sun@nxp.com>, Peng Fan <peng.fan@nxp.com>,
+ Frank Li <frank.li@nxp.com>, Joy Zou <joy.zou@nxp.com>
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ linux-serial <linux-serial@vger.kernel.org>,
+ "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Christoph Stoidner <c.stoidner@phytec.de>
+References: <a9263ccf-2873-46e4-8aee-25e0de89a611@gmx.net>
+ <DB9PR04MB84299ACCDAFE6427B30699F592B42@DB9PR04MB8429.eurprd04.prod.outlook.com>
 Content-Language: en-US
 From: Stefan Wahren <wahrenst@gmx.net>
 Autocrypt: addr=wahrenst@gmx.net; keydata=
@@ -73,113 +63,125 @@ Autocrypt: addr=wahrenst@gmx.net; keydata=
  f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
  V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
  aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <2c9a5438-40f1-4196-ada9-bfb572052122@lunn.ch>
+In-Reply-To: <DB9PR04MB84299ACCDAFE6427B30699F592B42@DB9PR04MB8429.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:2DQfa/1BzaIm5QWQ4icl0vbZnH/GHqqbwF4kMTdqWgMb/6zSMPK
- wd1ROmb6SjnV0gMM0So2NhHWW9Phs0qFXRyAGxVGvbAMSl5qeL6gGudlQen0WUK11oGVHie
- t1UufVoIdntlOLHUWT1UjJnR08FeM6966aVRIJ0DMAH3d7pE8GkoJo8gJwCGvDdN3fBMHco
- CYA84rTkV0LDV72kNGTog==
+X-Provags-ID: V03:K1:FjJumgb112Upp1kgY9X3tzPlFxJnmFPdBpwE9KWJw6Q4we6WhAy
+ 9EXcTm4YxTp1JjwHBF1sVT+y/rjNvjhShXKra5j2DJk8l8mgsJJnBsYlKq8BdZ9JBkCm0Z9
+ lF6tCxQs3gN6GqVrJkv6o4AZkOXWrNVknMohaxL/t+qAKDIDy6VqRZWfLCih8Zc3OkWgG0x
+ HcQX53RsHklDieQVkJKsA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:dRVddgF5sOg=;TyBy9LdOd4S+gyg60RqverJ7zZh
- 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
- UJ7soJFLEqFJKhUG0L6EyM=
+UI-OutboundReport: notjunk:1;M01:P0:E7J2OZxbYp0=;1mu8zmy9oXp9FTppcd+c/+bUlxa
+ 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
 
-Hi Andrew,
+Hi Sherry,
 
-Am 16.04.25 um 23:58 schrieb Andrew Lunn:
->>> -		eth_switch: switch@800f8000 {
->>> -			reg =3D <0x800f8000 0x8000>;
->>> +		eth_switch: switch@800f0000 {
->>> +			compatible =3D "nxp,imx28-mtip-switch";
->>> +			reg =3D <0x800f0000 0x20000>;
->>> +			interrupts =3D <100>, <101>, <102>;
->>> +			clocks =3D <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
->>> +			clock-names =3D "ipg", "ahb", "enet_out", "ptp";
->>>    			status =3D "disabled";
->> from my understanding of device tree this file should describe the hard=
-ware,
->> not the software implementation. After this change the switch memory re=
-gion
->> overlaps the existing mac0 and mac1 nodes.
+Am 09.04.25 um 11:51 schrieb Sherry Sun:
+>
+>> -----Original Message-----
+>> From: Stefan Wahren <wahrenst@gmx.net>
+>> Sent: Wednesday, April 9, 2025 4:19 PM
+>> To: Sherry Sun <sherry.sun@nxp.com>; Peng Fan <peng.fan@nxp.com>;
+>> Frank Li <frank.li@nxp.com>
+>> Cc: imx@lists.linux.dev; linux-serial <linux-serial@vger.kernel.org>;
+>> dmaengine@vger.kernel.org; Fabio Estevam <festevam@gmail.com>;
+>> Christoph Stoidner <c.stoidner@phytec.de>
+>> Subject: fsl_lpuart: imx93: Rare dataloss during DMA receive
 >>
->> Definition in the i.MX28 reference manual:
->> ENET MAC0 ENET 0x800F0000 - 0x800F3FFF 16KB
->> ENET MAC1 ENET 0x800F4000 - 0x800F7FFF 16KB
->> ENT Switch SWITCH 0x800F8000 - 0x800FFFFF 32KB
+>> Hi,
 >>
->> I'm not the expert how to solve this properly. Maybe two node reference=
-s to
->> mac0 and mac1 under eth_switch in order to allocate the memory regions
->> separately.
-> I get what you are saying about describing the hardware, but...
->
-> The hardware can be used in two different ways.
->
-> 1) Two FEC devices, and the switch it left unused.
->
-> For this, it makes sense that each FEC has its own memory range, there
-> are two entries, and each has a compatible, since there are two
-> devices.
->
-> 2) A switch and MAC conglomerate device, which makes use of all three
->     blocks in a single driver.
->
-> The three hardware blocks have to be used as one consistent whole, by
-> a single driver. There is one compatible for the whole. Given the
-> ranges are contiguous, it makes little sense to map them individually,
-> it would just make the driver needlessly more complex.
->
-> It should also be noted that 1) and 2) are mutually exclusive, so i
-> don't think it matters the address ranges overlap. Bad things are
-> going to happen independent of this if you enable both at once.
->
->        Andrew
-i wasn't aware how critical possible overlapping memory regions are. I=20
-was just surprised because it wasn't mention in the commit message. As=20
-long as everyone is fine with this approach, please ignore my last comment=
-.
+>> we have a custom i.MX93 board and on this board the i.MX93=C2=A0(A1 ste=
+pping) is
+>> connected via LPUART3 to another MCU. Both processors communicate via a
+>> small protocol (request/response are smaller than 16 bytes) at 115200 b=
+aud
+>> (no parity, no hardware flow control). The i.MX93 is the initiator and =
+the other
+>> MCU is the responder.
+>>
+>> So we noticed via logic analyzer that the i.MX93 sometimes doesn't rece=
+ive
+>> the complete response (no framing issues). In our setup it usually take=
+s 1 or 2
+>> minutes to reproduce this issue. Interestingly this issue is not reprod=
+ucible, if
+>> we disable DMA and operate via IRQ.
+>>
+>> The issue is still reproducible, if we disable all other DMA channel ex=
+cept the
+>> ones for LPUART3.
+>>
+>> We tested with Linux Mainline 6.14 and Linux NXP 6.6.23, in both cases =
+the
+>> issue was also reproducible. We debugged the relevant drivers and notic=
+ed
+>> that the UART detects (UARTSTAT has RX pin edge detected) the RX signal=
+, but
+>> there is not reaction within the DMA driver.
+>>
+>> Is anyone at NXP aware of such an issue?
+>> Do you have some suggestions to analyze this further?
+> We have not observed this issue in our internal testing, some debug sugg=
+estions from fsl-lpuart side. Perhaps Joy can give some suggestions from e=
+DMA side.
+> Please try with Linux Mainline 6.14.
+> 1. Can you please run "cat /proc/tty/driver/fsl-lpuart" and "cat /proc/i=
+nterrupt | grep serial" when issue observed? That may help to get more inf=
+o.
+> 2. Can you please check if the issue is still observed after enabling ha=
+rdware flow control?
+> 3. Can you please check if this is still observed if setting rx_watermar=
+k=3D1?
+> 4. Is there an easy way to reproduce this issue? Maybe we can give it a =
+try.
+thanks for your fast reply and the hints. Sorry for the noise, I figured=
+=20
+out that there was no dataloss. There was a bug in the test setup and a=20
+misunderstanding how thinks work :-(
 
 Regards
+>
+> Best Regards
+> Sherry
 
