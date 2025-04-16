@@ -1,355 +1,202 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012069.outbound.protection.outlook.com [52.101.66.69])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2046.outbound.protection.outlook.com [40.107.20.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30F717A2E0
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 07:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842AB22DF80
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 08:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744790197; cv=fail; b=AboQfQcZ7fpisyMo1uV7iSyCKjxgzfhMLgYUOQFTVUU6yb6veIylCIlui6ZkGZIBhYV+CiU43B6TFpRu2HOR3KJ2uFyYbT34tn+VcA/gFwljVRCqFqAfZYsoOOBCnmAHtyv6x/ZDSGaChXgLJAisolWjI6DcgA42Xw/YcPQmQmQ=
+	t=1744791285; cv=fail; b=EDibFELSq2YCNgl1kv/66AJalY6kD0+tMmlg1HC7lBB0cfzzMkdNrGPQK9hs5XgTBTaEWd27yMq2qAbsZ8WeasqlUvcCwotqRS4d7wDqNhi1AsJ/nTXT6ieR84N06km2b7ZVi7buosyMQXQhArfTUK/P4AvKw2pvRm8sAd7gf90=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744790197; c=relaxed/simple;
-	bh=P29BVkWMQ0U126e5d4Vmrq/HKpRYSanfYWBm6McUo80=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=f+WtvGE1aXK/wwyBI1q7548yE8tkEMAMwnOUH/9aYIsJbXZvPsCKkqVrQB+55RqwPkt9lygctXoYJNNrAIYKUOsd4fGPX54+3yFmJJogx3cqneAj1R+XEXiJc4S83+oMMFwineD3DMv1ubsP7Gl5PA2vdsXlVn4S3tsbxCFt4YQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=o/ziyvWd; arc=fail smtp.client-ip=52.101.66.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1744791285; c=relaxed/simple;
+	bh=Q+7aj89sP0BEmGHS9YXA+++Al9pMuTGaiBGV3A7vJ7Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=BMYFf+IqqFAPZGZejiFgSmQnV9EUoqzrGSNDzd0zbT0Yri/qeuA6GRVI7u7OcGb2Iis5ydvBENNK1aoPFJunrBQZNFnvQQ/5h5KSwmsxh4NmoY3WJ3AppcEmGYOsdQY5eio3Bot6K7KPJXmwI+Kegr1u+ajMmwdvA3oKWv+xi14=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JU8eyqG5; arc=fail smtp.client-ip=40.107.20.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="o/ziyvWd"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JU8eyqG5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=udtfEraFdYba+jukNfzK7WOXdxPcYVTLlq+L0SI/k6YqRNRfTXFezG0cRpH8arTGKdUztLJHkoG/JRsv+a+89sUsAAFMW0TZHjdARURe+S4lkFK4/73JhQiPufIWwvh/mPw5MAdLYPqjrSMMv2dqPEFe4XN9TrHF04cRIUiOig4ZKaYmt6AOC+kCi/X5C9Pu8/yDrTWt9LNpuWQHiaMlCZ5UiClvevgrAmv8wa0rD8vzCf6beBr4XiSS1aqGW/5GGttlSPlNLVNviqilBZeMi+N9S74R+nFXZxAKT+VOuXSw49czNlrq8zbboktBolAOlbFdrwVOpP/h5E6uJPJXvQ==
+ b=pMRA2jLL+5V/BzwuiKsoF9ylgrGCAfpwISNvzkPMlWyk26HgMwMwNwTAxiWVwTESn6lJX2xhXL1fArBsUjZYYpf1XjDQ0RwIszJh9Cjlnp0u5K+c8gBhd3bVDfQ6YdERcrX8l7iteEV80ddVqg+Wik8UUYQrmjtsXo6kwlqEaDr5PNfj3zedDx1TMgtf8Hnj//YgW7HA7tErSOj8+S+NM2j5hK3eE9Ql/qnmxSvFIGvaBq0rKiEGd761gB39MGDc2lQrkDKFypdNq3nr6saCMyGV8zoJDDiMXu0Fnu4toGAKWe9NOLz6u61DeLVuzll5At/MDowaTj/LuR4Ixu/AxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rrK/3gydfyljUWHEZ0Q+GUAy+HtTJBCqJpwAwHAQcKE=;
- b=UOSbCNufTSBXKh0xBcFVKNITu4Yw8rgF7DCCuvQT/0IotRfN9ZzDY8tOMntXmzQAebuYdARGjiQmOKx9e/wAdj1bC758anDhFo9Qf7mWDEo3uj6nKNHrr+6kGHIy5uHoWRU972RLcIshWYc/FNwc+fXWGtyR4PjQ7KbZrMb/VlDyVwXlYv7qdwo5Fg33unO5xJb7BZtgUzPLfR1+k3Tv5JtFNAWMcl06kz6BBD7sWFWI3LeMpMXe0tVHSvIUIEDHmMuluVtg8SRzMgh1//gADN4YzKi/AgW9ZnfB7xibeVHUx2ul/RCqNoXPgWvWHnwCVOArdFBnlkENcJkwo3A/AA==
+ bh=9zEWZQN+n4oZe8uJZywWn6S5+wYmTl0ZjXEmh28ODIo=;
+ b=Qwpn1TXZyy3V2NCJzVa8quNXHAyjVGdWNnYG3lmEbzQXN4jzWTLDcwFaHlmU7TEQcFzCHWkRG9hJqREgIFNIUhlqTP4kBTH+l8+Gl74jkRIqGp1XaXJqqffR7Xpc8xejdW1+NfAhMp+U7wIPRYt+nU+Mf0gnVEhR14VOxRmzBLcbDwxmQwjcGFUbvhoz76bzvF27LuCkFRt/NTYhoiUDT5nUd8HczVszVv7Wmt14X8cPeLARLOgV4Z+ese9bjDypIt8rNpHwX+WrT1M4Q+sHuwXIJprpMTpey7v3MLSiF6ixynw7kWMngKpx5YcMU0W9yGMzWBy/nMD5mXuJIVqyKg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rrK/3gydfyljUWHEZ0Q+GUAy+HtTJBCqJpwAwHAQcKE=;
- b=o/ziyvWd/kQAdmQazxnhlbNsYwtAn1bmeYpy4B5dafPiNov+xo3yqlPUO3PtHWMKQZF8qJilf2cEQOF43xnCAfI6cjlCv7SkGtqtqhMnmtsA+bQPE+0X3POgBpvorJZdZcfXVC28lonJa/MgGtOPoq6i2pM11A1eZkGnPZ3GdlJcKq/SND+TOiTI0i22tzDkCdLFWHebDlmya3SkpoiSgeAS9RbN0WQ7lrc1xUek+Zcn7rJa1BTfleq3LR4oQsFsP2oXcYVdtYhyGOGKrlUxhC2cneBC954R7+KRru9Kzb2aEmtkdkglQKa+ZuKsuKAIzgepvgqgHvcthmQtQf/7mQ==
+ bh=9zEWZQN+n4oZe8uJZywWn6S5+wYmTl0ZjXEmh28ODIo=;
+ b=JU8eyqG5OZLvW+ayREg652L7raZ+ZYStbDQ2P7pYZLH8WnJzn/7XRHOGjlEm7tm4wtdSJkKfp8sLXL4Vbhdj6bikDnKb+1TFe+PonxUlziL/SI+m2pHKASlU6DNhRRqocQqv+CaWzC2Afhn3/AOH4M+sSQXU0YTaH6fvpTHSBNB3nC7hKz7cYqiuLxD0s0x+LmD7du/j8d7ejnuUNMdhBhqvpO6SLChvwhdj83WYTCUw8BcUFoVmPlNqGG0zB5Yinbdf0AbcrMo40Hkg2dEmKNU/olLqxlHDE0eaY6qGeOZcVyNtbP1iTtDiQ7KQpb/K6pPOeRvm3QVhpdQ5IXoPZg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DU2PR04MB8774.eurprd04.prod.outlook.com (2603:10a6:10:2e1::21)
- by AS8PR04MB7912.eurprd04.prod.outlook.com (2603:10a6:20b:2ae::21) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
+ by VI1PR04MB7103.eurprd04.prod.outlook.com (2603:10a6:800:123::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.36; Wed, 16 Apr
- 2025 07:56:31 +0000
-Received: from DU2PR04MB8774.eurprd04.prod.outlook.com
- ([fe80::88b8:8584:24dc:e2a1]) by DU2PR04MB8774.eurprd04.prod.outlook.com
- ([fe80::88b8:8584:24dc:e2a1%7]) with mapi id 15.20.8655.022; Wed, 16 Apr 2025
- 07:56:30 +0000
-From: "Iuliana Prodan (OSS)" <iuliana.prodan@oss.nxp.com>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"S.J. Wang" <shengjiu.wang@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mpuaudiosw <Mpuaudiosw@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>
-Cc: imx@lists.linux.dev,
-	linux-remoteproc@vger.kernel.org,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.22; Wed, 16 Apr
+ 2025 08:14:40 +0000
+Received: from AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93]) by AS8PR04MB8676.eurprd04.prod.outlook.com
+ ([fe80::28b2:de72:ad25:5d93%4]) with mapi id 15.20.8632.030; Wed, 16 Apr 2025
+ 08:14:40 +0000
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: frank.li@nxp.com,
+	l.stach@pengutronix.de,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pci@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v5] remoteproc: imx_dsp_rproc: Add support for DSP-specific features
-Date: Wed, 16 Apr 2025 10:56:13 +0300
-Message-Id: <20250416075613.2116792-1-iuliana.prodan@oss.nxp.com>
-X-Mailer: git-send-email 2.25.1
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH RESEND v6 0/7] Add some enhancements for i.MX95 PCIe
+Date: Wed, 16 Apr 2025 16:13:07 +0800
+Message-Id: <20250416081314.3929794-1-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.37.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: AS4P190CA0019.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d0::18) To DU2PR04MB8774.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::21)
+X-ClientProxiedBy: SI1PR02CA0030.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::8) To AS8PR04MB8676.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8774:EE_|AS8PR04MB7912:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5a53732e-568f-4a40-06a5-08dd7cbc32f1
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8676:EE_|VI1PR04MB7103:EE_
+X-MS-Office365-Filtering-Correlation-Id: aef97e71-a5f1-4d07-a698-08dd7cbebc30
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|366016|38350700014;
+	BCL:0;ARA:13230040|366016|376014|52116014|7416014|1800799024|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VQvccfcLfXhLxGHODIt6tNAilR8g+0uF8EwHcnrdFCrfYjMdD8Q+1vBXosCE?=
- =?us-ascii?Q?iQItSLUDjLh88xgjuywLTHbPBuUE3wpTvN7JeeyyNR1On1OPka42cZgO19x1?=
- =?us-ascii?Q?o6Ix6dWDJKl6EI0ggOJQroYGuD75QdKNPXkHGeYtCNPgFJXrR1sduQ4vVUIy?=
- =?us-ascii?Q?TSNpy11H+tqHC2AxhYCe1gFl+r7apkU9ZsLyaTsOWkx5Dso/0SuwMzED1NPq?=
- =?us-ascii?Q?Y7HNz2CpKshJ9Nhta/wESLzaYrIIVkbOnSJSIJbElOQ60/AJU6xZOexP/xNT?=
- =?us-ascii?Q?8ortj0wdAJNKgKKhfzBmhSAa65J7zwd1JBxNZuVBu2nOmzvdGgl1Jr7koodc?=
- =?us-ascii?Q?tnkd0PZ3kJOcBGdt4N+nYRRbmCBncAQ6rRZSCxTUpxDDceDlFQMlsWvehc7H?=
- =?us-ascii?Q?r5er8b9oWuWvJfuPaG120l5Rb3H+kQxGAm85+2bvCYccRrw+SIClUtDloaRg?=
- =?us-ascii?Q?/uE99l1orAEKm9zzacrAuLJEYkjunEdpt9QV2fAS0KEAeJ6MeJ1m9WKmGkVc?=
- =?us-ascii?Q?i8ulip0+jfvMS9PZStJhDlubxf02+tSoGRo6oxXzYMQfzNKw4jVrQlTTqSn+?=
- =?us-ascii?Q?pibhl99nLVC7e/BjFVz6wBJVfv/LVkgM1bh3bnqdCkz/LyxuVxknvOnfsLWY?=
- =?us-ascii?Q?PivIag/dTuajCzoJAvmT/uoolh+y199wcDJ+al7mHlv9/0/Refu76KO9LXPv?=
- =?us-ascii?Q?tLKS+hdN8OrO6GmPDWtiySUOFzIMX/O6mULIYNVtIrutXGA7r//giGi/94ZQ?=
- =?us-ascii?Q?JRncWchyoQiXlxRBxAXPO2THBDtL6LMDjWGnHOoZMGWpJe8dYDQ5lgTRwD3P?=
- =?us-ascii?Q?qmRFxQRPdkRTwTGNdvODhBfkSJTYstM9z4kYYlWabazMjGb6c8q1IZtQwwxt?=
- =?us-ascii?Q?2XjnOdkX9V/kAOzmalIgwGemxnQaUh6Y8UT+vbaIqk8hGy5SBNM4ecTGxfap?=
- =?us-ascii?Q?KHOq9erVrvpQ28knmEmBWUhY426KCdjH0AA3+flCREBxxzYEBTgVeKTVzHZw?=
- =?us-ascii?Q?WAbZKiHNS5WWe31pV3AVIlh+FA5h+7D/pxAwQht52pLiLscn0I1lAZKN/i8I?=
- =?us-ascii?Q?/4nNkTBNpxhaXxxWLhRTYMhCKQOWZgWy12hMW6p3vTmnW98eILhy0RgC8WWa?=
- =?us-ascii?Q?uWXOQkJFZcpmZHoBtTT77TNd0/LrEMu2fHBf8j6BLJF0YnkMrLsYKF8Chhz0?=
- =?us-ascii?Q?AgIapTYe+sCmalzr/p9rKImRv7JMFWeCLz1en2h+BN+ehjOrTFC0/C6P+Emf?=
- =?us-ascii?Q?i0iHMn7Tb3WPHWywvrM+z6xODEvYhOA+YOTV+PGRukkCb9CKmnMqWr7yXqpi?=
- =?us-ascii?Q?G4yagMvupF1tpipswwDLGs7f/DdlIx99To4wGWkSAH1R46BhybPMI+OxVLj/?=
- =?us-ascii?Q?B8f+cMeTQS5crPHC56WE51PzSHxmarTlhsbGtmqBCqWVOjvR7YsgKUmAVNNW?=
- =?us-ascii?Q?B4riH0QaqJ9dHfxdMLxcVbJWwn4NKEdmCuO/w0ZKHOGU8oWxqxsyMdoMJOIk?=
- =?us-ascii?Q?hxmdgb9WBjqcOiA=3D?=
+	=?us-ascii?Q?Nhi4kka4PnPsZZ4tfp2tla4mPl2HfsF9qpIkg8zKzDipdgemJRs8s8fZd1nv?=
+ =?us-ascii?Q?qf/urItjKhXcUAvUe2CuqK87jxYN6pV3VNS2uw3ixkla1ygfsqYv5l2T/y7u?=
+ =?us-ascii?Q?JCe34+EmYssePs6mbTzWUq9QuBE/7NoHwf+kd5pMyhpLxM5lxREiCHh3hees?=
+ =?us-ascii?Q?U4i+Za3f3XOIab8EIb3tU5VKCCFo4+TKpRT9qDC5vD3WYOKiOHDZEdY4RqnZ?=
+ =?us-ascii?Q?x/NCVEblh7K1PdQCxtsJtsbXszlQXw/Ru96Q59/nMyx2BJ7R1PBhKR9eLjHk?=
+ =?us-ascii?Q?Qak05MpRUVvttM6vs7ba1ltmPwB0ZIcajOEqWYkGF6zGhM5vNX8F2Sr9X1Id?=
+ =?us-ascii?Q?uVjfmPzqecRyNuCiCVzttdurfdqVDSxKTDajzZmA0F/8M3DduInYicUD9B9/?=
+ =?us-ascii?Q?o8Fmg17QXZzTyYJQKiLuL2vZR2yUKrvwsuNQI8+zh2sicYAB+hxIY2rEHxxP?=
+ =?us-ascii?Q?dS0c3hGD8+uFbmlyfVs+kEDjS9bb3v07qjwkKD7c6lCcUncpsKqhMn81KrUd?=
+ =?us-ascii?Q?ILxp5MJTk1yFe/8a82x8IFtqV+AKrOPLnD4i2OGvpz6a/HLX+URSQsgQjfn2?=
+ =?us-ascii?Q?Rd6rATsylZm1tO+ottVnu/cwBbf030YrU/5C6n74TZqY8sD+U6kLRAbJ5AB7?=
+ =?us-ascii?Q?ZF+RwXYrC429w2FBHtwflkug4FphBo7yExDSPH7jPZXpUMJRA+sYuI/ZuqQj?=
+ =?us-ascii?Q?LYDB4+BMCo6ESCInja+iqtX+F60FwmXVY6rF4SLfVUVYnvdMtUmuetyCrV8N?=
+ =?us-ascii?Q?9c33iLhKYgQMnAL5B+dXmzzp+SufP4GH0u4XIa9kfbTobYwqJgddLNWBOJna?=
+ =?us-ascii?Q?r/d2SHEUeqzR+G6f2QCMDE+t5eZz2xZx8ffB0Y4pPQtC1EPxVDw122nsOVPX?=
+ =?us-ascii?Q?sroh+EQyNakn/lTjmS4jIenh8rBxVegtirF/1mSg99Sl70jO4q3riBcgIQEl?=
+ =?us-ascii?Q?tmVE8MLrhAN70/6g/0+PujH6keOkDnlvvWFBr4UDxiZky0d1KC/cP6VQFkT0?=
+ =?us-ascii?Q?GRM5vTaxJaYgGrGewLQfM1uZrrYY0l60gj92SPiSVf+2wWxkDZOwynoyl+ZO?=
+ =?us-ascii?Q?HS1fM+iowDHihAoEaLGqSGUiD8ODSIPmaIyGcxYKxIyzuHga7YJci5UnXd17?=
+ =?us-ascii?Q?olz4SoD64y0/lbAqTq0vjbCSBLOEb1AHwsJYeTgM6CQOXtVzYGZsFoNEVtiv?=
+ =?us-ascii?Q?a6PY0BO7ro0zCpqjo5+Z7mPPfq/o+6BOGIeVa/4IJUY0MUQcPBkss4eeAlb6?=
+ =?us-ascii?Q?5ERTOsgDeMFqF3sMgRm6pt0ikAetX+BNCiOzG+bTcEL0+LgDqJ4pmxkx/edj?=
+ =?us-ascii?Q?V8DMO5GoKkP0SDlhmvzFcoBqbuA8/n0sm6vMU+WecH+V757Pp8Q4rQ7FlPi/?=
+ =?us-ascii?Q?fVT3TdXHsv+6OOIo9tFV2P3Qo6sujoQ47SD3cLXf8cX56aDaFh3l6vLEAQ/w?=
+ =?us-ascii?Q?8MPEYcaGo1k5NKLHC+3hCGHeABvw8noby0//pyj3bVETiXUtzTbqhWqQz9kL?=
+ =?us-ascii?Q?b362qKurIF1f0nE=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8774.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8676.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(7416014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GVw/lXVLBvGU/K/zUAuwebmcDvuLyXDliUhyDFVyVoUfwEGqKS0oTAn1HnKD?=
- =?us-ascii?Q?U7FMCKBzJs3Qx7WuqjgCJlrIkcpy6tm4jLSaaQnWrnGtQ2flvIBW+lfvykjO?=
- =?us-ascii?Q?wz7N6y3C5ueGndnP5NOF1QDARvZ3b8ZZe51p2gs3tRtF6nRk90YfU0DDklEk?=
- =?us-ascii?Q?imOyRP81HFABUunIQGiNCLvr3x5KYjuJ6hoKHe7cuCeE5CMB0u2+k61pklgM?=
- =?us-ascii?Q?EOcu2C2hY5ZBmTGf2NjDmVrAlz9MHyg0fk0DZtAnIwnn2oSqH6Iydv6BiLEv?=
- =?us-ascii?Q?dlw59et83rjB8xSBkQVS1PZMJTerFZkoukuJAUzZzt8HmBOOVOfoUYDOhLn2?=
- =?us-ascii?Q?TEf2K+2Vnijle0/gRjKWpBjSgC4L1lRTxlKY6ZGcsV1qNrnBhR7j8mH2Qh7M?=
- =?us-ascii?Q?6eKsMfphNHc0VAx8U2tKjZCQtQ669r4t7ftMYc8EXxAp9pe9b24LMcNCbI62?=
- =?us-ascii?Q?JVWsJf298yILSJMF6XoSqqynqVobGrQZNoASdxN4WkhNaYuuyQjKOP/M1RSW?=
- =?us-ascii?Q?Lu72/Zk5yMg0YtIkkgYEouCnZMrh30BHyuhjfjyn+prnqdQjERLMTyExmCEP?=
- =?us-ascii?Q?Bvw7IX+uZwFuhFA3sNCtECSgi7OQjPGdkcAw+v4PRCqhfZGcpNTm1o0QNbir?=
- =?us-ascii?Q?zPvZ8sdtGl0b/wrZLrs7TGBaUXmlRccHGuaAO88SuIha3FV/JQwSk9gT2pST?=
- =?us-ascii?Q?S9lWcfZXHvVCr8Zyzx6zAV+7nIRBZR5thsyu4Gg5jVucIscPHg24xasQmtx7?=
- =?us-ascii?Q?gghY1J6Lr6WVrieTqIGCnzlvdcAgrBSSNZaBmaMmqhOvwAl7pMs61BpIPDDK?=
- =?us-ascii?Q?TgWcKlQbmuS7ZryqqW73KId9ZROEQnBARgwcrnuDsefEq7277ZHp+9fkH5Oy?=
- =?us-ascii?Q?KEvRS964KlSURpfIAzjo/q/l8KKJzzo68PGsgpuChSZNXIY8QC8fWkHA1xXC?=
- =?us-ascii?Q?EwUAxobYECetnXAMsF9Hi97PEmiL0e40TdK/if2LtJZqmFsx3HVfQMzn1hfM?=
- =?us-ascii?Q?J+mMIDcYvadR/NpS84SS1NPBNNzIUd64qE0u/SE6m8+sV3bONcHLp3XSG5fm?=
- =?us-ascii?Q?nis6SS2p1T4jfFyAX8GluevP4Xz8+Tt2Cut1cpIuCYbJuMAXrWeHZFOfvP/E?=
- =?us-ascii?Q?a7ixUucQn6pjAxcRqJ2XM2NVHy1WpnY/zKxQXqbr1X2ClMaBLH4XsfSeXAHR?=
- =?us-ascii?Q?ocwgAkav5N9a0XwTqc3PscVdUyyKuptMw5GdNfoyK6U21oQr6sQgZ8EAImTx?=
- =?us-ascii?Q?EXCslIzeniycqK9TcJkIQ/kkClBt4Ymks8CymfV8GV1Ir2Txy8URAg4Na9UK?=
- =?us-ascii?Q?o6lgwavf0oQk09vJDvsUWeqnPwH1X8byY4t7tfiCpQ0EgC6udg0N+98aMAS8?=
- =?us-ascii?Q?T6vbTMkYfZ/xI9v005v4AKeitCBdsVMiUS5plLu3soIaCCdNqsITmsIKuJZx?=
- =?us-ascii?Q?s3UUoFDyjS03IDSXCPgVS1vESE9r80LEJON7pd23308sXaWPiqay9ggB4GXP?=
- =?us-ascii?Q?YGVO8pCTY3GoevHh6BxpjfnQlO87oiw5Mmq8vFshFxcOcrUGQbMjFA+PU+ee?=
- =?us-ascii?Q?l6PyZtgNKBpfYrlVn3o9v3UpnaHFvg8BaWrCwCJNzz6SanN0bPeiom5yb/Jy?=
- =?us-ascii?Q?yw=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a53732e-568f-4a40-06a5-08dd7cbc32f1
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8774.eurprd04.prod.outlook.com
+	=?us-ascii?Q?131EIMS+ugIjvM/S+QohK0zTroDQe2R/COP959UyCeTDVy0Ch8xUGj7sQ1sd?=
+ =?us-ascii?Q?P2xfoaj/7qIhs48xh1+shSE+TbV6RtGYu9LTnv9JwjKRaoupCuOEd1pKNm+a?=
+ =?us-ascii?Q?BnUPnS8ayJmm7KGCMGcDJJ0EDN5BNMdOkFWcmhWgFi0dn/8hngoR65jXc+kM?=
+ =?us-ascii?Q?MZ6fFbQwAOnoOSwoYo9sM7nsHkYDqQqQ/YIXvgzKuvloXfFYOwcsIayqUthb?=
+ =?us-ascii?Q?EXK+RPq/xM0udbJ88zwgUB28sRyUeHandscqqDOf+I1S/so/e/sgdeoRfcwb?=
+ =?us-ascii?Q?OVYMFRdaY7AELD/sZOzREbkA6L7/ofd3+lHPaJ2oBd20hijIncdYnjpA/GpD?=
+ =?us-ascii?Q?tUVYulRqEDuhdrE0Bkql+x8U6d4m721MoJ4uDDhX8R2n4S3oOt7atX1cr2bP?=
+ =?us-ascii?Q?ZmuuUOwUSdd6rl6WSbEJ9LrUtKjOv8kcsWqvgyPH26MnqM7Fu6Z6YGEvJkK0?=
+ =?us-ascii?Q?X31wBgtOgVstFb6MWc+k6SGtnMWSsVkOfckeP+p9EPYvjkRVgYRXx/tBzLIp?=
+ =?us-ascii?Q?l073euY78rQpDary06rgKMLagA7Ta1Y8g8/2BlVOn7y8+2ifMFHF7bjFhCQq?=
+ =?us-ascii?Q?F2TM41L5R71L0Lcd0aP3D7fTDlyTHEZcWkeKu2BDDQYte+VdDpWL3mcRCfsG?=
+ =?us-ascii?Q?DVdjAEiYCZ+ekwjDaKsNw1vt71+8uXk2or26RMCNxSb95YOunmDRwp2s3W2f?=
+ =?us-ascii?Q?Swv9ZhXeG2C7df+5+mNILl0Rag6rK3GTl7yKh9/qXrxfZwd2KOWJAecCXQqN?=
+ =?us-ascii?Q?Ic+1JspUPnXUTDey697K/HyOpyxsvJguqbK6V3nh/btTzFD/Yq01SNivxXo9?=
+ =?us-ascii?Q?owmYv8w22L7732iatJC22AzvNfXo6t8I4uJuNpwJGHoX3V/maeCcai6bijVW?=
+ =?us-ascii?Q?0HNkTuWeb6QL9YCQsbumVfGJhabV3y2LiyiYt8ivoYzXyMGqqHP6VG9adFyb?=
+ =?us-ascii?Q?IlYwOXIgH91NzQzXKU5t+Ny5Kw5s09xS8Sii5SZEfR8c6AaCDX0V60J2RFVM?=
+ =?us-ascii?Q?3i/JGbSWjDD1TKdj9z15CWWA00ORJuPQUIn3mfHgbcD+xT/OjYbukgACBIWf?=
+ =?us-ascii?Q?0CPLFeeJGc17zDSrVk+hwe2e8lJaKu1fxaGqJYD6Yiu+uwgt0k7c+nCmDEM7?=
+ =?us-ascii?Q?DSAeaxq3r55NFcWtOZbBAnPyUjafbzTn8pr1LuXs5Nif9eQHHDVQNEMIxoOI?=
+ =?us-ascii?Q?szfzQGurlAcTeb2GjVqfNfmdhE38v3BwT8KtY/MT60g89PH0QWLDdpikozw6?=
+ =?us-ascii?Q?I+vTjQRo8PLsnVKJ2HK1jV3ra6b30HeaKv7/i1G2K08uj2DoBaxqt6TUyDul?=
+ =?us-ascii?Q?Z4LXrJch9Mbh/u3zRjVQI+0oWcxzkoFFvsQSbOSIBH6q9rjrrS1IkAlIn6JD?=
+ =?us-ascii?Q?2taUmlWVBqmCtw4RFZooUjfWY6XUtW3/26+2+YUpJBEeg8OoTNbbiSLFUCK+?=
+ =?us-ascii?Q?BcisyCwLW0IzUEQ9eQ6X4eg8q6JsreveERy3pBKOvsr+DmpUaaV+Pcsi0aid?=
+ =?us-ascii?Q?L7fm76OtBArMO++7WuRSlxUc77Fs9kaDjbEDVnfKiBTCZwn86D2Dc7OX3DPL?=
+ =?us-ascii?Q?AW58ZN9DYMltuoOasFhXd1CkVt9wW/tK1RQFa+a3?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aef97e71-a5f1-4d07-a698-08dd7cbebc30
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8676.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 07:56:30.8856
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 08:14:40.2452
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UzAK4izEFKFC9aWjuyeErJSrqVoVAbFRuBMZ0K/iqXhV7jTlPVlkpMy1+79b2oE/Pa3+oK/8I6kBErWfnP5OYQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7912
+X-MS-Exchange-CrossTenant-UserPrincipalName: lysmbeJcVh5YMem/d6B1n52p2MYRAas+Dftm/1ECiWX3Y7JQmJNRbE0SDPzXMiPl18Sr0lNiMvifVNsBrH2ytA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7103
 
-From: Iuliana Prodan <iuliana.prodan@nxp.com>
+Add some enhancements for i.MX95 PCIe.
+- Refine the link procedure to speed up link training.
+- Add two ERRATA SW workarounds.
+- To align PHY's power on sequency, add COLD reset.
+- Add PLL clock lock check.
+- Save/retore the LUT table in supend/resume callbacks.
+- 3/7 relies on "arm64: dts: imx95: Correct the range of PCIe app-reg region"
+  https://lore.kernel.org/imx/20250314060104.390065-1-hongxing.zhu@nxp.com/
 
-Some DSP firmware requires a FW_READY signal before proceeding, while
-others do not.
-Therefore, add support to handle i.MX DSP-specific features.
+v6 changes:
+- Move the PLL clock lock check out of core_reset, and collect to a new
+  callback function.
+- Update the commit message of 4/7.
+- Correct the typo errors in the commit messgage of 2/7 patch refer to
+  Alok's comments. Thanks.
+- Add the dependecy of 3/7 into the cover letter refer to Alexander'
+  comments.
 
-Implement handle_rsc callback to handle resource table parsing and to
-process DSP-specific resource, to determine if waiting is needed.
+v5 changes:
+- Rebase to v6.15-rc1
+- Update the commit message of "PCI: imx6: Skip one dw_pcie_wait_for_link() in"
 
-Update imx_dsp_rproc_start() to handle this condition accordingly.
+v4 changes:
+- Add another patch to skip one dw_pcie_wait_for_link() in the workaround link
+  training refer to Mani' suggestion.
+- Rephrase the comments in "PCI: imx6: Toggle the cold reset for i.MX95 PCIe".
+- Correct the error return in "PCI: imx6: Add PLL clock lock check for i.MX95 PCIe".
+- Collect and add the Reviewd-by tags.
 
-Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
----
-Changes in v5:
-- Reviews from Mathieu Poirier:
-  - ensure resource length matches struct size exactly.
-- Link to v4: https://lore.kernel.org/all/20250409213030.3489481-1-iuliana.prodan@oss.nxp.com/
+v3 changes:
+- Correct the typo error in first patch, and update the commit message of
+  #1 and #6 pathes.
+- Use a quirk flag to specify the errata workaround contained in post_init.
 
-Changes in v4:
-- Reviews from Mathieu Poirier:
-  - Adjusted len to include the size of struct fw_rsc_imx_dsp.
-  - Updated len validation checks.
-- Review from Frank Li:
-  - In imx_dsp_rproc_handle_rsc(), removed the goto ignored statement.
-- In probe(), set flags to WAIT_FW_READY to ensure the host waits
-for fw_ready when no vendor-specific resource is defined.
-- Link to v3: https://lore.kernel.org/all/20250403100124.637889-1-iuliana.prodan@oss.nxp.com/
+v2 changes:
+- Correct typo error, and update commit message.
+- Replace regmap_update_bits() by regmap_set_bits/regmap_clear_bits.
+- Use post_init callback of dw_pcie_host_ops.
+- Add one more PLL lock check patch.
+- Reformat LUT save and restore functions.
 
-Changes in v3:
-- Reviews from Mathieu Poirier:
-  - Added version and magic number to vendor-specific resource table entry.
-  - Updated defines to maintain backward compatibility with a resource table that doesn't have a vendor-specific resource.
-    - By default, wait for `fw_ready`, unless specified otherwise.
-- Link to v2: https://lore.kernel.org/all/20250318215007.2109726-1-iuliana.prodan@oss.nxp.com
+[PATCH RESEND v6 1/7] PCI: imx6: Start link directly when workaround
+[PATCH RESEND v6 2/7] PCI: imx6: Skip one dw_pcie_wait_for_link() in
+[PATCH RESEND v6 3/7] PCI: imx6: Toggle the cold reset for i.MX95
+[PATCH RESEND v6 4/7] PCI: imx6: Workaround i.MX95 PCIe may not exit
+[PATCH RESEND v6 5/7] PCI: imx6: Let i.MX95 PCIe compliance with
+[PATCH RESEND v6 6/7] PCI: imx6: Add PLL clock lock check for i.MX95
+[PATCH RESEND v6 7/7] PCI: imx6: Save and restore the LUT setting for
 
-Changes in v2:
-- Reviews from Mathieu Poirier:
-  - Use vendor-specific resource table entry.
-  - Implement resource handler specific to the i.MX DSP.
-- Revise commit message to include recent updates.
-- Link to v1: https://lore.kernel.org/all/20250305123923.514386-1-iuliana.prodan@oss.nxp.com/
-
- drivers/remoteproc/imx_dsp_rproc.c | 98 +++++++++++++++++++++++++++++-
- 1 file changed, 96 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index b9bb15970966..a16d9c4238ed 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -35,9 +35,18 @@ module_param_named(no_mailboxes, no_mailboxes, int, 0644);
- MODULE_PARM_DESC(no_mailboxes,
- 		 "There is no mailbox between cores, so ignore remote proc reply after start, default is 0 (off).");
- 
-+/* Flag indicating that the remote is up and running */
- #define REMOTE_IS_READY				BIT(0)
-+/* Flag indicating that the host should wait for a firmware-ready response */
-+#define WAIT_FW_READY				BIT(1)
- #define REMOTE_READY_WAIT_MAX_RETRIES		500
- 
-+/*
-+ * This flag is set in the DSP resource table's features field to indicate
-+ * that the firmware requires the host NOT to wait for a FW_READY response.
-+ */
-+#define FEATURE_DONT_WAIT_FW_READY		BIT(0)
-+
- /* att flags */
- /* DSP own area */
- #define ATT_OWN					BIT(31)
-@@ -72,6 +81,10 @@ MODULE_PARM_DESC(no_mailboxes,
- 
- #define IMX8ULP_SIP_HIFI_XRDC			0xc200000e
- 
-+#define FW_RSC_NXP_S_MAGIC			((uint32_t)'n' << 24 |	\
-+						 (uint32_t)'x' << 16 |	\
-+						 (uint32_t)'p' << 8 |	\
-+						 (uint32_t)'s')
- /*
-  * enum - Predefined Mailbox Messages
-  *
-@@ -136,6 +149,24 @@ struct imx_dsp_rproc_dcfg {
- 	int (*reset)(struct imx_dsp_rproc *priv);
- };
- 
-+/**
-+ * struct fw_rsc_imx_dsp - i.MX DSP specific info
-+ *
-+ * @len: length of the resource entry
-+ * @magic_num: 32-bit magic number
-+ * @version: version of data structure
-+ * @features: feature flags supported by the i.MX DSP firmware
-+ *
-+ * This represents a DSP-specific resource in the firmware's
-+ * resource table, providing information on supported features.
-+ */
-+struct fw_rsc_imx_dsp {
-+	uint32_t len;
-+	uint32_t magic_num;
-+	uint32_t version;
-+	uint32_t features;
-+} __packed;
-+
- static const struct imx_rproc_att imx_dsp_rproc_att_imx8qm[] = {
- 	/* dev addr , sys addr  , size	    , flags */
- 	{ 0x596e8000, 0x556e8000, 0x00008000, ATT_OWN },
-@@ -300,6 +331,66 @@ static int imx_dsp_rproc_ready(struct rproc *rproc)
- 	return -ETIMEDOUT;
- }
- 
-+/**
-+ * imx_dsp_rproc_handle_rsc() - Handle DSP-specific resource table entries
-+ * @rproc: remote processor instance
-+ * @rsc_type: resource type identifier
-+ * @rsc: pointer to the resource entry
-+ * @offset: offset of the resource entry
-+ * @avail: available space in the resource table
-+ *
-+ * Parse the DSP-specific resource entry and update flags accordingly.
-+ * If the WAIT_FW_READY feature is set, the host must wait for the firmware
-+ * to signal readiness before proceeding with execution.
-+ *
-+ * Return: RSC_HANDLED if processed successfully, RSC_IGNORED otherwise.
-+ */
-+static int imx_dsp_rproc_handle_rsc(struct rproc *rproc, u32 rsc_type,
-+				    void *rsc, int offset, int avail)
-+{
-+	struct imx_dsp_rproc *priv = rproc->priv;
-+	struct fw_rsc_imx_dsp *imx_dsp_rsc = rsc;
-+	struct device *dev = rproc->dev.parent;
-+
-+	if (!imx_dsp_rsc) {
-+		dev_dbg(dev, "Invalid fw_rsc_imx_dsp.\n");
-+		return RSC_IGNORED;
-+	}
-+
-+	/* Make sure resource isn't truncated */
-+	if (sizeof(struct fw_rsc_imx_dsp) > avail ||
-+	    sizeof(struct fw_rsc_imx_dsp) != imx_dsp_rsc->len) {
-+		dev_dbg(dev, "Resource fw_rsc_imx_dsp is truncated.\n");
-+		return RSC_IGNORED;
-+	}
-+
-+	/*
-+	 * If FW_RSC_NXP_S_MAGIC number is not found then
-+	 * wait for fw_ready reply (default work flow)
-+	 */
-+	if (imx_dsp_rsc->magic_num != FW_RSC_NXP_S_MAGIC) {
-+		dev_dbg(dev, "Invalid resource table magic number.\n");
-+		return RSC_IGNORED;
-+	}
-+
-+	/*
-+	 * For now, in struct fw_rsc_imx_dsp, version 0,
-+	 * only FEATURE_DONT_WAIT_FW_READY is valid.
-+	 *
-+	 * When adding new features, please upgrade version.
-+	 */
-+	if (imx_dsp_rsc->version > 0) {
-+		dev_warn(dev, "Unexpected fw_rsc_imx_dsp version %d.\n",
-+			 imx_dsp_rsc->version);
-+		return RSC_IGNORED;
-+	}
-+
-+	if (imx_dsp_rsc->features & FEATURE_DONT_WAIT_FW_READY)
-+		priv->flags &= ~WAIT_FW_READY;
-+
-+	return RSC_HANDLED;
-+}
-+
- /*
-  * Start function for rproc_ops
-  *
-@@ -335,8 +426,8 @@ static int imx_dsp_rproc_start(struct rproc *rproc)
- 
- 	if (ret)
- 		dev_err(dev, "Failed to enable remote core!\n");
--	else
--		ret = imx_dsp_rproc_ready(rproc);
-+	else if (priv->flags & WAIT_FW_READY)
-+		return imx_dsp_rproc_ready(rproc);
- 
- 	return ret;
- }
-@@ -936,6 +1027,7 @@ static const struct rproc_ops imx_dsp_rproc_ops = {
- 	.kick		= imx_dsp_rproc_kick,
- 	.load		= imx_dsp_rproc_elf_load_segments,
- 	.parse_fw	= imx_dsp_rproc_parse_fw,
-+	.handle_rsc	= imx_dsp_rproc_handle_rsc,
- 	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
- 	.sanity_check	= rproc_elf_sanity_check,
- 	.get_boot_addr	= rproc_elf_get_boot_addr,
-@@ -1053,6 +1145,8 @@ static int imx_dsp_rproc_probe(struct platform_device *pdev)
- 	priv = rproc->priv;
- 	priv->rproc = rproc;
- 	priv->dsp_dcfg = dsp_dcfg;
-+	/* By default, host waits for fw_ready reply */
-+	priv->flags |= WAIT_FW_READY;
- 
- 	if (no_mailboxes)
- 		imx_dsp_rproc_mbox_init = imx_dsp_rproc_mbox_no_alloc;
--- 
-2.25.1
+drivers/pci/controller/dwc/pci-imx6.c | 213 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------
+1 file changed, 182 insertions(+), 31 deletions(-)
 
