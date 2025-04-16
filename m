@@ -1,220 +1,204 @@
-Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2119.outbound.protection.outlook.com [40.107.241.119])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2086.outbound.protection.outlook.com [40.107.237.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FD02356A2
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 09:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0E5235361
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 09:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.86
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744794406; cv=fail; b=jR9iL3rCPkU+mhJtXi0AsUze1l54R5OW1DC2iNddyxMIC5pTmHGK7ifmcqY+xUF9iu2ryFCBHPCgST3ylTmAb0ngmuHO77f2TPeKEh3FaX6wc38GR2Zuim9f5VKU+mNWr9rTFOGbJ/yKmSLHdH6dhG5ZeSJTA6I7LpHMGV+NqBw=
+	t=1744794888; cv=fail; b=Y+aS+A7uzTf+8bYGbaTb/FBaZTpsrwzbtqulBnAQ/J2JoPUL0tMC6P6jk+j+uw4N2HsAB2ZEa3qSyV21H6lyaTHy6s9oXdt5AUH3t24I4DAWXQKAU4xwmzQW+e25bT+14G7ek5aIT7ylLolr3duaz0LpwUM7J+PiTLxMk8qwiJ0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744794406; c=relaxed/simple;
-	bh=UK58Xbdwqz4d9aqw4QboLCUIHsdxLvLfoo4BdGFQ7wU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PXRYDglzX4acxAwABHy4SoqLF/R0Em5N6D1plIewGvjOtw/2B02vaavBHAv3sMaj4gPnC45dU5DXwoNdWJ/RGJgDLx21bFzv5RExqbxvgEonU0j1tQ0JofpgUZRUakw2nJp9LbJGqG52aAeCqZE7RuWYtZwxRZHvZAz1oHGu0sc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com; spf=pass smtp.mailfrom=gocontroll.com; dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b=s29b6wXf; arc=fail smtp.client-ip=40.107.241.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gocontroll.com
+	s=arc-20240116; t=1744794888; c=relaxed/simple;
+	bh=y4/Z5MF3iVp/Hr2RTMkwL1W7fk2XjvCTuAkug8i65so=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=brirO8AbeaayPGDqGXwhOkzrxe5RkqOvc90duWA2qpKD+Q8TEqNW/bGOd5G72EtSIatJROk/r3ntghj083YSG1xhpSb0mFHQ7zWQ3oxNDpyvUcXXBnX1DzMKEANTYJcn851Y/fuhouTvZ/rR4aeQTEGAHTj96PePgY6NGwgdmQE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hvZG7Py+; arc=fail smtp.client-ip=40.107.237.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b="s29b6wXf"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hvZG7Py+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q8iDHqHKqv8k4C4KbkL0OtxegqdlcrBiU8NzGeMxWwIYky19j2lMMW6m8qa1JFuyobQNiynDl4mfycdrII1x8vzK4m2CZdp27JcEGh3ZzsCSZM4u7fj4jqu8INDJ33lXauTbkqHDoCpCohCfj60XkAQTIbnOema2T7oIMe1/Epu3axT/TFY10x0YC1o+/jkkIzQbb4jsQDEOkdmzniMLy9z73s8Fzj9KAbYaXozc6jM1fdgw33y5MIYxyPhkvngp3jF+3Yt4O7EsO0qAk55I1wMWDQqwK/q2tkXQkqT2UG1NUnXvFFvhwb7avfGwOJNFw1sgKNDg51a/WK4DvnOUAA==
+ b=yvKe6l/p8KKfZJQzu1pyG51fkOWJf+/TfNyeqqWZ53vFkuq4DHTouDvCFpWbPKeWGkM1elpUgKBeyeSttpL/fc+cTFJepuRdDNKP9Gry0JtVh5ug+UCnZdFuvy6KKAmPEEUQWW7jnam5H7MkRNA7fA63X+UL82ZkkYDrA7X+YY80EaaHSFmkBuUjlSpgg+SLtbvdnn5eadwwNbOJ7DoZisgAd02RyBHFw+euaHKG8+t/s9Onw3HA4B2FvjKSOnfAG/du5qyJH+fPgstTAD/th/nLTmSUcYpScWGoREEYILeafuC1TAqVYxUxjpe/HzIzBKPhinnll7PtAwkLuklR9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AfXlI92AqoSduMz/+MXiLWpu5hpg/b2uWA/f0vBPfvc=;
- b=jLp08xdr4t2ReCXJwRPNeP6B9+e+wqmnzKBSFWqs6CQX6uRgBqkqjdrBG9ldS8XYYaIrj4965yPDe10vSq3ZF2zDX0seIKHCXZDgthCcSvK35e02jiNLOSUmUDPwUWg5ApwEsf7YzCy55Eo6E8AgABIh7Xo0N9VEAixKjQQEdSkC8XxF/P8rqRWS0Ed9z0twbzl9HOspjLRzs5wNsHfRsFcvFoF4+pqPLFYGQMpMw5EiRj2YK3/WBFnbO3veiGk4yakG9zo2kpMQtE1kkpAJdDh8EJGpNDBZj0tOukrd3CnpZg9paSNQ+PNkEuiZDS5CSJysJ3ND23kKLRgL7Xn2HQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gocontroll.com; dmarc=pass action=none
- header.from=gocontroll.com; dkim=pass header.d=gocontroll.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gocontrollcom.onmicrosoft.com; s=selector1-gocontrollcom-onmicrosoft-com;
+ bh=hk9PGgfOtu94j5OcKo0DWr17MjPll5iaiddo3FnLpWM=;
+ b=JorJMz1SimWApaliqad1SxtvUxiKVkyc2K/7yKCa4Ug5xuFf/Anmhyl573cS5JIfGH6xfagegRPc7AjuNaPIR84+b8Dpzt1MEWc6y+kinmSxFckWAupun/6IWt+fN8yAyDLJ3/HWidypx0wxf9GsG+QCsG79djfcora+hdg0DESiaJjh+oJFO5/bRob/xY2xh22UApr8btewVU7bzbzqEuKhMvDuDksy11QXizeXdKNW8kAfK54VjVuNR82PadFuwnR+GmDvGS/Af0DUZDQYmcoASE0/uLsYEiG7n8SLoy2LWB4u89eMYYzCJze7s3h3BDK4lLecquG5Kfl6sSbv/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AfXlI92AqoSduMz/+MXiLWpu5hpg/b2uWA/f0vBPfvc=;
- b=s29b6wXfOCm2DY8ZTQbai+czX2CXFYOyFuRWvRzxKddFUJnjtFEL45MoJnCkQq91StGoW/0DSXMC5iZmbncKO1ne9e/6dmHfu4jnf0ogWA/a+joNd0O1xWu3bsviusC/eq4dyTf+/8iuBTT1l5nbbcrmgB2SI5mkTomLmKI4N6guovRZkkfdqbYlytc2jb+p619pGBrY2UA1Kpu1ItLKj7rvDQaLrN2EkDCa05NqklFAbyMwBLNYqa8hIfOkAdWX2o1k6Okq3XDSidnLd2sKdbjZ3sKipgUvST1G1gKtHZ+zbtZ+UzJ+jP8e26ve25p9SuvPyFSIrWXPAFQU6+wfng==
-Received: from PA4PR04MB7630.eurprd04.prod.outlook.com (2603:10a6:102:ec::16)
- by DU7PR04MB11139.eurprd04.prod.outlook.com (2603:10a6:10:5b1::18) with
+ bh=hk9PGgfOtu94j5OcKo0DWr17MjPll5iaiddo3FnLpWM=;
+ b=hvZG7Py+H7TdLA5QXBIJPIY4Xnu+L/GZ+8Xj1eUeBtk45LPRSk+uUVLLRMlZzHHnRXBTUdHEYpIpPvkuM/beA3fJaAR4AoW0WM+AWxBc+idtO96/x2XknQaNRV04KPoddyUgB5AH85vqbtL/Kgfulmc+COmOCVSiJGnA8NUUJ+5/HcOldfZ+ZdMvzTDWCHCpXTB7bi92iyOqn38lOYJXyIUVsDjYJ+xcHBwnm2HoTnSFQZ6nwST4DVS/sx44lllSMRVhE/1g0M/BUpizxhU7NwR2xx89lGoz7FMiksfUmF6youusawtLa/jPFRv1KXyYzFJAkHoxKjePplZ09pVEWw==
+Received: from BN9PR03CA0742.namprd03.prod.outlook.com (2603:10b6:408:110::27)
+ by MN0PR12MB5881.namprd12.prod.outlook.com (2603:10b6:208:379::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.22; Wed, 16 Apr
- 2025 09:06:40 +0000
-Received: from PA4PR04MB7630.eurprd04.prod.outlook.com
- ([fe80::311b:ad3a:4a62:7b5f]) by PA4PR04MB7630.eurprd04.prod.outlook.com
- ([fe80::311b:ad3a:4a62:7b5f%5]) with mapi id 15.20.8632.030; Wed, 16 Apr 2025
- 09:06:39 +0000
-From: Maud Spierings | GOcontroll <maudspierings@gocontroll.com>
-To: Frank Li <Frank.li@nxp.com>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v5 6/8] arm64: dts: freescale: Add the GOcontroll Moduline
- Display baseboard
-Thread-Topic: [PATCH v5 6/8] arm64: dts: freescale: Add the GOcontroll
- Moduline Display baseboard
-Thread-Index: AQHbrdM+rTbOWy7xEE+A0k2rEwpkRLOlFR0AgAENIYA=
-Date: Wed, 16 Apr 2025 09:06:39 +0000
-Message-ID: <78d30ba1-a4fd-41a8-967a-97252cc2ac7a@gocontroll.com>
-References: <20250415-initial_display-v5-0-f309f8d71499@gocontroll.com>
- <20250415-initial_display-v5-6-f309f8d71499@gocontroll.com>
- <Z/6sWD949qKeahtc@lizhi-Precision-Tower-5810>
-In-Reply-To: <Z/6sWD949qKeahtc@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-exchange-imapappendstamp: PA4PR04MB7630.eurprd04.prod.outlook.com
- (15.20.8632.030)
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=gocontroll.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB7630:EE_|DU7PR04MB11139:EE_
-x-ms-office365-filtering-correlation-id: 9a9e9c24-b037-4d6f-d823-08dd7cc5ffcc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|10070799003|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?MxrR1/wjRtnPwGkZx09Nf5DgW5EadtZfbAmLzq5aogSof+QH5UhaN4IO04?=
- =?iso-8859-1?Q?ePVp7q2MdMxToMh1GyyNmY+b5+WjblAln8bGR1NJe+m6M249DEjX0sA9GT?=
- =?iso-8859-1?Q?0uC5mGM57uIOk1cPFl6B40eynWXYE7Fr9nrYTM3IzGACLt/zNv/+NJC+us?=
- =?iso-8859-1?Q?b2PHRhWsmSTkQyczj13zaRDcFA6kdzofyzTz+NsE/Uw+GFxGti1kzjz0dy?=
- =?iso-8859-1?Q?pv1jH7PbNcd3hwzAZHv2U439r9Y4dJSLty32FwFKhdcQQE0Kq7rPAcVquK?=
- =?iso-8859-1?Q?2RCDvds0SyFePfh6l4HWnR0tEHaXC1iG/uh84p6AGz37Szk9AOJXNJSvPx?=
- =?iso-8859-1?Q?QbGQzfqPp/1/V1FUCk2Fp0UlHzBnARjQHImv5Jq6xgN/9tlLf4gB7L4s2b?=
- =?iso-8859-1?Q?8ptHUVUtfFMnTY453TM+WMY2OTj0gapQRC5rFX4/ywZFW+0VfHC3myQq5l?=
- =?iso-8859-1?Q?UbsCzpAFvpaLTpwS8Z6Og/QuHbLXDBUh9WfiIZpNjG2cma/C3t7Z9Iu0bS?=
- =?iso-8859-1?Q?2DpxYZoPkerZGtf6fW3Tm70W0AfcCG49eyPqDEP+SBVlmz0p8kLPHzCo3b?=
- =?iso-8859-1?Q?8mAypyos+3LZbpC1HBPVGq48+glXmSZrQjwyCTbvZeRkiCqdkPD06sQNGJ?=
- =?iso-8859-1?Q?FD+im+0lV+O/OW5FATabpRu/96b/drI7+cPB10EnQ/XrGtrouRSJwn2I+e?=
- =?iso-8859-1?Q?BeSrYARshgCK8kJVvDjXF3fNs1yhpSlkW04mGjsp4WGsoHh8uRc8XSlCee?=
- =?iso-8859-1?Q?gr2nRLh9QWbr/MH81s71dt09gOa2ud3DvElouo53eRawj/o/TmjL0yXmVO?=
- =?iso-8859-1?Q?o/0NxXfU4zDe1f+kVHDOWhmvDHcjqsS/xu6XCuHpiZYINBD9eoU2sbg4+O?=
- =?iso-8859-1?Q?rtK2O8Y8WnQeil4hS7dgeU/ls+HdHXRdHz4ATiB8ho1ECqktcmqFr242VD?=
- =?iso-8859-1?Q?lVnsL9Vjpy7+7zvDDWxW6DsO41Exqp6xfn9L8TPBBoCwhgpi/yE5KMse71?=
- =?iso-8859-1?Q?Iet55OL2pT9UDBN8aOSKUa9UbpedJrTXiM6O37x91vAFySuMTDO9ypW948?=
- =?iso-8859-1?Q?pshBYzpVa3AY+0ec+JBslQ77zyY2mwDwxRUJtJobnmex6+vOta4xr2ifXO?=
- =?iso-8859-1?Q?5jQnWmnRcj4h0KLeQWYT21WptjuLNsXf+z090E86HlBJzANCdIVqY+3I4S?=
- =?iso-8859-1?Q?jDJiumseJR5x7pq8f5nyp/wtCGFc26W0IDMvPyYAmPfcpi3PrOVzwK4J6G?=
- =?iso-8859-1?Q?9J9CUgErzc+bojWyjVdPqws8BCLKAG+lr2s/6r+eNDFPiVIvOFsj7LEW+R?=
- =?iso-8859-1?Q?G83JLBkn7cCIh4DGer2Z4JLqs2Rz2eY6OWqin62UJVKTl4CMHvcS4oIh4J?=
- =?iso-8859-1?Q?hBf+0Lw8eu7lAB4u3PTGHwnCKVyqPJlRrjzjCL9PWA/5yiySNEQW0NLuMP?=
- =?iso-8859-1?Q?Ny4G+jCtqRsALNoKQxuxZhVeLxbkV61nZep+HLFCP1kqtlOLkQHnpqrhKf?=
- =?iso-8859-1?Q?WHfr7V6cqZFOqIOvoi3qR3jyaFgRYOSKiNrAVuuce42g=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7630.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?umTCwxYnBVX+XNxWJOl+1rNjCoJ8+NaUWS5f4mwdhSedeioxemBGG5N3nY?=
- =?iso-8859-1?Q?8L6DUCqQKLFO80cwfI9YTBkGcKqt2ElCmDNgjJ5KbdfUcHhMb2RXpRIbq5?=
- =?iso-8859-1?Q?4ROQDRmr5NDTScfyJyeomMSzH9okiYPx3G4YGQlh6MWZb3yw1LctOrrzkD?=
- =?iso-8859-1?Q?P4BAvwNQSW5/oCi/jbf67/ysLBcYWS7ZelHjcKf36G6sniQuMdSNNVS0s3?=
- =?iso-8859-1?Q?/VOVrnQH+MPOYQjGEGwtO7MCRlHoMORsRJLgR4N3fScAQFjYr1TOJaHLWg?=
- =?iso-8859-1?Q?qFMcVmdOus32Qn7a1z/kX7HGmZqZY8frbogrvJkN5M6WY+ZeQ57f5qYQEU?=
- =?iso-8859-1?Q?RUfuqDCVHplX7mfyVSPtCVG8CgMUUtLTDbDd/77QzvkIJQ7vk7OL/3vgXs?=
- =?iso-8859-1?Q?ekjNZOk0IcjPARA7TA4FfYI/NP/EJFXKYMxQOrNSPWVaViIGZ37OE/qYKI?=
- =?iso-8859-1?Q?luvfFcP+4OKoR6XtT2Q6kfpU8g97myNEIcGeVxjTy/D4+C2fb7yELqo6tW?=
- =?iso-8859-1?Q?EzMpJATG9sThksNMjIGQOZAf4UKFNSbPOK2BvAuEVNICi8MjUrwrOLmmOU?=
- =?iso-8859-1?Q?Rm0+t4CPzv4Ux5Qa4UpX/QdvJ7b70TMoB3Aum9XbZut8xien7DFZ+elMfC?=
- =?iso-8859-1?Q?gW7BkMf12R6U2zb+vcwOkEpWKDCmahLwdryv6yl5zURDff4Hnl0eYQjANL?=
- =?iso-8859-1?Q?PyMGzgR8FbbUtn4IjbNMlX5a9G6KArz4goILU6ZXt2oZQMFDW3fTGuSWJB?=
- =?iso-8859-1?Q?Wis8lMoBVEJdweD24TGmTkU3yxQZtYqzTIs83MdHcH3w3+EDCHsXt6r79+?=
- =?iso-8859-1?Q?N05R7He3hJHFVdrbBLZ6y1LR/cDNeqlM1ojUleT7hVaLLeF5hJqXXMPSXv?=
- =?iso-8859-1?Q?K1HG3oXnA4apsB5DpH5eJkyWXR6KSecH1y14WYscBPDEWbM4DVAfCkTtKp?=
- =?iso-8859-1?Q?nLr/fNsRv4Kkp9SDqoyFJ2irNm64KCqTPJk5r69ozYBn0G/VQThJeY2tid?=
- =?iso-8859-1?Q?J7+L5331vdnd/cSYNWFQpX2nck9VwlXQ0zyuVrCKqZ3AHCIkKr07BJU+GP?=
- =?iso-8859-1?Q?rVClEaOAYlMjkT6u43y+/pyCYAV9Q+Fx8PJLuNE+EjcqQWwSb3sjQZQt9G?=
- =?iso-8859-1?Q?fKds5LjoUrxvRLM0b/1izNQcfzzM7aLco/fmLfvsQ74TLV2BDnpwI5F3qh?=
- =?iso-8859-1?Q?EbyN4FyAVYGyCYtjMz+KgT4kFmAvU5FbK/a89q6vMata0PId/FxieVg58a?=
- =?iso-8859-1?Q?vMTV6ArO4WwECJ1XsTtGJThj55T8OL2Sq7dI2wUGiR/yVwSFi6L5zIZDCQ?=
- =?iso-8859-1?Q?sThJCUsnaRe3sExaw91PN/aWuL448u85Jw8sXG6pznCn8xmlg8nZfb4Q/5?=
- =?iso-8859-1?Q?2Kf64HwxSX6fxYJG/CxHGQh9bHzGxC++SmtpLFSiXnv95bURZ6g3IVn4D5?=
- =?iso-8859-1?Q?6IuGJuv0HLYxEfNAcdHYriFuzNEhwIHAWY31AjDgAWgXKeQPS82gVhQcnr?=
- =?iso-8859-1?Q?fQQAbVSFRrB1g7fHo7MvkfbhNbrT9E5A+/fIELk8bnKM2O82HPwheui9eI?=
- =?iso-8859-1?Q?Sw6XgSZ0TnIaI6jP9q3Opepqinm7O/cah+R8iVlJZDG5Jci4m3n12S8r6i?=
- =?iso-8859-1?Q?Fxnb5WiDGkJqFsTy5JlYnSjZH3VM17474R6HVLGqCChacWIc4200Mx1Bh5?=
- =?iso-8859-1?Q?F89dMlvcutwuz3ar7cmXx99AGEpHwNUhU53EQsaImulXVnza+NGtAIRfnQ?=
- =?iso-8859-1?Q?AJPA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <31738CB92102BA43AC49786C004C9F04@gocontroll.com>
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.32; Wed, 16 Apr
+ 2025 09:14:40 +0000
+Received: from MN1PEPF0000F0DF.namprd04.prod.outlook.com
+ (2603:10b6:408:110:cafe::83) by BN9PR03CA0742.outlook.office365.com
+ (2603:10b6:408:110::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8632.34 via Frontend Transport; Wed,
+ 16 Apr 2025 09:14:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ MN1PEPF0000F0DF.mail.protection.outlook.com (10.167.242.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8655.12 via Frontend Transport; Wed, 16 Apr 2025 09:14:40 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 16 Apr
+ 2025 02:14:21 -0700
+Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 16 Apr
+ 2025 02:14:07 -0700
+References: <20250416010210.work.904-kees@kernel.org>
+User-agent: mu4e 1.8.14; emacs 29.4
+From: Petr Machata <petrm@nvidia.com>
+To: Kees Cook <kees@kernel.org>
+CC: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, Jeroen de Borst <jeroendb@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>, Ido Schimmel
+	<idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Simon Horman <horms@kernel.org>, Geoff Levand <geoff@infradead.org>, Wolfram
+ Sang <wsa+renesas@sang-engineering.com>, Alexander Lobakin
+	<aleksander.lobakin@intel.com>, Praveen Kaligineedi
+	<pkaligineedi@google.com>, Willem de Bruijn <willemb@google.com>, "Joshua
+ Washington" <joshwash@google.com>, Furong Xu <0x1207@gmail.com>, "Russell
+ King (Oracle)" <rmk+kernel@armlinux.org.uk>, Jisheng Zhang
+	<jszhang@kernel.org>, Petr Tesarik <petr@tesarici.cz>,
+	<netdev@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, Richard Cochran
+	<richardcochran@gmail.com>, Jacob Keller <jacob.e.keller@intel.com>, "Shannon
+ Nelson" <shannon.nelson@amd.com>, Ziwei Xiao <ziweixiao@google.com>,
+	"Shailend Chand" <shailend@google.com>, Choong Yong Liang
+	<yong.liang.choong@linux.intel.com>, Andrew Halaney <ahalaney@redhat.com>,
+	Kory Maincent <kory.maincent@bootlin.com>, <linux-kernel@vger.kernel.org>,
+	<linux-hardening@vger.kernel.org>
+Subject: Re: [PATCH] net: ethtool: Adjust exactly ETH_GSTRING_LEN-long stats
+ to use memcpy
+Date: Wed, 16 Apr 2025 11:09:43 +0200
+In-Reply-To: <20250416010210.work.904-kees@kernel.org>
+Message-ID: <87ecxswjs4.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: gocontroll.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7630.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a9e9c24-b037-4d6f-d823-08dd7cc5ffcc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2025 09:06:39.8298
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0DF:EE_|MN0PR12MB5881:EE_
+X-MS-Office365-Filtering-Correlation-Id: 300d342e-1bfd-4e03-32c0-08dd7cc71e3d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?j7IgJbEdesxIdWEYyXpqUrAtgUraiDFgEetdgiKxehUy2vSABUctMFwNZlf2?=
+ =?us-ascii?Q?gzXdRMTIGveOZ94zE0JH3BO9Vyt6l37NHF9leljHHfURP4y6ydMvmpu5RGeb?=
+ =?us-ascii?Q?6n0hNEV5+oyKqUTW4jWXjBg5bvCWgKaAOX5bIBznE9YN/80R1jVng9mJ2rWp?=
+ =?us-ascii?Q?X3JWKkbaBa3Nl3ggOgIElrrc+gsDmJo+7rjvJlW8Lu83GwJe6QPc06rriS+u?=
+ =?us-ascii?Q?iypv2Xa+dKj0MofYDNOwaO+eAA8+5lGjL/2ulXpi897P6BJMg3PsuyA7OFCP?=
+ =?us-ascii?Q?l6Eg0tTzGKUOe1XXbWA0zJe6qyUB8+GnTlkVW+prUPYw/x33+exPT3fvFxJZ?=
+ =?us-ascii?Q?VvM2Hfsw4MQIP+TBn4ikKmukqf/ANfTJ8Jh1tQRITDU/HSQP1xjte3glnfLg?=
+ =?us-ascii?Q?0oJ2bV/6eUF1SeFa0LWsRGUhAntXWL1t7RyGwqHfiUFnJ/m/XLYqhslZlWhH?=
+ =?us-ascii?Q?FvSe3zunouSc6/PjsnJuiC3Mb40TX3Kq5j9pZ8mTETh/fsw96xCwa1ewjai9?=
+ =?us-ascii?Q?04+irs6FTKd+uU8AFzwwq8N7tMgUE3Es1t7pTHrDaleCKmnaivew9/sCd+Bz?=
+ =?us-ascii?Q?bx+OP5K8KnCA2JGEF8a+vIuAwxxrNWrsIdIRBtg/httCV8qpuLMTCeiMchWX?=
+ =?us-ascii?Q?M4F8cO0DKyobU376zMNa9dzma+CeGOr4jDun2LLEnr2twq52TlsWy313ESIh?=
+ =?us-ascii?Q?b7A+W6OnwDI6D1Cz1jJOVG1XDQ25y2YbMvSQWLpMat3eTkVcMs+hXWTQdaqu?=
+ =?us-ascii?Q?aV8Fl3IEzwV5ISBS4bLDOgovQVCEpWfhSlwEAbTW8oG5PcwoRXSUUqqYxZT4?=
+ =?us-ascii?Q?eRXuvrxF0SKZOQ2fiVtn3tfA5ITt8Wi9sFSLncZ/QsOvX906mT5x4uEzUVHy?=
+ =?us-ascii?Q?1fMF+L6ZpCbtSHNZNsZz8kK6NxQdGdicYDZlpHyKliIwtZD4F8rH9vvn2J70?=
+ =?us-ascii?Q?f+fSFqkiaEotoJoajiAhPCL63aV5JDm1kgnKCFKB8p4sCUtqCxJ+hT1nB9Ga?=
+ =?us-ascii?Q?rawCxiaKwo6TimXmDlg0BDHDD0mW8argYA/ShGGfFJ7sb/awFVCWaGsPqReN?=
+ =?us-ascii?Q?biJpTUrn2Tvvxlrf87aafLRzB29OpVvEooLMXAjoChGLAZy2gssIzBltqAqc?=
+ =?us-ascii?Q?+GRI7hY9exe/VE9QNRYIN6bLtONDvKa/Hpb8OvvtxYCWkobEa5GpO0NfvnvU?=
+ =?us-ascii?Q?vHEMOGXvfGTiyedgVjplY4N8y8myclyeMjCRZZF2lp+LWb/l/JF14EEtj2gZ?=
+ =?us-ascii?Q?/1hJBoNZY93KinjF+Wb2OOzJmWAO0b7Qp7EEOM1+F1iM4UOUzhBYsibTTkzo?=
+ =?us-ascii?Q?umNFcgTzvBRuQLC7G65Bq5zfZQRZbzBz+JJcd++bqORIJXaA8ITDU1bf67lV?=
+ =?us-ascii?Q?j1T6+mGBGtHBZIIvHAViHb5mh4tjQx9qcg5oULOXK/y6FzKIu0NeCBpLGQ5D?=
+ =?us-ascii?Q?7lmwnrcfygX6HlM+0dz7OTXiqMotpkYd+SUJa9LLBj+R2rg4Alq9TYOYwTrc?=
+ =?us-ascii?Q?3Lsinw0Lw4JaMAs9GA7ISsNRP7qHrqM5ezgx?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 09:14:40.2423
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4c8512ff-bac0-4d26-919a-ee6a4cecfc9d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CNrRVsikn5oRTwePS+D3DlplmTf4ABCTQ/PyjLyObpWLzDVWY3+NsY75+txgpVhH00p73bmXkHUNpNSGjDq6OW21uM+8VLxTHKLpruf/bko=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR04MB11139
+X-MS-Exchange-CrossTenant-Network-Message-Id: 300d342e-1bfd-4e03-32c0-08dd7cc71e3d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000F0DF.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5881
 
-On 4/15/25 20:58, Frank Li wrote:=0A=
-> On Tue, Apr 15, 2025 at 08:54:29AM +0200, Maud Spierings via B4 Relay wro=
-te:=0A=
->> From: Maud Spierings <maudspierings@gocontroll.com>=0A=
->>=0A=
->> The Moduline Display platform is a part of the wider GOcontroll Moduline=
-=0A=
->> ecosystem. These are embedded controllers that focus on modularity with=
-=0A=
->> their swappable IO modules.=0A=
->>=0A=
->> The base Moduline Display board includes a board-to-board connector with=
-=0A=
->> various busses to enable adding new display types required by the=0A=
->> application. It includes 2 Moduline IO module slots, a simple mono=0A=
->> codec/amplifier, a four channel adc, 2 CAN busses, an RTC and optional=
-=0A=
->> wifi/bluetooth.=0A=
->>=0A=
->> busses to the display adapter include:=0A=
->> - 4 lane LVDS=0A=
->> - 4 lane MIPI-DSI=0A=
->> - 4 lane MIPI-CSI=0A=
->> - HDMI 2.0a=0A=
->> - USB 2.0=0A=
->> - I2S=0A=
->> - I2C=0A=
->> - SPI=0A=
->>=0A=
->> Also a couple of GPIO and PWM pins for controlling various ICs on the=0A=
->> display adapter board.=0A=
->>=0A=
->> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>=0A=
->> ---=0A=
-[...]=0A=
->> +=0A=
->> +&ecspi1 {=0A=
->> +	cs-gpios =3D <&gpio2 12 GPIO_ACTIVE_LOW>,=0A=
->> +			   <&gpio1 11 GPIO_ACTIVE_LOW>,=0A=
->> +			   <&gpio1 10 GPIO_ACTIVE_LOW>;=0A=
-> =0A=
-> indention mess!=0A=
-I'm not really sure how to resolve this correctly, currently the next=0A=
-lines have three tabs and three spaces, which lines up which tab =3D 4=0A=
-spaces but that is not the case for everyone.=0A=
-=0A=
-I just saw two other ways this was done:=0A=
-4 tabs (doesn't line up at all)=0A=
-2 tabs and 3 spaces (doesn't line up for tab =3D 4 spaces but does for tab=
-=0A=
-=3D 8 spaces=0A=
-=0A=
-Another way I thought is 1 tab and 11 spaces which lines up for all=0A=
-cases, but excessive amount of spaces.=0A=
-=0A=
-> Frank=0A=
--- =0A=
-Met vriendelijke groeten/with kind regards,=0A=
-Maud Spierings=0A=
+
+Kees Cook <kees@kernel.org> writes:
+
+> Many drivers populate the stats buffer using C-String based APIs (e.g.
+> ethtool_sprintf() and ethtool_puts()), usually when building up the
+> list of stats individually (i.e. with a for() loop). This, however,
+> requires that the source strings be populated in such a way as to have
+> a terminating NUL byte in the source.
+>
+> Other drivers populate the stats buffer directly using one big memcpy()
+> of an entire array of strings. No NUL termination is needed here, as the
+> bytes are being directly passed through. Yet others will build up the
+> stats buffer individually, but also use memcpy(). This, too, does not
+> need NUL termination of the source strings.
+>
+> However, there are cases where the strings that populate the
+> source stats strings are exactly ETH_GSTRING_LEN long, and GCC
+> 15's -Wunterminated-string-initialization option complains that the
+> trailing NUL byte has been truncated. This situation is fine only if the
+> driver is using the memcpy() approach. If the C-String APIs are used,
+> the destination string name will have its final byte truncated by the
+> required trailing NUL byte applied by the C-string API.
+>
+> For drivers that are already using memcpy() but have initializers that
+> truncate the NUL terminator, mark their source strings as __nonstring to
+> silence the GCC warnings.
+
+> Specifically the following warnings were investigated and addressed:
+>
+> ../drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c:328:24: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (33 chars into 32 available) [-Wunterminated-string-initialization]
+>   328 |                 .str = "a_mac_control_frames_transmitted",
+>       |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ../drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c:340:24: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (33 chars into 32 available) [-Wunterminated-string-initialization]
+>   340 |                 .str = "a_pause_mac_ctrl_frames_received",
+>       |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
+> index 3f64cdbabfa3..0a8fb9c842d3 100644
+> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
+> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_ethtool.c
+> @@ -262,7 +262,7 @@ static int mlxsw_sp_port_set_pauseparam(struct net_device *dev,
+>  }
+>  
+>  struct mlxsw_sp_port_hw_stats {
+> -	char str[ETH_GSTRING_LEN];
+> +	char str[ETH_GSTRING_LEN] __nonstring;
+>  	u64 (*getter)(const char *payload);
+>  	bool cells_bytes;
+>  };
+
+Reviewed-by: Petr Machata <petrm@nvidia.com> # for mlxsw
