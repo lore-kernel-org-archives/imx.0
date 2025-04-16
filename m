@@ -1,305 +1,337 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2062.outbound.protection.outlook.com [40.107.22.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA1A1FF7B3
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 15:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744816151; cv=fail; b=MmLIici1tx5IisBVi0XGSUUnVFTjK1wE8skRyaC/GBWS23UZRT8SHQz8IAVpxfubqiLBq0HJs572wDtPo3iLp8NhEERm/DMnGR45JUUdL1zzty6M+S/5JLR5JtWlLODDDH63O5j0ajMVi0ItyuluAJHw6vFjCWO5DTyLC/3mFG4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744816151; c=relaxed/simple;
-	bh=bEW7asnU3m+stoDXBfzoq+RfkwBz+mikSQ2/zuGJC/4=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fPHMsN65WliMdGIWGD7VhMQtfG6gcgxFrRhmEo9HOoai2CQqC7FuW+mj6y4uz1TiJayX0dMgcU8SNceR5xqMWMdiWfXeM+ddjDpV89+KHk9DAsNkuD7MXTbGu0ijqFgz5EWbIjhr3AfXnpkao8Q6HnjxP9RPEYoM6CE+ap7BDDI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YTRfTs5t; arc=fail smtp.client-ip=40.107.22.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4EF206F19
+	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 15:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744816524; cv=none; b=B0pGrc0GydpE5HMeTKoeSHt4dGXrxdlfj8MN7ArBnrdXZoDULjfSVXB5O1ZXdYPC2/vSBST3K/gDMGfxnRbaigKHN6XvLbXxzONgJOYUN+1/rhSQ7PJ/R3XGJ50rt3eQjS3nr5qcFBDDHwDSvgl6tB5hkbgZIyi+HPOGU/7zrI4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744816524; c=relaxed/simple;
+	bh=HpU6VloERQNeMMx8yqX2bXPiTYCq+K5EnDiKMZtvK64=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B+9TdKyqfSZdm1dpxRjGQpD4uPnvER63HzO3AuOTQ6buXljrwzZiGOGuJksJ4I9Y5PhhdkJBZJ6KKkQ3b6wrkNGFu0of0oxdv0ZrZiiL1Zmujdi7QT4MwSGDCWFDn1JyAar4R8sHfbfC9Jwab0zvz3u2rxnES19xLNuW7zYHSy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H4MDYX8x; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YTRfTs5t"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WusB30TiwwQ0aEIsLFPhvZd95pGVRif304P2jr+oXqYEZMy5b/3Yvb+iU9W5P1oprBW7kQlR/lpxLUDrZyc+K+tJw7etAJ9A+VsPQgZ2Y4Zy/80eDMfKgxy/De3fsUrI5QNFJre16YR2K47CzWBf7Q6U/2FzIRPEMwJUKOouHu/GMTaVxBYbmzDg7atAhXZv3ZbWpho1W4odR2R/ClesskT/lMignp1U0oFEW+SmDBkb3TlM5a11iNNrDKQb5GLk5te23aD5H+FnHxqEWNY61yjmY4QjwrYaqDpzvBnGoQUmEZgnY7dNdZUulpn5DRetl193L6ZVG6Tc8sKwdmCLOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zFZUCoc4/+NWa0nYe2wc/QAVxh9ul+CxlezfLqbgD34=;
- b=Dt6nRXM/QnmtVePIaIkF9VYZRoaDGWv//UlfdifrmNMTgf35zTY718z9atMyyqh584Lp+KGJ/96D6Tv77/Q7o+aaNTIdfBp4AD1FJkZz1N9wPiFjjekhWomoQKvAa4dy5qcmLwhoyDUsG+x4RxVrg2D9AIse9yNXtzQcBEzq90zq/cBT1CjULSxnK5uGQQ9PAe2oZs02EN0qO1ogWX794um/zuDMd4rkR0t3kQ27VxrsNuOVVOtWyUvNU9Pe78S/qIiGj84ZMOeTo1PzTtClZ1026KOStrzSEnZBMfO3EOG8rZi3w147TXoqIkS2FeJH3sLTj7/dD3mQQbZCY8C04w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zFZUCoc4/+NWa0nYe2wc/QAVxh9ul+CxlezfLqbgD34=;
- b=YTRfTs5tSMHtapBIisDdel+b3z4DsPjUBesbPRkU6JnKl9/UgeR1j9kZ5vvpODHHWAjRtKNw2psxB2GFE35JlREBYdIlIR8EY84XqOOvfz4C8qo/p0dVFJozpOcKj0JnjYgE2tGxY8eYeK8TWqG3Hrb2hoq4PPjwJUguVYSZMLqW3tnb0mRw65WMs1x1CZOHOrkFwfmUJtm0opSdg8VLSjE047ZPYYRQ1sYR3Lun1Y24yEpQ2snBdvyxQbRX0snvPyl05f4WAYw0r/rLYbSGk0olcmzYjDxJXTYKVNHZSq47o9y0m5Ww3wpsNVyblZLvyWibJWzoX5iZtrLa6ZzTNQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA2PR04MB10514.eurprd04.prod.outlook.com (2603:10a6:102:41e::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.35; Wed, 16 Apr
- 2025 15:09:06 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.035; Wed, 16 Apr 2025
- 15:09:05 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Dong Aisheng <aisheng.dong@nxp.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H4MDYX8x"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac6e8cf9132so1305406266b.2
+        for <imx@lists.linux.dev>; Wed, 16 Apr 2025 08:15:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744816521; x=1745421321; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=f54xB8jAzZGxPN+eurWEBlbBBztYq662AJjtmWBvOs8=;
+        b=H4MDYX8xLITBmDp/BP43KBrRI19iMhteTi+Nc/PkQ0/sHczyY01CO2s/WrvSFNcCsS
+         AI5QPnxwPMGjdcCsWeUacbU3vEaoDz0YzvPWB7ot9kPqc+vKkJPh5bLrWTyzCBCY66M7
+         EjmO8Vm7QYhchSZOb4vMMP2FmiPRpg1LZrpcYn+hi4ZyvB8KJlc1efoO5Okn+pR4a3aF
+         6597tTlplIY0pnDbqWVyupFwUzCa74oLTUHenV+vd18G1iicYhpi3VmKTNRQUQf8PFBv
+         b5qARH2Lw7mhT8naxGOZtJSOuQ3II/GBol5jgTGLNpajL5UbuU8KZjeFuK8aQbD6ee+i
+         KjHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744816521; x=1745421321;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f54xB8jAzZGxPN+eurWEBlbBBztYq662AJjtmWBvOs8=;
+        b=sNfSxg8/4R4KM47nDF0Vs2ZsQbDm3t3pUIR1c6+V/JzeV6jwzIVI8eRkWM4BjMGcSF
+         R6fmYhoRTSIxBAgUNXrRgtNfsKfv6n2M6DVdL5R15lWqcnuBceO586E2DFIPy4Lz9idL
+         JFS4qZjQwceKDlvrWl1VLNzCz+F879JmygtFPJ7mwTdE0wsArMLgV9PQi/e8DMsu+pPG
+         MG00vIEZBdK4l1RcQSqN+UH6tSV9zry5Z++1Lk92RkyxWBQ/3giJznvo5K855U1c+L+0
+         Qgwwd1LmsUJqLolGTR5hizyghMOw2KTntC6I1rYWsGyg9GSl0icwfCzsoCJBgltbX2pO
+         ZB6g==
+X-Forwarded-Encrypted: i=1; AJvYcCXUMDnPUuL8deja39qWvmPPw05Ewh7aRwWNCVGA/4yO+gv9eoojsWQOzRCTxQZ75Ccpx5k=@lists.linux.dev
+X-Gm-Message-State: AOJu0YypsZKqGYoQOlsPPFNAmcCN2tKwiNn0RY6c+Fo45VfwcRPP1byn
+	JXL+3+zdr5pWpT82ZBM30ix6MN2JEDGd3rX3i72FwmqQTIatrY6C
+X-Gm-Gg: ASbGncszP179mIXhj5VeEJwmfUfw4/MNgZceZQfDi26jbk+h7PcVZOd+eYgx4WZcHAp
+	rpiSMbYQl8Q41qSvJd5exVZLTgHmezqWrZo7lkO3NK2Vzvgh3Z9teXpAyjeYy0WELFjsTrAEXvX
+	m0JsBaURflBQw6slmubmUIOgX5dU1MPgTn2lXJ7z/hNuildCxMgJ3QdNfcrn7l7WP4uPLVgeln5
+	c6LywCNcfzJzC6ujEDRqJ1oL15gGKrV6xKYRTxzp1WAZb/1K37PX8ds+0RieM4IrUxvvMZr5tJv
+	sOB6zLwh4GCMu2UJFw3mFyEET3Jyjhp5CLR2PWmBlPXQVWGJMJh1Fg8CBUJZJQynTX9xBD/1TXI
+	38rxOwbJfraXZa9ZjjK4=
+X-Google-Smtp-Source: AGHT+IEYDMPTAVgdmlNNu9P4Oui1LjNbVBOfvMZvnfG/4JzHe+Ej8lmr2fDQnm8jtO40TBJR4xN3QQ==
+X-Received: by 2002:a17:907:3e03:b0:ac8:16fb:7c85 with SMTP id a640c23a62f3a-acb42bffb7fmr219117566b.41.1744816520410;
+        Wed, 16 Apr 2025 08:15:20 -0700 (PDT)
+Received: from toolbox.int.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb3ce5dbaesm143286166b.85.2025.04.16.08.15.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Apr 2025 08:15:20 -0700 (PDT)
+From: max.oss.09@gmail.com
+To: max.krummenacher@toradex.com
+Cc: Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-gpio@vger.kernel.org (open list:PIN CONTROLLER - FREESCALE),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: pinctrl: convert fsl,vf610-pinctrl.txt to yaml format
-Date: Wed, 16 Apr 2025 11:08:46 -0400
-Message-Id: <20250416150847.3422218-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0043.namprd03.prod.outlook.com
- (2603:10b6:a03:33e::18) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] arm64: dts: imx8-apalis: Add PCIe and SATA support
+Date: Wed, 16 Apr 2025 17:13:41 +0200
+Message-ID: <20250416151353.1692373-1-max.oss.09@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA2PR04MB10514:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0893d4e7-bffd-446c-6930-08dd7cf8a0c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?e01hSxcltAinA8/HyWVip8tBonfnxUhFKITuNa/Ps+ZxyEZF47QZErFEs1Nv?=
- =?us-ascii?Q?5nkic2y8D44Y2ECbxITMNgGaOVJ+KQX2pZ2bR6oLegGAJv6f24ULJkMNt/eg?=
- =?us-ascii?Q?Iq4fJM/NoHJu5/JMgIK+RNOs8uj3JbwRaGUmCprDqLPGsVPYed8qRkYjFUOM?=
- =?us-ascii?Q?vwH8p6ymgEgjLiuCmToq/cVyl43MFfDZIo27XayRHN1d0nPa56DKfTtN3coC?=
- =?us-ascii?Q?WSGZ2AMcU/mx2jhgRHmKUlvhaC/t2ymO3u7N4XNj/Us53zx3lXD6u6iPaTNE?=
- =?us-ascii?Q?81eEfi6NyOh/XnwuS6z6zVsyKIb5JgMqqvWqwYcXar6ClAFy1uiuRuCmo8d4?=
- =?us-ascii?Q?spLsYTaj/lHRowB+8cNC75d4cXcfvQfLhKE6dOeEnGIGN5M3Y87YhVrAussW?=
- =?us-ascii?Q?M7Rvb/UH8rKNHihojPOqFUXJZ89fegBvhQ5akO2n+1LfrNSZxaS+BLBHFm1Q?=
- =?us-ascii?Q?qnTyvtEm0q/im+Fa3sSJLiyluFU4Ra7hCzp0SzWJ1D0HGKwvDdJtuUeoCTmi?=
- =?us-ascii?Q?sqpfSl0i7rccTap7xZTxepx8IGoMCfgoqS/8xH+v8nu77gTy2gmRDaONkzb/?=
- =?us-ascii?Q?DyiqVa6IbHYi2A8wF6IK8TqxH5rdmJpqz2+4QdlDfOihXHbGxAJdcTz9OqXS?=
- =?us-ascii?Q?SDOfthcAUVbWExF0ICGnKYQpAmTmvn918Zx4PTBFrisRbu3VOjjB+o8SVqyq?=
- =?us-ascii?Q?bYRFTRu5xgk3upQwUSoSW2rk73HE7mK2ap2jffVt/9yT7SUDtmWRkHNaCQxO?=
- =?us-ascii?Q?1z8LOiOxFS5HTfK9Gl7P+uXG0VkOn719ofvu1O4ZVwYFFl6o8NI7E3R4MSXi?=
- =?us-ascii?Q?B1vw+4AEMPftOQ313Z8GHpxF2QafZfxOHePXTtTBivoA/phnshX4UaC8u8xh?=
- =?us-ascii?Q?Ws08/gORFtWFEfWI2WKp9H98m3liwn+6rbOzrfHnk9BcXOmAw2rNiT/4Q/3G?=
- =?us-ascii?Q?2vC6Ee2ZslwJPY2gUPy2pUWO8mCbnaeRHoV3WYjbV4RiLyLN5w14Vlewxj60?=
- =?us-ascii?Q?aSePNMSZucEsyhG3RFMpDwKVEKEFboWi5MofiNK6XaRxPH/cde+cuF/AKXK9?=
- =?us-ascii?Q?DpzZ8e+6/AvMBX3bjK55xpy/b0gheUJmxT2bNrHxxzJ1Z6J/QK3fKyUvoJ7t?=
- =?us-ascii?Q?abupAL21z3T40PrwjJpKJ7lsMSfbPkhu/xhEUAFiFL/GsOS/Pe0uplinsHqs?=
- =?us-ascii?Q?LQEMKtAVzogH1w2xRuLWwcGOzAjTDmo4BzKwtGSO//RwZENVCyB8GPDfJ79S?=
- =?us-ascii?Q?00LCrMQPSvWX7LMLhyoksYKIUqG/usu4dAjXLUuU4RU7m2uZU0RPc8vddVof?=
- =?us-ascii?Q?BDLqs6H03yVcvRKk8nFZdi7PM7zIOTVTFHhVOU9xvdV2G5gaCriJutXSTmJP?=
- =?us-ascii?Q?Wg9rsSeEIh3CXGdiukXQU8kkhGCDP4qNfVzSQoP4MObTv2pxH7d0LnrscpeZ?=
- =?us-ascii?Q?egj5Gp3CL9+IcSL8wG96ZBh6sgPUnA0s?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ccahjw3hv4s7NV6Q7OQlgCRO9ufGckHmTyIJGlrRbSv2NVT0TW5ccHdGBEZx?=
- =?us-ascii?Q?0xk0RQIoCb9/WwgdP209rPUMD5fdMfHDwfoyzgnMU1L17O3+0dNRK6nXssqD?=
- =?us-ascii?Q?Fi4Y65u96Bx2Ly697ri9wUvaXScm7QeQr3d6lS4gZZ6wHLFAURsjgw8S/gan?=
- =?us-ascii?Q?FtFJZ/uJRGBrXpAJSYUAV2dugjYZxNuvzU6wj092ojQmBBs0LMur6hV4UKF1?=
- =?us-ascii?Q?WXUfSCDZb/lBWzGGNpKKGIyoJS29v+TM7LvVjlihBDqGNmL0MvQchc99SXTl?=
- =?us-ascii?Q?6E2mAZE3Gdb0VSeW8Vs5K2LfVKy8WqLy2USnJJDp796mH+U+Ze5dITJX5ZPk?=
- =?us-ascii?Q?ydC9P4c9B6i6O92I3csaIaqbSmPi3WIdzLW5ApnOy9XrGnmH8g3M8j7TlRpz?=
- =?us-ascii?Q?jzdzFRGffR+Mda9C2+2LaSvJuwEEulNQ3baGFWjwa3wX100kk6fJp/UhxqWU?=
- =?us-ascii?Q?bsfllaXjPB64nyvt8XeTJZA7gDUPoF6l5cOz3Lp00JghA34bxEwZNdLgWJDw?=
- =?us-ascii?Q?xLJs3gb2yUMIVih5Zg+sTdkAREodKsHi8i8oVeeqXekRYh/TLll24PpaJI89?=
- =?us-ascii?Q?a1ukFRv/TOv07vuvkvYLIkhtHqgGUBWe8lfXSmJRoFmcUw+qs7cxtp1NmN8Q?=
- =?us-ascii?Q?TYe+2uLH4WuTUcrGe4VGPkMWVGtb0qSxcKSQai+jd+wHZLxnza/yzQAuC6rU?=
- =?us-ascii?Q?vqX6GJGjOngaa9V4pgh+aIux4UXHvY14vTe+ZlrbQLMxTCpTNeuQNqc2NyIf?=
- =?us-ascii?Q?CCAZeB4EFtclzOSI6HKZZ9vJajqMZHJS/mPlclo9yvl58mqkXrbJqbAas8kw?=
- =?us-ascii?Q?K0pViGgrL10PqPrXngfcZZ59UxRjBCe77/oN+ziER++jxo9ekLI6UhKIFacn?=
- =?us-ascii?Q?CC42RfhIVWapODs4ZIGv0LLwxIurVAcP3f0ceYD+X+C3ZhkCzJnOs/Of4hZr?=
- =?us-ascii?Q?Qyd2d5leeM8wqzgzzWJUlMnx772dThYVmtVLoe8WuY7WzROjNwM24TS6UoIy?=
- =?us-ascii?Q?icvm7Orp1ed7RE2MS4GC8cTisctcllFDqnfYSnw0PvsozkWKzdsUWlOoIuXa?=
- =?us-ascii?Q?+cmCURFb5DGau1yrE96X6HyEAKUqU1ZE0UAELNEYMYsb6DR9B0i98yA/2b7Z?=
- =?us-ascii?Q?CLc8MvE8474BzlXNIyRaUrtENnKPxOTkgc6Obc8bjvf9uhXDEalak8c73oi8?=
- =?us-ascii?Q?LcAtgy6yBGEuKHS6GQtJAoW+rbOMXuNDI+HIekCRJqj6dhBImkAYnHXQwOUQ?=
- =?us-ascii?Q?UxTKxcDkxdlbTReg4VUhiDxsarTqJAXyOPd7bm8A+uhd1L+1Ocx6gcYOtHUS?=
- =?us-ascii?Q?XFrKeHZPgzjbVsu9uqrMYeQUxhO7Uix9epCwbjB+rSETB+ZBVzLjVZUixZT7?=
- =?us-ascii?Q?AOsrT7eTgN9aEi8fBnCbEPVkzL31eWl3Z4BCueYTpiMdGFAFI0lKjh9kN/WZ?=
- =?us-ascii?Q?3wEQMcmwSVGKMbTNr/59ul7azJm70LzyMZ1L/qn+8vGWS7XTUdpx0mZ95LXU?=
- =?us-ascii?Q?BFIfR5zyqZuzxdSldN3aBypw/CGtkz7GYWIPoFDpkX5Wlbm7r10Gow3ZKtiN?=
- =?us-ascii?Q?lGXoYNG2NJby5RdBAQc=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0893d4e7-bffd-446c-6930-08dd7cf8a0c7
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 15:09:04.9962
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VaxPTwUphN7zA6exgpw7c9ts7IIQYXuOfRJT1lTVi0rtGRkdG8/HoQz1oTuOQklXkVIjuCDjhZEu1OAAaC4jAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10514
+Content-Transfer-Encoding: 8bit
 
-Convert fsl,vf610-pinctrl.txt to yaml format.
+From: Max Krummenacher <max.krummenacher@toradex.com>
 
-Additional changes:
-- subnode name force pattern to 'grp$' to align other imx chips.
+The needed drivers to support PCIe and SATA for i.MX 8QM have been
+added.
+Configure them for the Apalis iMX8 SoM.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+The pciea and pcieb blocks each get a single PCIe lane, pciea is
+available on the carrier boards while pcieb is connected to the
+on module Wi-Fi/BT module.
+The SATA lane is available on the carrier boards.
+
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+
 ---
-change from v1 to v2
-- add dual license
-- add Rob's reviewed-by tag
----
- .../bindings/pinctrl/fsl,vf610-iomuxc.yaml    | 83 +++++++++++++++++++
- .../bindings/pinctrl/fsl,vf610-pinctrl.txt    | 41 ---------
- 2 files changed, 83 insertions(+), 41 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,vf610-iomuxc.yaml
- delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,vf610-pinctrl.txt
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/fsl,vf610-iomuxc.yaml b/Documentation/devicetree/bindings/pinctrl/fsl,vf610-iomuxc.yaml
-new file mode 100644
-index 0000000000000..3e13587df3107
---- /dev/null
-+++ b/Documentation/devicetree/bindings/pinctrl/fsl,vf610-iomuxc.yaml
-@@ -0,0 +1,83 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/pinctrl/fsl,vf610-iomuxc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+ .../boot/dts/freescale/imx8-apalis-eval.dtsi  | 10 ++-
+ .../dts/freescale/imx8-apalis-ixora-v1.1.dtsi | 10 ++-
+ .../dts/freescale/imx8-apalis-ixora-v1.2.dtsi | 10 ++-
+ .../boot/dts/freescale/imx8-apalis-v1.1.dtsi  | 70 ++++++++++++-------
+ .../boot/dts/freescale/imx8qm-apalis.dtsi     | 10 ++-
+ 5 files changed, 74 insertions(+), 36 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
+index dc127298715b..311d4950793c 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi
+@@ -104,7 +104,10 @@ &lsio_pwm3 {
+ 	status = "okay";
+ };
+ 
+-/* TODO: Apalis PCIE1 */
++/* Apalis PCIE1 */
++&pciea {
++	status = "okay";
++};
+ 
+ /* TODO: Apalis BKL1_PWM */
+ 
+@@ -121,7 +124,10 @@ &sai5_lpcg {
+ 	status = "okay";
+ };
+ 
+-/* TODO: Apalis SATA1 */
++/* Apalis SATA1 */
++&sata {
++	status = "okay";
++};
+ 
+ /* Apalis SPDIF1 */
+ &spdif0 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
+index d4a1ad528f65..3d8731504ce1 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi
+@@ -191,7 +191,10 @@ &lsio_pwm3 {
+ 	status = "okay";
+ };
+ 
+-/* TODO: Apalis PCIE1 */
++/* Apalis PCIE1 */
++&pciea {
++	status = "okay";
++};
+ 
+ /* TODO: Apalis BKL1_PWM */
+ 
+@@ -208,7 +211,10 @@ &sai5_lpcg {
+ 	status = "okay";
+ };
+ 
+-/* TODO: Apalis SATA1 */
++/* Apalis SATA1 */
++&sata {
++	status = "okay";
++};
+ 
+ /* Apalis SPDIF1 */
+ &spdif0 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
+index 5e132c83e1b2..106e802a68ba 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi
+@@ -240,7 +240,10 @@ &lsio_pwm3 {
+ 	status = "okay";
+ };
+ 
+-/* TODO: Apalis PCIE1 */
++/* Apalis PCIE1 */
++&pciea {
++	status = "okay";
++};
+ 
+ /* TODO: Apalis BKL1_PWM */
+ 
+@@ -257,7 +260,10 @@ &sai5_lpcg {
+ 	status = "okay";
+ };
+ 
+-/* TODO: Apalis SATA1 */
++/* Apalis SATA1 */
++&sata {
++	status = "okay";
++};
+ 
+ /* Apalis SPDIF1 */
+ &spdif0 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
+index dbea1eefdeec..6f27a9cc2494 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
+@@ -339,6 +339,25 @@ &flexcan3 {
+ 	pinctrl-0 = <&pinctrl_flexcan3>;
+ };
+ 
++&hsio_phy {
++	fsl,hsio-cfg = "pciea-pcieb-sata";
++	fsl,refclk-pad-mode = "input";
++	status = "okay";
++};
 +
-+title: Freescale Vybrid VF610 IOMUX Controller
++&hsio_refa_clk {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pcie_sata_refclk>;
++	enable-gpios = <&lsio_gpio4 11 GPIO_ACTIVE_HIGH>;
++};
 +
-+description:
-+  Please refer to fsl,imx-pinctrl.txt in this directory for common binding part
-+  and usage.
++&hsio_refb_clk {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pcie_wifi_refclk>;
++	clocks = <&hsio_refa_clk>;
++	enable-gpios = <&lsio_gpio2 11 GPIO_ACTIVE_HIGH>;
++};
 +
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    const: fsl,vf610-iomuxc
-+
-+  reg:
-+    maxItems: 1
-+
-+patternProperties:
-+  'grp$':
-+    type: object
-+    description:
-+      Pinctrl node's client devices use subnodes for desired pin configuration.
-+      Client device subnodes use below standard properties.
-+
-+    properties:
-+      fsl,pins:
-+        description:
-+          two integers array, represents a group of pins mux and config setting.
-+          The format is fsl,pins = <PIN_FUNC_ID CONFIG>, PIN_FUNC_ID is a pin
-+          working on a specific function, CONFIG is the pad setting value such
-+          as pull-up, speed, ode for this pin. Please refer to Vybrid VF610
-+          datasheet for the valid pad config settings.
-+        $ref: /schemas/types.yaml#/definitions/uint32-matrix
-+        items:
-+          items:
-+            - description:
-+                PIN_FUN_ID refer to vf610-pinfunc.h in device tree source folder
-+                for all available PIN_FUNC_ID for Vybrid VF610.
-+            - description: |
-+                CONFIG bits definition is
-+                PAD_CTL_SPEED_LOW               (1 << 12)
-+                PAD_CTL_SPEED_MED               (2 << 12)
-+                PAD_CTL_SPEED_HIGH              (3 << 12)
-+                PAD_CTL_SRE_FAST                (1 << 11)
-+                PAD_CTL_SRE_SLOW                (0 << 11)
-+                PAD_CTL_ODE                     (1 << 10)
-+                PAD_CTL_HYS                     (1 << 9)
-+                PAD_CTL_DSE_DISABLE             (0 << 6)
-+                PAD_CTL_DSE_150ohm              (1 << 6)
-+                PAD_CTL_DSE_75ohm               (2 << 6)
-+                PAD_CTL_DSE_50ohm               (3 << 6)
-+                PAD_CTL_DSE_37ohm               (4 << 6)
-+                PAD_CTL_DSE_30ohm               (5 << 6)
-+                PAD_CTL_DSE_25ohm               (6 << 6)
-+                PAD_CTL_DSE_20ohm               (7 << 6)
-+                PAD_CTL_PUS_100K_DOWN           (0 << 4)
-+                PAD_CTL_PUS_47K_UP              (1 << 4)
-+                PAD_CTL_PUS_100K_UP             (2 << 4)
-+                PAD_CTL_PUS_22K_UP              (3 << 4)
-+                PAD_CTL_PKE                     (1 << 3)
-+                PAD_CTL_PUE                     (1 << 2)
-+                PAD_CTL_OBE_ENABLE              (1 << 1)
-+                PAD_CTL_IBE_ENABLE              (1 << 0)
-+                PAD_CTL_OBE_IBE_ENABLE          (3 << 0)
-+
-+    required:
-+      - fsl,pins
-+
-+    additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: pinctrl.yaml#
-+
-+unevaluatedProperties: false
-diff --git a/Documentation/devicetree/bindings/pinctrl/fsl,vf610-pinctrl.txt b/Documentation/devicetree/bindings/pinctrl/fsl,vf610-pinctrl.txt
-deleted file mode 100644
-index ddcdeb697c292..0000000000000
---- a/Documentation/devicetree/bindings/pinctrl/fsl,vf610-pinctrl.txt
-+++ /dev/null
-@@ -1,41 +0,0 @@
--Freescale Vybrid VF610 IOMUX Controller
+ /* TODO: Apalis HDMI1 */
+ 
+ &gpu_alert0 {
+@@ -514,7 +533,10 @@ &lsio_gpio0 {
+ 			  "MXM3_112",
+ 			  "MXM3_118",
+ 			  "MXM3_114",
+-			  "MXM3_116";
++			  "MXM3_116",
++			  "",
++			  "",
++			  "MXM3_26";
+ };
+ 
+ &lsio_gpio1 {
+@@ -586,15 +608,6 @@ &lsio_gpio2 {
+ 			  "MXM3_183",
+ 			  "MXM3_185",
+ 			  "MXM3_187";
 -
--Please refer to fsl,imx-pinctrl.txt in this directory for common binding part
--and usage.
+-	pcie-wifi-hog {
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_pcie_wifi_refclk>;
+-		gpio-hog;
+-		gpios = <11 GPIO_ACTIVE_HIGH>;
+-		line-name = "PCIE_WIFI_CLK";
+-		output-high;
+-	};
+ };
+ 
+ &lsio_gpio3 {
+@@ -660,16 +673,6 @@ &lsio_gpio4 {
+ 			  "MXM3_291",
+ 			  "MXM3_289",
+ 			  "MXM3_287";
 -
--Required properties:
--- compatible: "fsl,vf610-iomuxc"
--- fsl,pins: two integers array, represents a group of pins mux and config
--  setting. The format is fsl,pins = <PIN_FUNC_ID CONFIG>, PIN_FUNC_ID is
--  a pin working on a specific function, CONFIG is the pad setting value
--  such as pull-up, speed, ode for this pin. Please refer to Vybrid VF610
--  datasheet for the valid pad config settings.
+-	/* Enable pcie root / sata ref clock unconditionally */
+-	pcie-sata-hog {
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_pcie_sata_refclk>;
+-		gpio-hog;
+-		gpios = <11 GPIO_ACTIVE_HIGH>;
+-		line-name = "PCIE_SATA_CLK";
+-		output-high;
+-	};
+ };
+ 
+ &lsio_gpio5 {
+@@ -771,9 +774,30 @@ &mu2_m0 {
+ 	status = "okay";
+ };
+ 
+-/* TODO: Apalis PCIE1 */
++/* Apalis PCIE1 */
++&pciea {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_reset_moci>;
++	phys = <&hsio_phy 0 PHY_TYPE_PCIE 0>;
++	phy-names = "pcie-phy";
++	reset-gpio = <&lsio_gpio0 30 GPIO_ACTIVE_LOW>;
++	vpcie-supply = <&reg_pcie_switch>;
++};
++
++/* On-module Wi-Fi */
++&pcieb {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pcieb>, <&pinctrl_wifi>;
++	phys = <&hsio_phy 1 PHY_TYPE_PCIE 1>;
++	phy-names = "pcie-phy";
++	reset-gpio = <&lsio_gpio5 0 GPIO_ACTIVE_LOW>;
++	status = "okay";
++};
+ 
+-/* TODO: On-module Wi-Fi */
++&phyx2_lpcg {
++	clocks = <&hsio_refa_clk>, <&hsio_refb_clk>,
++		 <&hsio_refa_clk>, <&hsio_per_clk>;
++};
+ 
+ /* TODO: Apalis BKL1_PWM */
+ 
+@@ -806,8 +830,6 @@ &sai5 {
+ 			       <722534400>, <45158400>, <11289600>, <49152000>;
+ };
+ 
+-/* TODO: Apalis SATA1 */
 -
--CONFIG bits definition:
--PAD_CTL_SPEED_LOW		(1 << 12)
--PAD_CTL_SPEED_MED		(2 << 12)
--PAD_CTL_SPEED_HIGH		(3 << 12)
--PAD_CTL_SRE_FAST		(1 << 11)
--PAD_CTL_SRE_SLOW		(0 << 11)
--PAD_CTL_ODE			(1 << 10)
--PAD_CTL_HYS			(1 << 9)
--PAD_CTL_DSE_DISABLE		(0 << 6)
--PAD_CTL_DSE_150ohm		(1 << 6)
--PAD_CTL_DSE_75ohm		(2 << 6)
--PAD_CTL_DSE_50ohm		(3 << 6)
--PAD_CTL_DSE_37ohm		(4 << 6)
--PAD_CTL_DSE_30ohm		(5 << 6)
--PAD_CTL_DSE_25ohm		(6 << 6)
--PAD_CTL_DSE_20ohm		(7 << 6)
--PAD_CTL_PUS_100K_DOWN		(0 << 4)
--PAD_CTL_PUS_47K_UP		(1 << 4)
--PAD_CTL_PUS_100K_UP		(2 << 4)
--PAD_CTL_PUS_22K_UP		(3 << 4)
--PAD_CTL_PKE			(1 << 3)
--PAD_CTL_PUE			(1 << 2)
--PAD_CTL_OBE_ENABLE		(1 << 1)
--PAD_CTL_IBE_ENABLE		(1 << 0)
--PAD_CTL_OBE_IBE_ENABLE		(3 << 0)
+ /* Apalis SPDIF1 */
+ &spdif0 {
+ 	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi
+index c18f57039f6e..f97feee52c81 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qm-apalis.dtsi
+@@ -22,6 +22,10 @@ &fec1 {
+ 	phy-mode = "rgmii-rxid";
+ };
+ 
++&hsio_refa_clk {
++	enable-gpios = <&lsio_gpio4 27 GPIO_ACTIVE_HIGH>;
++};
++
+ /* TODO: Apalis HDMI1 */
+ 
+ /* Apalis I2C2 (DDC) */
+@@ -188,12 +192,6 @@ &lsio_gpio4 {
+ 			  "MXM3_291",
+ 			  "MXM3_289",
+ 			  "MXM3_287";
 -
--Please refer to vf610-pinfunc.h in device tree source folder
--for all available PIN_FUNC_ID for Vybrid VF610.
+-	/* Enable pcie root / sata ref clock unconditionally */
+-	pcie-sata-hog {
+-		gpios = <27 GPIO_ACTIVE_HIGH>;
+-	};
+-
+ };
+ 
+ &lsio_gpio5 {
 -- 
-2.34.1
+2.42.0
 
