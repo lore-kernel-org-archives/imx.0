@@ -1,201 +1,261 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5B73FB0E
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 12:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DD58528E;
+	Wed, 16 Apr 2025 12:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744807325; cv=none; b=LJAvo0YGgQ9f0EUGLkir7Zg2d6u+6RtSwDGJ28M3zX3zJ9Il3edKvTdTG9S1elAxjqDTlSNwOeYnUl9nOkX/U+VwKx/tsVzMsN7q/Jsz8hN5bovYXWmsw8s7XtpM4jIeUSnN7VSm8L1duZCm8iYeEh8IgoVjAdh5hhCoogoDua0=
+	t=1744807348; cv=none; b=sQ6+Pvoi2pC2wTF0icmK8Nh/A6Pr9lhDjVfmU6fmka8+kK8B6CqeahGCaemNqpumT9SGApLPDSfAXcrKK7buttl9zDN+US4PEdslfkkKyxKW3pSGA2df3trRz/bQqJyJCPBPEIQJun7XtjUPucGLUMCAr8xomm2PNC2KtZUwwTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744807325; c=relaxed/simple;
-	bh=l6BkU0WG/PDwwSUx64TnlRvo3wX1D1V2xBkUjIb0FY4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PYhaOwI3Ej5RAoaIxsdvRzKqR86bKaUER+iDHHWXQR0w2TwsLxWbwJCsANCVBppNxQ7Imhk/n1Ze8Lnd8+O7h0WDfGIG1FJ7SToopp5ApA5GVdKLi0wZ9U0MVad6uZki3r2DTaZ9SnN2+xhAFaT9C/ENlwVTQRCjIsytsOa4Qwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=YWqeyxmQ; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1744807348; c=relaxed/simple;
+	bh=YaLyJ2LyojkdkHa6UjzZZ5YY5cd2AoOll8QQL7QvgqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uUNR7CsAbgkXF0M8evT2tVrXNEL+gTf0XPSDP+WuMzp6N9oeRjtmx7nt0m/k+wFUorwmMkjn+GLxrGBfr2kU5Z6lDiO5FJ3KtXmagoBRvFpx+WzgNdrpkLx1NQiWgrIdhvgO8tiSsQmZvGy19zBPsBL6o510kzkPuEuWSzGbzsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vQf7FTiL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="YWqeyxmQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=amxK6ouKB1rCSLCDLbv8LpDaz47zy5qHLGTrbw+VYdM=; b=YWqeyxmQyXyzhLd5L6kJlOPOJO
-	LBLBeFqKfRCodOVY+s2EwPOLpw+hKBsVnpNRDDMJXI0Zh2Rn5NShXZVnIYZaaGwMz1tkOK7cadfWb
-	hPx/1ifWOzYIrFhZNNTsrFJ9SfuZb28w32qhyx0CBnLbrsZTk5DHN1gGnFRePEhkBUimySejHXuwf
-	2qoMOu4q/jYA0ocQMICZGs4gvBmZkI9HAuCCjqCN/3lfddL/wxJXKdunfnpwwIxvgD5jjntylytzZ
-	5NoLQ1j4oZ4PD1PieUyrToTMmn0EG9bDnwffFPj4alPrq9q6bh6yhyWkWN4F2zK8xor2R+nVGFbgH
-	kDDGi6ow==;
-Received: from [89.212.21.243] (port=41686 helo=[192.168.69.116])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1u525Z-003ze3-2Z;
-	Wed, 16 Apr 2025 14:42:01 +0200
-Message-ID: <6839cdfa-3086-459f-b318-4f3f2bbf0a4e@norik.com>
-Date: Wed, 16 Apr 2025 14:42:01 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQf7FTiL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1CEC4CEE2;
+	Wed, 16 Apr 2025 12:42:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744807347;
+	bh=YaLyJ2LyojkdkHa6UjzZZ5YY5cd2AoOll8QQL7QvgqE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vQf7FTiLueTna3mVqCVJ04IS1e4UW2CrQdmeBOPzquGZ5diNSIX8FAxdcU8mYoxrR
+	 mBoNq4BK0HYCEzl+yInEai3zaXntIGCoLgrszNd6pqh+vKdITUUL6Kvw0sa4WHOAMC
+	 VFlJM0Yq0Wuqyr7MHvO6gapNWev6kQC4tx1Cpa98wtzEz391rx9H23RTW7gqwxJabT
+	 RbUlMSu3SEO5xx+fmo17D7Q6FMhetFapfP/Ry204hkndMr0hRjtAtEDtvmF/jycTR6
+	 De4CQ5fO5g3pQMAl2v54Lg4auQmztCiPsX9JYou38B5zn+p3BmEbmaF1IvkBFhXRWM
+	 UR4MoCeRknWRg==
+Date: Wed, 16 Apr 2025 07:42:26 -0500
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	"open list:MEDIA INPUT INFRASTRUCTURE (V4L/DVB)" <linux-media@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: media: convert imx.txt to yaml format
+Message-ID: <20250416124226.GA2498696-robh@kernel.org>
+References: <20250414210720.3359301-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/15] arm64: dts: freescale: imx93-phyboard-segin: Add
- RTC support
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, upstream@lists.phytec.de
-References: <20250415043311.3385835-1-primoz.fiser@norik.com>
- <20250415043311.3385835-11-primoz.fiser@norik.com>
- <Z/6pkVPh5Rn9oOPY@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <Z/6pkVPh5Rn9oOPY@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250414210720.3359301-1-Frank.Li@nxp.com>
 
-Hi Frank,
-
-On 15. 04. 25 20:46, Frank Li wrote:
-> On Tue, Apr 15, 2025 at 06:33:06AM +0200, Primoz Fiser wrote:
->> Add support for RTC connected via I2C on phyBOARD-Segin-i.MX93. Set
->> default RTC by configuring the aliases.
->>
->> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
->> ---
->> Changes in v2:
->> - reword commit message
->>
->>  .../dts/freescale/imx93-phyboard-segin.dts    | 36 +++++++++++++++++++
->>  1 file changed, 36 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
->> index 525f52789f8b..38b89398e646 100644
->> --- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
->> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
->> @@ -17,6 +17,11 @@ /{
->>  	compatible = "phytec,imx93-phyboard-segin", "phytec,imx93-phycore-som",
->>  		     "fsl,imx93";
->>
->> +	aliases {
->> +		rtc0 = &i2c_rtc;
->> +		rtc1 = &bbnsm_rtc;
->> +	};
->> +
->>  	chosen {
->>  		stdout-path = &lpuart1;
->>  	};
->> @@ -33,6 +38,24 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
->>  	};
->>  };
->>
->> +/* I2C2 */
+On Mon, Apr 14, 2025 at 05:07:18PM -0400, Frank Li wrote:
+> Convert binding doc imx.txt to yaml format. Create two yaml files:
+> fsl,imx6-mipi-csi2.yaml and fsl,imx-capture-subsystem.yaml.
 > 
-> nit: needn't it
+> Additional changes:
+> - add example for fsl,imx6-mipi-csi2
 > 
->> +&lpi2c2 {
->> +	clock-frequency = <400000>;
->> +	pinctrl-names = "default";
->> +	pinctrl-0 = <&pinctrl_lpi2c2>;
->> +	status = "okay";
->> +
->> +	/* RTC */
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../media/fsl,imx-capture-subsystem.yaml      |  38 ++++++
+>  .../bindings/media/fsl,imx6-mipi-csi2.yaml    | 126 ++++++++++++++++++
+>  .../devicetree/bindings/media/imx.txt         |  53 --------
+>  3 files changed, 164 insertions(+), 53 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml
+>  create mode 100644 Documentation/devicetree/bindings/media/fsl,imx6-mipi-csi2.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/media/imx.txt
 > 
-> the same here, not name is rtc.
-> 
+> diff --git a/Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml b/Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml
+> new file mode 100644
+> index 0000000000000..77be3c1f37c5b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/fsl,imx-capture-subsystem.yaml
+> @@ -0,0 +1,38 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/fsl,imx-capture-subsystem.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale i.MX Media Video Device
+> +
+> +description:
+> +  This is the media controller node for video capture support. It is a
+> +  virtual device that lists the camera serial interface nodes that the
+> +  media device will control
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: fsl,imx-capture-subsystem
+> +
+> +  ports:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description:
+> +      Should contain a list of phandles pointing to camera
+> +      sensor interface ports of IPU devices.
+> +
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    capture-subsystem {
+> +        compatible = "fsl,imx-capture-subsystem";
+> +        ports = <&ipu1_csi0>, <&ipu1_csi1>;
+> +    };
+> +
+> diff --git a/Documentation/devicetree/bindings/media/fsl,imx6-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/fsl,imx6-mipi-csi2.yaml
+> new file mode 100644
+> index 0000000000000..1e69a1ff868cd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/fsl,imx6-mipi-csi2.yaml
+> @@ -0,0 +1,126 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/fsl,imx6-mipi-csi2.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: MIPI CSI-2 Receiver core in the i.MX SoC
+> +
+> +description:
+> +  This is the device node for the MIPI CSI-2 Receiver core in the i.MX
+> +  SoC. This is a Synopsys Designware MIPI CSI-2 host controller core
+> +  combined with a D-PHY core mixed into the same register block. In
+> +  addition this device consists of an i.MX-specific "CSI2IPU gasket"
+> +  glue logic, also controlled from the same register block. The CSI2IPU
+> +  gasket demultiplexes the four virtual channel streams from the host
+> +  controller's 32-bit output image bus onto four 16-bit parallel busses
+> +  to the i.MX IPU CSIs.
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: fsl,imx6-mipi-csi2
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: hsi_tx (the D-PHY clock)
+> +      - description: video_27m (D-PHY PLL reference clock)
+> +      - description: eim_podf;
+> +
+> +  clock-names:
+> +    items:
+> +      - const: dphy
+> +      - const: ref
+> +      - const: pix
+> +
+> +  interrupts:
+> +    maxItems: 2
 
-I would like to keep the above comments.
+Need to define each entry though the original binding is not too helpful 
+there.
 
-This is just helpful for customers using this board as reference when
-designing their own carrier boards.
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  port@0:
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+> +    unevaluatedProperties: false
+> +    description:
+> +      Input port node, single endpoint describing the CSI-2 transmitter.
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          clock-lanes:
+> +            const: 0
+> +
+> +          data-lanes:
+> +            minItems: 1
+> +            items:
+> +              - const: 1
+> +              - const: 2
+> +              - const: 3
+> +              - const: 4
+> +
+> +        required:
+> +          - data-lanes
+> +
+> +patternProperties:
+> +  '^port@[1-4]':
 
-Thank you for understanding,
+'^port@[1-4]$'
 
-BR,
-Primoz
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+> +    unevaluatedProperties: false
+> +    description:
+> +      ports 1 through 4 are output ports connecting with parallel bus sink
+> +      endpoint nodes and correspond to the four MIPI CSI-2 virtual channel
+> +      outputs.
+> +
+> +    properties:
+> +      endpoint@0:
+> +        $ref: video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +      endpoint@1:
+> +        $ref: video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/imx6qdl-clock.h>
+> +
+> +    mipi@21dc000 {
+> +        compatible = "fsl,imx6-mipi-csi2";
+> +        reg = <0x021dc000 0x4000>;
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        clocks = <&clks IMX6QDL_CLK_HSI_TX>,
+> +                 <&clks IMX6QDL_CLK_VIDEO_27M>,
+> +                 <&clks IMX6QDL_CLK_EIM_PODF>;
+> +        clock-names = "dphy", "ref", "pix";
+> +
+> +        port@0 {
+> +            reg = <0>;
+> +
+> +            endpoint {
+> +                remote-endpoint = <&ov5640_to_mipi_csi2>;
+> +                clock-lanes = <0>;
+> +                data-lanes = <1 2>;
+> +            };
+> +        };
+
+I would think at least 1 output port is required?
 
 
-> Frank
-> 
->> +	i2c_rtc: rtc@68 {
->> +		compatible = "microcrystal,rv4162";
->> +		reg = <0x68>;
->> +		pinctrl-names = "default";
->> +		pinctrl-0 = <&pinctrl_rtc>;
->> +		interrupt-parent = <&gpio4>;
->> +		interrupts = <26 IRQ_TYPE_LEVEL_LOW>;
->> +	};
->> +};
->> +
->>  /* Console */
->>  &lpuart1 {
->>  	pinctrl-names = "default";
->> @@ -56,6 +79,13 @@ &usdhc2 {
->>  };
->>
->>  &iomuxc {
->> +	pinctrl_lpi2c2: lpi2c2grp {
->> +		fsl,pins = <
->> +			MX93_PAD_I2C2_SCL__LPI2C2_SCL		0x40000b9e
->> +			MX93_PAD_I2C2_SDA__LPI2C2_SDA		0x40000b9e
->> +		>;
->> +	};
->> +
->>  	pinctrl_uart1: uart1grp {
->>  		fsl,pins = <
->>  			MX93_PAD_UART1_RXD__LPUART1_RX		0x31e
->> @@ -69,6 +99,12 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
->>  		>;
->>  	};
->>
->> +	pinctrl_rtc: rtcgrp {
->> +		fsl,pins = <
->> +			MX93_PAD_ENET2_RD2__GPIO4_IO26		0x31e
->> +		>;
->> +	};
->> +
->>  	pinctrl_usdhc2_cd: usdhc2cdgrp {
->>  		fsl,pins = <
->>  			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
->> --
->> 2.34.1
->>
-
--- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
+> +    };
+> +
