@@ -1,73 +1,66 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2082.outbound.protection.outlook.com [40.107.20.82])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013022.outbound.protection.outlook.com [52.101.72.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CA5251786
-	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 14:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3A12512E1
+	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 15:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744901890; cv=fail; b=WY6CP+SIe1mGZW+0S/PrEXpoLG0mlaUMWAWfLznvdnglFiUEU3SQunct+AGduc/gdh9UQhjPpEcfEcE2dmRR1PRJLbHDQBI3EatcRLXUw+xsgZc/DDoGX4rRaYTmrEkRlIICXAkn8jKDl2Qv5twhPHIwIwNmJXRnBR9CqlpW9Is=
+	t=1744902386; cv=fail; b=CTfXZpUf4aTzilt/V9L3FFwBHXtTIKMCmx1cjLwh34ptXjeSv2xHvfI8uJLTR+1RwMMWjbTH6G3MJh1EBLgJkptZgd7rmNy8U/oFH19ll59SThhmIWcrysizHyksZGciTybuZmtVWSUpDCZUA48rRRL7f9a1Fwh1a5yb/zcGo3c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744901890; c=relaxed/simple;
-	bh=/bW6xqCdvm8BPZPwOo33YkovRiPxNBWPVaCn1Q0NXU8=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=MJxvIoEKHjwLzp27GCE1K+F3mtjGHWJwUE+XI04hu++zKvL5QgAL0fi92emtARDXmOJlB8OEj4DEKeoltM15k22S+abGEJ+fJYNh7NdhzUXwJmn39Ojyy8gMm5eXQpJGpcrhWTE0pNp1ib11EQPcXPk+RJJ0zhIjZYS2aveo+h8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=m3IyPNV5; arc=fail smtp.client-ip=40.107.20.82
+	s=arc-20240116; t=1744902386; c=relaxed/simple;
+	bh=3G/tN8ColP12vYMvimTsQ4xoYLKhDsxhUBRCV7z0NXc=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=mfH0cjH6PgHzYKmbEZ1sxO7FfP+yo/9h7q/eIkitqDgMeZSXPvCdoy8h4lH74nhX/JhUtvXmD75iOO3ua98zi5434D52SnbiIYSUZuMVSpx/htI19g6ZkAtRz+YUspcEuR4bzrWniWCyzzXxowFWEyWqHzzRzUzzNT4tes/ouV4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=c9xtZnby; arc=fail smtp.client-ip=52.101.72.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="m3IyPNV5"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="c9xtZnby"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NQuJvKZ9a5E0hffIOheAMTi/OXx06k6/Y674cXfRBnYE2ZfRxzWGDUeQHUXqKBCGkPlL0ngFk2m/9dnuvhBpqK67L2Q2YWoDfX/TsN4EpU5ES174xKQKD+tJK+oaszpGhrvHlVQkobi2ZSvyZWWotGQCQD6TUDDiWhpKXdCVe7FsXqxvSz5RGpyOIH4uxE/1LZ7wjqW5nKExOrRif7waxza58fP5gbVlREQruIMKZIS76IOMYwhSvRSCwY5/4kkIbNVeJGRmfMhFT3ETy0B07eiR9ThbKlQ75k7+BqeZICxBzq+U2rHZOWXEtQIgrqDPLhOGzjRvS1P9EHffjU8igQ==
+ b=qRb8Hnf9yQFX3U0EJl8825X0f8cYRxJgLBlABSmmXB6iP92ji5LJ3b5NWx4D2u3quLoJGTnHyecE11XOCWQ29TJACKYVPlUSJbzPX4hKP23aBDL4RS9hsD76Q72MNQTYYAzp4bHsbtPwgFErqgdL/1JkAWG5LRZdYvkmPcCMTy5b93EgbVHFIAr99GBaNvaqcJvMH2pk7cW3LHzMHNw0nSWaGJSg6mvT/oDkxUOo6zp7UmzFcQOzt1c8t+30JZE4zMflqoqiC95H+MYY3Ya0kMZlGBg9pyp9TdTTr5TeimlvGBFCQf+H6YrWUMgG0vEHcjUGwSEwKOalSw9K6953vg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q84IkEPMpqSOBlm5UmYmQLhggw7ll6HBtAnErTlTk2c=;
- b=MlJeEQojxZJVBIlHp7sO7Rc8lU5Yfw7nJ3+aoZdPYkIXn4/T9j0Cx6oo8Ve6XY55mxGNYfNQmCHBNfMvBI2XrO+w1g4AbrmvcLuSRjbqwzjugWajtth1oHywK6h0b7y62hemf6XoRPx271dlRWz6GJt87yhNWDrIyZUFnOpZvuEEzs3M9FA8ualBK2Vl4Vjy3XRfec1EkWYGZszYm6SvywYMvz9SgzWj6Xtr7px6FSLZqxxza7inCzZltHjnvUxKDf14wgYsrmkkN6+sLgb/6Lfi4vkBA3lzZ246VeAkfhcX1hcGfQC/OsKbu/G1V6/kqDEa7LfLrT0E9rq7WdzTLw==
+ bh=nk3lo6Cqhw4w7rUgd9MfqlcCEj8ZPrfcKCOTBWZACYE=;
+ b=emQn9b5U3q9esKP+9r0H6M9dTwkpj3vuGdKwRNsSW8cR9LI0DCK4oOeHYxgc7PBkCKbC8z0RDtR9tJzJWbdNlBktL2NT3OyBKm7rSSi3ba+AIP3YuzUXYiAUmY2ldd2a1+EUtg7ofiQfLdo/8EbvYFY+TEuhNzQHZNPxxycdh77+cgWFlXNsvRtGbKrqWiGK756x4kIBDY0zbMxmFywAq4DdVP1UwfgqM+XClwyTedJzjebG62yndC4UERrQlQ5YcJa0fEKEoX/vNOmpflCino48JmtrA2O+PoagRKwn3KOaeaGVdSa3BncvrNKgghLsVBTtKzRAnawyBukVTV81VQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q84IkEPMpqSOBlm5UmYmQLhggw7ll6HBtAnErTlTk2c=;
- b=m3IyPNV5T+5SRjiA9LL+pqVsF1B3FlgzWmyFMEjQz8M0m7wB0yYv+xl/uppfANYm1cAGWHTlxaViP678x9tW5m0sHcbVX+pIywGPXKWG7jzw5g3mK5FVJoH4QYbZ0s7Dx+BaokJNI6JlwjeSsuflqjYPOvw3ZnKMjRro5jQVqwbfLtsProrM88fxqwHa05A1MIoNwkD3P/5ToMzVALPk5iSxlBvjcaEWn5y/mdMSBrq4IF/EGUVpuEpWtzl2RoWf4OP7gba/YdofOSVm5AfrvHUDgihVdlFZkRTCUaBe2onOaBN/OWbYQvcMXFeUmAmwW2fHyDPL91cXL8YZaZM70A==
+ bh=nk3lo6Cqhw4w7rUgd9MfqlcCEj8ZPrfcKCOTBWZACYE=;
+ b=c9xtZnby8Ywn0IM7zuLIN5dGSw8pcpBmyNxFdNIePf+btJgNAFye+ziWhFIUQkiJe7oRPXGVqW0bRy/lnAUVCAXrSe+Z8NKRpWcpdZH09e/dzTSaka2nUVZxZ3FRUkuJdx7lkLpwmz6vuzMiz6q8FindJOUWQwm108Iljug1cjXY+kAsvuYXGiaTM8y5fxdzX5yfJFHpSZ6I02ZbpLYw016nnRBvFObsDqUNiZTc3Jvv/xjwMmfZngxi4YjwXglVsK/srKRBgiMIutzhDhFJUXQfBwyL+atsACaPWzQ0pQa++rN3FSGDys/hFqJTluBojp2w+ANNadQAb195Ke7tsQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA1PR04MB10603.eurprd04.prod.outlook.com (2603:10a6:102:484::8) with
+ by VE1PR04MB7245.eurprd04.prod.outlook.com (2603:10a6:800:1b1::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.28; Thu, 17 Apr
- 2025 14:58:02 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.22; Thu, 17 Apr
+ 2025 15:06:21 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.035; Thu, 17 Apr 2025
- 14:58:01 +0000
+ 15:06:21 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS FOR FREESCALE IMX 5/6),
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
 	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: display: imx: convert ldb.txt to yaml format
-Date: Thu, 17 Apr 2025 10:57:41 -0400
-Message-Id: <20250417145742.3568572-1-Frank.Li@nxp.com>
+Subject: [PATCH 1/1] dt-bindings: fsl: convert m4if.txt and tigerp.txt to yaml format
+Date: Thu, 17 Apr 2025 11:06:04 -0400
+Message-Id: <20250417150608.3569512-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: PH7PR10CA0003.namprd10.prod.outlook.com
- (2603:10b6:510:23d::24) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SJ0PR13CA0177.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -76,120 +69,115 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10603:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ee0f721-77e4-4c2b-476b-08dd7dc03f85
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7245:EE_
+X-MS-Office365-Filtering-Correlation-Id: 029dff3d-cb50-4994-d29f-08dd7dc1698f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|1800799024|366016|921020|38350700014;
+	BCL:0;ARA:13230040|7416014|366016|376014|52116014|1800799024|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?aXKL57rnm/9j+DEULveSwslXJzr0a6y6qHAhDXJfIB9VUU5ZIo92IbWCrxrq?=
- =?us-ascii?Q?Yc1azda/P6VHXXLZFao0WSxyKLqSsLzeGp3DiNcatgsS9emO36I5pwyCL1bD?=
- =?us-ascii?Q?98IooiV6L3Q6piFcsQfUmbMiQnvPhZX2rv/iuWA753utmmEvosGqsNklKi/J?=
- =?us-ascii?Q?6QNshPVpjoRtI/nURxGmbtQTb2lSgyNzSpGQEV5Zal6fBBg6acMkqCvrODGU?=
- =?us-ascii?Q?TUqH9E43yq7+h4PtRTQB1avOK0+Lb08HTvdmYR5Wn/+iJmYxCd3kSYqWS+Ul?=
- =?us-ascii?Q?ZgcYippQFVeXqpnpSncZE7mcc6ujrrSv6WWDg0ROvx7Ks9soYtyOj5rFCzkt?=
- =?us-ascii?Q?WuaGARmk9GrHN1eoJUVHQZ9yoAhPgbT5jEVyrcB39GXFc0WaxzN5wEHvM8JQ?=
- =?us-ascii?Q?KG2jLtsKC3iQDmw7lA9rocClUestYgrOeEz67zLfmeHzPyeTnJmeIDy4oksb?=
- =?us-ascii?Q?Wx9Ebm5FBm4+qdQKW0gvjAaD2/w9XapZE66QQPONiHVgSI0ZNW4oQpTXRFw2?=
- =?us-ascii?Q?OQsao2ZUFmQCsez0dbvLxNB4oMIXM4JuftfpKC/WGhWX9fz1TMXomW8tEMJJ?=
- =?us-ascii?Q?Q97PR/JU4zIcjr8hrfF1iJ8Dxf9f5rst2nTj+pvG1/niNk7nvCzH7PpcSYyO?=
- =?us-ascii?Q?LvyxrF2OK3FMyvvtda8FPEudYqK/JOueaDTRG99ExNUzI3wEgPQ/dKzmgN0C?=
- =?us-ascii?Q?x819Hu1eHh7tou6C52Q2jjXdX8KD3Q/rw+RazLCqt9xnvYKGNMwrBty08fPo?=
- =?us-ascii?Q?DpdlBJywzzVS3qLy+XMcSyTtSm5F4Drld4hixgBnSfUHquCRKHyImEgfznBF?=
- =?us-ascii?Q?njlSL/Ef4J5u2rKz9jq0+UXA5GVhW+LR5GhRMeGVqKzL1HbVtLgfK+/tMgxu?=
- =?us-ascii?Q?buhrm+A9B6Aww9QiZMaB014OPq+a+RArGHgtwr9tEgMnG8S7MUJ7VP0oeG7Z?=
- =?us-ascii?Q?AO/UrUZOwLoSycl6fjBLSeBwsWrx1JRF4yyvpvaQvBCYk2eMu8NQFBjK3/cL?=
- =?us-ascii?Q?NcEhjJcQiLHrHlmZ+AvdNsnfMuXPhuq61jHupomI5zVBTgQLt0R0+Y1EISwW?=
- =?us-ascii?Q?O4+M7LVp0sZjH+9xOdDONX+jBq6t8CpV04jGQ/YNfLfm7JD3kcloyd+veTtI?=
- =?us-ascii?Q?ObibH9ApK7ZR99c+QhsYexgSD9QcJ6z8+WVeciSVJecsCyjA/POBeZ6rj+6U?=
- =?us-ascii?Q?Zsb4i/lfmfrRndUPGBia/6gmm996P9E5l+J4Yu9d57t7z+S/0v3tqvKGavnv?=
- =?us-ascii?Q?SEJ5J0MhC8H5dcC4VnMnYMAlEAvHE0ouajpqRNgLcHf+zQ85CSjO/lLrpvqe?=
- =?us-ascii?Q?/4ZXRIJC7JeHHfOMwnTecNC/gcJCO0L1a2ttKNyxKowYCcL38tKctQIgflak?=
- =?us-ascii?Q?bgu0HCqr1whm1NCjJUVpKxqNAZTuklzvxU8lV8xFFzk7GV2kWO78f1o7D86T?=
- =?us-ascii?Q?LTHVajm2bCY=3D?=
+	=?us-ascii?Q?vouHIzWUSL0U2csOjTOWBYYA4peIQKV7FLZDKnzhSVOyvXKXqyUSkzmNBi2r?=
+ =?us-ascii?Q?tSU3AroXPnX5dcfQXYj94AWkv1pH0gbMeqbJsarsVrY+idEW7Xusm6YlndUg?=
+ =?us-ascii?Q?epXXiN7mYrVnxVUfzwB8wpQ3rIr7vvNRiGqEOGawmRTLFzlRhQ4ABFlygk02?=
+ =?us-ascii?Q?SsF5ULz4ps598WYGU1hQcdET1Q3aUvkJUEddY4rfhI8I8tp26AEexXv8xUxd?=
+ =?us-ascii?Q?XPhYCPme5ZbK1wijNzZ2061BgZGRscsUobQssZPmYkNXrlRphgeC7qSp1epR?=
+ =?us-ascii?Q?gDavSkbaK1iOREfGstPiX+Xo+hnUkrEKip3/SxSVjMLks9u9jBWISTJ5zI07?=
+ =?us-ascii?Q?RXgqJFltG2I6g7kh+6hMHfne0nwfIf8cpDQ6Sh40A5lg7P1oDzNBv8b5AjG9?=
+ =?us-ascii?Q?24+qjgFM7ErbPFZD8K1wSSGz2VEK46HWy5MPinzIVfCGxaVnV6D+OmG1cMmy?=
+ =?us-ascii?Q?HxLqL0A8qlyCkvxbVTbSZ183mR2mu9niHtMgDwgExezYFX1e1vbCdXq2Z6Mw?=
+ =?us-ascii?Q?Qwx7ozruFLquUULf5/ouWQ4nuEgKRhg++usAYGgWTJ1TUYTaMex6oRR/KyNY?=
+ =?us-ascii?Q?R75jLPBqfNxIrrxvyrOgUGynChLqqZTWqlvAlc20TzEYtI7k6RcFouTKw2mA?=
+ =?us-ascii?Q?8sPIWsQdUNYR6LbFXS50Lnpoh4ZFjbMzps9zYdm5h2J60Rhz/cti/KFQ2+Rd?=
+ =?us-ascii?Q?Z8qIspW1VOR9ifj6k8gK/xxq85Kfx0kV+xb/feOVrKwWg4W8l1AwepgAavBz?=
+ =?us-ascii?Q?v7Xgvev15h0JevlxFTp5cx0tHVT7YMJh2cINbTa8BUQvtkwYgF4/TNgOcI9Q?=
+ =?us-ascii?Q?yWTcTwi+kRoSUdJ/ztfwgolvZ6DqXutDygJDLOYHrB59cV6LSkq2oK6XM3aS?=
+ =?us-ascii?Q?58gEz9SMD8xbjht2ou3BIb0ZQWfe1CvcKTLPtTBWl3W9ah/UaV2VjaFUSXNb?=
+ =?us-ascii?Q?q5j/g/GVdGgGgoMUAYeZ5jr8zbjUthEnT2YaLfLmK3E+CqIA4gPA5bvspmJe?=
+ =?us-ascii?Q?tqeiEmR23ihrPhLibuh5igxb2GBUdqZDSojNLpDw/PLZgZt8nwIhkmfwhkHf?=
+ =?us-ascii?Q?OW3r643DrurNKNriNWRNgj2x6Ds6HA/4fIggbZmHDC4E0aeKsbi/AHb/1ows?=
+ =?us-ascii?Q?6CPH7x4UfY/f3QwVX5wWiP/o9OfWdI1V7sM6HqbHBHiAq8kQSbt8gNIrg47f?=
+ =?us-ascii?Q?PMhpV8pb3ZZsK1KmMdAMSHLW18lwa3fseq8qdX453JiFziCCwxAFmZeTy6yT?=
+ =?us-ascii?Q?ZWFJaNRizAu2LPdo045FI545gcpGjo8riSZc3+C+0mlZxKxXBCCZsFhB/6+r?=
+ =?us-ascii?Q?2/gbKmzHAIZ+cC2pis9dXZfdx7uT/Gmuj41f4Dn3/Q70OgFtP3tg+lf5kqDQ?=
+ =?us-ascii?Q?UeGr6GrhwkSjUntuum8LW3GHZZYh+iibxaBFaVrwXdrEo4Q9Br2vEP/VogN/?=
+ =?us-ascii?Q?PAgK6h5oIhPP+OFfJGKr/X0QkW0VZmjC?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(1800799024)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(52116014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?k8gAkKZVSIYit0d7P2TLw+ps5+wImqiGVggPuJ74DVjmVOXptuKYU4cq2yBI?=
- =?us-ascii?Q?k+XPdWS2R/OPZK2HdduMhy1ukhv1Wx0ptmkayr+KVizSUcJx5UGSevgwZyQK?=
- =?us-ascii?Q?14anDpSB6lglWpofAhiQAs9H4CHqV/IwJXsLr4M1/r/P4AGFVKO6tDm087jA?=
- =?us-ascii?Q?scaKg0q2JWI9aFsS0/iH9fVakV4UgCKsRviW43vDgroXgtPTyn05RRpSYyt6?=
- =?us-ascii?Q?QthGWenVgZ3rnOaQCri1u9dN9dv6s7FL1ZMXhi76pveWOgsEuz4MLafdtLOR?=
- =?us-ascii?Q?aHwFn594qTjglg3lI+22uT0OreKyrPxRgS7NJskfTA9KRsY6CnyvEWpwRDzE?=
- =?us-ascii?Q?obkn7xKmiw1XpQ19Fk5rfaNnqFWiiLYIy6Aq7UqMasUlLOdHaDIooapBDBSm?=
- =?us-ascii?Q?eIK5gYv9VwZAnPPDFaZBdOWd4oek9yv1ktH57tSLmjzisjNfiBoWQz8gNX4b?=
- =?us-ascii?Q?2mhqeo7Z0q8782EBOijto+N8gCeSPrFvTvRBeXOHMkHsHUdqw06w/J5v8SfV?=
- =?us-ascii?Q?spAX8BLk5XAsW7jHrYmIhWQ058U6ePT3+IVzWjb4XVEANgSKd3nsgW776zss?=
- =?us-ascii?Q?MnuFObv3FoCaMGJROjyAeFl2q7YnJy9G2xb7Pk3KFx4VY3zyixTIkndhiPIL?=
- =?us-ascii?Q?mHEirxzfeRw2BlSBgoNyq5ZtMYGu9pyrNJg+3OmjtvEcLSKoJYkBJpQ88Dmr?=
- =?us-ascii?Q?M+jO0fmxEYUJ/d+j6SdWCwi3Tx19uHi/D6Ll+yVGXxTBAom9QmoGImwnWSKd?=
- =?us-ascii?Q?ycqgsbrNXJlmf8qc0D5aeyLaSEexyvW1TzVsM4GuCH/jCZ9ZSHree4D9eOsE?=
- =?us-ascii?Q?ce/bbqpTGH0d/9/f88RV6LA+WBFXYlUFarkq4xw7GlBzihNcoXNRIcAbS5rN?=
- =?us-ascii?Q?SrXn/ulCCx6NXzuWjIob4EeR0YPH+/WXwkipwSCA88CVcj/Gq85YP40OZIqL?=
- =?us-ascii?Q?ZfK5juKrQrMw/E7JxX8cmmYCt7zyGJcHjwHp9Ktboe8sFIChmJ1o5MNzkbIo?=
- =?us-ascii?Q?FU94PMUnzrNX7iyTFw7NJ3FkVtTZ2kEx872Jd6VADMhhEB+Uo2WY28OGa1ki?=
- =?us-ascii?Q?FAFonjKt5L6ZHqmq78MIDhOIiUq+/5gskyD1/O/U+TYpirKpvF66myO36hve?=
- =?us-ascii?Q?h4pDZ/+b8lGl+ZQk7+Gi7hp5wFdlLHy+nlOjdOYoosQ2WNxkM080icFYWRrd?=
- =?us-ascii?Q?j3FiI9bw1BB4uhScow34uc0kzp2GedlSuGdSOncGaCDZuDzrd7npcEyRIj8B?=
- =?us-ascii?Q?5Uzo6Oe9q5BhlRwmMXv0YRH7tZVx936VQy3HxnMWlLMHR0G539QgUkkDBGX2?=
- =?us-ascii?Q?2eRcH+M/vx8xgEJHvaB2KJDEwsJ3IFGVN/1Uhm2shbIPi8evX2izBaYHpyMm?=
- =?us-ascii?Q?Q3nf6NSv15mKf2sReAeDE7KSsldnmYtuRwPz32ZrYf+I2BhfZbuS7S3pFTLc?=
- =?us-ascii?Q?OxiNVfMQXnFNWQMLKDFhanZWIUCZkBm1yTBDw+dxob/jjAPLX54/ZdUOks+5?=
- =?us-ascii?Q?S/Yu7CiYSRpQ7wnUusgtCFOzJHju811v9Lj0lvwmgYELMehx9l5EhL7JBPvG?=
- =?us-ascii?Q?NwGjJ7rm6fsHblqp8YE=3D?=
+	=?us-ascii?Q?jRRwI3CEhIswyk5wARpYaNM0IB/QB64qAlJQrsraO7Qz2KBujsIArpshutmj?=
+ =?us-ascii?Q?xwd61AmGLq6MX1KGWmcCHErVDZWePUJ2sqBwvzgP+vuGVf7cLM2zuQmGs8aX?=
+ =?us-ascii?Q?dj1jXwl7IS0Xz345XJnIAIsnGeU6NV5sEVN1sutQPunJaf2lx6iH+/WZzz9R?=
+ =?us-ascii?Q?Z2jxWbnpTMZLaB+X+GaYHiONSlKdUyayupPI43vnvq0p8Scmz5KcyKuR8Sxu?=
+ =?us-ascii?Q?RQv9Qd19ZaTibl5UfnHnrV1LRIcUggQIJWfWBDH1PS7I/n6anPQ8EaZfZC1C?=
+ =?us-ascii?Q?sUCd51D0GN3mJbtQ3ZlxeJvE3ZJ9t3SyEfEGHWFR9c/AUmBUtQNKhK5NqCCh?=
+ =?us-ascii?Q?6LRuP2NjzXN12pBHefMHPIFx1hNxg9O+ZjRpG8x6FgW2SZktGXS0dDv38YkN?=
+ =?us-ascii?Q?YfLGB6gC5EM4CoX2jAg0M8PHGmrYrV/g7CZseg/rl6V/9cRvETTr5hR6wVo6?=
+ =?us-ascii?Q?n+NQu9PJoqzLf7PIF4JKswdbEv0GLAaOKI7KDE5KUzeSF0PbRniknBOjrfrU?=
+ =?us-ascii?Q?2I2hn5g5yPbrCyQ6we9Wq2ADBg5fo+1h+EtEBSzBgM1tHUo2P9V4sgqTlbB7?=
+ =?us-ascii?Q?BGlLyAyPHj27Hy0sQflAlb0xvlbe4mcqxp8hkEVFdQpFOMf0QZ/WkR8I0+6H?=
+ =?us-ascii?Q?+JMm6YmGL8Svp2P+u1YKB3C1/zE31nuVWcuz7lU16FjydAvt4pailzG67u10?=
+ =?us-ascii?Q?m8Rm82RHgkqq1IKBMQJIwKba0F1fxn5UaDlEMWpBNSXn69lEHMpULn0GM0OX?=
+ =?us-ascii?Q?CGvF8m40LIWguAgEj6Abxj+IGKwirZa8cdQ1RJLVHQWyovi5TdBYwhFfFOsL?=
+ =?us-ascii?Q?Fkq8dDaLPWE5tXTzZUE61/GaLhPTlXCZ9kZTtcvKRPtxmfIABw/M/jHdeyes?=
+ =?us-ascii?Q?/D8+qdtvVTb6HbG+yDX/1ju3YEQ61sIneN5bLTLYFtWnCVHbIgIXOurz2IyH?=
+ =?us-ascii?Q?iSbkI2iVJS4fjp+pWegI6fjxq5A2XFvF3xqTSBWqLOG/WlieFdYGEIaC8tYw?=
+ =?us-ascii?Q?npBMKuP6akm2Vv9QQOuyEzYIqIgl51bPm7/kygmoPjJRTlfICB1m9r/UW4HE?=
+ =?us-ascii?Q?UAmQ7BmZO3K60uV3ILSyg7FkvNbELr/GZgEJsfXxIuAkX6DfPr/kyL/ush+D?=
+ =?us-ascii?Q?SEuI96bFRGTmqZpsqG9yPZb203Brhy9F8Xo6fXRJ1lwf1Ij646qPpQ+2yUmi?=
+ =?us-ascii?Q?69qzdyeWlaWRWtWDNnnIiUN9oiRHSxw55N5mMEz8dqz1FSvvhoLq6WV9rYkX?=
+ =?us-ascii?Q?ceRIW6LWdq2ZSsYJeiaTqOW8W3R+10qbdlBV42jHO4y3ljEWPvPzT6xcJpwX?=
+ =?us-ascii?Q?dC1BfPcbUbFGiLJCiaxPqoq1FJFjNB9k1IT2+CMNqEWq5i03mRiXFnVFoAzz?=
+ =?us-ascii?Q?fbTeSx7KM10HEdzgOojDU213yNCJzGenxno9iLyg8wj5O0cnYenkSutIeLVs?=
+ =?us-ascii?Q?1a1c18GVZn3EI6s03tlIZaiCe+0W1BuNi8Kmi9vfc1ylwNBuVGVkKYtcWBMw?=
+ =?us-ascii?Q?iuaWzaQlJfXHQCUsnZq7bNs6LpnVG50NSh9XNPxYiJbeOidM5i2G3D7As5oW?=
+ =?us-ascii?Q?/XuuDrSpQ8cAdpyaJ/hF+JrpgIs7sA7Y9oeF69/n?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ee0f721-77e4-4c2b-476b-08dd7dc03f85
+X-MS-Exchange-CrossTenant-Network-Message-Id: 029dff3d-cb50-4994-d29f-08dd7dc1698f
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2025 14:58:01.3742
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Apr 2025 15:06:21.2492
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XM2Bg6L8svV2ZYZXugM4lHfoOUufrmfQVAvBbVAJcdmpdby855s6mG2pu0OJn5NDbCl0Oy6fZuuLjnd3VpQLWg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10603
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6wgpOL7xaP4YQQ9urvz32co42fVMhRJuP5QvkfhGdtGgxrHsTmlxwmq8X512VaCWpsCOEiWvpMbYBEa91/VcFw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7245
 
-Convert ldb.txt to yaml format.
+Convert m4if.txt and tigerp.txt to yaml format. These just use reg to
+indicate memory region.
 
-Additional changes
-- fix clock-names order to match existed dts file.
-- remove lvds-panel and iomuxc-gpr node in examples.
-- fsl,imx6q-ldb fail back to fsl,imx53-ldb.
-- add fsl,panel property to match existed dts.
+Additional changes:
+- Add compatible string fsl,imx51-aipstz.
+- Add fsl,imx53-tigerp and fail back to fsl,imx51-tigerp
+- Add compatible string fsl,imx7d-pcie-phy, which is not real phy and just
+indicate a memory region.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
-change from v1 to v2
-- use oneof in clock-names. imx6dl use imx6q-ldb comaptible string, but
-the clock-names is the same as imx53. To reduce dts impact, use oneof to
-allow two group clock-names list
-- fix typo pannel
----
- .../bindings/display/imx/fsl,imx6q-ldb.yaml   | 194 ++++++++++++++++++
- .../devicetree/bindings/display/imx/ldb.txt   | 146 -------------
- 2 files changed, 194 insertions(+), 146 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/display/imx/fsl,imx6q-ldb.yaml
- delete mode 100644 Documentation/devicetree/bindings/display/imx/ldb.txt
+ .../arm/freescale/fsl,imx51-m4if.yaml         | 41 +++++++++++++++++++
+ .../bindings/arm/freescale/m4if.txt           | 12 ------
+ .../bindings/arm/freescale/tigerp.txt         | 12 ------
+ 3 files changed, 41 insertions(+), 24 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/arm/freescale/fsl,imx51-m4if.yaml
+ delete mode 100644 Documentation/devicetree/bindings/arm/freescale/m4if.txt
+ delete mode 100644 Documentation/devicetree/bindings/arm/freescale/tigerp.txt
 
-diff --git a/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ldb.yaml b/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ldb.yaml
+diff --git a/Documentation/devicetree/bindings/arm/freescale/fsl,imx51-m4if.yaml b/Documentation/devicetree/bindings/arm/freescale/fsl,imx51-m4if.yaml
 new file mode 100644
-index 0000000000000..0f0a229956b78
+index 0000000000000..1f515bea39599
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/imx/fsl,imx6q-ldb.yaml
-@@ -0,0 +1,194 @@
++++ b/Documentation/devicetree/bindings/arm/freescale/fsl,imx51-m4if.yaml
+@@ -0,0 +1,41 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/imx/fsl,imx6q-ldb.yaml#
++$id: http://devicetree.org/schemas/arm/freescale/fsl,imx51-m4if.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale LVDS Display Bridge (ldb)
++title: Freescale Multi Master Multi Memory Interface (M4IF) and Tigerp module
 +
-+description:
-+  The LVDS Display Bridge device tree node contains up to two lvds-channel
-+  nodes describing each of the two LVDS encoder channels of the bridge.
++description: collect the imx devices, which only have compatible and reg property
 +
 +maintainers:
 +  - Frank Li <Frank.Li@nxp.com>
@@ -198,332 +186,65 @@ index 0000000000000..0f0a229956b78
 +  compatible:
 +    oneOf:
 +      - enum:
-+          - fsl,imx53-ldb
++          - fsl,imx51-m4if
++          - fsl,imx51-tigerp
++          - fsl,imx51-aipstz
++          - fsl,imx53-aipstz
++          - fsl,imx7d-pcie-phy
 +      - items:
-+          - enum:
-+              - fsl,imx6q-ldb
-+          - const: fsl,imx53-ldb
++          - const: fsl,imx53-tigerp
++          - const: fsl,imx51-tigerp
 +
 +  reg:
 +    maxItems: 1
 +
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  gpr:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      The phandle points to the iomuxc-gpr region containing the LVDS
-+      control register.
-+
-+  clocks:
-+    minItems: 6
-+    maxItems: 8
-+
-+  clock-names:
-+    oneOf:
-+      - items:
-+          - const: di0_pll
-+          - const: di1_pll
-+          - const: di0_sel
-+          - const: di1_sel
-+          - const: di0
-+          - const: di1
-+      - items:
-+          - const: di0_pll
-+          - const: di1_pll
-+          - const: di0_sel
-+          - const: di1_sel
-+          - const: di2_sel
-+          - const: di3_sel
-+          - const: di0
-+          - const: di1
-+
-+  fsl,dual-channel:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      if it exists, only LVDS channel 0 should
-+      be configured - one input will be distributed on both outputs in dual
-+      channel mode
-+
-+patternProperties:
-+  '^lvds-channel@[0-1]$':
-+    type: object
-+    description:
-+      Each LVDS Channel has to contain either an of graph link to a panel device node
-+      or a display-timings node that describes the video timings for the connected
-+      LVDS display as well as the fsl,data-mapping and fsl,data-width properties.
-+
-+    properties:
-+      reg:
-+        maxItems: 1
-+
-+      '#address-cells':
-+        const: 1
-+
-+      '#size-cells':
-+        const: 0
-+
-+      display-timings:
-+        $ref: /schemas/display/panel/display-timings.yaml#
-+
-+      fsl,data-mapping:
-+        enum:
-+          - spwg
-+          - jeida
-+
-+      fsl,data-width:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        description: should be <18> or <24>
-+        enum:
-+          - 18
-+          - 24
-+
-+      fsl,panel:
-+        $ref: /schemas/types.yaml#/definitions/phandle
-+        description: phandle to lcd panel
-+
-+    patternProperties:
-+      '^port@[0-4]$':
-+        $ref: /schemas/graph.yaml#/$defs/port-base
-+        unevaluatedProperties: false
-+        description:
-+          On i.MX5, the internal two-input-multiplexer is used. Due to hardware
-+          limitations, only one input port (port@[0,1]) can be used for each channel
-+          (lvds-channel@[0,1], respectively).
-+          On i.MX6, there should be four input ports (port@[0-3]) that correspond
-+          to the four LVDS multiplexer inputs.
-+          A single output port (port@2 on i.MX5, port@4 on i.MX6) must be connected
-+          to a panel input port. Optionally, the output port can be left out if
-+          display-timings are used instead.
-+
-+    additionalProperties: false
-+
 +required:
 +  - compatible
-+  - gpr
-+  - clocks
-+  - clock-names
++  - reg
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/clock/imx5-clock.h>
-+
-+    ldb@53fa8008 {
-+        compatible = "fsl,imx53-ldb";
-+        reg = <0x53fa8008 0x4>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        gpr = <&gpr>;
-+        clocks = <&clks IMX5_CLK_LDB_DI0_SEL>,
-+                 <&clks IMX5_CLK_LDB_DI1_SEL>,
-+                 <&clks IMX5_CLK_IPU_DI0_SEL>,
-+                 <&clks IMX5_CLK_IPU_DI1_SEL>,
-+                 <&clks IMX5_CLK_LDB_DI0_GATE>,
-+                 <&clks IMX5_CLK_LDB_DI1_GATE>;
-+        clock-names = "di0_pll", "di1_pll",
-+                      "di0_sel", "di1_sel",
-+                      "di0", "di1";
-+
-+        /* Using an of-graph endpoint link to connect the panel */
-+        lvds-channel@0 {
-+                reg = <0>;
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                port@0 {
-+                    reg = <0>;
-+
-+                    endpoint {
-+                        remote-endpoint = <&ipu_di0_lvds0>;
-+                    };
-+                };
-+
-+                port@2 {
-+                    reg = <2>;
-+
-+                    endpoint {
-+                        remote-endpoint = <&panel_in>;
-+                    };
-+               };
-+        };
-+
-+        /* Using display-timings and fsl,data-mapping/width instead */
-+        lvds-channel@1 {
-+                reg = <1>;
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+                fsl,data-mapping = "spwg";
-+                fsl,data-width = <24>;
-+
-+                display-timings {/* ... */
-+                };
-+
-+                port@1 {
-+                     reg = <1>;
-+
-+                     endpoint {
-+                         remote-endpoint = <&ipu_di1_lvds1>;
-+                     };
-+                };
-+        };
++    m4if@83fd8000 {
++        compatible = "fsl,imx51-m4if";
++        reg = <0x83fd8000 0x1000>;
 +    };
-diff --git a/Documentation/devicetree/bindings/display/imx/ldb.txt b/Documentation/devicetree/bindings/display/imx/ldb.txt
+diff --git a/Documentation/devicetree/bindings/arm/freescale/m4if.txt b/Documentation/devicetree/bindings/arm/freescale/m4if.txt
 deleted file mode 100644
-index 03653a291b549..0000000000000
---- a/Documentation/devicetree/bindings/display/imx/ldb.txt
+index 93bd7b867a536..0000000000000
+--- a/Documentation/devicetree/bindings/arm/freescale/m4if.txt
 +++ /dev/null
-@@ -1,146 +0,0 @@
--Device-Tree bindings for LVDS Display Bridge (ldb)
--
--LVDS Display Bridge
--===================
--
--The LVDS Display Bridge device tree node contains up to two lvds-channel
--nodes describing each of the two LVDS encoder channels of the bridge.
+@@ -1,12 +0,0 @@
+-* Freescale Multi Master Multi Memory Interface (M4IF) module
 -
 -Required properties:
-- - #address-cells : should be <1>
-- - #size-cells : should be <0>
-- - compatible : should be "fsl,imx53-ldb" or "fsl,imx6q-ldb".
--                Both LDB versions are similar, but i.MX6 has an additional
--                multiplexer in the front to select any of the four IPU display
--                interfaces as input for each LVDS channel.
-- - gpr : should be <&gpr> on i.MX53 and i.MX6q.
--         The phandle points to the iomuxc-gpr region containing the LVDS
--         control register.
--- clocks, clock-names : phandles to the LDB divider and selector clocks and to
--                        the display interface selector clocks, as described in
--                        Documentation/devicetree/bindings/clock/clock-bindings.txt
--        The following clocks are expected on i.MX53:
--                "di0_pll" - LDB LVDS channel 0 mux
--                "di1_pll" - LDB LVDS channel 1 mux
--                "di0" - LDB LVDS channel 0 gate
--                "di1" - LDB LVDS channel 1 gate
--                "di0_sel" - IPU1 DI0 mux
--                "di1_sel" - IPU1 DI1 mux
--        On i.MX6q the following additional clocks are needed:
--                "di2_sel" - IPU2 DI0 mux
--                "di3_sel" - IPU2 DI1 mux
--        The needed clock numbers for each are documented in
--        Documentation/devicetree/bindings/clock/imx5-clock.yaml, and in
--        Documentation/devicetree/bindings/clock/imx6q-clock.yaml.
+-- compatible : Should be "fsl,imx51-m4if"
+-- reg : Address and length of the register set for the device
 -
--Optional properties:
-- - pinctrl-names : should be "default" on i.MX53, not used on i.MX6q
-- - pinctrl-0 : a phandle pointing to LVDS pin settings on i.MX53,
--               not used on i.MX6q
-- - fsl,dual-channel : boolean. if it exists, only LVDS channel 0 should
--   be configured - one input will be distributed on both outputs in dual
--   channel mode
+-Example:
 -
--LVDS Channel
--============
--
--Each LVDS Channel has to contain either an of graph link to a panel device node
--or a display-timings node that describes the video timings for the connected
--LVDS display as well as the fsl,data-mapping and fsl,data-width properties.
+-m4if: m4if@83fd8000 {
+-	compatible = "fsl,imx51-m4if";
+-	reg = <0x83fd8000 0x1000>;
+-};
+diff --git a/Documentation/devicetree/bindings/arm/freescale/tigerp.txt b/Documentation/devicetree/bindings/arm/freescale/tigerp.txt
+deleted file mode 100644
+index 19e2aad63d6ef..0000000000000
+--- a/Documentation/devicetree/bindings/arm/freescale/tigerp.txt
++++ /dev/null
+@@ -1,12 +0,0 @@
+-* Freescale Tigerp platform module
 -
 -Required properties:
-- - reg : should be <0> or <1>
-- - port: Input and output port nodes with endpoint definitions as defined in
--   Documentation/devicetree/bindings/graph.txt.
--   On i.MX5, the internal two-input-multiplexer is used. Due to hardware
--   limitations, only one input port (port@[0,1]) can be used for each channel
--   (lvds-channel@[0,1], respectively).
--   On i.MX6, there should be four input ports (port@[0-3]) that correspond
--   to the four LVDS multiplexer inputs.
--   A single output port (port@2 on i.MX5, port@4 on i.MX6) must be connected
--   to a panel input port. Optionally, the output port can be left out if
--   display-timings are used instead.
+-- compatible : Should be "fsl,imx51-tigerp"
+-- reg : Address and length of the register set for the device
 -
--Optional properties (required if display-timings are used):
-- - display-timings : A node that describes the display timings as defined in
--   Documentation/devicetree/bindings/display/panel/display-timing.txt.
-- - fsl,data-mapping : should be "spwg" or "jeida"
--                      This describes how the color bits are laid out in the
--                      serialized LVDS signal.
-- - fsl,data-width : should be <18> or <24>
+-Example:
 -
--example:
--
--gpr: iomuxc-gpr@53fa8000 {
--	/* ... */
--};
--
--ldb: ldb@53fa8008 {
--	#address-cells = <1>;
--	#size-cells = <0>;
--	compatible = "fsl,imx53-ldb";
--	gpr = <&gpr>;
--	clocks = <&clks IMX5_CLK_LDB_DI0_SEL>,
--		 <&clks IMX5_CLK_LDB_DI1_SEL>,
--		 <&clks IMX5_CLK_IPU_DI0_SEL>,
--		 <&clks IMX5_CLK_IPU_DI1_SEL>,
--		 <&clks IMX5_CLK_LDB_DI0_GATE>,
--		 <&clks IMX5_CLK_LDB_DI1_GATE>;
--	clock-names = "di0_pll", "di1_pll",
--		      "di0_sel", "di1_sel",
--		      "di0", "di1";
--
--	/* Using an of-graph endpoint link to connect the panel */
--	lvds-channel@0 {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		reg = <0>;
--
--		port@0 {
--			reg = <0>;
--
--			lvds0_in: endpoint {
--				remote-endpoint = <&ipu_di0_lvds0>;
--			};
--		};
--
--		port@2 {
--			reg = <2>;
--
--			lvds0_out: endpoint {
--				remote-endpoint = <&panel_in>;
--			};
--		};
--	};
--
--	/* Using display-timings and fsl,data-mapping/width instead */
--	lvds-channel@1 {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		reg = <1>;
--		fsl,data-mapping = "spwg";
--		fsl,data-width = <24>;
--
--		display-timings {
--			/* ... */
--		};
--
--		port@1 {
--			reg = <1>;
--
--			lvds1_in: endpoint {
--				remote-endpoint = <&ipu_di1_lvds1>;
--			};
--		};
--	};
--};
--
--panel: lvds-panel {
--	/* ... */
--
--	port {
--		panel_in: endpoint {
--			remote-endpoint = <&lvds0_out>;
--		};
--	};
+-tigerp: tigerp@83fa0000 {
+-	compatible = "fsl,imx51-tigerp";
+-	reg = <0x83fa0000 0x28>;
 -};
 -- 
 2.34.1
