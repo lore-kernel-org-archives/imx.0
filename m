@@ -1,104 +1,94 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C667F253334
-	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 15:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E811253944;
+	Thu, 17 Apr 2025 16:22:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744903800; cv=none; b=CGZbOMS73jbgwuBnsuvHF6IWtP7jpn4QPk3irooJ7EIcA9jjS4FhyLHImVRwHRZfgdJ5rQB3f59/276NiRxBDUOe4ZE5iuNF/KFO4nbgG7nA3fcPxypro5yufYf1ZuF0MqEjBNuVcbFMXPb9VqtB3VG21spGr7axmr+wJ45XDks=
+	t=1744906930; cv=none; b=Gr2e1Q0rtg5Ds4IrrLone6HMH5E2Q7GtpWGOdyrpGh6UlcP2i7GFp7ZmJA1LCF7X9xT+6etKfTXgiZX/y8einJysgH4TmtDAYiJ2J2wXnlf8BM8TSrMFLnLZf9ifA9hchBBDTPTAyk1WdNSmwgUtk5fvgX8DkPVkebk5ipHJ7Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744903800; c=relaxed/simple;
-	bh=7yHU2zMjXO7YHcDIN5XLl9irHpMX2LD+Z4RtW8tNBNg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZICQkIeNTvb7sRo0/aekwOLYk2LAbvH4dkOGA6fE0Xg47Fn5Jduwevg7K3wMz3g8rUpHHBG0Qj1rqL20yi+VboBq60s4hTIipnSMTMfA075xIwkdEdPd92OMrVUH+OSGPrv2ciDOltUBnpgN4BCALvdI2UjA4RdOjnHrNh+m+ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tINTPSUk; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1744906930; c=relaxed/simple;
+	bh=+tJVKOIu+gBSCFEwwsnlu5dV6AI8KsV8zFpj108Zr4o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=O6l/lFb59kpQJvuel32am8H1pMmI7B/RbCs2J+sDun1Jfkd0WnG+wCSs4zS2aY0A/dlei7NdcDTjwXRdeMtDl+1jS2QoYeztRTl2ABrLQ8qo5fH0j68guL5nHNeG/NRtW4oOzlbixFcPLMKrK1hEcageKJfFkceI0gYPYlg5Td8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e7hcoEI1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tINTPSUk"
-Message-ID: <8d6c8f72-a8bd-43a8-b1e6-a20cafddf804@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744903792;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jkOBPoUk+xFY5ZKRx/7lO+ZCCZvZu8C4v3s/LGW1qvM=;
-	b=tINTPSUkz+lDh2u0qbUCc7IvYTHB0jtNBVFJ9GpvC7Xs047gwS9jy1iPUq6aP0+0OMpGTQ
-	tDohhgUbbIgxhRG1BUFLBUe7j3DUUn7RwmiDGwOgZZ3tjEdqYt3iISZp4y0PSgaEgSxpjz
-	LfFic1XsdEQ7osExW7l1Z8p7PX0VEsU=
-Date: Thu, 17 Apr 2025 11:29:38 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e7hcoEI1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A355C4CEE4;
+	Thu, 17 Apr 2025 16:22:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744906929;
+	bh=+tJVKOIu+gBSCFEwwsnlu5dV6AI8KsV8zFpj108Zr4o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=e7hcoEI1K2N7tr2pPvAvyGf9F2OS0j6PilDcGIYecuC+tWybN1PsAfR/i1HPUXMoV
+	 5dIH0NEUai+CFJeC5gkKpXo2g/WIqqkFRtSTEao/i/e28EpyWfGjY2V2QSIg1rMRof
+	 Ux/w/fbqIyvS+fTcFPDMAwOZwTqKwcMnPsUiywa5Q5mpASAY63CbgFMxf594yLjFRS
+	 kSxHLWbblcwy3YmhptglAY35iQ/TnzyvlEirtSpft+EEomL8naaEvil33ZvQExiwz0
+	 rxi4wWP8ocVY5/4dQXCV5SmGxIBQzXGDs4yCDmJld52zduHnvNSxUrsw8KxT45ZZUK
+	 Ep0J7+gOUDeJw==
+From: Mark Brown <broonie@kernel.org>
+To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Tamura Dai <kirinode0@gmail.com>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250417011700.14436-1-kirinode0@gmail.com>
+References: <20250417011700.14436-1-kirinode0@gmail.com>
+Subject: Re: [PATCH] spi: spi-imx: Add check for spi_imx_setupxfer()
+Message-Id: <174490692776.121478.4533295304176579175.b4-ty@kernel.org>
+Date: Thu, 17 Apr 2025 17:22:07 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [net-next PATCH v3 00/11] Add PCS core support
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, upstream@airoha.com,
- Christian Marangi <ansuelsmth@gmail.com>, linux-kernel@vger.kernel.org,
- Kory Maincent <kory.maincent@bootlin.com>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Beznea <claudiu.beznea@microchip.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
- Ioana Ciornei <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Joyce Ooi <joyce.ooi@intel.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Madalin Bucur <madalin.bucur@nxp.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Michal Simek <michal.simek@amd.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Robert Hancock <robert.hancock@calian.com>,
- Saravana Kannan <saravanak@google.com>, UNGLinuxDriver@microchip.com,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20250415193323.2794214-1-sean.anderson@linux.dev>
- <aADzVrN1yb6UOcLh@shell.armlinux.org.uk>
- <13357f38-f27f-45b5-8c6a-9a7aca41156f@linux.dev>
- <aAEdQVd5Wn7EaxXp@shell.armlinux.org.uk>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <aAEdQVd5Wn7EaxXp@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Mailer: b4 0.15-dev-c25d1
 
-On 4/17/25 11:24, Russell King (Oracle) wrote:
-> On Thu, Apr 17, 2025 at 10:22:09AM -0400, Sean Anderson wrote:
->> Hi Russell,
->> 
->> On 4/17/25 08:25, Russell King (Oracle) wrote:
->> > On Tue, Apr 15, 2025 at 03:33:12PM -0400, Sean Anderson wrote:
->> >> This series adds support for creating PCSs as devices on a bus with a
->> >> driver (patch 3). As initial users,
->> > 
->> > As per previous, unless I respond (this response not included) then I
->> > haven't had time to look at it - and today is total ratshit so, not
->> > today.
->> 
->> Sorry if I resent this too soon. I had another look at the request for
->> #pcs-cells [1], and determined that a simpler approach would be
->> possible. So I wanted to resend with that change since it would let me
->> drop the fwnode_property_get_reference_optional_args patches.
+On Thu, 17 Apr 2025 10:16:05 +0900, Tamura Dai wrote:
+> Add check for the return value of spi_imx_setupxfer().
+> spi_imx->rx and spi_imx->tx function pointer can be NULL when
+> spi_imx_setupxfer() return error, and make NULL pointer dereference.
 > 
-> Please can you send them as RFC so I don't feel the pressure to say
-> something before they get merged (remember, non-RFC patches to netdev
-> get queued up in patchwork for merging.)
+>  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+>  Call trace:
+>   0x0
+>   spi_imx_pio_transfer+0x50/0xd8
+>   spi_imx_transfer_one+0x18c/0x858
+>   spi_transfer_one_message+0x43c/0x790
+>   __spi_pump_transfer_message+0x238/0x5d4
+>   __spi_sync+0x2b0/0x454
+>   spi_write_then_read+0x11c/0x200
+> 
+> [...]
 
-This series is marked "changes requested" in patchwork, so I don't think
-it should get merged automatically. I won't send a v4 until you've had a
-chance to review it.
+Applied to
 
---Sean
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: spi-imx: Add check for spi_imx_setupxfer()
+      commit: 951a04ab3a2db4029debfa48d380ef834b93207e
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
