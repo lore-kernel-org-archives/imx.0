@@ -1,93 +1,301 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA5824E4AA
-	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 14:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D792522B3
+	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 14:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744899744; cv=none; b=itXr7gqli+Nmx9ILoC98fhPZCDREudGfbwyP8UjjVJGo0vvzuKhoHafJbrllvfjV4Y908Tjt6NdPjKwEoCn/DewFF3VjHyyPJzNAI2JwI/+0XGTaIb7FAQ37YWCyrRYVPe01X2Shw/cWTuWeLHA0MTKape5fTMCmrPKdTj5ux/k=
+	t=1744900011; cv=none; b=hvOkKJBCtWIiKrPYdysxttOlpmiRghTTD3IU0Hji1fnS92fJOvjm3MWSpXlKVcg9H6h1hU9kMd7eXWsTfNOBUl4H7fQU6t/P8du8Hi7IqEW18f8OPaaLtyuluDww+2ymU962CWUc/BOjiutTAo2p4pzOvvtnnXnjqS4qm+IKv6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744899744; c=relaxed/simple;
-	bh=xrC86xvnJkiy2wsi0KaTZ23wdHmrQQxY6hWpQMlw79Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PIw0sudT/nQqa2k5O79xA1nBO2dEjemTF7AC24IbiWfFzIpArnpy2oRTnbdwZPf4syLMLo79PCF7fRFL1Hmykkva8G3PFwOvAwCglXO3S8vrkAR7hy4OpYOcz8IVrhMwNSbOO55XY3Pr3tXuYTpNIqKMHcmW43+b4dBfjU+B4PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CuZseRVi; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CuZseRVi"
-Message-ID: <13357f38-f27f-45b5-8c6a-9a7aca41156f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744899737;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ChiiEwSa59wY7fvBbAy6iv40vz0WXaWqLI1I0LPkf10=;
-	b=CuZseRViZ/RaXnYZOACNcu4na/IG6hHI8dgeNeVVCuTSOVxXCs2ZnGodyZUZUH3dWE7CeK
-	QyjpUmPSSCLfAhMZ96M4KxFeuPaGKkfxb2/X4sadI1tABc+Cmv/RtAjACgO8b4jAiWWp3V
-	8lcI4vehocZ2Igzm1PT46ptOaVKHTGY=
-Date: Thu, 17 Apr 2025 10:22:09 -0400
+	s=arc-20240116; t=1744900011; c=relaxed/simple;
+	bh=0HQf6FJU32krnLiqr4S/lTsMFbdUqi6Uw6Nofsn+azA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k4fqoBtVbtsn/5yokNNp1LqqUufYIY4ngrPeAQQkhs2KKOtCddATRvjGuJrlOwwCaBPMCHFqqppg0Kva39OP2PvP87VX4yH7r+tUEkNyhjPzkL6DX58jHCYSVroMRZBSESzH5EySC6amzoCA6JTInz4NmfThh9T04/wwhgkT4B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 44A9E1515;
+	Thu, 17 Apr 2025 07:26:45 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0448C3F694;
+	Thu, 17 Apr 2025 07:26:44 -0700 (PDT)
+Date: Thu, 17 Apr 2025 15:26:42 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Peng Fan <peng.fan@nxp.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Aisheng Dong <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
+ scmi cpufreq
+Message-ID: <20250417-diligent-anteater-of-felicity-70bff3@sudeepholla>
+References: <Z87UJdhiTWhssnbl@bogus>
+ <Z87sGF_jHKau_FMe@bogus>
+ <PAXPR04MB8459EA5C7898393E51C246AD88D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <PAXPR04MB8459A73179FFF0ED0C9A51E488D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <Z9AdICiyaCmzKh-N@bogus>
+ <Z9FnZzBQuZ1j5k3I@bogus>
+ <Z9Fv9JPdF5OWUHfk@bogus>
+ <20250313052309.GA11131@nxa18884-linux>
+ <20250409035029.GC27988@nxa18884-linux>
+ <20250409-incredible-attentive-scorpion-fa9def@sudeepholla>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [net-next PATCH v3 00/11] Add PCS core support
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, upstream@airoha.com,
- Christian Marangi <ansuelsmth@gmail.com>, linux-kernel@vger.kernel.org,
- Kory Maincent <kory.maincent@bootlin.com>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Beznea <claudiu.beznea@microchip.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
- Ioana Ciornei <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Joyce Ooi <joyce.ooi@intel.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Madalin Bucur <madalin.bucur@nxp.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Michal Simek <michal.simek@amd.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Robert Hancock <robert.hancock@calian.com>,
- Saravana Kannan <saravanak@google.com>, UNGLinuxDriver@microchip.com,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20250415193323.2794214-1-sean.anderson@linux.dev>
- <aADzVrN1yb6UOcLh@shell.armlinux.org.uk>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <aADzVrN1yb6UOcLh@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250409-incredible-attentive-scorpion-fa9def@sudeepholla>
 
-Hi Russell,
-
-On 4/17/25 08:25, Russell King (Oracle) wrote:
-> On Tue, Apr 15, 2025 at 03:33:12PM -0400, Sean Anderson wrote:
->> This series adds support for creating PCSs as devices on a bus with a
->> driver (patch 3). As initial users,
+On Wed, Apr 09, 2025 at 12:14:00PM +0100, Sudeep Holla wrote:
+> On Wed, Apr 09, 2025 at 11:50:29AM +0800, Peng Fan wrote:
+> > Hi Sudeep, Cristian
+> > 
+> > On Thu, Mar 13, 2025 at 01:23:27PM +0800, Peng Fan wrote:
+> > >On Wed, Mar 12, 2025 at 11:28:52AM +0000, Sudeep Holla wrote:
+> > >>On Wed, Mar 12, 2025 at 10:52:23AM +0000, Sudeep Holla wrote:
+> > >>> On Tue, Mar 11, 2025 at 11:23:12AM +0000, Sudeep Holla wrote:
+> > >>> > On Tue, Mar 11, 2025 at 11:12:45AM +0000, Peng Fan wrote:
+> > >>> > >
+> > >>> > > So it is clear that wrong fw_devlink is created, it is because scmi cpufreq device is
+> > >>> > > created earlier and when device_add, the below logic makes the fwnode pointer points
+> > >>> > > to scmi cpufreq device.
+> > >>> > >         if (dev->fwnode && !dev->fwnode->dev) {
+> > >>> > >                 dev->fwnode->dev = dev;
+> > >>> > >                 fw_devlink_link_device(dev);
+> > >>> > >         }
+> > >>> > >
+> > >>> >
+> > >>> > Thanks, looks like simple way to reproduce the issue. I will give it a try.
+> > >>> >
+> > >>> 
+> > >>> I could reproduce but none of my solution solved the problem completely
+> > >>> or properly. And I don't like the DT proposal you came up with. I am
+> > >>> not inclined to just drop this fwnode setting in the scmi devices and
+> > >>> just use of_node.
+> > >>>
+> > >>
+> > >>Sorry for the typo that changes the meaning: s/not/now
+> > >>
+> > >>I meant "I am now inclined ..", until we figure out a way to make this
+> > >>work with devlinks properly.
+> > >
+> > >when you have time, please give a look at
+> > >https://github.com/MrVan/linux/commit/b500c29cb7f6f32a38b1ed462e333db5a3e301e4
+> > >
+> > >The upper patch was to follow Cristian's and Dan's suggestion in V2[1] to use
+> > >a flag SCMI_DEVICE_NO_FWNODE for scmi device.
+> > >
+> > >I could post out the upper patch as V3 if it basically looks no design flaw.
+> > >I will drop the pinctrl patch in v3, considering we are first going
+> > >to resolve the fw_devlink issue for cpufreq/devfreq.
+> > >
+> > >[1] https://lore.kernel.org/all/Z6SgFGb4Z88v783c@pluto/
+> > 
+> > Not sure you gave a look on this or not. I am thinking to bring this V3
+> > out to mailing list later this week. Please raise if you have any concern.
+> > 
 > 
-> As per previous, unless I respond (this response not included) then I
-> haven't had time to look at it - and today is total ratshit so, not
-> today.
+> Yes I had some thoughts. I will take a look and refresh my memories first.
+> 
 
-Sorry if I resent this too soon. I had another look at the request for
-#pcs-cells [1], and determined that a simpler approach would be
-possible. So I wanted to resend with that change since it would let me
-drop the fwnode_property_get_reference_optional_args patches.
+OK, I will post it separately(may be next week) but I wanted this way.
+Revert to old behaviour and driver request fw_devlink dependencies to
+be created if they rely on them. I am not sure if that is better approach.
 
---Sean
+Regards,
+Sudeep
 
-[1] https://lore.kernel.org/netdev/e7720741-93c5-450b-99a0-3434a5d535f5@linux.dev/
+
+-->8
+
+From: Sudeep Holla <sudeep.holla@arm.com>
+Date: Thu, 17 Apr 2025 10:59:10 +0100
+Subject: [PATCH] firmware: arm_scmi: Add flag to control setting of fwnode
+ handle
+
+Currently, when multiple SCMI devices share the same protocol,
+their fwnode->dev all reference the same device tree node. Depending
+on the order of device creation, fwnode->dev ends up pointing to one
+of the SCMI devices, causing fw_devlink to incorrectly establish
+supplier-consumer relationships treating the first-created device as
+the supplier for all others.
+
+To address this, introduce a flag that enables explicit control over
+whether the fwnode handle should be set. This allows only those devices
+that require fw_devlink support to request it explicitly.
+
+By default, only the of_node is set, which is sufficient for most SCMI
+drivers.
+
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+ drivers/firmware/arm_scmi/bus.c    | 19 ++++++++++++-------
+ drivers/firmware/arm_scmi/common.h |  2 +-
+ drivers/firmware/arm_scmi/driver.c | 12 ++++++------
+ include/linux/scmi_protocol.h      |  4 ++++
+ 4 files changed, 23 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+index 1adef0389475..eeab5de03a1e 100644
+--- a/drivers/firmware/arm_scmi/bus.c
++++ b/drivers/firmware/arm_scmi/bus.c
+@@ -389,7 +389,7 @@ static void __scmi_device_destroy(struct scmi_device *scmi_dev)
+ 
+ static struct scmi_device *
+ __scmi_device_create(struct device_node *np, struct device *parent,
+-		     int protocol, const char *name)
++		     int protocol, const char *name, u32 flags)
+ {
+ 	int id, retval;
+ 	struct scmi_device *scmi_dev;
+@@ -439,11 +439,15 @@ __scmi_device_create(struct device_node *np, struct device *parent,
+ 	scmi_dev->id = id;
+ 	scmi_dev->protocol_id = protocol;
+ 	scmi_dev->dev.parent = parent;
+-	device_set_node(&scmi_dev->dev, of_fwnode_handle(np));
+ 	scmi_dev->dev.bus = &scmi_bus_type;
+ 	scmi_dev->dev.release = scmi_device_release;
+ 	dev_set_name(&scmi_dev->dev, "scmi_dev.%d", id);
+ 
++	if (flags & SCMI_DEV_SET_FWNODE)
++		device_set_node(&scmi_dev->dev, of_fwnode_handle(np));
++	else
++		scmi_dev->dev.of_node = np;
++
+ 	retval = device_register(&scmi_dev->dev);
+ 	if (retval)
+ 		goto put_dev;
+@@ -461,11 +465,11 @@ __scmi_device_create(struct device_node *np, struct device *parent,
+ 
+ static struct scmi_device *
+ _scmi_device_create(struct device_node *np, struct device *parent,
+-		    int protocol, const char *name)
++		    int protocol, const char *name, u32 flags)
+ {
+ 	struct scmi_device *sdev;
+ 
+-	sdev = __scmi_device_create(np, parent, protocol, name);
++	sdev = __scmi_device_create(np, parent, protocol, name, flags);
+ 	if (!sdev)
+ 		pr_err("(%s) Failed to create device for protocol 0x%x (%s)\n",
+ 		       of_node_full_name(parent->of_node), protocol, name);
+@@ -498,14 +502,14 @@ _scmi_device_create(struct device_node *np, struct device *parent,
+  */
+ struct scmi_device *scmi_device_create(struct device_node *np,
+ 				       struct device *parent, int protocol,
+-				       const char *name)
++				       const char *name, u32 flags)
+ {
+ 	struct list_head *phead;
+ 	struct scmi_requested_dev *rdev;
+ 	struct scmi_device *scmi_dev = NULL;
+ 
+ 	if (name)
+-		return _scmi_device_create(np, parent, protocol, name);
++		return _scmi_device_create(np, parent, protocol, name, flags);
+ 
+ 	mutex_lock(&scmi_requested_devices_mtx);
+ 	phead = idr_find(&scmi_requested_devices, protocol);
+@@ -521,7 +525,8 @@ struct scmi_device *scmi_device_create(struct device_node *np,
+ 
+ 		sdev = _scmi_device_create(np, parent,
+ 					   rdev->id_table->protocol_id,
+-					   rdev->id_table->name);
++					   rdev->id_table->name,
++					   rdev->id_table->flags);
+ 		if (sdev)
+ 			scmi_dev = sdev;
+ 	}
+diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
+index dab758c5fdea..c948c4d88332 100644
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -151,7 +151,7 @@ extern struct blocking_notifier_head scmi_requested_devices_nh;
+ 
+ struct scmi_device *scmi_device_create(struct device_node *np,
+ 				       struct device *parent, int protocol,
+-				       const char *name);
++				       const char *name, u32 flags);
+ void scmi_device_destroy(struct device *parent, int protocol, const char *name);
+ 
+ int scmi_protocol_acquire(const struct scmi_handle *handle, u8 protocol_id);
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index f6c9e4491240..433b057ec0d9 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -436,11 +436,11 @@ EXPORT_SYMBOL_GPL(scmi_protocol_unregister);
+  *	  for the specified protocol.
+  */
+ static void scmi_create_protocol_devices(struct device_node *np,
+-					 struct scmi_info *info,
+-					 int prot_id, const char *name)
++					 struct scmi_info *info, int prot_id,
++					 const char *name, u32 flags)
+ {
+ 	mutex_lock(&info->devreq_mtx);
+-	scmi_device_create(np, info->dev, prot_id, name);
++	scmi_device_create(np, info->dev, prot_id, name, flags);
+ 	mutex_unlock(&info->devreq_mtx);
+ }
+ 
+@@ -2668,7 +2668,7 @@ static int scmi_chan_setup(struct scmi_info *info, struct device_node *of_node,
+ 	snprintf(name, 32, "__scmi_transport_device_%s_%02X",
+ 		 idx ? "rx" : "tx", prot_id);
+ 	/* Create a uniquely named, dedicated transport device for this chan */
+-	tdev = scmi_device_create(of_node, info->dev, prot_id, name);
++	tdev = scmi_device_create(of_node, info->dev, prot_id, name, 0);
+ 	if (!tdev) {
+ 		dev_err(info->dev,
+ 			"failed to create transport device (%s)\n", name);
+@@ -2865,7 +2865,7 @@ static int scmi_device_request_notifier(struct notifier_block *nb,
+ 	switch (action) {
+ 	case SCMI_BUS_NOTIFY_DEVICE_REQUEST:
+ 		scmi_create_protocol_devices(np, info, id_table->protocol_id,
+-					     id_table->name);
++					     id_table->name, id_table->flags);
+ 		break;
+ 	case SCMI_BUS_NOTIFY_DEVICE_UNREQUEST:
+ 		scmi_destroy_protocol_devices(info, id_table->protocol_id,
+@@ -3244,7 +3244,7 @@ static int scmi_probe(struct platform_device *pdev)
+ 		}
+ 
+ 		of_node_get(child);
+-		scmi_create_protocol_devices(child, info, prot_id, NULL);
++		scmi_create_protocol_devices(child, info, prot_id, NULL, 0);
+ 	}
+ 
+ 	return 0;
+diff --git a/include/linux/scmi_protocol.h b/include/linux/scmi_protocol.h
+index 688466a0e816..2546b7977fe3 100644
+--- a/include/linux/scmi_protocol.h
++++ b/include/linux/scmi_protocol.h
+@@ -947,9 +947,13 @@ struct scmi_device {
+ 
+ #define to_scmi_dev(d) container_of_const(d, struct scmi_device, dev)
+ 
++/* The scmi device needs fwnode handle */
++#define SCMI_DEV_SET_FWNODE		BIT(0)
++
+ struct scmi_device_id {
+ 	u8 protocol_id;
+ 	const char *name;
++	u32 flags;
+ };
+ 
+ struct scmi_driver {
+-- 
+2.34.1
+
