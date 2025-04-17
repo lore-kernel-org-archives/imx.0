@@ -1,94 +1,92 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213312222B6
-	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 07:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2902035962;
+	Thu, 17 Apr 2025 08:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744876027; cv=none; b=VWJ/H0LrvWkWQmN+VlENSUkTYGRshQPzIhU3dJKVQYHwyZ9bBaPN2k0Pzuy0stZDQSXqECdLo4h2lIk8+M2UoLnJbkiW4KML5VSu41or3icOUrmzNkc/b2MB8ZjDvENafEMouerd4cCWs37+EbB4CIyEWL62XaY6LXMQmXCtg2E=
+	t=1744877626; cv=none; b=OPwPROR70/Qf7pJtK9NcNYMl0w59+qbv8OjYDmOWYjEnCtOw4kw2kT5VY30pgeWfq1cLdtKh2TftPmj6aGn0ii+MHl5l0dusHBATx4YOlbDvX3oOusv5sSeON5dUD3evwl8t9+DBm49PAtOo839McNN28iii0cUo3peakHHt8KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744876027; c=relaxed/simple;
-	bh=WEyznqoBqrdJu6XKj04AtQkuSGwFcw9ym4LfF8stkeo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uZlEyfE2T/9ir7e8AovTC/0OC1vobZVF4f6vWdBj/YbxZi6Yg1wMqW281YpX7GqS2pDyGS6FLE/f5WHwj+EutKJO7y28u6YRlhBGS/0s1Z/hv5m9mga8yi3ECB8B4FdCVyAybA6ssAVgfscop2H0/BrWOpJnF3eL24Fe/PnQwog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KzBVN7Cr; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1744877626; c=relaxed/simple;
+	bh=zyU+Avmsupi03n5Di+kk3CCOVSwpjgJNzIO0CDPpUu4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H5ROccLrspj8F9O0/zWDtqf5lT3aeYPxETXVtQ31bS4EGa7Gu3vyHrpdt5Rr+FBP509h25eUyqesCChZWnY5bcG6S4Tz76C6wI1qhmyHp6iceBEZaj8GMx9C96CqrOKHQBuIpi4Y7vKhzYVJrHmmnZpafBYLTtMWzq8+rw+JXyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMUsly6C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KzBVN7Cr"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5498d2a8b89so494962e87.1
-        for <imx@lists.linux.dev>; Thu, 17 Apr 2025 00:47:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744876024; x=1745480824; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WEyznqoBqrdJu6XKj04AtQkuSGwFcw9ym4LfF8stkeo=;
-        b=KzBVN7CrdIahWBeWVP+yF4ydGVbfLdbuVB+GeiUQD+9LbMB8BZJXzYzf3l+mJ7FOst
-         nZnTpaMEXll5ldan3OX51g1nrmuN8Brt+BqjgdfrysbQdkt85zrEJjg657YrmiK4rDva
-         f7t1TofjUbysNSl+kFOWTFsJsBxjqBkGptpvfPpWn45h46xJrYxXVeeBowitauBUNsk+
-         /UlbY8E0UJrwzhKRDrtZXyJLBxsEQaHxIAwL5dhDPjlX5xd7JH6cXWfi+4A9gXZ6Vjpt
-         IMCnOU8YsjYb/tvWZ/Z0DmUSmdHeRzrTKe4htH93M2LWGvCw2CRKOyuGNUdIUgKmmBBI
-         NSVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744876024; x=1745480824;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WEyznqoBqrdJu6XKj04AtQkuSGwFcw9ym4LfF8stkeo=;
-        b=KMzhT7lYDDTuhEQVia1LyQHhFYy5B8fPluW6D4BDw+J/cEkvmxnsTlJ8C7Ze/nplCr
-         muOUS+xrRhE/q7wvoXY5Vk4SkCZCDD7ww4RtNujrjTmPdKfpijR5jEOE9diOvt/m61l7
-         WehJSz/pGhubC7b8Ie0jdXLyo45UTSdWWbI1tjNlYuk7BWoWVyTVmlvi3mNu9M7YYpER
-         V3bIPrP0u3Vdii1vCvb93xUAi2JnW7V2M92y5682rvy7Hu8N5mUsayVkfFA6G9wRcFzJ
-         uYj7Ge7JmTcJ0/xSfjOrPG1LEo5Xdi63aZlD8L5qowVZlDMw4dDSvZgsoJhg+5V62hpq
-         aWnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwxlMAWzoGDl4q/QJysbMhwoPGS66YyV5sNNgYBEKrtxzsJhp6SOx7Cc7w1NXfbmRgt6M=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwgFDU9qGpLcFTIrJO0e+ptkhuMgywlMxCuUsOJSuWp+qBMhEnI
-	uLksYQaqrP7y+5GH7uAsMij8UogVbIeUX2rgNJCzQg75+15HOZ0DSpYQ4het4laVkiRjokjp57s
-	aIcEvcoC/hSxPFd798o0gKxSakrWCJ6N99gYU6Q==
-X-Gm-Gg: ASbGncsZy+o6FKkvYnpws18bvu4Jp4gRPG95A7xAqYdlttOYotweiCVFFtxWYAMg1VQ
-	E8OII24jSTKcR+CF48fvgW+9ItCu12o7yvxXnABn2OQuZT19AYMAOWm5LHwPNcpcwcqV9RhFRF/
-	Wa7kGMPAoqJdNt5iI0G0FAjw==
-X-Google-Smtp-Source: AGHT+IHsWIAbtRpfryXnt3qAIwy3EE4NveEHC7HyLBuEny9/7E3MO+B1CV3UsgSfANPfkNtKQcLRY1ygdj94mYcsZKI=
-X-Received: by 2002:a05:6512:3d29:b0:54c:a7c:cbd5 with SMTP id
- 2adb3069b0e04-54d64aab2dbmr1542697e87.33.1744876024309; Thu, 17 Apr 2025
- 00:47:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMUsly6C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56139C4CEEC;
+	Thu, 17 Apr 2025 08:13:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744877625;
+	bh=zyU+Avmsupi03n5Di+kk3CCOVSwpjgJNzIO0CDPpUu4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JMUsly6CkJBosudFvHyYQiPEAS77Sz/TzCUbyo3NPgAPy444unATlz2zFtmuFjd0E
+	 GIJFNBF4NPTOeACGcAQINWkdlACY1DDuvm2J/OzclZ6D9Ii7NNTfEoee+Tn42CKUm4
+	 rtRH8tQPuPpAKKwK14Er0QO0iCBCDotee6A8SdYN+z/t1iTZfPaTUZftaCTUk4S/Iv
+	 93LWgZCuGzM07dviRIyK86w1ED9b7+qRmFG5vpV42WRw2u8jTsO5fPZZOkVtaThLaQ
+	 k5fVV+Up9ZKHe9nbaysX8EOFL8IjJz54oNxG7GH0x0Lg1dqjgvh7Ebd3UQ1JQD9GlZ
+	 cBFEhsfzpL0NQ==
+From: Philipp Stanner <phasta@kernel.org>
+To: Jiri Slaby <jirislaby@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Philipp Stanner <phasta@kernel.org>
+Subject: [PATCH] mxser: Use non-hybrid PCI devres API
+Date: Thu, 17 Apr 2025 10:13:34 +0200
+Message-ID: <20250417081333.20917-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250416150847.3422218-1-Frank.Li@nxp.com>
-In-Reply-To: <20250416150847.3422218-1-Frank.Li@nxp.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 17 Apr 2025 09:46:53 +0200
-X-Gm-Features: ATxdqUE6Yg7082az8t1vUSLeJgtF1F2xgv02wcz0LZ7Q-4BmoWJnqMUoGaW2MtA
-Message-ID: <CACRpkda42xO+7tmp+CHPfNgx1YEXn6tYDoDXYJo-EnphH9cTXQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] dt-bindings: pinctrl: convert fsl,vf610-pinctrl.txt
- to yaml format
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"open list:PIN CONTROLLER - FREESCALE" <linux-gpio@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 16, 2025 at 5:09=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+mxser enables its PCI device with pcim_enable_device(). This,
+implicitly, switches the function pci_request_region() into managed
+mode, where it becomes a devres function.
 
-> Convert fsl,vf610-pinctrl.txt to yaml format.
->
-> Additional changes:
-> - subnode name force pattern to 'grp$' to align other imx chips.
->
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+The PCI subsystem wants to remove this hybrid nature from its
+interfaces. To do so, users of the aforementioned combination of
+functions must be ported to non-hybrid functions.
 
-Patch applied!
+Replace the call to sometimes-managed pci_request_region() with one to
+the always-managed pcim_request_region().
 
-Yours,
-Linus Walleij
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+---
+ drivers/tty/mxser.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/tty/mxser.c b/drivers/tty/mxser.c
+index 4d45eca4929a..2fc13cc02cc5 100644
+--- a/drivers/tty/mxser.c
++++ b/drivers/tty/mxser.c
+@@ -1812,7 +1812,7 @@ static int mxser_probe(struct pci_dev *pdev,
+ 
+ 	/* io address */
+ 	ioaddress = pci_resource_start(pdev, 2);
+-	retval = pci_request_region(pdev, 2, "mxser(IO)");
++	retval = pcim_request_region(pdev, 2, "mxser(IO)");
+ 	if (retval)
+ 		goto err_zero;
+ 
+@@ -1822,7 +1822,7 @@ static int mxser_probe(struct pci_dev *pdev,
+ 
+ 	/* vector */
+ 	ioaddress = pci_resource_start(pdev, 3);
+-	retval = pci_request_region(pdev, 3, "mxser(vector)");
++	retval = pcim_request_region(pdev, 3, "mxser(vector)");
+ 	if (retval)
+ 		goto err_zero;
+ 	brd->vector = ioaddress;
+-- 
+2.48.1
+
