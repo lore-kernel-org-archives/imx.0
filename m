@@ -1,187 +1,121 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2877E248869
-	for <imx@lists.linux.dev>; Wed, 16 Apr 2025 22:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B222184E
+	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 01:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744843785; cv=none; b=iInLGCfy8AFbVJnlweoSn+jvLdysZTILCpqy+O4eegdHZKCC9gKzhLkC3wU/I9rqt7+2YQcOI7nOTQMl8j6hFiSgm5r1uxJeG/DSt5OFoNlZg9xZjgg5aIpXeUCSrPmailOasledxah5cz8/UfwrAHr+zZ9YR5Wes1FqaRbn1QQ=
+	t=1744852656; cv=none; b=AXLFZkW/xIclj6EO6C5J//4bBs8mvnukvsQDcz/G0WKauwMRVeLMU9Prig1UCEaRO3la4ZrOP7W5/KipLPnysWZS9/jg77pWKgT5Tm+QmDRmagcEgGSO5G91LWrZDQh8hFRNOoOpjaZVqFh3cMmknSeEw7hAg5lnFpSmiuvJlE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744843785; c=relaxed/simple;
-	bh=zhARHuIhbLTyXHkW6CXECsYiL9+R0A5TAIw+AjmN5vs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uRQBCJddiC3TL3o4VI7xP3qouuX/QEGNaotna8VSTRuqDi1vs5k1ZlnHOiInzbWcWcEIQrRY/vMbcRRmWaLSU6ea9+vpcdMtrI0WskU0mAjo3kjYyGjNApLV6vv5IZZ2MiCxQaJm6fr8a0jOErWzscpDhBGLgrKnBUpuNcWr9MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=iG9QV8HT; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1744852656; c=relaxed/simple;
+	bh=tAGrv9Y+ISX56kVJ642r8N1Gzi55R5eePdaHPLoZ/VA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Csu0q/KyaoBHFukScoU1g2cenN8fr2kTemq1lUZWw4yjbGdcWfRj3bI2DsqbN33J/nKks/RwmGJmAYrmxhD3Ub+YjUPy2Ahu6VkYk0CkB0FmFmBjapuNpMRbNbT/zCYjq9dS6Q3mliHTJbWUPPI8erighSs3uMYWfQbXKOVYuVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=inbyRyKr; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="iG9QV8HT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1744843771; x=1745448571; i=wahrenst@gmx.net;
-	bh=zhARHuIhbLTyXHkW6CXECsYiL9+R0A5TAIw+AjmN5vs=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=iG9QV8HTd3rUGkA48XDBauUafE5EH4g0rcbxil7U9wnhzDzxH0TGNSBox+tp6En5
-	 LQNCsudckMAssmXMdY+GbWkau3ClsQ6frrlo/sVn1OKpPdTKHKEmg1IXTej/ZzkuB
-	 XcMHt+vAJ9hzpG4UjUTBFdpzo2BAsJQLj0BcDvpidVy4h6JhKbEdASqJY7B9KQ5cL
-	 0CRcoEk99hQYxSSIL0aW3mlRULFxp30aFWiW8NjBiiZioKoLjrT67/Co11/rwuRsn
-	 qwjw5VQIq/dSMGs1oW9XktOSI7uIMekawXPHhsHX3wkXz1IL607xVRUbJ7mTAqpmo
-	 a5znv696IHb7emeb5A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mzyuc-1v2Dq13NdW-00xVLq; Thu, 17
- Apr 2025 00:49:31 +0200
-Message-ID: <2d5c6d41-90ee-4f33-866f-a8454162e41a@gmx.net>
-Date: Thu, 17 Apr 2025 00:49:30 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="inbyRyKr"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-af93cd64ef3so140095a12.2
+        for <imx@lists.linux.dev>; Wed, 16 Apr 2025 18:17:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744852654; x=1745457454; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X6kZCUyOGMeKdwk9Rr6GjPnU39uDn4efBFP4mrDY4n8=;
+        b=inbyRyKrX5DKmWodHlf8wGwid4VOzHKQY7SVhO9VRnyFQCqh8gl1Cg0sEd4fEWrU/O
+         Lq0uRpjJsimldIlsxcMwYI2SMee4PHblbnSAA5WrfPZiv67UFMTbcAFqUUBKm/S6Imfv
+         Ec4s8rhBqShI7rrTjzU1qQO8BpHZLT99ctWRlE7dtdZqxeC4jaX/K+NWMmQ43PakWaA8
+         aOHGopGCaTKojD9oqXFHCmPuibvAuhhWdHsUytyyOV53BRhtYNG/kyyL4QDdctHuYM8x
+         xnDqdmBTkk/GLv8bRE2+Hs0SuU7cBlkQmzz1hauejSKjH3ylsWaneGpPSANSjNriFp35
+         w/tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744852654; x=1745457454;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X6kZCUyOGMeKdwk9Rr6GjPnU39uDn4efBFP4mrDY4n8=;
+        b=qS2TlyvR+dgDfHZecwH3vagaJ2z7avwldpHyfP1r6/Rq0C6LaKYrgqRhXd5+iU7PbH
+         3/khQe+OVBJFdeAJEKqJh5+G1D+3x5UAZLTJphqLkDWcpyNNxgirQhbuLTYNZChxhEEb
+         A5VMvfORyb32Qwmm0KPpmJnDsTlqhV0rWCj6iOAPY56wP6mpMTa6Eeqqx5kmm8H3xlQ0
+         T3emQKbOZLYoBiWj7uByKVMD7SzeOgTa4zIqyCExKffLrPa8VkfyOludGDDFDygOsV/+
+         Twkc7wOnXk0sKJJWXGKJ057HnJV95LWOeeJSRcnAkO7qNRNgfNE+mnRxmd+WCsayYjTm
+         dYLw==
+X-Forwarded-Encrypted: i=1; AJvYcCX2yIqv4SIVt78K+D5z2wACJbS86CZPUGj+7kATdRMV9J4HmAD2cY7Qb2EaIRGz/gLJd6I=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyFoG965TOxbOxEUSyyTJUez68SunzpCvwyS8z4KM2+zjQbKktI
+	Zq27Eh3Wy7Yf+qmtwOxMor7WmVO1+mo4xk0Xqyql4NE9cPHZNPiB
+X-Gm-Gg: ASbGncthb8UwOpSth1EGbqos+GqVc/2k5alSabXtiEG9nbo/YqKT02zcfEt3qXwnsw1
+	x0NW+5Gt8WwVgU+oHn5To0mcJLYkVw2WY5BkaUCQaMh4ZhPY5PrKcK/8TqWRKev+SX19bwjwUOy
+	6WLRPhuDmT7H2bkZir4WXKWDvvn5/fEhzMMgBurY0V3LXpncLi3WpEAMKLLuAlpGo6I0wiP+2cY
+	WJNwWSOVCtkByZbJnz9lXhKgHl1kHbwG1fHHz88au+dWCtAnrdPjqoyAIt+6h5tJpbutvYdAI1/
+	sEnL8WOf5+Z1pUZZvQppmrcISGzPfdcKcR7XAGNUUJnEYbVQnFTKyXv5Y9jXpFh4RpLQaROEqhy
+	EXJo3
+X-Google-Smtp-Source: AGHT+IFdCxEx27NH3yIHMAmLL3SGYxxHjyXgNtoivLisYP2O66x59yWDou7m+l9nKLM43nZ0EotW4Q==
+X-Received: by 2002:a17:902:f60f:b0:221:85:f384 with SMTP id d9443c01a7336-22c358db3demr62326835ad.16.1744852654324;
+        Wed, 16 Apr 2025 18:17:34 -0700 (PDT)
+Received: from delphinus (p4007-ipbfpfx02osakakita.osaka.ocn.ne.jp. [60.40.45.135])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3086104dfd8sm2365860a91.0.2025.04.16.18.17.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Apr 2025 18:17:33 -0700 (PDT)
+From: Tamura Dai <kirinode0@gmail.com>
+To: Mark Brown <broonie@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Tamura Dai <kirinode0@gmail.com>
+Subject: [PATCH] spi: spi-imx: Add check for spi_imx_setupxfer()
+Date: Thu, 17 Apr 2025 10:16:05 +0900
+Message-ID: <20250417011700.14436-1-kirinode0@gmail.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: fsl_lpuart: imx93: Rare dataloss during DMA receive
-To: Sherry Sun <sherry.sun@nxp.com>, Peng Fan <peng.fan@nxp.com>,
- Frank Li <frank.li@nxp.com>, Joy Zou <joy.zou@nxp.com>
-Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
- linux-serial <linux-serial@vger.kernel.org>,
- "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Christoph Stoidner <c.stoidner@phytec.de>
-References: <a9263ccf-2873-46e4-8aee-25e0de89a611@gmx.net>
- <DB9PR04MB84299ACCDAFE6427B30699F592B42@DB9PR04MB8429.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <DB9PR04MB84299ACCDAFE6427B30699F592B42@DB9PR04MB8429.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FjJumgb112Upp1kgY9X3tzPlFxJnmFPdBpwE9KWJw6Q4we6WhAy
- 9EXcTm4YxTp1JjwHBF1sVT+y/rjNvjhShXKra5j2DJk8l8mgsJJnBsYlKq8BdZ9JBkCm0Z9
- lF6tCxQs3gN6GqVrJkv6o4AZkOXWrNVknMohaxL/t+qAKDIDy6VqRZWfLCih8Zc3OkWgG0x
- HcQX53RsHklDieQVkJKsA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:E7J2OZxbYp0=;1mu8zmy9oXp9FTppcd+c/+bUlxa
- 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
+Content-Transfer-Encoding: 8bit
 
-Hi Sherry,
+Add check for the return value of spi_imx_setupxfer().
+spi_imx->rx and spi_imx->tx function pointer can be NULL when
+spi_imx_setupxfer() return error, and make NULL pointer dereference.
 
-Am 09.04.25 um 11:51 schrieb Sherry Sun:
->
->> -----Original Message-----
->> From: Stefan Wahren <wahrenst@gmx.net>
->> Sent: Wednesday, April 9, 2025 4:19 PM
->> To: Sherry Sun <sherry.sun@nxp.com>; Peng Fan <peng.fan@nxp.com>;
->> Frank Li <frank.li@nxp.com>
->> Cc: imx@lists.linux.dev; linux-serial <linux-serial@vger.kernel.org>;
->> dmaengine@vger.kernel.org; Fabio Estevam <festevam@gmail.com>;
->> Christoph Stoidner <c.stoidner@phytec.de>
->> Subject: fsl_lpuart: imx93: Rare dataloss during DMA receive
->>
->> Hi,
->>
->> we have a custom i.MX93 board and on this board the i.MX93=C2=A0(A1 ste=
-pping) is
->> connected via LPUART3 to another MCU. Both processors communicate via a
->> small protocol (request/response are smaller than 16 bytes) at 115200 b=
-aud
->> (no parity, no hardware flow control). The i.MX93 is the initiator and =
-the other
->> MCU is the responder.
->>
->> So we noticed via logic analyzer that the i.MX93 sometimes doesn't rece=
-ive
->> the complete response (no framing issues). In our setup it usually take=
-s 1 or 2
->> minutes to reproduce this issue. Interestingly this issue is not reprod=
-ucible, if
->> we disable DMA and operate via IRQ.
->>
->> The issue is still reproducible, if we disable all other DMA channel ex=
-cept the
->> ones for LPUART3.
->>
->> We tested with Linux Mainline 6.14 and Linux NXP 6.6.23, in both cases =
-the
->> issue was also reproducible. We debugged the relevant drivers and notic=
-ed
->> that the UART detects (UARTSTAT has RX pin edge detected) the RX signal=
-, but
->> there is not reaction within the DMA driver.
->>
->> Is anyone at NXP aware of such an issue?
->> Do you have some suggestions to analyze this further?
-> We have not observed this issue in our internal testing, some debug sugg=
-estions from fsl-lpuart side. Perhaps Joy can give some suggestions from e=
-DMA side.
-> Please try with Linux Mainline 6.14.
-> 1. Can you please run "cat /proc/tty/driver/fsl-lpuart" and "cat /proc/i=
-nterrupt | grep serial" when issue observed? That may help to get more inf=
-o.
-> 2. Can you please check if the issue is still observed after enabling ha=
-rdware flow control?
-> 3. Can you please check if this is still observed if setting rx_watermar=
-k=3D1?
-> 4. Is there an easy way to reproduce this issue? Maybe we can give it a =
-try.
-thanks for your fast reply and the hints. Sorry for the noise, I figured=
-=20
-out that there was no dataloss. There was a bug in the test setup and a=20
-misunderstanding how thinks work :-(
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+ Call trace:
+  0x0
+  spi_imx_pio_transfer+0x50/0xd8
+  spi_imx_transfer_one+0x18c/0x858
+  spi_transfer_one_message+0x43c/0x790
+  __spi_pump_transfer_message+0x238/0x5d4
+  __spi_sync+0x2b0/0x454
+  spi_write_then_read+0x11c/0x200
 
-Regards
->
-> Best Regards
-> Sherry
+Signed-off-by: Tamura Dai <kirinode0@gmail.com>
+---
+ drivers/spi/spi-imx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 832d6e9009eb..c93d80a4d734 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1695,9 +1695,12 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
+ 				struct spi_device *spi,
+ 				struct spi_transfer *transfer)
+ {
++	int ret;
+ 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(spi->controller);
+ 
+-	spi_imx_setupxfer(spi, transfer);
++	ret = spi_imx_setupxfer(spi, transfer);
++	if (ret < 0)
++		return ret;
+ 	transfer->effective_speed_hz = spi_imx->spi_bus_clk;
+ 
+ 	/* flush rxfifo before transfer */
+-- 
+2.47.2
 
