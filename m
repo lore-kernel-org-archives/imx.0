@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBE822AE7A;
-	Thu, 17 Apr 2025 10:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7003122B587;
+	Thu, 17 Apr 2025 10:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744884850; cv=none; b=d8hHPZsv5KkLSz9FFJ+mUjZzI81MUccfXcfOlnNRbCN8aIKeOeFfRek7tK1af+H9OKjvdHBCqAORQnrcBz4byg1lI+KMw0+mMPPzNfgLQwjNPhLKxWkaZIlDwJJMYY+cNVqFjbY7y7+Jxvw852/QLSnxr9e+y4h31/DF9l/P+Y0=
+	t=1744884850; cv=none; b=Z9gAJdycoEO6Ih11xcRNM2MlQyb1wX6SCdtseHf0aXdlxkKnexyvQdzeZehtsO1eflm6eRKyycmKstv+M9ngrVLwrd0zX8KsTQ3TsAq59Ycla89YsQMsg9nyc7OpAvrRKbUGqUBV+RQ7RTIG5VzBKPo01MPWXU2sngSr4g34T8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744884850; c=relaxed/simple;
-	bh=2Dlsbp2ZQp0mKlkOG0l2HB/A70QyxJouIcLTcNaKU4Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fG04evPqAgR4UxsBsjvTjrLa3qUlQ4kBpUt/MEUBbDwtgL7QsdWnuwjfF4ac/BDzBLdDwSVef6I+tTGYiq94cjCPmVH0L6cvx94rMpogMDi5MQAMvfiBm6uaJPXWwz6wcFk/R4yvGJ6uJt69/zhrl1cypLPpt71Xps4KwZUEipI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rySPy2+X; arc=none smtp.client-ip=10.30.226.201
+	bh=OH7eZX54zgQCjVVOYI4sEIr2A+p5IQRMKEHQ5gWO4Vo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CieopJK+PS/fwYzUefJskf1z7WH56pcGrKy5fzxV3VHmfn7lTH9E+aq+XnK88oMcj/PZAkPOz368eQDim2Rg6bv0qitgXmBWzpoKro/0twFaQxqHxYIFu1z4CJKLMR8S4BtJVOsn6uFoZSLnebVpYprsesCOERtAZt+QX8E5PxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izOz1iOt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rySPy2+X"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 38880C4CEF5;
-	Thu, 17 Apr 2025 10:14:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izOz1iOt"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B9806C4CEE4;
+	Thu, 17 Apr 2025 10:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744884850;
-	bh=2Dlsbp2ZQp0mKlkOG0l2HB/A70QyxJouIcLTcNaKU4Q=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rySPy2+XkmyDlnb8+lbfad2sx0VycN09sDEt+MzqJMuKoWgsfBY2ZwvKhFbthn5fw
-	 a7DVRO9RnmmOFSCaHEGATGLowndtNQa1yVtie9QgwER9r3LYwXJw9mTY8iU40CY+n0
-	 2vvKEro2ALeJwiLlffF987c2gj4bRnSZhRj/PS6aKAFqvzzIJ/r9wNfL59qMU/UzuQ
-	 jIVvwvoMhi86ZaC1JxOzXw7MH1LNULo9fA3IPbQnT/MF359d/PoXWHIBdWUjkuQcX1
-	 j1dCZiTJ+gjU2OutfopTLMc4CjPoY7Rq+4XbXnvoNAhfbMtluF7J4MWiYFrUHuD8es
-	 nM4ZFt00M48MA==
+	s=k20201202; t=1744884849;
+	bh=OH7eZX54zgQCjVVOYI4sEIr2A+p5IQRMKEHQ5gWO4Vo=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=izOz1iOtENuLuSw9CLjDanuuvIB3V5jiQVKbGjuen6UaSZDHqzSL9tM3DqdQ2X4vm
+	 XHg4r4hM7AT+UaS2U2l4AHzSWoi6p4lcPT7M914rtWSAA/ctwdjzG4b5dOQjteqom4
+	 UAtTQ+V7Lqque7Grti0lWtfEOG/LqByuoOCquR6e/74JZqCLfb4AvMjHlDd6et+oZB
+	 phY/FqqVGLTcMVDRo8i4kGEEJXVRS+N/yEiWX+g/ynljgrt/Ii7xwaDZyKn+s44kdR
+	 L9XRxhjot8JB5u/obVu9YdD3MJ0LqDHDOCXXfRmIdpYy4A/nYCEZQ0JFkb2vN56wJ+
+	 /w+AkH9TQbm8Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30D1EC369B2;
-	Thu, 17 Apr 2025 10:14:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A569CC369B2;
+	Thu, 17 Apr 2025 10:14:09 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Thu, 17 Apr 2025 12:14:08 +0200
-Subject: [PATCH v6 7/8] arm64: dts: freescale: Add the BOE av101hdt-a10
- variant of the Moduline Display
+Subject: [PATCH v6 0/8] arm64: dts: freescale: Add support for the
+ GOcontroll Moduline Display
+Date: Thu, 17 Apr 2025 12:14:01 +0200
+Message-Id: <20250417-initial_display-v6-0-3c6f6d24c7af@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,9 +41,12 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250417-initial_display-v6-7-3c6f6d24c7af@gocontroll.com>
-References: <20250417-initial_display-v6-0-3c6f6d24c7af@gocontroll.com>
-In-Reply-To: <20250417-initial_display-v6-0-3c6f6d24c7af@gocontroll.com>
+X-B4-Tracking: v=1; b=H4sIAGnUAGgC/3XNzYrDIBSG4Vsprseix59oV72PMgzGaHsgE4uGM
+ KXk3sd204Lp8v3gPOdOSsgYCjns7iSHBQumqYb+2hF/cdM5UBxqE2CgGICkOOGMbvwZsFxHd6P
+ RGQBuAtNBkXp1zSHi31M8fde+YJlTvj0fLPyxfrYWThlV3vd91FwoKY7n5NM05zSOe59+yQNc4
+ B3RLQIVARFddFwww7tNRLwQAV2LiIrIYGxwXHfa9ZuIfCGSQYvIithorDHCOKPlJqLeEK5aRFU
+ kCladoePS2gZZ1/UfpAYd6scBAAA=
+X-Change-ID: 20250224-initial_display-fa82218e06e5
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -53,11 +56,11 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
  Maud Spierings <maudspierings@gocontroll.com>, Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744884848; l=4149;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744884848; l=3701;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=h0JRl/H1jAeQCWzYy2uEVhxYBS57hFbIJlyMQEJFcGI=;
- b=BQLNwPAQ/bZpmpmIO1+dtEy30HavvccIhjQE7zWaBj+brScjCpkz73uD2xfY8jdtW4kj0c167
- unS8nYCn38sB4/eQinUYqJ8WbOBwk76PugzlkYwK3bLbc09M0xHPrLR
+ bh=OH7eZX54zgQCjVVOYI4sEIr2A+p5IQRMKEHQ5gWO4Vo=;
+ b=E5KfrkxKT4ITztZE9VHXJ1UMy+TBUFwiIVRtGdhi8AJLHgzFtO3Ti6Xk8d9b702xDuV1xwg5h
+ GkQi4hhLOy8DXbqlcFul8IeIjVDMQ1b8ruDaiEGXhckZivbPWmsZnbf
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
@@ -65,144 +68,83 @@ X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
 X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
 Reply-To: maudspierings@gocontroll.com
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+Add inital support for 2 variants of the Moduline Display controller.
+This system is powered by the Ka-Ro Electronics tx8p-ml81 COM, which
+features an imx8mp SoC.
 
-Add the BOE av101hdt-a10 variant of the Moduline Display, this variant
-comes with a 10.1 1280x720 display with a touchscreen (not working in
-mainline).
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
-Currently the backlight driver is not available, this will be upstreamed
-in a future patch series. It is a Maxim max25014atg.
+Changes in v6:
+- Fix spi cs formatting in baseboard dts
+- Add model to baseboard dts
+- Fix commit typo in karo tx8p ml81 dtsi
+- Link to v5: https://lore.kernel.org/r/20250415-initial_display-v5-0-f309f8d71499@gocontroll.com
 
-The touchscreen has a Cypress CYAT81658-64AS48 controller which as far as
-I know is not supported upstream, the driver we currently use for this is
-a mess and I doubt we will be able to get it in an upstreamable state.
+Changes in v5:
+- Merge the makefile patch into the two dtso patches
+- Fix references to the root node in the dtso patches
+- Enable the USB bus going to the adapter board in the mainboard dts
+- Fix some formatting issues in the mainboard dts
+- Fix some formatting issues in the COM dts
+- Change a clock as suggested in the COM dts
+- Fix the maintainers entries, remove devicetree list and imx list
+- Rebase on latest linux-next
+- Link to v4: https://lore.kernel.org/r/20250402-initial_display-v4-0-9f898838a864@gocontroll.com
+
+Changes in v4:
+- Add imx mailing list to ka-ro tx8p maintainer entry
+- Fix several small indentation and ordering issues in devicetrees
+- Change the two display adapter boards to overlays
+- Add the missing patch for the Makefile to actually be able to build
+  the new devicetrees
+- Link to v3: https://lore.kernel.org/r/20250327-initial_display-v3-0-4e89ea1676ab@gocontroll.com
+
+Changes in v3:
+- Set regulator-boot-on and always-on on LDO5 of the pmic, after 20 ish
+  seconds it auto disabled this LDO causing weird behaviour like
+  ethernet droping out, wifi not working anymore. This LDO can control
+  the IO voltage level of certain pins, just let it keep the u-boot
+  value.
+- Fix the comment style in imx8mp-pinfunc.h
+- Rebase on newest next tag
+- Link to v2: https://lore.kernel.org/r/20250226-initial_display-v2-0-23fafa130817@gocontroll.com
+
+Changes in v2:
+- Dropped the trivial-devices patch
+- Added a patch with bindings for the gocontroll,moduline-module-slot
+- Added a patch to spidev.c to enable the spidev driver for the module
+  slot
+- Added a missing usb-c connector in the av101hdt-a10 variant dts
+- Switched to the new bindings for the module slots in the base dts
+- Fixed some commit typos
+- Link to v1: https://lore.kernel.org/r/20250224-initial_display-v1-0-5ccbbf613543@gocontroll.com
+
 ---
- arch/arm64/boot/dts/freescale/Makefile             |  5 ++
- ...x8p-ml81-moduline-display-106-av101hdt-a10.dtso | 94 ++++++++++++++++++++++
- 2 files changed, 99 insertions(+)
+Maud Spierings (8):
+      dt-bindings: arm: fsl: Add GOcontroll Moduline Display
+      arm64: dts: imx8mp: Add pinctrl config definitions
+      MAINTAINERS: add maintainer for the Ka-Ro tx8p-ml81 COM module
+      MAINTAINERS: add maintainer for the GOcontroll Moduline controllers
+      arm64: dts: freescale: add Ka-Ro Electronics tx8p-ml81 COM
+      arm64: dts: freescale: Add the GOcontroll Moduline Display baseboard
+      arm64: dts: freescale: Add the BOE av101hdt-a10 variant of the Moduline Display
+      arm64: dts: freescale: Add the BOE av123z7m-n17 variant of the Moduline Display
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index b6d3fe26d621234ab84353165d20af9d2536f839..ca3255aa9e18187b33d54c836992aca5dd5d0465 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -214,6 +214,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-bd500.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-tian-g07017.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314.dtb
-+
-+imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10-dtbs += imx8mp-tx8p-ml81-moduline-display-106.dtb \
-+	imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtb
-+
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw71xx-2x.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw72xx-2x.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso
-new file mode 100644
-index 0000000000000000000000000000000000000000..b3bbbd69f671493c809bbf043807a22adda5024a
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso
-@@ -0,0 +1,94 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Copyright 2025 GOcontroll B.V.
-+ * Author: Maud Spierings <maudspierings@gocontroll.com>
-+ */
-+
-+#include <dt-bindings/clock/imx8mp-clock.h>
-+#include <dt-bindings/gpio/gpio.h>
-+
-+#include "imx8mp-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&{/} {
-+	model = "GOcontroll Moduline Display with BOE av101hdt-a10 display";
-+
-+	panel {
-+		compatible = "boe,av101hdt-a10";
-+		enable-gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&pinctrl_panel>;
-+		pinctrl-names = "default";
-+		power-supply = <&reg_3v3_per>;
-+		reset-gpios = <&gpio1 9 GPIO_ACTIVE_LOW>;
-+
-+		port {
-+			panel_lvds_in: endpoint {
-+				remote-endpoint = <&ldb_lvds_ch0>;
-+			};
-+		};
-+	};
-+
-+	reg_vbus: regulator-vbus {
-+		compatible = "regulator-fixed";
-+		power-supply = <&reg_6v4>;
-+		regulator-always-on;
-+		regulator-max-microvolt = <5000000>;
-+		regulator-min-microvolt = <5000000>;
-+		regulator-name = "usb-c-vbus";
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_panel: panelgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07
-+			MX8MP_DSE_X1
-+			MX8MP_IOMUXC_GPIO1_IO09__GPIO1_IO09
-+			MX8MP_DSE_X1
-+		>;
-+	};
-+};
-+
-+&lcdif2 {
-+	status = "okay";
-+};
-+
-+&lvds_bridge {
-+	assigned-clocks = <&clk IMX8MP_CLK_MEDIA_LDB>, <&clk IMX8MP_VIDEO_PLL1>;
-+	/* IMX8MP_VIDEO_PLL1 = IMX8MP_CLK_MEDIA_DISP2_PIX * 2 * 7 */
-+	assigned-clock-rates = <0>, <1054620000>;
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			ldb_lvds_ch0: endpoint {
-+				remote-endpoint = <&panel_lvds_in>;
-+			};
-+		};
-+	};
-+};
-+
-+&usb_dwc3_1 {
-+	dr_mode = "host";
-+
-+	connector {
-+		compatible = "usb-c-connector";
-+		data-role = "host";
-+		pd-disable;
-+		vbus-supply = <&reg_vbus>;
-+
-+		port {
-+			high_speed_ep: endpoint {
-+				remote-endpoint = <&usb1_hs_ep>;
-+			};
-+		};
-+	};
-+
-+	port {
-+		usb1_hs_ep: endpoint {
-+			remote-endpoint = <&high_speed_ep>;
-+		};
-+	};
-+};
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   1 +
+ MAINTAINERS                                        |  12 +
+ arch/arm64/boot/dts/freescale/Makefile             |   8 +
+ arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h     |  33 ++
+ ...x8p-ml81-moduline-display-106-av101hdt-a10.dtso |  94 ++++
+ ...x8p-ml81-moduline-display-106-av123z7m-n17.dtso | 139 ++++++
+ .../imx8mp-tx8p-ml81-moduline-display-106.dts      | 526 ++++++++++++++++++++
+ .../arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi | 548 +++++++++++++++++++++
+ 8 files changed, 1361 insertions(+)
+---
+base-commit: fb44e19e78df2950877a9f7b4f24b58db790d293
+change-id: 20250224-initial_display-fa82218e06e5
 
+Best regards,
 -- 
-2.49.0
+Maud Spierings <maudspierings@gocontroll.com>
 
 
