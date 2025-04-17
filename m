@@ -1,62 +1,47 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678DE23F26A;
-	Thu, 17 Apr 2025 12:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE7017A30C
+	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 13:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744893565; cv=none; b=qawesyLCpcqWnH+j9JFmaAvJye0Qp5hkqloDaLWGW6LDK+VhZU4AIxw8CyV0MO3yzFQOSHlDQRouy4GyXiE9zdTSmb4mAfHt9/uNM/mRE26SC5VTWDjhcfrc3uvA6TWLOLIxlKI9LaaB0cODhdk3mg0mfpHo9xPWDmxcVwKcNaM=
+	t=1744895039; cv=none; b=SNkr67hofY3t1abj7Uv3pm/7szg9bEZVhGmF/Umhc9/P+xaRQCoLzEQskS47d94UEKr0K7DlgjgO60Ck+y3jyFaY1IzeliJy3ma1J/58Znv3mFN/nwFwvLcoEalCZfaRIub7gU31LU2dYn7onremtsag9BEsZhat/rC2WIK0DWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744893565; c=relaxed/simple;
-	bh=Q6ls8nXfCLbg6Gn8VXIwtK9f14Vv3gsPMNnsuO1EQsY=;
+	s=arc-20240116; t=1744895039; c=relaxed/simple;
+	bh=lFeALokJFpgk28Aq35eQ1HRQJYe1F50kbXfYETsPyFI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZkFKhisPn8Q4C/1ogPM1ykD4twyTWT4Q1fNkWJXFsi2sDsas3uV4RlM1y8w6hThhsZiWVl8L2mCsByVyZqDlXzHfpHUVd055hFZCQEqD37kZ+DJSJuj0V4DCZBXEB+Kc8Wwcg79j7L7N1BUumeGY75kqYmTMdmSkImvWriY0d3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UM7kBt8u; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=GNPAUdVI6RhYJ35rLLoL0Qu12cBhgmxWFsNWHd1R+NHaIhtr96xFDpB4GLxgfwhbwWsIcpb3TOo/V/zt2b/iUx50sMZ4EEu6afKcHHdy5mbJB2SgbYkM/giMsosKPHYgejxSDgEM1Z0+3lF2wkQ3hwh539m+n3HhS8uFzSbh788=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=KPzhyH1W; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UM7kBt8u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744893563; x=1776429563;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Q6ls8nXfCLbg6Gn8VXIwtK9f14Vv3gsPMNnsuO1EQsY=;
-  b=UM7kBt8uwhDQ2rYT21MZ/DGqn80UOMO0uajotMHHeiDEVgpAxHHBC/wy
-   EaHKxBLpXHQ1nTyPKWNGToS3bzlkX0ZqsbD/EjeEaNSelu5VCSvC+T9NR
-   bpDupROXXOd6xy7px2RlCzjYyAzjOSpduAUyHbLVnglcj2ZJyL7Q5J42U
-   6mjcMWRmrmqmzsjjpaEdQvqhapdh0xbKAeEgnfUQS/kf/aLHfaeDJAIaW
-   wNETXrn683t0LwzpZoT0p+kuhJlcYBbr1PbC4Lvmo2g8UMo+4LgcQGfE1
-   5LEeHGYoC5kSHSvyg6OogwzPIBWMJAawUzvuJdvRp2yzW3SOHav40YfKR
-   Q==;
-X-CSE-ConnectionGUID: V6CWxwvIS16tYeBcu+PWpA==
-X-CSE-MsgGUID: vKr0BD6iQLq80x7vmR7p1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="64015063"
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="64015063"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 05:39:22 -0700
-X-CSE-ConnectionGUID: v43BFzS3RQ+0avd8i/dxCQ==
-X-CSE-MsgGUID: NzuJVe9/TEiFihEIZEYzkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,219,1739865600"; 
-   d="scan'208";a="135757965"
-Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 17 Apr 2025 05:39:21 -0700
-Received: from kbuild by b207828170a5 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u5OWU-000Mim-0S;
-	Thu, 17 Apr 2025 12:39:18 +0000
-Date: Thu, 17 Apr 2025 20:38:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Xu Yang <xu.yang_2@nxp.com>, krzk@kernel.org, myungjoo.ham@samsung.com,
-	cw00.choi@samsung.com, robh@kernel.org, conor+dt@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH 2/3] extcon: ptn5150: Add Type-C orientation switch
- support
-Message-ID: <202504172041.B86u6VMO-lkp@intel.com>
-References: <20250416105940.1572672-2-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="KPzhyH1W"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id B71961F91A;
+	Thu, 17 Apr 2025 15:03:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1744895028;
+	bh=LVIv+Euugq4tGgOroUBB26lcmJe4QB+yarX/KrXGKoU=; h=From:To:Subject;
+	b=KPzhyH1WrJIKuXn4iDgsC61lXzCe1axXYyM9GRAGE4fsHLHTnE1wAqWGZwfS71ft/
+	 nA0ZpkIoMNpVG8On6N+KDyb5ttYOEERQ4IWBTolo/A2cjwB/nhLdB/CGaqiQTlf2OM
+	 /gSGRJDD8Lr6PSKZjNK8AXLJc4ZqSVQL+V4GkMC53obPRlvHHWgipM4GR0I5+mSGbn
+	 KKWmuEsMXuXmzbktwZlDCWTdCsFzXyFe1GnOUP9uJpdLcctRzzgN5bxc/+20wDuU9Y
+	 vBNiWRRq3YA0jxNMExpISjRCEOFuqgp+vByQIX6uAk0qLQmmvjCyVM70p9tEU552pe
+	 wsPG/35PlJDAA==
+Date: Thu, 17 Apr 2025 15:03:42 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: imx8mm-verdin: Link reg_nvcc_sd to usdhc2
+Message-ID: <20250417130342.GA18817@francesco-nb>
+References: <20250417112012.785420-1-Wojciech.Dubowik@mt.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -65,36 +50,51 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250416105940.1572672-2-xu.yang_2@nxp.com>
+In-Reply-To: <20250417112012.785420-1-Wojciech.Dubowik@mt.com>
 
-Hi Xu,
+Hello Wojciech,
+thanks very much for your patch.
 
-kernel test robot noticed the following build errors:
+On Thu, Apr 17, 2025 at 01:20:11PM +0200, Wojciech Dubowik wrote:
+> Link LDO5 labeled reg_nvcc_sd from PMIC to align with
+> hardware configuration specified in the datasheet.
+> 
+> Without this definition LDO5 will be powered down, disabling
+> SD card after bootup. This has been introduced in commit
+> f5aab0438ef1 (regulator: pca9450: Fix enable register for LDO5).
+> 
+> Fixes: f5aab0438ef1 (regulator: pca9450: Fix enable register for LDO5)
+> Cc: stable@vger.kernel.org
+> 
+> Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> index 7251ad3a0017..6307c5caf3bc 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> @@ -785,6 +785,7 @@ &usdhc2 {
+>  	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_cd>;
+>  	pinctrl-3 = <&pinctrl_usdhc2_sleep>, <&pinctrl_usdhc2_cd_sleep>;
+>  	vmmc-supply = <&reg_usdhc2_vmmc>;
+> +	vqmmc-supply = <&reg_nvcc_sd>;
 
-[auto build test ERROR on krzk-dt/for-next]
-[also build test ERROR on chanwoo-extcon/extcon-next linus/master v6.15-rc2 next-20250417]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I am worried just doing this will have some side effects.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Xu-Yang/extcon-ptn5150-Add-Type-C-orientation-switch-support/20250416-185917
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/krzk/linux-dt.git for-next
-patch link:    https://lore.kernel.org/r/20250416105940.1572672-2-xu.yang_2%40nxp.com
-patch subject: [PATCH 2/3] extcon: ptn5150: Add Type-C orientation switch support
-config: csky-randconfig-001-20250417 (https://download.01.org/0day-ci/archive/20250417/202504172041.B86u6VMO-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250417/202504172041.B86u6VMO-lkp@intel.com/reproduce)
+Before this patch, the switch between 1v8 and 3v3 was done because we
+have a GPIO, connected to the PMIC, controlled by the USDHC2 instance
+(MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT, see pinctrl_usdhc2).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504172041.B86u6VMO-lkp@intel.com/
+With your change both the PMIC will be programmed with a different
+voltage over i2c and the GPIO will also toggle. It does not sound like
+what we want to do.
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+Maybe we should have a "regulator-gpio" with vin-supply =
+<&reg_nvcc_sd>, as we recently did here
+https://lore.kernel.org/all/20250414123827.428339-1-ivitro@gmail.com/T/#m2964f1126a6732a66a6e704812f2b786e8237354
+?
 
->> ERROR: modpost: "typec_switch_set" [drivers/extcon/extcon-ptn5150.ko] undefined!
->> ERROR: modpost: "fwnode_typec_switch_get" [drivers/extcon/extcon-ptn5150.ko] undefined!
+Francesco
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
