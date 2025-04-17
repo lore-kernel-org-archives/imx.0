@@ -1,187 +1,94 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B366B2063E2
-	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 07:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213312222B6
+	for <imx@lists.linux.dev>; Thu, 17 Apr 2025 07:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744875228; cv=none; b=oEzTuvBdQhnGgAQb0cXxNmwLCMp/wFhXQD94u/bev3ROfib3AbnR8vH+IiP1w52eiDtExw5z6DBJ4/StDbLoz+QNsxk3I2LMbcJLxLGnxxVFgtUOqp42kcQNlzuNIJG9tBYCCQu86RvM4rN+yPKUOjEoNiQ6wLBrtMoHC16Gaog=
+	t=1744876027; cv=none; b=VWJ/H0LrvWkWQmN+VlENSUkTYGRshQPzIhU3dJKVQYHwyZ9bBaPN2k0Pzuy0stZDQSXqECdLo4h2lIk8+M2UoLnJbkiW4KML5VSu41or3icOUrmzNkc/b2MB8ZjDvENafEMouerd4cCWs37+EbB4CIyEWL62XaY6LXMQmXCtg2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744875228; c=relaxed/simple;
-	bh=Y/qc0vtTRMrzd2YLM5omTxkfh6yZkGOjYnmsFUzBRYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q0XUnSo6MAA8SM1iHoZK0QPG+iTGDmpkGd9Nmj7Skchql9WKU/OfQtuomCiWJXU0YD72BCRyHGENSMMDfyBo+sQrs5S/tsq4cShcaonAC6q8iOsQrZAbDzVDQYt2X/a8n2yZ0yBzM4H65vhjpZxp52QkMEvJPznJIfXH3GcmhMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=CvG1tcL+; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1744876027; c=relaxed/simple;
+	bh=WEyznqoBqrdJu6XKj04AtQkuSGwFcw9ym4LfF8stkeo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uZlEyfE2T/9ir7e8AovTC/0OC1vobZVF4f6vWdBj/YbxZi6Yg1wMqW281YpX7GqS2pDyGS6FLE/f5WHwj+EutKJO7y28u6YRlhBGS/0s1Z/hv5m9mga8yi3ECB8B4FdCVyAybA6ssAVgfscop2H0/BrWOpJnF3eL24Fe/PnQwog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KzBVN7Cr; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="CvG1tcL+"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0B7671039EF2C;
-	Thu, 17 Apr 2025 09:33:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744875222; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=u0xom2YM8lyIFaJb7oErSmb3c+ED4OylfqTb0GgwBno=;
-	b=CvG1tcL+b+zgb41GwvC6m4xQO6vjuPOzgoQvrY3Bfr/iRSLdc0WvXYEYX/csfLcpbI0Grp
-	vReiazhemuD55KwSeOpMUWTcwxQ4R/DRW5P9KfLigaANWxhDDauvPPAfbeYHgoqf9cjiIb
-	ZlKzSvJmhXXY2iHGQSFe8sufvWb5gOimRy3Va0qL0UvxGaSDP6BdBSh8PW9REt4d6KaqWn
-	2tvTZxQK8P6aM67FQVbQUkppSmvfBEXTaF2ScUJwOcKdf+po/vTAT5O18Ih1hA3egO1/h6
-	jW/72nVBQgjd9dped8D3rBLs9j3SwJmTkUuBT8yqCFfijlbtG+8oElzHaKOq4w==
-Date: Thu, 17 Apr 2025 09:33:38 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Simon Horman
- <horms@kernel.org>
-Subject: Re: [net-next v5 5/6] ARM: mxs_defconfig: Update mxs_defconfig to
- 6.15-rc1
-Message-ID: <20250417093338.0990e37f@wsk>
-In-Reply-To: <41ea023e-d19d-40f1-b268-37292c9e15de@gmx.net>
-References: <20250414140128.390400-1-lukma@denx.de>
-	<20250414140128.390400-6-lukma@denx.de>
-	<41ea023e-d19d-40f1-b268-37292c9e15de@gmx.net>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KzBVN7Cr"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5498d2a8b89so494962e87.1
+        for <imx@lists.linux.dev>; Thu, 17 Apr 2025 00:47:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744876024; x=1745480824; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WEyznqoBqrdJu6XKj04AtQkuSGwFcw9ym4LfF8stkeo=;
+        b=KzBVN7CrdIahWBeWVP+yF4ydGVbfLdbuVB+GeiUQD+9LbMB8BZJXzYzf3l+mJ7FOst
+         nZnTpaMEXll5ldan3OX51g1nrmuN8Brt+BqjgdfrysbQdkt85zrEJjg657YrmiK4rDva
+         f7t1TofjUbysNSl+kFOWTFsJsBxjqBkGptpvfPpWn45h46xJrYxXVeeBowitauBUNsk+
+         /UlbY8E0UJrwzhKRDrtZXyJLBxsEQaHxIAwL5dhDPjlX5xd7JH6cXWfi+4A9gXZ6Vjpt
+         IMCnOU8YsjYb/tvWZ/Z0DmUSmdHeRzrTKe4htH93M2LWGvCw2CRKOyuGNUdIUgKmmBBI
+         NSVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744876024; x=1745480824;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WEyznqoBqrdJu6XKj04AtQkuSGwFcw9ym4LfF8stkeo=;
+        b=KMzhT7lYDDTuhEQVia1LyQHhFYy5B8fPluW6D4BDw+J/cEkvmxnsTlJ8C7Ze/nplCr
+         muOUS+xrRhE/q7wvoXY5Vk4SkCZCDD7ww4RtNujrjTmPdKfpijR5jEOE9diOvt/m61l7
+         WehJSz/pGhubC7b8Ie0jdXLyo45UTSdWWbI1tjNlYuk7BWoWVyTVmlvi3mNu9M7YYpER
+         V3bIPrP0u3Vdii1vCvb93xUAi2JnW7V2M92y5682rvy7Hu8N5mUsayVkfFA6G9wRcFzJ
+         uYj7Ge7JmTcJ0/xSfjOrPG1LEo5Xdi63aZlD8L5qowVZlDMw4dDSvZgsoJhg+5V62hpq
+         aWnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwxlMAWzoGDl4q/QJysbMhwoPGS66YyV5sNNgYBEKrtxzsJhp6SOx7Cc7w1NXfbmRgt6M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwgFDU9qGpLcFTIrJO0e+ptkhuMgywlMxCuUsOJSuWp+qBMhEnI
+	uLksYQaqrP7y+5GH7uAsMij8UogVbIeUX2rgNJCzQg75+15HOZ0DSpYQ4het4laVkiRjokjp57s
+	aIcEvcoC/hSxPFd798o0gKxSakrWCJ6N99gYU6Q==
+X-Gm-Gg: ASbGncsZy+o6FKkvYnpws18bvu4Jp4gRPG95A7xAqYdlttOYotweiCVFFtxWYAMg1VQ
+	E8OII24jSTKcR+CF48fvgW+9ItCu12o7yvxXnABn2OQuZT19AYMAOWm5LHwPNcpcwcqV9RhFRF/
+	Wa7kGMPAoqJdNt5iI0G0FAjw==
+X-Google-Smtp-Source: AGHT+IHsWIAbtRpfryXnt3qAIwy3EE4NveEHC7HyLBuEny9/7E3MO+B1CV3UsgSfANPfkNtKQcLRY1ygdj94mYcsZKI=
+X-Received: by 2002:a05:6512:3d29:b0:54c:a7c:cbd5 with SMTP id
+ 2adb3069b0e04-54d64aab2dbmr1542697e87.33.1744876024309; Thu, 17 Apr 2025
+ 00:47:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/a2Zuo_5mcQkE7xKuvovt9yS";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
-
---Sig_/a2Zuo_5mcQkE7xKuvovt9yS
-Content-Type: text/plain; charset=US-ASCII
+References: <20250416150847.3422218-1-Frank.Li@nxp.com>
+In-Reply-To: <20250416150847.3422218-1-Frank.Li@nxp.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 17 Apr 2025 09:46:53 +0200
+X-Gm-Features: ATxdqUE6Yg7082az8t1vUSLeJgtF1F2xgv02wcz0LZ7Q-4BmoWJnqMUoGaW2MtA
+Message-ID: <CACRpkda42xO+7tmp+CHPfNgx1YEXn6tYDoDXYJo-EnphH9cTXQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: pinctrl: convert fsl,vf610-pinctrl.txt
+ to yaml format
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"open list:PIN CONTROLLER - FREESCALE" <linux-gpio@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Stefan,
+On Wed, Apr 16, 2025 at 5:09=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
 
-> Hi Lukasz,
->=20
-> Am 14.04.25 um 16:01 schrieb Lukasz Majewski:
-> > This file is the updated version of mxs_defconfig for the v6.15-rc1
-> > linux-next. =20
-> thanks for sending this as a separate patch. Unfortunately it's not
-> that simple by replacing the existing mxs_defconfig. We need to
-> double-check all changes to settings, which was enabled before. This
-> should also include a short note for every setting in the commit log,
-> otherwise every reviewer has to do this job. I'll help you here by
-> adding comments ...
-> >
-> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > ---
-> >
-> > Changes for v5:
-> > - New patch
-> > ---
-> >   arch/arm/configs/mxs_defconfig | 11 -----------
-> >   1 file changed, 11 deletions(-)
-> >
-> > diff --git a/arch/arm/configs/mxs_defconfig
-> > b/arch/arm/configs/mxs_defconfig index c76d66135abb..91723fdd3c04
-> > 100644 --- a/arch/arm/configs/mxs_defconfig
-> > +++ b/arch/arm/configs/mxs_defconfig
-> > @@ -32,9 +32,6 @@ CONFIG_INET=3Dy
-> >   CONFIG_IP_PNP=3Dy
-> >   CONFIG_IP_PNP_DHCP=3Dy
-> >   CONFIG_SYN_COOKIES=3Dy
-> > -# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
-> > -# CONFIG_INET_XFRM_MODE_TUNNEL is not set
-> > -# CONFIG_INET_XFRM_MODE_BEET is not set
-> >   # CONFIG_INET_DIAG is not set
-> >   # CONFIG_IPV6 is not set
-> >   CONFIG_CAN=3Dm
-> > @@ -45,7 +42,6 @@ CONFIG_MTD=3Dy
-> >   CONFIG_MTD_CMDLINE_PARTS=3Dy
-> >   CONFIG_MTD_BLOCK=3Dy
-> >   CONFIG_MTD_DATAFLASH=3Dy
-> > -CONFIG_MTD_M25P80=3Dy =20
-> This is safe because it has been replaced MTD_SPI_NOR, which is still=20
-> enabled.
-> >   CONFIG_MTD_SST25L=3Dy
-> >   CONFIG_MTD_RAW_NAND=3Dy
-> >   CONFIG_MTD_NAND_GPMI_NAND=3Dy
-> > @@ -60,7 +56,6 @@ CONFIG_ENC28J60=3Dy
-> >   CONFIG_ICPLUS_PHY=3Dy
-> >   CONFIG_MICREL_PHY=3Dy
-> >   CONFIG_REALTEK_PHY=3Dy
-> > -CONFIG_SMSC_PHY=3Dy =20
-> This is okay, because it's enabled implicit by USB_NET_SMSC95XX.
-> >   CONFIG_CAN_FLEXCAN=3Dm
-> >   CONFIG_USB_USBNET=3Dy
-> >   CONFIG_USB_NET_SMSC95XX=3Dy
-> > @@ -77,13 +72,11 @@ CONFIG_SERIAL_AMBA_PL011=3Dy
-> >   CONFIG_SERIAL_AMBA_PL011_CONSOLE=3Dy
-> >   CONFIG_SERIAL_MXS_AUART=3Dy
-> >   # CONFIG_HW_RANDOM is not set
-> > -# CONFIG_I2C_COMPAT is not set
-> >   CONFIG_I2C_CHARDEV=3Dy
-> >   CONFIG_I2C_MXS=3Dy
-> >   CONFIG_SPI=3Dy
-> >   CONFIG_SPI_GPIO=3Dm
-> >   CONFIG_SPI_MXS=3Dy
-> > -CONFIG_GPIO_SYSFS=3Dy =20
-> This also okay, because it has been deprecated by moving to EXPERT
-> and its replacement GPIO_CDEV is enabled by default.
-> >   # CONFIG_HWMON is not set
-> >   CONFIG_WATCHDOG=3Dy
-> >   CONFIG_STMP3XXX_RTC_WATCHDOG=3Dy
-> > @@ -138,10 +131,6 @@ CONFIG_PWM_MXS=3Dy
-> >   CONFIG_NVMEM_MXS_OCOTP=3Dy
-> >   CONFIG_EXT4_FS=3Dy
-> >   # CONFIG_DNOTIFY is not set
-> > -CONFIG_NETFS_SUPPORT=3Dm
-> > -CONFIG_FSCACHE=3Dy
-> > -CONFIG_FSCACHE_STATS=3Dy
-> > -CONFIG_CACHEFILES=3Dm =20
-> This is unintended, even it's not your fault Lukasz. NETFS_SUPPORT
-> isn't user select-able anymore, so it's dropped. AFAIU this comes
-> from NFS support, so i think we need to enable CONFIG_NFS_FSCACHE
-> here. Otherwise this caching feature get lost. Since this is a
-> bugfix, this should be separate patch before the syncronization.
->=20
-> @Shawn @Fabio what's your opinion?
-> >   CONFIG_VFAT_FS=3Dy
-> >   CONFIG_TMPFS=3Dy
-> >   CONFIG_TMPFS_POSIX_ACL=3Dy =20
->=20
+> Convert fsl,vf610-pinctrl.txt to yaml format.
+>
+> Additional changes:
+> - subnode name force pattern to 'grp$' to align other imx chips.
+>
+> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Stefan, I will add your comments in next version of this patch.
-Moreover, I'm going to introduce new patch with the NFS_FSCACHE enabled.
+Patch applied!
 
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/a2Zuo_5mcQkE7xKuvovt9yS
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgArtIACgkQAR8vZIA0
-zr0QsggA43pyZpG7jnH/6DRTCiYI+DqNL055w+1AQPvbmQvmW7/iJpPEJtFbRDJr
-dz30fj3dMp27htfUPT4jhtvhJRZ27lCO2aHDb7xzLQGzFpGe0/4UYuNyZ5oo9c8t
-HXVF/JWZhdQEiRIUomXaPcZaC9ZKHc71XSP/euaoM601NTRSp2emaLrukGklnWFB
-bd42VvXnntJ+7+8UBqfEv9PWibWtYJOIrEKN5wnQ4wG24TPZ5aJRk+fW/HitKVxy
-ZegQ6H3kTZa1CtLq9iXa9/9DC2CZvHZm0AVy3Yu4ARH6EpXK+/EKuFqIAevPBSra
-fsnhejZQdfkbg/ae/X11ConafcHPpg==
-=Ztk9
------END PGP SIGNATURE-----
-
---Sig_/a2Zuo_5mcQkE7xKuvovt9yS--
+Yours,
+Linus Walleij
