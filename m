@@ -1,35 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE3B267B00;
-	Fri, 18 Apr 2025 02:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07591547CC
+	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 06:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744942206; cv=none; b=shqqQrGa5veyc4FkTZT6x0gxDT7s9/JRhh2z4QACl9KkY0b80odfuW3BKdayxREdlvTSf+pRSJfPatlMe8WwyNJwlSJE5eTZ+hPyvK5lQAL/TwiN5iTUducedpRHPRf7iAHI7P/2tb8Ck6tu5MK8YKt9rFhmXEeQcAVg7NKW2Js=
+	t=1744956473; cv=none; b=SIQ77Ki7mpyg1cRVGaYnCpbGVGaB0DErOiX2Aw32gGF6soWlhEKgcRRfOQ0yAJsrHKQvqyeRfFOTxQcL7CgUyNJ6beG6s1yNo90gFgHH/ooxHrgcGJWV/DPkBLMJz3665ThzYA0q/1ZFT/U2tILGLUXIZRZOiFYQiM6u29XsQd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744942206; c=relaxed/simple;
-	bh=zJMWKlINLQxoHVInSJ+InJg9/4RqU8iLfjlB3jKpNuc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WYlBcpLXQoMJ7aqCj5kD4qWapcokhtTIjWZq2KqtedDuCAB6DHC/koRUDrxEyGUCuy0N6ALt+F8beO9lG+7HFsqRzRB9YdqliQfIAVzlUskgo8BgQmyVhTHSSXJoJuQjX+Y+6pE/1rNprM2xQeCA3gsWUWbL7kdRXb5Fq2K2I2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECLslSKR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744956473; c=relaxed/simple;
+	bh=f9WnUHLwI7r5PxohoerOyRrhe9IoLi9FojqIHzXvEiU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SouwlhfXmVMIUQ05sC97ho/pVpvakUaUhtbCM5sNsB5z3/cZWjLMl3iTIOgGXPtKEefPUVVIl3KHiXo5h3+ajJnu0PvPi6d225XvxKQ6LhqJJu4HH5cGKleOn4zCZErNhND4dn/1OCArZ0k6bmd5r7d5GDVCoSlD4drk84uP2Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=MxSWsDT0; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECLslSKR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D71CC4CEEA;
-	Fri, 18 Apr 2025 02:10:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744942205;
-	bh=zJMWKlINLQxoHVInSJ+InJg9/4RqU8iLfjlB3jKpNuc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ECLslSKRbGv0zfdqrE34jhBmJW2hvJsVMMrFLPipIG+IylXOp/BlYig4TKQJNCyPn
-	 KgIj4+ewoTMSGeQ3Sl50LL8S20V1IvJEWrpC2CjmiFlrSg4PIHpqHev6grPYcJopvk
-	 2xM/g+w1Z2DTGNW79xxAs1EgpWlQVTzkbpUtcSD1sKQ6phKvaP36iES9UBHvzCfMv4
-	 DtiR7bPrK/c8HkjwEqb4RGtAdvLzu/nDtjJrGw5V+CpcV4PdbGrZoIeLX3LCayzed8
-	 OIGAvDETN5Z3+4xhC1fsGD+fsPfAI9gUbg59eDlFDQxKpoRoZLuDg/deTVLUBBwDNt
-	 zM3IovL4KRx0Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAC8C380AAEB;
-	Fri, 18 Apr 2025 02:10:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="MxSWsDT0"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1C61E1029338D;
+	Fri, 18 Apr 2025 08:07:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1744956462; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=kvjT2AQfxdFmD9bmhbjX7G3FMB2UewEmBGLVIkkuwUE=;
+	b=MxSWsDT0Jcfj/LJtBDs0279/V9e5lZr9Sib0rZLzlbTr5s+oSnzqIcU7uMEJKJoCbcrSbO
+	eCAaNJjfCe8sdoXsIyqOJTY+9NI9rJ5mYUishB5pDNKDLer9FZPF83hckeNXFodrwiWEbr
+	iphYdnRZtsPZc7mjy1n0XaUi6JNjEVbt/DZmk1cV7rZ/No+MTbaUggbavd83bBg0m09Qt9
+	87aK39i0NfkZT4G9IgkIQJu77VF9aXTziWF2maL61cFcBX9EU9kpZreJ4FO7vzik/hBXY7
+	275X5zphccSq1sT0AMuHqHVjTE7TGS6irFMIQSN46XA+LCPmp6yDNcvmCKeu4Q==
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [net-next v6 0/7] net: mtip: Add support for MTIP imx287 L2 switch driver
+Date: Fri, 18 Apr 2025 08:07:09 +0200
+Message-Id: <20250418060716.3498031-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,58 +58,101 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: ethtool: Adjust exactly ETH_GSTRING_LEN-long stats to
- use memcpy
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174494224374.79616.15601499519996041916.git-patchwork-notify@kernel.org>
-Date: Fri, 18 Apr 2025 02:10:43 +0000
-References: <20250416010210.work.904-kees@kernel.org>
-In-Reply-To: <20250416010210.work.904-kees@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
- jeroendb@google.com, hramamurthy@google.com, idosch@nvidia.com,
- petrm@nvidia.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- horms@kernel.org, geoff@infradead.org, wsa+renesas@sang-engineering.com,
- aleksander.lobakin@intel.com, pkaligineedi@google.com, willemb@google.com,
- joshwash@google.com, 0x1207@gmail.com, rmk+kernel@armlinux.org.uk,
- jszhang@kernel.org, petr@tesarici.cz, netdev@vger.kernel.org,
- imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, richardcochran@gmail.com,
- jacob.e.keller@intel.com, shannon.nelson@amd.com, ziweixiao@google.com,
- shailend@google.com, yong.liang.choong@linux.intel.com, ahalaney@redhat.com,
- kory.maincent@bootlin.com, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+This patch series adds support for More Than IP's L2 switch driver embedded
+in some NXP's SoCs. This one has been tested on imx287, but is also available
+in the vf610.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+In the past there has been performed some attempts to upstream this driver:
 
-On Tue, 15 Apr 2025 18:02:15 -0700 you wrote:
-> Many drivers populate the stats buffer using C-String based APIs (e.g.
-> ethtool_sprintf() and ethtool_puts()), usually when building up the
-> list of stats individually (i.e. with a for() loop). This, however,
-> requires that the source strings be populated in such a way as to have
-> a terminating NUL byte in the source.
-> 
-> Other drivers populate the stats buffer directly using one big memcpy()
-> of an entire array of strings. No NUL termination is needed here, as the
-> bytes are being directly passed through. Yet others will build up the
-> stats buffer individually, but also use memcpy(). This, too, does not
-> need NUL termination of the source strings.
-> 
-> [...]
+1. The 4.19-cip based one [1]
+2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
+   with NO tag appended.
+3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
+   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
+   the driver uses already configured MAC and PHY to also configure PHY.
 
-Here is the summary with links:
-  - net: ethtool: Adjust exactly ETH_GSTRING_LEN-long stats to use memcpy
-    https://git.kernel.org/netdev/net-next/c/151e13ece86d
+All three approaches were not accepted as eligible for upstreaming.
 
-You are awesome, thank you!
+The driver from this series has floowing features:
+
+1. It is fully separated from fec_main - i.e. can be used interchangeable
+   with it. To be more specific - one can build them as modules and
+   if required switch between them when e.g. bridge offloading is required.
+
+   To be more specific:
+        - Use FEC_MAIN: When one needs support for two ETH ports with separate
+          uDMAs used for both and bridging can be realized in SW.
+
+        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
+          attached to switch and bridging shall be offloaded to HW. 
+
+2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
+   separation at boot time. Port separation is disabled when bridging is
+   required.
+
+3. Example usage:
+        Configuration:
+        ip link set lan0 up; sleep 1;
+        ip link set lan1 up; sleep 1;
+        ip link add name br0 type bridge;
+        ip link set br0 up; sleep 1;
+        ip link set lan0 master br0;
+        ip link set lan1 master br0;
+        bridge link;
+        ip addr add 192.168.2.17/24 dev br0;
+        ping -c 5 192.168.2.222
+
+        Removal:
+        ip link set br0 down;
+        ip link delete br0 type bridge;
+        ip link set dev lan1 down
+        ip link set dev lan0 down
+
+4. Limitations:
+        - Driver enables and disables switch operation with learning and ageing.
+        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
+          on purpose, as up till now we didn't had consensus about how the driver
+          shall be added to Linux.
+
+Links:
+[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
+[3] - https://source.denx.de/linux/linux-imx28-l2switch/-/tree/imx28-v5.12-L2-upstream-switchdev-RFC_v1?ref_type=heads
+
+Lukasz Majewski (7):
+  dt-bindings: net: Add MTIP L2 switch description
+  ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2 switch description
+  ARM: dts: nxp: mxs: Adjust XEA board's DTS to support L2 switch
+  net: mtip: The L2 switch driver for imx287
+  ARM: mxs_defconfig: Enable CONFIG_NFS_FSCACHE
+  ARM: mxs_defconfig: Update mxs_defconfig to 6.15-rc1
+  ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2
+    switch
+
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   |  148 ++
+ MAINTAINERS                                   |    7 +
+ arch/arm/boot/dts/nxp/mxs/imx28-xea.dts       |   56 +
+ arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |    9 +-
+ arch/arm/configs/mxs_defconfig                |   13 +-
+ drivers/net/ethernet/freescale/Kconfig        |    1 +
+ drivers/net/ethernet/freescale/Makefile       |    1 +
+ drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+ .../net/ethernet/freescale/mtipsw/Makefile    |    3 +
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 1989 +++++++++++++++++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  788 +++++++
+ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  120 +
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  449 ++++
+ 13 files changed, 3586 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.5
 
