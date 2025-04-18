@@ -1,41 +1,41 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083D326FA5A
-	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 09:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A5117332C
+	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 09:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744967342; cv=none; b=kIAC/eXE5avASfPkhgp5WtFz/t70zU9bPi2e0Hofj0myq8c21aalO+gXBHs4jnX1wvUBz3UrhRTbzAWxsft4m98y0O32s9b6pooq+kHzehxMYd6OFsVrgpWVMEOMav4+Tz9M1eKV9UvansVxWq/9SDFyEA5K089osjUejtrjJVw=
+	t=1744967906; cv=none; b=XybZM9eAOTa0oFL4vDkDn6bxh2KYDI+JgcH+7CkevjyMDeasnS/VVCTAaGeO7/f2xtuzaiGxGinV6OXNVpb0/MCqSczbhyKW75Isy2Rh3MGqN5GfOZ3uWMmJ+EyjCM3ASz8qokM0R0q4ph+q+VLLu07Tm11bo022U2RTi89B8s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744967342; c=relaxed/simple;
-	bh=VCWX9TW4R/j67PiZzSFd7CI7wtEGCBJKfWgcfm/BQBE=;
+	s=arc-20240116; t=1744967906; c=relaxed/simple;
+	bh=q7NI9QSwQEjqNUjXhs5GV15e0XPvbfa0m0ws1XHC090=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VL5vuw5/1xTGLOnZrgLsnTkhV7HKewJ30Tn5H882heO1BifwtVkKKMSyxUfHvyusyvnVqicEJOod1LBl+P7kufi9L1IhyFVaDNDoJElADpsYe7I9ehYaDCW+uwlgKPNb89gpDpzMLdH4UqGZTJcQb0hE4SRxnE9zHSjbXN6dO80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=eczCAv+a; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	 In-Reply-To:Content-Type; b=GH1kVlKTOlz1/Ff2wUSLJlLSF0d3rX70PoFBUhAsoPdmaAlss1AXKBEyuAwtmWh3QnaTH/UaGEt7iE4Ftq1dhw1FecWxkqvN5iPIkane5assnyIGqcaO0ec2Q4io1f/OmoETtgikTlF9jY0x3zRNyaEFbY5AqjwRW90oDHl/PEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=BIGmK1GJ; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="eczCAv+a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1744967327; x=1745572127; i=wahrenst@gmx.net;
-	bh=5FZc7ijLzZ2awcKizBx2RPk4e1oOriMZYbJpema2nnI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=eczCAv+abhgWdoxy1Mix0q/m/ZnqSJ0yy6kYtW0DccEKlpMK1bIQxK4g+eVhjayf
-	 92IyDLfb5bm9U2b2SQtyQ9UkMq5QkhOZ7+vLRk8d0Yn10wQgUEmWwV/W3Toucp1EA
-	 2hN51ishKi3DY/mp9cTF8sg8H0ZmakW2gvxNTNtY765ty4bg1a4RQivEFNzhctToK
-	 EyaiEIvlZc0paBssbqDFoY0lauA79cZ+e01T9SGMM1FePAfxQPOsW5QxyKLD+Rlz2
-	 Kx/51ajcHnp5eMWp92Scf3rQMpmV/4p+Szny+M7JzuspZybzUfjG8l2epaxmkvRT/
-	 Sb26sbd94gt/0AgIhQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.107] ([37.4.251.153]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N7zBb-1v9eAv3w8p-011UvF; Fri, 18
- Apr 2025 11:08:47 +0200
-Message-ID: <a137daef-8a09-4899-a6e2-380b8ed6061f@gmx.net>
-Date: Fri, 18 Apr 2025 11:08:43 +0200
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="BIGmK1GJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=lpFv20DDYxhbAWqqo0/MdXt9VXqLpTTMSrFUKJvS/SU=; b=BIGmK1GJEUKd12IfLt293mn2V7
+	O4xV5c4T5puHm94czvjBEhCz0ZDMk/Wy4QK+lSx9I+yPmPnQy8iSIZnbnJmzbNPp5Q2c3SlqcOf3X
+	wHTpmRR5rr2nO71jU7MAP/u6NnuwrHISVL8/3VT2ZyDGu2sw1Kk3XV/t0LEsvlcF+sFr776lKOj0u
+	w3sDUTyc9UfEY+czKOyrYKBfBvW2c3nB7o6NEFcbTLfJx7GrG3nKKxSnWk8OVJh10Mc/vu7hr/UXK
+	fy518A15GUXHT/lMj4uKlAHPHjykswYuTL7C6E39tTujuGEIhgxcdLdFEe/fsbTsa7nbmaE/XYzQy
+	M+SbqK+w==;
+Received: from [89.212.21.243] (port=36688 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1u5hra-00B3iy-2o;
+	Fri, 18 Apr 2025 11:18:22 +0200
+Message-ID: <63ba0243-ae07-4e8a-beb3-447e903ba9fc@norik.com>
+Date: Fri, 18 Apr 2025 11:18:20 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,127 +43,69 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v6 4/7] net: mtip: The L2 switch driver for imx287
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+Subject: Re: [PATCH v3 03/15] arm64: dts: freescale: imx93-phycore-som:
+ Disable LED pull-up
+To: Dirk Gouders <dirk@gouders.net>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Simon Horman <horms@kernel.org>
-References: <20250418060716.3498031-1-lukma@denx.de>
- <20250418060716.3498031-5-lukma@denx.de>
- <38f36d00-e461-4fc5-a98b-9b2d94d93c69@gmx.net> <20250418110223.594f586f@wsk>
+ linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+References: <20250418063104.2202085-1-primoz.fiser@norik.com>
+ <20250418063104.2202085-4-primoz.fiser@norik.com>
+ <gh1ptpkhpi.fsf@gouders.net>
 Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <20250418110223.594f586f@wsk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <gh1ptpkhpi.fsf@gouders.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:kS0UagTK8PoQnNEVtIOjGWpVgZgAq2O+D9TGo1zAnTtvyzwaiH3
- uXUWIVLE7mVrJZO5stgbME0xxiVaagxiUFgghMEOc652iRQVo6TbQzDTSheldbiAGvPYXVM
- Q68wyqYDoilc6hLfJlHs62mANwnTN/aJrTbb2PIOGaFpy9B7FsBS5Oq2fSaexxnykKfkLze
- 5FdSTbke3PNpnmINhv1PA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:3NBNlW/Hmh0=;wauUYAffRTWEjRv+TI+uG33zAoU
- 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
- L0d1fZBtYNknfs24UweW9fZU+vTOKmU=
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Am 18.04.25 um 11:02 schrieb Lukasz Majewski:
-> Hi Stefan,
->
->> Am 18.04.25 um 08:07 schrieb Lukasz Majewski:
->>> This patch series provides support for More Than IP L2 switch
->>> embedded in the imx287 SoC.
->>>
->>> This is a two port switch (placed between uDMA[01] and MAC-NET[01]),
->>> which can be used for offloading the network traffic.
->>>
->>> It can be used interchangeably with current FEC driver - to be more
->>> specific: one can use either of it, depending on the requirements.
->>>
->>> The biggest difference is the usage of DMA - when FEC is used,
->>> separate DMAs are available for each ENET-MAC block.
->>> However, with switch enabled - only the DMA0 is used to
->>> send/receive data to/form switch (and then switch sends them to
->>> respecitive ports).
->>>
->>> Signed-off-by: Lukasz Majewski <lukma@denx.de>
->> After changing the IRQ name part mention in patch 1, you can add
->>
->> Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
->>
-> Shall I add RoB tag to all patches?
-In case you mean Reviewed-by: yes
->
-> I will wait for ACK from at least Andrew and then reset the v7 with all
-> tags collected.
->
->> Thanks
->
->
->
-> Best regards,
->
-> Lukasz Majewski
->
-> --
->
-> DENX Software Engineering GmbH,      Managing Director: Erika Unter
-> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-> Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+Hi Dirk,
+
+On 18. 04. 25 10:16, Dirk Gouders wrote:
+> Primoz Fiser <primoz.fiser@norik.com> writes:
+> 
+>> There is already an external pull-down resistor on the LED output line.
+>> It makes no sense to have both pull-down and pull-up resistors enabled
+>> at the same time. Thus disable the internal pull-down.
+>                          ~~~~~~~              ~~~~~~~~~
+> Sorry for disturbing, but I couldn't resist: the above somehow
+> contradicts the subject line -- at least when reading this just by
+> chance.
+
+Yeah... it should say "disable the internal pull-up".
+
+Great attention to details :)
+
+Thanks,
+
+BR,
+Primoz
+
+> 
+> Regards,
+> 
+> Dirk
 
