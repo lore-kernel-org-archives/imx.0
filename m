@@ -1,145 +1,159 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83096275875
-	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 12:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC4D2749D7
+	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 13:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744980558; cv=none; b=D94Vv6qwVOm+NjWVIOZh+oyawhKG0NCK8seLIh8bPwAL4JQiFtwct3YxhvM0nc9W+wuN585ZIP2tA3uGgMNkJvsdCuOasBximI8M8UUV3mkjCZuz5sC/pff6o8QNHtyMUu9msGW8tBapZR24LhxCcfT4TQwLC9rVCDoKctkhEAI=
+	t=1744981851; cv=none; b=b6Uv1GSP5MmUDWjJhhRzKtZWnZs0cAIqKUbMQ170dp9+NXV2WUGKxCw8sY8Bg+CYqFoXN9Jqux2DGFeTaiXyKb3oeU7grdhTu41RDVtpuBBFG1hrJshpeVUzY3cSyzdHT+n/YgVh6DwPGiTDqJk8SdglB3+vzXEVGA4epwpRyjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744980558; c=relaxed/simple;
-	bh=gQlOxlO8930yO5ibgAmuqXeO4pmpPbtEVExTdD/GYtc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FzW4nN2TNISpBC9dBFaCoTrYV6XTa5SaytpCHu/7g6l7lVuQQ2/ZgwrUv7G20V+7+CZccEvSnX3+7jL58iD79UDJPcadH/wflPZv4fR9rRZQbz1bq40QJq2AAZ5BDVk6HlubLy1595VAzoO+R/L124yTEJPeJ2WB3qzCCGwnMjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=ZxBqPe2T; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+	s=arc-20240116; t=1744981851; c=relaxed/simple;
+	bh=JTTWxqBrwEtLKx6O5TyIr4GBL3p0TLD2eTF5sLveJGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FdsiXrtRyUQQPSzyFJiq1Rm21XbGyvv+XZNmnmEqNZ78MXXgaiAeALVT5I7uvwvCeADM7RxGBHM4pYegPoJpckOJGZSgyGuFVtlFa6ToInxBQnaYMYma440KbkuPfCgUYeTyDdSDsrWDeiFgiv0XffaKymPz6JquPlrViAMiox0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B5t3bSZd; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="ZxBqPe2T"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c5aecec8f3so269298585a.1
-        for <imx@lists.linux.dev>; Fri, 18 Apr 2025 05:49:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1744980555; x=1745585355; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jYaJAf4mlOAD42xMe/rZeVYxGHqCckmap7vqxCNd/40=;
-        b=ZxBqPe2TmMhiVgotk+MkkZsTKDQaRqsWz6/BMoFqANovARZKvqPmPanhZo8QRhSmAZ
-         dnSUB+w75wPzUPkY6ypWCYM6JGsGv3kSqMQyiqWJps6GOnn95URQj7SJgWeq9ND9ySb3
-         HAiYKxiHKZlYlSjCKnHw0OG2ToDbfGqwt/LeJeXqzQXtcwPvxyvIcJ38qIDgxANLgMF2
-         6AjDI0NTsY9l5TgEQY3SLnokHZf6cUplewhQpvox4UvP2vgeDe1uS35wDuWq8kzKtVGM
-         w+dmIY43o5YAXnP0tGbq+aQ9bp1HJQcsm6t7pNUk7eVe6pWxauQHZ1G55P/efkWEaFjH
-         hPBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744980555; x=1745585355;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jYaJAf4mlOAD42xMe/rZeVYxGHqCckmap7vqxCNd/40=;
-        b=CBRPQNppnP8XGVJKVNMi1M1yInzGIj1x2VuFozV3sDQSDh/FhWj63Tbb43FMUYizys
-         gDBdsey50ED/XMziyzXvcSJQX9zj/BIm+x8zaWPS7oiZocj709WLdAs61JXd48FZaNTP
-         m9PkQ152y3LPXSsgjYn0lWq1ymb1Om3iCoks0p47V3I6mPnmUQ/zcC3BMjZ0pO0F16U0
-         HC/oJrut+yDgWFt2OwxpywS9PbZX07o1JlNFY6j4ls9ov0+pr9F1CIEFlys2RuupiwbV
-         iPKONH9ySw588KSfAcwwtGXB1jxybHtuF2N8KNcqs+1kGY8+XGBo8DOtD3Z1DIxtyWGB
-         csbw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIxHodYKd+++K5ub6GOMUTsUz9XvFqE3KEtz1wQr78hZJE5cwg+jxn6jCup1SfmWwqXG4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz5Fe5BWPtjGnvVoZlzTCZhMlTlzmEIvrcn7muB/PSjgpj84LOX
-	RwMRKqPXuMwhJm4M0yXYciv7UqtjcKR+6oial9euR2SLhaQCOnyR5IBe2YtvtCs=
-X-Gm-Gg: ASbGncvOI0QZrELr4yQrtjVXuAogiREDl+3rXRCmnG6okjydi5lD9B4kzCe2Bh14OVi
-	MdWf1Y2dXQuhhGQYMlsf4GB+VHK6pS8QUj4OCF2A+0wSnQZMeaIs3n/NHo/EGMVk3ij93cmTS4k
-	prjdUJ8/LeV6dm+AP3oCJeYDdMw4wFJ338b/2YNmQx4iUT1ixo8lFl1iECva2QmILrMEH/jMKI8
-	WwREbUoBVRsAHFvWudRH3O/pJWEuzIWuy3N2y7RA5sHTxqL4Hi1V59+7Ou1WqQqIf6RwUeJE7o4
-	kV+fPMK3YGxujI0XK5vvOF2UnuE5uaNPwO4WssXHA11USQ==
-X-Google-Smtp-Source: AGHT+IGynna9oqlUfCvK4A2bAh3MndEe6O6J5Dk7XbTAN7GvFRmVsTQUL/cmbo1DTdHEkCI6hkR5wg==
-X-Received: by 2002:a05:620a:bc8:b0:7c7:b59d:a6f2 with SMTP id af79cd13be357-7c927f59337mr381802985a.10.1744980555401;
-        Fri, 18 Apr 2025 05:49:15 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:15:9913::c41? ([2606:6d00:15:9913::c41])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925a8f3c5sm103702685a.37.2025.04.18.05.49.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 05:49:14 -0700 (PDT)
-Message-ID: <22e43e927514ebfc20e97f2bfd5fd52899820627.camel@ndufresne.ca>
-Subject: Re: [PATCH v5 2/5] media: imx-jpeg: Reset slot data pointers when
- free data
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: ming.qian@oss.nxp.com, mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
-	mirela.rabulea@oss.nxp.com
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
- linux-imx@nxp.com, 	imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Fri, 18 Apr 2025 08:49:13 -0400
-In-Reply-To: <20250418070826.141-3-ming.qian@oss.nxp.com>
-References: <20250418070826.141-1-ming.qian@oss.nxp.com>
-	 <20250418070826.141-3-ming.qian@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0 (3.56.0-1.fc42) 
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B5t3bSZd"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8AC884333F;
+	Fri, 18 Apr 2025 13:10:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1744981840;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=flWAz2w14wq7W+OFxNQQycVZnw0/ZbM/Zjd3vHnpprk=;
+	b=B5t3bSZdX2Pd3XrVzuwEHF2KinZWkp5ZqrcvrtLQLoDFV4L/lSO9PtQI1lRmvm9jWuqbwg
+	r6TLbHTP1PwPFSC+jXorCpZF3Ey3loGgGda6H2O4yjQzjdJrNVWOlk0bwSHzI5JplKUDsg
+	GwOCyZfyyLFd7K4ig98jOczKvpBZcOjJaQ2wZMWuqYq9TlMMEaK7yr5oHZsdAh1j+ED3Ew
+	NEJeHaRcd/8pveKH3k29fv3niVN9Fm86fCMZFHKVFMT+lcZCWAZhrU+JCRI+QBtNICDKDo
+	CDMMC5zWgNSQx0LxfBAU5w44jp7ZAJvMkRZOCEU1GAW4B7VvnDvY4s/SH1hhUQ==
+Date: Fri, 18 Apr 2025 15:10:36 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
+ Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
+ Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
+ <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 11/16] of: property: Allow fw_devlink device-tree
+ support for x86
+Message-ID: <20250418151036.719f982b@bootlin.com>
+In-Reply-To: <Z_U0DkSemHK0lrJW@smile.fi.intel.com>
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+	<20250407145546.270683-12-herve.codina@bootlin.com>
+	<Z_Pw_MoPpVNwiEhc@smile.fi.intel.com>
+	<20250408154925.5653d506@bootlin.com>
+	<Z_U0DkSemHK0lrJW@smile.fi.intel.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvfedvvdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepffekjeehffeihfefueehveegvdeiieeludekhffhjeeuffdvudevgeevtdeiueefnecuffhomhgrihhnpegrnhgrnhguthgvtghhrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegtddprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhto
+ hepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
+X-GND-Sasl: herve.codina@bootlin.com
 
-Le vendredi 18 avril 2025 =C3=A0 15:08 +0800, ming.qian@oss.nxp.com a =C3=
-=A9crit=C2=A0:
-> From: Ming Qian <ming.qian@oss.nxp.com>
->=20
-> To make the function mxc_jpeg_alloc_slot_data() and
-> mxc_jpeg_free_slot_data() safe to be called multiple times. Ensure that
-> the slot data pointers are reset to NULL and handles are set to 0 after
-> freeing the coherent memory.
+Hi Andy,
 
-Perhaps:
+On Tue, 8 Apr 2025 17:34:54 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-   media: imx-jpeg: Reset slot data pointers when freed
+> On Tue, Apr 08, 2025 at 03:49:25PM +0200, Herve Codina wrote:
+> > On Mon, 7 Apr 2025 18:36:28 +0300
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
+> > > On Mon, Apr 07, 2025 at 04:55:40PM +0200, Herve Codina wrote:  
+> 
+> ...
+> 
+> > > This is incorrect, they never had ACPI to begin with. Also there is third
+> > > platform that are using DT on x86 core — SpreadTrum based phones.  
+> > 
+> > I will rework the commit log to avoid 'mixing ACPI and device-tree'
+> > 
+> > For "SpreadTrum based phones", do you have an idea about the Kconfig symbol
+> > I could use to filter our this x86 systems?  
+> 
+> Hmm... good question. I don't think it was anything. The Airmont core just
+> works and doesn't require anything special to be set. And platform is x86 with
+> the devices that are established on ARM, so nothing special in device tree
+> either, I suppose. Basically any x86 platform with OF should be excluded,
+> rather think of what should be included. But I see that as opposite
+> requirements to the same function. I have no idea how to solve this. Perhaps
+> find that SpreadTrum Intel Atom-based device? Would be really hard, I believe.
+> Especially if we want to install a custom kernel there...
+> 
+> > Anything I find upstream related to SpreadTrum seems base on ARM cpus.
+> > I probably miss something.  
+> 
+> There were two SoCs that were Intel Atom based [1]. And some patches [2] to x86
+> DT code were made to support those cases.
+> 
+> > > And not sure about AMD stuff (Geode?).  
+> > 
+> > Same here, if some AMD devices need to be filtered out, is there a specific
+> > Kconfig symbol I can use ?  
+> 
+> This is question to AMD people. I have no clue.
+> 
+> [1]: https://www.anandtech.com/show/11196/mwc-2017-spreadtrum-launches-8core-intel-airmontbased-soc-with-cat-7-lte-for-smartphones
+> 
+> [2]: 4e07db9c8db8 ("x86/devicetree: Use CPU description from Device Tree")
+> and co. `git log --no-merges 4e07db9c8db8 -- arch/x86/kernel/devicetree.c
+> 
+
+I have tried to find a solution for this topic.
+
+Indeed, this patch enables fw_devlink based on device-tree on all x86
+platform except OLPC and CE4100.
+
+You have mentioned some other x86 based system that could have issues with
+fw_devlink and it seems to be hard to have a complete list of systems for
+which we should not enable fw_devlink (potential issues and so regression
+against current kernel behavior).
+
+As you also proposed, we can thing on the opposite direction and enable
+fw_devlink on x86 systems that need it.
+
+We need it because we need the device-tree description over PCI device feature
+(CONFIG_PCI_DYNAMIC_OF_NODES) on x86 in order to support the LAN966x use case.
+
+What do you think about the following condition?
+
+	if (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_PCI_DYNAMIC_OF_NODES))
+ 		return 0; /* Not enabled */
+
+CONFIG_PCI_DYNAMIC_OF_NODES has already to set explicitly by the user.
 
 
-   Ensure that the slot data pointers are reset to NULL and handles are
-   set to 0 after freeing the coherent memory. This makes he function
-   mxc_jpeg_alloc_slot_data() and mxc_jpeg_free_slot_data() safe to be
-   called multiple times.
+Do you think it makes sense and could be a good alternative instead of
+filtering out a list of x86 systems ?
 
->=20
-> Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Enc=
-oder/Decoder")
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> ---
-> v5
-> - Make a single patch to reset the slot data pointers when free data
->=20
-> =C2=A0drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 6 ++++++
-> =C2=A01 file changed, 6 insertions(+)
->=20
-> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/med=
-ia/platform/nxp/imx-jpeg/mxc-jpeg.c
-> index 2f7ee5dfa93d..b2f7e9ad1885 100644
-> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> @@ -758,16 +758,22 @@ static void mxc_jpeg_free_slot_data(struct mxc_jpeg=
-_dev *jpeg)
-> =C2=A0	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
-> =C2=A0			=C2=A0 jpeg->slot_data.desc,
-> =C2=A0			=C2=A0 jpeg->slot_data.desc_handle);
-> +	jpeg->slot_data.desc =3D NULL;
-> +	jpeg->slot_data.desc_handle =3D 0;
-> =C2=A0
-> =C2=A0	/* free descriptor for encoder configuration phase / decoder DHT *=
-/
-> =C2=A0	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
-> =C2=A0			=C2=A0 jpeg->slot_data.cfg_desc,
-> =C2=A0			=C2=A0 jpeg->slot_data.cfg_desc_handle);
-> +	jpeg->slot_data.cfg_desc_handle =3D 0;
-> +	jpeg->slot_data.cfg_desc =3D NULL;
-> =C2=A0
-> =C2=A0	/* free configuration stream */
-> =C2=A0	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
-> =C2=A0			=C2=A0 jpeg->slot_data.cfg_stream_vaddr,
-> =C2=A0			=C2=A0 jpeg->slot_data.cfg_stream_handle);
-> +	jpeg->slot_data.cfg_stream_vaddr =3D NULL;
-> +	jpeg->slot_data.cfg_stream_handle =3D 0;
-> =C2=A0
-> =C2=A0	jpeg->slot_data.used =3D false;
-> =C2=A0}
-
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Best regards,
+Hervé
