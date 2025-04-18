@@ -1,159 +1,152 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC4D2749D7
-	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 13:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177B32144A8
+	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 13:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744981851; cv=none; b=b6Uv1GSP5MmUDWjJhhRzKtZWnZs0cAIqKUbMQ170dp9+NXV2WUGKxCw8sY8Bg+CYqFoXN9Jqux2DGFeTaiXyKb3oeU7grdhTu41RDVtpuBBFG1hrJshpeVUzY3cSyzdHT+n/YgVh6DwPGiTDqJk8SdglB3+vzXEVGA4epwpRyjI=
+	t=1744981925; cv=none; b=mdgGQtTDZNIIXJsoREUpWKr++bX2cbI/35wtk+ZbFdwstEVun2N5tvFIfaYuF13Rl+cePFg1nOfhkCtORFPyOtSZcrT0QwqlSo3hLhjod5bRxQbg8PD8kpDxaizStlh0oE7uFlRorWBHtXenbVLC0aKwz0TnnjpX081wDGFNkJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744981851; c=relaxed/simple;
-	bh=JTTWxqBrwEtLKx6O5TyIr4GBL3p0TLD2eTF5sLveJGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FdsiXrtRyUQQPSzyFJiq1Rm21XbGyvv+XZNmnmEqNZ78MXXgaiAeALVT5I7uvwvCeADM7RxGBHM4pYegPoJpckOJGZSgyGuFVtlFa6ToInxBQnaYMYma440KbkuPfCgUYeTyDdSDsrWDeiFgiv0XffaKymPz6JquPlrViAMiox0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B5t3bSZd; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1744981925; c=relaxed/simple;
+	bh=Fpyrr7Bk+jIkRZ6OSahA38xlx+xTco2EMP0Gwx5qCPs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TZ6PxKSEPqKX7/AH2iH2htBKqT5Jgdj4eiHUpxkPRNLzZiG5JwqBdgRdWoAkxs4avTd3cA59kZhb1UPtIdJOl3nFU27z9eBx4uI6GqDQY9iqLICKekI9235y/PB7tZWjoDJ/TdszBbP+0yGxXY6BHnuc2al6RlRpv36W0/DhBx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=lsY60Tys; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B5t3bSZd"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8AC884333F;
-	Fri, 18 Apr 2025 13:10:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744981840;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=flWAz2w14wq7W+OFxNQQycVZnw0/ZbM/Zjd3vHnpprk=;
-	b=B5t3bSZdX2Pd3XrVzuwEHF2KinZWkp5ZqrcvrtLQLoDFV4L/lSO9PtQI1lRmvm9jWuqbwg
-	r6TLbHTP1PwPFSC+jXorCpZF3Ey3loGgGda6H2O4yjQzjdJrNVWOlk0bwSHzI5JplKUDsg
-	GwOCyZfyyLFd7K4ig98jOczKvpBZcOjJaQ2wZMWuqYq9TlMMEaK7yr5oHZsdAh1j+ED3Ew
-	NEJeHaRcd/8pveKH3k29fv3niVN9Fm86fCMZFHKVFMT+lcZCWAZhrU+JCRI+QBtNICDKDo
-	CDMMC5zWgNSQx0LxfBAU5w44jp7ZAJvMkRZOCEU1GAW4B7VvnDvY4s/SH1hhUQ==
-Date: Fri, 18 Apr 2025 15:10:36 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
- Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
- Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
- <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 11/16] of: property: Allow fw_devlink device-tree
- support for x86
-Message-ID: <20250418151036.719f982b@bootlin.com>
-In-Reply-To: <Z_U0DkSemHK0lrJW@smile.fi.intel.com>
-References: <20250407145546.270683-1-herve.codina@bootlin.com>
-	<20250407145546.270683-12-herve.codina@bootlin.com>
-	<Z_Pw_MoPpVNwiEhc@smile.fi.intel.com>
-	<20250408154925.5653d506@bootlin.com>
-	<Z_U0DkSemHK0lrJW@smile.fi.intel.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="lsY60Tys"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c5675dec99so166747885a.0
+        for <imx@lists.linux.dev>; Fri, 18 Apr 2025 06:12:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1744981923; x=1745586723; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aMAgxXTmZLXXT9p3fPBY8vuGF8bkgr7l60OmevMYynw=;
+        b=lsY60Tysqn5kyPtiJ0LeSZGx7Zsgu0epw4xQgFjBHqVFtR0jVxC+9mMsVT+nBw4DZc
+         FOdKHjgzr4YR2o/tsjnI8ZKyyAUb4q3wKNKlP4qDr4dyxTsTFzp9Bi/ZeQCVyOav05t8
+         YeieKbuH2n2OtcIV5dkJ4ZylWgZC//rIiKeGSAf+fjS3ir0yQPqz61hO8twYoD6ZIUng
+         b0mFpK7fBtF0lDeQ0NTga4IsqMSJOgim3qM5aBEDQ11YapaWZDShpdp5mOI12WSxQQCL
+         Gnc7jGz0VNBBr9rS6SiNqpWAfyYlr3nmA7RZ3ttAadgWL2tS8fYlfB6TzrnnO7f48eKv
+         cFlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744981923; x=1745586723;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aMAgxXTmZLXXT9p3fPBY8vuGF8bkgr7l60OmevMYynw=;
+        b=u5azkR2COytZrA9R3yUY29hh0jXavHTeP2l8Pn+zYO8jr85x6r2krqs0yC5JpZK9Xv
+         n+RdSAiKTZGv+Em6HLDlxoG46LSS6SCRJZvGKzBjp5Mnrq2cizOs9gb6j5YK3IpbomtV
+         jXxchzh1o4FhVrVr7kspZpciyekHyHwbAgb8iAbRuVCqL3JYODe4F8YSOgoSnBY+c/4D
+         fzrc1a5Dk6eHKSVzYSQ2PBPHy9g/az40+/K4++V3Yih0YqeevUejw3q3u6cagUTLzoy2
+         CdvBbuzLqZ9rmGmT/KtU00k1IX6FnPtjBQB3pEo7L1XQOUeCnuo0WE1HriGM2VbPn4XS
+         laAA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtFfR15LrnozUZArxFbwTVSW2rIje192X5n/ut8vBU+28TNBDE/5JSo4n8z5jcKavs8D0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyhNhD+2fzE8xPH8uOhiGWe0ynDExSMzMqo5QNlG72CzSKUvMLD
+	070xFQoyJdr2tEGfZ9eJDsDeDY1J0VuBy0X+SnA96Be+Yn19RejzbDyqNlmW1GM=
+X-Gm-Gg: ASbGnctJ7LmT07BrlGEOfTfYSXePq7yHvcy4vpK4hmDVfG0RTZzICoOw4kz5+Va28Lk
+	5J1CHg8YHkzHS25AjyXySfWvaBFS2fUuTsGBRjPBiSbprAD+0AgqWyyhqjbhmmauRvrtGDoITn1
+	qWdaXGXQ2n+9Qshxk6b4FJ7wxM+kEs0BApSEdFpTXhu190hue7YQyvVxhjykPbcDGgDe6jup+hJ
+	tx22UxutV8pS2ZxlC2M09HgFxEkmRtYoCw70U3cnOaCi7J6Y2r49m6dTIW1wrJ6/ohZIpi4dcoS
+	sHFkl+m6AeNX5Uwy6f3BFqmJvoNsZh5leszl/nwJiRp0Qw==
+X-Google-Smtp-Source: AGHT+IH/XoxSUArL6cVz4iPViec3wwwSipsn5opstVs0fi+r5E8l1PRZpdXcrSGXm10//nNhqxZmPA==
+X-Received: by 2002:a05:620a:c4a:b0:7c5:af68:5019 with SMTP id af79cd13be357-7c927f97bbamr406396985a.13.1744981922969;
+        Fri, 18 Apr 2025 06:12:02 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:15:9913::c41? ([2606:6d00:15:9913::c41])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925a7147esm106040285a.14.2025.04.18.06.12.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Apr 2025 06:12:02 -0700 (PDT)
+Message-ID: <4549d9abf5f93fb6f417d0fb8f73877272d7c495.camel@ndufresne.ca>
+Subject: Re: [PATCH] media: imx-jpeg: Drop the first error frames
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: ming.qian@oss.nxp.com, mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
+	mirela.rabulea@oss.nxp.com
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
+ linux-imx@nxp.com, 	imx@lists.linux.dev, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
+Date: Fri, 18 Apr 2025 09:12:01 -0400
+In-Reply-To: <20250305022513.2312731-1-ming.qian@oss.nxp.com>
+References: <20250305022513.2312731-1-ming.qian@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0 (3.56.0-1.fc42) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvfedvvdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepffekjeehffeihfefueehveegvdeiieeludekhffhjeeuffdvudevgeevtdeiueefnecuffhomhgrihhnpegrnhgrnhguthgvtghhrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegtddprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhto
- hepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
-X-GND-Sasl: herve.codina@bootlin.com
 
-Hi Andy,
+Le mercredi 05 mars 2025 =C3=A0 10:25 +0800, ming.qian@oss.nxp.com a =C3=A9=
+crit=C2=A0:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>=20
+> When an output buffer contains error frame header,
+> v4l2_jpeg_parse_header() will return error, then driver will mark this
+> buffer and a capture buffer done with error flag in device_run().
+>=20
+> But if the error occurs in the first frames, before setup the capture
+> queue, there is no chance to schedule device_run(), and there may be no
+> capture to mark error.
+>=20
+> So we need to drop this buffer with error flag, and make the decoding
+> can continue.
+>=20
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
 
-On Tue, 8 Apr 2025 17:34:54 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+This seems like a relatively important bug fix to be, perhaps you can
+offer "Fixes" tag to this commit ?
 
-> On Tue, Apr 08, 2025 at 03:49:25PM +0200, Herve Codina wrote:
-> > On Mon, 7 Apr 2025 18:36:28 +0300
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
-> > > On Mon, Apr 07, 2025 at 04:55:40PM +0200, Herve Codina wrote:  
-> 
-> ...
-> 
-> > > This is incorrect, they never had ACPI to begin with. Also there is third
-> > > platform that are using DT on x86 core — SpreadTrum based phones.  
-> > 
-> > I will rework the commit log to avoid 'mixing ACPI and device-tree'
-> > 
-> > For "SpreadTrum based phones", do you have an idea about the Kconfig symbol
-> > I could use to filter our this x86 systems?  
-> 
-> Hmm... good question. I don't think it was anything. The Airmont core just
-> works and doesn't require anything special to be set. And platform is x86 with
-> the devices that are established on ARM, so nothing special in device tree
-> either, I suppose. Basically any x86 platform with OF should be excluded,
-> rather think of what should be included. But I see that as opposite
-> requirements to the same function. I have no idea how to solve this. Perhaps
-> find that SpreadTrum Intel Atom-based device? Would be really hard, I believe.
-> Especially if we want to install a custom kernel there...
-> 
-> > Anything I find upstream related to SpreadTrum seems base on ARM cpus.
-> > I probably miss something.  
-> 
-> There were two SoCs that were Intel Atom based [1]. And some patches [2] to x86
-> DT code were made to support those cases.
-> 
-> > > And not sure about AMD stuff (Geode?).  
-> > 
-> > Same here, if some AMD devices need to be filtered out, is there a specific
-> > Kconfig symbol I can use ?  
-> 
-> This is question to AMD people. I have no clue.
-> 
-> [1]: https://www.anandtech.com/show/11196/mwc-2017-spreadtrum-launches-8core-intel-airmontbased-soc-with-cat-7-lte-for-smartphones
-> 
-> [2]: 4e07db9c8db8 ("x86/devicetree: Use CPU description from Device Tree")
-> and co. `git log --no-merges 4e07db9c8db8 -- arch/x86/kernel/devicetree.c
-> 
+> ---
+> =C2=A0drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 9 +++++++++
+> =C2=A01 file changed, 9 insertions(+)
+>=20
+> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/med=
+ia/platform/nxp/imx-jpeg/mxc-jpeg.c
+> index 1221b309a916..0e6ee997284b 100644
+> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+> @@ -1921,6 +1921,15 @@ static void mxc_jpeg_buf_queue(struct vb2_buffer *=
+vb)
+> =C2=A0	if (ret)
+> =C2=A0		jpeg_src_buf->jpeg_parse_error =3D true;
+> =C2=A0
+> +	/*
+> +	 * if the capture queue is not setup, the device_run() won't be schedul=
+ed,
+> +	 * need to drop the error buffer, so that the decoding can continue
+> +	 */
+> +	if (jpeg_src_buf->jpeg_parse_error &&
+> +	=C2=A0=C2=A0=C2=A0 !vb2_is_streaming(v4l2_m2m_get_dst_vq(ctx->fh.m2m_ct=
+x))) {
+> +		v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_ERROR);
+> +		return;
+> +	}
 
-I have tried to find a solution for this topic.
+Looks good to me, an alternative implementation could have been to
+merged into the error branch above.
 
-Indeed, this patch enables fw_devlink based on device-tree on all x86
-platform except OLPC and CE4100.
+ 	if (ret) {
+ 		jpeg_src_buf->jpeg_parse_error =3D true;
+=20
+		/*
+	 	 * If the capture queue is not setup, the device_run() won't
+		 * be scheduled, drop the error buffer so that the decoding
+		 * can continue.
+	 	 */
+		if (!vb2_is_streaming(v4l2_m2m_get_dst_vq(ctx->fh.m2m_ctx))) {
+			v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_ERROR);
+			return;
+		}
+	}
 
-You have mentioned some other x86 based system that could have issues with
-fw_devlink and it seems to be hard to have a complete list of systems for
-which we should not enable fw_devlink (potential issues and so regression
-against current kernel behavior).
+With or without this suggestion, but with the Fixes tag, you can include in=
+ your v2:
 
-As you also proposed, we can thing on the opposite direction and enable
-fw_devlink on x86 systems that need it.
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-We need it because we need the device-tree description over PCI device feature
-(CONFIG_PCI_DYNAMIC_OF_NODES) on x86 in order to support the LAN966x use case.
-
-What do you think about the following condition?
-
-	if (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_PCI_DYNAMIC_OF_NODES))
- 		return 0; /* Not enabled */
-
-CONFIG_PCI_DYNAMIC_OF_NODES has already to set explicitly by the user.
-
-
-Do you think it makes sense and could be a good alternative instead of
-filtering out a list of x86 systems ?
-
-Best regards,
-Hervé
+> =C2=A0end:
+> =C2=A0	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
+> =C2=A0}
