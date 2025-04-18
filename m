@@ -1,62 +1,62 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87412C1A2
-	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 13:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335A778F54
+	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 13:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744984204; cv=none; b=ZsBMMRR4iNTMbrHxinA/SN4wRBt02U9cqZOJntAjqnM0GB0FP1yY6nZ3Y3c99F++EKC7TbLjmUKJJeBJ/H6KIUQ9PyKPqMc/ECAflBcINds0pNbr1vvm8SMGzTSxmAbt2Z4VNWAsd0rWuq5wOMU7NpE7cqLhWIhZT8N15YIx5VU=
+	t=1744984374; cv=none; b=GTHv9R1Qj8jSmpzTFeVrMXpqtK92SProMl/y9rv9B0u5eGhY8edSefyouUL+/5insAU9BoEEYFkB9QdHvb07fUNGdJJ9Wz9UtJ2Ibxb8Re31ffrkO4FISNhAcD2h1KD37CrGk72SOUtxjtq3PqQEe3U/IA5Q0v/xPbXN2LiDP4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744984204; c=relaxed/simple;
-	bh=b3iMxPUCQpRg32E9ly0v4ay2UEkLVA23OpI4WICveZk=;
+	s=arc-20240116; t=1744984374; c=relaxed/simple;
+	bh=CuBgNv5cd1S2PD2hevcSRahDNpP8CA3ZoLvuCSdO+No=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QgOgHmXBwNAcevlIRzJYdudWCUAAgAqDSJ1EmFJF/Ket6tTpeib33zcp+n+4+ew9uHOfvaXj1b+yf5VRO+wtqzhOQqayUIhlPeBeWVvM1pMrYo1A2FEIw0jrJOmS9hfR5tyeD9zCrVfXRA/mzD7wlqobalGqGgJKmUKrS82o9hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EKPnC3nf; arc=none smtp.client-ip=209.85.208.51
+	 Content-Type:Content-Disposition:In-Reply-To; b=NKJd3n6tloe7OA27kjuv5KCdVLn6O7bCMAWWqYGdLggPKZwZ5DuoKwE86pn3D+Iec6lJJZanoP/3xqs6Y3rKTywV67stex6DKmSV33tsWBAreSjlf6ujy8a+jtjGMMnhdYaUv4qDM7YRYVOZocobeEJguqBGyPLKhKD98nLCK6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cuTxMRv7; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EKPnC3nf"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5e82396baaeso277823a12.1
-        for <imx@lists.linux.dev>; Fri, 18 Apr 2025 06:50:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cuTxMRv7"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e61a18c05aso283673a12.1
+        for <imx@lists.linux.dev>; Fri, 18 Apr 2025 06:52:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744984201; x=1745589001; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1744984371; x=1745589171; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fY+hDpLzJtBhDrBf6wESfqlaw9mSea9W1+P81uS8duI=;
-        b=EKPnC3nfx8jv7U7PIUT0Xk9ExOG/sdvMfqOaodJJjba0M8wz24WrmGr/zugKZ9S+pY
-         RjFz8rWfb4ITlRU0rDUNepoup++IxdXuNKn/12KNnekGRtXLyjIZDD61oRDs40khRXtu
-         V8tSE9kfB9xAzL2Pb9Ul0tqocSjZvaUtP9WMCzqUmMtU34bmu67nbFPBOUtGZs4z652C
-         s9b2JJNK5xQSG8okNBwgER/AvZKIFqe1mZ4u+aWOmRkE88cojY6AgdtvYCWPEO4TLJw2
-         QSDn56bvHp/zPnVM62uq0VP8cqCFRMhG8Jc9VNbJPtUljpprhOtKK2C4/juq+9zUpj1G
-         aGJQ==
+        bh=CuBgNv5cd1S2PD2hevcSRahDNpP8CA3ZoLvuCSdO+No=;
+        b=cuTxMRv7k2Cw9vW5K4XRl/AM1d7FMgEcckx4P0SGoFbsyeTXdNZWSxyOUuEByIpfsP
+         5AIOKAhKrJ07SiAT/XgrpqODgHg1EXI2USrY/NJoCpcFGg8jkCb3gm2CGvkIOSSoK247
+         7mPbYUc9CA2xwKqbvgEsVO1N1+OXGDU9pHTNBjnaT3ZFrqpYiPzqkRJ/1wz7L0dhPgez
+         TxXN658/EGcdbrkFrNaAtSBKQiUOT7WVydsiZyADuu7IdS+Dhrf8rsoBGeDNyGb502bN
+         OT5Om7LRn15/DQOXGqWq9W5TinSYDCGjsY/H1FRoKjlZ3xTdwN9/Kx8lYWpr4Z+j4JPt
+         fFlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744984201; x=1745589001;
+        d=1e100.net; s=20230601; t=1744984371; x=1745589171;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fY+hDpLzJtBhDrBf6wESfqlaw9mSea9W1+P81uS8duI=;
-        b=EtcOqbVwvHoaUwPsI/Szcy+t+C8mQ04FhRJFWxGl3Dr3wQJgFDMIXYBWuM7CYHeDub
-         pMRR9/DJpmKwQikzNKvdVjvKXHquQIG4ePPZrs4i19PpoIVZ5ZbSfxZ3+it5XjyvaBXG
-         ddkh/mm9pVJ9hQkQ6neEhM6as4+AEXW4ouBSwbn6U7I06bJl2KRBga+jfPn2I17VGWRm
-         DnBMsAz+7XgY63ke7JO4ffb5Q8fuD2si6UZegngPFZ3ZGzEf/mNGN+aK3hQRruqDN0wq
-         o4nkcgn0C3ie5wSyE422C5HzI2UoqfzOkKYmuLrw5mt9Vyu/fPhVrmwrPBu8S/YCXcXR
-         G33Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVBKMlrY+JrzYNaHUCBnc+r3bMKMlw5eK6EPkvaEe+5JPIfMQ6Kr7rHq4wh48zJqkS/sik=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxfoSJCHbw9eXOV0Hn89chHjxLEftk9PTZgHhYTU8z8xje6nxwx
-	kg0ea4xr/Epvm9G6X1ewxkI9jVBQNetR8QvBMxNCHBKu1OrvNkEQ
-X-Gm-Gg: ASbGncvfTHmqH2YTtPfU0FnJkU0st6KbyYoZH1+b0wnPkqhdFV4r5wKL/W43Frk5ZAL
-	vKGxw02Mr/0S7dOusMugGDY0DWAjFC0jEjfOalNw7xY29UwdD4VHzS8YfF4RbhMhqvrA5SA30I0
-	jwMKjsvKyWHzYAThc3Xl9hywopqVZSf8U2QQCmL+ys/T9JEfcU9V/QUYSFeCCn7JZcbpuh/d9WX
-	1T6tvSZbx8gC80Zo2LBqh7UQ+cOx88dh2goc/Z/gQlvbECi+c6Z6mTeNnHUGD8txvZeYO72Nl5K
-	P+6fvXR2DiIG2NFw2fFOzHprOcyD
-X-Google-Smtp-Source: AGHT+IHjfpXDYgO9pT6Nw4Bezw1GjCosswQdk5p/7xF4ENGHQ2fIxqrauhJGFISGYIYBcl6ucEQa8Q==
-X-Received: by 2002:a05:6402:4312:b0:5ee:497:5221 with SMTP id 4fb4d7f45d1cf-5f628628bdamr756775a12.11.1744984200603;
-        Fri, 18 Apr 2025 06:50:00 -0700 (PDT)
+        bh=CuBgNv5cd1S2PD2hevcSRahDNpP8CA3ZoLvuCSdO+No=;
+        b=FWGRwg1SC54wgWuAtK5iwz6Ywwm30+PPu3n3RA+KrefqJCm7DXxjDB7zMufkSIXIpr
+         S/hpO9icLNxJIxVwccjHb0qeiOYodPm7CnLBDIxWEzJXcJhihp1acbD1YyTiO2xOquRu
+         zFoTL1KMEmhQMLwOVIODcpUuwRBankY4VdHUidkkkp36KqU0q12rdxhc3dLlewh+xMw6
+         TUzCEc4BhzrFwo64Vh6AxoVMU/Y5BqooQ3LERYNVh/9RQZ22FUy8YlI0mYlWw0RHn9ij
+         RcIXxgako9Z5NNLR3FQkLpqWQBTkrdYB1eOreMvpZr/Mm4Y+JCRW9XTbQqstVFuuLzlN
+         2PIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVt2xYh3vC8szZzzaL9/se0PT5FwSXatofHIZt15HAIJoJg5EOrHNWpwqJaHtAdx5g4I/M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YygbsYZYlXCZq/8y896WUDpP4P1lu4XUux82HP57wcujgVMDZcA
+	d6yxkCYm4bh/amaIwBhsUi/MQLHc2cK5MJ+bn8qMNvv57bav2C16
+X-Gm-Gg: ASbGncsm7rmyDZBhxKGkDQ3DSehc16IIJTaQu0Zp7QvkLfoh76V5aAmA/0GEfnDuwmR
+	Q5LjwHCOJfBcqLCUMyfk3qX/+SgN1msJgM37kqY92jC16V47QU0GpMCF7um3B2cRhQ7Bg86hMAy
+	GUZ7ShyJQxspu7IanMYZDXtay/ghBarb4VtENsY1PcsScVpNtbiDOLWOU0YnlWaxcgcOSglOhnD
+	zLMFNh206CpTDnYh3Ieu3LRY8lGQ2Rf9Z5ds4P2zcKElSsRfnY9Rw7EllahyYzCa/wbXwiyUrnt
+	ESvsPJwQwIe60amrmSTZbGsPn20g
+X-Google-Smtp-Source: AGHT+IFVtlQMaZys0yRiOygdgzqKHFtvYUnzaYsTx8NK1/CznrSsNWU+sPquLkREls3wzbKnT9aYMw==
+X-Received: by 2002:a17:907:7f0d:b0:acb:583:c63a with SMTP id a640c23a62f3a-acb74dd060cmr67927566b.15.1744984371062;
+        Fri, 18 Apr 2025 06:52:51 -0700 (PDT)
 Received: from skbuf ([188.25.50.178])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f625578345sm1009703a12.28.2025.04.18.06.49.58
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ec0bedbsm124885266b.16.2025.04.18.06.52.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 06:49:59 -0700 (PDT)
-Date: Fri, 18 Apr 2025 16:49:56 +0300
+        Fri, 18 Apr 2025 06:52:50 -0700 (PDT)
+Date: Fri, 18 Apr 2025 16:52:47 +0300
 From: Vladimir Oltean <olteanv@gmail.com>
 To: Wei Fang <wei.fang@nxp.com>
 Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
@@ -73,15 +73,15 @@ Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
 	"imx@lists.linux.dev" <imx@lists.linux.dev>,
 	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
 	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v5 net-next 01/14] net: enetc: add initial netc-lib
- driver to support NTMP
-Message-ID: <20250418134956.chlx2izlo6qcfzic@skbuf>
+Subject: Re: [PATCH v5 net-next 02/14] net: enetc: add command BD ring
+ support for i.MX95 ENETC
+Message-ID: <20250418135247.kf3syqrv3lznmcbf@skbuf>
 References: <20250411095752.3072696-1-wei.fang@nxp.com>
  <20250411095752.3072696-1-wei.fang@nxp.com>
- <20250411095752.3072696-2-wei.fang@nxp.com>
- <20250411095752.3072696-2-wei.fang@nxp.com>
- <20250418124905.2jve2cjzrojjwmyh@skbuf>
- <PAXPR04MB8510715CEE1461C5CC8D8CC288BF2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250411095752.3072696-3-wei.fang@nxp.com>
+ <20250411095752.3072696-3-wei.fang@nxp.com>
+ <20250418132511.azibvntwzh6odqvx@skbuf>
+ <PAXPR04MB85105C88656FA179985C8F0D88BF2@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -90,16 +90,10 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8510715CEE1461C5CC8D8CC288BF2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB85105C88656FA179985C8F0D88BF2@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-On Fri, Apr 18, 2025 at 01:38:31PM +0000, Wei Fang wrote:
-> > Can you please add one more sentence clarifying that the LS1028A
-> > management protocol has been retroactively named NTMP 1.0 and its
-> > implementation is in enetc_cbdr.c and enetc_tsn.c? The driver, like new
-> > NETC documentation, refers to NTMP 2.0 as simply "NTMP".
-> > 
-> 
-> Okay, but enetc_tsn.c is only existed in downstream, so it will not be
-> added here.
+On Fri, Apr 18, 2025 at 01:49:25PM +0000, Wei Fang wrote:
+> Do we need to retain cbdr_size in struct ntmp_user? Or just remove it in
+> next version?
 
-enetc_qos.c, sorry.
+It seems redundant with cbdr->bd_num, so yes, please remove it.
