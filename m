@@ -1,39 +1,39 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276A7269880
-	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 06:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD38226F44E
+	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 06:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744957883; cv=none; b=rTkkDvnZBIA8iOciqqYhyxLBHMhv7XtqDoGLk3jqeA7SK3TYMcb2kKg+P5vlGGmjCfGFsjIjnMQyYBOyX2EM/cSa+FmVPAzUOOlQRMGpSd3+qvfrvmSLiPVe0T1YO0feJ97Q77HHBsp+QMaM7TwEyDNReZ/SHMNfxVU6Q/qk6h8=
+	t=1744957887; cv=none; b=eW1IkYuZFjRBnWqj0XdYGE9XPeqvEgNXy9zotZBVqnB+KJN0ULEh6rBu9NrDNhr8w/X6go1bAn0BI5jipBKRQRdQMsoVaTjyJgWb00yDYNfImXJ8kZ8c7WuTdn8gUiJyh0HUhh7JE7GUCt72dUMPdipbhfx/vIy9SJrGxugtEtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744957883; c=relaxed/simple;
-	bh=FwgWWF+LP2EHZLRFmQS+agKbeiCpXr1FEFxEHMATv8g=;
+	s=arc-20240116; t=1744957887; c=relaxed/simple;
+	bh=r/Ex6zbqfmmSqV6pPOofSWL8wLYsy0vJ40McfaddmnA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NHxm2M0Q6tOPwKdQhsMHLKvuJyqCfmt0E5RMszbwv4jGrQj46Z29K4AVdZQvcOAYsYOg3OGvsf2I89h2gj4XlfJDxyTqGS0Hu+YPs1XgqYkZGiS0WO10GXs+dsMJkd91dRAcsVOuETxK/Nr1gPUbVX3F1oOik+hWWIUFfR8YSqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=LQ73NpTa; arc=none smtp.client-ip=46.19.9.99
+	 MIME-Version; b=p0QZJKKeKkCpobwi0AqH4+7sccAjP4el1gAOQYQKNFXdl1tCZKAhua6guOOaob7rLWLGLip+qU4jP2cUVD5xKXa70IEWUDBiVFv5TmN5gETeiLUDfG6qi49MaVsVjHwZuqN6+mMAp/4xrjOPQ1a+hNHGfjSNs9Vk16NNymYqp70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=cKH8Jjz3; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="LQ73NpTa"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="cKH8Jjz3"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=Itm00J1uaD0MfR8SRxtol0/+CWNZ2SWKT/We+OoqJm4=; b=LQ73NpTaqBVef0LspueNCcEg4o
-	TeXvKaVTIJ4CHBN3We+wJy33eiUQ3a5yV2hftqGeiWGUJRwJVYmTg+twNqY1F3XyHDHRcmx/dmvyp
-	6xQcqDA5HOTF58c+t++wR4urUsFwFXpuFPz9EBHLjBqYx/0goFH0jczjmKRRmdvI3oiV0pRtH6cNW
-	EdfkZ0yiIOR60h2W4Zr6Ef2n14L/LCySABVLm+l1mIBmqHLPeuG52iexNkH1NILxoPPQFtTalClVW
-	P0gah+1FUtBqXqwCx89jNs+KBcHcIeVTFWtoFi5D/LT9YllOj8ODRKgMEInAsua1NWtvJuFZ3Fn5z
-	UmU3WM1w==;
+	bh=oTg5xlBMV3ZpioVnQMKMCNtn41a6TiUkCbtv/ticY0Q=; b=cKH8Jjz3UhDIikWoDUs9Pr6GlI
+	Mmz/6GL+pGzQYRY4NUFxkPQ1reeW+aRqBnalYDxz5Cs/EBek0U2vd9bYn3wnMVO9bcz7K6nvF8a8y
+	vZ03y5b1HiShBsMyWEt/U56nCsO4sNA2kIgj17dyWhsUnjVS0Lug+UUFVqVMkWM+vgi9oHHr1CpC3
+	u/PxqDkEA+4KxZd1OM8JjV0tL7PKohBHdlAp7guW4A9Dh4Ii6FkbCo1ybIlEqu9YT73lbykd/uyPq
+	6lgqy2uq2Pj9oAYd1IP0qumexjCyfEGGNJtKkWmG7S+eMaVoK9mq5Pp93074AtyBlQDRSkxrgG5fz
+	SV6z8cgw==;
 Received: from [89.212.21.243] (port=56446 helo=localhost.localdomain)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1u5fFn-00AbM0-1F;
-	Fri, 18 Apr 2025 08:31:11 +0200
+	id 1u5fG0-00AbM0-1a;
+	Fri, 18 Apr 2025 08:31:24 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -47,9 +47,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v3 05/15] arm64: dts: freescale: imx93-phycore-som: Add eMMC no-1-8-v by default
-Date: Fri, 18 Apr 2025 08:30:54 +0200
-Message-Id: <20250418063104.2202085-6-primoz.fiser@norik.com>
+Subject: [PATCH v3 15/15] arm64: dts: freescale: imx93-phyboard-segin: Order node alphabetically
+Date: Fri, 18 Apr 2025 08:31:04 +0200
+Message-Id: <20250418063104.2202085-16-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250418063104.2202085-1-primoz.fiser@norik.com>
 References: <20250418063104.2202085-1-primoz.fiser@norik.com>
@@ -71,36 +71,50 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-The phyCORE-i.MX93 SoM comes in two variants, one with VDD_IO set to
-3.3V and the other variant to 1.8V. The 3.3V variant can only support
-DDR52 mode, while 1.8V variant is capable of HS400ES eMMC mode. The
-information about VDD_IO option is encoded in the SoM's EEPROM. EEPROM
-is read in the bootloader and bootloader clears the "no-1-8-v" flag in
-case of 1.8V SoM variant is detected. Thus add property 'no-1-8-v' by
-default to usdhc1 (eMMC) node and let bootloader handle the flag. In
-case EEPROM is erased or read-out fails, flag "no-1-8-v" also ensures
-fall-back compatibility with both SoM variants.
+Move pinctrl_uart1 to keep nodes in alphabetical order. No functional
+changes.
 
 Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
 Changes in v3:
-- no changes
+- add Reviewed-by tag
 
- arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ .../boot/dts/freescale/imx93-phyboard-segin.dts    | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-index 663530a7e2bb..22dbcc89e311 100644
---- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-@@ -172,6 +172,7 @@ &usdhc1 {
- 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
- 	bus-width = <8>;
- 	non-removable;
-+	no-1-8-v;
- 	status = "okay";
- };
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+index c62cc06fad4b..0c55b749c834 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+@@ -228,13 +228,6 @@ MX93_PAD_I2C2_SDA__LPI2C2_SDA		0x40000b9e
+ 		>;
+ 	};
  
+-	pinctrl_uart1: uart1grp {
+-		fsl,pins = <
+-			MX93_PAD_UART1_RXD__LPUART1_RX		0x31e
+-			MX93_PAD_UART1_TXD__LPUART1_TX		0x30e
+-		>;
+-	};
+-
+ 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+ 		fsl,pins = <
+ 			MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
+@@ -257,6 +250,13 @@ MX93_PAD_SAI1_RXD0__SAI1_RX_DATA00	0x1402
+ 		>;
+ 	};
+ 
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX93_PAD_UART1_RXD__LPUART1_RX		0x31e
++			MX93_PAD_UART1_TXD__LPUART1_TX		0x30e
++		>;
++	};
++
+ 	pinctrl_usdhc2_cd: usdhc2cdgrp {
+ 		fsl,pins = <
+ 			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
 -- 
 2.34.1
 
