@@ -1,123 +1,119 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3578202C39
-	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 15:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EED21B8F7;
+	Fri, 18 Apr 2025 18:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744990884; cv=none; b=HC5yngR78srBvPfKwjejzEBHpc2cZiDG+X1AbXtkdAH3Q3mYBXo4xWJ/kydYImBbGaIvFlnajanMW/ykOMheYRad1cBgja5l7B5EofA0mvcd9jauO2CqCmO2KYKMqo4inBG6N+ncd216AoMoYEwPIIuaPAQNkIJ2lASoNOVnFYk=
+	t=1745002681; cv=none; b=d6OLF+VvFjyyrrZP13d8E1dJqmsy3twXh3R+gie4UhnMpj0Jp+bTCv7j0tAJFR2jiMuX/FOcs0x/cKzScmMtyS3AdQ7KWzI1UtAv7YgoE5RGht5xszldiAJqLWz2Ze4X7qnBKjTFn+pSllcOTGpBsq+kMxqh9kRq2vdD0Mvpjx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744990884; c=relaxed/simple;
-	bh=Ei4hL6/iq+Fcex69xWAqM/CXlKvWLYHQG9EDDXMJvik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XpNnYExIL24TkuhWfZ1TtINiyAHWQExZDGzEjeRWViIhpYnc3QQ1aBE/YV7fpmUC3veOYruRFBzXUx4r4HMQFaySwqLQhy6mJzd/aUyd97oUvR0KmhkZ92o16VqXyUGqGgs0zfr6OjvSUkNAfkAj4N5yL5M7/obNyGGz0AnnlYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=niSshXAF; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745002681; c=relaxed/simple;
+	bh=lKE+iWGJ99lqJ2r/qZ9p87+taT1GBjkTanSu7C30l0A=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HkJaxSH2T4gKSrt7k0JUBrtZ1oDx/7zgjE1WS8vjaFdPF4Z6Bz8IPjFAL6Z1IQKYbDdbD5pLGNpfCWPI5aNFKnfAvExnqNtH8yUSl59Cei/0YEt0btet3bPtrtJ/5JnN9/dzqYjQGfoDb5YSODD4Jdoqz7s/S7Ak2KNdlKbB0sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=MhInK9Am; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="niSshXAF"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5edc468a7daso301152a12.2
-        for <imx@lists.linux.dev>; Fri, 18 Apr 2025 08:41:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744990881; x=1745595681; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4/cWTo90FQUpqjGK8y/mmDlFDVu6Jy0NFCw7BclObhA=;
-        b=niSshXAFY9ODAmnPFHyomm7TVQlNKECrI0ZPSvCbMLN5kZ18vrW28tKCVuNkZflpwB
-         gE87I/pMDOkTiyBqvJHL7bigwuOK+tL3Nf5aORf3dVIJUYb0mZSSX+vK1tz2Afsrfkfm
-         txyOjQup+u3hgzDJ4JXjBF1yFYzoN6MR6RejHHKHGS6whlUUnjdfUQnrfgOzRK86CTLE
-         GgmF0FdjzC5UmBEdRmgtbv9c+rmvxuoSadUloiRnZFNk3E7cd1IcN878VObY06LKtEfp
-         Z1pKMdAleOx5Eflmre8rCOLcGC0P3c4q6rDJS6Wxol8gF7q4cPjDLsF3PQjBPPQXviJy
-         2ZNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744990881; x=1745595681;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4/cWTo90FQUpqjGK8y/mmDlFDVu6Jy0NFCw7BclObhA=;
-        b=q2g+Sq2tpoZc2FoFG3pUCPiGH9xSsjtibKqY2USlG6AxIhvb5tAXrYKo8hy/D0OcrR
-         mj31fH/RaTpaQv5yki7dvWruUOrvgxAHW0238woDUWW1tniETUsiWmLVMkNrb0aywP4t
-         jg7mTL0uJoILa4EC9XkUUL5NA5tEa6MZOrR3keNmWeh3HSsjlVViLrAJrfcN+TCO645K
-         APNfLyk7W3ABwWTkTy+yqEMcQ6huIxMbsdje8BjfsOmNXHyGcELCxGG2iLetefTbVimi
-         5Ggpe48gx4cCVd9nMTUY+ezwQaM6b2V4xFjH2wM41kC21IkoxrhD+CNlo1p2VmlgzPWP
-         XcHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXy/W70YSfk382mKl2l9DwlK6c498zSPs51FZucVC6Q6E/2TFlw6iAQ1ksG8IbhGu+Mr2A=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyg+FGfWh2y0WeQhrAjbtSXVAMTfk/yHU95dxroJgZ7ZL0mloU/
-	uElw0eAg1QNT69wC3PO/PH9LyolFyclnQfjjk6Si1TQpq9CJrtaR
-X-Gm-Gg: ASbGncv7vZHe533sPFDAzY2kl9+jnHSPKHqUlB8hP8IdOwUJ0OHGgJICmUeQ5ocrQhG
-	GfIiPMI5LNy1QVyIZgvrSLVrFarAeIIB3G4zbt7Io8Qb44cEUPGwApmN2OgcjyXZh6y7+Az/ufX
-	Wo9MDc7bzfZpZaiiUz3YQu1GwtvRvLSaXj5fD0wQFpVx06qfZvSIQ1kWeohwg7vGqsHn8KZ45XV
-	iPNTURO8e47twV2iMu6pmTClTvd1k8CQo3NMeqlfcynNrrErDYLMPZ7P8AjBkiEw4C94haeY6Z4
-	Kt7IuBDc91k2Ch9eg3TRygTTEZuD
-X-Google-Smtp-Source: AGHT+IEkRAOdwHdMRa6d2QlCY5Yrw6uQ9t0434Mw1NfnH0yIfWXjkcyamqR6CUsapH+iG9W1uhu/lw==
-X-Received: by 2002:a05:6402:4301:b0:5f4:ca86:916c with SMTP id 4fb4d7f45d1cf-5f628524a18mr946596a12.3.1744990880873;
-        Fri, 18 Apr 2025 08:41:20 -0700 (PDT)
-Received: from skbuf ([188.25.50.178])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f625595590sm1128785a12.41.2025.04.18.08.41.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 08:41:19 -0700 (PDT)
-Date: Fri, 18 Apr 2025 18:41:17 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, christophe.leroy@csgroup.eu,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 net-next 04/14] net: enetc: add MAC filtering for
- i.MX95 ENETC PF
-Message-ID: <20250418154117.jcd6xxnwot4nmhek@skbuf>
-References: <20250411095752.3072696-1-wei.fang@nxp.com>
- <20250411095752.3072696-5-wei.fang@nxp.com>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="MhInK9Am"
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53IIvqU01001118
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Apr 2025 13:57:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1745002672;
+	bh=4B+kMbheGPM4KNTv8XPLuJ0eMWorUwyuLFrUknty9MY=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=MhInK9Amd8dP2fop1tuGqjlvD9gwnSo2mFwCJdxRduGAgTIoVX31Bee1H8iN8TeF+
+	 17ySwd3L9fryHK8giOJneRk7kdpUFOdyJ+q8JYtusEmOlFDsYQNoxMsTVx3ZLxUTD+
+	 iceTdip84mVSp6uc+V0vsuHYZ+VWo55JuzqczBNE=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53IIvqcl113576
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 18 Apr 2025 13:57:52 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 18
+ Apr 2025 13:57:52 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 18 Apr 2025 13:57:52 -0500
+Received: from localhost ([10.249.36.23])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53IIvq9j117628;
+	Fri, 18 Apr 2025 13:57:52 -0500
+From: Nishanth Menon <nm@ti.com>
+To: <vigneshr@ti.com>, Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+CC: Nishanth Menon <nm@ti.com>, <kristo@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <vaishnav.a@ti.com>,
+        <jai.luthra@linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <u-kumar1@ti.com>
+Subject: Re: [PATCH v3 0/7] Fix dtbs_check warnings in CSI overlays
+Date: Fri, 18 Apr 2025 13:57:50 -0500
+Message-ID: <174500265898.95535.4453778649749724956.b4-ty@ti.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250415111328.3847502-1-y-abhilashchandra@ti.com>
+References: <20250415111328.3847502-1-y-abhilashchandra@ti.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250411095752.3072696-5-wei.fang@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Fri, Apr 11, 2025 at 05:57:42PM +0800, Wei Fang wrote:
->  static const struct enetc_pf_ops enetc4_pf_ops = {
->  	.set_si_primary_mac = enetc4_pf_set_si_primary_mac,
->  	.get_si_primary_mac = enetc4_pf_get_si_primary_mac,
-> @@ -303,12 +489,55 @@ static void enetc4_pf_free(struct enetc_pf *pf)
->  	enetc4_free_ntmp_user(pf->si);
->  }
->  
-> +static void enetc4_psi_do_set_rx_mode(struct work_struct *work)
-> +{
-> +	struct enetc_si *si = container_of(work, struct enetc_si, rx_mode_task);
-> +	struct enetc_pf *pf = enetc_si_priv(si);
-> +	struct net_device *ndev = si->ndev;
-> +	struct enetc_hw *hw = &si->hw;
-> +	bool uc_promisc = false;
-> +	bool mc_promisc = false;
-> +	int type = 0;
-> +
-> +	if (ndev->flags & IFF_PROMISC) {
-> +		uc_promisc = true;
-> +		mc_promisc = true;
-> +	} else if (ndev->flags & IFF_ALLMULTI) {
+Hi Yemike Abhilash Chandra,
 
-enetc4_psi_do_set_rx_mode() runs unlocked relative to changes made
-to ndev->flags, so could you at least read it just once to avoid
-inconsistencies?
+On Tue, 15 Apr 2025 16:43:21 +0530, Yemike Abhilash Chandra wrote:
+> There are a bunch of new warnings generated using CONFIG_OF_ALL_DTBS.
+> This configuration applies DTB and overlay together to generate test DTBs,
+> which are then validated using dtbs_check.
+> 
+> This patch series fixes all warnings related to sensor overlays on
+> jacinto platforms and a few minor warnings on sitara as well.
+> 
+> [...]
 
-Speaking of running unlocked: if I'm not mistaken, this code design
-might lose consecutive updates to ndev->flags, as well as to the address
-lists, if queue_work() is executed while si->rx_mode_task is still
-running. There is a difference between statically allocating and
-continuously queuing the same work item, vs allocating one work item
-per each ndo_set_rx_mode() call.
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
 
-In practice it might be hard to trigger an actual issue, because the
-call sites serialize under rtnl_lock() which is so bulky that
-si->rx_mode_task should have time to finish by the time ndo_set_rx_mode()
-has a chance to be called again.
+[1/7] arm64: dts: ti: j721e-sk: Add DT nodes for power regulators
+      commit: 97b67cc102dc2cc8aa39a569c22a196e21af5a21
+[2/7] arm64: dts: ti: am68-sk: Fix regulator hierarchy
+      commit: 7edf0a4d3bb7f5cd84f172b76c380c4259bb4ef8
+[3/7] arm64: dts: ti: k3-j721e-sk: Remove clock-names property from IMX219 overlay
+      commit: 24ab76e55ef15450c6681a2b5db4d78f45200939
+[4/7] arm64: dts: ti: k3-j721e-sk: Add requiried voltage supplies for IMX219
+      commit: c6a20a250200da6fcaf80fe945b7b92cba8cfe0f
+[5/7] arm64: dts: ti: k3-am62x: Remove clock-names property from IMX219 overlay
+      commit: c68ab54a89a8c935732589a35ea2596e2329f167
+[6/7] arm64: dts: ti: k3-am62x: Rename I2C switch to I2C mux in IMX219 overlay
+      commit: 7b75dd2029ee01a8c11fcf4d97f3ccebbef9f8eb
+[7/7] arm64: dts: ti: k3-am62x: Rename I2C switch to I2C mux in OV5640 overlay
+      commit: b22cc402d38774ccc552d18e762c25dde02f7be0
 
-I can't tell you exactly how, but my gut feeling is that the combination
-of these 2 things is going to be problematic.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+
