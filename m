@@ -1,60 +1,58 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091572690D9
-	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 06:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FCB25332B
+	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 06:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744956478; cv=none; b=O3Nv6hQzEEM5Z7pB1aSUqmvHA+wnJ6a54cmGHbrI/th5n88Hc5D8wGAZYzDt70v1JNaE9I0hVTVx0uU2mezI55AGigM6inUqS6NswQ3gYE3PM6X/uG86JA7oxQP6rqrj5rfnaC2scqJ+pboQp4LnEsr+fOUW2C8PUNZh/YlrXJw=
+	t=1744957875; cv=none; b=uyZnwdAIrJUpA5kVtLS2HTjaj7+02SO8derZBfnjHI13QHYGjcviQ2Z0MXErqYEbaWTYtlAiHlCP0dGVAXlIKgOzUAV6AeqZuY8k4cl3BxTr+Hud/fmQ7AhfsDxWIFR0VYFrYXMHm2Zf1CxrsdgpPmTHvib7fr39bIBXxOSFpPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744956478; c=relaxed/simple;
-	bh=hXU6iBOkVqNqvJnyn5amxCjYXTuii/dZdBmG/kRfM3g=;
+	s=arc-20240116; t=1744957875; c=relaxed/simple;
+	bh=BF806nDt7Rbxny70SijRBFi5sg+adxWDqU225xT+InM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZzgWkpSwCn+F1nf7JN7NW+ed5saiYbWu9BcSokKYFcs2DR+RN5V6WBVgm4YdGXl4NMLGtNWXyy3QEDfqXL6fQCa4zQyttIlYQGpcgeEsEufpLjfm0pvz/85qMuAqvHKEzWpkMlfWEtsT6tPqAeO+1nTVs6xTvDVfBsETaIDQMaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=HWbwTmck; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	 MIME-Version; b=B3mPuOIkAghyXCgT8WU1cf3k2NJLd5xPeOGhRQbCY0msxgU4bMEOdzTqhaNkPdahKuWIcidX20S3Ux3F49R+so7mn4tRQZiMSntsEpIC5qVAJiWdoFE3DNlf9woiBRA3lAEdPUVWYfhutBrAC5qOG99a6paWeuIkLRIY+oji2d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=pVxd4hlW; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="HWbwTmck"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B455E102933AA;
-	Fri, 18 Apr 2025 08:07:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744956475; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=m0VF+kM9OTbKnvQE6hc/9mZ+Q2P4CfCIFoAJparHrkA=;
-	b=HWbwTmckQeuFXyh9j0TkDiY/+fWDN4W2SFMuuV2XWkhfiSXnG+XuaPx5USvt/Wvsy1vGCX
-	qVrE8ZsnPmL4HTjsWJAG5APN3HwHkrIdEtbnzqwO0z1QYS1fGf2ZDnQlyY3ePgj95ZXFlH
-	X3mV66xFNZV/Gi/8OMMkmPX5BDz4un2WhysDJjQFAavra7diJCoGMPzPj3xxHASt9AGJn4
-	CVdzDEURN0WXBbrEip8l1yVNNjvjBoryMsnSP4LgwpUpehc9QAKOnTlSTYAzFPtTdY6Zz3
-	JSPKO7a+7GAwz/aw7sznqLWOrqP+R0MDBy/MWaM3+L/wCZN+uOF8cjJsc/wplQ==
-From: Lukasz Majewski <lukma@denx.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="pVxd4hlW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=ZM1mvqa4ajyuKSIc1N4rndazopwUD8UEQrno8FzsF40=; b=pVxd4hlWwMroo6yUHzN9Zi6ZX4
+	NuzkRgqs6AQ8KL4J/vOgPYu1xjPwdN73nKySzyCDf1FhQY9jDM4l4iMPNytxxZ71pjOU/dGE7NxDw
+	3fjnNUIbGrm5fJOUlTsMQnJ6DuwMBFn10ZW0+m38+GxFcOy6rsGfSxrHA01mWg3JpM94W3Lj7SZDX
+	A+pwZ0UbacnKjii48CjXgl9/QKG65Md0qfbucAcHgxqDat3PZ5e9zEhoa8DpzNzL6kzIaiS1WaEcE
+	9baEXK7Gv1qRfPlSHk4WK+jO9aw51SEVnsGzZTicpMTOdZHqZdJvall2onY+z0Html5vZUsXw0Dss
+	xbgh+rdA==;
+Received: from [89.212.21.243] (port=56446 helo=localhost.localdomain)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1u5fFi-00AbM0-0D;
+	Fri, 18 Apr 2025 08:31:05 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukma@denx.de>
-Subject: [net-next v6 7/7] ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2 switch
-Date: Fri, 18 Apr 2025 08:07:16 +0200
-Message-Id: <20250418060716.3498031-8-lukma@denx.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250418060716.3498031-1-lukma@denx.de>
-References: <20250418060716.3498031-1-lukma@denx.de>
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH v3 02/15] arm64: dts: freescale: imx93-phycore-som: Add EEPROM support
+Date: Fri, 18 Apr 2025 08:30:51 +0200
+Message-Id: <20250418063104.2202085-3-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250418063104.2202085-1-primoz.fiser@norik.com>
+References: <20250418063104.2202085-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,53 +60,48 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-This patch enables support for More Than IP L2 switch available on some
-imx28[7] devices.
+Add support for the EEPROM chip available on I2C3 bus (address 0x50),
+used for the PHYTEC SOM detection.
 
-Moreover, it also enables CONFIG_SWITCHDEV and CONFIG_BRIDGE required
-by this driver for correct operation.
-
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
-Changes for v4:
-- New patch
+Changes in v3:
+- add Reviewed-by tag
 
-Changes for v5:
-- Apply this patch on top of patch, which updates mxs_defconfig to
-  v6.15-rc1
-- Add more verbose commit message with explanation why SWITCHDEV and
-  BRIDGE must be enabled as well
+ arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Changes for v6:
-- None
----
- arch/arm/configs/mxs_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
-index b1a31cb914c8..ef4556222274 100644
---- a/arch/arm/configs/mxs_defconfig
-+++ b/arch/arm/configs/mxs_defconfig
-@@ -34,6 +34,8 @@ CONFIG_IP_PNP_DHCP=y
- CONFIG_SYN_COOKIES=y
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
-+CONFIG_BRIDGE=y
-+CONFIG_NET_SWITCHDEV=y
- CONFIG_CAN=m
- # CONFIG_WIRELESS is not set
- CONFIG_DEVTMPFS=y
-@@ -52,6 +54,7 @@ CONFIG_EEPROM_AT24=y
- CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_NETDEVICES=y
-+CONFIG_FEC_MTIP_L2SW=y
- CONFIG_ENC28J60=y
- CONFIG_ICPLUS_PHY=y
- CONFIG_MICREL_PHY=y
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+index 507a71f9294b..0528e293c03d 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+@@ -154,6 +154,14 @@ ldo5: LDO5 {
+ 			};
+ 		};
+ 	};
++
++	/* EEPROM */
++	eeprom@50 {
++		compatible = "atmel,24c32";
++		reg = <0x50>;
++		pagesize = <32>;
++		vcc-supply = <&buck4>;
++	};
+ };
+ 
+ /* eMMC */
 -- 
-2.39.5
+2.34.1
 
