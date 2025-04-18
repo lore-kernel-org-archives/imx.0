@@ -1,154 +1,124 @@
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9507D22E40E
-	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 20:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B5D2512E1
+	for <imx@lists.linux.dev>; Fri, 18 Apr 2025 23:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745006411; cv=none; b=Kz+kilJEW8j+fVxfvJ67S45qdkb41/URI7U+JgDj3eplJgJTlISTI9oh/+LR7CGjmPuBRhURsd2t9c/iKiY1dyTGCQFN5oSNZLAtND8xnQonqmVfzK097EHVj7IPa1gkh17lH7V05T0jldRlvbrzmNmsTQb/MchLHFhfCheAt5w=
+	t=1745017547; cv=none; b=Wb77nxrOMycwVKagAtNUvAEZc+Qewzy3L2c+sPiOGJI0vD5Go3Dc1OOBe8CWLlAutmTplLBAhMCuq+pCxQYFIygW70+IcpA8fl+kOczDZgr9P48RMdS5NsZCNzYMCgWPMA4X7pbCFO5lJqcZDtFpdTRpHd7K8N953tVIkcOOefM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745006411; c=relaxed/simple;
-	bh=anywE7XPQeNCDKeK0PUagrE9N3D2Cd5D3ok+OCQfyOY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=K5F9vSqZV0ssUTU/ucQXH9p1oD2wOAFPoM6uYu19AgmQxt5d2sVqRoCxClCV4HAOMZrebEAOqnQE2CsRJ4Ti4NN6n3K0X9T+6UA+mhIa5qpNSBs3FtdDspMkpWzwI1orhCoMLFyLcDCA87i7Y/JUZ+ZdBW7e8RT/ChcusOmUGL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=K1tZS28y; arc=none smtp.client-ip=209.85.161.48
+	s=arc-20240116; t=1745017547; c=relaxed/simple;
+	bh=ymlQkqzyhQ/QPDDRJdie9S2n19N7122U3ZVfMyAGAeg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KuKO/vwNkCdE/kMu2HQDAPtB0vrZrlUl7g158tUx777p8KL7fsU8zmBGCgMK2J4pZSFcog1V8CGphSaBCtQqDkIP3l6bvmgYktQqAzYfIV8p2H1INqTt5aKKXLHg8qzxQeIMeJM3/jdH7FUS4MZTQ4zKNwiUX5cN2CZi19wHpFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=udFtX2Kf; arc=none smtp.client-ip=209.85.210.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="K1tZS28y"
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-6044db3b45bso1228375eaf.1
-        for <imx@lists.linux.dev>; Fri, 18 Apr 2025 13:00:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="udFtX2Kf"
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-72c1818c394so1375124a34.2
+        for <imx@lists.linux.dev>; Fri, 18 Apr 2025 16:05:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745006408; x=1745611208; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QlEEHDv/JjD6VH/F564VEg6t5ixWWwDpak4BAWMlBsA=;
-        b=K1tZS28yIf6eL9yLNbjqaLPMNLFHexGVCRePpzTxt/Y6NthaOw8Yez5ENRyJsZ2Ccu
-         z9255+AK6oA36MuoF5VjWa8Sn3L3g/5qlfChGLFqW+EEEtXtMn/dY46juT4HEGWfAKWP
-         4PF1lOeWFRqathS3qjkqCc58/5Hu8S7PgX7vNctEV5EEw5qoIttLz0ZSV0IlAWIlsY7J
-         COiM23kJ1Ceac730Ok3byxjwFVwUDgpoW5pItlP98egKwMITg9GU6O66lbxmq/YzWBFy
-         ur77wx93/eVd3IIywAZNMYNAx01jGgB01NQUR2usKkKkYCAPa7frTEQ4/pWEpbf5aKf6
-         AA9g==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1745017544; x=1745622344; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=atnsX2Ib1Wv1iIZ+2HRhddbg893c8+OuKKzqJdxz9N0=;
+        b=udFtX2KfuM/4l4QHxIFTpwgORPJO614bo1G/e4+SFQracAmZdIR9rHpyVPRvntql/A
+         IsPiWGHRAJfySD/zTXm1aXqneG3U0L4O0VmGI3ki3vBp3vL5hEqvCgCHP67ByRDOgNEV
+         lKFNtiTbo+UqFvQ+kQHfF78UmrOFA+5oOChu+hDXCaDXbzF1G6KaLRdJsj3I7bKp/veA
+         ZHWdpoAfrePzOK4Zv2RXs0JwhLkWUm5Wl1c3fUF0nvRkayHefDpUga4Y5j8FR/UYo0sP
+         RldHW4frtcxBvi+1b5gIALb++AoE3yJowtnxEACHkpv7PPubyCHyD5BMiJlTRP8CUNFZ
+         IWXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745006408; x=1745611208;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QlEEHDv/JjD6VH/F564VEg6t5ixWWwDpak4BAWMlBsA=;
-        b=EC+Mv6TwRrEj021F6ymwgBgMow4H/nP4aqtd9ab94NmeCrbLH3JqpvylQAqje1TiZ0
-         Mp7Xrciyz3aNXhnz3EoY5mBOL6lqCsbYfxU55UYX5Tnh3ccVBzbRH29KIs/HUECiVBkp
-         IrNLDYxV3cxyphDLuAJd0LRtAJDz9TVsbpa7RBvA2GRA+h+l82sGyCybp6GP9moseYER
-         CECYRJ1KkrU3jx2IT815/IKNDrZG4kUvjUVoFqqSkYr39ZsIPhpfBP3i7fZUaprEBMr+
-         6mFI64DhH7ZsPErt8d4vTCn7k8t87CKEIGp4hcS/7fXQa8v48dsKVBZkNP8wXZDN8Wr+
-         Phbg==
-X-Forwarded-Encrypted: i=1; AJvYcCUWXQDeCo0qkx4FCaLNTfOZEc2DTUN1uWVkxwoYdQ1LcWJunmdQKIp5viKALUYrHTZ8lRM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz/96akfQcAK6bP4hJqA5PCGxY8LPnAyNk6cQ/SmWfFleKht319
-	ZnPIIgOYCck7gP1fnKZWtiMkiVmqs0WUVVxBF1bsND5OEdjMwZOlTsbeghnsRPw=
-X-Gm-Gg: ASbGncvniUBgCNTvh3gUf4IZjZd4FFyODnVKMIy+ey3wMl4uly4kzezE6bBkDOfEsX/
-	X74A9dQp3HiR2/0VCU7LoFJkKR4jDgIA1B1ouaRcafoe3RItj2vF7C8qIE08no/ukdWHlfpNr25
-	76S0jnNMAZ/X1FjexGqmYoOlJ3yaflL9nJJ1ezNV7ThxqHg/QxumDeU8xNT1ECJ1gLTCMPFgYW6
-	Iysy3JGaJLd9t8jv778FGP/SHlOw/K6bhjhpKelkJEaEwi6V4czb872gGYDeIC/OATjE6mhDbr6
-	2tQFlpiIjvBQvlsdiViUFsGlRlVYIIHFemXvIM3dUD3iRFmEB1xFJSZnfg==
-X-Google-Smtp-Source: AGHT+IGr6jWJlv3BH4w4Ps2j1330V0WmKydx70JnXcNoazpPHvVerIJTYwy+J7D4DhPX9Wk8OvfSYw==
-X-Received: by 2002:a05:6870:ec8e:b0:2d4:c55b:199a with SMTP id 586e51a60fabf-2d526af63cbmr2074229fac.18.1745006408488;
-        Fri, 18 Apr 2025 13:00:08 -0700 (PDT)
-Received: from [127.0.1.1] ([2600:8803:e7e4:1d00:dcdf:46e0:18e5:c279])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2d5213f8e4asm606941fac.23.2025.04.18.13.00.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 13:00:07 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 18 Apr 2025 14:58:29 -0500
-Subject: [PATCH 10/10] iio: chemical: atlas-sensor: use struct with
- aligned_s64 timestamp
+        d=1e100.net; s=20230601; t=1745017544; x=1745622344;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=atnsX2Ib1Wv1iIZ+2HRhddbg893c8+OuKKzqJdxz9N0=;
+        b=pwR1VrYuRhP7VhG+xql8qOCFmRJL/hKt6nsITZy0BvUwtzSbuGrjPnlabrUsedNyK/
+         Tdl/rS55z0MSJJ1kDiAVWvnHwpkhIXOHCW63tfFzee9MkvbWJAsZ/c1XJkxITo2qHzhg
+         t5DN6KjySAB9OU+jydnWwiyflYX/R2YAU0Bv2B/aGRhYzoKQMSuysBfvc198dHuqbgdK
+         yz2UKEzNnW8Z4QEstOA3v6bUba1l+IjPIjK7HTOJipJyvLd4bp1deBn8DUq/HLY3mQQo
+         hYrilGEheQHKlY889yborm4XXxYAJ/8uBblz35g/PTTGVMkFY+qULfLZ4C402jLZM8N1
+         ThcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9wrMKD6EriDkiWFGGm9FPgRubftGfbRPkDWa/mGnGf2uyR6fEzV0cL+zG9lOqnpkHeI4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy2JsNderbLKTFMLEce3ooWKDA80DoDO+NEnF6yHwiSjWPRBkLw
+	/yTM5tNDTmVDpWE1SgrpRFNoNAa9m4SqwHBcYMr88RGae4ogqJOurrMJ7ZMhaNk=
+X-Gm-Gg: ASbGnctHNWgs/+nNNzyhBFGt+0EZzjskfvbSnM41SPLuxONLSqa20HxLfUdgz2SrDN4
+	t99Q9qVBql5lggqr4OKiV/Jx7McdrpvuUJqJa/F46FC6LUbglRnyiar5wt7NqSt0klWEe6mWIni
+	0brNw1uVJGzBGBXQvE8bCWMqULQbdutf85WFhjb3F9sL2rHjCoPKdbH1klaTv9LyAPszG4q+pSU
+	mcgVatCSc+TNvx8XPfgF5ZvChllup3oRpHxY5U1tKrPIASCWtfe1TtdRXXAMjhWzkvXPa33jksl
+	N7PJT4/J6EN/um7LK9NYRCFTzhogicV33Ad5Q0MEnhguFWQkXWtEBZ1XduUW3Qjf3nL3xuW1jvK
+	HTSLVIRJ6oLCJ0FycXV0AbM0Ofysy
+X-Google-Smtp-Source: AGHT+IFo3+CGCCjL/MDLKOL98VKpPnk7r+cnqZ8GYDV87Srf78OvwPE2vbzd7+9ZcA062oFaVEN0Pw==
+X-Received: by 2002:a05:6830:3693:b0:72b:9316:d596 with SMTP id 46e09a7af769-730061f15a7mr2627791a34.3.1745017544135;
+        Fri, 18 Apr 2025 16:05:44 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:dcdf:46e0:18e5:c279? ([2600:8803:e7e4:1d00:dcdf:46e0:18e5:c279])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7300489c6e7sm502383a34.65.2025.04.18.16.05.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Apr 2025 16:05:43 -0700 (PDT)
+Message-ID: <abe0db44-b27f-4cea-9edc-862e4096f80c@baylibre.com>
+Date: Fri, 18 Apr 2025 18:05:42 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250418-iio-prefer-aligned_s64-timestamp-v1-10-4c6080710516@baylibre.com>
-References: <20250418-iio-prefer-aligned_s64-timestamp-v1-0-4c6080710516@baylibre.com>
-In-Reply-To: <20250418-iio-prefer-aligned_s64-timestamp-v1-0-4c6080710516@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Eugen Hristev <eugen.hristev@linaro.org>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Andreas Klinger <ak@it-klinger.de>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] iio: prefer aligned_s64 timestamp (round 1)
+To: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Eugen Hristev <eugen.hristev@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andreas Klinger
+ <ak@it-klinger.de>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
  Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
- linux-stm32@st-md-mailman.stormreply.com, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1731; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=anywE7XPQeNCDKeK0PUagrE9N3D2Cd5D3ok+OCQfyOY=;
- b=owEBbQGS/pANAwAKAcLMIAH/AY/AAcsmYgBoAq8nzp0+Cmfo0t99KU1QNh1dT37rrLQG2SzNH
- U5outJwJB6JATMEAAEKAB0WIQTsGNmeYg6D1pzYaJjCzCAB/wGPwAUCaAKvJwAKCRDCzCAB/wGP
- wKuNB/9sC6Bs/gHTswHlJCsOQM/Cjv9JBeFqLqwPG/EH6lPVnuMM2r0CjXLaKZ6Sod/kwk+E4pt
- PNtFh4rt+VvxCpXg1H0wPTud1mMFV0tkDA7sJwxDGX3Z94mw+p7WvzEoCCCx9HSBkorH5YUMaBP
- FCGeNDyvZQ9+L3skA4biUuoQKswoX/yqxNlCaGcY5dG++zXclH3PsId+6ITHnGlrGoHnpFcs0Tk
- 2lRJbQaIhxof9SiZNt0q9xABQZsm6NFC63JdQGq9OgxSD7qaa/0W45hSH8XuZCCJndZw/VVEDwj
- Yi1sy0l4M68NpXKzIiV1vXzyy+beWErhT1Jlka5PNTGLOmpl
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20250418-iio-prefer-aligned_s64-timestamp-v1-0-4c6080710516@baylibre.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250418-iio-prefer-aligned_s64-timestamp-v1-0-4c6080710516@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Use a struct with aligned s64_timestamp instead of a padded array for
-the buffer used for iio_push_to_buffers_with_ts(). This makes it easier
-to see the correctness of the size and alignment of the buffer.
+On 4/18/25 2:58 PM, David Lechner wrote:
+> While reviewing the recent conversion to iio_push_to_buffers_with_ts(),
+> I found it very time-consuming to check the correctness of the buffers
+> passed to that function when they used an array with extra room at the
+> end for a timestamp. And we still managed find a few that were wrongly
+> sized or not properly aligned despite several efforts in the past to
+> audit these for correctness already.
+> 
+> Even though these ones look to be correct, it will still be easier for
+> future readers of the code if we follow the pattern of using a struct
+> with the array and timestamp instead.
+> 
+> For example, it is much easier to see that:
+> 
+> struct {
+> 	__be32 data[3];
+> 	aligned_s64 timestamp;
+> } buffer;
+> 
+After sending [1], I realized that some (perhaps many) of these would actually
+be a better candidate for the proposed IIO_DECLARE_BUFFER_WITH_TS macro rather
+that converting to the struct style as above.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/chemical/atlas-sensor.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Case in point: if the driver using that struct allows reading only one channel,
+then the offset of the timestamp when doing iio_push_to_buffers_with_ts() would
+be 8 bytes, not 16, so the struct would not always be the correct layout.
 
-diff --git a/drivers/iio/chemical/atlas-sensor.c b/drivers/iio/chemical/atlas-sensor.c
-index cb6662b9213740f4a88b8412e6a0f01bc5a314d6..a67783ce7f1b68135e05d3afc05533d400d4a052 100644
---- a/drivers/iio/chemical/atlas-sensor.c
-+++ b/drivers/iio/chemical/atlas-sensor.c
-@@ -17,6 +17,7 @@
- #include <linux/i2c.h>
- #include <linux/mod_devicetable.h>
- #include <linux/regmap.h>
-+#include <linux/types.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/buffer.h>
- #include <linux/iio/trigger.h>
-@@ -91,8 +92,10 @@ struct atlas_data {
- 	struct regmap *regmap;
- 	struct irq_work work;
- 	unsigned int interrupt_enabled;
--	/* 96-bit data + 32-bit pad + 64-bit timestamp */
--	__be32 buffer[6] __aligned(8);
-+	struct {
-+		__be32 data[3];
-+		aligned_s64 timestamp;
-+	} buffer;
- };
- 
- static const struct regmap_config atlas_regmap_config = {
-@@ -455,10 +458,10 @@ static irqreturn_t atlas_trigger_handler(int irq, void *private)
- 	int ret;
- 
- 	ret = regmap_bulk_read(data->regmap, data->chip->data_reg,
--			      &data->buffer, sizeof(__be32) * channels);
-+			       data->buffer.data, sizeof(__be32) * channels);
- 
- 	if (!ret)
--		iio_push_to_buffers_with_ts(indio_dev, data->buffer,
-+		iio_push_to_buffers_with_ts(indio_dev, &data->buffer,
- 					    sizeof(data->buffer),
- 					    iio_get_time_ns(indio_dev));
- 
+As long as the driver doesn't access the timestamp member of the struct, it
+doesn't really matter, but this could be a bit misleading to anyone who might
+unknowing try to use it in the future.
 
--- 
-2.43.0
-
+[1]: https://lore.kernel.org/linux-iio/20250418-iio-introduce-iio_declare_buffer_with_ts-v1-0-ee0c62a33a0f@baylibre.com/
