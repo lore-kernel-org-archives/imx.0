@@ -1,73 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AE8DDAB;
-	Mon, 21 Apr 2025 18:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCC920E026
+	for <imx@lists.linux.dev>; Mon, 21 Apr 2025 21:07:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745261308; cv=none; b=LUzYR28Kts/cK7Oqa+wcOhLnA3st42++2LK9Uia/U9nKhHpJf7plwnicHhhpmyyoCNa3k4q6W5J6g+GBLwdwmymxxM6B8ZQMZqhTixaPpPxSOzLg+7ZrBh2LFrbqIauqz80AToBK3FEh0TkqjNf8rURBrpjGxIOKUnAS+zfQk48=
+	t=1745269623; cv=none; b=aEw7MehEUtdPC3toOtLuYHXFrnvc6jlINcEmXKFa+fVJa7YV7HXJhAPYAnLnGdw7Q5S2cuWYvgZ69YyL292OIOR/GKIKA+3/YmF85nW3TJVzjBCcD/RNB/KSyNICDlD65DynIOnR2nWY2dYHGC29QB8AYzfBAIF9yRudr89E7WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745261308; c=relaxed/simple;
-	bh=Ijp7OoJM/SjB6q2/JnLqH5xk2mnKjD6u6f/PtjXw0Ok=;
+	s=arc-20240116; t=1745269623; c=relaxed/simple;
+	bh=zZ9QfTcAgGyVYVMs/hFgm2shARK8oqJFBREnc4yd/O8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Of+vF9q415G91KMzg69Spd0g1/3yu6qi2yB+ZWj7d7eVuGUKyMMbQNfKguAlG7Ung1L11y7aLR3BIMiTIZQsGv1tdN8KEpiYdA28KHzd2r6VLCvpf8XLD6NnksbAEG7z/0AS5/+nioylzzIiQ1pLEEFKvrV664J92HcqJJWoVR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tO9jNT0G; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=DDj38dDRJfz1fpyktnalJcZ3hBrnQqOPBpb+SNkTmo2ZDSTViZXd/Rs+lv56KkzaQUdj9yNqSXV9WtbuUgqyHGIWEX7Y8G58wF3kiIJLa895DV/Rj/yPo1RjtTLjzQ40sx0Pu/1dhtSli8nWt5pDjeBJmP7KKsc/wH4NvVO8kpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bzYJdNJg; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tO9jNT0G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F51EC4CEE4;
-	Mon, 21 Apr 2025 18:48:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745261307;
-	bh=Ijp7OoJM/SjB6q2/JnLqH5xk2mnKjD6u6f/PtjXw0Ok=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bzYJdNJg"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C7B066D6;
+	Mon, 21 Apr 2025 23:04:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1745269492;
+	bh=zZ9QfTcAgGyVYVMs/hFgm2shARK8oqJFBREnc4yd/O8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tO9jNT0GXs+9AfF7VttwbdUVOSuc8TE9HieRsrqdAvjZJGCauWzD6Jcp3PTIhDB1T
-	 2jFghVVcKbNU8nZPuX1B5oiS17mWCsKtNI6KL9gSMPhkspTWRJT/AVsYWUPolatrhv
-	 cs5EW0f1iNLJ5Li/nW+Zkmf2WDgWfqqcR9ccoGKqMu37/8xnpkWbk3AYv+8Jtr8Gny
-	 8R+Da2XRcbWUEbYkj0qBmlblSl2XhpfV54B93RsGQ1UXtufeyd51lrv4EK5se4PjBc
-	 1jQKL3B4mf5WG1st5UD6v+I2qaGwYbHZDBfoJFcX+n+26HtBSUkCVwBJ+Pk1wNmOsV
-	 UxfoREzuuUg4w==
-Date: Mon, 21 Apr 2025 13:48:25 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+	b=bzYJdNJg/LuvQBr4OL4eciqJS2M7kpo4FXjah87Kf7KRD64nt+dZ34NKjUjp0i/c/
+	 RNz9SWLBw/TuFNcM9G+FcaTDoV5dyQNmdsvlTrT9YqCbNRuI0udA42xi88w5Dt08vj
+	 09s2rEjqY68jvRrSv4nHsMH/oVeQWNkPySkyIrfo=
+Date: Tue, 22 Apr 2025 00:06:55 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Markus Niebel <Markus.Niebel@tq-group.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Magnus Damm <magnus.damm@gmail.com>, linux@ew.tq-group.com,
-	linux-renesas-soc@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/2] dt-bindings: arm: add TQMa8XxS boards
-Message-ID: <174526130447.2607883.13343591293403394303.robh@kernel.org>
-References: <20250415133301.443511-1-alexander.stein@ew.tq-group.com>
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Robert Chiras <robert.chiras@nxp.com>,
+	"Guoniu.zhou" <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH v4 03/13] media: nxp: imx8-isi: Remove unused offset in
+ mxc_isi_reg and use BIT() macro for mask
+Message-ID: <20250421210655.GM17813@pendragon.ideasonboard.com>
+References: <20250408-8qxp_camera-v4-0-ef695f1b47c4@nxp.com>
+ <20250408-8qxp_camera-v4-3-ef695f1b47c4@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250415133301.443511-1-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20250408-8qxp_camera-v4-3-ef695f1b47c4@nxp.com>
 
+Hi Frank,
 
-On Tue, 15 Apr 2025 15:32:58 +0200, Alexander Stein wrote:
-> From: Markus Niebel <Markus.Niebel@tq-group.com>
+Thank you for the patch.
+
+On Tue, Apr 08, 2025 at 05:53:01PM -0400, Frank Li wrote:
+> Preserve clarity by removing the unused 'offset' field in struct mxc_isi_reg,
+> as it duplicates information already indicated by the mask and remains unused.
+
+The commit message line length limit is normally 72 characters. I can
+reflow when applying if no other change to the series is needed.
+
 > 
-> TQMa8XxS is a SOM series featuring NXP i.MX8X SoC.
-> They are called TQMa8XQPS and TQMa8XDPS respectively.
-> MB-SMARC-2 is a carrier reference design.
+> Improve readability by replacing hex value masks with the BIT() macro.
 > 
-> Signed-off-by: Markus Niebel <Markus.Niebel@tq-group.com>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> No functional change.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
 > ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 25 +++++++++++-----------
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  1 -
+>  2 files changed, 13 insertions(+), 13 deletions(-)
 > 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> index 1e79b1211b603..ecfc95882f903 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> @@ -3,6 +3,7 @@
+>   * Copyright 2019-2020 NXP
+>   */
+>  
+> +#include <linux/bits.h>
+>  #include <linux/clk.h>
+>  #include <linux/device.h>
+>  #include <linux/errno.h>
+> @@ -247,24 +248,24 @@ static void mxc_isi_v4l2_cleanup(struct mxc_isi_dev *isi)
+>  
+>  /* For i.MX8QXP C0 and i.MX8MN ISI IER version */
+>  static const struct mxc_isi_ier_reg mxc_imx8_isi_ier_v1 = {
+> -	.oflw_y_buf_en = { .offset = 19, .mask = 0x80000  },
+> -	.oflw_u_buf_en = { .offset = 21, .mask = 0x200000 },
+> -	.oflw_v_buf_en = { .offset = 23, .mask = 0x800000 },
+> +	.oflw_y_buf_en = { .mask = BIT(19) },
+> +	.oflw_u_buf_en = { .mask = BIT(21) },
+> +	.oflw_v_buf_en = { .mask = BIT(23) },
+>  
+> -	.panic_y_buf_en = {.offset = 20, .mask = 0x100000  },
+> -	.panic_u_buf_en = {.offset = 22, .mask = 0x400000  },
+> -	.panic_v_buf_en = {.offset = 24, .mask = 0x1000000 },
+> +	.panic_y_buf_en = { .mask = BIT(20) },
+> +	.panic_u_buf_en = { .mask = BIT(22) },
+> +	.panic_v_buf_en = { .mask = BIT(24) },
+>  };
+>  
+>  /* For i.MX8MP ISI IER version */
+>  static const struct mxc_isi_ier_reg mxc_imx8_isi_ier_v2 = {
+> -	.oflw_y_buf_en = { .offset = 18, .mask = 0x40000  },
+> -	.oflw_u_buf_en = { .offset = 20, .mask = 0x100000 },
+> -	.oflw_v_buf_en = { .offset = 22, .mask = 0x400000 },
+> +	.oflw_y_buf_en = { .mask = BIT(18) },
+> +	.oflw_u_buf_en = { .mask = BIT(20) },
+> +	.oflw_v_buf_en = { .mask = BIT(22) },
+>  
+> -	.panic_y_buf_en = {.offset = 19, .mask = 0x80000  },
+> -	.panic_u_buf_en = {.offset = 21, .mask = 0x200000 },
+> -	.panic_v_buf_en = {.offset = 23, .mask = 0x800000 },
+> +	.panic_y_buf_en = { .mask = BIT(19) },
+> +	.panic_u_buf_en = { .mask = BIT(21) },
+> +	.panic_v_buf_en = { .mask = BIT(23) },
+>  };
+>  
+>  /* Panic will assert when the buffers are 50% full */
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> index 9c7fe9e5f941f..e7534a80af7b4 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> @@ -114,7 +114,6 @@ struct mxc_isi_buffer {
+>  };
+>  
+>  struct mxc_isi_reg {
+> -	u32 offset;
+>  	u32 mask;
+>  };
+>  
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+-- 
+Regards,
 
+Laurent Pinchart
