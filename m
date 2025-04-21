@@ -1,265 +1,218 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012036.outbound.protection.outlook.com [52.101.66.36])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A99213E65
-	for <imx@lists.linux.dev>; Mon, 21 Apr 2025 08:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745223250; cv=fail; b=kGC8Xm3TM8R2HKR+++a/8180UO7ZmowI9mA+L6E6gFDfzcl2D+7Wc9INoDh3vc8wEUfIA56gqsOFHnaxlO+G4S9y0RvNPkEMrVJwwPRCdRtyMRgG0JZon2cNI8Qh1M0wVhDwUzj++nao1YIqeWbzTdF1Pcl/MTjhKlksqAQ5zgg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745223250; c=relaxed/simple;
-	bh=MpL9YVwbgA1za36QIXIM87QneIZSt17CsQ4iGWK+o4Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e78aUD595+a5mBixUPCaBMy0iELUXTd3P+nM1MfVuEAezjkbBOSmquAuEXhZxIZ0lbgECkSyvdtGOGIKit0r2cW5nsXgrntnIQSgYgpMbY+y6Bbh2h8pFw9l08dFXpDOKzz+CaBn1WIGSoEe6JtEZbyF2XDW27i+UVw3kkbKyBw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=CxSyKsrs; arc=fail smtp.client-ip=52.101.66.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FC920E022;
+	Mon, 21 Apr 2025 08:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745223694; cv=none; b=cF8BZVq7aUHskwfcYh2P9Xz6bBIdvUQLZ6VOp7/YLoGMTY4hVJRoYi5qcMJxgOCyDIibIjiz1qdEQYmLriNNdOMqVcJQRVr98VkCC9Mb77BrfxnaAyUuzJL3Nhu8xSTlXGcpu4BiQpdUkVup5vN+/jQf2J/i0Lc6J2gD94OLEpM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745223694; c=relaxed/simple;
+	bh=C7Yr9B85WuyxzW/DyvbRmztxW7xiL896fdLQzr9xw6o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nw7VMsKmFw9hljs7cqdxRZGSGPCaYe5+GM7Q9S7TJZDrp+K9A9FEdlk5wbXCWhUhNhi0lfWsC+ZMnTE2jmiLN+QtmXdS7zoukix9spMF6ZZ+OTTQHtlyiPxJW8qEOBOWXWHmssRE5TfMYL3jkWXErHJDUHC6aac2XZu5ie0r6zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jHfwiB9w; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="CxSyKsrs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aIGtJ4cggsBBCksPClFaqHUHOy2KBS9xUPKC8dw92CSI0aemj/qK5ILBHBDUYjtMmc0tyjz86kPojO6702UjNs90G5J9dxiVSpAjRtrOox0MxoezMT3NcCHzlGEH0PMEDGBrNnQwJCK0WWLColn9vfcgSS/5wjvNUAy+mznCE8Vf1SryqS6PDBYzchhlfy0R/YEIRzGkNDY5xlnEtfksKMOXlKEKfG3Db3NfmC4o1SVv/cMv5K+pWcHcVdC5plcinyPyfhEQC4ceb3VNQbJNV4YcLYsLk1ngTqHKFRcHsKqNoMHACPQMC0WLvDLu2Au1Ov0g3wtodbKe/epg9PIHpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Tq0vuw+xZ9el5izdapryRuRDhg/TWVyQ+UUl5G2DKjg=;
- b=m8n50/tYN9scfcUy9nk/fLSxPxEK45ovJ71os21GVUAHAoSCt4Y43jlfI49Mc8LLvdjt9RfoQqtpUXHLINVHOD9+aedcw0sRPq8QzGv80dkYRMUFdboBC6isTgYCWCBNsSJq/43a8zetGmeOOiZyBMjMTxCBEYibtnRUpEugxJj80VBE3uqDdku9rqXsNE+3PLEJayGQ8R7JtGalwGBReCjsWGftUWcvKyhWXLS77OBf52G1gV1ubKpZ+mgULEU3Jvb0f+3QWECrF6uSwfjmsgWCTHS6cCjTQfALFg0QNznR2IRUvh/CARNMa9tx27BeC2b+pGToFKFR6GODRew16Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Tq0vuw+xZ9el5izdapryRuRDhg/TWVyQ+UUl5G2DKjg=;
- b=CxSyKsrssKuQQd7wh9ZcyNUnKkQt6B8GIhVJnm5yijH1tjWU2YXUcf4jiDIIFArNZaMkHfYKG+ovlw52Izu2hf3OERsoNV2Kjc5f+xSh8ezOyAl2upSvHb6fZOkk1EktwR/3bL+K4a+oc3CeUWznF0UqvAvUBehtL5m0MqtVRDdvghm6+LoIJ3onAz4lC0ibL64gtyc7krBE0lHoQhq+i1n49Gcu/a1RHt0srj9iKD2oGODxWKW/v4tntCP5cHhk49esBqRFKS2EbPQHDgctoOevrZfUNq0R096Db/wtoYi1UT1h7J+7Xy5Svnbf49IGXQ5ZF48KkwsygpJFfUYFYA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by VI0PR04MB10104.eurprd04.prod.outlook.com (2603:10a6:800:248::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.35; Mon, 21 Apr
- 2025 08:14:04 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%4]) with mapi id 15.20.8655.033; Mon, 21 Apr 2025
- 08:14:04 +0000
-From: ming.qian@oss.nxp.com
-To: mchehab@kernel.org,
-	hverkuil-cisco@xs4all.nl,
-	mirela.rabulea@oss.nxp.com
-Cc: nicolas@ndufresne.ca,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	xiahong.bao@nxp.com,
-	eagle.zhou@nxp.com,
-	linux-imx@nxp.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jHfwiB9w"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745223692; x=1776759692;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C7Yr9B85WuyxzW/DyvbRmztxW7xiL896fdLQzr9xw6o=;
+  b=jHfwiB9wL40LX16Qab3oTybHGUBnbu3AjyoIgFgYSFtIS2ORVWCXZh6B
+   O+WN4hCNqANfr6kTrifPj2ndYfhPru08prZbRGqoXNW9yEpJ/DiVorU0B
+   6wk/NWNB1/UzGfJBlNHQ6h/uBnbF7YfyaUD9BLFB5CqHejMlGdMRMBux4
+   eRadN1AULaRGudVckK7O8wFqeF5u1+OyBrSA4TC2Nhk0mbF4PMHsHiNoR
+   IhsVnabdXeA9vOF1yP1Uvw51Ah9pTDo+G4x45Wc/wwhYytaiO44Fm0Xek
+   TReeiIsy/R2xVfutA1Xf/VZItaUZYf+UBrbxxDPgL99tjLDdeX+CJou/L
+   A==;
+X-CSE-ConnectionGUID: p2B83AGrQ56VZ6F5sKMu7g==
+X-CSE-MsgGUID: t5PiMk/yTKaW0mu3sYvDAQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11409"; a="46635724"
+X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; 
+   d="scan'208";a="46635724"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2025 01:21:31 -0700
+X-CSE-ConnectionGUID: 9zpDJSyeTBKPkrXoSj84vw==
+X-CSE-MsgGUID: s+znY0pVR464Y46mObjRPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; 
+   d="scan'208";a="168862263"
+Received: from lkp-server01.sh.intel.com (HELO 9c2f37e2d822) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 21 Apr 2025 01:21:27 -0700
+Received: from kbuild by 9c2f37e2d822 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u6mP6-0000H1-2v;
+	Mon, 21 Apr 2025 08:21:24 +0000
+Date: Mon, 21 Apr 2025 16:20:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: carlos.song@nxp.com, miquel.raynal@bootlin.com, Frank.Li@nxp.com,
+	alexandre.belloni@bootlin.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	conor.culhane@silvaco.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-i3c@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v6 5/5] media: imx-jpeg: Check decoding is ongoing for motion-jpeg
-Date: Mon, 21 Apr 2025 16:12:56 +0800
-Message-ID: <20250421081301.1304-6-ming.qian@oss.nxp.com>
-X-Mailer: git-send-email 2.48.1.windows.1
-In-Reply-To: <20250421081301.1304-1-ming.qian@oss.nxp.com>
-References: <20250421081301.1304-1-ming.qian@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0023.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::17) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+Subject: Re: [PATCH 2/3] i3c: master: svc: switch to bulk clk API for
+ flexible clock support
+Message-ID: <202504211643.FJsMtmVl-lkp@intel.com>
+References: <20250421061544.2471379-3-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|VI0PR04MB10104:EE_
-X-MS-Office365-Filtering-Correlation-Id: db1ffff8-7075-4cdf-fd45-08dd80ac7aea
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JByMTX2joiWadHJEbMSgDyWlCkOfFdtzxfsACxS1DaAm0VD3z70k/uS6eMUj?=
- =?us-ascii?Q?1kRO+Bbay1mQzdq0NjgXC4R0PrtQuvhKiQPOb2cC0qZFeudA4bGXnkxf1gek?=
- =?us-ascii?Q?bszX0cAQANcGkwuMX6Z1doMpYGOTB1c6WGpFDE/uxtFKiSXdhmySnxvz4OBj?=
- =?us-ascii?Q?QX5mdWwLIK8kMbA80LpZdOCOkNzGowhSh+cICogaMS4r20UgDVcH0XdFA/2s?=
- =?us-ascii?Q?4ykVMM4448J1+jac6RSDynm2aEBSNp095c91yYP55GaBO6KdYYlQWq5aIDfe?=
- =?us-ascii?Q?n7+vBHouqjZDQS218xWEQO4UT+UCewPVNWJQmPA3s6N7mYjk5wavntywW32k?=
- =?us-ascii?Q?cEOMy9zmYG0eUmKmXXIUJH3OlSbwUBs91X9UGQSWc3pp6CMB1Ik+TbRSr1Dp?=
- =?us-ascii?Q?SEQmDArYY42L0UDVq1XhdLWctATXBU4zJCxr9YjKDZHGmCZR47bovJRQ5kvX?=
- =?us-ascii?Q?n0Cpd7daGzLb5BEyDdA6h6Z85hwb+Q6qBuOalYeICG30XkdozCU8ira1V7Jg?=
- =?us-ascii?Q?xPyBfEgUaZSi9pB3SsJZD6/sPDPMf4kD+Okew4SZ8NJCNtmeQ/E9ZgS/N9JS?=
- =?us-ascii?Q?VqV52CKPmDsmG+HhwiDChuz4yYOR/nsAQiu9eQVicu/gCjBKFtLXULTvnst5?=
- =?us-ascii?Q?VQ9i1wjA/SHudLmtGZxeQfsvMdkhqHbGotr7nkUqKgzWO5xgnWM0R7o1y6Ue?=
- =?us-ascii?Q?M4JyE6tShSpjQNk8tPs2WVb8vtTzR85jx3K3IUUGIIfhcHfnJf5Aur+mUWAC?=
- =?us-ascii?Q?g31/ch93oyMmJWC8dDzbuxanKI6w/M0SgkMMw/sMMsnjcRs2LzETUr7MAVlw?=
- =?us-ascii?Q?HTELXEOi9t2svb2MHxw92wlx1gLPYtkJSUwtYviW3lFpYLHD4Rt72LBDfB65?=
- =?us-ascii?Q?YFnL5JFhbkxf8A4a9hyVqieU/AXqiGSA5A5JZ4UpaJ0hDrmRNmgjhXmJKtGm?=
- =?us-ascii?Q?0cN/ve9PRCq88ABW/axAE1fJPW0h/l+tPTSTVtCwf2k6DlGZK7185VFkyhUK?=
- =?us-ascii?Q?yZtpFtlNTt+ahs9t7lhHkKYPa0ifC7Ww2WxIqhtysrQhVelJbH9Z3XyXtcVM?=
- =?us-ascii?Q?ZMTs0AF+bcTzu1dpE50FcAHPqvBJQnN3g4d4HuAv4Jrf4CE7eaf0Y15GF1fb?=
- =?us-ascii?Q?v0uorJiamnmlQChgPGiruMRRlYs7KSn0JhJbGzR37sX4PFtxOk+ubGnmx6e/?=
- =?us-ascii?Q?yXvenAXYpdYocYfHCL1ME55a8G1J4Q78hALmcbEfBnhG+zYHcruFm8phvizx?=
- =?us-ascii?Q?C97jne0h6WakRvwP99ddazmpX3HvuKZpJ9H/WRPRXNAwgUA9kSdXD8kaQPYy?=
- =?us-ascii?Q?xkdWKyaKwqc/dJMI1Znv825uI0DDYhqN4j20I7Je4VUOJmRPnxyFLKHhGU2t?=
- =?us-ascii?Q?RgibIjqUGbeaqzTvzVhMeSndpud6xG0U9OJY1KbYYA7IxgQWapEQ17A/I17f?=
- =?us-ascii?Q?N6FCf7kBe6vchHog6uh5nbY1mEu4aCcCBamLPwE+W5+5dlCZkpDgtOea1TNW?=
- =?us-ascii?Q?AjKsX+zftDPRzLo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?V7VFxZ+ktouH3lRUxPYW2yERzhxu98CX42ZBB01z31Oht5vZEm/RSQ1ISIu2?=
- =?us-ascii?Q?glgA7fbip3JADosHjSPZSBTyXx03MAqoJwKdMkepe07jL9vcMattb32SdHWL?=
- =?us-ascii?Q?oY08yHLk1N5PWChVpwLsi4OLaw8kox7MuHaeykDWDBRyKdhP41jZNhjE+20l?=
- =?us-ascii?Q?E6lQk+yTKmLA+Exi/9001wkk8HcHQf63oPpALs2dFC0thcrSXiZekketnF5Z?=
- =?us-ascii?Q?5E5E0cZMUc+n2gBaA/WYYvelJFYHoaqU7oNskwLJphSo91WX7rkKtdY/QK/7?=
- =?us-ascii?Q?hJZOpY3WeQlA3OhwwTqzERxRsn9CbBcmtJh8z/smWB3f81yzxavrg0XcIQsE?=
- =?us-ascii?Q?iTYS1nopNXuWvkuWmy2b7XGKqvvutQg3HACfPwHowPYWrI2d++LLu3iTh+3G?=
- =?us-ascii?Q?l+TsfVArGTguMUoRUwgl2k1q5LrFU+9CvUWeB0U6hfvM6MEM2KMWF9ns1Jj7?=
- =?us-ascii?Q?G392AeaujsGdf2ks0eD3Wqwo9YyqnTejA6Q+8tPtMVYJ6CaKS4fF/zChLQlg?=
- =?us-ascii?Q?l/Lqf3T7/LoFSVzieMMLa0xb/Ug0O+cIOppuUCQ5I689JP3EOYsK9km1tBVp?=
- =?us-ascii?Q?0E8DhKN7v+i8vLwjWLiQ6lzoC5QU1M0W5OYLVrSd0Jl6VyEKz+GuRe9o45QR?=
- =?us-ascii?Q?is7mYL1KYEXD39Ga/FnZthuF1il4eoWH2Hraq905XSKSiscjhAucAiNE4mVz?=
- =?us-ascii?Q?tKidOAYB/GeNc4EwzBMGW6ail3eKj1QZ2opqcG8ie6l6H1rpGjPDjdMJLKuT?=
- =?us-ascii?Q?VB1XlkQzCQpZYZmwuEyFwEAUCkGofIISkD5DQtaacUGVjRDr6P5Oniu5x3tP?=
- =?us-ascii?Q?NyWTZoUWjlQWzuTszIO2yS4xnizr3MftLh9DGDIezoLISerYGjwWB6tBw/sM?=
- =?us-ascii?Q?+iee4v74RuSYwYnCatD6NuKTyFml6Ze+c6XA8XvZYI1w1z9vIXXTcqxtTwkR?=
- =?us-ascii?Q?B45IF6h2oqJHu8NB1b9QpZaawXvHvv3+RsB7EgcfEbYpPe957xngo95cGog5?=
- =?us-ascii?Q?vJd1sltIjRw8BE8u5oAFs+ile46XCtKAwFaKJK5HNY0pUnzLcs55DQoBpTbh?=
- =?us-ascii?Q?prG4OgdEAPJjw+hTiJSQLJrrz1RSDX8Cul+FlTZexulcyrhxSMQ5eSQaRI2q?=
- =?us-ascii?Q?cISUw/ci+ngRhYfab6V7nzFGgJi6l4lCkf6Eoo5ushwQv5ePh82obguTLVlB?=
- =?us-ascii?Q?CN2uO21mSeewSSGimpvY3YrhWw5VVjx9cl75T88OMrnBBhYCxKMu441NHt2j?=
- =?us-ascii?Q?nCzu+18QfBgtjDb5wD6buXu29vRE3fPRgurY1azZAwXuKm5TigTEW6YehAF2?=
- =?us-ascii?Q?BrqkVFUzuwuJjG+A+9JGfLa0Ozg2XaBfNl9uL1bk6+FwB43EhrvPdonnCv4x?=
- =?us-ascii?Q?NyUGaVZGAij/TADnFij6gC8rBfM/EAFbdg6NYVI6FvEJLFr3OYhFdCOapfJb?=
- =?us-ascii?Q?uFtOGQYhRV6PdDoC+oGzLo+wFr6vZEM1BJxsb18vWC/TRQ6NshBEqkbYdiWh?=
- =?us-ascii?Q?v1Wg0tjy4j7D39Jetbn9gf2h7yDKR7khpVLJiB21OBAhpCHFvFNC1A9TzHrS?=
- =?us-ascii?Q?JkG7tf/Hgbae/hiH9dpzd6DrOSt4BH47Q4TVZj8S?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db1ffff8-7075-4cdf-fd45-08dd80ac7aea
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2025 08:14:04.3904
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: brzXOrJEolJOFPRxD5GE8ij4ZB12AUJsyIV5W6n9HlelNZ3ZiYExe6YwR/998F/GiAJVq2joJQiQmsOLDm6/fg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10104
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250421061544.2471379-3-carlos.song@nxp.com>
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+Hi,
 
-As the first frame in "repeat-mode" is the pattern, the pattern done
-interrupt is ignored by the driver. With small resolution bitstreams,
-the interrupts might fire too quickly and hardware combine two irqs to
-once because irq handle have latency. Thus the driver might miss the
-frame decode done interrupt from the first actual frame.
+kernel test robot noticed the following build warnings:
 
-In order to avoid the driver wait for the frame done interrupt that has
-been combined to the pattern done interrupt and been ignored, driver
-will check the curr_desc and slot_status registers to figure out if the
-decoding of actual frame is finished or not.
+[auto build test WARNING on robh/for-next]
+[also build test WARNING on linus/master v6.15-rc3 next-20250417]
+[cannot apply to shawnguo/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Firstly we check the curr_desc register,
-- if it is still pointing to the pattern descriptor, the second actual
-frame is not started, we can wait for its frame-done interrupt.
-- if the curr_desc has pointed to the frame descriptor, then we check the
-ongoing bit of slot_status register.
-- if the ongoing bit is set to 1, the decoding of the actual frame is not
-finished, we can wait for its frame-done interrupt.
-- if the ongoing bit is set to 0, the decoding of the actual frame is
-finished, we can't wait for the second interrupt, but mark it as done.
+url:    https://github.com/intel-lab-lkp/linux/commits/carlos-song-nxp-com/dt-bindings-i3c-silvaco-i3c-master-add-i-MX94-and-i-MX95-I3C/20250421-140716
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20250421061544.2471379-3-carlos.song%40nxp.com
+patch subject: [PATCH 2/3] i3c: master: svc: switch to bulk clk API for flexible clock support
+config: arm-randconfig-001-20250421 (https://download.01.org/0day-ci/archive/20250421/202504211643.FJsMtmVl-lkp@intel.com/config)
+compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project f819f46284f2a79790038e1f6649172789734ae8)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250421/202504211643.FJsMtmVl-lkp@intel.com/reproduce)
 
-But there is still a small problem, that the curr_desc and slot_status
-registers are not synchronous. curr_desc is updated when the
-next_descpt_ptr is loaded, but the ongoing bit of slot_status is set
-after the 32 bytes descriptor is loaded, there will be a short time
-interval in between, which may cause fake false. Consider read register
-is quite slow compared with IP read 32byte from memory, read twice
-slot_status can avoid this situation.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504211643.FJsMtmVl-lkp@intel.com/
 
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
-v4
-- Improve commit message
+All warnings (new ones prefixed by >>):
 
-v3
-- Read the slot_status register twice
-- Improve commit message
----
- .../media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h |  1 +
- .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 31 ++++++++++++++++++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
+>> drivers/i3c/master/svc-i3c-master.c:1898:29: warning: variable 'ret' is uninitialized when used here [-Wuninitialized]
+    1898 |                 return dev_err_probe(dev, ret, "can't get I3C clocks\n");
+         |                                           ^~~
+   drivers/i3c/master/svc-i3c-master.c:1882:9: note: initialize the variable 'ret' to silence this warning
+    1882 |         int ret, i;
+         |                ^
+         |                 = 0
+   1 warning generated.
 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-index d579c804b047..adb93e977be9 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-@@ -89,6 +89,7 @@
- /* SLOT_STATUS fields for slots 0..3 */
- #define SLOT_STATUS_FRMDONE			(0x1 << 3)
- #define SLOT_STATUS_ENC_CONFIG_ERR		(0x1 << 8)
-+#define SLOT_STATUS_ONGOING			(0x1 << 31)
- 
- /* SLOT_IRQ_EN fields TBD */
- 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index d72e15ee6d32..5c17bc58181e 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -910,6 +910,34 @@ static u32 mxc_jpeg_get_plane_size(struct mxc_jpeg_q_data *q_data, u32 plane_no)
- 	return size;
- }
- 
-+static bool mxc_dec_is_ongoing(struct mxc_jpeg_ctx *ctx)
-+{
-+	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-+	u32 curr_desc;
-+	u32 slot_status;
-+
-+	curr_desc = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_CUR_DESCPT_PTR));
-+	if (curr_desc == jpeg->slot_data.cfg_desc_handle)
-+		return true;
-+
-+	slot_status = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_STATUS));
-+	if (slot_status & SLOT_STATUS_ONGOING)
-+		return true;
-+
-+	/*
-+	 * The curr_desc register is updated when next_descpt_ptr is loaded,
-+	 * the ongoing bit of slot_status is set when the 32 bytes descriptor is loaded.
-+	 * So there will be a short time interval in between, which may cause fake false.
-+	 * Consider read register is quite slow compared with IP read 32byte from memory,
-+	 * read twice slot_status can avoid this situation.
-+	 */
-+	slot_status = readl(jpeg->base_reg + MXC_SLOT_OFFSET(ctx->slot, SLOT_STATUS));
-+	if (slot_status & SLOT_STATUS_ONGOING)
-+		return true;
-+
-+	return false;
-+}
-+
- static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
- {
- 	struct mxc_jpeg_dev *jpeg = priv;
-@@ -979,7 +1007,8 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
- 		mxc_jpeg_enc_mode_go(dev, reg, mxc_jpeg_is_extended_sequential(q_data->fmt));
- 		goto job_unlock;
- 	}
--	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed) {
-+	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed &&
-+	    mxc_dec_is_ongoing(ctx)) {
- 		jpeg_src_buf->dht_needed = false;
- 		dev_dbg(dev, "Decoder DHT cfg finished. Start decoding...\n");
- 		goto job_unlock;
+
+vim +/ret +1898 drivers/i3c/master/svc-i3c-master.c
+
+  1877	
+  1878	static int svc_i3c_master_probe(struct platform_device *pdev)
+  1879	{
+  1880		struct device *dev = &pdev->dev;
+  1881		struct svc_i3c_master *master;
+  1882		int ret, i;
+  1883	
+  1884		master = devm_kzalloc(dev, sizeof(*master), GFP_KERNEL);
+  1885		if (!master)
+  1886			return -ENOMEM;
+  1887	
+  1888		master->drvdata = of_device_get_match_data(dev);
+  1889		if (!master->drvdata)
+  1890			return -EINVAL;
+  1891	
+  1892		master->regs = devm_platform_ioremap_resource(pdev, 0);
+  1893		if (IS_ERR(master->regs))
+  1894			return PTR_ERR(master->regs);
+  1895	
+  1896		master->num_clks = devm_clk_bulk_get_all(dev, &master->clks);
+  1897		if (master->num_clks < 0)
+> 1898			return dev_err_probe(dev, ret, "can't get I3C clocks\n");
+  1899	
+  1900		for (i = 0; i < master->num_clks; i++) {
+  1901			if (!strcmp(master->clks[i].id, "fast_clk"))
+  1902				break;
+  1903		}
+  1904	
+  1905		if (i == master->num_clks)
+  1906			return dev_err_probe(dev, -EINVAL,
+  1907					     "can't get I3C peripheral clock\n");
+  1908	
+  1909		master->fclk = devm_clk_get(dev, "fast_clk");
+  1910		if (IS_ERR(master->fclk))
+  1911			return PTR_ERR(master->fclk);
+  1912	
+  1913		master->irq = platform_get_irq(pdev, 0);
+  1914		if (master->irq < 0)
+  1915			return master->irq;
+  1916	
+  1917		master->dev = dev;
+  1918		ret = clk_bulk_prepare_enable(master->num_clks, master->clks);
+  1919		if (ret)
+  1920			return dev_err_probe(dev, ret, "can't enable I3C clocks\n");
+  1921	
+  1922		INIT_WORK(&master->hj_work, svc_i3c_master_hj_work);
+  1923		INIT_WORK(&master->ibi_work, svc_i3c_master_ibi_work);
+  1924		mutex_init(&master->lock);
+  1925	
+  1926		ret = devm_request_irq(dev, master->irq, svc_i3c_master_irq_handler,
+  1927				       IRQF_NO_SUSPEND, "svc-i3c-irq", master);
+  1928		if (ret)
+  1929			goto err_disable_clks;
+  1930	
+  1931		master->free_slots = GENMASK(SVC_I3C_MAX_DEVS - 1, 0);
+  1932	
+  1933		spin_lock_init(&master->xferqueue.lock);
+  1934		INIT_LIST_HEAD(&master->xferqueue.list);
+  1935	
+  1936		spin_lock_init(&master->ibi.lock);
+  1937		master->ibi.num_slots = SVC_I3C_MAX_DEVS;
+  1938		master->ibi.slots = devm_kcalloc(&pdev->dev, master->ibi.num_slots,
+  1939						 sizeof(*master->ibi.slots),
+  1940						 GFP_KERNEL);
+  1941		if (!master->ibi.slots) {
+  1942			ret = -ENOMEM;
+  1943			goto err_disable_clks;
+  1944		}
+  1945	
+  1946		platform_set_drvdata(pdev, master);
+  1947	
+  1948		pm_runtime_set_autosuspend_delay(&pdev->dev, SVC_I3C_PM_TIMEOUT_MS);
+  1949		pm_runtime_use_autosuspend(&pdev->dev);
+  1950		pm_runtime_get_noresume(&pdev->dev);
+  1951		pm_runtime_set_active(&pdev->dev);
+  1952		pm_runtime_enable(&pdev->dev);
+  1953	
+  1954		svc_i3c_master_reset(master);
+  1955	
+  1956		/* Register the master */
+  1957		ret = i3c_master_register(&master->base, &pdev->dev,
+  1958					  &svc_i3c_master_ops, false);
+  1959		if (ret)
+  1960			goto rpm_disable;
+  1961	
+  1962		pm_runtime_mark_last_busy(&pdev->dev);
+  1963		pm_runtime_put_autosuspend(&pdev->dev);
+  1964	
+  1965		return 0;
+  1966	
+  1967	rpm_disable:
+  1968		pm_runtime_dont_use_autosuspend(&pdev->dev);
+  1969		pm_runtime_put_noidle(&pdev->dev);
+  1970		pm_runtime_disable(&pdev->dev);
+  1971		pm_runtime_set_suspended(&pdev->dev);
+  1972	
+  1973	err_disable_clks:
+  1974		clk_bulk_disable_unprepare(master->num_clks, master->clks);
+  1975	
+  1976		return ret;
+  1977	}
+  1978	
+
 -- 
-2.43.0-rc1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
