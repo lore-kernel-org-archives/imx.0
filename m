@@ -1,95 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F91718641;
-	Mon, 21 Apr 2025 07:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691D21AF4E9;
+	Mon, 21 Apr 2025 07:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745220559; cv=none; b=FNHLP97PT/ui61mdIiwVECmzJTpSub6N/eyA6lXKZnDoed41CxLd0icZozt3UypLjnYtXGYw1okbYQZmggdRS74jmJaJVvmCnIFnNR9uSxYivb5AC3Gr4vPHqatcBmukyzNmT6/UegOs6fUzYM+s+n93+2feu6wLNTULM8ojCEM=
+	t=1745220568; cv=none; b=l9vI4shr7nQp/M/CN5JaTjnkYVSgf/Q8K9DByzkTu+KswvQXXYaCmDlBrpB2ErssacEZE1ifIuOf6nfZY3WZn0jM1naN/Pd2FyuQKUvPc5He7x/GJfhtG/FBwAUt6omR39Ferg5efNFYuseD3VIYYDYG/CYZePx1LHQEXvN4r24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745220559; c=relaxed/simple;
-	bh=AsfbiDjIVGcOHxoZBj404PVsbS0hHdvffd79DyXm0zw=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=VCF96avuWEercIaME3zJ9hpsqQ5OxMe/14OaduOzQ16T6Li+OVxYUIABGWvVEHSALdCzopL49jhnfUacQg2nuZgh2OjMCSUIqCvIa5idr8FNg9klRCnihULpqWdxNGn7rUnZ37B8TyZUEVuk2/cHbI4U1WUFShRk8XExM0jpy2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=elclvoT+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745220568; c=relaxed/simple;
+	bh=01/f1NraBtWpGWUC221XvSWIgnjPGGgSGxblojkWilk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nj7+oGXVR5UroixH0GkchiNxiXFzrLn4rMSQkqjJTVH5h4qXpeiiw5aWVYBVBWZc3n3LdE8EFvcTg0bx55fvrYASozbrwSVBeNsVsT2+g9zZ3s2Ll0mF0SHGOBaqyNwI3enCl/PkU3OFSdyCLvuMS0fuVTbko4ox2RQzXwDcSAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eGdkgXa2; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="elclvoT+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85660C4CEE4;
-	Mon, 21 Apr 2025 07:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745220558;
-	bh=AsfbiDjIVGcOHxoZBj404PVsbS0hHdvffd79DyXm0zw=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=elclvoT+rKeEsXkmzDTwOoBFoMwx4Qu3exhJ6CQWv+/TF9zxKsr77GD6mtPSxypnh
-	 5oXwnoB0khUMMpqQpR0DiazrtlEEzt+CltbSfTptx8pDVkaNInPhkiDh2/XlPH2Uq6
-	 zivbAcrvwhpDGJmMvzZ02LhNFRm+dkJueQqEsJT6JNJ2D80AOa1CpYIFo2iTQOC4T5
-	 Uin3In3zrWFGv5T8gpHu0XhyQHv7KRxq6sRBDIlmUlEav9OO3m0oSWStWNGkdvWihu
-	 TP75G+flspaMDpfgw3gwBUHs69n6E33+LsQDVSuKZAcp91S7et32WKsUePxGDFqwXS
-	 s1s2Ge09dybew==
-Date: Mon, 21 Apr 2025 02:29:16 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eGdkgXa2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745220567; x=1776756567;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=01/f1NraBtWpGWUC221XvSWIgnjPGGgSGxblojkWilk=;
+  b=eGdkgXa2CcCBvmecogxY9gWhQsHrxq2zDSk4ussKEwip471crnxAYxP/
+   kl7ZKzuYRk1ikRGHN3/CYFQtPCTgNSsuzxKHKurBDZQxx2aWzMB+g0A42
+   o0+dnkgfIwM2MhU3RCY8FoCPwY/Aq/L2V9tE9dZmnfmNTnBs8FlMNrlJd
+   MRWZ023ZcIeHHCnWpBn9WrkD4zJmYlD6KKYE6vAWJJj/jWG1YxeuEtbMM
+   5iGWbE7Paic2MBDtsU1P2Eiw9/upA8bfXZPXIdgFO0E1D8BPxNIwXHZkB
+   TApHYNmNWueANjOtDh/qIzJfSTJx05bT6SGVXT1FexwMn8CJYwrMvC5eT
+   g==;
+X-CSE-ConnectionGUID: IHFpjLwiRVaejNGQH65luA==
+X-CSE-MsgGUID: uRqtht/LREKv/9jURtE/Vg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11409"; a="46458361"
+X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; 
+   d="scan'208";a="46458361"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2025 00:29:26 -0700
+X-CSE-ConnectionGUID: oPu2/drdQy2zzZf0R09YaA==
+X-CSE-MsgGUID: jIHOrVRJS62KkkGTBy1ktQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,227,1739865600"; 
+   d="scan'208";a="131950489"
+Received: from lkp-server01.sh.intel.com (HELO 9c2f37e2d822) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 21 Apr 2025 00:29:23 -0700
+Received: from kbuild by 9c2f37e2d822 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u6lai-0000Ep-1f;
+	Mon, 21 Apr 2025 07:29:20 +0000
+Date: Mon, 21 Apr 2025 15:28:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: Troy Mitchell <troymitchell988@gmail.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Troy Mitchell <troymitchell988@gmail.com>,
+	Yongchao Jia <jyc0019@gmail.com>
+Subject: Re: [PATCH 1/2] i2c: imx: use guard to take spinlock
+Message-ID: <202504211501.MNwGdl5F-lkp@intel.com>
+References: <20250421-i2c-imx-update-v1-1-1137f1f353d5@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: krzk+dt@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
- linux-kernel@vger.kernel.org, Frank.Li@nxp.com, 
- alexandre.belloni@bootlin.com, linux-i3c@lists.infradead.org, 
- miquel.raynal@bootlin.com, devicetree@vger.kernel.org, 
- conor.culhane@silvaco.com, linux-arm-kernel@lists.infradead.org, 
- shawnguo@kernel.org, kernel@pengutronix.de, imx@lists.linux.dev, 
- conor+dt@kernel.org
-To: carlos.song@nxp.com
-In-Reply-To: <20250421061544.2471379-2-carlos.song@nxp.com>
-References: <20250421061544.2471379-1-carlos.song@nxp.com>
- <20250421061544.2471379-2-carlos.song@nxp.com>
-Message-Id: <174522055654.901015.12807309511179699830.robh@kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: i3c: silvaco,i3c-master: add i.MX94
- and i.MX95 I3C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250421-i2c-imx-update-v1-1-1137f1f353d5@gmail.com>
+
+Hi Troy,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on 9d7a0577c9db35c4cc52db90bc415ea248446472]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Troy-Mitchell/i2c-imx-use-guard-to-take-spinlock/20250421-133753
+base:   9d7a0577c9db35c4cc52db90bc415ea248446472
+patch link:    https://lore.kernel.org/r/20250421-i2c-imx-update-v1-1-1137f1f353d5%40gmail.com
+patch subject: [PATCH 1/2] i2c: imx: use guard to take spinlock
+config: hexagon-randconfig-001-20250421 (https://download.01.org/0day-ci/archive/20250421/202504211501.MNwGdl5F-lkp@intel.com/config)
+compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250421/202504211501.MNwGdl5F-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504211501.MNwGdl5F-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/i2c/busses/i2c-imx.c:1140:17: warning: unused variable 'ret' [-Wunused-variable]
+                                   irqreturn_t ret;
+                                               ^
+   1 warning generated.
 
 
-On Mon, 21 Apr 2025 14:15:42 +0800, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
-> 
-> Add compatible string "nxp,imx94-i3c" and "nxp,imx95-i3c" for the i.MX94
-> chip and i.MX95 chip. Backward is compatible with "silvaco,i3c-master-v1".
-> 
-> Also i.MX94 and i.MX95 I3C only need two clocks and Legacy I3C needs
-> three clocks. So add restrictions for clock and clock-names properties
-> for different Socs.
-> 
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> ---
->  .../bindings/i3c/silvaco,i3c-master.yaml      | 45 ++++++++++++++++---
->  1 file changed, 39 insertions(+), 6 deletions(-)
-> 
+vim +/ret +1140 drivers/i2c/busses/i2c-imx.c
 
-My bot found errors running 'make dt_binding_check' on your patch:
+aa11e38ce6fe88 Darius Augulis     2009-01-30  1124  
+f7414cd6923fd7 Biwen Li           2020-11-11  1125  static irqreturn_t i2c_imx_isr(int irq, void *dev_id)
+f7414cd6923fd7 Biwen Li           2020-11-11  1126  {
+f7414cd6923fd7 Biwen Li           2020-11-11  1127  	struct imx_i2c_struct *i2c_imx = dev_id;
+f7414cd6923fd7 Biwen Li           2020-11-11  1128  	unsigned int ctl, status;
+f7414cd6923fd7 Biwen Li           2020-11-11  1129  
+d3973a577b8e10 Troy Mitchell      2025-04-21  1130  	guard(spinlock_irqsave)(&i2c_imx->slave_lock);
+d3973a577b8e10 Troy Mitchell      2025-04-21  1131  
+f7414cd6923fd7 Biwen Li           2020-11-11  1132  	status = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR);
+f7414cd6923fd7 Biwen Li           2020-11-11  1133  	ctl = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
+05ae60bc24f765 Kevin Paul Herbert 2020-12-22  1134  
+f7414cd6923fd7 Biwen Li           2020-11-11  1135  	if (status & I2SR_IIF) {
+f7414cd6923fd7 Biwen Li           2020-11-11  1136  		i2c_imx_clear_irq(i2c_imx, I2SR_IIF);
+d3973a577b8e10 Troy Mitchell      2025-04-21  1137  
+05ae60bc24f765 Kevin Paul Herbert 2020-12-22  1138  		if (i2c_imx->slave) {
+05ae60bc24f765 Kevin Paul Herbert 2020-12-22  1139  			if (!(ctl & I2CR_MSTA)) {
+f89bf95632b416 Corey Minyard      2021-11-12 @1140  				irqreturn_t ret;
+f89bf95632b416 Corey Minyard      2021-11-12  1141  
+d3973a577b8e10 Troy Mitchell      2025-04-21  1142  				return i2c_imx_slave_handle(i2c_imx,
+f89bf95632b416 Corey Minyard      2021-11-12  1143  							    status, ctl);
+05ae60bc24f765 Kevin Paul Herbert 2020-12-22  1144  			}
+f89bf95632b416 Corey Minyard      2021-11-12  1145  			i2c_imx_slave_finish_op(i2c_imx);
+05ae60bc24f765 Kevin Paul Herbert 2020-12-22  1146  		}
+d3973a577b8e10 Troy Mitchell      2025-04-21  1147  
+f7414cd6923fd7 Biwen Li           2020-11-11  1148  		return i2c_imx_master_isr(i2c_imx, status);
+f7414cd6923fd7 Biwen Li           2020-11-11  1149  	}
+f7414cd6923fd7 Biwen Li           2020-11-11  1150  
+aa11e38ce6fe88 Darius Augulis     2009-01-30  1151  	return IRQ_NONE;
+aa11e38ce6fe88 Darius Augulis     2009-01-30  1152  }
+aa11e38ce6fe88 Darius Augulis     2009-01-30  1153  
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml:16:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
-./Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml:19:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
-
-dtschema/dtc warnings/errors:
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250421061544.2471379-2-carlos.song@nxp.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
