@@ -1,25 +1,25 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8F2188580
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 16:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9598C1E8353
+	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 16:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745337953; cv=none; b=sz8SS3P1ygadEH4E76lBczBvusJ/F2NIEzKmTlj2a41pQyPlP1gD6uhGk63FbC5lAZgETORJpMTx9GfuZvjC+dDbbXGSHMRRbVFVNaaPs+TIhQQbhikG2F8udEs2AqeiCt+wgC5wbpWYPnS0bFh/7FNdb3P1yW+mfHbtr9anFiE=
+	t=1745338221; cv=none; b=Ne921OZZXDtt7x69PHCSXKxBwvVRLmtQ5SK2gSa3RqH6ZLDR7nmATEpPKFkd/PvxNzPv7fKYdShaKTVsyn7rg/GJAtwdAxhd8DJ7fOteJ5xKKuHZoDyQR6XJEwY6Bcw/e0k3xrtBjs1iFcN+rup7qhuPb0r7g0GjTTyt7SNG38E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745337953; c=relaxed/simple;
-	bh=KDs//5oUpg0VSA3+2RTj00OPt5E7x7Y+uh8cwKS7qGg=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=pkh7Zht2d/LDmxt0zsKlH0QRmLdCoyr7mF/OZVQ5gsuRwAzZYEsB74X1j0bnoUUL3/6+zq3xw2GR4vfN9fskdEGZVSWD+MZtFDulsN4fyr7NA9iPD5AET8oUa8c1JvjepnkwFrMOadRFSMX4b+Su0ks613rQnUe3rqQZ5mKE3DY=
+	s=arc-20240116; t=1745338221; c=relaxed/simple;
+	bh=nJevJKzYAzfxBEgFa8pg+lNR+fuS5jiwgYumveiDxJw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fmyU/fckiq/MvKVOGFzHdWc30bFF09t43t+eJPq4rOc2rLBM0WvzgsCoHTUwXQ0neMvbeVVKW6Es0uW4Mo5fqwklKJCffK9Ll6da4WQWuA85l/do75AdEsK5mw8Xy+S44xIeICc1He4Gn+Tnxa+UcvFBMr1oe0PUbG+8oE6K1js=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1u7G81-0003jx-Ha; Tue, 22 Apr 2025 18:05:45 +0200
-Message-ID: <53024a1d-a9a9-448f-9ddb-45efe4bece21@pengutronix.de>
-Date: Tue, 22 Apr 2025 18:05:44 +0200
+	id 1u7GCK-0004il-Im; Tue, 22 Apr 2025 18:10:12 +0200
+Message-ID: <4c195c2a-81c6-41c8-a134-1c7813904115@pengutronix.de>
+Date: Tue, 22 Apr 2025 18:10:11 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -27,85 +27,62 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] i2c: imx: use guard to take spinlock
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 2/2] i2c: imx: drop master prefix
 To: Troy Mitchell <troymitchell988@gmail.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
- Oleksij Rempel <o.rempel@pengutronix.de>, linux-i2c@vger.kernel.org,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Yongchao Jia <jyc0019@gmail.com>
+ Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+ Yongchao Jia <jyc0019@gmail.com>
 References: <20250421-i2c-imx-update-v1-0-1137f1f353d5@gmail.com>
- <20250421-i2c-imx-update-v1-1-1137f1f353d5@gmail.com>
- <20250422161213.0000597d@huawei.com>
- <918e0177-8e26-405c-93ad-8b0d2dfd3b3d@gmail.com>
- <54d062af-40ff-47b7-baec-c7e883defea3@pengutronix.de>
+ <20250421-i2c-imx-update-v1-2-1137f1f353d5@gmail.com>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <54d062af-40ff-47b7-baec-c7e883defea3@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250421-i2c-imx-update-v1-2-1137f1f353d5@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
 X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 4/22/25 17:53, Ahmad Fatoum wrote:
-> Hello Troy,
+On 4/21/25 07:36, Troy Mitchell wrote:
+> In light of the recent updates to the i2c subsystem,
+> drop master prefix.
 > 
-> On 4/22/25 17:26, Troy Mitchell wrote:
->> On 2025/4/22 23:12, Jonathan Cameron wrote:
->>> On Mon, 21 Apr 2025 13:36:38 +0800
-> 
-> [snip]
-> 
->>> In this path the patch changes the lock release to occur after
->>> i2c_imx_master_isr(i2c_imx, status);
->>>
->>> That may well be safe; I have no idea!  You should talk about that
->>> in the patch description if it is.
->> You're correct that this change slightly alters the lock release timing.
->>
->> However, both i2c_imx_slave_handle() and i2c_imx_master_isr() can safely be
->> entered with the lock held — there's no requirement for the lock to be released
->> before calling them.
-> 
-> Why would we want to hold a spinlock out of all things longer than
-> absolutely necessary?
-> 
->> Using guard(spinlock_irqsave) simplifies the control flow by ensuring consistent
->> and automatic unlock, which improves readability without affecting correctness.
->>
->> I'll update the commit message to clarify this.
-> 
-> Sorry, I don't think that this simplification is worth potentially
-> increasing the time we spend with preemption disabled,
-> i2c_imx_master_isr() even has a loop inside.
+> Signed-off-by: Troy Mitchell <troymitchell988@gmail.com>
 
-Ah the loop is in lpi2c_imx_master_isr, sorry about the confusion.
-I still think that the simplification isn't worth increasing critical
-section size.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-> Guards that don't increase critical section size however are fine by me.
+Please use a different cover letter title for your v2, adapting the
+mainline doesn't tell the reader anything about what the series is about.
+
+Perhaps something like i2c: imx: lock guards and cleanup
 
 Thanks,
 Ahmad
 
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Thanks,
-> Ahmad
-> 
->>
->>>
->>>> +
->>>>  		return i2c_imx_master_isr(i2c_imx, status);
->>>>  	}
->>>> -	spin_unlock_irqrestore(&i2c_imx->slave_lock, flags);
->>>>  
->>>>  	return IRQ_NONE;
->>>>  }
->>
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index cb96a57df4a0..dd07fde79632 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -1690,8 +1690,8 @@ static u32 i2c_imx_func(struct i2c_adapter *adapter)
+>  }
+>  
+>  static const struct i2c_algorithm i2c_imx_algo = {
+> -	.master_xfer = i2c_imx_xfer,
+> -	.master_xfer_atomic = i2c_imx_xfer_atomic,
+> +	.xfer = i2c_imx_xfer,
+> +	.xfer_atomic = i2c_imx_xfer_atomic,
+>  	.functionality = i2c_imx_func,
+>  	.reg_slave	= i2c_imx_reg_slave,
+>  	.unreg_slave	= i2c_imx_unreg_slave,
 > 
 
 -- 
