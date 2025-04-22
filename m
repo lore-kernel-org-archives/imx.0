@@ -1,67 +1,104 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7044919DF4F
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 02:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F97256C6F;
+	Tue, 22 Apr 2025 02:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745287976; cv=none; b=StRuLXUyw0usMM6Cll5YjgzneTiX2hZAZ11zt1BG7VT0MLiMgSVuXe+1/09X6Q9JYjvJKdvVacjFXQ76PopXl6OIu9H53tEQo1W0lWeFZUjc28estmIe3G6DN4OjU1B1p5Gva91XrV+RGJ39T/2Iq/I2xhUN+WCBhPLp1x/vaSQ=
+	t=1745288223; cv=none; b=LkJANN7Ke91/OyZemvVK6AlfYyg2L25tyyQFhu+30brY4tilIJsHG5lyCe7pCcTzUQGUbv5XMXVWM09Y/MlWXrXR0Ebt4BRmZWjsIyVLesXUgqB1BUaKxpwhYK4rNZCB7fSRJb/vEwFTCfoUGtCukrptpJmq9AJMN0i4eS9AYNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745287976; c=relaxed/simple;
-	bh=ZpRIpH/Xb8Bb2a4xbOALqDTv6V3r2LMrpwZauHQAsHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CQ/NQTwbcJ1XsV8rI55wR6uNBEaVMlYPANN3kUgUQA20XkX8lGmGCu/aLB3u6MHnoyNXONZ1yAkgDs2URqeID4mV7s+QHerL3hpxvmkiw2rERoudc1vfm0OrmQF2JihppKGaFG6rHtCkUELN5n8+xCrAdHkagpi20KTvn/VbMow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=j3c2wA8t; arc=none smtp.client-ip=1.95.21.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1745288223; c=relaxed/simple;
+	bh=W3fZc4RzShLZ39KaAzu286VLtoVz1a2Yr3M6iIQtwzM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=KItfCJ3N4MQ58tcEyXp5Fqh0hA/LE4oli/A6MhbgdDWbloB9reimzQjjSxh/9WQF4Pi3KywRb56rzgYwYzfWfK6mC25WPeYKvlFdCRZ3+hRzjSGPseTgMjOjKCMp0Z5AZLMBHB4dYIZoHYNZQTbr8KhamrvY+A+/+trshn6YqG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2kEEuqw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="j3c2wA8t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=s2WKQWHFaOBBiVhKURZdk+x4emLXSSQ2B7MB5TSOXFg=;
-	b=j3c2wA8tiUnKXr/gWCGn17+9XdyDs9/XezbctZh6IUY1WMWRw6YRIOqXdWz4AA
-	cdYQ3/JR+e09qDaGZwZNWc6EyJYWnWbbGYH3iSMPV40qJW20oAKpUWig3ue1BwQa
-	sp6sfl82ySFFPS5L/XB9DKkwtQbZqf1wbzk+uk3hNm2OM=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgB3Mz4L+wZozti7Aw--.12946S3;
-	Tue, 22 Apr 2025 10:12:28 +0800 (CST)
-Date: Tue, 22 Apr 2025 10:12:26 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Frank Li <Frank.li@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>, linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2kEEuqw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C88C4CEF5;
+	Tue, 22 Apr 2025 02:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745288223;
+	bh=W3fZc4RzShLZ39KaAzu286VLtoVz1a2Yr3M6iIQtwzM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=b2kEEuqw0EYCb71IziG55jcTwbR2NH6j5jCUzucOjKLrpavoRrI+jWBIKzSLMWKap
+	 sIj7mAT8pLhj4TE9lIoFPuZ4+ue8kERvsULisBp8v+FxRteJBTpTaWRABMRaE3+WJ9
+	 Ja7nORCSjo5F6dgKKSSa5NpGpttfWHqCqbzHPy0fEBVsNLBUXQFpUXTO+DrJWxCCW9
+	 9fFuncwNrjSZL5DPg2DpXrbILxpSc1WRpX3LKI/1AEjNoFr2+dtitN9JKsiAtQh3kg
+	 hYErq4V43UoF78oFdpUuBA9sW3uRNGy0lqJHruK//Jq5cqoWGhxfqKdCmGyUBUQ7Nz
+	 ajVQT9/eicbmg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Tamura Dai <kirinode0@gmail.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shawnguo@kernel.org,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v5 3/3] arm64: dts: imx: add imx95 dts for sof
-Message-ID: <aAb7CkrxVmTtsTHg@dragon>
-References: <20250311163255.2664-1-laurentiumihalcea111@gmail.com>
- <20250311163255.2664-4-laurentiumihalcea111@gmail.com>
+Subject: [PATCH AUTOSEL 6.14 30/30] spi: spi-imx: Add check for spi_imx_setupxfer()
+Date: Mon, 21 Apr 2025 22:15:50 -0400
+Message-Id: <20250422021550.1940809-30-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
+References: <20250422021550.1940809-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311163255.2664-4-laurentiumihalcea111@gmail.com>
-X-CM-TRANSID:Ms8vCgB3Mz4L+wZozti7Aw--.12946S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUI75rUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNA2dA2gG+w3pyAAA3e
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.3
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 11, 2025 at 12:32:55PM -0400, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> 
-> Add imx95 DTS for SOF usage.
-> 
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+From: Tamura Dai <kirinode0@gmail.com>
 
-Applied, thanks!
+[ Upstream commit 951a04ab3a2db4029debfa48d380ef834b93207e ]
+
+Add check for the return value of spi_imx_setupxfer().
+spi_imx->rx and spi_imx->tx function pointer can be NULL when
+spi_imx_setupxfer() return error, and make NULL pointer dereference.
+
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+ Call trace:
+  0x0
+  spi_imx_pio_transfer+0x50/0xd8
+  spi_imx_transfer_one+0x18c/0x858
+  spi_transfer_one_message+0x43c/0x790
+  __spi_pump_transfer_message+0x238/0x5d4
+  __spi_sync+0x2b0/0x454
+  spi_write_then_read+0x11c/0x200
+
+Signed-off-by: Tamura Dai <kirinode0@gmail.com>
+Reviewed-by: Carlos Song <carlos.song@nxp.com>
+Link: https://patch.msgid.link/20250417011700.14436-1-kirinode0@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-imx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index eeb7d082c2472..c43fb496da956 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1695,9 +1695,12 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
+ 				struct spi_device *spi,
+ 				struct spi_transfer *transfer)
+ {
++	int ret;
+ 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(spi->controller);
+ 
+-	spi_imx_setupxfer(spi, transfer);
++	ret = spi_imx_setupxfer(spi, transfer);
++	if (ret < 0)
++		return ret;
+ 	transfer->effective_speed_hz = spi_imx->spi_bus_clk;
+ 
+ 	/* flush rxfifo before transfer */
+-- 
+2.39.5
 
