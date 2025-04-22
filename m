@@ -1,63 +1,64 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2952D4B7C
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 20:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3432BD5B5
+	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 20:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745354049; cv=none; b=AG/AeDFkepYX1cb3+1jNg2UTblO26hT3WmwlzyF79wbaI9xRMhDCbpNRjsol9b4U1EpnznYI23Eo6dYLA0URxhR6sBFd2ie+kW0gzEPKJB4jRo+h8R63IsPN/Upk33W1H4TV3Gqie/K1b/GIBGbqMyxoV0mGcsDzDRHRcOoiy3A=
+	t=1745354374; cv=none; b=YXNgzLWErN4VT6MkFEeQPXsh8A5tKd/giJCE20eH3YALlyqyAXegM/TpljVnRVt+yC0Q7eTBmoVFOaK1Azo/CnUvTHYo/YoSpMNiONRQN224Bva4Lx04Yj7ndDJdhRcBIJ0Y+MRYX+HMqsapodnuM5UeNaHA8dqhIQ0B6aojL60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745354049; c=relaxed/simple;
-	bh=8GonxkaMRQkF8ZVGlT10aVldkELS5ROTeTzHlgFE+Tc=;
+	s=arc-20240116; t=1745354374; c=relaxed/simple;
+	bh=g/2T76R5tL0lu2B98PZab5ST8sK4AqY9aeoUm45pAz0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SAJ/mihXHprcR7gM01ok4/PklduNs3/ySqLvnJeSQ6WmLzC7IKGLBwPhqG3pjWUnWaWt9v0AH7xs87U7vP6XpcQC5jD2x9tWJvkOVSRDHmlXnokF9s8BUukPUakId0E9JvMpYVkrFQRge1m2pp7RZ7kNZuRvO1xF5hygnZ4rxa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=AzbvZMNp; arc=none smtp.client-ip=209.85.160.172
+	 Content-Type:MIME-Version; b=A6Zho3o1Ds2NGh1sYy7P0M+cP1Fc4z1DN9PLPmD+J6iyiQd9PQ2/a6UYr+NaCZ6Z2rVAdFCU6G1r1U1JhymsYh61nBLTSw/juAO3HuR7f9rEBv7hn5h+GADH/FpzafBdvFpC6ASnSqa1s/2AH+C1xNMGThZdHj1xieTwcMD8zOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=SZpPitVq; arc=none smtp.client-ip=209.85.219.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="AzbvZMNp"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-47692b9d059so82634391cf.3
-        for <imx@lists.linux.dev>; Tue, 22 Apr 2025 13:34:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="SZpPitVq"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6ed16ce246bso31223346d6.3
+        for <imx@lists.linux.dev>; Tue, 22 Apr 2025 13:39:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1745354042; x=1745958842; darn=lists.linux.dev;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1745354368; x=1745959168; darn=lists.linux.dev;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=QB/EZxvi3t87PK18i4g1vhWVTtw3rMf9PNCebJ3iyMk=;
-        b=AzbvZMNpqll7Nd4sydQZhGPEpNmieE73WJqWy5nmvicLw1nDLf1A08nZHSyD4mhSGL
-         bup08L6cZwofZ/iZHX3xvsBHNw4Ldb/4ZwlX9fpoETlA/I1xnkpeEUBnVHro3e4Mggsr
-         QyS9hSrqlLOrNIvEGKCaihseI3miS/suyJnNXavauE29uvOBFX95ctezMR1tUufkteAp
-         +Eq8DOpU0GRtFWBbeAb8uqVCN6+q7giUa0ahN2cGDU/ne5xS8xJGPig6gyj/6s2bLa73
-         7/Oogvoi/qZi9XF9pT0qFj1kAx2yEp80tWHAdcKHIoQBiDkJgrsIVegnwsTFd+9wHbPW
-         3DWg==
+        bh=Mxa8mnKGFLIwz3aSnLsB+cdsk2Io08xYKKTBbVflAy8=;
+        b=SZpPitVqHZ+qnwCm3v0DylKKBlE/dhMuZ2xJxzh/m9/FcpId2ieYSnOWjkOYiZEbnB
+         cx6421Ev8XHl1UHwq00X8TVmlhTTolldIVTZhA7BoQqpEc8U9mJpxyPalfGI4ZrCyD8S
+         Abg+kGGAZpytkQGVNNkUsle2n7bOjxj0LUpDe2tal1ErIwVYanfvG+9ElEiEehVcCP5g
+         9iPWt9y4A5vWNQVRmNs3LZWsLc2MBpV2Ut+6dKQJrBbUuFggTZxh691zOgwA1UE6uQQM
+         qo0O+NEFvCIchk4dgnE9TNm8jdNLeXhNU6yvkftL1bQnpLM/F0y/yfaCTX5cJThgf68U
+         PDCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745354042; x=1745958842;
+        d=1e100.net; s=20230601; t=1745354368; x=1745959168;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=QB/EZxvi3t87PK18i4g1vhWVTtw3rMf9PNCebJ3iyMk=;
-        b=elSRwEXqWjgzpwpkCLK9dxM1o4Y0aQypv0PR7+4K+Z/xx5ecNCQm+NmU4DZw9vtQQn
-         Uf15BpFm+XHnszuOKK6zgUv5CyLCeoPM7KDsKs7h7lmlDFUdGM01tT/jXtln6jKcRWrV
-         sh+/W+G27gTmmVYssalfnLY8jI39DtzNYgX8xwy12uI344zfv+P5vnjw0mtPpm57Rx22
-         8WyKUmrI00wGqj6NxQ/RRPnyI9IFpbSa7DDan9fJD4rYCk+vqOcyaDO0WHWpf0tQMRXf
-         m3VdGDf/XiEWGGImxFYPyiiuLbLc/TMzGpenCjFihIxAY/ALVx+f+ygAJJLyDrjpDBpr
-         Ti2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUrLg9oLeompbqmZDuzUsfMCC0vvQkGDenRlvNeCfiV0HvNUTxWZTujCP74o1Np443L+E8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw/zybXSIhGGHg5EXd6KR26Nc5gc7mAR1RtePS4w90L4JhKxIS7
-	PuSdl1kDYzy4eRD0YXVn8GpbfthRS7lEeT0ZufbOjx/FsDWPK+2UaoL9bOvYeNc=
-X-Gm-Gg: ASbGncvHVPQ8QOWAX/HHPnsAsPVY6uP574rwZCnBJjBTPUSjKaZZGeqP3Pxx6aGA0VK
-	dk0z7P1c1EfTV+0qF60eVnUIu3Wmeb+uahVpisU9oUw9vXm5iJ43olDnXJbEuY0UgSjzGXHJziH
-	B1Fil6CGLRqEURkA8L6aDHnVaVsm3z7NsKTjckd45ZokdsHpQ/dOa9WuaAvOwDfbyD9CkaJUtik
-	t1F7p4gqgd9qTPhl9THpExAOPnb4+g1v6l1LlSVXYg5jWYkEY1b2kt6n/OItFriLs3/SSinCfgf
-	C4XX+SqhdQgTVFltJqYC2dryZYqP9mydeDUpIR9ipTwFZw==
-X-Google-Smtp-Source: AGHT+IF2NY8NWZhRDDTGP3IWCtm2obgw3XdCPc+7lNS25z2oTNzCLuKcPU7yqB4NlMxM4ZoFISN2xw==
-X-Received: by 2002:a05:6214:5085:b0:6eb:28e4:8519 with SMTP id 6a1803df08f44-6f2c4562ff4mr302755556d6.21.1745354041933;
-        Tue, 22 Apr 2025 13:34:01 -0700 (PDT)
+        bh=Mxa8mnKGFLIwz3aSnLsB+cdsk2Io08xYKKTBbVflAy8=;
+        b=NwOwVznGpWGcJhp/TppeIlq2REZQP80wqil26RWAjzcXaoOzv+oKuiXFxhELG+rVQF
+         h8XXpoueoQlRcRjLfCXaziSGfxuXUwp/otIJbTwisvEsTukYOjin5mtNm4OvAYksSoNa
+         5/X8ugTI3Jnsfpmy8uUT9s5pZiGl6X8PKP/77Rc+wCpoR4j/EryiwAlvaaGqAOVCQpAT
+         W5RIK0phRimJOET/9hBhZUJIrAAL+BZb26xqWBxsu0E4YM2tH816JoNENWvm/UwDXu4d
+         Xqbpmj46P3HL6XRMNtjB3k+V3RKRAqv7KzQO2YXyWorltDzmKInypMjrfDseDUNViidv
+         d3iA==
+X-Forwarded-Encrypted: i=1; AJvYcCXDpqJVsOcpcvgUyj/13jS3rsACYCUOPhYurfFR7lnLk9FAvTVD9BrEatWfr9yVQv3R3Cg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxOyMpNuEggAcmhQVhs0xvTlZxeZ32P9N26J2WK1Pqm50QiZzX3
+	SgYVRDQQKMG+m4BszDFD+X18v8jCB96zPOqvEbNo++mYZaZ4h1K828n4zdm2o9HeofebSub8a9R
+	k39M=
+X-Gm-Gg: ASbGncsCY1CzjEap3ne8gB0+by/Y4wy2i2WESFq//bgIptP/lFMG1+xQjA7hLBozr5S
+	n2WTyRyW1K271S2GweNfKcRqP7YYEqkQTIzq0K8EAY9EKZRlkODg4SXXy/svYGedsNP0X45uAtj
+	RK+pS95KaKoxxV7O65rgmpi2i7Nw1ALp5ptwB1YyddDzpmqJ7H3WDrCOVmW3351GksWUzZOayQQ
+	8CSFzGQWFQdt1XfBONeTiaOedPwCq1n22vyNqzssfvixw14AHvqJb4pp0v6Z33phHcSVs1uN0ir
+	fs14BzMaI1HTuTsNGw2mqTf5DPcozWRs2NKQt3zNmlP3mQ==
+X-Google-Smtp-Source: AGHT+IHgoXB32I54YobFWotwW7Ql02OGxk1yBL4VLASRbXLMaVUU5YRS5yYScQbQz+DQ7P9MWu3VIA==
+X-Received: by 2002:a05:6214:1c49:b0:6ea:d033:2853 with SMTP id 6a1803df08f44-6f2c455326dmr292929536d6.16.1745354367604;
+        Tue, 22 Apr 2025 13:39:27 -0700 (PDT)
 Received: from ?IPv6:2606:6d00:15:9913::5ac? ([2606:6d00:15:9913::5ac])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2bfcfc5sm61803746d6.75.2025.04.22.13.34.00
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2b343ffsm61918306d6.65.2025.04.22.13.39.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 13:34:01 -0700 (PDT)
-Message-ID: <7864deb3dc090bc52cbdb4c646d0155ecc256076.camel@ndufresne.ca>
+        Tue, 22 Apr 2025 13:39:27 -0700 (PDT)
+Message-ID: <a257b77973512cad398502949324ad5518c54108.camel@ndufresne.ca>
 Subject: Re: [PATCH v5] media: amphion: Support dmabuf and v4l2 buffer
  without binding
 From: Nicolas Dufresne <nicolas@ndufresne.ca>
@@ -68,7 +69,7 @@ Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
  xiahong.bao@nxp.com, 	eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
  imx@lists.linux.dev, 	linux-media@vger.kernel.org,
  linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Tue, 22 Apr 2025 16:34:00 -0400
+Date: Tue, 22 Apr 2025 16:39:25 -0400
 In-Reply-To: <20250120082105.2960717-1-ming.qian@oss.nxp.com>
 References: <20250120082105.2960717-1-ming.qian@oss.nxp.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -80,6 +81,8 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+
+Hi,
 
 Le lundi 20 janvier 2025 =C3=A0 17:21 +0900, Ming Qian a =C3=A9crit=C2=A0:
 > When using VB2_DMABUF, the relationship between dma-buf and v4l2 buffer
@@ -97,6 +100,14 @@ Le lundi 20 janvier 2025 =C3=A0 17:21 +0900, Ming Qian a =C3=A9crit=C2=A0:
 > released by firmware, need to pend it until firmware release it.
 >=20
 > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+
+I believe this patch is ready, but unfortunately it no longer applies.
+Could you rebase against media-committers/next and resubmit ? Consider
+including a base commit in the future, sometimes that allows avoiding
+aa rebase.
+
+Nicolas
+
 > ---
 > v5
 > - Avoid dynamic size calculation in memory allocation, use kmalloc_array
@@ -279,10 +290,6 @@ ruct vpu_frame_info *frame)
 > +	if (vpu_buf->fs_id !=3D frame->id)
 > +		dev_err(inst->dev, "[%d] buffer id(%d(%d), %d) dismatch\n",
 > +			inst->id, vpu_buf->fs_id, vbuf->vb2_buf.index, frame->id);
-
-Was not newly introduced, so I'll take anyway, but can you send a patch
-later to fix dismatch -> mismatch.
-
 > =C2=A0
 > -	if (vpu_get_buffer_state(vbuf) =3D=3D VPU_BUF_STATE_READY && vdec->para=
 ms.display_delay_enable)
@@ -687,5 +694,3 @@ atform/amphion/vpu_v4l2.c
 > =C2=A0	return 0;
 > =C2=A0}
 > =C2=A0
-
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
