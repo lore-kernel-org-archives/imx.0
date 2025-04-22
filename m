@@ -1,39 +1,39 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF9B20E00A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60FB21018A
 	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 10:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745319414; cv=none; b=Yrq3zOMCb0UixHC9IhuOqdMQTpdiV/BttdWlOc5G4LQSBmLDggWiHiGaq5l+LD54kSvZvmKdgRXkNTdpHaxFCAMN1XNSYfTlnn82Umc9STDp73pvk9EpvSKV1j2aGPjrJNp6Ohk/fJKMT8Z/ZDNYyyFa4ChqPxvre0TG62l4haU=
+	t=1745319414; cv=none; b=cGjVemBal653YTvq3eujgJo+SISdiQ5mGb2SF5kM87fwy6dLmsuNW+zmVhD8Jci9lJ41c9SFiLGiHr24u4WPEo4hTsDcmoutvkHVQs7EG2pd8HHdFOswgNx/5qBveOn0ZTIRrewjse7TMV7jlhFCz6VNGKzKQyVwKEZB5TNAbiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1745319414; c=relaxed/simple;
-	bh=juuwbAzhoDfMUjFcZxTM9xhk9k+m2ubHx6nqEeAYc4Q=;
+	bh=5KvVhSE4OzayZxv6zr2nh6tzAm9cRj1gnBUG+aV4J0U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PAytjBvIuXM7VHUV3mQ6Zuqo0JsAZsngbgR3S2eN0fIW2gsL2oob1wWFnWXkjpivF9tXG4LdvSLvJ032Ss+zI1blqsD6m3LKjd88tUpQz636l1VW4jE2TL1vuucxDxX0vIWdfvH01WGhrx8cXV0hNzTxVXQ0D9Nyo6ymwrhHadw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=EiBjB8yy; arc=none smtp.client-ip=46.19.9.99
+	 MIME-Version; b=BCGq9sNR28bD77K/PXgISDee4y0LVvDYpCzd6Q9PqJbnKNxaLUJOy3fdElJSNrdhdMQNOM6mj5xcBekd0jb4RfguIVPeTppiRxA8ibniK4wqKScoEgWTKuROiALnjtgCic2LcDn723mqCkWsB5g50WQNstPOAcSXdTLI2ZF4cuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=n28loj0g; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="EiBjB8yy"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="n28loj0g"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=loNjfzD7XzJZlNyz06pFRAe4/by1nmcVqFTo0T/668M=; b=EiBjB8yyvkjbKlfy0T/WxsBpVH
-	P2fFIMONF6CER2gN2XsSPgmmsbSiEHzHA6/L2yH3Fzec93SSnctR0UKZxQEMXHKnbSv8jhHbgm3i/
-	khlUertmOOcxMSGWcUlsu+mqPhcwnLnl106BMSJqhn7FcdAReNRgss9qXclKZ2TQijQ13hy5QNR4c
-	/hUz1pOFslQFzkZ3DqWxRgQPZs/hqvuufI9i5SCT8jSp5WFrsJM/FYuzV+Nsp5Fa9AzAjutaPknbl
-	LinYcJgq2bOqtjiQiE0RWO1wg4Gdesg+dhSHokdKbjDPfX4nXB/Uur/kawBP07wCTidEe3nIfvPKZ
-	pFyWATOA==;
+	bh=zF4UOqdX0b7eFotsJnVlx6i1/S86SnKAsQ01ibQ35ZI=; b=n28loj0gjcEWAkPYmLmZrru4KZ
+	14D+SJCkHXBhx4/DTZ/Fs2wsHKl5u4k2AulXDCIdyQ8uzRSTIkY0UKBQcEnWI7EQ/VYu5zMmA0UTu
+	2YxkCe78BB4mxd0XQ5cPIRxpsTtAO+oo6ms5n/bdA71Ply0PcK7jxMJJagXWtVLrvCzzibwI4nhZR
+	wzKn3y4UYuhCLQw/Kr6bpkw7ANwW1alQGjYFTSu+FHh6rS3WLbsBJs+UXj41Ru1VhBDKLPw9v0ytY
+	MySE96aFtKpUrawY4ZZwzhQvfauniXvXdonEJk35og8iNHeLrLQPCiCRxH53UiMPrZwBjxyAcj5Mc
+	tjKR9l5w==;
 Received: from [89.212.21.243] (port=36562 helo=localhost.localdomain)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1u7BIz-008kyr-25;
-	Tue, 22 Apr 2025 12:56:45 +0200
+	id 1u7BJ5-008kyr-0l;
+	Tue, 22 Apr 2025 12:56:51 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -47,9 +47,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v4 01/15] arm64: dts: freescale: imx93-phycore-som: Add PMIC support
-Date: Tue, 22 Apr 2025 12:56:30 +0200
-Message-Id: <20250422105644.2725168-2-primoz.fiser@norik.com>
+Subject: [PATCH v4 05/15] arm64: dts: freescale: imx93-phycore-som: Add eMMC no-1-8-v by default
+Date: Tue, 22 Apr 2025 12:56:34 +0200
+Message-Id: <20250422105644.2725168-6-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250422105644.2725168-1-primoz.fiser@norik.com>
 References: <20250422105644.2725168-1-primoz.fiser@norik.com>
@@ -71,134 +71,36 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-PMIC driver for PCA9451A used on phyCORE-i.MX93 SOM is available since
-commit 5edeb7d31262 ("regulator: pca9450: add pca9451a support"). Add
-support for it in the SOM device-tree.
+The phyCORE-i.MX93 SoM comes in two variants, one with VDD_IO set to
+3.3V and the other variant to 1.8V. The 3.3V variant can only support
+DDR52 mode, while 1.8V variant is capable of HS400ES eMMC mode. The
+information about VDD_IO option is encoded in the SoM's EEPROM. EEPROM
+is read in the bootloader and bootloader clears the "no-1-8-v" flag in
+case of 1.8V SoM variant is detected. Thus add property 'no-1-8-v' by
+default to usdhc1 (eMMC) node and let bootloader handle the flag. In
+case EEPROM is erased or read-out fails, flag "no-1-8-v" also ensures
+fall-back compatibility with both SoM variants.
 
 Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
 Changes in v4:
 - no changes
 
- .../boot/dts/freescale/imx93-phycore-som.dtsi | 97 +++++++++++++++++++
- 1 file changed, 97 insertions(+)
+ arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-index 88c2657b50e6..507a71f9294b 100644
+index 663530a7e2bb..22dbcc89e311 100644
 --- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-@@ -72,6 +72,90 @@ ethphy1: ethernet-phy@1 {
- 	};
+@@ -172,6 +172,7 @@ &usdhc1 {
+ 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
+ 	bus-width = <8>;
+ 	non-removable;
++	no-1-8-v;
+ 	status = "okay";
  };
  
-+/* I2C3 */
-+&lpi2c3 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_lpi2c3>;
-+	status = "okay";
-+
-+	pmic@25 {
-+		compatible = "nxp,pca9451a";
-+		reg = <0x25>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pmic>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <27 IRQ_TYPE_LEVEL_LOW>;
-+
-+		regulators {
-+			buck1: BUCK1 {
-+				regulator-name = "VDD_SOC";
-+				regulator-min-microvolt = <610000>;
-+				regulator-max-microvolt = <950000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+				regulator-ramp-delay = <3125>;
-+			};
-+
-+			buck2: BUCK2 {
-+				regulator-name = "VDDQ_0V6";
-+				regulator-min-microvolt = <600000>;
-+				regulator-max-microvolt = <600000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			buck4: BUCK4 {
-+				regulator-name = "VDD_3V3_BUCK";
-+				regulator-min-microvolt = <3300000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			buck5: BUCK5 {
-+				regulator-name = "VDD_1V8";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			buck6: BUCK6 {
-+				regulator-name = "VDD_1V1";
-+				regulator-min-microvolt = <1100000>;
-+				regulator-max-microvolt = <1100000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo1: LDO1 {
-+				regulator-name = "PMIC_SNVS_1V8";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo4: LDO4 {
-+				regulator-name = "VDD_0V8";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <800000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo5: LDO5 {
-+				regulator-name = "NVCC_SD2";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+		};
-+	};
-+};
-+
- /* eMMC */
- &usdhc1 {
- 	pinctrl-names = "default";
-@@ -108,6 +192,19 @@ MX93_PAD_I2C1_SDA__GPIO1_IO01		0x31e
- 		>;
- 	};
- 
-+	pinctrl_lpi2c3: lpi2c3grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO28__LPI2C3_SDA		0x40000b9e
-+			MX93_PAD_GPIO_IO29__LPI2C3_SCL		0x40000b9e
-+		>;
-+	};
-+
-+	pinctrl_pmic: pmicgrp {
-+		fsl,pins = <
-+			MX93_PAD_ENET2_RD3__GPIO4_IO27		0x31e
-+		>;
-+	};
-+
- 	pinctrl_usdhc1: usdhc1grp {
- 		fsl,pins = <
- 			MX93_PAD_SD1_CLK__USDHC1_CLK		0x179e
 -- 
 2.34.1
 
