@@ -1,65 +1,65 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BA617BED0
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 20:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2952D4B7C
+	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 20:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745352932; cv=none; b=E1D7FgGZ81/U5ySvPUk9O/b+ZwUatNRx0o/L09mguW0onwxnlJyEBgp/5UfN3Uyr3xzFm8uYf/X6UTku1siMimy2Y62nBSy4CXNLYIAMNymTfLx706W+iBBSzXHx7Dj9SkOMRjJVvpjR1Le2EYQf7yNBchwMxTIVwPdCEqY0A20=
+	t=1745354049; cv=none; b=AG/AeDFkepYX1cb3+1jNg2UTblO26hT3WmwlzyF79wbaI9xRMhDCbpNRjsol9b4U1EpnznYI23Eo6dYLA0URxhR6sBFd2ie+kW0gzEPKJB4jRo+h8R63IsPN/Upk33W1H4TV3Gqie/K1b/GIBGbqMyxoV0mGcsDzDRHRcOoiy3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745352932; c=relaxed/simple;
-	bh=wNORhVYlgTJse9QfgWQWMbFqYMq1ZPqAa96KFCBdsj8=;
+	s=arc-20240116; t=1745354049; c=relaxed/simple;
+	bh=8GonxkaMRQkF8ZVGlT10aVldkELS5ROTeTzHlgFE+Tc=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lw0NWAqhiDJWl6eNMdrHBxGwkis/sEJOB0cGVX95SgcVmdMsoy5OF+JKv9+ScVgRoDYXAn5hlTM6Iqz5U3JHvnHuV9KT5NtWupyNDtrN5os36kF97H0UyCu3wo8pvjQPUoEvX+LU9GJV8uhU/ALXjR9TCqB99c0HMtUTt0qIVvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=rmFzv/un; arc=none smtp.client-ip=209.85.222.179
+	 Content-Type:MIME-Version; b=SAJ/mihXHprcR7gM01ok4/PklduNs3/ySqLvnJeSQ6WmLzC7IKGLBwPhqG3pjWUnWaWt9v0AH7xs87U7vP6XpcQC5jD2x9tWJvkOVSRDHmlXnokF9s8BUukPUakId0E9JvMpYVkrFQRge1m2pp7RZ7kNZuRvO1xF5hygnZ4rxa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=AzbvZMNp; arc=none smtp.client-ip=209.85.160.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="rmFzv/un"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c081915cf3so768966485a.1
-        for <imx@lists.linux.dev>; Tue, 22 Apr 2025 13:15:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="AzbvZMNp"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-47692b9d059so82634391cf.3
+        for <imx@lists.linux.dev>; Tue, 22 Apr 2025 13:34:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1745352928; x=1745957728; darn=lists.linux.dev;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1745354042; x=1745958842; darn=lists.linux.dev;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=FfIoYR2Hk8OscvFDt1woJsVwZTyVIxPWRqw5VTDHqxU=;
-        b=rmFzv/undSNtvME67dRYtIzW7UywOap2E+a3cOeWULEQMrs3/25Hr9o4akqY27Nez4
-         EPT0elxciC9husngR5TixFkprPWMpV90sECBIKXlZhI6Ggf0T+hpXm1qCTlhmfYfqeIE
-         ZiOOHSRbYe2m2YQco55ey3JVLHzwQfCZBZFhYim5HCwmZtpSBW3oWJdX4aAYDfk7I/QG
-         Q/+VS8wAJTHtg5zn2BZ8N/kf0NTvKO3i5Hod1dBzYwvQVGBe0MYCCQiFsBY3OyNaDLjL
-         jNo7L9jkJDJt14i5m7sfRMl9RDo+vPFu8pbBBk0t6pSqVM1iRviHLihzrf2pFmsBZB09
-         Eihg==
+        bh=QB/EZxvi3t87PK18i4g1vhWVTtw3rMf9PNCebJ3iyMk=;
+        b=AzbvZMNpqll7Nd4sydQZhGPEpNmieE73WJqWy5nmvicLw1nDLf1A08nZHSyD4mhSGL
+         bup08L6cZwofZ/iZHX3xvsBHNw4Ldb/4ZwlX9fpoETlA/I1xnkpeEUBnVHro3e4Mggsr
+         QyS9hSrqlLOrNIvEGKCaihseI3miS/suyJnNXavauE29uvOBFX95ctezMR1tUufkteAp
+         +Eq8DOpU0GRtFWBbeAb8uqVCN6+q7giUa0ahN2cGDU/ne5xS8xJGPig6gyj/6s2bLa73
+         7/Oogvoi/qZi9XF9pT0qFj1kAx2yEp80tWHAdcKHIoQBiDkJgrsIVegnwsTFd+9wHbPW
+         3DWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745352928; x=1745957728;
+        d=1e100.net; s=20230601; t=1745354042; x=1745958842;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=FfIoYR2Hk8OscvFDt1woJsVwZTyVIxPWRqw5VTDHqxU=;
-        b=sP4BLqdrFSO7j9O8jDh488UsMR493Ie6e22YYOe5TKPOXcMqifDXoolNVOruANKI+x
-         9TuMzHaSjwA1Ld1NhmH/qOY1ayiupKK41v2DZC1IsvMg0+c368gumYQRzWjYqxx3T/nB
-         YeZWRNdTCvdva2exrya3wHe5Q+a0HHJoEBqKF2VLQY0QBfsYSTE69+/6NqY1GQVBrnyu
-         BBYW8YqLZrZuC7wSexAzIzPQ528gu+r4gMuWSvwItiaN6HMubgZseQHofK8h3IKYRwTO
-         bL5GUe3jcOn5U1O4n+VpRvqAKFtks/Bcd/DZKZ3yY2ynYhXt5wTKJjCU+GtGDIn/INZb
-         PAWg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQfmpVA2JbMJLHGuMdoSpVtMHubrmMAzG3QLGoclgx/aIxE7lKl2FrSHlUqIiRczywOEk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyesSKatJLx2PYmekgc711kG3+eidyCY4EgCqtch4j3pX8/dN2i
-	EtDMmjz4xvCqz9FXcHBLwL4Ip0rf/jXrdPYvNvfX9UyVffXXPWrnIERnQ3BOkS8=
-X-Gm-Gg: ASbGncuxSevvLCdL84CwprvalGmi1+FqviLGJE534BGgj9r5be5Zjxt+nUoZxwDxIEU
-	HGBkv0rADWNGpu+dssKdFi9LmrQumGUMzAMeSEcPQawvSZrlcU2iQczTs8uTIqwHZSoUt2tsWpW
-	g27KV1Ik60PT34h1LEnPJ5SWjqyrzv81OxjkhPurpQ8m1S9Fzq98ZwtVKOFihgYlGsqc/LKc7Lt
-	g3rWtfHdtqPehYMAHlh4pvGJlvx+VI6dUxIKSrI9fiYEFqpK8rRr/SoK+mTi+0qzDHqcPJKc/Xm
-	plsqPY4tMRQwfKvBKgBTzoVbMgufjcOZMJP4K0c6YOvC4a6vos0pTL/r
-X-Google-Smtp-Source: AGHT+IE5UyDb3sP+B1E0k8WlUIn5epHst96b+MCPIWCRdWJrnaIbCMq4o4Z31SsOW5ok7mHv5BAPog==
-X-Received: by 2002:a05:620a:1a07:b0:7c7:827b:46bf with SMTP id af79cd13be357-7c928015f8dmr2301315685a.39.1745352928409;
-        Tue, 22 Apr 2025 13:15:28 -0700 (PDT)
+        bh=QB/EZxvi3t87PK18i4g1vhWVTtw3rMf9PNCebJ3iyMk=;
+        b=elSRwEXqWjgzpwpkCLK9dxM1o4Y0aQypv0PR7+4K+Z/xx5ecNCQm+NmU4DZw9vtQQn
+         Uf15BpFm+XHnszuOKK6zgUv5CyLCeoPM7KDsKs7h7lmlDFUdGM01tT/jXtln6jKcRWrV
+         sh+/W+G27gTmmVYssalfnLY8jI39DtzNYgX8xwy12uI344zfv+P5vnjw0mtPpm57Rx22
+         8WyKUmrI00wGqj6NxQ/RRPnyI9IFpbSa7DDan9fJD4rYCk+vqOcyaDO0WHWpf0tQMRXf
+         m3VdGDf/XiEWGGImxFYPyiiuLbLc/TMzGpenCjFihIxAY/ALVx+f+ygAJJLyDrjpDBpr
+         Ti2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUrLg9oLeompbqmZDuzUsfMCC0vvQkGDenRlvNeCfiV0HvNUTxWZTujCP74o1Np443L+E8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/zybXSIhGGHg5EXd6KR26Nc5gc7mAR1RtePS4w90L4JhKxIS7
+	PuSdl1kDYzy4eRD0YXVn8GpbfthRS7lEeT0ZufbOjx/FsDWPK+2UaoL9bOvYeNc=
+X-Gm-Gg: ASbGncvHVPQ8QOWAX/HHPnsAsPVY6uP574rwZCnBJjBTPUSjKaZZGeqP3Pxx6aGA0VK
+	dk0z7P1c1EfTV+0qF60eVnUIu3Wmeb+uahVpisU9oUw9vXm5iJ43olDnXJbEuY0UgSjzGXHJziH
+	B1Fil6CGLRqEURkA8L6aDHnVaVsm3z7NsKTjckd45ZokdsHpQ/dOa9WuaAvOwDfbyD9CkaJUtik
+	t1F7p4gqgd9qTPhl9THpExAOPnb4+g1v6l1LlSVXYg5jWYkEY1b2kt6n/OItFriLs3/SSinCfgf
+	C4XX+SqhdQgTVFltJqYC2dryZYqP9mydeDUpIR9ipTwFZw==
+X-Google-Smtp-Source: AGHT+IF2NY8NWZhRDDTGP3IWCtm2obgw3XdCPc+7lNS25z2oTNzCLuKcPU7yqB4NlMxM4ZoFISN2xw==
+X-Received: by 2002:a05:6214:5085:b0:6eb:28e4:8519 with SMTP id 6a1803df08f44-6f2c4562ff4mr302755556d6.21.1745354041933;
+        Tue, 22 Apr 2025 13:34:01 -0700 (PDT)
 Received: from ?IPv6:2606:6d00:15:9913::5ac? ([2606:6d00:15:9913::5ac])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925b6e198sm590055985a.103.2025.04.22.13.15.26
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2bfcfc5sm61803746d6.75.2025.04.22.13.34.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 13:15:27 -0700 (PDT)
-Message-ID: <74eb0589ae54855db1d2024591d501989e30027a.camel@ndufresne.ca>
-Subject: Re: [PATCH v2] media: amphion: Add H264 and HEVC profile and level
- control
+        Tue, 22 Apr 2025 13:34:01 -0700 (PDT)
+Message-ID: <7864deb3dc090bc52cbdb4c646d0155ecc256076.camel@ndufresne.ca>
+Subject: Re: [PATCH v5] media: amphion: Support dmabuf and v4l2 buffer
+ without binding
 From: Nicolas Dufresne <nicolas@ndufresne.ca>
 To: Ming Qian <ming.qian@oss.nxp.com>, mchehab@kernel.org, 
 	hverkuil-cisco@xs4all.nl
@@ -68,9 +68,9 @@ Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de,
  xiahong.bao@nxp.com, 	eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
  imx@lists.linux.dev, 	linux-media@vger.kernel.org,
  linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Tue, 22 Apr 2025 16:15:25 -0400
-In-Reply-To: <20241210093337.3779686-1-ming.qian@oss.nxp.com>
-References: <20241210093337.3779686-1-ming.qian@oss.nxp.com>
+Date: Tue, 22 Apr 2025 16:34:00 -0400
+In-Reply-To: <20250120082105.2960717-1-ming.qian@oss.nxp.com>
+References: <20250120082105.2960717-1-ming.qian@oss.nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.0 (3.56.0-1.fc42) 
@@ -81,298 +81,611 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
-Hi Ming,
-
-Le mardi 10 d=C3=A9cembre 2024 =C3=A0 18:33 +0900, Ming Qian a =C3=A9crit=
-=C2=A0:
-> From: Ming Qian <ming.qian@nxp.com>
+Le lundi 20 janvier 2025 =C3=A0 17:21 +0900, Ming Qian a =C3=A9crit=C2=A0:
+> When using VB2_DMABUF, the relationship between dma-buf and v4l2 buffer
+> may not one-to-one, a single dma-buf may be queued via different
+> v4l2 buffers, and different dma-bufs may be queued via the same
+> v4l2 buffer, so it's not appropriate to use the v4l2 buffer index
+> as the frame store id.
 >=20
-> For format H264 and HEVC, the firmware can report the parsed profile idc
-> and level idc to driver, the information may be useful.
-> Implement the H264 and HEVC profile and level control to report them.
+> We can generate a frame store id according to the dma address.
+> Then for a given dma-buf, the id is fixed.
 >=20
-> Signed-off-by: Ming Qian <ming.qian@nxp.com>
+> Driver now manages the frame store and vb2-buffer states independently.
+>=20
+> When a dmabuf is queued via another v4l2 buffer before the buffer is
+> released by firmware, need to pend it until firmware release it.
+>=20
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
 > ---
+> v5
+> - Avoid dynamic size calculation in memory allocation, use kmalloc_array
+> =C2=A0 instead
+> v4
+> - remove unnecessary 'out of memory' message
+> v3
+> -- fix a typo in NULL pointer check
 > v2
-> -- add support for V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE
+> -- fix an uninitialized issue reported by media-ci
 >=20
-> =C2=A0drivers/media/platform/amphion/vdec.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 61 +++++++++++++
-> =C2=A0drivers/media/platform/amphion/vpu_defs.h=C2=A0=C2=A0=C2=A0 |=C2=A0=
- 1 +
-> =C2=A0drivers/media/platform/amphion/vpu_helpers.c | 93 +++++++++++++++++=
-+++
-> =C2=A0drivers/media/platform/amphion/vpu_helpers.h |=C2=A0 5 ++
-> =C2=A0drivers/media/platform/amphion/vpu_malone.c=C2=A0 |=C2=A0 3 +-
-> =C2=A05 files changed, 162 insertions(+), 1 deletion(-)
+> =C2=A0drivers/media/platform/amphion/vdec.c=C2=A0=C2=A0=C2=A0=C2=A0 | 235=
+ +++++++++++++++++-----
+> =C2=A0drivers/media/platform/amphion/vpu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+|=C2=A0=C2=A0 7 +-
+> =C2=A0drivers/media/platform/amphion/vpu_dbg.c=C2=A0 |=C2=A0 15 +-
+> =C2=A0drivers/media/platform/amphion/vpu_v4l2.c |=C2=A0 11 +
+> =C2=A04 files changed, 220 insertions(+), 48 deletions(-)
 >=20
 > diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platfo=
 rm/amphion/vdec.c
-> index ca8f7319503a..61d5598ee6a1 100644
+> index b3bc9eb16d6a..f4979d537b97 100644
 > --- a/drivers/media/platform/amphion/vdec.c
 > +++ b/drivers/media/platform/amphion/vdec.c
-> @@ -232,6 +232,37 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
-> =C2=A0			=C2=A0 V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE,
-> =C2=A0			=C2=A0 0, 1, 1, 0);
+> @@ -26,6 +26,7 @@
+> =C2=A0#include "vpu_cmds.h"
+> =C2=A0#include "vpu_rpc.h"
 > =C2=A0
-> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_H264_PROFILE=
-,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_MUL=
-TIVIEW_HIGH,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ~((1 << V4L2_MPEG_VIDEO_H264_PRO=
-FILE_BASELINE) |
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE) |
-
-You've added it here, but you will never report it, see my comment
-below.
-
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MAIN) |
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED) |
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_HIGH) |
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH) |
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH)),
-
-Shall we advertise multiview and stereo ? My impression is that we lack
-a mechanism to actually signal the stereo layout, or which view each
-buffers came from. I'm thinking, you can can't test it, we should just
-fail on these ?
-
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_BAS=
-ELINE);
+> +#define VDEC_SLOT_CNT_DFT		32
+> =C2=A0#define VDEC_MIN_BUFFER_CAP		8
+> =C2=A0#define VDEC_MIN_BUFFER_OUT		8
+> =C2=A0
+> @@ -41,6 +42,14 @@ struct vdec_fs_info {
+> =C2=A0	u32 tag;
+> =C2=A0};
+> =C2=A0
+> +struct vdec_frame_store_t {
+> +	struct vpu_vb2_buffer *curr;
+> +	struct vpu_vb2_buffer *pend;
+> +	dma_addr_t addr;
+> +	unsigned int state;
+> +	u32 tag;
+> +};
 > +
-> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_H264_LEVEL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_2,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_0);
-> +
-> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_HEVC_PROFILE=
-,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAI=
-N_10,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ~((1 << V4L2_MPEG_VIDEO_HEVC_PRO=
-FILE_MAIN) |
-> +				 (1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10)),
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAI=
-N);
-> +
-> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_4);
-> +
-> =C2=A0	ctrl =3D v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
-> =C2=A0				 V4L2_CID_MIN_BUFFERS_FOR_CAPTURE, 1, 32, 1, 2);
-> =C2=A0	if (ctrl)
-> @@ -1166,6 +1197,35 @@ static void vdec_clear_slots(struct vpu_inst *inst=
-)
-> =C2=A0	}
+> =C2=A0struct vdec_t {
+> =C2=A0	u32 seq_hdr_found;
+> =C2=A0	struct vpu_buffer udata;
+> @@ -48,7 +57,8 @@ struct vdec_t {
+> =C2=A0	struct vpu_dec_codec_info codec_info;
+> =C2=A0	enum vpu_codec_state state;
+> =C2=A0
+> -	struct vpu_vb2_buffer *slots[VB2_MAX_FRAME];
+> +	struct vdec_frame_store_t *slots;
+> +	u32 slot_count;
+> =C2=A0	u32 req_frame_count;
+> =C2=A0	struct vdec_fs_info mbi;
+> =C2=A0	struct vdec_fs_info dcp;
+> @@ -289,6 +299,63 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
+> =C2=A0	return 0;
 > =C2=A0}
 > =C2=A0
-> +static void vdec_update_v4l2_ctrl(struct vpu_inst *inst, u32 id, u32 val=
-)
+> +static void vdec_attach_frame_store(struct vpu_inst *inst, struct vb2_bu=
+ffer *vb)
 > +{
-> +	struct v4l2_ctrl *ctrl =3D v4l2_ctrl_find(&inst->ctrl_handler, id);
+> +	struct vb2_v4l2_buffer *vbuf =3D to_vb2_v4l2_buffer(vb);
+> +	struct vpu_vb2_buffer *vpu_buf =3D to_vpu_vb2_buffer(vbuf);
+> +	struct vdec_t *vdec =3D inst->priv;
+> +	struct vdec_frame_store_t *new_slots =3D NULL;
+> +	dma_addr_t addr;
+> +	int i;
 > +
-> +	if (ctrl)
-> +		v4l2_ctrl_s_ctrl(ctrl, val);
-> +}
+> +	addr =3D vpu_get_vb_phy_addr(vb, 0);
+> +	for (i =3D 0; i < vdec->slot_count; i++) {
+> +		if (addr =3D=3D vdec->slots[i].addr) {
+> +			if (vdec->slots[i].curr && vdec->slots[i].curr !=3D vpu_buf) {
+> +				vpu_set_buffer_state(vbuf, VPU_BUF_STATE_CHANGED);
+> +				vdec->slots[i].pend =3D vpu_buf;
+> +			} else {
+> +				vpu_set_buffer_state(vbuf, vdec->slots[i].state);
+> +			}
+> +			vpu_buf->fs_id =3D i;
+> +			return;
+> +		}
+> +	}
 > +
-> +static void vdec_update_v4l2_profile_level(struct vpu_inst *inst, struct=
- vpu_dec_codec_info *hdr)
-> +{
-> +	switch (inst->out_format.pixfmt) {
-> +	case V4L2_PIX_FMT_H264:
-> +	case V4L2_PIX_FMT_H264_MVC:
-> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_PROFILE,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_h264_v4l2_profile(hdr->profil=
-e_idc));
-> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_LEVEL,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_h264_v4l2_level(hdr->level_id=
-c));
-> +		break;
-> +	case V4L2_PIX_FMT_HEVC:
-> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_hevc_v4l2_profile(hdr->profil=
-e_idc));
-> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_hevc_v4l2_level(hdr->level_id=
-c));
-> +		break;
-> +	default:
+> +	for (i =3D 0; i < vdec->slot_count; i++) {
+> +		if (!vdec->slots[i].addr) {
+> +			vdec->slots[i].addr =3D addr;
+> +			vpu_buf->fs_id =3D i;
+> +			return;
+> +		}
+> +	}
+> +
+> +	new_slots =3D krealloc_array(vdec->slots, vdec->slot_count * 2,
+> +				=C2=A0=C2=A0 sizeof(*vdec->slots),
+> +				=C2=A0=C2=A0 GFP_KERNEL | __GFP_ZERO);
+> +	if (!new_slots) {
+> +		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_ERROR);
 > +		return;
 > +	}
+> +
+> +	vdec->slots =3D new_slots;
+> +	vdec->slot_count *=3D 2;
+> +
+> +	vdec->slots[i].addr =3D addr;
+> +	vpu_buf->fs_id =3D i;
 > +}
 > +
-> =C2=A0static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_de=
-c_codec_info *hdr)
+> +static void vdec_reset_frame_store(struct vpu_inst *inst)
+> +{
+> +	struct vdec_t *vdec =3D inst->priv;
+> +
+> +	if (!vdec->slots || !vdec->slot_count)
+> +		return;
+> +
+> +	vpu_trace(inst->dev, "inst[%d] reset slots\n", inst->id);
+> +	memset(vdec->slots, 0, sizeof(*vdec->slots) * vdec->slot_count);
+> +}
+> +
+> =C2=A0static void vdec_handle_resolution_change(struct vpu_inst *inst)
 > =C2=A0{
 > =C2=A0	struct vdec_t *vdec =3D inst->priv;
-> @@ -1189,6 +1249,7 @@ static void vdec_event_seq_hdr(struct vpu_inst *ins=
-t, struct vpu_dec_codec_info
-> =C2=A0	vdec_init_crop(inst);
-> =C2=A0	vdec_init_mbi(inst);
-> =C2=A0	vdec_init_dcp(inst);
-> +	vdec_update_v4l2_profile_level(inst, hdr);
-> =C2=A0	if (!vdec->seq_hdr_found) {
-> =C2=A0		vdec->seq_tag =3D vdec->codec_info.tag;
-> =C2=A0		if (vdec->is_source_changed) {
-> diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/media/pl=
-atform/amphion/vpu_defs.h
-> index 428d988cf2f7..606f9d61a265 100644
-> --- a/drivers/media/platform/amphion/vpu_defs.h
-> +++ b/drivers/media/platform/amphion/vpu_defs.h
-> @@ -134,6 +134,7 @@ struct vpu_dec_codec_info {
-> =C2=A0	u32 decoded_height;
-> =C2=A0	struct v4l2_fract frame_rate;
-> =C2=A0	u32 dsp_asp_ratio;
-> +	u32 profile_idc;
-> =C2=A0	u32 level_idc;
-> =C2=A0	u32 bit_depth_luma;
-> =C2=A0	u32 bit_depth_chroma;
-> diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/media=
-/platform/amphion/vpu_helpers.c
-> index d12310af9ebc..108b75ceb4ae 100644
-> --- a/drivers/media/platform/amphion/vpu_helpers.c
-> +++ b/drivers/media/platform/amphion/vpu_helpers.c
-> @@ -509,3 +509,96 @@ const char *vpu_codec_state_name(enum vpu_codec_stat=
-e state)
+> @@ -750,11 +817,11 @@ static int vdec_frame_decoded(struct vpu_inst *inst=
+, void *arg)
+> =C2=A0	struct vb2_v4l2_buffer *src_buf;
+> =C2=A0	int ret =3D 0;
+> =C2=A0
+> -	if (!info || info->id >=3D ARRAY_SIZE(vdec->slots))
+> +	if (!info || info->id >=3D vdec->slot_count)
+> =C2=A0		return -EINVAL;
+> =C2=A0
+> =C2=A0	vpu_inst_lock(inst);
+> -	vpu_buf =3D vdec->slots[info->id];
+> +	vpu_buf =3D vdec->slots[info->id].curr;
+> =C2=A0	if (!vpu_buf) {
+> =C2=A0		dev_err(inst->dev, "[%d] decoded invalid frame[%d]\n", inst->id, =
+info->id);
+> =C2=A0		ret =3D -EINVAL;
+> @@ -775,11 +842,13 @@ static int vdec_frame_decoded(struct vpu_inst *inst=
+, void *arg)
+> =C2=A0	if (vpu_get_buffer_state(vbuf) =3D=3D VPU_BUF_STATE_DECODED)
+> =C2=A0		dev_info(inst->dev, "[%d] buf[%d] has been decoded\n", inst->id, =
+info->id);
+> =C2=A0	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_DECODED);
+> +	vdec->slots[info->id].state =3D VPU_BUF_STATE_DECODED;
+> =C2=A0	vdec->decoded_frame_count++;
+> =C2=A0	if (vdec->params.display_delay_enable) {
+> =C2=A0		struct vpu_format *cur_fmt;
+> =C2=A0
+> =C2=A0		cur_fmt =3D vpu_get_format(inst, inst->cap_format.type);
+> +		vdec->slots[info->id].state =3D VPU_BUF_STATE_READY;
+> =C2=A0		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_READY);
+> =C2=A0		for (int i =3D 0; i < vbuf->vb2_buf.num_planes; i++)
+> =C2=A0			vb2_set_plane_payload(&vbuf->vb2_buf,
+> @@ -802,11 +871,11 @@ static struct vpu_vb2_buffer *vdec_find_buffer(stru=
+ct vpu_inst *inst, u32 luma)
+> =C2=A0	struct vdec_t *vdec =3D inst->priv;
+> =C2=A0	int i;
+> =C2=A0
+> -	for (i =3D 0; i < ARRAY_SIZE(vdec->slots); i++) {
+> -		if (!vdec->slots[i])
+> +	for (i =3D 0; i < vdec->slot_count; i++) {
+> +		if (!vdec->slots[i].curr)
+> =C2=A0			continue;
+> -		if (luma =3D=3D vdec->slots[i]->luma)
+> -			return vdec->slots[i];
+> +		if (luma =3D=3D vdec->slots[i].addr)
+> +			return vdec->slots[i].curr;
 > =C2=A0	}
-> =C2=A0	return "<unknown>";
+> =C2=A0
+> =C2=A0	return NULL;
+> @@ -840,11 +909,11 @@ static void vdec_buf_done(struct vpu_inst *inst, st=
+ruct vpu_frame_info *frame)
+> =C2=A0
+> =C2=A0	cur_fmt =3D vpu_get_format(inst, inst->cap_format.type);
+> =C2=A0	vbuf =3D &vpu_buf->m2m_buf.vb;
+> -	if (vbuf->vb2_buf.index !=3D frame->id)
+> -		dev_err(inst->dev, "[%d] buffer id(%d, %d) dismatch\n",
+> -			inst->id, vbuf->vb2_buf.index, frame->id);
+> +	if (vpu_buf->fs_id !=3D frame->id)
+> +		dev_err(inst->dev, "[%d] buffer id(%d(%d), %d) dismatch\n",
+> +			inst->id, vpu_buf->fs_id, vbuf->vb2_buf.index, frame->id);
+
+Was not newly introduced, so I'll take anyway, but can you send a patch
+later to fix dismatch -> mismatch.
+
+> =C2=A0
+> -	if (vpu_get_buffer_state(vbuf) =3D=3D VPU_BUF_STATE_READY && vdec->para=
+ms.display_delay_enable)
+> +	if (vdec->params.display_delay_enable)
+> =C2=A0		return;
+> =C2=A0
+> =C2=A0	if (vpu_get_buffer_state(vbuf) !=3D VPU_BUF_STATE_DECODED)
+> @@ -857,10 +926,11 @@ static void vdec_buf_done(struct vpu_inst *inst, st=
+ruct vpu_frame_info *frame)
+> =C2=A0	vbuf->sequence =3D vdec->sequence;
+> =C2=A0	dev_dbg(inst->dev, "[%d][OUTPUT TS]%32lld\n", inst->id, vbuf->vb2_=
+buf.timestamp);
+> =C2=A0
+> -	v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
+> =C2=A0	vpu_inst_lock(inst);
+> +	vdec->slots[vpu_buf->fs_id].state =3D VPU_BUF_STATE_READY;
+> =C2=A0	vdec->display_frame_count++;
+> =C2=A0	vpu_inst_unlock(inst);
+> +	v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
+> =C2=A0	dev_dbg(inst->dev, "[%d] decoded : %d, display : %d, sequence : %d=
+\n",
+> =C2=A0		inst->id, vdec->decoded_frame_count, vdec->display_frame_count, v=
+dec->sequence);
 > =C2=A0}
-> +
-> +struct codec_id_mapping {
-> +	u32 id;
-> +	u32 v4l2_id;
-> +};
-> +
-> +static struct codec_id_mapping h264_profiles[] =3D {
-> +	{66,=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE},
-> +	{77,=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_MAIN},
-> +	{88,=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED},
-> +	{100, V4L2_MPEG_VIDEO_H264_PROFILE_HIGH},
-> +	{118, V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH},
-> +	{128, V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH}
-> +};
-> +
-> +static struct codec_id_mapping h264_levels[] =3D {
-> +	{10,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_0},
-> +	{9,=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1B},
-> +	{11,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_1},
-> +	{12,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_2},
-> +	{13,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_3},
-> +	{20,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_2_0},
-> +	{21,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_2_1},
-> +	{22,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_2_2},
-> +	{30,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_3_0},
-> +	{31,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_3_1},
-> +	{32,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_3_2},
-> +	{40,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_0},
-> +	{41,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_1},
-> +	{42,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_2},
-> +	{50,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_5_0},
-> +	{51,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_5_1},
-> +	{52,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_5_2},
-> +	{60,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_0},
-> +	{61,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_1},
-> +	{62,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_2}
-> +};
-> +
-> +static struct codec_id_mapping hevc_profiles[] =3D {
-> +	{1,=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN},
-> +	{2,=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10}
-> +};
-> +
-> +static struct codec_id_mapping hevc_levels[] =3D {
-> +	{30,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_1},
-> +	{60,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_2},
-> +	{63,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_2_1},
-> +	{90,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_3},
-> +	{93,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_3_1},
-> +	{120, V4L2_MPEG_VIDEO_HEVC_LEVEL_4},
-> +	{123, V4L2_MPEG_VIDEO_HEVC_LEVEL_4_1},
-> +	{150, V4L2_MPEG_VIDEO_HEVC_LEVEL_5},
-> +	{153, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_1},
-> +	{156, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_2},
-> +	{180, V4L2_MPEG_VIDEO_HEVC_LEVEL_6},
-> +	{183, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_1},
-> +	{186, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2}
-> +};
-> +
-> +static u32 vpu_find_v4l2_id(u32 id, struct codec_id_mapping *array, u32 =
-array_sz)
-> +{
-> +	u32 i;
-> +
-> +	if (!array || !array_sz)
-> +		return 0;
-> +
-> +	for (i =3D 0; i < array_sz; i++) {
-> +		if (id =3D=3D array[i].id)
-> +			return array[i].v4l2_id;
+> @@ -1103,18 +1173,30 @@ static int vdec_response_frame(struct vpu_inst *i=
+nst, struct vb2_v4l2_buffer *vb
+> =C2=A0	if (!vbuf)
+> =C2=A0		return -EINVAL;
+> =C2=A0
+> -	if (vdec->slots[vbuf->vb2_buf.index]) {
+> -		dev_err(inst->dev, "[%d] repeat alloc fs %d\n",
+> -			inst->id, vbuf->vb2_buf.index);
+> +	vpu_buf =3D to_vpu_vb2_buffer(vbuf);
+> +	if (vpu_buf->fs_id < 0 || vpu_buf->fs_id >=3D vdec->slot_count) {
+> +		dev_err(inst->dev, "invalid fs %d for v4l2 buffer %d\n",
+> +			vpu_buf->fs_id, vbuf->vb2_buf.index);
+> =C2=A0		return -EINVAL;
+> =C2=A0	}
+> =C2=A0
+> +	if (vdec->slots[vpu_buf->fs_id].curr) {
+> +		if (vdec->slots[vpu_buf->fs_id].curr !=3D vpu_buf) {
+> +			vpu_set_buffer_state(vbuf, VPU_BUF_STATE_CHANGED);
+> +			vdec->slots[vpu_buf->fs_id].pend =3D vpu_buf;
+> +		} else {
+> +			vpu_set_buffer_state(vbuf, vdec->slots[vpu_buf->fs_id].state);
+> +		}
+> +		dev_err(inst->dev, "[%d] repeat alloc fs %d (v4l2 index %d)\n",
+> +			inst->id, vpu_buf->fs_id, vbuf->vb2_buf.index);
+> +		return -EAGAIN;
 > +	}
 > +
-> +	return 0;
-> +}
-> +
-> +u32 vpu_get_h264_v4l2_profile(u32 idc)
-> +{
-> +	return vpu_find_v4l2_id(idc, h264_profiles, ARRAY_SIZE(h264_profiles));
-> +}
-> +
-> +u32 vpu_get_h264_v4l2_level(u32 idc)
-> +{
-> +	return vpu_find_v4l2_id(idc, h264_levels, ARRAY_SIZE(h264_levels));
-> +}
-> +
-> +u32 vpu_get_hevc_v4l2_profile(u32 idc)
-> +{
-> +	return vpu_find_v4l2_id(idc, hevc_profiles, ARRAY_SIZE(hevc_profiles));
-> +}
-> +
-> +u32 vpu_get_hevc_v4l2_level(u32 idc)
-> +{
-> +	return vpu_find_v4l2_id(idc, hevc_levels, ARRAY_SIZE(hevc_levels));
-> +}
-> diff --git a/drivers/media/platform/amphion/vpu_helpers.h b/drivers/media=
-/platform/amphion/vpu_helpers.h
-> index 0eaddb07190d..dc5fb1ca2d33 100644
-> --- a/drivers/media/platform/amphion/vpu_helpers.h
-> +++ b/drivers/media/platform/amphion/vpu_helpers.h
-> @@ -70,4 +70,9 @@ int vpu_color_get_default(u32 primaries, u32 *ptransfer=
-s, u32 *pmatrix, u32 *pfu
+> =C2=A0	dev_dbg(inst->dev, "[%d] state =3D %s, alloc fs %d, tag =3D 0x%x\n=
+",
+> =C2=A0		inst->id, vpu_codec_state_name(inst->state), vbuf->vb2_buf.index,=
+ vdec->seq_tag);
+> -	vpu_buf =3D to_vpu_vb2_buffer(vbuf);
 > =C2=A0
-> =C2=A0int vpu_find_dst_by_src(struct vpu_pair *pairs, u32 cnt, u32 src);
-> =C2=A0int vpu_find_src_by_dst(struct vpu_pair *pairs, u32 cnt, u32 dst);
+> =C2=A0	memset(&info, 0, sizeof(info));
+> -	info.id =3D vbuf->vb2_buf.index;
+> +	info.id =3D vpu_buf->fs_id;
+> =C2=A0	info.type =3D MEM_RES_FRAME;
+> =C2=A0	info.tag =3D vdec->seq_tag;
+> =C2=A0	info.luma_addr =3D vpu_get_vb_phy_addr(&vbuf->vb2_buf, 0);
+> @@ -1129,12 +1211,13 @@ static int vdec_response_frame(struct vpu_inst *i=
+nst, struct vb2_v4l2_buffer *vb
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	vpu_buf->tag =3D info.tag;
+> =C2=A0	vpu_buf->luma =3D info.luma_addr;
+> =C2=A0	vpu_buf->chroma_u =3D info.chroma_addr;
+> =C2=A0	vpu_buf->chroma_v =3D 0;
+> =C2=A0	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_INUSE);
+> -	vdec->slots[info.id] =3D vpu_buf;
+> +	vdec->slots[info.id].tag =3D info.tag;
+> +	vdec->slots[info.id].curr =3D vpu_buf;
+> +	vdec->slots[info.id].state =3D VPU_BUF_STATE_INUSE;
+> =C2=A0	vdec->req_frame_count--;
+> =C2=A0
+> =C2=A0	return 0;
+> @@ -1195,25 +1278,47 @@ static void vdec_recycle_buffer(struct vpu_inst *=
+inst, struct vb2_v4l2_buffer *v
+> =C2=A0	v4l2_m2m_buf_queue(inst->fh.m2m_ctx, vbuf);
+> =C2=A0}
+> =C2=A0
+> -static void vdec_clear_slots(struct vpu_inst *inst)
+> +static void vdec_release_curr_frame_store(struct vpu_inst *inst, u32 id)
+> =C2=A0{
+> =C2=A0	struct vdec_t *vdec =3D inst->priv;
+> =C2=A0	struct vpu_vb2_buffer *vpu_buf;
+> =C2=A0	struct vb2_v4l2_buffer *vbuf;
 > +
-> +u32 vpu_get_h264_v4l2_profile(u32 idc);
-> +u32 vpu_get_h264_v4l2_level(u32 idc);
-> +u32 vpu_get_hevc_v4l2_profile(u32 idc);
-> +u32 vpu_get_hevc_v4l2_level(u32 idc);
-> =C2=A0#endif
-> diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/=
-platform/amphion/vpu_malone.c
-> index 4769c053c6c2..5c6b2a841b6f 100644
-> --- a/drivers/media/platform/amphion/vpu_malone.c
-> +++ b/drivers/media/platform/amphion/vpu_malone.c
-> @@ -889,7 +889,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_rpc_=
-event *pkt,
-> =C2=A0	info->frame_rate.numerator =3D 1000;
-> =C2=A0	info->frame_rate.denominator =3D pkt->data[8];
-> =C2=A0	info->dsp_asp_ratio =3D pkt->data[9];
-> -	info->level_idc =3D pkt->data[10];
-> +	info->profile_idc =3D (pkt->data[10] >> 8) & 0xff;
+> +	if (id >=3D vdec->slot_count)
+> +		return;
+> +	if (!vdec->slots[id].curr)
+> +		return;
+> +
+> +	vpu_buf =3D vdec->slots[id].curr;
+> +	vbuf =3D &vpu_buf->m2m_buf.vb;
+> +
+> +	vdec_response_fs_release(inst, id, vdec->slots[id].tag);
+> +	if (vpu_buf->fs_id =3D=3D id) {
+> +		if (vpu_buf->state !=3D VPU_BUF_STATE_READY)
+> +			vdec_recycle_buffer(inst, vbuf);
+> +		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
+> +	}
+> +
+> +	vdec->slots[id].curr =3D NULL;
+> +	vdec->slots[id].state =3D VPU_BUF_STATE_IDLE;
+> +
+> +	if (vdec->slots[id].pend) {
+> +		vpu_set_buffer_state(&vdec->slots[id].pend->m2m_buf.vb, VPU_BUF_STATE_=
+IDLE);
+> +		vdec->slots[id].pend =3D NULL;
+> +	}
+> +}
+> +
+> +static void vdec_clear_slots(struct vpu_inst *inst)
+> +{
+> +	struct vdec_t *vdec =3D inst->priv;
+> =C2=A0	int i;
+> =C2=A0
+> -	for (i =3D 0; i < ARRAY_SIZE(vdec->slots); i++) {
+> -		if (!vdec->slots[i])
+> +	for (i =3D 0; i < vdec->slot_count; i++) {
+> +		if (!vdec->slots[i].curr)
+> =C2=A0			continue;
+> =C2=A0
+> -		vpu_buf =3D vdec->slots[i];
+> -		vbuf =3D &vpu_buf->m2m_buf.vb;
+> -
+> =C2=A0		vpu_trace(inst->dev, "clear slot %d\n", i);
+> -		vdec_response_fs_release(inst, i, vpu_buf->tag);
+> -		vdec_recycle_buffer(inst, vbuf);
+> -		vdec->slots[i]->state =3D VPU_BUF_STATE_IDLE;
+> -		vdec->slots[i] =3D NULL;
+> +		vdec_release_curr_frame_store(inst, i);
+> =C2=A0	}
+> =C2=A0}
+> =C2=A0
+> @@ -1354,39 +1459,29 @@ static void vdec_event_req_fs(struct vpu_inst *in=
+st, struct vpu_fs_info *fs)
+> =C2=A0static void vdec_evnet_rel_fs(struct vpu_inst *inst, struct vpu_fs_=
+info *fs)
+> =C2=A0{
+> =C2=A0	struct vdec_t *vdec =3D inst->priv;
+> -	struct vpu_vb2_buffer *vpu_buf;
+> -	struct vb2_v4l2_buffer *vbuf;
+> =C2=A0
+> -	if (!fs || fs->id >=3D ARRAY_SIZE(vdec->slots))
+> +	if (!fs || fs->id >=3D vdec->slot_count)
+> =C2=A0		return;
+> =C2=A0	if (fs->type !=3D MEM_RES_FRAME)
+> =C2=A0		return;
+> =C2=A0
+> -	if (fs->id >=3D vpu_get_num_buffers(inst, inst->cap_format.type)) {
+> +	if (fs->id >=3D vdec->slot_count) {
+> =C2=A0		dev_err(inst->dev, "[%d] invalid fs(%d) to release\n", inst->id, =
+fs->id);
+> =C2=A0		return;
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	vpu_inst_lock(inst);
+> -	vpu_buf =3D vdec->slots[fs->id];
+> -	vdec->slots[fs->id] =3D NULL;
+> -
+> -	if (!vpu_buf) {
+> +	if (!vdec->slots[fs->id].curr) {
+> =C2=A0		dev_dbg(inst->dev, "[%d] fs[%d] has bee released\n", inst->id, fs=
+->id);
+> =C2=A0		goto exit;
+> =C2=A0	}
+> =C2=A0
+> -	vbuf =3D &vpu_buf->m2m_buf.vb;
+> -	if (vpu_get_buffer_state(vbuf) =3D=3D VPU_BUF_STATE_DECODED) {
+> +	if (vdec->slots[fs->id].state =3D=3D VPU_BUF_STATE_DECODED) {
+> =C2=A0		dev_dbg(inst->dev, "[%d] frame skip\n", inst->id);
+> =C2=A0		vdec->sequence++;
+> =C2=A0	}
+> =C2=A0
+> -	vdec_response_fs_release(inst, fs->id, vpu_buf->tag);
+> -	if (vpu_get_buffer_state(vbuf) !=3D VPU_BUF_STATE_READY)
+> -		vdec_recycle_buffer(inst, vbuf);
+> -
+> -	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
+> +	vdec_release_curr_frame_store(inst, fs->id);
+> =C2=A0	vpu_process_capture_buffer(inst);
+> =C2=A0
+> =C2=A0exit:
+> @@ -1582,6 +1677,11 @@ static void vdec_cleanup(struct vpu_inst *inst)
+> =C2=A0		return;
+> =C2=A0
+> =C2=A0	vdec =3D inst->priv;
+> +	if (vdec) {
+> +		kfree(vdec->slots);
+> +		vdec->slots =3D NULL;
+> +		vdec->slot_count =3D 0;
+> +	}
+> =C2=A0	vfree(vdec);
+> =C2=A0	inst->priv =3D NULL;
+> =C2=A0	vfree(inst);
+> @@ -1713,11 +1813,43 @@ static int vdec_stop_session(struct vpu_inst *ins=
+t, u32 type)
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
+> -static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 siz=
+e, u32 i)
+> +static int vdec_get_slot_debug_info(struct vpu_inst *inst, char *str, u3=
+2 size, u32 i)
+> =C2=A0{
+> =C2=A0	struct vdec_t *vdec =3D inst->priv;
+> +	struct vpu_vb2_buffer *vpu_buf;
+> =C2=A0	int num =3D -1;
+> =C2=A0
+> +	vpu_inst_lock(inst);
+> +	if (i >=3D vdec->slot_count || !vdec->slots[i].addr)
+> +		goto exit;
+> +
+> +	vpu_buf =3D vdec->slots[i].curr;
+> +
+> +	num =3D scnprintf(str, size, "slot[%2d] :", i);
+> +	if (vpu_buf) {
+> +		num +=3D scnprintf(str + num, size - num, " %2d",
+> +				 vpu_buf->m2m_buf.vb.vb2_buf.index);
+> +		num +=3D scnprintf(str + num, size - num, "; state =3D %d", vdec->slot=
+s[i].state);
+> +	} else {
+> +		num +=3D scnprintf(str + num, size - num, " -1");
+> +	}
+> +
+> +	if (vdec->slots[i].pend)
+> +		num +=3D scnprintf(str + num, size - num, "; %d",
+> +				 vdec->slots[i].pend->m2m_buf.vb.vb2_buf.index);
+> +
+> +	num +=3D scnprintf(str + num, size - num, "\n");
+> +exit:
+> +	vpu_inst_unlock(inst);
+> +
+> +	return num;
+> +}
+> +
+> +static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 siz=
+e, u32 i)
+> +{
+> +	struct vdec_t *vdec =3D inst->priv;
+> +	int num;
+> +
+> =C2=A0	switch (i) {
+> =C2=A0	case 0:
+> =C2=A0		num =3D scnprintf(str, size,
+> @@ -1771,6 +1903,7 @@ static int vdec_get_debug_info(struct vpu_inst *ins=
+t, char *str, u32 size, u32 i
+> =C2=A0				vdec->codec_info.vui_present);
+> =C2=A0		break;
+> =C2=A0	default:
+> +		num =3D vdec_get_slot_debug_info(inst, str, size, i - 10);
+> =C2=A0		break;
+> =C2=A0	}
+> =C2=A0
+> @@ -1794,6 +1927,8 @@ static struct vpu_inst_ops vdec_inst_ops =3D {
+> =C2=A0	.get_debug_info =3D vdec_get_debug_info,
+> =C2=A0	.wait_prepare =3D vpu_inst_unlock,
+> =C2=A0	.wait_finish =3D vpu_inst_lock,
+> +	.attach_frame_store =3D vdec_attach_frame_store,
+> +	.reset_frame_store =3D vdec_reset_frame_store,
+> =C2=A0};
+> =C2=A0
+> =C2=A0static void vdec_init(struct file *file)
+> @@ -1834,6 +1969,16 @@ static int vdec_open(struct file *file)
+> =C2=A0		return -ENOMEM;
+> =C2=A0	}
+> =C2=A0
+> +	vdec->slots =3D kmalloc_array(VDEC_SLOT_CNT_DFT,
+> +				=C2=A0=C2=A0=C2=A0 sizeof(*vdec->slots),
+> +				=C2=A0=C2=A0=C2=A0 GFP_KERNEL | __GFP_ZERO);
+> +	if (!vdec->slots) {
+> +		vfree(vdec);
+> +		vfree(inst);
+> +		return -ENOMEM;
+> +	}
+> +	vdec->slot_count =3D VDEC_SLOT_CNT_DFT;
+> +
+> =C2=A0	inst->ops =3D &vdec_inst_ops;
+> =C2=A0	inst->formats =3D vdec_formats;
+> =C2=A0	inst->type =3D VPU_CORE_TYPE_DEC;
+> diff --git a/drivers/media/platform/amphion/vpu.h b/drivers/media/platfor=
+m/amphion/vpu.h
+> index 978971712742..d8100da160d1 100644
+> --- a/drivers/media/platform/amphion/vpu.h
+> +++ b/drivers/media/platform/amphion/vpu.h
+> @@ -223,6 +223,8 @@ struct vpu_inst_ops {
+> =C2=A0	int (*get_debug_info)(struct vpu_inst *inst, char *str, u32 size, =
+u32 i);
+> =C2=A0	void (*wait_prepare)(struct vpu_inst *inst);
+> =C2=A0	void (*wait_finish)(struct vpu_inst *inst);
+> +	void (*attach_frame_store)(struct vpu_inst *inst, struct vb2_buffer *vb=
+);
+> +	void (*reset_frame_store)(struct vpu_inst *inst);
+> =C2=A0};
+> =C2=A0
+> =C2=A0struct vpu_inst {
+> @@ -297,7 +299,8 @@ enum {
+> =C2=A0	VPU_BUF_STATE_DECODED,
+> =C2=A0	VPU_BUF_STATE_READY,
+> =C2=A0	VPU_BUF_STATE_SKIP,
+> -	VPU_BUF_STATE_ERROR
+> +	VPU_BUF_STATE_ERROR,
+> +	VPU_BUF_STATE_CHANGED
+> =C2=A0};
+> =C2=A0
+> =C2=A0struct vpu_vb2_buffer {
+> @@ -306,8 +309,8 @@ struct vpu_vb2_buffer {
+> =C2=A0	dma_addr_t chroma_u;
+> =C2=A0	dma_addr_t chroma_v;
+> =C2=A0	unsigned int state;
+> -	u32 tag;
+> =C2=A0	u32 average_qp;
+> +	s32 fs_id;
+> =C2=A0};
+> =C2=A0
+> =C2=A0void vpu_writel(struct vpu_dev *vpu, u32 reg, u32 val);
+> diff --git a/drivers/media/platform/amphion/vpu_dbg.c b/drivers/media/pla=
+tform/amphion/vpu_dbg.c
+> index 940e5bda5fa3..497ae4e8a229 100644
+> --- a/drivers/media/platform/amphion/vpu_dbg.c
+> +++ b/drivers/media/platform/amphion/vpu_dbg.c
+> @@ -48,6 +48,7 @@ static char *vpu_stat_name[] =3D {
+> =C2=A0	[VPU_BUF_STATE_READY] =3D "ready",
+> =C2=A0	[VPU_BUF_STATE_SKIP] =3D "skip",
+> =C2=A0	[VPU_BUF_STATE_ERROR] =3D "error",
+> +	[VPU_BUF_STATE_CHANGED] =3D "changed",
+> =C2=A0};
+> =C2=A0
+> =C2=A0static inline const char *to_vpu_stat_name(int state)
+> @@ -164,6 +165,7 @@ static int vpu_dbg_instance(struct seq_file *s, void =
+*data)
+> =C2=A0	for (i =3D 0; i < vb2_get_num_buffers(vq); i++) {
+> =C2=A0		struct vb2_buffer *vb;
+> =C2=A0		struct vb2_v4l2_buffer *vbuf;
+> +		struct vpu_vb2_buffer *vpu_buf;
+> =C2=A0
+> =C2=A0		vb =3D vb2_get_buffer(vq, i);
+> =C2=A0		if (!vb)
+> @@ -173,13 +175,24 @@ static int vpu_dbg_instance(struct seq_file *s, voi=
+d *data)
+> =C2=A0			continue;
+> =C2=A0
+> =C2=A0		vbuf =3D to_vb2_v4l2_buffer(vb);
+> +		vpu_buf =3D to_vpu_vb2_buffer(vbuf);
+> =C2=A0
+> =C2=A0		num =3D scnprintf(str, sizeof(str),
+> -				"capture[%2d] state =3D %10s, %8s\n",
+> +				"capture[%2d] state =3D %10s, %8s",
+> =C2=A0				i, vb2_stat_name[vb->state],
+> =C2=A0				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
+> =C2=A0		if (seq_write(s, str, num))
+> =C2=A0			return 0;
+> +
+> +		if (vpu_buf->fs_id >=3D 0) {
+> +			num =3D scnprintf(str, sizeof(str), "; fs %d", vpu_buf->fs_id);
+> +			if (seq_write(s, str, num))
+> +				return 0;
+> +		}
+> +
+> +		num =3D scnprintf(str, sizeof(str), "\n");
+> +		if (seq_write(s, str, num))
+> +			return 0;
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	num =3D scnprintf(str, sizeof(str), "sequence =3D %d\n", inst->seq=
+uence);
+> diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/pl=
+atform/amphion/vpu_v4l2.c
+> index 50aeb69d2c66..37ef706c29dd 100644
+> --- a/drivers/media/platform/amphion/vpu_v4l2.c
+> +++ b/drivers/media/platform/amphion/vpu_v4l2.c
+> @@ -500,14 +500,25 @@ static int vpu_vb2_queue_setup(struct vb2_queue *vq=
+,
+> =C2=A0		call_void_vop(inst, release);
+> =C2=A0	}
+> =C2=A0
+> +	if (V4L2_TYPE_IS_CAPTURE(vq->type))
+> +		call_void_vop(inst, reset_frame_store);
+> +
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static int vpu_vb2_buf_init(struct vb2_buffer *vb)
+> =C2=A0{
+> =C2=A0	struct vb2_v4l2_buffer *vbuf =3D to_vb2_v4l2_buffer(vb);
+> +	struct vpu_vb2_buffer *vpu_buf =3D to_vpu_vb2_buffer(vbuf);
+> +	struct vpu_inst *inst =3D vb2_get_drv_priv(vb->vb2_queue);
+> =C2=A0
+> +	vpu_buf->fs_id =3D -1;
+> =C2=A0	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
+> +
+> +	if (!inst->ops->attach_frame_store || V4L2_TYPE_IS_OUTPUT(vb->type))
+> +		return 0;
+> +
+> +	call_void_vop(inst, attach_frame_store, vb);
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
 
-The data should normally also include the sps_constraint_set1_flag,
-which differentiate baseline from constrained-baseline. I would also be
-very surprised if the decoders supports ASO/FMO.
-
-Nicolas
-
-> +	info->level_idc =3D pkt->data[10] & 0xff;
-> =C2=A0	info->bit_depth_luma =3D pkt->data[13];
-> =C2=A0	info->bit_depth_chroma =3D pkt->data[14];
-> =C2=A0	info->chroma_fmt =3D pkt->data[15];
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
