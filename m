@@ -1,50 +1,48 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03FC1386DA
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 13:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9475A27466;
+	Tue, 22 Apr 2025 13:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745326896; cv=none; b=W5XoxakS+GVjjBsquFuTYhx1jJDzsfgLP6nb6TyAWDKQ+FdYu9icyXi7s0Frbg+XJgDfXk5CfsZ1ClPR3M/djSYvO32xLTaIl0szEEdBCHkSPc436mJTDByjiPdgF2XRmzmjwnzNC10YSwaFTmyaPkvCxcbzpzofIwaXCJx1EVY=
+	t=1745327390; cv=none; b=kSApXvsc0CVe+tdVjqTr0ChKe0WxgUkt7JUszLr1tv3Xd4vEJnHpjxQgOaoOwzCN6TiEaDm/ZMT06qgndCcJ7gMwdOVAkYnSI9dxpEnkoJsp/OSt2a/3dd60JSjnwx0ijGLwme5O7ea7oLlY8CO5ffuCj4H2UjROFTTcL/gBADs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745326896; c=relaxed/simple;
-	bh=5LMGE4ZovaTauFyhzyyvbLqIw01XMG3sYlgkOB3VihQ=;
+	s=arc-20240116; t=1745327390; c=relaxed/simple;
+	bh=BEx2KaD/mS0zMAQs7LahMUkYPebN7yNtc+yXj3QXDNU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qcXs0Zi4/Hpj35YKm5YHuJC8nM34IqvxfoSv0/Zvd3OqCnwntW3KocTq62F2QZA3llX1NF2Oz7UYzlfa5fuAh8njStpyUhPqgwyhaDUaUkUTpNCC5HKHSnROve9P9BFNv/rbPhe1/yAwaIs48/zkW/5Csbl5xMSQtrAX2CCk8+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=C4zXWLtl; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=FKWwheElKgcx9ZE/Wyxoi2TxWBkMK2S7ycexiEPpnW6k/0XhCZJjWTwF6IqM+sYBtygTl7MeevlLR/nx2/kJOLQguOBholEtR4USV5MLaykeVzS7kJMSY4lcPwDzTn9JP0ZZ8iCx09dOQJKqpP1tcL56hUI3dZaSpUb1Dtfen+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZpXQOku; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="C4zXWLtl"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 072081F99E;
-	Tue, 22 Apr 2025 15:01:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1745326891;
-	bh=vjca4SS0LDQaoBRT4ZcgCIXZFJwOWWihMEoq+jbhB/o=; h=From:To:Subject;
-	b=C4zXWLtlL3y67SU1zoapsx4icmhYWhMeUCN1+Dr/K5iofMbMRwqEtYbmtBr/diRVo
-	 WBE7GTpJmG2QiK0IiWCQR+sBO95Wu/XMZqT6cVREWWdTfiKoaOMx18iYPMhkBEHHJh
-	 j4EgkGVlI2GS962j1yky/mfJsEYSkOjKlwNp6MyiEGtnt5ZhHoJ2zRBSjvcWpbb9JG
-	 OYeoQ+x1QMIDpEt8MJb2319XF5JN675YzWIgbL19PiUSvUrMpLYcZo6bZPPhLBakhf
-	 NHWnuz9c5a50LpziXXGaZCwd8NrQzZRH8U6dodWuS92/Rqfvem54ZP788P3RdrB76K
-	 vbkzG8mEnNLhg==
-Date: Tue, 22 Apr 2025 15:01:27 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
-Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZpXQOku"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7313C4CEE9;
+	Tue, 22 Apr 2025 13:09:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745327390;
+	bh=BEx2KaD/mS0zMAQs7LahMUkYPebN7yNtc+yXj3QXDNU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gZpXQOku0cTPUuOLSbem5KBzHMXQSFgGD8UvL8Bgola6TijHA8i8dI1fZdJa/SGrs
+	 rJNrQ5e04CMvgjkjAhWWs0ec2zqbALFifzOWPV95KK5wCr97J1BrTHtDofRONx4BsX
+	 /k2pnqBXqQdJ80q1fcKb1bnDtUITwsgQitg/KArtlIoxKMtp8Vu/QlFy2Stfo9Ft6G
+	 +EGu0N0A38sFznGSmrzYK96HsDFWEg1i1PZkzCbOM5H7DpblLsTeadhI5mVAWoIdSo
+	 eh42bm3b1zB0+lHI21J471ba+CWMHqvHQEerCjjuMc9OX7r8WwMJZb/285dET8PUwK
+	 FZAh94y2wi5eQ==
+Date: Tue, 22 Apr 2025 08:09:48 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: NXP S32 Linux Team <s32@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	imx@lists.linux.dev, Jacky Bai <ping.bai@nxp.com>,
+	linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	linux-gpio@vger.kernel.org, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Philippe Schenker <philippe.schenker@impulsing.ch>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to
- usdhc2
-Message-ID: <20250422130127.GA238494@francesco-nb>
-References: <20250422124619.713235-1-Wojciech.Dubowik@mt.com>
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/1] dt-bindings: pinctrl: convert
+ fsl,imx7ulp-pinctrl.txt to yaml format
+Message-ID: <174532738787.1019688.10866076280609935749.robh@kernel.org>
+References: <20250417152158.3570936-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,42 +51,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250422124619.713235-1-Wojciech.Dubowik@mt.com>
+In-Reply-To: <20250417152158.3570936-1-Frank.Li@nxp.com>
 
-Hello Wojciech,
 
-On Tue, Apr 22, 2025 at 02:46:15PM +0200, Wojciech Dubowik wrote:
-> Define vqmmc regulator-gpio for usdhc2 with vin-supply
-> coming from LDO5.
+On Thu, 17 Apr 2025 11:21:57 -0400, Frank Li wrote:
+> Convert fsl,imx7ulp-pinctrl.txt to yaml format.
 > 
-> Without this definition LDO5 will be powered down, disabling
-> SD card after bootup. This has been introduced in commit
-> f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5").
+> Additional changes:
+> - remove label in example
+> - fsl,pin direct use hex value instead of macro because macro define in
+> dts local directory.
 > 
-> Fixes: f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5")
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> v1 -> v2: https://lore.kernel.org/all/20250417112012.785420-1-Wojciech.Dubowik@mt.com/
->  - define gpio regulator for LDO5 vin controlled by vselect signal
-> ---
->  .../boot/dts/freescale/imx8mm-verdin.dtsi     | 23 +++++++++++++++----
->  1 file changed, 19 insertions(+), 4 deletions(-)
+>  .../bindings/pinctrl/fsl,imx7ulp-iomuxc1.yaml | 99 +++++++++++++++++++
+>  .../bindings/pinctrl/fsl,imx7ulp-pinctrl.txt  | 53 ----------
+>  2 files changed, 99 insertions(+), 53 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx7ulp-iomuxc1.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,imx7ulp-pinctrl.txt
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> index 7251ad3a0017..9b56a36c5f77 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> @@ -1206,13 +1220,17 @@ pinctrl_usdhc2_pwr_en: usdhc2pwrengrp {
->  			<MX8MM_IOMUXC_NAND_CLE_GPIO3_IO5		0x6>;	/* SODIMM 76 */
->  	};
->  
-> +	pinctrl_usdhc2_vsel: usdhc2vselgrp {
-> +		fsl,pins =
-> +			<MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x10>; /* PMIC_USDHC_VSELECT */
 
-This needs to be muxed as GPIO, MX8MM_IOMUXC_GPIO1_IO04_GPIO1_IO4
-
-Francesco
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
