@@ -1,249 +1,83 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDFA20B803
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 10:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6981C20C49E
+	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 10:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745316805; cv=none; b=K7FbkxaIDdoMJV4yk6UlfENCEOqehnhk4JfZId5NTCUgwsOC1Z4ghNaS09HNWpQDiADtscRgKD7Rnf6J8m7iBg1X09JlPRB6v3aYJXFXKlf9R05ekqM3x9LvvUSHCECKaX7t2yUJl8ZazG1gRjvddwOPUwVQA/D+aNi99cErbdw=
+	t=1745317013; cv=none; b=gGtwe93i0Vsp6Ab9iRIrGi91Qh6nSZYPWZf7ggH5g0fRY5I+yOQ6+GmVbGhhPxwv69WmNs3rrIgYHLgf2OddL6/fTEbqy2bqxpa3ka1HWW0YD1ZFa6Ps3e19JxytdzRN70EN0o5TLMqwdg+U5My9sfMd4Loum12FxfP6rk8sBvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745316805; c=relaxed/simple;
-	bh=rrmozzNxumnGfR9XKl/Tk4HoyfrHtNJ6j/pS/lYfCG8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GVLfugRsHHSXSsNltUA95E/+VC0gOy3o+5HIDf3iRmeVn+yY0GlmCU41zygZm5BInzqLbppX6ZCUjYMdMGKVsx+kBJSehuU9DEXrSgQvxzDo2svvDc11e/USfZLbGRMMVFHhjBNGrwdGTRPfiOXboQ/W/Wczi5e+vcmMKguideI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Ny5G3pbi; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=jh5PkcDA reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Ny5G3pbi";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="jh5PkcDA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1745316802; x=1776852802;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=GTgyBYM0atbB7o8tyo96ALPdwLqQ7fnnytL7AnbCemc=;
-  b=Ny5G3pbi6964mSBk9xceTVUd8b7J8SJK1m9+rl+5FgBiWAFVjbF9BVgD
-   lupwHqmUXwbHBgwJyFKlLAM3zPW2XkqnOX7K9BLJD/p6L669egqi0crZl
-   GgREhn43soZ7rAjB2sRxhGpnaTzd/0UdVU2vBoDpM0XM5by/esgg9LKYd
-   nSve7kcUFsUdBoqquKOo5gPZJAvwDkre4iKojnBAkrbYxRQcwn0IE6uX7
-   bb8UAsgbhtJJ5rp0aX6vDqpPhOtsGbwOQADzq9VSr7PP+ubKf7EnUGM7X
-   pPQe4Z4ePeXPOCNN7U10FZ69lRkgJkEGL/YCjwIDbhLM6tW/r4lwiKCL1
-   g==;
-X-CSE-ConnectionGUID: aFnZ/5SfRwmMZma6TXZltg==
-X-CSE-MsgGUID: zm9SyFfMT+ynQMFBCmSLdA==
-X-IronPort-AV: E=Sophos;i="6.15,230,1739833200"; 
-   d="scan'208";a="43643392"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 22 Apr 2025 12:13:13 +0200
-X-CheckPoint: {68076BB9-D-DC4DC9A0-F4F29281}
-X-MAIL-CPID: E85EBD5DCC334B9006B24DBC4B5A8702_0
-X-Control-Analysis: str=0001.0A006368.68076BC7.004D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4392516157F;
-	Tue, 22 Apr 2025 12:13:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1745316787;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GTgyBYM0atbB7o8tyo96ALPdwLqQ7fnnytL7AnbCemc=;
-	b=jh5PkcDACdr42zBpglMQlTtHe2GsSeBycBax5AeNrIxoKMDEJi7pZOJGlvzcbqZPXoEuQW
-	itX8TLKWSVXdsogH8yaE3qZS5OuU1HYtmNkf2FX4wEkhC/kWqwImVYs+TJAapW5oJYdJs1
-	89o/8/ZpbhEe5nLHs9mSAI6iZLeSl9p2sxmMCWrCo2sr/bfNrYq7stmyIWZwc6hcLLrj7Y
-	BLaiAxio5vEP2Ka1JGJJNPal5ZJBBH8IuYQc37TxJwWtH9Hw5TKQ8ZTCblhwH2Qwq+3Zfw
-	jERP+NMjT+g1hrYcyTSSkzKjWX1+FZAGQs7slMKzOq6v31gpOcqFoqlTN+LlvQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Stefan Agner <stefan@agner.ch>,
- Alison Wang <alison.wang@nxp.com>,
- "open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] dt-bindings: display: imx: convert fsl,
- dcu.txt to yaml format
-Date: Tue, 22 Apr 2025 12:13:04 +0200
-Message-ID: <2782645.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250417151934.3570681-1-Frank.Li@nxp.com>
-References: <20250417151934.3570681-1-Frank.Li@nxp.com>
+	s=arc-20240116; t=1745317013; c=relaxed/simple;
+	bh=W90UIsyeg/0lHOkHT4N2q5JRFzPPDsW1VlF70FXqS88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uXv1k4iI3I/Z0exjdLrps3W61fHqMdvkWnGeobQUHsWwuCS+1LynasR4SfRpouAad1dUJk3PKTnzvQ8s9BV2smAAD+/Mo87is0D8bJAjQD+KgF/1vgPNVV9bLB28D7+4m12JiMbE1YF0k2bV9fpGcSoKw259hSOwgECsUBSsqUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1399152B;
+	Tue, 22 Apr 2025 03:16:45 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4F67A3F66E;
+	Tue, 22 Apr 2025 03:16:47 -0700 (PDT)
+Date: Tue, 22 Apr 2025 11:16:44 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Peng Fan <peng.fan@nxp.com>, Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Aisheng Dong <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH 1/4] firmware: arm_scmi: bus: Bypass setting fwnode for
+ scmi cpufreq
+Message-ID: <20250422-vigorous-cockatoo-of-growth-bacdb7@sudeepholla>
+References: <PAXPR04MB8459EA5C7898393E51C246AD88D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <PAXPR04MB8459A73179FFF0ED0C9A51E488D12@PAXPR04MB8459.eurprd04.prod.outlook.com>
+ <Z9AdICiyaCmzKh-N@bogus>
+ <Z9FnZzBQuZ1j5k3I@bogus>
+ <Z9Fv9JPdF5OWUHfk@bogus>
+ <20250313052309.GA11131@nxa18884-linux>
+ <20250409035029.GC27988@nxa18884-linux>
+ <20250409-incredible-attentive-scorpion-fa9def@sudeepholla>
+ <20250417-diligent-anteater-of-felicity-70bff3@sudeepholla>
+ <20250420140944.GB31933@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250420140944.GB31933@nxa18884-linux>
 
-Am Donnerstag, 17. April 2025, 17:19:33 CEST schrieb Frank Li:
-> Convert fsl,dcu.txt to yaml format.
->=20
-> Additional changes:
-> - remove label in example.
-> - change node to display-controller in example.
-> - use 32bit address in example.
->=20
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/display/fsl,dcu.txt   | 34 ----------
->  .../bindings/display/fsl,ls1021a-dcu.yaml     | 68 +++++++++++++++++++
->  MAINTAINERS                                   |  2 +-
->  3 files changed, 69 insertions(+), 35 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/display/fsl,dcu.txt
->  create mode 100644 Documentation/devicetree/bindings/display/fsl,ls1021a=
-=2Ddcu.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/display/fsl,dcu.txt b/Docu=
-mentation/devicetree/bindings/display/fsl,dcu.txt
-> deleted file mode 100644
-> index 63ec2a624aa94..0000000000000
-> --- a/Documentation/devicetree/bindings/display/fsl,dcu.txt
-> +++ /dev/null
-> @@ -1,34 +0,0 @@
-> -Device Tree bindings for Freescale DCU DRM Driver
-> -
-> -Required properties:
-> -- compatible:		Should be one of
-> -	* "fsl,ls1021a-dcu".
-> -	* "fsl,vf610-dcu".
-> -
-> -- reg:			Address and length of the register set for dcu.
-> -- clocks:		Handle to "dcu" and "pix" clock (in the order below)
-> -			This can be the same clock (e.g. LS1021a)
-> -			See ../clocks/clock-bindings.txt for details.
-> -- clock-names:		Should be "dcu" and "pix"
-> -			See ../clocks/clock-bindings.txt for details.
-> -- big-endian		Boolean property, LS1021A DCU registers are big-endian.
-> -- port			Video port for the panel output
-> -
-> -Optional properties:
-> -- fsl,tcon:		The phandle to the timing controller node.
-> -
-> -Examples:
-> -dcu: dcu@2ce0000 {
-> -	compatible =3D "fsl,ls1021a-dcu";
-> -	reg =3D <0x0 0x2ce0000 0x0 0x10000>;
-> -	clocks =3D <&platform_clk 0>, <&platform_clk 0>;
-> -	clock-names =3D "dcu", "pix";
-> -	big-endian;
-> -	fsl,tcon =3D <&tcon>;
-> -
-> -	port {
-> -		dcu_out: endpoint {
-> -			remote-endpoint =3D <&panel_out>;
-> -	     };
-> -	};
-> -};
-> diff --git a/Documentation/devicetree/bindings/display/fsl,ls1021a-dcu.ya=
-ml b/Documentation/devicetree/bindings/display/fsl,ls1021a-dcu.yaml
-> new file mode 100644
-> index 0000000000000..7246c89271a8d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/fsl,ls1021a-dcu.yaml
-> @@ -0,0 +1,68 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/fsl,ls1021a-dcu.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale DCU DRM Driver
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,ls1021a-dcu
-> +      - fsl,vf610-dcu
-> +
-> +  reg:
-> +    maxItems: 1
+On Sun, Apr 20, 2025 at 10:09:44PM +0800, Peng Fan wrote:
+> On Thu, Apr 17, 2025 at 03:26:42PM +0100, Sudeep Holla wrote:
+> 
+> >Revert to old behaviour and driver request fw_devlink dependencies to
+> >be created if they rely on them. I am not sure if that is better approach.
+> 
+> This requires to update various drivers(clk,power,perf,pinctrl,regulator) to
+> set the flag SCMI_DEV_SET_FWNODE.
+> 
+> Using SCMI_DEV_NO_FWNODE would avoid updating the various drivers.
+> 
 
-interrupts:
-  maxItems: 1
+Agreed and good point.
 
-2D-ACE (DCU) has a single interrupt (204 in RM)
+> Anyway, you decide which to go :)
 
-Best regards,
-Alexander
+Still undecided 🙁
 
-> +
-> +  clocks:
-> +    maxItems: 2
-> +
-> +  clock-names:
-> +    items:
-> +      - const: dcu
-> +      - const: pix
-> +
-> +  big-endian: true
-> +
-> +  port:
-> +    $ref: /schemas/graph.yaml#/$defs/port-base
-> +    unevaluatedProperties: false
-> +    description: Video port for the panel output
-> +
-> +    properties:
-> +      endpoint:
-> +        $ref: /schemas/media/video-interfaces.yaml#
-> +        unevaluatedProperties: false
-> +
-> +  fsl,tcon:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: The phandle to the timing controller node.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    display-controller@2ce0000 {
-> +        compatible =3D "fsl,ls1021a-dcu";
-> +        reg =3D <0x2ce0000 0x10000>;
-> +        clocks =3D <&platform_clk 0>, <&platform_clk 0>;
-> +        clock-names =3D "dcu", "pix";
-> +        big-endian;
-> +        fsl,tcon =3D <&tcon>;
-> +
-> +        port {
-> +            endpoint {
-> +                remote-endpoint =3D <&panel_out>;
-> +            };
-> +        };
-> +    };
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 65e0716554203..02504134e1f5d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7894,7 +7894,7 @@ M:	Alison Wang <alison.wang@nxp.com>
->  L:	dri-devel@lists.freedesktop.org
->  S:	Supported
->  T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
-> -F:	Documentation/devicetree/bindings/display/fsl,dcu.txt
-> +F:	Documentation/devicetree/bindings/display/fsl,ls1021a-dcu.yaml
->  F:	Documentation/devicetree/bindings/display/fsl,tcon.txt
->  F:	drivers/gpu/drm/fsl-dcu/
-> =20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+-- 
+Regards,
+Sudeep
