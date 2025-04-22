@@ -1,89 +1,90 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE777256C89
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 08:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BB822A7E9;
+	Tue, 22 Apr 2025 09:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745311288; cv=none; b=cI1o5uiJzjk3WVYsWSL9r7uk+TJDVv1YG1D2LSiJPS4vDjPdBPhfIay3dBllrqPPWGHPYLUmbOp/p4aQY16afSmEuWNkaOLZQMEMMAarnjRA+Edp1CfMlFgED9TPCd4dqQv24FFrTETt+jgndUT2Jtvhkxi8acMGgkX9aE9TmAk=
+	t=1745312966; cv=none; b=oFBRlmBG8wtWsLGLwaZXT7RN+hw71961vW/Mx4NsI7mgNojObwBoEdwXHVaeLp59HCH8d+MCcq6asEFl5535BBpjplqPb+IF0C+KXqqiKhCsqh8Py6ZmK7iKlumHmXBFd10wlD1iNrZ3zt+dm+9aqs2K3rNVpc/MxddjTHMIutQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745311288; c=relaxed/simple;
-	bh=1Vpx6IWGw8fnpaFdAhzIBN6OlsDoegH8mN06+Y65eVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j+zOzyqkh2fML7tAuV6YvhKg+VhU5eHzh2soCqwFfmPzlCbUMVpRoQo0h8ZNYPpqy8mgTHdJdi6fgYc/d3JyBjqCE7ztgCqU3BavfWsA0JnTKpgPGhQGdB33E6IsuGw82Pmd4AqzYSlMTcvyfwW6HmSsunKzknAA6jY41QKej4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=penu3/YZ; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1745312966; c=relaxed/simple;
+	bh=mFSwkrwc/woqReWcRrFiToGptgj6JqGT5qUZ8w0yzC4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=j58kxJsbk9HroLgzEQfq6v5avm3Sz+5dzMajFpC2KWiWxeUABJ+aIVySjLc7ShXpa8Zwm4egY7N8TEoVEJXlidsxb9OrfIKybIP035QNxiwJuKbL/7rl4ze3IXdJ2WnLRTaTOExc13OX1GpBv+oqUrjGGZMLmXBlXfmWLbJFfMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G72da2Xe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="penu3/YZ"
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id E3BA01F929;
-	Tue, 22 Apr 2025 10:41:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1745311277;
-	bh=j42C1neK3aBXGc+3YIjfO2v8Xt2aMCt3/0zWgtV9maI=;
-	h=Received:From:To:Subject;
-	b=penu3/YZVEI07stg2iQTLUOpNVxP1HOxBAdODDevRCDZPAJCgLpfGVefwkW/zq4yK
-	 Rak6XOa9G2kod7SBw6TJPCJ8uFa/q4TQywOm1J8XqIZRCAQC7Cztqt3vlepvWqF3XT
-	 N/iwt/q2/75cJAr1Z5Tu3KOekjVlUNaxDglJORQrY+OnSA9KpRbBSkA4AqHJ3ztnhq
-	 jjOzB8olRLLfUBsiTQ32s30FTValKeVCLAYqQIprBaFJ9B/QTcV1BcD0vyFNI6aqkK
-	 0n3YhqZKABBuSIbdQL2m2/WzkSM55NQYD5xfqDTdh2wrHev+pNuTxS8L5C0xnmF5YA
-	 CCcGAsK+D5jmg==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id 952EE7F820; Tue, 22 Apr 2025 10:41:16 +0200 (CEST)
-Date: Tue, 22 Apr 2025 10:41:16 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Philippe Schenker <philippe.schenker@impulsing.ch>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8mm-verdin: Link reg_nvcc_sd to usdhc2
-Message-ID: <aAdWLFS2UYciaJc8@gaggiata.pivistrello.it>
-References: <20250417112012.785420-1-Wojciech.Dubowik@mt.com>
- <20250417130342.GA18817@francesco-nb>
- <95107ed358b735cbe9e5a1af20a2d6db74c5ed64.camel@impulsing.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G72da2Xe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839B6C4CEE9;
+	Tue, 22 Apr 2025 09:09:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745312966;
+	bh=mFSwkrwc/woqReWcRrFiToGptgj6JqGT5qUZ8w0yzC4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=G72da2XeldJj1UW6a12w3l89rBt7tfbC0GAHsKxGXq5cDoel8/3end4ShFVgDGk7F
+	 R7tui1x9mW/eg82FVn7oCpOUm0ubFuN3zWlMjXzuAykDXexnl25q9XA2bkFX5Faxj4
+	 UOXSS2jExqUda3NcBOYo3eUs0NLboTEMu5DiRcEbP2xUSkyXvPKRBQTpIcLGzjPiW8
+	 FTlSp7RK1PT1ZWJqou2Yuo9r2L0GR98AP1h7NLEgg+JMat4+oHejT86yefa//T9LEa
+	 WzivRLcXqyMI2db7VfjL5jOzYAc7sSOIZQqpjK2ADlkmk/3LdE3GZDTKi/Hm8VgDqx
+	 Vgo59FAFX7Qbw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33DD739D6546;
+	Tue, 22 Apr 2025 09:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <95107ed358b735cbe9e5a1af20a2d6db74c5ed64.camel@impulsing.ch>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/3] ENETC bug fixes for bpf_xdp_adjust_head() and
+ bpf_xdp_adjust_tail()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174531300475.1477965.2995189751191314193.git-patchwork-notify@kernel.org>
+Date: Tue, 22 Apr 2025 09:10:04 +0000
+References: <20250417120005.3288549-1-vladimir.oltean@nxp.com>
+In-Reply-To: <20250417120005.3288549-1-vladimir.oltean@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, claudiu.manoil@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, vlatko.markovikj@etas.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, lorenzo@kernel.org, toke@redhat.com,
+ aleksander.lobakin@intel.com, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 
-On Tue, Apr 22, 2025 at 07:57:32AM +0000, Philippe Schenker wrote:
-> Hi Francesco,
-Hey Philippe!
+Hello:
 
-> Not sure this causes any side-effects maybe you guys want to
-> investigate further about this.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Yes, we did, the correct implementation would be the one I linked
-in the previous email.
+On Thu, 17 Apr 2025 15:00:02 +0300 you wrote:
+> It has been reported that on the ENETC driver, bpf_xdp_adjust_head()
+> and bpf_xdp_adjust_tail() are broken in combination with the XDP_PASS
+> verdict. I have constructed a series a simple XDP programs and tested
+> with various packet sizes and confirmed that this is the case.
+> 
+> Patch 3/3 fixes the core issue, which is that the sk_buff created on
+> XDP_PASS is created by the driver as if XDP never ran, but in fact the
+> geometry needs to be adjusted according to the delta applied by the
+> program on the original xdp_buff. It depends on commit 539c1fba1ac7
+> ("xdp: add generic xdp_build_skb_from_buff()") which is not available in
+> "stable" but perhaps should be.
+> 
+> [...]
 
-> I needed it due to the strange requirements I had (described in commit
-> message).  From my point of view it is correct to link the vqmmc-supply so
-> the voltage can be set also to something different than the default fusing
-> values.
+Here is the summary with links:
+  - [net,1/3] net: enetc: register XDP RX queues with frag_size
+    https://git.kernel.org/netdev/net/c/2768b2e2f7d2
+  - [net,2/3] net: enetc: refactor bulk flipping of RX buffers to separate function
+    https://git.kernel.org/netdev/net/c/1d587faa5be7
+  - [net,3/3] net: enetc: fix frame corruption on bpf_xdp_adjust_head/tail() and XDP_PASS
+    https://git.kernel.org/netdev/net/c/020f0c8b3d39
 
-It does not really work fine, because you have this IO driven by the SDHCI
-core that is going to affect the PMIC behavior at the same time as the I2C
-communication. And even if you remove it from the pinctrl, it's the default
-out-of-reset function, so you would have to override it and set this pin as
-GPIO even when not used (this would work, of course).
-
-My request is to fix it in a slighlty different way that matches with the way
-the HW was designed.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
