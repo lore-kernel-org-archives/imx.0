@@ -1,155 +1,162 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E46151985
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 11:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AED22E3F9
+	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 12:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745322668; cv=none; b=OqEIjfIjyUd1ZCXaotSEjwQ7rYMH0+uuYSliv36kKKgDwyCo0ZMn3Q0wwJ7HV6VyxmDj+2heCkDL4+WS3RO6+lgyAcPX99BeyhO4AbQmXu0kN3I7Z8K6cbjSPqO6tNGsKEro1rIkV5XY9yg/lpSbwOL9oq8KOxR+qcxQ3FrEAGg=
+	t=1745323238; cv=none; b=J66aHpPUFHi3PdCHTkvRu4qvPH/GUAm6/t0ZFxGGKkyNSNvyYSf0kaLLA3dWa2QwnnBdAliMjhzsemgJljcRWpRVtv2FJkBJfuSI3+mmoEYZeJq7TUeSYUNgybE3SGctqn5FF5Nd+AzD+CnAIEaRd//GbcC51SZWxtXOATSZWWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745322668; c=relaxed/simple;
-	bh=VEhajbJhenyOwhDiqNi6r8q5OP8gwjnJXRhckqsJOpA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GRZM0O8tgk0bW50yEOaZvk1s8cClYQoWBPgof+vMyPx+E1K/9XFyloC2Mj/a/jKmaSyo6DeIstGsCfRxsalylVidiE3+U4Y0H7Ng03dCr2rM/yzZC4CggD3z6Omr5OMX6fjIUPGk/69Tx9XWBSIAYqTZgXdrCwAILqV1BD5xdTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dCjnYBr8; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745323238; c=relaxed/simple;
+	bh=PE32aOICxpf9Il971tWVYUOauqB5/VNm8nNUXdWIFZU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=bX6IB1r32ke51NUX5qyW0628CAdH6F+Z9i9Opw8eaQ9793xFlAp/keRrTvm1YmmZTIN1YDkrsLAJjs2Lh8sBIQ4vgeczMmjt0e+iF+728enAuHNnoUO/a8sXa6aZ4dMxcLuDi0/peGsXuEAefDDrC6L9P6U10ndQBcfUHIk7Zxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=FCtdW4K7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mWK2dk0L; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dCjnYBr8"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3995ff6b066so2671317f8f.3
-        for <imx@lists.linux.dev>; Tue, 22 Apr 2025 04:51:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745322664; x=1745927464; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xm+C1Hrf5PZav1kH12OZ68FgqFY1vN+rQWTlgliz2cs=;
-        b=dCjnYBr84xIc6hBy9dY6B+nECpuk86oCwRX3/2axZ3qtnaU7l0Asi3CmJH/PNEbwWO
-         hONc/Ji8vxEhCJTe6/8UVwCVkhi1E67LySzo17k3ee73VLwCC4ni5P+HZgSdoTueeANK
-         dNhWt4kbOB4KB3v2sG1fFO6V3Na0r7rWsfUSSivFW1S0DVqkJh0eMZONkRt9O/lFCm1L
-         p8x2yIKsLyZEUbzaj24QQ6ooq+5tHv5e1dLgLEUf2FUX7D6tp97pJesgUbh7GL/h4+Fm
-         UswoqIkd0YgsawD5HQUrBQMiy4Hcg4CrElGpxG8eiJB2URsD5zDPa9VeDrrpnbIuMe0V
-         2+Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745322664; x=1745927464;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xm+C1Hrf5PZav1kH12OZ68FgqFY1vN+rQWTlgliz2cs=;
-        b=M6fBfDnokUSLlfYl1iDq1U3zAyWGleSzDKVApAgOiO6Wd+PsFfdqt36x0nQ9pI4KaV
-         9Uv5/1/++Eb26eS1WDDYIqJnIKDjL3H8xiIbHo7mcS7nE+/bp6OtjzOs08V/jjeZpSdy
-         /+DmwhWwqzifMSHTS85+g6eGN+NJTDy+Pr5v34ChJNk1BYp6N62TQArkWt8e8x4fPAt9
-         C5c/GRQ8usg3Fxjv+tWCSHMri3EiifwYO1T1NXBniJRSYo7I9eTpBATXYK8/SPwD7kaP
-         H/hNaCX4/2Uk7snig/sq69yQg1NN+aM7haXmaoKRciHawXddyMnJfH0n2QT1lIDc48s1
-         37xg==
-X-Forwarded-Encrypted: i=1; AJvYcCU64yI5ZfuhnHmBWAG59nZlLQZXP7zJ9+HEScHz2C7gWL83cakyUb5glBQ7cmy9QYXsG40=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxvJZzsRMeJjT2RQqH026K+Yo2E9EPwHIgITJkdMrxGvXN1bWBw
-	MiqgUTZDr6GPk4NDPFW2rCUdY0C+WCdORHQo/MDMO3s15GC+k3BO
-X-Gm-Gg: ASbGncvh2v/F90mt55P+f2BbbW2f5+a3lBVl3ysvN+bRs/81+5e6bZ70NVTzPc6/RcB
-	J5IlR4SigulRew2azpEV8GH6aLKKRxGxTm6wWCTq1pYsoTE7dtijDjs0ZnXqYlr67yPThtNAldN
-	FfAaudGXURGZl8TM/YcpPFiiUO0s8/wbJgMWPUSb5w4qc8AxANM9Sh5jPvwZoA7VUDCUF0jwMQw
-	H3WMQ127/no6ZEDLtEqHZRTDd13tcuFI8VVRddgBq2zryCBdAhyfRJLup6wZoTTBQdegQWRc1nT
-	xxR/iqaDyem0PDwF9+yic2RMzXL2QxIgnKSimlwkuhMjnjEvyw87Lwrp9H8Bd6BvMZH2hsqfz2a
-	aHJtIMIb3
-X-Google-Smtp-Source: AGHT+IEDjgGNVWbzB6Xc4tHbi6ZRWUATDYuf4z8WnnwDr13qOhSHxOiNofBtLV/8u9BXBgZvL8GMGw==
-X-Received: by 2002:a5d:6da5:0:b0:391:3aaf:1d5f with SMTP id ffacd0b85a97d-39efbb09d5bmr12222914f8f.52.1745322664453;
-        Tue, 22 Apr 2025 04:51:04 -0700 (PDT)
-Received: from toolbox.int.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa5a2300sm14767410f8f.101.2025.04.22.04.51.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 04:51:04 -0700 (PDT)
-From: max.oss.09@gmail.com
-To: max.krummenacher@toradex.com
-Cc: Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1] arm64: dts: imx8-colibri: Add PCIe support
-Date: Tue, 22 Apr 2025 13:50:49 +0200
-Message-ID: <20250422115051.1867349-1-max.oss.09@gmail.com>
-X-Mailer: git-send-email 2.42.0
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="FCtdW4K7";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mWK2dk0L"
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id CD0161140251;
+	Tue, 22 Apr 2025 08:00:34 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Tue, 22 Apr 2025 08:00:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1745323234;
+	 x=1745409634; bh=8nthwYMKR4aOFINu9xZgH8QRFGdfF9jUoUvoZlCSYU4=; b=
+	FCtdW4K7I5zRyUQp1mclIzfaXPPDcsgT0G2XsPEkSGSS8BJ40XFJNF2l/bzcVak8
+	PJLftEKTePKlehKHr+AnSvI7TJIxO7SmiCXgJsU8scKoUhwtBOBCWVCKyZ2jO5Dl
+	rBxjlwr3fQORHFVrP9KtM8XvSwYXecX888kwoZr3ZjMZWPbq5U+GcaDO9fA15UkU
+	mmCcRxJwJkrWzHG54q5ElF+wJVS2G3JqYc3Jw0U2WG7ocF+5lNFPTeG9rvmuWCsi
+	njglbjyrOiOLj2cIiTM3373DP7mgJGa16rLBBiZx6hT1WzvvUHLFcDBFtrF6P71X
+	yXIm2hKpVmQmddjLM2RTVA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1745323234; x=
+	1745409634; bh=8nthwYMKR4aOFINu9xZgH8QRFGdfF9jUoUvoZlCSYU4=; b=m
+	WK2dk0L1aVa94+bunBhLx17FVJznnvK/AdKm8nEPfZUUS7IgF0ziI7PzIWNBofEQ
+	8CZP7gBY7bFYlNyj5QRhlUrNMvKSkF1nUwZOM7WaUPvrmIdCKqTGDpIZ9FJRrMrs
+	rY0dJK3JYP7Dr0c16X1Bp+SqDKHx6gHlSLl7FwmrAry9AEdQl7UZOnjQKjYZj+B6
+	vvrboj+7geoKTlI3tPb17BOxBo5pSKE6uOpB5ryVL8Hvhcip4IQ4CnrOLRyuJokn
+	nRUzuu1LC2c51effPU6RF18xX6fkizjG8VKovi8vuJXpvIaMldvoBAgALUzx2XUW
+	Fu8/l8WsLkMTIO1/RIRvQ==
+X-ME-Sender: <xms:4IQHaIwwAg2ARtGf3jGlqMBsIagJvBoGj0v_BftaGeTLZUA9fgBI2A>
+    <xme:4IQHaMSPkvJvmtb0CK21vKbtTwBPmE5CK5CbIBK6vPn0gPn4v1aYB4jF5XJoOGGAX
+    T6MbIL_0gzIP5Ud60k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeefieejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertder
+    tdejnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedv
+    vdegjedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
+    gedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguvghrvghkrdhkihgvrhhnrg
+    hnsegrmhgurdgtohhmpdhrtghpthhtohepughrrghgrghnrdgtvhgvthhitgesrghmugdr
+    tghomhdprhgtphhtthhopehpvggurgesrgigvghnthhirgdrshgvpdhrtghpthhtohepmh
+    htuhhrqhhuvghtthgvsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhopehhvghrvhgv
+    rdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthhopehluhgtrgdrtggvrh
+    gvshholhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvght
+    rgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnh
+    gvshgrshesghhlihguvghrrdgsvgdprhgtphhtthhopegujhhrshgtrghllhihsehgmhgr
+    ihhlrdgtohhm
+X-ME-Proxy: <xmx:4IQHaKWmoW2di_TlBk_3LC0bIqSqcvphy6ets2e-rndyOqir4PbyCA>
+    <xmx:4IQHaGiei-Ql0GRpXERiVlv65LxFK-7j6r-KkvhG1fj3vn-8NEFwVQ>
+    <xmx:4IQHaKCm5zPJpibs-8kVLkqGWNg8UD2hn4Z8TqFJIGHP--QssqYrRg>
+    <xmx:4IQHaHJOvBUka2beZuMcFi1smo_KB-gJx9FuTpNKCqV5ylIZza69NQ>
+    <xmx:4oQHaJYK6LHO-f8uu6Lf4HNT_VDikvi48Yp8jo6RBxgTdQ2SDj7VOZ4o>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D0CBA2220073; Tue, 22 Apr 2025 08:00:32 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: T51aa6c607dc631ce
+Date: Tue, 22 Apr 2025 14:00:12 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Herve Codina" <herve.codina@bootlin.com>,
+ "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Fabio Estevam" <festevam@gmail.com>,
+ "Michael Turquette" <mturquette@baylibre.com>,
+ "Stephen Boyd" <sboyd@kernel.org>, "Andi Shyti" <andi.shyti@kernel.org>,
+ "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
+ "Peter Rosin" <peda@axentia.se>,
+ "derek.kiernan@amd.com" <derek.kiernan@amd.com>,
+ "dragan.cvetic@amd.com" <dragan.cvetic@amd.com>,
+ "Rob Herring" <robh@kernel.org>,
+ "Saravana Kannan" <saravanak@google.com>,
+ "Bjorn Helgaas" <bhelgaas@google.com>, "Mark Brown" <broonie@kernel.org>,
+ "Len Brown" <lenb@kernel.org>, "Daniel Scally" <djrscally@gmail.com>,
+ "Heikki Krogerus" <heikki.krogerus@linux.intel.com>,
+ "Sakari Ailus" <sakari.ailus@linux.intel.com>,
+ "Wolfram Sang" <wsa@kernel.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org,
+ "Allan Nielsen" <allan.nielsen@microchip.com>,
+ "Horatiu Vultur" <horatiu.vultur@microchip.com>,
+ "Steen Hegelund" <steen.hegelund@microchip.com>,
+ "Luca Ceresoli" <luca.ceresoli@bootlin.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+Message-Id: <68b23799-29c2-4309-b55a-87d83dc6fbe9@app.fastmail.com>
+In-Reply-To: <20250408154925.5653d506@bootlin.com>
+References: <20250407145546.270683-1-herve.codina@bootlin.com>
+ <20250407145546.270683-12-herve.codina@bootlin.com>
+ <Z_Pw_MoPpVNwiEhc@smile.fi.intel.com> <20250408154925.5653d506@bootlin.com>
+Subject: Re: [PATCH 11/16] of: property: Allow fw_devlink device-tree support for x86
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Max Krummenacher <max.krummenacher@toradex.com>
+On Tue, Apr 8, 2025, at 15:49, Herve Codina wrote:
+> On Mon, 7 Apr 2025 18:36:28 +0300
+>> On Mon, Apr 07, 2025 at 04:55:40PM +0200, Herve Codina wrote:
+>>=20
+>> This is incorrect, they never had ACPI to begin with. Also there is t=
+hird
+>> platform that are using DT on x86 core =E2=80=94 SpreadTrum based pho=
+nes.
+>
+> I will rework the commit log to avoid 'mixing ACPI and device-tree'
+>
+> For "SpreadTrum based phones", do you have an idea about the Kconfig s=
+ymbol
+> I could use to filter our this x86 systems?
+>
+> Anything I find upstream related to SpreadTrum seems base on ARM cpus.
+> I probably miss something.
 
-The needed drivers to support PCIe for i.MX 8QXP have been
-added.
-Configure PCIe for the Colibri iMX8X SoM.
+This is the Intel SOFIA platform with chips from both Spreadtrum (now
+Unisoc) and Rockchips, using a port of the arch/arm/ code DT on x86,
+about 10 years ago.
 
-The pcieb block is connected to the on module Wi-Fi/BT module.
+That code was never upstreamed, and is long abandoned by everyone.
 
-Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+>> And not sure about AMD stuff (Geode?).
+>
+> Same here, if some AMD devices need to be filtered out, is there a spe=
+cific
+> Kconfig symbol I can use ?
 
----
+The only one I can think of is CONFIG_OLPC, the XO-1 was a Geode LX,
+while XO-1.5 used a VIA C7, both with actual open firmware (not just
+fdt).
 
- .../boot/dts/freescale/imx8x-colibri.dtsi     | 29 ++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
-index ecb35c6b67f5..e602d147e39b 100644
---- a/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8x-colibri.dtsi
-@@ -52,6 +52,15 @@ reg_module_vref_1v8: regulator-module-vref-1v8 {
- 		regulator-name = "vref-1v8";
- 	};
- 
-+	reg_module_wifi: regulator-module-wifi {
-+		compatible = "regulator-fixed";
-+		gpio = <&gpio_expander_43 6 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		regulator-always-on;
-+		regulator-name = "Wi-Fi_PDn";
-+		startup-delay-us = <2000>;
-+	};
-+
- 	reg_usbh_vbus: regulator-usbh-vbus {
- 		compatible = "regulator-fixed";
- 		pinctrl-names = "default";
-@@ -261,6 +270,16 @@ ethphy0: ethernet-phy@2 {
- 	};
- };
- 
-+&hsio_phy {
-+	fsl,hsio-cfg = "pciea-x2-pcieb";
-+	fsl,refclk-pad-mode = "input";
-+	status = "okay";
-+};
-+
-+&hsio_refb_clk {
-+	enable-gpios = <&gpio_expander_43 3 GPIO_ACTIVE_HIGH>;
-+};
-+
- /* Colibri SPI */
- &lpspi2 {
- 	pinctrl-names = "default";
-@@ -454,7 +473,15 @@ &mu1_m0 {
- 
- /* TODO MIPI DSI with DSI-to-HDMI bridge lt8912 */
- 
--/* TODO on-module PCIe for Wi-Fi */
-+/* On-module PCIe for Wi-Fi */
-+&pcieb {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pcieb>;
-+	phys = <&hsio_phy 0 PHY_TYPE_PCIE 0>;
-+	phy-names = "pcie-phy";
-+	reset-gpios = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+};
- 
- /* On-module I2S */
- &sai0 {
--- 
-2.42.0
-
+       Arnd
