@@ -1,42 +1,42 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851FF196
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 02:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB29CEAFA
+	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 03:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745290104; cv=none; b=BIrOydIGfXmUJvsYvSE71FJ0x2rnInsi36ZK/mCgsZIphZMeBZJJKSJZtZtJK476fG18H8KxrmiuRlhK8g9SGDfFSdJWxATj1fT3FQaTVAexcifsxfoLPHXmVf84a6E+x5+X6UAnmPWEQLo7JwwmYkEGywCcjUC1wsnWJ7zTis8=
+	t=1745291251; cv=none; b=LPpKKe7hM0NLFZqEpBARcrJievQ4edFhD7G22OByBtoaReOF2u5FwdunRgaWGh6KJjkKc8R3hVeTlY5Fy7P98NJnXo7T0P/fG9g2aX7x8u/EhWzfNb3PUdm9FurGzleeFyXsxWNyZqdPJBlDKq9f005Lx98ZxFXuNEp669KKh8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745290104; c=relaxed/simple;
-	bh=8Oi/7h1l6BwvkLMdRM7TN5xBdft1n/bpQEmit7jQzwg=;
+	s=arc-20240116; t=1745291251; c=relaxed/simple;
+	bh=hDLIaVfCxpkNARq3mDMRwM8hQH3+H+6ffO0Q6/SvR/Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZyCkXKcSyresnZ3vyAmdgd5+vsgRRZwPBCi/EAk2nAIM3eqvweMnVA+7bc8O+omv40wPJSWMCqQ/HNDiQ1Y8UTLPH/sPCk29ya7WXOmUprO8jXOGwJkh2ew3rhk1dpvTtiYBcgCtoPGYzVVg1/zWhq/puJyoLs5f8EzWuGGd1o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=TkTpbH+K; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=C8mOWhFDYJ0cgZR+lLOD2uO2XeIvCgxjdUp96Bz7K47wXOuTcGFjpajoA4e3juWU1oD7inext7nJNuadnetDQXUdp7bbW5L4Q8PDdRcBP+ST/05zhaiHz7j7WmpNV6Tw+o1y9lDCdW2Oo8gsVtR4h+fzEPvrQTEmdrAqqoVknaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=WWBOz97n; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="TkTpbH+K"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="WWBOz97n"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=iYJPrUWUZYghHqO5DdKs7mZT6xUZJXtvop8ZZkPf7T8=;
-	b=TkTpbH+K5yOkEdzap3zS5GUTC/2ZYBl/NYQEJ6K4dMYepqC1ud8Erl9OXNw+DR
-	anO2rS0YhEHhi6RkRHuDPJym1TES3HguTXpnX0Rk68Hua/N9tFvIKAgIWaDHWXCq
-	dMLzlbL9o03513N8Ua+jJ3mWAVVi7c7yWhK9i/yFGx/no=
+	Content-Type; bh=n/JvTCs/sCVXGz6hg3teVfW2as6Q4XHGy/um0GGV72Y=;
+	b=WWBOz97niOMrfuAQf948QNWtsLZb9k2XaXOOyu8avbFG4LiblVDbZQnmyDbBF+
+	TEzEtT4BJdWMlk0tF5t67UTUQFFVM2GrVC3dtXZUMDyi6q1m0ZQBKkE5GZvdC+E4
+	H+R5SViHRoN16UWNs4aptgkEw1WBKo77y+v4OvUtuBwPI=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgC3Z0tYAwdoG4yjAw--.32361S3;
-	Tue, 22 Apr 2025 10:47:54 +0800 (CST)
-Date: Tue, 22 Apr 2025 10:47:52 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCXbUbXBwdoi1GrAw--.548S3;
+	Tue, 22 Apr 2025 11:07:05 +0800 (CST)
+Date: Tue, 22 Apr 2025 11:07:03 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: nxp: Align NAND controller node name with
- bindings
-Message-ID: <aAcDWI/ehg2v8kgd@dragon>
-References: <20250317111853.43708-1-krzysztof.kozlowski@linaro.org>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: shawnguo@kernel.org, robh@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, krzk+dt@kernel.org, conor+dt@kernel.org,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	frank.li@nxp.com, aisheng.dong@nxp.com, daniel.baluta@gmail.com,
+	laurentiu.mihalcea@nxp.com, shengjiu.wang@nxp.com,
+	iuliana.prodan@nxp.com, a.fatoum@pengutronix.de,
+	mathieu.poirier@linaro.org, linux-remoteproc@vger.kernel.org
+Subject: Re: [PATCH v7 0/5] Configure imx8mp dsp node for rproc usage
+Message-ID: <aAcH170yqRMMwVXe@dragon>
+References: <20250320121004.2542314-1-daniel.baluta@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,18 +45,21 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250317111853.43708-1-krzysztof.kozlowski@linaro.org>
-X-CM-TRANSID:M88vCgC3Z0tYAwdoG4yjAw--.32361S3
+In-Reply-To: <20250320121004.2542314-1-daniel.baluta@nxp.com>
+X-CM-TRANSID:Mc8vCgCXbUbXBwdoi1GrAw--.548S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUa0tCUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBB83ZWgG2pu5jgAAsR
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUTHGQDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBB83ZWgG2pu5jgACsT
 
-On Mon, Mar 17, 2025 at 12:18:53PM +0100, Krzysztof Kozlowski wrote:
-> Bindings expect NAND controller device nodes to be named
-> "nand-controller".
-> 
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On Thu, Mar 20, 2025 at 02:09:50PM +0200, Daniel Baluta wrote:
+> Daniel Baluta (5):
+>   arm64: dts: imx8mp: Use resets property
+>   arm64: dts: imx8mp: Add mu2 root clock
+>   arm64: dts: imx8mp: Configure dsp node for rproc usage
+>   arm64: dts: imx8mp: Add DSP clocks
+>   arm64: dts: Enable DSP node for remoteproc usage
 
-Applied, thanks!
+arm64: dts: imx8mp-evk: Enable DSP node for remoteproc usage
+
+Changed the subject a bit and applied all, thanks!
 
