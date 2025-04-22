@@ -1,107 +1,105 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9CE28FFDF
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 15:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D6114883F
+	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 15:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745336694; cv=none; b=Ffm99Ra/IStN1+3DV2BS59KDf+9R/T5f65yW4B7UjwF3+p12YSxNXvIIwn32qaL4N/n+I2hobwrGj9AodGkqPzJps7nsqncMtHm1X/KNZfCZE+3rEVDX0aw8X+u8o6W29DEsejR8q85g2EbsxZZ6UjbHR41ZXWmcyMAIYkoUk6w=
+	t=1745337200; cv=none; b=KYMH4x2DUbwsltb2Y6S+42ErsAuEYp5YQRtPtzlKQVd/LHQzSqlC889ZLb9PKEHiDruzScsB/djWqfz5/3ttVsd8RXC+4dhZjWPq6jt9iO8u9xG79rA8kUMaVjFFfTBFmyqrSf+3b+CDfnC38li6QNpMcOPBPPzAXyXbw6U1nbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745336694; c=relaxed/simple;
-	bh=+wQ3V/SBCGFw935WChI1t2sSplf3aKsIu1jNFc4fRo0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=suarUU7ROi+oJvqmXzVrlM7HKeu4sMwv2oNPI9yRLeQJDQO8uVb1FnY43+uBakEpXIpcqJEcTAAVMNkBtOxOGtAeqfMaA7T3A6UL2Xboc//rEMO+QNnR8SOK1SUzVjY26te7XXD8TIF2nmh6b0nZeS2Tn6pUv30D1msv2ivCwfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZEBIZSWR; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZEBIZSWR"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-70433283ba7so45838797b3.2
-        for <imx@lists.linux.dev>; Tue, 22 Apr 2025 08:44:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745336690; x=1745941490; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4EFn2W/SBOz4Ss5vMmt0N5F+gg9XTWWc4yKELcXE5FM=;
-        b=ZEBIZSWRINb64RnIoSPLkMQ0qMiCcmXM2hXLKgdHCLlwA0//KuqipggHSg/4Emv4/F
-         o6/sOByNjonFYv7kugiCArBj8BwJrB7jYbtLCzZ/sm/6KyKPL0AjlU57e6GsMfm3SxBh
-         4ZgscjMgeszOpELt5nAc3UoCB1pAeHVUU/HXlFP8jDp6Vq3vizwZlNDObbs5n1g2V5li
-         cbv7wa9y9QSFeuT3Fnp7H3msUYh/S0QkvGTGEZrGoZaKVsweyTmLFbuGjXMb5Gh9CWwl
-         Y67zreHe4PxTQ2b5cYw0pgt1jtth7ppxIzvSGXHSawRqPPt6HskSgBePwxIqfDaro+wp
-         5YGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745336690; x=1745941490;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4EFn2W/SBOz4Ss5vMmt0N5F+gg9XTWWc4yKELcXE5FM=;
-        b=qJw6c0OJOAtWTpU+ZSKOYYk9sLbP2BrshaKYSNyXwhnXDavn5iN+ktbJSRz3F8yCeu
-         z8aeDFPXRd7P6bYHkFZ2C4QDHD7MZhankC3YQiqkaKJHAiWOR6DzEB+6IZBzEed4vVhr
-         HnrWohlrrwbkkwRXUZU0d+PiA6/FJZRGZtPo8w7C1gEhZxFnjHa8w0pqqijdEjoTXxyu
-         1aWF0sCtFDiidDqmFHGnI+1H2SYZWfzxqqTboRzqz/ctG/0AAnmpqD7AY4opSgGk2hHT
-         3aO3rTtMbRGO6iljFNXDBLSHzYJqlpnTKZDTUKYuZS7nGVlbN7DPN4avwhe6CnQuNqQi
-         cPvw==
-X-Forwarded-Encrypted: i=1; AJvYcCXr1m6tC0gPxsj+kKAOnxE0ejKczuecSb496QanduFiODvjw7rBHsrcGbGp288UFp43Vns=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywa5YCJpX/kgQ2c8HPByKorfET5o2/H+KH2gikfEoewVDRCnCtT
-	IlwOBMaiP8ItEZhSFBB+kFL4d2PyAXtH2mPFumEJ9q+flJOLjdHKNVF1r5KimU02o0T3PCselk8
-	/Gq62uLXzlotsbwgbNgHdxtPOgeBGdalsiXTQ/g==
-X-Gm-Gg: ASbGncv+MNY/xz+ukq8QZP0/SZM9b19l7vGLDidTa2rb3b4XVgOLFgu+ISEXKFdc2e8
-	5KPaVDnamYCU7ZONt5Joh/QMHPYoc3gzzJgyvbc5fIL/Us98dafO3mPLlVNqWEw9/P1jaacILo3
-	dVNMHEq5PPvGbErXC9knFw5hw=
-X-Google-Smtp-Source: AGHT+IEHc2hJ4Cqc2TLQJORRZ7HSilNpRQ02MgV9r96MtzM1W0JpjGC9ejSda0flvQWdusSoW6gwajxpxPi/3e7ThWA=
-X-Received: by 2002:a05:690c:6c0c:b0:6fe:b88e:4d9b with SMTP id
- 00721157ae682-706ccdf5d40mr253126207b3.27.1745336689950; Tue, 22 Apr 2025
- 08:44:49 -0700 (PDT)
+	s=arc-20240116; t=1745337200; c=relaxed/simple;
+	bh=CM6qDJtqmBbei3DOlADlrv4ZtQji60qcZQFUuL/gBpU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U1HJYpEfcaO5o20g3GtLxMrhZlkw0G1qlXGzbU7/2fTqLtAVgWN8ZAZ2StxlxlAFn7EzSVZQShE4S6oguUv+uf506lvdVCCYYHJGhfS2MoBIo7mhmSFIZBOEU8QjAwsh/m1QtED/kie0WtGlQVeeZNzUg55I3nEYNrkGE1cddd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1u7Fvs-0000r5-Mv; Tue, 22 Apr 2025 17:53:12 +0200
+Message-ID: <54d062af-40ff-47b7-baec-c7e883defea3@pengutronix.de>
+Date: Tue, 22 Apr 2025 17:53:11 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250409075550.3413032-1-ziniu.wang_1@nxp.com>
-In-Reply-To: <20250409075550.3413032-1-ziniu.wang_1@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 22 Apr 2025 17:44:14 +0200
-X-Gm-Features: ATxdqUFqgpqORv1AG7qmoEJZ9cXTo2y6ysVsgng0e-udR6FloO2w-1bXRpDq70A
-Message-ID: <CAPDyKFrNUp93Ouw8MEUNMqgTuYCszT5t6jbJZdRsM2_Ed_peDA@mail.gmail.com>
-Subject: Re: [PATCH 0/6] enhance the tuning process reliability for i.MX uSDHC controller
-To: ziniu.wang_1@nxp.com
-Cc: adrian.hunter@intel.com, haibo.chen@nxp.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	imx@lists.linux.dev, linux-mmc@vger.kernel.org, s32@nxp.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] i2c: imx: use guard to take spinlock
+To: Troy Mitchell <troymitchell988@gmail.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: imx@lists.linux.dev, Andi Shyti <andi.shyti@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ linux-kernel@vger.kernel.org, Oleksij Rempel <o.rempel@pengutronix.de>,
+ linux-i2c@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Yongchao Jia <jyc0019@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
+References: <20250421-i2c-imx-update-v1-0-1137f1f353d5@gmail.com>
+ <20250421-i2c-imx-update-v1-1-1137f1f353d5@gmail.com>
+ <20250422161213.0000597d@huawei.com>
+ <918e0177-8e26-405c-93ad-8b0d2dfd3b3d@gmail.com>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <918e0177-8e26-405c-93ad-8b0d2dfd3b3d@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Wed, 9 Apr 2025 at 09:54, <ziniu.wang_1@nxp.com> wrote:
->
-> From: Luke Wang <ziniu.wang_1@nxp.com>
->
-> This patch series enhances the tuning process reliability for the i.MX
-> uSDHC controller by addressing several hardware-specific requirements and
-> improving alignment with the i.MX Reference Manual recommendations.
->
-> Haibo Chen (4):
->   mmc: sdhci-esdhc-imx: explicitly reset tuning circuit via RSTT bit
->   mmc: sdhci-esdhc-imx: reset async FIFO before sending manual tuning
->     command
->   mmc: sdhci-esdhc-imx: widen auto-tuning window for standard tuning
->   mmc: sdhci-esdhc-imx: widen auto-tuning window for manual tuning
->
-> Luke Wang (2):
->   mmc: sdhci-esdhc-imx: verify tuning control status after configuration
->   mmc: sdhci-esdhc-imx: switch standard tuning to manual tuning
-> ---
-> This series depends on:
-> [PATCH v2] mmc: host: sdhci-esdhc-imx: save tuning value for the card which keep power in suspend
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 86 +++++++++++++++++++++++++-----
->  1 file changed, 74 insertions(+), 12 deletions(-)
->
-> --
-> 2.34.1
->
+Hello Troy,
 
-Applied for next, thanks!
+On 4/22/25 17:26, Troy Mitchell wrote:
+> On 2025/4/22 23:12, Jonathan Cameron wrote:
+>> On Mon, 21 Apr 2025 13:36:38 +0800
 
-Kind regards
-Uffe
+[snip]
+
+>> In this path the patch changes the lock release to occur after
+>> i2c_imx_master_isr(i2c_imx, status);
+>>
+>> That may well be safe; I have no idea!  You should talk about that
+>> in the patch description if it is.
+> You're correct that this change slightly alters the lock release timing.
+> 
+> However, both i2c_imx_slave_handle() and i2c_imx_master_isr() can safely be
+> entered with the lock held — there's no requirement for the lock to be released
+> before calling them.
+
+Why would we want to hold a spinlock out of all things longer than
+absolutely necessary?
+
+> Using guard(spinlock_irqsave) simplifies the control flow by ensuring consistent
+> and automatic unlock, which improves readability without affecting correctness.
+> 
+> I'll update the commit message to clarify this.
+
+Sorry, I don't think that this simplification is worth potentially
+increasing the time we spend with preemption disabled,
+i2c_imx_master_isr() even has a loop inside.
+
+Guards that don't increase critical section size however are fine by me.
+
+Thanks,
+Ahmad
+
+> 
+>>
+>>> +
+>>>  		return i2c_imx_master_isr(i2c_imx, status);
+>>>  	}
+>>> -	spin_unlock_irqrestore(&i2c_imx->slave_lock, flags);
+>>>  
+>>>  	return IRQ_NONE;
+>>>  }
+> 
+
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
