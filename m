@@ -1,39 +1,38 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60FB21018A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE421EDA2C
 	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 10:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745319414; cv=none; b=cGjVemBal653YTvq3eujgJo+SISdiQ5mGb2SF5kM87fwy6dLmsuNW+zmVhD8Jci9lJ41c9SFiLGiHr24u4WPEo4hTsDcmoutvkHVQs7EG2pd8HHdFOswgNx/5qBveOn0ZTIRrewjse7TMV7jlhFCz6VNGKzKQyVwKEZB5TNAbiQ=
+	t=1745319415; cv=none; b=Lhab4AoP5hTVCUq7tP1wFQTcQiO2XsKoR9yQeiEeVGy5TGbuQWrZ2y9TZnXsSPrIJDwXBt/EvvKZ0kHsWPQoh541NUrX8dIrybZipIc/oYZMUwNgN/wqDL3t5FFHStoXkVyX0kwxg1INymB8hqqUkohKiDWJOgDqMHfmAHAaT6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745319414; c=relaxed/simple;
-	bh=5KvVhSE4OzayZxv6zr2nh6tzAm9cRj1gnBUG+aV4J0U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BCGq9sNR28bD77K/PXgISDee4y0LVvDYpCzd6Q9PqJbnKNxaLUJOy3fdElJSNrdhdMQNOM6mj5xcBekd0jb4RfguIVPeTppiRxA8ibniK4wqKScoEgWTKuROiALnjtgCic2LcDn723mqCkWsB5g50WQNstPOAcSXdTLI2ZF4cuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=n28loj0g; arc=none smtp.client-ip=46.19.9.99
+	s=arc-20240116; t=1745319415; c=relaxed/simple;
+	bh=X7ob+1t7faJy0dtEZ5Ew2ZVx2nnmkT7BRI5h3x/SRpo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O81IUsCwjklUh2FNKObZvudZsdl56H20kM9I5qBWhroykBCIG3fFJ4ZAaxr8dae5eg7LX1dN9Y61RoIDDHfdUhbKkX58bZL1RM/Ud/A7YSwnAU4LOO+sawZ2vRb8nfcPjxtYhrHm8ezcZhRoQrsSMN/eXSw4d3oRXE8RvrpIh2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=aavujSDv; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="n28loj0g"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="aavujSDv"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=zF4UOqdX0b7eFotsJnVlx6i1/S86SnKAsQ01ibQ35ZI=; b=n28loj0gjcEWAkPYmLmZrru4KZ
-	14D+SJCkHXBhx4/DTZ/Fs2wsHKl5u4k2AulXDCIdyQ8uzRSTIkY0UKBQcEnWI7EQ/VYu5zMmA0UTu
-	2YxkCe78BB4mxd0XQ5cPIRxpsTtAO+oo6ms5n/bdA71Ply0PcK7jxMJJagXWtVLrvCzzibwI4nhZR
-	wzKn3y4UYuhCLQw/Kr6bpkw7ANwW1alQGjYFTSu+FHh6rS3WLbsBJs+UXj41Ru1VhBDKLPw9v0ytY
-	MySE96aFtKpUrawY4ZZwzhQvfauniXvXdonEJk35og8iNHeLrLQPCiCRxH53UiMPrZwBjxyAcj5Mc
-	tjKR9l5w==;
+	bh=NcJGNvpYM/m232+NdkLo68s3KFMPsC8oEvT7xb+EEOU=; b=aavujSDvxMjZJu66LpLkd3ZZTc
+	1dUYrdjUPI0GOSgTqa2H47/ulT/23zfzJbxHEoeTt8b3ubYhAaePvzjFMi4yVyJ3cYJ1Q7hw20NLg
+	4wlYDmg0TFs84Ikox3/18Y1QuQdgdjpzWpgrqBPXeQtuJR530dnbNyPr5kzLT3QE+JOHMEzAtbB2e
+	Zvh5X/2Ka01+Mg+Bs9+P0N6DW+6kgF6V5p2+1zI45xTxKOnPxpq07BD3RM5pPe5qrp21J0y5+Oedf
+	XmWVai68a6LrjBMS9y5k+SN/x5dGghoLmLoRfxV2/zn6Ldzl+wiuhBSoEJVfP1QBpOZvW4th/rvBJ
+	aju25naQ==;
 Received: from [89.212.21.243] (port=36562 helo=localhost.localdomain)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1u7BJ5-008kyr-0l;
-	Tue, 22 Apr 2025 12:56:51 +0200
+	id 1u7BIz-008kyr-1o;
+	Tue, 22 Apr 2025 12:56:45 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -47,12 +46,10 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	upstream@lists.phytec.de
-Subject: [PATCH v4 05/15] arm64: dts: freescale: imx93-phycore-som: Add eMMC no-1-8-v by default
-Date: Tue, 22 Apr 2025 12:56:34 +0200
-Message-Id: <20250422105644.2725168-6-primoz.fiser@norik.com>
+Subject: [PATCH v4 00/15] Update PHYTEC i.MX93 DTS
+Date: Tue, 22 Apr 2025 12:56:29 +0200
+Message-Id: <20250422105644.2725168-1-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250422105644.2725168-1-primoz.fiser@norik.com>
-References: <20250422105644.2725168-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,36 +68,97 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-The phyCORE-i.MX93 SoM comes in two variants, one with VDD_IO set to
-3.3V and the other variant to 1.8V. The 3.3V variant can only support
-DDR52 mode, while 1.8V variant is capable of HS400ES eMMC mode. The
-information about VDD_IO option is encoded in the SoM's EEPROM. EEPROM
-is read in the bootloader and bootloader clears the "no-1-8-v" flag in
-case of 1.8V SoM variant is detected. Thus add property 'no-1-8-v' by
-default to usdhc1 (eMMC) node and let bootloader handle the flag. In
-case EEPROM is erased or read-out fails, flag "no-1-8-v" also ensures
-fall-back compatibility with both SoM variants.
+Update i.MX93 device-tree sources in mainline for phyCORE-i.MX93 SoM and
+phyBOARD-Segin-i.MX93 board with changes from the downstream kernel.
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
----
+New SoM features:
+ - PMIC support
+ - EEPROM support
+ - enhanced eMMC support
+ - fix eMMC for ERR052021
+
+New board features:
+ - RTC support
+ - CAN support
+ - USB support
+ - I2S audio support
+ - 2nd Ethernet (EQOS interface)
+ - enhanced SD-card support
+ - fix SD-card for ERR052021
+
+Link to v3: https://lore.kernel.org/all/20250418063104.2202085-1-primoz.fiser@norik.com/
+
 Changes in v4:
+
+Patch #1:
 - no changes
 
- arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Patch #2:
+- no changes
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-index 663530a7e2bb..22dbcc89e311 100644
---- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-@@ -172,6 +172,7 @@ &usdhc1 {
- 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
- 	bus-width = <8>;
- 	non-removable;
-+	no-1-8-v;
- 	status = "okay";
- };
- 
+Patch #3:
+- fix commit message (s/pull-down/pull-up)
+
+Patch #4:
+- no changes
+
+Patch #5:
+- no changes
+
+Patch #6:
+- no changes
+
+Patch #7:
+- no changes
+
+Patch #8:
+- no changes
+
+Patch #9:
+- no changes
+
+Patch #10:
+- no changes
+
+Patch #11:
+- no changes
+
+Patch #12:
+- no changes
+
+Patch #13:
+- no changes
+
+Patch #14:
+- no changes
+
+Patch #15:
+- no changes
+
+
+Primoz Fiser (15):
+  arm64: dts: freescale: imx93-phycore-som: Add PMIC support
+  arm64: dts: freescale: imx93-phycore-som: Add EEPROM support
+  arm64: dts: freescale: imx93-phycore-som: Disable LED pull-up
+  arm64: dts: freescale: imx93-phycore-som: Enhance eMMC pinctrl
+  arm64: dts: freescale: imx93-phycore-som: Add eMMC no-1-8-v by default
+  arm64: dts: freescale: imx93-phyboard-segin: Drop eMMC no-1-8-v flag
+  arm64: dts: freescale: imx93-phyboard-segin: Disable SD-card
+    write-protect
+  arm64: dts: freescale: imx93-phyboard-segin: Fix SD-card pinctrl
+  arm64: dts: freescale: imx93-phyboard-segin: Set CMD/DATA SION bit to
+    fix ERR052021
+  arm64: dts: freescale: imx93-phyboard-segin: Add RTC support
+  arm64: dts: freescale: imx93-phyboard-segin: Add CAN support
+  arm64: dts: freescale: imx93-phyboard-segin: Add USB support
+  arm64: dts: freescale: imx93-phyboard-segin: Add I2S audio
+  arm64: dts: freescale: imx93-phyboard-segin: Add EQOS Ethernet
+  arm64: dts: freescale: imx93-phyboard-segin: Order node alphabetically
+
+ .../dts/freescale/imx93-phyboard-segin.dts    | 243 ++++++++++++++++--
+ .../boot/dts/freescale/imx93-phycore-som.dtsi | 165 +++++++++++-
+ 2 files changed, 369 insertions(+), 39 deletions(-)
+
 -- 
 2.34.1
 
