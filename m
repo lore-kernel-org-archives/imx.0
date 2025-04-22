@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2036B2676DF;
-	Tue, 22 Apr 2025 02:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177D926E168;
+	Tue, 22 Apr 2025 02:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288306; cv=none; b=nunyiROeWY3MgPyOQX7n99K1VQKXNswhrmVohqam850Hs1vtuH4nHnWKGnm/dv5moUdUaB+HMG0oNZDl0/69tQ/nK45tE0VBrWS2ZXw00cD5WpfJU1T5nLNMa5jlOwljIMjDPZpYRdceMHKV5CBacZt4hGSCzDYlBRNlj0BVMJA=
+	t=1745288327; cv=none; b=Y5WiTqT437ZneoKD/3yZNHm6yas/NaGzKuibU35ZuFSMseKkeVw3VaAZf1o7rwGYt76B2zD6Cevj5bztE1CDp3wjsBPbl6Qfx4az6iPXc84nil2GBF4c6futUj9n0EmsSG2YSlV/L2G0Lf/HDTUCvPRqcPMBeyW1fGykWRgtNYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288306; c=relaxed/simple;
-	bh=bEd4sUQUoqmZzswyiTFMd5iftM52xvaorbTZ3pRmocY=;
+	s=arc-20240116; t=1745288327; c=relaxed/simple;
+	bh=KvDZ7mCzuTOxw/CCqAMaB+URIEE6MZ+aoISGUCA8yYc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hQJWIkZBOPGbZoHpgw0heUt+QptwgXeMzRwPhqOzuLQF1k2hopoq7oqRuz8G4KQAA+dxi7hZZMVsgG2wxrHbg/TCCkurgKa8pBad8PbcwtbRfzDjz2CZl451zLa333P5P+efQDJJ7ADuezKz8d2Ecom4vLXnpN9jHVqqmbYw4tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J2VqOKl9; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=SWqjePiBXqcqlUpL+rI6517ItCmXGlb/zwRpBFyLN24ZInecdot3FGiBEkKuU0QsD8a11r/GA5Fm9Rry4IxjK9LtBe9pUQuOfRoJGF4RAvUzSnihcQXgyQOGntzHsRvlfbBlqHjEaG2cZgxN0hEprmNM3liLxNRI0tmerO+mQ38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ukwxnxS4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J2VqOKl9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF86C4CEED;
-	Tue, 22 Apr 2025 02:18:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ukwxnxS4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EB1C4CEEC;
+	Tue, 22 Apr 2025 02:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288306;
-	bh=bEd4sUQUoqmZzswyiTFMd5iftM52xvaorbTZ3pRmocY=;
+	s=k20201202; t=1745288326;
+	bh=KvDZ7mCzuTOxw/CCqAMaB+URIEE6MZ+aoISGUCA8yYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2VqOKl9gkwoIIbhzA/TlekVSpcqvver+YXXlfkTe2L8yo7ntVL5Bk9p+xLORWDAZ
-	 rmoLsRbYg2+R0em23VCz+5Bii7NFfyuiqRX09wAAIhi3PLTx4a9/PqdbF2k04ucwst
-	 HVv2spHIQgZCQMacHOOf+KOcpo5tUZ5rDHXduyZoe5lgZw5OEea/F7z6KUU3MUuxgF
-	 GbVUlxvEv5eyGPghbBPmbU0oSAVG35Ryl/tJyJZyTOnSt/LRyJLifdirN9ynn8ou9H
-	 UheFh+9uh5YMgarPtX0lLBiYaM0qkReSl3f+yi/FrkfFvY2+1PJETgZvE56MOVZWtB
-	 RRPRUoO3K/rXw==
+	b=ukwxnxS4E9aiPd+zo7kBtgcmVjYH54GcFyibucy9+xyfMed6VSMpPwqSaTXvw9ZFB
+	 Do8EJrOEsiKhnKwQFUmdIELZLa6BRlBQU53oFIzNBeUZIOMGstXgrMEOddQPEnHn1g
+	 ptFAxbcQEU4DnwXmkmseg2mSMh0fokw1Cur1SfHzig3hUz9ki3JyyvjiSUQUKv+fg/
+	 S79PpsLMoT8tz9IaFgIxOo/J3FoSj0anW0vWeY7PttIJ51Ug1qIqVKSs2IOeKXTNwH
+	 M9Fgb7v8n+vjiRz23VVjAFr/8umjB4RBxNnq7iYlmLXuWll6XFlCzMVcB4u8NkGV2H
+	 U+aYMo96LLgcA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -37,12 +37,12 @@ Cc: Tamura Dai <kirinode0@gmail.com>,
 	linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 15/15] spi: spi-imx: Add check for spi_imx_setupxfer()
-Date: Mon, 21 Apr 2025 22:17:59 -0400
-Message-Id: <20250422021759.1941570-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 12/12] spi: spi-imx: Add check for spi_imx_setupxfer()
+Date: Mon, 21 Apr 2025 22:18:26 -0400
+Message-Id: <20250422021826.1941778-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250422021759.1941570-1-sashal@kernel.org>
-References: <20250422021759.1941570-1-sashal@kernel.org>
+In-Reply-To: <20250422021826.1941778-1-sashal@kernel.org>
+References: <20250422021826.1941778-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,7 +51,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.87
+X-stable-base: Linux 6.1.134
 Content-Transfer-Encoding: 8bit
 
 From: Tamura Dai <kirinode0@gmail.com>
@@ -82,10 +82,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index daa32bde61556..da4442954375b 100644
+index df73a2c7120c9..13a6ebef01894 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -1614,10 +1614,13 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
+@@ -1605,10 +1605,13 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
  				struct spi_device *spi,
  				struct spi_transfer *transfer)
  {
