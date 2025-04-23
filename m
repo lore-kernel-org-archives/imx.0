@@ -1,60 +1,60 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA12266EFA
-	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 06:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB992267381
+	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 06:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745388187; cv=none; b=G3AFAFF5ojpZ9vgonYcnN8YFKYm3cj2MS6renmjxzmFZUaqPgzqzfutsGdYn/GsMUz4fXx81Rjz20X+X1nWgDKT02SUwJMvCVm2QiZAmJRLbKzTyDv5k2AOOPsLC3p1fDunsmqlPlMDAgQ24A6HFQXHj0NX06C6ZM+EdUAHAnbc=
+	t=1745388188; cv=none; b=ScQkmKSmJ0T9wxrEky26sAYTflgpJQtLg1GqK+gPXGGL7EpoyNuL3SYqWo9QT34i+2ou+F00ZMi66Ydt0CZ93I+idlP6T/CaPMFBc3JVJ2YiuGAdMo+Xl9SJYq9fwY2Sar8YVDerB3dBnDyXjNTnSde1DAfDh4mErfJM3X0S1CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745388187; c=relaxed/simple;
-	bh=yzCgb+8exvG1QLnKJjYoUr8BJCg4DBti7sbXPOVT/90=;
+	s=arc-20240116; t=1745388188; c=relaxed/simple;
+	bh=4JJzIfTPYd1xwS7ML8LLTZkwdWqlo3aofGz7RuYx0M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LlT+1ekysJ9gnUozAUDh4qseWyH2AlE0c/03zzJoxNHCepfdfl2ymx4XaFPyfThWB0/DjJZuDnWc2nlksBcJvfXRBE2HqhLnyZNjhSXbtbwpxDifSRQFJXQDWYpS3tKJRVnf7sKIadFxMKT2LOAOBr+RYDi6G+2i6AdagjjvFT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=EYzOY3WK; arc=none smtp.client-ip=209.85.218.44
+	 MIME-Version; b=Kcu50i+dwtD/Z0OqD/hTBogG25lk5yQ7atW9ZIWczbfxZKaXeSEqFI/ay9Y9sP+z6mjsPGzhcJUjnR7wkaKPG4AhLT84aes2EQnRa1+qkrLb6PxbeZblo1Y3sxjG1bFjv0bmF3K0zhfm6GJIjXYk3edhNjlyFIZiOWDuftqU2iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=cy8qoJs0; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="EYzOY3WK"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac3fcf5ab0dso912017566b.3
-        for <imx@lists.linux.dev>; Tue, 22 Apr 2025 23:03:05 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="cy8qoJs0"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ac339f53df9so1013279666b.1
+        for <imx@lists.linux.dev>; Tue, 22 Apr 2025 23:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1745388184; x=1745992984; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1745388185; x=1745992985; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xBVFA3tzS1bXJbCiJCU1B6IsR8mJkZI1gbjF/bIgONM=;
-        b=EYzOY3WKJSbuSaZjlzaBmMamvtb+SStG90FrWeh4MD0Ibv9ye7XomasyU76zD+x64B
-         0tB5uh8IeNt1BivWhZuVEnLj+nbidjxKdtiJHTtd9DlrYrZVHj8oZBwBu506y5EH2dv8
-         zH7Q9BTTYSOA7lEnBk2rPMLcsBFm6VCi8wr7A=
+        bh=hOYk7rkhvjRCnvuEcjwAqfr4aBzSa8a4sxHUvLuLnTs=;
+        b=cy8qoJs0PLxVGwZ6YDxoH8SXnRgwQFz9xj6MXVNlhxB92NW+yHAvLhe/gJX2Uc4IT5
+         bzK1u2aBGHcZU0k3jE/cgJRYPjsNsNNRIR0Ame9Xcqtjb5kNjangMisp9Py1xAoNY8o2
+         NPiToaF2A13Glt+7t9o17fbSAUxvBZDz1/yMw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745388184; x=1745992984;
+        d=1e100.net; s=20230601; t=1745388185; x=1745992985;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xBVFA3tzS1bXJbCiJCU1B6IsR8mJkZI1gbjF/bIgONM=;
-        b=Oyhx/N17v6Wc1t0LRYHAWmwIYV/ak4iXW0Kh0dYX0GTyxr/8CU3iNMGWl1s7FcEEMi
-         NKwqP0NH4+yJCfMAqOeNpWLzNoLuufK4ahMLPM3LFpTeWCxbgolwxXm0Lg4sL6qPj58L
-         NPNA+72B5fXwjURSIiY8V6eXAs1VPwlCsnWBjFOcwSGBQZD08dZBuFyUAftj0vihIGSz
-         VtPfWjzvXIzyfjMyqWQlbNYwMR20889SZMkw4wHBBuhKDPZaQ30l8Y247V8FmWtYp75s
-         2RH/UlI62zedMH5abTjRUdDuOIGgWgxdU0nAGGU4IMVzufnsjt9gHrYgmlcBZ8aZtCVh
-         kP+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUAEeKWUYEEEeTXfqDh8emEuMtdidQLabXYDPnnYYouifSOfWObadTy5qRFq9VWQNvi/WM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyt+48kLbGh3oaxILSQNDIkaiBStTla5gcTOVQJjbG/geRKLGzA
-	PzOn0xqfqJgaUxIa92BSRLbji9KQa/lk1eZFvUh3a6umRwMfcxGc7HFwMjtwb44=
-X-Gm-Gg: ASbGncsj7npUViWzp/ZQnsYvhfm2VV/LmPuuJqtT0d970pZPbIcFYdCznvw7JYnWztD
-	EtiG7qVVjWWnrQ92L9LyfoNgQ3wfooAeRDMW/KQhGL7qvc3JrcfBUYK9322JERuzckaTpHVicCD
-	pi1nA7zczOzuF6r6E9d9d+nj1xPyNIuAyh8u7IXeQR6k8LadZWEWlLaBN7MQF2rJ9khWFe76zvI
-	w1RLN/K9xHLwuYeCPnfc6XOP9OdH06cfKIwA+xzmBZUeb19Lyg5mc15FKmX0znh5diWV2MJuVDM
-	4/9maXnta/pBzj+hZ/xT0PI9f6p8+9azw5Qqwy/ZGqkivj9rxjrWyLi2QiHUgGqVW6MIIt8I8zT
-	t9wzd
-X-Google-Smtp-Source: AGHT+IEszP1Guf8UG/UCt0E+1javzsBikcJZaGNca8Tjxp/gqP5i1VMvnx/7dSDCxgTOQaMvTsXs8w==
-X-Received: by 2002:a17:907:2d91:b0:ace:4197:9ad0 with SMTP id a640c23a62f3a-ace41979c79mr94398166b.25.1745388183593;
-        Tue, 22 Apr 2025 23:03:03 -0700 (PDT)
+        bh=hOYk7rkhvjRCnvuEcjwAqfr4aBzSa8a4sxHUvLuLnTs=;
+        b=mMVFUlROGg17LJQvsktOSOAChSwOfECg8sVN42MHvJMMmteztwQmOfceTK4bcN/7DT
+         ov6wtY8B16tG0Q0js3TIvnuobrRxcJj1R8p5VhIvJFYv/zpMV7BaNsXHTr/uk3fg4YQI
+         dXALm2NBED5vnZcfC6WdCNl4oskQFfPHsN5HDSbJ4sAPEiHLIVaEP5tMEKSYP44JfNjr
+         6MGjh3xua6GhzWJVU5qRoT9oAACJhQkFt7g1XneLCui1iHkUeOjjnc/C4QNEpYloATe5
+         JQSdpXL4P5DLOtdEUa7YddMmINtPAFulNLYsQ2BIDSjKju3SItUzuXWxU8CPF9jxDSoG
+         l8hg==
+X-Forwarded-Encrypted: i=1; AJvYcCWzqFdl1B1snEeWQcU12FK6veGVf9xe57EU35Q3Cq/xZ1d5610hdiVmE39IGXl3HNacJDg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwwJ8u4P2mRPDI43U33cj+I9VYGsOivhPfOBUm8G423XZjOZ5fw
+	m1r6Q0FbiTNAL55QlYdt/04t1PjVkIdU1PmAQgGbFSpT+DOp61Bc54nZVDiFoaw=
+X-Gm-Gg: ASbGnctgFe1dVPH9q8lwcMsrERNBNm9kvyug3DsFjCMTS90JPFV6ABz/Yh3HkYCN6s/
+	Gl0CH/WGO1TgUK7oYUAwW6wAaN9g2JLf1MS4WXP4QJE5kSqvF8f6YDNz/2gFXQabncEK+wgpXcU
+	YU2oME4nIHiTrljQRppgjkKni9d4QLj2xpQs0OhrG9IrB2L5vBNJlfdDn+GV+G1CEbGs886v5xR
+	A3v/mBYf6b80B851u1FE0C5wbUImjHGRFXw/2mTCoITtZFWAkwr8XmLZwpBtieMPrzNolBSIoTI
+	VQmWZExolBvCMCkymzIJeIk5HXxzkuqJF+ttuKSv/IShMkE+bZg5T37k+BFNKBetRwlgXtgDD8o
+	i2Mdh
+X-Google-Smtp-Source: AGHT+IGrspoHDsYpuHpBd0xkLyZI/0PkKVqNxamXnpGvjKWbNAnUwCBvXK83/LAVhSGUiYAa3+5Q4g==
+X-Received: by 2002:a17:907:1ca5:b0:ace:31bf:30f3 with SMTP id a640c23a62f3a-ace31bf409bmr477621966b.43.1745388185104;
+        Tue, 22 Apr 2025 23:03:05 -0700 (PDT)
 Received: from dario-ThinkPad-T14s-Gen-2i.. ([2.196.40.29])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ef9e7e6sm745234366b.162.2025.04.22.23.03.02
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ef9e7e6sm745234366b.162.2025.04.22.23.03.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 23:03:03 -0700 (PDT)
+        Tue, 22 Apr 2025 23:03:04 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-amarula@amarulasolutions.com,
@@ -63,21 +63,18 @@ Cc: linux-amarula@amarulasolutions.com,
 	Stephen Boyd <sboyd@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH v11 05/18] dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
-Date: Wed, 23 Apr 2025 08:02:22 +0200
-Message-ID: <20250423060241.95521-6-dario.binacchi@amarulasolutions.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v11 06/18] arm64: dts: imx8mm: add anatop clocks
+Date: Wed, 23 Apr 2025 08:02:23 +0200
+Message-ID: <20250423060241.95521-7-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250423060241.95521-1-dario.binacchi@amarulasolutions.com>
 References: <20250423060241.95521-1-dario.binacchi@amarulasolutions.com>
@@ -89,346 +86,36 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Though adding clocks and clock-names properties will break the ABI,
-it is required to accurately describe the hardware. Indeed, the anatop
-module uses the input oscillators to generate various PLLs. In turn,
-the Clock Control Module (CCM) receives clocks from the PLLs and
-oscillators and generates clocks for on-chip peripherals.
+Add clocks to anatop node.
 
-Furthermore, as agreed in [1], this change represents the first step
-toward the implementation of the anatop driver. Currently, in fact,
-there is no dedicated anatop driver, but the CCM driver parses the
-anatop node and registers the PLLs it produces.
+Add the bindings definitions for the anatop node. The patch is
+preparatory for future developments.
 
-[1] https://lore.kernel.org/imx/20241106090549.3684963-1-dario.binacchi@amarulasolutions.com/
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 ---
 
-(no changes since v7)
-
-Changes in v7:
-- Add 'Reviewed-by' tag of Krzysztof Kozlowski
-
-Changes in v6:
-- Improve commit message
-- Merge it with patch 10, 11, and 12:
-  - 10/20 dt-bindings: clock: imx8mm: add binding definitions for anatop
-  - 11/20 dt-bindings: clock: imx8mn: add binding definitions for anatop
-  - 12/20 dt-bindings: clock: imx8mp: add binding definitions for anatop
+(no changes since v4)
 
 Changes in v4:
 - New
 
- .../bindings/clock/fsl,imx8m-anatop.yaml      | 53 ++++++++++++++-
- include/dt-bindings/clock/imx8mm-clock.h      | 64 +++++++++++++++++
- include/dt-bindings/clock/imx8mn-clock.h      | 64 +++++++++++++++++
- include/dt-bindings/clock/imx8mp-clock.h      | 68 +++++++++++++++++++
- 4 files changed, 248 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/clock/fsl,imx8m-anatop.yaml b/Documentation/devicetree/bindings/clock/fsl,imx8m-anatop.yaml
-index bbd22e95b319..f439b0a94ce2 100644
---- a/Documentation/devicetree/bindings/clock/fsl,imx8m-anatop.yaml
-+++ b/Documentation/devicetree/bindings/clock/fsl,imx8m-anatop.yaml
-@@ -30,22 +30,73 @@ properties:
-   interrupts:
-     maxItems: 1
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+index 4de3bf22902b..597041a05073 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+@@ -600,6 +600,8 @@ anatop: clock-controller@30360000 {
+ 				compatible = "fsl,imx8mm-anatop";
+ 				reg = <0x30360000 0x10000>;
+ 				#clock-cells = <1>;
++				clocks = <&osc_32k>, <&osc_24m>;
++				clock-names = "osc_32k", "osc_24m";
+ 			};
  
-+  clocks:
-+    minItems: 2
-+    maxItems: 3
-+
-+  clock-names:
-+    minItems: 2
-+    maxItems: 3
-+
-   '#clock-cells':
-     const: 1
- 
- required:
-   - compatible
-   - reg
-+  - clocks
-+  - clock-names
-   - '#clock-cells'
- 
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: fsl,imx8mq-anatop
-+    then:
-+      properties:
-+        clocks:
-+          items:
-+            - description: 32k osc
-+            - description: 25m osc
-+            - description: 27m osc
-+        clock-names:
-+          items:
-+            - const: ckil
-+            - const: osc_25m
-+            - const: osc_27m
-+    else:
-+      properties:
-+        clocks:
-+          items:
-+            - description: 32k osc
-+            - description: 24m osc
-+
-+        clock-names:
-+          items:
-+            - const: osc_32k
-+            - const: osc_24m
-+
- additionalProperties: false
- 
- examples:
-   - |
--    anatop: clock-controller@30360000 {
-+    clock-controller@30360000 {
-         compatible = "fsl,imx8mn-anatop", "fsl,imx8mm-anatop";
-         reg = <0x30360000 0x10000>;
-         #clock-cells = <1>;
-+        clocks = <&osc_32k>, <&osc_24m>;
-+        clock-names = "osc_32k", "osc_24m";
-+    };
-+
-+  - |
-+    clock-controller@30360000 {
-+        compatible = "fsl,imx8mq-anatop";
-+        reg = <0x30360000 0x10000>;
-+        #clock-cells = <1>;
-+        clocks = <&ckil>, <&osc_25m>, <&osc_27m>;
-+        clock-names = "ckil", "osc_25m", "osc_27m";
-     };
- 
- ...
-diff --git a/include/dt-bindings/clock/imx8mm-clock.h b/include/dt-bindings/clock/imx8mm-clock.h
-index 102d8a6cdb55..017c06e48430 100644
---- a/include/dt-bindings/clock/imx8mm-clock.h
-+++ b/include/dt-bindings/clock/imx8mm-clock.h
-@@ -287,4 +287,68 @@
- 
- #define IMX8MM_CLK_END				258
- 
-+#define IMX8MM_ANATOP_CLK_DUMMY			0
-+#define IMX8MM_ANATOP_CLK_32K			1
-+#define IMX8MM_ANATOP_CLK_24M			2
-+#define IMX8MM_ANATOP_AUDIO_PLL1_REF_SEL	3
-+#define IMX8MM_ANATOP_AUDIO_PLL2_REF_SEL	4
-+#define IMX8MM_ANATOP_VIDEO_PLL_REF_SEL		5
-+#define IMX8MM_ANATOP_DRAM_PLL_REF_SEL		6
-+#define IMX8MM_ANATOP_GPU_PLL_REF_SEL		7
-+#define IMX8MM_ANATOP_VPU_PLL_REF_SEL		8
-+#define IMX8MM_ANATOP_ARM_PLL_REF_SEL		9
-+#define IMX8MM_ANATOP_SYS_PLL3_REF_SEL		10
-+#define IMX8MM_ANATOP_AUDIO_PLL1		11
-+#define IMX8MM_ANATOP_AUDIO_PLL2		12
-+#define IMX8MM_ANATOP_VIDEO_PLL			13
-+#define IMX8MM_ANATOP_DRAM_PLL			14
-+#define IMX8MM_ANATOP_GPU_PLL			15
-+#define IMX8MM_ANATOP_VPU_PLL			16
-+#define IMX8MM_ANATOP_ARM_PLL			17
-+#define IMX8MM_ANATOP_SYS_PLL1			18
-+#define IMX8MM_ANATOP_SYS_PLL2			19
-+#define IMX8MM_ANATOP_SYS_PLL3			20
-+#define IMX8MM_ANATOP_AUDIO_PLL1_BYPASS		21
-+#define IMX8MM_ANATOP_AUDIO_PLL2_BYPASS		22
-+#define IMX8MM_ANATOP_VIDEO_PLL_BYPASS		23
-+#define IMX8MM_ANATOP_DRAM_PLL_BYPASS		24
-+#define IMX8MM_ANATOP_GPU_PLL_BYPASS		25
-+#define IMX8MM_ANATOP_VPU_PLL_BYPASS		26
-+#define IMX8MM_ANATOP_ARM_PLL_BYPASS		27
-+#define IMX8MM_ANATOP_SYS_PLL3_BYPASS		28
-+#define IMX8MM_ANATOP_AUDIO_PLL1_OUT		29
-+#define IMX8MM_ANATOP_AUDIO_PLL2_OUT		30
-+#define IMX8MM_ANATOP_VIDEO_PLL_OUT		31
-+#define IMX8MM_ANATOP_DRAM_PLL_OUT		32
-+#define IMX8MM_ANATOP_GPU_PLL_OUT		33
-+#define IMX8MM_ANATOP_VPU_PLL_OUT		34
-+#define IMX8MM_ANATOP_ARM_PLL_OUT		35
-+#define IMX8MM_ANATOP_SYS_PLL3_OUT		36
-+#define IMX8MM_ANATOP_SYS_PLL1_OUT		37
-+#define IMX8MM_ANATOP_SYS_PLL1_40M		38
-+#define IMX8MM_ANATOP_SYS_PLL1_80M		39
-+#define IMX8MM_ANATOP_SYS_PLL1_100M		40
-+#define IMX8MM_ANATOP_SYS_PLL1_133M		41
-+#define IMX8MM_ANATOP_SYS_PLL1_160M		42
-+#define IMX8MM_ANATOP_SYS_PLL1_200M		43
-+#define IMX8MM_ANATOP_SYS_PLL1_266M		44
-+#define IMX8MM_ANATOP_SYS_PLL1_400M		45
-+#define IMX8MM_ANATOP_SYS_PLL1_800M		46
-+#define IMX8MM_ANATOP_SYS_PLL2_OUT		47
-+#define IMX8MM_ANATOP_SYS_PLL2_50M		48
-+#define IMX8MM_ANATOP_SYS_PLL2_100M		49
-+#define IMX8MM_ANATOP_SYS_PLL2_125M		50
-+#define IMX8MM_ANATOP_SYS_PLL2_166M		51
-+#define IMX8MM_ANATOP_SYS_PLL2_200M		52
-+#define IMX8MM_ANATOP_SYS_PLL2_250M		53
-+#define IMX8MM_ANATOP_SYS_PLL2_333M		54
-+#define IMX8MM_ANATOP_SYS_PLL2_500M		55
-+#define IMX8MM_ANATOP_SYS_PLL2_1000M		56
-+#define IMX8MM_ANATOP_CLK_CLKOUT1_SEL		57
-+#define IMX8MM_ANATOP_CLK_CLKOUT1_DIV		58
-+#define IMX8MM_ANATOP_CLK_CLKOUT1		59
-+#define IMX8MM_ANATOP_CLK_CLKOUT2_SEL		60
-+#define IMX8MM_ANATOP_CLK_CLKOUT2_DIV		61
-+#define IMX8MM_ANATOP_CLK_CLKOUT2		62
-+
- #endif
-diff --git a/include/dt-bindings/clock/imx8mn-clock.h b/include/dt-bindings/clock/imx8mn-clock.h
-index 04809edab33c..b2fa73803d45 100644
---- a/include/dt-bindings/clock/imx8mn-clock.h
-+++ b/include/dt-bindings/clock/imx8mn-clock.h
-@@ -267,4 +267,68 @@
- 
- #define IMX8MN_CLK_END				235
- 
-+#define IMX8MN_ANATOP_CLK_DUMMY			0
-+#define IMX8MN_ANATOP_CLK_32K			1
-+#define IMX8MN_ANATOP_CLK_24M			2
-+#define IMX8MN_ANATOP_AUDIO_PLL1_REF_SEL	3
-+#define IMX8MN_ANATOP_AUDIO_PLL2_REF_SEL	4
-+#define IMX8MN_ANATOP_VIDEO_PLL_REF_SEL		5
-+#define IMX8MN_ANATOP_DRAM_PLL_REF_SEL		6
-+#define IMX8MN_ANATOP_GPU_PLL_REF_SEL		7
-+#define IMX8MN_ANATOP_M7_ALT_PLL_REF_SEL	8
-+#define IMX8MN_ANATOP_ARM_PLL_REF_SEL		9
-+#define IMX8MN_ANATOP_SYS_PLL3_REF_SEL		10
-+#define IMX8MN_ANATOP_AUDIO_PLL1		11
-+#define IMX8MN_ANATOP_AUDIO_PLL2		12
-+#define IMX8MN_ANATOP_VIDEO_PLL			13
-+#define IMX8MN_ANATOP_DRAM_PLL			14
-+#define IMX8MN_ANATOP_GPU_PLL			15
-+#define IMX8MN_ANATOP_M7_ALT_PLL		16
-+#define IMX8MN_ANATOP_ARM_PLL			17
-+#define IMX8MN_ANATOP_SYS_PLL1			18
-+#define IMX8MN_ANATOP_SYS_PLL2			19
-+#define IMX8MN_ANATOP_SYS_PLL3			20
-+#define IMX8MN_ANATOP_AUDIO_PLL1_BYPASS		21
-+#define IMX8MN_ANATOP_AUDIO_PLL2_BYPASS		22
-+#define IMX8MN_ANATOP_VIDEO_PLL_BYPASS		23
-+#define IMX8MN_ANATOP_DRAM_PLL_BYPASS		24
-+#define IMX8MN_ANATOP_GPU_PLL_BYPASS		25
-+#define IMX8MN_ANATOP_M7_ALT_PLL_BYPASS		26
-+#define IMX8MN_ANATOP_ARM_PLL_BYPASS		27
-+#define IMX8MN_ANATOP_SYS_PLL3_BYPASS		28
-+#define IMX8MN_ANATOP_AUDIO_PLL1_OUT		29
-+#define IMX8MN_ANATOP_AUDIO_PLL2_OUT		30
-+#define IMX8MN_ANATOP_VIDEO_PLL_OUT		31
-+#define IMX8MN_ANATOP_DRAM_PLL_OUT		32
-+#define IMX8MN_ANATOP_GPU_PLL_OUT		33
-+#define IMX8MN_ANATOP_M7_ALT_PLL_OUT		34
-+#define IMX8MN_ANATOP_ARM_PLL_OUT		35
-+#define IMX8MN_ANATOP_SYS_PLL3_OUT		36
-+#define IMX8MN_ANATOP_SYS_PLL1_OUT		37
-+#define IMX8MN_ANATOP_SYS_PLL1_40M		38
-+#define IMX8MN_ANATOP_SYS_PLL1_80M		39
-+#define IMX8MN_ANATOP_SYS_PLL1_100M		40
-+#define IMX8MN_ANATOP_SYS_PLL1_133M		41
-+#define IMX8MN_ANATOP_SYS_PLL1_160M		42
-+#define IMX8MN_ANATOP_SYS_PLL1_200M		43
-+#define IMX8MN_ANATOP_SYS_PLL1_266M		44
-+#define IMX8MN_ANATOP_SYS_PLL1_400M		45
-+#define IMX8MN_ANATOP_SYS_PLL1_800M		46
-+#define IMX8MN_ANATOP_SYS_PLL2_OUT		47
-+#define IMX8MN_ANATOP_SYS_PLL2_50M		48
-+#define IMX8MN_ANATOP_SYS_PLL2_100M		49
-+#define IMX8MN_ANATOP_SYS_PLL2_125M		50
-+#define IMX8MN_ANATOP_SYS_PLL2_166M		51
-+#define IMX8MN_ANATOP_SYS_PLL2_200M		52
-+#define IMX8MN_ANATOP_SYS_PLL2_250M		53
-+#define IMX8MN_ANATOP_SYS_PLL2_333M		54
-+#define IMX8MN_ANATOP_SYS_PLL2_500M		55
-+#define IMX8MN_ANATOP_SYS_PLL2_1000M		56
-+#define IMX8MN_ANATOP_CLK_CLKOUT1_SEL		57
-+#define IMX8MN_ANATOP_CLK_CLKOUT1_DIV		58
-+#define IMX8MN_ANATOP_CLK_CLKOUT1		59
-+#define IMX8MN_ANATOP_CLK_CLKOUT2_SEL		60
-+#define IMX8MN_ANATOP_CLK_CLKOUT2_DIV		61
-+#define IMX8MN_ANATOP_CLK_CLKOUT2		62
-+
- #endif
-diff --git a/include/dt-bindings/clock/imx8mp-clock.h b/include/dt-bindings/clock/imx8mp-clock.h
-index 3235d7de3b62..8c076225fd9e 100644
---- a/include/dt-bindings/clock/imx8mp-clock.h
-+++ b/include/dt-bindings/clock/imx8mp-clock.h
-@@ -402,4 +402,72 @@
- 
- #define IMX8MP_CLK_AUDIOMIX_END			59
- 
-+#define IMX8MP_ANATOP_CLK_DUMMY			0
-+#define IMX8MP_ANATOP_CLK_24M			1
-+#define IMX8MP_ANATOP_CLK_32K			2
-+#define IMX8MP_ANATOP_AUDIO_PLL1_REF_SEL	3
-+#define IMX8MP_ANATOP_AUDIO_PLL2_REF_SEL	4
-+#define IMX8MP_ANATOP_VIDEO_PLL_REF_SEL		5
-+#define IMX8MP_ANATOP_DRAM_PLL_REF_SEL		6
-+#define IMX8MP_ANATOP_GPU_PLL_REF_SEL		7
-+#define IMX8MP_ANATOP_VPU_PLL_REF_SEL		8
-+#define IMX8MP_ANATOP_ARM_PLL_REF_SEL		9
-+#define IMX8MP_ANATOP_SYS_PLL1_REF_SEL		10
-+#define IMX8MP_ANATOP_SYS_PLL2_REF_SEL		11
-+#define IMX8MP_ANATOP_SYS_PLL3_REF_SEL		12
-+#define IMX8MP_ANATOP_AUDIO_PLL1		13
-+#define IMX8MP_ANATOP_AUDIO_PLL2		14
-+#define IMX8MP_ANATOP_VIDEO_PLL			15
-+#define IMX8MP_ANATOP_DRAM_PLL			16
-+#define IMX8MP_ANATOP_GPU_PLL			17
-+#define IMX8MP_ANATOP_VPU_PLL			18
-+#define IMX8MP_ANATOP_ARM_PLL			19
-+#define IMX8MP_ANATOP_SYS_PLL1			20
-+#define IMX8MP_ANATOP_SYS_PLL2			21
-+#define IMX8MP_ANATOP_SYS_PLL3			22
-+#define IMX8MP_ANATOP_AUDIO_PLL1_BYPASS		23
-+#define IMX8MP_ANATOP_AUDIO_PLL2_BYPASS		24
-+#define IMX8MP_ANATOP_VIDEO_PLL_BYPASS		25
-+#define IMX8MP_ANATOP_DRAM_PLL_BYPASS		26
-+#define IMX8MP_ANATOP_GPU_PLL_BYPASS		27
-+#define IMX8MP_ANATOP_VPU_PLL_BYPASS		28
-+#define IMX8MP_ANATOP_ARM_PLL_BYPASS		29
-+#define IMX8MP_ANATOP_SYS_PLL1_BYPASS		30
-+#define IMX8MP_ANATOP_SYS_PLL2_BYPASS		31
-+#define IMX8MP_ANATOP_SYS_PLL3_BYPASS		32
-+#define IMX8MP_ANATOP_AUDIO_PLL1_OUT		33
-+#define IMX8MP_ANATOP_AUDIO_PLL2_OUT		34
-+#define IMX8MP_ANATOP_VIDEO_PLL_OUT		35
-+#define IMX8MP_ANATOP_DRAM_PLL_OUT		36
-+#define IMX8MP_ANATOP_GPU_PLL_OUT		37
-+#define IMX8MP_ANATOP_VPU_PLL_OUT		38
-+#define IMX8MP_ANATOP_ARM_PLL_OUT		39
-+#define IMX8MP_ANATOP_SYS_PLL3_OUT		40
-+#define IMX8MP_ANATOP_SYS_PLL1_OUT		41
-+#define IMX8MP_ANATOP_SYS_PLL1_40M		42
-+#define IMX8MP_ANATOP_SYS_PLL1_80M		43
-+#define IMX8MP_ANATOP_SYS_PLL1_100M		44
-+#define IMX8MP_ANATOP_SYS_PLL1_133M		45
-+#define IMX8MP_ANATOP_SYS_PLL1_160M		46
-+#define IMX8MP_ANATOP_SYS_PLL1_200M		47
-+#define IMX8MP_ANATOP_SYS_PLL1_266M		48
-+#define IMX8MP_ANATOP_SYS_PLL1_400M		49
-+#define IMX8MP_ANATOP_SYS_PLL1_800M		50
-+#define IMX8MP_ANATOP_SYS_PLL2_OUT		51
-+#define IMX8MP_ANATOP_SYS_PLL2_50M		52
-+#define IMX8MP_ANATOP_SYS_PLL2_100M		53
-+#define IMX8MP_ANATOP_SYS_PLL2_125M		54
-+#define IMX8MP_ANATOP_SYS_PLL2_166M		55
-+#define IMX8MP_ANATOP_SYS_PLL2_200M		56
-+#define IMX8MP_ANATOP_SYS_PLL2_250M		57
-+#define IMX8MP_ANATOP_SYS_PLL2_333M		58
-+#define IMX8MP_ANATOP_SYS_PLL2_500M		59
-+#define IMX8MP_ANATOP_SYS_PLL2_1000M		60
-+#define IMX8MP_ANATOP_CLK_CLKOUT1_SEL		61
-+#define IMX8MP_ANATOP_CLK_CLKOUT1_DIV		62
-+#define IMX8MP_ANATOP_CLK_CLKOUT1		63
-+#define IMX8MP_ANATOP_CLK_CLKOUT2_SEL		64
-+#define IMX8MP_ANATOP_CLK_CLKOUT2_DIV		65
-+#define IMX8MP_ANATOP_CLK_CLKOUT2		66
-+
- #endif
+ 			snvs: snvs@30370000 {
 -- 
 2.43.0
 
