@@ -1,98 +1,96 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13992CCC9
-	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 10:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27B826C3A6
+	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 10:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745404019; cv=none; b=T+KwlLVycrvl+dkKFPgOTzxw/d+R9dSwiuAloxBtBcKM6aMroZekHkPCKM825mYTeHZHdh32emZGhF7C7p8DAEXY9po0jcjN8cT1207Wxc8W9E+GGOwdgN2MbS9TyxNzORfevTL9rwMe6X40HECkoaL0hU9LUM1t4c0Hl0RHz5I=
+	t=1745405912; cv=none; b=OGctNEhzxkwOknT4H54MllvoAKsrq5robNY1SuPdgt6Ru7TF7Dp00RFG2G38lw2wDgNoUUiFFer7OVLvwrvD8fLANsPTXthGiJHImbkUDirHsOj89ehwTOoPk8DGiVhEsjNbwi2DZJ8QjWBlEWY25qw5yjF4rZRnC8D6GiAPFaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745404019; c=relaxed/simple;
-	bh=+SxBSMk7orLxVFxL8Gww7YOLecKij/zxaEXdo8QiJaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DD5rzBhObr5ostWToJivwemX3/0pDU8EdLaPIswzlHc8muG6afbp91wY7hRoJ6Tzv9V8LBvCinPdTJjSDkEglZgV90wU9wR86gpbqSjRjb/+/isvQzRfCIQN9oplr0Li17ccRNMnoe0lLb6k/V14nqZo3NBA7xLMnpgO3/yyNaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=jjgZ+LnT; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1745405912; c=relaxed/simple;
+	bh=uwmcdLotwKHbSyuTnYS6H751riUvBNfPKy6nA7rv0do=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HDrfmsclV49iv2wiGDaePainHGFtdPlTdDFyCaeaoTgxIQnNZf6W4Zv8wBrHei7u9ROrY4BWzdy/7QzCeDOjOsm0Q8QpzmADTNDvL8wA2aB51YeP9sC1bGvTSf1vg8G3JmP2YhzbngVm8eDG/hhCRQDYz7p6Zp3InUrhx4LAO74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kzZaCHxn; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="jjgZ+LnT"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 6EFAF1F96C;
-	Wed, 23 Apr 2025 12:26:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1745404014;
-	bh=YfVwzaklYqB2yPGJrUhReU1MAXFmWBiktB9H9OnlWHA=; h=From:To:Subject;
-	b=jjgZ+LnTi8D+QhEDcCoLzSUblRuMauYhItZqnADRVM14O2rzj11ls30N4onzc9Akp
-	 lOTOQ1i/3h8HqOsk2LiCiFju1aGmHdnVJl8VDP5bVbHyjU0mhFk9LNKszMNexjjJZZ
-	 rdz0mPsCmMFURLeaVXI9ptj5SaKX/fSXdkmQc/PE31R4OLs9D2CVAWC+eVZgstYWyH
-	 iLAP37E2POs5SACE1q8eCs67zEzY6MC66t+QYA4RDFMSS+3AGYMXvHLQCeLoedgXGL
-	 CkYeXMmE9YAjF07qOwhaABWRXgMhbG7GohCYNTo8qr8I4Y2aSdMF1GyOJ+Ud3ZdivO
-	 6h033Efpnke3A==
-Date: Wed, 23 Apr 2025 12:26:51 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Frieder Schrempf <frieder.schrempf@kontron.de>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
-	linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Philippe Schenker <philippe.schenker@impulsing.ch>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to
- usdhc2
-Message-ID: <20250423102651.GC4811@francesco-nb>
-References: <20250422124619.713235-1-Wojciech.Dubowik@mt.com>
- <522decdf-faa0-433b-8b92-760f8fd04388@kontron.de>
- <20250423070807.GB4811@francesco-nb>
- <17ec22a0-b68b-4ac5-b2bc-986837639a37@kontron.de>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kzZaCHxn"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-54b166fa41bso6861820e87.0
+        for <imx@lists.linux.dev>; Wed, 23 Apr 2025 03:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745405909; x=1746010709; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uwmcdLotwKHbSyuTnYS6H751riUvBNfPKy6nA7rv0do=;
+        b=kzZaCHxn0lUfEOChS673UcsYfCErSar9o7Gf5BSvJrWdHgNdDfetnwBqt7smuGrG7d
+         OCMjPrZHnnihMTe7CDx31GZYVJsAnIiJgj5558LXzreG9qX5WaQs96ncYYVwLGM3brc2
+         E7VhcU2EAYMEUaksoCzGveou7d5CdM0h8SPKn9s946bs/TZOMnCUvEdJ60D4j8ZClm4v
+         WBHOZUo9PCJdugHnkSb/05j2JZkI/IkFriuEGEp4K7cLrR4W4CqGXT2/1KgGKBdx/P30
+         ZXlpsP+Xwzgbx0H6/yoGdFo3bjGkKIPjBBKpdr4eV7oJKYESZACHnXoG4Rpa3cACMfrm
+         hNdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745405909; x=1746010709;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uwmcdLotwKHbSyuTnYS6H751riUvBNfPKy6nA7rv0do=;
+        b=XnQ9G0uz24oP8e1JPR0gZ3tcSuOylxIE0Q7Tr0bB1mctJ2VX6kGr3+pO7AM1IvT9AB
+         tBb2eKD3rNn8NYo43LqCkdEdCmCeHnC7fUTe65TVOXM2zUr20ya8qQixr3/nOq2UVXlc
+         WDxUAzSR7Gxm33pllx8kzOh41hQ0GwBC+Y+4cZTfyV20+LGJGVC1YwM+6FuYQqorYndy
+         Zi/TxyF4C3RerEOyUV2Gno7INWbzU0XqYZyGjcTRjikthfqtJUaNEgKod4+xwDMbkHIx
+         TExeY7dwEtBOlFtQRKTpbCQuoXHbmLXVa6rp5RCzMko9M3jjtWTLsBtFMS5Jj/i5QOYd
+         enUg==
+X-Forwarded-Encrypted: i=1; AJvYcCUfYkEIJX1Tux/uRiDWbGysW7Ke+c7MGcyG9QeaU6w1SV4KR3L1ORf1kebMPOVJDp5lj7M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwKl+B3b9qnVXaUEIAltjb82tR7UctBWsDBA75T5AVAqMcA4549
+	F+q6RLQdR+fdxNjsYxLK9p2sdFekxSwfeIyq872hLQ3YcGk9Qq1zlwlAYVRLQuz2P8NJQWlq5b3
+	t8quy0lKrMi+DmrFSDTJApobbn+LFMVEan/Gtug==
+X-Gm-Gg: ASbGnct5+b3rDCaClGtl+kFN7L8ccDu/HigLbEKp2Z+nQQ/T6gpdjOebi5cc0UOlT88
+	VwWHPpdjw720wq/bnYcs7ihKXaudpJyAF0QyWGuv5e03fMS7gz8SJRiRo6Pi2fJyUm//MWlBvq8
+	YYLl1U5Q2eBON4CwJUQjGWVkETZYOx77/d
+X-Google-Smtp-Source: AGHT+IEjS24jEIugO55xavRjGHILXYER6m4q0amlIjqOd7Xvxl7wCjNSGFGR0t0e9qberyDj3AV0pmDzW61zJwcHqaE=
+X-Received: by 2002:a05:6512:ba8:b0:549:6cac:6717 with SMTP id
+ 2adb3069b0e04-54d6e6629b6mr4831840e87.53.1745405909021; Wed, 23 Apr 2025
+ 03:58:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17ec22a0-b68b-4ac5-b2bc-986837639a37@kontron.de>
+References: <20250423-gpiochip-set-rv-gpio-part2-v1-0-b22245cde81a@linaro.org>
+In-Reply-To: <20250423-gpiochip-set-rv-gpio-part2-v1-0-b22245cde81a@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 23 Apr 2025 12:58:18 +0200
+X-Gm-Features: ATxdqUGeqKFeiJHfrdFM-E1Ot1VyXqrfMLSq32rxhf_gi-bzXxhhSJyFayC6FXQ
+Message-ID: <CACRpkdYVf9C+QZjFZZ9J96FRtoS8mowzyrmCcYmvV2uGTgcmzw@mail.gmail.com>
+Subject: Re: [PATCH 00/12] gpio: convert more GPIO chips to using new value
+ setters - part 2 for v6.16
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Lixu Zhang <lixu.zhang@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	Yinbo Zhu <zhuyinbo@loongson.cn>, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 23, 2025 at 10:00:22AM +0200, Frieder Schrempf wrote:
-> Am 23.04.25 um 09:08 schrieb Francesco Dolcini:
-> > On Wed, Apr 23, 2025 at 08:50:54AM +0200, Frieder Schrempf wrote:
-> >> Am 22.04.25 um 14:46 schrieb Wojciech Dubowik:
-> >>>
-> >>> Define vqmmc regulator-gpio for usdhc2 with vin-supply
-> >>> coming from LDO5.
-> >>>
-> >>> Without this definition LDO5 will be powered down, disabling
-> >>> SD card after bootup. This has been introduced in commit
-> >>> f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5").
-> >>>
-> >>> Fixes: f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5")
-> >>>
-> >>> Cc: stable@vger.kernel.org
-> >>> Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+On Wed, Apr 23, 2025 at 9:15=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
 
-...
+> struct gpio_chip now has callbacks for setting line values that return
+> an integer, allowing to indicate failures. We're in the process of
+> converting all GPIO drivers to using the new API. This series converts
+> another round of GPIO controllers.
+>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-> > With this solution (that I proposed), the sdcard driver just use the
-> > GPIO to select the right voltage and that's it, simple, no un-needed i2c
-> > communication with the PMIC, and the DT clearly describe the way the HW
-> > is designed.
-> 
-> Yes, but your solution relies on the fact that the LDO5 registers
-> actually have the correct values for 1v8 and 3v3 setup. The bootloader
-> might have changed these values. I would prefer it if we could have a
-> solution that puts the LDO5 in a defined state, that is independent from
-> any external conditions.
+The series:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-I do not think this is a real concern, the PMIC is programmed during
-manufacturing, if the PMIC programming is not correct we have way more
-issues ...
+Thanks for your persistant effort in fixing this!!
 
-Francesco
-
-
+Yours,
+Linus Walleij
