@@ -1,696 +1,230 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2064.outbound.protection.outlook.com [40.107.249.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3432BD5B5
-	for <imx@lists.linux.dev>; Tue, 22 Apr 2025 20:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745354374; cv=none; b=YXNgzLWErN4VT6MkFEeQPXsh8A5tKd/giJCE20eH3YALlyqyAXegM/TpljVnRVt+yC0Q7eTBmoVFOaK1Azo/CnUvTHYo/YoSpMNiONRQN224Bva4Lx04Yj7ndDJdhRcBIJ0Y+MRYX+HMqsapodnuM5UeNaHA8dqhIQ0B6aojL60=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745354374; c=relaxed/simple;
-	bh=g/2T76R5tL0lu2B98PZab5ST8sK4AqY9aeoUm45pAz0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=A6Zho3o1Ds2NGh1sYy7P0M+cP1Fc4z1DN9PLPmD+J6iyiQd9PQ2/a6UYr+NaCZ6Z2rVAdFCU6G1r1U1JhymsYh61nBLTSw/juAO3HuR7f9rEBv7hn5h+GADH/FpzafBdvFpC6ASnSqa1s/2AH+C1xNMGThZdHj1xieTwcMD8zOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=SZpPitVq; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92794A06
+	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 02:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745376909; cv=fail; b=GGHVNq+lCemGojkVTOItsTzfwXPifuI7NynTYuQ62RHRzW7qGayP7hPaWJUV7D1jPtbynOIAZLMXNHs6Otot3Q1f8qDZ5RCtq9FRMvqRrzQwUBkACsdJCvmRhw+ox+BkGUcRaWGclJAhzWPqATxTD1hqo129uXhfn7xcxo3SP10=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745376909; c=relaxed/simple;
+	bh=St5lkxtjzDpGDR4eEFNlL2gargze0fLgUP6T8qAfAZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=oTF23380Fex8nc3b6kSXabRhTnKxXHMjaonUp640RrIhsMl7EqcENB6YVymZB1YS/S6ifNRQZ3ahwZcbMOgAD9fWwFG+Bb9cW+FGYXUIA5jcDEj/F4nGf02mOYnS790qpl+ExcflNNMRjBb1VBqfQ60FcB6HXEpSNeLUTFKzhF8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QugcaCJK; arc=fail smtp.client-ip=40.107.249.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="SZpPitVq"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6ed16ce246bso31223346d6.3
-        for <imx@lists.linux.dev>; Tue, 22 Apr 2025 13:39:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1745354368; x=1745959168; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Mxa8mnKGFLIwz3aSnLsB+cdsk2Io08xYKKTBbVflAy8=;
-        b=SZpPitVqHZ+qnwCm3v0DylKKBlE/dhMuZ2xJxzh/m9/FcpId2ieYSnOWjkOYiZEbnB
-         cx6421Ev8XHl1UHwq00X8TVmlhTTolldIVTZhA7BoQqpEc8U9mJpxyPalfGI4ZrCyD8S
-         Abg+kGGAZpytkQGVNNkUsle2n7bOjxj0LUpDe2tal1ErIwVYanfvG+9ElEiEehVcCP5g
-         9iPWt9y4A5vWNQVRmNs3LZWsLc2MBpV2Ut+6dKQJrBbUuFggTZxh691zOgwA1UE6uQQM
-         qo0O+NEFvCIchk4dgnE9TNm8jdNLeXhNU6yvkftL1bQnpLM/F0y/yfaCTX5cJThgf68U
-         PDCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745354368; x=1745959168;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Mxa8mnKGFLIwz3aSnLsB+cdsk2Io08xYKKTBbVflAy8=;
-        b=NwOwVznGpWGcJhp/TppeIlq2REZQP80wqil26RWAjzcXaoOzv+oKuiXFxhELG+rVQF
-         h8XXpoueoQlRcRjLfCXaziSGfxuXUwp/otIJbTwisvEsTukYOjin5mtNm4OvAYksSoNa
-         5/X8ugTI3Jnsfpmy8uUT9s5pZiGl6X8PKP/77Rc+wCpoR4j/EryiwAlvaaGqAOVCQpAT
-         W5RIK0phRimJOET/9hBhZUJIrAAL+BZb26xqWBxsu0E4YM2tH816JoNENWvm/UwDXu4d
-         Xqbpmj46P3HL6XRMNtjB3k+V3RKRAqv7KzQO2YXyWorltDzmKInypMjrfDseDUNViidv
-         d3iA==
-X-Forwarded-Encrypted: i=1; AJvYcCXDpqJVsOcpcvgUyj/13jS3rsACYCUOPhYurfFR7lnLk9FAvTVD9BrEatWfr9yVQv3R3Cg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxOyMpNuEggAcmhQVhs0xvTlZxeZ32P9N26J2WK1Pqm50QiZzX3
-	SgYVRDQQKMG+m4BszDFD+X18v8jCB96zPOqvEbNo++mYZaZ4h1K828n4zdm2o9HeofebSub8a9R
-	k39M=
-X-Gm-Gg: ASbGncsCY1CzjEap3ne8gB0+by/Y4wy2i2WESFq//bgIptP/lFMG1+xQjA7hLBozr5S
-	n2WTyRyW1K271S2GweNfKcRqP7YYEqkQTIzq0K8EAY9EKZRlkODg4SXXy/svYGedsNP0X45uAtj
-	RK+pS95KaKoxxV7O65rgmpi2i7Nw1ALp5ptwB1YyddDzpmqJ7H3WDrCOVmW3351GksWUzZOayQQ
-	8CSFzGQWFQdt1XfBONeTiaOedPwCq1n22vyNqzssfvixw14AHvqJb4pp0v6Z33phHcSVs1uN0ir
-	fs14BzMaI1HTuTsNGw2mqTf5DPcozWRs2NKQt3zNmlP3mQ==
-X-Google-Smtp-Source: AGHT+IHgoXB32I54YobFWotwW7Ql02OGxk1yBL4VLASRbXLMaVUU5YRS5yYScQbQz+DQ7P9MWu3VIA==
-X-Received: by 2002:a05:6214:1c49:b0:6ea:d033:2853 with SMTP id 6a1803df08f44-6f2c455326dmr292929536d6.16.1745354367604;
-        Tue, 22 Apr 2025 13:39:27 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:15:9913::5ac? ([2606:6d00:15:9913::5ac])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2b343ffsm61918306d6.65.2025.04.22.13.39.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 13:39:27 -0700 (PDT)
-Message-ID: <a257b77973512cad398502949324ad5518c54108.camel@ndufresne.ca>
-Subject: Re: [PATCH v5] media: amphion: Support dmabuf and v4l2 buffer
- without binding
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Ming Qian <ming.qian@oss.nxp.com>, mchehab@kernel.org, 
-	hverkuil-cisco@xs4all.nl
-Cc: shawnguo@kernel.org, robh+dt@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- xiahong.bao@nxp.com, 	eagle.zhou@nxp.com, tao.jiang_2@nxp.com,
- imx@lists.linux.dev, 	linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Tue, 22 Apr 2025 16:39:25 -0400
-In-Reply-To: <20250120082105.2960717-1-ming.qian@oss.nxp.com>
-References: <20250120082105.2960717-1-ming.qian@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0 (3.56.0-1.fc42) 
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QugcaCJK"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t8gYqiu6NJ+HQAKlUKkdqwTnIAYwCcQOYnAsqueUF1YN8VE/WL0aQUYyzl8AmW/IAgtxAcstro+Z6PSwQ5q2AfC6omA/sB/wVoEroVIYu/t/7+UTr3DBkqIO94Cj99Vwf0AXi5Oz0XpDLr1g8LQMS4mUnuAASRCOlZIJ3Q2+azNlcHpZpx7B3c6zpvTiFV4pMGqnWlzo3KQVKFxi1Au4P6o2xEUHz5EcSgC2PQUbXcZMBddUZtH7Xr5iR1y7iVRcwzI4IiWH9yv9i7ZsMbLyv24KcdlYy6R5nJIax85u1RGhrBvBsztpbNewaDTFNJOQVXLnht7LmWIMW5880dOYdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iQNEBlrpWqgkDVhAZuMobmNjGPbgRolBt64+OwgqhQo=;
+ b=cNmfkuNZ2YMmj/aTOnhpYVTEmvyXg7w7BvCea8Hz4hQ2ylql6LX4Rh8pfgXBs8NFfRzDFlZt/Lj4YpdWF9RIEvun5cgtcys2kuYh+18fzEpUVwpK0Wc996DmbWiyx+drLdX06/G/T5mPIY2YrvDmEl7GHaMczTmVLirT08p9hbC+O49WjWSasEShMTs7W/wM0YbQbqHnkRcVNPRcJTilIgMwfkJLmJkLXZr8bwjsRlUsifbHm9ykhf6u6nyIJmoBhLQu5rcX8S9trkyc06dKGd3esfhJP6fY7be8i/BkMlLiXGe0TZhwe40v05VtD0RXlWXU/Zv3pwStSI5+YI1zww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iQNEBlrpWqgkDVhAZuMobmNjGPbgRolBt64+OwgqhQo=;
+ b=QugcaCJKgZjKFK4XUPFhXQ4janqufJLB/OH91WIYVYRhldca3O45gvSUdtbl5S73Su1HedBKbfIZAYYXUpzJ5ppE63Xq1C7kgvKJmEUkaQENthRQLoPhKSC2u4bz6qCtxJvyUVopx7fpwzwMcLhmA0t9LsyfrakkbGAeJYRwcCF5Yy6omTe/GtN+EajbHeqTOuaFzruNxDZ6oa8SjRmyVDDwxkAkqE5OR3DiyBmIhKnyMaaJOn/KVMqxhsIEH+RQrdFtKAziQRawPr7bE+xvBQjKJfelRgAsxVZnvfze+uAnPgeIymwOkKjk76MfWyFHnJTbxw6HuvkBk3gAJ/uUqA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by PAXPR04MB8557.eurprd04.prod.outlook.com (2603:10a6:102:214::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.36; Wed, 23 Apr
+ 2025 02:55:04 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%5]) with mapi id 15.20.8655.031; Wed, 23 Apr 2025
+ 02:55:03 +0000
+Date: Wed, 23 Apr 2025 10:51:08 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v6 1/3] arm64: dts: imx95: add USB2.0 nodes
+Message-ID: <20250423025108.inlhuvmfdwuzsey7@hippo>
+References: <20250410064907.3372772-1-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410064907.3372772-1-xu.yang_2@nxp.com>
+X-ClientProxiedBy: SI2PR04CA0003.apcprd04.prod.outlook.com
+ (2603:1096:4:197::23) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PAXPR04MB8557:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e800218-6892-42e9-943a-08dd82123e5c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Dw7AIn+kHhrQYnRmK29mhuEZFthZvLRoexPIzQn0csfIgwMXywnfx/BVhX0Y?=
+ =?us-ascii?Q?H6O50MyuRGUAq3NuGHg+tA98arj43zcE78EQCn7ZmWr7KqPP9tjANBV7CWWy?=
+ =?us-ascii?Q?UpawiDSOv02OOAlPk+naMYWTEG5LaljNqgUd/ODAviHBzkyjeORrfVwavpoL?=
+ =?us-ascii?Q?z/jA0HK21D0/Ppyu6y+0ey/X9NnHsEBA1RCplv2Wp9X9gvbquTYeB0aUGEhC?=
+ =?us-ascii?Q?fL3Pm+57/0LimAfuFIiTX8kPiXbp2Idg9abfbyvsh3Ff42LPOyD1pKTam7Ci?=
+ =?us-ascii?Q?5R/WOKd+Q3PWI+sKyURiwx3yYhOMtmU2NKLa1XBOqv95MDrGlznPL0c1AFMA?=
+ =?us-ascii?Q?j0cuEyLcl5nZRJEDFLYuzNVT/ZNMRkgyTEXi/ua2DX7kIwmTn5Bj6zj4wpKF?=
+ =?us-ascii?Q?ESbifEvWizvi/2IC8oLPtXRvLV22vQFIZiUC5gDMhtOSkKlOzQjFdX7+P5eK?=
+ =?us-ascii?Q?aDgYp5B+//R0WC+D6gpIKonAk5ST1VSvzmVc0JFxySAj5W8SfpJi4gA5G0GY?=
+ =?us-ascii?Q?UX48zh9d38LLSjCxPILGbjyWrcAulqbZfBw+mqngMB8LSqkwfW9FjujxNVwk?=
+ =?us-ascii?Q?SehBGiDSXxrg799V35H1h/P2MyjOG5tbsx5wWvkxti/o6SDmBbpOBC9Xnji4?=
+ =?us-ascii?Q?clvGVZAaSC2pWnl/JzTqOO4B5Tg9iq0mYbNBu6/D7BeaHt7evNQdWWiCLmb1?=
+ =?us-ascii?Q?2LeVWae3hFRLX9CC7zX96IRC1QyHvJNkjBFAGTJ0kRJUMbSflytqmpp1x6n2?=
+ =?us-ascii?Q?gcGt0bD9qvMEdBRVGebF6NaE6sFO2jUF78UmSFuqYHXYkOYbbI8loxiXGgvx?=
+ =?us-ascii?Q?yqBdI+62WTbqGBAy4659G/yMFyb9METRiDMGpGPR3aNXgENpudyWq5mFymsX?=
+ =?us-ascii?Q?kfcVtWq/xtPI0WLYrBe7s4kQTfLk2nJjBS813RcEkVL9qTc6Ihb+UyxDiANe?=
+ =?us-ascii?Q?AN7E8fpFwWV33DjXtJtR0v5hou19NgwJUpTHKHMIMrcC5ZObr8sMnGfhop33?=
+ =?us-ascii?Q?sUZe2DnX6Jk+m9FnwdDGM5EB36hdEd6F9GSkSBFtHzUwqmY7tKrCIsHWH+Rr?=
+ =?us-ascii?Q?XJrM6pFfiV7FveOCLTnEWIB/2JlfOGXxY225c+8jF5VttTkprDr9bQcup8LH?=
+ =?us-ascii?Q?gbB729J/S1ED+txG4TA9KskLIrcr9O2QjBPp0KKZzNwDPKA1WzUjdF/sJywW?=
+ =?us-ascii?Q?n0DubD4hTb2EIbUhm3YfkPH2F467WHfyBh3uk9L0RewrYNLUjM39Qd5QUhMY?=
+ =?us-ascii?Q?ioA7LyO6isO0VnkYZMlovFKCnBTdy3ed2yp2vZoKXbszKW1D3/kQsM3+r/5i?=
+ =?us-ascii?Q?uKwSau76GoJYKX0IAeCDYEDl64B14miTiFN4vZiKDSby1hvezCV6USoGlNMd?=
+ =?us-ascii?Q?3+RiiIV1N3i6HFSwqpD8/kKWNsfuKnGph/I/CJy7UzWBmDlnyAqx365h7jeX?=
+ =?us-ascii?Q?QvZWdUz/bb3h7nVkYUWAGtBnM2ettIfheQmXbCbcjUHY/zxQ2IFBDmihgUwv?=
+ =?us-ascii?Q?0Gi+GLJ5i+b/5pU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?l/WUSskjtSAUnPWxTvMPihlhPDw6Ye4MHypjNApIU4Lj++tz2MfqPQ16BF0L?=
+ =?us-ascii?Q?bjQXwQzJ8RwGYTzH0aX5BPN2Wyl2aYMWYMW3zEp9pkhnonDhPvhy2d1PcMkQ?=
+ =?us-ascii?Q?tcINd6Sg58cV0oFUzpZm2fFhId/TfOMfiYrBqMo+dzTOYg0Cst/aoZ4pLhWa?=
+ =?us-ascii?Q?WzVQm+fzb8D4X1kkNsgdCyMKJaWqQHDmgN7j5zbi6ij3poK2jdET/RQKJYwB?=
+ =?us-ascii?Q?4G+INaHMhOspzBefzX7ZjUV81hnRWUE/9+rnN5KNc9DPn/0o/3nMzfeEXW87?=
+ =?us-ascii?Q?ceIJqyiVPZGE2BpvMEFd8CwO7VrD+f8Ld8ytUa8wU5zxqe57WFktCLnfEtwY?=
+ =?us-ascii?Q?qf5I8AsC45xlGbDbonTDL2QZDR/O0nc1oYfHFzORWVHyCSI9MbKIjjXF1ACU?=
+ =?us-ascii?Q?95Xq7bmFqAZpKCoyNsCKLYClPff2V76xBuREPGdF0gmXzFOhQcxvIUQ09tA+?=
+ =?us-ascii?Q?zZ+gI2+UF8Y/f6PyY+83MnaxJKQqCQIZxkiRuH4vr/nsLKsmknWNXO8Kj2Sv?=
+ =?us-ascii?Q?SVCgPxKg99fIsigeqg4ZnTajLzVSqEid7Qt3/noEoGeRvX9VnrVVhgcC7i7J?=
+ =?us-ascii?Q?ZCQ7oE02V2oTZUL8JGrh9XXPp6ChJYlsM1jEW6aZIWj04eati95bLrITRJ2M?=
+ =?us-ascii?Q?PWM03QOY+M/70OW6CV4KshNm4KntHtSv7G3isaCS9bkOo+ssjBMIFWPY/srN?=
+ =?us-ascii?Q?TOIgVt9Onfp28N6oPnPAyUqpmQcBCrx705pRPF/jysUDu1oHdjru/kChX7lc?=
+ =?us-ascii?Q?0LiSGCxIb4tJp3WWMUdkTpKoYIwRMRW0mEvAVGWnI6Q3q2f62olnvqF7oZtz?=
+ =?us-ascii?Q?s32SDij/RmV82NF6jknu1n80az9DQJGV7rNYPoni1YWy+fuKEw+nXUj/vimq?=
+ =?us-ascii?Q?kp9txTGmTOcVA2y3fmO8qVtk+2aJA9i4RHlV3eAtTtUa9UE5iZdcltNlEciy?=
+ =?us-ascii?Q?uxbnRTnq/BILE+U3b0iJ0o43APaa7rhrRQnCJHTiQwo40GziDV8oPhWBN0KP?=
+ =?us-ascii?Q?MZtq0qhYSS0TuWDHT1Nm4bVCTfArEIfTyzZpIbiyVQ8d2Q5K31j6bc1jXV2p?=
+ =?us-ascii?Q?4LE2P4ethzSa1M3JlycjFXn3uCMQBu9utaP6y3LP4SuxuZjtI8PZ+XDpUod1?=
+ =?us-ascii?Q?9Sj7oz7AjAuB04FVS6s633uann5nP7zeL8jn/lziKIByt6fFDF5aqib2MDUt?=
+ =?us-ascii?Q?mnPt4y29i1S9tv2C/DnbSyoB/6fhOM/IsT9z9byGsIZeVKpiwrnwdzPfR0z5?=
+ =?us-ascii?Q?3spOoW0x3X7ppRrrVp+Xyxm2H9wTFZgJQaSVr3LghyjFmRd7ArTCOCk4CiMv?=
+ =?us-ascii?Q?2NAPBMsCoWB7EDkB249MUhYPuIteuFiSnzFbyURCeAhMQZ6H1urQtlu91SBm?=
+ =?us-ascii?Q?oxnHmchoEp2f39WQI3PUeao4TFB1XA6fjohLezjLYY0M2say0gNRG+JHSJWg?=
+ =?us-ascii?Q?MmYrKqd0fEV8VdMcloFVv27sO8s+iM03I8fgdzQaznV7mkaGTzMuu9vr34sk?=
+ =?us-ascii?Q?PwUKQEACmIGIRJ4dGc3WV8oyyArohVgOzcuNf9Qbl69mnP9j3uTcChHBaF4q?=
+ =?us-ascii?Q?6uAG7ASMMKtHCFra7QT8mvku9jmqiSbPRwQKyx/P?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e800218-6892-42e9-943a-08dd82123e5c
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2025 02:55:03.9177
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LQjGUANP1D1mjP+ifkNri0iCt7Jwp203AnBoytl9SQZNQEZtei0wSjA3w8PmYq3rbYcLvZzlUtscwoPVB6UuXQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8557
 
-Hi,
+Hi Shawn,
 
-Le lundi 20 janvier 2025 =C3=A0 17:21 +0900, Ming Qian a =C3=A9crit=C2=A0:
-> When using VB2_DMABUF, the relationship between dma-buf and v4l2 buffer
-> may not one-to-one, a single dma-buf may be queued via different
-> v4l2 buffers, and different dma-bufs may be queued via the same
-> v4l2 buffer, so it's not appropriate to use the v4l2 buffer index
-> as the frame store id.
->=20
-> We can generate a frame store id according to the dma address.
-> Then for a given dma-buf, the id is fixed.
->=20
-> Driver now manages the frame store and vb2-buffer states independently.
->=20
-> When a dmabuf is queued via another v4l2 buffer before the buffer is
-> released by firmware, need to pend it until firmware release it.
->=20
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+On Thu, Apr 10, 2025 at 02:49:05PM +0800, Xu Yang wrote:
+> Add USB2.0 controller and phy nodes.
+> 
+> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com> # TQMa95xxSA
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-I believe this patch is ready, but unfortunately it no longer applies.
-Could you rebase against media-committers/next and resubmit ? Consider
-including a base commit in the future, sometimes that allows avoiding
-aa rebase.
+Could you pick up these dts patches?
 
-Nicolas
+It was originally going to be sent together with the dt-binding patches [1].
+With Greg's request, I split dt-binding and dts patch after v5. So Rob's
+bot report DTB warnings due to his tree lack dt-binding patch. As now Greg has
+already picked up patchset [1], you can ignore DTB warnings.
 
+[1] https://lore.kernel.org/imx/20250318150908.1583652-1-xu.yang_2@nxp.com/
+
+Thanks,
+Xu Yang
+
+> 
 > ---
-> v5
-> - Avoid dynamic size calculation in memory allocation, use kmalloc_array
-> =C2=A0 instead
-> v4
-> - remove unnecessary 'out of memory' message
-> v3
-> -- fix a typo in NULL pointer check
-> v2
-> -- fix an uninitialized issue reported by media-ci
->=20
-> =C2=A0drivers/media/platform/amphion/vdec.c=C2=A0=C2=A0=C2=A0=C2=A0 | 235=
- +++++++++++++++++-----
-> =C2=A0drivers/media/platform/amphion/vpu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-|=C2=A0=C2=A0 7 +-
-> =C2=A0drivers/media/platform/amphion/vpu_dbg.c=C2=A0 |=C2=A0 15 +-
-> =C2=A0drivers/media/platform/amphion/vpu_v4l2.c |=C2=A0 11 +
-> =C2=A04 files changed, 220 insertions(+), 48 deletions(-)
->=20
-> diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platfo=
-rm/amphion/vdec.c
-> index b3bc9eb16d6a..f4979d537b97 100644
-> --- a/drivers/media/platform/amphion/vdec.c
-> +++ b/drivers/media/platform/amphion/vdec.c
-> @@ -26,6 +26,7 @@
-> =C2=A0#include "vpu_cmds.h"
-> =C2=A0#include "vpu_rpc.h"
-> =C2=A0
-> +#define VDEC_SLOT_CNT_DFT		32
-> =C2=A0#define VDEC_MIN_BUFFER_CAP		8
-> =C2=A0#define VDEC_MIN_BUFFER_OUT		8
-> =C2=A0
-> @@ -41,6 +42,14 @@ struct vdec_fs_info {
-> =C2=A0	u32 tag;
-> =C2=A0};
-> =C2=A0
-> +struct vdec_frame_store_t {
-> +	struct vpu_vb2_buffer *curr;
-> +	struct vpu_vb2_buffer *pend;
-> +	dma_addr_t addr;
-> +	unsigned int state;
-> +	u32 tag;
-> +};
+> Changes in v6:
+>  - no changes
+> Changes in v5:
+>  - no changes
+> Changes in v4:
+>  - add Tb tag
+> Changes in v3:
+>  - no changes
+> Changes in v2:
+>  - add Rb tag
+> ---
+>  arch/arm64/boot/dts/freescale/imx95.dtsi | 30 ++++++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> index 9bb26b466a06..8dd859d8d319 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -470,6 +470,13 @@ its: msi-controller@48040000 {
+>  		};
+>  	};
+>  
+> +	usbphynop: usbphynop {
+> +		compatible = "usb-nop-xceiv";
+> +		clocks = <&scmi_clk IMX95_CLK_HSIO>;
+> +		clock-names = "main_clk";
+> +		#phy-cells = <0>;
+> +	};
 > +
-> =C2=A0struct vdec_t {
-> =C2=A0	u32 seq_hdr_found;
-> =C2=A0	struct vpu_buffer udata;
-> @@ -48,7 +57,8 @@ struct vdec_t {
-> =C2=A0	struct vpu_dec_codec_info codec_info;
-> =C2=A0	enum vpu_codec_state state;
-> =C2=A0
-> -	struct vpu_vb2_buffer *slots[VB2_MAX_FRAME];
-> +	struct vdec_frame_store_t *slots;
-> +	u32 slot_count;
-> =C2=A0	u32 req_frame_count;
-> =C2=A0	struct vdec_fs_info mbi;
-> =C2=A0	struct vdec_fs_info dcp;
-> @@ -289,6 +299,63 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
-> +static void vdec_attach_frame_store(struct vpu_inst *inst, struct vb2_bu=
-ffer *vb)
-> +{
-> +	struct vb2_v4l2_buffer *vbuf =3D to_vb2_v4l2_buffer(vb);
-> +	struct vpu_vb2_buffer *vpu_buf =3D to_vpu_vb2_buffer(vbuf);
-> +	struct vdec_t *vdec =3D inst->priv;
-> +	struct vdec_frame_store_t *new_slots =3D NULL;
-> +	dma_addr_t addr;
-> +	int i;
+>  	soc {
+>  		compatible = "simple-bus";
+>  		#address-cells = <2>;
+> @@ -1621,6 +1628,29 @@ usb3_phy: phy@4c1f0040 {
+>  			status = "disabled";
+>  		};
+>  
+> +		usb2: usb@4c200000 {
+> +			compatible = "fsl,imx95-usb", "fsl,imx7d-usb", "fsl,imx27-usb";
+> +			reg = <0x0 0x4c200000 0x0 0x200>;
+> +			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 174 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&scmi_clk IMX95_CLK_HSIO>,
+> +				 <&scmi_clk IMX95_CLK_32K>;
+> +			clock-names = "usb_ctrl_root", "usb_wakeup";
+> +			iommus = <&smmu 0xf>;
+> +			phys = <&usbphynop>;
+> +			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> +			fsl,usbmisc = <&usbmisc 0>;
+> +			status = "disabled";
+> +		};
 > +
-> +	addr =3D vpu_get_vb_phy_addr(vb, 0);
-> +	for (i =3D 0; i < vdec->slot_count; i++) {
-> +		if (addr =3D=3D vdec->slots[i].addr) {
-> +			if (vdec->slots[i].curr && vdec->slots[i].curr !=3D vpu_buf) {
-> +				vpu_set_buffer_state(vbuf, VPU_BUF_STATE_CHANGED);
-> +				vdec->slots[i].pend =3D vpu_buf;
-> +			} else {
-> +				vpu_set_buffer_state(vbuf, vdec->slots[i].state);
-> +			}
-> +			vpu_buf->fs_id =3D i;
-> +			return;
-> +		}
-> +	}
+> +		usbmisc: usbmisc@4c200200 {
+> +			compatible = "fsl,imx95-usbmisc", "fsl,imx7d-usbmisc",
+> +				     "fsl,imx6q-usbmisc";
+> +			reg = <0x0 0x4c200200 0x0 0x200>,
+> +			      <0x0 0x4c010014 0x0 0x04>;
+> +			#index-cells = <1>;
+> +		};
 > +
-> +	for (i =3D 0; i < vdec->slot_count; i++) {
-> +		if (!vdec->slots[i].addr) {
-> +			vdec->slots[i].addr =3D addr;
-> +			vpu_buf->fs_id =3D i;
-> +			return;
-> +		}
-> +	}
-> +
-> +	new_slots =3D krealloc_array(vdec->slots, vdec->slot_count * 2,
-> +				=C2=A0=C2=A0 sizeof(*vdec->slots),
-> +				=C2=A0=C2=A0 GFP_KERNEL | __GFP_ZERO);
-> +	if (!new_slots) {
-> +		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_ERROR);
-> +		return;
-> +	}
-> +
-> +	vdec->slots =3D new_slots;
-> +	vdec->slot_count *=3D 2;
-> +
-> +	vdec->slots[i].addr =3D addr;
-> +	vpu_buf->fs_id =3D i;
-> +}
-> +
-> +static void vdec_reset_frame_store(struct vpu_inst *inst)
-> +{
-> +	struct vdec_t *vdec =3D inst->priv;
-> +
-> +	if (!vdec->slots || !vdec->slot_count)
-> +		return;
-> +
-> +	vpu_trace(inst->dev, "inst[%d] reset slots\n", inst->id);
-> +	memset(vdec->slots, 0, sizeof(*vdec->slots) * vdec->slot_count);
-> +}
-> +
-> =C2=A0static void vdec_handle_resolution_change(struct vpu_inst *inst)
-> =C2=A0{
-> =C2=A0	struct vdec_t *vdec =3D inst->priv;
-> @@ -750,11 +817,11 @@ static int vdec_frame_decoded(struct vpu_inst *inst=
-, void *arg)
-> =C2=A0	struct vb2_v4l2_buffer *src_buf;
-> =C2=A0	int ret =3D 0;
-> =C2=A0
-> -	if (!info || info->id >=3D ARRAY_SIZE(vdec->slots))
-> +	if (!info || info->id >=3D vdec->slot_count)
-> =C2=A0		return -EINVAL;
-> =C2=A0
-> =C2=A0	vpu_inst_lock(inst);
-> -	vpu_buf =3D vdec->slots[info->id];
-> +	vpu_buf =3D vdec->slots[info->id].curr;
-> =C2=A0	if (!vpu_buf) {
-> =C2=A0		dev_err(inst->dev, "[%d] decoded invalid frame[%d]\n", inst->id, =
-info->id);
-> =C2=A0		ret =3D -EINVAL;
-> @@ -775,11 +842,13 @@ static int vdec_frame_decoded(struct vpu_inst *inst=
-, void *arg)
-> =C2=A0	if (vpu_get_buffer_state(vbuf) =3D=3D VPU_BUF_STATE_DECODED)
-> =C2=A0		dev_info(inst->dev, "[%d] buf[%d] has been decoded\n", inst->id, =
-info->id);
-> =C2=A0	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_DECODED);
-> +	vdec->slots[info->id].state =3D VPU_BUF_STATE_DECODED;
-> =C2=A0	vdec->decoded_frame_count++;
-> =C2=A0	if (vdec->params.display_delay_enable) {
-> =C2=A0		struct vpu_format *cur_fmt;
-> =C2=A0
-> =C2=A0		cur_fmt =3D vpu_get_format(inst, inst->cap_format.type);
-> +		vdec->slots[info->id].state =3D VPU_BUF_STATE_READY;
-> =C2=A0		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_READY);
-> =C2=A0		for (int i =3D 0; i < vbuf->vb2_buf.num_planes; i++)
-> =C2=A0			vb2_set_plane_payload(&vbuf->vb2_buf,
-> @@ -802,11 +871,11 @@ static struct vpu_vb2_buffer *vdec_find_buffer(stru=
-ct vpu_inst *inst, u32 luma)
-> =C2=A0	struct vdec_t *vdec =3D inst->priv;
-> =C2=A0	int i;
-> =C2=A0
-> -	for (i =3D 0; i < ARRAY_SIZE(vdec->slots); i++) {
-> -		if (!vdec->slots[i])
-> +	for (i =3D 0; i < vdec->slot_count; i++) {
-> +		if (!vdec->slots[i].curr)
-> =C2=A0			continue;
-> -		if (luma =3D=3D vdec->slots[i]->luma)
-> -			return vdec->slots[i];
-> +		if (luma =3D=3D vdec->slots[i].addr)
-> +			return vdec->slots[i].curr;
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	return NULL;
-> @@ -840,11 +909,11 @@ static void vdec_buf_done(struct vpu_inst *inst, st=
-ruct vpu_frame_info *frame)
-> =C2=A0
-> =C2=A0	cur_fmt =3D vpu_get_format(inst, inst->cap_format.type);
-> =C2=A0	vbuf =3D &vpu_buf->m2m_buf.vb;
-> -	if (vbuf->vb2_buf.index !=3D frame->id)
-> -		dev_err(inst->dev, "[%d] buffer id(%d, %d) dismatch\n",
-> -			inst->id, vbuf->vb2_buf.index, frame->id);
-> +	if (vpu_buf->fs_id !=3D frame->id)
-> +		dev_err(inst->dev, "[%d] buffer id(%d(%d), %d) dismatch\n",
-> +			inst->id, vpu_buf->fs_id, vbuf->vb2_buf.index, frame->id);
-> =C2=A0
-> -	if (vpu_get_buffer_state(vbuf) =3D=3D VPU_BUF_STATE_READY && vdec->para=
-ms.display_delay_enable)
-> +	if (vdec->params.display_delay_enable)
-> =C2=A0		return;
-> =C2=A0
-> =C2=A0	if (vpu_get_buffer_state(vbuf) !=3D VPU_BUF_STATE_DECODED)
-> @@ -857,10 +926,11 @@ static void vdec_buf_done(struct vpu_inst *inst, st=
-ruct vpu_frame_info *frame)
-> =C2=A0	vbuf->sequence =3D vdec->sequence;
-> =C2=A0	dev_dbg(inst->dev, "[%d][OUTPUT TS]%32lld\n", inst->id, vbuf->vb2_=
-buf.timestamp);
-> =C2=A0
-> -	v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
-> =C2=A0	vpu_inst_lock(inst);
-> +	vdec->slots[vpu_buf->fs_id].state =3D VPU_BUF_STATE_READY;
-> =C2=A0	vdec->display_frame_count++;
-> =C2=A0	vpu_inst_unlock(inst);
-> +	v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
-> =C2=A0	dev_dbg(inst->dev, "[%d] decoded : %d, display : %d, sequence : %d=
-\n",
-> =C2=A0		inst->id, vdec->decoded_frame_count, vdec->display_frame_count, v=
-dec->sequence);
-> =C2=A0}
-> @@ -1103,18 +1173,30 @@ static int vdec_response_frame(struct vpu_inst *i=
-nst, struct vb2_v4l2_buffer *vb
-> =C2=A0	if (!vbuf)
-> =C2=A0		return -EINVAL;
-> =C2=A0
-> -	if (vdec->slots[vbuf->vb2_buf.index]) {
-> -		dev_err(inst->dev, "[%d] repeat alloc fs %d\n",
-> -			inst->id, vbuf->vb2_buf.index);
-> +	vpu_buf =3D to_vpu_vb2_buffer(vbuf);
-> +	if (vpu_buf->fs_id < 0 || vpu_buf->fs_id >=3D vdec->slot_count) {
-> +		dev_err(inst->dev, "invalid fs %d for v4l2 buffer %d\n",
-> +			vpu_buf->fs_id, vbuf->vb2_buf.index);
-> =C2=A0		return -EINVAL;
-> =C2=A0	}
-> =C2=A0
-> +	if (vdec->slots[vpu_buf->fs_id].curr) {
-> +		if (vdec->slots[vpu_buf->fs_id].curr !=3D vpu_buf) {
-> +			vpu_set_buffer_state(vbuf, VPU_BUF_STATE_CHANGED);
-> +			vdec->slots[vpu_buf->fs_id].pend =3D vpu_buf;
-> +		} else {
-> +			vpu_set_buffer_state(vbuf, vdec->slots[vpu_buf->fs_id].state);
-> +		}
-> +		dev_err(inst->dev, "[%d] repeat alloc fs %d (v4l2 index %d)\n",
-> +			inst->id, vpu_buf->fs_id, vbuf->vb2_buf.index);
-> +		return -EAGAIN;
-> +	}
-> +
-> =C2=A0	dev_dbg(inst->dev, "[%d] state =3D %s, alloc fs %d, tag =3D 0x%x\n=
-",
-> =C2=A0		inst->id, vpu_codec_state_name(inst->state), vbuf->vb2_buf.index,=
- vdec->seq_tag);
-> -	vpu_buf =3D to_vpu_vb2_buffer(vbuf);
-> =C2=A0
-> =C2=A0	memset(&info, 0, sizeof(info));
-> -	info.id =3D vbuf->vb2_buf.index;
-> +	info.id =3D vpu_buf->fs_id;
-> =C2=A0	info.type =3D MEM_RES_FRAME;
-> =C2=A0	info.tag =3D vdec->seq_tag;
-> =C2=A0	info.luma_addr =3D vpu_get_vb_phy_addr(&vbuf->vb2_buf, 0);
-> @@ -1129,12 +1211,13 @@ static int vdec_response_frame(struct vpu_inst *i=
-nst, struct vb2_v4l2_buffer *vb
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> -	vpu_buf->tag =3D info.tag;
-> =C2=A0	vpu_buf->luma =3D info.luma_addr;
-> =C2=A0	vpu_buf->chroma_u =3D info.chroma_addr;
-> =C2=A0	vpu_buf->chroma_v =3D 0;
-> =C2=A0	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_INUSE);
-> -	vdec->slots[info.id] =3D vpu_buf;
-> +	vdec->slots[info.id].tag =3D info.tag;
-> +	vdec->slots[info.id].curr =3D vpu_buf;
-> +	vdec->slots[info.id].state =3D VPU_BUF_STATE_INUSE;
-> =C2=A0	vdec->req_frame_count--;
-> =C2=A0
-> =C2=A0	return 0;
-> @@ -1195,25 +1278,47 @@ static void vdec_recycle_buffer(struct vpu_inst *=
-inst, struct vb2_v4l2_buffer *v
-> =C2=A0	v4l2_m2m_buf_queue(inst->fh.m2m_ctx, vbuf);
-> =C2=A0}
-> =C2=A0
-> -static void vdec_clear_slots(struct vpu_inst *inst)
-> +static void vdec_release_curr_frame_store(struct vpu_inst *inst, u32 id)
-> =C2=A0{
-> =C2=A0	struct vdec_t *vdec =3D inst->priv;
-> =C2=A0	struct vpu_vb2_buffer *vpu_buf;
-> =C2=A0	struct vb2_v4l2_buffer *vbuf;
-> +
-> +	if (id >=3D vdec->slot_count)
-> +		return;
-> +	if (!vdec->slots[id].curr)
-> +		return;
-> +
-> +	vpu_buf =3D vdec->slots[id].curr;
-> +	vbuf =3D &vpu_buf->m2m_buf.vb;
-> +
-> +	vdec_response_fs_release(inst, id, vdec->slots[id].tag);
-> +	if (vpu_buf->fs_id =3D=3D id) {
-> +		if (vpu_buf->state !=3D VPU_BUF_STATE_READY)
-> +			vdec_recycle_buffer(inst, vbuf);
-> +		vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
-> +	}
-> +
-> +	vdec->slots[id].curr =3D NULL;
-> +	vdec->slots[id].state =3D VPU_BUF_STATE_IDLE;
-> +
-> +	if (vdec->slots[id].pend) {
-> +		vpu_set_buffer_state(&vdec->slots[id].pend->m2m_buf.vb, VPU_BUF_STATE_=
-IDLE);
-> +		vdec->slots[id].pend =3D NULL;
-> +	}
-> +}
-> +
-> +static void vdec_clear_slots(struct vpu_inst *inst)
-> +{
-> +	struct vdec_t *vdec =3D inst->priv;
-> =C2=A0	int i;
-> =C2=A0
-> -	for (i =3D 0; i < ARRAY_SIZE(vdec->slots); i++) {
-> -		if (!vdec->slots[i])
-> +	for (i =3D 0; i < vdec->slot_count; i++) {
-> +		if (!vdec->slots[i].curr)
-> =C2=A0			continue;
-> =C2=A0
-> -		vpu_buf =3D vdec->slots[i];
-> -		vbuf =3D &vpu_buf->m2m_buf.vb;
-> -
-> =C2=A0		vpu_trace(inst->dev, "clear slot %d\n", i);
-> -		vdec_response_fs_release(inst, i, vpu_buf->tag);
-> -		vdec_recycle_buffer(inst, vbuf);
-> -		vdec->slots[i]->state =3D VPU_BUF_STATE_IDLE;
-> -		vdec->slots[i] =3D NULL;
-> +		vdec_release_curr_frame_store(inst, i);
-> =C2=A0	}
-> =C2=A0}
-> =C2=A0
-> @@ -1354,39 +1459,29 @@ static void vdec_event_req_fs(struct vpu_inst *in=
-st, struct vpu_fs_info *fs)
-> =C2=A0static void vdec_evnet_rel_fs(struct vpu_inst *inst, struct vpu_fs_=
-info *fs)
-> =C2=A0{
-> =C2=A0	struct vdec_t *vdec =3D inst->priv;
-> -	struct vpu_vb2_buffer *vpu_buf;
-> -	struct vb2_v4l2_buffer *vbuf;
-> =C2=A0
-> -	if (!fs || fs->id >=3D ARRAY_SIZE(vdec->slots))
-> +	if (!fs || fs->id >=3D vdec->slot_count)
-> =C2=A0		return;
-> =C2=A0	if (fs->type !=3D MEM_RES_FRAME)
-> =C2=A0		return;
-> =C2=A0
-> -	if (fs->id >=3D vpu_get_num_buffers(inst, inst->cap_format.type)) {
-> +	if (fs->id >=3D vdec->slot_count) {
-> =C2=A0		dev_err(inst->dev, "[%d] invalid fs(%d) to release\n", inst->id, =
-fs->id);
-> =C2=A0		return;
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	vpu_inst_lock(inst);
-> -	vpu_buf =3D vdec->slots[fs->id];
-> -	vdec->slots[fs->id] =3D NULL;
-> -
-> -	if (!vpu_buf) {
-> +	if (!vdec->slots[fs->id].curr) {
-> =C2=A0		dev_dbg(inst->dev, "[%d] fs[%d] has bee released\n", inst->id, fs=
-->id);
-> =C2=A0		goto exit;
-> =C2=A0	}
-> =C2=A0
-> -	vbuf =3D &vpu_buf->m2m_buf.vb;
-> -	if (vpu_get_buffer_state(vbuf) =3D=3D VPU_BUF_STATE_DECODED) {
-> +	if (vdec->slots[fs->id].state =3D=3D VPU_BUF_STATE_DECODED) {
-> =C2=A0		dev_dbg(inst->dev, "[%d] frame skip\n", inst->id);
-> =C2=A0		vdec->sequence++;
-> =C2=A0	}
-> =C2=A0
-> -	vdec_response_fs_release(inst, fs->id, vpu_buf->tag);
-> -	if (vpu_get_buffer_state(vbuf) !=3D VPU_BUF_STATE_READY)
-> -		vdec_recycle_buffer(inst, vbuf);
-> -
-> -	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
-> +	vdec_release_curr_frame_store(inst, fs->id);
-> =C2=A0	vpu_process_capture_buffer(inst);
-> =C2=A0
-> =C2=A0exit:
-> @@ -1582,6 +1677,11 @@ static void vdec_cleanup(struct vpu_inst *inst)
-> =C2=A0		return;
-> =C2=A0
-> =C2=A0	vdec =3D inst->priv;
-> +	if (vdec) {
-> +		kfree(vdec->slots);
-> +		vdec->slots =3D NULL;
-> +		vdec->slot_count =3D 0;
-> +	}
-> =C2=A0	vfree(vdec);
-> =C2=A0	inst->priv =3D NULL;
-> =C2=A0	vfree(inst);
-> @@ -1713,11 +1813,43 @@ static int vdec_stop_session(struct vpu_inst *ins=
-t, u32 type)
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
-> -static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 siz=
-e, u32 i)
-> +static int vdec_get_slot_debug_info(struct vpu_inst *inst, char *str, u3=
-2 size, u32 i)
-> =C2=A0{
-> =C2=A0	struct vdec_t *vdec =3D inst->priv;
-> +	struct vpu_vb2_buffer *vpu_buf;
-> =C2=A0	int num =3D -1;
-> =C2=A0
-> +	vpu_inst_lock(inst);
-> +	if (i >=3D vdec->slot_count || !vdec->slots[i].addr)
-> +		goto exit;
-> +
-> +	vpu_buf =3D vdec->slots[i].curr;
-> +
-> +	num =3D scnprintf(str, size, "slot[%2d] :", i);
-> +	if (vpu_buf) {
-> +		num +=3D scnprintf(str + num, size - num, " %2d",
-> +				 vpu_buf->m2m_buf.vb.vb2_buf.index);
-> +		num +=3D scnprintf(str + num, size - num, "; state =3D %d", vdec->slot=
-s[i].state);
-> +	} else {
-> +		num +=3D scnprintf(str + num, size - num, " -1");
-> +	}
-> +
-> +	if (vdec->slots[i].pend)
-> +		num +=3D scnprintf(str + num, size - num, "; %d",
-> +				 vdec->slots[i].pend->m2m_buf.vb.vb2_buf.index);
-> +
-> +	num +=3D scnprintf(str + num, size - num, "\n");
-> +exit:
-> +	vpu_inst_unlock(inst);
-> +
-> +	return num;
-> +}
-> +
-> +static int vdec_get_debug_info(struct vpu_inst *inst, char *str, u32 siz=
-e, u32 i)
-> +{
-> +	struct vdec_t *vdec =3D inst->priv;
-> +	int num;
-> +
-> =C2=A0	switch (i) {
-> =C2=A0	case 0:
-> =C2=A0		num =3D scnprintf(str, size,
-> @@ -1771,6 +1903,7 @@ static int vdec_get_debug_info(struct vpu_inst *ins=
-t, char *str, u32 size, u32 i
-> =C2=A0				vdec->codec_info.vui_present);
-> =C2=A0		break;
-> =C2=A0	default:
-> +		num =3D vdec_get_slot_debug_info(inst, str, size, i - 10);
-> =C2=A0		break;
-> =C2=A0	}
-> =C2=A0
-> @@ -1794,6 +1927,8 @@ static struct vpu_inst_ops vdec_inst_ops =3D {
-> =C2=A0	.get_debug_info =3D vdec_get_debug_info,
-> =C2=A0	.wait_prepare =3D vpu_inst_unlock,
-> =C2=A0	.wait_finish =3D vpu_inst_lock,
-> +	.attach_frame_store =3D vdec_attach_frame_store,
-> +	.reset_frame_store =3D vdec_reset_frame_store,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static void vdec_init(struct file *file)
-> @@ -1834,6 +1969,16 @@ static int vdec_open(struct file *file)
-> =C2=A0		return -ENOMEM;
-> =C2=A0	}
-> =C2=A0
-> +	vdec->slots =3D kmalloc_array(VDEC_SLOT_CNT_DFT,
-> +				=C2=A0=C2=A0=C2=A0 sizeof(*vdec->slots),
-> +				=C2=A0=C2=A0=C2=A0 GFP_KERNEL | __GFP_ZERO);
-> +	if (!vdec->slots) {
-> +		vfree(vdec);
-> +		vfree(inst);
-> +		return -ENOMEM;
-> +	}
-> +	vdec->slot_count =3D VDEC_SLOT_CNT_DFT;
-> +
-> =C2=A0	inst->ops =3D &vdec_inst_ops;
-> =C2=A0	inst->formats =3D vdec_formats;
-> =C2=A0	inst->type =3D VPU_CORE_TYPE_DEC;
-> diff --git a/drivers/media/platform/amphion/vpu.h b/drivers/media/platfor=
-m/amphion/vpu.h
-> index 978971712742..d8100da160d1 100644
-> --- a/drivers/media/platform/amphion/vpu.h
-> +++ b/drivers/media/platform/amphion/vpu.h
-> @@ -223,6 +223,8 @@ struct vpu_inst_ops {
-> =C2=A0	int (*get_debug_info)(struct vpu_inst *inst, char *str, u32 size, =
-u32 i);
-> =C2=A0	void (*wait_prepare)(struct vpu_inst *inst);
-> =C2=A0	void (*wait_finish)(struct vpu_inst *inst);
-> +	void (*attach_frame_store)(struct vpu_inst *inst, struct vb2_buffer *vb=
-);
-> +	void (*reset_frame_store)(struct vpu_inst *inst);
-> =C2=A0};
-> =C2=A0
-> =C2=A0struct vpu_inst {
-> @@ -297,7 +299,8 @@ enum {
-> =C2=A0	VPU_BUF_STATE_DECODED,
-> =C2=A0	VPU_BUF_STATE_READY,
-> =C2=A0	VPU_BUF_STATE_SKIP,
-> -	VPU_BUF_STATE_ERROR
-> +	VPU_BUF_STATE_ERROR,
-> +	VPU_BUF_STATE_CHANGED
-> =C2=A0};
-> =C2=A0
-> =C2=A0struct vpu_vb2_buffer {
-> @@ -306,8 +309,8 @@ struct vpu_vb2_buffer {
-> =C2=A0	dma_addr_t chroma_u;
-> =C2=A0	dma_addr_t chroma_v;
-> =C2=A0	unsigned int state;
-> -	u32 tag;
-> =C2=A0	u32 average_qp;
-> +	s32 fs_id;
-> =C2=A0};
-> =C2=A0
-> =C2=A0void vpu_writel(struct vpu_dev *vpu, u32 reg, u32 val);
-> diff --git a/drivers/media/platform/amphion/vpu_dbg.c b/drivers/media/pla=
-tform/amphion/vpu_dbg.c
-> index 940e5bda5fa3..497ae4e8a229 100644
-> --- a/drivers/media/platform/amphion/vpu_dbg.c
-> +++ b/drivers/media/platform/amphion/vpu_dbg.c
-> @@ -48,6 +48,7 @@ static char *vpu_stat_name[] =3D {
-> =C2=A0	[VPU_BUF_STATE_READY] =3D "ready",
-> =C2=A0	[VPU_BUF_STATE_SKIP] =3D "skip",
-> =C2=A0	[VPU_BUF_STATE_ERROR] =3D "error",
-> +	[VPU_BUF_STATE_CHANGED] =3D "changed",
-> =C2=A0};
-> =C2=A0
-> =C2=A0static inline const char *to_vpu_stat_name(int state)
-> @@ -164,6 +165,7 @@ static int vpu_dbg_instance(struct seq_file *s, void =
-*data)
-> =C2=A0	for (i =3D 0; i < vb2_get_num_buffers(vq); i++) {
-> =C2=A0		struct vb2_buffer *vb;
-> =C2=A0		struct vb2_v4l2_buffer *vbuf;
-> +		struct vpu_vb2_buffer *vpu_buf;
-> =C2=A0
-> =C2=A0		vb =3D vb2_get_buffer(vq, i);
-> =C2=A0		if (!vb)
-> @@ -173,13 +175,24 @@ static int vpu_dbg_instance(struct seq_file *s, voi=
-d *data)
-> =C2=A0			continue;
-> =C2=A0
-> =C2=A0		vbuf =3D to_vb2_v4l2_buffer(vb);
-> +		vpu_buf =3D to_vpu_vb2_buffer(vbuf);
-> =C2=A0
-> =C2=A0		num =3D scnprintf(str, sizeof(str),
-> -				"capture[%2d] state =3D %10s, %8s\n",
-> +				"capture[%2d] state =3D %10s, %8s",
-> =C2=A0				i, vb2_stat_name[vb->state],
-> =C2=A0				to_vpu_stat_name(vpu_get_buffer_state(vbuf)));
-> =C2=A0		if (seq_write(s, str, num))
-> =C2=A0			return 0;
-> +
-> +		if (vpu_buf->fs_id >=3D 0) {
-> +			num =3D scnprintf(str, sizeof(str), "; fs %d", vpu_buf->fs_id);
-> +			if (seq_write(s, str, num))
-> +				return 0;
-> +		}
-> +
-> +		num =3D scnprintf(str, sizeof(str), "\n");
-> +		if (seq_write(s, str, num))
-> +			return 0;
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	num =3D scnprintf(str, sizeof(str), "sequence =3D %d\n", inst->seq=
-uence);
-> diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/pl=
-atform/amphion/vpu_v4l2.c
-> index 50aeb69d2c66..37ef706c29dd 100644
-> --- a/drivers/media/platform/amphion/vpu_v4l2.c
-> +++ b/drivers/media/platform/amphion/vpu_v4l2.c
-> @@ -500,14 +500,25 @@ static int vpu_vb2_queue_setup(struct vb2_queue *vq=
-,
-> =C2=A0		call_void_vop(inst, release);
-> =C2=A0	}
-> =C2=A0
-> +	if (V4L2_TYPE_IS_CAPTURE(vq->type))
-> +		call_void_vop(inst, reset_frame_store);
-> +
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
-> =C2=A0static int vpu_vb2_buf_init(struct vb2_buffer *vb)
-> =C2=A0{
-> =C2=A0	struct vb2_v4l2_buffer *vbuf =3D to_vb2_v4l2_buffer(vb);
-> +	struct vpu_vb2_buffer *vpu_buf =3D to_vpu_vb2_buffer(vbuf);
-> +	struct vpu_inst *inst =3D vb2_get_drv_priv(vb->vb2_queue);
-> =C2=A0
-> +	vpu_buf->fs_id =3D -1;
-> =C2=A0	vpu_set_buffer_state(vbuf, VPU_BUF_STATE_IDLE);
-> +
-> +	if (!inst->ops->attach_frame_store || V4L2_TYPE_IS_OUTPUT(vb->type))
-> +		return 0;
-> +
-> +	call_void_vop(inst, attach_frame_store, vb);
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
+>  		pcie0: pcie@4c300000 {
+>  			compatible = "fsl,imx95-pcie";
+>  			reg = <0 0x4c300000 0 0x10000>,
+> -- 
+> 2.34.1
+> 
