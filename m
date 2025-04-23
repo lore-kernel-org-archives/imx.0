@@ -1,257 +1,213 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2075.outbound.protection.outlook.com [40.107.20.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E1026F451
-	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 08:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745395275; cv=fail; b=QBDYAaEE83AynA1WZA2aFh+bMXMQ9ys6nhfC0Fj8m+SSfUERpa4VlK+RZgxjzYpDeuNzJQeLdXONT9n4j4HLAztQVSDM1jlnisoCLNT8+zyWmhcLqogr9JXqstYDXYzVDnYWF4jX/zk02lNnIQc24ui7Y07L+ujiqW6U/do/M48=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745395275; c=relaxed/simple;
-	bh=t2jDuLe1YchmBoaRAfzrk5/9vvzpLLnbzsItn7WNz9I=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=FJP8e1wBkKfCWtWN6ziMRbF2H1cum0aHIIIXJdxQZtEH87BDMZMxjfu2azVZz1akmN8/XbLDos3JM+K4YzfbGAhEUdVn06zOHZPx+qVgRGbsn0fj+ir3tXRMa0lgeIrXNHVvU5a6uPMm5AibTeYzKZ4f5MHZLMpMa1OpwIBeFD4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ge7ECr7C; arc=fail smtp.client-ip=40.107.20.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DD3269AFB
+	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 08:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745397876; cv=none; b=IV2F75Adz9l44E0PayXhHXAMTkJimo4yJlpgjeQz3Rg4xBE1PP5wQGC9+24bMUGHdXlCUUU1htLpCMdpYzXD1lm+Tha6QZ4z+BAwCjb1YWHezUHCvn2ao9FDTnvjuPjWx3wAI8AJWT2skCE0f0jBNST7XcPcRWPJ1On0QRs7e5E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745397876; c=relaxed/simple;
+	bh=fB5j9Qh2d3h0SnxxtIGEil8fLk3S4gA+eewhDbj2B6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZhpgEcblgdSl3PoqPrxgyLQ2H/f93yzGFm6Dfd1Pu6SDhnpHWS7BUHKMo1a3IPsVet6bL6ZTWawxZ6siYcQBve6rsNdz3UtWVDsx9mcbEElnDxzbnGIa2H6lDFse8HAuKDhfRyhU63KMBt2RpV1Z4D5U/B779xL+SGsfY2M7BzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=mPONR0tJ; arc=none smtp.client-ip=220.197.32.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ge7ECr7C"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zFET0IVen1/HlHjN732Q5EQPdiKST1WntxMk5sz4NkMIUy/2VwtfFGuCkj1qbg5DEp3s1zEITmrBaTTzn5r2Zb4URiwQG7flqcaMxmUseM16tozU22u3eaCPY8B8z6nMRV3qoOcq0a7zGFc+8dsIOuleySAI92U1/+by+bu9Wr2HTvyFnaBhGcCZR+VQ3T067M2Tz4E9XaE9mcNIEK8SHKh57nY0BLRcvJvq2kJzcrm0+yz7J9g04xs9pIpUA3LmUyLDGKdLpUWYLreKsFRWptt9/j2zCT7CFNs9Axb9Lcah1ruwL/hlv0JDCX/Pne9pbso6w7MP1WtCu8gdShJggw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bYu49f0xzQqyVsdq/NvR/H8/kyPJ89r2Xvl6WXmAZRg=;
- b=qIgYXUCqwA8ip/8FBIqXu3MbTt/rI9IW3KfLBI5J1xMfZMRfArL+ABY+TdBbYirq4+WzzLWCC8UnzDA2J10UFc1d/r2tO/YKpCr8/UFdT9/wpIK/4eLR1wJzmvqh8KTCpb4HXOtetbSwaeWjMTfOB7E1r+GlgXnSH8Rfns6kF+KmjwZZe0jYs7S/+gAI1CoUidcP5LhaH8XRj6kRL9IGbrQ6s5dq5o+HeoaHE5EgRlDPxLaAYZliCxc8ZvL87xJQcnflA9VYVvjVPHxNvIIbumvzV9N19krk693wY1wCK5ekuzoqoGBdnBe5Eqq703xRkGWeFTMoUJTCUtPcz9Bfzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bYu49f0xzQqyVsdq/NvR/H8/kyPJ89r2Xvl6WXmAZRg=;
- b=ge7ECr7CfQVbY7b4JckPMs5gf6QYocwycMBVt2KOcbrnwY83MxuXaQKvbZQ+0Zam4AcJtRrx6HzMAyoGAXzicurCRQulxo5a6RRcz9hmNEo3GlutD48GNNp9A0s2BBfGa2QJ+Lue61RkXE1G3QRKcNYGQExi4JBRqVZg1Wqq1ZlMXTJyjAKyQE6+/DbCeDv/cwb42tIw3c0c3vr/TsMcPQnphSbqCxOTswag1b2q7s5OmL6KAakUPPMISxE5Ag4nIJxKE40FY25ynVkYXRryVkJusl3It0KxthhbaEEWqjwuqDb2visrZ4gh8vAVDzFMeabF1g4XjZzE540jnLcobg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.36; Wed, 23 Apr
- 2025 08:01:10 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::4fa3:7420:14ed:5334%5]) with mapi id 15.20.8655.033; Wed, 23 Apr 2025
- 08:01:10 +0000
-From: Haibo Chen <haibo.chen@nxp.com>
-Date: Wed, 23 Apr 2025 16:02:48 +0800
-Subject: [PATCH] iio: adc: imx93_adc: load calibrated values even
- calibration failed
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250423-adcpatch-v1-1-b0e84c27ae98@nxp.com>
-X-B4-Tracking: v=1; b=H4sIAKeeCGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDEyNj3cSU5ILEkuQM3eQkU8tkUyNTU0szQyWg8oKi1LTMCrBR0bG1tQC
- 8Uw7hWgAAAA==
-X-Change-ID: 20250423-adcpatch-cb59c5255961
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-iio@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Haibo Chen <haibo.chen@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1745395391; l=2740;
- i=haibo.chen@nxp.com; s=20250421; h=from:subject:message-id;
- bh=t2jDuLe1YchmBoaRAfzrk5/9vvzpLLnbzsItn7WNz9I=;
- b=1CoOrnu+mMs+Ia1tG+AyFrNTstzNkGpHtf8Z7CZD2r56BZOESsSNC/J14HVGoEq9Adpku91og
- /q3UY6edMq0CfuE5t+gSv0DkayAEoRHHK107eMQjdaBi9G4OamyncKZ
-X-Developer-Key: i=haibo.chen@nxp.com; a=ed25519;
- pk=HR9LLTuVOg3BUNeAf4/FNOIkMaZvuwVJdNrGpvKDKaI=
-X-ClientProxiedBy: MA0P287CA0010.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:d9::15) To DU0PR04MB9496.eurprd04.prod.outlook.com
- (2603:10a6:10:32d::19)
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="mPONR0tJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=cTTTAQDf6fHnIShOY7nHVrkl1CzARvdCJOI3IZdV3Ac=;
+	b=mPONR0tJ6JOAJK6st/hPw4OWfYhiQ3c37toLpvSvAaTUNYLlNVJC1R9nNG+9bO
+	H8o+3/NoDauh6x0yPfh+wYor+sUeJSUF4A25f5qsCk4oitUYlN9mKUDmXZZeIpqs
+	hptJqog/aAY1kmbLxXjDx5rYnCbMdc1NB+fa+38LBlu4Q=
+Received: from dragon (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD39tU8qAhoAhnAAw--.25448S3;
+	Wed, 23 Apr 2025 16:43:42 +0800 (CST)
+Date: Wed, 23 Apr 2025 16:43:40 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux@ew.tq-group.com
+Subject: Re: [PATCH 2/2] arm64: dts: imx8mp-tqma8mpql-mba8mp-ras314: Add
+ Raspberry Pi Camera V2 overlay
+Message-ID: <aAioPO9pZUFfyjpc@dragon>
+References: <20250324071102.23765-1-alexander.stein@ew.tq-group.com>
+ <20250324071102.23765-2-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9496:EE_|AM9PR04MB8604:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09b9a433-4062-4cba-437d-08dd823d0274
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|1800799024|366016|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?d1RlK1RjaUZSV0JucDJJckU5N3Jod2h2bk5QNDAyUG1sNlp5elpZTW9hVTE0?=
- =?utf-8?B?RzRBa0NIRFFNNnpDeEJvdWNoQURaNURzZTJpYmFvYXJiMEQzb3lNOWdmTnVZ?=
- =?utf-8?B?VFdrcW1pbVl3TVZ3MU9vdzlqakNCQzF0eXVLaVlEcHE2VUxxa0ZQbzRockpO?=
- =?utf-8?B?S1ZYVU1CNXRwaUNJWFBqdXgzWmxIWHNLYXZuVFppTC9Wbml5VjJVZWRSdzQ4?=
- =?utf-8?B?eFpjL1oyUjBIZDlUQk4vcjF2TkJNdlNVbmF0eFg1V1krelVxM2tuMVJscmo1?=
- =?utf-8?B?SU81UUs0eHV2cFpRSnNETmFIcjAwdGRoejU1eklCdEg1dncvRC9KOXMwNXpI?=
- =?utf-8?B?UE1JV2VwdmtQdWQzWjRSdzZ4RThyOCtsQ0wxWCtwRUpreU9LSG05QmhLTFpE?=
- =?utf-8?B?UHVPZE5pcW9DM25zMERIbEoveTVGRFpueFdzRWJhNlRWOUZpZlFqcWlOMSts?=
- =?utf-8?B?dk1nYU1VYUxrMmRTUFhsVGxJdXZSWEg3RDRSa3ZDTmdHOHpjNEoyc1YzZnJE?=
- =?utf-8?B?VTZnemFtZnFBZm1UOElWNzNheEYwcC9iZEFTbzBKekJOcTd2a1lLYjdVNzdp?=
- =?utf-8?B?bmk5bisvQTBZOHBiNkFEQXJXcnJqc0h2WFluTjl2ZXExT05kRE9CNm1qS21B?=
- =?utf-8?B?eFo2MCsxYTlOTkROUWhFa2dBWGN6T3pVTDIrR0o3RnhvTHR1eTJRSmQvN2tS?=
- =?utf-8?B?ZEZnRFBsS3BSb1FvT2FxckZaNFA2OWZHRzQya3VrWTRPQ1lFaVM4bXBCQjlm?=
- =?utf-8?B?ZXpDaEZDaXJtcXRzYlUvbUE2bGNDUzRwdGhnRWV1bld0SzVWMG1Cd0lhWnll?=
- =?utf-8?B?bVZERnN4NWRDV3FMY0x0OENwMDhGWitpOEthYXY3aDF3YzVaRjNmTU9IWDQ1?=
- =?utf-8?B?ZjZSQ2ZZa05ZSDU2SGxGbnhNZC80K3BlYTJrWk9LdDV5V3ZQN2FmeXJXZWMx?=
- =?utf-8?B?aUZCSlpxMzNIbDBWbGhBSGF0Uk9ZaktBV1FMZy9UazBiZ3RURHhDRGMyRmtk?=
- =?utf-8?B?SlRtZEduZTdlNXNMME13OUg5NGExdFRuOG9LeVg4aUhUWm91SG43cGhMRmV1?=
- =?utf-8?B?TzJPRzRsWEd3NnMzQ3Q0QmZxQjlLMTFLOWdUVUVuTUx2bzlSNGdUcUdackFo?=
- =?utf-8?B?bmpodHZDaUl5TXpHUzZxRzAyQzI0NC9qbzdkSUY5MldnajQ3Wlh3L2djNzdh?=
- =?utf-8?B?L1pXRVlVTWUvWkdvTnJGVTIxMWlaNWUycVZGL1VYNWttYklrUjdYTG13T1do?=
- =?utf-8?B?VHhEWll0cS9vQnZGWmROSjgzSnZkeDBaMzRtZlNJS0hBZlFaSGgzN0JLVFI1?=
- =?utf-8?B?UHhxY252VjlkTHNsWU1XY3hsRDIwaGZJZTFadGFOUHk1OE1WUTVRZHBQZU53?=
- =?utf-8?B?MS82UEZ5cFp3aFdIRndoWjZCTER4WDFJNTl6K1VMemJpVDhVbFBkUkdUT0VE?=
- =?utf-8?B?OXc3ZTFYWnRudno0aXVRMll5MU5paW9GZDhPZ3VzTE4xcndxeDFDMFgxYzhJ?=
- =?utf-8?B?Ynk1MzYyamxlaGtrNExFUEYrVGU2SndBL0YwM2xRVE9LTm5FckhJQjE2bjdU?=
- =?utf-8?B?M1R0ZmdwZHVQWVdpNWRKaWU4MFVSaDZ5TENIUXZsNjBweStaYUMvZ08xd3Mz?=
- =?utf-8?B?dmlvdWU2Y2F0NER0ZkFsTXlJak9vcDZsVlJ5MUVjYjlsa2xqa1gyd3k5TERx?=
- =?utf-8?B?Z3ZjYXNwcWVhVlBLQjNPeHRLci8rdXFVa1htbTF3aUFseXAzakdvQXU3RHM3?=
- =?utf-8?B?MlJBVXYrQjR2SUk0Vkxpcy9taEtLWW9TL1BUaTRzYUxuamNJZStBMmhxREFB?=
- =?utf-8?B?dk9ZQ3BwV3puWUpBbGVFdVliRTdTbkZhaHFHQ2pzeXJhSXBjRE1CSUZ6QVJO?=
- =?utf-8?B?WTZzZ1hNWTJSczFyR3NjVi92UnIrbGx2U2cvVER3NCtjU041aEpPMURUV1dW?=
- =?utf-8?B?NkNvTUR6enRKdTVQMEV1L1pYRmRSMEo2M05TV2R6eStKY2FPSVZkWnZpKy9U?=
- =?utf-8?Q?xdG5R0aqixjuBrXrfPfuHaMn0g7A6A=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(1800799024)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R2REZU9hb0RDallzaEIxb3M2SkdZc3VtWEVlWWVPdHcwV1RvMnp5d2NmUmtW?=
- =?utf-8?B?L0VyUWowcGx3OU1ROGJYTWpITjZWTXJseWROUi9tU0lEaVc3M3NTVlM4eUVl?=
- =?utf-8?B?bFBYQlRjeUV1RlkrZnVHMmlRMVRJcXlxQWtiZFlwZFlxaVdqbjd6dy9LMGZP?=
- =?utf-8?B?Szc5T0U5S1c0WUFPd3FvOSt5NjhBWmxldjJkbklvTHpaOUtEaVh0NFdEdjJN?=
- =?utf-8?B?WC9wNjVWaC83VVFnejhpVzZwRkhtbGJaME9pK2RGQmZjcmtISVV5NW9rUkhr?=
- =?utf-8?B?RGVqcFdvaWt6ZW43a0kvSWlZQWRDc2JXRVVuajlVQWVOQzFzblRxRU9aYTdF?=
- =?utf-8?B?NnQrcVFrZzBZVXdkcnVabHdtdklBVnlBT0xld0lZcXh4bG9ZY0I1OXN0N1JD?=
- =?utf-8?B?NWRqT1NIQU1yUXZWdHJ3OXlPbGN1RWNVS1B1UmVPRUhsbFo4VFBQTmszcGxx?=
- =?utf-8?B?c2JKZDNGd0pjTm9HUzBjRUpvVi9BV21VeGlUZERMUXdTMEZJREhOdHNWMFcr?=
- =?utf-8?B?ODN1anRyRmxXZzNIcWcvQUVXTUhhWllac0dPV0Z0Vjk2WjhZQjl4YlNSY2Ny?=
- =?utf-8?B?NWJIa0txTzQ2M0o0cTZDcXZXT0VPM0dJS09CQjdkcUlWUmxpQjVjK01ZNlpW?=
- =?utf-8?B?VlNaWE1ZUkI2ek1Nelpnak9uYkJJa21jU0xSMkNFeFUySjVUajlhNkpDUjBl?=
- =?utf-8?B?OXEwcFJMb3F3SHRNYW5MWmh1Mm5aQVJzVW1FalZiZTdYUEtxNjhGR1VKMXRW?=
- =?utf-8?B?aTFxQi9FbEtLM0pSM05OeDc0d1FxL1JiSGptWGluM1dsOFVBdnpKWWRhRW9h?=
- =?utf-8?B?eHVQK0pyVTZYNm1BSDk3WW83cFREVElWVkpXYzQ1NU1UMjhjS2Q1OCszQjkr?=
- =?utf-8?B?aEEzcGJoZVhiV3FOcHZQbThMRnhpeVJkTVcwa3c1RURtaHZIV0ZxYVpaTHlL?=
- =?utf-8?B?YWFkQ1haVS9xTzZKT2c4MzEwb1ZIaFRuSCtVZ3huVFkrZUZpckhjc0RzNUFX?=
- =?utf-8?B?TzV0VzAreW5JZWZHSmRXbmJNalVQa0tKT1dnV0ZuUUFLZ2Mvd3Q0eHlSdjBB?=
- =?utf-8?B?TGNZZzVpcGh5SExrL2toUXcxaEZjcmRPN1Q5ejE4MlhlbzFFcDRNdnFmMUQ2?=
- =?utf-8?B?WUZSYVN2RzFJU0RGY1NFbXd0aHQ0ZGpNdmNORVo0ZG5uRldlUjNlZG1MWjZa?=
- =?utf-8?B?NjVSV1VieCtzTnBUVHVDanhVR2VTOXNOaTFkVmdRb2FOT0NqQ0xYUGorOHhj?=
- =?utf-8?B?L1NDSjNvTVZkdURrL1pXTHhwMUVNcmxRNjMxVTlvRWVpNFY3elczUHRrVk9m?=
- =?utf-8?B?SEk0SG1XMktyOEM4V1NWUm9XcUJ4UVQvaFp2UDVxVGRiRC9wUk45cTVSOWZM?=
- =?utf-8?B?VktXemEySlo0eWRzUWpiNnVUYmZQQ3RqN2paWGlKdjdlay93aE5kWExuZi96?=
- =?utf-8?B?NW9PbnFST2U5bTE1T1dCUDZaMWc4TTRzSFVPWHpuaGppQVpzMXprVVRLK2tT?=
- =?utf-8?B?Q2c0SU15M3Y2c0kwQ3NESXM4ek0vb1lMTVoyWG51MTNuVnhrQ1lISGZOZ25j?=
- =?utf-8?B?bm1FU3AzZEMxUHhxKzNLNjFyREdOTkpGb3h4YlNnSDZ0cFRnYTZUMlRBbXR0?=
- =?utf-8?B?SnlrZnFWUTJhYlY0d0p3MGpGb0hoeXowQnkrcERaUmtsbEZ0K2pZMldYbUc5?=
- =?utf-8?B?eTRES3lVQmpyUmhOR01jaWlwSzBxSjcwZm1CYkZXVEtZVFNqMStlNjZLYVYx?=
- =?utf-8?B?OURnVStSa25Ca044VVp5eVJTT0NMZ2hHTzdGMTZBU0x2WDVXMUdLcTZ1VDFw?=
- =?utf-8?B?a2RjNjdwbkYyNUlRbUxJV09wQTFvMHhTbGlQbHJ3b1ZMZU9wcmM5SHVFUE9n?=
- =?utf-8?B?RzdFWHdYZFkwdE9GNmNTYisrNDZGUzh3SlZBTHJSeFdDS3hhOFpFeVI4ejIy?=
- =?utf-8?B?VjUwOHpoTmdnWjFlWmpUMFdxVXloa0diN2FMeEc3MlhwZzc3Z1ZOSlp2amFL?=
- =?utf-8?B?dE5vMUErR3ZYL2VFMXNZSDdhVVdrOXRBNkNMVEVOR01qamJYd00wMlZXa3NG?=
- =?utf-8?B?RGQrL2VBZ3ZvR1ZDMlZtREZTUUFkL1h5ditoZHZtQjlENGFHYy8vVnova2xH?=
- =?utf-8?Q?781xjpU41AnTX1FlvyPHTC2fb?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09b9a433-4062-4cba-437d-08dd823d0274
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2025 08:01:10.4286
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5W216Op5fWDkHE3TJnqiyx2IbA+NNa5tSqMgYqXGU2cTYWYUk4Ubq0S7InzyRVmPFtlFCuCNRaqNWiqS3p9BBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8604
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250324071102.23765-2-alexander.stein@ew.tq-group.com>
+X-CM-TRANSID:Mc8vCgD39tU8qAhoAhnAAw--.25448S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXrWDKFyfXrWkJrWxJFWfGrg_yoWrKryfpr
+	n7Ca93GFs7Jr4xAwsIqrnIgrn0y3y8GF4jvr1UAry8Cr129FyxtF90qr15urWfWFnFv3yj
+	vF92qry2gFnIqaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jO8nOUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQ04ZWgIgd2b8QAAsX
 
-ADC calibration might fail because of the noise on reference voltage.
-To avoid calibration fail, need to meet the following requirement:
-ADC reference voltage Noise < 1.8V * 1/2^ENOB
+On Mon, Mar 24, 2025 at 08:11:00AM +0100, Alexander Stein wrote:
+> This overlay configures IMX219 MIPI-CSI-2 camera attached to ISP1.
+> Also add additional overlay both using LVDS display and camera.
+> 
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile        |   4 +
+>  ...imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso | 107 ++++++++++++++++++
+>  2 files changed, 111 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index d7ac8dda4bde5..b5cd2efd260cb 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -247,10 +247,14 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-pcie-ep.dtb
+>  
+>  imx8mp-tqma8mpql-mba8mpxl-lvds-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
+>  imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtbo
+> +imx8mp-tqma8mpql-mba8mp-ras314-imx219-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtbo
+>  imx8mp-tqma8mpql-mba8mp-ras314-lvds-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
+> +imx8mp-tqma8mpql-mba8mp-ras314-lvds-imx219-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds-imx219.dtb
+>  
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mq-hummingboard-pulse.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso
+> new file mode 100644
+> index 0000000000000..0bc96d242f33f
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso
+> @@ -0,0 +1,107 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+> +/*
+> + * Copyright 2022-2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
+> + * D-82229 Seefeld, Germany.
+> + * Author: Alexander Stein
+> + */
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/media/video-interfaces.h>
+> +
+> +#include "imx8mp-pinfunc.h"
+> +
+> +&{/} {
+> +	/*
+> +	 * The three camera regulators are controlled by a single GPIO. Declare
+> +	 * a single regulator for the three supplies.
+> +	 */
+> +	reg_cam: regulator-cam {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "reg_cam";
+> +		/* pad muxing already done in gpio2grp */
+> +		gpio = <&gpio2 6 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		vin-supply = <&reg_vcc_3v3>;
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +	};
+> +
+> +	cam24m: cam24m {
 
-For the case which the ADC reference voltage on board do not meet
-the requirement, still load the calibrated values, so ADC can also
-work but maybe not that accurate.
+Can we name the node clock-cam24m?
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
----
- drivers/iio/adc/imx93_adc.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+> +		compatible = "fixed-clock";
+> +		#clock-cells = <0>;
+> +		clock-frequency = <24000000>;
+> +		clock-output-names = "cam24m";
+> +	};
+> +};
+> +
+> +&i2c2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+> +	camera@1a {
+> +		compatible = "sony,imx219";
+> +		reg = <0x10>;
 
-diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-index 7feaafd2316f246bd0c32fea99309900b5c65099..ebf976db746f02431a315b1faa86f151bb67132e 100644
---- a/drivers/iio/adc/imx93_adc.c
-+++ b/drivers/iio/adc/imx93_adc.c
-@@ -38,6 +38,7 @@
- #define IMX93_ADC_PCDR6		0x118
- #define IMX93_ADC_PCDR7		0x11c
- #define IMX93_ADC_CALSTAT	0x39C
-+#define IMX93_ADC_CALCFG0	0X3A0
- 
- /* ADC bit shift */
- #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
-@@ -58,6 +59,8 @@
- #define IMX93_ADC_IMR_ECH_MASK			BIT(0)
- #define IMX93_ADC_PCDR_CDATA_MASK		GENMASK(11, 0)
- 
-+#define IMX93_ADC_CALCFG0_LDFAIL_MASK		BIT(4)
-+
- /* ADC status */
- #define IMX93_ADC_MSR_ADCSTATUS_IDLE			0
- #define IMX93_ADC_MSR_ADCSTATUS_POWER_DOWN		1
-@@ -145,7 +148,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
- 
- static int imx93_adc_calibration(struct imx93_adc *adc)
- {
--	u32 mcr, msr;
-+	u32 mcr, msr, calcfg;
- 	int ret;
- 
- 	/* make sure ADC in power down mode */
-@@ -158,6 +161,11 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
- 
- 	imx93_adc_power_up(adc);
- 
-+	/* Enable loading of calibrated values even in fail condition */
-+	calcfg = readl(adc->regs + IMX93_ADC_CALCFG0);
-+	calcfg |= IMX93_ADC_CALCFG0_LDFAIL_MASK;
-+	writel(calcfg, adc->regs + IMX93_ADC_CALCFG0);
-+
- 	/*
- 	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
- 	 * can add the setting of these bit if need in future.
-@@ -179,11 +187,14 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
- 
- 	/* check whether calbration is success or not */
- 	msr = readl(adc->regs + IMX93_ADC_MSR);
--	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
-+	if (msr & IMX93_ADC_MSR_CALFAIL_MASK)
-+		/*
-+		 * Only give warning here, this means the noise of the
-+		 * reference voltage do not meet the requirement:
-+		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
-+		 * And the reault of ADC is not that accurate.
-+		 */
- 		dev_warn(adc->dev, "ADC calibration failed!\n");
--		imx93_adc_power_down(adc);
--		return -EAGAIN;
--	}
- 
- 	return 0;
- }
+'reg' doesn't match unit address.
 
----
-base-commit: bc8aa6cdadcc00862f2b5720e5de2e17f696a081
-change-id: 20250423-adcpatch-cb59c5255961
+Shawn
 
-Best regards,
--- 
-Haibo Chen <haibo.chen@nxp.com>
+> +		clocks = <&cam24m>;
+> +		VANA-supply = <&reg_cam>;
+> +		VDIG-supply = <&reg_cam>;
+> +		VDDL-supply = <&reg_cam>;
+> +		orientation = <2>;
+> +		rotation = <0>;
+> +
+> +		port {
+> +			sony_imx219: endpoint {
+> +				remote-endpoint = <&imx8mp_mipi_csi_in>;
+> +				clock-lanes = <0>;
+> +				clock-noncontinuous;
+> +				data-lanes = <1 2>;
+> +				link-frequencies = /bits/ 64 <456000000>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&isi_0 {
+> +	status = "disabled";
+> +
+> +	ports {
+> +		port@0 {
+> +			/delete-node/ endpoint;
+> +		};
+> +	};
+> +};
+> +
+> +&isp_0 {
+> +	status = "okay";
+> +
+> +	ports {
+> +		port@1 {
+> +			isp0_in: endpoint {
+> +				bus-type = <MEDIA_BUS_TYPE_PARALLEL>;
+> +				remote-endpoint = <&mipi_csi_0_out>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&mipi_csi_0 {
+> +	status = "okay";
+> +
+> +	ports {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		port@0 {
+> +			imx8mp_mipi_csi_in: endpoint {
+> +				remote-endpoint = <&sony_imx219>;
+> +				clock-lanes = <0>;
+> +				data-lanes = <1 2>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&mipi_csi_0_out {
+> +	remote-endpoint = <&isp0_in>;
+> +};
+> -- 
+> 2.43.0
+> 
 
