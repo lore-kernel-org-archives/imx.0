@@ -1,111 +1,75 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE5A28935F
-	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 15:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7236F1514F6
+	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 16:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745423528; cv=none; b=mTcmbSekEeVRgh7F3ay8IqdAeMgkQnSqW89zRNDkml2Je4CfbEzfjduxbqwwzLG1G8iMtgS3DrtkP2NZaJYDC4zw1cMvNdl5Bf7X6Bobc5lbXK3MiT8QbFrXj0/bfak+iQjW8eiHtOZVOBYgpuzZ9gikXLh08Y3ljo8FOYZeDuE=
+	t=1745425768; cv=none; b=sQVnuVn/4jqQrpj6/zBdyIm/d9nZFa3RXjGSwOc6Xpobwvqx0g1iacMwJ5jIxJH4sxGBmGItGDmRZKae45U6u1GXjlA9EB2p7Q94aoy6/sA0i1NcXL8Js7Cml/cdQKScy1lTgXqSwAJCOwB1Mf7HPdpwnTGYn9MV+d1fTqFwUXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745423528; c=relaxed/simple;
-	bh=xyjs0rLrd34P5DK/m9PmTC/jCEqBM3B50Jzi+NTDjBM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZXeVdXQQte9yYxT5p9mA7qGWoenUbLtBMinY09L1ftPVvWJj1nmQ3YdOT915btd/4tn4i8xxQ+rIla7SwYax1bj3lkwsnIAD2vSjG027siY3Y2suC9iox1ZBKiUkxHTAMDMs1rmrV4mBcyxjEe6NN/WljS/9MideIeT4jYnrVXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cia0WdNJ; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cia0WdNJ"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b061a775ac3so5910176a12.0
-        for <imx@lists.linux.dev>; Wed, 23 Apr 2025 08:52:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745423525; x=1746028325; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zSN8LA1qXE8sSMrIXXGWvP/A1XS/xD/J162Xg5jQH2M=;
-        b=Cia0WdNJqbuJgfUhkl/M7RwgyrGLgo5cyU0BmImJoaSMwZl2ALQTAdjT5LZtxMjVh8
-         Y07U/sp7cBVLDRGZ5cYiba115xR0paril5j2KQH4O4kzaPfN4axPnI4LkpQFD0h6k0d2
-         niXjQlxd0WXcJoqTFEIeSALxEE0vNuCcD7h2CdtYA4ayMFMN82YN4oXwtVeQYhQ5fVyw
-         zIB0b44ek+81DJcomeUGLjONPew3Xj4zj9+1BnidmUsnk6kXyziHNSvLiQfzp04RyKpr
-         5rbakV9/YQCx3s34IPuCRnZFcmv+hhB0Ua8d8++txlHWStWOE4Am3P6auQcHpq+JWGfK
-         EjHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745423525; x=1746028325;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zSN8LA1qXE8sSMrIXXGWvP/A1XS/xD/J162Xg5jQH2M=;
-        b=e/pg6b4KOUoHxBtbN1L8TGrhCwpuAKw94WAsRKYyq2Nj3hBo5Zn6C2tC8ZmR0TQnG6
-         5xuhlslQpLLuPq4xvOEartfRqB7NRjsU9YQQI7dFqn3jyupRXGgG7kAYAbr4yhDW6I5w
-         GNYXk8Sa1Mq8Ve/Iz8WgwQUoBMZahIV+TdCLYCgXpcQN1nCbxeNl53vvtYbdao+nMbwS
-         LT7O0EpigKZylVan1ru6+UI/IciE3FIKuQL1BqhkR5W/zDDtg3HhZ4YIo5D2Oi+G5wM2
-         e4gTEPr1SDOUbFSFTfUOnawR57wck/gG+5ypuca5ZETGprMTNxonmRt8H1vtv8+5xgL6
-         0ieA==
-X-Forwarded-Encrypted: i=1; AJvYcCXoMZn074a0ARftH1xVikHVZB6Ii1GgmibWUsinqdeSD6BmRHesVL/3PQ9515KPA322Sn4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz70I16qQj8SZbXiJAIb3SOSwzjBrAmv3hXiT838dZKBZaSQmR8
-	9T7iyJ0zTQkGSPiZr/YPjZHOoAvIWRiMVKzYEiD6UUn/r1++oEt5
-X-Gm-Gg: ASbGncvlO4WlotWsAfr60rzuZ+WO3IGCbs9BlmMexlN6VfrUw51LP268RA+OCHEHNn0
-	9jn0LM0HpbO5XrA1uAOYrndKC6mzwhUcKxyBeAciRHQ6MHPB3OEwrgFkc33ulvVJgOhF+r6fq5S
-	YljzC8x1FRxGZZ7LXWcPUhkrtrnbIJBEeCzRE/6l+E+PopAXgkmpk4TNjVK8yN7bEL7Ql0dPJyS
-	CtyOFeCnJrjck4fjDzA17DWaZxzD+5JRKRUXRALKiQZ2zn8+rH8lfsj+WpSIvBJKdyzhNSyx3Aq
-	PeIj1HD5zkQwo7K2ag1QOPbfp0sa/UaS6aZ84rui9smpXiIuCw6IbMSY7jL9gvY=
-X-Google-Smtp-Source: AGHT+IH9NXu1Zh4il4mX+tmqFO/fGM0azr6O1PCj5OfemeTOeltYbazHILrLFl2ZpdVQAwyq5Vkrfg==
-X-Received: by 2002:a05:6a20:12cd:b0:1f5:92ac:d6b7 with SMTP id adf61e73a8af0-203cbc05557mr29541583637.4.1745423525288;
-        Wed, 23 Apr 2025 08:52:05 -0700 (PDT)
-Received: from hiagof-nb.corp.toradex.com ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73dbf8c0228sm10598640b3a.25.2025.04.23.08.52.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 08:52:04 -0700 (PDT)
-From: Hiago De Franco <hiagofranco@gmail.com>
-To: linux-remoteproc@vger.kernel.org
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	s=arc-20240116; t=1745425768; c=relaxed/simple;
+	bh=KxcHnZYYoBmp7BD7P4s3CikLglkzwdJOyyb/R9wQQUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T56KCfCtzslzQfkCsrqjjsC5zeM9J7vxgTLQ4pUN3S1SczTnqkHa7uNEYWrzgcw2TpI0nCVCYGc2cYq6WILGUmgRqDt48Rez24hikE2bkKAL/5L21PlspTaQ7EU7/e8HSndyhyCWAuH69oclnjCY5tyLOz1gI0K8BIEugyottCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u7cyN-0002kv-71; Wed, 23 Apr 2025 18:29:19 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u7cyM-001kOA-2j;
+	Wed, 23 Apr 2025 18:29:18 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1u7cyM-00H6e4-2N;
+	Wed, 23 Apr 2025 18:29:18 +0200
+Date: Wed, 23 Apr 2025 18:29:18 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Hiago De Franco <hiago.franco@toradex.com>
-Subject: [PATCH] remoteproc: imx_rproc: replace devm_clk_get() with devm_clk_get_optional()
-Date: Wed, 23 Apr 2025 12:51:31 -0300
-Message-Id: <20250423155131.101473-1-hiagofranco@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 1/3] soc: imx8m: Cleanup with adding
+ imx8m_soc_[un]prepare
+Message-ID: <20250423162918.en4zmphifvot43dt@pengutronix.de>
+References: <20250423-uid-128-v2-0-327c30fe59a9@nxp.com>
+ <20250423-uid-128-v2-1-327c30fe59a9@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250423-uid-128-v2-1-327c30fe59a9@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-From: Hiago De Franco <hiago.franco@toradex.com>
+On 25-04-23, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> There is a common flow to i.MX8M family, map OCOTP register base and
+> enable ocotp clk first before read Unique ID from OCOTP.
+> 
+> So introduce imx8m_soc_prepare to do ioremap and enable the ocotp clk,
+> and introduce imx8m_soc_unprepare to disable the clk and do iounmap.
 
-The "clocks" device tree property is not mandatory, and if not provided
-Linux will shut down the remote processor power domain during boot if it
-is not present, even if it is running (e.g. it was started by U-Boot's
-bootaux command).
+Wouldn't have gone that far, but the changes lgtm.
 
-Use the optional devm_clk_get instead.
+> With this patch, no need to spread the ioremap and clk handling in
+> each soc_revision hook.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
----
- drivers/remoteproc/imx_rproc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 74299af1d7f1..45b5b23980ec 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -1033,7 +1033,7 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
- 	if (dcfg->method == IMX_RPROC_NONE)
- 		return 0;
- 
--	priv->clk = devm_clk_get(dev, NULL);
-+	priv->clk = devm_clk_get_optional(dev, NULL);
- 	if (IS_ERR(priv->clk)) {
- 		dev_err(dev, "Failed to get clock\n");
- 		return PTR_ERR(priv->clk);
--- 
-2.39.5
-
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
