@@ -1,90 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D46269CF4
-	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 07:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8081222F76A
+	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 07:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745393304; cv=none; b=gIcuaa0yFuSAnZGnIl7jDc0Krp5ZC9K/uE/QLkIC44zEPvKTbDhm9N64wvMOuk4afvJ1zcg80zrtVJBfhexR4OkDezL3e6J3C/n7txYdwwdpbzLe+DfqrmnajoxvJA3UCDjHWgFEYO8Fg3ZGKuw3Nr9K/lw9oo3to2J3tD8/91E=
+	t=1745393390; cv=none; b=bBqysG1BLp8Wl5byoyh9ffJRfvZy9gZ21iUNxLxFQ4wdD5euOp9eH+JMNM/PpFnhECUpwg8Dz7qa+GwPjHMg2C5ordxjB1Qyjgs4Z0QXI30VFN8KuGe4JUIdp4vdogJt9qvklCAk5N0kFkFnMN0yxJf6Au17/awUSWhk0FyiTUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745393304; c=relaxed/simple;
-	bh=4wTnwK7o8uegywRLEmUdj8ibpoPv/EFkeYiSplsAtMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XPXR0ZgmsTrWqLtyIARbpdLdc4qR3kxqsMk8/O4D3eC6v0t8Mk5IY0DofYywJq2aBp/YNkbNRrnww2ReU5Ztn8bSfilTClD9qAls3ywAkofeyMu0TcZSpXHoNXXFnSyYo3lzC5QAJY81BKQHqDNovQH2wVF6QK0e8juLk93PHPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UrxlmXVK; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1745393390; c=relaxed/simple;
+	bh=f9WnUHLwI7r5PxohoerOyRrhe9IoLi9FojqIHzXvEiU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GrvAEHJHnCHkAWz9Ygsc+bNW9/H+dciBlh7JCXPFhNaPsf5Uf06IjYTzXra/838t4A72GRpYGwm4vjjMOxf7w2UIcPfnvzzRynmX6nA0ZhkT9tueP+z1aK+uzyflZdukq/PMXapzRgWfrXWly9aD7LJP0yCZ252IU22p2q2KEXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=SJjSNzMo; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UrxlmXVK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745393301; x=1776929301;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4wTnwK7o8uegywRLEmUdj8ibpoPv/EFkeYiSplsAtMI=;
-  b=UrxlmXVKqSqxls1QBlMKydaMziZAJ7bxdFHCs+6U6SNNquavRRS3EX4O
-   mrgwsLwaqGPmZ6g4irRcXljbT34ZkxaELaX6tPYRB9dfw4oRQnawfYrMj
-   b/12BJXkIKMmWREtqOQGG2LaqVxBY4KdbmUXBJkB8/Ir/xmqckQZXCwTr
-   DTiXp+b8yFzljo5Fz8HYz5P90TmKLaeusrVodHRnv7hvm75vXl4z//kzw
-   8Hr8CvU0G6/lpBJJ5ZXhIwJLRyCkqVcJI8Mbx2ipK7CbfFijOqGCE8RqD
-   WtE0OCCJdh6lQeZzG5wkQ27aeyzqOfyvWuqCtFexJXDeBhXPjr39laxPp
-   A==;
-X-CSE-ConnectionGUID: fmnZMoWEQiGeDLTHPq8EZA==
-X-CSE-MsgGUID: MW/YP9bdTEOviefqLDULzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="47072327"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="47072327"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 00:28:21 -0700
-X-CSE-ConnectionGUID: gMtjzeN7RMKoxzuh9aGefQ==
-X-CSE-MsgGUID: WX3s9Va4SCKJaRqAFfR4zA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="137314255"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 00:28:18 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 4648411FC44;
-	Wed, 23 Apr 2025 10:28:15 +0300 (EEST)
-Date: Wed, 23 Apr 2025 07:28:15 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="SJjSNzMo"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A985D102E13E3;
+	Wed, 23 Apr 2025 09:29:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1745393379; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=kvjT2AQfxdFmD9bmhbjX7G3FMB2UewEmBGLVIkkuwUE=;
+	b=SJjSNzMoaRulgtXnVfnUhgtb8PRqAWhK9pQIc5i+ZWJi6CO6OOBTapSGhRtHwzvytJGQL4
+	jaVPa9dr8qrWm75FakSpycPL6UUki6tiFotCqeXT73BdOfMXGVw6hcny8YM/S2TjKMvKqd
+	LrbynugloIYP62dPsxwbukTTw8f9cbnQOEGM892gpZ92pdEKAabRG7OV16U36zDJPKsVcS
+	9DVLeMgc2PiXS8rHG/eGo+Bqx5NRsvYgrXZzfKjdvhy32op+Yz1bn146FldSWlFXTFnCx1
+	UxzGhRVwJjSYivu4/acCg92yzidV4AytiAEm9RhbV+V0lHfF7gK5DKDbOXXcTA==
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Lixu Zhang <lixu.zhang@intel.com>, Yinbo Zhu <zhuyinbo@loongson.cn>,
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH 08/12] gpio: ljca: use new line value setter callbacks
-Message-ID: <aAiWj7QFQMtzjLww@kekkonen.localdomain>
-References: <20250423-gpiochip-set-rv-gpio-part2-v1-0-b22245cde81a@linaro.org>
- <20250423-gpiochip-set-rv-gpio-part2-v1-8-b22245cde81a@linaro.org>
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [net-next v7 0/7] net: mtip: Add support for MTIP imx287 L2 switch driver
+Date: Wed, 23 Apr 2025 09:29:04 +0200
+Message-Id: <20250423072911.3513073-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250423-gpiochip-set-rv-gpio-part2-v1-8-b22245cde81a@linaro.org>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Apr 23, 2025 at 09:15:10AM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> struct gpio_chip now has callbacks for setting line values that return
-> an integer, allowing to indicate failures. Convert the driver to using
-> them.
-> 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+This patch series adds support for More Than IP's L2 switch driver embedded
+in some NXP's SoCs. This one has been tested on imx287, but is also available
+in the vf610.
 
-Thanks, Bartosz!
+In the past there has been performed some attempts to upstream this driver:
 
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+1. The 4.19-cip based one [1]
+2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
+   with NO tag appended.
+3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
+   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
+   the driver uses already configured MAC and PHY to also configure PHY.
+
+All three approaches were not accepted as eligible for upstreaming.
+
+The driver from this series has floowing features:
+
+1. It is fully separated from fec_main - i.e. can be used interchangeable
+   with it. To be more specific - one can build them as modules and
+   if required switch between them when e.g. bridge offloading is required.
+
+   To be more specific:
+        - Use FEC_MAIN: When one needs support for two ETH ports with separate
+          uDMAs used for both and bridging can be realized in SW.
+
+        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
+          attached to switch and bridging shall be offloaded to HW. 
+
+2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
+   separation at boot time. Port separation is disabled when bridging is
+   required.
+
+3. Example usage:
+        Configuration:
+        ip link set lan0 up; sleep 1;
+        ip link set lan1 up; sleep 1;
+        ip link add name br0 type bridge;
+        ip link set br0 up; sleep 1;
+        ip link set lan0 master br0;
+        ip link set lan1 master br0;
+        bridge link;
+        ip addr add 192.168.2.17/24 dev br0;
+        ping -c 5 192.168.2.222
+
+        Removal:
+        ip link set br0 down;
+        ip link delete br0 type bridge;
+        ip link set dev lan1 down
+        ip link set dev lan0 down
+
+4. Limitations:
+        - Driver enables and disables switch operation with learning and ageing.
+        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
+          on purpose, as up till now we didn't had consensus about how the driver
+          shall be added to Linux.
+
+Links:
+[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
+[3] - https://source.denx.de/linux/linux-imx28-l2switch/-/tree/imx28-v5.12-L2-upstream-switchdev-RFC_v1?ref_type=heads
+
+Lukasz Majewski (7):
+  dt-bindings: net: Add MTIP L2 switch description
+  ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2 switch description
+  ARM: dts: nxp: mxs: Adjust XEA board's DTS to support L2 switch
+  net: mtip: The L2 switch driver for imx287
+  ARM: mxs_defconfig: Enable CONFIG_NFS_FSCACHE
+  ARM: mxs_defconfig: Update mxs_defconfig to 6.15-rc1
+  ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2
+    switch
+
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   |  148 ++
+ MAINTAINERS                                   |    7 +
+ arch/arm/boot/dts/nxp/mxs/imx28-xea.dts       |   56 +
+ arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |    9 +-
+ arch/arm/configs/mxs_defconfig                |   13 +-
+ drivers/net/ethernet/freescale/Kconfig        |    1 +
+ drivers/net/ethernet/freescale/Makefile       |    1 +
+ drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+ .../net/ethernet/freescale/mtipsw/Makefile    |    3 +
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 1989 +++++++++++++++++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  788 +++++++
+ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  120 +
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  449 ++++
+ 13 files changed, 3586 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
 
 -- 
-Sakari Ailus
+2.39.5
+
