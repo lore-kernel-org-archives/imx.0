@@ -1,145 +1,141 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508C92676DD
-	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 07:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDCD1E1E1B
+	for <imx@lists.linux.dev>; Wed, 23 Apr 2025 07:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745392093; cv=none; b=R6moYGBm/sAEQlWycnRbMevKQp1wlGBrQam9e0G6CKmYoqvduEntkMdNvAKbLF5/ZOAVPmFHpo46Hujw4XowrPf2xKM7gZBLxEcuTXTxk1wOZsI+lCu1mLB1qmnp7p8vDpmSkTWA9FjO31xkQtLnzn/RnYWoefA5OXdIhgBTQGE=
+	t=1745392520; cv=none; b=hm5LbPFTVy5ICF2gD+3hfpml70aGFHS3z/EJaSqAHGEqIfLNfwa1PPatp9wcVQzC3uDc37eKffwb4ucy/gJLqT85ARCqWal/M68EnuYpeAib44Debz1Z0/Tf/ptqnKqEGAvvEAIAMhhE93bsH3osd3sicOdpElLmMJ1yCL7Y+7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745392093; c=relaxed/simple;
-	bh=7mnMqfZJXmRF7AEubXC5Quz0rD3EwGLxnuaIQrs31aw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cibiceen4T1SVaUiPRQ0E7iHbcph8pO9TGFKUcbjQ8ldj6MlDn5og2KhF5G/06uO+MXxOXOxb/vK8sYTPjsV3mqMPaUe6w8YOIyeLlI5C6zTEpVBVix8SXWbUClnkF9MDKeBu/9EtOBwoDXp2QAxT1btXjoB0u+YiEz1wYIPInU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=taM+nq0T; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1745392520; c=relaxed/simple;
+	bh=P8T6A2RfhQi9cs8jlDhrwJia7IeYiHPIj6iHNUhHRRs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PFrIxl7lFE7SpvLh0GinjeTPKRw2JFAa7GRLKQN7eRVCkAyrC6R1aTh1Yl2dSJX8w0+YPwADLY0DxC9Z2coEKk9Hyglf5LUrq62NA5vxw7lrfzw5JG8DNYMBnLsOATDJt1VJOeQKv+BmLXTvJe0WoJ9SPeTTED/twKdmnyEHaUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=vPEZAQx4; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="taM+nq0T"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id DB3B91F984;
-	Wed, 23 Apr 2025 09:08:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1745392089;
-	bh=/0EQyW6sKhsHbEM0FiXvZEMPWbxrVBqoFMcw038Fo0o=; h=From:To:Subject;
-	b=taM+nq0Tp+9ii+S0WaDF9seZryAoqKrz/vlplFL9/ZBKvYNh75kCC715TxDFQa+7j
-	 C/sGGFpIK77WVU5hAsa96KvTgz0cbCtwlSeMWTZM1eSsgb80787R1TEDZ13sDDM7GW
-	 m9Z7zfRZZMUu6acYf0lAsIKp7oi/a6A+Q9yGEc/kyS63x9sEef5+xz2ESa0JVOJ5d3
-	 eOdQVUXumLYh6f12oLeAynDGKptfRtEJhUzCj7jMfFXKsVktMRWbgLkMojclU174EO
-	 /wrDlZW4ofcXxj2R+S0I3MGfFJcZRhDvsNVCxViB6AMQjgUiz1cFqeO5rPYDOfd35J
-	 /6AKlQjxqp/Kg==
-Date: Wed, 23 Apr 2025 09:08:07 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Frieder Schrempf <frieder.schrempf@kontron.de>
-Cc: Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
-	linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Philippe Schenker <philippe.schenker@impulsing.ch>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to
- usdhc2
-Message-ID: <20250423070807.GB4811@francesco-nb>
-References: <20250422124619.713235-1-Wojciech.Dubowik@mt.com>
- <522decdf-faa0-433b-8b92-760f8fd04388@kontron.de>
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="vPEZAQx4"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3912d2c89ecso5028795f8f.2
+        for <imx@lists.linux.dev>; Wed, 23 Apr 2025 00:15:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1745392516; x=1745997316; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kfQbp+syyXkO/RHw4GNJukoFm6a9w8JqJKtPVgxdN5o=;
+        b=vPEZAQx4cVEPJgq2rJWsJ180lGzBrlvVZMGGx920fHESOJlQYWeDR9DwIqdrRSIxbR
+         +xaE59m8bf9AXXoZdgPoKuJYg9OhC/BaTi8c2zQbzSGTkI3+MWu6AaVcqoHgJDjBHPAa
+         LdsgsWABkOb0+PFzSxc3JIkYYM0LCbpWCQMb4MP2lmY4U9KJ921zFdbMw5qKIRKAVxaH
+         3yFUBk2tFSZKgbjTIEpXMwVFXzUptXMZCGUI2sVDv/+Cz275u9lIZIifn1VwBN8eYDGE
+         3cDhch7jM4oGhlU0mOqeK8iLZOXtLwze4x2hkxAQzAu8Xzh6t33VZGJriDFa27sMyt8N
+         e1fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745392516; x=1745997316;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kfQbp+syyXkO/RHw4GNJukoFm6a9w8JqJKtPVgxdN5o=;
+        b=oIpQnNtHRwqhohS62I1cqBPNnciV1ril0hqeRO08s/9efF2AGCGhYQrLoq55ZtJn/u
+         UTeRbf9m2hv8qRjhRe20ymnAHd/uFY+9OC80w0zSUl3MGSMyoIE9BVpUZYKBQ6bnMHKg
+         lkpoOoCFGhE0N8BvtILVpHLc3NvRKx0YThhZhp9QYNVNAbYRjXYfaR3oIAcJ4+bQI5nO
+         HkfZUi3DV/NfLGl5FjLoX2Ch1K6vdWTs05ft7AlAhgW1WLJtz7yjQ22ZV7L5OSk2tPNV
+         fDZx/XXFgl1bF00+2mo/YrRisrcFMQcQ0EYrdRZ0xjHe5Ui8Jv3AZMvzAGlmqoFg+JUq
+         kjfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxNYGlVrWp4z+1zITa3VYCWUVCJLeqV4D6Gb6xOFlxPs6+3pmA3K6mOop2I3QP8xh0F1Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx89IwxXbXrUYoFSbeQXdSNfv+vhMZTF51oFvsMRUr8bTMkbodJ
+	JJ97ZIBQTQF5eO4F1NjF2/V/7M9sZlW+KMQYdw9WMdwKZ1ynMvpcC3YoLcfj8HY=
+X-Gm-Gg: ASbGncudbZfQvdwc4lGr0HgIouHfcNA+O2qkcjnpUMVQ/OrqLovyL/qeQN2PzoqzQlu
+	NGFJJFQEKFvNVwhuFmZAldaOC411BfLezVnv14K1Jl4LD2FmWQO4KvSYfeVD9CMmz6tuDShe/X4
+	v3VcUBF6U3KIelUS1lLfzbVDOAdXQKx9OLqi63m+VSrG0rX3rInYxkdchmd8mAn2katThvXcNBY
+	lbeSVNh2iI/VywU9G5uVnoBMhdoHoLdFv7xeBI05FPhfbKAj2TP8QDOj59OchQusSW31yvcRWK+
+	rAY6RR0P+f9DGYBiQg0b6PQjZz5AxU9wO9kkPWcQBJH9
+X-Google-Smtp-Source: AGHT+IG+tJxvr2pB5uojdqPwlJlUoCOQYCF7lDXIVNF2nVM1sZvKoDsybtSZIIss18Pryk/S0Ef3fA==
+X-Received: by 2002:a5d:588b:0:b0:391:45e9:face with SMTP id ffacd0b85a97d-39efbb0252emr14722584f8f.54.1745392516313;
+        Wed, 23 Apr 2025 00:15:16 -0700 (PDT)
+Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:74b0:71bd:6dda:dcc1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa493446sm17696935f8f.74.2025.04.23.00.15.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Apr 2025 00:15:15 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH 00/12] gpio: convert more GPIO chips to using new value
+ setters - part 2 for v6.16
+Date: Wed, 23 Apr 2025 09:15:02 +0200
+Message-Id: <20250423-gpiochip-set-rv-gpio-part2-v1-0-b22245cde81a@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <522decdf-faa0-433b-8b92-760f8fd04388@kontron.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHaTCGgC/x3MPQqAMAwG0KtIZgM1+H8VcRD7qVm0pCKCeHeL4
+ 1veQxGmiNRnDxkujXrsCUWe0bxN+wpWn0zipHKlCK9Bj3nTwBEn2/Wbw2SncAPxtUNX+xaUgmB
+ Y9P7zYXzfDxJIbI9sAAAA
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Lixu Zhang <lixu.zhang@intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Yinbo Zhu <zhuyinbo@loongson.cn>
+Cc: linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1756;
+ i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
+ bh=P8T6A2RfhQi9cs8jlDhrwJia7IeYiHPIj6iHNUhHRRs=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBoCJN9PtDzo6pQhpJrIbuv3TgdhcsxmnoGxcbPW
+ lRtYYU14zeJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaAiTfQAKCRARpy6gFHHX
+ creZD/4wB84rig0XgfTyX7mc6x1ZYJw3YX7GCsmp8eACazubUCcNQBQO4dD9X2QWoeyiZr9sNj0
+ kG9snhzeXa0Tvzh5T2gedGUErStlmEEtNkjAjWsaq9hswKDrmsuc/mKcA5qWrkhvkLhcc/Pbj12
+ cpxHdFxDAASelR4triAIaQu18P1ZQp2Vj8paAhxBlPEaCPy8hUL0e4FYVMB1Fv6j4lrnLuw73xB
+ Mokir5p0P2mOSlg7jZ1KDABtZMRJ3CPkcRtQNnaeOTtbw+iMAeR5G1DDptYOQFchClFJcz/xL3c
+ GPMzwOimJLewFHGUaLNPOD++aD3pgcAdTPjwEFrbnawGcOeo9aVVaHTLh6A6y/5IzUup2dND530
+ zgLyZAtdQ1aYqwT43bhc5q8GGZbwkhi44RrPiO6wbxV+nySlux9Qeik/KNe/sCId8qpryzVd1ZS
+ eWLn8FftriS0QGv8+xltz/TLVnEDjrxdGBl/xTpUgFPtY9cEsdvhi/cOJu+CgO1aX6HcCbfRbOo
+ DMzzTyiMPndixsvtLUQBW71OgMqChX+LF/Ti24nk6z4tzcBW1oeIArw4ew5oJv7DacVyy+DdDTi
+ z2Oe6DeVscjg4pu7aChY2RpA1zzxwUS7QhJ3BDJZGw7UjNPoDfYoRHSX/kMd+8zwZFidXAVhwUI
+ bR7t8EKz9jVunow==
+X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 
-Hello Frieder,
+struct gpio_chip now has callbacks for setting line values that return
+an integer, allowing to indicate failures. We're in the process of
+converting all GPIO drivers to using the new API. This series converts
+another round of GPIO controllers.
 
-On Wed, Apr 23, 2025 at 08:50:54AM +0200, Frieder Schrempf wrote:
-> Am 22.04.25 um 14:46 schrieb Wojciech Dubowik:
-> > [Sie erhalten nicht häufig E-Mails von wojciech.dubowik@mt.com. Weitere Informationen, warum dies wichtig ist, finden Sie unter https://aka.ms/LearnAboutSenderIdentification ]
-> > 
-> > Define vqmmc regulator-gpio for usdhc2 with vin-supply
-> > coming from LDO5.
-> > 
-> > Without this definition LDO5 will be powered down, disabling
-> > SD card after bootup. This has been introduced in commit
-> > f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5").
-> > 
-> > Fixes: f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5")
-> > 
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
-> > ---
-> > v1 -> v2: https://lore.kernel.org/all/20250417112012.785420-1-Wojciech.Dubowik@mt.com/
-> >  - define gpio regulator for LDO5 vin controlled by vselect signal
-> > ---
-> >  .../boot/dts/freescale/imx8mm-verdin.dtsi     | 23 +++++++++++++++----
-> >  1 file changed, 19 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > index 7251ad3a0017..9b56a36c5f77 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-> > @@ -144,6 +144,19 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
-> >                 startup-delay-us = <20000>;
-> >         };
-> > 
-> > +       reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-> > +               compatible = "regulator-gpio";
-> > +               pinctrl-names = "default";
-> > +               pinctrl-0 = <&pinctrl_usdhc2_vsel>;
-> > +               gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-> > +               regulator-max-microvolt = <3300000>;
-> > +               regulator-min-microvolt = <1800000>;
-> > +               states = <1800000 0x1>,
-> > +                        <3300000 0x0>;
-> > +               regulator-name = "PMIC_USDHC_VSELECT";
-> > +               vin-supply = <&reg_nvcc_sd>;
-> > +       };
-> 
-> Please do not describe the SD_VSEL of the PMIC as gpio-regulator. There
-> already is a regulator node reg_nvcc_sd for the LDO5 of the PMIC.
-> 
-> > +
-> >         reserved-memory {
-> >                 #address-cells = <2>;
-> >                 #size-cells = <2>;
-> > @@ -785,6 +798,7 @@ &usdhc2 {
-> >         pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_cd>;
-> >         pinctrl-3 = <&pinctrl_usdhc2_sleep>, <&pinctrl_usdhc2_cd_sleep>;
-> >         vmmc-supply = <&reg_usdhc2_vmmc>;
-> > +       vqmmc-supply = <&reg_usdhc2_vqmmc>;
-> 
-> You should reference the reg_nvcc_sd directly here and actually this
-> should be the only change you need to fix things, no?
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+Bartosz Golaszewski (12):
+      gpio: imx-scu: don't check the GPIO range
+      gpio: imx-scu: use lock guards
+      gpio: imx-scu: destroy the mutex in detach path
+      gpio: imx-scu: use new line value setter callbacks
+      gpio: it87: use new line value setter callbacks
+      gpio: janz-ttl: use new line value setter callbacks
+      gpio: kempld: use new line value setter callbacks
+      gpio: ljca: use new line value setter callbacks
+      gpio: logicvc: use new line value setter callbacks
+      gpio: loongson-64bit: use new line value setter callbacks
+      gpio: loongson: use new line value setter callbacks
+      gpio: lp3943: use new line value setter callbacks
 
-If you just do this change you end-up in the situation I described in
-the v1 version of this patch
-https://lore.kernel.org/all/20250417130342.GA18817@francesco-nb/
+ drivers/gpio/gpio-imx-scu.c        | 47 +++++++++++++++++---------------------
+ drivers/gpio/gpio-it87.c           | 11 +++++----
+ drivers/gpio/gpio-janz-ttl.c       |  6 +++--
+ drivers/gpio/gpio-kempld.c         |  7 ++++--
+ drivers/gpio/gpio-ljca.c           | 13 +++++++----
+ drivers/gpio/gpio-logicvc.c        | 11 ++++-----
+ drivers/gpio/gpio-loongson-64bit.c |  6 +++--
+ drivers/gpio/gpio-loongson.c       |  8 ++++---
+ drivers/gpio/gpio-lp3943.c         | 13 +++++++----
+ 9 files changed, 69 insertions(+), 53 deletions(-)
+---
+base-commit: 2c9c612abeb38aab0e87d48496de6fd6daafb00b
+change-id: 20250422-gpiochip-set-rv-gpio-part2-7e2d60e96d8e
 
-With the IO being driven by the SDHCI core, while the linux driver
-changes the voltage over i2c.
-
-I was not aware of this sd-vsel-gpios, that if I understand correctly
-should handle the concern I raised initially, having the PMIC driver
-aware of this GPIO, however I do not see why that solution should be
-better than this one.
-
-BTW, is this solution safe from any kind of race condition? You have
-this IO driven by the SDHCI IP, and the I2C communication to the PMIC
-driven by the mmc driver, with the PMIC driver just reading this GPIO
-once when changing/reading the voltage.
-
-With this solution (that I proposed), the sdcard driver just use the
-GPIO to select the right voltage and that's it, simple, no un-needed i2c
-communication with the PMIC, and the DT clearly describe the way the HW
-is designed.
-
-Francesco
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
