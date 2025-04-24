@@ -1,147 +1,162 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F656296169
-	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 14:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D5B156F45;
+	Thu, 24 Apr 2025 15:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745504076; cv=none; b=Ta53nVqF1lVfUUIIl0ZcOiA9nMt2CvamGp1JRAozqbsC/1kWpLpDjzkJilTWdDBbHPR4FRytLR3UfhwSG+rtgt+Gg9iTL40KYeS/W+REvsQ2Dt6U+tWmhEGNFMo+z8XObuczE5f/sbQTLsn9YPovxq2Jo6gwygy4qWTSsIdpu7k=
+	t=1745507927; cv=none; b=dAzCURBQCraADeKNi/wCaglZ1Q4iKMzVJqcQUKbZAvnDP344TvozpXqqQwNGT0a4D5PIH2wBUox98HIPeOgWbzzHrcouqw4kbMNFUKoM64v+V+z3EGXiHzXtJHGUgKTmNUrz8Q5qg/Fv9NNqsDQgHNOihS3YL2iy3AKjLBJ+KvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745504076; c=relaxed/simple;
-	bh=hc3NuIx//WjHKdboDZgQCca1SVN0OX6YOp4RVVhyM/A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RQQq3hAa+nf557oGUGchTP7qfAfX0TkYuzTZrg8n89L7HgEYwlQBwvqYmInPyfzGTq3RlolMn6PNwjryc5cL5WvWTt8oc1IePPERITr3B9HbS62DTxjiW0eVenRm/ZckijyDJou2IhAFU9c7p6I/7xfPY7kHISV2RWr7Z4/32uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Obz9pwVR; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1745507927; c=relaxed/simple;
+	bh=Cfwo3zn+LUVCR2Nba2kjhqU4b8JvbapZ+dJDwNIQvR0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M9dGTUEJKqmZk9sLcjuSos7mqu7hMQh8zVNlNDob3xxQIMKy/3wVIIULV/OhHCP0iHPBIIC8RcHJylOJBw3b2CebZawShLA0QcK1n2S3sTQMZ393cnMeuOYpnNKTb6IOsDWpqijbgmwM0UjT3+raC5hQNm5+iaZMWwD68z/lrcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FtyAuiP8; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Obz9pwVR"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3104ddb8051so13154151fa.1
-        for <imx@lists.linux.dev>; Thu, 24 Apr 2025 07:14:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745504072; x=1746108872; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DIIOezRQ1iEeyh6wP7pxRulzkeF5lSrui5rZPEB2VUc=;
-        b=Obz9pwVRoCtSgfHxQvtpF03s4e5lF7d1JxUW/JLOqzLKJFbcJ2cPg4VuAwCCYRAhHb
-         BHw1YdiAEK0GgZEMukJdm+I80f1NwKeJ4S6H3u4dFvYN+sGzKIBrLhCtw6hZe+WMYW0m
-         s/tm+wCToE3pNdR9N4rftZ/jElvxmD77YCh9E1nETI8FEZ2gl5CcQTB3GWT/pNwCigyq
-         b/WLeZn+WXruT9/+AlpxgLxEAMlm8sevNCYY8F6/TDPrk/maU2aqIGMo+crtHe81IdR8
-         l33wBmM0P95RQjtp+usAVanTjddwPrwInYyh+1ATZou8X99VlqeLafljKVYT6OzMIr58
-         BUgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745504072; x=1746108872;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DIIOezRQ1iEeyh6wP7pxRulzkeF5lSrui5rZPEB2VUc=;
-        b=lq+5iePc7JpYBJDoL5VPrwhmGWOfPcTjOIRRBgLcjTH065cpHacjA+VjOF9J5KAZq5
-         girjwdLKauDp6nQfQ0KNa0nJS13pz+ArdNpZH60jwsBG0x0zLULxPue80si4QEd7a4k6
-         Dw9oDjMFJdMSK3f8M/IebGXUuKBrJYoM7QwXg0qtSReuijgBa2KuinMEEVFtu+36AlRI
-         BX1dSX/XYRIeT/om9y/F9v8qsbaF3XeqyfZmeYXEFKu+1rQyO21wwvKtQT9W9FadoJm2
-         GHqISE7Z062Q3dMA2QWcQgVazEEXc8BCtFAIpqtFXgftRSP8F6ky9SuVGdO2vpijGWT7
-         VgyA==
-X-Forwarded-Encrypted: i=1; AJvYcCVPCzVd3of0O+j00Lqw7ta9/dKaC6NrQgQ2xQnZmmk3ZOAD5eTKtWYcv5PqNJ/uv3a5/mw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxblbAQKp1+SBFot9pDulRioaUYIje5dPLRW1gG0jymxdwVqQpm
-	/1wHbXyL4VLDeDpvDBahyvXWKBsDPJ3JKzKEinz0uY5ASImtG//vBUOQ0d550l2gtqFDFzl9OLr
-	ldElYOJ/g38E8pGGKeTB2ck4pqpnBV4gu95Rl/Q==
-X-Gm-Gg: ASbGncsB7SXB/5XfWWxoGiDbcgmTxANX8jYf2Y9oi77c2t1L+mzPz9XYJlOwux50h/S
-	Yop+/b6FHVb9zLjG2qnwCP+QWuhoht/exfW/z11efb16z2NRlbxew+9wTf4GTG9AbFbASTrtg/c
-	IVAYgaDdL2RhgOiYG+YxDtm6oJIFg4UOe3xGTBMZyM6Jy8sPadboAGaMxe
-X-Google-Smtp-Source: AGHT+IGTSgfmE4C9KUY01cBQCa6U+zujjBr3JQn5JFHu87otSRTtbM+9TibC6Ub/YfaplbG5HQdBpJHJtYPG69/HM40=
-X-Received: by 2002:a05:651c:885:b0:30d:e104:cd56 with SMTP id
- 38308e7fff4ca-3179ffc1202mr10727731fa.39.1745504072212; Thu, 24 Apr 2025
- 07:14:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FtyAuiP8"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4481743B2E;
+	Thu, 24 Apr 2025 15:18:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1745507923;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8IVmwrk7aGTZcp/7NN8zrGIfqqXduX0J3M9hpB/pHPA=;
+	b=FtyAuiP8ARUUv2xs4PPtC4FuRrb5XYgrq7nTPDnp6BcGNmDvjt3hiUhZJ4gakGWOTMm285
+	izxLY19qRdbJgJHFDSKAmWuF147STQIQIY3Vvwl7qEaG7qJvaXjNpLiY9Vfya0P+MRrZDU
+	AaSSvmPNKnk2zfXYGcIo6csHPDBpesNfnl+mfWjAWossSdTGC2MKU8egwvpd6GBwyGo54M
+	fRZ/GwgbtAhX6Rj0x9SRnbLCNylZJ2rKp10NgYWNfJY6XoWyZWuZlAVflEcsvXYf2Mdzcj
+	OQ1uc5DdEPbXp2iO9ebp0rO3bbg1DWD4/1SRv2zche6VhM3c2W8AAxGm0SHemw==
+Date: Thu, 24 Apr 2025 17:18:38 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
+ Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
+ <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Douglas Anderson
+ <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof
+ Kozlowski <krzk@kernel.org>, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, Anusha Srivatsa <asrivats@redhat.com>, Paul
+ Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>,
+ =?UTF-8?B?SGVydsOp?= Codina <herve.codina@bootlin.com>, Hui Pu
+ <Hui.Pu@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, asahi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 34/34] drm/bridge: panel: convert to
+ devm_drm_bridge_alloc() API
+Message-ID: <20250424171838.21a95d80@booty>
+In-Reply-To: <20250408-thankful-husky-of-weather-355cae@houat>
+References: <20250407-drm-bridge-convert-to-alloc-api-v1-0-42113ff8d9c0@bootlin.com>
+	<20250407-drm-bridge-convert-to-alloc-api-v1-34-42113ff8d9c0@bootlin.com>
+	<20250408-thankful-husky-of-weather-355cae@houat>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250423-dt-memory-region-v2-v2-0-2fbd6ebd3c88@kernel.org>
-In-Reply-To: <20250423-dt-memory-region-v2-v2-0-2fbd6ebd3c88@kernel.org>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Thu, 24 Apr 2025 08:14:20 -0600
-X-Gm-Features: ATxdqUEG7UgU0b-fYJDsj-X6YeibPATP71Sc8xsrfndaXkHmANCAN6IFo1WtuOI
-Message-ID: <CANLsYkxKHhCHYrbAGzQ48QGpL_DbuLnX3=ppmpyu0vjuuvvODg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] of: Common "memory-region" parsing
-To: "Rob Herring (Arm)" <robh@kernel.org>, Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>, 
-	"Andrew F. Davis" <afd@ti.com>, "Shah, Tanmay" <tanmay.shah@amd.com>
-Cc: Saravana Kannan <saravanak@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Chen-Yu Tsai <wens@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeelkedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeelffefgfehhfdtvdefueefieevkefggfelkeeiudetkeektedvhedukefgvddvnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedtpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehtiihimhhmvghrmhgrn
+ hhnsehsuhhsvgdruggvpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghilhdrrghrmhhsthhrohhngheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprhhfohhssheskhgvrhhnvghlrdhorhhg
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-Arnaud, Daniel, Iuliana, Andrew and Tanmay - please test this patchset
-on the platforms you are working on.
+Hi Maxime,
 
-Thanks,
-Mathieu
+On Tue, 8 Apr 2025 17:51:08 +0200
+Maxime Ripard <mripard@kernel.org> wrote:
 
-On Wed, 23 Apr 2025 at 13:42, Rob Herring (Arm) <robh@kernel.org> wrote:
->
-> While there's a common function to parse "memory-region" properties for
-> DMA pool regions, there's not anything for driver private regions. As a
-> result, drivers have resorted to parsing "memory-region" properties
-> themselves repeating the same pattern over and over. To fix this, this
-> series adds 2 functions to handle those cases:
-> of_reserved_mem_region_to_resource() and of_reserved_mem_region_count().
->
-> I've converted the whole tree, but just including remoteproc here as
-> it has the most cases. I intend to apply the first 3 patches for 6.16
-> so the driver conversions can be applied for 6.17.
->
-> A git tree with all the drivers converted is here[1].
->
-> v2:
-> - Fix of_dma_set_restricted_buffer() to maintain behavior on warning msg
-> - Export devm_ioremap_resource_wc()
-> - Rework handling of resource name to drop unit-address from name as it
->   was before.
-> - Link to v1:
->   https://lore.kernel.org/all/20250317232426.952188-1-robh@kernel.org
->
-> [1] git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git dt/memory-region
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
-> Rob Herring (Arm) (4):
->       of: reserved_mem: Add functions to parse "memory-region"
->       of: Simplify of_dma_set_restricted_buffer() to use of_for_each_phandle()
->       devres: Export devm_ioremap_resource_wc()
->       remoteproc: Use of_reserved_mem_region_* functions for "memory-region"
->
->  drivers/of/device.c                       | 31 +++++-------
->  drivers/of/of_reserved_mem.c              | 80 +++++++++++++++++++++++++++++++
->  drivers/remoteproc/imx_dsp_rproc.c        | 45 +++++++----------
->  drivers/remoteproc/imx_rproc.c            | 68 +++++++++++---------------
->  drivers/remoteproc/qcom_q6v5_adsp.c       | 24 ++++------
->  drivers/remoteproc/qcom_q6v5_mss.c        | 60 ++++++++---------------
->  drivers/remoteproc/qcom_q6v5_pas.c        | 69 ++++++++++----------------
->  drivers/remoteproc/qcom_q6v5_wcss.c       | 25 ++++------
->  drivers/remoteproc/qcom_wcnss.c           | 23 ++++-----
->  drivers/remoteproc/rcar_rproc.c           | 36 ++++++--------
->  drivers/remoteproc/st_remoteproc.c        | 41 ++++++++--------
->  drivers/remoteproc/stm32_rproc.c          | 44 ++++++++---------
->  drivers/remoteproc/ti_k3_dsp_remoteproc.c | 28 +++++------
->  drivers/remoteproc/ti_k3_m4_remoteproc.c  | 28 +++++------
->  drivers/remoteproc/ti_k3_r5_remoteproc.c  | 28 +++++------
->  drivers/remoteproc/xlnx_r5_remoteproc.c   | 51 ++++++++------------
->  include/linux/of_reserved_mem.h           | 26 ++++++++++
->  lib/devres.c                              |  1 +
->  18 files changed, 339 insertions(+), 369 deletions(-)
-> ---
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> change-id: 20250423-dt-memory-region-v2-a2b15caacc63
->
-> Best regards,
-> --
-> Rob Herring (Arm) <robh@kernel.org>
->
+> Hi,
+> 
+> On Mon, Apr 07, 2025 at 05:27:39PM +0200, Luca Ceresoli wrote:
+> > This is the new API for allocating DRM bridges.
+> > 
+> > The devm lifetime management of this driver is peculiar. The underlying
+> > device for the panel_bridge is the panel, and the devm lifetime is tied the
+> > panel device (panel->dev). However the panel_bridge allocation is not
+> > performed by the panel driver, but rather by a separate entity (typically
+> > the previous bridge in the encoder chain).
+> > 
+> > Thus when that separate entoty is destroyed, the panel_bridge is not
+> > removed automatically by devm, so it is rather done explicitly by calling
+> > drm_panel_bridge_remove(). This is the function that does devm_kfree() the
+> > panel_bridge in current code, so update it as well to put the bridge
+> > reference instead.
+> > 
+> > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
+[...]
+
+> > --- a/drivers/gpu/drm/bridge/panel.c
+> > +++ b/drivers/gpu/drm/bridge/panel.c
+> > @@ -287,15 +287,14 @@ struct drm_bridge *drm_panel_bridge_add_typed(struct drm_panel *panel,
+> >  	if (!panel)
+> >  		return ERR_PTR(-EINVAL);
+> >  
+> > -	panel_bridge = devm_kzalloc(panel->dev, sizeof(*panel_bridge),
+> > -				    GFP_KERNEL);
+> > -	if (!panel_bridge)
+> > -		return ERR_PTR(-ENOMEM);
+> > +	panel_bridge = devm_drm_bridge_alloc(panel->dev, struct panel_bridge, bridge,
+> > +					     &panel_bridge_bridge_funcs);
+> > +	if (IS_ERR(panel_bridge))
+> > +		return (void *)panel_bridge;
+> >  
+> >  	panel_bridge->connector_type = connector_type;
+> >  	panel_bridge->panel = panel;
+> >  
+> > -	panel_bridge->bridge.funcs = &panel_bridge_bridge_funcs;
+> >  	panel_bridge->bridge.of_node = panel->dev->of_node;
+> >  	panel_bridge->bridge.ops = DRM_BRIDGE_OP_MODES;
+> >  	panel_bridge->bridge.type = connector_type;
+> > @@ -327,7 +326,7 @@ void drm_panel_bridge_remove(struct drm_bridge *bridge)
+> >  	panel_bridge = drm_bridge_to_panel_bridge(bridge);
+> >  
+> >  	drm_bridge_remove(bridge);
+> > -	devm_kfree(panel_bridge->panel->dev, bridge);
+> > +	devm_drm_put_bridge(panel_bridge->panel->dev, bridge);
+> >  }
+> >  EXPORT_SYMBOL(drm_panel_bridge_remove);  
+> 
+> I'm fine with it on principle, but as a temporary measure.
+> 
+> Now that we have the panel allocation function in place, we can just
+> allocate a bridge for each panel and don't need drm_panel_bridge_add_*
+> at all.
+> 
+> As I was saying before, it doesn't need to happen right now, or before
+> the rest of your work for hotplug goes in. But this needs to be tackled
+> at some point.
+
+I totally agree this needs to be handled eventually, and also to get
+there in steps.
+
+The current status of this driver is not ideal, so I paid attention to
+not make it unnecessarily worse when writing this patch. Do you think
+the current patch is OK for the next step? I'm going to send v2 in a
+few hours, so don't hesitate to mention any improvements you deem
+necessary.
+
+Luca
+
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
