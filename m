@@ -1,71 +1,71 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA531F4E39
-	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 11:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BB8221FD9
+	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 11:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745495679; cv=none; b=Zu7VTet0S08apq+VrD7qQBdwEJ9Ux5eNBryA7qeUwPr/ld35m1HuJg/J+OU0InJ1d9TvnujgTBydAqDgdMecOt0EXRQVfBOhKZhCNzAtwRFNkPpJPWorw/hlD5lwklve1+LKMzhdPIZQhfVkwEw8+QuZKXwQQND5cCSVcSU/+OI=
+	t=1745495703; cv=none; b=Cht8fAB/xQ6kJ4ykzg3OcDJEZvV3w8/H4fyHgs0zYzLKuIXUYQCZx+9s54keFnGYg16KfWF6t3tVi/HpEkKvi4tO/w9iWXAR2+0AjYYxmdWwLiTAoQnXAowcIgmd7s9RfwkGowNd56UmRC36iKY74dyLfewMkCta6UTy97M4jMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745495679; c=relaxed/simple;
-	bh=2LfjVBYMaapqG+RGUDzyZUCD3VsHLRQTARBAX5EftSM=;
+	s=arc-20240116; t=1745495703; c=relaxed/simple;
+	bh=3CXnS8upeLfS+v4WADg2CmZoMTXWci6Kc40+q19Trco=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qrDgPLEq56KbU4PHbs7YCGHEj7HwJuXheb3RUluSnssed1/ixjy3jA8TyA7pc5DSPg1RPf+HwX6UKnTER891pVkT6zscNiifdTU0x2khtTC+VnM+73GhMbt5P1lpX9cqg5sK0eOaWWstxNmVPxHKWu1CRmGBVi3xvnuWa19aM+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gBLptd+S; arc=none smtp.client-ip=209.85.214.180
+	 To:Cc:Content-Type; b=cYCK3RzQzha48207mLFDX+uwvMEiTGI444/vXQPP2uFqAwW05T+swB2Oo7eD8ESN4YGScJx2KxTPMcRl8LUrvYuNrkdqWho8ABCRgzKt627He0ELQ6ZOHJAHoa+99MMVlXuy1Yn0ECWPdM1QZOkubraFRzJr5M0IvfzORsLKNks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gz+Iq9K5; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gBLptd+S"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-22423adf751so9316515ad.2
-        for <imx@lists.linux.dev>; Thu, 24 Apr 2025 04:54:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gz+Iq9K5"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-30332dfc820so1074447a91.2
+        for <imx@lists.linux.dev>; Thu, 24 Apr 2025 04:55:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745495678; x=1746100478; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1745495701; x=1746100501; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cOeIljM0dsLpiUp3sMIwGCn1MBf/0oPhJSiBM5sc4As=;
-        b=gBLptd+S1TzFDH6F/eN+Mn20BivfpiyYNEEb8POiwSocI1hJ/Agq/sDH6lKzWK2uYV
-         e2UTSFokfGK00x0UMWqjsVXo9cJkHRjWQ/IR75vf8z43rEF7wNmTyO6IyFOw7E5HBmge
-         s+v6+oqMdf5BMLbZ3dz7HRiT5gINNB5dyZ9TH8HVBXLI1XwgER9l37yfpL+twIGfaBy3
-         Gbb/d+Kn8Blq6DraomomKFsof+RuOsZeZJwMG4ox2uZjobEQchp7BwwlS0iER+K2TI7Q
-         9WU6LHXsPv593LUbsBcVBp5v7wuFLIE38mGjbsmmCpPXjD5gEYg2Mt//uIhThjeDbt/H
-         SlfQ==
+        bh=LaXXZf7VNdBf/2Zq+DhTKSGQQp1DT6ynEcUt9SkvZ48=;
+        b=Gz+Iq9K5vHjBF4Xk/nTSuF9qWUKdsCisat2yi7OuIRYlHEV4PjaTufChb10c+2fL/I
+         vo0sBaPgmgkh4doEFB4kVWkFLIloyb/Lh7xz5g0od8O2wj1tB2WK/Dvb3tMDGd1LBNTz
+         96TN8y61ttGXFQspZ4nzL35t8UG3hogtE80gX2lO3CeI9m6RbUJ8mtMAsYMrfh9Bx03O
+         h7mSqclEA5rjYxDIMf58daHYVhc+hBeHZUtl6bTOlJPD6uMquvyW+SDAM2UaLSDWAi0R
+         UfMzYo5tpBV1S7iOEj2mzLjUXVMfHLeVMtsTRzexKj5hCnMbEbUj0UZ7ne35VsadjFpp
+         dRFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745495678; x=1746100478;
+        d=1e100.net; s=20230601; t=1745495701; x=1746100501;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cOeIljM0dsLpiUp3sMIwGCn1MBf/0oPhJSiBM5sc4As=;
-        b=KtbTwd5gbzUjfvjhT0z8YLgJoncydIpD/LmPrcMgDWkEPGK9A5EP/J98KSoS3Gk2k0
-         zB5fUgYrl8A6/lsNuADhllQUScSj3O2yHCnx7UYjahQlh6UFwvCgWB0WgJh5G5fjwGJ2
-         HX8lmHHpE6I5lg5Qtj5ojkRCH9r+7ajZS+oOSDzpv1boFpN2Zzf+eVJIOW+l6LKYX+U5
-         27ZP1sJc35O6iyq2a03LkxuTYIqtsB69Qgmx9rC3lt9FBaDh6Ouq117Dg2t/dHvE5DOW
-         o4FLpBe+bhgINw8UTC8q3SqVZcdF6RXqcZpelKV6f9xSAZU9MCUcbr+/pg++YX5cb1K5
-         KKwA==
-X-Forwarded-Encrypted: i=1; AJvYcCXGK2VZd3RnYwjd2pXhk9f/xsy3GSADMXeZ5LWjHke2vNTlRurCcBIJoVsFHZ9POk8b6dM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YylYfvlesuYcgC4tgw5VgQn613qTLr6+8akFqx/GwvOk0pfg+MB
-	Mo87n0811Bo/IleGtKLzGyiS1ir+SZCfmKKQMGHIVjRFDZtBs4eb8HACzvvSlPizlYCVj026ehI
-	fp4k4QH7mNDaagf3ozO1FwalODeg=
-X-Gm-Gg: ASbGnct6njKSDl12QH+WuYGIKPZCrJ6vGuTBgkFwjBJODD6rsnStoEA5srszj7Ii3AX
-	zJ7C8/2OVj3+wVxRcDASd10DeMYleaIovZacSh/Jk3oy01UNDPtTakFcY5dVNddtlGxuRJBT+se
-	h1vCjkNA2o1YKUEO9GtA==
-X-Google-Smtp-Source: AGHT+IEwa/y2fOKiJtPJOHNNBAcDhjfvq/eByFcVBE+2/Yf64GYFD5P4bbwNs4WymJaSgMNAyONJWmAiuB1qSHp44q0=
-X-Received: by 2002:a17:903:2a83:b0:227:e980:9190 with SMTP id
- d9443c01a7336-22db3dc0b8bmr41057205ad.44.1745495677805; Thu, 24 Apr 2025
- 04:54:37 -0700 (PDT)
+        bh=LaXXZf7VNdBf/2Zq+DhTKSGQQp1DT6ynEcUt9SkvZ48=;
+        b=Q4Pdi/YJnCWcMivFKL/s843JiI9/qwEYiELuGQCl/LGIVRjCJCh0IjgfhGhznGE36Z
+         dHQHiTEoWtMdLUztL2k36GulSPNohv3rptklpf+onhHrgmgxhnvJdvGX8hGiDB7vCfUE
+         GNpZ4sGVvM/6FLe71+wJqlHRiB07ls+hoQeeaXku/7acMeRI8Y6gRdL56RSNnoSTBTdU
+         b0CJ/+RqUoDxg8IGjy7rI9cT2602P23awRaP+5Pvf9UBF39jD5ypqiLPo0NG5+G1iSZ0
+         +/srt6pJdYFsv3+FkpnhfKen9ZpiAlVbZaYPAPlhyChrB6W3PnvccJl6mBPu6j+eDh8g
+         K57A==
+X-Forwarded-Encrypted: i=1; AJvYcCVFptIEZE0U0i/7BD9T458KO+mJuZ1+/Gn9SqrDnnQQmfu+8my26v2n2cywxDyp/uDQL/g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzfqJfqJHGAlGIJdBiKItR6uLOd6vWl57o7InJEDYcq/ICYTdxT
+	ZNin55Q0xnEgyuMw9sYUgh+l4vpEaWrAt8cFj8nGujEUCqxDKxDDzX/D4dyvJs6POWEca2Omm7T
+	ANs0BdrPwYJW0DgrjvukdB8xGi8Q=
+X-Gm-Gg: ASbGncv5szgSfCyVreingAK3SzJyJDWsHZREmAp/LwG/wiKxgQJ5GZdD03n8Bsa1o3y
+	9tas+6aDKIa28K5XFxvdbNnbJzFCiKohTdhKaPXX+Mg4dSUljHsJ+eGieuyI+l3exhDBK0mNm9n
+	7V+KcjSzrnVBwh0NTCyQ==
+X-Google-Smtp-Source: AGHT+IEVr8RYTjT9I12iRuzsSclckx06FCkr+9NaSoiRz8ff4GmsoCxyYCjNxZ7KvxRfcH7PrtxX3ivBVdZoECzD15Q=
+X-Received: by 2002:a17:90b:2d47:b0:2fe:a614:5cf7 with SMTP id
+ 98e67ed59e1d1-309ed24bbf4mr3357527a91.3.1745495701229; Thu, 24 Apr 2025
+ 04:55:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250424084800.105300-1-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20250424084800.105300-1-krzysztof.kozlowski@linaro.org>
+References: <20250424084800.105300-1-krzysztof.kozlowski@linaro.org> <20250424084800.105300-2-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250424084800.105300-2-krzysztof.kozlowski@linaro.org>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Thu, 24 Apr 2025 14:56:28 +0300
-X-Gm-Features: ATxdqUHiE5YmwRp_Og4qSAkF2P9kcgp5oyollWnIMyXy-GIrHjsW43cM8hbn2Gw
-Message-ID: <CAEnQRZDjKpUDgj5FwxGT-vK8WNGqdtf0JXoebsYqCYbWkOnUww@mail.gmail.com>
-Subject: Re: [PATCH 1/2] arm64: dts: imx: Align wifi node name with bindings
+Date: Thu, 24 Apr 2025 14:56:50 +0300
+X-Gm-Features: ATxdqUG07gfeFyk0H8HmHqP2CBe9nsNXfIbkETttN_SCGPWAGkzvs9MFfBgSr_g
+Message-ID: <CAEnQRZBQaYhPU+hzCLxKGQ+UmVpp6MEXDCU4QWVh+Od2mQ+z0w@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ARM: dts: nxp: Align wifi node name with bindings
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
@@ -78,14 +78,14 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 24, 2025 at 11:52=E2=80=AFAM Krzysztof Kozlowski
+On Thu, Apr 24, 2025 at 11:54=E2=80=AFAM Krzysztof Kozlowski
 <krzysztof.kozlowski@linaro.org> wrote:
 >
 > Since commit 3c3606793f7e ("dt-bindings: wireless: bcm4329-fmac: Use
 > wireless-controller.yaml schema"), bindings expect 'wifi' as node name:
 >
->   imx8mm-var-som-symphony.dtb: bcrmf@1: $nodename:0: 'bcrmf@1' does not m=
-atch '^wifi(@.*)?$'
+>   imx7d-remarkable2.dtb: bcrmf@1: $nodename:0: 'bcrmf@1' does not match '=
+^wifi(@.*)?$'
 >
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
