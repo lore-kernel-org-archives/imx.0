@@ -1,147 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B931F3D54;
-	Thu, 24 Apr 2025 07:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0E074C14
+	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 07:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745480795; cv=none; b=qePJk8jS+9MTUtijkxcl+2Vq7t/izyL3f+dyawswP4zZd4UBRYcJvcifp0+dV+xFd0y0km8469VAEUck/q/uZBN7khDGj3qYj5OPIBixZn2PQHrTjsz0UQ4x9DVk4n1krRdJr78ONfk9p0Hfn5tMLMhcoLfYpzUXYmBttOcF9Pw=
+	t=1745481020; cv=none; b=ecPOAJSDLAqJt671dyGV3wt/NomiOKeNsyWYbvqzgZxTQph1ghTNC0KvsLO/EwdWCMk4gAugCG7os2sf/HPQdSGLBKzTzBlxmGLXE9KHW1wZl7bBFqPWvvziGqPLj2bV3FMD0ri1o+kkvTLklLtKBXkJa5e3mYcF9qR9tZ5BKWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745480795; c=relaxed/simple;
-	bh=0V9WGCW9Dl7FGs6F9jrkHbnIrmofvrWwmHG1/UcXuG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W1DU7E0TvFc+0MGUGruDUo9Ia0DWD3TxjgS7hxsWs1SAbfYDfhoNrDbOMpJOmcuH3GtG2tEB8E1KqndKnKXjjALW2s6lmOyfIqH9iOY82k9c3xnRnrhHaXG6Cceev7pRvSAsBQNflkbru4mEy3WzIYbKpkh9XVBFDVOfv5RERhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/pJzigr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745481020; c=relaxed/simple;
+	bh=GnZknFA3mM/LbErvisFejtd/AZKs+Dvax3C1Mp1vNjQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cWiCnog3PqIp7rvDaCAChntNwM2JyXEGo05sxmQV3EAJJlLda4c0v5nHs9jqVDpShOdH3DardR/weB55Rqp/KtM+0OvIH3jH7ZafmXwYU0BVET9KCLp+fBE5a1aHoK4WOMLwoextTUeUVmVpbgc1qYSUq8dAuNttcFnzKE4CRTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=k6Fg/i/k; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=JBCvKpJv reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/pJzigr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1BCC4CEE3;
-	Thu, 24 Apr 2025 07:46:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745480794;
-	bh=0V9WGCW9Dl7FGs6F9jrkHbnIrmofvrWwmHG1/UcXuG0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R/pJzigr5qdS5xSGAQGWHUe4MJTilt/YKSPtuZ0NNdAMf5FKsGNtS0gLki+UPlU8X
-	 KlYrqz+ry2ovDqhKoytL6go9LtGj17NRNGrdGsmZ0k/07J2cFIBqWrEypyaojUG9UY
-	 akdHqVvoKWagDioiWQ5DBtqHEKkBsJ8SM/fJxNElPiGiPaxwV+F0IJFxAh9XfdvmMj
-	 GXZ++6Kpoixr9elcveD6jIr9NmQUh7crXZf/WD1npP0zd9wJDVzNbnpedBPP7hqxFb
-	 quT2bZUxP8C2RhXFtZ+nwbJGLVY2OsiU7ec3E71UmJh9bBUWzKScgGg+LvpHmMeHm3
-	 rZ/0YL3Cw0d1w==
-Date: Thu, 24 Apr 2025 09:46:31 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: carlos.song@nxp.com
-Cc: miquel.raynal@bootlin.com, Frank.Li@nxp.com, 
-	alexandre.belloni@bootlin.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, conor.culhane@silvaco.com, linux-i3c@lists.infradead.org, 
-	imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH V3 1/3] dt-bindings: i3c: silvaco,i3c-master: add i.MX94
- and i.MX95 I3C
-Message-ID: <20250424-axiomatic-fennec-of-kindness-ce1acb@kuoka>
-References: <20250422070853.2758573-1-carlos.song@nxp.com>
- <20250422070853.2758573-2-carlos.song@nxp.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="k6Fg/i/k";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="JBCvKpJv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1745481017; x=1777017017;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Rcwqw7rvpMYh9IpE8HSGeLIOn0eztB1Pd8t0+4Nts04=;
+  b=k6Fg/i/kL6omkIQg7VxdkJG3u6cIGbq6C2C4sfcj7CdrXsopuQYFeXSi
+   qTKH9ANQUNLlN34eNZEpcyq2+Jmgof57Nc/xVqJJWk1Gk3DWvIRPpqmgD
+   C558jVi6giiRPR52WrKcCZ+jkmqeMA2jnIDvgsfGOl4KAGRy2OtgPFfgr
+   N58mRLE/el6+6rgrF/7fp0mFudbL0P/PPItdv6Sd0/YBX+VIgM3MI0yhG
+   ei6qkbZ18w1v0gnE51crcC6yTM8D8vZuwVKdaTH1Z4vGlm4hrGz7j5dQC
+   zdB0V34/F5WXyHcUw0kNccSdCfqmAam3PEAFkhBwsdnF9qN95+7yA2qIB
+   w==;
+X-CSE-ConnectionGUID: 45SGrGlIT+WzhyFrR6hCtQ==
+X-CSE-MsgGUID: rPw/yKINRCGYTpmwzm1fxA==
+X-IronPort-AV: E=Sophos;i="6.15,235,1739833200"; 
+   d="scan'208";a="43691469"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 24 Apr 2025 09:50:08 +0200
+X-CheckPoint: {6809ED30-13-2417938-F0170C2B}
+X-MAIL-CPID: 3625BD89FC92ED8F66117B423DE68433_2
+X-Control-Analysis: str=0001.0A006376.6809ED3B.000D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3ABEC164B42;
+	Thu, 24 Apr 2025 09:50:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1745481003;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Rcwqw7rvpMYh9IpE8HSGeLIOn0eztB1Pd8t0+4Nts04=;
+	b=JBCvKpJvgHcY+NT4xxynklYDT+QD5vXN/29a3PCXzb5KRcisaspKVwJmxuK6gNe3iTj1o6
+	UCmPVbzhC7dEZcMcnclWLhwlzUusylddyHsfZetmBjlfcT4QC991QLXV0T3F2ZACkUr36i
+	t2+2JutJ0RE9uPsY5XhM7lb0iG57D3KZ0snDS7yoSPe+VqFfP28D22/ISny0kPh2p3USc+
+	QsEbUY6MV8HHQhDOFSpFxV71KKA37MrfEa22jUHgX38DNc4OcCPy2pGksnxYN1aYXSjIP8
+	tKDG79ithp7mOklPelRrJHmTYBGzs60eRIMbVS5T6nDprUdyrP3SRr0Q/tMf7w==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Martin Schmiedel <Martin.Schmiedel@tq-group.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux@ew.tq-group.com,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: [PATCH v2 1/2] arm64: dts: imx8mp-tqma8mpql-mba8mp-ras314: Add LVDS device tree overlay
+Date: Thu, 24 Apr 2025 09:49:58 +0200
+Message-ID: <20250424075000.1263138-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250422070853.2758573-2-carlos.song@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Apr 22, 2025 at 03:08:51PM GMT, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
-> 
-> Add compatible string "nxp,imx94-i3c" and "nxp,imx95-i3c" for the i.MX94
-> chip and i.MX95 chip. Backward is compatible with "silvaco,i3c-master-v1".
-> 
-> Also i.MX94 and i.MX95 I3C only need two clocks and Legacy I3C needs
-> three clocks. So add restrictions for clock and clock-names properties
-> for different Socs.
-> 
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change for V3:
-> - No change
-> Change for V2:
-> - Fix bot found errors running 'make dt_binding_check'
-> ---
->  .../bindings/i3c/silvaco,i3c-master.yaml      | 45 ++++++++++++++++---
->  1 file changed, 39 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml b/Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
-> index 4fbdcdac0aee..fd64741abc0c 100644
-> --- a/Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
-> +++ b/Documentation/devicetree/bindings/i3c/silvaco,i3c-master.yaml
-> @@ -9,14 +9,17 @@ title: Silvaco I3C master
->  maintainers:
->    - Conor Culhane <conor.culhane@silvaco.com>
->  
-> -allOf:
-> -  - $ref: i3c.yaml#
-> -
->  properties:
->    compatible:
-> -    enum:
-> -      - nuvoton,npcm845-i3c
-> -      - silvaco,i3c-master-v1
-> +    oneOf:
-> +      - enum:
-> +          - nuvoton,npcm845-i3c
-> +          - silvaco,i3c-master-v1
-> +      - items:
-> +          - enum:
-> +              - nxp,imx94-i3c
-> +              - nxp,imx95-i3c
-> +          - const: silvaco,i3c-master-v1
->  
->    reg:
->      maxItems: 1
-> @@ -25,12 +28,14 @@ properties:
->      maxItems: 1
->  
->    clocks:
-> +    minItems: 2
->      items:
->        - description: system clock
->        - description: bus clock
->        - description: other (slower) events clock
->  
->    clock-names:
-> +    minItems: 2
->      items:
->        - const: pclk
->        - const: fast_clk
-> @@ -46,6 +51,34 @@ required:
->    - clock-names
->    - clocks
->  
-> +allOf:
-> +  - $ref: i3c.yaml#
-> +  # Legacy Socs need three clocks
+From: Martin Schmiedel <Martin.Schmiedel@tq-group.com>
 
-Drop comment. I do not get what is here a legacy SoC. Which ones are
-legacy and *why*?
+This adds an overlay for the supported LVDS display tianma tm070jvhg33.
+The LVDS interface is the same as for MBa8MPxL so the already existing
+overlay can be reused on this platform.
 
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: silvaco,i3c-master-v1
+Signed-off-by: Martin Schmiedel <Martin.Schmiedel@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+Changes in v2: None
 
-Missing nuvoton compatible. This is supposed to be enum.
+ arch/arm64/boot/dts/freescale/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 3
-> +        clock-names:
-> +          minItems: 3
-> +  # imx94 and imx95 Soc need two clocks
-
-Drop comment. Don't repeat constraints in free form text.
-
-Best regards,
-Krzysztof
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index eb77eda881e0c..6f87f28f4583e 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -247,8 +247,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-pcie-ep.dtb
+ 
+ imx8mp-tqma8mpql-mba8mpxl-lvds-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
+ imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtbo
++imx8mp-tqma8mpql-mba8mp-ras314-lvds-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds.dtb
+ 
+ dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mq-hummingboard-pulse.dtb
+-- 
+2.43.0
 
