@@ -1,49 +1,47 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E737D19A2A3;
-	Thu, 24 Apr 2025 03:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFB279D0;
+	Thu, 24 Apr 2025 03:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745464331; cv=none; b=lMcDs34WoQ/HrVXjQmLsgtC2dnY0FpjjtU1nS7fci+9p95loCpENKWVnkMiR5Qn6ouwI1fGu/IrWjB9LbpePjrIFF1Z04CVYkkgP6svCP8RIl1qkNwC4iv4z9NC3Icw2g6G6NF1zmJGXQTzDNoFSvNNojNaBx8Ruy9+F6pWquIY=
+	t=1745466374; cv=none; b=fHpX+bHdG3lztZLDAzme6YMzUJ39GRQtL6z2puGb0wSo54m+xauEiLXkVIiwnYRXUvqs1WZU8BHJUoLhxWGTJ7mxGEt2eZ65tgjxs1OqMdUUxgcz88UhuzZJl5H4PKhgZegSYXaqhX5Z//cpYCTFnhGGlwJyAGaqZePVtOh2+HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745464331; c=relaxed/simple;
-	bh=KxI7ZwwdRe9K0y2ib/3b0x21CNzXlTubOfKD4w810Nc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qOf680oF/78P5ZxwwPHOkmJlExdzPFDn+fZgoM0IzEe5F7+sndK2L7SPWmwOorerd4HnxR9pXYAsGEmJ0HwPjR8j8w8DDSzqVY0vajQEg0DypYhg4MiA8AmvksDxcit0q9fISQUdshkWu1vHbpWe1z7rOn0zOwCZp4hgEkjrAAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ctgxr0x1; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1745466374; c=relaxed/simple;
+	bh=2Td0AwsHkUVXDPsjyguJ9OY3/fBE9LakHh4ZmZh77ms=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z72xl2FitjwKZQVS5O/9XMtPsNSUZharqfaDxqoKEHD1RmbZikVrsyXquMtRAdQFrmelPaqmE2jIZO3lgPVF21GRQnYq/vIB6wma2YIBPrhqf1+kLKnSoenWpowDO0N+DRMHlvJc2cl/+WF3PLwZa0WVinSAR6ANHQeCQU5Du/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=wNqPmEV4; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ctgxr0x1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=A09Ml
-	t/Mb26VyS9VXRXqUFoJt2UqYjVyFJddK4O2fxQ=; b=ctgxr0x1JThALzXsRdeaN
-	7pkAerYCeHPIosPVi8PI4o1TwF42xWo2lXhxOLesmiq7GY365TGJYlLDWy5ZIA68
-	8KDOXv5lQ/4LT7TrFlYuDlFV17VV4CglWrpitQSy4HPeQ/YsC2mvTINGJFffXdaA
-	J3OQV8R32qvzPBUGwoYJ7M=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDnTxrBqwloZo4dCA--.57924S4;
-	Thu, 24 Apr 2025 11:10:58 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: slongerbeam@gmail.com,
-	p.zabel@pengutronix.de,
-	mchehab@kernel.org,
-	gregkh@linuxfoundation.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	hverkuil@xs4all.nl
-Cc: linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="wNqPmEV4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=nDtHf9Db7AVpWkb0XrbJTdjcy64DwhugRpM3MfPBnyk=; b=wNqPmEV4b2sTEuEWQ+w4fjzAh0
+	LhMLp9WtNviJ/HJg/fiWXJZZ+wT/XN0156FNKWNj/PPHDQAZ/FSUHsN57c4GIQA+8dlNqk3k7WWvR
+	lplSeD7wKaV6v50689BqV+WGL66+2HhKwlCH742aSYDzCcHqKkQS8Gt1S7Q2TlWveRXU4vGwxl2nf
+	ATHefg7YQoRfM8AA4j2TJBTq5yDnorqiqMzOkJzX7atWDu3x79gpUYrwBdGi4p1+eZ7A1+hfeHzMV
+	0JyDrFj2mORaa1EjYYXXq4fkTyCOECImGqRyncGqeZQDCqEQLmutg60fAXkb8sM/UQzTIoIrEE+nc
+	XbOtwf5g==;
+Received: from [50.39.124.201] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u7nXP-0000000ClR3-1k3D;
+	Thu, 24 Apr 2025 03:46:11 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-mmc@vger.kernel.org,
+	Haibo Chen <haibo.chen@nxp.com>,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH v2 RESEND] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
-Date: Thu, 24 Apr 2025 11:10:53 +0800
-Message-Id: <20250424031053.3508137-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s32@nxp.com
+Subject: [PATCH -next] mmc: sdhci-esdhc-imx: fix defined but not used warnings
+Date: Wed, 23 Apr 2025 20:46:10 -0700
+Message-ID: <20250424034610.441532-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,41 +49,42 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnTxrBqwloZo4dCA--.57924S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XFyxtFWfKr15GFy5JFyxKrg_yoWkWwc_CF
-	4FqryxXrWUC3ySy3W5tF1I934Sqrs29rWFq3Z0vFZ5XFWjy3WYvr4qvws3X34jgryS9F9I
-	yr18Jr1akr12kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRtCJPDUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0gA5bmgJqTxwAgAAsD
 
-Add video_device_release() in label 'err_m2m' to release the memory
-allocated by video_device_alloc() and prevent potential memory leaks.
-Remove the reduntant code in label 'err_m2m'.
+Fix warnings when CONFIG_PM=y and CONFIG_PM_SLEEP is not set by
+surrounding the 2 functions with #ifdef CONFIG_PM_SLEEP.
 
-Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+drivers/mmc/host/sdhci-esdhc-imx.c:1659:13: warning: 'sdhc_esdhc_tuning_restore' defined but not used [-Wunused-function]
+ 1659 | static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
+drivers/mmc/host/sdhci-esdhc-imx.c:1637:13: warning: 'sdhc_esdhc_tuning_save' defined but not used [-Wunused-function]
+ 1637 | static void sdhc_esdhc_tuning_save(struct sdhci_host *host)
+
+Fixes: 3d1eea493894 ("mmc: sdhci-esdhc-imx: Save tuning value when card stays powered in suspend")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Luke Wang <ziniu.wang_1@nxp.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: linux-mmc@vger.kernel.org
+Cc: Haibo Chen <haibo.chen@nxp.com>
+Cc: imx@lists.linux.dev
+Cc: s32@nxp.com
 ---
-Changes in v2:
-- Remove the reduntant code. Thanks, Dan!
----
- drivers/staging/media/imx/imx-media-csc-scaler.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c b/drivers/staging/media/imx/imx-media-csc-scaler.c
-index e5e08c6f79f2..19fd31cb9bb0 100644
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -912,7 +912,7 @@ imx_media_csc_scaler_device_init(struct imx_media_dev *md)
- 	return &priv->vdev;
+--- linux-next-20250423.orig/drivers/mmc/host/sdhci-esdhc-imx.c
++++ linux-next-20250423/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1634,6 +1634,7 @@ static void sdhci_esdhc_imx_hwinit(struc
+ 	}
+ }
  
- err_m2m:
--	video_set_drvdata(vfd, NULL);
-+	video_device_release(vfd);
- err_vfd:
- 	kfree(priv);
- 	return ERR_PTR(ret);
--- 
-2.25.1
-
++#ifdef CONFIG_PM_SLEEP
+ static void sdhc_esdhc_tuning_save(struct sdhci_host *host)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+@@ -1688,6 +1689,7 @@ static void sdhc_esdhc_tuning_restore(st
+ 		       host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+ 	}
+ }
++#endif
+ 
+ static void esdhc_cqe_enable(struct mmc_host *mmc)
+ {
