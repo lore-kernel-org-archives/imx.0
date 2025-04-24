@@ -1,136 +1,92 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EC71FA261
-	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 11:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA531F4E39
+	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 11:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745495324; cv=none; b=A9NN/RUHfXqAdVrX7+If9n2dNqfpzpkq4Te25TmOIg+VoAqpILdrIiw2Nyb1X7GS8UTlfMhQRyrr7wRSUBYBdmfJgNXhxeSlkpP1/iMRvGiplP8QT9NwMObkwgwY3hY20lKwt7pigR8fSeAwbTi72TBOdGQZeFa8t+pLJu8sMaM=
+	t=1745495679; cv=none; b=Zu7VTet0S08apq+VrD7qQBdwEJ9Ux5eNBryA7qeUwPr/ld35m1HuJg/J+OU0InJ1d9TvnujgTBydAqDgdMecOt0EXRQVfBOhKZhCNzAtwRFNkPpJPWorw/hlD5lwklve1+LKMzhdPIZQhfVkwEw8+QuZKXwQQND5cCSVcSU/+OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745495324; c=relaxed/simple;
-	bh=hLk8B885yjx7fuSvoTeaR5hpp353sG7sSlOLWVu/Oro=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o7/DuaqdoLifYJnBgSdROErLuQ6/S0Tg40YsYAZ/Mp1MNpsB8LD9eNeWzejbraJtaNdW9j8/6A6WZ9iGO0b5t0Q98Wrc4zfYlf30A/LMFIS81T5jkgCbNCGtephScaOet6alqzfxuUe1NKlMOio3g4foQgfq7RavCc2FVE9fwzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=JR1HDn9G; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1745495679; c=relaxed/simple;
+	bh=2LfjVBYMaapqG+RGUDzyZUCD3VsHLRQTARBAX5EftSM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qrDgPLEq56KbU4PHbs7YCGHEj7HwJuXheb3RUluSnssed1/ixjy3jA8TyA7pc5DSPg1RPf+HwX6UKnTER891pVkT6zscNiifdTU0x2khtTC+VnM+73GhMbt5P1lpX9cqg5sK0eOaWWstxNmVPxHKWu1CRmGBVi3xvnuWa19aM+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gBLptd+S; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="JR1HDn9G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1745495313; x=1746100113; i=wahrenst@gmx.net;
-	bh=hutk4RUyOyPo6YZkclFLVE+p5t8Cn/N1Q0b+EB4iz6k=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=JR1HDn9GJANMv27lLqa0WWP3EFrWL0T5iwIUdjgqRtJI3kNpPejwNw/CGQrGyPg2
-	 u8l1oAKfk+t7ao/8cJ8K6Yw4eHevGckDxLeHV0tYB7IK3aqe20J1L0PKIJ7GEbwhr
-	 L6E3ssLtrxIk0UlYGxrz9NWfAlz/h380dfLdm5HRGitp4LWMhe1suCppa654G2zqC
-	 KR8+AM4h1Pc+3/YymKQZNZUYlm7AabZ/ZLrYxvivrNyve9KIHwwKisujwxnKWuRDH
-	 BgXON+BP+xCua7wEJX4cal9P5udL5ApljA0+w3Y+tVXyd5Vw83Tvty8llQecMRf3v
-	 JmdkIw5+eNUz3JAqvg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from stefanw-SCHENKER ([37.4.251.153]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MxDkm-1v19HV38Fk-00wypZ; Thu, 24
- Apr 2025 13:48:33 +0200
-From: Stefan Wahren <wahrenst@gmx.net>
-To: Frank Li <Frank.Li@nxp.com>,
-	Joy Zou <joy.zou@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Cc: imx@lists.linux.dev,
-	dmaengine@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH RFC] dmaengine: fsl-edma: Fix return code for unhandled interrupts
-Date: Thu, 24 Apr 2025 13:48:29 +0200
-Message-Id: <20250424114829.9055-1-wahrenst@gmx.net>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gBLptd+S"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-22423adf751so9316515ad.2
+        for <imx@lists.linux.dev>; Thu, 24 Apr 2025 04:54:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745495678; x=1746100478; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cOeIljM0dsLpiUp3sMIwGCn1MBf/0oPhJSiBM5sc4As=;
+        b=gBLptd+S1TzFDH6F/eN+Mn20BivfpiyYNEEb8POiwSocI1hJ/Agq/sDH6lKzWK2uYV
+         e2UTSFokfGK00x0UMWqjsVXo9cJkHRjWQ/IR75vf8z43rEF7wNmTyO6IyFOw7E5HBmge
+         s+v6+oqMdf5BMLbZ3dz7HRiT5gINNB5dyZ9TH8HVBXLI1XwgER9l37yfpL+twIGfaBy3
+         Gbb/d+Kn8Blq6DraomomKFsof+RuOsZeZJwMG4ox2uZjobEQchp7BwwlS0iER+K2TI7Q
+         9WU6LHXsPv593LUbsBcVBp5v7wuFLIE38mGjbsmmCpPXjD5gEYg2Mt//uIhThjeDbt/H
+         SlfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745495678; x=1746100478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cOeIljM0dsLpiUp3sMIwGCn1MBf/0oPhJSiBM5sc4As=;
+        b=KtbTwd5gbzUjfvjhT0z8YLgJoncydIpD/LmPrcMgDWkEPGK9A5EP/J98KSoS3Gk2k0
+         zB5fUgYrl8A6/lsNuADhllQUScSj3O2yHCnx7UYjahQlh6UFwvCgWB0WgJh5G5fjwGJ2
+         HX8lmHHpE6I5lg5Qtj5ojkRCH9r+7ajZS+oOSDzpv1boFpN2Zzf+eVJIOW+l6LKYX+U5
+         27ZP1sJc35O6iyq2a03LkxuTYIqtsB69Qgmx9rC3lt9FBaDh6Ouq117Dg2t/dHvE5DOW
+         o4FLpBe+bhgINw8UTC8q3SqVZcdF6RXqcZpelKV6f9xSAZU9MCUcbr+/pg++YX5cb1K5
+         KKwA==
+X-Forwarded-Encrypted: i=1; AJvYcCXGK2VZd3RnYwjd2pXhk9f/xsy3GSADMXeZ5LWjHke2vNTlRurCcBIJoVsFHZ9POk8b6dM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YylYfvlesuYcgC4tgw5VgQn613qTLr6+8akFqx/GwvOk0pfg+MB
+	Mo87n0811Bo/IleGtKLzGyiS1ir+SZCfmKKQMGHIVjRFDZtBs4eb8HACzvvSlPizlYCVj026ehI
+	fp4k4QH7mNDaagf3ozO1FwalODeg=
+X-Gm-Gg: ASbGnct6njKSDl12QH+WuYGIKPZCrJ6vGuTBgkFwjBJODD6rsnStoEA5srszj7Ii3AX
+	zJ7C8/2OVj3+wVxRcDASd10DeMYleaIovZacSh/Jk3oy01UNDPtTakFcY5dVNddtlGxuRJBT+se
+	h1vCjkNA2o1YKUEO9GtA==
+X-Google-Smtp-Source: AGHT+IEwa/y2fOKiJtPJOHNNBAcDhjfvq/eByFcVBE+2/Yf64GYFD5P4bbwNs4WymJaSgMNAyONJWmAiuB1qSHp44q0=
+X-Received: by 2002:a17:903:2a83:b0:227:e980:9190 with SMTP id
+ d9443c01a7336-22db3dc0b8bmr41057205ad.44.1745495677805; Thu, 24 Apr 2025
+ 04:54:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20250424084800.105300-1-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250424084800.105300-1-krzysztof.kozlowski@linaro.org>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Thu, 24 Apr 2025 14:56:28 +0300
+X-Gm-Features: ATxdqUHiE5YmwRp_Og4qSAkF2P9kcgp5oyollWnIMyXy-GIrHjsW43cM8hbn2Gw
+Message-ID: <CAEnQRZDjKpUDgj5FwxGT-vK8WNGqdtf0JXoebsYqCYbWkOnUww@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arm64: dts: imx: Align wifi node name with bindings
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>, Marek Vasut <marex@denx.de>, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	kernel@dh-electronics.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FAyuvXCFAvR2VD5P+D6D4tYGbj2GzXT90o/v43SSsSJzPqpdXUV
- Waqj5QX75GJle1FN35esWPnCLWpKsAAqjRsUh8dpk0w8mSrS6JrSW0YryFHWH9FOMQEPIvh
- yPop1Pc3ejZyQGhYAUStY0igVtfyX6F8G5c4wNukS+rWj0XLRhKgnJB8zXvDUzsH00T6Xgz
- A/GdiYc6fLCBtroWdk9ow==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:hJDQupgkjFk=;g52Ofk9lNmoOU2BinfTRp/DdNZb
- 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
- poT0TlqB1J/ztfisbxlTb8=
 
-For fsl,imx93-edma4 two DMA channels share the same interrupt.
-So in case fsl_edma3_tx_handler is called for the "wrong"
-channel, the return code must be IRQ_NONE. This signalize that
-the interrupt wasn't handled.
+On Thu, Apr 24, 2025 at 11:52=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> Since commit 3c3606793f7e ("dt-bindings: wireless: bcm4329-fmac: Use
+> wireless-controller.yaml schema"), bindings expect 'wifi' as node name:
+>
+>   imx8mm-var-som-symphony.dtb: bcrmf@1: $nodename:0: 'bcrmf@1' does not m=
+atch '^wifi(@.*)?$'
+>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-=2D--
-
-Hi,
-this issue was found on a custom i.MX93 board. This patch has been
-tested on the same platform.
-
- drivers/dma/fsl-edma-main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 756d67325db5..66bfa28d984e 100644
-=2D-- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -57,7 +57,7 @@ static irqreturn_t fsl_edma3_tx_handler(int irq, void *d=
-ev_id)
-=20
- 	intr =3D edma_readl_chreg(fsl_chan, ch_int);
- 	if (!intr)
--		return IRQ_HANDLED;
-+		return IRQ_NONE;
-=20
- 	edma_writel_chreg(fsl_chan, 1, ch_int);
-=20
-=2D-=20
-2.34.1
-
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
