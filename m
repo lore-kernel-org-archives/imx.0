@@ -1,60 +1,60 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F7A1F4613
-	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 06:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7BD1F4CB5
+	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 06:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745475739; cv=none; b=nsrae6pwTv+eGnpa3sc3CCbdBtuhOf9C05uC0UEWErPMyWYt1cZ0UGdOOex02y7WJcXk7EoMkP3hgtn5oMsDD+tOFEMK2pFYczr9y+kazOVqyx6aHt/hJaUdjiGeT39EE7qNbgN64d1MP2s31ktZarAvj9VJSACPEiRGmZKp57c=
+	t=1745475740; cv=none; b=Y61c9GAUH2dSwWEFOtI65tHfwTSev77UVa5xdpefcaji2G93mLCO5tz+1KzLFnVXJ0Z4kz1O7wLNHHnXX96YScbowsTyNjGXRN8XKFasEETeFjmThSPsdAYz9nRi4nc2PX6H7osrnJPIQ8v9GO+cXUtyVtrxNQvPyElDL43Ocnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745475739; c=relaxed/simple;
-	bh=vc25/TFqvg0Ekr2Sm4G/VkkviBdPeMF5e7FdTWNCvAE=;
+	s=arc-20240116; t=1745475740; c=relaxed/simple;
+	bh=2cbL/UoMZsHKenEkqVA3bsu+mxjHyTBuUjF0+bypM38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A6qri1R+hceiglcygAqsdVLN4TcESKNFlpJSj0h6n2ExPzrrDvpE7nQ6fFnVI4SZr8iHdBT1JD8E7CQzxn6nKCiVfBgFy6MylIDdHcA8cstvwV/JdQb3R/THd41ZKZApGTMozG7KRNxrm/ofAmH03PX5ooxVBGGdsTfNeJMx5G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=nxdpj19b; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version; b=ngTALnwSnEjhdCwguvRSX8hDIe3rm9wQBulNtyIe4btY3w4fmmwg6MrHDhmIxJBQPvQlj/EMh2H/232P22Q7PchiaoMt9LMl98ZAN3MAc7gRO1CwrdD8zedbXr/BVjEQkPHXKcm+FgZAoeHDhYPRqGLldFz/c4UC+4H1zKb/m6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Rj+SnUlc; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="nxdpj19b"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cf848528aso4129375e9.2
-        for <imx@lists.linux.dev>; Wed, 23 Apr 2025 23:22:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Rj+SnUlc"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43cf0d787eeso6339055e9.3
+        for <imx@lists.linux.dev>; Wed, 23 Apr 2025 23:22:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1745475735; x=1746080535; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1745475737; x=1746080537; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BHj8xJJDjB/nn7+FV+WNgNcGZHPneQlK/63TZumKERk=;
-        b=nxdpj19b47rkXbpijrsJ//XFZIlg8EMZQ8J9sPqDOPIqo5mE9lui9NlevCifOWH7JQ
-         c0oWqlk2foUHH65XZwIopVzy6l6hKxz9ei1nxMxuJ7ugMgMHsADxKnE9zIfNeEFyEpEP
-         x1sLkbk+FIxai2/EI3jZdd3Wvml/PiajJDwtQ=
+        bh=gDZuiTdlw8039p8GoLYv+uw7eDAfVUu6FSj2o7a4bY0=;
+        b=Rj+SnUlc4KbTssW6bLCkD9HpVMghKOov8aIK90aFBaLScJO9GIEr76t1DKrB+TOeCf
+         udUUz6Tn1aOmn+7KRk77JqZ1vwKZuAdqXjD/IsCWvMlmMTpAcd3PHQCjOyY389YMgxx/
+         88Akz4rc0BAE6lyEzX6tqZi3ALLuV6qLWffiA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745475735; x=1746080535;
+        d=1e100.net; s=20230601; t=1745475737; x=1746080537;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BHj8xJJDjB/nn7+FV+WNgNcGZHPneQlK/63TZumKERk=;
-        b=cOQuQD2XRmxEkw0OM+7uzVmCcyba5JNiD6pCjouIqieHYJ4HAooX2bld2o2W7349lI
-         5uujTI64DaGDZi9+Z8N4U1EM6aBzx8Fm8RZKOL4NR1SOp5mPNRyz71IfgcN5PnCK7mTC
-         YEJeU4GpaN5oPwK8Ay2FRLn7MTyZE2VrSfvM6yAaHeKvWT1FFGlce7pg3EpovoTG13Ca
-         Rq/IcqicglGqIcLQcqlQ+915tpzjjHYtw/t5hYDTVZB5iPD4CGbQT3JDaM4dUm0sYtUw
-         cvp1y0eT3kTXySoopsdMBNLRMqPidlsy6lBFtsXJMUhA1GMmtHccqaWK6eYROr+AmnoF
-         kpZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwiP18mJX15R4ubG0iW225x3xBpV54Hs98p2/BS4/NRqHkK2uJijFqtZ4rt4ZcLDipP2o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyW3TSR7KMO2JRv08trRsJPE7NN3Xhvo4Y0cyV1CYQJMrY098R3
-	cM5YfwnoccT4o7JeipiqcKITUsFTdZUaRihzdaUOkbJjda4680iHUNKuwBcd8FY=
-X-Gm-Gg: ASbGncsPEVf4cU2Qzr70LgWxq/sTQgRwybD/bOARWMF6YQ6P6egtGUufoAnGZ8E3hqh
-	A0lhg4jppqIg3PRkn98UY4Lg9Ygox16r5v1+aaibPDm2b78B5gob29u2CdvgTwAwa4Ytf+4SZfM
-	92r//+H9hhiT8fe5V8eTd+XHiEA7o+fx+pQ/bGzlhj7HFV9dCtgV4FwixXFZzT20uUpRt++11SU
-	0B+supNsX9UlhFezJirdFZTEPvyvb5m/+KwOsMbubrtix7ABBpLbfrTGpSMNf5B96vIHiO8hME7
-	UhR5xDffQPkZZQXPT8+9HUSj1KVz+aJxmvWrfw6d4167ID++HChWOxthe7kjFnyVX2Bx8J1EmRY
-	dJSUl
-X-Google-Smtp-Source: AGHT+IFfEKxdwofjLbOX41KrgGZVFzC2ffJ2xkKI3k+BOtUiPjGXL5Rc03EhcJrNDo7yGHkwvRfbrQ==
-X-Received: by 2002:a05:600c:1e8c:b0:43c:fb8e:aec0 with SMTP id 5b1f17b1804b1-4409bd236ddmr9097865e9.1.1745475735057;
-        Wed, 23 Apr 2025 23:22:15 -0700 (PDT)
+        bh=gDZuiTdlw8039p8GoLYv+uw7eDAfVUu6FSj2o7a4bY0=;
+        b=aNTOp5hmuRCTuIKWOllXH8CmxkDsC1DZ72gCnUtCyT6wiLG3irNfj56gikeLNU3vro
+         C9wi1vNRXPPxhZD5EjWw6TG+KayeBViyl37So5vlu9fzkUq3XTB3/lUwHRRwIom3uolI
+         sbKzSCWlRz3+9dpOxuQbb+Ok2Dv/5ZyEVylr0/WKSntYUBVVxHxlwSwxQsQOFefbbHK5
+         hBDHA89GT9Ci9HgfAuE+8CrEwgRGMkimkwfrQthCY0PiquY/6k/Qdp0ovJF7OIYYMwdo
+         vSMmJ3OiF+u65xTKTznqHE1MiJr75nE6tM12k0VDmHm74Wcg1g9WmvEAz2egp9WY1DcG
+         FBfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQHY8ZwllQsuL9aqyhrEmynSNZA/p2+ukUaDe3deypi6H8lA6uBnrKSDS+DkGdmevmPWg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YymMmzQGJCsyr8fW09tTb+cMnx3zKG6JP1gw6Me0MEJCgrpET7z
+	rA/3YeMHVzUMSxRW9IIlJjFLCu+CbXxJaZ348Z3kJ8KnCUrgcV++Q18Wjeo9M1w=
+X-Gm-Gg: ASbGncsmKV9shHcm60UTVqZ+ePwKQd8F9Jdpy7lPqiPQqyD8Jq9I8/56YRRUk800QOY
+	n6Cc3T41Ru6xMqCnW2tci6qBLcZcy6rervRzIJGQ9dCQhpxnyTpWJtD8rdkovQAuACqUkxita+G
+	RBqlGiSim+wwprI0vDjkBCeorWodop0jbs4Wwq2L8igjMTnauf53QFu4OA757/fHE8C33xPevEx
+	c/3UEymlbS/H9UqV+tN8Xc+gcoHbshvoRelfhc79GqAvC7aFl116wY3YHpss8gPGikdW+Synf+5
+	I4l3krWH+tdJOMSeYLZbSJ277p6EEqBIAhwoCh/pMAwwT2iQFCXFZEST4cohRysUhiMDvtvfbxc
+	BdGDw
+X-Google-Smtp-Source: AGHT+IGyI/+7MJ4IDLyNiZ7HG0se9/Du4KUg/pG6scYz/TegXiOuG86VE+RGX6eH8s+Yzc+aY9yVDg==
+X-Received: by 2002:a05:600c:4693:b0:43c:fa0e:471a with SMTP id 5b1f17b1804b1-4409bcfc14cmr9455825e9.5.1745475736712;
+        Wed, 23 Apr 2025 23:22:16 -0700 (PDT)
 Received: from dario-ThinkPad-T14s-Gen-2i.. ([2.196.40.65])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4409d2bf8dbsm7243435e9.35.2025.04.23.23.22.13
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4409d2bf8dbsm7243435e9.35.2025.04.23.23.22.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 23:22:14 -0700 (PDT)
+        Wed, 23 Apr 2025 23:22:16 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: Peng Fan <peng.fan@nxp.com>,
@@ -63,18 +63,16 @@ Cc: Peng Fan <peng.fan@nxp.com>,
 	linux-amarula@amarulasolutions.com,
 	Abel Vesa <abelvesa@kernel.org>,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v12 09/19] arm64: dts: imx8mq: add anatop clocks
-Date: Thu, 24 Apr 2025 08:21:39 +0200
-Message-ID: <20250424062154.2999219-10-dario.binacchi@amarulasolutions.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH v12 10/19] clk: imx: add hw API imx_anatop_get_clk_hw
+Date: Thu, 24 Apr 2025 08:21:40 +0200
+Message-ID: <20250424062154.2999219-11-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com>
 References: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com>
@@ -86,33 +84,71 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add clocks to anatop node.
+Get the hw of a clock registered by the anatop module. This function is
+preparatory for future developments.
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 
 ---
 
-(no changes since v4)
+(no changes since v9)
+
+Changes in v9:
+- Add 'Reviewed-by' tag of Peng Fan
+
+Changes in v7:
+- Add device_node type parameter to imx8m_anatop_get_clk_hw()
+- Rename imx8m_anatop_get_clk_hw() to imx_anatop_get_clk_hw()
+- Drop the gaurding macros so the code can be used also by i.MX9
+
+Changes in v5:
+- Consider CONFIG_CLK_IMX8M{M,N,P,Q}_MODULE to fix compilation errors
 
 Changes in v4:
 - New
 
- arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/imx/clk.c | 15 +++++++++++++++
+ drivers/clk/imx/clk.h |  2 ++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-index d51de8d899b2..1d1424a136f0 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-@@ -817,6 +817,8 @@ anatop: clock-controller@30360000 {
- 				reg = <0x30360000 0x10000>;
- 				interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
- 				#clock-cells = <1>;
-+				clocks = <&ckil>, <&osc_25m>, <&osc_27m>;
-+				clock-names = "ckil", "osc_25m", "osc_27m";
- 			};
+diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
+index df83bd939492..a906d3cd960b 100644
+--- a/drivers/clk/imx/clk.c
++++ b/drivers/clk/imx/clk.c
+@@ -128,6 +128,21 @@ struct clk_hw *imx_get_clk_hw_by_name(struct device_node *np, const char *name)
+ }
+ EXPORT_SYMBOL_GPL(imx_get_clk_hw_by_name);
  
- 			snvs: snvs@30370000 {
++struct clk_hw *imx_anatop_get_clk_hw(struct device_node *np, int id)
++{
++	struct of_phandle_args args;
++	struct clk_hw *hw;
++
++	args.np = np;
++	args.args_count = 1;
++	args.args[0] = id;
++
++	hw = __clk_get_hw(of_clk_get_from_provider(&args));
++	pr_debug("%s: got clk: %s\n", __func__, clk_hw_get_name(hw));
++	return hw;
++}
++EXPORT_SYMBOL_GPL(imx_anatop_get_clk_hw);
++
+ /*
+  * This fixups the register CCM_CSCMR1 write value.
+  * The write/read/divider values of the aclk_podf field
+diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
+index aa5202f284f3..50e407cf48d9 100644
+--- a/drivers/clk/imx/clk.h
++++ b/drivers/clk/imx/clk.h
+@@ -487,4 +487,6 @@ struct clk_hw *imx_clk_gpr_mux(const char *name, const char *compatible,
+ 			       u32 reg, const char **parent_names,
+ 			       u8 num_parents, const u32 *mux_table, u32 mask);
+ 
++struct clk_hw *imx_anatop_get_clk_hw(struct device_node *np, int id);
++
+ #endif
 -- 
 2.43.0
 
