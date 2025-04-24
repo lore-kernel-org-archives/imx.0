@@ -1,78 +1,78 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABA91E7C2D
-	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 07:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ACC1F3BAE
+	for <imx@lists.linux.dev>; Thu, 24 Apr 2025 07:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745481023; cv=none; b=izh8GvQ6fqCGC/NvXoN4ci7hGSOkD7CZGHdFob5hVXzVilnIyS5w0eusPUH3Virqbk3Ky5i6XeJTHWy7yltS31vCiAvYo+RWMfJwSgI9wwHyxiYETq464Bh7TAW5r1f9zi0WD89gU1BjBNgteOx7KrXIdKPFAP1/PR+G7RtJU2E=
+	t=1745481346; cv=none; b=GTAHWPwUZv6yYS7wqI0PGcrxiW4yw8IzSm1b2qAPN+VQtW47GjnHQMCCQfZkPm9Y39Bk3xjhhBzVMh1gGJBAp+vip+QXXf+ow3gDjev15njbtzPMrZq75bTLbYMc5aEfMLBsP5v8prfIRD5laJFr3OgSz3CIj3dzDO9XqJrM43s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745481023; c=relaxed/simple;
-	bh=Tq0hPlyp9qMv/BoeEAkyDOYHgk8PJ0sooMCG5eDXcN4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CUmOntk7iLmwmfYbfTlvx3+k18Pfm4SAno5uPgnpuKrDtSFnsQBrNzm+rv0Q0ptrKpd6eQ4xRrRPRvlnSLVci0DUFOGmVq3t13okuhJ/WvzQc84RWju5Cpt71UL0aBzxVwbIKf4Apf8uEI8QbcrR06Nmjr2mhSSIwpE6AZcNtn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=Bep5LGJS; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=NMVMRiOI reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	s=arc-20240116; t=1745481346; c=relaxed/simple;
+	bh=aAvQCc0R298w7RYGrKPrriQWJO7VY/0/BcobWu2OJn8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HGdrKkY/jzmZSxSUYE4gsWMpw8W1MuByElw2NOxEeBmuosAoJAQDDQ2YddKc93pFlNn7zAKDbnLrFmlFAPJ95dJxAFHejUbplXbvEpF1H1/Eho+KrguZ0dqArC1mJ6aU9jTAls3aOuiF/qAFbFbLphqvLreceK8wJ5yv8kbHyiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=i3YNG1ie; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=pERHcMbu reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="Bep5LGJS";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="NMVMRiOI"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="i3YNG1ie";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="pERHcMbu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1745481021; x=1777017021;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mg6lhM3R2ZSR9+KErjTtlCk6Ufu88DsvjnmmJE09rCU=;
-  b=Bep5LGJSf4PGUdkJKJCQMlzt8IzTwOHGnWGkW/wr4YTkAeiTI64XlXcc
-   xtiZcEs455BjKMvWOv2ELC3qKm1hsSEOk7j1E3U3ACMaBLckHX6Te+C3G
-   n+5fbpW9d2S+FFMzLeb8MjiiN7mz7193fOQMCx0bOqI1hF7Eml3pujK2/
-   lo2vLq7n08A0zJSNUQ4UVMmwKmB9CuwMgEo8xONlWP8i9K0gc4qj1VJ7C
-   gohNoANbiZp3HxegW+0kah0orJrG50wIRuMDzXXQzmAwqYg/gDgMw5d2/
-   pXXWeywth+LcAmhMV1E+/YLgI2ugLpldj/VaNcfsJVD8B7TcH0pgSDR1/
-   Q==;
-X-CSE-ConnectionGUID: QGD/Gg/jS3u6KCNl1aBeXA==
-X-CSE-MsgGUID: PcGB5fQAT9Golh5t6TkTpw==
+  t=1745481344; x=1777017344;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ziXtyaZN5bmoBDmr/R61NXBEs5KsMcbVvQqVoZIm3Nk=;
+  b=i3YNG1iezNdsMmjhSqBi854HeRBcLSTcn3VA2NmcCAGBRCEgtej0QB5m
+   22N9xiVwIHrdPPPabiqWTPEl/KMKJEUJcAIqA5x/r3jkJOT6LegO6PMr+
+   q7VAWDAIViPkAsfOBv/YZ2MfVZT0YoxkGCWDYxUNs+opprPegUI+51Qju
+   Baj6SmvSyC7uDE0V0wrVajz2gZEYEej4BgCMOqpUH56ckGLEyNXAxSZW4
+   Se/8L0t4m9rS800S5vju8Ae3vjCwWnt1HbH0OSmv2UAwEWbDe1WBSJ1ju
+   yeAUTW9bP120xEc6ksHZXxPi2kZxLzP+vUwiUi5XO54dBOmmk1lEsZagj
+   A==;
+X-CSE-ConnectionGUID: 8Fe9Dkv8QgOz+fFRgcfRoA==
+X-CSE-MsgGUID: U06klpP9SjavAFBgeWvsbg==
 X-IronPort-AV: E=Sophos;i="6.15,235,1739833200"; 
-   d="scan'208";a="43691475"
+   d="scan'208";a="43691655"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 24 Apr 2025 09:50:13 +0200
-X-CheckPoint: {6809ED35-3C-903EAEAC-E04C76C8}
-X-MAIL-CPID: 43870022036A7357E589DFBA273AC112_5
-X-Control-Analysis: str=0001.0A006376.6809ED40.009E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F3067163FAF;
-	Thu, 24 Apr 2025 09:50:08 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 24 Apr 2025 09:55:41 +0200
+X-CheckPoint: {6809EE7D-6-2417938-F0170C2B}
+X-MAIL-CPID: 70C2A69BD9BA4968A346425B2DD05DE9_2
+X-Control-Analysis: str=0001.0A006371.6809EE7E.0070,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 11AAC16117A;
+	Thu, 24 Apr 2025 09:55:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1745481009;
+	s=dkim; t=1745481336;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mg6lhM3R2ZSR9+KErjTtlCk6Ufu88DsvjnmmJE09rCU=;
-	b=NMVMRiOIBdx3fzw5lq8FizjygUrUu/GUdNN59KCfjoXxvWG7L1ZA1Y0QbeZVEFnX/cb2Kp
-	C6b1zociLFLoIJQUIpxytZQudu+V6UNsRoAtmFbmqYGEIBFtqkxfN9sAkdu+NQbgbnLQHe
-	dVaBtnPv6/UKGq9ukriFpOVl7nuEhIGq6nFihgLr7Vsv/rIxb8UT/oFkmFue5Q89AU/l6y
-	UI7ubySg1MJfXFfCjMVJqisQRcaIV2kH26Dzfj4SMBD24pW/LIihKriDAgCo0yG/F0764D
-	CVCJynmi6eoDf3nsHF0lDRyG6aLbiIS6xxTkYIzy6BzC74peAwwyebiwgZ8kwQ==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ziXtyaZN5bmoBDmr/R61NXBEs5KsMcbVvQqVoZIm3Nk=;
+	b=pERHcMbugIBYZirMjTG3JOmUw/cYZ9K7rko1CiSmwZZn6eaJQ3RDNXmAvs3gpj7YiR74ws
+	SPxXvUkuO7Dg/fcow7b8q1FrnlUzpWvQcsLFVNU3iFoT0eKoAKxX6B7F1+2ZCEQTNm5Jtu
+	ECGS0S+MMOZUxdVLmmFxSO29VZWPLlN3iNx6yREJyrqOSAR5ecBO8oWUKOx38wnMa0vNQX
+	SFRVpZwtOJA8OTyubF/LugRhcirZpkxPRCz2Xxrq3eOKEN4z7C4OuumsBROvBVs1mH4j1M
+	gvUavv4eXCMTrMoyf0wkA9DLeBj5+H/bB6XFdiH37rdl2yQQT1O2exn5klgQYQ==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Shawn Guo <shawnguo@kernel.org>,
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>
+Cc: Markus Niebel <Markus.Niebel@tq-group.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com
-Subject: [PATCH v2 2/2] arm64: dts: imx8mp-tqma8mpql-mba8mp-ras314: Add Raspberry Pi Camera V2 overlay
-Date: Thu, 24 Apr 2025 09:49:59 +0200
-Message-ID: <20250424075000.1263138-2-alexander.stein@ew.tq-group.com>
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com,
+	linux-renesas-soc@vger.kernel.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: [PATCH v2 1/2] dt-bindings: arm: add TQMa8XxS boards
+Date: Thu, 24 Apr 2025 09:55:29 +0200
+Message-ID: <20250424075533.1266435-1-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250424075000.1263138-1-alexander.stein@ew.tq-group.com>
-References: <20250424075000.1263138-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,154 +82,49 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-This overlay configures IMX219 MIPI-CSI-2 camera attached to ISP1.
-Also add additional overlay both using LVDS display and camera.
+From: Markus Niebel <Markus.Niebel@tq-group.com>
 
+TQMa8XxS is a SOM series featuring NXP i.MX8X SoC.
+They are called TQMa8XQPS and TQMa8XDPS respectively.
+MB-SMARC-2 is a carrier reference design.
+
+Signed-off-by: Markus Niebel <Markus.Niebel@tq-group.com>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 ---
-Thanks for the review.
-
 Changes in v2:
-* Renamed camera clock node
-* Fixed unit-address of sensor node
+* Collected Rob's A-b
 
- arch/arm64/boot/dts/freescale/Makefile        |   4 +
- ...imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso | 107 ++++++++++++++++++
- 2 files changed, 111 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso
+ Documentation/devicetree/bindings/arm/fsl.yaml | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 6f87f28f4583e..47cb156c94e7b 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -247,10 +247,14 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-pcie-ep.dtb
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index a6fd347de03fe..1c5fcd69e93e6 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1333,6 +1333,22 @@ properties:
+               - const: tq,imx8qxp-tqma8xqp     # TQ-Systems GmbH TQMa8XQP SOM (with i.MX8QXP)
+               - const: fsl,imx8qxp
  
- imx8mp-tqma8mpql-mba8mpxl-lvds-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
- imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtbo
-+imx8mp-tqma8mpql-mba8mp-ras314-imx219-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtbo
- imx8mp-tqma8mpql-mba8mp-ras314-lvds-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
-+imx8mp-tqma8mpql-mba8mp-ras314-lvds-imx219-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds-imx219.dtb
- 
- dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mq-hummingboard-pulse.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso
-new file mode 100644
-index 0000000000000..e5a2b3780215d
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtso
-@@ -0,0 +1,107 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/*
-+ * Copyright 2022-2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Alexander Stein
-+ */
-+/dts-v1/;
-+/plugin/;
++      - description:
++          TQMa8XxS is a series of SOM featuring NXP i.MX8X system-on-chip
++          variants. It has the SMARC-2.0 form factor and is designed to be placed on
++          different carrier boards. MB-SMARC-2 is a carrier reference design.
++        oneOf:
++          - items:
++              - enum:
++                  - tq,imx8qxp-tqma8xqps-mb-smarc-2 # TQ-Systems GmbH TQMa8QXPS SOM on MB-SMARC-2
++              - const: tq,imx8qxp-tqma8xqps         # TQ-Systems GmbH TQMa8QXPS SOM
++              - const: fsl,imx8qxp
++          - items:
++              - enum:
++                  - tq,imx8dxp-tqma8xdps-mb-smarc-2 # TQ-Systems GmbH TQMa8XDPS SOM on MB-SMARC-2
++              - const: tq,imx8dxp-tqma8xdps         # TQ-Systems GmbH TQMa8XDPS SOM
++              - const: fsl,imx8dxp
 +
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/media/video-interfaces.h>
-+
-+#include "imx8mp-pinfunc.h"
-+
-+&{/} {
-+	/*
-+	 * The three camera regulators are controlled by a single GPIO. Declare
-+	 * a single regulator for the three supplies.
-+	 */
-+	reg_cam: regulator-cam {
-+		compatible = "regulator-fixed";
-+		regulator-name = "reg_cam";
-+		/* pad muxing already done in gpio2grp */
-+		gpio = <&gpio2 6 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		vin-supply = <&reg_vcc_3v3>;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	cam24m: clock-cam24m {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <24000000>;
-+		clock-output-names = "cam24m";
-+	};
-+};
-+
-+&i2c2 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	camera@10 {
-+		compatible = "sony,imx219";
-+		reg = <0x10>;
-+		clocks = <&cam24m>;
-+		VANA-supply = <&reg_cam>;
-+		VDIG-supply = <&reg_cam>;
-+		VDDL-supply = <&reg_cam>;
-+		orientation = <2>;
-+		rotation = <0>;
-+
-+		port {
-+			sony_imx219: endpoint {
-+				remote-endpoint = <&imx8mp_mipi_csi_in>;
-+				clock-lanes = <0>;
-+				clock-noncontinuous;
-+				data-lanes = <1 2>;
-+				link-frequencies = /bits/ 64 <456000000>;
-+			};
-+		};
-+	};
-+};
-+
-+&isi_0 {
-+	status = "disabled";
-+
-+	ports {
-+		port@0 {
-+			/delete-node/ endpoint;
-+		};
-+	};
-+};
-+
-+&isp_0 {
-+	status = "okay";
-+
-+	ports {
-+		port@1 {
-+			isp0_in: endpoint {
-+				bus-type = <MEDIA_BUS_TYPE_PARALLEL>;
-+				remote-endpoint = <&mipi_csi_0_out>;
-+			};
-+		};
-+	};
-+};
-+
-+&mipi_csi_0 {
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port@0 {
-+			imx8mp_mipi_csi_in: endpoint {
-+				remote-endpoint = <&sony_imx219>;
-+				clock-lanes = <0>;
-+				data-lanes = <1 2>;
-+			};
-+		};
-+	};
-+};
-+
-+&mipi_csi_0_out {
-+	remote-endpoint = <&isp0_in>;
-+};
+       - description: i.MX8ULP based Boards
+         items:
+           - enum:
 -- 
 2.43.0
 
