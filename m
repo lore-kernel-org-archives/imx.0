@@ -1,91 +1,88 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30A061FF2
-	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 13:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DA1537F8
+	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 14:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745588722; cv=none; b=eI5Dmj8l49TUMqqCzQe9nts/Xa2EEUQHPjRDiKDGDAaoWynY872CY3YfcJIczbrWtYzFamS2zqA+qrzRZ2188ytuJdwLq2YIT37RTFxDftGi1jYgKhBnVGH82XImtJWVB8qTHdFTCDsbTrrM9Oaq1GkZ6WQozX0k3WTOv1yHRlY=
+	t=1745589908; cv=none; b=cmshFUquyP8HX4JZhCoKkwlHPve1C8s10zB3U3ukhuf9LqfV1AYzDr33+Rqofs7OvrUAoQ0rqIITMiacNKbNgiGg+miN635eDxkm9l1nmcvtzqfUmR9EzBH2+5OUDJ/R7Mbbk+y/L41Uw9fX/vsluucx3z3GalqXZ1exY1juDbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745588722; c=relaxed/simple;
-	bh=s+wGkxQdQOZAumMeKgpW5m+jjq14RmoCE/zy+aB2ZDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pqyd3P7zo3h+Cppmj6A78KRZYqQRer/Oc35+I8UofZ5w+tbr6rFAIwxdFKrVFORcXK1zlZwL0aJEGG8kpF0KP42PSFZUpwYMGATo2e74DiBcVwnh1150u5HXYhz/5TRBOXtAZ8IL1CcJbH0eiVd6oThh99eidM9hR7F+rWd3bKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=env9yBo4; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1745589908; c=relaxed/simple;
+	bh=tcriv+/Nzx4S273xik7czZ9fG6dM7aE9NlAHA+tSzps=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hTDtftXyTPBFsZlbgPGcMM3xcf9MQu0jtIC/3qtPA65SMRIe5U7wK3hHZij67GL4G5vsFglVIuxh+NFmsJLk+cIUtZpuhiBg2bK5frppLomvOtfSZR5HcYFB3S9Dqx36NQ5iwA8WIOR/OwvBzrLVNOpAkfpjMN1roqX3XgK1Lls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kdXO8htr; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="env9yBo4"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aaf0f1adef8so343182566b.3
-        for <imx@lists.linux.dev>; Fri, 25 Apr 2025 06:45:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kdXO8htr"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30effbfaf61so25016771fa.0
+        for <imx@lists.linux.dev>; Fri, 25 Apr 2025 07:05:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745588719; x=1746193519; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ElIjdAp6Y4lmYtJ6XWCfaS1fwcVpaJWdZTEkWJEeiVM=;
-        b=env9yBo4Q0VvGXYScd8iE0mqkoZgdjzIgBRGilVK5XL/LV4Zmkwp0tVj8XLFFFdCbz
-         vCJj6h91Ax7GYBaMEdrpkTOm25wgOmGuBoDlRR3arxVlQTPc3P/ko/m2lwOglLXfVUSQ
-         dkobKlG74xVCqUIuKy3+ZXK/otX1lnPoJnGvJyDk3Isk7oi0aP19UGn2bbjGvjUxM3Wn
-         /s8uSycSe5m04uxvrEO68yZE2fiqzXP9PAOqEYqut2OsnAWnyQS0NUfm8f88auAk4LOy
-         +rDQCOIG0SZ7XqJVYkYfPCFiGpKxFOajdwPcdlvHXU4Tz2j4TQYFm5t7r4/+goz0w6e5
-         2U8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745588719; x=1746193519;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1745589905; x=1746194705; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ElIjdAp6Y4lmYtJ6XWCfaS1fwcVpaJWdZTEkWJEeiVM=;
-        b=PGYdixrRRIC20AjiKb+Qw1m0t8P8N4JZDNhJN2yQiC53n/jUoRge2fuh0IVYm7oxfS
-         CUhRzu/LL6zdffyp7cF8ZNAfmO60uuXqgH5myJg8AAKUSOCDiw2y1Qu5rF8pVFBop31N
-         heOxmlgtNhukZYhXfFp4rAxdsaAd2Fz20nO1Y4KmEnRZk1j+jB+9rrfn885g5mvIsbbx
-         k+8W6G7N8WIBRy9ZGe27gp2L9pcZSVPfg4ZF1NifhjZLeKQEo/KJ5oHDMy6mN1UXsfrF
-         RfRPnU8b8Y7dVpRIpym6NUIJcmYduly4ioQp5VasDkGaH1VQp25Z5/p9uRoD8r3aSp7V
-         Ra2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUeueOaNLG6QygGckw7/Miv5Wz73wEpej6hRgorn2nmbQMehLj4y+DYbp0GZsdAuS7hJcE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx8FLOo4BAwnX1RR7dDSCof4mYLprazAefi10vM9PHaKvMpI+NL
-	bJs0uMVlbIPueMKxAOMVMusvCayQblyNndoaUdyac71AkFG/gLn9
-X-Gm-Gg: ASbGncsb40pT908ppTTs5Yk2hBBvUocoO7Ov8C9705ZS8kAYPqeJ8ONGeQS9w7ouT39
-	kTdwSc+n93FoGJLFMQ8ohrnTArVdUZm1CqWZm74sx4pBaZgvKB4ks9y661eMsjjAvrsjs1jS0Kl
-	hv4siNePaR/1l1O+TCeRmjvdheUZL5lvm6p7NQ8skjP6F0sCb1OCD7EmvJBvN3OcsST+6r5QUlo
-	7NrmXkTQmNWqcCZiuG6IVsoVmmX8SIrTa7ymaRsfzjms9TutbwcEnipsPD+thKhb7Nf4KPgI1uv
-	/Lgsyfrqfwpbtv41Xm017CRT7ZJu9M44Eb6v/0r/J8FvXt+KgbOHY08=
-X-Google-Smtp-Source: AGHT+IGNWxosw6tYKct4NcUyBZgI0Q/yEcMUb40Dma2Svsw8igWh4KZ3iIt+8W119rSVYItTMA9Veg==
-X-Received: by 2002:a17:906:4795:b0:acb:6746:8754 with SMTP id a640c23a62f3a-ace7111ef01mr227275466b.27.1745588719048;
-        Fri, 25 Apr 2025 06:45:19 -0700 (PDT)
-Received: from localhost ([217.151.144.138])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-ace6e41cb08sm143849366b.19.2025.04.25.06.45.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 06:45:18 -0700 (PDT)
-Date: Fri, 25 Apr 2025 15:44:25 +0200
-From: Oliver Graute <oliver.graute@gmail.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] arm64: dts: imx8qm: add ethernet aliases
-Message-ID: <aAuRuVq92b1G0T7H@graute-macos>
-References: <20250422100239.58799-1-francesco@dolcini.it>
+        bh=tcriv+/Nzx4S273xik7czZ9fG6dM7aE9NlAHA+tSzps=;
+        b=kdXO8htr8Vo36PszE0uXOTu2E1RLU1YSPY2PtzujeHsXnNKSZhetYDiBgY/5r/xAEo
+         Uy+z2zCjcXrjxdqvf81dT2NfcArNPHqdcDoYx8Jj36sEm7O+FL0AhcUFpLXNT266YkvA
+         IXbJeRpfCoFju2bpwQ98iSy+YQkuVmXYIrfGCa3/0S50zyg5RhrdhrTYBV7yD1eg4gaj
+         WZEJDYY5LX62wzQLx88Wj9ilcAGF0xZaPMMgorvJiIt5kgzZn4PxNQ+nKFhJpMMMkahO
+         yEXMmorp87qH3O6NsOGUAWT9MWSTXfWbmXNwEBBAAPgTOnylWCdjLQx3p25kt1ZHu49S
+         ii9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745589905; x=1746194705;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tcriv+/Nzx4S273xik7czZ9fG6dM7aE9NlAHA+tSzps=;
+        b=cKodd4Z9c0WPIsNqJCx4HU+PM0F/5u92ccpBeCbm/H0EEA7peEOqk5uRNu0ObuhC3r
+         d1uW+dHpzofeojj/9+SqCLbwF85lV1I+bjdYpXgM2NqFBZlu4lJ/HJMXh/Z8Oc3KxJcI
+         OAd2KMAM6wHj7sgjMJ7cRSB5nWCagQQxmm5+NfobO0AMuUKMOSSi9GWC7sOYVX5KXiw+
+         gi4X2Qy6xgmwX63/qs1aG9E3489Ez7JBdj3cCblj494xHEr4oDvn5r5szRsyJtjA3yVw
+         Fog5E9mqvi49B7RQOIiikcaf7vHVCg29S0eqoxBBURZDvXQ6GZhiE6n6i/fiveuwGRAR
+         x6aA==
+X-Forwarded-Encrypted: i=1; AJvYcCVlpKOXhJZGlXpNZnc+L28B3iVWhafmxnn2Y/+Ytu7M45xHPxYWMFrcoas7DGHJ3/z2O04=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx7o3gSkCi7mFa+6XfUfmQNvKcR0Lc+bthu+AMP8xJfvjPasFa4
+	zkdObv9xjsihS+K58f7ei83aKM0+GLbP0GOv2IUSca76Rk8IVhRfzZPp489ohz6Bpvh0rDBR68U
+	iSa81GnRw1WfrzzYLB8XZtcqe6vU=
+X-Gm-Gg: ASbGnctdoBHqFhTDaHSdItzLM1yRMcXPnm5eXIaANIIMGpyHmR/FUT448UGMlm3T8lo
+	WIIdQu9j1KnT1l7IcDtFSeG7PhgXaZV5mrOwmnajsgT7QITWwQlecMMMEubZFgxYU2gugZi3Pwk
+	v7L/qZJAO6ViMVMKsJwswK7l3NIRS242SV5YeLuDkBeFN0vZcCwO9O9Q==
+X-Google-Smtp-Source: AGHT+IGbNXTCJsd/v72rtI2+cHQDztvohzJr5dz6aN/tePTwECFs4nHLzaitujZr66nLWZDPS/2mWZOnrI3HOKGrkSY=
+X-Received: by 2002:a05:651c:2122:b0:309:20da:6188 with SMTP id
+ 38308e7fff4ca-318ffdf116bmr8233811fa.6.1745589904734; Fri, 25 Apr 2025
+ 07:05:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250422100239.58799-1-francesco@dolcini.it>
+References: <20250422115055.575753-1-xu.yang_2@nxp.com>
+In-Reply-To: <20250422115055.575753-1-xu.yang_2@nxp.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Fri, 25 Apr 2025 11:04:53 -0300
+X-Gm-Features: ATxdqUEgpFP6h3MmeDD8gkXynHJJDhY21-j6QnWVvr_oXvPD0yYjjdca-jszP7M
+Message-ID: <CAOMZO5BrENeZ2A1erDupCTfMypX-Pd482o1N1eF+wKEL3X7HZQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] usb: typec: Stub out typec_switch APIs when CONFIG_TYPEC=n
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: krzk@kernel.org, myungjoo.ham@samsung.com, cw00.choi@samsung.com, 
+	robh@kernel.org, conor+dt@kernel.org, gregkh@linuxfoundation.org, 
+	swboyd@chromium.org, heikki.krogerus@linux.intel.com, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 22/04/25, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> Add ethernet aliases, they are used by the firmware to set the MAC
-> address and by systemd to rename network interfaces to predictable
-> interface names, e.g. end0 and end1.
-> 
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Acked-by: Oliver Graute <oliver.graute@kococonnector.com>
+On Tue, Apr 22, 2025 at 8:49=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrote:
+>
+> From: Stephen Boyd <swboyd@chromium.org>
+>
+> Ease driver development by adding stubs for the typec_switch APIs when
+> CONFIG_TYPEC=3Dn. Copy the same method used for the typec_mux APIs to be
+> consistent.
+>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+You missed adding your Signed-off-by tag.
