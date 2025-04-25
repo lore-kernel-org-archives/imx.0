@@ -1,159 +1,127 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B371828E614
-	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 15:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF42F19F462;
+	Fri, 25 Apr 2025 16:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745595948; cv=none; b=kvfoSIFM89+oDlL8AOL2WUIA/kaohRL9Eeflx1+KLBtqGPTfeos3/0+bTwGaxeHEWWnBPp1PxyfQNjIt44xQ65npQFR//zEl7Fz/4fHQwOFOItwuu6H5BQBUfPqKxUMPj0oH02CLgcClrwP+QHgp5DjPB76ahDHUvXsTFu6icWM=
+	t=1745598988; cv=none; b=adKokek/Ceiaqyg8bM86VLTHxI9TQZjH2/kfAs6FD+antKdQU/YJmL/MZDS02+is9CfQpIgNEoNRTiU3/xvFA84AMwuWTITMKJgDDzUIyNsvWmB05PCgN4Mg0I4Dbz99d5RsgCBuaWrMi71TNheSsqpTlkhrSAwm7m+2jPp9nAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745595948; c=relaxed/simple;
-	bh=s6S6tqtAH7VBP94mPMyDnPIdCggzBtOxIijklT/Atao=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u6CHYhXC1oWZA9AEosQJaFQ58ozl0qfUaQJeSX/xUxAnXbZ76TxBBoDEBw2HYMQYGQvaQsu6hezSx12OZrZXeAUmhzYVtbcF6ianXN2aqIeKZYSjsDsxvuIcdPRRTl+WMb/WnkOf3s6+Ki47vo6WcUNGQtFKF6zwUeXZ4A83gHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sjdAs3p3; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1745598988; c=relaxed/simple;
+	bh=qyYP/d0Q/C/Ic0eifIrMXz9F9Vl6Jkj4BL5YiQzS9uY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E1ODokoVAwZNrVIb9KwAxgOJ71YuiSZW2iImNdDMAf3SjDS3GuTHEFlFBaUHxHU8z9STAdeSdX4+6+stxURTIyp1HxHlkNiB4vIK9C4cP5czZm7jKmi6KjJoTZX1wrTzNqeKrhw6uZVm2r4tpkdX1o6vEoFZKDVaJROiZpablM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eGLaRP/w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sjdAs3p3"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5eb92df4fcbso4577200a12.0
-        for <imx@lists.linux.dev>; Fri, 25 Apr 2025 08:45:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745595945; x=1746200745; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VXs9FQjEaSP6AkNuUDmsL7Vk1LpHpl5rslliTD8xE54=;
-        b=sjdAs3p3pyf03Kmlj5reb2MT1/2+GgSpdgh052tA/AXx2nKN7vhOYRhWBziRw4wRbb
-         WX/wHDVPmfACyU1IXRIJImS8C8y8yx91GZcntthZVLBacHUsENmmrTb96gu/5krkJIPH
-         +JzGxlpLtagRxesPs/ad4Byt51aRNeJ4bPAfQgZGLh1kCNnaIZ+uQHVkoIvVDN2pcSrA
-         hnrJocWxJN9PuGPv7+Woba+CrJ/URep+MZRwmQPbmn4DKbFkMr7nrXEKoTtfboGAvzKf
-         26Y2+Dx3E3SrPI1k1evHOQUVWGvnfzEg8nM5JY8dAe00kFtVLSvGKRiS7nAD//Acuhp7
-         fYhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745595945; x=1746200745;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VXs9FQjEaSP6AkNuUDmsL7Vk1LpHpl5rslliTD8xE54=;
-        b=EbzQ0MioAMSg8N5IgiiJ9FXrAC7DxYocjACk9g7C0PblT1sAhNaUS14lfaZli7UmE0
-         7QA99wiwlxLkjqA9wq3MKMZPc8b4veMRyWFugM4o73Yd+HY349i9cj3IdN56xz91EcIh
-         BvcaZLoTnxgee23DaS3biPQd2+ZB7G563IUKrGX+Vl/ojUABlurH903xPKydhw7BOHlZ
-         Tc4vBZWKoYP+fNui6ZayNg1okby77zNzjTyS1pQO+TBPTefarWMEvVMnECbGjQmL5UkO
-         erH0+63T2x/u9jyBrkbSLz6c9UZVCRocuJMwDah2jnSvbO40kBIzGERdTeTxmXGBrxsY
-         OBzA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKz30894zzvkJI3UudJ1GPwZQWv+fbRxbs6YfWCVYmFy2xnxmxQqtvemeLsn+T1uIj+Mo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOQyVdC5GmksOMwhHb5ZpnvUfl0cE+CqY7q4rlafBdTGxMoD4G
-	atlI2uLTtVXWSTR4XmmC16MLF9abBsMWJZdJZWchJ1hqqvsctl1MNP1KITHZcvzXinSxAQOsGri
-	ibxV36ex9VCBc0uSFMWFCHlwSi6xmJe/dzQeqDQ==
-X-Gm-Gg: ASbGncuuAHImY70+53NCwOq9uzaxyEe5VuX+dxD5fye44CHAgDDgsghhTR2cfJClNy0
-	nqrsaPJVcrpamDdmf0dZShqaHSE7Su7IP1rRYJc1V6QBSq3vk5NM3Q8oDFSJlmXTB8m+/tSuEKW
-	8c8P1ZJXdwBFpZaeG4aNkT1AbCTsH0PhT0yy4Gvk02A9uQbu8y0u+pS0At
-X-Google-Smtp-Source: AGHT+IFXUbwR8lWOZRe6i8l4qlKEaAy0lQrqMm3qm7cct6CH/tyqA5l2fVQXchZfGfEONa/1rSun0UddIdjxj4mkjSo=
-X-Received: by 2002:a05:6402:3490:b0:5e0:8c55:536 with SMTP id
- 4fb4d7f45d1cf-5f722673509mr2375476a12.4.1745595943758; Fri, 25 Apr 2025
- 08:45:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eGLaRP/w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14348C4CEE4;
+	Fri, 25 Apr 2025 16:36:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745598987;
+	bh=qyYP/d0Q/C/Ic0eifIrMXz9F9Vl6Jkj4BL5YiQzS9uY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eGLaRP/w67b6h2wN8dZhO7dOlM7r9Fk99DiSfwgCAFU3mWJ3w8GA2JN6No26ObB4T
+	 U74kacS1VdPLlfj6tXp33L07rJXCBMxTy7RIGt6cTaRDjAC8kakgMeFCWDbDawAexY
+	 qvWNZtNH1OouvW97QfH6v9TLuoEaOm6Axg4nf1hEMxM6nSvWa14CkRq9BCaYBbKuyn
+	 cSNk6KwCLL5XfT7RMmgU0p7o+q5hIPzM1mEJTzEH/EGrt4dbj2jBiTjlxIhq/jnpWN
+	 bRrtBYI1dWpbYDbS1VWaOpUTA+ZzGtKsdh/9IL+iEFRmp73xm17WoZ2bZXj8N0immK
+	 6ivpz4qjHLEQQ==
+Message-ID: <16a98816-f43c-4f4d-940e-9da30cb1f73f@kernel.org>
+Date: Fri, 25 Apr 2025 18:36:22 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250423155131.101473-1-hiagofranco@gmail.com>
- <aAkf6bxBLjgFjvIZ@p14s> <20250423192156.b44wobzcgwgojzk3@hiago-nb>
-In-Reply-To: <20250423192156.b44wobzcgwgojzk3@hiago-nb>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Fri, 25 Apr 2025 09:45:32 -0600
-X-Gm-Features: ATxdqUHU3-XEnukdUIRYxREV00XSdPXJg99nk4e8g7abiVI9-VXjzJzYla2eMME
-Message-ID: <CANLsYky2OyrVLqm5JWOQaFhR3Fxt0d_p_HG4-F1o-Tnh=OP3dA@mail.gmail.com>
-Subject: Re: [PATCH] remoteproc: imx_rproc: replace devm_clk_get() with devm_clk_get_optional()
-To: Hiago De Franco <hiagofranco@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
-	linux-remoteproc@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Hiago De Franco <hiago.franco@toradex.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] arm64: dts: imx8qm: add ethernet aliases
+To: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20250422100239.58799-1-francesco@dolcini.it>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250422100239.58799-1-francesco@dolcini.it>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 23 Apr 2025 at 13:22, Hiago De Franco <hiagofranco@gmail.com> wrote:
->
-> Hi Mathieu,
->
-> On Wed, Apr 23, 2025 at 11:14:17AM -0600, Mathieu Poirier wrote:
-> > Good morning,
-> >
-> > On Wed, Apr 23, 2025 at 12:51:31PM -0300, Hiago De Franco wrote:
-> > > From: Hiago De Franco <hiago.franco@toradex.com>
-> > >
-> > > The "clocks" device tree property is not mandatory, and if not provided
-> > > Linux will shut down the remote processor power domain during boot if it
-> > > is not present, even if it is running (e.g. it was started by U-Boot's
-> > > bootaux command).
-> >
-> > If a clock is not present imx_rproc_probe() will fail, the clock will remain
-> > unused and Linux will switch it off.  I think that is description of what is
-> > happening.
-> >
-> > >
-> > > Use the optional devm_clk_get instead.
-> > >
-> > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> > > ---
-> > >  drivers/remoteproc/imx_rproc.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> > > index 74299af1d7f1..45b5b23980ec 100644
-> > > --- a/drivers/remoteproc/imx_rproc.c
-> > > +++ b/drivers/remoteproc/imx_rproc.c
-> > > @@ -1033,7 +1033,7 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
-> > >     if (dcfg->method == IMX_RPROC_NONE)
-> > >             return 0;
-> > >
-> > > -   priv->clk = devm_clk_get(dev, NULL);
-> > > +   priv->clk = devm_clk_get_optional(dev, NULL);
-> >
-> > If my understanding of the problem is correct (see above), I think the real fix
-> > for this is to make the "clocks" property mandatory in the bindings.
->
-> Thanks for the information, from my understanding this was coming from
-> the power domain, I had a small discussion about this with Peng [1],
-> where I was able to bisect the issue into a scu-pd commit. But I see
-> your point for this commit, I can update the commit description.
->
+On 22/04/2025 12:02, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> Add ethernet aliases, they are used by the firmware to set the MAC
+> address and by systemd to rename network interfaces to predictable
+> interface names, e.g. end0 and end1.
+> 
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8qm.dtsi | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm.dtsi b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
+> index 6fa31bc9ece8..eccd0087efa7 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
+> @@ -17,6 +17,8 @@ / {
+>  	#size-cells = <2>;
+>  
+>  	aliases {
+> +		ethernet0 = &fec1;
+> +		ethernet1 = &fec2;
+Can't they be disabled (e.g. because MAC is external?) on actual board?
+IOW, aliases for exposed interfaces are properties of boards, not SoC.
 
-If commit 4f6c9832613b breaks on your platform then it should be reverted.
+What's more, I cannot find these in this DTSI, so how can you add alias
+to non-existing node?
 
-> About the change itself, I was not able to find a defined clock to use
-> into the device tree node for the i.MX8QXP/DX, maybe I am missing
-> something? I saw some downstream device trees from NXP using a dummy
-> clock, which I tested and it works, however this would not be the
-> correct solution.
->
-
-If we make the clock optional, what guarantees do we have that the
-clock the M4 is sharing with other devices won't be switched off?  To
-me a clock needs to be defined in the device tree and referenced in
-the remote processor bindings.
-
-Thanks,
-Mathieu
-
-> [1] https://lore.kernel.org/lkml/20250404141713.ac2ntcsjsf7epdfa@hiago-nb/
->
-> Cheers,
-> Hiago.
->
-> >
-> > Daniel and Iuliana, I'd like to have your opinions on this.
-> >
-> > Thanks,
-> > Mathieu
-> >
-> > >     if (IS_ERR(priv->clk)) {
-> > >             dev_err(dev, "Failed to get clock\n");
-> > >             return PTR_ERR(priv->clk);
-> > > --
-> > > 2.39.5
-> > >
+Best regards,
+Krzysztof
