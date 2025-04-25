@@ -1,88 +1,138 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DA1537F8
-	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 14:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906B92741A3
+	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 15:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745589908; cv=none; b=cmshFUquyP8HX4JZhCoKkwlHPve1C8s10zB3U3ukhuf9LqfV1AYzDr33+Rqofs7OvrUAoQ0rqIITMiacNKbNgiGg+miN635eDxkm9l1nmcvtzqfUmR9EzBH2+5OUDJ/R7Mbbk+y/L41Uw9fX/vsluucx3z3GalqXZ1exY1juDbA=
+	t=1745593922; cv=none; b=XiDxep2SyXqmFYFe05pmvAcuoMbRCbsXA9PIE0yMp0+GXBnRVMpkIPIzoq5JJ73erM54P1kNREb0N7x8Xl1LioTESEvXPiMSk/+SdKujHAu4xlTE6KQiJi4t7nnYRpkFAy6nbvScWWxBJx8b6uR3zu3zcs6lq2UURHBQk5LGXtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745589908; c=relaxed/simple;
-	bh=tcriv+/Nzx4S273xik7czZ9fG6dM7aE9NlAHA+tSzps=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hTDtftXyTPBFsZlbgPGcMM3xcf9MQu0jtIC/3qtPA65SMRIe5U7wK3hHZij67GL4G5vsFglVIuxh+NFmsJLk+cIUtZpuhiBg2bK5frppLomvOtfSZR5HcYFB3S9Dqx36NQ5iwA8WIOR/OwvBzrLVNOpAkfpjMN1roqX3XgK1Lls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kdXO8htr; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745593922; c=relaxed/simple;
+	bh=KvTIdzuY3IPxomgHmuC86/3MdUg8rIwFGCx19KapkVQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jVUBJ2/+bdkr3CN3GLSZOfw/3dtVGnN+GImuYilxY49+bcBPyBQLFXywrthCSYdpWHcoT9NW6IUR1TzK5/IzOwM6LmUq+s5WkWBcc0kWYlU+u9riwAX9KRnJ9BbQPov5OWi2pTPptdKAqCZ8qAxUS+09foK6TKmx8TzsB+iSwhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=I17MMhgk; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kdXO8htr"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30effbfaf61so25016771fa.0
-        for <imx@lists.linux.dev>; Fri, 25 Apr 2025 07:05:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745589905; x=1746194705; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tcriv+/Nzx4S273xik7czZ9fG6dM7aE9NlAHA+tSzps=;
-        b=kdXO8htr8Vo36PszE0uXOTu2E1RLU1YSPY2PtzujeHsXnNKSZhetYDiBgY/5r/xAEo
-         Uy+z2zCjcXrjxdqvf81dT2NfcArNPHqdcDoYx8Jj36sEm7O+FL0AhcUFpLXNT266YkvA
-         IXbJeRpfCoFju2bpwQ98iSy+YQkuVmXYIrfGCa3/0S50zyg5RhrdhrTYBV7yD1eg4gaj
-         WZEJDYY5LX62wzQLx88Wj9ilcAGF0xZaPMMgorvJiIt5kgzZn4PxNQ+nKFhJpMMMkahO
-         yEXMmorp87qH3O6NsOGUAWT9MWSTXfWbmXNwEBBAAPgTOnylWCdjLQx3p25kt1ZHu49S
-         ii9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745589905; x=1746194705;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tcriv+/Nzx4S273xik7czZ9fG6dM7aE9NlAHA+tSzps=;
-        b=cKodd4Z9c0WPIsNqJCx4HU+PM0F/5u92ccpBeCbm/H0EEA7peEOqk5uRNu0ObuhC3r
-         d1uW+dHpzofeojj/9+SqCLbwF85lV1I+bjdYpXgM2NqFBZlu4lJ/HJMXh/Z8Oc3KxJcI
-         OAd2KMAM6wHj7sgjMJ7cRSB5nWCagQQxmm5+NfobO0AMuUKMOSSi9GWC7sOYVX5KXiw+
-         gi4X2Qy6xgmwX63/qs1aG9E3489Ez7JBdj3cCblj494xHEr4oDvn5r5szRsyJtjA3yVw
-         Fog5E9mqvi49B7RQOIiikcaf7vHVCg29S0eqoxBBURZDvXQ6GZhiE6n6i/fiveuwGRAR
-         x6aA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlpKOXhJZGlXpNZnc+L28B3iVWhafmxnn2Y/+Ytu7M45xHPxYWMFrcoas7DGHJ3/z2O04=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx7o3gSkCi7mFa+6XfUfmQNvKcR0Lc+bthu+AMP8xJfvjPasFa4
-	zkdObv9xjsihS+K58f7ei83aKM0+GLbP0GOv2IUSca76Rk8IVhRfzZPp489ohz6Bpvh0rDBR68U
-	iSa81GnRw1WfrzzYLB8XZtcqe6vU=
-X-Gm-Gg: ASbGnctdoBHqFhTDaHSdItzLM1yRMcXPnm5eXIaANIIMGpyHmR/FUT448UGMlm3T8lo
-	WIIdQu9j1KnT1l7IcDtFSeG7PhgXaZV5mrOwmnajsgT7QITWwQlecMMMEubZFgxYU2gugZi3Pwk
-	v7L/qZJAO6ViMVMKsJwswK7l3NIRS242SV5YeLuDkBeFN0vZcCwO9O9Q==
-X-Google-Smtp-Source: AGHT+IGbNXTCJsd/v72rtI2+cHQDztvohzJr5dz6aN/tePTwECFs4nHLzaitujZr66nLWZDPS/2mWZOnrI3HOKGrkSY=
-X-Received: by 2002:a05:651c:2122:b0:309:20da:6188 with SMTP id
- 38308e7fff4ca-318ffdf116bmr8233811fa.6.1745589904734; Fri, 25 Apr 2025
- 07:05:04 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="I17MMhgk"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7F5A4982;
+	Fri, 25 Apr 2025 17:11:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1745593910;
+	bh=KvTIdzuY3IPxomgHmuC86/3MdUg8rIwFGCx19KapkVQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I17MMhgkuyvJLdUB8hAdtg7r7XY7pZDOeojpNNyAJNjTY0nfeD3bab6ZUSae3IEuD
+	 q1Zye01p62ZIhx5O+jOdIVrVtNLC7Y1Bpyze9yU8T2o3nL8Jn7+ebGUTDD00W/6pSB
+	 USyoKn2XGKXwxppcbj66zZspY5R3qLtzkV9JLgnU=
+Date: Fri, 25 Apr 2025 18:11:50 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Adam Ford <aford173@gmail.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-media <linux-media@vger.kernel.org>, imx@lists.linux.dev,
+	arm-soc <linux-arm-kernel@lists.infradead.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: i.MX8M Nano ISI Channel Question
+Message-ID: <20250425151150.GH24730@pendragon.ideasonboard.com>
+References: <CAHCN7xKy7w0Kwf8Oyjd6dFLzAhiGiqdaYOj=qfA4kSRthD5Law@mail.gmail.com>
+ <20250425121451.GP18085@pendragon.ideasonboard.com>
+ <CAHCN7xL=vgZO7TW5uZr+OBPX1EKcw2zQhYwjRokTUOHpVq_Wbw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250422115055.575753-1-xu.yang_2@nxp.com>
-In-Reply-To: <20250422115055.575753-1-xu.yang_2@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Fri, 25 Apr 2025 11:04:53 -0300
-X-Gm-Features: ATxdqUEgpFP6h3MmeDD8gkXynHJJDhY21-j6QnWVvr_oXvPD0yYjjdca-jszP7M
-Message-ID: <CAOMZO5BrENeZ2A1erDupCTfMypX-Pd482o1N1eF+wKEL3X7HZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] usb: typec: Stub out typec_switch APIs when CONFIG_TYPEC=n
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: krzk@kernel.org, myungjoo.ham@samsung.com, cw00.choi@samsung.com, 
-	robh@kernel.org, conor+dt@kernel.org, gregkh@linuxfoundation.org, 
-	swboyd@chromium.org, heikki.krogerus@linux.intel.com, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHCN7xL=vgZO7TW5uZr+OBPX1EKcw2zQhYwjRokTUOHpVq_Wbw@mail.gmail.com>
 
-On Tue, Apr 22, 2025 at 8:49=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrote:
->
-> From: Stephen Boyd <swboyd@chromium.org>
->
-> Ease driver development by adding stubs for the typec_switch APIs when
-> CONFIG_TYPEC=3Dn. Copy the same method used for the typec_mux APIs to be
-> consistent.
->
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Hi Adam,
 
-You missed adding your Signed-off-by tag.
+On Fri, Apr 25, 2025 at 07:36:52AM -0500, Adam Ford wrote:
+> On Fri, Apr 25, 2025 at 7:14 AM Laurent Pinchart wrote:
+> > On Thu, Apr 24, 2025 at 08:59:18PM -0500, Adam Ford wrote:
+> > > NXP-
+> > >
+> > > I am trying use Libcamera to capture video on an i.MX8M Nano.
+> > > (Hopefully, this makes Laurent smile)
+> > >
+> > > I noticed that it has a maximum capture of 1080 lines when I query it
+> > > with Libcamera, but the same camera on the Mini can capture at higher
+> > > rates.  The multimedia overview states it can handle 1 unprocessed
+> > > camera stream at 4kp30 without scaling.  The Nano's Ref manual later
+> > > states that each processing channel has one line buffer, and each line
+> > > buffer can store up to 2048 pixels.  It continues to describe when
+> > > processing higher resolution images like 4k, the line buffer from
+> > > other channels can be combined.
+> > >
+> > > Section 13.4.3.5 of the Nano's Ref manual (Rev 2, dated 07/2022)
+> > > explicitly goes into detail on how to capture up to 4k image
+> > > resolution by combining channel 'n' with channel 'n+1' which implies
+> > > there are at least two channels.
+> > >
+> > > Section 13.4.5.1 states the registers are dedicated for each channel
+> > > and spaced 64KB apart, but then the following table only shows the
+> > > base address for one, and Table 2-6 shows the ISI size is 64KB.
+> > >
+> > > The driver is currently written to only support 1 channel.  When
+> > > reading through the driver, it appears to require one IRQ per channel,
+> > > so I looked through the Nano's IRQ table (7-1), and found there are
+> > > three:
+> > > ISI Camera Channel 0 Interrupt - 16
+> > > ISI Camera Channel 1 Interrupt - 42
+> > > ISI Camera Channel 2 Interrupt - 43
+> > >
+> > > I attempted to enable a second channel by modifying the .num_channels
+> > > = 2 value in the driver, and I modified my device tree to assign a
+> > > second IRQ (42), but when I query the pipeline with libcamera, it
+> > > still doesn't show an available resolution ov 2592x1944 that is
+> > > supported by the camera and work on the Mini without the ISI system.
+> > >
+> > > Can someone tell me how many channels are actually available, and
+> > > whether or not  4Kp30 video is really available on the Nano?
+> >
+> > My understanding, based on the i.MX8MN reference manual, is that the ISI
+> > has a single channel. The ISI features list (13.4.1.2) reports
+> >
+> > • Supports up to 2K resolution at 30 or 60 fps (24bpp) on each channel.
+> 
+> I saw that which is why I was really confused when they listed 4K in
+> other section.
+> 
+> > If you look at the i.MX8MP reference manual, the same features list
+> > reports
+> >
+> > • Supports one source of 4K resolution at 30 fps (24bpp).
+> > • Supports up to 2K resolution at 30 or 60 fps (24bpp) on each channel.
+> 
+> I didn't look there, but that makes sense.
+> 
+> > There's no mention of 4K in the i.MX8MN ISI features. I expect that the
+> > documentation about 4K support by combining pixel buffers comes from the
+> > generic ISI documentation, and is not applicable to the i.MX8MN.
+> 
+> I suspect you're right, but the documentation is very confusing. If
+> that's true, maybe Frank can get the NXP people to remove the
+> references to the 4K capture from future documents.
+> 
+> Any idea is the CSI on Nano is really capable of 4-channel virtual
+> channels as listed in section "13.5.1.2 Features" because I believe
+> it's the same, or similar CSI as what is in 8M Plus and Mini, and I
+> don't think those are capable of virtual channels.
+
+That part isn't entirely clear to me. The integration of the CSI-2
+receiver in various i.MX8 SoCs is not well documented, so we rely on
+lots of guesswork.
+
+-- 
+Regards,
+
+Laurent Pinchart
