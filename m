@@ -1,66 +1,53 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC1D2459EE
-	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 11:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3031242D7A;
+	Fri, 25 Apr 2025 11:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745579673; cv=none; b=uQTD8OEvKhXIsRVHQQLylTFsKEvU4sKxTgQgaQ7u9LqNHK8Q+ghVwkxD7pvQJEMz+m66UH0qDTShbpGhSXmC3c4E7eYKQg5UCAQ1UZRYtroi06X84cDcik4M3B1CBRcuIEtKZD4X8Qm9mmXtIhXVHNrdK9y1lunP/9Wu6N4GIeM=
+	t=1745580506; cv=none; b=MCHd+qT9MpMEHKSzx/EiqqDh2T5v2p0bXvxByQtIfTuOJInCXETvJO1E2DOdymsJValeu8f15yjMKJSBqWa/mU+HLuT1QzpC2SCy5sY4OJQy2xR2jsj6RAhdQLFTFLos15LaNq6jQoFyfQJkpuFwogTns2VxLOZarBBzw9lt8z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745579673; c=relaxed/simple;
-	bh=WDl768/k2XZPf3ix/tJOCX3vVhrNeIIJfYXHENX4OgA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJmfWjHzcdw8uReSbW3bKsCEv8lGHrlJ8Ne4Y8VlKhrnjcwWUEiPWIsd2jQ+x/sQKINh09ExKyVRlnhLJD4JihGwwY7jCHMrjtcJJLg7KJtG0f5tv5ApCYkqdfj8t2nNc7XbCbwcJKuJjergV7WiKnU6PA4r1d5aB096W1J1XbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=PrXfrRO2; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1745580506; c=relaxed/simple;
+	bh=6RKZHJ2xfl2GxBt4YCR3zNnMFM/bzC0VR8WplMhPrjE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k0N5vDdsyc1cDJQHrxQywTn24rYy8g7suloNdJouOLXUaOPZY69lN9OFt+slvl1LIUKVqUR3gm5yl8KSr0wlrLzL247rccgc4k5w4TqLD+ZOkV1WU/V/lUAUkJqwCuYAl/dazJWEBbzr9iqn3eNLn+ebPDvvZuWIMj5/njTzmyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RxglTFqB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="PrXfrRO2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=o8dZSj6KyBq+sXWqiCuImDo8ebOFxoaJEIPvwb07TS0=; b=PrXfrR
-	O2xtLZfyvIe6vPTcYRg5Dou5RftuFbip2Nc7PqEKqrTm4NJZZHhCP0MynbKELv5C
-	4h1478vP2vG7KrGHX5/p+awMxeTnd67yegwtGs0dOea5t68f1CddtjVvmFn56rUm
-	JZIQJR8c+4ak4ntivMrtVLJG4m6x0UvQG4D8kPrEDBgR76/DwCqznW7W8JWq9TpS
-	LrkO7alAa/EqccZtZMQFpsVDImunpGJCawhCGMY5FuOB82Z7qX+t7BvQsbsYFEra
-	ol375b635Zz+B/3afx0U+EAayhOQ0zKWTQmt3ar7lwuWCGbrmvxM/7XmnuYyWOkE
-	IzePCVpq7WDeeGDw==
-Received: (qmail 3801357 invoked from network); 25 Apr 2025 13:14:28 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 25 Apr 2025 13:14:28 +0200
-X-UD-Smtp-Session: l3s3148p1@NPMGcJgzOpgujnsE
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-mmc@vger.kernel.org
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Aubin Constans <aubin.constans@microchip.com>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Ben Dooks <ben-linux@fluff.org>,
-	Jaehoon Chung <jh80.chung@samsung.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Hu Ziji <huziji@marvell.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RxglTFqB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164C9C4CEE4;
+	Fri, 25 Apr 2025 11:28:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745580505;
+	bh=6RKZHJ2xfl2GxBt4YCR3zNnMFM/bzC0VR8WplMhPrjE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RxglTFqBu4UflYEES/M/QAIq7zVthHRrcvTr/wW8pGeDR8xsLoks77syGVBnLvn9b
+	 66RxOdNEnmK1Eht/sfDMwFVmWH3PAMmoWoaYhl0nGVtyAuoEDdoVRdP9G4FE6nG8xV
+	 ns2kaM6K7HMNUF61KGesiFECenAGomxGl+gVjOIBZYupBW9upfHDmtaD9r7jlCanIY
+	 +erEFR2w5XWLGL2uUtte0sbXFrhN1TT3DjgbOXBdlvF1BNld0GhLeMHSujGyX5w36U
+	 sZAdPKW4VGa8RLvaTJoOHRaJkLWXWL1wU/+1midtNeWKBtv7SME0EI341A0AvhsTV7
+	 HOxiM84A0MP4Q==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Frank Li <Frank.Li@nxp.com>,
 	imx@lists.linux.dev,
-	s32@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH 11/11] mmc: rename mmc_retune_needed() to mmc_host_retune_needed()
-Date: Fri, 25 Apr 2025 13:14:07 +0200
-Message-ID: <20250425111414.2522-12-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250425111414.2522-1-wsa+renesas@sang-engineering.com>
-References: <20250425111414.2522-1-wsa+renesas@sang-engineering.com>
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mdio: fix CONFIG_MDIO_DEVRES selects
+Date: Fri, 25 Apr 2025 13:27:56 +0200
+Message-Id: <20250425112819.1645342-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,384 +56,79 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mmc_* functions sometimes relate to the card and sometimes to the host.
-Make it obvious by renaming this function to include 'host'.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+The newly added rtl9300 driver needs MDIO_DEVRES:
+
+x86_64-linux-ld: drivers/net/mdio/mdio-realtek-rtl9300.o: in function `rtl9300_mdiobus_probe':
+mdio-realtek-rtl9300.c:(.text+0x941): undefined reference to `devm_mdiobus_alloc_size'
+x86_64-linux-ld: mdio-realtek-rtl9300.c:(.text+0x9e2): undefined reference to `__devm_mdiobus_register'
+Since this is a hidden symbol, it needs to be selected by each user,
+rather than the usual 'depends on'. I see that there are a few other
+drivers that accidentally use 'depends on', so fix these as well for
+consistency and to avoid dependency loops.
+
+Fixes: 37f9b2a6c086 ("net: ethernet: Add missing depends on MDIO_DEVRES")
+Fixes: 24e31e474769 ("net: mdio: Add RTL9300 MDIO driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/mmc/core/core.c            | 4 ++--
- drivers/mmc/core/host.c            | 2 +-
- drivers/mmc/core/mmc_test.c        | 2 +-
- drivers/mmc/core/sdio.c            | 2 +-
- drivers/mmc/host/sdhci-acpi.c      | 4 ++--
- drivers/mmc/host/sdhci-esdhc-imx.c | 6 +++---
- drivers/mmc/host/sdhci-of-arasan.c | 2 +-
- drivers/mmc/host/sdhci-of-at91.c   | 2 +-
- drivers/mmc/host/sdhci-of-esdhc.c  | 2 +-
- drivers/mmc/host/sdhci-omap.c      | 2 +-
- drivers/mmc/host/sdhci-pci-core.c  | 6 +++---
- drivers/mmc/host/sdhci-pltfm.c     | 2 +-
- drivers/mmc/host/sdhci-pxav3.c     | 4 ++--
- drivers/mmc/host/sdhci-s3c.c       | 4 ++--
- drivers/mmc/host/sdhci-spear.c     | 2 +-
- drivers/mmc/host/sdhci-st.c        | 2 +-
- drivers/mmc/host/sdhci-xenon.c     | 2 +-
- drivers/mmc/host/sdhci.c           | 2 +-
- drivers/mmc/host/sdhci_am654.c     | 2 +-
- drivers/mmc/host/tmio_mmc_core.c   | 4 ++--
- include/linux/mmc/host.h           | 2 +-
- 21 files changed, 30 insertions(+), 30 deletions(-)
+ drivers/net/ethernet/freescale/enetc/Kconfig | 3 ++-
+ drivers/net/mdio/Kconfig                     | 7 ++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index 960d7f4a3503..c770a2835f23 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -146,7 +146,7 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
- 	    (err == -EILSEQ || (mrq->sbc && mrq->sbc->error == -EILSEQ) ||
- 	    (mrq->data && mrq->data->error == -EILSEQ) ||
- 	    (mrq->stop && mrq->stop->error == -EILSEQ)))
--		mmc_retune_needed(host);
-+		mmc_host_retune_needed(host);
+diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
+index 6c2779047dcd..5367e8af1e1a 100644
+--- a/drivers/net/ethernet/freescale/enetc/Kconfig
++++ b/drivers/net/ethernet/freescale/enetc/Kconfig
+@@ -73,7 +73,8 @@ config FSL_ENETC_IERB
  
- 	if (err && cmd->retries && mmc_host_is_spi(host)) {
- 		if (cmd->resp[0] & R1_SPI_ILLEGAL_COMMAND)
-@@ -493,7 +493,7 @@ void mmc_cqe_request_done(struct mmc_host *host, struct mmc_request *mrq)
- 	/* Flag re-tuning needed on CRC errors */
- 	if ((mrq->cmd && mrq->cmd->error == -EILSEQ) ||
- 	    (mrq->data && mrq->data->error == -EILSEQ))
--		mmc_retune_needed(host);
-+		mmc_host_retune_needed(host);
- 
- 	trace_mmc_request_done(host, mrq);
- 
-diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
-index 651c62ea0848..c9c67716d665 100644
---- a/drivers/mmc/core/host.c
-+++ b/drivers/mmc/core/host.c
-@@ -214,7 +214,7 @@ static void mmc_retune_timer(struct timer_list *t)
- {
- 	struct mmc_host *host = from_timer(host, t, retune_timer);
- 
--	mmc_retune_needed(host);
-+	mmc_host_retune_needed(host);
- }
- 
- static void mmc_of_parse_timing_phase(struct device *dev, const char *prop,
-diff --git a/drivers/mmc/core/mmc_test.c b/drivers/mmc/core/mmc_test.c
-index 503e4b2a7424..0293f2b7a9c8 100644
---- a/drivers/mmc/core/mmc_test.c
-+++ b/drivers/mmc/core/mmc_test.c
-@@ -1930,7 +1930,7 @@ static int mmc_test_rnd_perf(struct mmc_test_card *test, int write, int print,
- 		dev_addr = rnd_addr + test->card->pref_erase * ea +
- 			   ssz * mmc_test_rnd_num(range2);
- 		if (force_retuning)
--			mmc_retune_needed(test->card->host);
-+			mmc_host_retune_needed(test->card->host);
- 		ret = mmc_test_area_io(test, sz, dev_addr, write, 0, 0);
- 		if (ret)
- 			return ret;
-diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index 3fa1bae6845c..bd2104e0f13c 100644
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -1056,7 +1056,7 @@ static int mmc_sdio_suspend(struct mmc_host *host)
- 		mmc_power_off(host);
- 	} else if (host->retune_period) {
- 		mmc_retune_timer_stop(host);
--		mmc_retune_needed(host);
-+		mmc_host_retune_needed(host);
- 	}
- 
- 	mmc_release_host(host);
-diff --git a/drivers/mmc/host/sdhci-acpi.c b/drivers/mmc/host/sdhci-acpi.c
-index e6c5c82f64fa..630868203f9e 100644
---- a/drivers/mmc/host/sdhci-acpi.c
-+++ b/drivers/mmc/host/sdhci-acpi.c
-@@ -1001,7 +1001,7 @@ static int sdhci_acpi_suspend(struct device *dev)
- 	int ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	ret = sdhci_suspend_host(host);
- 	if (ret)
-@@ -1031,7 +1031,7 @@ static int sdhci_acpi_runtime_suspend(struct device *dev)
- 	int ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	ret = sdhci_runtime_suspend_host(host);
- 	if (ret)
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index b977d37e2684..2d78d7676967 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -2016,11 +2016,11 @@ static int sdhci_esdhc_suspend(struct device *dev)
- 	if ((imx_data->socdata->flags & ESDHC_FLAG_STATE_LOST_IN_LPMODE) &&
- 		(host->tuning_mode != SDHCI_TUNING_MODE_1)) {
- 		mmc_retune_timer_stop(host->mmc);
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 	}
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	/*
- 	 * For the device need to keep power during system PM, need
-@@ -2099,7 +2099,7 @@ static int sdhci_esdhc_runtime_suspend(struct device *dev)
- 		return ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	imx_data->actual_clock = host->mmc->actual_clock;
- 	esdhc_pltfm_set_clock(host, 0);
-diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-index 8c29676ab662..979f19fd95f4 100644
---- a/drivers/mmc/host/sdhci-of-arasan.c
-+++ b/drivers/mmc/host/sdhci-of-arasan.c
-@@ -598,7 +598,7 @@ static int sdhci_arasan_suspend(struct device *dev)
- 	int ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	if (sdhci_arasan->has_cqe) {
- 		ret = cqhci_suspend(host->mmc);
-diff --git a/drivers/mmc/host/sdhci-of-at91.c b/drivers/mmc/host/sdhci-of-at91.c
-index 97988ed37467..8b36cdc6cf81 100644
---- a/drivers/mmc/host/sdhci-of-at91.c
-+++ b/drivers/mmc/host/sdhci-of-at91.c
-@@ -256,7 +256,7 @@ static int sdhci_at91_runtime_suspend(struct device *dev)
- 	ret = sdhci_runtime_suspend_host(host);
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	clk_disable_unprepare(priv->gck);
- 	clk_disable_unprepare(priv->hclock);
-diff --git a/drivers/mmc/host/sdhci-of-esdhc.c b/drivers/mmc/host/sdhci-of-esdhc.c
-index 002d0d59b992..829491c59d09 100644
---- a/drivers/mmc/host/sdhci-of-esdhc.c
-+++ b/drivers/mmc/host/sdhci-of-esdhc.c
-@@ -1243,7 +1243,7 @@ static int esdhc_of_suspend(struct device *dev)
- 	esdhc_proctl = sdhci_readl(host, SDHCI_HOST_CONTROL);
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	return sdhci_suspend_host(host);
- }
-diff --git a/drivers/mmc/host/sdhci-omap.c b/drivers/mmc/host/sdhci-omap.c
-index 8897839ab2aa..98111e4253ec 100644
---- a/drivers/mmc/host/sdhci-omap.c
-+++ b/drivers/mmc/host/sdhci-omap.c
-@@ -1440,7 +1440,7 @@ static int __maybe_unused sdhci_omap_runtime_suspend(struct device *dev)
- 	struct sdhci_omap_host *omap_host = sdhci_pltfm_priv(pltfm_host);
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	if (omap_host->con != -EINVAL)
- 		sdhci_runtime_suspend_host(host);
-diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-index 13a84b9309e0..b4b355f41bfa 100644
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -86,7 +86,7 @@ static int sdhci_pci_suspend_host(struct sdhci_pci_chip *chip)
- 		host = slot->host;
- 
- 		if (chip->pm_retune && host->tuning_mode != SDHCI_TUNING_MODE_3)
--			mmc_retune_needed(host->mmc);
-+			mmc_host_retune_needed(host->mmc);
- 
- 		ret = sdhci_suspend_host(host);
- 		if (ret)
-@@ -167,7 +167,7 @@ static int sdhci_pci_runtime_suspend_host(struct sdhci_pci_chip *chip)
- 
- 		if (chip->rpm_retune &&
- 		    host->tuning_mode != SDHCI_TUNING_MODE_3)
--			mmc_retune_needed(host->mmc);
-+			mmc_host_retune_needed(host->mmc);
- 	}
- 
- 	return 0;
-@@ -1035,7 +1035,7 @@ static void glk_rpm_retune_wa(struct sdhci_pci_chip *chip, bool susp)
- 
- 	intel_host->rpm_retune_ok = true;
- 	chip->rpm_retune = true;
--	mmc_retune_needed(host->mmc);
-+	mmc_host_retune_needed(host->mmc);
- 	pr_info("%s: Requiring re-tune after rpm resume", mmc_hostname(host->mmc));
- }
- 
-diff --git a/drivers/mmc/host/sdhci-pltfm.c b/drivers/mmc/host/sdhci-pltfm.c
-index 62753d72198a..845f700dd454 100644
---- a/drivers/mmc/host/sdhci-pltfm.c
-+++ b/drivers/mmc/host/sdhci-pltfm.c
-@@ -193,7 +193,7 @@ int sdhci_pltfm_suspend(struct device *dev)
- 	int ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	ret = sdhci_suspend_host(host);
- 	if (ret)
-diff --git a/drivers/mmc/host/sdhci-pxav3.c b/drivers/mmc/host/sdhci-pxav3.c
-index 3fb56face3d8..ab83a39feed0 100644
---- a/drivers/mmc/host/sdhci-pxav3.c
-+++ b/drivers/mmc/host/sdhci-pxav3.c
-@@ -497,7 +497,7 @@ static int sdhci_pxav3_suspend(struct device *dev)
- 
- 	pm_runtime_get_sync(dev);
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 	ret = sdhci_suspend_host(host);
- 	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
-@@ -532,7 +532,7 @@ static int sdhci_pxav3_runtime_suspend(struct device *dev)
- 		return ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	clk_disable_unprepare(pxa->clk_io);
- 	if (!IS_ERR(pxa->clk_core))
-diff --git a/drivers/mmc/host/sdhci-s3c.c b/drivers/mmc/host/sdhci-s3c.c
-index bdf4dc0d6b77..a9524a0d7adc 100644
---- a/drivers/mmc/host/sdhci-s3c.c
-+++ b/drivers/mmc/host/sdhci-s3c.c
-@@ -695,7 +695,7 @@ static int sdhci_s3c_suspend(struct device *dev)
- 	struct sdhci_host *host = dev_get_drvdata(dev);
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	return sdhci_suspend_host(host);
- }
-@@ -719,7 +719,7 @@ static int sdhci_s3c_runtime_suspend(struct device *dev)
- 	ret = sdhci_runtime_suspend_host(host);
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	if (ourhost->cur_clk >= 0)
- 		clk_disable_unprepare(ourhost->clk_bus[ourhost->cur_clk]);
-diff --git a/drivers/mmc/host/sdhci-spear.c b/drivers/mmc/host/sdhci-spear.c
-index 770dc12b9ae9..c192c7d284b8 100644
---- a/drivers/mmc/host/sdhci-spear.c
-+++ b/drivers/mmc/host/sdhci-spear.c
-@@ -141,7 +141,7 @@ static int sdhci_suspend(struct device *dev)
- 	int ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	ret = sdhci_suspend_host(host);
- 	if (!ret)
-diff --git a/drivers/mmc/host/sdhci-st.c b/drivers/mmc/host/sdhci-st.c
-index 4973e08a98f8..bfeb680d4be9 100644
---- a/drivers/mmc/host/sdhci-st.c
-+++ b/drivers/mmc/host/sdhci-st.c
-@@ -456,7 +456,7 @@ static int sdhci_st_suspend(struct device *dev)
- 	int ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	ret = sdhci_suspend_host(host);
- 	if (ret)
-diff --git a/drivers/mmc/host/sdhci-xenon.c b/drivers/mmc/host/sdhci-xenon.c
-index 098f0ea45cbe..48b00b82d361 100644
---- a/drivers/mmc/host/sdhci-xenon.c
-+++ b/drivers/mmc/host/sdhci-xenon.c
-@@ -655,7 +655,7 @@ static int xenon_runtime_suspend(struct device *dev)
- 		return ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	clk_disable_unprepare(pltfm_host->clk);
- 	/*
-diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-index fd5681d1e31f..fa1924657ed6 100644
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -3635,7 +3635,7 @@ static irqreturn_t sdhci_irq(int irq, void *dev_id)
- 				mmc_hostname(host->mmc));
- 
- 		if (intmask & SDHCI_INT_RETUNE)
--			mmc_retune_needed(host->mmc);
-+			mmc_host_retune_needed(host->mmc);
- 
- 		if ((intmask & SDHCI_INT_CARD_INT) &&
- 		    (host->ier & SDHCI_INT_CARD_INT)) {
-diff --git a/drivers/mmc/host/sdhci_am654.c b/drivers/mmc/host/sdhci_am654.c
-index f75c31815ab0..ffd40733d71c 100644
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -1043,7 +1043,7 @@ static int sdhci_am654_runtime_suspend(struct device *dev)
- 	int ret;
- 
- 	if (host->tuning_mode != SDHCI_TUNING_MODE_3)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	ret = cqhci_suspend(host->mmc);
- 	if (ret)
-diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-index b71241f55df5..a2b35c1c8b62 100644
---- a/drivers/mmc/host/tmio_mmc_core.c
-+++ b/drivers/mmc/host/tmio_mmc_core.c
-@@ -224,7 +224,7 @@ static void tmio_mmc_reset(struct tmio_mmc_host *host, bool preserve)
- 	}
- 
- 	if (host->mmc->card)
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- }
- 
- static void tmio_mmc_reset_work(struct work_struct *work)
-@@ -852,7 +852,7 @@ static void tmio_mmc_finish_request(struct tmio_mmc_host *host)
- 
- 	/* Error means retune, but executed command was still successful */
- 	if (host->check_retune && host->check_retune(host, mrq))
--		mmc_retune_needed(host->mmc);
-+		mmc_host_retune_needed(host->mmc);
- 
- 	/* If SET_BLOCK_COUNT, continue with main command */
- 	if (host->mrq && !mrq->cmd->error) {
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index 68f09a955a90..e49a3f502ecf 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -699,7 +699,7 @@ static inline bool mmc_card_uhs2(struct mmc_host *host)
- 
- void mmc_retune_timer_stop(struct mmc_host *host);
- 
--static inline void mmc_retune_needed(struct mmc_host *host)
-+static inline void mmc_host_retune_needed(struct mmc_host *host)
- {
- 	if (host->can_retune)
- 		host->need_retune = 1;
+ config FSL_ENETC_MDIO
+ 	tristate "ENETC MDIO driver"
+-	depends on PCI && MDIO_DEVRES && MDIO_BUS
++	depends on PCI && MDIO_BUS
++	select MDIO_DEVRES
+ 	help
+ 	  This driver supports NXP ENETC Central MDIO controller as a PCIe
+ 	  physical function (PF) device.
+diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
+index 38a4901da32f..f680ed676797 100644
+--- a/drivers/net/mdio/Kconfig
++++ b/drivers/net/mdio/Kconfig
+@@ -66,7 +66,7 @@ config MDIO_ASPEED
+ 	tristate "ASPEED MDIO bus controller"
+ 	depends on ARCH_ASPEED || COMPILE_TEST
+ 	depends on OF_MDIO && HAS_IOMEM
+-	depends on MDIO_DEVRES
++	select MDIO_DEVRES
+ 	help
+ 	  This module provides a driver for the independent MDIO bus
+ 	  controllers found in the ASPEED AST2600 SoC. This is a driver for the
+@@ -172,7 +172,7 @@ config MDIO_IPQ4019
+ 	tristate "Qualcomm IPQ4019 MDIO interface support"
+ 	depends on HAS_IOMEM && OF_MDIO
+ 	depends on COMMON_CLK
+-	depends on MDIO_DEVRES
++	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interface found in Qualcomm
+ 	  IPQ40xx, IPQ60xx, IPQ807x and IPQ50xx series Soc-s.
+@@ -181,7 +181,7 @@ config MDIO_IPQ8064
+ 	tristate "Qualcomm IPQ8064 MDIO interface support"
+ 	depends on HAS_IOMEM && OF_MDIO
+ 	depends on MFD_SYSCON
+-	depends on MDIO_DEVRES
++	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interface found in the network
+ 	  interface units of the IPQ8064 SoC
+@@ -189,6 +189,7 @@ config MDIO_IPQ8064
+ config MDIO_REALTEK_RTL9300
+ 	tristate "Realtek RTL9300 MDIO interface support"
+ 	depends on MACH_REALTEK_RTL || COMPILE_TEST
++	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interface found in the Realtek
+ 	  RTL9300 family of Ethernet switches with integrated SoC.
 -- 
-2.47.2
+2.39.5
 
