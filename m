@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF42F19F462;
-	Fri, 25 Apr 2025 16:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5DF169AE6;
+	Fri, 25 Apr 2025 16:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745598988; cv=none; b=adKokek/Ceiaqyg8bM86VLTHxI9TQZjH2/kfAs6FD+antKdQU/YJmL/MZDS02+is9CfQpIgNEoNRTiU3/xvFA84AMwuWTITMKJgDDzUIyNsvWmB05PCgN4Mg0I4Dbz99d5RsgCBuaWrMi71TNheSsqpTlkhrSAwm7m+2jPp9nAw=
+	t=1745599172; cv=none; b=V2fgTTDMTdJMyHbEi6YGWzLlv3P4bsZX7rz/HZZ9kkXEUdnVSt//QSPT6Avv0optpUYqdnyDMODrnUnSpP5J+GVSFiAXeKAlw0aE6taNa9Mu9MNpUA2zynlsobKOFeKj/t0Ih5sS3Z/Le1fZNbGnq0/GpzIpyE8cGBCEKI3gXSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745598988; c=relaxed/simple;
-	bh=qyYP/d0Q/C/Ic0eifIrMXz9F9Vl6Jkj4BL5YiQzS9uY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E1ODokoVAwZNrVIb9KwAxgOJ71YuiSZW2iImNdDMAf3SjDS3GuTHEFlFBaUHxHU8z9STAdeSdX4+6+stxURTIyp1HxHlkNiB4vIK9C4cP5czZm7jKmi6KjJoTZX1wrTzNqeKrhw6uZVm2r4tpkdX1o6vEoFZKDVaJROiZpablM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eGLaRP/w; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745599172; c=relaxed/simple;
+	bh=kJppPNHkNpoSTVJHZawRj5UdBz23b9vR67EeA8OJ1XI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jk/kk8+d2v1t51tIC5C7+ikudJ2Wc99GOES/HQbILsio2rq9KJcVQgZUUtei3TQDJ0J7b/W7qlPD16LdnondMSU+np08T0pYWk8AOIutVtu/Gsj1MadoPqVUf4AYaWdVXXZ5tXYyH/v0zaIbG9+5GbuHvvQRA7rKShV2u+bHYoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIMYx6s8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eGLaRP/w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14348C4CEE4;
-	Fri, 25 Apr 2025 16:36:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIMYx6s8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45907C4CEE4;
+	Fri, 25 Apr 2025 16:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745598987;
-	bh=qyYP/d0Q/C/Ic0eifIrMXz9F9Vl6Jkj4BL5YiQzS9uY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eGLaRP/w67b6h2wN8dZhO7dOlM7r9Fk99DiSfwgCAFU3mWJ3w8GA2JN6No26ObB4T
-	 U74kacS1VdPLlfj6tXp33L07rJXCBMxTy7RIGt6cTaRDjAC8kakgMeFCWDbDawAexY
-	 qvWNZtNH1OouvW97QfH6v9TLuoEaOm6Axg4nf1hEMxM6nSvWa14CkRq9BCaYBbKuyn
-	 cSNk6KwCLL5XfT7RMmgU0p7o+q5hIPzM1mEJTzEH/EGrt4dbj2jBiTjlxIhq/jnpWN
-	 bRrtBYI1dWpbYDbS1VWaOpUTA+ZzGtKsdh/9IL+iEFRmp73xm17WoZ2bZXj8N0immK
-	 6ivpz4qjHLEQQ==
-Message-ID: <16a98816-f43c-4f4d-940e-9da30cb1f73f@kernel.org>
-Date: Fri, 25 Apr 2025 18:36:22 +0200
+	s=k20201202; t=1745599172;
+	bh=kJppPNHkNpoSTVJHZawRj5UdBz23b9vR67EeA8OJ1XI=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=KIMYx6s8btvFCZq8uw9Ft9JRZz99wpDLx7MLzfvP7E5EjOxzrM4WRGtiVR7o+h1YP
+	 Ti5co0T2KWTC0MYg4QZg2JyP0ul0NiyWvaTbAI+yYko4h7QNw3eJ+gbmKXMzgXVC0K
+	 1b/OoVUCSjmwmlxJK8yWvURxD8CyCEN0S9W75/DzgG3qYT6vG5zGQ9ivI1UwrHyZ/q
+	 1j4aswVE6/T6LjUewESS8xVplMNXR9lzIPBqiY/0NKdnLPmi23dn9KjBserc/2YjtH
+	 1WiiE5LJt2+NUe+09AgH9a+coFHVSO4YwW+9WCsBhGy6ByA9u7WeWBizJxsHys/4md
+	 e6SsgkOwy9hDA==
+Message-ID: <bca0cf4a-421c-404e-8161-4eab64cdbc57@kernel.org>
+Date: Fri, 25 Apr 2025 18:39:27 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -36,6 +36,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1] arm64: dts: imx8qm: add ethernet aliases
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -46,7 +47,7 @@ Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
  devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20250422100239.58799-1-francesco@dolcini.it>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <16a98816-f43c-4f4d-940e-9da30cb1f73f@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -91,37 +92,42 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250422100239.58799-1-francesco@dolcini.it>
+In-Reply-To: <16a98816-f43c-4f4d-940e-9da30cb1f73f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 22/04/2025 12:02, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On 25/04/2025 18:36, Krzysztof Kozlowski wrote:
+> On 22/04/2025 12:02, Francesco Dolcini wrote:
+>> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+>>
+>> Add ethernet aliases, they are used by the firmware to set the MAC
+>> address and by systemd to rename network interfaces to predictable
+>> interface names, e.g. end0 and end1.
+>>
+>> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+>> ---
+>>  arch/arm64/boot/dts/freescale/imx8qm.dtsi | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx8qm.dtsi b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
+>> index 6fa31bc9ece8..eccd0087efa7 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx8qm.dtsi
+>> +++ b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
+>> @@ -17,6 +17,8 @@ / {
+>>  	#size-cells = <2>;
+>>  
+>>  	aliases {
+>> +		ethernet0 = &fec1;
+>> +		ethernet1 = &fec2;
+> Can't they be disabled (e.g. because MAC is external?) on actual board?
+> IOW, aliases for exposed interfaces are properties of boards, not SoC.
 > 
-> Add ethernet aliases, they are used by the firmware to set the MAC
-> address and by systemd to rename network interfaces to predictable
-> interface names, e.g. end0 and end1.
-> 
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8qm.dtsi | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm.dtsi b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-> index 6fa31bc9ece8..eccd0087efa7 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm.dtsi
-> @@ -17,6 +17,8 @@ / {
->  	#size-cells = <2>;
->  
->  	aliases {
-> +		ethernet0 = &fec1;
-> +		ethernet1 = &fec2;
-Can't they be disabled (e.g. because MAC is external?) on actual board?
-IOW, aliases for exposed interfaces are properties of boards, not SoC.
+> What's more, I cannot find these in this DTSI, so how can you add alias
+> to non-existing node?
 
-What's more, I cannot find these in this DTSI, so how can you add alias
-to non-existing node?
+I found them (terrible design by NXP) but they are disabled so that's
+the point - adding aliases to disabled nodes is clear sign you are doing
+it wrong.
 
 Best regards,
 Krzysztof
