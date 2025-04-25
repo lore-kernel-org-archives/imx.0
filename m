@@ -1,70 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CED23D2A7;
-	Fri, 25 Apr 2025 11:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE7A22126C
+	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 12:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745580557; cv=none; b=eu7HG3s9Q6AvZYr7J/wjGvpwUUORghiQolFVJ/9ZMA02F56fS1wO4Nlyd/G5BsP9p4VNbGGyYsjTbJraBSixtUfVJJnHgI+gdILWX3yPiuRPxdfyes2fMN8rlDndaZ/7uRjgpL5OgAIp2bCgBRnojXWJkwz+sJihY5qXt0cjtr4=
+	t=1745583298; cv=none; b=iy99UBHw08yH594upIZc+tgx/h/QGmlMLoih8E9WnUGEKvkeb8BxUb3aZuAYNi0FtvRH6LPzWzFesmn0lCWH+sEnncYo2bVG1wwn1qjll7sO3Ui9E5WPikPC+TzSm4WOdd5XqN1hZE58KLfilp/1bttLV1tq5OlMmJ0udJZ41Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745580557; c=relaxed/simple;
-	bh=l4pbyFyJKgsL7EPZcn7j6uWIxIOaHPFWYyhX+MyM2yo=;
+	s=arc-20240116; t=1745583298; c=relaxed/simple;
+	bh=hXVxzv2BEfGt9maqV0Cdf0h/9YhMXC57kWNciCKGBKg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rHVJyQLb96KRZS5Iub95sIFjfW5c+we6rO/LIIcA4pFtShL/M+ksLKk3uop82ioYQYyvwLY8giPuqOwTuRGNh67kF6cnHs6P2KU9GCkUT81HHlTRIeFYudp614wBQFRr2DyKpSJDckp0BJqX1U8ccSeZO4qC90Lb3wg1Qgu96lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6T7d/VN; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=HbtXbvGKbKJNeuEhMf4HfTq5lo+8CGGCtBnxNVilEhiMk6LZ/ZN5kO7DLmTWO3I7vD8aqyhx7xWqGn/Cdowm1pzD93OrMMypvzs3xaSiCCf58lSey25li8INEUDrcb2312G5wBN1oCuym+/eE+UUWWCIE1B6jcca8obXmL5zQ8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=tTcp93Zs; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6T7d/VN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED620C4CEE4;
-	Fri, 25 Apr 2025 11:29:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745580555;
-	bh=l4pbyFyJKgsL7EPZcn7j6uWIxIOaHPFWYyhX+MyM2yo=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="tTcp93Zs"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 183A082E;
+	Fri, 25 Apr 2025 14:14:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1745583292;
+	bh=hXVxzv2BEfGt9maqV0Cdf0h/9YhMXC57kWNciCKGBKg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h6T7d/VNOP5MFUv8fVjNrVzwKe108c7cd2yUnFIDkAERZT0OAORlxukO0Pa6ymvh6
-	 9jXRs814OZa8LyweGU4Ovrv/1l7oq6pGKM6Ge6iYdwGFxKwr9b2V85mW/2cqNS5W4c
-	 uzONH+E5U7Mh1qgsOBBsRL8WD3dCXImD4FxfxZGo0mk53kfM6cZtnH/u+NEuWWFtI1
-	 FU9zjuAyn78/x7oLfwRxthWiXuB1dcH564nhHip5b/8e3QF8MAojqeXhx55xU9c4tu
-	 tL7i2YTSnlp7JvCm8+rGB0mhVY6wz9Y58KeeDDG7iK6qAXHpbVYjRs0hL2EBMHClAq
-	 x2t++k7A+Wx6A==
-Date: Fri, 25 Apr 2025 13:29:10 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: carlos.song@nxp.com
-Cc: aisheng.dong@nxp.com, frank.li@nxp.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i2c: imx-lpi2c: Fix clock count when probe defers
-Message-ID: <34ally74jbpae6etevqskr4zmcv5xyac46n4hl2j5ybihwtezn@jd2gvr762gs7>
-References: <20250421062341.2471922-1-carlos.song@nxp.com>
+	b=tTcp93ZsMQ43V6m58Oy1GpAMWsWYLaT26xS6LndaKoq+G3xqOv/onC3x+d8OHhAjR
+	 15rX3unqAaRxUPiz06jtjFUqaZrMo04ZsXRNKdHrEmBBbOXgz3ZrZQKpuq+Dys/1Hp
+	 TNGBZlScy5Aue88ppNVxollbOo9xb2gl8PXfrgNw=
+Date: Fri, 25 Apr 2025 15:14:51 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Adam Ford <aford173@gmail.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-media <linux-media@vger.kernel.org>, imx@lists.linux.dev,
+	arm-soc <linux-arm-kernel@lists.infradead.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: i.MX8M Nano ISI Channel Question
+Message-ID: <20250425121451.GP18085@pendragon.ideasonboard.com>
+References: <CAHCN7xKy7w0Kwf8Oyjd6dFLzAhiGiqdaYOj=qfA4kSRthD5Law@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250421062341.2471922-1-carlos.song@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHCN7xKy7w0Kwf8Oyjd6dFLzAhiGiqdaYOj=qfA4kSRthD5Law@mail.gmail.com>
 
-On Mon, Apr 21, 2025 at 02:23:41PM +0800, carlos.song@nxp.com wrote:
-> From: Clark Wang <xiaoning.wang@nxp.com>
+Hi Adam,
+
+(CC'ing Frank Li)
+
+On Thu, Apr 24, 2025 at 08:59:18PM -0500, Adam Ford wrote:
+> NXP-
 > 
-> Deferred probe with pm_runtime_put() may delay clock disable, causing
-> incorrect clock usage count. Use pm_runtime_put_sync() to ensure the
-> clock is disabled immediately.
+> I am trying use Libcamera to capture video on an i.MX8M Nano.
+> (Hopefully, this makes Laurent smile)
+> 
+> I noticed that it has a maximum capture of 1080 lines when I query it
+> with Libcamera, but the same camera on the Mini can capture at higher
+> rates.  The multimedia overview states it can handle 1 unprocessed
+> camera stream at 4kp30 without scaling.  The Nano's Ref manual later
+> states that each processing channel has one line buffer, and each line
+> buffer can store up to 2048 pixels.  It continues to describe when
+> processing higher resolution images like 4k, the line buffer from
+> other channels can be combined.
+> 
+> Section 13.4.3.5 of the Nano's Ref manual (Rev 2, dated 07/2022)
+> explicitly goes into detail on how to capture up to 4k image
+> resolution by combining channel 'n' with channel 'n+1' which implies
+> there are at least two channels.
+> 
+> Section 13.4.5.1 states the registers are dedicated for each channel
+> and spaced 64KB apart, but then the following table only shows the
+> base address for one, and Table 2-6 shows the ISI size is 64KB.
+> 
+> The driver is currently written to only support 1 channel.  When
+> reading through the driver, it appears to require one IRQ per channel,
+> so I looked through the Nano's IRQ table (7-1), and found there are
+> three:
+> ISI Camera Channel 0 Interrupt - 16
+> ISI Camera Channel 1 Interrupt - 42
+> ISI Camera Channel 2 Interrupt - 43
+> 
+> I attempted to enable a second channel by modifying the .num_channels
+> = 2 value in the driver, and I modified my device tree to assign a
+> second IRQ (42), but when I query the pipeline with libcamera, it
+> still doesn't show an available resolution ov 2592x1944 that is
+> supported by the camera and work on the Mini without the ISI system.
+> 
+> Can someone tell me how many channels are actually available, and
+> whether or not  4Kp30 video is really available on the Nano?
 
-What is the outcome of the incorrect clock usage count? Do you
-have any logs?
+My understanding, based on the i.MX8MN reference manual, is that the ISI
+has a single channel. The ISI features list (13.4.1.2) reports
 
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> Signed-off-by: Jun Li <jun.li@nxp.com>
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+• Supports up to 2K resolution at 30 or 60 fps (24bpp) on each channel.
 
-Carlo's SoB should be at the end of the chain. Should be nice to
-know what these are, though, are they co-developed-by? tested-by?
-Why so many SoB's?
+If you look at the i.MX8MP reference manual, the same features list
+reports
 
-(no need to resend for this)
+• Supports one source of 4K resolution at 30 fps (24bpp).
+• Supports up to 2K resolution at 30 or 60 fps (24bpp) on each channel.
 
-Andi
+There's no mention of 4K in the i.MX8MN ISI features. I expect that the
+documentation about 4K support by combining pixel buffers comes from the
+generic ISI documentation, and is not applicable to the i.MX8MN.
+
+-- 
+Regards,
+
+Laurent Pinchart
