@@ -1,207 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D08232395;
-	Fri, 25 Apr 2025 08:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224AF2343AE
+	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 09:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745568539; cv=none; b=F92CnwbR+y5DgwV6DQtcOyIAF9Dq/YTGcJUAebQc2F2wfmBiYWCZtdjW68LFz/G4yr1JaAuV/ZN2F3vksvzAkaNC+HWd9U2Bf9nxeG4ZNzRallStZu1G8DVwu+6DdWhdSLPBsbyEClKTI0GiDlz1gDmqtK16Q64xrEf4UT0I/kA=
+	t=1745572779; cv=none; b=eMMWF+H2947YcrG0b7sS1I0/+6l1NLRhHxWC8aTelHjzx5R0hZMATu6vCmIAev2pFXZkX/pAeR2pfJGzMwOSOvCyHS2Q68yOoYI9K9frFAENEGSnB0KzfbqfyKuruuRrYEpAP3tVOlvHa8mHAo48ixPCQheZTp1Pr614i1Hrojc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745568539; c=relaxed/simple;
-	bh=gtRsuvmEISKz28EyTTx8EH0Xr4h+sH+AR8WuiCfVNRw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kqI1HcoGVW0gpZbdO4S9uadeaQ7X9HMUkUL9SH0gWLZeZscCsPsA/MTdSCTQ/BKwFEOnxmmYEQT62BLtTtmoAxIVtPx+gF0ZnAtuLEeTLxTVOaRoBDb4rjNp9MKuSUdht3bG7eO7gOj2aRNjanvEgWSAHavIqz94X85FR/OwwMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bny011mn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745572779; c=relaxed/simple;
+	bh=V26+KD33m0aJZN0gGO/Xy5/bV6re183KaQZL3zie4PQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FrDEmNPbJKtuEaVXgunbQ60YfzCt2LlZpjZZa1pgiugmh9tKom3cn4XswpD1VEf+/ERWfSOH9e8G6bKzho4wreezWQwau+4oJ8xUzNuPXOu0zIzTExTfehpwiRz5b/iHFsLQgDImPi0zirZb7Kp/Zn/64kR3YFuXPk3VsiEuBG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HZsiYFE7; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bny011mn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC61C4CEE4;
-	Fri, 25 Apr 2025 08:08:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745568539;
-	bh=gtRsuvmEISKz28EyTTx8EH0Xr4h+sH+AR8WuiCfVNRw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bny011mnmcqkpjlJhSmVb7MhrUlgc7SqH/Yxq41eN/4DXdB8yNKni+99jmij1Rxdt
-	 KEZ2u2JrCIxxlv6qgs2cm0r5q5oNB0JKhXDwCfDBIZzljR5pXI5qncvipZ2OqU8jAX
-	 tequWuknHqsnGhuedOR1fC21GdhSaGACDN6lhEfXn+0laIy5dWv7wZCVgOlFYEPLhk
-	 8dXkMhCoFtngJ9EDLKpuNB9J8ZBnTNsW/Jo66256OnT6QwytmO/ehTa63vbGWUXnZf
-	 6VlMQ96C757YYziDKe66jimlrDB48ri8cBFlKUURYQafSoBv8KiR7F1sqC+kaqp0uD
-	 Q3Hx6tMBs7ahg==
-Message-ID: <fc450dca-a1ba-4b9f-befa-f9643d9b1b82@kernel.org>
-Date: Fri, 25 Apr 2025 10:08:52 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZsiYFE7"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5498d2a8b89so2074507e87.1
+        for <imx@lists.linux.dev>; Fri, 25 Apr 2025 02:19:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745572776; x=1746177576; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bCu4gnKGLji0Lj1TJspCZ0JNdQdRUdGQa5Ujm73xOi4=;
+        b=HZsiYFE7o2HZjrJiD5Op6tkdy+yaqPlwGR9z8JtYgOwzYjzwINxTiv+9iEs0h5h5lE
+         wc0Pbx8WOJlmqBcNwE18HQNK7IlVnrML2nXMBt4Car8DSkhFpGzPirWXpoUh36940p4X
+         j21K4Mp7WkX+LLvOIHlP5EEiBNOjxKrmAi9jeJDw6lVUqXSSZAW6KnFAfxkk4EkuuYNr
+         AoP8+v7ciQhip/rQOIbHFkueIpvBMWmGuEDcQkdgZPwKHPC0M4thk+zy+eFwt17b4QC1
+         13Hg/KKDjmOzok3WSrXnfA2C8SHRayF4synq9euX8wdDznOt18nAJFn6zXyX9ho+yxUv
+         daJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745572776; x=1746177576;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bCu4gnKGLji0Lj1TJspCZ0JNdQdRUdGQa5Ujm73xOi4=;
+        b=d/MjBSZ6R2hBMzEWA+qC/AGktPHb5TyA2A94JEYcHLB1Gswlx9urFhypUNEXOpstnr
+         wRc1rIXzvLzCwZ3TDGnw4Q8VO5io/xjizoUpGFc2sNsLUQEQqxiQB8c33kGorYsaZdF5
+         MmTXGVLO4TxXEHsXqh1QEbznUaWKXb/Vug7DvP1Mg3ot8i91mRK8r2RbZXyVZjjrtVpy
+         o7mL4ZNAlPe0NN6CzLiNie5EE/2faUy7JopxwvIcZNz8KqzTPFKfgFsjMFaZHLEBKMBx
+         RBRue4W5JYvwncrp4m2nx0FtoIz83Z7/EaJJu6WODDGbW8eKe2ux9OunBWn8PyUOm/9W
+         DEBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQFDe2Ot90GSF8ar8M7E2fIqPHLa0TAx1tzDHzvpQYCHIdp/XvF/EE6LZn6fBl+PD3BP0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyFJukHvIu+zKfW1HusZt05XQxICVHWXySPhNJncuj9DbCoD/An
+	w1cXSDVux9/gnUc545dmdXWF3S5vDqvZjNZuMQzypXu45wQr4hpu
+X-Gm-Gg: ASbGncskOzPM8Qyf6uxocjj4a9pK4H30mYcfozvCHF6mWkVGpXaDOG0RmocKIvZ2dMo
+	Bu3+qcmjNOOwqQ6dnM+04gx6YsO9ozAElUWMvjke3uyUWfKdYEv65TsAJrlSd2d8GbZnUi/6+tK
+	zfWMwtj8Ldsr7xlSGPNt+0JIQgI+OsQLg1FSYSeqFA1jji2DsmteBLuEO7i3jtatUQ0IKsv8eNW
+	4AGmiWEQnB0ZWZxD8jWzVzVzePYKdm0rBvAe7ehVDWZQr9gskLxK+SB2EM0dLe/aL/eSvVNwEg2
+	tyGjXSZ5pX8CNSyoZ1tFxqVA2Fhe4M/u2PlV9QDm/ouBfikyvwZkrKuzsdBEMGzW527Nn2YLIdD
+	TfnqPR5UnyppZ3ktb29IpBH/AwvWffkusmyLD8YI=
+X-Google-Smtp-Source: AGHT+IFQdGmsvgDmR6TVPSbh/xxX9pxHi/YRxyBrg1Y1rk5Z58OPuXPUin/wfhblrZ2GuZjz8ygL5w==
+X-Received: by 2002:a05:6512:b05:b0:545:381:71e with SMTP id 2adb3069b0e04-54e8cc07e43mr451893e87.40.1745572775998;
+        Fri, 25 Apr 2025 02:19:35 -0700 (PDT)
+Received: from IRS-520670-Linux.atlascopco.group (84-217-94-150.customers.ownit.se. [84.217.94.150])
+        by smtp.googlemail.com with ESMTPSA id 2adb3069b0e04-54e8c7f02d9sm214299e87.78.2025.04.25.02.19.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Apr 2025 02:19:35 -0700 (PDT)
+From: =?UTF-8?q?Efe=20Can=20=C4=B0=C3=A7=C3=B6z?= <efecanicoz@gmail.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	=?UTF-8?q?Efe=20Can=20=C4=B0=C3=A7=C3=B6z?= <efecanicoz@gmail.com>
+Subject: [PATCH] ARM: dts: imx7d: update opp-table voltages
+Date: Fri, 25 Apr 2025 11:18:40 +0200
+Message-ID: <20250425091853.54437-1-efecanicoz@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v7 4/7] net: mtip: The L2 switch driver for imx287
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>
-References: <20250423072911.3513073-1-lukma@denx.de>
- <20250423072911.3513073-5-lukma@denx.de> <20250424181110.2734cd0b@kernel.org>
- <0bf77ef6-d884-44d2-8ecc-a530fee215d1@kernel.org>
- <20250425080556.138922a8@wsk>
- <a5f54d46-6829-4d60-b453-9ee92e6b568c@kernel.org>
- <20250425094907.27740d07@wsk>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250425094907.27740d07@wsk>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 25/04/2025 09:49, Lukasz Majewski wrote:
-> Hi Krzysztof, Jakub
-> 
->> On 25/04/2025 08:05, Lukasz Majewski wrote:
->>> Hi Krzysztof, Jakub,
->>>   
->>>> On 25/04/2025 03:11, Jakub Kicinski wrote:  
->>>>> On Wed, 23 Apr 2025 09:29:08 +0200 Lukasz Majewski wrote:    
->>>>>> This patch series provides support for More Than IP L2 switch
->>>>>> embedded in the imx287 SoC.
->>>>>>
->>>>>> This is a two port switch (placed between uDMA[01] and
->>>>>> MAC-NET[01]), which can be used for offloading the network
->>>>>> traffic.
->>>>>>
->>>>>> It can be used interchangeably with current FEC driver - to be
->>>>>> more specific: one can use either of it, depending on the
->>>>>> requirements.
->>>>>>
->>>>>> The biggest difference is the usage of DMA - when FEC is used,
->>>>>> separate DMAs are available for each ENET-MAC block.
->>>>>> However, with switch enabled - only the DMA0 is used to
->>>>>> send/receive data to/form switch (and then switch sends them to
->>>>>> respecitive ports).    
->>>>>
->>>>> Lots of sparse warnings and build issues here, at least on x86.
->>>>>
->>>>> Could you make sure it's clean with an allmodconfig config, 
->>>>> something like:
->>>>>
->>>>> make C=1 W=1 drivers/net/ethernet/freescale/mtipsw/     
->>>>
->>>> ... and W=1 with clang as well.
->>>>  
->>>
->>> The sparse warnings are because of struct switch_t casting and
->>> register  
->>
->> clang W=1 fails on errors, so it is not only sparse:
->>
->> error: cast to smaller integer type 'uint' (aka 'unsigned int') from
->> 'struct cbd_t *' [-Werror,-Wpointer-to-int-cast]
->>
->> You probably wanted there kenel_ulong_t.
-> 
-> This I did not catch earlier (probably because of my testing on
-> imx287). Thanks for spotting it.
-> 
->>
->>> access with this paradigm (as it is done with other drivers).  
->>
->> I don't understand. I see code like:
->>
->> 	struct switch_t *fecp = fep->hwp;
->>
->> But this is not a cast - the same types.
-> 
-> For example:
-> 
-> The warning:
-> 
-> mtipl2sw.c:208:30: warning: incorrect type in argument 1 (different
-> address spaces) mtipl2sw.c:208:30:    expected void const volatile
-> [noderef] __iomem *addr mtipl2sw.c:208:30:    got unsigned int *
-> 
-> corresponds to:
->  info->maclo = readl(&fecp->ESW_LREC0);   [*]
-> 
-> where:
-> 
-> struct switch_t {
->         u32 ESW_REVISION;
->         u32 ESW_SCRATCH;
-> 	...
->         /*from 0x420-0x4FC*/
->         u32 esw_reserved9[57];
->         /*0xFC0DC500---0xFC0DC508*/
->         u32 ESW_LREC0;
->         u32 ESW_LREC1;
->         u32 ESW_LSR;
-> };
-> 
-> 
-> The 'u32' type seems to be valid here as this register is 32 bit wide.
+Update accepted voltage levels according to IMX7DCEC Table 9 Operating ranges
 
-It is not about size, but IOMEM annotation and pointer/non-pointer.
+Signed-off-by: Efe Can İçöz <efecanicoz@gmail.com>
+---
+ arch/arm/boot/dts/nxp/imx/imx7d.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7d.dtsi b/arch/arm/boot/dts/nxp/imx/imx7d.dtsi
+index 0484e349e064..d961c61a93af 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7d.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx7d.dtsi
+@@ -48,7 +48,7 @@ cpu0_opp_table: opp-table {
+ 
+ 		opp-792000000 {
+ 			opp-hz = /bits/ 64 <792000000>;
+-			opp-microvolt = <1000000>;
++			opp-microvolt = <1000000 950000 1250000>;
+ 			clock-latency-ns = <150000>;
+ 			opp-supported-hw = <0xd>, <0x7>;
+ 			opp-suspend;
+@@ -56,7 +56,7 @@ opp-792000000 {
+ 
+ 		opp-996000000 {
+ 			opp-hz = /bits/ 64 <996000000>;
+-			opp-microvolt = <1100000>;
++			opp-microvolt = <1100000 1045000 1250000>;
+ 			clock-latency-ns = <150000>;
+ 			opp-supported-hw = <0xc>, <0x7>;
+ 			opp-suspend;
+@@ -64,7 +64,7 @@ opp-996000000 {
+ 
+ 		opp-1200000000 {
+ 			opp-hz = /bits/ 64 <1200000000>;
+-			opp-microvolt = <1225000>;
++			opp-microvolt = <1225000 1200000 1250000>;
+ 			clock-latency-ns = <150000>;
+ 			opp-supported-hw = <0x8>, <0x3>;
+ 			opp-suspend;
+-- 
+2.43.0
 
-> 
-> To fix the sparse warnings - I think that I will replace [*] with:
-> 
-> info->maclo = readl((u32 __iomem *)&fecp->ESW_LREC0);
-
-I don't understand why are you reading address of ESW_LREC0. This is
-MMIO, right? So you are supposes to read base + offset (where base is a
-proper iomem pointer).
-
-
-Best regards,
-Krzysztof
