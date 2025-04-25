@@ -1,46 +1,45 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AFF7483
-	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 02:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610A37483
+	for <imx@lists.linux.dev>; Fri, 25 Apr 2025 02:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745546627; cv=none; b=tMMfuGhAVixE+Y1w/3dWhv9zjl5iwo4MWEcXVm57JaOZWju/QxWqu1p6+goOyiiCFW7B2fKXfPsopFeuEXip4lBfpXj/6WeqlOk7l8V9zQ/KkYynK7d11vM1Woh9bX116IByib8diD+DrOYz3q9heuIDzillGWqco386IKTbrzw=
+	t=1745546873; cv=none; b=WPB9JN3UYtyX9j85ZMEQtvCpHXFcCdvnfDrOHJO9ZvXim0SOotspqIFDyoI7rDfYkaPlj1hzu6t1rhOr1UKekJqV+k70zAoKr4e8Hc+byCJMAfWUiUZ+uB+TJUdvg8Un4IjLidA20rH+3dWBo29zLWXlQOJD/ywPVmR1WclYEHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745546627; c=relaxed/simple;
-	bh=JJ8rxowVDQuzei/jFejrAlW4KLdrj6AXuBhBx69i6hE=;
+	s=arc-20240116; t=1745546873; c=relaxed/simple;
+	bh=C0Onkw7Z6WQzYCDMpWTTwUoVEoCIysD7bDzMBGbjA+g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cV8MAPc9QgkcbfCjV4K1vJc8QP09YmWAU/oSgQDLJ+2IxkkYfl888gHlJPtnvQgGPR4WiBZ3IvKTV008tDvIjfFNtagbxsFop5Lw1HNFfcMjxB3dnJoQ8NiW9ZFJDhmyno7cySsw9oDLuMtOcZuyPyahEQr+wXfVJH9aGP4yMCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ozwY4w83; arc=none smtp.client-ip=220.197.32.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=hR42gbXD+790EVIaBrfLwheOyIkJa4V/sJqohDyMDsU5l6eoNGyqV3Hq0vS36dhWuJ8+Bs8kJUocF1F4uFpRMr9bmmwkkVlBRWGtw5Gj+PQ8UBWoCAqXepJcZ5NStOQwJcaJeZnOo6nwEYz3s09fRAvlMuNukW12iugjDHC/8gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=cOjiR3hp; arc=none smtp.client-ip=220.197.32.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ozwY4w83"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="cOjiR3hp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=A4Rq8oM0lfxwGxHCxGHz5nvQEWnfy10Mn/MUqJBAsDI=;
-	b=ozwY4w83ev7WrpOBi/KKnBVlxt0eSYZGRLhNKOfKLpFjx4khFNj3Ruhu9OG77i
-	MtkWK2jRqHjfGE8pTmrBJo75KbcWLjzfQ7SL6Y2FKg/AOue7urCWkDHFsmtAAlMW
-	JebPiLShAF99fK3llREW7xanCG6IQYN1iS2j00WNFAb5Y=
+	Content-Type; bh=eHzuw+bc0eV8DSy5e54/eajHTpo5TtF3m3H+/km2+yw=;
+	b=cOjiR3hpGSq5JZGnS9/s2OQIiPq+SRuNJ5amBAFBfyGNvxgSvcUAuOcCBxk9vn
+	t/8q5N3mwg9ZWGocNMeM/sfyAtdcbW/JeUpFJAux9YqMcpdc3JPLGNGld12Vmgk5
+	hg58WmynrXNlqV9Qm4nDOzTckLTpfNZEcMT8mM1by4Kjg=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCHhtVe7QpoHU_aAw--.28202S3;
-	Fri, 25 Apr 2025 10:03:12 +0800 (CST)
-Date: Fri, 25 Apr 2025 10:03:10 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgB3KU1Z7gpoJI3SAw--.37105S3;
+	Fri, 25 Apr 2025 10:07:23 +0800 (CST)
+Date: Fri, 25 Apr 2025 10:07:21 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Adam Ford <aford173@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
+	Frank.li@nxp.com, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com
-Subject: Re: [PATCH 1/2] dt-bindings: arm: add MBa91xxCA Mainboard for
- TQMa93xxCA/LA SOM
-Message-ID: <aArtXhus7Q+Qa+Wb@dragon>
-References: <20250415125947.429121-1-alexander.stein@ew.tq-group.com>
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2 01/10] arm64: dts: imx8mm-beacon: Fix RTC capacitive
+ load
+Message-ID: <aAruWUaXtM1O5Js3@dragon>
+References: <20250416010141.1785841-1-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,20 +48,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250415125947.429121-1-alexander.stein@ew.tq-group.com>
-X-CM-TRANSID:Mc8vCgCHhtVe7QpoHU_aAw--.28202S3
+In-Reply-To: <20250416010141.1785841-1-aford173@gmail.com>
+X-CM-TRANSID:M88vCgB3KU1Z7gpoJI3SAw--.37105S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU3YFADUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgQ6ZWgKtVvRfgAAsq
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUsmFCUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBAo6ZWgK1S9vFAAAsy
 
-On Tue, Apr 15, 2025 at 02:59:44PM +0200, Alexander Stein wrote:
-> From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+On Tue, Apr 15, 2025 at 08:01:27PM -0500, Adam Ford wrote:
+> Although not noticeable when used every day, the RTC appears to drift when
+> left to sit over time.  This is due to the capacitive load not being
+> properly set. Fix RTC drift by correcting the capacitive load setting
+> from 7000 to 12500, which matches the actual hardware configuration.
 > 
-> Add MBa91xxCA starterkit base board for TQMa93xxCA/LA SOM for
-> parallel display evaluation.
-> 
-> Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
+> Signed-off-by: Adam Ford <aford173@gmail.com>
 
-Applied both, thanks!
+Applied all, thanks!
 
