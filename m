@@ -1,344 +1,184 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010018.outbound.protection.outlook.com [52.101.69.18])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013005.outbound.protection.outlook.com [40.107.159.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88938241132
-	for <imx@lists.linux.dev>; Sun, 27 Apr 2025 07:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BCB247289
+	for <imx@lists.linux.dev>; Sun, 27 Apr 2025 08:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745738596; cv=fail; b=jtJOyT4cIZETbdcXynwgz6rqZyVdXqAugDSTvRXbIIhn17ScHZ1nAcAlri6KvY4tqV75xoCdRiw6qpCgzsYsOyfzYVR82xDSdIx6EC0hap06B25ZRCNHXppAcdIEuOchiDs1FLG6fTPgCS+dfQFcYuIpHrMDYRLmZMh+8FIWdGI=
+	t=1745742109; cv=fail; b=jTkcxjGLU6OPmrXHJ/JCSHCIIJ3h96t+XDYROS+b+TNBReZA9zyAs403kjZp1x5Rl/QVYIK2g3oOPEH7bmG0XYlz8Nswem8zRvK9lwpT8+Ga2Q1426HAn0cXBapWladJdVYmtEZRz4ybgJyMgMplouly7Sdec6rwj+vWYEnr+uE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745738596; c=relaxed/simple;
-	bh=AuOnKZSyYqKtiDq6H98rgoG+GulpanoU3PBpw0cQi8U=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SEMpzwN2sSi3UcujYt79B72G8NsEGpdU4/OIbVcTp6IslpoGGzAK/sel4qdqiZOP7yF2lZt7ilFznD0bBIGKWaqfxm5kZKbe3yT9D6I0+jvTYgXDGM7M6lc/I/fWMQQ0THpBxYC+ZPx+opQnXW2Ts+4t3IbT6e5EiC65+ORl+po=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LYwXHUQu; arc=fail smtp.client-ip=52.101.69.18
+	s=arc-20240116; t=1745742109; c=relaxed/simple;
+	bh=xdy33f+wvVfh8uILDTuHQ49dS9/alBQqAogYoYYkEW4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=L+PSU3NXijNc7ONe2RlKk29vFO+4eFxaG7DpUurUnZ30aHK4B0tQ2zhdoe3GF0OYKnT4Z8KyuqT+ERYDjavQqyZFELHaogiIcUI3moPAR1FINDT7Kwd+1ayvKPkxclhZ73pEXOKzU+OFMBYIx32kiTJyxGFP2SQyWdXk2ZnJ2zo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XlO6u0cG; arc=fail smtp.client-ip=40.107.159.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LYwXHUQu"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XlO6u0cG"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PIXExQ7UdgwklW6MHJj5XpZy0eXZoIeMm9aOkyQl6OXDQmb9may+TBUhY4jG7FtdE8dOhXKlyy83JaOEMtesjVSNRO9A7VjxOgSyEPxWzX4aZI+bBfzMRf+PyZTm/7f7w42pCqCvaVLRwY117QOUBAawJ5uScrFfPlOs7XA3AS2iUfklglilUjx3HIt47uKmgiNWXV5HEcRx6cUOko0p7Rb519JRl7JVSZAR6EPysRdLu5N/TDR8llCbJ0x6mjMnlAA67o/GwGokBzzPEFuTWCshTACRcAJo4DFnOx7uTmagmnpsOHDHQ+HNM1GPsASA2aCMQpxMPgqTB55Bx9fN2w==
+ b=QvI9OW6pdxmvXmp5/X8MEZYkP1JZ9UbHXBPAY8izHmHrs1baugXYfx1OCJPpisg+N8ZJa71y6SWTG6Q8RtCsHOOiK7H0dJ7SIhkW3vGs2itUxlYNjClhfN8bDllwpa7sS951rz3HrDBGbA7VINchxFj0hV2NrfErbG7krCLCPf7U/6j60oImRK5ejN3Vk6TBvPSwS1DL1PD/ye5LNfFjPtm9gq+MjINmQ1uXILvuhdeTQzXc1syEbjyVC6gt2m2QZtGE2iLSj/V1wqdGGGsWa58jovuZokLo8h3Sw4SWcgC/fNRYByONFDG/8MkJNgVQivJfU3pc6Z5zxxrymy+QYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6GCbgElHZ2CxzCrYryvtDPZlLRR7eip9wa9HUlP9Y90=;
- b=M4FFYiXeh+7TyZ7uRwroQN/9ubkuiiM+Psyy6gHQESxUEaOo5/5NHbusifpALC7kB4ZZu7ZbUl8czbZJbn1AmYuQd1Xq5HH/gABlRjtFLpQvMLBO7BIkkvVVP5xkQ2oX1hKTtzSZhlb+U7XoleU/cYVT/RmxMEhNSw++Y9CIIyQJ6pTnL7bvCEHBAcjmdhUOvogTvmlfToC84jiLfKLwkHkFF3JpMSEAoGln+Qt2BAn8zVyHRRhpyU01FRcIO70+oCNV1kn2xqJ6n7E4U+z6UNBffyah1qXGdvv53FzxFfKIaaY+p1dW4rokRin2NtMd3FBci/xdiw91inaBT/272g==
+ bh=oycBP6yqW27uZT51VlHXLLBBxUPx5auAcswmU0U4OWk=;
+ b=lbZHmkAd4GTYb3RT2ErLk/NHHjJIXpsCkA84zNV6rOzV+GE8TsDNbopOJs5fFhGqc9cJzW9EryoMIdZLzZFHGqjz3HPFel5KJ0lYkZq5Wx3hRYFnjbkoSHXr124OM7BZ6wgHM8mKXqw6r2NKrA1dy7oGzn/uda2itsTRk08+dhIzXoLLClLy/RqTfDNqVeaa601V1hLDTLtvSwKPJzGm0vipO8VZI6/smbegQCNR2QRy/WmHGjHum4osuLK9k0Oip3XSQjRbMfP632FxTewrdMc3hqpAvFhOUUmKPXwVKH16X1FCHnPxqrsxjnw6gq1utCqCslqn50aO6iB6D4nnVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6GCbgElHZ2CxzCrYryvtDPZlLRR7eip9wa9HUlP9Y90=;
- b=LYwXHUQuGqMTSZa4o8ihgWOleqIXKXnviKxkC6x4mCw2Vc54+QWeCftQXDzpFGAqNaF7E26yFE61FENRS2V2p/wtCY0Cc6Q7K7EeYUvdUFbK+IP15G+sDzKUoiybPFJ3KLDaLScFZCsFRN66QHsgcVs1unjiUIOjiqP04t1aowQWRM2djQn7i61fXF4uNUxYshcOrSfT3KoKOo25XTAQB+HCf1Y7g3vTSZ+0VIW+pdXvcXdkqzTms4d4dAQ9uM6taApdrfjwwddF8ZGDkdqA+k0lY+1E+LPD9vTPOLr7PvN9CM37pvmqZqtxVDCzKbro2PFDK1BVpcdTY0JzIWSriw==
+ bh=oycBP6yqW27uZT51VlHXLLBBxUPx5auAcswmU0U4OWk=;
+ b=XlO6u0cGWffo+2bwwqBtx8ZXBAB88R35xyXYSh+j/kAQ8OwOWcVfFgo+JUS9xupSWO6+Y1V+1/gqF4cNwufhxVILPDJxncYT6vlocf8IedmhQP0Mll+5rENFkAU5B7+7JnkIrjv4w4FrLRAOGfcP9fGTKZP7BWbWKyUcfGX97WSni6SLcFuy3JBNgOAkrrnRiVgt3ZCxtsPND+RJ+ZMuVRctwsfNHuSFMFfMl6K5QNgOrP2cjTwCg7+zeiO6410CXGNicflfR0YmKne+2GO/bNuwCtIzeGYBt8vA6rYBsIAVjhyfvsE+CQD4LWgSHQfvc0t6zMW//RYJXi/njIr0KQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- (2603:10a6:800:293::14) by DU4PR04MB11032.eurprd04.prod.outlook.com
- (2603:10a6:10:58a::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.28; Sun, 27 Apr
- 2025 07:23:10 +0000
+ (2603:10a6:800:293::14) by PAXPR04MB8474.eurprd04.prod.outlook.com
+ (2603:10a6:102:1dd::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.29; Sun, 27 Apr
+ 2025 08:21:44 +0000
 Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
  ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
  ([fe80::75ad:fac7:cfe7:b687%7]) with mapi id 15.20.8678.028; Sun, 27 Apr 2025
- 07:23:09 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Andi Shyti <andi.shyti@kernel.org>
-CC: Aisheng Dong <aisheng.dong@nxp.com>, Frank Li <frank.li@nxp.com>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de"
-	<s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-i2c@vger.kernel.org"
-	<linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] i2c: imx-lpi2c: Fix clock count when probe defers
-Thread-Topic: [PATCH] i2c: imx-lpi2c: Fix clock count when probe defers
-Thread-Index: AQHbt0U64ghCGMLe5Eig6819ak6AgA==
-Date: Sun, 27 Apr 2025 07:23:09 +0000
-Message-ID:
- <VI2PR04MB111474EAC1B4DB8EB6DD32628E8862@VI2PR04MB11147.eurprd04.prod.outlook.com>
-References: <20250421062341.2471922-1-carlos.song@nxp.com>
- <34ally74jbpae6etevqskr4zmcv5xyac46n4hl2j5ybihwtezn@jd2gvr762gs7>
-In-Reply-To: <34ally74jbpae6etevqskr4zmcv5xyac46n4hl2j5ybihwtezn@jd2gvr762gs7>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI2PR04MB11147:EE_|DU4PR04MB11032:EE_
-x-ms-office365-filtering-correlation-id: 4db59d63-4910-47e8-ecd5-08dd855c5cc7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?CRmRGCCXl5yAdPKKf2nn5XiMbZWWQ91CjykrtF9mwZ6dljmgFCZqH3T/G+n6?=
- =?us-ascii?Q?60lVBVtaLOvD6/S1ORgadBgBWC0v77/BxKYiGR4CEJjiP/y+bTqSJ6gG0FLk?=
- =?us-ascii?Q?MLbN8RjSNm1LPxulXCu/BGtm+rdWcwwFt9v5vunxv6BFh07g0SUKZXtNM/uf?=
- =?us-ascii?Q?zCLvTSkl6JKWyByTcD5pN2RDlRIKevkdLHVZBbhVonlb3ZsoS9ws9vJsnbgn?=
- =?us-ascii?Q?z6Xc0X81abGvUEJcfwcSl/PCKPiM/3sWaAUFPA6rlcVVzg3/nlQEC2wLmf6m?=
- =?us-ascii?Q?rwthY5gM7O8Eo5eHqU7sUOnNY0dh0RFUXXkHgrT7RcnUkoB+WTG3oBt6frD6?=
- =?us-ascii?Q?Ofkf6aM4m+GnNBHSbYrrL3DGui2msEfIp0+JTECy/3aok31X0fRLlTCteaMg?=
- =?us-ascii?Q?CD1i4//EMgdsDJL3m+EM3EkaMyB/7l4cFOBspyd7zLt8aV/+/DC6B7y/uyNU?=
- =?us-ascii?Q?B61lMqWfzrCMGXUVX7V481Hn0RmhR4a08cQEqXD7Ojl/1rA3ZY3UY2xVI+EM?=
- =?us-ascii?Q?7k2uYCDj3kF/C2bToEQMUF5a7AKdkkBxMnQEcMBZCiNKnODU0K752M1/KA3D?=
- =?us-ascii?Q?d7aRn+qmldzobWg0uNtrFTkvwH2W4TBUDQ+wHxA6NV6WWmFH5D0to1htcBG8?=
- =?us-ascii?Q?oY9WzjozV4NRdNFKqwNGVsIQ6dzVy1+UehIxfw/fvtB2nTpfGaMynlEpa80Y?=
- =?us-ascii?Q?RbepU4OAeGnSyouePJmHyPIGDDqeEdNHIKOc/P1mhrcoCz4gjMwfDW7cr9Eu?=
- =?us-ascii?Q?r83ucV3X4xQwCvTEEJ8qJYorU0pah2zbJnI4EUKqA6FrcKnAw/XdjDbCxayR?=
- =?us-ascii?Q?xay9NYrQ6Sa35fmFHIXIxfRlrz/x196p54cvqNlc7uF2oknVMYYP22YIm7CU?=
- =?us-ascii?Q?NZbMbip51yG5Xnkif9W2EgeNK7PvBaZh4xTA2Krh8SVqhM8GBbqPRJijQj2r?=
- =?us-ascii?Q?GHc959g7IWfzcdHI0EDAQa6tSI6wcQlrVTU+wr8HN3ik4bF7CE06HwXwO9TF?=
- =?us-ascii?Q?pBM60s/bCOcx2tP046hdkAxhATFLQyyScpvm4FlhNyeetN6OBxJRQ1IrvMmE?=
- =?us-ascii?Q?/A6qrAypjsa1xrOYv1s/NXFXG0m3IuMOK0nnQyZ/EN0/hk63XCfVhvqVJCxy?=
- =?us-ascii?Q?Jdx8cToF+aQ0KhJ/Ci5Ix8dqvPvloKhl/JbTr8zz494U2kwY9dw5wnfreSIc?=
- =?us-ascii?Q?igEKBkBgVYW50rKm+sJ7JFAkOXUvIn8lZhiUpT47j7K+R6WAUmbTwvK0uc/3?=
- =?us-ascii?Q?a2H9MNt4ajA1NdxvjddKW0CgQyuieUIHjY1b7vpQ3odzBMqO1vlYd7ZLclYc?=
- =?us-ascii?Q?GDf0/7BMuh7i91Q8k+hGXXvKKCBkLsyJOxqHZzv16ZyYoGNF5/G7b1Pbn4rP?=
- =?us-ascii?Q?/vHBaNaBRrGyELxV7tfLJajyk+FrSa0/lZmJGjLRO9lbl1lFTykJtuJbfR3q?=
- =?us-ascii?Q?FbZhibqIPKlb6o9fSgeL/FOfuL3z4YvkQmPe6y84kSN1FUnxetJokWvfsqto?=
- =?us-ascii?Q?F5Nm//z24POQtkE=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?/RBfo3m+UWIf9cepVNm0wO8eKc/Jzyb3z3tKm4GH3kuV0RdyW7zgMKL0qlbK?=
- =?us-ascii?Q?Kv3rkqxUi5i+BLdOw0tskkhO3dAIcwZjLHIlSn9uTT+zaYCY873K3utjp6TP?=
- =?us-ascii?Q?lc1Kr6cvWbqNKrRP1+SREC9xuXHHsI63dxEQbYHSwKuQK2pPKJGufxwSVtyf?=
- =?us-ascii?Q?cVD7EJ6pCDoTMq3TXZBxVH/Tb6GrYwEapz87GRk4231mIqZ9RKyapz1HyiRc?=
- =?us-ascii?Q?HkqSUSI/JRBdRu9xQzVv2nghVoqfKXBxmTVO9QaIa/bNlf+gYOQgWFxgg1n4?=
- =?us-ascii?Q?MZ+PEdi8qPzYvLYc3x+lT8la22j8nD/bsSSE6yzpglqYDHEuxCUef6KRolDy?=
- =?us-ascii?Q?EmGmy3C0b0CyPOK+dw26gxj1IbyE/RCOXF9ykSB36fjspTwXCjI3f1nW9JUW?=
- =?us-ascii?Q?UR+pnm89CSjtupwtKl4iPaJmEW2Et8Yc944A/VBjXZXKInikeZGA6nY+MBUm?=
- =?us-ascii?Q?/Lh0oIYY2Dtp3rn+kLGM7MCpsYCJaY7vSifeehcza05Buj91UTc1q1nS/3OR?=
- =?us-ascii?Q?8QgyrqEinlxswrgYsyd28EoxfOlYSo5DF70ppIHldVdaZfEAgeDQMr9VIgkp?=
- =?us-ascii?Q?h23olORQHX3bWKp0jXgFAsIs2h8KMiGBChUhOe3FNZM2yTcRO0Q7v40WX3iT?=
- =?us-ascii?Q?FA1kwb1gYZ/W4VfcKVk5CTP9RQ0qAqjuQSvTJAnvvcZxJNo0pJqRPLwldqC6?=
- =?us-ascii?Q?/KsA/Vqao8y96flGy9h9c0pkPy5fjdYU1ioxyLresbXDADQjmchVeNXyjpUT?=
- =?us-ascii?Q?v/ii7cBJvjvUPw6jrk1XRl10ZL/FitbZnnBl+lvZTh+Kj8Kx9zZ1IwWqAI/L?=
- =?us-ascii?Q?NaxWeBa0PGslHJit57ZjrI/x8BHts38cXoDa+gR0B2XIvnWe2njAOtjaKUjE?=
- =?us-ascii?Q?BPsQDvxDeIE6wRDojIwWgtZ/iwvB+QLPBX3A84h/HqgC0OBRvZHaGhs8QIP1?=
- =?us-ascii?Q?6HreKfVRp9d8Oxgek7LwYLPz8Jt6uGd1RhLDxSYBdzziUfihby8YfMJeHg8s?=
- =?us-ascii?Q?taurJPbX4xoUAu9GIaPHi9GK/EQ9a39lFcQvbptU5B25FE0qe8QSNDD9eILz?=
- =?us-ascii?Q?DYa4Y4hVh4Dktttqo5xzS8BVvBN3u0EgeMhDPL9csFyXIRPAFT5RetIgXaQR?=
- =?us-ascii?Q?fCxItyNs6A2Nf47RcUDzCvjtOETtGnoa7N2Mhet2V9XMPisy8MFQrOBM26i2?=
- =?us-ascii?Q?o9MK59z83GLZRb6UqB4anlPf0VrhlOQvxRA0/KD9K6k45CBAOESf45E5UVMg?=
- =?us-ascii?Q?xp7aavMbobmtX4E0T5OQTeQfmxfzPE6af8eHpz9KQkNDvSrqmTHsZtIHdKff?=
- =?us-ascii?Q?fuGMdDzY+z6Ar7RBMXJ5fldpBXeB/ZFGsS27Kk3pAisWX/5M/je+IEk6pPcQ?=
- =?us-ascii?Q?8vLQmbD/1k1f9R4onwWIUmes44EA0xhmqO4Teh3tHbkfmdt5mOy/1Bb5bY+P?=
- =?us-ascii?Q?q0rurJ3VOvHepLx8gh7UHfrenWW/mUNAS9R9g/5+YGHo9RBBRm8Y+y4GF+Gg?=
- =?us-ascii?Q?dH57IrJPOoOYYtxHBMGLDRWBmMkrr8SKUv5aDYncsUOuCuVdzhIe5oV5sLm5?=
- =?us-ascii?Q?Nel/6nVzyRog8WA+GLo=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 08:21:42 +0000
+From: carlos.song@nxp.com
+To: miquel.raynal@bootlin.com,
+	Frank.Li@nxp.com,
+	alexandre.belloni@bootlin.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	conor.culhane@silvaco.com
+Cc: linux-i3c@lists.infradead.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH V4 0/3] support different number of clocks for svc i3c controller
+Date: Sun, 27 Apr 2025 16:32:27 +0800
+Message-Id: <20250427083230.3325700-1-carlos.song@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0009.apcprd02.prod.outlook.com
+ (2603:1096:4:1f7::10) To VI2PR04MB11147.eurprd04.prod.outlook.com
+ (2603:10a6:800:293::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI2PR04MB11147:EE_|PAXPR04MB8474:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85e70c97-5df3-4d16-2d50-08dd85648a47
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|52116014|7416014|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?iMVl0vgOLfLXPsjjwKYX4+N9vyrXmz8bi0LOj2eR4HWxLuF5/9Ux7JyoN9rK?=
+ =?us-ascii?Q?7k101cBFphw3ZUQP4ZptYPrI9MaeWv5jpi14bHnII+5l4VIUXWuN59To6ecO?=
+ =?us-ascii?Q?Y5onagAX3SSW0BXBjT8Zpn70IEWVoUCP3VJk3CZ+QWrglSGR6oQ+9cp1m86/?=
+ =?us-ascii?Q?2b+PDhUW6Khbj9ub5tww2u2rQdsXKCBzOBOt40a3T4VMmuWh7f8cfMOAU3ms?=
+ =?us-ascii?Q?k9JoAX+umGTZausp+WkiU2/t9WuAiDmwy9ifSHWHdxhiuroVE+xmgyNdZ3f/?=
+ =?us-ascii?Q?DjoWw2vBGPViafEPAjIKb9aosAgUg0vYGeNl73PEhYd+jvZ4SJ6711Qz812S?=
+ =?us-ascii?Q?TfLaND4HE2aKJJOGfyaYQwgb1l512urePONfyr/2NnH9PgN7iUUbDYoxUuRs?=
+ =?us-ascii?Q?FNs5ghkEgRNwAa4FT4BXQ5q0DhOq5ZbiqmaYS8tfCkdOpU+A/fgPBqDegq68?=
+ =?us-ascii?Q?qT2SUD5uRP79Cjd5OikNwtqXeWZtimvOQCqwfmhZTCzHIVyLcrphdr5Wf0TS?=
+ =?us-ascii?Q?uCXBDtP6a2X9cjxRP7pAFF350uAzBekH3TkiFBuaLvWFxhsVgSKaylvFLVhw?=
+ =?us-ascii?Q?cJNNDBVK+NEbOgUUjlj0sKzcRFmj7R+ndVvg8o6cueaCnM94sByOtuOE3X6r?=
+ =?us-ascii?Q?Itsz62Zb48Ap8lp1LOpF+dp/IPtntxSSvxReG+Tf0Dhpc/CwHpunxTxlhG4f?=
+ =?us-ascii?Q?2e3PWxb/DFbXsz3ECNmptQJcn7u+fo26DYpJ1Av+DfIxYcWb93syPizEzF1W?=
+ =?us-ascii?Q?j40pN41VRIr9mSjscJ5b0p0JJr21bLDSDMwxCLXWxRMnDeG17GXy9DKe7Opw?=
+ =?us-ascii?Q?eOSWbLIZefRfUlHOL7X+t6Omu70T80QttGaQPwF5Iq2SJPcQxYQoqtbQpqCm?=
+ =?us-ascii?Q?w3TSXgBEbBZTjO2wpqZXLxCov0vCVl2eRy9u/nQtYIeRQEkn+taVBfzh7YFD?=
+ =?us-ascii?Q?elyq0Ut5FRrwGHHWvzgOLcLcYSz8JMlwWUs/gwP5MO80qYs1CFyPBOOXPhTC?=
+ =?us-ascii?Q?t0Lsg8zDzXsA7uB0naaKCMVxF9pmEnUHbBStLLY2Wkc129ycyE2k3lWfLDoH?=
+ =?us-ascii?Q?bgxsGJS0GsI2YHMrzwr5MRBNbKVymp4F26WL7m0sscQlBtRyV46vxKSDSWHG?=
+ =?us-ascii?Q?wGqkXoCoc0x+2yLntCnAiV2nIvF8aF2/cUMuNtXrwv5R2r22pGLudzkWQE1D?=
+ =?us-ascii?Q?ni/BMHDGbZBN315II6qj/VY3Lr8JKWYg0MS4Z8VFwelQKtX5BYUynwIgxQPr?=
+ =?us-ascii?Q?Aw8UHvfvsnuDNW6UBh94Rfq46jq2rBLpps//rgAMnGM3aBgWciT3A2F9KjKo?=
+ =?us-ascii?Q?dLE9XkUMhFUFE2ye00+t5EEurlQUD4kzp+SkDpn/qQQNSStOigM5evl4CdXW?=
+ =?us-ascii?Q?iH2IotU1SCcsK4a1h6EW4Smn2TsOUuG2tnX0WQzo4oy6Git+XZC1wLLrIlLK?=
+ =?us-ascii?Q?6qikgnhz+gGDLFcUPn+13Fcf9ImKaQxb+0wWZ6xwFvzZu9/OQ1koR1Nrp7UF?=
+ =?us-ascii?Q?S6OssNg99ombsww=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(7416014)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?TDA9ksrUjipjdSaQD7AuO9/nvIMMOkOOgSevINbNB2H22xdGkgb4L/734Dan?=
+ =?us-ascii?Q?9gdiYgwReAEGAN6MSt2pPtp+YX0hb0skeSmbZnw4BfDNlu0Tb1K8Oc+F/m8f?=
+ =?us-ascii?Q?qsxmZROViDspFAHnqZac5bR3gd4lk/BFGu3fgFHkJFibOehI3FDwIXQi6KFg?=
+ =?us-ascii?Q?/kEIOdPyOIxin/brduF6NsaU7vqcYFjQO/dO0U1VsdmmSs8ncgdxV2fFXtim?=
+ =?us-ascii?Q?FuOZBZCj9PA9W7ew/K/vJ1+jfYKKDtLcAvDyhC84k0sEbrIUb4KGqUgKDxbx?=
+ =?us-ascii?Q?Cgqbl8DG2w3iZRMC0e2oVN3UYWDZ0CiMYYGtz9bcoxAVvHNEvYmwtfPJQrch?=
+ =?us-ascii?Q?mjB4MQ33v6bNsmnyVc6p53ZpL4zzovFDF2HMbuN+M7cCRgyOpm9mew0HJ6ea?=
+ =?us-ascii?Q?58mS6lSE81PafRRGfSSz+o6I5+099f2fEX5cZKn1VI0ug8we7pK/u9EOTE9O?=
+ =?us-ascii?Q?NEvzBD2JG6G/fJDURCcE10XkryZ1IiL8rMCyTav+O0i9L7pciWPtwtJlKm05?=
+ =?us-ascii?Q?Jz4y4E/C9dZCmTcfuxMCxNsBBJzQae3J1O/L2phK+uLVOslhcIh67BRGwtPe?=
+ =?us-ascii?Q?0T6mXNigHA2ookexaMJF3/H/bi534VEcn1tmb/bUI1TvDv8/VWg+jY0aE1fu?=
+ =?us-ascii?Q?7azoxMV8fMrJelTiW9ZwKFPmz0KdkgXWOf3Msfg+glAwR8/Lcx1/iYHV4M6v?=
+ =?us-ascii?Q?7McJKJC1SYEIWSRPGQ5cG8UYPN0uI1qNHL3PBHeOLUPkkojoxMrpEcs5ipqe?=
+ =?us-ascii?Q?Z45e9yhQHZe2LKwRy7mtdliELU2g2KJUGbKVpwtDxRFQbyTpZ/XsTpyMSA7P?=
+ =?us-ascii?Q?Fk4EPMUu1DkOezSHRZM186aPT5cRdQ8SvX8jgo6xkDnvsT+gcZURstLK2J3o?=
+ =?us-ascii?Q?48YRXq7tWMcg70KqYRsSrfGsxDgwS4I7Gx6frUhK4/VGLDFn5O5r1fDhyLnZ?=
+ =?us-ascii?Q?qkxFwDXURO1aniCg0fmNOcodnFFfdwQ/KWZ9F7rr9wn2e8aGrfsByp6KBxBS?=
+ =?us-ascii?Q?qdNm+B81aY7i+X4kCCkpc3JKqWpZcKDaJUJvkNLXr0VEl/KIgn5BEBMC6S5e?=
+ =?us-ascii?Q?Uvv/Ys41Gyb1QH8Q5gvjsLXlDM2LjmbiIIdozv8T8opp2SHnAHNOECj36ScE?=
+ =?us-ascii?Q?NN2x+hP/fmNi0NKus4WdDOC+Oz/Rsq611Cx2tpuVOVStslNeRhZ+c2E0ILoB?=
+ =?us-ascii?Q?3U0QPBgFAubO1IgZldLVFujsSeldGzti/XuOyAlIn5C2JsbFQsy2BXwQFGJ5?=
+ =?us-ascii?Q?4PlS+3rkC3egNDodl1DEdxMlYPoYEiI6C8bqxnG/vylX1ZzvRw/C4a9hQJ9j?=
+ =?us-ascii?Q?Z+8GeSmPbhInfpjebBK+wGvBvJ6/XudkoKkAJDCgGtirifaegckosrHuvwuo?=
+ =?us-ascii?Q?PSgUj7nFochPoCBJPcW/rAW4RP6CwUBh5XqGMToLy40hUHRuNtb/9i3vossa?=
+ =?us-ascii?Q?M/0YqrKVTigsMTtpkoHbf4KnV3UbXn8eaL1okH8B1yWa0KuJ8KPF8HFFL8KG?=
+ =?us-ascii?Q?SfJDBR8BMthsP890kGmruJOBzHy87TGrZiyZbdSQMbZjdqgYpV6KeWD8o7xN?=
+ =?us-ascii?Q?Ys/By3HFodBUYJG7JV4J7rXvheSN/YrqvJ1QIPGu?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85e70c97-5df3-4d16-2d50-08dd85648a47
 X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4db59d63-4910-47e8-ecd5-08dd855c5cc7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Apr 2025 07:23:09.6268
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2025 08:21:42.3570
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AGmaajJZLqTLlcIgGMLsdad74dUgW5Ao4BeDujkL5EeNPjOzkWUgui5cmkT/hNwjjO1p7DGW81Ai3lie+jnxEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11032
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BOOESAF/yAfxTgozrHuRKFmyV6Nu6SvN14ShaOmVUPfk3LFw+9jtDsL9CJFMK8ASvnaE6pXwLOGF0ExC1y50kw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8474
 
+From: Carlos Song <carlos.song@nxp.com>
 
+I.MX94 and I.MX95 I3C only need two clocks and legacy I3C needs three
+clocks. So add restrictions for clock and clock-names properties for
+different Socs. In driver, use the clk_bulk API to handle clocks to
+support different numbers of clocks more easily. Make the code cleaner
+and more flexible.
 
-> -----Original Message-----
-> From: Andi Shyti <andi.shyti@kernel.org>
-> Sent: Friday, April 25, 2025 7:29 PM
-> To: Carlos Song <carlos.song@nxp.com>
-> Cc: Aisheng Dong <aisheng.dong@nxp.com>; Frank Li <frank.li@nxp.com>;
-> shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
-> festevam@gmail.com; linux-i2c@vger.kernel.org; imx@lists.linux.dev;
-> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> Subject: [EXT] Re: [PATCH] i2c: imx-lpi2c: Fix clock count when probe def=
-ers
->=20
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report =
-this
-> email' button
->=20
->=20
-> On Mon, Apr 21, 2025 at 02:23:41PM +0800, carlos.song@nxp.com wrote:
-> > From: Clark Wang <xiaoning.wang@nxp.com>
-> >
-> > Deferred probe with pm_runtime_put() may delay clock disable, causing
-> > incorrect clock usage count. Use pm_runtime_put_sync() to ensure the
-> > clock is disabled immediately.
->=20
-> What is the outcome of the incorrect clock usage count? Do you have any l=
-ogs?
->=20
+---
+Change for V4:
+- Drop comment in yaml and add nuvoton compatible.
+Change for V3:
+- Remove unrelated fix in imx95.dtsi.
+Change for V2:
+- Fix bot found errors running 'make dt_binding_check'
+- Fix warning from bot test. Use -EINVA instead of uninitialized ret in
+  dev_err_probe
+- Use master->fclk = master->clks[i].clk instead of devm_clk_get
+  (dev, "fast_clk");
 
-Hi, Andi
+Carlos Song (3):
+  dt-bindings: i3c: silvaco,i3c-master: add i.MX94 and i.MX95 I3C
+  i3c: master: svc: switch to bulk clk API for flexible clock support
+  arm64: dts: imx95: correct i3c node in imx95
 
-Thank you!
+ .../bindings/i3c/silvaco,i3c-master.yaml      | 45 +++++++++--
+ arch/arm64/boot/dts/freescale/imx95.dtsi      | 10 +--
+ drivers/i3c/master/svc-i3c-master.c           | 76 +++++++------------
+ 3 files changed, 69 insertions(+), 62 deletions(-)
 
-At imx943 board, I notice sometimes after boot one of lpi2cs enable count i=
-s 1, but now the controller has been suspend(enable count should be 0).
+-- 
+2.34.1
 
-This is a lpi2c4 example:
-
-root@imx943evk:~# cat /sys/kernel/debug/clk/clk_summary
-                                 enable  prepare  protect                  =
-              duty  hardware                            connection
-   clock                          count    count    count        rate   acc=
-uracy phase  cycle    enable   consumer                         id
-
-    lpi2c8                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c7                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c6                           0       2        1        24000000    =
-0          0     50000      Y      i2c@426c0000                    no_conne=
-ction_id
-    lpi2c5                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
--->  lpi2c4                           1       2        1        24000000   =
- 0          0     50000      Y      i2c@42540000                    no_conn=
-ection_id
-    lpi2c3                           0       2        1        24000000    =
-0          0     50000      Y      i2c@42530000                    no_conne=
-ction_id
-    lpi2c2                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c1                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-
-root@imx943evk:~# cat /sys/devices/platform/soc/42000000.bus/42540000.i2c/p=
-ower/runtime_status
-suspended
-
-Normal case should be this:
-Enable count is 0 and controller is suspended.
-
-root@imx943evk:~#  cat /sys/kernel/debug/clk/clk_summary | grep i2c
-                                 enable  prepare  protect                  =
-              duty  hardware                            connection
-   clock                          count    count    count        rate   acc=
-uracy phase  cycle    enable   consumer                         id
-    lpi2c8                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c7                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c6                           0       2        1        24000000    =
-0          0     50000      Y      i2c@426c0000                    no_conne=
-ction_id
-    lpi2c5                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c4                           0       2        1        24000000    =
-0          0     50000      Y      i2c@42540000                    no_conne=
-ction_id
-    lpi2c3                           0       2        1        24000000    =
-0          0     50000      Y      i2c@42530000                    no_conne=
-ction_id
-    lpi2c2                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c1                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-root@imx943evk:~# cat /sys/devices/platform/soc/42000000.bus/42540000.i2c/p=
-ower/runtime_status
-suspended
-
-Add debug log, when defer probe happened on imx-lpi2c 42540000.i2c.
-goto rpm_disable path:=20
-
-rpm_disable:
-	pm_runtime_put(&pdev->dev);
-	pm_runtime_disable(&pdev->dev);
-	pm_runtime_dont_use_autosuspend(&pdev->dev);
-
-pm_runtime_put() may not work really sometimes.
-
-[    3.203715] imx-lpi2c 42530000.i2c: defer probe
-[    3.208324] imx-lpi2c 42530000.i2c: lpi2c_runtime_suspend
-[    3.214801] imx-lpi2c 42540000.i2c: defer probe
----> (No lpi2c_runtime_suspend callback(pm_runtime_put() is not really wrok=
-))
-[    3.220672] imx-lpi2c 426c0000.i2c: defer probe
-[    3.225248] imx-lpi2c 426c0000.i2c: lpi2c_runtime_suspend
-
-After apply this change:
-rpm_disable:
-	pm_runtime_dont_use_autosuspend(&pdev->dev);
-	pm_runtime_put_sync(&pdev->dev);
-	pm_runtime_disable(&pdev->dev);
-
-all issues gone.
-[    3.093025] imx-lpi2c 42530000.i2c: defer probe
-[    3.097592] imx-lpi2c 42530000.i2c: lpi2c_runtime_suspend
-[    3.104281] imx-lpi2c 42540000.i2c: defer probe
-[    3.108858] imx-lpi2c 42540000.i2c: lpi2c_runtime_suspend
-[    3.115278] imx-lpi2c 426c0000.i2c: defer probe
-[    3.119818] imx-lpi2c 426c0000.i2c: lpi2c_runtime_suspend
-
-root@imx943evk:~# cat /sys/kernel/debug/clk/clk_summary | grep i2c
-                                 enable  prepare  protect                  =
-              duty  hardware                            connection
-   clock                          count    count    count        rate   acc=
-uracy phase  cycle    enable   consumer                         id
-    lpi2c8                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c7                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c6                           0       2        1        24000000    =
-0          0     50000      Y      i2c@426c0000                    no_conne=
-ction_id
-    lpi2c5                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c4                           0       2        1        24000000    =
-0          0     50000      Y      i2c@42540000                    no_conne=
-ction_id
-    lpi2c3                           0       2        1        24000000    =
-0          0     50000      Y      i2c@42530000                    no_conne=
-ction_id
-    lpi2c2                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-    lpi2c1                           0       0        0        24000000    =
-0          0     50000      Y      deviceless                      no_conne=
-ction_id
-
-
-> > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> > Signed-off-by: Jun Li <jun.li@nxp.com>
-> > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
->=20
-> Carlo's SoB should be at the end of the chain. Should be nice to know wha=
-t these
-> are, though, are they co-developed-by? tested-by?
-> Why so many SoB's?
->=20
-
-This patch author is not me and they meet similar issue at some boards(Vagu=
-e history), now
-I meet this issue at new SOC again. I think this local patch is helpful and=
- looks reasonable.
-So I send the patch to community adding my SoB.
-
-> (no need to resend for this)
->=20
-> Andi
