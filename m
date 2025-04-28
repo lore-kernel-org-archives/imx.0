@@ -1,103 +1,147 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0741025E800
-	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 08:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6830825F781
+	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 09:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745829794; cv=none; b=XC7PS261jrGN6aeZacW4DuPgWwY7rkTnGx5gqMw6gwN791kfEFIrdE/xZ06yly69qPXX6TLnS0A6Nz/6HlCUfiFcjy00CoUPExAxlWVQZrj5I2X7oGKwWkhCRFgJtpVwp/dz+IDm7ttUMDp0KWCtX+CKIcWbyGDj5TbwK+tWSTA=
+	t=1745834353; cv=none; b=IZmWIiKQ1oXhFaNM3ZrFdipbw4Bjgz5j2c0KbhxbmTc9zWxz3ic8NIm03FY7uqeUA2t4VyHmnEwmxMMG2JduqAVFQS3SwnqhMIF0OcCt6Xgop5RCoObp26LHJbSIiLOzUAulVB0kUoQiJ26bUUPwr1xEQgfJl1JHCiLnRklplJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745829794; c=relaxed/simple;
-	bh=OI5ZUFkKlZcdx4XCjlRyprfVIcbcTC+fNZppjc7+axs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=o+WyVwaHcBEJsogIQGj/bvTNRQK++3+D5IYKSBcvGRsWqR9fLK4VI+9t8Rr4w9AI6H521PPepYtEw2ZWsb51YHm90EarWzjwOmr2D9CtiHLIZ8UvGpqRqp/WQExU2f6oS8I2CIPMGZaDUmS6FgMCaWtbTFy3aw+60lzWOyX1BTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=qbJT/6nX; arc=none smtp.client-ip=1.95.21.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1745834353; c=relaxed/simple;
+	bh=NnpDnaecEjaxgC/9EoeWEeuNxdMbouz16eL8rW7sxFI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r4aa4HkjcKPqrEoMvrqSmHkYhB+k6cw5lcs/yQxiX+pO31xBEJvFA2uf2asb1x1ZCkGudSwvIxMfVyl9M3dG9w3/4gAnmrYpbsgDOFabZQVj18CkQrWUKBlR+Tpoqere2lD4wJAHbyiokmef04M/zFjh3cXc89uJxdhVPIfAQec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LVUqZmJO; arc=none smtp.client-ip=209.85.219.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="qbJT/6nX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=4K3Qwsa6osT47RC+pxezJV4ZKGVwxR2f9TSemPDQ+RM=;
-	b=qbJT/6nX6mSTCQCOCMYGvgyL6IwI2sY+D7ktj7c1vVNdgBMTucsfXvR6K3XRjs
-	vRDzyVAMsX2o6BT0P2KQSBJZEFL0QAD/MLLmLqcTaCg6EZY7nLjeEYvw2Q6NiQZ0
-	odel16PFErR6M7H8A5SaTyRkfPBwuSiti4uiuAVmFjP64=
-Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgAHLyR8Pw9oAgMVAA--.28245S3;
-	Mon, 28 Apr 2025 16:42:38 +0800 (CST)
-Date: Mon, 28 Apr 2025 16:42:36 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: soc@kernel.org, arm@kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	kernel@pengutronix.de, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL] i.MX fixes for 6.15
-Message-ID: <aA8/fFzh22s1Vtl1@dragon>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LVUqZmJO"
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e731cd5f2adso1952849276.0
+        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 02:59:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745834350; x=1746439150; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZgHog5j3bHubplZHipHB2WxTh+7XYb3lCIW6vc6Lfpk=;
+        b=LVUqZmJOcRIEVe84bsiExSBp6voXPT0PPJ/ZRKth3bbl0lERH0vDBtmlqzTUlIiCX8
+         agxbraQOxHJABVpv4fQQtnDFByeI5elX+J1UdDHnhIcoQXcmiBFsL4NuiXOlb6AJ8/TG
+         h/+Qjnctbb0zGL84y0+EEpUXu8eNUXMbs6wKMgj76gPcnm+IzTt3dR4aFQUjq7p4jMs2
+         oaoa3lyclKrzlMd6spK9sympvIbgNvNTpr5XWMocW+j6lEofu4jU/40/pPpJasEXUSwb
+         jtE3mauzgJQGi5+VMIl4RY1EXHT8WRKIRr0T4eJ//GKS26gBYH6cUGsIn29OybCGHoEL
+         nPEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745834350; x=1746439150;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZgHog5j3bHubplZHipHB2WxTh+7XYb3lCIW6vc6Lfpk=;
+        b=t7i+SBlk3lUCYaG6vkJPsoubw+bwnpJKyyfVhgIRax4cR/W81ESZPNBWuMeoSgmoth
+         lYJu1iJG3GotRFSUqikLMdfX2wl73teNjCfsEmOVs1HwjK79cYACw0je8J70yOiNlSE2
+         fU1L+FoVQXjwIMqqZq33k9LRDe7E6fsH+P7tCUr2Irdnmrn0BfE/FI5e6OwpUh2OfQxz
+         wyohxHGoo6Y8uwibiq5v1WcLoyR5l79TKgwSg1VGJbfYNaQZhQLxLYwNnW/G8OJpRUqN
+         CZjZFcMJPL6b270YmlqxYtm+v3kCDaiTWx4P7nhm8DJQKJ4t39QtTgfYOuIxHNh5PPZ/
+         2ueQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSOJsYECxAn53/rLLA64Uhx7pyvfmzOL+tFlqCdEdiknmETjxvVezjowk9TOve0C+V4AU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy88BegQ3P8FLP1URxBpTWWdxe6jBl+p9EK5ZrwN3BOfEZw9v4t
+	YsVLQpFWKZKWHeIIvjB8Xh8wFQalw9RBwS0f7JsFfLmzMjCzCC3wdScOxUulxzr7crr4DyDT9p+
+	GpQHGcV2AtIuZKI8PW20zM3faZ/nvZLdDM4Nc+Q==
+X-Gm-Gg: ASbGncuQ5qEz9MWw8S1xJHkH53NA7RYuduzuwKw4D5aqXwVPznlrLlidodzZgWAQg9G
+	TAWeyzQe3E7PCxMqJxiV1ODR6XNrj4yHyuAANmtNi8Gkc9HHt4ObjwTZX+YprBLA84Unkiw0j1/
+	9NoOcUYZW3oCilJaEzaDv6b98=
+X-Google-Smtp-Source: AGHT+IGzqA988NBw7sdHyV2pa28mJrkNSc68Mx4LZTYc3yj0PJhv5acQ0zBwmMN9hv6uRI1W/EgLr/AniunkS+8k1Ek=
+X-Received: by 2002:a05:6902:2e05:b0:e6d:f157:c601 with SMTP id
+ 3f1490d57ef6-e7316aa4b6cmr12912739276.17.1745834350357; Mon, 28 Apr 2025
+ 02:59:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Mc8vCgAHLyR8Pw9oAgMVAA--.28245S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr1xCr47JF4rKFyDWw48Zwb_yoW8uF4UpF
-	y3CrnxGr48Jr1xZrnxt3Wqq345Jws5A3WYvF13X340yF15Ar18Xrs8W34FgryUAryIv3yY
-	yFyxtr9rK3WrZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Uu6wNUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiARk9ZWgPB4HeVgAAsp
+References: <20250425111414.2522-1-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20250425111414.2522-1-wsa+renesas@sang-engineering.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 28 Apr 2025 11:58:34 +0200
+X-Gm-Features: ATxdqUESjgj-C7jn03RVVXo_02Q8tUEdsDkHYmNdSurwgrXAz3FKSyh0hhQHxd4
+Message-ID: <CAPDyKFqxHd85DsUH6eZVyoocTDrvwNu+wTLRBq-jUwDY+2iFTg@mail.gmail.com>
+Subject: Re: [PATCH 00/11] mmc: rename mmc_retune_* to mmc_host_retune_*
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-mmc@vger.kernel.org, Adrian Hunter <adrian.hunter@intel.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Aubin Constans <aubin.constans@microchip.com>, Ben Dooks <ben-linux@fluff.org>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Eugen Hristev <eugen.hristev@linaro.org>, 
+	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, Hu Ziji <huziji@marvell.com>, 
+	imx@lists.linux.dev, Jaehoon Chung <jh80.chung@samsung.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	Michal Simek <michal.simek@amd.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, s32@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, Viresh Kumar <vireshk@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-The following changes since commit 0af2f6be1b4281385b618cb86ad946eded089ac8:
+On Fri, 25 Apr 2025 at 13:14, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+>
+> As discussed previously[1], here is the next set of MMC core function
+> renaming to indicate if an action is relevant for the host or for the
+> card. Local build tests went fine, buildbots were happy too.
+>
+> [1] https://lore.kernel.org/r/CAPDyKFpsJpLre2bO9T7gsSthsta9f3JXoXTGZbjTjWVXH47gCw@mail.gmail.com
+>
+> Wolfram Sang (11):
+>   mmc: rename mmc_retune_enable() to mmc_host_retune_enable()
+>   mmc: rename mmc_retune_disable() to mmc_host_retune_disable()
+>   mmc: rename mmc_retune_hold() to mmc_host_retune_hold()
+>   mmc: rename mmc_retune_release() to mmc_host_retune_release()
+>   mmc: rename mmc_retune() to mmc_host_retune()
+>   mmc: rename mmc_retune_pause() to mmc_host_retune_pause()
+>   mmc: rename mmc_retune_unpause() to mmc_host_retune_unpause()
+>   mmc: rename mmc_retune_clear() to mmc_host_retune_clear()
+>   mmc: rename mmc_retune_hold_now() to mmc_host_retune_hold_now()
+>   mmc: rename mmc_retune_recheck() to mmc_host_retune_recheck()
+>   mmc: rename mmc_retune_needed() to mmc_host_retune_needed()
+>
+>  drivers/mmc/core/block.c           | 16 +++++++-------
+>  drivers/mmc/core/core.c            | 28 ++++++++++++------------
+>  drivers/mmc/core/host.c            | 34 +++++++++++++++---------------
+>  drivers/mmc/core/host.h            | 22 +++++++++----------
+>  drivers/mmc/core/mmc.c             |  8 +++----
+>  drivers/mmc/core/mmc_ops.c         | 12 +++++------
+>  drivers/mmc/core/mmc_test.c        |  4 ++--
+>  drivers/mmc/core/sdio.c            |  6 +++---
+>  drivers/mmc/core/sdio_io.c         |  4 ++--
+>  drivers/mmc/host/sdhci-acpi.c      |  4 ++--
+>  drivers/mmc/host/sdhci-esdhc-imx.c |  6 +++---
+>  drivers/mmc/host/sdhci-of-arasan.c |  2 +-
+>  drivers/mmc/host/sdhci-of-at91.c   |  2 +-
+>  drivers/mmc/host/sdhci-of-esdhc.c  |  2 +-
+>  drivers/mmc/host/sdhci-omap.c      |  2 +-
+>  drivers/mmc/host/sdhci-pci-core.c  |  6 +++---
+>  drivers/mmc/host/sdhci-pltfm.c     |  2 +-
+>  drivers/mmc/host/sdhci-pxav3.c     |  4 ++--
+>  drivers/mmc/host/sdhci-s3c.c       |  4 ++--
+>  drivers/mmc/host/sdhci-spear.c     |  2 +-
+>  drivers/mmc/host/sdhci-st.c        |  2 +-
+>  drivers/mmc/host/sdhci-xenon.c     |  2 +-
+>  drivers/mmc/host/sdhci.c           |  2 +-
+>  drivers/mmc/host/sdhci_am654.c     |  2 +-
+>  drivers/mmc/host/tmio_mmc_core.c   |  4 ++--
+>  include/linux/mmc/host.h           |  2 +-
+>  26 files changed, 92 insertions(+), 92 deletions(-)
+>
 
-  Linux 6.15-rc1 (2025-04-06 13:11:33 -0700)
+Sorry if my suggestion was unclear. I only had the MMC_CAP|CAP2_*
+related functions in mind. I think we should leave the mmc_retune*
+functions as is as they are not "can" functions.
 
-are available in the Git repository at:
+mmc_host_cmd23, mmc_host_done_complete, mmc_boot_partition_access,
+mmc_host_uhs. All in drivers/mmc/core/host.h
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.15
+According to your earlier renaming series, we should rename these function too:
+mmc_host_can_cmd23, mmc_host_can_done_complete,
+mmc_host_can_boot_partition, mmc_host_can_uhs
 
-for you to fetch changes up to 5591ce0069ddda97cdbbea596bed53e698f399c2:
+Does this make sense to you?
 
-  arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to usdhc2 (2025-04-27 21:49:30 +0800)
-
-----------------------------------------------------------------
-i.MX fixes for 6.15:
-
-- An i.MX8MP change from Ahmad Fatoum to fix the broken nominal device
-  tree caused by commit 9f7595b3e5ae ("arm64: dts: imx8mp: configure
-  GPU and NPU clocks to overdrive rate")
-- A MAINTAINERS update from Michael Riesch to exclude Sony IMX image
-  sensor drivers from i.MX entry
-- A i.MX95 device tree change from Richard Zhu to correct the range of
-  PCIe app-reg region
-- An opos6ul device tree change from Sébastien Szymanski to fix
-  an Ethernet regression caused by commit c7e73b5051d6 ("ARM: imx:
-  mach-imx6ul: remove 14x14 EVK specific PHY fixup")
-- An imx8mm-verdin device tree change from Wojciech Dubowik to fix
-  a SD card regression caused by commit f5aab0438ef1 ("regulator:
-  pca9450: Fix enable register for LDO5")
-
-----------------------------------------------------------------
-Ahmad Fatoum (1):
-      arm64: dts: imx8mp: configure GPU and NPU clocks in nominal DTSI
-
-Michael Riesch (1):
-      MAINTAINERS: add exclude for dt-bindings to imx entry
-
-Richard Zhu (1):
-      arm64: dts: imx95: Correct the range of PCIe app-reg region
-
-Sébastien Szymanski (1):
-      ARM: dts: opos6ul: add ksz8081 phy properties
-
-Wojciech Dubowik (1):
-      arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to usdhc2
-
- MAINTAINERS                                        |  1 +
- .../boot/dts/nxp/imx/imx6ul-imx6ull-opos6ul.dtsi   |  3 +++
- arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi   | 25 ++++++++++++++++-----
- arch/arm64/boot/dts/freescale/imx8mp-nominal.dtsi  | 26 ++++++++++++++++++++++
- arch/arm64/boot/dts/freescale/imx95.dtsi           |  8 +++----
- 5 files changed, 54 insertions(+), 9 deletions(-)
-
+Kind regards
+Uffe
