@@ -1,144 +1,273 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61F21FF60A;
-	Mon, 28 Apr 2025 07:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9579F2222C1
+	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 08:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745827186; cv=none; b=t0nQxVA6WdWU1MDmyLfve5eiSSZa7JV4dbV+E9MYZKS8ttibMt2pyKMSPM74phYAgaiWW+APNT5nX7TiGYxc/9jWXWvFUKVj0CW04DJVX6XJD7QYJHDoAn2GahSZNuwi29fr6k3YJAuezHqQh4UeuJGAiKVKVpv/lBTvldB7Ctk=
+	t=1745827884; cv=none; b=ruLsPE/TNFbvg586eomUZlrK32gM3P4g4l8qM/R3IugTnyCI1rhd4wtKHdGHhT8dUMqFXs5W9zz9psZmdkMgBgwN+6nBpB51SrxWcUKnwxTdXhSpBMHJCm2snq10aQghUAcG1Hu/wSMdkn1nXUXEJ6HZ4yJe6mPI1B3Md7O9Imk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745827186; c=relaxed/simple;
-	bh=vurruFqLtF8yoeklNaL/NrKmDFnF7HGf/qbXQ8ET/Z4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GLRKNPwXWkyG/ooVsLSMaSLpcQ9LF8PZSG7FPr/bxf68oiyPlJggFWs2MgpCMQV/LpQpMn9MzABRjt0P9JDAV0MFamKzvr/F4ZZEdDZZxPoLTFmC0UDnf2XBYX+j6XT//oPzQqpqAorfgI6oaALiot3Y45XxK5/PPIP2El7ymg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PzJ+lsZA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745827884; c=relaxed/simple;
+	bh=RZNWauRBZ77xwItbGqA7HuXfhu0XZkIoQCM+78qY6HM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jMAp6xHfaRZ4+Toi6PfWPU/C/2fhLrgyeZriUXNDsfjc7yhYjj6DHUzDL1qq4Wondo1IPZ4KewIMqnLf8CO91ZMP7Xr1bqxK1OZYyb+oQ634bXPI/NUAh337kRByAbPlaa1gzlt8nb1KUVZkxAsJTQaacVDj/oXHGxtQ3oRlRpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=QwoydfmJ; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PzJ+lsZA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24E9C4CEE4;
-	Mon, 28 Apr 2025 07:59:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745827185;
-	bh=vurruFqLtF8yoeklNaL/NrKmDFnF7HGf/qbXQ8ET/Z4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PzJ+lsZAS1otJLR8mP6WCOo6R3WaMZo5HTBVvGuciQld5qH+wpHUDzrkUV0UvP6FU
-	 7vqu3JattTkocjlCF/HNPy2RItdz+UItRdmX3MdtmJlRx7fMURg5/QQa0ltd3O+/zV
-	 K8V1/KR5kHgh3M+rkl3h9ZQq08w27TWKAObu1uk/BTv2Za5qHhyM64PrzdKoCtFtqr
-	 g545sVd85CEHiInw1Db2ROtvtDNP5BQ/rzbwKGXCitDUKjIX/Krw/Viy49+mnZB636
-	 vg/GLbRn/rpqfKnV1O3YyAkZ4fAcBwDbRgJiCtVdBaJO/C9qdqMTK9IoNsWyY3JG0E
-	 LrUgxxBVR3bWQ==
-Date: Mon, 28 Apr 2025 09:59:42 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, jun.li@nxp.com, 
-	alexander.stein@ew.tq-group.com, linux-phy@lists.infradead.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] dt-bindings: phy: imx8mq-usb: improve some tuning
- properties
-Message-ID: <20250428-thankful-observant-trogon-a5a003@kuoka>
-References: <20250423094607.1029429-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="QwoydfmJ"
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53S11XbV010761;
+	Mon, 28 Apr 2025 10:10:53 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	PQb6/JrtA/eLzoukWftU2fxvtoqJ28zJBaZAc0hVsHY=; b=QwoydfmJnqrIp1Bs
+	q/5op7P9yWgVMKAfoFEU1jyURgEx+qPUDq86ch/CQCNROm4Mxk9HC6YD7MH4Xtmi
+	3rQphDkC1+X5k47wruX25t+hfl48d3DGpsuF3Prb14wiAMj+EsbVHwphl0Fu3qJz
+	SmEK1tY8GUZaWs/i9ClheBgwg8NcYqTGZ+VSKcG1b0C7i2O4SBvWc3y/7E+zvtYc
+	NiEaxlGfyjdSwBnETaBtVc2kCpyyptb1Xq8l0qLOVuwN/IFbtdMo8w9pvWlHIbyO
+	23nxIBPn1Iz2uNbsjaTymfeLeJPQ8YA5tJnyzsDOlcOhxPHwotSdRgbyLDKFfAI7
+	tGWyzA==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 468pcg5gx0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Apr 2025 10:10:53 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id EF3BA4004F;
+	Mon, 28 Apr 2025 10:09:12 +0200 (CEST)
+Received: from Webmail-eu.st.com (eqndag1node6.st.com [10.75.129.135])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C8252A342DD;
+	Mon, 28 Apr 2025 10:07:54 +0200 (CEST)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE6.st.com
+ (10.75.129.135) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 28 Apr
+ 2025 10:07:54 +0200
+Received: from [10.48.86.121] (10.48.86.121) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 28 Apr
+ 2025 10:07:52 +0200
+Message-ID: <4e6840e5-34a7-4f15-a13a-1ff1ea5eff85@foss.st.com>
+Date: Mon, 28 Apr 2025 10:07:51 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250423094607.1029429-1-xu.yang_2@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] of: reserved_mem: Add functions to parse
+ "memory-region"
+To: "Rob Herring (Arm)" <robh@kernel.org>,
+        Saravana Kannan
+	<saravanak@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Bjorn
+ Andersson" <andersson@kernel.org>,
+        Mathieu Poirier
+	<mathieu.poirier@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer
+	<s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Patrice Chotard
+	<patrice.chotard@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Chen-Yu Tsai
+	<wens@kernel.org>
+CC: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-remoteproc@vger.kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-arm-msm@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Daniel Baluta
+	<daniel.baluta@nxp.com>
+References: <20250423-dt-memory-region-v2-v2-0-2fbd6ebd3c88@kernel.org>
+ <20250423-dt-memory-region-v2-v2-1-2fbd6ebd3c88@kernel.org>
+Content-Language: en-US
+From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+Organization: STMicroelectronics
+In-Reply-To: <20250423-dt-memory-region-v2-v2-1-2fbd6ebd3c88@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-28_03,2025-04-24_02,2025-02-21_01
 
-On Wed, Apr 23, 2025 at 05:46:06PM GMT, Xu Yang wrote:
-> Commit b2e75563dc39 ("dt-bindings: phy: imx8mq-usb: add phy tuning
-> properties") add many tuning properties, but some parameter value doesn't
-> match the register description. It made some changes based on the original
-> value: add offset to a negative number so turn it to a non-negative number.
-> However, this conversion bring many pain when some properties need to be
-> improved.
+Hello Rob,
+
+On 4/23/25 21:42, Rob Herring (Arm) wrote:
+> Drivers with "memory-region" properties currently have to do their own
+> parsing of "memory-region" properties. The result is all the drivers
+> have similar patterns of a call to parse "memory-region" and then get
+> the region's address and size. As this is a standard property, it should
+> have common functions for drivers to use. Add new functions to count the
+> number of regions and retrieve the region's address as a resource.
 > 
-> Because device-tree supports negative parameter number, this will improve
-> some propertie's parameter.
-> 
-> Mainly include below properties:
->  - fsl,phy-tx-vref-tune-percent
->  - fsl,phy-tx-rise-tune-percent
->  - fsl,phy-comp-dis-tune-percent
-> 
-> The parameter value of above 3 properties are USB PHY specific. i.MX8MP
-> and i.MX95 USB PHY has different meanings. So this add restrictions for
-> them.
-> 
->  - fsl,phy-tx-vboost-level-microvolt
-> 
-> For this property, the parameter value is wrong in register description.
-> This will correct it according to true value.
-> 
-> For detailed info, please refer to i.MX8MP and i.MX95 latest reference
-> manual.
-> 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 > ---
->  .../bindings/phy/fsl,imx8mq-usb-phy.yaml      | 43 +++++++++++++++----
->  1 file changed, 35 insertions(+), 8 deletions(-)
+> v2:
+>  - Wrap function parameters
+> ---
+>  drivers/of/of_reserved_mem.c    | 80 +++++++++++++++++++++++++++++++++++++++++
+>  include/linux/of_reserved_mem.h | 26 ++++++++++++++
+>  2 files changed, 106 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> index daee0c0fc915..b09e3dab4c59 100644
-> --- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> @@ -43,15 +43,11 @@ properties:
->    fsl,phy-tx-vref-tune-percent:
->      description:
->        Tunes the HS DC level relative to the nominal level
-> -    minimum: 94
-> -    maximum: 124
-
-Widest constraints should always stay here.
-
+> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+> index ee2e31522d7e..f87915cce961 100644
+> --- a/drivers/of/of_reserved_mem.c
+> +++ b/drivers/of/of_reserved_mem.c
+> @@ -12,6 +12,7 @@
+>  #define pr_fmt(fmt)	"OF: reserved mem: " fmt
 >  
->    fsl,phy-tx-rise-tune-percent:
->      description:
->        Adjusts the rise/fall time duration of the HS waveform relative to
->        its nominal value
-> -    minimum: 97
-> -    maximum: 103
->  
->    fsl,phy-tx-preemp-amp-tune-microamp:
->      description:
-> @@ -63,15 +59,12 @@ properties:
->    fsl,phy-tx-vboost-level-microvolt:
->      description:
->        Adjust the boosted transmit launch pk-pk differential amplitude
-> -    minimum: 880
-> -    maximum: 1120
-> +    enum: [844, 1008, 1156]
->  
->    fsl,phy-comp-dis-tune-percent:
->      description:
->        Adjust the voltage level used to detect a disconnect event at the host
->        relative to the nominal value
-> -    minimum: 91
-> -    maximum: 115
->  
->    fsl,phy-pcs-tx-deemph-3p5db-attenuation-db:
->      description:
-> @@ -112,6 +105,40 @@ allOf:
->          reg:
->            maxItems: 1
->  
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - fsl,imx8mq-usb-phy
-> +            - fsl,imx8mp-usb-phy
-> +    then:
-> +      properties:
-> +        fsl,phy-tx-vref-tune-percent:
-> +          minimum: -6
-> +          maximum: 24
+>  #include <linux/err.h>
+> +#include <linux/ioport.h>
+>  #include <linux/libfdt.h>
+>  #include <linux/of.h>
+>  #include <linux/of_fdt.h>
+> @@ -740,3 +741,82 @@ struct reserved_mem *of_reserved_mem_lookup(struct device_node *np)
+>  	return NULL;
+>  }
+>  EXPORT_SYMBOL_GPL(of_reserved_mem_lookup);
+> +
+> +/**
+> + * of_reserved_mem_region_to_resource() - Get a reserved memory region as a resource
+> + * @np:		node containing 'memory-region' property
+> + * @idx:	index of 'memory-region' property to lookup
+> + * @res:	Pointer to a struct resource to fill in with reserved region
+> + *
+> + * This function allows drivers to lookup a node's 'memory-region' property
+> + * entries by index and return a struct resource for the entry.
+> + *
+> + * Returns 0 on success with @res filled in. Returns -ENODEV if 'memory-region'
+> + * is missing or unavailable, -EINVAL for any other error.
+> + */
+> +int of_reserved_mem_region_to_resource(const struct device_node *np,
+> +				       unsigned int idx, struct resource *res)
+> +{
+> +	struct reserved_mem *rmem;
+> +
+> +	if (!np)
+> +		return -EINVAL;
+> +
+> +	struct device_node __free(device_node) *target = of_parse_phandle(np, "memory-region", idx);
+> +	if (!target || !of_device_is_available(target))
+> +		return -ENODEV;
+> +
+> +	rmem = of_reserved_mem_lookup(target);
+> +	if (!rmem)
+> +		return -EINVAL;
+> +
+> +	resource_set_range(res, rmem->base, rmem->size);
+> +	res->name = rmem->name;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(of_reserved_mem_region_to_resource);
+> +
+> +/**
+> + * of_reserved_mem_region_to_resource_byname() - Get a reserved memory region as a resource
+> + * @np:		node containing 'memory-region' property
+> + * @name:	name of 'memory-region' property entry to lookup
+> + * @res:	Pointer to a struct resource to fill in with reserved region
+> + *
+> + * This function allows drivers to lookup a node's 'memory-region' property
+> + * entries by name and return a struct resource for the entry.
+> + *
+> + * Returns 0 on success with @res filled in. Returns -ENODEV if 'memory-region'
+> + * is missing or unavailable, -EINVAL for any other error.
 
-That's ABI break with vague reason "some pain".
+of_property_match_string() can return some other error values.
 
-Best regards,
-Krzysztof
+Thanks,
+Arnaud
 
+> + */
+> +int of_reserved_mem_region_to_resource_byname(const struct device_node *np,
+> +					      const char *name,
+> +					      struct resource *res)
+> +{
+> +	int idx;
+> +
+> +	if (!name)
+> +		return -EINVAL;
+> +
+> +	idx = of_property_match_string(np, "memory-region-names", name);
+> +	if (idx < 0)
+> +		return idx;
+> +
+> +	return of_reserved_mem_region_to_resource(np, idx, res);
+> +}
+> +EXPORT_SYMBOL_GPL(of_reserved_mem_region_to_resource_byname);
+> +
+> +/**
+> + * of_reserved_mem_region_count() - Return the number of 'memory-region' entries
+> + * @np:		node containing 'memory-region' property
+> + *
+> + * This function allows drivers to retrieve the number of entries for a node's
+> + * 'memory-region' property.
+> + *
+> + * Returns the number of entries on success, or negative error code on a
+> + * malformed property.
+> + */
+> +int of_reserved_mem_region_count(const struct device_node *np)
+> +{
+> +	return of_count_phandle_with_args(np, "memory-region", NULL);
+> +}
+> +EXPORT_SYMBOL_GPL(of_reserved_mem_region_count);
+> diff --git a/include/linux/of_reserved_mem.h b/include/linux/of_reserved_mem.h
+> index e338282da652..f573423359f4 100644
+> --- a/include/linux/of_reserved_mem.h
+> +++ b/include/linux/of_reserved_mem.h
+> @@ -7,6 +7,7 @@
+>  
+>  struct of_phandle_args;
+>  struct reserved_mem_ops;
+> +struct resource;
+>  
+>  struct reserved_mem {
+>  	const char			*name;
+> @@ -39,6 +40,12 @@ int of_reserved_mem_device_init_by_name(struct device *dev,
+>  void of_reserved_mem_device_release(struct device *dev);
+>  
+>  struct reserved_mem *of_reserved_mem_lookup(struct device_node *np);
+> +int of_reserved_mem_region_to_resource(const struct device_node *np,
+> +				       unsigned int idx, struct resource *res);
+> +int of_reserved_mem_region_to_resource_byname(const struct device_node *np,
+> +					      const char *name, struct resource *res);
+> +int of_reserved_mem_region_count(const struct device_node *np);
+> +
+>  #else
+>  
+>  #define RESERVEDMEM_OF_DECLARE(name, compat, init)			\
+> @@ -63,6 +70,25 @@ static inline struct reserved_mem *of_reserved_mem_lookup(struct device_node *np
+>  {
+>  	return NULL;
+>  }
+> +
+> +static inline int of_reserved_mem_region_to_resource(const struct device_node *np,
+> +						     unsigned int idx,
+> +						     struct resource *res)
+> +{
+> +	return -ENOSYS;
+> +}
+> +
+> +static inline int of_reserved_mem_region_to_resource_byname(const struct device_node *np,
+> +							    const char *name,
+> +							    struct resource *res)
+> +{
+> +	return -ENOSYS;
+> +}
+> +
+> +static inline int of_reserved_mem_region_count(const struct device_node *np)
+> +{
+> +	return 0;
+> +}
+>  #endif
+>  
+>  /**
+> 
