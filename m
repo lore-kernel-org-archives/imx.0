@@ -1,45 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93610757F3;
-	Mon, 28 Apr 2025 06:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053DDBE67;
+	Mon, 28 Apr 2025 07:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745823566; cv=none; b=LgF/NvQBnY1AgTuImqaTB9AQm52r2G8T9gVmE7cxyHXp2XcJGwXpjFXadc2pi/yOsE5V68ZzG7JteXBHaYZprVeqyfUZg8iWmpOINxYp3juteprV83/x2RJbAdOX/OeE+DCEKSKLNqqEWwlRjBY8TisyXIH/RzowY4LNv51AnUQ=
+	t=1745824692; cv=none; b=YBrpTY4j1kr9UlgAS/oCUNdpGbrFbzfcF0Mrd888bmpLTwh4zg9nfknJ8wRtrSWba6/UPPWdt184UqoolhxO4RD4LYUJKLzrY1o/FV7quh5Q9t5UcyJvo03tDDd5ItS0+ge592q/pc99JqT8+U7DLHZ1s24kxqz8oST7RjMOx4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745823566; c=relaxed/simple;
-	bh=NjZjaesi/xJEEaiOj1GfSTanxXQS8uoOntzAyCFJJpk=;
+	s=arc-20240116; t=1745824692; c=relaxed/simple;
+	bh=/0xPqEi4eGB7ZunkNZvmwTimsz0kANTHGgLoKeMuoqQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TX9Qh0iwDJznnezhBgPWo2BOXAzJX8JHlhgBg7jTYx3DtcaWKgAAiTTZ3thRR/hkOL1NstP7NIHdCA1XZLSBFhN7FcgwK/5k0VUrNKTixWUQwVlltliCAzFZtWgiIt6JSbjn7njDATgg8LOaC9+Kp6HWNEAP3riEGaY1220ohEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C4Q/lsqA; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=q8vawX6OHU0DmUNw5rqnebyuJxmJjbvtS1ZyNAwzbjeCXcUwph2TV9uEvjNMV0VHWgfspCuWBg3zZm8Zhf07n5vT7FFCv8gx6z3JtorS4Tt9nk9biAL0R7ljX/fqEMV3YKdXR/yV5bK5kB96UuZrzPnNoHMR7KyqnTFet/SkPDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwTJQr9y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C4Q/lsqA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6DCC4CEE4;
-	Mon, 28 Apr 2025 06:59:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwTJQr9y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8874C4CEE4;
+	Mon, 28 Apr 2025 07:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745823566;
-	bh=NjZjaesi/xJEEaiOj1GfSTanxXQS8uoOntzAyCFJJpk=;
+	s=k20201202; t=1745824691;
+	bh=/0xPqEi4eGB7ZunkNZvmwTimsz0kANTHGgLoKeMuoqQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C4Q/lsqAp6xsE+SQgVLcmNfCP3Xc/pgT3AMTa2iDfOrBQDv8ytR8Ka0ZlaYKinZBa
-	 YdIem+llaGJSuy0rmgm4e1j6+uIXHBb3KuxTubQdV1FOHWci55IYEVwShN+nGFgk5R
-	 HzPhpv1YtQYFX+4VkMgvqaeBiCSMn2XpvQ4Dum9FvYjLY/mRLhdVoXUDJaWSEadt5I
-	 KjZLBT6rQliZStdsv0071JTXcmHDLVIw41W/EnsQT7UlbQXN70yP2/TTs6TX8L9yBT
-	 Ah8IdlFnHjw0tgisn4Y589fJ/Q5giLkraa6WKVIwUwAZ54O5ioUja5ly/iF8vVAYNg
-	 ZROxyxm3zG+1g==
-Date: Mon, 28 Apr 2025 08:59:23 +0200
+	b=rwTJQr9y96C4JJI8SsaD3r2Oo+hM+AZaPvjhjKbfHV6aiFs+V7TSR/10eiXqUHDKI
+	 ycX5ZC8uWeCbSf2VlQ3jOb/9UfGPSNjB3j9S2ukYb3jtGTo6mjogkvXQ0vLzWq4aYU
+	 Vhg8PnkG9Fb4GEjyzq812JAfZKWGZeDojY8RdPaJ2s3dhwmHSSU4EVHIA+eZrgGN9x
+	 FRxLZcAV8wXlecHWk4wRxPLQmiZQRyeaOhl0hbxWa4TvWKd8k4fHMEd+q5kSl3Xmnn
+	 W3+umR7NY0uYJN8Hjjf8R36L0cPcWqjLY7Fd8Y5FPHRqF16nNFqifCsXox5MoDCkuJ
+	 7B3GrmOnBesKQ==
+Date: Mon, 28 Apr 2025 09:18:08 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: carlos.song@nxp.com
-Cc: miquel.raynal@bootlin.com, Frank.Li@nxp.com, 
-	alexandre.belloni@bootlin.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, conor.culhane@silvaco.com, linux-i3c@lists.infradead.org, 
-	imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH V4 1/3] dt-bindings: i3c: silvaco,i3c-master: add i.MX94
- and i.MX95 I3C
-Message-ID: <20250428-topaz-mamba-of-pride-cead0a@kuoka>
-References: <20250427083230.3325700-1-carlos.song@nxp.com>
- <20250427083230.3325700-2-carlos.song@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: fsl: convert fsl,vf610-mscm-ir.txt
+ to yaml format
+Message-ID: <20250428-sticky-thistle-booby-fab337@kuoka>
+References: <20250424030305.3868637-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,20 +45,15 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250427083230.3325700-2-carlos.song@nxp.com>
+In-Reply-To: <20250424030305.3868637-1-Frank.Li@nxp.com>
 
-On Sun, Apr 27, 2025 at 04:32:28PM GMT, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
+On Wed, Apr 23, 2025 at 11:03:03PM GMT, Frank Li wrote:
+> Convert fsl,vf610-mscm-ir.txt to yaml format.
 > 
-> Add compatible string "nxp,imx94-i3c" and "nxp,imx95-i3c" for the i.MX94
-> chip and i.MX95 chip. Backward is compatible with "silvaco,i3c-master-v1".
+> Additional changes:
+> - remove label at example dts.
 > 
-> Also i.MX94 and i.MX95 I3C only need two clocks and Legacy I3C needs
-> three clocks. So add restrictions for clock and clock-names properties
-> for different Socs.
-> 
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
