@@ -1,106 +1,202 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD91E27C858
-	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 16:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90B81D5176;
+	Mon, 28 Apr 2025 16:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745857326; cv=none; b=K3xS1qB4s49LaK/aiLLUT7K/tOykWlFsY8FtYJLgksOyKMU21dzjqiLgTdNBcS3iCdh1O61ibP9vSiE+mT1r+tcsRvsjLWwUgdIv+37gzPin+K9GJGx65EZ/p9fbRyByCYKxJtt9Tyos38ky/tbmMpNgMtay/brD/I5Cc/QpVnY=
+	t=1745858064; cv=none; b=Mms5IfFIfarjxhqpJPgwaM9KUWso023a04/qlaDKOzzGuR5xAjuBIoMbwBfSWywhYcKX91ul1l+vJr1FOJqszWCQZDtJhvZNBYI5cYhUdig8qzLu+PCq7vYw/WquK6Q91Hvy7XzWiNWU3Xm9gr4Z/kWd4CTOL9xFfE5Fc/Wy32U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745857326; c=relaxed/simple;
-	bh=bpFyqVnuV1089Ku+5ux8rJ2ecmqFhHkgxj5EiEeZRv8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xv9n5UVhfNSzVuClmj3xke1Wv2lAI0PWajn2N+UKolg8I10brzSwy4EHUnWblxIqfPebirD718UE2TJuzj+Xh2Lm9plxcPqmmP8Ah2/hDRH/79lTpxfWzL96ncdVgWR9z5dIoumqZsqPvjgHhhLyxtKlH8/OTSYSeEP/PS3KGb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Zd3qwF/0; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1745858064; c=relaxed/simple;
+	bh=XWL8UolMeNZmPHHotkwGV8h0TGYlW+ze8mtg/kLlngg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BN9+zEaAx4wJj9rvWGWrfCFvOt+uLygC6hjPTZvjfOP2sCD3mmKlyjBGFrKDWE5wYZy9vnDWLW7QvvHNR7yC9BBWWPjWLQ43H3mr0QcT7MiggKkGB6F0r+zndcedKRK8Bzl6B3ui+TddAtLOxQ4u8WMUXVTnOYy+D3mkbP5532M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=A5vI5CPA; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Zd3qwF/0"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-70821dba48eso38395157b3.0
-        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 09:22:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745857324; x=1746462124; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jYJtlwUK9gE9rMaYOlbOBvLsJs+lLIqjK+LtZtlE7Pg=;
-        b=Zd3qwF/01xoXcAQt8pYwaWJkqvhS5dLMRi+BFAyC+byhlY1cYqcdwwTagArIrFcKnh
-         5whYhcBFxoOqasOK8RvIo/K9lU4xqG9+sLbul1jWDFgBr425fwW7ArKxOxzLnWxsSGJL
-         zcitCWIvRZEiOJbTUfnqxX1oWwe9iRao92uTYee6qZbb2yBMS8faoC5x7odopPHTEA5N
-         znyFXTYcAjZ4O5qumPct8Jtmx2lbfllAtMB6PcfnMY1zaurfs1iCZILy2H+2DZWAybQH
-         995zVpNmSKueJnTqZNKM8Wv8b+3XwaN+AHdN1KfGOpNPGce7bI1Jzxaf80sLqVrIpSJ3
-         GVkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745857324; x=1746462124;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jYJtlwUK9gE9rMaYOlbOBvLsJs+lLIqjK+LtZtlE7Pg=;
-        b=TwVeGUetJve+/9a1rxQuP3MXq+Yk9pu1SIltI28mpIr1h7FS5WzKLoLzH+Pxgs/PKu
-         vp3DMA+ABeSkMXywAGTB/HE4y3dnZ3Hh6YLz8qj9f1WCQV9IbvIQPMhwzJr8ilvSd67l
-         CyMMeYykuSLQ6NzS8rlCmVu3ygW+0O4aHyRPYw1TnYXA84fzdVkaK5JWmmjz+LHvh9iT
-         6ojm2M3Q15XPzHsIvMnAuRt1sUH/6nXWfduCy4llpPrCtIDPchp0PR52rRxjb5aXa5kP
-         waU3C3SIjLTHltTXJKf6/iV6MDGsvUa1wFb7G/NVMITmLtDBe/5FxHDBszRAe+naTwan
-         o/FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXmYQjQIn5M9kDHkuZDmx8PQZ2oK33/npWwsIkfHRAGE60LJGSU08PYmkVjrgyFoeldscY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzmXEOU2kDrZBGyMv9h94/TnyCZkBq7cuYo6RVOtyvx4OOS6PcK
-	h0dmxWthiRQhShfFBc1Aduqecksqd2HAE9n/4Q++3mhiKIDQwyim7pzBwyBr+nx/+BKT5B7rVm0
-	iGzCM3zKjdnwLK2bwAel7Z6r02sWMewzSVAiXhg==
-X-Gm-Gg: ASbGnctbasj/6LF42JGIHG84eXhmWMKsRQKhYfXwxObaNXF4LJfx7KYWyGIOA8KaxWB
-	754kYbS8jMPzjpsL+JVORbajU7OacEIlarv/R2oXHcxXB96WrCpClb8CAHAiou7w9DnlAKbJtOH
-	iKvq+j+gDAyJteQ80ZLIb9n6Y=
-X-Google-Smtp-Source: AGHT+IEnuPZVaSvesgsXBNiFjLoJWiZy53DGC9o8Sp1zW11942XKrl2X+yuR17blEKZkX8LjsFHcDXXyS5d8LGqn8s4=
-X-Received: by 2002:a05:690c:4905:b0:6ee:8363:96d3 with SMTP id
- 00721157ae682-7085f23733bmr133253447b3.27.1745857323624; Mon, 28 Apr 2025
- 09:22:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="A5vI5CPA"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F39DA43962;
+	Mon, 28 Apr 2025 16:33:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1745858053;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0+W4uodyxoQUQ7gTcLqHUOqlDvIcEkj4yx+1gWHy3Mc=;
+	b=A5vI5CPAhG7Ec31vAslCrct99yDYQUT4yEVpjGag1L5A3ypdDOeM06X6a2NpNi4YWnE6mC
+	2NyQNklaS4GH5N+Y0O0KorENjPo6XmIKRUe43hr2bljZ9KcS30qPhwmXIPUFXXOTPm5XIu
+	n26mA6Au7+KoHn580KonEgnc/bZs1s5A97JkVcqC4ISpJzXNYjj+t+twS22sMPY2EzjhQZ
+	iio59hjvBN4KHAeTHadmXNHM9e/08/R+WKLujQCoy1O7rhd/OkZ8uYxTFLAP+7H0ewrqHT
+	6PMrAxpgk6up77rZyTiJAqPjC9S4tcckhsI1eEGu3LR+due+PAeNxJSMadl6Qw==
+Date: Mon, 28 Apr 2025 18:33:58 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
+ Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
+ <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Douglas Anderson
+ <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof
+ Kozlowski <krzk@kernel.org>, Anusha Srivatsa <asrivats@redhat.com>, Paul
+ Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, Hui
+ Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
+ asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ chrome-platform@lists.linux.dev, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-stm32@st-md-mailman.stormreply.com, Adam Ford <aford173@gmail.com>,
+ Adrien Grassein <adrien.grassein@gmail.com>, Aleksandr Mishin
+ <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>, AngeloGioacchino
+ Del Regno <angelogioacchino.delregno@collabora.com>, Benson Leung
+ <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, Christoph
+ Fritz <chf.fritz@googlemail.com>, Cristian Ciocaltea
+ <cristian.ciocaltea@collabora.com>, Detlev Casanova
+ <detlev.casanova@collabora.com>, Dharma Balasubiramani
+ <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, Heiko
+ Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne
+ Grunau <j@jannau.net>, Jerome Brunet <jbrunet@baylibre.com>, Jesse Van
+ Gavere <jesseevg@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Kieran
+ Bingham <kieran.bingham+renesas@ideasonboard.com>, Liu Ying
+ <victor.liu@nxp.com>, Manikandan Muralidharan <manikandan.m@microchip.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Phong LE
+ <ple@baylibre.com>, Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang
+ <sugar.zhang@rock-chips.com>, Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi
+ Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Vitalii Mordan
+ <mordan@ispras.ru>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?=
+ <ilpo.jarvinen@linux.intel.com>, Bryan O'Donoghue
+ <bryan.odonoghue@linaro.org>, Hans de Goede <hdegoede@redhat.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>, Dmitry
+ Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, "Rob Herring (Arm)"
+ <robh@kernel.org>, Hsin-Te Yuan <yuanhsinte@chromium.org>, Pin-yen Lin
+ <treapking@chromium.org>, Xin Ji <xji@analogixsemi.com>, Aradhya Bhatia
+ <a-bhatia1@ti.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Ian
+ Ray <ian.ray@ge.com>, Martyn Welch <martyn.welch@collabora.co.uk>, Peter
+ Senna Tschudin <peter.senna@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Herve Codina <herve.codina@bootlin.com>, Alim
+ Akhtar <alim.akhtar@samsung.com>, Inki Dae <inki.dae@samsung.com>, Kyungmin
+ Park <kyungmin.park@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Abhinav Kumar
+ <quic_abhinavk@quicinc.com>, Bjorn Andersson <quic_bjorande@quicinc.com>,
+ Marijn Suijten <marijn.suijten@somainline.org>, Rob Clark
+ <robdclark@gmail.com>, Sean Paul <sean@poorly.run>, Helge Deller
+ <deller@gmx.de>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Philippe Cornu <philippe.cornu@foss.st.com>,
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Yannick Fertre
+ <yannick.fertre@foss.st.com>, =?UTF-8?B?TWHDrXJh?= Canal
+ <mcanal@igalia.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Alain Volmat
+ <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>,
+ Michal Simek <michal.simek@amd.com>
+Subject: Re: [PATCH v2 00/34] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+Message-ID: <20250428183358.4d28ca6a@booty>
+In-Reply-To: <20250428-colossal-fiery-alpaca-8c5fee@houat>
+References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
+	<20250428172457.23e23df5@booty>
+	<20250428-colossal-fiery-alpaca-8c5fee@houat>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250417151300.3570021-1-Frank.Li@nxp.com>
-In-Reply-To: <20250417151300.3570021-1-Frank.Li@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 28 Apr 2025 18:21:27 +0200
-X-Gm-Features: ATxdqUFvglZC6L-IAvGpqWBDcRfYWiynLM-kZ_f4pW7hBaIPW-FcbcKpWQ_mW_g
-Message-ID: <CAPDyKFpEGn=xcaG=QF4KkvLxwN3Ak41dJ=1mgY5oDn2pRYJktQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] dt-bindings: mmc: fsl,esdhc: add compatible string fsl,ls1021a-esdhc
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, 
-	"open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..." <linux-mmc@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddviedugeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfetudeugfehheeliefhjeejuddvledtuddttdevledthfehgeeugfetheekgfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddtkedprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepthiiihhmmhgvrhhmr
+ ghnnhesshhushgvrdguvgdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrgh
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-On Thu, 17 Apr 2025 at 17:13, Frank Li <Frank.Li@nxp.com> wrote:
->
-> Add compatible string fsl,ls1021a-esdhc for LS1021a SoC.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Hi Maxime,
 
-Applied for next, thanks!
+On Mon, 28 Apr 2025 17:42:46 +0200
+Maxime Ripard <mripard@kernel.org> wrote:
 
-Kind regards
-Uffe
+> On Mon, Apr 28, 2025 at 05:24:57PM +0200, Luca Ceresoli wrote:
+> > Hi Maxime, other DRM maintainers,
+> >=20
+> > On Thu, 24 Apr 2025 20:59:07 +0200
+> > Luca Ceresoli <luca.ceresoli@bootlin.com> wrote:
+> >  =20
+> > > devm_drm_bridge_alloc() [0] is the new API to allocate and initialize=
+ a DRM
+> > > bridge, and the only one supported from now on. It is also necessary =
+for
+> > > implementing reference counting and thus needed to support removal of
+> > > bridges from a still existing DRM pipeline without use-after-free.
+> > >=20
+> > > This series converts all DRM bridges to the new API.
+> > >=20
+> > > Patch 1 uses a coccinelle semantic patch to mass-convert some of those
+> > > drivers -- thanks Maxime for having suggested the patch that served a=
+s a
+> > > starting point for me. I was unable to come up with a better patch
+> > > converting more drivers though, so I converted all others manually. M=
+ost of
+> > > them were trivial. I left the non-trivial ones at the end of the seri=
+es to
+> > > help reviewers know where to look at more carefully.
+> > >=20
+> > > Due to the large number of touched files, the list of recipients gene=
+rated
+> > > by get_maintainers (b4 actually) was huge, 60~70 people (not counting
+> > > mailing lists), so I took the liberty of trimming the list as reasona=
+bly as
+> > > I could to DRM maintainers and frequent contributors, and added all o=
+ther
+> > > recipients individually per-patch. I hope this is fine. Don't hesitat=
+e to
+> > > suggest more people which should be Cc-ed in a future series, or a be=
+tter
+> > > Cc policy.
+> > >=20
+> > > Current plan and status of the DRM bridge refcounting work:
+> > >=20
+> > >  A. =E2=9C=94 add new alloc API and refcounting -> (now in drm-misc-n=
+ext)
+> > >  B. =E2=9E=9C convert all bridge drivers to new API (this series)
+> > >  C. =E2=80=A6 documentation, kunit tests, debugfs improvements (v1 un=
+der discussion)
+> > >  D. after (B), add get/put to drm_bridge_add/remove() + attach/detech=
+()
+> > >  E. after (B), convert accessors; this is a large work and can be done
+> > >     in chunks =20
+> >
+> > Maintaining this long series is quite painful. Do you think at least
+> > patches with a R-by or T-by tag could be merged before I send v3, so
+> > we can relieve the maintenance effort, mail servers, and everybody's
+> > inboxes? =20
+>=20
+> Yes?
+>=20
+> What's stopping you though? You have at least a colleague that can apply
+> them, and you could just as well apply for commit rights yourself.
 
+OK, thanks. Will do.
 
-> ---
->  Documentation/devicetree/bindings/mmc/fsl,esdhc.yaml | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/mmc/fsl,esdhc.yaml b/Documentation/devicetree/bindings/mmc/fsl,esdhc.yaml
-> index b86ffb53b18b5..62087cf920df8 100644
-> --- a/Documentation/devicetree/bindings/mmc/fsl,esdhc.yaml
-> +++ b/Documentation/devicetree/bindings/mmc/fsl,esdhc.yaml
-> @@ -24,6 +24,7 @@ properties:
->            - fsl,t1040-esdhc
->            - fsl,t4240-esdhc
->            - fsl,ls1012a-esdhc
-> +          - fsl,ls1021a-esdhc
->            - fsl,ls1028a-esdhc
->            - fsl,ls1088a-esdhc
->            - fsl,ls1043a-esdhc
-> --
-> 2.34.1
->
+The reason I haven't done it is this policy in DRM still appears a bit
+unusual to me, but if it works for DRM I'm OK with it. Only, in case of
+doubt, I didn't want to risk abusing of the commit rights.
+
+Best regards,
+Luca
+
+--=20
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
