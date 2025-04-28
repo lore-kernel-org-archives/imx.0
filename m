@@ -1,136 +1,222 @@
-Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com [209.85.215.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A5F5684
-	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 04:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16608635
+	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 06:46:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745816281; cv=none; b=frc5Friy3ve1X1DpkcDxySwK3hBLLqbzHpyp20qKxHInPo/S+ci1JukZyl75bVOHwgMznEcyHWMMctVBm6DhDu9AAhOIKUC2KED8n0xXn63tTRgMrCu3OOqlmQacu+5dXG/tGwPV3mJwrePALjy5PSTpZtX+TnwtaQjGVN/g4JM=
+	t=1745822817; cv=none; b=cTVyYDbbi9puJvwqApG8sZrrW3+FM7o3JPgZKAuTtn5cMMbH0DBqp+BwfiwELpCvXfg5Mf2bFduwCLTWmt+OFENjyxrtS3nSCLGXoFF+bq3zgk5ewykDJnACAJCU/hdw1yMsYzTQpTGBamttg6fyTM4Q/B0XHnkLCrWNRdYu6lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745816281; c=relaxed/simple;
-	bh=1Pd7BEe/5QE2amsE/bVBdnxt7TNs1q6JsqYcbWm4USg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E043Cy9s5ysUKPYU//PcsWbUVaHuv5zcl2zAAjnixoL1SPS1MkG3wg7HaQvONL5fpy1We9NfH22nLJulBUr0caBiXENyZTrWTYgV3hM2EG0lpjHT7IZ6NEjxKwrHQARWCSD6JfJiMYofFYOf9xXp0nZ1Df9CeQyLU/xsy5sV0H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SzUqGFJ6; arc=none smtp.client-ip=209.85.215.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745822817; c=relaxed/simple;
+	bh=RSrxkyaX9/8vKxjAvg5Op68zkrUI3xcDkjLdcziaXDs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BcJa9TfmsmWoqlqDKhLYit74OtT3Urb+D8q3SUglahAuFDbyPmyQXvBb2nvAsMTVAss3i26MP4WCSJM2YmtPpgP2vpQ3ckarzlF2IxdE0MtsQ742wh8n4zXrFV7TWGAC51dWpIlJKvO3/6PtV4A+5griW9mfDLZqcIdBuiWVW+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=iTdhBYLZ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=RgcF2MEx reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SzUqGFJ6"
-Received: by mail-pg1-f193.google.com with SMTP id 41be03b00d2f7-b1396171fb1so2693296a12.2
-        for <imx@lists.linux.dev>; Sun, 27 Apr 2025 21:57:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="iTdhBYLZ";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="RgcF2MEx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745816279; x=1746421079; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iPBvAyUU311bbG2aZ0BYl5mxeYY4FqGUEKf9879Dmxk=;
-        b=SzUqGFJ6BAwkpf+582LFDFXn8ejkugjiQP5muMgYUvJaA4x9y1V6bU/Na+Nzq0N27L
-         PZEw9xTdkJTmCMi6qTZizq0qUIsXMSyTnnF3efezq2AYcetxC7ZoMXcBNTRvsI1HWh4W
-         yrip2Y97xjjPvVETmCMVPwacdxStkdZdmv4+RJHO5utjKFHgo8VSAfgqj9GLpPEgGRFG
-         40d+0nP2M0QSqcWBGGo75K+G8bzkxhn1OxxW0Q5aC6fMhmK9xxSqPQoXImuIvujuaeNb
-         Wl8Ix/jpd7F5G3h7BbmfhN+pKYszPzlZhSTUXxbpSy6VBHnw7tJtWOH1g3j3eA4QiDN8
-         ItmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745816279; x=1746421079;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iPBvAyUU311bbG2aZ0BYl5mxeYY4FqGUEKf9879Dmxk=;
-        b=bFp7mJdL6ZiJwbHMy8Pzt2LG/mm9VeVGE0R32Wjk0bH1vzN5wHCgTbZFYBB9FRNG8j
-         WTt6Q/QRj8NayfqnDmoFg0nqdAkGMU5pglYgDpKn4AVKK03QbaxaZ4LagKONOaalUNKc
-         GbjJuGtWpuh6wd9EkeLR3Tv0QmP1SP26dJrMqgy/zhF38saVdYQm/fMV6dbtKkqHp3fk
-         g1lppGSvvzcR94FK0PuGugvilirUvnCrvoXOJpoaRQqa2/7nRiZFwRkISJ35crqsCA74
-         bjPpQd74NR9aNhUt73NsXCCSDeiIF9O67I/G+XEIKNQh1sUKECPwOPL0l17hfCW6xWQi
-         hGQg==
-X-Forwarded-Encrypted: i=1; AJvYcCW91oeyFs9uNu9kupEgFniRg280PDQHuj2ukGdbDzWh8R00hFZ+3x+FR2CeXKPX5/8U0OQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwNHzPxFtUvCq9v26P338P7ft6/CqDHGSxHSJ0G9idPiY0Qojao
-	FCE7C62AyWR5KLileRRjAWWZ7ZI5RqTuQU9v9IahkcQXkTy3MrHj
-X-Gm-Gg: ASbGncszJ99BDNuuYcgTU3S+CVDMHe3Kev0wq6vAfdyBsG6CKUB18S+cUpUVm040sYx
-	9qLcOGmdx1GY1ccFO9YaCoEZ5sh6t9LfT7+4bWkC2MqByGcc3F3gmXlSHvU6Fq4O6DVjrXZztr8
-	MGw8WEmlvyTug7U8PIhczhkDAeow5q9+BV/iPzKNcqtLKus3vk4bP9HL2XXI31Ss5yX+NfrAD08
-	OaFIZ6pewoEIfmXT34IeXzmdftCYkW9TFIhmcFl7XsQy1VsuNyjBFkOAzM+DVaYuH0dtqQlkowi
-	WYVXeKzrn5oeyJIRcvarDA==
-X-Google-Smtp-Source: AGHT+IHPWV68kDNnvcDOp3GF0LPKpG/CEzy0Pv2JiYWY15R9zmn4YM/P6w+2bnJu6lNJanewXlFw5g==
-X-Received: by 2002:a05:6a20:9d94:b0:204:4573:d855 with SMTP id adf61e73a8af0-2045b6b0383mr14404423637.9.1745816278754;
-        Sun, 27 Apr 2025 21:57:58 -0700 (PDT)
-Received: from localhost ([2a0d:2683:c100::bf])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b1b82c7adedsm2775300a12.75.2025.04.27.21.57.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Apr 2025 21:57:58 -0700 (PDT)
-Date: Mon, 28 Apr 2025 12:57:54 +0800
-From: Troy Mitchell <troymitchell988@gmail.com>
-To: Peng Fan <peng.fan@nxp.com>, Troy Mitchell <troymitchell988@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Yongchao Jia <jyc0019@gmail.com>, Frank Li <frank.li@nxp.com>
-Subject: Re: [PATCH v2 1/2] i2c: imx: use guard to take spinlock
-Message-ID: <20250428045754.glgyfhp2zn3l7wkj@troy-wujie14-pro>
-References: <20250427-i2c-imx-update-v2-0-d312e394b573@gmail.com>
- <20250427-i2c-imx-update-v2-1-d312e394b573@gmail.com>
- <PAXPR04MB8459E722812D2B11D57AA17F88812@PAXPR04MB8459.eurprd04.prod.outlook.com>
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1745822814; x=1777358814;
+  h=from:to:cc:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding:subject;
+  bh=DYnfPVaHALkZ4zVEL1fPaXQONejkm4gzI7Jo6W1CZ78=;
+  b=iTdhBYLZEV860hC50dPm3jVcKINbnTVGt6sjDHKSGevRuVPHB+3Q9hYj
+   L0oaIXKbgh1kMf94zH6kp0bZzFMR56MMV94/CAqELjak5z5VM1lUB8a74
+   RnOy2tU92zNaooYVQ2G/VV5nl/YxTvaZ/7pms3fyEj+ealJ7I+2kZ71d6
+   9BTkpZq0FzQ+3X32NpJAvcDAhjBCWjK8UjUE1lmcTpc4KkbtalVla8BCH
+   yBQyuhGHfii2t2o4AdAN/zCWsxWew6lypdEngg+inFxR2I0g0ZJpWFZeF
+   8CzE9nNG8KJnJJ39QUr9XsWg4wKBq8fptSi66boglltQ1umYCYLHtAZ4o
+   g==;
+X-CSE-ConnectionGUID: FhqaYLvmQS2fD5a1/I5smw==
+X-CSE-MsgGUID: Q0op95EWQOqH1TY1KwSpYw==
+X-IronPort-AV: E=Sophos;i="6.15,245,1739833200"; 
+   d="scan'208";a="43745391"
+Subject: Re: [PATCH 1/6] arm64: dts: imx8qxp: Move Ethernet aliases out of SoC DTSI
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 28 Apr 2025 08:46:44 +0200
+X-CheckPoint: {680F2454-6-DC4DC9A0-F4F29281}
+X-MAIL-CPID: 4C08CE85893DC81446E935E5F3697A3F_0
+X-Control-Analysis: str=0001.0A006371.680F2457.0083,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AF062162003;
+	Mon, 28 Apr 2025 08:46:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1745822799;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DYnfPVaHALkZ4zVEL1fPaXQONejkm4gzI7Jo6W1CZ78=;
+	b=RgcF2MExF2guXWv9b2n7+g7QPphLq0nculBMqFBJdYIOJ3cfyinKpHSj6V3sLtnupkka1c
+	5CnCRCRHAgmbOPLZJ/9W04omT8R+kQ9YxCrl9p6BXSpMaBgRaPMyk4e8JQK5PEV7dNZD5+
+	taI9Owy5SISI6MFw3SlO2dglOHHHNycuZUAG/0OLjPmjBxO6Ie8h3e9KIsw9ZxhbTvtv00
+	fWhZM5JqZNJ8ZcK/5QPTNXa9quj93iZGBqbVxAebzJC7i+cgo6+7jl21za04cXjbJBLVUv
+	99j5DdWlRAeNofcLp+/BLy2xh/oysiepNw24DopJzsJzcXyz7YWdDNEZJlGFkQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux@ew.tq-group.com,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date: Mon, 28 Apr 2025 08:46:38 +0200
+Message-ID: <2849273.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250425-dts-imx-aliases-ethernet-v1-1-15b9d5cca611@linaro.org>
+References:
+ <20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org>
+ <20250425-dts-imx-aliases-ethernet-v1-1-15b9d5cca611@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8459E722812D2B11D57AA17F88812@PAXPR04MB8459.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Apr 28, 2025 at 12:55:48AM +0000, Peng Fan wrote:
-> > Subject: [PATCH v2 1/2] i2c: imx: use guard to take spinlock
-> > 
-> > Use guard to automatically release the lock after going out of scope
-> > instead of calling it manually.
-> > 
-> > i2c_imx_slave_handle() can safely be entered with the lock held.
-> > 
-> > Refactored the i2c_imx_isr function so that i2c_imx_master_isr does
-> > not participate in the guard scope
-> > 
-> > So Using guard(spinlock_irqsave) simplifies the control flow by
-> > ensuring consistent and automatic unlock, which improves readability
-> > without affecting correctness.
-> > 
-> > Co-developed-by: Yongchao Jia <jyc0019@gmail.com>
-> > Signed-off-by: Yongchao Jia <jyc0019@gmail.com>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > Signed-off-by: Troy Mitchell <troymitchell988@gmail.com>
-> > ---
-> >  drivers/i2c/busses/i2c-imx.c | 39 ++++++++++++++++++---------------------
-> >  1 file changed, 18 insertions(+), 21 deletions(-)
-> > 
-> > diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> > index 9e5d454d8318..a98bf01c5dde 100644
-> > --- a/drivers/i2c/busses/i2c-imx.c
-> > +++ b/drivers/i2c/busses/i2c-imx.c
-...
-> > @@ -1125,32 +1126,28 @@ static irqreturn_t i2c_imx_isr(int irq, void
-> > *dev_id)  {
-> >  	struct imx_i2c_struct *i2c_imx = dev_id;
-> >  	unsigned int ctl, status;
-> > -	unsigned long flags;
-> > 
-> > -	spin_lock_irqsave(&i2c_imx->slave_lock, flags);
-> > -	status = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR);
-> > -	ctl = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-> > +	{
-> > +		guard(spinlock_irqsave)(&i2c_imx->slave_lock);
-> 
-> Use 
-> scoped_guard(spinlock_irqsave, & i2c_imx->slave_lock) {
->  ...
-> }
->
-Ok, I'll use it in the next version,
-and if no one has other suggestions, I'll send v3 ASAP.
-> 
-> Regards,
-> Peng
+Am Freitag, 25. April 2025, 21:48:24 CEST schrieb Krzysztof Kozlowski:
+> Ethernet interface, like other exposed interfaces, aliases depend on
+> actual board configuration, e.g. its labeling, thus aliases should be
+> defined per each board or each SoM.
+>=20
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com> #MBa8Xx
+
+> ---
+>  arch/arm64/boot/dts/freescale/imx8qxp-ai_ml.dts          | 1 +
+>  arch/arm64/boot/dts/freescale/imx8qxp-mek.dts            | 4 ++++
+>  arch/arm64/boot/dts/freescale/imx8qxp.dtsi               | 2 --
+>  arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi   | 6 ++++++
+>  arch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi | 1 +
+>  arch/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi    | 1 +
+>  arch/arm64/boot/dts/freescale/mba8xx.dtsi                | 2 ++
+>  7 files changed, 15 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-ai_ml.dts b/arch/arm64=
+/boot/dts/freescale/imx8qxp-ai_ml.dts
+> index 50bf7919c86305403dc9fe2d75ee312dead03b40..2586cabad31ef61594fbe7424=
+7d3868639095320 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qxp-ai_ml.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8qxp-ai_ml.dts
+> @@ -13,6 +13,7 @@ / {
+>  	compatible =3D "einfochips,imx8qxp-ai_ml", "fsl,imx8qxp";
+> =20
+>  	aliases {
+> +		ethernet0 =3D &fec1;
+>  		serial1 =3D &lpuart1;
+>  		serial2 =3D &lpuart2;
+>  		serial3 =3D &lpuart3;
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts b/arch/arm64/b=
+oot/dts/freescale/imx8qxp-mek.dts
+> index 4ba8ddd472234704d05db51fb5fb0929e6b15567..b5b14cb20cbef9a67a7661531=
+031fafc702dcbcd 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+> @@ -12,6 +12,10 @@ / {
+>  	model =3D "Freescale i.MX8QXP MEK";
+>  	compatible =3D "fsl,imx8qxp-mek", "fsl,imx8qxp";
+> =20
+> +	aliases {
+> +		ethernet0 =3D &fec1;
+> +	};
+> +
+>  	bt_sco_codec: audio-codec-bt {
+>  		compatible =3D "linux,bt-sco";
+>  		#sound-dai-cells =3D <1>;
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi b/arch/arm64/boot=
+/dts/freescale/imx8qxp.dtsi
+> index 05138326f0a572f45122f5ee425089f945fdc656..6d8386bdac00d150d272b62ad=
+68c136c0da6ba2d 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qxp.dtsi
+> @@ -20,8 +20,6 @@ / {
+>  	#size-cells =3D <2>;
+> =20
+>  	aliases {
+> -		ethernet0 =3D &fec1;
+> -		ethernet1 =3D &fec2;
+>  		gpio0 =3D &lsio_gpio0;
+>  		gpio1 =3D &lsio_gpio1;
+>  		gpio2 =3D &lsio_gpio2;
+> diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi b/arc=
+h/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi
+> index f7bbb2153ae01a2e97f1e28be0c23f9de4172102..7be0b9ecc8aab1f271c1b658b=
+abdb316bae41cc6 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi
+> @@ -3,6 +3,12 @@
+>   * Copyright 2018-2021 Toradex
+>   */
+> =20
+> +/ {
+> +	aliases {
+> +		ethernet0 =3D &fec1;
+> +	};
+> +};
+> +
+>  /* Colibri Analogue Inputs */
+>  &adc0 {
+>  	status =3D "okay";
+> diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi b/a=
+rch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi
+> index f75499765d85dc78808af9ddadc92e133b0c3499..a7159a842d74306f372db7939=
+59cdc8e2555eb3e 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi
+> @@ -7,6 +7,7 @@
+> =20
+>  / {
+>  	aliases {
+> +		ethernet0 =3D &fec1;
+>  		rtc0 =3D &rtc_i2c;
+>  		rtc1 =3D &rtc;
+>  	};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi b/arch=
+/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi
+> index 54393a0c5cbfcd55dae080a9f07879748bbd4486..1e588d76a6ddb1bd7f94f444d=
+72e2819f267c490 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi
+> @@ -5,6 +5,7 @@
+> =20
+>  / {
+>  	aliases {
+> +		ethernet0 =3D &fec1;
+>  		rtc0 =3D &rtc_i2c;
+>  		rtc1 =3D &rtc;
+>  	};
+> diff --git a/arch/arm64/boot/dts/freescale/mba8xx.dtsi b/arch/arm64/boot/=
+dts/freescale/mba8xx.dtsi
+> index c4b5663949ade617fe9b7be20a3aebf0b322623a..a64ae67ef70cc6a624b06f4ab=
+1f3a8ab03ffd1f6 100644
+> --- a/arch/arm64/boot/dts/freescale/mba8xx.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/mba8xx.dtsi
+> @@ -16,6 +16,8 @@ adc {
+>  	};
+> =20
+>  	aliases {
+> +		ethernet0 =3D &fec1;
+> +		ethernet1 =3D &fec2;
+>  		rtc0 =3D &pcf85063;
+>  		rtc1 =3D &rtc;
+>  	};
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
