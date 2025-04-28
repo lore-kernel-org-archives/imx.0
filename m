@@ -1,68 +1,68 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008901EE7B7
-	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 20:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55221EF0B9
+	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 21:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745873647; cv=none; b=nvu21XN4LLP7SGjcTM6atfR3Cc5HN5CDcuKGFA0+ibKB0zrao15K9SoXOt59thkTwNMc3OxOptO+DxdCFjPWEVg0w5C4llrJAD6cfF3ZOEujeHEmFcSL8zI2YhlVj+j9POoSF3QuTya1Rany4+z3XXdeZKFQERSYLeVZ3gXKiR8=
+	t=1745874413; cv=none; b=mAAG2aUofyjNkS0VsYWxRvbTQ/5XDiYxNujAjwCKwGLMBNzs0tQSV3N4tytyvuIltxDMo2uj5350cPmchTiH+sAeVDF1IaO6Hwks8PVi2QEzbCUuUTNeC/SF1UKhp/Iv3Er7BwbGea125xXVkPzgqg69algVpxfb/D46HiatHr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745873647; c=relaxed/simple;
-	bh=n4WGwCItyZewiOJcBSp4Eaj+wnGcnc5O6i3QGT0fNG8=;
+	s=arc-20240116; t=1745874413; c=relaxed/simple;
+	bh=sehDf/wz1Jc2NfNVJoDIU1m599/TWswRXczsp9U/qmw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MZ2Lf/RA6MTSmWfFbpW9cTajJFe0hlDqO+p1WpWPBJ0SZKN+BM9ml9hegospsoO/4EnCNmGG3XJhP8DsREU0YoUFuIwIU9gel9SgbsirZE4pGxmiC0grb3wpK/HmcLzjxVuSjREE6T8qc5hnFuFe0tUPw3CPV3p1N3JOeCwp4hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZcyuAo2P; arc=none smtp.client-ip=209.85.214.182
+	 To:Cc:Content-Type; b=C7K0t13MGkNXFakduWWv4i+inQAkJXAYDoTTY8Jnr0wJKiX4wl9UK7jxwnqrrploP8EMviN14xUCZ3NFc5chXSRFiNavkABK0kQIIMr/WYl26ZwBgNxzBCION6Rc1ufHMV/x5yplXZZI2CE5le0FyQa8uWKyhlkoVhHoea108zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=CxyKLopO; arc=none smtp.client-ip=209.85.222.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZcyuAo2P"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-22c33ac23edso48971085ad.0
-        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 13:54:05 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="CxyKLopO"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c54b651310so853921185a.0
+        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 14:06:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1745873645; x=1746478445; darn=lists.linux.dev;
+        d=chromium.org; s=google; t=1745874410; x=1746479210; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=duqrSY39uZvRf9QP4FI5wn82Hvp3y0G6BGsbl6wCfsU=;
-        b=ZcyuAo2PR/EbXdERuRfE0cpuUK70VeTGI5zKrfg+ZB5c4QHedV1h6wo4PBkRA46K6a
-         oTJCZnJJ2zlA7eiwcRCRyeVD7MiKVtESpY4y4QnivCkrp8CbS185fAXBHIFWsCy/8j+J
-         WasiDzT+JayDdBPyh2L+SF73wETNpoa81ZZm4=
+        bh=0HZyp8budJTYWJ9MOmTZnBjDzB8PV0g52ckHb+nyRQs=;
+        b=CxyKLopOT3lSML2f0t4lulIM6Y0GiOqwwXMo56aO7qS17PP/5t1ecytrISwPYsNVEb
+         qFiyofzAprA9+qf6wJW5I9BGqEv/uo9gS7sxxrfieAtn3NNN7bYbYFUgATkFmqg7j6V9
+         /EYXgw5p315cepbEkEWn58aEBWfzE2kwMnK7Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745873645; x=1746478445;
+        d=1e100.net; s=20230601; t=1745874410; x=1746479210;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=duqrSY39uZvRf9QP4FI5wn82Hvp3y0G6BGsbl6wCfsU=;
-        b=dZXf2wBkaX6yy7V6knJDAKyYK3pn6yZTPzljPnyllCyolbYf6KcXeL5bWN42ptoMNA
-         gBrDJLw2XZr20ID+r/nZwrTglfZ7URnxSKn2PWxn1vEHJgL1ATbDeLny5Y5oLdwC7UJO
-         yUeG/l2rIFaqbPgFzenrZqnLt4lQ7F7D+6AxKwc9L3lliiMNNfeo9IMj2YnrketIBlYc
-         I9F2SJzpTKm11tmVU5v5iDjeYBM3yEh6V2B0bKdwgGqSQ8VlZqnl1AcdDIpG0jgzNqqL
-         awSZGM93STD+pPIvbtwofeh8diiKdFw6gVqjBD8gzvQtZON95XTqaqktxMsB/2QGTlX0
-         QQdw==
-X-Forwarded-Encrypted: i=1; AJvYcCVxrmNlbrNkZhdln/W5i4ifh545uXuUzmx4hM1EmYrWKmBE0bA3hioHwW3QGdDf6A1gYco=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzVcYwzMy6+E1qybuE2V4NBfC3gtkvsWOHV+veM77rQxqhIz8bk
-	5FidGQULYO50ZvQ+GZutCezKS/GOEM9o/wZw92/Y2OtN3+gwziUN/k4Ngci0TfCFM66YUtznLms
+        bh=0HZyp8budJTYWJ9MOmTZnBjDzB8PV0g52ckHb+nyRQs=;
+        b=mo6YvtetYXCAFgwjIfo16XPaXA+hT4kYT/hi5wbuVJcC639Iho2+b1Fs64sAVH2uJa
+         MwmO4DnfKwWCe8nspF0LOVMQBLbZYJaXclvkI8vW0Iw7UhkBogMQvR0CJQeOm1f/GAJU
+         TtAjNMBnO37xKvTCQRjCwsF5HhtAmaTK9VexW+YIhWkxuIwI/hpFPi3/VvTgqrSaaIE9
+         ceATxMb90HMVjfJCh0R1yiaoFGqs4EYQ/aQHSkLTWwvlarIDsoZZGv/dxndGN7E6n77l
+         Qifwk1rMtLxan69E7ADNPKbqkAEeZmyoWju3F2MkJty1s0p97uCCqHyhK5z3vWBQ1NzM
+         MnFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUiHq42kuMgKaVG/iKbVF9MLQdi7Shd9vYq9+vxeOxziaEVko52fdiCcgd8nlxhwCsZxD0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwO5+yWINNoJ2ETSvGs3xZtMTlemOSTB9FPcjhfHFCwA8a8Y+hV
+	46ZZznQHz3c+x4oClHW8EgUyNrseB5HV5G1Ct3kHELevHq3a2thn2n1+cU6nsCwsyJ+aQWU3TX4
 	=
-X-Gm-Gg: ASbGncut+CM775oirS86AP+VU33uAFGvqdXLLwsbElFlKOps3bxMDuDjmH3rDuE+5iD
-	QiT1XG/fzM2BOZ2SLp9FDSCO2EauVHFRawy38RfY+FryfratLrlX1sXQYVztedyCdv5tKvgqVh2
-	wrTzXwUyNZG4BmorcPLL1k3vJ7OBtsJDMTLILEAOhV99Qxm8o3UYndPydusShVqo/i3PNwZtZum
-	qdongucL0KG4m+knvFzGRBXm9Hiv5zTIukgEFNt9fU89/GnYnfas1GoL1IpMxvYVQvYdE5xAehQ
-	n/dquQs+Zm746FVracHXnqsgvo6ZN1caGHQFKCSm8NpMXOm/3M6ud6W1uIkNm+U2xWrE8eyRm2M
-	krt5m49D1
-X-Google-Smtp-Source: AGHT+IH2erW334uIk0xT7MK+zyXrxAg4egKwKjGYbjxO01aLc+D10koYbnwGXfDwSErU82mZ/3VDgg==
-X-Received: by 2002:a17:903:40d0:b0:223:fbc7:25f4 with SMTP id d9443c01a7336-22de5fd202cmr14817255ad.14.1745873645397;
-        Mon, 28 Apr 2025 13:54:05 -0700 (PDT)
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com. [209.85.215.172])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4d76ce1sm88279065ad.40.2025.04.28.13.54.05
+X-Gm-Gg: ASbGncuciblxSigdGd7PPnBNvZQl3ejh3jz3Y1a6CaUEyuFeQo3mVeML4lgXMxkEqRK
+	ZuLacg1Ovcaj430g0OiXsVlzEPQJ9R2vnc6bJD48/woSuz8ux1v78dxa/9H1fV5hD5059CxFIIq
+	LjXat5uU8RtwTLNFyQVXLgeKF2qEnHshMr3mnP+x2Fcv0ExHzgd8gpasuBbJCkmpecEoeJiKNjh
+	DZxeHxnBqjLsm5+/9Gjx5+56xcsT6L9M2ZWIs++2KfAdPrrtg6UyzoisoiCjtW8h2v99/AV2Dgf
+	q+Bphhg7cC4WgZGdPQgxqKRLqds5HTqijWLuhHMqjjWDqdHPqkMpQlWRvE2Q5b2xwOpXopZNCHO
+	U0vW+tqdL
+X-Google-Smtp-Source: AGHT+IEfFnfKkpTlmL8CSUh2QVtSMida34xd1q51EkytXAyNlkU+oXrYhFY2mpk+6jXrcAjd9/3Axg==
+X-Received: by 2002:a05:620a:40d2:b0:7c5:4949:23f1 with SMTP id af79cd13be357-7c9668bfd77mr1703332685a.40.1745874410048;
+        Mon, 28 Apr 2025 14:06:50 -0700 (PDT)
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com. [209.85.222.174])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c958cbe651sm663959785a.47.2025.04.28.14.06.49
         for <imx@lists.linux.dev>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Apr 2025 13:54:05 -0700 (PDT)
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-7fd581c2bf4so4205350a12.3
-        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 13:54:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVFJIVrStb7PCokFBuUjbJgSf5gnifddaznrResWW0P1zHIdOoIlcctOlqakjtX2mD4/Bg=@lists.linux.dev
-X-Received: by 2002:a17:90b:2d08:b0:2fe:b9be:216 with SMTP id
- 98e67ed59e1d1-30a215a9e35mr1596359a91.31.1745873644318; Mon, 28 Apr 2025
- 13:54:04 -0700 (PDT)
+        Mon, 28 Apr 2025 14:06:49 -0700 (PDT)
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7c08fc20194so1212124885a.2
+        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 14:06:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXrAZzuh+WsTp8uqNr0ol+NwxQ7Xr7YnJc0cYTlyvEazPsL8rCA1O5+q7FCigvKtQdT0fw=@lists.linux.dev
+X-Received: by 2002:a17:90b:2e03:b0:2fa:1a23:c01d with SMTP id
+ 98e67ed59e1d1-30a0132e771mr15291417a91.21.1745874002058; Mon, 28 Apr 2025
+ 14:00:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,15 +70,15 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
- <20250424-drm-bridge-convert-to-alloc-api-v2-13-8f91a404d86b@bootlin.com>
-In-Reply-To: <20250424-drm-bridge-convert-to-alloc-api-v2-13-8f91a404d86b@bootlin.com>
+ <20250424-drm-bridge-convert-to-alloc-api-v2-1-8f91a404d86b@bootlin.com>
+In-Reply-To: <20250424-drm-bridge-convert-to-alloc-api-v2-1-8f91a404d86b@bootlin.com>
 From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 28 Apr 2025 13:53:52 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WBxgJ9HZK=UyE8R17OiM0+ME2Lp5O7zoZRVOw2z6_sng@mail.gmail.com>
-X-Gm-Features: ATxdqUGX6srhk44LYXds4__tJ7VKjYOOGbCee4VbhetmdBaO7SswZM-oniFpcj8
-Message-ID: <CAD=FV=WBxgJ9HZK=UyE8R17OiM0+ME2Lp5O7zoZRVOw2z6_sng@mail.gmail.com>
-Subject: Re: [PATCH v2 13/34] drm/bridge: ti-sn65dsi86: convert to
- devm_drm_bridge_alloc() API
+Date: Mon, 28 Apr 2025 13:59:50 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=VmV5yb0HWWGTiKyyC8+WNPJpM7vE9PQGh5_=KPk6+HCg@mail.gmail.com>
+X-Gm-Features: ATxdqUFp3e4vRAA9U9jS3-gUD9FhwChMaNCvlfej-PAqltrXksVDq12UxaUaXqM
+Message-ID: <CAD=FV=VmV5yb0HWWGTiKyyC8+WNPJpM7vE9PQGh5_=KPk6+HCg@mail.gmail.com>
+Subject: Re: [PATCH v2 01/34] drm: convert many bridge drivers from
+ devm_kzalloc() to devm_drm_bridge_alloc() API
 To: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
 	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
@@ -97,30 +97,158 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripar
 	linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
 	platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
 	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	Herve Codina <herve.codina@bootlin.com>
+	linux-stm32@st-md-mailman.stormreply.com, Adam Ford <aford173@gmail.com>, 
+	Adrien Grassein <adrien.grassein@gmail.com>, Aleksandr Mishin <amishin@t-argos.ru>, 
+	Andy Yan <andy.yan@rock-chips.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Benson Leung <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Christoph Fritz <chf.fritz@googlemail.com>, 
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, 
+	Detlev Casanova <detlev.casanova@collabora.com>, 
+	Dharma Balasubiramani <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne Grunau <j@jannau.net>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Jesse Van Gavere <jesseevg@gmail.com>, 
+	Kevin Hilman <khilman@baylibre.com>, 
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, Liu Ying <victor.liu@nxp.com>, 
+	Manikandan Muralidharan <manikandan.m@microchip.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Phong LE <ple@baylibre.com>, Sasha Finkelstein <fnkl.kernel@gmail.com>, 
+	Sugar Zhang <sugar.zhang@rock-chips.com>, Sui Jingfeng <sui.jingfeng@linux.dev>, 
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Vitalii Mordan <mordan@ispras.ru>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Thu, Apr 24, 2025 at 12:00=E2=80=AFPM Luca Ceresoli
+On Thu, Apr 24, 2025 at 11:59=E2=80=AFAM Luca Ceresoli
 <luca.ceresoli@bootlin.com> wrote:
 >
-> This is the new API for allocating DRM bridges.
+> devm_drm_bridge_alloc() is the new API to be used for allocating (and
+> partially initializing) a private driver struct embedding a struct
+> drm_bridge.
 >
-> Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+> For many drivers having a simple code flow in the probe function, this
+> commit does a mass conversion automatically with the following semantic
+> patch. The changes have been reviewed manually for correctness as well as
+> to find any false positives.
+>
+>   @@
+>   type T;
+>   identifier C;
+>   identifier BR;
+>   expression DEV;
+>   expression FUNCS;
+>   @@
+>   -T *C;
+>   +T *C;
+>    ...
+>   (
+>   -C =3D devm_kzalloc(DEV, ...);
+>   -if (!C)
+>   -    return -ENOMEM;
+>   +C =3D devm_drm_bridge_alloc(DEV, T, BR, FUNCS);
+>   +if (IS_ERR(C))
+>   +     return PTR_ERR(C);
+>   |
+>   -C =3D devm_kzalloc(DEV, ...);
+>   -if (!C)
+>   -    return ERR_PTR(-ENOMEM);
+>   +C =3D devm_drm_bridge_alloc(DEV, T, BR, FUNCS);
+>   +if (IS_ERR(C))
+>   +     return PTR_ERR(C);
+>   )
+>    ...
+>   -C->BR.funcs =3D FUNCS;
+>
 > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>
 > ---
->  drivers/gpu/drm/bridge/ti-sn65dsi86.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> Cc: Adam Ford <aford173@gmail.com>
+> Cc: Adrien Grassein <adrien.grassein@gmail.com>
+> Cc: Aleksandr Mishin <amishin@t-argos.ru>
+> Cc: Andy Yan <andy.yan@rock-chips.com>
+> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Cc: Benson Leung <bleung@chromium.org>
+> Cc: Biju Das <biju.das.jz@bp.renesas.com>
+> Cc: Christoph Fritz <chf.fritz@googlemail.com>
+> Cc: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+> Cc: Detlev Casanova <detlev.casanova@collabora.com>
+> Cc: Dharma Balasubiramani <dharma.b@microchip.com>
+> Cc: Guenter Roeck <groeck@chromium.org>
+> Cc: Heiko Stuebner <heiko@sntech.de>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Cc: Janne Grunau <j@jannau.net>
+> Cc: Jerome Brunet <jbrunet@baylibre.com>
+> Cc: Jesse Van Gavere <jesseevg@gmail.com>
+> Cc: Kevin Hilman <khilman@baylibre.com>
+> Cc: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+> Cc: Liu Ying <victor.liu@nxp.com>
+> Cc: Manikandan Muralidharan <manikandan.m@microchip.com>
+> Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Cc: Matthias Brugger <matthias.bgg@gmail.com>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Phong LE <ple@baylibre.com>
+> Cc: Sasha Finkelstein <fnkl.kernel@gmail.com>
+> Cc: Sugar Zhang <sugar.zhang@rock-chips.com>
+> Cc: Sui Jingfeng <sui.jingfeng@linux.dev>
+> Cc: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+> Cc: Vitalii Mordan <mordan@ispras.ru>
+>
+> Changed in v2:
+> - added missing PTR_ERR() in the second spatch alternative
+> ---
+>  drivers/gpu/drm/adp/adp-mipi.c                      |  8 ++++----
+>  drivers/gpu/drm/bridge/adv7511/adv7511_drv.c        |  9 ++++-----
+>  drivers/gpu/drm/bridge/analogix/analogix-anx78xx.c  |  9 ++++-----
+>  drivers/gpu/drm/bridge/aux-bridge.c                 |  9 ++++-----
+>  drivers/gpu/drm/bridge/aux-hpd-bridge.c             |  9 +++++----
+>  drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c |  8 ++++----
+>  drivers/gpu/drm/bridge/chipone-icn6211.c            |  9 ++++-----
+>  drivers/gpu/drm/bridge/chrontel-ch7033.c            |  8 ++++----
+>  drivers/gpu/drm/bridge/cros-ec-anx7688.c            |  9 ++++-----
+>  drivers/gpu/drm/bridge/fsl-ldb.c                    |  7 +++----
+>  drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c      |  9 ++++-----
+>  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c        | 10 ++++------
+>  drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c     |  8 ++++----
+>  drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c        |  8 ++++----
+>  drivers/gpu/drm/bridge/ite-it6263.c                 |  9 ++++-----
+>  drivers/gpu/drm/bridge/ite-it6505.c                 |  9 ++++-----
+>  drivers/gpu/drm/bridge/ite-it66121.c                |  9 ++++-----
+>  drivers/gpu/drm/bridge/lontium-lt8912b.c            |  9 ++++-----
+>  drivers/gpu/drm/bridge/lontium-lt9211.c             |  8 +++-----
+>  drivers/gpu/drm/bridge/lontium-lt9611.c             |  9 ++++-----
+>  drivers/gpu/drm/bridge/lvds-codec.c                 |  9 ++++-----
+>  drivers/gpu/drm/bridge/microchip-lvds.c             |  8 ++++----
+>  drivers/gpu/drm/bridge/nwl-dsi.c                    |  8 ++++----
+>  drivers/gpu/drm/bridge/parade-ps8622.c              |  9 ++++-----
+>  drivers/gpu/drm/bridge/parade-ps8640.c              |  9 ++++-----
+>  drivers/gpu/drm/bridge/sii9234.c                    |  9 ++++-----
+>  drivers/gpu/drm/bridge/sil-sii8620.c                |  9 ++++-----
+>  drivers/gpu/drm/bridge/simple-bridge.c              | 10 ++++------
+>  drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c        |  8 ++++----
+>  drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c       |  8 ++++----
+>  drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c      |  8 ++++----
+>  drivers/gpu/drm/bridge/tc358762.c                   |  9 ++++-----
+>  drivers/gpu/drm/bridge/tc358764.c                   |  9 ++++-----
+>  drivers/gpu/drm/bridge/tc358768.c                   |  9 ++++-----
+>  drivers/gpu/drm/bridge/tc358775.c                   |  9 ++++-----
+>  drivers/gpu/drm/bridge/thc63lvd1024.c               |  8 ++++----
+>  drivers/gpu/drm/bridge/ti-dlpc3433.c                |  9 ++++-----
+>  drivers/gpu/drm/bridge/ti-tdp158.c                  |  8 ++++----
+>  drivers/gpu/drm/bridge/ti-tfp410.c                  |  9 ++++-----
+>  drivers/gpu/drm/bridge/ti-tpd12s015.c               |  9 ++++-----
+>  drivers/gpu/drm/mediatek/mtk_dp.c                   |  9 ++++-----
+>  drivers/gpu/drm/mediatek/mtk_dpi.c                  |  9 ++++-----
+>  drivers/gpu/drm/mediatek/mtk_dsi.c                  |  9 ++++-----
+>  drivers/gpu/drm/mediatek/mtk_hdmi.c                 |  9 ++++-----
+>  drivers/gpu/drm/meson/meson_encoder_cvbs.c          | 12 ++++++------
+>  drivers/gpu/drm/meson/meson_encoder_dsi.c           | 12 ++++++------
+>  drivers/gpu/drm/meson/meson_encoder_hdmi.c          | 12 ++++++------
+>  drivers/gpu/drm/renesas/rcar-du/rcar_lvds.c         |  9 ++++-----
+>  drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c      | 10 ++++------
+>  49 files changed, 201 insertions(+), 237 deletions(-)
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-
-I can confirm that I can still build/boot on a board with ti-sn65dsi86
-after this patch. Thus, happy with:
-
-Tested-by: Douglas Anderson <dianders@chromium.org>
-
-Happy to have someone else land this through drm-misc-next or I can
-land it there myself.
+Reviewed-by: Douglas Anderson <dianders@chromium.org> # parade-ps8640
+Tested-by: Douglas Anderson <dianders@chromium.org> # parade-ps8640
