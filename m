@@ -1,95 +1,145 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2AB1DE8B2
-	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 12:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B021263F49
+	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 12:23:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745842831; cv=none; b=EGq6okmnEkChvHOFV1PmEtaC/xWV/xUDCY82LZFlgn+VhWphvblmCm3LrRxPF8bFVOFeAzGa6o/3VHtdXBAfTmFmvnUVP521bTCQPNlzyUPNA1mVhJ0FQ3CAtbVmdFHF31PxDyUh/gGcVih5VKkp7zAHdcvDhwHA4g0+jWe4s0w=
+	t=1745842994; cv=none; b=IVes3q7qEG3sUVuKBWInih48nO6cmh7Ph1UXAgGajojCNcBbXyzOz+vAmjFOukaQ3fuh80X0Rwv9JprfOMKqN7odrECkkkI/y+Yo/p6xHOTtgL6wtHWYkGm8MjRSCf16AisvtRYMjBrGJIWMe7nRbZbmuKK41/RukENXsDRJTgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745842831; c=relaxed/simple;
-	bh=5LJVD7EEo2QIoCV1sD+YeaR74gXBmkqhDW5rQm+7VG4=;
+	s=arc-20240116; t=1745842994; c=relaxed/simple;
+	bh=HCz8DLodaQbrm+46dctr2oR/E7+SUsbNqLwypXlR7Sg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CM+fUbCx1u8eKrBOE/atWK7QKxknc50Wwofz1N6AffsJ8bZkJcpXS8123J1rkkI99hgotO1pQxkmj0VU/TI9k4QqdV7QJXiZaBZ/b8ny6b8jo1OPBYvoVDmzXAvnAMWqxMn/b3wCkaYOAzXScRYkPyOdg73Rh6Ppo13b50y7qWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KoUxAecb; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=TrvpckNASzfW0uB3klojiHosuRwu7qbHGaabYWpbuHJsm4BdqINnS2ate+uo1sJRhPuULYRADcVlNvM855wtwMReeV2CyKQ8SGpWUkMEZd1rxukjwC8XW5HWWDtO+CCVQ1GbWqct4mYmQajuRmNNjZ+GF4VQpbvWXpPsXUvOdzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KpyCaYsQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KoUxAecb"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30bf5d7d107so39061521fa.2
-        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 05:20:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745842827; x=1746447627; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TWpWmVQh5LkKQ38Ckz6b68wz7ZGK8S3wIAjuRScvxvk=;
-        b=KoUxAecbqTMGzZEZyXvnDF55WP+K1lzMIyBKJyTJmDd4lgp9Q8J5WsvqlfW5brm8uF
-         p/6F8pE/bMOo1hdggweER0Rll13oYgi1KQlbLWjzgdc17zLn+KmGf1po2H0y3h3uRCDT
-         ugtC82xx0JHbQfcWiWsTFFfSMkNspN4J+rkZjSQ4rDXCV2E8h2zitp7zbfam6gS/ZPga
-         HTm5g+uYNTZEuheaosb62PbT7X0dJyuDv8n/gD//y+CVuFvUlkj6YckFUu74GAELdt1i
-         JYOV+HfKQdSkShPxcPesjPfNVEpFREPpSU4CDafWymeIKipc2fCefvQAbGugU5i1ROny
-         pknQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745842827; x=1746447627;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TWpWmVQh5LkKQ38Ckz6b68wz7ZGK8S3wIAjuRScvxvk=;
-        b=qzVO5L6Eq3ko2KGeR+OZkrVLZJO1LjqPYugZ9o+Zmq+2oYe+vr92G98ydWwmzjKs9L
-         ptXxGUrm2pQXKjOWeSW64UyTTPU8nFWXT7hJlx02zhAIakhyJrLFeXJC46YKdPMbfhis
-         TKRpfg7r+eA1MMC/5O7Nn9jDZ4Dlnp3mH1MnY3/96GuBsWwUD8dy/guGoFI0hghv84ZH
-         rz3V5rm3vQgQc8a5xbnz3rJTdBZ+iWIjwvwPLZmjopCgPPL/RI6qp4g0xh4PVYoVSBiQ
-         teDItJSpNQ6m8yPrc0stEfaspSmzpOtASbPNC5RNId0nvXZxTdtpT3d4Fu/CmBfMUb4o
-         cwcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVtphbm9HS6TBm9j55NrbjyXjkuiO8mopmvt7FsaXg+pS5agXCoyIl49pxfNC4CM8rgtT0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyjotgD+azXED9+rirUjMNxJsq1aUTXYDb2mqM4XioZo5/zRJej
-	TNYUpSqx49ZBPuIRPM3Jo/jEWa8PcOGiAYCs1fUrTW5fJq9aExf4sgz6oX7eyv+M/52Dg3ekQw1
-	QSg6MhezfqyzbJfpWtc1yo7k0laY=
-X-Gm-Gg: ASbGncsOcYLQ9vmJxok+KvDhaRx4q50M6UUAhb/FYsEIGSH9rBgW3L3LYnow6FtMb4n
-	hYMQ7nFcnwpbO0HUsV2MgB0kxPbbAopn+Qk8FpGfkqaszcRaEFij9YYZXnRGiBr1+LG8qL1tpGg
-	92nG3s5TzB1wG4ZFc+GeXC/1XNtH9K60XC0o0d3/r2ez2zqcCWt6mRJyzOUsMlsze0
-X-Google-Smtp-Source: AGHT+IEH7MzW5oALwsc/C1WmzilPjbYvu0ys4k1ey8nO0994HXLEhmlKcG8IDGOmdq5NvefT7TwCpG/T3Y0sA3Y96g4=
-X-Received: by 2002:a2e:8048:0:b0:31a:56a5:8454 with SMTP id
- 38308e7fff4ca-31a56a58783mr13285171fa.15.1745842827247; Mon, 28 Apr 2025
- 05:20:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KpyCaYsQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF327C4CEED
+	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 12:23:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745842993;
+	bh=HCz8DLodaQbrm+46dctr2oR/E7+SUsbNqLwypXlR7Sg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KpyCaYsQGtAyJOuUAwAEyx7KH4FWEFstaN/zDK8iSr8LyiS43doSjlzBK/wI1iEYm
+	 tgltI8g4gMIx2MAeXNiOdykXknUzjTvpubM6ehz0yaVFKHzQXaQUOyFmCZx3k413BB
+	 tfnURaLUnxKiRIyvL8DGHbkLk+Kx1ohTaHsH8g58pOmgiRdruSwPjKACmsGsVyTiVW
+	 tZWZ/2y+8b0eCTHHogjd5Z0oblaXN4DIFernU+aFGPypp7eCO3ZmIM4EYpcEgN3I4s
+	 4RXQk8u5PJhPyW3gWtw0gAuwQ6m9wsFEWVlC5Ydc945pAAkOLb023byD5wZcww8qzW
+	 zsry93j2gntNw==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5efe8d9ebdfso7085277a12.3
+        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 05:23:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVe1FctAV7TMXaQ9XGtdn9aKkzAJxi7q1lBYYLbwNPWw527x/Q6NbPIeCgxZowZESbNlJo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzX5u6aXWdPpfw+HWosSWhJvDkRqv8/MelGDvmyHPFULSI/kVOT
+	k2hR7z9U7S9Bv3Fx/l97qVBGasAAPFDb6d5bBhvYnvOuIHefzem0yBTQbnUvlUxxFqKWltE/9u2
+	MB1AWbl3dlJyu/QQV604E/dbbUw==
+X-Google-Smtp-Source: AGHT+IG+CACbiiD2abOkp8tXfXmRr505UnyuCRTrkEYyr07DsjIb1ktiKdJ4ARe6OcGznQb9vjFUFmdjHww0FD53lpk=
+X-Received: by 2002:a05:6402:d08:b0:5f4:370d:96c4 with SMTP id
+ 4fb4d7f45d1cf-5f7394d37ccmr7705350a12.0.1745842992502; Mon, 28 Apr 2025
+ 05:23:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250428074424.3311978-1-lukma@denx.de> <20250428074424.3311978-2-lukma@denx.de>
-In-Reply-To: <20250428074424.3311978-2-lukma@denx.de>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 28 Apr 2025 09:20:15 -0300
-X-Gm-Features: ATxdqUF9vhWUQdAh6ucd_rpBTSQD6jiO0FGzDnLrY9eVB0nzIxQ7MHR_oHtFiUs
-Message-ID: <CAOMZO5CYq8YKZBM6nk2pk8W0005MBBPdVqS_qe-O4-ZzkUG0bA@mail.gmail.com>
-Subject: Re: [net-next v8 1/7] dt-bindings: net: Add MTIP L2 switch description
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+References: <20250423-dt-memory-region-v2-v2-0-2fbd6ebd3c88@kernel.org>
+ <CANLsYkxKHhCHYrbAGzQ48QGpL_DbuLnX3=ppmpyu0vjuuvvODg@mail.gmail.com> <322d366c-1564-4b06-9362-28fe451a35e7@nxp.com>
+In-Reply-To: <322d366c-1564-4b06-9362-28fe451a35e7@nxp.com>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 28 Apr 2025 07:23:01 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJemaAzx6v0kj52J=YFRGqLo5=xk8LXXk-8i=mAomTCWQ@mail.gmail.com>
+X-Gm-Features: ATxdqUFE1MZW4VzC8-fvJOOKPGQbbAo554PCqhNSEgkFv0dfgvJlVI74jm4fy4w
+Message-ID: <CAL_JsqJemaAzx6v0kj52J=YFRGqLo5=xk8LXXk-8i=mAomTCWQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] of: Common "memory-region" parsing
+To: Iuliana Prodan <iuliana.prodan@nxp.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
+	"Andrew F. Davis" <afd@ti.com>, "Shah, Tanmay" <tanmay.shah@amd.com>, Saravana Kannan <saravanak@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Stefan Wahren <wahrenst@gmx.net>, 
-	Simon Horman <horms@kernel.org>
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Lukasz,
+On Fri, Apr 25, 2025 at 6:34=E2=80=AFPM Iuliana Prodan <iuliana.prodan@nxp.=
+com> wrote:
+>
+> Hello Mathieu, Rob,
+>
+> I've tested imx_dsp_rproc and it fails with:
+>
+> [   39.743770] Unable to handle kernel paging request at virtual address
+> ffffffffffffffea
+> ...
+> [   39.805078] Hardware name: NXP i.MX8MPlus EVK board (DT)
+> [   39.810390] pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS
+> BTYPE=3D--)
+> [   39.817353] pc : __pi_memset_generic+0x50/0x188
+> [   39.821892] lr : imx_dsp_rproc_prepare+0x3a4/0xea4 [imx_dsp_rproc]
+> [   39.828079] sp : ffff8000853dbb10
+> [   39.831396] x29: ffff8000853dbb90 x28: 0000000092400000 x27:
+> ffff80007a36d3d8
+> [   39.838540] x26: ffff0000d0a5e410 x25: ffff80007a36d3f0 x24:
+> 0000000000000004
+> [   39.845685] x23: ffff0000d5414880 x22: ffff0000d5e1dce8 x21:
+> 0000000000000000
+> [   39.852827] x20: ffff0000d5e1db98 x19: ffff0000d5414b80 x18:
+> 00000000ffffffff
+> [   39.859970] x17: 202c656c69687720 x16: 3e2074756f657672 x15:
+> ffff800081f8d050
+> [   39.867114] x14: ffff0000db584680 x13: 0000000000000003 x12:
+> 00007fffa3330000
+> [   39.874257] x11: 0000000000000004 x10: 0000000000000ab0 x9 :
+> 0000000000000000
+> [   39.881400] x8 : ffffffffffffffea x7 : 0000000000000000 x6 :
+> 000000000000003f
+> [   39.888546] x5 : 0000000000000040 x4 : 0000000000000006 x3 :
+> 0000000000000004
+> [   39.895689] x2 : 0000000000008000 x1 : 0000000000000000 x0 :
+> ffffffffffffffea
+> [   39.902837] Call trace:
+> [   39.905284]  __pi_memset_generic+0x50/0x188 (P)
+> [   39.909821]  rproc_boot+0x2c0/0x524
+> [   39.913317]  state_store+0x40/0x100
+> [   39.916812]  dev_attr_store+0x18/0x2c
+> [   39.920478]  sysfs_kf_write+0x7c/0x94
+> [   39.924146]  kernfs_fop_write_iter+0x120/0x1e8
+> [   39.928598]  vfs_write+0x244/0x37c
+> [   39.932008]  ksys_write+0x70/0x110
+> [   39.935413]  __arm64_sys_write+0x1c/0x28
+> [   39.939342]  invoke_syscall+0x48/0x104
+> [   39.943094]  el0_svc_common.constprop.0+0xc0/0xe0
+> [   39.947805]  do_el0_svc+0x1c/0x28
+> [   39.951123]  el0_svc+0x30/0xcc
+> [   39.954188]  el0t_64_sync_handler+0x10c/0x138
+> [   39.958549]  el0t_64_sync+0x198/0x19c
+> [   39.962222] Code: d65f03c0 cb0803e4 f2400c84 54000080 (a9001d07)
+> [   39.968317] ---[ end trace 0000000000000000 ]---
+>
+> The problem seems to be when computing `cpu_addr =3D
+> devm_ioremap_resource_wc(dev, &res);`, in patch 4.
+> In `__devm_ioremap_resource` (see [1]), it's expecting the resource type
+> to be `IORESOURCE_MEM`, which is not the case here (at least the flags
+> are nowhere set for this).
 
-On Mon, Apr 28, 2025 at 4:44=E2=80=AFAM Lukasz Majewski <lukma@denx.de> wro=
-te:
+Thanks for testing and diagnosing. IORESOURCE_MEM needs to be set. Can
+you test with this change:
 
-> +            reset-gpios =3D <&gpio2 13 0>;
+index f87915cce961..00c93585758f 100644
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -771,6 +771,7 @@ int of_reserved_mem_region_to_resource(const
+struct device_node *np,
+                return -EINVAL;
 
-The zero here means active high.
-
-I assume active low is more common, and you even used active low in
-the XEA board.
-
-I suggest using
-
- reset-gpios =3D <&gpio2 13 GPIO_ACTIVE_LOW>; in the dt-binding example.
+        resource_set_range(res, rmem->base, rmem->size);
++       res->flags =3D IORESOURCE_MEM;
+        res->name =3D rmem->name;
+        return 0;
+ }
