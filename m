@@ -1,254 +1,252 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2059.outbound.protection.outlook.com [40.107.104.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55221EF0B9
-	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 21:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745874413; cv=none; b=mAAG2aUofyjNkS0VsYWxRvbTQ/5XDiYxNujAjwCKwGLMBNzs0tQSV3N4tytyvuIltxDMo2uj5350cPmchTiH+sAeVDF1IaO6Hwks8PVi2QEzbCUuUTNeC/SF1UKhp/Iv3Er7BwbGea125xXVkPzgqg69algVpxfb/D46HiatHr0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745874413; c=relaxed/simple;
-	bh=sehDf/wz1Jc2NfNVJoDIU1m599/TWswRXczsp9U/qmw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C7K0t13MGkNXFakduWWv4i+inQAkJXAYDoTTY8Jnr0wJKiX4wl9UK7jxwnqrrploP8EMviN14xUCZ3NFc5chXSRFiNavkABK0kQIIMr/WYl26ZwBgNxzBCION6Rc1ufHMV/x5yplXZZI2CE5le0FyQa8uWKyhlkoVhHoea108zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=CxyKLopO; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1537C1E51F6
+	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 21:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745876450; cv=fail; b=rWhyqUcq9d7SEp6pYrGu+m/wce77VVfgeQK5vXpgjprhjRkWSsyiDobEzyBVL9tOsZu+n9JenV5u2gaHd2r6bFIwPbPYJr3IJelQmcaioEj47UZ9hmcKb5Amx4qdz/ioO1QVdOWbP8U8GLCq7qNCoSbn4Wf7p8Wcdmuw8PnCM1A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745876450; c=relaxed/simple;
+	bh=5n1q6rhHhhuFfbcDF0ybsXj/W1Wv58OfwYihfQR4y38=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=a6eXP1KFsdIfdnwlVzruD7zIKS0ikxXvZrPD4mH9ADD5kCTalxBJqw7AqkcFn7TgLbs+enH8eo3Nw8TNy+UhCNeaLvdn7JD7SPh9caGWBQC3AtsLz4N1P7EcALm8v7Dy1+Vdvc1a/OnD8+OrksXhzuBBGGl5b7oZB85g5VY1Onk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=VOcNbcMv; arc=fail smtp.client-ip=40.107.104.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="CxyKLopO"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c54b651310so853921185a.0
-        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 14:06:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1745874410; x=1746479210; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0HZyp8budJTYWJ9MOmTZnBjDzB8PV0g52ckHb+nyRQs=;
-        b=CxyKLopOT3lSML2f0t4lulIM6Y0GiOqwwXMo56aO7qS17PP/5t1ecytrISwPYsNVEb
-         qFiyofzAprA9+qf6wJW5I9BGqEv/uo9gS7sxxrfieAtn3NNN7bYbYFUgATkFmqg7j6V9
-         /EYXgw5p315cepbEkEWn58aEBWfzE2kwMnK7Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745874410; x=1746479210;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0HZyp8budJTYWJ9MOmTZnBjDzB8PV0g52ckHb+nyRQs=;
-        b=mo6YvtetYXCAFgwjIfo16XPaXA+hT4kYT/hi5wbuVJcC639Iho2+b1Fs64sAVH2uJa
-         MwmO4DnfKwWCe8nspF0LOVMQBLbZYJaXclvkI8vW0Iw7UhkBogMQvR0CJQeOm1f/GAJU
-         TtAjNMBnO37xKvTCQRjCwsF5HhtAmaTK9VexW+YIhWkxuIwI/hpFPi3/VvTgqrSaaIE9
-         ceATxMb90HMVjfJCh0R1yiaoFGqs4EYQ/aQHSkLTWwvlarIDsoZZGv/dxndGN7E6n77l
-         Qifwk1rMtLxan69E7ADNPKbqkAEeZmyoWju3F2MkJty1s0p97uCCqHyhK5z3vWBQ1NzM
-         MnFg==
-X-Forwarded-Encrypted: i=1; AJvYcCUiHq42kuMgKaVG/iKbVF9MLQdi7Shd9vYq9+vxeOxziaEVko52fdiCcgd8nlxhwCsZxD0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwO5+yWINNoJ2ETSvGs3xZtMTlemOSTB9FPcjhfHFCwA8a8Y+hV
-	46ZZznQHz3c+x4oClHW8EgUyNrseB5HV5G1Ct3kHELevHq3a2thn2n1+cU6nsCwsyJ+aQWU3TX4
-	=
-X-Gm-Gg: ASbGncuciblxSigdGd7PPnBNvZQl3ejh3jz3Y1a6CaUEyuFeQo3mVeML4lgXMxkEqRK
-	ZuLacg1Ovcaj430g0OiXsVlzEPQJ9R2vnc6bJD48/woSuz8ux1v78dxa/9H1fV5hD5059CxFIIq
-	LjXat5uU8RtwTLNFyQVXLgeKF2qEnHshMr3mnP+x2Fcv0ExHzgd8gpasuBbJCkmpecEoeJiKNjh
-	DZxeHxnBqjLsm5+/9Gjx5+56xcsT6L9M2ZWIs++2KfAdPrrtg6UyzoisoiCjtW8h2v99/AV2Dgf
-	q+Bphhg7cC4WgZGdPQgxqKRLqds5HTqijWLuhHMqjjWDqdHPqkMpQlWRvE2Q5b2xwOpXopZNCHO
-	U0vW+tqdL
-X-Google-Smtp-Source: AGHT+IEfFnfKkpTlmL8CSUh2QVtSMida34xd1q51EkytXAyNlkU+oXrYhFY2mpk+6jXrcAjd9/3Axg==
-X-Received: by 2002:a05:620a:40d2:b0:7c5:4949:23f1 with SMTP id af79cd13be357-7c9668bfd77mr1703332685a.40.1745874410048;
-        Mon, 28 Apr 2025 14:06:50 -0700 (PDT)
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com. [209.85.222.174])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c958cbe651sm663959785a.47.2025.04.28.14.06.49
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Apr 2025 14:06:49 -0700 (PDT)
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7c08fc20194so1212124885a.2
-        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 14:06:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXrAZzuh+WsTp8uqNr0ol+NwxQ7Xr7YnJc0cYTlyvEazPsL8rCA1O5+q7FCigvKtQdT0fw=@lists.linux.dev
-X-Received: by 2002:a17:90b:2e03:b0:2fa:1a23:c01d with SMTP id
- 98e67ed59e1d1-30a0132e771mr15291417a91.21.1745874002058; Mon, 28 Apr 2025
- 14:00:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="VOcNbcMv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=irKriz6Lq56gQ3xNCcyOilJkQvD64VAZk6i2J+vkZzoO8NPp8RH2HPZVZ5wNFUGoQu9r1vCtwgcx3X9SgU6EVrrRTEIp+4MzgdgMvn3kCFwCCP3BvoobzzTeIDMAqzZ50bOHSueENE4LOvn+ct/DAPTfbUXJ5gKExWjnhefOKnCs1DUbar1xmenndMVqc9ym4qj7wsPEA8WyAXroBZ7oD4fJ+URHZ584fXi5yGNO7kq3LG1oGbjIKgk6TySkeu7q2zH7T2JqVFecEpC6up7mv96rQ0PQ9MHR5pCsyBjs32uGwPDVN/nbA0L+LnI4upiIW/QriOkoHgWhK1K8tsYs9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=le5HuXrhqWS72PSd8/L6yifA4QUECx2VlRLIIw/1PLU=;
+ b=rlcSlj0VAUFBi2mRJDidSYVji2Mt9scB5PpcPeEDFd/R4biTJjvp5ZX7wJZreRky0tg9PNhYUtqktMvLf5g8AIa/t+WbAapbLPOtK5nS1nNhqsyU6lpHm/W/kJHp39OD50wtBjKlnnYG5SUtVogk74MSSozBpZs+ZiMFj3TrSTxZcTtjS2CZsNNPYplOFCOFzJHHSU50q1moj5X2MnF5EP5DScDt9iqsOh4Uo5t8hxasGrh/q/h4G0nwkjinptMW3EWr9yp+JoUWXFByezDGUMSXYSCnnyBiNOrerRrfWA9XMiOEa4MyJ8d7yYwOb+5KDk9N1gmutOT9EmmEtH5XLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=le5HuXrhqWS72PSd8/L6yifA4QUECx2VlRLIIw/1PLU=;
+ b=VOcNbcMvrg9tpjk19BiFekFcWVg5DRL81ho9NAPry/qHLG/eZxjIKXnlv5vYAPF8a+/U/QAam6d/2gdq+H9rtQ5c8vIQRSWrUO+QAlw0f2DaJXvfpuRbuuF8ngYVGIsPZuDSKl6gCM6UlMWws6J9h1WiGvJNziA7wstfRZ9z7OW4nBumK/0Wb7tTktdpfyDnqCgbtaKvx4lU2EpX9L0/A53n1LnulqlSyuPRUlh1VqYZdA4b+Hza0iq0aFwmucwN5nuoS/iARVsaIMDuf6oKhCO/JR9iHRPo6tT+khBplGijlfBduZNY+hAccfUCgxRpYLWZES4D2eaVuJAxf7v8TA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com (2603:10a6:10:2e1::21)
+ by AS8PR04MB8708.eurprd04.prod.outlook.com (2603:10a6:20b:42b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Mon, 28 Apr
+ 2025 21:40:45 +0000
+Received: from DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1]) by DU2PR04MB8774.eurprd04.prod.outlook.com
+ ([fe80::88b8:8584:24dc:e2a1%7]) with mapi id 15.20.8678.028; Mon, 28 Apr 2025
+ 21:40:45 +0000
+Message-ID: <89d58524-c6ac-4517-ade6-80c966c20115@nxp.com>
+Date: Tue, 29 Apr 2025 00:40:42 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] of: Common "memory-region" parsing
+To: Rob Herring <robh@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, "Andrew F. Davis" <afd@ti.com>,
+ "Shah, Tanmay" <tanmay.shah@amd.com>, Saravana Kannan
+ <saravanak@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Patrice Chotard <patrice.chotard@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Chen-Yu Tsai <wens@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+References: <20250423-dt-memory-region-v2-v2-0-2fbd6ebd3c88@kernel.org>
+ <CANLsYkxKHhCHYrbAGzQ48QGpL_DbuLnX3=ppmpyu0vjuuvvODg@mail.gmail.com>
+ <322d366c-1564-4b06-9362-28fe451a35e7@nxp.com>
+ <CAL_JsqJemaAzx6v0kj52J=YFRGqLo5=xk8LXXk-8i=mAomTCWQ@mail.gmail.com>
+Content-Language: en-US
+From: Iuliana Prodan <iuliana.prodan@nxp.com>
+In-Reply-To: <CAL_JsqJemaAzx6v0kj52J=YFRGqLo5=xk8LXXk-8i=mAomTCWQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4P189CA0037.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5dd::8) To DU2PR04MB8774.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
- <20250424-drm-bridge-convert-to-alloc-api-v2-1-8f91a404d86b@bootlin.com>
-In-Reply-To: <20250424-drm-bridge-convert-to-alloc-api-v2-1-8f91a404d86b@bootlin.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 28 Apr 2025 13:59:50 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=VmV5yb0HWWGTiKyyC8+WNPJpM7vE9PQGh5_=KPk6+HCg@mail.gmail.com>
-X-Gm-Features: ATxdqUFp3e4vRAA9U9jS3-gUD9FhwChMaNCvlfej-PAqltrXksVDq12UxaUaXqM
-Message-ID: <CAD=FV=VmV5yb0HWWGTiKyyC8+WNPJpM7vE9PQGh5_=KPk6+HCg@mail.gmail.com>
-Subject: Re: [PATCH v2 01/34] drm: convert many bridge drivers from
- devm_kzalloc() to devm_drm_bridge_alloc() API
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Jagan Teki <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Anusha Srivatsa <asrivats@redhat.com>, 
-	Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org, 
-	asahi@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	chrome-platform@lists.linux.dev, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-stm32@st-md-mailman.stormreply.com, Adam Ford <aford173@gmail.com>, 
-	Adrien Grassein <adrien.grassein@gmail.com>, Aleksandr Mishin <amishin@t-argos.ru>, 
-	Andy Yan <andy.yan@rock-chips.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Benson Leung <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Christoph Fritz <chf.fritz@googlemail.com>, 
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, 
-	Detlev Casanova <detlev.casanova@collabora.com>, 
-	Dharma Balasubiramani <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne Grunau <j@jannau.net>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Jesse Van Gavere <jesseevg@gmail.com>, 
-	Kevin Hilman <khilman@baylibre.com>, 
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, Liu Ying <victor.liu@nxp.com>, 
-	Manikandan Muralidharan <manikandan.m@microchip.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Phong LE <ple@baylibre.com>, Sasha Finkelstein <fnkl.kernel@gmail.com>, 
-	Sugar Zhang <sugar.zhang@rock-chips.com>, Sui Jingfeng <sui.jingfeng@linux.dev>, 
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Vitalii Mordan <mordan@ispras.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8774:EE_|AS8PR04MB8708:EE_
+X-MS-Office365-Filtering-Correlation-Id: aec1419f-6d00-4d27-15aa-08dd869d550d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?K1A3clhGbzg1aFlVdmw3V2JnZFhUYVJJck54MDZ6ZTJVd0plMVp4T21XcklW?=
+ =?utf-8?B?V2tiMEc2Wk1aTlZFR2tSSE5rT0tjVEplU0hRR1RIM3h5NWN4RzMvMVlHVXVE?=
+ =?utf-8?B?MDl2U3NDWGRXVFdGR2ppQ3dXMnpFN2NDSCtBMU1FKzNiSDU0b2gvc2tGQzh3?=
+ =?utf-8?B?bXlvRkNQcmNUTXJQaVJIWW5mUVdPZjBFOG1obDc5M2lPbUlYT0h1ekg0V2xl?=
+ =?utf-8?B?WlpxYTVUcjNucHhVNTRrM01oVk5aS29mMkFDaGhXTkpCcCthQW4yazVPZ1N0?=
+ =?utf-8?B?WkZBS2RHcmZCQ1R5M0hhaThlRWgva3RmTVBBbXZ6ZnBHeW1vdUpuOWhyOGVn?=
+ =?utf-8?B?b0R5c0IxSFJ6aXdSd0gyU055TDU0eE9ScTdYWnVacVU1VW4ybmxPSmdFcXl1?=
+ =?utf-8?B?dGxWeEh0Y001aEQxZmJUbWx1VUdVZnByeGJUYkxycHFOd2JKeE8rT2dGZzFQ?=
+ =?utf-8?B?YnUzRmVjMmc2Q3ZMRmFBKzlRWi9xMWQ5cHIzVlh3NE1nOWszOFRNb294djMr?=
+ =?utf-8?B?azBzTFp4RC9zcmR3VGh2N0N0dHBTVWFVSjl2dWlUK3dsdUsvSm1TdXNjOUR5?=
+ =?utf-8?B?NGF1ekkxZjRxT1QxaEJZTlVEMFhXWmZPcWRIVTJFWlFiUDdXMllPRmg0WWJH?=
+ =?utf-8?B?MWE4MllWWFUvZmIvTTNVNUNkN0N6YmZTRm4zMWFMOHViRU96NVRQSXBjdCs3?=
+ =?utf-8?B?SWx0YS96WnlkRDZhMGhhQTVQb0ZaSmh5am05bnFqci8reTJPUDl0VDVpUFRy?=
+ =?utf-8?B?R25mU1hOSkxJMWtFMklLSGxiOXJNWHl6QXg2ZVI2T0xCeGtpeWlXdGgwVlB3?=
+ =?utf-8?B?aXU3Y1IyRGFQN3RlS1ZEOFh2SHUxVlFWZWkwU1IrZDN6c0xFa2Q3YmRzUFNy?=
+ =?utf-8?B?M29VVEJ4U2dHZXh5UDY3eGNtclowZ01lcHRrTXJBQitDYldORC85WUxLSEJZ?=
+ =?utf-8?B?WTBGR3VqT1JVeHRHNnRXNUhLRVFZUmxpU283Qmp2aSsvcm9tYnJxOStuNmw3?=
+ =?utf-8?B?OUtGZ296MDRvSmRTaS9sOEFjMWF1d041elpiRXc5Z2k5di9pN3R5OWdxNjBs?=
+ =?utf-8?B?SEt1N2hYS0QvMzM0U2dHUzMxZVVvM3pCWExQdm1yUnpwc0twMFIvelRxVUVX?=
+ =?utf-8?B?YjhFTm0rQ2lqcGhMYXNoRU1Mc2Q5bWZSeVQ0NkZIMlhvL2FqRUxrTVRydlJC?=
+ =?utf-8?B?Smt6bER2bzhpNGV5VUNkV0N5NVRiVXZiWVhEK3NpUTliM0xsekE5VlZDcXly?=
+ =?utf-8?B?QzAwZ3huaUx0cE1mQXBVYW5hZnEvSnZMM3pCU2FJRkwyTk96Q2htaHE4VXBw?=
+ =?utf-8?B?K1BOUTZaR0tTV2ttVVo2VU5Pa0s1Z2hGaUs4aUgyZ2tPaVp5QTVvUGlzd1pj?=
+ =?utf-8?B?SGZVTmpWdG01YmNrWkpZc0R2TzZ3VDFBY29vVHEvTlR1cnVLYlJlcWY0Q3R1?=
+ =?utf-8?B?WGljenc3NG5nRjFJNS9xY1A4RWIrWlZzZ0QwYTdMWE1XZUdtYVhnNVRUanRp?=
+ =?utf-8?B?a3dpQkxPTzRwU1RSYWljY0x6NU9YL3kvV1VGMHlXRzQzbnlvYVkzOFF4OTRp?=
+ =?utf-8?B?N0VOZkZBMGpoNXRPUEV5L1FVbi9QWG95RktiVjFnbFB6ekFKSnJHQnR4YVdx?=
+ =?utf-8?B?YldRSFJrWWwxS3VCQ0l0OG91QWRwaW9lemcxRG05QytXaHJ4aTdvTGtwMVdr?=
+ =?utf-8?B?a3VGd0lNcWZ1MC85RVlzcnlWa0tSYWJ4QzNodGo3STZoSXFuZng1OFN0Q1Q0?=
+ =?utf-8?B?L0ZrK3ZvYzlHeHlJeWQwcjIzdW5zMmwxVk5qdCswQTRIZWttb1dQNjRzbWZl?=
+ =?utf-8?B?TExOcXFmbWNpaHM3L2tJN0l0UEEzR3NEMm93eWw2cmwxWmczSjRIQlJaYTdv?=
+ =?utf-8?B?S3RXbCtQTnRmRmJkTlMxZ3VaSVRoYnZiM2Q4MkJPZ25ydG9CMk9oaDZhSFNN?=
+ =?utf-8?Q?lnZGXQOP4jY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8774.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?M3ZCY2pORGdFV1ZZa08vcjh1bC9QMFNoY2dsZXFsRUo3Q0xLemV0NVBydStn?=
+ =?utf-8?B?N3VVZWRjVmRkRC95UmwzMzBwYTZkVnV5dXg0c1BORzdTdUR0MCs0Z2VLS0xa?=
+ =?utf-8?B?RndGd2FTT2JjQmxnR1hMZ3pxV0U3aEgxS2txM0pCdC9mUkxZMklqbkhPRy9C?=
+ =?utf-8?B?T1dXMmQ1VXA2ZzRHSXB1WEpLSkhkL1VZWVRTd1QvQjNIREJhRWFrQnVnNGFu?=
+ =?utf-8?B?bEhqY3A4ZFZkUjJ2ZFJVR2JBcVp5dXVWRElSOXdneTBhY3pqbzNwTHJhNmI5?=
+ =?utf-8?B?ZVU0aVp3LzhJVTdKczdBQzFEbjlRSVU4TEZMZ1JSRFNkTmxmRlZiblZ3dWNG?=
+ =?utf-8?B?Rjg0NGdQUXZiY1hQeFZxV0FJWGpZekp6anJuakxvckhTSzVVQ1pOSWlBVGx3?=
+ =?utf-8?B?OWVRSWcrMnNrNW9CeHlLZE1GSmFCWnVRbE1Rbi9JbWJpMVN5RlJtNmZHdHZi?=
+ =?utf-8?B?ZDFNMDNUaHpGbi9rWXYzMXREVm9lRklFdHA5TUFQV2hBM21JVjlOS1ZzcDhJ?=
+ =?utf-8?B?MDJ0Ri9xOGljMWZEVCtwT3VQV2ZLYThDOW1qT0lBUUM1N3Fxa2NNU3kwTHAr?=
+ =?utf-8?B?Y3pTSHozMmhnbFBnOXo4S2JEN3pjVW1NR2MvbWZpVHhTejRSSDFKY3ZnYkNy?=
+ =?utf-8?B?T1lpcWRDNThxRjQ0WWE0VkR2VjFTbno1STRhL2E4WE1Oc1FXbnBVcUdMRk1H?=
+ =?utf-8?B?dmMxUEtzNlFjTHZBUmhuNXo0YmJzV0xCUGJ0MWhmQ1RyMVlPN2JPNlZXQ0pY?=
+ =?utf-8?B?SlliWjhhR3g5TGtuSnU0WW9ob2ZEUnMzZDVVemFZOEgvbUExWWMxZ09sWWNk?=
+ =?utf-8?B?RlJRL1hYc0Mzdi9mZlpoaGhCbzJzMmxXMlpwWjNhem8wS0MrbU0rVGFEQkpO?=
+ =?utf-8?B?VFpjcVA0KzZ2YWxidlJtanNqTmt3REd6WUdmZ0drcXR4Q2VoMmhBSzFCKytI?=
+ =?utf-8?B?cmJQYW92N2RMZGYzSUhIQzVWakd6WjFSc2hjRjk5akZhaWxhbndueGUyL25l?=
+ =?utf-8?B?aEJSbUJyN2hWWUtKVGg4QkkxMDZhYnZpQks0YnhsbTdFdnBSTVU5M1dLd2Jn?=
+ =?utf-8?B?RUNQRGxaQURaS2VscEVwR1FMVldxSDFwdURiR3htMFRGdGgwU2s1YVZzZ21n?=
+ =?utf-8?B?M0RiTWJvUllDUnhidGE0ZURpM2piZDFiTkFZbzVTNEY0eGViN3c1N21UL3Q0?=
+ =?utf-8?B?eXowWTJiMytHMTRvcFo1L1ExVUZlUFpvSmw5YnFoeVBNUWxXM0tLdGp3ejZi?=
+ =?utf-8?B?QXc1eFlDSXFmd3N2Qm5SNjR3QmtYaXhLVFNId0p1amI3V0x5Sm5FOTI5Tzhs?=
+ =?utf-8?B?Lzg4QndsbGpkMDloKzJvdzR6OG1iZ2VxWWdsenNFdGJkdU9vVzhQUjBTOUhs?=
+ =?utf-8?B?cW0reitCSm4wYlpMUUthS1FkMzVQSnJoS0x6TUpReEdNWUFsK0lSSjVyRElI?=
+ =?utf-8?B?YUpDYzRsaGZkY1FCNzk2b2IwdloyMUdVVDZGUnIyTERFbGJaUXhhTFRhK3ox?=
+ =?utf-8?B?bnF5dm90MDR5ckJqUStKakZUTkwzU1VFY2VYR0JhdjJBbVc2THV0YTRHUmdX?=
+ =?utf-8?B?bnREN3NDVnFZYmRBSVNxaU12QWN0bFhoeW1mQkJaN1pOOU81aE53cEZHR3hw?=
+ =?utf-8?B?Yjg1UmU3WU5tejJwSXNMUmNVS0VkdEw2OHpwNkZMS2wvbkV1Qm8xZVo1L2x6?=
+ =?utf-8?B?K2ZnS1JqOVJZRXVHamxYaHZ2UGZOdnNjREM5THF3R1haS0lzRE5jcUZ4cWxQ?=
+ =?utf-8?B?V2VBSDBaUmhLcGMwcWducXgzK045eHhGWTZZWjBKWkpoYlpqamVjVmQvc0Fo?=
+ =?utf-8?B?MnlGNWJyWFYyZVRhenlCak1ZK1JZOFJoY3NYbEVDeHQ5Rjdxcjk4S25obVVM?=
+ =?utf-8?B?Q1VoNGVaNyszcnlPSEp4MktHZ0E1SXJOSjVIQlVlMDVGYmprOGZjWXlwajNa?=
+ =?utf-8?B?VkloMFltc0VKWDIwdi9iZzIxS09VV2V0VERiVnRGVEMrT0YrR2RFT0t0cFlT?=
+ =?utf-8?B?UDZDN2t4SXlSWEN5U1NlT0dVRzN6RmxIT2NObEpLWnpmaGJ2K3FtTnRrUkI3?=
+ =?utf-8?B?T09MMHNaUmNDQ1hiUW4vVVNQSEJ4dlJLbGdUdVdnVTJ2RGNzbW9PZDdBVkN6?=
+ =?utf-8?B?b1dvYkJiVEpxY29hcEFQajl0Sm5LaGEwUGMxOGVFQ0F5enRpSmFXQ2U4eFVP?=
+ =?utf-8?B?T1E9PQ==?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aec1419f-6d00-4d27-15aa-08dd869d550d
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8774.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 21:40:45.3507
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +bj2zKYqrCfal4xcKlXwj8RbUIAtOY1JuxfbKYP9Q+SZwn8zTC9tl62kc/wuVYqsgbsgUJY0GzpUfN1XSwxnmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8708
 
-Hi,
+On 4/28/2025 3:23 PM, Rob Herring wrote:
+> On Fri, Apr 25, 2025 at 6:34 PM Iuliana Prodan <iuliana.prodan@nxp.com> wrote:
+>> Hello Mathieu, Rob,
+>>
+>> I've tested imx_dsp_rproc and it fails with:
+>>
+>> [   39.743770] Unable to handle kernel paging request at virtual address
+>> ffffffffffffffea
+>> ...
+>> [   39.805078] Hardware name: NXP i.MX8MPlus EVK board (DT)
+>> [   39.810390] pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS
+>> BTYPE=--)
+>> [   39.817353] pc : __pi_memset_generic+0x50/0x188
+>> [   39.821892] lr : imx_dsp_rproc_prepare+0x3a4/0xea4 [imx_dsp_rproc]
+>> [   39.828079] sp : ffff8000853dbb10
+>> [   39.831396] x29: ffff8000853dbb90 x28: 0000000092400000 x27:
+>> ffff80007a36d3d8
+>> [   39.838540] x26: ffff0000d0a5e410 x25: ffff80007a36d3f0 x24:
+>> 0000000000000004
+>> [   39.845685] x23: ffff0000d5414880 x22: ffff0000d5e1dce8 x21:
+>> 0000000000000000
+>> [   39.852827] x20: ffff0000d5e1db98 x19: ffff0000d5414b80 x18:
+>> 00000000ffffffff
+>> [   39.859970] x17: 202c656c69687720 x16: 3e2074756f657672 x15:
+>> ffff800081f8d050
+>> [   39.867114] x14: ffff0000db584680 x13: 0000000000000003 x12:
+>> 00007fffa3330000
+>> [   39.874257] x11: 0000000000000004 x10: 0000000000000ab0 x9 :
+>> 0000000000000000
+>> [   39.881400] x8 : ffffffffffffffea x7 : 0000000000000000 x6 :
+>> 000000000000003f
+>> [   39.888546] x5 : 0000000000000040 x4 : 0000000000000006 x3 :
+>> 0000000000000004
+>> [   39.895689] x2 : 0000000000008000 x1 : 0000000000000000 x0 :
+>> ffffffffffffffea
+>> [   39.902837] Call trace:
+>> [   39.905284]  __pi_memset_generic+0x50/0x188 (P)
+>> [   39.909821]  rproc_boot+0x2c0/0x524
+>> [   39.913317]  state_store+0x40/0x100
+>> [   39.916812]  dev_attr_store+0x18/0x2c
+>> [   39.920478]  sysfs_kf_write+0x7c/0x94
+>> [   39.924146]  kernfs_fop_write_iter+0x120/0x1e8
+>> [   39.928598]  vfs_write+0x244/0x37c
+>> [   39.932008]  ksys_write+0x70/0x110
+>> [   39.935413]  __arm64_sys_write+0x1c/0x28
+>> [   39.939342]  invoke_syscall+0x48/0x104
+>> [   39.943094]  el0_svc_common.constprop.0+0xc0/0xe0
+>> [   39.947805]  do_el0_svc+0x1c/0x28
+>> [   39.951123]  el0_svc+0x30/0xcc
+>> [   39.954188]  el0t_64_sync_handler+0x10c/0x138
+>> [   39.958549]  el0t_64_sync+0x198/0x19c
+>> [   39.962222] Code: d65f03c0 cb0803e4 f2400c84 54000080 (a9001d07)
+>> [   39.968317] ---[ end trace 0000000000000000 ]---
+>>
+>> The problem seems to be when computing `cpu_addr =
+>> devm_ioremap_resource_wc(dev, &res);`, in patch 4.
+>> In `__devm_ioremap_resource` (see [1]), it's expecting the resource type
+>> to be `IORESOURCE_MEM`, which is not the case here (at least the flags
+>> are nowhere set for this).
+> Thanks for testing and diagnosing. IORESOURCE_MEM needs to be set. Can
+> you test with this change:
+>
+> index f87915cce961..00c93585758f 100644
+> --- a/drivers/of/of_reserved_mem.c
+> +++ b/drivers/of/of_reserved_mem.c
+> @@ -771,6 +771,7 @@ int of_reserved_mem_region_to_resource(const
+> struct device_node *np,
+>                  return -EINVAL;
+>
+>          resource_set_range(res, rmem->base, rmem->size);
+> +       res->flags = IORESOURCE_MEM;
+>          res->name = rmem->name;
+>          return 0;
+>   }
 
-On Thu, Apr 24, 2025 at 11:59=E2=80=AFAM Luca Ceresoli
-<luca.ceresoli@bootlin.com> wrote:
->
-> devm_drm_bridge_alloc() is the new API to be used for allocating (and
-> partially initializing) a private driver struct embedding a struct
-> drm_bridge.
->
-> For many drivers having a simple code flow in the probe function, this
-> commit does a mass conversion automatically with the following semantic
-> patch. The changes have been reviewed manually for correctness as well as
-> to find any false positives.
->
->   @@
->   type T;
->   identifier C;
->   identifier BR;
->   expression DEV;
->   expression FUNCS;
->   @@
->   -T *C;
->   +T *C;
->    ...
->   (
->   -C =3D devm_kzalloc(DEV, ...);
->   -if (!C)
->   -    return -ENOMEM;
->   +C =3D devm_drm_bridge_alloc(DEV, T, BR, FUNCS);
->   +if (IS_ERR(C))
->   +     return PTR_ERR(C);
->   |
->   -C =3D devm_kzalloc(DEV, ...);
->   -if (!C)
->   -    return ERR_PTR(-ENOMEM);
->   +C =3D devm_drm_bridge_alloc(DEV, T, BR, FUNCS);
->   +if (IS_ERR(C))
->   +     return PTR_ERR(C);
->   )
->    ...
->   -C->BR.funcs =3D FUNCS;
->
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
->
-> ---
->
-> Cc: Adam Ford <aford173@gmail.com>
-> Cc: Adrien Grassein <adrien.grassein@gmail.com>
-> Cc: Aleksandr Mishin <amishin@t-argos.ru>
-> Cc: Andy Yan <andy.yan@rock-chips.com>
-> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Cc: Benson Leung <bleung@chromium.org>
-> Cc: Biju Das <biju.das.jz@bp.renesas.com>
-> Cc: Christoph Fritz <chf.fritz@googlemail.com>
-> Cc: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-> Cc: Detlev Casanova <detlev.casanova@collabora.com>
-> Cc: Dharma Balasubiramani <dharma.b@microchip.com>
-> Cc: Guenter Roeck <groeck@chromium.org>
-> Cc: Heiko Stuebner <heiko@sntech.de>
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Janne Grunau <j@jannau.net>
-> Cc: Jerome Brunet <jbrunet@baylibre.com>
-> Cc: Jesse Van Gavere <jesseevg@gmail.com>
-> Cc: Kevin Hilman <khilman@baylibre.com>
-> Cc: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-> Cc: Liu Ying <victor.liu@nxp.com>
-> Cc: Manikandan Muralidharan <manikandan.m@microchip.com>
-> Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Cc: Matthias Brugger <matthias.bgg@gmail.com>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Phong LE <ple@baylibre.com>
-> Cc: Sasha Finkelstein <fnkl.kernel@gmail.com>
-> Cc: Sugar Zhang <sugar.zhang@rock-chips.com>
-> Cc: Sui Jingfeng <sui.jingfeng@linux.dev>
-> Cc: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-> Cc: Vitalii Mordan <mordan@ispras.ru>
->
-> Changed in v2:
-> - added missing PTR_ERR() in the second spatch alternative
-> ---
->  drivers/gpu/drm/adp/adp-mipi.c                      |  8 ++++----
->  drivers/gpu/drm/bridge/adv7511/adv7511_drv.c        |  9 ++++-----
->  drivers/gpu/drm/bridge/analogix/analogix-anx78xx.c  |  9 ++++-----
->  drivers/gpu/drm/bridge/aux-bridge.c                 |  9 ++++-----
->  drivers/gpu/drm/bridge/aux-hpd-bridge.c             |  9 +++++----
->  drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c |  8 ++++----
->  drivers/gpu/drm/bridge/chipone-icn6211.c            |  9 ++++-----
->  drivers/gpu/drm/bridge/chrontel-ch7033.c            |  8 ++++----
->  drivers/gpu/drm/bridge/cros-ec-anx7688.c            |  9 ++++-----
->  drivers/gpu/drm/bridge/fsl-ldb.c                    |  7 +++----
->  drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c      |  9 ++++-----
->  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c        | 10 ++++------
->  drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c     |  8 ++++----
->  drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c        |  8 ++++----
->  drivers/gpu/drm/bridge/ite-it6263.c                 |  9 ++++-----
->  drivers/gpu/drm/bridge/ite-it6505.c                 |  9 ++++-----
->  drivers/gpu/drm/bridge/ite-it66121.c                |  9 ++++-----
->  drivers/gpu/drm/bridge/lontium-lt8912b.c            |  9 ++++-----
->  drivers/gpu/drm/bridge/lontium-lt9211.c             |  8 +++-----
->  drivers/gpu/drm/bridge/lontium-lt9611.c             |  9 ++++-----
->  drivers/gpu/drm/bridge/lvds-codec.c                 |  9 ++++-----
->  drivers/gpu/drm/bridge/microchip-lvds.c             |  8 ++++----
->  drivers/gpu/drm/bridge/nwl-dsi.c                    |  8 ++++----
->  drivers/gpu/drm/bridge/parade-ps8622.c              |  9 ++++-----
->  drivers/gpu/drm/bridge/parade-ps8640.c              |  9 ++++-----
->  drivers/gpu/drm/bridge/sii9234.c                    |  9 ++++-----
->  drivers/gpu/drm/bridge/sil-sii8620.c                |  9 ++++-----
->  drivers/gpu/drm/bridge/simple-bridge.c              | 10 ++++------
->  drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c        |  8 ++++----
->  drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c       |  8 ++++----
->  drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi2.c      |  8 ++++----
->  drivers/gpu/drm/bridge/tc358762.c                   |  9 ++++-----
->  drivers/gpu/drm/bridge/tc358764.c                   |  9 ++++-----
->  drivers/gpu/drm/bridge/tc358768.c                   |  9 ++++-----
->  drivers/gpu/drm/bridge/tc358775.c                   |  9 ++++-----
->  drivers/gpu/drm/bridge/thc63lvd1024.c               |  8 ++++----
->  drivers/gpu/drm/bridge/ti-dlpc3433.c                |  9 ++++-----
->  drivers/gpu/drm/bridge/ti-tdp158.c                  |  8 ++++----
->  drivers/gpu/drm/bridge/ti-tfp410.c                  |  9 ++++-----
->  drivers/gpu/drm/bridge/ti-tpd12s015.c               |  9 ++++-----
->  drivers/gpu/drm/mediatek/mtk_dp.c                   |  9 ++++-----
->  drivers/gpu/drm/mediatek/mtk_dpi.c                  |  9 ++++-----
->  drivers/gpu/drm/mediatek/mtk_dsi.c                  |  9 ++++-----
->  drivers/gpu/drm/mediatek/mtk_hdmi.c                 |  9 ++++-----
->  drivers/gpu/drm/meson/meson_encoder_cvbs.c          | 12 ++++++------
->  drivers/gpu/drm/meson/meson_encoder_dsi.c           | 12 ++++++------
->  drivers/gpu/drm/meson/meson_encoder_hdmi.c          | 12 ++++++------
->  drivers/gpu/drm/renesas/rcar-du/rcar_lvds.c         |  9 ++++-----
->  drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c      | 10 ++++------
->  49 files changed, 201 insertions(+), 237 deletions(-)
+I've tested with this change, and is all good now. Iulia
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org> # parade-ps8640
-Tested-by: Douglas Anderson <dianders@chromium.org> # parade-ps8640
