@@ -1,254 +1,203 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2120.outbound.protection.outlook.com [40.107.247.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD90263C71
-	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 14:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745849434; cv=none; b=LHW7ZtEdN6GLuPLTk7YJYs2wwwvwFEMUJQp0M10+0gjhiIx5Ai4fBDdRaSOlpX7rhtPt6aIS3apphnwStj3GC8k1UfJt2zHDHhjXtS+nhvj/UpV0hoOCbOoBa8UslAVNV3WuBp+y9q6SM8CVOUBMcOPLJ1XtFt7bQClmf7ulEQw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745849434; c=relaxed/simple;
-	bh=BOuEWK+UmYfg4VYZdZhbRi1314+0MdlONTfS2GDO590=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b8Q/WvOGHDNh9G4AHuGrVihu9yUl1Z6N5H19fuDF+bJ7+dPD57t3qAsaQta+KsoBgtIffa1eje27RhFTlGJNWas+u+R6cE5HdZbNKkJqmx2/Pc5Nn53aJ2fCS62KldxUNgoZVx+GqUImrrJjsbWqKhEPST6Iqy/AzXcHsYRRSk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WNzV4ajg; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8E926FA4D
+	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 14:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.120
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745850705; cv=fail; b=fDa6aBGdlJImF1kuuWVmMj8okju/kKaUwoCe1SwZGEPSXDHye47/q5s1Zrt9RfS5IOTf/4bLyA7pbS81NVRGtEF664cPWzvP1XCgN7iIc5scKFXnee3/xStJp5QkpdNiq8VPo4C4wKG20F9oXTa9HPqCeKpGOldTCP43NoenZOU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745850705; c=relaxed/simple;
+	bh=lgxpYW7CXw/+8ZAlcOzkA559dh+xj9Lt/1zISOlK/QY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bpsqlUhZBgyGhIsdbbhlDOun5+d4RVXi6GxWUeWkrWbtUR/J71G/BLpIdq9ZcxA3PCv7NeN1zZReMuVlE0mbj7HEtwDmtD/1Uab/mkQquk+ENOxNRa61j2O8VhyMwFPrxc/Mn0FBU+COgPo0xfs0YBq55MXVfjCTA93lVjfb7o4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=sU3TZvJ/; arc=fail smtp.client-ip=40.107.247.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WNzV4ajg"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-736aa9d0f2aso5953970b3a.0
-        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 07:10:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745849432; x=1746454232; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GEvTqKjHd/gxofN54tYASAmooBFL0e/b3JPxl2GoRUQ=;
-        b=WNzV4ajg3qQAEgpW+RO9ADb7fb84f4NW/OrFCoqVLn397vcb/SITHRGNxm3rYoKD9c
-         fnzDC8cUSIAtHA5elz+PrhiZqts9QJfG88i5O8JHov1VENR44yEc5K+v69XeKEp82c2L
-         SShUoHbrwSa9HsKRBDMySVNuUbtGAOHKLj62HiB/+PfeuqnsicgmjuwF/1+2l6RGDjas
-         Aptet8TD/p1cZw8QbdHjq7vbAJgVts1fUzcAOiCkoec0yXP2c2qeNsNZ8iLlMWP7rhKT
-         446vSlNFhqdmDTfF4eI9kHRwStuMTpZ5FfeguuTz6KlF9L9c1zhW4r57grlXqXHGxf3s
-         HZtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745849432; x=1746454232;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GEvTqKjHd/gxofN54tYASAmooBFL0e/b3JPxl2GoRUQ=;
-        b=P1oiqhVfJsND+KYEefKFAQSTRzT8ottEAiKxIXzSDNqelEGMHqhrOiLG/feCTgskvJ
-         CLV5GshuFskgsp3t4BnvEFFd8DJKMsravCOjPAE1EdiDyikzcGzyFHEIxkdo8K4jWsSp
-         qGqM0eA3eOHO0yK8KWHQ0OacHF6qeSrc6ic3BzQZFhTPGRE6tM3GJunounZ5tQQJVpko
-         zUm/XuT36H4ZjToj4rdU9t+r3Z2wTHO0vksDy+KWkjSTQTxxl7hVegiIn1z1bl7ozR51
-         T54AGiPeQcO+vrSUqQmvuDh3T2szgS5Gyjafpv4wtR/N/Ftk6lrb9oykdLLogrAjBnNm
-         Liig==
-X-Forwarded-Encrypted: i=1; AJvYcCUbtp8ZttaK7VIa+YWMuZVfWcUc3Yje4sypg0LS4WiQjuxhpzUcs6tA9HuL5QxANwM+S0U=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywrp4vaeUakCfVoO1E5lJhyItTlGb1/ier4bT/8B8YPyBMzMldj
-	PtOoZw4ZM/OSlHMnzVlR17bG4F3kJJOUMQKgsp9eTFMyEXyy+FCX
-X-Gm-Gg: ASbGncsZGjSztSKjkMvDRXkFF7/GHYgIrLO4oLUgiV1kgyu5J+5X0mqdiTsGYr0PCzg
-	uvm0h9H++cwi+BaPXxsoLz0EWMsCFGoWhIViE18AEJPTWz1Ms0JatWZD8HknVNhLrRWTCz/9EQY
-	hFe3Kd7OQXSr+irDliEN2SU1KMdvT8wzrdQlm+4j3GuyH1qwe6PXFC8U/BsIfxrTq3Iza/StlE7
-	Yw4nMqWsh8cTDP+w8u/1UoZ8hN6q2/ev4fzT+oLLwm7putZyxGWYlxFKxHco1eVWTCbwcFZlD9a
-	v3f5VO5jQ0m17s0Dpal60uUI9173HyN0beJeqCU=
-X-Google-Smtp-Source: AGHT+IFPQFBivSHKCoihIOXfE6lIJJ5LhZaUT+yQbp62PbM2nBEezYpi5ZMGrhr3CBfTWdfDJQ3wig==
-X-Received: by 2002:a05:6a00:2382:b0:730:99cb:7c2f with SMTP id d2e1a72fcca58-73fd6fdd3aemr14893591b3a.6.1745849431973;
-        Mon, 28 Apr 2025 07:10:31 -0700 (PDT)
-Received: from hiago-nb ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e2593f621sm8002237b3a.39.2025.04.28.07.10.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 07:10:31 -0700 (PDT)
-Date: Mon, 28 Apr 2025 11:10:26 -0300
-From: Hiago De Franco <hiagofranco@gmail.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, daniel.baluta@nxp.com,
-	iuliana.prodan@oss.nxp.com, linux-remoteproc@vger.kernel.org,
-	Bjorn Andersson <andersson@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Hiago De Franco <hiago.franco@toradex.com>
-Subject: Re: [PATCH] remoteproc: imx_rproc: replace devm_clk_get() with
- devm_clk_get_optional()
-Message-ID: <20250428141026.pvbk5qrgflv4wkak@hiago-nb>
-References: <20250423155131.101473-1-hiagofranco@gmail.com>
- <aAkf6bxBLjgFjvIZ@p14s>
- <20250423192156.b44wobzcgwgojzk3@hiago-nb>
- <20250426134958.GB13806@nxa18884-linux>
- <CANLsYkzLZKHpwv+Zz7YqtU4NCy7ZmapuzpgtfxsRfoV=Ve8rVg@mail.gmail.com>
- <20250427020825.GC13806@nxa18884-linux>
+	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="sU3TZvJ/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hjP7S2p4uihGhR83P2KLswAjRed+584p1kAqSYFsPGQiSEqfIOvSlj6GzZPGBpF5M2tQlUxKvQQt62nZe/Q/H7gZIj3/ZXJ9vBsrBojTCedrHAC2yy2uDas3gTwN8k9P5cknWXRKsjKkTQusQcMkFM54TDlBiR5Zx2OWG1DWb8RW6aQWxSJJfk+oyM9KivKYE928MubUZjXWQReZnJLIojPahc7AYUGLu+wJraICmSQbUKg2RCRqyVh0p4lYtbS/Qd+TMsm3PaOhGSMS/DmrKi4sBqZecWaaovs/V75dGRKVBENRcYaJPZD75xWDzC1PXvUCROS9lax236eiH8dsGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WreVyyvzdwyRz8aZRh6sPUrZ2JqrKXfaJTjD47RXhDY=;
+ b=FyJajo6cJ4AnErZ+IOyrS4bqGFgNvy5ujjGd3fnb+TPbNkixPYOJdYwZg7ELEODpn8UgImEhgUR1jtpvu3XxH0Cih/hWS2DLQ8l+vJYPHKVimnrG8YviTuySwrbnwfxHGyFpg3cGpX8Ysk1gUpCHsTfKvEl05kpQHimK9fPjzNe2MbpfxtCbaJ7Ojb9CWACMgSHuefLxGNkY4dYf6Ma0UQIr2xQl3Qc+m6JL/wRCbXc5GH4tEo/TjvHAL4eW5mVks2+daDM1IrGcOQElbSj31lM4aQYh77RjHxp2v8+GC/AuLyDD49sEYXOWkzgMWN/N3UTI2Pm+LbIe4rDGQA1X1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=phytec.de; dmarc=pass action=none header.from=phytec.de;
+ dkim=pass header.d=phytec.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WreVyyvzdwyRz8aZRh6sPUrZ2JqrKXfaJTjD47RXhDY=;
+ b=sU3TZvJ//70OP2ciNRdsZvhPudyrE2PiBpywUvLTlqClCXS7DZuNEsApPH8nPj2mbYDAEGn5VgFjdoHbcw3mhX+nqDXAulad0y2pqT0lAqoX/UWC9rv4zB42B8aKz1I8kzTtrWevUxMpwKmyMUcmbEIt51X84Wz4tViz/EN0ctpXpVaAAcjQjRQUdwBa5BKIqG2fmfvdBQbZcMRgyu9WSwt/UXrgQFeMgI9uQXHuvZ0KRdhoDQ0rB2Vxfqy5MayH3DoSMcmbZw+ndHTSvdaqYc84CMgHlb1rZIY5MJ5norkI5PuCZAJX86cfuzPNAmQ/PawLZ4LjNB7ijPCT8GyAWQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=phytec.de;
+Received: from AS4P195MB1456.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:4b3::21)
+ by AM8P195MB0897.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:1ca::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Mon, 28 Apr
+ 2025 14:31:37 +0000
+Received: from AS4P195MB1456.EURP195.PROD.OUTLOOK.COM
+ ([fe80::369c:a760:5bf9:8d4a]) by AS4P195MB1456.EURP195.PROD.OUTLOOK.COM
+ ([fe80::369c:a760:5bf9:8d4a%4]) with mapi id 15.20.8678.028; Mon, 28 Apr 2025
+ 14:31:37 +0000
+Message-ID: <000c1117-81d1-4a74-9d36-f83a2b0fedd3@phytec.de>
+Date: Mon, 28 Apr 2025 17:31:33 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Upstream] [PATCH 2/2] arm64: dts: freescale: Add PHYTEC
+ phyBOARD-Nash-i.MX93 support
+To: Primoz Fiser <primoz.fiser@norik.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ upstream@lists.phytec.de
+References: <20250425064107.174548-1-primoz.fiser@norik.com>
+ <20250425064107.174548-2-primoz.fiser@norik.com>
+Content-Language: en-US
+From: Wadim Egorov <w.egorov@phytec.de>
+In-Reply-To: <20250425064107.174548-2-primoz.fiser@norik.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MRXP264CA0042.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:500:14::30) To AS4P195MB1456.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:4b3::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250427020825.GC13806@nxa18884-linux>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4P195MB1456:EE_|AM8P195MB0897:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1ce80267-fd5a-4909-2e7d-08dd866161d0
+X-LD-Processed: e609157c-80e2-446d-9be3-9c99c2399d29,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MFF6VS8zd0ttdEhvL1NMVldyR0h5dE9XWVZWY1hjMDFvd2crTzdrNnU0Szlv?=
+ =?utf-8?B?UXlZNzNaUVBCTjF2a2cvZ21LRzBPMjIyL0N3dXFSYkxUelJkelo0dUxKTjZi?=
+ =?utf-8?B?WGxrSGlOY1ZDeU44MHhSamtsekZrZWVUa2lIcmpyY21NckhLWHlrS1BZaUwy?=
+ =?utf-8?B?MVNqK2ZOS0Q4anZiTGZyZ3BOek9lc24wbHhHSk9UQ0xzRHFlRmllVGF6QW9S?=
+ =?utf-8?B?UU9PZitVMU15aWxuTWpUU3lPaHNiOTc2akFJdUFEM2JCUkhrNjFnYWwvTTky?=
+ =?utf-8?B?eXg3NTE5NVlrNSttbGNlZDZuMnptL2lwOTZoeURxaHZ4Y0xYZzVnais1NU8z?=
+ =?utf-8?B?cVc0UjRBMEx6OXRYbndWOGJvbW1SbVMwbEQ0T3k5NXh5eUVLOTVCd21GSHhB?=
+ =?utf-8?B?MWd1Nkc4THNhNzZOeE1xcmJnbkRrZGJQU1lmMWUrM1FKY3ZHZXBCUWVTWXJr?=
+ =?utf-8?B?cXdqdlcvTUNJYVNSS0U2a3BuRmluOG5lUlFGMUdaRmFRMFpYS21TNDJSMjlJ?=
+ =?utf-8?B?U05nZTBlMjV2WStJUDAxWURRUEpVd01CUm9vYWpyR2dhNHhYbXJPVWVsWVNx?=
+ =?utf-8?B?WklQK0wyc1F6MGdyN0V5TnowQ0JNcEE0SUhUTityS1JjZ1hTOEVVNmk0b29H?=
+ =?utf-8?B?NWFjczEzM1ArbFpJOEJrMTk2Y1JSdGpsT01CMWR2c2lXWjRibHE4TlFtckRZ?=
+ =?utf-8?B?OG5tNjNkYnBienpWT0NraWRFdUxwQ1p4NEZiUnRZdzFNTjlhMHJCaFhreS8y?=
+ =?utf-8?B?YnhtMi9sdmZ2VEZ2aVpiV2o0eG9zWTZ2R25QZ3FKQ2s2K3hpY3h4V0E5c1gv?=
+ =?utf-8?B?V0RYbUFJU0pRVVVjY1pubzR1QklCdFdYTGQweXRoalBNZzBvYklDbEIzY0Jq?=
+ =?utf-8?B?cUg3ZWxlQkdvRERRZWJHRkVZaWZhNjdrY2VMYWRidWFIMWdWMDRFdTFwakR5?=
+ =?utf-8?B?UGp4d1pHREw5RnllVUthRUg2WEhFWVZ5citUZ0JybWZiTUFWZFUvWVRvME9u?=
+ =?utf-8?B?ako2YkxYRTI2L1U2aFRzUU5WTUdrK2xSV0ZxRWZ3MHh2QWZ0Um10MDlndzVn?=
+ =?utf-8?B?bkd5TVRGUnBPZzJCb3hack9XQkVHK1poclBiVDBZRUhYRHdObHZDdm5Wdzgw?=
+ =?utf-8?B?bjZFa1pDWE50VTlpVFlIcTJXYzZqbUVnQ3BhNnA1QXA1NXN0ZUQzcVgrdUZo?=
+ =?utf-8?B?RGdGdlA2YzB0M015TVFONTBEREhPVFJiaXBDNGxqOUVsaElOekZrQXM2Ry9S?=
+ =?utf-8?B?L3pLUzB3ZHpUc1MvMTRMS2htVGZSOGlLaXcxOTZiM1Zka0JKejJ5eVptaEpS?=
+ =?utf-8?B?WjJiNUdkZ2FZOHJaOTJXVWw0SGhJOTJ2NzhxMERyeVlpUEIvaUV4RTlGM2Vp?=
+ =?utf-8?B?OU5KaU1QWVZ1cUlDUDV3VHRXcDYrbldpci9TVTJRYkJVMlhVWklPa25MVmMy?=
+ =?utf-8?B?MVhnZ3piNDZoOWVwYnN4UjB1MjA4YnBQWnVtbTRLTHo2Mm5YNmFBd1BUZFhF?=
+ =?utf-8?B?Nlg3OS84d1hhb0FDc2xqVnZTUm1yalB6V1ZpTDhvQWRMMWM0Y2kvUDAvdGF6?=
+ =?utf-8?B?cDNuQVp0Ty9TOXcxU1c0ZVpsVGZab2JsYmI0MSsvdzhlVkExb1ErYWd1MEt0?=
+ =?utf-8?B?NzdwYjY5V1BsQXVNekZMQlNENVNjdFlZNWQrVC8xQkIxa1JaQzFBSk15V2FC?=
+ =?utf-8?B?TDl6cjFldEtPRFR4K1o1bGJQWlVkZGNmeEFjbGtEeTVrejRQUWlRdjRGQUQy?=
+ =?utf-8?B?bFhKamE3VCt2VW9QWithdGhvZ0NpcXRGUDJnd20xUDkxcEpiSW9EMk9LTEZF?=
+ =?utf-8?B?UWJQUTMvQjhMNTR4ZTI1K2N0K1FLelcyRTZFRi9IZFdJV2xrdit6ZDR6bG45?=
+ =?utf-8?Q?2EvyBeLy9E5Du?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4P195MB1456.EURP195.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TVJjN3ZGU2tQOS9PcHdudEdQSldkN1NtWWY4ai9wVklTVUNXTVh1bVVGNXV4?=
+ =?utf-8?B?QWZEMlR2YmthYTdZWG56djJrL2tVRUxpaklZenI0Y0JoL2ltd0tPamovSFA1?=
+ =?utf-8?B?Tmsvbk9hbkROUjJzdi9Jc2dmU2NiMnNhSDdWWmNOZ0ErSVlmVklWOTNKakth?=
+ =?utf-8?B?UUo2TU4vNnhoWmhTenNZem1QTW0yU0lFMDFFSnVOWmR4bUt6b0dlVkp6OXdm?=
+ =?utf-8?B?bHcyRGFrZ0dxbGVrNGk2OXlEZiswa1IxcUx2THkzNUhJUXQ5QjluZmVtakVh?=
+ =?utf-8?B?QlNCRVhPK0tuNGhSMFo5RnpWOGVXTG90TzJ5dzhYbDNxNkdWV29nOHgrRUlO?=
+ =?utf-8?B?VlBEL2VuQUk2c1h3RnNwRndxMGoyUW1ka2dJYzVTRFhqQ0F6WWh2Vzc2cGdi?=
+ =?utf-8?B?eDVXMkFRMjZNWlpPMjFqZGx1NE1mdnY3bUZtTDdHYnY4K01ZWGZqMlgxbnh6?=
+ =?utf-8?B?QWwxYWFMS3dOQVRNTnFVTzJyNmFMd3hMYnN0bkY3ODlxeG9BS1dUNzFnSjBs?=
+ =?utf-8?B?WFRVdkxoellhQkEyc0R3dWJ5bGRPTGhUbUd0UnNMTC9pd2tGT2c5Tlcrd3lO?=
+ =?utf-8?B?YW9uWldDWWFSSmhwZGE0K1R2R3prbWR0OTBBSmR2RWxCb2xwWHJ1UDc0VjVO?=
+ =?utf-8?B?ZXE0M2twZ091VERCdEYyVEhNOUlOWTc5TkZSV2V6TUJKTEhQWnMzNTQ5LzZD?=
+ =?utf-8?B?VnVONXJhR1JpcWFERkRDUFZCNDJuMnNZeWh2QUxvTlJabHFUWlc5NWlMK3Zy?=
+ =?utf-8?B?NUJZenArVnYyUmZWaHdqQ0JYa2J2aHA3djF5cC8xTVJRR2g2dzNjZTVWUzB2?=
+ =?utf-8?B?WkpCN3BLUXZzR3BSdGZkc3hoanJMRm0rQUdqSTRZYnlNTU1qcFVjcCt5bCtT?=
+ =?utf-8?B?Rk5TQTNTQ0MzNHZLeXZObTlTNndWUTZPVWNSd2Y2TWRWZnE0N3F6TC9WRWNO?=
+ =?utf-8?B?ZHpxelBmM1p3aFNhL1RMNkdvZXFKaTVmMHM2MGlVb3NnWTZ0bWtTYVlGVEUr?=
+ =?utf-8?B?THVBcGFOV1oxYThOYndNVVNkTjFHNHZ3NlhVVlB6clBteU1JaXpJN2VjNFpV?=
+ =?utf-8?B?MWxrM3Y5aEY5ZXNZMHRFRW9JU1R0YzI0blVXdUFJOGI4UVpCamovbU1CcWt3?=
+ =?utf-8?B?a1pDT2FSNjBwZWlqL0dNK0J0eU5VT0gyKzhaS3BZSXljcE1RRUtsODNWc281?=
+ =?utf-8?B?amM3dzFkZ3dYQzU4b1VPWHB1LzlWc2tHcnEwdE5TbC94ZllUSmhZU2h6Mjg2?=
+ =?utf-8?B?VXlIVTVDWGxHaUx3ZWt6VzIyL21kb1ZMUXlabXBGNWl5RE9EM3BUS1FQVmZk?=
+ =?utf-8?B?TEZtMmpFVThUb2pON0NxSUtCRHYrKzdqaFV2V0E2ZW1la1ZRS2xFaE0xSlVu?=
+ =?utf-8?B?SHBzSUNRMlNRZFhQTnpXNld1elhqWU0vWnlVSmdaU1YyMmpOMUVNUTE3NDJ6?=
+ =?utf-8?B?UXo2eWdRYWM5djlCRkNGSkVxN3B2RTg0WUdZR2o3WUlTVHBwUEtOblljRXBK?=
+ =?utf-8?B?UTcvOGJ2azJBdWNvdmU5Y1NPL09iRld3L1pzSUp6OW5yVTh5cGxUdldxZnM3?=
+ =?utf-8?B?OThYNkdnNmFFNm1OWnVXTHMyN256RThQMWdiSkVVU1k3K1MrOGN0WDkxSDEy?=
+ =?utf-8?B?M3JGYWVjWnhsV21lRXVOZ0lzM09WOG5SQnlMQWhZSE9HUGVkVWhXTjI2SVdu?=
+ =?utf-8?B?aVdaYU1zdHBFeFFwSHBMcGVzNGVKMnpyOFpSV2pTNXU4OGhaTjVQSXFDd0tF?=
+ =?utf-8?B?NEVTMlVxMUUwM01leDlBL3BxZ1FlYjY1WEQrdGxMODBBT2ZZdEdVb015WlE1?=
+ =?utf-8?B?aEVDNFJJVjlmbG54VHN5Nnc4b281YUdZVHdlbnM2QnBGRFJoUlhuOE1sVk1N?=
+ =?utf-8?B?aE1KcmJrR0JrNDhYaUdFblIvL2plU0RFalVvaEdvL1BJd0hXN1hpd0lOZGNj?=
+ =?utf-8?B?ZTQ4L21zSXp0MUNCMWdwRmNoUDgvSVY3bERtSThiL2lneENzMHBLWjRCTWNz?=
+ =?utf-8?B?amk4MlNSVUFPUmI2U2RNN3JYai84OERKYTVrQi85Z1dZcDd2TTliS2pPYzEv?=
+ =?utf-8?B?anR2QmFmeXB3TU94dlNrU2VCcExkY2VOSlptT1E2Z2h0Z3EydEVlRHNkWjJE?=
+ =?utf-8?Q?n44SI3+edC5t+Q7E+5+BJdZvA?=
+X-OriginatorOrg: phytec.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ce80267-fd5a-4909-2e7d-08dd866161d0
+X-MS-Exchange-CrossTenant-AuthSource: AS4P195MB1456.EURP195.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 14:31:36.9339
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sVxbSrtDSoNGGK3jyruJcCqVD7ZqVjuXfJ/6peXu33NgOTCEFyocdGojHzhFcbajNQQkJ5vOZXnxP/3k6C7H4Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P195MB0897
 
-On Sun, Apr 27, 2025 at 10:08:25AM +0800, Peng Fan wrote:
-> On Sat, Apr 26, 2025 at 03:47:50PM -0600, Mathieu Poirier wrote:
-> >On Sat, 26 Apr 2025 at 06:41, Peng Fan <peng.fan@oss.nxp.com> wrote:
-> >>
-> >> On Wed, Apr 23, 2025 at 04:21:56PM -0300, Hiago De Franco wrote:
-> >> >Hi Mathieu,
-> >> >
-> >> >On Wed, Apr 23, 2025 at 11:14:17AM -0600, Mathieu Poirier wrote:
-> >> >> Good morning,
-> >> >>
-> >> >> On Wed, Apr 23, 2025 at 12:51:31PM -0300, Hiago De Franco wrote:
-> >> >> > From: Hiago De Franco <hiago.franco@toradex.com>
-> >> >> >
-> >> >> > The "clocks" device tree property is not mandatory, and if not provided
-> >> >> > Linux will shut down the remote processor power domain during boot if it
-> >> >> > is not present, even if it is running (e.g. it was started by U-Boot's
-> >> >> > bootaux command).
-> >> >>
-> >> >> If a clock is not present imx_rproc_probe() will fail, the clock will remain
-> >> >> unused and Linux will switch it off.  I think that is description of what is
-> >> >> happening.
-> >> >>
-> >> >> >
-> >> >> > Use the optional devm_clk_get instead.
-> >> >> >
-> >> >> > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> >> >> > ---
-> >> >> >  drivers/remoteproc/imx_rproc.c | 2 +-
-> >> >> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >> >> >
-> >> >> > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> >> >> > index 74299af1d7f1..45b5b23980ec 100644
-> >> >> > --- a/drivers/remoteproc/imx_rproc.c
-> >> >> > +++ b/drivers/remoteproc/imx_rproc.c
-> >> >> > @@ -1033,7 +1033,7 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
-> >> >> >    if (dcfg->method == IMX_RPROC_NONE)
-> >> >> >            return 0;
-> >> >> >
-> >> >> > -  priv->clk = devm_clk_get(dev, NULL);
-> >> >> > +  priv->clk = devm_clk_get_optional(dev, NULL);
-> >> >>
-> >> >> If my understanding of the problem is correct (see above), I think the real fix
-> >> >> for this is to make the "clocks" property mandatory in the bindings.
-> >> >
-> >> >Thanks for the information, from my understanding this was coming from
-> >> >the power domain, I had a small discussion about this with Peng [1],
-> >> >where I was able to bisect the issue into a scu-pd commit. But I see
-> >> >your point for this commit, I can update the commit description.
-> >> >
-> >> >About the change itself, I was not able to find a defined clock to use
-> >> >into the device tree node for the i.MX8QXP/DX, maybe I am missing
-> >> >something? I saw some downstream device trees from NXP using a dummy
-> >> >clock, which I tested and it works, however this would not be the
-> >> >correct solution.
-> >>
-> >> The clock should be "clocks = <&clk IMX_SC_R_M4_0_PID0 IMX_SC_PM_CLK_CPU>;" for
-> >> i.MX8QX. This should be added into device tree to reflect the hardware truth.
-> >>
-> >> But there are several working configurations regarding M4 on i.MX8QM/QX/DX/DXL.
-> >>
-> >> 1. M4 in a separate SCFW partition, linux has no permission to configure
-> >>   anything except building rpmsg connection.
-> >> 2. M4 in same SCFW partition with Linux, Linux has permission to start/stop M4
-> >>    In this scenario, there are two more items:
-> >>    -(2.1) M4 is started by bootloader
-> >>    -(2.2) M4 is started by Linux remoteproc.
-> >>
-> >>
-> >> Current imx_rproc.c only supports 1 and 2.2,
-> >> Your case is 2.1.
-> >
-> >Remoteproc operations .attach() and .detach() are implemented in
-> >imx_rproc.c and as such, 2.1 _is_ supported.
-> 
-> For i.MX8QM/QXP/DX/DXL, attach/detach is for case 1.
-> 
-> To support case 2.1, more code needs to be added in imx_rproc_detect_mode,
-> 
-> Something as below(no test, no build, just write example):
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 09d02f7d9e42..eeb1cd19314c 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -1019,6 +1019,9 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
->                         if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
->                                 return -EINVAL;
-> 
-> +                       if (imx_sc_cpu_is_started(M4X))
-> +                               priv->rproc->state = RPROC_DETACHED;
-> +
->                         return imx_rproc_attach_pd(priv);
->                 }
-> 
-> 
-> When we let uboot to start M4(case 1), we(NXP) only wanna to add some test
-> code in U-Boot. Not intended to make it for remoteproc
-> 
-> But if there are users wanna case 1 in their product, we could support it,
-> 1. adding cpu state detection in drivers/firmware/imx/
-> 2. Use the cpu state API in imx_rproc.c to detect cpu is started by bootloader
->    when the cpu is owned by linux.
+Hi Primoz,
 
-Thanks for the information Peng. I think the way forward is clear now, I
-will prepare the patches to address the 2.1 use case (bootaux).
+a few of the node references you are adding are out of alphabetical order.
 
+Am 25.04.25 um 09:41 schrieb Primoz Fiser:
+> Add initial support for PHYTEC phyBOARD-Nash-i.MX93 board [1] based on
+> the PHYTEC phyCORE-i.MX93 SoM (System-on-Module) [2].
 > 
-> >
-> >>
-> >> There is a clk_prepare_enable which not work for case 1 if adding a real
-> >> clock entry.
-> >>
-> >> So need move clk_prepare_enable to imx_rproc_start, not leaving it in probe?`
-> >> But for case 2.1, without clk_prepare_enable, kernel clk disable unused will
-> >> turn off the clk and hang M4. But even leaving clk_prepare_enable in probe,
-> >> if imx_rproc.c is built as module, clk_disable_unused will still turn
-> >> off the clk and hang M4.
-> >>
-> >> So for case 2.1, there is no good way to keep M4 clk not being turned off,
-> >> unless pass "clk_ignore_unused" in bootargs.
-> >>
-> >
-> >Isn't there something like an "always on" property for clocks?
-> 
-> There is CLK_IS_CRITICAL flag that could be added in clk driver, but this
-> is harcoded in clk driver. Using this flag means for case 2.2, there is no
-> chance to disable the clock when stop M4.
-> 
-> There is no device tree property to indicate a clk is always on as I know.
-> 
-> Regards,
-> Peng
-> >
-> >>
-> >> For case 2.2, you could use the clock entry to enable the clock, but actually
-> >> SCFW will handle the clock automatically when power on M4.
-> >>
-> >> If you have concern on the clk here, you may considering the various cases
-> >> and choose which to touch the clk, which to ignore the clk, but not
-> >> "clk get and clk prepare" for all cases in current imx_rproc.c implementation.
-> >>
-> >> Regards,
-> >> Peng
-> >>
-> >>
-> >> >
-> >> >[1] https://lore.kernel.org/lkml/20250404141713.ac2ntcsjsf7epdfa@hiago-nb/
-> >> >
-> >> >Cheers,
-> >> >Hiago.
-> >> >
-> >> >>
-> >> >> Daniel and Iuliana, I'd like to have your opinions on this.
-> >> >>
-> >> >> Thanks,
-> >> >> Mathieu
-> >> >>
-> >> >> >    if (IS_ERR(priv->clk)) {
-> >> >> >            dev_err(dev, "Failed to get clock\n");
-> >> >> >            return PTR_ERR(priv->clk);
-> >> >> > --
-> >> >> > 2.39.5
-> >> >> >
+> Supported board features:
+>   * ADC
+>   * CAN
+>   * Ethernet 2x
+>   * EEPROM
+>   * eMMC
+>   * Heartbeat LED
+>   * RTC
 
-Cheers,
-Hiago.
+eMMC and Hearbeat LED are not board features but SoM features.
+
+>   * RS-232/RS-485
+>   * SD-card
+>   * TPM 2.0
+>   * USB
+> 
+> For more details see the product pages for the development kit and the
+> SoM:
+> 
+> [1] https://www.phytec.eu/en/produkte/development-kits/phyboard-nash/
+> [2] https://www.phytec.eu/en/produkte/system-on-modules/phycore-imx-91-93/
+> 
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+
+With that changed,
+
+Reviewed-by: Wadim Egorov <w.egorov@phytec.de>
+
