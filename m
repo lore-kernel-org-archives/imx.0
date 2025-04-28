@@ -1,80 +1,44 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6CF25392E
-	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 17:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EC686359;
+	Mon, 28 Apr 2025 19:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745860386; cv=none; b=SYP5qenUnVOwjxEyxj3xL252/Zw5UUU9jA5GBqW8MzSvroMbJJCCq+DyhRdcD1WqpgFbCPXz1zJZC66DS/6z8ZQEGlzFPgPxJq8T42AF/7JwTxKom4Zjpwu7rbyfdiMDaJRGuTMb/P837DG9N5qZISUMFhZPv1OtxlfOi/zhjpg=
+	t=1745867834; cv=none; b=QzOuuV1arEDoblHHkrecLP+8hdTgPQuvPu+20zQysOJL4DKakduv+Alk0kAE9167uHTxJfMjdeT0USRW8cuwUUJfhDCj5qgVjJSKXst1otXCeCirAgRJmlGjMOnFbPolEL3UIi5HVmhT2gvBraBNoYRV36kgoaiL5lDRdovYeqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745860386; c=relaxed/simple;
-	bh=yPImR2FR7PHscbj8FO5MYpY++3jeaaS6t1jVeZ0eY/Y=;
+	s=arc-20240116; t=1745867834; c=relaxed/simple;
+	bh=+Pt11UMRuRnTvhbLia21GdJOsV7PGpiNDBc9vcqLQvI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LSPaazvIL8gj89VT/zCVSTvK1VMXNChjbfNBWy1jWeE6Ak/UJ8Z04FGSQIRdWm8dA6n+/yOokDhBKpBgK6nRIXxsJ+Ldn1qKgbqrIbiDlnrXA7gJBnqMs5DjHpbyrXxiffzWXfmKqOhVPVRRhQkZmOa+nLAgtzFgNH0pqECPhwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Unj/yRPD; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=r5336WjmhDuwCSUY1f4gLoN83TaYDAqWHKX4Kt313sVubCCWvoRb2tJfbrZQddAxRojiSUJsSOeKxuTjbecRhjpXOT45zGJ9pskCCd/P9jbLX0tL1aOHXSL2MA2WGGGmKSZGUzDyMIatXPSVu7L5zhmAoSR3Vb8ih437zBmlVL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aSRI3GkU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Unj/yRPD"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-309fac646adso2843064a91.1
-        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 10:13:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745860384; x=1746465184; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0aWcmtL95uQeYsQHUGFsCmGq4ARE/rjVxbyBKZAibqk=;
-        b=Unj/yRPDiFff93KHackW3z/oNPFcRJivVj/P7SYFIOIB/PnHkh93BmLa7/fvik9Bhv
-         IT4DZliTeq/gNmRR14yKObZsCRZvAeZGSLX5YcPkbDqTZd8fUCj9LI1D11/AMxMXA0fT
-         H2nFKi3EQrCnyam/H+mVoJXey/+b5uPiBvhHoUEMdl5+iJu+xstVvSn6z8C/ltqrAs3h
-         TauwRHI8T08W2nxSvp3maI0PCTojuTCvCz1kNk5DqSKUliUgIC7psZjS8tIYR+YrdLeA
-         pGBF87S5SuMDZzGQ/dxdkx25WwGwW1o/V5TbdoFUbOAAPJ0idzvi8x8nnSKEL3398Mgn
-         MD4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745860384; x=1746465184;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0aWcmtL95uQeYsQHUGFsCmGq4ARE/rjVxbyBKZAibqk=;
-        b=XEq0iWinJQ7s5QSeT64xpzp2zI6nq2VtjN1SpM306sCIbVKCdxQX+3bXsScL54b9jD
-         3/uj8P9ltye6eXqoHAA7Vjdj2HaKZyQe1LwVK19gsBkhAe2b5SydmtdBibXanfdqBQ71
-         BFqPAVSnLE0SLPd2/0oiqK1/qlTBC/yn+QYlHISbNyVG53BdX4aNRr68Gde09iDDYLlw
-         q3707FBu3EG5IknZYUSn+37Ha2afwOxAA4l0UdNLlnjCDXgYkGWKH6XzDyLkr6cspqWP
-         YVIygn8JKWXcXsqJpWD+4AxLsp75/Qv8b00PVHoWXiHrH5jfdfF0Ci6Sho9vATGKYYSM
-         4CAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVPBT0q484nMTH1ET8qaQuyOa5QiVD6/pInKojau23rm2zXDI1r5aTosTKmgaVFsweCOLA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyGBtT4QJmPFwLZ6UQOrgE2GIHvoiGG8FEbftOQfW7X8qJkMrCo
-	LVxqTw9mADE9pgfLMZUWGNG71yrSkTsUYMPuT/8tpAV6ebRWAcSt
-X-Gm-Gg: ASbGncuMtcBkuxOeKWI0erCn0w8q+B48SFgrCEzzhTtRZ7/qgCY4EBjWcf60x+GGolm
-	zQiUP31kaxKsdS+ZbvMH+/65r5RnaihlkMYwMmWb/e78s+9t93iECqmFomf8FVr0lvxHIlGu1uE
-	PyVVi2Wwopzuv4rXe1kog0EjM/IrakeCMecejUyGnyX7w9O5hU8Cx6o6T2/DSRrOJ0E9AsYQc9G
-	yk3xKXY78qdKEsfaoCk43KZzUwNwM+vRrxBo7w9epPk++NflHGm083gyAEthtRK55xPVZJWVwn8
-	+otwdrYPJKohyQtNQERbO64BYMcV+pv2U/IUTCc=
-X-Google-Smtp-Source: AGHT+IHWOIDd9y6vr7huqtxupJfN3hpUaBQLaUlNnozyWv6aH7mSCdhg1ZQngv1XQveJdMkPOacF4g==
-X-Received: by 2002:a17:90b:2550:b0:308:2945:3842 with SMTP id 98e67ed59e1d1-309f8a24cc1mr19035414a91.15.1745860383598;
-        Mon, 28 Apr 2025 10:13:03 -0700 (PDT)
-Received: from hiago-nb ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309ef1475c1sm9321785a91.45.2025.04.28.10.12.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 10:13:02 -0700 (PDT)
-Date: Mon, 28 Apr 2025 14:12:57 -0300
-From: Hiago De Franco <hiagofranco@gmail.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, daniel.baluta@nxp.com,
-	iuliana.prodan@oss.nxp.com, linux-remoteproc@vger.kernel.org,
-	Bjorn Andersson <andersson@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Hiago De Franco <hiago.franco@toradex.com>
-Subject: Re: [PATCH] remoteproc: imx_rproc: replace devm_clk_get() with
- devm_clk_get_optional()
-Message-ID: <20250428171257.276bqhaupe4ksu5l@hiago-nb>
-References: <20250423155131.101473-1-hiagofranco@gmail.com>
- <aAkf6bxBLjgFjvIZ@p14s>
- <20250423192156.b44wobzcgwgojzk3@hiago-nb>
- <20250426134958.GB13806@nxa18884-linux>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aSRI3GkU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1554BC4CEE4;
+	Mon, 28 Apr 2025 19:17:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745867833;
+	bh=+Pt11UMRuRnTvhbLia21GdJOsV7PGpiNDBc9vcqLQvI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aSRI3GkUAhCCiZj0WUU80xHJQT+SghGms4KZcVH/xrqsDa1/Gu/BIzMPU1MfKWyTd
+	 IjheCLi4QmgirILEewftqYgZDqgwKZnSvLDLfog3cgvYiXvKQXWVE36+MQ8AgLpvlA
+	 HI4AQ0AYcXl3ZCWySwGV6Nxi2T/+6nSlzjimx29GiWwtyEW2xaE5zEphUfBzaz0/jD
+	 vhTPFJemxn5ql1wx52r3vsuMEG1klAv2Trw5xbcw7+GCBw0SGebkN+tytD5MzibpTx
+	 DnqstA4gBIlT+tu7lMOvgb9z7nWMMWEq6eM3P1yW4UHf8NbF1FYAud3qF0d8hA3tf/
+	 NdwEuMBJS4kTw==
+Date: Mon, 28 Apr 2025 21:17:09 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: Aisheng Dong <aisheng.dong@nxp.com>, Frank Li <frank.li@nxp.com>, 
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] i2c: imx-lpi2c: Fix clock count when probe defers
+Message-ID: <l7meopd4ny4lbux64w5jgyugza3idt4sabwzojmvrafw67fhsw@uf4xbbajzfrj>
+References: <20250421062341.2471922-1-carlos.song@nxp.com>
+ <34ally74jbpae6etevqskr4zmcv5xyac46n4hl2j5ybihwtezn@jd2gvr762gs7>
+ <VI2PR04MB111474EAC1B4DB8EB6DD32628E8862@VI2PR04MB11147.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,169 +47,86 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250426134958.GB13806@nxa18884-linux>
+In-Reply-To: <VI2PR04MB111474EAC1B4DB8EB6DD32628E8862@VI2PR04MB11147.eurprd04.prod.outlook.com>
 
-On Sat, Apr 26, 2025 at 09:49:58PM +0800, Peng Fan wrote:
-> On Wed, Apr 23, 2025 at 04:21:56PM -0300, Hiago De Franco wrote:
-> >Hi Mathieu,
-> >
-> >On Wed, Apr 23, 2025 at 11:14:17AM -0600, Mathieu Poirier wrote:
-> >> Good morning,
-> >> 
-> >> On Wed, Apr 23, 2025 at 12:51:31PM -0300, Hiago De Franco wrote:
-> >> > From: Hiago De Franco <hiago.franco@toradex.com>
-> >> > 
-> >> > The "clocks" device tree property is not mandatory, and if not provided
-> >> > Linux will shut down the remote processor power domain during boot if it
-> >> > is not present, even if it is running (e.g. it was started by U-Boot's
-> >> > bootaux command).
-> >> 
-> >> If a clock is not present imx_rproc_probe() will fail, the clock will remain
-> >> unused and Linux will switch it off.  I think that is description of what is
-> >> happening.
-> >> 
-> >> > 
-> >> > Use the optional devm_clk_get instead.
-> >> > 
-> >> > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> >> > ---
-> >> >  drivers/remoteproc/imx_rproc.c | 2 +-
-> >> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >> > 
-> >> > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> >> > index 74299af1d7f1..45b5b23980ec 100644
-> >> > --- a/drivers/remoteproc/imx_rproc.c
-> >> > +++ b/drivers/remoteproc/imx_rproc.c
-> >> > @@ -1033,7 +1033,7 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
-> >> >  	if (dcfg->method == IMX_RPROC_NONE)
-> >> >  		return 0;
-> >> >  
-> >> > -	priv->clk = devm_clk_get(dev, NULL);
-> >> > +	priv->clk = devm_clk_get_optional(dev, NULL);
-> >> 
-> >> If my understanding of the problem is correct (see above), I think the real fix
-> >> for this is to make the "clocks" property mandatory in the bindings.
-> >
-> >Thanks for the information, from my understanding this was coming from
-> >the power domain, I had a small discussion about this with Peng [1],
-> >where I was able to bisect the issue into a scu-pd commit. But I see
-> >your point for this commit, I can update the commit description.
-> >
-> >About the change itself, I was not able to find a defined clock to use
-> >into the device tree node for the i.MX8QXP/DX, maybe I am missing
-> >something? I saw some downstream device trees from NXP using a dummy
-> >clock, which I tested and it works, however this would not be the
-> >correct solution.
-> 
-> The clock should be "clocks = <&clk IMX_SC_R_M4_0_PID0 IMX_SC_PM_CLK_CPU>;" for
-> i.MX8QX. This should be added into device tree to reflect the hardware truth.
+Hi Carlos,
 
-Is this correct? I added this clock entry and also updated the clk
-drivers to handle this option:
+> rpm_disable:
+> 	pm_runtime_put(&pdev->dev);
+> 	pm_runtime_disable(&pdev->dev);
+> 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+> 
+> pm_runtime_put() may not work really sometimes.
+> 
+> [    3.203715] imx-lpi2c 42530000.i2c: defer probe
+> [    3.208324] imx-lpi2c 42530000.i2c: lpi2c_runtime_suspend
+> [    3.214801] imx-lpi2c 42540000.i2c: defer probe
+> ---> (No lpi2c_runtime_suspend callback(pm_runtime_put() is not really wrok))
+> [    3.220672] imx-lpi2c 426c0000.i2c: defer probe
+> [    3.225248] imx-lpi2c 426c0000.i2c: lpi2c_runtime_suspend
+> 
+> After apply this change:
+> rpm_disable:
+> 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+> 	pm_runtime_put_sync(&pdev->dev);
+> 	pm_runtime_disable(&pdev->dev);
+> 
+> all issues gone.
+> [    3.093025] imx-lpi2c 42530000.i2c: defer probe
+> [    3.097592] imx-lpi2c 42530000.i2c: lpi2c_runtime_suspend
+> [    3.104281] imx-lpi2c 42540000.i2c: defer probe
+> [    3.108858] imx-lpi2c 42540000.i2c: lpi2c_runtime_suspend
+> [    3.115278] imx-lpi2c 426c0000.i2c: defer probe
+> [    3.119818] imx-lpi2c 426c0000.i2c: lpi2c_runtime_suspend
 
-diff --git a/drivers/clk/imx/clk-imx8qxp-rsrc.c b/drivers/clk/imx/clk-imx8qxp-rsrc.c
-index 585c425524a4..69c6f1711667 100644
---- a/drivers/clk/imx/clk-imx8qxp-rsrc.c
-+++ b/drivers/clk/imx/clk-imx8qxp-rsrc.c
-@@ -58,6 +58,7 @@ static const u32 imx8qxp_clk_scu_rsrc_table[] = {
-        IMX_SC_R_NAND,
-        IMX_SC_R_LVDS_0,
-        IMX_SC_R_LVDS_1,
-+       IMX_SC_R_M4_0_PID0,
-        IMX_SC_R_M4_0_UART,
-        IMX_SC_R_M4_0_I2C,
-        IMX_SC_R_ELCDIF_PLL,
-diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
-index 3ae162625bb1..be6dfe0a5b97 100644
---- a/drivers/clk/imx/clk-imx8qxp.c
-+++ b/drivers/clk/imx/clk-imx8qxp.c
-@@ -142,6 +142,7 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
-        imx_clk_scu("a35_clk", IMX_SC_R_A35, IMX_SC_PM_CLK_CPU);
-        imx_clk_scu("a53_clk", IMX_SC_R_A53, IMX_SC_PM_CLK_CPU);
-        imx_clk_scu("a72_clk", IMX_SC_R_A72, IMX_SC_PM_CLK_CPU);
-+       imx_clk_scu("cm40_clk", IMX_SC_R_M4_0_PID0, IMX_SC_PM_CLK_CPU);
+Thanks for the explanation. If we lose the count here, I think we
+also need for the Fixes tag, do you agree? Should we add:
 
-        /* LSIO SS */
-        imx_clk_scu("pwm0_clk", IMX_SC_R_PWM_0, IMX_SC_PM_CLK_PER);
+Fixes: 13d6eb20fc79 ("i2c: imx-lpi2c: add runtime pm support")
+Cc: <stable@vger.kernel.org> # v4.16+
 
+as well?
 
-However I am seeing a permission denied (-13) from the imx_rproc:
+...
 
-root@colibri-imx8x-07308754:~# dmesg | grep rproc
-[    0.489113] imx-rproc imx8x-cm4: Failed to enable clock
-[    0.489644] imx-rproc imx8x-cm4: probe with driver imx-rproc failed with error -13
-[    0.489708] remoteproc remoteproc0: releasing imx-rproc
+> > > Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> > > Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> > > Signed-off-by: Jun Li <jun.li@nxp.com>
+> > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> > 
+> > Carlo's SoB should be at the end of the chain. Should be nice to know what these
+> > are, though, are they co-developed-by? tested-by?
+> > Why so many SoB's?
+> > 
+> 
+> This patch author is not me and they meet similar issue at some boards(Vague history), now
+> I meet this issue at new SOC again. I think this local patch is helpful and looks reasonable.
+> So I send the patch to community adding my SoB.
 
-	imx8x-cm4 {
-		compatible = "fsl,imx8qxp-cm4";
-		clocks = <&clk IMX_SC_R_M4_0_PID0 IMX_SC_PM_CLK_CPU>;
-		mbox-names = "tx", "rx", "rxdb";
-		mboxes = <&lsio_mu5 0 1
-			  &lsio_mu5 1 1
-			  &lsio_mu5 3 1>;
-		memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>,
-				<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-		power-domains = <&pd IMX_SC_R_M4_0_PID0>,
-				<&pd IMX_SC_R_M4_0_MU_1A>;
-		fsl,entry-address = <0x34fe0000>;
-		fsl,resource-id = <IMX_SC_R_M4_0_PID0>;
-	};
+So Clark has authored the patch and you have sent it. And your
+SoB makes sense (even though, your SoB shoud be placed at the
+end, because you sent the patch).
 
-Am I missing something?
+Juan and Haibo have tested it? Reported it?
 
-> 
-> But there are several working configurations regarding M4 on i.MX8QM/QX/DX/DXL.
-> 
-> 1. M4 in a separate SCFW partition, linux has no permission to configure
->   anything except building rpmsg connection.
-> 2. M4 in same SCFW partition with Linux, Linux has permission to start/stop M4
->    In this scenario, there are two more items:
->    -(2.1) M4 is started by bootloader
->    -(2.2) M4 is started by Linux remoteproc.
-> 
-> 
-> Current imx_rproc.c only supports 1 and 2.2,
-> Your case is 2.1.
-> 
-> There is a clk_prepare_enable which not work for case 1 if adding a real
-> clock entry.
-> 
-> So need move clk_prepare_enable to imx_rproc_start, not leaving it in probe?
-> But for case 2.1, without clk_prepare_enable, kernel clk disable unused will
-> turn off the clk and hang M4. But even leaving clk_prepare_enable in probe,
-> if imx_rproc.c is built as module, clk_disable_unused will still turn
-> off the clk and hang M4.
-> 
-> So for case 2.1, there is no good way to keep M4 clk not being turned off,
-> unless pass "clk_ignore_unused" in bootargs.
-> 
-> 
-> For case 2.2, you could use the clock entry to enable the clock, but actually
-> SCFW will handle the clock automatically when power on M4.
-> 
-> If you have concern on the clk here, you may considering the various cases
-> and choose which to touch the clk, which to ignore the clk, but not 
-> "clk get and clk prepare" for all cases in current imx_rproc.c implementation.
-> 
-> Regards,
-> Peng
-> 
-> 
-> >
-> >[1] https://lore.kernel.org/lkml/20250404141713.ac2ntcsjsf7epdfa@hiago-nb/
-> >
-> >Cheers,
-> >Hiago.
-> >
-> >> 
-> >> Daniel and Iuliana, I'd like to have your opinions on this.
-> >> 
-> >> Thanks,
-> >> Mathieu
-> >> 
-> >> >  	if (IS_ERR(priv->clk)) {
-> >> >  		dev_err(dev, "Failed to get clock\n");
-> >> >  		return PTR_ERR(priv->clk);
-> >> > -- 
-> >> > 2.39.5
-> >> > 
+A practical rule of thumb for tags is that they are placed in
+chronological order, e.g.:
+
+ Reported-by: <reporter of the bug>
+ Fixes: <commit that introduced the bug>
+ Closes: <link where the bug has been reported>
+ Co-developed-by: <co-developer>
+ Signed-off-by: <co-developer>
+ Signed-off-by: <developer>
+ Cc: <people who should be aware of the patch>
+ Tested-by: <tester>
+ Reviewed-by: <reviewer>
+ Acked-by: <someone who agrees>
+ Signed-off-by: <patch sender>
+ Link: <lore link>
+ Signed-off-by: <maintainer who applies the patch>
+
+If you notice, more or less things are in chronological order. I
+hope this makes it a bit clearer.
+
+Andi
