@@ -1,111 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88B2265CC8;
-	Mon, 28 Apr 2025 11:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2AB1DE8B2
+	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 12:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745840366; cv=none; b=nO5hLtzilMOgNnWaA9HymfvPm0n20JRinfBovyl9/eDz36tbHOJIgSGXtQ5Un2YlOwrec/ysEquB+jKXWr9prys55WlArPQJFNYTOe6XYHYU4Q+9aiZLTEb6bdc7W5oNx5+6Hv9ctnG+WZSIHmmsxp0FgRSW2FB0P7ES5AlCuo8=
+	t=1745842831; cv=none; b=EGq6okmnEkChvHOFV1PmEtaC/xWV/xUDCY82LZFlgn+VhWphvblmCm3LrRxPF8bFVOFeAzGa6o/3VHtdXBAfTmFmvnUVP521bTCQPNlzyUPNA1mVhJ0FQ3CAtbVmdFHF31PxDyUh/gGcVih5VKkp7zAHdcvDhwHA4g0+jWe4s0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745840366; c=relaxed/simple;
-	bh=Ej44d3HYVlonJrSjsWIukJSaPhl3M6jkQ+SB3SSTJ0k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XHBVB0XD1xPnnsMAHWFacW9iOQ+huAgwahL3oTLIWEqtxO1VlwMMVH1nkfUsNmPoyyfIqK3GjsPsMjAQuQd5aV4me06O+/x+gvl/84t1dT4RZ5tSX7EmvpJDWSA3AjKvTl1pSLMUaZA+2VuMep3qJIauNDb++5/z4t7CYaEdFV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kv5vEYW7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745842831; c=relaxed/simple;
+	bh=5LJVD7EEo2QIoCV1sD+YeaR74gXBmkqhDW5rQm+7VG4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CM+fUbCx1u8eKrBOE/atWK7QKxknc50Wwofz1N6AffsJ8bZkJcpXS8123J1rkkI99hgotO1pQxkmj0VU/TI9k4QqdV7QJXiZaBZ/b8ny6b8jo1OPBYvoVDmzXAvnAMWqxMn/b3wCkaYOAzXScRYkPyOdg73Rh6Ppo13b50y7qWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KoUxAecb; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kv5vEYW7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08E5C4CEE4;
-	Mon, 28 Apr 2025 11:39:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745840366;
-	bh=Ej44d3HYVlonJrSjsWIukJSaPhl3M6jkQ+SB3SSTJ0k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Kv5vEYW72D5xWIDAHxidcS9oCPJI44A8/ATQTf4ndN6qOsRqnp47tGXt9HvXJ/fQX
-	 3iRGABjyVGdhzFevrJ/SKs1Tn/HzL+ntZXhZ5I1oZh84TTNujKuXIYiSDMBZKDmg+y
-	 AZfXDlw/mqs0mSwnN/keOFUJawtzrADt0D2HQYrOGgjrUXRSD84c7R7w7ycC/jTcSm
-	 x5DFNVaWHIOalypJx7V9K0lMtgehomF12uxSSBqBSLV7GPuCCodkBNURuekRYK6SrF
-	 nsCQ8roU5zy+dQ7EL1D9afZHfQm0EFsh/r0zRlmzrK5FfE/2zo1iP9Ttr0hP07NjcV
-	 75neqPgVXdgzA==
-Date: Mon, 28 Apr 2025 13:39:23 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki <jagan@amarulasolutions.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Douglas Anderson <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Anusha Srivatsa <asrivats@redhat.com>, 
-	Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, asahi@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	chrome-platform@lists.linux.dev, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
-	linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v2 34/34] drm/bridge: panel: convert to
- devm_drm_bridge_alloc() API
-Message-ID: <20250428-wild-condor-of-defiance-cadf60@houat>
-References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
- <20250424-drm-bridge-convert-to-alloc-api-v2-34-8f91a404d86b@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KoUxAecb"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30bf5d7d107so39061521fa.2
+        for <imx@lists.linux.dev>; Mon, 28 Apr 2025 05:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745842827; x=1746447627; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TWpWmVQh5LkKQ38Ckz6b68wz7ZGK8S3wIAjuRScvxvk=;
+        b=KoUxAecbqTMGzZEZyXvnDF55WP+K1lzMIyBKJyTJmDd4lgp9Q8J5WsvqlfW5brm8uF
+         p/6F8pE/bMOo1hdggweER0Rll13oYgi1KQlbLWjzgdc17zLn+KmGf1po2H0y3h3uRCDT
+         ugtC82xx0JHbQfcWiWsTFFfSMkNspN4J+rkZjSQ4rDXCV2E8h2zitp7zbfam6gS/ZPga
+         HTm5g+uYNTZEuheaosb62PbT7X0dJyuDv8n/gD//y+CVuFvUlkj6YckFUu74GAELdt1i
+         JYOV+HfKQdSkShPxcPesjPfNVEpFREPpSU4CDafWymeIKipc2fCefvQAbGugU5i1ROny
+         pknQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745842827; x=1746447627;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TWpWmVQh5LkKQ38Ckz6b68wz7ZGK8S3wIAjuRScvxvk=;
+        b=qzVO5L6Eq3ko2KGeR+OZkrVLZJO1LjqPYugZ9o+Zmq+2oYe+vr92G98ydWwmzjKs9L
+         ptXxGUrm2pQXKjOWeSW64UyTTPU8nFWXT7hJlx02zhAIakhyJrLFeXJC46YKdPMbfhis
+         TKRpfg7r+eA1MMC/5O7Nn9jDZ4Dlnp3mH1MnY3/96GuBsWwUD8dy/guGoFI0hghv84ZH
+         rz3V5rm3vQgQc8a5xbnz3rJTdBZ+iWIjwvwPLZmjopCgPPL/RI6qp4g0xh4PVYoVSBiQ
+         teDItJSpNQ6m8yPrc0stEfaspSmzpOtASbPNC5RNId0nvXZxTdtpT3d4Fu/CmBfMUb4o
+         cwcA==
+X-Forwarded-Encrypted: i=1; AJvYcCVtphbm9HS6TBm9j55NrbjyXjkuiO8mopmvt7FsaXg+pS5agXCoyIl49pxfNC4CM8rgtT0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyjotgD+azXED9+rirUjMNxJsq1aUTXYDb2mqM4XioZo5/zRJej
+	TNYUpSqx49ZBPuIRPM3Jo/jEWa8PcOGiAYCs1fUrTW5fJq9aExf4sgz6oX7eyv+M/52Dg3ekQw1
+	QSg6MhezfqyzbJfpWtc1yo7k0laY=
+X-Gm-Gg: ASbGncsOcYLQ9vmJxok+KvDhaRx4q50M6UUAhb/FYsEIGSH9rBgW3L3LYnow6FtMb4n
+	hYMQ7nFcnwpbO0HUsV2MgB0kxPbbAopn+Qk8FpGfkqaszcRaEFij9YYZXnRGiBr1+LG8qL1tpGg
+	92nG3s5TzB1wG4ZFc+GeXC/1XNtH9K60XC0o0d3/r2ez2zqcCWt6mRJyzOUsMlsze0
+X-Google-Smtp-Source: AGHT+IEH7MzW5oALwsc/C1WmzilPjbYvu0ys4k1ey8nO0994HXLEhmlKcG8IDGOmdq5NvefT7TwCpG/T3Y0sA3Y96g4=
+X-Received: by 2002:a2e:8048:0:b0:31a:56a5:8454 with SMTP id
+ 38308e7fff4ca-31a56a58783mr13285171fa.15.1745842827247; Mon, 28 Apr 2025
+ 05:20:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="xfc7ogpscqj7tsh5"
-Content-Disposition: inline
-In-Reply-To: <20250424-drm-bridge-convert-to-alloc-api-v2-34-8f91a404d86b@bootlin.com>
-
-
---xfc7ogpscqj7tsh5
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <20250428074424.3311978-1-lukma@denx.de> <20250428074424.3311978-2-lukma@denx.de>
+In-Reply-To: <20250428074424.3311978-2-lukma@denx.de>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 28 Apr 2025 09:20:15 -0300
+X-Gm-Features: ATxdqUF9vhWUQdAh6ucd_rpBTSQD6jiO0FGzDnLrY9eVB0nzIxQ7MHR_oHtFiUs
+Message-ID: <CAOMZO5CYq8YKZBM6nk2pk8W0005MBBPdVqS_qe-O4-ZzkUG0bA@mail.gmail.com>
+Subject: Re: [net-next v8 1/7] dt-bindings: net: Add MTIP L2 switch description
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Stefan Wahren <wahrenst@gmx.net>, 
+	Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 34/34] drm/bridge: panel: convert to
- devm_drm_bridge_alloc() API
-MIME-Version: 1.0
 
-On Thu, Apr 24, 2025 at 10:05:49PM +0200, Luca Ceresoli wrote:
-> This is the new API for allocating DRM bridges.
->=20
-> The devm lifetime management of this driver is peculiar. The underlying
-> device for the panel_bridge is the panel, and the devm lifetime is tied t=
-he
-> panel device (panel->dev). However the panel_bridge allocation is not
-> performed by the panel driver, but rather by a separate entity (typically
-> the previous bridge in the encoder chain).
->=20
-> Thus when that separate entoty is destroyed, the panel_bridge is not
-> removed automatically by devm, so it is rather done explicitly by calling
-> drm_panel_bridge_remove(). This is the function that does devm_kfree() the
-> panel_bridge in current code, so update it as well to put the bridge
-> reference instead.
->=20
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Hi Lukasz,
 
-This looks fine, but we need a TODO entry to clean this up later on, and
-a comment on devm_drm_put_bridge that this is inherently unsafe and
-must not be used.
+On Mon, Apr 28, 2025 at 4:44=E2=80=AFAM Lukasz Majewski <lukma@denx.de> wro=
+te:
 
-Maxime
+> +            reset-gpios =3D <&gpio2 13 0>;
 
---xfc7ogpscqj7tsh5
-Content-Type: application/pgp-signature; name="signature.asc"
+The zero here means active high.
 
------BEGIN PGP SIGNATURE-----
+I assume active low is more common, and you even used active low in
+the XEA board.
 
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaA9o4wAKCRAnX84Zoj2+
-dte3AX9ZTgylvSMOA8QF8MhOvEEJnfPIVewZiCH2yJknukV+y7S53MU2E4s0YFaN
-fsm4AaQBgIRYfqhWPjcnqXHC20V8llKYAK0QvK8ijj3k2G8LjbRoIfmGL11UOfGM
-QmUfHGyQeA==
-=AGTY
------END PGP SIGNATURE-----
+I suggest using
 
---xfc7ogpscqj7tsh5--
+ reset-gpios =3D <&gpio2 13 GPIO_ACTIVE_LOW>; in the dt-binding example.
