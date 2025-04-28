@@ -1,203 +1,182 @@
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2120.outbound.protection.outlook.com [40.107.247.120])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8E926FA4D
-	for <imx@lists.linux.dev>; Mon, 28 Apr 2025 14:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.120
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745850705; cv=fail; b=fDa6aBGdlJImF1kuuWVmMj8okju/kKaUwoCe1SwZGEPSXDHye47/q5s1Zrt9RfS5IOTf/4bLyA7pbS81NVRGtEF664cPWzvP1XCgN7iIc5scKFXnee3/xStJp5QkpdNiq8VPo4C4wKG20F9oXTa9HPqCeKpGOldTCP43NoenZOU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745850705; c=relaxed/simple;
-	bh=lgxpYW7CXw/+8ZAlcOzkA559dh+xj9Lt/1zISOlK/QY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=bpsqlUhZBgyGhIsdbbhlDOun5+d4RVXi6GxWUeWkrWbtUR/J71G/BLpIdq9ZcxA3PCv7NeN1zZReMuVlE0mbj7HEtwDmtD/1Uab/mkQquk+ENOxNRa61j2O8VhyMwFPrxc/Mn0FBU+COgPo0xfs0YBq55MXVfjCTA93lVjfb7o4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=sU3TZvJ/; arc=fail smtp.client-ip=40.107.247.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F0026A0DB;
+	Mon, 28 Apr 2025 15:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745852460; cv=none; b=FgFoD4cfDmX6SEaN9EJl12afDvCe9Dg7imLeGmjJBUO1AjpL+0qqZynKxRTvNrZ5FsevKUgOmYvVPBpCnpbSCFf3lFoKwm75H1SpkKCRHoEThYgJiRmOwiuxdVoAPKi4DrGLf42Z18DHqNPgo0404/m9RonLv+gaTCzeUBZOSHg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745852460; c=relaxed/simple;
+	bh=Jj0NuGJcZPP++kkBPoUGzVvz6UYG/ryJu2VBn3xv4s4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZoLvB8xf+zmNtsx3qz6ldfQQUnWiF4oAfSKPeMYStJaPNhgbCij4P5XKaxrczz2+1qNy9mFpK8oOuYVkPNhsyqNLB9/eI3tIQ8d3nqp3wuAPRCj/Aqnz8Rlsyc3H3chaaSWUHj09Rc3k3wtzQo3SztZdzXVwcqnmB7b7yIL2UsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cTAHqyDf; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="sU3TZvJ/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hjP7S2p4uihGhR83P2KLswAjRed+584p1kAqSYFsPGQiSEqfIOvSlj6GzZPGBpF5M2tQlUxKvQQt62nZe/Q/H7gZIj3/ZXJ9vBsrBojTCedrHAC2yy2uDas3gTwN8k9P5cknWXRKsjKkTQusQcMkFM54TDlBiR5Zx2OWG1DWb8RW6aQWxSJJfk+oyM9KivKYE928MubUZjXWQReZnJLIojPahc7AYUGLu+wJraICmSQbUKg2RCRqyVh0p4lYtbS/Qd+TMsm3PaOhGSMS/DmrKi4sBqZecWaaovs/V75dGRKVBENRcYaJPZD75xWDzC1PXvUCROS9lax236eiH8dsGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WreVyyvzdwyRz8aZRh6sPUrZ2JqrKXfaJTjD47RXhDY=;
- b=FyJajo6cJ4AnErZ+IOyrS4bqGFgNvy5ujjGd3fnb+TPbNkixPYOJdYwZg7ELEODpn8UgImEhgUR1jtpvu3XxH0Cih/hWS2DLQ8l+vJYPHKVimnrG8YviTuySwrbnwfxHGyFpg3cGpX8Ysk1gUpCHsTfKvEl05kpQHimK9fPjzNe2MbpfxtCbaJ7Ojb9CWACMgSHuefLxGNkY4dYf6Ma0UQIr2xQl3Qc+m6JL/wRCbXc5GH4tEo/TjvHAL4eW5mVks2+daDM1IrGcOQElbSj31lM4aQYh77RjHxp2v8+GC/AuLyDD49sEYXOWkzgMWN/N3UTI2Pm+LbIe4rDGQA1X1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=phytec.de; dmarc=pass action=none header.from=phytec.de;
- dkim=pass header.d=phytec.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WreVyyvzdwyRz8aZRh6sPUrZ2JqrKXfaJTjD47RXhDY=;
- b=sU3TZvJ//70OP2ciNRdsZvhPudyrE2PiBpywUvLTlqClCXS7DZuNEsApPH8nPj2mbYDAEGn5VgFjdoHbcw3mhX+nqDXAulad0y2pqT0lAqoX/UWC9rv4zB42B8aKz1I8kzTtrWevUxMpwKmyMUcmbEIt51X84Wz4tViz/EN0ctpXpVaAAcjQjRQUdwBa5BKIqG2fmfvdBQbZcMRgyu9WSwt/UXrgQFeMgI9uQXHuvZ0KRdhoDQ0rB2Vxfqy5MayH3DoSMcmbZw+ndHTSvdaqYc84CMgHlb1rZIY5MJ5norkI5PuCZAJX86cfuzPNAmQ/PawLZ4LjNB7ijPCT8GyAWQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=phytec.de;
-Received: from AS4P195MB1456.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:4b3::21)
- by AM8P195MB0897.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:1ca::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Mon, 28 Apr
- 2025 14:31:37 +0000
-Received: from AS4P195MB1456.EURP195.PROD.OUTLOOK.COM
- ([fe80::369c:a760:5bf9:8d4a]) by AS4P195MB1456.EURP195.PROD.OUTLOOK.COM
- ([fe80::369c:a760:5bf9:8d4a%4]) with mapi id 15.20.8678.028; Mon, 28 Apr 2025
- 14:31:37 +0000
-Message-ID: <000c1117-81d1-4a74-9d36-f83a2b0fedd3@phytec.de>
-Date: Mon, 28 Apr 2025 17:31:33 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Upstream] [PATCH 2/2] arm64: dts: freescale: Add PHYTEC
- phyBOARD-Nash-i.MX93 support
-To: Primoz Fiser <primoz.fiser@norik.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cTAHqyDf"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4F84F4397F;
+	Mon, 28 Apr 2025 15:00:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1745852455;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l/KM50XoeWonitoxoMaOHFeoOtZjamWkVO4Sfztxz2s=;
+	b=cTAHqyDfWqZQRajnA0jCJJTRWgntMZ9qCGKU473NOxESwutCLvKkGP9L3GMlUIUf1TVfoJ
+	rSml0e13bS9W5xL7vpWnRG/Gf8DwWyNIkXZ07glmnEui2hZC2Xoq/8/xjrvJp5r3ePSFuU
+	njtoTq8LUpcrENa9NLXi3tWAr4COusan12TyNUvMZQZfaHrdfuVf/DcDoxsqC3HUZd6Oxa
+	xFrGUT/PhDw09LZJgn+fTcnrJMlbI4kHX39u8mbqL16gwmh6HE2DuFmuNLvVbhBpuVI1WK
+	hOs5l7kG8ZpIdaFhDwnEIRvdHjqsZaRpzN9lTpgipOlJKjv7cuiqF1qRk9Zf2g==
+Date: Mon, 28 Apr 2025 17:00:45 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: "Andy Yan" <andyshrk@163.com>
+Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Andrzej
+ Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Jagan
+ Teki" <jagan@amarulasolutions.com>, "Shawn Guo" <shawnguo@kernel.org>,
+ "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Douglas
+ Anderson" <dianders@chromium.org>, "Chun-Kuang Hu"
+ <chunkuang.hu@kernel.org>, "Krzysztof Kozlowski" <krzk@kernel.org>, "Anusha
+ Srivatsa" <asrivats@redhat.com>, "Paul Kocialkowski" <paulk@sys-base.io>,
+ "Dmitry Baryshkov" <lumag@kernel.org>, "Hui Pu" <Hui.Pu@gehealthcare.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, asahi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- upstream@lists.phytec.de
-References: <20250425064107.174548-1-primoz.fiser@norik.com>
- <20250425064107.174548-2-primoz.fiser@norik.com>
-Content-Language: en-US
-From: Wadim Egorov <w.egorov@phytec.de>
-In-Reply-To: <20250425064107.174548-2-primoz.fiser@norik.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MRXP264CA0042.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:500:14::30) To AS4P195MB1456.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:4b3::21)
+ linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com,
+ "Adam Ford" <aford173@gmail.com>, "Adrien Grassein"
+ <adrien.grassein@gmail.com>, "Aleksandr Mishin" <amishin@t-argos.ru>, "Andy
+ Yan" <andy.yan@rock-chips.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Benson Leung"
+ <bleung@chromium.org>, "Biju Das" <biju.das.jz@bp.renesas.com>, "Christoph
+ Fritz" <chf.fritz@googlemail.com>, "Cristian Ciocaltea"
+ <cristian.ciocaltea@collabora.com>, "Detlev Casanova"
+ <detlev.casanova@collabora.com>, "Dharma Balasubiramani"
+ <dharma.b@microchip.com>, "Guenter Roeck" <groeck@chromium.org>, "Heiko
+ Stuebner" <heiko@sntech.de>, "Jani Nikula" <jani.nikula@intel.com>, "Janne
+ Grunau" <j@jannau.net>, "Jerome Brunet" <jbrunet@baylibre.com>, "Jesse Van
+ Gavere" <jesseevg@gmail.com>, "Kevin Hilman" <khilman@baylibre.com>,
+ "Kieran Bingham" <kieran.bingham+renesas@ideasonboard.com>, "Liu Ying"
+ <victor.liu@nxp.com>, "Manikandan Muralidharan"
+ <manikandan.m@microchip.com>, "Martin Blumenstingl"
+ <martin.blumenstingl@googlemail.com>, "Matthias Brugger"
+ <matthias.bgg@gmail.com>, "Philipp Zabel" <p.zabel@pengutronix.de>, "Phong
+ LE" <ple@baylibre.com>, "Sasha Finkelstein" <fnkl.kernel@gmail.com>, "Sugar
+ Zhang" <sugar.zhang@rock-chips.com>, "Sui Jingfeng"
+ <sui.jingfeng@linux.dev>, "Tomi Valkeinen"
+ <tomi.valkeinen+renesas@ideasonboard.com>, "Vitalii Mordan"
+ <mordan@ispras.ru>
+Subject: Re: [PATCH v2 01/34] drm: convert many bridge drivers from
+ devm_kzalloc() to devm_drm_bridge_alloc() API
+Message-ID: <20250428170045.5ca315ce@booty>
+In-Reply-To: <656e493e.a551.1967c6d0c53.Coremail.andyshrk@163.com>
+References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
+	<20250424-drm-bridge-convert-to-alloc-api-v2-1-8f91a404d86b@bootlin.com>
+	<656e493e.a551.1967c6d0c53.Coremail.andyshrk@163.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4P195MB1456:EE_|AM8P195MB0897:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ce80267-fd5a-4909-2e7d-08dd866161d0
-X-LD-Processed: e609157c-80e2-446d-9be3-9c99c2399d29,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MFF6VS8zd0ttdEhvL1NMVldyR0h5dE9XWVZWY1hjMDFvd2crTzdrNnU0Szlv?=
- =?utf-8?B?UXlZNzNaUVBCTjF2a2cvZ21LRzBPMjIyL0N3dXFSYkxUelJkelo0dUxKTjZi?=
- =?utf-8?B?WGxrSGlOY1ZDeU44MHhSamtsekZrZWVUa2lIcmpyY21NckhLWHlrS1BZaUwy?=
- =?utf-8?B?MVNqK2ZOS0Q4anZiTGZyZ3BOek9lc24wbHhHSk9UQ0xzRHFlRmllVGF6QW9S?=
- =?utf-8?B?UU9PZitVMU15aWxuTWpUU3lPaHNiOTc2akFJdUFEM2JCUkhrNjFnYWwvTTky?=
- =?utf-8?B?eXg3NTE5NVlrNSttbGNlZDZuMnptL2lwOTZoeURxaHZ4Y0xYZzVnais1NU8z?=
- =?utf-8?B?cVc0UjRBMEx6OXRYbndWOGJvbW1SbVMwbEQ0T3k5NXh5eUVLOTVCd21GSHhB?=
- =?utf-8?B?MWd1Nkc4THNhNzZOeE1xcmJnbkRrZGJQU1lmMWUrM1FKY3ZHZXBCUWVTWXJr?=
- =?utf-8?B?cXdqdlcvTUNJYVNSS0U2a3BuRmluOG5lUlFGMUdaRmFRMFpYS21TNDJSMjlJ?=
- =?utf-8?B?U05nZTBlMjV2WStJUDAxWURRUEpVd01CUm9vYWpyR2dhNHhYbXJPVWVsWVNx?=
- =?utf-8?B?WklQK0wyc1F6MGdyN0V5TnowQ0JNcEE0SUhUTityS1JjZ1hTOEVVNmk0b29H?=
- =?utf-8?B?NWFjczEzM1ArbFpJOEJrMTk2Y1JSdGpsT01CMWR2c2lXWjRibHE4TlFtckRZ?=
- =?utf-8?B?OG5tNjNkYnBienpWT0NraWRFdUxwQ1p4NEZiUnRZdzFNTjlhMHJCaFhreS8y?=
- =?utf-8?B?YnhtMi9sdmZ2VEZ2aVpiV2o0eG9zWTZ2R25QZ3FKQ2s2K3hpY3h4V0E5c1gv?=
- =?utf-8?B?V0RYbUFJU0pRVVVjY1pubzR1QklCdFdYTGQweXRoalBNZzBvYklDbEIzY0Jq?=
- =?utf-8?B?cUg3ZWxlQkdvRERRZWJHRkVZaWZhNjdrY2VMYWRidWFIMWdWMDRFdTFwakR5?=
- =?utf-8?B?UGp4d1pHREw5RnllVUthRUg2WEhFWVZ5citUZ0JybWZiTUFWZFUvWVRvME9u?=
- =?utf-8?B?ako2YkxYRTI2L1U2aFRzUU5WTUdrK2xSV0ZxRWZ3MHh2QWZ0Um10MDlndzVn?=
- =?utf-8?B?bkd5TVRGUnBPZzJCb3hack9XQkVHK1poclBiVDBZRUhYRHdObHZDdm5Wdzgw?=
- =?utf-8?B?bjZFa1pDWE50VTlpVFlIcTJXYzZqbUVnQ3BhNnA1QXA1NXN0ZUQzcVgrdUZo?=
- =?utf-8?B?RGdGdlA2YzB0M015TVFONTBEREhPVFJiaXBDNGxqOUVsaElOekZrQXM2Ry9S?=
- =?utf-8?B?L3pLUzB3ZHpUc1MvMTRMS2htVGZSOGlLaXcxOTZiM1Zka0JKejJ5eVptaEpS?=
- =?utf-8?B?WjJiNUdkZ2FZOHJaOTJXVWw0SGhJOTJ2NzhxMERyeVlpUEIvaUV4RTlGM2Vp?=
- =?utf-8?B?OU5KaU1QWVZ1cUlDUDV3VHRXcDYrbldpci9TVTJRYkJVMlhVWklPa25MVmMy?=
- =?utf-8?B?MVhnZ3piNDZoOWVwYnN4UjB1MjA4YnBQWnVtbTRLTHo2Mm5YNmFBd1BUZFhF?=
- =?utf-8?B?Nlg3OS84d1hhb0FDc2xqVnZTUm1yalB6V1ZpTDhvQWRMMWM0Y2kvUDAvdGF6?=
- =?utf-8?B?cDNuQVp0Ty9TOXcxU1c0ZVpsVGZab2JsYmI0MSsvdzhlVkExb1ErYWd1MEt0?=
- =?utf-8?B?NzdwYjY5V1BsQXVNekZMQlNENVNjdFlZNWQrVC8xQkIxa1JaQzFBSk15V2FC?=
- =?utf-8?B?TDl6cjFldEtPRFR4K1o1bGJQWlVkZGNmeEFjbGtEeTVrejRQUWlRdjRGQUQy?=
- =?utf-8?B?bFhKamE3VCt2VW9QWithdGhvZ0NpcXRGUDJnd20xUDkxcEpiSW9EMk9LTEZF?=
- =?utf-8?B?UWJQUTMvQjhMNTR4ZTI1K2N0K1FLelcyRTZFRi9IZFdJV2xrdit6ZDR6bG45?=
- =?utf-8?Q?2EvyBeLy9E5Du?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4P195MB1456.EURP195.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TVJjN3ZGU2tQOS9PcHdudEdQSldkN1NtWWY4ai9wVklTVUNXTVh1bVVGNXV4?=
- =?utf-8?B?QWZEMlR2YmthYTdZWG56djJrL2tVRUxpaklZenI0Y0JoL2ltd0tPamovSFA1?=
- =?utf-8?B?Tmsvbk9hbkROUjJzdi9Jc2dmU2NiMnNhSDdWWmNOZ0ErSVlmVklWOTNKakth?=
- =?utf-8?B?UUo2TU4vNnhoWmhTenNZem1QTW0yU0lFMDFFSnVOWmR4bUt6b0dlVkp6OXdm?=
- =?utf-8?B?bHcyRGFrZ0dxbGVrNGk2OXlEZiswa1IxcUx2THkzNUhJUXQ5QjluZmVtakVh?=
- =?utf-8?B?QlNCRVhPK0tuNGhSMFo5RnpWOGVXTG90TzJ5dzhYbDNxNkdWV29nOHgrRUlO?=
- =?utf-8?B?VlBEL2VuQUk2c1h3RnNwRndxMGoyUW1ka2dJYzVTRFhqQ0F6WWh2Vzc2cGdi?=
- =?utf-8?B?eDVXMkFRMjZNWlpPMjFqZGx1NE1mdnY3bUZtTDdHYnY4K01ZWGZqMlgxbnh6?=
- =?utf-8?B?QWwxYWFMS3dOQVRNTnFVTzJyNmFMd3hMYnN0bkY3ODlxeG9BS1dUNzFnSjBs?=
- =?utf-8?B?WFRVdkxoellhQkEyc0R3dWJ5bGRPTGhUbUd0UnNMTC9pd2tGT2c5Tlcrd3lO?=
- =?utf-8?B?YW9uWldDWWFSSmhwZGE0K1R2R3prbWR0OTBBSmR2RWxCb2xwWHJ1UDc0VjVO?=
- =?utf-8?B?ZXE0M2twZ091VERCdEYyVEhNOUlOWTc5TkZSV2V6TUJKTEhQWnMzNTQ5LzZD?=
- =?utf-8?B?VnVONXJhR1JpcWFERkRDUFZCNDJuMnNZeWh2QUxvTlJabHFUWlc5NWlMK3Zy?=
- =?utf-8?B?NUJZenArVnYyUmZWaHdqQ0JYa2J2aHA3djF5cC8xTVJRR2g2dzNjZTVWUzB2?=
- =?utf-8?B?WkpCN3BLUXZzR3BSdGZkc3hoanJMRm0rQUdqSTRZYnlNTU1qcFVjcCt5bCtT?=
- =?utf-8?B?Rk5TQTNTQ0MzNHZLeXZObTlTNndWUTZPVWNSd2Y2TWRWZnE0N3F6TC9WRWNO?=
- =?utf-8?B?ZHpxelBmM1p3aFNhL1RMNkdvZXFKaTVmMHM2MGlVb3NnWTZ0bWtTYVlGVEUr?=
- =?utf-8?B?THVBcGFOV1oxYThOYndNVVNkTjFHNHZ3NlhVVlB6clBteU1JaXpJN2VjNFpV?=
- =?utf-8?B?MWxrM3Y5aEY5ZXNZMHRFRW9JU1R0YzI0blVXdUFJOGI4UVpCamovbU1CcWt3?=
- =?utf-8?B?a1pDT2FSNjBwZWlqL0dNK0J0eU5VT0gyKzhaS3BZSXljcE1RRUtsODNWc281?=
- =?utf-8?B?amM3dzFkZ3dYQzU4b1VPWHB1LzlWc2tHcnEwdE5TbC94ZllUSmhZU2h6Mjg2?=
- =?utf-8?B?VXlIVTVDWGxHaUx3ZWt6VzIyL21kb1ZMUXlabXBGNWl5RE9EM3BUS1FQVmZk?=
- =?utf-8?B?TEZtMmpFVThUb2pON0NxSUtCRHYrKzdqaFV2V0E2ZW1la1ZRS2xFaE0xSlVu?=
- =?utf-8?B?SHBzSUNRMlNRZFhQTnpXNld1elhqWU0vWnlVSmdaU1YyMmpOMUVNUTE3NDJ6?=
- =?utf-8?B?UXo2eWdRYWM5djlCRkNGSkVxN3B2RTg0WUdZR2o3WUlTVHBwUEtOblljRXBK?=
- =?utf-8?B?UTcvOGJ2azJBdWNvdmU5Y1NPL09iRld3L1pzSUp6OW5yVTh5cGxUdldxZnM3?=
- =?utf-8?B?OThYNkdnNmFFNm1OWnVXTHMyN256RThQMWdiSkVVU1k3K1MrOGN0WDkxSDEy?=
- =?utf-8?B?M3JGYWVjWnhsV21lRXVOZ0lzM09WOG5SQnlMQWhZSE9HUGVkVWhXTjI2SVdu?=
- =?utf-8?B?aVdaYU1zdHBFeFFwSHBMcGVzNGVKMnpyOFpSV2pTNXU4OGhaTjVQSXFDd0tF?=
- =?utf-8?B?NEVTMlVxMUUwM01leDlBL3BxZ1FlYjY1WEQrdGxMODBBT2ZZdEdVb015WlE1?=
- =?utf-8?B?aEVDNFJJVjlmbG54VHN5Nnc4b281YUdZVHdlbnM2QnBGRFJoUlhuOE1sVk1N?=
- =?utf-8?B?aE1KcmJrR0JrNDhYaUdFblIvL2plU0RFalVvaEdvL1BJd0hXN1hpd0lOZGNj?=
- =?utf-8?B?ZTQ4L21zSXp0MUNCMWdwRmNoUDgvSVY3bERtSThiL2lneENzMHBLWjRCTWNz?=
- =?utf-8?B?amk4MlNSVUFPUmI2U2RNN3JYai84OERKYTVrQi85Z1dZcDd2TTliS2pPYzEv?=
- =?utf-8?B?anR2QmFmeXB3TU94dlNrU2VCcExkY2VOSlptT1E2Z2h0Z3EydEVlRHNkWjJE?=
- =?utf-8?Q?n44SI3+edC5t+Q7E+5+BJdZvA?=
-X-OriginatorOrg: phytec.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ce80267-fd5a-4909-2e7d-08dd866161d0
-X-MS-Exchange-CrossTenant-AuthSource: AS4P195MB1456.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 14:31:36.9339
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sVxbSrtDSoNGGK3jyruJcCqVD7ZqVjuXfJ/6peXu33NgOTCEFyocdGojHzhFcbajNQQkJ5vOZXnxP/3k6C7H4Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8P195MB0897
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieduvdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeelffefgfehhfdtvdefueefieevkefggfelkeeiudetkeektedvhedukefgvddvnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepieelpdhrtghpthhtoheprghnugihshhhrhhkseduieefrdgtohhmpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehmrhhiphgrrhgusehkvghrn
+ hgvlhdrohhrghdprhgtphhtthhopehtiihimhhmvghrmhgrnhhnsehsuhhsvgdruggvpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghilhdrrghrmhhsthhrohhngheslhhinhgrrhhordhorhhg
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-Hi Primoz,
+Hallo Andy,
 
-a few of the node references you are adding are out of alphabetical order.
+On Mon, 28 Apr 2025 20:44:03 +0800 (CST)
+"Andy Yan" <andyshrk@163.com> wrote:
 
-Am 25.04.25 um 09:41 schrieb Primoz Fiser:
-> Add initial support for PHYTEC phyBOARD-Nash-i.MX93 board [1] based on
-> the PHYTEC phyCORE-i.MX93 SoM (System-on-Module) [2].
+> Hi ,
 > 
-> Supported board features:
->   * ADC
->   * CAN
->   * Ethernet 2x
->   * EEPROM
->   * eMMC
->   * Heartbeat LED
->   * RTC
+> At 2025-04-25 02:59:08, "Luca Ceresoli" <luca.ceresoli@bootlin.com> wrote:
+> >devm_drm_bridge_alloc() is the new API to be used for allocating (and
+> >partially initializing) a private driver struct embedding a struct
+> >drm_bridge.
+> >
+> >For many drivers having a simple code flow in the probe function, this
+> >commit does a mass conversion automatically with the following semantic
+> >patch. The changes have been reviewed manually for correctness as well as
+> >to find any false positives.
+> >
+> >  @@
+> >  type T;
+> >  identifier C;
+> >  identifier BR;
+> >  expression DEV;
+> >  expression FUNCS;
+> >  @@
+> >  -T *C;
+> >  +T *C;
+> >   ...
+> >  (
+> >  -C = devm_kzalloc(DEV, ...);
+> >  -if (!C)
+> >  -    return -ENOMEM;
+> >  +C = devm_drm_bridge_alloc(DEV, T, BR, FUNCS);
+> >  +if (IS_ERR(C))
+> >  +     return PTR_ERR(C);
+> >  |
+> >  -C = devm_kzalloc(DEV, ...);
+> >  -if (!C)
+> >  -    return ERR_PTR(-ENOMEM);
+> >  +C = devm_drm_bridge_alloc(DEV, T, BR, FUNCS);
+> >  +if (IS_ERR(C))
+> >  +     return PTR_ERR(C);
+> >  )
+> >   ...
+> >  -C->BR.funcs = FUNCS;
+> >
+> >Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-eMMC and Hearbeat LED are not board features but SoM features.
+[...]
 
->   * RS-232/RS-485
->   * SD-card
->   * TPM 2.0
->   * USB
+> >diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+> >index 5e5f8c2f95be1f5c4633f1093b17a00f9425bb37..9b1dfdb5e7ee528c876c01916c9821d550cad679 100644
+> >--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+> >+++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+> >@@ -1045,9 +1045,10 @@ struct dw_hdmi_qp *dw_hdmi_qp_bind(struct platform_device *pdev,
+> > 		return ERR_PTR(-ENODEV);
+> > 	}
+> > 
+> >-	hdmi = devm_kzalloc(dev, sizeof(*hdmi), GFP_KERNEL);
+> >-	if (!hdmi)
+> >-		return ERR_PTR(-ENOMEM);
+> >+	hdmi = devm_drm_bridge_alloc(dev, struct dw_hdmi_qp, bridge,
+> >+				     &dw_hdmi_qp_bridge_funcs);
+> >+	if (IS_ERR(hdmi))
+> >+		return PTR_ERR(hdmi);  
 > 
-> For more details see the product pages for the development kit and the
-> SoM:
-> 
-> [1] https://www.phytec.eu/en/produkte/development-kits/phyboard-nash/
-> [2] https://www.phytec.eu/en/produkte/system-on-modules/phycore-imx-91-93/
-> 
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+>            This should return hdmi or ERR_CAST(hdmi);
 
-With that changed,
+Indeed, thanks!
 
-Reviewed-by: Wadim Egorov <w.egorov@phytec.de>
+My coccinelle patch is clearly not clever enough. I'll see whether I
+can fix it, otherwise I'll handle these 3 special cases manually, along
+with another similar one (imx/imx-legacy-bridge.c) I just spotted after
+your report.
 
+Luca
+
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
