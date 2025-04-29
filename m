@@ -1,324 +1,258 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2061.outbound.protection.outlook.com [40.107.20.61])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776A327BF8A
-	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 12:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745928653; cv=fail; b=K5VQui333tknx7JBONV5iEWcibkvbH6i3/1WPx1HRXV3t2n02vFicBNdCoAP4JTtUM3Pp+eMk6k1CK0neHwZWjLZFHrygbp9OpI9t18gVNHtnALdpYpg8oCGveVT7JF66ZWMTAzpZ2rl1aeMd+CbW4m63Z7ari46hebEglAxcuo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745928653; c=relaxed/simple;
-	bh=JslzjvJA3tr0D5cy1/ZOpocmfPw5rr6vLw6x7gTuuKE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=U0KLsU26mIvLO+t3/6ricxw/jxVOMz4iUM1j7ylkrUlax7mmHXBXISp05Gp5nYU7HAtVl34xIi4iiMaAnbJzDW9ROHKQxmWzwcbWtGHlqm83/xqfjsw7VoTTBPoUCVik6cbVWSQXQBY04IVKTDeWxAZ9SNts9NyKydZaQDVORcQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IewqNolD; arc=fail smtp.client-ip=40.107.20.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB652C108F;
+	Tue, 29 Apr 2025 12:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745930517; cv=none; b=MC9gonf/GQqBADuQf/UGHtZqXZWUckE9mCIv6W+N3xVrbqfTTupFA7Pn9gOaJvMy730vGWp7q+Ot+H9KpzzJOo6kmciaK3IOr/YjWaJE8MQdPDb35nwtgHxJNji2pgUZYRxynh7FKZbIiHqb8t/eb/2Gt1BqDPkUlh5MxtSs2Jw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745930517; c=relaxed/simple;
+	bh=XCnhP92FnLnRCYUyO2bvDnBsIp+W3m98fC3Wecogt0k=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ez/x9Sthg088Vv2mo0DX4aEO6NqbQAUl3yxVb7DGDfW3vt6gRnxP9KCGUZiDceL3C+RdsI8y7IdK7HnZHWz9hRfZ6g4F6kkhQ2ftVqUwUVf0u+xAuztu/qXnWzaWcHsokXiBM7RZlmebXNDWuaRgf9JSeRr3skCrPRs8K62nZjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fsC7jfN2; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IewqNolD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iJlmkN1PFjPF05D6veHHgBaW6KyqFsOPSkJnWE0SGL2ru5JWSk9z6g+Zg+VWSnnd6GYV2wVwRhp5h0LI1p53pe/E1FCtRu837SJonJbliafw3C46FXsMPpHKEly9uKOv4YLjzo1PoNyqYmsqD/z/cXcrd7DJIzRvfvpOfMPRmn3yNvx14gFgz8zNvYcqLLOBRZ8wvXRguMle2KYJJuUemNrgScFEq5pxM2EGBZvLa0HhJFwjKA9kn3MbKvY4NU0ehQUN2qfbExDXUliw4rc3+9A8RHsOsL7GCiTfVkQ6c1BNRoOgdYmHvP08QAv3FNG4+MOxNfUmRMSLtxQ64YWYAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yPyK7OPmSGzm3Zze+gdNib98ih182Uy40k26euou3/s=;
- b=kM5sJRWn8a5nGSZ181oQo8I5PhCw8EUMD2kwBWDJ3hfDlKcNdCCRUV6gUt/ZjMi4v6DMdq1iCnNRlJP/x93Q4s0TCBEL/e0I9YaVRNOqgujjVmI9W0mPv5qXhAJ/o8xLIbNH5QkUGauZ9zPnfrxo/Fm/lhv+MDTCjKO5Lj+tWi0Vg8nq5IH8JiF9glKfj0O3qwQgGfzKkMGBQ7ErZtcnew2+voPSTVVxbY7yVMk0SOPdS35xnkGrx5DspxmnPE6zoZvEYMdul/AR6ByIVMLyDTYABx9Lt/XgimdUrq6BICXAycYNAtovsOUYCiK06M7UPnOv/qhguN8tJPyzSOYdCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yPyK7OPmSGzm3Zze+gdNib98ih182Uy40k26euou3/s=;
- b=IewqNolD/0TdU3wkAog5pjGKvpElMGmIKv0VhwTADUDxbmAElYXdL8RTXi0AP4/Zbqyn1R5wnboqXioqET3HrBCXY3VkZJJY3edvhOi4UpJfC2JpNCKi9/v3vjk4BkSUsSJc0+147IluLt2sIlMfKkcOb5IEenlbuCbMWit2dU/wb4EyH1cNydGYadZ7V4mX+E7DV3j75U3sXEdFGJBAyAD+1um5QqxCYPV4Lp7yq4ic8S63mBF+o2IDMCx/u4kFP/ZqGb99C4XR17IbHGvFPThA5P5cl1QYZKgfBiAABfKUvr+RwaIuqbvuOy86ceqXDmMBh2GbcCET1RhZwqEwNA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI2PR04MB10690.eurprd04.prod.outlook.com (2603:10a6:800:279::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.31; Tue, 29 Apr
- 2025 12:10:48 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8678.028; Tue, 29 Apr 2025
- 12:10:48 +0000
-Date: Tue, 29 Apr 2025 08:10:39 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	jun.li@nxp.com, alexander.stein@ew.tq-group.com,
-	linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: phy: imx8mq-usb: improve some tuning
- properties
-Message-ID: <aBDBvzA11/NXPAbD@lizhi-Precision-Tower-5810>
-References: <20250429033009.2388291-1-xu.yang_2@nxp.com>
- <aBBpzljSQEnQwlvU@lizhi-Precision-Tower-5810>
- <20250429062640.cqqtkp3vwkd5a2gp@hippo>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429062640.cqqtkp3vwkd5a2gp@hippo>
-X-ClientProxiedBy: PH7P220CA0042.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32b::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fsC7jfN2"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 868F21FCE7;
+	Tue, 29 Apr 2025 12:41:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1745930513;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+hOrEAhno7m4cQKlwlJmGm8Rj/tVEl/GuIX19J6c9EU=;
+	b=fsC7jfN2Zzf6DQkEjpRic8pWM7yzcLOC/nuVX8wuoLYV8lJ6JT8vJzjRggXFLv3DaY5M+g
+	bKS9DTcgGQb6UFWXFJadK88/OXkYFQ0U257kEblOQ+ZHiUU6v4GoGzvtCq8PumjxlHSYuc
+	27ApFm3NfD1iUBHANI+nm1UTwLeB63hANnKucJ5eLvejapXSWgCWmG0dssIzqyuKQ59h5S
+	HslL9buypFCZSx47sMrgoblrGoGYuvWptn/IPXPm1+L43A8deYah1v6XYWbtfzGRyj0VMv
+	1J9LTFX3WHkiEUsuimis6TvaKT2VKjtodkvxzEc8KB6E/9Pu/RNom5r5TdqJLg==
+Message-ID: <832a9db0-cf8a-4d35-8a98-08053fbd6723@bootlin.com>
+Date: Tue, 29 Apr 2025 14:41:42 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI2PR04MB10690:EE_
-X-MS-Office365-Filtering-Correlation-Id: ffc16d84-f98f-4923-6dc6-08dd8716dfbe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Nd6ca5ONEL7xbQDNNEsfs9iMDL+7NhZLQTBfvEU5f/fHliS0CTskPMwDGcTa?=
- =?us-ascii?Q?7q6YWVOJJEjavWcHSAhTNoy9M30wqxD8g5tRO4wey+mbKbdfL2FAlf/GPb09?=
- =?us-ascii?Q?tXhsyzHmYe29QOlSE/ODKZIoFlH9ALIEDH1bA+emUPV/LCl+4MmEtUon75yP?=
- =?us-ascii?Q?IKOyCE3L4zgOkDtKAG3eavzGB/SoshF8BZ3kkoApk+jQROLSCJLX4s1ikALv?=
- =?us-ascii?Q?htI6H8NC3BwtrZ3k17tD8jI8xSqdwiGNrvbPstAWVUIvEOsDkK+kXemMb5zl?=
- =?us-ascii?Q?jx1lONgrvOA+gjz9x9IxKFAizarOZp+LPprcfso3jXyvdmO8cItkobgYpZ4J?=
- =?us-ascii?Q?evQrzeOXnmX5IPi2GW860dI5tsJeIzLXzeK6ka2Ri2Q14QHwiZN88aKZnorS?=
- =?us-ascii?Q?HRw+nWUS96CmfcMKbYTdQzrkoIJlrw/saB1/pAuVyhptzNZT2gkm4M5WgDrh?=
- =?us-ascii?Q?Ttbp8aZssalB7rHjnFzE3HFpW8gbpNu1h0Q5/4VptZR4iV8FBoDN180AWXKI?=
- =?us-ascii?Q?QnL7FQYaGfqDIxLDcuWu4g3WxT0puvm1dMrM93etffdCp3wwF2JHiEhllZn7?=
- =?us-ascii?Q?1Fp1RzOMHCwbeIcLsB+JLe8t3XyMu4jNfPo8dvpqNiYCvk6UWjy6lcxZ7gHf?=
- =?us-ascii?Q?VlzsU2rO0B5TGmX4rqzbFvCM4yGJaYpN9Dwpj+x9rTXlumrxfAOPgcnR9/J5?=
- =?us-ascii?Q?VkYFFcfK0PIgkN0qr2V/dcNBsEzt1oMRXb5tQ2xWxntcDEcw5Xy9g0Krs9g/?=
- =?us-ascii?Q?6yK+zfO8hMKufwBGT7lNmFHfaExCbvDsxcS+qLc/QSxViQFO6HmuM8LVJVR+?=
- =?us-ascii?Q?SiwqRYozJ/+psbVGystcUYQI0wRawgxWr/sTZitYgg7Sd9WXpEFv+OjI/bDy?=
- =?us-ascii?Q?beRK2jAD3uq7ZKKfAMZpox3nKklzmvziUvqO9/teFdI5QidDmREyel5ZJJ6L?=
- =?us-ascii?Q?M4uo63YTrrpmq1NcUzd3n7zvTzEELp+9/ixe5ndaiyMjWjlkwbVaZxV5UgZU?=
- =?us-ascii?Q?riCnA5DHlnXe84lEOG0jbwmpwvKoWG3nRX8PvtnDGcMm8vvizDVi/C8W7r2e?=
- =?us-ascii?Q?GwrG4uLEI7I2mqhZW/9KJNW78rfqlT5k1t+ynb41jCekK9dGRnMEQ6lb4GOy?=
- =?us-ascii?Q?YmSf9+aOMfluR9tN2+8TOiYEixX4WJWZFrmWvfClXT6hqKrgmWcCrouug1UK?=
- =?us-ascii?Q?ng5GSAQhqZnhGTON3rKnV1VLrdkiq+Hu8wQ0a8xMZ99SQdlYe2u8D8JFD3pn?=
- =?us-ascii?Q?pvaFdgWr8wRBEOrsABNk2T70G/Kx99CLXwW5ZFr4pHbSv9NHwUlXB9b4Tdx9?=
- =?us-ascii?Q?DBjBBEAECulGC/kREG3lfEyNndES9ceu+dvPLHAVlqRwuRikcNinKmNmqMw9?=
- =?us-ascii?Q?k/ZP2swv5lVbiaS0Wk2pewG+/8hGB/QsBTaPBH1yLFRc3iFRjU1J1EGOoJge?=
- =?us-ascii?Q?/lOS3FDWP2Z29nAn9S5sjEe/qyav8B+bSkSJQ+bckZMEUAwnbdxpHw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?r64rL8V5oePMgepRCFyTLufIuX1xQAQDOw9momEG133dZJoA1IHbnXRzYNAx?=
- =?us-ascii?Q?LNpwAAtkoCze1veql2uvs0FSQFEhQVgWvcGI8ykuEMd05vhvaGDuK/DnVfLI?=
- =?us-ascii?Q?Oz6m+mMc0odop8g86/BQKW24wsJNarYuLPxruvv2voUIFNNVfQGE0NTT1R6Z?=
- =?us-ascii?Q?pgRuhEKtqKsqN1R1GCQilTT0HoONJfr+5pZK0v5583y80w7maReu9K7ArmF8?=
- =?us-ascii?Q?XSbiopUCdCi8ZyEyo67n/vORIyWGVpjbUbJsQiNzpkXRslSZNIHFgLNCla91?=
- =?us-ascii?Q?oMe2onsTqvQwHEmR94F00CTxYJT1Kpeo+T/soLQHM2BP5lsXOPZnuNUhsgae?=
- =?us-ascii?Q?29wV/3VaIt9zw+50zdwNjR+UGmtkYr6/VMJcIavgy4ONOsVBQXcHOWpa+2dj?=
- =?us-ascii?Q?DB1n/z9y+8pJiJDe8Zi6XPVoyvoolqxKKLdeDmLtUOKRb5nHKRaHwmH2LT04?=
- =?us-ascii?Q?5W8d4XqklSWCy1Hfku6Ts6JM0yNGJMQNv25/spUpRdh1ytQYT+eyz2xI2xsb?=
- =?us-ascii?Q?uIM7t0Iyhzy2bC1BRUnj3P9sJWp9Pjrp3AEKHgd2UkiToWkf9y+Pd6oRUVbY?=
- =?us-ascii?Q?ZpxrTeWr9kznmm/2gRutXCx2mH2A4klQr1RrZ81Ue6jObFRmcdsz3R7PqXSe?=
- =?us-ascii?Q?0aBAeQLFnPiEB00xFq1wkq6QlpRrUHo4kPuQ8GpMxKsIFquhCmpqYnndqrpY?=
- =?us-ascii?Q?C60nVSj6xvps6EEScf6DrWogGqyKrPzYP5pt8muvl1yEUOW6dQbCbhg2qAd3?=
- =?us-ascii?Q?sFu5hAapC97Ol3J6NPzYrigN8kBgO6Mtr4jEaerB3w54XBWoLoPuMXRerLUc?=
- =?us-ascii?Q?weParw6xEJfvdNQind2HqLlfm2fKCcdnCEFz1wQeEDYe5yeoH8cZS1n0tTus?=
- =?us-ascii?Q?ItHobTmaP5IyLnllDPGJFEtzgsD27m7V3YpnLRnEfV1GAmfHUZc8cXPJhqo3?=
- =?us-ascii?Q?qSJksF/ICXdFDWrmSO8Z7KLeTw94g/Np3zdZ+eBbLwTfQv32jQtZ8+OwUodR?=
- =?us-ascii?Q?2xcDYG2TQZowSUpSLF82IDExgS+ES1tHWEPexuhWjARbeuGosHOT9WdYxJ8c?=
- =?us-ascii?Q?W12AI7bPd8Q9WbY7rYYnnnQEUe2fJvKlT/wjfNwVqeTl9Fl7pV1xttsiulYu?=
- =?us-ascii?Q?qFHUnmzfQF3fdWA+0znc4SA2aU8bdLvRsOkvtTDuo7E1xgEGFg0Anm93jd13?=
- =?us-ascii?Q?6JQRMP9NI0OEM4zlYCLRSIFhcdrET6vKoGKLRKPrsyiVPXXJnNGL6J5mve2K?=
- =?us-ascii?Q?xQds12RHMuNVep6h2bOdbWXpjJX+Ol8If7/lEgdhkg+lzV6p1rwRCl9ArJZa?=
- =?us-ascii?Q?x0sRP9nhiGQG3tITcPnVNSGMz+qvN77zeGdw7z9rIWisS7AaX0ruuDzi/6Dg?=
- =?us-ascii?Q?uJqmkM3yEJpZCNSCgIk9FAM4a3ZH7ftKo7GRIzYqxAG8Sx5EJAiR4RdV/cSy?=
- =?us-ascii?Q?tz8n2f1rLCtwJUDSCgSOR5owFlTCkqK+iGp9/RRtNb9lsw4SAfBwYoyarQVy?=
- =?us-ascii?Q?rlerp7R/8sBMp8V1M0FkdOIAtifb/7i/hgi6qJgJkxBEv6lh6PXahicNYHbs?=
- =?us-ascii?Q?qPfudjFurNhR2Knjp9Y=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ffc16d84-f98f-4923-6dc6-08dd8716dfbe
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2025 12:10:47.3020
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: t6rbLrnlArNI/vC3Tm8KO7xdzwiboA7DK8Y7r52FUiv+orU0P78sT5eSsbN1oz40GHcCiBJSYlx+cPcQcOtvWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10690
+User-Agent: Mozilla Thunderbird
+Subject: Re: (subset) [PATCH v2 00/34] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Jagan Teki <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Douglas Anderson
+ <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Anusha Srivatsa <asrivats@redhat.com>,
+ Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>,
+ Hui Pu <Hui.Pu@gehealthcare.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, asahi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com,
+ Adam Ford <aford173@gmail.com>, Adrien Grassein <adrien.grassein@gmail.com>,
+ Aleksandr Mishin <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Benson Leung <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>,
+ Christoph Fritz <chf.fritz@googlemail.com>,
+ Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+ Detlev Casanova <detlev.casanova@collabora.com>,
+ Dharma Balasubiramani <dharma.b@microchip.com>,
+ Guenter Roeck <groeck@chromium.org>, Heiko Stuebner <heiko@sntech.de>,
+ Jani Nikula <jani.nikula@intel.com>, Janne Grunau <j@jannau.net>,
+ Jerome Brunet <jbrunet@baylibre.com>, Jesse Van Gavere <jesseevg@gmail.com>,
+ Kevin Hilman <khilman@baylibre.com>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Liu Ying <victor.liu@nxp.com>,
+ Manikandan Muralidharan <manikandan.m@microchip.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Phong LE <ple@baylibre.com>,
+ Sasha Finkelstein <fnkl.kernel@gmail.com>,
+ Sugar Zhang <sugar.zhang@rock-chips.com>,
+ Sui Jingfeng <sui.jingfeng@linux.dev>,
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+ Vitalii Mordan <mordan@ispras.ru>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ "Rob Herring (Arm)" <robh@kernel.org>, Hsin-Te Yuan
+ <yuanhsinte@chromium.org>, Pin-yen Lin <treapking@chromium.org>,
+ Xin Ji <xji@analogixsemi.com>, Aradhya Bhatia <a-bhatia1@ti.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Ian Ray <ian.ray@ge.com>,
+ Martyn Welch <martyn.welch@collabora.co.uk>,
+ Peter Senna Tschudin <peter.senna@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Herve Codina
+ <herve.codina@bootlin.com>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Inki Dae <inki.dae@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
+ Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Bjorn Andersson <quic_bjorande@quicinc.com>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+ Helge Deller <deller@gmx.de>,
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Philippe Cornu <philippe.cornu@foss.st.com>,
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+ Yannick Fertre <yannick.fertre@foss.st.com>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+ Alain Volmat <alain.volmat@foss.st.com>,
+ Raphael Gallais-Pou <rgallaispou@gmail.com>,
+ Michal Simek <michal.simek@amd.com>
+References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
+ <174591887152.961603.7706063017853945511.b4-ty@bootlin.com>
+Content-Language: en-US
+Autocrypt: addr=louis.chauvet@bootlin.com; keydata=
+ xsFNBGCG5KEBEAD1yQ5C7eS4rxD0Wj7JRYZ07UhWTbBpbSjHjYJQWx/qupQdzzxe6sdrxYSY
+ 5K81kIWbtQX91pD/wH5UapRF4kwMXTAqof8+m3XfYcEDVG31Kf8QkJTG/gLBi1UfJgGBahbY
+ hjP40kuUR/mr7M7bKoBP9Uh0uaEM+DuKl6bSXMSrJ6fOtEPOtnfBY0xVPmqIKfLFEkjh800v
+ jD1fdwWKtAIXf+cQtC9QWvcdzAmQIwmyFBmbg+ccqao1OIXTgu+qMAHfgKDjYctESvo+Szmb
+ DFBZudPbyTAlf2mVKpoHKMGy3ndPZ19RboKUP0wjrF+Snif6zRFisHK7D/mqpgUftoV4HjEH
+ bQO9bTJZXIoPJMSb+Lyds0m83/LYfjcWP8w889bNyD4Lzzzu+hWIu/OObJeGEQqY01etOLMh
+ deuSuCG9tFr0DY6l37d4VK4dqq4Snmm87IRCb3AHAEMJ5SsO8WmRYF8ReLIk0tJJPrALv8DD
+ lnLnwadBJ9H8djZMj24+GC6MJjN8dDNWctpBXgGZKuCM7Ggaex+RLHP/+14Vl+lSLdFiUb3U
+ ljBXuc9v5/9+D8fWlH03q+NCa1dVgUtsP2lpolOV3EE85q1HdMyt5K91oB0hLNFdTFYwn1bW
+ WJ2FaRhiC1yV4kn/z8g7fAp57VyIb6lQfS1Wwuj5/53XYjdipQARAQABzSlMb3VpcyBDaGF1
+ dmV0IDxsb3Vpcy5jaGF1dmV0QGJvb3RsaW4uY29tPsLBlAQTAQgAPgIbAwULCQgHAgYVCgkI
+ CwIEFgIDAQIeAQIXgBYhBItxBK6aJy1mk/Un8uwYg/VeC0ClBQJmlnw+BQkH8MsdAAoJEOwY
+ g/VeC0ClyhwP/Ra6H+5F2NEW6/IMVHeXmhuly8CcZ3kyoKeGNowghIcTBo59dFh0atGCvr+y
+ K9YD5Pyg9aX4Ropw1R1RVIMrWoUNZUKebRTu6iNHkE6tmURJaKLzR+9la+789jznQvbV+9gM
+ YTBppX4/0cWY58jiDiDV4aJ77JDo7aWNK4hz8mZsB+Y7ezMuS4jy2r4b7dZ+YL/T9/k3/emO
+ PkAuFkVhkNhytMEyOBsT7SjL4IUBeYWvOw9MIaXEl4qW/5HLGtMuNhS94NsviDXZquoOHOby
+ 2uuRAI0bLz1qcsnY90yyPlDJ0pMuJHbi0DBzPTIYkyuwoyplfWxnUPp1wfsjiy/B6mRKTbdE
+ a/K6jNzdVC1LLjTD4EjwnCE8IZBRWH1NVC1suOkw3Sr1FYcHFSYqNDrrzO+RKtR1JMrIe8/3
+ Xhe2/UNUhppsK3SaFaIsu98mVQY3bA/Xn9wYcuAAzRzhEHgrbp8LPzYdi6Qtlqpt4HcPV3Ya
+ H9BkCacgyLHcdeQbBXaup9JbF5oqbdtwev3waAmNfhWhrQeqQ0tkrpJ46l9slEGEdao5Dcct
+ QDRjmJz7Gx/rKJngQrbboOQz+rhiHPoJc/n75lgOqtHRePNEf9xmtteHYpiAXh/YNooXJvdA
+ tgR1jAsCsxuXZnW2DpVClm1WSHNfLSWona8cTkcoSTeYCrnXzsFNBGCG6KUBEADZhvm9TZ25
+ JZa7wbKMOpvSH36K8wl74FhuVuv7ykeFPKH2oC7zmP1oqs1IF1UXQQzNkCHsBpIZq+TSE74a
+ mG4sEhZP0irrG/w3JQ9Vbxds7PzlQzDarJ1WJvS2KZ4AVnwc/ucirNuxinAuAmmNBUNF8w6o
+ Y97sdgFuIZUP6h972Tby5bu7wmy1hWL3+2QV+LEKmRpr0D9jDtJrKfm25sLwoHIojdQtGv2g
+ JbQ9Oh9+k3QG9Kh6tiQoOrzgJ9pNjamYsnti9M2XHhlX489eXq/E6bWOBRa0UmD0tuQKNgK1
+ n8EDmFPW3L0vEnytAl4QyZEzPhO30GEcgtNkaJVQwiXtn4FMw4R5ncqXVvzR7rnEuXwyO9RF
+ tjqhwxsfRlORo6vMKqvDxFfgIkVnlc2KBa563qDNARB6caG6kRaLVcy0pGVlCiHLjl6ygP+G
+ GCNfoh/PADQz7gaobN2WZzXbsVS5LDb9w/TqskSRhkgXpxt6k2rqNgdfeyomlkQnruvkIIjs
+ Sk2X68nwHJlCjze3IgSngS2Gc0NC/DDoUBMblP6a2LJwuF/nvaW+QzPquy5KjKUO2UqIO9y+
+ movZqE777uayqmMeIy4cd/gg/yTBBcGvWVm0Dh7dE6G6WXJUhWIUtXCzxKMmkvSmZy+gt1rN
+ OyCd65HgUXPBf+hioCzGVFSoqQARAQABwsOyBBgBCAAmAhsuFiEEi3EErponLWaT9Sfy7BiD
+ 9V4LQKUFAmaWfGYFCQfwx0ECQAkQ7BiD9V4LQKXBdCAEGQEIAB0WIQRPj7g/vng8MQxQWQQg
+ rS7GWxAs4gUCYIbopQAKCRAgrS7GWxAs4gfGEACcA0XVNesbVIyvs5SJpJy+6csrH4yy233o
+ GclX2P7pcCls55wiV6ywCtRaXWFjztYmklQieaZ/zq+pUuUDtBZo95rUP20E56gYV2XFB18W
+ YeekTwH5d2d/j++60iHExWTB+sgMEv3CEGikUBj7iaMX2KtaB1k9K+3K6dx/s1KWxOClFkbJ
+ EV/tmeq7Ta8LiytQM9b4yY550tzC0pEEeFcLFXo1m5KcJauYnAqrlOVY48NFpFUd9oAZf/Pz
+ p3oEs+zn/8zK2PBrZZCD6AhrbotRy7irE5eimhxcsFm1+MG5ufnaQUWHrRYXVuFhvkSoqZ8j
+ GPgPEpFor4NjRyX/PMLglQ7S5snkvKcr3Lun44aybXEHq/1FTzW2kOh6kFHFFOPbMv1voJKM
+ IzrmDoDS+xANt/La7OwpCylCgF6t9oHHTTGfAfwtfYZbiepC66FDe/Jt/QLwkIXeIoeSS1O4
+ 6rJdGWG2kHthUM+uIbUbaRJW8AkJpzP1Mz7TieR/9jO4YPeUm9tGL5kP2yyNtzFilcoOeox1
+ NSFNAPz+zPcovVmxAaSDGcSzhQVJVlk8xPib8g4fnI8qJ3Gj7xyw8D9dzxhCR2DIFmZL84En
+ N7Rj+k4VIGY7M/cVvxL81jlbMGMERMmb96Cua9z1ROviGA1He2gbHOcp6qmLNu3nprleG8PL
+ ZRNdEAC0iZapoyiXlVCKLFIwUPnxUz5iarqIfQU8sa1VXYYd/AAAFI6Wv3zfNtGicjgHP8rN
+ CIegqm2Av1939XXGZJVI9f3hEoUn04rvxCgcDcUvn7I0WTZ4JB9G5qAGvQLXeXK6Byu77qTx
+ eC7PUIIEKN3X47e8xTSj2reVTlanDr8yeqZhxpKHaS0laF8RbD85geZtAK67qEByX2KC9DUo
+ eHBFuXpYMzGQnf2SG105ePI2f4h5iAfbTW9VWH989fx4f2hVlDwTe08/NhPdwq/Houov9f/+
+ uPpYEMlHCNwE8GRV7aEjd/dvu87PQPm4zFtC3jgQaUKCbYYlHmYYRlrLQenX3QSorrQNPbfz
+ uQkNLDVcjgD2fxBpemT7EhHYBz+ugsfbtdsH+4jVCo5WLb/HxE6o5zvSIkXknWh1DhFj/qe9
+ Zb9PGmfp8T8Ty+c/hjE5x6SrkRCX8qPXIvfSWLlb8M0lpcpFK+tB+kZlu5I3ycQDNLTk3qmf
+ PdjUMWb5Ld21PSyCrtGc/hTKwxMoHsOZPy6UB8YJ5omZdsavcjKMrDpybguOfxUmGYs2H3MJ
+ ghIUQMMOe0267uQcmMNDPRueGWTLXcuyz0Tpe62Whekc3gNMl0JrNz6Gty8OBb/ETijfSHPE
+ qGHYuyAZJo9A/IazHuJ+4n+gm4kQl1WLfxoRMzYHCA==
+In-Reply-To: <174591887152.961603.7706063017853945511.b4-ty@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieefkeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuhffvvehfjggtgfesthekredttddvjeenucfhrhhomhepnfhouhhishcuvehhrghuvhgvthcuoehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeekjeefjeevtedvgfeiueeuudegudetvdejvdeujeelhfefvdevkeduheettedtveenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplgduledvrdduieekrddtrddvtdgnpdhmrghilhhfrhhomheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddtledprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpt
+ hhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrgh
+X-GND-Sasl: louis.chauvet@bootlin.com
 
-On Tue, Apr 29, 2025 at 02:26:40PM +0800, Xu Yang wrote:
-> Hi Frank,
->
-> On Tue, Apr 29, 2025 at 01:55:26AM -0400, Frank Li wrote:
-> > On Tue, Apr 29, 2025 at 11:30:07AM +0800, Xu Yang wrote:
-> > > Commit b2e75563dc39 ("dt-bindings: phy: imx8mq-usb: add phy tuning
-> > > properties") add many tuning properties, but some parameter value doesn't
-> > > match the register description. It made some changes based on the original
-> > > value: add offset to a negative number so turn it to a non-negative number.
-> > > However, it's not easy to find an exact tuning value from register field
-> > > with such conversion.
-> > >
-> > > Because device-tree supports negative parameter number, this will improve
-> > > some propertie's parameter.
-> > >
-> > > Mainly include below properties:
-> > >  - fsl,phy-tx-vref-tune-percent
-> > >  - fsl,phy-tx-rise-tune-percent
-> > >  - fsl,phy-comp-dis-tune-percent
-> >
-> > It should be standard unit. for example 0% to 100%. DT don't prefer you
-> > direct use register value.
->
-> Yes. The dtschema and driver already use standard unit.
-> This patch is going to correct the unintuitive expression.
->
-> Take tx-rise-tune as example, register field as below:
->
-> 		00b - + 3%
->  [21:20]	01b - 0 (default)
-> TXRISETUNE	10b - - 1%
-> 		11b - - 3%
->
-> The valid value of tx-rise-tune is [-3%, +3%]. However, the current dtschema
-> add an offset which caused the valid value to [97%, 103%].
->
-
-I think [97%, 103%] make sense.  (Normal value) * (fsl,phy-tx-vref-tune-percent)
-
-Your formual will be (Normal value) * (100% + fsl,phy-tx-vref-tune-percent)
-
-DT scheme don't care register implement.
-
-Frank
 
 
-> fsl,phy-tx-rise-tune-percent:
->   minimum: 97
->   maximum: 103
->
-> When I first added tuning property to DTS, I thought I was reading the wrong
-> dtschema. Other users may meet such confuse too.
->
-> Thanks,
-> Xu Yang
->
-> >
-> > Frank
-> >
-> > >
-> > > The parameter value of above 3 properties are USB PHY specific. i.MX8MP
-> > > and i.MX95 USB PHY has different meanings. So this add restrictions for
-> > > them.
-> > >
-> > >  - fsl,phy-tx-vboost-level-microvolt
-> > >
-> > > For this property, the parameter value is wrong in register description.
-> > > This will correct it according to true value.
-> > >
-> > > For detailed info, please refer to i.MX8MP and i.MX95 latest reference
-> > > manual.
-> > >
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > >
-> > > ---
-> > > Changes in v2:
-> > >  - keep widest constraints
-> > >  - use multipleOf for some properties
-> > > ---
-> > >  .../bindings/phy/fsl,imx8mq-usb-phy.yaml      | 60 +++++++++++++++----
-> > >  1 file changed, 49 insertions(+), 11 deletions(-)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> > > index daee0c0fc915..71e5940ef4b8 100644
-> > > --- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> > > +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> > > @@ -42,16 +42,17 @@ properties:
-> > >
-> > >    fsl,phy-tx-vref-tune-percent:
-> > >      description:
-> > > -      Tunes the HS DC level relative to the nominal level
-> > > -    minimum: 94
-> > > -    maximum: 124
-> > > +      Tunes the HS DC level relative to the nominal level. It varies
-> > > +      between different PHY versions
-> > > +    minimum: -1000
-> > > +    maximum: 875
-> > >
-> > >    fsl,phy-tx-rise-tune-percent:
-> > >      description:
-> > >        Adjusts the rise/fall time duration of the HS waveform relative to
-> > > -      its nominal value
-> > > -    minimum: 97
-> > > -    maximum: 103
-> > > +      its nominal value. It varies between different PHY versions
-> > > +    minimum: -10
-> > > +    maximum: 20
-> > >
-> > >    fsl,phy-tx-preemp-amp-tune-microamp:
-> > >      description:
-> > > @@ -63,15 +64,14 @@ properties:
-> > >    fsl,phy-tx-vboost-level-microvolt:
-> > >      description:
-> > >        Adjust the boosted transmit launch pk-pk differential amplitude
-> > > -    minimum: 880
-> > > -    maximum: 1120
-> > > +    enum: [844, 1008, 1156]
-> > >
-> > >    fsl,phy-comp-dis-tune-percent:
-> > >      description:
-> > >        Adjust the voltage level used to detect a disconnect event at the host
-> > > -      relative to the nominal value
-> > > -    minimum: 91
-> > > -    maximum: 115
-> > > +      relative to the nominal value. It varies between different PHY versions
-> > > +    minimum: -60
-> > > +    maximum: 45
-> > >
-> > >    fsl,phy-pcs-tx-deemph-3p5db-attenuation-db:
-> > >      description:
-> > > @@ -112,6 +112,44 @@ allOf:
-> > >          reg:
-> > >            maxItems: 1
-> > >
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          enum:
-> > > +            - fsl,imx8mq-usb-phy
-> > > +            - fsl,imx8mp-usb-phy
-> > > +    then:
-> > > +      properties:
-> > > +        fsl,phy-tx-vref-tune-percent:
-> > > +          minimum: -6
-> > > +          maximum: 24
-> > > +          multipleOf: 2
-> > > +        fsl,phy-tx-rise-tune-percent:
-> > > +          enum: [-3, -1, 0, 3]
-> > > +        fsl,phy-comp-dis-tune-percent:
-> > > +          enum: [-9, -6, -3, 0, 4, 7, 11, 15]
-> > > +
-> > > +  - if:
-> > > +      properties:
-> > > +        compatible:
-> > > +          contains:
-> > > +            enum:
-> > > +              - fsl,imx95-usb-phy
-> > > +    then:
-> > > +      properties:
-> > > +        fsl,phy-tx-vref-tune-percent:
-> > > +          description: 100x the original
-> > > +          minimum: -1000
-> > > +          maximum: 875
-> > > +          multipleOf: 125
-> > > +        fsl,phy-tx-rise-tune-percent:
-> > > +          enum: [-10, 0, 15, 20]
-> > > +        fsl,phy-comp-dis-tune-percent:
-> > > +          description: 10x the original
-> > > +          minimum: -60
-> > > +          maximum: 45
-> > > +          multipleOf: 15
-> > > +
-> > >    - if:
-> > >        required:
-> > >          - orientation-switch
-> > > --
-> > > 2.34.1
-> > >
+Le 29/04/2025 à 11:27, Louis Chauvet a écrit :
+> 
+> On Thu, 24 Apr 2025 20:59:07 +0200, Luca Ceresoli wrote:
+>> devm_drm_bridge_alloc() [0] is the new API to allocate and initialize a DRM
+>> bridge, and the only one supported from now on. It is also necessary for
+>> implementing reference counting and thus needed to support removal of
+>> bridges from a still existing DRM pipeline without use-after-free.
+>>
+>> This series converts all DRM bridges to the new API.
+>>
+>> [...]
+> 
+> Applied, thanks!
+> 
+> [02/34] platform: arm64: acer-aspire1-ec: convert to devm_drm_bridge_alloc() API
+>          commit: 411465d35bc56877c33e2498ac697acfcf484e6b
+> [03/34] drm/bridge: analogix-anx6345: convert to devm_drm_bridge_alloc() API
+>          commit: 53ddeb25159781b029fda404226af600e76f975f
+> [06/34] drm/bridge: display-connector: convert to devm_drm_bridge_alloc() API
+>          commit: 4e90a3d96a6185e143041273f9867a1092dd4a71
+> [07/34] drm/bridge: lt9611uxc: convert to devm_drm_bridge_alloc() API
+>          commit: 6287ffd9eff6eea65865e64b9d4c45e115fa5ecf
+> [11/34] drm/bridge: dw-hdmi: convert to devm_drm_bridge_alloc() API
+>          commit: ed6987b674185873ebed7a619a646da6dd1a78fa
+> [12/34] drm/bridge: tda998x: convert to devm_drm_bridge_alloc() API
+>          commit: 7fe58bf1a9a24b533875c262a3222581a3f759e4
+> [13/34] drm/bridge: ti-sn65dsi86: convert to devm_drm_bridge_alloc() API
+>          commit: a4754ae9cfa76fbce79f023c268a5bac56f36321
+> [14/34] drm/exynos: mic: convert to devm_drm_bridge_alloc() API
+>          commit: 91c5c7b5bb2dd09b43b025bce6d790d3c79f4518
+
+Hello all,
+
+I made a mistake while applying those patches. Instead of taking 
+2-3,11-13,15-18,27,31, I took 2-3,11-18,27,31, which includes the patch 14.
+
+This patch is not R-by/A-by/SoB by non-Bootlin people. For me, the patch 
+is correct, it does not break the build nor generate warnings.
+
+What should I do? Is my SoB sufficient, or should I revert the patch and 
+wait for R/A-by before taking it again?
+
+Sorry for this,
+Louis Chauvet
+
+> [15/34] drm/mcde: convert to devm_drm_bridge_alloc() API
+>          commit: 40c25b9ec641f43ba17c7b788ac16ec23f8daaa8
+> [16/34] drm/msm/dp: convert to devm_drm_bridge_alloc() API
+>          commit: b2aabe5c6b65516d88214aba4b12ce2ca78bac6c
+> [17/34] drm/msm/dsi: convert to devm_drm_bridge_alloc() API
+>          commit: fffc8847743e45604c4478f554d628481b985556
+> [18/34] drm/msm/hdmi: convert to devm_drm_bridge_alloc() API
+>          commit: e11532be87e437648521a8ed5358c56df11933b4
+> [27/34] drm/vc4: convert to devm_drm_bridge_alloc() API
+>          commit: 9545c91ed75ff65e114761a7729de0e1b440aec6
+> [31/34] drm/bridge: imx8*-ldb: convert to devm_drm_bridge_alloc() API
+>          commit: e74b84cd83962e357329a695ba348b3dfe37395c
+> 
+> Best regards,
+
+-- 
+Louis Chauvet, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
