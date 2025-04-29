@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA766299A8E;
-	Tue, 29 Apr 2025 23:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20602D26BB;
+	Tue, 29 Apr 2025 23:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970723; cv=none; b=hJN5jXdqqBnWlk50cOh5fkhZXiRBoAIAuTy+Rp9hjW0T8XCukQdeHcGaJutaWauBoS1dDwzbGOMImk4KRUoez8T7rOFh4IQK74CG6ZaVd7mvdf0N7DrxYpWaOi425KWWqwRM9CZ49rSoYuuGX9/loQA7AZncSEiNG9HhqgojGq0=
+	t=1745970784; cv=none; b=W32K+VGfUBskY9EVc4u3CwrGoOSzhCAJYcrFxJzsbDLzqf/+LExTk2vCDSqncGfdmN2pc/L1sp8TmHG6WUUH13rNvsuI1d9XD6HelfO1QgrzOlVuTS13uPhNKgljJpEilzzFWXZdyzNKnWbwUfTjmd5NJ2XStpQZwioLfihgJtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970723; c=relaxed/simple;
-	bh=xmeNq9buQRAwM6xGb2/qRztME82rUq9GOeiuMrabL5s=;
+	s=arc-20240116; t=1745970784; c=relaxed/simple;
+	bh=QUwnuC1y3iAmHWMyDULgb7TEwYmnyQqFYMmtkz9VAPM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e/9XGlAHOG2avrCeWr12I+J9pN2hrtScBVkpzcKORbLT6wayqhfPzrg+M2YzvRVu4PNgkSH2nb2mYz8F9XkgMkdr0PjEAtz8sBEncgspRGN6mRCSBvbHc0auL+GQ9xmeIqgGMyaFSWFFXMYhVs73H+CRjHyTVi1bO3Fc1Wq6wiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmdEduwB; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=TxrdL4lGekY34jg3XgYXsXd3K1qzfO2Misp/ar9vUKIpDthyuz6GozjjMK057oH+NwoYfZwdVqcpUxmv4vyLyc67zjzEHZdTtJnKIXkh1YvECY5EEll3UEv1Tu4kBMf7fEcxdH52FWC7cd604eYLsMLysBtFXiZ/MJQLIYkeFw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BtHhjC0D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmdEduwB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051B2C4CEED;
-	Tue, 29 Apr 2025 23:52:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BtHhjC0D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2067FC4CEE3;
+	Tue, 29 Apr 2025 23:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745970723;
-	bh=xmeNq9buQRAwM6xGb2/qRztME82rUq9GOeiuMrabL5s=;
+	s=k20201202; t=1745970784;
+	bh=QUwnuC1y3iAmHWMyDULgb7TEwYmnyQqFYMmtkz9VAPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmdEduwBzNDf+D4TuIa3pZ+hx4eCGXhMvXq5wh9QYMMz2N8q7y11Us9lrsrpJzBwn
-	 1HErSqI47G6Sr9NZOy0crDXdrWf4Qgx0QOyXn38N4BCp5HiUHj/CyY0/YEJ7aJcd0d
-	 qieUjz8DmMcw4cvy8EJFcabKPeKfW/fiErLSEf2qWgWNKF8NTXpcO0ljZMDnCkOWcT
-	 yx5eAwNSpQNRibLiW3dgPVfn5Z+5Dgc9jQy8FNrkw57U4s1iU7HuSVpKQasL7dWjW4
-	 UogrJxWVdEh4RXkk8PeLiteaNABHB8Qk5gWOU4rwF3+7Hmwj3P2+B/nH8zxHIRCSxR
-	 WSIuGgxrd6NbA==
+	b=BtHhjC0DyNduYutd5Zn9zdAxpGbmQgvfkpFOoYR3ctOBzzHK7DlFyOTN3v2U9kBQX
+	 rwh089MSpZG6nkWAeZK2qgqqmqdBt6KWa5Ejt3YMXkKUEBr0tUn6wSeiBW/qnmr7dR
+	 CboC1wzIWY3MJzUnP/o4YooG/0wp1yABX1pLPgE3ntukbFZ/Q40Gcnc8TY4uc4r8m/
+	 /XmtQV/QhMBLtF3h3js3tFwmNh7yKAkc00M9S5sV04QPfK3UhvNC03xKn2OomitUif
+	 OAOzUtjN2GemNW4qQXeuOBxUaeRmyZ/tHL16bRT9j8WOIob+c7P81RKqoRh1tQPoqA
+	 LU2YUHPufam0w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -41,12 +41,12 @@ Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
 	pabeni@redhat.com,
 	imx@lists.linux.dev,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 22/37] net: enetc: refactor bulk flipping of RX buffers to separate function
-Date: Tue, 29 Apr 2025 19:51:07 -0400
-Message-Id: <20250429235122.537321-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 16/21] net: enetc: refactor bulk flipping of RX buffers to separate function
+Date: Tue, 29 Apr 2025 19:52:28 -0400
+Message-Id: <20250429235233.537828-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250429235122.537321-1-sashal@kernel.org>
-References: <20250429235122.537321-1-sashal@kernel.org>
+In-Reply-To: <20250429235233.537828-1-sashal@kernel.org>
+References: <20250429235233.537828-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.25
+X-stable-base: Linux 6.6.88
 Content-Transfer-Encoding: 8bit
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
@@ -83,7 +83,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index f662a5d54986c..d8272b7a55fcb 100644
+index 8feb7d4226bb5..0c09d82dbf00d 100644
 --- a/drivers/net/ethernet/freescale/enetc/enetc.c
 +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
 @@ -1572,6 +1572,16 @@ static void enetc_xdp_drop(struct enetc_bdr *rx_ring, int rx_ring_first,
