@@ -1,153 +1,66 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347E6275841
-	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 08:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4BA2949FB;
+	Tue, 29 Apr 2025 08:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745914797; cv=none; b=JcEN6Hqes39qx+HO7aKlKYo0tPXBBtqu7aYzstwbC4qA7ClPxQaV9VhshnefCHnFXiYEEJ5D3ODVKem9EK4olyBv+z1EEcaL6Tq7P+p4pSlG+FhnFX+Iop+PdET4dVuh+0SOlzUIfFATt7qePFkTfeC4bFOZS3t7cJvMnQz1l3g=
+	t=1745914838; cv=none; b=TeWKud0cxxf89c1cNgbOVZLrN63DALVPXjIi3ISUKKov1iJWoQPKhWIH5OUBvUrdJRJT7xQd6drCEZ0j9tjmJHulQ9v2/wTe9PMgtsJNnlHYaY9Uv7SWLZ1p/5KM2GRzkOgX/uB3K14bVh/2HW951vn0c4hJEKt1m65KE9YhDys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745914797; c=relaxed/simple;
-	bh=kqErvxenmG2YIQeaLjoSCbGuE3CwAGrl7IeChf0Jkxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J9PijVCv6QiVa1+BksmxYho64aqY0iQNLhjnm0deDRGez21G+rmV5p6ddt3fXOC9yVSlwTcIdrslS+4+QtKNeHSTaEhTz4tVjjHj8qmYAKqVZ0gYEoPbbztJrH6A2FXg7LsxNGgj9SiFAAcbTI1X/2WGysqzIjIwkpYhM5lYpiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=gFr5oOyM; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1745914838; c=relaxed/simple;
+	bh=rAqlEeY2Ob/LlJLDaCVezRDiR75ozTPIeV2/nB52+C4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W/CHQTSfETNZWQMMiWwGLNQrVjNIpqpvGzhtrzKcwEehUo7e04jvtU1lHSucU/PZUft4lPhepgrZKbaIDupabrWOBOLryXowKrlGetS7MjEQ5FjZks4uaLnpprT9aPGfPWsDyFA7KN/4JIFmJ1pi2d24iGArPbPu7xyuRNmRxw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbhOeGs5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="gFr5oOyM"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C94F110271400;
-	Tue, 29 Apr 2025 10:19:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1745914785; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=Xe+5znHVUqk5GYGgi3E2U343rq4B5qNUfQk8zHOXAdQ=;
-	b=gFr5oOyMT8linriMuZr4uL8ElmpqxoxstsyXFpKtaJBbO/PHV0+T/mvjKtJIq0pW7818vo
-	fKP1kr190BR1IYMiH+OBIRxpV0dBeHoDWDV7S1N6R6qqdYAsYd6r39YGf5uGyjCPQa27VD
-	RDTRJsd+oTkMZOY5TrV7Tg6outSqHIHlVUnqm1WIq7+6fpnER7bCYnNaVISTyqZRVIwOFs
-	PUt1eZwWSGb0Zpfnojzid/sB4N003pyGEZDQs/Xlg3OiuzqdM/Qa6Z2Lbbvm7vnf2Ga3fT
-	GJQ19qKKbF2BleEtlQaAzpYVTmp646Uxr1rnI8AB2R/o1Vr/baw76GJE70KLLQ==
-Date: Tue, 29 Apr 2025 10:19:38 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [net-next v8 4/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250429101938.54790e51@wsk>
-In-Reply-To: <20250428132932.273fc568@kernel.org>
-References: <20250428074424.3311978-1-lukma@denx.de>
-	<20250428074424.3311978-5-lukma@denx.de>
-	<20250428132932.273fc568@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbhOeGs5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B46C4CEEA;
+	Tue, 29 Apr 2025 08:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745914837;
+	bh=rAqlEeY2Ob/LlJLDaCVezRDiR75ozTPIeV2/nB52+C4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UbhOeGs5WP1RIpjW5cIh8caOS7QhJo38dcGo4ivryLS1ZS98PL8xrtq6W1RnF6kS2
+	 KMifMwmttIRwvDljBoUemDtEsAfDx1rD8d2nIozOxbgeswHWZEECbtZ7+D0ivu7qPk
+	 lsHK6OWzO06jW6tBHfPLyMxq7eylq3DEoIUqBWrz+aZgYdhSXlSIimHhMZaoZ06B2s
+	 LulBcZcsKAmJfik2x9osewbJ/UWV3+fC3H81OXUnkTPC9oVKf8TFeqrfY3A6PAzowj
+	 WmoPKwipbWVen6sH613vxqyrPlU5Nc2Agr5HjJUPn2yeNon1/4cgXbUweQ9Fi26F0K
+	 7V4TmJ1D/LPwQ==
+Date: Tue, 29 Apr 2025 10:20:33 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: carlos.song@nxp.com
+Cc: aisheng.dong@nxp.com, frank.li@nxp.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] i2c: imx-lpi2c: Fix clock count when probe defers
+Message-ID: <ujjbteer3ripubpgmv5qsvhcoki5ibcp4im7vpnna56mbckacl@xxx52nayhw7e>
+References: <20250421062341.2471922-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/7C5c+VP_Ssr.yXpqT9xQXe/";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250421062341.2471922-1-carlos.song@nxp.com>
 
---Sig_/7C5c+VP_Ssr.yXpqT9xQXe/
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Carlos,
 
-Hi Jakub,
+On Mon, Apr 21, 2025 at 02:23:41PM +0800, carlos.song@nxp.com wrote:
+> From: Clark Wang <xiaoning.wang@nxp.com>
+> 
+> Deferred probe with pm_runtime_put() may delay clock disable, causing
+> incorrect clock usage count. Use pm_runtime_put_sync() to ensure the
+> clock is disabled immediately.
+> 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+> Signed-off-by: Jun Li <jun.li@nxp.com>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-> On Mon, 28 Apr 2025 09:44:21 +0200 Lukasz Majewski wrote:
-> > This patch series provides support for More Than IP L2 switch
-> > embedded in the imx287 SoC.
-> >=20
-> > This is a two port switch (placed between uDMA[01] and MAC-NET[01]),
-> > which can be used for offloading the network traffic.
-> >=20
-> > It can be used interchangeably with current FEC driver - to be more
-> > specific: one can use either of it, depending on the requirements.
-> >=20
-> > The biggest difference is the usage of DMA - when FEC is used,
-> > separate DMAs are available for each ENET-MAC block.
-> > However, with switch enabled - only the DMA0 is used to
-> > send/receive data to/form switch (and then switch sends them to
-> > respecitive ports).
-> >=20
-> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-> > Reviewed-by: Andrew Lunn <andrew@lunn.ch> =20
->=20
-> Linking fails with allmodconfig
->=20
-> ERROR: modpost: missing MODULE_LICENSE() in
-> drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.o WARNING:
-> modpost: missing MODULE_DESCRIPTION() in
-> drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.o ERROR: modpost:
-> missing MODULE_LICENSE() in
-> drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.o WARNING: modpost:
-> missing MODULE_DESCRIPTION() in
-> drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.o ERROR: modpost:
-> "mtip_forced_forward"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw.ko] undefined! ERROR:
-> modpost: "mtip_port_learning_config"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw.ko] undefined! ERROR:
-> modpost: "mtip_port_blocking_config"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw.ko] undefined! ERROR:
-> modpost: "mtip_port_enable_config"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw.ko] undefined! ERROR:
-> modpost: "mtip_port_broadcast_config"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw.ko] undefined! ERROR:
-> modpost: "mtip_port_multicast_config"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw.ko] undefined! ERROR:
-> modpost: "mtip_switch_en_port_separation"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw.ko] undefined! ERROR:
-> modpost: "mtip_register_notifiers"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw.ko] undefined! ERROR:
-> modpost: "mtip_unregister_notifiers"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw.ko] undefined! ERROR:
-> modpost: "mtip_is_switch_netdev_port"
-> [drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.ko] undefined!
-> WARNING: modpost: suppressed 3 unresolved symbol warnings because
-> there were too many)
+merged to i2c/i2c-host-fixes with all the changes I suggested.
 
-Yes, you are right.
-
-I've adjusted makefile to build it properly as a module.
-
-Thanks for spotting it.
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/7C5c+VP_Ssr.yXpqT9xQXe/
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgQi5oACgkQAR8vZIA0
-zr0EhQgAlT/wbAiGajLapmWxKuLFGzpGBN8yTQAWZkR4q5Av8pTGrIofsvMVyke5
-CAsy+yyi3ZJTiuqTKCKQYolWV3uFnFxiUhyy/s1V/8gJqZFPUx3H3p/vC1ezXORM
-f6gWiBdCwYS9e3FPbAY8UFo8oaIjF9O3ec020NvIeCbBXYTy5KOyp+Vbpkifc3uj
-Ns3T/3nqxmuzg6OyIos2sJIi/NUc6z9ihZV5wyg9AyOBccteEsIfTWamUSKNj/i8
-2GyU4WiMR8/h9lOiXB+wtrCQ9m8DtpnrfBNek1bOuIZgZr7yQhh7A2pUqRk698NS
-zC79DNTenk6v6L6vNX/Ii47rbfis/w==
-=llBU
------END PGP SIGNATURE-----
-
---Sig_/7C5c+VP_Ssr.yXpqT9xQXe/--
+Thanks,
+Andi
