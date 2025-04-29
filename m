@@ -1,32 +1,33 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9B3212FA2
-	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 11:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B800D20FAB1
+	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 11:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745926299; cv=none; b=e40lfcOxpHMn2/UDQVwGu8GnEdUiBZJiOkK2LieswSHarn9j8daQU19MueAwo4xi+BUPt6C96iwttMP7K+KnW5CglXx/kFDFV7dGz0Ozs+xVYfoEjEacjwt6l5/B2LbaHEoPmk6RA26JGHbJpFNFLmozab4RVcYjjmz8TVmsDW0=
+	t=1745926301; cv=none; b=CK5468lVTfS6NA+S1QRxvQPUiReNliORMuh3smpPqy+zLyxTY6Rmq3w9EI06s2gHUXepPqkgEB2PgVpnqL/X1Iea+vNYY5SEcxGTRekP8NIU/UvN/lIGLgx5ZvDwDuk81GPUlMtOZ/MXSEbApyUj4/i4B6XdnZWgvpbaVId3YdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745926299; c=relaxed/simple;
-	bh=uN4ty1fseBFNMwUuGFagV0dNlU0etgEJ1A2OrTvsxAs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IeczHjeaaQPTI7DIoh6z37ydduCczIN+zs2Bf3bsOvRkkexbJtl4TPUfUNhgJ+9hlFmyzeyIUqgCRYpELP8RM7ET1ixgkv3Vyhb/6YPzUqpnNPQpB1m/i/N9Yrd9QsGDbGrTPk8G658aEfJM3RHocdu3Kr9X32F5F6JNg0OVdaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=q6blwe0V; arc=none smtp.client-ip=217.194.8.81
+	s=arc-20240116; t=1745926301; c=relaxed/simple;
+	bh=FC4RyjuUdRs/wygmUCQvl5aBB2J8vSf6dxzZN78EcNY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=QhmKHKw+XUaAeeOgIergjnkjZO+7RKqUvOOVGRlpF+2zojmE4WsS/ltAvY5vst+tqgWcdOEUYbXb/ILOI6l44M1KOTKiJR/I9o1Q1rWNLrSTZdcIfDWJSW8BL3hfCyhzRjcdbbVp68jXtRXFtqlMQxm+DozTbDcbLMQuAv9ic6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=eRiVfhHs; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="q6blwe0V"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="eRiVfhHs"
 Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 904B31F945;
-	Tue, 29 Apr 2025 13:31:27 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 9F8ED1F9F1;
+	Tue, 29 Apr 2025 13:31:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1745926288;
-	bh=3IC7RgsdFRjgNaYf9Bgi/HQazgo9UqZR6LcWu3Lxorw=; h=From:To:Subject;
-	b=q6blwe0VuViLMGWdxk2Q8Jg5bwm254tstAbZUf3GJpHVVQYpsAiW3T8DM3OwSYin0
-	 V4iyB0dW6x/prfk0GRhPDsumLqBPVV2BCklB/Xcnd2qzPKVfXkQg7FlhgWOhrusU1R
-	 jX0b4rKAs2gvxO9awAp4WMNe+rsnvWi5nvLxYJvlPiNGBeMK8yPERXEkjTy8Vk1GZY
-	 IolJAKQpk/ECxFpQRt9gEioJqx4EXhTd+KLXl5H728WXTf7mv239KPg36UL9LabifY
-	 WMxz8K16saan9eple72fd7sXoyiE+HYZ+pYq+E+1OBdYkvCU3I4JK2Bvcp+nL/rqK3
-	 dlh5kYZBle7Vw==
+	s=default; t=1745926291;
+	bh=XBbGVyieOghmZLlg7Pw4NSfP9F5vBz10sBznCLal1ig=; h=From:To:Subject;
+	b=eRiVfhHs2QSe53VlR58VXQG0In7uHtNC4kvqKmMYJJoFycv/mOzcXiXtJ7PzPPPER
+	 /CCXNlpTWsrs/B4eIUvTJvc0Of43IR99watzPwa9WgocXjueMpDELcVeyA/7EHT9rQ
+	 CmL6aadE0tdQAEynNUIERY5N4GptwZKzjCNkTKouxnzbmLpJ3I0R+Xg1+/bylelg8n
+	 cNacLatDRla5aGSABTPW9VDOClPGEt9ZSSTWaihEpOEPPBb7+g7aYBtaRE/CTcf8rB
+	 ZsGLyf/sI5CTDHsLZD3t+OyG2gTT7nMFUrRpBIR+P8SdX0nHNlnmycR6mK8lIjzpDA
+	 1HafBEpafOMww==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -42,10 +43,12 @@ Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 0/4]  arm64: dts: freescale: imx8mp-toradex-smarc: add fan, ec, gpio
-Date: Tue, 29 Apr 2025 13:31:15 +0200
-Message-Id: <20250429113119.124427-1-francesco@dolcini.it>
+Subject: [PATCH v1 4/4] arm64: defconfig: Add Toradex Embedded Controller config
+Date: Tue, 29 Apr 2025 13:31:19 +0200
+Message-Id: <20250429113119.124427-5-francesco@dolcini.it>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250429113119.124427-1-francesco@dolcini.it>
+References: <20250429113119.124427-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -56,27 +59,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Add fan, gpio expander and embedded-controller to the Toradex SMARC iMX8MP
-device tree file.
+Enable config for Toradex SMARC Embedded Controller, this is required
+for proper reset and power-off functionalities on Toradex SMARC iMX8M
+Plus.
 
-All the required DT bindings and drivers are now in next:
- - https://lore.kernel.org/all/20250331072644.17921-1-francesco@dolcini.it/
- - https://lore.kernel.org/all/20250414171455.155155-1-francesco@dolcini.it/
- - https://lore.kernel.org/all/20250402102146.65406-1-francesco@dolcini.it/
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Emanuele Ghidoli (2):
-  arm64: dts: freescale: imx8mp-toradex-smarc: add embedded controller
-  arm64: dts: freescale: imx8mp-toradex-smarc: add gpio expander
-
-Francesco Dolcini (2):
-  arm64: dts: freescale: imx8mp-toradex-smarc: add fan PWM configuration
-  arm64: defconfig: Add Toradex Embedded Controller config
-
- .../freescale/imx8mp-toradex-smarc-dev.dts    |  9 +++++-
- .../dts/freescale/imx8mp-toradex-smarc.dtsi   | 30 +++++++++++++++++++
- arch/arm64/configs/defconfig                  |  1 +
- 3 files changed, 39 insertions(+), 1 deletion(-)
-
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index a92c4122a8b9..d4f1230250fa 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -680,6 +680,7 @@ CONFIG_GPIO_SL28CPLD=m
+ CONFIG_GPIO_AGGREGATOR=m
+ CONFIG_POWER_RESET_MSM=y
+ CONFIG_POWER_RESET_QCOM_PON=m
++CONFIG_POWER_RESET_TORADEX_EC=m
+ CONFIG_POWER_RESET_XGENE=y
+ CONFIG_POWER_RESET_SYSCON=y
+ CONFIG_POWER_RESET_SYSCON_POWEROFF=y
 -- 
 2.39.5
 
