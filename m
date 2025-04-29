@@ -1,163 +1,120 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649E41CF7AF
-	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 09:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80032BF3E9
+	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 10:07:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745919579; cv=none; b=RVdrkNDjEB2VRnfKTmCieqDn3QZuEeAQxyxZCy0IgzEP1C7tg96g++DOD+7p99eR3Lw3Lfccvlmj1TfG0Wv8quNIViiOuWtPCNOLCM3P9QBB0avthVyott0IEXHmIn7BhDMGaIjUh4WfiGHj7U0wWtEq3fuMXV8YMPdrLyQy64k=
+	t=1745921230; cv=none; b=MK2fbSqKMe7eQir7F6keMVeiVbQVW28hdSsKtNLS4bTAgvQGVOe41WjShnuHawzcClT9jXvu/Bg5bdGs8VOqGWpz6il05ZvIXsWgLn4wkiHCA8hLwSHnL/uwd3fZu9vItSQZuOIwCvY8+lFOMEJ32Zojy44A88XYOOh5T2lBHSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745919579; c=relaxed/simple;
-	bh=wff8gluj3VBQRHUO2dAZPoDwcc7HlG1ihchdsWbgGBQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RLf+koyRi1aPGn/HaRZIVkScbLCvQwxkr5qzxPRaSu8MRqE6TaVdmkH1xGrnrZsVg9qwbDEcUmK93wrjD46M8K+BfyxwAdkFAuLHTSaVR44rqs6vPsrdjHtY3GZpjG6f5HocXV13Zjkp9055S0NZSGmjXCOES3jCAO4N411NmH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1u9hQw-0004du-Pm; Tue, 29 Apr 2025 11:39:22 +0200
-Message-ID: <e97d3388a5b4272d70d7379b020843a47874a104.camel@pengutronix.de>
-Subject: Re: [PATCH 0/6] arm64: dts: imx: Move Ethernet aliases out of SoC
- DTSI
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, Francesco Dolcini <francesco@dolcini.it>, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Date: Tue, 29 Apr 2025 11:39:20 +0200
-In-Reply-To: <20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org>
-References: <20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1745921230; c=relaxed/simple;
+	bh=g1tVxbnLGk3i5P6Pxoj8Qjo6872iN8ITjCbgI2W21Dg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iOxdJoJCosuSJgTEUKznbMHrCogrMdCUAxpL9ZCVYPV+XBAz7SbBPQOT/htczoogBXSX/sRClBZxvt5LjbE2XMJjjCdYe17ruzh+T759Op0xnfpEcELHzl8Qjpn6/LdDunVTRt3TCov0ouEvTf2y77eWTx58/iV1boU62qY6TtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cR/18fHu; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cR/18fHu"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-7082ad1355bso49184677b3.1
+        for <imx@lists.linux.dev>; Tue, 29 Apr 2025 03:07:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745921227; x=1746526027; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=emtwuLYFhq/+dXPJNX/QT8Hgt+pr1K3s+G1bwQ8o3u0=;
+        b=cR/18fHubKJaoDyJnjXsipnSFZl5yKqDYJ1xkueTLw0Nt6TgWuYt0rdYMjBCKwBXVJ
+         I5oyQXi7G2g+ICBPJQ/lDKH42FUTNCsEXlBRl58s6h+W3qOTgyj+YIV8DesOEZVvGMJ8
+         ZCCiTRAaZipAbg1TCIpV8pch6f73IEgk4Du7mOUtt0KoiJ+HWmKYb4cc0xgm9SMv9Ixz
+         8K0hlw6E9bwOpMC88nVSwyulbuzaozE5BXK7bHlmF9T7pVTRnnhVOQ5i7c7mok9K9WbB
+         obTw37yHxI4qMPH2F4X1j68F/dRSdNmeUB5cNL2XdLyoN8ZnYpyEe4sjXIC+dn7Ag3nW
+         ZMhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745921227; x=1746526027;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=emtwuLYFhq/+dXPJNX/QT8Hgt+pr1K3s+G1bwQ8o3u0=;
+        b=XCfzOrPtIpi1MtVEMZh9kGMJaf9pLhtO0HISP2xu8ZLsuictWeqAM+agby8SW7Gapi
+         aqWaSSJduHCPa6yl+mJODDaF65YvAx5GpPChYaAwG3YhtbTblVf6STk+fN1maU33qbIC
+         i1lLXr0Dk8qHfqYiZIxDjIM9YhqUuU1z4D0ktuikaSoR3H/vfScns+/pQVDIVr2VVwzz
+         z1ny462tXMbSiZ5hTep+w59RkAH+oYg5lhYhg+tLM7sqkModPCeLlx5RQ/vYFUAp0l8v
+         E6hbqWM2cftiHNJgnHguohtl9uA55zHt2G98DlioGsR1KP/6JYowBRkB4kOYcFHKhGXm
+         bN6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUHWw0N3DxJLl7Mf0EGsr6/XoQzu8NkhpRbJJxApU76yJpqlipndJ+/haFIR0HrDHyVD4Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxBzgf15ze6iTFl6T/TPWgT1LBt3RKi9C/VC+5Lxh3pWx7gNjuA
+	d8xx6q+3wojEEVUV0eERC+54w08LYDglFX+pxqcrV+pAlecpHyrDLAy8kcIw1Ry78V/KS5LPEEJ
+	gn8u3cjIhoIMAM53rSNfFNfWKgPuR4JQuZmbKQA==
+X-Gm-Gg: ASbGncv8icnyOVJwtRZiClKuOh/IBg6DamlP5Uw3RYP/MmEzZxbF8zwJ0jG/P9FEMrQ
+	DDCokRrHPTeKho5+7/4fZd8n3KMYAkI200/sVlV2Lp+Xm8MrsHU7TzWT23tTrhpZ6h87DbHXWuO
+	ZwDe649YU16Rb8eUJRpCmv6SY=
+X-Google-Smtp-Source: AGHT+IE+KQ5mhqCdAicmf7a28zsguJznUEdy53WKuiHnYymLVfd0/ONr455swN8mCtn+15YDbEpXrpy4cOjvjDDAfZo=
+X-Received: by 2002:a05:690c:a90:b0:6fd:33a5:59a with SMTP id
+ 00721157ae682-7089af99460mr31745177b3.18.1745921226784; Tue, 29 Apr 2025
+ 03:07:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20250424034610.441532-1-rdunlap@infradead.org>
+In-Reply-To: <20250424034610.441532-1-rdunlap@infradead.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 29 Apr 2025 12:06:30 +0200
+X-Gm-Features: ATxdqUGe1f7BXwgk8BKhjbgMOwlPjLa7A1c1xzU9Uqd9tqasf9-fMmdsvIXz7aE
+Message-ID: <CAPDyKFr3EN+Ss5qaFmQ1+42=t_cZ55PtggXMq8uVHPkYQy-uyw@mail.gmail.com>
+Subject: Re: [PATCH -next] mmc: sdhci-esdhc-imx: fix defined but not used warnings
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Luke Wang <ziniu.wang_1@nxp.com>, 
+	linux-mmc@vger.kernel.org, Haibo Chen <haibo.chen@nxp.com>, imx@lists.linux.dev, 
+	s32@nxp.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Krzysztof,
+On Thu, 24 Apr 2025 at 05:46, Randy Dunlap <rdunlap@infradead.org> wrote:
+>
+> Fix warnings when CONFIG_PM=y and CONFIG_PM_SLEEP is not set by
+> surrounding the 2 functions with #ifdef CONFIG_PM_SLEEP.
+>
+> drivers/mmc/host/sdhci-esdhc-imx.c:1659:13: warning: 'sdhc_esdhc_tuning_restore' defined but not used [-Wunused-function]
+>  1659 | static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
+> drivers/mmc/host/sdhci-esdhc-imx.c:1637:13: warning: 'sdhc_esdhc_tuning_save' defined but not used [-Wunused-function]
+>  1637 | static void sdhc_esdhc_tuning_save(struct sdhci_host *host)
+>
+> Fixes: 3d1eea493894 ("mmc: sdhci-esdhc-imx: Save tuning value when card stays powered in suspend")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Luke Wang <ziniu.wang_1@nxp.com>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: linux-mmc@vger.kernel.org
+> Cc: Haibo Chen <haibo.chen@nxp.com>
+> Cc: imx@lists.linux.dev
+> Cc: s32@nxp.com
 
-Am Freitag, dem 25.04.2025 um 21:48 +0200 schrieb Krzysztof Kozlowski:
-> Not tested on hardware.
->=20
-> Ethernet interface, like other exposed interfaces, aliases depend on
-> actual board configuration, e.g. its labeling, thus aliases should be
-> defined per each board or each SoM.
->=20
-> Some boards (e.g. Gateworks) follow this convention but many do not.
->=20
-> This is continuation of my comments from:
-> https://lore.kernel.org/r/16a98816-f43c-4f4d-940e-9da30cb1f73f@kernel.org
->=20
-The i.MX boards have traditionally listed aliases for many hardware
-peripherals with the same numbering that's used in the SoC reference
-manual. Boards always have the option to override those aliases if they
-have a good reason to do so, e.g. labeling on the physical device.
+Applied for next, thanks!
 
-Other users besides Linux rely on fixed numbering provided by the
-aliases. Both barebox and U-Boot number their ethernet interfaces
-according to the alias.
+Kind regards
+Uffe
 
-While you seem to add back aliases for in-tree boards, this breaks the
-majority of boards that include the kernel DTSI from an out-of-tree
-board. I can understand that we can't always accommodate these users,
-but I simply don't see the strong benefit of this patch to justify
-creating churn and possible regressions with those OOT users.
 
-Having those aliases in the DTSI has been common practice on the i.MX
-platform since 2012, long before there was any strong consensus on how
-those aliases should be used. Breaking existing users for the sake of
-aligning the i.MX platform with more idiomatic DT usage does not seem
-to be a worthwhile trade-off to me.
-
-Regards,
-Lucas
-
-> Best regards,
-> Krzysztof
->=20
 > ---
-> Krzysztof Kozlowski (6):
->       arm64: dts: imx8qxp: Move Ethernet aliases out of SoC DTSI
->       arm64: dts: imx8dxl: Move Ethernet aliases out of SoC DTSI
->       arm64: dts: imx8mm: Move Ethernet aliases out of SoC DTSI
->       arm64: dts: imx8mn: Move Ethernet aliases out of SoC DTSI
->       arm64: dts: imx8mq: Move Ethernet aliases out of SoC DTSI
->       arm64: dts: imx8qm: Add Ethernet aliases
->=20
->  arch/arm64/boot/dts/freescale/imx8-apalis-eval.dtsi           | 2 ++
->  arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.1.dtsi     | 1 +
->  arch/arm64/boot/dts/freescale/imx8-apalis-ixora-v1.2.dtsi     | 1 +
->  arch/arm64/boot/dts/freescale/imx8dxl-evk.dts                 | 1 +
->  arch/arm64/boot/dts/freescale/imx8dxl.dtsi                    | 2 --
->  arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi          | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-data-modul-edm-sbc.dts   | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-emcon.dtsi               | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-emtop-baseboard.dts      | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi                 | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-icore-mx8mm-ctouch2.dts  | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-icore-mx8mm-edimm2.2.dts | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-innocomm-wb15-evk.dts    | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-kontron-bl-osm-s.dts     | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-kontron-bl.dts           | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-mx8menlo.dts             | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-nitrogen-r2.dts          | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-phg.dts                  | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi         | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-ucm-som.dtsi             | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi             | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-venice-gw700x.dtsi       | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-venice-gw7902.dts        | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts        | 1 +
->  arch/arm64/boot/dts/freescale/imx8mm-verdin-dahlia.dtsi       | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-verdin-dev.dtsi          | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-verdin-ivy.dtsi          | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-verdin-mallow.dtsi       | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm-verdin-yavia.dtsi        | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mm.dtsi                     | 1 -
->  arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi          | 1 +
->  arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi   | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi                 | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi             | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mn-venice-gw7902.dts        | 1 +
->  arch/arm64/boot/dts/freescale/imx8mn.dtsi                     | 1 -
->  arch/arm64/boot/dts/freescale/imx8mq-evk.dts                  | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mq-kontron-pitx-imx8m.dts   | 1 +
->  arch/arm64/boot/dts/freescale/imx8mq-librem5-devkit.dts       | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts          | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mq-nitrogen.dts             | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mq-phanbell.dts             | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mq-pico-pi.dts              | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mq-sr-som.dtsi              | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mq-thor96.dts               | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8mq-zii-ultra.dtsi           | 1 +
->  arch/arm64/boot/dts/freescale/imx8mq.dtsi                     | 1 -
->  arch/arm64/boot/dts/freescale/imx8qm-mek.dts                  | 5 +++++
->  arch/arm64/boot/dts/freescale/imx8qxp-ai_ml.dts               | 1 +
->  arch/arm64/boot/dts/freescale/imx8qxp-mek.dts                 | 4 ++++
->  arch/arm64/boot/dts/freescale/imx8qxp.dtsi                    | 2 --
->  arch/arm64/boot/dts/freescale/imx8x-colibri-aster.dtsi        | 6 ++++++
->  arch/arm64/boot/dts/freescale/imx8x-colibri-eval-v3.dtsi      | 1 +
->  arch/arm64/boot/dts/freescale/imx8x-colibri-iris.dtsi         | 1 +
->  arch/arm64/boot/dts/freescale/mba8mx.dtsi                     | 4 ++++
->  arch/arm64/boot/dts/freescale/mba8xx.dtsi                     | 2 ++
->  56 files changed, 143 insertions(+), 7 deletions(-)
-> ---
-> base-commit: 393d0c54cae31317deaa9043320c5fd9454deabc
-> change-id: 20250425-dts-imx-aliases-ethernet-37d8552939de
->=20
-> Best regards,
-
+>  drivers/mmc/host/sdhci-esdhc-imx.c |    2 ++
+>  1 file changed, 2 insertions(+)
+>
+> --- linux-next-20250423.orig/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ linux-next-20250423/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1634,6 +1634,7 @@ static void sdhci_esdhc_imx_hwinit(struc
+>         }
+>  }
+>
+> +#ifdef CONFIG_PM_SLEEP
+>  static void sdhc_esdhc_tuning_save(struct sdhci_host *host)
+>  {
+>         struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+> @@ -1688,6 +1689,7 @@ static void sdhc_esdhc_tuning_restore(st
+>                        host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+>         }
+>  }
+> +#endif
+>
+>  static void esdhc_cqe_enable(struct mmc_host *mmc)
+>  {
