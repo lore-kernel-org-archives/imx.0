@@ -1,54 +1,44 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71E32C1E0C
-	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 11:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905E71B040D;
+	Tue, 29 Apr 2025 11:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745927346; cv=none; b=Ji+Fq0KcngP0zCu0gvy/tFd39mMELegs3mUnbcOG9jb1Q6fjlAqQAz2UqdbDvr4okdJkkTpEWe3WARTV9kDWd6FdEVN1+32lsoIPM9dh0SLDYXFO0dvAMuetdq60Tr3potAWQlhZyu4RHRRFB8ROqWFNEPLne5Tr7HeZhFrPJXk=
+	t=1745927705; cv=none; b=kXRwrH5o4yyc0BymaN8dQDv4qwD0Nd3n6D8pxX64Bx/7G8XniJDDANFQUDVaVTEY/x641hQt/sEEqE/gDGyu0MqMIlvSqb1NRoE+YnE5Uq0GUMIY0W0cxlF/g9eJYC6oBT8GQdUZxBck3otk938jO+JJYI3CqEorwnyQ6n+N+vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745927346; c=relaxed/simple;
-	bh=LNxe9L/dVH+WsWoZiDeGo991fLnDBQKuOgP13ml2SeI=;
+	s=arc-20240116; t=1745927705; c=relaxed/simple;
+	bh=+rNyKIl/RBZ5aP/MltKedW1NnaUhMihaKYwfC3GhJNM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JAMt6VjdhNUFdwY8kNKzhcr1F12klT59g39HMHcGJ6xsVuonj+cljOiS1FOX60lJwWsRkCT2rrF1RGxoC58lk686FHDyArc6bDA2ZLYypbQAD9SowNsD/CVNJt7PPC2oJauJWecUgbApVN/rcKaEad60aHeVAZydeMgo13mmGSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=kZN9ESih; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=BqctvQ0kxgWSdlwbnxYLknSmbTfRIoRoyzz5toPqg88Lnp7UFCMVLKifNnpTCh/CCawYWEr0SWENWKXJrtXj+08Dp75rigsK9rznRlZQiM5k8YXr3g9+YJ7bEFQTJ2yFMgpKWaG0TI0/ed6N9Gb1Y5BuTun7SXDKw7vUb2Doksg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Qu3uNUA/; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="kZN9ESih"
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 070E81F945;
-	Tue, 29 Apr 2025 13:49:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1745927343;
-	bh=oDwIkddYcjzqpY0qn+RN60cxRzSZFEEPA0b1jtHao/Y=;
-	h=Received:From:To:Subject;
-	b=kZN9ESihpGKMvPY4cStlEn6RlCOnHRvDpolr94jqob8QWMXuZSmIGMA/LL2RgepaF
-	 enHO+t6u/Ug1npMjfqK4EfrjvnMgezzOJ3Jo8m2UxqJUjiJ9n/1of4majt2inv70wb
-	 bCcNx/65qczywfHfoXMUXd/8fWtBDSqnbZYHUlQ3ct85QGyW8JtoamDHRg0ryC8cX8
-	 7djC+wHLUcFTMTd5gfWaTt5aKa4j7lF5d5zJBs1GhxFm4frAhxQKakwhnMjLEtPoAe
-	 Dl5lhkIU4s/GInKY8O7f2co6OAwK2PAMBnbGeFe8FR06mn3vQKtxo1j9rs/cH5vxLn
-	 H3slz76KCoPOw==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id 7A8997F9D9; Tue, 29 Apr 2025 13:49:02 +0200 (CEST)
-Date: Tue, 29 Apr 2025 13:49:02 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Lucas Stach <l.stach@pengutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	Francesco Dolcini <francesco@dolcini.it>, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux@ew.tq-group.com
-Subject: Re: [PATCH 0/6] arm64: dts: imx: Move Ethernet aliases out of SoC
- DTSI
-Message-ID: <aBC8rvt-u8P4Qlzw@gaggiata.pivistrello.it>
-References: <20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org>
- <e97d3388a5b4272d70d7379b020843a47874a104.camel@pengutronix.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Qu3uNUA/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Bu4ZHz9O9QAPTcYBsVBqDb2/neVtowMeWzeBjt2mIy8=; b=Qu3uNUA/WAb4oeHv/xwttmfHX1
+	OK0eFQObYXoKIwkj92J/xfHxUWQ+0xgDu2MnK6SB8oSgT09OlL0c+ISsqh3xLgCNstGyPj4Chtp6k
+	izzHzoWJpWNm0LnaIkSF8ow86GF8a+bV18SBS3xzALAwzrGDT5UbNXjvVM8swanZWfMg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u9jXs-00Avsd-GF; Tue, 29 Apr 2025 13:54:40 +0200
+Date: Tue, 29 Apr 2025 13:54:40 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: mattiasbarthel@gmail.com
+Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, troy.kisky@boundarydevices.com,
+	imx@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mattias Barthel <mattias.barthel@atlascopco.com>
+Subject: Re: [PATCH net v1] net: fec: ERR007885 Workaround for conventional TX
+Message-ID: <d77b4361-2ff4-4a3d-9506-354c054ae3ca@lunn.ch>
+References: <20250429090826.3101258-1-mattiasbarthel@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,20 +47,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e97d3388a5b4272d70d7379b020843a47874a104.camel@pengutronix.de>
+In-Reply-To: <20250429090826.3101258-1-mattiasbarthel@gmail.com>
 
-Hello,
+On Tue, Apr 29, 2025 at 11:08:26AM +0200, mattiasbarthel@gmail.com wrote:
+> From: Mattias Barthel <mattias.barthel@atlascopco.com>
+> 
+> Activate TX hang workaround also in
+> fec_enet_txq_submit_skb() when TSO is not enabled.
+> 
+> Errata: ERR007885
+> 
+> Symptoms: NETDEV WATCHDOG: eth0 (fec): transmit queue 0 timed out
+> 
+> commit 37d6017b84f7 ("net: fec: Workaround for imx6sx enet tx hang when enable three queues")
+> There is a TDAR race condition for mutliQ when the software sets TDAR
+> and the UDMA clears TDAR simultaneously or in a small window (2-4 cycles).
+> This will cause the udma_tx and udma_tx_arbiter state machines to hang.
+> 
+> So, the Workaround is checking TDAR status four time, if TDAR cleared by
+>     hardware and then write TDAR, otherwise don't set TDAR.
+> 
+> Fixes: 53bb20d1faba ("net: fec: add variable reg_desc_active to speed things up")
+> Signed-off-by: Mattias Barthel <mattias.barthel@atlascopco.com>
 
-On Tue, Apr 29, 2025 at 11:39:20AM +0200, Lucas Stach wrote:
-> Am Freitag, dem 25.04.2025 um 21:48 +0200 schrieb Krzysztof Kozlowski:
-> > Ethernet interface, like other exposed interfaces, aliases depend on
-> > actual board configuration, e.g. its labeling, thus aliases should be
-> > defined per each board or each SoM.
-> > 
-> Breaking existing users for the sake of aligning the i.MX platform with more
-> idiomatic DT usage does not seem to be a worthwhile trade-off to me.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-FWIW, I agree with Lucas.
-
-Francesco
-
+    Andrew
