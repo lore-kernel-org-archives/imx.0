@@ -1,91 +1,174 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297D42135A4
-	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 13:38:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D6C17BCE;
+	Tue, 29 Apr 2025 14:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745933894; cv=none; b=gz8yzyaPV+j7mijz1pZDR7rd0VQyhbhqXuXe1OSY3NKVMw6y2zB0hy8Z3Bt+Q31pcKukMvx8jI9Pq1RQDaQ2SwgB90Ind3Aan4dA4OPDOvIvJG8m+rxFgQXzPODpg6B8k06q9zpS3A73MXFHxsNMFy64DPUttfYXktdx90mWUY0=
+	t=1745937053; cv=none; b=HWR6uMLLNjQMt/UFaRJMLRG6dQiqJlaWVV8oHw2Ka6SV6k7cCkVH+78rbrGZT7BCsCIxu0h51ov0FDaTAMKHz1kM6X3CjDHpUcJbz5hUynwwohgyeb+TvIi3g9r2V1mTs+tdAFH4GNyCR7fRaWc6NUPaLPBWqlE3qMfe85aeSZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745933894; c=relaxed/simple;
-	bh=P0u5bKOVeiv3vEYAMFrQC5BmOPXNLg3oQQYCtgr8BSM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tEyBFmsM7pUBkGY4KHGR+x8tRnBGAW7AGXesyYFN31z3pfE9aYziai6xEHRfnk8O6NGtAdWS05508rayWeTl39W5z/+os+uPACqMduJzEBonGr/V02oOwHfWPcxJ2gXH09bIeUPLk4cWPxLsSIz9JCzQsn1QsCuz3B4d+gb+Xbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h7yM4P2R; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745937053; c=relaxed/simple;
+	bh=niuFHlGy2Mq9d1XJwxCoT73mXw4vEIJadyOtE6yD3Yw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=txMtgBDO2OdAHOoOhiz+fozQMBOOyfaZWdqpuc+cQxbGyrSCymN6quOQrClglHxhynSlOw8qzD+obR/QOJ8CfIG3DAPgu/DiHA9Hc4s+nkcogGDhzkVuut+ewH+UetSopAYP96WjCLBflU4qhEFKAObKuSxbSsZiBMvqyDGGp/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOw6L32g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h7yM4P2R"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5f4ca707e31so10068091a12.2
-        for <imx@lists.linux.dev>; Tue, 29 Apr 2025 06:38:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745933891; x=1746538691; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y26J0iAJoKCmJNS38dntVfyxrAVGftlCnn+OgGntO2A=;
-        b=h7yM4P2Rqfklev2ccu8TjlwXy4K3NGui44FA+b+FqkHSfcxv+fakjlaPxgfS4ME192
-         dmkSliTs+PprzRZ/B1P480FvfHDfVWHv5yJYidd2wUqfAIajjhB+tqvuSDOgZkzBw6hK
-         GGlCaCXl4tpVcCOmXpy+U2ECg9yJd5sZJH/p6BSTD0asDiP+cS/XlFD4nRyq3gfvPqAJ
-         13dOLIXdizc/nyco4IfNDx9voXOLo42JNR/JZ1PgU5uGZdRyWKc81Dtips3srvdJkaT9
-         dVVIsmMKEfhgi+7zyL4lyy+FNyQFdCt3IzvgonAIiyL+KhbMxUATtMv4X8xVJafvgqj2
-         uYxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745933891; x=1746538691;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y26J0iAJoKCmJNS38dntVfyxrAVGftlCnn+OgGntO2A=;
-        b=l3PB+qJw3Y+g9j5Ezi+jrr2PY5Er+dmHi1uSM3eKcIISifZGjE98rhb8mjFoWen4EL
-         aGoV6zT6NZkJha4zgBCrQ8O820BSs58jQjheexy06t3P6HKT6TPjkJJM3+bjY7kOkL+5
-         O/huCsmDTpdp00cDnMomxwXgdzOshb5qFKffzUchHxo/rjrIgS9p8btmeiXdfATztbSp
-         3JQ9IOMmuVobIU0peyM1CZ2cXoZ013RyfWHO8wW+6PrnM/Dyj0U/uMGiNRFi3HNdVSEE
-         UX24M3KeVfFeRDD1Bncry17cdw+6oVSg1oWZaAilU2IIAjURq11h7bv2x4m0Qr3cYM+g
-         e2Sg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRnt92BDvccJdzKleInnZjq8NnXGDtPm/GyxeEF4LmEmLw98Og7e3Z5CpD0KdY9byx20o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxPKS1alWPGhOIMjrPNX+MRHwA97A8Fn0VTYBkG1bNsZGFHpSLi
-	P/GQkGC8mXIdrDevT2vMQeucoIZiqdxuKWOJtlNykMTM1ZRUJ8yC
-X-Gm-Gg: ASbGncsIoANcdM+12eK97acfazPyfEW8E5f2RbY5V74ImRlxr2uGFfmmmOhMxmS3NsV
-	HZgDHnkd2/NcZEnq92bIhQj0Fx547XbuamgoBh91TO+onjj3QFGcy0mXpKOVR1BX9wqpbfD2ZNK
-	q3BZTAo+vXB/uobAqLC8Fn5q9e1w6adFPGBATVtN5aNzVnZ0D/isxvPY358dQDTAjYetVm7nwuh
-	TUnFoXi4r5S5lNJfR+jVLFFdC6mGh1Li9wB1o4foNlWHv5fsfQw48EhAK1SN2PWsj7LbCSZMicZ
-	izNZXGtljEgq2bZyK8QRYeGDq5QpHnmbFwHcCYYpOCPA8YgxUBEYHhQ=
-X-Google-Smtp-Source: AGHT+IECDUUSwqdQe+jFeZC4zccITFBfdZlwb9V2S+BXUJyiLooaUiYpAnL5q+y3JtdKb9LMa4l5/A==
-X-Received: by 2002:a17:907:97c9:b0:ace:63b0:6f70 with SMTP id a640c23a62f3a-ace84b71607mr1146290666b.61.1745933891105;
-        Tue, 29 Apr 2025 06:38:11 -0700 (PDT)
-Received: from localhost ([217.151.144.138])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-ace6ed72826sm778242466b.154.2025.04.29.06.38.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 06:38:10 -0700 (PDT)
-Date: Tue, 29 Apr 2025 15:37:27 +0200
-From: Oliver Graute <oliver.graute@gmail.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux@ew.tq-group.com
-Subject: Re: [PATCH 6/6] arm64: dts: imx8qm: Add Ethernet aliases
-Message-ID: <aBDWF4-63M60EwX9@graute-macos>
-References: <20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org>
- <20250425-dts-imx-aliases-ethernet-v1-6-15b9d5cca611@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOw6L32g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47B8C4CEE3;
+	Tue, 29 Apr 2025 14:30:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745937052;
+	bh=niuFHlGy2Mq9d1XJwxCoT73mXw4vEIJadyOtE6yD3Yw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UOw6L32gJyl1G/eTXOE496uhRufHCQI6ope7tgmeNuabvY8FAcVLtdj627pt1kRP6
+	 j9s1TnsaHTo29Q+H+sUs8m+LhJUoR3taqKYGIEAQSl9i8FXRX+4eNtBGjaQBfLqiut
+	 +P/71e3cuW1g/bXrdsrRAAj7yVctS09ZaVEHxvrSyJw/Xk8jGANlZvhXjg+jKnikvg
+	 5XfQJWjiH2C0ATUJU46b7CF02/Ru2iROHgHilt0++oSdHxZ7ohYcwaqzlLBf9MjOdK
+	 eaULNxPa6PM4HLxbVL6QUHx+LboGBxLFsb4smj2HEQR0oJ0cRe0+yILuQHBTOZQZfS
+	 0Rdt9upcHGW/A==
+Message-ID: <c5538590-efe4-4b90-b291-6c429d8fa3fe@kernel.org>
+Date: Tue, 29 Apr 2025 16:30:46 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250425-dts-imx-aliases-ethernet-v1-6-15b9d5cca611@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] arm64: dts: imx: Move Ethernet aliases out of SoC
+ DTSI
+To: Lucas Stach <l.stach@pengutronix.de>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, Francesco Dolcini <francesco@dolcini.it>,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+References: <20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org>
+ <e97d3388a5b4272d70d7379b020843a47874a104.camel@pengutronix.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <e97d3388a5b4272d70d7379b020843a47874a104.camel@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 25/04/25, Krzysztof Kozlowski wrote:
-> Add Ethernet aliases for predictable names and for firmware or
-> bootloader to fill up MAC address.
+On 29/04/2025 11:39, Lucas Stach wrote:
+> Hi Krzysztof,
 > 
-> Suggested-by: Francesco Dolcini <francesco@dolcini.it>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Oliver Graute <oliver.graute@kococonnector.com>
+> Am Freitag, dem 25.04.2025 um 21:48 +0200 schrieb Krzysztof Kozlowski:
+>> Not tested on hardware.
+>>
+>> Ethernet interface, like other exposed interfaces, aliases depend on
+>> actual board configuration, e.g. its labeling, thus aliases should be
+>> defined per each board or each SoM.
+>>
+>> Some boards (e.g. Gateworks) follow this convention but many do not.
+>>
+>> This is continuation of my comments from:
+>> https://lore.kernel.org/r/16a98816-f43c-4f4d-940e-9da30cb1f73f@kernel.org
+>>
+> The i.MX boards have traditionally listed aliases for many hardware
+> peripherals with the same numbering that's used in the SoC reference
+
+... which is not correct. Aliases should represent how boards are really
+labeled, not how reference manual labels them.
+
+> manual. Boards always have the option to override those aliases if they
+> have a good reason to do so, e.g. labeling on the physical device.
+> 
+> Other users besides Linux rely on fixed numbering provided by the
+> aliases. Both barebox and U-Boot number their ethernet interfaces
+> according to the alias.
+
+And?
+
+> 
+> While you seem to add back aliases for in-tree boards, this breaks the
+> majority of boards that include the kernel DTSI from an out-of-tree
+> board. I can understand that we can't always accommodate these users,
+
+This is not ABI, so every out of tree user is on their own.
+
+> but I simply don't see the strong benefit of this patch to justify
+> creating churn and possible regressions with those OOT users.
+
+They should mainline their code.
+
+It is not only a "churn", but way to stop people from repeating the same
+mistake. Every time you bring new soc, people will copy old code thus
+this will never change.
+
+> 
+> Having those aliases in the DTSI has been common practice on the i.MX
+> platform since 2012, long before there was any strong consensus on how
+
+Many previous practices were poor practices and decent SoC platforms
+fixed and changed it.
+
+We made big cleanups - since ~2 years Samsung is warning free. Since
+similar time all Qcom boards use phandle/label override. All of them
+were significant effort and quite a shuffling of code. Such effort is
+necessary if you want to code to be maintainable and in best shape for
+future development.
+
+Unless you claim NXP SoCs are a legacy platform and we should not do
+such cleanups.
+
+> those aliases should be used. Breaking existing users for the sake of
+> aligning the i.MX platform with more idiomatic DT usage does not seem
+> to be a worthwhile trade-off to me.
+
+No existing users are broken. Everyone who decided to stay out of tree
+is on their own, but this was their choice. We are not talking here
+about ABI.
+
+
+
+Best regards,
+Krzysztof
