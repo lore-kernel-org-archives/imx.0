@@ -1,71 +1,77 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11F327F75A
-	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 09:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEE829DB69
+	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 09:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745917326; cv=none; b=gjEE0hYPqnRA8XI1OLqn9cOraET1K0rxeF61aWHNfsZAP6moMQ5tv+WPLjhPwIyTD69mcxGT31wO7rx3nRzQNBccvUtD9aiDs3NLFjI9Ll689nB8vd6KayhLwzP5XVVSVSp+n0uQwKWYeQan03Xmnq1MXKKQgYxaK+IzKqi7KA0=
+	t=1745917711; cv=none; b=SAItmBFs41x1jpVKso65+bpGPvecqI+HGYSHsx8WAR9p7PHcbOVagy72qRf+vSFDG4uF3uJVtX16kbK3nz32ysvJIOLn2zmWzpp+4MKgf8ntO8WQkiCyNT8s3C1ta3SVHIoC5qjg0BHTMEcd6ZUzd0SSTcShz11/UfcYKJkGGBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745917326; c=relaxed/simple;
-	bh=oNXzkfNQzmJC63PmCHxiMrgawnbadC7dxmj8/uKNLqk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bi/IiX+frAxyAZ7mbtlDRTucyFDVfjt4VI6h7sGB7Dxx41DhuMUT65etG2OVsO2CY5zQJFrndx0ZLSnD2RBTmpwG4g0tx6bie0NaJVkFTc7zbewgfb0/kL3yKjxbIRhK8JcBEYMpeBlluuzchmzsdLINMe/3TXLnVNZflPSXrpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=AqbgmLMC; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=QVG5KA7G reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1745917711; c=relaxed/simple;
+	bh=7tKkj3J8Tt+kCDm7+jBhWB+A/hvph8GxctRTX3yGEII=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lA91r8headcg24nVpoAbIEWXdnZbQB21rMCdf0l3rozU6xUOiwub0D4Kk5SYGTjAJ+f/cxHg825/x2amaUE1U571FYDY52nq386rd3UzzKwBLeKTeesaAlUxmOV4ibx5fNEwMOdDvLn5xaVL3XQpiDr4DfP57FQd/WgmF9haPF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IiRLLVUy; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="AqbgmLMC";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="QVG5KA7G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IiRLLVUy"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5ed43460d6bso8508749a12.0
+        for <imx@lists.linux.dev>; Tue, 29 Apr 2025 02:08:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1745917322; x=1777453322;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=CBp3gVMZ4Xj6VTie2AOZTRZv6GCiRK4KbGKItk9J0Z8=;
-  b=AqbgmLMCOuV0AwUJ1EReyfBli7tfkOH9DTx/R0DYrR2/SXCFeT15CH/x
-   YQ7clZll7HeaSQpL/pGCeuTWkGRLnI5Gi4O13Tuf+fFkIuNW/i02I+eB3
-   H4VsG6sonuaKrZPfpBHVFheGd/gcEtUf8J+rrvIWjL1MTVZwWsFo9PH7m
-   BHB08eGRAuAOPt/6kLHCBabxZ6pBG/8DMbK81Pkr3LL3Mx7jbINK0nWMO
-   lzx9B7HeRJSUZg5WDtimXRmbM26E7pv5wRnj1pbGFTAU+mb6RX2lokS60
-   h2FBUgpe1CMsMWwlwqb5Xa7uXler9hTnGDYCVFphmQ8nFAF+N4XZ+w+uT
-   w==;
-X-CSE-ConnectionGUID: ZLcJNe8HTUCCTWKIMfa8IA==
-X-CSE-MsgGUID: g9xvr/rwSxKr+0AA76UsgA==
-X-IronPort-AV: E=Sophos;i="6.15,248,1739833200"; 
-   d="scan'208";a="43777057"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 29 Apr 2025 11:01:59 +0200
-X-CheckPoint: {68109587-28-7141A0B0-E6EDEC14}
-X-MAIL-CPID: C8E3A0A56DD49BCC6676081E6626B4CF_3
-X-Control-Analysis: str=0001.0A006396.68109586.007C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BBE26160E21;
-	Tue, 29 Apr 2025 11:01:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1745917315;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=CBp3gVMZ4Xj6VTie2AOZTRZv6GCiRK4KbGKItk9J0Z8=;
-	b=QVG5KA7GT2JDq9rzTqFcSeoi5lLbmx0CMc8+weH7zqGrzO50CqIJDaJPA8RDdlqMDmELy/
-	iO/ayZbZ6X+nzEl7k5urOsDN58yAYvBMT0nE5sg+cIU+2V5sgSQ1qGQLg/VOC6o46tbFD6
-	vgaEhmJHOpwZjCb0+9Grk0qUYtiAfmajw3QPrzERMURMMAHoDJ1Ovb/KT2Z6It/vMgFQ+Y
-	ZscvQUrZpAItjhSb/mXdV7zcGDBtJ3ZBLHlyfqs8fVcXisaONqB2KLiHlMI77hxL915riE
-	VI9/4PJHKozuLBGj+RF1QaTP7ZklxKaxq7xRDTjyawtsfotJE70groQwdcvDfA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux-phy@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] phy: freescale: imx8m-pcie: Simplify with dev_err_probe()
-Date: Tue, 29 Apr 2025 11:01:52 +0200
-Message-ID: <20250429090152.1094243-1-alexander.stein@ew.tq-group.com>
+        d=gmail.com; s=20230601; t=1745917708; x=1746522508; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oUz53Saw6cMVXBIDBX+3gyUruKRB/Beug22u3wURK4s=;
+        b=IiRLLVUy7pdL4RaZOGw4bIuQ+3bjxUk6ATIiWZFuZTbeDolv55znz8q4/aE8OEwYqi
+         n+Vu999YnBzjCO2ieQA32CfR8WYL7RO9/rY2Ejydh9EMwOltlRSwJN/ygPWZ77QJFBSd
+         zMJ2lYwppz5NjSk1PbhFwspp4s9QnTEHVqDHlAX5SFCzMeMZiGb6KBlJpZe37aOgVpSK
+         yvbj0pIww8SLUGvrH+C4ojQ9h6NUi1Eb7rJfFk4iVcppJ7iBz1kan+qyVTgKVkbacWrk
+         qxK9ES+ZcLU4rrzIgHfWaQkFLDrdk92s+I50uJgTCAninkBH5anrM7E69/SYyA5g7G4T
+         jYdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745917708; x=1746522508;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oUz53Saw6cMVXBIDBX+3gyUruKRB/Beug22u3wURK4s=;
+        b=eUxpSGXEMTpsB7+DWb43SQUgRsSOWJ5Ta8WyNw5BzxQYBLnOhpFk6iLjHLCJYSm8w8
+         3uu/SNAsGGj/IWFFQMG7jNWbjmgtIK+PatilUfM8vhJZRnzqqrhrFGuoxRoVY7rPzK+o
+         C47oMOPvuvndJuzzBdJ5P3b/V84ieMUHQQ9Yh+Zbk1BftlbkeIVyQLDJo8NjGgP2ga/a
+         Y5vDrAOgDTFkdtfqTzKBRmg1lx3En8CoN1j+DALoFEZoUThSHPvlc3+NlSLfh6Mps7Rb
+         6K3Eo7DT1+bAoPIV/bnWhDrlkYWw4uuU2O1A+9I3zavwZa6MOcF29lofBuOJ+a3+oVjT
+         N+8A==
+X-Gm-Message-State: AOJu0YxtrTZi1StpxDYY+sA7C/tlgmVwN4Pe7kWgtKdc29avNFfeISd8
+	pxgtn2iLBwgLDzWmqdk3rSjsKVHyIaDpw0H7ZxU06fqkks7S2umt
+X-Gm-Gg: ASbGncuwppknrCPm8KVj3/jvKENXn9QlguH53MTg509UHSKF4mU0OU0C77/rgcNeI9+
+	/KIT4w0pN39zHux5SGMULKICR9AVzxCv+1BL3W9sAA7z/EtXEgtAEdWWnS4LFpk7AGWRYuz43Dq
+	oz27K5hswhB6B2DI1dVIkfh/5rhFUM7DIajTlQu30fIvkcAGi9SkhiI68tO+YNAQ3pv6J3MJMEc
+	3HhEeKP8MBQtBukcHNd3ZJNkGPWxutx8RaZGqPA0k0Wh2RM5ywhRVsnrVMGJbhJKyN3jP4tlV8U
+	dlgiiJfM7ybqSgxagDWq0/tQ9QSItmtgDvjLd0V7yHaErq7XBnOdTzZQ1PQVGNDXpw3Yyvfss1r
+	5oCfYdXdPaO11dRTPXXv1OBtGN40fpGiUhrjxcw4=
+X-Google-Smtp-Source: AGHT+IH0x6YL+2cpf45cN/k9GbVeXNWiPGIKjy2ZeOFTUUYtd3wRJNwtsQ+bN+GZ2H91QNv6Y+XNNA==
+X-Received: by 2002:a05:6402:e86:b0:5f6:c4ed:e266 with SMTP id 4fb4d7f45d1cf-5f83884b6c1mr1945283a12.8.1745917708122;
+        Tue, 29 Apr 2025 02:08:28 -0700 (PDT)
+Received: from titan.emea.group.atlascopco.com (static-212-247-106-195.cust.tele2.se. [212.247.106.195])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f7016f5dccsm7144159a12.37.2025.04.29.02.08.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Apr 2025 02:08:27 -0700 (PDT)
+From: mattiasbarthel@gmail.com
+To: wei.fang@nxp.com,
+	shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	troy.kisky@boundarydevices.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mattias Barthel <mattias.barthel@atlascopco.com>
+Subject: [PATCH net v1] net: fec: ERR007885 Workaround for conventional TX
+Date: Tue, 29 Apr 2025 11:08:26 +0200
+Message-ID: <20250429090826.3101258-1-mattiasbarthel@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,54 +80,48 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Error handling in probe() can be a bit simpler with dev_err_probe().
+From: Mattias Barthel <mattias.barthel@atlascopco.com>
 
+Activate TX hang workaround also in
+fec_enet_txq_submit_skb() when TSO is not enabled.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Errata: ERR007885
+
+Symptoms: NETDEV WATCHDOG: eth0 (fec): transmit queue 0 timed out
+
+commit 37d6017b84f7 ("net: fec: Workaround for imx6sx enet tx hang when enable three queues")
+There is a TDAR race condition for mutliQ when the software sets TDAR
+and the UDMA clears TDAR simultaneously or in a small window (2-4 cycles).
+This will cause the udma_tx and udma_tx_arbiter state machines to hang.
+
+So, the Workaround is checking TDAR status four time, if TDAR cleared by
+    hardware and then write TDAR, otherwise don't set TDAR.
+
+Fixes: 53bb20d1faba ("net: fec: add variable reg_desc_active to speed things up")
+Signed-off-by: Mattias Barthel <mattias.barthel@atlascopco.com>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-index 7355d9921b646..68fcc8114d750 100644
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -238,24 +238,21 @@ static int imx8_pcie_phy_probe(struct platform_device *pdev)
- 		imx8_phy->clkreq_unused = false;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index a86cfebedaa8..17e9bddb9ddd 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -714,7 +714,12 @@ static int fec_enet_txq_submit_skb(struct fec_enet_priv_tx_q *txq,
+ 	txq->bd.cur = bdp;
  
- 	imx8_phy->clk = devm_clk_get(dev, "ref");
--	if (IS_ERR(imx8_phy->clk)) {
--		dev_err(dev, "failed to get imx pcie phy clock\n");
--		return PTR_ERR(imx8_phy->clk);
--	}
-+	if (IS_ERR(imx8_phy->clk))
-+		return dev_err_probe(dev, PTR_ERR(imx8_phy->clk),
-+				     "failed to get imx pcie phy clock\n");
+ 	/* Trigger transmission start */
+-	writel(0, txq->bd.reg_desc_active);
++	if (!(fep->quirks & FEC_QUIRK_ERR007885) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active))
++		writel(0, txq->bd.reg_desc_active);
  
- 	/* Grab GPR config register range */
- 	imx8_phy->iomuxc_gpr =
- 		 syscon_regmap_lookup_by_compatible(imx8_phy->drvdata->gpr);
--	if (IS_ERR(imx8_phy->iomuxc_gpr)) {
--		dev_err(dev, "unable to find iomuxc registers\n");
--		return PTR_ERR(imx8_phy->iomuxc_gpr);
--	}
-+	if (IS_ERR(imx8_phy->iomuxc_gpr))
-+		return dev_err_probe(dev, PTR_ERR(imx8_phy->iomuxc_gpr),
-+				     "unable to find iomuxc registers\n");
- 
- 	imx8_phy->reset = devm_reset_control_get_exclusive(dev, "pciephy");
--	if (IS_ERR(imx8_phy->reset)) {
--		dev_err(dev, "Failed to get PCIEPHY reset control\n");
--		return PTR_ERR(imx8_phy->reset);
--	}
-+	if (IS_ERR(imx8_phy->reset))
-+		return dev_err_probe(dev, PTR_ERR(imx8_phy->reset),
-+				     "Failed to get PCIEPHY reset control\n");
- 
- 	if (imx8_phy->drvdata->variant == IMX8MP) {
- 		imx8_phy->perst =
+ 	return 0;
+ }
 -- 
 2.43.0
 
