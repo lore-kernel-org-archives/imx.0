@@ -1,214 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FF9219A63;
-	Tue, 29 Apr 2025 15:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7240E40C03
+	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 15:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745939419; cv=none; b=qyfZQkv6un1Q5knfOmKJlGXCm79EEE0T9Y5d5VJUy9ItakEH68X3PMlANI6G6ngf247Iz6nlNfYvfMF5a36nxmtNPYf472YnNOVlybB9dsBFFm+5wJmCtTSCbx8px7cIIsZ+/3SM/FiW9jqQY3jpWNYvIqweTenOyUfOeKe93a8=
+	t=1745939601; cv=none; b=eFBRbvLjsPn0cgYSnvfAOpP5t7httm7/1ufrR9YA2TVM1a/NObi0lrkHDzWMj1EMuRHV+f4Dr8Lc3eqoUttt+dS0eKFiAfFEVbVwjtGRMGNgs0rGoOZ8EW8I3qMipNXz0uTpvlYk/ghL3fHEraC7ijCvu9HDj+kOMeSm57x7VWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745939419; c=relaxed/simple;
-	bh=tH/b0H08UXNUu6dgbm5YvkwLd90cHvKfu0wgbJrpW2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jVJElpEB0kugpayb+q5muJYeH6YrM9qxR1mzTfk6AE+YQ50J6zioLpInxvVOZ0icxLazSRtiOS/IDsTWLk1JesH9sebhdbJoEpxH8jZHoFwqAUvF3NZsAsGKLV4hioMT6i7euqQ5tqJx5qf4wM3MtWtbYQzM6cWis1tlhExSG/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hy6OqaRB; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hy6OqaRB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BA3C4CEE3;
-	Tue, 29 Apr 2025 15:10:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745939418;
-	bh=tH/b0H08UXNUu6dgbm5YvkwLd90cHvKfu0wgbJrpW2g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hy6OqaRBXW2VArQAk0HkFGDWr69g/SzJsfJZ8IPR1Da5ckDhHLpiiUjgvvbO+3d+z
-	 x6OyY3irDdVMdsLz93UdVfUuXLXt9ZAbakYx2C+aZr4c4Ht9M7eKlJE18cZ4+e8PfM
-	 GI/Msv6SpjxgBS/1192R8lJEg7LYJPB9EVTCaBdSJsWFgdI+zpB/1LQK/WjxeVTvQz
-	 SySUAwMTrdZQPKibhIOSLjq/dlrplor/hJGnfSBtKUcau3TUy64Nah2sllXE3kGObb
-	 IWFx+2ZIX4B3VrYYkYCvDyMsMz7FhOd7svLyuOj755afscDhWwYdztPQR0zDf6d9i4
-	 uWJG6YYSthiuA==
-Date: Tue, 29 Apr 2025 16:10:13 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: vkoul@kernel.org, kishon@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	jun.li@nxp.com, alexander.stein@ew.tq-group.com,
-	linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: phy: imx8mq-usb: improve some tuning
- properties
-Message-ID: <20250429-charbroil-easing-04f579c68a2d@spud>
-References: <20250429033009.2388291-1-xu.yang_2@nxp.com>
+	s=arc-20240116; t=1745939601; c=relaxed/simple;
+	bh=b+WV1YgMrzOlLeB6/e1Q2R7G89OFhxRWSo9PzI4EV5g=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ObSud9oG2p/wDscjD1uwisXA1y6ZuYMezANLrcuViLrAeY8yXEKxsXSdikvoauYxyIuY1cxUF6yxTIWZqRBVkfxC42KrxwWt3YFxUlsLX1EgWd6AR1lbU4T0KpaVessLVt5SdmnSLPP2HoWXrJWtt5UWFZlhO/ekK98kumYJNUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1u9mdr-0003aE-21; Tue, 29 Apr 2025 17:13:03 +0200
+Message-ID: <06efb082c24176e6401265b4349b677468850f7d.camel@pengutronix.de>
+Subject: Re: [PATCH 0/6] arm64: dts: imx: Move Ethernet aliases out of SoC
+ DTSI
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn
+ Guo <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, Francesco Dolcini <francesco@dolcini.it>, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Date: Tue, 29 Apr 2025 17:13:01 +0200
+In-Reply-To: <c5538590-efe4-4b90-b291-6c429d8fa3fe@kernel.org>
+References: <20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org>
+	 <e97d3388a5b4272d70d7379b020843a47874a104.camel@pengutronix.de>
+	 <c5538590-efe4-4b90-b291-6c429d8fa3fe@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6fwPel+VdaSrAtp/"
-Content-Disposition: inline
-In-Reply-To: <20250429033009.2388291-1-xu.yang_2@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
+Am Dienstag, dem 29.04.2025 um 16:30 +0200 schrieb Krzysztof Kozlowski:
+> On 29/04/2025 11:39, Lucas Stach wrote:
+> > Hi Krzysztof,
+> >=20
+> > Am Freitag, dem 25.04.2025 um 21:48 +0200 schrieb Krzysztof Kozlowski:
+> > > Not tested on hardware.
+> > >=20
+> > > Ethernet interface, like other exposed interfaces, aliases depend on
+> > > actual board configuration, e.g. its labeling, thus aliases should be
+> > > defined per each board or each SoM.
+> > >=20
+> > > Some boards (e.g. Gateworks) follow this convention but many do not.
+> > >=20
+> > > This is continuation of my comments from:
+> > > https://lore.kernel.org/r/16a98816-f43c-4f4d-940e-9da30cb1f73f@kernel=
+.org
+> > >=20
+> > The i.MX boards have traditionally listed aliases for many hardware
+> > peripherals with the same numbering that's used in the SoC reference
+>=20
+> ... which is not correct. Aliases should represent how boards are really
+> labeled, not how reference manual labels them.
+>=20
+While that is the commonly agreed interpretation today, I do not see
+any language in the DT spec itself or kernel Documentation/devicetree
+that would mandate aliases to be used in this way.
 
---6fwPel+VdaSrAtp/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In fact there are examples to the contrary like
+Documentation/devicetree/bindings/serial/samsung_uart.yaml which says:
+"Each Samsung UART should have an alias [...] as specified by User's
+Manual of respective SoC."
 
-On Tue, Apr 29, 2025 at 11:30:07AM +0800, Xu Yang wrote:
-> Commit b2e75563dc39 ("dt-bindings: phy: imx8mq-usb: add phy tuning
-> properties") add many tuning properties, but some parameter value doesn't
-> match the register description. It made some changes based on the original
-> value: add offset to a negative number so turn it to a non-negative numbe=
-r.
-> However, it's not easy to find an exact tuning value from register field
-> with such conversion.
->=20
-> Because device-tree supports negative parameter number, this will improve
-> some propertie's parameter.
->=20
-> Mainly include below properties:
->  - fsl,phy-tx-vref-tune-percent
->  - fsl,phy-tx-rise-tune-percent
->  - fsl,phy-comp-dis-tune-percent
->=20
-> The parameter value of above 3 properties are USB PHY specific. i.MX8MP
-> and i.MX95 USB PHY has different meanings. So this add restrictions for
-> them.
+So I would argue that there is no hard line between correct/incorrect
+for the historical usage of the alias nodes on the i.MX platform.
 
-It's hard for me to understand from this if you're actually changing the
-meaning of the property. Will the current/old values continue to
-function as they have been?
+> > manual. Boards always have the option to override those aliases if they
+> > have a good reason to do so, e.g. labeling on the physical device.
+> >=20
+> > Other users besides Linux rely on fixed numbering provided by the
+> > aliases. Both barebox and U-Boot number their ethernet interfaces
+> > according to the alias.
+>=20
+> And?
+>=20
+Some usecases depend on the aliases being the same between kernel and
+bootloader. Historically that has been guaranteed on the i.MX platform
+by the aliases in the SoC DTSI, when the board didn't have a need to
+change them. With this series applied some other users may now end up
+with missing aliases if the only include the DTSI.
 
+> >=20
+> > While you seem to add back aliases for in-tree boards, this breaks the
+> > majority of boards that include the kernel DTSI from an out-of-tree
+> > board. I can understand that we can't always accommodate these users,
 >=20
->  - fsl,phy-tx-vboost-level-microvolt
->=20
-> For this property, the parameter value is wrong in register description.
-> This will correct it according to true value.
->=20
-> For detailed info, please refer to i.MX8MP and i.MX95 latest reference
-> manual.
->=20
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
->=20
-> ---
-> Changes in v2:
->  - keep widest constraints
->  - use multipleOf for some properties
-> ---
->  .../bindings/phy/fsl,imx8mq-usb-phy.yaml      | 60 +++++++++++++++----
->  1 file changed, 49 insertions(+), 11 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yam=
-l b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> index daee0c0fc915..71e5940ef4b8 100644
-> --- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
-> @@ -42,16 +42,17 @@ properties:
-> =20
->    fsl,phy-tx-vref-tune-percent:
->      description:
-> -      Tunes the HS DC level relative to the nominal level
-> -    minimum: 94
-> -    maximum: 124
-> +      Tunes the HS DC level relative to the nominal level. It varies
-> +      between different PHY versions
-> +    minimum: -1000
-> +    maximum: 875
-> =20
->    fsl,phy-tx-rise-tune-percent:
->      description:
->        Adjusts the rise/fall time duration of the HS waveform relative to
-> -      its nominal value
-> -    minimum: 97
-> -    maximum: 103
-> +      its nominal value. It varies between different PHY versions
-> +    minimum: -10
-> +    maximum: 20
-> =20
->    fsl,phy-tx-preemp-amp-tune-microamp:
->      description:
-> @@ -63,15 +64,14 @@ properties:
->    fsl,phy-tx-vboost-level-microvolt:
->      description:
->        Adjust the boosted transmit launch pk-pk differential amplitude
-> -    minimum: 880
-> -    maximum: 1120
-> +    enum: [844, 1008, 1156]
-> =20
->    fsl,phy-comp-dis-tune-percent:
->      description:
->        Adjust the voltage level used to detect a disconnect event at the =
-host
-> -      relative to the nominal value
-> -    minimum: 91
-> -    maximum: 115
-> +      relative to the nominal value. It varies between different PHY ver=
-sions
-> +    minimum: -60
-> +    maximum: 45
-> =20
->    fsl,phy-pcs-tx-deemph-3p5db-attenuation-db:
->      description:
-> @@ -112,6 +112,44 @@ allOf:
->          reg:
->            maxItems: 1
-> =20
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - fsl,imx8mq-usb-phy
-> +            - fsl,imx8mp-usb-phy
-> +    then:
-> +      properties:
-> +        fsl,phy-tx-vref-tune-percent:
-> +          minimum: -6
-> +          maximum: 24
-> +          multipleOf: 2
-> +        fsl,phy-tx-rise-tune-percent:
-> +          enum: [-3, -1, 0, 3]
-> +        fsl,phy-comp-dis-tune-percent:
-> +          enum: [-9, -6, -3, 0, 4, 7, 11, 15]
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - fsl,imx95-usb-phy
-> +    then:
-> +      properties:
-> +        fsl,phy-tx-vref-tune-percent:
-> +          description: 100x the original
-> +          minimum: -1000
-> +          maximum: 875
-> +          multipleOf: 125
-> +        fsl,phy-tx-rise-tune-percent:
-> +          enum: [-10, 0, 15, 20]
-> +        fsl,phy-comp-dis-tune-percent:
-> +          description: 10x the original
-> +          minimum: -60
-> +          maximum: 45
-> +          multipleOf: 15
-> +
->    - if:
->        required:
->          - orientation-switch
-> --=20
-> 2.34.1
->=20
+> This is not ABI, so every out of tree user is on their own.
 
---6fwPel+VdaSrAtp/
-Content-Type: application/pgp-signature; name="signature.asc"
+I am not too sympathetic about out-of-tree users myself, but I don't
+think we should make their life harder deliberately.
+>=20
+> > but I simply don't see the strong benefit of this patch to justify
+> > creating churn and possible regressions with those OOT users.
+>=20
+> They should mainline their code.
+>=20
+> It is not only a "churn", but way to stop people from repeating the same
+> mistake. Every time you bring new soc, people will copy old code thus
+> this will never change.
+>=20
+In this specific case I don't see a need to change the existing code.=C2=A0
 
------BEGIN PGP SIGNATURE-----
+If new SoCs should change the alias use, this is something that can be
+implemented on the SoC maintainer level. No need to introduce churn on
+the existing platforms to enforce a new rule for newly introduced SoCs.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaBDr1AAKCRB4tDGHoIJi
-0ih9AQDT8xFlp6KhPojdSp42RYiUGcj8PdnHv9paubx+sFlINgEAwKSNVrFiQ6Z0
-NamP3TPzHWAbYTYUyslHKxgpO109Kg0=
-=5BX7
------END PGP SIGNATURE-----
+> >=20
+> > Having those aliases in the DTSI has been common practice on the i.MX
+> > platform since 2012, long before there was any strong consensus on how
+>=20
+> Many previous practices were poor practices and decent SoC platforms
+> fixed and changed it.
+>=20
+> We made big cleanups - since ~2 years Samsung is warning free. Since
+> similar time all Qcom boards use phandle/label override. All of them
+> were significant effort and quite a shuffling of code. Such effort is
+> necessary if you want to code to be maintainable and in best shape for
+> future development.
+>=20
+> Unless you claim NXP SoCs are a legacy platform and we should not do
+> such cleanups.
+>=20
+As I don't see the current usage as objectively wrong, I don't see the
+need to do this cleanup/rework to the existing SoC DTSIs.
 
---6fwPel+VdaSrAtp/--
+> > those aliases should be used. Breaking existing users for the sake of
+> > aligning the i.MX platform with more idiomatic DT usage does not seem
+> > to be a worthwhile trade-off to me.
+>=20
+> No existing users are broken. Everyone who decided to stay out of tree
+> is on their own, but this was their choice. We are not talking here
+> about ABI.
+
+Yes, there is no formal ABI guarantee with this anywhere, so we can
+break out-of-tree user when needed. However, I don't think the
+improvements in this patchset justify such breakage.
+
+Regards,
+Lucas
