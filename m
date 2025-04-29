@@ -1,135 +1,163 @@
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CB022CBD9;
-	Tue, 29 Apr 2025 15:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7CE221568
+	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 15:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745941336; cv=none; b=YtKgMRl6NlxBWFPzD8e3r0awCGShCjcj+37d6Ji3f/FnRIQdHJz6fsl/0xUjj7p73Ck05sfP7HZS8O1t8P8ouGavYO9JR9F8rDcFYa0LTZrxzJCKSBbg79d40BiiY6A/Rbnuli7uVHwkfAI5T13YA2KIodJ/rJDmxPouAsjmuZo=
+	t=1745941422; cv=none; b=Egqrive+bcS3MyHnhr8AAKseedhB1onXrn/z7rxP13/TCRQHvwYX/a5s3lNRRKUty92xlaz1ovCzdSHgeBgVCbrjEI9cy0H/weJsNXjjiJx9c1XVeEK48RQYTQXsNprjxv8bIW67I6sjGgj9vb2259/WOaR7dJl4isz3h1buNLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745941336; c=relaxed/simple;
-	bh=OVUpFYw8EEbYe9Lk/l+H/ocJPtxgHwBeTDmWKZSU72s=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DKkG9DcXmDP4OrYsfLotp0v5CcxKfkPpY+vT59eV0TlukOdEaWN0Y9StKDG36cZngYeiUWpQT1ZFzfoiOvg3qT3wwWHQmQAQRFmKHFB5t6TKx4XvQyogrx91fUv/CDfi7AsBTDc0+DkjqwwWN4TdnFTYO+ZMARmsIPZK01VO47I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=dFjFeWwT; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="dFjFeWwT"
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53TFfxoa3121174
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Apr 2025 10:41:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1745941319;
-	bh=AeBJMhQyyG1RQnNgel+KZd/M8odIiZqEzCYJ3l+mOj0=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=dFjFeWwT8n8D+AQy5+HHmmwHtTWtyg40LpqESMRGetHT4ygBj5ok4w0csjEsPIBHq
-	 Kkq/rOgUHfwH68R+IwFvK1biV2QeOijpYv0Cb9QXHW42RQfIkH8F+2qxGhX4pbq4WV
-	 d+qcYH0+5GqxBGZvP1NnhdP/Tl61qfTz4P+pH43s=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53TFfxpR049671
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 29 Apr 2025 10:41:59 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 29
- Apr 2025 10:41:59 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 29 Apr 2025 10:41:59 -0500
-Received: from ws.dhcp.ti.com (ws.dhcp.ti.com [10.24.69.232])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53TFfXVt030051;
-	Tue, 29 Apr 2025 10:41:54 -0500
-From: Rishikesh Donadkar <r-donadkar@ti.com>
-To: <nm@ti.com>, <vigneshr@ti.com>
-CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <devarsht@ti.com>,
-        <y-abhilashchandra@ti.com>, <s-jain1@ti.com>, <jai.luthra@linux.dev>,
-        <jai.luthra@ideasonboard.com>, <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <imx@lists.linux.dev>, <r-donadkar@ti.com>
-Subject: [PATCH v1 4/4] arm64: dts: ti: k3-am62x: Add required voltage supplies for TEVI-OV5640
-Date: Tue, 29 Apr 2025 21:11:33 +0530
-Message-ID: <20250429154133.3377962-5-r-donadkar@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250429154133.3377962-1-r-donadkar@ti.com>
-References: <20250429154133.3377962-1-r-donadkar@ti.com>
+	s=arc-20240116; t=1745941422; c=relaxed/simple;
+	bh=8xZF0fCVJ/DOQqNhoX6uI9qtKjJAMwNhaOgH0CA8ZdM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=f/HHd5Z3IfrlBekPcxw4ftT2Tb/K5rV/kYojT73cvv8gRADE2RYdfd0ZQWZvpI0YnIb4IkifxwDroq+3gLrAkFji7GOJbGCvY0PnCz+LAL4+bXwqrFjTNXJ8sZ6zuI6hWC7vFCyaPSwPndIuC7R6HAX1GMfirF5qhpoo+Li/VpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1u9n7I-0006Jb-0X; Tue, 29 Apr 2025 17:43:28 +0200
+Message-ID: <aca3addbe510c58524af8d3fd069fe2ae4b1cd24.camel@pengutronix.de>
+Subject: Re: [PATCH 0/6] arm64: dts: imx: Move Ethernet aliases out of SoC
+ DTSI
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Krzysztof
+ Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, Francesco Dolcini <francesco@dolcini.it>, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Date: Tue, 29 Apr 2025 17:43:26 +0200
+In-Reply-To: <c2d8374b-b623-447d-a695-3f2ead068265@linaro.org>
+References: <20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org>
+	 <e97d3388a5b4272d70d7379b020843a47874a104.camel@pengutronix.de>
+	 <c5538590-efe4-4b90-b291-6c429d8fa3fe@kernel.org>
+	 <06efb082c24176e6401265b4349b677468850f7d.camel@pengutronix.de>
+	 <c2d8374b-b623-447d-a695-3f2ead068265@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The device tree overlay for TEVI-OV5640 requires following voltage
-supplies:
+Am Dienstag, dem 29.04.2025 um 17:17 +0200 schrieb Krzysztof Kozlowski:
+> On 29/04/2025 17:13, Lucas Stach wrote:
+> > Am Dienstag, dem 29.04.2025 um 16:30 +0200 schrieb Krzysztof Kozlowski:
+> > > On 29/04/2025 11:39, Lucas Stach wrote:
+> > > > Hi Krzysztof,
+> > > >=20
+> > > > Am Freitag, dem 25.04.2025 um 21:48 +0200 schrieb Krzysztof Kozlows=
+ki:
+> > > > > Not tested on hardware.
+> > > > >=20
+> > > > > Ethernet interface, like other exposed interfaces, aliases depend=
+ on
+> > > > > actual board configuration, e.g. its labeling, thus aliases shoul=
+d be
+> > > > > defined per each board or each SoM.
+> > > > >=20
+> > > > > Some boards (e.g. Gateworks) follow this convention but many do n=
+ot.
+> > > > >=20
+> > > > > This is continuation of my comments from:
+> > > > > https://lore.kernel.org/r/16a98816-f43c-4f4d-940e-9da30cb1f73f@ke=
+rnel.org
+> > > > >=20
+> > > > The i.MX boards have traditionally listed aliases for many hardware
+> > > > peripherals with the same numbering that's used in the SoC referenc=
+e
+> > >=20
+> > > ... which is not correct. Aliases should represent how boards are rea=
+lly
+> > > labeled, not how reference manual labels them.
+> > >=20
+> > While that is the commonly agreed interpretation today, I do not see
+> > any language in the DT spec itself or kernel Documentation/devicetree
+> > that would mandate aliases to be used in this way.
+> >=20
+> > In fact there are examples to the contrary like
+> > Documentation/devicetree/bindings/serial/samsung_uart.yaml which says:
+> > "Each Samsung UART should have an alias [...] as specified by User's
+> > Manual of respective SoC."
+>=20
+> And that is an ABI. Did I affect ABI here?
+>=20
+> >=20
+> > So I would argue that there is no hard line between correct/incorrect
+> > for the historical usage of the alias nodes on the i.MX platform.
+>=20
+> There is. ABI is documented. There are things which turn out ABI, even
+> though they are not documented, like node names. Was there a problem
+> with refactoring these in NXP?
+>=20
+> No.
+>=20
+In fact there was significant fallout from the node name changes, as
+assumptions in bootloader code on how to fix up DTs passed to the
+kernel were invalidated. We did not make a fuzz about those cases and
+just fixed the breakage in the bootloader, because we agreed with the
+overall benefit of those changes to the i.MX ecosystem.
+>=20
+> >=20
+> > > > manual. Boards always have the option to override those aliases if =
+they
+> > > > have a good reason to do so, e.g. labeling on the physical device.
+> > > >=20
+> > > > Other users besides Linux rely on fixed numbering provided by the
+> > > > aliases. Both barebox and U-Boot number their ethernet interfaces
+> > > > according to the alias.
+> > >=20
+> > > And?
+> > >=20
+> > Some usecases depend on the aliases being the same between kernel and
+> > bootloader. Historically that has been guaranteed on the i.MX platform
+> > by the aliases in the SoC DTSI, when the board didn't have a need to
+>=20
+> I know.
+>=20
+> > change them. With this series applied some other users may now end up
+> > with missing aliases if the only include the DTSI.
+>=20
+> Bring actual case, what is broken by this changeset.
+>=20
+> >=20
+> > > >=20
+> > > > While you seem to add back aliases for in-tree boards, this breaks =
+the
+> > > > majority of boards that include the kernel DTSI from an out-of-tree
+> > > > board. I can understand that we can't always accommodate these user=
+s,
+> > >=20
+> > > This is not ABI, so every out of tree user is on their own.
+> >=20
+> > I am not too sympathetic about out-of-tree users myself, but I don't
+> > think we should make their life harder deliberately.
+>=20
+> We are making our life easier by maintaining and improving source code:
+> e.g. not creating fake aliases for devices which do not exist on given
+> board.
 
-AVDD-supply: Analog voltage supply, 2.8 volts
-DOVDD-supply: Digital I/O voltage supply, 1.8 volts
-DVDD-supply: Digital core voltage supply, 1.5 volts
+Sorry, I disagree with this sweeping statement when looking at the
+specific changes in this patchset. I simply do not see how this change
+significantly improves future maintenance of existing DTs for the i.MX
+platform to justify the breakage inflicted upon existing OOT users.
 
-Add them in the DT overlay.
+I'm not the one to decide whether or not to take those patches, but
+IMHO the overall benefit of those patches to the i.MX ecosystem is not
+a net positive.
 
-Signed-off-by: Rishikesh Donadkar <r-donadkar@ti.com>
----
- .../dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso  | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
-index b6bfdfbbdd984..123ab0e5e8dfa 100644
---- a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
-@@ -15,6 +15,33 @@ clk_ov5640_fixed: ov5640-xclk {
- 		#clock-cells = <0>;
- 		clock-frequency = <24000000>;
- 	};
-+
-+	reg_2p8v: regulator-2p8v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "2P8V";
-+		regulator-min-microvolt = <2800000>;
-+		regulator-max-microvolt = <2800000>;
-+		vin-supply = <&vcc_3v3_sys>;
-+		regulator-always-on;
-+	};
-+
-+	reg_1p8v: regulator-1p8v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1P8V";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		vin-supply = <&vcc_3v3_sys>;
-+		regulator-always-on;
-+	};
-+
-+	reg_1p5v: regulator-1p5v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1P5V";
-+		regulator-min-microvolt = <1500000>;
-+		regulator-max-microvolt = <1500000>;
-+		vin-supply = <&vcc_3v3_sys>;
-+		regulator-always-on;
-+	};
- };
- 
- &main_i2c2 {
-@@ -40,6 +67,11 @@ ov5640: camera@3c {
- 
- 				clocks = <&clk_ov5640_fixed>;
- 				clock-names = "xclk";
-+
-+				AVDD-supply = <&reg_2p8v>;
-+				DOVDD-supply = <&reg_1p8v>;
-+				DVDD-supply = <&reg_1p5v>;
-+
- 				powerdown-gpios = <&exp1 13 GPIO_ACTIVE_LOW>;
- 
- 				port {
--- 
-2.34.1
-
+Regards,
+Lucas
