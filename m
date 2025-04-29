@@ -1,163 +1,72 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7CE221568
-	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 15:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EBF253F32
+	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 16:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745941422; cv=none; b=Egqrive+bcS3MyHnhr8AAKseedhB1onXrn/z7rxP13/TCRQHvwYX/a5s3lNRRKUty92xlaz1ovCzdSHgeBgVCbrjEI9cy0H/weJsNXjjiJx9c1XVeEK48RQYTQXsNprjxv8bIW67I6sjGgj9vb2259/WOaR7dJl4isz3h1buNLQ=
+	t=1745945667; cv=none; b=k/nP5dBb9tptpoQYlJfYvnNEeGevoQkRXzEscSC9FB75wnUO8dHAMIZGHMm3RTf7GreEB62TIlsEigPKTA7sd6p0X7V3PSL2SOT4YIvw82WwJAvYlXpNgTSnfuqTbSIABmkcibTyQR/oBkL8gM3jNa9JPRMZOxeehPKhxt++Sl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745941422; c=relaxed/simple;
-	bh=8xZF0fCVJ/DOQqNhoX6uI9qtKjJAMwNhaOgH0CA8ZdM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=f/HHd5Z3IfrlBekPcxw4ftT2Tb/K5rV/kYojT73cvv8gRADE2RYdfd0ZQWZvpI0YnIb4IkifxwDroq+3gLrAkFji7GOJbGCvY0PnCz+LAL4+bXwqrFjTNXJ8sZ6zuI6hWC7vFCyaPSwPndIuC7R6HAX1GMfirF5qhpoo+Li/VpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1u9n7I-0006Jb-0X; Tue, 29 Apr 2025 17:43:28 +0200
-Message-ID: <aca3addbe510c58524af8d3fd069fe2ae4b1cd24.camel@pengutronix.de>
-Subject: Re: [PATCH 0/6] arm64: dts: imx: Move Ethernet aliases out of SoC
- DTSI
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Krzysztof
- Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn
- Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, Francesco Dolcini <francesco@dolcini.it>, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Date: Tue, 29 Apr 2025 17:43:26 +0200
-In-Reply-To: <c2d8374b-b623-447d-a695-3f2ead068265@linaro.org>
-References: <20250425-dts-imx-aliases-ethernet-v1-0-15b9d5cca611@linaro.org>
-	 <e97d3388a5b4272d70d7379b020843a47874a104.camel@pengutronix.de>
-	 <c5538590-efe4-4b90-b291-6c429d8fa3fe@kernel.org>
-	 <06efb082c24176e6401265b4349b677468850f7d.camel@pengutronix.de>
-	 <c2d8374b-b623-447d-a695-3f2ead068265@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1745945667; c=relaxed/simple;
+	bh=AdoYyKISP36xJeQD9woyN2YEZghocYxvykppZ9AflqU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FnrjXnkE2Xht7/dUamZSRn7zzXZCarFmDnjo/hSZImSG2EnAHQpfzhmCnbWCu1Ff+kxXI+yXWH2xhTceIZeq5dPIunwpMY87C4vzk7D33d1eVhoJA8q0PdMb5hhH4ECmvItrh/LtFfBWDg576qkAGiF3ODbhHWZTSOrGFgZMbro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oMCcA1od; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oMCcA1od"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C996C4CEEF
+	for <imx@lists.linux.dev>; Tue, 29 Apr 2025 16:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745945666;
+	bh=AdoYyKISP36xJeQD9woyN2YEZghocYxvykppZ9AflqU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=oMCcA1ody40ilGXC0Qybb7DD6sqJxB52dAXTz8M0wbK6IB+bf8EDHo+zzXnykV1B2
+	 ZI1MDHferuz/WYILmf64MfVy+QwDtMwoK9hJu5FENIHEjcHPdsmJr8V+2NcyUZWQR/
+	 Zdf6orSEajxT7dZqQA6CDJXGCy0o17kNrAxtAudher8AP/WyxvfA6LVxGJvT4OZ6pS
+	 0bIxAIDtB15QnFrdc3oEUAdhVzZGoHIszrH1ZT2KmV1CIzLZA5KlnpXlD58F78ji4B
+	 Ov8zQU6zZvoTI9gS8fwNBEguGszOBuHXgZ+V74f8H1IwxjKGkr04VtKNjQAL2PJNdg
+	 FAAdjY9cCvHBQ==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac2a81e41e3so1117676366b.1
+        for <imx@lists.linux.dev>; Tue, 29 Apr 2025 09:54:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW3sux9CN7w1EVEmyaEq95krS2Ajq8vciB2DgBACSNnjoE4WXXqXY1qOma69Czgh+MW+hY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyjAhoEyeUdjOOjSIy/O2fZb+n/8zHEIHr74fJ8i25ZfU75udFb
+	ist/JEkWXt4pWOLhhTz5qP/TLaQj3g4Z5i60XNEmPyLxYTX5Nzvis7tdx4/X5f8nCtSqy0QXn0h
+	mw4lW6OCeXNlntG1nDYZSx2xtPoA=
+X-Google-Smtp-Source: AGHT+IG7skFkYmrh78r3PBufunbwFhCyH6bMAAQyF6iwtL4SiSNbNImHJcW3bMTneYB2TP8fzRb2vISMbXZRWbUX/Vo=
+X-Received: by 2002:a17:907:3d0d:b0:ac7:eb12:dc69 with SMTP id
+ a640c23a62f3a-acedc6226e0mr11217966b.28.1745945665026; Tue, 29 Apr 2025
+ 09:54:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20250428105657.3283130-1-wei.fang@nxp.com> <20250428105657.3283130-6-wei.fang@nxp.com>
+In-Reply-To: <20250428105657.3283130-6-wei.fang@nxp.com>
+From: Timur Tabi <timur@kernel.org>
+Date: Tue, 29 Apr 2025 11:53:47 -0500
+X-Gmail-Original-Message-ID: <CAOZdJXWxX6BKqt8=z-dWNO15AunjbhNBkSi5Cpfx6Dn3Yw4BaQ@mail.gmail.com>
+X-Gm-Features: ATxdqUH2vDIYWUftzeH4CwoDWqiZzAE9yKFOOu8ghijiqo79WRaU9jaZG_afqrM
+Message-ID: <CAOZdJXWxX6BKqt8=z-dWNO15AunjbhNBkSi5Cpfx6Dn3Yw4BaQ@mail.gmail.com>
+Subject: Re: [PATCH v6 net-next 05/14] net: enetc: add debugfs interface to
+ dump MAC filter
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, christophe.leroy@csgroup.eu, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am Dienstag, dem 29.04.2025 um 17:17 +0200 schrieb Krzysztof Kozlowski:
-> On 29/04/2025 17:13, Lucas Stach wrote:
-> > Am Dienstag, dem 29.04.2025 um 16:30 +0200 schrieb Krzysztof Kozlowski:
-> > > On 29/04/2025 11:39, Lucas Stach wrote:
-> > > > Hi Krzysztof,
-> > > >=20
-> > > > Am Freitag, dem 25.04.2025 um 21:48 +0200 schrieb Krzysztof Kozlows=
-ki:
-> > > > > Not tested on hardware.
-> > > > >=20
-> > > > > Ethernet interface, like other exposed interfaces, aliases depend=
- on
-> > > > > actual board configuration, e.g. its labeling, thus aliases shoul=
-d be
-> > > > > defined per each board or each SoM.
-> > > > >=20
-> > > > > Some boards (e.g. Gateworks) follow this convention but many do n=
-ot.
-> > > > >=20
-> > > > > This is continuation of my comments from:
-> > > > > https://lore.kernel.org/r/16a98816-f43c-4f4d-940e-9da30cb1f73f@ke=
-rnel.org
-> > > > >=20
-> > > > The i.MX boards have traditionally listed aliases for many hardware
-> > > > peripherals with the same numbering that's used in the SoC referenc=
-e
-> > >=20
-> > > ... which is not correct. Aliases should represent how boards are rea=
-lly
-> > > labeled, not how reference manual labels them.
-> > >=20
-> > While that is the commonly agreed interpretation today, I do not see
-> > any language in the DT spec itself or kernel Documentation/devicetree
-> > that would mandate aliases to be used in this way.
-> >=20
-> > In fact there are examples to the contrary like
-> > Documentation/devicetree/bindings/serial/samsung_uart.yaml which says:
-> > "Each Samsung UART should have an alias [...] as specified by User's
-> > Manual of respective SoC."
->=20
-> And that is an ABI. Did I affect ABI here?
->=20
-> >=20
-> > So I would argue that there is no hard line between correct/incorrect
-> > for the historical usage of the alias nodes on the i.MX platform.
->=20
-> There is. ABI is documented. There are things which turn out ABI, even
-> though they are not documented, like node names. Was there a problem
-> with refactoring these in NXP?
->=20
-> No.
->=20
-In fact there was significant fallout from the node name changes, as
-assumptions in bootloader code on how to fix up DTs passed to the
-kernel were invalidated. We did not make a fuzz about those cases and
-just fixed the breakage in the bootloader, because we agreed with the
-overall benefit of those changes to the i.MX ecosystem.
->=20
-> >=20
-> > > > manual. Boards always have the option to override those aliases if =
-they
-> > > > have a good reason to do so, e.g. labeling on the physical device.
-> > > >=20
-> > > > Other users besides Linux rely on fixed numbering provided by the
-> > > > aliases. Both barebox and U-Boot number their ethernet interfaces
-> > > > according to the alias.
-> > >=20
-> > > And?
-> > >=20
-> > Some usecases depend on the aliases being the same between kernel and
-> > bootloader. Historically that has been guaranteed on the i.MX platform
-> > by the aliases in the SoC DTSI, when the board didn't have a need to
->=20
-> I know.
->=20
-> > change them. With this series applied some other users may now end up
-> > with missing aliases if the only include the DTSI.
->=20
-> Bring actual case, what is broken by this changeset.
->=20
-> >=20
-> > > >=20
-> > > > While you seem to add back aliases for in-tree boards, this breaks =
-the
-> > > > majority of boards that include the kernel DTSI from an out-of-tree
-> > > > board. I can understand that we can't always accommodate these user=
-s,
-> > >=20
-> > > This is not ABI, so every out of tree user is on their own.
-> >=20
-> > I am not too sympathetic about out-of-tree users myself, but I don't
-> > think we should make their life harder deliberately.
->=20
-> We are making our life easier by maintaining and improving source code:
-> e.g. not creating fake aliases for devices which do not exist on given
-> board.
+On Mon, Apr 28, 2025 at 6:19=E2=80=AFAM Wei Fang <wei.fang@nxp.com> wrote:
+> +void enetc_remove_debugfs(struct enetc_si *si)
+> +{
+> +       debugfs_remove_recursive(si->debugfs_root);
 
-Sorry, I disagree with this sweeping statement when looking at the
-specific changes in this patchset. I simply do not see how this change
-significantly improves future maintenance of existing DTs for the i.MX
-platform to justify the breakage inflicted upon existing OOT users.
+You can just call debugfs_remove() here.  debugfs_remove_recursive()
+is deprecated:
 
-I'm not the one to decide whether or not to take those patches, but
-IMHO the overall benefit of those patches to the i.MX ecosystem is not
-a net positive.
-
-Regards,
-Lucas
+void debugfs_remove(struct dentry *dentry);
+#define debugfs_remove_recursive debugfs_remove
