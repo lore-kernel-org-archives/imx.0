@@ -1,33 +1,33 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D80C21ABC5
-	for <imx@lists.linux.dev>; Wed, 30 Apr 2025 09:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4E3231848
+	for <imx@lists.linux.dev>; Wed, 30 Apr 2025 09:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746006123; cv=none; b=Vrh6imdgcR5UGJpaRGtoozQ2oIf2JBCqhPLe3X80bzc1aGlUeCAoL0sSceHnUq81zSrovQNbWbxGDwym1F8PcDZ+U09qt866EqP0NlMr+EVC60bWGCpI+oyvWm/HnDH0YWQ4KfR5y4c36iRz1RYsc4MRHkYjTDYzx069Gha/9Fk=
+	t=1746006124; cv=none; b=Hs+rsuKnOJH2sujEcU1x6zIgtsEHgD7v5JtIM+qJbVQn5hjpAz6Sd2h8nJJxFpZmVRftsHiT2Mbhn5KiY4dC93dh11FAay4iwKD9mfzfg28lC+54Yh4ttOJE9IPlT0/huH8VBU7qBs/4LaR0YAdMSNsJsU/UUa90o6kyQWnHbko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746006123; c=relaxed/simple;
-	bh=fzSvUu61XhKjmnGZmVyO0QUaZR+/121r+Z8tAdHf29Y=;
+	s=arc-20240116; t=1746006124; c=relaxed/simple;
+	bh=7D2Ep9acFCW0yu0dO3CNwljDZn0Z+jApxognHWwVa/w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CsAo1KnYWE4m4nU4+K9lqPIUpBRQEL4OV96cz2lIBEI68Zk3gPt6dEKU7sbO8EjUYOn6lfkr/mRFav5CZU/yhWmSsfQISu6T/dN2++Y1TUdDE36GosvEOecFJ9Gu7BkFsXxU9ZS6OzpWYClciU2jxwVGwZu9NGB1bbin1nAH8LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=GD4bpCiv; arc=none smtp.client-ip=217.194.8.81
+	 MIME-Version; b=SEC1xmyHvbeSeVqBoIUkyUfWZiehSzyFFE+l2qD++K15I5YoMWQ37rjoixkN+dkhcTon4B3vVAjLJ5hZpwYYR931wsGFBo46tsDrCF0gRoci8/3XLUCuvd9fMefCdB5uqWc5ZNjLbgkx18SwBn6IwC+88pMK5nOs/ouTPMXvqR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=DIgppJcl; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="GD4bpCiv"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="DIgppJcl"
 Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id A2F231FC2D;
-	Wed, 30 Apr 2025 11:41:58 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id 1529B1FC7A;
+	Wed, 30 Apr 2025 11:42:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1746006119;
-	bh=ntln+YOGpHmhFRt+vk8RW2Ng5oNX6WD2cK51HZdX7ck=; h=From:To:Subject;
-	b=GD4bpCivljCnPyud/dxbHRcmv3iRa5N2NOk5X+AZ0/LAgNHPPDTQO0+u/u5ZQAUUj
-	 X8ySqMlB7gJWLQ26lFyOWLzSuV/wQFPnOPnYY6E2lXCZiUzW6sThDOHuW8gNIPQ834
-	 9Xn5zoRMjnN3EsVcKQO+TjzaYwU+kWQQOao3SFMc11O8DEXjV6EVjKKxn0A66wL9tT
-	 ar8JqaN5iaLjuMEoj3sluzqPfwRVa/MHOBL/pc88ekepxGahCOSjmb0KEpAfca2JXI
-	 bEO6C2c1SbD+jlOpXmXwzNiA6TE0SxvmrVjloPgcg8ReNSKDvgBNWw2Jombmta9EKu
-	 dPyMWUR2EZMsA==
+	s=default; t=1746006120;
+	bh=7NIEIJ/FCUKFcAXMy0195R/aYRKztB8r29LUVtuIC4k=; h=From:To:Subject;
+	b=DIgppJclgxz+jRLz+hPnq/w1eBK/hGiuWLT1jcSZNz2IbfcdfjsrB+Y67ZbWjsRNk
+	 UYj7mL/pzrEo06n6N55Qzy+HCNoI0Wd/moeM92WeOxN6LyoUoKK2RX0duadI/jhHa5
+	 L7rd6jFTt5nwpM6KkoYKHsnkSy6j2A7zEfSOzKSj5gUJXx69ZnpQq/lmO/bktq6X5U
+	 MOol6nJ84zmLOAjCRR8b/GT0qn6rD/rFd1Xx/NtC7UG98z3IXSTX63Cr0LHYdgyfhT
+	 fDlD2oyHdMn4FQcROxN8GiO4MFXW3guUqyd1aTPIq+S92JCnHBOunWKpcoTDjcu0GE
+	 uMvLqAHhVs6xQ==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -38,15 +38,16 @@ To: Rob Herring <robh@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH v2 1/5] arm64: dts: freescale: imx8mp-toradex-smarc: add fan PWM configuration
-Date: Wed, 30 Apr 2025 11:41:47 +0200
-Message-Id: <20250430094151.98079-2-francesco@dolcini.it>
+	Peng Fan <peng.fan@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH v2 3/5] arm64: dts: freescale: imx8mp-toradex-smarc: add gpio expander
+Date: Wed, 30 Apr 2025 11:41:49 +0200
+Message-Id: <20250430094151.98079-4-francesco@dolcini.it>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250430094151.98079-1-francesco@dolcini.it>
 References: <20250430094151.98079-1-francesco@dolcini.it>
@@ -58,47 +59,62 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-Configure correctly the FAN pwm output (inverted).
+Add gpio expander node to the device tree and the related nodes.
 
 Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
-v2: add r-b peng
+v2: add r-b peng, use generic gpio node name
 ---
- .../boot/dts/freescale/imx8mp-toradex-smarc-dev.dts      | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ .../dts/freescale/imx8mp-toradex-smarc.dtsi   | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
-index 581f221323b7..55b8c5c14fb4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts
-@@ -3,6 +3,8 @@
- 
- /dts-v1/;
- 
-+#include <dt-bindings/pwm/pwm.h>
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi
+index c4ca01ce60d0..0cd04c3c96bb 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc.dtsi
+@@ -54,6 +54,13 @@ smarc_key_sleep: key-sleep {
+ 			wakeup-source;
+ 			linux,code = <KEY_SLEEP>;
+ 		};
 +
- #include "imx8mp-toradex-smarc.dtsi"
- 
- / {
-@@ -205,9 +207,14 @@ &i2c6 {
- 	status = "okay";
- 
- 	/* Fan controller */
--	fan@18 {
-+	fan_controller: fan@18 {
- 		compatible = "ti,amc6821";
- 		reg = <0x18>;
-+		#pwm-cells = <2>;
-+
-+		fan {
-+			pwms = <&fan_controller 40000 PWM_POLARITY_INVERTED>;
++		smarc_switch_lid: switch-lid {
++			gpios = <&som_ec_gpio_expander 2 GPIO_ACTIVE_LOW>;
++			label = "SMARC_LID#";
++			linux,code = <SW_LID>;
++			linux,input-type = <EV_SW>;
 +		};
  	};
  
- 	/* Current measurement into module VDD */
+ 	reg_usb0_vbus: regulator-usb0-vbus {
+@@ -539,6 +546,24 @@ embedded-controller@28 {
+ 		reg = <0x28>;
+ 	};
+ 
++	som_ec_gpio_expander: gpio@29 {
++		compatible = "toradex,ecgpiol16", "nxp,pcal6416";
++		reg = <0x29>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_mcu_int>;
++		#interrupt-cells = <2>;
++		interrupt-controller;
++		interrupt-parent = <&gpio3>;
++		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		gpio-line-names =
++			"SMARC_CHARGER_PRSNT#",
++			"SMARC_CHARGING#",
++			"SMARC_LID#",
++			"SMARC_BATLOW#";
++	};
++
+ 	rtc_i2c: rtc@32 {
+ 		compatible = "epson,rx8130";
+ 		reg = <0x32>;
 -- 
 2.39.5
 
