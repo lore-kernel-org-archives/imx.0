@@ -1,159 +1,100 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34550288DA;
-	Wed, 30 Apr 2025 16:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3764421CFFA
+	for <imx@lists.linux.dev>; Wed, 30 Apr 2025 17:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746031349; cv=none; b=owYyY60lMAfRpF/2UKN5jeFT8UQhz+GTdWaiQqWqPocE0i47n200QPFftGMgs7YA0Tvvk4EwnX37g9Odsbo53papKklEw1sQsGMrzDUTkGxFI3oufH01GuzHRl2yabqeyRi0NqU2EgkPgcZjeNM7xn/Fu3YysVVogfNOcIxbGvc=
+	t=1746034182; cv=none; b=n2/Z1PtX64hDbk3ZONxnXTF/LEykZqQHVci00kpmS3BDfY4fMkLCCRKF60BHW0oKO+qRtxXz6YYj6xe2C5Fi6bdclCw/BcSRYmzTGcGjafzCbtsUbzfs63Q2eRqFQGVFYAW8cjgIb6BqAJJSOPx6Z2eoGV+KE62hgg52ytGaKK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746031349; c=relaxed/simple;
-	bh=bpjn8puFQ4rZGChqXBtSZDUYu+Gnq25CP/ziHwcqLbg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K0/ndbeCsNA0dA7qfINGMKU+dha9ZrVXCalPZaqm+lK0whbjw27lZNW3chtWF3bVobzRa7tx/W+96U68pmtTSPDARnWU2vFE9GVRFgcuUSw7WttVf5yKpYtT71smWOjLNpb2O5mMl90MxC9nee9Sdtnvcp1YnV8qVnzTI5fxB5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=R78+NOp5; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1746034182; c=relaxed/simple;
+	bh=8b7Bqu3LD7foyjvQRHymGo1eOumlODvyLsmaXgPy/SY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kTMbnFu3Z5qfNd4DceC98i9rpV1CRZWDkU4way+co0lyFUFTHaFQOfXleKxdAID3f9mUutfSXEhODQr8UmHeuU/kimHgeW11kqX3lKK6zx0RTetlUMMYynxgjWqaG4aVKmsTJw6akvSSCWrqkv1mdQlNVp9+/w5f9p/bx0z2F4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=N5BL6lDr; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="R78+NOp5"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4BA1E43B4C;
-	Wed, 30 Apr 2025 16:42:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746031343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bpjn8puFQ4rZGChqXBtSZDUYu+Gnq25CP/ziHwcqLbg=;
-	b=R78+NOp5gZIYtuRu5VllzkmYwx7C4ExRP6oGMuj+y1Pous6ww+7Ql2UM7ZVR3eAlcgxjhe
-	EL8gclRNV+2dQKCHLAwdz+o8e56pdOmAiN7cV69NhlIZ1Qg0rsw+h7L9j1342ejfKdHVKD
-	uE60s+5+nsGoETsCeR1S1VmV/agvwj5nqxaJnNF7Lp4/7VVVRHJA5YBJi9V4npOFPIuj/Y
-	GYnhX6Vi++Zo8p3uGplK/jU12s6/vcqsRHpTUVKPOD8igRoMeiILoeJRB7IcyZ7wXP/otR
-	dWt4vNk84a/q5dbz7ZmTEiiyrfsjSALHZCtQKQ9krgHLd9WIsAwh58D1xVRdnQ==
-Date: Wed, 30 Apr 2025 18:42:14 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Andrzej Hajda
- <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Laurent Pinchart
- <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
- <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Chun-Kuang Hu
- <chunkuang.hu@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Anusha
- Srivatsa <asrivats@redhat.com>, Paul Kocialkowski <paulk@sys-base.io>,
- Dmitry Baryshkov <lumag@kernel.org>, Hui Pu <Hui.Pu@gehealthcare.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, asahi@lists.linux.dev,
- linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com,
- Adam Ford <aford173@gmail.com>, Adrien Grassein
- <adrien.grassein@gmail.com>, Aleksandr Mishin <amishin@t-argos.ru>, Andy
- Yan <andy.yan@rock-chips.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Benson Leung
- <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, Christoph
- Fritz <chf.fritz@googlemail.com>, Cristian Ciocaltea
- <cristian.ciocaltea@collabora.com>, Detlev Casanova
- <detlev.casanova@collabora.com>, Dharma Balasubiramani
- <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, Heiko
- Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne
- Grunau <j@jannau.net>, Jerome Brunet <jbrunet@baylibre.com>, Jesse Van
- Gavere <jesseevg@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Kieran
- Bingham <kieran.bingham+renesas@ideasonboard.com>, Liu Ying
- <victor.liu@nxp.com>, Manikandan Muralidharan <manikandan.m@microchip.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Matthias Brugger
- <matthias.bgg@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Phong LE
- <ple@baylibre.com>, Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang
- <sugar.zhang@rock-chips.com>, Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi
- Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Vitalii Mordan
- <mordan@ispras.ru>
-Subject: Re: [PATCH v2 01/34] drm: convert many bridge drivers from
- devm_kzalloc() to devm_drm_bridge_alloc() API
-Message-ID: <20250430184214.0b53dc6b@booty>
-In-Reply-To: <CAD=FV=UBFhCGOUuwtCtdT75nCu_7EzM-SVY-=6Xh6UxUuxKCMw@mail.gmail.com>
-References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
-	<20250424-drm-bridge-convert-to-alloc-api-v2-1-8f91a404d86b@bootlin.com>
-	<CAD=FV=VmV5yb0HWWGTiKyyC8+WNPJpM7vE9PQGh5_=KPk6+HCg@mail.gmail.com>
-	<20250430123557.3d8b1de4@booty>
-	<CAD=FV=UBFhCGOUuwtCtdT75nCu_7EzM-SVY-=6Xh6UxUuxKCMw@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="N5BL6lDr"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-39141ffa9fcso43312f8f.0
+        for <imx@lists.linux.dev>; Wed, 30 Apr 2025 10:29:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746034178; x=1746638978; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/d2mdUEZU0W5ewPmxWru9I72D9hiUx6jBl16Iw4eyIQ=;
+        b=N5BL6lDrHW1LKvnrqvgs32ZJyak4fQrhZvezDe1zFdbIrFIxfmMCIFjXtdtIuf5El+
+         PFBQN1NCjHWoj2u3Oe3pVU+dB8edD7qtjFrJs+lsogzr9gF2UeDuP+5twuem08uh7Zzi
+         Pszk2iFWC22tiLbWWe/lUuz2OmvfUTYF1fel2XaYCCCDpI3n6EgvIJElftlrKfxMqOUQ
+         0M5umVmj+V8wShVR7IB88cgxIHDR+aunIlDs2HBPKF2iBANQeKd93jHV1W4cy93C6r6z
+         b3+VTjpj8KWp3GnAk7tX/BEHIEUXpwNjGOxuCoF9K4rmNPWkPDwwh1qKFW99Di2/teYo
+         xJEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746034178; x=1746638978;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/d2mdUEZU0W5ewPmxWru9I72D9hiUx6jBl16Iw4eyIQ=;
+        b=LA029WAs9uhOVyKJxTAHfyf6+YKvN4+lkNtjRp+HvD+u3W6OTlHyowS9/TWFI0iTTo
+         OyWCgJJo1Bk22oBY4JVQoTpXRS7gsmyUapQrstH7avoO0S686VOvs/qoH4S/gXdwMmJn
+         uLd2regRHBACFqqDdgdJ3yxGFO7vlwxdK2PM/SKG+pZmIRezPFLowpHARXSsZ69xVs9p
+         1kTIq5LxNBlrhRf5VPkc8iFt1hveizzyITGvqrJtH4uwxcIWE1yPEntue6+epdmFtmn5
+         9kobW0bh4zcstv9hc1dqTSdWS3qTx/y2JuxpCf5chorUueqeY6PzWMswLafJa01V99Ea
+         rGgg==
+X-Forwarded-Encrypted: i=1; AJvYcCVTBVxk+c5bGTZ+0gN+wApqRE/Fx+W6MIuZ8yU+vZ5JxbH/DtGtPGy96GNcS01HsWGk7HA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw+we3skKx21RUkU6taPUoj6B0uxxzd2ymYi8vOpNZeA+NmZsYq
+	OfQp9Oaletgg22Oz7XcOrkqb+hVAqYLDv5w2khINpqRlrAL0v4bCSkoaQz6Qo+E=
+X-Gm-Gg: ASbGncs38+yEQC7/HYtIDKHdCQU/1VSr5grVt8cU5dwNMO1uytk0m3veZ+N7pwHgihv
+	dUJAtkWgpYboW4pB0RxLFrLZHM6TiqXU7X+xWiXjXSeZiqiImHsoe5bSBs0mb9kd/cQ13UcyL4s
+	x9VXEXuQ1pNupSZn4zhPdzcvCt81JseFh/g0Keh7nH3oFEb1v/YC7JfwsN5BqlJulBEEC7CAQKw
+	8KNCIW8AYuCpLU+M8wHntRoTjomnsoigxvRASrCSBmUTtFqxv8ruFS3dswAokni1m97AcE9czSr
+	U4rjde7oprgYgF+R4aYNrWwfMYNQfO7dMYXXM11KvTj3UkxLOdLbOxo39xj02hT2oh/Dq1ZMbFo
+	vNVY=
+X-Google-Smtp-Source: AGHT+IGs1c8sYMZsyj9z2U0RULcNOGnmtGihhFGKINWCPv7w8C/Dxte7jQvye5V9MA1ApwGcschH3w==
+X-Received: by 2002:adf:fbc4:0:b0:3a0:7fd4:2848 with SMTP id ffacd0b85a97d-3a08f7a4abamr2974046f8f.52.1746034178446;
+        Wed, 30 Apr 2025 10:29:38 -0700 (PDT)
+Received: from mai.linaro.org (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073cbeda3sm17724596f8f.50.2025.04.30.10.29.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Apr 2025 10:29:37 -0700 (PDT)
+Date: Wed, 30 Apr 2025 19:29:36 +0200
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Bai Ping <ping.bai@nxp.com>,
+	"open list:CLOCKSOURCE, CLOCKEVENT DRIVERS" <linux-kernel@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH] dt-bindings: timer: nxp,sysctr-timer: Add i.MX94 support
+Message-ID: <aBJeAFb0dBYAMTqA@mai.linaro.org>
+References: <20250306170902.241057-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieejvdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtqhertdertdejnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfetudeugfehheeliefhjeejuddvledtuddttdevledthfehgeeugfetheekgfffnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepieekpdhrtghpthhtohepughirghnuggvrhhssegthhhrohhmihhumhdrohhrghdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepmhhrihhprghru
- geskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrgh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250306170902.241057-1-Frank.Li@nxp.com>
 
-Hello Doug,
+On Thu, Mar 06, 2025 at 12:09:02PM -0500, Frank Li wrote:
+> Add compatible string "nxp,imx94-sysctr-timer" for the i.MX94 chip, which
+> is backward compatible with i.MX95. Set it to fall back to
+> "nxp,imx95-sysctr-timer".
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-On Wed, 30 Apr 2025 08:51:52 -0700
-Doug Anderson <dianders@chromium.org> wrote:
+Applied, thanks
 
-> Hi,
->=20
-> On Wed, Apr 30, 2025 at 3:36=E2=80=AFAM Luca Ceresoli <luca.ceresoli@boot=
-lin.com> wrote:
-> >
-> > Hello Doug,
-> >
-> > On Mon, 28 Apr 2025 13:59:50 -0700
-> > Doug Anderson <dianders@chromium.org> wrote:
-> >
-> > [...]
-> > =20
-> > > Reviewed-by: Douglas Anderson <dianders@chromium.org> # parade-ps8640
-> > > Tested-by: Douglas Anderson <dianders@chromium.org> # parade-ps8640 =
-=20
-> >
-> > Thank you for your review!
-> >
-> > However I'll be sending v3 with some differences w.r.t. v2, in order to
-> > fix the 3 bugs reported by Andy Yan plus a similar one I spotted. The
-> > fix just is replacing PTR_ERR() with ERR_CAST() in the 4 cases where the
-> > involved function is returning a pointer instead of an int.
-> >
-> > Your review/test tags appear global to the whole patch, thus being the
-> > patch different I think I cannot include your tags in v3.
-> >
-> > Let me know if you think I should do differently.
-> >
-> > Sorry about that. =20
->=20
-> It's fine if you want to drop my tag. I didn't have time to review the
-> whole thing but I felt like I should at least review the drivers I'm
-> signed up as a reviewer for. That being said, I'm not counting tags or
-> anything so I'm not offended if they're dropped.
->=20
-> My understanding is that the hashtag at the end is at least a
-> semi-standard way to say that my tag only applies to a small part of
-> the patch, so it seems like it would be OK to carry it, though...
+-- 
 
-Oh dear. I was so stupid. I had not seen the comment in your tag
-lines... :-|
+ <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-So it's fine, I'll keep your tags as the parade driver is not modified
-in v3.
-
-Sorry about the noise.
-
-Luca
-
---=20
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
