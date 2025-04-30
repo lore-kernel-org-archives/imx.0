@@ -1,200 +1,84 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320642139A2;
-	Wed, 30 Apr 2025 09:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7551C5489
+	for <imx@lists.linux.dev>; Wed, 30 Apr 2025 09:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746005401; cv=none; b=JnUSwmwq9/8bbk4nmPMPCsMT98/MrHFEnyPhWBwNLiQJ+Ui0fyBn64RusyFFfMwINlde/u1B+Is7PYdPWtT959lLGmDeC1CI7c3ZgOM0i+I6pCw+KS+s8f3sJ648hAnK1ODL+5lHCyNMB4zgyb9uGCqS+7YVdtSmX+VP/xwxlN4=
+	t=1746006122; cv=none; b=Rn8OQRt0DTguhNa4F7e+AqNq17TkiYBD5UqWyMayHo062GB+5BZ+LxSwBqkqEBqm2vgIkJm1y8WcYlMb866WiCpinm1YYnyC4YWa0ea7k8SC9sM7sxk7UUF+MpP2TF/FhUsvEYLAWElo9p99zlh0sEQDOT8aLXl5u1CAIrZlZcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746005401; c=relaxed/simple;
-	bh=OuQHQAOMHQtxRXlMxvBk71v1iUH3QsjtJkQtpI1hgvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vt6PFtgkUMC3RUFA005eJ6xPnudNlhppo9HdH4EniQUzPDP/FxZmT26Na7+y5XsEuXLj1q2EpY9gWIt8jWwSGxjoMNSMwAr7ro7Vmd1hsFzAkuLk96R46c4y8vYbkv0YzwI9H8dks70+vTGxZfRzK5NdrxOLk4l+Vjv6DLKX+Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KDDKM6cW; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1746006122; c=relaxed/simple;
+	bh=wc6Yn/jcXcKSRZah9p0lLzGLn5hdD1b1lUHFAJ6k4co=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NsfuoMMP9PJvnCv0JFfuB0cZzBbsMptqw+z+KWMzmZo9YkIJ9yIMJ67mqm9OxR23yjC1nJpknwuY+R95r8RlFzKWK+K57J6inloZRCvdWKd0TLs4Oxf2rak0+bj2SoDQf2R7rSLQK6HbcaVrd29WA2nBtolvl4kbscX7CFumLHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=iKnUWzP1; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KDDKM6cW"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 960FF43181;
-	Wed, 30 Apr 2025 09:29:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746005390;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2OzPyycrHdBOFNYlaedmLd2bDrUmkg8qhEXCLfUTANg=;
-	b=KDDKM6cWxY7JZnVAYB2Fe3yny9Ai6C/bj2+8pZ79gBRIscyJX9q9/yxRPRMz7jDbDiCK19
-	LBw4sl41yaYp4vJvsFJLkqBBLb4Wvgr4pWnnuVi3NP1NI1muVlKtaI7KGn5DvsJ9wHfxCG
-	JOe6Io0gNCwYu/IgfJrsBcVWExhWe2WEiYnd9XVp/9nC1fVunvLSleF51EWyO5GhF6Miom
-	FkzHk/vmdWl8AsmX9ofhuCEM5VQswUKDevi6PScwlD4A2RoCCYkQ6xrbpkobZ39eyxfLbH
-	rKLfZff+JNJkiILxnoR0IF6QCQsvwFbUr9SKw1dIjdPIJI/6hrPhPWoXC2y1TQ==
-Date: Wed, 30 Apr 2025 11:29:44 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Andrzej Hajda
- <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Laurent Pinchart
- <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
- <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Douglas Anderson
- <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof
- Kozlowski <krzk@kernel.org>, Anusha Srivatsa <asrivats@redhat.com>, Paul
- Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, Hui
- Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
- asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
- chrome-platform@lists.linux.dev, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v2 30/34] drm/bridge: imx8qxp-pixel-combiner: convert to
- devm_drm_bridge_alloc() API
-Message-ID: <20250430112944.1b39caab@booty>
-In-Reply-To: <553d62ed-976a-4e17-9678-cdc3d40ce4a7@nxp.com>
-References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
-	<20250424-drm-bridge-convert-to-alloc-api-v2-30-8f91a404d86b@bootlin.com>
-	<553d62ed-976a-4e17-9678-cdc3d40ce4a7@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="iKnUWzP1"
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 0D6F81FA38;
+	Wed, 30 Apr 2025 11:41:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1746006118;
+	bh=Kt+PJysEfOP7r2Wg4l8xcp//IqyeBTg9yDxzQtKWL+g=; h=From:To:Subject;
+	b=iKnUWzP1eoXD9trFYsk54XxIcT1NqnIAKw60ytYeX4YKPTsXjSfPd6dzWlU/sX9yn
+	 Y5kkx4u02RVNSQDlXN7saZqJz1uc7IuSWPTORvBg1c0cWP++QZIprYE08WUfS0451J
+	 hy3enqHpdNCPXbXK68u6wz1/VrICJ5mtHIMIZiiBwaxmf9E+oy++pOiE9j9AWKtTgc
+	 Uf9rFtKvzIEhoGCPNMnBAvM43ewAdLaKwOADpNGjghe73/PqjIcAxRpf/VecZJlMbi
+	 HgAWoAAXpG+pJfY83Qi9bB0SgS0bMW2khvd4nZ2I5tAjQhwKCK1RNGc5XBvf5NNmVG
+	 l5eIWoJttW2LA==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/5] arm64: dts: freescale: imx8mp-toradex-smarc: add fan, ec, gpio
+Date: Wed, 30 Apr 2025 11:41:46 +0200
+Message-Id: <20250430094151.98079-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieeifeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeelffefgfehhfdtvdefueefieevkefggfelkeeiudetkeektedvhedukefgvddvnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfeelpdhrtghpthhtohepvhhitghtohhrrdhlihhusehngihprdgtohhmpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehmrhhiphgrrhgusehkv
- ghrnhgvlhdrohhrghdprhgtphhtthhopehtiihimhhmvghrmhgrnhhnsehsuhhsvgdruggvpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghilhdrrghrmhhsthhrohhngheslhhinhgrrhhordhorhhg
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-Hello Liu,
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-On Tue, 29 Apr 2025 10:10:55 +0800
-Liu Ying <victor.liu@nxp.com> wrote:
+Add fan, gpio expander and embedded-controller to the Toradex SMARC iMX8MP
+device tree file.
 
-> Hi,
-> 
-> On 04/25/2025, Luca Ceresoli wrote:
-> > This is the new API for allocating DRM bridges.
-> > 
-> > This driver embeds an array of channels in the main struct, and each
-> > channel embeds a drm_bridge. This prevents dynamic, refcount-based
-> > deallocation of the bridges.
-> > 
-> > To make the new, dynamic bridge allocation possible:
-> > 
-> >  * change the array of channels into an array of channel pointers
-> >  * allocate each channel using devm_drm_bridge_alloc()
-> >  * adapt the code wherever using the channels
-> > 
-> > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+All the required DT bindings and drivers are now in next:
+ - https://lore.kernel.org/all/20250331072644.17921-1-francesco@dolcini.it/
+ - https://lore.kernel.org/all/20250414171455.155155-1-francesco@dolcini.it/
+ - https://lore.kernel.org/all/20250402102146.65406-1-francesco@dolcini.it/
 
-[...]
+Emanuele Ghidoli (2):
+  arm64: dts: freescale: imx8mp-toradex-smarc: add embedded controller
+  arm64: dts: freescale: imx8mp-toradex-smarc: add gpio expander
 
-> > @@ -345,8 +351,8 @@ static int imx8qxp_pc_bridge_probe(struct platform_device *pdev)
-> >  free_child:
-> >  	of_node_put(child);
-> >  
-> > -	if (i == 1 && pc->ch[0].next_bridge)
-> > -		drm_bridge_remove(&pc->ch[0].bridge);
-> > +	if (i == 1 && pc->ch[0]->next_bridge)  
-> 
-> Since this patch makes pc->ch[0] and pc->ch[1] be allocated separately,
-> pc->ch[0] could be NULL if channel0 is not available, hence a NULL pointer
-> dereference here...
+Francesco Dolcini (3):
+  arm64: dts: freescale: imx8mp-toradex-smarc: add fan PWM configuration
+  arm64: dts: freescale: imx8mp-toradex-smarc: use generic gpio node
+    name
+  arm64: defconfig: Add Toradex Embedded Controller config
 
-See below for this.
-
-> > +		drm_bridge_remove(&pc->ch[0]->bridge);
-> >  
-> >  	pm_runtime_disable(dev);
-> >  	return ret;
-> > @@ -359,7 +365,7 @@ static void imx8qxp_pc_bridge_remove(struct platform_device *pdev)
-> >  	int i;
-> >  
-> >  	for (i = 0; i < 2; i++) {
-> > -		ch = &pc->ch[i];
-> > +		ch = pc->ch[i];
-> >  
-> >  		if (!ch->is_available)  
-> 
-> ...and here too.
-
-This is indeed a bug, I should have checked the pointer for being
-non-NULL.
-
-Looking at that more closely, I think the is_available flag can be
-entirely removed now. The allocation itself (ch != NULL) now is
-equivalent. Do you think my reasoning is correct?
-
-Ouch! After writing the previous paragraph I realized you proposed this
-a few lines below! OK, removing is_available. :)
-
-[...]
-
-> On top of this patch series, this issue doesn't happen if I apply the below
-> change:
-
-[...]
-
-> @@ -351,7 +349,7 @@ static int imx8qxp_pc_bridge_probe(struct platform_device *pdev)
->  free_child:
->         of_node_put(child);
->  
-> -       if (i == 1 && pc->ch[0]->next_bridge)
-> +       if (i == 1 && pc->ch[0])
->                 drm_bridge_remove(&pc->ch[0]->bridge);
-
-Unrelated to this patch, but as I looked at it more in depth now, I'm
-not sure this whole logic is robust, even in the original code.
-
-The 'i == 1' check here seems to mean "if some error happened when
-handling channel@1, that means channel@0 was successfully initialized,
-so let's clean up channel 0".
-
-However my understanding of the bindings is that device tree is allowed
-to have the channel@1 node before the channel@0 node (or even channel@1
-without channel@0, but that's less problematic here).
-
-In such case (channel@1 before channel@0), this would happen:
-
- 1. alloc and init ch[1], all OK
- 2. alloc and init ch[0], an error happens
-    (e.g. of_graph_get_remote_node() fails)
-
-So we'd reach the free_child: label, and we should call
-drm_bridge_remove() for ch[1]->bridge, but there's no code to do that.
-
-To be robust in such a case, I think both channels need to be checked
-independently, as the status of one does not imply the status of the
-other. E.g.:
-
-  for (i = 0; i < 2; i++)
-      if (pc->ch[i] && pc->ch[i]->next_bridge)
-          drm_bridge_remove(&pc->ch[i]->bridge);
-
-(which is similar to what .remove() does after the changes discussed in
-this thread, and which I have queued for v3)
-
-What's your opinion? Do you think I missed anything?
-
-Thanks for taking the time to dig into this!
-
-Best regards,
-Luca
+ .../freescale/imx8mp-toradex-smarc-dev.dts    |  9 +++++-
+ .../dts/freescale/imx8mp-toradex-smarc.dtsi   | 32 ++++++++++++++++++-
+ arch/arm64/configs/defconfig                  |  1 +
+ 3 files changed, 40 insertions(+), 2 deletions(-)
 
 -- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.39.5
+
