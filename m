@@ -1,174 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E86154BE2;
-	Wed, 30 Apr 2025 10:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9585725D909
+	for <imx@lists.linux.dev>; Wed, 30 Apr 2025 12:06:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746009563; cv=none; b=HxVcBrTcn4nAf/YAnj8ct0OxTYJRpf1kygM8RQZpq3btnfFZsjKFJr9mVLI3/M9pgnLU9u4hwFOGfjz5Z1xtY4dTh/CVq7gyk9ECjV3QMBf6WjtFEH5vG0tIAnt8tiPcqMDHoEugltzqhcmJIm3C/vASSYvXa9v65x3rTiUb3yg=
+	t=1746014790; cv=none; b=aL6eC7EsMl0JuJxY36s/NEY7zTqwc/LiU0brq8Ksv5GxAsNrEnfDNEJ/8kCtI+t2cnf+zP7xSsRVH+3VpA2OQIyFKw5iGw6+omRVrHiTgUmPBov/qGAGzZWvmoFBY5z8FdNRYokEUTI/+OOC8460oMFg2WdfyOnDGFdlpx0H230=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746009563; c=relaxed/simple;
-	bh=pa/oq7Iq9DFQzLAcYNPUeUzLf26wbsIriyzXBSer2gM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kHgATGFbwWdf0ToZApQFBDeHXGIRT3IpyQyYHagrQ03fhxjdYw4qtHsVSq7f3kYKn0gjhnZIJVOz80Cgwc0+s4btBLVC+RPoO7wCSriOv6DmAIRTr5sexkIItmfrmLouqDMZJbFXStBg3J42aGoMq7EXAB7Z2beVuXA9jp7OQP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ba2+wqLp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746014790; c=relaxed/simple;
+	bh=p1YMctkP+4J9z4wfwHeFb82KdEtOcPG7Y1y61zmIgxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G0z9IwAJv6Xhe3qUrFBcJf4/ENlFx9HM8LX0lz2ryGqopMVnJVUwCD8j7mr66l9QP6j6FPVnZo5b2yoc6/F1M/+A5fG1X3StT+DbkYvJdqII7aY4qYeTN0KCf1cynhqLkbfglJDpYKXIQqnEViDnyptiBGFwr8VkZ9gMllenl6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=R4358EAS; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=hXGTCeHa reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ba2+wqLp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B910BC4CEE9;
-	Wed, 30 Apr 2025 10:39:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746009560;
-	bh=pa/oq7Iq9DFQzLAcYNPUeUzLf26wbsIriyzXBSer2gM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ba2+wqLpY4w4Dwob5uYJx95CKmUelGELftsNTS3eHspzZ58Ikjl7LtL2k/WEVojg3
-	 6RNboZgAoPsRSceBSrJQ4gI0KI+kLh/x/+zVe369vcEYvsrJcpw+MaLGq1dvO0dhzT
-	 UXRNIHNfOndCAVL8bp8Vk+mUt5Z7AOA9GNYnov13fOSdNL5ZdZ+HunWP8UpY2BZFVS
-	 kcUcVI8My66bOlI48dIaW0RnArzM3AEdSf4RJwXFrBtI9GNBMwHbLfcRwpMdomOayN
-	 rqMkzFB+G2QvvC7JpYRvfRaEQX3MjkSQYncUy0phaJL6pWidajSYs2KXlz01S2iNTQ
-	 1tZFXEK+iUgRg==
-Date: Wed, 30 Apr 2025 12:39:17 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Jagan Teki <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Douglas Anderson <dianders@chromium.org>, 
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Luca Ceresoli <luca.ceresoli@bootlin.com>, Anusha Srivatsa <asrivats@redhat.com>, 
-	Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, asahi@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	chrome-platform@lists.linux.dev, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
-	linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-stm32@st-md-mailman.stormreply.com, Adam Ford <aford173@gmail.com>, 
-	Adrien Grassein <adrien.grassein@gmail.com>, Aleksandr Mishin <amishin@t-argos.ru>, 
-	Andy Yan <andy.yan@rock-chips.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Benson Leung <bleung@chromium.org>, 
-	Biju Das <biju.das.jz@bp.renesas.com>, Christoph Fritz <chf.fritz@googlemail.com>, 
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Detlev Casanova <detlev.casanova@collabora.com>, 
-	Dharma Balasubiramani <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne Grunau <j@jannau.net>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Jesse Van Gavere <jesseevg@gmail.com>, 
-	Kevin Hilman <khilman@baylibre.com>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-	Liu Ying <victor.liu@nxp.com>, Manikandan Muralidharan <manikandan.m@microchip.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Phong LE <ple@baylibre.com>, 
-	Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang <sugar.zhang@rock-chips.com>, 
-	Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
-	Vitalii Mordan <mordan@ispras.ru>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Hans de Goede <hdegoede@redhat.com>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, "Rob Herring (Arm)" <robh@kernel.org>, 
-	Hsin-Te Yuan <yuanhsinte@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
-	Xin Ji <xji@analogixsemi.com>, Aradhya Bhatia <a-bhatia1@ti.com>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Ian Ray <ian.ray@ge.com>, 
-	Martyn Welch <martyn.welch@collabora.co.uk>, Peter Senna Tschudin <peter.senna@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Herve Codina <herve.codina@bootlin.com>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Inki Dae <inki.dae@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Abhinav Kumar <quic_abhinavk@quicinc.com>, 
-	Bjorn Andersson <quic_bjorande@quicinc.com>, Marijn Suijten <marijn.suijten@somainline.org>, 
-	Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>, Helge Deller <deller@gmx.de>, 
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Subject: Re: (subset) [PATCH v2 00/34] drm: convert all bridges to
- devm_drm_bridge_alloc()
-Message-ID: <20250430-scorpion-of-majestic-argument-7f59b4@houat>
-References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
- <174591887152.961603.7706063017853945511.b4-ty@bootlin.com>
- <sdiwpe7nnhud3fvkgijjbfyenlwpchbxgehyxmsy7c5loo257h@hkfcawkjrlhd>
- <efcf3798-9ac1-42a7-8a12-24d931cbf771@bootlin.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="R4358EAS";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="hXGTCeHa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1746014786; x=1777550786;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=omb28bPFnepOCl9nKwsWgB/GlXCLrfSFWc7L3eCs/XI=;
+  b=R4358EASvC5g9CDo8fOMpaQWaXKwJcDQuPJWBTIUWV5rsdW4dKNqrZ3j
+   nGFciTpF55rb9DkKs/7jCcnF2644IT1drChVle9opMP3fywVttJMPhDAT
+   bGOnNHDwdSnXdZDp1eBOqXm4D4CHex0wkMfknkHLqv727ARLq7Rfkymuz
+   QSESkqC2DaMYaRBkm3qSXWg9HdntoTejlth8/9i+G52IoTkcO8PVx9ldf
+   b9L9lpDeNRBWrpRmk6AQIhqP52l2ydM6nsUCkxP5OQcImTyp1aChB/oYR
+   IrQJX7ffiUcv6qV9DzuaikCbVIIC0dsDA+6Xa416ZNdZtAkeiah34/SWT
+   Q==;
+X-CSE-ConnectionGUID: v8x2pFd2Q+e4LtiWMKjCjg==
+X-CSE-MsgGUID: xFRknDV/Qp27JbnCNXdQEA==
+X-IronPort-AV: E=Sophos;i="6.15,251,1739833200"; 
+   d="scan'208";a="43809741"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 30 Apr 2025 14:06:23 +0200
+X-CheckPoint: {6812123F-3B-C7E25413-F4312D34}
+X-MAIL-CPID: 26F950DBBDC6ACB49334F34AB69B5E04_4
+X-Control-Analysis: str=0001.0A00639C.6812124B.0078,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D26EA167074;
+	Wed, 30 Apr 2025 14:06:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1746014779;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=omb28bPFnepOCl9nKwsWgB/GlXCLrfSFWc7L3eCs/XI=;
+	b=hXGTCeHaQ8mm1Ph5J5FX4phYmH+hTjYb/aV7FLUIYQlHYpbswwdt37IBsiLmhm5D+uWhP1
+	1HLKphb7S6FFE4asYZgRBK+C+SDw8Dv46L0mJt+6Nk0NgMK52X6Qu/qThgU3bE/j47WcAp
+	mjgdvb4ywYbV0Avn4VGitVJq+NVz7jxzAWqobyamS6l7oxNJ+tgE5F3MGp9CZxeDHvUgrT
+	IACo/edJ7bUMVVgbwh6oEQBCi2cSDNxu7Q6XQ3CLT5YcB+ghVTTOFAdMUhnxRTQ0I7kgM4
+	eiRRHNVok8jbx/qd+ebhpzAmcK7SHygWQkkOcGgfV/jaiyE69PvedG31jjjhzQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v2 1/2] dt: bindings: arm: add bindings for TQMLS1012AL
+Date: Wed, 30 Apr 2025 14:06:00 +0200
+Message-ID: <20250430120605.2068102-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="n3uft3wwvexxpcog"
-Content-Disposition: inline
-In-Reply-To: <efcf3798-9ac1-42a7-8a12-24d931cbf771@bootlin.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+From: Matthias Schiffer <matthias.schiffer@tq-group.com>
 
---n3uft3wwvexxpcog
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: (subset) [PATCH v2 00/34] drm: convert all bridges to
- devm_drm_bridge_alloc()
-MIME-Version: 1.0
+TQMLS1012AL is a SOM using NXP LS1012A CPU. MBLS1012AL is a carrier
+reference design.
 
-On Wed, Apr 30, 2025 at 10:21:48AM +0200, Louis Chauvet wrote:
->=20
->=20
-> Le 29/04/2025 =E0 16:42, Dmitry Baryshkov a =E9crit=A0:
-> > On Tue, Apr 29, 2025 at 11:27:51AM +0200, Louis Chauvet wrote:
-> > >=20
-> > > On Thu, 24 Apr 2025 20:59:07 +0200, Luca Ceresoli wrote:
-> > > > devm_drm_bridge_alloc() [0] is the new API to allocate and initiali=
-ze a DRM
-> > > > bridge, and the only one supported from now on. It is also necessar=
-y for
-> > > > implementing reference counting and thus needed to support removal =
-of
-> > > > bridges from a still existing DRM pipeline without use-after-free.
-> > > >=20
-> > > > This series converts all DRM bridges to the new API.
-> > > >=20
-> > > > [...]
-> > >=20
-> > > Applied, thanks!
-> > >=20
-> >=20
-> > [...]
-> >=20
-> > > [16/34] drm/msm/dp: convert to devm_drm_bridge_alloc() API
-> > >          commit: b2aabe5c6b65516d88214aba4b12ce2ca78bac6c
-> > > [17/34] drm/msm/dsi: convert to devm_drm_bridge_alloc() API
-> > >          commit: fffc8847743e45604c4478f554d628481b985556
-> > > [18/34] drm/msm/hdmi: convert to devm_drm_bridge_alloc() API
-> > >          commit: e11532be87e437648521a8ed5358c56df11933b4
-> >=20
-> > Why? These drivers are explicitly handled outside of drm-misc. Please be
-> > more careful next time.
-> >=20
->=20
-> Sorry, I was not aware that msm also have his own repository.
->=20
-> TBH, I was not aware that other repositories existed for drm (I should ha=
-ve
-> looked at MAINTAINERS, it is totally my fault). DIM and doc[1] only list
-> drm, drm-misc, drm-xe, drm-intel, so I just tough "intel is special", not
-> "drm is divided in many repositories".
+[1] https://www.tq-group.com/en/products/tq-embedded/qoriq-layerscape/tqmls1012al
 
-It's mentioned in the drm-misc section:
+Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+---
+Changes in v2:
+* Collected Conor's A-b
 
-https://drm.pages.freedesktop.org/maintainer-tools/repositories/drm-misc.ht=
-ml
+ Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> This repository consists mostly of the core drm code as well as DRM
-> drivers that do not have a dedicated repository.
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 5ff0bc6c92483..8b9d96c5edc65 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1538,6 +1538,12 @@ properties:
+               - fsl,ls1012a-qds
+           - const: fsl,ls1012a
+ 
++      - description: TQ Systems TQMLS12AL SoM on MBLS1012AL board
++        items:
++          - const: tq,ls1012a-tqmls1012al-mbls1012al
++          - const: tq,ls1012a-tqmls1012al
++          - const: fsl,ls1012a
++
+       - description: LS1021A based Boards
+         items:
+           - enum:
+-- 
+2.43.0
 
-Feel free to send a patch to improve the doc. If you missed it, someone
-else will.
-
-Maxime
-
---n3uft3wwvexxpcog
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaBH91QAKCRAnX84Zoj2+
-dtaAAYD+vw3ijG0Npi7DNS7E4rH/Y/pmL5jn26rshJDKKon86xXDKPf7qxcxUMUk
-GcIwPpABfiK4x23dgB5GWaHnby7RQQrps8EcAVNJ5CjGxA14hgs3XZLzSy+6xbQn
-WiWn0Tn6mA==
-=/a61
------END PGP SIGNATURE-----
-
---n3uft3wwvexxpcog--
