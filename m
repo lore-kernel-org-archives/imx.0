@@ -1,177 +1,185 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2049.outbound.protection.outlook.com [40.107.104.49])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7840A1E32C3
-	for <imx@lists.linux.dev>; Wed, 30 Apr 2025 07:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745998568; cv=fail; b=FSvLjwPUCUz8Yr5LHR/kfKo/maso2AqpYXme9yjja24NkrqCx6nlTumub4oB6TU1cxY8Q6BzAJ+9pBkSkQ5YS7RIx020HLGjFdCb+7J8njZJDwVWgDJOTYLgdoGixPlDFXDYidBMXZ8/kUFXIGy8GgDOK1Xss4YWUPtPTZpNgYc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745998568; c=relaxed/simple;
-	bh=G6Sw3MGrNjfadEIanw7kpT9X2v2WtmaS3PPXxROCv3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=DXnkQjBldyL6Q7/V38CLnkukF3GQCrinQ6/hlynwQc4T1UkUFEPLpAt8cUMNy4Va98mEOxkzRUGUnPW9dWufLXYkKXBIA8Vin7miv2sMkz/LyBxc/etrpAvcJhpk6dBditc9xAza/Tf4h+gSJ+qpD5pAqyd9rPY9wWyTuVYc5QA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=GdZpC02j; arc=fail smtp.client-ip=40.107.104.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737AD1C8632;
+	Wed, 30 Apr 2025 08:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746000498; cv=none; b=fu5+cx3s34/hvTcGKz3aT4DezLHVkfb4j5aoxFKaD+7JPtycVFWM8ABEEU2yKo+FvU1eHfWUch6Eyro271PKv2Hpy9s5Dub9nE3KoTG73p6sPnErzYwDBZSMTy98deHt6m5UfVQ5GZmfPHYy4oZ8o7HZWU+vScE9DWazv2wRQqE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746000498; c=relaxed/simple;
+	bh=pCUgXguQq1vRA4bGkjweAQOtL40q6Ryp+ab88vmfA3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QvIWHujZr0v8dVsJDJUybpMrEchawOQDA6pHYoNPYQuTbVBL5zwf4Dx0TqcjO7s3kN0u/L9MAGWFn424NfL+fb01RSRNKYygXFMMYbcsdvsD03HlqH+ia4te/Isf6C5eLJhnQoJCk59U2SNS7T854ex8jxFPx8b30kZ7U/Euz34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PEhvhvQH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="GdZpC02j"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y4XN3N7aCA2gXkuaXVHTifhenAk/2dNtgONNC5smlIOw48MsYU2fdamxYOwhEJ8mGS8v3zul+c/B2pAVJ4lnyK0r3yshACFcaiNmH1HFBaMePL6FChAVKPW336LYdFwuv321N8b230I3yE3elD4Jkb1khUl1IUb7oEcAZGOJQJK8iCB/NgSIklK8i6igG0QKfeo6nSxtv6skdRQFX+w9GpnXHMXuFUD5nD1idhhZZYia02VDMpqctKbNWlj0Ru563grYGsqTXX8AbMBlPXMm8BbkcpmZAn8+Da9E34ibe3mb37IqkTA5f4qYrKNyA8eThJTvkK2dGdqBzvXgXeu68A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AkQFZkCzuOarGn0VOyvVPtDynfo685hwY7DHrQ/9yX4=;
- b=U9njjYie6XOMie+750i6Sy5qD+pnA5XYuqMC0Qr5+9PL3vN9+SpnT/oQVGQuH4ss4Foagsi/h8lmCTZ8Z9sGJxxfUsJeJyU2v3Dsjy0GNIs1StMfvOYyn9TXgKUQ++k77tBSD++XaqcZ7aVXmM6KT8LADp/gD+BLi1lGgz8D+lZl6IqkqM6Czbi8gO3qXTlB21eTWpALp+yC5DCvHjBwsIQQ1e4fmcsXbstx3ZcdiPS1FcP7D/rNeWbqc0jpu045ecuVWRt7Dsaua58d+TibPifGMeHLTcZ8zFIL52feoyI90suDmPzupWNye9+hrSFp2MI6/USQuKU7kCLTWX5b3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AkQFZkCzuOarGn0VOyvVPtDynfo685hwY7DHrQ/9yX4=;
- b=GdZpC02j1Yi4nS9ieUEMUjnBgfw5IzhDb8hUIIsc9YhZWTTiEe4VdBU21Ycs06ZoqnRVggzE1/RbCFgLdwbJqEuy99ETQFg1rsBjwjwmvJLSOcq+6qOAxDniMb2TEi481lFYA5b6H2tLDz+5MLTQejuw98bymVKFuzXgFgISTaOFikUzKc/I9DSO+twJqq53ke2istYPoR/nSjo2LDAA+4eUXSRTYVDHKUhOh/6F8sM1KF/Na3rsNFI/wwjnAO6C6jHwz+LQHM9FwTzn7CZ5fOuHb3vN2iMr/mmfNSq4BurbbEVczNCkjzoobyLD3MU9GapDviyfPQxKtS0TsAMKBA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DBBPR04MB7706.eurprd04.prod.outlook.com (2603:10a6:10:208::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Wed, 30 Apr
- 2025 07:36:02 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8678.028; Wed, 30 Apr 2025
- 07:36:02 +0000
-Date: Wed, 30 Apr 2025 16:45:04 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/4]  arm64: dts: freescale: imx8mp-toradex-smarc: add
- fan, ec, gpio
-Message-ID: <20250430084504.GC31028@nxa18884-linux>
-References: <20250429113119.124427-1-francesco@dolcini.it>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429113119.124427-1-francesco@dolcini.it>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR02CA0027.apcprd02.prod.outlook.com
- (2603:1096:4:195::14) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PEhvhvQH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C6EC4CEE9;
+	Wed, 30 Apr 2025 08:08:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746000498;
+	bh=pCUgXguQq1vRA4bGkjweAQOtL40q6Ryp+ab88vmfA3g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PEhvhvQHG4rVvDgSY5YEAlvFdlFIjPoEwklqHK2oVDFFscI9oOnH22AFxtXXETEug
+	 iHnVYvMe+t+mjmLvvnbJk0leb+R0US2frAqv3Vo0Rnx1IyUcFzc8Xz+JP/Vc4AgrWv
+	 c48oqzjYkbO2MbC5RCNzUEKgl16x3n093ezpE/HgkfVb2/a5ZQ/gaNtVmMRl6YrsgT
+	 Ek//OIPQJU/El1by4jlyMox7RQIViSupPPfGsNTCUePuh0N0KYiCkq3fsOplC3fn9+
+	 O9mkEGg517iIKGWX+UDcBJI+SdNy3IDIcjLt6YoA/frBd8zWVSzwqyzDqDrFOqkQvK
+	 BJdFA6k3dyQZw==
+Date: Wed, 30 Apr 2025 10:08:14 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Louis Chauvet <louis.chauvet@bootlin.com>, 
+	Inki Dae <inki.dae@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Seung-Woo Kim <sw0312.kim@samsung.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Douglas Anderson <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Anusha Srivatsa <asrivats@redhat.com>, Paul Kocialkowski <paulk@sys-base.io>, 
+	Dmitry Baryshkov <lumag@kernel.org>, Hui Pu <Hui.Pu@gehealthcare.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org, asahi@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
+	Adam Ford <aford173@gmail.com>, Adrien Grassein <adrien.grassein@gmail.com>, 
+	Aleksandr Mishin <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Benson Leung <bleung@chromium.org>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, Christoph Fritz <chf.fritz@googlemail.com>, 
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Detlev Casanova <detlev.casanova@collabora.com>, 
+	Dharma Balasubiramani <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne Grunau <j@jannau.net>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Jesse Van Gavere <jesseevg@gmail.com>, 
+	Kevin Hilman <khilman@baylibre.com>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+	Liu Ying <victor.liu@nxp.com>, Manikandan Muralidharan <manikandan.m@microchip.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Phong LE <ple@baylibre.com>, 
+	Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang <sugar.zhang@rock-chips.com>, 
+	Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+	Vitalii Mordan <mordan@ispras.ru>, Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Hans de Goede <hdegoede@redhat.com>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+	"Rob Herring (Arm)" <robh@kernel.org>, Hsin-Te Yuan <yuanhsinte@chromium.org>, 
+	Pin-yen Lin <treapking@chromium.org>, Xin Ji <xji@analogixsemi.com>, Aradhya Bhatia <a-bhatia1@ti.com>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Ian Ray <ian.ray@ge.com>, 
+	Martyn Welch <martyn.welch@collabora.co.uk>, Peter Senna Tschudin <peter.senna@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Herve Codina <herve.codina@bootlin.com>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Abhinav Kumar <quic_abhinavk@quicinc.com>, Bjorn Andersson <quic_bjorande@quicinc.com>, 
+	Marijn Suijten <marijn.suijten@somainline.org>, Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>, 
+	Helge Deller <deller@gmx.de>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Philippe Cornu <philippe.cornu@foss.st.com>, 
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Yannick Fertre <yannick.fertre@foss.st.com>, 
+	=?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Raphael Gallais-Pou <rgallaispou@gmail.com>, Michal Simek <michal.simek@amd.com>
+Subject: Re: (subset) [PATCH v2 00/34] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+Message-ID: <20250430-arrogant-marmoset-of-justice-92ced3@houat>
+References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
+ <174591887152.961603.7706063017853945511.b4-ty@bootlin.com>
+ <832a9db0-cf8a-4d35-8a98-08053fbd6723@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DBBPR04MB7706:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81546437-deae-456e-a6ff-08dd87b9a862
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|366016|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?q2w1ts58DkFZ4k+lh7w+hBNxMuQuyGtcJcId0sx6cL8R2aXwwLjTLEvYY2A1?=
- =?us-ascii?Q?MWucWevLF0q7ghDU5na3arYekMhkDRz6Mp9i7+WkMNp1KVicJTbeGI4m5hjK?=
- =?us-ascii?Q?FvoxrT0vxzDs71RvQ1P99YGE+lPr8HkoBplhsNicfjCW1XBE+spX8WO2JsBH?=
- =?us-ascii?Q?V8YdvYmziETPHSqeiUeWxLvodLY+kWtya+7r6zQvKZI1QrfxG+Xura8z7NCd?=
- =?us-ascii?Q?xMUIYhQRJU0Bl/XKifeWkXShh6aI6DaW2Vz4KYHISJvim/E6StS+L/CN63uY?=
- =?us-ascii?Q?k4//Mz51GnU7XEDcKWtOk8P4rLxbNKxDDfx02M4MNaV7QptRM0oLc+7L7fUP?=
- =?us-ascii?Q?DEqccEt9v15QTWaEx1BuLXLrAA5VivjwiKW0lPEO9DTK9GN1ElGaxnve3G4l?=
- =?us-ascii?Q?HtPtojQXqIV/xgUKXSYSII3GbNWzRZDOhu7IDqhye+scLIc8VAALqdpZ0oyy?=
- =?us-ascii?Q?dKkrPSd4c3K/yCYXuYOdlrb/+VmEnT57A8OxRN/DXIMUPQMHi0VwMMRespSs?=
- =?us-ascii?Q?Ws9UWucG0CwxJVUiFu5F8VZDMY+yOpRK/dUwxDKMizoOlMyqOIp3cTMOwBj6?=
- =?us-ascii?Q?vc9zuhMJrKal15rDFZ2IGO2Yt9hXA2U8oxpjuxEuO7U1DsWMP5YXtL723ESs?=
- =?us-ascii?Q?h0wNYOmlkwea7Y1ZoN2VcYX2VlTs4yIB4m+u/S5JqfzMgYRpvCKt82wHySTO?=
- =?us-ascii?Q?yX2R+CeNxOXR+7JG7RI8Tqnvney2I+vpCJmZ0zHL96UMslLTQ8/SBrQaUOB4?=
- =?us-ascii?Q?gVElUCx6LaYG5iOXMBKtWVyhFCDLTn/st1kW0msvdFFsDuDBmfQ44LLl190J?=
- =?us-ascii?Q?OLleDjFeklUNfBNFjEhB/0RFKPS7TOaT6DgeyUHEak0XuT1PYxh3pD6PNq4g?=
- =?us-ascii?Q?yaEJmXBXjVRlGLVzQcH8b0ZvVXXBrtzmGhSg20CxcqEZtM69vIk8rzeo9T1J?=
- =?us-ascii?Q?oPe+XhSnEd+7WlRlqxAugXZP8ri5JI7uRDQQh60v87qI5bS+FOqiHwcAyKvH?=
- =?us-ascii?Q?MWqALisD7oPhHZBDMcUkiEwDXZPQPvuhdnc1S+iltoNnMK44or7RHlSMTbGp?=
- =?us-ascii?Q?LdjhIdFqhj/9wGr/7NEw4QmR/PywJi+tGQJattjBPrDecetEPyQ2VvFOoiRO?=
- =?us-ascii?Q?g3t6Ayu5L+uU1HVkhFkrfYNcHwJa40pNbYZp49eG/Lf18rtkgupoMjOOxrfD?=
- =?us-ascii?Q?SE7kdR+W4iRhUDZa59jhCDrSgaxkJSH1qZKgDRjvb0ampcr3Ve+hdC5RXyby?=
- =?us-ascii?Q?77VNduA956mtHqAmrew5iOUBK3wwpHDqFT3NLuJAD2SwoEJLOh/WcB60DwyC?=
- =?us-ascii?Q?na0u6foAGtEDXx43QeCtmf0WiSgPeyGks2aS51q3Ax2af3QzMELQE60sL4yA?=
- =?us-ascii?Q?0KvEi+vL61Gnu+Zi1gpEULQWtlqX+0SezibRVmMeFJavjj2F9ighp/2RMQSw?=
- =?us-ascii?Q?4MF8M65ZXuq6bEBz83mrscdeiYb7WD00OshSWKdMYl3UIscT3XUoWi6ioOSK?=
- =?us-ascii?Q?KyzXRVHDE4r28NQ=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(366016)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?bzRd9Nh66MwF2yUXrXbILEwFMbBWQH/8dK7IEAHSttwjo1T3rOU9afjIYWU/?=
- =?us-ascii?Q?mG+2xmOMhmqbMWmr2z5ntH8iHTSeba+fE/4qem9mB+EVbzXpAq8xETkkfkGI?=
- =?us-ascii?Q?pYe7r84rLAZBhQVEqe1kk6hJJ/sMVakCE6WjeP1cvp5eq4Cq+LTzrk5PuVUK?=
- =?us-ascii?Q?U8b0R1u4hJ2IwvlJeAUkFlyT47SH0iHX9MC/EcJ+X90IqNGTfrp9QvVNT+Cb?=
- =?us-ascii?Q?9nTUpe7K4DoRBdZAAFFJ6M8xQfBDEZ5hjGujIduhkMEmCQ6QHA8epviwcxgw?=
- =?us-ascii?Q?Kk+O0A/y9696BpXrwcyj8y8WF3fttK9lPRFXQ/aH05upDbONsrJWp+VUI6mz?=
- =?us-ascii?Q?Wto+USYiZrZiyqUuWMkH7valwlOHanKDxpUA2OLDMiqVRiYRPCMpQyYNg/pD?=
- =?us-ascii?Q?JnfqnulH6MqnrOhG4tg0jCfbHh5zxmMBvFVJSjjDfXtxIciDrhMsxa1VJSeo?=
- =?us-ascii?Q?66pkSy9i0yC9/xbJvOWgXASgUnG7hRe6mc4TO901EFrubBhdpfBTL8UuU2X6?=
- =?us-ascii?Q?3pADAQ10GZqtruvQpUE5Pxy6o2M+N5PI0lp6qrcmkmFWsC7TzGcXHlpQOZIK?=
- =?us-ascii?Q?ysXRn447dmWYD6gS9zr+ARgtg2FiFOLS7l6DWO6Y8Ro8w4gl/sz/PQ+0YOPf?=
- =?us-ascii?Q?uZzFmwyZIVphj3RN0uLdt53VrtkchSuSzkQSy46mF6/qn560P+OK8tQT74jz?=
- =?us-ascii?Q?pxOiZ00sEtJdUf/Eex68JSXSTOe+i0fyWugc9dX5sb2z/6oSB8Vs4Xc0tYAY?=
- =?us-ascii?Q?KB2YUdO7HWbF1VtJTGaXTrJjODDA6vZjnOvufO6pQeJi3gbTsbBLxeDYXfBH?=
- =?us-ascii?Q?zobrx0zEbhYeo9jVCiVCCr03zQZC1J07QzMY3L6Giyv0jdCG0mpOzmMV8yFu?=
- =?us-ascii?Q?wMMbLgftYRJm+2f5kdOROmesLk+Ap9QsIuCCqsZzJ9FiVcyqqR7tMO0eXDp3?=
- =?us-ascii?Q?Fb8bLPIMRw/HqGKRKohoqxZRjYQjhek5Me5wkw1toTsbuFM4RLoBQtBK9uoT?=
- =?us-ascii?Q?zWcYgwDhUJ9YOu2RxGZZzuQ9Vf1H9YojEHRugK9XeQwJMut/Gt/2JAebG5l9?=
- =?us-ascii?Q?pWds0U1VOvio7C9Yg+i54CfTJlsXdgoeYsn1vIdP3/52X7YjmphODU7AkYBH?=
- =?us-ascii?Q?WkB218T1H8yKolNrCmPK0HnMNxYoKGN8Bc6AH6dMi94GEk/UoIcFHDaMy19l?=
- =?us-ascii?Q?aoZ7/J00iXH4/QKOmGF+SGHH6sH56KCBf8rxD8A8RBDk0osGKNpwkh4lZPXj?=
- =?us-ascii?Q?2AlpeZ8b7Wte55TxChKC4KxqL2/xFx7x0EOFK36tXjEKlFtut6XrhVZ5XPue?=
- =?us-ascii?Q?yDGpvvz/x6hig66CzEgxxBY6Vc3BkMDZd7QZo7f+FsaOHlauQvdoau7TqoAM?=
- =?us-ascii?Q?ayvNBv+cUbGOV2KvX13VGP07AcfSOjmRq8Ryls94iqfN9wnGg3Y8ciInfOxe?=
- =?us-ascii?Q?Mk62PnOEgOKjXF6w9bP/iJ1JK6nXJXVG6aFFCfJHVZsXsx6vPIFOXBZwzx5G?=
- =?us-ascii?Q?4nV327onbwOOPTH31Fff+mE4ft9g3W9pMjamwelVdcZbVgWHAvy0FQORTLr5?=
- =?us-ascii?Q?3D3GfuTvJ0kFqhMvwql077CddAO436XVxKhvPf8q?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81546437-deae-456e-a6ff-08dd87b9a862
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 07:36:02.2911
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5+Nhp8djetw37vgjy3U1LGzX4mAhYi4L9vQdtw/YKBg5jPavJ2LXqXIcOklYyr/af2m6qFb7tuuHIimsahIZnw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7706
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="o2svn3fbdbsdr4ij"
+Content-Disposition: inline
+In-Reply-To: <832a9db0-cf8a-4d35-8a98-08053fbd6723@bootlin.com>
 
-On Tue, Apr 29, 2025 at 01:31:15PM +0200, Francesco Dolcini wrote:
->From: Francesco Dolcini <francesco.dolcini@toradex.com>
->
->Add fan, gpio expander and embedded-controller to the Toradex SMARC iMX8MP
->device tree file.
->
->All the required DT bindings and drivers are now in next:
-> - https://lore.kernel.org/all/20250331072644.17921-1-francesco@dolcini.it/
-> - https://lore.kernel.org/all/20250414171455.155155-1-francesco@dolcini.it/
-> - https://lore.kernel.org/all/20250402102146.65406-1-francesco@dolcini.it/
->
->Emanuele Ghidoli (2):
->  arm64: dts: freescale: imx8mp-toradex-smarc: add embedded controller
->  arm64: dts: freescale: imx8mp-toradex-smarc: add gpio expander
->
->Francesco Dolcini (2):
->  arm64: dts: freescale: imx8mp-toradex-smarc: add fan PWM configuration
->  arm64: defconfig: Add Toradex Embedded Controller config
->
 
-Except the nit in patch 3, all LGTM:
+--o2svn3fbdbsdr4ij
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: (subset) [PATCH v2 00/34] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+MIME-Version: 1.0
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+On Tue, Apr 29, 2025 at 02:41:42PM +0200, Louis Chauvet wrote:
+> Le 29/04/2025 =E0 11:27, Louis Chauvet a =E9crit=A0:
+> >=20
+> > On Thu, 24 Apr 2025 20:59:07 +0200, Luca Ceresoli wrote:
+> > > devm_drm_bridge_alloc() [0] is the new API to allocate and initialize=
+ a DRM
+> > > bridge, and the only one supported from now on. It is also necessary =
+for
+> > > implementing reference counting and thus needed to support removal of
+> > > bridges from a still existing DRM pipeline without use-after-free.
+> > >=20
+> > > This series converts all DRM bridges to the new API.
+> > >=20
+> > > [...]
+> >=20
+> > Applied, thanks!
+> >=20
+> > [02/34] platform: arm64: acer-aspire1-ec: convert to devm_drm_bridge_al=
+loc() API
+> >          commit: 411465d35bc56877c33e2498ac697acfcf484e6b
+> > [03/34] drm/bridge: analogix-anx6345: convert to devm_drm_bridge_alloc(=
+) API
+> >          commit: 53ddeb25159781b029fda404226af600e76f975f
+> > [06/34] drm/bridge: display-connector: convert to devm_drm_bridge_alloc=
+() API
+> >          commit: 4e90a3d96a6185e143041273f9867a1092dd4a71
+> > [07/34] drm/bridge: lt9611uxc: convert to devm_drm_bridge_alloc() API
+> >          commit: 6287ffd9eff6eea65865e64b9d4c45e115fa5ecf
+> > [11/34] drm/bridge: dw-hdmi: convert to devm_drm_bridge_alloc() API
+> >          commit: ed6987b674185873ebed7a619a646da6dd1a78fa
+> > [12/34] drm/bridge: tda998x: convert to devm_drm_bridge_alloc() API
+> >          commit: 7fe58bf1a9a24b533875c262a3222581a3f759e4
+> > [13/34] drm/bridge: ti-sn65dsi86: convert to devm_drm_bridge_alloc() API
+> >          commit: a4754ae9cfa76fbce79f023c268a5bac56f36321
+> > [14/34] drm/exynos: mic: convert to devm_drm_bridge_alloc() API
+> >          commit: 91c5c7b5bb2dd09b43b025bce6d790d3c79f4518
+>=20
+> Hello all,
+>=20
+> I made a mistake while applying those patches. Instead of taking
+> 2-3,11-13,15-18,27,31, I took 2-3,11-18,27,31, which includes the patch 1=
+4.
+>=20
+> This patch is not R-by/A-by/SoB by non-Bootlin people. For me, the patch =
+is
+> correct, it does not break the build nor generate warnings.
+>=20
+> What should I do? Is my SoB sufficient, or should I revert the patch and
+> wait for R/A-by before taking it again?
+
+It's worse: just like msm, it was never supposed to be applied in
+drm-misc, exynos has its own git tree.
+
+Inki, Kyungmin, Seung-Woo, sorry for the mishap. Do you agree with the
+following patch, and it going through drm-misc?
+
+https://lore.kernel.org/dri-devel/20250424-drm-bridge-convert-to-alloc-api-=
+v2-14-8f91a404d86b@bootlin.com/
+
+If not, we'll revert.
+
+Maxime
+
+--o2svn3fbdbsdr4ij
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaBHaaAAKCRAnX84Zoj2+
+dnenAYDBZr6cr88AokBU5IxJIO545Bob3jJW0+AX0AYDOu8icKftnZn/muxH1K/2
+mlgois4Bf2nfOosRvUT+FqHEb3CHJCluDubGG9J2EVzCRjRyMKIJ+yKyJ5VGB4cE
+N6ZGUBWZvg==
+=3YXQ
+-----END PGP SIGNATURE-----
+
+--o2svn3fbdbsdr4ij--
