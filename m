@@ -1,240 +1,290 @@
-Received: from PNZPR01CU001.outbound.protection.outlook.com (mail-centralindiaazon11021076.outbound.protection.outlook.com [40.107.51.76])
+Received: from MA0PR01CU012.outbound.protection.outlook.com (mail-southindiaazon11021103.outbound.protection.outlook.com [40.107.57.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14537231829
-	for <imx@lists.linux.dev>; Thu,  1 May 2025 05:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.51.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5881E6FB9
+	for <imx@lists.linux.dev>; Thu,  1 May 2025 08:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.57.103
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746078391; cv=fail; b=VIC3i7RvsNo04JnsT7qb5DMvEoW5OAodjz4cnDRUb0/pngDNWCZ1ovF9xeZadyUf4jsBhgYUV2NX4vvx5fIhoAcJApZCzgRVs48F7NvsW1Ebw+PTmD/dX57aPL269OB+2AkZUzm32+FirPIFmkqA91s4qV5TR/p6xXZAPTM/fKc=
+	t=1746088966; cv=fail; b=X8GKyVP0lEJ554LwJ+XrYEybzGWCAqRqDJrVLQvxS7sbZAb0hq6dPMPjR2tbKnJtmEJFSpMV0Bp3ivJVXCnAiQ1X25yeKOsddm3iPZ6x0PulYDig5CZaBMNlnSWgHIhzZA2/ZmoA3wYnE4WqUyT0sxEvLs9txLT9+IdfXgK6qkM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746078391; c=relaxed/simple;
-	bh=0QD4yUmx/B9JK/jrS9So2Eb31fFwUaaukL34FxtienI=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=W/gXA6qPnqg11kuj0yT08BBIxY0zsMBpBNIA9Qz8uDnF7dtjRYjdAfRzMYaYvQcy3f5I7JXaKV2XlYNm+AmxDAyuhoq8GTQp9isyQGrC6IypoJ6mysBjwqTl3RLUX6VecivcVo6WKG/+FPPuZDieoWMXlEvyC2alrSDn13MRzCc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.51.76
+	s=arc-20240116; t=1746088966; c=relaxed/simple;
+	bh=x9n+rjWTQrEoA33qafQ0Zesfj87Nlh3I6WOIJk1ZdPE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XxwmIJruBCrDkjmYdYtv7wKDuqQZ7UhnQW0yMYtrNBJsYrWrg/5ndk37iMuX0VjLAIWa20CXj07Q34V+LgnYZWUxSJ/UiQTMFLCNCyrHd1mOmcB/7QXcM2fUl4ogy6UrBfWkkSWI5PwSUabrs99/0l5LS9vQlfhxPX4hOWBgR1Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.57.103
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KM9XxGuJK6iykPAOGuwzLwGzMl9i8fSXoQNd88wPbUxnW+mUM2sdP68Jnadwd1l9tVgLZOWIlqY15vUI/Yhre3YgVziRqZOesOj8CrlyA2mEOkBih1E+judFU6G5GF2DyLwwUchk7P9VVAFtPh6SRKveSDekz8nTiAjFhonmPBed+VbWqi9gRRSEs7XrbDyxiZmXEXYsUt6oUPMFFHERtT6L8DJC38hSNRPmkfPEkx7YtvSprpB4vRWd51GiyRmXzXJeFvOWhuAWiYUoZiWCTfHPJSAbf0W+vd5XcCSfINE/Qwov2CWVsM05wNjasZLCCUxGRnlLUwgO+hOabriLrA==
+ b=aBadZl63IkqN7mP7t0rG1Keg7+AduS7Jql+n9PxL4ABf7XlVvnwpV7OiWapeUXFh01T9A5jtz+LrqF4rGCCB11CSN685tQWUbbmH4WoeZadeMAEj9UrHglZUFPelMahkggh+SR2avYM/1CzQdW6jT2OK/HdIkcNe+vq6lHCP+33/GH2azbmf/HgUwu8EBaS2cw7JPqBMolowNZAXP7wO6HHy1SWlnub35wAntCP2TDavoJgRUx4iq+ORxBgjNvrJNxHPhdn7eeeczAr8VgM8/wP3f21pqNpKON2rXN3ZWZauCHi0i+MVXb8ZS8592vTJY53vAtOR8/lkNkWjDVM42Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FgzrLVaJB77MB0EBjdCKGzZJC/djdPOC9gp3eMYiPOE=;
- b=hnsrmdil/cHzLnYHAZGMYvGKPcO5kcmVChzYUt66U+p9qpQpfnlKkNm0JaJTj+lhp01OqLCo8uxDaGKJunEOQ7isJnGqpdyjv3vaVIYdVIfmh7b72bXsqXB/Pi7Xz1fHFuvMSwxvvK7F4IY/MUZseCDfOo7UVjcTdYJaAS7FKjCIIYGeTdDTYVvR4ejlEpk7OAByYlskljGIr3+rQZK193Rat5nVgieDZvBY0SLvngrM9wazsK13WUpO4gVxJUoUNyJEfKvfbKlOe0LeFhgnK9touBAS25747KkhQuKXcTqiWE/+82z08wcQ3qtbuWCtorUbzXWrpdtCG6Ppww8bGg==
+ bh=9eeK1Zd/sB2aFcZonO/thBi7IdUrFbUSsK8qSNo5hl8=;
+ b=b7NCMQXV9r63ikSvhKChz7vlICKSvfsGH2yzCgRxAKJriyQcKjQnZhDWkn3QX6lPHVopIr3xQ52o0E1COQ8N4dc1VMeD7uHqHGMJ+OUYjku4LimCXB3eexxcXJHyyHeBkT12Z9bp9ZeUw6jiz+tQcS3SCZ0gsDEuSVKZWz80DD4ljhiUg+2ip6yiU25qrKbr0HrTW4gavqxZ3P85oOHB/ESWrH7s1sXsVWGqjcnKpoizRA+xxHXuvZWVSR3fRl4snF935JSF6LHPlEUz6hgfyHlRBDJKJg06E3sKTmxDSOeSGebBPMvCVZ+LysYi3NRMMZ1LSRxagE8inE2unzyzTw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
  header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-Received: from PN0P287MB2019.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:1b8::9)
- by MA0P287MB1090.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:e5::7) with
+Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:199::7)
+ by MAZP287MB0560.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:10e::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.20; Thu, 1 May
- 2025 05:46:23 +0000
-Received: from PN0P287MB2019.INDP287.PROD.OUTLOOK.COM
- ([fe80::8f1d:511d:2d42:bf5c]) by PN0P287MB2019.INDP287.PROD.OUTLOOK.COM
- ([fe80::8f1d:511d:2d42:bf5c%5]) with mapi id 15.20.8699.019; Thu, 1 May 2025
- 05:46:23 +0000
-From: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
-To: krzk+dt@kernel.org,
-	tarang.raval@siliconsignals.io
-Cc: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>,
-	Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: imx8mp-var-som: Fix LDO5 shutdown causing SD card timeout
-Date: Thu,  1 May 2025 11:16:03 +0530
-Message-Id: <20250501054604.23368-1-himanshu.bhavani@siliconsignals.io>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PN4P287CA0122.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:2b2::11) To PN0P287MB2019.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:1b8::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.34; Thu, 1 May
+ 2025 08:42:38 +0000
+Received: from PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+ ([fe80::58ec:81a0:9454:689f]) by PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+ ([fe80::58ec:81a0:9454:689f%2]) with mapi id 15.20.8699.019; Thu, 1 May 2025
+ 08:42:38 +0000
+From: Tarang Raval <tarang.raval@siliconsignals.io>
+To: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
+CC: "krzk+dt@kernel.org" <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx8mp-var-som: Fix LDO5 shutdown causing SD
+ card timeout
+Thread-Topic: [PATCH] arm64: dts: imx8mp-var-som: Fix LDO5 shutdown causing SD
+ card timeout
+Thread-Index: AQHbulxgctRpmpzP2U2RCwqTv4VDIrO9bSqa
+Date: Thu, 1 May 2025 08:42:38 +0000
+Message-ID:
+ <PN3P287MB1829A86F2A43F4A892151DC58B822@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+References: <20250501054604.23368-1-himanshu.bhavani@siliconsignals.io>
+In-Reply-To: <20250501054604.23368-1-himanshu.bhavani@siliconsignals.io>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siliconsignals.io;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PN3P287MB1829:EE_|MAZP287MB0560:EE_
+x-ms-office365-filtering-correlation-id: 550fbe0e-db7d-46df-77dc-08dd888c210b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?dPMpYAjTsvnsX28h1OUyV6H+lJRu5xW6Ipz6FE28OurKuFM6+RfBwamTiZ?=
+ =?iso-8859-1?Q?Fv4WiYZiRFz+y7T7SsDvGhXhyMoIikL8WCmJDZSLcWK+fz948Kp4OVoTA3?=
+ =?iso-8859-1?Q?1qzvHuBn0lWpvJ9k3GP9EO2U/kRRIdZxiAHzoAWrRKKE7pux/dU8H1eVNN?=
+ =?iso-8859-1?Q?o9aq25xirrLONmrhQ53BxjKRngI8x8ITzrE8kRI864qY/b3MtWmnUo9smL?=
+ =?iso-8859-1?Q?YtSmNYakr8WNUw3JwIaNvt9Fy1vB1TBQEv/JIS0hEl2yrGch1FD+u0bCAX?=
+ =?iso-8859-1?Q?AGjVN6lGKPBJZ6YdI2ivxqX5gkwtIgy160A9Uy7m8d5IF7taOi84geryn1?=
+ =?iso-8859-1?Q?w5wH/ZFl5lhpzK5GUX/Bke8+DNoBgNFjQ9wMD0WG8QOhsEqZln9RhhlqSf?=
+ =?iso-8859-1?Q?kiHtDgcTqzYhX9ryOEsrQ+IMdePw6DTr4RvzvWRm294Co8CncJMQLkkLCI?=
+ =?iso-8859-1?Q?6KHexci17IqWyGVpMP2Ps91w5V8C0O0VfrM1k779XjK8K9IMw7Kk3Am3ma?=
+ =?iso-8859-1?Q?RfaIgg24vAvFPi4m4SMlOxRF4s8PmgDpi3b6vPFsTDKjzvUNm33CracJLJ?=
+ =?iso-8859-1?Q?dDzooUfAYnjRtpVCGyFtEYLMOFKf1oUXXrstBdIwkKKG6IwnKj6OqGjUot?=
+ =?iso-8859-1?Q?DwGiKjGDxTtUGftuf26svES9UCgPlOlIzk3Xh5MUrFC8dg4iCYqe8vsXou?=
+ =?iso-8859-1?Q?s4E20l2BWlfiuB5UJe37CpyelAPjw2WtIl5ammrJWiRb53yYMMbbe6SEZn?=
+ =?iso-8859-1?Q?gAmctTpXmg61c/ic5Rpe5Tvt6cjP/E8rTzc0BJ6EU7aWvwzGIhBEbr8HW5?=
+ =?iso-8859-1?Q?m4SDer2HmwbY4aSCslNM/ZJtq8/oeoi1yDMxSbU3lzGxQh9VpXQJlBE/ID?=
+ =?iso-8859-1?Q?aiSorE8pFvreGFjOfFDMH8G0LSC1rau6f39XBPeqZQJdBMQ7tk1DxojJd2?=
+ =?iso-8859-1?Q?W1pPvjQggpDFx1o8ZjZ6TyJ63T8T7zo1ZUhaV37YFJ+HVWzR3OKywTKYKv?=
+ =?iso-8859-1?Q?RzuR6JA66foP92GjCqe9NkOsqLpH+pOCEt7aqPuHEpQ9VU+wgU+uoPBfzx?=
+ =?iso-8859-1?Q?tePWqSKfwno6gHr3QFprl3cSbCV3KBHRnG7TyQC7747H4LURns99Z0QsUP?=
+ =?iso-8859-1?Q?4onV1td9c5RxOBiOrzKopt48HWi6tVc6jpieZzF9MPsOWM5ZdtiPq925Zo?=
+ =?iso-8859-1?Q?CVdBn21VUY85YDFbbBWE860FUyR+gE95+kwEGPABMX4yRh7xG8Q2WVNitr?=
+ =?iso-8859-1?Q?16HgecSm/h1u7JiytH6jge5c9iEA35aEyipRRyj46GYBrDJF/PKw5AWgTW?=
+ =?iso-8859-1?Q?Ql6c1XM5ENjp5VIHb0VGpalvx+0WEDlfwiDn+aCEwF5FPbKd8RHRJsPZQI?=
+ =?iso-8859-1?Q?Q+58jOBWpkn6GsN8n4j1vRtyWni1Qoi1tlW+1fhni89RFu+t4xlgxS8Xs7?=
+ =?iso-8859-1?Q?Zo3hWvYiyGDgjsby6Not/tm41yyoPm8B4xkypl59lAv6JSlze5VE53cZfG?=
+ =?iso-8859-1?Q?dhQKnq+RBoXCaqoO36V8KJLH7UwEPzu2RBzpZAsm7dCQ=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN3P287MB1829.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?AcL5+l5jk/hREo1TI4rWzLRY3AhWHwEev8Iw4bzSz+Ckvc2TzmjV2m6zxF?=
+ =?iso-8859-1?Q?XTbP5/2A89KCMLUUYYIW4xYGz7qfsxuES+fHnrNlqnXvjTS3gH9r+6bJz/?=
+ =?iso-8859-1?Q?7nRlDq7TQWhEbJPKPv7nHHsBBljJMHC4zxwaDF+1GSCxPvSaGcmly/vXv4?=
+ =?iso-8859-1?Q?zWKUvIx8TGYINpV3D68OVAb1p9IN/SFLsoypJtn+JBCaUnPathFfvxwhE5?=
+ =?iso-8859-1?Q?G3HtFOsdtix+YK3OKfztGv0qDZ5lnee6QjFsI+v91jfVk+CcU42AvWrYeH?=
+ =?iso-8859-1?Q?XcI7dbaBMdgYDT0w3l6zCnJHkp8zUDbFaTSJNOcSmnQFHdiOlyZVJ7p9RB?=
+ =?iso-8859-1?Q?nEUZlZwrczPcU1lOoctcyimu9+iyjpk3SzXcXhp9vXP+TceAjm3H1zbUw5?=
+ =?iso-8859-1?Q?+RkPOuaxew2h3xl2yB+mFZzrl14h/8E9rpMVd1WAXs/qEI4iq+T+CRnCSo?=
+ =?iso-8859-1?Q?C2LSuwnKUpR8S8bcqIUeCnKem2aO1QUlVgGeh3FXFbbXT10mOlyNFMgffA?=
+ =?iso-8859-1?Q?lNut22HcWqnhd/FA1LY4KHvLgrU1HAHpDmhZMqiCTbD65Z7uQUbBlGUOd2?=
+ =?iso-8859-1?Q?DI0EbzxNPL0iia4FI2YAcc7Oym66JAqoz6j61M24khqV3w4FBfnD7OPq99?=
+ =?iso-8859-1?Q?laM8MzMVCcJXGz2EfVQAxxDsCIPWrsQJ+xJyY3rdQeniZZskWwo5nt/mvx?=
+ =?iso-8859-1?Q?5qrovmaD52RXf7XbBXsq9XdX+R3V4hBSbid2/WNkXybs8cjq5dN5NfnJH5?=
+ =?iso-8859-1?Q?2dR3AAparkLmzzaH6QzXcCZ3tZbDd70di7yO4ZSvxpD6p5TswkBe/cqjT6?=
+ =?iso-8859-1?Q?mGOiFV9GvHlnvaBjex0iyu0KC8AQ1ipmIdC+uNbrssEkmkSPhAKvniGVX0?=
+ =?iso-8859-1?Q?m2zI1c0hLsw06FMWiXQ4bnFnu8GkM6103JOPEjqVPGBkQXa+23er0VXd0+?=
+ =?iso-8859-1?Q?e9AfGmd8nyNMY0UsJZ/YsQVCpkvpI8DQrZdwG02BxW3xJPIjaqmToSSEeC?=
+ =?iso-8859-1?Q?9DU/49LejdjozjiQ49EtISKRuHjAqB/sOzfIGYwK5kqkVq3nqzaq5x/uNR?=
+ =?iso-8859-1?Q?RqKXo9aKi+5j9IxcGjRTpoXhlnVjgx9N6mXLkEc3gy6mrR0sSffZ0Yvm6n?=
+ =?iso-8859-1?Q?DIo//mTAqsHqZHn3ztJGa7INKmTNNyqiBLY/GMNVMEi2NIR/7Cui5pHDC7?=
+ =?iso-8859-1?Q?AB70Jr2CkgmtSyjOhpmQXUNCZVK8IrJMdVgvan+72UMF1dzMuqIeYAZE8Z?=
+ =?iso-8859-1?Q?fWo8tU6evGaZqlsTLzshH/1r7vVwuXc//ApTB97fIKdQRFCfDo3RnilJva?=
+ =?iso-8859-1?Q?cP94Xn7GYmY7F7/aCspX9ZvJgIwiqyZq2pbnIZWI5314/0nmXY/EsU445p?=
+ =?iso-8859-1?Q?1VQYDDt5OTNRbnrWD34qMwT9w9iWK3/mxcHNuQ0p9wtkfGXvpuv2rzmRUC?=
+ =?iso-8859-1?Q?Hx9UD/Km4IQsPyFoA3WWHjDiYRcJeGsabD+Zn7Nr4+04u/md3pCz3epa+r?=
+ =?iso-8859-1?Q?WgUQYEqAoMRYoxwBKUpswrPxhV0gS4botvY7AGaz6zOxVRSom+oUwfP2SB?=
+ =?iso-8859-1?Q?sOOdMHZ+UiBmgRefxw80DxTnS+boqlzPpntDKCbbkXPZyDICdAS/72i95K?=
+ =?iso-8859-1?Q?5k6jJRrxTgFnHNndxUGT0M0eCuzgSyoqWRdx5gEFLabHN2cfanfVfyOA?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PN0P287MB2019:EE_|MA0P287MB1090:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4d8f50d6-56ab-45ca-a2e3-08dd8873817f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?a/pVjV5w+e1yrnsjJWvrxKrxMA9Th2QILzt0sKoCjKioSr13oFSmJyB0ehGc?=
- =?us-ascii?Q?/qRuqOC3hgKeQLD3UYGSa22JFYHydVQDOs4RZTzZqClAsrasndWmAb3Fi9jX?=
- =?us-ascii?Q?zAJC+w7ZeJlDCzGsA0A93sv4vi8STMlMmJlV6ixXOWws2cV34/SP8H+9nKYR?=
- =?us-ascii?Q?4JW+TKNTmt9m+WyiletW8sPCdPpBal2C4Ba2X9O4j6NHMJu+ngJDiK4RYN88?=
- =?us-ascii?Q?BNx1o+9X/C/Cap0W75TJs8tj0pN2P9tOGhs2WxU3QzCeOihkFgoPzp4IgVXV?=
- =?us-ascii?Q?mJ2Bjismuja+QQt/VHBEY3DUmrtg2fTsUGJuW+xrYSLulQESqKHzdqndiyaA?=
- =?us-ascii?Q?qkfS1WZgSNUPlip0FCpD2btPNbxPhl8P1eYm9HBdokpQo9IfxEZUkPdJYkRM?=
- =?us-ascii?Q?v5E33c1Foe36A1u5CPBBocbFgBTOce1QbC+m/xSvfajNYs4HGemKVKohO1At?=
- =?us-ascii?Q?JEgIInL/zh//6QHf2LoACOVseAGlaHaxezETeHZHKV7iodIil8JHhL6/ihQG?=
- =?us-ascii?Q?/qst5Jw5jjTT8lr0T8A9L65Ck3CRYNDBCy8Pj8qZ4vqJob04wpEMx34EoDOR?=
- =?us-ascii?Q?qiU8jNIwQLENagQtaxczm/v8SxiIHHyksqkk6Rl/p/f4xr3AEvqhsrmEG+XP?=
- =?us-ascii?Q?FaiQndSQf+0I65X/srJAGwJo8u2BIDq+2VTTUBY5Yt1W5gw7nbpJxs3K0EF1?=
- =?us-ascii?Q?V2VWY5ljokr4a1hSjF+LHlTkIOWxCBhf3YuqUWJ6gvXsOnDRvrLlAdpvftgT?=
- =?us-ascii?Q?smRkbCmqJCQViOfiZh2QyNla5vGjE/plNMhTGcNQaJlV9M7fXVEnWcAHzebF?=
- =?us-ascii?Q?isjIabgO9X4lpNfVuwVZuaxc0VfzDcgPAaix3sij2XhFQ2+9pRAVk9JP1JoG?=
- =?us-ascii?Q?y/GXGV4zyKeRVMA5+/Gbl9XtmoYVOcNFOk0JUbNrINkmUySCcT6jv6COAnEz?=
- =?us-ascii?Q?6ninxyCh69dXjJ1HaYsDmj2R6Kd+WOgvmgMbcV/ULFpvfnV7k7Lp2svD9jP4?=
- =?us-ascii?Q?l+YbJ2+1cS9933P9p3N0U2XwHFd0K7TkPCiO+XIrwSpEyne9feTaqtBF5kmv?=
- =?us-ascii?Q?/8Yzq0qolG2kYZa7LuOpgTwAlkoYLh4zD5lAi1pK0bF0NA694jYc1c9b41Ut?=
- =?us-ascii?Q?SajLNGJSoJPj9Ycs8NAZSPMWBm9DBXPACC4HVo4Kj7OSP0it0ev+CQrLbkrr?=
- =?us-ascii?Q?KD8a03VIruc9EdNq1Fhpm6AlhD11Cl+5w4ndozQPoHuu2iKk90+oX9armwYK?=
- =?us-ascii?Q?8XQ/I8vU0Olg8eB046AAvSYGwJTCE1zR45jj3kYcKSAWHnDFMkyf4sxvH3XY?=
- =?us-ascii?Q?kjmRxOaGOvpB6arpZnX1BtupTVWwZM87Oo8evWSfjBvHpKJA1iC4o8mCDJQk?=
- =?us-ascii?Q?kVajNbOKfIO34P4Rr77eXcfPwPQrUuIdCTbXDYCS9E9mr6HhSd7iNTtYkWR+?=
- =?us-ascii?Q?HP9lYh/1ckPmkoic2UlKKJvPVIT2uNrds9chTkmt1Bem5bDojtQT/w=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN0P287MB2019.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LicdPpW8BEjA8+hW09r/AJBxQ+EKbyILLC6QRfwg6sxZ723J4x1xG8vAYfI4?=
- =?us-ascii?Q?XTZ1Qocy535cfeXRmtgtXgq8y+40vcq4/u8X9rk2x4S34a2dr2c26S3f22+L?=
- =?us-ascii?Q?5x3MJKIr8nMp7O4xG+Qbr/wm2GOHbpIkdqiZXCEvSsI2MNJjh/172komUMZg?=
- =?us-ascii?Q?lyOK6POJutGLxNJt0XxZd4NV0pYyhJKVFIR8GoBI5/fWzogUmoRngGFQCyuR?=
- =?us-ascii?Q?9QhTXKJDss7eqo1SE4Chu0/E0l+eJg1PPt3uj+Ru89CVMYJCJcY8PxLOpXBP?=
- =?us-ascii?Q?XCs/UwimT6v1xK4ApkUv8NGV4ZAkoofu5P56d7HmxMNaQqnyMDLZNL9hV7mh?=
- =?us-ascii?Q?P0BSXpLSub21UT4M2SXztpr7J5VanKY4Ew35peuFR92KmRUADyd4EapC6HcH?=
- =?us-ascii?Q?J3HhiAZwHNbCRBTlE+IGnkj4Ck8+7v8CwF6RPT521cVbeWLKcNNRcs3DJ4aT?=
- =?us-ascii?Q?lxybKtAbtPV2PERAilsKzS2rX0EqoVoqWobsOTHuzBmiMpTJSAy3yI5vNamC?=
- =?us-ascii?Q?FKZ3ycz3+sYrxrw2R1GA4BZd8OdqfMqC7YFTcDKu24/UTzd2nxxb9NTsiSEo?=
- =?us-ascii?Q?DgcdXF4MtJVK75lvQlrQlpJzkKqyI4xc00h72RHkWc+5SIisLnlV85PsKGQx?=
- =?us-ascii?Q?4OPiRQzvRuqE0BgiNxKjhRdjEEKyBtmZAnPk3E3gmLaswbYuHTyXSpZkgCY9?=
- =?us-ascii?Q?Dg7mlCFHHHVhMHpKBSFm0xEQVl4g/NxB5cQ6KtXEt3K59JFpaI+xs3M4T4WZ?=
- =?us-ascii?Q?M3aC+b7rPAaH8TVYmV0orJWriQU/9VxvUdvupuFAPxeJuc4P6qhvG+7VvgEw?=
- =?us-ascii?Q?ieULd9P4maRoAHXWnEFEVBnfvmSDpl5C9LjApcPVXfvyseKWLJ06OpWeiT/5?=
- =?us-ascii?Q?4n7YeXu91Hq2Scs/249SVNtFHr/Cf90uDZZcmV7mEyfiFcE1kVMvZEatLyGR?=
- =?us-ascii?Q?lbzDDY/8OoiQJo1mmXRRXq9aM/lL1NI2kuKcPRIDi2QCLA9UyFxU4+Al72SI?=
- =?us-ascii?Q?dDnMG9Bwq7d4sIGwytwLnKrN/7tph0J8BuLJ1zVV5ETGYngBln3kvTILi8vS?=
- =?us-ascii?Q?k0OHqWTXjJPoPH6+kps2pBDztucgseVBp+r918+Cs5LFRW3bQoRzWVoCezEP?=
- =?us-ascii?Q?B1Y0P0OLpXOtyRHa1avAvvsS6fGrhFF26lMcjD2XtQmTKEj+iS83AzBkKCRj?=
- =?us-ascii?Q?MsNGaLsu22DCFhbct9+sz63zHpW00mm48NUfEL1jqWva7FKfiMIOyWJnlPwK?=
- =?us-ascii?Q?Tk/ntY2VYMTG5xiMDjRcROodVSrg9O0oADTiKBd7hgEmfZqZ17jzvas3ET9J?=
- =?us-ascii?Q?HVqBXgSgoCmYcRIV+Y8Q3RtAi2ySZtU4xWOu8E2IDUl5GyUUmzjLXHhOTkLh?=
- =?us-ascii?Q?JGMqzM3BcgJrRhGDhQlYc7EoDtnjBQ6qZ3B0jmp8MJk9HZmt3BdA6ulLnOaB?=
- =?us-ascii?Q?7fWFeQt5Oane/nDZa3+kjDAgsrNfOYyQ/0xfl4eTzjExkIP0uxL7L4YJ9c6u?=
- =?us-ascii?Q?iM0rNqn5mSEg1FtBNUkrjIbrCXorM+59nYDvzHQo/dUTuHwgd8uWl4Yw2lcb?=
- =?us-ascii?Q?gZISEUXz+cP+ATzAf4iXfQUnPd0XvZwFdZRlPSTpB05MtjLzXAD9PMk47TWy?=
- =?us-ascii?Q?glCqrUffXAGCJWVp17vJ5Lo=3D?=
 X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d8f50d6-56ab-45ca-a2e3-08dd8873817f
-X-MS-Exchange-CrossTenant-AuthSource: PN0P287MB2019.INDP287.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2025 05:46:23.3050
+X-MS-Exchange-CrossTenant-AuthSource: PN3P287MB1829.INDP287.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 550fbe0e-db7d-46df-77dc-08dd888c210b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 May 2025 08:42:38.7525
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YMBt8oX/8b4j8FBhGzvGwvs607mUMip71z5jQF/+18H/4I77TwF7P88Wex9gEw5qJmdiKrvsgCEkUrw/xUuFmnlWkeOkjf1VtMve8b21qcQ2i3GQ/R61yRbz8YUqSo0m
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0P287MB1090
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Fzqe6cJnukfGR+FeFjICRBpOtpTznHNdSUIhjtMTDj0v66JdWm3zoBkV4G+ZA2km6cuF8f9k9ZeH0ioNVU+YeQkMG178XGiB/yRRGY99iCs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MAZP287MB0560
 
-Fix SD card timeout issue caused by LDO5 regulator getting disabled
-after boot.
-
-The kernel log shows LDO5 being disabled, which leads to a timeout
-on USDHC2:
-[   33.760561] LDO5: disabling
-[   81.119861] mmc1: Timeout waiting for hardware interrupt.
-
-To prevent this, set regulator-boot-on and regulator-always-on for
-LDO5. Also add the vqmmc regulator to properly support 1.8V/3.3V
-signaling for USDHC2 using a GPIO-controlled regulator.
-
-Fixes: 6c2a1f4f71258 ("arm64: dts: imx8mp-var-som-symphony: Add Variscite Symphony board and VAR-SOM-MX8MP SoM")
-Signed-off-by: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
----
-
-kernel hangs during boot with the following logs:
-
-[   33.760561] LDO5: disabling
-[   81.119861] mmc1: Timeout waiting for hardware interrupt.
-[   81.119872] mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
-[   81.119876] mmc1: sdhci: Sys addr:  0x00000010 | Version:  0x00000002
-[   81.119882] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000010
-[   81.119886] mmc1: sdhci: Argument:  0x00844358 | Trn mode: 0x0000002b
-[   81.119891] mmc1: sdhci: Present:   0x01f88009 | Host ctl: 0x00000012
-[   81.119896] mmc1: sdhci: Power:     0x00000002 | Blk gap:  0x00000080
-[   81.119900] mmc1: sdhci: Wake-up:   0x00000008 | Clock:    0x0000003f
-[   81.119904] mmc1: sdhci: Timeout:   0x0000008f | Int stat: 0x00000000
-[   81.119908] mmc1: sdhci: Int enab:  0x117f100b | Sig enab: 0x117f100b
-[   81.119912] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000502
-[   81.119917] mmc1: sdhci: Caps:      0x07eb0000 | Caps_1:   0x0000b407
-[   81.119921] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00ffffff
-[   81.119925] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x0076b27f
-[   81.119929] mmc1: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x00000900
-[   81.119933] mmc1: sdhci: Host ctl2: 0x00000008
-[   81.119937] mmc1: sdhci: ADMA Err:  0x00000003 | ADMA Ptr: 0x4003f204
-[   81.119941] mmc1: sdhci-esdhc-imx: ========= ESDHC IMX DEBUG STATUS DUMP =========
-[   81.119944] mmc1: sdhci-esdhc-imx: cmd debug status:  0x21b0
-[   81.119949] mmc1: sdhci-esdhc-imx: data debug status:  0x2200
-[   81.119954] mmc1: sdhci-esdhc-imx: trans debug status:  0x2300
-[   81.119959] mmc1: sdhci-esdhc-imx: dma debug status:  0x2400
-[   81.119964] mmc1: sdhci-esdhc-imx: adma debug status:  0x2594
-[   81.119970] mmc1: sdhci-esdhc-imx: fifo debug status:  0x2608
-[   81.119976] mmc1: sdhci-esdhc-imx: async fifo debug status:  0x2798
-[   81.119981] mmc1: sdhci: ===========================================
-
----
- arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-index b2ac2583a592..8d50e8382a1a 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-@@ -35,7 +35,6 @@ memory@40000000 {
- 		      <0x1 0x00000000 0 0xc0000000>;
- 	};
- 
--
- 	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
- 	        compatible = "regulator-fixed";
- 	        regulator-name = "VSD_3V3";
-@@ -46,6 +45,16 @@ reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
- 	        startup-delay-us = <100>;
- 	        off-on-delay-us = <12000>;
- 	};
-+
-+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-+		compatible = "regulator-gpio";
-+		regulator-name = "VSD_VSEL";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpio = <&gpio2 12 GPIO_ACTIVE_HIGH>;
-+		gpios-states = <1>;
-+		states = <3300000 0x0 1800000 0x1>;
-+	};
- };
- 
- &A53_0 {
-@@ -158,6 +167,8 @@ ldo5: LDO5 {
- 				regulator-name = "LDO5";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
- 			};
- 		};
- 	};
-@@ -205,6 +216,7 @@ &usdhc2 {
-         pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-         cd-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
-         vmmc-supply = <&reg_usdhc2_vmmc>;
-+	vqmmc-supply = <&reg_usdhc2_vqmmc>;
-         bus-width = <4>;
-         status = "okay";
- };
--- 
-2.34.1
+Hi Himanshu,=0A=
+=0A=
+Thanks for the update=0A=
+=0A=
+> Fix SD card timeout issue caused by LDO5 regulator getting disabled=0A=
+> after boot.=0A=
+> =0A=
+> The kernel log shows LDO5 being disabled, which leads to a timeout=0A=
+> on USDHC2:=0A=
+> [   33.760561] LDO5: disabling=0A=
+> [   81.119861] mmc1: Timeout waiting for hardware interrupt.=0A=
+> =0A=
+> To prevent this, set regulator-boot-on and regulator-always-on for=0A=
+> LDO5. Also add the vqmmc regulator to properly support 1.8V/3.3V=0A=
+> signaling for USDHC2 using a GPIO-controlled regulator.=0A=
+>=0A=
+> Fixes: 6c2a1f4f71258 ("arm64: dts: imx8mp-var-som-symphony: Add Variscite=
+ Symphony board and VAR-SOM-MX8MP SoM")=0A=
+> Signed-off-by: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>=0A=
+> ---=0A=
+> =0A=
+> kernel hangs during boot with the following logs:=0A=
+> =0A=
+> [   33.760561] LDO5: disabling=0A=
+> [   81.119861] mmc1: Timeout waiting for hardware interrupt.=0A=
+> [   81.119872] mmc1: sdhci: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D SDHCI RE=
+GISTER DUMP =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+> [   81.119876] mmc1: sdhci: Sys addr:  0x00000010 | Version:  0x00000002=
+=0A=
+> [   81.119882] mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000010=
+=0A=
+> [   81.119886] mmc1: sdhci: Argument:  0x00844358 | Trn mode: 0x0000002b=
+=0A=
+> [   81.119891] mmc1: sdhci: Present:   0x01f88009 | Host ctl: 0x00000012=
+=0A=
+> [   81.119896] mmc1: sdhci: Power:     0x00000002 | Blk gap:  0x00000080=
+=0A=
+> [   81.119900] mmc1: sdhci: Wake-up:   0x00000008 | Clock:    0x0000003f=
+=0A=
+> [   81.119904] mmc1: sdhci: Timeout:   0x0000008f | Int stat: 0x00000000=
+=0A=
+> [   81.119908] mmc1: sdhci: Int enab:  0x117f100b | Sig enab: 0x117f100b=
+=0A=
+> [   81.119912] mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000502=
+=0A=
+> [   81.119917] mmc1: sdhci: Caps:      0x07eb0000 | Caps_1:   0x0000b407=
+=0A=
+> [   81.119921] mmc1: sdhci: Cmd:       0x0000193a | Max curr: 0x00ffffff=
+=0A=
+> [   81.119925] mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x0076b27f=
+=0A=
+> [   81.119929] mmc1: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x00000900=
+=0A=
+> [   81.119933] mmc1: sdhci: Host ctl2: 0x00000008=0A=
+> [   81.119937] mmc1: sdhci: ADMA Err:  0x00000003 | ADMA Ptr: 0x4003f204=
+=0A=
+> [   81.119941] mmc1: sdhci-esdhc-imx: =3D=3D=3D=3D=3D=3D=3D=3D=3D ESDHC I=
+MX DEBUG STATUS DUMP =3D=3D=3D=3D=3D=3D=3D=3D=3D=0A=
+> [   81.119944] mmc1: sdhci-esdhc-imx: cmd debug status:  0x21b0=0A=
+> [   81.119949] mmc1: sdhci-esdhc-imx: data debug status:  0x2200=0A=
+> [   81.119954] mmc1: sdhci-esdhc-imx: trans debug status:  0x2300=0A=
+> [   81.119959] mmc1: sdhci-esdhc-imx: dma debug status:  0x2400=0A=
+> [   81.119964] mmc1: sdhci-esdhc-imx: adma debug status:  0x2594=0A=
+> [   81.119970] mmc1: sdhci-esdhc-imx: fifo debug status:  0x2608=0A=
+> [   81.119976] mmc1: sdhci-esdhc-imx: async fifo debug status:  0x2798=0A=
+> [   81.119981] mmc1: sdhci: =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=0A=
+> =0A=
+> ---=0A=
+>  arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi | 14 +++++++++++++-=0A=
+>  1 file changed, 13 insertions(+), 1 deletion(-)=0A=
+> =0A=
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm=
+64/boot/dts/freescale/imx8mp-var-som.dtsi=0A=
+> index b2ac2583a592..8d50e8382a1a 100644=0A=
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi=0A=
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi=0A=
+> @@ -35,7 +35,6 @@ memory@40000000 {=0A=
+>                        <0x1 0x00000000 0 0xc0000000>;=0A=
+>          };=0A=
+>  =0A=
+> -=0A=
+>          reg_usdhc2_vmmc: regulator-usdhc2-vmmc {=0A=
+>                  compatible =3D "regulator-fixed";=0A=
+>                  regulator-name =3D "VSD_3V3";=0A=
+> @@ -46,6 +45,16 @@ reg_usdhc2_vmmc: regulator-usdhc2-vmmc {=0A=
+>                  startup-delay-us =3D <100>;=0A=
+>                  off-on-delay-us =3D <12000>;=0A=
+>          };=0A=
+> +=0A=
+> +       reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {=0A=
+> +               compatible =3D "regulator-gpio";=0A=
+> +               regulator-name =3D "VSD_VSEL";=0A=
+> +               regulator-min-microvolt =3D <1800000>;=0A=
+> +               regulator-max-microvolt =3D <3300000>;=0A=
+> +               gpio =3D <&gpio2 12 GPIO_ACTIVE_HIGH>;=0A=
+> +               gpios-states =3D <1>;=0A=
+=0A=
+You can remove gpios-states because we've already configured =0A=
+a pull-up in the pinmux, so this is not required.=0A=
+=0A=
+> +               states =3D <3300000 0x0 1800000 0x1>;=0A=
+> +       };=0A=
+>  };=0A=
+>=0A=
+>  &A53_0 {=0A=
+> @@ -158,6 +167,8 @@ ldo5: LDO5 {=0A=
+>                                  regulator-name =3D "LDO5";=0A=
+>                                  regulator-min-microvolt =3D <1800000>;=
+=0A=
+>                                  regulator-max-microvolt =3D <3300000>;=
+=0A=
+> +                               regulator-boot-on;=0A=
+> +                               regulator-always-on;=0A=
+=0A=
+Instead of using regulator-always-on for LDO5, we should set =0A=
+vin-supply =3D <&ldo5>; in the reg_usdhc2_vqmmc node. This =0A=
+cleanly defines the power dependency and avoids keeping =0A=
+LDO5 always on unnecessarily.=0A=
+=0A=
+>                          };=0A=
+>                  };=0A=
+>          };=0A=
+> @@ -205,6 +216,7 @@ &usdhc2 {=0A=
+>          pinctrl-2 =3D <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;=
+=0A=
+>          cd-gpios =3D <&gpio1 14 GPIO_ACTIVE_LOW>;=0A=
+>          vmmc-supply =3D <&reg_usdhc2_vmmc>;=0A=
+> +       vqmmc-supply =3D <&reg_usdhc2_vqmmc>;=0A=
+>          bus-width =3D <4>;=0A=
+>          status =3D "okay";=0A=
+>  };=0A=
+> --=0A=
+> 2.34.1=0A=
+=0A=
+Otherwise LGTM.=0A=
+=0A=
+Best Regards,=0A=
+Tarang=
