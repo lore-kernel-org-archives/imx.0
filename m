@@ -1,78 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7140F1F1513;
-	Thu,  1 May 2025 14:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B62718C011;
+	Thu,  1 May 2025 15:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746109193; cv=none; b=Q1foWc7G5mmR+Ke+kgJ6CcLdUro62nMpKlQvoslEJclCfZCKzQ5/iqiD8tnN/9FVYOsh7Ikb+P0sseJkJ2H9DlMDquzHfW+RVda2Kw/Km2e/WFfKJ8lqIk16L8k5DaJY5435SFtAPt7+Rna/6i7IbTwKkmz0niWx/zg6OQjDxX0=
+	t=1746113898; cv=none; b=EDDepPEKJ6LwbJ7WVu9h3oqHYKPgi+HhZW87rgXVNOrd2lTrHqWpmPr5wuDzT0UVDypKx6NOy8KAuSeVe5B7YJor34/4BXun4Q81wOFmMVxwEXgGf/GoUHCvw7QgA+O5OGnW/f5mlp9uIvUhPnkdqVoBikofH1dRs/I1xfQO5zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746109193; c=relaxed/simple;
-	bh=pO2NnunOSN24JmQF/ksUCdUUhbN9haI8sI7qfylU7EI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pRwEmdIKRwOapggnDjUdKXUXtWWjVaHJhBdOdcglhxqRo1EkJ8Ba1uQ3zegrUyPVC/9HagKgu05DLlAnJZNBSUUyPee2rMdy5yoBHEPsORsV3j9bO40dDPuVUesiHVUHzhkIMArm/4bqC/P5oDIU+c2gwDmfq+Q9xhdD1SqOAIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SR8rwqV9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746113898; c=relaxed/simple;
+	bh=XFFOTdP/3i3niIEuMBBcyJrNjW1QjuABGAb6m1NknNs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=srGkDkbddQZbhPf7rVl42QH7xevRPdAPCAmUsjSgSB7DHOa8pslsmTQ1xhHCwfYRYJhsNERTmqmXet7n1k3HwPdIuQesYyE+HooDeIu2ilsTJMZnCIDF4ukcmgDicpsmYb1gkXZwQHTgqYBuYjFKQbd8ivFrD2pWDvuq0DZO8mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQFf8QFk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SR8rwqV9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DCEC4CEE3;
-	Thu,  1 May 2025 14:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746109192;
-	bh=pO2NnunOSN24JmQF/ksUCdUUhbN9haI8sI7qfylU7EI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=SR8rwqV90xEGm+J2b5ZD0xjJ6RIDE4pBO/oqrRODgwLI0MHgAw0WDUPo1eEcuYa/2
-	 NRf5l1fKSRiT7NAZwLruwJIJKphSBavHsgDooTwHWzxukz5+i92moR2GbL8NSAY5y9
-	 s5j8mcAbXCVfrs0NjoX9B/2MKjNMa5Uc34UeQZ8mtfz6Eta8rsYcRWXGbdmRr9THQP
-	 g2KaAgixnlUVoQDK1iR6wK8Ka4skWpzTcB6uqwPZc1U42/BuwiycvSIPixgZqYDljx
-	 HqOHcOlRqB459VEh5KsT+bfLQMlF09IK+rMd6wyyRcNjrQdwabOm4K4yI2foGnKTaG
-	 t05Jy3fk8WuVg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D7A3822D59;
-	Thu,  1 May 2025 14:20:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQFf8QFk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01E2C4CEE3;
+	Thu,  1 May 2025 15:38:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746113897;
+	bh=XFFOTdP/3i3niIEuMBBcyJrNjW1QjuABGAb6m1NknNs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LQFf8QFkg9xartG2fb/Sf2lau8ALekMhViwng4WjSIJTupiajzvvSwtZgcOsf2DvD
+	 rhglop+yqL0FI6xBMktUYIVWiBLuSUnXtWsAqeszyAPDi7HaqGCghkFjK7X9ZCgukN
+	 cpNzYesEMP78VqIWrU7yz4T3EwhBHE0vYXawsOLI=
+Date: Thu, 1 May 2025 17:38:14 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Peter Chen <peter.chen@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
+	Fabio Estevam <festevam@gmail.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	linux-arm-kernel@lists.infradead.org, linux-usb@vger.kernel.org,
+	imx@lists.linux.dev, stable@kernel.org
+Subject: Re: [PATCH] usb: chipidea: ci_hdrc_imx: Fix NPD of usbmisc_data
+Message-ID: <2025050100-getting-curler-88aa@gregkh>
+References: <20250422185601.80199-1-wahrenst@gmx.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v1] net: fec: ERR007885 Workaround for conventional TX
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174610923200.2992896.532106335830602410.git-patchwork-notify@kernel.org>
-Date: Thu, 01 May 2025 14:20:32 +0000
-References: <20250429090826.3101258-1-mattiasbarthel@gmail.com>
-In-Reply-To: <20250429090826.3101258-1-mattiasbarthel@gmail.com>
-To: None <mattiasbarthel@gmail.com>
-Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, troy.kisky@boundarydevices.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- mattias.barthel@atlascopco.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250422185601.80199-1-wahrenst@gmx.net>
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 29 Apr 2025 11:08:26 +0200 you wrote:
-> From: Mattias Barthel <mattias.barthel@atlascopco.com>
+On Tue, Apr 22, 2025 at 08:56:01PM +0200, Stefan Wahren wrote:
+> The commit 74adad500346 ("usb: chipidea: ci_hdrc_imx: decrement device's
+> refcount in .remove() and in the error path of .probe()") introduced
+> a NULL pointer dereference on platforms which have no usbmisc_data
+> (e.g. i.MX28). So add the missing checks in .probe() and .remove().
 > 
-> Activate TX hang workaround also in
-> fec_enet_txq_submit_skb() when TSO is not enabled.
-> 
-> Errata: ERR007885
-> 
-> [...]
+> Fixes: 74adad500346 ("usb: chipidea: ci_hdrc_imx: decrement device's refcount in .remove() and in the error path of .probe()")
+> Cc: <stable@kernel.org>
+> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+> ---
+>  drivers/usb/chipidea/ci_hdrc_imx.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-Here is the summary with links:
-  - [net,v1] net: fec: ERR007885 Workaround for conventional TX
-    https://git.kernel.org/netdev/net/c/a179aad12bad
+Does not apply to 6.15-rc4 at all, can you rebase and resubmit?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+thanks,
 
-
+greg k-h
