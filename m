@@ -1,221 +1,81 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A30E20297D
-	for <imx@lists.linux.dev>; Thu,  1 May 2025 17:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C313D251782;
+	Thu,  1 May 2025 20:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746118983; cv=none; b=Ki0IK5A9e9E9QVROfI9GRCDyjAvJyulEdGNOo0DfHJ2Uu9eUxAvQYrggfvmWjVjW6+imnfklT4InYL8t0r572WbBzrtzvq8lJ3LJmlVHMQOFeIC/5wJeXCJQg1Q6IolUyRG7sjHEpqCFTcm9GK5aw5jJMExms1XUVfV6eIwT8Do=
+	t=1746132430; cv=none; b=RyfoPavfGdXnsD9wHrq1vKbkpgNxHiJbisHJa62aPOrNfZ7vzic9g6ESqh0IB3IYMThbAbgMbfeXLXGNydUSTDsaARWDQpa0ZDNba8L+wbp3lkk7h7dHYYzuxpdvuTr0PV60e8sWurw7xkc5nm5smLyYY42X87f2ruDMZaa+IXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746118983; c=relaxed/simple;
-	bh=dSiDMd+puSYJs9M8bjAAeKiONSkB2Z55opOgZxMzSVc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=beCwXvm9Qokp3PsDxo/nSll3Gd9TRykZAGGkOYh64zlXNpOZOksrbOHLOOvz2KYy9eqbJifKdECRA1LYbShaut5HzxoYxRqDDMKTssamp01Y8ko00yNmCbvZLgaCPypesg+bDnheiKMxXzQxTFpgpIi8KtGhvW1v3hu2WqhRsiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=eprvlrsX; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+	s=arc-20240116; t=1746132430; c=relaxed/simple;
+	bh=UiNTIn9FoqDdnMleZU/ZZ/+fnIbmixeKKNoJ4FezKvY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RaNlMRZ6gzIwraDhioviBNLwY9ae4ldbkPf4RnOlWlts0MtwnBcBfDAQhYO+kSZkCcDFvDoHjI+bG+eOsCtowJVDDTz6xWcPXbceycQyUSER77WUsVZffldIoMNbXOue3mMft4cPxR2sw943xS1OfiFVKYbxc6bWOAIM7B19FpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3htQxm1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="eprvlrsX"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7c7913bab2cso119379285a.0
-        for <imx@lists.linux.dev>; Thu, 01 May 2025 10:03:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1746118981; x=1746723781; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AnmKRR26C0Aot9dN/CEjPuuqw6IsSEUnG0n8Vnz6PHk=;
-        b=eprvlrsX/G+Jup5AE5Ne7lxVuo8oRQ2n7qM1fJK7RfpAJEzVne550Umsy+fJBS57+A
-         4ddrahH67YAPPBNvN+neX07JEwNw3tbhXwQQPH8ax+g95BVjtPP7RdU96lewW/eccKxa
-         NOfdETBIhDOi7R1ltBaWZoKIy49doXInZwqT15kbOCBtC+fMIbvzjlEif+AC8jZgw57F
-         2/Tu477m4Ir1FXbouiYlS14L5Aa93EkC9ljRJ8Gn/unuxC+WI+XtDJIxkTGCbZ3lcABp
-         QE8VTAL4+J+0hMv8iyqk+BTJosTPT4YIzffbw3dLBRQ4l2huiR+V1obStSHjMey7i/oA
-         VcNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746118981; x=1746723781;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AnmKRR26C0Aot9dN/CEjPuuqw6IsSEUnG0n8Vnz6PHk=;
-        b=BBWOIau0pCHR66wGyUodJKF08wKKEZgh0Cnwxo5JGynopeDAFOpLeqtkrB9T9etw8h
-         yUlS7Us3SXJUmRNlGWZ3g6dJjzGxepqz72IyQZYmWgmzm11SN5TrsgGFInnnQuU2xQto
-         ihGqdL+rvQKj6iJbDyntFYu+sqUuTxQt3LEA+h6JnEQ9wHtRHrud90V8eL9c/uWx5RrW
-         3KBl9CDBR8rClKB56VzR+39QjhLQ7fe+uzVkru6vH2CV11qLlCnkW4f+NgD+7mbIfbNa
-         qQi8RwfJZS9ydUQcueaJ9zohXbkYcZLw9BwInaC7ICtCn7Z6TYD26reezEGERu6JIx6k
-         bN4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWKQGzb6Og5LvXfsfeDJ3tSvxGAXT1/3wpRLZvqCDf282Dpf0Z3xh5tXa0WzOZbBw84HKM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy+U7tWdxPoYdh4W3rlozxVs2kielElEdfAsEsM/ALROhSMJaQv
-	s9q7mJoPMrm0Fau3kqTJ6FSdN5yZllSX1U/ejeRzBFx9KwMh2B/rLmdprYZQubk=
-X-Gm-Gg: ASbGnctzUXgvfYspmjWhdLrkm7y+5/iH0+/Fdb9bN3yKAp65HYUrFfNd+4xFrFGQur8
-	WDkWMvey3ryQg9EbSLUx2wR+FU/s6tAUZxL8OyDS8Ca3PLYpU6vJrVcOKkB+EGnv77hf4XOL5f1
-	jjB7tPGd8n5YAEkvHN6FxE901yrBd/tkMmb6VwVnNJArnmlsxswJjyzl4IbIl8E9XX0c8HcoEcE
-	le75uSYT0M+Sm5ztJNA7kIoPa0kHj/+0EhxojYcQan1O7WPcmsLHexN9+YqFIajFQJo6h4Ysmdq
-	PYFz/UV15+Dn22G9avLNVvOfN4CMCAl1vncPxGg19Bsg0g==
-X-Google-Smtp-Source: AGHT+IEWhy01ShAhWfub+iOOfu/TJN+6Qalpa374amdQx7s9VHC4cwQvXlZq/+brCm8fEf5wo6mH0Q==
-X-Received: by 2002:a05:620a:4694:b0:7c5:4788:a14e with SMTP id af79cd13be357-7cac7e97b3cmr976977585a.39.1746118980731;
-        Thu, 01 May 2025 10:03:00 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:17:8242::5ac? ([2606:6d00:17:8242::5ac])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cad23d1c99sm68552885a.63.2025.05.01.10.02.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 May 2025 10:03:00 -0700 (PDT)
-Message-ID: <c9981a1e01281153748a1edd4096f4ce1aaae576.camel@ndufresne.ca>
-Subject: Re: [PATCH] media: imx-jpeg: Account for data_offset when getting
- image address
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: ming.qian@oss.nxp.com, mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
-	mirela.rabulea@oss.nxp.com
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
- linux-imx@nxp.com, 	imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Thu, 01 May 2025 13:02:59 -0400
-In-Reply-To: <20250430053928.214-1-ming.qian@oss.nxp.com>
-References: <20250430053928.214-1-ming.qian@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3htQxm1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40F2C4CEE3;
+	Thu,  1 May 2025 20:47:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746132430;
+	bh=UiNTIn9FoqDdnMleZU/ZZ/+fnIbmixeKKNoJ4FezKvY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m3htQxm1w0PQRO6PwU7oQ5gBPmJQnFCt4g8y6SxzOwE4G8eVW/gssjcKUegmHkZf+
+	 FtHdz+sc/93ugffZFJK25wvcxSDF6qkqbY9xSSEP5h1j6VYHcP/OXlhQXjJer26b9e
+	 5jkma23zBEwdZJv9AmPgS2mBegmzqarIU9r8HwRy1g/ITfys9JP4diuhIJ00+Iaz2r
+	 ROkZq8WNSGz0ig7nIDr8hNNgGr8sZx7iV4fbK+HE4g/oloSdmPUmnNRm3wXGQ0mGRk
+	 GE8uMmx7sqpqwNpKrI3n1kzLpryJWX/R6rncLGsBEj2r/KBEqZjDqXcul1JhF/x19N
+	 DrS/u/7BeflWw==
+Date: Fri, 2 May 2025 05:47:07 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Haibo Chen <haibo.chen@nxp.com>
+Cc: Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] spi: spi-nxp-fspi: enable runtime pm for fspi
+Message-ID: <aBPdy8rR8M9x38w9@finisterre.sirena.org.uk>
+References: <20250428-flexspipatch-v3-0-61d5e8f591bc@nxp.com>
+ <20250428-flexspipatch-v3-2-61d5e8f591bc@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oAfTii5X1lsdJXzy"
+Content-Disposition: inline
+In-Reply-To: <20250428-flexspipatch-v3-2-61d5e8f591bc@nxp.com>
+X-Cookie: Well begun is half done.
 
-Le mercredi 30 avril 2025 =C3=A0 13:39 +0800, ming.qian@oss.nxp.com a =C3=
-=A9crit=C2=A0:
-> From: Ming Qian <ming.qian@nxp.com>
->=20
-> Applications may set data_offset when it refers to an output queue. So
-> driver need to account for it when getting the start address of input
-> image in the plane.
->=20
-> Meanwhile data_offset is included in bytesused. So the data_offset
-> should be subtracted from the payload of input image.
 
-I think you should revisit this commit message a little in the next version=
-.
-While the overall patch looks good, I believe you forgot to add code to ver=
-ify
-that addr + data_offset still falls within the HW needed alignment. I don't
-have the HW documentation for that chip, but I have never seen HW capapble =
-of
-handlign random alignment.
+--oAfTii5X1lsdJXzy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Without the data_offset, the data is always page align, so we don't usually
-have to validate that.
+On Mon, Apr 28, 2025 at 06:06:44PM +0800, Haibo Chen wrote:
+> Enable the runtime PM in fspi driver.
+> Also for system PM, On some board like i.MX8ULP-EVK board,
+> after system suspend, IOMUX module will lost power, so all
+> the pinctrl setting will lost when system resume back, need
+> driver to save/restore the pinctrl setting.
 
-regards,
-Nicolas
+I think I would expect the pinctrl driver to deal with restoring the pin
+status over resume?  But perhaps that's not the way that API works?
 
->=20
-> Signed-off-by: Ming Qian <ming.qian@nxp.com>
-> ---
-> =C2=A0.../media/platform/nxp/imx-jpeg/mxc-jpeg.c=C2=A0=C2=A0=C2=A0 | 42 +=
-+++++++++++++-----
-> =C2=A01 file changed, 31 insertions(+), 11 deletions(-)
->=20
-> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/med=
-ia/platform/nxp/imx-jpeg/mxc-jpeg.c
-> index 1221b309a916..035368d65913 100644
-> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> @@ -587,6 +587,27 @@ static void _bswap16(u16 *a)
-> =C2=A0	*a =3D ((*a & 0x00FF) << 8) | ((*a & 0xFF00) >> 8);
-> =C2=A0}
-> =C2=A0
-> +static dma_addr_t mxc_jpeg_get_plane_dma_addr(struct vb2_buffer *buf, un=
-signed int plane_no)
-> +{
-> +	if (plane_no >=3D buf->num_planes)
-> +		return 0;
-> +	return vb2_dma_contig_plane_dma_addr(buf, plane_no) + buf->planes[plane=
-_no].data_offset;
-> +}
-> +
-> +static void *mxc_jpeg_get_plane_vaddr(struct vb2_buffer *buf, unsigned i=
-nt plane_no)
-> +{
-> +	if (plane_no >=3D buf->num_planes)
-> +		return NULL;
-> +	return vb2_plane_vaddr(buf, plane_no) + buf->planes[plane_no].data_offs=
-et;
-> +}
-> +
-> +static unsigned long mxc_jpeg_get_plane_payload(struct vb2_buffer *buf, =
-unsigned int plane_no)
-> +{
-> +	if (plane_no >=3D buf->num_planes)
-> +		return 0;
-> +	return vb2_get_plane_payload(buf, plane_no) - buf->planes[plane_no].dat=
-a_offset;
-> +}
-> +
-> =C2=A0static void print_mxc_buf(struct mxc_jpeg_dev *jpeg, struct vb2_buf=
-fer *buf,
-> =C2=A0			=C2=A0 unsigned long len)
-> =C2=A0{
-> @@ -599,11 +620,11 @@ static void print_mxc_buf(struct mxc_jpeg_dev *jpeg=
-, struct vb2_buffer *buf,
-> =C2=A0		return;
-> =C2=A0
-> =C2=A0	for (plane_no =3D 0; plane_no < buf->num_planes; plane_no++) {
-> -		payload =3D vb2_get_plane_payload(buf, plane_no);
-> +		payload =3D mxc_jpeg_get_plane_payload(buf, plane_no);
-> =C2=A0		if (len =3D=3D 0)
-> =C2=A0			len =3D payload;
-> -		dma_addr =3D vb2_dma_contig_plane_dma_addr(buf, plane_no);
-> -		vaddr =3D vb2_plane_vaddr(buf, plane_no);
-> +		dma_addr =3D mxc_jpeg_get_plane_dma_addr(buf, plane_no);
-> +		vaddr =3D mxc_jpeg_get_plane_vaddr(buf, plane_no);
-> =C2=A0		v4l2_dbg(3, debug, &jpeg->v4l2_dev,
-> =C2=A0			 "plane %d (vaddr=3D%p dma_addr=3D%x payload=3D%ld):",
-> =C2=A0			=C2=A0 plane_no, vaddr, dma_addr, payload);
-> @@ -701,16 +722,15 @@ static void mxc_jpeg_addrs(struct mxc_jpeg_desc *de=
-sc,
-> =C2=A0	struct mxc_jpeg_q_data *q_data;
-> =C2=A0
-> =C2=A0	q_data =3D mxc_jpeg_get_q_data(ctx, raw_buf->type);
-> -	desc->buf_base0 =3D vb2_dma_contig_plane_dma_addr(raw_buf, 0);
-> +	desc->buf_base0 =3D mxc_jpeg_get_plane_dma_addr(raw_buf, 0);
-> =C2=A0	desc->buf_base1 =3D 0;
-> =C2=A0	if (img_fmt =3D=3D STM_CTRL_IMAGE_FORMAT(MXC_JPEG_YUV420)) {
-> =C2=A0		if (raw_buf->num_planes =3D=3D 2)
-> -			desc->buf_base1 =3D vb2_dma_contig_plane_dma_addr(raw_buf, 1);
-> +			desc->buf_base1 =3D mxc_jpeg_get_plane_dma_addr(raw_buf, 1);
-> =C2=A0		else
-> =C2=A0			desc->buf_base1 =3D desc->buf_base0 + q_data->sizeimage[0];
-> =C2=A0	}
-> -	desc->stm_bufbase =3D vb2_dma_contig_plane_dma_addr(jpeg_buf, 0) +
-> -		offset;
-> +	desc->stm_bufbase =3D mxc_jpeg_get_plane_dma_addr(jpeg_buf, 0) + offset=
-;
-> =C2=A0}
-> =C2=A0
-> =C2=A0static bool mxc_jpeg_is_extended_sequential(const struct mxc_jpeg_f=
-mt *fmt)
-> @@ -967,8 +987,8 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *pr=
-iv)
-> =C2=A0			vb2_set_plane_payload(&dst_buf->vb2_buf, 1, payload);
-> =C2=A0		}
-> =C2=A0		dev_dbg(dev, "Decoding finished, payload size: %ld + %ld\n",
-> -			vb2_get_plane_payload(&dst_buf->vb2_buf, 0),
-> -			vb2_get_plane_payload(&dst_buf->vb2_buf, 1));
-> +			mxc_jpeg_get_plane_payload(&dst_buf->vb2_buf, 0),
-> +			mxc_jpeg_get_plane_payload(&dst_buf->vb2_buf, 1));
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	/* short preview of the results */
-> @@ -1827,8 +1847,8 @@ static int mxc_jpeg_parse(struct mxc_jpeg_ctx *ctx,=
- struct vb2_buffer *vb)
-> =C2=A0	struct mxc_jpeg_sof *psof =3D NULL;
-> =C2=A0	struct mxc_jpeg_sos *psos =3D NULL;
-> =C2=A0	struct mxc_jpeg_src_buf *jpeg_src_buf =3D vb2_to_mxc_buf(vb);
-> -	u8 *src_addr =3D (u8 *)vb2_plane_vaddr(vb, 0);
-> -	u32 size =3D vb2_get_plane_payload(vb, 0);
-> +	u8 *src_addr =3D (u8 *)mxc_jpeg_get_plane_vaddr(vb, 0);
-> +	u32 size =3D mxc_jpeg_get_plane_payload(vb, 0);
-> =C2=A0	int ret;
-> =C2=A0
-> =C2=A0	memset(&header, 0, sizeof(header));
->=20
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> prerequisite-patch-id: 0000000000000000000000000000000000000000
+--oAfTii5X1lsdJXzy
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgT3cgACgkQJNaLcl1U
+h9CoAwf/cEyw6JWwhqoZvJEjqEzp3rVMCMhB6y9xgiOpL5V4+GIZGoVC/uWMEPtD
+J1uBokW0LCVxsplGWXY24gu49au+pxKTaEwyB8bCYfk6bR1McuE5cV+9Y6Jo+t6u
+LlaEaFVPozTSfVnx5OX7XyBPVEcr777LgeSwqxl6zMZ7TfhDTEHhWHhlbvGu95m+
+PgPSldOfFMH0JgrcIIUJ1wEnUpTUZuy1PSxbxtKO2XWYZtb1EoFNZe3Sl+FKNr06
+tY1wS/of8qHiG5zbVIT4UWei7pb612kO7zQCaDsUx7RKr5Y5YEVTj6tSJ5KXLZlw
+zRfiy9lUBuaPYLA/ODEmylfdFjygGw==
+=1ET9
+-----END PGP SIGNATURE-----
+
+--oAfTii5X1lsdJXzy--
