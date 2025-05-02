@@ -1,49 +1,49 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05B422A4DA;
-	Fri,  2 May 2025 08:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC888828;
+	Fri,  2 May 2025 08:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746173296; cv=none; b=Yek3YbV0ZdnWtbOOGPsRXOfjqpo/gY8rsdnLisEBznWrWvHU5UBGZwvg+Dbff7Aa8uQkHNV/AP+JMNP/VcyITYZHTVqnEtO47Q0ggfP1wBcTg+xcFRebD6vZoL4Ri5gBCVigQfgGtH+Yr3g1EzHZGsGF5tZdYb619Gdk+RhJYSs=
+	t=1746173797; cv=none; b=tEuDJa98WuofyliHdIQao0eLgEJTTZi9GFlFPA+EFsm1eF22fKRQ9quKiKboZL7lUCWJpCCxxi/5BSpP8JagPO4+EuqsPNDkkbdXfVugYmoYKfzh7/qLkCAMZ4IrAMNEA1OAVPM4DCceOdaJiBnUNSdD2i+MeOX748HuqHlomOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746173296; c=relaxed/simple;
-	bh=eiatRJ4JAfkKyNICDEwl7AfYH7Bpo4yYzsqoeBbolTY=;
+	s=arc-20240116; t=1746173797; c=relaxed/simple;
+	bh=7PEGRbjPoq0ejywDcjXSYcreCPbFzSRzZrGohIJB5UI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mFdahp1ORmUBrW3LxuW5KuEH6oKX1klLhsYE9M4lNoRvCDc4S6l97TIZn/jmFydyfhGIIEikDQM4xqBUUWhGCiqN5SSkGayysGXWmVJb7k8jv+4ygIRMwwHEardPCQnwmKElZIXfrYB4VCE3G5J6TTFiVUNV/yg5hfN2ekzWCGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=X74JdYW/; arc=none smtp.client-ip=198.47.23.235
+	 In-Reply-To:Content-Type; b=ZcGcHOdJ2ccAKPQIre/VwK/79HcywVVBxWuJDunn3Bv9VKAde0WZJfyXUe9hO8h31gGuraTDyDcxkWqWV7xnTPDyEaJeRZqsIOls8VBalUmQu2HT+o9WUFAmU+HWfmbswkRtU4voe7dJXa0PP9iUacHDCg9zAqrtuaTUv+/4JEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=g4hn8mdP; arc=none smtp.client-ip=198.47.19.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="X74JdYW/"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 54287nYA365294
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="g4hn8mdP"
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 5428Frxg196471
 	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 May 2025 03:07:49 -0500
+	Fri, 2 May 2025 03:15:53 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1746173269;
-	bh=XEy5kTWJrHiARXNw/DljkoPY++hyVEUVWZlPeTaseu8=;
+	s=ti-com-17Q1; t=1746173753;
+	bh=byzia56fERYQkK0LYd0FkTzh/NXmDn2U2tbEdsvg97A=;
 	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=X74JdYW/1OIfaBEK/7dZ95S6ToeGG9XqfzmYWzQPbUy+LDQCGFEBwwxmqRc8u8MFs
-	 BFdx4pEvb5qy7v1G/XF/HS00TbopFHTdLyThPXKdzY54uN90+rtTMxRA8gnjcsgg6r
-	 QBOjB8wdp0XpEVtThGbqz1sODbj1l7RSooghyIIg=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 54287nBo002710
+	b=g4hn8mdPZWg14BlNDN48oJAVTlb/PdlH5jzwTq4uJni7UWSNS7vFYudQIHPV16Pdg
+	 b+M6iWMEXTbB7oqydodsbXNOMNk4/gfhNfliyi2G62t4hNEXf8mMFV5ekyQS/pug/J
+	 xjbGjLSLVMLiSpxWynYj6E8bTGNqVJLH/GNIOU00=
+Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 5428Fr6V063765
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 2 May 2025 03:07:49 -0500
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+	Fri, 2 May 2025 03:15:53 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 2
- May 2025 03:07:49 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ May 2025 03:15:52 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 2 May 2025 03:07:49 -0500
+ Frontend Transport; Fri, 2 May 2025 03:15:52 -0500
 Received: from [172.24.227.193] (devarsh-precision-tower-3620.dhcp.ti.com [172.24.227.193])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 54287ia1107040;
-	Fri, 2 May 2025 03:07:44 -0500
-Message-ID: <e6533f02-b71f-41f5-bb8c-7d6e57f02b87@ti.com>
-Date: Fri, 2 May 2025 13:37:43 +0530
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 5428FlR2117383;
+	Fri, 2 May 2025 03:15:48 -0500
+Message-ID: <f223d5ec-5549-414a-842d-b9aeb80915e5@ti.com>
+Date: Fri, 2 May 2025 13:45:47 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,12 +77,24 @@ On 29/04/25 21:11, Rishikesh Donadkar wrote:
 > Add the corresponding voltage supply definitions to avoid dtbs_check
 > warnings.
 > 
-> Signed-off-by: Rishikesh Donadkar <r-donadkar@ti.com>
+
+On a side-note device-tree overlay requiring these voltages is an
+implied reason, it's mainly because the schematics mention that and
+bindings want to capture same topography in device-tree too.
+
+So maybe good to mention that and share schematic link too in commit
+message :
+
+https://datasheets.raspberrypi.com/camera/camera-module-2-schematics.pdf
+
+With these changes, feel free to add,
 
 Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
 
 Regards
 Devarsh
+
+> Signed-off-by: Rishikesh Donadkar <r-donadkar@ti.com>
 > ---
 >  .../boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso  | 31 +++++++++++++++++++
 >  1 file changed, 31 insertions(+)
