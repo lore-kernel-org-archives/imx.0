@@ -1,139 +1,128 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BE4267733
-	for <imx@lists.linux.dev>; Fri,  2 May 2025 16:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8D1A3156
+	for <imx@lists.linux.dev>; Fri,  2 May 2025 16:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746204790; cv=none; b=J9NnWpGYfFglNFWbSUH5mcbZaTLwwl17ZomWzN0EyoOlevX5erSAcrFwrRQsLRo0v/CchB6eOAoFsPujei73hig/jD90ygGlvBE5ViRIl+W+nO39MIORIGbEPOW3E6MlV8MoATdcCy+boEVz01VM9mV6rUr4NtljXwsja0FjbYc=
+	t=1746204861; cv=none; b=Cd82V7K+DyF0cmHjnVQV+kufggPoMrMWTHUnJmHWuoVWU1kBXBkNCIy90HVKCvJdS7d6NPY3KXfMOIQlZMRxbW/msRJCgF/L+iU94voWG4ltv8rmTeyEOddYC9+xVjlX7FpIlKMXKNlIl1J5fCLMaZqqWC1yHp/zzBVwxdBU7is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746204790; c=relaxed/simple;
-	bh=g4VUCjRthehjpe2xs+A0+SCTnyPwxFun1Jy7XN11WVI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=moAHqRx8MvRt4KDg3RP2F/VXlHF368AOOVSibfXQg+SYQKZw9/ka3UCKSCAMBPlqHhO3n9tOVYd2pQeNlRv8ZQMSbzOI7f0xOUiHGWP4Ynvvm01pfptkVVg+6hflUdYtj9PZ7W+TIErTxdJrY3GrPtMCAuzFwbUL2no6uFWTWDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JYpvmpNz; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JYpvmpNz"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-30863b48553so3404344a91.0
-        for <imx@lists.linux.dev>; Fri, 02 May 2025 09:53:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746204787; x=1746809587; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n7UI2Y6MBJpdKB31fdutcaWyVKKdFp08Cn0ReKUGIo8=;
-        b=JYpvmpNznKvPy4gxwaO/KrTAnb8fF29aw645tar8ZwQ2ZKUyvSJs+3dUTmj2MD0q1Z
-         hVaZE5zt9gjZ4XtqfG0NUn/TJM1wrjGUNEpr2ugiKFGxEN0BCNfieCe1P+zodyzJsj1J
-         IeMSTs8LEXxh+fqDyVSYWRBaJqY0i0pt9P2ZhR8DCD1vXpg9aeaKQ7O6hy1rtEsregjM
-         iPc1LE0EVYFSG7NStwjFJzWup0sKSIum128m+0TMdxVw0+7BSigNUa+nF+CvuBEcy4Jb
-         eATQVpF6qgZrw5nfkIaplpqhrh9/x97cPB8NalZo7jfFFprvlVRfzuW5OWiKr/JPgV35
-         tUxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746204787; x=1746809587;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n7UI2Y6MBJpdKB31fdutcaWyVKKdFp08Cn0ReKUGIo8=;
-        b=R6i+mSUmwOjUYWmUjy6ncQk/G6+5DlN1GI9nuuTHyv3qJLo1AFz2dDgFX40DMcBCyt
-         AdqfNoiYwij7fBAKsFGpvfIOn0hWyUApwiC2E6PWQvLWxeuECw2Q3bzQ0+FXg6yY49bw
-         Cn65BF3FDoLlLGCA5tISO0LHNODvdW2h0dQS6puxY6OvarUkKrgH4LAztMNUwRzlR75J
-         UJp7164bbBlu/V2EBynqDxgpmJ4oUX5rU5yYWXh+B3fC+QmFmrVOyI4NvvTHwKkfX2zw
-         hA3Vqf3hUrMEQ8iVXTqGZff8+mR1QaEARAg/w8sGApq+zhYNUMT3Lw25n9XTMRF0EnOp
-         MIXA==
-X-Forwarded-Encrypted: i=1; AJvYcCWB91rlRNkn1O1MgbUgzIzXbDijBsIIyvIB52P8OTPi1uUwUQUYzYGpdo2+hL3/W4IVf/M=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxkbA3W/mhIxyS/sqhINF1tiUWN6tml0+j8SkPh6Vd7FRztsI6D
-	Ja31PiO0cUfidoZWdUqCsAf/zgmlyelC0quAXFDFIuFX632tIJKzRQUAQ0Ktp3wrb5KhV2bkgN0
-	T31Z3i3L1AnkOUC+u062vUcqGxGw=
-X-Gm-Gg: ASbGncs0xhaSOaZzVkN7dHZuSkcoI+LMOeNN87cPQd1JcZ13l22PKCJIWpMvroiEZxU
-	qV6x+NrXM6G32odfxvvU0PvZdpLrMgUkzyJlrPt4FBWgT9D9AlGh0JyWbCQrHrI1jijT36mitv7
-	8fo453jyVZYIPaO57XFo+6XQ==
-X-Google-Smtp-Source: AGHT+IHGTYOtyWFxjXS9Ul06M6JVtewP0QqLDSWygChMn5nReUMS9WxVTU7k4hPxbBaUObqwnTWe5V/cpuVhKJnX2Y4=
-X-Received: by 2002:a17:90b:254d:b0:302:fc48:4f0a with SMTP id
- 98e67ed59e1d1-30a4e04c98dmr5766332a91.0.1746204787157; Fri, 02 May 2025
- 09:53:07 -0700 (PDT)
+	s=arc-20240116; t=1746204861; c=relaxed/simple;
+	bh=3M12KVAiXepaMce8WCfsepjU54GrGCHwMIvFLVFLQ2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TSx+MocR2eYG/VbOWXpMMwggbjYRlUEOhGVIc21+S4rcahgCty2RXumSNP/yEfR2WEUOAWUM7Ef4gMshpxQf6ox/vrzs/kgsPWMGoxKoDfMb+C3sJWjfMyRO+Hz+TvIdbO2Bm8rZc1LoH0cEUrs64cHJC+eJ0GXhITXRSp9un1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uAteA-00065d-2h; Fri, 02 May 2025 18:53:58 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uAte9-000mLr-0c;
+	Fri, 02 May 2025 18:53:57 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uAte9-00GahR-07;
+	Fri, 02 May 2025 18:53:57 +0200
+Date: Fri, 2 May 2025 18:53:57 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Adam Ford <aford173@gmail.com>
+Cc: nicolas.dufresne@collabora.com, benjamin.gaignard@collabora.com,
+	p.zabel@pengutronix.de, mchehab@kernel.org, shawnguo@kernel.org,
+	Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
+	festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, paulk@sys-base.io, hverkuil@xs4all.nl,
+	laurent.pinchart@ideasonboard.com, sebastian.fricke@collabora.com,
+	ming.qian@nxp.com, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org
+Subject: Re: [RFC PATCH 05/11] arm64: dts: imx8mp: drop gpcv2 vpu
+ power-domains and clocks
+Message-ID: <20250502165357.ncuve25xwvydhxz3@pengutronix.de>
+References: <20250502150513.4169098-1-m.felsch@pengutronix.de>
+ <20250502150513.4169098-6-m.felsch@pengutronix.de>
+ <CAHCN7xJ5p+dwJD7i7caqwhmrz8+gZDVeqfdWA_=He-H+aTJgRg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250502150513.4169098-1-m.felsch@pengutronix.de> <20250502150513.4169098-8-m.felsch@pengutronix.de>
-In-Reply-To: <20250502150513.4169098-8-m.felsch@pengutronix.de>
-From: Adam Ford <aford173@gmail.com>
-Date: Fri, 2 May 2025 11:52:55 -0500
-X-Gm-Features: ATxdqUE-GbFHdhVzbDY9mw-AkKfv1gk9sfEHekiKJv7IfKQ5yld-yg7UXiz-NTw
-Message-ID: <CAHCN7x+Lu9momgX3Vwp+Yu+Tet5Q=k2vCL83SMLuad24SDchEg@mail.gmail.com>
-Subject: Re: [RFC PATCH 07/11] arm64: dts: imx8mp: fix VPU_BUS clock setting
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: nicolas.dufresne@collabora.com, benjamin.gaignard@collabora.com, 
-	p.zabel@pengutronix.de, mchehab@kernel.org, shawnguo@kernel.org, 
-	Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de, festevam@gmail.com, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, paulk@sys-base.io, 
-	hverkuil@xs4all.nl, laurent.pinchart@ideasonboard.com, 
-	sebastian.fricke@collabora.com, ming.qian@nxp.com, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHCN7xJ5p+dwJD7i7caqwhmrz8+gZDVeqfdWA_=He-H+aTJgRg@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, May 2, 2025 at 10:10=E2=80=AFAM Marco Felsch <m.felsch@pengutronix.=
-de> wrote:
->
-> The VPU_PLL clock must be set before the VPU_BUS clock which is derived
-> from the VPU_PLL clock else the VPU_BUS clock is 300MHz and not 600MHz.
->
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mp.dtsi
-> index 97b09b647ec7..7f4bdefb3480 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -2289,8 +2289,8 @@ vpumix_blk_ctrl: blk-ctrl@38330000 {
->                                  <&clk IMX8MP_CLK_VPU_G2_ROOT>,
->                                  <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
->                         clock-names =3D "g1", "g2", "vc8000e";
-> -                       assigned-clocks =3D <&clk IMX8MP_CLK_VPU_BUS>, <&=
-clk IMX8MP_VPU_PLL>;
-> -                       assigned-clock-parents =3D <&clk IMX8MP_VPU_PLL_O=
-UT>;
-> +                       assigned-clocks =3D <&clk IMX8MP_VPU_PLL>, <&clk =
-IMX8MP_CLK_VPU_BUS>;
-> +                       assigned-clock-parents =3D <0>, <&clk IMX8MP_VPU_=
-PLL_OUT>;
->                         assigned-clock-rates =3D <600000000>, <600000000>=
-;
+On 25-05-02, Adam Ford wrote:
+> On Fri, May 2, 2025 at 10:10 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> >
+> > The GPCv2 G1, G2 and VC8000E power-domain don't need to reference the
+> > VPUMIX power-domain nor their module clocks since the power and reset
+> > handling is done by the VPUMIX blkctrl driver.
+> >
+> It was my understanding that having this dependency ensures the order
+> of the bring-up, but maybe I am wrong.  Do you know if the 8MP
 
-I think there was a move to make the default be overdrive [1]  and [2]
-and use a 'nominal' device tree for those who are not in overdrive
-mode.  According to the TRM, the VPU_BUS_CLK_ROOT, the nominal is
-600MHz and the overdrive is 800MHz.  Based on that, I wonder if the
-values here should be 800MHz and if we should add the nominal values
-of 600MHz to the imx8m-nominal.dtsi file.
+If that is true, the 8MM should be broken.
 
-adam
+> suspend-resume works properly?
 
->                         interconnects =3D <&noc IMX8MP_ICM_VPU_G1 &noc IM=
-X8MP_ICN_VIDEO>,
->                                         <&noc IMX8MP_ICM_VPU_G2 &noc IMX8=
-MP_ICN_VIDEO>,
+No I didn't test suspend/resume.
+
+> Should this get a fixes tag?
+
+It's just a cleanup, therefore I didn't add the fixes-tag.
+
+Regards,
+  Marco
 
 
-[1] - https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/c=
-ommit/arch/arm64/boot/dts/freescale/imx8mp.dtsi?h=3Dnext-20250502&id=3D9f75=
-95b3e5ae0ead20a74a5f2a8f0434b3254ac5
-
-[2] - https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/c=
-ommit/arch/arm64/boot/dts/freescale/imx8mp-nominal.dtsi?h=3Dnext-20250502&i=
-d=3D4b98bf3bff7353d94824c4d874ff2d7f38acc49a
-
-> --
-> 2.39.5
->
->
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 7 -------
+> >  1 file changed, 7 deletions(-)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > index e0d3b8cba221..cf9b6c487bd5 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > @@ -879,24 +879,17 @@ pgc_mediamix: power-domain@10 {
+> >
+> >                                         pgc_vpu_g1: power-domain@11 {
+> >                                                 #power-domain-cells = <0>;
+> > -                                               power-domains = <&pgc_vpumix>;
+> >                                                 reg = <IMX8MP_POWER_DOMAIN_VPU_G1>;
+> > -                                               clocks = <&clk IMX8MP_CLK_VPU_G1_ROOT>;
+> >                                         };
+> >
+> >                                         pgc_vpu_g2: power-domain@12 {
+> >                                                 #power-domain-cells = <0>;
+> > -                                               power-domains = <&pgc_vpumix>;
+> >                                                 reg = <IMX8MP_POWER_DOMAIN_VPU_G2>;
+> > -                                               clocks = <&clk IMX8MP_CLK_VPU_G2_ROOT>;
+> > -
+> >                                         };
+> >
+> >                                         pgc_vpu_vc8000e: power-domain@13 {
+> >                                                 #power-domain-cells = <0>;
+> > -                                               power-domains = <&pgc_vpumix>;
+> >                                                 reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
+> > -                                               clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+> >                                         };
+> >
+> >                                         pgc_hdmimix: power-domain@14 {
+> > --
+> > 2.39.5
+> >
+> >
+> 
