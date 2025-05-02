@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8D1A3156
-	for <imx@lists.linux.dev>; Fri,  2 May 2025 16:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E822571D5
+	for <imx@lists.linux.dev>; Fri,  2 May 2025 16:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746204861; cv=none; b=Cd82V7K+DyF0cmHjnVQV+kufggPoMrMWTHUnJmHWuoVWU1kBXBkNCIy90HVKCvJdS7d6NPY3KXfMOIQlZMRxbW/msRJCgF/L+iU94voWG4ltv8rmTeyEOddYC9+xVjlX7FpIlKMXKNlIl1J5fCLMaZqqWC1yHp/zzBVwxdBU7is=
+	t=1746204954; cv=none; b=SJPXF1w+yS+lfUJO8Ye6vGWraaAe7aXCna1rv+p1uaLlgy6l/92p6LiQGDVPu7IQVgqiiDKGSnHDOnY9YAUHbdKZgiy7LUa/2KNpiG1vGQqDf+yG5NFe8J/1BluR8DTLa4MdElncuT7tcUEfoX63a980nF2F4OIadJ3wf33aQqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746204861; c=relaxed/simple;
-	bh=3M12KVAiXepaMce8WCfsepjU54GrGCHwMIvFLVFLQ2c=;
+	s=arc-20240116; t=1746204954; c=relaxed/simple;
+	bh=vNqGUwYfp5kGOVOtzGXafZB7iPsvFgYgPqP2eNAkolw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TSx+MocR2eYG/VbOWXpMMwggbjYRlUEOhGVIc21+S4rcahgCty2RXumSNP/yEfR2WEUOAWUM7Ef4gMshpxQf6ox/vrzs/kgsPWMGoxKoDfMb+C3sJWjfMyRO+Hz+TvIdbO2Bm8rZc1LoH0cEUrs64cHJC+eJ0GXhITXRSp9un1U=
+	 Content-Type:Content-Disposition:In-Reply-To; b=huhRgfoOxEuRSJFBats6/jL+bVFHV0VPwspXfG6ybMA6JXr/saPztJh0loLiBEH/OH0B1WqDI0+Deev28O4HPdo1znDfsM/rqNmVrcV/2QHfF6FSUEBYSqEd1MPa8FWiEDJudXq4l684OXEPfMt2sVXlWavrW8XE38GvCYgi7sA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,18 +18,18 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uAteA-00065d-2h; Fri, 02 May 2025 18:53:58 +0200
+	id 1uAtfk-0006vQ-DD; Fri, 02 May 2025 18:55:36 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uAte9-000mLr-0c;
-	Fri, 02 May 2025 18:53:57 +0200
+	id 1uAtfj-000mM7-2r;
+	Fri, 02 May 2025 18:55:35 +0200
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1uAte9-00GahR-07;
-	Fri, 02 May 2025 18:53:57 +0200
-Date: Fri, 2 May 2025 18:53:57 +0200
+	id 1uAtfj-00Gai4-2R;
+	Fri, 02 May 2025 18:55:35 +0200
+Date: Fri, 2 May 2025 18:55:35 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Adam Ford <aford173@gmail.com>
 Cc: nicolas.dufresne@collabora.com, benjamin.gaignard@collabora.com,
@@ -42,12 +42,11 @@ Cc: nicolas.dufresne@collabora.com, benjamin.gaignard@collabora.com,
 	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	devicetree@vger.kernel.org
-Subject: Re: [RFC PATCH 05/11] arm64: dts: imx8mp: drop gpcv2 vpu
- power-domains and clocks
-Message-ID: <20250502165357.ncuve25xwvydhxz3@pengutronix.de>
+Subject: Re: [RFC PATCH 07/11] arm64: dts: imx8mp: fix VPU_BUS clock setting
+Message-ID: <20250502165535.aeb2osq2vnxsudmq@pengutronix.de>
 References: <20250502150513.4169098-1-m.felsch@pengutronix.de>
- <20250502150513.4169098-6-m.felsch@pengutronix.de>
- <CAHCN7xJ5p+dwJD7i7caqwhmrz8+gZDVeqfdWA_=He-H+aTJgRg@mail.gmail.com>
+ <20250502150513.4169098-8-m.felsch@pengutronix.de>
+ <CAHCN7x+Lu9momgX3Vwp+Yu+Tet5Q=k2vCL83SMLuad24SDchEg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,7 +56,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHCN7xJ5p+dwJD7i7caqwhmrz8+gZDVeqfdWA_=He-H+aTJgRg@mail.gmail.com>
+In-Reply-To: <CAHCN7x+Lu9momgX3Vwp+Yu+Tet5Q=k2vCL83SMLuad24SDchEg@mail.gmail.com>
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: mfe@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
@@ -66,63 +65,36 @@ X-PTX-Original-Recipient: imx@lists.linux.dev
 On 25-05-02, Adam Ford wrote:
 > On Fri, May 2, 2025 at 10:10 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
 > >
-> > The GPCv2 G1, G2 and VC8000E power-domain don't need to reference the
-> > VPUMIX power-domain nor their module clocks since the power and reset
-> > handling is done by the VPUMIX blkctrl driver.
+> > The VPU_PLL clock must be set before the VPU_BUS clock which is derived
+> > from the VPU_PLL clock else the VPU_BUS clock is 300MHz and not 600MHz.
 > >
-> It was my understanding that having this dependency ensures the order
-> of the bring-up, but maybe I am wrong.  Do you know if the 8MP
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > index 97b09b647ec7..7f4bdefb3480 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > @@ -2289,8 +2289,8 @@ vpumix_blk_ctrl: blk-ctrl@38330000 {
+> >                                  <&clk IMX8MP_CLK_VPU_G2_ROOT>,
+> >                                  <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+> >                         clock-names = "g1", "g2", "vc8000e";
+> > -                       assigned-clocks = <&clk IMX8MP_CLK_VPU_BUS>, <&clk IMX8MP_VPU_PLL>;
+> > -                       assigned-clock-parents = <&clk IMX8MP_VPU_PLL_OUT>;
+> > +                       assigned-clocks = <&clk IMX8MP_VPU_PLL>, <&clk IMX8MP_CLK_VPU_BUS>;
+> > +                       assigned-clock-parents = <0>, <&clk IMX8MP_VPU_PLL_OUT>;
+> >                         assigned-clock-rates = <600000000>, <600000000>;
+> 
+> I think there was a move to make the default be overdrive [1]  and [2]
+> and use a 'nominal' device tree for those who are not in overdrive
+> mode.  According to the TRM, the VPU_BUS_CLK_ROOT, the nominal is
+> 600MHz and the overdrive is 800MHz.  Based on that, I wonder if the
+> values here should be 800MHz and if we should add the nominal values
+> of 600MHz to the imx8m-nominal.dtsi file.
 
-If that is true, the 8MM should be broken.
-
-> suspend-resume works properly?
-
-No I didn't test suspend/resume.
-
-> Should this get a fixes tag?
-
-It's just a cleanup, therefore I didn't add the fixes-tag.
+You're right, Ahamd and Lucas did change this. I will adapt it later on.
 
 Regards,
   Marco
-
-
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 7 -------
-> >  1 file changed, 7 deletions(-)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > index e0d3b8cba221..cf9b6c487bd5 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > @@ -879,24 +879,17 @@ pgc_mediamix: power-domain@10 {
-> >
-> >                                         pgc_vpu_g1: power-domain@11 {
-> >                                                 #power-domain-cells = <0>;
-> > -                                               power-domains = <&pgc_vpumix>;
-> >                                                 reg = <IMX8MP_POWER_DOMAIN_VPU_G1>;
-> > -                                               clocks = <&clk IMX8MP_CLK_VPU_G1_ROOT>;
-> >                                         };
-> >
-> >                                         pgc_vpu_g2: power-domain@12 {
-> >                                                 #power-domain-cells = <0>;
-> > -                                               power-domains = <&pgc_vpumix>;
-> >                                                 reg = <IMX8MP_POWER_DOMAIN_VPU_G2>;
-> > -                                               clocks = <&clk IMX8MP_CLK_VPU_G2_ROOT>;
-> > -
-> >                                         };
-> >
-> >                                         pgc_vpu_vc8000e: power-domain@13 {
-> >                                                 #power-domain-cells = <0>;
-> > -                                               power-domains = <&pgc_vpumix>;
-> >                                                 reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
-> > -                                               clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
-> >                                         };
-> >
-> >                                         pgc_hdmimix: power-domain@14 {
-> > --
-> > 2.39.5
-> >
-> >
-> 
