@@ -1,111 +1,164 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B034E255224
-	for <imx@lists.linux.dev>; Fri,  2 May 2025 17:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424011F1511
+	for <imx@lists.linux.dev>; Fri,  2 May 2025 20:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746207714; cv=none; b=FrB+HHA8xQvu2HDJYP0qaOU7WxMfXr2/+/nkd/NwXAXevBnXGqDGNZI8BtL4Zn6MJ79aYcOyplhasYcdinyICaJTWbbQLcmHj7GEsYvPP7mU+VGxb7wmS95rzPYj3vj0rceLjJ3SZHYqjmgKwDrsGXdPNTbbNcUQq3em6PK+oAY=
+	t=1746218005; cv=none; b=pRNxGegCbur2Hl2zpnhpVaBWSVNO96krU08t0BjG6/4k1v3Zvv41vBxD35CZ8TOp0U+sMoWYlzvRcpJTD14Jj4xNKZ0yzQcnUNMPmtP9EvjpRK3ys/HrLUsdqa9R3E/uh6qEtOZRb7uK+YkjxEdRJA5wDyOTVKF7dscC6CkpQGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746207714; c=relaxed/simple;
-	bh=eLz7obv35w/u/cKxEql/UTAbQvGopYBPWu2O23zJfFE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=PxWUobkeHFq71SCUR1xGpKL7rp54LdtpMDhxyNaZ6B6qRybJD7ROppyIFqmuGbdrfN4NT7DPtHDhdIL+1+5CAeAGgo+pefhXWA7ThWyoqcjKRhzkCPxmyPyXyKGljcg8hbJhHSf6KCYIWfxHLl2yIMcXuwjuSKev6hPJhQ+GDFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MdQ2XScY; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1746218005; c=relaxed/simple;
+	bh=8cRp8SM0LX/HE5Z3KnJSbT0t2IN1vaMmNamccM78RCU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PfNu7k1+xR3ls8hgMQfTJenTs5t0g4lVg0cTRlUIPbJjc9PnM65TQIAPoJKOVdrHxqJt2cRlydVCEgd+SY7qD2ltZ8ea/0rAgXRrrLTozuraWwl7ZaNZUDDKaT9QBYewSH7CIjWNwk/lBuCcIRMyH+QpUFo0uZSua4QvFruxkco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmZ+vHtB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MdQ2XScY"
-Message-ID: <7590d7af-e8c3-48cd-aba2-10af4d9d909d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746207700;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xff4owWgDUIlVTdiJE9nAsinQN/NlojnRKLTslMQN8U=;
-	b=MdQ2XScY0YuJgRON9Ye4a2dZ6lrHOCp7JQsLUQSjuXZectNoGme+AUXVBqAz/bLAUi84rn
-	tYk3cMji0ERwL3QX6FL0n8Dtm2D4cGvlptE8Tm+HJDb0EKSUXLT3/UAE5lO/SrfbPWesYm
-	LxlvBaN08D7jjeD+fd2fPTrHOxfw2sQ=
-Date: Fri, 2 May 2025 13:41:32 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmZ+vHtB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168A1C4CEF1
+	for <imx@lists.linux.dev>; Fri,  2 May 2025 20:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746218005;
+	bh=8cRp8SM0LX/HE5Z3KnJSbT0t2IN1vaMmNamccM78RCU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VmZ+vHtBaP8SSohqqvMbuo/9dCNweJUIT1eTA8IbZzfbagwotj1lRz3ma4h4LYlc/
+	 q5Z65x7TjCE5xFP00y4yDAEFn2clHK+U7B0mCpeXgauBWtaKsZNh54N3Muk290/ffY
+	 q8LRgtoYCCBdXhGPcTQ4ewx8tCECuchfEETsDJoDqWM4Nk9xIYBAlp1D5IwxtP9tdL
+	 9YxCmJhxfm2gQ5ASaCUihgOry/tQI4win9t5vyfsK5WqpPzw2Cl8i/qZq1IiUmdCBv
+	 DWFp6bFBEYsM1EESOO41nOBOwlYINsr9OWIfH4theOH2OXkX41RMIR0l9ecPM/feGB
+	 dy0cyd6c9JMQg==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5f63ac6ef0fso1419849a12.1
+        for <imx@lists.linux.dev>; Fri, 02 May 2025 13:33:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVJNcN2iTNuApl3x+ucTXwlRrIUhp4m8XyTDlSJKVAZRL7sgfN8wuBfeBVJpYo9hyKEC2I=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxaqaGMuek5aDaw9YWwm1exiTqrreK672bWdnCjYHpyA4NiMjc3
+	BVIX7lmewNSrENy9QxDsnSpvNDyQ6kdZy3O15mO6/RxV9xr2RCNObno7oUHeRBdVJGTEPHGPaAm
+	tctRvJmedYbXiETUBCYVuS3sk7w==
+X-Google-Smtp-Source: AGHT+IFJAjhO8qP9BM2k4YXGFjxF2DDTVd060jMohyR4Ip3XSKyXWvnjjpfR8v4ueb8Q+ILn2MtJ1K5BoJWlIuzn/k0=
+X-Received: by 2002:a05:6402:354a:b0:5e5:ba77:6f42 with SMTP id
+ 4fb4d7f45d1cf-5f919836e4cmr7202023a12.4.1746218003663; Fri, 02 May 2025
+ 13:33:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [net-next PATCH v3 00/11] Add PCS core support
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, upstream@airoha.com,
- Christian Marangi <ansuelsmth@gmail.com>, linux-kernel@vger.kernel.org,
- Kory Maincent <kory.maincent@bootlin.com>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Beznea <claudiu.beznea@microchip.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
- Ioana Ciornei <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Joyce Ooi <joyce.ooi@intel.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Madalin Bucur <madalin.bucur@nxp.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Michal Simek <michal.simek@amd.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Robert Hancock <robert.hancock@calian.com>,
- Saravana Kannan <saravanak@google.com>, UNGLinuxDriver@microchip.com,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20250415193323.2794214-1-sean.anderson@linux.dev>
- <aADzVrN1yb6UOcLh@shell.armlinux.org.uk>
- <13357f38-f27f-45b5-8c6a-9a7aca41156f@linux.dev>
- <aAEdQVd5Wn7EaxXp@shell.armlinux.org.uk>
- <8d6c8f72-a8bd-43a8-b1e6-a20cafddf804@linux.dev>
-Content-Language: en-US
-In-Reply-To: <8d6c8f72-a8bd-43a8-b1e6-a20cafddf804@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20250423-dt-memory-region-v2-v2-0-2fbd6ebd3c88@kernel.org>
+ <20250423-dt-memory-region-v2-v2-4-2fbd6ebd3c88@kernel.org> <938c4876-d284-4f11-a4ac-9f3831d3c14d@amd.com>
+In-Reply-To: <938c4876-d284-4f11-a4ac-9f3831d3c14d@amd.com>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 2 May 2025 15:33:12 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKhjE-67k2jN3x5qjRYbT4100fDCfkpt7TjESgOi_f8sA@mail.gmail.com>
+X-Gm-Features: ATxdqUGr4Vb6qq9G8I43FJO0ja1hmdvZAb79PHSBzn0-jffEIRPNg2KLlUCVYFA
+Message-ID: <CAL_JsqKhjE-67k2jN3x5qjRYbT4100fDCfkpt7TjESgOi_f8sA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] remoteproc: Use of_reserved_mem_region_* functions
+ for "memory-region"
+To: tanmay.shah@amd.com
+Cc: Saravana Kannan <saravanak@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Russell,
+On Fri, May 2, 2025 at 10:40=E2=80=AFAM Tanmay Shah <tanmay.shah@amd.com> w=
+rote:
+>
+>
+> Hello Rob,
+>
+> Thanks for the patch. Please find my comments below.
+>
+>
+> On 4/23/25 2:42 PM, Rob Herring (Arm) wrote:
+> > Use the newly added of_reserved_mem_region_to_resource() and
+> > of_reserved_mem_region_count() functions to handle "memory-region"
+> > properties.
+> >
+> > The error handling is a bit different in some cases. Often
+> > "memory-region" is optional, so failed lookup is not an error. But then
+> > an error in of_reserved_mem_lookup() is treated as an error. However,
+> > that distinction is not really important. Either the region is availabl=
+e
+> > and usable or it is not. So now, it is just
+> > of_reserved_mem_region_to_resource() which is checked for an error.
+> >
+> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > ---
+> > v2:
+> >   - Use strstarts instead of strcmp for resource names as they include
+> >     the unit-address.
+> >   - Drop the unit-address from resource name for imx and st drivers
+> > ---
+> >   drivers/remoteproc/imx_dsp_rproc.c        | 45 ++++++++------------
+> >   drivers/remoteproc/imx_rproc.c            | 68 ++++++++++++----------=
+--------
+> >   drivers/remoteproc/qcom_q6v5_adsp.c       | 24 ++++-------
+> >   drivers/remoteproc/qcom_q6v5_mss.c        | 60 +++++++++-------------=
+-----
+> >   drivers/remoteproc/qcom_q6v5_pas.c        | 69 +++++++++++-----------=
+---------
+> >   drivers/remoteproc/qcom_q6v5_wcss.c       | 25 +++++------
+> >   drivers/remoteproc/qcom_wcnss.c           | 23 ++++-------
+> >   drivers/remoteproc/rcar_rproc.c           | 36 +++++++---------
+> >   drivers/remoteproc/st_remoteproc.c        | 41 +++++++++---------
+> >   drivers/remoteproc/stm32_rproc.c          | 44 +++++++++-----------
+> >   drivers/remoteproc/ti_k3_dsp_remoteproc.c | 28 +++++--------
+> >   drivers/remoteproc/ti_k3_m4_remoteproc.c  | 28 +++++--------
+> >   drivers/remoteproc/ti_k3_r5_remoteproc.c  | 28 +++++--------
+> >   drivers/remoteproc/xlnx_r5_remoteproc.c   | 51 +++++++++-------------=
+-
+> >   14 files changed, 221 insertions(+), 349 deletions(-)
+> >
+> > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/im=
+x_dsp_rproc.c
+> > index 90cb1fc13e71..fffae6ff4a5c 100644
+>
+> [ ... ]
+>
+> > diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remotepr=
+oc/xlnx_r5_remoteproc.c
+> > index 5aeedeaf3c41..b73e97074c01 100644
+> > --- a/drivers/remoteproc/xlnx_r5_remoteproc.c
+> > +++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+> > @@ -460,49 +460,44 @@ static int add_mem_regions_carveout(struct rproc =
+*rproc)
+> >   {
+> >       struct rproc_mem_entry *rproc_mem;
+> >       struct zynqmp_r5_core *r5_core;
+> > -     struct of_phandle_iterator it;
+> > -     struct reserved_mem *rmem;
+> >       int i =3D 0;
+> >
+> >       r5_core =3D rproc->priv;
+> >
+> >       /* Register associated reserved memory regions */
+> > -     of_phandle_iterator_init(&it, r5_core->np, "memory-region", NULL,=
+ 0);
+> > +     while (1) {
+> > +             int err;
+> > +             struct resource res;
+> >
+> > -     while (of_phandle_iterator_next(&it) =3D=3D 0) {
+> > -             rmem =3D of_reserved_mem_lookup(it.node);
+> > -             if (!rmem) {
+> > -                     of_node_put(it.node);
+> > -                     dev_err(&rproc->dev, "unable to acquire memory-re=
+gion\n");
+> > -                     return -EINVAL;
+> > -             }
+> > +             err =3D of_reserved_mem_region_to_resource(r5_core->np, i=
+++, &res);
+>
+> Here i++ is not needed as it's done at the end of the loop.
+> This bug breaks RPMsg communication on zynqmp platform.
 
-On 4/17/25 11:29, Sean Anderson wrote:
-> On 4/17/25 11:24, Russell King (Oracle) wrote:
->> On Thu, Apr 17, 2025 at 10:22:09AM -0400, Sean Anderson wrote:
->>> Hi Russell,
->>> 
->>> On 4/17/25 08:25, Russell King (Oracle) wrote:
->>> > On Tue, Apr 15, 2025 at 03:33:12PM -0400, Sean Anderson wrote:
->>> >> This series adds support for creating PCSs as devices on a bus with a
->>> >> driver (patch 3). As initial users,
->>> > 
->>> > As per previous, unless I respond (this response not included) then I
->>> > haven't had time to look at it - and today is total ratshit so, not
->>> > today.
->>> 
->>> Sorry if I resent this too soon. I had another look at the request for
->>> #pcs-cells [1], and determined that a simpler approach would be
->>> possible. So I wanted to resend with that change since it would let me
->>> drop the fwnode_property_get_reference_optional_args patches.
->> 
->> Please can you send them as RFC so I don't feel the pressure to say
->> something before they get merged (remember, non-RFC patches to netdev
->> get queued up in patchwork for merging.)
-> 
-> This series is marked "changes requested" in patchwork, so I don't think
-> it should get merged automatically. I won't send a v4 until you've had a
-> chance to review it.
+Thanks for debugging it. I'll fix that up.
 
-Any chance you could review this series in the next week or so? I would
-like to send v4 in time to be reviewed before net-next closes later this
-month.
-
---Sean
+Rob
