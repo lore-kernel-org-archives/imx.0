@@ -1,229 +1,137 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C00625A324
-	for <imx@lists.linux.dev>; Fri,  2 May 2025 15:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494E925D53A;
+	Fri,  2 May 2025 16:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746201480; cv=none; b=m870OkvHvZg77kDRK2E+BgRseUW+wOX66iyeHsnGyzs8vyiCf8b3rG3cYVy622sLIf+LgbphxIMKYzsuyhUh5VJMAwjO3x8p5mB47DKDgxbVEGntiNTv2cgnZeYAWDIATJKKGkBcU8LbO3lt0ZWUcY5lpiiRemKp8vnEhtG6lis=
+	t=1746203173; cv=none; b=da8Z5JFeWFP11dSJeKwUXE5yErQUthx/+NMHuoDlAoSaMEmzPTz1sNx4QwhOYQPp6sSBUOEPAqvL0NvJWhO63vWiwz/x0jL/yj+A5Pdbwx0KpXwD1CqrDGsbtdauNo1jJG5HMad4UwEb4u/7klSTtpHvtvp2HIF0kShbDAKOIq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746201480; c=relaxed/simple;
-	bh=8QYuu7fU5WUIXfLa2awfgrXyGtQ8swMWYYVzxECzPEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D03PFSh4B34DGsaXDTREOMxKAB3DDE9Jz1gxSR1FruBLcjZ9OVlBD2AE8IfL/zZNc6zvt5kotvQiWV2t93BkRogPXH6Sip+G/BkwVSvlVZgYbcHdx1q8k47dXrfV4AW5q8WTokyXjVbWOfgtXw4Zjt8zbQKOrzYPsTdV73zuvmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=s2GAqAeM; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1746203173; c=relaxed/simple;
+	bh=/D1DSkljvhqcswaEWYoX/PerSugjWXx1dx2evkbHVaQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p6vG7PmS+g7y3vDsfDFnKfM0PPndI9uziFeemvWKIh6lfvdiZHI2egQIK7k/86lY5lQq3QGjP7wZUPM+wfRChqnGf/l02Q9Qiss1OPqR/Xg99EIMCNPvltIapCsPoobaaYJDmPMtKhdsjisZ94WNgA/HuGToIvQd0NeJ3Ls2msU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=iYTyRTGv; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="s2GAqAeM"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id AFE20353;
-	Fri,  2 May 2025 17:57:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1746201468;
-	bh=8QYuu7fU5WUIXfLa2awfgrXyGtQ8swMWYYVzxECzPEw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s2GAqAeMwGyk87qn58OiHrgsgvDI9wlMCxw6tM5KORPioPIiY1cmhZ4Y0rEEV43Rk
-	 ZHjsi56wlLzk/opQb+UNzFOMac7F4k2CqiXSQp2+Qt3+cGTHMzV5Jn+a0EtAh9nzzb
-	 R52QvJGHsjKV22hApy2kl1o8bPbbX+ATTa2Iy05k=
-Date: Fri, 2 May 2025 18:57:47 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Robert Chiras <robert.chiras@nxp.com>,
-	"Guoniu.zhou" <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH v4 04/13] media: nxp: imx8-isi: Use
- devm_clk_bulk_get_all() to fetch clocks
-Message-ID: <20250502155747.GB20093@pendragon.ideasonboard.com>
-References: <20250408-8qxp_camera-v4-0-ef695f1b47c4@nxp.com>
- <20250408-8qxp_camera-v4-4-ef695f1b47c4@nxp.com>
- <20250421211438.GN17813@pendragon.ideasonboard.com>
- <aBQZjFsExJh2uRfK@lizhi-Precision-Tower-5810>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="iYTyRTGv"
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 542GQ1ux448886
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 2 May 2025 11:26:01 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1746203161;
+	bh=LXKeTl4krg0a5o3umNNyDFRYE6CagYQ9jy54yI6P1WE=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=iYTyRTGvnDrmnJ/A/XTAdjKpE40albTKCD1yQltU/X8pxdnveluBh4MgDJNx0rB96
+	 cPI/QiJtbeVl5XahpZDAsjOQ9l2JoSAqbf0CinWnTXXHTvQa670JERor1K3+i7bhEh
+	 d0M//L8k7I67WrcnP6z4ixms2Jb1hATHDo/pXyEc=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 542GQ1BM119008
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 2 May 2025 11:26:01 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 2
+ May 2025 11:26:00 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 2 May 2025 11:26:00 -0500
+Received: from ws.dhcp.ti.com (ws.dhcp.ti.com [10.24.69.232])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 542GPex9028994;
+	Fri, 2 May 2025 11:25:56 -0500
+From: Rishikesh Donadkar <r-donadkar@ti.com>
+To: <nm@ti.com>, <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <devarsht@ti.com>,
+        <y-abhilashchandra@ti.com>, <s-jain1@ti.com>, <jai.luthra@linux.dev>,
+        <jai.luthra@ideasonboard.com>, <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <imx@lists.linux.dev>, <r-donadkar@ti.com>
+Subject: [PATCH v2 3/4] arm64: dts: ti: k3-am62x: Add required voltage supplies for OV5640
+Date: Fri, 2 May 2025 21:55:38 +0530
+Message-ID: <20250502162539.322091-4-r-donadkar@ti.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250502162539.322091-1-r-donadkar@ti.com>
+References: <20250502162539.322091-1-r-donadkar@ti.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aBQZjFsExJh2uRfK@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Frank,
+The device tree overlay for OV5640 requires following voltage
+supplies as mentioned in the table 8-3 of the data-sheet [1].
 
-On Thu, May 01, 2025 at 09:02:04PM -0400, Frank Li wrote:
-> On Tue, Apr 22, 2025 at 12:14:38AM +0300, Laurent Pinchart wrote:
-> > On Tue, Apr 08, 2025 at 05:53:02PM -0400, Frank Li wrote:
-> > > Use devm_clk_bulk_get_all() helper to simplify clock handle code.
-> > >
-> > > No functional changes intended.
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 46 +++-------------------
-> > >  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  3 +-
-> > >  2 files changed, 6 insertions(+), 43 deletions(-)
-> > >
-> > > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> > > index ecfc95882f903..015350c6f2784 100644
-> > > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> > > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> > > @@ -275,11 +275,6 @@ static const struct mxc_isi_set_thd mxc_imx8_isi_thd_v1 = {
-> > >  	.panic_set_thd_v = { .mask = 0xf0000, .offset = 16, .threshold = 0x7 },
-> > >  };
-> > >
-> > > -static const struct clk_bulk_data mxc_imx8mn_clks[] = {
-> > > -	{ .id = "axi" },
-> > > -	{ .id = "apb" },
-> > > -};
-> > > -
-> > >  static const struct mxc_isi_plat_data mxc_imx8mn_data = {
-> > >  	.model			= MXC_ISI_IMX8MN,
-> > >  	.num_ports		= 1,
-> > > @@ -287,8 +282,6 @@ static const struct mxc_isi_plat_data mxc_imx8mn_data = {
-> > >  	.reg_offset		= 0,
-> > >  	.ier_reg		= &mxc_imx8_isi_ier_v1,
-> > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
-> > > -	.clks			= mxc_imx8mn_clks,
-> > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
-> > >  	.buf_active_reverse	= false,
-> > >  	.gasket_ops		= &mxc_imx8_gasket_ops,
-> > >  	.has_36bit_dma		= false,
-> > > @@ -301,8 +294,6 @@ static const struct mxc_isi_plat_data mxc_imx8mp_data = {
-> > >  	.reg_offset		= 0x2000,
-> > >  	.ier_reg		= &mxc_imx8_isi_ier_v2,
-> > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
-> > > -	.clks			= mxc_imx8mn_clks,
-> > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
-> > >  	.buf_active_reverse	= true,
-> > >  	.gasket_ops		= &mxc_imx8_gasket_ops,
-> > >  	.has_36bit_dma		= true,
-> > > @@ -315,8 +306,6 @@ static const struct mxc_isi_plat_data mxc_imx8ulp_data = {
-> > >  	.reg_offset		= 0x0,
-> > >  	.ier_reg		= &mxc_imx8_isi_ier_v2,
-> > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
-> > > -	.clks			= mxc_imx8mn_clks,
-> > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
-> > >  	.buf_active_reverse	= true,
-> > >  	.has_36bit_dma		= false,
-> > >  };
-> > > @@ -328,8 +317,6 @@ static const struct mxc_isi_plat_data mxc_imx93_data = {
-> > >  	.reg_offset		= 0,
-> > >  	.ier_reg		= &mxc_imx8_isi_ier_v2,
-> > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
-> > > -	.clks			= mxc_imx8mn_clks,
-> > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
-> > >  	.buf_active_reverse	= true,
-> > >  	.gasket_ops		= &mxc_imx93_gasket_ops,
-> > >  	.has_36bit_dma		= false,
-> > > @@ -386,7 +373,7 @@ static int mxc_isi_runtime_suspend(struct device *dev)
-> > >  {
-> > >  	struct mxc_isi_dev *isi = dev_get_drvdata(dev);
-> > >
-> > > -	clk_bulk_disable_unprepare(isi->pdata->num_clks, isi->clks);
-> > > +	clk_bulk_disable_unprepare(isi->num_clks, isi->clks);
-> > >
-> > >  	return 0;
-> > >  }
-> > > @@ -396,7 +383,7 @@ static int mxc_isi_runtime_resume(struct device *dev)
-> > >  	struct mxc_isi_dev *isi = dev_get_drvdata(dev);
-> > >  	int ret;
-> > >
-> > > -	ret = clk_bulk_prepare_enable(isi->pdata->num_clks, isi->clks);
-> > > +	ret = clk_bulk_prepare_enable(isi->num_clks, isi->clks);
-> > >  	if (ret) {
-> > >  		dev_err(dev, "Failed to enable clocks (%d)\n", ret);
-> > >  		return ret;
-> > > @@ -414,27 +401,6 @@ static const struct dev_pm_ops mxc_isi_pm_ops = {
-> > >   * Probe, remove & driver
-> > >   */
-> > >
-> > > -static int mxc_isi_clk_get(struct mxc_isi_dev *isi)
-> > > -{
-> > > -	unsigned int size = isi->pdata->num_clks
-> > > -			  * sizeof(*isi->clks);
-> > > -	int ret;
-> > > -
-> > > -	isi->clks = devm_kmemdup(isi->dev, isi->pdata->clks, size, GFP_KERNEL);
-> > > -	if (!isi->clks)
-> > > -		return -ENOMEM;
-> > > -
-> > > -	ret = devm_clk_bulk_get(isi->dev, isi->pdata->num_clks,
-> > > -				isi->clks);
-> > > -	if (ret < 0) {
-> > > -		dev_err(isi->dev, "Failed to acquire clocks: %d\n",
-> > > -			ret);
-> > > -		return ret;
-> > > -	}
-> > > -
-> > > -	return 0;
-> > > -}
-> > > -
-> > >  static int mxc_isi_probe(struct platform_device *pdev)
-> > >  {
-> > >  	struct device *dev = &pdev->dev;
-> > > @@ -457,11 +423,9 @@ static int mxc_isi_probe(struct platform_device *pdev)
-> > >  	if (!isi->pipes)
-> > >  		return -ENOMEM;
-> > >
-> > > -	ret = mxc_isi_clk_get(isi);
-> > > -	if (ret < 0) {
-> > > -		dev_err(dev, "Failed to get clocks\n");
-> > > -		return ret;
-> > > -	}
-> > > +	isi->num_clks = devm_clk_bulk_get_all(dev, &isi->clks);
-> >
-> > This prevents validating that the DT contains the expected clocks, which
-> > could cause hard to debug issues. Isn't it a problem ?
-> 
-> It is checked by dt-binding. Now no warning by DTB_CHECK under arm64 freecale.
-> CHECK_DTB should be enough to find expected clocks.
+AVDD-supply: Analog voltage supply, 2.8 volts
+DOVDD-supply: Digital I/O voltage supply, 1.8 volts
+DVDD-supply: Digital core voltage supply, 1.5 volts
 
-Yes, the DTB check will catch issues at build time, but the driver will
-not enforce that. I'm not sure if there's a clear policy here, and if
-ensuring at runtime in drivers that the expected clocks are present is
-considered as a good practice by the DT maintainers. Rob, Krzysztof,
-Conor, do you have an opinion ?
+Add them in the overlay.
 
-> > > +	if (isi->num_clks < 0)
-> > > +		return dev_err_probe(dev, isi->num_clks, "Failed to get clocks\n");
-> > >
-> > >  	isi->regs = devm_platform_ioremap_resource(pdev, 0);
-> > >  	if (IS_ERR(isi->regs)) {
-> > > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> > > index e7534a80af7b4..bd3cfe5fbe063 100644
-> > > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> > > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> > > @@ -169,8 +169,6 @@ struct mxc_isi_plat_data {
-> > >  	const struct mxc_isi_ier_reg  *ier_reg;
-> > >  	const struct mxc_isi_set_thd *set_thd;
-> > >  	const struct mxc_gasket_ops *gasket_ops;
-> > > -	const struct clk_bulk_data *clks;
-> > > -	unsigned int num_clks;
-> > >  	bool buf_active_reverse;
-> > >  	bool has_36bit_dma;
-> > >  };
-> > > @@ -282,6 +280,7 @@ struct mxc_isi_dev {
-> > >
-> > >  	void __iomem			*regs;
-> > >  	struct clk_bulk_data		*clks;
-> > > +	int				num_clks;
-> > >  	struct regmap			*gasket;
-> > >
-> > >  	struct mxc_isi_crossbar		crossbar;
+Link: https://cdn.sparkfun.com/datasheets/Sensors/LightImaging/OV5640_datasheet.pdf
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Signed-off-by: Rishikesh Donadkar <r-donadkar@ti.com>
+---
+ .../boot/dts/ti/k3-am62x-sk-csi2-ov5640.dtso  | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
+diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-ov5640.dtso b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-ov5640.dtso
+index 7fc7c95f5cd57..fc77fc77fe0b1 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-ov5640.dtso
++++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-ov5640.dtso
+@@ -15,6 +15,33 @@ clk_ov5640_fixed: ov5640-xclk {
+ 		#clock-cells = <0>;
+ 		clock-frequency = <12000000>;
+ 	};
++
++	reg_2p8v: regulator-2p8v {
++		compatible = "regulator-fixed";
++		regulator-name = "2P8V";
++		regulator-min-microvolt = <2800000>;
++		regulator-max-microvolt = <2800000>;
++		vin-supply = <&vcc_3v3_sys>;
++		regulator-always-on;
++	};
++
++	reg_1p8v: regulator-1p8v {
++		compatible = "regulator-fixed";
++		regulator-name = "1P8V";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		vin-supply = <&vcc_3v3_sys>;
++		regulator-always-on;
++	};
++
++	reg_1p5v: regulator-1p5v {
++		compatible = "regulator-fixed";
++		regulator-name = "1P5V";
++		regulator-min-microvolt = <1500000>;
++		regulator-max-microvolt = <1500000>;
++		vin-supply = <&vcc_3v3_sys>;
++		regulator-always-on;
++	};
+ };
+ 
+ &main_i2c2 {
+@@ -40,6 +67,11 @@ ov5640: camera@3c {
+ 
+ 				clocks = <&clk_ov5640_fixed>;
+ 				clock-names = "xclk";
++
++				AVDD-supply = <&reg_2p8v>;
++				DOVDD-supply = <&reg_1p8v>;
++				DVDD-supply = <&reg_1p5v>;
++
+ 				powerdown-gpios = <&exp1 13 GPIO_ACTIVE_LOW>;
+ 
+ 				port {
 -- 
-Regards,
+2.34.1
 
-Laurent Pinchart
