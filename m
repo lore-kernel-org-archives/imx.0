@@ -1,148 +1,128 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D158A25F7B2
-	for <imx@lists.linux.dev>; Fri,  2 May 2025 16:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C929125D90D
+	for <imx@lists.linux.dev>; Fri,  2 May 2025 16:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746203443; cv=none; b=U5rPH69MW0EMxcEe/eVuEY5PQiO3E+fEn8YxPHKzvYjeVte8wCEiPj5BqSg91wTlq1MoX36NuMvZL3wZEA6O419UdWBG3HP/tS0TEQPs7sLD8wTgGsvtEG9t9TT1MfWQV+AKo/LOiCsPIH4w6WfzKSCGyBfZOl2ey3h2gFT35CE=
+	t=1746203899; cv=none; b=IHW5XUry1IDaHGqx7wrEXu4HnnSuEayMKcOitlbYIYin7RKAHJP87ou5EUjprIKNvbrHc3DklNg+spaXlUic33ytm/JquTCysDKdyWOXtvSXvdP84HY9Fz/vLZ07eU7J3vLQE2Vg/YDF9dqt/fo/N7xO2BANG15ahBhWNcZHU4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746203443; c=relaxed/simple;
-	bh=GGGJaQnxnZ+/Qywxhcm3pMs8DHoqSjZXKNpRXJXqxNo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Khpspj3vDYJi8YvPEeOrr8mNT6WE1F7QD73nVnnBO7ZT9gBMBGecA9vlyn9yt3k3Fo+uTMatMjUidaO+ufSQHAc2xgJvTYaddQ6NBXvI9BpA+AjRHOxYSa5SmouHnMysK6MIoy6opPW9A8fTufoPR2rvJj47A8sCd6RdXtPxLxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U69n/reg; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746203899; c=relaxed/simple;
+	bh=StNCSoWqTHQVNnBSV3C33tQMvr1ACyrW1L37/XLZkWw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XkcAu6GKHWJsuPfYy1KmnULDsKgLYKOlU6OMUmKWuTW3QUYZtUYK8yyXfBItGY8zCxXWuMdAmJwzyG3R/2NPJI/A7iMgxDPktD8u+vmPgHCmtf4RsHn5TTmcwsJEGi+3dpXOcWlY1k1eOVw2XTBp8mClQ/yBDpXDX9XogiNKC10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=VtI0M86i; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U69n/reg"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-30a5094df42so1140046a91.0
-        for <imx@lists.linux.dev>; Fri, 02 May 2025 09:30:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746203441; x=1746808241; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tLgGDAzhbzi8zBfreiBGkw9+hq2PN6Kh7ZFPU4njLno=;
-        b=U69n/regB7yK0rOi2vac0/BJZ5wlJiyKdFw7YpAP7+irGc2oUCB9GI6QkCW3mOgSVz
-         cm8UUDt98PJGlZZHmzYTTm5ldf4xqQmv98iAfm0E4VY2ykRKslNEZqE15WFqAYa0S/af
-         6zqcByiXLKBvZyIFmlSJIADIYSQjqhCpIDVFbd2/mYevD2qz3S/fnDM646QCkD+zWzno
-         oGSYgeUyIvlcwD9oll4fMBsCusuwtKlZQFA1z1t72iw6OGKU9oeDhSgJ5nc5lBeujl0W
-         a9bRhqpbY4rm4uqJHRKO0EkBCkdqv0wokqJoDPDYckZ6GEBuIs1sLMPiTeIZe9yODLn2
-         8dAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746203441; x=1746808241;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tLgGDAzhbzi8zBfreiBGkw9+hq2PN6Kh7ZFPU4njLno=;
-        b=lIsLStkUdD5VJTi3IknNdwvoa8RNMXsbdAXu2rg/O14Q08MQVh/4fCGbD0fesD4Txm
-         a+qFdpKYLYmYht1eQKo4fttgxr5+27wKjLf6u/er9NIps/Lz6beqcY6qqVXyzqfLwrAN
-         VuOlNE9H3j0QtDQIFyOc20PP1TLuG++5qZ9I35J3yfL84XDRb+xJqZR9bQE8yMu/EH5L
-         mdtzyv8NoPTrYJfbxCeYyvacuf29MV7OUitzQRXG18QSiMo/q58ZDXaL7ZXdTBBrryjP
-         YhvNTmKKWtTcQyQ6yjPXukfIFWv8+55zauvRepVrfr1bzyBGhCmOG9l2SDGpOuWbpKjC
-         FJRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXO4QyU0frEVp1UODVq4I3z9wfgGUxJ+mfrznZmq48OcQqYGENP9jsD0BTwxmYq6xyF/bc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyXNNsyoeZcz/ojRW13W4mLXXI5pioaD4E5PE9smmKVruegIoMY
-	MMzE1wUejWHmexHrK87nOxo4v1TfLoGN3XDNkqQQ+DMqbNQ55a+WWbhI2H4/Ghp8EPSeBK957wd
-	IjPVYLsYPUVbLqQ4pAUTxRRH9F+Q=
-X-Gm-Gg: ASbGncsxaJUKadoGEASuzjIdaOXlNO3cRhQMQXpc2NgrXcfXyZSiih25pgpM4Ey6ZtN
-	AvUufB3vMN7uUuQ2oPQTFEqq18JG82ejzmVzM107nIFb6W9XOU17DHmKxh76lKXJYI5hqktK+Tw
-	3/U+mfeGS0wSiGALndUwPjRQ==
-X-Google-Smtp-Source: AGHT+IFD83mVdOJy5lpNuPlZVPmLooAoJbMjhC2ix2c3XVL7B+J+mwkKq3CJH7cJU97BTv0F3P0V/yqYXOccmyxktrA=
-X-Received: by 2002:a17:90b:582e:b0:2ff:6608:78cd with SMTP id
- 98e67ed59e1d1-30a4e5a5e10mr6554332a91.9.1746203440962; Fri, 02 May 2025
- 09:30:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="VtI0M86i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1746203895;
+	bh=StNCSoWqTHQVNnBSV3C33tQMvr1ACyrW1L37/XLZkWw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=VtI0M86iGqKNtCI/YHmVpMgC6HBmTIfOrA4YY+0vvgofcTMarsQ8v2IXDHfd+7LN2
+	 T34mfNirbEGRJenY9I0GDGUhwqurv/+5uI6DwA1HgtTEmIKBBwe8NIvbomKHRU9j4M
+	 EsoT3AYwn5z1ay8+NSg7SdmxFAUIVi7dtBkq0zc/B0Kx9fg58aw/Ni1uG6PZv6GvEv
+	 G0iLOL4zMW+gs81SiTPTKABjdSW0VpAJD6E3OANANxmE0PaeUE+uY+rqlsiJE6V37/
+	 y+Kv5j/4cb6N0mEPzL4+G7uB2tL3KAZQOGGQsx6q+Z5IuH++z9L6tXPGSRRJj1tgox
+	 dYzpmcjweClWA==
+Received: from [IPv6:2606:6d00:15:ec4::5ac] (unknown [IPv6:2606:6d00:15:ec4::5ac])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 48F3F17E0657;
+	Fri,  2 May 2025 18:38:13 +0200 (CEST)
+Message-ID: <2d82e4e0aa4c244e8b2d3f1e46e92760cd6238d7.camel@collabora.com>
+Subject: Re: [RFC PATCH 03/11] media: uapi: add nal unit header fields to
+ encode_params
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Marco Felsch <m.felsch@pengutronix.de>, benjamin.gaignard@collabora.com,
+ 	p.zabel@pengutronix.de, mchehab@kernel.org, shawnguo@kernel.org, Sascha
+ Hauer	 <s.hauer@pengutronix.de>, kernel@pengutronix.de, festevam@gmail.com,
+ 	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ paulk@sys-base.io, 	hverkuil@xs4all.nl, laurent.pinchart@ideasonboard.com, 
+	sebastian.fricke@collabora.com, ming.qian@nxp.com
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, Michael
+ Tretter <m.tretter@pengutronix.de>
+Date: Fri, 02 May 2025 12:38:11 -0400
+In-Reply-To: <20250502150513.4169098-4-m.felsch@pengutronix.de>
+References: <20250502150513.4169098-1-m.felsch@pengutronix.de>
+	 <20250502150513.4169098-4-m.felsch@pengutronix.de>
+Organization: Collabora Canada
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250502150513.4169098-1-m.felsch@pengutronix.de> <20250502150513.4169098-6-m.felsch@pengutronix.de>
-In-Reply-To: <20250502150513.4169098-6-m.felsch@pengutronix.de>
-From: Adam Ford <aford173@gmail.com>
-Date: Fri, 2 May 2025 11:30:29 -0500
-X-Gm-Features: ATxdqUGSLq9P6-CspNr6ECgbQeHdf383py-pp3cQ3WrpLLPzF-nJ74mtxVZrvag
-Message-ID: <CAHCN7xJ5p+dwJD7i7caqwhmrz8+gZDVeqfdWA_=He-H+aTJgRg@mail.gmail.com>
-Subject: Re: [RFC PATCH 05/11] arm64: dts: imx8mp: drop gpcv2 vpu
- power-domains and clocks
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: nicolas.dufresne@collabora.com, benjamin.gaignard@collabora.com, 
-	p.zabel@pengutronix.de, mchehab@kernel.org, shawnguo@kernel.org, 
-	Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de, festevam@gmail.com, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, paulk@sys-base.io, 
-	hverkuil@xs4all.nl, laurent.pinchart@ideasonboard.com, 
-	sebastian.fricke@collabora.com, ming.qian@nxp.com, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 2, 2025 at 10:10=E2=80=AFAM Marco Felsch <m.felsch@pengutronix.=
-de> wrote:
->
-> The GPCv2 G1, G2 and VC8000E power-domain don't need to reference the
-> VPUMIX power-domain nor their module clocks since the power and reset
-> handling is done by the VPUMIX blkctrl driver.
->
-It was my understanding that having this dependency ensures the order
-of the bring-up, but maybe I am wrong.  Do you know if the 8MP
-suspend-resume works properly?
+Hi,
 
+Le vendredi 02 mai 2025 à 17:05 +0200, Marco Felsch a écrit :
+> From: Michael Tretter <m.tretter@pengutronix.de>
+> 
+> The VEPU540 and VEPU580 may prepare the NAL unit headers in the coded
+> params. These values have to be provided by user space and be written
+> into the hardware registers.
 
-Should this get a fixes tag?
+To be reworked in future version. This commit message refers to RK356x and
+RK3688 encoders block from Rockchip. Though, its possible this applies for
+Hantro IP too.
 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Nicolas
+ 
+> Furthermore, nal_ref_idc indicates if a picture will be used as
+> reference and is a hint to the driver, if it needs to keep the
+> reconstructed buffer or not.
+> 
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 > ---
->  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 7 -------
->  1 file changed, 7 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mp.dtsi
-> index e0d3b8cba221..cf9b6c487bd5 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> @@ -879,24 +879,17 @@ pgc_mediamix: power-domain@10 {
->
->                                         pgc_vpu_g1: power-domain@11 {
->                                                 #power-domain-cells =3D <=
-0>;
-> -                                               power-domains =3D <&pgc_v=
-pumix>;
->                                                 reg =3D <IMX8MP_POWER_DOM=
-AIN_VPU_G1>;
-> -                                               clocks =3D <&clk IMX8MP_C=
-LK_VPU_G1_ROOT>;
->                                         };
->
->                                         pgc_vpu_g2: power-domain@12 {
->                                                 #power-domain-cells =3D <=
-0>;
-> -                                               power-domains =3D <&pgc_v=
-pumix>;
->                                                 reg =3D <IMX8MP_POWER_DOM=
-AIN_VPU_G2>;
-> -                                               clocks =3D <&clk IMX8MP_C=
-LK_VPU_G2_ROOT>;
-> -
->                                         };
->
->                                         pgc_vpu_vc8000e: power-domain@13 =
-{
->                                                 #power-domain-cells =3D <=
-0>;
-> -                                               power-domains =3D <&pgc_v=
-pumix>;
->                                                 reg =3D <IMX8MP_POWER_DOM=
-AIN_VPU_VC8000E>;
-> -                                               clocks =3D <&clk IMX8MP_C=
-LK_VPU_VC8KE_ROOT>;
->                                         };
->
->                                         pgc_hdmimix: power-domain@14 {
-> --
-> 2.39.5
->
->
+>  include/uapi/linux/v4l2-controls.h | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
+> index 670f822ee758..a8df393c9ead 100644
+> --- a/include/uapi/linux/v4l2-controls.h
+> +++ b/include/uapi/linux/v4l2-controls.h
+> @@ -1694,6 +1694,9 @@ struct v4l2_ctrl_h264_decode_params {
+>  	__u32 flags;
+>  };
+>  
+> +#define V4L2_H264_NAL_CODED_SLICE_NON_IDR_PIC	1
+> +#define V4L2_H264_NAL_CODED_SLICE_IDR_PIC	5
+> +
+>  #define V4L2_CID_STATELESS_H264_ENCODE_PARAMS	(V4L2_CID_CODEC_STATELESS_BASE + 8)
+>  
+>  /**
+> @@ -1719,6 +1722,8 @@ struct v4l2_ctrl_h264_decode_params {
+>   * @pic_init_qp_minus26: initial value minus 26 of luma qp for each slice.
+>   * @chroma_qp_index_offset: offset that shall be added to qp luma for addressing the
+>   * table of qp chroma values for the Cb chroma component.
+> + * @nal_ref_idc: nal_ref_idc for the header of the generated NAL unit
+> + * @nal_unit_type: one of the V4L2_H264_NAL_CODED_SLICE_{} values
+>   * @flags: combination of V4L2_H264_ENCODE_FLAG_{} flags.
+>   * @reference_ts: timestamp of the V4L2 buffer to use as reference
+>   */
+> @@ -1751,6 +1756,16 @@ struct v4l2_ctrl_h264_encode_params {
+>  
+>  	__u32 flags; /* V4L2_H264_ENCODE_FLAG_ */
+>  
+> +	/*
+> +	 * If nal_ref_idc is 0, the NAL unit won't be used as reference by
+> +	 * later NAL units. Any other value indicates that the NAL unit may be
+> +	 * used as reference.
+> +	 */
+> +	__u8 nal_ref_idc;
+> +
+> +	/* TODO Can we infer the nal_unit_type from the slice_type? */
+> +	__u8 nal_unit_type;
+> +
+>  	/* Reference */
+>  
+>  	__u64 reference_ts;
