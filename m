@@ -1,134 +1,148 @@
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C82526772A;
-	Fri,  2 May 2025 16:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D158A25F7B2
+	for <imx@lists.linux.dev>; Fri,  2 May 2025 16:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746203182; cv=none; b=QOx0A87YO5p2jM9Ss9wUkcRgrntQUVypwtpiViLwu5FtdvjijFxPkWRq9YXwUIkcF8/RLp1u1EBJDx1jRd6VYnZx+IKpVCdU6EC0r7gxUtTxGB652Nq62TJEFfUKx32o1J9QHm/tT432l7E2R1o5iawpYV1mhghHKsMu84vj1gc=
+	t=1746203443; cv=none; b=U5rPH69MW0EMxcEe/eVuEY5PQiO3E+fEn8YxPHKzvYjeVte8wCEiPj5BqSg91wTlq1MoX36NuMvZL3wZEA6O419UdWBG3HP/tS0TEQPs7sLD8wTgGsvtEG9t9TT1MfWQV+AKo/LOiCsPIH4w6WfzKSCGyBfZOl2ey3h2gFT35CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746203182; c=relaxed/simple;
-	bh=QylBnlgHnGfVEutJuWqfV07AbfoifMMiy9mc+lSQ1HE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V0MN2ATWP8YhXtmMVSmIrN8V2sjuB3jOe1pB7anJVIED0wuTRr3AlrVlM2AOotyk5nu2V5unqr0bsXPpXXEDyZ2P+ecHSmuLZB7RWqhbOvWsLpwB2jfsZFsd+jdeYpsqaknSDeq+F7dauEswQVtUAcCvDMPCmtdRg7SB/CoqOpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=J8P9NANC; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1746203443; c=relaxed/simple;
+	bh=GGGJaQnxnZ+/Qywxhcm3pMs8DHoqSjZXKNpRXJXqxNo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Khpspj3vDYJi8YvPEeOrr8mNT6WE1F7QD73nVnnBO7ZT9gBMBGecA9vlyn9yt3k3Fo+uTMatMjUidaO+ufSQHAc2xgJvTYaddQ6NBXvI9BpA+AjRHOxYSa5SmouHnMysK6MIoy6opPW9A8fTufoPR2rvJj47A8sCd6RdXtPxLxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U69n/reg; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="J8P9NANC"
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 542GPu7m268300
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 May 2025 11:25:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1746203156;
-	bh=36Kf5XVejWF+uquKt22aS/Ci0ZPLGS0PETWsE7ZHJ78=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=J8P9NANCBqGGLQlkpqzyu6W9XUJkIKUF3tYS7r7w0TIgvtA93heBpFW9eXKseXYLF
-	 bWyDhuA95TrSHYamEmsE7J9b8PEnZGSc0sFn7wIENp+uz+Lra4SnfmqVPd7U+Zaa2c
-	 3ATCg2ivfKINWztVQQGbZUPKlvBvvGZmVXhX9d0M=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 542GPus6118985
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 2 May 2025 11:25:56 -0500
-Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 2
- May 2025 11:25:55 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 2 May 2025 11:25:56 -0500
-Received: from ws.dhcp.ti.com (ws.dhcp.ti.com [10.24.69.232])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 542GPex8028994;
-	Fri, 2 May 2025 11:25:51 -0500
-From: Rishikesh Donadkar <r-donadkar@ti.com>
-To: <nm@ti.com>, <vigneshr@ti.com>
-CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <devarsht@ti.com>,
-        <y-abhilashchandra@ti.com>, <s-jain1@ti.com>, <jai.luthra@linux.dev>,
-        <jai.luthra@ideasonboard.com>, <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <imx@lists.linux.dev>, <r-donadkar@ti.com>
-Subject: [PATCH v2 2/4] arm64: dts: ti: k3-am62x: Add required voltage supplies for IMX219
-Date: Fri, 2 May 2025 21:55:37 +0530
-Message-ID: <20250502162539.322091-3-r-donadkar@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250502162539.322091-1-r-donadkar@ti.com>
-References: <20250502162539.322091-1-r-donadkar@ti.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U69n/reg"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-30a5094df42so1140046a91.0
+        for <imx@lists.linux.dev>; Fri, 02 May 2025 09:30:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746203441; x=1746808241; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tLgGDAzhbzi8zBfreiBGkw9+hq2PN6Kh7ZFPU4njLno=;
+        b=U69n/regB7yK0rOi2vac0/BJZ5wlJiyKdFw7YpAP7+irGc2oUCB9GI6QkCW3mOgSVz
+         cm8UUDt98PJGlZZHmzYTTm5ldf4xqQmv98iAfm0E4VY2ykRKslNEZqE15WFqAYa0S/af
+         6zqcByiXLKBvZyIFmlSJIADIYSQjqhCpIDVFbd2/mYevD2qz3S/fnDM646QCkD+zWzno
+         oGSYgeUyIvlcwD9oll4fMBsCusuwtKlZQFA1z1t72iw6OGKU9oeDhSgJ5nc5lBeujl0W
+         a9bRhqpbY4rm4uqJHRKO0EkBCkdqv0wokqJoDPDYckZ6GEBuIs1sLMPiTeIZe9yODLn2
+         8dAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746203441; x=1746808241;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tLgGDAzhbzi8zBfreiBGkw9+hq2PN6Kh7ZFPU4njLno=;
+        b=lIsLStkUdD5VJTi3IknNdwvoa8RNMXsbdAXu2rg/O14Q08MQVh/4fCGbD0fesD4Txm
+         a+qFdpKYLYmYht1eQKo4fttgxr5+27wKjLf6u/er9NIps/Lz6beqcY6qqVXyzqfLwrAN
+         VuOlNE9H3j0QtDQIFyOc20PP1TLuG++5qZ9I35J3yfL84XDRb+xJqZR9bQE8yMu/EH5L
+         mdtzyv8NoPTrYJfbxCeYyvacuf29MV7OUitzQRXG18QSiMo/q58ZDXaL7ZXdTBBrryjP
+         YhvNTmKKWtTcQyQ6yjPXukfIFWv8+55zauvRepVrfr1bzyBGhCmOG9l2SDGpOuWbpKjC
+         FJRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXO4QyU0frEVp1UODVq4I3z9wfgGUxJ+mfrznZmq48OcQqYGENP9jsD0BTwxmYq6xyF/bc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyXNNsyoeZcz/ojRW13W4mLXXI5pioaD4E5PE9smmKVruegIoMY
+	MMzE1wUejWHmexHrK87nOxo4v1TfLoGN3XDNkqQQ+DMqbNQ55a+WWbhI2H4/Ghp8EPSeBK957wd
+	IjPVYLsYPUVbLqQ4pAUTxRRH9F+Q=
+X-Gm-Gg: ASbGncsxaJUKadoGEASuzjIdaOXlNO3cRhQMQXpc2NgrXcfXyZSiih25pgpM4Ey6ZtN
+	AvUufB3vMN7uUuQ2oPQTFEqq18JG82ejzmVzM107nIFb6W9XOU17DHmKxh76lKXJYI5hqktK+Tw
+	3/U+mfeGS0wSiGALndUwPjRQ==
+X-Google-Smtp-Source: AGHT+IFD83mVdOJy5lpNuPlZVPmLooAoJbMjhC2ix2c3XVL7B+J+mwkKq3CJH7cJU97BTv0F3P0V/yqYXOccmyxktrA=
+X-Received: by 2002:a17:90b:582e:b0:2ff:6608:78cd with SMTP id
+ 98e67ed59e1d1-30a4e5a5e10mr6554332a91.9.1746203440962; Fri, 02 May 2025
+ 09:30:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+References: <20250502150513.4169098-1-m.felsch@pengutronix.de> <20250502150513.4169098-6-m.felsch@pengutronix.de>
+In-Reply-To: <20250502150513.4169098-6-m.felsch@pengutronix.de>
+From: Adam Ford <aford173@gmail.com>
+Date: Fri, 2 May 2025 11:30:29 -0500
+X-Gm-Features: ATxdqUGSLq9P6-CspNr6ECgbQeHdf383py-pp3cQ3WrpLLPzF-nJ74mtxVZrvag
+Message-ID: <CAHCN7xJ5p+dwJD7i7caqwhmrz8+gZDVeqfdWA_=He-H+aTJgRg@mail.gmail.com>
+Subject: Re: [RFC PATCH 05/11] arm64: dts: imx8mp: drop gpcv2 vpu
+ power-domains and clocks
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: nicolas.dufresne@collabora.com, benjamin.gaignard@collabora.com, 
+	p.zabel@pengutronix.de, mchehab@kernel.org, shawnguo@kernel.org, 
+	Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de, festevam@gmail.com, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, paulk@sys-base.io, 
+	hverkuil@xs4all.nl, laurent.pinchart@ideasonboard.com, 
+	sebastian.fricke@collabora.com, ming.qian@nxp.com, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The device tree overlay for the IMX219 sensor requires three voltage
-supplies to be defined: VANA (analog), VDIG (digital core), and VDDL
-(digital I/O) [1].
+On Fri, May 2, 2025 at 10:10=E2=80=AFAM Marco Felsch <m.felsch@pengutronix.=
+de> wrote:
+>
+> The GPCv2 G1, G2 and VC8000E power-domain don't need to reference the
+> VPUMIX power-domain nor their module clocks since the power and reset
+> handling is done by the VPUMIX blkctrl driver.
+>
+It was my understanding that having this dependency ensures the order
+of the bring-up, but maybe I am wrong.  Do you know if the 8MP
+suspend-resume works properly?
 
-Add the corresponding voltage supply definitions in the overlay so
-that the same topography as dt-bindings is present in the DT overlay.
 
-Link: https://datasheets.raspberrypi.com/camera/camera-module-2-schematics.pdf [1]
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Signed-off-by: Rishikesh Donadkar <r-donadkar@ti.com>
----
- .../boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso  | 31 +++++++++++++++++++
- 1 file changed, 31 insertions(+)
+Should this get a fixes tag?
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso
-index dd090813a32d6..149c59c071823 100644
---- a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso
-@@ -15,6 +15,33 @@ clk_imx219_fixed: imx219-xclk {
- 		#clock-cells = <0>;
- 		clock-frequency = <24000000>;
- 	};
-+
-+	reg_2p8v: regulator-2p8v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "2P8V";
-+		regulator-min-microvolt = <2800000>;
-+		regulator-max-microvolt = <2800000>;
-+		vin-supply = <&vcc_3v3_sys>;
-+		regulator-always-on;
-+	};
-+
-+	reg_1p8v: regulator-1p8v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1P8V";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		vin-supply = <&vcc_3v3_sys>;
-+		regulator-always-on;
-+	};
-+
-+	reg_1p2v: regulator-1p2v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1P2V";
-+		regulator-min-microvolt = <1200000>;
-+		regulator-max-microvolt = <1200000>;
-+		vin-supply = <&vcc_3v3_sys>;
-+		regulator-always-on;
-+	};
- };
- 
- &main_i2c2 {
-@@ -40,6 +67,10 @@ ov5640: camera@10 {
- 
- 				clocks = <&clk_imx219_fixed>;
- 
-+				VANA-supply = <&reg_2p8v>;
-+				VDIG-supply = <&reg_1p8v>;
-+				VDDL-supply = <&reg_1p2v>;
-+
- 				reset-gpios = <&exp1 13 GPIO_ACTIVE_HIGH>;
- 
- 				port {
--- 
-2.34.1
-
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 7 -------
+>  1 file changed, 7 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mp.dtsi
+> index e0d3b8cba221..cf9b6c487bd5 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> @@ -879,24 +879,17 @@ pgc_mediamix: power-domain@10 {
+>
+>                                         pgc_vpu_g1: power-domain@11 {
+>                                                 #power-domain-cells =3D <=
+0>;
+> -                                               power-domains =3D <&pgc_v=
+pumix>;
+>                                                 reg =3D <IMX8MP_POWER_DOM=
+AIN_VPU_G1>;
+> -                                               clocks =3D <&clk IMX8MP_C=
+LK_VPU_G1_ROOT>;
+>                                         };
+>
+>                                         pgc_vpu_g2: power-domain@12 {
+>                                                 #power-domain-cells =3D <=
+0>;
+> -                                               power-domains =3D <&pgc_v=
+pumix>;
+>                                                 reg =3D <IMX8MP_POWER_DOM=
+AIN_VPU_G2>;
+> -                                               clocks =3D <&clk IMX8MP_C=
+LK_VPU_G2_ROOT>;
+> -
+>                                         };
+>
+>                                         pgc_vpu_vc8000e: power-domain@13 =
+{
+>                                                 #power-domain-cells =3D <=
+0>;
+> -                                               power-domains =3D <&pgc_v=
+pumix>;
+>                                                 reg =3D <IMX8MP_POWER_DOM=
+AIN_VPU_VC8000E>;
+> -                                               clocks =3D <&clk IMX8MP_C=
+LK_VPU_VC8KE_ROOT>;
+>                                         };
+>
+>                                         pgc_hdmimix: power-domain@14 {
+> --
+> 2.39.5
+>
+>
