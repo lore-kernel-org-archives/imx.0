@@ -1,152 +1,114 @@
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.actia.se (mail.actia.se [212.181.117.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADCE19D07B;
-	Fri,  2 May 2025 11:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9BA246769;
+	Fri,  2 May 2025 11:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746184437; cv=none; b=HJpMJZy1gB4TtOXz6ExCB87lLVEfvs48R4v/DZm3bjHJ/Cc1r6kG3QMPLPKMeSRquu08bWWCKrrxj195eJIWdpdhVi1/fjlPlEK+IUhOKUjB5UPZskNjDtpufQOmSkVksgZc02CcKl7kqqmf2HHeNvlw/5tw3SH5211ZfgxUDZc=
+	t=1746186969; cv=none; b=dokliHY9o7QmSsvEgS5bjxCxBwj7/d5NeS9IWNmwjNLp4vI04TmRLatNJFGgg/smSkqE798G/wSAsVxyvQeAEMWEK1gq6XpmKOkBsgkHpWYtt+JunrMdYS4tW2Q3uu8x/SyNtjZZqgn7f225a2BvjKCMYN2ZptzvX/2xydL3Pgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746184437; c=relaxed/simple;
-	bh=9kHaM+DwGh2R0bvCj57XSgsqksXYbaATpqhrjd3RIio=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Uien6E7Yf/mHDxTVxlz6ZTIMrv1cnyOnaJnViRh5Ho+yX7F5HgM7I1fBjxCbmLRFFkM16PIroHFAVJjfSgRHd0cbeJVdaWg0qr6XL/k78CFyKkdfbQjvAsaE+4MkUIxGbsyc71wmQ8cfnlkbb6z5bh/bh0IKjmYq35STr5/9wqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=W5idxvhy; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="W5idxvhy"
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 542BDiEq3848530
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 May 2025 06:13:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1746184424;
-	bh=e+w5Qh2JRjlMFyhkZEHnj7ml/ugQxghiOlkLkqWDVzI=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=W5idxvhyn32t6wedPrduYdssQK5QNiQNVACARTf5WAYDH/BhLh3dbVBMNj/NwP7KM
-	 EwoDxSKVEf4W8FnSoPItBAul40ymbqBUrCRleffoQB9aTk+9bU4/e/qDATBznFViSk
-	 04h4bDSQw6y5r2o4tbHNkK+NMUkf/DUYWNFmO4Dg=
-Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 542BDiT1019558
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 2 May 2025 06:13:44 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 2
- May 2025 06:13:43 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 2 May 2025 06:13:43 -0500
-Received: from [10.249.134.35] ([10.249.134.35])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 542BDb39062789;
-	Fri, 2 May 2025 06:13:38 -0500
-Message-ID: <87d38b3d-607d-45c3-8f29-70f6c01187db@ti.com>
-Date: Fri, 2 May 2025 16:43:37 +0530
+	s=arc-20240116; t=1746186969; c=relaxed/simple;
+	bh=letA9dsi2lcAXXHIjmfW26gJ0WuEb8Yj17N6ppRV9ig=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tQEOSq7xSsvaBux0jNdPx1FpYKGpT9ZZzesVu2q6ChOp0DATFxUJk0jZfdFFgsR2KMSJgIRtmozD1CHgbqqw4ywK0bgBDX+TJBpIaOQhgsCnxUOzoXB6u4Yxw7FvZg6nSXzQw3mYedyeLE/ibUj0yNSd9KMGYVOsZmAlg0Axveg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
+Received: from S036ANL.actianordic.se (10.12.31.117) by S036ANL.actianordic.se
+ (10.12.31.117) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 2 May
+ 2025 13:40:56 +0200
+Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
+ S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
+ 15.01.2507.039; Fri, 2 May 2025 13:40:56 +0200
+From: John Ernberg <john.ernberg@actia.se>
+To: Juergen Gross <jgross@suse.com>, Stefano Stabellini
+	<sstabellini@kernel.org>
+CC: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, John Ernberg
+	<john.ernberg@actia.se>
+Subject: [PATCH 2/2] xen: swiotlb: Implement map_resource callback
+Thread-Topic: [PATCH 2/2] xen: swiotlb: Implement map_resource callback
+Thread-Index: AQHbu1cR+sKkXAZoXEOAUfrcrER15w==
+Date: Fri, 2 May 2025 11:40:56 +0000
+Message-ID: <20250502114043.1968976-3-john.ernberg@actia.se>
+References: <20250502114043.1968976-1-john.ernberg@actia.se>
+In-Reply-To: <20250502114043.1968976-1-john.ernberg@actia.se>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: git-send-email 2.49.0
+x-esetresult: clean, is OK
+x-esetid: 37303A2955B14453667460
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 4/4] arm64: dts: ti: k3-am62x: Add required voltage
- supplies for TEVI-OV5640
-To: Devarsh Thakkar <devarsht@ti.com>, <nm@ti.com>, <vigneshr@ti.com>
-CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <y-abhilashchandra@ti.com>,
-        <s-jain1@ti.com>, <jai.luthra@linux.dev>,
-        <jai.luthra@ideasonboard.com>, <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <imx@lists.linux.dev>
-References: <20250429154133.3377962-1-r-donadkar@ti.com>
- <20250429154133.3377962-5-r-donadkar@ti.com>
- <f73d24a6-7da6-4bcc-95ba-9d84b865a7a7@ti.com>
-Content-Language: en-US
-From: "Donadkar, Rishikesh" <r-donadkar@ti.com>
-In-Reply-To: <f73d24a6-7da6-4bcc-95ba-9d84b865a7a7@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
+Needed by the eDMA v3 DMA engine found in iommu-less SoCs such as iMX8QXP
+to be able to perform DMA operations as a Xen Hardware Domain, which needs
+to be able to do DMA in MMIO space.
 
-On 02-05-2025 14:37, Devarsh Thakkar wrote:
->
-> On 29/04/25 21:11, Rishikesh Donadkar wrote:
->> The device tree overlay for TEVI-OV5640 requires following voltage
->> supplies:
->>
->> AVDD-supply: Analog voltage supply, 2.8 volts
->> DOVDD-supply: Digital I/O voltage supply, 1.8 volts
->> DVDD-supply: Digital core voltage supply, 1.5 volts
->>
-> I think this contradicts the voltage mentioned in TEVI-OV56540 doc [1]
-> which mention digital voltage as 3.3 volts ?
+The callback implementation is basically the same as the one for direct
+mapping of resources, except this also takes into account Xen page
+mappings.
 
+There is nothing to do for unmap, just like with direct, so the unmap
+callback is not needed.
 
-Thank you for pointing out, I will fix it.
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
 
->
->> Add them in the DT overlay.
->>
-> [1]:
-> https://www.technexion.com/wp-content/uploads/2023/09/product-brief_tevi-ov5640.pdf
->
-> Regards
-> Devarsh
->> Signed-off-by: Rishikesh Donadkar <r-donadkar@ti.com>
->> ---
->>   .../dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso  | 32 +++++++++++++++++++
->>   1 file changed, 32 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
->> index b6bfdfbbdd984..123ab0e5e8dfa 100644
->> --- a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
->> +++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
->> @@ -15,6 +15,33 @@ clk_ov5640_fixed: ov5640-xclk {
->>   		#clock-cells = <0>;
->>   		clock-frequency = <24000000>;
->>   	};
->> +
->> +	reg_2p8v: regulator-2p8v {
->> +		compatible = "regulator-fixed";
->> +		regulator-name = "2P8V";
->> +		regulator-min-microvolt = <2800000>;
->> +		regulator-max-microvolt = <2800000>;
->> +		vin-supply = <&vcc_3v3_sys>;
->> +		regulator-always-on;
->> +	};
->> +
->> +	reg_1p8v: regulator-1p8v {
->> +		compatible = "regulator-fixed";
->> +		regulator-name = "1P8V";
->> +		regulator-min-microvolt = <1800000>;
->> +		regulator-max-microvolt = <1800000>;
->> +		vin-supply = <&vcc_3v3_sys>;
->> +		regulator-always-on;
->> +	};
->> +
->> +	reg_1p5v: regulator-1p5v {
->> +		compatible = "regulator-fixed";
->> +		regulator-name = "1P5V";
->> +		regulator-min-microvolt = <1500000>;
->> +		regulator-max-microvolt = <1500000>;
->> +		vin-supply = <&vcc_3v3_sys>;
->> +		regulator-always-on;
->> +	};
->>   };
->>   
->>   &main_i2c2 {
->> @@ -40,6 +67,11 @@ ov5640: camera@3c {
->>   
->>   				clocks = <&clk_ov5640_fixed>;
->>   				clock-names = "xclk";
->> +
->> +				AVDD-supply = <&reg_2p8v>;
->> +				DOVDD-supply = <&reg_1p8v>;
->> +				DVDD-supply = <&reg_1p5v>;
->> +
->>   				powerdown-gpios = <&exp1 13 GPIO_ACTIVE_LOW>;
->>   
->>   				port {
+---
+
+I originally exported dma_direct_map_resource() and used that which
+appeared to work, but it felt like not checking Xen page mappings wasn't
+fully correct and I went with this. But if dma_direct_map_resource() is
+the correct approach here then I can submit that isntead.
+---
+ drivers/xen/swiotlb-xen.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index ef56a2500ed6..0f02fdd9128d 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -285,6 +285,20 @@ static void xen_swiotlb_unmap_page(struct device *hwde=
+v, dma_addr_t dev_addr,
+ 					   attrs, pool);
+ }
+=20
++static dma_addr_t xen_swiotlb_map_resource(struct device *dev, phys_addr_t=
+ phys,
++					   size_t size, enum dma_data_direction dir,
++					   unsigned long attrs)
++{
++	dma_addr_t dev_addr =3D xen_phys_to_dma(dev, phys);
++
++	BUG_ON(dir =3D=3D DMA_NONE);
++
++	if (!dma_capable(dev, dev_addr, size, false))
++		return DMA_MAPPING_ERROR;
++
++	return dev_addr;
++}
++
+ static void
+ xen_swiotlb_sync_single_for_cpu(struct device *dev, dma_addr_t dma_addr,
+ 		size_t size, enum dma_data_direction dir)
+@@ -426,4 +440,5 @@ const struct dma_map_ops xen_swiotlb_dma_ops =3D {
+ 	.alloc_pages_op =3D dma_common_alloc_pages,
+ 	.free_pages =3D dma_common_free_pages,
+ 	.max_mapping_size =3D swiotlb_max_mapping_size,
++	.map_resource =3D xen_swiotlb_map_resource,
+ };
+--=20
+2.49.0
