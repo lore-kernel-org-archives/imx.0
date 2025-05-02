@@ -1,100 +1,77 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E822571D5
-	for <imx@lists.linux.dev>; Fri,  2 May 2025 16:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAE328E7;
+	Fri,  2 May 2025 17:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746204954; cv=none; b=SJPXF1w+yS+lfUJO8Ye6vGWraaAe7aXCna1rv+p1uaLlgy6l/92p6LiQGDVPu7IQVgqiiDKGSnHDOnY9YAUHbdKZgiy7LUa/2KNpiG1vGQqDf+yG5NFe8J/1BluR8DTLa4MdElncuT7tcUEfoX63a980nF2F4OIadJ3wf33aQqQ=
+	t=1746205510; cv=none; b=QWQHOVYX+bPYl4EzoLICoaag4FWuvioKo/g9rF2MLw1ix+VbJ44jjs1OuuqhhA/OKcBDULmwq4Yk3IiDiIOqAS4zyvoFjLtBLE6uM9AbD/oymaKODgqdsTwgOU4qZm84Bk8zZlLtc0Fw7QoNXb9Er88Vbc5JjLbD49SNb4ZBLOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746204954; c=relaxed/simple;
-	bh=vNqGUwYfp5kGOVOtzGXafZB7iPsvFgYgPqP2eNAkolw=;
+	s=arc-20240116; t=1746205510; c=relaxed/simple;
+	bh=ek3lW6S6ZXPfwiXtViPbi2/fuP4PwGB3UcVaXyxgnck=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=huhRgfoOxEuRSJFBats6/jL+bVFHV0VPwspXfG6ybMA6JXr/saPztJh0loLiBEH/OH0B1WqDI0+Deev28O4HPdo1znDfsM/rqNmVrcV/2QHfF6FSUEBYSqEd1MPa8FWiEDJudXq4l684OXEPfMt2sVXlWavrW8XE38GvCYgi7sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uAtfk-0006vQ-DD; Fri, 02 May 2025 18:55:36 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uAtfj-000mM7-2r;
-	Fri, 02 May 2025 18:55:35 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uAtfj-00Gai4-2R;
-	Fri, 02 May 2025 18:55:35 +0200
-Date: Fri, 2 May 2025 18:55:35 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Adam Ford <aford173@gmail.com>
-Cc: nicolas.dufresne@collabora.com, benjamin.gaignard@collabora.com,
-	p.zabel@pengutronix.de, mchehab@kernel.org, shawnguo@kernel.org,
-	Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
-	festevam@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, paulk@sys-base.io, hverkuil@xs4all.nl,
-	laurent.pinchart@ideasonboard.com, sebastian.fricke@collabora.com,
-	ming.qian@nxp.com, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=PcFzsN61h7esA02F34QIhbVTATLvwH1BYw2CB30NmMhr9aQlIdxrGAMfZRJ1bKpka8X40yGXAdsHZWOV2u6Y2OjJqIkAZUIo0zzkZW0V8YOVz5ruUhjPm7xYiDLbghQ8c27SKEU/eR6Bk5dj17P1HjIb1ddnkZaYD7rUNLORf2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g67pc0bP; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g67pc0bP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24688C4CEE4;
+	Fri,  2 May 2025 17:05:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746205509;
+	bh=ek3lW6S6ZXPfwiXtViPbi2/fuP4PwGB3UcVaXyxgnck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g67pc0bPZYbRvCZLgYd62jYJ7v2/yoFtWcawBDZNlz1eJUQiE6HKBhu1UKw0qVoKU
+	 E8ujvyItq3hjRADZN8atRqNR4pe/tf9TsplXl3F9kRk1hdoY0tcDuZ3JrPQYUp+yQs
+	 DZ3fhlRtBrFiMok2K9xWw1FbRp5iF2f9Khp4dJjz2bMDdyXdE46MwBTlRkQ6aIWiGq
+	 QIq059SsE2ypCxhlzXWARCCxGcEofL3vUzyaP6iXmC8RHSL3S3gAmiuGbwMCTQJuph
+	 OCRLKv0mNKQTOYSO0mnwYPrX1tsDFun/3b3qYAispqSQDNvFF0W8TYSh/HssAEnhHG
+	 C6MyJSP1qkh7Q==
+Date: Fri, 2 May 2025 18:05:03 +0100
+From: Simon Horman <horms@kernel.org>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org
-Subject: Re: [RFC PATCH 07/11] arm64: dts: imx8mp: fix VPU_BUS clock setting
-Message-ID: <20250502165535.aeb2osq2vnxsudmq@pengutronix.de>
-References: <20250502150513.4169098-1-m.felsch@pengutronix.de>
- <20250502150513.4169098-8-m.felsch@pengutronix.de>
- <CAHCN7x+Lu9momgX3Vwp+Yu+Tet5Q=k2vCL83SMLuad24SDchEg@mail.gmail.com>
+	Stefan Wahren <wahrenst@gmx.net>, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [net-next v10 4/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250502170503.GN3339421@horms.kernel.org>
+References: <20250502074447.2153837-1-lukma@denx.de>
+ <20250502074447.2153837-5-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHCN7x+Lu9momgX3Vwp+Yu+Tet5Q=k2vCL83SMLuad24SDchEg@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20250502074447.2153837-5-lukma@denx.de>
 
-On 25-05-02, Adam Ford wrote:
-> On Fri, May 2, 2025 at 10:10 AM Marco Felsch <m.felsch@pengutronix.de> wrote:
-> >
-> > The VPU_PLL clock must be set before the VPU_BUS clock which is derived
-> > from the VPU_PLL clock else the VPU_BUS clock is 300MHz and not 600MHz.
-> >
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > index 97b09b647ec7..7f4bdefb3480 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > @@ -2289,8 +2289,8 @@ vpumix_blk_ctrl: blk-ctrl@38330000 {
-> >                                  <&clk IMX8MP_CLK_VPU_G2_ROOT>,
-> >                                  <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
-> >                         clock-names = "g1", "g2", "vc8000e";
-> > -                       assigned-clocks = <&clk IMX8MP_CLK_VPU_BUS>, <&clk IMX8MP_VPU_PLL>;
-> > -                       assigned-clock-parents = <&clk IMX8MP_VPU_PLL_OUT>;
-> > +                       assigned-clocks = <&clk IMX8MP_VPU_PLL>, <&clk IMX8MP_CLK_VPU_BUS>;
-> > +                       assigned-clock-parents = <0>, <&clk IMX8MP_VPU_PLL_OUT>;
-> >                         assigned-clock-rates = <600000000>, <600000000>;
-> 
-> I think there was a move to make the default be overdrive [1]  and [2]
-> and use a 'nominal' device tree for those who are not in overdrive
-> mode.  According to the TRM, the VPU_BUS_CLK_ROOT, the nominal is
-> 600MHz and the overdrive is 800MHz.  Based on that, I wonder if the
-> values here should be 800MHz and if we should add the nominal values
-> of 600MHz to the imx8m-nominal.dtsi file.
+On Fri, May 02, 2025 at 09:44:44AM +0200, Lukasz Majewski wrote:
 
-You're right, Ahamd and Lucas did change this. I will adapt it later on.
+> +static int mtip_sw_probe(struct platform_device *pdev)
 
-Regards,
-  Marco
+...
+
+> +	ret = devm_request_irq(&pdev->dev, fep->irq, mtip_interrupt, 0,
+> +			       dev_name(&pdev->dev), fep);
+> +	if (ret)
+> +		return dev_err_probe(&pdev->dev, fep->irq,
+
+It looks like the 2nd argument to dev_err_probe() should be ret rather than
+fep->irq.
+
+Flagged by Smatch.
+
+> +				     "Could not alloc IRQ\n");
+
+...
