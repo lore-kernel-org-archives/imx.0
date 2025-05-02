@@ -1,162 +1,82 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D53522A4F8
-	for <imx@lists.linux.dev>; Fri,  2 May 2025 12:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B1A255F50;
+	Fri,  2 May 2025 14:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746187340; cv=none; b=upWWk22U0CWiKVNCo0TJ0WXO1BmDj5wa4mNTrIMXRChg7GO6Oi/rWRdvYVaueFPg4BjtY8dyx6i8C38EixH2REYPbj6yLgXQ3WEd6p3k5Tp5ymU7D2XoYnoCyYj6v4qDNFyuTzD8m+P31wigAwo0PV9Yq8YYvgdl7LQF0oiJCdk=
+	t=1746195210; cv=none; b=QKOI8N2dpZry/l//ico5lLbM2ln/DMz0t+6Kiecq+a90XMtNtdrVO5qsxueVxoRzYj3THgx3R4jK3x4s6B5Pw0U7fVd0d5OduqIGnNxGnhqM5SUDq/DZAc4q6xYBtV/D+uZJoLvLTzNVaWbSQKd/fk/XeiIL8qP3KK73obGnwNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746187340; c=relaxed/simple;
-	bh=pdLngio0TG5VNPMGwS0Ihf4TiunaK0SeKXgSCP9lScM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=peppNV84cT9rijqRrMsuSWznypsfOWXjteuq2s3F6RUnxkFvviRjaV2U1E+/anEv+L7gR4J2PpwOmSaCcsE2zAqm37g184SAiZnVIwljaobbiAIEn1nqD9iyAsA04jBfflh6wZDNjrb26NKhx5+IGKOV8pZnzI3BcT+vmVklHkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
- (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 2 May
- 2025 14:02:16 +0200
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
- 15.01.2507.039; Fri, 2 May 2025 14:02:16 +0200
-From: John Ernberg <john.ernberg@actia.se>
-To: Catalin Marinas <catalin.marinas@arm.com>
-CC: Peter Chen <peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>,
-	Roger Quadros <rogerq@kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	Jonas Blixt <jonas.blixt@actia.se>
-Subject: Re: [PATCH v7 00/17] mm, dma, arm64: Reduce ARCH_KMALLOC_MINALIGN to
- 8
-Thread-Topic: [PATCH v7 00/17] mm, dma, arm64: Reduce ARCH_KMALLOC_MINALIGN to
- 8
-Thread-Index: AQHboAAzgh/yl+5aq0iI+AsHqQOMo7OO6OaAgDBpqYA=
-Date: Fri, 2 May 2025 12:02:16 +0000
-Message-ID: <9f0d8609-2d50-43d6-8641-85dad089fb11@actia.se>
-References: <20230612153201.554742-1-catalin.marinas@arm.com>
- <ab2776f0-b838-4cf6-a12a-c208eb6aad59@actia.se> <Z-wXuTaTpWOLzTS_@arm.com>
-In-Reply-To: <Z-wXuTaTpWOLzTS_@arm.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A2956B14453667460
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <150431E3DE84364892F88EBB126BE473@actia.se>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1746195210; c=relaxed/simple;
+	bh=yx8MFH01X2N39XwTWzq6+ATHZglg/J+RztBenNzgst4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZxGLTplq7Goyczap+QBaT/RBSlM4xNSINPm+87JjpEtqsOnkkjs3pYDQYdzbGIiDyaGuc3vgl10g/FkBDm7yePxy5ev2q3K0iAiCVldy7vMDfWVu2BKGFoDsZiiEAGXZQbQigtWopW+Rt8SiWTaMg4GdiZ5zZK/tYqJBoYj8n0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HEJCUjNA; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HEJCUjNA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86FFC4CEE4;
+	Fri,  2 May 2025 14:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746195209;
+	bh=yx8MFH01X2N39XwTWzq6+ATHZglg/J+RztBenNzgst4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HEJCUjNAg/oXF9wvqym9vnorYBbBg6HAk8rKG4heSNpO90IPRIhdrchKRHxuV5Yia
+	 FDObzWatACdFKKIjNTGgziRG8XDnlbX3tTHP5pumonsFOuTe5HXLxvUDbpg8QKr1eU
+	 u1S3Qb29+tkYAE5kDYb7itLzsZNPRnFmJGqErxsK2DkTO6Eeg/pafXwJG1eV2fwAUO
+	 p4jQdZPZrqfAIhQLrsD3cQvilI+D/ngIya0x+i95Ynr2jv646qdUHjywWLzec/8oPk
+	 7znjw5WTNKwzxZBjNxCbspkFRExq+NZ7bz5DVg39YkN7nV/01JHWgffaeRdIuI1Cii
+	 QDzMKHL1LUpDQ==
+Date: Fri, 2 May 2025 07:13:28 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lukasz Majewski <lukma@denx.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v10 4/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250502071328.069d0933@kernel.org>
+In-Reply-To: <20250502074447.2153837-5-lukma@denx.de>
+References: <20250502074447.2153837-1-lukma@denx.de>
+	<20250502074447.2153837-5-lukma@denx.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-SGkgQ2F0YWxpbiwNCg0KT24gNC8xLzI1IDY6NDMgUE0sIENhdGFsaW4gTWFyaW5hcyB3cm90ZToN
-Cj4gT24gRnJpLCBNYXIgMjgsIDIwMjUgYXQgMDQ6NDE6MDVQTSArMDAwMCwgSm9obiBFcm5iZXJn
-IHdyb3RlOg0KPj4gT24gNi8xMi8yMyA1OjMxIFBNLCBDYXRhbGluIE1hcmluYXMgd3JvdGU6DQo+
-Pj4gVGhhdCdzIHY3IG9mIHRoZSBzZXJpZXMgcmVkdWNpbmcgdGhlIGttYWxsb2MoKSBtaW5pbXVt
-IGFsaWdubWVudCBvbg0KPj4+IGFybTY0IHRvIDggKGZyb20gMTI4KS4gVGhlcmUncyBubyBuZXcv
-ZGlmZmVyZW50IGZ1bmN0aW9uYWxpdHksIG1vc3RseQ0KPj4+IGNvc21ldGljIGNoYW5nZXMgYW5k
-IGFja3MvdGVzdGVkLWJ5cy4NCj4+Pg0KPj4+IEFuZHJldywgaWYgdGhlcmUgYXJlIG5vIGZ1cnRo
-ZXIgY29tbWVudHMgb3Igb2JqZWN0aW9ucyB0byB0aGlzIHZlcnNpb24sDQo+Pj4gYXJlIHlvdSBv
-ayB0byB0YWtlIHRoZSBzZXJpZXMgdGhyb3VnaCB0aGUgbW0gdHJlZT8gVGhlIGFybTY0IGNoYW5n
-ZXMgYXJlDQo+Pj4gZmFpcmx5IHNtYWxsLiBBbHRlcm5hdGl2ZWx5LCBJIGNhbiBwdXNoIGl0IGlu
-dG8gbGludXgtbmV4dCBub3cgdG8gZ2l2ZQ0KPj4+IGl0IHNvbWUgd2lkZXIgZXhwb3N1cmUgYW5k
-IGRlY2lkZSB3aGV0aGVyIHRvIHVwc3RyZWFtIGl0IHdoZW4gdGhlDQo+Pj4gbWVyZ2luZyB3aW5k
-b3cgb3BlbnMuIFRoYW5rcy4NCj4+Pg0KPj4+IFRoZSB1cGRhdGVkIHBhdGNoZXMgYXJlIGFsc28g
-YXZhaWxhYmxlIG9uIHRoaXMgYnJhbmNoOg0KPj4+DQo+Pj4gZ2l0Oi8vZ2l0Lmtlcm5lbC5vcmcv
-cHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L2FybTY0L2xpbnV4IGRldmVsL2ttYWxsb2MtbWluYWxp
-Z24NCj4+Pg0KPiBbLi4uXQ0KPj4gU2VlbiBvbiBMaW51eCA2LjEyLjIwLCBpdCBpcyBub3QgdHJp
-dmlhbCBmb3IgdXMgdG8gdGVzdCBsYXRlciBrZXJuZWxzIHNvDQo+PiBpZiB0aGUgaXNzdWUgaXMg
-cG90ZW50aWFsbHkgZml4ZWQgd2UgYXJlIG1vcmUgdGhhbiBoYXBweSB0byBjaGVycnktcGljaw0K
-Pj4gdGhlIHBvdGVudGlhbCBmaXhlcyBhbmQgZ2l2ZSB0aGVtIGEgZ28uDQo+IA0KPiBJJ20gbm90
-IGF3YXJlIG9mIGFueSByZWNlbnQgZml4IGZvciB0aGlzLCBzbyBJIGRvdWJ0IHRlc3RpbmcgYSBu
-ZXdlcg0KPiBrZXJuZWwgd291bGQgbWFrZSBhIGRpZmZlcmVuY2UuDQo+IA0KPj4gSGF2aW5nIGFu
-IFNNU0M5NTEyIChzbXNjOTV4eCkgVVNCIEV0aGVybmV0L0h1YiBjaGlwIGF0dGFjaGVkIHRvIHRo
-ZSBhcm12OA0KPj4gU29DIGlNWDhRWFAgb3ZlciB0aGUgQ2FkZW5jZSBVU0IzIFVTQjIgaW50ZXJm
-YWNlIChjZG5zMy1pbXgpIHdpbGwgc2luY2UNCj4+IHRoZSBwYXRjaCBzZXQgYXQgWzBdIGNhdXNl
-IHJhbmRvbSBpbnRlcnJ1cHQgc3Rvcm1zIG92ZXIgdGhlIFNNU0M5NTEyIElOVA0KPj4gRVAuDQo+
-Pg0KPj4gVGhlIHJlYXNvbiBmb3IgdGhlIHN0b3JtIGlzIHRoYXQgdGhlIGFzeW5jIFVSQnMgcXVl
-dWVkIGF0IFsxXSByaWdodCBiZWZvcmUNCj4+IHRoZSBpbnRlcnJ1cHQgY29uZmlndXJhdGlvbiBb
-Ml0gaW4gdGhlIGRyaXZlci4NCj4+IFdpdGggWzBdIGFwcGxpZWQsIHRob3NlIGFzeW5jIFVSQnMg
-YXJlIGxpa2VseSBjbG9iYmVyaW5nIGFueSBVUkIgbG9jYXRlZA0KPj4gYWZ0ZXIgdGhlbSBpbiBt
-ZW1vcnkgc29tZXdoZXJlIGluIHRoZSB4aGNpIG1lbW9yeSBzcGFjZS4NCj4+IFRoZSBtZW1vcnkg
-Y29ycnVwdGlvbiBvbmx5IGhhcHBlbnMgaWYgdGhlcmUgaXMgbW9yZSB0aGFuIG9uZSBVUkIgaW4g
-dGhlDQo+PiBxdWV1ZSBhdCB0aGUgc2FtZSB0aW1lLCBtYWtpbmcgdGhlc2UgYXN5bmMgVVJCcyBh
-IGdvb2QgdHJpZ2dlciBvZiB0aGUNCj4+IHByb2JsZW0uDQo+PiBJZiB3ZSBmb3JjZSB0aG9zZSBV
-UkJzIHRvIGJlIHN5bmMgb3IgdXNlIHRoZSBoYWNrIGlubGluZWQgYmVsb3csIHRoZQ0KPj4gcHJv
-YmxlbSBnb2VzIGF3YXkuDQo+IA0KPiBJJ20gbm90IHJlYWxseSBmYW1pbGlhciB3aXRoIHRoaXMg
-YXJlYS4gTXkgb25seSBkcml2ZXJzL3VzYi8gY2hhbmdlDQo+IHJlbGF0ZWQgdG8gQVJDSF9LTUFM
-TE9DX01JTkFMSUdOIHdhcyBjb21taXQgMDc1ZWZlN2MxNjU2ICgiZHJpdmVycy91c2I6DQo+IHVz
-ZSBBUkNIX0RNQV9NSU5BTElHTiBpbnN0ZWFkIG9mIEFSQ0hfS01BTExPQ19NSU5BTElHTiIpLiBJ
-IHdvdWxkbid0IGJlDQo+IHN1cnByaXNlZCBpZiBJIG1pc3NlZCBvdGhlciB0aGluZ3MgdGhhdCBy
-ZWx5IG9uIHRoZSBrbWFsbG9jKCkgYWxpZ25tZW50DQo+IHJhdGhlciB0aGFuIGV4cGxpY2l0IG1h
-Y3Jvcy4NCj4gDQo+PiBUaGUgY29udGVudCBvZiByZWFkX2J1ZiBpbiB0aGUgaW50ZXJydXB0IGNv
-bmZpZ3VyYXRpb24gcmVhZCBhdCBbMl0gbG9va3MNCj4+IHRvIGJlIHRoZSBsby1wYXJ0IG9mIGEg
-cG9pbnRlciArLTIwIGJ5dGVzIGRpc3RhbmNlIGZyb20gdGhlIHBvaW50ZXJzDQo+PiBwcmVzZW50
-IGluIHRoZSBhc3luYyBVUkJzIHF1ZXVlZCBmcm9tIFsxXSB3aGVuIHdlIGR1bXBlZCB0aGUgVVJC
-IHN0cnVjdHVyZXMNCj4+IGluc3RlYWQgb2YgdGhlIGV4cGVjdGVkIHJlZ2lzdGVyIGNvbnRlbnRz
-Lg0KPiANCj4gSXQgbWlnaHQgYmUgd29ydGggZW5hYmxpbmcgQ09ORklHX0RNQV9BUElfREVCVUcg
-dG8gc2VlIGlmIGl0IGNvbXBsYWlucy4NCj4gSSBsb3N0IG15c2VsZiBpbiB0aGUgY2FsbCBwYXRo
-cyBvbiBob3cgcmVhZF9idWYgZ2V0cyBwb3B1bGF0ZWQuIEluDQo+IHByaW5jaXBsZSwgdGhlIERN
-QSBBUEkgc2hvdWxkIGhhbmRsZSBib3VuY2luZyAoc3dpb3RsYikgZXZlbiBpZiB5b3UgcGFzcw0K
-PiBpdCBhIGJ1ZmZlciBzbWFsbGVyIHRoYW4gdGhlIHJlcXVpcmVkIGFsaWdubWVudA0KPiANCj4g
-UmFuZG9tIHNob3QsIHVudGVzdGVkIGFuZCBub3QgYW4gYWN0dWFsIGZpeCBidXQgc29tZSBpZGVh
-cyBmb3INCj4gZGVidWdnaW5nOg0KPiANCj4gLS0tLS0tLS0tLS0tLS0tLS0tODwtLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC91c2IvdXNi
-bmV0LmMgYi9kcml2ZXJzL25ldC91c2IvdXNibmV0LmMNCj4gaW5kZXggNDQxNzlmNGU4MDdmLi4w
-NmQ1ZjliZmVmNzUgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3VzYi91c2JuZXQuYw0KPiAr
-KysgYi9kcml2ZXJzL25ldC91c2IvdXNibmV0LmMNCj4gQEAgLTIwMjQsNyArMjAyNCw3IEBAIHN0
-YXRpYyBpbnQgX191c2JuZXRfcmVhZF9jbWQoc3RydWN0IHVzYm5ldCAqZGV2LCB1OCBjbWQsIHU4
-IHJlcXR5cGUsDQo+ICAgICAgICAgICAgICAgICAgICAgY21kLCByZXF0eXBlLCB2YWx1ZSwgaW5k
-ZXgsIHNpemUpOw0KPiANCj4gICAgICAgICAgaWYgKHNpemUpIHsNCj4gLSAgICAgICAgICAgICAg
-IGJ1ZiA9IGttYWxsb2Moc2l6ZSwgR0ZQX05PSU8pOw0KPiArICAgICAgICAgICAgICAgYnVmID0g
-a21hbGxvYyhBTElHTihzaXplLCBkbWFfZ2V0X2NhY2hlX2FsaWdubWVudCgpKSwgR0ZQX05PSU8p
-Ow0KPiAgICAgICAgICAgICAgICAgIGlmICghYnVmKQ0KPiAgICAgICAgICAgICAgICAgICAgICAg
-ICAgZ290byBvdXQ7DQo+ICAgICAgICAgIH0NCj4gQEAgLTIxNzEsMTIgKzIxNzEsMTMgQEAgaW50
-IHVzYm5ldF93cml0ZV9jbWRfYXN5bmMoc3RydWN0IHVzYm5ldCAqZGV2LCB1OCBjbWQsIHU4IHJl
-cXR5cGUsDQo+ICAgICAgICAgICAgICAgICAgZ290byBmYWlsOw0KPiANCj4gICAgICAgICAgaWYg
-KGRhdGEpIHsNCj4gLSAgICAgICAgICAgICAgIGJ1ZiA9IGttZW1kdXAoZGF0YSwgc2l6ZSwgR0ZQ
-X0FUT01JQyk7DQo+ICsgICAgICAgICAgICAgICBidWYgPSBrbWFsbG9jKEFMSUdOKHNpemUsIGRt
-YV9nZXRfY2FjaGVfYWxpZ25tZW50KCkpLCBHRlBfQVRPTUlDKTsNCj4gICAgICAgICAgICAgICAg
-ICBpZiAoIWJ1Zikgew0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgbmV0ZGV2X2VycihkZXYt
-Pm5ldCwgIkVycm9yIGFsbG9jYXRpbmcgYnVmZmVyIg0KPiAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAiIGluICVzIVxuIiwgX19mdW5jX18pOw0KPiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgZ290byBmYWlsX2ZyZWVfdXJiOw0KPiAgICAgICAgICAgICAgICAgIH0NCj4gKyAg
-ICAgICAgICAgICAgIG1lbWNweShidWYsIGRhdGEsIHNpemUpOw0KPiAgICAgICAgICB9DQo+IA0K
-PiAgICAgICAgICByZXEgPSBrbWFsbG9jKHNpemVvZihzdHJ1Y3QgdXNiX2N0cmxyZXF1ZXN0KSwg
-R0ZQX0FUT01JQyk7DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3VzYi9jZG5zMy9jZG5zcC1tZW0u
-YyBiL2RyaXZlcnMvdXNiL2NkbnMzL2NkbnNwLW1lbS5jDQo+IGluZGV4IDk3ODY2YmZiMmRhOS4u
-MjI2YWM3YWY2NTExIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3VzYi9jZG5zMy9jZG5zcC1tZW0u
-Yw0KPiArKysgYi9kcml2ZXJzL3VzYi9jZG5zMy9jZG5zcC1tZW0uYw0KPiBAQCAtNDUsNiArNDUs
-NyBAQCBzdGF0aWMgc3RydWN0IGNkbnNwX3NlZ21lbnQgKmNkbnNwX3NlZ21lbnRfYWxsb2Moc3Ry
-dWN0IGNkbnNwX2RldmljZSAqcGRldiwNCj4gICAgICAgICAgICAgICAgICByZXR1cm4gTlVMTDsN
-Cj4gICAgICAgICAgfQ0KPiANCj4gKyAgICAgICBtYXhfcGFja2V0ID0gQUxJR04obWF4X3BhY2tl
-dCwgZG1hX2dldF9jYWNoZV9hbGlnbm1lbnQoKSk7DQo+ICAgICAgICAgIGlmIChtYXhfcGFja2V0
-KSB7DQo+ICAgICAgICAgICAgICAgICAgc2VnLT5ib3VuY2VfYnVmID0ga3phbGxvYyhtYXhfcGFj
-a2V0LCBmbGFncyB8IEdGUF9ETUEpOw0KPiAgICAgICAgICAgICAgICAgIGlmICghc2VnLT5ib3Vu
-Y2VfYnVmKQ0KPiAtLS0tLS0tLS0tLS0tLS0tLS04PC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0NCj4gDQo+IEV2ZW4gd2l0aG91dCB0aGUgYWJvdmUsIG15IHJlYWRpbmcgb2YgdGhlIGNv
-ZGUgaXMgdGhhdCBpdCBpcyBzYWZlIHNpbmNlDQo+IHRoZSBidWZmZXJzIGV2ZW50dWFsbHkgZW5k
-IHVwIGluIGRtYV9tYXBfc2luZ2xlKCkgd2hpY2ggd291bGQgZG8NCj4gYm91bmNpbmcgdmlhIGFu
-IGFsaWduZWQgYnVmZmVyLg0KPiANCj4gVHJ5IHRvIHRyYWNrIGRvd24gY2FsbCBwYXRocyBmcm9t
-IHNtc2M5NXh4X3JlYWRfcmVnKCkgYW5kDQo+IHNtc2M5NXh4X3dyaXRlX3JlZ19hc3luYygpIHRv
-IHVzYm5ldF97cmVhZCx3cm90ZX1fY21kKiBldGMuIGFuZCBzZWUgaG93DQo+IHRoZSBETUEgdHJh
-bnNmZXJzIGhhcHBlbiwgd2hldGhlciBpdCdzIG1pc3Npbmcgc29tZSBkbWFfbWFwXyogY2FsbC4g
-VGhlDQo+IGRtYV9tYXBfKiBib3VuY2luZyBsb2dpYyByZWxpZXMgb24gdGhlIHNpemUsIHNlZQ0K
-PiBkbWFfa21hbGxvY19uZWVkc19ib3VuY2UoKS4NCj4gDQo+IElzIHRoZXJlIGFuIGlvbW11IGJl
-dHdlZW4gdGhlIHVzYiBob3N0IGNvbnRyb2xsZXIgYW5kIG1lbW9yeT8gVGhlIGlvbW11DQo+IGNv
-ZGUgc2hvdWxkIGRvIHNpbWlsYXIgYm91bmNpbmcgYnV0IGl0J3MgaGFkIG1pbmltYWwgdGVzdGlu
-Zy4NCj4gDQo+IC0tDQo+IENhdGFsaW4NCj4gDQoNCihGaW5hbGx5IGZpbmlzaGVkIHVwIHRoaXMg
-aXNzdWUgYWZ0ZXIgYmVpbmcgYXNzaWduZWQgc29tZSBoaWdoZXIgDQpwcmlvcml0eSB0YXNrcykN
-Cg0KVGhhbmsgeW91IGFnYWluIGZvciB0aGUgdmVyeSBoZWxwZnVsIGRlYnVnIGFkdmljZSwgSSB3
-YXMgYWJsZSB0byB0cmFjayANCmRvd24gdGhlIHByb2JsZW0gdG8gYmUgYSBYZW4gc3dpb3RsYiBw
-cm9ibGVtIChJIGhhZCBub3QgcmVhbGl6ZWQgWGVuIGhhZCANCml0cyBvd24gc3dpb3RsYiksIGFu
-ZCBJIG1hbmFnZWQgdG8gaWRlbnRpZnkgYW5vdGhlciBETUEgaXNzdWUgYXMgd2VsbCANCmR1ZSB0
-byB0aGF0LiBTZXJpZXMgYXQgWzFdLg0KDQpUaGFua3MhIC8vIEpvaG4gRXJuYmVyZw0KDQoNClsx
-XTogDQpodHRwczovL2xvcmUua2VybmVsLm9yZy94ZW4tZGV2ZWwvMjAyNTA1MDIxMTQwNDMuMTk2
-ODk3Ni0xLWpvaG4uZXJuYmVyZ0BhY3RpYS5zZS8=
+On Fri,  2 May 2025 09:44:44 +0200 Lukasz Majewski wrote:
+> This patch series provides support for More Than IP L2 switch embedded
+> in the imx287 SoC.
+> 
+> This is a two port switch (placed between uDMA[01] and MAC-NET[01]),
+> which can be used for offloading the network traffic.
+> 
+> It can be used interchangeably with current FEC driver - to be more
+> specific: one can use either of it, depending on the requirements.
+> 
+> The biggest difference is the usage of DMA - when FEC is used, separate
+> DMAs are available for each ENET-MAC block.
+> However, with switch enabled - only the DMA0 is used to send/receive data
+> to/form switch (and then switch sends them to respecitive ports).
+> 
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+Now that basic build is green the series has advanced to full testing,
+where coccicheck says:
+
+drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c:1961:1-6: WARNING: invalid free of devm_ allocated data
+drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c:1237:16-19: ERROR: bus is NULL but dereferenced.
+-- 
+pw-bot: cr
