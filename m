@@ -1,144 +1,127 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1411B46B8;
-	Sat,  3 May 2025 07:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3845136351
+	for <imx@lists.linux.dev>; Sun,  4 May 2025 06:28:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746256139; cv=none; b=msLkGNRa+xXM6VsVBmeQxig/zRjUVITt6OZMGp1Pi2JI4gcUaceOz7lI+rGk0xzi+vcI/I+nD44BzAqEWHRNDYA5HZXnNPKyoh1KnpByH80SC0yvoJnSHubv5VHUCm527/YtfkYOqejratfv9QNYvVydS2qDRuSnb8VEuef4ocM=
+	t=1746340111; cv=none; b=dgsrniK0Jyh/3CfhL7y8d01PUMomett8w34Lowy5sxejmFpqoCHO8zMvyFMIW25ggqtZEvykjp/k6/lkIG+MNY8GXlulyRAvMEuCg3f5Z7uZSBgM5xwh5nqgwwe9bTJYZkHskLA1azVtTYSJcGGQupKJPpQmTprnQt9aC2QpJls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746256139; c=relaxed/simple;
-	bh=R+jlvZbQdmwqm7NcjK+G61LADjyjLd0GDC0mzrUbkgo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JZjZSnUsA61AtyHbDoWY/WlJOuGIVBUZMUlAeweFIw0DyXk7Bafx1/k+4j5MCEt6DAZVYriJ2l9Fc3SbrUkty15d+/w+me3PjcVebRsWFsxSHc2SdiDN/kumE6wootDpywRCYkVJv1DXHYU0w5pkTYvdUwIjXqwNJbw68sAkJwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OeCEDfAq; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1746340111; c=relaxed/simple;
+	bh=JH7UWl0QPjoLu0FdEYSBj0ChSPIozh3YaMARZWs2Gyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q/rdCKo1sSpPN8jLU/DKL17HKi4+3fINXNcMz82kQQ19PAvwdkIKEiaOCgOS889sUCaVUtoFaT7+fvvTtNxM1uCg9084ZLExTN7duGbb4/CWEDWfrmJsLB0UV9nMehEeM5/P0ryk1y/GLFLxO8wu2t9Zm3W9XhBp4+qlDG6Bgqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=MgE7mYBf; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OeCEDfAq"
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 54378fCq561383
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 3 May 2025 02:08:41 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1746256121;
-	bh=4C9uWrdzZEQtSKzpMWCgzRsLbl9Gws62PCwkwfRtUSg=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=OeCEDfAq+l7Buxl4bhC7UqUQ7PjSdT79zInnVDnlbgsmAT9uYbFCfOg6J2k5QUIxS
-	 sJVDiW4JPHbp7go+YTxb4qooWKMThHDJj691ntzYZ+OWyRmD33AJuIT+O8cIJwDZ4v
-	 zje4r7ywEBY3jkdNVQn4E0PaIIH7Y3SYqgsVtD8M=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 54378fJn018399
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sat, 3 May 2025 02:08:41 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sat, 3
- May 2025 02:08:40 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sat, 3 May 2025 02:08:40 -0500
-Received: from [10.249.136.145] ([10.249.136.145])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 54378X05032476;
-	Sat, 3 May 2025 02:08:34 -0500
-Message-ID: <02a84099-7dfa-4901-bef5-29a06f3c747a@ti.com>
-Date: Sat, 3 May 2025 12:38:32 +0530
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="MgE7mYBf"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9C58C102EBA58;
+	Sun,  4 May 2025 08:28:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1746340100; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=rCgrVpFe4biw8hf/ZoueDjqGBEEPT9+1gxH8yMqDfrI=;
+	b=MgE7mYBfXN/HyW3DXX1gurVkn01PGNgPV3q7o0L+9PRlNWoioSE9c6kaq2ZrqXIAPjdDgI
+	ONrqX8sYjiREnJHNYF0XKTSgW48osfwDUHKGGigLh3ByV6gUlX3WDHhRaNL9/0t/uJFGc9
+	f4ahN/RJd72PKhp8T4/7o+dqVrm7S1+Inh96VoMAZ80yCs+r8KxQRhdoxyEPA2z1Qowo4U
+	z2ULxr3K0WOZB44kliZKG41EccEypr8FoznyhCm128qryxuGu+JwdH7mjWkgmX3vCEhyRk
+	eDWwJFj7edmMDpl+Z7ZlxTGe9cRJrRxesac92ErNRHW47zCX6GFC1O81tWmhBQ==
+Date: Sun, 4 May 2025 08:28:11 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v10 4/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250504082811.4893afaa@wsk>
+In-Reply-To: <20250502071328.069d0933@kernel.org>
+References: <20250502074447.2153837-1-lukma@denx.de>
+	<20250502074447.2153837-5-lukma@denx.de>
+	<20250502071328.069d0933@kernel.org>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v2 4/4] arm64: dts: ti: k3-am62x: Add required voltage
- supplies for TEVI-OV5640
-To: Rishikesh Donadkar <r-donadkar@ti.com>, <nm@ti.com>, <vigneshr@ti.com>
-CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <vaishnav.a@ti.com>, <y-abhilashchandra@ti.com>,
-        <s-jain1@ti.com>, <jai.luthra@linux.dev>,
-        <jai.luthra@ideasonboard.com>, <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <imx@lists.linux.dev>
-References: <20250502162539.322091-1-r-donadkar@ti.com>
- <20250502162539.322091-5-r-donadkar@ti.com>
-Content-Language: en-US
-From: "Thakkar, Devarsh" <devarsht@ti.com>
-In-Reply-To: <20250502162539.322091-5-r-donadkar@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: multipart/signed; boundary="Sig_/6QmTqwgtdiqccoc742SZ04r";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 5/2/2025 9:55 PM, Rishikesh Donadkar wrote:
-> The device tree overlay for TEVI-OV5640 requires following voltage
-> supplies as mentioned in the power section [1]
-> 
-> AVDD-supply: Analog voltage supply, 2.8 volts
-> DOVDD-supply: Digital I/O voltage supply, 1.8 volts
-> DVDD-supply: Digital core voltage supply, 3.3 volts
-> 
-> Add them in the DT overlay.
-> 
-> Link: https://www.technexion.com/wp-content/uploads/2023/09/product-brief_tevi-ov5640.pdf
-> Signed-off-by: Rishikesh Donadkar <r-donadkar@ti.com>
+--Sig_/6QmTqwgtdiqccoc742SZ04r
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Hi Jakub,
 
-Regards
-Devarsh
+> On Fri,  2 May 2025 09:44:44 +0200 Lukasz Majewski wrote:
+> > This patch series provides support for More Than IP L2 switch
+> > embedded in the imx287 SoC.
+> >=20
+> > This is a two port switch (placed between uDMA[01] and MAC-NET[01]),
+> > which can be used for offloading the network traffic.
+> >=20
+> > It can be used interchangeably with current FEC driver - to be more
+> > specific: one can use either of it, depending on the requirements.
+> >=20
+> > The biggest difference is the usage of DMA - when FEC is used,
+> > separate DMAs are available for each ENET-MAC block.
+> > However, with switch enabled - only the DMA0 is used to
+> > send/receive data to/form switch (and then switch sends them to
+> > respecitive ports).
+> >=20
+> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> > Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+> > Reviewed-by: Andrew Lunn <andrew@lunn.ch> =20
+>=20
+> Now that basic build is green the series has advanced to full testing,
+> where coccicheck says:
+>=20
+> drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c:1961:1-6: WARNING:
+> invalid free of devm_ allocated data
+> drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c:1237:16-19: ERROR:
+> bus is NULL but dereferenced.
 
-> ---
->  .../dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso  | 32 +++++++++++++++++++
->  1 file changed, 32 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
-> index b6bfdfbbdd984..fe3bc29632fa9 100644
-> --- a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
-> +++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-tevi-ov5640.dtso
-> @@ -15,6 +15,33 @@ clk_ov5640_fixed: ov5640-xclk {
->  		#clock-cells = <0>;
->  		clock-frequency = <24000000>;
->  	};
-> +
-> +	reg_2p8v: regulator-2p8v {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "2P8V";
-> +		regulator-min-microvolt = <2800000>;
-> +		regulator-max-microvolt = <2800000>;
-> +		vin-supply = <&vcc_3v3_sys>;
-> +		regulator-always-on;
-> +	};
-> +
-> +	reg_1p8v: regulator-1p8v {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "1P8V";
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-max-microvolt = <1800000>;
-> +		vin-supply = <&vcc_3v3_sys>;
-> +		regulator-always-on;
-> +	};
-> +
-> +	reg_3p3v: regulator-3p3v {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "3P3V";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		vin-supply = <&vcc_3v3_sys>;
-> +		regulator-always-on;
-> +	};
->  };
->  
->  &main_i2c2 {
-> @@ -40,6 +67,11 @@ ov5640: camera@3c {
->  
->  				clocks = <&clk_ov5640_fixed>;
->  				clock-names = "xclk";
-> +
-> +				AVDD-supply = <&reg_2p8v>;
-> +				DOVDD-supply = <&reg_1p8v>;
-> +				DVDD-supply = <&reg_3p3v>;
-> +
->  				powerdown-gpios = <&exp1 13 GPIO_ACTIVE_LOW>;
->  
->  				port {
+I'm sorry for not checking the code with coccinelle.
 
+I do have already used sparse and checkpatch.
+
+I will fix those errors.
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/6QmTqwgtdiqccoc742SZ04r
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgXCPwACgkQAR8vZIA0
+zr03AwgAkMNG0YrgvTM3iFWNDJ6IgUY1d14CkUU8GCex+FMbAMEEJeXx/+nws0ZR
+9sxsteMOv8I8iImMD1EIgBHdT8YjQKy9afBmzf5t8E9XOeE92W/e4Dc8w5CziCyN
+TV4akdUhoaTkhv3s7whhUAEOBvrZ7aHn9uqYzw5AybFcSArlLmmNS4MqWaGK0ATz
+tkfp14hOhxRKzMY87sqfTZYw+1DKMwnIn8mStHL8rHFnidLrt6LlAqWYrPw4wocp
+Ne/ziIpwkNfLjGtJM29tAB97HI4l4aZ5th6kcZACU+pTgRgY24wLDtXtk8UhY2a5
++EqG6B5zHuTWSNnZiUalr89fo0JhzA==
+=HuJH
+-----END PGP SIGNATURE-----
+
+--Sig_/6QmTqwgtdiqccoc742SZ04r--
