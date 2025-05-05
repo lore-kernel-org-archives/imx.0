@@ -1,50 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084833118DD;
-	Mon,  5 May 2025 22:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5471B32B2B4;
+	Mon,  5 May 2025 22:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484217; cv=none; b=u9CwHAtSiN2u/vtn7/4P0vA3m20kX3mg2pJhF49hubmyQlJ1taAjqZ0/QY4onOB1jvLXwXFvN61+fOXgqhrkkSVB4YZFq/0qhCJgh4EyUdth7X6h79lAe40gku9jc70sDVyaSRYfNhZeKbFLlJTv1JTks6kvuhXLD388WS6i6bw=
+	t=1746484506; cv=none; b=VAlZW4PXOCZSNyJe5kIVNdJedoeYTZ0NP0GjmHwWBnXZUcFBK0BtIz/WebRe9IJMgXhoTNNLs4tJWffW5Xt/KQpugK1HfpvlLCUkg6guMEaBzzbIB1bL95amJo1LRiCDD00BaSMukjKzGcd4nJuKvhQGOJSsRLO2jtIOytayz7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484217; c=relaxed/simple;
-	bh=0SqSalVLNIGV7ZGEkllDtan/2CZ5yqAgZD7fPjaulCI=;
+	s=arc-20240116; t=1746484506; c=relaxed/simple;
+	bh=yxsnRJRb9xThATtH7UqhtyDa4fYv1SCQYDmsViCzhlg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iie1tbWO+ObnSuOqVu1+BkvOsVu8GmD8s2dDQlj+xBP68/tpFZ84OHDnF5nEYtjDRERyFrrAu9+e/m7k37969cQzrsHH0lfuYPo0uUSMc+yZLHvQBF5LcN5WA9z/YeiFdcRXD2JZAiSle1/HgUUIdT+jL6KlVAXqY9Mp7vtHdAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IqyQhuD8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=S8IEC3b2O+x1ve/oWKlvlU5WLjVnghAXOIeTQltJ4vrxK75Vv1dHn5CFC3Vy7B7/v3pN5ibjwlsXccuzU2qXsgWB7j0dXw2Ew8hSrxBxN0+7KID/8tcvfqO24Tl4SwvQWynOAFVoOLtBhoYLcvl7w5xn0obXWmDmcMdeIICqaG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+3SMWC4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IqyQhuD8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2CEC4CEE4;
-	Mon,  5 May 2025 22:30:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+3SMWC4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75129C4CEF1;
+	Mon,  5 May 2025 22:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484216;
-	bh=0SqSalVLNIGV7ZGEkllDtan/2CZ5yqAgZD7fPjaulCI=;
+	s=k20201202; t=1746484506;
+	bh=yxsnRJRb9xThATtH7UqhtyDa4fYv1SCQYDmsViCzhlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IqyQhuD8MmBuM3bt8GlSiHB9oharCb3ejbevYIWd+5G5Bw+RJk28oon3WbJRTSRkB
-	 9MIESsKDWkGC9B07XY8nC8RSvCbO7Bti+FdmxQ9tfVmJOa3X1WmgK2nqV4YsDwNZYF
-	 tUDaXyfCNbHIt217pLQKGGcXxyPfnzeayfXUJbUey/sP7A0LzzyANW4ffGnADzs73z
-	 b5Uzr4sndhXCC+8sjSz49FbXsdgCuFQL+b4uYmyg2DFwjTiIOfVQ19rPCDGQvSLyuc
-	 uKxsbvqkcUTSCbeUhULRSrDDHJKJyFWKAbnut2VFxxpIrjdDSOO7sBZRZ+w+Ko//yi
-	 mAA1JKE7UnLLw==
+	b=T+3SMWC4t6zNDw9qiCgC9msclclk+BXyhXX0WCuqpCN0JVOZJMUdxl7e2p737Jxlo
+	 t0Jru+ED73moun5qAOPM9GjmOYw3ZcZjslmjqdCLkj/CODhKOprtU4c0mQ8V6mf+Ua
+	 Z3F0VdPLYh6+6bC3J4JMxnHJDhj/l0xa3myBZNUBSydORjsj1TZCxFeGRwlyYVsLn+
+	 3PKI8a/4Q4nAA+o+eGb/n/uWsRGSUzAIYJqJYXkWoWUzoUHzmikXEtRpXEygQMLfOs
+	 f25EIOaXu5EPN5XBECPuek1bxCqK4YLPiTXb2TuESsFAId7egDVnGhnU8IY+QXG7/Y
+	 cVFgP8z7WQNyg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+Cc: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Csókás,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	shengjiu.wang@nxp.com,
-	joe@pf.is.s.u-tokyo.ac.jp,
-	peng.fan@nxp.com,
-	m.felsch@pengutronix.de,
-	krzysztof.kozlowski@linaro.org,
-	dario.binacchi@amarulasolutions.com,
-	linux-pm@vger.kernel.org,
+	wei.fang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 392/642] pmdomain: imx: gpcv2: use proper helper for property detection
-Date: Mon,  5 May 2025 18:10:08 -0400
-Message-Id: <20250505221419.2672473-392-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 507/642] net: fec: Refactor MAC reset to function
+Date: Mon,  5 May 2025 18:12:03 -0400
+Message-Id: <20250505221419.2672473-507-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -54,43 +55,119 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit 6568cb40e73163fa25e2779f7234b169b2e1a32e ]
+[ Upstream commit 67800d296191d0a9bde0a7776f99ca1ddfa0fc26 ]
 
-Starting with commit c141ecc3cecd7 ("of: Warn when of_property_read_bool()
-is used on non-boolean properties"), probing the gpcv2 device on i.MX8M
-SoCs leads to warnings when LOCKDEP is enabled.
+The core is reset both in `fec_restart()` (called on link-up) and
+`fec_stop()` (going to sleep, driver remove etc.). These two functions
+had their separate implementations, which was at first only a register
+write and a `udelay()` (and the accompanying block comment). However,
+since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
+meant that these implementations diverged, often causing bugs.
 
-Fix this by checking property presence with of_property_present as
-intended.
+For instance, as of now, `fec_stop()` does not check for
+`FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
+a PM power-down event; and `fec_restart()` missed the refactor renaming
+the "magic" constant `1` to `FEC_ECR_RESET`.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.kernel.org/r/20250218-gpcv2-of-property-present-v1-1-3bb1a9789654@pengutronix.de
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+To harmonize current implementations, and eliminate this source of
+potential future bugs, refactor implementation to a common function.
+
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Link: https://patch.msgid.link/20250207121255.161146-2-csokas.bence@prolan.hu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/gpcv2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
-index 958d34d4821b1..105fcaf13a34c 100644
---- a/drivers/pmdomain/imx/gpcv2.c
-+++ b/drivers/pmdomain/imx/gpcv2.c
-@@ -1361,7 +1361,7 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index f7c4ce8e9a265..a86cfebedaa8b 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1093,6 +1093,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
  	}
+ }
  
- 	if (IS_ENABLED(CONFIG_LOCKDEP) &&
--	    of_property_read_bool(domain->dev->of_node, "power-domains"))
-+	    of_property_present(domain->dev->of_node, "power-domains"))
- 		lockdep_set_subclass(&domain->genpd.mlock, 1);
++/* Whack a reset.  We should wait for this.
++ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
++ * instead of reset MAC itself.
++ */
++static void fec_ctrl_reset(struct fec_enet_private *fep, bool allow_wol)
++{
++	u32 val;
++
++	if (!allow_wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
++		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
++		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
++			writel(0, fep->hwp + FEC_ECNTRL);
++		} else {
++			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
++			udelay(10);
++		}
++	} else {
++		val = readl(fep->hwp + FEC_ECNTRL);
++		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
++		writel(val, fep->hwp + FEC_ECNTRL);
++	}
++}
++
+ /*
+  * This function is called to start or restart the FEC during a link
+  * change, transmit timeout, or to reconfigure the FEC.  The network
+@@ -1109,17 +1132,7 @@ fec_restart(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
  
- 	ret = of_genpd_add_provider_simple(domain->dev->of_node,
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+-	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+-		writel(0, fep->hwp + FEC_ECNTRL);
+-	} else {
+-		writel(1, fep->hwp + FEC_ECNTRL);
+-		udelay(10);
+-	}
++	fec_ctrl_reset(fep, false);
+ 
+ 	/*
+ 	 * enet-mac reset will reset mac address registers too,
+@@ -1373,22 +1386,7 @@ fec_stop(struct net_device *ndev)
+ 	if (fep->bufdesc_ex)
+ 		fec_ptp_save_state(fep);
+ 
+-	/* Whack a reset.  We should wait for this.
+-	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+-	 * instead of reset MAC itself.
+-	 */
+-	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+-		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
+-			writel(0, fep->hwp + FEC_ECNTRL);
+-		} else {
+-			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+-			udelay(10);
+-		}
+-	} else {
+-		val = readl(fep->hwp + FEC_ECNTRL);
+-		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
+-		writel(val, fep->hwp + FEC_ECNTRL);
+-	}
++	fec_ctrl_reset(fep, true);
+ 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
+ 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
+ 
 -- 
 2.39.5
 
