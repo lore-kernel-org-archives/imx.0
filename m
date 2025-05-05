@@ -1,62 +1,62 @@
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962E52641C3
-	for <imx@lists.linux.dev>; Mon,  5 May 2025 15:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE94264FBD
+	for <imx@lists.linux.dev>; Mon,  5 May 2025 15:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746460201; cv=none; b=VRmgUVF/W1sS+ERLfeemnBHDjcw6cYhSvsKD/6M/fV6xD7MCtkZL5pPZaJ0x6saLaNw+ivpxxPWRWJpRzHhzDve1JJ05WeRRl6q0wuqj0c2ns1VFI2nxLRaQVumuQY4IQK+n7/tAvs24nLBRXkhWrBfcmjCR7/LFAVvMGQ3bo2c=
+	t=1746460205; cv=none; b=PZZT/Vv7n7sHtC2GUWXDzc40N4tREEq3GLhLeRaxvmXOKm4hvi2rSbi0vujwZIbagLYD1VoVjwyFfNq2eZxbeR71fgRHE4bPFk+qeLTZKhv4QMt6fWVQCA0Nay+fUk8q2T+W4BKbIM0HPBOlppGJYAJ2D6mcTyKaebJjMa09OGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746460201; c=relaxed/simple;
-	bh=oBMozJskEtvEjWYaahWUrCheNux/pXEF9fkwgtqsPEo=;
+	s=arc-20240116; t=1746460205; c=relaxed/simple;
+	bh=kYiHN+nVO56jpSLDAYAFIb8zFBmSTO/Xrj6sX4vDXQ4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TxqhWk0DCCUbp9bMcrmSkbAQ6lshmlb2jyxmR7wNynCrTkYslq4IcymbBpbef7XqWhujgVM+7nP4BQRqvPqjaV+gFr4fp7Fu29u/1lUwweq3MJRojMGeFX7Q9QeGjZnGCHB/IDxgPm2fZ70hzuVE3D3DkCVO3/97zhYApJl3/h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dcJG/wU+; arc=none smtp.client-ip=209.85.161.49
+	 MIME-Version; b=n1dDOCefOaOuCWqnjz1VMpIO2zJJfKxQlzrpcoJUcO8Bn3MryBn8HXDCj/qoaZIinmq/8cLwZs9YNiauTUglGSacmmMnlAhHm7gNzNHBua2u58cZrkqyXtC6O8otcB9YWx37x3dDPgOQSAHmLdn1f9aDfp9lv0rpcvNNgLaNT3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vs3VzBHf; arc=none smtp.client-ip=209.85.161.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dcJG/wU+"
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-601f3674116so1031179eaf.2
-        for <imx@lists.linux.dev>; Mon, 05 May 2025 08:49:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vs3VzBHf"
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-60219d9812bso1167897eaf.0
+        for <imx@lists.linux.dev>; Mon, 05 May 2025 08:50:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746460198; x=1747064998; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1746460203; x=1747065003; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bF/eU9zOanUVVZXeOgSfSnbo986yXdUGTIPTl3NGixQ=;
-        b=dcJG/wU+2U1xIvZMIpIqJijkJkmpmxypjvhE4PpPPwHRuhFj8AGjGGALfDMVU1gMcP
-         oZRcIPKjIBhrP0iZ/EX1dGEEWknDXRWkxGcDgz/O289ZHeEa3VJClyHwK9Jbkp8IUqu9
-         8W4Rhi0z26A7Dw9vxKwuoVilbUR2ubnF5/PZBaxReEmfUEUXKUHcK7riqGKEHPMihwOm
-         bMAXKbYs89D7YszqKIsXgkNliiCPqNUbeM2XkKt8HON01WYOx59JjfO6n/9/LAdxEZef
-         HUFPK5ZdhtkPGwJ5UviCjlRTa3bn0Qz/T5GuvE6yfJvi3gewmBaP/uzEaTe24FELpMMC
-         /h6g==
+        bh=QzxoNjX13i4eG31sNq5COpLdWdwplkA/ut9vzb6w+YA=;
+        b=Vs3VzBHfT2FgIHprtq/KhwOnV9ULo5Fe1dGicVFGoQ5/8R62jcQn/uMXc3N3gTZy4+
+         iyY2Efu8fW+y/5WDS5NLRJDVK6318Xl5LSQNvA+uhMxCQdn7ibQa0FkH6dGpY3ZduG8u
+         qNWoU0KZ5iRUTGgUZ7jDKuGDK5279STzON6+507u8F9ZzZq4ZqkVNb5YMC3cCHEet0eO
+         Gu5f4HsdYoK9bl/GCw7UoApSKipM3Qz6EHUKUrWkfkaijITdIL3b8Bcuy2to1FrPGkM6
+         kQadFHBaXLer/CYWsg8+DPS3CuXz/anaNuyLDp9Qf/iaRHsR+R63BzdZKJS6Iv2xCNbm
+         Ce3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746460198; x=1747064998;
+        d=1e100.net; s=20230601; t=1746460203; x=1747065003;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bF/eU9zOanUVVZXeOgSfSnbo986yXdUGTIPTl3NGixQ=;
-        b=vjlAw3DP5q9ccHTY3miSmlgQva37P/x0acIeRqRGkZ1RICRzo2pw+IUAeevQokZSYp
-         43Lqkrub1TzlYVYJFEvVeH66BtJlM6UAAFlT4qLF8lgb/BmBCQsa0sdTUWo9JO2IDecv
-         qIBiZ0pBbUo//qE/hr5qPTNjvT8lgerQPM8i5WNxE1hpMU2twpTazXV/0281NN63H6Oa
-         O9awXwjLozoN2mW2IkbiK1SFivj/jz1RF2pUr5Om8Q05GzZYq3ffwPbKqx2ftpuY92kE
-         q1upxYGul6UIN4mMTtoZQhyiDIUtiy9gXcUPB3sCPNy8avwypp/Ap5eDbvWnZA8zFtS8
-         crrA==
-X-Forwarded-Encrypted: i=1; AJvYcCWrp+sJAUrJIutDEMWERAw4VVAWacK/+EQH6NiTycF6awu1N9qWujewcuKjspECvIB7Y1Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx94IfqeSzPMdH35xnqQ40G5ugFsaqlOy1ScCOixLCaBvrBkmX6
-	ub/f2olIiYK8swY1aYlaiS/ZMclXcY/ZXILSiwCekGnGWG40ZVrT
-X-Gm-Gg: ASbGncvOVWq3HG4XlcGabY3YloLmNiqs/xoeYhVSmxKujKERVWzhed4TiOHTJuE6QG7
-	LnjpwHq/o7u4qTXLW+9hgleKzcxp8tyaTMup2YCeoNNp3HFXkoPtKEdT/vmjL584v5UnSKbrzxZ
-	wTOwvFA514N1pPFiykRpFcJQdwnk7yjkhzW4hQHZNbDUZvcjeadgHey/9FQk/80/jQoq5LPSKBa
-	gQR4fFnt2cUB2Zb1P8+JA18xQkyz1rSUSzUJx5VL0vH97P0Va6G8Vlv3ehZUkeChnbIsh7oyhZ2
-	1twCFTEV21Cdd5jKZYRV6nGEQ9FVX8WY5kFq7CT2/k3RQgsyh7al+1FzVAVs3wU=
-X-Google-Smtp-Source: AGHT+IFxOKSARBqkkegTT/BsbuPFrrDgx1ik3eNh9a8qIMK8qDnzx+rY6GvlMdOoHHyHuHjMiQD4vQ==
-X-Received: by 2002:a05:6820:208:b0:603:f973:1b3 with SMTP id 006d021491bc7-607fa81c1f3mr5567422eaf.0.1746460198572;
-        Mon, 05 May 2025 08:49:58 -0700 (PDT)
+        bh=QzxoNjX13i4eG31sNq5COpLdWdwplkA/ut9vzb6w+YA=;
+        b=lWPP7rTPqM6BV7FTIjR4zR7gVpHr3RVda6u3MVVyMroI+mllMedcqo976DsuMGlFQn
+         Iewv3lmU8h1m83UeHzwBaeNEQyjupWrV0y+ixC3Pr+WM1oKOJeTFxjr/R9nkDvBRAUZO
+         dPEawl1dlWQ19s7pk8Ja6MuPlSYM4lLcdGo/pST68IVquukj13j1vO8AYzaKNUyksbYA
+         sSAxEjszhiGaWP3swGHLoRRP3rImYLm0MI+2TpCBQDgxBFOd9VmgXvvcGlLv1DFmdNpr
+         m9DEQLYYIPrwkx9SdVXta57qmJ9V7zMzHSj32+dne8MplseratJ0pjouMx3fmjls7Rkr
+         dsvg==
+X-Forwarded-Encrypted: i=1; AJvYcCU5pN8yzPinrBk2zaqmXjSBE/fV5S3uTbxw/a9ctjcxnIF4PCOvgCvRQ5uR5cxae9cL8OM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxNdMxQhKVjt2n8pMhVDSeIlpBCZ9NsqEE3+XSo0o2GtnFJna1e
+	gnKDrY3cZhwyQkLZV3AKZvibbVidDw5syY4rFllJ3/dDKxKNeqjf
+X-Gm-Gg: ASbGnct5Ts/ft5P4xCaGKphWDDULoQKa2L2Jiy7bdhj8a2ovxgcsfWGT+pWs6Xr5qPS
+	vwsEBFzZNYqAWsxwNh+y6zjSmU+UE8+U2V4v8d5gNMpkWZ0Y8ldulQ8mgbEFkLfgdtL3HhExiKt
+	1fY01ct/esvsHudYB2qFx2K+es0HS3Y9GjONlMinO+pzEeBnuEikLTv+xbKFmFmkDcasP5zGU/2
+	hXSLUXdHHzZs5XvaXieKqkEGS3IfHsOmCf7SHN7JWtQm3SzXRLizq7Jq4YBlCWybKnUEntHJnzN
+	BeUkJFRZHHgy+uHgvmrqkXUecYBwsBX8TJrmMtbBJmRFRbZOE9yseaXg2SB8/o4=
+X-Google-Smtp-Source: AGHT+IFmXHRAfXFJOCHFZobnyaZvTqkwxSNtmF5ex7yON9mHi0l4M2n37VTw9ZY8eHmQoifZiTSQ/g==
+X-Received: by 2002:a4a:ec44:0:b0:607:e293:95b2 with SMTP id 006d021491bc7-607fab26b1emr5755194eaf.8.1746460203351;
+        Mon, 05 May 2025 08:50:03 -0700 (PDT)
 Received: from hiagof-nb.corp.toradex.com ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-607e7fe84a8sm1606217eaf.36.2025.05.05.08.49.54
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-607e7fe84a8sm1606217eaf.36.2025.05.05.08.49.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 08:49:57 -0700 (PDT)
+        Mon, 05 May 2025 08:50:02 -0700 (PDT)
 From: Hiago De Franco <hiagofranco@gmail.com>
 To: Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
@@ -74,9 +74,9 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	iuliana.prodan@oss.nxp.com,
 	Fabio Estevam <festevam@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH 2/3] firmware: imx: move get power mode function from scu-pd.c to misc.c
-Date: Mon,  5 May 2025 12:48:48 -0300
-Message-Id: <20250505154849.64889-3-hiagofranco@gmail.com>
+Subject: [PATCH 3/3] remoteproc: imx_rproc: add power mode check for remote core attachment
+Date: Mon,  5 May 2025 12:48:49 -0300
+Message-Id: <20250505154849.64889-4-hiagofranco@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505154849.64889-1-hiagofranco@gmail.com>
 References: <20250505154849.64889-1-hiagofranco@gmail.com>
@@ -90,162 +90,70 @@ Content-Transfer-Encoding: 8bit
 
 From: Hiago De Franco <hiago.franco@toradex.com>
 
-Move imx_sc_get_pd_power() from pmdomain/imx/scu-pd.c to
-firmware/imx/misc.c and rename it to imx_sc_pm_get_resource_power_mode()
-to maintain the same naming logic with other functions in misc.c.
+When the remote core is started before Linux boots (e.g., by the
+bootloader), the driver currently is not able to attach because it only
+checks for cores running in different partitions. If the core was kicked
+by the bootloader, it is in the same partition as Linux and it is
+already up and running.
 
-This makes the API available for other use cases. For example,
-remoteproc/imx_rproc.c can now use this function to check the power mode
-of the remote core.
+This adds power mode verification through the SCU interface, enabling
+the driver to detect when the remote core is already running and
+properly attach to it.
 
 Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+Suggested-by: Peng Fan <peng.fan@oss.nxp.com>
 ---
- drivers/firmware/imx/misc.c           | 47 +++++++++++++++++++++++++++
- drivers/pmdomain/imx/scu-pd.c         | 29 ++++-------------
- include/linux/firmware/imx/svc/misc.h |  8 +++++
- 3 files changed, 62 insertions(+), 22 deletions(-)
+ drivers/remoteproc/imx_rproc.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/firmware/imx/misc.c b/drivers/firmware/imx/misc.c
-index d073cb3ce699..61fcb0066ec9 100644
---- a/drivers/firmware/imx/misc.c
-+++ b/drivers/firmware/imx/misc.c
-@@ -37,6 +37,18 @@ struct imx_sc_msg_resp_misc_get_ctrl {
- 	u32 val;
- } __packed __aligned(4);
- 
-+struct imx_sc_msg_req_get_resource_power_mode {
-+	struct imx_sc_rpc_msg hdr;
-+	union {
-+		struct {
-+			u16 resource;
-+		} req;
-+		struct {
-+			u8 mode;
-+		} resp;
-+	} data;
-+} __packed __aligned(4);
-+
- /*
-  * This function sets a miscellaneous control value.
-  *
-@@ -135,3 +147,38 @@ int imx_sc_pm_cpu_start(struct imx_sc_ipc *ipc, u32 resource,
- 	return imx_scu_call_rpc(ipc, &msg, true);
- }
- EXPORT_SYMBOL(imx_sc_pm_cpu_start);
-+
-+/*
-+ * This function gets the power mode from a given @resource
-+ *
-+ * @param[in]     ipc         IPC handle
-+ * @param[in]     resource    resource to check the power mode
-+ *
-+ * @return Returns < 0 for errors or the following for success:
-+ * IMX_SC_PM_PW_MODE_OFF  0	Power off
-+ * IMX_SC_PM_PW_MODE_STBY 1	Power in standby
-+ * IMX_SC_PM_PW_MODE_LP   2	Power in low-power
-+ * IMX_SC_PM_PW_MODE_ON   3	Power on
-+ *
-+ * These are defined under firmware/imx/svc/pm.h
-+ */
-+int imx_sc_pm_get_resource_power_mode(struct imx_sc_ipc *ipc, u32 resource)
-+{
-+	struct imx_sc_msg_req_get_resource_power_mode msg;
-+	struct imx_sc_rpc_msg *hdr = &msg.hdr;
-+	int ret;
-+
-+	hdr->ver = IMX_SC_RPC_VERSION;
-+	hdr->svc = IMX_SC_RPC_SVC_PM;
-+	hdr->func = IMX_SC_PM_FUNC_GET_RESOURCE_POWER_MODE;
-+	hdr->size = 2;
-+
-+	msg.data.req.resource = resource;
-+
-+	ret = imx_scu_call_rpc(ipc, &msg, true);
-+	if (ret)
-+		return ret;
-+
-+	return msg.data.resp.mode;
-+}
-+EXPORT_SYMBOL(imx_sc_pm_get_resource_power_mode);
-diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
-index 01d465d88f60..945f972e636f 100644
---- a/drivers/pmdomain/imx/scu-pd.c
-+++ b/drivers/pmdomain/imx/scu-pd.c
-@@ -54,6 +54,7 @@
- #include <dt-bindings/firmware/imx/rsrc.h>
- #include <linux/console.h>
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 627e57a88db2..86541d9d8640 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -8,6 +8,7 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
  #include <linux/firmware/imx/sci.h>
 +#include <linux/firmware/imx/svc/misc.h>
- #include <linux/firmware/imx/svc/rm.h>
- #include <linux/io.h>
- #include <linux/module.h>
-@@ -328,27 +329,6 @@ static void imx_sc_pd_get_console_rsrc(void)
- 	imx_con_rsrc = specs.args[0];
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+ #include <linux/mailbox_client.h>
+@@ -906,6 +907,21 @@ static int imx_rproc_attach_pd(struct imx_rproc *priv)
+ 	return ret < 0 ? ret : 0;
  }
  
--static int imx_sc_get_pd_power(struct device *dev, u32 rsrc)
--{
--	struct imx_sc_msg_req_get_resource_power_mode msg;
--	struct imx_sc_rpc_msg *hdr = &msg.hdr;
--	int ret;
--
--	hdr->ver = IMX_SC_RPC_VERSION;
--	hdr->svc = IMX_SC_RPC_SVC_PM;
--	hdr->func = IMX_SC_PM_FUNC_GET_RESOURCE_POWER_MODE;
--	hdr->size = 2;
--
--	msg.data.req.resource = rsrc;
--
--	ret = imx_scu_call_rpc(pm_ipc_handle, &msg, true);
--	if (ret)
--		dev_err(dev, "failed to get power resource %d mode, ret %d\n",
--			rsrc, ret);
--
--	return msg.data.resp.mode;
--}
--
- static int imx_sc_pd_power(struct generic_pm_domain *domain, bool power_on)
- {
- 	struct imx_sc_msg_req_set_resource_power_mode msg;
-@@ -438,7 +418,12 @@ imx_scu_add_pm_domain(struct device *dev, int idx,
- 	if (imx_con_rsrc == sc_pd->rsrc)
- 		sc_pd->pd.flags = GENPD_FLAG_RPM_ALWAYS_ON;
- 
--	mode = imx_sc_get_pd_power(dev, pd_ranges->rsrc + idx);
-+	mode = imx_sc_pm_get_resource_power_mode(pm_ipc_handle,
-+						 pd_ranges->rsrc + idx);
-+	if (mode < 0)
-+		dev_err(dev, "failed to get power resource %d mode, ret %d\n",
-+			pd_ranges->rsrc + idx, mode);
-+
- 	if (mode == IMX_SC_PM_PW_MODE_ON)
- 		is_off = false;
- 	else
-diff --git a/include/linux/firmware/imx/svc/misc.h b/include/linux/firmware/imx/svc/misc.h
-index 760db08a67fc..376c800a88d0 100644
---- a/include/linux/firmware/imx/svc/misc.h
-+++ b/include/linux/firmware/imx/svc/misc.h
-@@ -55,6 +55,8 @@ int imx_sc_misc_get_control(struct imx_sc_ipc *ipc, u32 resource,
- 
- int imx_sc_pm_cpu_start(struct imx_sc_ipc *ipc, u32 resource,
- 			bool enable, u64 phys_addr);
-+
-+int imx_sc_pm_get_resource_power_mode(struct imx_sc_ipc *ipc, u32 resource);
- #else
- static inline int imx_sc_misc_set_control(struct imx_sc_ipc *ipc,
- 					  u32 resource, u8 ctrl, u32 val)
-@@ -73,5 +75,11 @@ static inline int imx_sc_pm_cpu_start(struct imx_sc_ipc *ipc, u32 resource,
- {
- 	return -ENOTSUPP;
- }
-+
-+static inline int imx_sc_pm_get_resource_power_mode(struct imx_sc_ipc *ipc,
-+						    u32 resource)
++static bool imx_rproc_is_on(struct device *dev, struct imx_sc_ipc *ipc,
++			    u32 resource)
 +{
-+	return -ENOTSUPP;
++	int ret;
++
++	ret = imx_sc_pm_get_resource_power_mode(ipc, resource);
++	if (ret < 0) {
++		dev_err(dev, "failed to get power resource %d mode, ret %d\n",
++			resource, ret);
++		return false;
++	}
++
++	return ret == IMX_SC_PM_PW_MODE_ON;
 +}
- #endif
- #endif /* _SC_MISC_API_H */
++
+ static int imx_rproc_detect_mode(struct imx_rproc *priv)
+ {
+ 	struct regmap_config config = { .name = "imx-rproc" };
+@@ -949,6 +965,13 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
+ 			if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
+ 				return -EINVAL;
+ 
++			/*
++			 * If remote core is already running (e.g. kicked by
++			 * the bootloader), attach to it.
++			 */
++			if (imx_rproc_is_on(dev, priv->ipc_handle, priv->rsrc_id))
++				priv->rproc->state = RPROC_DETACHED;
++
+ 			return imx_rproc_attach_pd(priv);
+ 		}
+ 
 -- 
 2.39.5
 
