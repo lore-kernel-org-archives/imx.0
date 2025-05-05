@@ -1,268 +1,325 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33B02F4794;
-	Mon,  5 May 2025 23:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5302D026D;
+	Mon,  5 May 2025 22:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486948; cv=none; b=dPTRZBhN9xMrpPn2ZLf2onWm3HSwPwsoKs3jeR2153DNykx54hJKPne5S4zQtUFjTY+KkGBavnmhL8t2Pu6mbUb+YCl1OvROTScJwAUBgJby7AJzDXa/DJ3qxe8wSbLTy+xn3sX52sU8xqBjKXAAjMwFeDudx/qCLKyYRhZZ7W8=
+	t=1746485427; cv=none; b=JzY2vWHcE3eIrWQIKhXSNK4g7jlazUP+blT/20mJifLn9GnsNQqARUG5LgovBEZxzqiXki41aljv8l0QPV57LQnJLniEEXXSn/VnWd8M9QX6STQeZv7KI+QCDgZUgKx/If92nqVIGjnOMK8BF3QhnV4KqN/yK4HxHBOobqjZI30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486948; c=relaxed/simple;
-	bh=PyUtw5nLT+/IZ6m4GvoskMThyl8jlpB1z23ocn4sra4=;
+	s=arc-20240116; t=1746485427; c=relaxed/simple;
+	bh=NpDBFexPX1tuTzC6iZI8/MRik7F8bcHGbQyKLCQ0Zzk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FKcE813Xly4RrDs7+LteTIiq+NliYFOX0P214ZloNybPILGYVZTcRm8w/scPqX5pnhkb20hhlNGkxnuQZyHaTKQ830uWNG7AQdnWfKz/u6ceP4DTJgSLCc5hXIUKX8n+TVX7utQT4TNvahH1wi9g1hL6dCIWYZlA5iA+LO2Eigo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m5Wbqbi2; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=nQrfiFZAaoyQtwA8imPI78GSfeZjOgEzsldrRgjFMNh1moiTII3KK6G5pexYTMsSXvgUd6XrG5VaGibuwrT1wmKRpMtNtzaqdeuONjKtnfotm3YXllsT98WSBJHljnrnhCA2umAT6N6aQxWy9EzfyNrMvvggOeDFlGyP4CBw7Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IryBRScn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m5Wbqbi2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63398C4CEF1;
-	Mon,  5 May 2025 23:15:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IryBRScn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0792C4CEE4;
+	Mon,  5 May 2025 22:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486946;
-	bh=PyUtw5nLT+/IZ6m4GvoskMThyl8jlpB1z23ocn4sra4=;
+	s=k20201202; t=1746485426;
+	bh=NpDBFexPX1tuTzC6iZI8/MRik7F8bcHGbQyKLCQ0Zzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5Wbqbi2f//yKrAD+PvXxHsbO07OyXtSsTRNeNRfZ8fUWYJxTOnMPAYoHaX1Nkg4p
-	 bhn8fBFJFaqIlvM0Kt1usTd2Xr7Re4cHo95NxaFFQDmYt+j9hV4J0sO8013ifriulo
-	 Dt6rUCgqV+ETKGvwy7DWqaq7tDRS33ktxVC7TKsCr4kbrvBwSVyFAE/CFdfWLR1GKh
-	 QmZ2laU8tZ5wwyQYFMWYOpyJocddXaEwbopzJKPpIB/CfUbWJ5Afb7fb3r3pZ9R+dC
-	 BQyFABOJvBvhzulwgk93ZR9MHcvciN45oswR+OWQ+5nqs3TCcP4wjQ6u6L4GOl6u9F
-	 mNPKIz0TAeAlw==
+	b=IryBRScnpqDktttqKChG+jkMr4MbAqBv31Msaet991/wgJhmS8T0wcWvdVVnxIZh1
+	 WltvSEdvdItfOxMk+kU9EIhq6rQ0XoqpeA09oy2VQjlFIypbq1UsugK8x+EVxXi1aT
+	 eKJq/QjJEjQUtqzyr6PIhPiMQuJlbfH2PlhrlxxWUPGG+zwahdGFIih+Mged+KcEtY
+	 /kdtKHusUQICZC7yjf8tQuKkePN2G/0KRauOqWNfGktmpT+BfO1BvCVhDi7reDruHO
+	 4t2JybCfUMLIo7onUsbyRgI4UvMuqHXobb5zT3rglivP5eWJ/JeDQu8Ikd1kx8XS11
+	 KMtypc4Y21k6g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+Cc: =?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	abelvesa@kernel.org,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
+	corbet@lwn.net,
+	nicolas.ferre@microchip.com,
+	alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev,
 	shawnguo@kernel.org,
-	linux-clk@vger.kernel.org,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	john.ogness@linutronix.de,
+	pmladek@suse.com,
+	arnd@arndb.de,
+	andriy.shevchenko@linux.intel.com,
+	namcao@linutronix.de,
+	benjamin.larsson@genexis.eu,
+	schnelle@linux.ibm.com,
+	esben@geanix.com,
+	stefan.eichenberger@toradex.com,
+	tglx@linutronix.de,
+	linux@rasmusvillemoes.dk,
+	marex@denx.de,
+	jeff.johnson@oss.qualcomm.com,
+	linux@treblig.org,
+	geert+renesas@glider.be,
+	wsa+renesas@sang-engineering.com,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	cheick.traore@foss.st.com,
+	ben.wolsieffer@hefring.com,
+	u.kleine-koenig@baylibre.com,
+	linux-serial@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 073/153] clk: imx8mp: inform CCF of maximum frequency of clocks
-Date: Mon,  5 May 2025 19:12:00 -0400
-Message-Id: <20250505231320.2695319-73-sashal@kernel.org>
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH AUTOSEL 6.12 306/486] serial: mctrl_gpio: split disable_ms into sync and no_sync APIs
+Date: Mon,  5 May 2025 18:36:22 -0400
+Message-Id: <20250505223922.2682012-306-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
-References: <20250505231320.2695319-1-sashal@kernel.org>
+In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
+References: <20250505223922.2682012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.181
+X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-[ Upstream commit 06a61b5cb6a8638fa8823cd09b17233b29696fa2 ]
+[ Upstream commit 1bd2aad57da95f7f2d2bb52f7ad15c0f4993a685 ]
 
-The IMX8MPCEC datasheet lists maximum frequencies allowed for different
-modules. Some of these limits are universal, but some depend on
-whether the SoC is operating in nominal or in overdrive mode.
+The following splat has been observed on a SAMA5D27 platform using
+atmel_serial:
 
-The imx8mp.dtsi currently assumes overdrive mode and configures some
-clocks in accordance with this. Boards wishing to make use of nominal
-mode will need to override some of the clock rates manually.
+BUG: sleeping function called from invalid context at kernel/irq/manage.c:738
+in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 27, name: kworker/u5:0
+preempt_count: 1, expected: 0
+INFO: lockdep is turned off.
+irq event stamp: 0
+hardirqs last  enabled at (0): [<00000000>] 0x0
+hardirqs last disabled at (0): [<c01588f0>] copy_process+0x1c4c/0x7bec
+softirqs last  enabled at (0): [<c0158944>] copy_process+0x1ca0/0x7bec
+softirqs last disabled at (0): [<00000000>] 0x0
+CPU: 0 UID: 0 PID: 27 Comm: kworker/u5:0 Not tainted 6.13.0-rc7+ #74
+Hardware name: Atmel SAMA5
+Workqueue: hci0 hci_power_on [bluetooth]
+Call trace:
+  unwind_backtrace from show_stack+0x18/0x1c
+  show_stack from dump_stack_lvl+0x44/0x70
+  dump_stack_lvl from __might_resched+0x38c/0x598
+  __might_resched from disable_irq+0x1c/0x48
+  disable_irq from mctrl_gpio_disable_ms+0x74/0xc0
+  mctrl_gpio_disable_ms from atmel_disable_ms.part.0+0x80/0x1f4
+  atmel_disable_ms.part.0 from atmel_set_termios+0x764/0x11e8
+  atmel_set_termios from uart_change_line_settings+0x15c/0x994
+  uart_change_line_settings from uart_set_termios+0x2b0/0x668
+  uart_set_termios from tty_set_termios+0x600/0x8ec
+  tty_set_termios from ttyport_set_flow_control+0x188/0x1e0
+  ttyport_set_flow_control from wilc_setup+0xd0/0x524 [hci_wilc]
+  wilc_setup [hci_wilc] from hci_dev_open_sync+0x330/0x203c [bluetooth]
+  hci_dev_open_sync [bluetooth] from hci_dev_do_open+0x40/0xb0 [bluetooth]
+  hci_dev_do_open [bluetooth] from hci_power_on+0x12c/0x664 [bluetooth]
+  hci_power_on [bluetooth] from process_one_work+0x998/0x1a38
+  process_one_work from worker_thread+0x6e0/0xfb4
+  worker_thread from kthread+0x3d4/0x484
+  kthread from ret_from_fork+0x14/0x28
 
-As operating the clocks outside of their allowed range can lead to
-difficult to debug issues, it makes sense to register the maximum rates
-allowed in the driver, so the CCF can take them into account.
+This warning is emitted when trying to toggle, at the highest level,
+some flow control (with serdev_device_set_flow_control) in a device
+driver. At the lowest level, the atmel_serial driver is using
+serial_mctrl_gpio lib to enable/disable the corresponding IRQs
+accordingly.  The warning emitted by CONFIG_DEBUG_ATOMIC_SLEEP is due to
+disable_irq (called in mctrl_gpio_disable_ms) being possibly called in
+some atomic context (some tty drivers perform modem lines configuration
+in regions protected by port lock).
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.kernel.org/r/20250218-imx8m-clk-v4-6-b7697dc2dcd0@pengutronix.de
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Split mctrl_gpio_disable_ms into two differents APIs, a non-blocking one
+and a blocking one. Replace mctrl_gpio_disable_ms calls with the
+relevant version depending on whether the call is protected by some port
+lock.
+
+Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Acked-by: Richard Genoud <richard.genoud@bootlin.com>
+Link: https://lore.kernel.org/r/20250217-atomic_sleep_mctrl_serial_gpio-v3-1-59324b313eef@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mp.c | 151 +++++++++++++++++++++++++++++++++++
- 1 file changed, 151 insertions(+)
+ Documentation/driver-api/serial/driver.rst |  2 +-
+ drivers/tty/serial/8250/8250_port.c        |  2 +-
+ drivers/tty/serial/atmel_serial.c          |  2 +-
+ drivers/tty/serial/imx.c                   |  2 +-
+ drivers/tty/serial/serial_mctrl_gpio.c     | 34 +++++++++++++++++-----
+ drivers/tty/serial/serial_mctrl_gpio.h     | 17 +++++++++--
+ drivers/tty/serial/sh-sci.c                |  2 +-
+ drivers/tty/serial/stm32-usart.c           |  2 +-
+ 8 files changed, 47 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 0f9ec5e0f5f81..0541ddfdf1020 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -8,6 +8,7 @@
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/module.h>
-+#include <linux/units.h>
- #include <linux/of_address.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-@@ -405,11 +406,151 @@ static const char * const imx8mp_clkout_sels[] = {"audio_pll1_out", "audio_pll2_
- static struct clk_hw **hws;
- static struct clk_hw_onecell_data *clk_hw_data;
+diff --git a/Documentation/driver-api/serial/driver.rst b/Documentation/driver-api/serial/driver.rst
+index 84b43061c11be..60434f2b02863 100644
+--- a/Documentation/driver-api/serial/driver.rst
++++ b/Documentation/driver-api/serial/driver.rst
+@@ -103,4 +103,4 @@ Some helpers are provided in order to set/get modem control lines via GPIO.
+ .. kernel-doc:: drivers/tty/serial/serial_mctrl_gpio.c
+    :identifiers: mctrl_gpio_init mctrl_gpio_free mctrl_gpio_to_gpiod
+            mctrl_gpio_set mctrl_gpio_get mctrl_gpio_enable_ms
+-           mctrl_gpio_disable_ms
++           mctrl_gpio_disable_ms_sync mctrl_gpio_disable_ms_no_sync
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index c1376727642a7..0519679929652 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1657,7 +1657,7 @@ static void serial8250_disable_ms(struct uart_port *port)
+ 	if (up->bugs & UART_BUG_NOMSR)
+ 		return;
  
-+struct imx8mp_clock_constraints {
-+	unsigned int clkid;
-+	u32 maxrate;
-+};
+-	mctrl_gpio_disable_ms(up->gpios);
++	mctrl_gpio_disable_ms_no_sync(up->gpios);
+ 
+ 	up->ier &= ~UART_IER_MSI;
+ 	serial_port_out(port, UART_IER, up->ier);
+diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
+index 09b246c9e389e..8bd39586a49f7 100644
+--- a/drivers/tty/serial/atmel_serial.c
++++ b/drivers/tty/serial/atmel_serial.c
+@@ -700,7 +700,7 @@ static void atmel_disable_ms(struct uart_port *port)
+ 
+ 	atmel_port->ms_irq_enabled = false;
+ 
+-	mctrl_gpio_disable_ms(atmel_port->gpios);
++	mctrl_gpio_disable_ms_no_sync(atmel_port->gpios);
+ 
+ 	if (!mctrl_gpio_to_gpiod(atmel_port->gpios, UART_GPIO_CTS))
+ 		idr |= ATMEL_US_CTSIC;
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 90974d338f3c0..8e3b15534bc72 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1596,7 +1596,7 @@ static void imx_uart_shutdown(struct uart_port *port)
+ 		imx_uart_dma_exit(sport);
+ 	}
+ 
+-	mctrl_gpio_disable_ms(sport->gpios);
++	mctrl_gpio_disable_ms_sync(sport->gpios);
+ 
+ 	uart_port_lock_irqsave(&sport->port, &flags);
+ 	ucr2 = imx_uart_readl(sport, UCR2);
+diff --git a/drivers/tty/serial/serial_mctrl_gpio.c b/drivers/tty/serial/serial_mctrl_gpio.c
+index 8855688a5b6c0..ca55bcc0b6111 100644
+--- a/drivers/tty/serial/serial_mctrl_gpio.c
++++ b/drivers/tty/serial/serial_mctrl_gpio.c
+@@ -322,11 +322,7 @@ void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
+ }
+ EXPORT_SYMBOL_GPL(mctrl_gpio_enable_ms);
+ 
+-/**
+- * mctrl_gpio_disable_ms - disable irqs and handling of changes to the ms lines
+- * @gpios: gpios to disable
+- */
+-void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
++static void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios, bool sync)
+ {
+ 	enum mctrl_gpio_idx i;
+ 
+@@ -342,10 +338,34 @@ void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
+ 		if (!gpios->irq[i])
+ 			continue;
+ 
+-		disable_irq(gpios->irq[i]);
++		if (sync)
++			disable_irq(gpios->irq[i]);
++		else
++			disable_irq_nosync(gpios->irq[i]);
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms);
++
++/**
++ * mctrl_gpio_disable_ms_sync - disable irqs and handling of changes to the ms
++ * lines, and wait for any pending IRQ to be processed
++ * @gpios: gpios to disable
++ */
++void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
++{
++	mctrl_gpio_disable_ms(gpios, true);
++}
++EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_sync);
++
++/**
++ * mctrl_gpio_disable_ms_no_sync - disable irqs and handling of changes to the
++ * ms lines, and return immediately
++ * @gpios: gpios to disable
++ */
++void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
++{
++	mctrl_gpio_disable_ms(gpios, false);
++}
++EXPORT_SYMBOL_GPL(mctrl_gpio_disable_ms_no_sync);
+ 
+ void mctrl_gpio_enable_irq_wake(struct mctrl_gpios *gpios)
+ {
+diff --git a/drivers/tty/serial/serial_mctrl_gpio.h b/drivers/tty/serial/serial_mctrl_gpio.h
+index fc76910fb105a..79e97838ebe56 100644
+--- a/drivers/tty/serial/serial_mctrl_gpio.h
++++ b/drivers/tty/serial/serial_mctrl_gpio.h
+@@ -87,9 +87,16 @@ void mctrl_gpio_free(struct device *dev, struct mctrl_gpios *gpios);
+ void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios);
+ 
+ /*
+- * Disable gpio interrupts to report status line changes.
++ * Disable gpio interrupts to report status line changes, and block until
++ * any corresponding IRQ is processed
+  */
+-void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios);
++void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios);
 +
 +/*
-+ * Below tables are taken from IMX8MPCEC Rev. 2.1, 07/2023
-+ * Table 13. Maximum frequency of modules.
-+ * Probable typos fixed are marked with a comment.
++ * Disable gpio interrupts to report status line changes, and return
++ * immediately
 + */
-+static const struct imx8mp_clock_constraints imx8mp_clock_common_constraints[] = {
-+	{ IMX8MP_CLK_A53_DIV,             1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_AXI,             266666667 }, /* Datasheet claims 266MHz */
-+	{ IMX8MP_CLK_NAND_USDHC_BUS,       266666667 }, /* Datasheet claims 266MHz */
-+	{ IMX8MP_CLK_MEDIA_APB,            200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HDMI_APB,             133333333 }, /* Datasheet claims 133MHz */
-+	{ IMX8MP_CLK_ML_AXI,               800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_AHB,                  133333333 },
-+	{ IMX8MP_CLK_IPG_ROOT,              66666667 },
-+	{ IMX8MP_CLK_AUDIO_AHB,            400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_DISP2_PIX,      170 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_DRAM_ALT,             666666667 },
-+	{ IMX8MP_CLK_DRAM_APB,             200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_CAN1,                  80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_CAN2,                  80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_PCIE_AUX,              10 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_I2C5,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_I2C6,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI1,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI2,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI3,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI5,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI6,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_ENET_QOS,             125 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_QOS_TIMER,       200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_REF,             125 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_TIMER,           125 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_PHY_REF,         125 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NAND,                 500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_QSPI,                 400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_USDHC1,               400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_USDHC2,               400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_I2C1,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_I2C2,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_I2C3,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_I2C4,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_UART1,                 80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_UART2,                 80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_UART3,                 80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_UART4,                 80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ECSPI1,                80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ECSPI2,                80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_PWM1,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_PWM2,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_PWM3,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_PWM4,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_GPT1,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT2,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT3,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT4,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT5,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT6,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_WDOG,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_IPP_DO_CLKO1,         200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_IPP_DO_CLKO2,         200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HDMI_REF_266M,        266 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_USDHC3,               400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_MIPI_PHY1_REF,  300 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_DISP1_PIX,      250 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_CAM2_PIX,       277 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_LDB,            595 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_MIPI_TEST_BYTE, 200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ECSPI3,                80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_PDM,                  200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_SAI7,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_MAIN_AXI,             400 * HZ_PER_MHZ },
-+	{ /* Sentinel */ }
-+};
-+
-+static const struct imx8mp_clock_constraints imx8mp_clock_nominal_constraints[] = {
-+	{ IMX8MP_CLK_M7_CORE,           600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ML_CORE,           800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU3D_CORE,        800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU3D_SHADER_CORE, 800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU2D_CORE,        800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_AUDIO_AXI_SRC,     600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HSIO_AXI,          400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_ISP,         400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_BUS,           600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_AXI,         400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HDMI_AXI,          400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU_AXI,           600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU_AHB,           300 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NOC,               800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NOC_IO,            600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ML_AHB,            300 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_G1,            600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_G2,            500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_CAM1_PIX,    400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_VC8000E,       400 * HZ_PER_MHZ }, /* Datasheet claims 500MHz */
-+	{ IMX8MP_CLK_DRAM_CORE,         800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GIC,               400 * HZ_PER_MHZ },
-+	{ /* Sentinel */ }
-+};
-+
-+static const struct imx8mp_clock_constraints imx8mp_clock_overdrive_constraints[] = {
-+	{ IMX8MP_CLK_M7_CORE,            800 * HZ_PER_MHZ},
-+	{ IMX8MP_CLK_ML_CORE,           1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU3D_CORE,        1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU3D_SHADER_CORE, 1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU2D_CORE,        1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_AUDIO_AXI_SRC,      800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HSIO_AXI,           500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_ISP,          500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_BUS,            800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_AXI,          500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HDMI_AXI,           500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU_AXI,            800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU_AHB,            400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NOC,               1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NOC_IO,             800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ML_AHB,             400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_G1,             800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_G2,             700 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_CAM1_PIX,     500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_VC8000E,        500 * HZ_PER_MHZ }, /* Datasheet claims 400MHz */
-+	{ IMX8MP_CLK_DRAM_CORE,         1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GIC,                500 * HZ_PER_MHZ },
-+	{ /* Sentinel */ }
-+};
-+
-+static void imx8mp_clocks_apply_constraints(const struct imx8mp_clock_constraints constraints[])
++void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios);
+ 
+ /*
+  * Enable gpio wakeup interrupts to enable wake up source.
+@@ -148,7 +155,11 @@ static inline void mctrl_gpio_enable_ms(struct mctrl_gpios *gpios)
+ {
+ }
+ 
+-static inline void mctrl_gpio_disable_ms(struct mctrl_gpios *gpios)
++static inline void mctrl_gpio_disable_ms_sync(struct mctrl_gpios *gpios)
 +{
-+	const struct imx8mp_clock_constraints *constr;
-+
-+	for (constr = constraints; constr->clkid; constr++)
-+		clk_hw_set_rate_range(hws[constr->clkid], 0, constr->maxrate);
 +}
 +
- static int imx8mp_clocks_probe(struct platform_device *pdev)
++static inline void mctrl_gpio_disable_ms_no_sync(struct mctrl_gpios *gpios)
  {
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np;
- 	void __iomem *anatop_base, *ccm_base;
-+	const char *opmode;
- 	int err;
+ }
  
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mp-anatop");
-@@ -720,6 +861,16 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index f43059e1b5c28..80efe3b0ed0c3 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -2297,7 +2297,7 @@ static void sci_shutdown(struct uart_port *port)
+ 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
  
- 	imx_check_clk_hws(hws, IMX8MP_CLK_END);
+ 	s->autorts = false;
+-	mctrl_gpio_disable_ms(to_sci_port(port)->gpios);
++	mctrl_gpio_disable_ms_sync(to_sci_port(port)->gpios);
  
-+	imx8mp_clocks_apply_constraints(imx8mp_clock_common_constraints);
-+
-+	err = of_property_read_string(np, "fsl,operating-mode", &opmode);
-+	if (!err) {
-+		if (!strcmp(opmode, "nominal"))
-+			imx8mp_clocks_apply_constraints(imx8mp_clock_nominal_constraints);
-+		else if (!strcmp(opmode, "overdrive"))
-+			imx8mp_clocks_apply_constraints(imx8mp_clock_overdrive_constraints);
-+	}
-+
- 	err = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
- 	if (err < 0) {
- 		dev_err(dev, "failed to register hws for i.MX8MP\n");
+ 	uart_port_lock_irqsave(port, &flags);
+ 	sci_stop_rx(port);
+diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
+index 9b9981352b1e1..e685cace5c854 100644
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -944,7 +944,7 @@ static void stm32_usart_enable_ms(struct uart_port *port)
+ 
+ static void stm32_usart_disable_ms(struct uart_port *port)
+ {
+-	mctrl_gpio_disable_ms(to_stm32_port(port)->gpios);
++	mctrl_gpio_disable_ms_sync(to_stm32_port(port)->gpios);
+ }
+ 
+ /* Transmit stop */
 -- 
 2.39.5
 
