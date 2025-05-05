@@ -1,134 +1,154 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E57E1A2393
-	for <imx@lists.linux.dev>; Mon,  5 May 2025 07:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAAD1DF254
+	for <imx@lists.linux.dev>; Mon,  5 May 2025 08:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746431569; cv=none; b=TRmnUWegZEafq3K68S/V4vqblbLUx2jhH3srVV44j1OL9Jbdku94NeKVzU01QBJONfkgwX6akFgKnbV7JmJsjUFPFWKgTzHyzd3A7Fg0eOYEPnMcTz4pecZ5IeHwqzaY64psEC+CMTkC2mYkr5GIsPv35eKNA1KImQG59aA6qnw=
+	t=1746432007; cv=none; b=bW/H0X0lSSRD5pd4sqrHUXAGFpDAntvFwkt+KnljIKAZ3eLyPhSw+GmIf/kNo985CIH+Gpxbp80dzBJfDhmJlAVAlF0TotrRXlR7HgWAWNTal/WqAxG2Co/INCo37Cs5utKIyRBZuwkIiGCG9OL+eWy/oqvB0MnOx5/V/M2Zf8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746431569; c=relaxed/simple;
-	bh=ZjSUP8jmlrb5+uP1brciCf5mZMhZ6YlpFsc/7NT/y40=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gDiqJltEqTW1536q/L9WR5JuTO/PaxJIXDJTKSUjaDUmR0zSOvNW2Qq1oNDqBM/CVLl6hchefT4a51MFjk2bAKKXxHuZvmVHKm2asofSlnxyrFJ+/Z19yJA2OYBqEtKrYtdrKhZOLzdpnjE0xiA6/GCrEzd+lJYQgVOYTxp3ytU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z57JZSxm; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1746432007; c=relaxed/simple;
+	bh=yDPy55Cf9Zyk4amT2UFhvK6TEYzPakN4rmyC6eHpXpY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NObYbh237zZmdm9cwbz7KqTpTe8P8vzL2P3047XLYNA6UfQmAbw6vZ55T3zUIlcAyhNQguXVW2LS3bxJNpmhhrJcl4UQM2oIJ99/GZiMKYJ9NDniYJnzzVEfY/Y5+YKaK1lubpmuZYZ6cpvZhfk8VL7wgu4nZxN5EvqQHQl9F34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=cK9noqLn; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z57JZSxm"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ace98258d4dso569628566b.2
-        for <imx@lists.linux.dev>; Mon, 05 May 2025 00:52:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746431566; x=1747036366; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aMDm0qfjOuYWTzr0Xo2QLnRNDzdiZPn1MuFHomJVvBY=;
-        b=Z57JZSxm1Hr//kRBgDcihWmDPXv/Y1oC7RxeIpywYRrGbbSAsINwO9kXuv0easUyUr
-         WnDqcSbR3AdBKaL+mOctkiRHuWTiUjTUGR6QXZBFq3hSdEE+rN0GaRhow9tj6NYbiADn
-         CGuuVUA92OT4sZfqon8qbSioksQ/Q0lNMv+WW0CM5abpof5kzdZqsynjze2b4sWXNhjc
-         feni5zaPlhMrNBUdWPVoWmf6AxUuPoPuhvRl9ZHUR846ARYgKuEOOekfLNzvFw1ZJdBP
-         1i8kboWpFhwTB6qxjX1StsTB1HcNpQtCl2G4GdLcu3b7Jgr+2eq+StM3VZwCudnhRV7F
-         l8nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746431566; x=1747036366;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aMDm0qfjOuYWTzr0Xo2QLnRNDzdiZPn1MuFHomJVvBY=;
-        b=MQ4zqukK4vpVdQ/o8lbJZeLPk9dpbtGQVP+Iv0MNvu++sCqWi4HRGpuEP2PHI+6ZVQ
-         r3nTH9v9QWqx+BglvQS8KzRAM9PIhQC6ooT9XOI+7t49MocbOtt4WPurMX7Sz8CFgdPR
-         7bWbZ3zfjq1zwnl6Mq/RvB1hjDkL30yAwSYAWkbB5ftnyQ51u/gkg8aQ6o04mQoPowUK
-         sqZvkAVLW3p3wKVX09gseRHVsBwHgxHyIyVq0TR8t0K12Mgsq2qKjzUXr+538G8VHdlv
-         7/jkOfp/SFhAA5DggKM1aQFp80KoBsdVTimK23oux9+EvrPM+Aqfthsr5+mtXICt6Ojw
-         8Zjg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvhK6xfwbGtkE0gMgHRXDZ1xMbl3tPLIS8299s/14gWlmJZ9YPTvp8UbUqvtNc4gRrgfs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyWjgn9MhGTUZWbw2E5H4mQ4uE2ef0appHLcWCNoaYPve09bAmE
-	YpJfsmP7dDGocjKmkwDjHT+sW5EFNQzUQsjXckjunjMH65sFIgBLGT3iV3OGhrI=
-X-Gm-Gg: ASbGncuREDsOaYWS03lIbbCYC0eoihC8flWi4ap4hFK7aGG5u1hKnPslgE+7BiZ/hNL
-	REo9LLIFlD99LYlbXVrJytAg4R5auaqZiGrDyUS74pilpqG9nqe5JqtPaEmg2g/TdPmvsndKapE
-	wIx8qkb4iSWTVpQanDvWNJ1NDbghNPYSmfqncyJe11Pr3VNF/l0MSDHPL3uiTb/lnRQGlM8+Dlr
-	5tokKMOBsv43uBMINaWiE9TDqm55Sr24c+cIWPURs2y4Z1xxAL+k+6BfRlDNk5q5KqhzPr7XIfz
-	P2hykZcatxoXefuesbOupJkg0C9SKHgkUC9rwTZA0hDyffGjOQ==
-X-Google-Smtp-Source: AGHT+IFKn1amEuiEsrKWv/SJZ/kZTwDtb/a8ekD/9m9gKUzOyHca4mZtzNEFzhzpC/nVZriKwygVQQ==
-X-Received: by 2002:a17:906:c08e:b0:aca:db46:f9a6 with SMTP id a640c23a62f3a-ad190858be1mr564437066b.59.1746431565639;
-        Mon, 05 May 2025 00:52:45 -0700 (PDT)
-Received: from hackbox.lan ([62.231.96.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad189540d94sm446544666b.182.2025.05.05.00.52.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 00:52:44 -0700 (PDT)
-From: Abel Vesa <abel.vesa@linaro.org>
-To: linux-kernel@vger.kernel.org,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	linux-amarula@amarulasolutions.com,
-	Abel Vesa <abelvesa@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org
-Subject: Re: (subset) [PATCH v12 00/19] Support spread spectrum clocking for i.MX8M PLLs
-Date: Mon,  5 May 2025 10:52:35 +0300
-Message-Id: <174643143452.2950397.16722215892279685541.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com>
-References: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="cK9noqLn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=FWcMhUUAD341x1j4p0TzxNBabdUQcp6F1O3NT2s7Z9I=; b=cK9noqLnLdYH8B5aHwnOVCr3N8
+	aFx1PhEY/AeDmgx30074nqdwSaV2O3JlovBwN6qZ/ncicaMyCEmmS5VH5ez+VuFKd6PT0O1dadn2r
+	wSLeCT/LpfhW2+tGGAd1OHXe6ZHyqa/nGbiRAfRLHCReM+BqRN7kELFx9302k1TmN7zG74MGAjvQS
+	fTQElveeg8b8N6vHKjQVnWT6esJW1+jbbFhJiNuPJfxizo4WtlSeFARU7XnwbnNBrZ7HXJbQArCez
+	rVvQHu/zsoCp0KQ0De/EW7oY711Av6tuCj9lf5vm3d9s6HYfNWrpdq+WpN9MUeeC+mTEiWxp/EEzO
+	zNzibs3g==;
+Received: from [89.212.21.243] (port=58904 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1uBpsB-00BenA-24;
+	Mon, 05 May 2025 09:04:18 +0200
+Message-ID: <282a7e41-97f8-4fd4-9f03-29f70acc4df2@norik.com>
+Date: Mon, 5 May 2025 09:04:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Upstream] [PATCH 2/2] arm64: dts: freescale: Add PHYTEC
+ phyBOARD-Nash-i.MX93 support
+To: Wadim Egorov <w.egorov@phytec.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ upstream@lists.phytec.de
+References: <20250425064107.174548-1-primoz.fiser@norik.com>
+ <20250425064107.174548-2-primoz.fiser@norik.com>
+ <000c1117-81d1-4a74-9d36-f83a2b0fedd3@phytec.de>
+Content-Language: en-US
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <000c1117-81d1-4a74-9d36-f83a2b0fedd3@phytec.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
+Hi Wadim,
 
-On Thu, 24 Apr 2025 08:21:30 +0200, Dario Binacchi wrote:
-> This version keeps the version v9 patches that can be merged and
-> removes the patches that will need to be modified in case Peng's
-> PR https://github.com/devicetree-org/dt-schema/pull/154 is accepted.
-> The idea is to speed up the merging of the patches in the series
-> that have already been reviewed and are not dependent on the
-> introduction of the assigned-clocks-sscs property, and postpone
-> the patches for spread spectrum to a future series once it becomes
-> clear what needs to be done.
+On 28. 04. 25 16:31, Wadim Egorov wrote:
+> Hi Primoz,
 > 
-> [...]
+> a few of the node references you are adding are out of alphabetical order.
 
-Applied, thanks!
+Only &mdio node is out of alphabetical order.
 
-[01/19] dt-bindings: clock: imx8mm: add VIDEO_PLL clocks
-        commit: 20e5d201b5d8f830e702d7d183f6b1b246b78d8a
-[02/19] clk: imx8mm: rename video_pll1 to video_pll
-        commit: 26a33196b5b68cf199b6c4283a254aa92d2aaf4b
-[03/19] dt-bindings: clock: imx8mp: add VIDEO_PLL clocks
-        commit: 2d50415e2457c6f6621c2faa3b01b11150fb9c67
-[04/19] clk: imx8mp: rename video_pll1 to video_pll
-        commit: 21bb969f608cefd8d847cf6eb50a193d9f1fbb87
-[05/19] dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
-        commit: 2ba124053687c933031a6dc5b2e16ceaca250934
-[10/19] clk: imx: add hw API imx_anatop_get_clk_hw
-        commit: 17e3c1a272d97e49b4f3fbfe1f1b889e120d2be8
-[11/19] clk: imx: add support for i.MX8MM anatop clock driver
-        commit: 3cbc38cf42ca42d2dc9a93c949e0381ff919df71
-[12/19] clk: imx: add support for i.MX8MN anatop clock driver
-        commit: 80badb1d7264e83b512475898e7459f464a009c9
-[13/19] clk: imx: add support for i.MX8MP anatop clock driver
-        commit: 4c82bbe8b5437c7f16b2891ce33210c0f1410597
-[14/19] clk: imx8mp: rename ccm_base to base
-        commit: 1a77907dbbecfbe5e6a1aec28afd49a1dc184b7a
-[16/19] dt-bindings: clock: imx8m-clock: add PLLs
-        commit: 6a55647af3334f1d935ece67de4a838a864b53fc
+But this is done by choice to keep it together with &eqos node since
+both nodes are related to the 2nd Ethernet interface (&ethphy2) and thus
+kept logically with each other.
 
-Best regards,
+We did the same for phyBOARD-Segin-i.MX93.
+
+> 
+> Am 25.04.25 um 09:41 schrieb Primoz Fiser:
+>> Add initial support for PHYTEC phyBOARD-Nash-i.MX93 board [1] based on
+>> the PHYTEC phyCORE-i.MX93 SoM (System-on-Module) [2].
+>>
+>> Supported board features:
+>>   * ADC
+>>   * CAN
+>>   * Ethernet 2x
+>>   * EEPROM
+>>   * eMMC
+>>   * Heartbeat LED
+>>   * RTC
+> 
+> eMMC and Hearbeat LED are not board features but SoM features.
+
+That's true.
+
+I will remove those from the list in v2 and only list carrier-board
+features.
+
+BR,
+Primoz
+
+> 
+>>   * RS-232/RS-485
+>>   * SD-card
+>>   * TPM 2.0
+>>   * USB
+>>
+>> For more details see the product pages for the development kit and the
+>> SoM:
+>>
+>> [1] https://www.phytec.eu/en/produkte/development-kits/phyboard-nash/
+>> [2]
+>> https://www.phytec.eu/en/produkte/system-on-modules/phycore-imx-91-93/
+>>
+>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> 
+> With that changed,
+> 
+> Reviewed-by: Wadim Egorov <w.egorov@phytec.de>
+> 
+
 -- 
-Abel Vesa <abel.vesa@linaro.org>
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
