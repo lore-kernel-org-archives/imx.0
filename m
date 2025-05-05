@@ -1,154 +1,160 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAAD1DF254
-	for <imx@lists.linux.dev>; Mon,  5 May 2025 08:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CE81F8691;
+	Mon,  5 May 2025 11:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746432007; cv=none; b=bW/H0X0lSSRD5pd4sqrHUXAGFpDAntvFwkt+KnljIKAZ3eLyPhSw+GmIf/kNo985CIH+Gpxbp80dzBJfDhmJlAVAlF0TotrRXlR7HgWAWNTal/WqAxG2Co/INCo37Cs5utKIyRBZuwkIiGCG9OL+eWy/oqvB0MnOx5/V/M2Zf8c=
+	t=1746443235; cv=none; b=qtYrETC40rU8hAl1yHDonVdpyPP5ZD+hLKkLkWJGaq3dZdG64ecxPV2Vj6OjTjnQn9I1TtPMEUmX1nWLPPL/IXBinPqG5rC45UsWqQsCjgZZMbkinB4ZjUhU27gyKfzLkW7eXSn0ZBGDCGY5D0EJR4+HtO75AjjoNbV6vXW+xvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746432007; c=relaxed/simple;
-	bh=yDPy55Cf9Zyk4amT2UFhvK6TEYzPakN4rmyC6eHpXpY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NObYbh237zZmdm9cwbz7KqTpTe8P8vzL2P3047XLYNA6UfQmAbw6vZ55T3zUIlcAyhNQguXVW2LS3bxJNpmhhrJcl4UQM2oIJ99/GZiMKYJ9NDniYJnzzVEfY/Y5+YKaK1lubpmuZYZ6cpvZhfk8VL7wgu4nZxN5EvqQHQl9F34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=cK9noqLn; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1746443235; c=relaxed/simple;
+	bh=rO5eZh+9eYwMMDNioF2j933ze88msy7mSao8PLdGod4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZswEZYkLGuGD9T4o8p7BWLnTvoOid3ds2HkgrNoBIJv4SlQ7qo0KyMjp7s9WgXXSF5JxSx3fE2rto+DG/zpYy8+hWfxinDs/3cObzhYHZ5buZLrrfVWVce4cOLt/hbBWANlYgcMXanSuH88buBE6GV/+lF7jFAfxEnlo0JAra6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EOb3oUa1; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="cK9noqLn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=FWcMhUUAD341x1j4p0TzxNBabdUQcp6F1O3NT2s7Z9I=; b=cK9noqLnLdYH8B5aHwnOVCr3N8
-	aFx1PhEY/AeDmgx30074nqdwSaV2O3JlovBwN6qZ/ncicaMyCEmmS5VH5ez+VuFKd6PT0O1dadn2r
-	wSLeCT/LpfhW2+tGGAd1OHXe6ZHyqa/nGbiRAfRLHCReM+BqRN7kELFx9302k1TmN7zG74MGAjvQS
-	fTQElveeg8b8N6vHKjQVnWT6esJW1+jbbFhJiNuPJfxizo4WtlSeFARU7XnwbnNBrZ7HXJbQArCez
-	rVvQHu/zsoCp0KQ0De/EW7oY711Av6tuCj9lf5vm3d9s6HYfNWrpdq+WpN9MUeeC+mTEiWxp/EEzO
-	zNzibs3g==;
-Received: from [89.212.21.243] (port=58904 helo=[192.168.69.116])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1uBpsB-00BenA-24;
-	Mon, 05 May 2025 09:04:18 +0200
-Message-ID: <282a7e41-97f8-4fd4-9f03-29f70acc4df2@norik.com>
-Date: Mon, 5 May 2025 09:04:17 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EOb3oUa1"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 433D443233;
+	Mon,  5 May 2025 11:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1746443223;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4MhGsI2EbyH3hc3EXge2Ok/O3ysmCRWNeiIpRKl0bo4=;
+	b=EOb3oUa1DKhQxgB28CR2wdYNZDkW5kb7zZ+egfQDcKeyUiJ+3s5hrBQEK32Laci8oYNbEM
+	OF/6FJ81JC9ER9MCDPfm3DJKwHYwXvm9BFTaPpPRJkeu41eU3spHBce9bmliA0oBhYQ4ze
+	AGnzKk/cFNK4Y5+5A5JlPp1NRYHjQhQRsnA5X075tHVNLg6fzWimigCoP/wbk9BZGNPFyy
+	25st1+P47zeaWIOGIRg2XJ8un3lPPyWU24XEhUwgjQ6SYDxjHrCI4cq3aTiRtC60imY1yW
+	ST70x6y44sWQ/Lz+O1QYqD7FEKTW135y6myH23veuat+2D3xlhpkPgCUnizCfQ==
+Date: Mon, 5 May 2025 13:06:48 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Inki Dae <inki.dae@samsung.com>, Kyungmin Park
+ <kyungmin.park@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, Alim
+ Akhtar <alim.akhtar@samsung.com>
+Cc: Maxime Ripard <mripard@kernel.org>, Louis Chauvet
+ <louis.chauvet@bootlin.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
+ Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
+ <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Douglas Anderson
+ <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof
+ Kozlowski <krzk@kernel.org>, Anusha Srivatsa <asrivats@redhat.com>, Paul
+ Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, Hui
+ Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
+ asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ chrome-platform@lists.linux.dev, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-stm32@st-md-mailman.stormreply.com, Adam Ford <aford173@gmail.com>,
+ Adrien Grassein <adrien.grassein@gmail.com>, Aleksandr Mishin
+ <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>, AngeloGioacchino
+ Del Regno <angelogioacchino.delregno@collabora.com>, Benson Leung
+ <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, Christoph
+ Fritz <chf.fritz@googlemail.com>, Cristian Ciocaltea
+ <cristian.ciocaltea@collabora.com>, Detlev Casanova
+ <detlev.casanova@collabora.com>, Dharma Balasubiramani
+ <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, Heiko
+ Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne
+ Grunau <j@jannau.net>, Jerome Brunet <jbrunet@baylibre.com>, Jesse Van
+ Gavere <jesseevg@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Kieran
+ Bingham <kieran.bingham+renesas@ideasonboard.com>, Liu Ying
+ <victor.liu@nxp.com>, Manikandan Muralidharan <manikandan.m@microchip.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Phong LE
+ <ple@baylibre.com>, Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang
+ <sugar.zhang@rock-chips.com>, Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi
+ Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Vitalii Mordan
+ <mordan@ispras.ru>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?=
+ <ilpo.jarvinen@linux.intel.com>, Bryan O'Donoghue
+ <bryan.odonoghue@linaro.org>, Hans de Goede <hdegoede@redhat.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>, Dmitry
+ Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, "Rob Herring (Arm)"
+ <robh@kernel.org>, Hsin-Te Yuan <yuanhsinte@chromium.org>, Pin-yen Lin
+ <treapking@chromium.org>, Xin Ji <xji@analogixsemi.com>, Aradhya Bhatia
+ <a-bhatia1@ti.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Ian
+ Ray <ian.ray@ge.com>, Martyn Welch <martyn.welch@collabora.co.uk>, Peter
+ Senna Tschudin <peter.senna@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Herve Codina <herve.codina@bootlin.com>, Alim
+ Akhtar <alim.akhtar@samsung.com>, Linus Walleij <linus.walleij@linaro.org>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>, Bjorn Andersson
+ <quic_bjorande@quicinc.com>, Marijn Suijten
+ <marijn.suijten@somainline.org>, Rob Clark <robdclark@gmail.com>, Sean Paul
+ <sean@poorly.run>, Helge Deller <deller@gmx.de>, Kuninori Morimoto
+ <kuninori.morimoto.gx@renesas.com>, Laurent Pinchart
+ <laurent.pinchart+renesas@ideasonboard.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Philippe Cornu <philippe.cornu@foss.st.com>,
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Yannick Fertre
+ <yannick.fertre@foss.st.com>, =?UTF-8?B?TWHDrXJh?= Canal
+ <mcanal@igalia.com>, Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Alain Volmat
+ <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>,
+ Michal Simek <michal.simek@amd.com>
+Subject: Re: (subset) [PATCH v2 00/34] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+Message-ID: <20250505130648.22ec8716@booty>
+In-Reply-To: <20250430-arrogant-marmoset-of-justice-92ced3@houat>
+References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
+	<174591887152.961603.7706063017853945511.b4-ty@bootlin.com>
+	<832a9db0-cf8a-4d35-8a98-08053fbd6723@bootlin.com>
+	<20250430-arrogant-marmoset-of-justice-92ced3@houat>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Upstream] [PATCH 2/2] arm64: dts: freescale: Add PHYTEC
- phyBOARD-Nash-i.MX93 support
-To: Wadim Egorov <w.egorov@phytec.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- upstream@lists.phytec.de
-References: <20250425064107.174548-1-primoz.fiser@norik.com>
- <20250425064107.174548-2-primoz.fiser@norik.com>
- <000c1117-81d1-4a74-9d36-f83a2b0fedd3@phytec.de>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <000c1117-81d1-4a74-9d36-f83a2b0fedd3@phytec.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkedtleefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdeljeejuddvudetffdtudelfedugfduledtueffuedufefgudegkeegtdeihedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedutdelpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomhdprhgtphhtthhopehinhhkihdru
+ ggrvgesshgrmhhsuhhnghdrtghomhdprhgtphhtthhopehkhihunhhgmhhinhdrphgrrhhksehsrghmshhunhhgrdgtohhmpdhrtghpthhtohepshiftdefuddvrdhkihhmsehsrghmshhunhhgrdgtohhmpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehtiihimhhmvghrmhgrnhhnsehsuhhsvgdruggvpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomh
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-Hi Wadim,
+Inki, Kyungmin, Seung-Woo, Alim,
 
-On 28. 04. 25 16:31, Wadim Egorov wrote:
-> Hi Primoz,
+On Wed, 30 Apr 2025 10:08:14 +0200
+Maxime Ripard <mripard@kernel.org> wrote:
+
+> Inki, Kyungmin, Seung-Woo, sorry for the mishap. Do you agree with the
+> following patch, and it going through drm-misc?
 > 
-> a few of the node references you are adding are out of alphabetical order.
-
-Only &mdio node is out of alphabetical order.
-
-But this is done by choice to keep it together with &eqos node since
-both nodes are related to the 2nd Ethernet interface (&ethphy2) and thus
-kept logically with each other.
-
-We did the same for phyBOARD-Segin-i.MX93.
-
+> https://lore.kernel.org/dri-devel/20250424-drm-bridge-convert-to-alloc-api-v2-14-8f91a404d86b@bootlin.com/
 > 
-> Am 25.04.25 um 09:41 schrieb Primoz Fiser:
->> Add initial support for PHYTEC phyBOARD-Nash-i.MX93 board [1] based on
->> the PHYTEC phyCORE-i.MX93 SoM (System-on-Module) [2].
->>
->> Supported board features:
->>   * ADC
->>   * CAN
->>   * Ethernet 2x
->>   * EEPROM
->>   * eMMC
->>   * Heartbeat LED
->>   * RTC
-> 
-> eMMC and Hearbeat LED are not board features but SoM features.
+> If not, we'll revert.
 
-That's true.
+Did you have a chance to have a look at the patch mentioned by Maxime?
 
-I will remove those from the list in v2 and only list carrier-board
-features.
+It was applied to drm-misc-next by mistake. Not your mistake of course,
+but now it's there so if you don't reply anything it will have to be
+reverted, and then sent again to go through all the review process to
+be hopefully re-applied in the future.
 
-BR,
-Primoz
+If you agree with keeping it in drm-misc-next, that would be less noise
+for everybody.
 
-> 
->>   * RS-232/RS-485
->>   * SD-card
->>   * TPM 2.0
->>   * USB
->>
->> For more details see the product pages for the development kit and the
->> SoM:
->>
->> [1] https://www.phytec.eu/en/produkte/development-kits/phyboard-nash/
->> [2]
->> https://www.phytec.eu/en/produkte/system-on-modules/phycore-imx-91-93/
->>
->> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> 
-> With that changed,
-> 
-> Reviewed-by: Wadim Egorov <w.egorov@phytec.de>
-> 
+I'm going to send v3 very soon, so it would be good to decide what to
+do before that.
+
+Best regards,
+Luca
 
 -- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
