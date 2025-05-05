@@ -1,262 +1,231 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013064.outbound.protection.outlook.com [52.101.72.64])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6C41A316A
-	for <imx@lists.linux.dev>; Mon,  5 May 2025 11:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746445264; cv=fail; b=X4y1PoUa2fc4Pib4m41KcppkcuGNBYZRpUROPz8TuQj+CzYJenKVJeXOClgN8d1bmOIk2C4ijEG4pB/FTdPZsdRLbZMPXe+50kb4Bob7ieIfDl3mMbYMdAFp4O0Bfh9awYR0YHvazxFKwGd0r5+OmlZB93KvFPy6NxgPW6aP4vY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746445264; c=relaxed/simple;
-	bh=V4l/I+AoFVha8NcMp4my/vw+SM6y2GMQqPaJLUx1Hmk=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dhnUtvYiq5yv/3wMeAqCsTeTGZplGYB44s+WgHEunlNcyM8UedmItXaHsbDLEWA50ZtwXoc9cHh9KS0KEqll1izlGA7G87QdJ+cPpSw5mHGC3jyJR53xwJCriN2j2OyD92SZAyfNoyMMQgPjOS7MT1kCVyAW6sHl4v46OS+xmX4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ELrSYP9b; arc=fail smtp.client-ip=52.101.72.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3188202995
+	for <imx@lists.linux.dev>; Mon,  5 May 2025 11:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746446349; cv=none; b=rOycKf72McOE7umSpseFDVX4QNPwYlAeSR0+USe1bIMKNTtycURZs0TXkJgxVaWcjCGl3RGdp9s5PD8DgnN2NK7iP7cEzjPQH4bgrS880yEiu/vpsmoQaevT8z0KMWxZnsjuUARnytnv8XYHnYR48X/S+A6j1MY697BFavAtxgI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746446349; c=relaxed/simple;
+	bh=FGuR2WBMXMvdjCd1ovjlhudh3LWd/ZGssire864V+jY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VDMeYNRszVR7TaJLhmhomXCZ+v35ACJVGcoJRhHQ+uT4VB67ODH7uDzNZho+UHXwchM2zM2Kk2ZN6vwI5vmGaJfp4hJNTOSxdQ/SqQEqKHdZtzMPIFhtLwQTVwBImDwtxEXdd36VqdZRuZnBbDpzT3J4kd99aKBqrSW2fF3JOtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IzwHVUWj; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ELrSYP9b"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gmiIlA8YO5pMWS3ji/UhOTPTnbdfKINd1IXfPTNNsWQymx30n3HhnplpeKgh3v2xjIxyDweb41izReU9y3wY0xh1h8nA7ELTRCXoyvgIkEqDrWcTKKvNmsxeAMljMX+B5KShQ1+5PNcvfbq0EGMf9pzOS4gQU6lI2hM/RklLx+BiIHtutYp4kzdTa5FtpDn+x0qDyhsCjFIXD44lRg3FQxwaA606Crw4uS0YnuK17o6R4XJ/BWEn7BcVB/iNi429FqIQ6eR5/ox9mbhf5cWNmAqbSgBnpV1Rl7WKWxwC5wnVLNelvDHWnu5QNLOHH7SpdkPW3eYca5oGsDn1TB1JXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C8T1j6Reqp01Z3ISjy4/euotw90caqRJMOyPLFutVjg=;
- b=N0pFYgX9J9KtfziXZyVl98Io4wAj3eGJOXyIioz1+G6jkRspirisVu/IWVMG29vt4o/OjWgBxbQkKpDP0lEaUPeri3in/xxDdMmM30VUo5IH5YOnKp92aS+InC0DvSP6YLn/jvyjMj9EyNEDfaGdqBnLu8w9UfSD5o1ufdGomzjJTqejXRu0nPGOFxQpGcxNpHP2EO0e5zLSUQgY4EKAoDgbF5Y+8xTpuQn5/sZQUYgiz3iesSQpJJQGcL6kuT+wpCP/asgSeX+xKI5/DW4nOH3rMXuk6AaiFbehuhu/qRFQ2gGD0n9BeePbK5K9diU+htYEtsSqsJFgjeX53GmCHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C8T1j6Reqp01Z3ISjy4/euotw90caqRJMOyPLFutVjg=;
- b=ELrSYP9byQYXmnP3S7b7hjok0U3c5XdWMPo7K9LcHvRkpEQ8B1lh0GD8vHQJXy3CZcGO8cucmXz47RzlqchdSXuELb4wySdzz9PVT180Kr77Jsl8d8JX1G5/PLRtqL+ulpCIKFadarF4g/xXqyX6DIB122bTuMmT8XGNbBQeHkrvlAtY94OOtHho01k0DaZ2alff3fcB20FO/ae4V0P7QkOGohUV/PQhPU05o5RbJxZss/NIJ0u+S388PPZ0jgjmRnyUGh4HlXChIE7G2lncm+pshntqSf6xXooDhS/BYJsTyBKRbev0zTLBMElkV1y6cUkjeNJ0HQ5VeJ2nfazi7Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
- by PA2PR04MB10447.eurprd04.prod.outlook.com (2603:10a6:102:413::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Mon, 5 May
- 2025 11:40:59 +0000
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::84f7:e2c3:ceed:c0a6]) by AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::84f7:e2c3:ceed:c0a6%3]) with mapi id 15.20.8699.019; Mon, 5 May 2025
- 11:40:59 +0000
-From: Daniel Baluta <daniel.baluta@nxp.com>
-To: broonie@kernel.org
-Cc: lgirdwood@gmail.com,
-	kernel@pengutronix.de,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com,
-	p.zabel@pengutronix.de,
-	Frank.Li@nxp.com,
-	iuliana.prodan@nxp.com,
-	linux-sound@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kai.vehmanen@linux.intel.com,
-	daniel.baluta@gmail.com,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Subject: [PATCH] ASoC: SOF: imx8m: Use reset controller API to control the DSP
-Date: Mon,  5 May 2025 14:42:51 +0300
-Message-ID: <20250505114251.57018-1-daniel.baluta@nxp.com>
-X-Mailer: git-send-email 2.43.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM0PR06CA0129.eurprd06.prod.outlook.com
- (2603:10a6:208:ab::34) To AS8PR04MB8247.eurprd04.prod.outlook.com
- (2603:10a6:20b:3f2::13)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IzwHVUWj"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 544NL1EN005776
+	for <imx@lists.linux.dev>; Mon, 5 May 2025 11:59:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Fc5osDce5Ixp5n1NZs7mSFVdO0qDnEBm9TZBSOSJaog=; b=IzwHVUWjTSN2aTmN
+	0IPLo//J+Zxdxh8FtBA8UKJ7kvNC6g+mk1Nyx6JgENgjB7iSAWdxaJe0sbw/06Yx
+	rI0moqbfIK7VFeEzrfag5tOCxAtPLGtRISnnrU3EugHQbuhuTQ1mLn3Qo9ujWUvy
+	fLWLGqdXGl1rq9M9oukIM0trKrsS9nx9J8rSek+aOFY11cmZ7bwh/xlxKMwI8ME0
+	XZwDaJgrzDkUw3ksftk4vxB6U2C162O2dy0nV66qHrYinprt9IRxBdaiAyl1MUWx
+	BJ6yPf5iJzQmpNkxalDBL/TejWUfJFCxnAFOX2Jvul5ILCohX2ayaf4tIxsw5iUu
+	QL/3Aw==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46dbc5c05n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Mon, 05 May 2025 11:59:06 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c54e7922a1so925034885a.2
+        for <imx@lists.linux.dev>; Mon, 05 May 2025 04:59:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746446345; x=1747051145;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fc5osDce5Ixp5n1NZs7mSFVdO0qDnEBm9TZBSOSJaog=;
+        b=mGN/S/FI+KBeeGtmlnQQfNAijlil8DrmTAmbzgkLmIPsAiVsS3dRN7srd2oUVWvICK
+         xp9/qBrzYudUx6jXXQ4kjar7TW17sr+HGZ2SZgQcMlh5WIljqnutJ6A05PokLZhN3Oj8
+         IMO0QAZl4uysF68956Xvb5xkmAPcWAayLqUVHDrCmumCyeV9jKPBP9voTKD/242A/C2a
+         Di7CgqUz4qSEnqjBL3xZLCmz5Sr2FcYpM/fGqqQvVlTOc7D7cSJRdpX7UM6rk9C1jqwJ
+         mULsMjcAypk/tXCiQbDo/Hw5Cx7glBWonnrO0HNUX5uP++iqhp9LrG8o7gUoMVuGLLop
+         Y1eA==
+X-Forwarded-Encrypted: i=1; AJvYcCU6XjYDP4xFA6fGt8HQ+8eq/+pwyBRs31pmTUsPe9bzPV0Ni8iLG8/KcPvHdgTuAfHrFg0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw6E9QaIPXcKSf+M5eF1pR6QOlry9dssihyhjlbVdERNKFGMhl6
+	KuAEH+oGylVxoNKrc2bq28ynxSNRNWm3vidiaGEM4G0ZmVfK+2xE8/jiGHKlnjUSHm5VPeTZ6i2
+	2IkQF45qKy1u99RDWhMLj7yKSRdTXRHYHBAu1XQeftUuJRljqQSc=
+X-Gm-Gg: ASbGncsmXOD1wIO9XhoH31j5cm7FYmd5GsI1AUNUlRVWA66E8Kdh+chSThjSL5IB8Y+
+	Wv40X4/fin37bKSA2NBDe6VLj8xAAyJ13Md037ezaMWgp+4Iqy0Wp/lkW6IZzskLTEDzfZAvVUi
+	bbqEZVSB/0+2PRW4QwWxqmuRQwMTNjqGggDhCuIbgAsMHvKKDzO7Hc2IDD9kpt9s4PW0JM06nvL
+	tkrvHXRM5WR8x3cDfM7PFMIioI/p8iVK7gEAIcEBsZTtlVftwQfvHOyYJl/Wny5Zhk3tUlx6lVE
+	v/8RvwudAnSgDPhEDRfx7PCpnelmMArnNb0JObwD+jDTKfL+FuDBKGLN9S2ZtUzhkP5fjALkA3Y
+	270yWe+OjNjcD80qxbR1vvaLrjs3uusqSVK4sPNORNRWZh8mBO0ucs9sFRPJ/x/InyePo
+X-Received: by 2002:a05:620a:4001:b0:7c5:9a37:c418 with SMTP id af79cd13be357-7cae3b1604amr1093368285a.51.1746446344887;
+        Mon, 05 May 2025 04:59:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxsMcGBcuXzdzsMZLmfG4jCCth/aIBhqNnJlAxtHNCdoHctJUXgi2+jH+zw6iGwmYPEzBLZg==
+X-Received: by 2002:a05:620a:4001:b0:7c5:9a37:c418 with SMTP id af79cd13be357-7cae3b1604amr1093364085a.51.1746446344392;
+        Mon, 05 May 2025 04:59:04 -0700 (PDT)
+Received: from ?IPV6:2001:14bb:671:42db:aca9:2ffd:84bc:ddc5? (2001-14bb-671-42db-aca9-2ffd-84bc-ddc5.rev.dnainternet.fi. [2001:14bb:671:42db:aca9:2ffd:84bc:ddc5])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54ea94c8d40sm1695574e87.98.2025.05.05.04.58.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 04:59:03 -0700 (PDT)
+Message-ID: <9afd098c-edd3-44fa-8efe-99f2e9c9a525@oss.qualcomm.com>
+Date: Mon, 5 May 2025 14:58:58 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|PA2PR04MB10447:EE_
-X-MS-Office365-Filtering-Correlation-Id: a79f95b5-9779-44f8-46b5-08dd8bc9b493
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Slg2a29zS1U4RDBDSldqd0szLyt0SXp6a0hmMHhkUmZJS05rcmlQZkJlQ1VH?=
- =?utf-8?B?Z0lwRjVpdTBkdXJZUmgvSVRraXFQaUNCclplb0JyOENzRVE3dnE1dVFWR1pO?=
- =?utf-8?B?cTUzaTYwWkQrcEJ4ODJLVnJEN0ZVUDRxeFdvRGhzUnlJd1BPVERQU2R1TkxC?=
- =?utf-8?B?cWViQTVoS1V3c1ZNemdEYW1qREY5Z3NGbno5alhGaXoxNGNHN3lIMjBmbXBC?=
- =?utf-8?B?WE1JTHgzeW9jNHBSejZhRGYrQ2huN0E1aDlwR0NEb2hyaWpUT01YOXo0eFFa?=
- =?utf-8?B?dThvRFdLa2t4eTVUREppSmpZRVJyM0t5OXVQMWQrT2NaWWFTdDgvOTlKdDJW?=
- =?utf-8?B?QW02WkR2TXVvdjl0enJSZ2RXNm1xUm9iSXJML0Q0YTIxUS9RWjZiS2g4WXVl?=
- =?utf-8?B?VnFYL25XYTFDMk1qdzBtYjQ1Vlo2MjFLQ0d3UmdrbFA2YlR0NWVmcTBnSXlD?=
- =?utf-8?B?UFlkb2VRTE1GWFMwV1BrcFkzdzU2MHlySm5WeEQ2YWRQYllWYy93M3h4SzFu?=
- =?utf-8?B?clFUVU9Va1lFNklhNXNYdmwvT21oQnBBRUpmdTRXdjBqYUU2TzE3YzR0NFh0?=
- =?utf-8?B?ZENVa0ZXRm40VjlyaHRTd2dOcXJvWlRoRVc0T25qSi83V1Z2NmNNQmdiOWlK?=
- =?utf-8?B?azZQWHBGQVVsb2E2b0VLVzdqWC9hbGdWQzBQY0hQbkJTeVREcGhsdGdsY0FX?=
- =?utf-8?B?M0hqS1J2ZmQxS1VBWjZzUVNQQU9KWlVHMHZJNlMyY3JQd2FvY2MwTndjYnRE?=
- =?utf-8?B?bnFiVlNleUN2dUNwYnY5cUJ1alhrd1JJLzZ1NitiV3JHR1A1NUI2aDQ1aENt?=
- =?utf-8?B?Y1dvclBXN3gzK2VhY1dBVWxUcUZpVWtVRlFiSmhnKzZleXFJRWJNUG5OQ3VQ?=
- =?utf-8?B?Q3g2eHBTZUNvaUpCb3pUSzVuZGxnSVFMelptWFR1U1JVbUsxazg4RzJ1UEcz?=
- =?utf-8?B?c2xGQjBZOXA1ekJmSDRFQkY5Z2FoMkdEMWk1a2dFQ016NXo5b05zY0haN2ky?=
- =?utf-8?B?U0s4UWlneXROL3U2a1ZhU3VmcXJXdTdEckhVNGQzVHlNSW5HVElVc0dpckY2?=
- =?utf-8?B?OWtHQnlQWXV0eXFUdkx4V2J2bFNSei9MNW8wMHVUSWcvQWw0dGVVREw4eDZq?=
- =?utf-8?B?enVqUnQzQVJ5anB4UVU5Y1JsdTREb1c2aUlWVmxTcUs1WFhkZEt4bnY0OHlX?=
- =?utf-8?B?TXRQZElsVTRvT3EwVmpFdkVGVzdvcFhxK3dUeFlYMG8xZ08xdWFCckRuTlRR?=
- =?utf-8?B?NU5hR3VEcVZ0clZ5RnlKUWpJb1VkR3lTY05aVTJYYjdNVms1dnlHeWFVV2w5?=
- =?utf-8?B?dTd2a0xmWERlUVMzdnJMV2VPUVZXQWQ1Q2szTUxWNWJhVFVzZ2RVVE55blN3?=
- =?utf-8?B?WDRUWENSR1RZTlAwWjJQNnp5SFNyMUVLVW5DdExRdmEyZWQ4VFNMR2NVRzVi?=
- =?utf-8?B?TjI2U0psNnlKQTY1VFluTkVMYzdrdHd2N0t0bU85eUN4VVBHSnM4SDhHVFBy?=
- =?utf-8?B?SkFLR3hsK01iOTFjQ2llY2FXY2V6cVZyZ0FYY2diZkJnOUpiRENORVdrVmFM?=
- =?utf-8?B?MDFXUnYzUHJtTmVpSExPMWZucTUrQncxbHdpOVpsaXRFeEt1WS9QUllNS2NU?=
- =?utf-8?B?enJNU3lQQ1ptaDJXWjB3NHpPbGtaWWJDWW9GVG9iZXBEZEY0bnJ1ZVVuUTQ0?=
- =?utf-8?B?SFhybXdyTmJsRkZpRUlHNmJKdVFWdmpkdjk5dzZ1U3ZMWkpTVW1jdG9BcFRo?=
- =?utf-8?B?TGxzckIyQUxCK1g2NEt1R3NrVEVPZWR3UVVrekhQT1gwdUF6V05vMkhBTjRB?=
- =?utf-8?B?YUsvWmxnVjdPUTdQeGR0OWU5TzJTaHRhSWp6SVk2VjYyTE9YcXY3eUgrSlc4?=
- =?utf-8?B?UFFpNmZlWThJOWFsN1Fock10QlRHSDg0ZUUvUFYzMW8rOFNHSjFkenA2TkN2?=
- =?utf-8?B?WVJuc2ZXQ24wRmNxdWtnS3ZoSTcwNHRuZTdYZTl5YllXNFVnNHIwdjczUnFx?=
- =?utf-8?B?Z2ZqM2dzVTJ3PT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?N09TeHQzVm1uOFNaTzRncEF5bUJEWDZTMTZQbE41TXlIZmMzMTdJaWRUVmdj?=
- =?utf-8?B?VkM2YlV2ckpERFl3eTkxQVF3QXcwY1Y4VzhZWGxzM1BJQTVFU2JGRzZBYzR4?=
- =?utf-8?B?VHUyS2JBRFRjRC9oVWdPL1NDOFcrZFZOUUlMQnZoY1BmRjh5NFFDbW9RYlNZ?=
- =?utf-8?B?T050MENXNkErQ3ZIYW4ycjJkb0RUaGhXNFRNbklIUHR4alpncTltc0Rsb0dC?=
- =?utf-8?B?ZnI1QTZQZ21QOVhQakIxTXIwTE15dGlZcElWdnRMczJOMEVVZ1p3M0NTQktB?=
- =?utf-8?B?MGxyd1VNVFNHL0pVa2Nodkk4LzdEQUh1Z3AzaVBoakZDNlJaTzV6WWZHcE5m?=
- =?utf-8?B?Sy80L1U1SyttZmdReCtXZ2lXa3V0WWVFYzNXcDB0RmNmdEJWcUdKVGlCUlc4?=
- =?utf-8?B?RkxpSHcvemRJQ3Z1L0FvamUydHFVL0dXaSszdmdFaE9idlRicWZkQzlvYWNu?=
- =?utf-8?B?UnJWK0JyVEVQUVBSZmtTL3E0OSswZitlRWYwaWVkVTJlZ3FJNmNUR1lsVmhj?=
- =?utf-8?B?QlY4QUErZGYwVnFUQVl1OWE2RE1NdnZnWDFGeUdPK01CbHBybW42MEpnQVVQ?=
- =?utf-8?B?aU1IMFlmczBNRTh5U2lrTXplRlRpR0pad0RuMEJFenUvZmhzaTdlQW40RzZ0?=
- =?utf-8?B?VXpLRnBmMTFQc3VuUisyZitVZzU2OTVGQ09Qd0lrbnpGRkEvdWVPQzFZQ3pa?=
- =?utf-8?B?Wk9KNDh5Y2I5ODkzK2I2bXNpRmVLZWJJeGFLenl6R1RVdWRoa3FoSWgwWjhF?=
- =?utf-8?B?c3hjWjFKUWRsN0dGVTZrc20xS2NUWGhUNTB2Tlo0d1VaNUhqUFkrSzk5YWNt?=
- =?utf-8?B?WmNGT1U4U0RYNkVuREg4MWxWb0tmek1KWStoYTczR3pRV0l1VVVReVVuVkxG?=
- =?utf-8?B?N0pWZ09vVXl0aU5naXh4M0g2bFQ2YWt1M3l3R3pMUkJseVZhNzg3ejF2RWVa?=
- =?utf-8?B?OTRudUVsd0RkbjUwNTNpcG5kdFgvMUpDUzBKOENrUmRkWUhUM1hWRDVYaXdl?=
- =?utf-8?B?bnhqalkyZjhwN1FZKzBhTjZoVXhVYWFJbGxUbkdtazMyaVJsdW41RXZpT2Nt?=
- =?utf-8?B?ckowR1RaWjI2YTRzOUlSVG4yK3Q3S3lxNnVKenB5SEFKV1htcjRCTXhFNUll?=
- =?utf-8?B?a2xFMzQ5R25qNzMrWCtXSjFWNnZXVzdwNWtXNGZIRHQ0S3ZleVlQczg0c050?=
- =?utf-8?B?My9KMWtUS1AvaDNFSFExd1Z1MEczR1dvVEc4ZXUvT2RVMFl2RDdzUjcvUGRN?=
- =?utf-8?B?eHhFUUVyNkNjMU1hbVBCTnNZS2VwWFVyMCtPRkw3dTRHN2dZdS9NMWV6ZmVs?=
- =?utf-8?B?YklKMndnQlA5SWVBMXYxeHJ1Vi9ZeUlEcU52RFNPbWVNbjNORGp6MSs4ZzBQ?=
- =?utf-8?B?WnhaTmtXNjFDbzYrQnI4aGlidXViajV4bFRtbGpUM0ZXZU5DblRxdUF1RlRq?=
- =?utf-8?B?eUxLeFF6QUc1enhwS2RxTWRUZkFuSStTazV1ZUZNM2wwQy85UFJWaXMyVGJH?=
- =?utf-8?B?Mm44WUlyOGkxMXFGYU1YdlVBc0dQVHdIVlArNWtsaDI3dWhkSFd6Rmpmd09K?=
- =?utf-8?B?U1NQVEZmZThhQVVJWXNBMjBlSE1HQmNTTFphYnJsUVJDVHM3c21MZEN5TFdS?=
- =?utf-8?B?ekxHMkhEQnJET2pHeld4Rlp5c2lJdVU0enpobVd5bUJtVGtJWlNpZDNIOEV1?=
- =?utf-8?B?elp1c2xXNDEyYk03c2RTWHFUK2pTL1lvYUFDNmRuZFBXRitITmYwbTV2cnNU?=
- =?utf-8?B?cStPZGxtUmZENlN3VkdtRCtlZkdWNkphYjIvTDZ2MGh4OGU0dGhJOGIrdC92?=
- =?utf-8?B?QmdJam54dlRsdFBoNTY1c21HalR2L25TMS9lM0xaSk1rZ2loekNQUDdlTldM?=
- =?utf-8?B?ZDZ3ZlBJSTl5bWZaOU5pYXFhamoxZzZyVVpDUkVLcGhaVUFmNVllclQyZlVK?=
- =?utf-8?B?WG1JZGVvQjR1dFRZRVFkcE5KQ0kzcWVkZlZWeGNlNU0xSVdaVHdvVkpZa1BS?=
- =?utf-8?B?MkZWQ01xOXJNWWdFQ3ZVdXphOTcvQjZQSmFLcEpuVUtDbDV1WFRBVFVkdld1?=
- =?utf-8?B?d1RLTCs3T0x2WVU5U3pxM1Q0ZXB2TFRqc0o5UW5OOFJZZ3RkeFlOM2NEYzNu?=
- =?utf-8?Q?nxa5KmDx1cmEZCRK9SSPBBUYT?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a79f95b5-9779-44f8-46b5-08dd8bc9b493
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2025 11:40:59.2492
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ds1ECxfoWYvmRUl2V3aEz5DbynqcWeSo9cuCr/RSh3LxAZTmZ3RUrcjHDS3OED5ynlhQCnfozwj2resySLR9qA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10447
+User-Agent: Mozilla Thunderbird
+Subject: Re: (subset) [PATCH v2 00/34] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+        Inki Dae
+ <inki.dae@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Maxime Ripard <mripard@kernel.org>,
+        Louis Chauvet <louis.chauvet@bootlin.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Jagan Teki <jagan@amarulasolutions.com>,
+        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Douglas Anderson
+ <dianders@chromium.org>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Anusha Srivatsa
+ <asrivats@redhat.com>,
+        Paul Kocialkowski <paulk@sys-base.io>,
+        Dmitry Baryshkov <lumag@kernel.org>, Hui Pu <Hui.Pu@gehealthcare.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        dri-devel@lists.freedesktop.org, asahi@lists.linux.dev,
+        linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Adam Ford <aford173@gmail.com>,
+        Adrien Grassein <adrien.grassein@gmail.com>,
+        Aleksandr Mishin <amishin@t-argos.ru>,
+        Andy Yan <andy.yan@rock-chips.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Benson Leung <bleung@chromium.org>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Christoph Fritz <chf.fritz@googlemail.com>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Detlev Casanova <detlev.casanova@collabora.com>,
+        Dharma Balasubiramani <dharma.b@microchip.com>,
+        Guenter Roeck <groeck@chromium.org>, Heiko Stuebner <heiko@sntech.de>,
+        Jani Nikula <jani.nikula@intel.com>, Janne Grunau <j@jannau.net>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Jesse Van Gavere <jesseevg@gmail.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Liu Ying <victor.liu@nxp.com>,
+        Manikandan Muralidharan <manikandan.m@microchip.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>, Phong LE <ple@baylibre.com>,
+        Sasha Finkelstein <fnkl.kernel@gmail.com>,
+        Sugar Zhang <sugar.zhang@rock-chips.com>,
+        Sui Jingfeng <sui.jingfeng@linux.dev>,
+        Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+        Vitalii Mordan <mordan@ispras.ru>,
+        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+        "Rob Herring (Arm)" <robh@kernel.org>,
+        Hsin-Te Yuan
+ <yuanhsinte@chromium.org>,
+        Pin-yen Lin <treapking@chromium.org>, Xin Ji <xji@analogixsemi.com>,
+        Aradhya Bhatia <a-bhatia1@ti.com>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Ian Ray <ian.ray@ge.com>, Martyn Welch <martyn.welch@collabora.co.uk>,
+        Peter Senna Tschudin <peter.senna@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Herve Codina
+ <herve.codina@bootlin.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Rob Clark <robdclark@gmail.com>
+References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
+ <174591887152.961603.7706063017853945511.b4-ty@bootlin.com>
+ <832a9db0-cf8a-4d35-8a98-08053fbd6723@bootlin.com>
+ <20250430-arrogant-marmoset-of-justice-92ced3@houat>
+ <20250505130648.22ec8716@booty>
+Content-Language: en-US
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+In-Reply-To: <20250505130648.22ec8716@booty>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: q6ptibaja5b7CZ0esdYN7nGpwppRqfoq
+X-Authority-Analysis: v=2.4 cv=O7Y5vA9W c=1 sm=1 tr=0 ts=6818a80a cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=P-IC7800AAAA:8 a=H8qqLt0gxxJlsNWwv3EA:9
+ a=QEXdDO2ut3YA:10 a=bTQJ7kPSJx9SKPbeHEYW:22 a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-ORIG-GUID: q6ptibaja5b7CZ0esdYN7nGpwppRqfoq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDExNCBTYWx0ZWRfX92V+TloDcsNW
+ ddyUNWCs+EXYhIZuYJspSRuJoogVaEtmFCxSvnaJOh5jVpBWFExYBZGK9M1aM1GebBHtmV9aHcX
+ lsva8qLa77HPjjXJk7I3oY2lxW692Szu8FciFs90MpmJ/67uusSpLN/7liTx8gpa/SgKd1Mc5Xy
+ f8xEO2yvJJX+VCGqCoEiFrfFiLMV3/3B3crNGqUcEe5FqNUQGnJXXNiewxwE5JvcS/bpqixmQvS
+ DNSenH4FQvemQAzFQB/b852Mhlx0u4iw0obCrlmLX3K5/sNaQrn+MZnpk7uDqVz0bL/ju73wNP+
+ NHt9L7b290oRlvC48TyELE9fbBKT4lJECVRSZQXX82Uqr9bx0g4svZNiQ08PyGQC3gNhWcgUeJS
+ qywivzfHJZwJPX93eBdlFzdViUcCcc1QFtpINVjotbjXBCGBuxJDp5m1V7YRlvQtCA0B9QNl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-05_05,2025-04-30_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
+ clxscore=1015 priorityscore=1501 adultscore=0 phishscore=0 bulkscore=0
+ impostorscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505050114
 
-DSP on i.MX8MP doesn't have a direct reset line so according to hardware
-design team in order to handle assert/deassert/reset functionality we
-need to use a combination of control bits from two modules. Audio block
-control module for Run/Stall control of the DSP and DAP module in order
-to do software reset.
+On 05/05/2025 14:06, Luca Ceresoli wrote:
+> Inki, Kyungmin, Seung-Woo, Alim,
+> 
+> On Wed, 30 Apr 2025 10:08:14 +0200
+> Maxime Ripard <mripard@kernel.org> wrote:
+> 
+>> Inki, Kyungmin, Seung-Woo, sorry for the mishap. Do you agree with the
+>> following patch, and it going through drm-misc?
+>>
+>> https://lore.kernel.org/dri-devel/20250424-drm-bridge-convert-to-alloc-api-v2-14-8f91a404d86b@bootlin.com/
+>>
+>> If not, we'll revert.
+> 
+> Did you have a chance to have a look at the patch mentioned by Maxime?
+> 
+> It was applied to drm-misc-next by mistake. Not your mistake of course,
+> but now it's there so if you don't reply anything it will have to be
+> reverted, and then sent again to go through all the review process to
+> be hopefully re-applied in the future.
+> 
+> If you agree with keeping it in drm-misc-next, that would be less noise
+> for everybody.
+> 
+> I'm going to send v3 very soon, so it would be good to decide what to
+> do before that.
 
-In a first step, for i.MX8MP we are switching on using the reset
-controller API to handle the DSP Run/Stall bits i.MX8MP. This comes with
-the advantage of offering a better probe ordering and a more natural way
-of abstracting the Audio block control bits.
+For the record: even though I'm not happy with msm-related patches going 
+through drm-misc without additional ack from our side, I think reverting 
+those and reapplying them later will create a bigger mess. So, I'm fine 
+with keeping drm/msm/* bridged patches in.
 
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Tested-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
----
- sound/soc/sof/imx/imx8.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
-
-diff --git a/sound/soc/sof/imx/imx8.c b/sound/soc/sof/imx/imx8.c
-index ab07512e511d..a40a8047873e 100644
---- a/sound/soc/sof/imx/imx8.c
-+++ b/sound/soc/sof/imx/imx8.c
-@@ -11,6 +11,7 @@
- #include <linux/arm-smccc.h>
- #include <linux/firmware/imx/svc/misc.h>
- #include <linux/mfd/syscon.h>
-+#include <linux/reset.h>
- 
- #include "imx-common.h"
- 
-@@ -23,13 +24,6 @@
- #define IMX8M_DAP_PWRCTL (0x4000 + 0x3020)
- #define IMX8M_PWRCTL_CORERESET BIT(16)
- 
--#define AudioDSP_REG0 0x100
--#define AudioDSP_REG1 0x104
--#define AudioDSP_REG2 0x108
--#define AudioDSP_REG3 0x10c
--
--#define AudioDSP_REG2_RUNSTALL  BIT(5)
--
- /* imx8ulp macros */
- #define FSL_SIP_HIFI_XRDC       0xc200000e
- #define SYSCTRL0                0x8
-@@ -43,6 +37,7 @@
- struct imx8m_chip_data {
- 	void __iomem *dap;
- 	struct regmap *regmap;
-+	struct reset_control *run_stall;
- };
- 
- /*
-@@ -137,8 +132,7 @@ static int imx8m_reset(struct snd_sof_dev *sdev)
- 	/* keep reset asserted for 10 cycles */
- 	usleep_range(1, 2);
- 
--	regmap_update_bits(chip->regmap, AudioDSP_REG2,
--			   AudioDSP_REG2_RUNSTALL, AudioDSP_REG2_RUNSTALL);
-+	reset_control_assert(chip->run_stall);
- 
- 	/* take the DSP out of reset and keep stalled for FW loading */
- 	pwrctl = readl(chip->dap + IMX8M_DAP_PWRCTL);
-@@ -152,9 +146,7 @@ static int imx8m_run(struct snd_sof_dev *sdev)
- {
- 	struct imx8m_chip_data *chip = get_chip_pdata(sdev);
- 
--	regmap_update_bits(chip->regmap, AudioDSP_REG2, AudioDSP_REG2_RUNSTALL, 0);
--
--	return 0;
-+	return reset_control_deassert(chip->run_stall);
- }
- 
- static int imx8m_probe(struct snd_sof_dev *sdev)
-@@ -174,10 +166,10 @@ static int imx8m_probe(struct snd_sof_dev *sdev)
- 		return dev_err_probe(sdev->dev, -ENODEV,
- 				     "failed to ioremap DAP\n");
- 
--	chip->regmap = syscon_regmap_lookup_by_phandle(sdev->dev->of_node, "fsl,dsp-ctrl");
--	if (IS_ERR(chip->regmap))
--		return dev_err_probe(sdev->dev, PTR_ERR(chip->regmap),
--				     "failed to fetch dsp ctrl regmap\n");
-+	chip->run_stall = devm_reset_control_get_exclusive(sdev->dev, "runstall");
-+	if (IS_ERR(chip->run_stall))
-+		return dev_err_probe(sdev->dev, PTR_ERR(chip->run_stall),
-+				     "failed to get dsp runstall reset control\n");
- 
- 	common->chip_pdata = chip;
- 
 -- 
-2.43.0
-
+With best wishes
+Dmitry
