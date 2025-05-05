@@ -1,46 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943F22C1785;
-	Mon,  5 May 2025 22:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A70389A16;
+	Mon,  5 May 2025 23:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485372; cv=none; b=R0Qd2Em+qvGnFgdQJ3X1A029NIqHULGGEGTLBOX7L0Y/Fz1a8e4T57j1FCbeU1qfKQNvMlpWPafmgxOXih40CFw1jfnHX72L61bykf8Jb0dGjN2t3RhbdVTx+eGU1BMsWM55c/TP8ZJDAmrYUlE0SvVe6VGCeIiRbuGDTTUlEqI=
+	t=1746486056; cv=none; b=hVTB1rnXDxPsvu+U+aHBMXKYstZvOQYhmQ8j0SEhzQ1mB+4nVJLAjmzaWFtKKsu54k7hvxC6nOhuqe969dVdjoDAYUYHG5VUtPiw/j3VY0t3xLOskCbMHhwzNXzMiyC/Q+dW8DBWhwtMrXb+l/fkH1AL1gjJV1kO6bHTinf7Rak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485372; c=relaxed/simple;
-	bh=YVBEWd8fzTq67NZgBhRcJJ1n5ZNEhk8+BBu3Q9IDrXI=;
+	s=arc-20240116; t=1746486056; c=relaxed/simple;
+	bh=AUN/ZpzpRneL6frMoc+GqTQzgvGFnu0eT//vqiAah2I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=psNSVhbsXzhfGP1ziDRFYZPWq6Tt3SluXVvxSldFbGMTTDuKwZUVjLUixMFDdrtxIhIXFKXIE+GE4KIv4CDlVg6CZLq6i7aetiMWqmMk0FWTRPaOdMSHFxfml1vHuFGtXZHYbmnvf4oeG48+B620KXBpmhIZDU46q5ki/9kyNBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmvhBqS2; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=q+eNB7TGMys2LGPcRhJsPPWWmbcUuSTMYvrnP7PlzKytEUUSFdYvbOwBu7/P4wDF1S4H/khfLLEQwGB9GkQZaGihdIe18aFkK1cWYZJaEiiE4C2vXvEE9EmTraUM7hdDVWoJ12x5V8JnjDf+Ws8zXbL8wFiY+4JbQhcmenYdD1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQpQE9l3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmvhBqS2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DD3C4CEEF;
-	Mon,  5 May 2025 22:49:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQpQE9l3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F461C4CEF1;
+	Mon,  5 May 2025 23:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485371;
-	bh=YVBEWd8fzTq67NZgBhRcJJ1n5ZNEhk8+BBu3Q9IDrXI=;
+	s=k20201202; t=1746486055;
+	bh=AUN/ZpzpRneL6frMoc+GqTQzgvGFnu0eT//vqiAah2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JmvhBqS2jPEH/9Ohwr9cbz+MQe9xVtExFodBDZ2p8Bc33w4PLzsKxQuf+TKatL9C+
-	 gflKvI4U+2sZ+DNFtLeb1Ai5dSUPVkw2f0IxB7XUc0HqGi/ZGJPb0mfaKFPm+4O1lM
-	 SVa6Hd0d1mYbAJVqsG4ECHBiuPzpbvtHysixi/37iCuHHI3o3lpXzqOnqHxNZIMsB+
-	 DXbBb4CU2e8viVmzNLvGUpXeKe3G6ngF3TUnF8gUN57R5GWQCY5q59J5kIMpSXH/Pg
-	 ObuMrTxEUyKRNFu/noZOHVbGpBXYrI3BNXB14BBb8LfmXkdf13LN1v2dYm9ogbhvIb
-	 dGPy7um37aRyg==
+	b=PQpQE9l3L2GohUitm5A5nan4pLdP2r/R4HxJPxERk461tk5mQVh/olXkRBdEJJV6c
+	 M0n8tNME2cQoEGlViXT3EfcpsedlTsA69B2Jl7333XsA+rRwA712SgDv+zgueoTnBD
+	 +SPWs0M5vW0I9Y6SXmkYD2buCFu7yS4ufbRn6ZDhGWb192pI7wicOz5xjmqr1e0goy
+	 bwOP5s04yW2v18P5R58OX5tLkNNjlW5FcDJviUSVTJFLOVAe5m2nlYVRiBkIzJAnUr
+	 lO78G/1nMqaG0T8sIMBeyMlxZLeTdvq6tV6c9oTBhcAoQ/hxxPeB/mL0zTLNBPTx+7
+	 3UJH5IlhtPmZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-i3c@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 295/486] i3c: master: svc: Flush FIFO before sending Dynamic Address Assignment(DAA)
-Date: Mon,  5 May 2025 18:36:11 -0400
-Message-Id: <20250505223922.2682012-295-sashal@kernel.org>
+	abelvesa@kernel.org,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	shawnguo@kernel.org,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 130/294] clk: imx8mp: inform CCF of maximum frequency of clocks
+Date: Mon,  5 May 2025 18:53:50 -0400
+Message-Id: <20250505225634.2688578-130-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
-References: <20250505223922.2682012-1-sashal@kernel.org>
+In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
+References: <20250505225634.2688578-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,40 +54,215 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.26
+X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit a892ee4cf22a50e1d6988d0464a9a421f3e5db2f ]
+[ Upstream commit 06a61b5cb6a8638fa8823cd09b17233b29696fa2 ]
 
-Ensure the FIFO is empty before issuing the DAA command to prevent
-incorrect command data from being sent. Align with other data transfers,
-such as svc_i3c_master_start_xfer_locked(), which flushes the FIFO before
-sending a command.
+The IMX8MPCEC datasheet lists maximum frequencies allowed for different
+modules. Some of these limits are universal, but some depend on
+whether the SoC is operating in nominal or in overdrive mode.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20250129162250.3629189-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+The imx8mp.dtsi currently assumes overdrive mode and configures some
+clocks in accordance with this. Boards wishing to make use of nominal
+mode will need to override some of the clock rates manually.
+
+As operating the clocks outside of their allowed range can lead to
+difficult to debug issues, it makes sense to register the maximum rates
+allowed in the driver, so the CCF can take them into account.
+
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.kernel.org/r/20250218-imx8m-clk-v4-6-b7697dc2dcd0@pengutronix.de
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/imx/clk-imx8mp.c | 151 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 151 insertions(+)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 6ffe022dbb5b4..62913feae45dd 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -860,6 +860,8 @@ static int svc_i3c_master_do_daa_locked(struct svc_i3c_master *master,
- 	u32 reg;
- 	int ret, i;
+diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+index 747f5397692e5..2a0804dd4b846 100644
+--- a/drivers/clk/imx/clk-imx8mp.c
++++ b/drivers/clk/imx/clk-imx8mp.c
+@@ -8,6 +8,7 @@
+ #include <linux/err.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
++#include <linux/units.h>
+ #include <linux/of_address.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+@@ -406,11 +407,151 @@ static const char * const imx8mp_clkout_sels[] = {"audio_pll1_out", "audio_pll2_
+ static struct clk_hw **hws;
+ static struct clk_hw_onecell_data *clk_hw_data;
  
-+	svc_i3c_master_flush_fifo(master);
++struct imx8mp_clock_constraints {
++	unsigned int clkid;
++	u32 maxrate;
++};
 +
- 	while (true) {
- 		/* SVC_I3C_MCTRL_REQUEST_PROC_DAA have two mode, ENTER DAA or PROCESS DAA.
- 		 *
++/*
++ * Below tables are taken from IMX8MPCEC Rev. 2.1, 07/2023
++ * Table 13. Maximum frequency of modules.
++ * Probable typos fixed are marked with a comment.
++ */
++static const struct imx8mp_clock_constraints imx8mp_clock_common_constraints[] = {
++	{ IMX8MP_CLK_A53_DIV,             1000 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ENET_AXI,             266666667 }, /* Datasheet claims 266MHz */
++	{ IMX8MP_CLK_NAND_USDHC_BUS,       266666667 }, /* Datasheet claims 266MHz */
++	{ IMX8MP_CLK_MEDIA_APB,            200 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_HDMI_APB,             133333333 }, /* Datasheet claims 133MHz */
++	{ IMX8MP_CLK_ML_AXI,               800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_AHB,                  133333333 },
++	{ IMX8MP_CLK_IPG_ROOT,              66666667 },
++	{ IMX8MP_CLK_AUDIO_AHB,            400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_DISP2_PIX,      170 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_DRAM_ALT,             666666667 },
++	{ IMX8MP_CLK_DRAM_APB,             200 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_CAN1,                  80 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_CAN2,                  80 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_PCIE_AUX,              10 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_I2C5,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_I2C6,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_SAI1,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_SAI2,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_SAI3,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_SAI5,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_SAI6,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_ENET_QOS,             125 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ENET_QOS_TIMER,       200 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ENET_REF,             125 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ENET_TIMER,           125 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ENET_PHY_REF,         125 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_NAND,                 500 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_QSPI,                 400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_USDHC1,               400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_USDHC2,               400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_I2C1,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_I2C2,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_I2C3,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_I2C4,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_UART1,                 80 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_UART2,                 80 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_UART3,                 80 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_UART4,                 80 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ECSPI1,                80 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ECSPI2,                80 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_PWM1,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_PWM2,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_PWM3,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_PWM4,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_GPT1,                 100 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPT2,                 100 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPT3,                 100 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPT4,                 100 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPT5,                 100 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPT6,                 100 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_WDOG,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_IPP_DO_CLKO1,         200 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_IPP_DO_CLKO2,         200 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_HDMI_REF_266M,        266 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_USDHC3,               400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_MIPI_PHY1_REF,  300 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_DISP1_PIX,      250 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_CAM2_PIX,       277 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_LDB,            595 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_MIPI_TEST_BYTE, 200 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ECSPI3,                80 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_PDM,                  200 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_SAI7,                  66666667 }, /* Datasheet claims 66MHz */
++	{ IMX8MP_CLK_MAIN_AXI,             400 * HZ_PER_MHZ },
++	{ /* Sentinel */ }
++};
++
++static const struct imx8mp_clock_constraints imx8mp_clock_nominal_constraints[] = {
++	{ IMX8MP_CLK_M7_CORE,           600 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ML_CORE,           800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU3D_CORE,        800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU3D_SHADER_CORE, 800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU2D_CORE,        800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_AUDIO_AXI_SRC,     600 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_HSIO_AXI,          400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_ISP,         400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_VPU_BUS,           600 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_AXI,         400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_HDMI_AXI,          400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU_AXI,           600 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU_AHB,           300 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_NOC,               800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_NOC_IO,            600 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ML_AHB,            300 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_VPU_G1,            600 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_VPU_G2,            500 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_CAM1_PIX,    400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_VPU_VC8000E,       400 * HZ_PER_MHZ }, /* Datasheet claims 500MHz */
++	{ IMX8MP_CLK_DRAM_CORE,         800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GIC,               400 * HZ_PER_MHZ },
++	{ /* Sentinel */ }
++};
++
++static const struct imx8mp_clock_constraints imx8mp_clock_overdrive_constraints[] = {
++	{ IMX8MP_CLK_M7_CORE,            800 * HZ_PER_MHZ},
++	{ IMX8MP_CLK_ML_CORE,           1000 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU3D_CORE,        1000 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU3D_SHADER_CORE, 1000 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU2D_CORE,        1000 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_AUDIO_AXI_SRC,      800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_HSIO_AXI,           500 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_ISP,          500 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_VPU_BUS,            800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_AXI,          500 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_HDMI_AXI,           500 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU_AXI,            800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GPU_AHB,            400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_NOC,               1000 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_NOC_IO,             800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_ML_AHB,             400 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_VPU_G1,             800 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_VPU_G2,             700 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_MEDIA_CAM1_PIX,     500 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_VPU_VC8000E,        500 * HZ_PER_MHZ }, /* Datasheet claims 400MHz */
++	{ IMX8MP_CLK_DRAM_CORE,         1000 * HZ_PER_MHZ },
++	{ IMX8MP_CLK_GIC,                500 * HZ_PER_MHZ },
++	{ /* Sentinel */ }
++};
++
++static void imx8mp_clocks_apply_constraints(const struct imx8mp_clock_constraints constraints[])
++{
++	const struct imx8mp_clock_constraints *constr;
++
++	for (constr = constraints; constr->clkid; constr++)
++		clk_hw_set_rate_range(hws[constr->clkid], 0, constr->maxrate);
++}
++
+ static int imx8mp_clocks_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np;
+ 	void __iomem *anatop_base, *ccm_base;
++	const char *opmode;
+ 	int err;
+ 
+ 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mp-anatop");
+@@ -715,6 +856,16 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+ 
+ 	imx_check_clk_hws(hws, IMX8MP_CLK_END);
+ 
++	imx8mp_clocks_apply_constraints(imx8mp_clock_common_constraints);
++
++	err = of_property_read_string(np, "fsl,operating-mode", &opmode);
++	if (!err) {
++		if (!strcmp(opmode, "nominal"))
++			imx8mp_clocks_apply_constraints(imx8mp_clock_nominal_constraints);
++		else if (!strcmp(opmode, "overdrive"))
++			imx8mp_clocks_apply_constraints(imx8mp_clock_overdrive_constraints);
++	}
++
+ 	err = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
+ 	if (err < 0) {
+ 		dev_err(dev, "failed to register hws for i.MX8MP\n");
 -- 
 2.39.5
 
