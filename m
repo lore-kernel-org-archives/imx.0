@@ -1,200 +1,154 @@
-Received: from MA0PR01CU012.outbound.protection.outlook.com (mail-southindiaazon11021142.outbound.protection.outlook.com [40.107.57.142])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D13119F462
-	for <imx@lists.linux.dev>; Mon,  5 May 2025 05:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.57.142
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746424747; cv=fail; b=T/FXASXgq0v9DNXgDWH/qNnAT9e+5Xl5jZQ74ML7IjzDU+RCha0DjRZ09p3ru7nXu7LUdoyKboNhLtecm31d80IV2BnRbxm8jyE/bxLWcug3Ep16200ylHPomQOpftuzSU5hhEDaqhFod+URC2VSzVeBJmFJ5iDX65no6N3uFwI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746424747; c=relaxed/simple;
-	bh=qWbX6AAvSaO91Bv8n+fwra3+x2oZP7kT8ENQridOu7Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=hf+PV5qgnLu3YTQuX6Fn3YJrh5CMyg4VITnkuFo1uGfCtvM+6y9jnFogjQkSWFlula8IGEYIFhEGl7znX1/SFJofDmL8UuievgEiWtDtU8gnXQ9eujvv0eLXq7zUh7w9baXZUMlc6vf4Oeg5OOWNd+FdlXVNWmAOdbs/uboz3JY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.57.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LDfi+2f+YupNF7TV6MjVEApG+32MQT/3J8FD8/MqzoCF8jpQRY5Aai0qKYRXikfqPT8sr9lMooidJfU4+IxyVYw7M79JLbjUOEGJTASlCKVpiueYMCkb33MOMOgUYYbIS2J7g/rTWKQzgO45o83a/3bH7P5KLZ4WiXsX2nOOzhCG+q+Mbk6B9G7+xEvHtvyvD86fSqYH6rtdJGruaW5yVNx1giotga4UCilFtBov18JqUh6N95MFpmDcEnkSSNUbEb3/em0nGdXoYBlqYIw1qo9QJYEUkKcqL8zDBPqOb9efguGOgNfCBV3ri5fq47j/i+yVQ4lCMEi75088I/rPRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6mgbBpuH+vwgxATfGxsEGtyfbK3eFvsnmWZJVlfKaB8=;
- b=EjyUCZeDEaTzl2r7roFclZLweovR72P9lQcdQPv/VP78bqQaVJ73bAkhbVVpAJ1Zj+g+pyr9yvtDwMdyAAp5BpmOFzWQVujLyiSRI7j2gnOiko6ZqXi+1EfPXH8/3acu/vwQx3DuJmMjfUt3fcVe2ZQ/HIS68WXsca6kX2bMUkhFfbgHLqTlL8uwGwtbVhEvJTBxuEaVl6VWP7+zehp1Quod88+7P+NMkcWflQBwExFLQnEze+3se3JHGlyybQdaihv0VPvCw2PJmHfLivivkyiyf2G0MwV23NJVtDgwyfsQ5Hbi50URAY/25Nz7wlY9HOcp2S28bOoUL29zMC9Qgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-Received: from PN0P287MB2019.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:1b8::9)
- by PN0P287MB1188.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:17e::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Mon, 5 May
- 2025 05:58:58 +0000
-Received: from PN0P287MB2019.INDP287.PROD.OUTLOOK.COM
- ([fe80::ac6c:f2c2:8013:8d0f]) by PN0P287MB2019.INDP287.PROD.OUTLOOK.COM
- ([fe80::ac6c:f2c2:8013:8d0f%7]) with mapi id 15.20.8699.026; Mon, 5 May 2025
- 05:58:58 +0000
-From: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
-To: shawnguo@kernel.org,
-	tarang.raval@siliconsignals.io
-Cc: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] arm64: dts: imx8mp-var-som: Fix LDO5 shutdown causing SD card timeout
-Date: Mon,  5 May 2025 11:28:27 +0530
-Message-Id: <20250505055828.4160-1-himanshu.bhavani@siliconsignals.io>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PN2PR01CA0125.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:6::10) To PN0P287MB2019.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:1b8::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F251B3F3D;
+	Mon,  5 May 2025 06:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746426210; cv=none; b=j+8XNFp0Z+vFmOxQf+VXF9yJth1pSH5lzAdcIjm6xDFABa0e92QcysmbQ05Fufd4ysRnedSegK6bb1y3T4gdXADFsw+T/G+QF4k3nOUS5+bDIz43g/kdY5FrHzi4lUcUazt3pNp1Ls0WFkT0ileetQu18kapoF/sJ1Fjw+TLc+k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746426210; c=relaxed/simple;
+	bh=blz46dfKcTkqUU1mdHuxtQzWM8gPcsEOF9yJwSPZQjo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WL6b36FCJTB8qWp9zY0SMsz9ioQJ3xEqxrfvskUQDBDbeLnV/qLcfFxVP4IN88WglI23yE3WLmsrgpkoEWGnGKBseA3NHBKmhDIfBodXOilxFQZZoEgK6//UDbfd8mnYsd3kH4B+ApIahIob46N+SW0VGSH83xhQ33uGRNzCZVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=koamshTJ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="koamshTJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076EFC4CEE4;
+	Mon,  5 May 2025 06:23:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746426209;
+	bh=blz46dfKcTkqUU1mdHuxtQzWM8gPcsEOF9yJwSPZQjo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=koamshTJSZ1WF/eCcwZGiyDpkwsaCADLfvS3QwjV5PotkB/YOwWC8XyuJVSsdLCIk
+	 /4Jtd7bMz2vmYsMNWmf/X4Sis4kqCPIcH2Wo9nzKbUDCdEWEjPm99kDdRKffgOIfVC
+	 GO8aK9v8GOt73LRnb9Tey6JAPxRlvzcCyhCmmdVLeIQZNUJGxNU4jtNLGVqIHj+dbm
+	 MEpwGnq7vCW5rHYuMgB1xOP/tAAjfa3OIH4mb6zlf/o2UpzxgLckv3VDuOX+zXChXs
+	 TEqMARo/LYFzdXeUg1+VrFmrPwI3ZjNDFpR2bMvYWKsJuqvZsxTYKkHx5l6dtCp9Kp
+	 s2eAL5PrUzyBg==
+Date: Mon, 5 May 2025 08:23:26 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Douglas Anderson <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Anusha Srivatsa <asrivats@redhat.com>, 
+	Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	dri-devel@lists.freedesktop.org, asahi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	chrome-platform@lists.linux.dev, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+	linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+	linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v2 34/34] drm/bridge: panel: convert to
+ devm_drm_bridge_alloc() API
+Message-ID: <20250505-beneficial-fossa-of-weather-67c676@houat>
+References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
+ <20250424-drm-bridge-convert-to-alloc-api-v2-34-8f91a404d86b@bootlin.com>
+ <20250428-wild-condor-of-defiance-cadf60@houat>
+ <20250428172516.79058e22@booty>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PN0P287MB2019:EE_|PN0P287MB1188:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6780f993-5bc2-4006-d550-08dd8b99ed53
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9oRgeLHv1MpJ5JZT/rP6ewzryvdbmkuSGH8fgI+elDuG7yzXmvsMStxvUlnC?=
- =?us-ascii?Q?TUj9aUDd0D8NJiUkgIFd7nG1ImGd6e9G5404ItVBIytjLzBQo/8vZWF1pEzr?=
- =?us-ascii?Q?pEA8BkJS11zAzs6ZcUJ5FjDTj6TFNGn3nef7GaVW+O/2UfJsQNq8nxZcdl3S?=
- =?us-ascii?Q?1h4odAFcc2dmRWXyvBegXCbccR/tbtw4vDOQi+5ugY3hBk1FholZ60B0072t?=
- =?us-ascii?Q?MYMzJSYvc+gdzYFD9hum7xwx2YLI82hCQvwNnxuBqkkSOMlZajt7cUpBYTxh?=
- =?us-ascii?Q?Q+zbbTYFi5IgAm+z08/H+UyDGN7TgfgizuTQRy5+mbUNS/2XJKaCQxmDBytr?=
- =?us-ascii?Q?cgBNazovnCSL23/bw5yabM/vw+/2Ce86y3x1M+49d0CHsMLe5jRRB6sKpN6s?=
- =?us-ascii?Q?JM/gC7FYxFFdcSk9rpinD0gZHC+QGAyDL/GYpGXbSBKAYgfirsWiQlYcSnTe?=
- =?us-ascii?Q?NFK+ZpDza89cAFmBdh0i7ToPQKZ8DJJi7sCbdGbVvOgMMeMLT98eiB+lOcO1?=
- =?us-ascii?Q?1InyYPR3209xEga3Pwl/R2GFwxvu/37NTjHf2pgRjGmyoc0Lc6d1d2ncM98Q?=
- =?us-ascii?Q?9KCycjQNscjl5znxSBRdNub9QLAT1zF97WePK2spHyyR2ido5kuaqYGVGj4/?=
- =?us-ascii?Q?bQP9ORLAvCMckn3KkrFFlyMKL0ruIhIyY8Y3fvSV/GkDGJNOuj+d/hv/vXyK?=
- =?us-ascii?Q?RD01tEOX0rRKph3MLjg7Va4ngdHqrB/ctTbgaR0CKS+JObVyCtXqIPjp8Yqm?=
- =?us-ascii?Q?+97j7iRGF9+GHD8Gh47hoxYHSZQ8kZDRRgL+m+IbT9D2l2irO+rJnTSiHSeo?=
- =?us-ascii?Q?tBaz8yh558mslqrVACKA1j+RcNypUiou5Q3hPxolOcZ6xQRgGu7Hel9N8AKA?=
- =?us-ascii?Q?Mb27nK6H/JmcN8R+MrFBHaqNiqE+N7cKi2tHyF/SlIQLIUIbxMg/lzqTvZbK?=
- =?us-ascii?Q?DuSb0bSa0pmvtQ4a0yTjVXH6Pn9zqxZ63mDuCEy+bObAtbBiQ7StfwWuNFZO?=
- =?us-ascii?Q?2NPQqjFyflePDeInjrvqQB7sjMmityHSL26mABMOWWSS9yyrOZWTedNcBq9j?=
- =?us-ascii?Q?0waYqIx+XzYewvWRhtqjTVt2dOxw7PFp80wJG8bohdAjoOiH/uCGW0QOLRY/?=
- =?us-ascii?Q?L+AYnZDuq3u1H/s0iUtxWHJ30VnUP18LlUYLRestQFETxzy8saIG3/h7Nm2w?=
- =?us-ascii?Q?beEpFpm61hRwcISYsIyfyfIKT10/RymUy0PLkcRBnBJ8MPGvQkcbYMxxP1WX?=
- =?us-ascii?Q?lH29640wMwp9z6pCRgai/bi85TZBCHpJu5z0sB3fQQA18ihfWyWs/i5XRBES?=
- =?us-ascii?Q?hwx5McE1c+RHaMN3qxBdEaGsC1DTK2yn3+sMEOSkA3PE8MRxOSd1kDf/rQE1?=
- =?us-ascii?Q?qrThaV5NAas/nP4FyTHx8PK1GgMenwrMy/NfLq5IN9pdWKjQQ6gYF3GyFRsl?=
- =?us-ascii?Q?OcLwI0O2AJqNxNxf6BmGIFosdVD572AtA2qrXYYXRXZKwoQhFJnkgA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN0P287MB2019.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?U8XjjLyFNQqrPz6+UyqAk5EZZ0ueNDJLj/Jc3axuygbOkAXPVwwaA+J5RF9i?=
- =?us-ascii?Q?lUjZa0nuhryyTj5iVx5fy7KDZmae8aoH65mwarCpwass+COx7Em7iLA+ikLV?=
- =?us-ascii?Q?BtuBKNtJgldcWuDq07EZdoK88eZ46VCBDhTUS7VZFmIjzkLklwHIYoqmZl8g?=
- =?us-ascii?Q?xm5RVeEPU7OARH1zj+GfXx9xoUxgZQrL8SQvZ68V3WW2GRzmB2Hgr2LCsf2x?=
- =?us-ascii?Q?89ACSENVBcE3LeYMpx512DunCNWysbNvCFnIhBp6NRxFkaMHqCgQJu2mkc7/?=
- =?us-ascii?Q?0wZuY3/VhY5jfPFoCFOYbKjXeyX7wSotl4U6avjoaVWsM/6dv2/Ksm/bMOmN?=
- =?us-ascii?Q?XKnOmh9RMihpv2De3NR0gDaGRn/to2sQUDXxiQ1JtcI/gl/NsvNOzy+6vruJ?=
- =?us-ascii?Q?bU8sBMgHE5Wbgeui6Y2yYn8WkL6KcPSynDq9o9i34ltVnK8iodAz/lDGRgpD?=
- =?us-ascii?Q?6ziPjKJG5j8CNxmPO7ONKHRuLKGPCa71CVhnbxGSYIVDhcFW7R5zL5cSd6Je?=
- =?us-ascii?Q?6ImYfjorDCe+KueKBbVRiMXppQq2b7TtsuO+5snfUYpiMtcjt09gcd3Yr2Y1?=
- =?us-ascii?Q?Qy7vkMweZL8opHuaDuBPNa52YV0v/rhR/MOSl2c5/+aHhBqLp2HKM9CQV4nj?=
- =?us-ascii?Q?jMpv75FxG0dUl1EmAwsN6rcYAlst0DXpBIJee54TgdgdYGhPiZo/PpLZUb6v?=
- =?us-ascii?Q?YTR0lVsAJW8/YR8Ofq6GhTRRPBxh8ps4wRnhZR85O3Y/Eyth3R7M7OY/aeXQ?=
- =?us-ascii?Q?kB5J7coSSP5MGvRL+sv/rfv5cG6qg3HQzOv+rPNVQtePRJY75dkMOfsDZ/Ak?=
- =?us-ascii?Q?Z+ju36z2PBz1LgsgvqGV/AhwE1JAxgh7t1zsZAhSpY5ATturtn+aoljfEBpf?=
- =?us-ascii?Q?POvHwm8gAQxha/FD2NDcKxdCNhj2vpW9Sgdsz3u84z8GN1wqqiPwGUB90x52?=
- =?us-ascii?Q?21Ul1Lert4ulauR/KmrGTkoX6+OTz2Sy8hsi0vsq7O15QKeAebxRdeHI0Xx8?=
- =?us-ascii?Q?PqMUJmM5CMQ44qZqIxzCh6JTEtsWlcC5g2mNpPtrG4uE3V1QNO9827MfBU5j?=
- =?us-ascii?Q?UUjF5M4S+RFUYgKOkW+LICA4G3IyWebiYRuf4egWemimwyc+bv4/LE/SaSUQ?=
- =?us-ascii?Q?Y2Wl/G5GfWTCmy9DgY16v1MDuTJSko7J4j9dn6N84/kO1RcXtWzGl/M28b50?=
- =?us-ascii?Q?qnbsFQWNcSqda/3HK8nsn+V+H8puUWr19pbMQTy/8JlRqprcYswV5xq9ADZ/?=
- =?us-ascii?Q?Fmg9f22vvjvIfOfZCxXO3PWzh0KC1XkRMXEP+l+eesaOJjpYM66etwXxJS2X?=
- =?us-ascii?Q?fPrduE7t7Q78Jg9KP2pPE/jCI1y4vur35I5ao7bE4ZQzxDut2AFn26fRoJSR?=
- =?us-ascii?Q?75MDFEH8rjYyI5ghoK/8PT42+Ep23/B4ZpT5tAMzfbUYJRlH4hMmdV3ykFEm?=
- =?us-ascii?Q?RaFHokM6nxT8I+iv3WPsGle415OGDPJQ9lt6gQi70IRmbQtgw+F9kQld8NVH?=
- =?us-ascii?Q?2jRIjfbdPzNTEJZWqhD2Y/cg4KbdB7xeEewh3oOH7jjWNyN2iLWitsQuUqvC?=
- =?us-ascii?Q?HQ1wbj7WJ0QMoWvRUzu53W6Jf+cTA8U6q/LUE/5N5vkq5K2DM5fA7qrgld8P?=
- =?us-ascii?Q?YyiTBOesiUIgRLrqG8pIbe4=3D?=
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6780f993-5bc2-4006-d550-08dd8b99ed53
-X-MS-Exchange-CrossTenant-AuthSource: PN0P287MB2019.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2025 05:58:58.6262
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vveDH4vKA1W1Jt4e/GPVX+eOxI6IDA/FiPfnZmE1j1i/N3GvusCNtnwjSHDq/e4PNvU1KZP+FYrISeiuO1OETXt3BzxCGgFZ/cQae7GYrujE6FQPosJYOmye0Df6+lZc
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN0P287MB1188
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="fxb23j2izsboyssh"
+Content-Disposition: inline
+In-Reply-To: <20250428172516.79058e22@booty>
 
-Fix SD card timeout issue caused by LDO5 regulator getting disabled
-after boot.
 
-The kernel log shows LDO5 being disabled, which leads to a timeout
-on USDHC2:
-[   33.760561] LDO5: disabling
-[   81.119861] mmc1: Timeout waiting for hardware interrupt.
+--fxb23j2izsboyssh
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 34/34] drm/bridge: panel: convert to
+ devm_drm_bridge_alloc() API
+MIME-Version: 1.0
 
-To prevent this, set regulator-boot-on and regulator-always-on for
-LDO5. Also add the vqmmc regulator to properly support 1.8V/3.3V
-signaling for USDHC2 using a GPIO-controlled regulator.
+On Mon, Apr 28, 2025 at 05:25:16PM +0200, Luca Ceresoli wrote:
+> Hi Maxime,
+>=20
+> On Mon, 28 Apr 2025 13:39:23 +0200
+> Maxime Ripard <mripard@kernel.org> wrote:
+>=20
+> > On Thu, Apr 24, 2025 at 10:05:49PM +0200, Luca Ceresoli wrote:
+> > > This is the new API for allocating DRM bridges.
+> > >=20
+> > > The devm lifetime management of this driver is peculiar. The underlyi=
+ng
+> > > device for the panel_bridge is the panel, and the devm lifetime is ti=
+ed the
+> > > panel device (panel->dev). However the panel_bridge allocation is not
+> > > performed by the panel driver, but rather by a separate entity (typic=
+ally
+> > > the previous bridge in the encoder chain).
+> > >=20
+> > > Thus when that separate entoty is destroyed, the panel_bridge is not
+> > > removed automatically by devm, so it is rather done explicitly by cal=
+ling
+> > > drm_panel_bridge_remove(). This is the function that does devm_kfree(=
+) the
+> > > panel_bridge in current code, so update it as well to put the bridge
+> > > reference instead.
+> > >=20
+> > > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com> =20
+> >=20
+> > This looks fine, but we need a TODO entry to clean this up later on, and
+> > a comment on devm_drm_put_bridge that this is inherently unsafe and
+> > must not be used.
+>=20
+> Ah, I see, OK.
+>=20
+> Quick draft:
+>=20
+>  /**
+>   * devm_drm_put_bridge - Release a bridge reference obtained via devm
+>   * @dev: device that got the bridge via devm
+>   * @bridge: pointer to a struct drm_bridge obtained via devm
+>   *
+>   * Same as drm_bridge_put() for bridge pointers obtained via devm functi=
+ons
+>   * such as devm_drm_bridge_alloc().
+> + *
+> + * This function is a temporary workaround and MUST NOT be used. Manual
+> + * handling of bridge lifetime is inherently unsafe.
+>   */
 
-Fixes: 6c2a1f4f71258 ("arm64: dts: imx8mp-var-som-symphony: Add Variscite Symphony board and VAR-SOM-MX8MP SoM")
-Signed-off-by: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
----
- arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+That part looks good to me
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-index b2ac2583a592..b59da91fdd04 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-@@ -35,7 +35,6 @@ memory@40000000 {
- 		      <0x1 0x00000000 0 0xc0000000>;
- 	};
- 
--
- 	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
- 	        compatible = "regulator-fixed";
- 	        regulator-name = "VSD_3V3";
-@@ -46,6 +45,16 @@ reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
- 	        startup-delay-us = <100>;
- 	        off-on-delay-us = <12000>;
- 	};
-+
-+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-+		compatible = "regulator-gpio";
-+		regulator-name = "VSD_VSEL";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio2 12 GPIO_ACTIVE_HIGH>;
-+		states = <3300000 0x0 1800000 0x1>;
-+		vin-supply = <&ldo5>;
-+	};
- };
- 
- &A53_0 {
-@@ -205,6 +214,7 @@ &usdhc2 {
-         pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
-         cd-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
-         vmmc-supply = <&reg_usdhc2_vmmc>;
-+	vqmmc-supply = <&reg_usdhc2_vqmmc>;
-         bus-width = <4>;
-         status = "okay";
- };
--- 
-2.34.1
+> and:
+>=20
+> -	devm_kfree(panel_bridge->panel->dev, bridge);
+> +       /* TODO remove this after reworking panel_bridge lifetime */
+> +	devm_drm_put_bridge(panel_bridge->panel->dev, bridge);
+>  }
+>=20
+> Does it look good enough?
 
+That too, but I was talking about an entry in
+https://www.kernel.org/doc/html/latest/gpu/todo.html
+
+Maxime
+
+--fxb23j2izsboyssh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaBhZWgAKCRAnX84Zoj2+
+dmbVAX4gMY0F9VXdFsIIKKBjn5Ev2tMwW+uv6doEaqoNJIEat9dVa/bvOYl9n6tm
+ZNZ29HABeQEtltAKrypsuFB4FFzNPiZADC9MB5moran2psvsF2a1chXqCjrK2xyp
+FQXpVqx4qw==
+=pRS+
+-----END PGP SIGNATURE-----
+
+--fxb23j2izsboyssh--
