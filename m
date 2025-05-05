@@ -1,51 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5471B32B2B4;
-	Mon,  5 May 2025 22:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3AE34451D;
+	Mon,  5 May 2025 22:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484506; cv=none; b=VAlZW4PXOCZSNyJe5kIVNdJedoeYTZ0NP0GjmHwWBnXZUcFBK0BtIz/WebRe9IJMgXhoTNNLs4tJWffW5Xt/KQpugK1HfpvlLCUkg6guMEaBzzbIB1bL95amJo1LRiCDD00BaSMukjKzGcd4nJuKvhQGOJSsRLO2jtIOytayz7E=
+	t=1746484712; cv=none; b=fPOXeALR0zohxQ7AfhGVkjI8K9MyUW2BIqr/oYKPK/lpYW2Er13jjA9kT6DqheXFNfYsZIK51U1J/9hz3vn3tFbqgXYRIEXNR2lp8h9Wr7ZWKtDHMF9pVzexpPtz1wsEX/RZhyT5WZ7faGmoMnrCmY/gnmuQ2w1pEnAeIKl5pgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484506; c=relaxed/simple;
-	bh=yxsnRJRb9xThATtH7UqhtyDa4fYv1SCQYDmsViCzhlg=;
+	s=arc-20240116; t=1746484712; c=relaxed/simple;
+	bh=xzIqIZgerJnM3pWkDT5WnBHc7fyqGwyOl3LIJ3Oq8mI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S8IEC3b2O+x1ve/oWKlvlU5WLjVnghAXOIeTQltJ4vrxK75Vv1dHn5CFC3Vy7B7/v3pN5ibjwlsXccuzU2qXsgWB7j0dXw2Ew8hSrxBxN0+7KID/8tcvfqO24Tl4SwvQWynOAFVoOLtBhoYLcvl7w5xn0obXWmDmcMdeIICqaG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+3SMWC4; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=SXGhQWwVKfSWzVqI+Diy7rvrsz2wojnOC3S0qYXTOAglpXGHbsa5nLjlfXKTTA2v5KeyC5xdt5Vl/FE4zTmu0fka1MVeqwLuCYEPHTdIemGwRfmuCezUgQNqgxBCRqTxHdIIrk0+Ectc5S22rvhIIsH38qLS7Cb/U+ieD5RPYQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YiGvS4EQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+3SMWC4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75129C4CEF1;
-	Mon,  5 May 2025 22:35:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YiGvS4EQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C900C4CEE4;
+	Mon,  5 May 2025 22:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484506;
-	bh=yxsnRJRb9xThATtH7UqhtyDa4fYv1SCQYDmsViCzhlg=;
+	s=k20201202; t=1746484712;
+	bh=xzIqIZgerJnM3pWkDT5WnBHc7fyqGwyOl3LIJ3Oq8mI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+3SMWC4t6zNDw9qiCgC9msclclk+BXyhXX0WCuqpCN0JVOZJMUdxl7e2p737Jxlo
-	 t0Jru+ED73moun5qAOPM9GjmOYw3ZcZjslmjqdCLkj/CODhKOprtU4c0mQ8V6mf+Ua
-	 Z3F0VdPLYh6+6bC3J4JMxnHJDhj/l0xa3myBZNUBSydORjsj1TZCxFeGRwlyYVsLn+
-	 3PKI8a/4Q4nAA+o+eGb/n/uWsRGSUzAIYJqJYXkWoWUzoUHzmikXEtRpXEygQMLfOs
-	 f25EIOaXu5EPN5XBECPuek1bxCqK4YLPiTXb2TuESsFAId7egDVnGhnU8IY+QXG7/Y
-	 cVFgP8z7WQNyg==
+	b=YiGvS4EQ/y45WGtX6VQ/ploUhIU20XXDdG+i4Duby8/eFyX7Ih+8SuopylJzEtP0H
+	 FAyxkJ8Q87Wp0SQRjEWz5zJjiQjdofOvwkv0pJTfkCRnpAgWyaXuF0BCREkODZDj40
+	 Es69ll1tR1SS+L/VqSYBYJmG7PMav4OyeimLtn60oKN/7wyZW+VvZXWf9ipGWIqhXp
+	 n9RrksOiMBrX8EQ01s/2kek0ag88q5NJSwazD9uSCYVWFIbZpdmXPxLIx5pIgAdnh1
+	 AVObUYAw704ueYcVhniwsMnbSZU9hT1dDgyxyP+wGWXXDH1c5pZtnGIrd9HMq0MRat
+	 cxCw2PxvzD4Tg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Csókás,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	wei.fang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
+	miquel.raynal@bootlin.com,
+	Frank.Li@nxp.com,
+	yschu@nuvoton.com,
+	linux-i3c@lists.infradead.org,
 	imx@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 507/642] net: fec: Refactor MAC reset to function
-Date: Mon,  5 May 2025 18:12:03 -0400
-Message-Id: <20250505221419.2672473-507-sashal@kernel.org>
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.14 622/642] i3c: master: svc: Fix implicit fallthrough in svc_i3c_master_ibi_work()
+Date: Mon,  5 May 2025 18:13:58 -0400
+Message-Id: <20250505221419.2672473-622-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -55,119 +50,54 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 67800d296191d0a9bde0a7776f99ca1ddfa0fc26 ]
+[ Upstream commit e8d2d287e26d9bd9114cf258a123a6b70812442e ]
 
-The core is reset both in `fec_restart()` (called on link-up) and
-`fec_stop()` (going to sleep, driver remove etc.). These two functions
-had their separate implementations, which was at first only a register
-write and a `udelay()` (and the accompanying block comment). However,
-since then we got soft-reset (MAC disable) and Wake-on-LAN support, which
-meant that these implementations diverged, often causing bugs.
+Clang warns (or errors with CONFIG_WERROR=y):
 
-For instance, as of now, `fec_stop()` does not check for
-`FEC_QUIRK_NO_HARD_RESET`, meaning the MII/RMII mode is cleared on eg.
-a PM power-down event; and `fec_restart()` missed the refactor renaming
-the "magic" constant `1` to `FEC_ECR_RESET`.
+  drivers/i3c/master/svc-i3c-master.c:596:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+    596 |         default:
+        |         ^
+  drivers/i3c/master/svc-i3c-master.c:596:2: note: insert 'break;' to avoid fall-through
+    596 |         default:
+        |         ^
+        |         break;
+  1 error generated.
 
-To harmonize current implementations, and eliminate this source of
-potential future bugs, refactor implementation to a common function.
+Clang is a little more pedantic than GCC, which does not warn when
+falling through to a case that is just break or return. Clang's version
+is more in line with the kernel's own stance in deprecated.rst, which
+states that all switch/case blocks must end in either break,
+fallthrough, continue, goto, or return. Add the missing break to silence
+the warning.
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20250207121255.161146-2-csokas.bence@prolan.hu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0430bf9bc1ac ("i3c: master: svc: Fix missing STOP for master request")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 52 +++++++++++------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f7c4ce8e9a265..a86cfebedaa8b 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1093,6 +1093,29 @@ static void fec_enet_enable_ring(struct net_device *ndev)
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 2cf2c567f8931..75127b6c161f0 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -552,6 +552,7 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
+ 		svc_i3c_master_emit_stop(master);
++		break;
+ 	default:
+ 		break;
  	}
- }
- 
-+/* Whack a reset.  We should wait for this.
-+ * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
-+ * instead of reset MAC itself.
-+ */
-+static void fec_ctrl_reset(struct fec_enet_private *fep, bool allow_wol)
-+{
-+	u32 val;
-+
-+	if (!allow_wol || !(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
-+		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
-+		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
-+			writel(0, fep->hwp + FEC_ECNTRL);
-+		} else {
-+			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
-+			udelay(10);
-+		}
-+	} else {
-+		val = readl(fep->hwp + FEC_ECNTRL);
-+		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
-+		writel(val, fep->hwp + FEC_ECNTRL);
-+	}
-+}
-+
- /*
-  * This function is called to start or restart the FEC during a link
-  * change, transmit timeout, or to reconfigure the FEC.  The network
-@@ -1109,17 +1132,7 @@ fec_restart(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
- 
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
--	    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
--		writel(0, fep->hwp + FEC_ECNTRL);
--	} else {
--		writel(1, fep->hwp + FEC_ECNTRL);
--		udelay(10);
--	}
-+	fec_ctrl_reset(fep, false);
- 
- 	/*
- 	 * enet-mac reset will reset mac address registers too,
-@@ -1373,22 +1386,7 @@ fec_stop(struct net_device *ndev)
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
- 
--	/* Whack a reset.  We should wait for this.
--	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
--	 * instead of reset MAC itself.
--	 */
--	if (!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
--		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
--			writel(0, fep->hwp + FEC_ECNTRL);
--		} else {
--			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
--			udelay(10);
--		}
--	} else {
--		val = readl(fep->hwp + FEC_ECNTRL);
--		val |= (FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
--		writel(val, fep->hwp + FEC_ECNTRL);
--	}
-+	fec_ctrl_reset(fep, true);
- 	writel(fep->phy_speed, fep->hwp + FEC_MII_SPEED);
- 	writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
- 
 -- 
 2.39.5
 
