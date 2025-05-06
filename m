@@ -1,30 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F73218ACC;
-	Tue,  6 May 2025 21:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F20218EBA;
+	Tue,  6 May 2025 21:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746567413; cv=none; b=anKlUymTEB6PEH0f6kcFNmQ02SGWF+TyWas3hBDY1lGoicxtQHl2O5Vvo39hp1e2xp0KoHgx0ZF5XWRiYRkkQkkaCLLYBk8UWSWz3Aw23+fRu1l+UHn3jsa9WuJRELZ5dPY0foxvG0RKPlndcKllF9CtNOrmYBo1FgZZFlrO9Ec=
+	t=1746567441; cv=none; b=SG3oUZUIWcl2W7PmgbbzTv5YEfzpE3pgRYyi/72uQHkIGAJHnslQ+nc4RCsRY3YW2fUYyf18vhlAS03w4G4OAFPBm2gqRSrpUkHwJWyXMLL6TULy5Rw8XrsbBg6He3HOfHCOucgLArn27YyJvrvky95QV5QYhYf3vKqMy52Bg0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746567413; c=relaxed/simple;
-	bh=+fNJE1yTF2PALBlbEE+UifwLAvbWwqAE5ZTkWve7cD4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZBNeVIw8DYiTcOR6WmYCm/je1btMdRBkly+DCDO6NgsTVyY+0A3rcEj3h1A+U1OV8YJS5DRSznoRn3Ff8uhiNIjGAB1/Bmrlwk6rnsH36Yzze+sKqE7PSQ+R8G1oXVJkC+XNA+qpwxYiGLs5Pev4ACEbxFYJ6JIMqzTa3yjZjaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V95Btymw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746567441; c=relaxed/simple;
+	bh=sDdNilLczBKLaYqH/j1+dAzPrmbkU/4O96N81w9WPAU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NgtAuk1s7NvsjcB91dNWchdWdk27/d/dAHoVtIrN7+JHDOQ4H8CnEDreo+aRO6dHT1rCd8tRmFy0OhERHveWNxRCehuZ/gIaHNQP6ZwDRvy8ChmtxQaIS4e5bAEPYk9SFm1hVqQRUoU5qa0NqHo+9wvMghJDVB+25lsFP/YpfeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFll7MAC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V95Btymw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC145C4CEE4;
-	Tue,  6 May 2025 21:36:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFll7MAC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B88C4CEEE;
+	Tue,  6 May 2025 21:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746567413;
-	bh=+fNJE1yTF2PALBlbEE+UifwLAvbWwqAE5ZTkWve7cD4=;
+	s=k20201202; t=1746567439;
+	bh=sDdNilLczBKLaYqH/j1+dAzPrmbkU/4O96N81w9WPAU=;
 	h=From:To:Cc:Subject:Date:From;
-	b=V95BtymwV/E5DqMEVgxfcFw1cm+UfaeVTE4Ot+mz1hWuy5jquRBNrGqRbMcxK60gm
-	 kGgBDOHhzzVxIxKncgDuCr2T+PSlv9hDzWDuk9tpjo3a6/wKiHKvSZzqntNZohn9b/
-	 QfigwMXfLSE9koBDnxL1KxkO7bZMDv7XguJ3PNC9pPpF6k+TrKV93CaHY+NIgjFd0/
-	 snS4zfT2WYuuwQvRXNfGoCwgLuZatdeUpnuDrnzlrn7xcJ9tJ/zkrMH5vMdZs0slgG
-	 FfYLVyOlHNQsuvnsvytTfhx0CvCskXCzITY4/HG9Co3r94bAB5MmLdHbVsoJnz/FI6
-	 05om8T1x1HVIA==
+	b=GFll7MACCfR30CYypbhc3YU4zQrW+sGnDisfzoH00p5OQqfXhoLJNyDslyTWzTgLm
+	 zPgsGJ8anCr08Gku7f6TkhgldVWZFs/OqbJMJ9NzCayW+cecVJqcZkVAp10KdCt3tY
+	 to1mgfK7BcuY4u8XX5Vyx4TEw2c5tL60UJhUQxYBC+zR4pDJQ5sdWmGu2202dlqvfB
+	 tytHH0PNHiHzbrV6g2Czm9q7Dr8N5QpLpzkYlOPhidBAHaJVezxvCLoRorE3w4rFlI
+	 WZUJHDEGrPV64ZTAamKTn12mtChhEmcejDop5wIoap5tTv6AoduUTcDWifmSZ20WIN
+	 4wtYG8frBy+/g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -42,9 +42,9 @@ Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 01/12] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
-Date: Tue,  6 May 2025 17:36:36 -0400
-Message-Id: <20250506213647.2983356-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 1/6] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
+Date: Tue,  6 May 2025 17:37:09 -0400
+Message-Id: <20250506213714.2983569-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.89
+X-stable-base: Linux 6.1.137
 Content-Transfer-Encoding: 8bit
 
 From: Chenyuan Yang <chenyuan0y@gmail.com>
@@ -76,7 +76,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index 7128bcf3a743e..bb304de5cc38a 100644
+index c6d55b21f9496..11430f9f49968 100644
 --- a/sound/soc/fsl/imx-card.c
 +++ b/sound/soc/fsl/imx-card.c
 @@ -517,7 +517,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
