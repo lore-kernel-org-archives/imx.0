@@ -1,219 +1,168 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011051.outbound.protection.outlook.com [52.101.65.51])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9FE2580EE
-	for <imx@lists.linux.dev>; Tue,  6 May 2025 08:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746520080; cv=fail; b=BnwhLn87DaEbf1hRPyfDFFaDLVPJ0F9HP7cEF7aFlcEzVnOEPkpUGDB+pkaSCa5+KlA/O57Sn0fekO5hG+1JsLL/yWvtv5wUutvigxZAzsLoTLR3qiKITCvzhywl5QaAoAlhaAvDoWqTerkupIiRZbVTKHqI/ZAOvXMhgjkC7NA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746520080; c=relaxed/simple;
-	bh=XjNav7jKPyDWGqgwARsUwsFtRcPa9e1Eoxkn7KM6KYw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kJ3TWA4pIZODkAFKnEZlkuYOxWIY59BLAF8nCXHTDcO8lV6mbfTOE9e+Mz2UZqnTWjVME7BwK0jQU4IZj64tfCDUZdaqPr19c6WEPsf2yPN/4MsBTkhVeEKdisNzJdBDO+v6GAZdvFMXS7xS5eCYSqFBbw/e7PwT8zS2Tx0wv44=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=H0UEMypJ; arc=fail smtp.client-ip=52.101.65.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BE41474B8
+	for <imx@lists.linux.dev>; Tue,  6 May 2025 10:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746527827; cv=none; b=b44J85vCFYc/Oh9JlGPkkMKWq2L6zFPT15nGamdlKYbK2RQQ8L1m5VL02NYI8NA27+5B+Cr9Ra0qdB186M+qrkvYJJLEc29Y1/BjSUIYImIFcfbgDYVd4Pe9qn/Je4xfA1IEKQgHRnj3g8+Ikc0Rkpg8rrL72S0jwvmWEJJRLMY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746527827; c=relaxed/simple;
+	bh=bGLHeOo/UPh/FsvGzBipG1630hXDqTjfzmZD/hU1dOg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KyniloRJ7saG4iQQuXcpLSf/aj1duFPCqMAnY/iwG7+wspbmoyfDlv02ial73PUD8WrtWNmJy27VkRmXOUt0Qm7tj6d/XqSOGGKTb4djSHyx4UBy6/UnzepOe3ZjRaq6rNLIYbdTOPGqkg0Ff7I0Zve8l+h3OujWBT0wdOZ8B5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DlUkXv8E; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="H0UEMypJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C5ul9SjZZo/J3ZyPkFaUu5yJSJO+ieVoaFjV2DE53y78NXGyRN5Uwk0F/sryOn837CSoHvPnhyzPNhkTnzwKKsbSHz26vDnLcV6lmVk34b9+RzWDdzcw0NXhxzoYLXT5tVwjun8jNKQl1nibqQrU6URdS2wdW0uDyjUbnQqkVwUdet8fyr4Tqnpcl1C9QimRy2Gb6mmKR34kF8zecOEtxd9l129XiM8g4rMX5/nDrkezT1FvRpXk5Xcx667J3iId1H+3TP2Hp5rpjk4JD1gdo45XnnG5bLzF1j8aC/4rWSRkBuxdNjBcueH1wDWJDxOHESMIsgmBOGxDY8z3oWcORQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1wf2ZPHzooNqEyfUwWyL/hekmw6AY1g3HgCMe46dxtE=;
- b=wQ9k6exmZYSOWKchk9GoCRSa6FQOK94GhxY8ScJ5IW6LBFE+fxvh/EqUIxgxqKdpI5XAj4cY+yWYEwW/9l/rrgRN9nOdWbi3tjQPaWe+hWwqCa4Nwq1uKIC0B9gkpSo1WCnuJyEiJ3PzjpYZKRbr/YhApkDo1mbrc3wQ+ZZza6yL+n39PmvZ15siMuPbVK/NpUAvg1/HZVKzcVLUD0LLQ6aGw1tvFFPR8nyF2QaRQB6fsrpztGymX8xb4TLjmyF/4x6aMFZVF4c+L0V2B3EqDpt2u8i7ifbhOnw5Erf51ePe2xHQfwi/Ja9vn4jzrfLVdsrvtSmUg7M3ZyB1K6DTLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1wf2ZPHzooNqEyfUwWyL/hekmw6AY1g3HgCMe46dxtE=;
- b=H0UEMypJb16QUHEMMinCJ3v+lFs8HpXJxtYd6g1VjnujXRxEDdcGmDCkXI+IWwHsXBQ4+Ur7wHhQ78RIlAMtZBJ6BSaJNrC/7WEk7v3p5MFE06WJCpbx5omFocZ+HbsOB5/QOElgw4wtvKOUbPOrM6av3JZj5STStVkgSG+sYyuGM6lf6xvBukkP8HMTWvgwNiQI3vcjPgIbTMNjMmMV993qt8tVBPC/W77qeGcpMEL/r38G37gpsAA7ICnrTXidrIWkECMn5KqSj5Prl95hGTfl6hwReiqiyOw8Yezug9YG0oMJ7DYfWmpNb8Yq5c7KvJ+tfVotkVzO2z2RzcW/4Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA4PR04MB7744.eurprd04.prod.outlook.com (2603:10a6:102:c9::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Tue, 6 May
- 2025 08:27:55 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.8699.022; Tue, 6 May 2025
- 08:27:55 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: christophe.leroy@csgroup.eu,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	timur@kernel.org
-Subject: [PATCH v7 net-next 14/14] net: enetc: add loopback support for i.MX95 ENETC PF
-Date: Tue,  6 May 2025 16:07:35 +0800
-Message-Id: <20250506080735.3444381-15-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250506080735.3444381-1-wei.fang@nxp.com>
-References: <20250506080735.3444381-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR06CA0249.apcprd06.prod.outlook.com
- (2603:1096:4:ac::33) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DlUkXv8E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746527824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aqJrxIoT0NsSUqxGw8G610oIR60/B2YKtR0eMCHfHoU=;
+	b=DlUkXv8EfCo0ILG0N+pgQwQDvZLnRgWggoAG98Zk1MD3C4kDF4br+PBJ/MvkgrQj6YfY9Z
+	JLoVW5YRxK757Zd9j3UXOzBTS7eXskM/1XpJpqPPTSpgTjC0fkPpCgZIYAnx3jTaIrpWZu
+	QaJWgrHunTrmhCYnbTRMmP37nm+CP/E=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-615-Sfwd5xawOeK5Uh6O_Yvqeg-1; Tue, 06 May 2025 06:37:03 -0400
+X-MC-Unique: Sfwd5xawOeK5Uh6O_Yvqeg-1
+X-Mimecast-MFC-AGG-ID: Sfwd5xawOeK5Uh6O_Yvqeg_1746527822
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-39c2da64df9so2424822f8f.0
+        for <imx@lists.linux.dev>; Tue, 06 May 2025 03:37:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746527822; x=1747132622;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aqJrxIoT0NsSUqxGw8G610oIR60/B2YKtR0eMCHfHoU=;
+        b=wT3lCmPyAbN9esJogKm3Nm+Dgbt7OSOVJ7++xhSbSBwKqjwmKcg82uEm35N5e6VgUW
+         LLua2zZDdU11+7/5tXIrbGaTimWBqHWdmIuwsirt6hyPjiT5vICmJNKCuK8fxt48+aJ7
+         hvlZb7K2iSCwVg/z7RGxkOXMLKi1e7hOqx9uquM6W8gFu385rWDc8ynvVWGY+w4Exiwv
+         NpP7pIp011QtkMlyq2mS0pMfLDbphXhP1mMiwPuycpu5okZo51XksS71wbf162BVMKg3
+         TlPLT7HkW2Px4x8Pt7npRyFSqyUA/9KmPiSpckkp8rJFJ+M+1AU7bNo/HxQxN8Yn/1GV
+         RlXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUVTVZDpb2fF9Q4P0By5GifsBRCEgMVeZB8bmbZF+jcB4+Xjv8ZWespyxU3Hkfw6k7lzyQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzshznkPotf1e8HsvjFU2Ed1DpAyi6Pqt7KHvXCOLue1zrHwytA
+	eB4pbKoDfPCFvpjLAAo27BcU4FKzu/msM166AKY2Yopz65JBxBlx/NyLDv7kSShM4RBmz22aAr7
+	GScmJBqMflzYtm7HMgOSMQJ22FLsrQupzd2WVYcgbtmScYEiYUQ==
+X-Gm-Gg: ASbGncv5bwfbiPaDbu5pm+8kci779bX9AQ4VHW85Qpxye/EZvn4XNSoJUo8I5Rlv63N
+	zI8LLX8Pt1CduDfgBMlMTFEbHwkJpgO8xOevhqU88CFwrrRLS98yKLzqny0WG3P32lQTWwblbGC
+	YDCaFXYbIMVp1A2ykxB6TQjQptBSXNnqShdKbUEaFw4v12l8QEZW/bqvlgmEkvH+iAsZQ4+9XZP
+	P/qtxN63Mvu0dudkcAjCWxNCNuyREtnNxBZ1w8gkNpDt1WpIEkSVsyH/YahG1HIC9UxEuY2aVxd
+	tqkM9kC01GkDzViDio59tZ3fR2HPQsFrG3gDzF90mFBMRwv3a88H6yybnNU=
+X-Received: by 2002:a05:6000:4383:b0:390:e1e0:1300 with SMTP id ffacd0b85a97d-3a0ac0ec4a6mr1662156f8f.33.1746527822107;
+        Tue, 06 May 2025 03:37:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEIqkSxt+T1Y7TtJsOmByWaD3BgViww9S8kLQLobpWHpxjPJOZvKt1Y7bskuQM3nS0/SlP2Zw==
+X-Received: by 2002:a05:6000:4383:b0:390:e1e0:1300 with SMTP id ffacd0b85a97d-3a0ac0ec4a6mr1662118f8f.33.1746527821579;
+        Tue, 06 May 2025 03:37:01 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2706:e010:b099:aac6:4e70:6198? ([2a0d:3344:2706:e010:b099:aac6:4e70:6198])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b8a2874asm162916855e9.26.2025.05.06.03.36.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 May 2025 03:37:01 -0700 (PDT)
+Message-ID: <61ebe754-d895-47cb-a4b2-bb2650b9ff7b@redhat.com>
+Date: Tue, 6 May 2025 12:36:57 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PA4PR04MB7744:EE_
-X-MS-Office365-Filtering-Correlation-Id: f576df2f-315b-4461-7363-08dd8c77e69e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8P30YHyQgJJKymYIRfzqg6MSwFRKGWkcS9o5s41+vNcRksr8e7OYu6CX7yPL?=
- =?us-ascii?Q?KHKk0HIYrxzl7EBo97TIxR+F81Q8qJkCV8SuRVKFP8jX2GbfmzvhhKaAIjkV?=
- =?us-ascii?Q?F/eWSaHkl/9IGXDs1PUEV7oazFE6ieEP4H9ylocqq0svCHljpWVI9iUMVuJb?=
- =?us-ascii?Q?4jJAoUbXiDULOnIXvp5TNGWEzHvM2XjvPuNIeQVC7yFcffWJ5VpqALk5f9CC?=
- =?us-ascii?Q?RV3RK20PD+3PekGfeAQVt3RDPVdj8ooNgavu28vk47nG/DdP1jCekZKYjuAK?=
- =?us-ascii?Q?UDN9UDf5MnpZcGmen/9ApvT6koNuw4CMbGgyqpzX2F8Xsp3U73EPTB6tXgkP?=
- =?us-ascii?Q?2NofKwqiqvLWePavVnoBKgjxLqEpQ0EsU0AANuU7X8j1L9Igv/5fq6yZNyXv?=
- =?us-ascii?Q?lcuerXuS+vCA4u1X2SVAGPTVX1jEGC0oH4hL7PN360Pda46CTXfZn4/tFEOd?=
- =?us-ascii?Q?dcinOg+Eufr7if5gYUaN6HDfr6TXl3NO5XT85PeBgtNdaer+6RTI5leAWWvw?=
- =?us-ascii?Q?//tzKSx7K765NlQm6PHUWPMu9GlnRVwaly7B49ti5LrBIHSCER7nFbi1rIHf?=
- =?us-ascii?Q?WsqCYJkA09rMXDYhCj/vOPc1PFSxOqozvLDh8gnAdyo/WwgXT8NtDFMVf1VW?=
- =?us-ascii?Q?ElKF5lxcTYiwtvmYIGLBj2v6f39xMK6ZUJadEO3zxCdy8mEqMrGLPudW5JM2?=
- =?us-ascii?Q?Dfy3NvHF307Q+eavurnpH7iwHCTqlMcX14ZcJDGHi0XsBznI1Q+RdjcFbiEL?=
- =?us-ascii?Q?iu//BmHQJ9m8dsRrBOrBq9bz1CS3Q1fBrCz5V5gh+uJURvm8J0WIwA1VmAYe?=
- =?us-ascii?Q?o+3qUZUgl0zv/qB7vDNU0zO6bh70+62gohPhXErEhF+PIzM8P3Vg3RbPhteZ?=
- =?us-ascii?Q?bCZqiAXh5fvx6zhQYZItD0fDPU6a8tg2CX2sMI9CvyCd2fhQ+wB3nmVaHRZU?=
- =?us-ascii?Q?ZYI9vRSROez994LycWE0dpPMFw0+wKIsKfK5fDY80BtnoGtAcc2fkQmwu9Cg?=
- =?us-ascii?Q?EkYKbQn4Da9+zLQ0KiIeMkLzxaW1WKYO+g7V4e06xCzrXyW8CjTcyM7fn77h?=
- =?us-ascii?Q?UR3J9Eq0obNF0RR055mTt5LqmBh38CM4RJMs47scklQsNdHFLSqh9Kza2gM8?=
- =?us-ascii?Q?w+AvIONarFFjojG8vZJcoNi8nW6uakw0NJYm9xR4sAemN/UMt10LGQAG4k75?=
- =?us-ascii?Q?TIB2V0kxKOJCOw7QNY74PVj18APrK3ACGe4G6uUeXkefISKB1luJer4/zWJm?=
- =?us-ascii?Q?EYyyG73lE6TJRYlLvsy1+zB5XzkUrhn0ABDdZi4zsNBjYr6J6WEPrH35rVlE?=
- =?us-ascii?Q?67WZmSc6BhUipmb8YmyL/LKdFVS9OV/jE8cgYnzxptIPb1I53EGeItf8xMgN?=
- =?us-ascii?Q?5P1s4BiHtI4Ze/0yjvgJtrGlC6nOrFQMr0hn04DWWlxagAVAru8mwauLw6cn?=
- =?us-ascii?Q?1P4eNyrUhrP4Jrn6aHCwWAZJ48iIOsvT1tjWD7Ny7dI/TwowaYCvfQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LjDt6nyTjDI89RRDnMVRb+SGd5QFULlUYQLFf//c16A99a43ZrX1BIz02p+e?=
- =?us-ascii?Q?4ZfWWLqOdlR8ChzdoixnCp/ZMFjXeBQw6Y8WJSwQX8wu/xhfzBycV06PGXgo?=
- =?us-ascii?Q?yaEmvVgCsRij1C72XbCie/cvlG1ygKp2d6qzGYet05h2HRf4tsSfr9gTHCN1?=
- =?us-ascii?Q?Z0y9i0sMgMpkW7tA/39Wgn+UJDvpRp4tiQb7U+kI10IAFMWvExHqsYpjGCtJ?=
- =?us-ascii?Q?JU8qdgC5NnAD+c0YRXcPn6IuIDXGQ6pEaiAg7aCo2PHYRnAX3WxJZEuTZBG/?=
- =?us-ascii?Q?tlFWSCMXZ+4F7B17Xw6M7zGzsK+00UmB2qNl9UZPxmAIk6yFyTax5sR2fCeN?=
- =?us-ascii?Q?umj9OhGXjf4b6Kv+VFLDM0SNpNJAATIVbQyJKILhL6AS87P9A5tNYg+omhy+?=
- =?us-ascii?Q?cx4uCOZUWpxYq3GDTTnzCXyrfm5r0T28H9haSgTWYduw4TePLrHLtCsNfyhh?=
- =?us-ascii?Q?DCT2hXC+AQTd8VAAX0sHS9f4h1L0M8hKLp6wBZynft/rqqSKWZhP6kQna6IP?=
- =?us-ascii?Q?pNGYifH7TJgyxUc9fm5LmdZEDPKA8BQYqUOS4Bb43DBzRJrIYWa1PHD7Nu8r?=
- =?us-ascii?Q?EumbZDX8gRtY4z+Cd2Gb9x9SXuoqDBalgGqYR79nTxm8wfJ7NDzF+C6TQuz7?=
- =?us-ascii?Q?st6bmDJqbSVeERnDVhbjhE1zNV3mAbxYQSJcdPnISuUaa/JUH4GUHG2/uBfN?=
- =?us-ascii?Q?IgIkzSuDvrYIZ2VjCF1mgFsUkqefkRKY+MUKFHDiPcJLVdMpD0S2clZH2Pif?=
- =?us-ascii?Q?z2DXCkxmvqPWo2q+nBQQCwhs9uGO8ewcTrUN2NPSq1NJYCTaohIZFtwYd/cT?=
- =?us-ascii?Q?XZ3Qp+7Yx4BdHPFlutc3XAx0b7eL6OMuuznmpRyrfchPweS3I7vh+L4dNyMM?=
- =?us-ascii?Q?5ccuK4cTWp0gkr2y+q8u1wY1Eu1ZaefXcIfl0dhu3Kzlrmja8Kg8sonDy3aY?=
- =?us-ascii?Q?qYyLY0saFucRysP8yCiC/FOy7dU1vXzyq2lv/mRs7iVOSiquagnrsiDHE79J?=
- =?us-ascii?Q?SLru0ZfI8lkN6AprOc4Vong/80oEGafTaDwM6HaA4S3W9c0y9lkGXhoW2o0a?=
- =?us-ascii?Q?XQPM6vQZWjMM9yIE7Q+mq1VTrZTa9H1OZ8ZNOBQ7eefadTMQ2tjHuRRnto2r?=
- =?us-ascii?Q?5nf5DZ6G6S1rA6mDFUuH1ljg0RpnNfVV/ldLLVTD64Hy3BBzYtqkcAhoxp1r?=
- =?us-ascii?Q?Jx15P/Zv4eNB9MkSbUl1kwa5tK9C1NmyUtIt2OW0o+zQkYwlO9YOtZW0AKlQ?=
- =?us-ascii?Q?FyadstVjwQN/hKPNwqfvAW2rNw4ptWeHTVBB3M6L8F6iSpPxl9EOF5e1GUAp?=
- =?us-ascii?Q?FRFm9ZivHs+8V2BlaAkYFbpWJJb9qrGmRJCjS9J4KV9T75NQe6BgDl+kGhi0?=
- =?us-ascii?Q?pHm+FZOZAgQP7/PbpRHQbke9qYhPBkLGbcpfG5XATn9ZByclfGU/tn+kA6Lw?=
- =?us-ascii?Q?uXanMVpOcbliFA2t+PZHAf1cStQhPykW1HEd32u7Gruhp9xjUU2HiGBZVb82?=
- =?us-ascii?Q?rDDzzTjaPiORqYS0DRnF5OtuwfZ7QSdcTOJ1diP10E319M8yJsPmpnRgfc4q?=
- =?us-ascii?Q?YURsh2DNb/cteCOuL5vShslm6t1VrBOp6vUaomUJ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f576df2f-315b-4461-7363-08dd8c77e69e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 08:27:55.6805
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5K7V8oes9kHCmmKqJHaKa1HsqP98HgDmznShiDZolGSF4nBZZ1biHomuRbaskWyCALJ89apCUG08PS98h5hX2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7744
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next v11 4/7] net: mtip: The L2 switch driver for imx287
+To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>,
+ Andrew Lunn <andrew@lunn.ch>
+References: <20250504145538.3881294-1-lukma@denx.de>
+ <20250504145538.3881294-5-lukma@denx.de>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250504145538.3881294-5-lukma@denx.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: uguQWUOmXdGMghG64vlg4NBr81DdJ0RHMT_KE6RXxWg_1746527822
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add internal loopback support for i.MX95 ENETC PF, the default loopback
-mode is MAC level loopback, the MAC Tx data is looped back onto the Rx.
-The MAC interface runs at a fixed 1:8 ratio of NETC clock in MAC-level
-loopback mode, with no dependency on Tx clock.
+On 5/4/25 4:55 PM, Lukasz Majewski wrote:
+> +		/* This does 16 byte alignment, exactly what we need.
+> +		 * The packet length includes FCS, but we don't want to
+> +		 * include that when passing upstream as it messes up
+> +		 * bridging applications.
+> +		 */
+> +		skb = netdev_alloc_skb(pndev, pkt_len + NET_IP_ALIGN);
+> +		if (unlikely(!skb)) {
+> +			dev_dbg(&fep->pdev->dev,
+> +				"%s: Memory squeeze, dropping packet.\n",
+> +				pndev->name);
+> +			pndev->stats.rx_dropped++;
+> +			goto err_mem;
+> +		} else {
+> +			skb_reserve(skb, NET_IP_ALIGN);
+> +			skb_put(skb, pkt_len);      /* Make room */
+> +			skb_copy_to_linear_data(skb, data, pkt_len);
+> +			skb->protocol = eth_type_trans(skb, pndev);
+> +			napi_gro_receive(&fep->napi, skb);
+> +		}
+> +
+> +		bdp->cbd_bufaddr = dma_map_single(&fep->pdev->dev, data,
+> +						  bdp->cbd_datlen,
+> +						  DMA_FROM_DEVICE);
+> +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
+> +					       bdp->cbd_bufaddr))) {
+> +			dev_err(&fep->pdev->dev,
+> +				"Failed to map descriptor rx buffer\n");
+> +			pndev->stats.rx_errors++;
+> +			pndev->stats.rx_dropped++;
+> +			dev_kfree_skb_any(skb);
+> +			goto err_mem;
+> +		}
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- .../net/ethernet/freescale/enetc/enetc4_pf.c   | 18 ++++++++++++++++++
- .../ethernet/freescale/enetc/enetc_pf_common.c |  4 +---
- 2 files changed, 19 insertions(+), 3 deletions(-)
+This is doing the mapping and ev. dropping the skb _after_ pushing the
+skb up the stack, you must attempt the mapping first.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-index 1f6500f12bbb..c16378eb50bc 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -101,6 +101,21 @@ static void enetc4_pf_set_si_mc_hash_filter(struct enetc_hw *hw, int si,
- 	enetc_port_wr(hw, ENETC4_PSIMMHFR1(si), upper_32_bits(hash));
- }
- 
-+static void enetc4_pf_set_loopback(struct net_device *ndev, bool en)
-+{
-+	struct enetc_ndev_priv *priv = netdev_priv(ndev);
-+	struct enetc_si *si = priv->si;
-+	u32 val;
-+
-+	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
-+	val = u32_replace_bits(val, en ? 1 : 0, PM_CMD_CFG_LOOP_EN);
-+	/* Default to select MAC level loopback mode if loopback is enabled. */
-+	val = u32_replace_bits(val, en ? LPBCK_MODE_MAC_LEVEL : 0,
-+			       PM_CMD_CFG_LPBK_MODE);
-+
-+	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
-+}
-+
- static void enetc4_pf_clear_maft_entries(struct enetc_pf *pf)
- {
- 	int i;
-@@ -536,6 +551,9 @@ static int enetc4_pf_set_features(struct net_device *ndev,
- 		enetc4_pf_set_si_vlan_promisc(hw, 0, promisc_en);
- 	}
- 
-+	if (changed & NETIF_F_LOOPBACK)
-+		enetc4_pf_set_loopback(ndev, !!(features & NETIF_F_LOOPBACK));
-+
- 	enetc_set_features(ndev, features);
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-index 8c563e552021..edf14a95cab7 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-@@ -134,10 +134,8 @@ void enetc_pf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
- 	}
- 
- 	/* TODO: currently, i.MX95 ENETC driver does not support advanced features */
--	if (!is_enetc_rev1(si)) {
--		ndev->hw_features &= ~NETIF_F_LOOPBACK;
-+	if (!is_enetc_rev1(si))
- 		goto end;
--	}
- 
- 	ndev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
- 			     NETDEV_XDP_ACT_NDO_XMIT | NETDEV_XDP_ACT_RX_SG |
--- 
-2.34.1
+> +static void mtip_free_buffers(struct net_device *dev)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	struct sk_buff *skb;
+> +	struct cbd_t *bdp;
+> +	int i;
+> +
+> +	bdp = fep->rx_bd_base;
+> +	for (i = 0; i < RX_RING_SIZE; i++) {
+> +		skb = fep->rx_skbuff[i];
+> +
+> +		if (bdp->cbd_bufaddr)
+> +			dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
+> +					 MTIP_SWITCH_RX_FRSIZE,
+> +					 DMA_FROM_DEVICE);
+> +		if (skb)
+> +			dev_kfree_skb(skb);
+
+I suspect that on error paths mtip_free_buffers() can be invoked
+multiple consecutive times with any successful allocation in between:
+skb will be freed twice. Likely you need to clear fep->rx_skbuff[i] here.
+
+Side note: this patch is way too big for a proper review: you need to
+break it in multiple smaller ones, introducing the basic features
+separately.
+
+Cheers,
+
+Paolo
 
