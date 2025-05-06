@@ -1,128 +1,162 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9796B27FB2D;
-	Tue,  6 May 2025 12:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1825027FB0E
+	for <imx@lists.linux.dev>; Tue,  6 May 2025 12:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746534189; cv=none; b=dtOPsFyRgNTeHcyRN90ch5p574DkgQBp35Epr3KmIbbaUCGStOep/jG2hMdAOryM84UZhxifk5qwcZ2mhvvIqcsM4XWT8+oKpP2jRn1yeXU21zykzBAUhF5fNQWx8igPepBLp/8l+f5mznQlzbQrL5aBidnLwSK8g4TwES2XB9M=
+	t=1746534988; cv=none; b=PL9LONrPM7tjb+qcsKea5Vd4AIfk1fEhT+M6BbtBOFi2CQMYO1ermftemwt7BrEp/vyvx7nyL3Cq9TabGwOPTOJvLH0LszEgsQIIc50HuZOXNYHDJmJqeQtZW5uquANSA/6pbivEje1MnpxPcMMYlS3nS/0LE97K20n+mxYUNIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746534189; c=relaxed/simple;
-	bh=+AsV3FfvFyjm+nJS6lLXkvZPdGmM/MfaPxj0wojFrCI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tqG3bLxGoJmxkaRf1U2/Czi+xCPNMFbWCQFZpHQMtmeKxVsm+bVN5cj/SX4+gCF5Nd7DL2FstOtfl5/5YW4UnhCnJkxnc/HqZ+0lgRAqUZ51Ik+8Q6f42xOQKsrrIlYNLldiYGS51egjw9crgGZX1fzgSbJ7UAxWLAT9+h5gUzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S036ANL.actianordic.se
- (10.12.31.117) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 May
- 2025 14:22:55 +0200
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
- 15.01.2507.039; Tue, 6 May 2025 14:22:55 +0200
-From: John Ernberg <john.ernberg@actia.se>
-To: Stefano Stabellini <sstabellini@kernel.org>
-CC: Juergen Gross <jgross@suse.com>, Oleksandr Tyshchenko
-	<oleksandr_tyshchenko@epam.com>, Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>, "xen-devel@lists.xenproject.org"
-	<xen-devel@lists.xenproject.org>, "iommu@lists.linux.dev"
-	<iommu@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH 2/2] xen: swiotlb: Implement map_resource callback
-Thread-Topic: [PATCH 2/2] xen: swiotlb: Implement map_resource callback
-Thread-Index: AQHbu1cR+sKkXAZoXEOAUfrcrER157O/dMAAgAX2O4A=
-Date: Tue, 6 May 2025 12:22:55 +0000
-Message-ID: <75266eb7-66a4-4477-ae8a-cbd1ebbee8db@actia.se>
-References: <20250502114043.1968976-1-john.ernberg@actia.se>
- <20250502114043.1968976-3-john.ernberg@actia.se>
- <alpine.DEB.2.22.394.2505021007460.3879245@ubuntu-linux-20-04-desktop>
-In-Reply-To: <alpine.DEB.2.22.394.2505021007460.3879245@ubuntu-linux-20-04-desktop>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A2955B14453667060
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3E994E23DDFC0E4EB8666504990A79B4@actia.se>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1746534988; c=relaxed/simple;
+	bh=X4Yh3JtCRkiQP87Dxdyse/UwWkT9JwNjx0Xs4dHDkSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MX+Zck0xKFYWXoyf21wrG53sO9m2FhN++ZBT7TNNywL9SZIkE0eZnQXq7b4zTqK563vJm0P2jZv33QVwyjetv1B1NPFJJbipUsW6IU0WMDw/rxLt02sFFNA3saIaLPJXL74mvG+iV0QybC8FJ107Tamg+mTpi2yoY/7eU8bbjEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Urz8EbxZ; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Urz8EbxZ"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-736ad42dfd6so4499161b3a.3
+        for <imx@lists.linux.dev>; Tue, 06 May 2025 05:36:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746534986; x=1747139786; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fw+usroP3NgOGNx1hpYdeiF4dmvyltKLfFB52iURL84=;
+        b=Urz8EbxZShUjI7EsNzxVPwn291kAeprc/ycB2Y5v/1UYm9QxJBZGz85j9vncgYI/PS
+         2N4EsNrVb9ZWrAu3+BC7iHzmPTsw7krwyzt0gzCXUcaGqNvfW3acsSVCaD3SEMXSwuur
+         JzvvBCgfA9Bdq7S1XyAGHW+53FlHO3n6mxvg7NxotI8NkOG6BI64QL1FgyVaNmN1ihzi
+         79UjDS+URwZl48jp1eXKo0/zo+05qrSguZnIMJij3oeEy1P5xEll0wiuxYA0JDaHdRpL
+         vl3uof8+WZqcxr47Y5CzTQ7Z1ewdOQqMyX3wE43iCNNQhBIb3bwHp9P56bkdF+czkjSh
+         6DIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746534986; x=1747139786;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fw+usroP3NgOGNx1hpYdeiF4dmvyltKLfFB52iURL84=;
+        b=OOzA9RLWgNi54JZrfQ3pcqNy61+yx+rbWd5G7YrywowgYMPCPtB7RtJvCkUd0LrZ3d
+         WKHW3HzbSMr5xBu/86X7/28arNvE8iAvTaVsPiVqhE1N1T32C+duvxz0j3EqnGYLFLyY
+         lfSxD3UlYUWKuYyUh19dU7WikW4JE+h6C99ZordbIayyF1c9Xys4KbKMUe6Y2YyIpHzW
+         qQdcwhFrZ251lRahjl7/m4bX2D6lChple+/eHNz4iOl4nST00MNDmdtFZqbUcts9Yslq
+         4VXH1elpAEeeUNuvnNquR4hVGUOP5AYo0BeCOQr3GMNt786hSnvDVtbVA/tT5UamIq4n
+         LUyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXF2Mk93Elq2xZHH8AdkyQSf/jW21vRCrHG1Sm6DNBkV4U23rGUMK8dK7m0bgkBmPBka+c=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwqQ7Efior3KVf7714bQg9T7BYxDwCg2FFjbIbPVsWrvnXSy/bg
+	lOoZqJaNRvNO3TMgBJVOia86ZdUF/rCffZQya3Sd2bonhcWbVKZq
+X-Gm-Gg: ASbGncsgIYm7QfsgHj+F5KFH5ztBhPxWrsFr91lLCVUubviBgazwRdBgb4MUHROcpDE
+	EnbSRcDKq0LeLlXRqwA/0xhqipG64x4BtA1z7v/juNTwJJIxdO3IUN59/9n93YxpiWrGkMIylHz
+	4xCK0N2at9i0tRKIimElYoXZ5eH5C2nCe+61BqbPfDYTQlyYkGntcJsDCFLeS7QToPBtcZ1nOLP
+	vKzR0ejLPiHdj2FIhccBKq2DwGR/izc5V4veTOb5WYZPNsBlK2mZgkFijoDGuA5GzOIXTnEepMz
+	VGMVh9v7FVyQ5uobaTX6rd45dYt42tmT5v5tBRc=
+X-Google-Smtp-Source: AGHT+IELVS4lhs43iILfpwkhJE1qzvUcBDpCZPSr8G03kGFiX1zF+uJrHmJifYxOzwmCsKQfm2eOFA==
+X-Received: by 2002:a05:6a00:1d21:b0:736:32d2:aa8e with SMTP id d2e1a72fcca58-74091a1ee5emr3278160b3a.6.1746534986102;
+        Tue, 06 May 2025 05:36:26 -0700 (PDT)
+Received: from hiago-nb ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058d7ad6csm9089557b3a.17.2025.05.06.05.36.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 May 2025 05:36:25 -0700 (PDT)
+Date: Tue, 6 May 2025 09:36:19 -0300
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>, linux-pm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH 1/3] remoteproc: imx_rproc: skip clock enable when M-core
+ is managed by the SCU
+Message-ID: <20250506123619.egobussm6b74imso@hiago-nb>
+References: <20250505154849.64889-1-hiagofranco@gmail.com>
+ <20250505154849.64889-2-hiagofranco@gmail.com>
+ <20250506043835.GB24259@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250506043835.GB24259@nxa18884-linux>
 
-SGkgU3RlZmFubywNCg0KT24gNS8yLzI1IDc6MjAgUE0sIFN0ZWZhbm8gU3RhYmVsbGluaSB3cm90
-ZToNCj4gK0NocmlzdG9waA0KPiANCj4gT24gRnJpLCAyIE1heSAyMDI1LCBKb2huIEVybmJlcmcg
-d3JvdGU6DQo+PiBOZWVkZWQgYnkgdGhlIGVETUEgdjMgRE1BIGVuZ2luZSBmb3VuZCBpbiBpb21t
-dS1sZXNzIFNvQ3Mgc3VjaCBhcyBpTVg4UVhQDQo+PiB0byBiZSBhYmxlIHRvIHBlcmZvcm0gRE1B
-IG9wZXJhdGlvbnMgYXMgYSBYZW4gSGFyZHdhcmUgRG9tYWluLCB3aGljaCBuZWVkcw0KPj4gdG8g
-YmUgYWJsZSB0byBkbyBETUEgaW4gTU1JTyBzcGFjZS4NCg0KU2VsZi1ub3RlOiBUaGUgYWJvdmUg
-cGFydCBvZiB0aGUgY29tbWl0IG1lc3NhZ2UgaXMgYSBkaXNhc3RlciBhbmQgc2hvdWxkIA0KcmVh
-ZCBzb21ldGhpbmcgbGlrZS4NCg0KTmVlZGVkIGJ5IFNvQ3Mgd2l0aG91dCBhbiBpb21tdSAoc3Vj
-aCBhcyB0aGUgaU1YOFFYUCBhbmQgaXQncyBlRE1BIHYzIA0KZW5naW5lKSB0aGF0IG5lZWQgdG8g
-YmUgYWJsZSB0byBwZXJmb3JtIERNQSBvcGVyYXRpb25zIGluIE1NSU8gc3BhY2UuDQoNCj4+DQo+
-PiBUaGUgY2FsbGJhY2sgaW1wbGVtZW50YXRpb24gaXMgYmFzaWNhbGx5IHRoZSBzYW1lIGFzIHRo
-ZSBvbmUgZm9yIGRpcmVjdA0KPj4gbWFwcGluZyBvZiByZXNvdXJjZXMsIGV4Y2VwdCB0aGlzIGFs
-c28gdGFrZXMgaW50byBhY2NvdW50IFhlbiBwYWdlDQo+PiBtYXBwaW5ncy4NCj4+DQo+PiBUaGVy
-ZSBpcyBub3RoaW5nIHRvIGRvIGZvciB1bm1hcCwganVzdCBsaWtlIHdpdGggZGlyZWN0LCBzbyB0
-aGUgdW5tYXANCj4+IGNhbGxiYWNrIGlzIG5vdCBuZWVkZWQuDQo+Pg0KPj4gU2lnbmVkLW9mZi1i
-eTogSm9obiBFcm5iZXJnIDxqb2huLmVybmJlcmdAYWN0aWEuc2U+DQo+Pg0KPj4gLS0tDQo+Pg0K
-Pj4gSSBvcmlnaW5hbGx5IGV4cG9ydGVkIGRtYV9kaXJlY3RfbWFwX3Jlc291cmNlKCkgYW5kIHVz
-ZWQgdGhhdCB3aGljaA0KPj4gYXBwZWFyZWQgdG8gd29yaywgYnV0IGl0IGZlbHQgbGlrZSBub3Qg
-Y2hlY2tpbmcgWGVuIHBhZ2UgbWFwcGluZ3Mgd2Fzbid0DQo+PiBmdWxseSBjb3JyZWN0IGFuZCBJ
-IHdlbnQgd2l0aCB0aGlzLiBCdXQgaWYgZG1hX2RpcmVjdF9tYXBfcmVzb3VyY2UoKSBpcw0KPj4g
-dGhlIGNvcnJlY3QgYXBwcm9hY2ggaGVyZSB0aGVuIEkgY2FuIHN1Ym1pdCB0aGF0IGlzbnRlYWQu
-DQo+PiAtLS0NCj4+ICAgZHJpdmVycy94ZW4vc3dpb3RsYi14ZW4uYyB8IDE1ICsrKysrKysrKysr
-KysrKw0KPj4gICAxIGZpbGUgY2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygrKQ0KPj4NCj4+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL3hlbi9zd2lvdGxiLXhlbi5jIGIvZHJpdmVycy94ZW4vc3dpb3RsYi14
-ZW4uYw0KPj4gaW5kZXggZWY1NmEyNTAwZWQ2Li4wZjAyZmRkOTEyOGQgMTAwNjQ0DQo+PiAtLS0g
-YS9kcml2ZXJzL3hlbi9zd2lvdGxiLXhlbi5jDQo+PiArKysgYi9kcml2ZXJzL3hlbi9zd2lvdGxi
-LXhlbi5jDQo+PiBAQCAtMjg1LDYgKzI4NSwyMCBAQCBzdGF0aWMgdm9pZCB4ZW5fc3dpb3RsYl91
-bm1hcF9wYWdlKHN0cnVjdCBkZXZpY2UgKmh3ZGV2LCBkbWFfYWRkcl90IGRldl9hZGRyLA0KPj4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYXR0cnMsIHBvb2wpOw0K
-Pj4gICB9DQo+Pg0KPj4gK3N0YXRpYyBkbWFfYWRkcl90IHhlbl9zd2lvdGxiX21hcF9yZXNvdXJj
-ZShzdHJ1Y3QgZGV2aWNlICpkZXYsIHBoeXNfYWRkcl90IHBoeXMsDQo+PiArICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpemVfdCBzaXplLCBlbnVtIGRtYV9kYXRhX2Rp
-cmVjdGlvbiBkaXIsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHVuc2lnbmVkIGxvbmcgYXR0cnMpDQo+PiArew0KPj4gKyAgICAgZG1hX2FkZHJfdCBkZXZfYWRk
-ciA9IHhlbl9waHlzX3RvX2RtYShkZXYsIHBoeXMpOw0KPiANCj4gWWVzLCB3ZSBuZWVkIHRoZSB4
-ZW5fcGh5c190b19kbWEgY2FsbCBoZXJlLiBUaGlzIGlzIG9uZSBvZiB0aGUgcmVhc29ucyBJDQo+
-IGRvbid0IHRoaW5rIHdlIGNhbiB1c2UgZG1hX2RpcmVjdF9tYXBfcmVzb3VyY2UoKSB0byBpbXBs
-ZW1lbnQNCj4gbWFwX3Jlc291cmNlDQo+IA0KPiANCj4+ICsgICAgIEJVR19PTihkaXIgPT0gRE1B
-X05PTkUpOw0KPj4gKw0KPj4gKyAgICAgaWYgKCFkbWFfY2FwYWJsZShkZXYsIGRldl9hZGRyLCBz
-aXplLCBmYWxzZSkpDQo+PiArICAgICAgICAgICAgIHJldHVybiBETUFfTUFQUElOR19FUlJPUjsN
-Cj4gDQo+IEJ1dCBoZXJlIHlvdSBhbHNvIG5lZWQgdG8gY2hlY2sgdGhhdCBwaHlzK3NpemUgZG9l
-c24ndCBjcm9zcyBhIHBhZ2UNCj4gYm91bmRhcnkuIFlvdSBuZWVkIHRvIGNhbGwgcmFuZ2Vfc3Ry
-YWRkbGVzX3BhZ2VfYm91bmRhcnksIGxpa2Ugd2UgZG8gYXQNCj4gdGhlIGJlZ2lubmluZyBvZiB4
-ZW5fc3dpb3RsYl9tYXBfcGFnZS4NCj4gDQo+IElmIGl0IGlzIHBvc3NpYmxlIHRvIGNyb3NzIGEg
-cGFnZSBib3VuZGFyeSwgdGhlbiB3ZSBuZWVkIHRvIGJhc2ljYWxseSB0bw0KPiBkbyB0aGUgc2Ft
-ZSB0aGluZyBoZXJlIGFzIHdlIGRvIGluIHhlbl9zd2lvdGxiX21hcF9wYWdlIHdoZXJlIHdlIGNo
-ZWNrDQo+IGZvcjoNCj4gDQo+ICAgICAgICAgIGlmIChkbWFfY2FwYWJsZShkZXYsIGRldl9hZGRy
-LCBzaXplLCB0cnVlKSAmJg0KPiAgICAgICAgICAgICAgIXJhbmdlX3N0cmFkZGxlc19wYWdlX2Jv
-dW5kYXJ5KHBoeXMsIHNpemUpICYmDQo+ICAgICAgICAgICAgICAgICAgIXhlbl9hcmNoX25lZWRf
-c3dpb3RsYihkZXYsIHBoeXMsIGRldl9hZGRyKSAmJg0KPiAgICAgICAgICAgICAgICAgICFpc19z
-d2lvdGxiX2ZvcmNlX2JvdW5jZShkZXYpKQ0KPiAgICAgICAgICAgICAgICAgIGdvdG8gZG9uZTsN
-Cj4gDQo+IGlmIGFsbCBpcyB3ZWxsLCB3ZSBnbyB3aXRoIHRoZSBuYXRpdmUgcGF0aCwgb3RoZXJ3
-aXNlIHdlIGJvdW5jZSBvbg0KPiBzd2lvdGxiLXhlbi4NCj4gDQoNCkknbGwgcHJlZmFjZSB0aGlz
-IHdpdGggdGhhdCBpdCdzIG15IGZpcnN0IGRlZXAgZGl2ZSBpbiBETUEsIHNvIHRoZSANCmZvbGxv
-d2luZyBtYXkgZW50aXJlbHkgYmUgbWUgYmVpbmcgc3R1cGlkOg0KDQpJJ20gbm90IHN1cmUgYSBz
-dHJhZGRsZXMgcGFnZSBib3VuZGFyeSBwYXRoIG1ha2VzIHNlbnNlLg0KDQpUaGlzIG1hcHBpbmcg
-aXMgbm90IGZvciBhIFJBTSBiYWNrZWQgYWRkcmVzcy4gSW4gdGhlIGVETUEgY2FzZSBmb3IgdGhl
-IA0KaU1YOFFYUCB0aGUgYHBoeXNgIGNvbWluZyBpbiBoZXJlIGlzIHRoZSBhZGRyZXNzIG9mIGEg
-cmVnaXN0ZXIuIEkgY2Fubm90IA0Kc2VlIGhvdyBhIHN3aW90bGIgYm91bmNlIHdvdWxkIGZpeCBh
-bnl0aGluZyBpZiB5b3UgZW5kIHVwIHN0cmFkZGxpbmcgYSANCnBhZ2UgYm91bmRhcnkuIEF0IG1v
-c3QgSSBjYW4gc2VlIGEgV0FSTl9PTiB3aXRoIGEgRE1BX01BUFBJTkdfRVJST1IgDQpyZXR1cm4g
-aWYgc3VjaCBhIGNoZWNrIHdvdWxkIHlpZWxkIHRydWUuDQoNCkxldCdzIHNheSB5b3Ugd2FudCB0
-byBkbyBhIERFVl9UT19NRU0gYW5kIGEgY2hlY2sgZGVjaWRlcyB5b3UgbmVlZCB0byANCmJvdW5j
-ZSBpdCB5b3UnZCBib3VuY2UgYW4gUlggcmVnaXN0ZXIgYWRkcmVzcy4gSSBjYW5ub3Qgc2VlIGhv
-dyB0aGF0IERNQSANCndvdWxkIGV2ZXIgZW5kIHVwIGRvaW5nIHRoZSBleHBlY3RlZCB0aGluZy4N
-Cg0KVGhlIGVETUEgZW5naW5lIHdpbGwgbWFuYWdlIHRoZSBSWC9UWCByZWdpc3RlcnMgZm9yIGFu
-IElQIGJsb2NrIGFuZCBtb3ZlIA0KdGhlIGRhdGEgYmV0d2VlbiB0aGVtIGFuZCBSQU0sIHdoZXJl
-IHRoZSBSQU0gbWVtb3J5IGlzIG1hcHBlZCBzZXBhcmF0ZWx5IA0KYnkgZG1hX21hcF9wYWdlIChh
-bmQgZmFtaWx5KS4gQW5kIHRoZXNlIGNhbiBiZSBzd2lvdGxiIGJvdW5jZWQgdmlhIHRoZSANCm1h
-cCBwYWdlIGNhbGxiYWNrIHdpdGggbm8gcHJvYmxlbS4NCg0KQmVzdCByZWdhcmRzIC8vIEpvaG4g
-RXJuYmVyZw==
+Hi Peng,
+
+On Tue, May 06, 2025 at 12:38:35PM +0800, Peng Fan wrote:
+> On Mon, May 05, 2025 at 12:48:47PM -0300, Hiago De Franco wrote:
+> >From: Hiago De Franco <hiago.franco@toradex.com>
+> >
+> >For the i.MX8X and i.MX8 family SoCs, when the M-core is powered up
+> >before Linux starts (e.g., by the bootloader) and it is being managed by
+> >the SCU, the SCFW will not allow the kernel to enable the clock again.
+> >This currently causes an SCU fault reset when the M-core is up and
+> >running and the kernel boots, resetting the system.
+> >
+> >Therefore, add a check in the clock enable function to not execute it if
+> >the M-core is being managed by the SCU.
+> >
+> >This change affects only the i.MX8X and i.MX8 family SoCs, as this is
+> >under the IMX_RPROC_SCU_API method.
+> 
+> I would rewrite as below: "
+> 
+> For the i.MX8X and i.MX8 family SoCs, when the M-core is powered up
+> by the bootloader, M-core and Linux are in same SCFW(System Controller
+> Firmware) partition, so linux has permission to control M-core.
+> 
+> But when M-core is started, the SCFW will automatically enable the clock
+> and configure the rate, and any users that wanna to enable the clock
+> will get error 'LOCKED' from SCFW. So current imx_rproc.c probe function
+> gets failure because clk_prepare_enable returns failure. Then
+> the power domain of M-core is powered off when M-core is still running,
+> SCU(System Controller Unit) will get a fault reset, and system restarts.
+> 
+> To address the issue, ignore handling the clk for i.MX8X and i.MX8 M-core,
+> because SCFW automatically enables and configures the clock.
+> "
+> 
+> You may update if you wanna.
+> 
+> >
+> >Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+> >Suggested-by: Peng Fan <peng.fan@oss.nxp.com>
+> 
+> -> peng.fan@nxp.com
+
+Thanks for the review, I will update the suggestions on a v2. Meanwhile,
+I will wait a little bit for other feedbacks.
+
+> 
+> Thanks,
+> Peng
+> 
+> >---
+> > drivers/remoteproc/imx_rproc.c | 4 ++--
+> > 1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> >diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> >index 74299af1d7f1..627e57a88db2 100644
+> >--- a/drivers/remoteproc/imx_rproc.c
+> >+++ b/drivers/remoteproc/imx_rproc.c
+> >@@ -1029,8 +1029,8 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
+> > 	struct device *dev = priv->dev;
+> > 	int ret;
+> > 
+> >-	/* Remote core is not under control of Linux */
+> >-	if (dcfg->method == IMX_RPROC_NONE)
+> >+	/* Remote core is not under control of Linux or it is managed by SCU API */
+> >+	if (dcfg->method == IMX_RPROC_NONE || dcfg->method == IMX_RPROC_SCU_API)
+> > 		return 0;
+> > 
+> > 	priv->clk = devm_clk_get(dev, NULL);
+> >-- 
+> >2.39.5
+> >
+
+Cheers,
+Hiago.
