@@ -1,90 +1,58 @@
-Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2064.outbound.protection.outlook.com [40.107.103.64])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2069.outbound.protection.outlook.com [40.107.241.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E109320E315;
-	Wed,  7 May 2025 10:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B024072604
+	for <imx@lists.linux.dev>; Wed,  7 May 2025 10:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746612909; cv=fail; b=VrBMFVfJrN1DUcMZ1YIhurrgS5iIIZWxh94ogD38hQhgpjx0bTKlx6vPBNZ8UJGInBj1rx/d+BWWAsrghgBJ/EE5clGhgG4ocUU2suJpUiuGNPpnIebJj0Nd4wpsx/CSUiUQX80R2Jb/a9ZWDELNyESZTxofdcoZxr5lKbPeYkE=
+	t=1746613521; cv=fail; b=l5i60Z2iq82Fduc0jMWPSbRnYNkI6tcXIq0mENZtNxOTFTpcdBPcmCmTuuKE2qGQObPd1VvjtMctmOionkRBR6sClOoSPL1jh97yyYAx7olVJLRU7TRyulXuTMFpuHTfjxXKiwf0OIb3ZbLOlok6LJrvRcsxLaIrot9wKJGWmEc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746612909; c=relaxed/simple;
-	bh=dgBndZJVleT14gh75TMLOTpmBpz3Hnur7C+rYrwpquY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=rC6C6lBPzMRgfh0WAC1kEOnhUGOWcOLWYZJ8nU4Q3C+dm/UDB22YD34YGwzjfasAOcRsiYYd23Ev3pXYt/4U9cLrTe89zCX/Tou3jumYCPj1xF+x8cwuxhJPuvEHGIA6sRFbKin4R5oLzPKp+TANSctrD4jMSaNln4sRYjKyJf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=K4HsFJ55; arc=fail smtp.client-ip=40.107.103.64
+	s=arc-20240116; t=1746613521; c=relaxed/simple;
+	bh=ozEPgFogBnDWtLi0Eshh1wIkKfdFBzhGHREz9k9hq7Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=O9Jt36aZBD+cTjYTHvBKNf/wUG5AHUUckDJrE/L2OyayaGGSCmWRg8TYxx0kqKoQJ/IIi2gLbpg0dFH2J57AuasbyWMeeKBXusuMqtW9rkP1iaONFoxGErZ92nCeFDjWL9eBSVdJKwix2X41hPuRYnlO4oRdM7Qo3/7c7qZv3A0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZMrtiwCy; arc=fail smtp.client-ip=40.107.241.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="K4HsFJ55"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZMrtiwCy"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PKMfry3Q/ax629yNHP0dEQIUXvpYeGe1Dc3CltBIuH4kgkslsNqSSVLQ/+maEhEIBDGfDJz13O2EMudNo/E+5pj9EbS2/HcPmrzNGjlbymM/DWWlSzVCw+82sZ1K9soE3CVao4t0Q3LYlDFj+w7iVyaNo3YH4zA4WkU4tEmmSgj0j0BBjqgSmVzSwA8YHbM8zsIkuDXpSznArAiCbHKlCgPEh/ijb+4N619TSMorHcqoJVSM5ilsQ4jvEjPT+nEm5i6HMqWjoUpyaaTEPnloVmD7Cyd0l+no0xm9LdWieoQogHK4D3hGRSgMHCVoLNMa9XmnMTZkJXPiiZRs1Tdc/Q==
+ b=agROxhKs/NybyQ0zAobvFKJ0fTYXBEgsZLEGf8CUgvBQpTX9fl30a+vbtkHB9oSHATS1EusFGCorcxJeQOmOaLKSgTf3cUpvPE7EtHVZupcPLMEnKiBwV52VHbs4swMJKSqt3Ysdooh557Nk731vZFNTp2NVBYWR7RiAQSKnrrKxxbnU+PwfmaG72cjDuNpnjHqP7EChvdwLMRg3USKtDtPY+l+Wiwvawfm8GGzJMecoqAtvgNGHCsWZwxc8358mDjwlqqRvEoZlUTO9N0gOMzLq2hmvhpSqRa6M+lY8nZHLUhne3OwprGL+iestYMGolHDDrrGyn9BAB8UeHpiKrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RycThhcPl47BOso6w6PXZNCz38cRrbsQKA/1KF2WhAI=;
- b=ebwi+n1GE4crR2mhNVVGny+CnakhRUbhqrEHOk+MV6EeknSFSD959LG+eCo5363k50eEgWUC9jR4hY/YWCKWSgnfSACq0ijXp/cQsCSMErlpFRtHPZbH0SRP8PfjiQJrtNjgTOerSdPVXl5wqfj5RFj9GwI3F+h85CVHlBp9SXDOCjyBydr2pDrnTbRvHesHt+kCuFIHFAfRvaD1KqEdDhx+kGMyNMaPtnWPGQCizdpHsK+hqyCT53Se6xVeIMyAOnlfa+D+x/3DN/e1WhbqEPRApGT/V792L9K3e+e9qTVf7V9yI8LHnzwrMPW2jNOPFq/4NgHYIc4Xdp55dcuLLA==
+ bh=xsB5WKeJy2Zcc2e8lFlQ93r6EIOrYvc+nS40g7lvJ8Q=;
+ b=Ik6w68nAHvzSKkYhOLWD5UafOMV6x1pZYZvJCB7/Yq0cRQIlADoKc9H5z1VJ02mEZnSe7WJN629MLzF3uNdk+5x6sOXX+l8wK6JEKaWudWcsozkgBTKOvIl+NYCrs9NUKLBMN8B/CSCl4dK452HHoljmsgrEYGQq9/QWgGPFSbf5dqhkNXISdsf4KgtGt4iSdHjEyFvSaM/GSujzUqIV+1dO6YaGyd4gGPolEanpsGw6TmC5YIay6vYRfrY9UNuqK2qP9mC+ClMBP+KZLU8P1Oakumej099RQzBC11sAoA+Vs3e4gWhtPR3ALchuQjSoYt3fCEpoJFCxFaO/hignWQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RycThhcPl47BOso6w6PXZNCz38cRrbsQKA/1KF2WhAI=;
- b=K4HsFJ55zIJYoChsi6ALUf9sGxcozqiqPQ2ia4sQAySmuzi/vhOYqAgnRYGjtUbWV0KI9OezC5HpB/iv0EcxL5I6v7ixMl59Gn1A9urpXD0g7DASrlGDGSxGfNRiMFWfy6VntEKu/g2VgjHLUYy/lMfLpfCNgNicL8hU3EhAIMuitAYVlECgcLUuX5kiZilgUZF5sTv2QDILV5fLfawsU0ehElRWzjOa3cl4RnWV5CyKwDU9SQhTDLTkQT7iV/pMDtQrmLQmJky2SusCBoaMLUOfeNhSVRQHicX05EBdKDqrqIGHX4eJaUFnhGGNIRPl5+8+h0l2rHmZqL3fPeJvQg==
+ bh=xsB5WKeJy2Zcc2e8lFlQ93r6EIOrYvc+nS40g7lvJ8Q=;
+ b=ZMrtiwCyPgkYEDo7OHcZs+b/+sORDWDc3FFLCeecPMVw2id7W6CCSXmTUoi8Z+TlzEa2HgG6k4unFqPfGuX34yEC+t7Nn0N5ufX3s7blAPqlQhMJcK5yKYZba/HSa1XahmVkpdheGdnEHypBL/cNg+3IUpo77SMqnHImLU2I6wr8Efokz9FkQc+6rrKnJ9foNFTL2epxbjI7nJCGiQkvXgRCo7wyJRQaTS4JuWvUmwJw0/B5OIbvOpbKBOAhF0hd5G3neqQhzGWsd5jGdatfcnBsFPE3XKHudxPZnwu3FRHwu1hNXc72yg+UVCQOe76vkwNWaOhyhPf2mMET5fczVQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by AM9PR04MB7634.eurprd04.prod.outlook.com (2603:10a6:20b:2d5::10) with
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by DBBPR04MB7817.eurprd04.prod.outlook.com (2603:10a6:10:1ef::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Wed, 7 May
- 2025 10:15:03 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::d1ce:ea15:6648:6f90%4]) with mapi id 15.20.8699.026; Wed, 7 May 2025
- 10:15:03 +0000
-Message-ID: <430d497d-45a1-436d-91fd-635854f80c9f@nxp.com>
-Date: Wed, 7 May 2025 18:16:28 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 30/34] drm/bridge: imx8qxp-pixel-combiner: convert to
- devm_drm_bridge_alloc() API
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Jagan Teki <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Douglas Anderson
- <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, Anusha Srivatsa
- <asrivats@redhat.com>, Paul Kocialkowski <paulk@sys-base.io>,
- Dmitry Baryshkov <lumag@kernel.org>, Hui Pu <Hui.Pu@gehealthcare.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, asahi@lists.linux.dev,
- linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com
-References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
- <20250424-drm-bridge-convert-to-alloc-api-v2-30-8f91a404d86b@bootlin.com>
- <553d62ed-976a-4e17-9678-cdc3d40ce4a7@nxp.com>
- <20250430112944.1b39caab@booty>
- <f71d18d2-4271-4bb9-b54f-0e5a585778f3@nxp.com>
- <20250506224720.5cbcf3e1@booty>
- <a1abf31a-7a4a-4f8d-bf48-6b826aa01197@nxp.com>
- <20250507091244.32865a71@booty>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <20250507091244.32865a71@booty>
-Content-Type: text/plain; charset=UTF-8
-X-ClientProxiedBy: SG2PR04CA0201.apcprd04.prod.outlook.com
- (2603:1096:4:187::23) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Wed, 7 May
+ 2025 10:25:16 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%5]) with mapi id 15.20.8699.022; Wed, 7 May 2025
+ 10:25:16 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: wsa+renesas@sang-engineering.com
+Cc: linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH] i2c: core: add useful info when defer probe
+Date: Wed,  7 May 2025 18:27:14 +0800
+Message-Id: <20250507102714.3535412-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA0PR01CA0058.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ac::16) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -92,377 +60,116 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|AM9PR04MB7634:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74ae9de8-a71c-4d3a-b33c-08dd8d500822
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DBBPR04MB7817:EE_
+X-MS-Office365-Filtering-Correlation-Id: 07651309-4b22-48ce-3119-08dd8d51757b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
+	BCL:0;ARA:13230040|1800799024|52116014|366016|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?cXJ2S0lpa01Ucy9VVVlWMVo4TlpDcTRaazF1emV6VkljU25MUVFiS2lIbHRr?=
- =?utf-8?B?V3R3REo4d01WRkVHYWhMZ0h1WHRRRHFQdW80M3FlVkV3SG9pbWNvZlVKVC9B?=
- =?utf-8?B?b0VzOW9iNWpiUkljNVRtWWNJSkt3aCtoNTJ3bHFRWDl0N2doQ2hod2JnQmRE?=
- =?utf-8?B?Z0lnaXk1QUEvK2N6YU93bUFBZUJVemhOL0tqeFpmMm5ESThpU1JwbVh5NXl1?=
- =?utf-8?B?MEIzVkRrSVY1VFRaL2wrcTcrQ2llMVNGempnanNsem51MWRPbzExN2hKZ1pu?=
- =?utf-8?B?Q3l6bDRXanRJMlBGRlYzQTNsQ2tYWmg4dEhJTDIxVHdVbzZ2TUtwTi9GMVR6?=
- =?utf-8?B?Ukt5Z1MxR1lFYjBCQ2piNXpnL0txRFlyK2lEVlBxVWFJZ0pyNHhOU0JleUl5?=
- =?utf-8?B?WlRzZjVxWkRMRHNNclpvUVZDdm13WitsZHRwYU9OSTVkUlpwWklFNFB5d05l?=
- =?utf-8?B?cmR5VWZ4RzR4eThWRnl5Q3VpeVVIOFNqY05GNVVkM25pcCsyZ01uV21DUGx5?=
- =?utf-8?B?TG11a2haeVlNVTNLNlVVUXUvaWFrdGJ0aklOek5jcGNxNlVyVVhxdmxCdDBX?=
- =?utf-8?B?d3JCS00rUWRObzZDUmJENEcrdDNKL1NTVGF5SytvS21yc3MwRVV4UnRxbHo3?=
- =?utf-8?B?R2x4R2tMTDlySURwR3hmQTlvUXVuRmNWMFZDendETURkWjVkcE5SSEhRckIx?=
- =?utf-8?B?ZlVQNDluWWZOR2paaUxjam9RS2dZTUNmTklsWitZb0hFbDFPdDNGM0pncHht?=
- =?utf-8?B?YVJlNExVbldWRHE1OXJjZmtwNTBPY1g5S3IxZDZCYmNZTUhxTVhzSExuT1VH?=
- =?utf-8?B?VHo2NlVCM3Boc29qdmp0RlQ3VjBoRnBHd0tiZlZocHdDMTJ0dVU2blRRK2dR?=
- =?utf-8?B?a3YwVXdJVDgvdWQ5cUFrRjRLR1RiOVZYbVM5TEZwWlhoUUVudHgzeEljaWxT?=
- =?utf-8?B?YjdKdnAvb1RKWWZzZGpkTDdEUW9oRjBuU2l2ei8vR3R5ZURyQzdRcnNFNzkr?=
- =?utf-8?B?cHlnMU90WkdOeC9GTFRFZ0lZbW4yN0tyQzFoUkZTcUxKMllNdGhFY0tYSDR5?=
- =?utf-8?B?MC9kSVJ6MDc5RDdmWUVZeHloYzh1NHA1QXNGQnYrcjdpSitRK1Z0dU1vbHo1?=
- =?utf-8?B?cGxmNnMzU3FYYUxJRUJpdFZNRnQ0Z3czcjQvRUNUSUhBVUN1YVBabkcvRno1?=
- =?utf-8?B?UVFtSmFFM0NBeUNyRTYxdHNMOXRrdUZpMjN4ajByZVFGVm5FalAvZ1E2VVJS?=
- =?utf-8?B?aFJVNlR1dytRNy9XRDFkNERlSkE3UEZNYkJrWEZhZ2NBZHlMUTVucFNXSkVJ?=
- =?utf-8?B?YnhKM1VrdElaRHVkVGpzYVE0OTRkZWNDSXNTTnBUN1piaVVQZFhOS2RtNWw0?=
- =?utf-8?B?T0lHNFBtbUlSRVBzRUZDcEY3QlkzUlpyNmw3dUJXNE1LU1pGZkJxZEl1Q25E?=
- =?utf-8?B?aEF3enYxUEU4RlhKYWJ2RHd3U2dNTVlKdVhlYXdXczNyUXZuTXdxTDNRbU93?=
- =?utf-8?B?T3U1azhRT09XamhqeUp2QktNbkFMdTZPMkdZVFRmaWFvMWZHS0IzaURtemp4?=
- =?utf-8?B?WEVUaUZsbHVPTFBoMG9OTmRldTNmbFBXci9lRTZMeURvbXhNT0M3WVV2UzVm?=
- =?utf-8?B?b2Vrckg2aldSYi9yRENOaGQ1MWp2STVCSi9mREpDek9meG05ZDUydkpETjlK?=
- =?utf-8?B?NFQyaXdGQlNzbHFUNCtNQVA4SHE5V2k3RVNtVkRMdjZ1ZG9GSC9tdEhCZGpn?=
- =?utf-8?B?VUU4M0dhMHYyaDhZbXY4NTlmd2I3OVBwQXJMb3dsVWhHRi91TXhpSnQ0Sk9x?=
- =?utf-8?B?TGJVN3dBOUxRbkRVeEo3R3FPTTlNaEhyMWdKcUt1NFJJQWJQY29mWjlaaktH?=
- =?utf-8?B?anBkRWE2Nit3QVYrcmQrcWdtREtPbk5EVTJSSGc4NUU0dFVtVnVqL1h6SUM4?=
- =?utf-8?Q?VzrlEBak8XY=3D?=
+	=?us-ascii?Q?lwM/HEB1SXCkTffG2x5W542UglMSuTFWk6caVNgMvJpKu+KDp84BN/V/JS7J?=
+ =?us-ascii?Q?nOzJNkkKIubJ3ZXHrqb/EClX9eVuWtA7x1WpCNuuh5GgkJaJiuTrY+ufxLQY?=
+ =?us-ascii?Q?5lDgtgFip6GdyV1TxJf61YlB9nIH7JgUUU8s1nvkHkP5FxyzuwTAvV2otL0s?=
+ =?us-ascii?Q?3+oCNBfqQx7d8mpZGwkSHxvOY0cZ6qvqDKuN+XLBjuzI1Y6VNgmk/g8Wdr71?=
+ =?us-ascii?Q?bWTgr7jEc8UWfmEWVDG/+CnEEuXtrelZ+5qhjk5jxB89rnTZGB+rUchtytWE?=
+ =?us-ascii?Q?s7wDufCAYiohvmMRnqWIgX49Ypy/5xUbbhXofjnOIuwRxCwr3vbxj2tGLgic?=
+ =?us-ascii?Q?FtUZXPP7mqM45oiXTZKdvvGG4fHnswkY3gWZs5R1RTUUFmy8qf/oFXGHaUt+?=
+ =?us-ascii?Q?Oe/T37OAB0WzKPjFOlxUl/dos2vrDyCPTKRwOnN5c/RiqU4X35AUVFKrQyPM?=
+ =?us-ascii?Q?JoR5gMaehBJWZUuXbVZUlGzRayFkUyiZGkha4rpgYZJQylXI7yO3jskTupKZ?=
+ =?us-ascii?Q?mXDXLdMHQ5RAtc2UMwdmi9uu3p04CgjNo9eI1pwjbKPdTpeRCD30dZ47ezNp?=
+ =?us-ascii?Q?ldEYZ5Xocr8N09i9lam24WlzR5I+1xzdnZPNcSj/5hyv92Lf5SWO6AAnxif5?=
+ =?us-ascii?Q?Lyr+pG85/ybMGz2RJiOcBg6mI/ghQHfFJkJ2ON4UJlrYSblV4kM7vn98IpIx?=
+ =?us-ascii?Q?0dsjpej7/DJkznqcHNIgVdYhm85H63x2KEEcpIzOCz/HxpowNB6EFawfd/eC?=
+ =?us-ascii?Q?iRs5CcFzdsn25Azp6LFzCC46JglcoC7ln337Y89mobB0srDDZaRhd9zSsNZq?=
+ =?us-ascii?Q?sh/nSsGIqgV0JbNN/hk0qzHWUxGPzuYAi0e+DuDoK1rmqskFjPCWOGUZ3ODM?=
+ =?us-ascii?Q?UTjFnGPTlT4pzVrPOOifDcgnBD8s0HDWIOR+9fcUTQg9UOB68qWD0p/d4izn?=
+ =?us-ascii?Q?KKKeclrkh2Am11XsrSCL4ZGTNalvT8DHbq+c/XZo6S+tT0BwcwCn3ytW6DdR?=
+ =?us-ascii?Q?i4aNTYJhURYPi/xlDE6CxdQ6UnMUXXJUoYJFTYW6oAfa6DmON47rNup8eg+W?=
+ =?us-ascii?Q?nNEpXU1gOwTGRm0nPswNYY/lhI8nURMgA+YQoDPjU5dsZ5Kkwfjcjgj52Fvo?=
+ =?us-ascii?Q?B74CAQ60rc4TybSd1EyfJAukW4VSLX1rcZdjjc7CKvRl3EehcPRsP5o3+ZMS?=
+ =?us-ascii?Q?RS+XhSmtS0EqrdxYoCZh4RQ9s9zvmUEPjMZ2bEQBvwIxSMB6g5l0vo918oKI?=
+ =?us-ascii?Q?CON+N9uKcx9QBSU9cXqbEeZ2hQpRz74MrGc5LuNz5bDRLOwKUTeAGjAkcFWM?=
+ =?us-ascii?Q?YjIrn8+aeWjWqFS/HLX/PYHMFXxkZqq/Y+P3ekepGkU1VD7/BRdqnr180BxB?=
+ =?us-ascii?Q?X3mD75PylsH6sp3JNUjnuuf+FhjLM95Z2U31hE3imLA/T5AqllDhmkIXC50+?=
+ =?us-ascii?Q?PlsN68quvw2LmMxCj94H/fL41W5RtMLOCPD+/dQ98FIIYSabKnD/JA=3D=3D?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?RnJaYy85dWNOTTdEU1NyT0U4aEJOV0pCaVZoa0hJQmwyOWlZSzB0N0dCcVZJ?=
- =?utf-8?B?SGdVNVpvT3pCVngzTTRqMXIwdlVHZGxmb3BZZy9UekdsbUF6UXc4TTMzVnRP?=
- =?utf-8?B?SVJoSzhzamdYLy9paHZuOTZncjQxSjBDL2tLNGJSeWJYT29pTWsyRk1VTURa?=
- =?utf-8?B?N2RNVmxXSzRYd0Exek9nd2ZYMk92MnRYMWpMWkhBUmJtU1gzS3Y3WWhoRkU5?=
- =?utf-8?B?ampIdWlNZGNMS0FZNmdHa2hWSnBZaFpUa1hBd3ErMlJwSlpmd0JsRnBIODVr?=
- =?utf-8?B?eko2ZGxlNmlGMWk4cEtBNnJ3SUpZcG54UjV0S0k3YXlMWFdTQjNkNTdXZHhI?=
- =?utf-8?B?b3dtNlpUQnVHb3NDVW9JTW5ENGFaQnlHdnU5WjRSZ0J6ckV2MkdaTDRyNUpr?=
- =?utf-8?B?N0k0MHhlcWd0ZTJ6N1JxbkFGV2dVMXA0QkVkWkFXMnMzV1VTbDNnTkpSM1Az?=
- =?utf-8?B?cUg3bHJDVDhKWDIrQUljVDRXSERFUitPRTFxbDVDTUowVDVoTmJRL09jQ0NP?=
- =?utf-8?B?TlYrQXN4aTN6Z0xHeDB1ZHdJUy85emh6dTRTZzRJRkRhUTdxWmxVNmhNN0xm?=
- =?utf-8?B?OTNmVkwwUlJVcThnT0Y0MU1mRDZ4WnpyUGtXbEJTNFl0YzlLTnVMaGdkZ0NL?=
- =?utf-8?B?U1NNOHpqTDRPS3VRQWxwRWhjSEx0a2dWdUg4cEdhQUNkK0Q5SVpJYS9SUDAw?=
- =?utf-8?B?WEJ0S2l4eElpMTNpZ2w0MWh2RDdrd04vajZzbHAyU09EWEhPVGs1bjJPQWVt?=
- =?utf-8?B?OWdXajVIaG1vc05paUFNYzJuWlBCUGhNNEFGaEFqYnhlSmNiam5ZS0xzeith?=
- =?utf-8?B?eXlqYTBwRVRMQTBFbVZ0cmpOeEFybzVWUFoxMWo2Tk1qWThFOFFqeTN0ZDlQ?=
- =?utf-8?B?ZlhpSnJ3WkpjZlVUNDc3YXlzY0JUc2EvTWxqcldubzVIZkloNTR3NnFCSWNE?=
- =?utf-8?B?THhyWFdaL3VWdUY5bnVqcU5xbUl6ZDBXcGNucG9PN3VvY1pVZUhrSkNTa0to?=
- =?utf-8?B?V2R6UzE5WXFrMllsT1VvSG5iZzRZZE1qQU9sbXFzVU9yVW9TNUNhdXRmYjN2?=
- =?utf-8?B?M0o1NkU4YlJNK0J5YU5PVDVsNnQ3ditQY1laeVp4bTZKeGdLTjF3eVR2RW5S?=
- =?utf-8?B?NUNpblQ1QktLcy9TeWFiOElPVWJkWDR5UE5hMzhmbW1qdzhUOEY2SC9pLzA1?=
- =?utf-8?B?VTYzeFI3VzNDZ2JqdFptYkI0UzNlTlhPUkR0M3NjakxEM0xmWjZFNEVCZ3lQ?=
- =?utf-8?B?SXNaR1ZhTy94cHFKdHc1VVB4SFB2ZGFXZG1ZdU16TnFremdjZVE2SkR5Rngv?=
- =?utf-8?B?N2NRYWx4MzdnOXQ1aDZGQW4wRk1hVGxUTGcza2VDeGlFYlZDa3B2cVBLK3Bp?=
- =?utf-8?B?L0NldTd0NnNBQkVOWkw3OWYzSWkxRURBSU5hRUhrWUdiK1VZMllGeDg1b0Zh?=
- =?utf-8?B?bm9wYmJuSjRsRmhRSllwWmhvRFBYSk82UGRuWHEyNkJJK1FrY3pueldLYjVh?=
- =?utf-8?B?cTNnbFVJNUg4aWlKa1F1dXVCaWQrS3poYzR1QldFY3c5T1poTVYzSkRqUUxH?=
- =?utf-8?B?ekFrcEhyME1yUVNKREYwWC95UTIwY3o5TXVBUXFrSmJNRk5NM2xRbWhjM0NQ?=
- =?utf-8?B?MTlzS2VaRDJpTWZQNXZLejIyQllxaGJlSDZ6TlFpUGk3aU1CcHhWWk5QT0ly?=
- =?utf-8?B?RlM3Nk5WdHRPeHZxUXY0TGNjWlp2T0tNb1pNSTF0WHN3L1duRzd3b0xsN3pq?=
- =?utf-8?B?WDllVFNqWlZFTmRHQ3JyQ0N5dTBwYldXcmlwZXhPWUIrRy90T0d5d1o4a28r?=
- =?utf-8?B?WW9FM3V2bDRoWFZId0Q2Ujl5d3pDMlA5NytjQ3VQdmJKV09DS0RtaDVMQmZG?=
- =?utf-8?B?cFJKcmF6cjdGa1VTaWJtQk5kVVAwMWJQQmRMRTI4NEJzeCtGQU1qa3lEeHdV?=
- =?utf-8?B?UTJSN0FHaU9PRWJMYUhHbExiZ2pWVyt3M3JrajA3Ym1tMUpwbUVVSHpjQm5z?=
- =?utf-8?B?cEsveHhUc2I0ejlZS3FOa2I0eVpXaXI2UXU2N1dScXJpMXVoNjFtS1lmU0dv?=
- =?utf-8?B?bU9Yd0h5UlRJTER3QmxSR1kyc0k3cnIzcERFWkJhLzdBYnJDWmVlNXVlZmpE?=
- =?utf-8?Q?tfYRDqTgbHFH6oHV2i2OKZ8Q1?=
+	=?us-ascii?Q?NasnpTDAadX9LuaTrm2kLObMV0RLCUaRd8vGbqKCATshK0C223kBDJUrOV3p?=
+ =?us-ascii?Q?KxEzYQusY5UbcLj9HYOTPfvCES/bqew/Y7hmAKS6fPDsQqLvYGTdTVanHXg9?=
+ =?us-ascii?Q?BaeQVQoiv0mOZMcHwt+l7biFu6BuuHZPU27MMJtYQv+bCfJxnDVnZzhai8Bl?=
+ =?us-ascii?Q?cCh5LL4zLDTD10SP851q6WbhTOJAdhK3AkuB0lb3pkNTxkZzZMbu03IcZYCR?=
+ =?us-ascii?Q?cIcqQExfuBSVS9WLA3Eq4ucLXa5n3CrKsRG8wv8crlSSdD6Xz1omnMFy0V4G?=
+ =?us-ascii?Q?OpcbeRmJHa2ypwYpcC7hEZPoDk5asUxBJjV8Y6sJpZz4Tnxd0rgzbXTKofWs?=
+ =?us-ascii?Q?v4ZkX6LRowBgdHWRiMr4S07jwh3YL7HXOtSKwuphD3HblFBdB76i3QpQNgd2?=
+ =?us-ascii?Q?rIBpnB2O92BafhP6GovFYDxqgijhn4eW9H7QxMEpfemOZ65rSvFEhiV2EFhv?=
+ =?us-ascii?Q?1Mjl3OxgNzzQVC8/P00qUNQhoJBy+jKCEddTrHSqXS9WZOu7CqELIOCRScEM?=
+ =?us-ascii?Q?thdVrbp4jyQGrunbu7jzTKHC0WFXYcdNgJRO3a+JPDcyaHdBol17orePYmRC?=
+ =?us-ascii?Q?M2bfwm/UaLxd/Cg+c1W3joipLlcTWUw2dTs5mSUtNw03ywClOa9qfmrQGE8s?=
+ =?us-ascii?Q?jBuAC7wyjc8q0ri9QR8UaIEOtruEkfiBwTylTw5ayNw0mYLGjeRAcAvmq2qJ?=
+ =?us-ascii?Q?U3/jEgbgIPlvvelMQFCYAYI41IE0rhYtUg78+IOeisTBsardpQmJTtsVKr3I?=
+ =?us-ascii?Q?HeoWI1eHVkPfw8npAJskQfBUPmqJ5wZmbn5wHbc9s5BS3T5XoE82MVTxACH7?=
+ =?us-ascii?Q?0CgLsDJnekdCae4gVg5HvLyW6DEOiZu+Giw6nIAXXvbhfWC306Y7L4o49IzJ?=
+ =?us-ascii?Q?b94N9ibf5IxW7CV06ugErCVMS8Co0J735EQGvmkeoBMWhbE3w4mTsaKvxIRu?=
+ =?us-ascii?Q?2kn5ojJXZREDSmCsqUUevdsqT/XDtV70HLom2NNeTdVj3GvGufprvScTP7RF?=
+ =?us-ascii?Q?WDVAeut0BxwjIwDawtd38XSNVFO6qgSWdL+YDGeuA7EVzlGAfohW4nxvauWE?=
+ =?us-ascii?Q?ChvWHQ7gRQDpmSgIDlAE/b7fXvNopESFeVifONwfh2Oxxw3vjLJemGqFvV/o?=
+ =?us-ascii?Q?4HS6POSM0a5Ctrq7ke/TlSES4j4cUbK9PYjCkeWkUQe1yIhWrjrqXXWC0KZe?=
+ =?us-ascii?Q?3icasxK4vcT0dmHCjUFBVwHCZZM3vtWpyvkR46WxiMCdVI/WTTIQcJqlJZc7?=
+ =?us-ascii?Q?s7cfT8Or05qRrf0XbjAdk7KyozBlEFcKtKaiydcjbqet7f2zJ8aHK9N27Ms6?=
+ =?us-ascii?Q?RrPLtA+QNqIU5NYe4eCcCNSv+PDZFEfcqRm52kpcwWG3QZw1+uNbXuxD2/I5?=
+ =?us-ascii?Q?4c7oudQEodpCz5lObaITA+1LG+ICbqrEcnhZa+Aruo158AJ0Rqs3bBIfxEIk?=
+ =?us-ascii?Q?VBUZyqPeIbM/IAXlkO18J44uftXeHx6wPTvQQcLjUaAMMpPmG9yMQ5c+BAtF?=
+ =?us-ascii?Q?ITpIHAzfCoceCGptN4HGZeo2YipuCS/LnIwvgHslC3mI1r1r63u5oBOYn6DE?=
+ =?us-ascii?Q?tZkZ1NBzq+DP6N9pYoJxUTM2bCOHZFkxBWeVaf7N?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74ae9de8-a71c-4d3a-b33c-08dd8d500822
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07651309-4b22-48ce-3119-08dd8d51757b
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 10:15:03.2451
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 10:25:16.2722
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cMBpLlcOwGcOcHLKRTQ9EsUf9nAB5gzqsPm6Hb3XTxt1/8ZCrJpGm7iOR2XMbKjSCsAYIhSJ4OtscFf0VCKVhQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7634
+X-MS-Exchange-CrossTenant-UserPrincipalName: F+My6QZwM838Lg1lTb2ocCVUT293tTtP2SzKC5WgkiRYq2Xq6m3irbEkpRyET4P42LRynQpCWBhvACVCsqnDUQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7817
 
-On 05/07/2025, Luca Ceresoli wrote:
-> Hello Liu,
-> 
-> On Wed, 7 May 2025 10:10:53 +0800
-> Liu Ying <victor.liu@nxp.com> wrote:
-> 
->> On 05/07/2025, Luca Ceresoli wrote:
->>> Hello Liu,  
->>
->> Hi Luca,
->>
->>>
->>> thanks for your further feedback.
->>>
->>> On Tue, 6 May 2025 10:24:18 +0800
->>> Liu Ying <victor.liu@nxp.com> wrote:
->>>   
->>>> On 04/30/2025, Luca Ceresoli wrote:  
->>>>> Hello Liu,    
->>>>
->>>> Hi Luca,
->>>>  
->>>>>
->>>>> On Tue, 29 Apr 2025 10:10:55 +0800
->>>>> Liu Ying <victor.liu@nxp.com> wrote:
->>>>>     
->>>>>> Hi,
->>>>>>
->>>>>> On 04/25/2025, Luca Ceresoli wrote:    
->>>>>>> This is the new API for allocating DRM bridges.
->>>>>>>
->>>>>>> This driver embeds an array of channels in the main struct, and each
->>>>>>> channel embeds a drm_bridge. This prevents dynamic, refcount-based
->>>>>>> deallocation of the bridges.
->>>>>>>
->>>>>>> To make the new, dynamic bridge allocation possible:
->>>>>>>
->>>>>>>  * change the array of channels into an array of channel pointers
->>>>>>>  * allocate each channel using devm_drm_bridge_alloc()
->>>>>>>  * adapt the code wherever using the channels
->>>>>>>
->>>>>>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>    
->>>>>
->>>>> [...]
->>>>>     
->>>>>>> @@ -345,8 +351,8 @@ static int imx8qxp_pc_bridge_probe(struct platform_device *pdev)
->>>>>>>  free_child:
->>>>>>>  	of_node_put(child);
->>>>>>>  
->>>>>>> -	if (i == 1 && pc->ch[0].next_bridge)
->>>>>>> -		drm_bridge_remove(&pc->ch[0].bridge);
->>>>>>> +	if (i == 1 && pc->ch[0]->next_bridge)      
->>>>>>
->>>>>> Since this patch makes pc->ch[0] and pc->ch[1] be allocated separately,
->>>>>> pc->ch[0] could be NULL if channel0 is not available, hence a NULL pointer
->>>>>> dereference here...    
->>>>>
->>>>> See below for this.
->>>>>     
->>>>>>> +		drm_bridge_remove(&pc->ch[0]->bridge);
->>>>>>>  
->>>>>>>  	pm_runtime_disable(dev);
->>>>>>>  	return ret;
->>>>>>> @@ -359,7 +365,7 @@ static void imx8qxp_pc_bridge_remove(struct platform_device *pdev)
->>>>>>>  	int i;
->>>>>>>  
->>>>>>>  	for (i = 0; i < 2; i++) {
->>>>>>> -		ch = &pc->ch[i];
->>>>>>> +		ch = pc->ch[i];
->>>>>>>  
->>>>>>>  		if (!ch->is_available)      
->>>>>>
->>>>>> ...and here too.    
->>>>>
->>>>> This is indeed a bug, I should have checked the pointer for being
->>>>> non-NULL.
->>>>>
->>>>> Looking at that more closely, I think the is_available flag can be
->>>>> entirely removed now. The allocation itself (ch != NULL) now is
->>>>> equivalent. Do you think my reasoning is correct?
->>>>>
->>>>> Ouch! After writing the previous paragraph I realized you proposed this
->>>>> a few lines below! OK, removing is_available. :)
->>>>>
->>>>> [...]
->>>>>     
->>>>>> On top of this patch series, this issue doesn't happen if I apply the below
->>>>>> change:    
->>>>>
->>>>> [...]
->>>>>     
->>>>>> @@ -351,7 +349,7 @@ static int imx8qxp_pc_bridge_probe(struct platform_device *pdev)
->>>>>>  free_child:
->>>>>>         of_node_put(child);
->>>>>>  
->>>>>> -       if (i == 1 && pc->ch[0]->next_bridge)
->>>>>> +       if (i == 1 && pc->ch[0])
->>>>>>                 drm_bridge_remove(&pc->ch[0]->bridge);    
->>>>>
->>>>> Unrelated to this patch, but as I looked at it more in depth now, I'm
->>>>> not sure this whole logic is robust, even in the original code.
->>>>>
->>>>> The 'i == 1' check here seems to mean "if some error happened when
->>>>> handling channel@1, that means channel@0 was successfully initialized,
->>>>> so let's clean up channel 0".
->>>>>
->>>>> However my understanding of the bindings is that device tree is allowed
->>>>> to have the channel@1 node before the channel@0 node (or even channel@1
->>>>> without channel@0, but that's less problematic here).
->>>>>
->>>>> In such case (channel@1 before channel@0), this would happen:
->>>>>
->>>>>  1. alloc and init ch[1], all OK
->>>>>  2. alloc and init ch[0], an error happens
->>>>>     (e.g. of_graph_get_remote_node() fails)
->>>>>
->>>>> So we'd reach the free_child: label, and we should call
->>>>> drm_bridge_remove() for ch[1]->bridge, but there's no code to do that.
->>>>>
->>>>> To be robust in such a case, I think both channels need to be checked
->>>>> independently, as the status of one does not imply the status of the
->>>>> other. E.g.:
->>>>>
->>>>>   for (i = 0; i < 2; i++)
->>>>>       if (pc->ch[i] && pc->ch[i]->next_bridge)
->>>>>           drm_bridge_remove(&pc->ch[i]->bridge);
->>>>>
->>>>> (which is similar to what .remove() does after the changes discussed in
->>>>> this thread, and which I have queued for v3)
->>>>>
->>>>> What's your opinion? Do you think I missed anything?    
->>>>
->>>> The pixel combiner DT node would be added in imx8-ss-dc{0,1}.dtsi, please
->>>> see the case for imx8-ss-dc0.dtsi introduced by an in-flight patch[1].  As
->>>> channel@{0,1} child nodes always exist(DT overlay cannot effectively delete
->>>> any of them) and channel@0 always comes first, there is no problematic case.  
->>>
->>> I'm not questioning what existing and future dts files (will) contain,
->>> and surely I don't see a good reason someone would write channel@1
->>> before channel@0.
->>>
->>> My point is:
->>>
->>>  - the bindings _allow_ channel1 before channel@0
->>>  - the error management code after the free_child label won't work
->>>    correctly if channel1 is before channel@0 in the device tree
->>>
->>> IOW the driver is not robust against all legal device tree descriptions,
->>> and it could be easily made robust using the example code in my
->>> previous e-mail (quoted a few lines above).
->>>
->>> If you agree about this I'll be happy to send a patch doing that change.
->>> If you think I'm wrong, I won't fight a battle. This topic is
->>> orthogonal to the change I'm introducing in this patch, and I can
->>> continue the conversion independently from this discussion.  
->>
->> I don't think it is necessary to do that change for now.  When someone
->> really comes across this issue, we may make the error management code
->> robust.
->>
->>>   
->>>>> Thanks for taking the time to dig into this!    
->>>>
->>>> After looking into this patch and patch 31(though I've already provided my A-b)
->>>> more closely, I think the imx8qxp_pc and imx8{qm,qxp}_ldb main structures
->>>> should have the same life time with the embedded DRM bridges, because for
->>>> example the clk_apb clock in struct imx8qxp_pc would be accessed by the
->>>> imx8qxp_pc_bridge_mode_set DRM bridge callback.  But, IIUC, your patches extend
->>>> the life time for the embedded channel/bridge structures only, but not for the
->>>> main structures.  What do you think ?  
->>>
->>> I see you concern, but I'm sure the change I'm introducing is not
->>> creating the problem you are concerned about.
->>>
->>> The key aspect is that my patch is merely changing the lifetime of the
->>> _allocation_ of the drm_bridge, not its usage. On drm_bridge_remove()
->>> the bridge is removed from its encoder chain and it is completely not
->>> reachable, both before and after my patch. With my patch it is not
->>> freed immediately, but it's just a piece of "wasted" memory that is
->>> still allocated until elsewhere in the kernel there are pointers to it,
->>> to avoid use-after-free.
->>>
->>> With this explanation, do you think my patch is correct (after fixing
->>> the bug we already discussed of course)?  
->>
->> I tend to say your patch is not correct because we'll eventually make sure
->> that removing a bridge module is safe when doing atomic commit,
-> 
-> I think your sentence can be rephrased as "your patch is correct with
-> the current code base where bridges are not (yet) removable, but there
-> will be a problem when they start to actually be removable".
-> 
-> Is my understanding correct? If it is, I agree on that sentence.
+Add an useful info when failed to get irq/wakeirq due to -EPROBE_DEFER.
 
-Nope, I meant your patch should align the life times of the main structures
-and the DRM bridges, for the sake of the kinda long term goal - remove bridge
-driver module safely when doing atomic commit.
+Before:
+[   15.737361] i2c 2-0050: deferred probe pending: (reason unknown)
 
-> 
-> The work to have removable bridges is massive and non-trivial, so it
-> will need to be tackled in steps. The grand plan [0] is:
-> 
->  1. add refcounting to DRM bridges (struct drm_bridge)
->  2. handle gracefully atomic updates during bridge removal
->  3. avoid DSI host drivers to have dangling pointers to DSI devices 
->  4. finish the hotplug bridge work, removing the "always-disconnected"
->     connector, moving code to the core and potentially removing the
->     hotplug-bridge itself (this needs to be clarified as points 1-3 are
->     developed)
+After:
+[   15.816295] i2c 2-0050: deferred probe pending: tcpci: can't get irq
 
-I'm busy with internal things these days and cannot look into the grand
-plan and steps closely, sorry about that.
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+---
+ drivers/i2c/i2c-core-base.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> I am at step 1 right now. Removal during atomic updates is step 2,
-> ideas about how to implement that are already being discussed [1],
-> there's a practical plan proposed by Maxime with the goal of reaching
-> removable bridges without breaking things along the path.
-> 
-> [0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/
-> [1] https://lore.kernel.org/all/20250106-vigorous-talented-viper-fa49d9@houat/
-> 
->> which means
->> the main structures should have the same life time with the DRM bridges.
-> 
-> The word "lifetime" mean two things for bridges:
-> 
->  * the time span during which memory is allocated for a struct
->    drm_bridge (along with the embedding struct)
-
-Note that with your patch set the imx8*-ldb drivers and this bridge driver
-won't allocate the DRM bridge along with the embedding struct. This makes
-me worry, because maybe these drivers are the only "special" ones in this
-patch set and I don't want them to be "special" after your patch set is
-applied.
-
->  * the time span during which a DRM bridge is active/used/usable as
->    part of a card
->    - i.e. when it is part of an encoder chain
->    - i.e. when drm_bridge_funcs callbacks can be called
->    - i.e. from drm_bridge_add() to drm_bridge_remove()
-> 
-> These two lifetimes used to be nearly the same. Now the "memory
-> allocation lifetime" is extended, but the "bridge existence" is
-> unchanged: drm_bridge_add() to drm_bridge_remove() are called in the
-> same place and do the same things, so the bridge will stop being in any
-> encoder chain at the exact same time. now we are just keeping a piece of
-> memory allocated for a longer time.
-> 
-> Seen in another way, the events used to be:
-> 
->  * probe:
->    - allocate bridge
->    - drm_bridge_add()
-> 
->  * remove
->    - drm_bridge_remove()
->    - now the bridge is not used, it's just some dead memory [*]
->    - kfree bridge (either in .remove() or just after by devm)
-> 
-> Now it becomes:
-> 
->  * probe:
->    - allocate bridge
->    - drm_bridge_add()
-> 
->  * remove
->    - drm_bridge_remove()
->    - now the bridge is not used, it's just some dead memory [*]
->    - maybe some more time, possibly long, until the last put [*]
->    - kfree bridge (by devm)
-> 
-> The duration of the [*] steps changes, but it's harmless because the
-> bridge is not used at all. No change except for memory allocation.
-> 
-> Luca
-> 
-
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index dc3c60a7d382..32ffd12bff9f 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -520,7 +520,7 @@ static int i2c_device_probe(struct device *dev)
+ 				client->flags |= I2C_CLIENT_WAKE;
+ 		}
+ 		if (irq == -EPROBE_DEFER) {
+-			status = irq;
++			status = dev_err_probe(dev, irq, "can't get irq\n");
+ 			goto put_sync_adapter;
+ 		}
+ 
+@@ -548,7 +548,7 @@ static int i2c_device_probe(struct device *dev)
+ 
+ 		wakeirq = fwnode_irq_get_byname(fwnode, "wakeup");
+ 		if (wakeirq == -EPROBE_DEFER) {
+-			status = wakeirq;
++			status = dev_err_probe(dev, wakeirq, "can't get wakeirq\n");
+ 			goto put_sync_adapter;
+ 		}
+ 
 -- 
-Regards,
-Liu Ying
+2.34.1
+
