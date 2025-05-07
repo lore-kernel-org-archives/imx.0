@@ -1,101 +1,95 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E04410E0;
-	Wed,  7 May 2025 00:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203951A29A;
+	Wed,  7 May 2025 00:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746577186; cv=none; b=Tp67Hoj8huqkKrFkWfpZXiZ4Cn59s0Q6ft5Rkjgw7VyAi5cKmd5No+bijKUjofyoVty0+9Rv+KWzzTCMgKKPHS8nknJsUC9iWN90MKMBVB6GlHPmjODJFDEENburtXhzCSe/fPnr44qCaYZd+sTsr8SI73muXKeTZDesKOIMVfo=
+	t=1746578950; cv=none; b=Qk/ytKyRPSXYutKHAOWi/L7+eAiy33ZVMBDqDqW6rtuMPsgZrG++tsst8N756XGaWkqJtZPqetCkm6SDqFVIhIk5gOk7OIRMte38VK434ApV7LhyWj0IKFI1o3ozrIqPee/epS51IyHPtUAaxV2U9M1Z6Uh1SLt4RjnFymYHkU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746577186; c=relaxed/simple;
-	bh=fZxGcNvTdZTFQLMlJzF/fwaxYwZT8e6wbu3mTrUHadg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZSMO+LlMtJfEC9XJ6UoEPI+hea7MLOtnGzKnog0HJeJxx+R6gN/vn9D387SbIK7zjhfH59GpZt1l1XjjbPFOcBW9CzklfE0xn/bklg224xhMFH/Zul8D4bu/x6BcAnqIFWL28+dBfuiyematj8B4JWIRqCqdRCjOhX9ENAuLLag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xgPdcWUh; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1746578950; c=relaxed/simple;
+	bh=FqpSSMgskx38eAb8yDypPKR7sukMVAki+mbzc3ILHE4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=oJEF6Dea/Ir4HhKhCmWUBoD85wYLML+75yb2dGERIHQq1r7OMbNxr2FDz9qMCM53FACiHOeX48KIvsrB3bB+IpzrTBfpAESrRByQ65gBbzvLZ8+BhTPYNghmLeIeY4Ge01oYpGaAObRo9wbv6JrIsqi/VEjR4Yj/sJT3fhjX2hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TzKoDtMH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xgPdcWUh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xTXkZlmGU0IUIeI5o1mZLEL2Y+CPmDfnV2Cutj83nfI=; b=xgPdcWUhv4EFQcPM13XcmfmxKb
-	aBP9zY+Xa7DSWHBgJrqyf7u/sw7qlCR0Bx+JRNdmgf2DqObdL1PgiPlD3I2EcCQdaz5yhx0qDV2go
-	qnPTEFZTNRz/ekJxgctQ4Fo8g25YfU4FFQ42XSzEzlnjWpqW9mIY7a3szBE35MoooSm0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uCSVU-00BpHj-5F; Wed, 07 May 2025 02:19:28 +0200
-Date: Wed, 7 May 2025 02:19:28 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>, upstream@airoha.com,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Joyce Ooi <joyce.ooi@intel.com>,
-	Madalin Bucur <madalin.bucur@nxp.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	UNGLinuxDriver@microchip.com, Wei Fang <wei.fang@nxp.com>,
-	imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [net-next PATCH v3 05/11] net: pcs: lynx: Convert to an MDIO
- driver
-Message-ID: <90b2af4e-6c6e-41b9-be5b-ead443cd85b2@lunn.ch>
-References: <20250415193323.2794214-1-sean.anderson@linux.dev>
- <20250415193323.2794214-6-sean.anderson@linux.dev>
- <20250415193323.2794214-6-sean.anderson@linux.dev>
- <20250506215841.54rnxy3wqtlywxgb@skbuf>
- <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
- <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
- <20250506221834.uw5ijjeyinehdm3x@skbuf>
- <d66ac48c-8fe3-4782-9b36-8506bb1da779@linux.dev>
- <20250506222928.fozoqcxuf7roxur5@skbuf>
- <39753b36-adfd-4e00-beea-b58c1e5606e3@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TzKoDtMH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCBFC4CEEE;
+	Wed,  7 May 2025 00:49:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746578949;
+	bh=FqpSSMgskx38eAb8yDypPKR7sukMVAki+mbzc3ILHE4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=TzKoDtMH9f/NysCl0MEQQXbnv2j45sfVJt8KXY7QRXNTCKlNg58mD0ppIsZaOkigz
+	 SJtUGSIsJeZ31OLWQrIUAOSCFiLqs17Aq9h056H2G6vtjLVwYJUhICB/Uu01fqivdH
+	 90/VH2ecIEDI780sg5s0rNmtMCHFC8/A6l/+bhRX4AorZzwxh7T7ASBeMLOZV2JpvR
+	 NjKwufZrIi01RSBgg4iG1iXx6Lc8rPAy8zVfA0Xio8SRr7092pCMfokoVRGJ4617cZ
+	 sgghPQhcQqdV4kfsHHfimnqOGrDp6WPT8FU8zldz/XLOTlvHCvPPWcbBjlXWkERdrY
+	 /DJiry3+VAJQg==
+From: Mark Brown <broonie@kernel.org>
+To: Daniel Baluta <daniel.baluta@nxp.com>
+Cc: lgirdwood@gmail.com, kernel@pengutronix.de, s.hauer@pengutronix.de, 
+ festevam@gmail.com, p.zabel@pengutronix.de, Frank.Li@nxp.com, 
+ iuliana.prodan@nxp.com, linux-sound@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, kai.vehmanen@linux.intel.com, 
+ daniel.baluta@gmail.com, Bard Liao <yung-chuan.liao@linux.intel.com>, 
+ =?utf-8?q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>, 
+ Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+In-Reply-To: <20250505114251.57018-1-daniel.baluta@nxp.com>
+References: <20250505114251.57018-1-daniel.baluta@nxp.com>
+Subject: Re: [PATCH] ASoC: SOF: imx8m: Use reset controller API to control
+ the DSP
+Message-Id: <174657894590.4155013.6784460979005872545.b4-ty@kernel.org>
+Date: Wed, 07 May 2025 09:49:05 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <39753b36-adfd-4e00-beea-b58c1e5606e3@linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c25d1
 
-> > You will need to explain that better, because what I see is that the
-> > "BSD-3-Clause" portion of the license has disappeared and that applies
-> > file-wide, not just to your contribution.
+On Mon, 05 May 2025 14:42:51 +0300, Daniel Baluta wrote:
+> DSP on i.MX8MP doesn't have a direct reset line so according to hardware
+> design team in order to handle assert/deassert/reset functionality we
+> need to use a combination of control bits from two modules. Audio block
+> control module for Run/Stall control of the DSP and DAP module in order
+> to do software reset.
 > 
-> But I also have the option to just use the GPL-2.0+ license. When you
-> have an SPDX like (GPL-2.0+ OR BSD-3-Clause) that means the authors gave
-> permission to relicense it as
+> In a first step, for i.MX8MP we are switching on using the reset
+> controller API to handle the DSP Run/Stall bits i.MX8MP. This comes with
+> the advantage of offering a better probe ordering and a more natural way
+> of abstracting the Audio block control bits.
 > 
-> - BSD-3-Clause
-> - GPL-2.0+
-> - GPL-2.0+ OR BSD-3-Clause
-> - GPL-2.0
-> - GPL-2.0 OR BSD-3-Clause
-> - GPL-3.0
-> - GPL-3.0 OR BSD-3-Clause
-> - GPL-4.0 (if it ever happens)
-> 
-> I want my contributions to remain free software, so I don't want to
-> allow someone to take the BSD-3-Clause option (without the GPL).
+> [...]
 
-Please can you give us a summary of the licenses of this file over its
-complete history. Maybe it started out as GPL, and somebody wanted
-their parts to be under BSD, and so added the BSD parts?
+Applied to
 
-	Andrew
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: SOF: imx8m: Use reset controller API to control the DSP
+      commit: a71b261c19a455f7f8e560b4ddfac44d3150ae39
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
