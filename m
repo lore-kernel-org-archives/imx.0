@@ -1,35 +1,35 @@
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C14223DE2
-	for <imx@lists.linux.dev>; Wed,  7 May 2025 07:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D41D2253A1
+	for <imx@lists.linux.dev>; Wed,  7 May 2025 07:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746602037; cv=none; b=SBHjBXMudv5KorlOTUmI8bUQF65b7xRO1pFKdH8+9Fd9DuVz5JteGk26Hg4LnDfZJkj2KRNsziHDtIPu/g3tJFZE64C15PjqnL1MtlAWWcJIqNo0E85/oImAukGIkHxQZcDmJ7BUvGufxiDxeFIfC59ximMBD0fKyo5BxHXzVk0=
+	t=1746602039; cv=none; b=eXwTJzqE1ea3uG00HZAqqpPrgBgsh17fq2Cisj0gUicTnfnMS0FPJKj1KHLjqugFKdyXxydJ14faRL7dm5/uYG7WydThbYyQYZbcqR9agzGoAT+LQTwjS7kACdmjnXumrnMJxokPThnAxBlquBuQqaKJXwg2w6JsNFp7xR1ZNGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746602037; c=relaxed/simple;
-	bh=YfuRLPgqOBQZBBQlRs96BjwEv2D+fa2L0aVxYK/CvXo=;
+	s=arc-20240116; t=1746602039; c=relaxed/simple;
+	bh=5m0SJ0ezW/rEHsJnkWlKQnL5WO6EocE2YhQ14+QmJ6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHCcAPXz7VbB4Cp93DMmJ8Pn6Tv1DMuwiTWjWGudTU+2e09zbb8pOmJIBeeOISZ+hLfflGyd8SSScdwI9OSN1QaJnCOzR9IbcA3I/QUu5DvilzecNG1s698lFpWU+417VoX+WSIMG9bRgza1gpgBYgGAzlnVfBlTYMaG5eNDL44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mQbHoHuO; arc=none smtp.client-ip=217.70.183.201
+	 MIME-Version; b=rNmSa6flyLH3t6eBH7rKFZZZ9pXK/+4PiXLdgzsDcHrAzCP6Ji7iiI3m9g4JyJuCD6f9egMTT66A6RX8+cga1MVqeO+CDMuFNCKrLctdSBpZ+IA6Tz8rTcuQTxh9hXsWQ1iIpMHPmJd1ybaY8dBib+gjXK76lzsHUwalT/Zl1yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fyWtYyvJ; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mQbHoHuO"
-Received: by mail.gandi.net (Postfix) with ESMTPA id 218FF43B62;
-	Wed,  7 May 2025 07:13:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fyWtYyvJ"
+Received: by mail.gandi.net (Postfix) with ESMTPA id 2E9DF43B4B;
+	Wed,  7 May 2025 07:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746602034;
+	t=1746602036;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=q/Vpofllz9uvTkBvwyXS9bs6uGOP3mNTrdme1mQDCAM=;
-	b=mQbHoHuOW+/XCEIJ0w4Zk0Xq3ojyGApVZHJ/sWPkSNiMM4vwG0CFsfS+bbHW2pCL38YW7B
-	phC3EfSfjURysIukeiPHHRJSHwbdk/Xjei9nSyTEbgLjQc9ElVPzYgcFm6x9oC9qd8tLUh
-	NpLSaZRY1YBiO5ll4IS5RlBL8NCIXv6yaoocCGTj+PsWOU5q0BfAaq670NghNOLiIn2SHQ
-	d8HYAn/iC3DnpdTOLDE4GtWdJJuRvEowWwbncOdXR4g6koiB4E7QGeTgLt05ELPU1vGoB/
-	WwrsdlaaQW+sXDxmF9YmS5qcpg/q/FnnTFPL/8ndUh2VMqFcf4TJj/LqjCncLQ==
+	bh=OwoSn5Dm1JTkqRnnKPn8/rYnXTTvHblvHSJ5b9VB5fI=;
+	b=fyWtYyvJUQxSpRLkuuTq0gASiEeXu3VPL3XiVcJu7/vnx3bvJ8AERTVT/YST3/tQZm0TfD
+	z2x7lrcnfJokhfZmeTiWqsh/vXWgUgS9Qa+lOyRBLc/c8f14EcCnJv11H+uX2IlsN80mLi
+	30OeYwqEHDWNhZhw4Xdl4LFacGcX9EeNNShBsJHOM9ucWe2Hvbb+2e/eupH5uiE4LutLWg
+	Q3vZzPFB+TMrNnBv6TQQz6GomcZ/YtIETNq5lbE+36luEiwp2bOkBayOvN2sotMylAaEz5
+	Prw0/ZzjxNEfhmJwlbWJGrd7qS/eQIo0g+KidnaWyfMBUjzFMIXK6JhoPZrruA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -73,9 +73,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v2 14/26] i2c: core: Introduce i2c_get_adapter_physdev()
-Date: Wed,  7 May 2025 09:12:56 +0200
-Message-ID: <20250507071315.394857-15-herve.codina@bootlin.com>
+Subject: [PATCH v2 15/26] i2c: mux: Set adapter physical device
+Date: Wed,  7 May 2025 09:12:57 +0200
+Message-ID: <20250507071315.394857-16-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507071315.394857-1-herve.codina@bootlin.com>
 References: <20250507071315.394857-1-herve.codina@bootlin.com>
@@ -92,74 +92,31 @@ X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeeivdefucetufdoteggode
  hgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
 X-GND-Sasl: herve.codina@bootlin.com
 
-The physical device providing an I2C adapter is the device that calls
-i2c_add_adapter() or variants and i2c_del_adapter().
+For i2c muxes, the parent of the mux adapter device is the adapter
+device the mux is connected to.
 
-Most of the time this physical device is the parent of the adapter
-device.
+This parent is not the physical device related to the mux adapter.
+Indeed, the physical device of the mux adapter is the mux device itself.
 
-Exceptions exist with i2c muxes. Indeed, in case of i2c muxes, the
-parent of the mux adapter device points to the adapter device the mux is
-connected to instead of the physical of this mux adapter.
-
-Introduce i2c_get_adapter_physdev() and a new physdev field in the
-adapter structure in order to ease the adapter physical device
-retrieval.
+Fill the adap.physdev with the mux device.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/i2c/i2c-core-base.c | 16 ++++++++++++++++
- include/linux/i2c.h         |  3 +++
- 2 files changed, 19 insertions(+)
+ drivers/i2c/i2c-mux.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index 7ad1ad5c8c3f..f36a00b7ff8f 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -1917,6 +1917,22 @@ struct i2c_adapter *i2c_get_adapter_by_fwnode(struct fwnode_handle *fwnode)
- }
- EXPORT_SYMBOL(i2c_get_adapter_by_fwnode);
- 
-+/**
-+ * i2c_get_adapter_physdev() - Get the physical device of an adapter
-+ * @adapter: the adapter to get the physical device from
-+ *
-+ * Return:
-+ * Look up and return the &struct device corresponding to the device supplying
-+ * this @adapter.
-+ *
-+ * The user must call put_device() once done with the physical device returned.
-+ */
-+struct device *i2c_get_adapter_physdev(struct i2c_adapter *adapter)
-+{
-+	return get_device(adapter->physdev ?: adapter->dev.parent);
-+}
-+EXPORT_SYMBOL(i2c_get_adapter_physdev);
-+
- static void i2c_parse_timing(struct device *dev, char *prop_name, u32 *cur_val_p,
- 			    u32 def_val, bool use_def)
- {
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index 2e4903b7f7bc..c3648c9e1891 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -746,6 +746,7 @@ struct i2c_adapter {
- 	int timeout;			/* in jiffies */
- 	int retries;
- 	struct device dev;		/* the adapter device */
-+	struct device *physdev;		/* the physical device */
- 	unsigned long locked_flags;	/* owned by the I2C core */
- #define I2C_ALF_IS_SUSPENDED		0
- #define I2C_ALF_SUSPEND_REPORTED	1
-@@ -913,6 +914,8 @@ struct i2c_adapter *i2c_get_adapter(int nr);
- void i2c_put_adapter(struct i2c_adapter *adap);
- unsigned int i2c_adapter_depth(struct i2c_adapter *adapter);
- 
-+struct device *i2c_get_adapter_physdev(struct i2c_adapter *adap);
-+
- void i2c_parse_fw_timings(struct device *dev, struct i2c_timings *t, bool use_defaults);
- 
- /* Return the functionality mask */
+diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
+index fda72e8be885..3bf2035f485f 100644
+--- a/drivers/i2c/i2c-mux.c
++++ b/drivers/i2c/i2c-mux.c
+@@ -318,6 +318,7 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 	priv->adap.algo = &priv->algo;
+ 	priv->adap.algo_data = priv;
+ 	priv->adap.dev.parent = &parent->dev;
++	priv->adap.physdev = muxc->dev;
+ 	priv->adap.retries = parent->retries;
+ 	priv->adap.timeout = parent->timeout;
+ 	priv->adap.quirks = parent->quirks;
 -- 
 2.49.0
 
