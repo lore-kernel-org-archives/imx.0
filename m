@@ -1,35 +1,35 @@
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91DD227EAC
-	for <imx@lists.linux.dev>; Wed,  7 May 2025 07:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4C122A1E1
+	for <imx@lists.linux.dev>; Wed,  7 May 2025 07:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746602045; cv=none; b=V6y/HKNedcnrSs3uwF9J7/p9hnClCL4MNlFfSZBYc9kws7iRFnFkUZoaMBkkAwvHugATS4SPw8xaxkZYVVFX574ehcXIu6ZJ+QQnRjSonzifADPwiGQOSgkx3vi/xcFQ+AvGLoH7J+bqpnIHNeDWRkRfmq2MDC+cw/XY7Dkx1rA=
+	t=1746602047; cv=none; b=bEcvimedEiJrb59bK9K78lbIHLW7w+tyHb9FMwWTuABW0FIgBTB/74wk7FoNxSCjKd2NNjYWNj/Nnu46kJd9XJ5S4OmZ+8yetKiTE2mo7nxCvOXEM1IRWPGrQr+4RC3EokVzKmUdu9Hznp7/hgN2k0lR595jw6nvB+W4QPE8mCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746602045; c=relaxed/simple;
-	bh=U9bQtO+EvA4HTZzlOez/R20TCCnGu9vI35WBZPdTfRQ=;
+	s=arc-20240116; t=1746602047; c=relaxed/simple;
+	bh=BOkkJvxrcSbMJzMV7B4taBZh+tDq2XQHW2lVdlGHPRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3Hata1plCedp1JfEk0fBAoBLddswAtsYeZoHesfaV26gyRI3perDMciXvUql27Mau0/1z4tHTII+BQTh8t80e+p7Oq7dtV1EU8yTmJipv1m+j1KPTtJyM0y0oSvZoc73pbLyy0IyZzvopcZmRyVpvGaGNoLWhn0mqdRjuE6kWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ndUO3Wir; arc=none smtp.client-ip=217.70.183.201
+	 MIME-Version; b=lTML/0Yx5R6sNDnDDXe2beSPFE+n/LICpyqk5NKoaWdKf/65anUWc8GoWmyqq1iZzrhORLyLbGnD4uRBKH5zcucf3cEH+wAVTuQwYT4ABo34aDZ7lBUqV7k951mJlncHiK0c76FPN7N7Qeb42XhZAC6DJT4KNXBaVK04KXInPTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QVQq5UlU; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ndUO3Wir"
-Received: by mail.gandi.net (Postfix) with ESMTPA id 3452443B5D;
-	Wed,  7 May 2025 07:14:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QVQq5UlU"
+Received: by mail.gandi.net (Postfix) with ESMTPA id 6C1A643B5E;
+	Wed,  7 May 2025 07:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746602042;
+	t=1746602044;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k+2kDZZ4eHBobXo/9zEPdIoQifD0aFd2/G+4Th7PK44=;
-	b=ndUO3WirJRI7p0G6ZGs5yDqsKegMZbu/FfQq6TNpahwQ4UzuReAE5wFhMmWlc5RPtAxQDO
-	rhmbGkv0Ufk8r+eL7AszARA6VudWkFKIr3QgK85DIrtzb6//r1wLmVPoYIQlsV5SSNTm1z
-	W/MkGKcpJqNxoybkjOtwt+2gRiL7VdvXxk1hxywFU+ydnqhEq1ynp4GjKMgosaL8QID5q/
-	7E9oBCOmQz4n6yvkBY+0YR5Agnrj1Ss6L72uehkyMHoUOcEoT8kgawy73Tj7u6vrhfyjOi
-	03dUHnaXh5S4txjOpuFwWz8Kl+QmdhUCO9WWEq5RtVLDiFtXEspkpO/d8tRA3Q==
+	bh=8oQBv0PsMUDUre1Bu82m7dpdvbVeSSW511rM1FJ7IjE=;
+	b=QVQq5UlUc3SukDk2VaKC/sDZQP8OPzj4IMbyXO7hZwxd3c93oSPTjtMHgUPuAXQ8nP8nJI
+	Ve8mfkbRlRaqWwONQ4UsvSZnsFmpAAgt/7qpTFpL4XG3Q4QyOeRUtdNV6i7wTayQZ9ROcA
+	yJa69Pjo6hAubsEcaQ3V8h5XS5AhVx1CzmST6E0whbzW7dJ+z1H8xuV5OHBWDfAP3v5Ifc
+	ItqQaQ0kri26AdLYOR21NGkO3FFxKUbXDlN9N9zRO8vaBqncSh6RnnQzZ/T3vj5VVYiaAP
+	CTiM3RC//Y9CQofsOEc78wFSPlyn028yBjvyAYl2au6ta/xOKHBbRw11W4+fqA==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -73,9 +73,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v2 18/26] clk: lan966x: Add MCHP_LAN966X_PCI dependency
-Date: Wed,  7 May 2025 09:13:00 +0200
-Message-ID: <20250507071315.394857-19-herve.codina@bootlin.com>
+Subject: [PATCH v2 19/26] i2c: busses: at91: Add MCHP_LAN966X_PCI dependency
+Date: Wed,  7 May 2025 09:13:01 +0200
+Message-ID: <20250507071315.394857-20-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507071315.394857-1-herve.codina@bootlin.com>
 References: <20250507071315.394857-1-herve.codina@bootlin.com>
@@ -88,34 +88,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeeivdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheffiefgjeeuleeuueffleeufefglefhjefhheeigedukeetieeltddthfffkeffnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgepuddvnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedvpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsr
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeeivdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheffiefgjeeuleeuueffleeufefglefhjefhheeigedukeetieeltddthfffkeffnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgepudegnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedvpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsr
  dhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
 X-GND-Sasl: herve.codina@bootlin.com
 
-The lan966x clock controller depends on the LAN969x architecture or the
-LAN966x SoC.
+The AT91 I2C driver depends on ARCH_AT91.
 
-This clock controller can be used by the LAN966x PCI device and so it
-needs to be available when the LAN966x PCI device is enabled.
+This I2C controller can be used by the LAN966x PCI device and so
+it needs to be available when the LAN966x PCI device is enabled.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/clk/Kconfig | 2 +-
+ drivers/i2c/busses/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index 713573b6c86c..de4fe180cd4b 100644
---- a/drivers/clk/Kconfig
-+++ b/drivers/clk/Kconfig
-@@ -270,7 +270,7 @@ config COMMON_CLK_LAN966X
- 	tristate "Generic Clock Controller driver for LAN966X SoC"
- 	depends on HAS_IOMEM
- 	depends on OF
--	depends on SOC_LAN966 || ARCH_LAN969X || COMPILE_TEST
-+	depends on SOC_LAN966 || ARCH_LAN969X || MCHP_LAN966X_PCI || COMPILE_TEST
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 83c88c79afe2..148f9f66d5f3 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -414,7 +414,7 @@ config I2C_ASPEED
+ 
+ config I2C_AT91
+ 	tristate "Atmel AT91 I2C Two-Wire interface (TWI)"
+-	depends on ARCH_AT91 || COMPILE_TEST
++	depends on ARCH_AT91 || MCHP_LAN966X_PCI || COMPILE_TEST
  	help
- 	  This driver provides support for Generic Clock Controller(GCK) on
- 	  LAN966X SoC. GCK generates and supplies clock to various peripherals
+ 	  This supports the use of the I2C interface on Atmel AT91
+ 	  processors.
 -- 
 2.49.0
 
