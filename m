@@ -1,53 +1,53 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C501DBB0C
-	for <imx@lists.linux.dev>; Wed,  7 May 2025 15:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE85289E1B
+	for <imx@lists.linux.dev>; Wed,  7 May 2025 15:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746630378; cv=none; b=XldP0kV0icbnn1dgvj0nVSG0IBxkDpVGDeM2r71s1mTj6bzpt78XvnNyYJ0MIddskxXGlYLGIRDm3E35yjhp82Cj28v7JtfuFe1NcE30QA82XW+p6GO3Nzn6JQHcs3zc27IgQLs/gdy5oU+bYeNXieF/ntOKKqN4TJaIhAsgk0w=
+	t=1746630655; cv=none; b=b5sHBYrSxO32AoeYh9PBZ4PoF92/1mB1bhENIrS7IAcVmot5Biuat5eDKrRHdN1c+uoEU+1u5YARpyjYyBmhnC1Jg1fcW0X2jxu7IiXIJMNVSewuYi+UXlZ+UQllz/sN87aLqRk6MEv+Rp48haSNLEE0zxfsvX411ConWDXeySE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746630378; c=relaxed/simple;
-	bh=Y/WUVh0ev6M+r+m9bgj7h8JDEj1XP6+S3ee84YZotzA=;
+	s=arc-20240116; t=1746630655; c=relaxed/simple;
+	bh=1xPQQ8cgSsnUdxWhhTMgGFgv6gyyo/ahFyXwkkVFqhg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qRVpOFCfOi2BWPoK8T21MYMVflMGCiBRgikBpZDNIR+mR/yjFwLhWht5I3FLbnkRuE3+qwlWrYGzWxfK0mKtPsiq3FpSnYi9FElBsTbrnSOmrcIrl5SVwTzT9D3Obx3Rt9FOkmDFBIOr5QDhvdTvgrXS+MbbX4IjilPabUdjW4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hJiGIWPg; arc=none smtp.client-ip=192.198.163.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=cTOWnRi2vlIerXGFn93OkExT2r/jn1/H9clUhOA5AP6ISrRJZnPfZC7CfF/xzjIIZVA86I3dHjmzXx31a3J7feWgAwlPjRZRZue7ltB5mm0Zlhv7Pj7CJ3ak1UKEZ2vyvFcezgcf2pWNpWOwrLxl5Hure8kHWx0cPIxk6RJbp5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cX6+TqKU; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hJiGIWPg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cX6+TqKU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746630377; x=1778166377;
+  t=1746630654; x=1778166654;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Y/WUVh0ev6M+r+m9bgj7h8JDEj1XP6+S3ee84YZotzA=;
-  b=hJiGIWPg/G9N4WvBldoO/Y2e03XAxZrVsEy7QekzNM65YlyvwHuDW/kD
-   ox2GHu00B3nXkw/yFJDFcXC7LA3k8CGhJBRBh29n7yTe6Z8P/XzQ330xC
-   eJXiEB+hTjd2Fq91aDTsQT1CuVwpJnMX9Kpegw3KDHI63uxdIAuc93esO
-   9QFGEXsTosU0WTc6204DD74jkg4FcnaKsGW2ak6BdV7jFrs86ImCnXJsl
-   YsFfTNtwAwab2sqCHkRtRv5I5BcGArRSCjr+/TF1/RCS/+AtAvWZdry7F
-   HHG6Y9iZUV6AL33CsnoejLdhEkbIoRnRLo+/EMNspfQYHwj5z4khkt8vY
-   A==;
-X-CSE-ConnectionGUID: 1UYl3QtfSHOioJj9qiU7HA==
-X-CSE-MsgGUID: NhFgwgumQSGS9TgV86O+tA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="52183814"
+  bh=1xPQQ8cgSsnUdxWhhTMgGFgv6gyyo/ahFyXwkkVFqhg=;
+  b=cX6+TqKU7RQGNVxclZExECRgjj1qxucMa//puAi3K+1dxZEau90FSejs
+   U57OnZLDO2OvxfzSxUvWRrxSGJ3JIQavgEwmdgt/TigGDJsymOLddWSLz
+   PXdgUsx0/DllTzuSzy6lx2mfyHxyBmK1EInwqy08Ydhv747DEKTqd8fhL
+   elC0tr4tr+uS2aE4n7ZNaWkFdVcyrTFZzTaBeoU7/9EryXiEAMSiz249J
+   0inEZuKxRktoF7/9LDgfgPm14VSpZ+Ny2wPgmMCy+/1PsFJV6cLPXcN8Y
+   Ulh7XL5lV5YAdOwXThhzzNAALpEZZgiP90EIMlfda3+5dLmgNZKiIDlXl
+   Q==;
+X-CSE-ConnectionGUID: LQ4JL6+sRumpCq7zefE7WQ==
+X-CSE-MsgGUID: 84KovHB4RCe68fCZHAWyag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="48385045"
 X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="52183814"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:06:16 -0700
-X-CSE-ConnectionGUID: Z/H6YXNKTMeyF9mW6VqssQ==
-X-CSE-MsgGUID: d/50a7xkRzuk5pzTD8W5Eg==
+   d="scan'208";a="48385045"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:10:53 -0700
+X-CSE-ConnectionGUID: 8ZDu9uRDQC+SvUB3OKws0Q==
+X-CSE-MsgGUID: PnZJEGOxR4WhtEqGsijYkg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="136502215"
+   d="scan'208";a="141107107"
 Received: from smile.fi.intel.com ([10.237.72.55])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:06:08 -0700
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:10:44 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uCgLS-00000003lQ1-4BdZ;
-	Wed, 07 May 2025 18:06:03 +0300
-Date: Wed, 7 May 2025 18:06:02 +0300
+	id 1uCgPw-00000003lUL-1quq;
+	Wed, 07 May 2025 18:10:40 +0300
+Date: Wed, 7 May 2025 18:10:40 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Andrew Lunn <andrew@lunn.ch>,
@@ -82,10 +82,10 @@ Cc: Andrew Lunn <andrew@lunn.ch>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 08/26] pinctrl: cs42l43: Use fw_devlink_set_device()
-Message-ID: <aBt22olAebSy8Xx3@smile.fi.intel.com>
+Subject: Re: [PATCH v2 09/26] cxl/test: Use device_set_node()
+Message-ID: <aBt38JR-YGD5nnC4@smile.fi.intel.com>
 References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-9-herve.codina@bootlin.com>
+ <20250507071315.394857-10-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -94,29 +94,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507071315.394857-9-herve.codina@bootlin.com>
+In-Reply-To: <20250507071315.394857-10-herve.codina@bootlin.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, May 07, 2025 at 09:12:50AM +0200, Herve Codina wrote:
-> The code set directly fwnode->dev field.
+On Wed, May 07, 2025 at 09:12:51AM +0200, Herve Codina wrote:
+> The code set directly dev->fwnode.
 > 
-> Use the dedicated fw_devlink_set_device() helper to perform this
-> operation.
+> Use the dedicated helper to perform this operation.
 
 ...
 
->  		fwnode = fwnode_get_named_child_node(fwnode, "pinctrl");
->  
+> @@ -1046,7 +1046,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
+>  {
+>  	device_initialize(&adev->dev);
+>  	fwnode_init(&adev->fwnode, NULL);
+> -	dev->fwnode = &adev->fwnode;
+> +	device_set_node(dev, &adev->fwnode);
+>  	adev->fwnode.dev = dev;
+>  }
 
->  		if (fwnode && !fwnode->dev)
-
-Why do we bother checking the fwnode->dev here?
-Just wondering... Hopefully the original author of the code can explain what is
-going on here.
-
-> -			fwnode->dev = priv->dev;
-> +			fw_devlink_set_device(fwnode, priv->dev);
->  	}
+This code is questionable to begin with. Can the original author explain what
+is the motivation behind this as the only callers of fwnode_init() are deep
+core pieces _and_ this only module. Why?!
 
 -- 
 With Best Regards,
