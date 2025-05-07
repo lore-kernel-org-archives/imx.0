@@ -1,105 +1,167 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF07290DA4;
-	Wed,  7 May 2025 22:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DBB1ACEC8;
+	Wed,  7 May 2025 23:09:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746656661; cv=none; b=il771HPd3xstg3MlZHOVB9S0LnGntdpA8zhYLpWdjcOduQLDSUi66Ii7/vrJiL2T0sJX9v5YF8vEw/qJredljO0qsWoYwrwRM5mGqEhKHCgVGGe8a1n1kl+6gBU+8G0X/n9f5ryO2641dB+HJYmzudxv6zElzebMT+PS/GC8AIM=
+	t=1746659359; cv=none; b=gvExzpBVbw4xRTrAKdwR9tx0sK98x9AItAOpCPUGPKMR5Ub6fbET2ToxQuA7jujXdL2GpCgf3saPuQUtUYH0Y8z9ZP5NvWZh77Qk5KybJAYTj0UVmRVK3ldZK62GKEGsKeZY5wOtdcjD5AcnfOuFKJvpkD91OrJgTDZi80fwass=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746656661; c=relaxed/simple;
-	bh=AzuzgfE6GFKxTRRxcmQmVIVwtjphxNohFQ1mkjj32Gs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gS/FwG0VxdZkL1MG94ysJ+xODHnHe7ETZCYV8mD7/ytD2yF7snK/4AuJ0K4bMhHR7etar/4UOYwo/mJq0QpGzdsoIbGMOMRaONp306SJJBMgzj3XrqPgpWOrHFPYCLLPCIrHLwPPDvqxzeFMbs/qI/KZAdOM//SYh4JEQeJwCEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=H3AhQNzf; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1746659359; c=relaxed/simple;
+	bh=if38SdnC0AJjNobF5sj+Z+diQFRQsDZaQWTmcM3J0z0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=R36SoJwxghaJNxV9TCRsXK/cFUiD46/d5p4S9YVlDASq3QXM8ifAfW/P0cBaWPmvxtkwCfAhrtue+IVzWTmwXaL0KTy7/W4zmKIAmmcLVwC9uXp0NUYmLWJAhU6R2uUKI4FzxaV2cY4YcK9GXIPC6remPbRPOPH7N5DlCIKgRGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVUT35wF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="H3AhQNzf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=PzMdG6ucufIYiDDg070rOIAisSRRkIriDyNiBBXVH3U=; b=H3AhQNzfKur7H3echOL82K5wSj
-	UWauEM7K0xtUngTkTiumFckVqkxTSQmxx04ybKUuXMGDwQxdg9v4LTVktEbeK1wYbAEG7wA2phbCJ
-	WOEUl0ZmHpOetacgwgUET9KPOR85GwrqWO+zoimHuICTlzt/azYqhg8fHIiVUKBeUXS8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uCnBL-00BwDo-6P; Thu, 08 May 2025 00:24:03 +0200
-Date: Thu, 8 May 2025 00:24:03 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 23/26] misc: lan966x_pci: Introduce board specific data
-Message-ID: <8b97e095-dbed-438c-9c6d-d3c2c5929fc0@lunn.ch>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-24-herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVUT35wF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4150CC4CEE2;
+	Wed,  7 May 2025 23:09:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746659358;
+	bh=if38SdnC0AJjNobF5sj+Z+diQFRQsDZaQWTmcM3J0z0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=bVUT35wFQvPLtu0LytwChJj8OCMGL50uKSUkAw/N299dum2gMqiUCpyl5S06wAMwP
+	 LCEdm1qGVJNMvc0xia9kjE1XilBbXfDOpHCsU+MT0fvQXnKV30xtuGljLYyec6KmdU
+	 oULJXb2Q7uBOQcET4vHAELvnYz0czULBYVtQ6q33A3B4HtESvwX2yIvtSGq/aN99sv
+	 nupLajSjMLfm3Xb5VyTkcRwbKAkT+w97QNGWS/Nsk9lDPzNTbaXKMCQbpExRU3KOvb
+	 aFIvTIa68tC4XysVp57S5ddzdoZm1eOBI+/yvxN/Snhy0o+j9u8OrcZTJ8DARIVDKk
+	 8PdOrgh3+9ShA==
+Date: Wed, 7 May 2025 16:09:15 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: John Ernberg <john.ernberg@actia.se>
+cc: Stefano Stabellini <sstabellini@kernel.org>, 
+    Juergen Gross <jgross@suse.com>, 
+    Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
+    Catalin Marinas <catalin.marinas@arm.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
+    "iommu@lists.linux.dev" <iommu@lists.linux.dev>, 
+    "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+    "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+    Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH 2/2] xen: swiotlb: Implement map_resource callback
+In-Reply-To: <75266eb7-66a4-4477-ae8a-cbd1ebbee8db@actia.se>
+Message-ID: <alpine.DEB.2.22.394.2505071602570.3879245@ubuntu-linux-20-04-desktop>
+References: <20250502114043.1968976-1-john.ernberg@actia.se> <20250502114043.1968976-3-john.ernberg@actia.se> <alpine.DEB.2.22.394.2505021007460.3879245@ubuntu-linux-20-04-desktop> <75266eb7-66a4-4477-ae8a-cbd1ebbee8db@actia.se>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250507071315.394857-24-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=US-ASCII
 
-On Wed, May 07, 2025 at 09:13:05AM +0200, Herve Codina wrote:
-> Only one device-tree overlay (lan966x_evb_lan9662_nic.dtbo) is handled
-> and this overlay is directly referenced in lan966x_pci_load_overlay().
+On Tue, 6 May 2025, John Ernberg wrote:
+> Hi Stefano,
 > 
-> This avoid to use the code for an other board.
+> On 5/2/25 7:20 PM, Stefano Stabellini wrote:
+> > +Christoph
+> > 
+> > On Fri, 2 May 2025, John Ernberg wrote:
+> >> Needed by the eDMA v3 DMA engine found in iommu-less SoCs such as iMX8QXP
+> >> to be able to perform DMA operations as a Xen Hardware Domain, which needs
+> >> to be able to do DMA in MMIO space.
 > 
-> In order to be more generic and to allow support for other boards (PCI
-> Vendor/Device IDs), introduce the lan966x_pci_info structure and attach
-> it to PCI Vendor/Device IDs handled by the driver.
+> Self-note: The above part of the commit message is a disaster and should 
+> read something like.
 > 
-> This structure contains information related to the PCI board such as
-> information related to the dtbo describing the board we have to load.
+> Needed by SoCs without an iommu (such as the iMX8QXP and it's eDMA v3 
+> engine) that need to be able to perform DMA operations in MMIO space.
 > 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> >>
+> >> The callback implementation is basically the same as the one for direct
+> >> mapping of resources, except this also takes into account Xen page
+> >> mappings.
+> >>
+> >> There is nothing to do for unmap, just like with direct, so the unmap
+> >> callback is not needed.
+> >>
+> >> Signed-off-by: John Ernberg <john.ernberg@actia.se>
+> >>
+> >> ---
+> >>
+> >> I originally exported dma_direct_map_resource() and used that which
+> >> appeared to work, but it felt like not checking Xen page mappings wasn't
+> >> fully correct and I went with this. But if dma_direct_map_resource() is
+> >> the correct approach here then I can submit that isntead.
+> >> ---
+> >>   drivers/xen/swiotlb-xen.c | 15 +++++++++++++++
+> >>   1 file changed, 15 insertions(+)
+> >>
+> >> diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+> >> index ef56a2500ed6..0f02fdd9128d 100644
+> >> --- a/drivers/xen/swiotlb-xen.c
+> >> +++ b/drivers/xen/swiotlb-xen.c
+> >> @@ -285,6 +285,20 @@ static void xen_swiotlb_unmap_page(struct device *hwdev, dma_addr_t dev_addr,
+> >>                                           attrs, pool);
+> >>   }
+> >>
+> >> +static dma_addr_t xen_swiotlb_map_resource(struct device *dev, phys_addr_t phys,
+> >> +                                        size_t size, enum dma_data_direction dir,
+> >> +                                        unsigned long attrs)
+> >> +{
+> >> +     dma_addr_t dev_addr = xen_phys_to_dma(dev, phys);
+> > 
+> > Yes, we need the xen_phys_to_dma call here. This is one of the reasons I
+> > don't think we can use dma_direct_map_resource() to implement
+> > map_resource
+> > 
+> > 
+> >> +     BUG_ON(dir == DMA_NONE);
+> >> +
+> >> +     if (!dma_capable(dev, dev_addr, size, false))
+> >> +             return DMA_MAPPING_ERROR;
+> > 
+> > But here you also need to check that phys+size doesn't cross a page
+> > boundary. You need to call range_straddles_page_boundary, like we do at
+> > the beginning of xen_swiotlb_map_page.
+> > 
+> > If it is possible to cross a page boundary, then we need to basically to
+> > do the same thing here as we do in xen_swiotlb_map_page where we check
+> > for:
+> > 
+> >          if (dma_capable(dev, dev_addr, size, true) &&
+> >              !range_straddles_page_boundary(phys, size) &&
+> >                  !xen_arch_need_swiotlb(dev, phys, dev_addr) &&
+> >                  !is_swiotlb_force_bounce(dev))
+> >                  goto done;
+> > 
+> > if all is well, we go with the native path, otherwise we bounce on
+> > swiotlb-xen.
+> > 
+> 
+> I'll preface this with that it's my first deep dive in DMA, so the 
+> following may entirely be me being stupid:
+> 
+> I'm not sure a straddles page boundary path makes sense.
+> 
+> This mapping is not for a RAM backed address. In the eDMA case for the 
+> iMX8QXP the `phys` coming in here is the address of a register.
 
-How big is the dtbo ?
+Ok, this information is important :-)
 
-This is going in the right direction. I'm just wondering if each dtbo
-should be wrapped in its own very slim PCI driver, which simply
-registers its lan966x_pci_info structure to a core driver. Only the
-needed dtbo will then be loaded into memory as a module, not them all.
+I am not certain whether the map_resource interface can only be called
+for MMIO addresses or if it can also be called for RAM-backed addresses
+with a size > PAGE_SIZE. In the latter case, we could run into the issue
+I was describing.
 
-Pretty much all the pieces are here, so it can be done later.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> I cannot see how a swiotlb bounce would fix anything if you end up
+> straddling a page boundary. At most I can see a WARN_ON with a
+> DMA_MAPPING_ERROR return if such a check would yield true.
+> 
+> Let's say you want to do a DEV_TO_MEM and a check decides you need to 
+> bounce it you'd bounce an RX register address. I cannot see how that DMA 
+> would ever end up doing the expected thing.
+> 
+> The eDMA engine will manage the RX/TX registers for an IP block and move 
+> the data between them and RAM, where the RAM memory is mapped separately 
+> by dma_map_page (and family). And these can be swiotlb bounced via the 
+> map page callback with no problem.
 
-    Andrew
+OK thanks for the explanation. Like I wrote above, if we are guaranteed
+that map_resource cannot be called for RAM-backed addresses or size is
+less than PAGE_SIZE, then your patch is good as-is. If there are no such
+guarantees, then we'll have to think a bit more about it.
