@@ -1,35 +1,35 @@
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05507221FAD
-	for <imx@lists.linux.dev>; Wed,  7 May 2025 07:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5176222577
+	for <imx@lists.linux.dev>; Wed,  7 May 2025 07:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746602028; cv=none; b=I7ZGgONWh8PNC+ktz9K6aM7AFsMjnHB+BS12iurYWgML3Q9ZNHUGI49cM9O5d//AtEqsXu+JasF/7OYS/VSw+x9Fp/TlHSX12SMLJlV2X/Oe6hnofXtD8EvIOvHjuKfCd/7Q3jm8jGCIDTAx+mEwDXlVM+Zy+Er8azyxek362zg=
+	t=1746602030; cv=none; b=AZK9Vhl5NfL96mkYz2uyxdQBDvhofDimkuoDjuSieD0rTTtLusJ5hlkH+35hhJXoQB2sH3M1HDTlMR39KXG5shpgvxhZxmd5Sma2+QG0DryqReSToEiz60gxrdNpmZCr0nbBZnaRJvYz4BS5XkthfjS9YiOUn3sQrbec+g7J7TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746602028; c=relaxed/simple;
-	bh=83nEqcf0DBp7gAA3z4dz4Zg2lUadopwiE2bCHWtcFqI=;
+	s=arc-20240116; t=1746602030; c=relaxed/simple;
+	bh=E2y/AGfFnpT5SwxGb6FKAZcYLm/dpGHTGJYd7BMjmB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCCHFLxnYoeB+z3KLSAQzPxgJV5COWSqS+BYJKrnzwmBoydJeH6s2sTmTNbq2hoZ+UbPZXRKGWSqetCgf9n+UdUqOAM1UXhG7SuCXSg2sZR+u43dTMfJELPeNEt6+kj5c0lTHtG9897y7MOYQco9q6lvXQTq9BK9ImklADxO5Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BpIQ3vdS; arc=none smtp.client-ip=217.70.183.201
+	 MIME-Version; b=lnuqNbiDoYtecNyk87BaUcc4gsZ2Zv7ADIIDa13zRSF6NNkuShV/VGYCJ+0zRn3GfPy17rD/H1n7o+QTUxyN+M3WOjZVvxPOerD5gVUpyUtfYd15va61obTWmOymmpubRTZFJ77Iuu+k2pjSnXMj1GIF0KfpmTST7Ey8jLc6yAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UE0EKiMR; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BpIQ3vdS"
-Received: by mail.gandi.net (Postfix) with ESMTPA id 9C13543B5B;
-	Wed,  7 May 2025 07:13:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UE0EKiMR"
+Received: by mail.gandi.net (Postfix) with ESMTPA id B435E43B64;
+	Wed,  7 May 2025 07:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746602025;
+	t=1746602027;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Zl7IRojDFL02AYR+whGLbNK3iD+K8S61W7A7mx9hQWI=;
-	b=BpIQ3vdSRV6qpMMlH5Tuuqtkgifo5/1QK36qeLL8HEewg4xQNU77rzJDX9kia02/MZQRsj
-	L6ywwDAB19jISaq+4SgJ2XZauGuL7PWZYrojh0b1XXNNn1e9MGb5IIx8fYOLkR25M0pmt7
-	82oA+ebhJsFXbPYnLqLoV8CJUv7KYMb1zm6FhI2O0Tc549ZFXy7paiXFaUO9zQ+bW/quPT
-	hpPcvcbGk/UYXp0DZOX1qGeIVCf1PXmPWPJaMlUw6Y/KxjTlTf44moo7JM8VxxjN4uPHfK
-	TaCRtbPT42+gy5dTkYJesaxBabgU2A9/NQyhHz35s88HXDkewAje26zYOilRIA==
+	bh=JSXin/NaoD/7kR4B/eM46Fkk5Jb9G5HFuZaX55s0xqg=;
+	b=UE0EKiMRtr1j0+U+O8gsPM9W4we0gUc7lwzhIMO5qTAjcQW2eB++xjYRS2dF/shIym0iNg
+	It/Oeg5BwPawcntk1MLQ5/8uu1dJuFFGdq+7J3XFk6dZaDOy5w96RR3GH02U6ZSA4syItl
+	NQmWytnjbDr4vdT+qRGu/WrnjYP610bD1I/2y0n54kygGxrq9CZPL2dLke5cztzZdcWaGS
+	EVs+ItWRtROtGvcA8lDY+CzNxBCdJ86Lomr1hp0p23NwD+lcDh5suHpktvaijAl7Qa0vt4
+	t7NLtAoMMIENsGDKpZCqPxHxmLNf0HuMfdB/KRLqEtk8lbL/+RoCJ/dCTBbMCw==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -73,9 +73,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v2 10/26] cxl/test: Use fw_devlink_set_device()
-Date: Wed,  7 May 2025 09:12:52 +0200
-Message-ID: <20250507071315.394857-11-herve.codina@bootlin.com>
+Subject: [PATCH v2 11/26] PCI: of: Use fw_devlink_set_device()
+Date: Wed,  7 May 2025 09:12:53 +0200
+Message-ID: <20250507071315.394857-12-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507071315.394857-1-herve.codina@bootlin.com>
 References: <20250507071315.394857-1-herve.codina@bootlin.com>
@@ -99,22 +99,22 @@ operation.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- tools/testing/cxl/test/cxl.c | 2 +-
+ drivers/pci/of.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-index 80b950b084a6..30938da736ec 100644
---- a/tools/testing/cxl/test/cxl.c
-+++ b/tools/testing/cxl/test/cxl.c
-@@ -1047,7 +1047,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
- 	device_initialize(&adev->dev);
- 	fwnode_init(&adev->fwnode, NULL);
- 	device_set_node(dev, &adev->fwnode);
--	adev->fwnode.dev = dev;
-+	fw_devlink_set_device(&adev->fwnode, dev);
- }
+diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+index ab7a8252bf41..2435200fdd58 100644
+--- a/drivers/pci/of.c
++++ b/drivers/pci/of.c
+@@ -803,7 +803,7 @@ void of_pci_make_host_bridge_node(struct pci_host_bridge *bridge)
+ 	 * bus. Avoid any new device creation.
+ 	 */
+ 	of_node_set_flag(np, OF_POPULATED);
+-	np->fwnode.dev = &bridge->dev;
++	fw_devlink_set_device(&np->fwnode, &bridge->dev);
+ 	fwnode_dev_initialized(&np->fwnode, true);
  
- #ifndef SZ_64G
+ 	ret = of_changeset_apply(cset);
 -- 
 2.49.0
 
