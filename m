@@ -1,190 +1,161 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815AB289350;
-	Wed,  7 May 2025 14:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97BB28C2D0
+	for <imx@lists.linux.dev>; Wed,  7 May 2025 14:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746627207; cv=none; b=nROzYsvtxVTGYRvrKaPjKC3xeuHgcrNtEkrecUXV5ndw6d2bjvLJZI7/BFckBxPyoGlmSFFSKpghe1T05BNmxrhNzozQPc0nG2fTciIyA3X/5ORREMPutVCUctM87jTGqMHMSdRWBtRQLYXnOjZ0rnO9V3COrXebmi5tHBRKg1A=
+	t=1746627325; cv=none; b=jv6JAila++mw7xSO8VreFlpauHJ9un69kGjakfCynkFGd9TjZ/7uX31eritZzIYxJRUNFrr+w8PnRtLPNJSLo+WFhiOBU75ChIU2C5qdNqkrvOG08qIGt8/LiAndSVAoKSiUNzahvfrKCQfOcFa2WvxZLzlyFmN23OBsuS1etPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746627207; c=relaxed/simple;
-	bh=wRvDEyGE8SyLT4eXm8S/vOTb1xNAByubplY2t+C38K8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kLbr/8CNpTmpgE7XJGmfeedCJyH6E/En/6Gb7bgFl6PBJMC+UAasFlJ6vBSlWa1LG9dAQ6fN0TD0gcZJbSQBGA1jvvH6PNaygFZfCspTOISmZEJVHJCVNOJc0uPyxogvvZTgOvW1T6YxoHgNmllE9SrtigE6skOVb4/dhne5rRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=adYesO7D; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1746627325; c=relaxed/simple;
+	bh=RKMneX1wQOhwOyRqZHFY/RTQfW6urNlhtUZHaTk0CvU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PzNmKVt3zonDubRLA/9gwWKEILuvOCbxxllmCtZUFC9jNkJFY1zLx4jBW5ZjGtqu9COYBLpajqUxSXu0aAMISLhigVGo7qvW2PF9ieNhknD2ntyOC1ptG6nbvXCpYh9R1aWO1zznBb5T9kNdAz5uUYvQsvFP5axUo8WakAtDKg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=rHIrLePl; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="adYesO7D"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A7A8943A17;
-	Wed,  7 May 2025 14:13:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746627197;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZUkZFmqLpaya2SvixZMFXiK5vMoC/WgZVFpr9qlTBnY=;
-	b=adYesO7D1P7ynosW29lwbsjTgJFaCmVyHEon+flnFOa0BvpYbgiRnF+Xmpud0uAtagWCKR
-	3oskQarIGt0LOBcEzJnasoloDFldQLXTPGfiIhzFPFxQ44Bv9OhNB8OfgtRyxM7+9P43cR
-	EkU5M3wIV4eMfygkH8Z49lCMg02BGC3HtUgDaN8q7xI8pIpFMVELZovDj9NLGU/agK2QHw
-	g3CUt2Har990IGmx7V543phmv8Wv4XvzKKsAS8THOhfgcNBUADs19379Lxd8e7/I43vGMD
-	r3WqKePwg6IikvuHOAtVe8FiAWFIlf69nPFcMS8m4pDVEx1m0DuHF1UEztkH0g==
-Date: Wed, 7 May 2025 16:13:11 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Andrzej Hajda
- <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Laurent Pinchart
- <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
- <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Douglas Anderson
- <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof
- Kozlowski <krzk@kernel.org>, Anusha Srivatsa <asrivats@redhat.com>, Paul
- Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, Hui
- Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
- asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
- chrome-platform@lists.linux.dev, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v2 30/34] drm/bridge: imx8qxp-pixel-combiner: convert to
- devm_drm_bridge_alloc() API
-Message-ID: <20250507161311.6e434f2f@booty>
-In-Reply-To: <430d497d-45a1-436d-91fd-635854f80c9f@nxp.com>
-References: <20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com>
-	<20250424-drm-bridge-convert-to-alloc-api-v2-30-8f91a404d86b@bootlin.com>
-	<553d62ed-976a-4e17-9678-cdc3d40ce4a7@nxp.com>
-	<20250430112944.1b39caab@booty>
-	<f71d18d2-4271-4bb9-b54f-0e5a585778f3@nxp.com>
-	<20250506224720.5cbcf3e1@booty>
-	<a1abf31a-7a4a-4f8d-bf48-6b826aa01197@nxp.com>
-	<20250507091244.32865a71@booty>
-	<430d497d-45a1-436d-91fd-635854f80c9f@nxp.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="rHIrLePl"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54d6f93316dso5965070e87.2
+        for <imx@lists.linux.dev>; Wed, 07 May 2025 07:15:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1746627321; x=1747232121; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8kbahxvpfkE5SUIJ9O+RAhHkMsjfPizkD68mJarweeM=;
+        b=rHIrLePlpm0qpM+7G0qRimtFdgYUBjW0NXqR6iLICo3hGNU9tEaMCu/eIyhwqfjDa3
+         rwQUsRB4lE/2PJfWko1804U1cNBnCbBZgwu+m0h7E6ezeutNGzIoILvoTlO24eJPbxdH
+         drhrFGQ1v4i95juBklCG2pLDJppmtqrC+fKEM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746627321; x=1747232121;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8kbahxvpfkE5SUIJ9O+RAhHkMsjfPizkD68mJarweeM=;
+        b=P/lmz0a79rysIov3nhM3fsZ/DRzl1Xo5QA3rbU5Z3LYWYycPeqHAXKpngLwlmXBiAx
+         nWK2Z/dOBECca3F2zZCFoPWFailjSnVXCTDc6mUp9buIb694lUS3G9JVb19ErACHiBIN
+         DO0tWPRgLc1QSO8u+giOtW/5DRo41veJfW3EZfPy3QTybVCsaxEi40mSjhbOfkvby9CV
+         TCbRl7wFjhps6haNga2tztFwW6KWCkvM5h8niFFIuiReS04YP44hbQ6IUEnpL4fm0XUH
+         K6bB3GJoXKehaZKSIeCWoyOd/B7wqE31OJ/hI1j2th/EieFxMeEpvrz1lxmBsUJzHQZ6
+         BMhw==
+X-Forwarded-Encrypted: i=1; AJvYcCXx67AHGbmraCd1ejce2694z8bGn3dVbDveQ3zVFnAIRmgXVYWXOdodq3triKweSCLgavM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzfHMIR/6t+BvhY4VONPkWqVLK0x4ZYHmWF6V8dEWsr/ynZJv6o
+	M97qTIiWgeDmaKDfmqtfv0cZVTYcHNkHEYoyNohU8cj8Z2uFK6fM3k4zJrIPy7qYkuf6t/rH65L
+	W
+X-Gm-Gg: ASbGnctGlTeL9lFx6g+vHyZLfg+GbFRAADkzQM1cOz5/RPMLRMw7Hgol5YxPN2tq41k
+	CJI3tCKw7SPYlvLhI1ZGsgDZggzPMf8dNMBh80y1YAEJ2P+iA4IuWOz2cYhO5y4scISsrxAn5yU
+	xkdAhtHhvFMCKQDoBs0/WTHTvASXSCV0Xag+HER+YcP/cuC9n2Iu4XhcmuvHlA1AELb4IKTNHRx
+	ylU1PHS1GHjtP7L8WIF5e5ayzN+Z+AOZC+OvyJCBZ3C6BCW0RnDPKTzHyg1HOzZmoMMNrF+zv1F
+	rG/OFiZ3gZLRQ1nWCIE+IhKnotQj/M3k3nXx4IyTcpd/ncgXHzdbWzzTEvkejzvSgL3mweH1ZsQ
+	RyovL+m5yoRBIR8JY8UF4N+9LqfkaOA==
+X-Google-Smtp-Source: AGHT+IHdlj7CpNVBpX0ik+NG/wdlK6dMWu7TW5P7ZwM+3Yc0y5PuGMTHr+/cHr3uiayAfwmPefwgnQ==
+X-Received: by 2002:a17:907:2d23:b0:ac7:4d45:f13e with SMTP id a640c23a62f3a-ad1e8bc3151mr378991766b.13.1746627310389;
+        Wed, 07 May 2025 07:15:10 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2.196.43.82])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1894c02f3sm927944966b.92.2025.05.07.07.15.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 May 2025 07:15:10 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] ARM: dts: mxs: use padconfig macros
+Date: Wed,  7 May 2025 16:14:58 +0200
+Message-ID: <20250507141504.1332054-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeejtdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdeljeejuddvudetffdtudelfedugfduledtueffuedufefgudegkeegtdeihedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefledprhgtphhtthhopehvihgtthhorhdrlhhiuhesnhigphdrtghomhdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhto
- hepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrgh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-Hello Liu,
+Convert mx2{3,8} dts files to use the padconfig macros defined in
+mxs-pinfunc.h.
 
-On Wed, 7 May 2025 18:16:28 +0800
-Liu Ying <victor.liu@nxp.com> wrote:
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+---
 
-[...]
+ arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts    |  6 +++---
+ arch/arm/boot/dts/nxp/mxs/imx23-xfi3.dts     | 12 ++++++------
+ arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts |  6 +++---
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-> >>>> After looking into this patch and patch 31(though I've already provided my A-b)
-> >>>> more closely, I think the imx8qxp_pc and imx8{qm,qxp}_ldb main structures
-> >>>> should have the same life time with the embedded DRM bridges, because for
-> >>>> example the clk_apb clock in struct imx8qxp_pc would be accessed by the
-> >>>> imx8qxp_pc_bridge_mode_set DRM bridge callback.  But, IIUC, your patches extend
-> >>>> the life time for the embedded channel/bridge structures only, but not for the
-> >>>> main structures.  What do you think ?    
-> >>>
-> >>> I see you concern, but I'm sure the change I'm introducing is not
-> >>> creating the problem you are concerned about.
-> >>>
-> >>> The key aspect is that my patch is merely changing the lifetime of the
-> >>> _allocation_ of the drm_bridge, not its usage. On drm_bridge_remove()
-> >>> the bridge is removed from its encoder chain and it is completely not
-> >>> reachable, both before and after my patch. With my patch it is not
-> >>> freed immediately, but it's just a piece of "wasted" memory that is
-> >>> still allocated until elsewhere in the kernel there are pointers to it,
-> >>> to avoid use-after-free.
-> >>>
-> >>> With this explanation, do you think my patch is correct (after fixing
-> >>> the bug we already discussed of course)?    
-> >>
-> >> I tend to say your patch is not correct because we'll eventually make sure
-> >> that removing a bridge module is safe when doing atomic commit,  
-> > 
-> > I think your sentence can be rephrased as "your patch is correct with
-> > the current code base where bridges are not (yet) removable, but there
-> > will be a problem when they start to actually be removable".
-> > 
-> > Is my understanding correct? If it is, I agree on that sentence.  
-> 
-> Nope, I meant your patch should align the life times of the main structures
-> and the DRM bridges, for the sake of the kinda long term goal - remove bridge
-> driver module safely when doing atomic commit.
-
-Again, I don't think there is any bug introduced by this patch (once
-the NULL ptr deref bug we already discussed is fixed). No bridge can be
-removed as of now, with or without this patch.
-
-You concern that this patch would make things more complex in the
-future, when bridges will actually become removable and they could be
-during atomic updates. But about this...
-
-> > The work to have removable bridges is massive and non-trivial, so it
-> > will need to be tackled in steps. The grand plan [0] is:
-> > 
-> >  1. add refcounting to DRM bridges (struct drm_bridge)
-> >  2. handle gracefully atomic updates during bridge removal
-> >  3. avoid DSI host drivers to have dangling pointers to DSI devices 
-> >  4. finish the hotplug bridge work, removing the "always-disconnected"
-> >     connector, moving code to the core and potentially removing the
-> >     hotplug-bridge itself (this needs to be clarified as points 1-3 are
-> >     developed)  
-> 
-> I'm busy with internal things these days and cannot look into the grand
-> plan and steps closely, sorry about that.
-
-...I'll wait until you have time to look into that more closely. There
-is just no way to understand this whole topic without some dedicated
-attention, which takes time unavoidably.
-
-In the meanwhile I am going to send v3 soon with the known bug fixed,
-so the best version is available to continue this discussion.
-
-> > I am at step 1 right now. Removal during atomic updates is step 2,
-> > ideas about how to implement that are already being discussed [1],
-> > there's a practical plan proposed by Maxime with the goal of reaching
-> > removable bridges without breaking things along the path.
-> > 
-> > [0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/
-> > [1] https://lore.kernel.org/all/20250106-vigorous-talented-viper-fa49d9@houat/
-> >   
-> >> which means
-> >> the main structures should have the same life time with the DRM bridges.  
-> > 
-> > The word "lifetime" mean two things for bridges:
-> > 
-> >  * the time span during which memory is allocated for a struct
-> >    drm_bridge (along with the embedding struct)  
-> 
-> Note that with your patch set the imx8*-ldb drivers and this bridge driver
-> won't allocate the DRM bridge along with the embedding struct.
-
-By "embedding struct" I mean the struct imx8qxp_pc_channel that embeds
-the struct drm_bridge. Sorry, I realize my wording was ambiguous.
-
-> This makes
-> me worry, because maybe these drivers are the only "special" ones in this
-> patch set and I don't want them to be "special" after your patch set is
-> applied.
-
-Luca
-
+diff --git a/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts b/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
+index cb661bf2d157..613f13b6c8a8 100644
+--- a/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
++++ b/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
+@@ -93,9 +93,9 @@ MX23_PAD_LCD_DOTCK__GPIO_1_22
+ 						MX23_PAD_LCD_HSYNC__GPIO_1_24
+ 						MX23_PAD_PWM3__GPIO_1_29
+ 					>;
+-					fsl,drive-strength = <0>;
+-					fsl,voltage = <1>;
+-					fsl,pull-up = <0>;
++					fsl,drive-strength = <MXS_DRIVE_4mA>;
++					fsl,voltage = <MXS_VOLTAGE_HIGH>;
++					fsl,pull-up = <MXS_PULL_DISABLE>;
+ 				};
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/nxp/mxs/imx23-xfi3.dts b/arch/arm/boot/dts/nxp/mxs/imx23-xfi3.dts
+index 0b088c8ab6b6..fad08f6c008f 100644
+--- a/arch/arm/boot/dts/nxp/mxs/imx23-xfi3.dts
++++ b/arch/arm/boot/dts/nxp/mxs/imx23-xfi3.dts
+@@ -83,9 +83,9 @@ hog_pins_a: hog@0 {
+ 					fsl,pinmux-ids = <
+ 						MX23_PAD_GPMI_D07__GPIO_0_7
+ 					>;
+-					fsl,drive-strength = <0>;
+-					fsl,voltage = <1>;
+-					fsl,pull-up = <0>;
++					fsl,drive-strength = <MXS_DRIVE_4mA>;
++					fsl,voltage = <MXS_VOLTAGE_HIGH>;
++					fsl,pull-up = <MXS_PULL_DISABLE>;
+ 				};
+ 
+ 				key_pins_a: keys@0 {
+@@ -94,9 +94,9 @@ key_pins_a: keys@0 {
+ 						MX23_PAD_ROTARYA__GPIO_2_7
+ 						MX23_PAD_ROTARYB__GPIO_2_8
+ 					>;
+-					fsl,drive-strength = <0>;
+-					fsl,voltage = <1>;
+-					fsl,pull-up = <1>;
++					fsl,drive-strength = <MXS_DRIVE_4mA>;
++					fsl,voltage = <MXS_VOLTAGE_HIGH>;
++					fsl,pull-up = <MXS_PULL_ENABLE>;
+ 				};
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts
+index d004b1cbb4ae..f170df37b3f8 100644
+--- a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts
++++ b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts
+@@ -102,9 +102,9 @@ mmc_pwr_cfa10036: mmc_pwr_cfa10036@0 {
+ 			0x31c3 /*
+ 			MX28_PAD_PWM3__GPIO_3_28 */
+ 		>;
+-		fsl,drive-strength = <0>;
+-		fsl,voltage = <1>;
+-		fsl,pull-up = <0>;
++		fsl,drive-strength = <MXS_DRIVE_4mA>;
++		fsl,voltage = <MXS_VOLTAGE_HIGH>;
++		fsl,pull-up = <MXS_PULL_DISABLE>;
+ 	};
+ };
+ 
 -- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.43.0
+
+base-commit: 0d8d44db295ccad20052d6301ef49ff01fb8ae2d
+branch: modify-mx28-pad
