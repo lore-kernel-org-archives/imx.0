@@ -1,29 +1,36 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098D9C2FA
-	for <imx@lists.linux.dev>; Tue,  6 May 2025 23:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E04410E0;
+	Wed,  7 May 2025 00:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746575838; cv=none; b=HnYW33ht3mm1ttayY41qgKJFhms7Wkis0dYeslEdAfQLAP2gfZU3DHIuWuKLVvWqVo33ISqAjP4Zx2NyXno6bOjuyX+oI09VTek2P41hI2LC5RfeADNGvLtU9Jy2eQnM8YlbXw5lpGc2gxw0Ug5nzUmXK8FgzdHJS39OYoqq9WI=
+	t=1746577186; cv=none; b=Tp67Hoj8huqkKrFkWfpZXiZ4Cn59s0Q6ft5Rkjgw7VyAi5cKmd5No+bijKUjofyoVty0+9Rv+KWzzTCMgKKPHS8nknJsUC9iWN90MKMBVB6GlHPmjODJFDEENburtXhzCSe/fPnr44qCaYZd+sTsr8SI73muXKeTZDesKOIMVfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746575838; c=relaxed/simple;
-	bh=ykAHd5Is/09WaVAT2pFbXqZo5I4E9ja1ZRV8IBy1puE=;
+	s=arc-20240116; t=1746577186; c=relaxed/simple;
+	bh=fZxGcNvTdZTFQLMlJzF/fwaxYwZT8e6wbu3mTrUHadg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QhierA4vL0wo3tIPlovMwjZbpTqJrV1uG4Wcyd8pK9+bNAtyavoLjJQoHDBBltu2dwcm0gwN+j/RF9fiiCRqodmss2BQNKYfVFtb+/cPTdeECKf059FGqeyg3Z3eLye4lFhLAHAqVDTNiwQP+5LaXaP+VphaolmG53EPw1DiAcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1uCS3l-000000004RO-19ao;
-	Tue, 06 May 2025 23:56:44 +0000
-Date: Wed, 7 May 2025 00:56:38 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Sean Anderson <sean.anderson@linux.dev>, netdev@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZSMO+LlMtJfEC9XJ6UoEPI+hea7MLOtnGzKnog0HJeJxx+R6gN/vn9D387SbIK7zjhfH59GpZt1l1XjjbPFOcBW9CzklfE0xn/bklg224xhMFH/Zul8D4bu/x6BcAnqIFWL28+dBfuiyematj8B4JWIRqCqdRCjOhX9ENAuLLag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xgPdcWUh; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xgPdcWUh"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=xTXkZlmGU0IUIeI5o1mZLEL2Y+CPmDfnV2Cutj83nfI=; b=xgPdcWUhv4EFQcPM13XcmfmxKb
+	aBP9zY+Xa7DSWHBgJrqyf7u/sw7qlCR0Bx+JRNdmgf2DqObdL1PgiPlD3I2EcCQdaz5yhx0qDV2go
+	qnPTEFZTNRz/ekJxgctQ4Fo8g25YfU4FFQ42XSzEzlnjWpqW9mIY7a3szBE35MoooSm0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uCSVU-00BpHj-5F; Wed, 07 May 2025 02:19:28 +0200
+Date: Wed, 7 May 2025 02:19:28 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -45,17 +52,17 @@ Cc: Sean Anderson <sean.anderson@linux.dev>, netdev@vger.kernel.org,
 	imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com
 Subject: Re: [net-next PATCH v3 05/11] net: pcs: lynx: Convert to an MDIO
  driver
-Message-ID: <aBqhtl3m03J6pw3V@makrotopia.org>
-References: <20250415193323.2794214-6-sean.anderson@linux.dev>
- <20250506215841.54rnxy3wqtlywxgb@skbuf>
- <20250415193323.2794214-1-sean.anderson@linux.dev>
- <20250415193323.2794214-1-sean.anderson@linux.dev>
+Message-ID: <90b2af4e-6c6e-41b9-be5b-ead443cd85b2@lunn.ch>
+References: <20250415193323.2794214-1-sean.anderson@linux.dev>
  <20250415193323.2794214-6-sean.anderson@linux.dev>
  <20250415193323.2794214-6-sean.anderson@linux.dev>
  <20250506215841.54rnxy3wqtlywxgb@skbuf>
  <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
  <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
  <20250506221834.uw5ijjeyinehdm3x@skbuf>
+ <d66ac48c-8fe3-4782-9b36-8506bb1da779@linux.dev>
+ <20250506222928.fozoqcxuf7roxur5@skbuf>
+ <39753b36-adfd-4e00-beea-b58c1e5606e3@linux.dev>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,53 +71,31 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250506221834.uw5ijjeyinehdm3x@skbuf>
+In-Reply-To: <39753b36-adfd-4e00-beea-b58c1e5606e3@linux.dev>
 
-On Wed, May 07, 2025 at 01:18:34AM +0300, Vladimir Oltean wrote:
-> On Tue, May 06, 2025 at 06:03:35PM -0400, Sean Anderson wrote:
-> > On 5/6/25 17:58, Vladimir Oltean wrote:
-> > > Hello Sean,
-> > > 
-> > > On Tue, Apr 15, 2025 at 03:33:17PM -0400, Sean Anderson wrote:
-> > >> diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
-> > >> index 23b40e9eacbb..bacba1dd52e2 100644
-> > >> --- a/drivers/net/pcs/pcs-lynx.c
-> > >> +++ b/drivers/net/pcs/pcs-lynx.c
-> > >> @@ -1,11 +1,15 @@
-> > >> -// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-> > >> -/* Copyright 2020 NXP
-> > >> +// SPDX-License-Identifier: GPL-2.0+
-> > >> +/* Copyright (C) 2022 Sean Anderson <seanga2@gmail.com>
-> > >> + * Copyright 2020 NXP
-> > >>   * Lynx PCS MDIO helpers
-> > >>   */
-> > >>  
-> > >> -MODULE_DESCRIPTION("NXP Lynx PCS phylink library");
-> > >> -MODULE_LICENSE("Dual BSD/GPL");
-> > >> +MODULE_DESCRIPTION("NXP Lynx PCS phylink driver");
-> > >> +MODULE_LICENSE("GPL");
-> > > 
-> > > What's the idea with the license change for this code?
-> > 
-> > I would like to license my contributions under the GPL in order to
-> > ensure that they remain free software.
-> > 
-> > --Sean
+> > You will need to explain that better, because what I see is that the
+> > "BSD-3-Clause" portion of the license has disappeared and that applies
+> > file-wide, not just to your contribution.
 > 
-> But in the process, you are relicensing code which is not yours.
-> Do you have agreement from the copyright owners of this file that the
-> license can be changed?
+> But I also have the option to just use the GPL-2.0+ license. When you
+> have an SPDX like (GPL-2.0+ OR BSD-3-Clause) that means the authors gave
+> permission to relicense it as
 > 
+> - BSD-3-Clause
+> - GPL-2.0+
+> - GPL-2.0+ OR BSD-3-Clause
+> - GPL-2.0
+> - GPL-2.0 OR BSD-3-Clause
+> - GPL-3.0
+> - GPL-3.0 OR BSD-3-Clause
+> - GPL-4.0 (if it ever happens)
+> 
+> I want my contributions to remain free software, so I don't want to
+> allow someone to take the BSD-3-Clause option (without the GPL).
 
-I think there is a misunderstanding here.
+Please can you give us a summary of the licenses of this file over its
+complete history. Maybe it started out as GPL, and somebody wanted
+their parts to be under BSD, and so added the BSD parts?
 
-Of course the licence for the file remains dual BSD-3-Clause and GPL-2.0+ up
-to the change Sean wants to contribute. However, as he only permits GPL-2.0+
-the file after applying the change would then only be covered by GPL-2.0+ and
-no longer by BSD-3-Clause. Legally speaking there is no need to ask any of the
-previous authors for permission because they already agreed on having the
-code under GPL-2.0+ **OR** BSD-3-Clause, which means that everyone is free
-to distribute it under GPL-2.0+ (which is already the case when distributing
-it along with the Linux Kernel, obviously). Only netdev maintainers need to
-agree to drop the BSD-3-Clause licence **from future versions including his
-changes**, and there are obviously reasons for and against that.
+	Andrew
+
