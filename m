@@ -1,120 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E52189B8C;
-	Wed,  7 May 2025 11:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8605525F7B4
+	for <imx@lists.linux.dev>; Wed,  7 May 2025 12:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746617287; cv=none; b=Kj7a+OQe8IHutWnqTN6NnxZxU37YhrmfKUNy4LB5qpBiCyyOvhbBYnZ43pIiZ0rbrNuv12J/7KYNubqGXSCeMQjzA761LfZ6DSyzbWiKbI6XMQIbDhbGFRRWsNFIw5i6NLrC7Muzxi5Yj4bovBxlE8umz1FplcZgg0xXHEbCGYc=
+	t=1746621342; cv=none; b=KSKi18l1PNjaCxmFPhMiFj9KGd6IUdNgVGyzugwK1KBUJ5XsykTU/mpO/cVGOo1TjzYwkEmqmcAwmvZ+4fg2afrMusC5uHqyjyvpIqZUaUnmOuyLza3TZFT3Ji0UksxSfn9xSf4ftfmbKll8DTXqYRyfNfGNyhRMvG70ljHbQDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746617287; c=relaxed/simple;
-	bh=+myiwgE5IaBaXJzmpEL8CqSZA8uzkotePvS5m/azOWI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AehfhQnq9nCydWCalbTeJqsmBRIe3XsRafo2MwCcUdLo+tvQLWt8rmgVIAhPhBE9EV+DrHYownjKwZ1how4HI21ytunbqZLfzilC4AI0Eo8VNcX8GKWGzjmn4kVJNibjvfRMcsw/dCoJliPK2ViAaW8+f3C5XjFKJpEnT8oqLjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9g7Uo3K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746621342; c=relaxed/simple;
+	bh=W/jXllp7QKxqo10uYHex1yrZDnuxG/dHXbYSQf58jCA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UfHi+FxDJnWmB9/obnRq+Gy0swCGt4h5oyY6Lf/PBEev/ioXQhsj0FWgNeySb9j6BS2FpTdJz+CORJUvE+RYL0490LAgSdBXq3RTRIawEk3h8PLf7olYnXvg1XDxOHZs5D2vwXIpOU2cTPvA1QkQ6SVT4ymYTRV07GvseDnX9UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xb4Unu2Q; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9g7Uo3K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16050C4CEE7;
-	Wed,  7 May 2025 11:28:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746617286;
-	bh=+myiwgE5IaBaXJzmpEL8CqSZA8uzkotePvS5m/azOWI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H9g7Uo3KF3gdhcH2ZEMV9V3wNqXA8tWVr4h+XSChpAk8ADpc3AiALZ4luZs+qiP11
-	 Z/MMgQA+W8firplqY6wsfvaRlyKDnu2GwFBPbbSs260wPnfiIZNYS/X+7RgVASh77m
-	 RpC/hLSnA/nsP75LVgIyB2iQqMj3uUQrguNMZM870ct6AHpi0KrvjkwwfISkMW7V3a
-	 YOPAoo049AzlkO+K5zbADyxXnj6XpUO50IDuoOngkJTqfSy9VuxxdFuvsHaky5egwP
-	 KzvfbiAMDQAUjIzdffkOIksa2UyWdR9eJyQ0Y56Uy3z2fvqMFG3OeJNxR8UwUZLFBh
-	 Co6k62Ve2SILg==
-Date: Wed, 7 May 2025 20:28:03 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 01/26] Revert "treewide: Fix probing of devices in DT
- overlays"
-Message-ID: <aBtDw-qXUCH9U-7l@finisterre.sirena.org.uk>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-2-herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xb4Unu2Q"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ad1f6aa2f84so52086466b.0
+        for <imx@lists.linux.dev>; Wed, 07 May 2025 05:35:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746621338; x=1747226138; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xWON9I4ameGxWiEKwkDziYc8iN3l6k5w6SWR59IgmyI=;
+        b=xb4Unu2QVmn/WQDApSYcSA60gdQPOkT9hyC+rxQDPtDDcSMOF2VqvdM9tFjzkwkBz8
+         8SDhNGvge9YY7325cKjQy8991OZfXHpvbjUsE9PfQ9ueNu671Ba+rGqLOUCSx8YLIkKG
+         Kzw3jS/Gw4ZoeRjIcapu1TM5zDDvAzoqCTQ/6Ci7w+0BVSNPFO/4QHPZ86AAM8vtdLy7
+         DArII8ytCMZ23BL/3s9IAKRN28QTVzPpfd3MpnnY2vjgMUJQIUj6c8lHtXa3SlTJhHCX
+         C5J2vnCOctNWbN3y3QyzBFteSztJd6DUJJWg0JBIHMM2tdFEOwW3QRdH0nxj13ly1nZG
+         AgtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746621338; x=1747226138;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xWON9I4ameGxWiEKwkDziYc8iN3l6k5w6SWR59IgmyI=;
+        b=jKvE4irVZ9Ws/4C4qdFgScKxALYm7GiTDh7G90bSD7dB63+Z8EfzLqx9maFesqLbco
+         Z2x3IanpLqw2Z/jwDnco6Otj3Ar4udexez7OOkVH6GZSfLNk5jRF5JT8XA1Y6obvU19g
+         L9rQDr/qJASpl+YR/eavNxtTG7UyeOLQFkE9zFnrJ2NQae4ncmPMUIvVlY52mFp/8vWV
+         nqedL+J3PmocjXTDZF1aAjKazFzxpYdkO+noTxpT7cXkLzEF+5wa56LkiMdpRbWdEgUz
+         Y1YBO0twuiGzVaI2TxBNYF+Qg9k21c7TV9nCoGP671VJubFiZknC+gSJng0a/hPHTGUf
+         GQ6g==
+X-Gm-Message-State: AOJu0YwzNI6XiT6Cu4o+dT/Sy/3H3R676p/yf/4sWdBBKz8fFllwHdfK
+	RkM2nhxvCaeJfOvU0l3d6NKupsHSOzEO6rJ0DbK0stbkfedhRE8vYZIMwlydpVM=
+X-Gm-Gg: ASbGncv+OPhAN/2EeW0Ss3hAJ2OQIGNnIvasrEzEuTAAtRqN+MXitr5dYBaNw/YfAeG
+	mdWXl5GSzAiZxTWbJCIqWD4YYf1Zx/ELyQfZAhGDZZIjehtOmvmFaH3kCMHyGdIMAxGiF743wpI
+	z7makk8TzFTuxoPFN5zgrybzZmARmqHPLQ1WVgKPpXbMpsmnornsLKqfrnPi9+9kDQOG/TcuQ8Z
+	ldM8FHxAVBgD+xdStrDtfHNLQZvC9vieSKS9AWJvDuKDIrZn2Wl/0liReLQd50c0z0HBVrKekLK
+	G6xDtzfDxepXK6Nt/ztvqnBvB+De8V86oi9OfSU=
+X-Google-Smtp-Source: AGHT+IEMmTi4bmJFoUPDT0YBq0AgR9RZuiis3rxqwa+boAiz7GJ/sZbLrp/zC5X9/7Njxkr4VGX0Ww==
+X-Received: by 2002:a17:907:6eaa:b0:ac7:b1eb:8283 with SMTP id a640c23a62f3a-ad1e7830348mr370649066b.17.1746621337789;
+        Wed, 07 May 2025 05:35:37 -0700 (PDT)
+Received: from hackbox.lan ([62.231.96.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1891f04absm897883966b.78.2025.05.07.05.35.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 May 2025 05:35:36 -0700 (PDT)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Mike Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: imx@lists.linux.dev,
+	NXP Linux Team <linux-imx@nxp.com>,
+	linux-clk@vger.kernel.org,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] clk: imx: Updates for v6.16
+Date: Wed,  7 May 2025 15:35:28 +0300
+Message-Id: <20250507123528.585447-1-abel.vesa@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oe+RepqPNVL4+bmX"
-Content-Disposition: inline
-In-Reply-To: <20250507071315.394857-2-herve.codina@bootlin.com>
-X-Cookie: Well begun is half done.
+Content-Transfer-Encoding: 8bit
 
+The following changes since commit 0af2f6be1b4281385b618cb86ad946eded089ac8:
 
---oe+RepqPNVL4+bmX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  Linux 6.15-rc1 (2025-04-06 13:11:33 -0700)
 
-On Wed, May 07, 2025 at 09:12:43AM +0200, Herve Codina wrote:
-> From: Saravana Kannan <saravanak@google.com>
->=20
-> This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
+are available in the Git repository at:
 
-> While the commit fixed fw_devlink overlay handling for one case, it
-> broke it for another case. So revert it and redo the fix in a separate
-> patch.
+  git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/ tags/clk-imx-6.16
 
-Acked-by: Mark Brown <broonie@kernel.org>
+for you to fetch changes up to 6a55647af3334f1d935ece67de4a838a864b53fc:
 
-Please include human readable descriptions of things like commits and
-issues being discussed in e-mail in your mails, this makes them much
-easier for humans to read especially when they have no internet access.
-I do frequently catch up on my mail on flights or while otherwise
-travelling so this is even more pressing for me than just being about
-making things a bit easier to read.
+  dt-bindings: clock: imx8m-clock: add PLLs (2025-05-05 10:48:56 +0300)
 
---oe+RepqPNVL4+bmX
-Content-Type: application/pgp-signature; name="signature.asc"
+----------------------------------------------------------------
+i.MX clock changes for 6.16
 
------BEGIN PGP SIGNATURE-----
+- Add video PLL clocks to both i.MX8MM and i.MX8MP
+  while dropping the numeral suffix.
+- Add imx_anatop_get_clk_hw helper
+- Add anatop clock providers for i.MX8M[MNP]
+- Drop ccm_ prefix from base in i.MX8MP clock provider
+- Document bindings for PLLs in imx8m-clock schema
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgbQ8MACgkQJNaLcl1U
-h9A3/wf8D6c+36MLT2mhvh2zxesAYWfdL1e5vpcKQk0H/bkk+8KQLEBRl9w9syn2
-MFtk87xXOIdfli0pvEnP2cUrCHKDrD2ehLcNFcur8Vq6IOjjX2Gs3Iboe5CfqnoS
-tPRSxFS31DY3g7DhUGmQ7fUUlPYGwpYIK1QgXrfiR+uhEbooIq6yN1/hcKL2rFS4
-Y21v0te/hUxHTpeTMlcOkXqqu/1UExRszOly4m0YB9mZoswASG024vcrx4paZFjF
-sJ6hXYEyI/PDpMSVthVLe0jK7jyBsiVGSSVDRcimNQj6nAokmye1VeKejWhV3Flv
-7epg7YG5YuZjEXoQ3CaQaDdESm7PnA==
-=5SSZ
------END PGP SIGNATURE-----
+----------------------------------------------------------------
+Dario Binacchi (11):
+      dt-bindings: clock: imx8mm: add VIDEO_PLL clocks
+      clk: imx8mm: rename video_pll1 to video_pll
+      dt-bindings: clock: imx8mp: add VIDEO_PLL clocks
+      clk: imx8mp: rename video_pll1 to video_pll
+      dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
+      clk: imx: add hw API imx_anatop_get_clk_hw
+      clk: imx: add support for i.MX8MM anatop clock driver
+      clk: imx: add support for i.MX8MN anatop clock driver
+      clk: imx: add support for i.MX8MP anatop clock driver
+      clk: imx8mp: rename ccm_base to base
+      dt-bindings: clock: imx8m-clock: add PLLs
 
---oe+RepqPNVL4+bmX--
+ .../bindings/clock/fsl,imx8m-anatop.yaml           |  53 +-
+ .../devicetree/bindings/clock/imx8m-clock.yaml     |  27 +-
+ drivers/clk/imx/Makefile                           |   6 +-
+ drivers/clk/imx/clk-imx8mm-anatop.c                | 287 +++++++++
+ drivers/clk/imx/clk-imx8mm.c                       | 262 ++++----
+ drivers/clk/imx/clk-imx8mn-anatop.c                | 283 +++++++++
+ drivers/clk/imx/clk-imx8mn.c                       | 183 +++---
+ drivers/clk/imx/clk-imx8mp-anatop.c                | 306 ++++++++++
+ drivers/clk/imx/clk-imx8mp.c                       | 672 ++++++++++-----------
+ drivers/clk/imx/clk.c                              |  15 +
+ drivers/clk/imx/clk.h                              |   2 +
+ include/dt-bindings/clock/imx8mm-clock.h           |  76 ++-
+ include/dt-bindings/clock/imx8mn-clock.h           |  64 ++
+ include/dt-bindings/clock/imx8mp-clock.h           |  80 ++-
+ 14 files changed, 1711 insertions(+), 605 deletions(-)
+ create mode 100644 drivers/clk/imx/clk-imx8mm-anatop.c
+ create mode 100644 drivers/clk/imx/clk-imx8mn-anatop.c
+ create mode 100644 drivers/clk/imx/clk-imx8mp-anatop.c
