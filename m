@@ -1,201 +1,302 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2054.outbound.protection.outlook.com [40.107.20.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D01B142E7C
-	for <imx@lists.linux.dev>; Wed,  7 May 2025 03:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746588819; cv=fail; b=FYUNR3LQD68iFFci44ir0M2K175LxAn22rcETNyWOVKfXGAt/L+bKwDh1iCdc5nMZuPhPEsanect5ub6yXApzDCVQ6II7THC8j5tW6PpeTMRKnyPcwwuX/obUrb99wU+lcmozpHKMgD1jLt76b60vvP1cc1+tIpjRy4TizvjNT4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746588819; c=relaxed/simple;
-	bh=p3fUndO8OMVt7bcO6j5Bk0qm6GvAycWrqsybbmlyM6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CP10/VQ3EQjzvvEUUW7Nu4TDeIVLU7Tm2jbsf1dyscgrDqxcoZQc7x5fzAR8QPjCKuiLTokk5bHP9H4xLFTqfxCUlm03Dnv7nlJDnPrKlwx5czbyT7t94m/SYFliVHzR8f+fif9hURvGawIu2or6JcZF6UoELGXJn/dTCJm+c1g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=NMpcxQQQ; arc=fail smtp.client-ip=40.107.20.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C1A4A00
+	for <imx@lists.linux.dev>; Wed,  7 May 2025 06:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746598633; cv=none; b=ZRwdUFzKsxy9MZNeqDtAAopx8JbTDHMS4AW7LjZ1gNSuOouUJLvWjTvi9en4SJQ8LpH015T5qXMq5Qqw8tL9X009nxyTdQPMT7ZsiUWJ+Zhzet0FRhafBqY7dCBzMm6OAlj4FoKCP+9o7ON/HaurJSV/PAja5C80TRyShOVHRlE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746598633; c=relaxed/simple;
+	bh=fxUC+POU4TSYGxAxTAwRJlNrAbmDzTlhhWDtD1g+PMk=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=CvcxCVa4dRk0yH3f1UXO061qaycn9J/OCXqVznNhvzURcmKKGchhar5QrUhPViXOdpJxs83NDo5XjnNpMycx3A6s0DOgMmUSc5ODxLW23FA67p729zoL7lAaY/XpHgjPmanxghPCA4K7bror9c2aDwyGmQJ7sm9Fy1mfMQULKEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UoDxy9CX; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="NMpcxQQQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=azKo+qIH6uJbcp+MWWTZPymWDdW5OHYGIWWwyNpNLn3odx5YaVvrZUVl1BIm7RcB4Uy0RvZLfekQcpMl3/ERzedhrPn5+grtYUgGL1jlWxRIWh9r3DUFHIh8QbBqJ9hrQYtoA/C2YXVa6CHMSghOD8/loAlH61Fr55b4xhcOVXkUxEnwn7Q+ogKJ09TPA8EwttRGd2J9nfnQUpA/CMPdizkOHYxFVcM9m47Rz/C3TKUIFtUlxUho4NR0ft7YTpyrsimwXrkv9kNUDVNON6aXmEv6b0C7rtU1gQta6BVEh6gBD1/qriseF+Ln/T2yULiYzKYPCz2d+EdWH+GZRusIAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jYA12YK7zILSCsjks26D54O0YhtosuFK+6TAZKbzLAU=;
- b=k5dT6EuggcNfgu+2KcLdoc98R5C4T/eToJsEYUZUXf08KC2iFlblgR+n4cUZVvrvF8ZeosNEO0z+Q/U7ekQJVqunJuuUjEe9pasLLvAJcBycNwQ0b9L4DqXTclthAHIXRkM34FI2Qcf8URoZB5IhxvhYzNlnVLFYDH1U2/RuPSVSqnmXSZr8RpuLhSBkSfhnlUQDD1J32cbsX75UMGZ6Bd3BuCh+7DlfaTFlKQSk4Yt+tqtd/jlYUl4LKt7h5C60/sbdRTU7OzIsHCRfhxtSoRX4+UVNh+iVoGqKUCDrHCNCnoe2NeUSJ71stTPJf3oEjyXrMel2iJGnc8ej2ApS7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jYA12YK7zILSCsjks26D54O0YhtosuFK+6TAZKbzLAU=;
- b=NMpcxQQQgpt3VYp7GeKBTk2JNEEuTMd8ypqyXn+Roe+K08yjKPjk/Jata24lpYXEC+Boam535st5m0NDsIwSqRuWj+GxycjUcihOWsorBe5wsT4bjWb6m7n7XpiRlLrWNJmhapEfqWh60BRPsc1srg+trKjaHtvXBb89tCQygE85bZcM9zsUGkuiD0VudJGzX2KnHRNFpxT+smGuDBchqRWIu6kAan3M2FzCh7HeVqMvOWoRW9GzNd0XnsYK9mC5x8vDOoQDeIOjsWmHB0vCW9tWwKq7iHCYrVdTTZk6Jo1QdH4/x+47HywO7zLnjNeFTMPn5zF4obfb8Zxld+Pw7w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by VE1PR04MB7406.eurprd04.prod.outlook.com (2603:10a6:800:1ae::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Wed, 7 May
- 2025 03:33:32 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8699.026; Wed, 7 May 2025
- 03:33:32 +0000
-Date: Wed, 7 May 2025 12:42:41 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
-	Chen-Yu Tsai <wens@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Daniel Baluta <daniel.baluta@nxp.com>
-Subject: Re: [PATCH v2 0/4] of: Common "memory-region" parsing
-Message-ID: <20250507044241.GA2351@nxa18884-linux>
-References: <20250423-dt-memory-region-v2-v2-0-2fbd6ebd3c88@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250423-dt-memory-region-v2-v2-0-2fbd6ebd3c88@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI1PR02CA0024.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::12) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UoDxy9CX"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43d04ea9d9aso29966875e9.3
+        for <imx@lists.linux.dev>; Tue, 06 May 2025 23:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746598629; x=1747203429; darn=lists.linux.dev;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mHclcOVxLAKl44OZQb+mfQdhLECVjass08E2gEcfSxg=;
+        b=UoDxy9CXHRuZRdXj5e2QIzBaNmcr01FJ4rkrNGkdf/W+gOXYMa4eXSYiTU/Awn5UG0
+         QXNYTFizM+Y/31RBmh0x5rOMvso8ghygiNz0n+GmiI64hTh5MME4YMHsnNEmjij/3/hN
+         YF4NGPplCXvldQ6frju/5L71BAPVJzldhx6PSTu3SMDrbYgC53V/CXPQmDnLQn6z/h5Q
+         mL4jhrHjC3joNC5rTmG3pbQbsFYrti9zEhXsh3YyBQYID9XlRpcIxldm3ew53VepKKIx
+         55h2e2Fohico0d+uKaNKlQBJ9FT2MKOyPdUA9Wvu6C0VPwfOFI2XPtHsnASAl0fh36Ui
+         7SnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746598629; x=1747203429;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mHclcOVxLAKl44OZQb+mfQdhLECVjass08E2gEcfSxg=;
+        b=QB5l/AxjxDtgEaWrXxEVi87uhm7Nv2dtNbsshtgbbi81a76N5ETsTL36wVvKQHsrwT
+         sFH6lyDKn6mOYPfyd0RpUuv0Q8ocs4LQSHbv1jBqmhShrqzx2NHJowB8JpXkO/Y5ECDm
+         z7rXqCLQeImdV/c2xCOfWke452FrRmIfCrycaEhljQQJOjm/PX5hn/cg8EaZU1ucX3P3
+         QSWGLnheULtMM7sGzPQBQ2v4dL+wgOf7Egf8gzBbS4D2Qvq/Hukt1QC0mcruYd67rUUz
+         t9Kp3o/fY6isBnD3JDx1I1tlCsQZVuDKhKDXodfpV14UZIoHnzl0fe72iDR+XjM6pE8c
+         8G0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVb0DeBjIZVYyUW+H5yvVJZzLfILJzYhzD0fiVuPE+nD7FFkULxi13Vq3VtqzKn9L+VtA4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzKcmHHsjk0LGQzd7yGNUXSt7KO+/qTSOIE/g6Skl4z8UtSxofM
+	fmtbB9mvxLZj1+oW2i1fTqxvBzm4xWYWZpDzS94SPtzl4ILaGGYO
+X-Gm-Gg: ASbGncvfDSo3pO1IRDzD3XPhMaIcAg4jNedW3WmZr9kU47azVuuCvS5zHrghLkF+aNQ
+	KfLbpYNG+EsskJMqG7o+ykognlgQYDAIK85majpcT64R59k0XrIPA7yZpoyzCvGVf9LoLHU6eTS
+	QIYcFmNmZ+knyfKUGOcMVVCAkV9q+EFmYoARAPjtirBHfKbw90nfNNkVvi58hl6Tez207CVgW1V
+	EG5x3p8Kw/G75llRPiLa9WNWbvVjT/FL1sHxDzdPLYmb7i6/kEn+dbSbQJdjvAecWSgk7KplQ8R
+	B74DpNouEEy/b7o8YubbgtEjlTj8+a3kaDQpIJWjxzF50hK0vjH8x8kSnr0eXP9dXcV834Yhu5L
+	j9dIY2xUuEetw3FAU+oatdc13t82bLkzNG/PJFsqHnfQcUi0oLfL3Bo/sgkdO3j2JKw1TKSksQj
+	vmFg5PFtrPlUOmAog=
+X-Google-Smtp-Source: AGHT+IElIAxQd9f7AP7aegu2tFlm1Ro5UkUu5nzmi10g7b5IpPUAMmvgOstUmW+/Qjii3YEqvzxLqw==
+X-Received: by 2002:a05:600c:1c91:b0:43c:efed:732c with SMTP id 5b1f17b1804b1-441d44e3341mr9329705e9.28.1746598629030;
+        Tue, 06 May 2025 23:17:09 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f2d:8d00:d1ed:f1f1:dce9:7a6c? (p200300ea8f2d8d00d1edf1f1dce97a6c.dip0.t-ipconnect.de. [2003:ea:8f2d:8d00:d1ed:f1f1:dce9:7a6c])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-441d43465besm18986765e9.16.2025.05.06.23.17.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 May 2025 23:17:08 -0700 (PDT)
+Message-ID: <9c2df2f8-6248-4a06-81ef-f873e5a31921@gmail.com>
+Date: Wed, 7 May 2025 08:17:17 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|VE1PR04MB7406:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc5292b7-53a9-4632-b646-08dd8d17f11d
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tgyVn5gTU1oAZ+LyHKjq6AyCJx3TzOQ16c9hL7E8eJoTZSdgxf9uq6bFDi6L?=
- =?us-ascii?Q?ilGuMaYhkoV91VKMsY/PaMgbaKmjqqMh7HG0QMqj9CBor21EBq2WFOiu5Va3?=
- =?us-ascii?Q?KYRcixOqExuH9nExN0EGbRf26fxiGdIsyG3qf9UhYmTnAEpn6paIMl2kKdcU?=
- =?us-ascii?Q?3/YG+zOsXhCqMkvm2z45TcWNR3Z/CFJbx6hVJkr9MLfscc4XCfOdNc8pKO0f?=
- =?us-ascii?Q?nWURGBP8tL25Fub1YGCxoNl+OynjpJHFuv47d6Hwzr0odxmgO1NPBHn5BxlE?=
- =?us-ascii?Q?w1/qzkdjCLEVBEyLE3xtCKfZfWy3MwWOoeMNdzjIJ0yM+68mgStVtpIYqwNV?=
- =?us-ascii?Q?g398gBfht2kEoro8zDAEU0yk45YR/i9WkceRIyKekTNhWn7VfVte7oQOWl9m?=
- =?us-ascii?Q?6TYE1L+ef/P2R0hp8Y/7H7FI97ovvUSSCLJ666HXt7APEVjoBa3QBmAE3oIB?=
- =?us-ascii?Q?SDXva86f8zS0NjIMI4qwXGEcZxDBxQJvvu5rHLU9Bxx48NSMctoC6m1WGCLi?=
- =?us-ascii?Q?R77qCVVsWGpdOxHrj2ycOWckwsGHYh7mLzLInbgvKNvt7oFiVI979Iy2OYdm?=
- =?us-ascii?Q?mPn7+8+a3AtYDO06HWI4ouVdkL1OkvuSepvGnfM04ayh5sPqXJKu3GOfOqUC?=
- =?us-ascii?Q?2nu1UVcCjb/frW4YYZLJNb8s68eOwaN8ARQ9EwdMhnBzQcmF/qdQDZJO5iLd?=
- =?us-ascii?Q?0mwl0YZfYxyoMAUxcI5vLpE0/Qv2vRw6/it9hxTecSvNpTSayWSGsHGRnPwN?=
- =?us-ascii?Q?K04rAOoTmEbrl/t4RSshLFYDo9D5ua+RbrwxOEU4iWaTes/U9Z53Obuaujhg?=
- =?us-ascii?Q?EO9Smzn5p9+hazGiGv6kapTvLJa9ESagx4agyWPBQWuevh+X6NUaqHJ84R7c?=
- =?us-ascii?Q?uUvOKioCJPTcYZKmuuPT/FDU4uSHBGheo++yOAGg9yyoDursMaTeMAEnq4Wm?=
- =?us-ascii?Q?mj5374OuOf70ea8ABRyjR4p2zqtFPoBjSzEgbHy4//krfaehuDUZyuvkFY/d?=
- =?us-ascii?Q?1mXvaNXXiEvDpQ8xTk9xoHlNYNsRN5IC5tpOxhwPbf7QobcGD9q4YqoTiZkv?=
- =?us-ascii?Q?Hgd2Ct/QySpaBAKWahZrwhR1HDA0j5q/p6ucQw4TlIF1iFz/ASxNitCfieW+?=
- =?us-ascii?Q?yM+BdzhQk7eAekZstfXRPfQ02RotztV4a/ddg4ByR3igDAG+K8pvy3cYn9A1?=
- =?us-ascii?Q?P43AnDQmnzOVa5uVEOVxkBIpF4XJ2N50Ka8DaS7bQ+kpqvdPqL/SYPno9z4M?=
- =?us-ascii?Q?W9QfBPP8cNRdGGJNAUoIknU6goNZW9yDVbVXJ1ocHi9qJmrj0Cul3ln4Oyjm?=
- =?us-ascii?Q?mR6jyit3py/BdNngmuj8p3LVC+Kmr2wwNT9W6PQtEWp0umd+gOhZRSAJ1hNR?=
- =?us-ascii?Q?RDvOpvh3zNH6o9cBpi3fre5c47s2dHe+s5CphzsASfeWjDJMtv/33WFbJiOT?=
- =?us-ascii?Q?w2TpgP+2z05jQgZQI/zifcSVTJpcVucL8A/9cMnfTp6A+aI1Gl3fBZ3qp2/x?=
- =?us-ascii?Q?UElC017XDsVhGLU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?InNt1+XB5xVB6TBZw5gM1cKqmTvXQ460wIatNIkq8g400R3v8VNUwLFlGde7?=
- =?us-ascii?Q?jV/5CMXOC4VxcntX+CcKqd3lXmAiuQWkRaFdIAJcUpomGFkCvOX/Ip4754Py?=
- =?us-ascii?Q?QQU8N2QDh/QZ/f2j4RWOY8l6cAuqwvEkFNU01hKtD+wWlcSTenwgHbkZwVd9?=
- =?us-ascii?Q?lujctweFpGBgGTRYqA0gMW3VkaK0FLUmE2StbYLEB1zbS5axynAwVryCmvzJ?=
- =?us-ascii?Q?C4DrGKcw7IjquzWy+9W6kmebwBuPTegZepM8dE1dpzIqbiWCuh6KHog9i8X9?=
- =?us-ascii?Q?Fm3bDb0F7RZyx/VSYIceDHGhtIVV8v5AmBjfz9dmVpTzKbpP8pW8FnuBARIQ?=
- =?us-ascii?Q?WL09+163gCZ7v7YOcFoBcYVN9NxgNutUaJh5YGMxZmyt58WH76/jrNsD+tnb?=
- =?us-ascii?Q?gQyLyOp5r9B5OZgzTY4tfcV2IWh5rx9eAgfpstjqM4Lqe3SLfTXRKyF7ZQux?=
- =?us-ascii?Q?ZDZn0Ji0XTNfkmvPYY3VkbAH6slV8pH9fCD//qaJJ4gWT/2miCR0snMRhcWe?=
- =?us-ascii?Q?aP3D1zSEY0gByjh9oPbR2sDfmqSVgdJFy2AcGqudVPcW0CffgE0h2Ry1nE7k?=
- =?us-ascii?Q?YhT6wiwnfOISRBoX5XQ/4nt/lVnz1GGJJKf79LgCLLUqIi4bcKICdSbDSGlH?=
- =?us-ascii?Q?NYPhEHBAfhMa40y6ooMemt+Ig3/AsiyXt2Tzi2hVaqiG+7GkJdsw5oSPQ0Ve?=
- =?us-ascii?Q?KonaM4ehDUDoIxLupvH36XXPmoJF6cmmRDwQwAJD1Gwxc3UOMzlv1npxnOz2?=
- =?us-ascii?Q?QyqWnRPS/Y367dEZYcA67anN73+x15AWqUpnRpCT7h+V0zQWeHM+Sjj58ZLg?=
- =?us-ascii?Q?cmbdorHsfn5BsMB6CartHhbMN19K5M8mNfEWH0WKXeUydoKbZDvnUwqDcyTT?=
- =?us-ascii?Q?WCVEq8CnwC80ijeGBzO2glL7UUZTvG7Hl+YTlkN/rBwFv6/v4omp3j9KKupf?=
- =?us-ascii?Q?+tI+ILprSkoicq/4s1Ux/Vika/N4MvCSXt82IzxuIFTY8xbClQa1TCecg8Km?=
- =?us-ascii?Q?QI4N9/aZp4PYRhX7wh0smxcNlrQCejeWhsW5mbxWSzoROkO2Mg2yARKzO7tB?=
- =?us-ascii?Q?sxUcq4VHhh5CyeNUXiCLB0Zsqw8dMuVvQSPy+OL80sHsO5Me3PQ26ioxd1NG?=
- =?us-ascii?Q?qiHPBBzPFWzCebuH0Ckn/7vu8QK62Cq9/mO+o+sRHzWruUtgn7K60mMEd67p?=
- =?us-ascii?Q?SZEcl+7G2/BJveQtZiuDST5e18gsFq/xrEx5b/rPX3R1acY1RXcRUUM0DKgF?=
- =?us-ascii?Q?AF5kmWP1oHlfR9kB54cH7THhzp6Wsf6u/61D/ZaAYmlNep9L0fY5YRajDdvh?=
- =?us-ascii?Q?eVaxN6PQC+Lx17bMb6ZKvFvRIC7xwy3QqFHZ4qnj8Lty6ANsCI4SoPV13936?=
- =?us-ascii?Q?pbWNJ3dSAABOJ4wdDMvfhj7Md7an7t/35A7TeWwDWR3IRV9M3YRJVUG35eXF?=
- =?us-ascii?Q?7IxyFN4t8UXbwJJC3cjP64G9QRa1xAC5a+rYh8YsDwgkLEQDGY0vCS92idz0?=
- =?us-ascii?Q?iYOOohdrZGeiea7KbMa/IVSoXVhNtoMRk4w0inm4y3O/C2frILVQhhalmT0T?=
- =?us-ascii?Q?oTJMBYm05lLkDPfRTAUuYvFWEvoB3ZFz3I9tFdnr?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc5292b7-53a9-4632-b646-08dd8d17f11d
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 03:33:32.7837
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P4m2eAKJFkxEN5ji2yVZtmWHZs0pkF8tcbqMTsu2q3bIgU5EWBEzKXtfCnX8Y0oOtp7poEpnOz0bYE/ksW4Yfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7406
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Andrew Lunn <andrew@lunn.ch>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, imx@lists.linux.dev
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH net-next] net: phy: remove Kconfig symbol MDIO_DEVRES
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 23, 2025 at 02:42:12PM -0500, Rob Herring (Arm) wrote:
->While there's a common function to parse "memory-region" properties for
->DMA pool regions, there's not anything for driver private regions. As a
->result, drivers have resorted to parsing "memory-region" properties
->themselves repeating the same pattern over and over. To fix this, this
->series adds 2 functions to handle those cases:
->of_reserved_mem_region_to_resource() and of_reserved_mem_region_count().
->
->I've converted the whole tree, but just including remoteproc here as
->it has the most cases. I intend to apply the first 3 patches for 6.16
->so the driver conversions can be applied for 6.17.
->
->A git tree with all the drivers converted is here[1].
->
->v2:
->- Fix of_dma_set_restricted_buffer() to maintain behavior on warning msg
->- Export devm_ioremap_resource_wc()
->- Rework handling of resource name to drop unit-address from name as it 
->  was before.
->- Link to v1: 
->  https://lore.kernel.org/all/20250317232426.952188-1-robh@kernel.org
->
->[1] git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git dt/memory-region
->
->Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
->---
->Rob Herring (Arm) (4):
->      of: reserved_mem: Add functions to parse "memory-region"
->      of: Simplify of_dma_set_restricted_buffer() to use of_for_each_phandle()
->      devres: Export devm_ioremap_resource_wc()
->      remoteproc: Use of_reserved_mem_region_* functions for "memory-region"
->
-> drivers/of/device.c                       | 31 +++++-------
-> drivers/of/of_reserved_mem.c              | 80 +++++++++++++++++++++++++++++++
-> drivers/remoteproc/imx_dsp_rproc.c        | 45 +++++++----------
-> drivers/remoteproc/imx_rproc.c            | 68 +++++++++++---------------
+MDIO_DEVRES is only set where PHYLIB/PHYLINK are set which
+select MDIO_DEVRES. So we can remove this symbol.
 
-Tested-by: Peng Fan <peng.fan@nxp.com> (i.MX93-11x11-EVK for imx_rproc.c)
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+ drivers/net/ethernet/freescale/Kconfig       |  1 -
+ drivers/net/ethernet/freescale/enetc/Kconfig |  2 --
+ drivers/net/ethernet/marvell/Kconfig         |  1 -
+ drivers/net/ethernet/qualcomm/Kconfig        |  1 -
+ drivers/net/mdio/Kconfig                     | 11 -----------
+ drivers/net/phy/Kconfig                      |  1 -
+ drivers/net/phy/Makefile                     |  2 +-
+ 7 files changed, 1 insertion(+), 18 deletions(-)
 
-Thanks,
-Peng
+diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
+index a2d730092..bbef47c34 100644
+--- a/drivers/net/ethernet/freescale/Kconfig
++++ b/drivers/net/ethernet/freescale/Kconfig
+@@ -71,7 +71,6 @@ config FSL_XGMAC_MDIO
+ 	tristate "Freescale XGMAC MDIO"
+ 	select PHYLIB
+ 	depends on OF
+-	select MDIO_DEVRES
+ 	select OF_MDIO
+ 	help
+ 	  This driver supports the MDIO bus on the Fman 10G Ethernet MACs, and
+diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
+index 7250d3bbf..f3a6b3752 100644
+--- a/drivers/net/ethernet/freescale/enetc/Kconfig
++++ b/drivers/net/ethernet/freescale/enetc/Kconfig
+@@ -18,7 +18,6 @@ config NXP_ENETC_PF_COMMON
+ config FSL_ENETC
+ 	tristate "ENETC PF driver"
+ 	depends on PCI_MSI
+-	select MDIO_DEVRES
+ 	select FSL_ENETC_CORE
+ 	select FSL_ENETC_IERB
+ 	select FSL_ENETC_MDIO
+@@ -36,7 +35,6 @@ config FSL_ENETC
+ config NXP_ENETC4
+ 	tristate "ENETC4 PF driver"
+ 	depends on PCI_MSI
+-	select MDIO_DEVRES
+ 	select FSL_ENETC_CORE
+ 	select FSL_ENETC_MDIO
+ 	select NXP_ENETC_PF_COMMON
+diff --git a/drivers/net/ethernet/marvell/Kconfig b/drivers/net/ethernet/marvell/Kconfig
+index 837295fec..50f7c59e8 100644
+--- a/drivers/net/ethernet/marvell/Kconfig
++++ b/drivers/net/ethernet/marvell/Kconfig
+@@ -34,7 +34,6 @@ config MV643XX_ETH
+ config MVMDIO
+ 	tristate "Marvell MDIO interface support"
+ 	depends on HAS_IOMEM
+-	select MDIO_DEVRES
+ 	select PHYLIB
+ 	help
+ 	  This driver supports the MDIO interface found in the network
+diff --git a/drivers/net/ethernet/qualcomm/Kconfig b/drivers/net/ethernet/qualcomm/Kconfig
+index 9210ff360..a4434eb38 100644
+--- a/drivers/net/ethernet/qualcomm/Kconfig
++++ b/drivers/net/ethernet/qualcomm/Kconfig
+@@ -52,7 +52,6 @@ config QCOM_EMAC
+ 	depends on HAS_DMA && HAS_IOMEM
+ 	select CRC32
+ 	select PHYLIB
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the Qualcomm Technologies, Inc. Gigabit
+ 	  Ethernet Media Access Controller (EMAC). The controller
+diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
+index 107236cd6..d3219ca19 100644
+--- a/drivers/net/mdio/Kconfig
++++ b/drivers/net/mdio/Kconfig
+@@ -38,9 +38,6 @@ config ACPI_MDIO
+ 	help
+ 	  ACPI MDIO bus (Ethernet PHY) accessors
+ 
+-config MDIO_DEVRES
+-	tristate
+-
+ config MDIO_SUN4I
+ 	tristate "Allwinner sun4i MDIO interface support"
+ 	depends on ARCH_SUNXI || COMPILE_TEST
+@@ -60,7 +57,6 @@ config MDIO_ASPEED
+ 	tristate "ASPEED MDIO bus controller"
+ 	depends on ARCH_ASPEED || COMPILE_TEST
+ 	depends on OF_MDIO && HAS_IOMEM
+-	select MDIO_DEVRES
+ 	help
+ 	  This module provides a driver for the independent MDIO bus
+ 	  controllers found in the ASPEED AST2600 SoC. This is a driver for the
+@@ -130,7 +126,6 @@ config MDIO_I2C
+ config MDIO_MVUSB
+ 	tristate "Marvell USB to MDIO Adapter"
+ 	depends on USB
+-	select MDIO_DEVRES
+ 	help
+ 	  A USB to MDIO converter present on development boards for
+ 	  Marvell's Link Street family of Ethernet switches.
+@@ -138,7 +133,6 @@ config MDIO_MVUSB
+ config MDIO_MSCC_MIIM
+ 	tristate "Microsemi MIIM interface support"
+ 	depends on HAS_IOMEM && REGMAP_MMIO
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MIIM (MDIO) interface found in the network
+ 	  switches of the Microsemi SoCs; it is recommended to switch on
+@@ -156,7 +150,6 @@ config MDIO_OCTEON
+ 	depends on (64BIT && OF_MDIO) || COMPILE_TEST
+ 	depends on HAS_IOMEM
+ 	select MDIO_CAVIUM
+-	select MDIO_DEVRES
+ 	help
+ 	  This module provides a driver for the Octeon and ThunderX MDIO
+ 	  buses. It is required by the Octeon and ThunderX ethernet device
+@@ -166,7 +159,6 @@ config MDIO_IPQ4019
+ 	tristate "Qualcomm IPQ4019 MDIO interface support"
+ 	depends on HAS_IOMEM && OF_MDIO
+ 	depends on COMMON_CLK
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interface found in Qualcomm
+ 	  IPQ40xx, IPQ60xx, IPQ807x and IPQ50xx series Soc-s.
+@@ -175,7 +167,6 @@ config MDIO_IPQ8064
+ 	tristate "Qualcomm IPQ8064 MDIO interface support"
+ 	depends on HAS_IOMEM && OF_MDIO
+ 	depends on MFD_SYSCON
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interface found in the network
+ 	  interface units of the IPQ8064 SoC
+@@ -183,7 +174,6 @@ config MDIO_IPQ8064
+ config MDIO_REALTEK_RTL9300
+ 	tristate "Realtek RTL9300 MDIO interface support"
+ 	depends on MACH_REALTEK_RTL || COMPILE_TEST
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interface found in the Realtek
+ 	  RTL9300 family of Ethernet switches with integrated SoC.
+@@ -204,7 +194,6 @@ config MDIO_THUNDER
+ 	depends on 64BIT
+ 	depends on PCI
+ 	select MDIO_CAVIUM
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interfaces found on Cavium
+ 	  ThunderX SoCs when the MDIO bus device appears as a PCI
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index 0b8cc325e..677d56e06 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -15,7 +15,6 @@ config PHYLINK
+ menuconfig PHYLIB
+ 	tristate "PHY Device support and infrastructure"
+ 	select MDIO_DEVICE
+-	select MDIO_DEVRES
+ 	help
+ 	  Ethernet controllers are usually attached to PHY
+ 	  devices.  This option provides infrastructure for
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 631859d44..59ac3a9a3 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -20,7 +20,7 @@ obj-y				+= stubs.o
+ else
+ obj-$(CONFIG_MDIO_DEVICE)	+= mdio-bus.o
+ endif
+-obj-$(CONFIG_MDIO_DEVRES)	+= mdio_devres.o
++obj-$(CONFIG_PHYLIB)		+= mdio_devres.o
+ libphy-$(CONFIG_SWPHY)		+= swphy.o
+ libphy-$(CONFIG_LED_TRIGGER_PHY)	+= phy_led_triggers.o
+ libphy-$(CONFIG_OPEN_ALLIANCE_HELPERS) += open_alliance_helpers.o
+-- 
+2.49.0
+
