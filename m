@@ -1,105 +1,130 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5712857C2
-	for <imx@lists.linux.dev>; Wed,  7 May 2025 12:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583B728935A
+	for <imx@lists.linux.dev>; Wed,  7 May 2025 13:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746622598; cv=none; b=cEiSEBWuvQRuLSU86PVUA1sx53yxK+mO2PmZcknPSuKW4Ct9GsTTm+e4SRUPtmszw6b7WaEbNPG99/04WDNh3dHlZ1Ruu7cQTIkcA3HqV8RYHeiC0cTGGtzh4Oz6+eba7oRyXa9FrVn2OFeA8cMPk1TaVXAOL9u+ZA46q8A2rDs=
+	t=1746623280; cv=none; b=tmfMTzUzOufvivSI7kqGjlpqpsuSAHrwkxMvxeXfelM/3S7HzKvND6df/CLy26ua7wLJyEyCsKYCIAUkc7of64KWXZEjdeMQ7iwbVGzbG67KVLDTz9bnroC4WsPtM0u+i9PjDATHFr5Hpq/Jn3DmeuQvabeR61A5eZdC5Dd8QHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746622598; c=relaxed/simple;
-	bh=pmgBmVFHG5dwmHS2I90dALMcPCyLWDDKaLRQX2tDSNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QC7nl+UOoXJI9/1ti0qq+m0Q2Z6+aNx09VDwZgyzpVPIftWoBhNJm5yeKY/gcf8MDfbUUsbqdVYAXiVenekAi1SZNnTWarYMUWPMOk2dXsLIacrt/qHbN3qrKfYwkNCrEKCpze6NrCLC+Kw/mRyMSlWA3uQvwQVh13O/d/dAKWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=l6okT1Cl; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="l6okT1Cl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7yFiUJMvxd+brtMkZOQ3kNGPogxiayEtQ77mEoxeYG0=; b=l6okT1ClafPedgc+Mz+M2LcJyl
-	JNUvSLvFFd/kFLROuLZ+LrbNtNpCAWRMci+J35BFuJfiDoA9c6sweInd5fO+8hnZU+FUwqhhaLHZK
-	ZymywsrQyXiu5PTpLNGFPcgKMZxg5pAH7KiXzXiw/8Y2BrPLGneEDJR7HKTfDrFFGQbS6L0bW2UBB
-	G1krmc36iBFNcOVaZ3bal5N0iri2HK9k5awloFGQIUcyTfVdTMGcQvgrlEM54sKUr5L/I13Mh3j8i
-	Zl9rQhxZeMhS6IZjZurhIP/gfp/vzme68MsgZRf82L3Mq4JpCpeqJJPEWJIh/NMgoZFqFh+6yKdN+
-	oSXRz4tQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47350)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	s=arc-20240116; t=1746623280; c=relaxed/simple;
+	bh=VrozmJHqdPopRWKMda1tn1rm5/kvvsrCa0JkWaKp31M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QC2y9YuRaoAMtsyyfcz0+Z2ltRZJ059BRALnoLI3El5oqBvGl5pJWOU52EiXtGHhyS2kVdgormJmysj/OTElnhdiAv7LxV4WluhrtOQr2HD50b/lUEHVTAX1/VMB6iOb9eVgRV6F2dgnSpCZUTboeg/hdp8YPtUKH1/oWd6T9/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uCeUy-0006P4-8e; Wed, 07 May 2025 15:07:44 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uCeK1-0007ZS-0F;
-	Wed, 07 May 2025 13:56:25 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uCeJy-0005nU-0q;
-	Wed, 07 May 2025 13:56:22 +0100
-Date: Wed, 7 May 2025 13:56:22 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	David Miller <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	imx@lists.linux.dev
-Subject: Re: [PATCH net-next] net: phy: remove Kconfig symbol MDIO_DEVRES
-Message-ID: <aBtYdq2NurrTIcJi@shell.armlinux.org.uk>
-References: <9c2df2f8-6248-4a06-81ef-f873e5a31921@gmail.com>
- <aBs58BUtVAHeMPip@shell.armlinux.org.uk>
- <5ecf2ece-683b-4c7b-a648-aca82d5843ed@lunn.ch>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uCeUw-001ZIn-2o;
+	Wed, 07 May 2025 15:07:42 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uCeUx-00EJKB-0s;
+	Wed, 07 May 2025 15:07:42 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 07 May 2025 15:07:25 +0200
+Subject: [PATCH v2] gpio: mxc: configure dynamic GPIO base for
+ CONFIG_GPIO_SYSFS=n
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5ecf2ece-683b-4c7b-a648-aca82d5843ed@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250507-b4-imx-gpio-base-warning-v2-1-d43d09e2c6bf@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAA1bG2gC/42NQQ6CMBBFr0Jm7Zi2gBRW3sOwKDCUWdiSFhFDu
+ LuVE7h8L/nv7xApMEVosh0CrRzZuwTqkkE/GWcJeUgMSqhSSJljVyA/N7Qze+xMJHyb4NhZLMb
+ akK61rgYBaT4HGnk704828cRx8eFzPq3yZ/+IrhIFCqN0lUtT9uPtPpOzryV4x9t1IGiP4/gCg
+ LUfEcUAAAA=
+X-Change-ID: 20250113-b4-imx-gpio-base-warning-4f9ae89887d0
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-gpio@vger.kernel.org, 
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>, 
+ Haibo Chen <haibo.chen@nxp.com>, 
+ Catalin Popescu <catalin.popescu@leica-geosystems.com>, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+X-Mailer: b4 0.14.2
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Wed, May 07, 2025 at 02:49:05PM +0200, Andrew Lunn wrote:
-> On Wed, May 07, 2025 at 11:46:08AM +0100, Russell King (Oracle) wrote:
-> > On Wed, May 07, 2025 at 08:17:17AM +0200, Heiner Kallweit wrote:
-> > > MDIO_DEVRES is only set where PHYLIB/PHYLINK are set which
-> > > select MDIO_DEVRES. So we can remove this symbol.
-> > 
-> > Does it make sense for mdio_devres to be a separate module from libphy?
-> 
-> I _think_ Broadcom have one MDIO bus master which is not used for
-> PHYs/Switches but regulators or GPIOs or something. In theory, you
-> could build a kernel without networking, but still use those
-> regulators or GPIOs. But given that Broadcom SoCs are all about
-> networking, it does seem like a very unlikely situation.
+i.MX GPIO numbering has been deterministic since commit 7e6086d9e54a
+("gpio/mxc: specify gpio base for device tree probe"), a year after
+device tree support was first added back in 2011.
 
-I'm pointing out that:
+Reverting to dynamically allocated GPIO base now would break most
+systems making use of the sysfs API. These systems will be eventually
+broken by the removal of the sysfs API, but that would result in GPIO
+scripts not working instead of essentially toggling at random according
+to probe order, which would happen if we unconditionally set base to -1.
 
-libphy-y                        := phy.o phy-c45.o phy-core.o phy_device.o \
-                                   linkmode.o phy_link_topology.o \
-                                   phy_package.o phy_caps.o mdio_bus_provider.o
+Yet, the warning is annoying and has resulted in many rejected attempts
+to remove it over the years[1][2][3].
 
-mdio_bus_provider.o provides at least some of the functions used by
-mdio_devres.
+As the i.MX GPIO driver is device tree only, GPIO_SYSFS is the only
+consumer of the deterministic GPIO numbering. Let's therefore restrict the
+static base and the warning that comes with it to configurations
+with CONFIG_GPIO_SYSFS enabled.
 
-obj-$(CONFIG_PHYLIB)            += mdio_devres.o
-obj-$(CONFIG_PHYLIB)            += libphy.o
+[1]: https://lore.kernel.org/all/20230226205319.1013332-1-dario.binacchi@amarulasolutions.com/
+[2]: https://lore.kernel.org/all/20230506085928.933737-2-haibo.chen@nxp.com/
+[3]: https://lore.kernel.org/all/20241121145515.3087855-1-catalin.popescu@leica-geosystems.com/
 
-So, when PHYLIB=m, we end up with mdio_devres and libphy as two separate
-loadable modules. I'm questioning whether this makes any sense, or
-whether making mdio_devres part of libphy would be more sensible.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+This was one result of the discussion with Bartosz at FOSDEM 2025.
+---
+Changes in v2:
+- drop warning opt-out flag
+- set a dynamic base only if sysfs support is disabled.
+- drop unrelated driver cleanup separately picked by Bartosz
+- Link to v1: https://lore.kernel.org/r/20250113-b4-imx-gpio-base-warning-v1-0-0a28731a5cf6@pengutronix.de
+---
+ drivers/gpio/gpio-mxc.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Maybe the only case is if mdio_devres adds dependencies we don't want
-libphy to have, but I think that needs to be spelt out in the commit.
+diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+index 619b6fb9d833a4bb94a93b4209f01b49ad1cbdb0..38504c9486b05802a792367111c9d71dc08bdd16 100644
+--- a/drivers/gpio/gpio-mxc.c
++++ b/drivers/gpio/gpio-mxc.c
+@@ -490,7 +490,14 @@ static int mxc_gpio_probe(struct platform_device *pdev)
+ 	port->gc.request = mxc_gpio_request;
+ 	port->gc.free = mxc_gpio_free;
+ 	port->gc.to_irq = mxc_gpio_to_irq;
+-	port->gc.base = of_alias_get_id(np, "gpio") * 32;
++	/*
++	 * Driver is DT-only, so a fixed base needs only be maintained for legacy
++	 * userspace with sysfs interface.
++	 */
++	if (IS_ENABLED(CONFIG_GPIO_SYSFS))
++		port->gc.base = of_alias_get_id(np, "gpio") * 32;
++	else /* silence boot time warning */
++		port->gc.base = -1;
+ 
+ 	err = devm_gpiochip_add_data(&pdev->dev, &port->gc, port);
+ 	if (err)
 
+---
+base-commit: 92a09c47464d040866cf2b4cd052bc60555185fb
+change-id: 20250113-b4-imx-gpio-base-warning-4f9ae89887d0
 
+Best regards,
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Ahmad Fatoum <a.fatoum@pengutronix.de>
+
