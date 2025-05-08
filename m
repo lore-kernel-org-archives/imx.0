@@ -1,132 +1,100 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B961487F4
-	for <imx@lists.linux.dev>; Thu,  8 May 2025 10:18:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609D92747B
+	for <imx@lists.linux.dev>; Thu,  8 May 2025 11:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746699516; cv=none; b=QR6sGlbLufxQwaey06AMu+4zGxo3bdUKBZZ7HXGWbZBb/yNl0d1ZU5yNgikP3M6+Ml/KN55Lz4Bkg6Iv+ujpJOl/0CgdL2bDSFchABkWXzqHTNRFZVRC3ItE7OjUawuzzwK0PE+GnpfyJpGet8sIE5m00RbHUU3b/BP/Ke1FSWk=
+	t=1746704868; cv=none; b=fDvpRdrvyn0V/u8bgEtB7cUOzzhMSbFdL4N/vdAPBL9s93j/jCTZ+lg7TWXxDm9y7BPSWOuagrFjA5uUHixKbJ9EwY7JHyCCNqQ7uGDOaMgzo73TItM/LciFd/EJGVC0+a648PoTxeRm/A5Rn5KIejqilra9E86CXGXSMwF3cqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746699516; c=relaxed/simple;
-	bh=4+5xC11//k7SELncU7TsWsMFz+BlhXNj6YltonqzUPE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=YUioVItfG6V50faDJzz83DTEyxY1sUmPqJpe9DacUI/KmcbaMex5cW4lPERu/JdeAIJcNoR1q5/nCQ6kWNeKWAgppOA08XGb8YbKgtKMsK9mHDt2gqGj5U2t3gQso9+lCr57tqK73kWmgPi8Sjxg4eg8NPmBfH+Km6xd41V1BDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=M9Mtw4vE; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="M9Mtw4vE"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 5B4BB24002D
-	for <imx@lists.linux.dev>; Thu,  8 May 2025 12:18:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-	t=1746699506; bh=4+5xC11//k7SELncU7TsWsMFz+BlhXNj6YltonqzUPE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:From;
-	b=M9Mtw4vEv6bpgKDIz15tCNIk7FQuaUi8d9hjJs/cz6v2WJBYX7otl4N25tkBpSVMq
-	 oRqvxoT0hrbzB3v2NJqjXprgRm+kzIXmI3+YcYN8l1gzCDI4R7JUVqQhh9h9VJO+3e
-	 6I4DGhlY4Hb1PmwmX8qtvNrq2n1Xhum0YwDZYRWmf62ymKKWMhhi0/MbiXV3sWMVak
-	 hy4Md6ac+dlLq10zpVFEFbXemuCEELsiG8g8PcJAv3M5goT/ya13pjjoBBy0C8CTM7
-	 UlltC5vQISPz7Kurw68RtoO1+spffHSRmCL4RGd3I/mS7tE251Lsd6xGAOHPUlgy7Q
-	 kj0b8smd1XHRA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4ZtSl427Mcz6trs;
-	Thu,  8 May 2025 12:18:24 +0200 (CEST)
-From: =?UTF-8?q?Martin=20Kepplinger-Novakovi=C4=87?= <martink@posteo.de>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de,
-	festevam@gmail.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Martin=20Kepplinger-Novakovi=C4=87?= <martink@posteo.de>
-Subject: [PATCH] arm64: dts: imx8mp: Enable gpu passive throttling
-Date: Thu,  8 May 2025 10:18:02 +0000
-Message-Id: <20250508101802.489712-1-martink@posteo.de>
+	s=arc-20240116; t=1746704868; c=relaxed/simple;
+	bh=wY2rXlF9lNnn5R10zAhDvzddR0b8o48odmpoov1tV7A=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CBQRkGaEdl95YU9iIk04EqWnFgIgugW+DfHo4KQaZ3bo2/xSOsV6r2ryyrndRymbT2wCsHcakMz2DeG8AMwjZdZKrj4G744GFc4MvuNSKxGA+aXAGKKiDZfwHmad0vggMDNDYkQ4w7a8t1b57w7L+CbwV+ob/dvYaQycWKH2zbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ZtVg63KzCz6L5VR;
+	Thu,  8 May 2025 19:45:06 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 95D9C140121;
+	Thu,  8 May 2025 19:47:36 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 8 May
+ 2025 13:47:34 +0200
+Date: Thu, 8 May 2025 12:47:33 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+	<wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, "Derek
+ Kiernan" <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, Arnd
+ Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, "Saravana Kannan"
+	<saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, "Mark Brown"
+	<broonie@kernel.org>, Len Brown <lenb@kernel.org>, Daniel Scally
+	<djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>, <linux-kernel@vger.kernel.org>,
+	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-clk@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>, Allan Nielsen
+	<allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli
+	<luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	<linux-cxl@vger.kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Dave Jiang
+	<dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, Vishal
+ Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan
+ Williams <dan.j.williams@intel.com>, <linux-cxl@vger.kernel.org>
+Subject: Re: [PATCH v2 09/26] cxl/test: Use device_set_node()
+Message-ID: <20250508124733.00001208@huawei.com>
+In-Reply-To: <aBt38JR-YGD5nnC4@smile.fi.intel.com>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+	<20250507071315.394857-10-herve.codina@bootlin.com>
+	<aBt38JR-YGD5nnC4@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hook up the gpu as a passive cooling device to the thermal zones' alert
-trip point just like the cpu.
+On Wed, 7 May 2025 18:10:40 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-The gpu here consists of 3D GPU, 2D GPU and NPU.
+> On Wed, May 07, 2025 at 09:12:51AM +0200, Herve Codina wrote:
+> > The code set directly dev->fwnode.
+> > 
+> > Use the dedicated helper to perform this operation.  
+> 
+> ...
+> 
+> > @@ -1046,7 +1046,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
+> >  {
+> >  	device_initialize(&adev->dev);
+> >  	fwnode_init(&adev->fwnode, NULL);
+> > -	dev->fwnode = &adev->fwnode;
+> > +	device_set_node(dev, &adev->fwnode);
+> >  	adev->fwnode.dev = dev;
+> >  }  
+> 
+> This code is questionable to begin with. Can the original author explain what
+> is the motivation behind this as the only callers of fwnode_init() are deep
+> core pieces _and_ this only module. Why?!
+> 
 
-One way to test would be to set one "alert" trip point low enough
-and watch the cooling device state increase:
+More likely to happen if CXL folk are +CC.  Added.
 
-echo 10000 > /sys/class/thermal/thermal_zone0/trip_point_0_temp
-watch cat /sys/class/thermal/cooling_device*/cur_state
-
-And of course set the trip point back to its original value and watch
-the cooling device states jump to 0 again.
-
-Signed-off-by: Martin Kepplinger-Novaković <martink@posteo.de>
----
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 50a07c56faffc..dea9342d071c4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -320,7 +320,10 @@ map0 {
- 						<&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
- 						<&A53_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
- 						<&A53_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
--						<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
-+						<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-+						<&gpu3d THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-+						<&gpu2d THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-+						<&npu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
- 			};
- 		};
-@@ -350,7 +353,10 @@ map0 {
- 						<&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
- 						<&A53_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
- 						<&A53_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
--						<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
-+						<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-+						<&gpu3d THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-+						<&gpu2d THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-+						<&npu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
- 			};
- 		};
-@@ -2229,6 +2235,7 @@ gpu3d: gpu@38000000 {
- 				 <&clk IMX8MP_CLK_GPU_ROOT>,
- 				 <&clk IMX8MP_CLK_GPU_AHB>;
- 			clock-names = "core", "shader", "bus", "reg";
-+			#cooling-cells = <2>;
- 			assigned-clocks = <&clk IMX8MP_CLK_GPU3D_CORE>,
- 					  <&clk IMX8MP_CLK_GPU3D_SHADER_CORE>;
- 			assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
-@@ -2245,6 +2252,7 @@ gpu2d: gpu@38008000 {
- 				 <&clk IMX8MP_CLK_GPU_ROOT>,
- 				 <&clk IMX8MP_CLK_GPU_AHB>;
- 			clock-names = "core", "bus", "reg";
-+			#cooling-cells = <2>;
- 			assigned-clocks = <&clk IMX8MP_CLK_GPU2D_CORE>;
- 			assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>;
- 			assigned-clock-rates = <1000000000>;
-@@ -2302,6 +2310,7 @@ npu: npu@38500000 {
- 				 <&clk IMX8MP_CLK_ML_AXI>,
- 				 <&clk IMX8MP_CLK_ML_AHB>;
- 			clock-names = "core", "shader", "bus", "reg";
-+			#cooling-cells = <2>;
- 			power-domains = <&pgc_mlmix>;
- 		};
- 
--- 
-2.39.5
-
+Dan, maybe one for you?
