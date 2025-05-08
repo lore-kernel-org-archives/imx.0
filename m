@@ -1,105 +1,92 @@
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69602638A0
-	for <imx@lists.linux.dev>; Thu,  8 May 2025 15:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D218286D58
+	for <imx@lists.linux.dev>; Thu,  8 May 2025 17:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746719879; cv=none; b=TTVooRj7o2EfokAQ7IpwI0rexWvVye6EZzn5qb9JPUfRpcvbGVw7XaSTDaRG1ikUnPzZIWzt5ZYdBb+1cLqFCiZGK9Gt3H/T+XRgIkibVN5Zyx+AvMllRTJd+OblteYpZBbHKZrZXVv7q369rpOVOiZ2zJkwFBPyuHO4Uup0hSY=
+	t=1746725198; cv=none; b=k7XPlChuBPP/hzuvTHvIwdUr6PJ/e6828kMhYvKDK+69+fxxQOafkdyHRJD+LnR9qjBlpK7L5M60otOV76y2z73YraI+AGwzJsDpFzzHSL7SrWhd/S/A/Coibbo4Z/acAp+iruYCJzR/uFRRUIoKsC+dY2cAGCWWLkKOv6WnHk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746719879; c=relaxed/simple;
-	bh=mv6+AFQbMjS0ePIASEYb6FmIlCpd2gcgZiCc/i2a2Wk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mXpEWtQ34IgimH0EhRrY6Yr11Jd5IOJwu8GjayShs54YUThIsKrWpQFgPD3iJ+1HBvBWak6ZLDR2HppYYYaCtVNBK+HqivU9OrqHUPAzz4Lr8DjKMOtOeOuSHxdYWvpWzdeDumzY+AuBkQ9R1jGSC0G9DA7vxZirEReXc99/Xhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lJPdaR3F; arc=none smtp.client-ip=91.218.175.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1746725198; c=relaxed/simple;
+	bh=/lMonJP9624v17JznT8vU6RUH3y++91soly0vGOyNrc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iTfZW4Lrjr/oMom9dKt9pf479bgy2ipiybMyDwODq8FbfGGNDubsi3PmFj1zLaulViChNHZTlcvzI9h7TzoafKQrbceFLz8mqvhhvsaR+5onNBg+6FBVoNAO5ZIhGdWq0qq4cQxvphPO8zXSfaHwwFZhYSvhhA/Z0NoU2x5qn0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IsQL30ON; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H9CLw99f; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lJPdaR3F"
-Message-ID: <b4b662cc-7b56-4e96-b3d1-7d19e2663cb1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746719874;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IsQL30ON";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H9CLw99f"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1746725192;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oCf3z7hOXG7UGs2boSQYoGffK4tgAQHTQeG/mcAB+UQ=;
-	b=lJPdaR3Fu+V9MjBKhXVqjM5ARaeWWWBzH7gr12dEMCD3CyGBvWqwd2190MaRx7p69jMmIS
-	me9Q+Sv/63NVqHv5s6kUGxzTe24eHPO6Fi/A8TEbUJ//ht6I79MVTUFYi9LC30wv9H4eY/
-	baAF+k0hlVlEkJfa+yDCdl8n+4ngxXg=
-Date: Thu, 8 May 2025 11:57:46 -0400
+	bh=hTbyL4rDqJd0LCAW+KvoiiMK8wPz1NsF8UcJJ8cPhiw=;
+	b=IsQL30ONrI4jH8NVOxem46kLDCMzP/Nm59W11WHMUP8KJlzwrFVIEHrxLI3VEWTLPUeH8Y
+	7XOJpnHiBRo/pb4bhe2U4Mpp+M+mJODfTGP9oz9U0HzUgvvphMZt3MK0I33CvXIDScyri/
+	ElClzkI1fJpAvrE3LiRiB/hmMDZM2pdMTfhEOmcNJRV3MKiEu06cyWI8dUvMiUVdnePZra
+	BRfX9LIVEdizlZoEkFEIb0JIz2bbCy/2UAB1ibYG8keWY3Dp5dIjuVv0w6Jm3T0SF3PJ+M
+	lo/W7BklVcGLQjCFreaswevbzJgusPpmB2aTsBXhKZd2kGQNc9dkLdEiN7/0Nw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1746725192;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hTbyL4rDqJd0LCAW+KvoiiMK8wPz1NsF8UcJJ8cPhiw=;
+	b=H9CLw99fBJ7LF0HxwGGI1SpmPdzd7KGDyNshq8EBwNjUWLVEH9JYnBjbnl2w0aefJsI9yq
+	Of9gn2t7UEx8NSCA==
+To: Frank Li <Frank.Li@nxp.com>, Kishon Vijay Abraham I <kishon@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Anup Patel
+ <apatel@ventanamicro.com>, Kishon Vijay Abraham I <kishon@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Manivannan Sadhasivam
+ <manivannan.sadhasivam@linaro.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kw@linux.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Shuah Khan
+ <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach
+ <l.stach@pengutronix.de>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob
+ Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org, jdmason@kudzu.us,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-pci@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ imx@lists.linux.dev, devicetree@vger.kernel.org, Frank Li
+ <Frank.Li@nxp.com>
+Subject: Re: [PATCH v18 00/15] PCI: EP: Add RC-to-EP doorbell with platform
+ MSI controller
+In-Reply-To: <20250414-ep-msi-v18-0-f69b49917464@nxp.com>
+References: <20250414-ep-msi-v18-0-f69b49917464@nxp.com>
+Date: Thu, 08 May 2025 19:26:31 +0200
+Message-ID: <87y0v7ko8o.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [net-next PATCH v3 05/11] net: pcs: lynx: Convert to an MDIO
- driver
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, upstream@airoha.com,
- Christian Marangi <ansuelsmth@gmail.com>, linux-kernel@vger.kernel.org,
- Kory Maincent <kory.maincent@bootlin.com>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Clark Wang <xiaoning.wang@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
- Ioana Ciornei <ioana.ciornei@nxp.com>, Joyce Ooi <joyce.ooi@intel.com>,
- Madalin Bucur <madalin.bucur@nxp.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, UNGLinuxDriver@microchip.com,
- Wei Fang <wei.fang@nxp.com>, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20250415193323.2794214-1-sean.anderson@linux.dev>
- <20250415193323.2794214-6-sean.anderson@linux.dev>
- <20250415193323.2794214-6-sean.anderson@linux.dev>
- <20250506215841.54rnxy3wqtlywxgb@skbuf>
- <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
- <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
- <20250506221834.uw5ijjeyinehdm3x@skbuf>
- <d66ac48c-8fe3-4782-9b36-8506bb1da779@linux.dev>
- <20250506222928.fozoqcxuf7roxur5@skbuf>
- <39753b36-adfd-4e00-beea-b58c1e5606e3@linux.dev>
- <90b2af4e-6c6e-41b9-be5b-ead443cd85b2@lunn.ch>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <90b2af4e-6c6e-41b9-be5b-ead443cd85b2@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
 
-Hi Andrew,
+On Mon, Apr 14 2025 at 14:30, Frank Li wrote:
+> This patches add new API to pci-epf-core, so any EP driver can use it.
+>       platform-msi: Add msi_remove_device_irq_domain() in platform_device_msi_free_irqs_all()
+>       irqdomain: Add IRQ_DOMAIN_FLAG_MSI_IMMUTABLE and irq_domain_is_msi_immutable()
+>       irqchip/gic-v3-its: Set IRQ_DOMAIN_FLAG_MSI_IMMUTABLE for ITS
+>       dt-bindings: PCI: pci-ep: Add support for iommu-map and msi-map
+>       irqchip/gic-v3-its: Add support for device tree msi-map and msi-mask
 
-On 5/6/25 20:19, Andrew Lunn wrote:
->> > You will need to explain that better, because what I see is that the
->> > "BSD-3-Clause" portion of the license has disappeared and that applies
->> > file-wide, not just to your contribution.
->> 
->> But I also have the option to just use the GPL-2.0+ license. When you
->> have an SPDX like (GPL-2.0+ OR BSD-3-Clause) that means the authors gave
->> permission to relicense it as
->> 
->> - BSD-3-Clause
->> - GPL-2.0+
->> - GPL-2.0+ OR BSD-3-Clause
->> - GPL-2.0
->> - GPL-2.0 OR BSD-3-Clause
->> - GPL-3.0
->> - GPL-3.0 OR BSD-3-Clause
->> - GPL-4.0 (if it ever happens)
->> 
->> I want my contributions to remain free software, so I don't want to
->> allow someone to take the BSD-3-Clause option (without the GPL).
-> 
-> Please can you give us a summary of the licenses of this file over its
-> complete history. Maybe it started out as GPL, and somebody wanted
-> their parts to be under BSD, and so added the BSD parts?
+I applied the interrupt related changes in the tip tree. They are on a
+seperate rc1 based branch and contain no other changes so that they can
+be pulled into the PCI tree as prerequisite for the actual endpoint
+changes. This can be pulled from the following tag:
 
-This is the original license added in commit 0da4c3d393e4 ("net: phy:
-add Lynx PCS module").
+   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq-platform-msi-05-08-25
 
---Sean
+Thanks,
+
+        tglx
