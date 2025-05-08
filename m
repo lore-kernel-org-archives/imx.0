@@ -1,92 +1,125 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D218286D58
-	for <imx@lists.linux.dev>; Thu,  8 May 2025 17:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64161C84BF
+	for <imx@lists.linux.dev>; Thu,  8 May 2025 18:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746725198; cv=none; b=k7XPlChuBPP/hzuvTHvIwdUr6PJ/e6828kMhYvKDK+69+fxxQOafkdyHRJD+LnR9qjBlpK7L5M60otOV76y2z73YraI+AGwzJsDpFzzHSL7SrWhd/S/A/Coibbo4Z/acAp+iruYCJzR/uFRRUIoKsC+dY2cAGCWWLkKOv6WnHk8=
+	t=1746729107; cv=none; b=TnPYu+YOcxo06yT/IAFtC9EXZq6evey0QyHG6ZqyzgOHUizT/fSMpFgtwR2fWvNedyFiHlld8gvwrFL307VuQrxsaC+Sb07BM52IbXl0xZ0gSRyu0aSTISxzKk1zXr3bY6LhuC/aXG8za3D07lKDuOaKPBv0et9cZgPApIzkKcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746725198; c=relaxed/simple;
-	bh=/lMonJP9624v17JznT8vU6RUH3y++91soly0vGOyNrc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iTfZW4Lrjr/oMom9dKt9pf479bgy2ipiybMyDwODq8FbfGGNDubsi3PmFj1zLaulViChNHZTlcvzI9h7TzoafKQrbceFLz8mqvhhvsaR+5onNBg+6FBVoNAO5ZIhGdWq0qq4cQxvphPO8zXSfaHwwFZhYSvhhA/Z0NoU2x5qn0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IsQL30ON; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H9CLw99f; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1746729107; c=relaxed/simple;
+	bh=lmW0Dg0L5hEpYSQrGyyAU2RGWEg1vYLosLy8p05Df9E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Myb0yBbGBrUJy8k5vDNVBHFqWgtqn5UWrIU/q/MZMXs7o4jzTIXtNQEDjx++fLEBG2NjylVxHo5pcDvnHtd2bMfXzrsG1ot5+uwyP/D1RLYx7I0H6h8NJ89+6qUTayzMo+tFwPV1ZXiur5D4UI7qb0NVwQ2uVJ7b0QJkiPdPvNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kbVWD+89; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IsQL30ON";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H9CLw99f"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746725192;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hTbyL4rDqJd0LCAW+KvoiiMK8wPz1NsF8UcJJ8cPhiw=;
-	b=IsQL30ONrI4jH8NVOxem46kLDCMzP/Nm59W11WHMUP8KJlzwrFVIEHrxLI3VEWTLPUeH8Y
-	7XOJpnHiBRo/pb4bhe2U4Mpp+M+mJODfTGP9oz9U0HzUgvvphMZt3MK0I33CvXIDScyri/
-	ElClzkI1fJpAvrE3LiRiB/hmMDZM2pdMTfhEOmcNJRV3MKiEu06cyWI8dUvMiUVdnePZra
-	BRfX9LIVEdizlZoEkFEIb0JIz2bbCy/2UAB1ibYG8keWY3Dp5dIjuVv0w6Jm3T0SF3PJ+M
-	lo/W7BklVcGLQjCFreaswevbzJgusPpmB2aTsBXhKZd2kGQNc9dkLdEiN7/0Nw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746725192;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hTbyL4rDqJd0LCAW+KvoiiMK8wPz1NsF8UcJJ8cPhiw=;
-	b=H9CLw99fBJ7LF0HxwGGI1SpmPdzd7KGDyNshq8EBwNjUWLVEH9JYnBjbnl2w0aefJsI9yq
-	Of9gn2t7UEx8NSCA==
-To: Frank Li <Frank.Li@nxp.com>, Kishon Vijay Abraham I <kishon@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Anup Patel
- <apatel@ventanamicro.com>, Kishon Vijay Abraham I <kishon@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kw@linux.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Shuah Khan
- <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach
- <l.stach@pengutronix.de>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob
- Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org, jdmason@kudzu.us,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-pci@vger.kernel.org, linux-kselftest@vger.kernel.org,
- imx@lists.linux.dev, devicetree@vger.kernel.org, Frank Li
- <Frank.Li@nxp.com>
-Subject: Re: [PATCH v18 00/15] PCI: EP: Add RC-to-EP doorbell with platform
- MSI controller
-In-Reply-To: <20250414-ep-msi-v18-0-f69b49917464@nxp.com>
-References: <20250414-ep-msi-v18-0-f69b49917464@nxp.com>
-Date: Thu, 08 May 2025 19:26:31 +0200
-Message-ID: <87y0v7ko8o.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kbVWD+89"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746729106; x=1778265106;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lmW0Dg0L5hEpYSQrGyyAU2RGWEg1vYLosLy8p05Df9E=;
+  b=kbVWD+89TsaU5YN6EeJnLmwbUupdjkow/0bxOu/0lZXHnNbx6RQsEAMP
+   PcB1Zk0B1fIc/OI47O5I+ZtgGe1dyM0dEDCU7FGYnjuKtU7oA9vylHufi
+   JMBOd3EUX3y4iUck3Zf8aQsb/OG9QKrX9ZhC6KvWq++apEz9Jwd4KhI77
+   6bK12Q/shFFXesKqSqD6xhnzmIWe0RdQ3Q89vomA1Ep0uVEUqL7BHcxrO
+   ebXWClVt9Xa/z/hYRYwIjX5wHoWZWufgBwzMiniBk7g0Egm+rl9k2tjkj
+   qyEZoZJq9V7VxQ+r4uCDtl87wvsl5sGRQYQnWIsaq4MAOASvSbIiSHf31
+   g==;
+X-CSE-ConnectionGUID: kKfBnEqnRPSOu4/LviIkww==
+X-CSE-MsgGUID: vE/gfl3yRfGnkKTAAXyD4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="52185438"
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
+   d="scan'208";a="52185438"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:31:45 -0700
+X-CSE-ConnectionGUID: XR1rcrq6RLiCNe1U0w4udg==
+X-CSE-MsgGUID: lI5CdtKsTd+NqPODxBCj3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
+   d="scan'208";a="136774458"
+Received: from smile.fi.intel.com ([10.237.72.55])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 11:31:35 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uD61r-00000004C9z-45LZ;
+	Thu, 08 May 2025 21:31:31 +0300
+Date: Thu, 8 May 2025 21:31:31 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 12/26] PCI: of: Set fwnode device of newly created PCI
+ device nodes
+Message-ID: <aBz4gxUlnSgEtHn8@smile.fi.intel.com>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+ <20250507071315.394857-13-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250507071315.394857-13-herve.codina@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Apr 14 2025 at 14:30, Frank Li wrote:
-> This patches add new API to pci-epf-core, so any EP driver can use it.
->       platform-msi: Add msi_remove_device_irq_domain() in platform_device_msi_free_irqs_all()
->       irqdomain: Add IRQ_DOMAIN_FLAG_MSI_IMMUTABLE and irq_domain_is_msi_immutable()
->       irqchip/gic-v3-its: Set IRQ_DOMAIN_FLAG_MSI_IMMUTABLE for ITS
->       dt-bindings: PCI: pci-ep: Add support for iommu-map and msi-map
->       irqchip/gic-v3-its: Add support for device tree msi-map and msi-mask
+On Wed, May 07, 2025 at 09:12:54AM +0200, Herve Codina wrote:
+> Device-tree node can be created when CONFIG_PCI_DYNAMIC_OF_NODES. Those
+> node are created and filled based on PCI core information but the
+> fwnode device field is not set.
+> 
+> When later an overlay is applied, this consuses fw_devlink. Indeed,
 
-I applied the interrupt related changes in the tip tree. They are on a
-seperate rc1 based branch and contain no other changes so that they can
-be pulled into the PCI tree as prerequisite for the actual endpoint
-changes. This can be pulled from the following tag:
+consuses?
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq-platform-msi-05-08-25
+> without any device attached to the node, fw_devlink considers that this
+> node will never become a device. When this node is pointed as a
+> supplier, devlink looks at its ancestors in order to find a node with a
+> device that could be used as the supplier.
+> 
+> In the PCI use case, this leads to links that wrongly use the PCI root
+> bridge device as the supplier instead of the expected PCI device.
+> 
+> Setting the fwnode device to the device of the PCI device allows devlink
+> to use this device as a supplier and so, correct links are created.
 
-Thanks,
+-- 
+With Best Regards,
+Andy Shevchenko
 
-        tglx
+
