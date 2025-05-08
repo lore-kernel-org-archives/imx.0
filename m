@@ -1,159 +1,105 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC2D2417EE
-	for <imx@lists.linux.dev>; Thu,  8 May 2025 14:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8D722A1F1;
+	Thu,  8 May 2025 14:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746714489; cv=none; b=qVXD3bZfKOM1VJ8gUib4C3kTiidIBPUlCxadT0XdIbhWCtqPpzOwnrMPmmMoCpxn1eQq3vh7PJoXDcDesE0T7v+E2eDrvHGQfBAkWKNcOp3nIDqid//NTxz/KSSY8Hr8m/pjOs/0knSzh0OA2YRjzuDZR5yeAv8iWWMOliXzHAI=
+	t=1746716244; cv=none; b=u6TJbgGNihl8VUZZRDN3O18Gca9dIck6X69M+H2LyE4stQr9TFims3IS0eOhswDKQ/ndkn/7AwA1kGIF11QZKXbkKfk2SwLWAh+fMfRZG0pW1FwsYR3YIyvdb8voZghq8728gwDjpIGUkOvRAH1j1IaYJrGpBbLJFjnzEBABnmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746714489; c=relaxed/simple;
-	bh=IY3VG/gRbQesJTL7PGEn0YX+FszGyoQR0i1Wr/j85Qc=;
+	s=arc-20240116; t=1746716244; c=relaxed/simple;
+	bh=9ar8QWK+6HF5F4izWOQj3DNDEiLV3HwPtOjT2Z51yv8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MjBPcW4s/eRuehLB0CX4W7lfWrVvbFm7oAlGmHx4XT+78NdqjFHSA8Dl8U7fkn9aDVsY4O11AK8VsjHogogMrhd+RL4kXc/rBQyudellwUT3OQ12d4856O2Fu1kltXFrOFzJbbpDfbN8429e898imKcRSHsP/UZpr8edypzHHSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OqLO7Frl; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=CqTm1mfx53QLY3llxBkyYszSOmQM35DhiMgmj3l1Y5jEbUkkcl/vMyeW860aN1mEWxKLzeiuFXXwlYlA4cPoF+ukT4GpU3KU8LnFH7fuz7z0W2Bw38dQZctErQ6jUHv4b1Ptm3BQHUh0Tyjym/bgKUWek6yOXSFJyL/I1BHoyGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pIlT50GW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OqLO7Frl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746714488; x=1778250488;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IY3VG/gRbQesJTL7PGEn0YX+FszGyoQR0i1Wr/j85Qc=;
-  b=OqLO7Frlp51+/iQ8jFwdkkpC3vNzJNPHGqepWzg7owCpacS4WuuOpd+c
-   tid7Pj1fx6rA071jArC17O46E7f+HgE9tIWHMo+upHhdHx3b3jHmkaAcj
-   C8GSAqZMdz3pqDmXj5+lg/PfldvDkKLaaaBv1bx+Ewr/tjobEHO+NYTAu
-   H3yjqTg8cnSZwwG2ADbTISmwNFLOOpXTXoLA4bujVbqLBFtPHyEzgPPo5
-   MuBrXQXQI6ZPYQ0ahaXiY3+AvCuP5PNYLSd6PCdlLtv1ZwIJr/EdrbWgc
-   nTF6MTp0TlwEOYvwaCl9k8MvVL9K8Ra+rbzMV0U/JBq+HlpXtqdPOrhkl
-   w==;
-X-CSE-ConnectionGUID: pmWtWgrrSgONQDYlJ+XpIw==
-X-CSE-MsgGUID: za+OUj2RQTKlA5w/0jVtjg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="59496608"
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="59496608"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 07:28:06 -0700
-X-CSE-ConnectionGUID: rdEp9pKSQSOxGK7lJDtSyw==
-X-CSE-MsgGUID: uy6WKA9hT6e5NY9UIu6Ijw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,272,1739865600"; 
-   d="scan'208";a="136320287"
-Received: from smile.fi.intel.com ([10.237.72.55])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 07:27:56 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uD2E4-000000048Ph-1tm1;
-	Thu, 08 May 2025 17:27:52 +0300
-Date: Thu, 8 May 2025 17:27:52 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pIlT50GW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932FCC4CEE7;
+	Thu,  8 May 2025 14:57:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746716244;
+	bh=9ar8QWK+6HF5F4izWOQj3DNDEiLV3HwPtOjT2Z51yv8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pIlT50GWBoJI3mnGqjyogC67R8vDxXxo5QD9Hey3kuPw2J1mg/o0BgVW8IFOGk6S7
+	 I/5njV5SUiyKkXWe2+BCOwM4tycbiHHyUS3MEIk2TmNhPJyIcirBYQ7J7zbRSbQrDh
+	 216P6kLlSXMqbmx1osR97GnbKQOlY9qs8yPTtGR4c2tf9IQeKjQWe7/NJIELFE9ms/
+	 rgWzpXJ+mZiigdN4fs1N6Ase7ywBylQLi4vOu18Gm59hJBISiguTicV/h5TRwCMrGq
+	 gGiKYGN9imc8fMdLJP2SLV6IPj1KD4V3NNYemGuIxvTXpBYjVXnOOA1yeO1xB6QLYM
+	 A5AtIaoEzmGBQ==
+Date: Thu, 8 May 2025 15:57:18 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Yannic Moog <y.moog@phytec.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, upstream@lists.phytec.de,
+	Benjamin Hahn <b.hahn@phytec.de>,
+	Teresa Remmet <t.remmet@phytec.de>,
+	Yashwanth Varakala <y.varakala@phytec.de>,
+	Jan Remmet <j.remmet@phytec.de>, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 05/26] bus: simple-pm-bus: Populate child nodes at
- probe
-Message-ID: <aBy_aBkC7NpicXho@smile.fi.intel.com>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-6-herve.codina@bootlin.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] dt-bindings: add imx95-libra-rdk-fpsc
+Message-ID: <20250508-statistic-creation-ba17442921de@spud>
+References: <20250507-wip-y-moog-phytec-de-imx95-libra-v1-0-4b73843ad4cd@phytec.de>
+ <20250507-wip-y-moog-phytec-de-imx95-libra-v1-1-4b73843ad4cd@phytec.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="uGPUkIg0ljVqE3bF"
+Content-Disposition: inline
+In-Reply-To: <20250507-wip-y-moog-phytec-de-imx95-libra-v1-1-4b73843ad4cd@phytec.de>
+
+
+--uGPUkIg0ljVqE3bF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507071315.394857-6-herve.codina@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 07, 2025 at 09:12:47AM +0200, Herve Codina wrote:
-> The simple-pm-bus drivers handles several simple bus. When it is used
+On Wed, May 07, 2025 at 03:13:12PM +0200, Yannic Moog wrote:
+> imx95-libra-rdk-fpsc is a development board based on the phyCORE-i.MX 95
+> Plus FPSC SoM. Add its description and binding.
+>=20
+> Signed-off-by: Yannic Moog <y.moog@phytec.de>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentati=
+on/devicetree/bindings/arm/fsl.yaml
+> index 447054b52ea391f69d11409d51751a88bb8b539a..783550c61cd7e9aa12ffe78bf=
+aa74478c19e0797 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1366,6 +1366,13 @@ properties:
+>                - fsl,imx95-19x19-evk       # i.MX95 19x19 EVK Board
+>            - const: fsl,imx95
+> =20
+> +      - description: PHYTEC i.MX 95 FPSC based Boards
+> +        items:
+> +          - enum:
+> +            - phytec,imx95-libra-rdk-fpsc     # Libra-i.MX 95 FPSC
+> +          - const: phytec,imx95-phycore-fpsc  # phyCORE-i.MX 95 FPSC
+> +          - const: fsl,imx95
 
-bus --> busses ?
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-> with busses other than a compatible "simple-pm-bus", it don't populate
-> its child devices during its probe.
-> 
-> This confuses fw_devlink and results in wrong or missing devlinks.
-> 
-> Once a driver is bound to a device and the probe() has been called,
-> device_links_driver_bound() is called.
-> 
-> This function performs operation based on the following assumption:
->     If a child firmware node of the bound device is not added as a
->     device, it will never be added.
-> 
-> Among operations done on fw_devlinks of those "never be added" devices,
-> device_links_driver_bound() changes their supplier.
-> 
-> With devices attached to a simple-bus compatible device, this change
-> leads to wrong devlinks where supplier of devices points to the device
-> parent (i.e. simple-bus compatible device) instead of the device itself
-> (i.e. simple-bus child).
-> 
-> When the device attached to the simple-bus is removed, because devlinks
-> are not correct, its consumers are not removed first.
-> 
-> In order to have correct devlinks created, make the simple-pm-bus driver
-> compliant with the devlink assumption and create its child devices
-> during its probe.
+--uGPUkIg0ljVqE3bF
+Content-Type: application/pgp-signature; name="signature.asc"
 
-...
+-----BEGIN PGP SIGNATURE-----
 
->  	if (match && match->data) {
->  		if (of_property_match_string(np, "compatible", match->compatible) == 0)
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaBzGTgAKCRB4tDGHoIJi
+0mIpAQDFZ7pwZBVIyTySKTZEy3Y13FwVLzSbzc+p71Y977kHbgEA8UuMBpqQg6DY
+l00dUGbvIZiCgpxFiB6rSMZ+Z+o2LQ8=
+=o519
+-----END PGP SIGNATURE-----
 
-Side note, there is an fwnode_is_device_compatible() API for such cases. And IIRC
-there is also OF variant of it.
-
-> -			return 0;
-> +			goto populate;
->  		else
->  			return -ENODEV;
->  	}
-
-...
-
-> +	if (pdev->dev.of_node)
-
-Why do you need this check? AFAICS it dups the one the call has already in it.
-
-> +		of_platform_depopulate(&pdev->dev);
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+--uGPUkIg0ljVqE3bF--
