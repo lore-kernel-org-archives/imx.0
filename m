@@ -1,143 +1,132 @@
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7C0144304
-	for <imx@lists.linux.dev>; Thu,  8 May 2025 10:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B961487F4
+	for <imx@lists.linux.dev>; Thu,  8 May 2025 10:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746698652; cv=none; b=ZQL6M0pLvydTRZQL4WYtNsCkyi1ce8OLPcwQbUZoRADKTyKSyVvCuS7o5q77ZTrFQ1/idxW9RUWLY7JdnOQjmgXnQZcygy3zKPD3a4wtiYWMGH9sBx1WWrZFjWAjelXc/s2kjbdM5GyP1FMB5p9/HpTfKYkUPetQofiocqtkVtY=
+	t=1746699516; cv=none; b=QR6sGlbLufxQwaey06AMu+4zGxo3bdUKBZZ7HXGWbZBb/yNl0d1ZU5yNgikP3M6+Ml/KN55Lz4Bkg6Iv+ujpJOl/0CgdL2bDSFchABkWXzqHTNRFZVRC3ItE7OjUawuzzwK0PE+GnpfyJpGet8sIE5m00RbHUU3b/BP/Ke1FSWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746698652; c=relaxed/simple;
-	bh=nQWMS8zLodxQjA2tkoVMA2V3++BSV8DfYZl9qCc12q4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jTrKa0G5m6dTkKg6lgVkK6+vJ4DRq2NbI/Z2b+66KN7IktLB5teWbDF473Q/+nA2lCSjSR1AMvOPDqUAbi0HJtiRZUklo2tM1ZTjzliFyKsHPcmIqqAeWH5WloQluu681sFknGPejP2tyvhoLETitPDRLJeA16I6gop/aoizfzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ota6MAg7; arc=none smtp.client-ip=209.85.219.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1746699516; c=relaxed/simple;
+	bh=4+5xC11//k7SELncU7TsWsMFz+BlhXNj6YltonqzUPE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=YUioVItfG6V50faDJzz83DTEyxY1sUmPqJpe9DacUI/KmcbaMex5cW4lPERu/JdeAIJcNoR1q5/nCQ6kWNeKWAgppOA08XGb8YbKgtKMsK9mHDt2gqGj5U2t3gQso9+lCr57tqK73kWmgPi8Sjxg4eg8NPmBfH+Km6xd41V1BDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=M9Mtw4vE; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ota6MAg7"
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e75607f50e5so768041276.3
-        for <imx@lists.linux.dev>; Thu, 08 May 2025 03:04:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746698649; x=1747303449; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+OMCAEKXt9Na5TVEs/wllXz+LY/w4SZyrDL1epmaZEU=;
-        b=Ota6MAg7NGsTxCXlOV0kBFRbBeS11tA481DUqVZSrTZ8tEoph1r2uYwTj6Pnrgb7XA
-         ms3lgupKhHSUAXmImlTJiT4OVtb4yjto+cFRnMcD9AXNk/onO5v0EXWLHNP3XRzNo4wF
-         nmYlaJLUQEaGChl5n01zRRhS9hFGJSO5FGmB/DsqHG5JBc3VbxsJyv3Pb0Tx7r8473ls
-         yFlCQ1T6o6URRQE32fdfv55AGSzSsgik2pUSoAMRzPUlBgEQDDLOCY/IPbDZArATVYA5
-         Hv1La66jBuOnXzvR9+tADPwCHyOpT1W4z72RLXPQF3tDJaGuno3ndnOqhEtBws5RDQ9E
-         pUiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746698649; x=1747303449;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+OMCAEKXt9Na5TVEs/wllXz+LY/w4SZyrDL1epmaZEU=;
-        b=GrFcC9pfmsQodUkAJGXb8TyCY5EI8OQ7Uo+klHst8TdOduhXPVJgpcPrGjvYg1dqGG
-         wI7N/Cx3T4+0BoANFGb7J88JapRsYJwjCOlOHR1zoGFqoHLa09MxWoUY9YP8HFTuCVY3
-         ra5nBIbP0a7A88G7mTlQt1i2YWZDSk4wkfBt5TVdiQBL7h8lx6EceAJreCtKBc/rhS+p
-         Oqgk3wfnwdd4zpFGNdPIvmo0NL6v8lCNeVI5nNGXszAZZVj/10WLQW8izgL4O3r6QEYL
-         yk+ERGcCKit0Gu0CdUsFFXujv/BWZBl8NotAqSLy99UWS4gY17AjvEm3GuctJFrfK5FK
-         muEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5x88W5JPnnoLBn3VJNDAMqJjZeY9phpnC9NrpQ01sq58lkFcNgWRHng5h/hyln0wmabo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwiRWm5zZr+vKQLiqtPrd/tim51CkmeYwt30oBVwnSksx2rUG8B
-	EVdyPGwyP/lMg+FdyUNlpI/k7S49vXCWMz9vtK7+aXhXXFrQtRFSD+y7IDb5pS9yiOszZREpJ8Z
-	QmaIvt4NFFuFFUdo11yC4lRmKtzLLYGK7+gapNw==
-X-Gm-Gg: ASbGncubYTFpg+nSpiAa2BCQbjdUTIJgZga021UHrKhbdqXAxjTjVaQiKCo2NYhc8b0
-	qcgOK5SRBQBfQWJiwxSEvCm/qtMCN3tEahsQMYozhOG4KkUV6aeGrgNniAntCrHxEqUsotZ5gNR
-	JPPG4cWl3YHUO6nHtUCAdhCbI=
-X-Google-Smtp-Source: AGHT+IEe4zp5EUGAPH2midu3NVbyBycrHIpRT+XUkbdIdzvQqiRxX8Kp0ZBPTG8H9R5eDjAreGEn66s7Qu9eZSe/884=
-X-Received: by 2002:a05:6902:2b0d:b0:e78:f1e2:8f25 with SMTP id
- 3f1490d57ef6-e78f1e2907amr1705899276.0.1746698649338; Thu, 08 May 2025
- 03:04:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="M9Mtw4vE"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 5B4BB24002D
+	for <imx@lists.linux.dev>; Thu,  8 May 2025 12:18:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+	t=1746699506; bh=4+5xC11//k7SELncU7TsWsMFz+BlhXNj6YltonqzUPE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=M9Mtw4vEv6bpgKDIz15tCNIk7FQuaUi8d9hjJs/cz6v2WJBYX7otl4N25tkBpSVMq
+	 oRqvxoT0hrbzB3v2NJqjXprgRm+kzIXmI3+YcYN8l1gzCDI4R7JUVqQhh9h9VJO+3e
+	 6I4DGhlY4Hb1PmwmX8qtvNrq2n1Xhum0YwDZYRWmf62ymKKWMhhi0/MbiXV3sWMVak
+	 hy4Md6ac+dlLq10zpVFEFbXemuCEELsiG8g8PcJAv3M5goT/ya13pjjoBBy0C8CTM7
+	 UlltC5vQISPz7Kurw68RtoO1+spffHSRmCL4RGd3I/mS7tE251Lsd6xGAOHPUlgy7Q
+	 kj0b8smd1XHRA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZtSl427Mcz6trs;
+	Thu,  8 May 2025 12:18:24 +0200 (CEST)
+From: =?UTF-8?q?Martin=20Kepplinger-Novakovi=C4=87?= <martink@posteo.de>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Martin=20Kepplinger-Novakovi=C4=87?= <martink@posteo.de>
+Subject: [PATCH] arm64: dts: imx8mp: Enable gpu passive throttling
+Date: Thu,  8 May 2025 10:18:02 +0000
+Message-Id: <20250508101802.489712-1-martink@posteo.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250507160056.11876-1-hiagofranco@gmail.com> <20250507160056.11876-4-hiagofranco@gmail.com>
-In-Reply-To: <20250507160056.11876-4-hiagofranco@gmail.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 8 May 2025 12:03:33 +0200
-X-Gm-Features: ATxdqUFUvDJo4SEFGQh5UV_w7ICgnExMVykRp0SMxPXtgTPPo6OOJoK0tLhcWVM
-Message-ID: <CAPDyKFrHD1hVCfOK-JV5FJM+Cd9DoKKZGKcC94fxx6_9Bsri1g@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
- remote core attachment
-To: Hiago De Franco <hiagofranco@gmail.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, linux-pm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Bjorn Andersson <andersson@kernel.org>, 
-	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
-	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, 7 May 2025 at 18:02, Hiago De Franco <hiagofranco@gmail.com> wrote:
->
-> From: Hiago De Franco <hiago.franco@toradex.com>
->
-> When the remote core is started before Linux boots (e.g., by the
-> bootloader), the driver currently is not able to attach because it only
-> checks for cores running in different partitions. If the core was kicked
-> by the bootloader, it is in the same partition as Linux and it is
-> already up and running.
->
-> This adds power mode verification through the SCU interface, enabling
-> the driver to detect when the remote core is already running and
-> properly attach to it.
->
-> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> Suggested-by: Peng Fan <peng.fan@nxp.com>
-> ---
-> v2: Dropped unecessary include. Removed the imx_rproc_is_on function, as
-> suggested.
-> ---
->  drivers/remoteproc/imx_rproc.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 627e57a88db2..9b6e9e41b7fc 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -949,6 +949,19 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
->                         if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
->                                 return -EINVAL;
->
-> +                       /*
-> +                        * If remote core is already running (e.g. kicked by
-> +                        * the bootloader), attach to it.
-> +                        */
-> +                       ret = imx_sc_pm_get_resource_power_mode(priv->ipc_handle,
-> +                                                               priv->rsrc_id);
-> +                       if (ret < 0)
-> +                               dev_err(dev, "failed to get power resource %d mode, ret %d\n",
-> +                                       priv->rsrc_id, ret);
-> +
-> +                       if (ret == IMX_SC_PM_PW_MODE_ON)
-> +                               priv->rproc->state = RPROC_DETACHED;
-> +
->                         return imx_rproc_attach_pd(priv);
+Hook up the gpu as a passive cooling device to the thermal zones' alert
+trip point just like the cpu.
 
-Why is it important to potentially set "priv->rproc->state =
-RPROC_DETACHED" before calling imx_rproc_attach_pd()?
+The gpu here consists of 3D GPU, 2D GPU and NPU.
 
-Would it be possible to do it the other way around? First calling
-imx_rproc_attach_pd() then get the power-mode to know if
-RPROC_DETACHED should be set or not?
+One way to test would be to set one "alert" trip point low enough
+and watch the cooling device state increase:
 
-The main reason why I ask, is because of how we handle the single PM
-domain case. In that case, the PM domain has already been attached
-(and powered-on) before we reach this point.
+echo 10000 > /sys/class/thermal/thermal_zone0/trip_point_0_temp
+watch cat /sys/class/thermal/cooling_device*/cur_state
 
->                 }
->
-> --
-> 2.39.5
->
+And of course set the trip point back to its original value and watch
+the cooling device states jump to 0 again.
 
-Kind regards
-Uffe
+Signed-off-by: Martin Kepplinger-Novaković <martink@posteo.de>
+---
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 50a07c56faffc..dea9342d071c4 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -320,7 +320,10 @@ map0 {
+ 						<&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+ 						<&A53_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+ 						<&A53_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+-						<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++						<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++						<&gpu3d THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++						<&gpu2d THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++						<&npu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+ 				};
+ 			};
+ 		};
+@@ -350,7 +353,10 @@ map0 {
+ 						<&A53_0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+ 						<&A53_1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+ 						<&A53_2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+-						<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
++						<&A53_3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++						<&gpu3d THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++						<&gpu2d THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
++						<&npu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+ 				};
+ 			};
+ 		};
+@@ -2229,6 +2235,7 @@ gpu3d: gpu@38000000 {
+ 				 <&clk IMX8MP_CLK_GPU_ROOT>,
+ 				 <&clk IMX8MP_CLK_GPU_AHB>;
+ 			clock-names = "core", "shader", "bus", "reg";
++			#cooling-cells = <2>;
+ 			assigned-clocks = <&clk IMX8MP_CLK_GPU3D_CORE>,
+ 					  <&clk IMX8MP_CLK_GPU3D_SHADER_CORE>;
+ 			assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>,
+@@ -2245,6 +2252,7 @@ gpu2d: gpu@38008000 {
+ 				 <&clk IMX8MP_CLK_GPU_ROOT>,
+ 				 <&clk IMX8MP_CLK_GPU_AHB>;
+ 			clock-names = "core", "bus", "reg";
++			#cooling-cells = <2>;
+ 			assigned-clocks = <&clk IMX8MP_CLK_GPU2D_CORE>;
+ 			assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>;
+ 			assigned-clock-rates = <1000000000>;
+@@ -2302,6 +2310,7 @@ npu: npu@38500000 {
+ 				 <&clk IMX8MP_CLK_ML_AXI>,
+ 				 <&clk IMX8MP_CLK_ML_AHB>;
+ 			clock-names = "core", "shader", "bus", "reg";
++			#cooling-cells = <2>;
+ 			power-domains = <&pgc_mlmix>;
+ 		};
+ 
+-- 
+2.39.5
+
