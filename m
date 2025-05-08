@@ -1,133 +1,155 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E88E219311
-	for <imx@lists.linux.dev>; Thu,  8 May 2025 07:13:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5112F263889
+	for <imx@lists.linux.dev>; Thu,  8 May 2025 08:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746688431; cv=none; b=d75qLNZxAOIffxbXSwEuV3nTix43l/KwCbTQu2ugehBK9HYLEt8c2E7ceYudl2GbsFRiUVn3CCuOwmd/pVncQT3vIxqo29VGjpgZabgQyIvR2AlAWxrYzaeAv0DPWv8RN3lHif94ONOjTy9jPjMerfMTyFHZGvzs4empnwfZylA=
+	t=1746693144; cv=none; b=chyD+JVeaSDcGo5e2xpM/1oTfc32pm/9LpMCYE+XItEQyKFi966dmTTzorWoD3pqaEhRYmZiaSXSienWQXh+S+Ho/UEefwnw5ZrDMBUzHRrVV00cEFT2hEH0LHFqHtM+I3qEmWkmKQ537pBlw5x+V5xuwFYAfpOnnjXFpJleWmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746688431; c=relaxed/simple;
-	bh=hrwGFHMMwMzLO3qU86OI8t/Nh3XTJsB3z/oENIE9U9I=;
+	s=arc-20240116; t=1746693144; c=relaxed/simple;
+	bh=99sIuYQv9yyYPOuX4dWNyMjpDSYVT8a3hkLHdw7sW/Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KX1znqZulYpTTFOp72c5xW7HG+gadzdV1bEpypmX7ytcU4AX3rY9t+QQA6Uv0LtbRSSXEwwpsduxjP4dIp4x9ZNnPqmoNJDJ6hjkofQjWSjn3z8+ZTQ4rI4AxUyXUZG3IsYSVvtQiErrfCOFRC/WhWuy+ddYrW28owyk7m8Cljs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-52b2290e292so239699e0c.3
-        for <imx@lists.linux.dev>; Thu, 08 May 2025 00:13:49 -0700 (PDT)
+	 To:Cc:Content-Type; b=P6zubpHuh/Z4AJcEdt8HGOpsjY/tVGZO9T3VKii5iTAFkF84JaXSEtuss1ZGs0Js/tz1GZ4nzXJaxl+SssA7LNyCOBytnZD24F0qCYBLX1i0SeGjyAmPOzCcg96t7T8j5h9RQLcSfr4mNalJ7mxCvDFMqcXw38TJmrqUKhdfLnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=qn1HrdFL; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="qn1HrdFL"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7082e46880eso6606867b3.1
+        for <imx@lists.linux.dev>; Thu, 08 May 2025 01:32:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1746693141; x=1747297941; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=quaZx11+VGNrggf88njtg5xLklc9eFfI7c4+X9LIJ5o=;
+        b=qn1HrdFL88vMR28uTrfa2g01RIrFkcDIex0QQGDrYs+2qolj0458WmLurPrLY9tWEe
+         5sEotivvWKq50k937rt/i9OxOJrwt9iIjW5UY+oIcxY0RJ8QdNvaojrGI2Fxt1jYSzB0
+         lwkxzw5/4HM2sXU7HldjhNwqZu3jhk1U6YkYA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746688427; x=1747293227;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YCDiRMnhh5NRGE6kDeKql7Kl5Sr5vQvd1G2z+pchMa0=;
-        b=rY8xj+IwK+Xy8LwgFuEeAagf2eyqX2Exdt0KsVvb4Tcb80dhiJBP/qqxryZYBZIkjC
-         2O6Diojf+Q1b4Ya/Ih85KX7G/vAuUtmMegfus1tpUpl+N0ZtQ7rme0zFV3N7WELAEkIr
-         fqxQtW4SeBqK5rDk77l9pR6bYClUX3P+ks8KL7uj149+7N+9yLVvFTYGDSUmYkDfFJ1i
-         qJIvx1v3pVV+LFcTHvbBKih22DIhSyRsPSP0R3+y5DNNkSlqN099YH5oAVwDzcCXdrMA
-         prToeGHPop4rJYT27AyI7Hloq4kOYuVSP6VmZRkQ1qgmNttge8gLUOAHc1b79YrUsoU1
-         2lrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWBDeCnE60UHu1nCspOKOmF8SHZOuhBZAw1JaKIJuTMLR546P6ZQQr4NXdgBItQ/Wgxjao=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyEG64BWY5sNyavNt/gk8b3ybIK+4hQNQPYmj1XwQLgJqQAwHm+
-	P9kZ6Wg8mjdbLZLOeQvbC7uh9J7ZqkVcE06oka+mYJkE3v8YDQd8o4faDNu2
-X-Gm-Gg: ASbGnctwY0AU0r37rGangw8hkUsK1nTFGJb8KCq6PbcSHrs/L3jnM0twg/55P+ne0xC
-	th0ATNtbvggJsio0/m+nVPs0KK6xsVo2FnkjYuzRaqNOZbzsssQSejtBXWV2gCW1FBMhJTzrPpZ
-	dTBM4ADKYo3qCPo6aQyknmP1Q4HIHWsv27jRPvvki/dK7p7euPCSXtuq/LoAoTsuHGcsAIzvTm8
-	MaQe3Bu7k+r5sRpbPdvQelJc1BT7WEOYXs25G766Tfw88QBl4JZkA5KCEECWjrkd6qOqJJ3GOB9
-	9B+4fyTZiWNIqnW+WM4uHfW8eTa+iUif7lUZpydU4CdEnG8DOwkPZt1ehDhiy+RVoNlyUrW02Nw
-	G7oE=
-X-Google-Smtp-Source: AGHT+IGFlK5N7r2NLZAQ/F0PI/Kd8J5Muapd6tNSQ3u9wvLdteF+LXFKJDDODeUoK7ZnsVkfb0Hikw==
-X-Received: by 2002:a05:6122:c8e:b0:529:d7e:d13f with SMTP id 71dfb90a1353d-52c37ab8a8amr4724659e0c.9.1746688427319;
-        Thu, 08 May 2025 00:13:47 -0700 (PDT)
-Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com. [209.85.217.50])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52ae419cd5dsm2855867e0c.37.2025.05.08.00.13.46
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 May 2025 00:13:46 -0700 (PDT)
-Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-4ddb53a10d1so82127137.3
-        for <imx@lists.linux.dev>; Thu, 08 May 2025 00:13:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV9AsIZ+mUdetR+C5dMuWgTi6DebL5bGhDHv8TzHokDWMUTIq8Vu9ohOOM7fchrjrzeKO0=@lists.linux.dev
-X-Received: by 2002:a05:6102:2c87:b0:4c1:c10d:cf65 with SMTP id
- ada2fe7eead31-4dc738bc3famr5378135137.25.1746688425863; Thu, 08 May 2025
- 00:13:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746693141; x=1747297941;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=quaZx11+VGNrggf88njtg5xLklc9eFfI7c4+X9LIJ5o=;
+        b=ozJSoAJOOetyCBjS8m3KYuBN3HvuMZkpqBI+ovKwxfL/qNw2BNAEO8PgQ/TXJO4n8G
+         19R0xbdOMFKF+cXc6WjQXoLyAhi4AhyrjssPlkj+P7EDgHZlorptpWmttt8vS6vTM9Dr
+         NXnZKD7xh/dljquzUu8yLnC4g4K7v/pUzitDyBeguGLRugBI7ETpN66ofmALsk/M+FwQ
+         vTs+LV9Wn07r6+C6SBZAaLBJlp7cD4XLW4wO0NvMWV5wiZ4RvpltYJrMnrOailcvrf0L
+         M9RGsNJj+c8WrDyl8GX0RueUQZIwPRbczF8hro/agHc3+FE210sLxlDTBuB+eCxQdzt2
+         77Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCX/4iEW4Hn1WkXyCP6JS4rxvEQg34x4CdYg35oPj3kQHhNw+Hu8oovh7lmMV4dv/IAb4b8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyudmoRHl78g2TSt/mwrN0ubyOu8wa8+UnjyJZ/2fUMiiggN6cY
+	aH5nP6e2GaeJumWD5k0ntxzOiYFWlO4mEkNCLa4jPGmH5AoiSYlweKrCRcm2UPe9zJP5GUXtXOS
+	Bn/Wu/24jwUWwSuOIWY1QU0He+k/D4hqDwnGuZQ==
+X-Gm-Gg: ASbGncuIGLnoQx4XWVSCNEWMhP9UT02k/wS/XzuS+c5VaUSuSMv1p0Lp9NtjCMg23EX
+	QH22ZlAvbEpR6Mi/c2GVW8yyQ5YJ+KBx7xmzzRd9lCrzUf1doXAoJt3Rs0j0QkNreNyIc0oc26K
+	KtpxDDwY7Nh79mrUCcd3bj
+X-Google-Smtp-Source: AGHT+IE4CmJhrdoXRe32HoBH4jbtzbQ2hoNMjPwxRG6sk3WrTeunXaOWumwPqctZu6MIIYqzIKZAUd1PKmmcUuwqfyo=
+X-Received: by 2002:a05:690c:6085:b0:703:d7a6:6266 with SMTP id
+ 00721157ae682-70a1d9f9304mr89735297b3.10.1746693141277; Thu, 08 May 2025
+ 01:32:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-24-herve.codina@bootlin.com> <8b97e095-dbed-438c-9c6d-d3c2c5929fc0@lunn.ch>
-In-Reply-To: <8b97e095-dbed-438c-9c6d-d3c2c5929fc0@lunn.ch>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 8 May 2025 09:13:33 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUVvOMavxSAKaSMOwj_zXR=5h8KrrqNg4RS2Yaw3WXpKg@mail.gmail.com>
-X-Gm-Features: ATxdqUHmcSjbjZfHI-fr6cqBy9DRd_HkLObPFwa-nuGiyXHv4iNIliDKKGB_NdU
-Message-ID: <CAMuHMdUVvOMavxSAKaSMOwj_zXR=5h8KrrqNg4RS2Yaw3WXpKg@mail.gmail.com>
-Subject: Re: [PATCH v2 23/26] misc: lan966x_pci: Introduce board specific data
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Herve Codina <herve.codina@bootlin.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Derek Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+References: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com> <174643143452.2950397.16722215892279685541.b4-ty@linaro.org>
+In-Reply-To: <174643143452.2950397.16722215892279685541.b4-ty@linaro.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date: Thu, 8 May 2025 10:32:10 +0200
+X-Gm-Features: ATxdqUGGoyMhD-TPgWfLjSDF0XqnBspVuNvo1SR1O8IpFOj15QasDBjp5hm1sY0
+Message-ID: <CABGWkvrkVLRocFsZs9JLni4KDZCDyYDZxMzwA9AzAwipmUyTzQ@mail.gmail.com>
+Subject: Re: (subset) [PATCH v12 00/19] Support spread spectrum clocking for
+ i.MX8M PLLs
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, 
+	Stephen Boyd <sboyd@kernel.org>, linux-amarula@amarulasolutions.com, 
+	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+	Abel Vesa <abel.vesa@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 8 May 2025 at 00:24, Andrew Lunn <andrew@lunn.ch> wrote:
-> On Wed, May 07, 2025 at 09:13:05AM +0200, Herve Codina wrote:
-> > Only one device-tree overlay (lan966x_evb_lan9662_nic.dtbo) is handled
-> > and this overlay is directly referenced in lan966x_pci_load_overlay().
-> >
-> > This avoid to use the code for an other board.
-> >
-> > In order to be more generic and to allow support for other boards (PCI
-> > Vendor/Device IDs), introduce the lan966x_pci_info structure and attach
-> > it to PCI Vendor/Device IDs handled by the driver.
-> >
-> > This structure contains information related to the PCI board such as
-> > information related to the dtbo describing the board we have to load.
-> >
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Hello Shawn,
+
+On Mon, May 5, 2025 at 9:52=E2=80=AFAM Abel Vesa <abel.vesa@linaro.org> wro=
+te:
 >
-> How big is the dtbo ?
 >
-> This is going in the right direction. I'm just wondering if each dtbo
-> should be wrapped in its own very slim PCI driver, which simply
-> registers its lan966x_pci_info structure to a core driver. Only the
-> needed dtbo will then be loaded into memory as a module, not them all.
+> On Thu, 24 Apr 2025 08:21:30 +0200, Dario Binacchi wrote:
+> > This version keeps the version v9 patches that can be merged and
+> > removes the patches that will need to be modified in case Peng's
+> > PR https://github.com/devicetree-org/dt-schema/pull/154 is accepted.
+> > The idea is to speed up the merging of the patches in the series
+> > that have already been reviewed and are not dependent on the
+> > introduction of the assigned-clocks-sscs property, and postpone
+> > the patches for spread spectrum to a future series once it becomes
+> > clear what needs to be done.
+> >
+> > [...]
+>
+> Applied, thanks!
+>
+> [01/19] dt-bindings: clock: imx8mm: add VIDEO_PLL clocks
+>         commit: 20e5d201b5d8f830e702d7d183f6b1b246b78d8a
+> [02/19] clk: imx8mm: rename video_pll1 to video_pll
+>         commit: 26a33196b5b68cf199b6c4283a254aa92d2aaf4b
+> [03/19] dt-bindings: clock: imx8mp: add VIDEO_PLL clocks
+>         commit: 2d50415e2457c6f6621c2faa3b01b11150fb9c67
+> [04/19] clk: imx8mp: rename video_pll1 to video_pll
+>         commit: 21bb969f608cefd8d847cf6eb50a193d9f1fbb87
+> [05/19] dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
+>         commit: 2ba124053687c933031a6dc5b2e16ceaca250934
+> [10/19] clk: imx: add hw API imx_anatop_get_clk_hw
+>         commit: 17e3c1a272d97e49b4f3fbfe1f1b889e120d2be8
+> [11/19] clk: imx: add support for i.MX8MM anatop clock driver
+>         commit: 3cbc38cf42ca42d2dc9a93c949e0381ff919df71
+> [12/19] clk: imx: add support for i.MX8MN anatop clock driver
+>         commit: 80badb1d7264e83b512475898e7459f464a009c9
+> [13/19] clk: imx: add support for i.MX8MP anatop clock driver
+>         commit: 4c82bbe8b5437c7f16b2891ce33210c0f1410597
+> [14/19] clk: imx8mp: rename ccm_base to base
+>         commit: 1a77907dbbecfbe5e6a1aec28afd49a1dc184b7a
+> [16/19] dt-bindings: clock: imx8m-clock: add PLLs
+>         commit: 6a55647af3334f1d935ece67de4a838a864b53fc
+>
 
-Alternatively, the dtbo could be loaded through request_firmware().
-That could lead to a generic support option in the PCI core, which would
-fallback to loading pci-<vid>-<pid>.dtbo when no driver is available.
+Please check the remaining patches, as they are required for correctly
+building the
+ones merged by Abel. The kernel test robot has already reported build error=
+s.
 
-> Pretty much all the pieces are here, so it can be done later.
+Thanks and regards,
+Dario
 
-Exactly.
+> Best regards,
+> --
+> Abel Vesa <abel.vesa@linaro.org>
 
-Gr{oetje,eeting}s,
 
-                        Geert
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+--=20
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Dario Binacchi
+
+Senior Embedded Linux Developer
+
+dario.binacchi@amarulasolutions.com
+
+__________________________________
+
+
+Amarula Solutions SRL
+
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
+
+T. +39 042 243 5310
+info@amarulasolutions.com
+
+www.amarulasolutions.com
