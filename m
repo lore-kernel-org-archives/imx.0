@@ -1,96 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6626125;
-	Thu,  8 May 2025 15:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69602638A0
+	for <imx@lists.linux.dev>; Thu,  8 May 2025 15:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746717710; cv=none; b=cvwgKOpq+fXV+chCh6ijid3ky+N85GvDvvrt5Os2VjNIZHidF5AcB6S5bkLDuUgAoR++85eGExpLsFmLA/SbhMVu3/+tfGC6n5Rom8skR3CRR1UcJ904poOgxNZbNg70SQP7Bd3WgCW9lwUulc7wSZd0Fb0xEquR64dkPvjzywk=
+	t=1746719879; cv=none; b=TTVooRj7o2EfokAQ7IpwI0rexWvVye6EZzn5qb9JPUfRpcvbGVw7XaSTDaRG1ikUnPzZIWzt5ZYdBb+1cLqFCiZGK9Gt3H/T+XRgIkibVN5Zyx+AvMllRTJd+OblteYpZBbHKZrZXVv7q369rpOVOiZ2zJkwFBPyuHO4Uup0hSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746717710; c=relaxed/simple;
-	bh=q/TDJBwEVbrcelLCE627ULHjq3znl/iiudThmhNqqoA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kf8w33i0iQCB92sciVDwCWRz7rQ0XDAV7YQ9uAdjtva/bBZua2Nz+UdpbCy/z54cWyIycAOhQ+Y+OcPrGpb+yXgkscm7zTMmpv7DRh+NGOjV02A0fSzERjron1O6MBUt5FJjHLUp5Tw+ocm+i8g9wuojkSNyNULTR18OAbcU3x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F907C4CEE7;
-	Thu,  8 May 2025 15:21:47 +0000 (UTC)
-Date: Thu, 8 May 2025 16:21:45 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: John Ernberg <john.ernberg@actia.se>
-Cc: Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"stable@kernel.org" <stable@kernel.org>
-Subject: Re: [PATCH 1/2] xen: swiotlb: Use swiotlb bouncing if kmalloc
- allocation demands it
-Message-ID: <aBzMCWmTMzLNuvmJ@arm.com>
-References: <20250502114043.1968976-1-john.ernberg@actia.se>
- <20250502114043.1968976-2-john.ernberg@actia.se>
+	s=arc-20240116; t=1746719879; c=relaxed/simple;
+	bh=mv6+AFQbMjS0ePIASEYb6FmIlCpd2gcgZiCc/i2a2Wk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mXpEWtQ34IgimH0EhRrY6Yr11Jd5IOJwu8GjayShs54YUThIsKrWpQFgPD3iJ+1HBvBWak6ZLDR2HppYYYaCtVNBK+HqivU9OrqHUPAzz4Lr8DjKMOtOeOuSHxdYWvpWzdeDumzY+AuBkQ9R1jGSC0G9DA7vxZirEReXc99/Xhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lJPdaR3F; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lJPdaR3F"
+Message-ID: <b4b662cc-7b56-4e96-b3d1-7d19e2663cb1@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1746719874;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oCf3z7hOXG7UGs2boSQYoGffK4tgAQHTQeG/mcAB+UQ=;
+	b=lJPdaR3Fu+V9MjBKhXVqjM5ARaeWWWBzH7gr12dEMCD3CyGBvWqwd2190MaRx7p69jMmIS
+	me9Q+Sv/63NVqHv5s6kUGxzTe24eHPO6Fi/A8TEbUJ//ht6I79MVTUFYi9LC30wv9H4eY/
+	baAF+k0hlVlEkJfa+yDCdl8n+4ngxXg=
+Date: Thu, 8 May 2025 11:57:46 -0400
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250502114043.1968976-2-john.ernberg@actia.se>
+Subject: Re: [net-next PATCH v3 05/11] net: pcs: lynx: Convert to an MDIO
+ driver
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, upstream@airoha.com,
+ Christian Marangi <ansuelsmth@gmail.com>, linux-kernel@vger.kernel.org,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Ioana Ciornei <ioana.ciornei@nxp.com>, Joyce Ooi <joyce.ooi@intel.com>,
+ Madalin Bucur <madalin.bucur@nxp.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, UNGLinuxDriver@microchip.com,
+ Wei Fang <wei.fang@nxp.com>, imx@lists.linux.dev,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20250415193323.2794214-1-sean.anderson@linux.dev>
+ <20250415193323.2794214-6-sean.anderson@linux.dev>
+ <20250415193323.2794214-6-sean.anderson@linux.dev>
+ <20250506215841.54rnxy3wqtlywxgb@skbuf>
+ <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
+ <50e809ea-62a4-413d-af63-7900929c3247@linux.dev>
+ <20250506221834.uw5ijjeyinehdm3x@skbuf>
+ <d66ac48c-8fe3-4782-9b36-8506bb1da779@linux.dev>
+ <20250506222928.fozoqcxuf7roxur5@skbuf>
+ <39753b36-adfd-4e00-beea-b58c1e5606e3@linux.dev>
+ <90b2af4e-6c6e-41b9-be5b-ead443cd85b2@lunn.ch>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <90b2af4e-6c6e-41b9-be5b-ead443cd85b2@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, May 02, 2025 at 11:40:55AM +0000, John Ernberg wrote:
-> Xen swiotlb support was missed when the patch set starting with
-> 4ab5f8ec7d71 ("mm/slab: decouple ARCH_KMALLOC_MINALIGN from
-> ARCH_DMA_MINALIGN") was merged.
-> 
-> When running Xen on iMX8QXP, a SoC without IOMMU, the effect was that USB
-> transfers ended up corrupted when there was more than one URB inflight at
-> the same time.
-> 
-> Add a call to dma_kmalloc_needs_bounce() to make sure that allocations too
-> small for DMA get bounced via swiotlb.
-> 
-> Closes: https://lore.kernel.org/linux-usb/ab2776f0-b838-4cf6-a12a-c208eb6aad59@actia.se/
-> Fixes: 4ab5f8ec7d71 ("mm/slab: decouple ARCH_KMALLOC_MINALIGN from ARCH_DMA_MINALIGN")
-> Cc: stable@kernel.org # v6.5+
-> Signed-off-by: John Ernberg <john.ernberg@actia.se>
-> 
-> ---
-> 
-> It's impossible to pick an exact fixes tag since this driver was missed
-> in the flagged patch set. I picked one I felt gave a decent enough picture
-> for someone coming across this later.
+Hi Andrew,
 
-All the above patches went in at the same time in 6.5, so it probably
-doesn't matter. In theory, you could add:
-
-Fixes: 370645f41e6e ("dma-mapping: force bouncing if the kmalloc() size is not cache-line-aligned")
-Cc: <stable@vger.kernel.org> # 6.5.x
-
-as that's when dma_kmalloc_needs_bounce() was added (a few commits after
-the "decouple ARCH_KMALLOC_MINALIGN..." one). However, actual problems
-started to appear with commit 9382bc44b5f5 ("arm64: allow kmalloc()
-caches aligned to the smaller cache_line_size()") which makes
-ARCH_KMALLOC_MINALIGN equal 8 on arm64.
-
-> ---
->  drivers/xen/swiotlb-xen.c | 1 +
->  1 file changed, 1 insertion(+)
+On 5/6/25 20:19, Andrew Lunn wrote:
+>> > You will need to explain that better, because what I see is that the
+>> > "BSD-3-Clause" portion of the license has disappeared and that applies
+>> > file-wide, not just to your contribution.
+>> 
+>> But I also have the option to just use the GPL-2.0+ license. When you
+>> have an SPDX like (GPL-2.0+ OR BSD-3-Clause) that means the authors gave
+>> permission to relicense it as
+>> 
+>> - BSD-3-Clause
+>> - GPL-2.0+
+>> - GPL-2.0+ OR BSD-3-Clause
+>> - GPL-2.0
+>> - GPL-2.0 OR BSD-3-Clause
+>> - GPL-3.0
+>> - GPL-3.0 OR BSD-3-Clause
+>> - GPL-4.0 (if it ever happens)
+>> 
+>> I want my contributions to remain free software, so I don't want to
+>> allow someone to take the BSD-3-Clause option (without the GPL).
 > 
-> diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-> index 1f65795cf5d7..ef56a2500ed6 100644
-> --- a/drivers/xen/swiotlb-xen.c
-> +++ b/drivers/xen/swiotlb-xen.c
-> @@ -217,6 +217,7 @@ static dma_addr_t xen_swiotlb_map_page(struct device *dev, struct page *page,
->  	 * buffering it.
->  	 */
->  	if (dma_capable(dev, dev_addr, size, true) &&
-> +	    !dma_kmalloc_needs_bounce(dev, size, dir) &&
->  	    !range_straddles_page_boundary(phys, size) &&
->  		!xen_arch_need_swiotlb(dev, phys, dev_addr) &&
->  		!is_swiotlb_force_bounce(dev))
+> Please can you give us a summary of the licenses of this file over its
+> complete history. Maybe it started out as GPL, and somebody wanted
+> their parts to be under BSD, and so added the BSD parts?
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+This is the original license added in commit 0da4c3d393e4 ("net: phy:
+add Lynx PCS module").
+
+--Sean
