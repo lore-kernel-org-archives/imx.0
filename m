@@ -1,85 +1,50 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7513182BC
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 16:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E69C4B1E5C;
+	Fri,  9 May 2025 16:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746806858; cv=none; b=aFRy99I4Reuv+0leq/pwKxxX+OoyKyhsiNHCCnisRffCn+sfIEj8l6G3GPEHM3mtUA3FHBL/f5IHF/M+juJVMlJJcLxlDmHQLuC1IAFMtaj+9RZVjbYY7MjlCmSCcmWdqncje2Zl6EDGq+oUcifw3pxLotuegC8dZSvk+I9VN8w=
+	t=1746807948; cv=none; b=rfocGJWBOf4VI2sM6QbxRRuYihVnOR/ZmFTDomo+HrExZeM5+nPF6PjSKT4IqixAI4J7CYGvFGH8Vf/LvNjkB92xmGFZPwX8jTj5Dslnc/zdCDxAAJvGk5Jo21RlD131lAPrK6aK5oUQRbaZDV8t2vW4o3GLH7Lw6KI31g8RPSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746806858; c=relaxed/simple;
-	bh=+/1IQ2oCinigP5CnNh1S1UQ2fww1RQQZshyDjBgmy6c=;
+	s=arc-20240116; t=1746807948; c=relaxed/simple;
+	bh=pWBgsTEX8GV7+i3t+seP0AVeCM2U+ftwb9bTfHMqsr4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AO1l/vK+kTQ7pTW0k+HfSb3sBjDuBHAjaPjI3dTYuRHRE+QiZYlnshincjTmuxKlGoWMata5lk/gimc27BbCe/bB+ZynrnSr9K54eFlTMTY0GvF5UsQMf8hXIr2YV2hRKANSWfSFLjIBEiI9p1JdgHLOYaq/AaPwQdKSur798cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iAKxJ6ZS; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=iiFwMaFG1hxb4ILsbUMcJYwQYtsR68lP80ddFdNB3bh9IDT3XnuhDd7mKFlpopy4wBhNMNr0PNdNfMvWsGA/wbSqbKRSkk+KuNFlSngCucqyqgOKd0OSEALYgarriBOIryLg6yOxenz/zgEz6DojumNBUqMwf3p7Q+XpRkNSkHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fjckqt4f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iAKxJ6ZS"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ad1b42d7ea7so30706266b.2
-        for <imx@lists.linux.dev>; Fri, 09 May 2025 09:07:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746806855; x=1747411655; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O1aSEKZ9GPjDBpZIq0+eebFymFhGTQv6JnpJUamgLSU=;
-        b=iAKxJ6ZSmn79On66HtLVAMD37UTeU0vptZ+WNUYIIXjzJxqcFO9LVPgTMmbuOWoAu5
-         CWLDIUzFzigyHOMiWp9w4LGEqFKOHqcxBSCQSFCG1DSG778MybZB/W7MundY7M8SC776
-         Y3sLxDtml9AClEWH/o1DO+PFqG8tMhmL8ArZvveMAvLYcG2hWJPol+Ka5k5lXwn9RYG0
-         vjP/gyFX882Te50nVM2/f+4h3y8VUej5k+uAWBAfM+iEH80E0+yKb8wqWl4b626j4UQi
-         4pSQkWSk5gNxQ0d9T9UHawxJiUj9/mIXHVOlXKaB7ZuP6n/mDuOzaYg28XBiohiiI5lb
-         4+fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746806855; x=1747411655;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O1aSEKZ9GPjDBpZIq0+eebFymFhGTQv6JnpJUamgLSU=;
-        b=KhS3Ycxs4FCIiC5mriEgPZA9hi7CH/kEovIbQALdalKEWwl486Qbg/5490MUFrsdNb
-         fo3pkrIk/yuoanzK39Thtz+HEtgkSF0MmheI+7yTb5x9+GKvhT3zUlWJBqhK4+xUK1FQ
-         k4/E3Oq8w96YzKx8iRLYrN1Yu/jHjlgB5ajeFYX3lclmtEX633gFdwbR1AxKlmhcwDHj
-         f1bkGiURo1dwqIl7JDDMw8CWGBboXaM3dvvpb6LHB9EcJQF+/WI/I1YkuzIrG0o+pGgb
-         zrIhD5zthPPnMFDoXJ7KV9arZETuxApUf6VehY1aXOxxMy7Z4E2xKujPFnRtK5nDiJOo
-         itNA==
-X-Forwarded-Encrypted: i=1; AJvYcCXsCXQQeR2no0lSrCZdzjXry1yqe3X3j0nL9B1ufCNj4XOxeIsj77P1iKuA4CBWFykla88=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzKIdskbYKbnXStwNUvD2yCPVOOZ3oN6ySg8MO1RszrXyAEWH0B
-	UraOj79wEG0t2hEcDMWtvWNK49k0XPy7aLHgzCxczBXwF+b9+mkh
-X-Gm-Gg: ASbGnctWjZ5YEO+rDyziaYFo4YXOKYJaliXWl1Safc0i8o3UinuL329+ZTjxhtRTRRp
-	4HnfnxALgkZ82CT2hUm4DFdLYC+KBWphnvMiko2vbjlj+Mmy8VMiNB0FoOmxtBdg6jpLJ/sFmBF
-	clGH+Zb2MIfJVgrlrpdgOomZnoon459eI6r2Q2aP3Axpd1himNKB7mSJ6OzWba8mqy4+ynmSp7i
-	8D12KJ0ZbL9qDWSzd/QcVvOSCpf4/KXfDcm2OYRMFnR+CvDdWNlA0OYFJjdYI3H7HlWkBcbAk2z
-	P/TC942imRYvPExfv553YL3ZmxDn
-X-Google-Smtp-Source: AGHT+IFfblZ5zyybW8Zc1JXlu3gaLC6XU1AeC2AshGGFeE3SDeA+ieQda1+l7upR9+VJ3d7Jl2trlg==
-X-Received: by 2002:a17:906:84ef:b0:ad1:e9fb:e78 with SMTP id a640c23a62f3a-ad219121b47mr132183266b.10.1746806854983;
-        Fri, 09 May 2025 09:07:34 -0700 (PDT)
-Received: from skbuf ([188.25.50.178])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad22562ed61sm84950466b.31.2025.05.09.09.07.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 May 2025 09:07:34 -0700 (PDT)
-Date: Fri, 9 May 2025 19:07:31 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: James Clark <james.clark@linaro.org>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fjckqt4f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95B4C4CEE4;
+	Fri,  9 May 2025 16:25:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746807948;
+	bh=pWBgsTEX8GV7+i3t+seP0AVeCM2U+ftwb9bTfHMqsr4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fjckqt4ff3yPZ9Z10wyhN9E27yWp8UPgNgf6MpU6+T/JD774nJHwwYaNW4sDl/SIv
+	 tfg1KoT010YGjS4DsOoZ9apCkuuoMfDPErP3HTTF2W39sCgP4tBvFreluPtO5wau4d
+	 2uhFEKXxRJl3DYzqRfZYf6lOtv1XFS4TpcbM+wktnwpetlf4PeuLGT6Bkqc9DgfxTi
+	 QgdakWKRAagwX8iDrcCZy7OUbgA0CasETjjnktKwlZ1fLZ3yogIzz/V+0gl87d4Nrh
+	 B1JmU4CKusHRWfFkwq077jjNOpgz//HQO7ovyXp1sTub4/91Pzypmi9kQQJEqm1NwS
+	 oaDsGvN7jKTFA==
+Date: Fri, 9 May 2025 11:25:46 -0500
+From: Rob Herring <robh@kernel.org>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	linux-amarula@amarulasolutions.com, Abel Vesa <abelvesa@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Michael Turquette <mturquette@baylibre.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, larisa.grigore@nxp.com,
-	arnd@linaro.org, andrei.stefanescu@nxp.com,
-	dan.carpenter@linaro.org, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 02/14] spi: spi-fsl-dspi: Re-use one volatile regmap for
- both device types
-Message-ID: <20250509160731.wibhaumyialjloz3@skbuf>
-References: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
- <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
- <20250509-james-nxp-spi-v1-2-32bfcd2fea11@linaro.org>
- <20250509-james-nxp-spi-v1-2-32bfcd2fea11@linaro.org>
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org
+Subject: Re: [PATCH v12 16/19] dt-bindings: clock: imx8m-clock: add PLLs
+Message-ID: <20250509162546.GA3704130-robh@kernel.org>
+References: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com>
+ <20250424062154.2999219-17-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -88,69 +53,82 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250509-james-nxp-spi-v1-2-32bfcd2fea11@linaro.org>
- <20250509-james-nxp-spi-v1-2-32bfcd2fea11@linaro.org>
+In-Reply-To: <20250424062154.2999219-17-dario.binacchi@amarulasolutions.com>
 
-On Fri, May 09, 2025 at 12:05:49PM +0100, James Clark wrote:
-> max_register overrides anything in the volatile ranges, so we can get
-> away with sharing the same one for both types. In a later commit we'll
-> add more devices and also read/write ranges which also override volatile
-> ranges so this avoids adding even more duplication.
+On Thu, Apr 24, 2025 at 08:21:46AM +0200, Dario Binacchi wrote:
+> Though adding the PLLs to clocks and clock-names properties will break
+> the ABI, it is required to accurately describe the hardware. Indeed,
+> the Clock Control Module (CCM) receives clocks from the PLLs and
+> oscillators and generates clocks for on-chip peripherals.
 > 
-> No functional changes.
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
-> Signed-off-by: James Clark <james.clark@linaro.org>
 > ---
->  drivers/spi/spi-fsl-dspi.c | 15 ++-------------
->  1 file changed, 2 insertions(+), 13 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 31ea8ce81e98..cb0e55a49eea 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -141,6 +141,7 @@ static const struct regmap_range dspi_volatile_ranges[] = {
->  	regmap_reg_range(SPI_MCR, SPI_TCR),
->  	regmap_reg_range(SPI_SR, SPI_SR),
->  	regmap_reg_range(SPI_PUSHR, SPI_RXFR3),
-> +	regmap_reg_range(SPI_SREX, SPI_SREX)
-
-Same idea, don't take the review tag as a sign that I don't have any
-change request here.
-
->  };
+> (no changes since v11)
+> 
+> Changes in v11:
+> - Fix conflict while rebasing on master
+> 
+> Changes in v7:
+> - Add 'Reviewed-by' tag of Krzysztof Kozlowski
+> 
+> Changes in v6:
+> - New
+> 
+>  .../bindings/clock/imx8m-clock.yaml           | 27 ++++++++++++++-----
+>  1 file changed, 21 insertions(+), 6 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> index 4fec55832702..e83f08abd44c 100644
+> --- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> +++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
+> @@ -29,12 +29,12 @@ properties:
+>      maxItems: 2
 >  
->  static const struct regmap_access_table dspi_volatile_table = {
-> @@ -148,18 +149,6 @@ static const struct regmap_access_table dspi_volatile_table = {
->  	.n_yes_ranges	= ARRAY_SIZE(dspi_volatile_ranges),
->  };
->  
-> -static const struct regmap_range dspi_xspi_volatile_ranges[] = {
-> -	regmap_reg_range(SPI_MCR, SPI_TCR),
-> -	regmap_reg_range(SPI_SR, SPI_SR),
-> -	regmap_reg_range(SPI_PUSHR, SPI_RXFR3),
-> -	regmap_reg_range(SPI_SREX, SPI_SREX),
-> -};
-> -
-> -static const struct regmap_access_table dspi_xspi_volatile_table = {
-> -	.yes_ranges	= dspi_xspi_volatile_ranges,
-> -	.n_yes_ranges	= ARRAY_SIZE(dspi_xspi_volatile_ranges),
-> -};
-> -
->  enum {
->  	DSPI_REGMAP,
->  	DSPI_XSPI_REGMAP,
-> @@ -179,7 +168,7 @@ static const struct regmap_config dspi_regmap_config[] = {
->  		.val_bits	= 32,
->  		.reg_stride	= 4,
->  		.max_register	= 0x13c,
-> -		.volatile_table	= &dspi_xspi_volatile_table
-> +		.volatile_table	= &dspi_volatile_table
->  	},
->  	[DSPI_PUSHR] = {
->  		.name		= "pushr",
-> 
-> -- 
-> 2.34.1
-> 
+>    clocks:
+> -    minItems: 6
+> -    maxItems: 7
+> +    minItems: 7
 
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Increasing the minimum entries looks like an ABI break to me. The .dts 
+files not being in linux-next confirms that (from 0 warnings in 
+mainline):
+
+arch/arm64/boot/dts/freescale:859:50
+    122  clock-controller@30380000 (fsl,imx8mm-ccm): clock-names: ['osc_32k', 'osc_24m', 'clk_ext1', 'clk_ext2', 'clk_ext3', 'clk_ext4'] is too short
+    120  clock-controller@30380000 (fsl,imx8mp-ccm): clock-names: ['osc_32k', 'osc_24m', 'clk_ext1', 'clk_ext2', 'clk_ext3', 'clk_ext4'] is too short
+     61  clock-controller@30360000 (fsl,imx8mm-anatop): 'clocks' is a required property
+     61  clock-controller@30360000 (fsl,imx8mm-anatop): 'clock-names' is a required property
+     60  clock-controller@30360000 (fsl,imx8mp-anatop): 'clocks' is a required property
+     60  clock-controller@30360000 (fsl,imx8mp-anatop): 'clock-names' is a required property
+     36  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[35], [36], [37], [38], [39], [40]] is too short
+     36  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[24], [25], [26], [27], [28], [29]] is too short
+     32  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[34], [35], [36], [37], [38], [39]] is too short
+     28  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[22], [23], [24], [25], [26], [27]] is too short
+     26  clock-controller@30380000 (fsl,imx8mn-ccm): clock-names: ['osc_32k', 'osc_24m', 'clk_ext1', 'clk_ext2', 'clk_ext3', 'clk_ext4'] is too short
+     17  clock-controller@30360000 (fsl,imx8mq-anatop): 'clocks' is a required property
+     17  clock-controller@30360000 (fsl,imx8mq-anatop): 'clock-names' is a required property
+     14  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[44], [45], [46], [47], [48], [49]] is too short
+     14  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[23], [24], [25], [26], [27], [28]] is too short
+     13  clock-controller@30360000 (fsl,imx8mn-anatop): 'clocks' is a required property
+     13  clock-controller@30360000 (fsl,imx8mn-anatop): 'clock-names' is a required property
+     12  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[26], [27], [28], [29], [30], [31]] is too short
+     10  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[38], [39], [40], [41], [42], [43]] is too short
+      8  clock-controller@30380000 (fsl,imx8mn-ccm): clocks: [[22], [23], [24], [25], [26], [27]] is too short
+      8  clock-controller@30380000 (fsl,imx8mn-ccm): clocks: [[20], [21], [22], [23], [24], [25]] is too short
+      8  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[34], [35], [36], [37], [38], [39]] is too short
+      8  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[28], [29], [30], [31], [32], [33]] is too short
+      8  bcrmf@1 (brcm,bcm4329-fmac): $nodename:0: 'bcrmf@1' does not match '^wifi(@.*)?$'
+      6  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[41], [42], [43], [44], [45], [46]] is too short
+      6  clock-controller@30380000 (fsl,imx8mn-ccm): clocks: [[24], [25], [26], [27], [28], [29]] is too short
+      4  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[43], [44], [45], [46], [47], [48]] is too short
+      4  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[40], [41], [42], [43], [44], [45]] is too short
+      4  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[36], [37], [38], [39], [40], [41]] is too short
+      4  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[35], [36], [37], [38], [39], [40]] is too short
+
+Please fix the binding or drop what's been applied so far.
+
+Rob
+
