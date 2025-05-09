@@ -1,66 +1,66 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F36C28F937
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 11:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AE4291157
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 11:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746788829; cv=none; b=j2+Qaklo0rHcKRVd29ilhHq5HgLs6tji2dxSisRGyTngfmAMi6F+RwiJskDWk12BXl/rwfL8EFkgJGv9FTh7UNj10fJABvray/SxLoIFIbgadBbFMkyDsABMmA00vUrvRsq12ag5SdIpQE/3afGsk3kBHmO2Ox0+SgHcRYgMgMY=
+	t=1746788831; cv=none; b=m58oJWCx5CdV90NVwVyBIVqorOXotByr/tTGUnjikk0zDciXihVfzfpCgOJ5i6mpCSZPjLoMlhkPopYtjcjKifKfPJtYO8gOs7KO+K7hU8FsyknVm4pd7J2ihCvoa8co4gmDtqyaxV9HXpHuQUEH9eGph4BinGlqhZPVhesZexc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746788829; c=relaxed/simple;
-	bh=Wzbi1SX9mtAF2E7Mjcw8XjP0xTVKnkUioAGI/9ufBe8=;
+	s=arc-20240116; t=1746788831; c=relaxed/simple;
+	bh=S/bLVRCZo0bzcqIxKXf/hzh5QW5OR0CMl07vRP4K15U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=f5ImUw+L92EtBtq4UYwHdcN/6XOUEvcuq+fuOdHRJsP7CvJBsYfSfLiUP8T2FoS9RPg/zD+cW5G7daVgYKBxzoxoQ7z7CoSx+TdOCDc/yIpPgrHALv3CtrEmQefaq1pFo0FZ1ycaSAEecdPmYrWOPNCsoxpGntIO2KgnAnf/NvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DHq8k/hI; arc=none smtp.client-ip=209.85.221.54
+	 In-Reply-To:To:Cc; b=L4bq2vece91K+obNO3oSccAJUmLB3kJ4H14QuBlj7w4f3jTVL36LY+KnsBoyYD2Ws7N6m5E4XLx46td+qzVnLiJLCkry1veSKQT9o7riCyyoVj03lsUoy4fUfxCVBoO+n+wceOxRlYXNnA6V9Q2BW89aRIjBvLJVzKJNg88Jzuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I7pY1mDK; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DHq8k/hI"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3995ff6b066so1099115f8f.3
-        for <imx@lists.linux.dev>; Fri, 09 May 2025 04:07:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I7pY1mDK"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a0b9af89f2so1154852f8f.3
+        for <imx@lists.linux.dev>; Fri, 09 May 2025 04:07:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746788826; x=1747393626; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1746788827; x=1747393627; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=X9YN8+8rnHDsp/b09Y/xOR9H3TlYqB2jpDQsHdPnIdk=;
-        b=DHq8k/hIHQnOqRtCNAskx/UhOaJprRaZ4X6tfTl8GIA/oPPPQsM2owyGh4JeFoKcd/
-         DVtB6fpU1eEDmYuniwecFZpShemxfet/ce841U9vMObXsuf+NN8d+/5n9M40V4Akw4Ru
-         PN044Wa47Gx6v15Z/mCGELqSYm94DsatP1AnKFcciA9/99oZ/iF7hy4DnI1YNX0qpTFK
-         nsd6utM3cUGLXUQH0tGxwdueq6cBCNd+Y1Noglp1LWFc40shW5aGs3Dj5pap/qmlz7v0
-         9Y+HnvDlD7I44i/eicvG3PVuftIi4l7fUoLOZJd4ohi0MMZ7hv5BAYRVLp8YLhACyESr
-         w2GA==
+        bh=fEyehrM+Fx4o61r/yR0u4BgsTY9lmtx/SKx/NBJ8aCc=;
+        b=I7pY1mDKp/kLPCjkBkGr5PMY4Vm7bL+4ztaX5JnjaBhlp0qEgYBX2YmyZZMzbm1t0p
+         fpd3R/0aXwf0Pdg6V/JEWCAng+PHrnCrtPqBIZNOYDTO154054ZtnJes/G7qOGChUpMI
+         GPFsekAJUYOlvqk4hH7eds+3XCH53Ix+dL1MPlIVnel92snXc5k06ocG0tl4euvKekyT
+         6ayV2NhcDuiDOr6Kn8G52d66NQVCcX23vNFsr/DpO6qEElUg2X2obJnbNXy8fVWM39cf
+         SxbCNga/py0MRE63dMPjN20Civ68/52QQv2MgJV41LX2QFd3yJWJIW/EHpRzZko32wew
+         Xoaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746788826; x=1747393626;
+        d=1e100.net; s=20230601; t=1746788827; x=1747393627;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=X9YN8+8rnHDsp/b09Y/xOR9H3TlYqB2jpDQsHdPnIdk=;
-        b=qlr0jUeVSbw5fcZIed2R5WMa8FRWSmPE5W6yNvzgdRKkr78i1HrBJWS7xeGB8Ad1hL
-         fEzL9ngg4Aqq+BjJNDHE3c17R/NWM1dhQ1uLT2EWfLtghE2hZq2U4BE87CWQy1XJK6d6
-         M0AKueQp1sxVbdYE4ScLNBvKg0Jblh2eOZFD1f1l5tk6Cx5Ty/yliEMZxFsY954ZCSjN
-         DCjggQaz+P25zN4ORpflCdJ80iEBWS+kzx68CectZ/hPONyTTorz+sesU2BGNsy1mCjO
-         6DhlH+XG7dSfjEpXeSg7eO4D7uTJHVqlqGlb9CGqOEUfK0lqoCe9cz14wgcKzefJwtlp
-         Fpwg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHN6tO/v9DA2b54q3ODWKGPD+HgSifEkcoM2nPc2mi6eXCd4ioWOX5N61nOro1bC2UZI8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxevRkE+96npObCbgWLnSMfmtqi3F3TqvnxQbjJb4fp78VFVXN1
-	HhorJ9fUcB8r5pULLS9q9qLOlgM0Rg0y/qakrv9MD+KC8MkRdl7fIdOXlfH+DAs=
-X-Gm-Gg: ASbGncuooSu02bkaixiQE1wlDwZ8P9HEP9J4xCAwdi0zH3jUToW8gherWL3C8AUtbWd
-	0ZKxw3s4xYWi0+CT6nZo0tN6HSlwh2//R94CgZBPxqfOZrIOX3rzLPIzfF6zjkNLq8UgkeErqTm
-	l4Y6uq+3M3wpQVIOGwhKRoBzONxP/47HVOMGvTvuDxYva2nZSNVSyZ4TPIQQCUvFOF+KJYWuBjt
-	ynu/r+6RQZ3Fy7qe76CX0qqyCtCewTtQdM8A5JfDm/fIKdfsvOh1iGWS5MvB0V28vwl4T0RoqzP
-	o+ItC4ExxHBudmad/2cKbz52asT0WJqF8YPmm1Y/yJjrT4A=
-X-Google-Smtp-Source: AGHT+IGTcDbYuLQC5gOTqBLxhDeYoC8oTLnNT0OALiU2xxGu34CRv1e+8uSkOAx/4GXBO/mVq1Dayg==
-X-Received: by 2002:a5d:584b:0:b0:3a1:f635:1136 with SMTP id ffacd0b85a97d-3a1f6487d80mr2603233f8f.28.1746788825706;
-        Fri, 09 May 2025 04:07:05 -0700 (PDT)
+        bh=fEyehrM+Fx4o61r/yR0u4BgsTY9lmtx/SKx/NBJ8aCc=;
+        b=T2HtmkND4iGdvVoLCC/4aoTWV2HEwit6knq3vnryav/ttSobLyDiIr2qLKEitN14+o
+         4ZOEpc65dyr6S2TRmX+ON+xU+zWSpivVVnsCVIHS6PlhNzd3J9kY1CyNnfUzrW8BU/1s
+         Lisqncwhj1bkUAGB9REDHc5wmOKdR24v463ze9Uk/zTDyBGfB0SyvkiBmMamWkiswxtK
+         TxAsT02SrJqwz4csqqyj7etE4zjQJ5hbA/7bpGsSNIYGKkwrPaZ40GWTBJYk4R5MfNWQ
+         BXW6YCbTNG9yWoy7wAokaM2tX2MMNpqkcZ6ewJH0vTB1awk0Xzmq/QHS83h+raJXd1q/
+         D7Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCWC5vw11NdoCDmEZ1nFeaCnVg81bK0s9DAWUHaa3Ceexxq3g2L9L6+U+1RtESrOolIgvHU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy93BrQkg35KgjsyAIooqRbIIN1sTj769PDAb+K783KB4DWxCp+
+	l46wQRd6c7f54NE11im15eVHeiRvxltiywoaKEqgTtqSer51F0J5H4mfQiZRAfY=
+X-Gm-Gg: ASbGncsXl3Af6eJvCxqY0UdGJd6RaNCpfUpXG+GIqjMLYnyEu6+hHdBBhhKci7fNxbO
+	xLeZwr3jOArSGBR5x1gwAu7s/zoppGOxgSSte3Z9w4W8mU5Iq/15y2GNmDuSGRn8oKB+i+9tr2w
+	kO5U0jtpT3DAKptIsO+TPtiK2Tdr2Dj0kdtQmNh9ypMz9BO5M5v61EIZcjlmp0GtjeBNrZ6H4Iy
+	P2AcJdO01wd+EXGOekGhGVTYlfnXmD6Ok7dlp/qFZtWbou2wXhaf2+QdLuP0TZIopdDvzwYDjF0
+	gc2ONZ/xX+zG9zPfBiQpVlFWMf3tt/Jlvy32vDfmsc3jD5E=
+X-Google-Smtp-Source: AGHT+IEQntKAHHe5FBbl7TvKgw8FWGCOZDWYXdtRsViQGulRTo3e/GMO/aV0MJn1nNmDeMFHI32nUQ==
+X-Received: by 2002:a05:6000:2506:b0:3a0:a0e5:d28b with SMTP id ffacd0b85a97d-3a1f6421ecemr2453655f8f.3.1746788827070;
+        Fri, 09 May 2025 04:07:07 -0700 (PDT)
 Received: from ho-tower-lan.lan ([77.81.75.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58ecadfsm2914797f8f.22.2025.05.09.04.07.04
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58ecadfsm2914797f8f.22.2025.05.09.04.07.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 May 2025 04:07:05 -0700 (PDT)
+        Fri, 09 May 2025 04:07:06 -0700 (PDT)
 From: James Clark <james.clark@linaro.org>
-Date: Fri, 09 May 2025 12:05:55 +0100
-Subject: [PATCH 08/14] spi: spi-fsl-dspi: Use DMA for S32G controller in
- target mode
+Date: Fri, 09 May 2025 12:05:56 +0100
+Subject: [PATCH 09/14] spi: spi-fsl-dspi: Reinitialize DSPI regs after
+ resuming for S32G
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250509-james-nxp-spi-v1-8-32bfcd2fea11@linaro.org>
+Message-Id: <20250509-james-nxp-spi-v1-9-32bfcd2fea11@linaro.org>
 References: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
 In-Reply-To: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
 To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -84,99 +84,118 @@ To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
  andrei.stefanescu@nxp.com, dan.carpenter@linaro.org
 Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- Ciprian Marian Costea <ciprianmarian.costea@nxp.com>, 
- James Clark <james.clark@linaro.org>
+ linux-arm-kernel@lists.infradead.org, James Clark <james.clark@linaro.org>
 X-Mailer: b4 0.14.0
 
 From: Larisa Grigore <larisa.grigore@nxp.com>
 
-Switch to DMA for target mode otherwise the controller is too slow to
-feed TX FIFO and UNDERFLOW occurs frequently. DMA can work only with 8
-and 16 bits per word. 32bits per word is not supported, this is a
-hardware limitation, so we keep the controller mode in TCFQ mode.
+After resuming, DSPI registers (MCR and SR) need to be reinitialized for
+S32G platforms.
 
 Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
 Signed-off-by: James Clark <james.clark@linaro.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 73 +++++++++++++++++++++++++---------------------
+ 1 file changed, 40 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index b7363cfc649d..50cec3b94322 100644
+index 50cec3b94322..0613642d769d 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -137,7 +137,8 @@ enum {
- 	LX2160A,
- 	MCF5441X,
- 	VF610,
--	S32G
-+	S32G,
-+	S32G_TARGET
+@@ -1258,6 +1258,39 @@ static const struct of_device_id fsl_dspi_dt_ids[] = {
  };
+ MODULE_DEVICE_TABLE(of, fsl_dspi_dt_ids);
  
- static const struct regmap_range dspi_yes_ranges[] = {
-@@ -182,6 +183,7 @@ static const struct regmap_access_table dspi_volatile_table = {
- 
- enum {
- 	DSPI_REGMAP,
-+	S32G_DSPI_REGMAP,
- 	DSPI_XSPI_REGMAP,
- 	S32G_DSPI_XSPI_REGMAP,
- 	DSPI_PUSHR
-@@ -197,6 +199,15 @@ static const struct regmap_config dspi_regmap_config[] = {
- 		.wr_table	= &dspi_access_table,
- 		.rd_table	= &dspi_access_table
- 	},
-+	[S32G_DSPI_REGMAP] = {
-+		.reg_bits	= 32,
-+		.val_bits	= 32,
-+		.reg_stride	= 4,
-+		.max_register	= 0x8C,
-+		.volatile_table	= &dspi_volatile_table,
-+		.wr_table	= &s32g_dspi_access_table,
-+		.rd_table	= &s32g_dspi_access_table,
-+	},
- 	[DSPI_XSPI_REGMAP] = {
- 		.reg_bits	= 32,
- 		.val_bits	= 32,
-@@ -294,6 +305,12 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
- 		.max_clock_factor	= 1,
- 		.fifo_size		= 5,
- 		.regmap			= &dspi_regmap_config[S32G_DSPI_XSPI_REGMAP]
-+	},
-+	[S32G_TARGET] = {
-+		.trans_mode		= DSPI_DMA_MODE,
-+		.max_clock_factor	= 1,
-+		.fifo_size		= 5,
-+		.regmap			= &dspi_regmap_config[S32G_DSPI_REGMAP]
- 	}
- };
- 
-@@ -350,6 +367,12 @@ struct fsl_dspi {
- 	void (*dev_to_host)(struct fsl_dspi *dspi, u32 rxdata);
- };
- 
-+static bool is_s32g_dspi(struct fsl_dspi *data)
++static int dspi_init(struct fsl_dspi *dspi)
 +{
-+	return data->devtype_data == &devtype_data[S32G] ||
-+	       data->devtype_data == &devtype_data[S32G_TARGET];
++	unsigned int mcr;
++
++	/* Set idle states for all chip select signals to high */
++	mcr = SPI_MCR_PCSIS(GENMASK(dspi->ctlr->max_native_cs - 1, 0));
++
++	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
++		mcr |= SPI_MCR_XSPI;
++	if (!spi_controller_is_target(dspi->ctlr))
++		mcr |= SPI_MCR_HOST;
++
++	regmap_write(dspi->regmap, SPI_MCR, mcr);
++	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
++
++	switch (dspi->devtype_data->trans_mode) {
++	case DSPI_XSPI_MODE:
++		regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_CMDTCFE);
++		break;
++	case DSPI_DMA_MODE:
++		regmap_write(dspi->regmap, SPI_RSER,
++			     SPI_RSER_TFFFE | SPI_RSER_TFFFD |
++			     SPI_RSER_RFDFE | SPI_RSER_RFDFD);
++		break;
++	default:
++		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
++			dspi->devtype_data->trans_mode);
++		return -EINVAL;
++	}
++
++	return 0;
 +}
 +
- static void dspi_native_host_to_dev(struct fsl_dspi *dspi, u32 *txdata)
+ #ifdef CONFIG_PM_SLEEP
+ static int dspi_suspend(struct device *dev)
  {
- 	switch (dspi->oper_word_size) {
-@@ -1398,6 +1421,9 @@ static int dspi_probe(struct platform_device *pdev)
- 		dspi->pushr_tx = 0;
- 	}
- 
-+	if (spi_controller_is_target(ctlr) && is_s32g_dspi(dspi))
-+		dspi->devtype_data = &devtype_data[S32G_TARGET];
+@@ -1284,6 +1317,13 @@ static int dspi_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 	spi_controller_resume(dspi->ctlr);
 +
- 	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
- 		ctlr->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
- 	else
++	ret = dspi_init(dspi);
++	if (ret) {
++		dev_err(dev, "failed to initialize dspi during resume\n");
++		return ret;
++	}
++
+ 	if (dspi->irq)
+ 		enable_irq(dspi->irq);
+ 
+@@ -1293,39 +1333,6 @@ static int dspi_resume(struct device *dev)
+ 
+ static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
+ 
+-static int dspi_init(struct fsl_dspi *dspi)
+-{
+-	unsigned int mcr;
+-
+-	/* Set idle states for all chip select signals to high */
+-	mcr = SPI_MCR_PCSIS(GENMASK(dspi->ctlr->max_native_cs - 1, 0));
+-
+-	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
+-		mcr |= SPI_MCR_XSPI;
+-	if (!spi_controller_is_target(dspi->ctlr))
+-		mcr |= SPI_MCR_HOST;
+-
+-	regmap_write(dspi->regmap, SPI_MCR, mcr);
+-	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
+-
+-	switch (dspi->devtype_data->trans_mode) {
+-	case DSPI_XSPI_MODE:
+-		regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_CMDTCFE);
+-		break;
+-	case DSPI_DMA_MODE:
+-		regmap_write(dspi->regmap, SPI_RSER,
+-			     SPI_RSER_TFFFE | SPI_RSER_TFFFD |
+-			     SPI_RSER_RFDFE | SPI_RSER_RFDFD);
+-		break;
+-	default:
+-		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
+-			dspi->devtype_data->trans_mode);
+-		return -EINVAL;
+-	}
+-
+-	return 0;
+-}
+-
+ static int dspi_target_abort(struct spi_controller *host)
+ {
+ 	struct fsl_dspi *dspi = spi_controller_get_devdata(host);
 
 -- 
 2.34.1
