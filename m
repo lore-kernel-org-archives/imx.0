@@ -1,136 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC8A28ECEF;
-	Fri,  9 May 2025 12:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A2F290BA2
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 12:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746794363; cv=none; b=q/PcjsQyI5xgTi3qI8mg+pmTbc5wHaglsQvqM/eevWQgq7vSDDOU8CC24LBti+uBzf+EsU8UwBZeeusgF0KvUp52joqf56rV7WL/y+NJeb5gYT+5LnDOYXPXJgA/O9SFd73MmE8mm3kVdpgj6+kfBMpkpBP4adeR7vMhpzW/6r4=
+	t=1746794613; cv=none; b=mNLlpPla5fSiJ44KcW1wo05fYHTT5s/u9P8vzj4JdtZ+Yp6xLyNSgv7vQSw+kJI3gKjtqD5wvWatrcIPv/xuN+QCSu0lQet60aUkblHH42WPSVBRTouHY6oVavCpPPvv0+iFVMs/JqAJJG+XEVcmzo3hm7w6rfakdf9pH/v6+Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746794363; c=relaxed/simple;
-	bh=cUmOxOaE52FoEMZHnlv9RgRXtpWQx9C474WJO5+AbhI=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=Gs/ZNPyjo5wKBbNEA+rvuUXM93+eAqvm0P82hywkBzMhYEEvgNqzvDR3K465aV2FUUKR5m+U//ZR5ByGFygb8+GqerTae5QRh4yjLUqVO2fWnHHv56WC1dkBF8dpl38JvixOUpMnosJ/IkYGLIrHVNr/T1Mg0khUtOe27P8IfCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aoVtvlTu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746794613; c=relaxed/simple;
+	bh=dBq5NjX3jmgg7se5CJ/Fx1O2rSIBfOC+Pwzh4kwEhtc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=udDpFO1Jc7CMeNnp/wuEH+UPcxJZuGWuK55x9UuWsc98Z3a+Uawdakx771bQMx21nhHY66SfnUdF5D9aAQb5NEEslNmbF1Us8Yhzmeu7XVzfGkW7MF9sAD+W1FnEIsLa9Zf3qG60i7Cc5amfdXSV1s/6twpA0LDoGhghqR9sv+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=nXCzkGCz; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aoVtvlTu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B1EC4CEE4;
-	Fri,  9 May 2025 12:39:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746794363;
-	bh=cUmOxOaE52FoEMZHnlv9RgRXtpWQx9C474WJO5+AbhI=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=aoVtvlTuC0s5AXOpQUKBtQ6yf+hLFn13+wVmG4Ziw/fDORTVFrT/C0zYquWy85qIp
-	 B4xH6BwW9XjV9rRSfHEIQ3eoW8fFcCii/0OKUSW+bNWabOHJKMksHNH6wj/hNF6SY8
-	 PEA0Kr4Wsd5kwW+N32yuKFiIdfWkcI1qQp/C5lCqqY9BqhqdcNfGHQ6riC1ZSkjgrH
-	 a5YUXYTpR4/X6ZN8CyCOpiN2yUkfsBq1V+IIg+eZ7Wkw/SpiBuRD5tHOszn6PhHN3v
-	 WL46kn7Xr6u8dwz3LtWzJfhhGcuFIJotbut+F3z6rPpKqbLTtX90JZlPycF/yRfBw2
-	 iFNTlW20BHNRA==
-Date: Fri, 09 May 2025 07:39:21 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="nXCzkGCz"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-70a2d8a8396so18232727b3.3
+        for <imx@lists.linux.dev>; Fri, 09 May 2025 05:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1746794610; x=1747399410; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wk+PX1t5YjNrLbu3fw7I3HTDSpUrF4EYuLzp9K2iLrw=;
+        b=nXCzkGCzf7V1TKuzkdph0zKa+NdlMoI9zDNxpiCZ5wiVv0DrkgtMi0Z05kJfrgxB4j
+         0BCHp2QfNtWoX5zQIJeoqsNjr4DT8pVkUnX0YVQaRZrinj/I3ha6OArLLvDBWn6Ys4ye
+         1uRQLczm+2QiUBb90d1/Q408QCi9LTAYu66fs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746794610; x=1747399410;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wk+PX1t5YjNrLbu3fw7I3HTDSpUrF4EYuLzp9K2iLrw=;
+        b=xSzKS4UJiZQetq+/i4io0E6ZVSU+TYQXvv4B1IVDEwPi9iVKAdQ5AjzyFpxgUa6RNs
+         t+04tYBndmA8M9A0KOcLy8n151CtiWBTqHFyNcR6QV3gvrTtmeRNg6JbC97nnIMVHcAG
+         BNAWE2kbY3L+uNlESqz0XQx0NNHkQV8IPIVMROpK2uXh00opOICIuQ4Sy1zOMFGu5lXq
+         /1ypTSNI37wxza1rexOXALs6Pb1PlFHVXjT0ii7cbOm6ixC+1aOuj35B0dqZNvHHeDyT
+         mJ54b10KoQsQE80teNrwvtF8n0zAXugGoU/g1rbsfD69IbpIqcxpBspSB/OB+BG8fNj4
+         iaPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzdy2Im83FrpiDT6S+YMp7Bw6D26LqIb/iKo0AXeFllqPeEvEE67Rnc+F/NTH9t0e+eDc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxlLgCATcJGuptIW0QzQ6KBAbZQImt32WwJt58Gs5of/9otd0P5
+	syMBqfds3tbDU4HLGnFFeh27dvLLgPUC33H8cMvHYF0cUC3fOaAKHl69rhRDSC0pjXJt7wCAf/O
+	kcrTiiCdPhee4+2l6QE/KzfQ0wNfJ0ejRda3Lgw==
+X-Gm-Gg: ASbGnctf/eQDqBszXIoj+hQYW7mca8sCw/3vtodofcWZODPAKXoVGtsLNMfhQ5CAfZV
+	VZoHMCpT9r2VloNLmTMN2w0e+tsa8QaIwvzhYz089BYZqnhpnSS/elp8ENLz3YPuPp/+/JINkcC
+	0YEyj8tfh4/vuVg6Fglw==
+X-Google-Smtp-Source: AGHT+IFrjZ49BKORpGjnuIsEC44rpN9s+TBJde8pml0KWAikxDuw2695c1SnudEFBoIfDQFFwneLL6Ms7ZC7MJFaDXI=
+X-Received: by 2002:a05:690c:4587:b0:703:ace3:150a with SMTP id
+ 00721157ae682-70a3fb605e9mr40252827b3.34.1746794610485; Fri, 09 May 2025
+ 05:43:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Teresa Remmet <t.remmet@phytec.de>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Fabio Estevam <festevam@gmail.com>, 
- Yashwanth Varakala <y.varakala@phytec.de>, linux-kernel@vger.kernel.org, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Benjamin Hahn <b.hahn@phytec.de>, upstream@lists.phytec.de, 
- Jan Remmet <j.remmet@phytec.de>, imx@lists.linux.dev, 
- Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
-To: Yannic Moog <y.moog@phytec.de>
-In-Reply-To: <20250507-wip-y-moog-phytec-de-imx95-libra-v1-0-4b73843ad4cd@phytec.de>
-References: <20250507-wip-y-moog-phytec-de-imx95-libra-v1-0-4b73843ad4cd@phytec.de>
-Message-Id: <174679427817.2814201.3015231739636256872.robh@kernel.org>
-Subject: Re: [PATCH 0/2] Add new imx imx95-libra-rdk-fpsc SBC
+References: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com>
+ <174643143452.2950397.16722215892279685541.b4-ty@linaro.org>
+ <CABGWkvrkVLRocFsZs9JLni4KDZCDyYDZxMzwA9AzAwipmUyTzQ@mail.gmail.com> <aB3unsCzCFUkdp9i@dragon>
+In-Reply-To: <aB3unsCzCFUkdp9i@dragon>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date: Fri, 9 May 2025 14:43:19 +0200
+X-Gm-Features: AX0GCFvVFue8wdjYB0ISSFwk7W4pX-EIs3Ikr6iut0B47FJnqLkddmDVofMWjCc
+Message-ID: <CABGWkvqfyH=dcuw6EDZaFVVebj8SZhJF0P944+mmzL5YK3-Pug@mail.gmail.com>
+Subject: Re: (subset) [PATCH v12 00/19] Support spread spectrum clocking for
+ i.MX8M PLLs
+To: Shawn Guo <shawnguo2@yeah.net>
+Cc: Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@nxp.com>, Stephen Boyd <sboyd@kernel.org>, linux-amarula@amarulasolutions.com, 
+	Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
+	Abel Vesa <abel.vesa@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, May 9, 2025 at 2:02=E2=80=AFPM Shawn Guo <shawnguo2@yeah.net> wrote=
+:
+>
+> On Thu, May 08, 2025 at 10:32:10AM +0200, Dario Binacchi wrote:
+> > Hello Shawn,
+> >
+> > On Mon, May 5, 2025 at 9:52=E2=80=AFAM Abel Vesa <abel.vesa@linaro.org>=
+ wrote:
+> > >
+> > >
+> > > On Thu, 24 Apr 2025 08:21:30 +0200, Dario Binacchi wrote:
+> > > > This version keeps the version v9 patches that can be merged and
+> > > > removes the patches that will need to be modified in case Peng's
+> > > > PR https://github.com/devicetree-org/dt-schema/pull/154 is accepted=
+.
+> > > > The idea is to speed up the merging of the patches in the series
+> > > > that have already been reviewed and are not dependent on the
+> > > > introduction of the assigned-clocks-sscs property, and postpone
+> > > > the patches for spread spectrum to a future series once it becomes
+> > > > clear what needs to be done.
+> > > >
+> > > > [...]
+> > >
+> > > Applied, thanks!
+> > >
+> > > [01/19] dt-bindings: clock: imx8mm: add VIDEO_PLL clocks
+> > >         commit: 20e5d201b5d8f830e702d7d183f6b1b246b78d8a
+> > > [02/19] clk: imx8mm: rename video_pll1 to video_pll
+> > >         commit: 26a33196b5b68cf199b6c4283a254aa92d2aaf4b
+> > > [03/19] dt-bindings: clock: imx8mp: add VIDEO_PLL clocks
+> > >         commit: 2d50415e2457c6f6621c2faa3b01b11150fb9c67
+> > > [04/19] clk: imx8mp: rename video_pll1 to video_pll
+> > >         commit: 21bb969f608cefd8d847cf6eb50a193d9f1fbb87
+> > > [05/19] dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
+> > >         commit: 2ba124053687c933031a6dc5b2e16ceaca250934
+> > > [10/19] clk: imx: add hw API imx_anatop_get_clk_hw
+> > >         commit: 17e3c1a272d97e49b4f3fbfe1f1b889e120d2be8
+> > > [11/19] clk: imx: add support for i.MX8MM anatop clock driver
+> > >         commit: 3cbc38cf42ca42d2dc9a93c949e0381ff919df71
+> > > [12/19] clk: imx: add support for i.MX8MN anatop clock driver
+> > >         commit: 80badb1d7264e83b512475898e7459f464a009c9
+> > > [13/19] clk: imx: add support for i.MX8MP anatop clock driver
+> > >         commit: 4c82bbe8b5437c7f16b2891ce33210c0f1410597
+> > > [14/19] clk: imx8mp: rename ccm_base to base
+> > >         commit: 1a77907dbbecfbe5e6a1aec28afd49a1dc184b7a
+> > > [16/19] dt-bindings: clock: imx8m-clock: add PLLs
+> > >         commit: 6a55647af3334f1d935ece67de4a838a864b53fc
+> > >
+> >
+> > Please check the remaining patches, as they are required for correctly
+> > building the
+> > ones merged by Abel. The kernel test robot has already reported build e=
+rrors.
+>
+> I assume the remaining patches are DTS ones?
+Yes
+> If so, I do not see how
+> clock drivers would require DTS change to build correctly.  Do you have
+> a pointer to the reported build errors?
+
+https://lore.kernel.org/oe-kbuild-all/202505090537.ss8RbFln-lkp@intel.com/
+
+DTC compilation fails. I think it's because of the patch
+[16/19] dt-bindings: clock: imx8m-clock: add PLLs
+which was merged without the corresponding DTS changes.
+
+Thanks and regards,
+Dario
+>
+> My understanding about the build dependency is the opposite, i.e. the
+> DTS changes require clock defines merged by Abel to build?  In that
+> case, I suggest Abel pick up the whole series with my ack on DTS changes.
+>
+> Acked-by: Shawn Guo <shawnguo@kernel.org>
+>
+> Alternatively, I can pick up the remaining patches after clock changes
+> land on mainline (the next -rc1).
+>
+> Shawn
+>
 
 
-On Wed, 07 May 2025 15:13:11 +0200, Yannic Moog wrote:
-> The Libra i.MX 95 is a SBC that consists of the Libra base board
-> and the phyCORE i.MX 95 FPSC SoM.
-> This series adds its binding and device trees.
-> 
-> ---
-> Yannic Moog (2):
->       dt-bindings: add imx95-libra-rdk-fpsc
->       arm64: dts: add imx95-libra-rdk-fpsc board
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml     |   7 +
->  arch/arm64/boot/dts/freescale/Makefile             |   1 +
->  .../boot/dts/freescale/imx95-libra-rdk-fpsc.dts    | 327 ++++++++++
->  .../boot/dts/freescale/imx95-phycore-fpsc.dtsi     | 656 +++++++++++++++++++++
->  4 files changed, 991 insertions(+)
-> ---
-> base-commit: 9bfe32fed9a8c17000f7cd6bc59ce8348aefe5e9
-> change-id: 20250415-wip-y-moog-phytec-de-imx95-libra-27c9ce555b91
-> 
-> Best regards,
-> --
-> Yannic Moog <y.moog@phytec.de>
-> 
-> 
-> 
+--=20
+
+Dario Binacchi
+
+Senior Embedded Linux Developer
+
+dario.binacchi@amarulasolutions.com
+
+__________________________________
 
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Amarula Solutions SRL
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+T. +39 042 243 5310
+info@amarulasolutions.com
 
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: using specified base-commit 9bfe32fed9a8c17000f7cd6bc59ce8348aefe5e9
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250507-wip-y-moog-phytec-de-imx95-libra-v1-0-4b73843ad4cd@phytec.de:
-
-arch/arm64/boot/dts/freescale/imx95-libra-rdk-fpsc.dtb: usb@4c200000 (fsl,imx95-usb): compatible: 'oneOf' conditional failed, one must be fixed:
-	['fsl,imx95-usb', 'fsl,imx7d-usb', 'fsl,imx27-usb'] is too long
-	'fsl,imx95-usb' is not one of ['fsl,imx27-usb']
-	'fsl,imx95-usb' is not one of ['fsl,imx23-usb', 'fsl,imx25-usb', 'fsl,imx28-usb', 'fsl,imx35-usb', 'fsl,imx50-usb', 'fsl,imx51-usb', 'fsl,imx53-usb', 'fsl,imx6q-usb', 'fsl,imx6sl-usb', 'fsl,imx6sx-usb', 'fsl,imx6ul-usb', 'fsl,imx7d-usb', 'fsl,vf610-usb']
-	'fsl,imx95-usb' is not one of ['fsl,imx8dxl-usb', 'fsl,imx8ulp-usb']
-	'fsl,imx95-usb' is not one of ['fsl,imx8mm-usb', 'fsl,imx8mn-usb', 'fsl,imx93-usb']
-	'fsl,imx95-usb' is not one of ['fsl,imx6sll-usb', 'fsl,imx7ulp-usb']
-	'fsl,imx27-usb' was expected
-	'fsl,imx7ulp-usb' was expected
-	'fsl,imx6ul-usb' was expected
-	from schema $id: http://devicetree.org/schemas/usb/chipidea,usb2-imx.yaml#
-arch/arm64/boot/dts/freescale/imx95-libra-rdk-fpsc.dtb: usb@4c200000 (fsl,imx95-usb): interrupts: [[0, 176, 4], [0, 174, 4]] is too long
-	from schema $id: http://devicetree.org/schemas/usb/chipidea,usb2-imx.yaml#
-arch/arm64/boot/dts/freescale/imx95-libra-rdk-fpsc.dtb: /soc/usb@4c200000: failed to match any schema with compatible: ['fsl,imx95-usb', 'fsl,imx7d-usb', 'fsl,imx27-usb']
-arch/arm64/boot/dts/freescale/imx95-libra-rdk-fpsc.dtb: usbmisc@4c200200 (fsl,imx95-usbmisc): compatible: 'oneOf' conditional failed, one must be fixed:
-	['fsl,imx95-usbmisc', 'fsl,imx7d-usbmisc', 'fsl,imx6q-usbmisc'] is too long
-	'fsl,imx95-usbmisc' is not one of ['fsl,imx25-usbmisc', 'fsl,imx27-usbmisc', 'fsl,imx35-usbmisc', 'fsl,imx51-usbmisc', 'fsl,imx53-usbmisc', 'fsl,imx6q-usbmisc', 'fsl,vf610-usbmisc']
-	'fsl,imx95-usbmisc' is not one of ['fsl,imx6ul-usbmisc', 'fsl,imx6sl-usbmisc', 'fsl,imx6sx-usbmisc', 'fsl,imx7d-usbmisc']
-	'fsl,imx95-usbmisc' is not one of ['fsl,imx7ulp-usbmisc', 'fsl,imx8mm-usbmisc', 'fsl,imx8mn-usbmisc', 'fsl,imx8ulp-usbmisc']
-	'fsl,imx6sll-usbmisc' was expected
-	'fsl,imx6q-usbmisc' was expected
-	'fsl,imx6ul-usbmisc' was expected
-	from schema $id: http://devicetree.org/schemas/usb/fsl,usbmisc.yaml#
-arch/arm64/boot/dts/freescale/imx95-libra-rdk-fpsc.dtb: usbmisc@4c200200 (fsl,imx95-usbmisc): reg: [[0, 1277166080, 0, 512], [0, 1275133972, 0, 4]] is too long
-	from schema $id: http://devicetree.org/schemas/usb/fsl,usbmisc.yaml#
-arch/arm64/boot/dts/freescale/imx95-libra-rdk-fpsc.dtb: /soc/usbmisc@4c200200: failed to match any schema with compatible: ['fsl,imx95-usbmisc', 'fsl,imx7d-usbmisc', 'fsl,imx6q-usbmisc']
-
-
-
-
-
+www.amarulasolutions.com
