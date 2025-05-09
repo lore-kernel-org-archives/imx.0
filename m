@@ -1,82 +1,116 @@
-Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790E6280318
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 09:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1594B1E7C;
+	Fri,  9 May 2025 09:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746782821; cv=none; b=BTytdxy4ONIcuxaNOcoXLUR8ZsONP75j77vK39uBOnrn9pGDGN8yUmFfF0pMj4q6nn5ZGa/xUIk5iCtWn2IGb8Wd+6BnnplOQs28pD4Ev1lfOojKO2ECOFECk3u5lLPMxoYZEVGZ7Be2HxV2/tlVVdSlXnyBzZIGds0hsJjSXgQ=
+	t=1746783478; cv=none; b=Vm4co7gYykkm8ZOhbn+koeNpdz4v5gc1rC8ENHcqe/e75X7OWzARc0v8cwc5JUI3cUQblwCNHt2O5uKGHOTNZwDcuJWGpjP4eH0qvN1iHQKDFxH4i8Txcs5rBupT9KqOfxo+08bLjLCL4gv0kCZaXdCwJwB5IWWvIU55mU7RU4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746782821; c=relaxed/simple;
-	bh=SOJyVp7M79mYTH2ICW1jzFJq6b++cdAYlf8m+j+m270=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HPe+IzePwqNhaS2CWFh0MDAlKzzLJprXhVleRGs+kEV90uGdv47pUPwb9SqHb91qNI5nQqEosVdpSF43w8Hti53VlCKr/hq8weLex48fBX57VtSVgHN3G7AYiY/KJiPyjR7tqlkkO+W4X5mrbTpcDmG+vzxSsjo8GdD7G5RIP9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id C88F3C405A46;
-	Fri,  9 May 2025 11:26:55 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl C88F3C405A46
-From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan
- <peng.fan@nxp.com>, linux-pm@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] imx8m-blk-ctrl: set ISI panic write hurry level
-Sender: khalasa@piap.pl
-Date: Fri, 09 May 2025 11:26:55 +0200
-Message-ID: <m3ldr69lsw.fsf@t19.piap.pl>
+	s=arc-20240116; t=1746783478; c=relaxed/simple;
+	bh=xyOJtjUQ7Rqu2zBQdpb/wjJlsQkJeZeAW3fBuv8lBKE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=op21gQAN8AHAncT38mFlFQ6Jl8nLptr8DMldvrrUOgJot0yi9BiWKYYw9cpgt1N9gMcmYc+oW48rtDHjUju1T1sxoqxBmWKM0ZFPxhM1yLC1lx2otr1snNrXSQAWW3xRf7n5DLX5rLIkc7h+o8ZAip3srpTGaz4A3GMCMOlZnNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P6A+9MQf; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P6A+9MQf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746783477; x=1778319477;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xyOJtjUQ7Rqu2zBQdpb/wjJlsQkJeZeAW3fBuv8lBKE=;
+  b=P6A+9MQfQkkrLEMtWuu6GPsHyvyDhFAbRoOZwyLk+fCJHG9b5xW0IwJp
+   5noXhwa/b8cUyD374k/fl9VcxQ4OdWOsM4qjOquwxsd7oMv43nagJ7bT9
+   oLsyrfP1erGLYZjZuBDkY+JG/XaaJEgVhkL8ehJYKu39GF5pQZhD6F5kC
+   g8jZj9XDA8l2tBYsMFa0HCB96Gmenvq/SPYuVxuFL47E7Q1ISR4OftQkZ
+   aAGKfeF3H4dXw5uPqymvQANiOOe8JecT+rHAhJJrE2oKC6rBMFiZIrA2k
+   aibcpV9D51BPWUSBzm4NUDfksAYtAdmgG9V2BF8vhKuZXc0qx9G8sihFB
+   g==;
+X-CSE-ConnectionGUID: hPIBgd/KTYizGIhbXGywug==
+X-CSE-MsgGUID: poHaHaSzT/qYXROSG53caA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="59268810"
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="59268810"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 02:37:56 -0700
+X-CSE-ConnectionGUID: FcjoOz+LTqGzJSCXcsQPZw==
+X-CSE-MsgGUID: LKHV/WWIQpqqcqFe3yg6Rw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="136959749"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 09 May 2025 02:37:51 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uDKAv-000BsL-18;
+	Fri, 09 May 2025 09:37:49 +0000
+Date: Fri, 9 May 2025 17:37:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: ming.qian@oss.nxp.com, mchehab@kernel.org, hverkuil-cisco@xs4all.nl
+Cc: oe-kbuild-all@lists.linux.dev, nicolas@ndufresne.ca,
+	sebastian.fricke@collabora.com, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-imx@nxp.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
+	imx@lists.linux.dev, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3] media: amphion: Add H264 and HEVC profile and level
+ control
+Message-ID: <202505091722.oiKjnVNJ-lkp@intel.com>
+References: <20250508053304.2057-1-ming.qian@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250508053304.2057-1-ming.qian@oss.nxp.com>
 
-Apparently, ISI needs cache settings similar to LCDIF.
-Otherwise we get artefacts in the image.
-Tested on i.MX8MP.
+Hi,
 
-Signed-off-by: Krzysztof Ha=C5=82asa <khalasa@piap.pl>
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/i=
-mx8m-blk-ctrl.c
-index 912802b5215b..5c83e5599f1e 100644
---- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-@@ -665,6 +665,11 @@ static const struct imx8m_blk_ctrl_data imx8mn_disp_bl=
-k_ctl_dev_data =3D {
- #define  LCDIF_1_RD_HURRY	GENMASK(15, 13)
- #define  LCDIF_0_RD_HURRY	GENMASK(12, 10)
-=20
-+#define ISI_CACHE_CTRL		0x50
-+#define  ISI_V_WR_HURRY		GENMASK(28, 26)
-+#define  ISI_U_WR_HURRY		GENMASK(25, 23)
-+#define  ISI_Y_WR_HURRY		GENMASK(22, 20)
-+
- static int imx8mp_media_power_notifier(struct notifier_block *nb,
- 				unsigned long action, void *data)
- {
-@@ -694,6 +699,11 @@ static int imx8mp_media_power_notifier(struct notifier=
-_block *nb,
- 		regmap_set_bits(bc->regmap, LCDIF_ARCACHE_CTRL,
- 				FIELD_PREP(LCDIF_1_RD_HURRY, 7) |
- 				FIELD_PREP(LCDIF_0_RD_HURRY, 7));
-+		/* Same here for ISI */
-+		regmap_set_bits(bc->regmap, ISI_CACHE_CTRL,
-+				FIELD_PREP(ISI_V_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_U_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_Y_WR_HURRY, 7));
- 	}
-=20
- 	return NOTIFY_OK;
+[auto build test WARNING on b64b134942c8cf4801ea288b3fd38b509aedec21]
 
---=20
-Krzysztof "Chris" Ha=C5=82asa
+url:    https://github.com/intel-lab-lkp/linux/commits/ming-qian-oss-nxp-com/media-amphion-Add-H264-and-HEVC-profile-and-level-control/20250508-133520
+base:   b64b134942c8cf4801ea288b3fd38b509aedec21
+patch link:    https://lore.kernel.org/r/20250508053304.2057-1-ming.qian%40oss.nxp.com
+patch subject: [PATCH v3] media: amphion: Add H264 and HEVC profile and level control
+config: x86_64-buildonly-randconfig-001-20250509 (https://download.01.org/0day-ci/archive/20250509/202505091722.oiKjnVNJ-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250509/202505091722.oiKjnVNJ-lkp@intel.com/reproduce)
 
-Sie=C4=87 Badawcza =C5=81ukasiewicz
-Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-Al. Jerozolimskie 202, 02-486 Warszawa
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505091722.oiKjnVNJ-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/media/platform/amphion/vpu_color.c:17:
+>> drivers/media/platform/amphion/vpu_helpers.h:74:38: warning: 'struct vpu_dec_codec_info' declared inside parameter list will not be visible outside of this definition or declaration
+      74 | u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr);
+         |                                      ^~~~~~~~~~~~~~~~~~
+   drivers/media/platform/amphion/vpu_helpers.h:75:36: warning: 'struct vpu_dec_codec_info' declared inside parameter list will not be visible outside of this definition or declaration
+      75 | u32 vpu_get_h264_v4l2_level(struct vpu_dec_codec_info *hdr);
+         |                                    ^~~~~~~~~~~~~~~~~~
+   drivers/media/platform/amphion/vpu_helpers.h:76:38: warning: 'struct vpu_dec_codec_info' declared inside parameter list will not be visible outside of this definition or declaration
+      76 | u32 vpu_get_hevc_v4l2_profile(struct vpu_dec_codec_info *hdr);
+         |                                      ^~~~~~~~~~~~~~~~~~
+   drivers/media/platform/amphion/vpu_helpers.h:77:36: warning: 'struct vpu_dec_codec_info' declared inside parameter list will not be visible outside of this definition or declaration
+      77 | u32 vpu_get_hevc_v4l2_level(struct vpu_dec_codec_info *hdr);
+         |                                    ^~~~~~~~~~~~~~~~~~
+
+
+vim +74 drivers/media/platform/amphion/vpu_helpers.h
+
+    73	
+  > 74	u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr);
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
