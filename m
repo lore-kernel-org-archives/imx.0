@@ -1,222 +1,146 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11013025.outbound.protection.outlook.com [52.101.67.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7745017BCE
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 10:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.67.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746787240; cv=fail; b=lUqVyq0fJEwu85HISUI/iCUfWXWamQhvq4e7yShboMxOFIOeAh8MD5BGXE+K4kzJvHzLuojx3Y+7klaPZOPv4RzsDTVyV+yZW6VAt8ZxN4qxyXpbW7Cma8J+YoLRj6wdZUZO2tkEPyqkdh0nZ895WRug+NIp7l6Izjn1dxUmuh8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746787240; c=relaxed/simple;
-	bh=X9iJDbOs++a8sRv1zI+XY/0/W6818MwCr1ta0PiKfWY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=he6pkFNlqgVvNaEiyG9HIVOKKRxuFqxuim75lxkVE/+HRLoApcOZYwG1SMRBZFpLsbcQwdmGRO43+Aaq2g8CcQ2m5cHFB0h6+jnv1w1wy3zRLTIrC1jpdQXeJaFafHGraKA8vs0VUmnw4eShqFYKptVRSUKK9RzME9+I1FKUOEc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NYLSckKQ; arc=fail smtp.client-ip=52.101.67.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3069328ECE9
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 11:06:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746788818; cv=none; b=AsG7/30qiVFDhrBLTGRMU9f89pOb7rE4F7yxPAF/oa/j1yK6x3IFRNcLK6JtlbpAZM4gUnx0L+hSDgsU7/OClv5PZvaaLmTmSjP3DFl9Nmy1hNNgtnxCGLMtNlSYj6VIpwjH+LuP1ya+lM0qGJgSATcwJotMHtKhJbP7W/GcIxE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746788818; c=relaxed/simple;
+	bh=8g6zkTjB4a5mBnaZeVYAI4MzPAjk54nrw+e13fId4pg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BZadTGoVgsPiz8N2q17jAushUBgyttjMnYoVBRAfeJc87vfhDhbGxfP/Sbn5JBbzC4OHsvvQcZmE7/SXPaT6N99pyN+tYX01uGVmozdnXNQOL8usowRLwrHbWnT0o/KP0w/pOmIbDSUMXe9YnH9EoCgbIfwrs3pf9MnQqbllsus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=liKNXSAm; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NYLSckKQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ipubFdzC8cBoTO0KdlOedygDoz4BQfvPn0qBrb4nqHbsUOmAqku3DjJ/C6T+9+Fd89K15ZrB4MuSH36jQalTV3ObpqHlnndNQO0/S88qyCCItuO1D+TE+YfRsRtqmv6PsCbKf0sG4hbcLBs1w8CsLqP+fUI7T+klrMtp1Aces2UKHNlUGizX1lcJNh1fOH0k1dzQJKfUJ5LA8fSyjM5dSBAdo0zVDMj7XLj65HJ/JoJFsNB/BLh6gtPAvFkYopT9ABL3ETzYR/viEnDPRjE+P6ZEIscEsZBQe099qdMEhynwCOeVHz1k3sOVAcQjW8mIK6jD55i9Z6GBpWVnva+HTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bPmM1cj7w/fl9sDrJwpP30i1F1/CuevnmveT42xPXwA=;
- b=Oyhvf9SIIfFmCPMO8QI+TxmXYeq0wYfbk+mW9bcu4HZzyzS7zU1QBO72awEok9Jkt0j7qyGCCqEbTxW+qyD/diND07wHqU4hmePM5inyjO2SAOFEr3Gjz/tETdOuoTeJSUCa9cwcMZV9EHNo53QibC/JW/c/unsWdD/zFhSaAYl8vrlWf30FztAEbZBjXHINgQv39E7qqELwmx7oK5d4UgZSlebSIAs9+UJ78tOtakwqmUtYJ51Ps4ZJoVlDXpbDe7d55PkAfeMVNk+JWJ2QTkYJbdiWy6zLc9hmy+5R/dhh/RIkfCmCMqnytL6a8SA3j7N1KUoCFpYEQMJT1mkySw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bPmM1cj7w/fl9sDrJwpP30i1F1/CuevnmveT42xPXwA=;
- b=NYLSckKQSX4T4HOWB3qJ7aABTBtcNKsZC7M+G8VFFUg7OhDNmHPTuvcau86/fdyYCQ5LBhhjHji4M+bZv5LuXP57mWV2nH1IgzecK3G7ttVmvABpwzmKtYMpqHzhriVP6ka4u6DF9l4q6NBSyOpVrNcHnDAHILZv0wFcg3xw1qTCdZytQPQzoUVTKlcsSYeNpZGaSG5Vsc7QblubCMi1Ci8Gq9d+/uQACSgmpZHvUh0eDyTIyxaUTJRumfAqZeBXJkLpnpA2yzLqvgyfa7d66+26kh1zGHsw6dN+2V9UxCIQnWM7ujt2MWd+mLeIcMO0lW4YQYeVBR1bxlCzpi97mw==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by VI2PR04MB10571.eurprd04.prod.outlook.com (2603:10a6:800:278::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.33; Fri, 9 May
- 2025 10:40:33 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%5]) with mapi id 15.20.8722.020; Fri, 9 May 2025
- 10:40:33 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Abel Vesa <abel.vesa@linaro.org>, Mike Turquette
-	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Shawn Guo
-	<shawnguo2@yeah.net>, Dario Binacchi <dario.binacchi@amarulasolutions.com>
-CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, dl-linux-imx
-	<linux-imx@nxp.com>, "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: RE: [GIT PULL] clk: imx: Updates for v6.16
-Thread-Topic: [GIT PULL] clk: imx: Updates for v6.16
-Thread-Index: AQHbv0yLszFJyZJDU0KnkvYkCs4ZB7PKHc9Q
-Date: Fri, 9 May 2025 10:40:33 +0000
-Message-ID:
- <PAXPR04MB8459F66A8036C86F124E4E5B888AA@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20250507123528.585447-1-abel.vesa@linaro.org>
-In-Reply-To: <20250507123528.585447-1-abel.vesa@linaro.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|VI2PR04MB10571:EE_
-x-ms-office365-filtering-correlation-id: 1cb6370a-47f6-476b-9b24-08dd8ee5ed1b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?QYlRgQa9gVpBcO8mxNamJlbGqGvJkaXbryuxUyASGVrTS0rVeLvQyEEWOd9e?=
- =?us-ascii?Q?SAiZ4uxkTvh8gdnGRabR1m8fc5kN1OHrKjJKZCUwBbAaK8p+NjZFoG4bd1IR?=
- =?us-ascii?Q?JaW/wnoZoKiu3XlRUN++muFUTCVRZBXeoVZvH9SEtDTsA/4HKrG++n/u2xGg?=
- =?us-ascii?Q?SH/Kst4nlZ4XpWriYlBgW2SnedLldstlZ5ylmqvwd9YVw0r7ZC56WJ7UZ++M?=
- =?us-ascii?Q?2OgulSqxGuCSku35+EdCwSFwcxIVq79RIdJBJFPOSoP+dbhPI/Dmtpcf6Vas?=
- =?us-ascii?Q?UqGgro0AsLMoXan+hlb6VBkoB4mko2xAtOh9AQq9RBMxZIzp01V1ZNxJK+cR?=
- =?us-ascii?Q?U9ja0A/36Hlk/o2kDR9la8Ct33/3/9ooHz2GPOAkPI6xXBSTR/FQZ0b50If/?=
- =?us-ascii?Q?tEpnkZPxM24LMu5CGP+EzksGTmpqPTg9W/y3zGMEz2g71AghCtkzt7dqYsHB?=
- =?us-ascii?Q?tO+hjkET/2u0lxJA4t/KW8sX5JTMgCLl4W0KKtqSIRHSEqaiHSeZTkWXFlKX?=
- =?us-ascii?Q?6FhntOFvpeimT1gdILXcQ5XMy5/hja0vrxWchCvbU/Ps6Cu7ZDKOCwsQUhUF?=
- =?us-ascii?Q?4zJWeGqhLCXJ6OtL4w+bQtPzWvkhIlev8GxuIT+jmIkMEjfKCVVIoK6y81es?=
- =?us-ascii?Q?DojgAru8tza0TkZH/bXakQBwayFOrxvKCyskvS3JqcwgmDzMhMmfrMkSJbe9?=
- =?us-ascii?Q?SAxoEJHPu0K78E+rYt9abcEx/g+Wa0lF5oP6Dkxvh6fy8y4eC/94pdnBxEZ1?=
- =?us-ascii?Q?NqazhZJJeXaiDWd3ydOqx5khjTNq866160AK96BTLUaC17yyOXeg7r+Z8bPh?=
- =?us-ascii?Q?lWkIn7/01FbB7SgX7FHPNcasc3dbZECC49jDW7ICUnf2XYoqbTOpPfy14Wzc?=
- =?us-ascii?Q?lx+UJUtwpPDwYN3+4dTmNJvfUyBWFzq4C2ZajmBJSQ9st9gWQvne5UZ8g4b6?=
- =?us-ascii?Q?ciZ32Wfv6astNTfQCSrWAZZgpC7FUPdu2wKXYtqyvy3e6cMcDa3KxyuRzxGV?=
- =?us-ascii?Q?IT05w8I1czhDPGtp1mpcJHeM1GbUoaucPF30jtGxEeJsIwAZyFhQaNOL4xDy?=
- =?us-ascii?Q?LRCBvUrle0zN2fxx97I9HMukCddX/6+MkXWJlV/aE/GKhqKk6DxCYCNIC4Dl?=
- =?us-ascii?Q?UMu9nhKY1XncYkgOyRT8umW/mWpWtNTLoZjJcpWckKZU1bgQ4wTikXI3g6PJ?=
- =?us-ascii?Q?axlJNSkGvWhXXzvZzBV1x3DXtnXcd+2ITNODPt/1Bfxpv4BjpDLcgPLFdmy7?=
- =?us-ascii?Q?73D9WgKhDpcg+mcbfoUu8QOf+kloClyqixEPRyYsa8MLrPCHt4cjgMUtI0N5?=
- =?us-ascii?Q?zLFMsa1h1NbSL2McJHBQ/MTmIV8mSdMFKadM76iA8ABAsL3aMqSGgB0SGL45?=
- =?us-ascii?Q?aMQOmXJt3R8wyOSpfg+BVh2yw6v9rab/MCVc50/vjhOHN8k39z4ZdHIrHq2P?=
- =?us-ascii?Q?FgiO5KxQYGZ0ksk9aHHbSJ3QdXCaVuRGHyt2od8lEp0AglA+FfU0qMdzUjGh?=
- =?us-ascii?Q?5fKpLHKi5Kh+Npo=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?nnWTJsCA2JR33c6TXa6BPHlQ+6TRM+yuXiUD1wzQ5MgiyyfNHtsoTxK1ysel?=
- =?us-ascii?Q?R2oypRJV0xBNuNW+DJnubpfuKe30wPIQjcIHAqeRyQBZexs/fWJd1eWDhDXi?=
- =?us-ascii?Q?joXQmpH+op6LAeq5g56DckSbQFiHipEdI1KuNDgvwN45ZcbFG3uonlrRtXxU?=
- =?us-ascii?Q?Y9bVCO5IB3aJHBpNLvVZ/2FXUv0wioCcAp0Dzd73U35rboR7ScsROijFUK+J?=
- =?us-ascii?Q?qNMGE3l92aEDh1ngcmT3/mxZO/55fSXpLPj3+wmFlEgxXfdEwTd7COiev4zD?=
- =?us-ascii?Q?hG/XQqSgtA+/36sY1wQwDAQLVDO4ip9G+jWcSr5Eq9z6Hly2+7OP8pS/y0BA?=
- =?us-ascii?Q?zTBtV8eUDztbKw3nvx18nMiMRJo14c6Tb7sUNJLgLVqwi5Ope/0t79pIe1s0?=
- =?us-ascii?Q?vk+1/yw6IHKdqHR3st695cVWy0oL/93r47vEI+xsatGCLu2c25XJz8yVWJL/?=
- =?us-ascii?Q?oP70Sekj3W4ks42QwtcVSVhjOZm0B0ZPdMu6YfLbHFE+6j2p1f4AksWHPiZE?=
- =?us-ascii?Q?2V0ZUdPHeokJHeH/QaD97mbHpuxmIgwtkF0aNOl2/be9J6wF0eqo1sIFXc0t?=
- =?us-ascii?Q?4jplEglL3sTH3W93sHNb3k5d5N8770epOVOYF0m+Py3xGwwE9+6YhB1MOr5H?=
- =?us-ascii?Q?9B7uirIj29d8++tCzDEbA+FC5qaOlWsdB6QFj7hMiXsX30Mf2Gd5oxC4ckQ8?=
- =?us-ascii?Q?/ao97pJ/rSyc3qDvIfsYakPR5bZ+NPdwPSIkFuwvFGNUfh3OrPjDNnNhAwWc?=
- =?us-ascii?Q?tWLv+OD2I2DGwtjn26DzTzL/pXFIyBEtyGmd9KIRRvijM7xjcpzA9ubvPAuw?=
- =?us-ascii?Q?DXy2CEIXEhGjlWeET9qlFysvOv87+jiRc8acRyu3AmAjomeRxgJeCTuH8QNA?=
- =?us-ascii?Q?TU8CF38cPL5nQZmR/Creoeh3TyEGcLrmKab/mlf9rjWiWDOPFh4WVYLJ8Zui?=
- =?us-ascii?Q?4GQ+RZMYCUilhVUBSco3uYk5fCsMd9mTdhCTf3tIWTJTn+OaefRVP7nye+rT?=
- =?us-ascii?Q?lhJW9rlXqql2N3lZA7jgJyp7u2DotAaNEcXOIvJAp/p8l4n/Y70V6aJ/GlrC?=
- =?us-ascii?Q?MUejAI38KTw2MURTqNBmnCQcTzqRXz8VZxYo9K51SBAWRcZhnjhCgpqb7Wxm?=
- =?us-ascii?Q?p4g4TWHUgjI76hu9PTprjM+0h5OHB4x8c5OMFQELzhPX4XuPA6OrROWJR+nt?=
- =?us-ascii?Q?vPJkuPtp+a03vegQfwKwB5son7pBh+5HCUO4s65VmIKysWs+WoIsc2H5TJXv?=
- =?us-ascii?Q?XHOwpc18n91ZL9ROcEbEUURaCyUu3ay6YpF0eXHebiJ/fZf9fHAfZiBGc7je?=
- =?us-ascii?Q?5lf84U3lCT0Wo6Id1n4oQCwkyJyi+xKJ64DWjOGDZRaARPVfMxM57TSV4muG?=
- =?us-ascii?Q?2c7IzPi7yFkp5ck8MxNOkw6sgwQf5aqopJmsXv2XdUS9B93mSmSMpNKljPDX?=
- =?us-ascii?Q?7EXbM/2sMtk3tUx/Alo/wCfax9zJq6/oUuot/1IZ2ULTWq29HFon4ND/GK1L?=
- =?us-ascii?Q?HtHS9i7nxhK+0m+zcdldy3l8kLTOMPuVXROBYpHB3dN4pjYdSBZ2vrhrTO4z?=
- =?us-ascii?Q?7M/fnv4vuPt3neFcivg=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="liKNXSAm"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a0bd7f4cd5so1474534f8f.0
+        for <imx@lists.linux.dev>; Fri, 09 May 2025 04:06:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746788814; x=1747393614; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MdQh7LT8W4RzJzp1eDyrsDrfrxqK5LM5LuKtE8YNB2c=;
+        b=liKNXSAmsRsOAmul8Ibq7rlf6uy6JgThmWgj0R06dyRHnzxqcOWi9X29tEIZ6ScU/e
+         EUoMILvCw8hkAbpWTuAa2cQK75voBE8TrMQDp1l3EvD58t6Gq3PKCx5g6UtrAYtXkmwh
+         7jS6UqFJ5ciZmMEx/bqZk8eZNNmUh6gTdvBclJX4Kc1UGQSXPc8DSF11OYgjSI9MhMCg
+         1S4HxRlrRVMnbnWRBt58nSMBX4HFAXIs9OHeyhguy+rgUTEqx9gu/MIryiPKWqMjiFJk
+         Uk0XbmHywmy+/88WCzPdUXkLcQaQObOKRlQQDVgDmBSGp2kEoz2/gIV5EXzBzBuqrdhv
+         QPPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746788814; x=1747393614;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MdQh7LT8W4RzJzp1eDyrsDrfrxqK5LM5LuKtE8YNB2c=;
+        b=woFugG1aLgTALRQnMpS31TbVq6FexingqKd2usAEk/QHud1lSnH+GbkXigUZD6rEZp
+         yOLHH+YES8r400nH2uNptZvEPbTozI2ZEh8Gd6ke75Cs0ofiWLdcCXExMVxgY5xMVJ0b
+         RnWe3z2+7nSKPV5BOsrTsLLcVJcM2fqhCMg5bMkaA+x50tc4w8NtW2qJgJA6+g7QB6lf
+         UZsQs/MVtdUqdI1Zo438dVxBWqrZgDd7rfFZRVq4zNHjgezck6wyvPFzA8otk+tg/eA0
+         TmlPkWjpbR489mLoMCE23BFaRZRGCUl605Vm+hjWfmWaF1dBr6cFRk4boaKA4hb3HiHM
+         NqLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWU8mWSezffZC/0gZNHZLAdhOcU5gxA4E9S3LaLKUeDIR3/g7S/MilFoYViyUh2ba9bubY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyw9JClvz2IThYN2nqHdQx2ybgHzLxEZ8z+Ppw3cjKFI0yHD5xa
+	LOtxhY21VW1uUDP45fcAJtXsm3bdslivaAb7Mim/ryBRDwphOxhS7oPb+W8ZUcU=
+X-Gm-Gg: ASbGnctlYBvWpArH4VWxMl78TjsdUnHLAtLBAYs1JVEiX8Nd4PnSWIFdXz5pUoNODJK
+	UfRgWzxMAEJKW/FiSWeNEFs9Kg4UDqkRnTzIb9VXJZ5TcULe9FAOM1lr+Dw9vbbmtJ51rxz49xy
+	Fwpt49MNS0JHq+r9y58tbHKdBEhyGr1syMoNmQ33sUf/dt9dVLVieu3B5AI+O3/SvvXKZcu5Vag
+	jGRTU9R6Dk9Ttt+Ehs73j1UD5Vh8MGIeJphpSjNHGr9ZRdFkmjhOoombcjzDn6LHTasr45m2gbm
+	1G6ybVwYL+P+hzezfQ4SjDZfTPM16CD9CLHP6fSEsKwZx8g=
+X-Google-Smtp-Source: AGHT+IF8zf0HZ+jIS52ar661eUuXC/rKe9WCfGGwcqpO6GEcFF49TaMuxQRQxMt3K3cGjEyD0Y8O6g==
+X-Received: by 2002:adf:8b1c:0:b0:3a0:8712:4f51 with SMTP id ffacd0b85a97d-3a1f64b5a97mr1959695f8f.40.1746788814469;
+        Fri, 09 May 2025 04:06:54 -0700 (PDT)
+Received: from ho-tower-lan.lan ([77.81.75.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58ecadfsm2914797f8f.22.2025.05.09.04.06.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 May 2025 04:06:54 -0700 (PDT)
+From: James Clark <james.clark@linaro.org>
+Subject: [PATCH 00/14] spi: spi-fsl-dspi: DSPI support for NXP S32G
+ platforms
+Date: Fri, 09 May 2025 12:05:47 +0100
+Message-Id: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1cb6370a-47f6-476b-9b24-08dd8ee5ed1b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 May 2025 10:40:33.2668
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oZIAZ3YjiT20J1LWlzx7BjmLnQnvCQiFjKLOyKMxh623dplQE3DExpkK5OKxPxl+6BTyDeInkagKkuOK3xAZvg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10571
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIvhHWgC/x3MMQqAMAxA0atIZgNtxEGvIg5Fo0awlkZEkd7d6
+ viG/x9QjsIKbfFA5FNUdp9hywKGxfmZUcZsIEO1qajG1W2s6K+AGgQHN1km0zRUWchNiDzJ9f+
+ 6PnsRPfZ4f/uU0gslR/0vbgAAAA==
+To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, larisa.grigore@nxp.com, arnd@linaro.org, 
+ andrei.stefanescu@nxp.com, dan.carpenter@linaro.org
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, James Clark <james.clark@linaro.org>, 
+ Xulin Sun <xulin.sun@windriver.com>, Marius Trifu <marius.trifu@nxp.com>, 
+ Ciprian Marian Costea <ciprianmarian.costea@nxp.com>, 
+ Andra-Teodora Ilie <andra.ilie@nxp.com>, 
+ Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>, 
+ Stoica Cosmin-Stefan <cosmin.stoica@nxp.com>, Dan Nica <dan.nica@nxp.com>, 
+ Larisa Grigore <Larisa.Grigore@nxp.com>, 
+ Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>, 
+ "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>
+X-Mailer: b4 0.14.0
 
-Hi Abel,
+DT and driver changes for DSPI on S32G platforms. First 4 commits add
+new S32G registers and device settings along with restricting userspace
+register access properly for all devices. Then some DMA mode fixes along
+with adding support for target mode, which uses DMA. Followed by some
+other minor bug fixes and then finally add the DT compatibles and
+binding docs.
 
-> Subject: [GIT PULL] clk: imx: Updates for v6.16
->=20
-> The following changes since commit
-> 0af2f6be1b4281385b618cb86ad946eded089ac8:
->=20
->   Linux 6.15-rc1 (2025-04-06 13:11:33 -0700)
->=20
-> are available in the Git repository at:
->=20
->   git://git.kernel.org/pub/scm/linux/kernel/git/abelvesa/linux.git/
-> tags/clk-imx-6.16
->=20
-> for you to fetch changes up to
-> 6a55647af3334f1d935ece67de4a838a864b53fc:
->=20
->   dt-bindings: clock: imx8m-clock: add PLLs (2025-05-05 10:48:56
-> +0300)
->=20
-> ----------------------------------------------------------------
-> i.MX clock changes for 6.16
->=20
-> - Add video PLL clocks to both i.MX8MM and i.MX8MP
->   while dropping the numeral suffix.
-> - Add imx_anatop_get_clk_hw helper
-> - Add anatop clock providers for i.MX8M[MNP]
-> - Drop ccm_ prefix from base in i.MX8MP clock provider
-> - Document bindings for PLLs in imx8m-clock schema
->=20
-> ----------------------------------------------------------------
-> Dario Binacchi (11):
->       dt-bindings: clock: imx8mm: add VIDEO_PLL clocks
->       clk: imx8mm: rename video_pll1 to video_pll
->       dt-bindings: clock: imx8mp: add VIDEO_PLL clocks
->       clk: imx8mp: rename video_pll1 to video_pll
->       dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
->       clk: imx: add hw API imx_anatop_get_clk_hw
->       clk: imx: add support for i.MX8MM anatop clock driver
->       clk: imx: add support for i.MX8MN anatop clock driver
->       clk: imx: add support for i.MX8MP anatop clock driver
->       clk: imx8mp: rename ccm_base to base
->       dt-bindings: clock: imx8m-clock: add PLLs
+---
+Andra-Teodora Ilie (1):
+      spi: spi-fsl-dspi: Enable modified transfer protocol
 
-Sorry to raise here.
+Bogdan-Gabriel Roman (1):
+      spi: spi-fsl-dspi: Halt the module after a new message transfer
 
-Not sure whether Shawn will pick the DT part, otherwise
-there will be booting break as Mark replied.
+Ciprian Marian Costea (2):
+      dt-bindings: spi: dspi: Add S32G support
+      spi: spi-fsl-dspi: Enable support for S32G platforms
 
-If DT part not goes in 6.16, this PR should be delayed or
-redo the patchset to support old DTs to keep backwards
-compatibility supported.
+James Clark (2):
+      spi: spi-fsl-dspi: Define regmaps per device
+      spi: spi-fsl-dspi: Re-use one volatile regmap for both device types
 
-Regards,
-Peng
+Larisa Grigore (7):
+      spi: spi-fsl-dspi: restrict register range for regmap access
+      spi: spi-fsl-dspi: Add config and regmaps for S32G platforms
+      spi: spi-fsl-dspi: Avoid setup_accel logic for DMA transfers
+      spi: spi-fsl-dspi: Reset SR flags before sending a new message
+      spi: spi-fsl-dspi: Use DMA for S32G controller in target mode
+      spi: spi-fsl-dspi: Reinitialize DSPI regs after resuming for S32G
+      arm64: dts: Add DSPI entries for S32G platforms
 
->=20
->  .../bindings/clock/fsl,imx8m-anatop.yaml           |  53 +-
->  .../devicetree/bindings/clock/imx8m-clock.yaml     |  27 +-
->  drivers/clk/imx/Makefile                           |   6 +-
->  drivers/clk/imx/clk-imx8mm-anatop.c                | 287 +++++++++
->  drivers/clk/imx/clk-imx8mm.c                       | 262 ++++----
->  drivers/clk/imx/clk-imx8mn-anatop.c                | 283 +++++++++
->  drivers/clk/imx/clk-imx8mn.c                       | 183 +++---
->  drivers/clk/imx/clk-imx8mp-anatop.c                | 306 ++++++++++
->  drivers/clk/imx/clk-imx8mp.c                       | 672 ++++++++++-----=
-------
->  drivers/clk/imx/clk.c                              |  15 +
->  drivers/clk/imx/clk.h                              |   2 +
->  include/dt-bindings/clock/imx8mm-clock.h           |  76 ++-
->  include/dt-bindings/clock/imx8mn-clock.h           |  64 ++
->  include/dt-bindings/clock/imx8mp-clock.h           |  80 ++-
->  14 files changed, 1711 insertions(+), 605 deletions(-)  create mode
-> 100644 drivers/clk/imx/clk-imx8mm-anatop.c
->  create mode 100644 drivers/clk/imx/clk-imx8mn-anatop.c
->  create mode 100644 drivers/clk/imx/clk-imx8mp-anatop.c
+Marius Trifu (1):
+      spi: spi-fsl-dspi: Use spi_alloc_target for target
+
+ .../devicetree/bindings/spi/fsl,dspi.yaml          |  18 ++
+ arch/arm64/boot/dts/freescale/s32g2.dtsi           |  78 +++++
+ arch/arm64/boot/dts/freescale/s32g3.dtsi           |  78 +++++
+ arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi    |  87 +++++
+ arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi    |  77 +++++
+ drivers/spi/Kconfig                                |   4 +-
+ drivers/spi/spi-fsl-dspi.c                         | 356 +++++++++++++++------
+ 7 files changed, 592 insertions(+), 106 deletions(-)
+---
+base-commit: 9c69f88849045499e8ad114e5e13dbb3c85f4443
+change-id: 20250325-james-nxp-spi-caf1e2099231
+
+Best regards,
+-- 
+James Clark <james.clark@linaro.org>
+
