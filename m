@@ -1,220 +1,106 @@
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF64254AEC
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 19:13:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AFF2609C6
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 21:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746817998; cv=none; b=sBj4RLmMVwDAfD7gFW1Y4MW5kbwK5NlwCZ/us17wIMaV0vl4zPLthbELT78MADkPF+u4XJ4lv/NB946KB2bZ8pHd5Rv7JAzRRa1S1/coy6PDo6rpIJ5RX5j+rI41cKTwOuBgt7BRdNeG5wFdFMNGYbUu75M0MQSD9/sDFiCO3dY=
+	t=1746827511; cv=none; b=jPlpOwjHTfNMXiDv9FR6F5HaBzaPfHWPhysRrbQLmW7OlvjJJ2cS/hndtuKnf4tZPW+ZIw7jBkH3snZvb7mbLnqfcsIYexWMI4i3HIlurDqIp8NKoXxxSbNATIDmY3KK8t6ojBLjjHvBRLEYd36PYLAv7ayE/dhVP+5Lmg5o+lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746817998; c=relaxed/simple;
-	bh=QCR55OsR8BeOhjGcGHiHtwOpQrGrz8N/scYm+FoUARk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hGgGa4esK5tkaqbo8KT+deG9UG/Wc/0JNQDKXeal7zr3pIDYH0VQEvauV2nXxXPh+vHhjcx625zAbPRuyIFMaju8Z5OSs/JKLPLEEfP+td6JFA67YSwtnobpiRd++NEO+MMnYmRMGL9eCgCS6B0vH0ogrIWQAjXKMTpz8hzMs88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LEhaJCLu; arc=none smtp.client-ip=209.85.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746827511; c=relaxed/simple;
+	bh=f9Q7oZzAD3nVBbCeFbQ5MfukDb6SqnYSXJSBVfzsRMg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=d/60Y3O7zQyx1lqdYZvWRR9tQSFk9PeU/Q9WN35W4elqE9izeXUKJypDtbca87hkuFT1xRP+rBQwLyw8J87RHsnDHFhCQPvtMu36VnlgAfhHnP04AVOzp5W77/TZPPAUmV5YOoClupOPz+2qUJTtQkVojVJ2IfrfZs7oMtLhc7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YdTG/lBL; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LEhaJCLu"
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-52c58804270so767702e0c.0
-        for <imx@lists.linux.dev>; Fri, 09 May 2025 12:13:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746817995; x=1747422795; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dZfddHQu5I9Otb7WuExi6VXYbXbdDVVverdTHksitlQ=;
-        b=LEhaJCLuSF98MRIzITH3h2SN/3x89NRwPq/OdAd2GTTBQw6qXnI1DAC1vmw/WbS1qa
-         eNtcdJeOa/qOK4/OxWEQ7MUmdIa2pwv2DiWt6/JdewcOnNWb/tcXME2qm1xfE5mHolpn
-         DlRiQtle/owMKDkvGPjJS0pc5n8+G+KXUBlQAbKCYto/3Clg2sisaMAPHec+awkuCg/E
-         jMiR8SIlCzsX9iMwuQkWiThbcADy8e+xAaDqUMp6D51Q+yz3oy4U0yeiOdGXahik2keX
-         d31Xe92DOqinHk8rS9NZi0HYFH57to5yVrirXp4GAdBap0wVGvZsHfHj+YUSPkcqntuM
-         0xpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746817995; x=1747422795;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dZfddHQu5I9Otb7WuExi6VXYbXbdDVVverdTHksitlQ=;
-        b=dlsTakiZvi4UZzNFvs4DzSyU3b+TYv9ODYRksVt6Y5+aWlPu4eRHUTKi+Yt6HOJgNd
-         c/VhiSvki8a7FYISegg5ir9FeZoJ0l08/xTo0kJLlmIxIgH9wdAeOmvtYSAElN6mxSez
-         R80fB9v5FT2o58/mrwVT0PO+TqLqL+Z9TawUvye2E9lOqPuFC7qwePnMJbOInVEsJa2p
-         i0bgxnwQTC5eck8KpI4wJg6ldarTY0QJdNS6jzYlZGlO7sif/rqmBGitwa6lC8ffrWs0
-         rpZF+m2UJf4zfxkJubadOewo89tsZfRwTOKBZgQSXFFUeq4eQ00AWieBY0dePb0YKD7z
-         Ns5A==
-X-Forwarded-Encrypted: i=1; AJvYcCX7tWn6rtTr6Su8j85HmWL68UitGffDbbCNWMKbVPHv/0yizuss0mg52Ff/hMCr4UDFjRs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxUwD5jiJLBVWCsFkSUGmK/Efd/fG9UQAfY6C9bJGQytw6gdBnV
-	5W8bTCmKWTV+NqgTwscK7wjzBEasTqk4nm2s4HFfbKcJAD/AfXot
-X-Gm-Gg: ASbGncs9bxDOeFET3d+qHfUgBpmWjW0IM3qJ35v7C/iNdrk8D6zAARahWpCzOnE+uEH
-	zlwHWg2YKEbLaxAJ7kuQeDMI8+ksKTNmxHwXDST2etew3lz/DUlvmWcfY/XyZ69QKj35R3B4u3H
-	wIVPLKwZMse+1Gmw+N4UmMR7J6+Bm+AFUoydVLriK/wZ39qbD4fpbMQJHzE7IDR3/rbjjMI0TyB
-	oRF+yA/vBZ5uNf4W7rJfxcB27lx1Cfc5smhKJTZWQLu9ms4jkq+1unbnVt1AwQewy690pa03eKO
-	frN+G8Y0a2dpo13/+GcxE4J8rIOU++CBfskpLj3GD/AuMo0qNA==
-X-Google-Smtp-Source: AGHT+IH6q+Y+fNg3K1fYBeHbGWU3eRXIxIU/yD3j9JyGk1Xodh5lnXB6Ky0QBqgV1qG4FaffonJZUQ==
-X-Received: by 2002:a05:6122:1d14:b0:523:dd87:fe95 with SMTP id 71dfb90a1353d-52c53daf2admr4866962e0c.9.1746817995152;
-        Fri, 09 May 2025 12:13:15 -0700 (PDT)
-Received: from hiago-nb ([2804:1b3:a7c0:6030:2d83:24ee:356:8505])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-879f6298ebasm1570303241.34.2025.05.09.12.13.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 May 2025 12:13:14 -0700 (PDT)
-Date: Fri, 9 May 2025 16:13:08 -0300
-From: Hiago De Franco <hiagofranco@gmail.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, linux-pm@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com,
-	iuliana.prodan@oss.nxp.com, Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
- remote core attachment
-Message-ID: <20250509191308.6i3ydftzork3sv5c@hiago-nb>
-References: <20250507160056.11876-1-hiagofranco@gmail.com>
- <20250507160056.11876-4-hiagofranco@gmail.com>
- <CAPDyKFrHD1hVCfOK-JV5FJM+Cd9DoKKZGKcC94fxx6_9Bsri1g@mail.gmail.com>
- <20250508202826.33bke6atcvqdkfa4@hiago-nb>
- <CAPDyKFr3yF=yYZ=Xo5FicvSbDPOTx7+fMwc8dMCLYKPBMEtCKA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YdTG/lBL"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 938881FCE8;
+	Fri,  9 May 2025 21:51:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1746827507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3ybU8O60AFFwP7YDQiZRFLzyAUOwV85K224Agh85zF0=;
+	b=YdTG/lBLqsugAmiwZTWnq6AeEi93etuaS35Q7flJL2B+hpTTc9PkVY3qgnxbOwAHG2GRrl
+	O92c0r5S+mCaPJ7rqhc6yJWAIf9E5Bx8EE4Vp6Z+u38Ozjo02E+kxxmdS1H/lqyVdU2TT8
+	nGXVOjPoqZCpWcesJnyj5GXxVccfK7Y+bJsO832Mk84drlVfMWkjQP5hLPNWQL1r9wOiYM
+	m+KIPg+wsYWilRSpctPT8lLI4Y4rlrk2EpZZAYOjcVjGNs0HXGqhsdpkjC2Reoa6LB4+GP
+	4+y/GL1Xq5Owm011apG+TLAawqecn4oeookjSGmeHF1BfjlcLsdkPA+ORJONzw==
+From: Olivier Benjamin <olivier.benjamin@bootlin.com>
+Subject: [PATCH v3 0/4] Describe the cameras in the PinePhone Pro dts
+Date: Fri, 09 May 2025 23:51:36 +0200
+Message-Id: <20250509-camera-v3-0-dab2772d229a@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFr3yF=yYZ=Xo5FicvSbDPOTx7+fMwc8dMCLYKPBMEtCKA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOh4HmgC/2WOQQ7CIBBFr9LMWgxMqS2uvIdxAThYElsMNETT9
+ O7SLjTG5fuZ9zIzJIqeEhyrGSJln3wYC9S7Cmyvxxsxfy0MyLHhiB2zeqCoWas7JQ057XQL5fg
+ RyfnnFjpfCvc+TSG+tm4W6/qXyIJxZhvRHZRTklR7MiFMdz/ubRhgjWT8ijXHj4hFrAUaKY0sf
+ 9hfcVmWN9ek20HXAAAA
+X-Change-ID: 20250228-camera-7a894befafa7
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+ Nicholas Roth <nicholas@rothemail.net>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-media@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
+ imx@lists.linux.dev, Olivier Benjamin <olivier.benjamin@bootlin.com>, 
+ Dragan Simic <dsimic@manjaro.org>, Ondrej Jirman <megi@xff.cz>
+X-Mailer: b4 0.14.2
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleefjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomhepqfhlihhvihgvrhcuuegvnhhjrghmihhnuceoohhlihhvihgvrhdrsggvnhhjrghmihhnsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedtudehfeeutdffjeeviefgjeetieeuleefkeefgfevfedvlefgiefhheejueejvdenucffohhmrghinheptghouggvsggvrhhgrdhorhhgpdhkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegvfeegmegvtgefkeemvdegvgdtmehfhegtvgemfhefgedvmeeiheekjeemfheiheeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvfeegmegvtgefkeemvdegvgdtmehfhegtvgemfhefgedvmeeiheekjeemfheiheeipdhhvghloheplgduledvrdduieekrddurddvtdgnpdhmrghilhhfrhhomhepohhlihhvihgvrhdrsggvnhhjrghmihhnsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvfedprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvv
+ hdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhmpdhrtghpthhtohepkhhriihksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegushhimhhitgesmhgrnhhjrghrohdrohhrgh
+X-GND-Sasl: olivier.benjamin@bootlin.com
 
-On Fri, May 09, 2025 at 12:37:02PM +0200, Ulf Hansson wrote:
-> On Thu, 8 May 2025 at 22:28, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> >
-> > Hello,
-> >
-> > On Thu, May 08, 2025 at 12:03:33PM +0200, Ulf Hansson wrote:
-> > > On Wed, 7 May 2025 at 18:02, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> > > >
-> > > > From: Hiago De Franco <hiago.franco@toradex.com>
-> > > >
-> > > > When the remote core is started before Linux boots (e.g., by the
-> > > > bootloader), the driver currently is not able to attach because it only
-> > > > checks for cores running in different partitions. If the core was kicked
-> > > > by the bootloader, it is in the same partition as Linux and it is
-> > > > already up and running.
-> > > >
-> > > > This adds power mode verification through the SCU interface, enabling
-> > > > the driver to detect when the remote core is already running and
-> > > > properly attach to it.
-> > > >
-> > > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> > > > Suggested-by: Peng Fan <peng.fan@nxp.com>
-> > > > ---
-> > > > v2: Dropped unecessary include. Removed the imx_rproc_is_on function, as
-> > > > suggested.
-> > > > ---
-> > > >  drivers/remoteproc/imx_rproc.c | 13 +++++++++++++
-> > > >  1 file changed, 13 insertions(+)
-> > > >
-> > > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> > > > index 627e57a88db2..9b6e9e41b7fc 100644
-> > > > --- a/drivers/remoteproc/imx_rproc.c
-> > > > +++ b/drivers/remoteproc/imx_rproc.c
-> > > > @@ -949,6 +949,19 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
-> > > >                         if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
-> > > >                                 return -EINVAL;
-> > > >
-> > > > +                       /*
-> > > > +                        * If remote core is already running (e.g. kicked by
-> > > > +                        * the bootloader), attach to it.
-> > > > +                        */
-> > > > +                       ret = imx_sc_pm_get_resource_power_mode(priv->ipc_handle,
-> > > > +                                                               priv->rsrc_id);
-> > > > +                       if (ret < 0)
-> > > > +                               dev_err(dev, "failed to get power resource %d mode, ret %d\n",
-> > > > +                                       priv->rsrc_id, ret);
-> > > > +
-> > > > +                       if (ret == IMX_SC_PM_PW_MODE_ON)
-> > > > +                               priv->rproc->state = RPROC_DETACHED;
-> > > > +
-> > > >                         return imx_rproc_attach_pd(priv);
-> > >
-> > > Why is it important to potentially set "priv->rproc->state =
-> > > RPROC_DETACHED" before calling imx_rproc_attach_pd()?
-> > >
-> > > Would it be possible to do it the other way around? First calling
-> > > imx_rproc_attach_pd() then get the power-mode to know if
-> > > RPROC_DETACHED should be set or not?
-> > >
-> > > The main reason why I ask, is because of how we handle the single PM
-> > > domain case. In that case, the PM domain has already been attached
-> > > (and powered-on) before we reach this point.
-> >
-> > I am not sure if I understood correcly, let me know if I missed
-> > something. From my understanding in this case it does not matter, since
-> > the RPROC_DETACHED will only be a flag to trigger the attach callback
-> > from rproc_validate(), when rproc_add() is called inside
-> > remoteproc_core.c.
-> 
-> Okay, I see.
-> 
-> To me, it sounds like we should introduce a new genpd helper function
-> instead. Something along the lines of this (drivers/pmdomain/core.c)
-> 
-> bool dev_pm_genpd_is_on(struct device *dev)
-> {
->         struct generic_pm_domain *genpd;
->         bool is_on;
-> 
->         genpd = dev_to_genpd_safe(dev);
->         if (!genpd)
->                 return false;
-> 
->         genpd_lock(genpd);
->         is_on = genpd_status_on(genpd);
->         genpd_unlock(genpd);
-> 
->         return is_on;
-> }
-> 
-> After imx_rproc_attach_pd() has run, we have the devices that
-> correspond to the genpd(s). Those can then be passed as in-parameters
-> to the above function to get the power-state of their PM domains
-> (genpds). Based on that, we can decide if priv->rproc->state should be
-> to RPROC_DETACHED or not. Right?
+This series adds support for the Pine64 PinePhone Pro's rear and front
+cameras in Device Tree.
+This is based on some of Ondrej Jirman's patches hosted in his tree at
+https://codeberg.org/megi/linux, but I have also fully reviewed and
+re-written the code from the RK3399 datasheet, the PinePhone Pro
+schematic, and the IMX258-0AQH5 software reference manual.
 
-Got your idea, I think it should work yes, I am not so sure how. From
-what I can see these power domains are managed by
-drivers/pmdomain/imx/scu-pd.c and by enabling the debug messages I can
-see the power mode is correct when the remote core is powered on:
+I have tested these changes on my PinePhone Pro and am able to take
+photos from both cameras using libcamera's cam.
 
-[    0.317369] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_ON
+Signed-off-by: Olivier Benjamin <olivier.benjamin@bootlin.com>
+---
+Changes in v3:
+- Fixed new DTB warnings reported by Rob Herring's bot
+- Link to v2: https://lore.kernel.org/r/20250302-camera-v2-0-312b44b4a89c@bootlin.com
 
-and powered off:
+Changes in v2:
+- Rebase on mainline
+- Change patch subject to arm64: dts: rockchip
+- Rename new regulators to fit preferred form for fixed regulators
+- Link to v1: https://lore.kernel.org/r/20250228-camera-v1-0-c51869f94e97@bootlin.com
 
-[    0.314953] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_OFF
+---
+Olivier Benjamin (4):
+      dt-bindings: media: ov8858: inherit video-interface-devices properties
+      dt-bindings: media: imx258: inherit video-interface-devices properties
+      arm64: dts: rockchip: describe I2c Bus 1 and IMX258 world camera on PinePhone Pro
+      arm64: dts: rockchip: describe the OV8858 user camera on PinePhone Pro
 
-But I cannot see how to integrate this into the dev_pm_genpd_is_on() you
-proposed. For a quick check, I added this function and it always return
-NULL at dev_to_genpd_safe(). Can you help me to understand this part?
+ .../devicetree/bindings/media/i2c/ovti,ov8858.yaml |   4 +-
+ .../devicetree/bindings/media/i2c/sony,imx258.yaml |   4 +-
+ .../boot/dts/rockchip/rk3399-pinephone-pro.dts     | 139 +++++++++++++++++++++
+ 3 files changed, 145 insertions(+), 2 deletions(-)
+---
+-- 
+Olivier Benjamin <olivier.benjamin@bootlin.com>
 
-> 
-> In this way we don't need to export unnecessary firmware functions
-> from firmware/imx/misc.c, as patch1/3 does.
-> 
-> If you think it can work, I can help to cook a formal patch for the
-> above helper that you can fold into your series. Let me know.
-> 
-> >
-> > With that we can correcly attach to the remote core running, which was
-> > not possible before, where the function returns at "return
-> > imx_rproc_attach_pd(priv);" with the RPROC_OFFLINE state to
-> > rproc_validate().
-> 
-> I see, thanks for clarifying!
-> 
-> Kind regards
-> Uffe
-
-Thank you!
-Hiago.
