@@ -1,63 +1,96 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDE1230D14
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 14:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2227E17C208;
+	Fri,  9 May 2025 15:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746802471; cv=none; b=seT3NtTEAxgn4LUj0DZS1J1TebmX2O81KcABTt9mNZjSeJP1fTb2HaUGbGv7Km9wHCjVbHlLcEdfkn5QffAO2TYWeBPCS7sJrxts81HA0nMiPKo5zkvDu2oX4F8y+KfW16s3YPoafyFNQEaS8iEr/dqOrJmsMvYsPcTi6RzyYIE=
+	t=1746805463; cv=none; b=SLjhXN97laaR8BlbVHJD3WzjBDZ1KZYi9mFyTPJEH2yo5/RdlH1z1K/v++5AbvV8T92EDqk6PQ210w8GOkkOWcfeb/bvlincd819RPw8APbOdJfvXHmnguvU4fEbnjCt4KgN7Li97hKVoiFg/RjbaQcZMkdl5GvEdsKsg+D9YV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746802471; c=relaxed/simple;
-	bh=ftCFmTDm4MpBp+NrzQlh8AVYNKU4PO8esHvpD3a43fE=;
+	s=arc-20240116; t=1746805463; c=relaxed/simple;
+	bh=IMXhmQQ2lWO0KiQ0KnSj8yQCSD7P7FRsgDDD17Jfbs0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ouc60araJDcfmmBMGcuYY6+2Q9wrHWyIWn9483qj4C/KEGcr2atTT9Q9Ylt/XuJFAwWIRkkdb4g1LVcvm+mAW5sKatQTphIPjnoEjUIGXl2OECc17q85JvJmkz4rtVxQPQbkooY3FN4CRWyberMUgzLTGqD/CLNoI5CK6vMhWpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=CAQD5QrC; arc=none smtp.client-ip=220.197.32.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=WtzqEhBj60d1d2dQVoW3py2YPIyUwqipFLx1L7JCvChDJXAOj2FprNrmMAMS1oOqN9h8ToMQVYx3pc/BYeAeIhTYPt8TWTJKX8OZRt9ctgcM9/Ma4rcVBC1N1AVJ73kDWj6p0vD8pie/l4hRxSIXd+q02+9jMQMrWkLHn8Qshg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPxU1U5h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="CAQD5QrC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=oPlOYtBazf98uWZHxWpdn4kV8cJsQLj4ZpKTkdWd44U=;
-	b=CAQD5QrCGozhLcpHXuJIkNPy0br7JHKOGqMxioVLuJXJ+uMSG8o8WB6qdujPvn
-	sVt5Qn9NJecoUJJ7DO4kKog3/jnunrHXckX7hbzvSaXuJCu0kk86T4JBarYja0Y4
-	PVopQAyz/2dotQLiOa/SkXRlk6wkw2lh+aTp9OiV5Rrxw=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDn3_MIFx5o9kGtAA--.4244S3;
-	Fri, 09 May 2025 22:54:01 +0800 (CST)
-Date: Fri, 9 May 2025 22:53:59 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: mxs: use padconfig macros
-Message-ID: <aB4XB+OcNBCkcW3m@dragon>
-References: <20250507141504.1332054-1-dario.binacchi@amarulasolutions.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPxU1U5h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2098C4CEE4;
+	Fri,  9 May 2025 15:44:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746805462;
+	bh=IMXhmQQ2lWO0KiQ0KnSj8yQCSD7P7FRsgDDD17Jfbs0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EPxU1U5hYKZ9lQxrZY4kxYVxUmRXrbi6StJM5Se5n7emSq6H4CCwSp1PvU+8lZBWu
+	 HbfNfwQ8AcE3ZokS+TWPkwMsUIKc0x+56XDheqWT0qF8298RYe9A4q38mFWZ7Lk9ve
+	 akBoJ0shcCVTV726rUnUs8VixrBSHZGpKtaQOca6w8+ck2exdtHEdpuuchiPDZfLAB
+	 88C9cULAhL//1QOWsfNefOfDOT35BpoGmWBlTgM2FjHO4U4idlU9jfnih4UrpUoNO2
+	 gI4DJN+4mUatc8d66IbD2/dmYNB7RaWDOD594gGKIlFi6yew1MO1+P+CFHYKfF2XYQ
+	 UwDcwZiYYwNuQ==
+Date: Fri, 9 May 2025 16:44:18 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Richard Hu <richard.hu@technexion.com>, sascha.hauer@pengutronix.de,
+	Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev,
+	ray.chang@technexion.com, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] arm64: dts: imx8mp: Add TechNexion EDM-G-IMX8M-PLUS
+ SoM on WB-EDM-G carrier board
+Message-ID: <20250509-dripping-colonial-aa805906a189@spud>
+References: <20250509071242.12098-1-richard.hu@technexion.com>
+ <8173a798-b5d7-485c-8ce3-b46f4a097d83@kernel.org>
+ <83401d0a-ca96-4cfd-9016-13a8604beb9c@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="OD4wdRO1911HDruQ"
+Content-Disposition: inline
+In-Reply-To: <83401d0a-ca96-4cfd-9016-13a8604beb9c@kernel.org>
+
+
+--OD4wdRO1911HDruQ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507141504.1332054-1-dario.binacchi@amarulasolutions.com>
-X-CM-TRANSID:Ms8vCgDn3_MIFx5o9kGtAA--.4244S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUwxhlDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCwpIZWgd37XrywAAsT
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 07, 2025 at 04:14:58PM +0200, Dario Binacchi wrote:
-> Convert mx2{3,8} dts files to use the padconfig macros defined in
-> mxs-pinfunc.h.
-> 
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+On Fri, May 09, 2025 at 03:58:32PM +0200, Krzysztof Kozlowski wrote:
+> On 09/05/2025 15:21, Krzysztof Kozlowski wrote:
+> >=20
+> > No, that's not a spi controller.
+> >=20
+> > Node names should be generic. See also an explanation and list of
+> > examples (not exhaustive) in DT specification:
+> > https://devicetree-specification.readthedocs.io/en/latest/chapter2-devi=
+cetree-basics.html#generic-names-recommendation
+> >=20
+> >=20
+> >> +		compatible =3D "rohm,dh2228fv";
+> >=20
+> > I doubt that. Drop the node or fix the compatible.
+>=20
+> ... especially that dh2228fv does not exist. There is no such device
+> from ROHM. If you claim otherwise, please share this imaginary device
+> datasheet.
 
-Applied, thanks!
+To be clear, the thing to do if you have some device without a kernel
+driver and want to use spidev for it, is to add a binding for the
+device and add the device specific compatible to spidev.c.
+If it is a simple device with no unusual properties (maybe it has an
+interrupt, that's fine) add it to trivial-devices.yaml instead of
+writing a dedicated binding.
 
+--OD4wdRO1911HDruQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaB4i0gAKCRB4tDGHoIJi
+0rTIAQCvC0a5Fu0qeL8RJpXo9801tjpYBm1ES+9QEWTFRWEB4AEAuwO8YdFqpXuB
+siGWDtLPid4o2efFJvy1i/+/LuJXeAA=
+=VP1b
+-----END PGP SIGNATURE-----
+
+--OD4wdRO1911HDruQ--
