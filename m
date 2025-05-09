@@ -1,66 +1,65 @@
 Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD7B29188F
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 11:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4072918C7
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 11:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746788834; cv=none; b=SssxyrJYuP3iKH3Os+kYRk2ec/zj8aaJmzc4k6mjSasecT9WZSpAQsr7MR6EGqxs9zDtDX1VBNKDCzRg1gaAR/Ir32TIDLa92OwubY7ygzCKL1NwtnPc8n8Eg+/kZ1bYmMcphrISUyQSTluR5rxI9z596izPGWAmNWuo8jYkrZ0=
+	t=1746788835; cv=none; b=FBD2K+84++HqkeT52gGh2KGrf8JaQ5A42ywfyMZCl3jB8Gn9AsRfT5zqe3dwzPCEOQGlhDV6z8BVGpXag1TSJl2kq5GHXzbgt05qIyVYVEbWmpD4Iss3993uL52roD7cbhTwko7WHVX5fyCl/oSb20xFjRhE0PFHdgIefXnF974=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746788834; c=relaxed/simple;
-	bh=gdl/1A2tWVRhxiGr8HNdkp2uLbfVXUsZjNQ28NMiOx8=;
+	s=arc-20240116; t=1746788835; c=relaxed/simple;
+	bh=mx5u03b5TB/f2q1YQ3KCyV5h99vYZyaZPDhhfpjU5fc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QIlwO4PGkESq/ccQ+bFMQJba+ibiGTaO5rvUPm503LwEYsBWuUtmYHfm5r6qwfSiDnxZUVxdd8/+txvzaSYFlB9t/vGJ6Cya46LanDE/EKq81c45oQpa3AMsODKxZC6JnHrfUsmC7LVnP2ouH8u1NnFxsFAej05JFWDZpIBcsoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zFEHrA4W; arc=none smtp.client-ip=209.85.128.52
+	 In-Reply-To:To:Cc; b=p0C/73qzOyLJ9F11WGxoYIyiq0hDHgz2c/jQzMw8sCEBNn029UHnXejpCUKCbaZ73yGhG0sN/N09fHTwpVWqhcSAA1qvFv+1Q93V1ZiE++8wx/6y6wNp6OuUqjsoX0vMqRsO8MMcx3+UlbTEdEknPX1nbBTTKHztaj6TORN2O68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YNTQWhZd; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zFEHrA4W"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-442d146a1aaso18539645e9.1
-        for <imx@lists.linux.dev>; Fri, 09 May 2025 04:07:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YNTQWhZd"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cf680d351so17700205e9.0
+        for <imx@lists.linux.dev>; Fri, 09 May 2025 04:07:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746788830; x=1747393630; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1746788831; x=1747393631; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vT4KOWN4uTm3QxGCYySEGWVVZs5ryN1meRZIg3C7iIY=;
-        b=zFEHrA4WpeXhukdiqi/1za/8NlL74gf0OnrH4bQBySVsPdbZfLaNF0RHanb2BB9s1J
-         XVvSnwCzmYsz9A1VXtaaJhH+t+POBsbGtbHv/cu2omBJV1Ve111DeCJJWTJD/mdYV9HP
-         Xkw38tRndSWAMUQek9r56FvNmqaAq14nFAOLOcom6lG4JhRSa9bm6fYlxIC4TBCZZMQE
-         IURr90mn868itzgRLvtPHnk4xrunqtVgHEIYy6ym8ZUt+Twg60n1nWgJInMKbwYiFRV6
-         sC94RQRgimZIYGvDSO0iZHqzJkmh84XUnuBLaf/5p52eAIHC4ldddHSw2GwOOduzjpzF
-         QAZQ==
+        bh=OjvkkMIUxErk/9CbtL8I8hETKTjq9Ni1Xdc4V8HrKQc=;
+        b=YNTQWhZdpbOpmPDgLNbQzVR5rtb9nqJFz/end5J5LAESbO/k8m58s+vfrRdQxwwdel
+         sbCc3j1mksXl0JaXC3okhJ+fC1vSnk6d/BGQ2ah6QLaQ1Ex3g/jrn/dNyq/UNA+vKdl9
+         Bqm0YHvUWxw/QIotcW1lmAanHGKTy/pwBfs1+QPF+VBycxvWzlWg+qjqnY574M5EJ8e2
+         bmI+AeZihbzqrAwdlIQf9M/ir2EP0t6zuOot822JTcwyWGcF8pcQW8mRO7y6e/FVcuTq
+         8f47dJIvtHVX+gPGwwGBXlBoOVKY3+lcfwS/wpNwg5Tuw11wn+Et2kxKJrqx8GqtjLCL
+         Pafw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746788830; x=1747393630;
+        d=1e100.net; s=20230601; t=1746788831; x=1747393631;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vT4KOWN4uTm3QxGCYySEGWVVZs5ryN1meRZIg3C7iIY=;
-        b=K5QCjx4v6oqM2sFhQV+DO9Xi6vDcgFDI+IT00dIYW+8kKjM8UzVrptA1wZBXUF7MW1
-         AQPZpNjD4NgbEpaQKAmWYeUKT/9fUaHhZGvi5ZLIkFBFwNFRSUva7DpK2mQc1+LqXVda
-         XTJNj+81k6Jt8yZLbfBBJ8OhRsilv6i9bOGXFIliOCcbGYhXLSb06cJQ/0RBnp4P2UMC
-         rPENsBu9yONew1RII6cBSrOz/o2wC9t/FcuICcbeWiiWFZaSfSJbMSL4Y32KLY4mpmsu
-         gvYprQon5TJMMvjSIezBjzj+7aO6gzbncN2cyOZolHGSfqtK8Oab5Lly4loaEV05C5ei
-         kHFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXeWLOtKC0aI79dVWrLCm3M8LY7m7B6/003q1jdiPqtBBn2w19ynBbypt22mB2ZVGfhIkM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywkf5iitRjw33Ckz/QoF+mgo3UE8OPcRLB7Ab2ZWZQ4Fm4d1edV
-	Dj7CwXEy1SGqhE7W6r4b4GQHviGcMRw5KJ/SOzdyMXxDE/O2qREr4iYtCcjfprA=
-X-Gm-Gg: ASbGncsDKBpkJ1EQP8zivqFxYV6GSdVVuU3g9zYo7nq/ce3xUr8ulOSsYAYebaGETgo
-	dvn+CoqPdJ9Frg7FAlCWbcp+Q1dy0kPHH+HQnossuAj4F1ZLj2kdog0/voIONqMxgHA2WnDURtQ
-	bf18afpNxTc6w4ue1sj9c9Q8iWXi7yPXCx2I5ViWgkQPqi0C6fm/xTvAdxuoKk5oYntW7xb8jev
-	ZNEn5guiy6/XkEaOZYuHt72jpce1WSHoKMxHoyP2HzVp6JtdoWJia9JxY0TcoBQkKT4FvUw3WmN
-	hLjl9i3OpGjXTLHLjmx/xoNmylF5MIsJb7BYN9sCjgeQUW8=
-X-Google-Smtp-Source: AGHT+IGGXkJ58sLQbmi3wU/ta+YdLpsygJwEMpejLEliNzR91iBPwbbisuUDIlnG+jy75pghXWkjdg==
-X-Received: by 2002:a05:6000:1ac5:b0:39a:cb5b:78fe with SMTP id ffacd0b85a97d-3a1f647a5b5mr2514501f8f.34.1746788829944;
-        Fri, 09 May 2025 04:07:09 -0700 (PDT)
+        bh=OjvkkMIUxErk/9CbtL8I8hETKTjq9Ni1Xdc4V8HrKQc=;
+        b=wALgIk4wT/5Q15v00F1/YGwd4EDr+JpJ5RcZL0ogVBAwsLzTIh9ApoyeepximcGtsn
+         W07OKBqIDd2UyQYwgsveWyu1gnldwG+eCS2dTLvZxrQIHBh13JHPUYzf0WBL91mv5VWi
+         thyJ/mbJQ3pk86K0o9kSYIDpD6D39zOc1MWAgfnSmFyWejd4pm9d4ks5hEPJEEc/D1YR
+         RCkxnn9rd7y7ZXv7Zy9lpDj90Z+EbLtok4CDLHczxSzHdLmj6VbtGfHKnN7FShFr9vcp
+         j9XK99iywxS32DaR66K7FthM6VcuewNjgXaF4F3J908m6t0XFlvHFWbmj/mGgrroYWcm
+         VpTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVbXPi+pbWhLVHvYcOFQQRA+2boeOhKkZe49OtbtIHbbTvjYAxGUfPHVYrSF+cH4JrgX/4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyFTUpRrbzH3El3VP5yegmR0qQU+7F6lZQ6rNtT5VrioeQ/pwrp
+	c65HV5FP0UveJCetJnE/BHuyGV5n4b+IUB9lXW9m7YQxp9E0hpnnNVV746eLtoc=
+X-Gm-Gg: ASbGncuZm25a7M5fcgCswvsPq9VNGh3HAFXcG+Rlfe4Q3VGRGCnI3XVqxYuTm2qn775
+	N9L2dAOQUIEILBAn8/lJ/pQcNFUfrNGk+/tGxhEuHcP3Fa53YvdGQhJeY+Wbv9Ot13e7LH/Rn98
+	l+X5R5Wup+9EglFDCWo5xwVwNpEh0OlJkbfCUZrQOxl4qhvuFqspa0j16spvDijRNU2gQn36qDO
+	ixI+RmrbsilgjlCWZ0748FULJwibcYJcnL1wvblKcxiaa/zIrJd4UZGtAEiZ+ospvXXRPMhuY3N
+	Hjs7r3wg8WEYW3gRn2QURHHbTlysYqoKWu3Y56RM9YqS+wQ=
+X-Google-Smtp-Source: AGHT+IGJvDt+LaY1QQLl2SlTRe/DojIZ4tpeJAXa/uWwNzG6xIzfPYcQgejyyHruKfc7448qtaeZfA==
+X-Received: by 2002:a05:6000:228a:b0:3a0:b8ba:849f with SMTP id ffacd0b85a97d-3a1f6a0fc42mr2727736f8f.4.1746788831370;
+        Fri, 09 May 2025 04:07:11 -0700 (PDT)
 Received: from ho-tower-lan.lan ([77.81.75.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58ecadfsm2914797f8f.22.2025.05.09.04.07.08
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58ecadfsm2914797f8f.22.2025.05.09.04.07.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 May 2025 04:07:09 -0700 (PDT)
+        Fri, 09 May 2025 04:07:11 -0700 (PDT)
 From: James Clark <james.clark@linaro.org>
-Date: Fri, 09 May 2025 12:05:58 +0100
-Subject: [PATCH 11/14] spi: spi-fsl-dspi: Halt the module after a new
- message transfer
+Date: Fri, 09 May 2025 12:05:59 +0100
+Subject: [PATCH 12/14] dt-bindings: spi: dspi: Add S32G support
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +68,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250509-james-nxp-spi-v1-11-32bfcd2fea11@linaro.org>
+Message-Id: <20250509-james-nxp-spi-v1-12-32bfcd2fea11@linaro.org>
 References: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
 In-Reply-To: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
 To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -85,104 +84,69 @@ To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
 Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-arm-kernel@lists.infradead.org, 
- Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>, 
+ Ciprian Marian Costea <ciprianmarian.costea@nxp.com>, 
  James Clark <james.clark@linaro.org>
 X-Mailer: b4 0.14.0
 
-From: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+From: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
 
-The XSPI mode implementation in this driver still uses the EOQ flag to
-signal the last word in a transmission and deassert the PCS signal.
-However, at speeds lower than ~200kHZ, the PCS signal seems to remain
-asserted even when SR[EOQF] = 1 indicates the end of a transmission.
-This is a problem for target devices which require the deassertation of
-the PCS signal between transfers.
+Document S32G compatible strings. 's32g2' and 's32g3' use the same
+driver so 's32g2' must follow 's32g3'.
 
-Hence, this commit 'forces' the deassertation of the PCS by stopping the
-module through MCR[HALT] after completing a new transfer. According to
-the reference manual, the module stops or transitions from the Running
-state to the Stopped state after the current frame, when any one of the
-following conditions exist:
-- The value of SR[EOQF] = 1.
-- The chip is in Debug mode and the value of MCR[FRZ] = 1.
-- The value of MCR[HALT] = 1.
+The SPI controller node in dts can define both host and target pinctrl.
+The selection between them will be done based on pinctrl-names. The
+default pinctrl will be loaded first and will be used by the host. If
+the controller is configured as target (spi-slave property is added in
+the dts node), the driver will look for the "slave" pinctrl and apply it
+if found.
 
-This shouldn't be done if the last transfer in the message has cs_change
-set.
-
-Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
 Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
 Signed-off-by: James Clark <james.clark@linaro.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ Documentation/devicetree/bindings/spi/fsl,dspi.yaml | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 31521dac1580..db921ee6305f 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -64,6 +64,7 @@
- #define SPI_SR_TFIWF			BIT(18)
- #define SPI_SR_RFDF			BIT(17)
- #define SPI_SR_CMDFFF			BIT(16)
-+#define SPI_SR_TXRXS			BIT(30)
- #define SPI_SR_CLEAR			(SPI_SR_TCFQF | \
- 					SPI_SR_TFUF | SPI_SR_TFFF | \
- 					SPI_SR_CMDTCF | SPI_SR_SPEF | \
-@@ -1056,9 +1057,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 	struct spi_transfer *transfer;
- 	bool cs = false;
- 	int status = 0;
-+	u32 val = 0;
-+	bool cs_change = false;
+diff --git a/Documentation/devicetree/bindings/spi/fsl,dspi.yaml b/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
+index 7ca8fceda717..b5fac0bb142a 100644
+--- a/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
++++ b/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
+@@ -23,6 +23,7 @@ properties:
+           - fsl,ls2080a-dspi
+           - fsl,ls2085a-dspi
+           - fsl,lx2160a-dspi
++          - nxp,s32g2-dspi
+       - items:
+           - enum:
+               - fsl,ls1012a-dspi
+@@ -37,6 +38,9 @@ properties:
+       - items:
+           - const: fsl,lx2160a-dspi
+           - const: fsl,ls2085a-dspi
++      - items:
++          - const: nxp,s32g3-dspi
++          - const: nxp,s32g2-dspi
  
- 	message->actual_length = 0;
- 
-+	/* Put DSPI in running mode if halted. */
-+	regmap_read(dspi->regmap, SPI_MCR, &val);
-+	if (val & SPI_MCR_HALT) {
-+		regmap_update_bits(dspi->regmap, SPI_MCR, SPI_MCR_HALT, 0);
-+		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
-+		       !(val & SPI_SR_TXRXS))
-+			;
-+	}
-+
- 	list_for_each_entry(transfer, &message->transfers, transfer_list) {
- 		dspi->cur_transfer = transfer;
- 		dspi->cur_msg = message;
-@@ -1088,6 +1100,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				dspi->tx_cmd |= SPI_PUSHR_CMD_CONT;
- 		}
- 
-+		cs_change = transfer->cs_change;
- 		dspi->tx = transfer->tx_buf;
- 		dspi->rx = transfer->rx_buf;
- 		dspi->len = transfer->len;
-@@ -1125,6 +1138,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 			dspi_deassert_cs(spi, &cs);
- 	}
- 
-+	if (status || !cs_change) {
-+		/* Put DSPI in stop mode */
-+		regmap_update_bits(dspi->regmap, SPI_MCR,
-+				   SPI_MCR_HALT, SPI_MCR_HALT);
-+		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
-+		       val & SPI_SR_TXRXS)
-+			;
-+	}
-+
- 	message->status = status;
- 	spi_finalize_current_message(ctlr);
- 
-@@ -1306,6 +1328,8 @@ static int dspi_init(struct fsl_dspi *dspi)
- 	if (!spi_controller_is_target(dspi->ctlr))
- 		mcr |= SPI_MCR_HOST;
- 
-+	mcr |= SPI_MCR_HALT;
-+
- 	regmap_write(dspi->regmap, SPI_MCR, mcr);
- 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
- 
+   reg:
+     maxItems: 1
+@@ -114,3 +118,17 @@ examples:
+                 spi-cs-hold-delay-ns = <50>;
+         };
+     };
++  # S32G3 in target mode
++  - |
++    spi0: spi@401d4000 {
++        compatible = "nxp,s32g3-dspi", "nxp,s32g2-dspi";
++        reg = <0x401d4000 0x1000>;
++        interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&clks 26>;
++        clock-names = "dspi";
++        spi-num-chipselects = <8>;
++        bus-num = <0>;
++        dmas = <&edma0 0 7>, <&edma0 0 8>;
++        dma-names = "tx", "rx";
++        spi-slave;
++    };
 
 -- 
 2.34.1
