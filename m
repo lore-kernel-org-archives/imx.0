@@ -1,31 +1,31 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A8B229B35
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 14:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108275464E
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 14:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746801221; cv=none; b=BcMCNUHP8kag6Vh4FuyAAIKRZ9ie2RkIs6lNtmbH3OsazcMlnSrs4bIEnIbpLbF3wyX6K/i35sYa5UDD9YuDFtaXMRP3dEIzom9r2g76FZp1qY22jQtd2Oi8WWUp5PtTe12jgXGRfBRGl9pGjC5LKcztkqUkGoNe8t7/gaQONsU=
+	t=1746801659; cv=none; b=o5ioGpRIlGM2H/zh8B8sAPBcV7Lr+YWtJz0F9IMJnJUG3LHTPIJdetgZxfYVKfyEsETSat8yrk8Bm6YtGVzfYjrHj3WnOwv1QCTgJIp//oT3RplOS7aOnvKvq1XJLEStm8NxPUGIjBM51YinsQBm7StwTnffg8NaAGsBAUSfoIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746801221; c=relaxed/simple;
-	bh=mhyldcst/FwlgLhc8mUZwssOs1OMGla2sLaQ1bVesSU=;
+	s=arc-20240116; t=1746801659; c=relaxed/simple;
+	bh=1Bb8xF5ZUtAqzAYX+MCnhk8JufnOu8YhLs1oNq47D4Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AJC+Cd1NTiNByqAxKops4y/H83V4Do713Vz0uHgsWjZVz1YPAMSVan2avF1g1pL5DLaFWJlBoN88dPvOVgpw8NuQ0RA0bsq6O0DNlPScoX2cBeCu1CAl5CufPPTzUcJmlrniyfUEFXfkIf6oSQ2f2EpoXLDUWjZr0nYJIANkYCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=pAXhJYTb; arc=none smtp.client-ip=220.197.32.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=uPyCoCMyqYW6iW2TkbJIXVPg870YBk4gRK0G0lDkLVtWy8bsWC89Lvw1QcJdgpEqsqoGN58l7BMGdwavOMv9D1U6iSa8B73MThUSXeDZl2bYCxTE5mHGD08sFjnVD9b6jClQy/53RVNAQijcxaUXevOHGQXoigeWlfyWewxLNkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=cfr8GOgm; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="pAXhJYTb"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="cfr8GOgm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=KZet+ff0CAqKdEihq0J4KoIwRL/wzE3KoqwUIYv73Sw=;
-	b=pAXhJYTbNRJtQHK6fCd0ea3DhgtshwYydPx04PrJS2UaqOYzyginNzWLkXJq1F
-	exjsqMWvuiU4N54hvvVh8NGwq2HSySo67N5rqG2xBPbmO607qao0hMED2UpTyKdB
-	CRolNhVdC2YvbsiKfZ5BVqqovzV6OaRrgMt9YVsxYeJGE=
+	Content-Type; bh=yUwQFda+RlFIMXKiIF4g+n1LDysyAUbuSGkjmJu59Ic=;
+	b=cfr8GOgmFsA2xfLB7tC4cs6pXs2TEJkPJLkAcTW6VwZd4EUlbSUtIe7stkK96p
+	WSOCOj7j5rsObTdgRkl2E0mHplt13wrUI+YDKamzENgs/WjV/0lloc4rrf+mVtP2
+	ZiaorTCC6rhl39ewTp7s9FnCZGHgAR/iJ3jYhol/d4NHI=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD33xEbEh5otAutAA--.15781S3;
-	Fri, 09 May 2025 22:33:01 +0800 (CST)
-Date: Fri, 9 May 2025 22:32:59 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgDn7xPQEx5oH32oAA--.41579S3;
+	Fri, 09 May 2025 22:40:18 +0800 (CST)
+Date: Fri, 9 May 2025 22:40:16 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Alexander Stein <alexander.stein@ew.tq-group.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -33,14 +33,14 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com,
-	linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt: bindings: arm: add bindings for TQMa95xxSA
-Message-ID: <aB4SG1a8A2OvIBNB@dragon>
-References: <20250428135915.520432-1-alexander.stein@ew.tq-group.com>
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	linux@ew.tq-group.com, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] arm64: dts: imx93-tqma9352-mba91xxca: disable Open
+ Drain for MDIO
+Message-ID: <aB4T0Jaz2VJk07hF@dragon>
+References: <20250430081849.1827688-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,19 +49,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250428135915.520432-1-alexander.stein@ew.tq-group.com>
-X-CM-TRANSID:Ms8vCgD33xEbEh5otAutAA--.15781S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUcg10UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCR5IZWgd36zXkwAAs4
+In-Reply-To: <20250430081849.1827688-1-alexander.stein@ew.tq-group.com>
+X-CM-TRANSID:M88vCgDn7xPQEx5oH32oAA--.41579S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU8mhFUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCR5IZWgd36zXkwABs5
 
-On Mon, Apr 28, 2025 at 03:59:08PM +0200, Alexander Stein wrote:
-> TQMa95xxSA is a SOM using NXP i.MX95 CPU. MB-SMARC-2 is a carrier
-> reference design.
+On Wed, Apr 30, 2025 at 10:18:48AM +0200, Alexander Stein wrote:
+> From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 > 
-> [1] https://www.tq-group.com/en/products/tq-embedded/arm-architecture/tqma95xxsa/
+> Using the MDIO pins with Open Drain causes spec violations of the
+> signals. Revert the changes.
+> This is similar to commit 14e66e4b13221 ("Revert "arm64: dts:
+> imx93-tqma9352-mba93xxca: enable Open Drain for MDIO"")
 > 
+> Fixes: e5bc07026f94 ("arm64: add initial device tree for TQMa93xx/MBa91xxCA")
+> Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Applied both, thanks!
+Applied, thanks!
 
