@@ -1,151 +1,519 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8AF8632C
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 14:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F422918FF
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 14:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746799590; cv=none; b=fRgzPOakQLWFuBrQw72fYdAhaxjdfJqUOzWuZcex+mH6v5OUjQmyJu/tFGfquXegka8R70L4Al5HmDc0ak4sWf0XRCQtES2se2Xae4Nj8cKTIDLTvIPeYzRT6puYNGvZu8wpS1ADKA34Ujcq/REu+CMEDHPuQ2CzzDn6U8lVHKg=
+	t=1746799809; cv=none; b=mQeYaV0N63cJKZJ7ipg26rJRjeQM7U8qkmmbGtomaLZHNKzCxpgmcU5+wFsGtc6toCg5+4MfyPW5oheqAwHJswmsJ3xOjlCXZ8On66mzySG2XIHRPOBkqZNvShTcHWzUhSitnS5Tbd7j7kdqajKzz/SUNiMRILJjKxKAPSStrGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746799590; c=relaxed/simple;
-	bh=EDEwnV0nE85Oqv0NR7mxnbl9Iv6yY6k//Uqp11s7Pl8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZOHbdDE4btYs6ttEIUwyQvRtpFiCN0lh5mmUSju4OVIwjfa9KtM40WGP0ukRRuZFXfO56Y3RtiI9djj3PlbZEJqMxbkHW4xSN24Ty7LyP7Y11vi0+2EhwOeGniflZyQxN6uyXmcTMCD+4VK0xanceokRYV5FWZTCm8IRqPPIv9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WA3jTdkF; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746799809; c=relaxed/simple;
+	bh=utSjomRtIBnGMrqivQfSzexmNxMAKur9ebTn2Ksty7c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RgCKDYGAyhks10TCJ9OjRYTBlonxTwrjccnbJjIWO5I2UWNMaYgY6gpi6R3wrCyh3HEpMx7H9Q+K49yCOmcp7ueYTPPd4XMIrDjIHFCB2z1VcZ1wHmb2lui8a3pB5HJr5Xpl8n+oNlrA5Gf0PT8q2nMdOEafYs7t+tst8Bl1yiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=zwpNhs98; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WA3jTdkF"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ac79fa6e1c2so39964066b.1
-        for <imx@lists.linux.dev>; Fri, 09 May 2025 07:06:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746799587; x=1747404387; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1vR3S5bFvr+HUo+LPE6J+nwHXZjEwfOX2Cga+g88x6Q=;
-        b=WA3jTdkFJ7lqsK6xsujqiZUZTAxNIWaitht1KXxWigGkfS82SAGVoAL4cVx5LkVG/w
-         w5A/N8TpJMvMAkvcPhci8tQ81EGqrywVXePu2KLaoKOTdd87bDMAqrYM8z5i9ob9UkSR
-         XXRepsqldvod4gtc2BeYsrtMWqHeQnycBRgg7kf9MZWGxZgBYiQssjdHSj2jzowOirzT
-         +2dO9HTnTFLO7/gkQ2I29+SDV6mvQaspd9YFF6PjC7/2D9OWUVRwIwr3g9fRDISU0YRP
-         LgieBcziHddBCfnMBUdMJvQyTyO6HYWt9UQv8V3+l4zMdr0Zpe15shbTNXNtKcveU54Z
-         Wheg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746799587; x=1747404387;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1vR3S5bFvr+HUo+LPE6J+nwHXZjEwfOX2Cga+g88x6Q=;
-        b=vEAloqFgdhbvozcDjE0pcwy+WIXLkNS8971m4idC0oNZDC7Vo2YdqZst01hFdNBQQb
-         v5AJZwaQJ/eXVKiqPWmLIlxL211lQh3Q5iEzwy+xGy6SGfl2CGm7ntzwpDbkXrXZxOAd
-         MNRgw8DiKdzSLYTQo2nQPCQKQmV/zKLM784qhIy5JMt5ulJwMCrbzrqWrLRwBUgOKv01
-         WRhzbLd35MOKIfSkYYaP3t3IURBg/dPVX3lMUIARFaBjX2WqdCoJ7U0zDsBn9BkLlUbd
-         ZmzR0NJFomksBvwEx+3j7k5TuTwIH7iV8sVjiiz76hgPLYpGEEW9LvuOTx3TIfQfXVzf
-         lkjg==
-X-Forwarded-Encrypted: i=1; AJvYcCWFAKS1Y2jHCwSJ8zOGrrENgSeaQCMKs7s3CUltdZUc6Sb+Ii8ZXS9ldt/I371z0yOgCwc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyauXNidcAtC5LeG95b0wP/hoNEDWS3iJ2tVVNX2c9GnUDZeMOG
-	i9GpS8zV4Wgd9oupFsiZvLphHQBelUMuqUfiswqNaUEmBE9jACX3
-X-Gm-Gg: ASbGnctZWeByVzxLZWBvEd9jAnVFnOVYGMWlmLqFc2oONGt0L3MHKr/6w9wv1meWIdT
-	6TsFzanIauTwVvn3qw805fRci7D+zJsrdY98G8ggoGncIdOE6qYaLMSk2/ivtwDkIe4/Vyv1slG
-	JQN2jkpYO/WemGIfBPYoY2jKKULnoevCI0BDDaJemdB0V/MRg4uc/KojITlNyvV86eB63RXQtIQ
-	+DaiNIYsQMd6chPO681A3Ez9pYSX9iX7fcGTWmqWGIDXUXggwLFT5TUvZXNTqQ1yk3bUrE0C053
-	ESexECzMysAva/Yfplx6HB54aNYl
-X-Google-Smtp-Source: AGHT+IFyBqJPuUpd/VkBty6rVNROepduGUENPpZDSw5zwcqT5KP0a0bpgkdNYr+JHP9i1uJjIlcABw==
-X-Received: by 2002:a17:906:8474:b0:ab7:5fcd:d4db with SMTP id a640c23a62f3a-ad218f68a14mr108916866b.9.1746799586548;
-        Fri, 09 May 2025 07:06:26 -0700 (PDT)
-Received: from skbuf ([188.25.50.178])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad2192d4a1dsm158053766b.17.2025.05.09.07.06.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 May 2025 07:06:25 -0700 (PDT)
-Date: Fri, 9 May 2025 17:06:22 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: James Clark <james.clark@linaro.org>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="zwpNhs98"
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 88A541F9FD;
+	Fri,  9 May 2025 16:09:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1746799797;
+	bh=HchLSnl0xtTgWIkHSHTZOJttXYpwd3D8Q0PCSz7JKKE=; h=From:To:Subject;
+	b=zwpNhs98UKPAcPJLDaEZn5Q3R2qPhyZR4BUVo6l2Lr+UAfPxGXIP/NfeotmiQykjK
+	 v7N/GecXI4AgHKMaKvjnYQvvAy7AVdm/dKN55d/27ZEPb1WoN/DHdFGydn0zE1/Eds
+	 tco1OjkQYU4y0Bivy3XEenuvxIIb8MHQdICfPgbdwj3nyKQ3BluOq75J1dGXPGlNGp
+	 V4664+0lN74FpvFd4zEeh8/xIJTFKNzPa/VIvQH+Rn83oRAONCkc9k58uIAkNDTkCG
+	 k4GbfTYPaCxEx9qXkjMATODqkOjzCwzCeyhmIWG1TQs9+c2wIF71rOwtDc1wOSF9Z+
+	 zEF6SFaZUXxpQ==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Dong Aisheng <aisheng.dong@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, larisa.grigore@nxp.com,
-	arnd@linaro.org, andrei.stefanescu@nxp.com,
-	dan.carpenter@linaro.org, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Xulin Sun <xulin.sun@windriver.com>
-Subject: Re: [PATCH 03/14] spi: spi-fsl-dspi: restrict register range for
- regmap access
-Message-ID: <20250509140622.n2tc3dd23ylyux72@skbuf>
-References: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
- <20250509-james-nxp-spi-v1-3-32bfcd2fea11@linaro.org>
+	Fabio Estevam <festevam@gmail.com>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Carlos Song <carlos.song@nxp.com>
+Subject: [PATCH v2] i2c: lpi2c: implement master_xfer_atomic callback
+Date: Fri,  9 May 2025 16:09:49 +0200
+Message-Id: <20250509140949.56324-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250509-james-nxp-spi-v1-3-32bfcd2fea11@linaro.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 09, 2025 at 12:05:50PM +0100, James Clark wrote:
-> From: Larisa Grigore <larisa.grigore@nxp.com>
-> 
-> DSPI registers are NOT continuous, some registers are reserved and
-> accessing them from userspace will trigger external abort, add regmap
-> register access table to avoid below abort:
-> 
-> Internal error: synchronous external abort: 96000210 1 PREEMPT SMP
-> Modules linked in: fuse dummy tun hse sch_fq_codel openvswitch nsh
-> nf_conncount nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4
-> CPU: 2 PID: 18231 Comm: read_all Not tainted 5.2.33-yocto-standard #1
-> Hardware name: Freescale S32G275 (DT)
-> pstate: 20000085 (nzCv daIf -PAN -UAO)
-> pc : regmap_mmio_read32le+0x24/0x48
-> lr : regmap_mmio_read+0x48/0x70
-> sp : ffffff801123bb70
-> x29: ffffff801123bb70 x28: ffffffc873b5c000
-> x27: ffffff8010b408f0 x26: 0000000000000001
-> x25: 000000000000013c x24: ffffff801123be40
-> x23: 00000000000003ff x22: ffffff801123bcfc
-> x21: ffffff801123bcfc x20: ffffffc873a9e500
-> x19: 0000000000000024 x18: 0000000000000020
-> x17: 0000000000000000 x16: 0000000000000000
-> x15: ffffffc876189160 x14: 0000000000000003
-> x13: ffffffc873bf73ff x12: ffffffc873bf707e
-> x11: 0000000000000000 x10: 0000000000000000
-> x9 : 0000000000000000 x8 : ffffffc83fca4e00
-> x7 : 000000000000000f x6 : ffffffc873bf7083
-> x5 : 00000000fffffff9 x4 : 0000000000000002
-> x3 : ffffff801061f058 x2 : ffffff801061ee18
-> x1 : 0000000000000024 x0 : ffffff8011490024
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-I think you can leave the register dump out, it doesn't seem of much use.
+Rework the read and write code paths in the driver to support operation
+in atomic contexts. To achieve this, the driver must not rely on IRQs
+or perform any scheduling, e.g., via a sleep or schedule routine. Even
+jiffies do not advance in atomic contexts, so timeouts based on them
+are substituted with delays.
 
-> Call trace:
-> regmap_mmio_read32le+0x24/0x48
-> regmap_mmio_read+0x48/0x70
-> _regmap_bus_reg_read+0x38/0x48
-> _regmap_read+0x68/0x1b0
-> regmap_read+0x50/0x78
-> regmap_read_debugfs+0x120/0x338
-> regmap_map_read_file+0x44/0x58
-> full_proxy_read+0x68/0x98
-> __vfs_read+0x48/0x90
-> vfs_read+0xb0/0x130
-> ksys_read+0x7c/0x108
-> __arm64_sys_read+0x24/0x30
-> el0_svc_common.constprop.0+0x74/0x168
-> el0_svc_handler+0x70/0x90
-> el0_svc+0x8/0xc
-> 
-> Co-developed-by: Xulin Sun <xulin.sun@windriver.com>
-> Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
-> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Signed-off-by: James Clark <james.clark@linaro.org>
-> ---
+Implement atomic, sleep-free, and IRQ-less operation. This increases
+complexity but is necessary for atomic I2C transfers required by some
+hardware configurations, e.g., to trigger reboots on an external PMIC chip.
 
-Do you have a reproducer for any of the supported SoCs? On LS1028A, "cat
-/sys/kernel/debug/regmap/2120000.spi/registers" runs fine and does not
-crash.
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Carlos Song <carlos.song@nxp.com>
+---
+v1 -> v2
+ - Rename READL_POLL_TIMEOUT to lpi2c_imx_read_msr_poll_timeout
+ - Remove addr and timeout_us parameters from lpi2c_imx_read_msr_poll_timeout since they are used always with the same value
+ - add r-b tag from Carlos Song
+---
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 257 +++++++++++++++++++----------
+ 1 file changed, 172 insertions(+), 85 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 342d47e67586..fb45c71662bc 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -16,6 +16,7 @@
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+@@ -187,36 +188,36 @@ struct lpi2c_imx_struct {
+ 	struct i2c_client	*target;
+ };
+ 
++#define lpi2c_imx_read_msr_poll_timeout(atomic, val, cond, delay_us)          \
++	(atomic ? readl_poll_timeout_atomic(lpi2c_imx->base + LPI2C_MSR, val, \
++					    cond, delay_us, 500000) :         \
++		  readl_poll_timeout(lpi2c_imx->base + LPI2C_MSR, val, cond,  \
++				     delay_us, 500000))
++
+ static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
+ 			      unsigned int enable)
+ {
+ 	writel(enable, lpi2c_imx->base + LPI2C_MIER);
+ }
+ 
+-static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx)
++static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+-	unsigned long orig_jiffies = jiffies;
+ 	unsigned int temp;
+ 
+-	while (1) {
+-		temp = readl(lpi2c_imx->base + LPI2C_MSR);
++	lpi2c_imx_read_msr_poll_timeout(atomic, temp, temp & (MSR_ALF | MSR_BBF | MSR_MBF), 1);
+ 
+-		/* check for arbitration lost, clear if set */
+-		if (temp & MSR_ALF) {
+-			writel(temp, lpi2c_imx->base + LPI2C_MSR);
+-			return -EAGAIN;
+-		}
+-
+-		if (temp & (MSR_BBF | MSR_MBF))
+-			break;
++	/* check for arbitration lost, clear if set */
++	if (temp & MSR_ALF) {
++		writel(temp, lpi2c_imx->base + LPI2C_MSR);
++		return -EAGAIN;
++	}
+ 
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "bus not work\n");
+-			if (lpi2c_imx->adapter.bus_recovery_info)
+-				i2c_recover_bus(&lpi2c_imx->adapter);
+-			return -ETIMEDOUT;
+-		}
+-		schedule();
++	/* check for bus not busy */
++	if (!(temp & (MSR_BBF | MSR_MBF))) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "bus not work\n");
++		if (lpi2c_imx->adapter.bus_recovery_info)
++			i2c_recover_bus(&lpi2c_imx->adapter);
++		return -ETIMEDOUT;
+ 	}
+ 
+ 	return 0;
+@@ -242,7 +243,7 @@ static void lpi2c_imx_set_mode(struct lpi2c_imx_struct *lpi2c_imx)
+ }
+ 
+ static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
+-			   struct i2c_msg *msgs)
++			   struct i2c_msg *msgs, bool atomic)
+ {
+ 	unsigned int temp;
+ 
+@@ -254,30 +255,22 @@ static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
+ 	temp = i2c_8bit_addr_from_msg(msgs) | (GEN_START << 8);
+ 	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+ 
+-	return lpi2c_imx_bus_busy(lpi2c_imx);
++	return lpi2c_imx_bus_busy(lpi2c_imx, atomic);
+ }
+ 
+-static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
++static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+-	unsigned long orig_jiffies = jiffies;
+ 	unsigned int temp;
+ 
+ 	writel(GEN_STOP << 8, lpi2c_imx->base + LPI2C_MTDR);
+ 
+-	do {
+-		temp = readl(lpi2c_imx->base + LPI2C_MSR);
+-		if (temp & MSR_SDF)
+-			break;
+-
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
+-			if (lpi2c_imx->adapter.bus_recovery_info)
+-				i2c_recover_bus(&lpi2c_imx->adapter);
+-			break;
+-		}
+-		schedule();
++	lpi2c_imx_read_msr_poll_timeout(atomic, temp, temp & MSR_SDF, 1);
+ 
+-	} while (1);
++	if (!(temp & MSR_SDF)) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
++		if (lpi2c_imx->adapter.bus_recovery_info)
++			i2c_recover_bus(&lpi2c_imx->adapter);
++	}
+ }
+ 
+ /* CLKLO = I2C_CLK_RATIO * CLKHI, SETHOLD = CLKHI, DATAVD = CLKHI/2 */
+@@ -391,28 +384,30 @@ static int lpi2c_imx_pio_msg_complete(struct lpi2c_imx_struct *lpi2c_imx)
+ 	return time_left ? 0 : -ETIMEDOUT;
+ }
+ 
+-static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx)
++static u32 txfifo_cnt(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-	unsigned long orig_jiffies = jiffies;
+-	u32 txcnt;
++	return readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
++}
+ 
+-	do {
+-		txcnt = readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
++static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
++{
++	unsigned int temp;
++	int err;
+ 
+-		if (readl(lpi2c_imx->base + LPI2C_MSR) & MSR_NDF) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "NDF detected\n");
+-			return -EIO;
+-		}
++	err = lpi2c_imx_read_msr_poll_timeout(atomic, temp,
++					      (temp & MSR_NDF) || !txfifo_cnt(lpi2c_imx), 1);
+ 
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "txfifo empty timeout\n");
+-			if (lpi2c_imx->adapter.bus_recovery_info)
+-				i2c_recover_bus(&lpi2c_imx->adapter);
+-			return -ETIMEDOUT;
+-		}
+-		schedule();
++	if (temp & MSR_NDF) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "NDF detected\n");
++		return -EIO;
++	}
+ 
+-	} while (txcnt);
++	if (err) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "txfifo empty timeout\n");
++		if (lpi2c_imx->adapter.bus_recovery_info)
++			i2c_recover_bus(&lpi2c_imx->adapter);
++		return -ETIMEDOUT;
++	}
+ 
+ 	return 0;
+ }
+@@ -436,7 +431,7 @@ static void lpi2c_imx_set_rx_watermark(struct lpi2c_imx_struct *lpi2c_imx)
+ 	writel(temp << 16, lpi2c_imx->base + LPI2C_MFCR);
+ }
+ 
+-static void lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx)
++static bool lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+ 	unsigned int data, txcnt;
+ 
+@@ -451,13 +446,19 @@ static void lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx)
+ 		txcnt++;
+ 	}
+ 
+-	if (lpi2c_imx->delivered < lpi2c_imx->msglen)
+-		lpi2c_imx_intctrl(lpi2c_imx, MIER_TDIE | MIER_NDIE);
+-	else
++	if (lpi2c_imx->delivered < lpi2c_imx->msglen) {
++		if (!atomic)
++			lpi2c_imx_intctrl(lpi2c_imx, MIER_TDIE | MIER_NDIE);
++		return false;
++	}
++
++	if (!atomic)
+ 		complete(&lpi2c_imx->complete);
++
++	return true;
+ }
+ 
+-static void lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
++static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+ {
+ 	unsigned int blocklen, remaining;
+ 	unsigned int temp, data;
+@@ -482,8 +483,9 @@ static void lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
+ 	remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
+ 
+ 	if (!remaining) {
+-		complete(&lpi2c_imx->complete);
+-		return;
++		if (!atomic)
++			complete(&lpi2c_imx->complete);
++		return true;
+ 	}
+ 
+ 	/* not finished, still waiting for rx data */
+@@ -501,7 +503,10 @@ static void lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
+ 		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+ 	}
+ 
+-	lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE);
++	if (!atomic)
++		lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE);
++
++	return false;
+ }
+ 
+ static void lpi2c_imx_write(struct lpi2c_imx_struct *lpi2c_imx,
+@@ -509,11 +514,29 @@ static void lpi2c_imx_write(struct lpi2c_imx_struct *lpi2c_imx,
+ {
+ 	lpi2c_imx->tx_buf = msgs->buf;
+ 	lpi2c_imx_set_tx_watermark(lpi2c_imx);
+-	lpi2c_imx_write_txfifo(lpi2c_imx);
++	lpi2c_imx_write_txfifo(lpi2c_imx, false);
+ }
+ 
+-static void lpi2c_imx_read(struct lpi2c_imx_struct *lpi2c_imx,
+-			   struct i2c_msg *msgs)
++static int lpi2c_imx_write_atomic(struct lpi2c_imx_struct *lpi2c_imx,
++				  struct i2c_msg *msgs)
++{
++	u32 temp;
++	int err;
++
++	lpi2c_imx->tx_buf = msgs->buf;
++
++	err = lpi2c_imx_read_msr_poll_timeout(true, temp,
++					      (temp & MSR_NDF) ||
++					      lpi2c_imx_write_txfifo(lpi2c_imx, true), 5);
++
++	if (temp & MSR_NDF)
++		return -EIO;
++
++	return err;
++}
++
++static void lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
++				struct i2c_msg *msgs)
+ {
+ 	unsigned int temp;
+ 
+@@ -524,8 +547,43 @@ static void lpi2c_imx_read(struct lpi2c_imx_struct *lpi2c_imx,
+ 	temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
+ 	temp |= (RECV_DATA << 8);
+ 	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
++}
++
++static bool lpi2c_imx_read_chunk_atomic(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	u32 rxcnt;
++
++	rxcnt = (readl(lpi2c_imx->base + LPI2C_MFSR) >> 16) & 0xFF;
++	if (!rxcnt)
++		return false;
++
++	if (!lpi2c_imx_read_rxfifo(lpi2c_imx, true))
++		return false;
+ 
+-	lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE | MIER_NDIE);
++	return true;
++}
++
++static int lpi2c_imx_read_atomic(struct lpi2c_imx_struct *lpi2c_imx,
++				 struct i2c_msg *msgs)
++{
++	u32 temp;
++	int tmo_us;
++
++	tmo_us = 1000000;
++	do {
++		if (lpi2c_imx_read_chunk_atomic(lpi2c_imx))
++			return 0;
++
++		temp = readl(lpi2c_imx->base + LPI2C_MSR);
++
++		if (temp & MSR_NDF)
++			return -EIO;
++
++		udelay(100);
++		tmo_us -= 100;
++	} while (tmo_us > 0);
++
++	return -ETIMEDOUT;
+ }
+ 
+ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
+@@ -545,14 +603,27 @@ static int lpi2c_imx_pio_xfer(struct lpi2c_imx_struct *lpi2c_imx,
+ {
+ 	reinit_completion(&lpi2c_imx->complete);
+ 
+-	if (msg->flags & I2C_M_RD)
+-		lpi2c_imx_read(lpi2c_imx, msg);
+-	else
++	if (msg->flags & I2C_M_RD) {
++		lpi2c_imx_read_init(lpi2c_imx, msg);
++		lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE | MIER_NDIE);
++	} else {
+ 		lpi2c_imx_write(lpi2c_imx, msg);
++	}
+ 
+ 	return lpi2c_imx_pio_msg_complete(lpi2c_imx);
+ }
+ 
++static int lpi2c_imx_pio_xfer_atomic(struct lpi2c_imx_struct *lpi2c_imx,
++				     struct i2c_msg *msg)
++{
++	if (msg->flags & I2C_M_RD) {
++		lpi2c_imx_read_init(lpi2c_imx, msg);
++		return lpi2c_imx_read_atomic(lpi2c_imx, msg);
++	}
++
++	return lpi2c_imx_write_atomic(lpi2c_imx, msg);
++}
++
+ static int lpi2c_imx_dma_timeout_calculate(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+ 	unsigned long time = 0;
+@@ -947,8 +1018,8 @@ static int lpi2c_imx_dma_xfer(struct lpi2c_imx_struct *lpi2c_imx,
+ 	return ret;
+ }
+ 
+-static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
+-			  struct i2c_msg *msgs, int num)
++static int lpi2c_imx_xfer_common(struct i2c_adapter *adapter,
++				 struct i2c_msg *msgs, int num, bool atomic)
+ {
+ 	struct lpi2c_imx_struct *lpi2c_imx = i2c_get_adapdata(adapter);
+ 	unsigned int temp;
+@@ -959,7 +1030,7 @@ static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
+ 		return result;
+ 
+ 	for (i = 0; i < num; i++) {
+-		result = lpi2c_imx_start(lpi2c_imx, &msgs[i]);
++		result = lpi2c_imx_start(lpi2c_imx, &msgs[i], atomic);
+ 		if (result)
+ 			goto disable;
+ 
+@@ -971,28 +1042,33 @@ static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
+ 		lpi2c_imx->tx_buf = NULL;
+ 		lpi2c_imx->delivered = 0;
+ 		lpi2c_imx->msglen = msgs[i].len;
+-		init_completion(&lpi2c_imx->complete);
+ 
+-		if (is_use_dma(lpi2c_imx, &msgs[i])) {
+-			result = lpi2c_imx_dma_xfer(lpi2c_imx, &msgs[i]);
+-			if (result && lpi2c_imx->dma->using_pio_mode)
+-				result = lpi2c_imx_pio_xfer(lpi2c_imx, &msgs[i]);
++		if (atomic) {
++			result = lpi2c_imx_pio_xfer_atomic(lpi2c_imx, &msgs[i]);
+ 		} else {
+-			result = lpi2c_imx_pio_xfer(lpi2c_imx, &msgs[i]);
++			init_completion(&lpi2c_imx->complete);
++
++			if (is_use_dma(lpi2c_imx, &msgs[i])) {
++				result = lpi2c_imx_dma_xfer(lpi2c_imx, &msgs[i]);
++				if (result && lpi2c_imx->dma->using_pio_mode)
++					result = lpi2c_imx_pio_xfer(lpi2c_imx, &msgs[i]);
++			} else {
++				result = lpi2c_imx_pio_xfer(lpi2c_imx, &msgs[i]);
++			}
+ 		}
+ 
+ 		if (result)
+ 			goto stop;
+ 
+ 		if (!(msgs[i].flags & I2C_M_RD)) {
+-			result = lpi2c_imx_txfifo_empty(lpi2c_imx);
++			result = lpi2c_imx_txfifo_empty(lpi2c_imx, atomic);
+ 			if (result)
+ 				goto stop;
+ 		}
+ 	}
+ 
+ stop:
+-	lpi2c_imx_stop(lpi2c_imx);
++	lpi2c_imx_stop(lpi2c_imx, atomic);
+ 
+ 	temp = readl(lpi2c_imx->base + LPI2C_MSR);
+ 	if ((temp & MSR_NDF) && !result)
+@@ -1008,6 +1084,16 @@ static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
+ 	return (result < 0) ? result : num;
+ }
+ 
++static int lpi2c_imx_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs, int num)
++{
++	return lpi2c_imx_xfer_common(adapter, msgs, num, false);
++}
++
++static int lpi2c_imx_xfer_atomic(struct i2c_adapter *adapter, struct i2c_msg *msgs, int num)
++{
++	return lpi2c_imx_xfer_common(adapter, msgs, num, true);
++}
++
+ static irqreturn_t lpi2c_imx_target_isr(struct lpi2c_imx_struct *lpi2c_imx,
+ 					u32 ssr, u32 sier_filter)
+ {
+@@ -1070,9 +1156,9 @@ static irqreturn_t lpi2c_imx_master_isr(struct lpi2c_imx_struct *lpi2c_imx)
+ 	if (temp & MSR_NDF)
+ 		complete(&lpi2c_imx->complete);
+ 	else if (temp & MSR_RDF)
+-		lpi2c_imx_read_rxfifo(lpi2c_imx);
++		lpi2c_imx_read_rxfifo(lpi2c_imx, false);
+ 	else if (temp & MSR_TDF)
+-		lpi2c_imx_write_txfifo(lpi2c_imx);
++		lpi2c_imx_write_txfifo(lpi2c_imx, false);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -1268,10 +1354,11 @@ static u32 lpi2c_imx_func(struct i2c_adapter *adapter)
+ }
+ 
+ static const struct i2c_algorithm lpi2c_imx_algo = {
+-	.master_xfer	= lpi2c_imx_xfer,
+-	.functionality	= lpi2c_imx_func,
+-	.reg_target	= lpi2c_imx_register_target,
+-	.unreg_target	= lpi2c_imx_unregister_target,
++	.master_xfer		= lpi2c_imx_xfer,
++	.master_xfer_atomic	= lpi2c_imx_xfer_atomic,
++	.functionality		= lpi2c_imx_func,
++	.reg_target		= lpi2c_imx_register_target,
++	.unreg_target		= lpi2c_imx_unregister_target,
+ };
+ 
+ static const struct of_device_id lpi2c_imx_of_match[] = {
+-- 
+2.39.5
+
