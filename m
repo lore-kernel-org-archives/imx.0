@@ -1,221 +1,220 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8628239E94
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 18:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF64254AEC
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 19:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746814953; cv=none; b=Yz0vSKsER0W+V4GPuFi5vZHe3B1aMVtgajUemZQzlOPgpncqKMyEVH9WT/sMrry0rhV68ELrz6DFZ9H4WIinLD8F6tmXY9jw3ls7MhmKvy/FyMzV0bjMLA/ZSC3yROlTQ9ySd0k0xWHIkonvnzxrYcCwEqORYSqMHdmhd58uul0=
+	t=1746817998; cv=none; b=sBj4RLmMVwDAfD7gFW1Y4MW5kbwK5NlwCZ/us17wIMaV0vl4zPLthbELT78MADkPF+u4XJ4lv/NB946KB2bZ8pHd5Rv7JAzRRa1S1/coy6PDo6rpIJ5RX5j+rI41cKTwOuBgt7BRdNeG5wFdFMNGYbUu75M0MQSD9/sDFiCO3dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746814953; c=relaxed/simple;
-	bh=o0HnRWUOJEFTR1JyaXMLNHbxjezz3ONJkGCb3fLH4P8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LprRCT/IOxI+ZHmLhfvT/6l4FWsdxv9CZIxVXbcgobBMjknNG31kR4P9L/yD0TezIS/Bcbc8quXGwipzK5psOfZoyvFmt3sw2VALFN0AzzfXro5hXcrDq71LHwm1oQrXpP0vhE3y6QUUcjZeRxVH9NrgwGKw3dfZNIZ/BAzYQQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=h+Zz7A1+; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1746817998; c=relaxed/simple;
+	bh=QCR55OsR8BeOhjGcGHiHtwOpQrGrz8N/scYm+FoUARk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hGgGa4esK5tkaqbo8KT+deG9UG/Wc/0JNQDKXeal7zr3pIDYH0VQEvauV2nXxXPh+vHhjcx625zAbPRuyIFMaju8Z5OSs/JKLPLEEfP+td6JFA67YSwtnobpiRd++NEO+MMnYmRMGL9eCgCS6B0vH0ogrIWQAjXKMTpz8hzMs88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LEhaJCLu; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="h+Zz7A1+"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-703cd93820fso23157237b3.2
-        for <imx@lists.linux.dev>; Fri, 09 May 2025 11:22:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LEhaJCLu"
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-52c58804270so767702e0c.0
+        for <imx@lists.linux.dev>; Fri, 09 May 2025 12:13:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1746814950; x=1747419750; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FVdGvQl7I4jzamIx+mGrMWIjkTZGB9PGkkLFZVwWjA4=;
-        b=h+Zz7A1+5NRSG6UGjMCNn9Gt8qMJYvpjOtgTKhHLtglieZwVhItLSnhpeQ0cqVfvao
-         VJMEud5eWbtNjG79+tR2tGgVlWfS1iMAdOlP7uyOaCHMMmbz63w2iSOipxeCBaCwpirJ
-         /CFnSo+pEetmO9GnW4tfrgjWrHOvzGXk6T7aA=
+        d=gmail.com; s=20230601; t=1746817995; x=1747422795; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dZfddHQu5I9Otb7WuExi6VXYbXbdDVVverdTHksitlQ=;
+        b=LEhaJCLuSF98MRIzITH3h2SN/3x89NRwPq/OdAd2GTTBQw6qXnI1DAC1vmw/WbS1qa
+         eNtcdJeOa/qOK4/OxWEQ7MUmdIa2pwv2DiWt6/JdewcOnNWb/tcXME2qm1xfE5mHolpn
+         DlRiQtle/owMKDkvGPjJS0pc5n8+G+KXUBlQAbKCYto/3Clg2sisaMAPHec+awkuCg/E
+         jMiR8SIlCzsX9iMwuQkWiThbcADy8e+xAaDqUMp6D51Q+yz3oy4U0yeiOdGXahik2keX
+         d31Xe92DOqinHk8rS9NZi0HYFH57to5yVrirXp4GAdBap0wVGvZsHfHj+YUSPkcqntuM
+         0xpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746814950; x=1747419750;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FVdGvQl7I4jzamIx+mGrMWIjkTZGB9PGkkLFZVwWjA4=;
-        b=aadYgkSeGVTn8yik4b/ra4BeETbZJYKiYRH69OSlYAFXn0kEfSrbmd5V9YfPij1BCV
-         hUHR3xReWY+dMNplgiNX9nWPAiIjOF2kpSE+Bc6JdFeMHSpd6CW46WCdXgUde5OHlyk0
-         4j1D3ZwueKON6N3KaeOUdZ9QY52W1gbI0a/lyr7c3Iytvw8N2VtxTul+uJYc1b83OZVs
-         6KVF2a2PKdZA+Ox2aFpXudvpY1AoKlQanAVo61ekixm3rZ+oTuF2M1+opfzI9aro4KjZ
-         j5h/dEQ+LYMsfoX7fNED5o/x5Fb/Y7+FoSkR3nETTGxPfzA+fw38OMSuhOWW8b9mxVeY
-         oQ6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWFeg/T13FZjVDaeHoOTH5YXEMnq0QV9eIYb9T2lFKomGzc2UILrNa+PE3Wwnmz50AnGrw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyPBh7pmr8ocJXO3ltnzpqLwClE++YCddY1oPK2U/+Vv1HbWxY2
-	tpka6UjYb/Wnb7HIvh0XJiPGgGNLr1zWl4Y77VdCy7z7KbDNwISI58y4YB+nZQf+5sUgYc0lt/P
-	QiP9kOcjgq97Ee95L762b6vRG0P4lmnGG3j7Kmg==
-X-Gm-Gg: ASbGncsqvPHR019Fk2ZlcUnW1soR3EMIzmP9PrvbRtKTUb5xbDCdTgyN4Foda2twkU7
-	4dsohQ3zEX2b/lCs/Rfgod6oqZwUY7E6BRkAVEHoU4Y1beRaTcxRULVC5UFzSyhk22UOnQJ8c7A
-	Hlm5szQJ64nDK+wHiW4uiISJqRrYiY
-X-Google-Smtp-Source: AGHT+IFhuGu6cPIv6shqVcKb5yMcaEsKd2xMo/nKwn74VQkFfSO8SSLUGFFj0iY8SWc7yPYKJguYvy3CEdCdcbkRiBw=
-X-Received: by 2002:a05:690c:7007:b0:708:ab81:ec26 with SMTP id
- 00721157ae682-70a3fb75af8mr60732477b3.33.1746814949659; Fri, 09 May 2025
- 11:22:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746817995; x=1747422795;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dZfddHQu5I9Otb7WuExi6VXYbXbdDVVverdTHksitlQ=;
+        b=dlsTakiZvi4UZzNFvs4DzSyU3b+TYv9ODYRksVt6Y5+aWlPu4eRHUTKi+Yt6HOJgNd
+         c/VhiSvki8a7FYISegg5ir9FeZoJ0l08/xTo0kJLlmIxIgH9wdAeOmvtYSAElN6mxSez
+         R80fB9v5FT2o58/mrwVT0PO+TqLqL+Z9TawUvye2E9lOqPuFC7qwePnMJbOInVEsJa2p
+         i0bgxnwQTC5eck8KpI4wJg6ldarTY0QJdNS6jzYlZGlO7sif/rqmBGitwa6lC8ffrWs0
+         rpZF+m2UJf4zfxkJubadOewo89tsZfRwTOKBZgQSXFFUeq4eQ00AWieBY0dePb0YKD7z
+         Ns5A==
+X-Forwarded-Encrypted: i=1; AJvYcCX7tWn6rtTr6Su8j85HmWL68UitGffDbbCNWMKbVPHv/0yizuss0mg52Ff/hMCr4UDFjRs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxUwD5jiJLBVWCsFkSUGmK/Efd/fG9UQAfY6C9bJGQytw6gdBnV
+	5W8bTCmKWTV+NqgTwscK7wjzBEasTqk4nm2s4HFfbKcJAD/AfXot
+X-Gm-Gg: ASbGncs9bxDOeFET3d+qHfUgBpmWjW0IM3qJ35v7C/iNdrk8D6zAARahWpCzOnE+uEH
+	zlwHWg2YKEbLaxAJ7kuQeDMI8+ksKTNmxHwXDST2etew3lz/DUlvmWcfY/XyZ69QKj35R3B4u3H
+	wIVPLKwZMse+1Gmw+N4UmMR7J6+Bm+AFUoydVLriK/wZ39qbD4fpbMQJHzE7IDR3/rbjjMI0TyB
+	oRF+yA/vBZ5uNf4W7rJfxcB27lx1Cfc5smhKJTZWQLu9ms4jkq+1unbnVt1AwQewy690pa03eKO
+	frN+G8Y0a2dpo13/+GcxE4J8rIOU++CBfskpLj3GD/AuMo0qNA==
+X-Google-Smtp-Source: AGHT+IH6q+Y+fNg3K1fYBeHbGWU3eRXIxIU/yD3j9JyGk1Xodh5lnXB6Ky0QBqgV1qG4FaffonJZUQ==
+X-Received: by 2002:a05:6122:1d14:b0:523:dd87:fe95 with SMTP id 71dfb90a1353d-52c53daf2admr4866962e0c.9.1746817995152;
+        Fri, 09 May 2025 12:13:15 -0700 (PDT)
+Received: from hiago-nb ([2804:1b3:a7c0:6030:2d83:24ee:356:8505])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-879f6298ebasm1570303241.34.2025.05.09.12.13.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 May 2025 12:13:14 -0700 (PDT)
+Date: Fri, 9 May 2025 16:13:08 -0300
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, linux-pm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com,
+	iuliana.prodan@oss.nxp.com, Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
+ remote core attachment
+Message-ID: <20250509191308.6i3ydftzork3sv5c@hiago-nb>
+References: <20250507160056.11876-1-hiagofranco@gmail.com>
+ <20250507160056.11876-4-hiagofranco@gmail.com>
+ <CAPDyKFrHD1hVCfOK-JV5FJM+Cd9DoKKZGKcC94fxx6_9Bsri1g@mail.gmail.com>
+ <20250508202826.33bke6atcvqdkfa4@hiago-nb>
+ <CAPDyKFr3yF=yYZ=Xo5FicvSbDPOTx7+fMwc8dMCLYKPBMEtCKA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com>
- <20250424062154.2999219-17-dario.binacchi@amarulasolutions.com> <20250509162546.GA3704130-robh@kernel.org>
-In-Reply-To: <20250509162546.GA3704130-robh@kernel.org>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Fri, 9 May 2025 20:22:18 +0200
-X-Gm-Features: AX0GCFudXK-0LsSuEXf0ommGdIrbGEzxESxhBMaUX-8mIu528WIhNrRmopexvqM
-Message-ID: <CABGWkvq4a73hvCWG-P_+arc3R-pnr5NVfcGPDTGEoW1doPt2qg@mail.gmail.com>
-Subject: Re: [PATCH v12 16/19] dt-bindings: clock: imx8m-clock: add PLLs
-To: Rob Herring <robh@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	linux-amarula@amarulasolutions.com, Abel Vesa <abelvesa@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFr3yF=yYZ=Xo5FicvSbDPOTx7+fMwc8dMCLYKPBMEtCKA@mail.gmail.com>
 
-On Fri, May 9, 2025 at 6:25=E2=80=AFPM Rob Herring <robh@kernel.org> wrote:
->
-> On Thu, Apr 24, 2025 at 08:21:46AM +0200, Dario Binacchi wrote:
-> > Though adding the PLLs to clocks and clock-names properties will break
-> > the ABI, it is required to accurately describe the hardware. Indeed,
-> > the Clock Control Module (CCM) receives clocks from the PLLs and
-> > oscillators and generates clocks for on-chip peripherals.
+On Fri, May 09, 2025 at 12:37:02PM +0200, Ulf Hansson wrote:
+> On Thu, 8 May 2025 at 22:28, Hiago De Franco <hiagofranco@gmail.com> wrote:
 > >
-> > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > Hello,
 > >
-> > ---
+> > On Thu, May 08, 2025 at 12:03:33PM +0200, Ulf Hansson wrote:
+> > > On Wed, 7 May 2025 at 18:02, Hiago De Franco <hiagofranco@gmail.com> wrote:
+> > > >
+> > > > From: Hiago De Franco <hiago.franco@toradex.com>
+> > > >
+> > > > When the remote core is started before Linux boots (e.g., by the
+> > > > bootloader), the driver currently is not able to attach because it only
+> > > > checks for cores running in different partitions. If the core was kicked
+> > > > by the bootloader, it is in the same partition as Linux and it is
+> > > > already up and running.
+> > > >
+> > > > This adds power mode verification through the SCU interface, enabling
+> > > > the driver to detect when the remote core is already running and
+> > > > properly attach to it.
+> > > >
+> > > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+> > > > Suggested-by: Peng Fan <peng.fan@nxp.com>
+> > > > ---
+> > > > v2: Dropped unecessary include. Removed the imx_rproc_is_on function, as
+> > > > suggested.
+> > > > ---
+> > > >  drivers/remoteproc/imx_rproc.c | 13 +++++++++++++
+> > > >  1 file changed, 13 insertions(+)
+> > > >
+> > > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> > > > index 627e57a88db2..9b6e9e41b7fc 100644
+> > > > --- a/drivers/remoteproc/imx_rproc.c
+> > > > +++ b/drivers/remoteproc/imx_rproc.c
+> > > > @@ -949,6 +949,19 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
+> > > >                         if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
+> > > >                                 return -EINVAL;
+> > > >
+> > > > +                       /*
+> > > > +                        * If remote core is already running (e.g. kicked by
+> > > > +                        * the bootloader), attach to it.
+> > > > +                        */
+> > > > +                       ret = imx_sc_pm_get_resource_power_mode(priv->ipc_handle,
+> > > > +                                                               priv->rsrc_id);
+> > > > +                       if (ret < 0)
+> > > > +                               dev_err(dev, "failed to get power resource %d mode, ret %d\n",
+> > > > +                                       priv->rsrc_id, ret);
+> > > > +
+> > > > +                       if (ret == IMX_SC_PM_PW_MODE_ON)
+> > > > +                               priv->rproc->state = RPROC_DETACHED;
+> > > > +
+> > > >                         return imx_rproc_attach_pd(priv);
+> > >
+> > > Why is it important to potentially set "priv->rproc->state =
+> > > RPROC_DETACHED" before calling imx_rproc_attach_pd()?
+> > >
+> > > Would it be possible to do it the other way around? First calling
+> > > imx_rproc_attach_pd() then get the power-mode to know if
+> > > RPROC_DETACHED should be set or not?
+> > >
+> > > The main reason why I ask, is because of how we handle the single PM
+> > > domain case. In that case, the PM domain has already been attached
+> > > (and powered-on) before we reach this point.
 > >
-> > (no changes since v11)
+> > I am not sure if I understood correcly, let me know if I missed
+> > something. From my understanding in this case it does not matter, since
+> > the RPROC_DETACHED will only be a flag to trigger the attach callback
+> > from rproc_validate(), when rproc_add() is called inside
+> > remoteproc_core.c.
+> 
+> Okay, I see.
+> 
+> To me, it sounds like we should introduce a new genpd helper function
+> instead. Something along the lines of this (drivers/pmdomain/core.c)
+> 
+> bool dev_pm_genpd_is_on(struct device *dev)
+> {
+>         struct generic_pm_domain *genpd;
+>         bool is_on;
+> 
+>         genpd = dev_to_genpd_safe(dev);
+>         if (!genpd)
+>                 return false;
+> 
+>         genpd_lock(genpd);
+>         is_on = genpd_status_on(genpd);
+>         genpd_unlock(genpd);
+> 
+>         return is_on;
+> }
+> 
+> After imx_rproc_attach_pd() has run, we have the devices that
+> correspond to the genpd(s). Those can then be passed as in-parameters
+> to the above function to get the power-state of their PM domains
+> (genpds). Based on that, we can decide if priv->rproc->state should be
+> to RPROC_DETACHED or not. Right?
+
+Got your idea, I think it should work yes, I am not so sure how. From
+what I can see these power domains are managed by
+drivers/pmdomain/imx/scu-pd.c and by enabling the debug messages I can
+see the power mode is correct when the remote core is powered on:
+
+[    0.317369] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_ON
+
+and powered off:
+
+[    0.314953] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_OFF
+
+But I cannot see how to integrate this into the dev_pm_genpd_is_on() you
+proposed. For a quick check, I added this function and it always return
+NULL at dev_to_genpd_safe(). Can you help me to understand this part?
+
+> 
+> In this way we don't need to export unnecessary firmware functions
+> from firmware/imx/misc.c, as patch1/3 does.
+> 
+> If you think it can work, I can help to cook a formal patch for the
+> above helper that you can fold into your series. Let me know.
+> 
 > >
-> > Changes in v11:
-> > - Fix conflict while rebasing on master
-> >
-> > Changes in v7:
-> > - Add 'Reviewed-by' tag of Krzysztof Kozlowski
-> >
-> > Changes in v6:
-> > - New
-> >
-> >  .../bindings/clock/imx8m-clock.yaml           | 27 ++++++++++++++-----
-> >  1 file changed, 21 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml b=
-/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> > index 4fec55832702..e83f08abd44c 100644
-> > --- a/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> > +++ b/Documentation/devicetree/bindings/clock/imx8m-clock.yaml
-> > @@ -29,12 +29,12 @@ properties:
-> >      maxItems: 2
-> >
-> >    clocks:
-> > -    minItems: 6
-> > -    maxItems: 7
-> > +    minItems: 7
->
-> Increasing the minimum entries looks like an ABI break to me. The .dts
-> files not being in linux-next confirms that (from 0 warnings in
-> mainline):
->
-> arch/arm64/boot/dts/freescale:859:50
->     122  clock-controller@30380000 (fsl,imx8mm-ccm): clock-names: ['osc_3=
-2k', 'osc_24m', 'clk_ext1', 'clk_ext2', 'clk_ext3', 'clk_ext4'] is too shor=
-t
->     120  clock-controller@30380000 (fsl,imx8mp-ccm): clock-names: ['osc_3=
-2k', 'osc_24m', 'clk_ext1', 'clk_ext2', 'clk_ext3', 'clk_ext4'] is too shor=
-t
->      61  clock-controller@30360000 (fsl,imx8mm-anatop): 'clocks' is a req=
-uired property
->      61  clock-controller@30360000 (fsl,imx8mm-anatop): 'clock-names' is =
-a required property
->      60  clock-controller@30360000 (fsl,imx8mp-anatop): 'clocks' is a req=
-uired property
->      60  clock-controller@30360000 (fsl,imx8mp-anatop): 'clock-names' is =
-a required property
->      36  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[35], [36],=
- [37], [38], [39], [40]] is too short
->      36  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[24], [25],=
- [26], [27], [28], [29]] is too short
->      32  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[34], [35],=
- [36], [37], [38], [39]] is too short
->      28  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[22], [23],=
- [24], [25], [26], [27]] is too short
->      26  clock-controller@30380000 (fsl,imx8mn-ccm): clock-names: ['osc_3=
-2k', 'osc_24m', 'clk_ext1', 'clk_ext2', 'clk_ext3', 'clk_ext4'] is too shor=
-t
->      17  clock-controller@30360000 (fsl,imx8mq-anatop): 'clocks' is a req=
-uired property
->      17  clock-controller@30360000 (fsl,imx8mq-anatop): 'clock-names' is =
-a required property
->      14  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[44], [45],=
- [46], [47], [48], [49]] is too short
->      14  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[23], [24],=
- [25], [26], [27], [28]] is too short
->      13  clock-controller@30360000 (fsl,imx8mn-anatop): 'clocks' is a req=
-uired property
->      13  clock-controller@30360000 (fsl,imx8mn-anatop): 'clock-names' is =
-a required property
->      12  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[26], [27],=
- [28], [29], [30], [31]] is too short
->      10  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[38], [39],=
- [40], [41], [42], [43]] is too short
->       8  clock-controller@30380000 (fsl,imx8mn-ccm): clocks: [[22], [23],=
- [24], [25], [26], [27]] is too short
->       8  clock-controller@30380000 (fsl,imx8mn-ccm): clocks: [[20], [21],=
- [22], [23], [24], [25]] is too short
->       8  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[34], [35],=
- [36], [37], [38], [39]] is too short
->       8  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[28], [29],=
- [30], [31], [32], [33]] is too short
->       8  bcrmf@1 (brcm,bcm4329-fmac): $nodename:0: 'bcrmf@1' does not mat=
-ch '^wifi(@.*)?$'
->       6  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[41], [42],=
- [43], [44], [45], [46]] is too short
->       6  clock-controller@30380000 (fsl,imx8mn-ccm): clocks: [[24], [25],=
- [26], [27], [28], [29]] is too short
->       4  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[43], [44],=
- [45], [46], [47], [48]] is too short
->       4  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[40], [41],=
- [42], [43], [44], [45]] is too short
->       4  clock-controller@30380000 (fsl,imx8mp-ccm): clocks: [[36], [37],=
- [38], [39], [40], [41]] is too short
->       4  clock-controller@30380000 (fsl,imx8mm-ccm): clocks: [[35], [36],=
- [37], [38], [39], [40]] is too short
->
-> Please fix the binding or drop what's been applied so far.
+> > With that we can correcly attach to the remote core running, which was
+> > not possible before, where the function returns at "return
+> > imx_rproc_attach_pd(priv);" with the RPROC_OFFLINE state to
+> > rproc_validate().
+> 
+> I see, thanks for clarifying!
+> 
+> Kind regards
+> Uffe
 
-Abel and Shawn are already aware of the issue:
-
-https://lore.kernel.org/all/CABGWkvqfyH=3Ddcuw6EDZaFVVebj8SZhJF0P944+mmzL5Y=
-K3-Pug@mail.gmail.com/
-
-Thanks and regards,
-Dario
-
->
-> Rob
->
-
-
---=20
-
-Dario Binacchi
-
-Senior Embedded Linux Developer
-
-dario.binacchi@amarulasolutions.com
-
-__________________________________
-
-
-Amarula Solutions SRL
-
-Via Le Canevare 30, 31100 Treviso, Veneto, IT
-
-T. +39 042 243 5310
-info@amarulasolutions.com
-
-www.amarulasolutions.com
+Thank you!
+Hiago.
