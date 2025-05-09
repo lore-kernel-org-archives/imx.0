@@ -1,166 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6336128ECE9;
-	Fri,  9 May 2025 11:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2367D28FA91
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 11:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746789252; cv=none; b=pailuKZwQ8Iwf/1p4YkXcmdKNG8zaeBysjsvDGmzNuU/z48HuV94uXogML7wkM4M0pNKBXK9cbptX+GZj1KKH4J0LR9YOxwP6/dENbidxwKr9zTllKMnAr+QN0uATLYB+cqMmTtLMDZkL/emWKRSbwkUDM+nGXj5AculQ7e3VNA=
+	t=1746789702; cv=none; b=hqEpxBNo2BFEhAGt7rzJ0D4pbSVbqho+lnKCKEDApMFq3lghTVtXRwUSkqQh6wkLJeBfQcvWO7QWCTjxFk6O1OqS8pogJNMiG1a0OMNRckN3cqSLRDK4rT+Tv1MqQccy7RzlanmSC7khZT0JX6bszv+fy2GxqBduHZgXC0Z6SJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746789252; c=relaxed/simple;
-	bh=k7G921yPgxgQuLbDV/CqmiMWdYexVQs7eW3UyOEo0Ek=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SPGQGfKOBpOZikgkG9J6k8q7Vs/FHp6larSPj8nfO9G4AfgbFszkBYsfmOs95Ex9ku5XepiMAw7rhDmv4IpwtZEV03pr12UOUHU1KNfFuI6tlOF19gH+ZFXycUYDo2GIuwJhUQUvq9275j8XXYAyrXPi3bOqHTLVmIe2LW+HtCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OvzeELq8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746789702; c=relaxed/simple;
+	bh=s66Afxw8a3xMB/SBhQiPMSJcaB2YeSJGVtDWMjyFv0E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PXfT4X1tFPV0ulJzVs0AdR5Kew/kFhFEKD6cSkF4dies8aHyZR38qjgEDkTPmfKzrAwupBjdMaTQVSoZAs+lYXwxr6nrwH9Y6pOsGz5koWKLasWrZZGdDhe9rZA8YDF4XEWNAq9OZG/Ed07zKiMI3FCdOMG+X5wtZRVZkejukA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=avKi3oNu; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OvzeELq8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D81C4CEE4;
-	Fri,  9 May 2025 11:14:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746789251;
-	bh=k7G921yPgxgQuLbDV/CqmiMWdYexVQs7eW3UyOEo0Ek=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OvzeELq8205dZHReoAgw/C+jcPMr8OGOfXcpco7HYR/uXWR4ANWzNWs81MgGG8wZI
-	 BoYb53Iv96Bc8LpnpQ4coOkYzh++HKMtB0+fmYYI0jDOiv0V6c6G57Try7lwYiDFoA
-	 +eit/isGJe+f11iTuUevq86gdpIUdYP1L0KVV3WGTWWdNiXr3LpqwcMyBTHzTsdJfS
-	 4grInBkhvdymaF/+7+NHRtvdskP6aOUYmcQfr/pnSfojI7mmxrbEjt3dWwJsMNNeZs
-	 yZ3/hLBIVJZ8gnfdWuwIgNSPXika8t9sT1jtFnlzo7fplLcV0ThBdEijOzMS26Nh0F
-	 486C94kqORNEw==
-Message-ID: <af92e978-e6f1-43db-8a84-334e7dd0d43d@kernel.org>
-Date: Fri, 9 May 2025 13:14:04 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="avKi3oNu"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-442cd12d28cso344095e9.3
+        for <imx@lists.linux.dev>; Fri, 09 May 2025 04:21:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746789698; x=1747394498; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oKYrxiUxy0npi+Mk4ryYuieCR3b8bkKwTBnIOJMWofc=;
+        b=avKi3oNuMhjQvK+QSCFWt9bgJQ/48skT4+nDzIP/vVnNfnXvZu8TQ/vFymAnnaRB7X
+         KMsKw/wGXz7Xj3HwU/t2iGseJSmIE6kPBWZV/UXDo8EGHFDV2AZGam14e6Ao+2yA2t14
+         MUKX2D6u4NShxHETBVcBTky4GVFcqi4eKA1L5O4Ju5pxTqW0oirAu2dq4BPS1ihHy+f1
+         PzeEpeBIoV5Bga8allYQ2GGFcxEVRD3QYOiTglQevnB7s76GRMHNsxmF5kvBVES8syFE
+         8wHLv9iteohOQ4K9Qv5p3ZsAzuzMoGPx3xHaRgO5dhNsBBByRbDd6VkELOkdv8RNcm0X
+         CtlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746789698; x=1747394498;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oKYrxiUxy0npi+Mk4ryYuieCR3b8bkKwTBnIOJMWofc=;
+        b=idsn7bsy4Z4A2pnscXI+Ir+RqR21pUHD+G/CGCGYC5vypYTrh77yIzisJ/6ULhJABD
+         53gFeBxoyp/OdAcn92pXPudT04jQvjiOUkx4KoEwi0gwyWS/ASjJEHCElfkThS1UFsrR
+         sutRblWhInj5XVVhJe+p3oNcoW7jPoX13UyudaqZ0tFIlfi1gJ/4Oh9xdVBCap6kSjVs
+         m65e00TJCmoqz0K5uY1y0AT82w5D3gEUPLOPPyllb/mEiIQ5ZkisUHvY1V5LJw1iw2im
+         dsx799+3cG40qOCvz9ci+GLDpPRuruesSSx62PFyYkgATKADWIG/F5uU+kJ41L0pH+6Y
+         1noQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIxSH7/ghBojicBRURDKWLl8lUmvBgWYbjICq5Ytm/6w1uxz4FD0A9Qd8r+VMvuA6t8O8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxbQAAHCIkoWGqb5KlNljXZhj8pswif7qNjIazJK+saYTtLtk4A
+	keZ+b7W6YFLhcVTs9nixGfojQlytCRv15auLTQw0d0FZi4hruCw5UOOGREmZFIo=
+X-Gm-Gg: ASbGnctjaQhP6dCs7rkIv7hppEfLNXvfZ1RBMNCnGQgW3H0Vvar+9D7HUc+A5smnWL3
+	8C5GdD5O4g6oQ9vPH/Ry2weZevYTjyPaoNxbwhReMYG/tXw+QIbfnUtEbGIpJFzU+LYUrB+jd5h
+	c8c13mguWz0cyi/Tkb8GDSTc4brGgcxJusdqvFGx/NT1iB6ygYw+rWA5wI3mzUquPGoh+YrhBTx
+	2ATcCbwCTtlUPppXxqQZWALfU5UgSy6Ro71pyWziVOrj5NGwDO/dsIsR/YlS0sj1b7G59xfImvn
+	ZPFs3lAdU6y9l9t5r6304I5cno+MQjD4FFE231tNJjehVCjumn9SysH6BxEd
+X-Google-Smtp-Source: AGHT+IFlbI/ktfksQQOpGjeIwbwt/o9L6Xz+ipgRzNOoWeXM2S9UxEpNqGKoq6dMD0VJeqXmsLSN+g==
+X-Received: by 2002:a05:600c:4451:b0:43b:c0fa:f9c4 with SMTP id 5b1f17b1804b1-442d6dc7d2dmr9532715e9.4.1746789698392;
+        Fri, 09 May 2025 04:21:38 -0700 (PDT)
+Received: from kuoka.. ([178.197.207.88])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442cd328455sm69946945e9.2.2025.05.09.04.21.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 May 2025 04:21:37 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Vladimir Oltean <olteanv@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	openbmc@lists.ozlabs.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/2] spi: dt-bindings: fsl,dspi: Fix example indentation
+Date: Fri,  9 May 2025 13:21:31 +0200
+Message-ID: <20250509112130.123462-3-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/14] dt-bindings: spi: dspi: Add S32G support
-To: James Clark <james.clark@linaro.org>, Vladimir Oltean
- <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
- NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, larisa.grigore@nxp.com, arnd@linaro.org,
- andrei.stefanescu@nxp.com, dan.carpenter@linaro.org
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-References: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
- <20250509-james-nxp-spi-v1-12-32bfcd2fea11@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250509-james-nxp-spi-v1-12-32bfcd2fea11@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1380; i=krzysztof.kozlowski@linaro.org;
+ h=from:subject; bh=s66Afxw8a3xMB/SBhQiPMSJcaB2YeSJGVtDWMjyFv0E=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoHeU66+RBLo+l0lSwvGSnhzCY2cPM9tZGuIQ2p
+ wsaUNeN9bOJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaB3lOgAKCRDBN2bmhouD
+ 17OnD/wKNyvGnBHJUSNZxdQlvkRO2cr4Gton4WSAWbZ2wKtlwLfNMdH+g91UdqFkXbytN2611vW
+ RcWUGYGRpoCMqelb2OjY+fLEfn5HIJi2Wpxaxyx8h8fzjCUKngY7dfgLJDqbaFa/hLkmkCcimnG
+ g3sFRdTXd+scm6fQHI++SP+ovsyGOHo/zHC60TCcusbm8CL8lweGzKuzVt+jdkbd3KYoSWsBH7X
+ paH2jYlUqunABAf3g0XH6ay4Ib2CnW2dO9fdfN18DuiOl972ClrhYBKBcYYnEyaW1xSOl0fhaDD
+ dVgvsd2JoQd0OC9ccfzCTSX9kQFZbR0zE0lTP5IBahHEut7bhUbr5tvGdnxYQK0XQvSMUHIXhNZ
+ X8wfIDUGWRuygCbj0BdrLv6+m0OKJBOJjhjJo38KGkOW3LpqwmAd+47ottvB9ofZQoHfmg7DBvA
+ HtyZ7r8C2siQqDa+N0Z2XYWKyB/ugPh4pw22tAOfJG+kZ72V8RksiGAFEIwuqzGt8ddNm6DE9SI
+ BeSDarp7Jaqomm5eoDAYnxgff9GlYokHuol19yq9RDrFM37tvykY1ArwU2VTFPXs6vyf6MXUO1l
+ xaSpQNs56nhvSp/MYbpZ7JfQo5ml5GGRp7mktfDKpWKJazgMpdteFiS5DRQwZpXgnPhC3L+e5oX iiM4xKX/3xOH2bg==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
 
-On 09/05/2025 13:05, James Clark wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-> 
-> Document S32G compatible strings. 's32g2' and 's32g3' use the same
-> driver so 's32g2' must follow 's32g3'.
-> 
-> The SPI controller node in dts can define both host and target pinctrl.
-> The selection between them will be done based on pinctrl-names. The
-> default pinctrl will be loaded first and will be used by the host. If
-> the controller is configured as target (spi-slave property is added in
-> the dts node), the driver will look for the "slave" pinctrl and apply it
-> if found.
+DTS example in the bindings should be indented with 2- or 4-spaces, so
+correct a mixture of different styles to keep consistent 4-spaces.
 
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-I do not see any changes in the binding related to above paragraph, so I
-do not understand why are you explaining driver?
+---
 
-> 
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-> Signed-off-by: James Clark <james.clark@linaro.org>
-> ---
->  Documentation/devicetree/bindings/spi/fsl,dspi.yaml | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/fsl,dspi.yaml b/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
-> index 7ca8fceda717..b5fac0bb142a 100644
-> --- a/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
-> +++ b/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
-> @@ -23,6 +23,7 @@ properties:
->            - fsl,ls2080a-dspi
->            - fsl,ls2085a-dspi
->            - fsl,lx2160a-dspi
-> +          - nxp,s32g2-dspi
->        - items:
->            - enum:
->                - fsl,ls1012a-dspi
-> @@ -37,6 +38,9 @@ properties:
->        - items:
->            - const: fsl,lx2160a-dspi
->            - const: fsl,ls2085a-dspi
-> +      - items:
-> +          - const: nxp,s32g3-dspi
-> +          - const: nxp,s32g2-dspi
->  
->    reg:
->      maxItems: 1
-> @@ -114,3 +118,17 @@ examples:
->                  spi-cs-hold-delay-ns = <50>;
->          };
->      };
-> +  # S32G3 in target mode
-> +  - |
-> +    spi0: spi@401d4000 {
+No functional changes here, but saves some comments during reviews of
+new patches built on existing code.
+---
+ .../devicetree/bindings/spi/fsl,dspi.yaml          | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Drop unused label.
+diff --git a/Documentation/devicetree/bindings/spi/fsl,dspi.yaml b/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
+index 7ca8fceda717..bf9cce53c48d 100644
+--- a/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
++++ b/Documentation/devicetree/bindings/spi/fsl,dspi.yaml
+@@ -105,12 +105,12 @@ examples:
+         big-endian;
+ 
+         flash@0 {
+-                compatible = "jedec,spi-nor";
+-                reg = <0>;
+-                spi-max-frequency = <16000000>;
+-                spi-cpol;
+-                spi-cpha;
+-                spi-cs-setup-delay-ns = <100>;
+-                spi-cs-hold-delay-ns = <50>;
++            compatible = "jedec,spi-nor";
++            reg = <0>;
++            spi-max-frequency = <16000000>;
++            spi-cpol;
++            spi-cpha;
++            spi-cs-setup-delay-ns = <100>;
++            spi-cs-hold-delay-ns = <50>;
+         };
+     };
+-- 
+2.45.2
 
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
