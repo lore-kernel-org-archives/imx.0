@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2227E17C208;
-	Fri,  9 May 2025 15:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300D92A1BB;
+	Fri,  9 May 2025 15:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746805463; cv=none; b=SLjhXN97laaR8BlbVHJD3WzjBDZ1KZYi9mFyTPJEH2yo5/RdlH1z1K/v++5AbvV8T92EDqk6PQ210w8GOkkOWcfeb/bvlincd819RPw8APbOdJfvXHmnguvU4fEbnjCt4KgN7Li97hKVoiFg/RjbaQcZMkdl5GvEdsKsg+D9YV8=
+	t=1746805831; cv=none; b=FO62oZC9uxuI8p6WqlJHMp6kUWQI0ekKfDuw7UcSV+YUxV+TKiOw0ntFZPeFgegc2x60HNIBBD6OcZd1uB9LanTccK62cBteli5ncJVwKBRWdRK7oGJ/0A/VuSlyOCnisozIf08WzDcxahyUstoaq58n2Oh8tHcW0ztNb/XIKnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746805463; c=relaxed/simple;
-	bh=IMXhmQQ2lWO0KiQ0KnSj8yQCSD7P7FRsgDDD17Jfbs0=;
+	s=arc-20240116; t=1746805831; c=relaxed/simple;
+	bh=MWAkGidqBX5HBclIK0w8IRw+9+HbrMS7tiBfUakCTeQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WtzqEhBj60d1d2dQVoW3py2YPIyUwqipFLx1L7JCvChDJXAOj2FprNrmMAMS1oOqN9h8ToMQVYx3pc/BYeAeIhTYPt8TWTJKX8OZRt9ctgcM9/Ma4rcVBC1N1AVJ73kDWj6p0vD8pie/l4hRxSIXd+q02+9jMQMrWkLHn8Qshg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPxU1U5h; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=B0Wz7N5pU86DsHvufIg8Q3aOs60gji4G2cYFDY2SbxwikOo4LnokAnspmfpUsWQKBCRDInxNYgybc9Jt/hzMkXcEUdjGZ4n4UOHIy2At1nfGpEuupZxauvTF8QuG5w7M0qvjlG/hi6v7EOCK3iLCx9f+StYE2DhasPXidJ+45so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agPE/e38; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPxU1U5h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2098C4CEE4;
-	Fri,  9 May 2025 15:44:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="agPE/e38"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25259C4CEE4;
+	Fri,  9 May 2025 15:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746805462;
-	bh=IMXhmQQ2lWO0KiQ0KnSj8yQCSD7P7FRsgDDD17Jfbs0=;
+	s=k20201202; t=1746805830;
+	bh=MWAkGidqBX5HBclIK0w8IRw+9+HbrMS7tiBfUakCTeQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EPxU1U5hYKZ9lQxrZY4kxYVxUmRXrbi6StJM5Se5n7emSq6H4CCwSp1PvU+8lZBWu
-	 HbfNfwQ8AcE3ZokS+TWPkwMsUIKc0x+56XDheqWT0qF8298RYe9A4q38mFWZ7Lk9ve
-	 akBoJ0shcCVTV726rUnUs8VixrBSHZGpKtaQOca6w8+ck2exdtHEdpuuchiPDZfLAB
-	 88C9cULAhL//1QOWsfNefOfDOT35BpoGmWBlTgM2FjHO4U4idlU9jfnih4UrpUoNO2
-	 gI4DJN+4mUatc8d66IbD2/dmYNB7RaWDOD594gGKIlFi6yew1MO1+P+CFHYKfF2XYQ
-	 UwDcwZiYYwNuQ==
-Date: Fri, 9 May 2025 16:44:18 +0100
+	b=agPE/e38PsyLDYEY7NP19Kk/S3Aki2UA+OUsmF/Ur0wiu8MwfK13WMkYRpSoktZ3x
+	 qYhMlflMGek/F7qJiDASfOQAKDQ6iFuoBSsknUIWyjckHs6AZdS7ZrXCECZMGA31zE
+	 henLbXb4ceM4pH+zqlVlSM4xAyb55uw08vNs1Ym1d//KHxWGl/adzIG9kTipPnwVAy
+	 0sSfriM3YS2b34KI8jzLtNhpKru+SAeetkxbzMyHW02ewuvB/G71gm9lu/RiCOtc2S
+	 KJMndkwXkLJqRZDKcI8jvOv2pjcUAvQI6J0KaWcVHwUSz8qPEQmE7ZNFXzpw9z/G/u
+	 irnqM44abmMJA==
+Date: Fri, 9 May 2025 16:50:25 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Richard Hu <richard.hu@technexion.com>, sascha.hauer@pengutronix.de,
-	Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev,
-	ray.chang@technexion.com, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] arm64: dts: imx8mp: Add TechNexion EDM-G-IMX8M-PLUS
- SoM on WB-EDM-G carrier board
-Message-ID: <20250509-dripping-colonial-aa805906a189@spud>
-References: <20250509071242.12098-1-richard.hu@technexion.com>
- <8173a798-b5d7-485c-8ce3-b46f4a097d83@kernel.org>
- <83401d0a-ca96-4cfd-9016-13a8604beb9c@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+	Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org
+Subject: Re: [PATCH 1/2] spi: dt-bindings: fsl,dspi: Fix example indentation
+Message-ID: <20250509-anew-slept-032f64ac6034@spud>
+References: <20250509112130.123462-3-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,51 +47,36 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OD4wdRO1911HDruQ"
+	protocol="application/pgp-signature"; boundary="JLtz9K+e58T54EQF"
 Content-Disposition: inline
-In-Reply-To: <83401d0a-ca96-4cfd-9016-13a8604beb9c@kernel.org>
+In-Reply-To: <20250509112130.123462-3-krzysztof.kozlowski@linaro.org>
 
 
---OD4wdRO1911HDruQ
+--JLtz9K+e58T54EQF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 09, 2025 at 03:58:32PM +0200, Krzysztof Kozlowski wrote:
-> On 09/05/2025 15:21, Krzysztof Kozlowski wrote:
-> >=20
-> > No, that's not a spi controller.
-> >=20
-> > Node names should be generic. See also an explanation and list of
-> > examples (not exhaustive) in DT specification:
-> > https://devicetree-specification.readthedocs.io/en/latest/chapter2-devi=
-cetree-basics.html#generic-names-recommendation
-> >=20
-> >=20
-> >> +		compatible =3D "rohm,dh2228fv";
-> >=20
-> > I doubt that. Drop the node or fix the compatible.
+On Fri, May 09, 2025 at 01:21:31PM +0200, Krzysztof Kozlowski wrote:
+> DTS example in the bindings should be indented with 2- or 4-spaces, so
+> correct a mixture of different styles to keep consistent 4-spaces.
 >=20
-> ... especially that dh2228fv does not exist. There is no such device
-> from ROHM. If you claim otherwise, please share this imaginary device
-> datasheet.
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-To be clear, the thing to do if you have some device without a kernel
-driver and want to use spidev for it, is to add a binding for the
-device and add the device specific compatible to spidev.c.
-If it is a simple device with no unusual properties (maybe it has an
-interrupt, that's fine) add it to trivial-devices.yaml instead of
-writing a dedicated binding.
+For both
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---OD4wdRO1911HDruQ
+(idc about both appearing in tree with an ack Mark)
+
+--JLtz9K+e58T54EQF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaB4i0gAKCRB4tDGHoIJi
-0rTIAQCvC0a5Fu0qeL8RJpXo9801tjpYBm1ES+9QEWTFRWEB4AEAuwO8YdFqpXuB
-siGWDtLPid4o2efFJvy1i/+/LuJXeAA=
-=VP1b
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaB4kQQAKCRB4tDGHoIJi
+0qShAQCd9ufBaxXRPbap/bGPVseVhTYkT+wTdHHy2pa1ltrV8QD+Jy6vOTleDf2K
+GCgM3WPo4O3ActnatJPM376WaePb7AE=
+=7huX
 -----END PGP SIGNATURE-----
 
---OD4wdRO1911HDruQ--
+--JLtz9K+e58T54EQF--
