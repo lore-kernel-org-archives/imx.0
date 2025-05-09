@@ -1,47 +1,46 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F64A5464E
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 14:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC24622A1ED
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 14:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746801816; cv=none; b=ClGX/bwYfZIg8SCt9aO//S5LDUCFFN5j9ZNZdPPLoX1tgZdaO7TMElGbMqL5rBwVKBs3No4Omai7zTkl9RlDampMCaFDpdxPdxDsrtlfVujRMEO0m7F4OtSeMjM5sh0RevsvhzZ8n4iPQnIvcIedNqY7B3Jd0R0ZVFmRH8qZKUc=
+	t=1746802199; cv=none; b=s4hZA491x0Rfq+NTAZrsD6PRjggQ3dpUqsk4zoa044Pv7MW5GdQMHcGxc01W0BrX2+UdjL8xdEw+aQlz2CWKOXunbzdftukVi7PCNTVa0Qnkcr8bv97Ht99PuD9GRCEbl6PinN3CB5hX81hhPiccssn0VDIoBO7pavVVqC73j0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746801816; c=relaxed/simple;
-	bh=mNPApPuwIaDUrhXbWA5v+Y3Fcvc95RJv/Ek/jZVjQTk=;
+	s=arc-20240116; t=1746802199; c=relaxed/simple;
+	bh=aFiukFtu4i+F/1eg7Cg9rkmZ16PPBLIO7y7QaxznsV0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bTl3GQTrGByGSm8CspBF9Dg1roItqkoGAzG9aa8yXyKbcdae5OzBUYJNhhEnY55eW81Bd917SMVJxDe0aB+6ZUxmRT2Q0scc4WmPhOtvSlRrWTMi+v/N8fC0LvWJC0sKVmOfI9zbddlYOMxX2EOANhSiz1zJSsJogotk672+6q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=V0d6960n; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=l8BtDxN7NRdNw2U2GjJqPiqU4bEQJkaWkNAR8Isha1gkq/Y2uZyjQj+zx2WQndiAa3PVNb0RGUItS/i/vYfTO3/5NT4VcNKs1OCziRa2mLmoOWzMugDzL+8oyGLnH2doaOS7+O5GjmKU0ZE3a4FRy8f5Q4u5m1UY2ijasGJURlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nlZ1ey9r; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="V0d6960n"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nlZ1ey9r"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=6EkHZ6uoB2xHmNiBXZ1kh3u+YSfhV8TuHSXfN/u3xAQ=;
-	b=V0d6960n3JUBSgaFAneLnUf6NWJU+XxTBr84bDIiZfFivT+rAU4oWpEwuW6ABd
-	MGNCgLJS+TDcLEbCtiC3D8lpUKfRtDvKD3e6aCfn3keTrBrosq57oyHKyCbYrcBb
-	8UOTwWx4hh9yfzmfHQSiaDbUsgiVEm9JU4LX3Ul16Q5ME=
+	Content-Type; bh=8W4x/SOfsK5KukV+9m2Wm8bOWGZZSROVtNjLW9SKw4k=;
+	b=nlZ1ey9rhYWL6MQoeMZvKJ82l7lMwUfcl4SMECr6vhmuhYlzbO0cjPQ09gA1JP
+	StjMYyYrWNnXXMOBviGbhJsMasN1x2YBCDSMHJE4Y3kn5dFBsv9MoqWXLSwLoqX+
+	85821j/DVP1Ck5AwgZjnFKG2lqZjeIwkYwbQEWpGmegGU=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDXnytmFB5oWHWqAA--.62630S3;
-	Fri, 09 May 2025 22:42:48 +0800 (CST)
-Date: Fri, 9 May 2025 22:42:45 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgBnL_HwFR5oMpOoAA--.26367S3;
+	Fri, 09 May 2025 22:49:21 +0800 (CST)
+Date: Fri, 9 May 2025 22:49:19 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
+Cc: shawnguo@kernel.org, tarang.raval@siliconsignals.io,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] arm64: dts: freescale: imx8mp-toradex-smarc: add
- fan, ec, gpio
-Message-ID: <aB4UZZgSSsLIg3qv@dragon>
-References: <20250430094151.98079-1-francesco@dolcini.it>
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: imx8mp-var-som: Fix LDO5 shutdown causing
+ SD card timeout
+Message-ID: <aB4V76XU9Cyl48pl@dragon>
+References: <20250505055828.4160-1-himanshu.bhavani@siliconsignals.io>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,22 +49,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250430094151.98079-1-francesco@dolcini.it>
-X-CM-TRANSID:Mc8vCgDXnytmFB5oWHWqAA--.62630S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUOzuWUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAQVIZWgd+-h1qQAAsD
+In-Reply-To: <20250505055828.4160-1-himanshu.bhavani@siliconsignals.io>
+X-CM-TRANSID:M88vCgBnL_HwFR5oMpOoAA--.26367S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7WryUKw4kJw48Ww47trW8WFg_yoW3Xrb_Wa
+	18tanru3y3Ar9avr1rt3WxKrWSqw4qv3W7J3yUWrWqyFy2vay5JwsI93yrAw4rt39xtF1q
+	q343Xw4UWF1a9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjOVy7UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAQVIZWgd+-h1qQABsC
 
-On Wed, Apr 30, 2025 at 11:41:46AM +0200, Francesco Dolcini wrote:
-> Emanuele Ghidoli (2):
->   arm64: dts: freescale: imx8mp-toradex-smarc: add embedded controller
->   arm64: dts: freescale: imx8mp-toradex-smarc: add gpio expander
+On Mon, May 05, 2025 at 11:28:27AM +0530, Himanshu Bhavani wrote:
+> Fix SD card timeout issue caused by LDO5 regulator getting disabled
+> after boot.
 > 
-> Francesco Dolcini (3):
->   arm64: dts: freescale: imx8mp-toradex-smarc: add fan PWM configuration
->   arm64: dts: freescale: imx8mp-toradex-smarc: use generic gpio node
->     name
->   arm64: defconfig: Add Toradex Embedded Controller config
+> The kernel log shows LDO5 being disabled, which leads to a timeout
+> on USDHC2:
+> [   33.760561] LDO5: disabling
+> [   81.119861] mmc1: Timeout waiting for hardware interrupt.
+> 
+> To prevent this, set regulator-boot-on and regulator-always-on for
+> LDO5. Also add the vqmmc regulator to properly support 1.8V/3.3V
+> signaling for USDHC2 using a GPIO-controlled regulator.
+> 
+> Fixes: 6c2a1f4f71258 ("arm64: dts: imx8mp-var-som-symphony: Add Variscite Symphony board and VAR-SOM-MX8MP SoM")
+> Signed-off-by: Himanshu Bhavani <himanshu.bhavani@siliconsignals.io>
 
-Applied all, thanks!
+Applied, thanks!
 
