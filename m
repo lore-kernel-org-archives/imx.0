@@ -1,73 +1,78 @@
-Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D79B27A132
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 10:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2868A212F89
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 10:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746785228; cv=none; b=sV3GyKo2mtAl3irULJlA6aoB5+GQ07i0wAtmONT9/533de4CDut21UbAhX6iMC8u+OVm33WxdQ+TFHuRWvNiH+SoThd/6Bd6MZ2dC7UcixBz4h+u2K8wbqH45iT14v520qM9kC337AFqJYq8lWFsY4OYa93AUY7SLkkLXm7dlPc=
+	t=1746785467; cv=none; b=ulcSuD/IyzcRT8kKlfi1h3vzJ4JuZ8imSpJ8O7H2sHu1NnYtL2WRFnCzyY0++dVpl+OudB1uM4XRUxEq167ajleTVqw/YQzgbv73rPVL1qcpU5PKd0Ae4kKHZz5BVb2MOmVp/DAEQFE30xDfishLSwnmqBC5bkN6AtnQOPdlDn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746785228; c=relaxed/simple;
-	bh=pZd/znGo/jxzEhRwIHo1wRIwFkzcN7UFQTeOMVaIPRI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SVHgs0r+DUr7azTRT+6gkGVBQc7HEVpjFJkbXeQXjhBZcylNptLVvPiW/v2EiADDp/6GtNZOZmmt3+kT/2Gbj/EbZTZqP8BoLCyZCQJ7aGc3TljG1px5OMc8DPFkSlSGRc8kmuj2O0ZtoJ6Ej9OsKHnSeKFgnwMpWNq9EP0dnhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id 5E851C405A46;
-	Fri,  9 May 2025 12:07:01 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 5E851C405A46
-From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: Rui Miguel Silva <rmfrfs@gmail.com>, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, Martin Kepplinger <martink@posteo.de>
-Cc: Purism Kernel Team <kernel@puri.sm>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] Enable MIPI filtering by DT on i.MX8M*
-Sender: khalasa@piap.pl
-Date: Fri, 09 May 2025 12:07:01 +0200
-Message-ID: <m3h61u9jy2.fsf@t19.piap.pl>
+	s=arc-20240116; t=1746785467; c=relaxed/simple;
+	bh=lqziQpMlughBedTUO+EzYkiCIUZJo/QheOWVzWoKiJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SaVKIPeIkV2bcFgY3YJra7LW5VuwKtwv9EeztpO09f554IZodfzgytNqmIi7QVJ3qOd7wN3MrMkt/DmHe9YDJcq6rO0XpfwtnFMvWWF10fff5GChlNKD5X4h2cnaESS6tXQT77OHf0J2aRbxwIJ/NG5ScYZgas3Ydabv3NgSIKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=keWZgP8c; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="keWZgP8c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=izERVxm2+ntmpqePiAy07uUJR+42twLW2H2vEA4ju50=;
+	b=keWZgP8cSVuU62zuRHKBjK7P9EZ6VdTqDnuXp+dF4RFUw8G1hPbfC+oqhhKSIo
+	0z/GgMWQWsRPfTXQaiFjIzYwQRXF6vIEKlxxPSZ9zAm6E/Tu4gTiqyin50dfm9pP
+	mHbPVX1tuKgHvJCJPRONRH75Pd/xo8tQ4LofoslkyEcPM=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD31w6f1B1ol0OqAA--.12430S3;
+	Fri, 09 May 2025 18:10:40 +0800 (CST)
+Date: Fri, 9 May 2025 18:10:38 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Primoz Fiser <primoz.fiser@norik.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+Subject: Re: [PATCH v4 00/15] Update PHYTEC i.MX93 DTS
+Message-ID: <aB3Unt2tKNaIBnBS@dragon>
+References: <20250422105644.2725168-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250422105644.2725168-1-primoz.fiser@norik.com>
+X-CM-TRANSID:Ms8vCgD31w6f1B1ol0OqAA--.12430S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XF1rAFy5tr43Cr45ZFyrJFb_yoWkuFg_uF
+	4fWrn7Gr1kJrs3Aw15A3Wjq3s29FWYyFyrKFyUW3Z5tr9rGFnIkr9ru3yfGF4qgFnF9r17
+	CF18JwnaqrWYgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbfgA7UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRdIZWgdnHfvXAAAse
 
-In addition to raw image data, certain MIPI sensors send additional
-information like NULL packets or "embedded 8-bit non-image data".
-Without DT (data type) filtering, these packets end up in the frame
-buffer, corrupting it.
+On Tue, Apr 22, 2025 at 12:56:29PM +0200, Primoz Fiser wrote:
+> Primoz Fiser (15):
+>   arm64: dts: freescale: imx93-phycore-som: Add PMIC support
+>   arm64: dts: freescale: imx93-phycore-som: Add EEPROM support
+>   arm64: dts: freescale: imx93-phycore-som: Disable LED pull-up
+>   arm64: dts: freescale: imx93-phycore-som: Enhance eMMC pinctrl
+>   arm64: dts: freescale: imx93-phycore-som: Add eMMC no-1-8-v by default
+>   arm64: dts: freescale: imx93-phyboard-segin: Drop eMMC no-1-8-v flag
+>   arm64: dts: freescale: imx93-phyboard-segin: Disable SD-card
+>     write-protect
+>   arm64: dts: freescale: imx93-phyboard-segin: Fix SD-card pinctrl
+>   arm64: dts: freescale: imx93-phyboard-segin: Set CMD/DATA SION bit to
+>     fix ERR052021
+>   arm64: dts: freescale: imx93-phyboard-segin: Add RTC support
+>   arm64: dts: freescale: imx93-phyboard-segin: Add CAN support
+>   arm64: dts: freescale: imx93-phyboard-segin: Add USB support
+>   arm64: dts: freescale: imx93-phyboard-segin: Add I2S audio
+>   arm64: dts: freescale: imx93-phyboard-segin: Add EQOS Ethernet
+>   arm64: dts: freescale: imx93-phyboard-segin: Order node alphabetically
 
-Tested on i.MX8MP with IMX290 sensor.
+Applied all, thanks!
 
-Signed-off-by: Krzysztof Ha=C5=82asa <khalasa@piap.pl>
-
-diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/pla=
-tform/nxp/imx-mipi-csis.c
-index 29523bb84d95..d53a4262b63d 100644
---- a/drivers/media/platform/nxp/imx-mipi-csis.c
-+++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -654,8 +654,7 @@ static void mipi_csis_set_params(struct mipi_csis_devic=
-e *csis,
- 	val =3D mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
- 	val &=3D ~MIPI_CSIS_CMN_CTRL_LANE_NR_MASK;
- 	val |=3D (lanes - 1) << MIPI_CSIS_CMN_CTRL_LANE_NR_OFFSET;
--	if (csis->info->version =3D=3D MIPI_CSIS_V3_3)
--		val |=3D MIPI_CSIS_CMN_CTRL_INTER_MODE;
-+	val |=3D MIPI_CSIS_CMN_CTRL_INTER_MODE; /* enable filtering by DT */
- 	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL, val);
-=20
- 	__mipi_csis_set_format(csis, format, csis_fmt);
-
---=20
-Krzysztof "Chris" Ha=C5=82asa
-
-Sie=C4=87 Badawcza =C5=81ukasiewicz
-Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-Al. Jerozolimskie 202, 02-486 Warszawa
