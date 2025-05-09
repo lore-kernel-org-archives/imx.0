@@ -1,156 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1C821322B;
-	Fri,  9 May 2025 14:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CA321D3FB
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 14:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746800231; cv=none; b=oTowVLRHKtky9pq2MKJN9r9DBbgkTRFGfigOrJXIoAkeY83Vl+zwOdnKnEEENt2JZJo9vWwbG+Z47XmnfzcGSbG78HKTuS33bfdC7Y2P2/R8Xe08e8uFTJvZJkWt5UwpzbD3btdy/P6aKvxNZe6C82STM+r5qMJqI4zIBo8gM0k=
+	t=1746800237; cv=none; b=KH09+FV8FiIygTT79pnNCwJVehnkEb/PhFaiOINCfGfWjL5w9vvw52mgKaMOI0vRmwqiAVyeyMpWdorF+wHoKlx5H/r/YpkHi5m0xtTqOCXUAjji0YAdMW3KBL59Ze4BF4wfdqGcfAK/QRylThgA8Z3DHtHIyvhsLaougpvewtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746800231; c=relaxed/simple;
-	bh=/PIseCcZUdjenlJfiK9ityerZ5vunYK2BIb4xzakXsY=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=eV+ELn8zMm0RXlCa/eEDnhQ25mxd4kaksEsyiJ+EX+h1+8UgF0YUWN50b8M4DwwS+ss3JT/1Be1g4VaOSOst/MuQumRV2wl6croTynJjdaZKDpKPOmGhHkcU8bZ4vD3z6IaBy1F0tkLMN2rg7LziC6CZ4qfYLtFJ4zqyXVAGspI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNRTj5CO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746800237; c=relaxed/simple;
+	bh=8YpPIiJRES6y9U9nDUVsp0fNxxDECRqz8HdY8Iy5l9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z0WFKuSn2uIxsw0+6T1a5wkb1q1VqK/RJpqejP3ISTWxUNf1Fe6H9gac2e0BH46zQ4oklmu+GLJ04WjcvuGwnsMj9wgCcBpHu9ObyYuSzM6PiLHRzhXBgrZ3rveSsQILTiAAy/IC6z7Cu+AqBxdtMUxzZcZbeK8srT0ESKsTy8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=SSkA9rzG; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNRTj5CO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18BA1C4CEEB;
-	Fri,  9 May 2025 14:17:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746800231;
-	bh=/PIseCcZUdjenlJfiK9ityerZ5vunYK2BIb4xzakXsY=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=lNRTj5COI1LxN5vFI2zoyMg5fRwlQKKh3fjA8VOUZUu5J+u3dBR8AwnlA2dm7UURL
-	 olg1CYEwp94CDD3L6ZEA3Z+ujx98/8FsvRw8+bECKFZSxENdXq0S0RE5PXKxRtnmkr
-	 pwbHE5a2PwrTPhEopzFF7hjcGmm52RVloMhH5Fk+ZgQnUH71hJWcH7CcySsLOgWeGP
-	 Koj1/JE1dAequF97dxppbTjei2ZLWgxexZ/QP7odwZHvNE9D0FLmP7g+7UQGVUhTa8
-	 ciEBi2niTEYug5BbnkyYJJ7JwBI6SuilUO1btJuB/OIIoHuf25RB1gg0rY91i82GL/
-	 uOFkan+F91s7w==
-Date: Fri, 09 May 2025 09:17:09 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="SSkA9rzG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=Kg1lOsicIGwMurHHg1lsBFSLBs1lOtH7DCGaQFmSoc4=;
+	b=SSkA9rzGzQPYLCmZq3aIZxQoDYOHXIIkCeFrJsIqAmFW1LByq3EGP4MrFBeYD/
+	xNj44kpFFaqkqBEvtsiUciWqUrgnVuTLwb+qqUUAkNWpUY9S6/X3SbQCVdyf49eJ
+	FOXSMjluCBPH6r+Ma45DCZmyLC4QNvMX16DqwHTgH/4iU=
+Received: from dragon (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgCnB_pEDh5oyTOqAA--.49231S3;
+	Fri, 09 May 2025 22:16:38 +0800 (CST)
+Date: Fri, 9 May 2025 22:16:35 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Markus Niebel <Markus.Niebel@tq-group.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com, linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: arm: add TQMa8XxS boards
+Message-ID: <aB4OQ+sVXz1Qima0@dragon>
+References: <20250424075533.1266435-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
- Larisa Grigore <Larisa.Grigore@nxp.com>, 
- Ciprian Marian Costea <ciprianmarian.costea@nxp.com>, 
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
- linux-arm-kernel@lists.infradead.org, 
- "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>, arnd@linaro.org, 
- Dan Nica <dan.nica@nxp.com>, linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Stoica Cosmin-Stefan <cosmin.stoica@nxp.com>, 
- Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>, 
- NXP S32 Linux Team <s32@nxp.com>, dan.carpenter@linaro.org, 
- Andra-Teodora Ilie <andra.ilie@nxp.com>, 
- Xulin Sun <xulin.sun@windriver.com>, larisa.grigore@nxp.com, 
- Sascha Hauer <s.hauer@pengutronix.de>, andrei.stefanescu@nxp.com, 
- Marius Trifu <marius.trifu@nxp.com>, Chester Lin <chester62515@gmail.com>, 
- Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>, 
- Matthias Brugger <mbrugger@suse.com>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Shawn Guo <shawnguo@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- Frank Li <Frank.Li@nxp.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: James Clark <james.clark@linaro.org>
-In-Reply-To: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
-References: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
-Message-Id: <174679985557.3369558.10881468523148413098.robh@kernel.org>
-Subject: Re: [PATCH 00/14] spi: spi-fsl-dspi: DSPI support for NXP S32G
- platforms
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250424075533.1266435-1-alexander.stein@ew.tq-group.com>
+X-CM-TRANSID:Mc8vCgCnB_pEDh5oyTOqAA--.49231S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUYD73DUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiBBFIZWgd-c1QIAAAsN
 
-
-On Fri, 09 May 2025 12:05:47 +0100, James Clark wrote:
-> DT and driver changes for DSPI on S32G platforms. First 4 commits add
-> new S32G registers and device settings along with restricting userspace
-> register access properly for all devices. Then some DMA mode fixes along
-> with adding support for target mode, which uses DMA. Followed by some
-> other minor bug fixes and then finally add the DT compatibles and
-> binding docs.
+On Thu, Apr 24, 2025 at 09:55:29AM +0200, Alexander Stein wrote:
+> From: Markus Niebel <Markus.Niebel@tq-group.com>
 > 
-> ---
-> Andra-Teodora Ilie (1):
->       spi: spi-fsl-dspi: Enable modified transfer protocol
+> TQMa8XxS is a SOM series featuring NXP i.MX8X SoC.
+> They are called TQMa8XQPS and TQMa8XDPS respectively.
+> MB-SMARC-2 is a carrier reference design.
 > 
-> Bogdan-Gabriel Roman (1):
->       spi: spi-fsl-dspi: Halt the module after a new message transfer
-> 
-> Ciprian Marian Costea (2):
->       dt-bindings: spi: dspi: Add S32G support
->       spi: spi-fsl-dspi: Enable support for S32G platforms
-> 
-> James Clark (2):
->       spi: spi-fsl-dspi: Define regmaps per device
->       spi: spi-fsl-dspi: Re-use one volatile regmap for both device types
-> 
-> Larisa Grigore (7):
->       spi: spi-fsl-dspi: restrict register range for regmap access
->       spi: spi-fsl-dspi: Add config and regmaps for S32G platforms
->       spi: spi-fsl-dspi: Avoid setup_accel logic for DMA transfers
->       spi: spi-fsl-dspi: Reset SR flags before sending a new message
->       spi: spi-fsl-dspi: Use DMA for S32G controller in target mode
->       spi: spi-fsl-dspi: Reinitialize DSPI regs after resuming for S32G
->       arm64: dts: Add DSPI entries for S32G platforms
-> 
-> Marius Trifu (1):
->       spi: spi-fsl-dspi: Use spi_alloc_target for target
-> 
->  .../devicetree/bindings/spi/fsl,dspi.yaml          |  18 ++
->  arch/arm64/boot/dts/freescale/s32g2.dtsi           |  78 +++++
->  arch/arm64/boot/dts/freescale/s32g3.dtsi           |  78 +++++
->  arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi    |  87 +++++
->  arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi    |  77 +++++
->  drivers/spi/Kconfig                                |   4 +-
->  drivers/spi/spi-fsl-dspi.c                         | 356 +++++++++++++++------
->  7 files changed, 592 insertions(+), 106 deletions(-)
-> ---
-> base-commit: 9c69f88849045499e8ad114e5e13dbb3c85f4443
-> change-id: 20250325-james-nxp-spi-caf1e2099231
-> 
-> Best regards,
-> --
-> James Clark <james.clark@linaro.org>
-> 
-> 
-> 
+> Signed-off-by: Markus Niebel <Markus.Niebel@tq-group.com>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: using specified base-commit 9c69f88849045499e8ad114e5e13dbb3c85f4443
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org:
-
-arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: pinctrl@4009c240 (nxp,s32g2-siul2-pinctrl): 'dspi1_pins', 'dspi5_pins' do not match any of the regexes: '-pins$', '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/pinctrl/nxp,s32g2-siul2-pinctrl.yaml#
-arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: pinctrl@4009c240 (nxp,s32g2-siul2-pinctrl): 'dspi1_pins', 'dspi5_pins' do not match any of the regexes: '-pins$', '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/pinctrl/nxp,s32g2-siul2-pinctrl.yaml#
-arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: spidev@0 (rohm,dh2228fv): 'fsl,spi-cs-sck-delay', 'fsl,spi-sck-cs-delay' do not match any of the regexes: '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/trivial-devices.yaml#
-arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: pinctrl@4009c240 (nxp,s32g2-siul2-pinctrl): 'dspi1_pins', 'dspi5_pins' do not match any of the regexes: '-pins$', '^pinctrl-[0-9]+$'
-	from schema $id: http://devicetree.org/schemas/pinctrl/nxp,s32g2-siul2-pinctrl.yaml#
-
-
-
-
+Applied both, thanks!
 
