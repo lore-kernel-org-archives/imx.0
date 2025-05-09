@@ -1,148 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3635428FA99;
-	Fri,  9 May 2025 11:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908CE2741A8
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 12:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746789988; cv=none; b=BZZRL8S7Sl186xqLjY3qI7qqDViM01WOTx6ZjqvkX5IkV4E/1YTzcGolT2XqNZKG4GQN3TWt7QSNMqeyyytIuhf909uYxlx/RvCXBa9kYSk9GJIwCXtYCZyeQ+MbdtQ8tc8ZO2k1+tzLpooJlOJvoJch+J8Eci4F7XU9Dx345fM=
+	t=1746792211; cv=none; b=DTKRlt9+icnaUbN04Aw7iLzGbwLsyfKeuMHzCKShnJWxdW6T0XPxppVgecCfAkyUB0cgPB+hfQc2C2yXqBjR6Eouaf0tUduN2XNZ5g69x+Bnu3YdORsWD9j4vxaBsVLTKujy33XhKX/VsdAWs7T83qHvCH8Cj53bsbDNyInTj/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746789988; c=relaxed/simple;
-	bh=hzLS1kXe+h9iNMiiyoZn+cOfweZp3O9xMdrElxq55yA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YJJRZjoVKrVHQX1xpZKSaVFaoU/JgLmchmRYgGpdrg+x6S7z1CVwEPuTLZv116HY+Y7dp+uLi8GFkOuhsVqJ9uNsZQII9wJnULeHeC1OKxuj3DSZibez4Mz7ZkyEWd5orXPZVWiE+nOuIJvdiOYafDxDGn97U1mMlmGoytxGwew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X/W5IgPQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746792211; c=relaxed/simple;
+	bh=zMk3Ur7keZic+WklbtXFWS6gObTJIJhCYMILZ9CiGdg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jwZF9qsjz9daNv7wMvgqcVlkyJ7NmeVBqp4S3WIyPzZbOJIvF7LzTH70YUi5r9bah9DTcf3sohbdrzUGFkHSR9SGhbJSR2avq5L1iA/jB51PG8MPxmA/yWOQdPTaHiEyFRQMlOQh91WjRBZ287SST1YoUWpKGZ64bRxKCkZ3io0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=mlGh+L/e; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X/W5IgPQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306F8C4CEE4;
-	Fri,  9 May 2025 11:26:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746789987;
-	bh=hzLS1kXe+h9iNMiiyoZn+cOfweZp3O9xMdrElxq55yA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=X/W5IgPQzAckzO/++fEBxwjg3pQP0vPff3cu0Dxhfr33pO6EJnBpJWZIzACDdY9ZL
-	 xeVkXUlMRyb+xJnth6Ud/bnE7zO8iRsFxnSGKiGIJlsXm6R87oughaoQ9gaBTdzHyB
-	 TaQajUFSNrSQk6Dw9EQGN6MdaA2pMpWIEOLcro7zN0h4abcDHLEKvJhJ+7UKMd1z+t
-	 sYRR7bGqZ5/5EE3d35JXABRExqEiB+VVB9ezEUyTbt+7yMeYFjl2IP7/91h8Z+Xucl
-	 eTs1mDfp0hXc53vsEpSoBFHdIjVa3fCOTfGesOT+BP0wubtsQkBP2hL5+ojKgM2O3P
-	 EeOslwo0d7DXw==
-Message-ID: <3ddde799-76b5-43f9-971e-a52ec322e9b1@kernel.org>
-Date: Fri, 9 May 2025 13:26:20 +0200
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="mlGh+L/e"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=uZznWLba/NrZlGr5Qa9wgXdmAIeUPmYseOlEvibVjwc=;
+	b=mlGh+L/e3yD5Rzxyt5H4YE5WgU95NUq48DtszJYSAK09t/qKPMO2tb5qPO1ANa
+	CO673MDq3NgqiHbSRopshU79k8zJukP3ey48IEnX4Qkfdka1wZIaOXr7jETDafFC
+	6D0y8KiZxyUvBGEnGDjZ8UUDzIl3iL/FuD1aBPN4ml7Gw=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgC3N_Ke7h1oXnOrAA--.65461S3;
+	Fri, 09 May 2025 20:01:36 +0800 (CST)
+Date: Fri, 9 May 2025 20:01:34 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>, Stephen Boyd <sboyd@kernel.org>,
+	linux-amarula@amarulasolutions.com,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org, Abel Vesa <abel.vesa@linaro.org>
+Subject: Re: (subset) [PATCH v12 00/19] Support spread spectrum clocking for
+ i.MX8M PLLs
+Message-ID: <aB3unsCzCFUkdp9i@dragon>
+References: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com>
+ <174643143452.2950397.16722215892279685541.b4-ty@linaro.org>
+ <CABGWkvrkVLRocFsZs9JLni4KDZCDyYDZxMzwA9AzAwipmUyTzQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/14] arm64: dts: Add DSPI entries for S32G platforms
-To: James Clark <james.clark@linaro.org>, Vladimir Oltean
- <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
- NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, larisa.grigore@nxp.com, arnd@linaro.org,
- andrei.stefanescu@nxp.com, dan.carpenter@linaro.org
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>
-References: <20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org>
- <20250509-james-nxp-spi-v1-14-32bfcd2fea11@linaro.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250509-james-nxp-spi-v1-14-32bfcd2fea11@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABGWkvrkVLRocFsZs9JLni4KDZCDyYDZxMzwA9AzAwipmUyTzQ@mail.gmail.com>
+X-CM-TRANSID:Ms8vCgC3N_Ke7h1oXnOrAA--.65461S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw1kGFWrCr1furWUWr13CFg_yoW5WrWUpa
+	4SkayqyrWDJFy8GF9Fyr45ta40qw4DZay8Jw1Ygr90v34YqF15JFW7Kry5KFyUG3yfC39r
+	tay5Xw1ku3WYvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j4c_fUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxNIZWgd37UzoAAAs5
 
-On 09/05/2025 13:06, James Clark wrote:
-> +&spi1 {
-> +	pinctrl-0 = <&dspi1_pins>;
-> +	pinctrl-names = "default";
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	status = "okay";
-> +
-> +	spidev0: spidev@0 {
+On Thu, May 08, 2025 at 10:32:10AM +0200, Dario Binacchi wrote:
+> Hello Shawn,
+> 
+> On Mon, May 5, 2025 at 9:52 AM Abel Vesa <abel.vesa@linaro.org> wrote:
+> >
+> >
+> > On Thu, 24 Apr 2025 08:21:30 +0200, Dario Binacchi wrote:
+> > > This version keeps the version v9 patches that can be merged and
+> > > removes the patches that will need to be modified in case Peng's
+> > > PR https://github.com/devicetree-org/dt-schema/pull/154 is accepted.
+> > > The idea is to speed up the merging of the patches in the series
+> > > that have already been reviewed and are not dependent on the
+> > > introduction of the assigned-clocks-sscs property, and postpone
+> > > the patches for spread spectrum to a future series once it becomes
+> > > clear what needs to be done.
+> > >
+> > > [...]
+> >
+> > Applied, thanks!
+> >
+> > [01/19] dt-bindings: clock: imx8mm: add VIDEO_PLL clocks
+> >         commit: 20e5d201b5d8f830e702d7d183f6b1b246b78d8a
+> > [02/19] clk: imx8mm: rename video_pll1 to video_pll
+> >         commit: 26a33196b5b68cf199b6c4283a254aa92d2aaf4b
+> > [03/19] dt-bindings: clock: imx8mp: add VIDEO_PLL clocks
+> >         commit: 2d50415e2457c6f6621c2faa3b01b11150fb9c67
+> > [04/19] clk: imx8mp: rename video_pll1 to video_pll
+> >         commit: 21bb969f608cefd8d847cf6eb50a193d9f1fbb87
+> > [05/19] dt-bindings: clock: imx8m-anatop: add oscillators and PLLs
+> >         commit: 2ba124053687c933031a6dc5b2e16ceaca250934
+> > [10/19] clk: imx: add hw API imx_anatop_get_clk_hw
+> >         commit: 17e3c1a272d97e49b4f3fbfe1f1b889e120d2be8
+> > [11/19] clk: imx: add support for i.MX8MM anatop clock driver
+> >         commit: 3cbc38cf42ca42d2dc9a93c949e0381ff919df71
+> > [12/19] clk: imx: add support for i.MX8MN anatop clock driver
+> >         commit: 80badb1d7264e83b512475898e7459f464a009c9
+> > [13/19] clk: imx: add support for i.MX8MP anatop clock driver
+> >         commit: 4c82bbe8b5437c7f16b2891ce33210c0f1410597
+> > [14/19] clk: imx8mp: rename ccm_base to base
+> >         commit: 1a77907dbbecfbe5e6a1aec28afd49a1dc184b7a
+> > [16/19] dt-bindings: clock: imx8m-clock: add PLLs
+> >         commit: 6a55647af3334f1d935ece67de4a838a864b53fc
+> >
+> 
+> Please check the remaining patches, as they are required for correctly
+> building the
+> ones merged by Abel. The kernel test robot has already reported build errors.
 
+I assume the remaining patches are DTS ones?  If so, I do not see how
+clock drivers would require DTS change to build correctly.  Do you have
+a pointer to the reported build errors?
 
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+My understanding about the build dependency is the opposite, i.e. the
+DTS changes require clock defines merged by Abel to build?  In that
+case, I suggest Abel pick up the whole series with my ack on DTS changes.
 
+Acked-by: Shawn Guo <shawnguo@kernel.org>
 
-> +		compatible = "rohm,dh2228fv";
+Alternatively, I can pick up the remaining patches after clock changes
+land on mainline (the next -rc1).
 
+Shawn
 
-Nah, I really doubt. That's not the device you have there. It's
-possible, though, so can you share schematics?
-
-> +		spi-max-frequency = <4000000>;
-> +		reg = <0>;
-> +		fsl,spi-cs-sck-delay = <100>;
-> +		fsl,spi-sck-cs-delay = <100>;
-> +	};
-> +};
-> diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-> index ba53ec622f0b..798b58fa9536 100644
-> --- a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-> @@ -127,6 +127,77 @@ i2c4-gpio-grp1 {
->  			pinmux = <0x2d40>, <0x2d30>;
->  		};
->  	};
-> +
-> +	dspi1_pins: dspi1_pins {
-
-No underscores in node names. Please use upstream as basis of your
-changes, not downstream code. See also DTS coding style.
-
-Best regards,
-Krzysztof
