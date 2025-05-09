@@ -1,73 +1,73 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6684C27465C
-	for <imx@lists.linux.dev>; Fri,  9 May 2025 09:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D79B27A132
+	for <imx@lists.linux.dev>; Fri,  9 May 2025 10:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746784645; cv=none; b=MjQAw8lBI8numa5EfyiXcTggbpgXhoHSv7GJj6LUB+k1CXPdWX7bNY15hOotLmUxFuWRISMe3ScSil70qN82CmLp/cAqjoSs3Q+pYrepcMSHhJ19lqnopjUuwCQ9L9+ofcCoRdktiZ3R9xytdJLZ88rpsKQwoXDB0CJ6tQUWtzk=
+	t=1746785228; cv=none; b=sV3GyKo2mtAl3irULJlA6aoB5+GQ07i0wAtmONT9/533de4CDut21UbAhX6iMC8u+OVm33WxdQ+TFHuRWvNiH+SoThd/6Bd6MZ2dC7UcixBz4h+u2K8wbqH45iT14v520qM9kC337AFqJYq8lWFsY4OYa93AUY7SLkkLXm7dlPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746784645; c=relaxed/simple;
-	bh=/1nUlecFxPkXb5UBTWdjvjhl+OV1lK0qu0WlzJbESDI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YTK9cDOHATVZOWMKpl4azjdBg3xhso95ITN99abvrkIyBQ++OAfBREkwGRVCWV4M+x3onuzdqkm50IbkpAPuHqA5q3bu7a5MtD0515lvycszMlmH1mKmDnatZ/efLqK9a4H6fVTjspfwVuSW5wNQfwnc+zgomhpXqqsj4PAL/oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=AA6tle6T; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="AA6tle6T"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ztpen9DuNRABAlryqI4gdvEyhar1spaRR9YZP2KvAT4=;
-	b=AA6tle6TmM7PdJ4gi8I9yRrcBcdwBcfjsw+8LLrbPNdMruSNojxEqqbLzyrZHS
-	In63wY6UU9QQENgkE8pG+WDACIZiOUlg1EMVCfDSJUkGVcXafB4L/F1mwqi4Y7Ul
-	0AAtRIzN4Eowa/wGUvyGf/Z4+2zsvNFYYpl7maGgPYNh4=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgBHD_Fg0R1o046lAA--.20888S3;
-	Fri, 09 May 2025 17:56:50 +0800 (CST)
-Date: Fri, 9 May 2025 17:56:48 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8mp: use 800MHz NoC OPP for nominal drive
- mode
-Message-ID: <aB3RYMONiB4RQdjk@dragon>
-References: <20250422-imx8m-nominal-noc-v1-1-889592ff65a5@pengutronix.de>
+	s=arc-20240116; t=1746785228; c=relaxed/simple;
+	bh=pZd/znGo/jxzEhRwIHo1wRIwFkzcN7UFQTeOMVaIPRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SVHgs0r+DUr7azTRT+6gkGVBQc7HEVpjFJkbXeQXjhBZcylNptLVvPiW/v2EiADDp/6GtNZOZmmt3+kT/2Gbj/EbZTZqP8BoLCyZCQJ7aGc3TljG1px5OMc8DPFkSlSGRc8kmuj2O0ZtoJ6Ej9OsKHnSeKFgnwMpWNq9EP0dnhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+	by ni.piap.pl (Postfix) with ESMTPS id 5E851C405A46;
+	Fri,  9 May 2025 12:07:01 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 5E851C405A46
+From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
+To: Rui Miguel Silva <rmfrfs@gmail.com>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, Martin Kepplinger <martink@posteo.de>
+Cc: Purism Kernel Team <kernel@puri.sm>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: [PATCH] Enable MIPI filtering by DT on i.MX8M*
+Sender: khalasa@piap.pl
+Date: Fri, 09 May 2025 12:07:01 +0200
+Message-ID: <m3h61u9jy2.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250422-imx8m-nominal-noc-v1-1-889592ff65a5@pengutronix.de>
-X-CM-TRANSID:M88vCgBHD_Fg0R1o046lAA--.20888S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrCF1fGr45uF4DZw1UXw4kCrg_yoWxXrc_ur
-	W8WwnrAw1kWr17u34qk3y5Za4fWw4UCF1SgasxXan2qFyfXrZ3Z3s7X3s5XF1UGrWjqwsr
-	AF1DXw48JFy2kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbzVbPUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiARxIZWgduGdhEQAAsq
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 22, 2025 at 09:12:35AM +0200, Ahmad Fatoum wrote:
-> When running in nominal drive mode, the maximum allowed frequency for
-> the NoC is 800MHz, but the OPP table for the i.MX8MP interconnect device
-> listed the 1GHz operating point for the NoC, regardless of the active
-> mode.
-> 
-> The newly introduced imx8mp-nominal.dtsi header reconfigures the clock
-> controller to observe nominal drive mode limits, so have it modify the
-> maximum NoC OPP as well.
-> 
-> Fixes: 255fbd9eabe7 ("arm64: dts: imx8mp: Add optional nominal drive mode DTSI")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In addition to raw image data, certain MIPI sensors send additional
+information like NULL packets or "embedded 8-bit non-image data".
+Without DT (data type) filtering, these packets end up in the frame
+buffer, corrupting it.
 
-Applied, thanks!
+Tested on i.MX8MP with IMX290 sensor.
 
+Signed-off-by: Krzysztof Ha=C5=82asa <khalasa@piap.pl>
+
+diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/pla=
+tform/nxp/imx-mipi-csis.c
+index 29523bb84d95..d53a4262b63d 100644
+--- a/drivers/media/platform/nxp/imx-mipi-csis.c
++++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+@@ -654,8 +654,7 @@ static void mipi_csis_set_params(struct mipi_csis_devic=
+e *csis,
+ 	val =3D mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
+ 	val &=3D ~MIPI_CSIS_CMN_CTRL_LANE_NR_MASK;
+ 	val |=3D (lanes - 1) << MIPI_CSIS_CMN_CTRL_LANE_NR_OFFSET;
+-	if (csis->info->version =3D=3D MIPI_CSIS_V3_3)
+-		val |=3D MIPI_CSIS_CMN_CTRL_INTER_MODE;
++	val |=3D MIPI_CSIS_CMN_CTRL_INTER_MODE; /* enable filtering by DT */
+ 	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL, val);
+=20
+ 	__mipi_csis_set_format(csis, format, csis_fmt);
+
+--=20
+Krzysztof "Chris" Ha=C5=82asa
+
+Sie=C4=87 Badawcza =C5=81ukasiewicz
+Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
+Al. Jerozolimskie 202, 02-486 Warszawa
