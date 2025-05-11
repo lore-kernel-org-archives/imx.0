@@ -1,92 +1,89 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0ED221F34
-	for <imx@lists.linux.dev>; Sat, 10 May 2025 17:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E52DEEA8;
+	Sun, 11 May 2025 01:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746899843; cv=none; b=L4Xmz1r4tvaXEMBs65JGbhxLg+wTRZj60jj2DvAusE7TTyTqNkAANWMpdYRG9YSUxRzh94s5pQPv9rVvuL+rijXsWQ+45kOAoUtu+iwg4tJHQEjADvEbhmnAfO9ccCti8TdSygsqq6s1cC/nTcCvKDseT+ZbcFJ3/QtIF1s/Cu8=
+	t=1746928502; cv=none; b=JWhNEOsUaPTUUngqIi9jWY2qzvgFoX7tmxs0ANJifrtnL7hffy90nzFwfMQZepYuR/DyD1qMLEM9UmPU/yHEVJEn//ASQfpCP7SHiw5vPBdHV7onMhp9Yj/5yOiM4uFbsiCvkpR8OvTmGsTvsmbB576HY65uxhDLsjuN24axTMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746899843; c=relaxed/simple;
-	bh=WjgGUfr6X08qxQK3zfVrb3aTo/x2kOH4Dzdn/sVCI8Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uoOTuRplzAL2Xa5N1ektQJ9rsuUWTD3EcaDsMPjyNqHxbiHWRZM6cxvI11qb7D05YJq4Y31k2CR7vKGK8zGResntxHsowuLg2C6QmCKEZP6UCCkyYkultjbabjPkFYMDQg394cwKG2s4QQ9NGfHyqvn1hYFWj5B/HERs40+38Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EgO/7O3H; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746928502; c=relaxed/simple;
+	bh=ig4DYJ3RXrVpEeq3aerEl+Ap4/cbUODtqNdrvm1zJko=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=tr0Ry1l4NcN3w+QjC1nAQr7XCgRFZhw/5SlKo5PLMrTVA6voAM34Kt1yEBQQoQngI4qdQeRKKSWhAMSHA1BuRD9y2IbFFtcnjdfAdYbpkz66Q8Mpqttd+ZUGqF1dctKTfMy/OZmUY3DCGRgU7387e0YSSAdIzT/bw/1EqmKnYGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7dVw8nG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EgO/7O3H"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5493b5bc6e8so4154619e87.2
-        for <imx@lists.linux.dev>; Sat, 10 May 2025 10:57:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746899839; x=1747504639; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WjgGUfr6X08qxQK3zfVrb3aTo/x2kOH4Dzdn/sVCI8Y=;
-        b=EgO/7O3HSiYTWac6XN9naL0TZlxMJoHcFHfTBPNSdzQO71kseDocnTGgnJxUYRMtnA
-         OC0qoIAiw/sqNAKqZO/eXrvwrk/9PN1sQhgMGR/2B9t33jpepfzKeTSOW2jHnpqQAqcL
-         e9RvN6XK83WbKCl78wlaPKVU0+2eodcJdJpiG7ApDNmZ5D76bI3tomjnB0BnW/H7Plka
-         wlCWSM2h7ITc99YTkagP+bQGtpv0ikOfZn+0Hy6fK5mG/H7ZBSDTWWZ09BNC/FdFJ0Up
-         p+MXkBZBvfP/6nlT9IDArjs+RcJRzF1X66FiRFpW0N5BHm5Kyxb5iTEpm+hGoH1Alhz0
-         roKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746899839; x=1747504639;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WjgGUfr6X08qxQK3zfVrb3aTo/x2kOH4Dzdn/sVCI8Y=;
-        b=hPOvvCHqkE56q7BEn0d8Rx3wDLSUFa9ppZHxeymD/EC8GhGk/IIfTC/SiCBXcpXIJE
-         rLlTsgLXrSz+Ppm1IoWBHXX8DQJ/sOnfQc5+jMBAeweT79v73/Z8tZFnivVnF908bZuR
-         2O7mgGFmh4oezDzj7vW/nFkJxjUP5L55r1qmdV07ixHcDc7EqNuGGGQbT1SjwWrWZ9Zz
-         jmWys+I0MJnsYXY/FH95gZXKjklPyL7jht3Of7GgTYGl3arTBHUtY5oBpgeHevw1JLOj
-         HHmfWMqL3QzkYDpFcIVs2dfnv5zzShywALhpRO3kLXq0XLOhM0yZeDOnK+N3xCVJbU/O
-         Z09w==
-X-Forwarded-Encrypted: i=1; AJvYcCV+Jao6eYfFazDZoCX+3ATtuCTa2RqIC4OeyTAtxrDN3DuXaXqa4+sxGPIWk6YbjL1U0+c=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxRnOYvIo/m5Q05yPWstcqmMjZQJQALLV4Mh2zTCreiCSFNN6by
-	UUjC2wL+hJRoB23+olTe01b1B5SFrnIAAzG806v1EZGT4+PUpnHLkBYavaePfRqKCeq/EntP3vU
-	8OFwsXQqrP+UFXDi3crkKZT4HVJQ=
-X-Gm-Gg: ASbGncv8/rNw4E81t5ql63NtjTiBTyhcC4uL6b6cd2gKYR1yOhZjOYNM4GokccOdtE6
-	9Qb3j1rjS91eq8ymQ1qHYCoKkEd5oF3XWG1Fy2U3JKcALP0zdxHQI5FQVY16E274JrYJpd1oMRy
-	fBFhr+5TFNGUISaVmgOwq4EpTaGnlNpSC+pFquCUqyE7vBYcJBNUGvIb2cqm+vYvx6
-X-Google-Smtp-Source: AGHT+IF3Z7tQbN2UvUVUBVdgIrJ9vuxONRjESM/OBLUWaAOZrCvSkzujqqR6dmG4HVeFUAwt4imd8+AAeDimdibevQg=
-X-Received: by 2002:a05:651c:30c6:b0:30c:7a7:e874 with SMTP id
- 38308e7fff4ca-326c4569ba6mr34455471fa.11.1746899838943; Sat, 10 May 2025
- 10:57:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7dVw8nG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B011C4CEE2;
+	Sun, 11 May 2025 01:54:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746928501;
+	bh=ig4DYJ3RXrVpEeq3aerEl+Ap4/cbUODtqNdrvm1zJko=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=O7dVw8nGOAjKUBvvPSiCXB25ADmuwKNiprixu+5FFh04GZ2ucVCvxN8jFlQtEHjeY
+	 ImxJlGApNuSuCtgpPcorxA+7CoZbJo6J8RF9JzivuA2wstZQ9u/gngjZH0/JR9OQni
+	 NuIbGRShNPb/deGAzgu8zTrvA06yHiAAZVwOCwmQ8/4wL3Ui2RFpJEXanFKDkQ6nK/
+	 XP1e12gz8+AdtJghb/wfFNlryapmHqAQbBA8DRyscCRk7coru9UYkZ0GTLlfpLAsd5
+	 iX2LV4Vf/e9o4wyclhxLzZ+c93b5lWOALqlCUcfAlxmJymj60l6ewr87wcT8kXrma+
+	 yNbTpHKoV8yEA==
+From: Mark Brown <broonie@kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ openbmc@lists.ozlabs.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250509112130.123462-3-krzysztof.kozlowski@linaro.org>
+References: <20250509112130.123462-3-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH 1/2] spi: dt-bindings: fsl,dspi: Fix example
+ indentation
+Message-Id: <174692849876.61256.337596049686049621.b4-ty@kernel.org>
+Date: Sun, 11 May 2025 10:54:58 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250510011806.13470-1-benato.denis96@gmail.com> <20250510011806.13470-2-benato.denis96@gmail.com>
-In-Reply-To: <20250510011806.13470-2-benato.denis96@gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sat, 10 May 2025 14:57:07 -0300
-X-Gm-Features: AX0GCFu_Mc34XZBVrE6yFFGghE4cYWVtNs10oUnBiwd7enOu-iz8bicOZ1AybT8
-Message-ID: <CAOMZO5A1oRcUuNVcr_kcKz0SZqGc-AHzLR+__gRQEaV__xKbsw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ARM: imx_v4_v5_defconfig: define CONFIG_ARCH_NXP
-To: Denis Benato <benato.denis96@gmail.com>
-Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c25d1
 
-On Fri, May 9, 2025 at 10:18=E2=80=AFPM Denis Benato <benato.denis96@gmail.=
-com> wrote:
->
-> Define CONFIG_ARCH_NXP so that CONFIG_ARCH_MXC won't be disabled
-> as it depends on CONFIG_ARCH_NXP.
+On Fri, 09 May 2025 13:21:31 +0200, Krzysztof Kozlowski wrote:
+> DTS example in the bindings should be indented with 2- or 4-spaces, so
+> correct a mixture of different styles to keep consistent 4-spaces.
+> 
+> 
 
-This is not correct.
+Applied to
 
-$ make imx_v4_v5_defconfig
-#
-# configuration written to .config
-#
-$ cat .config | grep CONFIG_ARCH_MXC
-CONFIG_ARCH_MXC=3Dy
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-CONFIG_ARCH_NXP is an arm64 option.
+Thanks!
+
+[1/2] spi: dt-bindings: fsl,dspi: Fix example indentation
+      commit: 846656f278e803cb60161f0cba4ee90a058440cc
+[2/2] spi: dt-bindings: nuvoton,wpcm450-fiu: Drop unrelated nodes from DTS example
+      commit: a4ca02454821cbc411e0bf16e527d392f188c218
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
