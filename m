@@ -1,67 +1,65 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17041A3BD7
-	for <imx@lists.linux.dev>; Sun, 11 May 2025 21:06:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9213A188A3A
+	for <imx@lists.linux.dev>; Sun, 11 May 2025 21:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746997585; cv=none; b=rxVqTK+V6fvFY78O8UCSH60SBGD/V7DKzmFaqYyJqUOUAodKvwQXbL/zxd+uCem61wfqeLcw9LWp9O+1b7XE4y6y0/GOg3qAEBeUQcH4bScqTkkh2FC4SK44RaYCVOhhhSLdZZ/Ngo6jA7c5TTOrec1T2d4snZLGrty1f4Va+aY=
+	t=1746997992; cv=none; b=k7Ai9TBKvw8ePCZYvgykiez0GrVqZg5hikaHKXY8bbEWBF7qqDsdIaWPLzhhVGSr+j/+MtXzg3EgOQ/cvibBc7ybGN8ReazSYbBUj1YzBv9y84yC7YRXXqsf2Ao8Q5ybziZ+FGb0qP7nbG+Xi/7RteygESVqbcdH/x4HVl30cLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746997585; c=relaxed/simple;
-	bh=Yparvh47DZUMmDg4hz1POyGhEXF3/29a+awFGUB1+3I=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=o/mTHecxH4IhIyLtbTfE3gilS/fYagUfmDDzesi8Jn05QEt+upXz7g54n+srQ+TdLT4+/Zpg9aa2SGL+KxPUaTWCVAhwgK9LasooIlmIveoCCSd/6RfLum6ojl4elD97Thokuf3e4i8ywd9WIxACbUofabuZDammGXq8gzLskrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jrPvqG/f; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1746997992; c=relaxed/simple;
+	bh=PBxT3Yfuhu1mkLfPI6I6XpNFmj7DQt7TT9YB/DiE43k=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=hNuXVRP62tPJjxNQE1nBv5vpiJGXKYAUKeDtNZqpzaKWpCVmg8RzNZP7DFBuiOtTlpCFsL1bfDHsBC60qUorNkG7jkPUDOf9zkL9S0/mZV4cApwBz70JG+oaYww/sdtxcxK9hGo3JEevlS5DNYL1Xx8ypn3OM+HCnUx5P3aYJCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QANq3ily; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jrPvqG/f"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43cfdc2c8c9so20820885e9.2
-        for <imx@lists.linux.dev>; Sun, 11 May 2025 14:06:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QANq3ily"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a0b9af89f2so2169358f8f.3
+        for <imx@lists.linux.dev>; Sun, 11 May 2025 14:13:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746997582; x=1747602382; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=tvjb4mRr9IYq+BLguoXBjbpKA7hhbwJYkSPBEc2D78U=;
-        b=jrPvqG/fBvXTUq7s+ZHjKQxuu/3UvbyZWeXpswEPjc9F2JQPaUtZoWoBmo6G4uvec/
-         CKOMPNN2DkrBkr9ftx+lmFRXt19lpZmsp6wej6YtQErcaKkmKcA2Idd4mKjfKFZrq9gh
-         zqCjNnls9a8G2y7qXqQhRKsMVWs6q8WnWam9RhLcuhC530FqgqsXGTiEqFxxLG+wrpTK
-         KBy60+HaFY9rU4kDFOirtWYwv7JJg26rBFFKA+RmDG9O003ru2bnBxN6q7ywvR+6YJh2
-         nWqzz81dlKzrayjeohizvsnB54H0DODtYSLnM8cPY/y4YJ/WdeBMRBZS7nRJ7nHuSVbN
-         v8Xg==
+        d=gmail.com; s=20230601; t=1746997988; x=1747602788; darn=lists.linux.dev;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Yre+NWKLTTdcJGzJrNYx38sr1aueWrlMQmm4m4DEOJM=;
+        b=QANq3ilyT9wiewxXMTYKijTJ0c/ykftmHbmtMGMsqws+XKDEk5j5LKiKKLGHbeXU5+
+         4wLNCVFxmGb5kbpwxD8eIxmx+NYEsG3UAmZhsg9LOQN2hCFnD687CdVELW7TRf9daNqc
+         yeHiFZXS8nE4VPVgAfrdG+UmcajwGCaNKaf0KPLV73+dlc80TuAlOZwe6cPL/8ZqeGMQ
+         OkcRZnoxR5NQdLFrXAUbdaWnhJZ5jg+bhACzcqWdoI1nZwtil42MJr/VJArlADU3h6GG
+         Y7mFqojXrhHmg0pKmLG/0Pm+aO9XYGZsme3rEkx03rbdUKD62cUUdbKnRzOQxu7imD6P
+         a1nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746997582; x=1747602382;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tvjb4mRr9IYq+BLguoXBjbpKA7hhbwJYkSPBEc2D78U=;
-        b=BmqZtU5SRfgUIRzUVp5OgSiGgYhTIpBkcW0awrFO+VBt5plEVgVJQIkeM6pOPVbrwD
-         HWgT4u0iZCB4x2Y0e9L4RLwdTCvlkfYakrxo5o1UMrWzmNo7neH1L2dhBbi5Hg0no/Rg
-         dEd+ArzwL1RiMpF2hYSDVNcYwKZVoknhRQqverHYd15Tfr0SHuUuZ9iTqZhTqIFq38Tt
-         Wm4YLSe90y0qdchABro4UMjMl9G9yCqUnksc/+nuv3A6VqVK58JSAldOhxWgvqCOeRdz
-         QfAv+qdPwuScIS7PIloG7l1Vy+XTYKmVFK1eOoC+xgzSt2tLaIctp1cIBOHZMrk1UKVH
-         M/YA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2QVh7ocwDYsuKuq4rxCPnxXIqVBQcYrdHFU7DW9bgkfhDC7LFzIj8ffTf0cYQxjcQsO4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwI5iRD+BIwLHhFrM3R3h2/X7gDIOTGOKMkoBU1L1QIWazfznQz
-	cyeCSSKjkF9xS2KTqIa2MYUrtGDeuUGVZkHy5mnfRWtqkTsWjPxtuJhWzQ==
-X-Gm-Gg: ASbGnctMR/foYvIN0gZQrrVG/qUDM+vq7NXxkeoQUaq98Kq9Rj6FRs5AQoD++eA+MHf
-	GDBppSmwqATR3vODo2/6wlVryupYb6wGiR9/k0mCU0ao8FC/KYHQZAMQ/hGmY0SDjT7u1JlynsT
-	Gzhh9fVWKNLiWKDuvAZaywM90fmNyWYZGzLVDRnSK7QAKe2vTeW9HbwZbuaQIV4bnpqd2WG7sYy
-	pf3SM1FJnk8D0n6z8lYy9GZ1mjxgoam3lQkKAEmIH7MNbA0GUg1crbKsFL4GbZMkUCFgmKQ+zJ7
-	v28QaaU1g2QIu+x5/fgyjQRAZlDaW2CiCaE1PnrMnUQKiyu940DRU7HoBdYOAOCajNTmxLN9aIs
-	+ep65OpPcOONE8uYWwhlW8aNBj8z929crM9dPY/v37c6dZc40zvKlgKziRLif2QJibcUDOf8fqD
-	S5WWTbmgRJYyG7adI=
-X-Google-Smtp-Source: AGHT+IHfMrdrZYUkBPsO5gXbfZrDhjtzT+/IQ57iHwbBK0o7+FJS5fnONsRBPu61wTGfMF/VqbDzYg==
-X-Received: by 2002:a05:600c:a42:b0:43d:24d:bbe2 with SMTP id 5b1f17b1804b1-442d6ddcff4mr66728965e9.28.1746997581919;
-        Sun, 11 May 2025 14:06:21 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746997988; x=1747602788;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yre+NWKLTTdcJGzJrNYx38sr1aueWrlMQmm4m4DEOJM=;
+        b=t5S5Y9R+7Z1AieOKAfHC6XGxrgFtPOsmfXYgiEjNdcdMKbL01ErAAl+rg74Ts5xj+P
+         C/8LFFifDY5TvEbH8Q/5TqTUgMWZbHJ2EkK5wS9E3dVLGS0akW/rTvpnbvOt0oynWcSM
+         snAnsl/Hc5+yKjeLUbVgdXfmmg6W9imP2J5cpIneCeNXrO+C+jO90lcuxeVikWn4F36A
+         8Jp44vkhN7dkp2fPLZ6ClNTcFRhy7MBSZxLXvNbhA05XGmbwevkrwvngLAWzJx7OSuXI
+         Lv6hnMs3k94jwFiprO+46JK4OXbz/13+nO2y6wVe+c66DdPPAUg9+JHQAEbVcyalx6jT
+         1fxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXNrmAISL/rWikH08TnIxPJ/H6GpoEM2jnQpY9x1qn7xOGkWqOFuAXqMljXLq2bDwcfJu8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy0dnrJQE8jU1RVKKEqzvaMF5IOj07E4sxE1kLOB50R/q5v0ltu
+	isK/5xhGPL0QU01qFmWTs2JGT+fwPPgHZAwqYGSQe9ihLgEqrDg+
+X-Gm-Gg: ASbGncu3my/TVZCVLcNHzIXOCsY5vMN9LquGKCpbuq7TsRt/zbxXGvepW31MkNsYdHh
+	vGCw9MdCLOiJAw0T1jx+qTGJq0zZ6bawyuCULyzld2PbnAY6iCtUtLMa05SzO2vTLvakRQx3V9x
+	Wx6ryR088GCLo7NtsfjewfjS0BdAMxc5Shlsi61ZZPChMf0m9l/+BZcwe9888niy8y6GEUQCfrv
+	3ddCVxy2Bu7o32Orx8e+tqulD6aDAabNlF8e3lx2vpTYHVasz31gE5UGC5hte6HgDAO9Tyun2eY
+	FbkB++w7XH9nCfD7gp4hieorPa4QVGnFGrsQhdqstD0Dp3rCrsvK9bTmGxpALRdaS79EHD5DmEt
+	BtL5FqiBepf03tJidfMCup2Z0VTbuQ+b3ksBrw+RbAPYcdRzZhXCn0Oqo+vkpshvKQD7W+I7shY
+	WzLPtc5mmw5N/IZHs=
+X-Google-Smtp-Source: AGHT+IGuBrbhHswazyX4kn0P4nhwPlTseG51zGUf2AsAYOfeR6ESx2VsjaOKn7N/f8BK4w7IlrumVw==
+X-Received: by 2002:a05:6000:420d:b0:3a2:595:e8cb with SMTP id ffacd0b85a97d-3a20595e91cmr2198231f8f.45.1746997987598;
+        Sun, 11 May 2025 14:13:07 -0700 (PDT)
 Received: from ?IPV6:2003:ea:8f15:c500:b4b8:71b1:ffc8:3022? (p200300ea8f15c500b4b871b1ffc83022.dip0.t-ipconnect.de. [2003:ea:8f15:c500:b4b8:71b1:ffc8:3022])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-442d685c3bdsm101866495e9.29.2025.05.11.14.06.20
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-442dc6f1a51sm69839985e9.22.2025.05.11.14.13.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 May 2025 14:06:21 -0700 (PDT)
-Message-ID: <03e2e1c7-326f-4b0e-94dd-18536c2f537e@gmail.com>
-Date: Sun, 11 May 2025 23:06:39 +0200
+        Sun, 11 May 2025 14:13:07 -0700 (PDT)
+Message-ID: <27cba535-f507-4b32-84a3-0744c783a465@gmail.com>
+Date: Sun, 11 May 2025 23:13:25 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,23 +67,18 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: phy: remove Kconfig symbol MDIO_DEVRES
-From: Heiner Kallweit <hkallweit1@gmail.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>
-Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, imx@lists.linux.dev
-References: <9c2df2f8-6248-4a06-81ef-f873e5a31921@gmail.com>
- <aBs58BUtVAHeMPip@shell.armlinux.org.uk>
- <5ecf2ece-683b-4c7b-a648-aca82d5843ed@lunn.ch>
- <aBtYdq2NurrTIcJi@shell.armlinux.org.uk>
- <fbe1e3e7-cd44-4e13-8cae-9b128d896a0e@gmail.com>
- <c7771c90-9c0e-429e-b703-661e21e2b1e5@gmail.com>
 Content-Language: en-US
+To: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+ <olteanv@gmail.com>, Wei Fang <wei.fang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, imx@lists.linux.dev
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH RESUBMIT net-next] net: phy: remove Kconfig symbol MDIO_DEVRES
 Autocrypt: addr=hkallweit1@gmail.com; keydata=
  xsFNBF/0ZFUBEAC0eZyktSE7ZNO1SFXL6cQ4i4g6Ah3mOUIXSB4pCY5kQ6OLKHh0FlOD5/5/
  sY7IoIouzOjyFdFPnz4Bl3927ClT567hUJJ+SNaFEiJ9vadI6vZm2gcY4ExdIevYHWe1msJF
@@ -129,66 +122,185 @@ Autocrypt: addr=hkallweit1@gmail.com; keydata=
  H/0Z53okMykVs3a8tECPHIxnre2UxKdTbCEkjkR4V6JyplTS47oWMw3zyI7zkaadfzVFBxk2
  lo/Tny+FX1Azea3Ce7oOnRUEZtWSsUidtIjmL8YUQFZYm+JUIgfRmSpMFq8JP4VH43GXpB/S
  OCrl+/xujzvoUBFV/cHKjEQYBxo+MaiQa1U54ykM2W4DnHb1UiEf5xDkFd4=
-In-Reply-To: <c7771c90-9c0e-429e-b703-661e21e2b1e5@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 07.05.2025 20:39, Heiner Kallweit wrote:
-> On 07.05.2025 16:21, Heiner Kallweit wrote:
->> On 07.05.2025 14:56, Russell King (Oracle) wrote:
->>> On Wed, May 07, 2025 at 02:49:05PM +0200, Andrew Lunn wrote:
->>>> On Wed, May 07, 2025 at 11:46:08AM +0100, Russell King (Oracle) wrote:
->>>>> On Wed, May 07, 2025 at 08:17:17AM +0200, Heiner Kallweit wrote:
->>>>>> MDIO_DEVRES is only set where PHYLIB/PHYLINK are set which
->>>>>> select MDIO_DEVRES. So we can remove this symbol.
->>>>>
->>>>> Does it make sense for mdio_devres to be a separate module from libphy?
->>>>
->>>> I _think_ Broadcom have one MDIO bus master which is not used for
->>>> PHYs/Switches but regulators or GPIOs or something. In theory, you
->>>> could build a kernel without networking, but still use those
->>>> regulators or GPIOs. But given that Broadcom SoCs are all about
->>>> networking, it does seem like a very unlikely situation.
->>>
->>> I'm pointing out that:
->>>
->>> libphy-y                        := phy.o phy-c45.o phy-core.o phy_device.o \
->>>                                    linkmode.o phy_link_topology.o \
->>>                                    phy_package.o phy_caps.o mdio_bus_provider.o
->>>
->>> mdio_bus_provider.o provides at least some of the functions used by
->>> mdio_devres.
->>>
->>> obj-$(CONFIG_PHYLIB)            += mdio_devres.o
->>> obj-$(CONFIG_PHYLIB)            += libphy.o
->>>
->>> So, when PHYLIB=m, we end up with mdio_devres and libphy as two separate
->>> loadable modules. I'm questioning whether this makes any sense, or
->>> whether making mdio_devres part of libphy would be more sensible.
->>>
->> I was asking myself the same question. If mdio_devres is a separate module,
->> then it won't be loaded if no active phylib user requires the devres
->> functionality, saving a little bit of memory. However mdio_devres is quite
->> small and we don't gain much.
->>
->> For now I decided to keep the current behavior of mdio_devres being a
->> separate module. However if consensus is that we better make it part of
->> phylib, fine with me.
->>
-> After thinking again, I'll submit a v2 and will make mdio_devres part
-> of phylib.
-> 
-kernel test robot reported circular dependencies. So I'll re-submit
-the original version, leaving mdio_devres a separate module.
+MDIO_DEVRES is only set where PHYLIB/PHYLINK are set which
+select MDIO_DEVRES. So we can remove this symbol.
 
-depmod: ERROR: Cycle detected: libphy -> of_mdio -> fixed_phy -> libphy
-depmod: ERROR: Cycle detected: libphy -> of_mdio -> libphy
-depmod: ERROR: Cycle detected: libphy -> of_mdio -> fwnode_mdio -> libphy
+Note: Due to circular module dependencies we can't simply
+      make mdio_devres.c part of phylib.
 
->>
->>> Maybe the only case is if mdio_devres adds dependencies we don't want
->>> libphy to have, but I think that needs to be spelt out in the commit.
->>>
->>>
->>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+ drivers/net/ethernet/freescale/Kconfig       |  1 -
+ drivers/net/ethernet/freescale/enetc/Kconfig |  2 --
+ drivers/net/ethernet/marvell/Kconfig         |  1 -
+ drivers/net/ethernet/qualcomm/Kconfig        |  1 -
+ drivers/net/mdio/Kconfig                     | 11 -----------
+ drivers/net/phy/Kconfig                      |  1 -
+ drivers/net/phy/Makefile                     |  2 +-
+ 7 files changed, 1 insertion(+), 18 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
+index a2d730092..bbef47c34 100644
+--- a/drivers/net/ethernet/freescale/Kconfig
++++ b/drivers/net/ethernet/freescale/Kconfig
+@@ -71,7 +71,6 @@ config FSL_XGMAC_MDIO
+ 	tristate "Freescale XGMAC MDIO"
+ 	select PHYLIB
+ 	depends on OF
+-	select MDIO_DEVRES
+ 	select OF_MDIO
+ 	help
+ 	  This driver supports the MDIO bus on the Fman 10G Ethernet MACs, and
+diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
+index 7250d3bbf..f3a6b3752 100644
+--- a/drivers/net/ethernet/freescale/enetc/Kconfig
++++ b/drivers/net/ethernet/freescale/enetc/Kconfig
+@@ -18,7 +18,6 @@ config NXP_ENETC_PF_COMMON
+ config FSL_ENETC
+ 	tristate "ENETC PF driver"
+ 	depends on PCI_MSI
+-	select MDIO_DEVRES
+ 	select FSL_ENETC_CORE
+ 	select FSL_ENETC_IERB
+ 	select FSL_ENETC_MDIO
+@@ -36,7 +35,6 @@ config FSL_ENETC
+ config NXP_ENETC4
+ 	tristate "ENETC4 PF driver"
+ 	depends on PCI_MSI
+-	select MDIO_DEVRES
+ 	select FSL_ENETC_CORE
+ 	select FSL_ENETC_MDIO
+ 	select NXP_ENETC_PF_COMMON
+diff --git a/drivers/net/ethernet/marvell/Kconfig b/drivers/net/ethernet/marvell/Kconfig
+index 837295fec..50f7c59e8 100644
+--- a/drivers/net/ethernet/marvell/Kconfig
++++ b/drivers/net/ethernet/marvell/Kconfig
+@@ -34,7 +34,6 @@ config MV643XX_ETH
+ config MVMDIO
+ 	tristate "Marvell MDIO interface support"
+ 	depends on HAS_IOMEM
+-	select MDIO_DEVRES
+ 	select PHYLIB
+ 	help
+ 	  This driver supports the MDIO interface found in the network
+diff --git a/drivers/net/ethernet/qualcomm/Kconfig b/drivers/net/ethernet/qualcomm/Kconfig
+index 9210ff360..a4434eb38 100644
+--- a/drivers/net/ethernet/qualcomm/Kconfig
++++ b/drivers/net/ethernet/qualcomm/Kconfig
+@@ -52,7 +52,6 @@ config QCOM_EMAC
+ 	depends on HAS_DMA && HAS_IOMEM
+ 	select CRC32
+ 	select PHYLIB
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the Qualcomm Technologies, Inc. Gigabit
+ 	  Ethernet Media Access Controller (EMAC). The controller
+diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
+index 107236cd6..d3219ca19 100644
+--- a/drivers/net/mdio/Kconfig
++++ b/drivers/net/mdio/Kconfig
+@@ -38,9 +38,6 @@ config ACPI_MDIO
+ 	help
+ 	  ACPI MDIO bus (Ethernet PHY) accessors
+ 
+-config MDIO_DEVRES
+-	tristate
+-
+ config MDIO_SUN4I
+ 	tristate "Allwinner sun4i MDIO interface support"
+ 	depends on ARCH_SUNXI || COMPILE_TEST
+@@ -60,7 +57,6 @@ config MDIO_ASPEED
+ 	tristate "ASPEED MDIO bus controller"
+ 	depends on ARCH_ASPEED || COMPILE_TEST
+ 	depends on OF_MDIO && HAS_IOMEM
+-	select MDIO_DEVRES
+ 	help
+ 	  This module provides a driver for the independent MDIO bus
+ 	  controllers found in the ASPEED AST2600 SoC. This is a driver for the
+@@ -130,7 +126,6 @@ config MDIO_I2C
+ config MDIO_MVUSB
+ 	tristate "Marvell USB to MDIO Adapter"
+ 	depends on USB
+-	select MDIO_DEVRES
+ 	help
+ 	  A USB to MDIO converter present on development boards for
+ 	  Marvell's Link Street family of Ethernet switches.
+@@ -138,7 +133,6 @@ config MDIO_MVUSB
+ config MDIO_MSCC_MIIM
+ 	tristate "Microsemi MIIM interface support"
+ 	depends on HAS_IOMEM && REGMAP_MMIO
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MIIM (MDIO) interface found in the network
+ 	  switches of the Microsemi SoCs; it is recommended to switch on
+@@ -156,7 +150,6 @@ config MDIO_OCTEON
+ 	depends on (64BIT && OF_MDIO) || COMPILE_TEST
+ 	depends on HAS_IOMEM
+ 	select MDIO_CAVIUM
+-	select MDIO_DEVRES
+ 	help
+ 	  This module provides a driver for the Octeon and ThunderX MDIO
+ 	  buses. It is required by the Octeon and ThunderX ethernet device
+@@ -166,7 +159,6 @@ config MDIO_IPQ4019
+ 	tristate "Qualcomm IPQ4019 MDIO interface support"
+ 	depends on HAS_IOMEM && OF_MDIO
+ 	depends on COMMON_CLK
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interface found in Qualcomm
+ 	  IPQ40xx, IPQ60xx, IPQ807x and IPQ50xx series Soc-s.
+@@ -175,7 +167,6 @@ config MDIO_IPQ8064
+ 	tristate "Qualcomm IPQ8064 MDIO interface support"
+ 	depends on HAS_IOMEM && OF_MDIO
+ 	depends on MFD_SYSCON
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interface found in the network
+ 	  interface units of the IPQ8064 SoC
+@@ -183,7 +174,6 @@ config MDIO_IPQ8064
+ config MDIO_REALTEK_RTL9300
+ 	tristate "Realtek RTL9300 MDIO interface support"
+ 	depends on MACH_REALTEK_RTL || COMPILE_TEST
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interface found in the Realtek
+ 	  RTL9300 family of Ethernet switches with integrated SoC.
+@@ -204,7 +194,6 @@ config MDIO_THUNDER
+ 	depends on 64BIT
+ 	depends on PCI
+ 	select MDIO_CAVIUM
+-	select MDIO_DEVRES
+ 	help
+ 	  This driver supports the MDIO interfaces found on Cavium
+ 	  ThunderX SoCs when the MDIO bus device appears as a PCI
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index 0b8cc325e..677d56e06 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -15,7 +15,6 @@ config PHYLINK
+ menuconfig PHYLIB
+ 	tristate "PHY Device support and infrastructure"
+ 	select MDIO_DEVICE
+-	select MDIO_DEVRES
+ 	help
+ 	  Ethernet controllers are usually attached to PHY
+ 	  devices.  This option provides infrastructure for
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 631859d44..59ac3a9a3 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -20,7 +20,7 @@ obj-y				+= stubs.o
+ else
+ obj-$(CONFIG_MDIO_DEVICE)	+= mdio-bus.o
+ endif
+-obj-$(CONFIG_MDIO_DEVRES)	+= mdio_devres.o
++obj-$(CONFIG_PHYLIB)		+= mdio_devres.o
+ libphy-$(CONFIG_SWPHY)		+= swphy.o
+ libphy-$(CONFIG_LED_TRIGGER_PHY)	+= phy_led_triggers.o
+ libphy-$(CONFIG_OPEN_ALLIANCE_HELPERS) += open_alliance_helpers.o
+-- 
+2.49.0
 
