@@ -1,306 +1,474 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2072.outbound.protection.outlook.com [40.107.22.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9213A188A3A
-	for <imx@lists.linux.dev>; Sun, 11 May 2025 21:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746997992; cv=none; b=k7Ai9TBKvw8ePCZYvgykiez0GrVqZg5hikaHKXY8bbEWBF7qqDsdIaWPLzhhVGSr+j/+MtXzg3EgOQ/cvibBc7ybGN8ReazSYbBUj1YzBv9y84yC7YRXXqsf2Ao8Q5ybziZ+FGb0qP7nbG+Xi/7RteygESVqbcdH/x4HVl30cLM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746997992; c=relaxed/simple;
-	bh=PBxT3Yfuhu1mkLfPI6I6XpNFmj7DQt7TT9YB/DiE43k=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=hNuXVRP62tPJjxNQE1nBv5vpiJGXKYAUKeDtNZqpzaKWpCVmg8RzNZP7DFBuiOtTlpCFsL1bfDHsBC60qUorNkG7jkPUDOf9zkL9S0/mZV4cApwBz70JG+oaYww/sdtxcxK9hGo3JEevlS5DNYL1Xx8ypn3OM+HCnUx5P3aYJCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QANq3ily; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17291917F9
+	for <imx@lists.linux.dev>; Mon, 12 May 2025 02:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747015360; cv=fail; b=tAEd23McEiyN7HDpvKVfTM7YpodDqyCF7NhB7i61Bw+DyGd2NtgMOez2ZuhyHxi5cRA72D9umSKEx5pWGMdmmoJFhgfRTQGJKCqMTiKG3y5OPPgAqY6MF4qYKV8bjROweEsvOGON6KG5M5nM8YDvwf4LG437Aoii+NZEQO02zlE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747015360; c=relaxed/simple;
+	bh=aOHBbrjWwb1/vjiAxZdDj/QyTLfBY5RN1IYaqxuYLlE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=gTiOY6QPbwJECuFZw6u0c/PetNB3MtttmaDQbuvk0De028v2OXqRlI/hoG5WQ+SfF4hpBoJAXMohd1w54JyGUcC+w5Qs3UMR8u8Q4nWCLvRCv1pX8zHspdbh62Ld0ss7FdeVpL3SBbEVPbYDTh8hZzOmGHzxRu5U7oFQsboW4IU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=gnZBkS3N; arc=fail smtp.client-ip=40.107.22.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QANq3ily"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a0b9af89f2so2169358f8f.3
-        for <imx@lists.linux.dev>; Sun, 11 May 2025 14:13:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746997988; x=1747602788; darn=lists.linux.dev;
-        h=content-transfer-encoding:autocrypt:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Yre+NWKLTTdcJGzJrNYx38sr1aueWrlMQmm4m4DEOJM=;
-        b=QANq3ilyT9wiewxXMTYKijTJ0c/ykftmHbmtMGMsqws+XKDEk5j5LKiKKLGHbeXU5+
-         4wLNCVFxmGb5kbpwxD8eIxmx+NYEsG3UAmZhsg9LOQN2hCFnD687CdVELW7TRf9daNqc
-         yeHiFZXS8nE4VPVgAfrdG+UmcajwGCaNKaf0KPLV73+dlc80TuAlOZwe6cPL/8ZqeGMQ
-         OkcRZnoxR5NQdLFrXAUbdaWnhJZ5jg+bhACzcqWdoI1nZwtil42MJr/VJArlADU3h6GG
-         Y7mFqojXrhHmg0pKmLG/0Pm+aO9XYGZsme3rEkx03rbdUKD62cUUdbKnRzOQxu7imD6P
-         a1nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746997988; x=1747602788;
-        h=content-transfer-encoding:autocrypt:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yre+NWKLTTdcJGzJrNYx38sr1aueWrlMQmm4m4DEOJM=;
-        b=t5S5Y9R+7Z1AieOKAfHC6XGxrgFtPOsmfXYgiEjNdcdMKbL01ErAAl+rg74Ts5xj+P
-         C/8LFFifDY5TvEbH8Q/5TqTUgMWZbHJ2EkK5wS9E3dVLGS0akW/rTvpnbvOt0oynWcSM
-         snAnsl/Hc5+yKjeLUbVgdXfmmg6W9imP2J5cpIneCeNXrO+C+jO90lcuxeVikWn4F36A
-         8Jp44vkhN7dkp2fPLZ6ClNTcFRhy7MBSZxLXvNbhA05XGmbwevkrwvngLAWzJx7OSuXI
-         Lv6hnMs3k94jwFiprO+46JK4OXbz/13+nO2y6wVe+c66DdPPAUg9+JHQAEbVcyalx6jT
-         1fxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNrmAISL/rWikH08TnIxPJ/H6GpoEM2jnQpY9x1qn7xOGkWqOFuAXqMljXLq2bDwcfJu8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy0dnrJQE8jU1RVKKEqzvaMF5IOj07E4sxE1kLOB50R/q5v0ltu
-	isK/5xhGPL0QU01qFmWTs2JGT+fwPPgHZAwqYGSQe9ihLgEqrDg+
-X-Gm-Gg: ASbGncu3my/TVZCVLcNHzIXOCsY5vMN9LquGKCpbuq7TsRt/zbxXGvepW31MkNsYdHh
-	vGCw9MdCLOiJAw0T1jx+qTGJq0zZ6bawyuCULyzld2PbnAY6iCtUtLMa05SzO2vTLvakRQx3V9x
-	Wx6ryR088GCLo7NtsfjewfjS0BdAMxc5Shlsi61ZZPChMf0m9l/+BZcwe9888niy8y6GEUQCfrv
-	3ddCVxy2Bu7o32Orx8e+tqulD6aDAabNlF8e3lx2vpTYHVasz31gE5UGC5hte6HgDAO9Tyun2eY
-	FbkB++w7XH9nCfD7gp4hieorPa4QVGnFGrsQhdqstD0Dp3rCrsvK9bTmGxpALRdaS79EHD5DmEt
-	BtL5FqiBepf03tJidfMCup2Z0VTbuQ+b3ksBrw+RbAPYcdRzZhXCn0Oqo+vkpshvKQD7W+I7shY
-	WzLPtc5mmw5N/IZHs=
-X-Google-Smtp-Source: AGHT+IGuBrbhHswazyX4kn0P4nhwPlTseG51zGUf2AsAYOfeR6ESx2VsjaOKn7N/f8BK4w7IlrumVw==
-X-Received: by 2002:a05:6000:420d:b0:3a2:595:e8cb with SMTP id ffacd0b85a97d-3a20595e91cmr2198231f8f.45.1746997987598;
-        Sun, 11 May 2025 14:13:07 -0700 (PDT)
-Received: from ?IPV6:2003:ea:8f15:c500:b4b8:71b1:ffc8:3022? (p200300ea8f15c500b4b871b1ffc83022.dip0.t-ipconnect.de. [2003:ea:8f15:c500:b4b8:71b1:ffc8:3022])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-442dc6f1a51sm69839985e9.22.2025.05.11.14.13.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 May 2025 14:13:07 -0700 (PDT)
-Message-ID: <27cba535-f507-4b32-84a3-0744c783a465@gmail.com>
-Date: Sun, 11 May 2025 23:13:25 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="gnZBkS3N"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VO1gFQ2+ndmruW/MRHAQdWuA9sBcWDvCAhYZ26YO9nFUIexyJEW7BgdHny0VxDZT+vzMQFLq1ghYSS9daY4lvX+EC6GxrXYbxlNROKVN2QgxUlS32E+BLL3kUASIAC4UtK/Ld0qX2mh8vnhDD2EqkagHZt6bL6QIuRa/493JOSeuhtrGvQGyAJPqtgI2odsdNxuAYmx9v9LsdwNrSrRJtBWnXmkNk3b18xA78/6EMlgBNbhGQWxpnREcSn3mf3PRzsXJV9AuFJEZAwSpAE1NWMicJ3zsWtFzqeohr0aMGiaFFqnMCUvFziZux1x+qp4084IS3yQ7OOSiu/qch7fPFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dEFvcPhqTe3Tu3yifFuRtV59t0yPCPBZbmzH94nDWkU=;
+ b=AIMJ4q7a+bIPabTACezthrDi6o3Fc8pUq+AgAYgTBWjqOe1F2x4PlSOYyH+juPwhDJeGKonIwTbf+OIWfV0bFndUy5niKq8pYEAj7JSkHm00Cw93DZpwxr6o419+HomGSixa1tr9Hq7meJTnVeQiHw75tHzHDQeX4tJ3xvEy78IsSGZCrUhQSykydAIx0Hdr+wdiTzb+d90rEsUyksPe9wdKi6nHAYzrKa1i0mawpn+CFqgRXxnHNzkPSqfR4MdaxWmMxJVz2Zykc1afli7+nSbiLXFvEIwWQc1JIoe/LPaTQA7k7SOPKT5n6TkHrD0fNYnTUbY3qG01yK72WF9oUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dEFvcPhqTe3Tu3yifFuRtV59t0yPCPBZbmzH94nDWkU=;
+ b=gnZBkS3NZ9movt6Bq8yriv/wvVEu7vRqp3iZbI1xI4NK/fiv+xwAl6/UkvS6sGwaj/5hjxtXIMPiBDpnjENEgFUKvr8VsS49V9XCM3ktcckUMWSovBL5wCbYMo2tFdHBtLkr+hxqWt5HVmuX6KJWs/U5/re/YDA+TUdj/zf51EcUxqFdOCEP4RxUJv7vMQyiy0CkcNgSb2cAR5ezYtYvI7TH4as6VvleymwYFYGnqeMChXndhoXwU7HtMtigQrfEEKCRlIQXExZ6cuNzzbagtFmkmUaXnb3jUtDMxUV6M9Ir1B93kMQ80CsFIrLBMAqGdNS1JmXJh0W6d3BrkKqqOw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by PAXPR04MB9229.eurprd04.prod.outlook.com (2603:10a6:102:2bd::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Mon, 12 May
+ 2025 02:02:34 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%6]) with mapi id 15.20.8722.024; Mon, 12 May 2025
+ 02:02:34 +0000
+From: ming.qian@oss.nxp.com
+To: mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl
+Cc: nicolas@ndufresne.ca,
+	sebastian.fricke@collabora.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-imx@nxp.com,
+	xiahong.bao@nxp.com,
+	eagle.zhou@nxp.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4] media: amphion: Add H264 and HEVC profile and level control
+Date: Mon, 12 May 2025 10:01:36 +0800
+Message-ID: <20250512020137.211-1-ming.qian@oss.nxp.com>
+X-Mailer: git-send-email 2.48.1.windows.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR06CA0181.apcprd06.prod.outlook.com (2603:1096:4:1::13)
+ To PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
- <olteanv@gmail.com>, Wei Fang <wei.fang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, imx@lists.linux.dev
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH RESUBMIT net-next] net: phy: remove Kconfig symbol MDIO_DEVRES
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|PAXPR04MB9229:EE_
+X-MS-Office365-Filtering-Correlation-Id: 79689685-d8c5-41ce-65aa-08dd90f90f74
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ro79S5xVRQtLCXWWpzs+frJHlWiiXupqWalCb26K6qgfQ5NN1WnpzDBedg9E?=
+ =?us-ascii?Q?7sLLxq6DinBsMJgUWseG5T73U96PUWMgTtuLmza1Kr8zgZoD6tb87P0OH4mB?=
+ =?us-ascii?Q?8oY+iaiwGnwqTdAz7SLQoSHXgfcJzEqPXU5hmI7Q6ol5Wcnav3FWLtAOw9Yn?=
+ =?us-ascii?Q?rsRzO6k+4qTGnNGNtHpv/pytlTg+qviDVU7bROD3FzwyATbnlBDBledQjl29?=
+ =?us-ascii?Q?HNAQqJJMb1/jayi/boWuZWjF8uWPsmdoWkZCyrkJj4DUPvVNP2I9Rr5yWIE6?=
+ =?us-ascii?Q?zriW0W2r2QhgJncuSgnk0ojrIQ6GF1cM9gl6sG8Wnum2VVYvuEmbB9gh0qUW?=
+ =?us-ascii?Q?PKGi6UBfMyuvCx2tixUKS0Z5SaLp4/3+lOK2QiXaBLCVJiQ0ap1eSAz3+e1s?=
+ =?us-ascii?Q?gQ5ldnhwtlPzTGTjka0saREgJ2XVg/2TRZJLZ0S1Bv3atQDhpQ4od3CABfXM?=
+ =?us-ascii?Q?2YX/McrV/VeCDI0m9EFz1joqcB2M+dbKSCzwfuhypDg4/voXX2MVVWNeZZCa?=
+ =?us-ascii?Q?grq7ilVFfQunqiwVH4+Te7Wy1yqhcsvZ00uC9WVjKsHQsZb3pMH3VjoNFU2z?=
+ =?us-ascii?Q?PKp4DTVxfNmUpDaC21QFKdnoNPaWjdbnHqmzWcQkiYTseu5o+RyTxihF7Kty?=
+ =?us-ascii?Q?ULLUxnPUNoKASzbKABgLiOw6qDePmKfhm3Q3wt16PbRklxOzyGuWglguEhZs?=
+ =?us-ascii?Q?VN3EqHKF8CGgDqtFuFA5+PFiJYu15ukqFmkEXG2T9+HOCtvcsNDqgZrxMEvs?=
+ =?us-ascii?Q?1IlWl0snGdM6h9Jc4wednxuxxTlugKj3p7SQD+obnIp7+4Ix7AZXAm6AEBDs?=
+ =?us-ascii?Q?eNKXfRDBiqOUPFj8kTtQNWZW619dWZAXzR/UM4JmJCBGXhdliNupyJSm9QyO?=
+ =?us-ascii?Q?4mar1nkG766h7kasW4wHQoLhZwSsNum8Njs1COlD8jzlWJUD5gqUMAbxAqbC?=
+ =?us-ascii?Q?iftf5OLZbe7DXlGbRnqLoaO1hF8939cAFgYW1HcmqINk9VkR4AlpX3yHqAAT?=
+ =?us-ascii?Q?8O1tNlq08xBkVMC0nOVDbgPgFwmS17T8X64jq7VDNpGI+SYj76HV/WAJQXlh?=
+ =?us-ascii?Q?fZC05jlIfR0a5AHAUXCisQ9rc+CjcopRxm9zXTFGulS5zmXF0MSdoaikCKsf?=
+ =?us-ascii?Q?2Fxg+XGGcmEPQJRf0Yl4d4x/3qpyMNYR4tFooFaGtc7O+mpFrXACz1MlEJzr?=
+ =?us-ascii?Q?Fa3JS3YFakHRVIkPVZTyP8KBQk7/HIvEcr/xxp0VDHp2blPu3eR7LrdkbKxg?=
+ =?us-ascii?Q?Z1ac8iBmy/zvBrwmTsruv4imAIDDLBP5yTICODiGqcsH9+95kvOHcIoVmvJd?=
+ =?us-ascii?Q?Mqa2TdPZYsi40gqwUDg61DrHCOz5MnJc2wowYo2bVlHuFqup4WHzm9MmMp3v?=
+ =?us-ascii?Q?+rGGa+7rsj3bQXmvgxW5Sl/a9r2HQdzMFGc1EbXeVGgqqF5ojg2VqjCVJKLI?=
+ =?us-ascii?Q?BjMUUTc6LRph7GkmHa+zSnQ5MkLuuGNdcY7A0copars3kXBENcfUSA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6l5YPGzBKFuw1v2PJZmrjKIOVe3UPhVx45Jx5tGWKQSamJ4H2p+HNRTwxzF5?=
+ =?us-ascii?Q?2sGE4JOmpIpg8WUZkRPVEMXM6Thqy0HFs+Nfd7mYmRq9+Cnx8ZDwMSuhLLgq?=
+ =?us-ascii?Q?m+SMbYPiNP/5kVcsB2SJvtGZTrhhlauVPzNZxPXpKgDIDB06f0HR9l2CUI54?=
+ =?us-ascii?Q?fV9o6xAQ2um1v+NeBiYDYDxXZwQ6C7TAYCrIRCwQ41rcqGs/ZJYM9A7/Ksli?=
+ =?us-ascii?Q?GMB/mPN06cqeC5ddpoH9tyrWUJgFk/TRf1z//Kc9yBrz6lRWMPgEHoR+kyGj?=
+ =?us-ascii?Q?um0/yVy2NvuR6VeMI/uak2dAEwLhjoNZuqXXTRBwHbx/aSyF1rRBk92ZkTSl?=
+ =?us-ascii?Q?/88MyeF4jbzckI8qffrsobn4INgA9xOzdxzLWEmJgQIAo5HXZ3sXsPJjyhpM?=
+ =?us-ascii?Q?q3JHEAnDn7G5vOkE9Vr2WRqBPxVfOp6WQ1a6h5DUhkJDOF+ZgEibwL3I6Ki+?=
+ =?us-ascii?Q?AuwQOrbNDWbCV9OTuerNxNevqBr016YYDX0BzK5252TVZA7DtdM77IsbEQSx?=
+ =?us-ascii?Q?ECWpuq0QyGcFSixU2EsCC7/ZiriZ3aszvJktzfuiL7i3Cw0Bs/dr9hbIvo6g?=
+ =?us-ascii?Q?7csEQx/swbE9RtyjxKdmgSEmPWpxcwCuIsjpHxy5EnQSIJdKLeNlbKCryG7S?=
+ =?us-ascii?Q?LUUMwA/EaJruHk7aJC4jHsyLRkWR2nRNeMUcYVM8AiEjgjXbA+oT/6fMHGAM?=
+ =?us-ascii?Q?GT87tM/qlSEDErbARIx1+lRtpP7XDS8S/AF4LKD/kIfkgtHiRMIjyV3liu4V?=
+ =?us-ascii?Q?qpNcsOk0D6DSzzfNu86mgRq+Ru0Zhjx2kWcXskhEHmH22DCiknCQQSb1cAox?=
+ =?us-ascii?Q?594v4WAmyiGCp+vwDbZiRjRaah7vmLiRieM/lHnM4nZDId5ul5w+rs2/4r+Z?=
+ =?us-ascii?Q?VCa27+E8ymrXS13glXnkLCELTFAhRep2U+dTjg+dH0J8b4112XfgPUyAjILE?=
+ =?us-ascii?Q?L895KuSjogXKdPUho8Od3Nmpl0muGWR/Ou2rDvEQWLDftg4PR7/4u39T1ueb?=
+ =?us-ascii?Q?jQR/MWVd4WAXztXKo2uUFzmZ/rY68kqZ54EryjDjT3o7GYLI70d/kJIi9c7Y?=
+ =?us-ascii?Q?DdQ2+X7XMWXngHIF/UqAxPp5IpYy0np8dU4WWKdm1DIXW8XpS6LEOLEgN3O0?=
+ =?us-ascii?Q?IUkU4vP10KeEJ46O95Jg+4fHa6x8O3WFO0XXgB6naNjc+drQexB+74nUVzwN?=
+ =?us-ascii?Q?czDl2YK+Iu67U8jBcNYHddH/Yjw+N6+QckihDvdjhofpuaZdAQa/2dYymvDD?=
+ =?us-ascii?Q?3ujhOSEVR2t8ouRBfXBAIH3872LdA9yW/vAZ3fAc8yveitdE0f2XFP+kh7DR?=
+ =?us-ascii?Q?jniKise0Jbk3dlELEqCKqNC/mV0yV4ljbgTX6iq2xk9wTTig2r0L7dhoaXud?=
+ =?us-ascii?Q?hD915IYLHOGmzf43nxLFRyMZQV9QmXJ41cZTEUVTxnpBNqyhhPkhmLCL5nnp?=
+ =?us-ascii?Q?k5EZbkxErbkgES4z0WSYNQYAB4o4ddKecB2OienK/o7UnkqDzG7wgnXYIpyF?=
+ =?us-ascii?Q?oKrlldmLigd5rlg/kokxd52c0mUtXocN7s2Za5dJ20zozAqOszm5iMafRjwm?=
+ =?us-ascii?Q?3L/Y5+cPt5rKp0ZOHskcgGP3WvJYRlyjLwS0IRQh?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79689685-d8c5-41ce-65aa-08dd90f90f74
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 02:02:33.9481
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Op/FkjjqeR4NLRuMmcpn+zEY6DFjJDXUdXm6xeh1RSoKSsdPuUvddH339aVv9oM8u0zVkemsbyOFlQkKFXGhJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9229
 
-MDIO_DEVRES is only set where PHYLIB/PHYLINK are set which
-select MDIO_DEVRES. So we can remove this symbol.
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-Note: Due to circular module dependencies we can't simply
-      make mdio_devres.c part of phylib.
+For format H264 and HEVC, the firmware can report the parsed profile idc
+and level idc to driver, these information may be useful.
+Implement the H264 and HEVC profile and level control to report them.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
 ---
- drivers/net/ethernet/freescale/Kconfig       |  1 -
- drivers/net/ethernet/freescale/enetc/Kconfig |  2 --
- drivers/net/ethernet/marvell/Kconfig         |  1 -
- drivers/net/ethernet/qualcomm/Kconfig        |  1 -
- drivers/net/mdio/Kconfig                     | 11 -----------
- drivers/net/phy/Kconfig                      |  1 -
- drivers/net/phy/Makefile                     |  2 +-
- 7 files changed, 1 insertion(+), 18 deletions(-)
+v4
+- Fix a building warning reported by kernel test robot
 
-diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
-index a2d730092..bbef47c34 100644
---- a/drivers/net/ethernet/freescale/Kconfig
-+++ b/drivers/net/ethernet/freescale/Kconfig
-@@ -71,7 +71,6 @@ config FSL_XGMAC_MDIO
- 	tristate "Freescale XGMAC MDIO"
- 	select PHYLIB
- 	depends on OF
--	select MDIO_DEVRES
- 	select OF_MDIO
- 	help
- 	  This driver supports the MDIO bus on the Fman 10G Ethernet MACs, and
-diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
-index 7250d3bbf..f3a6b3752 100644
---- a/drivers/net/ethernet/freescale/enetc/Kconfig
-+++ b/drivers/net/ethernet/freescale/enetc/Kconfig
-@@ -18,7 +18,6 @@ config NXP_ENETC_PF_COMMON
- config FSL_ENETC
- 	tristate "ENETC PF driver"
- 	depends on PCI_MSI
--	select MDIO_DEVRES
- 	select FSL_ENETC_CORE
- 	select FSL_ENETC_IERB
- 	select FSL_ENETC_MDIO
-@@ -36,7 +35,6 @@ config FSL_ENETC
- config NXP_ENETC4
- 	tristate "ENETC4 PF driver"
- 	depends on PCI_MSI
--	select MDIO_DEVRES
- 	select FSL_ENETC_CORE
- 	select FSL_ENETC_MDIO
- 	select NXP_ENETC_PF_COMMON
-diff --git a/drivers/net/ethernet/marvell/Kconfig b/drivers/net/ethernet/marvell/Kconfig
-index 837295fec..50f7c59e8 100644
---- a/drivers/net/ethernet/marvell/Kconfig
-+++ b/drivers/net/ethernet/marvell/Kconfig
-@@ -34,7 +34,6 @@ config MV643XX_ETH
- config MVMDIO
- 	tristate "Marvell MDIO interface support"
- 	depends on HAS_IOMEM
--	select MDIO_DEVRES
- 	select PHYLIB
- 	help
- 	  This driver supports the MDIO interface found in the network
-diff --git a/drivers/net/ethernet/qualcomm/Kconfig b/drivers/net/ethernet/qualcomm/Kconfig
-index 9210ff360..a4434eb38 100644
---- a/drivers/net/ethernet/qualcomm/Kconfig
-+++ b/drivers/net/ethernet/qualcomm/Kconfig
-@@ -52,7 +52,6 @@ config QCOM_EMAC
- 	depends on HAS_DMA && HAS_IOMEM
- 	select CRC32
- 	select PHYLIB
--	select MDIO_DEVRES
- 	help
- 	  This driver supports the Qualcomm Technologies, Inc. Gigabit
- 	  Ethernet Media Access Controller (EMAC). The controller
-diff --git a/drivers/net/mdio/Kconfig b/drivers/net/mdio/Kconfig
-index 107236cd6..d3219ca19 100644
---- a/drivers/net/mdio/Kconfig
-+++ b/drivers/net/mdio/Kconfig
-@@ -38,9 +38,6 @@ config ACPI_MDIO
- 	help
- 	  ACPI MDIO bus (Ethernet PHY) accessors
+v3
+- Check H264 Constrained Baseline Profile
+- Check H264 Level 1b
+- Remove support for V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH
+- Remove support for V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH
+
+v2
+- Add support for V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE
+---
+ drivers/media/platform/amphion/vdec.c        |  59 +++++++++
+ drivers/media/platform/amphion/vpu_defs.h    |  12 ++
+ drivers/media/platform/amphion/vpu_helpers.c | 123 +++++++++++++++++++
+ drivers/media/platform/amphion/vpu_helpers.h |   7 ++
+ drivers/media/platform/amphion/vpu_malone.c  |   5 +-
+ 5 files changed, 205 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
+index 85d518823159..55067d9405c2 100644
+--- a/drivers/media/platform/amphion/vdec.c
++++ b/drivers/media/platform/amphion/vdec.c
+@@ -232,6 +232,35 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
+ 			  V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE,
+ 			  0, 1, 1, 0);
  
--config MDIO_DEVRES
--	tristate
--
- config MDIO_SUN4I
- 	tristate "Allwinner sun4i MDIO interface support"
- 	depends on ARCH_SUNXI || COMPILE_TEST
-@@ -60,7 +57,6 @@ config MDIO_ASPEED
- 	tristate "ASPEED MDIO bus controller"
- 	depends on ARCH_ASPEED || COMPILE_TEST
- 	depends on OF_MDIO && HAS_IOMEM
--	select MDIO_DEVRES
- 	help
- 	  This module provides a driver for the independent MDIO bus
- 	  controllers found in the ASPEED AST2600 SoC. This is a driver for the
-@@ -130,7 +126,6 @@ config MDIO_I2C
- config MDIO_MVUSB
- 	tristate "Marvell USB to MDIO Adapter"
- 	depends on USB
--	select MDIO_DEVRES
- 	help
- 	  A USB to MDIO converter present on development boards for
- 	  Marvell's Link Street family of Ethernet switches.
-@@ -138,7 +133,6 @@ config MDIO_MVUSB
- config MDIO_MSCC_MIIM
- 	tristate "Microsemi MIIM interface support"
- 	depends on HAS_IOMEM && REGMAP_MMIO
--	select MDIO_DEVRES
- 	help
- 	  This driver supports the MIIM (MDIO) interface found in the network
- 	  switches of the Microsemi SoCs; it is recommended to switch on
-@@ -156,7 +150,6 @@ config MDIO_OCTEON
- 	depends on (64BIT && OF_MDIO) || COMPILE_TEST
- 	depends on HAS_IOMEM
- 	select MDIO_CAVIUM
--	select MDIO_DEVRES
- 	help
- 	  This module provides a driver for the Octeon and ThunderX MDIO
- 	  buses. It is required by the Octeon and ThunderX ethernet device
-@@ -166,7 +159,6 @@ config MDIO_IPQ4019
- 	tristate "Qualcomm IPQ4019 MDIO interface support"
- 	depends on HAS_IOMEM && OF_MDIO
- 	depends on COMMON_CLK
--	select MDIO_DEVRES
- 	help
- 	  This driver supports the MDIO interface found in Qualcomm
- 	  IPQ40xx, IPQ60xx, IPQ807x and IPQ50xx series Soc-s.
-@@ -175,7 +167,6 @@ config MDIO_IPQ8064
- 	tristate "Qualcomm IPQ8064 MDIO interface support"
- 	depends on HAS_IOMEM && OF_MDIO
- 	depends on MFD_SYSCON
--	select MDIO_DEVRES
- 	help
- 	  This driver supports the MDIO interface found in the network
- 	  interface units of the IPQ8064 SoC
-@@ -183,7 +174,6 @@ config MDIO_IPQ8064
- config MDIO_REALTEK_RTL9300
- 	tristate "Realtek RTL9300 MDIO interface support"
- 	depends on MACH_REALTEK_RTL || COMPILE_TEST
--	select MDIO_DEVRES
- 	help
- 	  This driver supports the MDIO interface found in the Realtek
- 	  RTL9300 family of Ethernet switches with integrated SoC.
-@@ -204,7 +194,6 @@ config MDIO_THUNDER
- 	depends on 64BIT
- 	depends on PCI
- 	select MDIO_CAVIUM
--	select MDIO_DEVRES
- 	help
- 	  This driver supports the MDIO interfaces found on Cavium
- 	  ThunderX SoCs when the MDIO bus device appears as a PCI
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 0b8cc325e..677d56e06 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -15,7 +15,6 @@ config PHYLINK
- menuconfig PHYLIB
- 	tristate "PHY Device support and infrastructure"
- 	select MDIO_DEVICE
--	select MDIO_DEVRES
- 	help
- 	  Ethernet controllers are usually attached to PHY
- 	  devices.  This option provides infrastructure for
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 631859d44..59ac3a9a3 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -20,7 +20,7 @@ obj-y				+= stubs.o
- else
- obj-$(CONFIG_MDIO_DEVICE)	+= mdio-bus.o
- endif
--obj-$(CONFIG_MDIO_DEVRES)	+= mdio_devres.o
-+obj-$(CONFIG_PHYLIB)		+= mdio_devres.o
- libphy-$(CONFIG_SWPHY)		+= swphy.o
- libphy-$(CONFIG_LED_TRIGGER_PHY)	+= phy_led_triggers.o
- libphy-$(CONFIG_OPEN_ALLIANCE_HELPERS) += open_alliance_helpers.o
++	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
++			       V4L2_CID_MPEG_VIDEO_H264_PROFILE,
++			       V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH,
++			       ~((1 << V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MAIN) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED) |
++				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_HIGH)),
++			       V4L2_MPEG_VIDEO_H264_PROFILE_MAIN);
++
++	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
++			       V4L2_CID_MPEG_VIDEO_H264_LEVEL,
++			       V4L2_MPEG_VIDEO_H264_LEVEL_6_2,
++			       0,
++			       V4L2_MPEG_VIDEO_H264_LEVEL_4_0);
++
++	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
++			       V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
++			       V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10,
++			       ~((1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN) |
++				 (1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10)),
++			       V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN);
++
++	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
++			       V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
++			       V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2,
++			       0,
++			       V4L2_MPEG_VIDEO_HEVC_LEVEL_4);
++
+ 	ctrl = v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
+ 				 V4L2_CID_MIN_BUFFERS_FOR_CAPTURE, 1, 32, 1, 2);
+ 	if (ctrl)
+@@ -1166,6 +1195,35 @@ static void vdec_clear_slots(struct vpu_inst *inst)
+ 	}
+ }
+ 
++static void vdec_update_v4l2_ctrl(struct vpu_inst *inst, u32 id, u32 val)
++{
++	struct v4l2_ctrl *ctrl = v4l2_ctrl_find(&inst->ctrl_handler, id);
++
++	if (ctrl)
++		v4l2_ctrl_s_ctrl(ctrl, val);
++}
++
++static void vdec_update_v4l2_profile_level(struct vpu_inst *inst, struct vpu_dec_codec_info *hdr)
++{
++	switch (inst->out_format.pixfmt) {
++	case V4L2_PIX_FMT_H264:
++	case V4L2_PIX_FMT_H264_MVC:
++		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_PROFILE,
++				      vpu_get_h264_v4l2_profile(hdr));
++		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_LEVEL,
++				      vpu_get_h264_v4l2_level(hdr));
++		break;
++	case V4L2_PIX_FMT_HEVC:
++		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
++				      vpu_get_hevc_v4l2_profile(hdr));
++		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
++				      vpu_get_hevc_v4l2_level(hdr));
++		break;
++	default:
++		return;
++	}
++}
++
+ static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_dec_codec_info *hdr)
+ {
+ 	struct vdec_t *vdec = inst->priv;
+@@ -1189,6 +1247,7 @@ static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_dec_codec_info
+ 	vdec_init_crop(inst);
+ 	vdec_init_mbi(inst);
+ 	vdec_init_dcp(inst);
++	vdec_update_v4l2_profile_level(inst, hdr);
+ 	if (!vdec->seq_hdr_found) {
+ 		vdec->seq_tag = vdec->codec_info.tag;
+ 		if (vdec->is_source_changed) {
+diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/media/platform/amphion/vpu_defs.h
+index 428d988cf2f7..f56245ae2205 100644
+--- a/drivers/media/platform/amphion/vpu_defs.h
++++ b/drivers/media/platform/amphion/vpu_defs.h
+@@ -134,6 +134,7 @@ struct vpu_dec_codec_info {
+ 	u32 decoded_height;
+ 	struct v4l2_fract frame_rate;
+ 	u32 dsp_asp_ratio;
++	u32 profile_idc;
+ 	u32 level_idc;
+ 	u32 bit_depth_luma;
+ 	u32 bit_depth_chroma;
+@@ -147,6 +148,17 @@ struct vpu_dec_codec_info {
+ 	u32 mbi_size;
+ 	u32 dcp_size;
+ 	u32 stride;
++	union {
++		struct {
++			u32 constraint_set5_flag : 1;
++			u32 constraint_set4_flag : 1;
++			u32 constraint_set3_flag : 1;
++			u32 constraint_set2_flag : 1;
++			u32 constraint_set1_flag : 1;
++			u32 constraint_set0_flag : 1;
++		};
++		u32 constraint_set_flags;
++	};
+ };
+ 
+ struct vpu_dec_pic_info {
+diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/media/platform/amphion/vpu_helpers.c
+index d12310af9ebc..886d5632388e 100644
+--- a/drivers/media/platform/amphion/vpu_helpers.c
++++ b/drivers/media/platform/amphion/vpu_helpers.c
+@@ -509,3 +509,126 @@ const char *vpu_codec_state_name(enum vpu_codec_state state)
+ 	}
+ 	return "<unknown>";
+ }
++
++struct codec_id_mapping {
++	u32 id;
++	u32 v4l2_id;
++};
++
++static struct codec_id_mapping h264_profiles[] = {
++	{66,  V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE},
++	{77,  V4L2_MPEG_VIDEO_H264_PROFILE_MAIN},
++	{88,  V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED},
++	{100, V4L2_MPEG_VIDEO_H264_PROFILE_HIGH}
++};
++
++static struct codec_id_mapping h264_levels[] = {
++	{10,  V4L2_MPEG_VIDEO_H264_LEVEL_1_0},
++	{9,   V4L2_MPEG_VIDEO_H264_LEVEL_1B},
++	{11,  V4L2_MPEG_VIDEO_H264_LEVEL_1_1},
++	{12,  V4L2_MPEG_VIDEO_H264_LEVEL_1_2},
++	{13,  V4L2_MPEG_VIDEO_H264_LEVEL_1_3},
++	{20,  V4L2_MPEG_VIDEO_H264_LEVEL_2_0},
++	{21,  V4L2_MPEG_VIDEO_H264_LEVEL_2_1},
++	{22,  V4L2_MPEG_VIDEO_H264_LEVEL_2_2},
++	{30,  V4L2_MPEG_VIDEO_H264_LEVEL_3_0},
++	{31,  V4L2_MPEG_VIDEO_H264_LEVEL_3_1},
++	{32,  V4L2_MPEG_VIDEO_H264_LEVEL_3_2},
++	{40,  V4L2_MPEG_VIDEO_H264_LEVEL_4_0},
++	{41,  V4L2_MPEG_VIDEO_H264_LEVEL_4_1},
++	{42,  V4L2_MPEG_VIDEO_H264_LEVEL_4_2},
++	{50,  V4L2_MPEG_VIDEO_H264_LEVEL_5_0},
++	{51,  V4L2_MPEG_VIDEO_H264_LEVEL_5_1},
++	{52,  V4L2_MPEG_VIDEO_H264_LEVEL_5_2},
++	{60,  V4L2_MPEG_VIDEO_H264_LEVEL_6_0},
++	{61,  V4L2_MPEG_VIDEO_H264_LEVEL_6_1},
++	{62,  V4L2_MPEG_VIDEO_H264_LEVEL_6_2}
++};
++
++static struct codec_id_mapping hevc_profiles[] = {
++	{1,   V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN},
++	{2,   V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10}
++};
++
++static struct codec_id_mapping hevc_levels[] = {
++	{30,  V4L2_MPEG_VIDEO_HEVC_LEVEL_1},
++	{60,  V4L2_MPEG_VIDEO_HEVC_LEVEL_2},
++	{63,  V4L2_MPEG_VIDEO_HEVC_LEVEL_2_1},
++	{90,  V4L2_MPEG_VIDEO_HEVC_LEVEL_3},
++	{93,  V4L2_MPEG_VIDEO_HEVC_LEVEL_3_1},
++	{120, V4L2_MPEG_VIDEO_HEVC_LEVEL_4},
++	{123, V4L2_MPEG_VIDEO_HEVC_LEVEL_4_1},
++	{150, V4L2_MPEG_VIDEO_HEVC_LEVEL_5},
++	{153, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_1},
++	{156, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_2},
++	{180, V4L2_MPEG_VIDEO_HEVC_LEVEL_6},
++	{183, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_1},
++	{186, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2}
++};
++
++static u32 vpu_find_v4l2_id(u32 id, struct codec_id_mapping *array, u32 array_sz)
++{
++	u32 i;
++
++	if (!array || !array_sz)
++		return 0;
++
++	for (i = 0; i < array_sz; i++) {
++		if (id == array[i].id)
++			return array[i].v4l2_id;
++	}
++
++	return 0;
++}
++
++u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr)
++{
++	if (!hdr)
++		return 0;
++
++	/*
++	 * In H.264 Document section A.2.1.1 Constrained Baseline profile
++	 * Conformance of a bitstream to the Constrained Baseline profile is indicated by
++	 * profile_idc being equal to 66 with constraint_set1_flag being equal to 1.
++	 */
++	if (hdr->profile_idc == 66 && hdr->constraint_set1_flag)
++		return V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE;
++
++	return vpu_find_v4l2_id(hdr->profile_idc, h264_profiles, ARRAY_SIZE(h264_profiles));
++}
++
++u32 vpu_get_h264_v4l2_level(struct vpu_dec_codec_info *hdr)
++{
++	if (!hdr)
++		return 0;
++
++	/*
++	 * In H.264 Document section 7.4.2.1.1 Sequence parameter set data semantics
++	 * If profile_idc is equal to 66, 77, or 88 and level_idc is equal to 11,
++	 * constraint_set3_flag equal to 1 indicates that the coded video sequence
++	 * obeys all constraints specified in Annex A for level 1b
++	 * and constraint_set3_flag equal to 0 indicates that the coded video sequence
++	 * obeys all constraints specified in Annex A for level 1.1.
++	 */
++	if (hdr->level_idc == 11 && hdr->constraint_set3_flag &&
++	    (hdr->profile_idc == 66 || hdr->profile_idc == 77 || hdr->profile_idc == 88))
++		return V4L2_MPEG_VIDEO_H264_LEVEL_1B;
++
++	return vpu_find_v4l2_id(hdr->level_idc, h264_levels, ARRAY_SIZE(h264_levels));
++}
++
++u32 vpu_get_hevc_v4l2_profile(struct vpu_dec_codec_info *hdr)
++{
++	if (!hdr)
++		return 0;
++
++	return vpu_find_v4l2_id(hdr->profile_idc, hevc_profiles, ARRAY_SIZE(hevc_profiles));
++}
++
++u32 vpu_get_hevc_v4l2_level(struct vpu_dec_codec_info *hdr)
++{
++	if (!hdr)
++		return 0;
++
++	return vpu_find_v4l2_id(hdr->level_idc, hevc_levels, ARRAY_SIZE(hevc_levels));
++}
+diff --git a/drivers/media/platform/amphion/vpu_helpers.h b/drivers/media/platform/amphion/vpu_helpers.h
+index 0eaddb07190d..6c0554ccf3b3 100644
+--- a/drivers/media/platform/amphion/vpu_helpers.h
++++ b/drivers/media/platform/amphion/vpu_helpers.h
+@@ -6,6 +6,8 @@
+ #ifndef _AMPHION_VPU_HELPERS_H
+ #define _AMPHION_VPU_HELPERS_H
+ 
++#include "vpu_defs.h"
++
+ struct vpu_pair {
+ 	u32 src;
+ 	u32 dst;
+@@ -70,4 +72,9 @@ int vpu_color_get_default(u32 primaries, u32 *ptransfers, u32 *pmatrix, u32 *pfu
+ 
+ int vpu_find_dst_by_src(struct vpu_pair *pairs, u32 cnt, u32 src);
+ int vpu_find_src_by_dst(struct vpu_pair *pairs, u32 cnt, u32 dst);
++
++u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr);
++u32 vpu_get_h264_v4l2_level(struct vpu_dec_codec_info *hdr);
++u32 vpu_get_hevc_v4l2_profile(struct vpu_dec_codec_info *hdr);
++u32 vpu_get_hevc_v4l2_level(struct vpu_dec_codec_info *hdr);
+ #endif
+diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+index feca7d4220ed..ba688566dffd 100644
+--- a/drivers/media/platform/amphion/vpu_malone.c
++++ b/drivers/media/platform/amphion/vpu_malone.c
+@@ -908,7 +908,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_rpc_event *pkt,
+ 	info->frame_rate.numerator = 1000;
+ 	info->frame_rate.denominator = pkt->data[8];
+ 	info->dsp_asp_ratio = pkt->data[9];
+-	info->level_idc = pkt->data[10];
++	info->profile_idc = (pkt->data[10] >> 8) & 0xff;
++	info->level_idc = pkt->data[10] & 0xff;
+ 	info->bit_depth_luma = pkt->data[13];
+ 	info->bit_depth_chroma = pkt->data[14];
+ 	info->chroma_fmt = pkt->data[15];
+@@ -925,6 +926,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_rpc_event *pkt,
+ 		info->pixfmt = V4L2_PIX_FMT_NV12M_10BE_8L128;
+ 	else
+ 		info->pixfmt = V4L2_PIX_FMT_NV12M_8L128;
++	if (pkt->hdr.num > 28)
++		info->constraint_set_flags = pkt->data[28];
+ 	if (info->frame_rate.numerator && info->frame_rate.denominator) {
+ 		unsigned long n, d;
+ 
+
+base-commit: b64b134942c8cf4801ea288b3fd38b509aedec21
 -- 
-2.49.0
+2.43.0-rc1
 
