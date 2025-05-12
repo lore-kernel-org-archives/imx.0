@@ -1,51 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED89250C05;
-	Mon, 12 May 2025 16:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92EA24468F
+	for <imx@lists.linux.dev>; Mon, 12 May 2025 17:11:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747068028; cv=none; b=RLceQLMfDeUVg85wvH793GJm4lZhohQpsF54nu6QXvE0mHlWvcH3ZvxWNTxz9o+0WIN7N5tysJSGmXjM924oQJ41HU5QYbAVSmqkq7LaGFFzqbDDOtOepueZdg6vovig77m8qUCkl5xTuoV91jSiUq4a5DvpJJ3onH+wQ2NZKWw=
+	t=1747069919; cv=none; b=lFKg8TGoScGSmFySRX3/Bsq9F+bn0czrPFBTW02SUW7JKk1/jKWbsAzj/v1QJR+Y4y5s7OoDNnCJTpS6X+2UFpsSZd9CGiXFynYHq6X23RsSDn7bHYEgfaMbhacxwSSgOzNLTeoWGavNobJPH4sx5oNFOppT3eCe926yVQt9j/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747068028; c=relaxed/simple;
-	bh=6tcoJxQNycyS+g+UuadukNx5hqQX0eM1s0P5TP7QSpU=;
+	s=arc-20240116; t=1747069919; c=relaxed/simple;
+	bh=IVnOc9MOV2+02cQgtBlCO9R1yHhMZSXIztpUlnxj9J0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2kq2KQ2yoO503sMHtaPjIPbbIV+BPuMIa7aoPYU2gTIXxq5EF20gC/X2Dc5eFnRydwchQ7HHo4J9xp/ox1CKEoGjvPQK3aNQEjKY2PQkji9C/QAN1eFiBdwyJsD3i+dcFIWG8GF7CNsp+nF2oBAhNJyksPjAk9phup6/BXAjbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmyYf+UT; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmyYf+UT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A356C4CEE7;
-	Mon, 12 May 2025 16:40:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747068027;
-	bh=6tcoJxQNycyS+g+UuadukNx5hqQX0eM1s0P5TP7QSpU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NmyYf+UTzTUMyJDclwm9Ra8k0Vriwlze7yPBcvq/W4d4jQNjgwbz6C6z9RkxsfCct
-	 owjG9TO+GLMSpIeCLcCmV5Zv5ZCJFcmB8PE7TDHxqW4ZVr5wo8S6dE8qzqPb9sFptK
-	 RLk0YrbmJYZWjicM8Kcoqc91EyxrN5VD2JNu9xsCgPapu9zpMl4Pio9E/2DYKNKNfo
-	 wwdjaMZteB5o1I7hWPGDWKiH2U1KpdMr0pFZSERvdhxoKDGcfj6KLsZS371rnAIPRS
-	 ayFTAgV5wRwtR9wwHybcCqKU+X92fGrR4/tFFU6ICJbZczo0ypwXUKk7QKECwJNNrT
-	 vbsMPzcjNGWCw==
-Date: Mon, 12 May 2025 11:40:25 -0500
-From: Rob Herring <robh@kernel.org>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+	 Content-Type:Content-Disposition:In-Reply-To; b=fUm+aW+IuO3j2UqzxP1UrMtzPJLLdEOR8PTSn5baf7gLTauZDXjS08KKKXhQBIykHpBwhxCPbe3Ii7w6tbhTox0K0XoC/iXUCq9rcUBvAF7n1YZ6l4Qza9zwWuobS0kPLIuxnf9H2GvCyb5lLuVNZpE16RTWdgNWLY9TETMjzM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98.2)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1uEWau-000000006LH-25Hs;
+	Mon, 12 May 2025 17:11:32 +0000
+Date: Mon, 12 May 2025 18:11:25 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, upstream@airoha.com,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Claudiu Beznea <claudiu.beznea@microchip.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jonathan Corbet <corbet@lwn.net>, Joyce Ooi <joyce.ooi@intel.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Madalin Bucur <madalin.bucur@nxp.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+	Robert Hancock <robert.hancock@calian.com>,
+	Saravana Kannan <saravanak@google.com>,
+	UNGLinuxDriver@microchip.com,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v11 1/7] dt-bindings: net: Add MTIP L2 switch
- description
-Message-ID: <20250512164025.GA3454904-robh@kernel.org>
-References: <20250504145538.3881294-1-lukma@denx.de>
- <20250504145538.3881294-2-lukma@denx.de>
+	linux-doc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [net-next PATCH v4 00/11] Add PCS core support
+Message-ID: <aCIrvTAGP5ukmwnb@makrotopia.org>
+References: <20250512161013.731955-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,230 +66,15 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250504145538.3881294-2-lukma@denx.de>
+In-Reply-To: <20250512161013.731955-1-sean.anderson@linux.dev>
 
-On Sun, May 04, 2025 at 04:55:32PM +0200, Lukasz Majewski wrote:
-> This patch provides description of the MTIP L2 switch available in some
-> NXP's SOCs - e.g. imx287.
+On Mon, May 12, 2025 at 12:10:02PM -0400, Sean Anderson wrote:
+> This series adds support for creating PCSs as devices on a bus with a
+> driver (patch 3). As initial users,
 > 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-> 
-> ---
-> Changes for v2:
-> - Rename the file to match exactly the compatible
->   (nxp,imx287-mtip-switch)
-> 
-> Changes for v3:
-> - Remove '-' from const:'nxp,imx287-mtip-switch'
-> - Use '^port@[12]+$' for port patternProperties
-> - Drop status = "okay";
-> - Provide proper indentation for 'example' binding (replace 8
->   spaces with 4 spaces)
-> - Remove smsc,disable-energy-detect; property
-> - Remove interrupt-parent and interrupts properties as not required
-> - Remove #address-cells and #size-cells from required properties check
-> - remove description from reg:
-> - Add $ref: ethernet-switch.yaml#
-> 
-> Changes for v4:
-> - Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove already
->   referenced properties
-> - Rename file to nxp,imx28-mtip-switch.yaml
-> 
-> Changes for v5:
-> - Provide proper description for 'ethernet-port' node
-> 
-> Changes for v6:
-> - Proper usage of
->   $ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
->   when specifying the 'ethernet-ports' property
-> - Add description and check for interrupt-names property
-> 
-> Changes for v7:
-> - Change switch interrupt name from 'mtipl2sw' to 'enet_switch'
-> 
-> Changes for v8:
-> - None
-> 
-> Changes for v9:
-> - Add GPIO_ACTIVE_LOW to reset-gpios mdio phandle
-> 
-> Changes for v10:
-> - None
-> 
-> Changes for v11:
-> - None
-> ---
->  .../bindings/net/nxp,imx28-mtip-switch.yaml   | 149 ++++++++++++++++++
->  1 file changed, 149 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> new file mode 100644
-> index 000000000000..35f1fe268de7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> @@ -0,0 +1,149 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
-> +
-> +maintainers:
-> +  - Lukasz Majewski <lukma@denx.de>
-> +
-> +description:
-> +  The 2-port switch ethernet subsystem provides ethernet packet (L2)
-> +  communication and can be configured as an ethernet switch. It provides the
-> +  reduced media independent interface (RMII), the management data input
-> +  output (MDIO) for physical layer device (PHY) management.
-> +
-> +properties:
-> +  compatible:
-> +    const: nxp,imx28-mtip-switch
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  phy-supply:
-> +    description:
-> +      Regulator that powers Ethernet PHYs.
-> +
-> +  clocks:
-> +    items:
-> +      - description: Register accessing clock
-> +      - description: Bus access clock
-> +      - description: Output clock for external device - e.g. PHY source clock
-> +      - description: IEEE1588 timer clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: ipg
-> +      - const: ahb
-> +      - const: enet_out
-> +      - const: ptp
-> +
-> +  interrupts:
-> +    items:
-> +      - description: Switch interrupt
-> +      - description: ENET0 interrupt
-> +      - description: ENET1 interrupt
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: enet_switch
-> +      - const: enet0
-> +      - const: enet1
-> +
-> +  pinctrl-names: true
-> +
-> +  ethernet-ports:
-> +    type: object
-> +    $ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
+> - The Lynx PCS (and all of its users) is converted to this system (patch 5)
+> - The Xilinx PCS is broken out from the AXI Ethernet driver (patches 6-8)
+> - The Cadence MACB driver is converted to support external PCSs (namely
+>   the Xilinx PCS) (patches 9-10).
 
-'patternProperties' is wrong. Drop.
-
-> +    additionalProperties: true
-
-Drop.
-
-> +
-> +    patternProperties:
-> +      '^ethernet-port@[12]$':
-> +        type: object
-> +        additionalProperties: true
-> +        properties:
-> +          reg:
-> +            items:
-> +              - enum: [1, 2]
-> +            description: MTIP L2 switch port number
-> +
-> +        required:
-> +          - reg
-> +          - label
-
-'label' shouldn't ever be required because s/w shouldn't care what the 
-value is.
-
-> +          - phy-mode
-> +          - phy-handle
-> +
-> +  mdio:
-> +    type: object
-> +    $ref: mdio.yaml#
-> +    unevaluatedProperties: false
-> +    description:
-> +      Specifies the mdio bus in the switch, used as a container for phy nodes.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - interrupts
-> +  - interrupt-names
-> +  - mdio
-> +  - ethernet-ports
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include<dt-bindings/interrupt-controller/irq.h>
-> +    #include<dt-bindings/gpio/gpio.h>
-> +    switch@800f0000 {
-> +        compatible = "nxp,imx28-mtip-switch";
-> +        reg = <0x800f0000 0x20000>;
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&mac0_pins_a>, <&mac1_pins_a>;
-> +        phy-supply = <&reg_fec_3v3>;
-> +        interrupts = <100>, <101>, <102>;
-> +        interrupt-names = "enet_switch", "enet0", "enet1";
-> +        clocks = <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
-> +        clock-names = "ipg", "ahb", "enet_out", "ptp";
-> +
-> +        ethernet-ports {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            mtip_port1: ethernet-port@1 {
-> +                reg = <1>;
-> +                label = "lan0";
-> +                local-mac-address = [ 00 00 00 00 00 00 ];
-> +                phy-mode = "rmii";
-> +                phy-handle = <&ethphy0>;
-> +            };
-> +
-> +            mtip_port2: ethernet-port@2 {
-> +                reg = <2>;
-> +                label = "lan1";
-> +                local-mac-address = [ 00 00 00 00 00 00 ];
-> +                phy-mode = "rmii";
-> +                phy-handle = <&ethphy1>;
-> +            };
-> +        };
-> +
-> +        mdio_sw: mdio {
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            reset-gpios = <&gpio2 13 GPIO_ACTIVE_LOW>;
-> +            reset-delay-us = <25000>;
-> +            reset-post-delay-us = <10000>;
-> +
-> +            ethphy0: ethernet-phy@0 {
-> +                reg = <0>;
-> +            };
-> +
-> +            ethphy1: ethernet-phy@1 {
-> +                reg = <1>;
-> +            };
-> +        };
-> +    };
-> -- 
-> 2.39.5
-> 
+Are those changes tested on real hardware?
