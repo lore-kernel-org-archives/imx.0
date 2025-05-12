@@ -1,97 +1,72 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB04F242D64;
-	Mon, 12 May 2025 07:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8621A25B68C
+	for <imx@lists.linux.dev>; Mon, 12 May 2025 09:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747034102; cv=none; b=Bsy5CBn7H1wiaXtskjewZncE+njcC1QCi2+LkTfet+Y9zGI0b/58B3pPPRTlQUrnKZ8Wc8ROlU1DMALmbgzeKHbQEG3EMnWMhA8UspfViB/akNsU5qXDpU0soI97o91Wjp9S03sMBiPmQ5cUmLTvS4PsFm3DjkJyfjUgCBudKSU=
+	t=1747041927; cv=none; b=MiAC46w40QMmImRXf7slR8wFRJfz8Pv363Irc4xr74wak+K6Ia/QWyqKC2op+s6rYPX0smXlpU0m4WMbtfkH2vkmRdX77ceMrr6nzhK6Hv5QxMaE7Erom3oEZI26/JE/xBMkXRH4ndWeHVuP1sCPMV/KJuGxB5kJk5t1HBMd5vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747034102; c=relaxed/simple;
-	bh=Cbw+2lbNzTl44Wt8GRwA6T8D6WhEeQvbiA9InX1p4+I=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=JDUGTSWile37nyv2+T/ZYfphsokRLYT45QXTYGmvP8rvmaA0HLKmlwvOU4Zx/uEjnsNZOHTigSAc6v6aYRjowvRMwZVzjfwue5ENzCRFbhts/8KrMSsMvcNUZbug7I7pWak25aaGbjuL4F0eVTnBUdCbK6FxzcEbpPhj7PjDAI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
- (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 12 May
- 2025 09:14:50 +0200
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
- 15.01.2507.039; Mon, 12 May 2025 09:14:50 +0200
-From: John Ernberg <john.ernberg@actia.se>
-To: Juergen Gross <jgross@suse.com>, Stefano Stabellini
-	<sstabellini@kernel.org>
-CC: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Christoph
- Hellwig" <hch@infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	John Ernberg <john.ernberg@actia.se>
-Subject: [PATCH v2] xen: swiotlb: Wire up map_resource callback
-Thread-Topic: [PATCH v2] xen: swiotlb: Wire up map_resource callback
-Thread-Index: AQHbww2MQ91Fme3GEU6/lmK+Crf+Dw==
-Date: Mon, 12 May 2025 07:14:50 +0000
-Message-ID: <20250512071440.3726697-1-john.ernberg@actia.se>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: git-send-email 2.49.0
-x-esetresult: clean, is OK
-x-esetid: 37303A2956B14453617466
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1747041927; c=relaxed/simple;
+	bh=OLSHO2Ibs2uoIHZrl9Xn5cSfahZ7tkgcZIzEwxzVdy4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ZGqeBx5rneqmam4/BTx9UKOMFtqKjtwH8SX7cNRz1UZBAaVqpBGuYL89sDFkp2nWP7kuZyKdYfnUtFU58/uVGAFdC211lxXo8LUe0Pho0YGRyTInYRKwOpIyikT29ssVhxCzHxNEJmdlakZPmzt/mSzXkFnJcf+m9y7bp6omP3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oM8oOPXd; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oM8oOPXd"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C8ED743284;
+	Mon, 12 May 2025 09:25:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1747041918;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OLSHO2Ibs2uoIHZrl9Xn5cSfahZ7tkgcZIzEwxzVdy4=;
+	b=oM8oOPXdDFoFnYhlHrGrcIe4CG/Ex8eoF29mMpTzDa4skMFmN0wxKB9InrYu0A2XX5kISl
+	IdqwbEeqroNrcN3vwnXjqC3FdPTwcDeWfszZ2jyK6vuFvi0ySKsjFklBXL3Z85xbIRcaQz
+	9fdOPyuALkEEK0sX81UP0Fr+yWf11p0RM/95lQ8PC0UFTetPReRsHX4vzDdsAheyLjqmrg
+	gYBmJ3H06k6HsW9VAOl6DpBxf0gwr+ub8dvIe2eaWcJHrTY1ni9wpL62lxudV4RTwtaq+n
+	ZL2OmAiMPKplVLAImdwI9QqBS/D3amh9wBr6qJRJSz17oLUQZf4qTXw9flfs5g==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+  linux-i3c@lists.infradead.org (moderated list:SILVACO I3C DUAL-ROLE
+ MASTER),  imx@lists.linux.dev (open list:SILVACO I3C DUAL-ROLE MASTER),
+  linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH v2 1/1] i3c: master: svc: skip address resend on repeat
+ START
+In-Reply-To: <20250429054234.4013929-1-Frank.Li@nxp.com> (Frank Li's message
+	of "Tue, 29 Apr 2025 01:42:34 -0400")
+References: <20250429054234.4013929-1-Frank.Li@nxp.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Mon, 12 May 2025 11:25:16 +0200
+Message-ID: <877c2mmb9f.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftddtkeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhgffffkgggtsehttdertddtredtnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfelkedvveffleeuhfeigfdvvefhgfejgffghfeiteegteeiudegfedtjeehkeefnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohephedprhgtphhtthhopefhrhgrnhhkrdfnihesnhigphdrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheplhhinhhugidqiheftgeslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrk
+ hgvrhhnvghlrdhorhhg
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-When running Xen on iMX8QXP, an Arm SoC without IOMMU, DMA performed via
-its eDMA v3 DMA engine fail with a mapping error.
+On 29/04/2025 at 01:42:34 -04, Frank Li <Frank.Li@nxp.com> wrote:
 
-The eDMA performs DMA between RAM and MMIO space, and it's the MMIO side
-that cannot be mapped.
+> According to the I3C specification, address arbitration only happens during
+> the START. Repeated START do not initiate arbitration, and In-Band
+> Interrupts (IBIs) cannot occur at this stage.
+>
+> Resending the address upon a NACK in a repeat START is therefore redundant
+> and unnecessary. Avoid redundant retries, improving efficiency and ensuring
+> protocol compliance.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-MMIO->RAM DMA access cannot be bounce buffered if it would straddle a page
-boundary and on Xen the MMIO space is 1:1 mapped for Arm, and x86 PV Dom0.
-Cases where MMIO space is not 1:1 mapped, such as x86 PVH Dom0, requires an
-IOMMU present to deal with the mapping.
-
-Considering the above the map_resource callback can just be wired to the
-existing dma_direct_map_resource() function.
-
-There is nothing to do for unmap so the unmap callback is not needed.
-
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-
----
-
-v2:
- - Just use dma_direct_map_resource() directly (Stefano Stabellini)
- - Incorporate some of the discussion and explanations from v1 into the
-    commit message (Stefano, Christoph)
- - General English improvements in the commit message.
- - Just this patch now, 1/2 in the previous set was applied
-
-v1: (series) https://lore.kernel.org/xen-devel/20250502114043.1968976-1-joh=
-n.ernberg@actia.se/
----
- drivers/xen/swiotlb-xen.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index ef56a2500ed6..da1a7d3d377c 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -426,4 +426,5 @@ const struct dma_map_ops xen_swiotlb_dma_ops =3D {
- 	.alloc_pages_op =3D dma_common_alloc_pages,
- 	.free_pages =3D dma_common_free_pages,
- 	.max_mapping_size =3D swiotlb_max_mapping_size,
-+	.map_resource =3D dma_direct_map_resource,
- };
---=20
-2.49.0
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
