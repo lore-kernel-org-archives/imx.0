@@ -1,72 +1,72 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8621A25B68C
-	for <imx@lists.linux.dev>; Mon, 12 May 2025 09:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D17261577
+	for <imx@lists.linux.dev>; Mon, 12 May 2025 10:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747041927; cv=none; b=MiAC46w40QMmImRXf7slR8wFRJfz8Pv363Irc4xr74wak+K6Ia/QWyqKC2op+s6rYPX0smXlpU0m4WMbtfkH2vkmRdX77ceMrr6nzhK6Hv5QxMaE7Erom3oEZI26/JE/xBMkXRH4ndWeHVuP1sCPMV/KJuGxB5kJk5t1HBMd5vY=
+	t=1747046362; cv=none; b=lQ2yE00zM1yvdOCU8GgSgqHz7OQTHUlIwzISymMI3xdOB2+B/b5dt8Hmt29X3TUQeIlKE9MhgHAjikqNZ+FTIEBrCCYIv5dU1qQ984r+zwsUA681EOwiMKk8gFUH/3Kw0FZNGrAbgN10ewqBNHvhDJQXXcDEujkaJAsOECg56JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747041927; c=relaxed/simple;
-	bh=OLSHO2Ibs2uoIHZrl9Xn5cSfahZ7tkgcZIzEwxzVdy4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZGqeBx5rneqmam4/BTx9UKOMFtqKjtwH8SX7cNRz1UZBAaVqpBGuYL89sDFkp2nWP7kuZyKdYfnUtFU58/uVGAFdC211lxXo8LUe0Pho0YGRyTInYRKwOpIyikT29ssVhxCzHxNEJmdlakZPmzt/mSzXkFnJcf+m9y7bp6omP3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oM8oOPXd; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1747046362; c=relaxed/simple;
+	bh=mLLIpyFiRzCKEImiqoPC0v0UcgjN4CKT/HsuUkB/IcE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lJkzVdlLzQk3Rq/K5IV+7CjmoHypoGLcH9Ye5NYfo6GeHiPlGA2lc6BFaWS2kTHGCQmVcan0WJvIBqPSc/Is/n0UyGtEeSFeqDDv/AHSR2irffAR8A9/7YpBsNAb6pvYodgAxb1m/E/CHjcQjsHaCmBhPpgv9/3H0NaCkHiUF2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r3Qw7jcM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oM8oOPXd"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C8ED743284;
-	Mon, 12 May 2025 09:25:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747041918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OLSHO2Ibs2uoIHZrl9Xn5cSfahZ7tkgcZIzEwxzVdy4=;
-	b=oM8oOPXdDFoFnYhlHrGrcIe4CG/Ex8eoF29mMpTzDa4skMFmN0wxKB9InrYu0A2XX5kISl
-	IdqwbEeqroNrcN3vwnXjqC3FdPTwcDeWfszZ2jyK6vuFvi0ySKsjFklBXL3Z85xbIRcaQz
-	9fdOPyuALkEEK0sX81UP0Fr+yWf11p0RM/95lQ8PC0UFTetPReRsHX4vzDdsAheyLjqmrg
-	gYBmJ3H06k6HsW9VAOl6DpBxf0gwr+ub8dvIe2eaWcJHrTY1ni9wpL62lxudV4RTwtaq+n
-	ZL2OmAiMPKplVLAImdwI9QqBS/D3amh9wBr6qJRJSz17oLUQZf4qTXw9flfs5g==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-  linux-i3c@lists.infradead.org (moderated list:SILVACO I3C DUAL-ROLE
- MASTER),  imx@lists.linux.dev (open list:SILVACO I3C DUAL-ROLE MASTER),
-  linux-kernel@vger.kernel.org (open list)
-Subject: Re: [PATCH v2 1/1] i3c: master: svc: skip address resend on repeat
- START
-In-Reply-To: <20250429054234.4013929-1-Frank.Li@nxp.com> (Frank Li's message
-	of "Tue, 29 Apr 2025 01:42:34 -0400")
-References: <20250429054234.4013929-1-Frank.Li@nxp.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 12 May 2025 11:25:16 +0200
-Message-ID: <877c2mmb9f.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r3Qw7jcM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF27C4CEE7;
+	Mon, 12 May 2025 10:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747046362;
+	bh=mLLIpyFiRzCKEImiqoPC0v0UcgjN4CKT/HsuUkB/IcE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=r3Qw7jcMD/AqzhW4ctUfL8NajFvKBzFUpMtB1ePJFtHDeQhR4dqQca3Eg/Qrb9PrY
+	 dgawHMrhuqKMKhBC/3+qRAtX8y7+4CCFaa8ZXHo5PSPtwPHErkHcHtBrbVJEleiFGL
+	 9eUL6uzvuPP2ywvbrd1ntaemvNEZCUyeX9aJzzcPS43SzrnpI5d+bH8EmI3G2B6VcM
+	 JRLN3qHcYnrk443RlHLOKXWtL1S5rDFvTBWOT1yf9Ow7wYLmKMKDq/RkUXIdzDHwUs
+	 WfNCgBZuni9n/W07rC/jKAApe57pY+ymWXpJH0mloRc6dkoiLR2VGjx1/MQEytmrTA
+	 bYVOJt6cvrbYQ==
+From: Shawn Guo <shawnguo@kernel.org>
+To: soc@kernel.org,
+	arm@kernel.org
+Cc: Shawn Guo <shawnguo@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL 1/5] i.MX drivers change for 6.16
+Date: Mon, 12 May 2025 11:38:54 +0100
+Message-Id: <20250512103858.50501-1-shawnguo@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftddtkeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhgffffkgggtsehttdertddtredtnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfelkedvveffleeuhfeigfdvvefhgfejgffghfeiteegteeiudegfedtjeehkeefnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohephedprhgtphhtthhopefhrhgrnhhkrdfnihesnhigphdrtghomhdprhgtphhtthhopegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheplhhinhhugidqiheftgeslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrk
- hgvrhhnvghlrdhorhhg
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-On 29/04/2025 at 01:42:34 -04, Frank Li <Frank.Li@nxp.com> wrote:
+The following changes since commit 0af2f6be1b4281385b618cb86ad946eded089ac8:
 
-> According to the I3C specification, address arbitration only happens during
-> the START. Repeated START do not initiate arbitration, and In-Band
-> Interrupts (IBIs) cannot occur at this stage.
->
-> Resending the address upon a NACK in a repeat START is therefore redundant
-> and unnecessary. Avoid redundant retries, improving efficiency and ensuring
-> protocol compliance.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
+  Linux 6.15-rc1 (2025-04-06 13:11:33 -0700)
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-drivers-6.16
+
+for you to fetch changes up to fd0bf2bb32215976c269d6e68c1a12b5815e6c20:
+
+  soc: imx8m: Dump higher 64bits UID (2025-05-09 18:16:28 +0800)
+
+----------------------------------------------------------------
+i.MX drivers change for 6.16:
+
+- A series from Peng Fan to dump full 128-bits UID for i.MX8MP
+
+----------------------------------------------------------------
+Peng Fan (3):
+      soc: imx8m: Cleanup with adding imx8m_soc_[un]prepare
+      soc: imx8m: Introduce soc_uid hook
+      soc: imx8m: Dump higher 64bits UID
+
+ drivers/soc/imx/soc-imx8m.c | 177 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 108 insertions(+), 69 deletions(-)
