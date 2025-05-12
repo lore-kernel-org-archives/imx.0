@@ -1,93 +1,132 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DC925485E
-	for <imx@lists.linux.dev>; Mon, 12 May 2025 17:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35249299957
+	for <imx@lists.linux.dev>; Mon, 12 May 2025 18:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747070168; cv=none; b=Irlh7BueiQt1vflJXtJB3JQyCDuvNU1+HIOmdD6xKXjHnhoVqrSplDrM2HG8II0oNZV+8bXnsuGTl91MazbPkUb3tsPUD17Jx27OYpvc3XEla/1FH0r1hc82fwL1NFs1trgrZkzbbIw3i/ulLF7fCtk6dmnEW4F1E5vJmhOTmjk=
+	t=1747073345; cv=none; b=WDaUGY9l2uu18+8I+XM7MqS9B6Amyoa4NaZfT9TpUX1EB9lJyEmdOruAxdfaIYovuk5S3Hk+xsLydR33cmLZLBjjGcW8Y2Em2geFVZ8O2Ff5wCZa8oNUixQyEAOLu8T2n3BT19mdr7jFRtQzATDE5hKLYy3ra4MZqEduNL0WBqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747070168; c=relaxed/simple;
-	bh=Klm9/xnlMVHXujMrDhURyLZBgR3GvxsmIVTqJHHrWl4=;
+	s=arc-20240116; t=1747073345; c=relaxed/simple;
+	bh=FWvYOr8sG81qYIL6uLusAIWToSTzsXn/CUa6oVyIEvU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NJxdNin2EojRn0ImiUcsoEncEgpT2462Of+6AXxL6g6sLRpFdh2VWSka2OuNyNpxyhHGNNL9QynvIvIftp5tNn+nNeYerDoA2Xty3P7iIPdfG34MtTkjljpy9lmfh6cvRC8DXiOFtjh3ggTwGRf57ieghNOPZFdRc8Teb/Zjeug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aCzoCDXj; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=Ps1qfNdGu2w4v+QA2hTeHsQzPaS+jpV/QIG7j/hlUQPpcvz3X6WSB0AjoSk6Kvy4H7Yzcp1X46wXTqiIHc3vHIISC9RxfSqsvwVu5TtM4dY8JobdqdXTdEUAPgC6jgIfId7JfgjHAcJvi5JQLBkdT28idRsli9FwOf1CIB9S8uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EfvQdNR1; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aCzoCDXj"
-Message-ID: <5f99168b-c309-4c60-9313-d6687bb1998c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1747070162;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K8N6GKlbK16hAp/92AuGA8T5bSLcIE21CMka1AVFczE=;
-	b=aCzoCDXjrbj/khZWc3y7z15EqUNWmg1j25agjJ4p6xbwu55Ty1xS9zdRCHBWMpvgl1XE2d
-	T2RIo99ThvKuKH578Qs7qFHYNP552cmLjy0rOJ10TA1ra3CePl0qIM8khepBF06SERJT8P
-	FxLOwkO9bIqHawSbMjbhAcMiFx+rLCE=
-Date: Mon, 12 May 2025 13:15:53 -0400
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EfvQdNR1"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a1fb17bb8cso2687304f8f.0
+        for <imx@lists.linux.dev>; Mon, 12 May 2025 11:09:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747073342; x=1747678142; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TqGdI0u7r+KY5CbJScsuboirtiZOmF2NseWC3BorEbo=;
+        b=EfvQdNR1kcfbn+Mm0WhHq+L+BqUnlcAmTx/bJ7wG414dQ5qNUuK9qrUSjnn7t99nET
+         uGCU3JonUjkBlW8QkDx83hLFK2o6FaUOjaCH+wyKGBV0goQcgbtsqC5Dp3U8DEO34Slb
+         zjvMiGRje8D1XvMM4B/N+5Ubhu8z4sVoP7DJB+FycmEX7hrVl9p+6yrdbi8nKs5uazvw
+         jo8z7yoPqyyi8oxWac6zTRQRJUjk8imiylqCJ8Olmz1RDg7kqGITGarSlPLVzngz/Zqc
+         4xCJScBvRtVb5yal7vGuknga8yqNdmm3yjUO2rYz8lzND9eGAHNwVjh0uWRrh6EQR7YD
+         ZBIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747073342; x=1747678142;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TqGdI0u7r+KY5CbJScsuboirtiZOmF2NseWC3BorEbo=;
+        b=qzSNvNIYbYP6igkVqPFLLFl1Aehrj09onr+C/zrrjEjUmcZ8KrsaauZXtszDbhflZA
+         IJOx7fC9eplOsZrdcoF8TeOOF/t0HlJKFakeWrn17+5CSM10aPSEsrb/dNQOvfJXAe0f
+         bGiE2KzDZU+lm1JaHKEhjPKhX/Gg39F/mq7LiH+d6G9GAgY6Zzsw1bk/4XsPUIIr/x5y
+         OGJ6ViTbXoj3Ni+gSELB0VjV1Ql2tEYNQBWBrJAqzH0fDWccjIDijeaRNcJ2SiKmcwef
+         9ETUnFubhorBpBpmjNYxo2v2hMfA1oYzS8NBAqKZ1hXM4BpfyQJGqkS9IU0Pk3UZ45UX
+         6jsA==
+X-Forwarded-Encrypted: i=1; AJvYcCUA0DHakh8O0KRqTT89bkQtii+2kBiY+J0Il3WtT2DK87w6TnlVFSsy7iZFt4JbGYDkZBE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxus8r+ndwIxUDBeGhqGLIcdikRDvCw7k5dxjCU4grdKauOpfR0
+	8f7TInREuaZsrXMm+A5y12FxYV1HHTMSgkykyv9AloDIuaKVh3PJ
+X-Gm-Gg: ASbGncs7AzsFrnUXFN/nic+DS9Jw3hd03H11d/jBqnwvQA/UsfGRxdQ1lzOS/YZKBHt
+	QliLp33KlJxt8EMYWBUUCdGwZdrX02dS6HQmvxVU2fZ6BVdyR3moeLLws2TVL2zN0fY8TfIvBGQ
+	5NZCXtjGA0AyFIHPOQNLH/oOCL2TNmmLvtFdy6a8hkOM2abJHZ/C8h73k/L8E7ttsciGMkjAxpS
+	JWymSfo3oi4VoMGyx6TewG1G+00wSl2z1Y9Tm02vCl/wyn3eICrWTT5blTOFQAEplnA6kmfS73L
+	rUYTirSkanI4jEe0TFlBYs10k/uFoNf+b/1tTRlxBcyOQCmNRcdAzTtxLKtVGwc=
+X-Google-Smtp-Source: AGHT+IFw+AkbDnKjFZClxNbYQI+3I+tTSTGJnGpv7ufV8y5CAq7nGPHM3nF5qWIrKS5j7UeyFSkz5A==
+X-Received: by 2002:adf:cf03:0:b0:3a1:f6fd:da50 with SMTP id ffacd0b85a97d-3a1f6fddab1mr8230689f8f.46.1747073342301;
+        Mon, 12 May 2025 11:09:02 -0700 (PDT)
+Received: from [192.168.1.121] ([176.206.99.211])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f57dde6bsm13417967f8f.13.2025.05.12.11.09.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 May 2025 11:09:01 -0700 (PDT)
+Message-ID: <fdab2ea2-824b-4b52-b880-0b097fd29086@gmail.com>
+Date: Mon, 12 May 2025 20:09:01 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [net-next PATCH v4 00/11] Add PCS core support
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- upstream@airoha.com, Kory Maincent <kory.maincent@bootlin.com>,
- Simon Horman <horms@kernel.org>, Christian Marangi <ansuelsmth@gmail.com>,
- linux-kernel@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Beznea <claudiu.beznea@microchip.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Conor Dooley <conor+dt@kernel.org>,
- Ioana Ciornei <ioana.ciornei@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Joyce Ooi <joyce.ooi@intel.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Madalin Bucur <madalin.bucur@nxp.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Michal Simek <michal.simek@amd.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
- Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Robert Hancock <robert.hancock@calian.com>,
- Saravana Kannan <saravanak@google.com>, UNGLinuxDriver@microchip.com,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20250512161013.731955-1-sean.anderson@linux.dev>
- <aCIrvTAGP5ukmwnb@makrotopia.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <aCIrvTAGP5ukmwnb@makrotopia.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] arm: fix imx_* defconfig
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20250510011806.13470-1-benato.denis96@gmail.com>
+ <aCGPMvP6F6r-57KF@pengutronix.de>
+Content-Language: en-US, it-IT, en-US-large
+From: Denis Benato <benato.denis96@gmail.com>
+In-Reply-To: <aCGPMvP6F6r-57KF@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 5/12/25 13:11, Daniel Golle wrote:
-> On Mon, May 12, 2025 at 12:10:02PM -0400, Sean Anderson wrote:
->> This series adds support for creating PCSs as devices on a bus with a
->> driver (patch 3). As initial users,
->> 
->> - The Lynx PCS (and all of its users) is converted to this system (patch 5)
->> - The Xilinx PCS is broken out from the AXI Ethernet driver (patches 6-8)
->> - The Cadence MACB driver is converted to support external PCSs (namely
->>   the Xilinx PCS) (patches 9-10).
-> 
-> Are those changes tested on real hardware?
 
-Yes. I have tested the Xilinx changes on a custom board which uses both
-macb and axi ethernet MACs with the Xilinx PCS. I also tested the Lynx
-PCS changes on an LS1046ARDB. As noted in the AXI Ethernet commit, it
-has also been tested by Suraj Gupta, although I am not sure what
-hardware he used.
+On 5/12/25 08:03, Sascha Hauer wrote:
+> Hi Denis,
+>
+> On Sat, May 10, 2025 at 03:18:03AM +0200, Denis Benato wrote:
+>> Compiling the kernel using affected imx defconfigs lead
+>> to a hard CPU crash that reaches a state where each register,
+>> including PC ends up in 0xDEADBEEF.
+>>
+>> That is because the SoC support depending on CONFIG_ARCH_MXC
+>> gets disabled since CONFIG_ARCH_NXP is not defined while
+>> said feature depends on it.
+>>
+>> The default arm defconfig is unaffected as it defines
+>> CONFIG_ARCH_NXP=y correctly as excepted.
+>>
+>> These patches solve the crash causing my confusion:
+>> https://lore.kernel.org/all/c84e8246-8104-4409-8d95-389d61bc07af@gmail.com
+> In this mail you say you want to start a ARMv8 i.MX8MM board. The
+> configs you are changing are for old 32bit ARMv4-7 SoCs.
+> arch/arm64/configs/defconfig is for you.
 
---Sean
+Hello and thanks for both of your answers.
+
+
+Yes, I have made the mistake of using that defconfig for arm while building an arm64 kernel.
+
+
+I am sorry and thank you both for correcting me.
+
+Please, ignore these patches.
+
+Denis B.
+
+> Sascha
+>
+>> Denis Benato (3):
+>>   ARM: imx_v4_v5_defconfig: define CONFIG_ARCH_NXP
+>>   ARM: imx_v6_v7_defconfig: define CONFIG_ARCH_NXP
+>>   ARM: imxrt_defconfig: define CONFIG_ARCH_NXP
+>>
+>>  arch/arm/configs/imx_v4_v5_defconfig | 1 +
+>>  arch/arm/configs/imx_v6_v7_defconfig | 1 +
+>>  arch/arm/configs/imxrt_defconfig     | 1 +
+>>  3 files changed, 3 insertions(+)
+>>
+>> -- 
+>> 2.49.0
+>>
+>>
