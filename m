@@ -1,134 +1,98 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A414299928
-	for <imx@lists.linux.dev>; Tue, 13 May 2025 15:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCF81A2398
+	for <imx@lists.linux.dev>; Tue, 13 May 2025 17:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747150669; cv=none; b=iDOY8v8RPSPxkMbKQdFb4yB/rSQ0jUTb8LeR4yjf6p1ipb2IjqkgCZ9SrEh774xTZVHdHNwjLCMQKhcsB7geNUw7FyynRYnZtc1x99REI/s68Sre2MgTZosTdoydIYvtwDWXMAq1spFJ8L42AVBj7IidoBJvheIBzgiNIzCV1iY=
+	t=1747157134; cv=none; b=tPV2pVQXEeS8eoD0MnQgJYhHsBQPZnyYuSeQt1hZyixdrMVljptmtBQg9WqtnMTZs2QxQmq6TzT5J5c1GEMveCbOspU0iMQRW5Uuw4XRPlrDn4jO+qFfAhWpbIqIeppdiPPrjdCnI48NUU5Y33l3kIIf40GGYzb3hW+1NmD1b4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747150669; c=relaxed/simple;
-	bh=KJS9CxnNPpheLNaZ7imhBbfapJj0YpC6MwYgWpp3x9s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BczZtaPmdNoOIuEwWHX/xfCzMdZFVSk6GsKi+tQdB+YTbnSZcxkDZw/aVJBs0kOOjeJGE16Rt6aTE/pCKVnCkgRD5qFyMDEmi2RnZv+Edu8R1OB3XDhheDozuvvTMJzgwDjMEXs7v0sclf+2GrvKPz/Dm//vSdN6ltTUlS2/O9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=pAPYvOmS; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=HFuFRpRT reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="pAPYvOmS";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="HFuFRpRT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1747150665; x=1778686665;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KJS9CxnNPpheLNaZ7imhBbfapJj0YpC6MwYgWpp3x9s=;
-  b=pAPYvOmSB68QlDy3lxx3m7wx88i+qCUkLA5fdlwfHvDUj4Ugry5Mlk9e
-   uNFe4QL6l5muoOK63V0jOk7yD3n3tB7XqdOw7QKQiTtmEwmqqAZCU6KW2
-   c7jEgTrdeQNQggOPGS221RWdOKBRn8JVjU+BqJFB5fQE9k3lCMztFgLYc
-   OE2KIxA6CYZmK5Qrlw5ds/EU/R4Gzh2DWU17gmHQxXkMygmOBm7SEC0Es
-   vc2eKGm85kYmAx4catZjfOKhSuci+0+3vOL0mpppEFHyQ092mCEDZ+3nY
-   5UMX8eyaJ4cSPXVwdKewP03/Y5Hr7kkUmMXafDojuzDRKPu6RpY0Rkr/Z
-   Q==;
-X-CSE-ConnectionGUID: irKwGYMGTE2318TjCJsHnQ==
-X-CSE-MsgGUID: BXWXh5dpQIGK8etu1WtVMg==
-X-IronPort-AV: E=Sophos;i="6.15,285,1739833200"; 
-   d="scan'208";a="44052047"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 13 May 2025 17:37:42 +0200
-X-CheckPoint: {68236746-13-BF62DDF1-CB8BF55F}
-X-MAIL-CPID: 5B6CDACB2F8209EED8054BD55E19D0AC_1
-X-Control-Analysis: str=0001.0A006375.68236749.006B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 46BD4160AF7;
-	Tue, 13 May 2025 17:37:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1747150658;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KJS9CxnNPpheLNaZ7imhBbfapJj0YpC6MwYgWpp3x9s=;
-	b=HFuFRpRT09roncsuKn6WsddpIpCTW8yJlMynj4Wdev+hKN2OyOYgWCbAFjw2h3Ip/1h6I+
-	BksszSj8dEdQfTpeHKOl2yQANX2EH2M9zGZUb06HDc6qVwL5kSNXLqIZpovZJUgDhafjMF
-	ZCAXh9MuJl3Hhn3ODi3lJCTdO65eQu+S+blHfaSlG1bhfdyx/GHcn/j/sdtbjzqhuOsa+T
-	f7Jd5IuqFsw1ZiofwSl237aeBKcYcL341MXH/MBsHQ15PsVa81VdAoaQ1jzUDfSZVGiWnw
-	wL7lYzb+62ZZ0j1E1PGnN5+Ctvplw8TJedZ2+129YaR0P9o7fp3nNWSjsLsUvQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Peng Fan <peng.fan@oss.nxp.com>,
- Cristian Marussi <cristian.marussi@arm.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1747157134; c=relaxed/simple;
+	bh=KwBHwUKbPrI8zFSIj23WEdv0CSSQb5m1yVfuhttKX9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gj24hB+JViPcU8efULffv2pFK5KnRnsS9I9UOW28CRCqeV6emdcMX+8gw5R9WTMBeL4y1YgTcP/s6Bfy7jNaI0lVuPf35YM/mO9AZPj1ui0HAlKb4T77+46ll6GXuTAOWjimdbGtAV1Y50yEhPDTJKiVyW807RNHLTV79nP9TCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9E6562247;
+	Tue, 13 May 2025 10:25:21 -0700 (PDT)
+Received: from bogus (unknown [10.57.45.210])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EFBB13F63F;
+	Tue, 13 May 2025 10:25:29 -0700 (PDT)
+Date: Tue, 13 May 2025 18:25:28 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Peng Fan <peng.fan@oss.nxp.com>, Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 1/1] dt-bindings: firmware: imx95-scmi: Allow linux,
  code for protocol@81
-Date: Tue, 13 May 2025 17:37:36 +0200
-Message-ID: <2804473.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250409160029.GE27988@nxa18884-linux>
-References:
- <20241104085622.177781-1-alexander.stein@ew.tq-group.com>
+Message-ID: <20250513-whimsical-almond-quoll-e3ad5b@sudeepholla>
+References: <20241104085622.177781-1-alexander.stein@ew.tq-group.com>
  <20250409-heavenly-sceptical-ara-bceeb9@sudeepholla>
  <20250409160029.GE27988@nxa18884-linux>
+ <2804473.mvXUDI8C0e@steina-w>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2804473.mvXUDI8C0e@steina-w>
 
-Hi Sudeep,
-
-Am Mittwoch, 9. April 2025, 18:00:29 CEST schrieb Peng Fan:
+On Tue, May 13, 2025 at 05:37:36PM +0200, Alexander Stein wrote:
 > Hi Sudeep,
->=20
-> On Wed, Apr 09, 2025 at 01:31:58PM +0100, Sudeep Holla wrote:
-> >On Wed, Apr 09, 2025 at 08:18:29PM +0800, Peng Fan wrote:
-> >> + SCMI maintainer, Sudeep and Cristian
-> >>=20
-> >> On Wed, Apr 09, 2025 at 12:59:50PM +0200, Alexander Stein wrote:
-> >> >Hi,
-> >> >
-> >> >Am Montag, 4. November 2024, 09:56:21 CEST schrieb Alexander Stein:
-> >> >> BBM protocol supports a single power button, supported by driver
-> >> >> imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be ove=
-rwritten
-> >> >> using linux,code. Add a reference to this schema and add linux,code=
- as a
-> >> >> supported property.
-> >> >>=20
-> >> >> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> >> >
-> >> >Is there any other feedback or things to do here?
-> >>=20
-> >> I see Rob already gave R-b.
-> >>=20
-> >> Not sure this should go through Shawn's or Sudeep's tree.
-> >>=20
-> >
-> >I am fine either way. Peng, just let me know if you want to pick this up.
->=20
-> Not my patch :)
->=20
-> Since scmi driver changes go through your tree, the binding changes
-> should follow same.
->=20
-> It would be good that if you could pick it up.=20
+> 
+> Am Mittwoch, 9. April 2025, 18:00:29 CEST schrieb Peng Fan:
+> > Hi Sudeep,
+> > 
+> > On Wed, Apr 09, 2025 at 01:31:58PM +0100, Sudeep Holla wrote:
+> > >On Wed, Apr 09, 2025 at 08:18:29PM +0800, Peng Fan wrote:
+> > >> + SCMI maintainer, Sudeep and Cristian
+> > >> 
+> > >> On Wed, Apr 09, 2025 at 12:59:50PM +0200, Alexander Stein wrote:
+> > >> >Hi,
+> > >> >
+> > >> >Am Montag, 4. November 2024, 09:56:21 CEST schrieb Alexander Stein:
+> > >> >> BBM protocol supports a single power button, supported by driver
+> > >> >> imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be overwritten
+> > >> >> using linux,code. Add a reference to this schema and add linux,code as a
+> > >> >> supported property.
+> > >> >> 
+> > >> >> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > >> >
+> > >> >Is there any other feedback or things to do here?
+> > >> 
+> > >> I see Rob already gave R-b.
+> > >> 
+> > >> Not sure this should go through Shawn's or Sudeep's tree.
+> > >> 
+> > >
+> > >I am fine either way. Peng, just let me know if you want to pick this up.
+> > 
+> > Not my patch :)
+> > 
+> > Since scmi driver changes go through your tree, the binding changes
+> > should follow same.
+> > 
+> > It would be good that if you could pick it up. 
+> 
+> A gentle ping.
+> 
 
-A gentle ping.
+Sorry I missed Peng's response. I have already sent my PR for v6.16
+Since there is no driver changes, I thought it would be routed elsewhere.
+See if Rob or Shawn can pick it up for v6.16, else I can pick it up for
+v6.17, sorry for that.
 
-Best regards
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+-- 
+Regards,
+Sudeep
