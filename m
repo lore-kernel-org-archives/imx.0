@@ -1,115 +1,114 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EB428DB63
-	for <imx@lists.linux.dev>; Tue, 13 May 2025 13:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1FB28E611
+	for <imx@lists.linux.dev>; Tue, 13 May 2025 13:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747141483; cv=none; b=nHPjl3QYKG1p7c9p+SMc0Vchd6Ka5IS9Hl6aWjDtL8WwUZuXLRjYAoqZDwCbNE9glTvPaIHWH16gR8mGfT0CMAAU3z0bJeaGNm9y9vLXHkUUqr4QxpsdQoJibLpV5f0Yasx5I3h4M3FnBu8HXs56374EkKB6IT6NKIpdF/Orx58=
+	t=1747142461; cv=none; b=DBA3za7NL7g3WdbGcGb605b7RxlbIZRJLPnrI6GTitTjy+6FoU+KnQdw8DGjb5G/X/HT4SimGXgNdfMSrhLIUHO4at3GnFLlU2N30+LmP6KZDPewdzgPw5ONaXG3SElzh0oUhXI/X+j7Kd6wKKwI+IuPyprmfuOpDgMAJ+MngXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747141483; c=relaxed/simple;
-	bh=u2ZxOoIdi13WjQ49OpkZmrMWrhD/oEbMUsIPhKeBTyY=;
+	s=arc-20240116; t=1747142461; c=relaxed/simple;
+	bh=a07HNvK2s/ifER9xOGcNCCEiUl0FR+rf5Vx8rLmQK6M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t2BIZ3fh74FN+iDSGDJV99hlF98y+mRjtUnybwNffu+hDB14gBuuU2Q4W5DQiTuKMen86Ff4isxxe/syTQhEyj2g0Fsralz30MehqEOwiB/QDv0PRwdIg8+LuIPU1Jy9f3a6My7goq1QfxKosbL3m80M/ABeCdsDR3ML97MnFY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Htn3xUsC; arc=none smtp.client-ip=209.85.167.44
+	 To:Cc:Content-Type; b=M1A3gHfoIReAJa0HHUq3oxJyhsGSlYmkrHuyJ9b6rAOxk2kwDGhBda0RIHpjVvYlo1qJR6nONGRXmhjNMRCbBD3mr8ZeU6f6CzQcSUtLEXkJa1oUxDazrV5MLHRpFNgUiPf+ziDCI8DUhGjwlCs+Vs8E+rW/LK4XfBtNdEh7bmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YxFzgpvo; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Htn3xUsC"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-550d09d4daaso1188161e87.2
-        for <imx@lists.linux.dev>; Tue, 13 May 2025 06:04:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YxFzgpvo"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54acc0cd458so6105052e87.0
+        for <imx@lists.linux.dev>; Tue, 13 May 2025 06:20:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747141480; x=1747746280; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1747142458; x=1747747258; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u2ZxOoIdi13WjQ49OpkZmrMWrhD/oEbMUsIPhKeBTyY=;
-        b=Htn3xUsCBSTJTels2c97+2Av/3q4Y66ASI7Uxi4DCeNtC+PgZo5bStbWKxt3EToHmt
-         N68Czbpo0tzQEwm+k2Mab0/p4HK2U+N92aFjd1/44ghQfAosORFLXqAnpyymIJw9TQQN
-         jJJLiVMkuZaHrnPhEEnUSicPDs1shIJdcubmVK0FZ+hKuQclx4Bx04izUEYgWvrKDLZl
-         Np30qPwI59yXfGrKFWxUjTCErIpOYvnKe+A604H/S/JSc2Ve6sZ37g+CZn4gykBB8SRd
-         mncq5in21rEfkxnpKVMl920QO4MYwhO9vB+XNbGTTof1cY0DY+iAeuHU2XYw0JzeRsOk
-         N7oA==
+        bh=a07HNvK2s/ifER9xOGcNCCEiUl0FR+rf5Vx8rLmQK6M=;
+        b=YxFzgpvoO4V/lCGQqWd0OMu+7MNo1jeOd5OGJRhBLx5FwOmEioDBwqhX/2OGc84Z4x
+         DR0m5YXyqMt/z2HdZyNYpuE6xBz7zdt558bpHaYADdEowcmLZ9ZlordMiNjhE4MX2yy7
+         ZBtAXp+1hae8/ruXm6/GgRewKksdureGz+DMGNLRPMB5TvdvygjfvRS+XAaXS2WzcvQU
+         Usm3hAuoKs4W6ppzMUVNplgYkzMYfJXZHM1rNWzq6t+UMuz4gFPAITQUvg9SMApYzv1Z
+         oZbNw97jAZLUzqa5qF1Cu5Cm+1QuN7TMKTHjV24QX2eP1ypGISUHOPHPDQsaWRSCkEmx
+         Wgug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747141480; x=1747746280;
+        d=1e100.net; s=20230601; t=1747142458; x=1747747258;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=u2ZxOoIdi13WjQ49OpkZmrMWrhD/oEbMUsIPhKeBTyY=;
-        b=MepTM/bOYJm28wdsuonq1ETQzUwENhMIdddXJ/bRtJlPyXYbhcoBWYUEXOKUn6gjSg
-         de3ipFH790oQSvl8uSxgZ+yVYzS0wHoU32rYoXOolD1kUqAKYrunpFokFtkWNbB0GeDI
-         Qq9dAZwkbW1SHIQAVrrWb4dGOKxhRzyrlraSQdXFSxL/z1lsR/YKJFbW4/Y2CEc4U1q7
-         sMPRI5xfHS3WcKnH8FL4eT/rQhff0yfYkakwkphtIYHqmjW7SoiaxT8mbcYYth2IyXnl
-         jZcegaGSmD1NHq67gBtbocZFp0TxFMdlySQaUdAc5oPa8lNVfMk0wJ6TkzJ3OCPa0gew
-         PCzg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7DEQwRS4O2IV19f0B6+Y74UBrRLA+7NfbBD5tHpnlg5k8R4IN3UuAPxaqAmmihs+t3Bk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzZhj/hqOvRsWIqyby6vqkCwAzt66QUD86cUq4SmCSgk+RDcUFy
-	amg5q2gXhsCaUHZ60yWxUsV9eHF64O7X5NMnHLQhZmJuzPipwLucbVc2yYZFmjCtd/RVn8krr2o
-	hd6Heb1Pi0whGMfhZs785ajMMowe21/4o1g17Mg==
-X-Gm-Gg: ASbGncsm+NcWJRqTFEeUwRnZAKSMG8rD6BBEPqBOnKAxLBWGHz0Ohjn++Ws/MkZxwsg
-	sOZWbBNgqIynMWW19jvEMWtzyKEvzC93MVN/Qb4VGDZV8wNhn6XEabnbBKpmUyeWB6mVEMiIitP
-	TqZC7QUIuw4sc7CUqf1vSJ9Fbh9c4TVSbb8WRyAfOgeRE=
-X-Google-Smtp-Source: AGHT+IHvP0gooDDmu568VdD7x6FFv8psYcJXM3XY47vCtvEw04TEGbdJAZqsD4ocAj63/kyy4PnOyiTDBOr/SlE5CrE=
-X-Received: by 2002:a05:6512:608b:b0:545:1e2d:6b73 with SMTP id
- 2adb3069b0e04-54fc67b5d02mr7159396e87.13.1747141479717; Tue, 13 May 2025
- 06:04:39 -0700 (PDT)
+        bh=a07HNvK2s/ifER9xOGcNCCEiUl0FR+rf5Vx8rLmQK6M=;
+        b=YZ3M89iDmwsEgViEUyf/Xdl3XELpdb8jrk2v0RHFRQ37a3t2Z8qxk1N1IgvX5b72in
+         psa3G4mF/QUk3kSD/8LVQWkW6COMVXWdeR8YmwHg0EcBSKdK438pkD6wi6r2RAiSPm8o
+         ifzgpqQfR2ex6UiUFMJwsPeQErPSp8YksDIr+59p6fEdwpx8UEES7ABhzzdSnklYRujo
+         YoRI2oQdZYtjzWZ6731l4JL51nPxo1ykXsesUIjJd/NdMNgqJWiSRgoWoDTVpojNb2Ej
+         BDV9dATxy9FaFRIlpQ+tJiBPzmzyW2Z08P1JeQcVJiC6ib6jPkRaH6B6zqjO0w+TuCSJ
+         vDbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUH0Umd9M0dVS3qAWa4sjDc4NHgAsg5fn8Owjo7jRNPpZNrlNKzKZLuUyKqZLciO+2/kFU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywnbz+AjBdr+qrN0eREhuM4B50sQDqqkK9gcceKXKMDYrNW2e5y
+	qQbDoIyL6aKovsS4Xl2DpoA2exrDWSlH0YH5PdZKoi74otKX/aQWmRAbyPKFgOO5Nv6vdJ7mPLV
+	pyssx5ofi/j+BLHRoONtZdSQJLzg4jtWgNbs8bQ==
+X-Gm-Gg: ASbGncvvX8x75hS+/Nhrt5IpiuOGdNa91GYOUyFdOWVpPOjwsfj7eUVgxUW4NqxQOJ0
+	AsAmkIE2M/9vkTLLpScGamE+LoBatMBXxgpRxbod6/G+Ji7Vg0zAe1dQ+N7EZU2Eg+gd9JwgpXl
+	8tU2h5q+7AuIVXCnos+z6bkjNn4VHXggqY
+X-Google-Smtp-Source: AGHT+IGEAON4CqeWB7MIriXflZ3TKRdVPaHoB+BTW6X7JW4SlMZJHvBn+KzxohMwhUgzM+6fwnKvwVBVuufnBpAzy7A=
+X-Received: by 2002:a05:6512:3b88:b0:54f:c66b:8b78 with SMTP id
+ 2adb3069b0e04-54fc67ecebbmr5256122e87.49.1747142457796; Tue, 13 May 2025
+ 06:20:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250507-b4-imx-gpio-base-warning-v2-1-d43d09e2c6bf@pengutronix.de>
-In-Reply-To: <20250507-b4-imx-gpio-base-warning-v2-1-d43d09e2c6bf@pengutronix.de>
+References: <20250512-pin-v1-0-d9f1555a55ad@nxp.com> <20250512-pin-v1-1-d9f1555a55ad@nxp.com>
+ <20250512-mongoose-vacation-f81a56dd6c5d@spud> <20250513075532.GB14572@nxa18884-linux>
+In-Reply-To: <20250513075532.GB14572@nxa18884-linux>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 13 May 2025 15:04:28 +0200
-X-Gm-Features: AX0GCFt0sjPwjvA5EozAKBAvIh0YXGHalZHBo5O9eCpuXVR3ChNSqR-rASM-_dk
-Message-ID: <CACRpkdaBrxwWd4JPAJCZRj1Ov8a_6U+idGzi2pnEr4MJ0Eyf2Q@mail.gmail.com>
-Subject: Re: [PATCH v2] gpio: mxc: configure dynamic GPIO base for CONFIG_GPIO_SYSFS=n
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-gpio@vger.kernel.org, 
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>, Haibo Chen <haibo.chen@nxp.com>, 
-	Catalin Popescu <catalin.popescu@leica-geosystems.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Tue, 13 May 2025 15:20:44 +0200
+X-Gm-Features: AX0GCFuZNXL7sad4G9E3lsfZTN1DW6pieeaGbeQGotqOwvfnEpDnUcCktC-com4
+Message-ID: <CACRpkdYmupji8a0np0xzogjcvJ8YFstAgg_XwdxNczhQjBZOPg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] dt-bindings: firmware: nxp,imx95-scmi-pinctrl:
+ Introduce nxp,iomuxc-daisy-off
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	NXP S32 Linux Team <s32@nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 7, 2025 at 3:07=E2=80=AFPM Ahmad Fatoum <a.fatoum@pengutronix.d=
-e> wrote:
+On Tue, May 13, 2025 at 8:46=E2=80=AFAM Peng Fan <peng.fan@oss.nxp.com> wro=
+te:
 
-> i.MX GPIO numbering has been deterministic since commit 7e6086d9e54a
-> ("gpio/mxc: specify gpio base for device tree probe"), a year after
-> device tree support was first added back in 2011.
->
-> Reverting to dynamically allocated GPIO base now would break most
-> systems making use of the sysfs API. These systems will be eventually
-> broken by the removal of the sysfs API, but that would result in GPIO
-> scripts not working instead of essentially toggling at random according
-> to probe order, which would happen if we unconditionally set base to -1.
->
-> Yet, the warning is annoying and has resulted in many rejected attempts
-> to remove it over the years[1][2][3].
->
-> As the i.MX GPIO driver is device tree only, GPIO_SYSFS is the only
-> consumer of the deterministic GPIO numbering. Let's therefore restrict th=
-e
-> static base and the warning that comes with it to configurations
-> with CONFIG_GPIO_SYSFS enabled.
->
-> [1]: https://lore.kernel.org/all/20230226205319.1013332-1-dario.binacchi@=
-amarulasolutions.com/
-> [2]: https://lore.kernel.org/all/20230506085928.933737-2-haibo.chen@nxp.c=
-om/
-> [3]: https://lore.kernel.org/all/20241121145515.3087855-1-catalin.popescu=
-@leica-geosystems.com/
->
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >Same comment here as was left on the driver.
+> >I also don't get why there's a property being introduced from something
+> >you can determine based on the soc.
 
-Well that is an interesting way to do it. OK I guess!
+I agree with Conor's observation.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> we are targeting a common pinctrl driver for i.MX SCMI based SoC.
+> So that means pinctrl-imx-scmi.c needs support i.MX95, i.MX94 and i.MX9[X=
+].
+>
+> Each time we support a new SoC, we need to hardcode the register offset i=
+n
+> the driver. But if using DT here, no need to update the pinctrl driver an=
+ymore
+> when supporting a new i.MX SoC.
+
+I understand that it is convenient, but that doesn't mean it is the right
+thing to do.
+
+I would advice you to keep this in the driver and use the SoC compatible
+to determine the offset, just as is done today.
+
+If information can be deduced from what is already present in the
+device tree it is redundant to add stuff like this, and it inevitably
+will create copy-paste errors where the wrong offset is used
+with the wrong SoC.
 
 Yours,
 Linus Walleij
