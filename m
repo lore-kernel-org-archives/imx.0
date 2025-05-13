@@ -1,105 +1,134 @@
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF971F1932
-	for <imx@lists.linux.dev>; Tue, 13 May 2025 14:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A414299928
+	for <imx@lists.linux.dev>; Tue, 13 May 2025 15:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747146224; cv=none; b=tWddt6shKSksI8BKOZEWewQ/zVsnpMCtpeAVzso9DQEzmpXv7819K3qjgrPL17wgt/XR7KuriFYpq7rFuir4rVTPYmTfhHMYECT8v7Gdgp7nIZgiujsguArycGZO5i/uZmNCpjC45GNCdqQrpaiuMEFM29XenYV1STwH/obNBpQ=
+	t=1747150669; cv=none; b=iDOY8v8RPSPxkMbKQdFb4yB/rSQ0jUTb8LeR4yjf6p1ipb2IjqkgCZ9SrEh774xTZVHdHNwjLCMQKhcsB7geNUw7FyynRYnZtc1x99REI/s68Sre2MgTZosTdoydIYvtwDWXMAq1spFJ8L42AVBj7IidoBJvheIBzgiNIzCV1iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747146224; c=relaxed/simple;
-	bh=oT6XNM77B8+ium9Cx4cc7TioAAenrUX/vpKuFTyATHM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=me02ZnieokyUiql1/t1YASWnbgPJxtsBCcntyrSUrYKuJgOjv2C+SRDXNmfe9I/+WCuCbMDdUHM0BQN0nAykerUxleQ+xSap3mh7d+XqNowO4hSn6u88MS+ikMO+BO83eR5S3vZzGZJdY+IlTzz7KoPrTQ/7DlLGtIZ7V7fkz7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lDDsvbgw; arc=none smtp.client-ip=209.85.222.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747150669; c=relaxed/simple;
+	bh=KJS9CxnNPpheLNaZ7imhBbfapJj0YpC6MwYgWpp3x9s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BczZtaPmdNoOIuEwWHX/xfCzMdZFVSk6GsKi+tQdB+YTbnSZcxkDZw/aVJBs0kOOjeJGE16Rt6aTE/pCKVnCkgRD5qFyMDEmi2RnZv+Edu8R1OB3XDhheDozuvvTMJzgwDjMEXs7v0sclf+2GrvKPz/Dm//vSdN6ltTUlS2/O9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=pAPYvOmS; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=HFuFRpRT reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lDDsvbgw"
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-878627ac2ddso1375822241.0
-        for <imx@lists.linux.dev>; Tue, 13 May 2025 07:23:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="pAPYvOmS";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="HFuFRpRT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747146222; x=1747751022; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0l36qpCnDAhRnaTWedEaUZwbfvZPD7EM2qytUdMEXlk=;
-        b=lDDsvbgwQ/Taxrp9XJztURAQoGOvPkEiCquY0JcpvLmoCv+vzdeXvIWd0hnsyVYPCK
-         4xXGRxRFUeLFHOuPKQqQc9uCss9bCAT1dPbDHNCyDeWx6SAkV6wD+zXSk0V5DUNncICT
-         RDPK/D2Jcdm25Y/GPFsTAaJy6HUWH82iUfGcf73pSmVVc+X0tZm4WTrMUCMebymyF8eQ
-         bAUljFAIQEzEKX1Qw3qYD43JvszkDvtVRqsoNOyqrCnHGf1o4iKdK0SOdxdTD/fOIAcZ
-         RzDKFSEVI+Ll+jGdDNjzOTHBL7Pjj0g+5PmkkHdgwdnfOfREX83UIl8FRiczpOz6AQS5
-         OzlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747146222; x=1747751022;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0l36qpCnDAhRnaTWedEaUZwbfvZPD7EM2qytUdMEXlk=;
-        b=e23APGfA++wwJISritdmEt2vUMiutXaJSbSSRCkxwZ09X41rD3yWc0TCHDDiwSI3pK
-         Dp9rz34VVFGW5mA2/maRHO4BqutSLjFYFHztET5b4QCy7PmJNDhnycxJGwJlLOi8aHmV
-         rHI+yjojtDFBG0kxfcGO1FkPelWr8GJn2/XqoHwV9jHD9Dopj8v2NhlxT0R3hwY17JrS
-         yL51AoS8wY8XhukGp60UDpcPD86fT+N0ZQ1ebv9/cH/WGmUx6udMvW0oymiROjmmKI60
-         /IReVe17lvT0CpdYwSJNqH6KQ3VjGdPoaQKnjum4mJ+pdECP7YC3L/wm5edL3B2u5zra
-         ZTkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWYqo8ohgqxsjy3zW9i5RmxxMN/TigklH98M86ZblF1COOYinCX8LQAAX9/LZB11c2SFLQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywg2K5/fRI9tnNXss6vy21PaQOWh9DMyaUYnRZ5ZbmQ9wR50ooO
-	A413fOWF4CcrECqEU8lOZS55XvxSgNBFGxhWl9UavipFz0aUdxEl
-X-Gm-Gg: ASbGnctIBbzZg8H4f3YC06RzpUOfU4tph9TvulcN7x56MisOS/Av3lHV4UnxqMLZdTW
-	2PR0DGFBqg2qcjF0mqMwBbK7T1SEpqFcEC6OEHowHZxdOTOwYN/tNsEo9aB/RhfWd5C+WGFGYZ2
-	0HhEhet5L3zfHxKGPx3P8hdzLeEspXqprb+YYBKN6Znjz6AoIhoV8D1APTFSijM+/6r+1Zs2IbG
-	no9T+1HqqklSjSXx0K3NEaApr+wDI9z4EOQfTP7xD1x0s77q1jnJauMoqxGVCLPGFwcIndB6ZrB
-	m2WSKPcWcNNHJ94FOVNuWNrv+pusAHd2cG5vPgg8qpx23nKxZBsx4JeqQAvO+Fo2rA==
-X-Google-Smtp-Source: AGHT+IEPnMB4IboXCa/1FdqFHavEmkJxVozv+Io0Cs9hnebsXUci5GmVrdypDMhC+ZsSI0YngK2PIg==
-X-Received: by 2002:a67:e7cc:0:b0:4dd:ab6c:765a with SMTP id ada2fe7eead31-4deed36dc90mr14572810137.12.1747146221656;
-        Tue, 13 May 2025 07:23:41 -0700 (PDT)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:5c18:acd6:b894:dc8f])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4deb203c26bsm6630965137.27.2025.05.13.07.23.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 May 2025 07:23:41 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-To: shawnguo@kernel.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH 3/3] ARM: imx_v6_v7_defconfig: Select BT_HCIUART_BCM
-Date: Tue, 13 May 2025 11:23:20 -0300
-Message-Id: <20250513142320.4036324-3-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250513142320.4036324-1-festevam@gmail.com>
-References: <20250513142320.4036324-1-festevam@gmail.com>
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1747150665; x=1778686665;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=KJS9CxnNPpheLNaZ7imhBbfapJj0YpC6MwYgWpp3x9s=;
+  b=pAPYvOmSB68QlDy3lxx3m7wx88i+qCUkLA5fdlwfHvDUj4Ugry5Mlk9e
+   uNFe4QL6l5muoOK63V0jOk7yD3n3tB7XqdOw7QKQiTtmEwmqqAZCU6KW2
+   c7jEgTrdeQNQggOPGS221RWdOKBRn8JVjU+BqJFB5fQE9k3lCMztFgLYc
+   OE2KIxA6CYZmK5Qrlw5ds/EU/R4Gzh2DWU17gmHQxXkMygmOBm7SEC0Es
+   vc2eKGm85kYmAx4catZjfOKhSuci+0+3vOL0mpppEFHyQ092mCEDZ+3nY
+   5UMX8eyaJ4cSPXVwdKewP03/Y5Hr7kkUmMXafDojuzDRKPu6RpY0Rkr/Z
+   Q==;
+X-CSE-ConnectionGUID: irKwGYMGTE2318TjCJsHnQ==
+X-CSE-MsgGUID: BXWXh5dpQIGK8etu1WtVMg==
+X-IronPort-AV: E=Sophos;i="6.15,285,1739833200"; 
+   d="scan'208";a="44052047"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 13 May 2025 17:37:42 +0200
+X-CheckPoint: {68236746-13-BF62DDF1-CB8BF55F}
+X-MAIL-CPID: 5B6CDACB2F8209EED8054BD55E19D0AC_1
+X-Control-Analysis: str=0001.0A006375.68236749.006B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 46BD4160AF7;
+	Tue, 13 May 2025 17:37:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1747150658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KJS9CxnNPpheLNaZ7imhBbfapJj0YpC6MwYgWpp3x9s=;
+	b=HFuFRpRT09roncsuKn6WsddpIpCTW8yJlMynj4Wdev+hKN2OyOYgWCbAFjw2h3Ip/1h6I+
+	BksszSj8dEdQfTpeHKOl2yQANX2EH2M9zGZUb06HDc6qVwL5kSNXLqIZpovZJUgDhafjMF
+	ZCAXh9MuJl3Hhn3ODi3lJCTdO65eQu+S+blHfaSlG1bhfdyx/GHcn/j/sdtbjzqhuOsa+T
+	f7Jd5IuqFsw1ZiofwSl237aeBKcYcL341MXH/MBsHQ15PsVa81VdAoaQ1jzUDfSZVGiWnw
+	wL7lYzb+62ZZ0j1E1PGnN5+Ctvplw8TJedZ2+129YaR0P9o7fp3nNWSjsLsUvQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Peng Fan <peng.fan@oss.nxp.com>,
+ Cristian Marussi <cristian.marussi@arm.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] dt-bindings: firmware: imx95-scmi: Allow linux,
+ code for protocol@81
+Date: Tue, 13 May 2025 17:37:36 +0200
+Message-ID: <2804473.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250409160029.GE27988@nxa18884-linux>
+References:
+ <20241104085622.177781-1-alexander.stein@ew.tq-group.com>
+ <20250409-heavenly-sceptical-ara-bceeb9@sudeepholla>
+ <20250409160029.GE27988@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Select BT_HCIUART_BCM so that Bluetooth can work by default on a
-imx7s-warp board with a BCM43455 Wifi/Bluetooth chip.
+Hi Sudeep,
 
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
- arch/arm/configs/imx_v6_v7_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+Am Mittwoch, 9. April 2025, 18:00:29 CEST schrieb Peng Fan:
+> Hi Sudeep,
+>=20
+> On Wed, Apr 09, 2025 at 01:31:58PM +0100, Sudeep Holla wrote:
+> >On Wed, Apr 09, 2025 at 08:18:29PM +0800, Peng Fan wrote:
+> >> + SCMI maintainer, Sudeep and Cristian
+> >>=20
+> >> On Wed, Apr 09, 2025 at 12:59:50PM +0200, Alexander Stein wrote:
+> >> >Hi,
+> >> >
+> >> >Am Montag, 4. November 2024, 09:56:21 CEST schrieb Alexander Stein:
+> >> >> BBM protocol supports a single power button, supported by driver
+> >> >> imx-sm-bbm-key.c. By default this is KEY_POWER, but can also be ove=
+rwritten
+> >> >> using linux,code. Add a reference to this schema and add linux,code=
+ as a
+> >> >> supported property.
+> >> >>=20
+> >> >> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> >> >
+> >> >Is there any other feedback or things to do here?
+> >>=20
+> >> I see Rob already gave R-b.
+> >>=20
+> >> Not sure this should go through Shawn's or Sudeep's tree.
+> >>=20
+> >
+> >I am fine either way. Peng, just let me know if you want to pick this up.
+>=20
+> Not my patch :)
+>=20
+> Since scmi driver changes go through your tree, the binding changes
+> should follow same.
+>=20
+> It would be good that if you could pick it up.=20
 
-diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
-index 062c1eb8dd60..6f62d2e96239 100644
---- a/arch/arm/configs/imx_v6_v7_defconfig
-+++ b/arch/arm/configs/imx_v6_v7_defconfig
-@@ -68,6 +68,7 @@ CONFIG_BT=y
- CONFIG_BT_BNEP=m
- CONFIG_BT_HCIUART=y
- CONFIG_BT_HCIUART_LL=y
-+CONFIG_BT_HCIUART_BCM=y
- CONFIG_BT_NXPUART=m
- CONFIG_CFG80211=y
- CONFIG_CFG80211_WEXT=y
--- 
-2.34.1
+A gentle ping.
+
+Best regards
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
