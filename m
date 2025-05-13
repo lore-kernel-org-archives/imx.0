@@ -1,65 +1,65 @@
 Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8017D1EB19E
-	for <imx@lists.linux.dev>; Tue, 13 May 2025 06:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C66B1EB1B4
+	for <imx@lists.linux.dev>; Tue, 13 May 2025 06:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747118202; cv=none; b=nsE+vKhlTalbiJxTJG0G3l/wzojPDowx0HecPmRT3jPzmGT3wosOejAZxKN7212/zsCx8qahqgSTAsDQRluFy60vkzOFZN3vNcH3+/pLZDRGS2RfDljcp2ZfEyaHyUO/NY7+RhuLMM2/zc+Nq6xfVEDYelMtHjk5iK8cEK+UV40=
+	t=1747118208; cv=none; b=LkeZKWw1NXRdiHBQOEO2/KkQ2+BO23Igye+RJWltJ+aLzuUWeG+m5snLwkltOkcw2wMiAIOLyR6bfNEN4zMKIwqaQV3Y9nbAj4dGiHFsl/y68P0DGUD2CvNKZtpxrjsnFGeOIgEkW18/djeJBlnyu40uYhXzK0LMJbtlZFkQ2+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747118202; c=relaxed/simple;
-	bh=h+IkIgCUvVv5X/EgaxFnbE68t9F1Ebt3Kltz7OM6R0o=;
+	s=arc-20240116; t=1747118208; c=relaxed/simple;
+	bh=Ip3fCjtKHIWdXoxS2ayjmqQZ2CXz2QC9JgKDfWc8a7w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cU0TvejNxeHfWmV7W4qLolLg1syLWzxLm5maXvHEXU1HbAMUzqylIVHlJNlsr4/V89Gcy9PAAMJvEREPVumEBYKOWAQlidGQPeVk+6ZiB18vHEmXRZ/wXeEIcNViWfCa/TmknbLln9ln9tblZJ6RUjqPs3dGUqNgaFc6dJHV1Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a3XvQtk7; arc=none smtp.client-ip=209.85.210.195
+	 In-Reply-To:To:Cc; b=ZVCWShJzQL4joVj+ekS9RzqX+H0Kt/YnzD1FM8dxbmfGb3mIj/D+O5FTptTGNXZ4QxAo9DodhVsTRU3ZBApp+XJpzqw/VorRUGMoHvphZYvZBESyC9jOn2V5Z+6yOqBwUAnu0dI00KIQp6kgqgNq4UnRXc+zpn/dLmTUHcUo5R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y/CDeEwc; arc=none smtp.client-ip=209.85.210.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a3XvQtk7"
-Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-74267c68c11so1609195b3a.0
-        for <imx@lists.linux.dev>; Mon, 12 May 2025 23:36:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y/CDeEwc"
+Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-73bf5aa95e7so5246721b3a.1
+        for <imx@lists.linux.dev>; Mon, 12 May 2025 23:36:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747118200; x=1747723000; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1747118205; x=1747723005; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=q/m+/Li5pJXxIfZ18YdvYQcc+JWVJfDghRV2cswxgso=;
-        b=a3XvQtk7ilojtFVZYSN9/zS8mqFvaMGCG4PTWCT3wCL1Z08vRAvEZ9bReMOERUxU0w
-         IXFGEt7sGp2ty3UsBewfJjmay2py7RKLv6W/207vgR0Ksk1JQjuCDio4IGoG9tudlg9z
-         /jKCEII/sfty/+eBCEerJkLZo8W6SBd5fYi/M13Tu5DN/CTaEK1ZQCY6ymKh84frF81D
-         SKzCg0eDWzmRoxJ60XmQwbpLbxRHqN77M624e6y/IHvcjYbHS2mx8d8WyE7NDm/ahVcV
-         dqVDObD+J6QrnXHRHkZLRnNfU6cTe4IGFEr0+hG0sgC3uAYgi7T3uWSp/gmAbel7jJ0U
-         MW2A==
+        bh=y99xS7SY2LAz3TrF1rHqHfHg9H2RdQzzJUTTaDgx+SY=;
+        b=Y/CDeEwcCk1KBOgC1UxWjRlrcJA9yWWdgim8a4s6WZOdwIgE5GAEfDgxexTK8W43xS
+         6lJ6XkwCrdMx2KQyLzU0C2D1VTWX6ZyS8JbCdK3tj4xH6o5FNOIg81eHO0/KT5AYpIG2
+         5P9DHJHakfTfo51b2chkGgu8ipvGaL0Zfx5rhyp2HzhT6ibBm2ayp4iWXL5ev5VEAP7n
+         2OGAWgg+X97yZoUMH3ELXPNmaiUdDtAnd5AAmUZYcQ2bjwNdn7GxpO4aSE8rnmnAFUk5
+         P3Y5FtGRtyL6sz+2pBzX1mmEh3ImXhrtDb9lxa1KQs5oRXLjPiJu2ZXCnxls7wZPiCAh
+         7s/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747118200; x=1747723000;
+        d=1e100.net; s=20230601; t=1747118205; x=1747723005;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=q/m+/Li5pJXxIfZ18YdvYQcc+JWVJfDghRV2cswxgso=;
-        b=VVKmBCaW4jWWVaGedXM7D0nt1eC5gIxEqYMyzzumlY+MqJjvGWFHcHXbkINyoSIjbK
-         AjNrsUiVr411U9GLheUeDmMBfZBNSWR1v/1lq+z6hRt/WUS+552AfvdHAB5zajiFnSZs
-         JcHiJM+E+OnRfwnfT1DfKgr5hEXs/S1XpkU/mnG2IojYBQ0u797Vr6Jcsq/P8wnV+ygM
-         6feM8iFK+gtGJDuz1YCv3+JTQ9+xywQ4P/7TmWM9wwMlx3sQFJoEVYm2V0zKbnD4rcIR
-         EsyYPSyH4N/krbQcSnaBs24G0uKudmyS1wwFLYymKL1Qt5qmuwL0BlynlH3qCwF3qWsV
-         7G2A==
-X-Forwarded-Encrypted: i=1; AJvYcCV2CbrW+qFwshkiHrMxyj9BRj9t4euh/UCmkpEJjLthxz+PV00Ga8w9V8b47nlCsfcMQsM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz9a3oElrdvRv/BnuMQGMb4IHmh+Gh6nCjJ9IhQzqgDqoicA+d0
-	MUy75TvJ4/ORfKsfBDydNaOaRCmjelb9U35R3B1rbGh7RpsrVRpG
-X-Gm-Gg: ASbGncu//u1P0ez+OcMUuV3WHhfExDXT0B2ilHJD21xIV4mUEHTi658XmNz7E4bm9kK
-	YnVswInM5lD9OJLIV6BwhTHQha1yp6XGuzhA8ZdoGJZPmCMTMSUGKljAW6Xfdv+hQQUqtc7bKxs
-	y906aPhDISS/glyE9ylJyqi+J/R+XdL8BBY5vkEmf7Ic25+Iloacb0HNYEFzszKIRIL9D696XBd
-	/sMPC+S9wlv/I+QW0cP7w7Js16nItyPRpgM2Sh3w8/eBCbkOlQWddQpxOp3S033tpqcW8qZsMpv
-	PkbdULh6aq1GngXj1+wJODlVjM2Kzbg2xXOZ8gkVdts5du9NHvvizHI=
-X-Google-Smtp-Source: AGHT+IGZ12WCZaO89aqysPWzb8ptQomhGLUKACz8fvPTEYceAq2R5hRP0UZ1mryvPQHCijtI5AB34g==
-X-Received: by 2002:a05:6a20:7fa4:b0:1f5:83da:2f9f with SMTP id adf61e73a8af0-215abaf92e9mr22671112637.12.1747118199649;
-        Mon, 12 May 2025 23:36:39 -0700 (PDT)
+        bh=y99xS7SY2LAz3TrF1rHqHfHg9H2RdQzzJUTTaDgx+SY=;
+        b=G/uZLtzEl6c8LO/NC/QqtLZDc/Y+tf6g5fXYzkyFAhJ5f1+9qFKSEVF3ZhysoQytu8
+         2ttuPcS1LTjer8kIRhTCl9E/gKXUHEHZeWI4su7HDBOlI1fC0Cd/YuxIUPUoAIYoEfPw
+         evoKmhHOvBcrryEIVOtX06O+1SdeIRywPehAzHOuLMPvwD/V8pQOmli3T8AwZh1S5wWy
+         RPlnA+loB0zwvsflCd8Ip7q0cEVyy5At/sfhBXrFaKhJcskdKXexkLPFyqK/duEuQYwm
+         6ZAloT8FyGTK+kpaKpuJjOLM/jPwGJkkGxpyR4DPzs94njWANc4Yhho9MLot6hooD9Dw
+         jWPA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1LMN1U+1zW0bKqxMErSCfPSsqcVkYJ9hpfagYwImbzICZHq+s4IWeHtE4HdgmvTuV2hQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz+0K7Hsmz/486shqJqgkDf3M4JI7b2a5cGux/3w3qUq/pBDL9H
+	aEjGMsbV29U3KYB44j2Hikqw7y8BvopXylE+duORMk17DS33DuRilG+vY/Y9bNo92uUR
+X-Gm-Gg: ASbGnctnLdgGYscGNDWsGokTTeiFn3vfZnTITP46R6hRmvpV1eSTWjNdG9AokvZFETJ
+	u5eB9dwbjh+tIEhmNYenWuUjs4ZdrAoBQXLpR20PNJSaVUEfXQ5EsyOUOjlpPrA2MEzaUWk3dqG
+	Pfzzvhwb70vukwHzHoTibb9RAukJfnblt3dv2gImj/Z1X2L5KbaUYKhsoAifkfN108TJCz9ySUA
+	6NIvHAxTqiUv4J55r1rxWagi1RWu3h3LSsgTMYkoGu+VkHyGv13XVBT0zGbV408zyOEz+wKQ+60
+	8XCePNB2KYZJRNe7AaYJcryld4BIwnSfQAW+7Q18sp2KUtzlhGeTq1Y=
+X-Google-Smtp-Source: AGHT+IFJWXy24yaetI34omZb1r4anR0SzeBfbfb+3vCHkMA5r41DKDPTr4sjv1kUrFcK6m2M+hxgTw==
+X-Received: by 2002:a05:6a21:3510:b0:1f5:7cb4:b713 with SMTP id adf61e73a8af0-215abb3a301mr23308487637.19.1747118204664;
+        Mon, 12 May 2025 23:36:44 -0700 (PDT)
 Received: from [127.0.1.1] ([91.124.30.36])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b234a0b76ccsm6657936a12.27.2025.05.12.23.36.35
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b234a0b76ccsm6657936a12.27.2025.05.12.23.36.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 May 2025 23:36:39 -0700 (PDT)
+        Mon, 12 May 2025 23:36:44 -0700 (PDT)
 From: Troy Mitchell <troymitchell988@gmail.com>
-Date: Tue, 13 May 2025 14:36:13 +0800
-Subject: [PATCH v3 1/2] i2c: imx: use guard to take spinlock
+Date: Tue, 13 May 2025 14:36:14 +0800
+Subject: [PATCH v3 2/2] i2c: imx: drop master prefix
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250513-i2c-imx-update-v3-1-817b7426a67e@gmail.com>
+Message-Id: <20250513-i2c-imx-update-v3-2-817b7426a67e@gmail.com>
 References: <20250513-i2c-imx-update-v3-0-817b7426a67e@gmail.com>
 In-Reply-To: <20250513-i2c-imx-update-v3-0-817b7426a67e@gmail.com>
 To: Oleksij Rempel <o.rempel@pengutronix.de>, 
@@ -78,110 +78,40 @@ To: Oleksij Rempel <o.rempel@pengutronix.de>,
 Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Troy Mitchell <troymitchell988@gmail.com>, Yongchao Jia <jyc0019@gmail.com>, 
- Frank Li <Frank.Li@nxp.com>
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1747118187; l=3101;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1747118187; l=873;
  i=troymitchell988@gmail.com; h=from:subject:message-id;
- bh=h+IkIgCUvVv5X/EgaxFnbE68t9F1Ebt3Kltz7OM6R0o=;
- b=GEBTx6+w7HdlyIV2HGzJrrowsb4WUjf9YUDMcusHX61zNyz4tZoMS2uN2u12UPh1FXB5/cVSC
- QhMiNEnbqgnAxvnM70de3VHUi8VKsRvt/VNeqwQ9jVbxs9ve176vtez
+ bh=Ip3fCjtKHIWdXoxS2ayjmqQZ2CXz2QC9JgKDfWc8a7w=;
+ b=dtZzgsLgDl4KFfOlioaf2TlzkSvJK7YIv+UGk86oqaYvH+1y/9yehAeMD3OYYPYJjYj4B7deQ
+ sLWQG6khLQIDMDqVZzcC3TMjq2ndve+vwEALeKmMzhawudTm3ezOiut
 X-Developer-Key: i=troymitchell988@gmail.com; a=ed25519;
  pk=2spEMGBd/Wkpd36N1aD9KFWOk0aHrhVxZQt+jxLXVC0=
 
-Use guard to automatically release the lock after going out of scope
-instead of calling it manually.
+In light of the recent updates to the i2c subsystem,
+drop master prefix.
 
-i2c_imx_slave_handle() can safely be entered with the lock held.
-
-Refactored the i2c_imx_isr function so that i2c_imx_master_isr
-does not participate in the guard scope
-
-So Using scoped_guard simplifies the control flow
-by ensuring consistent and automatic unlock,
-which improves readability without affecting correctness.
-
-Co-developed-by: Yongchao Jia <jyc0019@gmail.com>
-Signed-off-by: Yongchao Jia <jyc0019@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Troy Mitchell <troymitchell988@gmail.com>
 ---
- drivers/i2c/busses/i2c-imx.c | 37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 9e5d454d8318..5b276e007292 100644
+index 5b276e007292..d85adfb73bac 100644
 --- a/drivers/i2c/busses/i2c-imx.c
 +++ b/drivers/i2c/busses/i2c-imx.c
-@@ -23,6 +23,7 @@
- 
- #include <linux/acpi.h>
- #include <linux/clk.h>
-+#include <linux/cleanup.h>
- #include <linux/completion.h>
- #include <linux/delay.h>
- #include <linux/dma-mapping.h>
-@@ -891,13 +892,13 @@ static enum hrtimer_restart i2c_imx_slave_timeout(struct hrtimer *t)
- 	struct imx_i2c_struct *i2c_imx = container_of(t, struct imx_i2c_struct,
- 						      slave_timer);
- 	unsigned int ctl, status;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&i2c_imx->slave_lock, flags);
-+	guard(spinlock_irqsave)(&i2c_imx->slave_lock);
-+
- 	status = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR);
- 	ctl = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
- 	i2c_imx_slave_handle(i2c_imx, status, ctl);
--	spin_unlock_irqrestore(&i2c_imx->slave_lock, flags);
-+
- 	return HRTIMER_NORESTART;
+@@ -1687,8 +1687,8 @@ static u32 i2c_imx_func(struct i2c_adapter *adapter)
  }
  
-@@ -1125,32 +1126,26 @@ static irqreturn_t i2c_imx_isr(int irq, void *dev_id)
- {
- 	struct imx_i2c_struct *i2c_imx = dev_id;
- 	unsigned int ctl, status;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&i2c_imx->slave_lock, flags);
--	status = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR);
--	ctl = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-+	scoped_guard(spinlock_irqsave, &i2c_imx->slave_lock) {
-+		status = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2SR);
-+		ctl = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-+
-+		if (!(status & I2SR_IIF))
-+			return IRQ_NONE;
- 
--	if (status & I2SR_IIF) {
- 		i2c_imx_clear_irq(i2c_imx, I2SR_IIF);
-+
- 		if (i2c_imx->slave) {
--			if (!(ctl & I2CR_MSTA)) {
--				irqreturn_t ret;
--
--				ret = i2c_imx_slave_handle(i2c_imx,
--							   status, ctl);
--				spin_unlock_irqrestore(&i2c_imx->slave_lock,
--						       flags);
--				return ret;
--			}
-+			if (!(ctl & I2CR_MSTA))
-+				return i2c_imx_slave_handle(i2c_imx,
-+							    status, ctl);
-+
- 			i2c_imx_slave_finish_op(i2c_imx);
- 		}
--		spin_unlock_irqrestore(&i2c_imx->slave_lock, flags);
--		return i2c_imx_master_isr(i2c_imx, status);
- 	}
--	spin_unlock_irqrestore(&i2c_imx->slave_lock, flags);
- 
--	return IRQ_NONE;
-+	return i2c_imx_master_isr(i2c_imx, status);
- }
- 
- static int i2c_imx_dma_write(struct imx_i2c_struct *i2c_imx,
+ static const struct i2c_algorithm i2c_imx_algo = {
+-	.master_xfer = i2c_imx_xfer,
+-	.master_xfer_atomic = i2c_imx_xfer_atomic,
++	.xfer = i2c_imx_xfer,
++	.xfer_atomic = i2c_imx_xfer_atomic,
+ 	.functionality = i2c_imx_func,
+ 	.reg_slave	= i2c_imx_reg_slave,
+ 	.unreg_slave	= i2c_imx_unreg_slave,
 
 -- 
 2.34.1
