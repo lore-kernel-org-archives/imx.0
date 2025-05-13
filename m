@@ -1,51 +1,51 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758031E5710
-	for <imx@lists.linux.dev>; Tue, 13 May 2025 05:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FD31E5729
+	for <imx@lists.linux.dev>; Tue, 13 May 2025 06:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747114281; cv=none; b=CnkMQ0zqfHZuP6NGpef+VGZ9JywmOlbl5W2e2Z35mLFc268kFBeWZskcaONBh8n+/E+pdv4aUxfBE8ipz7cYoUv9jInBlU2l1p74AFCk6FdPL2aOu9WrJiCghdUPXUlXpDLZVbTMbH32hydHZlVP7EmJ7WTR4pp3JyZWZCsj4v0=
+	t=1747116570; cv=none; b=Hsi0wdggQdKjXdRJOJXde2pGekOVewbSeyyS6gpkivSy2dRSp+HP7oy9n8a42EGZMHycg8aIDT/e9awtRLrGl0UqZ67Ze4j5wwmwtoDcLADeLlLrXOb62RpZfK5YFnB9fOMW4Nlg5pxZ/hOh7meDiseHZqv6ycq92n71xiT/RIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747114281; c=relaxed/simple;
-	bh=VtWsJ5jxF5ditBS+PzMpbSYMYidoIRW8fVv6/2U8zto=;
+	s=arc-20240116; t=1747116570; c=relaxed/simple;
+	bh=sFh2ICeB4mznTP4Bfry/I+dPTE8ZXXQmZmNZVTM9oeg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dmyfvO/d/LoeN1pWf7dWidKQ+sWCL0ccXCyaQB1fqPPjgttwhwmb4F93zV4NcjjndZoZfpeHEOtNV/gnu0Y+HSj6NvIvpGB5YQITR69tQ40a1B1+Vx5WMOnN7B9EGTORsh252StcF2DjPtNMi7ynKpah3O0E+IuME7vaBCCmnRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=AyOcLNrg; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version:Content-Type; b=mzF3jZj3UACglHfjGXDSP2EiAGW6q7wWYlGR0fNgaBQdNJhXLNFpuwubIdshC2Ieuy2/35FW/qjyKX1NJpYmj6KA0tdVBw2ov34Sbv4d1P1NZN2EP0fvljCkXUwdPnuy3dN9Mr2XO99+gxffcJn0jxnRG6KiVTMtQaWye22P3hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=XgIlxJAC; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="AyOcLNrg"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 257C0101F54F9;
-	Tue, 13 May 2025 07:31:11 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="XgIlxJAC"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B21DD101F54F9;
+	Tue, 13 May 2025 08:09:21 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1747114276; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=AOoLpSlcMEI3x/GsGXxu7WykZ1/+A4nN7MIcD+H/+uQ=;
-	b=AyOcLNrgYSbYvX4wYgUv7mAVOse9uZXTb2e+Unl8AVKvxYEBs1D9iqL+oee+kyOUJMQeh0
-	p8TL9HQCLcGSTXMaQtY5jJwQO9bkdLR0tdV9uKejyTTl/I2RVZhXVcR+0gbCfS+TD3WQXt
-	WQBIMODdESc0ckXiMmWXI9zZZ8FiJZX117MsatlhANrhd6M2Ev4JBfYNLP2oe3PV8hZE/t
-	l4gLRaLVEmSC/r8zxEuRJDSVUEIRtFDUcsjYVJiXRvKd6xsn3/wSxqK2vNqEAS2vyP12ot
-	jisN+XZssVfk7xllsfE8hzFW3p42yDJtW2K/NE5Ct+138mhoEwrK7BLTv/V02w==
-Date: Tue, 13 May 2025 07:31:09 +0200
+	t=1747116564; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=MncshJ1N3nQkNK52N5FTaCdNEcC11NmMuRNRJmKFpY8=;
+	b=XgIlxJACCVW018Pi0FgvOmE3ybj/A0gfvBO5sbPbBVtV3RlD3DCEvISmFRHrg/u5mfvWxp
+	R8GDDioBVq6Kl3fcH9G/gZr1OlsvkjkMW95Zx9T4EGjHq34AXnR8ES0uOpOMk8z3QYpk0/
+	YmNPkIUkcdgsm2NTbRLDju8qDA5pWD6XJLiTR/efIjqFkzF+b3QK3blk3pQI45EZTucwii
+	nAjwYFmkVTQSwZZEcWiIjhaDT2a1u4UZOcxeIbfnLQaFSBl/M9n4hH6pJ5BL/Pop36cEcX
+	cJvh/pjNbllhD77gopHErZZGvDRcV8fLoPYogdLlgC3OboQb3AoijmoY85J55g==
+Date: Tue, 13 May 2025 08:09:20 +0200
 From: Lukasz Majewski <lukma@denx.de>
-To: Paolo Abeni <pabeni@redhat.com>
+To: Rob Herring <robh@kernel.org>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
  <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
  Fabio Estevam <festevam@gmail.com>, Richard Cochran
  <richardcochran@gmail.com>, netdev@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [net-next v11 4/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250513073109.485fec95@wsk>
-In-Reply-To: <61ebe754-d895-47cb-a4b2-bb2650b9ff7b@redhat.com>
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
+Subject: Re: [net-next v11 1/7] dt-bindings: net: Add MTIP L2 switch
+ description
+Message-ID: <20250513080920.7c8a2a06@wsk>
+In-Reply-To: <20250512164025.GA3454904-robh@kernel.org>
 References: <20250504145538.3881294-1-lukma@denx.de>
-	<20250504145538.3881294-5-lukma@denx.de>
-	<61ebe754-d895-47cb-a4b2-bb2650b9ff7b@redhat.com>
+	<20250504145538.3881294-2-lukma@denx.de>
+	<20250512164025.GA3454904-robh@kernel.org>
 Organization: denx.de
 X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -54,115 +54,289 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/NdXiA+ua5HLGGlUZSgHFP74";
+Content-Type: multipart/signed; boundary="Sig_/szb2u=yuhhNpm=y0AkbX6Qf";
  protocol="application/pgp-signature"; micalg=pgp-sha512
 X-Last-TLS-Session-Version: TLSv1.3
 
---Sig_/NdXiA+ua5HLGGlUZSgHFP74
+--Sig_/szb2u=yuhhNpm=y0AkbX6Qf
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-Hi Paolo,
+Hi Rob,
 
-> On 5/4/25 4:55 PM, Lukasz Majewski wrote:
-> > +		/* This does 16 byte alignment, exactly what we
-> > need.
-> > +		 * The packet length includes FCS, but we don't
-> > want to
-> > +		 * include that when passing upstream as it messes
-> > up
-> > +		 * bridging applications.
-> > +		 */
-> > +		skb =3D netdev_alloc_skb(pndev, pkt_len +
-> > NET_IP_ALIGN);
-> > +		if (unlikely(!skb)) {
-> > +			dev_dbg(&fep->pdev->dev,
-> > +				"%s: Memory squeeze, dropping
-> > packet.\n",
-> > +				pndev->name);
-> > +			pndev->stats.rx_dropped++;
-> > +			goto err_mem;
-> > +		} else {
-> > +			skb_reserve(skb, NET_IP_ALIGN);
-> > +			skb_put(skb, pkt_len);      /* Make room */
-> > +			skb_copy_to_linear_data(skb, data,
-> > pkt_len);
-> > +			skb->protocol =3D eth_type_trans(skb, pndev);
-> > +			napi_gro_receive(&fep->napi, skb);
-> > +		}
+> On Sun, May 04, 2025 at 04:55:32PM +0200, Lukasz Majewski wrote:
+> > This patch provides description of the MTIP L2 switch available in
+> > some NXP's SOCs - e.g. imx287.
+> >=20
+> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> > Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+> >=20
+> > ---
+> > Changes for v2:
+> > - Rename the file to match exactly the compatible
+> >   (nxp,imx287-mtip-switch)
+> >=20
+> > Changes for v3:
+> > - Remove '-' from const:'nxp,imx287-mtip-switch'
+> > - Use '^port@[12]+$' for port patternProperties
+> > - Drop status =3D "okay";
+> > - Provide proper indentation for 'example' binding (replace 8
+> >   spaces with 4 spaces)
+> > - Remove smsc,disable-energy-detect; property
+> > - Remove interrupt-parent and interrupts properties as not required
+> > - Remove #address-cells and #size-cells from required properties
+> > check
+> > - remove description from reg:
+> > - Add $ref: ethernet-switch.yaml#
+> >=20
+> > Changes for v4:
+> > - Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove
+> > already referenced properties
+> > - Rename file to nxp,imx28-mtip-switch.yaml
+> >=20
+> > Changes for v5:
+> > - Provide proper description for 'ethernet-port' node
+> >=20
+> > Changes for v6:
+> > - Proper usage of
+> >   $ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
+> >   when specifying the 'ethernet-ports' property
+> > - Add description and check for interrupt-names property
+> >=20
+> > Changes for v7:
+> > - Change switch interrupt name from 'mtipl2sw' to 'enet_switch'
+> >=20
+> > Changes for v8:
+> > - None
+> >=20
+> > Changes for v9:
+> > - Add GPIO_ACTIVE_LOW to reset-gpios mdio phandle
+> >=20
+> > Changes for v10:
+> > - None
+> >=20
+> > Changes for v11:
+> > - None
+> > ---
+> >  .../bindings/net/nxp,imx28-mtip-switch.yaml   | 149
+> > ++++++++++++++++++ 1 file changed, 149 insertions(+)
+> >  create mode 100644
+> > Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+> >=20
+> > diff --git
+> > a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+> > b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+> > new file mode 100644 index 000000000000..35f1fe268de7 --- /dev/null
+> > +++
+> > b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+> > @@ -0,0 +1,149 @@ +# SPDX-License-Identifier: (GPL-2.0-only OR
+> > BSD-2-Clause) +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > > +
-> > +		bdp->cbd_bufaddr =3D dma_map_single(&fep->pdev->dev,
-> > data,
-> > +						  bdp->cbd_datlen,
-> > +						  DMA_FROM_DEVICE);
-> > +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
-> > +					       bdp->cbd_bufaddr)))
-> > {
-> > +			dev_err(&fep->pdev->dev,
-> > +				"Failed to map descriptor rx
-> > buffer\n");
-> > +			pndev->stats.rx_errors++;
-> > +			pndev->stats.rx_dropped++;
-> > +			dev_kfree_skb_any(skb);
-> > +			goto err_mem;
-> > +		} =20
->=20
-> This is doing the mapping and ev. dropping the skb _after_ pushing the
-> skb up the stack, you must attempt the mapping first.
-
-I've double check it - the code seems to be correct.
-
-This code is a part of mtip_switch_rx() function, which handles
-receiving data.
-
-First, on probe, the initial dma memory is mapped for MTIP received
-data.
-
-When we receive data, it is processed and afterwards it is "pushed" up
-to the network stack.
-
-As a last step we do map memory for next, incoming data and leave the
-function.
-
-Hence, IMHO, the order is OK and this part shall be left as is.
-
->=20
-> > +static void mtip_free_buffers(struct net_device *dev)
-> > +{
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	struct sk_buff *skb;
-> > +	struct cbd_t *bdp;
-> > +	int i;
+> > +title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
 > > +
-> > +	bdp =3D fep->rx_bd_base;
-> > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
-> > +		skb =3D fep->rx_skbuff[i];
+> > +maintainers:
+> > +  - Lukasz Majewski <lukma@denx.de>
 > > +
-> > +		if (bdp->cbd_bufaddr)
-> > +			dma_unmap_single(&fep->pdev->dev,
-> > bdp->cbd_bufaddr,
-> > +					 MTIP_SWITCH_RX_FRSIZE,
-> > +					 DMA_FROM_DEVICE);
-> > +		if (skb)
-> > +			dev_kfree_skb(skb); =20
+> > +description:
+> > +  The 2-port switch ethernet subsystem provides ethernet packet
+> > (L2)
+> > +  communication and can be configured as an ethernet switch. It
+> > provides the
+> > +  reduced media independent interface (RMII), the management data
+> > input
+> > +  output (MDIO) for physical layer device (PHY) management.
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: nxp,imx28-mtip-switch
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  phy-supply:
+> > +    description:
+> > +      Regulator that powers Ethernet PHYs.
+> > +
+> > +  clocks:
+> > +    items:
+> > +      - description: Register accessing clock
+> > +      - description: Bus access clock
+> > +      - description: Output clock for external device - e.g. PHY
+> > source clock
+> > +      - description: IEEE1588 timer clock
+> > +
+> > +  clock-names:
+> > +    items:
+> > +      - const: ipg
+> > +      - const: ahb
+> > +      - const: enet_out
+> > +      - const: ptp
+> > +
+> > +  interrupts:
+> > +    items:
+> > +      - description: Switch interrupt
+> > +      - description: ENET0 interrupt
+> > +      - description: ENET1 interrupt
+> > +
+> > +  interrupt-names:
+> > +    items:
+> > +      - const: enet_switch
+> > +      - const: enet0
+> > +      - const: enet1
+> > +
+> > +  pinctrl-names: true
+> > +
+> > +  ethernet-ports:
+> > +    type: object
+> > +    $ref:
+> > ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties =20
 >=20
-> I suspect that on error paths mtip_free_buffers() can be invoked
-> multiple consecutive times with any successful allocation in between:
-> skb will be freed twice. Likely you need to clear fep->rx_skbuff[i]
-> here.
+> 'patternProperties' is wrong. Drop.
+>=20
 
-+1 - I will add it with v12.
+When I do drop it, then
+make dt_binding_check DT_SCHEMA_FILES=3Dnxp,imx28-mtip-switch.yaml
+
+shows:
+
+nxp,imx28-mtip-switch.example.dtb: switch@800f0000: ethernet-ports:
+'oneOf' conditional failed, one must be fixed:
+
+'ports' is a required property=20
+'ethernet-ports' is a required property
+        from schema $id:
+        http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
+
+We do have ethernet-ports:
+and we do "include" ($ref)
+https://elixir.bootlin.com/linux/v6.14.6/source/Documentation/devicetree/bi=
+ndings/net/ethernet-switch.yaml#L77
+
+which is what we exactly need.
+
+> > +    additionalProperties: true =20
+>=20
+> Drop.
+>=20
+
+When removed we do have:
+nxp,imx28-mtip-switch.example.dtb: switch@800f0000: Unevaluated
+properties are not allowed ('ethernet-ports' was unexpected)
+
+or=20
+
+nxp,imx28-mtip-switch.yaml: ethernet-ports: Missing
+additionalProperties/unevaluatedProperties constraint
+
+Depending if I do remove 'patternProperties' above.
+
+To sum up - with the current code, the DT schema checks pass. It also
+looks like the $ref for ethernet-switch is used in an optimal way.
+
+I would opt for keeping the code as is for v12.
+
+> > +
+> > +    patternProperties:
+> > +      '^ethernet-port@[12]$':
+> > +        type: object
+> > +        additionalProperties: true
+> > +        properties:
+> > +          reg:
+> > +            items:
+> > +              - enum: [1, 2]
+> > +            description: MTIP L2 switch port number
+> > +
+> > +        required:
+> > +          - reg
+> > +          - label =20
+>=20
+> 'label' shouldn't ever be required because s/w shouldn't care what
+> the value is.
+
+Ok, I will remove it for v12.
 
 >=20
-> Side note: this patch is way too big for a proper review: you need to
-> break it in multiple smaller ones, introducing the basic features
-> separately.
->=20
-> Cheers,
->=20
-> Paolo
->=20
+> > +          - phy-mode
+> > +          - phy-handle
+> > +
+> > +  mdio:
+> > +    type: object
+> > +    $ref: mdio.yaml#
+> > +    unevaluatedProperties: false
+> > +    description:
+> > +      Specifies the mdio bus in the switch, used as a container
+> > for phy nodes. +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - clocks
+> > +  - clock-names
+> > +  - interrupts
+> > +  - interrupt-names
+> > +  - mdio
+> > +  - ethernet-ports
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    #include<dt-bindings/interrupt-controller/irq.h>
+> > +    #include<dt-bindings/gpio/gpio.h>
+> > +    switch@800f0000 {
+> > +        compatible =3D "nxp,imx28-mtip-switch";
+> > +        reg =3D <0x800f0000 0x20000>;
+> > +        pinctrl-names =3D "default";
+> > +        pinctrl-0 =3D <&mac0_pins_a>, <&mac1_pins_a>;
+> > +        phy-supply =3D <&reg_fec_3v3>;
+> > +        interrupts =3D <100>, <101>, <102>;
+> > +        interrupt-names =3D "enet_switch", "enet0", "enet1";
+> > +        clocks =3D <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
+> > +        clock-names =3D "ipg", "ahb", "enet_out", "ptp";
+> > +
+> > +        ethernet-ports {
+> > +            #address-cells =3D <1>;
+> > +            #size-cells =3D <0>;
+> > +
+> > +            mtip_port1: ethernet-port@1 {
+> > +                reg =3D <1>;
+> > +                label =3D "lan0";
+> > +                local-mac-address =3D [ 00 00 00 00 00 00 ];
+> > +                phy-mode =3D "rmii";
+> > +                phy-handle =3D <&ethphy0>;
+> > +            };
+> > +
+> > +            mtip_port2: ethernet-port@2 {
+> > +                reg =3D <2>;
+> > +                label =3D "lan1";
+> > +                local-mac-address =3D [ 00 00 00 00 00 00 ];
+> > +                phy-mode =3D "rmii";
+> > +                phy-handle =3D <&ethphy1>;
+> > +            };
+> > +        };
+> > +
+> > +        mdio_sw: mdio {
+> > +            #address-cells =3D <1>;
+> > +            #size-cells =3D <0>;
+> > +
+> > +            reset-gpios =3D <&gpio2 13 GPIO_ACTIVE_LOW>;
+> > +            reset-delay-us =3D <25000>;
+> > +            reset-post-delay-us =3D <10000>;
+> > +
+> > +            ethphy0: ethernet-phy@0 {
+> > +                reg =3D <0>;
+> > +            };
+> > +
+> > +            ethphy1: ethernet-phy@1 {
+> > +                reg =3D <1>;
+> > +            };
+> > +        };
+> > +    };
+> > --=20
+> > 2.39.5
+> >  =20
 
 
 
@@ -177,20 +351,20 @@ DENX Software Engineering GmbH,      Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
 
---Sig_/NdXiA+ua5HLGGlUZSgHFP74
+--Sig_/szb2u=yuhhNpm=y0AkbX6Qf
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgi2R0ACgkQAR8vZIA0
-zr22dAf7BLxjZukHTC/6XVODiBt97iljTiAjzfkSLa9WXpEue6HV1GmD6tkt3wnJ
-HdyON1QvZxs7JUywLFPzF6JgjFz6rxpTR/EpvshLzQOkyW991XrhmPyvHRvUCS2+
-hddDVP0K+6Nbo2EEmlkq3383XOZwPtP93pYieNwkzml9NDgY7tdxwl6fumWOX05c
-obTZQIo6zLfjjoK2alr3lqYke6CfmkJRl7o8/xhcu9Ju9hYIpJl1EPhePCn0ZcVq
-Pmorr7BxDgT1h0M/DnxyRC1RfzIhSekjIaL6+ZBzBWM5mYXy/oDO8jk1q6pS1lPP
-5WomLLwha1NwFG4Y8w+1Ll6gH++xTg==
-=g2d0
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgi4hAACgkQAR8vZIA0
+zr2PiQf/cfG3+ozsR1UCw0lSG/JLHOpz0LUFMjubElolzz4TEfNW4ErqdBptFyNQ
+rna1NkbRl3YTxViqoBnYVyOrR3lAN25+rPAieJdWZYeKc4BOTkXVh5faZHGTQlPX
+IIHNuHnoLny6vJ8Qod38+mMiQL5LYMVVmNhq5PwxuqfTswcrEKaGp7o9AgTUL0CE
+zTzV2ah6nKRuOPTCOzpo2MJCFd0FxebpgqCHxvusVUyi+uzpy6Jl7sCHdN5Rlpb9
+9tETECoKMAxFLpoVePSYKRLdpdYJDUeSHwU1jZrm3eANglKtstNLyelNBr5MvBeQ
+0iT8FnR49zccvtTNAq2duXAbBUVbIw==
+=Cvzg
 -----END PGP SIGNATURE-----
 
---Sig_/NdXiA+ua5HLGGlUZSgHFP74--
+--Sig_/szb2u=yuhhNpm=y0AkbX6Qf--
