@@ -1,73 +1,115 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6884B28DF0C
-	for <imx@lists.linux.dev>; Tue, 13 May 2025 12:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EB428DB63
+	for <imx@lists.linux.dev>; Tue, 13 May 2025 13:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747139851; cv=none; b=MlZSO9qoDzpZfArwHMwA8VN2aDRNzrMrfzXzCpbc7mjjiqijUQKNPEf75KMIP2JoL2Xpzl8ahmLzgTW1lulU8no3Yzt4ekZJzexPEHRN/dImcKNjIqdlWwNova1KwDfWUcSmUKvrf9SrEQZH5wwjiUl2GUIhWB4gn2UvUi2T+rw=
+	t=1747141483; cv=none; b=nHPjl3QYKG1p7c9p+SMc0Vchd6Ka5IS9Hl6aWjDtL8WwUZuXLRjYAoqZDwCbNE9glTvPaIHWH16gR8mGfT0CMAAU3z0bJeaGNm9y9vLXHkUUqr4QxpsdQoJibLpV5f0Yasx5I3h4M3FnBu8HXs56374EkKB6IT6NKIpdF/Orx58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747139851; c=relaxed/simple;
-	bh=3sMnQutBFlPViJp7Hc1+l8Bg0KmvD8Trhn54GPGgYZE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rscL6uuVB0fH+ElLeu6RgWm+PRaAku5fVDl/FEyJ6xQlwy+ReuSKth2XG4ESAe0bU01nziohntiDy8h0sHcoSIkUQfNrTRBPivFQkFQYaMhpjC6LoCzlvFSY+ogAuqhpvxBs+vz2l1nnKr1KUgTp/uC8XrQnYkeiIAPcPEr2jX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QDnXZ34D; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1747141483; c=relaxed/simple;
+	bh=u2ZxOoIdi13WjQ49OpkZmrMWrhD/oEbMUsIPhKeBTyY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t2BIZ3fh74FN+iDSGDJV99hlF98y+mRjtUnybwNffu+hDB14gBuuU2Q4W5DQiTuKMen86Ff4isxxe/syTQhEyj2g0Fsralz30MehqEOwiB/QDv0PRwdIg8+LuIPU1Jy9f3a6My7goq1QfxKosbL3m80M/ABeCdsDR3ML97MnFY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Htn3xUsC; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QDnXZ34D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=UL
-	7uRrHf7AfMhis0KiBAtUc7h4CmxurwrN1nGmPQo6g=; b=QDnXZ34Do4HX+Np1XY
-	Vnxp0129+sJL2DkXqzLaa9FR1IauHMsp5At2B3uSIohmxsp2YajyV5r6T0AA+/UC
-	KL9jpZPqkx5DKFdiLBWKEIRCpt/uNhPu8wG8ZwBt1PFqsH5+GTjk0MRPgPCcltwV
-	vRGY3kKZ/QMvJGIYkEaZYFM4Q=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wBXPCPzPCNojQdqBA--.15182S4;
-	Tue, 13 May 2025 20:37:13 +0800 (CST)
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
-To: Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	imx@lists.linux.dev
-Cc: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Subject: [PATCH 1/1] Add check to ida_alloc()
-Date: Tue, 13 May 2025 20:37:05 +0800
-Message-Id: <20250513123705.3041311-1-ruc_gongyuanjun@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Htn3xUsC"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-550d09d4daaso1188161e87.2
+        for <imx@lists.linux.dev>; Tue, 13 May 2025 06:04:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1747141480; x=1747746280; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u2ZxOoIdi13WjQ49OpkZmrMWrhD/oEbMUsIPhKeBTyY=;
+        b=Htn3xUsCBSTJTels2c97+2Av/3q4Y66ASI7Uxi4DCeNtC+PgZo5bStbWKxt3EToHmt
+         N68Czbpo0tzQEwm+k2Mab0/p4HK2U+N92aFjd1/44ghQfAosORFLXqAnpyymIJw9TQQN
+         jJJLiVMkuZaHrnPhEEnUSicPDs1shIJdcubmVK0FZ+hKuQclx4Bx04izUEYgWvrKDLZl
+         Np30qPwI59yXfGrKFWxUjTCErIpOYvnKe+A604H/S/JSc2Ve6sZ37g+CZn4gykBB8SRd
+         mncq5in21rEfkxnpKVMl920QO4MYwhO9vB+XNbGTTof1cY0DY+iAeuHU2XYw0JzeRsOk
+         N7oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747141480; x=1747746280;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u2ZxOoIdi13WjQ49OpkZmrMWrhD/oEbMUsIPhKeBTyY=;
+        b=MepTM/bOYJm28wdsuonq1ETQzUwENhMIdddXJ/bRtJlPyXYbhcoBWYUEXOKUn6gjSg
+         de3ipFH790oQSvl8uSxgZ+yVYzS0wHoU32rYoXOolD1kUqAKYrunpFokFtkWNbB0GeDI
+         Qq9dAZwkbW1SHIQAVrrWb4dGOKxhRzyrlraSQdXFSxL/z1lsR/YKJFbW4/Y2CEc4U1q7
+         sMPRI5xfHS3WcKnH8FL4eT/rQhff0yfYkakwkphtIYHqmjW7SoiaxT8mbcYYth2IyXnl
+         jZcegaGSmD1NHq67gBtbocZFp0TxFMdlySQaUdAc5oPa8lNVfMk0wJ6TkzJ3OCPa0gew
+         PCzg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7DEQwRS4O2IV19f0B6+Y74UBrRLA+7NfbBD5tHpnlg5k8R4IN3UuAPxaqAmmihs+t3Bk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzZhj/hqOvRsWIqyby6vqkCwAzt66QUD86cUq4SmCSgk+RDcUFy
+	amg5q2gXhsCaUHZ60yWxUsV9eHF64O7X5NMnHLQhZmJuzPipwLucbVc2yYZFmjCtd/RVn8krr2o
+	hd6Heb1Pi0whGMfhZs785ajMMowe21/4o1g17Mg==
+X-Gm-Gg: ASbGncsm+NcWJRqTFEeUwRnZAKSMG8rD6BBEPqBOnKAxLBWGHz0Ohjn++Ws/MkZxwsg
+	sOZWbBNgqIynMWW19jvEMWtzyKEvzC93MVN/Qb4VGDZV8wNhn6XEabnbBKpmUyeWB6mVEMiIitP
+	TqZC7QUIuw4sc7CUqf1vSJ9Fbh9c4TVSbb8WRyAfOgeRE=
+X-Google-Smtp-Source: AGHT+IHvP0gooDDmu568VdD7x6FFv8psYcJXM3XY47vCtvEw04TEGbdJAZqsD4ocAj63/kyy4PnOyiTDBOr/SlE5CrE=
+X-Received: by 2002:a05:6512:608b:b0:545:1e2d:6b73 with SMTP id
+ 2adb3069b0e04-54fc67b5d02mr7159396e87.13.1747141479717; Tue, 13 May 2025
+ 06:04:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXPCPzPCNojQdqBA--.15182S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKFyxGrW7GFWDXrWrCF1rZwb_yoW3AwcEkw
-	4xuryI9F18Gr1DKr18tryfAryYkF1Y9FZ3XrnxKws3Zry5Cw10grykArnrZwsrWw4xCF1k
-	CrWqkF43Ar47GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRWbyAJUUUUU==
-X-CM-SenderInfo: 5uxfsw5rqj53pdqm30i6rwjhhfrp/1tbiNxpM5WgjNvOQXgAAsE
+References: <20250507-b4-imx-gpio-base-warning-v2-1-d43d09e2c6bf@pengutronix.de>
+In-Reply-To: <20250507-b4-imx-gpio-base-warning-v2-1-d43d09e2c6bf@pengutronix.de>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 13 May 2025 15:04:28 +0200
+X-Gm-Features: AX0GCFt0sjPwjvA5EozAKBAvIh0YXGHalZHBo5O9eCpuXVR3ChNSqR-rASM-_dk
+Message-ID: <CACRpkdaBrxwWd4JPAJCZRj1Ov8a_6U+idGzi2pnEr4MJ0Eyf2Q@mail.gmail.com>
+Subject: Re: [PATCH v2] gpio: mxc: configure dynamic GPIO base for CONFIG_GPIO_SYSFS=n
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-gpio@vger.kernel.org, 
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Catalin Popescu <catalin.popescu@leica-geosystems.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Check the return value of ida_alloc() in case it fails.
-This is found by a static checker.
+On Wed, May 7, 2025 at 3:07=E2=80=AFPM Ahmad Fatoum <a.fatoum@pengutronix.d=
+e> wrote:
 
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
----
- drivers/perf/fsl_imx9_ddr_perf.c | 3 +++
- 1 file changed, 3 insertions(+)
+> i.MX GPIO numbering has been deterministic since commit 7e6086d9e54a
+> ("gpio/mxc: specify gpio base for device tree probe"), a year after
+> device tree support was first added back in 2011.
+>
+> Reverting to dynamically allocated GPIO base now would break most
+> systems making use of the sysfs API. These systems will be eventually
+> broken by the removal of the sysfs API, but that would result in GPIO
+> scripts not working instead of essentially toggling at random according
+> to probe order, which would happen if we unconditionally set base to -1.
+>
+> Yet, the warning is annoying and has resulted in many rejected attempts
+> to remove it over the years[1][2][3].
+>
+> As the i.MX GPIO driver is device tree only, GPIO_SYSFS is the only
+> consumer of the deterministic GPIO numbering. Let's therefore restrict th=
+e
+> static base and the warning that comes with it to configurations
+> with CONFIG_GPIO_SYSFS enabled.
+>
+> [1]: https://lore.kernel.org/all/20230226205319.1013332-1-dario.binacchi@=
+amarulasolutions.com/
+> [2]: https://lore.kernel.org/all/20230506085928.933737-2-haibo.chen@nxp.c=
+om/
+> [3]: https://lore.kernel.org/all/20241121145515.3087855-1-catalin.popescu=
+@leica-geosystems.com/
+>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-diff --git a/drivers/perf/fsl_imx9_ddr_perf.c b/drivers/perf/fsl_imx9_ddr_perf.c
-index 843f163e6c33..86da027405cf 100644
---- a/drivers/perf/fsl_imx9_ddr_perf.c
-+++ b/drivers/perf/fsl_imx9_ddr_perf.c
-@@ -790,6 +790,9 @@ static int ddr_perf_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, pmu);
- 
- 	pmu->id = ida_alloc(&ddr_ida, GFP_KERNEL);
-+	if (pmu->id < 0)
-+		return -ENOMEM;
-+
- 	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, DDR_PERF_DEV_NAME "%d", pmu->id);
- 	if (!name) {
- 		ret = -ENOMEM;
--- 
-2.25.1
+Well that is an interesting way to do it. OK I guess!
 
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij
