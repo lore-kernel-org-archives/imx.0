@@ -1,204 +1,299 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013063.outbound.protection.outlook.com [40.107.162.63])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030D51DE4E1
-	for <imx@lists.linux.dev>; Wed, 14 May 2025 02:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747188701; cv=fail; b=Ziv+LWwiqLO8DP90BSa3x5OeCo1neRd7dbJbu2wcX88OgBGHlxX1Axy1ufWHUa8Hsl8jCPo74ar2awDXpp37k0YOIk8ZzMHsob7SuBLLE6jsMnM3S5qKwTRki00JvlkQDpIGodonfC1BRGl+XaJ+W/FQ2Bs2QFE4JdIQz0ZoPR4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747188701; c=relaxed/simple;
-	bh=7uUlPhS9QYpD3FsypYqJrGpvv2fMt6NGUIUER2bOsk8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=qIdrIWONK6EKrfw+2UooEqq88m0xEaRpp3noZ3XzvS4N62blysgI9ziBdGU7FwZvasJxXUgLWiQaUv60/cDJTPjZHXr2BCyDivMvOjFPLdTZRUoHDbC1jYwO7+FTZ6DOVhs+AWItI6hLR8HjOJ7H51qOxN2bIkQBZE8Ih1f5Ls0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=V6ADBOmE; arc=fail smtp.client-ip=40.107.162.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD511B4F08
+	for <imx@lists.linux.dev>; Wed, 14 May 2025 04:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747198778; cv=none; b=f6Ol9uuXg9ZzAnYi/moiIlrfUmsU0Swk3tk28eUmcV2mFLUSw3kzEKgcl2M4CNSl4DM3wDiJ6NPLTWPDV1cyE1R8t4nhVzpPqRwVhVAaeXYUwfTRp8Svaz0orPSBgmZKbTKPQel4KWk64Duxit8NJ2Xc1W15rf5ML1rC8Yw2tuQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747198778; c=relaxed/simple;
+	bh=MJ3cFlkprqs/V2Fxu+vosb+8YqPTUxTuwQ3e6W4Aj5Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DK7G57RmWfkwaeBQvJczVNDI+p6U4WOCSgscjecy+LsfRVr//IaTlF8GThSu8+i7O+3IAa6oMUyykyANcz2x5Bo/f2xJ8nxpfetbxcdIWdnDQALG9xZ2S3Lh+m5np6JhUcIpgh2+IhD3MnvK+Sijs0riVy836LxHVoMKPvCiqgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Oggjx/AW; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="V6ADBOmE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u26rCTVgIT3PBL3fwuQVD5+3j9QDSMrCxtp3T+OqGAFpTj1pfYR5LHMJ35DqI1ahVmb7fkfS1z06vsovJ3e8r5vVlGEX1NACM4Czlqps4VTL5CZg73enc2JM3xTP0l+YJ5ZmMMZ0+onLeJrk/uFZ6DIDFmLZkMMJpc8Q6KHsJuywUlxWXnV3K6D5LPcOJqQgK9PQdjEBiCRM43OJmkPcaZOqW8LTMNX/Rz/pVN5Y77QewzXTkbBuaygsgL7zX6tQIzlS3tfPH6ITajYqtOLr3URc8mPJM7tG1Br47/jmelVZr/CN85fryg4QJ1v2LzP9dwpEVXt1TUkUV4TcsCjRdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7uUlPhS9QYpD3FsypYqJrGpvv2fMt6NGUIUER2bOsk8=;
- b=nBTpQ64DQAkGqxaZglcqawtCgtmCDj6R7UjIrs6ApNLNrmoWTZRonQn1LyT6e/cluWb+pOoGbSgjDblGYLasUqOhKnQqRbTHyovsfVfPU2biGk6TaRcJLfMh1Gyon2pFckOTJ8EYb9vMGbSDmJ1tM2wKJfeqnlEFCaqQ44drt7GZBK6ttlaMLj2lWRYD7mmgxRQFzbEG1IeE2+1/7jxwD/WxjkDdPdIhSqAPw+Hr+pocetE8aG9x4CDCo31W85ub+INIK72mRd8dQdlSPMX2pVSQBpINPW1VA5TPEIjZ+RHQchmLW4PfQZGP9YCksI7hFSIKl6MckLJE6Y62xWZ8Cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7uUlPhS9QYpD3FsypYqJrGpvv2fMt6NGUIUER2bOsk8=;
- b=V6ADBOmEhJ2BCmlV3pdutYbC4TJKejtKgnOyW5HAdg4+V5ENS/SpWUEhvXpsE9AxlPYKJrMqzURHTGbFcMArq+QvyjoyChilnEsKd8R0GFlYF0w2I7vns5SpFGXF6Pa6yPficAdGUk7vPrj+zrkflk/N5OSnPUe248ZGkKjF5Wym8gm5rrb/MwoA9Sz0afJhS7dWetquc1ZTlhlx+BY0VDXERWh13auGDZVhknquN6dFIcKS5z677fNLg+JHoTmT0sj2nvpOaj1+qat1LmBik+3ZwnZC3q68w5cXAuO0jRRIZCY6wmkGDzvhXcX3HAC0O0lx2pjmOoabV7L4RjGVqg==
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- (2603:10a6:800:293::14) by AM0PR04MB7105.eurprd04.prod.outlook.com
- (2603:10a6:208:19b::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Wed, 14 May
- 2025 02:11:36 +0000
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687%6]) with mapi id 15.20.8722.027; Wed, 14 May 2025
- 02:11:36 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Troy Mitchell <troymitchell988@gmail.com>, Oleksij Rempel
-	<o.rempel@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-CC: "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Yongchao Jia <jyc0019@gmail.com>, Ahmad
- Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH v3 2/2] i2c: imx: drop master prefix
-Thread-Topic: [PATCH v3 2/2] i2c: imx: drop master prefix
-Thread-Index: AQHbxHWF4zbXSOrs/UG1vaBzZot9aA==
-Date: Wed, 14 May 2025 02:11:36 +0000
-Message-ID:
- <VI2PR04MB11147FB3ADCB122291962D911E891A@VI2PR04MB11147.eurprd04.prod.outlook.com>
-References: <20250513-i2c-imx-update-v3-0-817b7426a67e@gmail.com>
- <20250513-i2c-imx-update-v3-2-817b7426a67e@gmail.com>
-In-Reply-To: <20250513-i2c-imx-update-v3-2-817b7426a67e@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI2PR04MB11147:EE_|AM0PR04MB7105:EE_
-x-ms-office365-filtering-correlation-id: ff03219b-85da-475a-81c3-08dd928ca796
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?aTUvNUg2eFhPN2pUM25mM3drRUdac2xNR1JuVXMzR3EyajVObEgwZlAzZ0Vp?=
- =?utf-8?B?VmR1N3hBaTFSZm5DWnZxK2FLT2F0R2h4WlV4cWs5U09JRnl4QzhkK3F0YWhG?=
- =?utf-8?B?V2UwM2xTNHNuaUZrRW0yWjRycXlJY3lnWjJQc0Jqd2tmMUdTTktCbGhnN0hk?=
- =?utf-8?B?bFhMRVp6M0JjVUlqUHR6dXd1WE5MK2s4bWpyU3NjNFZ3NDF1SndtblNFN0xn?=
- =?utf-8?B?MndITGd2UlNSUys3akRlcldoVXhKUEhtclVjakVMbnQ1UGV5MnZCZDhPWkNt?=
- =?utf-8?B?RnZVSWUzbTZZclhZVUtVNVlqTU9hK3NnZTRlbzlJeDlzUHRvWElxRlp1bW05?=
- =?utf-8?B?Nm5mdHRDejB1UWZhTnZVUlBSUHdQU3R1eC9MUjZQdjdJdUJWbC9lSUNkWU5T?=
- =?utf-8?B?eFNyTElaVzZwZHdneTBqSTE0eXUyYUZUK1doRUdvL09hYUp5aWlwR054VkZI?=
- =?utf-8?B?d29uZ2JVNk9SUU4vektaODhzRi95NURzcURQc3RkS3pYdXdYKzgzQlBDWm1X?=
- =?utf-8?B?d21ISmovYzRtQmMrL0svUXloQ3hkYjZ6eEZIY0U3dmwyREx3dFo0aW1KQ0t5?=
- =?utf-8?B?YmJBOHp0WEkyNzAxajdQdlpSd2Y0c1hrd013OG95cmYrOEFsQmRkQ3ZsaHRS?=
- =?utf-8?B?UkpsZlpZSklwWlpKVGovdUhKS2U3S0pUVmd3Z041Y1BxL3VCclJvUVU2TTM3?=
- =?utf-8?B?ektLMjZiM2FpNzNHNmlESy9XYTkwd3EyejNoakQ2eUVNbG96bUxwME1FZmNq?=
- =?utf-8?B?Y1dsZVM5dnduKzF4bTNIaWZTS2pHOUhoQ3VIRXo3bnQwSkFISGdvUnozQk1U?=
- =?utf-8?B?T2k4MFRRVU5TR1dZbGJTcjJzVUI2YlpuRU9YZjFiYW1KOEdaN3VWMGRsK1N3?=
- =?utf-8?B?UTlBdmVqODBVNXZ0SUxJa2FzbnFJaWtUWm9vbWhndm9Cdi9iUE1iTUUvSG01?=
- =?utf-8?B?bHhvTjFtUnc5QWEySXhRdERJSFdGRGFtdEtEblpnWVQ1V1ZXWForYXBoWm5T?=
- =?utf-8?B?VzV2QmluczUvRzdFazBEemVvS3Q4NzdSTFV4TVBaMXluMnpXYUo0OWU3RzJ3?=
- =?utf-8?B?dUIzN0l3QTA3cTU0cWREcUhuaW5LNGltY2MxQkhyMWM5VUVSM1htNDF6VzFH?=
- =?utf-8?B?SWxuL0pTam5MS2J6WU5uZEo3bHMxZ3p3S2VveWdkOEdqMTAzTVUxd1N2a1Fx?=
- =?utf-8?B?ZlVyK3owTEtVbXFvOVZFclVDeTNXRmg3VkJVQ3JSTWdMT1Q3bEJPb2N5S2pz?=
- =?utf-8?B?bFJMM3diUXpoaTdTYkVYZzQ2dGZlSFBDYmN0Ym5rb2ltWnZOMVdGUzZvRjh6?=
- =?utf-8?B?Vzlja0ZYNklsMVZNaVdzVi9mVXlRRkx1c0ZkenJHcnBnSDhJamdTM2d6WTBy?=
- =?utf-8?B?cUVxeUtBUWxCSEZ2WmlISTloUlYzMG1lY1NNSGVjN0xsZ1JtYmNZcjBobFU3?=
- =?utf-8?B?NGFqRWdSdWVKdnpsMTNGRGtqWGdqL3lhUVh0OFdxRWRFeEcrak9xWUhEaE03?=
- =?utf-8?B?SUpSRlQ4Yy9XanVmUWwxd2RLM2lDeDlZWGtPQ3RPcUNBa0U2UzJFeUhuMnZu?=
- =?utf-8?B?UGRhcXpORFZ6bDB2NU1HR0RaaVlleVFWT0tJK214S2RRM01PSk9salRLdVRC?=
- =?utf-8?B?Z21TSFJMazZENWpxTURHaTR3dURwVnpUMDNPMlhhUFpTbWRyOXUyeGU2VzEw?=
- =?utf-8?B?UFdnY0t6RFdkNkt1bXQ3Z2thYkNLYkFYbXdoV01PSTBJN2svOVZabm5xYlZo?=
- =?utf-8?B?ZU5maFZpdlVvNGVFS1lpQmt0TlM2c01iTXZjQlh5cXNVRUJiZ2lqdWhoQVEx?=
- =?utf-8?B?TTdKN0c2OG5oVVJlWktYdTNNRWtuTzM3ekNhMFFKZkJOQ1NhSklRaG82NzNj?=
- =?utf-8?B?YnFOY0JYOURCQ3hyZXQ3UDdhQ2tYb2dwdEtob0hkWUFxVFJhT0prQVk5U3Vt?=
- =?utf-8?B?UEM4VnkrL01RallrdkpsUHdoeUxjenVzbVBlZ01adHhhVWdtT3gvWFNVM0Jq?=
- =?utf-8?Q?xhfuSDzl476E2a7dvCcPwKm6fOp7SE=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?YWRMMm5kQWIzTm84Q1BRTkhMS3pkMnJqbkRrM0FPWHg5WjNJV2g0VTBrNFVy?=
- =?utf-8?B?TGt1VE9haXpXVDh0TVNPeEhQaklkS05EZ2IvOTFxVmFFeWlpczIrUmptQmsv?=
- =?utf-8?B?ZGRhSi9wSEd4RmFMb29mUzNmaWE4MXdWY0dOM1cxUzFzeHBvTnhRditJa3dX?=
- =?utf-8?B?UXVOQk5SdGppbCsvV0UvQVVKcDVRRjlHZ2VkeFFzQk5LMzRwRWtNVHlzVi9G?=
- =?utf-8?B?NG9YZ29ZZGY4OFUyQVhCSHEzWmNKQ3k1Q01VU0dnaGF3MWNPd0NJdlIxMVZU?=
- =?utf-8?B?OU1PQ2grbHdyZWdLeFRJZUMyWU10RXNTTk1Cd2NVL3ZaOGEwOUFFRnBueFRB?=
- =?utf-8?B?RVNkL3NTNjJCK3B0Q1B6UkcyKzloSFdiQmliSmFPbzRTZXBsbmRhcnpwUjU4?=
- =?utf-8?B?L1ZaZ0djaW45OHdOTmtJSm1hU1RKcFFDdGJHNmVhcC9BSVgyNWJMY3I5bmhE?=
- =?utf-8?B?QURzd0tYMEdRbFBGRW05TzV0RkdKWnN3VzE4QU11S25qeDI4LzZWRnZpRlEr?=
- =?utf-8?B?dVphUzFhTWFDVnNMVENIOUU3aXV2NFRYNTg1cmo0T3Z1SnRuL2h6WUZqMWVy?=
- =?utf-8?B?QzNCLy9yTGhobkhudldVemJRcUR5ZVN1SVQ4OVNjY2RaUjZFR2IybHFOamxy?=
- =?utf-8?B?OFNpV09RYi9ESVN5Q0hmdDU4VGtzdWN5YkgwdGFXZUgwbGJLUGJCa2tLOGZr?=
- =?utf-8?B?eHdCT1d6Vm1WeGE0bFBXeHNuZXhSNlcxSUN5NWg2UzhLZUdQQkN4S1NFV0Vm?=
- =?utf-8?B?eFByL1R1UXBNTlRJcTh4bHN0T0Z3S3lycEZQVHBVYU82Wk85endpeUZIalBh?=
- =?utf-8?B?TmFkdFlSM3B4TktoWnNHTGJ4ZWFrNmFUV1ZhMGhoSGFkdmNVRVJNVFFqTU9W?=
- =?utf-8?B?dStVQ1BTUmZuK1JJa21KVno1KzFSMEppTklPVGtYNXJiTENrNHhCZWUvcjRu?=
- =?utf-8?B?enN1ZnFkYnFBNnRVSUdXQmFqUE83aTlhUy9KTDZYV0RiV2RiSkowRnJmNFhJ?=
- =?utf-8?B?czErNXkvSmc3SjFPckY1YXdwNlBIdTlyZ0ZZYTFRc3RZdzFFTUlPVGxXUmY2?=
- =?utf-8?B?YVNVazUwNGtvYjduNW1GU2tnK3N3SzlrVmtzbXcxZ1kwSU5HOElBK254OXZp?=
- =?utf-8?B?dHYrcWtaL3krQlhRVHAxTW43OUFTc1QwN2RqVkhWdFVUUyszN0Z2K2JCdWsv?=
- =?utf-8?B?NmlnNnB4OXI3bEE3WlMvN0lYWUpiRFQ2MGlLUlVFeDRoQVBqbzM2TkxHbHNa?=
- =?utf-8?B?SjFvUURlQUVjK3JWTTIvOU1saWdmSlIxWTdXQmJ3REJ3WnZad1daWjBGWjdU?=
- =?utf-8?B?S3Z3M0VFeHJ0M3NiMVYrSjJkanYxdzA0OVg3NEF4SnBnbm9Fa2c3UGxnZFlF?=
- =?utf-8?B?ajcvOWxwMkVscjAyVjNzNitQekVPbDhERXJuM2lic1p6V0I5ZWZ4UU5DdSti?=
- =?utf-8?B?UnVIZnNwVHAvc2xQQTRBdVNza1ZUY2h2QzBSNDYzWTdpbzFBdHNqVVNTVkdt?=
- =?utf-8?B?amFpSkRtcy9rQ1E2dHB1R3g3MjhFK1BSb1BUVTdMRzJxTC8yR2YxMzBTdjlJ?=
- =?utf-8?B?K0FvVlZBZWFrMzgxd01pK0pYQ0FHQmlZeTFQQk1Kc3JhQkIzRGRMZmRDQU16?=
- =?utf-8?B?eDNnVWJod1FwR01aUExHSWppTlBYRzlyclNXSTd4SDNVMkFTUC9EMGZOTG11?=
- =?utf-8?B?cTQyY2FlcFhiTDFHbjkrY3hvbmphMUtSWmU4Mk9GZTRFM0FCRGtzL1RyVjJG?=
- =?utf-8?B?VEJPMERxZWlvaDlBYnkyV1lhUUxlRHFQR2wyemdpZ3V1OGlWSTFrVUt4ZkFn?=
- =?utf-8?B?emRKRVp5eEJSS2gxQS9oaU1JSEhMZUc2OVNpbTNkaVBPK1djcVFNQm1vbGsv?=
- =?utf-8?B?NXkwbUtuU29GV3JCNDY3U2ZydTg0akhxU2ZzbVRYMldKd3dTcUdwZktFb0hn?=
- =?utf-8?B?dU9SVlphNzIzUkwrWEl1dEh3WUQ1cDhyQ1hkQUV6aG96T0Z3VUgyNmRsRkpG?=
- =?utf-8?B?eGZOTTM5RWdGWnlTVVNURHBSMXRYNm5jSXFMNlBuN2E4ZzZzVXN6cWhDYklV?=
- =?utf-8?B?d1B1enZQV2FmSml5OWxKWlhMZVRTS1JoYVFZSituS21lZjM2RTVIZklQeTJu?=
- =?utf-8?Q?DGclhlB+dIYIQhvARttekuJtv?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Oggjx/AW"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2C24A4394D;
+	Wed, 14 May 2025 04:59:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1747198774;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3r4be1ycuideZs+OiC0M2O3UfYCEUyFCGXty1I5JkLw=;
+	b=Oggjx/AW2K4r6PCB9AgV7IuR40Uu4pC449YNDeZqQBdgVhyoepkqwSCv4GlzvLRpbTEYVv
+	jeUkYGXdufujAn9ettXx0pgnnvYQav5fRN0WqHeE3EfebDZdjntO3Q3vg0PVR+zQ+TannR
+	d5KzsfxLPrmKfS2uoc0M+OYKT+j0K/4yWBh/ns0rEGH2MwmAyOIi3oh2RD0upAYku8392h
+	2ryLhRRlIdnG2J3vEDQtmAqR2vrc44Wsh1msPCRuzE3PoDYkHtSM6VXVhSewm6W+M68lGK
+	wlVeFkovE+i7DlQPZl4dfQyY452EPDjzVzAkQP29Nizkmhe+iBPrKMwmJCY7mA==
+Message-ID: <e8af352a-bfcf-4aa5-b113-e8b845c3a2c6@bootlin.com>
+Date: Wed, 14 May 2025 06:59:30 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff03219b-85da-475a-81c3-08dd928ca796
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 May 2025 02:11:36.0916
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WQYK8kurTrvT5TN8jfM1pk9X3I19HcHhZSJgFJcU/GBPm7X0/Afp6G6hRQDi/AzEFLBjZJ39jbOOlKU2ESTnSA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7105
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] arm64: dts: rockchip: describe I2c Bus 1 and
+ IMX258 world camera on PinePhone Pro
+To: Heiko Stuebner <heiko@sntech.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Nicholas Roth <nicholas@rothemail.net>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
+ imx@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
+ Ondrej Jirman <megi@xff.cz>
+References: <20250509-camera-v3-0-dab2772d229a@bootlin.com>
+ <20250509-camera-v3-3-dab2772d229a@bootlin.com> <3359896.e9J7NaK4W3@phil>
+Content-Language: en-US
+From: Olivier Benjamin <olivier.benjamin@bootlin.com>
+In-Reply-To: <3359896.e9J7NaK4W3@phil>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftdeiuddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepqfhlihhvihgvrhcuuegvnhhjrghmihhnuceoohhlihhvihgvrhdrsggvnhhjrghmihhnsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeelgfelieetjeekgffhffekkeefvddtveelheegleejgeffjeelgeehlefftdekueenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegvfeegmegvtgefkeemvdegvgdtmehfhegtvgemfhefgedvmeeiheekjeemfheiheeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvfeegmegvtgefkeemvdegvgdtmehfhegtvgemfhefgedvmeeiheekjeemfheiheeipdhhvghloheplgfkrfggieemvdgrtddumegvfeegmegvtgefkeemvdegvgdtmehfhegtvgemfhefgedvmeeiheekjeemfheiheeingdpmhgrihhlfhhrohhmpeholhhivhhivghrrdgsvghnjhgrmhhinhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddvpdhrtghpthhtohephhgvihhkohesshhnthgvtghhrdguvgdprhgtphhtthhopehrohgsh
+ heskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghonhhorhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjrggtohhpohdrmhhonhguihesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepnhhitghhohhlrghssehrohhthhgvmhgrihhlrdhnvghtpdhrtghpthhtohepmhgthhgvhhgrsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrkhgrrhhirdgrihhluhhssehlihhnuhigrdhinhhtvghlrdgtohhm
+X-GND-Sasl: olivier.benjamin@bootlin.com
 
-DQpUaGFuayB5b3UuDQpZb3UgY2FuIGFsc28gYWRkIG15IHJldmlld2VkLWJ5Lg0KDQpSZXZpZXdl
-ZC1ieTogQ2FybG9zIFNvbmcgPGNhcmxvcy5zb25nQG54cC5jb20+DQoNCj4gLS0tLS1PcmlnaW5h
-bCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVHJveSBNaXRjaGVsbCA8dHJveW1pdGNoZWxsOTg4QGdt
-YWlsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgTWF5IDEzLCAyMDI1IDI6MzYgUE0NCj4gVG86IE9s
-ZWtzaWogUmVtcGVsIDxvLnJlbXBlbEBwZW5ndXRyb25peC5kZT47IFBlbmd1dHJvbml4IEtlcm5l
-bCBUZWFtDQo+IDxrZXJuZWxAcGVuZ3V0cm9uaXguZGU+OyBBbmRpIFNoeXRpIDxhbmRpLnNoeXRp
-QGtlcm5lbC5vcmc+OyBTaGF3biBHdW8NCj4gPHNoYXduZ3VvQGtlcm5lbC5vcmc+OyBTYXNjaGEg
-SGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+OyBGYWJpbw0KPiBFc3RldmFtIDxmZXN0ZXZh
-bUBnbWFpbC5jb20+DQo+IENjOiBsaW51eC1pMmNAdmdlci5rZXJuZWwub3JnOyBpbXhAbGlzdHMu
-bGludXguZGV2Ow0KPiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4
-LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IFRyb3kNCj4gTWl0Y2hlbGwgPHRyb3ltaXRjaGVsbDk4
-OEBnbWFpbC5jb20+OyBZb25nY2hhbyBKaWEgPGp5YzAwMTlAZ21haWwuY29tPjsNCj4gQWhtYWQg
-RmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4NCj4gU3ViamVjdDogW0VYVF0gW1BBVENI
-IHYzIDIvMl0gaTJjOiBpbXg6IGRyb3AgbWFzdGVyIHByZWZpeA0KPiANCj4gQ2F1dGlvbjogVGhp
-cyBpcyBhbiBleHRlcm5hbCBlbWFpbC4gUGxlYXNlIHRha2UgY2FyZSB3aGVuIGNsaWNraW5nIGxp
-bmtzIG9yDQo+IG9wZW5pbmcgYXR0YWNobWVudHMuIFdoZW4gaW4gZG91YnQsIHJlcG9ydCB0aGUg
-bWVzc2FnZSB1c2luZyB0aGUgJ1JlcG9ydCB0aGlzDQo+IGVtYWlsJyBidXR0b24NCj4gDQo+IA0K
-PiBJbiBsaWdodCBvZiB0aGUgcmVjZW50IHVwZGF0ZXMgdG8gdGhlIGkyYyBzdWJzeXN0ZW0sIGRy
-b3AgbWFzdGVyIHByZWZpeC4NCj4gDQo+IFJldmlld2VkLWJ5OiBBaG1hZCBGYXRvdW0gPGEuZmF0
-b3VtQHBlbmd1dHJvbml4LmRlPg0KPiBTaWduZWQtb2ZmLWJ5OiBUcm95IE1pdGNoZWxsIDx0cm95
-bWl0Y2hlbGw5ODhAZ21haWwuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMt
-aW14LmMgfCA0ICsrLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVs
-ZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXgu
-YyBiL2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtaW14LmMgaW5kZXgNCj4gNWIyNzZlMDA3MjkyLi5k
-ODVhZGZiNzNiYWMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtaW14LmMN
-Cj4gKysrIGIvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXguYw0KPiBAQCAtMTY4Nyw4ICsxNjg3
-LDggQEAgc3RhdGljIHUzMiBpMmNfaW14X2Z1bmMoc3RydWN0IGkyY19hZGFwdGVyDQo+ICphZGFw
-dGVyKSAgfQ0KPiANCj4gIHN0YXRpYyBjb25zdCBzdHJ1Y3QgaTJjX2FsZ29yaXRobSBpMmNfaW14
-X2FsZ28gPSB7DQo+IC0gICAgICAgLm1hc3Rlcl94ZmVyID0gaTJjX2lteF94ZmVyLA0KPiAtICAg
-ICAgIC5tYXN0ZXJfeGZlcl9hdG9taWMgPSBpMmNfaW14X3hmZXJfYXRvbWljLA0KPiArICAgICAg
-IC54ZmVyID0gaTJjX2lteF94ZmVyLA0KPiArICAgICAgIC54ZmVyX2F0b21pYyA9IGkyY19pbXhf
-eGZlcl9hdG9taWMsDQo+ICAgICAgICAgLmZ1bmN0aW9uYWxpdHkgPSBpMmNfaW14X2Z1bmMsDQo+
-ICAgICAgICAgLnJlZ19zbGF2ZSAgICAgID0gaTJjX2lteF9yZWdfc2xhdmUsDQo+ICAgICAgICAg
-LnVucmVnX3NsYXZlICAgID0gaTJjX2lteF91bnJlZ19zbGF2ZSwNCj4gDQo+IC0tDQo+IDIuMzQu
-MQ0KPiANCg0K
+
+
+On 5/13/25 20:23, Heiko Stuebner wrote:
+> Hi Olivier,
+> 
+Hello Heiko, thanks for having a look!
+
+> Am Freitag, 9. Mai 2025, 23:51:39 Mitteleuropäische Sommerzeit schrieb Olivier Benjamin:
+>> Add the description of the rear/world camera (IMX258) on the PinePhone Pro
+>> to the device dts file.
+>> It receives commands on the I2C Bus 1 at address 0x1a and transmits data
+>> over CSI-MIPI.
+>>
+>> The I2C address for IMX258 can be found in the IMX258-0AQH5 Software
+>> Reference Manual, page 24, section 2.3.1: 0b0011010 = 0x1a.
+>> Section 3 indicates the module has 4 pairs of data lines. While 4-lane
+>> mode is nominal, 2-lane mode should also be supported.
+>>
+>> The pin muxing info was extracted from the PinePhone Pro schematic v1.0
+>> as well as the RK3399 datasheet revision 1.8.
+>>
+>> Table 2-3 in section 2.8 of the RK3399 datasheet contains the mapping
+>> of IO functions for the SoC pins. Page 52 shows GPIO1_A0, page 54 shows
+>> GPIO2_D4.
+>>
+>> For I2C power, the PinePhone Pro schematic page 11 quadrants A4 and A5:
+>> RK3399_J.AA8 and RK3399_J.Y8 get power from vcaa1v8_codec, so turn it on
+>>
+>> The IMX258 also uses the following regulators, expected by its driver:
+>>   - vana (2.8V analog), called AVDD2V8_DVP on P.18 q.C1 and derived from
+>>     VCC1V8_S3 on P.13 q.B2
+>>   - vdig (1.2V digital core), called DVDD_DVP on P.18 q.C1 and shown on
+>>     P.18 q.D3 to be equivalent to VCC1V2_DVP derived from VCC3V3_SYS on
+>>     P.13 q.B3. Note that this regulator's voltage is inconsistently
+>>     labeled either 1.2V or 1.5V
+>>
+>> RK3399_J.AG1 is GPIO4_A1/I2C1_SDA, RK3399_J.Y6 is GPIO4_A2/I2C1_SCL
+>> This is the default pinctrl "i2c1_xfer" for i2c1 from rk3399-base.
+>>
+>> For the reset (RESET) signal:
+>> page 11 quadrant D2             | p.18 q.C3-4 | p.18 q.C2
+>> RK3399_E.R25 -> GPIO1_A0 -> Camera_RST -> MIPI_RST0 -> IMX258.12
+>>
+>> For the powerdown (PWDN) signal:
+>> page 11 quadrants B4-5          | p.18 q.C2
+>> RK3399_G.AF8 -> GPIO2_D4 -> DVP_PDN1_H -> IMX258.14
+>>
+>> Helped-by: Dragan Simic <dsimic@manjaro.org>
+>> Co-developed-by: Ondrej Jirman <megi@xff.cz>
+>> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+>> Signed-off-by: Olivier Benjamin <olivier.benjamin@bootlin.com>
+> 
+> how independent are the devicetree changes from the binding changes?
+> As the binding change "only" includes other properties.
+> 
+They are pretty independent: the binding changes are only needed to 
+suppress warnings on the devicetree.
+However, the changes to the devicetree are the motivation for the 
+changes to the binding: the other properties are not strictly necessary 
+otherwise.
+
+> Heiko
+> 
+> 
+>> ---
+>>   .../boot/dts/rockchip/rk3399-pinephone-pro.dts     | 94 ++++++++++++++++++++++
+>>   1 file changed, 94 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>> index 04ba4c4565d0a205e2e46d7535c6a3190993621d..588e2d8a049cc649aa227c7a885bd494f23fbdf8 100644
+>> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>> @@ -114,6 +114,16 @@ vcc3v3_sys: regulator-vcc3v3-sys {
+>>   		vin-supply = <&vcc_sys>;
+>>   	};
+>>   
+>> +	avdd2v8_dvp: regulator-avdd2v8-dvp {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "avdd2v8_dvp";
+>> +		regulator-always-on;
+>> +		regulator-boot-on;
+>> +		regulator-min-microvolt = <2800000>;
+>> +		regulator-max-microvolt = <2800000>;
+>> +		vin-supply = <&vcc3v3_sys>;
+>> +	};
+>> +
+>>   	vcca1v8_s3: regulator-vcc1v8-s3 {
+>>   		compatible = "regulator-fixed";
+>>   		regulator-name = "vcca1v8_s3";
+>> @@ -136,6 +146,16 @@ vcc1v8_codec: regulator-vcc1v8-codec {
+>>   		vin-supply = <&vcc3v3_sys>;
+>>   	};
+>>   
+>> +	vcc1v2_dvp: regulator-vcc1v2-dvp {
+>> +		compatible = "regulator-fixed";
+>> +		regulator-name = "vcc1v2_dvp";
+>> +		regulator-always-on;
+>> +		regulator-boot-on;
+>> +		regulator-min-microvolt = <1200000>;
+>> +		regulator-max-microvolt = <1200000>;
+>> +		vin-supply = <&vcca1v8_s3>;
+>> +	};
+>> +
+>>   	wifi_pwrseq: sdio-wifi-pwrseq {
+>>   		compatible = "mmc-pwrseq-simple";
+>>   		clocks = <&rk818 1>;
+>> @@ -312,6 +332,8 @@ vcc3v0_touch: LDO_REG2 {
+>>   
+>>   			vcca1v8_codec: LDO_REG3 {
+>>   				regulator-name = "vcca1v8_codec";
+>> +				regulator-always-on;
+>> +				regulator-boot-on;
+>>   				regulator-min-microvolt = <1800000>;
+>>   				regulator-max-microvolt = <1800000>;
+>>   			};
+>> @@ -420,6 +442,46 @@ regulator-state-mem {
+>>   	};
+>>   };
+>>   
+>> +&i2c1 {
+>> +	clock-frequency = <400000>;
+>> +	pinctrl-0 = <&i2c1_xfer &cif_clkouta>;
+>> +	assigned-clocks = <&cru SCLK_CIF_OUT>;
+>> +	assigned-clock-rates = <24000000>;
+>> +	status = "okay";
+>> +
+>> +	wcam: camera@1a {
+>> +		compatible = "sony,imx258";
+>> +		reg = <0x1a>;
+>> +		clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK0, derived from CIF_CLKO */
+>> +		clock-names = "xvclk";
+>> +		pinctrl-names = "default";
+>> +		pinctrl-0 = <&wcam_rst>;
+>> +		/* Note: both cameras also depend on vcca1v8_codec to power the I2C bus. */
+>> +		vif-supply = <&vcc1v8_dvp>;
+>> +		vana-supply = <&avdd2v8_dvp>;
+>> +		vdig-supply = <&vcc1v2_dvp>; /* DVDD_DVP is the same as VCC1V2_DVP */
+>> +		reset-gpios = <&gpio1 RK_PA0 GPIO_ACTIVE_LOW>;
+>> +		orientation = <1>; /* V4L2_CAMERA_ORIENTATION_BACK */
+>> +		rotation = <270>;
+>> +		lens-focus = <&wcam_lens>;
+>> +
+>> +		port {
+>> +			wcam_out: endpoint {
+>> +				remote-endpoint = <&mipi_in_wcam>;
+>> +				data-lanes = <1 2 3 4>;
+>> +				link-frequencies = /bits/ 64 <636000000>;
+>> +			};
+>> +		};
+>> +	};
+>> +
+>> +	wcam_lens: camera-lens@c {
+>> +		compatible = "dongwoon,dw9714";
+>> +		reg = <0x0c>;
+>> +		/* Same I2c bus as both cameras, depends on vcca1v8_codec for power. */
+>> +		vcc-supply = <&vcc1v8_dvp>;
+>> +	};
+>> +};
+>> +
+>>   &i2c3 {
+>>   	i2c-scl-rising-time-ns = <450>;
+>>   	i2c-scl-falling-time-ns = <15>;
+>> @@ -462,6 +524,28 @@ &io_domains {
+>>   	status = "okay";
+>>   };
+>>   
+>> +&isp1 {
+>> +	status = "okay";
+>> +
+>> +	ports {
+>> +		port@0 {
+>> +			mipi_in_wcam: endpoint@0 {
+>> +				reg = <0>;
+>> +				remote-endpoint = <&wcam_out>;
+>> +				data-lanes = <1 2 3 4>;
+>> +			};
+>> +		};
+>> +	};
+>> +};
+>> +
+>> +&mipi_dphy_rx0 {
+>> +	status = "okay";
+>> +};
+>> +
+>> +&isp1_mmu {
+>> +	status = "okay";
+>> +};
+>> +
+>>   &mipi_dsi {
+>>   	status = "okay";
+>>   	clock-master;
+>> @@ -495,6 +579,10 @@ mipi_in_panel: endpoint {
+>>   	};
+>>   };
+>>   
+>> +&mipi_dsi1 {
+>> +	status = "okay";
+>> +};
+>> +
+>>   &pmu_io_domains {
+>>   	pmu1830-supply = <&vcc_1v8>;
+>>   	status = "okay";
+>> @@ -507,6 +595,12 @@ pwrbtn_pin: pwrbtn-pin {
+>>   		};
+>>   	};
+>>   
+>> +	camera {
+>> +		wcam_rst: wcam-rst {
+>> +			rockchip,pins = <1 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
+>> +		};
+>> +	};
+>> +
+>>   	leds {
+>>   		red_led_pin: red-led-pin {
+>>   			rockchip,pins = <4 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none>;
+>>
+>>
+> 
+> 
+> 
+> 
+> 
+
+-- 
+Olivier Benjamin, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
