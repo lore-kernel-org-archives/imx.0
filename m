@@ -1,60 +1,60 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A9A222566
-	for <imx@lists.linux.dev>; Wed, 14 May 2025 08:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4025756B81
+	for <imx@lists.linux.dev>; Wed, 14 May 2025 08:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747211125; cv=none; b=Ep1lC1Q2Tv1P2bLF5I5B7iSGCLiK9IWaZIRSDc21Q5J3ecgwCj6+pof9l7rzBj1DDlgCz8gH7Z+fddXOx4OlZkYYMOvHzJcncf+d6B1aVos1bhYz8xgQ2gu3sTIMcKQxJ9BYtXwFdtQ6HjSgT6GhyuvIklR5gb0pPhvj7Bofkg8=
+	t=1747211126; cv=none; b=XnH6aRHSxM1hYTGAkRZGrFrAVi89V+PBCkv7NyIt4lQoLiFfooBgy1+1SDlSBMzXpY5DI+Ec8QeXaP4jGYVhq9xkL/3sBwi1HZzNArbxobT+sZnzhiN4LKh/I3uPn9ohOMQJ6nKel/EAmMCDoJSPzzxA5xApsTWEe3ZpWC1BVZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747211125; c=relaxed/simple;
-	bh=HsVCl1yxLXvhDf43Nd0AQkKlThmkNlDCATxWj7ZdQkI=;
+	s=arc-20240116; t=1747211126; c=relaxed/simple;
+	bh=e2pQqiVOxDgNFEozC0iIGMhFjYoToSACQa3AfvGruJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SkC5z4yoeU3FwCryrnCgtRGQfP8tpLjRmftjeWSINxFdnLpL3UIJ8P65k3CVgaD7WUmQhxstXBlc5+HywNg02NtB6zapUKmcdv73kKCzCcRSIvM37A9Bb+DATzDV1dtRw0q1AVs5R32KtQxOTaSIyPrGlmigoRdJP7x0lyUT0qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=f9h/4Guh; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=BNoG/26osqBHpg8+J0/ApuqwBpXYWdT3ClFSggZPefZQar5zQxKpweoZiPYRB5TihK/OajDCR+50RfPvN9/jww1fxAKJWoLbyJkZCoCNQXhmJAdral80JhooLCC/lL9cQhYkqZt5QGrmQE1CYaidmm6y0xaSgdAH+hKoGm8F4c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=KX3849wO; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="f9h/4Guh"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43cf848528aso56951245e9.2
-        for <imx@lists.linux.dev>; Wed, 14 May 2025 01:25:22 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="KX3849wO"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a0b933f214so3078481f8f.0
+        for <imx@lists.linux.dev>; Wed, 14 May 2025 01:25:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1747211121; x=1747815921; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1747211122; x=1747815922; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9TYuMpa3lECo5TxM+RObwV30bGxY9a5ZOYB/MAe2Vms=;
-        b=f9h/4GuhVyq1F7lfvLwDhtP7XsLHEkTnmpNofoWSlj/IcvnaUm7KQm5MqsALO2KsdR
-         vS85hCu4bOvHeGd7RMBxVcyUHZYEE3N3CVAM60D+/snQsjaoC/dH1zHAH6O+j4+PLJb8
-         w7YsBeuUaiozbEmwMBOnxD+MbDMSLE6saooDo=
+        bh=pt1EP0ezTYwDfM+B24peCLWSMczcGcs5Rkqpf9JI850=;
+        b=KX3849wOBmQhjukGXneYNSyHbb2wFzotcE4Tr97eBrZiCaanUH+PVGvvscJn1MZpUF
+         526biV6nGmyk8e13fRS+u4noKs38Cw1aAjEYk0MBkIzZcm35UMZEMdwVHMWl+uypdab2
+         XorhRor2Q8APNAv4DQS5ZPwv6sqsvii8cIlUQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747211121; x=1747815921;
+        d=1e100.net; s=20230601; t=1747211122; x=1747815922;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9TYuMpa3lECo5TxM+RObwV30bGxY9a5ZOYB/MAe2Vms=;
-        b=t+jws6j+FeiAAHosQpAQNsV+0nHlWB4xz4tV7LO9JsECcn1pnnTcEFZ70TUiL8QJjJ
-         25ORnyL82+GBN00j5dFSYpqAZvqCdm9NyA2LOsLuL+V1W5obf74r09AjmaKYIb35uEm/
-         aQqUTgiqS0Zi0CIWXdsSmVgiVpjuP/YdgSQ2CD+pjwlei3F/6FCbZcf9RUshkU2wFYVu
-         PQjLZ7Rof/Lhy/WiwbhyDr5Z4PhZut8OyWyL+dDVb5hy2TgADWNGAMh9EI2yQNhsSJfe
-         qU0sFlvOKiaQrnae9ahoZLok7/Gy46p470J/A8qtTiRV3J7hsAQj11Ain2A3LWa1SGD0
-         8F7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXKyDrHSac3JRgywx52SSRcj4ur6gs5G/McEx03LY7kOpNaqESzGumfVjDAcqo9LsAXBEk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCaLzCploX4YSw739R8Ytbk/pNvNcspJcc+OI8oWLpBlwoXGja
-	32nFtQ5q6sunlU2IbVTFfu1tLs0IBozSnSruZT26mskpv/iPiwwJ0qXTxAP3xmY=
-X-Gm-Gg: ASbGncsHHzk4olHhscSarqTb9LORws9LhWBQ8YEKNVrb5oXtvjkPnidP0NhAWJdKNLu
-	hWpDXNPFcHZnEHg2UkFlYyjdpxQr2Bk29gMf41EsPugZihYj0u/7+/+wgcdi1Hf9a19Ml8f8gsT
-	R3uk+PMtU0/52gEPoj3LVHos2obVQp5i/i01Pr92STH1ZpsfQrLzrOzuYxx1cPfPhuIUMzrNJCd
-	3FNc5PEOEdKXgmqiD6cAxe3ahKTvIqXrkrPBlQtYvQ7ZZyeQE9NK+8/f7eglTmSk9Jgpw3PhCm3
-	MHd7W4UgbZplha6g1lOTgq01J0t95aUH7OEB6qbrtSbC5GH4k375iIffZC6paja+DyFsazURgJC
-	qY2lOWbn6fihYMv0tDdZHlNa8Wk5PnQIbs15SPeGhkvcnfKEbVuczcw==
-X-Google-Smtp-Source: AGHT+IElgZGelBk5zT2GgVn2jS8QC31s8cj0ziUv3wJ5MYE4/n7YxAgcmx5VnwG5fRUicYlfJQi+aA==
-X-Received: by 2002:a05:600c:3c8e:b0:43d:fa59:af97 with SMTP id 5b1f17b1804b1-442f2179bd8mr15288665e9.32.1747211121301;
-        Wed, 14 May 2025 01:25:21 -0700 (PDT)
+        bh=pt1EP0ezTYwDfM+B24peCLWSMczcGcs5Rkqpf9JI850=;
+        b=HY5x0B9pIWdLFGadL69z77ozjkmu0HxWucsiNR3rijgwus44q8mVN7dmnLdeZ8UXPJ
+         fKl6Sqe7ha/MHIbLxwe5+o0m3KMZIINAoYwIcYqNA1Xe3e6gfAIWHr3NvPphort3ksMh
+         9VNTsgqdMRRANR+zolD0juI+RGaqMyyBh4MHoCbfHUuAEZZ6lqSncWjJrgYmnlhPX9xB
+         vTMhuNLNerP5hch77vdu0BLnZLIR3tYTE3DBkE+Loo3Y1/wGOjGFxBOcSgeIaDZCwASI
+         fPr05dqdZmj2D8clcV2VD39K1HmEIM1f5F75XoUcu4hjJYz+7nnkV+Li/akQ/Jy/IGxR
+         q+PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVV9q7i0biW8gxqTT/esldqIRmNoRxFDWf6lr0DnsQwU8XCZKWfX6WOPi5VWNiUS2bh/iE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwjSYtiBfRj+DY21E+FwEfF440U6JpFVIrVwlo0MjtNfIW3mdUg
+	3XyliiaKT0L+2mfbW8UsZtZ59H8vCds9ux05uz3ju6KdbqW55W5g1VwmIXXLe4M=
+X-Gm-Gg: ASbGnctTvTR5upWLfPykabPUtZijt7MsLfLJyLGYNMlCMupTNwNltByD7rNp0LNaA8q
+	9NMh7kHjIWfrTNaYbae7ymMPk8HGhAx1L6tAC9j7bJ5UUsUGlgvIO5NKYaMJiqMPQGw/mqo/Tbb
+	e7GdyBTWSPHzln/R2onlHKBMLrbHhNzw+l3THPk8XVtkCXhn1pObtZ3i/H7SuCAU0ZDFNTyS9WS
+	qMLKVFtTyjvjXtoXraae0hYQDX2ORq+xMBJ3IG1OshMr7UBht8s3HBnX3ZuHy9x7Dwc0bG6zPvn
+	YGmOV8STr0aGiW8/pe+bs4JR3j3wI9Dzw3pNZLHfxnalQ7kfpYVXghyk0B0qHcjy2g4d9ygElCT
+	PGsYeqMlIMC+bySs4BoN2ij4z1QF8EoZcWD8N3eM517w=
+X-Google-Smtp-Source: AGHT+IFjDXXwQhSURwlfHmcLE4irqIStV0UgnScTM4HB5AXLneqabf/gWJDu9GBdpVyWbqQMxTEylA==
+X-Received: by 2002:a05:6000:2505:b0:3a0:aee0:c647 with SMTP id ffacd0b85a97d-3a3496a42f0mr1760633f8f.17.1747211122654;
+        Wed, 14 May 2025 01:25:22 -0700 (PDT)
 Received: from dario-ThinkPad-T14s-Gen-2i.client.m3-hotspots.de ([46.189.28.43])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442ebda7d2csm30987365e9.3.2025.05.14.01.25.20
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442ebda7d2csm30987365e9.3.2025.05.14.01.25.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 May 2025 01:25:20 -0700 (PDT)
+        Wed, 14 May 2025 01:25:22 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: Simon Holesch <simon.holesch@bshg.com>,
@@ -73,9 +73,9 @@ Cc: Simon Holesch <simon.holesch@bshg.com>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 7/9] arm64: dts: imx8mn-bsh-smm-s2-common: Set minimum value for VDD_3V3
-Date: Wed, 14 May 2025 10:25:01 +0200
-Message-ID: <20250514082507.1983849-8-dario.binacchi@amarulasolutions.com>
+Subject: [PATCH 8/9] arm64: dts: imx8mn-bsh-smm-s2-common: Increase drive strength of pmic irq
+Date: Wed, 14 May 2025 10:25:02 +0200
+Message-ID: <20250514082507.1983849-9-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250514082507.1983849-1-dario.binacchi@amarulasolutions.com>
 References: <20250514082507.1983849-1-dario.binacchi@amarulasolutions.com>
@@ -89,8 +89,8 @@ Content-Transfer-Encoding: 8bit
 
 From: Wolfgang Birkner <wolfgang.birkner@bshg.com>
 
-Buck4 is called Buck6 in the BD71847 datasheet. This buck supports
-2.6...3.3V. Set the minimum allowed value.
+Increased drive strength of PMIC IRQ pin to increase reliability on the
+reference hardware.
 
 Signed-off-by: Wolfgang Birkner <wolfgang.birkner@bshg.com>
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
@@ -100,18 +100,18 @@ Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-index 81fa0a8767e2..04112a83b1d3 100644
+index 04112a83b1d3..ea8d741c6904 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-@@ -144,7 +144,7 @@ buck3_reg: BUCK3 {
- 			buck4_reg: BUCK4 {
- 				/* PMIC_BUCK6 - VDD_3V3 */
- 				regulator-name = "buck4";
--				regulator-min-microvolt = <3000000>;
-+				regulator-min-microvolt = <2600000>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-boot-on;
- 				regulator-always-on;
+@@ -364,7 +364,7 @@ MX8MN_IOMUXC_I2C4_SDA_I2C4_SDA			0x400000c2
+ 
+ 	pinctrl_pmic: pmicirqgrp {
+ 		fsl,pins = <
+-			MX8MN_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x040
++			MX8MN_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x041
+ 		>;
+ 	};
+ 
 -- 
 2.43.0
 
