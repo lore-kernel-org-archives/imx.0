@@ -1,113 +1,123 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0DB296730
-	for <imx@lists.linux.dev>; Thu, 15 May 2025 10:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5617228B51F
+	for <imx@lists.linux.dev>; Thu, 15 May 2025 10:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747304354; cv=none; b=QwyDk53C6EPb+0f7+dAgZSG2bZEHfHpiFnXlSZjkaOmt9HU5EIfaB4MMG/KGBU+gI0uXm7nspXIQ4R2tOOvcXAS2GOzbNbH13RNNKwgNAftKJT6UzmdcTq87o5Fme9+tPvQj5jNUJCKCmh5Ub1ajHXJhOC3AGf3tRmsC/z++rXE=
+	t=1747304622; cv=none; b=Sewti7F25JrftoCnDI7RIsDnf1gxzkPMYcYB1AJk2/1k2mxQPnRo7z1hszCrdNxxvc0IxixTvPFmJ3P/5nAu8yRinL5slEOHf04AFmpFu/s4V3GaNC9qgn1goBY3YA7MniEnRiEvJ5E34DGwWUlsTQqWYWhbm9DM3ZKHlWux2Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747304354; c=relaxed/simple;
-	bh=/cnbovOFj/4K/kSKZHZsimOqCSA+C4agdVHxhrxUPSY=;
+	s=arc-20240116; t=1747304622; c=relaxed/simple;
+	bh=LPn993xnWWkvwlm5rudsJA0BQo0qu2yihgm1xOxvsW0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UJ5jX5W/ftAy4zLazAtqQBnhJgycKrH2D5isNUnNPXH52O1AOjeVHS8w6WlMT4k0Pbyv9nbMTUK00ZcAP/B9cDznvPVq5AWoXAQFHV8ClYmWYtiz3YC3uJn8JMWuqOc73zDsPn61BULP4OYdi4DZnW99f0T+UEdI6Toh3ktfnyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FCZkqaEE; arc=none smtp.client-ip=209.85.214.170
+	 To:Cc:Content-Type; b=VSHLRqjl+JDSd5fBYQP1EHM5Jt4dBJdIl+KMhD85N4M1cydNT4ansepgMGGjlr4N7O0PE5wewkbiyI2+u5zNGOAxHN/R+RmgFxWHiLH2Z/aoYv9dl3PpFRtFpFv5QFkjsOHgjqoATsVRnJk6gJFMe3ac1r/25Wl1Y8fI/XdsJ/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M+nfQ1Do; arc=none smtp.client-ip=209.85.166.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FCZkqaEE"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22e7eff58a0so7766935ad.3
-        for <imx@lists.linux.dev>; Thu, 15 May 2025 03:19:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M+nfQ1Do"
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3da74959554so1898055ab.2
+        for <imx@lists.linux.dev>; Thu, 15 May 2025 03:23:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747304352; x=1747909152; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1747304620; x=1747909420; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SgEmQPsTMSukLECA6PYoxAhOxF/9eSkMwkJFG9w+Jwg=;
-        b=FCZkqaEEj/4p45OzZWjO6BUb6P0EsMCEb0GA+z7yHGKFKuXZ1J1hzrLtEGl4YhpE35
-         KdcrbDCIXp5NQ58HvbizYtk1OTst/Emya/YcAg5YOngGhgZRY1D0lCyTKTos3ZNl6EKb
-         7AtMk79lDFgdUeq5H/FfeLDLm2j/JH9/twWN+zM1yHWVJFeYdHTWXqeGLvLolO6yuc/R
-         QW7RMYXUeuQQoeiuXTcN6Fh+JLS3orXmSkSwfzpXnCkKo3CSFlJXEG9uLEGG6oQfv6mL
-         PqIBU2xMvAJy+iHYM4dlTm/x4sC4FcjS6l/ZM7GmJ5gFCPI6puxwog360Ju8PtHe/zxx
-         oKQQ==
+        bh=zJZrSFBkNbM1G4hOj8s/L4+l2f6c8+4aH2wqD19Gqc0=;
+        b=M+nfQ1DoFZNvuEmmuUB4qP/zfCevaru/nEaHbjkKtTDCCyYJpeXfSSiNrOza8Rmwsz
+         krojydSzr44wN3XwpR5RMMRHlqObTXO/FXzDbtVc8EuFLFcGIVulWnez1qGkrN74iZI4
+         DW9l2ZG1oIEpC2VKFP9Sld60muJ8zWZeD3j7MIzP6X7q3nxgUfLIelCWosKyt2XxZprI
+         ikiRWv5TXeyGYAvP9zM3K4x1EDiZd8RP1EkctGbEF+heDYxHUiUP7Uni2i6IRHOt4MBT
+         UIzo9XCGJ/ts5f7fxpa3USKMIjhKP+l2NkpRoIcAEGYXrHYA+ZIouLagWIvqoEEmCepz
+         durA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747304352; x=1747909152;
+        d=1e100.net; s=20230601; t=1747304620; x=1747909420;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SgEmQPsTMSukLECA6PYoxAhOxF/9eSkMwkJFG9w+Jwg=;
-        b=ho294zUHsDCuNx7rx3a3PadCqN1hiaQFuxYAtvbmH8RZDCr8vfWYV1bpWvFe425FOq
-         JFNrhBlymPjbM9/Kywtb4VXxShtQ1SMVo6EEeaBgYfvnNHJ9y9KHnY3dQmHLtAx3FHqm
-         DftKGLUg77VoNCrATq7hufcK4v/Xy3pIWwbmhaX94Z5YKgWndL7yjswO0Kznl3ZKRc0c
-         QDJuimB3kBGn12doAmkTZRm8dU/EJ6B55Yf7WqE19k6QFy8FILAPGuucrR4y8lnYpKQJ
-         TNjLtK1gIBwD9AVJPNlTKhe+yBx/CnLDh+zh9rvY1Lb3GYszZ6YSmgB6AqevFiFHfFdy
-         l12Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV7lKQ+t3nawRcXvuKY6uXCm5CoP4riq8SeHnp5s//25dlvz3j/u6C65QJzBTF0SWLHTkk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8rfn/p8VQFjItIFqXsMj9MBRuQKnJ9w3koVBYBKb8gLSuRYyN
-	jWZDtnQjCFR1QzYnUKm6rhn5M/55CnzJr9pwrLOmXIbpnVLuQaUdfISyBCkkqxoO4onHFbh952d
-	LMI5Sp1sX1wexbRYDUqpqtTwBvE4=
-X-Gm-Gg: ASbGncuLWxZ1GsROMI+TmxO0NT0Nu4TZmIjFy94/7ia7VASKkrLxSyvvFOtBqezX5bS
-	kSBJ81KLusBLPBqPCWExAIXvPyVmA+k0IFHUDC/UMb2o7ZHOnZWzXsII2Gbw7SFpieVyuW1Z9LB
-	5tr7MjYd85ytAgCq+FcxmDAzYiSTMvzA==
-X-Google-Smtp-Source: AGHT+IEsIUOtHqCyd3RUFAmp28tpSkSzHX7erUjCawa8T/wazwsdJ3+WuKQBWkKpBGFc9cg7xp3+86p/M24KmPAv1WQ=
-X-Received: by 2002:a17:902:da81:b0:22f:b6d6:2737 with SMTP id
- d9443c01a7336-231b5e51d4emr26927485ad.10.1747304351996; Thu, 15 May 2025
- 03:19:11 -0700 (PDT)
+        bh=zJZrSFBkNbM1G4hOj8s/L4+l2f6c8+4aH2wqD19Gqc0=;
+        b=aYvrwFIa/ALM5uK+UcQxv4MFTdWLD8kH1Fur+I3NOJlT3LTDZH09bL/aGUVoTWb+0z
+         Xw8Jbz13mvGdh4atIgQbh1jSUm4n0r4/0uCbyHiFHvEpN5EjKdt5m9jH5C1ssuAeOseR
+         kcogOFUqGxVODJ0K2U0RbjAiBOJ+BtOmsEUsKRDc4tQKRtR6hqiDhzXUp0lK736l1u0C
+         lgaMb+AP/b16ZHANROeFSVJjh17MFkItEEgzwhFrM0ZxWrj/k6poL3+IpaFUkffov3oh
+         fRnybobHdmoYIvuPwrDkhvAqnQU8gQQadpjXQYIErBWbsJRdqDXTlBOCX0jkXP2QtT2G
+         hoMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcRPCvSMfySxOrJUEs/vyYYSwrmFYHwudTIOzEix0MlfWCvpccVXX1Jsl+q9H/6D1i6EY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwoLsiezTi4BxnhbO4W2R+E/z+ShVYhDy9GPQdQ7TYSv0D6o/Af
+	7I7y2BiF9+ORAzQpacLvZ8mrbGyjeTJH2Lrxn0IqZ4+gYCCa8BsRYeSKBJZ3mBt/5M/r3HBwBDq
+	n1NhP9d1ImZLSyGgTt9kSJxVZ+AY=
+X-Gm-Gg: ASbGncsCq32Jzqo964WuV5SL7TMnnHzsXIGxjkkV7RdeLs731lxTdquhs40GCpyiQ4G
+	lS0bbYw8YmXR3LeuXRAg5wAew0cm3qdiv8LTN8vUKfFm1msKOCZlQ1uEB4GB7qp3aWq5wY9oPJW
+	uSW9rP9DOuCMajG3OWyYVJS4ea8bL4rknM
+X-Google-Smtp-Source: AGHT+IHO5NjvG7NPaTx/Wk84Xf6YXEN9rB+dPDyiQnC6Nqm2qSNMD7m/f1k9O8ljI/qF9B+KJKVTOxllmfRsmBxkeqU=
+X-Received: by 2002:a05:6e02:2186:b0:3db:75e6:80d5 with SMTP id
+ e9e14a558f8ab-3db75e68272mr38100995ab.14.1747304620350; Thu, 15 May 2025
+ 03:23:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250515051900.2353627-1-shengjiu.wang@nxp.com> <20250515051900.2353627-2-shengjiu.wang@nxp.com>
-In-Reply-To: <20250515051900.2353627-2-shengjiu.wang@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Thu, 15 May 2025 13:21:00 +0300
-X-Gm-Features: AX0GCFtYRGBFzwrIv-5BkoOX-4f7j8QWlxzR2F9_CR7P2Wf-QEkia7AjZk42Z20
-Message-ID: <CAEnQRZBJgJpyE-K6fn3_s61-Q7j=mXk5FGMggpaBhnH62w+ACQ@mail.gmail.com>
+References: <20250515051900.2353627-1-shengjiu.wang@nxp.com>
+ <20250515051900.2353627-2-shengjiu.wang@nxp.com> <CAEnQRZBJgJpyE-K6fn3_s61-Q7j=mXk5FGMggpaBhnH62w+ACQ@mail.gmail.com>
+In-Reply-To: <CAEnQRZBJgJpyE-K6fn3_s61-Q7j=mXk5FGMggpaBhnH62w+ACQ@mail.gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 15 May 2025 18:23:26 +0800
+X-Gm-Features: AX0GCFs1HwaoDdoFbQAbv3WJV20f_7O_khUEi6c3pJChsc5rxc9dD7nQQ1yVecY
+Message-ID: <CAA+D8APSQK8FqGYYmAygF-dhM7N_54Zw-jSz4xWrr5ToGfUKmw@mail.gmail.com>
 Subject: Re: [PATCH 1/6] arm64: dts: imx94: Add micfil and mqs device nodes
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	shengjiu.wang@gmail.com, carlos.song@nxp.com
+To: Daniel Baluta <daniel.baluta@gmail.com>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, carlos.song@nxp.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 15, 2025 at 8:21=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.co=
-m> wrote:
+On Thu, May 15, 2025 at 6:19=E2=80=AFPM Daniel Baluta <daniel.baluta@gmail.=
+com> wrote:
 >
-> Add micfil and mqs device nodes
+> On Thu, May 15, 2025 at 8:21=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.=
+com> wrote:
+> >
+> > Add micfil and mqs device nodes
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx94.dtsi | 30 ++++++++++++++++++++++++
+> >  1 file changed, 30 insertions(+)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi b/arch/arm64/boot=
+/dts/freescale/imx94.dtsi
+> > index 3661ea48d7d2..77297dde5c95 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx94.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
+> > @@ -108,6 +108,16 @@ scmi_misc: protocol@84 {
+> >                 };
+> >         };
+> >
+> > +       mqs1: mqs1 {
+> > +               compatible =3D "fsl,imx943-aonmix-mqs";
+> > +               status =3D "disabled";
+> > +       };
+> > +
+> > +       mqs2: mqs2 {
+> > +               compatible =3D "fsl,imx943-wakeupmix-mqs";
+> > +               status =3D "disabled";
+> > +       };
 >
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx94.dtsi | 30 ++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
+> Node names should be somehow generic.
 >
-> diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi b/arch/arm64/boot/d=
-ts/freescale/imx94.dtsi
-> index 3661ea48d7d2..77297dde5c95 100644
-> --- a/arch/arm64/boot/dts/freescale/imx94.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
-> @@ -108,6 +108,16 @@ scmi_misc: protocol@84 {
->                 };
->         };
+> So here, we need to have something like:
 >
-> +       mqs1: mqs1 {
-> +               compatible =3D "fsl,imx943-aonmix-mqs";
-> +               status =3D "disabled";
-> +       };
-> +
-> +       mqs2: mqs2 {
-> +               compatible =3D "fsl,imx943-wakeupmix-mqs";
-> +               status =3D "disabled";
-> +       };
+> mqs1: mqs@<ip_addr>
+>
+> similar for mqs2.
 
-Node names should be somehow generic.
+There is no ip address for mqs module.  The only control register is
+in BLK_CTRL.
 
-So here, we need to have something like:
-
-mqs1: mqs@<ip_addr>
-
-similar for mqs2.
+best regards
+Shengjiu Wang
