@@ -1,65 +1,65 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE5D292938
-	for <imx@lists.linux.dev>; Thu, 15 May 2025 08:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF052882AD
+	for <imx@lists.linux.dev>; Thu, 15 May 2025 08:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747299171; cv=none; b=udQa6+aTODkF6kdJNPC0YnOCwrfrwRveE3qj2ianKD6MEINizmK4XnFn93MK7JfaywVrSBAkBNhOsObIGkAFDM9yYpPMeJMiz4lsGafqOf2uItIzJo+SrTRtO0lRVrzdJ/7pJQ7IfehUq+W4NBAECqwsMWxctUvIPhiL/avX7eM=
+	t=1747299262; cv=none; b=uYZCc0JQnv3bmSl1XSY2vtiZFp+pV54T0B/B0GVtD5huIb2zmVaEoGV8MOJ+5NQNavaRbIMrtYykw+iP3Q/ba2tM0hYDE72yy/wjMz15mlMf6qYFndwUyYX6AiaAVLdWqmoTisDxVFQXw+OTjAiAHd8Cawp2gg6aXd31GsMSYc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747299171; c=relaxed/simple;
-	bh=baDU5OetjJx39/uqBkmmFjvG7V0MajD4w+Wf3Mhy0sI=;
+	s=arc-20240116; t=1747299262; c=relaxed/simple;
+	bh=E1z5He3Wwd9ce7anNAAfQb1t4GFYDRY9FnjlwNIzh1g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YhwWbyhphHfQoxrWxLrvgzdRGpAji0bzGwvO7GBiKkmguDRPUwTL4fUuSV/HKKl8J84SJ7HASzpm4TfC66hISx77zUJkXmir6iA2+VTQoBRnrnKu1Sy92RX2I/YtkGKbyac02XYkMOJRZZB43sY/eXWf/kifJ3Sopby4yM4/veQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IR8wxjqd; arc=none smtp.client-ip=209.85.167.45
+	 In-Reply-To:Content-Type; b=DCq+uOW5ysOAH92AUy3MiuZyHdo8Awy3S2S5HI6wpYydBJaLBE+PuRcnUPUtMjzIiNOB0CY2X8bC9XIj+/sGqRU9bdqRPEN+M1aFT+/F6X0cDY/X1rtguBfHKWJbj7kIbdEaQ99l09JMIfg+vg05Dqr0OArmYN7IQ2y5FBfmJ/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dm0kFkFw; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IR8wxjqd"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54b0d638e86so776794e87.1
-        for <imx@lists.linux.dev>; Thu, 15 May 2025 01:52:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dm0kFkFw"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30f30200b51so6577391fa.3
+        for <imx@lists.linux.dev>; Thu, 15 May 2025 01:54:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747299167; x=1747903967; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1747299259; x=1747904059; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=+nMEUq5ozL3XCKx6Xei2teXG7hWWZhoXqA/EoccK2ek=;
-        b=IR8wxjqddxCazqsTcy409Xx36+bzOl7AyuotkQ7Ry2pKclCM+dcwA+AccPqn5LBfmx
-         0l2/37393Mt51RATBRLKzNkWydpLcm0PhP/jtbC45tTMC40mHiyqAWrF8woJ7xlGR8wT
-         toeqAhP/mSVzZopOd4ST0ksWbQV62u3SB5rZSGa/1LNPmrb7PcbFz4HRl9GYGOLvaEuu
-         WPD76zKaVcg3UqqypO9ij9SfHTKnYNBx1XsgNg7rUvGNJakm1ooh8mm3ZColXhNYytfe
-         1iGGpCFNbCj9KyKYQ2o7h2N1hkYjwQL/twFmgm6+ZIsR+74bAujTHFZFjlpUVDaXveKe
-         KhLQ==
+        bh=a7JvnrWNRYAOhJGuJiHPvQ8RmC0zHeKbDlxT+TMUjbE=;
+        b=Dm0kFkFwnasi35UBbFaBUwmsd2VFJGP7BqV5QpnpcdJkweoGJgX/IZoHtbvUN/IAg0
+         uCvWiUlE4ecmH7UtcWLDnB2Ww+/YeetikQkXoyF/WPY995jecQZfcQd9UglqAxhh56eI
+         OtQvydle6Pans67TdRrQYbLuTh1jzHUlUuxsG45mEG7wHCCRqOoN/ri5zBlanzIdxpm0
+         3e/zjE4jI53EZ0HKs+9LjQriiUqwPYAeCyndOpk1gMbh5cnM4zTV1rNHgYRX7WY9NzAX
+         1GgpxoBYVReA97CFFkZsa3jatL8C82TFUll+rHaXL8SvgwvyvKu2UOjEARYVcVCdArVB
+         33Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747299167; x=1747903967;
+        d=1e100.net; s=20230601; t=1747299259; x=1747904059;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+nMEUq5ozL3XCKx6Xei2teXG7hWWZhoXqA/EoccK2ek=;
-        b=lZavmVDeozde+wk22/AROv8azC8MP95WqoAYhhJEMs5WQ4dnXDW5+YG3vZtQanyqfu
-         83MsPFFpQBBr0SFT82VLc+ikgcsqzqAP2e4/YPO+LWJOuYJ//YjH0oYnjmSHxRM1jLXc
-         qF5/Ezhi5jhL7uSd4a2Q1w7W4HxDzLNMMHbtarIEg0KfEfEa2LEx02u0qzTQfcRUarZe
-         6jXl2l9to7Bq67TweWKs9ppIKZjBuBZGfhNOLspi6emrhydJCPwPhHRlbRJkOBSxV4OH
-         wSYj9UaKfr6xGQIfdDu2tbTZ2xKL2CTVYAgeXE7QV1VIQR4rqngCRZvcNOpqFqYLc25c
-         UGiA==
-X-Forwarded-Encrypted: i=1; AJvYcCX5HwYV4ByTH9nuvyt6UpJA6HNqiwv+J97VX16cU9e69q2EuFeOiXgN2eAOQqasbZxSMSI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwOyH7cVw3RkGXLbu/Iv9AzqjKPrLYi2K9ZgmVQtwv9aomgt45h
-	EX/tl7w+A3F0tcWL7XT+sNfURZqrTu1v2VT6bb47vL1LzeWmRPF1/jn1bQ==
-X-Gm-Gg: ASbGncvEO/VrKCRaf9d1AtxaWPcbpLQOWyrumS29Uddvg20jBoy0mqbNmPItq7SPnEW
-	D4sPvCF38gm9+MfehNKYvHRTevpqeZB/fMc33zxQKLo0T08H6hpMwPJLXXfqQHpvh8/sjwD0wpc
-	8HixT1gc3s0N5imK3SIQeij4DgBbaSw9jWSRZk+/YzgwleukT1Olly/cuYN2/VmcajOIU0vsTxD
-	XiZnXNFAy/DWP43xchLc8NUJjSsZG7kvN0aXE8vRD0mDJYkOVuxO8csj2yyAXV881Fzrz+48ghT
-	GRFVymPSS8fVNbB8wKvFHGB0n3eFoMhI0/5OkY+p+lP8LoSQwtWmmItHlvjiWUR5vzOy05eYCYH
-	unMTHHdsNh0Mvb0eKGE+EHlztoFhdQpxG
-X-Google-Smtp-Source: AGHT+IFr+Zu/wdjpllwn3ZdGFMnTZxToomXEA+mKUOQn0Jm/AWko6eEHsQCUeWofLoc5bYC55wc4SQ==
-X-Received: by 2002:a05:6512:3b9b:b0:549:39d8:51ef with SMTP id 2adb3069b0e04-550dcffc1fbmr627657e87.6.1747299167217;
-        Thu, 15 May 2025 01:52:47 -0700 (PDT)
+        bh=a7JvnrWNRYAOhJGuJiHPvQ8RmC0zHeKbDlxT+TMUjbE=;
+        b=bE7zl5zQC9rKmeYBeq38HLC1S5JdZ4pOwhesdv0165Ij8+5aJH5TsdKv0LKa58rtBg
+         tJ4vjGoD7d3jNhMRojCpNs5bWuFMqAC+F/4tEhjUQuWc3gua5rK24D/MF4zzwlCuhM/X
+         TH1A/WIdp2JOeP11gnmvnW7zt4rKzIInde40o3yPM/VZ8WH8eIZ8STsrGA1lP4ONh/6O
+         yvjnHt92dJd485dxjeXovXf4SBC6gvxRibu07q6oavPBfnxbxe1JfykOhnAogaSKl1m1
+         hYOAk/7BT15YPVEkkUJZeJCU6DGomYAxBWIMkF0cQFmbhfWru1we14psvPdtgcM/JvZq
+         xHVA==
+X-Forwarded-Encrypted: i=1; AJvYcCXDtoygI/eOHGUipUovQ1Jl0VqZrT/7wlROES3EulVvBeBKzRSQkgK/249f8B5s8i3lQhw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyA7rc1MbC+8IQzlEqZe4EOhSD46uI4p5eoHGW++pPYwZ0HMMI9
+	mYkUhnRzv8FyDqnQn13me871fLogjEEPZVtoGFFhdUwWbtg8kKv7LbF2fg==
+X-Gm-Gg: ASbGnct5EnD/Qa8oyRY20upCKVOCm0CahWsAKt92PBXA4wGIoKORO8jpnE/WQ+eesgD
+	0jfaMy/Hrz5iOSDOIzjeofdYEKy9Qe8/z5KJpLbatbFIKFGVGiHK98ftcwerw940QKRMTqYtKJO
+	WPHNPRSs9fW3DIEch58RwyIr9R6ZgzmkR6fc03UZ7FDclaOYuJvNU5jalYU5mS3gg5rMHI19qhD
+	pBZ9iiCCmKDfhIpCb1AONeGHzo53R/qBq6eyhn0HmwGRXZvErRQWVoySyLLt8Rt8AjnnCW6CpP8
+	byiKz7gSb/bWz2CxJ5bQUGX4555Tev4R6MTEhii3Ciwgh67Xg5Kro7C/SdFP5v9AZ0Itok7USfu
+	FUOJs8e2JHRPJmS8Dy3YQNsp2As/NeOWX
+X-Google-Smtp-Source: AGHT+IHtcdpnhUlg72zfo7hWrvx0FJm1YaMSsnRsy3WAnb5OW4dErT+GY1iWZYdh7iEQuUQYLBOqVg==
+X-Received: by 2002:a2e:9fcb:0:b0:30b:ad2c:dfe4 with SMTP id 38308e7fff4ca-327ed1dedb9mr32145521fa.30.1747299258821;
+        Thu, 15 May 2025 01:54:18 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54fc64ccf20sm2530860e87.239.2025.05.15.01.52.46
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-326c33b7fe3sm22411401fa.24.2025.05.15.01.54.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 May 2025 01:52:46 -0700 (PDT)
-Message-ID: <057c6bc2-adf9-4160-9184-6438cbe6e9d4@gmail.com>
-Date: Thu, 15 May 2025 11:52:45 +0300
+        Thu, 15 May 2025 01:54:18 -0700 (PDT)
+Message-ID: <db3f6178-646b-4f42-983e-9004d61dabc2@gmail.com>
+Date: Thu, 15 May 2025 11:54:17 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,8 +67,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] arm64: dts: imx8mn-bsh-smm-s2-common: Define suspend
- voltage threshold
+Subject: Re: [PATCH 2/9] arm64: dts: imx8mn-bsh-smm-s2-common: Leave regulator
+ under hw state machine
 To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
  linux-kernel@vger.kernel.org
 Cc: Simon Holesch <simon.holesch@bshg.com>,
@@ -82,67 +82,58 @@ Cc: Simon Holesch <simon.holesch@bshg.com>,
  Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
 References: <20250514082507.1983849-1-dario.binacchi@amarulasolutions.com>
- <20250514082507.1983849-2-dario.binacchi@amarulasolutions.com>
+ <20250514082507.1983849-3-dario.binacchi@amarulasolutions.com>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250514082507.1983849-2-dario.binacchi@amarulasolutions.com>
+In-Reply-To: <20250514082507.1983849-3-dario.binacchi@amarulasolutions.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 14/05/2025 11:24, Dario Binacchi wrote:
 > From: Michael Trimarchi <michael@amarulasolutions.com>
 > 
-> Voltage threshold should be adjust according to the worst case.
+> Let regulator to be controlled by hardware state machine.
 
-I would love to understand why these voltages are set.
+Is it possible to add a note _why_ these regulators must be controlled 
+by the state machine and not by the software?
 
-Could you please explain a bit further why this change is done. What 
-worst case? What happens if voltages aren't adjusted? What is the 
-current voltage (before this patch is applied?).
-
+> 
 > Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 > ---
 > 
->   .../boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi  | 11 +++++++++++
->   1 file changed, 11 insertions(+)
+>   arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi | 3 +++
+>   1 file changed, 3 insertions(+)
 > 
 > diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-> index bbb07c650da9..5a1ec2f6a552 100644
+> index 5a1ec2f6a552..0d343ffdb7f9 100644
 > --- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
 > +++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-> @@ -105,6 +105,12 @@ buck1_reg: BUCK1 {
+> @@ -144,6 +144,7 @@ buck4_reg: BUCK4 {
+>   				regulator-max-microvolt = <3300000>;
 >   				regulator-boot-on;
 >   				regulator-always-on;
->   				regulator-ramp-delay = <1250>;
-> +
-> +				/* enable autosuspend threshold */
-> +				rohm,dvs-run-voltage = <850000>;
-> +				rohm,dvs-idle-voltage = <850000>;
-> +				rohm,dvs-suspend-voltage = <850000>;
 > +				rohm,no-regulator-enable-control;
-
-The commit message does not explain why the software control of the 
-regulator's enable state is changed? Maybe this should be in the 2/9?
-
 >   			};
 >   
->   			buck2_reg: BUCK2 {
-> @@ -115,6 +121,11 @@ buck2_reg: BUCK2 {
+>   			buck5_reg: BUCK5 {
+> @@ -153,6 +154,7 @@ buck5_reg: BUCK5 {
+>   				regulator-max-microvolt = <1995000>;
 >   				regulator-boot-on;
 >   				regulator-always-on;
->   				regulator-ramp-delay = <1250>;
-> +
-> +				/* enable autosuspend threshold */
-> +				rohm,dvs-run-voltage = <960000>;
-> +				rohm,dvs-idle-voltage = <860000>;
 > +				rohm,no-regulator-enable-control;
-
-same here?
-
 >   			};
 >   
->   			buck3_reg: BUCK3 {
+>   			buck6_reg: BUCK6 {
+> @@ -162,6 +164,7 @@ buck6_reg: BUCK6 {
+>   				regulator-max-microvolt = <1400000>;
+>   				regulator-boot-on;
+>   				regulator-always-on;
+> +				rohm,no-regulator-enable-control;
+>   			};
+>   
+>   			ldo1_reg: LDO1 {
 
 Yours,
 	-- Matti
+
