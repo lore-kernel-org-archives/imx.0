@@ -1,75 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0768F2951A6;
-	Wed, 14 May 2025 20:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51AB1EA7C2;
+	Thu, 15 May 2025 02:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747253563; cv=none; b=U2Ldwm1yVc2UkHM6TR7httQPyMlgzHGBbFAijREDikc6Qh9w1T/U/quJgdrmyyaJm+8ORPb7DmUgiD9fNV4ZRtwplH++NLj0i7LBifZsFoK1wJIO1GWo+UGCrQMKKpajj0GCykgTOQNKrfxmqXry6LZuUVJajlI0KMGDj8ye1kg=
+	t=1747275601; cv=none; b=VuhkTLFUMFtZ+G0AD3vfftdsDXaRKRwBAJwelCpeli2vU4Ofb9EwuCFM6QyhNApBwMFg8YOFswO20a83QH8gbowp78M33U/T5bdzLqZ56bWx1F8SHIq+jS1X9Aizx2XxNWABcryw7GqAg2pw5lR///PnUdYY4HG+Mmr7MR/heuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747253563; c=relaxed/simple;
-	bh=OzKdPvbRk8hZ5qrmc01ogW5Qt/80h78/YBJYjWWOc4I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=urRKIJzbyAW6in45N7aIQRZpT50No0TSWsEN/V74N3Spm2Wjlbn99jVKUHaAldHSwEdhZVMkl90LqHj6xUuJHGsFrMlZI73eI3VJtLBUnifNZ60gB4oJOkORb/3Lv96B+nYYotr2nGJMv/5cbAX1psCxZEZ/oj7vmWzDLcmQ4C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YjrD7uF3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747275601; c=relaxed/simple;
+	bh=hgksmwj8UrYlGHHwWD3HsRnyJNAn2rovwNQR0Fw1FQQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=L4/xYgFDg3djPZm2MKZVZVltEFgBnHxT9VFZsXa6flVU2aamfEGMoT/XJZduyLerXuz7ebif782u/2RMAXWPob6t1rAakLmPls7HTCmQsZcanX7372/b5rTFyxkjNe30xIwBvTaiN8a7arzzAJ4BOdgA4sHPGM7Eiee8lnQj5rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrvzxz/3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YjrD7uF3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB4FC4CEE3;
-	Wed, 14 May 2025 20:12:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrvzxz/3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427C2C4CEF1;
+	Thu, 15 May 2025 02:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747253562;
-	bh=OzKdPvbRk8hZ5qrmc01ogW5Qt/80h78/YBJYjWWOc4I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YjrD7uF3s4MzpmCi5++bmuEF1uYLGz2YMBnsiMqoFW7YDj5mc8aOQESHbZu88v1DH
-	 /d18hc+b+qCiFIU8wjE+VT3AUBn0WHkoTjMtfQSxakcobRGXhUIUhXcjPqfE+3ENm4
-	 50iYiKTv8Q57RXy9OlgNnwEWWkUcdDj30VbH5Lu0yYNjQhv5K538xqA5La1qGLzQyq
-	 J+Y37RDoc0V7KiNuD3QEUxsqrff7ZF0EBInFFBUijITqyrdwWAepJiQqqBBdPcRYzZ
-	 baQkY+Gry6SJbiMS9tY+h8YfTzXl7CVbMG3lItpymdu1EpEzqXNWmzOfa9fyCEN98Z
-	 xI4qL7dgk4dgw==
-Date: Wed, 14 May 2025 15:12:41 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Olivier Benjamin <olivier.benjamin@bootlin.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-media@vger.kernel.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-kernel@vger.kernel.org,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nicholas Roth <nicholas@rothemail.net>,
-	linux-rockchip@lists.infradead.org,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Heiko Stuebner <heiko@sntech.de>, imx@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH v3 2/4] dt-bindings: media: imx258: inherit
- video-interface-devices properties
-Message-ID: <174725356050.2958291.9709026924364137236.robh@kernel.org>
-References: <20250509-camera-v3-0-dab2772d229a@bootlin.com>
- <20250509-camera-v3-2-dab2772d229a@bootlin.com>
+	s=k20201202; t=1747275601;
+	bh=hgksmwj8UrYlGHHwWD3HsRnyJNAn2rovwNQR0Fw1FQQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lrvzxz/3XjJx/sSGr466s3EocUeLsmCZs/tdo6GjCR3FSVKK79V1iywvXXxJhuXtz
+	 ibvZGkFlmFcslWaNjIhekccUElk/Up/9unAf7HPgNfZNVPA8RgOX2B+fPGKaisar5Z
+	 abDNVwwhJg+ImpNvNRritXlYIbvfkoT6yaRSsyV844rxL7AY8Z+skDdbVzdeCSo1B2
+	 3vock3KTEkXyNc/7G5MtmoxNUNxVZq6NJW4grzBxxsM8ctyal9SW+Wyd8VL4s/usRi
+	 lS+6kbrs5hplxqmIJTeIKcfkikdorI9iTOzLlPY26uhGyOL6JlTV/6Nxp7ksH8Aatf
+	 XtT72kyZZC5qQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADDF8380AA66;
+	Thu, 15 May 2025 02:20:39 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250509-camera-v3-2-dab2772d229a@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH RESUBMIT net-next] net: phy: remove Kconfig symbol MDIO_DEVRES
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174727563825.2582097.14870007817374073417.git-patchwork-notify@kernel.org>
+Date: Thu, 15 May 2025 02:20:38 +0000
+References: <27cba535-f507-4b32-84a3-0744c783a465@gmail.com>
+In-Reply-To: <27cba535-f507-4b32-84a3-0744c783a465@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: andrew@lunn.ch, andrew+netdev@lunn.ch, linux@armlinux.org.uk,
+ pabeni@redhat.com, kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
+ claudiu.manoil@nxp.com, olteanv@gmail.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
+ imx@lists.linux.dev
 
+Hello:
 
-On Fri, 09 May 2025 23:51:38 +0200, Olivier Benjamin wrote:
-> Update the IMX258 binding to inherit properties defined in the
-> video-interface-devices binding.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sun, 11 May 2025 23:13:25 +0200 you wrote:
+> MDIO_DEVRES is only set where PHYLIB/PHYLINK are set which
+> select MDIO_DEVRES. So we can remove this symbol.
 > 
-> Signed-off-by: Olivier Benjamin <olivier.benjamin@bootlin.com>
-> ---
->  Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Note: Due to circular module dependencies we can't simply
+>       make mdio_devres.c part of phylib.
 > 
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> 
+> [...]
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Here is the summary with links:
+  - [RESUBMIT,net-next] net: phy: remove Kconfig symbol MDIO_DEVRES
+    https://git.kernel.org/netdev/net-next/c/73d952840d9f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
