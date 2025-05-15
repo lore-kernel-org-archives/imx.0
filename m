@@ -1,123 +1,85 @@
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5617228B51F
-	for <imx@lists.linux.dev>; Thu, 15 May 2025 10:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4923819;
+	Thu, 15 May 2025 11:40:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747304622; cv=none; b=Sewti7F25JrftoCnDI7RIsDnf1gxzkPMYcYB1AJk2/1k2mxQPnRo7z1hszCrdNxxvc0IxixTvPFmJ3P/5nAu8yRinL5slEOHf04AFmpFu/s4V3GaNC9qgn1goBY3YA7MniEnRiEvJ5E34DGwWUlsTQqWYWhbm9DM3ZKHlWux2Ls=
+	t=1747309251; cv=none; b=LGrxeKB5PSjSwigjkhCK2C1oG1wMpPaCB/1OwdlwsapVH2ViDnEuYccPkpiULAtQMon8uxxb9zfwPYuAemJA3z0Kmt6i3Pzpdawr+xLm08WYSVy6DYU0QxSsmuD6vFHZkKpppwiIfBJghhF9/C8oRrljFIoBSK3e2IEVaFeNYAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747304622; c=relaxed/simple;
-	bh=LPn993xnWWkvwlm5rudsJA0BQo0qu2yihgm1xOxvsW0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VSHLRqjl+JDSd5fBYQP1EHM5Jt4dBJdIl+KMhD85N4M1cydNT4ansepgMGGjlr4N7O0PE5wewkbiyI2+u5zNGOAxHN/R+RmgFxWHiLH2Z/aoYv9dl3PpFRtFpFv5QFkjsOHgjqoATsVRnJk6gJFMe3ac1r/25Wl1Y8fI/XdsJ/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M+nfQ1Do; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747309251; c=relaxed/simple;
+	bh=AtLrKuyB/2mv1b3YAJljBOxYlY0Y4WwepVYWImQje1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jal3KKph9jtrNQRweYiKraNGrPYkhK1xa+n96y9K+VjAJUMEISrmTHGl3fgfhwNz5CPyb0fF5YN83gKGzlMAdHBqxgG+n8VSC/9ZDwZC8652l/0dwllkDJGzsb0U8ZAIl5E7WF+IL6jTVkdHEnQhM1FfljBfIDifMuVZfPwuQUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TnOivIrM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M+nfQ1Do"
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3da74959554so1898055ab.2
-        for <imx@lists.linux.dev>; Thu, 15 May 2025 03:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747304620; x=1747909420; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zJZrSFBkNbM1G4hOj8s/L4+l2f6c8+4aH2wqD19Gqc0=;
-        b=M+nfQ1DoFZNvuEmmuUB4qP/zfCevaru/nEaHbjkKtTDCCyYJpeXfSSiNrOza8Rmwsz
-         krojydSzr44wN3XwpR5RMMRHlqObTXO/FXzDbtVc8EuFLFcGIVulWnez1qGkrN74iZI4
-         DW9l2ZG1oIEpC2VKFP9Sld60muJ8zWZeD3j7MIzP6X7q3nxgUfLIelCWosKyt2XxZprI
-         ikiRWv5TXeyGYAvP9zM3K4x1EDiZd8RP1EkctGbEF+heDYxHUiUP7Uni2i6IRHOt4MBT
-         UIzo9XCGJ/ts5f7fxpa3USKMIjhKP+l2NkpRoIcAEGYXrHYA+ZIouLagWIvqoEEmCepz
-         durA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747304620; x=1747909420;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zJZrSFBkNbM1G4hOj8s/L4+l2f6c8+4aH2wqD19Gqc0=;
-        b=aYvrwFIa/ALM5uK+UcQxv4MFTdWLD8kH1Fur+I3NOJlT3LTDZH09bL/aGUVoTWb+0z
-         Xw8Jbz13mvGdh4atIgQbh1jSUm4n0r4/0uCbyHiFHvEpN5EjKdt5m9jH5C1ssuAeOseR
-         kcogOFUqGxVODJ0K2U0RbjAiBOJ+BtOmsEUsKRDc4tQKRtR6hqiDhzXUp0lK736l1u0C
-         lgaMb+AP/b16ZHANROeFSVJjh17MFkItEEgzwhFrM0ZxWrj/k6poL3+IpaFUkffov3oh
-         fRnybobHdmoYIvuPwrDkhvAqnQU8gQQadpjXQYIErBWbsJRdqDXTlBOCX0jkXP2QtT2G
-         hoMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcRPCvSMfySxOrJUEs/vyYYSwrmFYHwudTIOzEix0MlfWCvpccVXX1Jsl+q9H/6D1i6EY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwoLsiezTi4BxnhbO4W2R+E/z+ShVYhDy9GPQdQ7TYSv0D6o/Af
-	7I7y2BiF9+ORAzQpacLvZ8mrbGyjeTJH2Lrxn0IqZ4+gYCCa8BsRYeSKBJZ3mBt/5M/r3HBwBDq
-	n1NhP9d1ImZLSyGgTt9kSJxVZ+AY=
-X-Gm-Gg: ASbGncsCq32Jzqo964WuV5SL7TMnnHzsXIGxjkkV7RdeLs731lxTdquhs40GCpyiQ4G
-	lS0bbYw8YmXR3LeuXRAg5wAew0cm3qdiv8LTN8vUKfFm1msKOCZlQ1uEB4GB7qp3aWq5wY9oPJW
-	uSW9rP9DOuCMajG3OWyYVJS4ea8bL4rknM
-X-Google-Smtp-Source: AGHT+IHO5NjvG7NPaTx/Wk84Xf6YXEN9rB+dPDyiQnC6Nqm2qSNMD7m/f1k9O8ljI/qF9B+KJKVTOxllmfRsmBxkeqU=
-X-Received: by 2002:a05:6e02:2186:b0:3db:75e6:80d5 with SMTP id
- e9e14a558f8ab-3db75e68272mr38100995ab.14.1747304620350; Thu, 15 May 2025
- 03:23:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TnOivIrM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D59C4CEE7;
+	Thu, 15 May 2025 11:40:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747309251;
+	bh=AtLrKuyB/2mv1b3YAJljBOxYlY0Y4WwepVYWImQje1Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TnOivIrMpnQgHRo/eEvXMJRZ6zFtOo1KqVTzjuYabmi1wOzGb6TFo2fxKlbCKAFDc
+	 Qdm7ri21X1blh4QyzFqFK5p+92yj+TEs9UNZa0/Uy/65s6S0nBkG1zBPMorZq/Wkg2
+	 XbUsf+fHGIX6dQJG7x1ZW1Chr9XEFTFG99ZyYexGRMvIqP2EcK3bdZXrhIji4OJ3Vz
+	 J82Xb8iQ1D5wAhTjJhcWs6FKCRK4yXLbALX9lF4f0cn37h2k4rfJlpVYZYcijpwFnK
+	 3EcakqZvpDzlKNDB4hy4QQcL/X6hfMqBvNND5fXbFJN/oiMM8q3t9g8jLj/dZokUv6
+	 wqjbfkQfssTYA==
+Date: Thu, 15 May 2025 13:40:44 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v1] i2c: lpi2c: implement master_xfer_atomic callback
+Message-ID: <lqspn72kegy6b7rrpefbajvomcefs3d764ndtwescwhg7jz6bx@hhu4gzkcms62>
+References: <20250319145114.50771-1-francesco@dolcini.it>
+ <tds5osuthulo4bnlck6dgx3g3aoanca3my2uczdhcipcfcxgpp@opzseflynjar>
+ <3C1EEBEB-E691-4EB7-A008-A1FE9CEE7238@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250515051900.2353627-1-shengjiu.wang@nxp.com>
- <20250515051900.2353627-2-shengjiu.wang@nxp.com> <CAEnQRZBJgJpyE-K6fn3_s61-Q7j=mXk5FGMggpaBhnH62w+ACQ@mail.gmail.com>
-In-Reply-To: <CAEnQRZBJgJpyE-K6fn3_s61-Q7j=mXk5FGMggpaBhnH62w+ACQ@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 15 May 2025 18:23:26 +0800
-X-Gm-Features: AX0GCFs1HwaoDdoFbQAbv3WJV20f_7O_khUEi6c3pJChsc5rxc9dD7nQQ1yVecY
-Message-ID: <CAA+D8APSQK8FqGYYmAygF-dhM7N_54Zw-jSz4xWrr5ToGfUKmw@mail.gmail.com>
-Subject: Re: [PATCH 1/6] arm64: dts: imx94: Add micfil and mqs device nodes
-To: Daniel Baluta <daniel.baluta@gmail.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, carlos.song@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3C1EEBEB-E691-4EB7-A008-A1FE9CEE7238@dolcini.it>
 
-On Thu, May 15, 2025 at 6:19=E2=80=AFPM Daniel Baluta <daniel.baluta@gmail.=
-com> wrote:
->
-> On Thu, May 15, 2025 at 8:21=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.=
-com> wrote:
-> >
-> > Add micfil and mqs device nodes
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx94.dtsi | 30 ++++++++++++++++++++++++
-> >  1 file changed, 30 insertions(+)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi b/arch/arm64/boot=
-/dts/freescale/imx94.dtsi
-> > index 3661ea48d7d2..77297dde5c95 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx94.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
-> > @@ -108,6 +108,16 @@ scmi_misc: protocol@84 {
-> >                 };
-> >         };
-> >
-> > +       mqs1: mqs1 {
-> > +               compatible =3D "fsl,imx943-aonmix-mqs";
-> > +               status =3D "disabled";
-> > +       };
-> > +
-> > +       mqs2: mqs2 {
-> > +               compatible =3D "fsl,imx943-wakeupmix-mqs";
-> > +               status =3D "disabled";
-> > +       };
->
-> Node names should be somehow generic.
->
-> So here, we need to have something like:
->
-> mqs1: mqs@<ip_addr>
->
-> similar for mqs2.
+Hi Francesco,
 
-There is no ip address for mqs module.  The only control register is
-in BLK_CTRL.
+On Wed, May 14, 2025 at 05:51:27PM +0200, Francesco Dolcini wrote:
+> Il 14 maggio 2025 17:14:32 CEST, Andi Shyti <andi.shyti@kernel.org> ha scritto:
+> >On Wed, Mar 19, 2025 at 03:51:14PM +0100, Francesco Dolcini wrote:
+> >> Rework the read and write code paths in the driver to support operation
+> >> in atomic contexts. To achieve this, the driver must not rely on IRQs
+> >> or perform any scheduling, e.g., via a sleep or schedule routine. Even
+> >> jiffies do not advance in atomic contexts, so timeouts based on them
+> >> are substituted with delays.
+> >> 
+> >> Implement atomic, sleep-free, and IRQ-less operation. This increases
+> >> complexity but is necessary for atomic I2C transfers required by some
+> >> hardware configurations, e.g., to trigger reboots on an external PMIC chip.
+> >> 
+> >> Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> >> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> >
+> >this patch is causing a build regression. I'm going to revert it,
+> >please check the test report that has been reported and you are
+> >cc'ed.
+> 
+> I am looking at it, it's a warning with W=1, not a build error.
+> I would not revert this patch, just wait for a follow up patch
+> or comment that will address that warning.
 
-best regards
-Shengjiu Wang
+please send a v2 already fixed I don't want to keep a regression
+even if it's a small warning.
+
+We still have time until the merge window and this patch is
+already reviewed by Carlos.
+
+Thanks,
+Andi
