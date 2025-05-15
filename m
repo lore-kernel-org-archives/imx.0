@@ -1,346 +1,148 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80555296D03
-	for <imx@lists.linux.dev>; Thu, 15 May 2025 08:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE5D292938
+	for <imx@lists.linux.dev>; Thu, 15 May 2025 08:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747297916; cv=none; b=N4+8ZB32I828rWIbrR7EcUuzOypQrPKgFrTCFLk3se8f75ETaF4ZBs0oX9X8oXUCcTW763R7gsrz41GhAeZZMuqwFG6N0I3I1CFlNPHEwB1+daouHFwdgegb+++ajV41EIbsbYpv6J0JMO2BKPaLPwJfID+emycg8yhMcbqYhiE=
+	t=1747299171; cv=none; b=udQa6+aTODkF6kdJNPC0YnOCwrfrwRveE3qj2ianKD6MEINizmK4XnFn93MK7JfaywVrSBAkBNhOsObIGkAFDM9yYpPMeJMiz4lsGafqOf2uItIzJo+SrTRtO0lRVrzdJ/7pJQ7IfehUq+W4NBAECqwsMWxctUvIPhiL/avX7eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747297916; c=relaxed/simple;
-	bh=VU3qN8J/LVCw5asCq7dV4q7qWI2UtrIRGFtMGAw+KKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k14Ju1/b5yX7bNKJ3HvLIVoQC3/DtHl0tG+1TnVzNEOSkP8DLnVHKopunvyVcwRTI0ynueQ8IdT1EwzPyDw5FkHelZVMBmW7goNzCAKaJaDJVgOGDXfX+OokefXa3ohDNfqknAPiP//dVCnFdJW4IVXUZvGAzBiPV6bQAq6hKkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ORs9VJ4H; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1747299171; c=relaxed/simple;
+	bh=baDU5OetjJx39/uqBkmmFjvG7V0MajD4w+Wf3Mhy0sI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YhwWbyhphHfQoxrWxLrvgzdRGpAji0bzGwvO7GBiKkmguDRPUwTL4fUuSV/HKKl8J84SJ7HASzpm4TfC66hISx77zUJkXmir6iA2+VTQoBRnrnKu1Sy92RX2I/YtkGKbyac02XYkMOJRZZB43sY/eXWf/kifJ3Sopby4yM4/veQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IR8wxjqd; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ORs9VJ4H"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9BBB310397281;
-	Thu, 15 May 2025 10:31:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1747297910; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=Fi0Gbu6aDQ30lLHvX8QotTG0CofWbimlQkVK9vsGpzQ=;
-	b=ORs9VJ4HASNNxM8v+sEnhLcZOwGui+A+8YtPVkzc9ekhm984Z5WbHiiQdgPzyCIxDz1V8K
-	P9IYjKL/RpOAukLtGAKN/j5KC36DNIYhoI/zsoHyh6jnpa5xGsYHdPUxb6JYYcDp2GwqaC
-	Fv7F3hBvo6FNwP9FjOWyqTpWyrYUU9rML+mtJD9mtE61iFax0tfnPNr5lvbLI/sv44Va2J
-	5LNr1MBsK15MHJ4crySIONzdcIfyKP9xbq9SB/xGBSEc9j5kyOdlDt9mEIejApKN9jLx5A
-	XwZQe7JLVntjZaKVZkCI764x567zGg5dN4WxRmSz5Ut07+g3IwUiUm7ivgQBJA==
-Date: Thu, 15 May 2025 10:31:43 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Rob Herring <robh@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v11 1/7] dt-bindings: net: Add MTIP L2 switch
- description
-Message-ID: <20250515103143.4d2255fc@wsk>
-In-Reply-To: <20250514160115.GA2382587-robh@kernel.org>
-References: <20250504145538.3881294-1-lukma@denx.de>
-	<20250504145538.3881294-2-lukma@denx.de>
-	<20250512164025.GA3454904-robh@kernel.org>
-	<20250513080920.7c8a2a06@wsk>
-	<20250514160115.GA2382587-robh@kernel.org>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IR8wxjqd"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54b0d638e86so776794e87.1
+        for <imx@lists.linux.dev>; Thu, 15 May 2025 01:52:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747299167; x=1747903967; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+nMEUq5ozL3XCKx6Xei2teXG7hWWZhoXqA/EoccK2ek=;
+        b=IR8wxjqddxCazqsTcy409Xx36+bzOl7AyuotkQ7Ry2pKclCM+dcwA+AccPqn5LBfmx
+         0l2/37393Mt51RATBRLKzNkWydpLcm0PhP/jtbC45tTMC40mHiyqAWrF8woJ7xlGR8wT
+         toeqAhP/mSVzZopOd4ST0ksWbQV62u3SB5rZSGa/1LNPmrb7PcbFz4HRl9GYGOLvaEuu
+         WPD76zKaVcg3UqqypO9ij9SfHTKnYNBx1XsgNg7rUvGNJakm1ooh8mm3ZColXhNYytfe
+         1iGGpCFNbCj9KyKYQ2o7h2N1hkYjwQL/twFmgm6+ZIsR+74bAujTHFZFjlpUVDaXveKe
+         KhLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747299167; x=1747903967;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+nMEUq5ozL3XCKx6Xei2teXG7hWWZhoXqA/EoccK2ek=;
+        b=lZavmVDeozde+wk22/AROv8azC8MP95WqoAYhhJEMs5WQ4dnXDW5+YG3vZtQanyqfu
+         83MsPFFpQBBr0SFT82VLc+ikgcsqzqAP2e4/YPO+LWJOuYJ//YjH0oYnjmSHxRM1jLXc
+         qF5/Ezhi5jhL7uSd4a2Q1w7W4HxDzLNMMHbtarIEg0KfEfEa2LEx02u0qzTQfcRUarZe
+         6jXl2l9to7Bq67TweWKs9ppIKZjBuBZGfhNOLspi6emrhydJCPwPhHRlbRJkOBSxV4OH
+         wSYj9UaKfr6xGQIfdDu2tbTZ2xKL2CTVYAgeXE7QV1VIQR4rqngCRZvcNOpqFqYLc25c
+         UGiA==
+X-Forwarded-Encrypted: i=1; AJvYcCX5HwYV4ByTH9nuvyt6UpJA6HNqiwv+J97VX16cU9e69q2EuFeOiXgN2eAOQqasbZxSMSI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwOyH7cVw3RkGXLbu/Iv9AzqjKPrLYi2K9ZgmVQtwv9aomgt45h
+	EX/tl7w+A3F0tcWL7XT+sNfURZqrTu1v2VT6bb47vL1LzeWmRPF1/jn1bQ==
+X-Gm-Gg: ASbGncvEO/VrKCRaf9d1AtxaWPcbpLQOWyrumS29Uddvg20jBoy0mqbNmPItq7SPnEW
+	D4sPvCF38gm9+MfehNKYvHRTevpqeZB/fMc33zxQKLo0T08H6hpMwPJLXXfqQHpvh8/sjwD0wpc
+	8HixT1gc3s0N5imK3SIQeij4DgBbaSw9jWSRZk+/YzgwleukT1Olly/cuYN2/VmcajOIU0vsTxD
+	XiZnXNFAy/DWP43xchLc8NUJjSsZG7kvN0aXE8vRD0mDJYkOVuxO8csj2yyAXV881Fzrz+48ghT
+	GRFVymPSS8fVNbB8wKvFHGB0n3eFoMhI0/5OkY+p+lP8LoSQwtWmmItHlvjiWUR5vzOy05eYCYH
+	unMTHHdsNh0Mvb0eKGE+EHlztoFhdQpxG
+X-Google-Smtp-Source: AGHT+IFr+Zu/wdjpllwn3ZdGFMnTZxToomXEA+mKUOQn0Jm/AWko6eEHsQCUeWofLoc5bYC55wc4SQ==
+X-Received: by 2002:a05:6512:3b9b:b0:549:39d8:51ef with SMTP id 2adb3069b0e04-550dcffc1fbmr627657e87.6.1747299167217;
+        Thu, 15 May 2025 01:52:47 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54fc64ccf20sm2530860e87.239.2025.05.15.01.52.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 May 2025 01:52:46 -0700 (PDT)
+Message-ID: <057c6bc2-adf9-4160-9184-6438cbe6e9d4@gmail.com>
+Date: Thu, 15 May 2025 11:52:45 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/P_3M55nHRx=Laa9vzpqBEX+";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] arm64: dts: imx8mn-bsh-smm-s2-common: Define suspend
+ voltage threshold
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ linux-kernel@vger.kernel.org
+Cc: Simon Holesch <simon.holesch@bshg.com>,
+ Karthikdatt Anantharamrao <karthikdatt.anantharamrao@in.bosch.com>,
+ michael@amarulasolutions.com, linux-amarula@amarulasolutions.com,
+ Wolfgang Birkner <wolfgang.birkner@bshg.com>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250514082507.1983849-1-dario.binacchi@amarulasolutions.com>
+ <20250514082507.1983849-2-dario.binacchi@amarulasolutions.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250514082507.1983849-2-dario.binacchi@amarulasolutions.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---Sig_/P_3M55nHRx=Laa9vzpqBEX+
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+On 14/05/2025 11:24, Dario Binacchi wrote:
+> From: Michael Trimarchi <michael@amarulasolutions.com>
+> 
+> Voltage threshold should be adjust according to the worst case.
 
-Hi Rob,
+I would love to understand why these voltages are set.
 
-Thanks for your detailed explanation.
+Could you please explain a bit further why this change is done. What 
+worst case? What happens if voltages aren't adjusted? What is the 
+current voltage (before this patch is applied?).
 
-> On Tue, May 13, 2025 at 08:09:20AM +0200, Lukasz Majewski wrote:
-> > Hi Rob,
-> >  =20
-> > > On Sun, May 04, 2025 at 04:55:32PM +0200, Lukasz Majewski wrote: =20
-> > > > This patch provides description of the MTIP L2 switch available
-> > > > in some NXP's SOCs - e.g. imx287.
-> > > >=20
-> > > > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > > > Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-> > > >=20
-> > > > ---
-> > > > Changes for v2:
-> > > > - Rename the file to match exactly the compatible
-> > > >   (nxp,imx287-mtip-switch)
-> > > >=20
-> > > > Changes for v3:
-> > > > - Remove '-' from const:'nxp,imx287-mtip-switch'
-> > > > - Use '^port@[12]+$' for port patternProperties
-> > > > - Drop status =3D "okay";
-> > > > - Provide proper indentation for 'example' binding (replace 8
-> > > >   spaces with 4 spaces)
-> > > > - Remove smsc,disable-energy-detect; property
-> > > > - Remove interrupt-parent and interrupts properties as not
-> > > > required
-> > > > - Remove #address-cells and #size-cells from required properties
-> > > > check
-> > > > - remove description from reg:
-> > > > - Add $ref: ethernet-switch.yaml#
-> > > >=20
-> > > > Changes for v4:
-> > > > - Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and
-> > > > remove already referenced properties
-> > > > - Rename file to nxp,imx28-mtip-switch.yaml
-> > > >=20
-> > > > Changes for v5:
-> > > > - Provide proper description for 'ethernet-port' node
-> > > >=20
-> > > > Changes for v6:
-> > > > - Proper usage of
-> > > >   $ref:
-> > > > ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
-> > > > when specifying the 'ethernet-ports' property
-> > > > - Add description and check for interrupt-names property
-> > > >=20
-> > > > Changes for v7:
-> > > > - Change switch interrupt name from 'mtipl2sw' to 'enet_switch'
-> > > >=20
-> > > > Changes for v8:
-> > > > - None
-> > > >=20
-> > > > Changes for v9:
-> > > > - Add GPIO_ACTIVE_LOW to reset-gpios mdio phandle
-> > > >=20
-> > > > Changes for v10:
-> > > > - None
-> > > >=20
-> > > > Changes for v11:
-> > > > - None
-> > > > ---
-> > > >  .../bindings/net/nxp,imx28-mtip-switch.yaml   | 149
-> > > > ++++++++++++++++++ 1 file changed, 149 insertions(+)
-> > > >  create mode 100644
-> > > > Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> > > >=20
-> > > > diff --git
-> > > > a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> > > > b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> > > > new file mode 100644 index 000000000000..35f1fe268de7 ---
-> > > > /dev/null +++
-> > > > b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> > > > @@ -0,0 +1,149 @@ +# SPDX-License-Identifier: (GPL-2.0-only OR
-> > > > BSD-2-Clause) +%YAML 1.2
-> > > > +---
-> > > > +$id:
-> > > > http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml# +
-> > > > +title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP
-> > > > switch) +
-> > > > +maintainers:
-> > > > +  - Lukasz Majewski <lukma@denx.de>
-> > > > +
-> > > > +description:
-> > > > +  The 2-port switch ethernet subsystem provides ethernet packet
-> > > > (L2)
-> > > > +  communication and can be configured as an ethernet switch. It
-> > > > provides the
-> > > > +  reduced media independent interface (RMII), the management
-> > > > data input
-> > > > +  output (MDIO) for physical layer device (PHY) management.
-> > > > +
-> > > > +properties:
-> > > > +  compatible:
-> > > > +    const: nxp,imx28-mtip-switch
-> > > > +
-> > > > +  reg:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  phy-supply:
-> > > > +    description:
-> > > > +      Regulator that powers Ethernet PHYs.
-> > > > +
-> > > > +  clocks:
-> > > > +    items:
-> > > > +      - description: Register accessing clock
-> > > > +      - description: Bus access clock
-> > > > +      - description: Output clock for external device - e.g.
-> > > > PHY source clock
-> > > > +      - description: IEEE1588 timer clock
-> > > > +
-> > > > +  clock-names:
-> > > > +    items:
-> > > > +      - const: ipg
-> > > > +      - const: ahb
-> > > > +      - const: enet_out
-> > > > +      - const: ptp
-> > > > +
-> > > > +  interrupts:
-> > > > +    items:
-> > > > +      - description: Switch interrupt
-> > > > +      - description: ENET0 interrupt
-> > > > +      - description: ENET1 interrupt
-> > > > +
-> > > > +  interrupt-names:
-> > > > +    items:
-> > > > +      - const: enet_switch
-> > > > +      - const: enet0
-> > > > +      - const: enet1
-> > > > +
-> > > > +  pinctrl-names: true
-> > > > +
-> > > > +  ethernet-ports:
-> > > > +    type: object
-> > > > +    $ref:
-> > > > ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties   =20
-> > >=20
-> > > 'patternProperties' is wrong. Drop.
-> > >  =20
-> >=20
-> > When I do drop it, then
-> > make dt_binding_check DT_SCHEMA_FILES=3Dnxp,imx28-mtip-switch.yaml
-> >=20
-> > shows:
-> >=20
-> > nxp,imx28-mtip-switch.example.dtb: switch@800f0000: ethernet-ports:
-> > 'oneOf' conditional failed, one must be fixed:
-> >=20
-> > 'ports' is a required property=20
-> > 'ethernet-ports' is a required property
-> >         from schema $id:
-> >         http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
-> > =20
->=20
-> Actually, it needs to be at the top-level as well:
->=20
-> allOf:
->   - $ref: ethernet-switch.yaml#/$defs/ethernet-ports
->=20
+> Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+> ---
+> 
+>   .../boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi  | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
+> index bbb07c650da9..5a1ec2f6a552 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
+> @@ -105,6 +105,12 @@ buck1_reg: BUCK1 {
+>   				regulator-boot-on;
+>   				regulator-always-on;
+>   				regulator-ramp-delay = <1250>;
+> +
+> +				/* enable autosuspend threshold */
+> +				rohm,dvs-run-voltage = <850000>;
+> +				rohm,dvs-idle-voltage = <850000>;
+> +				rohm,dvs-suspend-voltage = <850000>;
+> +				rohm,no-regulator-enable-control;
 
-So after your suggestions - I've add:
+The commit message does not explain why the software control of the 
+regulator's enable state is changed? Maybe this should be in the 2/9?
 
-allOf:
-  - $ref: ethernet-switch.yaml#/$defs/ethernet-ports
+>   			};
+>   
+>   			buck2_reg: BUCK2 {
+> @@ -115,6 +121,11 @@ buck2_reg: BUCK2 {
+>   				regulator-boot-on;
+>   				regulator-always-on;
+>   				regulator-ramp-delay = <1250>;
+> +
+> +				/* enable autosuspend threshold */
+> +				rohm,dvs-run-voltage = <960000>;
+> +				rohm,dvs-idle-voltage = <860000>;
+> +				rohm,no-regulator-enable-control;
 
-In the top level of the file - above of
-properties:
-  ...
-  ethernet-ports:
-    type: object
-    additionalProperties: true
+same here?
 
-    patternProperties:
-	'^ethernet-port@[12]$':
-	  type:=C2=B7object
-          additionalProperties:=C2=B7true
-          properties:
-	    reg:
-              items:
-                - enum: [1, 2]
-              description: MTIP L2 switch port number
+>   			};
+>   
+>   			buck3_reg: BUCK3 {
 
-And after calling:
-make dt_binding_check DT_SCHEMA_FILES=3Dnxp,imx28-mtip-switch.yaml
-
-there are no errors.
-
-However, when I make a mistake nad in the "examples" section I change
-'lablel' -> 'labelx' I see
-
-switch@800f0000: ethernet-ports:ethernet-port@2: Unevaluated properties
-are not allowed ('labelx' was unexpected)
-
-which I suppose is expected behaviour.
-
->=20
-> >=20
-> > We do have ethernet-ports:
-> > and we do "include" ($ref)
-> > https://elixir.bootlin.com/linux/v6.14.6/source/Documentation/devicetre=
-e/bindings/net/ethernet-switch.yaml#L77
-> >=20
-> > which is what we exactly need. =20
->=20
-> The $ref is effectively pasting in what you reference, so the result=20
-> would be:
->=20
-> ethernet-ports:
->   type: object
->   "^(ethernet-)?ports$":
->     patternProperties:
->       "^(ethernet-)?port@[0-9a-f]+$":
->         description: Ethernet switch ports
->         $ref: ethernet-switch-port.yaml#
->         unevaluatedProperties: false
->=20
-> A DT node/property name and json-schema keyword at the same level is=20
-> never correct. json-schema behavior is to ignore (silently) any
-> unknown keyword. So the validator sees the keyword
-> "^(ethernet-)?ports$" and ignores everything below it.
->=20
->=20
-> >  =20
-> > > > +    additionalProperties: true   =20
-> > >=20
-> > > Drop.
-> > >  =20
-> >=20
-> > When removed we do have:
-> > nxp,imx28-mtip-switch.example.dtb: switch@800f0000: Unevaluated
-> > properties are not allowed ('ethernet-ports' was unexpected)
-> >=20
-> > or=20
-> >=20
-> > nxp,imx28-mtip-switch.yaml: ethernet-ports: Missing
-> > additionalProperties/unevaluatedProperties constraint =20
->=20
-> 'additionalProperties: true' should suppress that.
->=20
-> >=20
-> > Depending if I do remove 'patternProperties' above.
-> >=20
-> > To sum up - with the current code, the DT schema checks pass. It
-> > also looks like the $ref for ethernet-switch is used in an optimal
-> > way.
-> >=20
-> > I would opt for keeping the code as is for v12. =20
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/P_3M55nHRx=Laa9vzpqBEX+
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmglpm8ACgkQAR8vZIA0
-zr0lrwgAjYaokJU7/wM67PMOUKDCEun08foLIuNHkRs9C9qG7tZ55D3KAGKvglg2
-MNAuHQUlKKLBMorzsKJ7TFfmcKAhrKJMM5w43t7AkeiNZhmCRv85RXQVtLkxkHeB
-EP9yJCTt3AdAqsIxcv9VVVLB1xVKG1M/jFfiF2KcJACWZKTvMTmL6jfxG0VJXs40
-P3H6kC04U/WZw8VKazlxdMRKo84ahVcua7H2tiyfM40olqEuZ0HOb86OXtuDRyIy
-zhnWODQyp4vyJDFAQxNo1/ZXXM9J3YgH+IqH+lFbIWxHu276yFYuL6Qvn5hI9GZv
-QAoqjGwAlKdwhnU2uTyeTlxoXRojdQ==
-=uoB0
------END PGP SIGNATURE-----
-
---Sig_/P_3M55nHRx=Laa9vzpqBEX+--
+Yours,
+	-- Matti
