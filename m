@@ -1,132 +1,78 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5186E297A46
-	for <imx@lists.linux.dev>; Thu, 15 May 2025 09:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD2A29615A
+	for <imx@lists.linux.dev>; Thu, 15 May 2025 09:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747301329; cv=none; b=kFp99+TI5fV7Ll20b1JKBLzwKD7yVRYryTYyole32i0CuAoykLPsn/NDJjykyEkv7KwVKxNAGZL95He+7b/v+/mTn0E72qdcwGuWXbeEigiKcASurmkwb4qSsQoTzhYyRMvrg+8ZAbPEffPT32CEw2G2+oA4A9CXMRk1w85P0jE=
+	t=1747303001; cv=none; b=Hc56O81hBtANufyBtwi1sb70c6muocSz0cvCw/+rejy3yJ3IyOoOtO9qGYpB5lUxrvT/Qm/T8nc0X6WS+8FtmZPXaXYOklrgF9ky7cybQUTK1aNniqxsqMpB1hBCi5+AMzO/hWjXBBS1PVrmlhMWqpkXzOuyLaUBt/JGMHi1Eg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747301329; c=relaxed/simple;
-	bh=8HDKOO78NW4n9McYgFb9i+h1xt2fE41Co7f0h1JCzP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ka5ilLG9mgWMCGLGkN4iTdOIji1xDmNLRGKhKRlj/C8ZZI/2NhMyEaY5379QOyP4tPUAiSB7eRstOcQblP8T8wCmK7iHlHfF+gDDc9cBUr2sgcY8wgBEORXUiu4ec5ld5jhucGNT//l7os7S5qGMBEKoSSpNxfjoHA+agVzpYC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ssf7bpk3; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747303001; c=relaxed/simple;
+	bh=9daz873AML8PH9dGYcCVjPZMBzm/Rsy9GJ2D4PB7RgQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZIMq98rpNg966bDMhj72q6xt5fRwD9Ox2N3DnfaCyVc39lWCG2Q1J2NPyVDVJ6gQf+olhUoXZiSciMloiR9R/pI79+1B/C62ZPY83U20kFKeCXYq2gOLyEAqyE1Kme5rNbukC/6bYW3adaPKKGSbqhMo478lYRzV0fVO0ZeyyZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pS3O+aXu; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ssf7bpk3"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54b10956398so826486e87.0
-        for <imx@lists.linux.dev>; Thu, 15 May 2025 02:28:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747301325; x=1747906125; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oUZnZ1nzA1VahWTXdD9nimd4WKEUhUq33YKSElfIzC4=;
-        b=Ssf7bpk3EaVbDK7HeqfgXWjyKxHpm1L12NhgjlB9P5qVwV65Zp/o8vCXq5GCscu8VD
-         6T0WY4P1kV56qJCcm8TANis/gJRJLW+GCjwUPqSharye34Cqqwq7J9jM3m0ej4VUssEZ
-         Xn4xTU0DODmHOVPQfevYz5jNlHrLCnk87scUE7FYs5Jhq4AXjDs0Ygjt4gvL2C+8PXL0
-         EZgthPhupI+IPSivKAtkNrrMhOLuJ5Uz/oLpjrmtnUYlXbO6+W6cdxPodHeZ5xfAe2J8
-         lk/YZV8l6uN4qVR3dDOBENx1W3Q4GpPZiKqSdqnLaxo6VQOOMcjUhX4Ml+4MsRX+b1zG
-         nLng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747301325; x=1747906125;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oUZnZ1nzA1VahWTXdD9nimd4WKEUhUq33YKSElfIzC4=;
-        b=asTbRtgZOYbMhVBXRQgTsOzgr7M6x/1w73E7unEgHNqyQBcn3H4LM8bkIryP+pbh9A
-         vjx/6vr0X9OeED8EuNKu679sB+rOaINso9Guq65EhC+XRuPCcrYwez4FmXBBOV7N11Kg
-         drFN9a6Q8URoZN7waIkmwdOipEjH3H3lJRj1h5f0eFU9osbU+pp38ocd53IAoeK5Rw4f
-         OmT3OjI20c98C6JaD9Z8dQckQWwTvw2Yi7vir1nRzfv16PisLAaTIRS18cX+pNzy1FSk
-         yWHfwn8vunH7QfbNgBA2UAT6ieHKJ+B5QyRHKkOVy0gxZ0H5BSF0fG3b938SYDRewsjy
-         KWkg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZogmXhOxzLltR/O+FZHYippwCJG05jt31h0iwcDnOcbiICrkkHZWKXS1uRPJbOstjXJo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzEftjELk4DOV/KHgSaBeL5Jm5KQTbU2qiX2GYpAU5Vbv+eBRVU
-	hSZqpYI2s4vs8prgW6CwdzBXowTbfUW9M+4viO/OfdwkwQrnyRfTjl0W
-X-Gm-Gg: ASbGncs65k9qpeIXTYKKZK9ljXIVk63CcF76j4FLRPk08V5sITbe4T2b7k936eSRIBm
-	2yzKxtEEblsImmMPQLtM7mUkSUh9wiZZ0JVtNHFaLP9SY4TN4ER5yJIi/8YRymXsj6xhGHC+QMp
-	qz4gWw5KydYUfe64FAdUOgMQRYh3ou8fH3eXWNh16ZEuvCzzdvm/izG8Xnu2VDfOu4N6jBrqeXa
-	1zs3fLvkIZEnCacczLuwBZIkFsdsZ+y7uW06+kuAs62UAMadtUdlyYhouZvQgxeVv2J9w1otT8G
-	siGO1A4hNjzNxx2mZY5AuRcuPwK4g18l8HohXmLsmn/G3bcPb/OXRRgRye2D5qANS5qZAn+xIWG
-	UP9TxGeJXDFFT5vUOYGbZP0DryGRBDwjy
-X-Google-Smtp-Source: AGHT+IGtzN/vJeQqjXNcCh6S+CyPGXXKJUFYk7VQPziFd4r34mBTi90PPXGWHwTS9SK3MYrz0Qwrbw==
-X-Received: by 2002:a05:6512:b11:b0:549:9643:68d0 with SMTP id 2adb3069b0e04-550db97d223mr937454e87.17.1747301325041;
-        Thu, 15 May 2025 02:28:45 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54fc644fafdsm2565109e87.51.2025.05.15.02.28.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 May 2025 02:28:44 -0700 (PDT)
-Message-ID: <fb5b60e9-eaf9-42bc-9bda-0c80bd55f81d@gmail.com>
-Date: Thu, 15 May 2025 12:28:43 +0300
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pS3O+aXu"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 69E2A443C1;
+	Thu, 15 May 2025 09:56:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1747302996;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7b7QfGSwTLf0/PzmgHM9kT4FYPZClKyby6GF/Dr6W6Y=;
+	b=pS3O+aXuaUpOl3ut6N2HqUFsPuhA3T2JNmDd+qC4sCm7kJ3vQBPa9z/pyJdBRKiZfx+3XW
+	OKmuO623zxf2XjHRc8W7D9BcKZJsQYrv9PKIJTIAWpBwYTj76mzxVVu7HPNlxf4cjDqkZt
+	YvZ8Wav1oT9jAGGUghkdUMJgYg6sEteqCqcQHr5bu536dQB4u7qmRul+rqwu+oOPvnC6Z9
+	ld82GxTYnnz31IXYLxB0xojg3UP3NrTiujiH097jM5+P4gK4xnuNNuMbbHCD5zl3H/2Qpc
+	1u5vPBTmHJZjFium/XAMSx+yMnv6kWCyKdlUL5Eqa69Eqpmx+eo5QMzdHusx4Q==
+Date: Thu, 15 May 2025 11:56:33 +0200
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+	linux-i3c@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] i3c: master: svc: skip address resend on repeat
+ START
+Message-ID: <174730297355.1309338.10386281682864531931.b4-ty@bootlin.com>
+References: <20250429054234.4013929-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 9/9] arm64: dts: imx8mn-bsh-smm-s2-common: Disable PMIC
- SNVS reset target state
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
- linux-kernel@vger.kernel.org
-Cc: Simon Holesch <simon.holesch@bshg.com>,
- Karthikdatt Anantharamrao <karthikdatt.anantharamrao@in.bosch.com>,
- michael@amarulasolutions.com, linux-amarula@amarulasolutions.com,
- Wolfgang Birkner <wolfgang.birkner@bshg.com>,
- Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20250514082507.1983849-1-dario.binacchi@amarulasolutions.com>
- <20250514082507.1983849-10-dario.binacchi@amarulasolutions.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250514082507.1983849-10-dario.binacchi@amarulasolutions.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250429054234.4013929-1-Frank.Li@nxp.com>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftdelheeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeetlhgvgigrnhgurhgvuceuvghllhhonhhiuceorghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepieejfefhffekjeeuheevueevjedvleevjeetudffheeutdffudefjeduffeuvddtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtdgumegvgeekjeemgedugehfmeeftdgvfeemiegtvddumeehrggurgemfhehsgemleefgegvnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehinhgvthepvdgrtdgumegvgeekjeemgedugehfmeeftdgvfeemiegtvddumeehrggurgemfhehsgemleefgegvpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrlhgvgigrnhgurhgvrdgsvghllhhonhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeehpdhrtghpthhtohepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehlihhnuhigqdhifegtsehlihhsthhsrdhin
+ hhfrhgruggvrggurdhorhhgpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopefhrhgrnhhkrdfnihesnhigphdrtghomh
+X-GND-Sasl: alexandre.belloni@bootlin.com
 
-On 14/05/2025 11:25, Dario Binacchi wrote:
-> From: Wolfgang Birkner <wolfgang.birkner@bshg.com>
+On Tue, 29 Apr 2025 01:42:34 -0400, Frank Li wrote:
+> According to the I3C specification, address arbitration only happens during
+> the START. Repeated START do not initiate arbitration, and In-Band
+> Interrupts (IBIs) cannot occur at this stage.
 > 
-> VDD_DRAM was disabled on standby, therefore the reference hardware did not
-> wake up reliable. Use PMIC reset target state READY instead of SNVS, to
-> keep VDD_DRAM active during standby.
-
-There is something I'm not quite sure I understand. Lookin at the 
-BD71847 data-sheet, the VDD_DRAM is OFF at READY.
-
-(Page 27, Table 3-8. Voltage Rails ON/OFF for Respective Power State)
-
-https://fscdn.rohm.com/en/products/databook/datasheet/ic/power/switching_regulator_system/bd71847amwv-e.pdf
-
-Please, explain.
-
-Yours,
-	-- Matti
-
+> Resending the address upon a NACK in a repeat START is therefore redundant
+> and unnecessary. Avoid redundant retries, improving efficiency and ensuring
+> protocol compliance.
 > 
-> Signed-off-by: Wolfgang Birkner <wolfgang.birkner@bshg.com>
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> 
-> ---
-> 
->   arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-> index ea8d741c6904..633874b3bf66 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mn-bsh-smm-s2-common.dtsi
-> @@ -94,7 +94,6 @@ bd71847: pmic@4b {
->   		pinctrl-0 = <&pinctrl_pmic>;
->   		interrupt-parent = <&gpio1>;
->   		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-> -		rohm,reset-snvs-powered;
->   
->   		#clock-cells = <0>;
->   		clocks = <&osc_32k>;
+> [...]
 
+Applied, thanks!
+
+[1/1] i3c: master: svc: skip address resend on repeat START
+      https://git.kernel.org/abelloni/c/12cbd1573448
+
+Best regards,
+
+-- 
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
