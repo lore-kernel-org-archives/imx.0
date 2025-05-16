@@ -1,220 +1,194 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2057.outbound.protection.outlook.com [40.107.249.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749E3139E
-	for <imx@lists.linux.dev>; Fri, 16 May 2025 05:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747374859; cv=none; b=uQsGt32udfrdReukCs4LLMHBgDkRndR6lAPt/bjmkXarlMWGzipYaXhrs8VlYZ8pYC5UCLZGDbylHFBQCUJu4EqogEpxLnjdNpZtAozAcQ4olDCL2GfDGTNAOt7DY3z7J1vRnsgcHwcAbJ/joM8WnT+bbFDpYSXY6zTVPCGp8mo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747374859; c=relaxed/simple;
-	bh=hE/2RZ1PYyTSAjwfUMOIzb+0X8Tc/g40NO/t/GM1M2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T0VjSC/Er5NJnBcURGX5+Z3BdmPjcX8UWvt8RCai0SJcvfbxQfT+6hSSwAOHk1ijBPeaHbyMVExX/PCfH5OWtTub8fzvASenet5sg+SdzJJGbAXCCiVAaO/zyABQB/YDrPpXc8JsHdtJlDF//JvCyl6A7CNQC53Ld0akvUtZ/ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=L+lVcNK2; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9B6223328
+	for <imx@lists.linux.dev>; Fri, 16 May 2025 06:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747376628; cv=fail; b=Md4FRHk2NYG8OxL/Rh0/ZXajaM4Cjmfw6EK0d8xMZdlMnIEAP3OUV16Y8VP26u5iJjBtko+/Y70GsIayov6KE8vlcBbkrfDzofaVdp7+jfR6TshmivnUZCftFQqL5U2k5pBwjI1dsd0hzOucQm7NxiamChxVh/6qC/fDOkv58PU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747376628; c=relaxed/simple;
+	bh=rMH0FFVdK55RgzxwRjs1oxXTI8ZUgGr3rd8P6tR8jbU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=HUP8IFMvLyX/0vfJnYSG/UNoYExPv0mOfL8l6mTWmn6hZq/F2NlI1jtDnTOzSEgzcukzMfF0SvT4ZGUK1TK2/QFI6/8yoX5bfQFOz6ZCGfM0umqE7LzL+0j5oOocL+431hqHMLNH6bebcTb74kWO6jf47BSLyHQGjeMCcSAQvY0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cB3qFtmB; arc=fail smtp.client-ip=40.107.249.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="L+lVcNK2"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4E9EE10397281;
-	Fri, 16 May 2025 07:54:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1747374847; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=npw7oUOa65omh2AfzcTC00iOX1CPSJ9Fh+nCscZc5Qw=;
-	b=L+lVcNK2s55ncmt8CcZOpWwgETi+D4+e9Q492CJjTyHaxO3Lbj+ZxgebA7H1rfoNlYpaPH
-	+l1IIIgb4wJruB3r8NWRzqWoxeMEV7meEznD71Lppv3BgMOJG8wY5nZuE/LkqSVyJS5JOE
-	S5FXcErYtg2hiLD8BJT4a2LelygYHAKhVemONn/kvlllsS5IGUJREfGqZr2nk/Gbz31Q/l
-	wvX1mhR7FbSD2+dl9xiSvSwUna5vLEQC9RQRX2t2isuA5soeVoyCR1EYcVI6zwiF3r6zKz
-	zaQ8j9maRTqo2EKYnwJZ/DaTnrcakhzaxLVEIgh+MpGolmiWj+g5NslaPAgXSg==
-Date: Fri, 16 May 2025 07:54:02 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [net-next v11 4/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250516075402.5104a0b6@wsk>
-In-Reply-To: <20250513073109.485fec95@wsk>
-References: <20250504145538.3881294-1-lukma@denx.de>
-	<20250504145538.3881294-5-lukma@denx.de>
-	<61ebe754-d895-47cb-a4b2-bb2650b9ff7b@redhat.com>
-	<20250513073109.485fec95@wsk>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cB3qFtmB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kEYBXSmQ7L1/p3tk50GH3oXyoC3ataORcyVxFcwewqK17Xy9MNnKnIeVjkf2Ln1Moc80fUUSmEeF0gnwMSX9lTQCjnOyPORTTmaHwv0LqsZn8aVQA5C3Ev1EC1aPsonnas16waIr6nLdhqBsJSCfi+5odstwLJYduX9RYs8iTYYx/KEMb5WeD3C0+6/39jGcMnR2k6QywaaJCpznHyNnoJaXz2SOnSYcpXeES+TUv/b//yYAXq3KPyY9cTiPrTqzotbXrwDhW113QVaZT0L22yxD9zFR4goko4IuolcyKyAg4/26BIqkqEd92YiGUp1MPbCBchbf8QksfeMuwGCWPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DRuBH5XvIomJglioziitLxp4I1DVGJe+IGRh5LfIDno=;
+ b=XuHHKS/Mqwd0PyD5edVLqzv0ElA9hM4/9KgW0uTKVHYbv9pK5ICXF9dQII8JslNI+nK5fddfpZPNEtTtUCnmeoKzRnxiSzJY6Q77YMeH3IxYQx/Y+8/4cd/6bCVDRRMrQb28gboCJrRfzZxl2zyzmA/2gNqRNhxRBVD2dMDAYVcpV1D5OQWVcyjIBAweUH9Xu2RLshzQmeBHHgvHt59mv1EbtBHosF6i7cvrFcTUnSse9FOtCRtIwziGjrkzjr/ctxcaFUCizO1JveY0PyJ2H8dbUJP8ATCxVq9U9D0pl984cDeWSDHNEH1NNpZNquEFAInSCwNJdq7jkYDeYcTrzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DRuBH5XvIomJglioziitLxp4I1DVGJe+IGRh5LfIDno=;
+ b=cB3qFtmBlCZyNiz/s2l5qQe986MFXUYFf7lTQrmUpn0D51Jm1YgwC6hO34UcqJZuPINYerlvFY2+XfDjoCtslGojPjxBeJF6ArGN200gvOLi8GkKkI0Iy27oS4BbRJoBqwuPvnTMPl8YI4SZQX9xVsI8lz6tGEfS8bjMVCIEQQcQli7xqP5p1yBBgFzNY1pvHwwRnsOiQynlQaxQBfm5ftHDZxaabupuhWZlv9z9Fnej7rlT5zDmI0mWDB1+pHjipLeHxeeIpgViMT83P7s6rO82vy/VkfkX7VzERO0OaqZxf7VZY8wuA4nB2c8ncNFhQBGH0Gw+LGBKgtbxZN8g2Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
+ by AM9PR04MB8636.eurprd04.prod.outlook.com (2603:10a6:20b:43f::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Fri, 16 May
+ 2025 06:23:31 +0000
+Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
+ ([fe80::4fa3:7420:14ed:5334]) by DU0PR04MB9496.eurprd04.prod.outlook.com
+ ([fe80::4fa3:7420:14ed:5334%4]) with mapi id 15.20.8722.031; Fri, 16 May 2025
+ 06:23:31 +0000
+From: haibo.chen@nxp.com
+To: adrian.hunter@intel.com,
+	ulf.hansson@linaro.org,
+	linux-mmc@vger.kernel.org
+Cc: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	s32@nxp.com,
+	haibo.chen@nxp.com
+Subject: [PATCH] mmc: sdhci-esdhc-imx: fix few build warnings
+Date: Fri, 16 May 2025 14:24:23 +0800
+Message-Id: <20250516062423.1408380-1-haibo.chen@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SGXP274CA0022.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::34)
+ To DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/ex0Iw2w7PZxxqHuvJIb/PVl";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9496:EE_|AM9PR04MB8636:EE_
+X-MS-Office365-Filtering-Correlation-Id: f18dc9f8-2826-44c3-a05f-08dd94422dd7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?dq7K8KiSY1rtgCJBIFdbEwrjawF4o7yMA7RNqjkEtHlKR4qw9kicQ0GBUSzl?=
+ =?us-ascii?Q?EBYWQlslgwM+zrgxklNQPhcuhUUtR4bv5Gdij/pEFIXchZg4ZiV/vYGI0sti?=
+ =?us-ascii?Q?UvM3NtcfbWLBkjwWkCe9EoV7whMHBegkqNqpb9hUhGd9bs8oPadlGiQ9KwZo?=
+ =?us-ascii?Q?IznYOc6nCgEynZF3cOi0osaCCCnEfRGWxLK2M+aPlxPE8t97J10EPQwI7xto?=
+ =?us-ascii?Q?JszZvZknVVyA39NINC1D7cbxrwwCCBAiab/SEhuYyuSWy3yHr2vMRpcg9f+C?=
+ =?us-ascii?Q?Cmh+GuksnkFxqwbPrqsJotA7u5EYpRsLGU77u5yvbR2LYAjSlh3soUTV7/Yy?=
+ =?us-ascii?Q?0N4k5PjeiGfrM9iZmsCCnwvu99b/w6O1j76A0KUw0LKif7NWMWlzn2IOfFMo?=
+ =?us-ascii?Q?SsO7ckrar4jf/CMgAcWoT9Dja8KjFOi/SbtgD3AsND8Ue7qzEDSeP/J9vUMz?=
+ =?us-ascii?Q?J8hSqwJI0ZI6HMVJLrfVGd//GDD36Q2k87Ti6jgiAv2Lgu7h2lX0u18IV/LW?=
+ =?us-ascii?Q?2RxDulZojSqJ+SOaTtB1Co6lCjU1dwnriXdq45yCLkruokhtfOGGbrT1HPHX?=
+ =?us-ascii?Q?mVq8WKsPpFzxPwpOH8oWidWqDjMBQRAWbHpkfPwTdg/x6vh8Fbu4h1LTQn7C?=
+ =?us-ascii?Q?Eo9Xd0gh2Y4WO7owNJbRPojL0ccHU8jRXupgiFaWN7+6DCI8dFFbuqAYfjXX?=
+ =?us-ascii?Q?6I6T9t+0tTHxmKbdt6QSmd02UaYv+Ei7ap6Ano1wQHBCketvl6hvDbGXW92G?=
+ =?us-ascii?Q?aQrCvLz/pna/4+LgHWuHOC47p2vsSsdm6iLm+vI1tRSkHW5l14toWH+nS9Rh?=
+ =?us-ascii?Q?YPcVjtQslPHZr4f1a29BT6LBe0yWV0Rlt1x723jBEAs1WHXZGlCfR8c0wXuP?=
+ =?us-ascii?Q?NYLxscU+OCnOCSmGWx6Xz6RPp7EfygEwFn6vTIYecatkBw/0Y0q7M5LH5wjm?=
+ =?us-ascii?Q?vokI/OgdsWg7wE2yI9svdVYaUur4Pjjj1NJACi1K+5KYmRv91O2nEd4/GAOy?=
+ =?us-ascii?Q?EkyCkycyDdQeR9KhdMzyWo5AdOnTmWD/kgeDnxofOHd4+ued58jbomSVCLtK?=
+ =?us-ascii?Q?nDQVdLfAf8oZ7mFokJW6eLZN4ynHHfTHMo1+kcRiZ2zv9RJqu1mF9vRM7TGq?=
+ =?us-ascii?Q?ekf6EX27p1CInd72szvyK+vRPlyJiLd2kecJPs4yp4EcPugqeft8cQgLMhCh?=
+ =?us-ascii?Q?IkLowkR48zU8IvKADt9jHHndmapYzq6N4QC40a7rbyP1GX5T9KFzZrGvhF3O?=
+ =?us-ascii?Q?LAZlXUgFr+RPrRIBeLDAllqZQdWum+a8/cCX29SuadCCKRJmL3TCvXHaLSoI?=
+ =?us-ascii?Q?FoYUEdVdablDXrzctZZY2eTZNlkVs2N8I0D0lQMtDVZj45hOZMb2Aa5zAX8k?=
+ =?us-ascii?Q?Zlvjzkc9X5dYnZooyeHnsKwUgzNHtxj6LhLeMk0DfDstcu9jrFxxSd76/zFH?=
+ =?us-ascii?Q?UurZQ0EK1SR+MF4Lpc7UKwynxO1EP9ODy46D7w/C3Swiv7Q9hFFIrg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5ShVo7xo/xKHL30hogeSpUgLgcnhu9xQtG2gTJZJN+XDkGmFqyBNVp26QbPO?=
+ =?us-ascii?Q?ukEPv6FOUmqYBFdhVadEbA27XjDXOO6THC83REnl0LzB0pv8qblFAQDU458i?=
+ =?us-ascii?Q?qRCLQ5ofgBbQuHdnBrRC55g8xWFCcf/67klpv4OB3YKl7pSmOI0eKS8CYauQ?=
+ =?us-ascii?Q?zJlxAzGaltXBY1erK2HbaJgwdvK3JAA1gGwg6zoica+D7AO6hirvqsGjVJDD?=
+ =?us-ascii?Q?shmYiEEgIZSJdH5BlBGyrEh48fzVIk1iwO507WRiPhTeDx+kZB99gq5LUt7N?=
+ =?us-ascii?Q?pcxZbIsgEyuhATYqLff+6CQlT8pMsc1Wkkuf7u69YQi2SChi8VIpS/BHgv9x?=
+ =?us-ascii?Q?V+PvbvdMfHHqFfQ3xtg59/L5X7b15e3JZ0qasuWTbP0ci1Y66Zxd+qGn4LFR?=
+ =?us-ascii?Q?oFp7tBXmXfEqhw1gP5BTFzCZoDtL3B5yV3wdndK5ge2Wuinq9cUwdAaPhbhI?=
+ =?us-ascii?Q?oCysBdhDGP+I4NF7IJbl+/w3nktvsMVr7kKkHgDXzANilkEsVUgb8Lmu90i1?=
+ =?us-ascii?Q?PCF5Wc9JEGAnZS9sgC3rvJ/pQeKIY5pq92q2+ZOFjgOVUeWCu2bHRSqbEYrG?=
+ =?us-ascii?Q?ZAIUU0FBG80fnTc6M5UXLFKzrhOQoZJ/wBVEHAjtn/hCRd8GsHVzHQ2M2vfu?=
+ =?us-ascii?Q?zhmxD7Lw1I6w4wbHiJ/T0PAJo52sTOEtSe3I8V86TRGm1qgqyO5RD8NMWXcK?=
+ =?us-ascii?Q?fXhX45bkCMvOZLG6aFClQ49fG0tAA7Gztq/pHTSJeiE0vlPtGC5x8QHyKQDL?=
+ =?us-ascii?Q?fwAg3rSxpVXyPiahBaIYM+vZdFeoD2QxLVmMpPo6D5TG5RRirvDM8SGh+jKe?=
+ =?us-ascii?Q?EIV7b70SqSjkcKSnWADxfeGVxSkXz9tVYIB50p7R/jsjow1NI4AeZjp+n+kc?=
+ =?us-ascii?Q?z1LJG6TNu/Z7KW637xO3QiRGIdiXMmzkB22s2FCGeabhGKg5yLGhE+/Wp9E1?=
+ =?us-ascii?Q?U9lbg0aHBqSw544lsMd7dkcza2n41kv+IutcfDSEcU88gImi/pNhQhiulZF7?=
+ =?us-ascii?Q?PvQ+bOyt3eOP2xL/Hk1gWCjTDQ2eNWHb3yF0zC4vvXTC7+XVj7R0XCVnRrdD?=
+ =?us-ascii?Q?wx2HPzH0lKYS7Qt9PSzoCRDAA89l9JNJyut0w3r/PGj/IQhKDVEYm48ITRjE?=
+ =?us-ascii?Q?/jbZ76g/Z6PC46TtJMM9oMj/X6EJix4xzEu7anE1UhKZWc/6C1GPH+mCpl8Z?=
+ =?us-ascii?Q?ygSlAz+YBfseELTDxRP4rp8Wary8NeKdfFvLvzlVrCDuGdcZjIsD1PErQOPD?=
+ =?us-ascii?Q?dxZ4IAXjKb5ULnmsnvvYH8huctZ24HMbE5Rta4XwgrDfv40eA1KTuXAuIglA?=
+ =?us-ascii?Q?VuGlwhtl4kqMUyh2CbIupxPOoDKs2cBy8GHBo6yLfAizN2B22Lqs0iExnDzj?=
+ =?us-ascii?Q?01vwu/0c8s5EDZTyxTPQUp1tkYyVtNotVoeAFw2Nfa/oZTKMz2kacp7jfyNA?=
+ =?us-ascii?Q?Gpl22JgCRxJ5a2Fw9HIA4Ba2i2v2ML4DvWKwLlhYqoGv1D/j/RT7tHgxfb+a?=
+ =?us-ascii?Q?VJP/SfxmViXgzvdLBlw65/0Tdev1fn+PcnyXphqjSDIOi4KdUZjv0L3yiNWb?=
+ =?us-ascii?Q?2/6tUJVSV3eySZFFdIouA2yWKCU1NzpnrgBq2d79?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f18dc9f8-2826-44c3-a05f-08dd94422dd7
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 06:23:31.6978
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hHwSCnM7Th306IgjKetX1XtY4YBLD9zSM2IZSVVBYt0/5f75pDD/xTnTQp0rH2p2453M0lfXSJhMz9n6rPEXPw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8636
 
---Sig_/ex0Iw2w7PZxxqHuvJIb/PVl
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: Haibo Chen <haibo.chen@nxp.com>
 
-Hi Paolo,
+drivers/mmc/host/sdhci-esdhc-imx.c:1566 sdhci_esdhc_imx_hwinit() warn: inconsistent indenting
+drivers/mmc/host/sdhci-esdhc-imx.c:1251 esdhc_executing_tuning() error: uninitialized symbol 'target_min'.
+drivers/mmc/host/sdhci-esdhc-imx.c:1251 esdhc_executing_tuning() error: uninitialized symbol 'target_max'.
 
-> Hi Paolo,
->=20
-> > On 5/4/25 4:55 PM, Lukasz Majewski wrote: =20
-> > > +		/* This does 16 byte alignment, exactly what we
-> > > need.
-> > > +		 * The packet length includes FCS, but we don't
-> > > want to
-> > > +		 * include that when passing upstream as it
-> > > messes up
-> > > +		 * bridging applications.
-> > > +		 */
-> > > +		skb =3D netdev_alloc_skb(pndev, pkt_len +
-> > > NET_IP_ALIGN);
-> > > +		if (unlikely(!skb)) {
-> > > +			dev_dbg(&fep->pdev->dev,
-> > > +				"%s: Memory squeeze, dropping
-> > > packet.\n",
-> > > +				pndev->name);
-> > > +			pndev->stats.rx_dropped++;
-> > > +			goto err_mem;
-> > > +		} else {
-> > > +			skb_reserve(skb, NET_IP_ALIGN);
-> > > +			skb_put(skb, pkt_len);      /* Make room
-> > > */
-> > > +			skb_copy_to_linear_data(skb, data,
-> > > pkt_len);
-> > > +			skb->protocol =3D eth_type_trans(skb,
-> > > pndev);
-> > > +			napi_gro_receive(&fep->napi, skb);
-> > > +		}
-> > > +
-> > > +		bdp->cbd_bufaddr =3D
-> > > dma_map_single(&fep->pdev->dev, data,
-> > > +
-> > > bdp->cbd_datlen,
-> > > +
-> > > DMA_FROM_DEVICE);
-> > > +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
-> > > +
-> > > bdp->cbd_bufaddr))) {
-> > > +			dev_err(&fep->pdev->dev,
-> > > +				"Failed to map descriptor rx
-> > > buffer\n");
-> > > +			pndev->stats.rx_errors++;
-> > > +			pndev->stats.rx_dropped++;
-> > > +			dev_kfree_skb_any(skb);
-> > > +			goto err_mem;
-> > > +		}   =20
-> >=20
-> > This is doing the mapping and ev. dropping the skb _after_ pushing
-> > the skb up the stack, you must attempt the mapping first. =20
->=20
-> I've double check it - the code seems to be correct.
->=20
-> This code is a part of mtip_switch_rx() function, which handles
-> receiving data.
->=20
-> First, on probe, the initial dma memory is mapped for MTIP received
-> data.
->=20
-> When we receive data, it is processed and afterwards it is "pushed" up
-> to the network stack.
->=20
-> As a last step we do map memory for next, incoming data and leave the
-> function.
->=20
-> Hence, IMHO, the order is OK and this part shall be left as is.
+Fixes: be953af79cc6 ("mmc: sdhci-esdhc-imx: widen auto-tuning window for standard tuning")
+Fixes: 541a95e64d76 ("mmc: sdhci-esdhc-imx: optimize the manual tuing logic to get the best timing")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes:
+https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore
+.kernel.org%2Foe-kbuild-all%2F202505160225.Csr5USfq-lkp%40intel.com%2F
+&data=05%7C02%7Chaibo.chen%40nxp.com%7C2653112e34c94691a75108dd93e34a5
+6%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638829326610115371%7CUn
+known%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOi
+JXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=1m0RsAsU
+wxLde7RpCDx4nHJiBrb7pfJu3grSFASTpbI%3D&reserved=0
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+---
+ drivers/mmc/host/sdhci-esdhc-imx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Is the explanation sufficient?
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index c0160c69a027..741db169f44d 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1216,8 +1216,8 @@ static int esdhc_executing_tuning(struct sdhci_host *host, u32 opcode)
+ 	int win_length, target_min, target_max, target_win_length;
+ 	u32 clk_tune_ctrl_status, temp;
+ 
+-	min = ESDHC_TUNE_CTRL_MIN;
+-	max = ESDHC_TUNE_CTRL_MIN;
++	min = target_min = ESDHC_TUNE_CTRL_MIN;
++	max = target_max = ESDHC_TUNE_CTRL_MIN;
+ 	target_win_length = 0;
+ 	while (max < ESDHC_TUNE_CTRL_MAX) {
+ 		/* find the mininum delay first which can pass tuning */
+@@ -1591,8 +1591,8 @@ static void sdhci_esdhc_imx_hwinit(struct sdhci_host *host)
+ 			 * wider, give auto tuning enough space to handle the sample
+ 			 * point shift cause by temperature change.
+ 			 */
+-			 tmp &= ~ESDHC_TUNING_WINDOW_MASK;
+-			 tmp |= FIELD_PREP(ESDHC_TUNING_WINDOW_MASK, ESDHC_AUTO_TUNING_WINDOW);
++			tmp &= ~ESDHC_TUNING_WINDOW_MASK;
++			tmp |= FIELD_PREP(ESDHC_TUNING_WINDOW_MASK, ESDHC_AUTO_TUNING_WINDOW);
+ 
+ 			/* Disable the CMD CRC check for tuning, if not, need to
+ 			 * add some delay after every tuning command, because
+-- 
+2.34.1
 
->=20
-> >  =20
-> > > +static void mtip_free_buffers(struct net_device *dev)
-> > > +{
-> > > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > > +	struct switch_enet_private *fep =3D priv->fep;
-> > > +	struct sk_buff *skb;
-> > > +	struct cbd_t *bdp;
-> > > +	int i;
-> > > +
-> > > +	bdp =3D fep->rx_bd_base;
-> > > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
-> > > +		skb =3D fep->rx_skbuff[i];
-> > > +
-> > > +		if (bdp->cbd_bufaddr)
-> > > +			dma_unmap_single(&fep->pdev->dev,
-> > > bdp->cbd_bufaddr,
-> > > +					 MTIP_SWITCH_RX_FRSIZE,
-> > > +					 DMA_FROM_DEVICE);
-> > > +		if (skb)
-> > > +			dev_kfree_skb(skb);   =20
-> >=20
-> > I suspect that on error paths mtip_free_buffers() can be invoked
-> > multiple consecutive times with any successful allocation in
-> > between: skb will be freed twice. Likely you need to clear
-> > fep->rx_skbuff[i] here. =20
->=20
-> +1 - I will add it with v12.
->=20
-> >=20
-> > Side note: this patch is way too big for a proper review: you need
-> > to break it in multiple smaller ones, introducing the basic features
-> > separately.
-> >=20
-> > Cheers,
-> >=20
-> > Paolo
-> >  =20
->=20
->=20
->=20
->=20
-> Best regards,
->=20
-> Lukasz Majewski
->=20
-> --
->=20
-> DENX Software Engineering GmbH,      Managing Director: Erika Unter
-> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-> Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email:
-> lukma@denx.de
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/ex0Iw2w7PZxxqHuvJIb/PVl
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgm0voACgkQAR8vZIA0
-zr1KMwf+LbqivlaOayX4KF7BX15t/6+4VtMYl0vfPvtkhJUk16KHiMdq8jOJgd1a
-mEMSCZbdP79VOHquqMUl4dhBBt5pxa9HvHNEprTYncHrAGptXNbLkXtYzW0FCa4g
-p9/ajwh6N/Q7vl1sc41w5b48sTt1inLufkbRnSZqrW+J4eTLIzXmjJCCpot2zKgr
-nN8j4gzHwd+auHQkCP3yGhWb9Vxu+F1OAKcw5ChUuMYHw7IuJfTG5EF335HyPY2D
-NZXKP56M+xsXOdGd4jLXKrr56wiBogIThnfvaBIJBDI8mjAJN23QWsIh/RuNz5FG
-0gaOjQiU1Jb2i6tJC4Vk7PP6CGVDJQ==
-=2uYa
------END PGP SIGNATURE-----
-
---Sig_/ex0Iw2w7PZxxqHuvJIb/PVl--
