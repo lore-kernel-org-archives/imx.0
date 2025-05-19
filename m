@@ -1,63 +1,63 @@
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309672882BF
-	for <imx@lists.linux.dev>; Mon, 19 May 2025 17:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18391EB195
+	for <imx@lists.linux.dev>; Mon, 19 May 2025 17:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747674983; cv=none; b=eM19VjdjHyuOtKBFKVn5EqiHhSjsuQFYHyXu4kVXpC9ZU8+8TzFjFVRwasPFClGjkOjJ9iXvcqNXtExWPALD5USiLourmNLFPOBl5ybk6XAjBc/AvuJbyJXwXCbunARTYLefAwajtZhgj5Ihmyc33j4YvmvOpO11HAY79ggSs/I=
+	t=1747674988; cv=none; b=Vr7ApPXqV0Hjz4C6ouQ1X+7iqtcy8mlvZxLq4GqIfMCJRkwgVCMa+HxJ9mY/OIck+g+4B/AYlGlFDta5/PSZIJ5CIG9Kw2/Le3gnqCv58cVIFXMJ7WYdkiTBAMBFAcUOZpi+u+fI0EJB1rJbvYuJjOQ5sLTsQyg9UuvOPpIvmdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747674983; c=relaxed/simple;
-	bh=rQAwwHGSkb+3HPYT26JL1d2p9vSi54lvUjzrl/7T5w8=;
+	s=arc-20240116; t=1747674988; c=relaxed/simple;
+	bh=PKBq78bzubgMQ/vHAE1CkKGTFKeq16OIfKRTurY/NKM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nnE+8a0T9mSIOca1RFTUfSFQK7Oji3+9MFB5Qq3+uwCqEMA9XB0z3w3xqTY24eYmq9NAxigDp1EcrgK7xqn0rXLNmYWPYyWoRq3L7ktp1myCp6+18QC0Ptgj6S9n2Mp0Se6dAO1/iGSE/Lx9o0q4eGl/ubPgqFMkJ1JZgKJz+lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VHw23Knf; arc=none smtp.client-ip=209.85.222.52
+	 MIME-Version; b=NmzKeVBkb58jCXngJ4ms75QTEn52nT7XSgA1ewCmWEIe5Ybz9Iazaz6TY87nclB6BVtVahXJQNO/JyMNZYrXYhfS/tbOACENzCJk+ElMk2uCFIJ8QRExdJTYhyrvOhmYifTMFCzWI9F9f9VEj1qDz9qivDA7B+7xnRLPd3T6Ob0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jwzzH9w6; arc=none smtp.client-ip=209.85.221.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VHw23Knf"
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-87bfe95866fso598893241.1
-        for <imx@lists.linux.dev>; Mon, 19 May 2025 10:16:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jwzzH9w6"
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-527b70bd90dso1696299e0c.3
+        for <imx@lists.linux.dev>; Mon, 19 May 2025 10:16:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747674981; x=1748279781; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1747674986; x=1748279786; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tGjXFGuWNPuMSkHVFxRqYuJrDQhGPryMypgumm+l/4k=;
-        b=VHw23KnfKDAkRwgeE5vvmvCapzMaYyuXJ+G+MDfEISiZ8dqxN1F01w/c65wngQqpWt
-         OIUG2ws8GyS1lS5AgLsUospA8dG+PIB7UtJLhIyMabOKH+9x8vAFhWndTx7XFu7RTInS
-         BPyXLCpJkx1T6FYA/bTXzrnXLuPhwo1ReAN94SUAe92gRMDB18y+3zq0KllbWVyevlA4
-         iAjRPwtK4OH+IFQBWiNMz00n9f3+yjCoslK8Ev1eJvzRSOUee642D/aBdiyU2S6N1sUH
-         ncB+zH9m3Lf4JrONUBcF2oVFd2yealV1dp7TJD3wx//EvrSLMpaFULc6UgUS0en0ST3B
-         gbdg==
+        bh=7omkwwv22LywzPK9OnluDC1evnMI2mYZ/bT9rkSvGw8=;
+        b=jwzzH9w6woz77NNUMDMUnAY5PHstVvasVKRSSlEhsjZk/UlE8UX+w8FKlxHnf32Q9E
+         M6x+7TZoCgcOv9lp7P3xiXqRKIPl9ILUh+69blg9xm8icE9Eeb/lIht3aFdNPbc25qbB
+         UkicqQzWQ8dyhhpnAO4gndsMOrtsNDccY4YHUr6vHaxrU8GNPJO7cWFpJPejCo8WF2gS
+         pvYprYuVLWwC25nMe0Ir1KDQ7sQXhp6zOChI0y/IqMzWNMHghhD8OW3a0xiOozM8ku1g
+         EOaXN5zC7CQ/Xo09FL8EQJXQHZpqYAonc2wO2s5V+ZsjQ3A5FDBg1Ug+VcCAoIA6HGe6
+         Rs+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747674981; x=1748279781;
+        d=1e100.net; s=20230601; t=1747674986; x=1748279786;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tGjXFGuWNPuMSkHVFxRqYuJrDQhGPryMypgumm+l/4k=;
-        b=BiFQuJEHcLJVW+KeuD2RvxwidcHIYROZAmiYXw7BAk+8WxVK58qOrMjD8isxGknFn5
-         Cc+h3vqgNPnYdA080NbD+zpd/WDTsPJjMdc2/dXaECOxtrYgGgxH7Wql4TCyj3ZzKlOP
-         AbwWeRkn97B47rtmfXcPl5oYV5EdczJI1yyOSaLHe+CngrLwuoZrmokaviVSLHH8zGBN
-         /9M0mtzw/sgnb5XFTKCkT7iupGwOdH78edjy3uV+ZjwUUZGkEmtSGHEy0QwqZ0VcyGj/
-         yyLjzsIdWu5Nq8panmw6D5nxxQgBV41cQ3/QIkU7ZpxBKdBmxeAAoyI3va2g5NgdAarF
-         OnHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWkQLoxiBLEOPe+WvMHA/TO280Mo0UVrs2soSujqfO8pS7a0Iq/tkBTAaBLs1EMTEvpyQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzSWH/9RnGe970SGnzrM17JNfjzXtkx1ENwIKsHQkvieZW6TdOc
-	1ikcB9jEor8jk21K5fXR6vpuFxo5Lig2OJoMOABr0X4RmuVeQipBtL04
-X-Gm-Gg: ASbGnct6gxB1H1qInMUePfZWR85uCrbntBywctaKWbHh4dd2vzOBWG3xi15O0Ng5UPK
-	e8d3XBkG1PM7n0HLEE5X09lnOSM+6ZLx3lEg7+u/z5l73mCiMCNPpIwxKU4RjHrq1k+Fl8jj9GP
-	Bwo2Dokym/fMxFFovlpuvDMIeMcFE+uvjOwdV3IhvJlf0UVBOr3/RM6UBYr/K4jXuI3Pq+LRgRj
-	1WKL2J4WFP50jF1dJxXtfwCBh96YRMjuHsu2qqeNIRaK0EVU/0YwKeyIC+pORokn1AHK+1yQuyG
-	8hDoU7TzeG/GzSPUH9Nz3wxXwahZlw3gM4/WagVwcmLsVpgNKp2gHFuoovafkew5M/SndTw2DA=
-	=
-X-Google-Smtp-Source: AGHT+IH9BchR+WY1xG/OkUX8wAcOrhxgnJTryDQb39oorpQKhqyzK9wy1AtcbLqbWwTQkOs8cLfUHg==
-X-Received: by 2002:a05:6122:2049:b0:52d:bbab:2055 with SMTP id 71dfb90a1353d-52dbbab9460mr8433938e0c.10.1747674981032;
-        Mon, 19 May 2025 10:16:21 -0700 (PDT)
+        bh=7omkwwv22LywzPK9OnluDC1evnMI2mYZ/bT9rkSvGw8=;
+        b=O7bfCQs+UT93l2pzauwuu2JP5PcL/PFjl1pwpvHCeMj9yVCoA/TnkhZyVNKksumNO0
+         8a6AwAjixbwuPZZUCraL1Cq8/0HyUOASCGkErvBqHaVo0o7dYIJOicqQeAZUIcR6qOXj
+         adwSBDGZB1c2zZx0mkIsLBCo/L3pOEo12gbPiSdDRwjYAH4dyYgFiHNrxzqR3EIrnKpx
+         LaKHswkQs3gEri7fm1Ro/4QRYNLcxkBKy4blagKk+9q5FVHpKqDgOLw2sDtnKt8pHXyR
+         WfIrDNQCrrIwlIICZxELYsXQJIv5Jsz4JbzhFSxz/9elOxPOIFhSG1rdL4uJFATD75j+
+         sgoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVqLmzwzcouUlbLAShIEnBvuA7xA+vHcCGpBuHBewvrx1fzKMkXEHsrFZw20cDPpCbfqPM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyQOXSCqr61kdrKUvShDiKSBbPK7nMk0BblPY5mWFOQ7X/sMh1f
+	R8/qRfaTxsvoPN+t/Gajrf9UQr1Z3gu5qqVA3YgAfA8N7Cc64sH12HqRhW4vy0em0vQ=
+X-Gm-Gg: ASbGncuH/E25L2gi394YgqWq/faU8WI9NnvxCqaNmmlBhtfPe6O3XzgcjhkOyy6br8C
+	rvxQjdtRbxif01ESKePcKrDC+jaKAo85sm2YDct0WRBpR/br2HBwwIgs1Q376I3H2ieRo9f6q8n
+	0HxaoSpdus6W80GIuTYD4Q+nIv9WOkD3KZT12XtYXHNLYLVMnsOI+c2tD61uhPJOB/Oj+pKbGHd
+	aw7G/X0oQFGvpnCCyHF/dzZ0Us0WR1B6+lh7sNj23U57+i9kJDgnEMdhuQ7inqOe+LH37Niu7BJ
+	MiaZhyUDnJJVYXnseco/yChRQkRd3CMeAEKxpZPK/Rk61sQ0bq+bmGfKyU+g+z48lUU61C8RKay
+	WYOvbY161
+X-Google-Smtp-Source: AGHT+IE6q6gZqSe9Ip0nuMzYQBfcuFkViraMC2BkT8AsUnpaWIwgC9BeYahAGarm+vPPXTf/z60teQ==
+X-Received: by 2002:a05:6122:8c0f:b0:520:3536:feb5 with SMTP id 71dfb90a1353d-52dba97c622mr12664280e0c.11.1747674985608;
+        Mon, 19 May 2025 10:16:25 -0700 (PDT)
 Received: from hiagof-nb.corp.toradex.com ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52dbab4e983sm7003647e0c.31.2025.05.19.10.16.16
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52dbab4e983sm7003647e0c.31.2025.05.19.10.16.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 10:16:20 -0700 (PDT)
+        Mon, 19 May 2025 10:16:25 -0700 (PDT)
 From: Hiago De Franco <hiagofranco@gmail.com>
 To: Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
@@ -76,9 +76,9 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH v3 2/3] remoteproc: imx_rproc: skip clock enable when M-core is managed by the SCU
-Date: Mon, 19 May 2025 14:15:13 -0300
-Message-Id: <20250519171514.61974-3-hiagofranco@gmail.com>
+Subject: [PATCH v3 3/3] remoteproc: imx_rproc: add power mode check for remote core attachment
+Date: Mon, 19 May 2025 14:15:14 -0300
+Message-Id: <20250519171514.61974-4-hiagofranco@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250519171514.61974-1-hiagofranco@gmail.com>
 References: <20250519171514.61974-1-hiagofranco@gmail.com>
@@ -92,45 +92,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Hiago De Franco <hiago.franco@toradex.com>
 
-For the i.MX8X and i.MX8 family SoCs, when the M-core is powered up
-by the bootloader, M-core and Linux are in same SCFW (System Controller
-Firmware) partition, so linux has permission to control M-core.
+When the remote core is started before Linux boots (e.g., by the
+bootloader), the driver currently is not able to attach because it only
+checks for cores running in different partitions. If the core was kicked
+by the bootloader, it is in the same partition as Linux and it is
+already up and running.
 
-But when M-core is started, the SCFW will automatically enable the clock
-and configure the rate, and any users that want to enable the clock will
-get error 'LOCKED' from SCFW. So current imx_rproc.c probe function
-fails because clk_prepare_enable also fails. With that, the M-core power
-domain is powered off when it is still running, causing a SCU (System
-Controller Unit) fault reset, and the system restarts.
-
-To address the issue, ignore handling the clk for i.MX8X and i.MX8 M-core,
-because SCFW will automatically enable and configure the clock.
+This adds power mode verification through the SCU interface, enabling
+the driver to detect when the remote core is already running and
+properly attach to it.
 
 Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
 Suggested-by: Peng Fan <peng.fan@nxp.com>
 ---
 v3: Unchanged.
-v2: Commit description updated, as suggested. Fixed Peng Fan email.
-v1: https://lore.kernel.org/lkml/20250505154849.64889-2-hiagofranco@gmail.com/
+v2: Dropped unecessary include. Removed the imx_rproc_is_on function, as
+suggested.
+v1: https://lore.kernel.org/lkml/20250505154849.64889-4-hiagofranco@gmail.com/
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/remoteproc/imx_rproc.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 74299af1d7f1..627e57a88db2 100644
+index 627e57a88db2..9b6e9e41b7fc 100644
 --- a/drivers/remoteproc/imx_rproc.c
 +++ b/drivers/remoteproc/imx_rproc.c
-@@ -1029,8 +1029,8 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
- 	struct device *dev = priv->dev;
- 	int ret;
+@@ -949,6 +949,19 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
+ 			if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
+ 				return -EINVAL;
  
--	/* Remote core is not under control of Linux */
--	if (dcfg->method == IMX_RPROC_NONE)
-+	/* Remote core is not under control of Linux or it is managed by SCU API */
-+	if (dcfg->method == IMX_RPROC_NONE || dcfg->method == IMX_RPROC_SCU_API)
- 		return 0;
++			/*
++			 * If remote core is already running (e.g. kicked by
++			 * the bootloader), attach to it.
++			 */
++			ret = imx_sc_pm_get_resource_power_mode(priv->ipc_handle,
++								priv->rsrc_id);
++			if (ret < 0)
++				dev_err(dev, "failed to get power resource %d mode, ret %d\n",
++					priv->rsrc_id, ret);
++
++			if (ret == IMX_SC_PM_PW_MODE_ON)
++				priv->rproc->state = RPROC_DETACHED;
++
+ 			return imx_rproc_attach_pd(priv);
+ 		}
  
- 	priv->clk = devm_clk_get(dev, NULL);
 -- 
 2.39.5
 
