@@ -1,244 +1,290 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2040.outbound.protection.outlook.com [40.107.21.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E6821170D
-	for <imx@lists.linux.dev>; Mon, 19 May 2025 20:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747687940; cv=none; b=kqQN+opIIYIAIsmCw6uTZdl7GVIGuXa8ie+odnqwaEQXMePPvIOqexzuchZd8lq9CFGXIXrzRdtEplBABNo7QPM1aIAbES7HIv5pcvvi9+sCHJEn1ciG22mEcY8ejNGEtMI/8yQxpUhWhrrfDCBmqJljY7cg6Qyb2l8OtTPv0Xs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747687940; c=relaxed/simple;
-	bh=GHBvbY3fgn9tKe86kfPJG/2c8/ck7nOT9M0uEfF+cv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IaPHWM4YP62R7QBdY1+Qd8448PDujNWLIcnGztClXjTh3GS+vUPRTU7PGTMPtxcj+8E2OSiLZvVc4x2vx/q0q8c3yCy+JUYORiER13ThTy5yOOHw1f70HIeoGpD9RTWh2UdimMm4pYr7eY1+5FPr1udrEWs55k9LQbt36CK1iHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=MdKEOgQ2; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3095DC148
+	for <imx@lists.linux.dev>; Mon, 19 May 2025 20:57:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747688240; cv=fail; b=bszvbnvzbdjeBQVyjE4wNsNoGoSlqNyuKQeGYuz9FnXLyI8JZQldrNAie50g+SVHQGqrxj1011zsSGVjHBl66/pvvlHCy2GTz3UbZmrP7P71yU3+yjQJSztcMYvoLag+p2X+F+pgrJUuThqUAYLmhSFiFZ9IDx1oUghKWWAkuaQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747688240; c=relaxed/simple;
+	bh=mKtcDgcMAeCnSa9ot85l2rgT9bddeZVro7cb/GEZdqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=eyXH2H5t5TWYeNg3Bn9qDDVz6PX6icxCNThIzFOI2gNIIbViM1RljPUajrPQ3Ph8ncWc40tSd0uJcaGSOyNO/EQGrO55+KESEVEGnar2BNyPnVYQzGjbtezTeHuFp1UNBnHVuBFE6YJ9vvzfIwOQJ5NgvjrvZm0GB4sREcsNHLg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DWcUxCFC; arc=fail smtp.client-ip=40.107.21.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="MdKEOgQ2"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E433C1039728C;
-	Mon, 19 May 2025 22:52:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1747687934; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=xi0fa9hZtQ3xUfjh/Fd+6H85XEzvRV9KyKLSSoEBIho=;
-	b=MdKEOgQ2NYMapNfr6nWpzieFKGxPSRJvQ75R1YB86etandc2/tz4Gw51ZJxeKtPDcCGFZm
-	jps1OdMdqB19S7kvfimr8bHMPMia877rQmTJ0/EMDs81TVfUyi8P7ogE5ksjtvTzzzMdjd
-	SxuV+oa002NkrORXIibfJc2D6cDRzgS89bkKjuiVmE4mKMwnLlAswiicF780OX3xQ0uYiI
-	4FD0zTngteBD5df6JzSt5bsNDpA2+yF2qwg5EQvU9/ATfcdAOLVX3n85Cdyb6BOPFKixc5
-	V27CH5iBzELG9fL7mGxX3yGwyf2NqPflDDyDitP7wOF1dKfUIuSSz/uQQV+6pw==
-Date: Mon, 19 May 2025 22:52:08 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [net-next v11 4/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250519225208.50d60df5@wsk>
-In-Reply-To: <20250516075402.5104a0b6@wsk>
-References: <20250504145538.3881294-1-lukma@denx.de>
-	<20250504145538.3881294-5-lukma@denx.de>
-	<61ebe754-d895-47cb-a4b2-bb2650b9ff7b@redhat.com>
-	<20250513073109.485fec95@wsk>
-	<20250516075402.5104a0b6@wsk>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DWcUxCFC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PCIIbrbRUb7l+KpDFHaK3DGD9QW7S1f1+MMEGa4P/Eji08nFmdcNbT6WLUu/C0EI6qmJoBxNm7I2s33v1QMWoaqAvstTle8FeYNaC2rpNUhx+SKuV6MkL/U4/KcKGUV27+pNkv2/18R7ps1G3fT/zXcF35MdvQhHJQL0Lwz92dzm4QnRm8tvo/7ExBAjqs6+1QUM1K0wpbpN4G7x8D4YjlzuhuCBacxH8h7/5f3T/NLd6URoYnxiJoyoiIJQRo0QKOnIBRQMhhxnioXJLajWlhXIemgBwEsuIAgu9vb8+gg2CKlwprU2/bqwZKPKvqvPfOKaDFOnhMjxJSTmEAcR/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dem+ZPL1Xghl6l41clEHJxnFhYpkFXJH74f+O41oKLI=;
+ b=RoALLP6FDC9b/8TEb11jaFqct4F9vMcsQWSMlJMstyK2g7Ln7udEaihRCx0XYmq72sWdJJzqdZlKlkqGE9i7gnNUDvzPLCtpPgYgnOFS9nC58UhCh29v7YsE7ISu3hXE2hFB543iTjECkY2Wcl6sJpAtfm8FfG/I8D+4av3kQC3TT4g9N0SOqh7J28SdtgfG+L8uEAtAHNe+fvQgrIqvOY6x0G91ry9fnKl6Lq2crN/vPLV86UGo+a1Gicsd22gPZtk49d7f1OqKPKcyra5jnfJGI5gHQPaXF5FX601pwcrL281UIX3+2vA7LjrPeWHHRoNUz6kVBHLKk7gl0nQVQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dem+ZPL1Xghl6l41clEHJxnFhYpkFXJH74f+O41oKLI=;
+ b=DWcUxCFC41395gAHYpLvwuxCcujFJXqZBiBbaAE4iAWhocAN3vrVg90XvK0Zo5aylp+8kBiWint+hrGABIAIm3NXfTbgcfrNLNHoV+wW5qXDbcM6PVv8W5lZUIAaxuXtOlUlMmj/gXkJ261Soxofoohy854Tq+XRsvk9Wau9W4wzNvUkTgS9DRwN/slRydo85/BH5ojcuPDCbVzQRDnU9mpGytsqVtPOObpQoA6M8etsniP/5ldzWXMQWQYdz2Bt8VGZ+Nv2l+pJxf3RBMhs9EDFj0Gh0SRYIf5i0UeIJmOE/i9xnkV13FQHzPoE/2Z3AhClaYCXkVRPrAR7YNPQHg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GVXPR04MB10084.eurprd04.prod.outlook.com (2603:10a6:150:1b3::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Mon, 19 May
+ 2025 20:57:11 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8746.030; Mon, 19 May 2025
+ 20:57:11 +0000
+Date: Mon, 19 May 2025 16:57:02 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: ming.qian@oss.nxp.com
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
+	mirela.rabulea@oss.nxp.com, nicolas@ndufresne.ca,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
+	linux-imx@nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] media: imx-jpeg: Account for data_offset when getting
+ image address
+Message-ID: <aCubHqUy3v+slA1b@lizhi-Precision-Tower-5810>
+References: <20250506080816.1792-1-ming.qian@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250506080816.1792-1-ming.qian@oss.nxp.com>
+X-ClientProxiedBy: SJ0PR03CA0206.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/TOeu=qW_6zT9zkkN5+sCnzY";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10084:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5e21cda-197e-4512-bee9-08dd9717b9da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?1JuF/6ZH7N2ZM4flI9OAow034hBbdctMbdXddXU9xkNQFcSVeXKT59Dyzy4r?=
+ =?us-ascii?Q?g9ne8klmbxKhzZHsLE0hNqCdGynhimOcfBPsC5CxUUZ14SNSwc8NwGfgDaOv?=
+ =?us-ascii?Q?5UHZBKpcLFRR6zhu6tnSqYp2oI+nh0/MGjtPcgS2Tq2ZrAxIdG6JqVtL10j4?=
+ =?us-ascii?Q?CQE9aIbqm8d9YlxYjAeQ4l67QJwFF/2ztvYK9ADqAzS67M/4N1OIzrRkAps2?=
+ =?us-ascii?Q?eTQEXgP+phEFnBsTvckzbEb8T+1butweB79Kd3cVa/g2kXwvmU/m4p1iEkUF?=
+ =?us-ascii?Q?74dGMxOXKa1YeZgjzcDqoUXW1Um4vPH29IySw3PIEoCIzU/fr6ZjoIqor2yW?=
+ =?us-ascii?Q?L1yvfMks+mhV7BLWpUCespBSzg72OAHGoe/Auyp5VqJlFGQl5kZzsXzL0hWd?=
+ =?us-ascii?Q?ZZaE4roD38tWt11NGNKVpwRzfFHOipHe49n9E4awn2OkUFQNWp3sP77PDBNf?=
+ =?us-ascii?Q?AXHsIxRSDDoj9ZCdJk2SnPQ+VZ/s9bHAQjyp5Rd8GtsgWP5CIrjj22gH17ZI?=
+ =?us-ascii?Q?/fwxcoqzOEgG6Oo8tGFibKSAyu6R2SPGRlOLTPcSEo05jJXzSsOovuCpcnEo?=
+ =?us-ascii?Q?+WBN4CJMI9/5oPupxB5nHnT7rjT540QtNOiEa3tnLcorGtlT2nOEZn7It1uq?=
+ =?us-ascii?Q?kAxXRX3ekLVmm+ozwGnd/qkf7tu35qRwxPGmby9JzW4NiAZxoFsjPTLGE6cL?=
+ =?us-ascii?Q?vTm66n+jgpb4GIVf2A60OG1A89p9GcWNJE0SXrpWRmxnQ85AIqQM2MEWz3hB?=
+ =?us-ascii?Q?tiJ0LcIk5njdQI+MXWnAD5n4ECmHOZUQYnARWm+z5DL1QvRRWAZtljWn53PH?=
+ =?us-ascii?Q?vHTZulDyAHcRkx1ev0hQnHYZuG3v1Ia4umEuTaNv3UlnfOBkzBG+nITlpvif?=
+ =?us-ascii?Q?ECBcaPn6YR0g5RjHq+KVECFjfbydII2helGIjWS6m0MN3VXtBDJ70Swgs/ng?=
+ =?us-ascii?Q?FSM9CeKhWt1J7w7WeuorKxFID8BRkqIQ52XFBrgxaPuGStEQ3oubw9+tPKBs?=
+ =?us-ascii?Q?a6i7+8rvB4KEbYBrCWYLfTBGNN9wsH7SxMEQqOOGTcjEaI0VYc0wTHcCIIVr?=
+ =?us-ascii?Q?Tse5WdwtK0pzB8JrHxUn1ngjIovUZHG2zJuxCKELjoxpe8qts5Z6+iwsnSbk?=
+ =?us-ascii?Q?kQBNBCj/FzCGCUXhKUEYI9PuNFi3gufLbDUuD5xyS1Y9E6d4Ag75jeU+3wKT?=
+ =?us-ascii?Q?jpzrFsP4eIVFoKRQR+5X3j7fko6eLndkNyLtdRAP4qD3ZVLPZx4zyUnnnSu7?=
+ =?us-ascii?Q?EulCZLMajSSJlpmcGqhVHBWbwWx+dpuKYXM/C7EMR+ZTQeokE1ZxEYE7/0X1?=
+ =?us-ascii?Q?HFizfdgF0bMbSz9BQEUAhtvpyLcABXIzwBwVV1rjKo9LKUUCDhuOq3w8Joyd?=
+ =?us-ascii?Q?or8VWFZx8ZhIKFH/JwqpbGlGfZkkPyRAAOslEul8NHWfDdHuOdZPzOtQFkfc?=
+ =?us-ascii?Q?Hk20xH6/f1GYD7BGRhJUDAX544YSIsTKC4U3kOIdEu6RNM0No8m/Nw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rzn7yfndhWJ+evDQUugij8IhflmrNXBexpsH9B68WzetU9OJE8UpKd4wbcQE?=
+ =?us-ascii?Q?uoHaRQn1wMjDNe/dHnhNMqDfo3jG4HRxeKTxPbEu4BA29z/1TUMe+2BaoSyy?=
+ =?us-ascii?Q?pOgzz4NnJcLAUsf9N/pJROKgZd3FJ31bfsJFMBml1oOUcfDjGp7dVHzim7se?=
+ =?us-ascii?Q?JrGW/k7SkhwJTTTmHX6Ptucwch+Ek9J/7fjAtA3uEiNS8SIdgJU/O16zAwYR?=
+ =?us-ascii?Q?JCNvBZS1RJ7ACHEuZNp3ITmnivfB4f2fCQbP85y/GLrfsyvEF7f00BOi37lz?=
+ =?us-ascii?Q?2MlJXU5OPKRJwckk8M2Py7ClEauoYP9DzdF5UKalyIwLd7dtWTIi/nSz6ijQ?=
+ =?us-ascii?Q?QcRcT5cS/bNogvtFl788WRRvdRRORPS32DzytJqLAErAaePkLDGRIghcG6B1?=
+ =?us-ascii?Q?aXqMHa7TVYeMJ0lWRT7V8g6dAOGxPfOJOXYeYGnFT0zLuo7WqSilc2jr3O4A?=
+ =?us-ascii?Q?/e2RWryVCx/SI/PLXVCsJlRkj9qCFMIkIrn5ZOYj6SdAdf2fXrCVDxXb9vb0?=
+ =?us-ascii?Q?nN6KLdyD+SSo6x2o0k4HW9yobzt0ibavtHoMWOaQpD2uUE1FJAi71xvQwhfw?=
+ =?us-ascii?Q?YfhJURiOX8Gy52KpqJNHkxhm02hDK8WR5B8tj+lheQELGtrkHJReX/Ar9+VJ?=
+ =?us-ascii?Q?D/aX1I7VNKeyGKmrr15RL4EkqjXD9l4PrT5I3YGr3/Th10C3Qrp67+E5Mw9X?=
+ =?us-ascii?Q?uP9NfeF4/Disz8FtN7PAOv7QCIxQBm0xke1k+JJwVjCzI4OSvcXfrp1t7dZs?=
+ =?us-ascii?Q?vERq3pI2PE0zFOZbkBNty1iz8W+pshoa1y3HJF59ehMZ31fNpWspGC/Vdi6L?=
+ =?us-ascii?Q?nAFpLFA9yNX8XSLcbIZObYJ0kmjfcXILtrk23uENVNx4Lb2iU6QUijKTdpUr?=
+ =?us-ascii?Q?1uMKDDfs4v5p6U97OO7+zFUOb12CfHYKAhgHLUaUaIa7AB1JPgkG1sAWLzGh?=
+ =?us-ascii?Q?RHDucm8RPoz7i9plkac6Jfp1cK5g4HuEC6m08gLH0ldnEyvlnnDrht1lGlZC?=
+ =?us-ascii?Q?6IGBil6cJFBPs4Uw+N31xfTk9Qer6NcMCqW4WPKRX7+hB0L/ZXvrF+8D3crG?=
+ =?us-ascii?Q?6tsGGjZj13pQu9HGeWqrlGQTv38KSHG20nzCnUdYFNui1MVsYndYXlthSqDB?=
+ =?us-ascii?Q?sPev9ymBSyAxZX/jJ2oKmHZmNOlOUMzgcKvm/p1xt1vMcCG75C6vk+AcNEwE?=
+ =?us-ascii?Q?6r0MhHFtPPVWcFod68zu6QlGuCgJElPjOWRtWaA0dWbxaFSbItTR4MSXIDtU?=
+ =?us-ascii?Q?Osi3+wo3H+Wnxx7J+gi4RMbGdr9IYgDBXY0gz5VF6v0dOwYGAVInOF9xfhUc?=
+ =?us-ascii?Q?YibLqCWkIjVeD9BSJvLYMlYc1SmA7gCnCBUY+C5Z34/20DVTXL0TSaLJHNoD?=
+ =?us-ascii?Q?3Ce+FKFJhxETRzZSHuQgDP1WtAGC5OvTrqtsUC/wVOkp7DWTMIwl+jjfnZKg?=
+ =?us-ascii?Q?cFGA4W6/AN8HDoRUjXboYLUttg4+oyOuyZkiiiELqJO+ytGBuGXSOcUpo6xm?=
+ =?us-ascii?Q?VO2YjOHSgkNdqjZqn2uZF17cQj4Ye32z+LpjGMtG26f1e+8zzrSio3V0C/0c?=
+ =?us-ascii?Q?RFEC7wkapO9EsBxkTLw=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5e21cda-197e-4512-bee9-08dd9717b9da
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 20:57:11.6828
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: B6YF9QsqX9hs1wZAX8Zym4NffaKco14gHEyoAc8NHHIZddR+kwdmrXJ5Mrg8FhhdHo46fK3ppDUFQhkjB2mAdA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10084
 
---Sig_/TOeu=qW_6zT9zkkN5+sCnzY
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Tue, May 06, 2025 at 04:08:15PM +0800, ming.qian@oss.nxp.com wrote:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>
+> Applications may set data_offset when it refers to an output queue. So
+> driver need to account for it when getting the start address of input
+> image in the plane.
+>
+> Meanwhile the mxc-jpeg codec requires the address (plane address +
+> data_offset) to be 16-aligned.
 
-Hi Paolo,
+look like it is bug fix, missed consider data_offset.
 
-> Hi Paolo,
->=20
-> > Hi Paolo,
-> >  =20
-> > > On 5/4/25 4:55 PM, Lukasz Majewski wrote:   =20
-> > > > +		/* This does 16 byte alignment, exactly what we
-> > > > need.
-> > > > +		 * The packet length includes FCS, but we don't
-> > > > want to
-> > > > +		 * include that when passing upstream as it
-> > > > messes up
-> > > > +		 * bridging applications.
-> > > > +		 */
-> > > > +		skb =3D netdev_alloc_skb(pndev, pkt_len +
-> > > > NET_IP_ALIGN);
-> > > > +		if (unlikely(!skb)) {
-> > > > +			dev_dbg(&fep->pdev->dev,
-> > > > +				"%s: Memory squeeze, dropping
-> > > > packet.\n",
-> > > > +				pndev->name);
-> > > > +			pndev->stats.rx_dropped++;
-> > > > +			goto err_mem;
-> > > > +		} else {
-> > > > +			skb_reserve(skb, NET_IP_ALIGN);
-> > > > +			skb_put(skb, pkt_len);      /* Make
-> > > > room */
-> > > > +			skb_copy_to_linear_data(skb, data,
-> > > > pkt_len);
-> > > > +			skb->protocol =3D eth_type_trans(skb,
-> > > > pndev);
-> > > > +			napi_gro_receive(&fep->napi, skb);
-> > > > +		}
-> > > > +
-> > > > +		bdp->cbd_bufaddr =3D
-> > > > dma_map_single(&fep->pdev->dev, data,
-> > > > +
-> > > > bdp->cbd_datlen,
-> > > > +
-> > > > DMA_FROM_DEVICE);
-> > > > +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
-> > > > +
-> > > > bdp->cbd_bufaddr))) {
-> > > > +			dev_err(&fep->pdev->dev,
-> > > > +				"Failed to map descriptor rx
-> > > > buffer\n");
-> > > > +			pndev->stats.rx_errors++;
-> > > > +			pndev->stats.rx_dropped++;
-> > > > +			dev_kfree_skb_any(skb);
-> > > > +			goto err_mem;
-> > > > +		}     =20
-> > >=20
-> > > This is doing the mapping and ev. dropping the skb _after_ pushing
-> > > the skb up the stack, you must attempt the mapping first.   =20
-> >=20
-> > I've double check it - the code seems to be correct.
-> >=20
-> > This code is a part of mtip_switch_rx() function, which handles
-> > receiving data.
-> >=20
-> > First, on probe, the initial dma memory is mapped for MTIP received
-> > data.
-> >=20
-> > When we receive data, it is processed and afterwards it is "pushed"
-> > up to the network stack.
-> >=20
-> > As a last step we do map memory for next, incoming data and leave
-> > the function.
-> >=20
-> > Hence, IMHO, the order is OK and this part shall be left as is. =20
->=20
-> Is the explanation sufficient?
+So need fix tag.
 
-I would do appreciate your feedback as your OK is required to prepare
-v12, so I would had the opportunity to have this patch set accepted to
-net-next before cut-off date.
+Frank
 
-Thanks in advance for your help.
-
->=20
-> >  =20
-> > >    =20
-> > > > +static void mtip_free_buffers(struct net_device *dev)
-> > > > +{
-> > > > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > > > +	struct switch_enet_private *fep =3D priv->fep;
-> > > > +	struct sk_buff *skb;
-> > > > +	struct cbd_t *bdp;
-> > > > +	int i;
-> > > > +
-> > > > +	bdp =3D fep->rx_bd_base;
-> > > > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
-> > > > +		skb =3D fep->rx_skbuff[i];
-> > > > +
-> > > > +		if (bdp->cbd_bufaddr)
-> > > > +			dma_unmap_single(&fep->pdev->dev,
-> > > > bdp->cbd_bufaddr,
-> > > > +					 MTIP_SWITCH_RX_FRSIZE,
-> > > > +					 DMA_FROM_DEVICE);
-> > > > +		if (skb)
-> > > > +			dev_kfree_skb(skb);     =20
-> > >=20
-> > > I suspect that on error paths mtip_free_buffers() can be invoked
-> > > multiple consecutive times with any successful allocation in
-> > > between: skb will be freed twice. Likely you need to clear
-> > > fep->rx_skbuff[i] here.   =20
-> >=20
-> > +1 - I will add it with v12.
-> >  =20
-> > >=20
-> > > Side note: this patch is way too big for a proper review: you need
-> > > to break it in multiple smaller ones, introducing the basic
-> > > features separately.
-> > >=20
-> > > Cheers,
-> > >=20
-> > > Paolo
-> > >    =20
-> >=20
-> >=20
-> >=20
-> >=20
-> > Best regards,
-> >=20
-> > Lukasz Majewski
-> >=20
-> > --
-> >=20
-> > DENX Software Engineering GmbH,      Managing Director: Erika Unter
-> > HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell,
-> > Germany Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email:
-> > lukma@denx.de =20
->=20
->=20
->=20
->=20
-> Best regards,
->=20
-> Lukasz Majewski
->=20
+>
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> ---
+> v2
+> - Verify the address alignment in buf_prepare()
+>
+> ---
+>  .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 47 ++++++++++++++-----
+>  .../media/platform/nxp/imx-jpeg/mxc-jpeg.h    |  1 +
+>  2 files changed, 37 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+> index 5c17bc58181e..8681dd193033 100644
+> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+> @@ -598,6 +598,27 @@ static void _bswap16(u16 *a)
+>  	*a = ((*a & 0x00FF) << 8) | ((*a & 0xFF00) >> 8);
+>  }
+>
+> +static dma_addr_t mxc_jpeg_get_plane_dma_addr(struct vb2_buffer *buf, unsigned int plane_no)
+> +{
+> +	if (plane_no >= buf->num_planes)
+> +		return 0;
+> +	return vb2_dma_contig_plane_dma_addr(buf, plane_no) + buf->planes[plane_no].data_offset;
+> +}
+> +
+> +static void *mxc_jpeg_get_plane_vaddr(struct vb2_buffer *buf, unsigned int plane_no)
+> +{
+> +	if (plane_no >= buf->num_planes)
+> +		return NULL;
+> +	return vb2_plane_vaddr(buf, plane_no) + buf->planes[plane_no].data_offset;
+> +}
+> +
+> +static unsigned long mxc_jpeg_get_plane_payload(struct vb2_buffer *buf, unsigned int plane_no)
+> +{
+> +	if (plane_no >= buf->num_planes)
+> +		return 0;
+> +	return vb2_get_plane_payload(buf, plane_no) - buf->planes[plane_no].data_offset;
+> +}
+> +
+>  static void print_mxc_buf(struct mxc_jpeg_dev *jpeg, struct vb2_buffer *buf,
+>  			  unsigned long len)
+>  {
+> @@ -610,11 +631,11 @@ static void print_mxc_buf(struct mxc_jpeg_dev *jpeg, struct vb2_buffer *buf,
+>  		return;
+>
+>  	for (plane_no = 0; plane_no < buf->num_planes; plane_no++) {
+> -		payload = vb2_get_plane_payload(buf, plane_no);
+> +		payload = mxc_jpeg_get_plane_payload(buf, plane_no);
+>  		if (len == 0)
+>  			len = payload;
+> -		dma_addr = vb2_dma_contig_plane_dma_addr(buf, plane_no);
+> -		vaddr = vb2_plane_vaddr(buf, plane_no);
+> +		dma_addr = mxc_jpeg_get_plane_dma_addr(buf, plane_no);
+> +		vaddr = mxc_jpeg_get_plane_vaddr(buf, plane_no);
+>  		v4l2_dbg(3, debug, &jpeg->v4l2_dev,
+>  			 "plane %d (vaddr=%p dma_addr=%x payload=%ld):",
+>  			  plane_no, vaddr, dma_addr, payload);
+> @@ -712,16 +733,15 @@ static void mxc_jpeg_addrs(struct mxc_jpeg_desc *desc,
+>  	struct mxc_jpeg_q_data *q_data;
+>
+>  	q_data = mxc_jpeg_get_q_data(ctx, raw_buf->type);
+> -	desc->buf_base0 = vb2_dma_contig_plane_dma_addr(raw_buf, 0);
+> +	desc->buf_base0 = mxc_jpeg_get_plane_dma_addr(raw_buf, 0);
+>  	desc->buf_base1 = 0;
+>  	if (img_fmt == STM_CTRL_IMAGE_FORMAT(MXC_JPEG_YUV420)) {
+>  		if (raw_buf->num_planes == 2)
+> -			desc->buf_base1 = vb2_dma_contig_plane_dma_addr(raw_buf, 1);
+> +			desc->buf_base1 = mxc_jpeg_get_plane_dma_addr(raw_buf, 1);
+>  		else
+>  			desc->buf_base1 = desc->buf_base0 + q_data->sizeimage[0];
+>  	}
+> -	desc->stm_bufbase = vb2_dma_contig_plane_dma_addr(jpeg_buf, 0) +
+> -		offset;
+> +	desc->stm_bufbase = mxc_jpeg_get_plane_dma_addr(jpeg_buf, 0) + offset;
+>  }
+>
+>  static bool mxc_jpeg_is_extended_sequential(const struct mxc_jpeg_fmt *fmt)
+> @@ -1029,8 +1049,8 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
+>  			vb2_set_plane_payload(&dst_buf->vb2_buf, 1, payload);
+>  		}
+>  		dev_dbg(dev, "Decoding finished, payload size: %ld + %ld\n",
+> -			vb2_get_plane_payload(&dst_buf->vb2_buf, 0),
+> -			vb2_get_plane_payload(&dst_buf->vb2_buf, 1));
+> +			mxc_jpeg_get_plane_payload(&dst_buf->vb2_buf, 0),
+> +			mxc_jpeg_get_plane_payload(&dst_buf->vb2_buf, 1));
+>  	}
+>
+>  	/* short preview of the results */
+> @@ -1889,8 +1909,8 @@ static int mxc_jpeg_parse(struct mxc_jpeg_ctx *ctx, struct vb2_buffer *vb)
+>  	struct mxc_jpeg_sof *psof = NULL;
+>  	struct mxc_jpeg_sos *psos = NULL;
+>  	struct mxc_jpeg_src_buf *jpeg_src_buf = vb2_to_mxc_buf(vb);
+> -	u8 *src_addr = (u8 *)vb2_plane_vaddr(vb, 0);
+> -	u32 size = vb2_get_plane_payload(vb, 0);
+> +	u8 *src_addr = (u8 *)mxc_jpeg_get_plane_vaddr(vb, 0);
+> +	u32 size = mxc_jpeg_get_plane_payload(vb, 0);
+>  	int ret;
+>
+>  	memset(&header, 0, sizeof(header));
+> @@ -2027,6 +2047,11 @@ static int mxc_jpeg_buf_prepare(struct vb2_buffer *vb)
+>  				i, vb2_plane_size(vb, i), sizeimage);
+>  			return -EINVAL;
+>  		}
+> +		if (!IS_ALIGNED(mxc_jpeg_get_plane_dma_addr(vb, i), MXC_JPEG_ADDR_ALIGNMENT)) {
+> +			dev_err(dev, "planes[%d] address is not %d aligned\n",
+> +				i, MXC_JPEG_ADDR_ALIGNMENT);
+> +			return -EINVAL;
+> +		}
+>  	}
+>  	if (V4L2_TYPE_IS_CAPTURE(vb->vb2_queue->type)) {
+>  		vb2_set_plane_payload(vb, 0, 0);
+> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
+> index fdde45f7e163..44e46face6d1 100644
+> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
+> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
+> @@ -30,6 +30,7 @@
+>  #define MXC_JPEG_MAX_PLANES		2
+>  #define MXC_JPEG_PATTERN_WIDTH		128
+>  #define MXC_JPEG_PATTERN_HEIGHT		64
+> +#define MXC_JPEG_ADDR_ALIGNMENT		16
+>
+>  enum mxc_jpeg_enc_state {
+>  	MXC_JPEG_ENCODING	= 0, /* jpeg encode phase */
+>
+> base-commit: 2e79181dfc85e1347a8655ea8d8a314158155c52
+> prerequisite-patch-id: 0000000000000000000000000000000000000000
 > --
->=20
-> DENX Software Engineering GmbH,      Managing Director: Erika Unter
-> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-> Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email:
-> lukma@denx.de
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/TOeu=qW_6zT9zkkN5+sCnzY
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmgrmfgACgkQAR8vZIA0
-zr09nAf+PrG7I521kkXUYZKC2dEjxU/q4ixwas9hAklmPl5J8w3C7wiM5/X4unzo
-vgyoBo1oGToGHEV79FZkeZxn/MF9YXMrKl2WEAaLyNhHpKeusus4my0xt1Ao/Q9R
-dkyM0jAeOSnUNpcIl0zhOmgEyBzPFPeRMz263XvTekvJet3E/gTAPHHc1Cg2PfA1
-EyxCnsiGy4aHuPJGg+zMhVHxWkt1awEIwSwEZu5O4OtjpUAqfllFn4eiapelBHb7
-Z7IM3C1tqdvKGO8lU9nqIoBnYpU9ZzZcg4N27morc9NfrAbF0KlJr/a+pxbM7ptD
-rXo54/GaGqwWVq3BcFVpWi3OD+9oJA==
-=WWM9
------END PGP SIGNATURE-----
-
---Sig_/TOeu=qW_6zT9zkkN5+sCnzY--
+> 2.43.0-rc1
+>
