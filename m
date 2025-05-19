@@ -1,260 +1,107 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523BE283C87
-	for <imx@lists.linux.dev>; Mon, 19 May 2025 14:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722F627511A
+	for <imx@lists.linux.dev>; Mon, 19 May 2025 14:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747665629; cv=none; b=EbMdw+9SUYgbBtAqsh1Wi6A0BKopXPmOWOveNuLJ9hSnrUJoIFaOZq9s4cjiifto2TpBJMwaFk6U6RwPSNJ1qkAXroug630JIcso2lowWAb6ErHSev0T4NLaGpsaqZwyZ143WHVcl9te5zAOLumXQSjnARLC9GV8Jxj4PLugVhw=
+	t=1747665895; cv=none; b=TERYlffjthSp1mTOiDuMiriW+s7As/tjBAXfd/tHP4OV9Zg1bIgLpeEoMoK7H908oWHFCse0S4AiHYs4VEQw9nb4L3kvoUJzF8FM5dchrI5l8OqRUgFM8/vBVXfe0f70TGm5mt8tlQgnSblIbPjUYV/VIc+FNwoDTPwYdSL4Dak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747665629; c=relaxed/simple;
-	bh=rH7mSy6p/UZxneRb0uvBUYWeTgasHAWB1L8BSsc7Y98=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cQMyyDD9ewPAZLPFu/C1WFDhJs42MgYjBRIMjJozMFrgDo9OG/nTiAoNxuMtpsQzCByHjPVWTWFfmTwGfRJY7UZf1tmjmHXw6eNfT8WnvA8GFEtaRn13/JB6qi0hpxV9myzLGnjd0LccxR5jjErTKU998WO8Xcx8rm6BwAtgkjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=n1N8X9PD; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1747665895; c=relaxed/simple;
+	bh=vBqhKMKC4OdHgrV/CQyjfP3RTYzJtSE/7KU63stqSvg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XIsVzS9k45Lrjzb2jKDucqHu4SKtR/HRZ0kLAtxLKg8XKzDPRmQWycp+6+bdc3BMLK2X2khgrb7L8QKz8k+PjLq+Kt9pRzfEq80Epz6f4puyM+uDlNe83q4qvhZtDjhUWvAg2PWR2f1Ok6pGp3RRSkZVzXV5dX688EvLmlIc5HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eH3WdAKN; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="n1N8X9PD"
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e7b9972069dso1184943276.3
-        for <imx@lists.linux.dev>; Mon, 19 May 2025 07:40:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747665626; x=1748270426; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nR9qA2TvUhjAo0p0Wu7gCQQJQdEUudGGwhv8dj3Lu70=;
-        b=n1N8X9PDuYR+qb+CHDfnMXaWUFR7wOrVjnW6NLg+lAutIZhAHi+8AVRto/uXt1FNRg
-         1ZTJo8YMA0f61bUBcLFSdLxM90v5m32MnVGKwRLDQjWBLlVQb6uOJUKBliNaC4zOEBiG
-         sbINoALBKm2/gJQZjA/jFi4clkhoIRPS1h4TZhiUAIcoOObqBSpIB8oS78moHGRN1UM7
-         CeBX8V2nvSD8xUw4P1StcZEggL0IuPe/fr4ms6/3MWjfHlf7EQQddIcTo3hZ43ugBcVp
-         WiS6unJnPI4uvfLeMiI6a5uLh/9PMmpnpmc8fdP3nfidG5nwzPVKU8CGh7O1m+na62hM
-         AnKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747665626; x=1748270426;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nR9qA2TvUhjAo0p0Wu7gCQQJQdEUudGGwhv8dj3Lu70=;
-        b=b1HfK7yDRpNk96qZoxyjR0Ix+H7bbfRwlCqcQPJF6osc/VN4LWU/Sl93wHg7r64YUt
-         57opxHSEXNSay2anh5J2qWb3DRChAFVvlHXV4Bkun0hxQ2qEu+7T1KdGar6fJcl30LHC
-         7JPil93AUmgngHIQCoM5g+/J57pljh8o9p42Aic/Tb2DAkQ3vqGuMreJGcPhlM+06IXB
-         7JWz6PfxlttZUeAuPSu5KSmF5pKtX6XmPyKkvQszUfbBMV8doBD7+OPHYqZRqW4zQsyp
-         YHYHLezlg32pLqrm2lJhGxUrBI0po1g1H/8ypj+Zt2bIACpICnrfObqJEGNFA+M0MtmV
-         NsdA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1GD1M9FKo9AOeKjAlL0p/hAzljmjE0V3aNzFYPRHAkZKQ65Oa1+ZmMm/irA8lZiuLEA8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyvcxKNdQnT8ztnOwFECNOHWy6a9A5I9Ix7WZlZ+vBqmhPAC1W/
-	NwzkpEyvnIg8nX+gbwDmkCf4i/UGfH4w7ByAbEp5IiQMShrijNEe3A9GIxx2l256/mqPtNAkQbA
-	M5ugx/xGadXZUbEFdksUpOarXWShpwElZ1K33b9Pb+g==
-X-Gm-Gg: ASbGncsUE8JoQA/HdOqOP1tMYENLwYdhai2ExDogPRNvTzfmEvWQY7ppdkd/ZMkehbK
-	FBQK2CVeQJXiaTmhbF+7z6cXnmeaPAsRk/fWJ4iZtwuiahv/N6zOPKacZ/nltFLujdQE6idrz0f
-	xgGUNEzL8WVaEkzoMhnZBTEzXU308euzxm0Q==
-X-Google-Smtp-Source: AGHT+IH8qk2ueLJXAPfHp5CUgGKJqL27jCDTEcZZ/Z2xIhtpa6CoyOq3g3PJegrRumYN6CXvNBgDTdJaa2//XqfYZlQ=
-X-Received: by 2002:a05:6902:12c7:b0:e7b:3788:78a6 with SMTP id
- 3f1490d57ef6-e7b6a412047mr18064288276.48.1747665626144; Mon, 19 May 2025
- 07:40:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eH3WdAKN"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C35E543A62;
+	Mon, 19 May 2025 14:44:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1747665891;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qhRsdDycI0OlXvOuPwJxvAYxJ8SUxX7xj+GFLQ0kVvw=;
+	b=eH3WdAKNnNb3TD5/ufVcgMos6dNTqXPDtuD8xsTELsY3XFQ2nqsXkOcUDh1YfySKaHwJz8
+	I+/Fp/PaWvCD6rTsGXxTBdTUwvz1i56dSEnQ7WeL4xSL/dmY+eQ7hzb2XG6NmwN0kTYDhy
+	NF6MfmYzMzFIqkMomuXzHCLETqPRY1nwHvOqSTwFe0VeKUEerfPB6LCt1T+Z+KZxjnYkPA
+	FBEmBnaZXG/rxvub1PVImJTtGAPI4UiJvlFWZl0Fd/0fnmbLjWFeThj67uheOOpXUShINU
+	4UBnKrqa15BzocMqVTJT33gGXwX+b6a+LPQ8BjWxKuC6xmy26F8Iz4/6Ac1gxg==
+Date: Mon, 19 May 2025 16:44:48 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, Saravana
+ Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Mark
+ Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 23/26] misc: lan966x_pci: Introduce board specific
+ data
+Message-ID: <20250519164448.57792b6d@bootlin.com>
+In-Reply-To: <8b97e095-dbed-438c-9c6d-d3c2c5929fc0@lunn.ch>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+	<20250507071315.394857-24-herve.codina@bootlin.com>
+	<8b97e095-dbed-438c-9c6d-d3c2c5929fc0@lunn.ch>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250507160056.11876-1-hiagofranco@gmail.com> <20250507160056.11876-4-hiagofranco@gmail.com>
- <CAPDyKFrHD1hVCfOK-JV5FJM+Cd9DoKKZGKcC94fxx6_9Bsri1g@mail.gmail.com>
- <20250508202826.33bke6atcvqdkfa4@hiago-nb> <CAPDyKFr3yF=yYZ=Xo5FicvSbDPOTx7+fMwc8dMCLYKPBMEtCKA@mail.gmail.com>
- <20250509191308.6i3ydftzork3sv5c@hiago-nb> <20250512045613.GB31197@nxa18884-linux>
-In-Reply-To: <20250512045613.GB31197@nxa18884-linux>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 19 May 2025 16:39:50 +0200
-X-Gm-Features: AX0GCFuzwvmBFpPVm7uHOWrhDiGdyjOO1BUzNOe_b1ksrA1mW-H30PaJUA1Wruo
-Message-ID: <CAPDyKFqLMEOEnGDRE-1OUi8o8eVd4_oYPH4heu=WFQ8+4s+3-w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
- remote core attachment
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Hiago De Franco <hiagofranco@gmail.com>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Bjorn Andersson <andersson@kernel.org>, Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
-	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefvdduieehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeguddprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhgu
+ hhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
+X-GND-Sasl: herve.codina@bootlin.com
 
-On Mon, 12 May 2025 at 05:46, Peng Fan <peng.fan@oss.nxp.com> wrote:
->
-> On Fri, May 09, 2025 at 04:13:08PM -0300, Hiago De Franco wrote:
-> >On Fri, May 09, 2025 at 12:37:02PM +0200, Ulf Hansson wrote:
-> >> On Thu, 8 May 2025 at 22:28, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> >> >
-> >> > Hello,
-> >> >
-> >> > On Thu, May 08, 2025 at 12:03:33PM +0200, Ulf Hansson wrote:
-> >> > > On Wed, 7 May 2025 at 18:02, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> >> > > >
-> >> > > > From: Hiago De Franco <hiago.franco@toradex.com>
-> >> > > >
-> >> > > > When the remote core is started before Linux boots (e.g., by the
-> >> > > > bootloader), the driver currently is not able to attach because it only
-> >> > > > checks for cores running in different partitions. If the core was kicked
-> >> > > > by the bootloader, it is in the same partition as Linux and it is
-> >> > > > already up and running.
-> >> > > >
-> >> > > > This adds power mode verification through the SCU interface, enabling
-> >> > > > the driver to detect when the remote core is already running and
-> >> > > > properly attach to it.
-> >> > > >
-> >> > > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> >> > > > Suggested-by: Peng Fan <peng.fan@nxp.com>
-> >> > > > ---
-> >> > > > v2: Dropped unecessary include. Removed the imx_rproc_is_on function, as
-> >> > > > suggested.
-> >> > > > ---
-> >> > > >  drivers/remoteproc/imx_rproc.c | 13 +++++++++++++
-> >> > > >  1 file changed, 13 insertions(+)
-> >> > > >
-> >> > > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> >> > > > index 627e57a88db2..9b6e9e41b7fc 100644
-> >> > > > --- a/drivers/remoteproc/imx_rproc.c
-> >> > > > +++ b/drivers/remoteproc/imx_rproc.c
-> >> > > > @@ -949,6 +949,19 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
-> >> > > >                         if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
-> >> > > >                                 return -EINVAL;
-> >> > > >
-> >> > > > +                       /*
-> >> > > > +                        * If remote core is already running (e.g. kicked by
-> >> > > > +                        * the bootloader), attach to it.
-> >> > > > +                        */
-> >> > > > +                       ret = imx_sc_pm_get_resource_power_mode(priv->ipc_handle,
-> >> > > > +                                                               priv->rsrc_id);
-> >> > > > +                       if (ret < 0)
-> >> > > > +                               dev_err(dev, "failed to get power resource %d mode, ret %d\n",
-> >> > > > +                                       priv->rsrc_id, ret);
-> >> > > > +
-> >> > > > +                       if (ret == IMX_SC_PM_PW_MODE_ON)
-> >> > > > +                               priv->rproc->state = RPROC_DETACHED;
-> >> > > > +
-> >> > > >                         return imx_rproc_attach_pd(priv);
-> >> > >
-> >> > > Why is it important to potentially set "priv->rproc->state =
-> >> > > RPROC_DETACHED" before calling imx_rproc_attach_pd()?
-> >> > >
-> >> > > Would it be possible to do it the other way around? First calling
-> >> > > imx_rproc_attach_pd() then get the power-mode to know if
-> >> > > RPROC_DETACHED should be set or not?
-> >> > >
-> >> > > The main reason why I ask, is because of how we handle the single PM
-> >> > > domain case. In that case, the PM domain has already been attached
-> >> > > (and powered-on) before we reach this point.
-> >> >
-> >> > I am not sure if I understood correcly, let me know if I missed
-> >> > something. From my understanding in this case it does not matter, since
-> >> > the RPROC_DETACHED will only be a flag to trigger the attach callback
-> >> > from rproc_validate(), when rproc_add() is called inside
-> >> > remoteproc_core.c.
-> >>
-> >> Okay, I see.
-> >>
-> >> To me, it sounds like we should introduce a new genpd helper function
-> >> instead. Something along the lines of this (drivers/pmdomain/core.c)
-> >>
-> >> bool dev_pm_genpd_is_on(struct device *dev)
-> >> {
-> >>         struct generic_pm_domain *genpd;
-> >>         bool is_on;
-> >>
-> >>         genpd = dev_to_genpd_safe(dev);
-> >>         if (!genpd)
-> >>                 return false;
-> >>
-> >>         genpd_lock(genpd);
-> >>         is_on = genpd_status_on(genpd);
-> >>         genpd_unlock(genpd);
-> >>
-> >>         return is_on;
-> >> }
-> >>
-> >> After imx_rproc_attach_pd() has run, we have the devices that
-> >> correspond to the genpd(s). Those can then be passed as in-parameters
-> >> to the above function to get the power-state of their PM domains
-> >> (genpds). Based on that, we can decide if priv->rproc->state should be
-> >> to RPROC_DETACHED or not. Right?
-> >
-> >Got your idea, I think it should work yes, I am not so sure how. From
-> >what I can see these power domains are managed by
-> >drivers/pmdomain/imx/scu-pd.c and by enabling the debug messages I can
-> >see the power mode is correct when the remote core is powered on:
-> >
-> >[    0.317369] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_ON
-> >
-> >and powered off:
-> >
-> >[    0.314953] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_OFF
-> >
-> >But I cannot see how to integrate this into the dev_pm_genpd_is_on() you
-> >proposed. For a quick check, I added this function and it always return
-> >NULL at dev_to_genpd_safe(). Can you help me to understand this part?
->
-> Ulf's new API dev_pm_genpd_is_on needs to run after power domain attached.
+Hi Andrew,
 
-Correct, but you need to provide the correct "dev" to it. See my other
-reply to Hiago.
+On Thu, 8 May 2025 00:24:03 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
->
-> But if run after power domain attached, there is no API to know whether
-> M4 is kicked by bootloader or now.
+> On Wed, May 07, 2025 at 09:13:05AM +0200, Herve Codina wrote:
+> > Only one device-tree overlay (lan966x_evb_lan9662_nic.dtbo) is handled
+> > and this overlay is directly referenced in lan966x_pci_load_overlay().
+> > 
+> > This avoid to use the code for an other board.
+> > 
+> > In order to be more generic and to allow support for other boards (PCI
+> > Vendor/Device IDs), introduce the lan966x_pci_info structure and attach
+> > it to PCI Vendor/Device IDs handled by the driver.
+> > 
+> > This structure contains information related to the PCI board such as
+> > information related to the dtbo describing the board we have to load.
+> > 
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
+> 
+> How big is the dtbo ?
 
-As long as you have multiple PM domains attached for a device, genpd
-will *not* power on the PM domain(s).
+With current series applied, the dtbo is 6029 Bytes.
 
-Genpd does a power-on in the single PM domain case (for legacy
-reasons), but that should not be a problem here, right?
-
-So what am I missing?
-
->
-> Even imx_rproc_attach_pd has a check for single power domain, but I just
-> give a look again on current i.MX8QM/QX, all are using two power domain
-> entries.
->
-> >
-> >>
-> >> In this way we don't need to export unnecessary firmware functions
-> >> from firmware/imx/misc.c, as patch1/3 does.
->
->
-> I think still need to export firmware API. My idea is
-> 1. introduce a new firmware API and put under firmware/imx/power.c
-> 2. Use this new firmware API in imx_rproc.c
-> 3. Replace scu-pd.c to use this new firmware API.
->
-> Or
-> 1. Export the API in scu-pd.c
-> 2. Use the API in imx_rproc.c
->
-> With approach two, you need to handle them in three trees in one patchset:
-> imx/pd/rproc.
->
-> With approach one, you need to handle two trees in one patchset: imx/rproc tree,
-> then after done, pd tree
->
-> Regards,
-> Peng
-> >>
-> >> If you think it can work, I can help to cook a formal patch for the
-> >> above helper that you can fold into your series. Let me know.
-> >>
-> >> >
-> >> > With that we can correcly attach to the remote core running, which was
-> >> > not possible before, where the function returns at "return
-> >> > imx_rproc_attach_pd(priv);" with the RPROC_OFFLINE state to
-> >> > rproc_validate().
-> >>
-> >> I see, thanks for clarifying!
-> >>
-> >> Kind regards
-> >> Uffe
-> >
-> >Thank you!
-> >Hiago.
-
-Kind regards
-Uffe
+Best regards,
+Hervé
