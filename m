@@ -1,149 +1,220 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99307276045
-	for <imx@lists.linux.dev>; Mon, 19 May 2025 12:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C6F2749FF
+	for <imx@lists.linux.dev>; Mon, 19 May 2025 12:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747656416; cv=none; b=Rxkt7+GpikLW601PhuNzQ959HzqtiyFfmegKl1fvezkJ1fM5UJJwxMi/X5l8j0pMKxBLGfNq9rtxpsj6ChUe3lGeUIXidP9DFbsSFmj+I6a2ZQt7PXqCNpFcEc7Hrawy0KBZwAzQVD65XU13nm+II8B4QAIuaurNW4YCkYL+8rQ=
+	t=1747657933; cv=none; b=u97ftTgU8n/HUzS+spSCMrXLka4sFxC9Qz3xeYSlqH13MVd52HhClQ5svgC1mpNMorPMithpZud5L6UIIGwIseN94IkyQclatuCHUJhGJfpOLIVmlq93I3bD4wBV1XsfsyDdyQtPCf2za81vSKAOtTefeowwIB4emGrrJUb7Wqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747656416; c=relaxed/simple;
-	bh=X9JYOmBZRRIrcEoIxM35PaaiyYlkP8TFD/KMSQVTS0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nSJxyhKj4UczyZvSOeKuVvQgQPmZXzcRdS+K5mmN4V3lKKpHKLl2QIC0VCxvRfNERQqv6EAMl9oHZpdjD6xM2PTG2g73XsspcdvXop+/WH0KCZoGW4N9WZDwbOTnRPtX4m4lYCidGM2SM+dwHTPB2GNP60c9zaoi1xURvfeFZTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JdCRGhaE; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1747657933; c=relaxed/simple;
+	bh=HOodb27u5TwtTAPSsy92wrZWNxC37y9Hm9lyvRSe3Ns=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XhqqjGfWluvjYoGhjxFneSEzpLx7YdE12+BX0+KelZggUB+WSX1rkTbAB7YxlY42eCJTqoD9HHeR9y5DxrNgd2J/YjYeuhkeSV/gmTMhxBUQJWHure6bC9SUnYYzcoDo7cSnvfR4dTUK1NcUieMR6wNKwVHKNjvIMxdOZzrs89I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sGFojbLR; arc=none smtp.client-ip=209.85.219.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JdCRGhaE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747656415; x=1779192415;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=X9JYOmBZRRIrcEoIxM35PaaiyYlkP8TFD/KMSQVTS0U=;
-  b=JdCRGhaEn+qI5doIMAOdkK0za+kEkIfrP8JdhCuUHib+5Zy1cJhOLby0
-   gtnGpWi68AnCrpxljfa3tGYGIF6LvWDc87kmR9j+8xoLUbc7jDalbXFHW
-   QsHe1k6dWhj4xmgheqLsboyUME2sDZ6bwymPNUIGq6ThSds2CrEuuBpOj
-   cDGImTriG7+F4UVsOOdSOHo05afZRfYHejrP5mypqeyb3gsMenT6Qim4L
-   j7nAOoMDr520kZ81eN/KLsF9D0yAxdpcL8GBDbzHsSM7hMB4vc57N2OOa
-   wW/zBoAvwvv2Ii4vWueLeWTvPCOupbvrJH2E33X9phy8kmoUSZ6vkh2Kk
-   g==;
-X-CSE-ConnectionGUID: 0KA1EefkTpeIxOGQewhupA==
-X-CSE-MsgGUID: YKFBdwhERwSamKaq4jYORQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="53225196"
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
-   d="scan'208";a="53225196"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 05:06:54 -0700
-X-CSE-ConnectionGUID: WMsdqKWhTEWrSxf4sLI6yQ==
-X-CSE-MsgGUID: iTaMPZPKSmWRJ7+uxsle8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
-   d="scan'208";a="144112208"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 05:06:38 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uGzGL-000000031iT-3wdP;
-	Mon, 19 May 2025 15:06:33 +0300
-Date: Mon, 19 May 2025 15:06:33 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 05/26] bus: simple-pm-bus: Populate child nodes at
- probe
-Message-ID: <aCseyW1iZgZNZNqd@smile.fi.intel.com>
-References: <20250507071315.394857-1-herve.codina@bootlin.com>
- <20250507071315.394857-6-herve.codina@bootlin.com>
- <aBy_aBkC7NpicXho@smile.fi.intel.com>
- <20250519135818.01db3341@bootlin.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sGFojbLR"
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e7b962a156cso1027430276.0
+        for <imx@lists.linux.dev>; Mon, 19 May 2025 05:32:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1747657931; x=1748262731; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=B7Zhmo/JpzcMaAMKKOwzh6ja2t6tkPpPMCDNoaM6o58=;
+        b=sGFojbLRhdAx3o4kSGEssVwUNY6dw4jPWerE+HJFKNvypjwxYxtu2RqBWqWGt4Y2oR
+         fEJjZUZssIv3UEXWUq4ehdpf2clOC0XGuKMH8Jv0B6NJGRn/fJyohXwcun/vlQiBUNMz
+         BqMsQVlwE1+49uTxAZuDZ5BATENS9fjAx/t7/1PWPybZczcOJgr8Gp06OEzmxNkAJsfc
+         H8kjiWaSCHlydN/GJAkuuxnoQfKZwo+yvZC/lSF4NLfrQyds/zesqH4mH6x3hM8hp2Gt
+         SMlPSyk/hN+7UZHgZHaawojsHmNMnpIPl8fGH9GyZAlFZsHf86eACWxgZxHLHe+W0tKV
+         zClw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747657931; x=1748262731;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B7Zhmo/JpzcMaAMKKOwzh6ja2t6tkPpPMCDNoaM6o58=;
+        b=cOoo0XXbHH4Xty78v3CAULx+2liaEp0/DxA9bdGxH/b7ybRfU+ywXM3IhAzrVBC1+N
+         h5A+S0+BfbaA5SqXvrIznKz0AhZ/s5+GUnJUaDeoIu2CY3PoaBT2zgSNevIDNoqZEcMP
+         doZgRYPdmpe26rJft1T2S8A5cu2yZBRR/kGnUPyZmBQOUM/zFU46YahcQFQJ7iN5w5Xx
+         0M9mGens4dtvOFXmiy5hTEDtrWsiU9sSxgqLJrZaAZsHjZRtpI4wpQoGkKbn2zyE2Uir
+         lH/xqaJviaz8RYLPEms3CMZJ4uI04cl7K5A5LCyQQgRVQv8qLPNsRXQEbAdWqykQBQ2O
+         kHvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMmADG98o8WBPk0/BHa3BwMngSiORu87spniY3OTR8SrUj4BE67aM1X2J7/sg+zbJE+zY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwuGa9m0a6XkpVroDaXG3cBta2rlY7/wAIskRJ/wrXaJMzJq/Bz
+	PbfmHlYEqUxe7T8QtqLV7mt9fB0LTEHkQdAXWCf9CBVSFgeawmqIWry4GAuwgF1UwGquewhBOMl
+	GUjn1zeMOAoftwaNMrafHgrq19IZmliqm+jpVBhZ9lA==
+X-Gm-Gg: ASbGnct9m6iRhD7cYCKjikbkbvAoJ88vpJSbRVtH43VuMlyTtzOYB4yH9EtLnawtQU7
+	JobGb8hZbDZzmDm029jFEfuTHgy7wLEWpkk5vimynBvCzu1yd94lYCymgWqs/LQJmhqxW1llw7X
+	79h3xLx+n2waBZiPy57sOyR8hAw/jvQPtuxQ==
+X-Google-Smtp-Source: AGHT+IHMRf8bcz5aIkiyV4tAaS8tGQtUKO6bhUpbLyg9woenXTM/y8WVzmZJnfWYm+84x/Es23zMYwq7B9ivClzWPz0=
+X-Received: by 2002:a05:6902:1b03:b0:e7b:8524:3f5e with SMTP id
+ 3f1490d57ef6-e7b85243fb8mr12802970276.10.1747657930730; Mon, 19 May 2025
+ 05:32:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519135818.01db3341@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250514094903.1771642-1-ziniu.wang_1@nxp.com>
+ <20250514094903.1771642-2-ziniu.wang_1@nxp.com> <0bda0bba-cfc6-403d-b36f-9c625e5bafb2@intel.com>
+In-Reply-To: <0bda0bba-cfc6-403d-b36f-9c625e5bafb2@intel.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 19 May 2025 14:31:34 +0200
+X-Gm-Features: AX0GCFtU3S8coUHVXTKQU7bBOE0kHTmWJQ63OQyAYKI9Qe1enSPXNA1WeuzFizU
+Message-ID: <CAPDyKFp+ATxghU2g1XxVLB1Oy4TkFvUqj6SpyKCV_ro9bayXtQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mmc: host: sdhci-esdhc-imx: refactor the system PM logic
+To: ziniu.wang_1@nxp.com, Adrian Hunter <adrian.hunter@intel.com>
+Cc: linux-mmc@vger.kernel.org, haibo.chen@nxp.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	imx@lists.linux.dev, s32@nxp.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, May 19, 2025 at 01:58:18PM +0200, Herve Codina wrote:
-> On Thu, 8 May 2025 17:27:52 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Wed, May 07, 2025 at 09:12:47AM +0200, Herve Codina wrote:
+On Thu, 15 May 2025 at 14:53, Adrian Hunter <adrian.hunter@intel.com> wrote:
+>
+> On 14/05/2025 12:49, ziniu.wang_1@nxp.com wrote:
+> > From: Luke Wang <ziniu.wang_1@nxp.com>
+> >
+> > Current suspend/resume logic has one issue. In suspend, will config
+> > register when call sdhci_suspend_host(), but at this time, can't
+> > guarantee host in runtime resume state. If not, the per clock is gate
+> > off, access register will hang.
+> >
+> > In sdhci_esdhc_suspend/sdhci_esdhc_resume, remove sdhci_suspend_host()
+> > and sdhci_resume_host(), all are handled in runtime PM callbacks except
+> > the wakeup irq setting. For wakeup irq setting, use pm_runtime_get_sync()
+> > in sdhci_esdhc_suspend() to make sure clock gate on.
+> >
+> > Remove pinctrl_pm_select_default_state() in sdhci_esdhc_resume, because
+> > pm_runtime_force_resume() already config the pinctrl state according to
+> > ios timing, and here config the default pinctrl state again is wrong for
+> > SDIO3.0 device if it keep power in suspend.
+> >
+> > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> > Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+>
+> Looks OK to me, at least, although Ulf may still have comments.
+> Otherwise, for both patches:
 
-...
+Looks good to me too!
 
-> > >  		if (of_property_match_string(np, "compatible", match->compatible) == 0)  
-> > 
-> > Side note, there is an fwnode_is_device_compatible() API for such cases. And IIRC
-> > there is also OF variant of it.
-> 
-> fwnode_device_is_compatible() checked for all compatible string. I mean, if
-> we have compatible = "foo,custom-bus", "simple-bus";
-> fwnode_device_is_compatible() checking against "simple-bus" returns true.
-> 
-> Here, we want "simple-bus" as the first position in the compatible string.
-> In other word, we want to match the more specific compatible string as
-> mentioned in the comment.
+>
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-I admit I'm not an expert in DT, but why is the compatibility position
-dependent?
+Both patches applied for next, thanks!
 
-...
-
-> > > +	if (pdev->dev.of_node)  
-> > 
-> > Why do you need this check? AFAICS it dups the one the call has already in it.
-> 
-> of_platform_populate() was called only if an OF node is present.
-> I want to call of_platform_depopulate() on removal also only if an OF node
-> is present.
-> 
-> I don't see the other call that duplicated this check.
-> 
-> Can you clarify?
-
-The of_...() is already NULL-aware (AFAICS), why do you need the duplicated
-check?
-
-> > > +		of_platform_depopulate(&pdev->dev);  
-
--- 
-With Best Regards,
-Andy Shevchenko
+Kind regards
+Uffe
 
 
+>
+> > ---
+> >  drivers/mmc/host/sdhci-esdhc-imx.c | 50 ++++++++++++++++++------------
+> >  1 file changed, 30 insertions(+), 20 deletions(-)
+> >
+> > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > index c0160c69a027..7611682f10c3 100644
+> > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > @@ -2009,11 +2009,14 @@ static int sdhci_esdhc_suspend(struct device *dev)
+> >       struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+> >       int ret;
+> >
+> > -     if (host->mmc->caps2 & MMC_CAP2_CQE) {
+> > -             ret = cqhci_suspend(host->mmc);
+> > -             if (ret)
+> > -                     return ret;
+> > -     }
+> > +     /*
+> > +      * Switch to runtime resume for two reasons:
+> > +      * 1, there is register access (e.g., wakeup control register), so
+> > +      *    need to make sure gate on ipg clock.
+> > +      * 2, make sure the pm_runtime_force_resume() in sdhci_esdhc_resume() really
+> > +      *    invoke its ->runtime_resume callback (needs_force_resume = 1).
+> > +      */
+> > +     pm_runtime_get_sync(dev);
+> >
+> >       if ((imx_data->socdata->flags & ESDHC_FLAG_STATE_LOST_IN_LPMODE) &&
+> >               (host->tuning_mode != SDHCI_TUNING_MODE_1)) {
+> > @@ -2021,9 +2024,6 @@ static int sdhci_esdhc_suspend(struct device *dev)
+> >               mmc_retune_needed(host->mmc);
+> >       }
+> >
+> > -     if (host->tuning_mode != SDHCI_TUNING_MODE_3)
+> > -             mmc_retune_needed(host->mmc);
+> > -
+> >       /*
+> >        * For the device need to keep power during system PM, need
+> >        * to save the tuning delay value just in case the usdhc
+> > @@ -2033,9 +2033,13 @@ static int sdhci_esdhc_suspend(struct device *dev)
+> >           esdhc_is_usdhc(imx_data))
+> >               sdhc_esdhc_tuning_save(host);
+> >
+> > -     ret = sdhci_suspend_host(host);
+> > -     if (ret)
+> > -             return ret;
+> > +     if (device_may_wakeup(dev)) {
+> > +             /* The irqs of imx are not shared. It is safe to disable */
+> > +             disable_irq(host->irq);
+> > +             ret = sdhci_enable_irq_wakeups(host);
+> > +             if (!ret)
+> > +                     dev_warn(dev, "Failed to enable irq wakeup\n");
+> > +     }
+> >
+> >       ret = pinctrl_pm_select_sleep_state(dev);
+> >       if (ret)
+> > @@ -2043,6 +2047,12 @@ static int sdhci_esdhc_suspend(struct device *dev)
+> >
+> >       ret = mmc_gpio_set_cd_wake(host->mmc, true);
+> >
+> > +     /*
+> > +      * Make sure invoke runtime_suspend to gate off clock.
+> > +      * uSDHC IP supports in-band SDIO wakeup even without clock.
+> > +      */
+> > +     pm_runtime_force_suspend(dev);
+> > +
+> >       return ret;
+> >  }
+> >
+> > @@ -2053,16 +2063,19 @@ static int sdhci_esdhc_resume(struct device *dev)
+> >       struct pltfm_imx_data *imx_data = sdhci_pltfm_priv(pltfm_host);
+> >       int ret;
+> >
+> > -     ret = pinctrl_pm_select_default_state(dev);
+> > +     pm_runtime_force_resume(dev);
+> > +
+> > +     ret = mmc_gpio_set_cd_wake(host->mmc, false);
+> >       if (ret)
+> >               return ret;
+> >
+> >       /* re-initialize hw state in case it's lost in low power mode */
+> >       sdhci_esdhc_imx_hwinit(host);
+> >
+> > -     ret = sdhci_resume_host(host);
+> > -     if (ret)
+> > -             return ret;
+> > +     if (host->irq_wake_enabled) {
+> > +             sdhci_disable_irq_wakeups(host);
+> > +             enable_irq(host->irq);
+> > +     }
+> >
+> >       /*
+> >        * restore the saved tuning delay value for the device which keep
+> > @@ -2072,11 +2085,8 @@ static int sdhci_esdhc_resume(struct device *dev)
+> >           esdhc_is_usdhc(imx_data))
+> >               sdhc_esdhc_tuning_restore(host);
+> >
+> > -     if (host->mmc->caps2 & MMC_CAP2_CQE)
+> > -             ret = cqhci_resume(host->mmc);
+> > -
+> > -     if (!ret)
+> > -             ret = mmc_gpio_set_cd_wake(host->mmc, false);
+> > +     pm_runtime_mark_last_busy(dev);
+> > +     pm_runtime_put_autosuspend(dev);
+> >
+> >       return ret;
+> >  }
+>
