@@ -1,182 +1,138 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2086.outbound.protection.outlook.com [40.107.22.86])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FC127A47A
-	for <imx@lists.linux.dev>; Mon, 19 May 2025 15:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747668420; cv=fail; b=DwEpiDr2iEnXM7FvZ9v9Q4NfJhGccTZ6mDHJv7FtoF/4gFM5r4A1rxhz8Ef1bRpSfvDiIDJpxSx7crGGq5xce9yk0CiI9M+ZpP/9yGgIrF9+0DuP2J7e3mm5IxP37L6vIAaAzSCmrnT3Sk0yNiXjc4xQamip31aj5dNNo3/bKEc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747668420; c=relaxed/simple;
-	bh=UZgScgtSpUkoZLWpWP6V6m7J8xeNvopv8Mw4Y6MDMTg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=W59plGWA53U1cOdhNcwQ5fetwVBhw6+/7vuWEZi6LFvzpNoopRoahjn5tSApE5VMh8u1DmdkDAhPJdCXgTcxcsaW13QQVJJAtbHUf3HfhUtSs+u4Ia3io22pEtCxd26CEZvN2IO4hjhdOKJlfOIoB87ybOfIvX7hyYtu//l1tZk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=htLklbLe; arc=fail smtp.client-ip=40.107.22.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A14B22A7FF
+	for <imx@lists.linux.dev>; Mon, 19 May 2025 15:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747669469; cv=none; b=K/YlJ+fhMPg0P8+R2INsdzpqB+B3D7uXsjJpRiqwZaA33/nQ2Ud3b+PWBSiBYc3VOiuBYHauucGVICCII5KjwXpGud0RXcLVjWF0QaNPR2W0eRZ9PNgH/sH1DkT9pliCCv4DOcC1zy3bs0RsF2VSyInXN1cuoqc63AC2ORFoF5w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747669469; c=relaxed/simple;
+	bh=ucbRC+By9t6hiwEjSnTGEwM8Sp7zd3PXSGJLq749aGA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bAbcK9Rwx8aE83SauUbUOE+sJ8yE5rY/1nCLdtMWElc4BnUCiK2SADUZFoamL1NpFx1A5aHhxWVLGKbmsnRjh34z08qaqluFGQmErajFPl/DhyGp9zHuYizSeWM1Us8T5QYFrgvpnuTVcd1hW/xiXVMrOET/rcyfBhnmuGtlEjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gOMWIman; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="htLklbLe"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QYKjp8+d1qsphrVJkHncmC8Hc04/ttdCykFpJTxMW5W1TOYgJeLXdcVUeyB2Gv0/wMHE59IvuZ+SHJAjp9dWWs7G8uFH5j+jt8Rp/FEY7mre4I7Q/a6eJZY42v35nTfjt94JBl/g25UAUQpMUxGyplNsAaqUd4uaUa4ROKbxVSiRTQl50ff7dkv9EM3gocr13m60Ea3MdUP+Q6khvuunh4AXMrsZA8F469++NCMpfXvO0bXCWFrpuhpSkKrSGhFrkJJRsMTBWrmSTXVqfhLcM6qNE1Feq0Pbba4H6pROyiYdi9wm5CZ3I9zdF/gAV8/hN+hq1MWJU+ykLlw822Ue8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BfNTL7NM/RiOpYrt03YM7Bvw7PjliRH2M+2/x02gV8U=;
- b=ZGatQV8lx2nxAfJ+gb59hr6M2n0eOc1Bf6mvXVK0cAWdX/ERQ6ltmVPHnQMTDqbtvEQf0RPVG9oa9d0pPGt7m3m36sTVa58MTB958xupuj8TQJKpX54s6Y/UiNd6pmb3AXX8aZJ2EtjEYcZqspMAZ7bJ+rnyg95U8cO12PIbneiSO62Cr9lTZBE2pH/TLw4GUBvgauKl+rMLCdTEPGuRowvjpFjW/Z9GVSwQ1rCg8NK/HzykYS2kbvzNJQQgY+8e/7REnML19Kqdstk+zkYcGIRF9ok7m/3QgUTnGna1sXjWiDOYty2nTX5bIggHpE+STD5eglba67+eiVE+gIOPKw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BfNTL7NM/RiOpYrt03YM7Bvw7PjliRH2M+2/x02gV8U=;
- b=htLklbLeSXiB0b3CO4lJmcZBQ39lJh6cR0K62CxgnlxOj/S5/JwKfzXiaARSZGz1th7QPSL3rWfXFXTbm0rkwSH653v4hvaBec5wZ+C35rMqh+L6bYeoEIA4YFXUMRiu5ME4pw2Y0hNlw7BjQ0hIl06xF/en6PZ+EZ0Otq153BUGvRg30KFFOFJ6zlUK2bOVD4nHmnCx89PpvIcCSww7bY8OT7WFF25Q6qW3zRBkiWp+/eGXXwlfKXb8wpOnl/ETMSAjROrbeRf+vY3UV6JLD82Sh171I60EsfbvRPWq69baEn1PvTqQe3LU//9jmJcEPMH2Yma6jUHMTc1Jn3ZiYQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU4PR04MB10531.eurprd04.prod.outlook.com (2603:10a6:10:55a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Mon, 19 May
- 2025 15:26:55 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8746.030; Mon, 19 May 2025
- 15:26:55 +0000
-Date: Mon, 19 May 2025 11:26:44 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gOMWIman"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747669469; x=1779205469;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ucbRC+By9t6hiwEjSnTGEwM8Sp7zd3PXSGJLq749aGA=;
+  b=gOMWImanockod7A/QxMhBip60hxhwDqRMjfZuqjMPulix1cJgkOeSY9G
+   uVp4Yfeopxznj7KPDWdx8aDdTANeeh0rx/ejfIZCzjkxiti+WqL+PmzFf
+   o1nKoJkAzHClGxWTcgXkZnlKwp4AhiTlkj+901XhieoRlr1OeDhQ1GuCe
+   ztEM0zzEnZyGd/e813Xl1dy35NKQ6y1kG+fb5ugBZeRgcOZQ0s42OGZaB
+   h6DRoK8EOBiuZzWHD4AbfQO1MQw0rWE+a5DeGvFSD1A2mdz0gEuP4HjH3
+   3stFLGelmUzcOHA/rhR55DG/iKyxCkWH6ilFRwL5H5rubH2wuP/0bcbzZ
+   w==;
+X-CSE-ConnectionGUID: KcetDYZVTJqOt4aQQ5W09A==
+X-CSE-MsgGUID: u7C9QrDCSWeSzHn9YoKm6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="60966640"
+X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
+   d="scan'208";a="60966640"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 08:44:28 -0700
+X-CSE-ConnectionGUID: D9nnBx4yRm2U9Gb6be0UuQ==
+X-CSE-MsgGUID: O7jOjWPERG2e6Txxz393/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
+   d="scan'208";a="176513494"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 08:44:18 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uH2f0-000000034rN-2cA2;
+	Mon, 19 May 2025 18:44:14 +0300
+Date: Mon, 19 May 2025 18:44:14 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Stefan Agner <stefan@agner.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] dt-bindings: gpio: vf610: add ngpios and
- gpio-reserved-ranges
-Message-ID: <aCtNtKHay9IXmCgD@lizhi-Precision-Tower-5810>
-References: <20250519-gpio-dts-v2-0-b9e77173e9c5@nxp.com>
- <20250519-gpio-dts-v2-2-b9e77173e9c5@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519-gpio-dts-v2-2-b9e77173e9c5@nxp.com>
-X-ClientProxiedBy: PH7P220CA0048.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32b::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v2 23/26] misc: lan966x_pci: Introduce board specific data
+Message-ID: <aCtRzm6nPk61WtRj@smile.fi.intel.com>
+References: <20250507071315.394857-1-herve.codina@bootlin.com>
+ <20250507071315.394857-24-herve.codina@bootlin.com>
+ <aB0ERYKdRreDe7Wt@smile.fi.intel.com>
+ <20250519170004.631d99af@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU4PR04MB10531:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2632e2f8-65ac-413a-7c5b-08dd96e99640
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xy6EEDtf5pXU8iGAA62E933frNqMuLoyPR6QnjvLqfvUttiik4qii1jL44jI?=
- =?us-ascii?Q?biYOxy6jXLlCuzOJ0jcyPQyckEieORG72h/Zu+SPgLyB59/JgR6B958iyOI/?=
- =?us-ascii?Q?feosdYECRSs21+UpA/jIDP2ApOwlEg0hTbvGh4rJiwQKa9rF4GtSRbg+zAdo?=
- =?us-ascii?Q?uK6kuUTS5zdXAGFgbAkgie8V/VDKsQeC6owrQ3xa8B4PQWwILV+j1qluGBHK?=
- =?us-ascii?Q?MxXpCjh3qtpJw640M+XntBBi6fr8Y+cezcuHyqTVYKumDv1MUmPBwCzJ9OuY?=
- =?us-ascii?Q?PEVYp2cvTkHMABMvZD5MrBPZzLOrXCCNUV0Cu+BA6U+DZjq3omndGo6rauKB?=
- =?us-ascii?Q?oPK7gnGsebo1651BDDdgEJSv2g45AlwEid702lWhysFjQI69R5QMhKsuiyYv?=
- =?us-ascii?Q?vJgG74sn9IQbRjAiqvEjeMKDOIJo4t0FPnZ0btCMayBTfKdd7FG0iiHQyruA?=
- =?us-ascii?Q?Ci5+Ayw+SHToo7ej6NruUDboMt5IuUVGoOfn6AYZW6jkRI5M/8M/CtSEUnc8?=
- =?us-ascii?Q?WRMOW1ww7JXqChr40tLGiSqCQ0HaL1EBj5G+6BEHMT94x4b/MHXkY11uU+uA?=
- =?us-ascii?Q?ucOakpU+MqvDFLDSh6neMaeeBJP9wg2n5EzNcjHdAo82hTUQpwkeimB40fMT?=
- =?us-ascii?Q?6vDACkjf71j36UtBIYz0IngEl5Y4xflfM/bjVRsHVxibsxoGoNFrpcsstiz4?=
- =?us-ascii?Q?ipm6I6infCkByjLeaIaH7hpT095jeicddElHnI46JD6v6zwuE2E6coXhnhhx?=
- =?us-ascii?Q?xlZIMmGFDgdtEv41lfG/4UaG3WtHWZja9+MnENa4XSE16n7AgbY0hUjb/lZq?=
- =?us-ascii?Q?yHYIldQXXmD5ZZ7/C6xmqK/bQEFBBI7TanfLihRQmC9bpfrpy6le7Xx5TpwA?=
- =?us-ascii?Q?F903g1XUrGzb12cMIRCFejfo7qmDZ2n+4pjOiiLc+8QbGbuIygWlq45KJBi9?=
- =?us-ascii?Q?D5+DRu+ciCcHeguKzcIlzUl3c8kOHMI98N8ldd73WMzjaMEsoYmQCEAb1/+v?=
- =?us-ascii?Q?pxW0vIV4UpzlswikEMSddORPYkAbEIuqaIgsIprX8jud8YkITORFTKyM7Ktj?=
- =?us-ascii?Q?imvOoK+QvNVzgYAypAuTFMWcXsavOdS9mqnmpOuQaz8SL3jWf5DY2bKTORO3?=
- =?us-ascii?Q?mrHiqzC7PTT4nK4+uM28IJD/HA4ZYBnHcYb42A4qyRZPeulY/Kx8f52O1aLN?=
- =?us-ascii?Q?Hea3ValSK6wgTBGXVC7TgG8L5uTLuqR3u1h0V/xhVZSaFIBmCKF5d+7oMHc/?=
- =?us-ascii?Q?sxkLAqOhMSYSMZi0gGgodPWO3K7t7lpAQZd82AoLC8hfF+cIwKLRVmZbRERb?=
- =?us-ascii?Q?xaSoDVdJBEic98iXjagPhxNnWWy/5u4p5QtaHEGft/0gYJbK4wZq3sMecnlX?=
- =?us-ascii?Q?oP+vEcOS9l8WL3EamDPiSOvp8T1NuwrLkKn+C5UlwKSO8seJIGEJLU6+rZxY?=
- =?us-ascii?Q?86vNdTIGY/FjPdPtinThRtUAodlHJ39YEJgAd/H+41/IaXQy3gTKqg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CQIe7OAVIjzIxOtS4DRTgT4JP5VmC8qyN6pAD7gCUEx3vKloI0+ddB8Q3b1e?=
- =?us-ascii?Q?rYIM7WK2wGS6DOKQSgwYhDlLQE80kNL4rXXmb3UIV4vEz67R3ajmgubjdqMx?=
- =?us-ascii?Q?+BuImWgKsUE2aNT2/ChvDgO8r7XPmiq0DXzchlVO6rZBw9HfjpSqWkzudJoy?=
- =?us-ascii?Q?zI0WfCPnhaavAl3dEiIsDCfvEs2HyuWAIJuPmVtKDfhlnA+6vMs24OqG4DA5?=
- =?us-ascii?Q?PeRwkDFEJXINqumqAJMo+MTkTvP0bxia3A1GNKFTm08ZMWNcuV2hI5sNdNDw?=
- =?us-ascii?Q?a64hHUDYt0RuIO+llqgj8VG+s1ZqwmjvZ+eDRL9rQ92+SELlclygpAmJ6haI?=
- =?us-ascii?Q?T1TtPSOVq1XqU1ViWaPelwfUGb95rdluHp2FA5RVAejvwk1nd3hWiamURV1x?=
- =?us-ascii?Q?IxVmiTsMr5eBWeaLO6c+hi1sfOomHbKLjN/8kkKOOrSCcdEZ7ZINo4G4P9io?=
- =?us-ascii?Q?edGGMRfAGnE5hkLp96BcUdDvstSm83Y65wkk80Sy9XsgO3ld/ewFvgO1yP99?=
- =?us-ascii?Q?oyv0YxiTeBTZ8DrBu2SseKI3/R/ZwRxLKjurkmUWYzNvJ5NMp07HXOHQyiE9?=
- =?us-ascii?Q?Zi0vm1RmIBqjxErD7y3ZtsFyiRhIuUANH/IPQwBLJtrNmJ3Sh0Bxv3691EHZ?=
- =?us-ascii?Q?5GOijBhtRrHBzITZ6m0liQjp9I8RLqXmAPfYLTVCevGt62hsXm235y7dC3R8?=
- =?us-ascii?Q?5i7YoWtnHWApJgRa/qaB1x/NjSgNzxeAUN6AXyfijzBZNvHYPzEeObA1Xr/3?=
- =?us-ascii?Q?IzPdiuoeFDrPTtFBNB09tbGN9Z1+6ZIqy3K7Cxhpbwysoaba1HTNnAy4QBEq?=
- =?us-ascii?Q?/ucMDyOvrC+jcvHoInmNvy49V1ZudbHtwFytDWHZvfDx85VlGGjoXi1S1Tzi?=
- =?us-ascii?Q?j5JCDP4rFUTgDshCRcDqUAJPRSuxwv5LmV2DU1Fju47Hws1a1INDImoRvzNV?=
- =?us-ascii?Q?o+ArmsUaYnJtH8pIixqMyyCjlFr7LRjYDWRld0L0jyNzSerW6DyF6m/zWLsk?=
- =?us-ascii?Q?QN1h3lBJ3hN12TU4IAyavLbP9Bh4rM6NA6W0SyoZ5wPjX9dZ3Ru9y0lGXc57?=
- =?us-ascii?Q?+OOSsbvUDD1bdaZ5r5eq0zZvi6gFqEiBi8XGTyUIzpJF/tsqK4MLxIkYp6JB?=
- =?us-ascii?Q?aIWV2XScseIezwGnPywVxsiScPF8Bd7NKVyyLWFqmWBAT+MKn1dqcRbojKXh?=
- =?us-ascii?Q?rfeimfoP3n1aQ7uiQaTo7O8y2pqYrgijIwzM3yrOhDI9haH+aEhIdqnWiMPK?=
- =?us-ascii?Q?dqMMCZ946jYLZyD/Afb/1uekSdXTjAxnxhiEoMPVUY/9DjgcxdzruyeRTT9A?=
- =?us-ascii?Q?7aKFcoeCzNA0zycgMsCXNt9uVb6p8mim/pQ4mPTHsCgSHjawo2sFz90iAwr1?=
- =?us-ascii?Q?T2kVu+QdsEb2IzVgexalut9DEqytaltg5W4/p1b2M+VK0dp9/2YBK+JEUvhJ?=
- =?us-ascii?Q?JHwA+R58XTM+LHsNmZC3yy5VGtzAdffTX9QZHjPcM0HyYU+KDyZ0GjHdPFzj?=
- =?us-ascii?Q?p3TkL60fSoxBlOwqD6WxBccsKXofJZILC5uuYdNLtPF6sfGGr9NkU9u4apWg?=
- =?us-ascii?Q?8qBg5FP/G6fhP4Ta/JNLIUQRVVhVgzt4jfHzykW6?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2632e2f8-65ac-413a-7c5b-08dd96e99640
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 15:26:55.1062
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pKENm9El8eI3LjHYTRO06zb5XH8kMT1yv2FbtuRAumaOt7q8hmg8aO2fKDc2/g5lmwH1S2gWLbxZDiLbYxun4A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10531
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250519170004.631d99af@bootlin.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, May 19, 2025 at 02:03:43PM +0800, Haibo Chen wrote:
-> Add optional ngpios and gpio-reserved-ranges property
+On Mon, May 19, 2025 at 05:00:04PM +0200, Herve Codina wrote:
+> On Thu, 8 May 2025 22:21:41 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > On Wed, May 07, 2025 at 09:13:05AM +0200, Herve Codina wrote:
 
-Nit: Add "." after sentense.
+...
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > >  static struct pci_device_id lan966x_pci_ids[] = {
+> > > -	{ PCI_DEVICE(PCI_VENDOR_ID_EFAR, 0x9660) },
+> > > +	{ PCI_VDEVICE(EFAR, 0x9660), (kernel_ulong_t)&evb_lan9662_nic_info },  
+> > 
+> > PCI_DEVICE_DATA() ?
+> 
+> PCI_DEVICE_DATA() need the device ID defined using a #define in the form
+> PCI_DEVICE_ID_##vend##_##dev
+> 
+> PCI_VDEVICE() allows the device ID value passed as an integer in the same
+> way as for PCI_DEVICE().
+> 
+> Also, according to its kdoc, it allows the next field to follow as the
+> device private data.
+> 
+> IMHO, I think PCI_VDEVICE() use is correct here and I will keep it.
 
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
->  Documentation/devicetree/bindings/gpio/gpio-vf610.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml b/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
-> index 4fb32e9aec0a341a50088f3e4352ed4d36f649d3..5b98228466c6414be681c49417bbdd82f2c45756 100644
-> --- a/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-vf610.yaml
-> @@ -70,6 +70,12 @@ properties:
->      minItems: 1
->      maxItems: 4
->
-> +  gpio-reserved-ranges: true
-> +
-> +  ngpios:
-> +    minimum: 1
-> +    maximum: 32
-> +
->  patternProperties:
->    "^.+-hog(-[0-9]+)?$":
->      type: object
->
-> --
-> 2.34.1
->
+It's correct, no doubts, but using PCI_DEVICE_DATA() makes sense when you need
+to supply driver_data. In particular it will take care of needed castings and
+also as you noticed asks users to apply the regular pattern for PCI ID
+definitions.
+
+Moreover, the 0x9660 is used in two drivers and it's a good candidate to be in
+pci_ids.h. (Note drivers/pci/quirks.c:6286)
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
