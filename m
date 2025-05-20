@@ -1,75 +1,73 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2124.outbound.protection.outlook.com [40.107.20.124])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F29265CAA
-	for <imx@lists.linux.dev>; Tue, 20 May 2025 11:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747741932; cv=fail; b=er1DcCbzAc/ofMD3gGIvXh6uoRtEtDFDFGoIs/q5Y9rO2Ccs2vFVJj6fEgNctOF8XWpa+M83t9MX2ZY48aEjfwzU3riEnLggwBDJE2G1sGdTKgXG9+6Ix5usSAJSdv1gN0oJCxbIECAVfzUghgopTZDzHHPHzOhWV7c+DMIrHZ4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747741932; c=relaxed/simple;
-	bh=8dnzEpH8w/72P7VRhHxvnHy7VwrPmcaP9V00Bg+nn8M=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ilx6Rmw05/w16N7UzVv+gIFlUecBMIvQED/+UKPe4KEGA1XICoKYLVxm6qjeTObq80QmV0Z/P69OviJFWfUipJWhDnlDmxX8wS8IqpzYINRMdyZki4PbWFzFoTNQCGaeNBHWcG/DuPY40K/3RdUl00WmuJr4oQ41HrONTmyuzKc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=iz9aPydt; arc=fail smtp.client-ip=40.107.20.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A494227FD5C
+	for <imx@lists.linux.dev>; Tue, 20 May 2025 12:09:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747742983; cv=none; b=XGqyxul9L2onnrwAMav6vgIjnD+gdXnrvIKxJi5bJNHnM+jKdf9jxb1fERojza6cEbhUwpYGymlcsdT98OxhHIip34E7M7P5EXVrQmAfj6v/pU21SATEg7X3d8Ot6x/cXZk2Y6ltgp+cExu0TBlgda2bWthxrAW/zUF64Yv+iT8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747742983; c=relaxed/simple;
+	bh=r/0a45tDOG1Wp/4/S60HJvxc7MPWubEQ4sYHv9Gbi60=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u050f+HjMQnYl798fNOyFxRmrP3SXfMwEm/8b4qp7EAABN/6xldN/0FMKe9WTs1S7aiikP0OpNehhhyWkkEMf1iEn0DD953JCi4KNDjAThpbXUTKDtQ0esi3BUoVfmShgryPRy6fUCUpbN0Fc87mzoZNCNEsrbBHacZ+sbqE5qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=E6IIruio; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=sRWml8PK reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="iz9aPydt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r8VAEwefSmdLyQYbKo0UNOVDX36AudQFaD8pidgROMZQ+H94DeqZsVXWP/iIJccHOzlbRKVTeX9JlsE4/3wxbrd72hQT8bb10ccj310m8vHoRgkfZmnGI1yZ8tCJJ7SyUOCURt0szB+sLf/DXMzhx8O6Pgq0LknAvkuWJdkEUUYvAsWEfK8MK9g+aHzB6T9pPDR1mu6gzMmqz0MCjpvF2k2yDupSMOxjyzmAHxV2OoxSWwwxwA1zBCO0We6TZVokBflR5XwXw0gNQ74brLvvnwfgqgD0t6zDNR5rYElp/hBkUoxOFJo3IHuhnA2vzGoSbqNmLIoEVCtAhRwPSsLx7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ghLxwQaEsPNUXjvQ5ZQLfEFInqyv/lBqfcO3Js9ORio=;
- b=vdVNZOmApd/5bKvg0dDTCpwDmL9InTDwNJaihiYDZD7SW4qFvaUxfUBCUmbP4TmGklTjOCOpKiIyv7x1FpR0JCVNOmxt4dC24N28h5obzQPcDUE2xdlMVCkP8K+Loo3bwrzK3RYibvlztX02Nt3BsipCZ3dZuKqM+ICaEXIKsVZXzi7I+Yj6cWZK4D42jZA8aqF3Yf4TR3QhaWg3q1BXLcOEoU5Su6DQYzDGjORE7xlnCe0NL6J2Gz7L1HPGt3Mx6ztkzHvE3LR+y56J704eiDjBWNedWMMrkZWmwvEMzBuRZZ5nsijC2sThzWYTXICoUwrM5rfZAAuA/fj03tgt5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 91.26.50.189) smtp.rcpttodomain=norik.com smtp.mailfrom=phytec.de;
- dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
- header.from=phytec.de; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ghLxwQaEsPNUXjvQ5ZQLfEFInqyv/lBqfcO3Js9ORio=;
- b=iz9aPydtsiG0YGZy2qzSZBuQJsQOnF/afO7Qv5QaMFuzIIQU5kCN/Im5hxzGc/PZWSahaBTpq+p7arxQTdwndzbOC9Nj9kGrut+k/zcO5xwqj6wW4ulfiE2fH4FCN5OE7oBDZSPUafTD7v6J1Ycm2L8gpzR0A4SEd/J4LlOvGAUv+7Bq3fAPh5ux7Mhr1n+cjNVYdtmVowXW5L1duraqXntxzKXaPjjHrYQ8atgdZQHp0U1X1oNl0VVQqvixrCG7K5nIyb6ADyuhqHh4GSZEA7Yz+iW/VlwAqr0eOuQN4QVr2PwaXS2b/Z6qPHdWsH3Piy4nTNheXKVnhpC78viu1g==
-Received: from CWLP265CA0336.GBRP265.PROD.OUTLOOK.COM (2603:10a6:401:57::36)
- by GV1P195MB1786.EURP195.PROD.OUTLOOK.COM (2603:10a6:150:5a::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.31; Tue, 20 May
- 2025 11:52:04 +0000
-Received: from AM4PEPF00027A68.eurprd04.prod.outlook.com
- (2603:10a6:401:57:cafe::95) by CWLP265CA0336.outlook.office365.com
- (2603:10a6:401:57::36) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8746.29 via Frontend Transport; Tue,
- 20 May 2025 11:52:03 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 91.26.50.189)
- smtp.mailfrom=phytec.de; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=phytec.de;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- phytec.de discourages use of 91.26.50.189 as permitted sender)
-Received: from Diagnostix.phytec.de (91.26.50.189) by
- AM4PEPF00027A68.mail.protection.outlook.com (10.167.16.85) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8769.18 via Frontend Transport; Tue, 20 May 2025 11:52:02 +0000
-Received: from Florix.phytec.de (172.25.0.13) by Diagnostix.phytec.de
- (172.25.0.14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 20 May
- 2025 13:52:01 +0200
-Received: from llp-stoidner.phytec.de (172.25.39.157) by Florix.phytec.de
- (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Tue, 20 May
- 2025 13:52:01 +0200
-From: Christoph Stoidner <c.stoidner@phytec.de>
-To: Primoz Fiser <primoz.fiser@norik.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<upstream@lists.phytec.de>, Christoph Stoidner <c.stoidner@phytec.de>
-Subject: [PATCH v2] arm64: dts: freescale: imx93-phycore-som: Delay the phy reset by a gpio
-Date: Tue, 20 May 2025 13:51:43 +0200
-Message-ID: <20250520115143.409413-1-c.stoidner@phytec.de>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="E6IIruio";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="sRWml8PK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1747742981; x=1779278981;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Mydkjm08QIvLWA/4BcOB1dXEsbYKaUwIYfeH9kPQgNs=;
+  b=E6IIruioTkRtzvsz4YzE6FUFtJm3y4XF5TlNjoldovtXwR7FEKsUlnOg
+   IJ54IBp9AR4dd35cQSuWBmXCYH6XOh2vbDZbEHVCZnyjTyW4gF4hnyE58
+   Y8d1x7Zh2ieC4ChEhq1hBhQNCzzwrX3SWa1mE6l6dRRMAmlfKPCPqILDW
+   FTfgqYYfg5IQ7W5gwo1BoPxL6GvAtvVbZ3iHQGhDxffSlOt9FvNdWTm8A
+   /OjqJz4nliTli9Trz09vgDgQ83eSpLZiH5uUc5RjhvOCbfhNUJxQvrbXc
+   FFoKBCCCJtQhukFPydx7kiKNu8XGmf5PAU4y+uh3yjuvDkzIr4VDs1RCn
+   Q==;
+X-CSE-ConnectionGUID: WGbEe5mISL6y4FTUK6hA/A==
+X-CSE-MsgGUID: wNbZQtggSh+ST2W74UFkow==
+X-IronPort-AV: E=Sophos;i="6.15,302,1739833200"; 
+   d="scan'208";a="44182551"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 20 May 2025 14:08:28 +0200
+X-CheckPoint: {682C70BC-7-DF3E87D0-C74668F0}
+X-MAIL-CPID: E98BEE298717E5CE9BA43ED74D55136E_0
+X-Control-Analysis: str=0001.0A00639F.682C70C3.0032,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3AC9B160A8F;
+	Tue, 20 May 2025 14:08:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1747742903;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Mydkjm08QIvLWA/4BcOB1dXEsbYKaUwIYfeH9kPQgNs=;
+	b=sRWml8PKLS2gK0dDH+njNPfwX5dX8uBb4x78wNwmI8THAjaUaxNIy0E8nNNOZTWVSPlGQl
+	arvXW+bEXegh5G+J2k4pX85rcpKWy58VMgcIgx/g8ZKxbBrwWqz3f0zdEyJU+jyxIJW5LI
+	1tf7o811/HyX+ke4jpKxmCqluVPK7Gbj3eU04I+YpaqaWkSuUOPDf7dVehlrisH2k32W4O
+	v2ZBUQDPf2KHfJFWxMvj7Jg6PK72UmDsBT/ogFVb/UEQdw/GqRU9/VTrjJkIc965k4Orjv
+	ZjG3j/QiKeB161PgIJUdrLi80srNDlysDrNuZnNJgJ5t/vYoABXH5S1UK5KHPw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] arm64: dts: tqma8mnql: Add EASRC support
+Date: Tue, 20 May 2025 14:08:18 +0200
+Message-ID: <20250520120820.890252-1-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -78,115 +76,66 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Diagnostix.phytec.de (172.25.0.14) To Florix.phytec.de
- (172.25.0.13)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM4PEPF00027A68:EE_|GV1P195MB1786:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e4851b1-53a5-4e27-9606-08dd9794bc18
-X-LD-Processed: e609157c-80e2-446d-9be3-9c99c2399d29,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tUWN0vs06IHdU6Qd4ywS7Ll6z5ow0UFZLkBzpBygHpx4PIc/IZH360wgjrKk?=
- =?us-ascii?Q?B6FlRTiSoD7aBB0vUf+/0zLu43LHTbPF8QeXCHtM4TPOP1ac+1FPYNOgK3Cp?=
- =?us-ascii?Q?IBkxWrc/RSIXPS3R3ihVlaU6gsjpppxQ32i6EgTBAYl0rUu25h0bq9jkhVPF?=
- =?us-ascii?Q?IRCpUmvATM0KqRffkzIqstaEpEzT/EUIjc/5t+SkXmcjZbAFxxcJz63ovwbf?=
- =?us-ascii?Q?CwMCP4cjUomuAlN7R0ZDte3PoxBzGCTjqpmpMPkvogFknldz4WCQe+0jFAhD?=
- =?us-ascii?Q?88PQOuIbUfyw28U0ezI6EZZWYPtZjAi8/gz9MyBPVNY1rAGBByJJSfi65l3y?=
- =?us-ascii?Q?+RVkBA1xGm1VzgJQi5s2K97kIeEmldDN7Qc3JhlxlSW8gBgPY8Y4QtpezJcI?=
- =?us-ascii?Q?FBPzZhgpkqWuFAx7UaWQyfe5VcwPNPOmqkyoZXurVHuFgTfcdSzy9Ucm5cAT?=
- =?us-ascii?Q?GsF/QXv8aqL25j1KcLhkftKTLeeMYD9aWjbX+Aspwp6XeXFrdtvIt9lDWNmA?=
- =?us-ascii?Q?4w3rC8a1jqpuTlCiaZYpdNolzD237SbtuaPYuebcaMy63f2t1eFcvMl5PzAT?=
- =?us-ascii?Q?58Pdx4O7ffUtHnmjgq+18/8HlPJrvalitsb6YGQKNruMeEqwC3kUfPKyw6QT?=
- =?us-ascii?Q?Ts5sDTbEBEKNvr3us3d+dpa1hZcq27ej9uCuP+2IDlP/iNv9hKtiBP2+wcpq?=
- =?us-ascii?Q?fjp5hJ4TyWySZ4kRM2lkAD4OKALw+676uVVYgPMqjAa+tUWxZZSfGFLcxxID?=
- =?us-ascii?Q?eDXvlcgs07W/g8ZindH3+dVTSz67v34Uuo6/ctS8qpT9jQX9gtafiYtqZ3/1?=
- =?us-ascii?Q?QFxVobqmJ6FZ1sKEhgr8rafSc2r3kie2/ULgJGokWKqajqUSicEH/uBVAf7y?=
- =?us-ascii?Q?uQJHNrAeOVeY3PqoAZiVIpfKP8iMRy3o6l6P9NXP7RFlAHTfv78s16qRk4Os?=
- =?us-ascii?Q?1iGmXsyXO4Yxm7vslPfre+cQbnJPGCAgIsySbTiLvM5O9LGknRJEjo8wT3Uv?=
- =?us-ascii?Q?S8qxDsf1sWZmqzFcBmoPg2P7HPPvaYHfHd6iU+wSrB1xeVLHdrj1e9y0BGFH?=
- =?us-ascii?Q?3dkntSboNGJqFJM7ofJ/dO6GG6y0t4wZvNCgDkU5/w19YXtDL28sTg1lYW2W?=
- =?us-ascii?Q?TFrDNUphLrJSz4pe7qIh/ncfDHrwLFnC4xp+GZF1v/E7LCo6HLbTDs1ifvyq?=
- =?us-ascii?Q?DNYl7Pox9VyPy0Ex8+YYQmfITCORFUHb79TtcftKc2wOneFvBGk32Ev0Gh/i?=
- =?us-ascii?Q?UO15m9r9Eyax7SGpKmL2rCqeaWC4ZrS/5139pzGyvzEZJ/6Q8Kz5fGZB9Wld?=
- =?us-ascii?Q?Z5g6yl+VJ/cOQgME4id8Zt8LyAEMHeku3h5Udu6m60hjb97kGnN1/DJ0+21u?=
- =?us-ascii?Q?W7f77FavLYl42eaP6CcYk5tpxvd4h8jIACgmh3j52cZ7csDeBB/UvJEiQt+6?=
- =?us-ascii?Q?vfvtENeQ9vqL+DU0MsCl0ClxRBnpfys1xJzI2Ri/1EhuSZyzeLdP1Gm5UJC8?=
- =?us-ascii?Q?DBqgJBxE0Heq4Z64Zri5RF9MDKw5ilYiZCqJ?=
-X-Forefront-Antispam-Report:
-	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:Diagnostix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014);DIR:OUT;SFP:1102;
-X-OriginatorOrg: phytec.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2025 11:52:02.2708
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e4851b1-53a5-4e27-9606-08dd9794bc18
-X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Diagnostix.phytec.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AM4PEPF00027A68.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1P195MB1786
+X-Last-TLS-Session-Version: TLSv1.3
 
-According to the datasheet the phy needs to be held in reset until the
-reference clock got stable. Even though no issue was observed, fix this
-as the software should always comply with the specification.
+Enable EASRC support in tlv320aic32x4 sound card.
 
-Use gpio4 23, which is connected to the phy reset pin. On the same pin
-RX_ER was used before, but this signal is optional and can be dropped.
-
-Note: This comes into effect with the phyCOREs SOM hardware revision 4.
-In revisions before, this gpio is not connected, and the phy reset is
-managed with the global hardware reset circuit.
-
-Signed-off-by: Christoph Stoidner <c.stoidner@phytec.de>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
+Note that the firmware file /lib/firmware/imx/easrc/easrc-imx8mn.bin
+is needed.
+
 Changes in v2:
-- remove paragraph "Fix this in the bootloader..." from commit message
-- fix checkpatch warning
+* Rebase to next-20250516
 
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi       | 4 ++++
+ arch/arm64/boot/dts/freescale/mba8mx.dtsi                 | 2 +-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
- arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-index 88c2657b50e6..c08f4b8a65a6 100644
---- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-@@ -58,6 +58,9 @@ &fec {
- 				 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
- 				 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
- 	assigned-clock-rates = <100000000>, <50000000>, <50000000>;
-+	phy-reset-gpios = <&gpio4 23 GPIO_ACTIVE_HIGH>;
-+	phy-reset-duration = <1>;
-+	phy-reset-post-delay = <0>;
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
+index dc94d73f7106c..d7f7f9aafb7d1 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
+@@ -79,6 +79,10 @@ &sai3 {
+ 		 <&clk IMX8MN_AUDIO_PLL2_OUT>;
+ };
  
- 	mdio: mdio {
-@@ -91,14 +94,17 @@ pinctrl_fec: fecgrp {
- 		fsl,pins = <
- 			MX93_PAD_ENET2_MDC__ENET1_MDC			0x50e
- 			MX93_PAD_ENET2_MDIO__ENET1_MDIO			0x502
--			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x57e
--			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x57e
--			MX93_PAD_ENET2_RXC__ENET1_RX_ER			0x5fe
-+			/* the three pins below are connected to PHYs straps,
-+			 * that is what the pull-up/down setting is for.
-+			 */
-+			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x37e
-+			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x37e
- 			MX93_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL	0x57e
- 			MX93_PAD_ENET2_TD0__ENET1_RGMII_TD0		0x50e
- 			MX93_PAD_ENET2_TD1__ENET1_RGMII_TD1		0x50e
- 			MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL	0x50e
- 			MX93_PAD_ENET2_TD2__ENET1_TX_CLK		0x4000050e
-+			MX93_PAD_ENET2_RXC__GPIO4_IO23			0x51e
- 		>;
++&sound {
++	audio-asrc = <&easrc>;
++};
++
+ &tlv320aic3x04 {
+ 	clock-names = "mclk";
+ 	clocks = <&clk IMX8MN_CLK_SAI3_ROOT>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
+index 640c41b51af98..1d23814e11cd3 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
+@@ -52,6 +52,10 @@ &A53_0 {
+ 	cpu-supply = <&buck2_reg>;
+ };
+ 
++&easrc {
++	status = "okay";
++};
++
+ &flexspi {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_flexspi>;
+diff --git a/arch/arm64/boot/dts/freescale/mba8mx.dtsi b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+index 7ee1228a50f4f..79daba930ad64 100644
+--- a/arch/arm64/boot/dts/freescale/mba8mx.dtsi
++++ b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+@@ -136,7 +136,7 @@ reg_vcc_3v3: regulator-3v3 {
+ 		regulator-max-microvolt = <3300000>;
  	};
  
+-	sound {
++	sound: sound {
+ 		compatible = "fsl,imx-audio-tlv320aic32x4";
+ 		model = "tqm-tlv320aic32";
+ 		ssi-controller = <&sai3>;
 -- 
 2.43.0
 
