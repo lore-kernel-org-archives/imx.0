@@ -1,168 +1,198 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2057.outbound.protection.outlook.com [40.107.21.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE340218EA2
-	for <imx@lists.linux.dev>; Tue, 20 May 2025 09:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747731613; cv=none; b=KPSh6MomF+ohdVfE6RTkPdOiOtEixU0Gx2oLjE6iP/OUoh0y8IWGu7CPlYSh+zU1RgZxgKv0R0tFmL5fD9UfC0k4Y1qCFkVNBy9hoSuCUEUXh5L8Qr+AP6RcttmdYG/OTt9fElEMYN2PSqbcVxM1qhzi91H/lazBKtl5KjVJvX4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747731613; c=relaxed/simple;
-	bh=/cBn7/afihVspLZ8dscheq2oAej7A2VWzWI1xW+tNR0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VEipkjVexk7KzaMx4hyrCHQ7sv4a6rdHgM1d/ScCV/kDW0eA3jZfxUpx+FXeN5jk6EWwGZcBiS4+yYDZSVV9LGMKMVFcOacDrHNq/TCuB28Klj6YrPmlKd/n9qZTT+hBXmynBvPwF90xkW06wIBS/VfblBA9DHMCImQ2TVvHGa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=cAQXddps; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795141D7985
+	for <imx@lists.linux.dev>; Tue, 20 May 2025 09:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747731679; cv=fail; b=m5Cd41mXtCTW/fx5twZogFDEPiBJ180QnZ350SPTFBBs2wV6l+aGn8aPbw9cMMbNPmkH7n41/jxoerGQEsggqTonWIG0P4t8hyR8xYSfe92DLFOisRZrzoploeT3644e5Q6gxQc7J4J9bNoa0miMJ9NjBEoKF6/VmD3hLYSRz9o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747731679; c=relaxed/simple;
+	bh=dVjXbw1V0YdH9EfyMvVZpolOTAI0JcKDWHsYhM0TZGc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=j7EMJJa9CVmjlTec6qbHjABkBV52UPK13zSB+5Ql8ufg0AyPvOQR28rqKBxXl5hrH9n9XuqeJPSVcqoDz7XEEsh3c+nCoTTx7hA7ZQvBDOKwv/T+URRNublScBjKxmTmwaKbjpPk3ugR1Hy6gXNcbOivMFRmM6wsn9BlUEx3sso=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ocORBZpg; arc=fail smtp.client-ip=40.107.21.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="cAQXddps"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=w0LsP1fiZLjpi1gUjPOfQqurrRWtv9lamy0l+H19eNs=; b=cAQXddps1vtWNSjTgqR6JR92O/
-	A1Ul4BSViUPWt9tLuHIctuBmrLCSjqBtoB5E9M0C4nC/WRRgMLHV8aUYGnJqG8dOmaBlyIpGhvkKI
-	pBptnZMQrLeWndGWsrFddQG3KuNkECU8Wv8GhmXG0ZA54ru0m/WPNJoQuct2xKoQbriAx+G0jMD+3
-	ogJWW5IueXiow4jsKv7Lhtpi2zB2ObuAG2fnvW0pR5+5SdZIeRgrz3VanAZlcJWK3+HntLxuc8n//
-	24MKYDkz1Fru7hNdy3blghtKO8NwnazWBxz2YB7lC1O6zCvTWYWF2wpnfToYGqiMp73irFST3y1UP
-	Q/WlkGow==;
-Received: from [89.212.21.243] (port=52674 helo=[192.168.69.116])
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1uHHqP-009yd6-21;
-	Tue, 20 May 2025 09:57:01 +0200
-Message-ID: <e986fcf0-fe2b-43de-9d46-8ea60d97ca14@norik.com>
-Date: Tue, 20 May 2025 09:56:59 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ocORBZpg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pwCMQC+YqUmbv/YQa6M+s5OjFUXpg6AqBpbAaP83Jpzfzu0KJ6ldATK6jqBEVEOD8dNG8UwNvPxXoOz+4sv746KIcuPde6moxb2XgoLx8JLkW/6VWdKVRMw00iNOQ0mLMzEv0tSFN5HuAj32/bRmP7nWgt0NucaUAGVTC5U8EID/xBVgqOX9Z4LQQj0m3J+LJOf+qhKADIf+1q/rPEIXB+N5xMPvqogM/pZt+K0CBd+1mXaKENoyyLwK/pp1E3LYA2Jgw6eBRADFdE94oK71xcHDWBisVHyUX3iFuVcfOB8Fce7Wx74eES3rM4EFzM3QcKrImide3tcDQuFpqqU4ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hrlEaJUBwFUAOI5IE9bQNnQCLUYbdhXxQlL5y8DVKic=;
+ b=mAtiYV5KQP1rLnUsax602RwMu7IKQsTHpM1+iK/CQwKM/zEwKXNTNME/Apf6mAsBYRkDG+fXlrxtpemVRRkGstOA6MC1uh56dUOeJBl0FkWekSVnH5B3GpmaKk4RboGbuc0Ut/BtY0fqNM2Oq3TOVetRFDjQ3NFe61/jp7zkpcZMsCf89xd6XQ6Wtg0XrFIuxKTkOWBUCMkrJfyMhsTJPLVofxiP5uphktYr8+0vdN5g+0WO9SvcJuOeXHCm6q0dZnbKKtvhTlfqrd6Y6FbUAdTAebSI7oocnF7Qvil8UzTIMT3KopvCqkdiBR1gPq6PkZPETgbAndQv5RiPi8vzvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hrlEaJUBwFUAOI5IE9bQNnQCLUYbdhXxQlL5y8DVKic=;
+ b=ocORBZpglmvVXe/ltRk/GcfJcWali+JTwstXP5/0iPEHVqPaK3JxZCMCtfqhDtG/NyQGVeTtMVam8/krUnxEiHGmAWc1VqZDExCJCnBS02fWGU9iGyMXT8Y2+3TrSGs1fdO3h5ENFFSi3ksHmfBIw0X3tcYvlYvv3L0ZHQiH68RxvA7W02MRJ+PHTiZvJ4+VxxNHaUqSp/9CvfMoBlFgLAP0V/wlCRXGuX945lgqFJxrE9Q2IhJb/2GyO/tw8PE3TcFlixM+nrY0DZzR/V8dX49HJ4nmYBu1XOW0zRPEKBoKCEAD/Igi5ON/3edTZTZd0TPU9wlqgReh3ltTgs5fZA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com (2603:10a6:10:352::15)
+ by VI2PR04MB10906.eurprd04.prod.outlook.com (2603:10a6:800:277::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Tue, 20 May
+ 2025 09:01:11 +0000
+Received: from DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd]) by DU0PR04MB9251.eurprd04.prod.outlook.com
+ ([fe80::708f:69ee:15df:6ebd%5]) with mapi id 15.20.8746.030; Tue, 20 May 2025
+ 09:01:10 +0000
+Message-ID: <6027483f-336b-4fad-a969-dfef1c454de7@oss.nxp.com>
+Date: Tue, 20 May 2025 12:01:06 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/4] arm64: defconfig: add S32G RTC module support
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, linux-rtc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, NXP S32 Linux <s32@nxp.com>,
+ imx@lists.linux.dev, Christophe Lizzi <clizzi@redhat.com>,
+ Alberto Ruiz <aruizrui@redhat.com>, Enric Balletbo <eballetb@redhat.com>,
+ Eric Chanudet <echanude@redhat.com>
+References: <20250403103346.3064895-1-ciprianmarian.costea@oss.nxp.com>
+ <20250403103346.3064895-4-ciprianmarian.costea@oss.nxp.com>
+ <c4a80c1f-56a0-4cdf-afbd-cb2c13cc0b8b@kernel.org>
+ <6ebb8c15-9ff1-4bf3-bbf3-c91aa387d873@oss.nxp.com>
+ <dec769ad-5144-4503-9714-d9c83a4c242c@kernel.org>
+ <b7d82f31-05d1-4331-809b-e865d21c958c@oss.nxp.com>
+ <2025040408532288b38dea@mail.local>
+Content-Language: en-US
+From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+In-Reply-To: <2025040408532288b38dea@mail.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P189CA0032.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5dd::18) To DU0PR04MB9251.eurprd04.prod.outlook.com
+ (2603:10a6:10:352::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Upstream] [PATCH] arm64: dts: freescale: imx93-phycore-som:
- Delay the phy reset by a gpio
-To: Christoph Stoidner <c.stoidner@phytec.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- upstream@lists.phytec.de
-References: <20250520073450.388989-1-c.stoidner@phytec.de>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <20250520073450.388989-1-c.stoidner@phytec.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9251:EE_|VI2PR04MB10906:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1840981e-c0d4-468c-abed-08dd977cdd30
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VUNuY1h2dmZ5alduWE4zWTdleTBZUzkwUWVENzZxSzR4eDRxejJINUtTYXpX?=
+ =?utf-8?B?ZUY4Mnhvd1NCbnI2c0Q1cHI5a0l6Qm9QdEU2c0tzVk42ZndMR3RLYStUUyt4?=
+ =?utf-8?B?Qkd5dkx5SlpXOCt2NjB6YndLSG9XRHlXdWpYd3B3UGNwZWFXL2JWUjJYbStU?=
+ =?utf-8?B?cTZhVE8xL20xek81YVpKbExhMSs5VHlPQTdKTy82b3hLWmF2d2NyVmpsR1lB?=
+ =?utf-8?B?Z3dDZTNJVjcxdDhNZDAwd1o3RWdsdGVuQklhd2N4UlVzNVlRMktiUkdlTitl?=
+ =?utf-8?B?VUx2NG1mcHROK01HRzdvZm43SkNWV01GbFFuQWZwNUtqYjRib3RSWVhtR0Fv?=
+ =?utf-8?B?S201V1lxYkR0QzVjVDAzeGFpYTJnNGNTRXdSWndHbDBkditXaFdPK2xnS0ZM?=
+ =?utf-8?B?a3NMMUhoc3BlaFY0TnNWd281NDFvZlpJWnJCbE9TbEhFUWgyNWJaK0tEOTAy?=
+ =?utf-8?B?SytqZ0lwTTR0YTluRWdFSHVCNHpEL0ZBVGNyYUQ5bXBROGNQZE13Q2FiUnli?=
+ =?utf-8?B?Yi9DcVRJNkExL0J6YkRLVHpXYXJncEdRUHI0RlBYcjdnTVlPeGN6Nkw2bDFy?=
+ =?utf-8?B?RWtma0sydWc1RC9RM2prbUR0eVE5OG1YSkxnNmdqMlJzU1R5UHlGemFwM1M1?=
+ =?utf-8?B?WEVSTFlmcHNGR1p3dDVyT2RnZDlScG5zM3ljSVBDS1o1OEdmRkxseFU1c3pQ?=
+ =?utf-8?B?UFdIczdYK0xvc0R1OUx3dmxNUTk3bWo2N3hPVDEwNWJDRXpwaHQ2NUV1MUpo?=
+ =?utf-8?B?SVd2US9ZWG8yaWs3bXoyeUxuWkVReDBZay9ZZU1ySzh2elQyOHViY0JXZkM1?=
+ =?utf-8?B?ZFJVeHAzSlZyeFVzd2lYZU9LZTNTb2ZWMlM0V3ZRRWtXTzhkT1BuMmJBa0FU?=
+ =?utf-8?B?aW05UDgxNzJzQmtYNVl5Z0Nacm1STG5ZbytXWEQ0M200d1B2TjhmaU5zbHlx?=
+ =?utf-8?B?SzFDYndjc2N0NWJRc213KzlFbDJHQzZwbWc2NE9YQ2VBVTNZb0ZybWpTZCs3?=
+ =?utf-8?B?MmJBWWN3VWZQM29hV2cyNDJhMm9CUGNSZFNwOXFjZit5YjFwY250SEUyVnNn?=
+ =?utf-8?B?QjVKaG1tYzc0UjYzb3pRMkFZMktxQU83TVl0ckFMSjc3SnA2MzB5T1IybWhp?=
+ =?utf-8?B?TU1GcmxGMmpZY08vcG9ydlpUREI2aVcyb1p1cFVOYXNmKzFwSlE1RGEyUWFG?=
+ =?utf-8?B?UjRscFV2MXhOTmJyTkxsV2hLWWY2bmxnUDJTbzJpUGl3WGpxRmFOZEFBbkFu?=
+ =?utf-8?B?TmtHd3ZJNlJZU0FwNGVJYUFyUUNsN2F3azNMbFBvYTBnS0hQOEpRLzlhVFdT?=
+ =?utf-8?B?TmUxNGtuRVY5VUNxWit1QkE0SDVOL0M0dWxxUTgvUjFUdDFhb1U0R2lXK3pR?=
+ =?utf-8?B?eVBKbjJwU3Fldk9Bc3ZtckNPM09rRFRDSERhUUZyY2xya2wxSTIyRGk5QlVm?=
+ =?utf-8?B?SHgrU3VFeUV3S0J1UjFMM3YvQXdLOE9lc0Z2NUNyS0ZvZzI5UDdLdG9wVW5K?=
+ =?utf-8?B?d1hSeHFYbUtWMmFPcGNNY0dDUGtBYVBiOXhWQkk0MXBudmFiZjh6Y3JOSkxR?=
+ =?utf-8?B?VXZ0OWNFem9FNGxBcnRGOVlVZllYalFucWJPdGI0ZnlSc1VxM0FTZHpabFRw?=
+ =?utf-8?B?WHdpQisrZ01UOS9zbUZlRE9UL05rQ1dIZVJTL1NnV1pINWxjajlRZGxrY3ky?=
+ =?utf-8?B?YTd0MzUybHcyTXNubHJiN2syWGRXVmh3cW1sajVQazNIeEdPUFdEUWxlZXFw?=
+ =?utf-8?B?a1UrWGNYa3pTS01CTFV1bU5weEJWSHAreWJackV0c0JFVUdCZ3k4eEpCRnMz?=
+ =?utf-8?B?VTl5ZGtSMDVxRENQLzdJU2NQeWhFejNjc3ByRjNaVUhjTzRNNVNwNDJpYjNJ?=
+ =?utf-8?B?RURSaG9ZdERONFFEYk9KRTk5Lzd3SUtObWgyTFVCTldvbVE9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9251.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YlZQQUlHcUQvSWFiemV6QzM0OFViV214b1dhMUJlcEJ2MTZ0YlFUUVBHTWR6?=
+ =?utf-8?B?TmMvNURJSzZKRWo3Ny81dkszZHR2U3BiR3MwZXhUMDNMQXZvT0UwNjZvMEZz?=
+ =?utf-8?B?TXY2WGFVbGNYL1JMZW1hb05hbHpsUzZqOE1tZ3E5NDdZem9hVXlWSnNKeGNP?=
+ =?utf-8?B?em5ySHhmWTlnRjNjY3RSbURjdEdReGt4cnNGNkswZ2JxZXNRWWJHMFcrNjN2?=
+ =?utf-8?B?dXdBMHpwSWRXTVUxZm5yWmxkdG9PWk5nTDNIU213dWtzOHZyTDBSeFFBMzdN?=
+ =?utf-8?B?NWtxSE5wOFVKRnE1aGlCL21HZWI0L0h3M2RvL0JVWXVYTXhxdUZVQThMa0Jr?=
+ =?utf-8?B?MlRyMjkvU3Zld21KbDBnSytveVhNRXY1c2lYV3I3WFhGRTdnYUs4S2o3Mkwy?=
+ =?utf-8?B?Tyt6SFR2OW8xbUo3RFlCdzdPMG9CM2NSZjZLdlFJM2dxSzJjNWl5UXhJYWJK?=
+ =?utf-8?B?cSsxSGY1dEtsNDZZNEpVMk5rcXRyRjNVcDR5Q09mUkd5QXlpeHNXTnU5bVFF?=
+ =?utf-8?B?Mmg3V0lDVkZaRks3M3p4TW5RVmZ2R1pSTURkdmltb0hvdmlLOUd6N3RkMFFw?=
+ =?utf-8?B?M3A3dldBV2dvV3ZRcU9QOWV4eWVTSzZpU3ZaVmN5UWhSeEdZUER3S2xrdHdC?=
+ =?utf-8?B?eUo0eERpQzFncXluVWxiOURGaTIreWxCRy94VmFSOXgvNkhhYmdSbk9DU3RT?=
+ =?utf-8?B?dlZHWllQaXBOY1dsRktIc0VRK3lENEtESEk1bkRWanM1anB2aElsVUdjYjBp?=
+ =?utf-8?B?bWZVZ0FMejJ0R0Zaa2kwMmhWcGdjUkx4T1dMSlBtREEwaTdBcUtObmZLOEFF?=
+ =?utf-8?B?TU5Rend2T0t2a2thTXM4MWROODZxM0JNTGd1emI4c3B3ZVNTcTYvYmNicFlu?=
+ =?utf-8?B?UWpKNXJIQ2k1WU5iVERYRmIxZ1BhbXJqQ2V6eEFVQTVjcHRUb3RlOGdNWG5T?=
+ =?utf-8?B?V1hMQm5GMlFTRnFGOVJXWVErMU9uR0lsNFB2WHNIVFJ0eEVxZlJDczJ2b2Ux?=
+ =?utf-8?B?eDk5Z2lwOWhlaTloY1lJcGo4c0NzYXduZ0F2ZERucjF3L1B2dEhyYllTb3lt?=
+ =?utf-8?B?ejUzVi81Y3VBODU3VHVJcGhIOTFKR0tRTm5IZlZnamVmNkxnRkVGQm4rbTBj?=
+ =?utf-8?B?WGhuejFCR0crRGhyVC9CSUwyaGw4eXBIM0l5T2hUUjVBdXZESXg2Z05iM0VR?=
+ =?utf-8?B?QVBxRm5rd2pPSndOZXBYNUxST3pTd2tVM3NDcW1Pb0tPeDExNVBJSlV5V2lZ?=
+ =?utf-8?B?LzYwSlVneFBnNG84SHRzekhKeFdqd05hcitHSkRIVG9XMVZmaXRVQWNOQm1Z?=
+ =?utf-8?B?dGxvanh3REQ3WVBDczk3N2tVZEVhbTU3bk1ZMHR2SEV3M201dFRlcENWeHJB?=
+ =?utf-8?B?UWhOckpQWVJ5V2N5SkRKNEE1SDJuNWpQM3owRU1nYjdjVGNhQndnc3Y0djhI?=
+ =?utf-8?B?c0Q2ZDlwU1M2M09TdmdySnRVVUVHajVXaFBWaEJRRCs1cHV4bzBidE9kZXd2?=
+ =?utf-8?B?OUhMdVBxdGtTakVNSFB3QlBISHl0bjZxRFA3THo4VkhHVHl2cU0vTmFYSnhO?=
+ =?utf-8?B?U1M5WnUwTWZQbXh2c1JnZ2dFMnVFZXpaQlIreFQ2REFPQXo1YldwN0hGdXhN?=
+ =?utf-8?B?RCtxTC9iZmVtNHpMek40MmtzOSt4SG5pUWc1ZWczRXdLOFFKMzFSVXFtbUdx?=
+ =?utf-8?B?UEdldWtTZHo5MFd0bThMUUFxOEZrN1lMWkhSZGdUVzNZQWJ6TXBQRE5kcWhD?=
+ =?utf-8?B?STdYRlJLamtBMGdRSXJldTFyNzFDUmt3bWVMd3pGMHhHeW5Vbk1HQ3g4aERQ?=
+ =?utf-8?B?dHNWMjQybmU1cENZMXFuVXVsUERsUEsrZzYvcXFQZW4xL1ViWmFTYnM3SVhu?=
+ =?utf-8?B?Zzc2dkxXc1BudXNzaVFuRnZGclN6eUdaQnV3aFd5R2MrYzRrb2hxQldRQzFj?=
+ =?utf-8?B?L2dGQkcwSzhmM2FWZlQ4L1VPUk80ajA5Y2FtQ2JBb1hsUW8zZ0tQQVlMQmds?=
+ =?utf-8?B?Y1VmeFcxd0JmUUF0WEJCdlRSWnE3NVQ3alpsRUEzNGhoN3IzTTZpMTBGUElT?=
+ =?utf-8?B?NHlLMnVtemdpRWlESEQzL0V5LzJFaVh1NUhPMGlULzVkb1JMb3lwYWU5dlVB?=
+ =?utf-8?B?bGUvcHBQclhpa2EvV3RXUzFXcVVVZC85MVN3ZEpnSDYyY3BPaDlPVktQR0dt?=
+ =?utf-8?Q?KOAlWf9LDDbeZK3Jzbn7+uA=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1840981e-c0d4-468c-abed-08dd977cdd30
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9251.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2025 09:01:10.5338
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 80EL+uB+td5o9V548UQOq9ttBnv9+luOHP5wjAd83fdTGTdDYEoj5keN+PQyK0K5vm6gh4wiTjbPhfo9s/k/gqa+RJvsTm1a8IqdXB9khCU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10906
 
-Hi Christoph,
-
-On 20. 05. 25 09:34, Christoph Stoidner wrote:
-> According to the datasheet the phy needs to be held in reset until the
-> reference clock got stable. Even though no issue was observed, fix this
-> as the software should always comply with the specification.
+On 4/4/2025 11:53 AM, Alexandre Belloni wrote:
+[ ... ]
+>>
+>> Ok. I will send out a V10 in which I will drop this current patch from the
+>> patchset. Also, I will send the DTS patch which adds S32G274A-EVB,
+>> S32G274-RDB2 and S32G399A-RDB3 usage of the RTC after this patchset gets
+>> accepted.
+>>
 > 
-> Fix this in the bootloader, as this is the point where the reference
-> clock gets initialized and stable first.
-
-I would remove this paragraph about the "Fix this in the bootloader..."
-
-Doesn't patch apply to both the kernel and the bootloader FEC driver?
-
+> I don't need V10, I can apply V9 without 3/4 and 4/4
 > 
-> Use gpio4 23, which is connected to the phy reset pin. On the same pin
-> RX_ER was used before, but this signal is optional and can be dropped.
-> 
-> Note: This comes into effect with the phyCOREs SOM hardware revision 4.
-> In revisions before, this gpio is not connected, and the phy reset is
-> managed with the global hardware reset circuit.
-> 
-> Signed-off-by: Christoph Stoidner <c.stoidner@phytec.de>
-> ---
->  arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-> index 88c2657b50e6..f8e2f3f3baa8 100644
-> --- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-> @@ -58,6 +58,9 @@ &fec {
->  				 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
->  				 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>;
->  	assigned-clock-rates = <100000000>, <50000000>, <50000000>;
-> +	phy-reset-gpios = <&gpio4 23 GPIO_ACTIVE_HIGH>;
-> +	phy-reset-duration = <1>;
-> +	phy-reset-post-delay = <0>;
->  	status = "okay";
->  
->  	mdio: mdio {
-> @@ -91,14 +94,16 @@ pinctrl_fec: fecgrp {
->  		fsl,pins = <
->  			MX93_PAD_ENET2_MDC__ENET1_MDC			0x50e
->  			MX93_PAD_ENET2_MDIO__ENET1_MDIO			0x502
-> -			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x57e
-> -			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x57e
-> -			MX93_PAD_ENET2_RXC__ENET1_RX_ER			0x5fe
-> +			/* the three pins below are connected to PHYs straps,
-> +			 * that is what the pull-up/down setting is for. */
+>> Best Regards,
+>> Ciprian
+>>
 
-I would remove this comment and maybe move it to the commit msg why are
-you changing the PD/PU configuration.
+Hello Alexandre,
 
-Anyway, if you decide to keep it, you need to fix the following warning:
+Sorry for bothering. I am writing to ask about the status of this 
+patchset since it has been hanging for a while.
 
-WARNING: Block comments use a trailing */ on a separate line
-#46: FILE: arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi:98:
-+                        * that is what the pull-up/down setting is for. */
+Are there any more changes required from your point of view ?
 
-BR,
-Primoz
+Regards,
+Ciprian
 
-> +			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x37e
-> +			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x37e
->  			MX93_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL	0x57e
->  			MX93_PAD_ENET2_TD0__ENET1_RGMII_TD0		0x50e
->  			MX93_PAD_ENET2_TD1__ENET1_RGMII_TD1		0x50e
->  			MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL	0x50e
->  			MX93_PAD_ENET2_TD2__ENET1_TX_CLK		0x4000050e
-> +			MX93_PAD_ENET2_RXC__GPIO4_IO23			0x51e
->  		>;
->  	};
->  
-
--- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
