@@ -1,65 +1,41 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BBD25C701
-	for <imx@lists.linux.dev>; Tue, 20 May 2025 09:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C16C21CC70
+	for <imx@lists.linux.dev>; Tue, 20 May 2025 10:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747732796; cv=none; b=MQFXjctNOtv+evhYTq3B7nBJJ9IWWkoFc4VOnWY7tatsRRlTZrKcJCjoHKJmeHH8SZ/2Sh9K3MOi+8tzsSgompYNkUonId36FoDqDx/fsOeqNYHYtahNvGka0WEj3QXU9W3g9HB0PMPk9QBgsqq9A5pq+jErZrnXnbAZlNaSPIs=
+	t=1747738514; cv=none; b=FWVCeeh6aQqzSnfewhJIRr/EmFZTJ4hQ5gtoRRoahZTUx8BmCkiohD/+xzZDS0PZC58EDYIZ0TSpxxFGMlXz/Wd/ianQl9veRr6dyQcbWADeNZZAySl5kjdTJBXXltViv0DIdkptva7ppnbXu498ZQvUONKze6MX41TDDyqwrD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747732796; c=relaxed/simple;
-	bh=yT/QtvKLeUa8jeXrh71nPfnSeQ3XefPZ6BT+ePGHDck=;
+	s=arc-20240116; t=1747738514; c=relaxed/simple;
+	bh=Gc0wZ+bMJbD1feOCIgrzdzp2vokFyfBnADbbUlrcFdQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Au+UOxqOjWAD+mq3xIuJc14nKeOvBzyIA5CmsEGa3mHf/6pSZOct+EVv4tW0QAb4jXtEiC6DsD0Wtm0+EDs8krbzANc2lIJnn/D/sk3Jd4M2BTs8KJ8KqTMDbHrR+JxtvMcfO/0V1jXXKt5aAbuhO9rCRSD8zB7wLpK3B/JGxyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zGS9nYsx; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=l+Mc6s92zyhVXdLmXI6Oj2jjuxnNasbFKGzBEjUN+7a7i9855vvTWqQQN5RFa+BrTn9D9V0nebidb8R6XdxZv3w18UEqEcOgCV83XOf9VIVFxXM03+sNm2hmuMtdevb2c1ba81kWyCIWJ9eYG2Ljr3I4ywHLvEW3IVvrpUaduhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=f5OtOc+h; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zGS9nYsx"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a368259589so434787f8f.3
-        for <imx@lists.linux.dev>; Tue, 20 May 2025 02:19:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747732792; x=1748337592; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=yT/QtvKLeUa8jeXrh71nPfnSeQ3XefPZ6BT+ePGHDck=;
-        b=zGS9nYsx2uYpEqeaEgLcAIUgWuiOSECXtdbybZK02M3vqEWiTiCNinFm4V1MhPVGIa
-         oYtZGQquVrJzmuiZnz8CZuLQ41h/X3uVfQEdY2FxIE0BqDyBZ2HVCBFgEjPNJw2wLU+u
-         /T+0M1rzDp0wFN+2cVUmCQpWZe+VHUty9FyP/kFdQ+7fYhzEhSRAbAnx3dxsom68ixiY
-         6rYFwd/IOPPwjNC7ZmI6qRhF0xrwc0kJf476sWGXLWd/v0uwEhcp7CvkVrH2ArZK9hKW
-         EXSM9Gvj6ckyUq8pl8Ybk5jvMUDQa9eLWWmUDqVSYPVXhb3j15KE7YntEKLFpvpy79SF
-         XDyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747732792; x=1748337592;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yT/QtvKLeUa8jeXrh71nPfnSeQ3XefPZ6BT+ePGHDck=;
-        b=VpQWgcxGwf1akgRGZWNMq1hFK+/b2s+xu5cgmcutd9Uqt60FpgcV9JOdYfIWqJzyc5
-         v7cimQYJJXs1/jtT1kmzUUlOoQlvJJFvmHzf58Iw/BNP5WERGcCLu9u82ENFOjtVH5zA
-         fWHrqZC+/M+yC0BniVbVC89MKy0G/uqIZA1m+yrRUAqWaCrsV6DNAuNa1fwP7JyhPCFi
-         YRg+QygRKrDc8ex+YZoVKaY+6Zog0m8uVcUMr9+MnGduFg87MLeOvmLWdtXswhw4jJoQ
-         8Ch6wRy5DY2EUi1UBpPNGndMcL621ywKIawNIfFlmkEZI30QSvI68XoVdMjj0bs7v++w
-         mSDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVAnpH7GO7C8N1d9mD6TJMTQZirJ7RgBneOJRzcpRJCIOgVqnEAqM2eRVuqnyhNrS3AKBc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzOgGScJ+pZpIYpEDZAeDRMr9K4F9HY1kCK7kf9EO5xaYPJErrC
-	Rn74TVyKp4VkrCJdmrgnk0zPA/qR4ztCauU6fY4u2Neuujyd5aUia4033ecQGwrxBn8=
-X-Gm-Gg: ASbGnctL5E4XLpRAy6NB0JY2XtBDmLCwxGit3IvF07tHg/RG8ILaDNLr6OTpH8VglqO
-	E/QQd45ljcHbrmYfKLda24kJedFRmM4Mr7hCTunC5HiSYn10EsCRlwAT2y2JkosAVO90kvJ3unb
-	OjSO530HPdeeFcKKfVgls42xZhEK8l406JwOY6sgRf/fdgmaUxW4MsCgJOOM9/JbZLeUcjj0O9Z
-	VscAjgZdbWZewlLVww28pq8zcT/C1cNg3jmUSAcEnMwJitRMFIFIr407GeiiAoIVBC3YHzUcp7A
-	H6XVCyXnmoGwvfwcj0F6y+HWyFwU1EIPiUHXfspnBbQduKykCeWa6cOUEMKh6W2PLGYLqkw=
-X-Google-Smtp-Source: AGHT+IE0KhG7Byol3rqL9+TUiiilzPQtBPzROXY2nFHPpqSTCakEs3GIZmD5PTaPMzpGGdP9tjEfcw==
-X-Received: by 2002:a05:600c:468f:b0:43b:c844:a4ba with SMTP id 5b1f17b1804b1-442fd62fd3amr48271505e9.3.1747732792584;
-        Tue, 20 May 2025 02:19:52 -0700 (PDT)
-Received: from [192.168.1.29] ([178.197.223.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f1825457sm24395635e9.1.2025.05.20.02.19.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 May 2025 02:19:51 -0700 (PDT)
-Message-ID: <eca8721c-305f-4053-8df0-0347cc869325@linaro.org>
-Date: Tue, 20 May 2025 11:19:50 +0200
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="f5OtOc+h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1747738492; x=1748343292; i=wahrenst@gmx.net;
+	bh=TT2xkWfmRv0GSyyjB8NHPoKAs97BDlbBMy3S8w3PonU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=f5OtOc+hn1NjVYTN+ZPwGD2Qy/qnFTYq14Ld6LmqvIIQK5nDltkEg7zrL8AAhlQt
+	 JKnRLbANzffZRjaSCQaSa0tyjdkba703usKpOuUecBHXBurPuPymcay1bpV0RtQzE
+	 UVR53BcwfU/kx2sbKCPmOXy3k1dbBeENVJHvbd74vO6/mSj21Y56FWMg05Mm+6fe+
+	 P2XYFV9wRAiVn6zX07tpXc6ehjqv5so99Y6MioH7YaGEAuIkjz7xg3zMiRYz1OQM/
+	 tQGIV5fo9VhqyyodCcEDFiqQQej2vcTcx0MU13EjLLi21YJ5sd9XttFhhIil0vlYk
+	 WuDD9Mv3mvn+oZNhkA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.105] ([91.41.216.208]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MRTRH-1ucPhm3Cwn-00O2G5; Tue, 20
+ May 2025 12:54:51 +0200
+Message-ID: <f0017caf-8fd7-4046-ab7c-71c6560b7a95@gmx.net>
+Date: Tue, 20 May 2025 12:54:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,81 +43,195 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] ASoC: qcom: Use helper function
- for_each_child_of_node_scoped()
-To: Ai Chao <aichao@kylinos.cn>, johannes@sipsolutions.net, perex@perex.cz,
- tiwai@suse.com, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, nicoleotsuka@gmail.com, lgirdwood@gmail.com,
- broonie@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, jbrunet@baylibre.com, neil.armstrong@linaro.org,
- khilman@baylibre.com, martin.blumenstingl@googlemail.com,
- srinivas.kandagatla@linaro.org, kuninori.morimoto.gx@renesas.com,
- zhangzekun11@huawei.com, ckeepax@opensource.cirrus.com,
- drhodes@opensource.cirrus.com, alexey.klimov@linaro.org
-Cc: linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-References: <20250520091131.4150248-1-aichao@kylinos.cn>
- <20250520091131.4150248-7-aichao@kylinos.cn>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 2/3] ARM: dts: add ngpios for vf610 compatible gpio
+ controllers
+To: Haibo Chen <haibo.chen@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Stefan Agner <stefan@agner.ch>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, peng.fan@nxp.com, conor@kernel.org,
+ Frank Li <Frank.Li@nxp.com>
+References: <20250520-gpio-dts-v3-0-04771c6cf325@nxp.com>
+ <20250520-gpio-dts-v3-2-04771c6cf325@nxp.com>
 Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- 2+47PN9NZAOyb771QoVr8A==
-In-Reply-To: <20250520091131.4150248-7-aichao@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20250520-gpio-dts-v3-2-04771c6cf325@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:xrkl7NJAqZnlTaTEnX/cpkGwTW+zKvSKuh/hDiAPK7+MOCaf2yi
+ 1LSOS8uyvmobKOQO4SbcnnT2r6QgfpWyxp+PllMX8Oh98+98AMlHVGYF8t37PPv/twH0Yhb
+ aYpgIdqZw0RWW50rnjO87u6w/9vC4NDNMH1cxFFq/HynPB+bN1dKvao5Q28BVKNO4KgKzvo
+ ZFSgwTWU9lIullCEOTZNw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ssFXhHaeEuM=;Gx4eRypxVFkb9GRqF9fl4ZVUEQu
+ 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
+ 1XEpMxhRDAL0s2dT
 
-On 20/05/2025 11:11, Ai Chao wrote:
-> The for_each_child_of_node_scoped() helper provides a scope-based
-> clean-up functionality to put the device_node automatically, and
-> as such, there is no need to call of_node_put() directly.
+Hi,
 
+Am 20.05.25 um 05:46 schrieb Haibo Chen:
+> After commit da5dd31efd24 ("gpio: vf610: Switch to gpio-mmio"),
+> the vf610 GPIO driver no longer uses the static number 32 for
+> gc->ngpio. This allows users to configure the number of GPIOs
+> per port.
+>
+> And some gpio controllers did have less pads. So add 'ngpios' here,
+> this can save some memory when request bitmap, and also show user
+> more accurate information when use gpio tools.
+sorry for asking this dumb question: why do we need the redundant ngpio=20
+property in case there is already gpio-ranges defined? AFAIU the last=20
+cell already contains the necessary information. Or do I missed something?
 
-I do not see any of_node_put() there, so I don't understand what is the
-benefit of this and how this commit msg explains reason behind the change.
+Best regards
+>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> ---
+>   arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi | 4 ++++
+>   arch/arm/boot/dts/nxp/vf/vfxxx.dtsi    | 5 +++++
+>   2 files changed, 9 insertions(+)
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi b/arch/arm/boot/dts/=
+nxp/imx/imx7ulp.dtsi
+> index 3c6ef7bfba60986b797bb01b843830d364c96d45..880b9a4f32b0846a773dbf9a=
+d30715c84ac2fda6 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx7ulp.dtsi
+> @@ -399,6 +399,7 @@ gpio_ptc: gpio@40ae0000 {
+>   				 <&pcc3 IMX7ULP_CLK_PCTLC>;
+>   			clock-names =3D "gpio", "port";
+>   			gpio-ranges =3D <&iomuxc1 0 0 20>;
+> +			ngpios =3D <20>;
+>   		};
+>  =20
+>   		gpio_ptd: gpio@40af0000 {
+> @@ -413,6 +414,7 @@ gpio_ptd: gpio@40af0000 {
+>   				 <&pcc3 IMX7ULP_CLK_PCTLD>;
+>   			clock-names =3D "gpio", "port";
+>   			gpio-ranges =3D <&iomuxc1 0 32 12>;
+> +			ngpios =3D <12>;
+>   		};
+>  =20
+>   		gpio_pte: gpio@40b00000 {
+> @@ -427,6 +429,7 @@ gpio_pte: gpio@40b00000 {
+>   				 <&pcc3 IMX7ULP_CLK_PCTLE>;
+>   			clock-names =3D "gpio", "port";
+>   			gpio-ranges =3D <&iomuxc1 0 64 16>;
+> +			ngpios =3D <16>;
+>   		};
+>  =20
+>   		gpio_ptf: gpio@40b10000 {
+> @@ -441,6 +444,7 @@ gpio_ptf: gpio@40b10000 {
+>   				 <&pcc3 IMX7ULP_CLK_PCTLF>;
+>   			clock-names =3D "gpio", "port";
+>   			gpio-ranges =3D <&iomuxc1 0 96 20>;
+> +			ngpios =3D <20>;
+>   		};
+>   	};
+>  =20
+> diff --git a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi b/arch/arm/boot/dts/nxp=
+/vf/vfxxx.dtsi
+> index 597f20be82f1ee044e14bfaf3bd05cff37a8ad39..a275821c35d41e97eb2139a0=
+81ef5765d07672aa 100644
+> --- a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+> +++ b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+> @@ -318,6 +318,7 @@ gpio0: gpio@40049000 {
+>   				interrupt-controller;
+>   				#interrupt-cells =3D <2>;
+>   				gpio-ranges =3D <&iomuxc 0 0 32>;
+> +				ngpios =3D <32>;
+>   			};
+>  =20
+>   			gpio1: gpio@4004a000 {
+> @@ -329,6 +330,7 @@ gpio1: gpio@4004a000 {
+>   				interrupt-controller;
+>   				#interrupt-cells =3D <2>;
+>   				gpio-ranges =3D <&iomuxc 0 32 32>;
+> +				ngpios =3D <32>;
+>   			};
+>  =20
+>   			gpio2: gpio@4004b000 {
+> @@ -340,6 +342,7 @@ gpio2: gpio@4004b000 {
+>   				interrupt-controller;
+>   				#interrupt-cells =3D <2>;
+>   				gpio-ranges =3D <&iomuxc 0 64 32>;
+> +				ngpios =3D <32>;
+>   			};
+>  =20
+>   			gpio3: gpio@4004c000 {
+> @@ -351,6 +354,7 @@ gpio3: gpio@4004c000 {
+>   				interrupt-controller;
+>   				#interrupt-cells =3D <2>;
+>   				gpio-ranges =3D <&iomuxc 0 96 32>;
+> +				ngpios =3D <32>;
+>   			};
+>  =20
+>   			gpio4: gpio@4004d000 {
+> @@ -362,6 +366,7 @@ gpio4: gpio@4004d000 {
+>   				interrupt-controller;
+>   				#interrupt-cells =3D <2>;
+>   				gpio-ranges =3D <&iomuxc 0 128 7>;
+> +				ngpios =3D <7>;
+>   			};
+>  =20
+>   			anatop: anatop@40050000 {
+>
 
-Best regards,
-Krzysztof
