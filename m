@@ -1,96 +1,102 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D8E136351
-	for <imx@lists.linux.dev>; Tue, 20 May 2025 21:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A6125F780
+	for <imx@lists.linux.dev>; Tue, 20 May 2025 21:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747777899; cv=none; b=YHtN8LpX2BI9THVSAJyfLAnzimwDKwQEy/VwxLfEQ8jEvsJlLXhmCynNr6hde8csSXVwQsDV2TLycUg81F97HoLdKaG+EZmufYl0c3UqfV6oJtXqpGV7OvR0y5L/RAMW1nFmFQSA4bwom13+qVua6jMPbmCfpc0tK1Uj1aE7IeE=
+	t=1747778025; cv=none; b=CxjNkVtFuS4wAmXLWVwlP/AmfIfXP0X6AATRQo0qsN4sI7ANkBWY7FBqwBlec0Aqn5dYpieDtXxPAqD2K6pMIuYE0OiKUtBLje9ke3Y8CXqvhozgZ0IIR6CGWo1bp0/TkTSujM9rPkjx/wJUUCuQs2bZJBlE4m+K4PV0RF561Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747777899; c=relaxed/simple;
-	bh=+YcxJa4AFvNZkS0xWAAHV4pBceL+Aa87KE1RhOakO3I=;
+	s=arc-20240116; t=1747778025; c=relaxed/simple;
+	bh=BuzhlNqyJc6n1p51Wy6w2ws8ML+CaNuBHjlDaIn4jws=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X2E9nWxi+l3Jgeb3Q+MmAfVrR/ECJsmPuWm1UvOsunEMzD2MqoTnGwn4N6+EvwWQyUNOVscNUCjZh+EEe+aGMDFsYj6Tudcaf+5I2jqveuVI46SqT/Ej+M2Z9iOl2/eAz8bBdOBNyQu+nbjyhc14W20Dhp3Ii+jkgb6/FRBmnGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=d/YuQK7e; arc=none smtp.client-ip=209.85.167.47
+	 To:Cc:Content-Type; b=tEYNGlc5gWxuLyewYh9PRWkO6YPz4yrKdPXAwVmX5BkeJ9UKkCDYVLwOUNM+/lHCjRuKXhh0K/pm0l0r6wjaEvIBvNwTkkJY7dcJEFMpSzA1j4p4NNf20g24t9iQNRqzPJgPnavtEh7QdW4m9Ug8CJEJzQ25F+eCZfGOijSe46U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hU0RqNnh; arc=none smtp.client-ip=209.85.167.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="d/YuQK7e"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54b09cb06b0so7197212e87.1
-        for <imx@lists.linux.dev>; Tue, 20 May 2025 14:51:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hU0RqNnh"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54d6f93316dso7182430e87.2
+        for <imx@lists.linux.dev>; Tue, 20 May 2025 14:53:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747777895; x=1748382695; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1747778022; x=1748382822; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+YcxJa4AFvNZkS0xWAAHV4pBceL+Aa87KE1RhOakO3I=;
-        b=d/YuQK7eweA2kFsnywP8feTqGgcjlDszziCMQw0+8A7rUk6+ivBo5buFnagLT4AISj
-         rys9Y90975+IsYyeW3k3O29P5Dg+zcX+chc2d/PtW1CfsMRfBpaBP1Rb22WLRsPRaXTs
-         wO5ASUWwhUJ/N+7I94UfsST2GBhOhESPCxa4/7dSwWCaOFuA2u0XDL2cHjkIVng/jy0o
-         Ozw5XdVGm6WEAlGmX1L6yEQ05lPA8tMgH4qHeiYtQcL0ojRn4GQzIpkTLtYCy2yP20e9
-         q09oZdWqvL1jWKgxcvndw+wN49A1A2hqpRfyYhu4c6Y0YQSIg5iKwBv+em6fKcibH603
-         RqcQ==
+        bh=BuzhlNqyJc6n1p51Wy6w2ws8ML+CaNuBHjlDaIn4jws=;
+        b=hU0RqNnhmVs6fcSGbFZ0kWlN1o7ziMNWXcMFwwymOrgevaymUemnFXyoySltohTrpz
+         pH1WP3Zh5J3W1Y5aQUBwLAHdRbR3ySMLJ6t/felv8TH10tPfqVociGPXRsl3lm9HPDKy
+         NHBdOJmxcOhpFkIv5Tty8wHWdEUoGyn8vKbwigAcigs51aGU+ItRzKcItaPSd7OHk6uU
+         3j5GThTFgm64qg/4yNImR+O8MTM4Q/puuoiSN+ZTq0wNvkaNA1b/YdljPOwW+YeC24ul
+         SmnmDboAmqbFDO3DVCNQ9vkrp7L68RZlhe3qcikETm2DCgZMYdF3IgnN/CjxpOZ8C2Kl
+         BGhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747777895; x=1748382695;
+        d=1e100.net; s=20230601; t=1747778022; x=1748382822;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+YcxJa4AFvNZkS0xWAAHV4pBceL+Aa87KE1RhOakO3I=;
-        b=kLUuN3FybEyoApngr27CyK2z+7G+hutQDcXKKkDYikKxvOShuM/yv/oMFWy4z3vqj9
-         9mmXpwVSw+tcpNV7l2hXQl5odX1KkPxD7Pl5zue5n/yEld0oWD19lSsXNJJBrjtEoJqk
-         Vq+MPIRkQLzZz593ASy4qa3BFJoLBIW6MiPXDsvzOHx7FhAP7dU9uihovic8fQK0XHoD
-         5CXkWkvdOs/X2GEZqdRzGCk57moMyHt9id3522xkhMRBmv9KmlgLLnsvJ+UCucZKF1cO
-         VVQPIkh7zs4VqYM53iYcnn1L37yN1A3moCSgdGcilO7vlOQXToElPPOC7Fm67eKgAlQ9
-         2ACg==
-X-Forwarded-Encrypted: i=1; AJvYcCUl0CGtOLvaPiw7boZqPUUI2GeRK6Ql0dZso2iUybP7+JPW0VwfSjY8zdV29OeTIsdjbj0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyeSwdWbbnMEhV1qZmkMw61+r618keBr5W+DIvOoUVueEg0Nj3a
-	COt+AZ47P8MbQxRGwZm2LJwK+bh7BdOoqtJDEZeKAwaA24r4Mqn43z/ZR0ISEcnv0MrsO4wUaNs
-	GngFp31e6TimrxCCq67UBl8QiP/J8Xz6PQyQQNuI5Yg==
-X-Gm-Gg: ASbGnctuekkMlprZ54iB2P2HPp/mdWBoTPw9BL8PkR/FYsnavV3wEQpgR/Hl93R+itd
-	djZlSauiAcngBLtHcl0eifmmO6/lHYsQZh4gpFwhvlJK3HG9cQZFwrGQt5/wC+pzAoSHV4cNSoT
-	yjV5Anw7tmKotR2RQI3LKngyfvPN2HQKwZ
-X-Google-Smtp-Source: AGHT+IFVkq4h2CinjfVO4g88kIBTXBbAWFl5Mto0qgQ5kuq3Zs33wt1FkBPYSfQEYVpZKmi9mKF3laDdRT+6Oo5QVNI=
-X-Received: by 2002:a05:6512:6081:b0:550:e648:182a with SMTP id
- 2adb3069b0e04-550e7248117mr5466218e87.55.1747777894769; Tue, 20 May 2025
- 14:51:34 -0700 (PDT)
+        bh=BuzhlNqyJc6n1p51Wy6w2ws8ML+CaNuBHjlDaIn4jws=;
+        b=wknkYSUiyJQs7iw5w8USnaHkKaF8VdIK+D6uub0M74ibX/Z7kZr/lTwXwni9y6jWNZ
+         PS7LoWrGkZu4EKEMyR5MikWqU7DfX6svLJxJUkKKU1kgwrqOk34920mNqpF3wIvprbHe
+         KhCQtFBZB1mRZCK9XjQwQwVFYVX8d2nj9Ddy2s3pjHQcAFjY7hqa6mtKg0YcoDk0tG/E
+         adR4F+ZmF/kD5oxQ4r+V+PIgOGStcqn9219m9ldOSXaiBO3QMPwqGIgrKKh8r8jALhv2
+         Q+8ptBAvlle09SVGfd0ceXFTEKhq2I3NEMq8CgAGy8lHzljOoo2oev0luEFU1XfzCTRG
+         a6RQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVoEWFtVprLEvVbgudXKRv5qiVKpNwb9zyW6kSvvISIY+gLNfOFQjVlQydR6IllfDS1SLg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxdTG7B8hhaNg9zjfb9KVHPESPlYd79RXWyeNZYYuS/JfLTAk1l
+	alE0S/pREfh7UroRNYztwib59/kZHa4bEf+Ym4hlMTdGIgg1cRoJhTOwcifTVCvfQjc8jf0HKiX
+	nq1GPaY2nN5EFnYS0ffFZ5eAyQHKAQnLAhiu4VUdI8Q==
+X-Gm-Gg: ASbGnctUwBPSjEu/XwEJSj2/ivMnS9x6ZKEQdHiGPOofbjHEkviBLWqDqky6gy10pY4
+	VBCjg3sXxFgGV/WuSyG/RqGLptTILC/LsOpam49J+4cNkeCJLpSKn4v98bdy2Dmo46q443vVVx0
+	b4qngtypiIoy6z+zQBhPuqucojcRUqlj1/
+X-Google-Smtp-Source: AGHT+IFDmcGo1axArvFCz2dx6uFyFqkML6kJ22pcoHKMMAfAxgp0/2ysMJ6m5JO5I5AyQlwSQbgeg4ij02FeQU7FSkQ=
+X-Received: by 2002:a05:6512:6317:b0:540:2fd2:6c87 with SMTP id
+ 2adb3069b0e04-550e71b4e43mr5955773e87.16.1747778021614; Tue, 20 May 2025
+ 14:53:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250516100423.1685732-1-ping.bai@nxp.com>
-In-Reply-To: <20250516100423.1685732-1-ping.bai@nxp.com>
+References: <20250516-gpio-dts-v1-1-a9c3505f54c5@nxp.com>
+In-Reply-To: <20250516-gpio-dts-v1-1-a9c3505f54c5@nxp.com>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 20 May 2025 23:51:23 +0200
-X-Gm-Features: AX0GCFstJNfbhxP8OvAOpZb2VTNEUaus21faETIiRrX0PcV1DOJb07Ynai4P9Vs
-Message-ID: <CACRpkdbXfNs8a+YEwsxROpUT16S9m7NxYXnTsOJNpi3ds0wKDg@mail.gmail.com>
-Subject: Re: [PATCH v2] pinctrl: freescale: Add support for imx943 pinctrl
-To: Jacky Bai <ping.bai@nxp.com>
-Cc: sudeep.holla@arm.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	cristian.marussi@arm.com, aisheng.dong@nxp.com, festevam@gmail.com, 
-	kernel@pengutronix.de, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, arm-scmi@vger.kernel.org
+Date: Tue, 20 May 2025 23:53:30 +0200
+X-Gm-Features: AX0GCFsoSIZvC7lGTFU51O8wPs6RsCUHG2kDfSqZhe8h4hkLrUFi0bw--0irOtg
+Message-ID: <CACRpkdZRdFLyGJrgAf32V8snnYW1gPvbtxSPQaSBFSMkt+y08w@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: add ngpios for vf610 compatible gpio controllers
+To: Haibo Chen <haibo.chen@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Stefan Agner <stefan@agner.ch>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 16, 2025 at 12:02=E2=80=AFPM Jacky Bai <ping.bai@nxp.com> wrote=
-:
+Hi Haibo,
 
-> The i.MX943 System Manager (SM) firmware supports the System Control
-> Management Interface (SCMI) pinctrl protocol, similar to the i.MX95 SM.
-> The base offset for the i.MX943 IOMUXC Daisy input register differs from
-> that of the i.MX95. Update the pinctrl-imx-scmi driver to add support for
-> i.MX943.
+On Fri, May 16, 2025 at 12:57=E2=80=AFPM Haibo Chen <haibo.chen@nxp.com> wr=
+ote:
+
+> After commit da5dd31efd24 ("gpio: vf610: Switch to gpio-mmio"), vf610
+> gpio driver no more use the static number 32 for gc->ngpio, user has a
+> chance to config it through device tree for each port.
 >
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> And some gpio controllers did have less pads. So add 'ngpios' here,
+> this can save some memory when request bitmap, and also show user
+> more accurate information when use gpio tools.
+>
+> Besides, some gpio controllers have hole in the gpio ranges, so use
+> 'gpio-reserved-ranges' to cover that, then the gpioinfo tool show the
+> correct result.
+>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-I would merge it... but you also need a patch adding fsl,imx94 to
-Documentation/devicetree/bindings/arm/fsl.yaml
-do you not?
+the patch looks (very) good, but it seems the .yaml DT bindings need
+to be updated with ngpios as well.
 
 Yours,
 Linus Walleij
