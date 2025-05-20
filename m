@@ -1,451 +1,172 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D38171D2
-	for <imx@lists.linux.dev>; Tue, 20 May 2025 21:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF0625E832;
+	Tue, 20 May 2025 21:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747775079; cv=none; b=RLup84a6hreUrAA2TLSd/flFfMyaX7u4LNS1AiBm9gp4zBSJrp9QZn6eIK1mDHWD5f19Nad/F3k49wi0ji/77PpHCUrhLTZXjQ9D9znWLwdCS86Qkzf2b/XlifpSEWmvhyn0u3R6BgeoMBDbmHJ7y8jCq4NN0V1WO0cjrH7DSc0=
+	t=1747777426; cv=none; b=FEeF3CWOcsbnOtpjdn2N9I6Ozjif2gLFxG3GKdTd+A0ED71/0MKp7NeVtAbMvoUJBy8EK8D1J5gRbcrhpjT1b2SujuccwEPFEKSLFYsXgRb6QgS3Ve54q0bJDBSAU22NlwAJuePiVSmGCoXPGHwj6w3A5oHB9vyl6aWQS/JSDHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747775079; c=relaxed/simple;
-	bh=+0fk8uCaFo18Kf0MRV/43eFPSKdgOZ74kwi42fEg8X0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dZ4pyliFPhnHO8eFBxRZxTV2h1Mvx2/BJWWwGdzEHijnVMu5DX3cwN/gjv9VPE/fV1vn2c/7RVEKjcTq5UpdS8HMlCesODtXYQE9yD8gaMbUvJoXi64sZ/xadJrr6+bxxcFOKFrqX/MyblL5ECvOKAP4jERxep+6TDLjXgNL6v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=OGLszMdS; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+	s=arc-20240116; t=1747777426; c=relaxed/simple;
+	bh=3Uwzu0x4Ol7jQHWlBgnHzcOFIw3Xt2G7jzzTCuvsxA8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ls9HlOzPGG4CVFBDzwLkF1tXyknypjMJvg75wTwiioCjIJFiopl6KXrSoSsWpeypfFV4OMCi4xd0jxpySEjRv5ZURZ0FmQvhMtY5/iwLJzg840wnZwqwRadzUJ5VvsWeC42+hWNX1qYxVWXwIbYjyGzv8apSULFe5j8kUPyB2qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=azUdx4vz; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="OGLszMdS"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-47698757053so79589281cf.0
-        for <imx@lists.linux.dev>; Tue, 20 May 2025 14:04:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1747775076; x=1748379876; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=KqItrUF4ptaBPjuoyGDGzHkCvCHQr1VtbdWE1plJfJg=;
-        b=OGLszMdS2F7hPjnSb2pEELp+dLj0fV64z1hcQPtyOTmLQAaMfSV3SVPle1lOE9mcrw
-         1AJ4DC+kCBKKmbc1sNvHwRWQW2srsvO7uh+hVLJisBEuauQRhafZ/LPRt5jSeaZ00gy1
-         CUYVTm9dpTLsjyKjZGm4BHzHH6KBkYAZ1z2VI9wZ25h2Zo3mG+f8CsZy+L1Jm9hzzpYr
-         JZwIegmkvrbAse9YY/MO3Rtitpc4QFW8vger7RMTa4qIMxKP1pdovbYRGa49lg0W9TRI
-         dbZz+Fd1UAvSbsESEKHAlnVy4EoRwvKNOv7X0x3ggDgvYruQ6Ug18pfjm4Ihz2BVw6Fu
-         iSvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747775076; x=1748379876;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KqItrUF4ptaBPjuoyGDGzHkCvCHQr1VtbdWE1plJfJg=;
-        b=AT1xsSZyzZvl3xsR6eVSHGgjW6ocBQlJYym1CnDNcMYfD3hnHTgcwSy75A3ZQyX5Uz
-         +XUq2SitlqtGSTVPvEwVrOr9Zz7+GzWohbf6mNk4I9oe/FWVFTMOrEbfap2r0q+AwlCX
-         ++s5Dye7g4CBnhEHOIRqZebg1N1Q64I1HCB8Kuggr/EgL8idchubCqVZ7KW+kycYFALJ
-         ZEiZF7ZXgTwZ/XTbrqRD2V0QrJfecWXp5xLpGV3/Fq4YEF01/YpLCVZuLGokYlzFPSLN
-         PRIFOSDa5NPhjDl0ApBbpinkFtRmd32j800VCx2p71HtxtZClhW9VmDG4w76XWQ1C9Sy
-         X+5A==
-X-Forwarded-Encrypted: i=1; AJvYcCVbWdNMolf0T42HI5PPEMgR8HmbhvtbgheIZDdb7U4MW2QrnTSEU8oMgJ07C7tAN1Qocgg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxX0j+o18ukwo/0bTDQuBoq0k2F8Gz05A/B7f4eaZEYnlFY11i1
-	BjE+8gEmFqIOHBEyO9/l4MR5StzAdo0jE938SrpaNdzomr0e8qZOO8D1T7tyJ6adtQ8=
-X-Gm-Gg: ASbGncuizjUqvYZ5/3RanOd5Lf0X6XLkOu9yl+95MVh2eheU/6HDbxpXMWDPZVxT6wb
-	pl+jUaEZzI/wEvEqBsz5EuiTV7ZpmuCaUd4cNhWA09DW3znqEwW2vAi7WJxVPrOPhlOj1v5hb6v
-	UXBp2RiI6TvfDAUQS63q9P6aUAevJL7zf1Zt1fKdJAlZitOPS51h7hL/Z755yeOF8cd2S6Kbe+2
-	v+XzpVlRKfA+sCwPWxv6+gABd28wjpl7jgKEZwxWRim6cTUDkDHoLALDZEvxkv/xgDDXKhLwI/6
-	ALxVru81SGW2OwwnjKga8FfR397l2yI8yMd4zH0+dk4tsig7UaNz9w==
-X-Google-Smtp-Source: AGHT+IHg5L1LnATAiuBzkKLspOuWrCkqOalfc5A589kj0iiOhCdWAsv0cllP21x6GsWbso6aFUBAew==
-X-Received: by 2002:ac8:6f1b:0:b0:48b:5656:bb01 with SMTP id d75a77b69052e-494ae352f98mr248655851cf.10.1747775076215;
-        Tue, 20 May 2025 14:04:36 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:15:ec4::c41? ([2606:6d00:15:ec4::c41])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-494ae3f922csm75736131cf.26.2025.05.20.14.04.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 May 2025 14:04:35 -0700 (PDT)
-Message-ID: <3e794e17ab846e29fb5922dc94b969b8cf9334a8.camel@ndufresne.ca>
-Subject: Re: [PATCH v4] media: amphion: Add H264 and HEVC profile and level
- control
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: ming.qian@oss.nxp.com, mchehab@kernel.org, hverkuil-cisco@xs4all.nl
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com,
- eagle.zhou@nxp.com, 	imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Tue, 20 May 2025 17:04:34 -0400
-In-Reply-To: <20250512020137.211-1-ming.qian@oss.nxp.com>
-References: <20250512020137.211-1-ming.qian@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="azUdx4vz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747777424; x=1779313424;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3Uwzu0x4Ol7jQHWlBgnHzcOFIw3Xt2G7jzzTCuvsxA8=;
+  b=azUdx4vzotGu0CYUKO3vh3ScAZ+l+10KiEau6TGXRIYQht+S2hBBNvvK
+   68xkvQ94PojbKrPcFHJ3Tehv/lnHxfGavzRvS63uehGTlQhHrJK8i5u5k
+   MmSjZL1Ix6nnW/vNu3j34WCB78uM2UUUjkv6S/8WFAhJXa1C8ozSLtCdG
+   9wI7IdVIihH6+JeuxyaURjKbIEWpcP/HI9J08bYgMTdc1RMyu+GrDTIQL
+   7vsD4kIfuYDGWwy+j8/fxi/JLFn4zuc2SOplS95r7yehcl4/Dhj6OpTC/
+   4wlhfDANR1s3wN7QYM5Kqlt3D9GLztN/pi0+LrPeEPs4tKAa2XNh6lbi2
+   Q==;
+X-CSE-ConnectionGUID: W6mvSns5R6awCRfk3X1iCQ==
+X-CSE-MsgGUID: CKVxQ+LJTjiwiaMllvcYmg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49435933"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="49435933"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 14:43:43 -0700
+X-CSE-ConnectionGUID: 3+/Jn4AWQHeWHUJykGSFxg==
+X-CSE-MsgGUID: EXveqf+TQbqRz9yutsdNTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="139721317"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 20 May 2025 14:43:36 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uHUkI-000Nb2-0B;
+	Tue, 20 May 2025 21:43:34 +0000
+Date: Wed, 21 May 2025 05:43:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ai Chao <aichao@kylinos.cn>, johannes@sipsolutions.net, perex@perex.cz,
+	tiwai@suse.com, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com,
+	festevam@gmail.com, nicoleotsuka@gmail.com, lgirdwood@gmail.com,
+	broonie@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, jbrunet@baylibre.com,
+	neil.armstrong@linaro.org, khilman@baylibre.com,
+	martin.blumenstingl@googlemail.com, srinivas.kandagatla@linaro.org,
+	kuninori.morimoto.gx@renesas.com, zhangzekun11@huawei.com,
+	krzysztof.kozlowski@linaro.org, ckeepax@opensource.cirrus.com,
+	drhodes@opensource.cirrus.com, alexey.klimov@linaro.org
+Cc: oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 4/6] ASoC: meson: Use helper function
+ for_each_child_of_node_scoped()
+Message-ID: <202505210557.EpJig9BQ-lkp@intel.com>
+References: <20250520091131.4150248-5-aichao@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250520091131.4150248-5-aichao@kylinos.cn>
 
-Hi Ming,
+Hi Ai,
 
-got one final question below...
+kernel test robot noticed the following build errors:
 
-Le lundi 12 mai 2025 =C3=A0 10:01 +0800, ming.qian@oss.nxp.com a =C3=A9crit=
-=C2=A0:
-> From: Ming Qian <ming.qian@oss.nxp.com>
->=20
-> For format H264 and HEVC, the firmware can report the parsed profile idc
-> and level idc to driver, these information may be useful.
-> Implement the H264 and HEVC profile and level control to report them.
->=20
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> ---
-> v4
-> - Fix a building warning reported by kernel test robot
->=20
-> v3
-> - Check H264 Constrained Baseline Profile
-> - Check H264 Level 1b
-> - Remove support for V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH
-> - Remove support for V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH
->=20
-> v2
-> - Add support for V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE
-> ---
-> =C2=A0drivers/media/platform/amphion/vdec.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 |=C2=A0 59 +++++++++
-> =C2=A0drivers/media/platform/amphion/vpu_defs.h=C2=A0=C2=A0=C2=A0 |=C2=A0=
- 12 ++
-> =C2=A0drivers/media/platform/amphion/vpu_helpers.c | 123 ++++++++++++++++=
-+++
-> =C2=A0drivers/media/platform/amphion/vpu_helpers.h |=C2=A0=C2=A0 7 ++
-> =C2=A0drivers/media/platform/amphion/vpu_malone.c=C2=A0 |=C2=A0=C2=A0 5 +=
--
-> =C2=A05 files changed, 205 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platfo=
-rm/amphion/vdec.c
-> index 85d518823159..55067d9405c2 100644
-> --- a/drivers/media/platform/amphion/vdec.c
-> +++ b/drivers/media/platform/amphion/vdec.c
-> @@ -232,6 +232,35 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
-> =C2=A0			=C2=A0 V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE,
-> =C2=A0			=C2=A0 0, 1, 1, 0);
-> =C2=A0
-> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_H264_PROFILE=
-,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_MUL=
-TIVIEW_HIGH,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ~((1 << V4L2_MPEG_VIDEO_H264_PRO=
-FILE_BASELINE) |
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE) |
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MAIN) |
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED) |
-> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_HIGH)),
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_MAI=
-N);
-> +
-> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_H264_LEVEL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_2,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_0);
-> +
-> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_HEVC_PROFILE=
-,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAI=
-N_10,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ~((1 << V4L2_MPEG_VIDEO_HEVC_PRO=
-FILE_MAIN) |
-> +				 (1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10)),
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAI=
-N);
-> +
-> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_4);
-> +
-> =C2=A0	ctrl =3D v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
-> =C2=A0				 V4L2_CID_MIN_BUFFERS_FOR_CAPTURE, 1, 32, 1, 2);
-> =C2=A0	if (ctrl)
-> @@ -1166,6 +1195,35 @@ static void vdec_clear_slots(struct vpu_inst *inst=
-)
-> =C2=A0	}
-> =C2=A0}
-> =C2=A0
-> +static void vdec_update_v4l2_ctrl(struct vpu_inst *inst, u32 id, u32 val=
-)
-> +{
-> +	struct v4l2_ctrl *ctrl =3D v4l2_ctrl_find(&inst->ctrl_handler, id);
-> +
-> +	if (ctrl)
-> +		v4l2_ctrl_s_ctrl(ctrl, val);
-> +}
-> +
-> +static void vdec_update_v4l2_profile_level(struct vpu_inst *inst, struct=
- vpu_dec_codec_info *hdr)
-> +{
-> +	switch (inst->out_format.pixfmt) {
-> +	case V4L2_PIX_FMT_H264:
-> +	case V4L2_PIX_FMT_H264_MVC:
-> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_PROFILE,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_h264_v4l2_profile(hdr));
-> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_LEVEL,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_h264_v4l2_level(hdr));
-> +		break;
-> +	case V4L2_PIX_FMT_HEVC:
-> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_hevc_v4l2_profile(hdr));
-> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_hevc_v4l2_level(hdr));
-> +		break;
-> +	default:
-> +		return;
-> +	}
-> +}
-> +
-> =C2=A0static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_de=
-c_codec_info *hdr)
-> =C2=A0{
-> =C2=A0	struct vdec_t *vdec =3D inst->priv;
-> @@ -1189,6 +1247,7 @@ static void vdec_event_seq_hdr(struct vpu_inst *ins=
-t, struct vpu_dec_codec_info
-> =C2=A0	vdec_init_crop(inst);
-> =C2=A0	vdec_init_mbi(inst);
-> =C2=A0	vdec_init_dcp(inst);
-> +	vdec_update_v4l2_profile_level(inst, hdr);
-> =C2=A0	if (!vdec->seq_hdr_found) {
-> =C2=A0		vdec->seq_tag =3D vdec->codec_info.tag;
-> =C2=A0		if (vdec->is_source_changed) {
-> diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/media/pl=
-atform/amphion/vpu_defs.h
-> index 428d988cf2f7..f56245ae2205 100644
-> --- a/drivers/media/platform/amphion/vpu_defs.h
-> +++ b/drivers/media/platform/amphion/vpu_defs.h
-> @@ -134,6 +134,7 @@ struct vpu_dec_codec_info {
-> =C2=A0	u32 decoded_height;
-> =C2=A0	struct v4l2_fract frame_rate;
-> =C2=A0	u32 dsp_asp_ratio;
-> +	u32 profile_idc;
-> =C2=A0	u32 level_idc;
-> =C2=A0	u32 bit_depth_luma;
-> =C2=A0	u32 bit_depth_chroma;
-> @@ -147,6 +148,17 @@ struct vpu_dec_codec_info {
-> =C2=A0	u32 mbi_size;
-> =C2=A0	u32 dcp_size;
-> =C2=A0	u32 stride;
-> +	union {
-> +		struct {
-> +			u32 constraint_set5_flag : 1;
-> +			u32 constraint_set4_flag : 1;
-> +			u32 constraint_set3_flag : 1;
-> +			u32 constraint_set2_flag : 1;
-> +			u32 constraint_set1_flag : 1;
-> +			u32 constraint_set0_flag : 1;
-> +		};
-> +		u32 constraint_set_flags;
+[auto build test ERROR on broonie-sound/for-next]
+[also build test ERROR on tiwai-sound/for-next tiwai-sound/for-linus wireless-next/main wireless/main linus/master v6.15-rc7 next-20250516]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Shouldn't this be u8 all over to match the fact the firmware reports this o=
-ver a single byte ?
+url:    https://github.com/intel-lab-lkp/linux/commits/Ai-Chao/ASoC-ppc-Use-helper-function-for_each_child_of_node_scoped/20250520-171556
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+patch link:    https://lore.kernel.org/r/20250520091131.4150248-5-aichao%40kylinos.cn
+patch subject: [PATCH 4/6] ASoC: meson: Use helper function for_each_child_of_node_scoped()
+config: arc-randconfig-002-20250521 (https://download.01.org/0day-ci/archive/20250521/202505210557.EpJig9BQ-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 12.4.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250521/202505210557.EpJig9BQ-lkp@intel.com/reproduce)
 
-Nicolas
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505210557.EpJig9BQ-lkp@intel.com/
 
-> +	};
-> =C2=A0};
-> =C2=A0
-> =C2=A0struct vpu_dec_pic_info {
-> diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/media=
-/platform/amphion/vpu_helpers.c
-> index d12310af9ebc..886d5632388e 100644
-> --- a/drivers/media/platform/amphion/vpu_helpers.c
-> +++ b/drivers/media/platform/amphion/vpu_helpers.c
-> @@ -509,3 +509,126 @@ const char *vpu_codec_state_name(enum vpu_codec_sta=
-te state)
-> =C2=A0	}
-> =C2=A0	return "<unknown>";
-> =C2=A0}
-> +
-> +struct codec_id_mapping {
-> +	u32 id;
-> +	u32 v4l2_id;
-> +};
-> +
-> +static struct codec_id_mapping h264_profiles[] =3D {
-> +	{66,=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE},
-> +	{77,=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_MAIN},
-> +	{88,=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED},
-> +	{100, V4L2_MPEG_VIDEO_H264_PROFILE_HIGH}
-> +};
-> +
-> +static struct codec_id_mapping h264_levels[] =3D {
-> +	{10,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_0},
-> +	{9,=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1B},
-> +	{11,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_1},
-> +	{12,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_2},
-> +	{13,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_3},
-> +	{20,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_2_0},
-> +	{21,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_2_1},
-> +	{22,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_2_2},
-> +	{30,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_3_0},
-> +	{31,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_3_1},
-> +	{32,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_3_2},
-> +	{40,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_0},
-> +	{41,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_1},
-> +	{42,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_2},
-> +	{50,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_5_0},
-> +	{51,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_5_1},
-> +	{52,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_5_2},
-> +	{60,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_0},
-> +	{61,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_1},
-> +	{62,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_2}
-> +};
-> +
-> +static struct codec_id_mapping hevc_profiles[] =3D {
-> +	{1,=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN},
-> +	{2,=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10}
-> +};
-> +
-> +static struct codec_id_mapping hevc_levels[] =3D {
-> +	{30,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_1},
-> +	{60,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_2},
-> +	{63,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_2_1},
-> +	{90,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_3},
-> +	{93,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_3_1},
-> +	{120, V4L2_MPEG_VIDEO_HEVC_LEVEL_4},
-> +	{123, V4L2_MPEG_VIDEO_HEVC_LEVEL_4_1},
-> +	{150, V4L2_MPEG_VIDEO_HEVC_LEVEL_5},
-> +	{153, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_1},
-> +	{156, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_2},
-> +	{180, V4L2_MPEG_VIDEO_HEVC_LEVEL_6},
-> +	{183, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_1},
-> +	{186, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2}
-> +};
-> +
-> +static u32 vpu_find_v4l2_id(u32 id, struct codec_id_mapping *array, u32 =
-array_sz)
-> +{
-> +	u32 i;
-> +
-> +	if (!array || !array_sz)
-> +		return 0;
-> +
-> +	for (i =3D 0; i < array_sz; i++) {
-> +		if (id =3D=3D array[i].id)
-> +			return array[i].v4l2_id;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr)
-> +{
-> +	if (!hdr)
-> +		return 0;
-> +
-> +	/*
-> +	 * In H.264 Document section A.2.1.1 Constrained Baseline profile
-> +	 * Conformance of a bitstream to the Constrained Baseline profile is in=
-dicated by
-> +	 * profile_idc being equal to 66 with constraint_set1_flag being equal =
-to 1.
-> +	 */
-> +	if (hdr->profile_idc =3D=3D 66 && hdr->constraint_set1_flag)
-> +		return V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE;
-> +
-> +	return vpu_find_v4l2_id(hdr->profile_idc, h264_profiles, ARRAY_SIZE(h26=
-4_profiles));
-> +}
-> +
-> +u32 vpu_get_h264_v4l2_level(struct vpu_dec_codec_info *hdr)
-> +{
-> +	if (!hdr)
-> +		return 0;
-> +
-> +	/*
-> +	 * In H.264 Document section 7.4.2.1.1 Sequence parameter set data sema=
-ntics
-> +	 * If profile_idc is equal to 66, 77, or 88 and level_idc is equal to 1=
-1,
-> +	 * constraint_set3_flag equal to 1 indicates that the coded video seque=
-nce
-> +	 * obeys all constraints specified in Annex A for level 1b
-> +	 * and constraint_set3_flag equal to 0 indicates that the coded video s=
-equence
-> +	 * obeys all constraints specified in Annex A for level 1.1.
-> +	 */
-> +	if (hdr->level_idc =3D=3D 11 && hdr->constraint_set3_flag &&
-> +	=C2=A0=C2=A0=C2=A0 (hdr->profile_idc =3D=3D 66 || hdr->profile_idc =3D=
-=3D 77 || hdr->profile_idc =3D=3D 88))
-> +		return V4L2_MPEG_VIDEO_H264_LEVEL_1B;
-> +
-> +	return vpu_find_v4l2_id(hdr->level_idc, h264_levels, ARRAY_SIZE(h264_le=
-vels));
-> +}
-> +
-> +u32 vpu_get_hevc_v4l2_profile(struct vpu_dec_codec_info *hdr)
-> +{
-> +	if (!hdr)
-> +		return 0;
-> +
-> +	return vpu_find_v4l2_id(hdr->profile_idc, hevc_profiles, ARRAY_SIZE(hev=
-c_profiles));
-> +}
-> +
-> +u32 vpu_get_hevc_v4l2_level(struct vpu_dec_codec_info *hdr)
-> +{
-> +	if (!hdr)
-> +		return 0;
-> +
-> +	return vpu_find_v4l2_id(hdr->level_idc, hevc_levels, ARRAY_SIZE(hevc_le=
-vels));
-> +}
-> diff --git a/drivers/media/platform/amphion/vpu_helpers.h b/drivers/media=
-/platform/amphion/vpu_helpers.h
-> index 0eaddb07190d..6c0554ccf3b3 100644
-> --- a/drivers/media/platform/amphion/vpu_helpers.h
-> +++ b/drivers/media/platform/amphion/vpu_helpers.h
-> @@ -6,6 +6,8 @@
-> =C2=A0#ifndef _AMPHION_VPU_HELPERS_H
-> =C2=A0#define _AMPHION_VPU_HELPERS_H
-> =C2=A0
-> +#include "vpu_defs.h"
-> +
-> =C2=A0struct vpu_pair {
-> =C2=A0	u32 src;
-> =C2=A0	u32 dst;
-> @@ -70,4 +72,9 @@ int vpu_color_get_default(u32 primaries, u32 *ptransfer=
-s, u32 *pmatrix, u32 *pfu
-> =C2=A0
-> =C2=A0int vpu_find_dst_by_src(struct vpu_pair *pairs, u32 cnt, u32 src);
-> =C2=A0int vpu_find_src_by_dst(struct vpu_pair *pairs, u32 cnt, u32 dst);
-> +
-> +u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr);
-> +u32 vpu_get_h264_v4l2_level(struct vpu_dec_codec_info *hdr);
-> +u32 vpu_get_hevc_v4l2_profile(struct vpu_dec_codec_info *hdr);
-> +u32 vpu_get_hevc_v4l2_level(struct vpu_dec_codec_info *hdr);
-> =C2=A0#endif
-> diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/=
-platform/amphion/vpu_malone.c
-> index feca7d4220ed..ba688566dffd 100644
-> --- a/drivers/media/platform/amphion/vpu_malone.c
-> +++ b/drivers/media/platform/amphion/vpu_malone.c
-> @@ -908,7 +908,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_rpc_=
-event *pkt,
-> =C2=A0	info->frame_rate.numerator =3D 1000;
-> =C2=A0	info->frame_rate.denominator =3D pkt->data[8];
-> =C2=A0	info->dsp_asp_ratio =3D pkt->data[9];
-> -	info->level_idc =3D pkt->data[10];
-> +	info->profile_idc =3D (pkt->data[10] >> 8) & 0xff;
-> +	info->level_idc =3D pkt->data[10] & 0xff;
-> =C2=A0	info->bit_depth_luma =3D pkt->data[13];
-> =C2=A0	info->bit_depth_chroma =3D pkt->data[14];
-> =C2=A0	info->chroma_fmt =3D pkt->data[15];
-> @@ -925,6 +926,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_rpc_=
-event *pkt,
-> =C2=A0		info->pixfmt =3D V4L2_PIX_FMT_NV12M_10BE_8L128;
-> =C2=A0	else
-> =C2=A0		info->pixfmt =3D V4L2_PIX_FMT_NV12M_8L128;
-> +	if (pkt->hdr.num > 28)
-> +		info->constraint_set_flags =3D pkt->data[28];
-> =C2=A0	if (info->frame_rate.numerator && info->frame_rate.denominator) {
-> =C2=A0		unsigned long n, d;
-> =C2=A0
->=20
-> base-commit: b64b134942c8cf4801ea288b3fd38b509aedec21
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/device.h:15,
+                    from include/sound/soc.h:15,
+                    from sound/soc/meson/meson-card-utils.c:8:
+   sound/soc/meson/meson-card-utils.c: In function 'meson_card_set_be_link':
+>> sound/soc/meson/meson-card-utils.c:166:71: error: 'np' undeclared (first use in this function); did you mean 'up'?
+     166 |                 dev_err(card->dev, "error setting %pOFn link name\n", np);
+         |                                                                       ^~
+   include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                                     ^~~~~~~~~~~
+   sound/soc/meson/meson-card-utils.c:166:17: note: in expansion of macro 'dev_err'
+     166 |                 dev_err(card->dev, "error setting %pOFn link name\n", np);
+         |                 ^~~~~~~
+   sound/soc/meson/meson-card-utils.c:166:71: note: each undeclared identifier is reported only once for each function it appears in
+     166 |                 dev_err(card->dev, "error setting %pOFn link name\n", np);
+         |                                                                       ^~
+   include/linux/dev_printk.h:110:37: note: in definition of macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                                     ^~~~~~~~~~~
+   sound/soc/meson/meson-card-utils.c:166:17: note: in expansion of macro 'dev_err'
+     166 |                 dev_err(card->dev, "error setting %pOFn link name\n", np);
+         |                 ^~~~~~~
+
+
+vim +166 sound/soc/meson/meson-card-utils.c
+
+aa9c3b7273a58b Jerome Brunet     2020-02-13  134  
+aa9c3b7273a58b Jerome Brunet     2020-02-13  135  int meson_card_set_be_link(struct snd_soc_card *card,
+aa9c3b7273a58b Jerome Brunet     2020-02-13  136  			   struct snd_soc_dai_link *link,
+aa9c3b7273a58b Jerome Brunet     2020-02-13  137  			   struct device_node *node)
+aa9c3b7273a58b Jerome Brunet     2020-02-13  138  {
+aa9c3b7273a58b Jerome Brunet     2020-02-13  139  	struct snd_soc_dai_link_component *codec;
+aa9c3b7273a58b Jerome Brunet     2020-02-13  140  	int ret, num_codecs;
+aa9c3b7273a58b Jerome Brunet     2020-02-13  141  
+aa9c3b7273a58b Jerome Brunet     2020-02-13  142  	num_codecs = of_get_child_count(node);
+aa9c3b7273a58b Jerome Brunet     2020-02-13  143  	if (!num_codecs) {
+aa9c3b7273a58b Jerome Brunet     2020-02-13  144  		dev_err(card->dev, "be link %s has no codec\n",
+aa9c3b7273a58b Jerome Brunet     2020-02-13  145  			node->full_name);
+aa9c3b7273a58b Jerome Brunet     2020-02-13  146  		return -EINVAL;
+aa9c3b7273a58b Jerome Brunet     2020-02-13  147  	}
+aa9c3b7273a58b Jerome Brunet     2020-02-13  148  
+aa9c3b7273a58b Jerome Brunet     2020-02-13  149  	codec = devm_kcalloc(card->dev, num_codecs, sizeof(*codec), GFP_KERNEL);
+aa9c3b7273a58b Jerome Brunet     2020-02-13  150  	if (!codec)
+aa9c3b7273a58b Jerome Brunet     2020-02-13  151  		return -ENOMEM;
+aa9c3b7273a58b Jerome Brunet     2020-02-13  152  
+aa9c3b7273a58b Jerome Brunet     2020-02-13  153  	link->codecs = codec;
+aa9c3b7273a58b Jerome Brunet     2020-02-13  154  	link->num_codecs = num_codecs;
+aa9c3b7273a58b Jerome Brunet     2020-02-13  155  
+6c05494fd8e28e Ai Chao           2025-05-20  156  	for_each_child_of_node_scoped(node, np) {
+2e1dbea1f8a358 Kuninori Morimoto 2023-06-20  157  		ret = meson_card_parse_dai(card, np, codec);
+6c05494fd8e28e Ai Chao           2025-05-20  158  		if (ret)
+aa9c3b7273a58b Jerome Brunet     2020-02-13  159  			return ret;
+aa9c3b7273a58b Jerome Brunet     2020-02-13  160  
+aa9c3b7273a58b Jerome Brunet     2020-02-13  161  		codec++;
+aa9c3b7273a58b Jerome Brunet     2020-02-13  162  	}
+aa9c3b7273a58b Jerome Brunet     2020-02-13  163  
+aa9c3b7273a58b Jerome Brunet     2020-02-13  164  	ret = meson_card_set_link_name(card, link, node, "be");
+aa9c3b7273a58b Jerome Brunet     2020-02-13  165  	if (ret)
+aa9c3b7273a58b Jerome Brunet     2020-02-13 @166  		dev_err(card->dev, "error setting %pOFn link name\n", np);
+aa9c3b7273a58b Jerome Brunet     2020-02-13  167  
+aa9c3b7273a58b Jerome Brunet     2020-02-13  168  	return ret;
+aa9c3b7273a58b Jerome Brunet     2020-02-13  169  }
+aa9c3b7273a58b Jerome Brunet     2020-02-13  170  EXPORT_SYMBOL_GPL(meson_card_set_be_link);
+aa9c3b7273a58b Jerome Brunet     2020-02-13  171  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
