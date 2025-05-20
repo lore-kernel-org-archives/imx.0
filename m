@@ -1,97 +1,103 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB0224DFE4
-	for <imx@lists.linux.dev>; Tue, 20 May 2025 22:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6852617BD9
+	for <imx@lists.linux.dev>; Tue, 20 May 2025 22:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747778960; cv=none; b=Z7U0EHeHBmiNdxL6iuhJVyCA5fBBRps8HctOLBIlJfaOCluPFJp5t6Jv80W0kTYiZbNZEDn96In0LmBbOY6Ev6oFbTGywgDMWyTfnhsDcOWePfGbQ3Gj7+aCLYHGXTSpPznVxcl60sz7dwMkDzxtH4+4lhMH5Q7iEE9AbmIBIII=
+	t=1747779261; cv=none; b=qWSi8D5TzD2Ebd3Jqu5HxMJlq022CYYH7WIaDlrsPT3nXoNpFwPFB0tqPgtroe9f4gijsIK8noKYzgnZgsI7TVISHNmy7mUXn3rLIqd024G0ajgZbu68SlpF3jO9HsmlokvR6JPxCTPjalE61xufeSJwhtQT8Ji2/iC9PHRblE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747778960; c=relaxed/simple;
-	bh=ratdE9jXoB0SJ0Y0w3wsjguEzkshW/vmeLVeCaT31+I=;
+	s=arc-20240116; t=1747779261; c=relaxed/simple;
+	bh=0KKxr0NhS0ebwaZO5bcBif23znaAXOSTxXvDT9vZo0g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ivbjg9V+wKt92tSi3QB+tPKnGNUnwWnZp9WScGK3Sxv4D8usxZWXMYRfe2wIRx7da9fwMdnSothtTnQIoCgNlykaky9xKSAqYPmYMX1pBulRFijEWCfIxp3kVCvd2p6KLdSF6d0k+BKi3K3yUkL/o/UBRe74gstNsbpwrCde4fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yJ2B9Ms2; arc=none smtp.client-ip=209.85.208.173
+	 To:Cc:Content-Type; b=QrcnD4Ve/JkyY/qXZCRWgHNo4H8wCXdN1c0wW3aVVWFR8HD2TClkKPO44A+EE14Kgx4CZYJFxdNupSShRCtTr26FaduiaTY2lN28I9B0AvvWolUJjCTQxzc/Fi8pyUHoBNCFkJ9GnOph+dk9ije174TXUpRd0gp2F5vMM3woqeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MwiDzcx5; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yJ2B9Ms2"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3280b1a25b1so40134291fa.3
-        for <imx@lists.linux.dev>; Tue, 20 May 2025 15:09:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MwiDzcx5"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30effbfaf4aso66847591fa.3
+        for <imx@lists.linux.dev>; Tue, 20 May 2025 15:14:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747778957; x=1748383757; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1747779257; x=1748384057; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ratdE9jXoB0SJ0Y0w3wsjguEzkshW/vmeLVeCaT31+I=;
-        b=yJ2B9Ms2jwE10T/UFGrxGQ2vZkJBza9MTV6cuxr/jrD9uYwAkSpXkJxu70L7A6zzJH
-         CdWlRyInHpAIppMOZyrgt1jfdYgbLBFapgifw3lsgFFQGhXx5FiZqhVso10EEobylCTN
-         9W5EBZpcwHStftV/YJEvZZtbtKodd+5SAd4T5KF9bE+14PcLgdGVaoW7z+oAjcCRj9xx
-         FHmlHKP36hFwToGUyYHlm+hhAMdeMfRLW5oml7L6ZJ1SMTrO3JpJIew91sCqIRsQTTG7
-         /McIOlFJbJboFXynfDfQpbzNPNVfqgtpJVoawd82kxr2mb68wP7+SIadO/t4cDJgODyb
-         kNjw==
+        bh=0KKxr0NhS0ebwaZO5bcBif23znaAXOSTxXvDT9vZo0g=;
+        b=MwiDzcx5BzfNKeidTP5yJZvuo88f7//l5VT/bSBiU8uTfHissW7Qr77U4SfNlxcLrf
+         R/tGrjZ1hpOnuJqzfS5RfueksE0ulhNn3BKQBsf944t58akEvWGMYWjCljx7f13iNdFG
+         OszOkki7lRiTKe0OrB7haw1KbMlAWDpchoFWX/hBElTnME5kRIr/mj79NdNvv6Yw+SeK
+         lSXBcuPiJnihLY6x/n/LBjN1K3Nnzva4grH/QX+p3qRubspEEof1lRGbWfIPiWDtVYbM
+         pMiarcU8EFfekv1X4nrSn/udW/v3iyE5ctcR+YgQka5Tn0TK0HbG04qvNkLLGsqwJYm2
+         55TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747778957; x=1748383757;
+        d=1e100.net; s=20230601; t=1747779257; x=1748384057;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ratdE9jXoB0SJ0Y0w3wsjguEzkshW/vmeLVeCaT31+I=;
-        b=Xm7qARgLi8iavd5wj716cNnqdWUKd9G6vgfmTf8aMa+zmUW594bj9M+bFaIx0405yu
-         pPPzzPw5dNoGpQ3zzjykUbh0lpP1011RcrM+IijKQCHJkDZ1g2TV5vfzbus8Aj32g9Fo
-         tNgYCeu1EgIud9mRiIM+t8Pild9R4AhR3r9LLLZvQntIgHsZy6B9NoNEUb1huPEZR9xU
-         Ulxxwxy8d4rmj1R5CLmoPcIZsKkdsiirxG5E1QtRo9vMYkxgZl48Lbd7Lb85W+OLdpoC
-         9i7YxLHdeYKJFAvYwQBB+QJx4avox6NhHeYNnQuuQ4VPSlHwPFVbZhUxTAATTQJ5eV27
-         wrIA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWqHbool8BC/7OfdH3CCw1gUiwQ4A6GZty0/DLEW44g9Q4Ue6omJujnsL/cn8EUtzOPRw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxNcTNQSPh+Oi/+SX9iq2aiZkGERW6PZzS6mJSu1UA/VHbXmART
-	stbOdeC1NIvp41rqZaB6xMVJ6TxOc39r0HnlerAKKn8Hkmtuvjhl7uG22W2eJRooNtvGAzaaq0v
-	OPfxQnfbYPoIg2J5+bFeYTup44m09OQXEKYoWbExWYA==
-X-Gm-Gg: ASbGncu13Sx7hXVzg6qQvjsHmP2JUM87QJb8Mzc5j2Oo9GbwBw19Jq0o8wpGyROqyB+
-	THVveP55T6zTO2RKFQ8L8umBtNp4qYnnQpM7Sqt5fqur7/YLra0RVdLlkYglN7R2nO2LFVo67LU
-	Rs70C6VyuePf+/z1k3PyXfvcR+zBulVtXhq/MN6ADzevw=
-X-Google-Smtp-Source: AGHT+IHDDQJhnWX2kmTO5v1Pk0nimoh123FoAZWbqbQl+FUgai9VCQfwTjo/Tn4PNUMetJyi+2gPAW5SomZT1SLUvWQ=
-X-Received: by 2002:a2e:8a87:0:b0:30b:d05a:c103 with SMTP id
- 38308e7fff4ca-328077a2e75mr64717311fa.29.1747778957098; Tue, 20 May 2025
- 15:09:17 -0700 (PDT)
+        bh=0KKxr0NhS0ebwaZO5bcBif23znaAXOSTxXvDT9vZo0g=;
+        b=e+DcfdA0dUENj65WFBJyKE+truoWaU9FkUpwyZd1ZP/X7DfWWGMiW7aNlr1ZePn7Q+
+         EOqm2hiabRcvncWmwmRCGVq3rc/JfeyPOLna0NVKVsseKVR5B4iuj0CR0bgKKgwr1k4l
+         L94GtK871IZUkgj7naeYZCNWoBNHptA4mEU5KuT0GxksOfQVLVSYkIJQMBhcFOL6Wgk4
+         pzB+9Fu+b+0pv2kgH1rL3JQDQ100QcGmA6z1WWUqJCinIR7Io0EF0cGZSe3oryw55r3H
+         xHXeQXO6654DyfJw89PIt8oNno30vkRkVpBWboNcC/fwiuaIiCJWz9DhxXO0hEHaPlmG
+         BNIg==
+X-Forwarded-Encrypted: i=1; AJvYcCW3FQJVMXyJnHQNlfUFcNAKY4OA+60dsCaUB6jsqeGP47vG7O2Pewus0P0Q8RgLeraBZto=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwMuDNuLpz8+UBC+DjYjKl4M0GWJ38cchkcpSKdflrJ9NPr+C9m
+	GNEI+h82dZ88YWTyzefnyL+Bw6I8Oyk0qOvUOHWgYHIyyOSpFraN4RhA7m4iwSrvP+359UWUQ2K
+	T9JI0mZXpDZ5Nlnkk5KXhobc7JiwMhvZqB9r+FV9A1Q==
+X-Gm-Gg: ASbGnctbFrcR1f2a7o6T7JW/kjwshFsFC5Sgney6NFMiy403I9teIZ70uaXVdfiOTjA
+	Spwm99Fw18ZV3VZdh7CpeWO4VCITrYF7ScRn11upK5zHsC+/dIkxMDcrpNYfrFyedpBqkk10Pch
+	OZ2c8njFJVvoCwa9GyM0q7xpe8anBPLnvI
+X-Google-Smtp-Source: AGHT+IE2I9dkpHJtUzuV3F55HIcCy4H/0xE0bIT2P9EiCFLTqHbK469GeJi8kQXTq+VvjFFqjzVGAT63GH/fgS+P2nQ=
+X-Received: by 2002:a2e:bc1a:0:b0:318:7f36:da6f with SMTP id
+ 38308e7fff4ca-3280974b19dmr60101281fa.26.1747779257574; Tue, 20 May 2025
+ 15:14:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250520-gpio-dts-v3-0-04771c6cf325@nxp.com>
-In-Reply-To: <20250520-gpio-dts-v3-0-04771c6cf325@nxp.com>
+References: <20250520-gpio-dts-v3-0-04771c6cf325@nxp.com> <20250520-gpio-dts-v3-2-04771c6cf325@nxp.com>
+ <f0017caf-8fd7-4046-ab7c-71c6560b7a95@gmx.net>
+In-Reply-To: <f0017caf-8fd7-4046-ab7c-71c6560b7a95@gmx.net>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 21 May 2025 00:09:05 +0200
-X-Gm-Features: AX0GCFuwZ5Uj2GFu8v9SUCd9XbxxK9oH9Hmv5mkp9JeCnQEfeHNWxb9r3Wl8bto
-Message-ID: <CACRpkda6D_OayG2DDFG6+sQ5vyYCrTojHs2H1ZVUMw4rpbuC9g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] Add 'ngpios' and 'gpio-reserved-ranges' for
- vf610-gpio driver
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Stefan Agner <stefan@agner.ch>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, peng.fan@nxp.com, wahrenst@gmx.net, 
+Date: Wed, 21 May 2025 00:14:06 +0200
+X-Gm-Features: AX0GCFujWmK7RjwxHirjq3655UF2TsXAVvYT5SDx5SrWKMcU6UcS_lP2iMrNx4c
+Message-ID: <CACRpkda1OKXnma11wKTrBsO_AAXrifVK8RDCKmufdHXBMmtMbQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] ARM: dts: add ngpios for vf610 compatible gpio controllers
+To: Stefan Wahren <wahrenst@gmx.net>
+Cc: Haibo Chen <haibo.chen@nxp.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Stefan Agner <stefan@agner.ch>, Bartosz Golaszewski <brgl@bgdev.pl>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, peng.fan@nxp.com, 
 	conor@kernel.org, Frank Li <Frank.Li@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 20, 2025 at 5:44=E2=80=AFAM Haibo Chen <haibo.chen@nxp.com> wro=
-te:
+On Tue, May 20, 2025 at 12:54=E2=80=AFPM Stefan Wahren <wahrenst@gmx.net> w=
+rote:
 
-> Not all GPIO ports have 32 pads, so add 'ngpios' property to specify
-> the number. This can save some memory when alloc bitmap for GPIO,
-> besides GPIO tools like gpioinfo will show the correct information.
->
-> Some GPIO ports even more special, e.g. GPIO7 on imx94, it only support
-> IO0~IO9 and IO16~IO27, so add 'gpio-reserved-ranges' property.
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> sorry for asking this dumb question: why do we need the redundant ngpio
+> property in case there is already gpio-ranges defined? AFAIU the last
+> cell already contains the necessary information. Or do I missed something=
+?
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Not all GPIOs on a gpio controller have to be present in
+a range.
+
+The ranges can be multiple and have holes in them.
+
+The ranges are also optional.
+
+The fact that this DTS file, for this SoC and on this controller
+happens to have a range mapped right over all of the pins
+is merely a coinicidence and not a general rule of any kind,
+it just apophenia playing games on us.
 
 Yours,
 Linus Walleij
