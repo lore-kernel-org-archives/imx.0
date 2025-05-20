@@ -1,128 +1,224 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC1727EC9A
-	for <imx@lists.linux.dev>; Tue, 20 May 2025 12:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC1DEED7
+	for <imx@lists.linux.dev>; Tue, 20 May 2025 12:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747742986; cv=none; b=AvGWYyPA/SpOn4WGTSPRTc2lNtyksm+Mez3oOMXlg614FyIMKP2OfktzTxvzrgU48O7fI91I5BzEn+KZQYDwUpYLlrcZrcQJicQN0KhPYteddO7xYakDJQsoqCdUBP36giYUVNDwXSu+OiJFgs7shMeCxxdfI25K4ULyhWaVbKw=
+	t=1747743749; cv=none; b=bPo8n43DqJeTIGeX3RtPj60nvlheNErWfietOhXCFUxRPsOQ+3CGT+aVQQdoSARd/S73ayQuCezrOAKno0usNi/Z2cIPaUBMU8K8GsQcNjX1m0XuqP7/hBYOMRyB/r8WKbemkW45hTfL96HxPvsGW6hJdNcjezV7wGweFRxFWbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747742986; c=relaxed/simple;
-	bh=9GLuEQ++J6Qc8EWr6+zlrM8e9bZk28Gdib/STpO1trY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXKjShgR7qlFf7jV7lQUSaWMBC7PZN4MRbsmLz3avT6aOk6WONslUJDikFouXIZwXTdsTD+xgar2RGuFkDWYbkVp7GvimyWi+ILEZVcK7yaJ+G9XOClVWSlrJHA1dwRao0u7v1/sFEE4L4mYVgR/x5CkRKlvjBOYW8kPjedDI+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=P9ftewxo; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=PkyWP9o2 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1747743749; c=relaxed/simple;
+	bh=QouWssyxn4NBMq4oguRadbPcsKGXlZJW7CbUFKqwr9o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JCEypDEvc/39bpEaY6KlVmKV9X01kbQ6FGY7xYZzPAW64BtbgogXEV7DBcn0YXsbbhC+oo0iL2Cwf6VyJPp56AIlhOLv1CYpLePfttfg0ZwZUnihLT/JP4QWtPfvlObSispJLbNjRCiiR7/vNtUvRl7YG3oAFWiDJLAZYHODEJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bz1cT57r; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="P9ftewxo";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="PkyWP9o2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bz1cT57r"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-70dd29b0d34so14659267b3.1
+        for <imx@lists.linux.dev>; Tue, 20 May 2025 05:22:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1747742984; x=1779278984;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kb8yOWD2SiIrBRXQUwBCkGRdlFJUWL5tP/E1dNrLTJA=;
-  b=P9ftewxoHE94bejIiuDxd07BSwm+NKMG7SOQJwB7C7hxlbUScSckz8iu
-   cgYauFmfYyegKq/i+9GyuuPYbNR9lLY3y75WoUfuKzxJvsMoURsH4VShR
-   ugIe/f4PeS/uaGN5wt7jQgkgWjj9aZ2miHF+QQ40Z8Ya32+zWw34zUiF7
-   NCv/Ah0SWeCtpnRrnxB/g4cVWcOVcHugQe7cNyjfrh3FME9NlwQQeUJT+
-   MZeeA5+y3zfezPigYQ7SzEyAA0HMN4BeGoxpDtDJ32sov8RRvgP6uo7SY
-   ITIrMABjlhD3xEMAnDxgkw4jxF+jnXKMsbAyaxMm6UhgNQSB6inzUlbDt
-   w==;
-X-CSE-ConnectionGUID: U7BqYBSxTNaZOtyCw+nueg==
-X-CSE-MsgGUID: rF3hdTvdS8+rZlHUcoWiyA==
-X-IronPort-AV: E=Sophos;i="6.15,302,1739833200"; 
-   d="scan'208";a="44182565"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 20 May 2025 14:08:33 +0200
-X-CheckPoint: {682C70C1-5-BF62DDF1-CB8BF55F}
-X-MAIL-CPID: B419E8CFE1EF68CF796833D42FEF4458_1
-X-Control-Analysis: str=0001.0A00639F.682C70C8.002F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8C489163BBB;
-	Tue, 20 May 2025 14:08:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1747742908;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kb8yOWD2SiIrBRXQUwBCkGRdlFJUWL5tP/E1dNrLTJA=;
-	b=PkyWP9o2yye8o5cWieV9x3S5hzYTFj4HFX6nCyqYJSmwrbwCzgDP0GpBFoz4JtrIkvSUbt
-	YE8MguMpFcZcWacZ1ReYxuhFyIl3CZXVUBlUGTs5bXZZjdyp8363Aq++AA3VwDIi6MAj9n
-	eT4RAUanWq7W2MTzjF9R+OF+KUYOhL0O9/DLj2DbIqYctS8kG2H6v6B5fkiLEllhBR8s1S
-	T/3uufqmJd+irx+aKM7wUUZkW6ra8/SK8mhPQdTvIGBa9crhfQQr/3+ukvvRmzB4ooZ0X4
-	EgWFIDm5Xjq6L7bjW2BZuMcCfaAxlt23LuaPXRYnTm0d4spafhU2nr4hViNfgQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] arm64: dts: tqma8mpql: Add EASRC support
-Date: Tue, 20 May 2025 14:08:19 +0200
-Message-ID: <20250520120820.890252-2-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250520120820.890252-1-alexander.stein@ew.tq-group.com>
-References: <20250520120820.890252-1-alexander.stein@ew.tq-group.com>
+        d=linaro.org; s=google; t=1747743746; x=1748348546; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MEOAQ4+huP5P2UxwDkmIJwHky2Zn8+jD9WJaoKTnTcI=;
+        b=bz1cT57rTXPk8D1xmawsuM6+TgUGdYssd75flrfjSgp92LjMvPylKecQxq4qKA98tP
+         1HXyEGnGKqmScTNFfVLJ3wARtQJHr41dBiOutzOE+hvyJne3Yd6Ci8RNsCLXohrh+5BW
+         vWEmMmK2yFMyE2dXuJgOQ5jBGF3h95vInfIjhdp0u6cMZf+vITYd0litVx39bsw7VpQ3
+         belpZUV64Exw+aIE8jMaQcALMrZhiRi1/3wkTpmfLw5oUvdd9rhoH57acgK+/hPz9Dm5
+         jjkprFMQCaKIgEInUITyRBOSfCEmAsPMCfqa16OI4aR2IXz9YAaNDxmCfrZSxR/IJxZ5
+         +pcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747743746; x=1748348546;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MEOAQ4+huP5P2UxwDkmIJwHky2Zn8+jD9WJaoKTnTcI=;
+        b=cxyWeHwZCC2QbzG87o3KAEh1rFKOZFXyvNTPguG7BcpG7bz197KHX2RyT73rnW6YNS
+         ISE/K1Q/CsXzy/UQ0tqYvJ1Qn/kHTkgLSW5HyvHGK5kCd9MovwxczLnIUto11cRLRciZ
+         faQhz5VhxkZvjqNPopgpBjnCbjUw+1ko/5SBuk6Fn+fUdh37qJiZuPQd8p1PDv2d5cpu
+         YdT/VZvNd/ajCF6fhqZ0bYR697/BL3Tljqm80J8bFjVkucBpmOHOMvP1DT9PvjlPxcif
+         XPEs8Gn5Smt/SDRT5U7SGzMJzpOkGpsR3SP6x0Kc/fNw/e+har4ELcCu1FnCV2nOqXuD
+         V8Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCVeNQBd6/fOQHpi8aJ36ZMZLo9+Kcubf8wnfJgHcVRb0wR2iWIy3vJeLsR/u3zgcM5U/8s=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyc+VSIFD1dHDqX1pXNAyniJcaqQq5DizLHRvvdlpkn2odTclbR
+	bBd5bSesm3eCPRsCI8PQJGeb6dApis7/LXMr4zCD9OXmkzehTj3ctkadu7pMg/OUhNl1agL+UOc
+	cOcrHzqXoUx18EFTGmYCTRL+HJQxN6ThsaBD7A3ew9w==
+X-Gm-Gg: ASbGncuyqrr251AxqkL/QNrZIImtHev5Yq53jP8ZjMI2195jti030MVxXFKLuzKeolO
+	zIxDFJvZiqTkDTLAeAO4oj4L0p0aum3/NCOdueKVB1rUWedTa4a47Ff9HjObDS79cy47+QuyyT7
+	DVgC4WrBxwf/WZPTCzE03veeSXHe6ZC0caPw==
+X-Google-Smtp-Source: AGHT+IEoqQjb+R4v4FqIJ9NsaAJz8P+torT+l2h/KrsSDMTfNo1fSuoB13kxgbLiWRiK4DxnCXAbwKmJB14az3T0qSA=
+X-Received: by 2002:a05:690c:ed1:b0:70d:d1a6:fcfc with SMTP id
+ 00721157ae682-70dd1a6ffb1mr74617027b3.13.1747743745677; Tue, 20 May 2025
+ 05:22:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20250507160056.11876-1-hiagofranco@gmail.com> <20250507160056.11876-4-hiagofranco@gmail.com>
+ <CAPDyKFrHD1hVCfOK-JV5FJM+Cd9DoKKZGKcC94fxx6_9Bsri1g@mail.gmail.com>
+ <20250508202826.33bke6atcvqdkfa4@hiago-nb> <CAPDyKFr3yF=yYZ=Xo5FicvSbDPOTx7+fMwc8dMCLYKPBMEtCKA@mail.gmail.com>
+ <20250509191308.6i3ydftzork3sv5c@hiago-nb> <CAPDyKFpnLzk5YR3piksGhdB8ZoGNCzmweBTxm_rDX5=vjLFxqQ@mail.gmail.com>
+ <20250519172357.vfnwehrbkk24vkge@hiago-nb>
+In-Reply-To: <20250519172357.vfnwehrbkk24vkge@hiago-nb>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 20 May 2025 14:21:49 +0200
+X-Gm-Features: AX0GCFvecIGQgQvYviOe7hMAhu1Tk0oNxkZ2kd0dxrSn8Ur7tJ7dhdnhpp02IIc
+Message-ID: <CAPDyKFpGcgMzOUHf-JTRTLBviFdLdbjZKrMm8yd37ZqJ1nfkHw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
+ remote core attachment
+To: Hiago De Franco <hiagofranco@gmail.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, linux-pm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Bjorn Andersson <andersson@kernel.org>, 
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
+	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Enable EASRC support in tlv320aic32x4 sound card.
+On Mon, 19 May 2025 at 19:24, Hiago De Franco <hiagofranco@gmail.com> wrote:
+>
+> Hi Ulf,
+>
+> On Mon, May 19, 2025 at 04:33:30PM +0200, Ulf Hansson wrote:
+> > On Fri, 9 May 2025 at 21:13, Hiago De Franco <hiagofranco@gmail.com> wrote:
+> > >
+> > > On Fri, May 09, 2025 at 12:37:02PM +0200, Ulf Hansson wrote:
+> > > > On Thu, 8 May 2025 at 22:28, Hiago De Franco <hiagofranco@gmail.com> wrote:
+> > > > >
+> > > > > Hello,
+> > > > >
+> > > > > On Thu, May 08, 2025 at 12:03:33PM +0200, Ulf Hansson wrote:
+> > > > > > On Wed, 7 May 2025 at 18:02, Hiago De Franco <hiagofranco@gmail.com> wrote:
+> > > > > > >
+> > > > > > > From: Hiago De Franco <hiago.franco@toradex.com>
+> > > > > > >
+> > > > > > > When the remote core is started before Linux boots (e.g., by the
+> > > > > > > bootloader), the driver currently is not able to attach because it only
+> > > > > > > checks for cores running in different partitions. If the core was kicked
+> > > > > > > by the bootloader, it is in the same partition as Linux and it is
+> > > > > > > already up and running.
+> > > > > > >
+> > > > > > > This adds power mode verification through the SCU interface, enabling
+> > > > > > > the driver to detect when the remote core is already running and
+> > > > > > > properly attach to it.
+> > > > > > >
+> > > > > > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+> > > > > > > Suggested-by: Peng Fan <peng.fan@nxp.com>
+> > > > > > > ---
+> > > > > > > v2: Dropped unecessary include. Removed the imx_rproc_is_on function, as
+> > > > > > > suggested.
+> > > > > > > ---
+> > > > > > >  drivers/remoteproc/imx_rproc.c | 13 +++++++++++++
+> > > > > > >  1 file changed, 13 insertions(+)
+> > > > > > >
+> > > > > > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> > > > > > > index 627e57a88db2..9b6e9e41b7fc 100644
+> > > > > > > --- a/drivers/remoteproc/imx_rproc.c
+> > > > > > > +++ b/drivers/remoteproc/imx_rproc.c
+> > > > > > > @@ -949,6 +949,19 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
+> > > > > > >                         if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
+> > > > > > >                                 return -EINVAL;
+> > > > > > >
+> > > > > > > +                       /*
+> > > > > > > +                        * If remote core is already running (e.g. kicked by
+> > > > > > > +                        * the bootloader), attach to it.
+> > > > > > > +                        */
+> > > > > > > +                       ret = imx_sc_pm_get_resource_power_mode(priv->ipc_handle,
+> > > > > > > +                                                               priv->rsrc_id);
+> > > > > > > +                       if (ret < 0)
+> > > > > > > +                               dev_err(dev, "failed to get power resource %d mode, ret %d\n",
+> > > > > > > +                                       priv->rsrc_id, ret);
+> > > > > > > +
+> > > > > > > +                       if (ret == IMX_SC_PM_PW_MODE_ON)
+> > > > > > > +                               priv->rproc->state = RPROC_DETACHED;
+> > > > > > > +
+> > > > > > >                         return imx_rproc_attach_pd(priv);
+> > > > > >
+> > > > > > Why is it important to potentially set "priv->rproc->state =
+> > > > > > RPROC_DETACHED" before calling imx_rproc_attach_pd()?
+> > > > > >
+> > > > > > Would it be possible to do it the other way around? First calling
+> > > > > > imx_rproc_attach_pd() then get the power-mode to know if
+> > > > > > RPROC_DETACHED should be set or not?
+> > > > > >
+> > > > > > The main reason why I ask, is because of how we handle the single PM
+> > > > > > domain case. In that case, the PM domain has already been attached
+> > > > > > (and powered-on) before we reach this point.
+> > > > >
+> > > > > I am not sure if I understood correcly, let me know if I missed
+> > > > > something. From my understanding in this case it does not matter, since
+> > > > > the RPROC_DETACHED will only be a flag to trigger the attach callback
+> > > > > from rproc_validate(), when rproc_add() is called inside
+> > > > > remoteproc_core.c.
+> > > >
+> > > > Okay, I see.
+> > > >
+> > > > To me, it sounds like we should introduce a new genpd helper function
+> > > > instead. Something along the lines of this (drivers/pmdomain/core.c)
+> > > >
+> > > > bool dev_pm_genpd_is_on(struct device *dev)
+> > > > {
+> > > >         struct generic_pm_domain *genpd;
+> > > >         bool is_on;
+> > > >
+> > > >         genpd = dev_to_genpd_safe(dev);
+> > > >         if (!genpd)
+> > > >                 return false;
+> > > >
+> > > >         genpd_lock(genpd);
+> > > >         is_on = genpd_status_on(genpd);
+> > > >         genpd_unlock(genpd);
+> > > >
+> > > >         return is_on;
+> > > > }
+> > > >
+> > > > After imx_rproc_attach_pd() has run, we have the devices that
+> > > > correspond to the genpd(s). Those can then be passed as in-parameters
+> > > > to the above function to get the power-state of their PM domains
+> > > > (genpds). Based on that, we can decide if priv->rproc->state should be
+> > > > to RPROC_DETACHED or not. Right?
+> > >
+> > > Got your idea, I think it should work yes, I am not so sure how. From
+> > > what I can see these power domains are managed by
+> > > drivers/pmdomain/imx/scu-pd.c and by enabling the debug messages I can
+> > > see the power mode is correct when the remote core is powered on:
+> > >
+> > > [    0.317369] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_ON
+> > >
+> > > and powered off:
+> > >
+> > > [    0.314953] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_OFF
+> > >
+> > > But I cannot see how to integrate this into the dev_pm_genpd_is_on() you
+> > > proposed. For a quick check, I added this function and it always return
+> > > NULL at dev_to_genpd_safe(). Can you help me to understand this part?
+> >
+> > As your device has multiple PM domains and those gets attached with
+> > dev_pm_domain_attach_list(), the device(s) that you should use with
+> > dev_pm_genpd_is_on() are in imx_rproc->pd_list->pd_devs[n].
+>
+> Ok got it, thanks for sharing.
+>
+> I just send the v3 with the changes Peng proposed (here
+> https://lore.kernel.org/lkml/20250519171514.61974-1-hiagofranco@gmail.com/T/#t),
+> but I am a bit confused which path we should take, the initial approach
+> proposed or using these PD functions. Maybe we can discuss this in the
+> new v3 patch series?
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Note that the firmware file /lib/firmware/imx/easrc/easrc-imx8mn.bin
-is needed.
+I think it would be better if we can avoid sharing low-level firmware
+functions for PM domains. I am worried that they may become abused for
+other future use-cases.
 
-Changes in v2:
-* New in v2
+So, if possible, I would rather make us try to use
+dev_pm_genpd_is_on() (or something along those lines), but let's see
+what Peng thinks about it before we make the decision.
 
- arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts | 1 +
- arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi         | 4 ++++
- 2 files changed, 5 insertions(+)
+[...]
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-index 23c612e80dd38..33cd92e63c5d5 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-@@ -235,6 +235,7 @@ linux,cma {
- 	sound {
- 		compatible = "fsl,imx-audio-tlv320aic32x4";
- 		model = "tqm-tlv320aic32";
-+		audio-asrc = <&easrc>;
- 		audio-cpu = <&sai3>;
- 		audio-codec = <&tlv320aic3x04>;
- 	};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-index 6067ca3be814e..fd70b686e7efc 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
-@@ -30,6 +30,10 @@ &A53_0 {
- 	cpu-supply = <&buck2_reg>;
- };
- 
-+&easrc {
-+	status = "okay";
-+};
-+
- &flexspi {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_flexspi0>;
--- 
-2.43.0
-
+Kind regards
+Uffe
