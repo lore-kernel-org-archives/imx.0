@@ -1,111 +1,139 @@
-Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D236F27A106
-	for <imx@lists.linux.dev>; Tue, 20 May 2025 11:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01D0264A97;
+	Tue, 20 May 2025 11:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747740509; cv=none; b=T2q/SmYvud487FsPhy38u53HenmoO1u5vT9SuEx4GIpj4QdgCXSoUVeYP0dxwGSKBV33QEIG5dklwmn1EMqB2QqI3UUpdN80QPp5glwvv1cF00OotrTDdhZHvL2MjSYT8JZ6NaFXZP8E1J9Z5Z1Fof9g5byrBtgHuD8zQ/lKkRw=
+	t=1747741313; cv=none; b=EgxrXrCXVtOv37x/Nh3S88I9s32lsny9x4fqjuht7wYGrKFu4OGcSQaYGBR85tIW3NBxucXGV7QZTgMIytpfgNQZH73XDmVM4Auo0ro/CTkrEg1ffm+3zn9XOVKFqvTwrE/GiIoTn7lPPM2ZvqTwyRTDQj4gDgxja5QcCZhRFl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747740509; c=relaxed/simple;
-	bh=rh9L2o/yrA2qFrgP2BkiU/biAuRHzdA3ItNyQQZiNHY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lJ3Kp+nef1qeH0CjcSCIZZ0VAdlAVdUP1R3KU47sCBCsqnPVnBodZOqPGQD7WhKII0sTThCf089ngUYjH8K/VHR18vPiF2jsTcL2Gf8t6U4X4KWRGmh3cT95fd9zoAH9Iabij/0W9gECy2SfBJy82nI2k7U/i1j4EFUWWD4GIu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id 6D479C405A49;
-	Tue, 20 May 2025 13:19:12 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 6D479C405A49
-From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,  Shawn Guo
- <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
-  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
- <festevam@gmail.com>,  linux-media@vger.kernel.org,  imx@lists.linux.dev,
-  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i.MX8 ISI crossbar: simplify a couple of error messages
-In-Reply-To: <20250509091549.GD28896@pendragon.ideasonboard.com> (Laurent
-	Pinchart's message of "Fri, 9 May 2025 11:15:49 +0200")
-References: <m3plgi9pwu.fsf@t19.piap.pl>
-	<20250509091549.GD28896@pendragon.ideasonboard.com>
-Sender: khalasa@piap.pl
-Date: Tue, 20 May 2025 13:19:12 +0200
-Message-ID: <m3sekz8r7z.fsf@t19.piap.pl>
+	s=arc-20240116; t=1747741313; c=relaxed/simple;
+	bh=UExusS9wGruu2jirSHupY+orQc1NwlzDHTp5gtaUL6E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Aw5fk3qPcW42mzrTJ85VWH15Fb35AAa6p+ZjWXcz6zy7wdq/BZDEng5uoETLiweb+HvIUaMjHhY4kz/a0ADQ6E0cBbcqH9pdplkvYmP1vNzwsxQS3AWyYE/h5IuzjCETWYf7MV4geLbBB7dAWwYic2VRexmW5J9bJ/pAkMBNG+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=GzTXMwsi; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="GzTXMwsi"
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54K9UC8E021011;
+	Tue, 20 May 2025 13:41:16 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	UExusS9wGruu2jirSHupY+orQc1NwlzDHTp5gtaUL6E=; b=GzTXMwsiZejt1O8H
+	HSMOo4JJMYdWKi4XLUZACmweuNUHMXMcoKBaBK4izDYF74vuwBPhTZk6IexHobg/
+	qK9I73asI1F+eYDQZiyzxP43hKUrX/gpKv/++Q/63O4zRbJXsKcyIXJRe8YtHdoV
+	RPwyyY04Tk6DjBcJZpMMLx0wfWgVldqOE1FvIgNQm9RI5S0gb+O/faMVPHN8vYO7
+	xVKBfv+hc1nAbKmBD0/cmEDphgVskJ4VOESdBzuwEbJOODz1O+/U82sx8FwgyLMU
+	7hCq2HGWxCcmbZsgQoNFKYIKbh+ZOklyV2oLZ5i1xQm8eShnTM2y/drHpPFlUzAG
+	h0IOcQ==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 46pht1w43t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 May 2025 13:41:16 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 1C0F740049;
+	Tue, 20 May 2025 13:38:29 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4B551AE2BFA;
+	Tue, 20 May 2025 13:37:16 +0200 (CEST)
+Received: from [10.252.29.31] (10.252.29.31) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 20 May
+ 2025 13:37:13 +0200
+Message-ID: <b1d3f93b-8206-481b-bd8a-d7c0953e0ea5@foss.st.com>
+Date: Tue, 20 May 2025 13:37:12 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 15/22] drm/bridge: stm_lvds: convert to
+ devm_drm_bridge_alloc() API
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+        Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Jonas Karlman
+	<jonas@kwiboo.se>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Jagan Teki
+	<jagan@amarulasolutions.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer
+	<s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk@kernel.org>
+CC: Anusha Srivatsa <asrivats@redhat.com>,
+        Paul Kocialkowski
+	<paulk@sys-base.io>,
+        Dmitry Baryshkov <lumag@kernel.org>, Hui Pu
+	<Hui.Pu@gehealthcare.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        <dri-devel@lists.freedesktop.org>, <asahi@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <chrome-platform@lists.linux.dev>,
+        <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-amlogic@lists.infradead.org>,
+        <linux-renesas-soc@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>,
+        <linux-samsung-soc@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <freedreno@lists.freedesktop.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Alexandre Torgue
+	<alexandre.torgue@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Philippe Cornu <philippe.cornu@foss.st.com>,
+        Yannick Fertre
+	<yannick.fertre@foss.st.com>
+References: <20250509-drm-bridge-convert-to-alloc-api-v3-0-b8bc1f16d7aa@bootlin.com>
+ <20250509-drm-bridge-convert-to-alloc-api-v3-15-b8bc1f16d7aa@bootlin.com>
+Content-Language: en-US
+From: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+In-Reply-To: <20250509-drm-bridge-convert-to-alloc-api-v3-15-b8bc1f16d7aa@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-20_04,2025-05-16_03,2025-03-28_01
 
-Hi Laurent,
+Hi Luca,
 
-Laurent Pinchart <laurent.pinchart@ideasonboard.com> writes:
-
-> The goal was indeed to save memory.
+On 5/9/25 15:53, Luca Ceresoli wrote:
+> This is the new API for allocating DRM bridges.
 >
->> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
->> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
->> @@ -352,9 +352,8 @@ static int mxc_isi_crossbar_enable_streams(struct v4=
-l2_subdev *sd,
->>                                                sink_streams);
->>               if (ret) {
->>                       dev_err(xbar->isi->dev,
->> -                             "failed to %s streams 0x%llx on '%s':%u: %=
-d\n",
->> -                             "enable", sink_streams, remote_sd->name,
->> -                             remote_pad, ret);
->> +                             "failed to enable streams 0x%llx on '%s':%=
-u: %d\n",
->> +                             sink_streams, remote_sd->name, remote_pad,=
- ret);
->>                       mxc_isi_crossbar_gasket_disable(xbar, sink_pad);
->>                       return ret;
->>               }
->> @@ -392,9 +391,8 @@ static int mxc_isi_crossbar_disable_streams(struct v=
-4l2_subdev *sd,
->>                                                 sink_streams);
->>               if (ret)
->>                       dev_err(xbar->isi->dev,
->> -                             "failed to %s streams 0x%llx on '%s':%u: %=
-d\n",
->> -                             "disable", sink_streams, remote_sd->name,
->> -                             remote_pad, ret);
->> +                             "failed to disable streams 0x%llx on '%s':=
-%u: %d\n",
->> +                             sink_streams, remote_sd->name, remote_pad,=
- ret);
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>
+> ---
+>
+> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Philippe Cornu <philippe.cornu@foss.st.com>
+> Cc: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+> Cc: Yannick Fertre <yannick.fertre@foss.st.com>
+> ---
 
-It appears the current code saves (in my default build) 8 bytes of
-memory, at the cost of readability and inability to search with grep:
+I went away from keyboard for some time.  Sorry for the delay :
 
-Current:
-Name          Size      File off
-.text         00000bf4  00000040
-.data         00000000  00000c34
-.rodata.str1.8 000001b8 00000c38
-__jump_table  00000030  00000df0
-.rodata       000001b8  00000e20
+Acked-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 
-With patch:
-Name          Size      File off
-.text         00000bd4  00000040
-.data         00000000  00000c14
-.rodata.str1.8 000001e0 00000c18
-__jump_table  00000030  00000df8
-.rodata       000001b8  00000e28
 
-Built as a module it doesn't even save that - the number of pages stays
-the same.
+Regards,
+Raphaël
 
-Just FYI.
---=20
-Krzysztof "Chris" Ha=C5=82asa
-
-Sie=C4=87 Badawcza =C5=81ukasiewicz
-Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-Al. Jerozolimskie 202, 02-486 Warszawa
