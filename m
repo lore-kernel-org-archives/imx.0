@@ -1,112 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6660D28FFC5;
-	Wed, 21 May 2025 19:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA5F28EA64
+	for <imx@lists.linux.dev>; Wed, 21 May 2025 20:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747856152; cv=none; b=psO7WjQ+0doVgdFzI93R00+KW8omOWFFCewuzCiKFdBf1hPzNAVcFvce/Ex87kXw5eIYtF25Roa38lPaHrYbcAo7cO0XwX1sp5JkpzzzrX1+WX+PnOyuX/AUKDcL/NxRihaOHG0MH58JVrMMES9J3pbdXUjeTJ8kHg2Z0fPoMVg=
+	t=1747859998; cv=none; b=rfOo1p31HPiIoI5CTjFa/A8d85qrhLKfqx1tmEgwM7jedNGRYgjMaH/jpHQ1NKZwk290kVyGmIriPhB+uF9OwFVlSBD6vRSTj0Chezv8n0cEfpbFlmTGfzfDpQUfn6qdLAhiUNiUQXSD4JWBltkRQRJ9SIv8feM4OtY9DToMpeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747856152; c=relaxed/simple;
-	bh=rl9GZqdLGBfjBJ296zN0oZFwK2zvx5a8miUiRaAwWLs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uGYnDCcqI5h5Y7dJ0n7pIO2iMNKvDivTxpM5NeDbFWP4BuhkQ5Qa/Uftqu36+jUaqqJkqurGNOdIux/stpoQOK1krQTqlqYA3TtiVY3DnL77aXUGEhq4CISeRU4imn/me3V5lOfX1i/y/H2xeCb66k1xnxa2G0R+dynkYelGnN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HXjUXzLm; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HXjUXzLm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 42BD1C4CEFA;
-	Wed, 21 May 2025 19:35:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747856151;
-	bh=rl9GZqdLGBfjBJ296zN0oZFwK2zvx5a8miUiRaAwWLs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=HXjUXzLmPZK8JxZv2rMAiyQMypnvz30SOWaF5Le6MSIj0SaMX1eXUlAwi6XVMMbDr
-	 /9o7RnnsdygXgNbIrerqIWF1oXtn+9OaMhes8HqGbzKGCRyBlPPP1nDBqLkmEF62+o
-	 AI+o5suaagx4IDgxqYXEqzpVDMQp2gAAN6wEP+IDuhTdM7IoUT1NftMlQBUMyWnH1S
-	 tfa4W/5+n+X7zGt9wMTcL9eD2sNmUJUud6aHRgFx019iGspx67lrR0y/ybu3+28oDJ
-	 2DJcqVoY5+Cw/lu4eUvpTYpw6aBEsQzjHnGFW62Huf8OJdB/ilu8EV6eFlrvw+EC7H
-	 zsi+hsvUAkHHA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37109C54F2E;
-	Wed, 21 May 2025 19:35:51 +0000 (UTC)
-From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Wed, 21 May 2025 21:34:28 +0200
-Subject: [PATCH v3 5/5] media: i2c: imx214: Remove hard-coded external
- clock frequency
+	s=arc-20240116; t=1747859998; c=relaxed/simple;
+	bh=hWUF0Rmj/9yF+2TSHrisMjKZCsHHAIi1HKG4bsw7dt4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MTcRvImmf/24tgePivYY5Rqk5+vV6hjPKVA+ywvisbQVMI16DL2wl+K8Tl65d7xHTs2q+5PZWtrjvlqJXDHwOUNtXeUFg3M+GYD6nXtIciaeFc7SQOCw7ZjY/h2IpRi+sxLugHcmosovho9nu1mJZwpSFMVD3HidU1+yBr7OrgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uHqDo-0008EG-1p; Wed, 21 May 2025 22:39:28 +0200
+Message-ID: <3ba28773-61ec-4e1e-949d-e8285525d1d2@pengutronix.de>
+Date: Wed, 21 May 2025 22:39:05 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250521-imx214_ccs_pll-v3-5-bfb4a2b53d14@apitzsch.eu>
-References: <20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu>
-In-Reply-To: <20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu>
-To: Ricardo Ribalda <ribalda@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1747856148; l=1194;
- i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=81a5knJurFPeQFihfZmv0dfoKheJNZM//Pf1vhwjDog=;
- b=u047Jl0beOhUD9XDWfSja6SNCQ6YB0IeZ8wgFG7Akslb+UIKriMBQ9i130y9Wed440+cMBspz
- QG7lRqWCUyCDV3miprXvcQ6wRM8n0Z/7cCMw+Mji4SqHPK7t5ohzqKG
-X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
- pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
-X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
- auth_id=142
-X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Reply-To: git@apitzsch.eu
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/8] MAINTAINERS: add maintainer for the Ka-Ro
+ tx8p-ml81 COM module
+To: Maud Spierings | GOcontroll <maudspierings@gocontroll.com>,
+ Shawn Guo <shawnguo2@yeah.net>, Rob Herring <robh@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+References: <20250417-initial_display-v6-0-3c6f6d24c7af@gocontroll.com>
+ <20250417-initial_display-v6-3-3c6f6d24c7af@gocontroll.com>
+ <aB26FRq/Ets5fiRK@dragon>
+ <PA4PR04MB7630F5874577DA12FCBE1537C58AA@PA4PR04MB7630.eurprd04.prod.outlook.com>
+ <aB3DuZMBIwsFXrVz@dragon>
+ <PA4PR04MB76309AE2C6E2C774DF8FAE29C58AA@PA4PR04MB7630.eurprd04.prod.outlook.com>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <PA4PR04MB76309AE2C6E2C774DF8FAE29C58AA@PA4PR04MB7630.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-From: André Apitzsch <git@apitzsch.eu>
+Dear Device Tree Maintainers,
+Dear Maud and Shawn,
 
-Instead rely on the rate set on the clock (using assigned-clock-rates
-etc.)
+On 09.05.25 11:03, Maud Spierings | GOcontroll wrote:
+> On 5/9/25 10:58, Shawn Guo wrote:
+>>>>> +KA-RO TX8P COM MODULE
+>>>>> +M:	Maud Spierings <maudspierings@gocontroll.com>
+>>>>> +L:	imx@lists.linux.dev
+>>>>> +S:	Maintained
+>>>>> +F:	arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi
+>>>>> +
+>>>>
+>>>> I'm not fond of such changes, as MAINTAINERS file could be bloated
+>>>> quickly by individual DTS.
+>>>
+>>> Is there some way you would prefer to see it? I don't really know of a better
+>>> way.
+>>
+>> There was some discussion about getting ./scripts/get_maintainer.pl pick
+>> up the Author: field (in DTS header area).  But I'm not sure where it
+>> ended.
+> 
+> I feel like that would be wrong in this situation too, it would pull in
+> Lothar Wassmann, who has nothing to do with me upstreaming this. I have
+> seen him around on the mailing list but given that Ka-Ro are not
+> upstreaming these themselves, I feel it would be weird to pull him into
+> this.
 
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
----
- drivers/media/i2c/imx214.c | 6 ------
- 1 file changed, 6 deletions(-)
+We can add multiple authors. Authors not wishing to receive mail can always
+remove their name or blackhole their mail address via the mailmap.
 
-diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index 19b494c08ece9894de67a4ee34c6f8e6e2708e41..264e897ec6e8e3d2fcd9d58db82090c7dd85d526 100644
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -32,7 +32,6 @@
- 
- #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
- 
--#define IMX214_DEFAULT_CLK_FREQ	24000000
- #define IMX214_DEFAULT_LINK_FREQ	600000000
- /* Keep wrong link frequency for backward compatibility */
- #define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
-@@ -1402,11 +1401,6 @@ static int imx214_probe(struct i2c_client *client)
- 		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
- 				     "failed to get xclk\n");
- 
--	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
--	if (ret)
--		return dev_err_probe(dev, ret,
--				     "failed to set xclk frequency\n");
--
- 	ret = imx214_get_regulators(dev, imx214);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "failed to get regulators\n");
+I am not leaning strongly in favor of either way, but I am bothered a little
+by b4 nagging me about adding MAINTAINERS entry for device trees that I've
+added. It would be nice to have a guideline here.
+
+If the current guideline is not to add MAINTAINERS for device tree, then
+this patch that has generated no feedback so far could use some attention:
+
+https://lore.kernel.org/all/20250113-b4-dts-mainainers-check-v1-1-794ed5749a94@pengutronix.de/
+
+Cheers,
+Ahmad
+
+> 
+
 
 -- 
-2.49.0
-
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
