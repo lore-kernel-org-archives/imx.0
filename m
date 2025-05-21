@@ -1,266 +1,199 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03B3265CCF
-	for <imx@lists.linux.dev>; Wed, 21 May 2025 12:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3617F26C3AD;
+	Wed, 21 May 2025 12:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747829502; cv=none; b=G/hDF/AHu1+iQX6NTNxD71e6hXUPOqJn4YFHdGOB1WLrI/Y5WF1Xxoo++yE/gsVCgpcIMv41IkXw8lXjwX8NWzgzTG2Xiw9Iv+anEOqJ6krFjThgGehUklDsJzWCbDCQENEr0tkItkNbOUWA9lQOvwUG5Y4WzLdhgvGL5I7ligs=
+	t=1747832177; cv=none; b=GgPIqHUGdSOFrdbyqgCsDzlNC2qaKAqStcsfimPbO3xJZ5iWa/wHaU7jqER+DvfGJ9exICBeyqaIPVrlug1gjBnkcqbLUaYQ4xXmvV3HUNZRJI8JRsqDW2ya4V1pQ+UzSm0dpPr0sQ7fiHRVIw40aDZSF3hVwl8+WbWRiyYwn+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747829502; c=relaxed/simple;
-	bh=VqSxZbHBNqv79Xze1igbciYOMZRnsmnIMjQTjRZltsA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rcfKVUa2VzUBdZt1AN+ab/r2htfEVqfCQtxJkIldGx7Nvtyk3C0TjKsO8PWJ7y4pFkVqbvwIYA1+JLXbwp175ZPpsydlJM4aWPxXilFLMoES34eD1pDCE0ZknlY569eUZ7ypNdWBK7iyi/G8Q9VtLlGvXt6Tskb0qRDt8sq7pyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BYuQmCK6; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1747832177; c=relaxed/simple;
+	bh=COLlQbBjihbwrGoCTuNX+CjfY62lIbRWheQQID6EbaA=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=JChvBYQ3tFty6ecSQRxxRv/o4Jn3vdSfelopOQyvEzCD3WpMl80P3BG2tAyPtw7/dl8IwoYmCf3CwgEdm7VKl6DZ1I4hx35sWZ7ejKxKIv/9bSEBhm/lfo/1w46OzX0//qHFOxMZuqKIvvI8AGqcstSJp3pUmu4tsGG/qMZn13U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmMyMwQE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BYuQmCK6"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e7b9a3d85b9so3068057276.0
-        for <imx@lists.linux.dev>; Wed, 21 May 2025 05:11:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747829498; x=1748434298; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=leH2Hwtpn8bKj0gxFlEX3tMtghWEWhWZN+JSBgnuZRk=;
-        b=BYuQmCK6AB4ksPNxAoc2/kL/eVxs/idh5hmVTYCOSs/9ggcCgCP0YeNSeMiENEbPkM
-         IVOthkeiquwtwrcTVZoXBZHMxQpjoneteKso5bmvs8PefeEbZUekq0nAna+01tf9qVKz
-         r7Jq7SMdaCsaoOczTHwKTyInj5dxGD+N8/3hhMakOTdt+fKcZrvjkU15VucObldmZNX0
-         1SGM6GyKV2s7g/hCOuJi/qdHvBMabpgKj2WOENA/mjjDdo/4bzZ51BUgzT1DvfQuQR6B
-         /9w5MYgnrbSjILlyhy9jpBN3FXlT2+uo6KCojNPXpDT8HM3meUH3bPqiB2yQBtPBc/1u
-         m0sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747829498; x=1748434298;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=leH2Hwtpn8bKj0gxFlEX3tMtghWEWhWZN+JSBgnuZRk=;
-        b=aRXAJcXe3kq77YsycLnEhvQe3iZM17W+vf9/Jr9y8zKQqiyUCKaRqMAz5PUJD7k380
-         yGQvrm9hBSw7jDOOg+NQMAW8l6KrgXk5z7JBU0i1uM6+RtMaoWYGaRB69graFA65Prqc
-         kpjgTYiZpyv3V0iytGKlN8Leekm5EQC7ti73BIDPVYM7CVzT4Y+lCPFLAHbPBeOCPZut
-         IeebpiRgbyAg469tRXT3dP+hgmQwfys57+Qb8jT25bSRqmnJi73sByRiNjX6Klb2TZDF
-         OzCuDbM8qgU/oG4AFxAYngC+plHYprEhhqhHQuj/If8a286+xyZ1mZOQH9PSgrJoXtFe
-         DU8g==
-X-Forwarded-Encrypted: i=1; AJvYcCXJyjgPXw7uTnVUoBOdh8tkfv/6Ta7mNLpfMApxxBpxQqYFaxCJQvKi0reeZ1Buxa7citM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxPsQbVgvfqWsCXsrtZH/W6uXgiwfNXnAiF1hrg6Ic8XrSCyAIw
-	jhsKLxAwhUhc/MFeAnqz6DhYZaE9mV3F3QirFL3A5K7QG3aYb5ekF0cLpa1ZxryF1Bnr/PH5qg1
-	6deEjDA1g9P32cLP5lwgbaTmCO4NPL4lXLkYXLfRzlQ==
-X-Gm-Gg: ASbGncudK2CPrAKNjrb4Uar5FiHGHLmxq5tEBaeZxQejaZyPfJxlAbclUkliO8y3i6I
-	FHm+c1VExTX9JtfTuVGXDR8VLydUVV2i5/t5iigHV2ZUu58/YoE4pobU8HY56B4kZp9B1NBMC97
-	M1DIdfdu+i0+W1z58xpxoV73E9c1R1iFrPig==
-X-Google-Smtp-Source: AGHT+IFK1U1VhHvGbw7ni7gmxP6cQYNFW+g9T99BOXkJgTIb2HoHmfYe7OdY+kneqLkjitX0ZrvP8e97mCZilZjwnvM=
-X-Received: by 2002:a05:6902:228e:b0:e72:85a8:cd14 with SMTP id
- 3f1490d57ef6-e7b6d55485fmr25867282276.34.1747829498391; Wed, 21 May 2025
- 05:11:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmMyMwQE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D65C4CEE7;
+	Wed, 21 May 2025 12:56:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747832175;
+	bh=COLlQbBjihbwrGoCTuNX+CjfY62lIbRWheQQID6EbaA=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=KmMyMwQEhWdZwGo2yXWu8YsO7BgEJ+AjR2fTEU6zAA9pJLD3q4Aw43KMayJt3XxI3
+	 /9vgDGnu8DQeKYU0CkVQAaY/th3pLTEFsA/7XwAKmAd7X9OZLhAGHOIeXMTiIDScLc
+	 o7T3nCqw5uTjtCB/e1SAzi411291Kjr4Rw6lRGBeuzmdjaWQj2yjNlCfm3nsehLBxi
+	 Kdgs0gs92xI7ud6qF1N7vC9VF/RfZhh7SGYFuTHPo06vsFHvcIAd4TB0aXdOUCPJ21
+	 /QJ1kYpu0N48GBxrOHE0nGtC47kaEYPCxXKaA3+CM8+VaqFnffagjyAtvphLkF13xk
+	 TJwvRTEa/aS2Q==
+Date: Wed, 21 May 2025 07:56:13 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250507160056.11876-1-hiagofranco@gmail.com> <20250507160056.11876-4-hiagofranco@gmail.com>
- <CAPDyKFrHD1hVCfOK-JV5FJM+Cd9DoKKZGKcC94fxx6_9Bsri1g@mail.gmail.com>
- <20250508202826.33bke6atcvqdkfa4@hiago-nb> <CAPDyKFr3yF=yYZ=Xo5FicvSbDPOTx7+fMwc8dMCLYKPBMEtCKA@mail.gmail.com>
- <20250509191308.6i3ydftzork3sv5c@hiago-nb> <CAPDyKFpnLzk5YR3piksGhdB8ZoGNCzmweBTxm_rDX5=vjLFxqQ@mail.gmail.com>
- <20250519172357.vfnwehrbkk24vkge@hiago-nb> <CAPDyKFpGcgMzOUHf-JTRTLBviFdLdbjZKrMm8yd37ZqJ1nfkHw@mail.gmail.com>
- <20250521041306.GA28017@nxa18884-linux> <20250521041840.GB28017@nxa18884-linux>
-In-Reply-To: <20250521041840.GB28017@nxa18884-linux>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 21 May 2025 14:11:02 +0200
-X-Gm-Features: AX0GCFs2ejlkWlTvzumqCZeACImuwbiSBdhWlDwwv02fTo8PCrix65GSFR6kMCo
-Message-ID: <CAPDyKFpSb+KsfDr1-=uk4TF4Op1dUQ9rDwPP5sSpMfxDRDhnZA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
- remote core attachment
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Hiago De Franco <hiagofranco@gmail.com>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Bjorn Andersson <andersson@kernel.org>, Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
-	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Michael Walle <mwalle@kernel.org>, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, Marek Vasut <marex@denx.de>, 
+ Max Merchel <Max.Merchel@ew.tq-group.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Tim Harvey <tharvey@gateworks.com>, 
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Fabio Estevam <festevam@denx.de>, Heiko Schocher <hs@denx.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, 
+ linux-amarula@amarulasolutions.com, linux-kernel@vger.kernel.org, 
+ michael@amarulasolutions.com
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+In-Reply-To: <20250521092826.1035448-1-dario.binacchi@amarulasolutions.com>
+References: <20250521092826.1035448-1-dario.binacchi@amarulasolutions.com>
+Message-Id: <174783212340.3233254.8471978099095548477.robh@kernel.org>
+Subject: Re: [PATCH 0/3] Support i.MX28 Amarula rmm board
 
-On Wed, 21 May 2025 at 05:09, Peng Fan <peng.fan@oss.nxp.com> wrote:
->
-> On Wed, May 21, 2025 at 12:13:06PM +0800, Peng Fan wrote:
-> >Hi Ulf,
-> >
-> >On Tue, May 20, 2025 at 02:21:49PM +0200, Ulf Hansson wrote:
-> >>On Mon, 19 May 2025 at 19:24, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> >>>
-> >>> Hi Ulf,
-> >>>
-> >>> On Mon, May 19, 2025 at 04:33:30PM +0200, Ulf Hansson wrote:
-> >>> > On Fri, 9 May 2025 at 21:13, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> >>> > >
-> >>> > > On Fri, May 09, 2025 at 12:37:02PM +0200, Ulf Hansson wrote:
-> >>> > > > On Thu, 8 May 2025 at 22:28, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> >>> > > > >
-> >>> > > > > Hello,
-> >>> > > > >
-> >>> > > > > On Thu, May 08, 2025 at 12:03:33PM +0200, Ulf Hansson wrote:
-> >>> > > > > > On Wed, 7 May 2025 at 18:02, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> >>> > > > > > >
-> >>> > > > > > > From: Hiago De Franco <hiago.franco@toradex.com>
-> >>> > > > > > >
-> >>> > > > > > > When the remote core is started before Linux boots (e.g., by the
-> >>> > > > > > > bootloader), the driver currently is not able to attach because it only
-> >>> > > > > > > checks for cores running in different partitions. If the core was kicked
-> >>> > > > > > > by the bootloader, it is in the same partition as Linux and it is
-> >>> > > > > > > already up and running.
-> >>> > > > > > >
-> >>> > > > > > > This adds power mode verification through the SCU interface, enabling
-> >>> > > > > > > the driver to detect when the remote core is already running and
-> >>> > > > > > > properly attach to it.
-> >>> > > > > > >
-> >>> > > > > > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> >>> > > > > > > Suggested-by: Peng Fan <peng.fan@nxp.com>
-> >>> > > > > > > ---
-> >>> > > > > > > v2: Dropped unecessary include. Removed the imx_rproc_is_on function, as
-> >>> > > > > > > suggested.
-> >>> > > > > > > ---
-> >>> > > > > > >  drivers/remoteproc/imx_rproc.c | 13 +++++++++++++
-> >>> > > > > > >  1 file changed, 13 insertions(+)
-> >>> > > > > > >
-> >>> > > > > > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> >>> > > > > > > index 627e57a88db2..9b6e9e41b7fc 100644
-> >>> > > > > > > --- a/drivers/remoteproc/imx_rproc.c
-> >>> > > > > > > +++ b/drivers/remoteproc/imx_rproc.c
-> >>> > > > > > > @@ -949,6 +949,19 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
-> >>> > > > > > >                         if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
-> >>> > > > > > >                                 return -EINVAL;
-> >>> > > > > > >
-> >>> > > > > > > +                       /*
-> >>> > > > > > > +                        * If remote core is already running (e.g. kicked by
-> >>> > > > > > > +                        * the bootloader), attach to it.
-> >>> > > > > > > +                        */
-> >>> > > > > > > +                       ret = imx_sc_pm_get_resource_power_mode(priv->ipc_handle,
-> >>> > > > > > > +                                                               priv->rsrc_id);
-> >>> > > > > > > +                       if (ret < 0)
-> >>> > > > > > > +                               dev_err(dev, "failed to get power resource %d mode, ret %d\n",
-> >>> > > > > > > +                                       priv->rsrc_id, ret);
-> >>> > > > > > > +
-> >>> > > > > > > +                       if (ret == IMX_SC_PM_PW_MODE_ON)
-> >>> > > > > > > +                               priv->rproc->state = RPROC_DETACHED;
-> >>> > > > > > > +
-> >>> > > > > > >                         return imx_rproc_attach_pd(priv);
-> >>> > > > > >
-> >>> > > > > > Why is it important to potentially set "priv->rproc->state =
-> >>> > > > > > RPROC_DETACHED" before calling imx_rproc_attach_pd()?
-> >>> > > > > >
-> >>> > > > > > Would it be possible to do it the other way around? First calling
-> >>> > > > > > imx_rproc_attach_pd() then get the power-mode to know if
-> >>> > > > > > RPROC_DETACHED should be set or not?
-> >>> > > > > >
-> >>> > > > > > The main reason why I ask, is because of how we handle the single PM
-> >>> > > > > > domain case. In that case, the PM domain has already been attached
-> >>> > > > > > (and powered-on) before we reach this point.
-> >>> > > > >
-> >>> > > > > I am not sure if I understood correcly, let me know if I missed
-> >>> > > > > something. From my understanding in this case it does not matter, since
-> >>> > > > > the RPROC_DETACHED will only be a flag to trigger the attach callback
-> >>> > > > > from rproc_validate(), when rproc_add() is called inside
-> >>> > > > > remoteproc_core.c.
-> >>> > > >
-> >>> > > > Okay, I see.
-> >>> > > >
-> >>> > > > To me, it sounds like we should introduce a new genpd helper function
-> >>> > > > instead. Something along the lines of this (drivers/pmdomain/core.c)
-> >>> > > >
-> >>> > > > bool dev_pm_genpd_is_on(struct device *dev)
-> >>> > > > {
-> >>> > > >         struct generic_pm_domain *genpd;
-> >>> > > >         bool is_on;
-> >>> > > >
-> >>> > > >         genpd = dev_to_genpd_safe(dev);
-> >>> > > >         if (!genpd)
-> >>> > > >                 return false;
-> >>> > > >
-> >>> > > >         genpd_lock(genpd);
-> >>> > > >         is_on = genpd_status_on(genpd);
-> >>> > > >         genpd_unlock(genpd);
-> >>> > > >
-> >>> > > >         return is_on;
-> >>> > > > }
-> >>> > > >
-> >>> > > > After imx_rproc_attach_pd() has run, we have the devices that
-> >>> > > > correspond to the genpd(s). Those can then be passed as in-parameters
-> >>> > > > to the above function to get the power-state of their PM domains
-> >>> > > > (genpds). Based on that, we can decide if priv->rproc->state should be
-> >>> > > > to RPROC_DETACHED or not. Right?
-> >>> > >
-> >>> > > Got your idea, I think it should work yes, I am not so sure how. From
-> >>> > > what I can see these power domains are managed by
-> >>> > > drivers/pmdomain/imx/scu-pd.c and by enabling the debug messages I can
-> >>> > > see the power mode is correct when the remote core is powered on:
-> >>> > >
-> >>> > > [    0.317369] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_ON
-> >>> > >
-> >>> > > and powered off:
-> >>> > >
-> >>> > > [    0.314953] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_OFF
-> >>> > >
-> >>> > > But I cannot see how to integrate this into the dev_pm_genpd_is_on() you
-> >>> > > proposed. For a quick check, I added this function and it always return
-> >>> > > NULL at dev_to_genpd_safe(). Can you help me to understand this part?
-> >>> >
-> >>> > As your device has multiple PM domains and those gets attached with
-> >>> > dev_pm_domain_attach_list(), the device(s) that you should use with
-> >>> > dev_pm_genpd_is_on() are in imx_rproc->pd_list->pd_devs[n].
-> >>>
-> >>> Ok got it, thanks for sharing.
-> >>>
-> >>> I just send the v3 with the changes Peng proposed (here
-> >>> https://lore.kernel.org/lkml/20250519171514.61974-1-hiagofranco@gmail.com/T/#t),
-> >>> but I am a bit confused which path we should take, the initial approach
-> >>> proposed or using these PD functions. Maybe we can discuss this in the
-> >>> new v3 patch series?
-> >>
-> >>I think it would be better if we can avoid sharing low-level firmware
-> >>functions for PM domains. I am worried that they may become abused for
-> >>other future use-cases.
-> >>
-> >>So, if possible, I would rather make us try to use
-> >>dev_pm_genpd_is_on() (or something along those lines), but let's see
-> >>what Peng thinks about it before we make the decision.
-> >
-> >There are two power domains for this m4:
-> >power-domains = <&pd IMX_SC_R_M4_0_PID0>, <&pd IMX_SC_R_M4_0_MU_1A>;
-> >
-> >So before attach the pd, dev_pm_genpd_is_on should also return false
-> >per my understanding. If run dev_pm_genpd_is_on after attaching the pd,
-> >the pd will be powered on. So we are not able to know whether M4 is started
-> >by bootloader or not.
->
->
-> Could we use PD_FLAG_NO_DEV_LINK when attach the PD, then
-> use dev_pm_genpd_is_on to detect the status of genpd?
->
-> we set is_off as true when pm_genpd_init if the PD is physical ON.
->
 
-You should not provide any flag (or attach_data to
-dev_pm_domain_attach_list()) at all. In other words just call
-dev_pm_domain_attach_list(dev, NULL, &priv->pd_list), similar to how
-drivers/remoteproc/imx_dsp_rproc.c does it.
+On Wed, 21 May 2025 11:28:19 +0200, Dario Binacchi wrote:
+> The series adds support for i.MX28 Amarula rmm board.
+> 
+> The board includes the following resources:
+>  - 256 Mbytes NAND Flash
+>  - 256 Mbytes SRAM
+>  - LCD-TFT controller
+>  - CAN
+>  - USB 2.0 high-speed/full-speed
+>  - Ethernet MAC
+> 
+> 
+> Dario Binacchi (3):
+>   ARM: dts: imx28: add pwm7 muxing options
+>   dt-bindings: arm: fsl: add i.MX28 Amarula rmm board
+>   ARM: dts: mxs: support i.MX28 Amarula rmm board
+> 
+>  .../devicetree/bindings/arm/fsl.yaml          |   1 +
+>  arch/arm/boot/dts/nxp/mxs/Makefile            |   1 +
+>  .../boot/dts/nxp/mxs/imx28-amarula-rmm.dts    | 302 ++++++++++++++++++
+>  arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |  10 +
+>  4 files changed, 314 insertions(+)
+>  create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
+> 
+> --
+> 2.43.0
+> 
+> base-commit: 4a95bc121ccdaee04c4d72f84dbfa6b880a514b6
+> branch: imx28-amarula-rmm
+> 
+> 
 
-In this way, the device_link is created by making the platform->dev
-the consumer and by keeping the supplier-devices (corresponding to the
-genpds) in RPM_SUSPENDED state.
 
-The PM domains (genpds) are then left in their current state, which
-should allow us to call dev_pm_genpd_is_on() for the corresponding
-supplier-devices, to figure out whether the bootloader turned them on
-or not, I think.
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Moreover, to make sure the genpds are turned on when needed, we also
-need to call pm_runtime_enable(platform->dev) and
-pm_runtime_get_sync(platform->dev). The easiest approach is probably
-to do that during ->probe() - and then as an improvement on top you
-may want to implement more fine-grained support for runtime PM.
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-[...]
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-Kind regards
-Uffe
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: using specified base-commit 4a95bc121ccdaee04c4d72f84dbfa6b880a514b6
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/nxp/' for 20250521092826.1035448-1-dario.binacchi@amarulasolutions.com:
+
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: /apb@80000000/apbh-bus@80000000/interrupt-controller@80000000: failed to match any schema with compatible: ['fsl,imx28-icoll', 'fsl,icoll']
+arch/arm/boot/dts/nxp/mxs/imx28-xea.dtb: spi@80010000 (fsl,imx28-mmc): $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-spi.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds@0', 'mac0-phy-int@0', 'mac0-phy-reset@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'qca7000@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: nand-controller@8000c000 (fsl,imx28-gpmi-nand): #size-cells: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: nand-controller@8000c000 (fsl,imx28-gpmi-nand): Unevaluated properties are not allowed ('#address-cells', '#size-cells' were unexpected)
+	from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: nand-controller@8000c000 (fsl,imx28-gpmi-nand): #size-cells: 0 was expected
+	from schema $id: http://devicetree.org/schemas/mtd/nand-controller.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-cfa10056.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-10056-pullup@0', 'lcdif-10056@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds-10036@0', 'mac0-10037@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'mmc_pwr_cfa10036@0', 'otg-10036@0', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2-cfa10056@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssd1306-10036@0', 'usb-10037@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: spi@80010000 (fsl,imx28-mmc): $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: spi@80010000 (fsl,imx28-mmc): Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'broken-cd', 'bus-width', 'clocks' were unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/mxs-mmc.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'edt-ft5x06-0', 'edt-ft5x06-wake-0', 'fec-3v3-enable-0', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog-0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds-0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0-vbus-enable-0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1-vbus-enable-0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): compatible: ['fsl,imx28-pinctrl', 'simple-bus'] is too long
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-xea.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'hog@2', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-cfa10037.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds-10036@0', 'mac0-10037@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'mmc_pwr_cfa10036@0', 'otg-10036@0', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssd1306-10036@0', 'usb-10037@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-apx4devkit.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-apx4@0', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit-apx4@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg-apx4@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'keypad-bttc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-bttc@0', 'lcdif-bttc@1', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssp1-sdio@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1', 'wifi-en-pin@0' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-tx28.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi-gpiogrp@0', 'spi2@0', 'spi3@0', 'spi3@1', 'tx28-edt-ft5x06-pins@0', 'tx28-flexcan-xcvr-pins@0', 'tx28-lcdif-23bit@0', 'tx28-lcdif-ctrl@0', 'tx28-mac0-gpio-pins@0', 'tx28-pca9554-pins@0', 'tx28-tsc2007-pins@0', 'tx28-usbphy0-pins@0', 'tx28-usbphy1-pins@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000: failed to match any schema with compatible: ['fsl,imx28-digctl', 'fsl,imx23-digctl']
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: /apb@80000000/apbx-bus@80040000/lradc@80050000: failed to match any schema with compatible: ['fsl,imx28-lradc']
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: /apb@80000000/apbx-bus@80040000/i2c@80058000/edt-ft5x06@38: failed to match any schema with compatible: ['edt,edt-ft5x06']
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
+arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dtb: /apb@80000000/apbx-bus@80040000/timrot@80068000: failed to match any schema with compatible: ['fsl,imx28-timrot', 'fsl,timrot']
+arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-enocean.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'enocean-button@0', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds@0', 'mac0-phy-int@0', 'mac0-phy-reset@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds-10036@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'mmc_pwr_cfa10036@0', 'otg-10036@0', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssd1306-10036@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-apf28.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-duckbill.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds@0', 'mac0-phy-reset@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-cfa10058.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-10058@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds-10036@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'mmc_pwr_cfa10036@0', 'otg-10036@0', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssd1306-10036@0', 'usb-10058@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-1.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'keypad-bttc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-bttc@0', 'lcdif-bttc@1', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssp1-sdio@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1', 'wifi-en-pin@0' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-eukrea-mbmx283lc.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpio-button-sw3-mbmx28lc@0', 'gpio-button-sw4-mbmx28lc@0', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog-cpuimx283@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcd-3v3-mbmx28lc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-mbmx28lc@0', 'lcdif-sync@0', 'led-d6-mbmx28lc@0', 'led-d7-mbmx28lc@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'reg-usb0-vbus-mbmx28lc@0', 'reg-usb1-vbus-mbmx28lc@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-sps1.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog-gpios@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-apf28dev.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-apf28dev@0', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'otg-apf28dev@0', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-cfa10055.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-10055-pullup@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-evk@0', 'lcdif-sync@0', 'leds-10036@0', 'mac0-10037@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'mmc_pwr_cfa10036@0', 'otg-10036@0', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2-cfa10055@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssd1306-10036@0', 'usb-10037@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-cfa10057.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-evk@0', 'lcdif-sync@0', 'leds-10036@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'mmc_pwr_cfa10036@0', 'otg-10036@0', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssd1306-10036@0', 'usb-10057@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-btt3-2.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'hog@1', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'keypad-bttc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-bttc@0', 'lcdif-bttc@1', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'ssp1-sdio@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1', 'wifi-en-pin@0' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-evk.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand-evk@0', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-evk@0', 'lcdif-sync@0', 'led_gpio3_5@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds@0', 'mac0-phy-int@0', 'mac0-phy-reset@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'i2cmux-10049@0', 'lcdif-10049-pullup@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-evk@0', 'lcdif-sync@0', 'leds-10036@0', 'mac0-10049@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'mmc_pwr_cfa10036@0', 'otg-10036@0', 'pca-10049@0', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'rotary-10049@0', 'rotary-btn-10049@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2-cfa10049@0', 'spi2@0', 'spi3-cfa10049@0', 'spi3@0', 'spi3@1', 'ssd1306-10036@0', 'usb-10049@0', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-ts4600.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'en-sd-pwr@0', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-m28cu3.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-m28@0', 'lcdif-sync@0', 'leds-m28@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-m28evk.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-m28@0', 'lcdif-sync@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-485.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-sync@0', 'leds@0', 'mac0-phy-int@0', 'mac0-phy-reset@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/mxs/imx28-eukrea-mbmx287lc.dtb: pinctrl@80018000 (fsl,imx28-pinctrl): 'auart0-2pins@0', 'auart0@0', 'auart1-2pins@0', 'auart1@0', 'auart2-2pins@0', 'auart2-2pins@1', 'auart2-pins@0', 'auart3-2pins@0', 'auart3-2pins@1', 'auart3@0', 'auart4@0', 'auart4@1', 'can0@0', 'can1@0', 'duart-4pins@0', 'duart@0', 'duart@1', 'gpio-button-sw3-mbmx28lc@0', 'gpio-button-sw4-mbmx28lc@0', 'gpmi-nand@0', 'gpmi-status-cfg@0', 'hog-cpuimx283@0', 'hog-cpuimx287@0', 'i2c0@0', 'i2c0@1', 'i2c1@0', 'i2c1@1', 'lcd-3v3-mbmx28lc@0', 'lcdif-16bit@0', 'lcdif-18bit@0', 'lcdif-24bit@0', 'lcdif-mbmx28lc@0', 'lcdif-sync@0', 'led-d6-mbmx28lc@0', 'led-d7-mbmx28lc@0', 'mac0@0', 'mac0@1', 'mac1@0', 'mmc0-4bit@0', 'mmc0-8bit@0', 'mmc0-cd-cfg@0', 'mmc0-sck-cfg@0', 'mmc1-4bit@0', 'mmc1-cd-cfg@0', 'mmc1-sck-cfg@0', 'mmc2-4bit@0', 'mmc2-4bit@1', 'mmc2-cd-cfg@0', 'mmc2-sck-cfg@0', 'mmc2-sck-cfg@1', 'pwm0@0', 'pwm2@0', 'pwm3@0', 'pwm3@1', 'pwm4@0', 'pwm7@0', 'reg-usb0-vbus-mbmx28lc@0', 'reg-usb1-vbus-mbmx28lc@0', 'saif0@0', 'saif0@1', 'saif1@0', 'spi2@0', 'spi3@0', 'spi3@1', 'usb0@0', 'usb0@1', 'usb0id1@0', 'usb0id@0', 'usb1@0', 'usb1@1' do not match any of the regexes: '^pinctrl-[0-9]+$', 'gpio@[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-mxs.yaml#
+arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dtb: /ahb/flash@20020000: failed to match any schema with compatible: ['nxp,lpc3220-slc']
+
+
+
+
+
