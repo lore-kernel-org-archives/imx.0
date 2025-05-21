@@ -1,66 +1,70 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2078.outbound.protection.outlook.com [40.107.22.78])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2057.outbound.protection.outlook.com [40.107.22.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B811D190696
-	for <imx@lists.linux.dev>; Wed, 21 May 2025 01:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF92F221717
+	for <imx@lists.linux.dev>; Wed, 21 May 2025 01:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.57
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747790656; cv=fail; b=l6YYafqLaqxKBpqz9K/akJHRcY9HK/5PXitlwA7Drcpq/81C8jraRnu4a6Vo4kqEz9gb/cY9IfvCItts0STrFet90k3lNrfV1VkIriyaugNbI/xrWJ0fN6IynYRBm3fTMPun+stf4d/s5a+8lWI0eYDlvP4dGEt9MYKjw7Eu3H8=
+	t=1747792521; cv=fail; b=eiETiFrT2YLn+FnXmC5uD5QO34XE0O0++CP/Yr6nVbK9NG2BzM/foh0dMfl511DMGxQuN1AmleeczBW+5gXYg4Z1iVFw8SCr3ho1aw3gVOQp44/48NT75V+f5+ZwQYpwpbKCNXGAbnyisIyq2o5DW2uu+MDmezB1DlcQAlMNVck=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747790656; c=relaxed/simple;
-	bh=lZLMjK2K/IkCRrZf3EhQzz3Qz8FtyBVKRFlZ/IDBeGs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=QTnFtmaH0AgnzQOCvXeUckeOiqguTnC4/tOJl6UVJAD/DpCUK7PvAu/yyadwiHXNbTWH5vzPECc9HeRtQwYRxQwnCyv6QQ7Ojwg5iuSgy+rzPiIPG59Xmq2ADsiY7+5rtuStULJ5ZY/GvFgZ2v7fkjxSsy0l4S0QNdOeV+yIULg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=p3Pjjw3l; arc=fail smtp.client-ip=40.107.22.78
+	s=arc-20240116; t=1747792521; c=relaxed/simple;
+	bh=XAR1k72g09SOfumt9KDnms5q1wmLPNU+r2AA7s1U0XY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=V/Y1WxEi9QncqgimOLAgp8wp5G5TjXORuSgqgngqMFO571faGMs1pLiiLs0DMQsI0OYbRa+GAu0mLK7pvu/+l9sw4/8f5pxEJLuG/T21lRr+f7oy0fXxm/bdggAaQoDhNRT42fLsrLzY1i2tnbZwP97WE8naSAjku+FJ7PUwb/U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=kFJcvYzz; arc=fail smtp.client-ip=40.107.22.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="p3Pjjw3l"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="kFJcvYzz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jDuDyrDXef2wNM/me5araJxCVdg3Zj4juqeubae6ubC1u1g6PDsDcfhOWEWXSKuxhubNSguAM3HqCeCBl6iBBnh6v6XYmcN0zzfLPpSbUYDRwv7TirM3ipAXotyje9ALgllhp6W1+kOgadibS/A7l0okSGbdkNN20xIXnKls+l6D8y04MpUaR4WNVD5uLvM0pWImlM9K9nUyUSjiLbK1gtS+8hJW9l+FheTSC4ko0piFrvTdyHi8qlxaUouqeXDO9+b6EBzPiS55S6MP0LggViD6XMRQao/VF+nbMWI3UkNRzEa7Eh1/oY5ANGA2IpcXz1cauSaAGDrV5TAd806+QA==
+ b=N68PJuWQYZgRo6iOWwRcP3157tE7+vylihhnTqET9hVS3cg6uCqJRbH3ipnMSZl2vGXLAGKm14Xwg7rHPfyy4m1ps8bu03FMnMwWaSeitqQdMjm833Hmm4mu6r60laJdsPoWIe9R2a7LzmNVdEyCAWkOOWR5saSnn4r+K9ZeY3nctEsaEq6D3/DAMQUlxk9fn14d+Dnb6w67oMRLr1EEUTBrEjjy/YN8yGlDiQZRyF8dcM24W3lA8oCEOhZxcvzx4nvYr8jXWh5fZEter6wU34gPguNbQd9SHklgSkhMcZKbYEaPJSdtYEsuhvx+lPaXdSDe6Iw+/jxYaTM9yTSA0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pXnWEx8fu5bWki+sIY2QVaeBjZac6lpbIAo0uLSScCY=;
- b=aN2cZmTyjun6oEDxVWYfcrBUUJoyyCpNQ4sg4jW9IaItfdNW/FsVl1j4loxTT7xB1qeFzLJbmBtakp+rmzW9wo8uogDZFluViUkJiHat00wL1EvdFMuVV8wvWfpCN6LI8+kBMsSrCzBcevu6WtfAUbUotn+Xn3ipOghQdclkNclK1gkuzVbMnoR8VGbEw0UWthU2Tfyb0/L1t8XZsy11gQqqMDmsDD/byGsqVydfDeiA0X2ysdLkXwvBtB36bNG0SS27fXaiDfH61gvR1pxsOW52LT02xlQl5p95RjoOyX4ITBxya5JcJ7Dp+GQqhcY7oAd/ya/HLhrPtyDqqi2MGg==
+ bh=D1l5Y26fE31eA+2VlxwXfT3gELk5pZJS8QoxYnKKdj8=;
+ b=gAz+RWhQYYzRNHDFcfTbr5VO9TeFSrvwHbRL36ayv0IcrPrSM3q2658PvRnMJ7ENs4j73YyHDXIb4Ug0eAWERn+3CvR65t3V1vDlaglQ9u3o2VsZeOm1RBVaWi7+Q6EXrIMYQsHd91ZSnS1QOrsTD+xe2Ab7/foMHA1p6MFXIyfpbxi5/1a2JuBtMxgKOAv9kfEJ02rDsHuXRMOtJybZfqLhuyBwt7KKPNi+wVRhSMfPVLUcnFIlzgohhVYxsxQqJwnJp+OR5Jte4aALw6wOpBGsRnPudVW6U0JWz1gEPS0GuZDfn53G4XLpbSPMcNB0KyXsFZDXuhm+28yV5yAWzA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pXnWEx8fu5bWki+sIY2QVaeBjZac6lpbIAo0uLSScCY=;
- b=p3Pjjw3l8KK1nMQMRXpGnf+pSokZAvN0Q9VFNJq//pAq+DTMw/ZfZGq6jQmQBMjEx+lgcNGkyrDSclGuupaXFLeCOy1/b/EFtfRD9xz717TiUrjqro+lhsTn1uzUEhqLbJyFD1+sHEuxrrFSyb1WKi0T+kellSSESs1DOc+ZavzdFUDBaR7mmvwo6dmzj/nzf0nbveZp57bNrDCajngwZxUZWLRPgVVV1sGfqISEsdE3Y3TgxMk5qfeIJzMJj+03ZlahfpmMsgnqCompECPyWLUtC7n0ywKP8KJ60op3Awzajr0NomHdsauHwOLIsxAH/mb+JdzI88P4trFIRJ3feQ==
+ bh=D1l5Y26fE31eA+2VlxwXfT3gELk5pZJS8QoxYnKKdj8=;
+ b=kFJcvYzz8zi3nW1qG8dc3uDP+4ryqZ6o0vJV9psHx454m5hyoWs3A/bWn63QWELvJl0Hiz4oAJ9DRlUJNjOv/DqGQPmAiBCAng6sVBrYB2fsQtXhfH3pARQl7ky1b8Mf4vqVW9PBtCz9HD0vyDGzz2fA9PRjiL8ZNmOHUNNv/NyYLHLa0sHDLVE+8Ztye8ejSuR6qkvKgG+mGovqlgpovLgE+4U0dLxmqfl+ue/L594aHt4dCRD3Q6uUbeCSDSoR7upqydWLnm+GoUMzyOgAC+QGoHuNm8H7rU9ExTkIuONU7tDyyxdb2LcSsb6mOTDoka55BV5UrDlVPc+g9UYloQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by AM8PR04MB7780.eurprd04.prod.outlook.com (2603:10a6:20b:24c::12) with
+ by AS8PR04MB8948.eurprd04.prod.outlook.com (2603:10a6:20b:42f::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.31; Wed, 21 May
- 2025 01:24:10 +0000
+ 2025 01:55:09 +0000
 Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
  ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
  ([fe80::2755:55ac:5d6f:4f87%7]) with mapi id 15.20.8722.031; Wed, 21 May 2025
- 01:24:10 +0000
-Message-ID: <36d644aa-5143-4a5a-a01e-a67792288ba3@oss.nxp.com>
-Date: Wed, 21 May 2025 09:23:56 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] media: amphion: Add H264 and HEVC profile and level
- control
-To: Nicolas Dufresne <nicolas@ndufresne.ca>, mchehab@kernel.org,
- hverkuil-cisco@xs4all.nl
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com,
- eagle.zhou@nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20250512020137.211-1-ming.qian@oss.nxp.com>
- <3e794e17ab846e29fb5922dc94b969b8cf9334a8.camel@ndufresne.ca>
-From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-In-Reply-To: <3e794e17ab846e29fb5922dc94b969b8cf9334a8.camel@ndufresne.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ 01:55:09 +0000
+From: ming.qian@oss.nxp.com
+To: mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl,
+	mirela.rabulea@oss.nxp.com
+Cc: nicolas@ndufresne.ca,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	xiahong.bao@nxp.com,
+	eagle.zhou@nxp.com,
+	linux-imx@nxp.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3] media: imx-jpeg: Account for data_offset when getting image address
+Date: Wed, 21 May 2025 09:54:07 +0800
+Message-ID: <20250521015408.261-1-ming.qian@oss.nxp.com>
+X-Mailer: git-send-email 2.48.1.windows.1
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0052.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ac::13) To PAXPR04MB8254.eurprd04.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0021.apcprd02.prod.outlook.com
+ (2603:1096:4:195::10) To PAXPR04MB8254.eurprd04.prod.outlook.com
  (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,451 +74,220 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AM8PR04MB7780:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95123351-481c-42d8-bb33-08dd98062d53
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AS8PR04MB8948:EE_
+X-MS-Office365-Filtering-Correlation-Id: 062635bc-fcec-4b4c-a32a-08dd980a83db
 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|52116014|1800799024|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Y1FrMEovakRzYlliYW1BSXVtVzZHVEhHb1BTZDNwLzRXOVN4eEt6R3BwWmNF?=
- =?utf-8?B?b1JMT3hFTXBtSUp4VkhMUysxZkJicWFmRi92YzZ3RDhoUFZTcHhtUW9hd1hj?=
- =?utf-8?B?VHhzSXBCZURidUpYZnhUV01lRWIwOU9UTnMzNUdCMmpaRU1KcTdnYkpqQ3E4?=
- =?utf-8?B?MUNTaUxHcHkxLzVmb0FZR2ZCMEFucEQ0VjJMalV5OGVkWGUyUzMzRnlkakJK?=
- =?utf-8?B?NC9ON3pLN3JlVEtUZS9QMHl5R0RLQ3dZZkxFQnVUQjVNbTVJeU1zZGt6ODJG?=
- =?utf-8?B?MlNoY1c2SUhxQ2trZERYbkFFN2Mwc0lhRWFpcFEwa2IwRUhhMnFrZHZuUmRk?=
- =?utf-8?B?cVpYQUNkOEFoTzY4QjBHeUQzejZPMUo2UGV1WVBHMVQ1V3h6REkzZFBtak8x?=
- =?utf-8?B?ZjBpQ0Q2S0JjM2VvQ053WE44dHF3bi9veFpVMHNKdE9ZVEUzQjR3NkVWc1M1?=
- =?utf-8?B?OGdIbmU5dGpxbjFSV1dvY0RnczRSOGF0VG4zRGZjQXcvUlBXTlRwbWZWLyty?=
- =?utf-8?B?eU5iUXVJZGFCSDkzMERSQ2VhdjN3UVI4UWZOd2VmWGtUZGdHR2pTeTVwWGZq?=
- =?utf-8?B?NXYwbzNCM1d1RHBxV0F3VjRTWjlXQ1dYeHBLYVpoVlNlMmNhdFpONERBMm95?=
- =?utf-8?B?Q2ZlSCtzb0ZMUjAxK0orbWV1NTMzY3g0cjRyR2dGVEh1QWJ1QWhpWVRvM2hJ?=
- =?utf-8?B?TFFRdytqUlN2RG9xK1NWNUpYRWVYZElNVDRaYlNoUkttTzRFMUdXVDdvSG1T?=
- =?utf-8?B?RUsrSFJxZERkRlpCb1hxa3hsMWFoMTZPM2FqOHp3bjFGTjFlYUd1Z3NEcDhq?=
- =?utf-8?B?ellIdldPUndXUlBMZlRRb0dsZDBkZThOdFZ0YjFkRE9XQUNIdE1FQmRwUm9x?=
- =?utf-8?B?NkJIT2Y1VzZTNGcvNU5WVzA0TTZmU3ZIMUt3dGNrVGdwMG53eERtbUpCdUZ3?=
- =?utf-8?B?NWRheXhTajczVEQ1TUhYbUdhUUZFV2oySERhdHRxN3FLM3dBZzhSdnBybjA0?=
- =?utf-8?B?T0Z5UG9qYStlcC9VT1FvNkJNRUNiWXRJTC80M0VuYUdRbjlOaGRxVXhGTVdK?=
- =?utf-8?B?TmhuVW1hamNIQ3AvUHlVWnhHNnoyem9iUFJudE9DaW9sOGpqSGxNRUlTTVZG?=
- =?utf-8?B?UGVJcE8zeDJvWHVkUTBWaXNzSS9Cd2FHQm04M09ta0ZJQjdaY3MyVlF0Ky9N?=
- =?utf-8?B?QzRBZTJrODkyd2haTFNCR2J0NHJWNmpyQ0Q1cVhEZi9kd2IzZldaWkRPc2ZW?=
- =?utf-8?B?L0xqNk1vSkltQThiLytZV3ZVcEFIZHlLY3hBUU1zelhHMlQwTEUxcHdvVUNv?=
- =?utf-8?B?OEMxdGhTVEN2dmkxRmJrVFdFaUJkU0NVYWVXM3EzbU9LK1ppaVE0M3pXNnNT?=
- =?utf-8?B?NGFuYTV0Y3E2c0Q5YUEzdzBvZy9LN1ZvNHlRY1IvMmNSSnR5TUl3NG1IMkho?=
- =?utf-8?B?SVZoMGpGQVVpWTEwNjY0TUExSFVCaFk2Z1BNUlgwYm9rbFJDa2dnT1YyZCti?=
- =?utf-8?B?VVpzRFJIMTZ4ejJ4d1FYRlk0TkZUdlJlNEV3U1hFTGFNbXQxRGZSZ3JVQXUy?=
- =?utf-8?B?ekd4VHJrMHhDWHpXeHAra05OWDNueitBbTdXRlFKWTZSaFpiZVloZlY0M3RZ?=
- =?utf-8?B?NldjSWZmS3lSanExTEIzMUV6bkxERnRsZDBYc3d6VWtNd3RoYk5uWDFCTnhU?=
- =?utf-8?B?L0E0Y0M1elplTGpnUE1ubjhSdkJUanV0djRzb2dqaEpIM0p0a0JLOElYSmlW?=
- =?utf-8?B?OFcweUdUOXpmdGJJdVQrNTlMUkVudDAvS0dvZGdMckNNQVJVdjU2UUZndTVB?=
- =?utf-8?B?WmZ2dnd3UTlELzdaVXlXa0xwUTlKMElrQ2pEMjUyRlRoc2dHMU9Wa245U3A3?=
- =?utf-8?B?RjFqU3p6Y1BJMUZvNU5MRU5rSEdhR3pHK0xGcUl0QkwybkE9PQ==?=
+	=?us-ascii?Q?KHn1+pirKjfhhavRBZwqMd52SHVsW8s1jW6hk6fmpz8IAXgrwAuYJ7e21Mxo?=
+ =?us-ascii?Q?2MPMfWI/pLapH8aoWRVdBV9me+hS+zH2jqY/BZ3Qdwl5qceugRL+atxU42Dk?=
+ =?us-ascii?Q?LIMuahBdJ7XK2jQjJPtRgT6kP2fEDBk9Zcyf+n6mbrhkpAQbAPrH8Ez6fT6s?=
+ =?us-ascii?Q?jv3IvtLupjdeTqbmG+9jeK5rvJGFJ/RxJGgslRn8TinzcpGoXRcm/7QtM6ap?=
+ =?us-ascii?Q?aC2/+4/tTBLUuK5nvPh528+jOUuZzhR2y3HRkOv5/HVqnI9aOkf1C0db94Kl?=
+ =?us-ascii?Q?go70yFlphgjmuW3PX1oJ0RdlYzKlaiJyyfTd2bizsNK7lezOb1kfHFEsQr7v?=
+ =?us-ascii?Q?DMQT1pKkYasiOzdPgR75jqyh23VuBx4Rmop2lXpSFYIyuaai+Kic8QU3V5xt?=
+ =?us-ascii?Q?wk5Yy4slmnmq3vSzXjGziHDEYMx4dd38LcALuuz5Do49DQD5nDpFxs/wr+if?=
+ =?us-ascii?Q?6OeAhAbG9KFLvqsZN5tquiY2pJltgy4oYebtLMw0I90NKldvUT9Gx/PWJJCk?=
+ =?us-ascii?Q?LzQ/2l4lUGk8Fx7nY8RsHmjS1qo8sSOhr+ULJzhd9x6gC5DXu2dN7QEVgSbr?=
+ =?us-ascii?Q?7CI21nDcnLanzPKFjL7xRaaO0I7RU1BjZbs6516+jiLytTUg2VarMUjmInmS?=
+ =?us-ascii?Q?QFFPmMGPW6snxaW/PCytwBdWmuBgEuV0yQj6sxow4S/63NoZlJq1cJRZFeAl?=
+ =?us-ascii?Q?mak81t4Oti7ntO4W4mphOzMA5GZKbyhUb85bLnM2tKjKep3ROXh+nEHsz1Hh?=
+ =?us-ascii?Q?OFSG2hfwPspug5yr7zXD7qO8K3oI8pT0+lbwz9glvhDS1vNVSxgASDTOl3Xr?=
+ =?us-ascii?Q?5kptvOnGg0RRTmn7F+2CcZe5YHn3rYbyjVzlWj7yJNDq+gOiM9PSL0eLg3t9?=
+ =?us-ascii?Q?x5XrP4Ds3dGQCvrmDrGxgDHsPwRAR5o+brVQ+ZGbEdFCcVa7pDbTYBq91oU7?=
+ =?us-ascii?Q?w81c8s6Nxqzx14S9GxW97JRi8hMei6ApMakzR75yWiyomyBNYrfcb/gEWesR?=
+ =?us-ascii?Q?N1lZrVnwizrQpKbTjSmfDJHHKZT3uZa5dh1r1gTH0WwMCCeJB/E9vGAJ0fEr?=
+ =?us-ascii?Q?gk0LdF/84EUroaDslaxjSjqw0EhP1RBM4TDtHAGqBDxfJ0d6oaM3NtGxhGME?=
+ =?us-ascii?Q?+tVFcyl7+PZQ6qlgjT3uxlndDYYR9E9q5aVJ1KWOKvOtpeFDh4qYXrHJ9iD6?=
+ =?us-ascii?Q?U87ZdDWU5yebrDy/rIP/Wihd6oXK28SgMb8ftFGEVktQvacOQIZEPWbM83rg?=
+ =?us-ascii?Q?oT9Ljr+E4tQwrnHzwvPngiKLDe66cJS2TFphtgXuePXYopH5FbrHcsvIsyZx?=
+ =?us-ascii?Q?N19dKOkfW1AAVfOYLKVruxxiZ6+985Dk3KCWQ26owBwAyGXuuWoDrnrI+8by?=
+ =?us-ascii?Q?b3v/oszAg8m+4I7kRzGZNICeFIxxWC8NPmL0OMHNcE6LIqE9g3eFks9pYrM1?=
+ =?us-ascii?Q?isOUbqzA86FbIMTWmn986Qt6OEjxAKW+ZlZwlti0GpdaeHDjJZ2o/w=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(52116014)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TXlJaHlsSi80cHJuSVJmVDlYV2o0RmU0dmNYWFhRNlVFVFhMaEdacnlUeDFV?=
- =?utf-8?B?MEtlYmw4ajVxdGNrZnBkNk1OMkU2Y3o2THBUVTNuMzcxcHBhakF0SWFIU1p0?=
- =?utf-8?B?OXA3ckIyN3dmTEh4dVFFeldNcDZiSUJBcnRUZWNsQXN5dk1GU01pWTlYdEdY?=
- =?utf-8?B?N0RTSXhNK3hFajZ6SFVFMDM0enJvMWdSaGhWQmNZemdhYS9XZmJIRUIwTTk5?=
- =?utf-8?B?azhiNC96NVNPTG95aUE3aEI2SnpQeEhHdUFJcUs0Sk9abHVWZ2oxUWlrY09h?=
- =?utf-8?B?Y2tEMCtVT2pkT1c3Ry9uRUdZWnc3WEwzK1U2L2RnbFp5MStNZWhiSG43a2p5?=
- =?utf-8?B?YWRkZE8yZTdrRXh5N1FiRk0wejYzeG8rV2MvbFFKTXc4OU5pVDgydmtNeHcz?=
- =?utf-8?B?RXBXaUhWODk1QlNqN0hqNHA5NmdYSkpJem91SERZNlV0L2EyYjB2cnhyRVhF?=
- =?utf-8?B?eUU2QnRFOHdDOHlBcUhOdmNmcEhtdFhNckJzYnBZbWQ0ck1TRFZyVkNzeVdJ?=
- =?utf-8?B?eUM5QU5GR0xRNDQ5RXIxNjJtWlZYZG9KdG56QVN0QUNxUTdzK2JIYi9pa0xZ?=
- =?utf-8?B?blBWTmZNSW5GTlU2bnhHYVVHVVFKOXNBNWEvUUpnMUpNczE2aWptQTNNNWVy?=
- =?utf-8?B?MzZKU3ZhWnZ0cTk4STdkZFh5UGl2S01SQXdjQ21JajdSUG44TFMrdDhteEx1?=
- =?utf-8?B?dTg0TXdjSG80eWV1UHJyL2pGQ09ObmJ0dFJrTFN4TFo4b05GZVFhSmdlTVRG?=
- =?utf-8?B?U283QmFZUDEyV1VLOUEvVW0vYXFlbGhOSGc0dGxFOEhBTlJ3dWpxQnZ5ZS9F?=
- =?utf-8?B?ejc1SjNKZWJFQmdlQ2ErSEtJbExxZSsrM1lZRThDNUVQS2lCeHRpbFR6cjJD?=
- =?utf-8?B?NVQ0ZE9RTXVJdmJWZFN3aGdiNkZoUjR2SEpOQVdZNUJZQUozMzAwSHVRMjFl?=
- =?utf-8?B?V3FyRFpoK2NCbm1JVGZDazBNYzIvLzdLd0xJNlFHRWRucGJkS3VlcVdER2tl?=
- =?utf-8?B?TFVQYnl3d2RnSmRtMWZjT2NEWG84QkpQaHZxaUtScnpCYXFCQXJTVVJvNk96?=
- =?utf-8?B?OU1TcHo1ZGVOaHZkYlFCRnlzd3VZOUlwMDMrdnhkaUxsUUNrTzg4dHN3WTdB?=
- =?utf-8?B?dGJSSFM1S2dmVzQ0Qk5KSUR4ZS9DbVpRc25BeEVyR1kwMzFyaTVOdVFNR3BU?=
- =?utf-8?B?aGlqbElYM3VLT3BUM3J4dXBVKzErVVhEZno0azcrNkpiNGVrNSsvRTd0Q09s?=
- =?utf-8?B?K1E2am9USTVtdFZHYXNVbXN5MUEyMi9zaFNnbDlkOEM3cHIwaExqQW5CdFc5?=
- =?utf-8?B?VzN1OUJaSnBYOWp2ekNDSVBwcjkySXZ2bXNkRlhabXlXaE4yYXprSFRGenRD?=
- =?utf-8?B?bHVDSXoycytWdVY1WUlnaWREZGtFdmNLSTJDWVFaVE9CNm1RNkZjaEo3WmR5?=
- =?utf-8?B?MW40ckRFb3JLa0pwbDYvc1orOVN0WHB4b1RTQlZCTXg1cVp2WStKNEpXd010?=
- =?utf-8?B?aThnamdyZEdPUDA5MXNRN0RlSHROSE1naTZhZU5EekVVWHYyWUJCbWt3cGxm?=
- =?utf-8?B?Ujlwdm9PWE1OdFd1RDFVSUtwVGdOV3k4SGxXb2RzU0NrdWlGa0c0NXBaS2hl?=
- =?utf-8?B?Ti9vbUQweC9LZDNoQzA1QTlZNk5sRkh3ZVcrOTBHaTZGN3pCOGZwa2ZxVFBF?=
- =?utf-8?B?MG14WVZKWXcyamp4YkZobXpUOHdtY094dFRBUmZQeDB6ZXV3Y3JXWFA1ZWpj?=
- =?utf-8?B?SGdWQ2dseU00dnJ1ZmRKY1llcU9BN25jdVhSRVpMR2ZNV3BxRXcwSXl0Yjdz?=
- =?utf-8?B?UUNEVjBVeXVBOHpRN0JPaVFlUExLOXFKc0E1aXpyOHpkVWtzZmdDSHB5bHNI?=
- =?utf-8?B?Q3NGVHlySlBuOXdYWUtXM0JOWkt2TFdsMFBFSmxNSDROYkg5czEvbzBpWUph?=
- =?utf-8?B?bkRaQVZzVUIxTGtwNTV2cWd3RlFWUVlNYisrUkhRNFRXaG1ibmFpd0lkY3VQ?=
- =?utf-8?B?UFRIWHI5blFnaU5IS3FPWkdRZXpEZTNtOEczb05KTHBMZVFLMksvQnp0Vzly?=
- =?utf-8?B?Z21uRW54TWl4WjhCT01DcVdPVnNySHY0VXQvSGNYaUUwK1ZGbHlGZEpDY3dw?=
- =?utf-8?Q?kSHExDfNPCk9tSQX1MoxlKH1K?=
+	=?us-ascii?Q?Y7v5X0bvbvmF12aeaPeUDKmjhdrnsXPSIb+swHIQu5duVp9QGDOkVmxZ9xrI?=
+ =?us-ascii?Q?2KGu1t354AKuWsr5W/ht7llQKc2icz9wbZMYg1mzan7LMNkyag8t/uONyHbb?=
+ =?us-ascii?Q?aqXwGNBp7ZibRtbu+9yIUf9hWYK6k/ysWP6vsu7qdzvWYZqrSbXWN0rXP9F3?=
+ =?us-ascii?Q?M35EutiyyhSatocBqrprcJM/uZDMoO8MkyhUmFrjwCpykEvqMfjlx1f4RUH/?=
+ =?us-ascii?Q?0xP0Nh9Vdl94rpbpCV5sik43AbaLtmiOMqpp41algmxwGLWH1/FXu6Loeeq8?=
+ =?us-ascii?Q?K2FGtxX8zdfvNLC7cNSALhxHfse4K3ov1OeEl5Z28ZrIxaUq3KN7BvcdqzM3?=
+ =?us-ascii?Q?DKMEIXsacsOZ99LIBTF3ym89EBjjhrlqYvm/DbmaqZTsB41RsgrNpAgNo8Yu?=
+ =?us-ascii?Q?vd0dkBkmT7ZLf5h4xhMoPRl7exH2WQajE/TXHGzsIVPp6UiF/pKvOru0QxRu?=
+ =?us-ascii?Q?TK8F+wcHs23dohGGMiDNHPnZYK1ZS+8XvFonPYeug2ynq/Oy32eOq0fvanCy?=
+ =?us-ascii?Q?XFxBBOT8jRUOzxUHA6XqH824UWsK8Lg+WoGNL2hMkycJpWcsoRotPYFywTGz?=
+ =?us-ascii?Q?bk/UxfG83y6vBaepcQ/Xik0AYWQX7lIR9J5HV11ro0OuIpb1UJGSf9nATHAm?=
+ =?us-ascii?Q?rjwEZcA1rrs/atNr2cvyyzAPXm56NvdlL+oIKNnVtSm47zFieftk4ZpIkyJ2?=
+ =?us-ascii?Q?g+cYnFbVbOJh2y6H+vRvtWnxwVllf2KEpGVC2girSPNppgHuKUbiEBJS1174?=
+ =?us-ascii?Q?ZJ7kPsM721FCbm5C12pYQAfTSwmMrRPtzRlWtQoZwbtHU1XQXd0waYFDeNpj?=
+ =?us-ascii?Q?WvMTuc6CoOAI9Ma4QyeoslRewkoMkxl/oU3LHCUx+8prbeLxU+//d9RIOnSj?=
+ =?us-ascii?Q?Izr9VJNLGrYBf207JWNTvkZtqSg0EQermdhSXZHQe90Ny+4RSUkErMIyUZ6Z?=
+ =?us-ascii?Q?XdhO5YalSPdn8ifP1OUKXIGMcs5WRBnf4SWvylWum93D2wESYDDaJKJwXyRe?=
+ =?us-ascii?Q?Usqe07aEPkjZey3S7/ubXmsiFOVw4HDIJ8sj3MW8SLAA6svRovgVbLSDDu4V?=
+ =?us-ascii?Q?20/P4jKBCcahFlwUiVqmqodOMeqSa94x1ZQw9tdKs5My2L9P7zEbVZG1aKuh?=
+ =?us-ascii?Q?pmUbRpnGXQnDybUKd534HY1vMM5KC9EZeWkup6t3nn45xe56Dssok+b4ZxIO?=
+ =?us-ascii?Q?znEJ68kuBJrbaLjIwf4XQNZ2VXopZX6ecIAfIOdvkxX4kVYDhVLNuJPkmW3a?=
+ =?us-ascii?Q?s49w05C9yXJ9tfuChWj2ATG2IrFZVXngY05M5l1SWDJZYGSvwv0CfT3P446d?=
+ =?us-ascii?Q?SH40VRZAOi8yy4/D0B0kqICKh1oH1YqLPGNmRUSZwD4XWWpLaTEfxlNz93wV?=
+ =?us-ascii?Q?Nh2a1T23tbatIh2wEKDDpU+by8XeLvbjotqfV9okQsg+6fD4Ou89soj6uD2l?=
+ =?us-ascii?Q?F/dthxGQmIfvOuXAdo0vX71MUNxww5DxuJy5CKrQjXfhuQoVY7ylvPgncg+L?=
+ =?us-ascii?Q?iVi8BmX0qizhrhPhFgTVtty6obMB0GxWky1jYOvPjJ2DwPD1pHVkTYixStBw?=
+ =?us-ascii?Q?w0CgadRVe3MEeF8vy3eiFakhS5SJ4/zGUqwafTD1?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95123351-481c-42d8-bb33-08dd98062d53
+X-MS-Exchange-CrossTenant-Network-Message-Id: 062635bc-fcec-4b4c-a32a-08dd980a83db
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 01:24:09.9589
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 01:55:08.9544
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e+CqTGLYCmglMqHgBZWEM5cAFYZNpGAfhz8k+NekFMBYlHV8gB3XX4nEqcSb8c/bT9VHr8AJQo9OQNuoZeCKxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7780
+X-MS-Exchange-CrossTenant-UserPrincipalName: Uye58QsAwZ62W7y0wnV0nu9MatzbsdE3DfvyVA8a7zCh6ZxtagFOSXY1ODOQxkIKX/qycjrrlwUnw6Bo74ncOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8948
 
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-Hi Nicolas,
+Applications may set data_offset when it refers to an output queue. So
+driver need to account for it when getting the start address of input
+image in the plane.
 
-On 2025/5/21 5:04, Nicolas Dufresne wrote:
-> Hi Ming,
-> 
-> got one final question below...
-> 
-> Le lundi 12 mai 2025 à 10:01 +0800, ming.qian@oss.nxp.com a écrit :
->> From: Ming Qian <ming.qian@oss.nxp.com>
->>
->> For format H264 and HEVC, the firmware can report the parsed profile idc
->> and level idc to driver, these information may be useful.
->> Implement the H264 and HEVC profile and level control to report them.
->>
->> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->> ---
->> v4
->> - Fix a building warning reported by kernel test robot
->>
->> v3
->> - Check H264 Constrained Baseline Profile
->> - Check H264 Level 1b
->> - Remove support for V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH
->> - Remove support for V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH
->>
->> v2
->> - Add support for V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE
->> ---
->>   drivers/media/platform/amphion/vdec.c        |  59 +++++++++
->>   drivers/media/platform/amphion/vpu_defs.h    |  12 ++
->>   drivers/media/platform/amphion/vpu_helpers.c | 123 +++++++++++++++++++
->>   drivers/media/platform/amphion/vpu_helpers.h |   7 ++
->>   drivers/media/platform/amphion/vpu_malone.c  |   5 +-
->>   5 files changed, 205 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platform/amphion/vdec.c
->> index 85d518823159..55067d9405c2 100644
->> --- a/drivers/media/platform/amphion/vdec.c
->> +++ b/drivers/media/platform/amphion/vdec.c
->> @@ -232,6 +232,35 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
->>   			  V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE,
->>   			  0, 1, 1, 0);
->>   
->> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
->> +			       V4L2_CID_MPEG_VIDEO_H264_PROFILE,
->> +			       V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH,
->> +			       ~((1 << V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE) |
->> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE) |
->> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MAIN) |
->> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED) |
->> +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_HIGH)),
->> +			       V4L2_MPEG_VIDEO_H264_PROFILE_MAIN);
->> +
->> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
->> +			       V4L2_CID_MPEG_VIDEO_H264_LEVEL,
->> +			       V4L2_MPEG_VIDEO_H264_LEVEL_6_2,
->> +			       0,
->> +			       V4L2_MPEG_VIDEO_H264_LEVEL_4_0);
->> +
->> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
->> +			       V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
->> +			       V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10,
->> +			       ~((1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN) |
->> +				 (1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10)),
->> +			       V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN);
->> +
->> +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
->> +			       V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
->> +			       V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2,
->> +			       0,
->> +			       V4L2_MPEG_VIDEO_HEVC_LEVEL_4);
->> +
->>   	ctrl = v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ctrl_ops,
->>   				 V4L2_CID_MIN_BUFFERS_FOR_CAPTURE, 1, 32, 1, 2);
->>   	if (ctrl)
->> @@ -1166,6 +1195,35 @@ static void vdec_clear_slots(struct vpu_inst *inst)
->>   	}
->>   }
->>   
->> +static void vdec_update_v4l2_ctrl(struct vpu_inst *inst, u32 id, u32 val)
->> +{
->> +	struct v4l2_ctrl *ctrl = v4l2_ctrl_find(&inst->ctrl_handler, id);
->> +
->> +	if (ctrl)
->> +		v4l2_ctrl_s_ctrl(ctrl, val);
->> +}
->> +
->> +static void vdec_update_v4l2_profile_level(struct vpu_inst *inst, struct vpu_dec_codec_info *hdr)
->> +{
->> +	switch (inst->out_format.pixfmt) {
->> +	case V4L2_PIX_FMT_H264:
->> +	case V4L2_PIX_FMT_H264_MVC:
->> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_PROFILE,
->> +				      vpu_get_h264_v4l2_profile(hdr));
->> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_LEVEL,
->> +				      vpu_get_h264_v4l2_level(hdr));
->> +		break;
->> +	case V4L2_PIX_FMT_HEVC:
->> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
->> +				      vpu_get_hevc_v4l2_profile(hdr));
->> +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
->> +				      vpu_get_hevc_v4l2_level(hdr));
->> +		break;
->> +	default:
->> +		return;
->> +	}
->> +}
->> +
->>   static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_dec_codec_info *hdr)
->>   {
->>   	struct vdec_t *vdec = inst->priv;
->> @@ -1189,6 +1247,7 @@ static void vdec_event_seq_hdr(struct vpu_inst *inst, struct vpu_dec_codec_info
->>   	vdec_init_crop(inst);
->>   	vdec_init_mbi(inst);
->>   	vdec_init_dcp(inst);
->> +	vdec_update_v4l2_profile_level(inst, hdr);
->>   	if (!vdec->seq_hdr_found) {
->>   		vdec->seq_tag = vdec->codec_info.tag;
->>   		if (vdec->is_source_changed) {
->> diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/media/platform/amphion/vpu_defs.h
->> index 428d988cf2f7..f56245ae2205 100644
->> --- a/drivers/media/platform/amphion/vpu_defs.h
->> +++ b/drivers/media/platform/amphion/vpu_defs.h
->> @@ -134,6 +134,7 @@ struct vpu_dec_codec_info {
->>   	u32 decoded_height;
->>   	struct v4l2_fract frame_rate;
->>   	u32 dsp_asp_ratio;
->> +	u32 profile_idc;
->>   	u32 level_idc;
->>   	u32 bit_depth_luma;
->>   	u32 bit_depth_chroma;
->> @@ -147,6 +148,17 @@ struct vpu_dec_codec_info {
->>   	u32 mbi_size;
->>   	u32 dcp_size;
->>   	u32 stride;
->> +	union {
->> +		struct {
->> +			u32 constraint_set5_flag : 1;
->> +			u32 constraint_set4_flag : 1;
->> +			u32 constraint_set3_flag : 1;
->> +			u32 constraint_set2_flag : 1;
->> +			u32 constraint_set1_flag : 1;
->> +			u32 constraint_set0_flag : 1;
->> +		};
->> +		u32 constraint_set_flags;
-> 
-> Shouldn't this be u8 all over to match the fact the firmware reports this over a single byte ?
-> 
-> Nicolas
-> 
+Meanwhile the mxc-jpeg codec requires the address (plane address +
+data_offset) to be 16-aligned.
 
-firmware use u32 to transmit message data:
-	struct vpu_rpc_event_header {
-		u32 index;
-		u32 id;
-		u32 num;
-	};
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+---
+v3
+- Add Fixes tag, it's a bug fix, as missed consider data_offset
 
-	struct vpu_rpc_event {
-		struct vpu_rpc_event_header hdr;
-		u32 data[128];
-	};
+v2
+- Verify the address alignment
+---
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 47 ++++++++++++++-----
+ .../media/platform/nxp/imx-jpeg/mxc-jpeg.h    |  1 +
+ 2 files changed, 37 insertions(+), 11 deletions(-)
 
-And in amphion vpu decoder firmware 1.10.0, it increase the data number of
-SEQ_HDR_FOUND event from 28 to 29. the constraint_set_flags is stored in
-the data[28], so although only 6 bits are used, u32 is still used here.
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+index 5c17bc58181e..8681dd193033 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -598,6 +598,27 @@ static void _bswap16(u16 *a)
+ 	*a = ((*a & 0x00FF) << 8) | ((*a & 0xFF00) >> 8);
+ }
+ 
++static dma_addr_t mxc_jpeg_get_plane_dma_addr(struct vb2_buffer *buf, unsigned int plane_no)
++{
++	if (plane_no >= buf->num_planes)
++		return 0;
++	return vb2_dma_contig_plane_dma_addr(buf, plane_no) + buf->planes[plane_no].data_offset;
++}
++
++static void *mxc_jpeg_get_plane_vaddr(struct vb2_buffer *buf, unsigned int plane_no)
++{
++	if (plane_no >= buf->num_planes)
++		return NULL;
++	return vb2_plane_vaddr(buf, plane_no) + buf->planes[plane_no].data_offset;
++}
++
++static unsigned long mxc_jpeg_get_plane_payload(struct vb2_buffer *buf, unsigned int plane_no)
++{
++	if (plane_no >= buf->num_planes)
++		return 0;
++	return vb2_get_plane_payload(buf, plane_no) - buf->planes[plane_no].data_offset;
++}
++
+ static void print_mxc_buf(struct mxc_jpeg_dev *jpeg, struct vb2_buffer *buf,
+ 			  unsigned long len)
+ {
+@@ -610,11 +631,11 @@ static void print_mxc_buf(struct mxc_jpeg_dev *jpeg, struct vb2_buffer *buf,
+ 		return;
+ 
+ 	for (plane_no = 0; plane_no < buf->num_planes; plane_no++) {
+-		payload = vb2_get_plane_payload(buf, plane_no);
++		payload = mxc_jpeg_get_plane_payload(buf, plane_no);
+ 		if (len == 0)
+ 			len = payload;
+-		dma_addr = vb2_dma_contig_plane_dma_addr(buf, plane_no);
+-		vaddr = vb2_plane_vaddr(buf, plane_no);
++		dma_addr = mxc_jpeg_get_plane_dma_addr(buf, plane_no);
++		vaddr = mxc_jpeg_get_plane_vaddr(buf, plane_no);
+ 		v4l2_dbg(3, debug, &jpeg->v4l2_dev,
+ 			 "plane %d (vaddr=%p dma_addr=%x payload=%ld):",
+ 			  plane_no, vaddr, dma_addr, payload);
+@@ -712,16 +733,15 @@ static void mxc_jpeg_addrs(struct mxc_jpeg_desc *desc,
+ 	struct mxc_jpeg_q_data *q_data;
+ 
+ 	q_data = mxc_jpeg_get_q_data(ctx, raw_buf->type);
+-	desc->buf_base0 = vb2_dma_contig_plane_dma_addr(raw_buf, 0);
++	desc->buf_base0 = mxc_jpeg_get_plane_dma_addr(raw_buf, 0);
+ 	desc->buf_base1 = 0;
+ 	if (img_fmt == STM_CTRL_IMAGE_FORMAT(MXC_JPEG_YUV420)) {
+ 		if (raw_buf->num_planes == 2)
+-			desc->buf_base1 = vb2_dma_contig_plane_dma_addr(raw_buf, 1);
++			desc->buf_base1 = mxc_jpeg_get_plane_dma_addr(raw_buf, 1);
+ 		else
+ 			desc->buf_base1 = desc->buf_base0 + q_data->sizeimage[0];
+ 	}
+-	desc->stm_bufbase = vb2_dma_contig_plane_dma_addr(jpeg_buf, 0) +
+-		offset;
++	desc->stm_bufbase = mxc_jpeg_get_plane_dma_addr(jpeg_buf, 0) + offset;
+ }
+ 
+ static bool mxc_jpeg_is_extended_sequential(const struct mxc_jpeg_fmt *fmt)
+@@ -1029,8 +1049,8 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
+ 			vb2_set_plane_payload(&dst_buf->vb2_buf, 1, payload);
+ 		}
+ 		dev_dbg(dev, "Decoding finished, payload size: %ld + %ld\n",
+-			vb2_get_plane_payload(&dst_buf->vb2_buf, 0),
+-			vb2_get_plane_payload(&dst_buf->vb2_buf, 1));
++			mxc_jpeg_get_plane_payload(&dst_buf->vb2_buf, 0),
++			mxc_jpeg_get_plane_payload(&dst_buf->vb2_buf, 1));
+ 	}
+ 
+ 	/* short preview of the results */
+@@ -1889,8 +1909,8 @@ static int mxc_jpeg_parse(struct mxc_jpeg_ctx *ctx, struct vb2_buffer *vb)
+ 	struct mxc_jpeg_sof *psof = NULL;
+ 	struct mxc_jpeg_sos *psos = NULL;
+ 	struct mxc_jpeg_src_buf *jpeg_src_buf = vb2_to_mxc_buf(vb);
+-	u8 *src_addr = (u8 *)vb2_plane_vaddr(vb, 0);
+-	u32 size = vb2_get_plane_payload(vb, 0);
++	u8 *src_addr = (u8 *)mxc_jpeg_get_plane_vaddr(vb, 0);
++	u32 size = mxc_jpeg_get_plane_payload(vb, 0);
+ 	int ret;
+ 
+ 	memset(&header, 0, sizeof(header));
+@@ -2027,6 +2047,11 @@ static int mxc_jpeg_buf_prepare(struct vb2_buffer *vb)
+ 				i, vb2_plane_size(vb, i), sizeimage);
+ 			return -EINVAL;
+ 		}
++		if (!IS_ALIGNED(mxc_jpeg_get_plane_dma_addr(vb, i), MXC_JPEG_ADDR_ALIGNMENT)) {
++			dev_err(dev, "planes[%d] address is not %d aligned\n",
++				i, MXC_JPEG_ADDR_ALIGNMENT);
++			return -EINVAL;
++		}
+ 	}
+ 	if (V4L2_TYPE_IS_CAPTURE(vb->vb2_queue->type)) {
+ 		vb2_set_plane_payload(vb, 0, 0);
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
+index fdde45f7e163..44e46face6d1 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
+@@ -30,6 +30,7 @@
+ #define MXC_JPEG_MAX_PLANES		2
+ #define MXC_JPEG_PATTERN_WIDTH		128
+ #define MXC_JPEG_PATTERN_HEIGHT		64
++#define MXC_JPEG_ADDR_ALIGNMENT		16
+ 
+ enum mxc_jpeg_enc_state {
+ 	MXC_JPEG_ENCODING	= 0, /* jpeg encode phase */
 
-	if (pkt->hdr.num > 28)
-		info->constraint_set_flags = pkt->data[28];
+base-commit: b64b134942c8cf4801ea288b3fd38b509aedec21
+prerequisite-patch-id: 0000000000000000000000000000000000000000
+-- 
+2.43.0-rc1
 
-Regards,
-Ming
-
->> +	};
->>   };
->>   
->>   struct vpu_dec_pic_info {
->> diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/media/platform/amphion/vpu_helpers.c
->> index d12310af9ebc..886d5632388e 100644
->> --- a/drivers/media/platform/amphion/vpu_helpers.c
->> +++ b/drivers/media/platform/amphion/vpu_helpers.c
->> @@ -509,3 +509,126 @@ const char *vpu_codec_state_name(enum vpu_codec_state state)
->>   	}
->>   	return "<unknown>";
->>   }
->> +
->> +struct codec_id_mapping {
->> +	u32 id;
->> +	u32 v4l2_id;
->> +};
->> +
->> +static struct codec_id_mapping h264_profiles[] = {
->> +	{66,  V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE},
->> +	{77,  V4L2_MPEG_VIDEO_H264_PROFILE_MAIN},
->> +	{88,  V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED},
->> +	{100, V4L2_MPEG_VIDEO_H264_PROFILE_HIGH}
->> +};
->> +
->> +static struct codec_id_mapping h264_levels[] = {
->> +	{10,  V4L2_MPEG_VIDEO_H264_LEVEL_1_0},
->> +	{9,   V4L2_MPEG_VIDEO_H264_LEVEL_1B},
->> +	{11,  V4L2_MPEG_VIDEO_H264_LEVEL_1_1},
->> +	{12,  V4L2_MPEG_VIDEO_H264_LEVEL_1_2},
->> +	{13,  V4L2_MPEG_VIDEO_H264_LEVEL_1_3},
->> +	{20,  V4L2_MPEG_VIDEO_H264_LEVEL_2_0},
->> +	{21,  V4L2_MPEG_VIDEO_H264_LEVEL_2_1},
->> +	{22,  V4L2_MPEG_VIDEO_H264_LEVEL_2_2},
->> +	{30,  V4L2_MPEG_VIDEO_H264_LEVEL_3_0},
->> +	{31,  V4L2_MPEG_VIDEO_H264_LEVEL_3_1},
->> +	{32,  V4L2_MPEG_VIDEO_H264_LEVEL_3_2},
->> +	{40,  V4L2_MPEG_VIDEO_H264_LEVEL_4_0},
->> +	{41,  V4L2_MPEG_VIDEO_H264_LEVEL_4_1},
->> +	{42,  V4L2_MPEG_VIDEO_H264_LEVEL_4_2},
->> +	{50,  V4L2_MPEG_VIDEO_H264_LEVEL_5_0},
->> +	{51,  V4L2_MPEG_VIDEO_H264_LEVEL_5_1},
->> +	{52,  V4L2_MPEG_VIDEO_H264_LEVEL_5_2},
->> +	{60,  V4L2_MPEG_VIDEO_H264_LEVEL_6_0},
->> +	{61,  V4L2_MPEG_VIDEO_H264_LEVEL_6_1},
->> +	{62,  V4L2_MPEG_VIDEO_H264_LEVEL_6_2}
->> +};
->> +
->> +static struct codec_id_mapping hevc_profiles[] = {
->> +	{1,   V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN},
->> +	{2,   V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10}
->> +};
->> +
->> +static struct codec_id_mapping hevc_levels[] = {
->> +	{30,  V4L2_MPEG_VIDEO_HEVC_LEVEL_1},
->> +	{60,  V4L2_MPEG_VIDEO_HEVC_LEVEL_2},
->> +	{63,  V4L2_MPEG_VIDEO_HEVC_LEVEL_2_1},
->> +	{90,  V4L2_MPEG_VIDEO_HEVC_LEVEL_3},
->> +	{93,  V4L2_MPEG_VIDEO_HEVC_LEVEL_3_1},
->> +	{120, V4L2_MPEG_VIDEO_HEVC_LEVEL_4},
->> +	{123, V4L2_MPEG_VIDEO_HEVC_LEVEL_4_1},
->> +	{150, V4L2_MPEG_VIDEO_HEVC_LEVEL_5},
->> +	{153, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_1},
->> +	{156, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_2},
->> +	{180, V4L2_MPEG_VIDEO_HEVC_LEVEL_6},
->> +	{183, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_1},
->> +	{186, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2}
->> +};
->> +
->> +static u32 vpu_find_v4l2_id(u32 id, struct codec_id_mapping *array, u32 array_sz)
->> +{
->> +	u32 i;
->> +
->> +	if (!array || !array_sz)
->> +		return 0;
->> +
->> +	for (i = 0; i < array_sz; i++) {
->> +		if (id == array[i].id)
->> +			return array[i].v4l2_id;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr)
->> +{
->> +	if (!hdr)
->> +		return 0;
->> +
->> +	/*
->> +	 * In H.264 Document section A.2.1.1 Constrained Baseline profile
->> +	 * Conformance of a bitstream to the Constrained Baseline profile is indicated by
->> +	 * profile_idc being equal to 66 with constraint_set1_flag being equal to 1.
->> +	 */
->> +	if (hdr->profile_idc == 66 && hdr->constraint_set1_flag)
->> +		return V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE;
->> +
->> +	return vpu_find_v4l2_id(hdr->profile_idc, h264_profiles, ARRAY_SIZE(h264_profiles));
->> +}
->> +
->> +u32 vpu_get_h264_v4l2_level(struct vpu_dec_codec_info *hdr)
->> +{
->> +	if (!hdr)
->> +		return 0;
->> +
->> +	/*
->> +	 * In H.264 Document section 7.4.2.1.1 Sequence parameter set data semantics
->> +	 * If profile_idc is equal to 66, 77, or 88 and level_idc is equal to 11,
->> +	 * constraint_set3_flag equal to 1 indicates that the coded video sequence
->> +	 * obeys all constraints specified in Annex A for level 1b
->> +	 * and constraint_set3_flag equal to 0 indicates that the coded video sequence
->> +	 * obeys all constraints specified in Annex A for level 1.1.
->> +	 */
->> +	if (hdr->level_idc == 11 && hdr->constraint_set3_flag &&
->> +	    (hdr->profile_idc == 66 || hdr->profile_idc == 77 || hdr->profile_idc == 88))
->> +		return V4L2_MPEG_VIDEO_H264_LEVEL_1B;
->> +
->> +	return vpu_find_v4l2_id(hdr->level_idc, h264_levels, ARRAY_SIZE(h264_levels));
->> +}
->> +
->> +u32 vpu_get_hevc_v4l2_profile(struct vpu_dec_codec_info *hdr)
->> +{
->> +	if (!hdr)
->> +		return 0;
->> +
->> +	return vpu_find_v4l2_id(hdr->profile_idc, hevc_profiles, ARRAY_SIZE(hevc_profiles));
->> +}
->> +
->> +u32 vpu_get_hevc_v4l2_level(struct vpu_dec_codec_info *hdr)
->> +{
->> +	if (!hdr)
->> +		return 0;
->> +
->> +	return vpu_find_v4l2_id(hdr->level_idc, hevc_levels, ARRAY_SIZE(hevc_levels));
->> +}
->> diff --git a/drivers/media/platform/amphion/vpu_helpers.h b/drivers/media/platform/amphion/vpu_helpers.h
->> index 0eaddb07190d..6c0554ccf3b3 100644
->> --- a/drivers/media/platform/amphion/vpu_helpers.h
->> +++ b/drivers/media/platform/amphion/vpu_helpers.h
->> @@ -6,6 +6,8 @@
->>   #ifndef _AMPHION_VPU_HELPERS_H
->>   #define _AMPHION_VPU_HELPERS_H
->>   
->> +#include "vpu_defs.h"
->> +
->>   struct vpu_pair {
->>   	u32 src;
->>   	u32 dst;
->> @@ -70,4 +72,9 @@ int vpu_color_get_default(u32 primaries, u32 *ptransfers, u32 *pmatrix, u32 *pfu
->>   
->>   int vpu_find_dst_by_src(struct vpu_pair *pairs, u32 cnt, u32 src);
->>   int vpu_find_src_by_dst(struct vpu_pair *pairs, u32 cnt, u32 dst);
->> +
->> +u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr);
->> +u32 vpu_get_h264_v4l2_level(struct vpu_dec_codec_info *hdr);
->> +u32 vpu_get_hevc_v4l2_profile(struct vpu_dec_codec_info *hdr);
->> +u32 vpu_get_hevc_v4l2_level(struct vpu_dec_codec_info *hdr);
->>   #endif
->> diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
->> index feca7d4220ed..ba688566dffd 100644
->> --- a/drivers/media/platform/amphion/vpu_malone.c
->> +++ b/drivers/media/platform/amphion/vpu_malone.c
->> @@ -908,7 +908,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_rpc_event *pkt,
->>   	info->frame_rate.numerator = 1000;
->>   	info->frame_rate.denominator = pkt->data[8];
->>   	info->dsp_asp_ratio = pkt->data[9];
->> -	info->level_idc = pkt->data[10];
->> +	info->profile_idc = (pkt->data[10] >> 8) & 0xff;
->> +	info->level_idc = pkt->data[10] & 0xff;
->>   	info->bit_depth_luma = pkt->data[13];
->>   	info->bit_depth_chroma = pkt->data[14];
->>   	info->chroma_fmt = pkt->data[15];
->> @@ -925,6 +926,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_rpc_event *pkt,
->>   		info->pixfmt = V4L2_PIX_FMT_NV12M_10BE_8L128;
->>   	else
->>   		info->pixfmt = V4L2_PIX_FMT_NV12M_8L128;
->> +	if (pkt->hdr.num > 28)
->> +		info->constraint_set_flags = pkt->data[28];
->>   	if (info->frame_rate.numerator && info->frame_rate.denominator) {
->>   		unsigned long n, d;
->>   
->>
->> base-commit: b64b134942c8cf4801ea288b3fd38b509aedec21
