@@ -1,140 +1,179 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2041.outbound.protection.outlook.com [40.107.22.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BAE253F06
-	for <imx@lists.linux.dev>; Wed, 21 May 2025 10:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747823552; cv=none; b=pIH/VdIyotDmglxCzAC00J6Bvmx2bOXpm2aDgy9pYkT5l6rFg2tbUN1WBX3EQykm7UvALrCvQ3NE86NibXjndpCR+qTHmuNB/+riiMEb7gPP8VCg2r3BT5+evu4W590aghlt6RZZZNZzXFLqw0tdek1+DUxP7TuEBaOoZfOIipU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747823552; c=relaxed/simple;
-	bh=TzN8oeMuskKQU6CcpR7ilKeJfIloLruNAKAnwByhXCY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rwiMXk6R//JHiPJC8i1J627DG0vKgaD0+m+w1uypjof/IckJFMo8Vc4HIk0Oep8ZK1/cUTpleTePNUdiS7coIQGsa+L6EufO7IqSFZ9zB3GNhWcKfJszAfiNq9cJwkf+1BWfWU2mZZi9FNN/knYUybEXO4LQVVoY//wZMvvoRKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=MrRhveDw; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D1825A2DD
+	for <imx@lists.linux.dev>; Wed, 21 May 2025 11:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747826370; cv=fail; b=Ng1dL8B1L4PtBpF5OXiSY61YYUIiefPWRx/L1GtR2D9uNhgtiSG+Hjx6zUK/OOohLCTO9NN5tTumgprgsaEPg0jt9P8oymXdI6v6jhP3BX2StWExheUNGorgZk5yM/uCoX+J7/x7il2fHxz2890awcU5U1mRtgmfTLaHCmY2sBU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747826370; c=relaxed/simple;
+	bh=Kdoq/LbIKySvsRFgRWOTXgfW9nLMErQ6TxpdUE6SbFI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=eZlBO9Xhil0EwJ4yj+VKFVIcpuGm1/Ep4aNeEmdo27Un/ScN2y5u9axsI/8PCk9/g3D/LhEbDvNZ34rx/MbX4lrzrDL4rttGH67AgMHoUm/rnlKvhnHsc556aVn+HVzIEnGED9TlrhWDg7yAMcG2zJRMKMVUNPYqd55/xKY/xaA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S9ESdQ0+; arc=fail smtp.client-ip=40.107.22.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="MrRhveDw"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-70a57a8ffc3so62571327b3.0
-        for <imx@lists.linux.dev>; Wed, 21 May 2025 03:32:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1747823550; x=1748428350; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wrx4aRxpWMNpz3kBZx0QvAIs12jvmJX0PVdxD7GtL1U=;
-        b=MrRhveDwCQJBwetUPE1Sh29di5mz250jErRSatAXzQfWXry7/N4X0wc9+0oYJS4YqC
-         +B0Vzdd+oqaIzyPteZDRrSRV0TF+YX6yMBVukeGE/jbuVZxI0LhsVeziAtgl4zDTQ8eU
-         mbIATUCN2JadaIs+kIh0o2zq94zwOlvH5LNNA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747823550; x=1748428350;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wrx4aRxpWMNpz3kBZx0QvAIs12jvmJX0PVdxD7GtL1U=;
-        b=XcSe3KpD5bNfNfGXV4HgdmbLJ9H/U50vR5paNy35p2b0y9DWUIGAlfxta2SWCVfAUx
-         X7NDh/fjjOJPuJrW2myRf7m5mPY2tVqZ0AUBBWbVykig5/syQoCyWAGIcmyXuD0xUSy2
-         +NAfzeMtxwOuraF4TeFubvAJRVBBDpHfPKYqXVVsJzkpb9kL3O9g6JE9HFHBL3s0oNUm
-         OLTiMKOWWwMVWnzIvgO7UslZnUU6kAttPwAiv+ajVnNZxpfpRdPz0Rcaw946eHlXHdPL
-         cmPWOvq+BWjks5RXFRXAnzSQRlUA0HKEbqpSnMwwN21dzIJje4sYZ9Q6+1818qCDGrkR
-         yusg==
-X-Forwarded-Encrypted: i=1; AJvYcCXOQMy+D2VlIuhCDLshlhVEkzC1YPMo3ZLzRX/9M28Rb52w3h4Pfuo7fXTUrq2UnDe718o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyGPaoBg59UPkxihUbESzdweZ217PcF9s/rMFlvhmzCFjO8oAvN
-	b7HBaopycQmk36+UHJAiEUFf1Lx3m/g38c1aUJBcCPhwaLaxysCYeRzlQgFhyvsxyplcbF2NPTZ
-	icGly5cm8R1wsgKmBgw4T8K2NOKuD6cMyJcrvkJ1PJA==
-X-Gm-Gg: ASbGncsojJImuY7/Bc1vfNEh4i3Bv5cAVwGIf4zV6DU2o5krE2ZPhpDAMLUAru1+5F9
-	JHd6jbKj8wlR8DDgvX0oIydaec8BQRFcPPh3MLeZebk1ePfU7wqEhOdrGUGI/Oy2rLwZR/lOTYa
-	OmPwHpicuLUtV9AQ/+gkKEMnLRfJZuxYMt8ggE1rL5r5GGCoHFDsHrPyvvmiYkU14jjw==
-X-Google-Smtp-Source: AGHT+IFFal7PqjGJ+LGmx5bNYrc9004KFk4ruAZ0EqygehsuQ0KzsT99Pyli2tqxvHiA6hWSh10r4+jSoSJ6zf3teYw=
-X-Received: by 2002:a05:690c:ed4:b0:6fb:1f78:d9ee with SMTP id
- 00721157ae682-70caaf78e03mr301107987b3.15.1747823549692; Wed, 21 May 2025
- 03:32:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S9ESdQ0+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UdQVoSGeeaWD5EjHjE5apFBNe/0h5ZI5SVyiS6njN+ccfyBpBvR5ols0hZJcbycop1IN66L1KXgd9qEKHkjhX16tJBft5UJo5SWLh+HIxTxc6/PpJe0wB7yqzISSMPdlpozht7GgvNGDtcDO8p+R/ZCcTV5+ROw+7vQ34DEE8eBhvqdqMPJa2eBinVVG3tCBwK2F1lOWY4Qq5+HnT47BQIqhyzM7NCvN2Zfr+F1G+eKS3HJsXbP0edDRP1/CmxoMSjnPj84fvI6KDKW3jVA7dlVkFyESkCEOce7zNrKNbYnNYDS1q6ZYVYuqcakCq8T3KVXshTimZPit5xebIAF9ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=docwtRrkJh2FF47a5H7t9L+ufhsx5WjribxeOoiGRiI=;
+ b=G9LL9Cw9lsUVEGVbwHF64jSs2SnNz4AtlRaTPhCRpW8vO6BslDRZNUSC6ohyS3R348vRjKoOSad7s7GgqnCi0GYS2NSkVND2N+13qNilHMBh9/wE28xWDcDMA1fXwaSfL9jr7BFp242EB3zP5EzAXEd1fHTkhfJS8HFdY6jX9iicz4aeigu64oK/iSakerMFUGJmFVFOVkpX4MRVc5TTYQJAVRZZTsKFfp7EHRvfxaUg8fAjgApmhtAg+p88oM2dle+KFljfryKPdIrXDQEsZFdMAFzYwiivZG0XpH/J/5UJP6fx7V8YlMJS9OOU1i5TveVAif7FMuyyraH6t+JoNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=docwtRrkJh2FF47a5H7t9L+ufhsx5WjribxeOoiGRiI=;
+ b=S9ESdQ0+AZElpUUy98TrYXlNuciCVPdR+gk3xppSbJ46xAzzWwbcAoGhIOLOCY+cT7ft9vnHtiZB6pmV5jtlTq5GYClCDI0bq4Pj0CMIQJzwbbtyGJYGCtPDKv0RJyV9QFUx3JkILS0+isdwK8DuRmYOcyAevwAfnP+KA4M2Sxz41cdNVexB5YNz5s4MAnFXxJVJZ9nY8AIbHSBn7uv0OxfopBThpiXcp9PT1qh9o8YNtPXhawTNVTYFbcT6NO6EN0L5HHUtIN6w9AFXl3qiZZKaM7K8apGy55CQ9FjaRM3gJQMO8mp+cgNkH5CTltxqZyQ4HVsMSahtgT9bZ/gcLA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
+ by GVXPR04MB10048.eurprd04.prod.outlook.com (2603:10a6:150:118::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Wed, 21 May
+ 2025 11:19:23 +0000
+Received: from DU2PR04MB8567.eurprd04.prod.outlook.com
+ ([fe80::4db:3dc0:c292:493a]) by DU2PR04MB8567.eurprd04.prod.outlook.com
+ ([fe80::4db:3dc0:c292:493a%3]) with mapi id 15.20.8769.019; Wed, 21 May 2025
+ 11:19:23 +0000
+From: ziniu.wang_1@nxp.com
+To: haibo.chen@nxp.com,
+	adrian.hunter@intel.com,
+	ulf.hansson@linaro.org,
+	linux-mmc@vger.kernel.org
+Cc: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	s32@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mmc: sdhci-esdhc-imx: inherit pins_100mhz from pins_200mhz when unconfigured
+Date: Wed, 21 May 2025 19:20:42 +0800
+Message-Id: <20250521112042.266111-1-ziniu.wang_1@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0005.apcprd04.prod.outlook.com
+ (2603:1096:4:197::16) To DU2PR04MB8567.eurprd04.prod.outlook.com
+ (2603:10a6:10:2d6::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250521092826.1035448-1-dario.binacchi@amarulasolutions.com>
- <20250521092826.1035448-4-dario.binacchi@amarulasolutions.com> <20250521-quizzical-tidy-worm-1fe67d-mkl@pengutronix.de>
-In-Reply-To: <20250521-quizzical-tidy-worm-1fe67d-mkl@pengutronix.de>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Wed, 21 May 2025 12:32:19 +0200
-X-Gm-Features: AX0GCFtZ6hwSbA_J2rTqW8QnXowGlyqASP2_EDudgcpET604dgwM5KYsyW3Eszo
-Message-ID: <CABGWkvrmuhaF4iHqHRkrNrrHb2gUNDBJKCT-jZ8ZuwZGRvm7Lw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] ARM: dts: mxs: support i.MX28 Amarula rmm board
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
-	linux-amarula@amarulasolutions.com, Sascha Hauer <s.hauer@pengutronix.de>, 
-	imx@lists.linux.dev, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, michael@amarulasolutions.com, 
-	Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8567:EE_|GVXPR04MB10048:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5cb1c269-caf3-4bdb-a58b-08dd9859569c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?y/X5OcM1ugaOgZfhkD3I9JwOpjZykYSTrod3UrHKMHzAFh55GbnbS98RhhYH?=
+ =?us-ascii?Q?JUPOroPWFdTQ36m2jbthaA/BN/JsYgC+adQZ8MN63PkFES29D+PfXzxv9A1I?=
+ =?us-ascii?Q?qmGFWdX05Cc2nmWwjYB5dVkBH5gl8mYkk+DYoJoueT1+pdkI7MjXdAc3lu7J?=
+ =?us-ascii?Q?7aMaYGxSfL9YxBAwdm8R8aZeeA/2UKxkaFVBylwVvv58c2eI/tUv/Oq4AbRO?=
+ =?us-ascii?Q?J66KFOy4MKXx9mK2vhfPumSrKKftrWiTmNlv+baYAFVS0YsS1oj7RHKOP1bW?=
+ =?us-ascii?Q?HWTCGFwARgu3JAQadu7LPgo4wjsGGfDzKa8QcJfJSFmZu29MinsOXeTSJQb9?=
+ =?us-ascii?Q?quzCcDepnK/nQcTc1yKRw5oZdyDqwC6pCBTwNVND9A3xHU/twrUlWVp0SRbj?=
+ =?us-ascii?Q?6UfxUwt9ElDdc5yeFnvisMxqAqoVW1S/3LJaYdmz1++PEchzxqIS36cXDxkI?=
+ =?us-ascii?Q?jlqSmW7fkMMSN0xV3wZ25uYmDynOjP1FVD+IoDvwAm2kFoNYC2p7z/RhUx3r?=
+ =?us-ascii?Q?bfEBvBwJqE79Rn3YZ2AuK/CWG2hI550LUGwrnsq41tZSgFa8c4SG8A4F1uoo?=
+ =?us-ascii?Q?tgXXcEjx4zwNlWTWc9uZwAVNNVGWhs3+Hcy/Xneqki2+p6rmQQ+hdUf4yQcp?=
+ =?us-ascii?Q?XbOgwPC0qmBIBTZDIUvS9LNBNS28YKByhSTBdNNz82D17Ujp7XDfbiJEfngi?=
+ =?us-ascii?Q?eBNNMTHpcNgeGDoeGs7GQSbUUCLMpENwDXazP4gCrrKtzPCq4u2fJJmAzYtD?=
+ =?us-ascii?Q?jQ85/HlGpgwMJNLddYG4v7YvzcDwBJLuvhqxrmmAUS2MzYO76AFclZUXUifM?=
+ =?us-ascii?Q?L/tawdet8bW+WgUyCvBCzjkKn8XOwwfgaak9igLVi1Z6N8LUHhdvdFMty3/a?=
+ =?us-ascii?Q?qbYoqonz7nJudvLAN09jW36hJpn3aynD4bopqjggd9yrMDI3ZBKFnMwUpBW9?=
+ =?us-ascii?Q?J1dhidHwl8+JrDn/fjvoBsf1PLrMoXYRRoCu28bQU3hB2nSLvSAvP3CptS3B?=
+ =?us-ascii?Q?LRsqQrb1DxHP8jdKOoYQC55/66RLhxMnjuAhbI0Wgqs2fM4Tqr2h7MKiecvj?=
+ =?us-ascii?Q?nZWZcsNXYqA2/BBelXRr+7CNULwivO3DqeULEAK5Zy6wojxzb4E45nW0hnqM?=
+ =?us-ascii?Q?+/NloPrJDdzdwb3L3XAqkAmbc4J5rrp1kuv4Wzw7amhk/59Ty0bM6fLiM52I?=
+ =?us-ascii?Q?fygTeaxCre84oDwy69vcMFo2f8HOatxKUzkXg+zSHBgS+Dn4Zb2/ke7dl+Id?=
+ =?us-ascii?Q?twAziN12rum1naPnpMFHGru+DRqrs0OBpZ2FnR/5G+nCooXRBjzkrfKL0cgS?=
+ =?us-ascii?Q?CVjqcDteIv/gTthsTpk4BI05EMWktjQmM3nrrMic/ttSTmwIcfILyghBBByO?=
+ =?us-ascii?Q?BPxaQUrMYTA/VWaWahvD0dbYXvfTHM7KLoNc17moPGlWG7jmZKOthit4ntWB?=
+ =?us-ascii?Q?vYzmQUKfOiCRiDN4q85x769QcoApmm+nBvGgc3wNXfk/D70pLdJFKQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8567.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?A7JKBziagTv2MGyNO+jHJZAPjJxmX6pkb8jJcGupuK3VqAIGE2pRsTfIHfAK?=
+ =?us-ascii?Q?jAU39SGw4a0WWpozmsFGPfA3bIhbj3aIVwed0e/gsuVFBdP6FP4sY11E9R1Y?=
+ =?us-ascii?Q?hV98HJJGfOVDir4d3fEBFRjrSxfaniTBBBNhBaDyXmRFxLeqXZrtYhgVCfAY?=
+ =?us-ascii?Q?coHE6T2vPOWYTCqcuNUInH8+R1bOr+zcOAzE7KrR4IDyXHA5FAXLEXrXL7wG?=
+ =?us-ascii?Q?YgGtwB3i+f6pwYtgqHjfH+5zR8McC5pYvegXmHVAhQdKxVfHl3anWcwKL72/?=
+ =?us-ascii?Q?6uVbCzHX3QQMSgJV5HpIKLmEb4ZgwXr9Iy42gn5mzp2pU48mlE1Xqwva7za8?=
+ =?us-ascii?Q?EAWKv8k2pk/ge7clqiSe+eJW4C/j74yucKT9hahGbBSrb7TFRrolsfx7nRwL?=
+ =?us-ascii?Q?Lbov4VQsScX4E5kiyiI8b4jrUK0JFmjGYF9jLGYjkLFEtTGwcdLk+I6TXDmV?=
+ =?us-ascii?Q?I/aDLuh5GEtdit5DfQ4L93w6U7n07KZcoQbBEp8seUMxRiFdQzbDxrn7Onip?=
+ =?us-ascii?Q?yDf0Fe32ZrBgvcnXgelx2IKBoKSE86i+d29BPE+H/V0/0+c8kFF5fTlnfji6?=
+ =?us-ascii?Q?NSwGcbYQHS7+SOAGonulUAqIFfBoueWt86ia9ncA94C8NqS7CeG0D64EbGd6?=
+ =?us-ascii?Q?GXq57PBieP936z3ZsVfWphFWRLoqg9nlZ9JBgJMAcUHgBOcFE7IYa7MFSg7o?=
+ =?us-ascii?Q?XH2Iv2MLVU45iaMvNZa6Nf2hhSErpzQaIJtPkIHAXR2Tv7CE7clN/aK+ubaK?=
+ =?us-ascii?Q?Mu3bVTlEGzbKKRDZP8Q47d7sfnQlLi2zhPxiaTESrfTnRvwGmLg0+Z8yDTz4?=
+ =?us-ascii?Q?yurJrY1KWA8n61W6xc4NGzH3o7DoJTT0vh9OSDRw4cnxv/vcbPosmf/qx86K?=
+ =?us-ascii?Q?/OCC3/cHomGU2uAdh4tBmOGMnKGp3bdu5D1oJEF8VgAbMkY5cs+i9KLN73sE?=
+ =?us-ascii?Q?W9rc5rD23mZe/RgUBfHqr3Y6hWHp6qjZsdzjU+R5FbGjszNAyXbNHJj4ducD?=
+ =?us-ascii?Q?wjnpHL3u9JES4YY4r2nNyhs6AD2iKSpEJmrCBCXyBnCYWwip9fBWUCT+fieL?=
+ =?us-ascii?Q?+NEAg+QRMcTIg5jk8JVZVQx9eCtm9RyXCKjYJhi+cxQhZXhDspucZuu9GgZN?=
+ =?us-ascii?Q?lMlX7aE3HCe+4xWESfnW7WjWSJ1YYgGjHXo8na/Ixh6LtUdz9QWgPXHscm/L?=
+ =?us-ascii?Q?/LDcUZfVfAvKlFNh2Gh3G89b1LC4w+tWber9ynN92T2RzgRBBqONEeWua9NH?=
+ =?us-ascii?Q?T7uteBPUzQtf9+iHWxd1ILYvbKDAH9CQY0Hz8vbyQcdfCP63+54JCPsTbPQ7?=
+ =?us-ascii?Q?4nxkoqhq1kMmJKkZ5hLlhRwe4FRLkOSghaFbgvE53lo5JGeBCFIL7vL4PTPn?=
+ =?us-ascii?Q?GNtW9rILqERq0hOiAlTEVlFoonjKjY5lbko/Mdg8dFHVkDz5XjEVvpONG0ff?=
+ =?us-ascii?Q?MdyMZ54hPY1FivPtah6P4KbjVaL0x7DyAbO4Xpj3K8taaWmXtXVGXsJFV2fX?=
+ =?us-ascii?Q?b8o8FEm5yMwRJFmfiOgeTunwocvd4xkC4qEnou+ppAOg3lnfaacc056T5Jk7?=
+ =?us-ascii?Q?yHumhfjab+EAaFOmJ52wFQ/IhJyymTE0HjQLxG4G?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cb1c269-caf3-4bdb-a58b-08dd9859569c
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8567.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 11:19:23.3062
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dNTjCSgN325RpjHkZhv+FjtJvXgwNajqQw98ZtSbJj7A5dHX61u7dpvcTSLp0D9LVLdUluiv5c96DrtSqR3kRw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10048
 
-Hello Marc,
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-On Wed, May 21, 2025 at 11:35=E2=80=AFAM Marc Kleine-Budde <mkl@pengutronix=
-.de> wrote:
->
-> On 21.05.2025 11:28:22, Dario Binacchi wrote:
-> > The board includes the following resources:
-> >  - 256 Mbytes NAND Flash
-> >  - 256 Mbytes SRAM
-> >  - LCD-TFT controller
-> >  - CAN
->
-> [...]
->
-> > +&can0 {
-> > +     pinctrl-names =3D "default";
-> > +     pinctrl-0 =3D <&can0_pins_a>;
-> > +     xceiver-supply =3D <&reg_3v3>;
->
-> Since v6.15-rc1 (d80bfde3c57a ("can: flexcan: add transceiver
-> capabilities")), the flexcan driver supports CAN transceivers via the
-> phy framework, see drivers/phy/phy-can-transceiver.c. Can you make use
-> of it?
+On some new i.MX platforms, hardware guidelines recommend using identical
+pin configurations for SDR50/DDR50 (100MHz) and SDR104/HS400 (200MHz)
+modes. But defining two identical pinctrl for 100MHz and 200MHz in dts
+creates redundancy. In this case, omit explicit 100MHz configuration,
+driver will inherit 100MHz pinctrl from 200MHz.
 
-The board uses the SN65HVD233 transceiver, which is not listed among those
-supported by drivers/phy/phy-can-transceiver.c. So I can't use the PHY
-framework.
-Do you agree?
-Or am I missing something?
+Preserves existing behavior if 100MHz is configured but 200MHz not (e.g,
+imx8mp-navq.dts usdhc1 supports SDR50/DDR50 but SDR104/HS400 not).
 
-Thanks and regards,
-Dario
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+---
+ drivers/mmc/host/sdhci-esdhc-imx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
->
-> regards,
-> Marc
->
-> --
-> Pengutronix e.K.                 | Marc Kleine-Budde          |
-> Embedded Linux                   | https://www.pengutronix.de |
-> Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-> Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index f206b562a6e3..dfd8be5000c8 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -1810,6 +1810,9 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
+ 						ESDHC_PINCTRL_STATE_100MHZ);
+ 		imx_data->pins_200mhz = pinctrl_lookup_state(imx_data->pinctrl,
+ 						ESDHC_PINCTRL_STATE_200MHZ);
++
++		if (IS_ERR_OR_NULL(imx_data->pins_100mhz))
++			imx_data->pins_100mhz = imx_data->pins_200mhz;
+ 	}
+ 
+ 	/* call to generic mmc_of_parse to support additional capabilities */
+-- 
+2.34.1
 
-
-
---=20
-
-Dario Binacchi
-
-Senior Embedded Linux Developer
-
-dario.binacchi@amarulasolutions.com
-
-__________________________________
-
-
-Amarula Solutions SRL
-
-Via Le Canevare 30, 31100 Treviso, Veneto, IT
-
-T. +39 042 243 5310
-info@amarulasolutions.com
-
-www.amarulasolutions.com
