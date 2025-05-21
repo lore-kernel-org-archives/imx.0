@@ -1,235 +1,331 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2043.outbound.protection.outlook.com [40.107.21.43])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2056.outbound.protection.outlook.com [40.107.21.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323A81632D7
-	for <imx@lists.linux.dev>; Wed, 21 May 2025 02:53:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7052B1BE871
+	for <imx@lists.linux.dev>; Wed, 21 May 2025 03:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747796030; cv=fail; b=PAz6pyeTB39kRCuUo473DaHC8b7/gui2uobaJ664M1L9OxOlW/ZEZ1lhH0pudMOs/bdR/l/O/U/ChTGJ6hehvASz4vAW3zRIUMq/S6/zOxdEj9Nbp/aVYceM7oP3wZK8X43agtx9ToVZ+GRODBJjSjtJ3Kkpe69z5vbo99X535A=
+	t=1747796627; cv=fail; b=mBN7IECzKR+p0JlnCQCBfBV1kZkoa9GAPkhXg0ELhLtnTj45HyXPsiQMxfxs2p7G9ccjdkV7Qc9KV4mdgP+7i15orV0A8rd3bcBexnnc39NMeG50j2ojbeZGCV7IMX9WNkvFZWGgjzAeZWn6bhARFnC86V35sTId8RzqIr7ILyA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747796030; c=relaxed/simple;
-	bh=gdEVblh5A2OG4N80ZMjIfR6Q3ZqyKVHXnb0QzbPDB64=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GAqE61wW+NEQ6f17qOEQOeffuQUyXPNHHC0o4BZ6UKOtzhsjSWqi+voxuypZg3OxdoWuHXaATVX3IF1snKKItxE82r/S3GLoXWFUWQXvkN+f8B10HuMll3Vpyit/51XCnS2sNKeHm+RMFh9boS/vwCnsE2q5aNQo6MYP7TPRzz0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WEYNbl+v; arc=fail smtp.client-ip=40.107.21.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1747796627; c=relaxed/simple;
+	bh=+OhDJTeDyAbgJV5vXmzYVtVi/QyA7fMocftNe9NXCIk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=rlOjdWRaKEu147kvWriUjyRy2JHzf0QbJfg/Oh9E0G3jfBe4cWwql1kc+Pj+56crtJpgqDU0NafbKce+D11+inlRAMWmxPsAQ03zap3pcjvcKPBtsPc9DH0dd9Q+kM6WpnrZO0Z0geWfHZ2eXMuOpXuf2lEOwJ+hakSSb3Ee25c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dmZavJC0; arc=fail smtp.client-ip=40.107.21.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WEYNbl+v"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dmZavJC0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZHIklTfbb/W9WMjOSJnRxjlbO5VsEBBhdiBSgGgOHxlo9mETcZl70jK7AeX9ZQfpSxxfP/VEFJZPWYQ9VwZvWM2uM/GT9ajKaS2Dyx7E2nYuewOE2yUFL9QCUnUlLvzSfIQ4wyTVa20vOz/tX5CSTryXK5DSXjUPJ296yixU+7xsbNZiIJ0Wrp6Uc0kCIRM2qyEfaXZFhJzJ/FzHCgwukOlbeOEy82jXr3V6xOzMxHG0AY5BGSlcFWHhOVyP3FfSpdDEc1Y7GpahhMZUuRCS3DDxAH48HoFsf6t1Woy5iTxiCvtZGdpQz2RYb5NSaAaPaar5JzUft/281JnQYseE6g==
+ b=rJ6junM8j8/2/3yg7Muf5zBOh7pb3sSGhXXuQ3qCbRR1DBs14r0xEbtdcFhGFAifwdMULkmLizTrbVRgfZyrmsJ9s+gd3CbUaTa+ZHgrJgx3ttJUERYVb1aF+7aZas2Pkjw8XTfUdU9gvKdC0ESXCYDu4FS6VVk+SSxrBYoe+maVanlC4lkBsFx1DTPOn3iKwCU8soM3ZZvKIEQU1cGzMeconbtFe0ax2MYulp2K6k6WLqURtOvLLz3ivRV0MbiCu2B1UYLEczkJREtVimiIfx55GbPJuSVrVNPzIH8QjGwUIDzwTK/9s80ilYNtlDTjKEGbOwCSMUndf6Mp5VtrYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w00azB6vIToNdt6ul27sHOpJVob0ENOmRwAgx9vroRo=;
- b=YB4FFhRYBrtRt9H9EovduNbQAKgDL3nYZkepHXw1oVe3nvLH7S2dAf55iGKNOM0pH+ZNq19kQlTgh4v/WesEm0ZPSiAKWLFRAl4e9sv2ErxRnefwfbtDvEbrmNePH3rTLdV03EKkXri3QrBIqCcXeF8Pl3qs8ixq9PTkav0wimwpo7HV2rxTZmVOYgWaSO3ttaisnn8Ibxi/hrWzXeFBL/fRubCKFIDUdOTOahSZKHEYezvJhjS9xGmNYfdAX83olorfLMvE4mXQSuwgmLyvaVt1MWPGpyRlq471v9HcR+ukuw7a/SmjdPfQYV85GwA+wU8jxLR7R+JhHkKAjg0n3w==
+ bh=bkgQGUKqQkdyZWKRDiEHvdIuYEGBEcWmrS11MJyM6bU=;
+ b=Gqu9yM0Tudmj5GnAPc/5RdjWoTE3lydlGhCMVSVnk9lfNTnmnbbNvgAbjx5wIA+hvLaHKbcp4HV9SnN0Pvd++8eIr0ejhK3C1VWrJflUj7mny2DpkaXp+qHgnwjeIAWSapqNyYfi5pMnQniNWsnNzA3QaOkp4FKsfvtUqSOdCMY7D83RqdRCxf6RSrbDQzTUK/nkz1S0kmpuam72WX+LJu6wcDKSXW9VJ7Z/hqAHDDzmkPdajASF2g9BjvqmLeuk8DnvZs9masetngIr9fQ1A+Wa4eveK7cM71K5gDz/XbPN48QpOGNby4i/uWMLXxLoZglKZEIWzzTciTgI6ol8NQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w00azB6vIToNdt6ul27sHOpJVob0ENOmRwAgx9vroRo=;
- b=WEYNbl+vUj49j0h+v8ldrnG/ucbZop4a0xFGOn2iwJj/0TSm+lchYiRukkC7OJ0iP8R4mXsi99hDRqbExacsGRfZX02bpzW8G0IAqJV8DXKicP7cDSe92w3QBVxl+VN5E1bQeA/BMJuLgKzJ3HmjprPxPVFatgJqGbXEeWoWDJkQ/1wrM9AmykOqgJ14to/CAuYyUHqPUxQWJ1gVm9tvVm4hfOppgis0lvmU4eP7JSuL1yQ0eNUKFl9ITc4SrqQsERukwcP/RxewwvnvxF4OlIDDjj2ZIDoDI9wav3KpIdlswnX7/9ei8JaL75wV/A9P90D8dWFUcF0mUAiWnops7A==
+ bh=bkgQGUKqQkdyZWKRDiEHvdIuYEGBEcWmrS11MJyM6bU=;
+ b=dmZavJC03o3Aoivkpgq+lFZRrZhksX/IFHlJdY0UMLeSAdIOiEh0Ce/brht1seMPKR9466K/6GE1g0Yc/1TLVfpHmthHlVyvN2Ncnom6nPwE1C4/fbQdSazePQgppnLxMfWhScTy4l4cSNp3WScghcXAfe35hlHh6gWnTdGbb4rWodLtBincMjt68TRsyp6h5/4oF1ExbU9EEFypAn4OigOm7Ua3h0toVVlVJNbc8u/UmsUsNKpHWeBY/m9ZOLWQzRNCJZAFqAxBgO2EwRdjZaHm7jsSa6CU/BQvuNozmlaIEzJdRjtCyU9m6oL3esqG3xZm6DfBBJjnfr2YXJI6ug==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8574.eurprd04.prod.outlook.com (2603:10a6:102:215::19)
- by VI2PR04MB10883.eurprd04.prod.outlook.com (2603:10a6:800:27f::22) with
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by DB9PR04MB8379.eurprd04.prod.outlook.com (2603:10a6:10:241::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Wed, 21 May
- 2025 02:53:46 +0000
-Received: from PAXPR04MB8574.eurprd04.prod.outlook.com
- ([fe80::60b6:6a5c:8db3:cce]) by PAXPR04MB8574.eurprd04.prod.outlook.com
- ([fe80::60b6:6a5c:8db3:cce%2]) with mapi id 15.20.8769.019; Wed, 21 May 2025
- 02:53:45 +0000
-From: ziniu.wang_1@nxp.com
-To: haibo.chen@nxp.com,
-	adrian.hunter@intel.com,
-	ulf.hansson@linaro.org,
-	linux-mmc@vger.kernel.org
-Cc: shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	s32@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] mmc: sdhci-esdhc-imx: optimize clock loopback selection with dummy pad support
-Date: Wed, 21 May 2025 10:55:02 +0800
-Message-Id: <20250521025502.112030-2-ziniu.wang_1@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250521025502.112030-1-ziniu.wang_1@nxp.com>
-References: <20250521025502.112030-1-ziniu.wang_1@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR04CA0006.apcprd04.prod.outlook.com
- (2603:1096:4:197::13) To PAXPR04MB8574.eurprd04.prod.outlook.com
- (2603:10a6:102:215::19)
+ 2025 03:03:39 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.8722.031; Wed, 21 May 2025
+ 03:03:39 +0000
+Date: Wed, 21 May 2025 12:13:06 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Hiago De Franco <hiagofranco@gmail.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
+ remote core attachment
+Message-ID: <20250521041306.GA28017@nxa18884-linux>
+References: <20250507160056.11876-1-hiagofranco@gmail.com>
+ <20250507160056.11876-4-hiagofranco@gmail.com>
+ <CAPDyKFrHD1hVCfOK-JV5FJM+Cd9DoKKZGKcC94fxx6_9Bsri1g@mail.gmail.com>
+ <20250508202826.33bke6atcvqdkfa4@hiago-nb>
+ <CAPDyKFr3yF=yYZ=Xo5FicvSbDPOTx7+fMwc8dMCLYKPBMEtCKA@mail.gmail.com>
+ <20250509191308.6i3ydftzork3sv5c@hiago-nb>
+ <CAPDyKFpnLzk5YR3piksGhdB8ZoGNCzmweBTxm_rDX5=vjLFxqQ@mail.gmail.com>
+ <20250519172357.vfnwehrbkk24vkge@hiago-nb>
+ <CAPDyKFpGcgMzOUHf-JTRTLBviFdLdbjZKrMm8yd37ZqJ1nfkHw@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpGcgMzOUHf-JTRTLBviFdLdbjZKrMm8yd37ZqJ1nfkHw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-ClientProxiedBy: SGXP274CA0003.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::15)
+ To PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8574:EE_|VI2PR04MB10883:EE_
-X-MS-Office365-Filtering-Correlation-Id: b5ca8239-31a1-4dde-5c0c-08dd9812b431
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB9PR04MB8379:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e7da0f3-582f-4333-7157-08dd9814153a
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|38350700014;
+	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3+Bs3twDqsuy9WRJhKVwi0wGojUGuUKQuL/XK4f7r7VP/Y1Dzzi5Sacf1Adn?=
- =?us-ascii?Q?MED0eEaTZhH8nBeSs4Nnu5cSFeH4vRalKuI4ElZBO5b5HB1ytkBhgJqTsBkR?=
- =?us-ascii?Q?YRQsrs0HtB26ubBAg9hF1UKEhVrOzWM/BD7farVN1qEWFcn65/n+3bHQSvsE?=
- =?us-ascii?Q?qa8PKG+bqfUdah2Rv32M7CSPaZnJB3WIH2/k5r4jZk54mJvBQFEXOt+tZ6Hj?=
- =?us-ascii?Q?2D9oV8ho2goZ7VvXAEbb/prFxcIorErEy6Gt5N/J6uZUOncElV9QoknFjXpp?=
- =?us-ascii?Q?z5bOXlIqs1+LAhowbwftL+ifSaa0Y9QTYYaGvHu9dGAVcO0TQ8OS2atCwMyU?=
- =?us-ascii?Q?54kGaWRTbxiZaWMYbq+72VR7MfO6y6qa4nm2FGaa5+LI9TVPh3N8wNYuWR3D?=
- =?us-ascii?Q?EHsmwTv0im7VuJcJDhR6ZooT+EYOfWcYdUQYW8yAl6tZZ7Rgt49W+OW7zrah?=
- =?us-ascii?Q?qkAk7nZWxiZwrvgEfwMb2W82gIrHUbmlodzTAdGqUx7NWzbs96JfsPUCKx30?=
- =?us-ascii?Q?yjbfwd3MmwXRF6OiLd/CmoPZYTwa4h3kUtJB0BRMrhFFsnakcC2pE/6nrNjh?=
- =?us-ascii?Q?bdcd9YPjyVeTAvOTvCP2Wrime1eqjbdgwh1SyXOW5XLyGFIYA26xvQ5UCc2w?=
- =?us-ascii?Q?A4cVfs35cVsTUn0CUZrHrsW2W89uEewAZpkos2JNSIxpxBzrst1huNWGQ9VN?=
- =?us-ascii?Q?LkTmAuDUKvd2o5K6SBqtd33QS1ONGPjjzeeGQNnaLjYajoqKvwttaEMbEtNJ?=
- =?us-ascii?Q?vGS58CHsLBu7VH5WgQf6RA2UzRxsehgliurOSY+cxy3zfe7E9kibTxKrI0Yu?=
- =?us-ascii?Q?OK8vtUr10IDRbR9bVW9z57ZgApI32QU2g3R9wllwlL0SDrjf1sAsK6zMDu4w?=
- =?us-ascii?Q?9Q/cpHIc9eSRDkL+4rmHin+DE0VJudVRc0yp8IdH0Iw1WC4m6sLAu0O2/ZQe?=
- =?us-ascii?Q?015QBijyYuCVYMTzcTJpvUB1sI/+9R6hCWF0Cdh946aJcKUjcIK5+o2bZ1pV?=
- =?us-ascii?Q?a5kQ4EjtLkkhh7X3drQyMMvynb8wcDntoKEMnEva5HFxwHx0EmXj0+ZTy0Fe?=
- =?us-ascii?Q?KAmnb8dldvUinCcpvDzKRKLSxsED5sxkzFuWDsJUE9Smo5Ll9vO7ueJzqeCB?=
- =?us-ascii?Q?JOMbM67QXoS8o7sbYAFw+9Qoel6pq/nfNbhczHPOmTlu1duobBfai7rbQl1f?=
- =?us-ascii?Q?XYoSBC674HOVvnxgyH1ydMZ6JYKhhkqCqObX72fu7atvHRMpQHfhl9uHW8ra?=
- =?us-ascii?Q?IUE8x0ZRleas0WdP15Qlq05yIINXcbGJTq2VQLbVvwrboqcrgCSo9oMB/7ot?=
- =?us-ascii?Q?Dxq/eaSUcmqVdGuy+r2J9AIDA5WSMPUEPGXDv2z2zQXrTez5e/h8fVUqVTNQ?=
- =?us-ascii?Q?Lq44Yw7EM/neAe0d4A5jMw9aTw+d+70+loO49cpjbgvcpGUiZAVEqDgyqobh?=
- =?us-ascii?Q?uu0NoI02nEdG6cWmAaF50ZhRZNRIsCjFajPnoJMnvQBXAbEzSbF6Og=3D=3D?=
+	=?us-ascii?Q?QhyG9q0uFrNQNyYs9o9dczwpWq7f+pApdR2kLsDv/J/CM89oe+igzp1chtgi?=
+ =?us-ascii?Q?sCUXEYUxQjw8IKMOoi1Nk1P5Xv3K3radOsArZ4EsELWLigy//UbtC5XPFeVf?=
+ =?us-ascii?Q?Rh9Yavj9sMnaaPTzoNk7zAhnyMjf9zLeIyJuaQ3ovXYxGhUki5BJaI4YrAo+?=
+ =?us-ascii?Q?zvewUthQ2zaHB0BKZZ0mpdSWFj+nXSBTBzXl3sPLdAq53//guC2++kPSxGcR?=
+ =?us-ascii?Q?jLuxeyRmP7RnUgox/ZQ+itUViql+PMGEKgienz7J+gMM5ZAKelslmTZwFsdc?=
+ =?us-ascii?Q?ouB19CIvOtezy0eoawIBhw1qDCpOu0ug+Nob7URqSTftugomAICbWedx4HEi?=
+ =?us-ascii?Q?uwxmEbckKX3pOHchOv3sHFXMofuYBIP+r3xxUXhaREL/lWZM2kpGfuu8/Bt1?=
+ =?us-ascii?Q?QlZLB6Ejn53ygdMMSRnGUT+Xmghp7YhvYWmYhnFucoMMAdys0L4+Sw/n17Tx?=
+ =?us-ascii?Q?CFJ7Ra/cOyke5RSH/H6OS2v0ABPxMyaP8Nk7/iXjGalmGOG2kATNuq4LOQVE?=
+ =?us-ascii?Q?4bnTGEK1/+OUiyLYKXZMfIA47Mu5r8TSP15n5N38QHYU6650TTkLZf2HTg5C?=
+ =?us-ascii?Q?vbbWGDN7MnJ49kH7T7/4jXfGFZMNp87zrT5N4SiJdyk7BLNW/4bi29Wh9z0S?=
+ =?us-ascii?Q?nIGdj0z/KW6YkDpZ3G2R5X4gtpV+82d9CBeOxOF/v1NCpWED4M7lJ3/DU+Rq?=
+ =?us-ascii?Q?m2XAF6F5Lnjy24mpsx45IXmnwXcYTkLYKW5Jf71L+wdGetS2gjjaa3qNMtKX?=
+ =?us-ascii?Q?Y/hWNGWogQPlrcY0hvSaiKZ1o+rvzePo0xz9Gf6rA/9B0nujW07mrhSe6WAy?=
+ =?us-ascii?Q?Cq5M8y7u1qg48Xlo2n8ddizwpcsnQXpkkp525QWo+BhTjhmTC/yRokI+Bfc1?=
+ =?us-ascii?Q?PIgmC8oScoEBKvbRZ3NsT266zFd+HdwADlPoVQlO9KXS0tuTkGrzGODZR5Lp?=
+ =?us-ascii?Q?P+bNxliqEb2/ezdFahzdHcHOA0OBDnugja5gGX0so+L+pUkRKhWaUwf3CACe?=
+ =?us-ascii?Q?g+FCAnrTZSizHQe2GMYFfi8JI72kPf4MWQbFN4ed6/D71PANGnKHH6vbOUy3?=
+ =?us-ascii?Q?npVgYRLQGrkn2Nb4Mc2bPznX8PcDIBGlDg283LOnL2n83fISrb2AIyr3wy+3?=
+ =?us-ascii?Q?8TfEzrPhvV/UFOLiwH9UbrYx0DZYY4QC0YPy0hQihNdnfhbxkqa+fCWviXyJ?=
+ =?us-ascii?Q?qopE4T+5RYGYahJdYywAKsG1TldHPyfBHsh7Rvc0SjE7lPbGgAncilNYgWy3?=
+ =?us-ascii?Q?nc/a1/RAyfkKnR68NebEe7R5cQKzmmhD0gD98ZNwTXChQF5Ns8jZYAnl1cAk?=
+ =?us-ascii?Q?vYg7HFjAjYcGkCw2p3dFxiZkTy9XQjftnSmPAtEBfLoBq9hwt+p6ESoEApXO?=
+ =?us-ascii?Q?0oJeSZP3HdZH88p71jLtEsOEf9shrNSX9fv77DuUllXzQ8fsEykQfbbrfW9y?=
+ =?us-ascii?Q?hToHlXZVFto=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8574.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?re+vN75p+Fr1lODhHfxBFPQEW0tQreCKpS3PmBtJYeblAFN0WiEfvq/Kd52v?=
- =?us-ascii?Q?dbbQt+150hbHE/RqfhKkK0HBNPStXakmZVFiYu2ajIGKzYCNRg1Q22iKorYY?=
- =?us-ascii?Q?9Jg4rgi0dRq0QB64A7qO8NsAUKvWWYsNASzyju3/8oiYYEroFuLc495JMVFe?=
- =?us-ascii?Q?l1qH+TiYoLUK4xRrexvOcjJjIsV1ERWCmcsqP8cIBeGS5sWW3wb7Xcaf8OGI?=
- =?us-ascii?Q?HkW9HN1KCaDWQhcXqdzEW6M3rhbdbCBPtnrQZsoI2gE1SWXTSue2DS3Y+E4N?=
- =?us-ascii?Q?1+ji1EUtGlL8qIJHHkYTvLVGfJipRFWheebFOi1qVvqW/WmgnpQQ89szGCNo?=
- =?us-ascii?Q?8JvCfQ3245DB+/NS+fhak68W7+jiol9VuuQUBYRUW/xxeT/ojZMwfSOLBUc8?=
- =?us-ascii?Q?2h7OR7xU7IgrfR+nYLf1EnxHPkttNT5YLSHBa+38zN1T8BXZjuwTNusLh6UP?=
- =?us-ascii?Q?BmNciwTkSihQHtGiViFhK4ybohgkFIcU8LapNTJQM0MAsx85qljwHUhOhRHk?=
- =?us-ascii?Q?qAbWjDGFOdAYsUDtbKvt8R2ZX8DyFkaxneqn+v4xPx9Kkqmmaa3z/QDgnTsd?=
- =?us-ascii?Q?E/ccmmPLlazVUCcaxXjS2TvBZU7ygASXwZUI6TPCYwLjnGGFIj7iRHRKYdyf?=
- =?us-ascii?Q?UZZ+3R0NfqpwPHWvZs2hOzkWEmnh3Rau9Pw01LiGzb7SbsHPKCrvT7NBRkIQ?=
- =?us-ascii?Q?A6ZQAbLwXAZSURiHfPW2RT6vbrNomPPYatxnqzRSqK0IsjaEOtgwSYbzOwj2?=
- =?us-ascii?Q?0U3Bd+k2DeUeTF3GLvmOqbIrMQmDDie03oFrI39NS4kwhCCN9XqcxCEhMcoK?=
- =?us-ascii?Q?KpZh33Pij7Ce8yRoHTyYIzS2RzLY59C5U735OMRfqBDPoSDax/ysEBZHg+H6?=
- =?us-ascii?Q?SaM4ESNENMFY+DbNvt9pRgLIhncq2RuUqnMy5GvLGMBNu5+ERKt/l0fYgiDP?=
- =?us-ascii?Q?hvVIVWraxwJZ6bqiPLcOnsWH+wwy68Jje3PBbXf3V1Q+UnrYILcRhxn81Rye?=
- =?us-ascii?Q?64G3KhKBv2MioCu6wwCWP4CJPieZyKU6Qk6Ps7mvlPMs9+XK8PQwM0dGxlE4?=
- =?us-ascii?Q?JHHzOjSrSBKeZDOL36k89JkAJdB3QKKNtCcd4mysLY9vvh7sTYtEvGEn02Zr?=
- =?us-ascii?Q?WmkPIz0xs8JsU9UJyKypNywx3s8q4gk5itYZmvkXJRLQmYth1+UMjO+0qdda?=
- =?us-ascii?Q?YG6N+UWeoF902iQLLvPTvgoOy1AhQYm8JIft9JQ1+6eeSS6K0jNtSK/cUd/f?=
- =?us-ascii?Q?TuMTeC/14ULkMIe7loBQEryS6HYOTOEK1J7xZIyscKRiv0IwnKAkmhXKSG6/?=
- =?us-ascii?Q?Y9RHbgQuzIiyf4xkkHNtNRNuthHCvaal6QlzVzGhJdmK8+wGV49qGG/4Xjkc?=
- =?us-ascii?Q?7rwmNPklzrKDqPToyLu/9BAIwOh8Syi8CaqZY1ydoulkd72B4esZU5vvWMBe?=
- =?us-ascii?Q?WDh5bBBPInaNRusttfuqOLs4B8B8f6fKTsuUc5QRCK7hqCZayQllZqg3Zl4N?=
- =?us-ascii?Q?+Wto0xc0GJyJmV2DHn775JiyucNmN3Kq7oEQDj9B5fUPB9a35s4r49SVnmpH?=
- =?us-ascii?Q?RghVoq/uDgEjNtI1+UL7Osw7LOQ5SCbCMNit6PqH?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5ca8239-31a1-4dde-5c0c-08dd9812b431
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8574.eurprd04.prod.outlook.com
+	=?us-ascii?Q?z5JK8qcPORkaqgJNGbSgntoScspopEPjo6xEqEvOe7NoRBdq5HTGXTMF977E?=
+ =?us-ascii?Q?HWLuM784KpaymPw1f+mHKHKmjEHIVnPK1n0WdzHLi2aaxw6ITtoB5WwJ6Urd?=
+ =?us-ascii?Q?WIIxlbi2oRABVveNOkItaap2IQcR38xgSODUkgn56gc/lS6eZtp0BCIL2G7v?=
+ =?us-ascii?Q?1EO0HFpCuDhlXLwotSje4X3OcSoSHd/LQt8wvTnucnGSCf1qVaHHrkEqakKM?=
+ =?us-ascii?Q?zSK99cL9NQEVc07zIHnQ4WxX+ePes4ulEhUtgiW81WBoDFuarBqlPP5je/OT?=
+ =?us-ascii?Q?uZNVZXn9icTU02PbhX+cfQT3VHgA4VeCoFRXxoVb5RaXgLDbXcLboOI6TUiR?=
+ =?us-ascii?Q?LjvPylU+qUE9fCjX1yv8HMstCC08LPO/zOVkwyu21kpYcTRt1XvrUlY4srb5?=
+ =?us-ascii?Q?ARXh9DHYrGcQYOGpKdqWKTYtYrRacxRC3imydRfwIn/hZ2gl9gWY1RaLtjKD?=
+ =?us-ascii?Q?geH1PZb0xF2YjDhDxbX8O3P2CX4BecS6QAr9Hf3/X8q0UwHW5NOUmG1baJDG?=
+ =?us-ascii?Q?JBzJUEyhEU7xyIWNUs4r87Q4Rn2F8JKssr1+G3us6fb9c0KBKtwAJLVg1iyI?=
+ =?us-ascii?Q?2bz1nDO0sechrHnfe3GZb2j1lF5yGIwNvA7pCoGC41YdU64I+kC34vBXzt19?=
+ =?us-ascii?Q?TkF6aixVj3NaHwv+v8d0gde2JDBYMBDVjq11gn+OZ9wzRueIcMRieOFI7Xca?=
+ =?us-ascii?Q?SVnrYvIWR9R4jN7G3o8dnC9zqj++SrZI6P7zhYro81H3YB/13wS73MxxiuJX?=
+ =?us-ascii?Q?vVpPzu9xWtIVKzaxMIjwvQyZ+ioPirVr3GaBWDzbrpCiC8pzMDIBwEYGZZak?=
+ =?us-ascii?Q?cd61bJ+EoeJ2YnDCegS/36+Hsh2CwutAAaV8eU9wYBqIlKAF6aAAC5LH+wdY?=
+ =?us-ascii?Q?i3YX5oKbYri25CHgsBmYMaF8u9XG8Jr8RBN443um0G7e+pLeK86FFgeaCznA?=
+ =?us-ascii?Q?JDN+NIOu+r3pGdU2FJU7f5C5ypsBKkR4pCBm8dmeevdUUM3ZMoIh9lUpdv/L?=
+ =?us-ascii?Q?qObSc8f5OdiEHVjsu1hWgeDv/zJm1LF7zBse+of1dydpK3gG5HvSmhGx2iv/?=
+ =?us-ascii?Q?jxs2c0pcG2g84JN7NiE2G4uAOKrzEDYYkaG1ADlqQVy5UnorlJvZCjWDJP5j?=
+ =?us-ascii?Q?t22CFJKQCSkGhp+cRecqicmFbzoIhhSu+S1xPUp/Rv+yCjiYWiG8ykJ1BGxi?=
+ =?us-ascii?Q?gd5hQy6aExnN2DkZA+ULu0t9rEFAwyrmAbQ7E8SPWx9ZXtBnLuDjb4py3DQQ?=
+ =?us-ascii?Q?Jowa4etHu24aJlXyoI6uQnNBMgJ3iRUnuspa+YMbYl/MoigFmZ85L7HfKbUV?=
+ =?us-ascii?Q?aPMFJimoLqOslazfjSc8rRzRQVXZ8C2qs4Kpu0CM1JCNrH9TkItWfxgqqNmg?=
+ =?us-ascii?Q?fj3iv8I5TqmV92fhdm82eAnviwHIAdIHuG828vUtUIVV9HzZZT0DVOxIdpLh?=
+ =?us-ascii?Q?qJmci1Z1xLsINxlkkkeLCoCmeuuBgKemRYb9Dxm1dGyNhPqemnD79PCA72Lm?=
+ =?us-ascii?Q?aFiOmxW6Za5DDu9K1BjIELI0oGh4AVIvS6aXKB8lmKhhpD09AmaeEpRV/wdo?=
+ =?us-ascii?Q?YvIMAQUiFGzkyBMxW7rC7gLsdjQkkGp8yIze19lg?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e7da0f3-582f-4333-7157-08dd9814153a
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 02:53:45.8474
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 03:03:39.0285
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4r+1zoAhoxpNAWMoiQ8KR4Gt+xsvGHNksz+Tc+xBe7KevLppsIX/GUNVzXB8nq1BtdOwcN7rTR0WPIBq6ktzOA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10883
+X-MS-Exchange-CrossTenant-UserPrincipalName: UajQfNcaaJS3e7Ew4dgLWlwevrXVfSJc3KqpqpviATtGh5kNmMxQ0uaGM4zrNfwrZ2W9pEPJ5T4LEhMWauvQZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8379
 
-From: Luke Wang <ziniu.wang_1@nxp.com>
+Hi Ulf,
 
-For legacy platforms without dummy pad:
-When clock <= 100MHz: Set ESDHC_MIX_CTRL_FBCLK_SEL to 0 (external clock
-pad loopback) for better bus clock proximity.
-When clock > 100MHz: Set ESDHC_MIX_CTRL_FBCLK_SEL to 1 (internal clock
-loopback) to avoid signal reflection noise at high frequency.
+On Tue, May 20, 2025 at 02:21:49PM +0200, Ulf Hansson wrote:
+>On Mon, 19 May 2025 at 19:24, Hiago De Franco <hiagofranco@gmail.com> wrote:
+>>
+>> Hi Ulf,
+>>
+>> On Mon, May 19, 2025 at 04:33:30PM +0200, Ulf Hansson wrote:
+>> > On Fri, 9 May 2025 at 21:13, Hiago De Franco <hiagofranco@gmail.com> wrote:
+>> > >
+>> > > On Fri, May 09, 2025 at 12:37:02PM +0200, Ulf Hansson wrote:
+>> > > > On Thu, 8 May 2025 at 22:28, Hiago De Franco <hiagofranco@gmail.com> wrote:
+>> > > > >
+>> > > > > Hello,
+>> > > > >
+>> > > > > On Thu, May 08, 2025 at 12:03:33PM +0200, Ulf Hansson wrote:
+>> > > > > > On Wed, 7 May 2025 at 18:02, Hiago De Franco <hiagofranco@gmail.com> wrote:
+>> > > > > > >
+>> > > > > > > From: Hiago De Franco <hiago.franco@toradex.com>
+>> > > > > > >
+>> > > > > > > When the remote core is started before Linux boots (e.g., by the
+>> > > > > > > bootloader), the driver currently is not able to attach because it only
+>> > > > > > > checks for cores running in different partitions. If the core was kicked
+>> > > > > > > by the bootloader, it is in the same partition as Linux and it is
+>> > > > > > > already up and running.
+>> > > > > > >
+>> > > > > > > This adds power mode verification through the SCU interface, enabling
+>> > > > > > > the driver to detect when the remote core is already running and
+>> > > > > > > properly attach to it.
+>> > > > > > >
+>> > > > > > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+>> > > > > > > Suggested-by: Peng Fan <peng.fan@nxp.com>
+>> > > > > > > ---
+>> > > > > > > v2: Dropped unecessary include. Removed the imx_rproc_is_on function, as
+>> > > > > > > suggested.
+>> > > > > > > ---
+>> > > > > > >  drivers/remoteproc/imx_rproc.c | 13 +++++++++++++
+>> > > > > > >  1 file changed, 13 insertions(+)
+>> > > > > > >
+>> > > > > > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+>> > > > > > > index 627e57a88db2..9b6e9e41b7fc 100644
+>> > > > > > > --- a/drivers/remoteproc/imx_rproc.c
+>> > > > > > > +++ b/drivers/remoteproc/imx_rproc.c
+>> > > > > > > @@ -949,6 +949,19 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
+>> > > > > > >                         if (of_property_read_u32(dev->of_node, "fsl,entry-address", &priv->entry))
+>> > > > > > >                                 return -EINVAL;
+>> > > > > > >
+>> > > > > > > +                       /*
+>> > > > > > > +                        * If remote core is already running (e.g. kicked by
+>> > > > > > > +                        * the bootloader), attach to it.
+>> > > > > > > +                        */
+>> > > > > > > +                       ret = imx_sc_pm_get_resource_power_mode(priv->ipc_handle,
+>> > > > > > > +                                                               priv->rsrc_id);
+>> > > > > > > +                       if (ret < 0)
+>> > > > > > > +                               dev_err(dev, "failed to get power resource %d mode, ret %d\n",
+>> > > > > > > +                                       priv->rsrc_id, ret);
+>> > > > > > > +
+>> > > > > > > +                       if (ret == IMX_SC_PM_PW_MODE_ON)
+>> > > > > > > +                               priv->rproc->state = RPROC_DETACHED;
+>> > > > > > > +
+>> > > > > > >                         return imx_rproc_attach_pd(priv);
+>> > > > > >
+>> > > > > > Why is it important to potentially set "priv->rproc->state =
+>> > > > > > RPROC_DETACHED" before calling imx_rproc_attach_pd()?
+>> > > > > >
+>> > > > > > Would it be possible to do it the other way around? First calling
+>> > > > > > imx_rproc_attach_pd() then get the power-mode to know if
+>> > > > > > RPROC_DETACHED should be set or not?
+>> > > > > >
+>> > > > > > The main reason why I ask, is because of how we handle the single PM
+>> > > > > > domain case. In that case, the PM domain has already been attached
+>> > > > > > (and powered-on) before we reach this point.
+>> > > > >
+>> > > > > I am not sure if I understood correcly, let me know if I missed
+>> > > > > something. From my understanding in this case it does not matter, since
+>> > > > > the RPROC_DETACHED will only be a flag to trigger the attach callback
+>> > > > > from rproc_validate(), when rproc_add() is called inside
+>> > > > > remoteproc_core.c.
+>> > > >
+>> > > > Okay, I see.
+>> > > >
+>> > > > To me, it sounds like we should introduce a new genpd helper function
+>> > > > instead. Something along the lines of this (drivers/pmdomain/core.c)
+>> > > >
+>> > > > bool dev_pm_genpd_is_on(struct device *dev)
+>> > > > {
+>> > > >         struct generic_pm_domain *genpd;
+>> > > >         bool is_on;
+>> > > >
+>> > > >         genpd = dev_to_genpd_safe(dev);
+>> > > >         if (!genpd)
+>> > > >                 return false;
+>> > > >
+>> > > >         genpd_lock(genpd);
+>> > > >         is_on = genpd_status_on(genpd);
+>> > > >         genpd_unlock(genpd);
+>> > > >
+>> > > >         return is_on;
+>> > > > }
+>> > > >
+>> > > > After imx_rproc_attach_pd() has run, we have the devices that
+>> > > > correspond to the genpd(s). Those can then be passed as in-parameters
+>> > > > to the above function to get the power-state of their PM domains
+>> > > > (genpds). Based on that, we can decide if priv->rproc->state should be
+>> > > > to RPROC_DETACHED or not. Right?
+>> > >
+>> > > Got your idea, I think it should work yes, I am not so sure how. From
+>> > > what I can see these power domains are managed by
+>> > > drivers/pmdomain/imx/scu-pd.c and by enabling the debug messages I can
+>> > > see the power mode is correct when the remote core is powered on:
+>> > >
+>> > > [    0.317369] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_ON
+>> > >
+>> > > and powered off:
+>> > >
+>> > > [    0.314953] imx-scu-pd system-controller:power-controller: cm40-pid0 : IMX_SC_PM_PW_MODE_OFF
+>> > >
+>> > > But I cannot see how to integrate this into the dev_pm_genpd_is_on() you
+>> > > proposed. For a quick check, I added this function and it always return
+>> > > NULL at dev_to_genpd_safe(). Can you help me to understand this part?
+>> >
+>> > As your device has multiple PM domains and those gets attached with
+>> > dev_pm_domain_attach_list(), the device(s) that you should use with
+>> > dev_pm_genpd_is_on() are in imx_rproc->pd_list->pd_devs[n].
+>>
+>> Ok got it, thanks for sharing.
+>>
+>> I just send the v3 with the changes Peng proposed (here
+>> https://lore.kernel.org/lkml/20250519171514.61974-1-hiagofranco@gmail.com/T/#t),
+>> but I am a bit confused which path we should take, the initial approach
+>> proposed or using these PD functions. Maybe we can discuss this in the
+>> new v3 patch series?
+>
+>I think it would be better if we can avoid sharing low-level firmware
+>functions for PM domains. I am worried that they may become abused for
+>other future use-cases.
+>
+>So, if possible, I would rather make us try to use
+>dev_pm_genpd_is_on() (or something along those lines), but let's see
+>what Peng thinks about it before we make the decision.
 
-For i.MX94/95 with dummy pad support:
-Keep ESDHC_MIX_CTRL_FBCLK_SEL at 0 for all speed mode. Hardware
-automatically substitutes clock pad loopback with dummy pad loopback
-when available, eliminating signal reflections while preserving better
-bus clock proximity.
+There are two power domains for this m4:
+power-domains = <&pd IMX_SC_R_M4_0_PID0>, <&pd IMX_SC_R_M4_0_MU_1A>;
 
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
----
- drivers/mmc/host/sdhci-esdhc-imx.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+So before attach the pd, dev_pm_genpd_is_on should also return false
+per my understanding. If run dev_pm_genpd_is_on after attaching the pd,
+the pd will be powered on. So we are not able to know whether M4 is started
+by bootloader or not.
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index c448a53530a5..5f1c45b2bd5d 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -212,6 +212,9 @@
- /* The IP does not have GPIO CD wake capabilities */
- #define ESDHC_FLAG_SKIP_CD_WAKE		BIT(18)
- 
-+/* the controller has dummy pad for clock loopback */
-+#define ESDHC_FLAG_DUMMY_PAD		BIT(19)
-+
- #define ESDHC_AUTO_TUNING_WINDOW	3
- 
- enum wp_types {
-@@ -348,6 +351,15 @@ static struct esdhc_soc_data usdhc_imx8mm_data = {
- 	.quirks = SDHCI_QUIRK_NO_LED,
- };
- 
-+static struct esdhc_soc_data usdhc_imx95_data = {
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
-+			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
-+			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
-+			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
-+			| ESDHC_FLAG_DUMMY_PAD,
-+	.quirks = SDHCI_QUIRK_NO_LED,
-+};
-+
- struct pltfm_imx_data {
- 	u32 scratchpad;
- 	struct pinctrl *pinctrl;
-@@ -392,6 +404,8 @@ static const struct of_device_id imx_esdhc_dt_ids[] = {
- 	{ .compatible = "fsl,imx7ulp-usdhc", .data = &usdhc_imx7ulp_data, },
- 	{ .compatible = "fsl,imx8qxp-usdhc", .data = &usdhc_imx8qxp_data, },
- 	{ .compatible = "fsl,imx8mm-usdhc", .data = &usdhc_imx8mm_data, },
-+	{ .compatible = "fsl,imx94-usdhc", .data = &usdhc_imx95_data, },
-+	{ .compatible = "fsl,imx95-usdhc", .data = &usdhc_imx95_data, },
- 	{ .compatible = "fsl,imxrt1050-usdhc", .data = &usdhc_imxrt1050_data, },
- 	{ .compatible = "nxp,s32g2-usdhc", .data = &usdhc_s32g2_data, },
- 	{ /* sentinel */ }
-@@ -1424,9 +1438,10 @@ static void esdhc_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
- 		break;
- 	}
- 
--	if (timing == MMC_TIMING_UHS_SDR104 ||
--	    timing == MMC_TIMING_MMC_HS200 ||
--	    timing == MMC_TIMING_MMC_HS400)
-+	if (!(imx_data->socdata->flags & ESDHC_FLAG_DUMMY_PAD) &&
-+	    (timing == MMC_TIMING_UHS_SDR104 ||
-+	     timing == MMC_TIMING_MMC_HS200 ||
-+	     timing == MMC_TIMING_MMC_HS400))
- 		m |= ESDHC_MIX_CTRL_FBCLK_SEL;
- 	else
- 		m &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
-@@ -1678,7 +1693,9 @@ static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
- 		writel(reg, host->ioaddr + ESDHC_TUNING_CTRL);
- 
- 		reg = readl(host->ioaddr + ESDHC_MIX_CTRL);
--		reg |= ESDHC_MIX_CTRL_SMPCLK_SEL | ESDHC_MIX_CTRL_FBCLK_SEL;
-+		reg |= ESDHC_MIX_CTRL_SMPCLK_SEL;
-+		if (!(imx_data->socdata->flags & ESDHC_FLAG_DUMMY_PAD))
-+			reg |= ESDHC_MIX_CTRL_FBCLK_SEL;
- 		writel(reg, host->ioaddr + ESDHC_MIX_CTRL);
- 
- 		writel(FIELD_PREP(ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK,
--- 
-2.34.1
+Hiago's case needs the real power status before attaching the
+pd to set remoteproc as DETACHED(M4 kicked by bootloader) or OFFLINE(
+M4 not kicked by bootloader) state.
 
+Seems there is no other SCFW API to check whether M4 is started by
+bootloader.
+
+I not have good idea as of now except directly checking the real
+power status to indicate M4 started by bootloader or not. Or using a
+device tree property runtime added by bootloader,
+saying "fsl,rproc-started"?
+
+
+Thanks,
+Peng
+
+>
+>[...]
+>
+>Kind regards
+>Uffe
