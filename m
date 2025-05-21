@@ -1,135 +1,191 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975D026D4F7
-	for <imx@lists.linux.dev>; Wed, 21 May 2025 13:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ACD2798F1
+	for <imx@lists.linux.dev>; Wed, 21 May 2025 13:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747832406; cv=none; b=iX19LgAYNEW5c3cj6l677bQofnnMWL+PAf1DkpZaxiMro8MnKgdRuBxw6HwyCqK4tAMhH++s7ZSX3bMSbtn/6ytl8J9ooClBPOvTiCIo6ZN13U/A5ouD965iWiVhwY/Nr9zsEYdtwCTOroC2N0xxF/69U0zn9iUuybN/a8sDfNc=
+	t=1747833603; cv=none; b=QONzvHGctgyHQxiSfRTFe0t9soja8F3F+IRfgSDv4aDXTGy6f2OW7/0Dr8A4FnvzzZE4rEEL5mMRj+iegB2OIREtkoXGoiF58EOf49Eb+eskNHF/S1F3yJKrGieQlF4SslFFh/DSj8F7I0rBrEcw7jO/fdzM6wc+hOLUoz3xObc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747832406; c=relaxed/simple;
-	bh=0hRq0bSmR5JZNPD2Mx0NYL1bKkYX+m5s1ZMhJDwT44g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e5z0RHYEouhuNXXahovbGDYLc8zkO2QSW2Fp3+V0VKg/SodqzkIvtapqmGkj7TChh2A3CRKZ3el5KVOAcXcZJFfir6aTW0PSCD4sIksGFpy8jaW254yhDL688ErAm2q8MEypmyZt3sLSzcs00G461ZT4I7IJXnWl9hRu7MVCrS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uHj32-00007s-NY; Wed, 21 May 2025 14:59:52 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uHj32-000ZXv-1X;
-	Wed, 21 May 2025 14:59:52 +0200
-Received: from pengutronix.de (unknown [IPv6:2a03:2260:2009:2000::])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8452641698E;
-	Wed, 21 May 2025 12:59:51 +0000 (UTC)
-Date: Wed, 21 May 2025 14:59:50 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, michael@amarulasolutions.com, Fabio Estevam <festevam@gmail.com>, 
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: dts: mxs: support i.MX28 Amarula rmm board
-Message-ID: <20250521-neon-yellow-groundhog-69f777-mkl@pengutronix.de>
-References: <20250521092826.1035448-1-dario.binacchi@amarulasolutions.com>
- <20250521092826.1035448-4-dario.binacchi@amarulasolutions.com>
- <20250521-quizzical-tidy-worm-1fe67d-mkl@pengutronix.de>
- <CABGWkvrmuhaF4iHqHRkrNrrHb2gUNDBJKCT-jZ8ZuwZGRvm7Lw@mail.gmail.com>
+	s=arc-20240116; t=1747833603; c=relaxed/simple;
+	bh=Mp5KvBUD4ru+9Ndh/QthP4GfWu7ALeMm0VnKwSS6DW0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RfpySvJeX/TSAeEpPfHvyNt6WZdbYd8vvazjnXahFPAVOFVkYPrPIi7KRjvKJlOapIgjKeagVgd0cW+JiPl96b4sVshCDWGHF1SD0ytxKIt3gyZmRFRFqdSiSV1BebMS/feAElsUs0f8P6J+7Cs4L3w69VFhytKf3YHA+uUuD/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=gakg08Uc; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="gakg08Uc"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-70cc667a7ecso27707947b3.3
+        for <imx@lists.linux.dev>; Wed, 21 May 2025 06:20:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1747833600; x=1748438400; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MdEgWSJxe9FJMYKcuUExk/aYWYfMksc/H/dM1vOfbdc=;
+        b=gakg08UcQEY0+wPhiY4yPGfjcR6z1FvNOByaJY+OX2yOs81GxN/09R5inGyDVeLiFw
+         coQR9gs7eGoPLo4TU/zGoMN3GgdNbv9oUhzvGY3LV5EbU6QNfaITOAtMvYWgOER4P/cY
+         EpY86CKCkV9cvCsF6/eabCCTNKfLCRYaTHcqg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747833600; x=1748438400;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MdEgWSJxe9FJMYKcuUExk/aYWYfMksc/H/dM1vOfbdc=;
+        b=D8xWjvXuVgxsL37eOYfQOUClYgVyJrfGlet1oMECQKOI31AUi3RrZ2wu2jvDtZgp8Q
+         bsDnKoeorY3mhVn8Sm4a7gEfnICF+qRf0F/ZkHCZ3Rm3cTQZasmIER8sFLZ1vjOguxs/
+         WkId0SaoZVdFsBohKnOb7Eaceww82THUqcnD9FPdhYRLzZiQKxWxVkU0MO8qpWAoTJy0
+         toB6DHzPfvd6jz0IJWBspF4KYkgtvMz6ysA2hknlxxhX6UZiG/S6i8MrP6bTGlxWer9z
+         WdQ7wp5DNVH8R129+XD4+4kHOOrY0h5G2cLcfRhmIicv/Zg59hKNP6yKDzE98oxUtgI+
+         Y6cg==
+X-Forwarded-Encrypted: i=1; AJvYcCXy1sDH/6JE5BGzch1auXZ0ubMgT7x3ohqYXf4+Sg4BFwT9lgf7ZedtGscc0zufyMw1fUQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyOlkabchkPMOaIlB++Smnxm8aderxjqCBfiCTk+7EP0JFPnaEt
+	GSbextcm6GSBV0BR5EOP8wOQKEdAIV/399PJuGjLyAG3SarRuNvBOsT0nK6V0QlgeeF9C+oq7uC
+	mjH/lfUAXLIxpQjeUccoedCyjmB5GHENxwXYTh7MpKg==
+X-Gm-Gg: ASbGnct3aRoCZAn8+uE3XRhP9iQVyOktdUiSxozaDnzyRpoKMb8/ruEGnCtAhHLQjQf
+	NqQ6rFnP7suIIr0VAL+qHcjrjDxxdNKyE8X3frkPwLFKNmpOwT8FjkEQjhelhw/u+ut1v7mR6Yd
+	gcCcfwaFv8SbUiGq23qVMm+RqhEz4GpkhZR7VeSHMCi5lcsgz5r6gi+6CkisSnGH42bg==
+X-Google-Smtp-Source: AGHT+IFJuZAiihHxJLr6M/kE3uYbWzRfUS/uPkbXXA+1qG7+nEsPeLqVDoAYPRojiT4pNkEEDqIrXTdm4/tlPfieZDg=
+X-Received: by 2002:a05:690c:750e:b0:70c:b90a:5c88 with SMTP id
+ 00721157ae682-70cb90a5f24mr213677417b3.31.1747833600229; Wed, 21 May 2025
+ 06:20:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="a46t33bhnuh43qgg"
-Content-Disposition: inline
-In-Reply-To: <CABGWkvrmuhaF4iHqHRkrNrrHb2gUNDBJKCT-jZ8ZuwZGRvm7Lw@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
-
-
---a46t33bhnuh43qgg
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+References: <20250521092826.1035448-1-dario.binacchi@amarulasolutions.com>
+ <20250521092826.1035448-4-dario.binacchi@amarulasolutions.com> <CAOMZO5D-d7bmBfXKe936W5QjmsukRRX3y0ge+xtizqFx0HPE8A@mail.gmail.com>
+In-Reply-To: <CAOMZO5D-d7bmBfXKe936W5QjmsukRRX3y0ge+xtizqFx0HPE8A@mail.gmail.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Date: Wed, 21 May 2025 15:19:48 +0200
+X-Gm-Features: AX0GCFtbBN2xKHFMu-Zp69Kj64qn-x6_0NKQbUd_en3T7Wa4I2aai6e9qO1zzuQ
+Message-ID: <CABGWkvpPMry26DP4Wo8WEGhokdkf5GdLd=+O5SqRdh-8JBqt_w@mail.gmail.com>
 Subject: Re: [PATCH 3/3] ARM: dts: mxs: support i.MX28 Amarula rmm board
-MIME-Version: 1.0
+To: Fabio Estevam <festevam@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	michael@amarulasolutions.com, Conor Dooley <conor+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 21.05.2025 12:32:19, Dario Binacchi wrote:
-> Hello Marc,
->=20
-> On Wed, May 21, 2025 at 11:35=E2=80=AFAM Marc Kleine-Budde <mkl@pengutron=
-ix.de> wrote:
-> >
-> > On 21.05.2025 11:28:22, Dario Binacchi wrote:
-> > > The board includes the following resources:
-> > >  - 256 Mbytes NAND Flash
-> > >  - 256 Mbytes SRAM
-> > >  - LCD-TFT controller
-> > >  - CAN
-> >
-> > [...]
-> >
-> > > +&can0 {
-> > > +     pinctrl-names =3D "default";
-> > > +     pinctrl-0 =3D <&can0_pins_a>;
-> > > +     xceiver-supply =3D <&reg_3v3>;
-> >
-> > Since v6.15-rc1 (d80bfde3c57a ("can: flexcan: add transceiver
-> > capabilities")), the flexcan driver supports CAN transceivers via the
-> > phy framework, see drivers/phy/phy-can-transceiver.c. Can you make use
-> > of it?
->=20
-> The board uses the SN65HVD233 transceiver, which is not listed among those
-> supported by drivers/phy/phy-can-transceiver.c. So I can't use the PHY
-> framework.
+Hi Fabio,
 
-Hmmm, okay. Since the SN65HVD233 has features like loopback, we have to
-think about it more than adding a new compatible to the existing driver.
+On Wed, May 21, 2025 at 1:40=E2=80=AFPM Fabio Estevam <festevam@gmail.com> =
+wrote:
+>
+> Hi Dario,
+>
+> On Wed, May 21, 2025 at 6:28=E2=80=AFAM Dario Binacchi
+> <dario.binacchi@amarulasolutions.com> wrote:
+> >
+> > The board includes the following resources:
+> >  - 256 Mbytes NAND Flash
+> >  - 256 Mbytes SRAM
+>
+> SRAM or DDR?
 
-> Do you agree?
+Sorry, DRAM DDR2
+
+>
+> >  - LCD-TFT controller
+>
+> The LCD support is not described in the dts.
+
+Yes, you're right.
+The board has been in use for a long time with a 4.19 kernel. We recently b=
+umped
+it to the LTS version 6.6.69. However, for now we've had to revert commit
+f225f1393f034 ("video: fbdev: mxsfb: Remove driver") along with other
+custom changes
+to reproduce the correct display behavior in the field. That's why we
+haven't described
+the LCD panel yet.
+We'd like to add it only after we get it working without needing to
+apply non-mainline patches.
+
+The same goes for the sound, which is neither mentioned in the commit
+description nor in the DTS.
+
+So if you're okay with it, I will remove all references to the LCD
+display =E2=80=94 both from the commit
+message and from the DTS, such as the reset pin, for example.
+
+>
+> > +/ {
+> > +       model =3D "Amarula i.MX28 rmm";
+> > +       compatible =3D "amarula,imx28-rmm", "fsl,imx28";
+> > +
+> > +       memory@40000000 {
+> > +               device_type =3D "memory";
+> > +               reg =3D <0x40000000 0x08000000>;
+>
+> In the commit log, you say 256 MB, but here we have 128 MB.
+
+We have two models, one with 128MB and one with 256MB of RAM.
+What's the recommended way to handle both cases?
+Should I define a new DTS file named imx28-amarula-rmm-256mb.dts
+that includes imx28-amarula-rmm.dts and override the reg property of
+the memory node?
+
+>
+> > +&i2c0 {
+> > +       pinctrl-names =3D "default";
+> > +       pinctrl-0 =3D <&i2c0_pins_a>;
+> > +       status =3D "okay";
+> > +
+> > +       polytouch: edt-ft5x06@38 {
+>
+> Node names should be generic: touchscreen@38
 
 Ok
 
-> Or am I missing something?
+>
+> > +
+> > +&pinctrl {
+> > +       pinctrl-names =3D "default";
+> > +       pinctrl-0 =3D <&hog_pins_a>;
+> > +
+> > +       hog_pins_a: hog-0 {
+> > +               reg =3D <0>;
+> > +               fsl,pinmux-ids =3D <
+> > +                       MX28_PAD_LCD_RESET__GPIO_3_30 /* LCD reset */
+> > +                       MX28_PAD_SSP2_SS1__GPIO_2_20  /* External power=
+ */
+>
+> Proper panel bindings should better describe these pins than hog pins.
 
-regards,
-Marc
+I will drop the LCD reset pin.
+
+Thanks and regards,
+Dario
+
+>
+> Do you plan to add display support?
+
+
 
 --=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
---a46t33bhnuh43qgg
-Content-Type: application/pgp-signature; name="signature.asc"
+Dario Binacchi
 
------BEGIN PGP SIGNATURE-----
+Senior Embedded Linux Developer
 
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmgtzkIACgkQDHRl3/mQ
-kZxORgf/WqqWv1YA6aA24pwIch/Mdi1hGSfsgp+sRP0Y+Rjp3ZFzW/NzCap+BoX8
-VPtoygZEJLRnFjuApZePl2IwbhUX8gEjffcfl29qjLzAo6Z4MFQUlzzAr9+GZS8h
-5XVxLVWher9z7xrW49Bhrebad+f9TEp+yFdez/W8LqTG6csHd2j/WhNvnA+iWp1u
-1aNVS6/4dFWPgqB+aQItZ8WXJOalqhKEePqgONIWA61pPwtsF/u219pPYLLfVFAs
-vL+7hVS2jph1b3sbLcUxTqZ6IV1kMUs8IyMmKyx9zYq7ziblcDGILMlPaJPkxvJO
-xunHUUhFDU2GQso45w88F6DpSq2SCA==
-=KaRh
------END PGP SIGNATURE-----
+dario.binacchi@amarulasolutions.com
 
---a46t33bhnuh43qgg--
+__________________________________
+
+
+Amarula Solutions SRL
+
+Via Le Canevare 30, 31100 Treviso, Veneto, IT
+
+T. +39 042 243 5310
+info@amarulasolutions.com
+
+www.amarulasolutions.com
