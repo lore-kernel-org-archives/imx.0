@@ -1,93 +1,152 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7350C233D85
-	for <imx@lists.linux.dev>; Wed, 21 May 2025 08:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43D5199EAF
+	for <imx@lists.linux.dev>; Wed, 21 May 2025 08:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747815181; cv=none; b=A1SlHuGl2BLWzY9gcoxumYcj0uwXtYUZs7SwquTVxoB9BeGrH+EAp/DuZottbdjqAFjSWNiRpyUwCt4Ta/98i2+uoNU0YllL5xeQBovgX/+2/IR1NFJJbxt+UudApimhieGVY9j7sp8j0rt+71tyHgoIKgffkb9HIEOz0r2EQrU=
+	t=1747816814; cv=none; b=Fe7D97z7d93oNn3MBPdjT7DkGDj/725NEcxaxIogsJTyZCt+qMv+Vowvir835m/2qmwhQoIvDZwUuCE797IQV03iwkMEKt2VkIvlZNbFwPeuL4r1kar8MTXyMmYY2ZO96b1ZCwILnqY8CBblSG3yTCtTaMwBu8sRXcxDufYh2y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747815181; c=relaxed/simple;
-	bh=pwr4z+M06i1mMSwv0rCr5dUsFp06XkoBxQnrw1/GtgI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l8Xe+YFrpBikQv0iTy1wUB+oKvuUriZQ0/raSytcOfA+GWPrpug89HbdaJFc5qIPdNKj6FiVR4erzVfOBtgMMhMY7L/bxQKP/2binUOo9VmwxXjjJ4NiRfYa8U2z0xRlcptP2zPPEp4CEGr1r8o1I/JBfYlNZDxrmOagS8EK8L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=B9lgvohL; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1747816814; c=relaxed/simple;
+	bh=xKrhmqIiWOmOlpaJasryOxvv+AyK40z7gGjfp/7LQO4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U03fepf46tx63sBQHZ8XX4pd72yiMJuAeWDOcC1xSNPXtSzVO60P7d6msH+KmW3ge+vpmzfnC+g6sEj4kvI9Rta+PKo3xQo9csW/tMYfekXALV9eBcY5KieKw2EbLEex3wI/yr7m1TGHL/aqIubQiTgJ+w7Qo2PD+GNH++Agiio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=d5f9fZPH; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B9lgvohL"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-54b10594812so7625070e87.1
-        for <imx@lists.linux.dev>; Wed, 21 May 2025 01:12:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747815177; x=1748419977; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pwr4z+M06i1mMSwv0rCr5dUsFp06XkoBxQnrw1/GtgI=;
-        b=B9lgvohLiFnvINlMAClnfabbzIvPyjNDaDm+Lu/5AYsK59nVg6KOTmpFdBsY1C9E9G
-         292CX8ny3xmot7W8hLaVnrMvO2KZl/JdWTsZSrFHiJjaOnEpLWRiYz+2GfjjIGRsDHq5
-         oko7oM5tAyPU35gX2nbXwFpM6CpcnOjAO5it8Bgj1HHA95NBOVFfAEt/5t+4pgRobGk8
-         Ll4ahEHIwoODZsfFOkL8eLwFKEm0onewpMgSiibuUR85MFoX0N/X+fDXZmfLHKjRIaPV
-         MH0r+fHsiBld5arTLrTsJwM1W7VK1dQymPO1ts0QqfxwdOBgzMDhkp+uFpxx8/zLQGZR
-         Xvfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747815177; x=1748419977;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pwr4z+M06i1mMSwv0rCr5dUsFp06XkoBxQnrw1/GtgI=;
-        b=fN86NGi+RzYMpgA2GmjAsHZxIWovVgf83CevUmvX4UTLPqXY9YwW34Sy4eMK+SFwxL
-         tSoW467EE/C9ENw8JkZUeGyeDGoQoImYl3lniD629axI53/a6gmMiTAWE5eGBZ47WL7U
-         BYT2HWXfCQj7wSMInHk0Jfe7oxMDt81mnUZSQtaz5Ka9GxLpbG5s3Et0zh3sr8QeegM5
-         mmDx0gh9JCLvUDTRsvy7bjoAYQ2NCosN1Y1wMX6+ndAEOIYymJOGotzyLl47YKQ8xaEb
-         9GlevHOL4CHR+if9ZLDilSx/CYvQ7uxLY4n3XzSmY+5l7MeS2U8LXJFTqfOcKdxIcmoT
-         PE9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX3bWqXg0DnpqM+3RucYDscr9uiDktw1s+JQagzslnYv/VJ6CQYl1RB9ijK5qGJWxgJo+U=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywcr8MGFBSppDLbVo9Lu+Rvc0AOiQcYbQulnYqjnh1LKUerb4x2
-	Q5StdvTt1YwDKtKgoClkW9AgoBJsn0auJZZcDmkpR6GsHQSz++sZLwG15Y+eyVra3wnRLPYHN69
-	o1uDR+UnT+iFUvfGE55le3NLxVN5nC0Xzw3H3mhjU8Q==
-X-Gm-Gg: ASbGncuRrKdWFldAgJC6SjM86oLSt51D82wv+ITrH5dvPF9kvZU0m2WT08stECNf5OG
-	bIKmHFSf6SWeUiP38Iw2QbNF8odF/iiRWLmFDAdzjivMO5N2wKYVKFR2KOqKFz2lYIuvL2PThiq
-	GmWFnLoZVwxv1e7viEPW3X5+2JtvBVdYDRPiw4T3PbKHg=
-X-Google-Smtp-Source: AGHT+IHypaEtLgbAx0hI1pwfX+02JjmtIZJY41Yl+79R8Nfu0dbAldHSIKhHCLmxFeUhAu+kg3UiZtw/f5zBM85OvXE=
-X-Received: by 2002:a05:6512:6805:b0:54d:663b:bda9 with SMTP id
- 2adb3069b0e04-550e726811emr5586519e87.51.1747815177553; Wed, 21 May 2025
- 01:12:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="d5f9fZPH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1747816805; x=1748421605; i=wahrenst@gmx.net;
+	bh=xKrhmqIiWOmOlpaJasryOxvv+AyK40z7gGjfp/7LQO4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=d5f9fZPHew8XRi21cvmOsB6f1oB/9SWXu/fKQ+cY99+nYm8qavN1WfU7pHhRm9nR
+	 AfbeK0ZPeocADjRKhXNf+/TSu9To6sfULg+MIc8iXE1zC0VA2NJbdj6NGq3F/PlJY
+	 j4K8XjAdGsLoyc/ZQ2KiXpWOeZwRACZYEFr9Opw03kbpP5ab+RQ0ah7j6MXxbxj3k
+	 qWBErawVep0xkk+L0mYhPxVQ9w9CJub4IcS7AvVvZbTvBrXtbRwn0+E1gfZ/idwgu
+	 ZtfPHGEIwPucypbh5WshTJrPj047DXlcN2wiLJ4Lj9zwQbnIT8ZYIRSW2t4Ic7Ae2
+	 0N7Zke3IQwzQBja6CQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.105] ([91.41.216.208]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MC34h-1u5KeH3sYn-00CwUd; Wed, 21
+ May 2025 10:40:05 +0200
+Message-ID: <81fd4ffd-5f1d-47fa-a50c-e0643ee2787e@gmx.net>
+Date: Wed, 21 May 2025 10:40:03 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250516100423.1685732-1-ping.bai@nxp.com>
-In-Reply-To: <20250516100423.1685732-1-ping.bai@nxp.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 21 May 2025 10:12:46 +0200
-X-Gm-Features: AX0GCFtWAB87B9iw-eCTV-w3vbrXw3ATM0xxduBEOTn9gKp9rC41cR3ebYjTvJQ
-Message-ID: <CACRpkdZ7iymSvvst8Gi3EaeG--2icRgkoKEiJxxjLgC2LCDW_A@mail.gmail.com>
-Subject: Re: [PATCH v2] pinctrl: freescale: Add support for imx943 pinctrl
-To: Jacky Bai <ping.bai@nxp.com>
-Cc: sudeep.holla@arm.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	cristian.marussi@arm.com, aisheng.dong@nxp.com, festevam@gmail.com, 
-	kernel@pengutronix.de, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, arm-scmi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] ARM: dts: add ngpios for vf610 compatible gpio
+ controllers
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Haibo Chen <haibo.chen@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Stefan Agner <stefan@agner.ch>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, peng.fan@nxp.com,
+ conor@kernel.org, Frank Li <Frank.Li@nxp.com>
+References: <20250520-gpio-dts-v3-0-04771c6cf325@nxp.com>
+ <20250520-gpio-dts-v3-2-04771c6cf325@nxp.com>
+ <f0017caf-8fd7-4046-ab7c-71c6560b7a95@gmx.net>
+ <CACRpkda1OKXnma11wKTrBsO_AAXrifVK8RDCKmufdHXBMmtMbQ@mail.gmail.com>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <CACRpkda1OKXnma11wKTrBsO_AAXrifVK8RDCKmufdHXBMmtMbQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:uFUFDJdhW4swt/TD+jo8LPeuiKlQ8k4OGhLbj4Ydgc9rvkIN7g3
+ fQE6wAxK+PTLtDVHt9zeryR8kMl9GV1wA0vG5PEfDhZJ8DASqrlmd3wD2o7KYJlkPYNu6xo
+ cqqkm9y4WGd09Ixx8CwrjpYgxaN7PST+ZXSqTnZNntOsNEvfCKSfpioTUD8mXfUSWghNmSV
+ 420WAPbyCtYiOs5sqHpLw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:dscK6y2rpac=;PnLHkn4xxCMDPZ3Gw6LtJVSdcf4
+ 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
+ O7TgvjpokwI5o=
 
-On Fri, May 16, 2025 at 12:02=E2=80=AFPM Jacky Bai <ping.bai@nxp.com> wrote=
-:
-
-> The i.MX943 System Manager (SM) firmware supports the System Control
-> Management Interface (SCMI) pinctrl protocol, similar to the i.MX95 SM.
-> The base offset for the i.MX943 IOMUXC Daisy input register differs from
-> that of the i.MX95. Update the pinctrl-imx-scmi driver to add support for
-> i.MX943.
+Am 21.05.25 um 00:14 schrieb Linus Walleij:
+> On Tue, May 20, 2025 at 12:54=E2=80=AFPM Stefan Wahren <wahrenst@gmx.net=
+> wrote:
 >
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+>> sorry for asking this dumb question: why do we need the redundant ngpio
+>> property in case there is already gpio-ranges defined? AFAIU the last
+>> cell already contains the necessary information. Or do I missed somethi=
+ng?
+> Not all GPIOs on a gpio controller have to be present in
+> a range.
+>
+> The ranges can be multiple and have holes in them.
+>
+> The ranges are also optional.
+>
+> The fact that this DTS file, for this SoC and on this controller
+> happens to have a range mapped right over all of the pins
+> is merely a coinicidence and not a general rule of any kind,
+> it just apophenia playing games on us.
+Thanks for clarification
+>
+> Yours,
+> Linus Walleij
+>
 
-Patch applied, expecting the compatible string to come in from
-another tree!
-
-Yours,
-Linus Walleij
