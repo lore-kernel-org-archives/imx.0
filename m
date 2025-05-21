@@ -1,427 +1,114 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A165424168A
-	for <imx@lists.linux.dev>; Wed, 21 May 2025 09:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A544238173
+	for <imx@lists.linux.dev>; Wed, 21 May 2025 09:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747819717; cv=none; b=QTOx+IH9HGXuyx3putUZdPx/fFYXCRI46CAawXDnM124qBocDQ9h3YRjgHMe2OT9ky9MNT/rlwMeW9kc6Bjz8/WPTBMo7LpJtL8BKn9BLfWI8YjQtlF4gyLUX3pFTwB9j2neLnLfBVzxpPYj2MCk5UOaa3m/TeJIz4rXUIqp3rY=
+	t=1747820129; cv=none; b=PmoZuwvBK7ux7CHtkGQ83kK0gHOzIH81iqgspWA6XpPPg0zytatA1h7OT9lIyBCOs/AlMJaKuUD77J9hZwArHVlskjJ4MGB9K3B5Hyp35/frkm98LVsjFATK/XrMhYedpHdhe/+ZG/LXGpXVTv/N1ZvGLmjsK2nQRyFTdVuqNhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747819717; c=relaxed/simple;
-	bh=FomHqmQ14E2Bt24ovsI6OM78X7YORg7U3Xg/Dt8cjMg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FINKIzvDO++HR+47v/9HWaNxGZKcQ8wuy+DehCIBkNV1CqsotCENsssrwiekY7wRzTFJ1ZrswTuUVPXqEAbrMPj45upw8pZ81qwDaoBwrEc5bMPpK9WmsQlcpzD2TgEODvEIoiOocs3NzXHYGM5t5GtzO0ZDj+PQ1waYNE4zQA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=TKEKd3od; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="TKEKd3od"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ad56cbc7b07so459590166b.0
-        for <imx@lists.linux.dev>; Wed, 21 May 2025 02:28:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1747819714; x=1748424514; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=88zSqdF1oery5Ifyy1daaJl4Nvz7hA233uJOXHAMsbU=;
-        b=TKEKd3odyFW3NkprZD1tL9JvDK4Qio7j1J8JeFW1eqy9q5y50GB4YZ9OS/jvGPa7TO
-         xl4I+7s6agd5IgYoCKTFGMgoQBUYE1XCMhuWZDL5/nZOCpQNJCwHaBWEXLoRmkqKYxOJ
-         wcvb/b5npFh1CWolEF/YyIfvC0BJv2QWbN3+8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747819714; x=1748424514;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=88zSqdF1oery5Ifyy1daaJl4Nvz7hA233uJOXHAMsbU=;
-        b=jKSfUhL45xO4WMo4IiVhd1qXSZjXMZQCwlvH9FbphtOTLu8jCBcNmx4CsZP4pQzrAl
-         RR7LtQvrj/7JwB2IWSXZah9FUQUp2/e0fpOIpZZlHgFlRZ5otCnL4Kqe/HUHEociFiZJ
-         mRaZaxtT+HbEqb/B5bT2l9wAhc+H36yViQ+tNDoTDj3cEiJgpf0ra4GjK5Vr9v8XsL00
-         4xPY9Epsuz/iLIsaszxCIjy+/XD18BoJ8PStAXlFlYqlQMEIyjA4G4eUoW5TTGOVQrxs
-         2WhIIQ2ptcEbRnkbAhQbYTZPk14hvi2+sQ8yp6+nyVuFlTs5p9lKPVyK/lq5/LpMb44p
-         qlCg==
-X-Forwarded-Encrypted: i=1; AJvYcCWao4/thJQCVWxyqkZKyMr+XIQkcfkDeMiB4CfkU14PIFv96Btk9v0wQRRwp+gpQ+31hUE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwgvrzhVx3wlZ88//xqBhCEiEjQ6eqk7u6qgZR2O5BenqYM507t
-	nniQaByRLnBv3S3ZUwM+AIEB+mdEpkW2qrj4XgAT4QBLaKGhJf6MuCZTmyVkyQ/K7b4UY03Veng
-	u5Ofx
-X-Gm-Gg: ASbGncsuN5OXQGHkBSxV8VOgKabtZCA+OXbJz5ha57G9LYHzx2oSpVp3TG0nH/xxLQc
-	1Nr2Il0o9PxgOln+zyhTJ87YhRozP6Yv5O9FS4RI6RVgr4Dq2mEyek1YF0+ktjagHuaGdwzK5Ws
-	c2rZ3jDvnXCTs2n7ZZCsS6cFbcJc8Q3eGdq1ikho9+4/dF53R4MMwKTohW65KAJy0CC9QvUXBGp
-	yFVDeUKBnrC5bpAVDx7cDtYysZgBr+kLkcnQPVf3wldNsUKVKWiwy6QNI4hc3m5QxWpXG0C2Kf+
-	xsBjUPTrkV0+0aXJ3RchQ5KPIKRXJJHYyx8AdmCGNWm7/gM7zGZuQ3hO0OS9iovt7WjoXTkofIn
-	LUU3Pz5Mktivg
-X-Google-Smtp-Source: AGHT+IHbZ8J/wRZ5lk7VnfS42O+2zQL+znLKT7ZMo3IHYU7HZnK0RacmYNlNgAkU20/pUPem8p2E7Q==
-X-Received: by 2002:a17:906:4794:b0:ad5:54e0:4c97 with SMTP id a640c23a62f3a-ad554e04df2mr1260109466b.50.1747819713811;
-        Wed, 21 May 2025 02:28:33 -0700 (PDT)
-Received: from localhost.localdomain ([2001:b07:6474:ebbf:cfc5:5070:d6f4:1d86])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d275d9fsm867442466b.74.2025.05.21.02.28.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 02:28:33 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-amarula@amarulasolutions.com,
-	michael@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
+	s=arc-20240116; t=1747820129; c=relaxed/simple;
+	bh=ldy3lqqkdQ8O42SSNi98DGRMwNCFB9KvnWLzokONCAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dhdjZ9r33i8NiFjwsxf9T717uzDS3m2qrkJxhFQAgTM58OpvfBHTC6XzGsuZK9DHA48hpwZvJGYqBtPSoMkkSnx7f4VljherV4Met+JP3+W0F/UQAVENPPaxD6uANRWp5AZzTfbr8e2k2VwKE1KUzXM1rd8Z3RFTZDdzfPBmwlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uHfr3-0001Lu-7G; Wed, 21 May 2025 11:35:17 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uHfr2-000YAT-34;
+	Wed, 21 May 2025 11:35:16 +0200
+Received: from pengutronix.de (unknown [IPv6:2a03:2260:2009:2000::])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id F299741679B;
+	Wed, 21 May 2025 09:35:15 +0000 (UTC)
+Date: Wed, 21 May 2025 11:35:15 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	Sascha Hauer <s.hauer@pengutronix.de>, imx@lists.linux.dev, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, michael@amarulasolutions.com, Fabio Estevam <festevam@gmail.com>, 
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 3/3] ARM: dts: mxs: support i.MX28 Amarula rmm board
-Date: Wed, 21 May 2025 11:28:22 +0200
-Message-ID: <20250521092826.1035448-4-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250521092826.1035448-1-dario.binacchi@amarulasolutions.com>
+Subject: Re: [PATCH 3/3] ARM: dts: mxs: support i.MX28 Amarula rmm board
+Message-ID: <20250521-quizzical-tidy-worm-1fe67d-mkl@pengutronix.de>
 References: <20250521092826.1035448-1-dario.binacchi@amarulasolutions.com>
+ <20250521092826.1035448-4-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iltdsbk26xo7g47t"
+Content-Disposition: inline
+In-Reply-To: <20250521092826.1035448-4-dario.binacchi@amarulasolutions.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The board includes the following resources:
- - 256 Mbytes NAND Flash
- - 256 Mbytes SRAM
- - LCD-TFT controller
- - CAN
- - USB 2.0 high-speed/full-speed
- - Ethernet MAC
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+--iltdsbk26xo7g47t
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 3/3] ARM: dts: mxs: support i.MX28 Amarula rmm board
+MIME-Version: 1.0
 
----
+On 21.05.2025 11:28:22, Dario Binacchi wrote:
+> The board includes the following resources:
+>  - 256 Mbytes NAND Flash
+>  - 256 Mbytes SRAM
+>  - LCD-TFT controller
+>  - CAN
 
- arch/arm/boot/dts/nxp/mxs/Makefile            |   1 +
- .../boot/dts/nxp/mxs/imx28-amarula-rmm.dts    | 302 ++++++++++++++++++
- 2 files changed, 303 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
+[...]
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/Makefile b/arch/arm/boot/dts/nxp/mxs/Makefile
-index 96dd31ea19ba..d72ba702b6fa 100644
---- a/arch/arm/boot/dts/nxp/mxs/Makefile
-+++ b/arch/arm/boot/dts/nxp/mxs/Makefile
-@@ -5,6 +5,7 @@ dtb-$(CONFIG_ARCH_MXS) += \
- 	imx23-sansa.dtb \
- 	imx23-stmp378x_devb.dtb \
- 	imx23-xfi3.dtb \
-+	imx28-amarula-rmm.dtb \
- 	imx28-apf28.dtb \
- 	imx28-apf28dev.dtb \
- 	imx28-apx4devkit.dtb \
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-new file mode 100644
-index 000000000000..ce6b34e35e1c
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-@@ -0,0 +1,302 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2025 Amarula Solutions, Dario Binacchi <dario.binacchi@amarulasolutions.com>
-+ */
-+
-+/dts-v1/;
-+#include "imx28.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+/ {
-+	model = "Amarula i.MX28 rmm";
-+	compatible = "amarula,imx28-rmm", "fsl,imx28";
-+
-+	memory@40000000 {
-+		device_type = "memory";
-+		reg = <0x40000000 0x08000000>;
-+	};
-+
-+	reg_5v: regulator-5v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "5v";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		regulator-always-on;
-+	};
-+
-+	reg_3v3: regulator-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "3v3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-always-on;
-+	};
-+
-+	reg_1v8: regulator-1v8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1v8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	reg_fec_3v3: regulator-fec-3v3 {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&fec_3v3_enable_pin>;
-+		regulator-name = "fec-3v3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio3 27 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		startup-delay-us = <300000>;
-+		vin-supply = <&reg_5v>;
-+	};
-+
-+	reg_usb0_vbus: regulator-usb0-vbus {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&usb0_vbus_enable_pin>;
-+		regulator-name = "usb0_vbus";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		gpio = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		regulator-always-on;
-+	};
-+
-+	reg_usb1_vbus: regulator-usb1-vbus {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&usb1_vbus_enable_pin>;
-+		regulator-name = "usb1_vbus";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		gpio = <&gpio2 6 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		regulator-always-on;
-+	};
-+
-+	backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pwm 4 5000000 0>;
-+		brightness-levels = <0 255>;
-+		num-interpolated-steps = <255>;
-+		default-brightness-level = <255>;
-+		power-supply = <&reg_5v>;
-+	};
-+
-+	beeper {
-+		compatible = "pwm-beeper";
-+		pwms = <&pwm 7 100000 0>;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&leds_pins>;
-+
-+		led-0 {
-+			label = "status";
-+			gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		led-1 {
-+			label = "x22_5";
-+			gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		led-2 {
-+			label = "x22_4";
-+			gpios = <&gpio3 17 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+	};
-+};
-+
-+&auart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&auart0_2pins_a>;
-+	status = "okay";
-+};
-+
-+&auart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&auart1_pins_a>;
-+	status = "okay";
-+};
-+
-+&can0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&can0_pins_a>;
-+	xceiver-supply = <&reg_3v3>;
-+	status = "okay";
-+};
-+
-+&duart {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&duart_pins_b>;
-+	status = "okay";
-+};
-+
-+&duart_pins_b {
-+	fsl,voltage = <MXS_VOLTAGE_LOW>;
-+};
-+
-+&gpmi {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&gpmi_pins_a &gpmi_status_cfg>;
-+	status = "okay";
-+};
-+
-+&i2c0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c0_pins_a>;
-+	status = "okay";
-+
-+	polytouch: edt-ft5x06@38 {
-+		compatible = "edt,edt-ft5x06";
-+		reg = <0x38>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&edt_ft5x06_pins &edt_ft5x06_wake_pin>;
-+		interrupt-parent = <&gpio0>;
-+		interrupts = <19 IRQ_TYPE_EDGE_RISING>;
-+		reset-gpios = <&gpio0 21 GPIO_ACTIVE_LOW>;
-+		wake-gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>;
-+	};
-+};
-+
-+&lradc {
-+	status = "okay";
-+};
-+
-+&mac0 {
-+	phy-mode = "rmii";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mac0_pins_a>;
-+	phy-supply = <&reg_fec_3v3>;
-+	phy-handle = <&ethphy>;
-+	status = "okay";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy: ethernet-phy@0 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <0>;
-+			max-speed = <100>;
-+			reset-gpios = <&gpio3 28 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <4000>;
-+			reset-deassert-us = <4000>;
-+		};
-+	};
-+};
-+
-+&pinctrl {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&hog_pins_a>;
-+
-+	hog_pins_a: hog-0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_LCD_RESET__GPIO_3_30 /* LCD reset */
-+			MX28_PAD_SSP2_SS1__GPIO_2_20  /* External power */
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+
-+	edt_ft5x06_pins: edt-ft5x06-0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_GPMI_RDY1__GPIO_0_21 /* Reset */
-+			MX28_PAD_GPMI_CE3N__GPIO_0_19 /* Interrupt */
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_ENABLE>;
-+	};
-+
-+	edt_ft5x06_wake_pin: edt-ft5x06-wake-0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <MX28_PAD_GPMI_CE2N__GPIO_0_18>;
-+		fsl,drive-strength = <MXS_DRIVE_16mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+
-+	fec_3v3_enable_pin: fec-3v3-enable-0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <MX28_PAD_SPDIF__GPIO_3_27>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+
-+	leds_pins: leds-0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_SSP0_DATA7__GPIO_2_7
-+			MX28_PAD_PWM0__GPIO_3_16
-+			MX28_PAD_PWM1__GPIO_3_17
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+
-+	usb0_vbus_enable_pin: usb0-vbus-enable-0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA5__GPIO_2_5>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+
-+	usb1_vbus_enable_pin: usb1-vbus-enable-0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA6__GPIO_2_6>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+	};
-+};
-+
-+&pwm {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pwm4_pins_a &pwm7_pins_a>;
-+	status = "okay";
-+};
-+
-+&ssp0 {
-+	compatible = "fsl,imx28-mmc";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mmc0_4bit_pins_a &mmc0_sck_cfg>;
-+	status = "okay";
-+	bus-width = <4>;
-+	broken-cd;
-+};
-+
-+&usb0 {
-+	status = "okay";
-+	vbus-supply = <&reg_usb0_vbus>;
-+	dr_mode = "host";
-+};
-+
-+&usb1 {
-+	status = "okay";
-+	vbus-supply = <&reg_usb1_vbus>;
-+	dr_mode = "host";
-+};
-+
-+&usbphy0 {
-+	status = "okay";
-+};
-+
-+&usbphy1 {
-+	status = "okay";
-+};
--- 
-2.43.0
+> +&can0 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&can0_pins_a>;
+> +	xceiver-supply =3D <&reg_3v3>;
 
+Since v6.15-rc1 (d80bfde3c57a ("can: flexcan: add transceiver
+capabilities")), the flexcan driver supports CAN transceivers via the
+phy framework, see drivers/phy/phy-can-transceiver.c. Can you make use
+of it?
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--iltdsbk26xo7g47t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmgtnlAACgkQDHRl3/mQ
+kZxqfwgArcPARaZe5fCyem7ScC0CD03Xge91Id9cL6A9oCHQPIUaTJXStmGpgEPZ
+p13vybE5uN1qhF25l4ALMsw76XVtydokAWgZ0/G2+tDVaP2BSfxJ+hwcfRmT4Mcc
+n39D3dO/DWz1mFWJenJDMGrc0JUQVENF5ab4ixItQ0UtCb9QWffEv6iRDevafmJl
+r+57pk+GzQkvauQLHelULhGlZeWTtfyTXSxUQwzEzXyhBRJ7RTCB3NjQUMvyRfRv
+14tMcmQf3/5SzCScR2OaiPDrEUFLxv42y2W8UmU2swha32vvEq33ILw5bBTA+IW8
+wKWmSI2jxnFb0dX2cNAoPq+8UYGv6w==
+=1fHO
+-----END PGP SIGNATURE-----
+
+--iltdsbk26xo7g47t--
