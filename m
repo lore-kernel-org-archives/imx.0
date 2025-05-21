@@ -1,128 +1,113 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2090C1DB124
-	for <imx@lists.linux.dev>; Wed, 21 May 2025 11:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52FC26462C
+	for <imx@lists.linux.dev>; Wed, 21 May 2025 11:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747827657; cv=none; b=KVRgwNw5BWepKiuhb+uiwm//7NpxtvqONz9OSd/z8DQL5EzWXFK2eGdi5ug6cOG8m8EKoxbJZM+nM7wiJmn7v3PvaST9jL3d4wQQwVmAKsktduD/eB2vKuOUoz85VuxycL6BbaYXW2LD9vxwSMR+ZGHNX2xVIA7WPuPZIZCEVtk=
+	t=1747827916; cv=none; b=dhNY6mKeoJ3WBBLxjHaOKRD2yQz+/J33hkp+o28/zY1alyqHgjVdy/QAMe2BWkUx5wKa4G5+sAbJJF1Q59ELh3511BUupzvBbwOtyHNgwR8gSjNusPsiA5okxuJ+31Wh4eGqOo0CoJVv35xCgfCxYNeQG4UTPcZYmfdRm6eI8XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747827657; c=relaxed/simple;
-	bh=s/NcY3SINg1iBtbSiIAXOaPuq5jYZKVkctKM8NepVdI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ovhHyn8Uf+Rrl3E3jZUA7CcH499ZG4wtJwp7E1w5YyyOXKx6zQSzTDUemECY9xvX0F4TqhGfmSu/xCbYqcw/VF+Dxl2Hvq+gSmWjFp6r8GY/VxxWFRKMddFBvX+hKjRO60McfaP2FUg71nwOckBPc+lOFQ7A6Mtwv9kADrlBooQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HBUQAhht; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HBUQAhht"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-551fe46934eso1864141e87.1
-        for <imx@lists.linux.dev>; Wed, 21 May 2025 04:40:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747827654; x=1748432454; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z9d59y1AAUBQBeLns7WWUxwr1G+hlDyrZidnmum2/Ds=;
-        b=HBUQAhhtBTGLK/1AjLw+Khqpm24cwN5qAr2cPYrd8Eua+gufYpxwx6DxpdRZZaddjm
-         Rn8oha/lGGiJWUqFJ+8Jisjp7cvnJSA3fHdYsRpTbn8dHt0zYdUCx60ondxQTyBdLH8j
-         VyLRtG9PrK6iSl3FSpqR+ptAdtBvISJrYfH2EsD873n99Q26cMxza+kQsgy9cJlyJafK
-         JMeb8zfzEXDG14XwfnomSoey2v6H2I+QaG1cCMM0MLl3i9LW9OuKNXjvH2wKtqqAgS/k
-         eIzo+MzPnGHix+AUI9IUhCM1BZ+pqMDQtZg1uCMvHP05xChlF2MhZZaLw3uoQmXVLXT4
-         DBcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747827654; x=1748432454;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z9d59y1AAUBQBeLns7WWUxwr1G+hlDyrZidnmum2/Ds=;
-        b=Cy6mBWcg6HFe3XflNses0hgL6rZcutMKsAVCpQCYZw2RdQheoggvZFfNFuXoHsLka/
-         nmN81UUtDnXgHh0n4gomgav98qr4ljGlQXC7efzgUncxDUyLeqf/Hi04VPh7zZf+4l9c
-         M3IsUg4kjGJb20s38870idF2XNtLwyGwz4nKOykp5FAKQH9PWpacMuhVQNP2Z/LoRPfj
-         Pftd6fBVayW6jRrOlKD42CMaqrxx7EwxU+61wLjg6otUBcWs8uAgiMwZvu/k/8Dk8Tgq
-         +IhTBQtqcOUsSnFysnK2u8DqhlMoVILkZFRlXaoZp8O/+3yaq5Lko645u521dh3rlT6/
-         9+bQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+qwNhjwCg6mp4omRDMlJzQWhSLfdT6BKWyslbi/N45V8RY6rBe/gPE8Q5uxvtR4pBocQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyVp+PSoA8VVfaf9XBS3RZ6PdIYiGNZcwjTjePcG0jINB9bqWB2
-	M2alZv4Z0nulnJhC371ufURziTXN3VbxExgP9K2WQBuvS4402pMz6i88Uq5JuPNw1hN4taWNu7K
-	ge6bWofurYo7WMckQoSC/cOH9YVeerZE=
-X-Gm-Gg: ASbGncsXVmjuKYVzRwijZD40StUhDOajZP31/uvZTrde6bTmUnFKzmiJtPko/SyThU3
-	vUHAmA8vLv3cfVPz4XmAErBlwmK/v6W0JuCgIA3vYAt5B1MDQpsUapl67kAF7Pv4tHPJ2muPLR6
-	hxYKntwBRoZ7OJMzLokjHg0/hTDfNVEZp3uNbceRPAhU+v5KeemCcx3UTHFBAYVn9fWAljuCpcM
-	zg=
-X-Google-Smtp-Source: AGHT+IEBT7uTeEaD1M6QcMlftPN+Diu0RdjP2HkZ+bs8PtCVUYHorsV+7TdTYTFNdPAyQT5oPUXJJVDEF5pcsY0RnQI=
-X-Received: by 2002:a05:6512:3c85:b0:551:ebc1:bc84 with SMTP id
- 2adb3069b0e04-551ebc1bff9mr4320652e87.8.1747827653907; Wed, 21 May 2025
- 04:40:53 -0700 (PDT)
+	s=arc-20240116; t=1747827916; c=relaxed/simple;
+	bh=td/pyxwNtvx4HW46UhbjzrcmN3XyrFV0b2aBZlY01Dw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fb8S2MULAPgvLGJPLSukyud2NQfVrILGOOicLvkA8mh4+60Aso9Tb8JW2jjXzMX2f37wvIS37ULNg1QCzJIQa27gqZMz539QVLlyxTPOmEPElj5i7HdDAAQ/fX0Hr9ergyDFk+wKV6CF2oh2zMAPdBOyEtqyT9E9H8DtwgFl/ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uHhsc-00018T-H7; Wed, 21 May 2025 13:45:02 +0200
+Message-ID: <721420c6-5e65-48a4-81c5-b161d0df8cfd@pengutronix.de>
+Date: Wed, 21 May 2025 13:44:59 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250521092826.1035448-1-dario.binacchi@amarulasolutions.com> <20250521092826.1035448-4-dario.binacchi@amarulasolutions.com>
-In-Reply-To: <20250521092826.1035448-4-dario.binacchi@amarulasolutions.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 21 May 2025 08:40:41 -0300
-X-Gm-Features: AX0GCFvuahJEGWjKzRmbj_fSU5phUy4za7_-MZjI-5ppsFQyUQtxl9C1m5zGqss
-Message-ID: <CAOMZO5D-d7bmBfXKe936W5QjmsukRRX3y0ge+xtizqFx0HPE8A@mail.gmail.com>
-Subject: Re: [PATCH 3/3] ARM: dts: mxs: support i.MX28 Amarula rmm board
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	michael@amarulasolutions.com, Conor Dooley <conor+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: inherit pins_100mhz from
+ pins_200mhz when unconfigured
+To: ziniu.wang_1@nxp.com, haibo.chen@nxp.com, adrian.hunter@intel.com,
+ ulf.hansson@linaro.org, linux-mmc@vger.kernel.org
+Cc: imx@lists.linux.dev, s32@nxp.com, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+ festevam@gmail.com, linux-arm-kernel@lists.infradead.org
+References: <20250521112042.266111-1-ziniu.wang_1@nxp.com>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20250521112042.266111-1-ziniu.wang_1@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Dario,
+Hi Luke,
 
-On Wed, May 21, 2025 at 6:28=E2=80=AFAM Dario Binacchi
-<dario.binacchi@amarulasolutions.com> wrote:
->
-> The board includes the following resources:
->  - 256 Mbytes NAND Flash
->  - 256 Mbytes SRAM
+Thanks for your patch.
 
-SRAM or DDR?
+On 21.05.25 13:20, ziniu.wang_1@nxp.com wrote:
+> From: Luke Wang <ziniu.wang_1@nxp.com>
+> 
+> On some new i.MX platforms, hardware guidelines recommend using identical
+> pin configurations for SDR50/DDR50 (100MHz) and SDR104/HS400 (200MHz)
+> modes. But defining two identical pinctrl for 100MHz and 200MHz in dts
+> creates redundancy.
 
->  - LCD-TFT controller
+I am not convinced this is an improvement. If 200mhz is missing, it's understood
+that it's not supported. Now if 100mhz is missing, it means something different
+depending on whether state_200mhz exists or not. This is more mental overhead
+than having:
 
-The LCD support is not described in the dts.
+  pinctrl-names = "default", "state_100mhz", "state_200mhz";
+  pinctrl-0 = <&pinctrl_usdhc1>;        
+  pinctrl-1 = <&pinctrl_usdhc1_uhs>;   
+  pinctrl-2 = <&pinctrl_usdhc1_uhs>;
 
-> +/ {
-> +       model =3D "Amarula i.MX28 rmm";
-> +       compatible =3D "amarula,imx28-rmm", "fsl,imx28";
+where it's directly evident that you share pinctrl states.
+
+> In this case, omit explicit 100MHz configuration,
+> driver will inherit 100MHz pinctrl from 200MHz.
+> 
+> Preserves existing behavior if 100MHz is configured but 200MHz not (e.g,
+> imx8mp-navq.dts usdhc1 supports SDR50/DDR50 but SDR104/HS400 not).
+
+This conflicts with the binding, which doesn't allow for state_200mhz
+to exist without state_100mhz, so that would need adaptation.
+
+As noted before though, I don't think we really need to change anything
+here though.
+
+Thanks,
+Ahmad
+
+> 
+> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+> ---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index f206b562a6e3..dfd8be5000c8 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -1810,6 +1810,9 @@ sdhci_esdhc_imx_probe_dt(struct platform_device *pdev,
+>  						ESDHC_PINCTRL_STATE_100MHZ);
+>  		imx_data->pins_200mhz = pinctrl_lookup_state(imx_data->pinctrl,
+>  						ESDHC_PINCTRL_STATE_200MHZ);
 > +
-> +       memory@40000000 {
-> +               device_type =3D "memory";
-> +               reg =3D <0x40000000 0x08000000>;
+> +		if (IS_ERR_OR_NULL(imx_data->pins_100mhz))
+> +			imx_data->pins_100mhz = imx_data->pins_200mhz;
+>  	}
+>  
+>  	/* call to generic mmc_of_parse to support additional capabilities */
 
-In the commit log, you say 256 MB, but here we have 128 MB.
 
-> +&i2c0 {
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&i2c0_pins_a>;
-> +       status =3D "okay";
-> +
-> +       polytouch: edt-ft5x06@38 {
-
-Node names should be generic: touchscreen@38
-
-> +
-> +&pinctrl {
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&hog_pins_a>;
-> +
-> +       hog_pins_a: hog-0 {
-> +               reg =3D <0>;
-> +               fsl,pinmux-ids =3D <
-> +                       MX28_PAD_LCD_RESET__GPIO_3_30 /* LCD reset */
-> +                       MX28_PAD_SSP2_SS1__GPIO_2_20  /* External power *=
-/
-
-Proper panel bindings should better describe these pins than hog pins.
-
-Do you plan to add display support?
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
