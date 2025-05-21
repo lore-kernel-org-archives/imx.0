@@ -1,224 +1,505 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2073.outbound.protection.outlook.com [40.107.20.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71E428ECE6
-	for <imx@lists.linux.dev>; Wed, 21 May 2025 17:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.73
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747848896; cv=fail; b=P0wduQRVKErc+eZLeeiIjhxgh4riteRlA3ip9rRXHdiRaLV+fIeMq+RSFcG+poczhU3bu1ovclo1sohD1dV0YacFBbyUXQpdBkHn8aQwc8rGcaZK67tVMkqupe4zo/1IxqKQdVTvvJEus+rdotMiEIp24LcEGjdPyQP1bNtm9Uc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747848896; c=relaxed/simple;
-	bh=K6nst15mV282GDBWP3tjC5eFtXDBFtTmsvQjMfYQMMc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FOZnHnlWAg2E+y+kc+C4Uewa3jMHLXNYaL0EIO93RWQQ+X9NTMxBVv0v9F1IDnBaD9rDIwPXs3uudLOb5qMpYbR0EC7X2W8pxoCYnKXhfPpb0hvJEMPvG7/ublWmpRh8TZZb1OvI3UUwVYBAQS5NKWwWdiqcGAHcAAL5C17ZeRk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=TeSHdOoj; arc=fail smtp.client-ip=40.107.20.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D694B6EB79
+	for <imx@lists.linux.dev>; Wed, 21 May 2025 18:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747852795; cv=none; b=nPS4W4mBl2z85jDdF3wfJlkVfVOwtPOm9esKepwy0KGNp6q9pnBBhHz2j7Vm80O2lkPywVjPag1AiEFqAPd/ZJ8cxxiCHWAMHpgjfNp1SVLJLes/WEBJQrPtbocUFdoJ0uKHkWXrO/Y8xWnoACxhuz7XkKng6VA7VNq6aIsRoPo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747852795; c=relaxed/simple;
+	bh=t78CBbtKx4VCyGVqyGKwmC1MBF16ubBxQ702/ru36O4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=A//7fJQMn1N2ub98Vqtyqox2FxZ4wE6hFg1UFWXsSujuZ1OUV5+ci0D4+PuVs/YWv8/5FkLyxAjdVxYFwEtX1+xxaBkM8nWtL1cAAkZPUJW0qLWIOxyCN79l+0y7aJUi97JVlOywaDth+r8OXqnhxqI+FwYkHiYM9YyGlIt2tYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=MHVqhjhn; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="TeSHdOoj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TIc3FfRRKiU+un1V8e3/bwnyGOaQXUeSdTQqbMegfhhlYruwKbJ99J8SWD73lnWeeP3BRCspmqY8YglAUMMvQY8J3/xgXIfitpn1VzDwA5ZYJLOL38NSN9AI2SYxZkx2wY5mL9VoYy1T7FzMYOFm1Ez3J9CTsFeQS9JRmF2xnPviyXHYXTe7J2lpj0C2TF8t0X1IZHGEwtH9rW8d0IPE0rkD5w0WQA4nT3L3jLqRRHFcfM+JBzIomjDf0G1M5lBo41DM2kFOfzlRIOBpp5+hMPM8BRNXz8X70l+oOYpxCc5tALrf+H+q2iFmwJRgQnsVD37n3fYvNDe6rtPWNXqKfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iN+OoEWxf46UqFRSXFVkIJv4b4zVS7JR/Amkb9kE4Ig=;
- b=CktfmbyJnfQR2YaFa336sGzLUyNPZJcKUVMH2jpKnbws1C/K3tyAlHKXe2/R/NQaxjrOwysp+rTGaKkp34XqljXel4cm2FMojOmJWmjSRlkfjwQ2pW2RX6DytEi6fszbx3y6i/D+DLpFtqtGQX+biX12+mknUU4VHljgGXYu4ht5NGP7h12iwCP1KF4yHWwhdC990a/NvNbfbv2WlxOBGR319OaU/DwY3mNKelipfDWdXhN8C1ai5AXghThZJdrPT3jYwUJndcICej64T99C6rZmc0Oh7HplSVrgmk1sc+O/D2esCQj030RjCrtneSahdZSThgx+awM6KHIjkdh/gA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iN+OoEWxf46UqFRSXFVkIJv4b4zVS7JR/Amkb9kE4Ig=;
- b=TeSHdOojNMESKjSdzfqyIpqsYkM5M9mKcSx18YFcV+wYP2cHEvQM/CqrAHF6wCL5X7QutZmwz0tnFyyHuGn8E2TQL0kdPRJRIvC6mIg6ir9kHO/caCOZMYaPr7fVlTuW4fLkvJKTJlA2TP0VqyiHqcn4UBKOSH2MgutR9P2bc6thh/b7PT12s9VYVcloP7Hi3KOK3l8FhXf8WjuTGV7E7OMhxaikOSvedq8160HyQsoHbdV+rk2Nu5cxFfsmHwQ109xd6gCOqfFRzefGjfQa9CgUiKh3NRoDAWPKRFQb5kmxrZ5T4wCteduuZj8k3N8ngnwomwfRf9NiQDq5lUjJ2A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VE1PR04MB7389.eurprd04.prod.outlook.com (2603:10a6:800:1b1::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.31; Wed, 21 May
- 2025 17:34:52 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8746.030; Wed, 21 May 2025
- 17:34:51 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: mirela.rabulea@nxp.com,
-	mchehab@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	ming.qian@nxp.com
-Subject: [PATCH RESEND 2/2] arm64: dts: imx95: add jpeg encode and decode nodes
-Date: Wed, 21 May 2025 13:34:04 -0400
-Message-Id: <20250521173444.310641-2-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250521-95_jpeg-v1-0-392de5d29672@nxp.com>
-References: <20250521-95_jpeg-v1-0-392de5d29672@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0P220CA0010.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="MHVqhjhn"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c54f67db99so837399685a.1
+        for <imx@lists.linux.dev>; Wed, 21 May 2025 11:39:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1747852793; x=1748457593; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=C9hN/ALYj6MAmLNmuqeaYYS+ymrl+13ez5PlAjoRPF8=;
+        b=MHVqhjhnj2rp+jzwMvVsGhIepiFk15a3tsVm7E4bsFlvxh1TAa0l/SDDI2buZv4Ty3
+         2R+rM1KhK1cEGKdqICNCJ+EuM5LcOI4MkKTDahCxaXB7CfA7IS14JXl+vg9yRnykeLxO
+         Fz6HFcc3Wl9cE2XwQtuZuVzJ9x2lh6FdT2tPjFaVKZBA0ymVXDJRLPZu9kDAP9/+Kf38
+         vjpkEkkhqPRhBMWDjahGOoETNTT5OXhI75JAAnEKjKJvlyv2J/dsi4vZb5C6tLG+72Xm
+         7RnZKrvaQZ8cCTNTOo6j3udXYaVcCG3/roLWUAY/+L42DYMIyU5MEtAARBnFpbCfsWPs
+         nT6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747852793; x=1748457593;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=C9hN/ALYj6MAmLNmuqeaYYS+ymrl+13ez5PlAjoRPF8=;
+        b=hmRrCLhHNKh7HPML0jZyRhyQReTdUbebsJFHrSggbI4GYQOMN4HTTHP5V5g04GPjKb
+         zY68bHk8Pby7zoTBcttIdhLORONEiwrPLvTwW/SwbjEiVOv4mV0MO55V1vsx3crW6jBS
+         zi2ftjBftIsxiGHfYhXSzclbuhKPSxiZ+Q7DJu/kgdKtSq4V2Sp+dr9Wo9q6qoGcPYOy
+         j+z2LOShL6tl+YerY4XEduNgfXQgIcfJinp5kBiyV0XkpdlXE56AwiJH8cIbPzM+P8yG
+         uBNN5BqzvLxwMOS03ryM9sbwVBnZ8Iv7YN7hqdpUW7cEro9/2Ijrrs62Rx1RqnrWCw/m
+         Quww==
+X-Forwarded-Encrypted: i=1; AJvYcCUOxOwAs/QLtiSFQzIVTe6dZDtdzq05WFfB2PitHXuv7fYKg3a5C6cV9QXUD7q4Hk2gMbI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyMMbW57yDYqYT6+3g/7Xg4mCgzrA2H4uLM2Y+6e5obddTlCc+r
+	y2uyAgNFWWcz8c6ZiNvHixeoYAiSAdnsztk+00Pbpg6iefSh23Vc50uAZQYkeLgSzEE=
+X-Gm-Gg: ASbGncswki+hQbsCTWabAfUPfkwEZ4NS7q+NWyUCUmBegm0FTCPwFX+jmL16FVCVFyC
+	cSB0BN45ipAay6pNHDFR7fvpCj+EHIbh39IdghjsJz3z1UdjCFXxtWf0emlOo2CIW80ZqLMshMe
+	YjJyf2c864UFJCCfsWMIbJMIPHi84qC3vFNMAWyUzaxzFWxAl8dGOqp5h//svQBTMDTWXX/5P9p
+	JkITk0lxDIW64fmPxIT2qLTP6z4aLuteA+c5oVw7C3m6c3SELq/IKBah+K2wvELnNrx6Vyd7F1w
+	tIoj+f3S0QFWK+S0CcLx3vaE/nZhvQVoX89HLKlAUuuMXjNOsZJ8SZeN
+X-Google-Smtp-Source: AGHT+IEH1yg96f+6LtDU7dk/LUCmzgUoLgGpjjtmworILuCaY55up0WZsaGhvzPy17yVEqZT5x/cRQ==
+X-Received: by 2002:a05:620a:1982:b0:7c5:d71c:6a47 with SMTP id af79cd13be357-7cd46af8c77mr3443038785a.8.1747852792554;
+        Wed, 21 May 2025 11:39:52 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:17:b2fc::c41? ([2606:6d00:17:b2fc::c41])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd467bc2dbsm913992085a.15.2025.05.21.11.39.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 May 2025 11:39:52 -0700 (PDT)
+Message-ID: <0f751cf4a8998b6c6b9046d4e1cb25646709f75a.camel@ndufresne.ca>
+Subject: Re: [PATCH v4] media: amphion: Add H264 and HEVC profile and level
+ control
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, mchehab@kernel.org, 
+	hverkuil-cisco@xs4all.nl
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-imx@nxp.com, xiahong.bao@nxp.com,
+ eagle.zhou@nxp.com, 	imx@lists.linux.dev, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
+Date: Wed, 21 May 2025 14:39:51 -0400
+In-Reply-To: <36d644aa-5143-4a5a-a01e-a67792288ba3@oss.nxp.com>
+References: <20250512020137.211-1-ming.qian@oss.nxp.com>
+	 <3e794e17ab846e29fb5922dc94b969b8cf9334a8.camel@ndufresne.ca>
+	 <36d644aa-5143-4a5a-a01e-a67792288ba3@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7389:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1fc054e-4173-4d24-bc40-08dd988dcad7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?yvjm+XNi7NErvCryQ4adLqTETc/sCgz2ktZ7MpfjyQwHwVu9+a2INcpK7Fwo?=
- =?us-ascii?Q?zYa7UyvSXkjx5iR3mk7aenBHiO+iR0JxO91NjRDiIOWghfmkTjosp8M+1Mu+?=
- =?us-ascii?Q?YJ6oOPN3YjEFEYkZN62UMt967Dm13jCgoqlStJuj0Jg80uvnqtEQketjGiAn?=
- =?us-ascii?Q?r1R6/rbGbjt5wYfr39GNmNZSKbe3YypzClqVfbIpQk4QhNFtF7+25LuZszV5?=
- =?us-ascii?Q?qrB5NYoV9UkEJYUWP6NEI1prMDt4QYBm7SAP/LUDvG8BDGPlH7FPNbQhysvr?=
- =?us-ascii?Q?Z5mOtHNn5BAJ5LpCmYA7ErTL0YDYGnH3KstyDP0c9ULiAgVw8gAlN2ORsBA5?=
- =?us-ascii?Q?hXbMLiQgB4s3wuANyhbKvy/mgl9jUeI8t3SCImWbuxfwskJsucUbYDeoiY8Y?=
- =?us-ascii?Q?/ncIB3wz01iNGwKut1ckycZ8nqum2r08RdypWV/oczMEGcJPD1NPQ/0x2DRB?=
- =?us-ascii?Q?aEeLdPiR+SJ5qXg3qsiC1K0Fafp4rEHUonYzCP11BMy52850e/Tg+0x9TEnE?=
- =?us-ascii?Q?Nm5qc9DpGRGD9BE4RmeR+mbhdW3JKBJkP1IYwQ+1EjzEG3ajG/vAEG6dQwi6?=
- =?us-ascii?Q?d5tuMG1YScrBo2UmBO6XvW/k1C9nMSU+Hx6/j5T6y3wtEskPwDmy6p7mgO1m?=
- =?us-ascii?Q?kuSAe911R+eaMtCEXWewzs0ESeB4WEnuLesploIbmU2FifurK/82qM0q6AT3?=
- =?us-ascii?Q?reAj64PKETgj+CPuCwEolc0NOAwL8MSDdtdRqmYsyzGKi7I3UyKUnsR9bXQX?=
- =?us-ascii?Q?Qd4uz+SbgDXS90ceq+pQ2/n/HCa9eaBtGbtqSTmU6CwSkzp1373fZvozmrXn?=
- =?us-ascii?Q?USIAlp6HFx9xIc95MNqs1rheQOQpvwlIQMEoVOFicqryDhMWSysS/KORnMbz?=
- =?us-ascii?Q?7uCUoG7P5GGLBBJR36YaYlsI56nUPtykCftGADu6Cf4/iBy+4OJB25Sch7sp?=
- =?us-ascii?Q?cEyHU+yASz1PFqr0NEI8XSGmWfeNvTrC6nCyc7tYDzdzpVU2raX8aj1pQZoE?=
- =?us-ascii?Q?7Q0wYgsjiCHjGDBrkIEceTcA2tHj88TvvPdVbIO2WdF3swmUuKB2BPkECuHv?=
- =?us-ascii?Q?7HC6Dsr7og87vJj49iqk6oltQBc7sWYXTS5AY4VAEzj/pX+2ZEBo9pD5Zw2N?=
- =?us-ascii?Q?APdW0fdSStoGA1aZ/UXod3G2Jq6FMRiQSIospvUqAuM1nRTJcrgm3phOJdxy?=
- =?us-ascii?Q?I3SAKx7TTc+Nz1Vujbt5q9Q7qbk5ouG4+y7j4ZHC+1nsw90VBtLqHfsIgE4v?=
- =?us-ascii?Q?41azeB0wv2RL1vfdMVAkoNLx+AShT3WGv94NzB6fZHDYNkOE2qA5AT7HB74B?=
- =?us-ascii?Q?UCqqhVcu5eLS1wcniGkuUXD8uFuJ0mbiJr+bF6SkkSU8qGRuGTEK2tBc4c6X?=
- =?us-ascii?Q?hxFod1YydmLGXSV5rTQ17d19weniySaColjN1gRM+JH21AHrYAqoy5o2wggm?=
- =?us-ascii?Q?Glj3kAm62cLp752rZU9xNVd3kkVcx7GMDLse3PmCNmC1E4Cb5zF7wQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kyQ1oRiOZrG4lzRkx4k4ZxSi7Q3KKyzATxpfSu5bAh0Wn0HDMXa5udby+Aoz?=
- =?us-ascii?Q?Dr3SStnKiiJhAqvFlAp/uD0bBLyhBLNEMKiywfwUb8iqUSdcx7zEsFVnGeT4?=
- =?us-ascii?Q?kLdJAGfTurFrnqWvVhEbEB88OUilDCSXqHY1/450qv83l1GiAow/w8e9RSp6?=
- =?us-ascii?Q?ySO5AUQr1M/hqEJ4KLSAFoA9Tcn19oFH3phREX7xGpz3Ufq4aCM4/g/kmRbW?=
- =?us-ascii?Q?AAhtXpXxf+lRSoaWTuAX6tOdvgJN7L/vt9Z6OfYaJWiEOJUBRefJmOl5q4fF?=
- =?us-ascii?Q?qhO8NCSQcMmLjkveclLcZnaQUb0LSfmvIdH6aYlgX1y9uB8z2Q4iLto9QNqr?=
- =?us-ascii?Q?d7MRy1HvGALIbciwEhCMRtH2MkE7aFLz1AuGG4CXOwrkZaQUMoEzCMoVDFI/?=
- =?us-ascii?Q?1Rzp27kRApI+abUd7R3PmrReIeSdPFrwuyrOTlQ2SmaHJBLdtGRVRC0vrYzA?=
- =?us-ascii?Q?n5xAn3KwLA6nMw/WaILNuYjIH2HqLbBSgs657i63YsyJz7zrYST2sBswBSh3?=
- =?us-ascii?Q?BFXiSh9sZpIHa0QAKqDh53qzcbbG3TGrMPZT06UkBk4L22wfimR0W0EbOeWr?=
- =?us-ascii?Q?N479YV89y0RKhC7gcgqpY5E4VZHYPQMKEV93uiFVf6rs4ZcVIaUnsItJ+g16?=
- =?us-ascii?Q?wNxIeqRWuoiBDjDK8wkjjKLwGV+OGnDX50MpRk1UgYSz5Y7zxbEYACMS6DLr?=
- =?us-ascii?Q?VlagJsjhwCJbZnffz+WxrLdFm6jtzvRtDfDDE2ZD/wBy8i/ya80HCzSYD53S?=
- =?us-ascii?Q?oxihAjbMzbUe5zHH7TbTP3a32hLbr43gqP2+hmotLZZjroLND/Z3QNEGZCjM?=
- =?us-ascii?Q?y6FnyzKVbTKtcigQoq3ocIyneYVP/JJsyGdy2bMzh20yFyl3G7lmEpPw330w?=
- =?us-ascii?Q?BgOHUDWbXDrhwKKN4TsLJUzHlronqBziBZd/HCXJ9cs/LRwxaYP3ZrCmyC78?=
- =?us-ascii?Q?f54ZVthN5wlGtNM/RE0BGp3kwO0Tu5FukSnQomKKV+TWjO88xzOTRXW+/rZm?=
- =?us-ascii?Q?PZ+PS2uoTR2ctaa5Fazro2XCZUGORI80QDUZaTU0BODSizmZPpBioMlY8hzi?=
- =?us-ascii?Q?j1fKZyfiAZ5Epv/Lm5QeSC+6pJoi3bT0CYVp2gt2WeT+cfdAm6NL0iEdcAdY?=
- =?us-ascii?Q?a2OumkMYpPV/wxMT9QY/a7vnbuGuoSr+UGuL0fadEtXeIX1klLDoT47SamXr?=
- =?us-ascii?Q?jZY+RnntYnrMxrEF/20REGgqHwSx5DxBnQSSq0UCxAxA4aCp5lnh6qYNv+rM?=
- =?us-ascii?Q?EarSewR1XUnbw2knLNamO8mKYuiuwhBHtnIZpvrg4AaNmyWvOuznIz8hfl8o?=
- =?us-ascii?Q?GRgBfkzplxql6c2vBwZ3EbHDc57NCYoL0fr2A7L0KXdWlCEnjcNuBJCTnMxK?=
- =?us-ascii?Q?hWUIeW/yAS8WEmKKDFkewsqlFasW5AndivYcpGhkrb8G2kPcmjbgM6j+Vn9N?=
- =?us-ascii?Q?xVwGzqLeGAePSzbr/lrg8vs/EeigQ3AYmlWLd1Ll+ypzp8dOaQHoTnRFtNQ3?=
- =?us-ascii?Q?P22p5ahdS/4Ik1Ap9hbd39a1gyQCvf2r1KHWAZWBzHGBQRsWSRFaDgUoWyk/?=
- =?us-ascii?Q?T1V94LrcydWXEe5mHVm+OLTXBP0s4I2S3RkI9F7+?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1fc054e-4173-4d24-bc40-08dd988dcad7
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 17:34:51.8782
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gniTEGxjc8AgQuYhCWmxXwZiR+H3fLwwyVY8b4FYCnIbQZoJtiRM5d1n8ndapgnjXnP6/MnLkODr4vXubT5CkA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7389
 
-Add jpeg encode\decode and related nodes for i.MX95.
+Hi,
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx95.dtsi | 44 ++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index 632631a291122..d38bbe8b16d7e 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -3,6 +3,7 @@
-  * Copyright 2024 NXP
-  */
- 
-+#include <dt-bindings/clock/nxp,imx95-clock.h>
- #include <dt-bindings/dma/fsl-edma.h>
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/input/input.h>
-@@ -1801,6 +1802,49 @@ pcie1_ep: pcie-ep@4c380000 {
- 			status = "disabled";
- 		};
- 
-+		vpu_blk_ctrl: clock-controller@4c410000 {
-+			compatible = "nxp,imx95-vpu-csr", "syscon";
-+			reg = <0x0 0x4c410000 0x0 0x10000>;
-+			#clock-cells = <1>;
-+			clocks = <&scmi_clk IMX95_CLK_VPUAPB>;
-+			power-domains = <&scmi_devpd IMX95_PD_VPU>;
-+			assigned-clocks = <&scmi_clk IMX95_CLK_VPUAPB>,
-+					  <&scmi_clk IMX95_CLK_VPU>,
-+					  <&scmi_clk IMX95_CLK_VPUJPEG>;
-+			assigned-clock-parents = <&scmi_clk IMX95_CLK_SYSPLL1_PFD1_DIV2>,
-+						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD2>,
-+						 <&scmi_clk IMX95_CLK_SYSPLL1_PFD0>;
-+			assigned-clock-rates = <133333333>, <667000000>, <500000000>;
-+		};
+Le mercredi 21 mai 2025 =C3=A0 09:23 +0800, Ming Qian(OSS) a =C3=A9crit=C2=
+=A0:
+>=20
+> Hi Nicolas,
+>=20
+> On 2025/5/21 5:04, Nicolas Dufresne wrote:
+> > Hi Ming,
+> >=20
+> > got one final question below...
+> >=20
+> > Le lundi 12 mai 2025 =C3=A0 10:01 +0800, ming.qian@oss.nxp.com=C2=A0a =
+=C3=A9crit :
+> > > From: Ming Qian <ming.qian@oss.nxp.com>
+> > >=20
+> > > For format H264 and HEVC, the firmware can report the parsed profile =
+idc
+> > > and level idc to driver, these information may be useful.
+> > > Implement the H264 and HEVC profile and level control to report them.
+> > >=20
+> > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> > > ---
+> > > v4
+> > > - Fix a building warning reported by kernel test robot
+> > >=20
+> > > v3
+> > > - Check H264 Constrained Baseline Profile
+> > > - Check H264 Level 1b
+> > > - Remove support for V4L2_MPEG_VIDEO_H264_PROFILE_MULTIVIEW_HIGH
+> > > - Remove support for V4L2_MPEG_VIDEO_H264_PROFILE_STEREO_HIGH
+> > >=20
+> > > v2
+> > > - Add support for V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE
+> > > ---
+> > > =C2=A0 drivers/media/platform/amphion/vdec.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0 59 +++++++++
+> > > =C2=A0 drivers/media/platform/amphion/vpu_defs.h=C2=A0=C2=A0=C2=A0 |=
+=C2=A0 12 ++
+> > > =C2=A0 drivers/media/platform/amphion/vpu_helpers.c | 123 +++++++++++=
+++++++++
+> > > =C2=A0 drivers/media/platform/amphion/vpu_helpers.h |=C2=A0=C2=A0 7 +=
 +
-+		jpegdec: jpegdec@4c500000 {
-+			compatible = "nxp,imx95-jpgdec", "nxp,imx8qxp-jpgdec";
-+			reg = <0x0 0x4C500000 0x0 0x00050000>;
-+			interrupts = <GIC_SPI 295 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 296 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 297 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 298 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&scmi_clk IMX95_CLK_VPU>,
-+				 <&vpu_blk_ctrl IMX95_CLK_VPUBLK_JPEG_DEC>;
-+			assigned-clocks = <&vpu_blk_ctrl IMX95_CLK_VPUBLK_JPEG_DEC>;
-+			assigned-clock-parents = <&scmi_clk IMX95_CLK_VPUJPEG>;
-+			power-domains = <&scmi_devpd IMX95_PD_VPU>;
-+		};
-+
-+		jpegenc: jpegenc@4c550000 {
-+			compatible = "nxp,imx95-jpgenc", "nxp,imx8qxp-jpgenc";
-+			reg = <0x0 0x4C550000 0x0 0x00050000>;
-+			interrupts = <GIC_SPI 291 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 292 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 293 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 294 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&scmi_clk IMX95_CLK_VPU>,
-+				 <&vpu_blk_ctrl IMX95_CLK_VPUBLK_JPEG_ENC>;
-+			assigned-clocks = <&vpu_blk_ctrl IMX95_CLK_VPUBLK_JPEG_DEC>;
-+			assigned-clock-parents = <&scmi_clk IMX95_CLK_VPUJPEG>;
-+			power-domains = <&scmi_devpd IMX95_PD_VPU>;
-+		};
-+
- 		netcmix_blk_ctrl: syscon@4c810000 {
- 			compatible = "nxp,imx95-netcmix-blk-ctrl", "syscon";
- 			reg = <0x0 0x4c810000 0x0 0x8>;
--- 
-2.34.1
+> > > =C2=A0 drivers/media/platform/amphion/vpu_malone.c=C2=A0 |=C2=A0=C2=
+=A0 5 +-
+> > > =C2=A0 5 files changed, 205 insertions(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/pl=
+atform/amphion/vdec.c
+> > > index 85d518823159..55067d9405c2 100644
+> > > --- a/drivers/media/platform/amphion/vdec.c
+> > > +++ b/drivers/media/platform/amphion/vdec.c
+> > > @@ -232,6 +232,35 @@ static int vdec_ctrl_init(struct vpu_inst *inst)
+> > > =C2=A0=C2=A0			=C2=A0 V4L2_CID_MPEG_VIDEO_DEC_DISPLAY_DELAY_ENABLE,
+> > > =C2=A0=C2=A0			=C2=A0 0, 1, 1, 0);
+> > > =C2=A0=20
+> > > +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_H264_PRO=
+FILE,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE=
+_MULTIVIEW_HIGH,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ~((1 << V4L2_MPEG_VIDEO_H264=
+_PROFILE_BASELINE) |
+> > > +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE) |
+> > > +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_MAIN) |
+> > > +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED) |
+> > > +				 (1 << V4L2_MPEG_VIDEO_H264_PROFILE_HIGH)),
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE=
+_MAIN);
+> > > +
+> > > +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_H264_LEV=
+EL,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6=
+_2,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4=
+_0);
+> > > +
+> > > +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_HEVC_PRO=
+FILE,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE=
+_MAIN_10,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ~((1 << V4L2_MPEG_VIDEO_HEVC=
+_PROFILE_MAIN) |
+> > > +				 (1 << V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10)),
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE=
+_MAIN);
+> > > +
+> > > +	v4l2_ctrl_new_std_menu(&inst->ctrl_handler, NULL,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_CID_MPEG_VIDEO_HEVC_LEV=
+EL,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_6=
+_2,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0,
+> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_4=
+);
+> > > +
+> > > =C2=A0=C2=A0	ctrl =3D v4l2_ctrl_new_std(&inst->ctrl_handler, &vdec_ct=
+rl_ops,
+> > > =C2=A0=C2=A0				 V4L2_CID_MIN_BUFFERS_FOR_CAPTURE, 1, 32, 1, 2);
+> > > =C2=A0=C2=A0	if (ctrl)
+> > > @@ -1166,6 +1195,35 @@ static void vdec_clear_slots(struct vpu_inst *=
+inst)
+> > > =C2=A0=C2=A0	}
+> > > =C2=A0 }
+> > > =C2=A0=20
+> > > +static void vdec_update_v4l2_ctrl(struct vpu_inst *inst, u32 id, u32=
+ val)
+> > > +{
+> > > +	struct v4l2_ctrl *ctrl =3D v4l2_ctrl_find(&inst->ctrl_handler, id);
+> > > +
+> > > +	if (ctrl)
+> > > +		v4l2_ctrl_s_ctrl(ctrl, val);
+> > > +}
+> > > +
+> > > +static void vdec_update_v4l2_profile_level(struct vpu_inst *inst, st=
+ruct vpu_dec_codec_info *hdr)
+> > > +{
+> > > +	switch (inst->out_format.pixfmt) {
+> > > +	case V4L2_PIX_FMT_H264:
+> > > +	case V4L2_PIX_FMT_H264_MVC:
+> > > +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_PROFILE,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_h264_v4l2_profile(hdr));
+> > > +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_H264_LEVEL,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_h264_v4l2_level(hdr));
+> > > +		break;
+> > > +	case V4L2_PIX_FMT_HEVC:
+> > > +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_PROFILE,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_hevc_v4l2_profile(hdr));
+> > > +		vdec_update_v4l2_ctrl(inst, V4L2_CID_MPEG_VIDEO_HEVC_LEVEL,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vpu_get_hevc_v4l2_level(hdr));
+> > > +		break;
+> > > +	default:
+> > > +		return;
+> > > +	}
+> > > +}
+> > > +
+> > > =C2=A0 static void vdec_event_seq_hdr(struct vpu_inst *inst, struct v=
+pu_dec_codec_info *hdr)
+> > > =C2=A0 {
+> > > =C2=A0=C2=A0	struct vdec_t *vdec =3D inst->priv;
+> > > @@ -1189,6 +1247,7 @@ static void vdec_event_seq_hdr(struct vpu_inst =
+*inst, struct vpu_dec_codec_info
+> > > =C2=A0=C2=A0	vdec_init_crop(inst);
+> > > =C2=A0=C2=A0	vdec_init_mbi(inst);
+> > > =C2=A0=C2=A0	vdec_init_dcp(inst);
+> > > +	vdec_update_v4l2_profile_level(inst, hdr);
+> > > =C2=A0=C2=A0	if (!vdec->seq_hdr_found) {
+> > > =C2=A0=C2=A0		vdec->seq_tag =3D vdec->codec_info.tag;
+> > > =C2=A0=C2=A0		if (vdec->is_source_changed) {
+> > > diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/medi=
+a/platform/amphion/vpu_defs.h
+> > > index 428d988cf2f7..f56245ae2205 100644
+> > > --- a/drivers/media/platform/amphion/vpu_defs.h
+> > > +++ b/drivers/media/platform/amphion/vpu_defs.h
+> > > @@ -134,6 +134,7 @@ struct vpu_dec_codec_info {
+> > > =C2=A0=C2=A0	u32 decoded_height;
+> > > =C2=A0=C2=A0	struct v4l2_fract frame_rate;
+> > > =C2=A0=C2=A0	u32 dsp_asp_ratio;
+> > > +	u32 profile_idc;
+> > > =C2=A0=C2=A0	u32 level_idc;
+> > > =C2=A0=C2=A0	u32 bit_depth_luma;
+> > > =C2=A0=C2=A0	u32 bit_depth_chroma;
+> > > @@ -147,6 +148,17 @@ struct vpu_dec_codec_info {
+> > > =C2=A0=C2=A0	u32 mbi_size;
+> > > =C2=A0=C2=A0	u32 dcp_size;
+> > > =C2=A0=C2=A0	u32 stride;
+> > > +	union {
+> > > +		struct {
+> > > +			u32 constraint_set5_flag : 1;
+> > > +			u32 constraint_set4_flag : 1;
+> > > +			u32 constraint_set3_flag : 1;
+> > > +			u32 constraint_set2_flag : 1;
+> > > +			u32 constraint_set1_flag : 1;
+> > > +			u32 constraint_set0_flag : 1;
+> > > +		};
+> > > +		u32 constraint_set_flags;
+> >=20
+> > Shouldn't this be u8 all over to match the fact the firmware reports th=
+is over a single byte ?
+> >=20
+> > Nicolas
+> >=20
+>=20
+> firmware use u32 to transmit message data:
+> 	struct vpu_rpc_event_header {
+> 		u32 index;
+> 		u32 id;
+> 		u32 num;
+> 	};
+>=20
+> 	struct vpu_rpc_event {
+> 		struct vpu_rpc_event_header hdr;
+> 		u32 data[128];
+> 	};
+>=20
+> And in amphion vpu decoder firmware 1.10.0, it increase the data number o=
+f
+> SEQ_HDR_FOUND event from 28 to 29. the constraint_set_flags is stored in
+> the data[28], so although only 6 bits are used, u32 is still used here.
+>=20
+> 	if (pkt->hdr.num > 28)
+> 		info->constraint_set_flags =3D pkt->data[28];
 
+Ack, I should have checked the definition instead of assuming. Patch queued=
+.
+
+regards
+Nicolas
+
+>=20
+> Regards,
+> Ming
+>=20
+> > > +	};
+> > > =C2=A0 };
+> > > =C2=A0=20
+> > > =C2=A0 struct vpu_dec_pic_info {
+> > > diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/m=
+edia/platform/amphion/vpu_helpers.c
+> > > index d12310af9ebc..886d5632388e 100644
+> > > --- a/drivers/media/platform/amphion/vpu_helpers.c
+> > > +++ b/drivers/media/platform/amphion/vpu_helpers.c
+> > > @@ -509,3 +509,126 @@ const char *vpu_codec_state_name(enum vpu_codec=
+_state state)
+> > > =C2=A0=C2=A0	}
+> > > =C2=A0=C2=A0	return "<unknown>";
+> > > =C2=A0 }
+> > > +
+> > > +struct codec_id_mapping {
+> > > +	u32 id;
+> > > +	u32 v4l2_id;
+> > > +};
+> > > +
+> > > +static struct codec_id_mapping h264_profiles[] =3D {
+> > > +	{66,=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE},
+> > > +	{77,=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_MAIN},
+> > > +	{88,=C2=A0 V4L2_MPEG_VIDEO_H264_PROFILE_EXTENDED},
+> > > +	{100, V4L2_MPEG_VIDEO_H264_PROFILE_HIGH}
+> > > +};
+> > > +
+> > > +static struct codec_id_mapping h264_levels[] =3D {
+> > > +	{10,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_0},
+> > > +	{9,=C2=A0=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1B},
+> > > +	{11,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_1},
+> > > +	{12,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_2},
+> > > +	{13,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_1_3},
+> > > +	{20,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_2_0},
+> > > +	{21,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_2_1},
+> > > +	{22,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_2_2},
+> > > +	{30,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_3_0},
+> > > +	{31,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_3_1},
+> > > +	{32,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_3_2},
+> > > +	{40,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_0},
+> > > +	{41,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_1},
+> > > +	{42,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_4_2},
+> > > +	{50,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_5_0},
+> > > +	{51,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_5_1},
+> > > +	{52,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_5_2},
+> > > +	{60,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_0},
+> > > +	{61,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_1},
+> > > +	{62,=C2=A0 V4L2_MPEG_VIDEO_H264_LEVEL_6_2}
+> > > +};
+> > > +
+> > > +static struct codec_id_mapping hevc_profiles[] =3D {
+> > > +	{1,=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN},
+> > > +	{2,=C2=A0=C2=A0 V4L2_MPEG_VIDEO_HEVC_PROFILE_MAIN_10}
+> > > +};
+> > > +
+> > > +static struct codec_id_mapping hevc_levels[] =3D {
+> > > +	{30,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_1},
+> > > +	{60,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_2},
+> > > +	{63,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_2_1},
+> > > +	{90,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_3},
+> > > +	{93,=C2=A0 V4L2_MPEG_VIDEO_HEVC_LEVEL_3_1},
+> > > +	{120, V4L2_MPEG_VIDEO_HEVC_LEVEL_4},
+> > > +	{123, V4L2_MPEG_VIDEO_HEVC_LEVEL_4_1},
+> > > +	{150, V4L2_MPEG_VIDEO_HEVC_LEVEL_5},
+> > > +	{153, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_1},
+> > > +	{156, V4L2_MPEG_VIDEO_HEVC_LEVEL_5_2},
+> > > +	{180, V4L2_MPEG_VIDEO_HEVC_LEVEL_6},
+> > > +	{183, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_1},
+> > > +	{186, V4L2_MPEG_VIDEO_HEVC_LEVEL_6_2}
+> > > +};
+> > > +
+> > > +static u32 vpu_find_v4l2_id(u32 id, struct codec_id_mapping *array, =
+u32 array_sz)
+> > > +{
+> > > +	u32 i;
+> > > +
+> > > +	if (!array || !array_sz)
+> > > +		return 0;
+> > > +
+> > > +	for (i =3D 0; i < array_sz; i++) {
+> > > +		if (id =3D=3D array[i].id)
+> > > +			return array[i].v4l2_id;
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr)
+> > > +{
+> > > +	if (!hdr)
+> > > +		return 0;
+> > > +
+> > > +	/*
+> > > +	 * In H.264 Document section A.2.1.1 Constrained Baseline profile
+> > > +	 * Conformance of a bitstream to the Constrained Baseline profile i=
+s indicated by
+> > > +	 * profile_idc being equal to 66 with constraint_set1_flag being eq=
+ual to 1.
+> > > +	 */
+> > > +	if (hdr->profile_idc =3D=3D 66 && hdr->constraint_set1_flag)
+> > > +		return V4L2_MPEG_VIDEO_H264_PROFILE_CONSTRAINED_BASELINE;
+> > > +
+> > > +	return vpu_find_v4l2_id(hdr->profile_idc, h264_profiles, ARRAY_SIZE=
+(h264_profiles));
+> > > +}
+> > > +
+> > > +u32 vpu_get_h264_v4l2_level(struct vpu_dec_codec_info *hdr)
+> > > +{
+> > > +	if (!hdr)
+> > > +		return 0;
+> > > +
+> > > +	/*
+> > > +	 * In H.264 Document section 7.4.2.1.1 Sequence parameter set data =
+semantics
+> > > +	 * If profile_idc is equal to 66, 77, or 88 and level_idc is equal =
+to 11,
+> > > +	 * constraint_set3_flag equal to 1 indicates that the coded video s=
+equence
+> > > +	 * obeys all constraints specified in Annex A for level 1b
+> > > +	 * and constraint_set3_flag equal to 0 indicates that the coded vid=
+eo sequence
+> > > +	 * obeys all constraints specified in Annex A for level 1.1.
+> > > +	 */
+> > > +	if (hdr->level_idc =3D=3D 11 && hdr->constraint_set3_flag &&
+> > > +	=C2=A0=C2=A0=C2=A0 (hdr->profile_idc =3D=3D 66 || hdr->profile_idc =
+=3D=3D 77 || hdr->profile_idc =3D=3D 88))
+> > > +		return V4L2_MPEG_VIDEO_H264_LEVEL_1B;
+> > > +
+> > > +	return vpu_find_v4l2_id(hdr->level_idc, h264_levels, ARRAY_SIZE(h26=
+4_levels));
+> > > +}
+> > > +
+> > > +u32 vpu_get_hevc_v4l2_profile(struct vpu_dec_codec_info *hdr)
+> > > +{
+> > > +	if (!hdr)
+> > > +		return 0;
+> > > +
+> > > +	return vpu_find_v4l2_id(hdr->profile_idc, hevc_profiles, ARRAY_SIZE=
+(hevc_profiles));
+> > > +}
+> > > +
+> > > +u32 vpu_get_hevc_v4l2_level(struct vpu_dec_codec_info *hdr)
+> > > +{
+> > > +	if (!hdr)
+> > > +		return 0;
+> > > +
+> > > +	return vpu_find_v4l2_id(hdr->level_idc, hevc_levels, ARRAY_SIZE(hev=
+c_levels));
+> > > +}
+> > > diff --git a/drivers/media/platform/amphion/vpu_helpers.h b/drivers/m=
+edia/platform/amphion/vpu_helpers.h
+> > > index 0eaddb07190d..6c0554ccf3b3 100644
+> > > --- a/drivers/media/platform/amphion/vpu_helpers.h
+> > > +++ b/drivers/media/platform/amphion/vpu_helpers.h
+> > > @@ -6,6 +6,8 @@
+> > > =C2=A0 #ifndef _AMPHION_VPU_HELPERS_H
+> > > =C2=A0 #define _AMPHION_VPU_HELPERS_H
+> > > =C2=A0=20
+> > > +#include "vpu_defs.h"
+> > > +
+> > > =C2=A0 struct vpu_pair {
+> > > =C2=A0=C2=A0	u32 src;
+> > > =C2=A0=C2=A0	u32 dst;
+> > > @@ -70,4 +72,9 @@ int vpu_color_get_default(u32 primaries, u32 *ptran=
+sfers, u32 *pmatrix, u32 *pfu
+> > > =C2=A0=20
+> > > =C2=A0 int vpu_find_dst_by_src(struct vpu_pair *pairs, u32 cnt, u32 s=
+rc);
+> > > =C2=A0 int vpu_find_src_by_dst(struct vpu_pair *pairs, u32 cnt, u32 d=
+st);
+> > > +
+> > > +u32 vpu_get_h264_v4l2_profile(struct vpu_dec_codec_info *hdr);
+> > > +u32 vpu_get_h264_v4l2_level(struct vpu_dec_codec_info *hdr);
+> > > +u32 vpu_get_hevc_v4l2_profile(struct vpu_dec_codec_info *hdr);
+> > > +u32 vpu_get_hevc_v4l2_level(struct vpu_dec_codec_info *hdr);
+> > > =C2=A0 #endif
+> > > diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/me=
+dia/platform/amphion/vpu_malone.c
+> > > index feca7d4220ed..ba688566dffd 100644
+> > > --- a/drivers/media/platform/amphion/vpu_malone.c
+> > > +++ b/drivers/media/platform/amphion/vpu_malone.c
+> > > @@ -908,7 +908,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_=
+rpc_event *pkt,
+> > > =C2=A0=C2=A0	info->frame_rate.numerator =3D 1000;
+> > > =C2=A0=C2=A0	info->frame_rate.denominator =3D pkt->data[8];
+> > > =C2=A0=C2=A0	info->dsp_asp_ratio =3D pkt->data[9];
+> > > -	info->level_idc =3D pkt->data[10];
+> > > +	info->profile_idc =3D (pkt->data[10] >> 8) & 0xff;
+> > > +	info->level_idc =3D pkt->data[10] & 0xff;
+> > > =C2=A0=C2=A0	info->bit_depth_luma =3D pkt->data[13];
+> > > =C2=A0=C2=A0	info->bit_depth_chroma =3D pkt->data[14];
+> > > =C2=A0=C2=A0	info->chroma_fmt =3D pkt->data[15];
+> > > @@ -925,6 +926,8 @@ static void vpu_malone_unpack_seq_hdr(struct vpu_=
+rpc_event *pkt,
+> > > =C2=A0=C2=A0		info->pixfmt =3D V4L2_PIX_FMT_NV12M_10BE_8L128;
+> > > =C2=A0=C2=A0	else
+> > > =C2=A0=C2=A0		info->pixfmt =3D V4L2_PIX_FMT_NV12M_8L128;
+> > > +	if (pkt->hdr.num > 28)
+> > > +		info->constraint_set_flags =3D pkt->data[28];
+> > > =C2=A0=C2=A0	if (info->frame_rate.numerator && info->frame_rate.denom=
+inator) {
+> > > =C2=A0=C2=A0		unsigned long n, d;
+> > > =C2=A0=20
+> > >=20
+> > > base-commit: b64b134942c8cf4801ea288b3fd38b509aedec21
