@@ -1,222 +1,95 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09978126BF1;
-	Thu, 22 May 2025 15:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A384C7DA73;
+	Thu, 22 May 2025 16:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747929402; cv=none; b=Q2Qm8GieBcNZR7hIIG/DO80aT2qmYRmSi4ymW4VJq7dJFXVWufAMiooOd4oPAaV7DymiOojHzVp6R/XQLE3GeRz03G4gCpNyQ/FjQg9mewkOANhffqdSvAY3wL0dOw0CC5I9XSJ1IROB17OyEHmeo+WlDD2GqTx7EpCtPd6Gugk=
+	t=1747930771; cv=none; b=NAaZaE+fScSAC/OXRVMwfBqF7zs6XOddsoYmlIILg5rZ/3k4yqVprqt1mPKj3nRgMMnRLiBW8FA6NMxkVyR9GzRnlN3D1snXTXHTrPK389SpzK6Iyi0Y7QP244f4VnldJfSM2m6UimWHRAR1rgiTJbxWRM9xqLEesktxE0UvmYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747929402; c=relaxed/simple;
-	bh=wQH70eo1sPSqO0FtIIJnBv1zebflYdHlHJdMqRCxIeI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nd1XH85gpEgm5+NJ+crUrq9X1SltNkHbGfCKnblK80110p1OXbq3/MzCU4Hs98x05GEwF3cWgtgoSScY8idZ5Z9uAPmvreHys1WOEtJmOW+LfcB6V2J/VTErPflfHpzQDqau7NZw1YrOdDof7AWqbuSSuONZ6kQVo9zkf2W2w1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LrOFkxjD; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1747930771; c=relaxed/simple;
+	bh=iBE7Lob++OOfoLrW8v5UQ4fc6DSc6z/13VLQ6i+h49Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PJ4vEijIG2SYI6w3fEyyQV98VbPkyYD3tdqguY4X6Mn1qQAABII5bn9WXtwrNDpSxRLsJD+SyikNetbRYEpmLt2Fc82UFD3jxQwEPrGuGXFWg6a/S4qO5LS711cO1OLW67dAWaJ4Sge4fuUciztmG8/KPhngBxXOLsbdtHkHJMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QSiK299A; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LrOFkxjD"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 62288439A5;
-	Thu, 22 May 2025 15:56:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747929396;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hDrRfxUh05bF14pzZXQ+mC3f/tIJuaPORyh0q5iuGpM=;
-	b=LrOFkxjDWfPYlaJ27v0bKylFL4XWO+4kvvgStRLZlUDRYZHdyChNIb2pfDuGENtsuftdv/
-	wGbOCWfZtxzREyaEFwnH82wXULSKdAdYw/PBXzq/zAP46MQh+2qKay6Pd/jwy3zwxJN8dw
-	rgJTGQYyYqHyrBnB5+bbAyyUPyuK4SQmrz1l5b6bKlFTJX3baN6Ej14byKnrUchMCQnb3+
-	vJDkRIAED2cQX+6NzREg8KVZNhwI6WQ0582mb8M9FYZVQz3yCa/TIqtPexDE/d9Fb/Krsm
-	aRFHR6fwOi/MpKAjV481sgJjj5EABYXpHVIjb+acU9Q+t95PRAEbZnkSC880OA==
-Date: Thu, 22 May 2025 17:56:23 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
- Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
- <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Douglas Anderson
- <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof
- Kozlowski <krzk@kernel.org>, Liu Ying <victor.liu@nxp.com>, Anusha Srivatsa
- <asrivats@redhat.com>, Paul Kocialkowski <paulk@sys-base.io>, Dmitry
- Baryshkov <lumag@kernel.org>, Hui Pu <Hui.Pu@gehealthcare.com>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
- asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
- chrome-platform@lists.linux.dev, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-stm32@st-md-mailman.stormreply.com, Louis Chauvet
- <louis.chauvet@bootlin.com>, Alim Akhtar <alim.akhtar@samsung.com>, Inki
- Dae <inki.dae@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
- Seung-Woo Kim <sw0312.kim@samsung.com>, Manikandan Muralidharan
- <manikandan.m@microchip.com>, Adam Ford <aford173@gmail.com>, Adrien
- Grassein <adrien.grassein@gmail.com>, Aleksandr Mishin
- <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>, AngeloGioacchino
- Del Regno <angelogioacchino.delregno@collabora.com>, Benson Leung
- <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, Christoph
- Fritz <chf.fritz@googlemail.com>, Cristian Ciocaltea
- <cristian.ciocaltea@collabora.com>, Detlev Casanova
- <detlev.casanova@collabora.com>, Dharma Balasubiramani
- <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, Heiko
- Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne
- Grunau <j@jannau.net>, Jerome Brunet <jbrunet@baylibre.com>, Jesse Van
- Gavere <jesseevg@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Kieran
- Bingham <kieran.bingham+renesas@ideasonboard.com>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Matthias Brugger
- <matthias.bgg@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Phong LE
- <ple@baylibre.com>, Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang
- <sugar.zhang@rock-chips.com>, Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi
- Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Vitalii Mordan
- <mordan@ispras.ru>, "Rob Herring (Arm)" <robh@kernel.org>, Hsin-Te Yuan
- <yuanhsinte@chromium.org>, Pin-yen Lin <treapking@chromium.org>, Xin Ji
- <xji@analogixsemi.com>, Aradhya Bhatia <a-bhatia1@ti.com>, Tomi Valkeinen
- <tomi.valkeinen@ideasonboard.com>, Ian Ray <ian.ray@gehealthcare.com>,
- Martyn Welch <martyn.welch@collabora.co.uk>, Peter Senna Tschudin
- <peter.senna@gmail.com>, Helge Deller <deller@gmx.de>, Kuninori Morimoto
- <kuninori.morimoto.gx@renesas.com>, Laurent Pinchart
- <laurent.pinchart+renesas@ideasonboard.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Philippe Cornu <philippe.cornu@foss.st.com>,
- Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Yannick Fertre
- <yannick.fertre@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>,
- Raphael Gallais-Pou <rgallaispou@gmail.com>, Michal Simek
- <michal.simek@amd.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH v3 00/22] drm: convert all bridges to
- devm_drm_bridge_alloc()
-Message-ID: <20250522175623.1a6d9b14@booty>
-In-Reply-To: <20250522-amphibian-shiny-chachalaca-cf05ba@houat>
-References: <20250509-drm-bridge-convert-to-alloc-api-v3-0-b8bc1f16d7aa@bootlin.com>
-	<20250521162216.79dd3290@booty>
-	<20250522-amphibian-shiny-chachalaca-cf05ba@houat>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QSiK299A"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=xW2yJXrDkikvHHO+re2mbxIzKOAy7tNs68ZEuANiRbo=; b=QSiK299AFsqBJlUww7GUw0Xbav
+	DFIs2FP+PpruzGhrbynwbH4dpD8UNSvZZzuumJad5A4OK0SbjGSoNalO9pTsXp5Isa35noZ76C9UX
+	7T2t8YnDsfzQIqH1KeC4XDSkOtQdpKmQWG9Sqa+O2VHaCAFSYSS1EPgNy+V+HTDSFmr4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uI8dV-00DVwB-N0; Thu, 22 May 2025 18:19:13 +0200
+Date: Thu, 22 May 2025 18:19:13 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+	"xiaolei.wang@windriver.com" <xiaolei.wang@windriver.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH net] net: phy: clear phydev->devlink when the link is
+ deleted
+Message-ID: <d8cb2a8f-af3d-4042-96a3-a762df1876a9@lunn.ch>
+References: <20250522064253.3653521-1-wei.fang@nxp.com>
+ <f19659d4-444c-4f44-9bff-4c83a8c5a7e9@lunn.ch>
+ <PAXPR04MB851054C5E1049B5361A46C108899A@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdeifeejucdltddurdegfedvrddttddmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfejhffgjeelkeeftdekfefgteekgefhleelueeijeffieekieeigefhledtffetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpfhhrvggvuggvshhkthhophdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeelhedprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhho
- hhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrgh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB851054C5E1049B5361A46C108899A@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-Hi Maxime,
-
-On Thu, 22 May 2025 16:57:30 +0200
-Maxime Ripard <mripard@kernel.org> wrote:
-
-[...]
-
-> > As the commit was a mistake, I'm applying the revert by the end of this
-> > week (i.e. on Friday) unless there are better instructions.  
+On Thu, May 22, 2025 at 01:57:20PM +0000, Wei Fang wrote:
+> > On Thu, May 22, 2025 at 02:42:53PM +0800, Wei Fang wrote:
+> > > The phydev->devlink is not cleared when the link is deleted, so calling
+> > > phy_detach() again will cause a crash.
+> > 
+> > I would say crashing is correct. You have done something you should
+> > not do, and the crash helped you find it. phy_attach() and
+> > phy_detach() should always be in pairs.
+> > 
 > 
-> Given the lack of answers, and that it looks correct to me, just leave
-> it there. We can always revert later on if things turned out to be
-> broken.
+> phy_attach() and phy_detach() are called in pairs in my case. When
+> re-enabling the network port, if an error occurs in the phy_attach_direct(),
+> For example, if phy_init_hw() returns an error, it will jump to the error
+> path and call phy_detach(). Because phy_detach() did not clear the
+> phydev->devlink pointer when the network port was disabled,
+> device_link_del() will access a NULL pointer and cause a crash. And this
+> crash may cause the CPU to hang. I don't think it is reasonable to cause
+> the CPU to hang.
 
-OK, I'll leave the commit and drop the revert in v4.
+Ah, now i get it...
 
-> > >       drm: convert many bridge drivers from devm_kzalloc() to devm_drm_bridge_alloc() API  
-> > 
-> > This patch affects multiple drivers. Running get_maintainers.pl
-> > points at Shawn Guo's repository. After reviewing the MAINTAINERS file,
-> > this looks like due to the 'N:' line in:
-> > 
-> > ARM/FREESCALE IMX / MXC ARM ARCHITECTURE
-> > M:	Shawn Guo <shawnguo@kernel.org>
-> > M:	Sascha Hauer <s.hauer@pengutronix.de>
-> > R:	Pengutronix Kernel Team <kernel@pengutronix.de>
-> > ...
-> > T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
-> > N:	imx
-> > ...
-> > 
-> > (https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-next/MAINTAINERS?ref_type=heads#L2511-2528)
-> > 
-> > Here 'imx' matches the 'drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c'
-> > file that is touched by the patch. That regexp appears overly generic to me.  
-> 
-> I agree, or at least, we shouldn't wait for Shawn or Sasha...
-> 
-> > Shawn, can it be fixed by making it less generic?
-> > 
-> > If not, can we at least add a band-aid 'X:' entry for
-> > drivers/gpu/drm/bridge/imx?
-> > 
-> > I think the other matching entry is the one to consider:
-> > 
-> > DRM DRIVERS FOR FREESCALE IMX BRIDGE
-> > M:	Liu Ying <victor.liu@nxp.com>
-> > L:	dri-devel@lists.freedesktop.org
-> > S:	Maintained
-> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-ldb.yaml
-> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pixel-combiner.yaml
-> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pixel-link.yaml
-> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pxl2dpi.yaml
-> > F:	drivers/gpu/drm/bridge/imx/
-> > 
-> > (https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-next/MAINTAINERS?ref_type=heads#L7940-7948)  
-> 
-> ... As long as Ying is fine with it, because it does look like they are
-> the actual maintainer.
+phy_attach_direct() runs, but fails early, before the call to:
 
-Ack, thanks for confirming this.
+phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
+						  DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
 
-Bottom line, given that large patch has your Acked-by, and given the
-shawnguo repo was ruled out, the conclusion is it can apply it to
-drm-misc-next.
+So it has its old value, from a previous attach/detach cycle. At the
+error: label, it calls phy_detach(phydev), which does a
+device_link_del(), using the old value...
 
-Having that large patch applied will be relieving me a lot! I think
-next time I'm going to split any imilar change in per-driver patches,
-even if it is spatch-automated.
+Please improve your changelog message, add more details.
 
-> > >       drm/todo: add entry to remove devm_drm_put_bridge()  
-> > 
-> > This involves documentation maintained on another tree. Where should it
-> > be applied? There are two matching entries in MAINTAINERS:
-> > 
-> >  * DRM DRIVERS -> the drm tree
-> >  * DRM DRIVERS AND MISC GPU PATCHES -> the drm-misc tree
-> > 
-> > To me it looks like the second is obviously the closest match as we are
-> > dealing with DRM bridges, so I'm applying this as well on Friday unless
-> > there are better instructions.  
-> 
-> Yes, they should be applied to drm-misc.
+    Andrew
 
-OK, will do soon.
-
-> That being said, putting a two days timeout on *any* email is really
-> over-the-top. I doubt you reply to any of your mail in such a short
-> timeframe. We have rules for a reason, I'd expect you to follow them, no
-> matter how frustrating the lack of answers can be.
-
-Apologies if that was too much.
-
-I was indeed nervous about the revert. A patch got applied by mistake
-and I believe it should have been reverted very quickly, if need be.
-Both Louis and I didn't want to break the process again. So we asked,
-but not having answer after 2+ weeks I must admit I got a bit nervous
-about it.
-
-Sorry about that and thanks for the feedback about my questions.
-
-Luca
-
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+---
+pw-bot: cr
