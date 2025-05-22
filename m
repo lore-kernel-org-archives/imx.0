@@ -1,65 +1,66 @@
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7448A28C870
-	for <imx@lists.linux.dev>; Thu, 22 May 2025 14:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBD723A57F
+	for <imx@lists.linux.dev>; Thu, 22 May 2025 14:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747925563; cv=none; b=Z0UDwgrc89b22dnrdbcr2qwZahNPqiOWU/NyYGVfX9ajItItHkZ6vcmKqseDJpPJ5TMViLNz2tV5tD021Vh2+ZWjNNWTY0G3X7RjO3oomFceK+Vupn9M5Rr0MkywzUwcyF2qFNNZBM9+4HoANfzMQh9gM7a6jvnEpIxgRvBtgb8=
+	t=1747925564; cv=none; b=kRCDlz3C/wJzMbOltfyc/g8BY59wWXXweLLEmNCbQ7Oo5YdxqbzUI2Oq/vzYdnS74baisgbjh2hLVNC0tyTDpzrUvq48utdCsbFUExMhTISaSX/Ejbbwh2N/vLC90nYYWGzrjoUsSFbvuNzz1DzI8CK5S/ZutuFhuAPNqH/RV1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747925563; c=relaxed/simple;
-	bh=tdIGdyYQ20MkL5rp4ZKUkrznRFJ9rMy7wxoT6sn8RP4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=arUjtSP1SroSh2Mp7+kqbVdok6MDOY7FZkVrHCfraTSe6eo91GNzPDQhwQUTxrIZoBLhVtrIpzE+Kj2skE63xDZkqpdilHyB9NNRCUQDFvE+SmF+7L9q47F8XFMMlWMyFewhW5yY1cWbnHWDOGr8LTJmpiwh7USCWzlu8OZrAV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=llej3qEm; arc=none smtp.client-ip=209.85.128.66
+	s=arc-20240116; t=1747925564; c=relaxed/simple;
+	bh=yddrBEmi1RYqf8QMPGgBcWKQg/oZLwzcf2KAxCgTLyA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=cSCym6glQ93US04WCJ4HL9VFCdYIJkF9URUxVQ0g2rRF4YKRac3l5bnukcyd8Bv9U70E5nOFAlemfgxSbhXQzoYGP8V6/QK5j94FuleywcrHfEUnPm5A2DiCVN1GjoAUF3ZeBSd/lYwIVEC8eqVJzP3KJqkxGCVSgevi2YAxKHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UkePc7Jg; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="llej3qEm"
-Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-44b1f5b917fso1395075e9.3
-        for <imx@lists.linux.dev>; Thu, 22 May 2025 07:52:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UkePc7Jg"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-44b1f5b917fso1395295e9.3
+        for <imx@lists.linux.dev>; Thu, 22 May 2025 07:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747925559; x=1748530359; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VEeX4pHU5dbnP7BXmwT5H8fSOKMWm7ham8iEEngBq2c=;
-        b=llej3qEmhOKZEsjZc1HCs3qc8TvD0AuIFR4UaAoaz5OCp+PL9AnE69VkyEmPl0qmHR
-         q3ku2UcXCGF6bXPGpXqeT80+dXC/ezOl9IYVmnO7nAc0om0mrFZtAhpj7nThWGn0fpv2
-         Jubuj4tPjXFRyEl76/GC92YvPElo3DTdrHMqiWaE8XQO4T9wfonnark8zhoDVzqUMFpv
-         sJcc0cKFtjsVvukV+bO7LMupbO/202o6lne+PLG5e6U/t+7lyL8Ub4QKOl1ouxkmAdrS
-         dZOQ40fgmFdKybFlLzrXd2MxBt/w7v4zqkxVR/4fyBUHtVKh+pB0/g9fIYzedKjHGVSb
-         /9xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747925559; x=1748530359;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1747925560; x=1748530360; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VEeX4pHU5dbnP7BXmwT5H8fSOKMWm7ham8iEEngBq2c=;
-        b=GhczeuFoi6MtlmBdHuW1K52iIueYSziuPO6aJ5xgFlC5FXa9Ybzu8KRvjWW4CjXtrw
-         BA/clwn+52EFHypJ0XvKy3d0630XcC8E9f+/rmS4YazyRTH4tT13ZhOsJBVI33D0kHzB
-         51A07Y2VAtJZ+P4kD4hHUor6fvEN4QYwmUGwDho5OxZQrCmZZ9ffotiE+rt7nRfJ1Rio
-         hX4oe6olizX2h9wrMD9fDbONJApcnMHq4CvLHnEE45BURyLqzQebvQsXLJILdmlHHdl7
-         oPyk//B25uDI7B9sqWws39LYj5i7mE8hGMdnJgJtYoIWBQqMrOb7EOf7tBC8FijvgvgR
-         942w==
-X-Forwarded-Encrypted: i=1; AJvYcCWiso/dPPgEVa8YIIIGpW9UslIw7TSy1iB0IbDh8OYySw0tIUBAyhYuqsm98dYtq9Z69I4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzDvobPOlPSq4uL25QgBt9ciss2Ito6WEIvWYIg5OQRpDBUcuEF
-	aIGjZ9QX4AwdQ/mhYMEF6P7wqkgfeTDF2CrI7a5suP9FhNmC7/iJYrui+S/KmXp7/4A=
-X-Gm-Gg: ASbGncvknzfjK/6Ghivn7Fmc31ydcsce7ocirr/fgP0TY15HIREgrAM/wnF5VLjk6C8
-	zhNtr/aErpQSwHbmvvKMFO/6ZEtYDOVTVaZ/F01hlezqF31vtHnU1aNjSf+o1ilS09ceY8Z15rV
-	Z8CRmeIFVb8hLa2CN8WR1eBP9DKrZ1qIEFoUo/VJ3pqLaBmZucm+W4+eoK8OpCEUTfHI6s9Ba4J
-	AuCn72p4EDkXXEhFvckRZfldYWXjt1Ftk056SWAM/MMprR7ejbaJiJxGahSfi/CEspvgPQo0rOt
-	A4TERyfabuLVfsrwBfzhTNi0eOJL897/NB40e90H5YlMt2+UtRI6JntLHV3U
-X-Google-Smtp-Source: AGHT+IGuO6Y6d+kCxwoNrEY38IpkexCj4wL5pVJUa3/XxA+mRVZ8kHkKd9XIST6kB9JCbxHGl+gsxw==
-X-Received: by 2002:a05:600c:3114:b0:440:61eb:2ce5 with SMTP id 5b1f17b1804b1-442fd64e335mr299932885e9.17.1747925558639;
-        Thu, 22 May 2025 07:52:38 -0700 (PDT)
+        bh=bX8Np3nsOAVhGpGTczqX2XujPUCRtkdhb7ZQQUV9YcY=;
+        b=UkePc7JgvMxUWn9UO4YHYCL5OdA5678IE56Im7ezIBTZc1zv9p84Eru5f5L2bsOnWE
+         btl9N/FFKkGyej3XiSZMtbTojF0noA4J8HU1Jx3WZFJfyYALr0mq61YTN1VxZp7GEOtF
+         /ioJM146d61T7hkX0iQ2ZAli51T97PX+nb4kuWhloAV0VLjT4PF4dqSD6FbgT3PEuyGi
+         OoUJ2cIK4VHmmvGZTxl8BUFXMlghjcKo/4bv+LJmTizW52cpneEcc/fyRbEfhDmBuu9t
+         ErqN8GO2lBSYO/w39pvltijgwDptGHYWubhEDl9Vp8KyGQCCg5QAp5G5GTggkW9vbAUI
+         VixA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747925560; x=1748530360;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bX8Np3nsOAVhGpGTczqX2XujPUCRtkdhb7ZQQUV9YcY=;
+        b=GlLuJGIixfvVykVe+IC9X5BvWSUPH0Xlg9vwTepHuIa28W5mrYkboScLNMxpGZF5io
+         viJNr32p1O2DW2x/6d2KYR5ubM2vZQoaATzyFCcr5O4e7bqkjvtYaleOK0ee+JhhMXFx
+         wIjAvCtsf4uGTCXfSYiOEW0ex4DqD6CPh86EdE0YwL66zw+uqMvRRyt3+vmriI+SJKd0
+         cql+/k37+8QyYgssrWOwkmHu4oUBg2hy+YA3thOioxWF/WmwINZ7Ly1EvKtMKm4KJiEX
+         XoA25nx6QW2r+ywwl/npG9RUajYlPNAjrDNMKYNfWaUqiVhFzIe/kE9oD1orkNiYRZfr
+         gBSA==
+X-Forwarded-Encrypted: i=1; AJvYcCV9OAeryjKPip/tOaByhtww3l6yaJvRvDn0m7a7L7dzfvGAX4CAEaOmqOCEo9g92KR2RKU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzEodqF0gHR85m1fCGcu6CKLMwCrbppuMr4zXpWq4p+wkSB3enF
+	QWB6heH/GPAc6CTH9MBVVCl0LVsxcbI4ALTZuImmj+nn/K8WzD0tQNE/CoX/TLucTkM=
+X-Gm-Gg: ASbGnctQwSv0HMuMqTBaJYm4766EPyzvKd+7HMopsJSrjBTKeSgCGAO9X0IziQRmsev
+	bycFS3E/rwZDf4xn5BqeDhrk4i2DR8kQBOOFfyp7V5rfxnDdPwCPZiP1muG0oA4Su2oVTDNOOoa
+	U5P/5pn+GZpm9p4SIyyob85LiyUc91plooQ0nqPYlNyLCPgBpAyzobJNnKE4+Y3OslpzYTQ6w9s
+	CfrbPCB5/cMxNejUjFo96+r+HHJdKL6gARqumpxDGWCbxydU7EeNSAvQqyYwQ3qwDhUxxxC+yxk
+	09M6NZbt8yjwTWFSD4N3EuTbx86erSnH0mCjz2Zinhtj3fG8VPxSWbIMoYkT
+X-Google-Smtp-Source: AGHT+IHkwaJ6gHJgvWiPzVxDv2dV6i3HHkhWCA1c5/mCAe/0o4MB5fUJzCgJeRD5hGESr2V3uBRYRg==
+X-Received: by 2002:a05:600c:4ed2:b0:43d:8ea:8d7a with SMTP id 5b1f17b1804b1-442fd67504emr191953925e9.28.1747925560426;
+        Thu, 22 May 2025 07:52:40 -0700 (PDT)
 Received: from ho-tower-lan.lan ([37.18.136.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f78aeb56sm104965555e9.27.2025.05.22.07.52.36
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f78aeb56sm104965555e9.27.2025.05.22.07.52.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 07:52:38 -0700 (PDT)
+        Thu, 22 May 2025 07:52:39 -0700 (PDT)
 From: James Clark <james.clark@linaro.org>
-Subject: [PATCH v2 00/14] spi: spi-fsl-dspi: DSPI support for NXP S32G
- platforms
-Date: Thu, 22 May 2025 15:51:29 +0100
-Message-Id: <20250522-james-nxp-spi-v2-0-bea884630cfb@linaro.org>
+Date: Thu, 22 May 2025 15:51:30 +0100
+Subject: [PATCH v2 01/14] spi: spi-fsl-dspi: restrict register range for
+ regmap access
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,9 +69,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPE5L2gC/13MQQ6CMBCF4auQWTumnaYLXHkPw6LCFMZo27SEY
- Ah3t+LO5f+S921QOAsXuDQbZF6kSAw16NRAP7kwMspQG0iRVYYsPtyLC4Y1YUmCvfOaSbUtGQ3
- 1kzJ7WQ/v1tWepMwxvw9+0d/1J1nV/kmLRoWG7r4fyLPT+vqU4HI8xzxCt+/7B7lZF6qrAAAA
+Message-Id: <20250522-james-nxp-spi-v2-1-bea884630cfb@linaro.org>
+References: <20250522-james-nxp-spi-v2-0-bea884630cfb@linaro.org>
+In-Reply-To: <20250522-james-nxp-spi-v2-0-bea884630cfb@linaro.org>
 To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Matti Vaittinen <mazziesaccount@gmail.com>
@@ -88,76 +89,91 @@ Cc: Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
  Vladimir Oltean <vladimir.oltean@nxp.com>, 
  Dan Carpenter <dan.carpenter@linaro.org>, 
  Larisa Grigore <larisa.grigore@nxp.com>, 
- Xulin Sun <xulin.sun@windriver.com>, James Clark <james.clark@linaro.org>, 
- Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>, 
- Marius Trifu <marius.trifu@nxp.com>, 
- Ciprian Marian Costea <ciprianmarian.costea@nxp.com>, 
- Andra-Teodora Ilie <andra.ilie@nxp.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Stoica Cosmin-Stefan <cosmin.stoica@nxp.com>, Dan Nica <dan.nica@nxp.com>, 
- Larisa Grigore <Larisa.Grigore@nxp.com>, 
- Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>, 
- "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>
+ Xulin Sun <xulin.sun@windriver.com>, James Clark <james.clark@linaro.org>
 X-Mailer: b4 0.14.0
 
-DT and driver changes for DSPI on S32G platforms. First 3 commits are
-fixes for various edge cases which also apply to other platforms.
-Remaining commits add new S32G registers and device settings, some S32G
-specific fixes and then finally add the DT compatibles and binding docs.
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-Tested in both host and target mode on S32G-VNP-RDB3 by transferring to
-an external device over spi1 using spidev_test.c
+DSPI registers are NOT continuous, some registers are reserved and
+accessing them from userspace will trigger external abort, add regmap
+register access table to avoid below abort.
 
+  For example on S32G:
+
+  # cat /sys/kernel/debug/regmap/401d8000.spi/registers
+
+  Internal error: synchronous external abort: 96000210 1 PREEMPT SMP
+  ...
+  Call trace:
+  regmap_mmio_read32le+0x24/0x48
+  regmap_mmio_read+0x48/0x70
+  _regmap_bus_reg_read+0x38/0x48
+  _regmap_read+0x68/0x1b0
+  regmap_read+0x50/0x78
+  regmap_read_debugfs+0x120/0x338
+
+Fixes: 1acbdeb92c87 ("spi/fsl-dspi: Convert to use regmap and add big-endian support")
+Co-developed-by: Xulin Sun <xulin.sun@windriver.com>
+Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
 ---
-Changes in v2:
-- Add trailing commas to lists
-- Line length fixes
-- DT coding style changes
-- Remove fake "rohm,dh2228fv" device for testing
-- Improve some commit messages
-- Put all fixes commits first and add fixes: tags
-- Link to v1: https://lore.kernel.org/r/20250509-james-nxp-spi-v1-0-32bfcd2fea11@linaro.org
+ drivers/spi/spi-fsl-dspi.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
----
-Andra-Teodora Ilie (1):
-      spi: spi-fsl-dspi: Enable modified transfer protocol on S32G
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 067c954cb6ea..effb460d436d 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ //
+ // Copyright 2013 Freescale Semiconductor, Inc.
+-// Copyright 2020 NXP
++// Copyright 2020-2025 NXP
+ //
+ // Freescale DSPI driver
+ // This file contains a driver for the Freescale DSPI
+@@ -1167,6 +1167,20 @@ static int dspi_resume(struct device *dev)
+ 
+ static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
+ 
++static const struct regmap_range dspi_yes_ranges[] = {
++	regmap_reg_range(SPI_MCR, SPI_MCR),
++	regmap_reg_range(SPI_TCR, SPI_CTAR(3)),
++	regmap_reg_range(SPI_SR, SPI_TXFR3),
++	regmap_reg_range(SPI_RXFR0, SPI_RXFR3),
++	regmap_reg_range(SPI_CTARE(0), SPI_CTARE(3)),
++	regmap_reg_range(SPI_SREX, SPI_SREX),
++};
++
++static const struct regmap_access_table dspi_access_table = {
++	.yes_ranges	= dspi_yes_ranges,
++	.n_yes_ranges	= ARRAY_SIZE(dspi_yes_ranges),
++};
++
+ static const struct regmap_range dspi_volatile_ranges[] = {
+ 	regmap_reg_range(SPI_MCR, SPI_TCR),
+ 	regmap_reg_range(SPI_SR, SPI_SR),
+@@ -1184,6 +1198,8 @@ static const struct regmap_config dspi_regmap_config = {
+ 	.reg_stride	= 4,
+ 	.max_register	= 0x88,
+ 	.volatile_table	= &dspi_volatile_table,
++	.rd_table	= &dspi_access_table,
++	.wr_table	= &dspi_access_table,
+ };
+ 
+ static const struct regmap_range dspi_xspi_volatile_ranges[] = {
+@@ -1205,6 +1221,8 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 		.reg_stride	= 4,
+ 		.max_register	= 0x13c,
+ 		.volatile_table	= &dspi_xspi_volatile_table,
++		.rd_table	= &dspi_access_table,
++		.wr_table	= &dspi_access_table,
+ 	},
+ 	{
+ 		.name		= "pushr",
 
-Bogdan-Gabriel Roman (1):
-      spi: spi-fsl-dspi: Halt the module after a new message transfer
-
-Ciprian Marian Costea (2):
-      dt-bindings: spi: dspi: Add S32G support
-      spi: spi-fsl-dspi: Enable support for S32G platforms
-
-James Clark (2):
-      spi: spi-fsl-dspi: Re-use one volatile regmap for both device types
-      spi: spi-fsl-dspi: Define regmaps per device
-
-Larisa Grigore (7):
-      spi: spi-fsl-dspi: restrict register range for regmap access
-      spi: spi-fsl-dspi: Reset SR flags before sending a new message
-      spi: spi-fsl-dspi: Add config and regmaps for S32G platforms
-      spi: spi-fsl-dspi: Avoid setup_accel logic for DMA transfers
-      spi: spi-fsl-dspi: Use DMA for S32G controller in target mode
-      spi: spi-fsl-dspi: Reinitialize DSPI regs after resuming for S32G
-      arm64: dts: Add DSPI entries for S32G platforms
-
-Marius Trifu (1):
-      spi: spi-fsl-dspi: Use spi_alloc_target for target
-
- .../devicetree/bindings/spi/fsl,dspi.yaml          |  18 +
- arch/arm64/boot/dts/freescale/s32g2.dtsi           |  78 +++++
- arch/arm64/boot/dts/freescale/s32g3.dtsi           |  78 +++++
- arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi    |  83 +++++
- arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi    |  83 +++++
- drivers/spi/Kconfig                                |   4 +-
- drivers/spi/spi-fsl-dspi.c                         | 362 +++++++++++++++------
- 7 files changed, 600 insertions(+), 106 deletions(-)
----
-base-commit: d608703fcdd9e9538f6c7a0fcf98bf79b1375b60
-change-id: 20250325-james-nxp-spi-caf1e2099231
-
-Best regards,
 -- 
-James Clark <james.clark@linaro.org>
+2.34.1
 
