@@ -1,76 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE571B0434;
-	Thu, 22 May 2025 08:16:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D87279799
+	for <imx@lists.linux.dev>; Thu, 22 May 2025 08:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747901768; cv=none; b=nsFYgg3tHNISueBXNqIn5oIuEICoWwxRZJU7ptB3JMF6Ny5SQxK3YgvmggZpMphIEQ4x8EncYGo12k32X5Ff08qD7w5cZYqEHWQqvRfTlb32OpOUtWLSlxkHuxWrSo7eRkG2WgC46lNTS+V6Bb8ddBCDqB0ENz+A+lTwL3jD1+0=
+	t=1747903159; cv=none; b=u9c3U/cgrcH+OORilw8gZEucGxph0LvA9tiW5b9Nn7W0/rWMz61qnmkvUs7ZysiHWurCPJK1ve6UfYWrgb4IWbfR2fWDsioAzEGjVduemD+6H9DziXitsjvxliHbk6tj5J7bbpDqcW3MDJY+o6pfJoneygTRIXSmwXd6ZlB1uz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747901768; c=relaxed/simple;
-	bh=KMc63RmTzPcR/81j0drv6M/ddsUQd+ajSyxtG85Ui/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jwhocu8oNFwGSdgDlI4X7CvxJeloAIHNIyf9w51NtPmWGkMYFPeXCdu7f8NAQezREpPLU5YD/cB/wFFqCfBt7JzIf2/gm7G465nA8EMYwKHIR8UYQv7razOOTsG7phwx6judTEdqKeLxaeYggCFYaBxBzGK25jpOwg2+7+GyZ1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C7akfoFn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747903159; c=relaxed/simple;
+	bh=QTy1k3Ew/RqSP8xX7rFD4GrhuViSyGVepDKk8lzTijU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WTjD+mA00XHXxRvQc0gS6P5meAm4gi/Kz0oBWmjQ9SKCU8dek1su6lrtVviYUt/vbwC8ol5IX6a4jls+lf+vTZX1OkTMI7CeW4Er8ujCwmhVJQ55gUg6uoK85EIN0WRSq+tBO/SjL4TZ5NSSWoufEwQil4C2aUcbV9eH4ISMWrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=GKUe9g1D; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C7akfoFn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931FCC4CEE4;
-	Thu, 22 May 2025 08:16:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747901768;
-	bh=KMc63RmTzPcR/81j0drv6M/ddsUQd+ajSyxtG85Ui/I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C7akfoFnEQDybY3kmBGiab4XMcKqhRgGaO9Xcn4WMAmy/KOo6Ov5FJhuHE252+57N
-	 wAraR4i7GdUapYu9QH27lm296PjPHXaadys2oIfaj7yXrYM6ah+H1wIOGEeDcx8ohP
-	 iswaUGq3uGaMsJMDtOUzfUWnq3r1sioi3pulREExlc+JotF0JVcKDrQrv5X2QEgdM6
-	 KvRJSWjDOyMBoTdU6ObQhtAyHtfmEkeZ3jc8bkDOfd4Mh3q6SpvFG5BPnJr/y+dST4
-	 XlfWBTZ2fLOndWe8HKk/XMu7WXx0ekIWjcf7GYEYTpyfvsJfbn+mTuZJxD7gyew7gF
-	 mmAh+/recW7aQ==
-Date: Thu, 22 May 2025 10:16:05 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Stefan Agner <stefan@agner.ch>, Alison Wang <alison.wang@nxp.com>, 
-	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: display: imx: convert fsl,dcu.txt to
- yaml format
-Message-ID: <20250522-practical-beryl-corgi-be233d@kuoka>
-References: <20250521165310.307339-1-Frank.Li@nxp.com>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="GKUe9g1D"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=VLjIX7nSKhkcnuApiD0KRwJJujcGBBsiXxOFrQ/KWTc=; b=GKUe9g1D9ayAnusFpEJP2ZdXcM
+	Cfs3ZLh9fZTVemOy7zdZcDDn9+PbQ3IKNf92Rfp5QWlI6ixHQXx9qBiMHucmbv2i8a8pmy6nU6c4l
+	Is2KZ3EysWeWNqqiTFbK0Ppwaz5HZR4TZr4mZ/J3VBfPOMzv9Uryo4Zm9VthDqfFFnc8zbEz2YdLW
+	Q7ZJQ+QhMncTk+w3NFsA10GHFxS7Ea69UBCPzNKJZRqdutyVRTBjD24L5BfsyeO7o199iieOozBLK
+	sUys5gk0Fx4kMUl+De7QtbZLMq9pGctcF9uQ1+1Ve0Vj7gg7D26XPdWEaPNlp0oQBE3jaKV30bas9
+	1q+qCR4Q==;
+Received: from [89.212.21.243] (port=51574 helo=localhost.localdomain)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1uI1SI-002sBQ-1V;
+	Thu, 22 May 2025 10:39:10 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH 2/2] arm64: dts: freescale: imx93-phyboard-segin: Set ethernet1 alias
+Date: Thu, 22 May 2025 10:39:09 +0200
+Message-Id: <20250522083909.533567-2-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250522083909.533567-1-primoz.fiser@norik.com>
+References: <20250522083909.533567-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250521165310.307339-1-Frank.Li@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Wed, May 21, 2025 at 12:53:09PM GMT, Frank Li wrote:
-> Convert fsl,dcu.txt to yaml format.
-> 
-> Additional changes:
-> - remove label in example.
-> - change node to display-controller in example.
-> - use 32bit address in example.
-> - add interrupts property.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> Reviewed-by: Stefan Agner <stefan@agner.ch>
-> ---
-> Change from v1 to v2
-> - add Reviewed-by: Stefan Agner <stefan@agner.ch> review tag
-> - add interrupt
+Set ethernet1 alias to EQOS interface on phyBOARD-Segin-i.MX93 marking
+it the secondary networking interface. The primary ethernet0 interface
+is already set by the SoM include file (imx93-phycore-som.dtsi).
 
-Thanks for doing the conversions and for review from Stefan and
-Alexander.
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+index 0c55b749c834..6f1374f5757f 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts
+@@ -18,6 +18,7 @@ /{
+ 		     "fsl,imx93";
+ 
+ 	aliases {
++		ethernet1 = &eqos;
+ 		rtc0 = &i2c_rtc;
+ 		rtc1 = &bbnsm_rtc;
+ 	};
+-- 
+2.34.1
 
