@@ -1,122 +1,222 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EF9291869
-	for <imx@lists.linux.dev>; Thu, 22 May 2025 15:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09978126BF1;
+	Thu, 22 May 2025 15:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747927615; cv=none; b=TpZha+51F5qhDKBwk7o82StWJo5Ml0Zxbzi7N+Thb9iKL08LE3THmpuMK1p3VNpcsG0WZSYZPtZBsz81ApfYSxfS1TAQPUWlIgc3p+5kvj4iBUWVAVPJCfI8HwxYj+BUjQFWzCUYpCd9MRNPv4CWFbi/viD5vY0siNZI3F87CZU=
+	t=1747929402; cv=none; b=Q2Qm8GieBcNZR7hIIG/DO80aT2qmYRmSi4ymW4VJq7dJFXVWufAMiooOd4oPAaV7DymiOojHzVp6R/XQLE3GeRz03G4gCpNyQ/FjQg9mewkOANhffqdSvAY3wL0dOw0CC5I9XSJ1IROB17OyEHmeo+WlDD2GqTx7EpCtPd6Gugk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747927615; c=relaxed/simple;
-	bh=3vgB5xe8h0Ac0HX4R8W4NCM3nLD44/mLKpe7F7SkdXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a6F6gE0g3sd3bX2FCbCrsGD41U/yC9GI2W31hQZQlPZTgeE4Izp8ntbBA8CFKEL4uWtd9spP6PitwtG+pZDDlwN9Z0qtXt1HmKknqudJ8CEuIGIG4a0B/JeHJN0ZPunb61w2fw4ONIcLJN2z9KCB/f4D4RfId+9QBmZRXMT+Sgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=OQsjAE98; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1747929402; c=relaxed/simple;
+	bh=wQH70eo1sPSqO0FtIIJnBv1zebflYdHlHJdMqRCxIeI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nd1XH85gpEgm5+NJ+crUrq9X1SltNkHbGfCKnblK80110p1OXbq3/MzCU4Hs98x05GEwF3cWgtgoSScY8idZ5Z9uAPmvreHys1WOEtJmOW+LfcB6V2J/VTErPflfHpzQDqau7NZw1YrOdDof7AWqbuSSuONZ6kQVo9zkf2W2w1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LrOFkxjD; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="OQsjAE98"
-Received: from pendragon.ideasonboard.com (179.218-130-109.adsl-dyn.isp.belgacom.be [109.130.218.179])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E4DD28FA;
-	Thu, 22 May 2025 17:26:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1747927590;
-	bh=3vgB5xe8h0Ac0HX4R8W4NCM3nLD44/mLKpe7F7SkdXI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OQsjAE98J6DPK3laF62msi3T3h9qdFdCNnohLbAH7v5yrDdsh/IqgnGLFwnyuFyir
-	 /rU9iI3Mji5/LDH3kJTpUdjAsCZQ6vB73xfzhU5xUFg1AjJD54RGndguMKt3BBBRfJ
-	 1ymAfhc+vaTe8+tWa4qWiAIG53RyTUBB434JNWaU=
-Date: Thu, 22 May 2025 17:26:45 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Daniel Scally <dan.scally@ideasonboard.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] media: nxp: imx8-isi: Cleanup video device in error path
-Message-ID: <20250522152645.GS12514@pendragon.ideasonboard.com>
-References: <20250522-djrscally-imx8-isi-fixes-v1-1-10bcd6d347a6@ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LrOFkxjD"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 62288439A5;
+	Thu, 22 May 2025 15:56:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1747929396;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hDrRfxUh05bF14pzZXQ+mC3f/tIJuaPORyh0q5iuGpM=;
+	b=LrOFkxjDWfPYlaJ27v0bKylFL4XWO+4kvvgStRLZlUDRYZHdyChNIb2pfDuGENtsuftdv/
+	wGbOCWfZtxzREyaEFwnH82wXULSKdAdYw/PBXzq/zAP46MQh+2qKay6Pd/jwy3zwxJN8dw
+	rgJTGQYyYqHyrBnB5+bbAyyUPyuK4SQmrz1l5b6bKlFTJX3baN6Ej14byKnrUchMCQnb3+
+	vJDkRIAED2cQX+6NzREg8KVZNhwI6WQ0582mb8M9FYZVQz3yCa/TIqtPexDE/d9Fb/Krsm
+	aRFHR6fwOi/MpKAjV481sgJjj5EABYXpHVIjb+acU9Q+t95PRAEbZnkSC880OA==
+Date: Thu, 22 May 2025 17:56:23 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
+ Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
+ <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Douglas Anderson
+ <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof
+ Kozlowski <krzk@kernel.org>, Liu Ying <victor.liu@nxp.com>, Anusha Srivatsa
+ <asrivats@redhat.com>, Paul Kocialkowski <paulk@sys-base.io>, Dmitry
+ Baryshkov <lumag@kernel.org>, Hui Pu <Hui.Pu@gehealthcare.com>, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
+ asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ chrome-platform@lists.linux.dev, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-stm32@st-md-mailman.stormreply.com, Louis Chauvet
+ <louis.chauvet@bootlin.com>, Alim Akhtar <alim.akhtar@samsung.com>, Inki
+ Dae <inki.dae@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
+ Seung-Woo Kim <sw0312.kim@samsung.com>, Manikandan Muralidharan
+ <manikandan.m@microchip.com>, Adam Ford <aford173@gmail.com>, Adrien
+ Grassein <adrien.grassein@gmail.com>, Aleksandr Mishin
+ <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>, AngeloGioacchino
+ Del Regno <angelogioacchino.delregno@collabora.com>, Benson Leung
+ <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, Christoph
+ Fritz <chf.fritz@googlemail.com>, Cristian Ciocaltea
+ <cristian.ciocaltea@collabora.com>, Detlev Casanova
+ <detlev.casanova@collabora.com>, Dharma Balasubiramani
+ <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, Heiko
+ Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne
+ Grunau <j@jannau.net>, Jerome Brunet <jbrunet@baylibre.com>, Jesse Van
+ Gavere <jesseevg@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Kieran
+ Bingham <kieran.bingham+renesas@ideasonboard.com>, Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Phong LE
+ <ple@baylibre.com>, Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang
+ <sugar.zhang@rock-chips.com>, Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi
+ Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Vitalii Mordan
+ <mordan@ispras.ru>, "Rob Herring (Arm)" <robh@kernel.org>, Hsin-Te Yuan
+ <yuanhsinte@chromium.org>, Pin-yen Lin <treapking@chromium.org>, Xin Ji
+ <xji@analogixsemi.com>, Aradhya Bhatia <a-bhatia1@ti.com>, Tomi Valkeinen
+ <tomi.valkeinen@ideasonboard.com>, Ian Ray <ian.ray@gehealthcare.com>,
+ Martyn Welch <martyn.welch@collabora.co.uk>, Peter Senna Tschudin
+ <peter.senna@gmail.com>, Helge Deller <deller@gmx.de>, Kuninori Morimoto
+ <kuninori.morimoto.gx@renesas.com>, Laurent Pinchart
+ <laurent.pinchart+renesas@ideasonboard.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Philippe Cornu <philippe.cornu@foss.st.com>,
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Yannick Fertre
+ <yannick.fertre@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>,
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, Michal Simek
+ <michal.simek@amd.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 00/22] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+Message-ID: <20250522175623.1a6d9b14@booty>
+In-Reply-To: <20250522-amphibian-shiny-chachalaca-cf05ba@houat>
+References: <20250509-drm-bridge-convert-to-alloc-api-v3-0-b8bc1f16d7aa@bootlin.com>
+	<20250521162216.79dd3290@booty>
+	<20250522-amphibian-shiny-chachalaca-cf05ba@houat>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250522-djrscally-imx8-isi-fixes-v1-1-10bcd6d347a6@ideasonboard.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdeifeejucdltddurdegfedvrddttddmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfejhffgjeelkeeftdekfefgteekgefhleelueeijeffieekieeigefhledtffetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpfhhrvggvuggvshhkthhophdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeelhedprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhho
+ hhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrgh
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-Hi Dan,
+Hi Maxime,
 
-Thank you for the patch.
+On Thu, 22 May 2025 16:57:30 +0200
+Maxime Ripard <mripard@kernel.org> wrote:
 
-On Thu, May 22, 2025 at 03:30:08PM +0100, Daniel Scally wrote:
-> mxc_isi_v4l2_init() registers video devices and v4l2 subdevices but
-> the video devices are not cleaned up in that function's error path
-> which means they're left hanging if it fails. Update the function
-> to clean them up properly.
+[...]
+
+> > As the commit was a mistake, I'm applying the revert by the end of this
+> > week (i.e. on Friday) unless there are better instructions.  
 > 
-> Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
-> ---
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+> Given the lack of answers, and that it looks correct to me, just leave
+> it there. We can always revert later on if things turned out to be
+> broken.
+
+OK, I'll leave the commit and drop the revert in v4.
+
+> > >       drm: convert many bridge drivers from devm_kzalloc() to devm_drm_bridge_alloc() API  
+> > 
+> > This patch affects multiple drivers. Running get_maintainers.pl
+> > points at Shawn Guo's repository. After reviewing the MAINTAINERS file,
+> > this looks like due to the 'N:' line in:
+> > 
+> > ARM/FREESCALE IMX / MXC ARM ARCHITECTURE
+> > M:	Shawn Guo <shawnguo@kernel.org>
+> > M:	Sascha Hauer <s.hauer@pengutronix.de>
+> > R:	Pengutronix Kernel Team <kernel@pengutronix.de>
+> > ...
+> > T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
+> > N:	imx
+> > ...
+> > 
+> > (https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-next/MAINTAINERS?ref_type=heads#L2511-2528)
+> > 
+> > Here 'imx' matches the 'drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c'
+> > file that is touched by the patch. That regexp appears overly generic to me.  
 > 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> index 1e79b1211b603a71f0427e82a997787110f7e4ac..4a74b988217f504a03dfe330a7bac76cdecc933c 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> @@ -154,7 +154,7 @@ static int mxc_isi_v4l2_init(struct mxc_isi_dev *isi)
->  		if (ret < 0) {
->  			dev_err(isi->dev, "Failed to register pipe%u: %d\n", i,
->  				ret);
-> -			goto err_v4l2;
-> +			goto err_cleanup_pipe;
->  		}
->  
->  		ret = media_create_pad_link(&isi->crossbar.sd.entity,
-> @@ -164,14 +164,14 @@ static int mxc_isi_v4l2_init(struct mxc_isi_dev *isi)
->  					    MEDIA_LNK_FL_IMMUTABLE |
->  					    MEDIA_LNK_FL_ENABLED);
->  		if (ret < 0)
-> -			goto err_v4l2;
-> +			goto err_cleanup_pipe;
->  	}
->  
->  	/* Register the M2M device. */
->  	ret = mxc_isi_m2m_register(isi, v4l2_dev);
->  	if (ret < 0) {
->  		dev_err(isi->dev, "Failed to register M2M device: %d\n", ret);
-> -		goto err_v4l2;
-> +		goto err_cleanup_pipe;
->  	}
->  
->  	/* Initialize, fill and register the async notifier. */
-> @@ -212,6 +212,9 @@ static int mxc_isi_v4l2_init(struct mxc_isi_dev *isi)
->  err_m2m:
->  	mxc_isi_m2m_unregister(isi);
->  	v4l2_async_nf_cleanup(&isi->notifier);
-> +err_cleanup_pipe:
-> +	for (i = 0; i < isi->pdata->num_channels; ++i)
-> +		mxc_isi_pipe_unregister(&isi->pipes[i]);
-
-mxc_isi_pipe_unregister() calls mxc_isi_video_unregister(), which locks
-the video->lock mutex. The mutex is initialized in
-mxc_isi_video_register(), so you will have an issue here when reaching
-this label from within the pipe registration loop for any non-registered
-pipe.
-
-One option to address this would be to return from
-mxc_isi_video_unregister() if video->pipe is NULL.
-
->  err_v4l2:
->  	v4l2_device_unregister(v4l2_dev);
->  err_media:
+> I agree, or at least, we shouldn't wait for Shawn or Sasha...
 > 
-> ---
-> base-commit: b64b134942c8cf4801ea288b3fd38b509aedec21
-> change-id: 20250522-djrscally-imx8-isi-fixes-fed2d7cffb1c
+> > Shawn, can it be fixed by making it less generic?
+> > 
+> > If not, can we at least add a band-aid 'X:' entry for
+> > drivers/gpu/drm/bridge/imx?
+> > 
+> > I think the other matching entry is the one to consider:
+> > 
+> > DRM DRIVERS FOR FREESCALE IMX BRIDGE
+> > M:	Liu Ying <victor.liu@nxp.com>
+> > L:	dri-devel@lists.freedesktop.org
+> > S:	Maintained
+> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-ldb.yaml
+> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pixel-combiner.yaml
+> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pixel-link.yaml
+> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pxl2dpi.yaml
+> > F:	drivers/gpu/drm/bridge/imx/
+> > 
+> > (https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-next/MAINTAINERS?ref_type=heads#L7940-7948)  
+> 
+> ... As long as Ying is fine with it, because it does look like they are
+> the actual maintainer.
+
+Ack, thanks for confirming this.
+
+Bottom line, given that large patch has your Acked-by, and given the
+shawnguo repo was ruled out, the conclusion is it can apply it to
+drm-misc-next.
+
+Having that large patch applied will be relieving me a lot! I think
+next time I'm going to split any imilar change in per-driver patches,
+even if it is spatch-automated.
+
+> > >       drm/todo: add entry to remove devm_drm_put_bridge()  
+> > 
+> > This involves documentation maintained on another tree. Where should it
+> > be applied? There are two matching entries in MAINTAINERS:
+> > 
+> >  * DRM DRIVERS -> the drm tree
+> >  * DRM DRIVERS AND MISC GPU PATCHES -> the drm-misc tree
+> > 
+> > To me it looks like the second is obviously the closest match as we are
+> > dealing with DRM bridges, so I'm applying this as well on Friday unless
+> > there are better instructions.  
+> 
+> Yes, they should be applied to drm-misc.
+
+OK, will do soon.
+
+> That being said, putting a two days timeout on *any* email is really
+> over-the-top. I doubt you reply to any of your mail in such a short
+> timeframe. We have rules for a reason, I'd expect you to follow them, no
+> matter how frustrating the lack of answers can be.
+
+Apologies if that was too much.
+
+I was indeed nervous about the revert. A patch got applied by mistake
+and I believe it should have been reverted very quickly, if need be.
+Both Louis and I didn't want to break the process again. So we asked,
+but not having answer after 2+ weeks I must admit I got a bit nervous
+about it.
+
+Sorry about that and thanks for the feedback about my questions.
+
+Luca
 
 -- 
-Regards,
-
-Laurent Pinchart
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
