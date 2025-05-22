@@ -1,138 +1,169 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B954A223321
-	for <imx@lists.linux.dev>; Thu, 22 May 2025 07:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30181487FE
+	for <imx@lists.linux.dev>; Thu, 22 May 2025 07:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747899422; cv=none; b=ueV8Ne/vrojxvlkh91c3bjBbhg87aEiO1Iweu0UdrtYCsBR1td/4hDLyHaMuGO7Hk0ZmkgXQY/Sgc9ipcWibQVvtkw0ML+dpXd7SUevfHGisgciDJHPm01Yh4KvxAwTClOnmiQ0RprJ5XfRyFKAxQp2+FWBlXOIKCIs1SHk2O/c=
+	t=1747900524; cv=none; b=LBuMPPh+kwLeNt4uj/HefoT3NEKnkXyFK9RfAppHiGvn1b7sm/cnHUHjaHZJT1paxqqUX2TV58FABchXu3xGlVMQFZRN7+ollSV4YBgs6quK2dD5WSrVkRH+1VDzV9cAtkVaH66ZW0RO41z0I+Zy1zvYhC3dHDoOjQGEOE5uJYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747899422; c=relaxed/simple;
-	bh=EpTuo3/eKYUqt/vcS6hzJUVm6+j2JcC5pE3YceV+xl4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CSQZmGyyGdnuIchUf+GZkrFUMzzLvDz17h+P4OKgL8D3N5xqa7X2u1tXXrU/WtSJHtp+TI5Br0NNQihlA0Y0l/uu0yBsSPijsFfLWeXd0lfy1fa2maN8hvcFu9UR07Geg3uxckUUY4lCloMiC0NquXHMhQhh9r4zGUseR65cNAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1uI0Ts-0008Bc-NL; Thu, 22 May 2025 09:36:44 +0200
-Message-ID: <5291df1a-d44f-493e-9655-0bf13a4a7a59@pengutronix.de>
-Date: Thu, 22 May 2025 09:36:42 +0200
+	s=arc-20240116; t=1747900524; c=relaxed/simple;
+	bh=LQlF5YVK7B0Bdj6cq5MWXvYwRFxsOIq4rPYtjbNmgas=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o54baS/+JkKpETtXJo30v/20tbEfK0XrDcLs8nPLX6Rsm+dhLW/Bc7d1hJPM4dpj+04vzJVEh4fIyhAuX+EeHnyl2Cs7vmonvsXi3bM5AwudHaFJ4zf0Ilqvh4J6w8h29KpFgM8ZE8cZtFp0i6gUrOCR1mSE+pbIn63DyT8PtJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=GqYR1D95; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="GqYR1D95"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CFE531039728C;
+	Thu, 22 May 2025 09:55:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1747900518; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=MJ7lmCjvK1+80wMyjFPNbT67zAQdNUXvibJ0absooOs=;
+	b=GqYR1D95VJg8+Gf8v8ZUt8ueqV6Mj7VHimGEBqcDn/m5ExL5v/yifBtD5ouHnRbmEiZKt9
+	EmwZg4eazBwUxCtgKhjfFO2XpIiEMhlQfj5Mc3Mh1uId17/FUEE63zeP48CX7EwZksqDPj
+	8vjDdFbsEHhtK/TP0q9CE9g88HBTwErYBbvNzl00GYoF4hU+KCTQZD0OpWP/nMixgk45VN
+	HMqqjitecI+53WwRj1Lg3aVAO96SPE3w+1OijjLuvKcAVmpcjgdxOJLiDRH6ftqiMg+LcE
+	n3tM2uXFsA0T+JpJ23CgVAxdvkONPoTZ4jH7+0yyJqgFY1tb2pBB94VRWdCQug==
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Lukasz Majewski <lukma@denx.de>
+Subject: [net-next v12 0/7] net: mtip: Add support for MTIP imx287 L2 switch driver
+Date: Thu, 22 May 2025 09:54:48 +0200
+Message-Id: <20250522075455.1723560-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/8] MAINTAINERS: add maintainer for the Ka-Ro
- tx8p-ml81 COM module
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Maud Spierings | GOcontroll <maudspierings@gocontroll.com>,
- Shawn Guo <shawnguo2@yeah.net>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20250417-initial_display-v6-0-3c6f6d24c7af@gocontroll.com>
- <20250417-initial_display-v6-3-3c6f6d24c7af@gocontroll.com>
- <aB26FRq/Ets5fiRK@dragon>
- <PA4PR04MB7630F5874577DA12FCBE1537C58AA@PA4PR04MB7630.eurprd04.prod.outlook.com>
- <aB3DuZMBIwsFXrVz@dragon>
- <PA4PR04MB76309AE2C6E2C774DF8FAE29C58AA@PA4PR04MB7630.eurprd04.prod.outlook.com>
- <3ba28773-61ec-4e1e-949d-e8285525d1d2@pengutronix.de>
- <650740e3-1a21-46b1-a297-f8d6b7df9ae9@kernel.org>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <650740e3-1a21-46b1-a297-f8d6b7df9ae9@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Krzysztof,
+This patch series adds support for More Than IP's L2 switch driver embedded
+in some NXP's SoCs. This one has been tested on imx287, but is also available
+in the vf610.
 
-On 22.05.25 08:19, Krzysztof Kozlowski wrote:
-> On 21/05/2025 22:39, Ahmad Fatoum wrote:
->> Dear Device Tree Maintainers,
->> Dear Maud and Shawn,
->>
->> On 09.05.25 11:03, Maud Spierings | GOcontroll wrote:
->>> On 5/9/25 10:58, Shawn Guo wrote:
->>>>>>> +KA-RO TX8P COM MODULE
->>>>>>> +M:	Maud Spierings <maudspierings@gocontroll.com>
->>>>>>> +L:	imx@lists.linux.dev
->>>>>>> +S:	Maintained
->>>>>>> +F:	arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi
->>>>>>> +
->>>>>>
->>>>>> I'm not fond of such changes, as MAINTAINERS file could be bloated
->>>>>> quickly by individual DTS.
->>>>>
->>>>> Is there some way you would prefer to see it? I don't really know of a better
->>>>> way.
->>>>
->>>> There was some discussion about getting ./scripts/get_maintainer.pl pick
->>>> up the Author: field (in DTS header area).  But I'm not sure where it
->>>> ended.
->>>
->>> I feel like that would be wrong in this situation too, it would pull in
->>> Lothar Wassmann, who has nothing to do with me upstreaming this. I have
->>> seen him around on the mailing list but given that Ka-Ro are not
->>> upstreaming these themselves, I feel it would be weird to pull him into
->>> this.
->>
->> We can add multiple authors. Authors not wishing to receive mail can always
->> remove their name or blackhole their mail address via the mailmap.
->>
->> I am not leaning strongly in favor of either way, but I am bothered a little
->> by b4 nagging me about adding MAINTAINERS entry for device trees that I've
->> added. It would be nice to have a guideline here.
-> 
-> Hm? That's not a warning anyone should fix. If any of these patches are
-> because of checkpatch, then obviously this should never be accepted.
+In the past there has been performed some attempts to upstream this driver:
 
-If we come to an agreement that in the general case, MAINTAINER entries
-are not desired for device trees, we should fix the tooling to not mislead
-contributors.
+1. The 4.19-cip based one [1]
+2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
+   with NO tag appended.
+3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
+   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
+   the driver uses already configured MAC and PHY to also configure PHY.
 
-> And that's true for every other change, every addition of C or H file.
-> You do not add maintainer entries for them.
+All three approaches were not accepted as eligible for upstreaming.
 
-I guess it's more of a nudge to make the contributor think about whether the
-change is adequately covered by existing MAINTAINERS entries or not.
-People have time and time again came to different conclusions for that
-regarding device trees though.
+The driver from this series has floowing features:
 
-It would be nice if we could put that to rest by 1) documenting it
-and 2) fixing the tooling to not nag about it or to have a more suitable
-message concerning device trees.
+1. It is fully separated from fec_main - i.e. can be used interchangeable
+   with it. To be more specific - one can build them as modules and
+   if required switch between them when e.g. bridge offloading is required.
 
-I am happy to implement either thing into checkpatch.pl.
-Just let me know what way we should go.
+   To be more specific:
+        - Use FEC_MAIN: When one needs support for two ETH ports with separate
+          uDMAs used for both and bridging can be realized in SW.
 
-Thank you,
-Ahmad
+        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
+          attached to switch and bridging shall be offloaded to HW. 
 
-> 
->>
-> 
-> 
-> Best regards,
-> Krzysztof
-> 
+2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
+   separation at boot time. Port separation is disabled when bridging is
+   required.
 
+3. Example usage:
+        Configuration:
+        ip link set lan0 up; sleep 1;
+        ip link set lan1 up; sleep 1;
+        ip link add name br0 type bridge;
+        ip link set br0 up; sleep 1;
+        ip link set lan0 master br0;
+        ip link set lan1 master br0;
+        bridge link;
+        ip addr add 192.168.2.17/24 dev br0;
+        ping -c 5 192.168.2.222
+
+        Removal:
+        ip link set br0 down;
+        ip link delete br0 type bridge;
+        ip link set dev lan1 down
+        ip link set dev lan0 down
+
+4. Limitations:
+        - Driver enables and disables switch operation with learning and ageing.
+        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
+          on purpose, as up till now we didn't had consensus about how the driver
+          shall be added to Linux.
+
+5. Clang build:
+	make LLVM_SUFFIX=-19 LLVM=1 mrproper
+	cp ./arch/arm/configs/mxs_defconfig .config
+	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 menuconfig
+	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 -j8 LOADADDR=0x40008000 uImage dtbs
+
+6. Kernel compliance checks:
+	make coccicheck MODE=report J=4 M=drivers/net/ethernet/freescale/mtipsw/
+	~/work/src/smatch/smatch_scripts/kchecker drivers/net/ethernet/freescale/mtipsw/
+
+
+Links:
+[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
+[3] - https://source.denx.de/linux/linux-imx28-l2switch/-/tree/imx28-v5.12-L2-upstream-switchdev-RFC_v1?ref_type=heads
+
+Lukasz Majewski (7):
+  dt-bindings: net: Add MTIP L2 switch description
+  ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2 switch description
+  ARM: dts: nxp: mxs: Adjust XEA board's DTS to support L2 switch
+  net: mtip: The L2 switch driver for imx287
+  ARM: mxs_defconfig: Enable CONFIG_NFS_FSCACHE
+  ARM: mxs_defconfig: Update mxs_defconfig to 6.15-rc1
+  ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2
+    switch
+
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   |  150 ++
+ MAINTAINERS                                   |    7 +
+ arch/arm/boot/dts/nxp/mxs/imx28-xea.dts       |   56 +
+ arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |    9 +-
+ arch/arm/configs/mxs_defconfig                |   13 +-
+ drivers/net/ethernet/freescale/Kconfig        |    1 +
+ drivers/net/ethernet/freescale/Makefile       |    1 +
+ drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+ .../net/ethernet/freescale/mtipsw/Makefile    |    4 +
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 1970 +++++++++++++++++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  771 +++++++
+ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  120 +
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  436 ++++
+ 13 files changed, 3540 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.5
+
