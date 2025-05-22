@@ -1,186 +1,181 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2068.outbound.protection.outlook.com [40.107.22.68])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E85B1A841C
-	for <imx@lists.linux.dev>; Thu, 22 May 2025 07:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747897367; cv=fail; b=CVBHZweZ4Tp0OkIYNB5qHAecX0tsqpREsFs5HMkVAOzBO7KnT3Z1BuVIZbPIBV7c3QkF0EK28JP7XuPbuVLrBXwz2vZ9xHMA0MxGwJkonBD6uSIWhfRPkMGQ6fx8NYgtDJFnKfs95MuIWIFe/sTAzccQwQeZFJ9amSjXoToC9BE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747897367; c=relaxed/simple;
-	bh=pmA69DFdEllbzakDyDDapHuO65oY+QUGt4jaVc7q20g=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=XK4DkLsouq0b5rkR2xatOg+e2bP3sbjVJ4cfsxHwzX/Kjl6OwwuWhdW/huhb75Me+NxNusoxepaPL9uInIjGao8kzFytmiG8ePnFlBXJTOe9f2A8EQ8XsPLg4mI9/UmVjlNgM5C1Qpa7JkGU6H0wJB+lbrZyb/q/HgfL15Mo+zU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=G1xsmSy1; arc=fail smtp.client-ip=40.107.22.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61B0215787;
+	Thu, 22 May 2025 07:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747898922; cv=none; b=nwjlGeI0oMjmEU7X+rlLYq1Mpg7/LEhdy/VdMxeMr7OW1oziOzCVaOWDHdpoEb/BLa5wyPZmGuBSEBVNGJUP7px6vK8io7DqSvOrqhojFI8ENTURny6KiiYYdDUK2NyssbEwuv8qzi4QiC/Nw7lfXYnmbQD2xiJLLlxIpq7JyLk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747898922; c=relaxed/simple;
+	bh=KZdv6Z0YK/lfcikuoIW7xyDZNHZ76Zlsa7Mknlwx1N0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LvzBeZlE1BpU9ffukvyrJggbDobkfZiJzpOFtgHPsP9fWyKW3cADn6uegf+djbO/fBRKD1PI0AlYhRId7VNCitrdKx5BCkZx7oY3PnTvi24a8V7DYoiBMjkZaZIO26GrvFv+sZ+5YnQGgTzW6skpR9G89ANdlpkq6TtJL5vH0Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ib3yNxEs; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="G1xsmSy1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P2VKUQFZG0RXp/Xp81JbWU+7yjJN89+wAfFQn4PKGLnEXBSF0aBXW/9OhOlUFeRrSsLC+SXGz6v2XHm0SneQg5G/0TNgx+AoprYKYwjxgsXeORx5LjtE0ZWb10kRKlULr3nyrA2rtqNA9AsCe/7rz06U2c3L7dI7GhC8v+j/vgHPH4WHdpcT5AYXlrFw/FFwgRG/K92TEbGdCD6p/RI93ofsSe0l28KASLCdQOhWN+J/LHHqmIeg+KpJL1lrPP117cGLYKZEZvyB91dQvkn4dfcDf6wmPlmRbnO8Nq+N+HZm0htcO/NzDQZs0JMtVxUjQfs6z/At4+AwRTcOg+Hd8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j1vTKZ4Ljdj+MvSx0ga/zJOxDrEZOQFM+7Y9MTW2NRY=;
- b=I+nrc9xy9jvVeYGu4ojWF+5lNovKQM5uPR6jzjMRWF5VQUoSGx430xEL72mlYLdyhmCYXyorpyAvSAcZU4zta6zP99yewO2dWX/GFhe2b99mnAzKT1qIBqwozrrTf9qJ54vZYRqBHn5PozVafyAatYRnXkV0rP2msnf1Nc5KPVj7MbG12pzyJp1uOYOF9ADjFzju5LXGWb/wHuMQhxbKjy+W1YSy/r0cENZW8wEIeOndWm1gYGo6/eoHHZ9M650doTKvJAW69KEtAU0QoyDNSFpk7V/Lem/eVgK0pOp35sV1eCKCVF4Lf5N78QjoeyeHxjrdCchevrW/tplbvVyPzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j1vTKZ4Ljdj+MvSx0ga/zJOxDrEZOQFM+7Y9MTW2NRY=;
- b=G1xsmSy1W9dmHn9pxFt452/UZY9uSWIOxty8H/qS3eky6YL9Xz8F0IMt+1pVb+MqVkaDLVmLMdrcBjmz16Ymu9p2TFGuYUqrNaF10sQekfO7FRCjReYwwnQRTX9i2ZIxrUU9d6HDopoicf2R016R5pZWCGZzu1QknhkALtwnjpL5xjL8Wol9YxgkWkJf92yxSBs2o0WGCO0RExsAR1ui1T0kMWZiqtriUoRv4Voq2x1QfytOkoYBJMIBCMU/f9cRJVBQ9gsCMm9mem4fRENlo29CLwgUy/ZGqhoqh/RdOeALtIyn+4hqKbKQ84EhPTZ4yANH3k3z3LTFrXruUlL48g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by GVXPR04MB10754.eurprd04.prod.outlook.com (2603:10a6:150:225::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.31; Thu, 22 May
- 2025 07:02:39 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8769.019; Thu, 22 May 2025
- 07:02:39 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	f.fainelli@gmail.com,
-	xiaolei.wang@windriver.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net] net: phy: clear phydev->devlink when the link is deleted
-Date: Thu, 22 May 2025 14:42:53 +0800
-Message-Id: <20250522064253.3653521-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0185.apcprd01.prod.exchangelabs.com
- (2603:1096:4:189::19) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ib3yNxEs"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A22DF43B77;
+	Thu, 22 May 2025 07:28:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1747898917;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4JY0tOi4vZjkrIAmVNhcdxDZ/2M98xTujKUJaASQzHI=;
+	b=Ib3yNxEs/5s44AFOE1RwGqaQ3/C/qZgn2d71AFEvZWt7k9cSiTL6woWNrw80/K+W6/Z/V7
+	kPpQoV2bzFWLRmpCywhJlPQUEg2FXlo+1nPIaf5l0cpBMiAzN9raixCTiTWtHG2MAT2dvw
+	sQ/zOcBmUvR5DU4gtyDa+MzbOlcDIse1XjwVI+yIroFSWP+dFmY21GxXL7/XktKyaWOIPe
+	yff37LPcs4+KyUCuNN9KOzfcxdlETTCBb1PO57HImPoi3YGPlPgcnozmejJeah9bwmPEng
+	p+dHgqDtnYmeAW4q5nFCbFmQTz/G7k6Pz/kBamcKo+eZpnfao0DUC72lv/PdQQ==
+Date: Thu, 22 May 2025 09:28:24 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Andrzej Hajda
+ <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Robert Foss <rfoss@kernel.org>, Laurent Pinchart
+ <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
+ <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Douglas Anderson
+ <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof
+ Kozlowski <krzk@kernel.org>, Anusha Srivatsa <asrivats@redhat.com>, Paul
+ Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, Hui
+ Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
+ asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ chrome-platform@lists.linux.dev, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-stm32@st-md-mailman.stormreply.com, Louis Chauvet
+ <louis.chauvet@bootlin.com>, Alim Akhtar <alim.akhtar@samsung.com>, Inki
+ Dae <inki.dae@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
+ Seung-Woo Kim <sw0312.kim@samsung.com>, Manikandan Muralidharan
+ <manikandan.m@microchip.com>, Adam Ford <aford173@gmail.com>, Adrien
+ Grassein <adrien.grassein@gmail.com>, Aleksandr Mishin
+ <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>, AngeloGioacchino
+ Del Regno <angelogioacchino.delregno@collabora.com>, Benson Leung
+ <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>, Christoph
+ Fritz <chf.fritz@googlemail.com>, Cristian Ciocaltea
+ <cristian.ciocaltea@collabora.com>, Detlev Casanova
+ <detlev.casanova@collabora.com>, Dharma Balasubiramani
+ <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, Heiko
+ Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne
+ Grunau <j@jannau.net>, Jerome Brunet <jbrunet@baylibre.com>, Jesse Van
+ Gavere <jesseevg@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Kieran
+ Bingham <kieran.bingham+renesas@ideasonboard.com>, Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Phong LE
+ <ple@baylibre.com>, Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang
+ <sugar.zhang@rock-chips.com>, Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi
+ Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Vitalii Mordan
+ <mordan@ispras.ru>, "Rob Herring (Arm)" <robh@kernel.org>, Hsin-Te Yuan
+ <yuanhsinte@chromium.org>, Pin-yen Lin <treapking@chromium.org>, Xin Ji
+ <xji@analogixsemi.com>, Aradhya Bhatia <a-bhatia1@ti.com>, Tomi Valkeinen
+ <tomi.valkeinen@ideasonboard.com>, Ian Ray <ian.ray@gehealthcare.com>,
+ Martyn Welch <martyn.welch@collabora.co.uk>, Peter Senna Tschudin
+ <peter.senna@gmail.com>, Helge Deller <deller@gmx.de>, Kuninori Morimoto
+ <kuninori.morimoto.gx@renesas.com>, Laurent Pinchart
+ <laurent.pinchart+renesas@ideasonboard.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Philippe Cornu <philippe.cornu@foss.st.com>,
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Yannick Fertre
+ <yannick.fertre@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>,
+ Raphael Gallais-Pou <rgallaispou@gmail.com>, Michal Simek
+ <michal.simek@amd.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 00/22] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+Message-ID: <20250522092824.421e766c@booty>
+In-Reply-To: <36ade269-a590-4243-889c-006f37d9ae6e@nxp.com>
+References: <20250509-drm-bridge-convert-to-alloc-api-v3-0-b8bc1f16d7aa@bootlin.com>
+	<20250521162216.79dd3290@booty>
+	<36ade269-a590-4243-889c-006f37d9ae6e@nxp.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|GVXPR04MB10754:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa0153b1-a2eb-4c46-17ce-08dd98fea38a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?JuqQe3K6PMkrMApU6v5s5Yp24rUdHgSjB0Sc8nM28ohKiaK9uM6iTewU8xsg?=
- =?us-ascii?Q?6TaPM+lq1vASSthF/gjPNG+deqv5ttupoWVCsSGn2XzeZHp0XAcQrzC8N40y?=
- =?us-ascii?Q?kkxBK9L0dHX3uzts5FLtpWZdEZnGT3mq3g1Q4VOxgR/fKoMw0ldrDILhaj27?=
- =?us-ascii?Q?WHO6oZCTMaIUFpYbF6YNxWKH7W7aFX6d6v2+sj/k9YXfSQgAQwENC17IMKUm?=
- =?us-ascii?Q?KJnMQbDZi73nT9FHg5iiwkRu8y1/doQvVq5/ZYB3UTbRG5zxpQRdkeh8WSmP?=
- =?us-ascii?Q?cL4QL2ua7RPerjIi54sbxhcys538Omu2dGkZk6YL/NGRilC9MVRtxLBrSxQ7?=
- =?us-ascii?Q?Fv7cqJ3d69OqAWyc87STbcvApaBqvgEOc98j/XRsM/yXCwEzOU3OHo0G+R1T?=
- =?us-ascii?Q?rFxylGBbuLpnKf6NdLj+rggkenj5vspHC98OWR/BaX5Gb4otRJOif2+QQxbh?=
- =?us-ascii?Q?SLiuGfrpYfBI88hcyqzadiAYhAag9U9E6g6GaXYUXxawQ8PJb+LrchuBNgYZ?=
- =?us-ascii?Q?Aa1WdWxSqmmIZaEe0YTm1MT3k+2bkxWkGFJnurAokPWs/0TgciCcH4zl2iRx?=
- =?us-ascii?Q?00jxKU5+W/fsGuCO0gpe7tQrEr5XZ3xa5sa70ZlPaBH9CzQNG6oZ/RqGD89Z?=
- =?us-ascii?Q?ZS/Dd3HaevyYmbnQL5JOcjKH4A/hQB+DCpZSqcHhRgzy3K8FUfXT/w7uZKvy?=
- =?us-ascii?Q?CyUkYxquD2pOwpmsaMq7ERiebydTVxSDaRbmn0BUFszuAzSPaX4ssyUXZsPf?=
- =?us-ascii?Q?0oeNbO+vbcuCUOeVreqW7V11nceOoAMARQ4gtJfcYGRJIlZtiM5iUIC0mJpw?=
- =?us-ascii?Q?yDxypjvtX1GYmaqkBfGXbZTO91/YRy5PvIQaP08dB2sQv69ITNNnsYVvMzb6?=
- =?us-ascii?Q?zRAsri4vEEHlgpwDy2AyLJ1GNMyaTkoPpKv2pZkAfzs2+mHz8ULtAQW0RTV9?=
- =?us-ascii?Q?BnvuHInzcd8AI2oq32TgrORXTlQoPR8j3qOY1i+/1KCKDnzkMvQqa7OjRetx?=
- =?us-ascii?Q?8/YgXmGM4IiHdnPhZ7CR32BiXgwJbw6UGA+y3ghQBhehTf0sJ3+ncKeVZcv1?=
- =?us-ascii?Q?Wn5FOuL3UfR/1W/vcpjIPZe63d/wDomH3WW3Af5u48xLpB9SzbT/rkTYOYwV?=
- =?us-ascii?Q?RRPLl4q0DIdxnm5+G4xqlIUq1SMo/ciFyj52InN2PUURu8VPX2CQS7MyiExK?=
- =?us-ascii?Q?WWLg5HJS3p3i2x+eKLCHe0GieeN9USo7lsR8/vhnCW3P/XxLbMq0UtYRNxeo?=
- =?us-ascii?Q?sUvhWtf2mahwja8KV/J8B8ed6d7b/UhEYvsHJ0Ft1g+1MMHz22aPNbAHurJs?=
- =?us-ascii?Q?T4YNl5oAQyMcfXnZ3gPUhw+CcXEUBNVOTWukQmmn0h3xoG/idarBcVt2YDeZ?=
- =?us-ascii?Q?F5V99BNDdJPH4g/3bOSWLU0hplgLWz4bBkpxx3AICgGC52Z7PSMDzeQHffrJ?=
- =?us-ascii?Q?ISDyGqaWJDLFAhBHPB3X/iM7zk3noOrkhLvbP5nzHn8MWbnLP2hD5g=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/nVKct1E0WYiml+Di7WjHAELU6Ipb1CQK6EsV5CbwUzGUYFEXqGDxD5IOwSm?=
- =?us-ascii?Q?ttzDZseunUzGoaP7Y9Kr9jLREoXb+1Um00cKe6MD2eUFkr5eSzEgK4gaS6+x?=
- =?us-ascii?Q?NR+jKFJ6asMzpklhIWXF9/3ND126KTo87ZOdUmY1SLF6hT/hEeeIc4VXj0oK?=
- =?us-ascii?Q?AzS4KQ38p6YpDS3sJcKg+lUfzLojIJYs+qbCw+Wfh1zjFOD9pXvPwWgNnPnT?=
- =?us-ascii?Q?BSfpMzhzx8G1vFSY+G1gPZoaRklNsIfdbDoazR57DTeiS5OfJhNgvfLUPSny?=
- =?us-ascii?Q?KygBYOa4/MSOWNTjZ06dooheHkPKegq345JiFbQDLvklrjapIUPpIA6GULY/?=
- =?us-ascii?Q?Nk174XwnQYr03PQwISzDYWtGaE7W3Db1H9sx/KU2zbQDfJCbJ19VBZKqub8B?=
- =?us-ascii?Q?ocMqnFcDG5cij7V/LouN9HqQ2L+bwm5pRa/Ub3UfOS5wF1EKaGhvKQLZVI1m?=
- =?us-ascii?Q?bZJeoS25MHy6o+KWslUzjLY/NJjYzfgsW5tlCcbA3od23A8ID3+3tcjIdaNu?=
- =?us-ascii?Q?z5s5F7MZsJDnPgX6wNqthjWonhZsVcJRhIMEsAfHlOCWnTFbZaMLJs2nh2jT?=
- =?us-ascii?Q?NVBoDu7MP4Gmqry4SOL2GA/GJmYOHNoAkomGvXhwAJ0mE6BrT+Jgqywrhe+a?=
- =?us-ascii?Q?+ij30gw3A2WzazOyHpqiMPfNLPckljl66EWq/nfkndhL099wnxUbF+Ka5qFJ?=
- =?us-ascii?Q?7gV4MSGkubMoB3E9oUmHD5gQc3831q7tj6/mvZcVukYSwCbAcLUcEtXZs1i0?=
- =?us-ascii?Q?N/OP/MH+QRkGdzN8+XKc64rhqgCaLrFDrWeKRZcmj1OOvqKcDIQ2UyTJDEOu?=
- =?us-ascii?Q?KEk0Ht/NyTz1PmMaAcvFjLdmFwdZbvc8tUtBpHqZRot4CHVW6TjMVnJvhh8o?=
- =?us-ascii?Q?JotdT27iMTyH9PdEWZjVelTraj3l6K4wlUqZiIGR/itPGFfJF/RJj9EO30/g?=
- =?us-ascii?Q?76Iv/ObiB1lge8q0l9jPlb2z6YI/Tp2WwuU6XrncqzAs9hDylACDEGngzmoE?=
- =?us-ascii?Q?LQXF8o6tas8rO8jLy//QF6y0by64952nrYSVCaWwWVhNPpul7NFbEcn2UOrY?=
- =?us-ascii?Q?Qptyr2AiWhPnnMN+CrEzaU9FenF3UauUkX8hjymIoO3ci9Qs3vtlsLKqNmZI?=
- =?us-ascii?Q?/eEjwNzndt0Z8IDyoK0qlCxK+eHCu9D1c4OKe/Fw27XEJrMVv7UUdUT5Spmo?=
- =?us-ascii?Q?UXZKFl+kpj2H75VaGWPR5nN+aOw/yhyqLIbjwMbBofCvAGH/VA6yolHchfON?=
- =?us-ascii?Q?WHw5kZKKqPBFCddBjAAGE2cD57gSbezuTnkcDi8qZyhMt43/FaFM/nOuSHs/?=
- =?us-ascii?Q?aXUGzFfLaAHM3pUzi3jM5cdRBOCruRllCFpzhDyjov7IcS2f3DRQbuACmSNX?=
- =?us-ascii?Q?HtiuFrb/UgPgXqwyzHejn5iWXD96wPJkruVfneMGLiikUDytrd72wTBMZNj7?=
- =?us-ascii?Q?GJ5jenLYy7kwWMz8BudPmPjAmmM3hw6wr349ijc94E/YZHqL2Dfnq67zqJ6Q?=
- =?us-ascii?Q?VlsfbyfxSI5W9O+5qnUG8ibrTy2hd7a2dnaBQ/gMm5RX2uHyE9gLn/85Nb9B?=
- =?us-ascii?Q?+YK49Q+oZrJViG8RIvJl7cR8wL02edf8EAjpZQx1?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa0153b1-a2eb-4c46-17ce-08dd98fea38a
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2025 07:02:39.1461
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mLUh2B9/np8HGEzBNbPFw7LxZDT6zCiiJ3ZJA4CTMyvNLbqM0+TkWPksQJCbl/36wA7e2ZYQt0+DdXJOTa6tjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10754
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdehfeeiucdltddurdegfedvrddttddmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtjeertdertddvnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepjeetffdtleehgefhffffudekhfdujeeuvdefhfetleeftefgffekjeetjedtvdevnecuffhomhgrihhnpehfrhgvvgguvghskhhtohhprdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgdphhgvlhhopegsohhothihpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepleehpdhrtghpthhtohepvhhitghtohhrrdhlihhusehngihprdgtohhmpdhrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidri
+ hhnthgvlhdrtghomhdprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtiihimhhmvghrmhgrnhhnsehsuhhsvgdruggvpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtoheprghnughriigvjhdrhhgrjhgurgesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghilhdrrghrmhhsthhrohhngheslhhinhgrrhhordhorhhg
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-The phydev->devlink is not cleared when the link is deleted, so calling
-phy_detach() again will cause a crash. For example, the link is deleted
-when the network interface is set to down, then re-enable the network
-interface and phy_attach_direct() will be called, but an error occurs
-and jump to the error path, so phy_detach() is called again and cause a
-crash, the crash log is as follows.
+Hello Liu,
 
-[   24.702421] Call trace:
-[   24.704856]  device_link_put_kref+0x20/0x120
-[   24.709124]  device_link_del+0x30/0x48
-[   24.712864]  phy_detach+0x24/0x168
-[   24.716261]  phy_attach_direct+0x168/0x3a4
-[   24.720352]  phylink_fwnode_phy_connect+0xc8/0x14c
-[   24.725140]  phylink_of_phy_connect+0x1c/0x34
+On Thu, 22 May 2025 11:20:17 +0800
+Liu Ying <victor.liu@nxp.com> wrote:
 
-Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/phy/phy_device.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> > If not, can we at least add a band-aid 'X:' entry for
+> > drivers/gpu/drm/bridge/imx?
+> > 
+> > I think the other matching entry is the one to consider:
+> > 
+> > DRM DRIVERS FOR FREESCALE IMX BRIDGE
+> > M:	Liu Ying <victor.liu@nxp.com>
+> > L:	dri-devel@lists.freedesktop.org
+> > S:	Maintained
+> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-ldb.yaml
+> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pixel-combiner.yaml
+> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pixel-link.yaml
+> > F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pxl2dpi.yaml
+> > F:	drivers/gpu/drm/bridge/imx/
+> > 
+> > (https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-next/MAINTAINERS?ref_type=heads#L7940-7948)
+> > 
+> > However it does not list any trees. I _guess_ drm-misc applies here as
+> > a fallback as well as common sense.
+> > 
+> > Liu, should this entry have a 'T:' line for drm/misc?  
+> 
+> These bridge drivers also don't have a 'T:' line:
+> 
+> DRM DRIVER FOR CHIPONE ICN6211 MIPI-DSI to RGB CONVERTER BRIDGE
+> DRM DRIVER FOR PARADE PS8640 BRIDGE CHIP
+> DRM DRIVER FOR TI DLPC3433 MIPI DSI TO DMD BRIDGE
+> DRM DRIVER FOR TI SN65DSI86 BRIDGE CHIP
+> LONTIUM LT8912B MIPI TO HDMI BRIDGE
+> MEGACHIPS STDPXXXX-GE-B850V3-FW LVDS/DP++ BRIDGES
+> MICROCHIP SAM9x7-COMPATIBLE LVDS CONTROLLER
+> 
+> I think that they fallback to drm-misc since "DRM DRIVERS FOR BRIDGE CHIPS"
+> covers them.  I don't have strong opinion on adding a "T" line to them, at
+> least to "DRM DRIVERS FOR FREESCALE IMX BRIDGE".  Anyway, it would be good
+> to know comments from maintainers for "DRM DRIVERS FOR BRIDGE CHIPS" and
+> "DRM DRIVERS".
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index cc1bfd22fb81..7d5e76a3db0e 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1727,8 +1727,10 @@ void phy_detach(struct phy_device *phydev)
- 	struct module *ndev_owner = NULL;
- 	struct mii_bus *bus;
- 
--	if (phydev->devlink)
-+	if (phydev->devlink) {
- 		device_link_del(phydev->devlink);
-+		phydev->devlink = NULL;
-+	}
- 
- 	if (phydev->sysfs_links) {
- 		if (dev)
+I agree the fallback seems OK for this MAINTAINERS entry.
+
+The other entry (ARM/FREESCALE IMX / MXC ARM ARCHITECTURE) is another
+story.
+
+> >>       drm/bridge: imx8qxp-pixel-combiner: convert to devm_drm_bridge_alloc() API  
+> > 
+> > Not acked/reviewed, some discussion happened. I am resending it in v4,
+> > possibly with updates based on the discussion.  
+> 
+> I still think the main structures in imx8qxp-pixel-combiner.c and imx*-ldb.c
+> should have the same lifetime with the allocated bridges.  I added a new
+> comment on this driver in v2 just now.
+
+Thanks, let's continue the conversation there.
+
+Luca
+
 -- 
-2.34.1
-
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
