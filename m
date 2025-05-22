@@ -1,44 +1,90 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A32381BA;
-	Thu, 22 May 2025 12:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767E628A3E1
+	for <imx@lists.linux.dev>; Thu, 22 May 2025 12:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747917224; cv=none; b=ZQJv3rD0PK22yq1bNlw8xdlpjeo4G/1jUJtTECXbjHFmktL85J/7rkRoVaA0ckjDQpJ3GK9dZDelz4roD2P8u5uwoHROyOn6FSu9wExX8r0VqzXeg51toqtqxPQAATetZS/3CqV7dI9BWWeFSu7W4Th4u2KwMgNH2jdbgPhu83w=
+	t=1747917468; cv=none; b=DMPmWiAj6pxUsI4BF35LtprlGqW409a+MEvxuibADVVAgQBJFsbH0tX01f6kKWNW03xCXXT7rm75WwpOYlPPD3hJhf+Z4P1nf6lx2ve3HB6nzF98nB/d37PrjC/gjtguFG7auLbaNVP15eKCxgdINJGCnOokLgROtDoyYnEl07s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747917224; c=relaxed/simple;
-	bh=uP61MchQPewY0Ob/xBfWVgKe5JiKOcl72p3w7LJxVss=;
+	s=arc-20240116; t=1747917468; c=relaxed/simple;
+	bh=W6OEXgXNX8Gqe89LMCjSeM73v/HbqEgC8SQtD8y6JEc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ghEtXVxA6XvpU+HR476fpuHc66Fz4EoZeK5mMe30LeLzWoNpDa0pTFZHf+Vi6+RoF8299AZD2uO+JP5QQ9fGtba5wzJ3NtrSMIHTxMdv8FUgv2z4mKzC/IalLnFDyZZ1FtjkbBkmzSgDoNC/NQKosCX8jN9+PfUNjk2+6fiqDC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cKRC3kO3; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=K3/ohNJzfNwNOXCDWa4jCmVrUgkEaeqcdC9Xl9IF+NklFowuaFJI781IDrHbnAw8wFtxSSHJ6g3W//L9D4UiI7abKy2q8W3Zp6owjNBsIsu/qCKVIOTEIANEDNdo49nIo9dpmbYL2EVWxCgmXj3rx7mHWW8I63JqWjdymRhP4ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=puIi8/YX; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cKRC3kO3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QRm0+jOKmPeRh8S3vbmBsdZ3er87cYnpMRW/rqcs0pU=; b=cKRC3kO32MHq23ZPOKvEXwFAdy
-	EkGIQlvit4BnfwInI4cbw5e/giWtfQLNvpQdjSCebnzbrmxreBEm6X6RfvxrD/ntJHSqMZI9oQrnF
-	KVtZXg+45wDAaqgReogAtn0MKXEhOfyw7B5FiYIxYymSTcu76eTgJ5D2mlqKUjVfDc7k=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uI576-00DUdV-AG; Thu, 22 May 2025 14:33:32 +0200
-Date: Thu, 22 May 2025 14:33:32 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	f.fainelli@gmail.com, xiaolei.wang@windriver.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH net] net: phy: clear phydev->devlink when the link is
- deleted
-Message-ID: <f19659d4-444c-4f44-9bff-4c83a8c5a7e9@lunn.ch>
-References: <20250522064253.3653521-1-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="puIi8/YX"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54M7Q6x9006590
+	for <imx@lists.linux.dev>; Thu, 22 May 2025 12:37:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=RgX9Aci2OKy/LHgxiHnopths
+	wLGl49EW6vrJhQF5Sd4=; b=puIi8/YXySjnaRhqdPF6arFGXrN64CFKlgec9+hh
+	yazluQo/TWc0lbpIj5odU7MUowdsNeEbFfK5csRrlO3C0EEFxId7eNo2CawsvJnZ
+	PTIOa8jzHsTkAenPYyRBUnBPsa7pvvNLyvf7T6hWxZCFzVqh/eKEEgepS0VGDcna
+	G8U2mZR0m3OYEZFrFk78u0L+N7rS1Jpb6elMICfZ1AdRzNVMlKr5tA9RT+E4VNtX
+	Srz+XlZbxjppxFXyMzBSpx029AEjLf5t/3+r1XP/SXtTmp2gjk84m6fTsazCuRMt
+	Y5npPMV2il3EgMdInXJaV/+Yz9ulQ52+xwmoyVDXNrZcEQ==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46rwf0pdxd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Thu, 22 May 2025 12:37:45 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c5e2872e57so1410790085a.0
+        for <imx@lists.linux.dev>; Thu, 22 May 2025 05:37:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747917464; x=1748522264;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RgX9Aci2OKy/LHgxiHnopthswLGl49EW6vrJhQF5Sd4=;
+        b=FtUI5Ovwr0QR7VBCNIusAvuPntJ0jp/vIldnmmGHNJxTIMWEmiKee05UR78feXaW4F
+         pGjWrd9SOBgxR+aDXM99HsdQEmkt7b0Fq9Q3x1KbaGdYq4He8KTVo8fXUgVYGpHFBRhw
+         xHmMtervJQZYjhDnXjDFfWI68JAPF/+DMH9jkIxYdoOkTBAh1RQ3DyGNGehNlS8g9fK8
+         vKw77n7aKWcjktFxlvoZVXtZjn3Osf4e0xX7HIjg/Tty/mI04wKQZ6cRlAuLmPGEnTFT
+         AwdiPQZJ1AVBDWV+LuNsMAF9e2+/1JWHY0BQ1y2Orlz3YTi6fpV8lyc56LbVSOwT1efi
+         +KyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5P5YFd8+sCDU1DGCWU9FJ7jmGJ8/GBcQZOBat1/jay62anp/V+9qE7P0f31UGfTF9mgs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzZbworM7CYdaiYt4NO1lQZWzwN/APFsQsmMIxXcq6sFJk6TH0m
+	l+HR2cu5VWBcxeIqnaQEf6VhElR+H54WijQSsVS4gyl5EcswGAr/gLvjqDFoCX6WPeb8wiYEhwG
+	JlHvpshsA2F1wnLsLwPa98f6pvVHl3pwGG/qZVemmyq0JiNyZUe7WHTc=
+X-Gm-Gg: ASbGncvTa2x/Hm9jvnI7yu3Fc1REC0XZpdKDsMlMohT5WziP7imXD3FhM4mzqV1igp0
+	V2Kg9Vfs9aBNefS9julSNDPj/KxcCJHDxIQz3ZQgUpLhxP488ATZeIsm3RTLOJrtCTn7tQd+Pwt
+	K3f8cmi2j4q8qiGyLLpXig2JVqNxcvcf2inC3SiaykRF04KJB8k5CWKf94nuLTtR7wty4Xbkkmm
+	nNO46WmUtGgHUA1yukmNkmJa0Ghyob6vpu6WA0HYgu8H2PeTHDM1RNT8ST+u4B10ThtNLx4h9na
+	IwJPyfrDrb84xUxDxjIhPg1GKECWoecixIjgELfYXrdwmTHLu+wqSvdOWb4xK04nDaOUC4JIlLs
+	=
+X-Received: by 2002:a05:620a:4013:b0:7ca:f447:c676 with SMTP id af79cd13be357-7cd467a017dmr3460590785a.43.1747917463767;
+        Thu, 22 May 2025 05:37:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEuK9ZYaNS9i+Q5elNYnjF85wlG4E7W2PQcAkgZfLcHHNu2rPiTZal61BKORpuvgC6jlMqV/w==
+X-Received: by 2002:a05:620a:4013:b0:7ca:f447:c676 with SMTP id af79cd13be357-7cd467a017dmr3460586985a.43.1747917463368;
+        Thu, 22 May 2025 05:37:43 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e702a289sm3392445e87.163.2025.05.22.05.37.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 May 2025 05:37:42 -0700 (PDT)
+Date: Thu, 22 May 2025 15:37:40 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Ai Chao <aichao@kylinos.cn>
+Cc: perex@perex.cz, tiwai@suse.com, johannes@sipsolutions.net,
+        kuninori.morimoto.gx@renesas.com, lgirdwood@gmail.com,
+        broonie@kernel.org, jbrunet@baylibre.com, neil.armstrong@linaro.org,
+        khilman@baylibre.com, martin.blumenstingl@googlemail.com,
+        shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
+        nicoleotsuka@gmail.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        srinivas.kandagatla@linaro.org, linux-sound@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
+        kernel@pengutronix.de, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 6/6] ASoC: qcom: Use helper function
+ for_each_child_of_node_scoped()
+Message-ID: <jp6lxxm3httbz7ygu7bj3xju4l7jnnhvbpaicb36ju4hyxpb2o@4lhl7xzif6qo>
+References: <20250522050300.519244-1-aichao@kylinos.cn>
+ <20250522050300.519244-7-aichao@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,17 +93,113 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250522064253.3653521-1-wei.fang@nxp.com>
+In-Reply-To: <20250522050300.519244-7-aichao@kylinos.cn>
+X-Proofpoint-GUID: RwqQSDWLRdrTlWNvnnbrREEquaYGJnVf
+X-Authority-Analysis: v=2.4 cv=J/Sq7BnS c=1 sm=1 tr=0 ts=682f1a99 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=dt9VzEwgFbYA:10 a=rlxKSa1xbkCyiMC8iTsA:9 a=CjuIK1q_8ugA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-ORIG-GUID: RwqQSDWLRdrTlWNvnnbrREEquaYGJnVf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDEyNyBTYWx0ZWRfX52Bgik5cH5oH
+ ANeqBZ+vnnREd8aq9y1KMxJxbnyg9cIsWLFQONbbAMfXKqk3iGMZDSS9OyJL/NGSUCXJ3b8B7PC
+ PFMX4xAfSaXOvMiejGfwiZpE7dZ6X3Q2FR3tyISgs376+hP0UTn0YPJOEF5D2j7Zd3hsppuWqu5
+ +JOMiYE2BgqB/+d3HofRgTNk9U+5Ou8pxT8XFrxLTjbT877vRyi7M1e8XmarnORiaOdt2m+mfaA
+ KhiqOrN6NyrnNpzrCgs2gGB+DTDFutLAds+OARa+v+d9comHVYfNe85xHszQN1eIbX5Axf6jsC9
+ B0hoGM0U7bdToJLhtQlFtwGES7T1cyHFwFEolcqNmwnvEl4MbFLH4QCCzyziRf+kjWMzkthm2T0
+ xVTHOTNpVlYZdIUjFKAmbiTX/qy1JSiRL1G9M4t2FSu0iG5K+E45pYeTiQy5K480jD8h5pMz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-22_06,2025-05-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1015 mlxlogscore=954 suspectscore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505160000 definitions=main-2505220127
 
-On Thu, May 22, 2025 at 02:42:53PM +0800, Wei Fang wrote:
-> The phydev->devlink is not cleared when the link is deleted, so calling
-> phy_detach() again will cause a crash.
+On Thu, May 22, 2025 at 01:02:59PM +0800, Ai Chao wrote:
+> The for_each_child_of_node_scoped() helper provides a scope-based
+> clean-up functionality to put the device_node automatically, and
+> as such, there is no need to call of_node_put() directly.
 
-I would say crashing is correct. You have done something you should
-not do, and the crash helped you find it. phy_attach() and
-phy_detach() should always be in pairs.
+There are no calls to of_node_put() in the commit. So the commit message
+is incorrect / not-applicable.
 
-    Andrew
+> 
+> Thus, use this helper to simplify the code.
+> 
+> Signed-off-by: Ai Chao <aichao@kylinos.cn>
+> ---
+>  sound/soc/qcom/lpass-cpu.c       | 3 +--
+>  sound/soc/qcom/qdsp6/q6afe-dai.c | 3 +--
+>  sound/soc/qcom/qdsp6/q6asm-dai.c | 4 +---
+>  3 files changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
+> index 242bc16da36d..62f49fe46273 100644
+> --- a/sound/soc/qcom/lpass-cpu.c
+> +++ b/sound/soc/qcom/lpass-cpu.c
+> @@ -1046,7 +1046,6 @@ static unsigned int of_lpass_cpu_parse_sd_lines(struct device *dev,
+>  static void of_lpass_cpu_parse_dai_data(struct device *dev,
+>  					struct lpass_data *data)
+>  {
+> -	struct device_node *node;
+>  	int ret, i, id;
+>  
+>  	/* Allow all channels by default for backwards compatibility */
+> @@ -1056,7 +1055,7 @@ static void of_lpass_cpu_parse_dai_data(struct device *dev,
+>  		data->mi2s_capture_sd_mode[id] = LPAIF_I2SCTL_MODE_8CH;
+>  	}
+>  
+> -	for_each_child_of_node(dev->of_node, node) {
+> +	for_each_child_of_node_scoped(dev->of_node, node) {
+>  		ret = of_property_read_u32(node, "reg", &id);
+>  		if (ret || id < 0) {
+>  			dev_err(dev, "valid dai id not found: %d\n", ret);
+> diff --git a/sound/soc/qcom/qdsp6/q6afe-dai.c b/sound/soc/qcom/qdsp6/q6afe-dai.c
+> index 7d9628cda875..64735f2adf8f 100644
+> --- a/sound/soc/qcom/qdsp6/q6afe-dai.c
+> +++ b/sound/soc/qcom/qdsp6/q6afe-dai.c
+> @@ -962,10 +962,9 @@ static const struct snd_soc_component_driver q6afe_dai_component = {
+>  static void of_q6afe_parse_dai_data(struct device *dev,
+>  				    struct q6afe_dai_data *data)
+>  {
+> -	struct device_node *node;
+>  	int ret;
+>  
+> -	for_each_child_of_node(dev->of_node, node) {
+> +	for_each_child_of_node_scoped(dev->of_node, node) {
+>  		unsigned int lines[Q6AFE_MAX_MI2S_LINES];
+>  		struct q6afe_dai_priv_data *priv;
+>  		int id, i, num_lines;
+> diff --git a/sound/soc/qcom/qdsp6/q6asm-dai.c b/sound/soc/qcom/qdsp6/q6asm-dai.c
+> index a400c9a31fea..d7680dd3a3bb 100644
+> --- a/sound/soc/qcom/qdsp6/q6asm-dai.c
+> +++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+> @@ -1236,10 +1236,8 @@ static int of_q6asm_parse_dai_data(struct device *dev,
+>  {
+>  	struct snd_soc_dai_driver *dai_drv;
+>  	struct snd_soc_pcm_stream empty_stream;
+> -	struct device_node *node;
+>  	int ret, id, dir, idx = 0;
+>  
+> -
+>  	pdata->num_dais = of_get_child_count(dev->of_node);
+>  	if (!pdata->num_dais) {
+>  		dev_err(dev, "No dais found in DT\n");
+> @@ -1253,7 +1251,7 @@ static int of_q6asm_parse_dai_data(struct device *dev,
+>  
+>  	memset(&empty_stream, 0, sizeof(empty_stream));
+>  
+> -	for_each_child_of_node(dev->of_node, node) {
+> +	for_each_child_of_node_scoped(dev->of_node, node) {
+>  		ret = of_property_read_u32(node, "reg", &id);
+>  		if (ret || id >= MAX_SESSIONS || id < 0) {
+>  			dev_err(dev, "valid dai id not found:%d\n", ret);
+> -- 
+> 2.47.1
+> 
 
----
-pw-bot: cr
+-- 
+With best wishes
+Dmitry
