@@ -1,132 +1,69 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E972252901
-	for <imx@lists.linux.dev>; Thu, 22 May 2025 07:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F27B22FF58;
+	Thu, 22 May 2025 08:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747900534; cv=none; b=GBnYgTPFhZcEBjYvWmS+jE9V0Komhs402KSar/FKtXjt8HmorB13B+5iP0oOrrENrGX0Vhv54FK4i124lfTyLlSRv2v133xmFXGlxBPEbYfCiB7M/LAhGv48VX+Nb+bWP+DlAptxSmEuqFhLU56z08JjB30mmTlL59X4ChD27ko=
+	t=1747901635; cv=none; b=V9GwzEz4mEvuv+a0ckSlruoESV7aqnlORP6XKA+3x3nPSHEESBx31ggeZDsucLMLryHvc5uzg+ERw9GCZLEYajUXC7/Tm+Z4bXKL9IA8uff0a29pUGCbW12eLi3KTZ8nySKEeQyR7wNB4XgYaQiS1EIPDxLS94Rbjh3Q+4tReM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747900534; c=relaxed/simple;
-	bh=Ko5BzjsIWNyfzA6NaY8ak3afoz8yLDjUoJFNglsP0R8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q8vEIJspJZzEWY3zuyJORUq10UP5Q2zSsyBppfMrwRTUObX8bGLvLfnbS+xqPmGbrhuY4ZwNHEaoO9NC5g5mhcfjhWRW0S4I83tLTxHHUNfBifqcZsLmwTBJPolzLECMEK+vfJC90OK0EfoI2y/GUIjrBgvu+aWtH7FShFVBWVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=aRD7Wxif; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1747901635; c=relaxed/simple;
+	bh=ucKCUlLYSYT3nj8S/fG2k2xkdPHQzH9hjqYueghoDL4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A1IT8fFTm85+/PbQ5gKvOu9Ce54V7qyessmyMBAFI+63qwNTeGqYPtTenp7k4SMmdcPcSt+oBSyoVbrAFZRrlFzOUYbRoppvXwndhjIR2XjdpWwtMMnfSo6u4iQQ3eB1aW+4P0B/ZrRCOM3SQV+E2zUPwiq+6ApQ2j0LDRE1jTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZSEL/YZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="aRD7Wxif"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA08C103972A7;
-	Thu, 22 May 2025 09:55:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1747900531; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=EKthtVOjKwRAL4r8sGzEyQlPs4VqBO1mEaddwoggnqk=;
-	b=aRD7WxifY5qzQHF6QUxhkTdsqpjsO8LF5wa8u2QGIDtnBZ6JGda8xFEspRMUuasN5gfN0G
-	a0c5X8HYwUNi8nSuyc31REEDseq5i2vI5i6PC+/1Ka8HynWnJwZA1ySnpsLxBmcpBtqvLK
-	tel+HvdwoshlYgmG3zw7PpOKdQarc8PvAsQbLQpPSzzroewACvT0IQkOfiH6KJPteqgQV4
-	hMJWwiPtgEDISHvdaH9QTxdn4sUC7A4lPTPiCplWni2vtiPwOvprp+lDG2l/xM2CuscByt
-	AclarNLjX7a/bviwYUZ/65hclQXP54y/rft3Wi9/6iAWWbxoxS+WkoMbd6QP5Q==
-From: Lukasz Majewski <lukma@denx.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukma@denx.de>
-Subject: [net-next v12 7/7] ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2 switch
-Date: Thu, 22 May 2025 09:54:55 +0200
-Message-Id: <20250522075455.1723560-8-lukma@denx.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250522075455.1723560-1-lukma@denx.de>
-References: <20250522075455.1723560-1-lukma@denx.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZSEL/YZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84367C4CEE4;
+	Thu, 22 May 2025 08:13:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747901632;
+	bh=ucKCUlLYSYT3nj8S/fG2k2xkdPHQzH9hjqYueghoDL4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fZSEL/YZ1Hpq1nto08f+Dyi3Hg8/2ZhTWK8dLFHgQUx7SfwC4fa85+f/h5xHykFke
+	 UH8gTvRcumqwhmT95DaGnNCzwEfAroKTEgoVSMEcKCyNHVBCUQYmJEqbkEnZwPcUBw
+	 HypAiGGdA0qOC3F+wqbuhRBI4x4/5kepHJA0BS2p6cfSROz9Qb0ncCB9s5FdXAvFwE
+	 w/lder3nTNXd2bsGZ2LnyIaKTUCFqXYpXsbJp9kS1uJHxyX7kER6mx8OH9Y1eiPcjL
+	 o0nO3KtTE1yi4cVn4vgnEPQ6Ga8vUwslLkGjXYFamM9vbq8CDGJp2dUwktWsEaHPae
+	 7aOYMhczK4RDQ==
+Date: Thu, 22 May 2025 10:13:50 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Srinivas Kandagatla <srini@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: nvmem: convert vf610-ocotp.txt to
+ yaml format
+Message-ID: <20250522-calm-pronghorn-of-storm-bb8a8c@kuoka>
+References: <20250521164031.306481-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250521164031.306481-1-Frank.Li@nxp.com>
 
-This patch enables support for More Than IP L2 switch available on some
-imx28[7] devices.
+On Wed, May 21, 2025 at 12:40:30PM GMT, Frank Li wrote:
+> Convert vf610-ocotp.txt to yaml format.
+> 
+> Additional changes:
+> - Remove label in examples.
+> - Add include file in examples.
+> - Move reg just after compatible in examples.
+> - Add ref: nvmem.yaml and nvmem-deprecated-cells.yaml
+> - Remove #address-cells and #size-cells from required list to match existed
+> dts file.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
 
-Moreover, it also enables CONFIG_SWITCHDEV and CONFIG_BRIDGE required
-by this driver for correct operation.
+Thanks!
 
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
----
-Changes for v4:
-- New patch
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Changes for v5:
-- Apply this patch on top of patch, which updates mxs_defconfig to
-  v6.15-rc1
-- Add more verbose commit message with explanation why SWITCHDEV and
-  BRIDGE must be enabled as well
-
-Changes for v6:
-- None
-
-Changes for v7:
-- None
-
-Changes for v8:
-- None
-
-Changes for v9:
-- None
-
-Changes for v10:
-- None
-
-Changes for v11:
-- None
-
-Changes for v12:
-- None
----
- arch/arm/configs/mxs_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
-index b1a31cb914c8..ef4556222274 100644
---- a/arch/arm/configs/mxs_defconfig
-+++ b/arch/arm/configs/mxs_defconfig
-@@ -34,6 +34,8 @@ CONFIG_IP_PNP_DHCP=y
- CONFIG_SYN_COOKIES=y
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
-+CONFIG_BRIDGE=y
-+CONFIG_NET_SWITCHDEV=y
- CONFIG_CAN=m
- # CONFIG_WIRELESS is not set
- CONFIG_DEVTMPFS=y
-@@ -52,6 +54,7 @@ CONFIG_EEPROM_AT24=y
- CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_NETDEVICES=y
-+CONFIG_FEC_MTIP_L2SW=y
- CONFIG_ENC28J60=y
- CONFIG_ICPLUS_PHY=y
- CONFIG_MICREL_PHY=y
--- 
-2.39.5
+Best regards,
+Krzysztof
 
