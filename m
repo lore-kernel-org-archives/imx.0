@@ -1,508 +1,243 @@
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D018528F936
-	for <imx@lists.linux.dev>; Thu, 22 May 2025 14:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E895D28D85C;
+	Thu, 22 May 2025 14:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747925586; cv=none; b=hty07mA1yWfKsL2KCTbiR2Iy9oDq4LqsCB/ucjqAtk84LCLGGgc5jK3qqgJTihdstrrWq2445syBhH4lWX0Iqx+YMF4wjq4AqGO7pLUV8DvbXBdr941yGxkpj1DI1Gw87Idqwxg4QKm+iI09Sz35gjtd5yHJeVJFEU5iiDDkKl0=
+	t=1747925854; cv=none; b=jfyDGWY+rxSCTQK1Zq3zhyQRiSE4KDMbPG0w/zS8MzefzjFnD3bv+v4yMY5yX9pXiC9RKnA7ggLABASUtf2RP3ZcTCzrVTYsnRv1EKJmU+Wt26w1xYqRO6XbN+L+eVjmSAh1DyPQUxDizDP/xJgzZ05cpxTc2AcLrvyyVpshJX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747925586; c=relaxed/simple;
-	bh=voHIdnek2rVWq11x4dHxBsrRBa2u2uSDVw8eZR/HomA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d2OV8wa1XJhQpB38NxIsJzM5sZVo02MlwrB4OGWJSpdwT8Ny4LlzcM/UexS0LTJzPVTCMNMqdDFEucAVj067sdkigZfl04fdve4A9FdzUcIaZZLYUO2OcUJairQZTKFWpBKCOXW1YRfWkYqBl0nS6420pXFeNYs3+EA9NKbWGMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hZ3mtq3J; arc=none smtp.client-ip=209.85.128.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1747925854; c=relaxed/simple;
+	bh=5G+CU34zmKz9PE5a5J7jN90cu5Gxk5UtkArIIi8NlfY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ecmTH83/MAMfqkm5/6i1hJTldLjeQ/MXwiVOurGkTBteiqsHmv4mV4EgAAdrWPRvmrZmV/B0JOtoi0YnOhrlmIua7zku3FSMj/6qKOg4vPL8+x6c3yljRmwIEeei7sNGXaF08FcbxtW5WIEVtBP/nF8eM9NTJfelsxpkRZcb770=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s3wma8Dg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hZ3mtq3J"
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-442f5b3c710so67557345e9.1
-        for <imx@lists.linux.dev>; Thu, 22 May 2025 07:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747925582; x=1748530382; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WYaZ4ifiuCk5/DWThGzMkIsPWpqlx/A/4VaIeK3abLc=;
-        b=hZ3mtq3JjsZUIMQJgrhHxXQlblIz/n82jXJWwFAP9lhS1tkDVsiN9jLlwq5KWZq1Cn
-         i4cJy/LMtZ8e2ZxGO2UysX0h13FD4xcMw9poazEUx3EZ1qliYdERdQ/psFUDNcNeaGwd
-         UgMVHp6m8JzE335dPpqV9q2PM++6/vu3PBDptTrWWstXYb3hVUbeOje8ENxKvuyI5FeR
-         jGDquq95GQYCgrYr9d0Jzm2U1NAHQOt8DpZtayZ877oBMtPRrPcQuLzUecTPtkq1Oqg3
-         MZetAvJsv5DOZsJkmFquGSO0/LC0fhPClcqCw4osSpXzKkkXOHF8P1HtJvhaglKhZgO+
-         C0Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747925582; x=1748530382;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WYaZ4ifiuCk5/DWThGzMkIsPWpqlx/A/4VaIeK3abLc=;
-        b=Ss6Wm42KH8c9yJy6ayfV6S2NDjke6cJDTUh+O1cZFbOB+oT3tHUtWCTR73RsaAJdop
-         OZGCKgCR6ttiVJIiZKeLqurptFEb1OpBaOCwaBUvlKYAMymmOWdgsMKEFEpx6RbELswE
-         w2aqTrEwcMuG6C0aMJ5AOfOlyzmQBvo+73/hFzOWXv6wLNA74GtYojEnyVRzQtAt1a/o
-         T/mgE/cXu+tkT1LvdX9/7apO1FjUgCoAP6VMnlr2Wg27ovxb8IbyroM7q/XqcLn2370u
-         fkEswZUJUVHABEdXhrZxKP9fJoTB4UJlgieuH5O2CuuQpSUT1YTNQ5pVO7dt6FT54BnL
-         mnTA==
-X-Forwarded-Encrypted: i=1; AJvYcCWfEE1kZ7V4Nmjqw3iyyVfGT6l71C63WCn2QZ7kFMgHokAmNfWtJCd8Q7u5jZEac3sLlYE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxjloWXek5s8XxTQexWdI+YmDw88qhUygB9H0CNmChAnflxH706
-	K2aBSsYrOO0zXycN19E4tpEJHveWbfRoRY3Zgx1c6LeCtkOZYObxXjKYJnvcncABwIU=
-X-Gm-Gg: ASbGnctAXUTg3lhJ0SWYN3ycvm8ADOdB6BrgW2kYSeTkcu0cebigFRS1pYSaZ7BO1H8
-	4gYIrZcr7LZKFe6pcDPVtO1cgs2UoCqyERZTE7t7rPYNgbejfLP809mM4V9R/GRQpVhc/AX2PRU
-	JMBDVFM7Zz67gND94dSJRasGLH1A1vrmQ5xrjjPbNqULlGsI5CTobOC+LrCWb0Bzd/fSRrdBSau
-	7ULQl8FglLLloaA0Qyy/nPlLUGafu0oC1cmJmorUHPqbKO3mxh+EIeXHx7MOG2eVkKuYsdyr6rt
-	DLPwNz6FQsYA8eVgeejT6VpSW55YLRM1hHaG3qwhz4Hz/XcEb2Z1+lZiE2xa
-X-Google-Smtp-Source: AGHT+IHCGO08iUjDoKaqKd1XsFoF23FK31du7ZihSX97aKyIlXUv+uhNYjl/lS+O32YNy8OUI/RSbg==
-X-Received: by 2002:a05:600c:4f42:b0:442:f4d4:522 with SMTP id 5b1f17b1804b1-442fd60a5bemr233790665e9.5.1747925582001;
-        Thu, 22 May 2025 07:53:02 -0700 (PDT)
-Received: from ho-tower-lan.lan ([37.18.136.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f78aeb56sm104965555e9.27.2025.05.22.07.53.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 07:53:01 -0700 (PDT)
-From: James Clark <james.clark@linaro.org>
-Date: Thu, 22 May 2025 15:51:43 +0100
-Subject: [PATCH v2 14/14] arm64: dts: Add DSPI entries for S32G platforms
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s3wma8Dg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3816C4CEEA;
+	Thu, 22 May 2025 14:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747925853;
+	bh=5G+CU34zmKz9PE5a5J7jN90cu5Gxk5UtkArIIi8NlfY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s3wma8DglmgLQ+hMVFjvtfjc4AGN1CkhvK3aJgPdEeop7ZdSKHWrh+jFnDK9fS1Bt
+	 k4DPjLZirixi4RiNSCPaqTeQgbbYCGh34naxvV1r976lLS74g+aZn2NIJWPxU9Bk2h
+	 5lhBFpwnMYqpXLlbfQyJNLBIPkBOwrbgXjydFtJry7hB5vIcXzHiBLTIOBsTw60ofP
+	 Sbe3oHlRv+SrSkLUAyO4OvF2SWUXfIQoAWSdBVx6gLBXEtHN69lIJ+ngwI0pTb/j5i
+	 982RPFTGUmNJf2N7qI0n6pT07RfEnvluDICTfTYoG8Smrgr1WlqJE6p9LO4kvWBltm
+	 OmAchw1yswU2w==
+Date: Thu, 22 May 2025 16:57:30 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki <jagan@amarulasolutions.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Douglas Anderson <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Liu Ying <victor.liu@nxp.com>, 
+	Anusha Srivatsa <asrivats@redhat.com>, Paul Kocialkowski <paulk@sys-base.io>, 
+	Dmitry Baryshkov <lumag@kernel.org>, Hui Pu <Hui.Pu@gehealthcare.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org, asahi@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
+	Louis Chauvet <louis.chauvet@bootlin.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Inki Dae <inki.dae@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Seung-Woo Kim <sw0312.kim@samsung.com>, Manikandan Muralidharan <manikandan.m@microchip.com>, 
+	Adam Ford <aford173@gmail.com>, Adrien Grassein <adrien.grassein@gmail.com>, 
+	Aleksandr Mishin <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Benson Leung <bleung@chromium.org>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, Christoph Fritz <chf.fritz@googlemail.com>, 
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>, Detlev Casanova <detlev.casanova@collabora.com>, 
+	Dharma Balasubiramani <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne Grunau <j@jannau.net>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Jesse Van Gavere <jesseevg@gmail.com>, 
+	Kevin Hilman <khilman@baylibre.com>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Phong LE <ple@baylibre.com>, 
+	Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang <sugar.zhang@rock-chips.com>, 
+	Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+	Vitalii Mordan <mordan@ispras.ru>, "Rob Herring (Arm)" <robh@kernel.org>, 
+	Hsin-Te Yuan <yuanhsinte@chromium.org>, Pin-yen Lin <treapking@chromium.org>, 
+	Xin Ji <xji@analogixsemi.com>, Aradhya Bhatia <a-bhatia1@ti.com>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+	Martyn Welch <martyn.welch@collabora.co.uk>, Peter Senna Tschudin <peter.senna@gmail.com>, 
+	Helge Deller <deller@gmx.de>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Philippe Cornu <philippe.cornu@foss.st.com>, 
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, Yannick Fertre <yannick.fertre@foss.st.com>, 
+	Alain Volmat <alain.volmat@foss.st.com>, Raphael Gallais-Pou <rgallaispou@gmail.com>, 
+	Michal Simek <michal.simek@amd.com>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 00/22] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+Message-ID: <20250522-amphibian-shiny-chachalaca-cf05ba@houat>
+References: <20250509-drm-bridge-convert-to-alloc-api-v3-0-b8bc1f16d7aa@bootlin.com>
+ <20250521162216.79dd3290@booty>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250522-james-nxp-spi-v2-14-bea884630cfb@linaro.org>
-References: <20250522-james-nxp-spi-v2-0-bea884630cfb@linaro.org>
-In-Reply-To: <20250522-james-nxp-spi-v2-0-bea884630cfb@linaro.org>
-To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
- NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Chao Fu <B44548@freescale.com>, 
- Xiubo Li <Li.Xiubo@freescale.com>, Lukasz Majewski <lukma@denx.de>, 
- linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- Vladimir Oltean <vladimir.oltean@nxp.com>, 
- Dan Carpenter <dan.carpenter@linaro.org>, 
- Larisa Grigore <larisa.grigore@nxp.com>, 
- "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>, 
- Larisa Grigore <Larisa.Grigore@nxp.com>, 
- James Clark <james.clark@linaro.org>
-X-Mailer: b4 0.14.0
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="fe7madz4h5tk5u3n"
+Content-Disposition: inline
+In-Reply-To: <20250521162216.79dd3290@booty>
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
 
-S32G3 and S32G2 have the same 6 SPI devices, add the DT entries. Devices
-are all the same except spi0 has 8 chip selects instead of 5. Clock
-settings for the chip rely on ATF Firmware [1].
+--fe7madz4h5tk5u3n
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 00/22] drm: convert all bridges to
+ devm_drm_bridge_alloc()
+MIME-Version: 1.0
 
-[1]: https://github.com/nxp-auto-linux/arm-trusted-firmware
-Co-developed-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
-Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
-Signed-off-by: Larisa Grigore <Larisa.Grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
----
- arch/arm64/boot/dts/freescale/s32g2.dtsi        | 78 +++++++++++++++++++++++
- arch/arm64/boot/dts/freescale/s32g3.dtsi        | 78 +++++++++++++++++++++++
- arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi | 83 +++++++++++++++++++++++++
- arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi | 83 +++++++++++++++++++++++++
- 4 files changed, 322 insertions(+)
+On Wed, May 21, 2025 at 04:22:16PM +0200, Luca Ceresoli wrote:
+> Hello Maxime, Shawn, Liu, all,
+>=20
+> On Fri, 09 May 2025 15:53:26 +0200
+> Luca Ceresoli <luca.ceresoli@bootlin.com> wrote:
+>=20
+> > devm_drm_bridge_alloc() [0] is the new API to allocate and initialize a=
+ DRM
+> > bridge, and the only one supported from now on. It is the first milesto=
+ne
+> > towards removal of bridges from a still existing DRM pipeline without
+> > use-after-free.
+>=20
+> I applied on drm-misc-next patches 3-17,20-21 as they match all the
+> criteria:
+>  - At least a Acked-by (or R-by maintainers)
+>  - patch is for drm-misc
+>=20
+> Being my very first commits to drm-misc, I tried to be careful, and
+> double checked all the patches with Louis (thanks!).
+>=20
+> Here are the pending questions and plan for the remaining patches.
+>=20
+> >       Revert "drm/exynos: mic: convert to devm_drm_bridge_alloc() API"
+>=20
+> This reverts the commit applied my mistake:
+> https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/91c5c7b5bb2dd09b4=
+3b025bce6d790d3c79f4518
+>=20
+> Neither the  original patch nor the revert has been reviewed/acked.
+>=20
+> As the commit was a mistake, I'm applying the revert by the end of this
+> week (i.e. on Friday) unless there are better instructions.
 
-diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-index ea1456d361a3..68848575bf81 100644
---- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-@@ -376,6 +376,45 @@ uart1: serial@401cc000 {
- 			status = "disabled";
- 		};
- 
-+		spi0: spi@401d4000 {
-+			compatible = "nxp,s32g2-dspi";
-+			reg = <0x401d4000 0x1000>;
-+			interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <8>;
-+			bus-num = <0>;
-+			dmas = <&edma0 0 7>, <&edma0 0 8>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
-+		spi1: spi@401d8000 {
-+			compatible = "nxp,s32g2-dspi";
-+			reg = <0x401d8000 0x1000>;
-+			interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <1>;
-+			dmas = <&edma0 0 10>, <&edma0 0 11>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
-+		spi2: spi@401dc000 {
-+			compatible = "nxp,s32g2-dspi";
-+			reg = <0x401dc000 0x1000>;
-+			interrupts = <GIC_SPI 87 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <2>;
-+			dmas = <&edma0 0 13>, <&edma0 0 14>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
- 		i2c0: i2c@401e4000 {
- 			compatible = "nxp,s32g2-i2c";
- 			reg = <0x401e4000 0x1000>;
-@@ -460,6 +499,45 @@ uart2: serial@402bc000 {
- 			status = "disabled";
- 		};
- 
-+		spi3: spi@402c8000 {
-+			compatible = "nxp,s32g2-dspi";
-+			reg = <0x402c8000 0x1000>;
-+			interrupts = <GIC_SPI 88 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <3>;
-+			dmas = <&edma0 1 7>, <&edma0 1 8>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
-+		spi4: spi@402cc000 {
-+			compatible = "nxp,s32g2-dspi";
-+			reg = <0x402cc000 0x1000>;
-+			interrupts = <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <4>;
-+			dmas = <&edma0 1 10>, <&edma0 1 11>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
-+		spi5: spi@402d0000 {
-+			compatible = "nxp,s32g2-dspi";
-+			reg = <0x402d0000 0x1000>;
-+			interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <5>;
-+			dmas = <&edma0 1 13>, <&edma0 1 14>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
- 		i2c3: i2c@402d8000 {
- 			compatible = "nxp,s32g2-i2c";
- 			reg = <0x402d8000 0x1000>;
-diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-index 991dbfbfa203..4f883b1a50ad 100644
---- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-@@ -435,6 +435,45 @@ uart1: serial@401cc000 {
- 			status = "disabled";
- 		};
- 
-+		spi0: spi@401d4000 {
-+			compatible = "nxp,s32g3-dspi", "nxp,s32g2-dspi";
-+			reg = <0x401d4000 0x1000>;
-+			interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <8>;
-+			bus-num = <0>;
-+			dmas = <&edma0 0 7>, <&edma0 0 8>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
-+		spi1: spi@401d8000 {
-+			compatible = "nxp,s32g3-dspi", "nxp,s32g2-dspi";
-+			reg = <0x401d8000 0x1000>;
-+			interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <1>;
-+			dmas = <&edma0 0 10>, <&edma0 0 11>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
-+		spi2: spi@401dc000 {
-+			compatible = "nxp,s32g3-dspi", "nxp,s32g2-dspi";
-+			reg = <0x401dc000 0x1000>;
-+			interrupts = <GIC_SPI 87 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <2>;
-+			dmas = <&edma0 0 13>, <&edma0 0 14>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
- 		i2c0: i2c@401e4000 {
- 			compatible = "nxp,s32g3-i2c",
- 				     "nxp,s32g2-i2c";
-@@ -524,6 +563,45 @@ uart2: serial@402bc000 {
- 			status = "disabled";
- 		};
- 
-+		spi3: spi@402c8000 {
-+			compatible = "nxp,s32g3-dspi", "nxp,s32g2-dspi";
-+			reg = <0x402c8000 0x1000>;
-+			interrupts = <GIC_SPI 88 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <3>;
-+			dmas = <&edma0 1 7>, <&edma0 1 8>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
-+		spi4: spi@402cc000 {
-+			compatible = "nxp,s32g3-dspi", "nxp,s32g2-dspi";
-+			reg = <0x402cc000 0x1000>;
-+			interrupts = <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <4>;
-+			dmas = <&edma0 1 10>, <&edma0 1 11>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
-+		spi5: spi@402d0000 {
-+			compatible = "nxp,s32g3-dspi", "nxp,s32g2-dspi";
-+			reg = <0x402d0000 0x1000>;
-+			interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clks 26>;
-+			clock-names = "dspi";
-+			spi-num-chipselects = <5>;
-+			bus-num = <5>;
-+			dmas = <&edma0 1 13>, <&edma0 1 14>;
-+			dma-names = "tx", "rx";
-+			status = "disabled";
-+		};
-+
- 		i2c3: i2c@402d8000 {
- 			compatible = "nxp,s32g3-i2c",
- 				     "nxp,s32g2-i2c";
-diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-index d26af0fb8be7..d8bf734aa267 100644
---- a/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32gxxxa-evb.dtsi
-@@ -173,6 +173,77 @@ i2c4-gpio-grp1 {
- 			pinmux = <0x2d40>, <0x2d30>;
- 		};
- 	};
-+
-+	dspi1_pins: dspi1-pins {
-+		dspi1-grp0 {
-+			pinmux = <0x72>;
-+			output-enable;
-+			input-enable;
-+			slew-rate = <150>;
-+			bias-pull-up;
-+		};
-+
-+		dspi1-grp1 {
-+			pinmux = <0x62>;
-+			output-enable;
-+			slew-rate = <150>;
-+		};
-+
-+		dspi1-grp2 {
-+			pinmux = <0x83>;
-+			output-enable;
-+			input-enable;
-+			slew-rate = <150>;
-+		};
-+
-+		dspi1-grp3 {
-+			pinmux = <0x5F0>;
-+			input-enable;
-+			slew-rate = <150>;
-+			bias-pull-up;
-+		};
-+
-+		dspi1-grp4 {
-+			pinmux = <0x3D92>,
-+				 <0x3DA2>,
-+				 <0x3DB2>;
-+		};
-+	};
-+
-+	dspi5_pins: dspi5-pins {
-+		dspi5-grp0 {
-+			pinmux = <0x93>;
-+			output-enable;
-+			input-enable;
-+			slew-rate = <150>;
-+		};
-+
-+		dspi5-grp1 {
-+			pinmux = <0xA0>;
-+			input-enable;
-+			slew-rate = <150>;
-+			bias-pull-up;
-+		};
-+
-+		dspi5-grp2 {
-+			pinmux = <0x3ED2>,
-+				 <0x3EE2>,
-+				 <0x3EF2>;
-+		};
-+
-+		dspi5-grp3 {
-+			pinmux = <0xB3>;
-+			output-enable;
-+			slew-rate = <150>;
-+		};
-+		dspi5-grp4 {
-+			pinmux = <0xC3>;
-+			output-enable;
-+			input-enable;
-+			slew-rate = <150>;
-+			bias-pull-up;
-+		};
-+	};
- };
- 
- &can0 {
-@@ -220,3 +291,15 @@ &i2c4 {
- 	pinctrl-1 = <&i2c4_gpio_pins>;
- 	status = "okay";
- };
-+
-+&spi1 {
-+	pinctrl-0 = <&dspi1_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&spi5 {
-+	pinctrl-0 = <&dspi5_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-index ba53ec622f0b..b0a21e4468da 100644
---- a/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32gxxxa-rdb.dtsi
-@@ -127,6 +127,77 @@ i2c4-gpio-grp1 {
- 			pinmux = <0x2d40>, <0x2d30>;
- 		};
- 	};
-+
-+	dspi1_pins: dspi1-pins {
-+		dspi1-grp0 {
-+			pinmux = <0x72>;
-+			output-enable;
-+			input-enable;
-+			slew-rate = <150>;
-+			bias-pull-up;
-+		};
-+
-+		dspi1-grp1 {
-+			pinmux = <0x62>;
-+			output-enable;
-+			slew-rate = <150>;
-+		};
-+
-+		dspi1-grp2 {
-+			pinmux = <0x83>;
-+			output-enable;
-+			input-enable;
-+			slew-rate = <150>;
-+		};
-+
-+		dspi1-grp3 {
-+			pinmux = <0x5F0>;
-+			input-enable;
-+			slew-rate = <150>;
-+			bias-pull-up;
-+		};
-+
-+		dspi1-grp4 {
-+			pinmux = <0x3D92>,
-+				 <0x3DA2>,
-+				 <0x3DB2>;
-+		};
-+	};
-+
-+	dspi5_pins: dspi5-pins {
-+		dspi5-grp0 {
-+			pinmux = <0x93>;
-+			output-enable;
-+			input-enable;
-+			slew-rate = <150>;
-+		};
-+
-+		dspi5-grp1 {
-+			pinmux = <0xA0>;
-+			input-enable;
-+			slew-rate = <150>;
-+			bias-pull-up;
-+		};
-+
-+		dspi5-grp2 {
-+			pinmux = <0x3ED2>,
-+				 <0x3EE2>,
-+				 <0x3EF2>;
-+		};
-+
-+		dspi5-grp3 {
-+			pinmux = <0xB3>;
-+			output-enable;
-+			slew-rate = <150>;
-+		};
-+		dspi5-grp4 {
-+			pinmux = <0xC3>;
-+			output-enable;
-+			input-enable;
-+			slew-rate = <150>;
-+			bias-pull-up;
-+		};
-+	};
- };
- 
- &can0 {
-@@ -155,6 +226,18 @@ pcal6524: gpio-expander@22 {
- 	};
- };
- 
-+&spi1 {
-+	pinctrl-0 = <&dspi1_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&spi5 {
-+	pinctrl-0 = <&dspi5_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
- &i2c2 {
- 	pinctrl-names = "default", "gpio";
- 	pinctrl-0 = <&i2c2_pins>;
+Given the lack of answers, and that it looks correct to me, just leave
+it there. We can always revert later on if things turned out to be
+broken.
 
--- 
-2.34.1
+> >       drm: convert many bridge drivers from devm_kzalloc() to devm_drm_=
+bridge_alloc() API
+>=20
+> This patch affects multiple drivers. Running get_maintainers.pl
+> points at Shawn Guo's repository. After reviewing the MAINTAINERS file,
+> this looks like due to the 'N:' line in:
+>=20
+> ARM/FREESCALE IMX / MXC ARM ARCHITECTURE
+> M:	Shawn Guo <shawnguo@kernel.org>
+> M:	Sascha Hauer <s.hauer@pengutronix.de>
+> R:	Pengutronix Kernel Team <kernel@pengutronix.de>
+> ...
+> T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
+> N:	imx
+> ...
+>=20
+> (https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-next/MAIN=
+TAINERS?ref_type=3Dheads#L2511-2528)
+>=20
+> Here 'imx' matches the 'drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c'
+> file that is touched by the patch. That regexp appears overly generic to =
+me.
 
+I agree, or at least, we shouldn't wait for Shawn or Sasha...
+
+> Shawn, can it be fixed by making it less generic?
+>=20
+> If not, can we at least add a band-aid 'X:' entry for
+> drivers/gpu/drm/bridge/imx?
+>=20
+> I think the other matching entry is the one to consider:
+>=20
+> DRM DRIVERS FOR FREESCALE IMX BRIDGE
+> M:	Liu Ying <victor.liu@nxp.com>
+> L:	dri-devel@lists.freedesktop.org
+> S:	Maintained
+> F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-ldb.yaml
+> F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pixel-com=
+biner.yaml
+> F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pixel-lin=
+k.yaml
+> F:	Documentation/devicetree/bindings/display/bridge/fsl,imx8qxp-pxl2dpi.y=
+aml
+> F:	drivers/gpu/drm/bridge/imx/
+>=20
+> (https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-next/MAIN=
+TAINERS?ref_type=3Dheads#L7940-7948)
+
+=2E.. As long as Ying is fine with it, because it does look like they are
+the actual maintainer.
+
+> However it does not list any trees. I _guess_ drm-misc applies here as
+> a fallback as well as common sense.
+>=20
+> Liu, should this entry have a 'T:' line for drm/misc?
+>=20
+> >       drm/bridge: imx8qxp-pixel-combiner: convert to devm_drm_bridge_al=
+loc() API
+>=20
+> Not acked/reviewed, some discussion happened. I am resending it in v4,
+> possibly with updates based on the discussion.
+>=20
+> But it has the same issue discussed above, with get_maintiners.pl
+> pointing at Shawn Guo's tree, so in the future I'm assuming this goes
+> to drm-misc unless there are news about that.
+>=20
+> >       drm/bridge: tc358767: convert to devm_drm_bridge_alloc() API
+>=20
+> No feedback, resending in v4.
+>=20
+> >       drm/todo: add entry to remove devm_drm_put_bridge()
+>=20
+> This involves documentation maintained on another tree. Where should it
+> be applied? There are two matching entries in MAINTAINERS:
+>=20
+>  * DRM DRIVERS -> the drm tree
+>  * DRM DRIVERS AND MISC GPU PATCHES -> the drm-misc tree
+>=20
+> To me it looks like the second is obviously the closest match as we are
+> dealing with DRM bridges, so I'm applying this as well on Friday unless
+> there are better instructions.
+
+Yes, they should be applied to drm-misc.
+
+That being said, putting a two days timeout on *any* email is really
+over-the-top. I doubt you reply to any of your mail in such a short
+timeframe. We have rules for a reason, I'd expect you to follow them, no
+matter how frustrating the lack of answers can be.
+
+Maxime
+
+--fe7madz4h5tk5u3n
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaC87WgAKCRAnX84Zoj2+
+do0iAYDmirWaXC3jRPAWe+k6egrSRuRKSb9T+TBMm48WnW6SNhJrwyOYhX8DpsOL
+IHaDlR4BfiFZ6a345YL/OKfebcrONxA8UY50Y3/kmzH9OdWsvkfvJSWcHiCEeu26
+nklxCgQuzA==
+=mXOq
+-----END PGP SIGNATURE-----
+
+--fe7madz4h5tk5u3n--
