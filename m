@@ -1,146 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE3541AAC;
-	Thu, 22 May 2025 14:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D233EEC0;
+	Thu, 22 May 2025 14:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747923438; cv=none; b=gwjnd5ZaoQ4jLwEct3lqgF9PHEAfaRHvYInh3IpIFHVYkb4yY+wBf8XXK6Dx7Hz8AkV1s5KBFz0kAm29aK6LEjFDl/igIV5HQTIUJ8HRLVJRGWM1dlBUt5l5oQdpgdWGhsIvhab4BVDlB8o9yfqwNWrzLyvrLye0NmBzkT45Sm0=
+	t=1747924000; cv=none; b=hJYyccsRc83ZNcuEjDN4oJBFmu2OUpNYELwkfChBCQumrjYaYMY1eS8y/hNekC2MBggUXABccQQ7m4n0cc9n/ye9xxwGC5IPxDRcCo3jQPU/d5LErOXq0o2qZcq+MHhbeKOXLoUYuNMrDi8w0OKIJ4yQo3d3Mw2VdKuBFP+kTc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747923438; c=relaxed/simple;
-	bh=FIAP5ivOA9Tc52MccphjuWXYgFP4ivGn13zAzEuvEOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YoxtbTphaPKeg2efVq/+PBilS6YS6zkF24vx88N/0vbN6YLdHQ+wX2MFpz6eLuPFXIm6s0oC4yv8LOpPZnj/id3F04VQlFGuQ1W+aU573rUhDUpJo5SNDbn5n0o1qDtpCCznHJJpqCs+BZ+2lsh3B6q4Qrdaz7Dvri7isis5huY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FpdkCoBE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747924000; c=relaxed/simple;
+	bh=pFm2zIvgiBGcCdXpksFzoUZ8o0UGo7b59ZsWH8nK9Og=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=adrpsEtpZj0Zqg8vCd+EvzlrPmXa8R96sFZj1uJTvm2njFWnTCMHY5LrgN9/bAu893slb5w3K1bHSsBMC1TMi4YWub0zKFNqIvFb6p1ayYqbz2qlPmPCIapE/ImcZRu7GIyS5qMVT6rF3kyCYnTPaWwFzaTKpFtHMLYr2spGG94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C8I1lCpN; arc=none smtp.client-ip=209.85.160.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FpdkCoBE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4F2C4CEE4;
-	Thu, 22 May 2025 14:17:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747923436;
-	bh=FIAP5ivOA9Tc52MccphjuWXYgFP4ivGn13zAzEuvEOg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FpdkCoBEgERzSMO4wqrP46cxPcN7MTgEhi9c3w0XYPP3iOpAR+5Jn/e6iz4QQujOY
-	 37hQXKQs3dfh1b8mqu23o1LZOBNATvSG0HPkvJE25vu+tiQf04tli6W13ORP/RgY+b
-	 pee+yIJ+r+7cIB7fGiub5BwQcclB6ngvniO9xJCdwP+pbCWHqNx5t8tp3XzM7Rx1hn
-	 9XhwsTnsINcnew/jOlZxQBd+0vT7EspvsbFP6ewcxhQgtGzxw+epMbEZasiOhvHdtY
-	 v9Do9My08L3NdnoJs4WioUZbK/EgTvtfsonWrmKzOAumZXT26a7de4OXd+jH9fOZ59
-	 nP5wkVWDRcvhw==
-Message-ID: <2567dc7e-f88d-475e-9ae8-a454416251c2@kernel.org>
-Date: Thu, 22 May 2025 16:17:09 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C8I1lCpN"
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-2db2f23f174so3495952fac.2;
+        Thu, 22 May 2025 07:26:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747923998; x=1748528798; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V/A33PMiQZi7B+yBG25G8T9Mv2qAG7AQkcIksX5iQLc=;
+        b=C8I1lCpND1sc792khXdWfx8EYutzcnkjUu6Hd7dC+t4kgEof5kgH4pTI1NlnSfctnD
+         7eyMxecS8IMAryj+sFX3gOSjhJYgi65Gu5jGu6qrFtAfPH7vYWHKiZbfmg8eKbg8/8ht
+         C+8PifotTcgyjkPybQqgU2Awxx2NXYLApPt6sbQTOliPZWV4vJrAWu2bwPtNKmBOljFS
+         nOh+OVJsbUzXqupjLEQuV4PZPvkGBuDP5m1nBb1IjHLfWAOTuUEg5Po7euARq7D1MORF
+         ujAE753cYgCcxp8oAxlY7ecYISbrxrpYRfNgsVpLf2nBJuH6Plrcp92vy2ccGCxEZOZv
+         B6cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747923998; x=1748528798;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V/A33PMiQZi7B+yBG25G8T9Mv2qAG7AQkcIksX5iQLc=;
+        b=gaS5Wft3+O+M//xf8hAUnBEQ8P3jRTPPokTpYSYNx5QZsp9r8ZLbF2AdG2bnFWtWxp
+         B3z6m1mzU7PrYAioa+smcyPzU4g/m7hbw67zX68sY5vu9FXSnyl/EyNf31qPb2273vjS
+         dqvF+cSQJGrrIwog+rMZaH9HLdaOt1y8U2LuCHiAKiSzTica8iTTy30glXme5HM89D+J
+         jay/O38mLa9GjSx0r4UYmnxpmFCljguHIDSate31s8e/GD65s+0stpMQbt1f8dxnfarU
+         qGrcy5Cbzn05g19VEfUbfkYCXHFd9nhRCrkRNksWhtz3r0R9Ic9Na54LU8uUdf65oJ/w
+         uYEA==
+X-Forwarded-Encrypted: i=1; AJvYcCUT0djF1ZBPiy+Xaeafg/eMoLJeOgsANjRPq/D6N5aP5P+DmZPUGnbYGWMkg6/oYeOgPQLdhsn76g==@lists.linux.dev, AJvYcCVE9UgSECFKd4bYcwXqkD2SKRLklzexqoZjuaUrPF020dhjLMLIDB7o2GyZL+wEoZ2AB3w=@lists.linux.dev
+X-Gm-Message-State: AOJu0YznwRS/NFoaVAyWXndNjuORcC+FkdI+vRgX0Fz+74Or4B7DdXA6
+	vOoa2qSf0/9a6TU7aE6XYA2sNrTD2mgl9P01gszxK0UvFSb2R2XdA/aPu8yrN1OSJitSxlgvyxz
+	Gj/R/qlhSqondwsI6HoLzdDJaX52Pp5Q=
+X-Gm-Gg: ASbGncvsKxGkj4VH7zmKNPLbYfjIaYOD1Iot3bUS/LhM1QAffzn3rjNrt681X6NSG+j
+	ZJ2Unn3g6XgX1EGDOXMNmMwzOnbYPGLHd6zO4z3NkGf6CEIJx2u/ONasGl8PLugbqsOkmhEKL4t
+	YNOB6wAJ5tRrTUAVsjASXl+bUV9zB90Qrrgg==
+X-Google-Smtp-Source: AGHT+IFasGXYJwj7OJUMsTUB4kivLSdn/44D8WhpmTf+mhlWsPkahY4qS13v4kKGGOknI5Fo1nq5EbXL83EaOftSvd0=
+X-Received: by 2002:a05:6870:9e0d:b0:2c2:5b08:8e42 with SMTP id
+ 586e51a60fabf-2e3c1ed9f7emr16579212fac.27.1747923998032; Thu, 22 May 2025
+ 07:26:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/7] MT9M114 driver bugfix and improvements
-To: Mathis Foerst <mathis.foerst@mt.com>, linux-kernel@vger.kernel.org
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>,
- Steve Longerbeam <slongerbeam@gmail.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-staging@lists.linux.dev,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- manuel.traut@mt.com, mathis.foerst@zuehlke.com
-References: <20250522140613.104963-1-mathis.foerst@mt.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250522140613.104963-1-mathis.foerst@mt.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250425014937.3812976-1-peng.fan@oss.nxp.com>
+In-Reply-To: <20250425014937.3812976-1-peng.fan@oss.nxp.com>
+From: Jassi Brar <jassisinghbrar@gmail.com>
+Date: Thu, 22 May 2025 09:26:26 -0500
+X-Gm-Features: AX0GCFtasETiZuNGdlMvkRCVQ4E8fN8ZJu-KkF_A9xx8QyFPXNOI67oep8lmyZo
+Message-ID: <CABb+yY0dqgPhe5_p+=cyRAbSwSL+qCZXV1G+QQ2kQh7Axh_7Tw@mail.gmail.com>
+Subject: Re: [PATCH] mailbox: imx: Fix TXDB_V2 sending
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, mailbox@lists.linux.dev, 
+	Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 22/05/2025 16:06, Mathis Foerst wrote:
-> Hi,
-> 
-> this patch series contains the following bugfix and improvements
-> for the MT9M114 camera driver:
-> 
-> Changelog:
-> 
-> v4 -> v5:
-> - Apply reformatings and small refactorings as suggested in review comments
-> - Split PATCH 4 into two parts: One for applying HFLIP / VFLIP while 
->   streaming, one for applying set_selection while streaming.
-> - Add condition to apply set_selection immediately only if the size of the
->   cropping rectangle does not change in PATCH 5
-> - Use device_property_read_u32 instead of of_property_read_u32 in PATCH 7
-> 
-> v3 -> v4:
-> - Rename DT binding from "onnn,slew-rate" to "slew-rate" in PATCH 1 and 6 as
->   requested in the review comment.
-> 
-> v2 -> v3:
-> - Dropped PATCH 2 ("media: mt9m114: Add get_mbus_config").
->   Based on the comments, this issure won't be fixed in the MT9M114
->   driver but in "imx-media-csi.c" in a separate patch.
-> - Renumbered patches accordingly.
-> - Fix the incomplete renaming of the DT property from 'pad-slew-rate'
->   to 'onnn,slew-rate' in PATCH 1 and 6.
-> - Fix checkpatch formatting suggestions in PATCH 2 and 6.
-> 
-> v1 -> v2:
-> - Fix the subjects of the patches
-> - Dropped PATCH 1 ("Add bypass-pll DT-binding") as it can be automatically
->   detected if the PLL should be bypassed.
-> - Renumbered patches accordingly
-> - Switch to uint32, add default value and clarify documentation in PATCH 1
-> - Add 'Fixes' and 'Cc' tags as suggested in PATCH 6
-> 
-I am looking at this changelog and cannot find:
+On Thu, Apr 24, 2025 at 8:51=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.co=
+m> wrote:
+>
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> i.MX95 features several processing domains, Cortex-M7, Cortex-A55
+> secure, Cortex-A55 non-secure. Each domain could communicate with
+> SCMI firmware with a dedicated MU. But the current NXP SCMI firmware
+> is not a RTOS, all processing logic codes are in interrupt context.
+> So if high priority Cortex-M7 is communicating with SCMI firmware and
+> requires a bit more time to handle the SCMI call, Linux MU TXDB_V2
+> will be timeout with high possiblity in 1000us(the current value in
+> imx-mailbox.c). Per NXP SCMI firmware design, if timeout, there is
+> no recover logic, so SCMI agents should never timeout and always
+> wait until the check condition met.
+>
+> Based on the upper reason, enlarge the timeout value to 10ms which
+> is less chance to timeout, and retry if timeout really happends.
+>
+> Fixes: 5bfe4067d350 ("mailbox: imx: support channel type tx doorbell v2")
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  drivers/mailbox/imx-mailbox.c | 21 +++++++++++++++------
+>  1 file changed, 15 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.=
+c
+> index 6ef8338add0d..aef8d572a27c 100644
+> --- a/drivers/mailbox/imx-mailbox.c
+> +++ b/drivers/mailbox/imx-mailbox.c
+> @@ -226,7 +226,7 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv=
+,
+>  {
+>         u32 *arg =3D data;
+>         u32 val;
+> -       int ret;
+> +       int ret, count;
+>
+>         switch (cp->type) {
+>         case IMX_MU_TYPE_TX:
+> @@ -240,11 +240,20 @@ static int imx_mu_generic_tx(struct imx_mu_priv *pr=
+iv,
+>         case IMX_MU_TYPE_TXDB_V2:
+>                 imx_mu_write(priv, IMX_MU_xCR_GIRn(priv->dcfg->type, cp->=
+idx),
+>                              priv->dcfg->xCR[IMX_MU_GCR]);
+> -               ret =3D readl_poll_timeout(priv->base + priv->dcfg->xCR[I=
+MX_MU_GCR], val,
+> -                                        !(val & IMX_MU_xCR_GIRn(priv->dc=
+fg->type, cp->idx)),
+> -                                        0, 1000);
+> -               if (ret)
+> -                       dev_warn_ratelimited(priv->dev, "channel type: %d=
+ failure\n", cp->type);
+> +               ret =3D -ETIMEDOUT;
+> +               count =3D 0;
+> +               while (ret) {
 
-Where did you mention and explain dropping two reviews which you
-received (see submitting patches)?
+Maybe    while (ret && count < N)  ... esp when you already increase
+the timeout from 1 to 10ms.
 
-Best regards,
-Krzysztof
+cheers.
