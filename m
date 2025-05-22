@@ -1,95 +1,162 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A384C7DA73;
-	Thu, 22 May 2025 16:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B5C1754B
+	for <imx@lists.linux.dev>; Thu, 22 May 2025 17:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747930771; cv=none; b=NAaZaE+fScSAC/OXRVMwfBqF7zs6XOddsoYmlIILg5rZ/3k4yqVprqt1mPKj3nRgMMnRLiBW8FA6NMxkVyR9GzRnlN3D1snXTXHTrPK389SpzK6Iyi0Y7QP244f4VnldJfSM2m6UimWHRAR1rgiTJbxWRM9xqLEesktxE0UvmYU=
+	t=1747933667; cv=none; b=S6vO/3MfSWHAycxhL/B2GnBvGj2YTsyWklEbfVH0+s+F1PnkvpPGaknL/u0ybNQqXY0jp/avludAz/ZYE6H8ZJMEfdwogwmdFFQhsLgKfS7T5VKsMBqVFFzkx2cunjyVlAN7ADM5aBXyBJfr8C6E4m41S/RQMBPPU/+mLEqP44s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747930771; c=relaxed/simple;
-	bh=iBE7Lob++OOfoLrW8v5UQ4fc6DSc6z/13VLQ6i+h49Q=;
+	s=arc-20240116; t=1747933667; c=relaxed/simple;
+	bh=xGm4gGN4zrT0UXQUtb8Q82nSx7dmZ58S0QFDxN4SRrQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PJ4vEijIG2SYI6w3fEyyQV98VbPkyYD3tdqguY4X6Mn1qQAABII5bn9WXtwrNDpSxRLsJD+SyikNetbRYEpmLt2Fc82UFD3jxQwEPrGuGXFWg6a/S4qO5LS711cO1OLW67dAWaJ4Sge4fuUciztmG8/KPhngBxXOLsbdtHkHJMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QSiK299A; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=T/ZGfWfuOdWcRvqta8NJP456Oj25aVuR7zKA51wvLZxv9kUAbHz1ncpg9b18Z13Y7E5d2wPoZ5FOpD4B0dzha3X1mUlDDDPwGhXbCUjx2aeDiA29aMAlYEMKfeONaNXVK1ms1JMwWy75smrM8q1UXlz5mcrUhDT0kTUuLM9FT0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=g8lItOQa; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QSiK299A"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xW2yJXrDkikvHHO+re2mbxIzKOAy7tNs68ZEuANiRbo=; b=QSiK299AFsqBJlUww7GUw0Xbav
-	DFIs2FP+PpruzGhrbynwbH4dpD8UNSvZZzuumJad5A4OK0SbjGSoNalO9pTsXp5Isa35noZ76C9UX
-	7T2t8YnDsfzQIqH1KeC4XDSkOtQdpKmQWG9Sqa+O2VHaCAFSYSS1EPgNy+V+HTDSFmr4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uI8dV-00DVwB-N0; Thu, 22 May 2025 18:19:13 +0200
-Date: Thu, 22 May 2025 18:19:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-	"xiaolei.wang@windriver.com" <xiaolei.wang@windriver.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: [PATCH net] net: phy: clear phydev->devlink when the link is
- deleted
-Message-ID: <d8cb2a8f-af3d-4042-96a3-a762df1876a9@lunn.ch>
-References: <20250522064253.3653521-1-wei.fang@nxp.com>
- <f19659d4-444c-4f44-9bff-4c83a8c5a7e9@lunn.ch>
- <PAXPR04MB851054C5E1049B5361A46C108899A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="g8lItOQa"
+Received: from pendragon.ideasonboard.com (179.218-130-109.adsl-dyn.isp.belgacom.be [109.130.218.179])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 55C8D8FA;
+	Thu, 22 May 2025 19:07:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1747933641;
+	bh=xGm4gGN4zrT0UXQUtb8Q82nSx7dmZ58S0QFDxN4SRrQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g8lItOQaLgm7Hr4+9r7MBGx6km1W6nU55kF0PGEVDDq7BS/91knDhvLOw3WmjQh0S
+	 M7PAn4PuoXTBqct/GknMEqaTbt46Jb138ErEkgfghTcFGyf7j3K5VHNj9zHk4h9m1S
+	 cMm+emLnjaWu0PwBwKc7K30tig8XFZN1ta+IW/sk=
+Date: Thu, 22 May 2025 19:07:36 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: git@apitzsch.eu
+Cc: Ricardo Ribalda <ribalda@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 4/5] media: dt-bindings: sony,imx214: Deprecate
+ property clock-frequency
+Message-ID: <20250522170736.GW12514@pendragon.ideasonboard.com>
+References: <20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu>
+ <20250521-imx214_ccs_pll-v3-4-bfb4a2b53d14@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <PAXPR04MB851054C5E1049B5361A46C108899A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250521-imx214_ccs_pll-v3-4-bfb4a2b53d14@apitzsch.eu>
 
-On Thu, May 22, 2025 at 01:57:20PM +0000, Wei Fang wrote:
-> > On Thu, May 22, 2025 at 02:42:53PM +0800, Wei Fang wrote:
-> > > The phydev->devlink is not cleared when the link is deleted, so calling
-> > > phy_detach() again will cause a crash.
-> > 
-> > I would say crashing is correct. You have done something you should
-> > not do, and the crash helped you find it. phy_attach() and
-> > phy_detach() should always be in pairs.
-> > 
+Hi André,
+
+Thank you for the patch.
+
+On Wed, May 21, 2025 at 09:34:27PM +0200, André Apitzsch via B4 Relay wrote:
+> From: André Apitzsch <git@apitzsch.eu>
 > 
-> phy_attach() and phy_detach() are called in pairs in my case. When
-> re-enabling the network port, if an error occurs in the phy_attach_direct(),
-> For example, if phy_init_hw() returns an error, it will jump to the error
-> path and call phy_detach(). Because phy_detach() did not clear the
-> phydev->devlink pointer when the network port was disabled,
-> device_link_del() will access a NULL pointer and cause a crash. And this
-> crash may cause the CPU to hang. I don't think it is reasonable to cause
-> the CPU to hang.
+> Deprecate the clock-frequency property in favor of assigned-clock-rates.
+> 
+> While at it, re-order properties according to coding style and fix the
+> link-frequency in the example.  See commit acc294519f17 ("media: i2c:
+> imx214: Fix link frequency validation").
+> 
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
 
-Ah, now i get it...
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-phy_attach_direct() runs, but fails early, before the call to:
+> ---
+>  .../devicetree/bindings/media/i2c/sony,imx214.yaml | 29 ++++++++++++----------
+>  1 file changed, 16 insertions(+), 13 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
+> index 0162eec8ca993a7614d29908f89fa9fe6d4b545d..aea99ebf8e9ed15f8066841228d9fdecc822b553 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
+> @@ -33,20 +33,21 @@ properties:
+>  
+>    clock-frequency:
+>      description: Frequency of the xclk clock in Hz.
+> +    deprecated: true
+>  
+>    enable-gpios:
+>      description: GPIO descriptor for the enable pin.
+>      maxItems: 1
+>  
+> -  vdddo-supply:
+> -    description: Chip digital IO regulator (1.8V).
+> -
+>    vdda-supply:
+>      description: Chip analog regulator (2.7V).
+>  
+>    vddd-supply:
+>      description: Chip digital core regulator (1.12V).
+>  
+> +  vdddo-supply:
+> +    description: Chip digital IO regulator (1.8V).
+> +
+>    flash-leds: true
+>    lens-focus: true
+>  
+> @@ -84,11 +85,10 @@ required:
+>    - compatible
+>    - reg
+>    - clocks
+> -  - clock-frequency
+>    - enable-gpios
+> -  - vdddo-supply
+>    - vdda-supply
+>    - vddd-supply
+> +  - vdddo-supply
+>    - port
+>  
+>  unevaluatedProperties: false
+> @@ -104,22 +104,25 @@ examples:
+>          camera-sensor@1a {
+>              compatible = "sony,imx214";
+>              reg = <0x1a>;
+> -            vdddo-supply = <&pm8994_lvs1>;
+> -            vddd-supply = <&camera_vddd_1v12>;
+> +
+> +            clocks = <&camera_clk>;
+> +            assigned-clocks = <&camera_clk>;
+> +            assigned-clock-rates = <24000000>;
+> +
+> +            enable-gpios = <&msmgpio 25 GPIO_ACTIVE_HIGH>;
+> +
+>              vdda-supply = <&pm8994_l17>;
+> +            vddd-supply = <&camera_vddd_1v12>;
+> +            vdddo-supply = <&pm8994_lvs1>;
+> +
+>              lens-focus = <&ad5820>;
+> -            enable-gpios = <&msmgpio 25 GPIO_ACTIVE_HIGH>;
+> -            clocks = <&camera_clk>;
+> -            clock-frequency = <24000000>;
+>  
+>              port {
+>                  imx214_ep: endpoint {
+>                      data-lanes = <1 2 3 4>;
+> -                    link-frequencies = /bits/ 64 <480000000>;
+> +                    link-frequencies = /bits/ 64 <600000000>;
+>                      remote-endpoint = <&csiphy0_ep>;
+>                  };
+>              };
+>          };
+>      };
+> -
+> -...
 
-phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
-						  DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
+-- 
+Regards,
 
-So it has its old value, from a previous attach/detach cycle. At the
-error: label, it calls phy_detach(phydev), which does a
-device_link_del(), using the old value...
-
-Please improve your changelog message, add more details.
-
-    Andrew
-
----
-pw-bot: cr
+Laurent Pinchart
