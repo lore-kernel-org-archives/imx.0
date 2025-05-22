@@ -1,162 +1,116 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B5C1754B
-	for <imx@lists.linux.dev>; Thu, 22 May 2025 17:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A621D944F;
+	Thu, 22 May 2025 17:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747933667; cv=none; b=S6vO/3MfSWHAycxhL/B2GnBvGj2YTsyWklEbfVH0+s+F1PnkvpPGaknL/u0ybNQqXY0jp/avludAz/ZYE6H8ZJMEfdwogwmdFFQhsLgKfS7T5VKsMBqVFFzkx2cunjyVlAN7ADM5aBXyBJfr8C6E4m41S/RQMBPPU/+mLEqP44s=
+	t=1747934279; cv=none; b=WoOlHo0hoB0ydxGntUeXylLHYmHC5jtZEwE/6NYrVK17+YFG1q0LZKjC4fNh0YTgvEUHcm9K6D+l2crSePYn6KxROOyd7rLqPl+oiOq0+EomD+2zTKhvZ3SV+is7ohcfedO6veSf56Wflayu0UCiHh3bCTJ+88BHGczhiKziWmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747933667; c=relaxed/simple;
-	bh=xGm4gGN4zrT0UXQUtb8Q82nSx7dmZ58S0QFDxN4SRrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T/ZGfWfuOdWcRvqta8NJP456Oj25aVuR7zKA51wvLZxv9kUAbHz1ncpg9b18Z13Y7E5d2wPoZ5FOpD4B0dzha3X1mUlDDDPwGhXbCUjx2aeDiA29aMAlYEMKfeONaNXVK1ms1JMwWy75smrM8q1UXlz5mcrUhDT0kTUuLM9FT0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=g8lItOQa; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1747934279; c=relaxed/simple;
+	bh=zt7+l4oSZuD0/9FmyoQM5JpiKAJhKIgjL/L3nrauO30=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=GwtxqBF2OnY5tHPXIlMdcIADCnU/nOx/Y9i3oqxkjkZCTWPYbQAXl7MBQBUPS+15Q9/g4l1+ywImC7yf4UkGN2YzYgUYfgmGdhqcbg8xtcq0apqAbnvN36/f6dMQ5qoa7nvKSTpXAeXhmTTFJQ2zizaN0BIIRZVgwKsB9txIFT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WcmhuwsH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="g8lItOQa"
-Received: from pendragon.ideasonboard.com (179.218-130-109.adsl-dyn.isp.belgacom.be [109.130.218.179])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 55C8D8FA;
-	Thu, 22 May 2025 19:07:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1747933641;
-	bh=xGm4gGN4zrT0UXQUtb8Q82nSx7dmZ58S0QFDxN4SRrQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=g8lItOQaLgm7Hr4+9r7MBGx6km1W6nU55kF0PGEVDDq7BS/91knDhvLOw3WmjQh0S
-	 M7PAn4PuoXTBqct/GknMEqaTbt46Jb138ErEkgfghTcFGyf7j3K5VHNj9zHk4h9m1S
-	 cMm+emLnjaWu0PwBwKc7K30tig8XFZN1ta+IW/sk=
-Date: Thu, 22 May 2025 19:07:36 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: git@apitzsch.eu
-Cc: Ricardo Ribalda <ribalda@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 4/5] media: dt-bindings: sony,imx214: Deprecate
- property clock-frequency
-Message-ID: <20250522170736.GW12514@pendragon.ideasonboard.com>
-References: <20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu>
- <20250521-imx214_ccs_pll-v3-4-bfb4a2b53d14@apitzsch.eu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WcmhuwsH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE42FC4CEE4;
+	Thu, 22 May 2025 17:17:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747934279;
+	bh=zt7+l4oSZuD0/9FmyoQM5JpiKAJhKIgjL/L3nrauO30=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=WcmhuwsH+v34k/Mb7xq3B1A/GA8v8cea0e0pzwWPS7qTdcydrzxYM03u5sfH9edMn
+	 RwANKtFAmlRZQ1NmnRjLlMGqrCcpBYxNrfcIGo8Ofxon593uorq8EhP29v9lr2vrRC
+	 IZVVm5xfWLP9Us1raF693tWH8sGzc6XB+Mo8cSUicgh331lSowInY+jt67j1+fi51h
+	 w6OUim4hdydsjtdnNSIwEq/P+hQQCPf3IO8+2AETOrwxM9UrOaSnQpNk0R1SKzbthq
+	 KmcsLtX9RIKrBMFSCkvWbUw98p3F1L5XAMXGhfupduroYkw1DEg3ToEaFvxYWiwM9G
+	 GxsrYe+5kCe6A==
+From: Mark Brown <broonie@kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ James Clark <james.clark@linaro.org>
+Cc: Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Chao Fu <B44548@freescale.com>, 
+ Xiubo Li <Li.Xiubo@freescale.com>, Lukasz Majewski <lukma@denx.de>, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, 
+ Dan Carpenter <dan.carpenter@linaro.org>, 
+ Larisa Grigore <larisa.grigore@nxp.com>, 
+ Xulin Sun <xulin.sun@windriver.com>, 
+ Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>, 
+ Marius Trifu <marius.trifu@nxp.com>, 
+ Ciprian Marian Costea <ciprianmarian.costea@nxp.com>, 
+ Andra-Teodora Ilie <andra.ilie@nxp.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Stoica Cosmin-Stefan <cosmin.stoica@nxp.com>, Dan Nica <dan.nica@nxp.com>, 
+ Larisa Grigore <Larisa.Grigore@nxp.com>, 
+ Stefan-Gabriel Mirea <stefan-gabriel.mirea@nxp.com>, 
+ "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>
+In-Reply-To: <20250522-james-nxp-spi-v2-0-bea884630cfb@linaro.org>
+References: <20250522-james-nxp-spi-v2-0-bea884630cfb@linaro.org>
+Subject: Re: (subset) [PATCH v2 00/14] spi: spi-fsl-dspi: DSPI support for
+ NXP S32G platforms
+Message-Id: <174793427263.150041.3711005972084134023.b4-ty@kernel.org>
+Date: Thu, 22 May 2025 18:17:52 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250521-imx214_ccs_pll-v3-4-bfb4a2b53d14@apitzsch.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c25d1
 
-Hi André,
-
-Thank you for the patch.
-
-On Wed, May 21, 2025 at 09:34:27PM +0200, André Apitzsch via B4 Relay wrote:
-> From: André Apitzsch <git@apitzsch.eu>
+On Thu, 22 May 2025 15:51:29 +0100, James Clark wrote:
+> DT and driver changes for DSPI on S32G platforms. First 3 commits are
+> fixes for various edge cases which also apply to other platforms.
+> Remaining commits add new S32G registers and device settings, some S32G
+> specific fixes and then finally add the DT compatibles and binding docs.
 > 
-> Deprecate the clock-frequency property in favor of assigned-clock-rates.
+> Tested in both host and target mode on S32G-VNP-RDB3 by transferring to
+> an external device over spi1 using spidev_test.c
 > 
-> While at it, re-order properties according to coding style and fix the
-> link-frequency in the example.  See commit acc294519f17 ("media: i2c:
-> imx214: Fix link frequency validation").
-> 
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> [...]
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Applied to
 
-> ---
->  .../devicetree/bindings/media/i2c/sony,imx214.yaml | 29 ++++++++++++----------
->  1 file changed, 16 insertions(+), 13 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
-> index 0162eec8ca993a7614d29908f89fa9fe6d4b545d..aea99ebf8e9ed15f8066841228d9fdecc822b553 100644
-> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
-> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx214.yaml
-> @@ -33,20 +33,21 @@ properties:
->  
->    clock-frequency:
->      description: Frequency of the xclk clock in Hz.
-> +    deprecated: true
->  
->    enable-gpios:
->      description: GPIO descriptor for the enable pin.
->      maxItems: 1
->  
-> -  vdddo-supply:
-> -    description: Chip digital IO regulator (1.8V).
-> -
->    vdda-supply:
->      description: Chip analog regulator (2.7V).
->  
->    vddd-supply:
->      description: Chip digital core regulator (1.12V).
->  
-> +  vdddo-supply:
-> +    description: Chip digital IO regulator (1.8V).
-> +
->    flash-leds: true
->    lens-focus: true
->  
-> @@ -84,11 +85,10 @@ required:
->    - compatible
->    - reg
->    - clocks
-> -  - clock-frequency
->    - enable-gpios
-> -  - vdddo-supply
->    - vdda-supply
->    - vddd-supply
-> +  - vdddo-supply
->    - port
->  
->  unevaluatedProperties: false
-> @@ -104,22 +104,25 @@ examples:
->          camera-sensor@1a {
->              compatible = "sony,imx214";
->              reg = <0x1a>;
-> -            vdddo-supply = <&pm8994_lvs1>;
-> -            vddd-supply = <&camera_vddd_1v12>;
-> +
-> +            clocks = <&camera_clk>;
-> +            assigned-clocks = <&camera_clk>;
-> +            assigned-clock-rates = <24000000>;
-> +
-> +            enable-gpios = <&msmgpio 25 GPIO_ACTIVE_HIGH>;
-> +
->              vdda-supply = <&pm8994_l17>;
-> +            vddd-supply = <&camera_vddd_1v12>;
-> +            vdddo-supply = <&pm8994_lvs1>;
-> +
->              lens-focus = <&ad5820>;
-> -            enable-gpios = <&msmgpio 25 GPIO_ACTIVE_HIGH>;
-> -            clocks = <&camera_clk>;
-> -            clock-frequency = <24000000>;
->  
->              port {
->                  imx214_ep: endpoint {
->                      data-lanes = <1 2 3 4>;
-> -                    link-frequencies = /bits/ 64 <480000000>;
-> +                    link-frequencies = /bits/ 64 <600000000>;
->                      remote-endpoint = <&csiphy0_ep>;
->                  };
->              };
->          };
->      };
-> -
-> -...
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
--- 
-Regards,
+Thanks!
 
-Laurent Pinchart
+[01/14] spi: spi-fsl-dspi: restrict register range for regmap access
+        commit: 283ae0c65e9c592f4a1ba4f31917f5e766da7f31
+[02/14] spi: spi-fsl-dspi: Halt the module after a new message transfer
+        commit: 8a30a6d35a11ff5ccdede7d6740765685385a917
+[03/14] spi: spi-fsl-dspi: Reset SR flags before sending a new message
+        commit: 7aba292eb15389073c7f3bd7847e3862dfdf604d
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
