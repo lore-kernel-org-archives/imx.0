@@ -1,195 +1,125 @@
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2058.outbound.protection.outlook.com [40.107.22.58])
+Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15B11CBA02
-	for <imx@lists.linux.dev>; Fri, 23 May 2025 08:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747990668; cv=fail; b=tWdz/mtZzYpCXfNIc6QjwidUZeDoGP2s+yDmxEKu5VYQpw/SMvJmwM11etAH9BIoYy650asJ02SNnh9mNG2PqBPpvg2on2cytgM2zHB/aUm4UPiwIEj5VHJHet4GJPwCad+8rca1LikFSvLGj/nyQGxiZScR8l0mN/YsVYplPqM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747990668; c=relaxed/simple;
-	bh=yuqBqBCgmWq7zcUWeAIoHuYs6cjElm+UK5k51jyVdqA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iNDKY8GnG11Pj8D3pBL6Lc2papVorYNiV+yRneiMpk2SD3+iNxXtErT4zkVti6J6ISfTjzjrlcpNKU5pI4hLCqqe4GA+DbqZ+3tSGZ2wLdt1GNcH10TP7lAx5Y9oCWIo9urvmy6L28e6zokpBlMxrQGcyVyp48Cwx8c3pDSIzyw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FfmWRDU8; arc=fail smtp.client-ip=40.107.22.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FfmWRDU8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A3pXLnI7StKEKd2Wh+/svIX1nCoKa69ay0nruvqBVJFYyVs+LBF10zGjh2VD98dG0YJg6RVyXhm5Vtv057DCpER4NbrIwdssaj/9ZiJp/46xJA8DUZ5eMz4eB3pODFuRn1xqXmB+XSHPxocupwyyUjkCfK5m/Xqhm1EcjXwOsV0dB4gNXEy1KmET4tbPg7ynxiK392ciyFXVdpmPL/8CK2jBIzt66lCdNA6D7SKJA4vc5HCFfY+drkeCy8AwQjROH1VrNV+7PC5VTqh73Ei2nVyN44a2vOCT3dnmtp311WrjKijS0d9mJST2j8OaUqia6NO61ZQ2LCO4cCAkfB24bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+ijKgcwqE+mwxbSnhP/MsTyOMcOVUyy0JooIE65zp7E=;
- b=RpoUJN2w0ja4j20WchvPeYsGKxSoElX6o4KNiRIwNEob2bySAqRZEjXCYCFu7VZR1uRG4ZEgpfOdSK16C/E8UR6ZJHIXwgfqv5i97/DbQhRutDvky4g6IWrU6yYkVwlGTD0eO/tHv6OMb5+fBw8+/ZXjNiPFDL8tTxMZzFLMKbzpEGXLcBmGGZT7vVOLnwvkv/WXOYAfb3IPEQkYDJh6R5SezTsfYM2C/tO6ArLoKY6KRF4smjzZnvrhcKoHiHgQDdfuZSwiqAkUZtLgnq5lqpTkn0kpItd3NPgkfJeHmSudRnUSpuVNv3DegNPaP+GKgrMJqAypUQZCmFo+UGWBIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+ijKgcwqE+mwxbSnhP/MsTyOMcOVUyy0JooIE65zp7E=;
- b=FfmWRDU89K4iNFjauO2UngIZ2KtWTVeQnZtA/MkZ9wFpLafU2l3Tp9D+ZjJ0BANb/x/7xa5pSk1PCSOu2mnn40bsMMr5MZG7rG/6fUgyGeal3MlbQcljbPHayXGkm2NHNe9glhAtwHmHqlLTXfvS15Jr1WzuEklQgzNNB8jcnIZJqNOT2KBdYDLcosh7Hgvl2VuKge1ge/42PpLYWWX4bd5naOfMoNkm2x3rePVIGidDdkg6j77pJUYYGqT/wakwa3/nNR7T7oHtU/j5FyU2LCKDhJ5DCNzs3AlRLXbGICCgUrdC5zRyFzmE0vL2RZ5qHJLcZT5NFzg/bbZen16OUw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PAXPR04MB9231.eurprd04.prod.outlook.com (2603:10a6:102:2bb::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.22; Fri, 23 May
- 2025 08:57:44 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8769.019; Fri, 23 May 2025
- 08:57:44 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	f.fainelli@gmail.com,
-	xiaolei.wang@windriver.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v2 net] net: phy: clear phydev->devlink when the link is deleted
-Date: Fri, 23 May 2025 16:37:59 +0800
-Message-Id: <20250523083759.3741168-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR04CA0009.apcprd04.prod.outlook.com
- (2603:1096:4:197::8) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AC12288EA
+	for <imx@lists.linux.dev>; Fri, 23 May 2025 09:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747994308; cv=none; b=Y180Nsx5vBWY+Zvpmo6f20aFUskP4s7KHvTt1C2SVNYn3qssdEUCgSFdLwD56h69LTQfrcvtWIJ89XEzhx0UMtuRHkKUJE05IVVBHuyUzRdb+z6K5esAKIMmNsFB/tqhAIPhDboWcXa1JfLZKjsGdxm8WGWay7/B0lOrQKAmI9w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747994308; c=relaxed/simple;
+	bh=08fg3jpSPJOEN6w8dbd543RIPo/ty5tra/UHgFDBq9g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jvILEnWifyAcoRu0TyJP3NRQwedSTYzDjG0P2jVCY6LS1KJREjE97pJ3NRAgksd1BydX/SGHbtZne/wkxOKiexclqi13yEFeALdMDdUYXswlgxaeUVjcfeiIDsC8B7rFhx8L9HnCWb5yJiUkUZ69KEAsg/NPXv/clQqXNEWjW4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+	by ni.piap.pl (Postfix) with ESMTPS id 9A651C405A4C;
+	Fri, 23 May 2025 11:58:23 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl 9A651C405A4C
+From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,  Rui Miguel Silva
+ <rmfrfs@gmail.com>,  Martin Kepplinger <martink@posteo.de>,  Purism Kernel
+ Team <kernel@puri.sm>,  Mauro Carvalho Chehab <mchehab@kernel.org>,  Shawn
+ Guo <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
+  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
+ <festevam@gmail.com>,  linux-media@vger.kernel.org,  imx@lists.linux.dev,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Enable MIPI filtering by DT on i.MX8M*
+In-Reply-To: <m31psg97dy.fsf@t19.piap.pl> ("Krzysztof =?utf-8?Q?Ha=C5=82as?=
+ =?utf-8?Q?a=22's?= message of
+	"Thu, 22 May 2025 14:06:49 +0200")
+References: <m3h61u9jy2.fsf@t19.piap.pl>
+	<20250509103733.GE28896@pendragon.ideasonboard.com>
+	<m3o6vn8np5.fsf@t19.piap.pl>
+	<iegnn5xoosqpk52hvipcr73aliwhqtsq6r6ctvt5756bhy6yen@rqcdongb7fdf>
+	<m31psg97dy.fsf@t19.piap.pl>
+Sender: khalasa@piap.pl
+Date: Fri, 23 May 2025 11:58:23 +0200
+Message-ID: <m3plfz7io0.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PAXPR04MB9231:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41f3536a-4bca-4f3d-b8dc-08dd99d7e166
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dCK8VKSbT7TzAhZlksJyG+0CSV5oXBYakmbugqbhKcO+ehhW3YLMSISF08eY?=
- =?us-ascii?Q?HN1yg1ibWGq3ZTVg9domWyJJhIVSWRy0PEbNyce1YSaVGJC29/FCrwIO3BAP?=
- =?us-ascii?Q?VRyRZL8oHJxnYuABj0HNJo7YpY0jclXVSxagQo50AXvuJYQlpIutMoCCbrUP?=
- =?us-ascii?Q?rAG4wk7x4pBTw6i2s2+ch/TbtYIr0TKwDkUtRBmYrApco4Bt2GYuVoz/C5M3?=
- =?us-ascii?Q?RN6BULR9pL8HNPhNbgO1XSLbKJ+VR8W6jgG4JJ0yXKeoPCN89Co9xT/89gvx?=
- =?us-ascii?Q?4Pn1+LLofsxeerRKezXayheGRzoNbONTvXbprSLiWc5fKxEfKcgk2tRLD1g5?=
- =?us-ascii?Q?NmWtjgyQ2t+NkyD7q2pguX0fKq8DKqKTDlkvmHJbPwiHYAf1jRVS5bdHffWA?=
- =?us-ascii?Q?I2GqJK+AdTZu91pqHAx2L8Gmq5Ks/Bfs6YITAi/jRBke24gHrtKWuLhBzcbM?=
- =?us-ascii?Q?RCLaff3ADLXiXyQU9O/yxk0mZqNFuvTSVUCiBs96CQxF32tcmvIejwUUCJrR?=
- =?us-ascii?Q?F5cLqnPHpr8WZq6ZdAh+0aJS4ozmF/dgumYtUnczluZq9Dko1byarxqBbgGc?=
- =?us-ascii?Q?K9bFDtFc7AIX/QjPNxqYdAZf979jqMdjNscPKgWyAsT1+Z/0h4yN/+SDp/a4?=
- =?us-ascii?Q?3mGF4tnGjTz8jCZHAZRlJ9QbuXIryhCDiIBAa0JT5iYy9M//AzPTyAjCB6Jb?=
- =?us-ascii?Q?z3F9ZEdbCq0XPmcdmlg7FnZA6cb2ePali9DT1EaQbxAu0fGzwcnLv479nL0Y?=
- =?us-ascii?Q?9H/Ul1vOoevHwXWpsDJtHWyD6jGIPjfy4E5lsHCZ8lcuhKa3jPoUskCRwSxT?=
- =?us-ascii?Q?tx0amjfwxu1WVhsYC0BT8RzdbXzuNP1bOzSdi8/DNkqnUSZxZrCba+NiDKTn?=
- =?us-ascii?Q?GRnY42+BkDJNoPcMdzpeyGxX+07t1NGMNHEuLE1u2eMIEAiqGck1Mv80SR5a?=
- =?us-ascii?Q?LMq1Asp4/R4+HSo77eJdkDz1+5N3xhPB5M9t6AxxD6deu3ea02+rnhRq/JA9?=
- =?us-ascii?Q?CmQ8Huyh9wtL5FScISsMfI5Xs38F31F+wqMQKDJN1rFRmm4CqiRHv86BOIDk?=
- =?us-ascii?Q?SWBkGwQsqM91kGtJSDECu3iks1m0eERelEVBy/2Kt7yyeyV+mkUexEDSOMjW?=
- =?us-ascii?Q?/g+s/DL0qm5UA6SYbYxMUzZbzO1Qcfu7qVPs5ejkkj61/iWAFXbLgaYUvsZM?=
- =?us-ascii?Q?xcNgYWwJDMga6ht645UE6hd92SdtOQZjp7MjGENM8T8HguI0Dwc93pSbDaLe?=
- =?us-ascii?Q?pfwFCkXSJNa2Sny1Hk89uPVg1E/MhTHGx8ihWJjQ6G14ygFIrM9WywsQygNw?=
- =?us-ascii?Q?VQI/qyHR/ue9ub7nCGq9ifQFf51KYECPMW9ZfnbCdtz0J2WhhnhKW8ZG4M2y?=
- =?us-ascii?Q?gq4HpnQd15I+nQDTObloB3l4ruC6sNJ7WEexTdunt4owlTK33KjzMXjJSlzl?=
- =?us-ascii?Q?B0i5z40BV+ra28Uaqvu/zu6snWDTmAiMizj+gwaY7wkIl7SpK4Abqg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ryuw/wuyUbSgbNIU6tKURu9x1dcQsmNTLCaH5N91ddWIyvi6zJT0GTtsOWyc?=
- =?us-ascii?Q?LN726mxpredtbyc+BUhWO7YVZXj8Dx6H7Pi9wx4wSTxxgH+4q0MdMyuP/Pd2?=
- =?us-ascii?Q?6PmY4C2r9LMapGZMQIHeOQoIqWrv/NgfeBdVhI8zM4FUb0QidBhz9VQE0XrZ?=
- =?us-ascii?Q?Vf5fzKaPDNVi1evj2OyI2KgLq1ifEp4BtJ63autAxuqn5CJIR+4twKbDWSjp?=
- =?us-ascii?Q?CxTYljO87BEb4yuxIsALpw8PI8uFXcJl/2Xlb7KdWFdM81WrNXcHSdEmEK92?=
- =?us-ascii?Q?WzzIG0m8jlW2qoFcnFC0t2m+TwO6rwXuaNEO2lqHovNQPVJJ6QS1W4bnEiSu?=
- =?us-ascii?Q?yCyKpSekc2kmfabLq4RAeLEatMUIpkO66HyTWS5Ai3EvQKLnxj4JD0JBZyss?=
- =?us-ascii?Q?8ukbWRjLBoEyfucO0um0BL30+sbNs51Y27IPv3Yv7aBV7cjL3ki+0TG9vYYz?=
- =?us-ascii?Q?jYPhYAA/NnCcnibTlxbio/F0G8Gp9HXhzRPBYxbUfDIr6MxKFfwudfpib2fl?=
- =?us-ascii?Q?MvA/vp8m0UnT8L/anWuT99OuSUQDEUJYKY/u0qAYs3Pnplf+Lu20tPfNPLzq?=
- =?us-ascii?Q?c8hsBXVjxb+7ysRKYqrDHZA7DiTUyVjKnb3FpvwdmAOkMJT6Oe/9QiaYcVNM?=
- =?us-ascii?Q?F5LlE4/p+FfW8dv+IKZGzv5sXv9kTwcgeXIhp7PZvkL14y3WYCAnJ2vfFm2r?=
- =?us-ascii?Q?wKSixxhy/lvn6eph2bsPYUDxChomtZQIyxRSi2qGDzbWKWnuONgK5L1S8fqo?=
- =?us-ascii?Q?bgSx4eJxqCg5guaov7tnuXGhfJwSyKwFV/G7liiikFnqVohOQBcSRwnGNosQ?=
- =?us-ascii?Q?uP7gPRi/AB8fl1cBZPRRrDwUj9iM527kWIlsu1BaIWc6EzaBM6iK2VuRgMm0?=
- =?us-ascii?Q?U7QFTjgFd1udayxDwbR73t8yicDP17cQNfwPIerJj4aEn4f9ViOBSzGvXkCI?=
- =?us-ascii?Q?61akkelaeA6/onX77VomXQ9mEBp+cXkouj/8jEP1fytxhv64gF5Fx7rovR0q?=
- =?us-ascii?Q?rqiEhP4UcAgPhSHl9fMXqbTKgVYNBX90LFQNviTK5Wy8ehd7HuXv/UroBnWV?=
- =?us-ascii?Q?NlbwSyiWNXvl/jsBcFrh47UwhSWRb2zipLNlKH7/6A+CPCEI9hb1GFWFBRz2?=
- =?us-ascii?Q?VApCoZGjKvPtflglujaTf2101NtSjF5qnfefPvaXt9OiAB4l/LresCB/vtCQ?=
- =?us-ascii?Q?0hkUAosqRy3Gnzn31VlM4YTl/o7GZ/6yVFMroe5MdpnxMLvBW7xr8JbxmjkE?=
- =?us-ascii?Q?Ob2B+ie+UL0XV2ac1SY8/mnPvCPfDJxaHCeBKe0z7Xkhp9RfYHDgCq84O/5N?=
- =?us-ascii?Q?ar9h4rEMrAb48FdLeLTnF35rsfx2bBiC5Bo0Fpk9x942cpvjixz0fLUQ8stN?=
- =?us-ascii?Q?NFRGaZxlXs4SRd2Ydx7FdIMcwMLOSikc2WXcrAIeJt9Wp7vvC0EqX2YNUNJw?=
- =?us-ascii?Q?B9X5i0m91mlbhW3aX5uAtiekpgh4FK4XiEGfZxbCUNuuCnFTffGHySTcyKGv?=
- =?us-ascii?Q?i66m3YbjlqjElIyfcca+39obz27sqGvwb6AoR9tw86jiLHrlJ6WGuz192o4Z?=
- =?us-ascii?Q?SwJwPZOySjHi87Eur7ijzSQSjfdWMaPrKq6LOBk9?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41f3536a-4bca-4f3d-b8dc-08dd99d7e166
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2025 08:57:43.9365
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iQjQKsZdnXPIhzi5nV9X+OyGNvO9UMyorZX+cfnw9x0ok44PLBogeV3JCs1qZcEdCXIT4IfXSBrR5stqfBNGCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9231
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-There is a potential crash issue when disabling and re-enabling the
-network port. When disabling the network port, phy_detach() calls
-device_link_del() to remove the device link, but it does not clear
-phydev->devlink, so phydev->devlink is not a NULL pointer. Then the
-network port is re-enabled, but if phy_attach_direct() fails before
-calling device_link_add(), the code jumps to the "error" label and
-calls phy_detach(). Since phydev->devlink retains the old value from
-the previous attach/detach cycle, device_link_del() uses the old value,
-which accesses a NULL pointer and causes a crash. The simplified crash
-log is as follows.
+I wrote:
 
-[   24.702421] Call trace:
-[   24.704856]  device_link_put_kref+0x20/0x120
-[   24.709124]  device_link_del+0x30/0x48
-[   24.712864]  phy_detach+0x24/0x168
-[   24.716261]  phy_attach_direct+0x168/0x3a4
-[   24.720352]  phylink_fwnode_phy_connect+0xc8/0x14c
-[   24.725140]  phylink_of_phy_connect+0x1c/0x34
+> This produces (test_pattern=3D5 which starts with black, using ISP):
+> Y =3D  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00...
+> UV =3D 80 80 80 80  80 80 80 80  80 80 80 80  80 80 80 80...
+>
+> Now I do (perhaps I should revert the patch instead):
+> ./devmem write32 0x32E50004 0x14305
+>
+> and this does (=3D without DT filtering):
+> Y =3D  E6 FF 36 1B  00 00 00 00  00 00 00 00  00 00 00 00...
+> UV =3D 85 6A 74 B4  7D 8C 80 80  80 80 80 80  80 80 80 80...
 
-Therefore, phydev->devlink needs to be cleared when the device link is
-deleted.
+The corruption is visible in ISP RAW-12 mode as well: CSI2 + ISP2 without
+DT filtering: IMX462 test patterns, Linux v6.14, 1280x720p25.
 
-Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
-v2: Improve the commit message.
----
- drivers/net/phy/phy_device.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Only 3 first 16-bit (12-bit on MIPI) RGGB values in each frame are
+changed (bits 3-0 of the third pixel aren't changed).
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index cc1bfd22fb81..7d5e76a3db0e 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1727,8 +1727,10 @@ void phy_detach(struct phy_device *phydev)
- 	struct module *ndev_owner = NULL;
- 	struct mii_bus *bus;
- 
--	if (phydev->devlink)
-+	if (phydev->devlink) {
- 		device_link_del(phydev->devlink);
-+		phydev->devlink = NULL;
-+	}
- 
- 	if (phydev->sysfs_links) {
- 		if (dev)
--- 
-2.34.1
+32EC0060h          0 Gasket 0 output disabled
+32EC0090h          0 Gasket 1 output disabled
+32EC0138h    2D8000h ISP Dewarp Control Register (ISP_DEWARP_CONTROL)
+      ISP ID mode 0, ISP1: DT 0, ISP2: DT 2Ch (RAW12) left-just mode
 
+32E50040h        B0h ISP Configuration Register (MIPI_CSIS_ISPCONFIG_CH0)
+      DT 2Ch (RAW12)
+
+pattern 1:   0 800   0 2AB changed into 2AA B02 B00 2AB
+pattern 2 and 3: FFF FFF FFF FFF... not altered at all
+pattern 4: 501 501 4C2 4C2 changed into FFF 7FF 7F2 4C2
+pattern 5:   0   0   0   0 changed into 7EF FF7 FF0   0
+pattern 6:   0   1   0 101 changed into FFF FFF FF0 101
+pattern 7:   0 2AB   0 2AB changed into BAA BAB BA0 2AB
+
+RAW-12 on MIPI goes like this:
+ lane0    lane1   lane2 7:4   lane2 3:0   lane3
+----------- MIPI Header (all 4 lanes) ----------
+P1-11:4  P2-11:4    P1-3:0      P2-3:0   P3-11:4
+P4-11:4  ...
+
+This means all the changed values are located in the first 4 bytes after
+the packet header (i.e., in the first byte after the header for each
+lane). Which IMHO smells like a hardware bug - especially given the
+problem manifests itself only on CSI2 (+ISP2, I haven't tried using
+ISI).
+
+Fortunately enabling DT filtering fixes it.
+
+I remember I was getting a bit different results on, I believe, the
+NXP's 5.15 kernels (with their =3D Verisilicon VVCam driver). Instead of
+simply changing the first 32 bits of the MIPI payload, the rest of the
+RGGB data was shifted a couple of pixels or so.
+
+
+Now, what do we do with it?
+Is anybody able to verify the CSIC version register value on i.MX8MM?
+Something like devmem read32 0x32E50000 (or 0x32E40000 for CSI1) WHILE
+RUNNING CAPTURE on that very CSI would do the trick (using your
+favorite instance of devmem/devmem2/etc). Alternatively one could add
+a debug printk to the csic module.
+
+And: is anybody able to check if the DT filtering works on i.MX8MM
+(=3D if my patch doesn't break it on 8MM)?
+
+Alternatively I guess we can add MIPI_CSIS_V3_6_3_1 for 8MP only.
+
+Anybody using i.MX8MM with ISP2 + CSI2 BTW? Is the corruption there as
+well? I understand it may be hard to spot, it's (usually a bright) dot
+in the left top corner.
+--=20
+Krzysztof "Chris" Ha=C5=82asa
+
+Sie=C4=87 Badawcza =C5=81ukasiewicz
+Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
+Al. Jerozolimskie 202, 02-486 Warszawa
