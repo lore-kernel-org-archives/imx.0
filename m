@@ -1,158 +1,168 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B6235959
-	for <imx@lists.linux.dev>; Fri, 23 May 2025 14:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5A81CB518
+	for <imx@lists.linux.dev>; Fri, 23 May 2025 14:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748009984; cv=none; b=HNp5lpIych/X2I3GID/7aeMKobjeDLwi+dJk5zRZwdwgAC2I6nSjxQ+3qaRYtyqC35R23BgzYS8S48VpEAM7Cs5eGE+NjU3vB2a6UtUJFlQWgThiQj9skG1ZWmFuU05eaQFwCR9XrfRteKqT/G/p+tjRN9oue2tsNOGo9bMxAKw=
+	t=1748010906; cv=none; b=AI9GSO6mDAMFdEtC0KcPg/CFk1OIgLJcZe2XSJ3ovwQ01vR0ZSahpS3hJ/h4FORRffkeVslbuFUrIaRkNu2ZuTmitCYf3XkcDLqFP49Gjn0u9VH9I1RuEQ3V3puKB8iFcYQX/EGycryK4lzUHL22I2ehysePuy+K3MSds+mTM/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748009984; c=relaxed/simple;
-	bh=PtnaVW1Gl2iS4KmDLtNA3/Vu7A34huTPLYGs5P+2rY0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=p1jxWRQC1JUsWhGjC5Gl30WWG3iAeWv368EDJ1YddVNs59i+aqILruGPMCHb082f6jS1CFd9igh3U4rwwxlokcZI80/1QdYj4/Izy4WQSctN1j563TDWjs6lCI+rSeq0dHtcBgmL5tBHAnoEI9685GgXJAatg8rQZ/k7nmKgUlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
- (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 23 May
- 2025 16:19:38 +0200
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
- 15.01.2507.039; Fri, 23 May 2025 16:19:38 +0200
-From: John Ernberg <john.ernberg@actia.se>
-To: Frank Li <Frank.li@nxp.com>
-CC: =?utf-8?B?SG9yaWEgR2VhbnTEgw==?= <horia.geanta@nxp.com>, Pankaj Gupta
-	<pankaj.gupta@nxp.com>, Gaurav Jain <gaurav.jain@nxp.com>, Herbert Xu
-	<herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, "Rob
- Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Thomas Richard
-	<thomas.richard@bootlin.com>, "linux-crypto@vger.kernel.org"
-	<linux-crypto@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "stable@kernel.org"
-	<stable@kernel.org>
-Subject: Re: [PATCH 1/4] crypto: caam - Prevent crash on suspend with iMX8QM /
- iMX8ULP
-Thread-Topic: [PATCH 1/4] crypto: caam - Prevent crash on suspend with iMX8QM
- / iMX8ULP
-Thread-Index: AQHby+Uubq4/T0/2xEa3pJeQa3AymLPgGseAgAAHVgA=
-Date: Fri, 23 May 2025 14:19:38 +0000
-Message-ID: <b62d6620-4c31-41e4-b510-130f0af66c79@actia.se>
-References: <20250523131814.1047662-1-john.ernberg@actia.se>
- <20250523131814.1047662-2-john.ernberg@actia.se>
- <aDB909HDzfUaA3hv@lizhi-Precision-Tower-5810>
-In-Reply-To: <aDB909HDzfUaA3hv@lizhi-Precision-Tower-5810>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A2956B14453607160
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3B1A1B4F0E8E8D4B9F309BC7B8A62D68@actia.se>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1748010906; c=relaxed/simple;
+	bh=7ahIPwLlIZgRB9P45+gukHzvCNulX6S1U8rMklHinXE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WViM2UFb/Ggpn01CbPzs8RlPMVaMifx6G2Tw/zi3r0wdpRG/PCqNfIlv1ZAi5Wh9eVOFQ3R0WODEe/PsKgDQg8vff5DvkMHYtPr9KWlufU4rWzxViHvTeCdovsBzxBfwivJloAPRransT+AUi1eQ8E27dn/vc41xQdHwnjT4WF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=AxkCZOip; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="AxkCZOip"
+Received: from [192.168.0.43] (cpc141996-chfd3-2-0-cust928.12-3.cable.virginm.net [86.13.91.161])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4F1B7346;
+	Fri, 23 May 2025 16:34:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1748010873;
+	bh=7ahIPwLlIZgRB9P45+gukHzvCNulX6S1U8rMklHinXE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AxkCZOipWio4LgIo4t1fo+99EFqI5aVjYGgALTH4dubBcmKLupqXokM6KBxFpj0bS
+	 B1LzBCBkDui986WbMAcgdsSJFtLXpQmog3yvJkUCzZfvLbNLkKEzB7yJiLwEQkDFl+
+	 tOzQv7V5WuaiomhF5Eb8C/NxRwf1CZc6iLrULJRc=
+Message-ID: <4a54204a-3284-4341-8faa-9c5264ad1129@ideasonboard.com>
+Date: Fri, 23 May 2025 15:34:53 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: nxp: imx8-isi: Cleanup video device in error path
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250522-djrscally-imx8-isi-fixes-v1-1-10bcd6d347a6@ideasonboard.com>
+ <20250522152645.GS12514@pendragon.ideasonboard.com>
+Content-Language: en-US
+From: Dan Scally <dan.scally@ideasonboard.com>
+Autocrypt: addr=dan.scally@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <20250522152645.GS12514@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-SGkgRnJhbmssDQoNCk9uIDUvMjMvMjUgMzo1MyBQTSwgRnJhbmsgTGkgd3JvdGU6DQo+IE9uIEZy
-aSwgTWF5IDIzLCAyMDI1IGF0IDAxOjE4OjMyUE0gKzAwMDAsIEpvaG4gRXJuYmVyZyB3cm90ZToN
-Cj4+IFNpbmNlIHRoZSBDQUFNIG9uIHRoZXNlIFNvQ3MgaXMgbWFuYWdlZCBieSBhbm90aGVyIEFS
-TSBjb3JlLCBjYWxsZWQgdGhlDQo+PiBTRUNPIChTZWN1cml0eSBDb250cm9sbGVyKSBvbiBpTVg4
-UU0gYW5kIFNlY3VyZSBFbmNsYXZlIG9uIGlNWDhVTFAsIHdoaWNoDQo+PiBhbHNvIHJlc2VydmVz
-IGFjY2VzcyB0byByZWdpc3RlciBwYWdlIDAgc3VzcGVuZCBvcGVyYXRpb25zIGNhbm5vdCB0b3Vj
-aA0KPj4gdGhpcyBwYWdlLg0KPj4NCj4+IEludHJvZHVjZSBhIHZhcmlhYmxlIHRvIHRyYWNrIHRo
-aXMgc2l0dWF0aW9uLiBTaW5jZSB0aGlzIGlzIHN5bm9ueW1vdXMNCj4+IHdpdGggdGhlIG9wdGVl
-IGNhc2UgaW4gc3VzcGVuZC9yZXN1bWUgdGhlIG9wdGVlIGNoZWNrIGlzIHJlcGxhY2VkIHdpdGgN
-Cj4+IHRoaXMgbmV3IGNoZWNrLg0KPj4NCj4+IEZpeGVzIHRoZSBmb2xsb3dpbmcgc3BsYXQgYXQg
-c3VzcGVuZDoNCj4+DQo+PiAgICAgIEludGVybmFsIGVycm9yOiBzeW5jaHJvbm91cyBleHRlcm5h
-bCBhYm9ydDogMDAwMDAwMDA5NjAwMDAxMCBbIzFdIFNNUA0KPj4gICAgICBIYXJkd2FyZSBuYW1l
-OiBGcmVlc2NhbGUgaS5NWDhRWFAgQUNVNkMgKERUKQ0KPj4gICAgICBwc3RhdGU6IDYwNDAwMDA1
-IChuWkN2IGRhaWYgK1BBTiAtVUFPIC1UQ08gLURJVCAtU1NCUyBCVFlQRT0tLSkNCj4+ICAgICAg
-cGMgOiByZWFkbCsweDAvMHgxOA0KPj4gICAgICBsciA6IHJkX3JlZzMyKzB4MTgvMHgzYw0KPj4g
-ICAgICBzcCA6IGZmZmZmZmMwODE5MmJhMjANCj4+ICAgICAgeDI5OiBmZmZmZmZjMDgxOTJiYTIw
-IHgyODogZmZmZmZmODAyNTE5MDAwMCB4Mjc6IDAwMDAwMDAwMDAwMDAwMDANCj4+ICAgICAgeDI2
-OiBmZmZmZmZjMDgwOGFlODA4IHgyNTogZmZmZmZmYzA4MDkyMjMzOCB4MjQ6IGZmZmZmZjgwMjBl
-ODkwOTANCj4+ICAgICAgeDIzOiAwMDAwMDAwMDAwMDAwMDAwIHgyMjogZmZmZmZmYzA4MDkyMjAw
-MCB4MjE6IGZmZmZmZjgwMjBlODkwMTANCj4+ICAgICAgeDIwOiBmZmZmZmZjMDgwMzg3ZWY4IHgx
-OTogZmZmZmZmODAyMGU4OTAxMCB4MTg6IDAwMDAwMDAwNWQ4MDAwZDUNCj4+ICAgICAgeDE3OiAw
-MDAwMDAwMDMwZjM1OTYzIHgxNjogMDAwMDAwMDA4Zjc4NWYzZiB4MTU6IDAwMDAwMDAwM2I4ZWY1
-N2MNCj4+ICAgICAgeDE0OiAwMDAwMDAwMGM0MThhZWY4IHgxMzogMDAwMDAwMDBmNWZlYTUyNiB4
-MTI6IDAwMDAwMDAwMDAwMDAwMDENCj4+ICAgICAgeDExOiAwMDAwMDAwMDAwMDAwMDAyIHgxMDog
-MDAwMDAwMDAwMDAwMDAwMSB4OSA6IDAwMDAwMDAwMDAwMDAwMDANCj4+ICAgICAgeDggOiBmZmZm
-ZmY4MDI1MTkwODcwIHg3IDogZmZmZmZmODAyMTcyNjg4MCB4NiA6IDAwMDAwMDAwMDAwMDAwMDIN
-Cj4+ICAgICAgeDUgOiBmZmZmZmY4MDIxNzI2OGYwIHg0IDogZmZmZmZmODAyMTcyNjg4MCB4MyA6
-IGZmZmZmZmMwODEyMDAwMDANCj4+ICAgICAgeDIgOiAwMDAwMDAwMDAwMDAwMDAxIHgxIDogZmZm
-ZmZmODAyMGU4OTAxMCB4MCA6IGZmZmZmZmMwODEyMDAwMDQNCj4+ICAgICAgQ2FsbCB0cmFjZToN
-Cj4+ICAgICAgIHJlYWRsKzB4MC8weDE4DQo+PiAgICAgICBjYWFtX2N0cmxfc3VzcGVuZCsweDMw
-LzB4ZGMNCj4+ICAgICAgIGRwbV9ydW5fY2FsbGJhY2suY29uc3Rwcm9wLjArMHgyNC8weDVjDQo+
-PiAgICAgICBkZXZpY2Vfc3VzcGVuZCsweDE3MC8weDJlOA0KPj4gICAgICAgZHBtX3N1c3BlbmQr
-MHhhMC8weDEwNA0KPj4gICAgICAgZHBtX3N1c3BlbmRfc3RhcnQrMHg0OC8weDUwDQo+PiAgICAg
-ICBzdXNwZW5kX2RldmljZXNfYW5kX2VudGVyKzB4N2MvMHg0NWMNCj4+ICAgICAgIHBtX3N1c3Bl
-bmQrMHgxNDgvMHgxNjANCj4+ICAgICAgIHN0YXRlX3N0b3JlKzB4YjQvMHhmOA0KPj4gICAgICAg
-a29ial9hdHRyX3N0b3JlKzB4MTQvMHgyNA0KPj4gICAgICAgc3lzZnNfa2Zfd3JpdGUrMHgzOC8w
-eDQ4DQo+PiAgICAgICBrZXJuZnNfZm9wX3dyaXRlX2l0ZXIrMHhiNC8weDE3OA0KPj4gICAgICAg
-dmZzX3dyaXRlKzB4MTE4LzB4MTc4DQo+PiAgICAgICBrc3lzX3dyaXRlKzB4NmMvMHhkMA0KPj4g
-ICAgICAgX19hcm02NF9zeXNfd3JpdGUrMHgxNC8weDFjDQo+PiAgICAgICBpbnZva2Vfc3lzY2Fs
-bC5jb25zdHByb3AuMCsweDY0LzB4YjANCj4+ICAgICAgIGRvX2VsMF9zdmMrMHg5MC8weGIwDQo+
-PiAgICAgICBlbDBfc3ZjKzB4MTgvMHg0NA0KPj4gICAgICAgZWwwdF82NF9zeW5jX2hhbmRsZXIr
-MHg4OC8weDEyNA0KPj4gICAgICAgZWwwdF82NF9zeW5jKzB4MTUwLzB4MTU0DQo+PiAgICAgIENv
-ZGU6IDg4ZGZmYzIxIDg4ZGZmYzIxIDVhYzAwODAwIGQ2NWYwM2MwIChiOTQwMDAwMCkNCj4+DQo+
-PiBGaXhlczogZDI4MzU3MDFkOTNjICgiY3J5cHRvOiBjYWFtIC0gaS5NWDhVTFAgZG9ub3QgaGF2
-ZSBDQUFNIHBhZ2UwIGFjY2VzcyIpDQo+PiBGaXhlczogNjFiYjhkYjZmNjgyICgiY3J5cHRvOiBj
-YWFtIC0gQWRkIHN1cHBvcnQgZm9yIGkuTVg4UU0iKQ0KPj4gQ2M6IHN0YWJsZUBrZXJuZWwub3Jn
-ICMgdjYuMTArDQo+PiBTaWduZWQtb2ZmLWJ5OiBKb2huIEVybmJlcmcgPGpvaG4uZXJuYmVyZ0Bh
-Y3RpYS5zZT4NCj4+DQo+PiAtLS0NCj4+DQo+PiBJIG5vdGljZWQgdGhpcyB3aGVuIGVuYWJsaW5n
-IHRoZSBpTVg4UVhQIHN1cHBvcnQgKG5leHQgcGF0Y2gpLCBoZW5jZSB0aGUNCj4+IGlNWDhRWFAg
-YmFja3RyYWNlLCBidXQgdGhlIGlNWDhRTSBDQUFNIGludGVncmF0aW9uIHdvcmtzIGV4YWN0bHkg
-dGhlIHNhbWUNCj4+IGFuZCBhY2NvcmRpbmcgdG8gdGhlIE5YUCB0cmVlIFsxXSB0aGUgaU1YOFVM
-UCBzdWZmZXJzIHRoZSBzYW1lIGlzc3VlLg0KPj4NCj4+IFsxXTogaHR0cHM6Ly9naXRodWIuY29t
-L254cC1pbXgvbGludXgtaW14L2NvbW1pdC82NTM3MTJmZmU1MmRkNTlmNDA3YWYxYjc4MWNlMzE4
-ZjNkOWUxN2JiDQo+PiAtLS0NCj4+ICAgZHJpdmVycy9jcnlwdG8vY2FhbS9jdHJsLmMgICB8IDUg
-KysrLS0NCj4+ICAgZHJpdmVycy9jcnlwdG8vY2FhbS9pbnRlcm4uaCB8IDEgKw0KPj4gICAyIGZp
-bGVzIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4+DQo+PiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9jcnlwdG8vY2FhbS9jdHJsLmMgYi9kcml2ZXJzL2NyeXB0by9jYWFt
-L2N0cmwuYw0KPj4gaW5kZXggMzhmZjkzMTA1OWI0Li43NjZjNDQ3YzljZmIgMTAwNjQ0DQo+PiAt
-LS0gYS9kcml2ZXJzL2NyeXB0by9jYWFtL2N0cmwuYw0KPj4gKysrIGIvZHJpdmVycy9jcnlwdG8v
-Y2FhbS9jdHJsLmMNCj4+IEBAIC04MzEsNyArODMxLDcgQEAgc3RhdGljIGludCBjYWFtX2N0cmxf
-c3VzcGVuZChzdHJ1Y3QgZGV2aWNlICpkZXYpDQo+PiAgIHsNCj4+ICAgICAgICBjb25zdCBzdHJ1
-Y3QgY2FhbV9kcnZfcHJpdmF0ZSAqY3RybHByaXYgPSBkZXZfZ2V0X2RydmRhdGEoZGV2KTsNCj4+
-DQo+PiAtICAgICBpZiAoY3RybHByaXYtPmNhYW1fb2ZmX2R1cmluZ19wbSAmJiAhY3RybHByaXYt
-Pm9wdGVlX2VuKQ0KPj4gKyAgICAgaWYgKGN0cmxwcml2LT5jYWFtX29mZl9kdXJpbmdfcG0gJiYg
-IWN0cmxwcml2LT5ub19wYWdlMCkNCj4+ICAgICAgICAgICAgICAgIGNhYW1fc3RhdGVfc2F2ZShk
-ZXYpOw0KPj4NCj4+ICAgICAgICByZXR1cm4gMDsNCj4+IEBAIC04NDIsNyArODQyLDcgQEAgc3Rh
-dGljIGludCBjYWFtX2N0cmxfcmVzdW1lKHN0cnVjdCBkZXZpY2UgKmRldikNCj4+ICAgICAgICBz
-dHJ1Y3QgY2FhbV9kcnZfcHJpdmF0ZSAqY3RybHByaXYgPSBkZXZfZ2V0X2RydmRhdGEoZGV2KTsN
-Cj4+ICAgICAgICBpbnQgcmV0ID0gMDsNCj4+DQo+PiAtICAgICBpZiAoY3RybHByaXYtPmNhYW1f
-b2ZmX2R1cmluZ19wbSAmJiAhY3RybHByaXYtPm9wdGVlX2VuKSB7DQo+PiArICAgICBpZiAoY3Ry
-bHByaXYtPmNhYW1fb2ZmX2R1cmluZ19wbSAmJiAhY3RybHByaXYtPm5vX3BhZ2UwKSB7DQo+PiAg
-ICAgICAgICAgICAgICBjYWFtX3N0YXRlX3Jlc3RvcmUoZGV2KTsNCj4+DQo+PiAgICAgICAgICAg
-ICAgICAvKiBIVyBhbmQgcm5nIHdpbGwgYmUgcmVzZXQgc28gZGVpbnN0YW50aWF0aW9uIGNhbiBi
-ZSByZW1vdmVkICovDQo+PiBAQCAtOTA4LDYgKzkwOCw3IEBAIHN0YXRpYyBpbnQgY2FhbV9wcm9i
-ZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KPj4NCj4+ICAgICAgICAgICAgICAgIGlt
-eF9zb2NfZGF0YSA9IGlteF9zb2NfbWF0Y2gtPmRhdGE7DQo+PiAgICAgICAgICAgICAgICByZWdf
-YWNjZXNzID0gcmVnX2FjY2VzcyAmJiBpbXhfc29jX2RhdGEtPnBhZ2UwX2FjY2VzczsNCj4+ICsg
-ICAgICAgICAgICAgY3RybHByaXYtPm5vX3BhZ2UwID0gIXJlZ19hY2Nlc3M7DQo+IA0KPiBJZiB5
-b3Ugd2FudCB0byB1c2Ugbm9fcGFnZTAgdG8gY29udHJvbCBpZiBjYWxsIGNhYW1fc3RhdGVfc2F2
-ZSgpLCB5b3UnZA0KPiBiZXR0ZXIgc2V0IGN0cmxwcml2LT5ub19wYWdlMCBhbHNvIGFmdGVyIGN0
-cmxwcml2LT5vcHRlZV9lbiA9ICEhbnA7DQo+IA0KPiBGcmFuaw0KDQpJJ20gbm90IHN1cmUgSSB1
-bmRlcnN0YW5kLCBJIGNhbm5vdCBzZWUgYSBjb2RlIHBhdGggd2hlcmUgbm9fcGFnZTAgd2lsbCAN
-CmJlICh1bilzZXQgaW5jb3JyZWN0bHkuDQoNCm9wdGVlIGRpc2FibGVzIHRoZSBwYWdlMCBhY2Nl
-c3MsIHNvIHJlZ19hY2Nlc3MgaXMgYWxyZWFkeSB0aGUgaW52ZXJzZSBvZiANCm9wdGVlX2VuLiBy
-ZWdfYWNjZXNzID09IGZhbHNlIHdoZW4gb3B0ZWVfZW4gPT0gdHJ1ZS4NCg0KVGh1cywgaWYgb3B0
-ZWUgaXMgbG9hZGVkIG9uIGEgU29DIHRoYXQgbm9ybWFsbHkgaGFzIHBhZ2UwX2FjY2VzcyB0aGUg
-DQpgcmVnX2FjY2VzcyA9IHJlZ19hY2Nlc3MgJiYgaW14X3NvY19kYXRhLT5wYWdlMF9hY2Nlc3M7
-YCBzdGF0ZW1lbnQgb24gDQp0aGUgbGluZSBhYm92ZSBzZXR0aW5nIG5vX3BhZ2UwIGFscmVhZHkg
-dGFrZXMgY2FyZSBvZiBpdCwgc286DQpyZWdfYWNjZXNzID0gZmFsc2UgJiYgdHJ1ZSAtPiBmYWxz
-ZS4NCg0KU2ltaWxhcmx5IGlmIGJvdGggcmVnX2FjY2VzcyA9PSBmYWxzZSBhbmQgcGFnZTBfYWNj
-ZXNzID09IGZhbHNlLCANCnJlZ19hY2Nlc3Mgd2lsbCBzdGlsbCBiZSBmYWxzZS4NCg0KVGhhbmtz
-ISAvLyBKb2huIEVybmJlcmc=
+Hi Laurent
+
+On 22/05/2025 16:26, Laurent Pinchart wrote:
+> Hi Dan,
+>
+> Thank you for the patch.
+>
+> On Thu, May 22, 2025 at 03:30:08PM +0100, Daniel Scally wrote:
+>> mxc_isi_v4l2_init() registers video devices and v4l2 subdevices but
+>> the video devices are not cleaned up in that function's error path
+>> which means they're left hanging if it fails. Update the function
+>> to clean them up properly.
+>>
+>> Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
+>> ---
+>>   drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 9 ++++++---
+>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+>> index 1e79b1211b603a71f0427e82a997787110f7e4ac..4a74b988217f504a03dfe330a7bac76cdecc933c 100644
+>> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+>> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+>> @@ -154,7 +154,7 @@ static int mxc_isi_v4l2_init(struct mxc_isi_dev *isi)
+>>   		if (ret < 0) {
+>>   			dev_err(isi->dev, "Failed to register pipe%u: %d\n", i,
+>>   				ret);
+>> -			goto err_v4l2;
+>> +			goto err_cleanup_pipe;
+>>   		}
+>>   
+>>   		ret = media_create_pad_link(&isi->crossbar.sd.entity,
+>> @@ -164,14 +164,14 @@ static int mxc_isi_v4l2_init(struct mxc_isi_dev *isi)
+>>   					    MEDIA_LNK_FL_IMMUTABLE |
+>>   					    MEDIA_LNK_FL_ENABLED);
+>>   		if (ret < 0)
+>> -			goto err_v4l2;
+>> +			goto err_cleanup_pipe;
+>>   	}
+>>   
+>>   	/* Register the M2M device. */
+>>   	ret = mxc_isi_m2m_register(isi, v4l2_dev);
+>>   	if (ret < 0) {
+>>   		dev_err(isi->dev, "Failed to register M2M device: %d\n", ret);
+>> -		goto err_v4l2;
+>> +		goto err_cleanup_pipe;
+>>   	}
+>>   
+>>   	/* Initialize, fill and register the async notifier. */
+>> @@ -212,6 +212,9 @@ static int mxc_isi_v4l2_init(struct mxc_isi_dev *isi)
+>>   err_m2m:
+>>   	mxc_isi_m2m_unregister(isi);
+>>   	v4l2_async_nf_cleanup(&isi->notifier);
+>> +err_cleanup_pipe:
+>> +	for (i = 0; i < isi->pdata->num_channels; ++i)
+>> +		mxc_isi_pipe_unregister(&isi->pipes[i]);
+> mxc_isi_pipe_unregister() calls mxc_isi_video_unregister(), which locks
+> the video->lock mutex. The mutex is initialized in
+> mxc_isi_video_register(), so you will have an issue here when reaching
+> this label from within the pipe registration loop for any non-registered
+> pipe.
+>
+> One option to address this would be to return from
+> mxc_isi_video_unregister() if video->pipe is NULL.
+
+
+Ah - good spot, thanks
+
+>>   err_v4l2:
+>>   	v4l2_device_unregister(v4l2_dev);
+>>   err_media:
+>>
+>> ---
+>> base-commit: b64b134942c8cf4801ea288b3fd38b509aedec21
+>> change-id: 20250522-djrscally-imx8-isi-fixes-fed2d7cffb1c
