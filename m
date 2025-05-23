@@ -1,107 +1,236 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B281DE2B4
-	for <imx@lists.linux.dev>; Fri, 23 May 2025 08:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A285288C3F
+	for <imx@lists.linux.dev>; Fri, 23 May 2025 08:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747988255; cv=none; b=gLOLegjrCiGaeh8D5xMXYXZlcgqW00aE+1Z874rojVmlu8OM3u9JbXfwOqnSVTDilj1GXC91TLl6Siqscped68Qskw08pw8djpX2wAI2J1UiqSViXocp6dNpFcR8BXwj8p1qvmcMp+dlcARf8pUPyUlxhR4uUIxXAfxwGTRuZI0=
+	t=1747988984; cv=none; b=p9LV4tEdE6TWc4HAM6vGuvTKa3XVf5dBZ4gzzwsf7gH9diOafl4lQKUmqmfVzHG0Ab11aWYGnGCKBOwERASfxw0hnijtF5u0F3JZHCVaQASE94Bm6s9ADbANtbvTvLRVVEDEribzukzLXK2TkFSGIJlUkbjPgvVKzqwhSE4d5Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747988255; c=relaxed/simple;
-	bh=BFCItceWfyuAXXe806yu+VbLQ/lI0BL9H850ON0oNA0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oEQHwQkZ3GpwgNN9dzmjAj7/23hZcYouOjIlWtJOTAJv8veKlXR5g2T2YVvSC5fbJuxQwe1339MkmryfTnRJtT8pg3RLqhzGM8XIpN5bDASEhdJoMMPpxLrNbKQUJ/esEhng0fRj7ZRnHS/dl2P3FFMSH5FfzmUsSjis+JUXlao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=uXt5eSu8; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1747988984; c=relaxed/simple;
+	bh=qLHfCk8CPey1Okeakrp/Va/iHPuMcclTv/tlUY2XgIg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=IKGIlk7ZdPXfbSdszqlbr8nPtBvWEC6CAUxIrCxRE6EJsBR+H3YDRiaNJd1bdBOH1rBMUYlXVuw4Y6x08NiCFq1V+rUjYCXDCwggyBmCPHmyEIyVqvUURS/eH9lcV9YgsH0FfB5nrTCxaYPAX3yCiwCD//7paQ2c3WQNDGCCC1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=pqG2RpQs; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="uXt5eSu8"
-Received: from pendragon.ideasonboard.com (179.218-130-109.adsl-dyn.isp.belgacom.be [109.130.218.179])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 144384A4;
-	Fri, 23 May 2025 10:17:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1747988230;
-	bh=BFCItceWfyuAXXe806yu+VbLQ/lI0BL9H850ON0oNA0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uXt5eSu8sVYfZL82LXbn4zyArt8iv+pp4jy+FOET4Yq/rZz0f6QDRCf70KFG7/fiw
-	 so0KRl3BEWQ97BQaMpkQ/advHhkbceM8SoU6pzKgNgbfxFc4IlOsvq9wA1tXAVECzH
-	 rOuhxR4vR5AWAlSc6Lxm4E7D82VWkJUc+fJ15UDg=
-Date: Fri, 23 May 2025 10:17:25 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: git@apitzsch.eu
-Cc: Ricardo Ribalda <ribalda@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="pqG2RpQs"
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 80F3D1F9D9;
+	Fri, 23 May 2025 10:29:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1747988980;
+	bh=j3tZe3/WIA/A9RSei6guiNM9/nIQO96/MG0HzRXeW18=; h=From:To:Subject;
+	b=pqG2RpQsBjSnlowjk4bODeanUiXyagWvirSd6sjdbCKiUxbgXvd501uR8H8LH7yEZ
+	 hn+X4q5g4Bav8fcOjTGSfrMGfXB9WT4bV4IaXtTlsQWEjOpRb8xnh9oya0B118Edt+
+	 PU3awFuhctkusnRKgNVW5ykPUKm3M0yeeQGxzNsd6trC+e36fdWRNnSnYE26FGVGkU
+	 5uON2FBEwK8bvU5AYAi/HbljKbw/9LaOKiL/5aDXTZC5GPV18Xm6i08q3y3jlr0glS
+	 ZKQp20lGXuP1fB8OJarTRQHjs2ll8dXXsrPwWicva+gHvgpjawQZHXRduKMfX6gMfJ
+	 O3yLhpzJctSVg==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Dong Aisheng <aisheng.dong@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 5/5] media: i2c: imx214: Remove hard-coded external
- clock frequency
-Message-ID: <20250523081725.GB12514@pendragon.ideasonboard.com>
-References: <20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu>
- <20250521-imx214_ccs_pll-v3-5-bfb4a2b53d14@apitzsch.eu>
+	Fabio Estevam <festevam@gmail.com>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Carlos Song <carlos.song@nxp.com>
+Subject: [PATCH v4 1/2] i2c: lpi2c: use readl_poll_timeout() for register polling
+Date: Fri, 23 May 2025 10:29:30 +0200
+Message-Id: <20250523082931.23170-2-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250523082931.23170-1-francesco@dolcini.it>
+References: <20250523082931.23170-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250521-imx214_ccs_pll-v3-5-bfb4a2b53d14@apitzsch.eu>
 
-Hi André,
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-Thank you for the patch.
+Replace polling loops with the readl_poll_timeout() helper macro.
 
-On Wed, May 21, 2025 at 09:34:28PM +0200, André Apitzsch via B4 Relay wrote:
-> From: André Apitzsch <git@apitzsch.eu>
-> 
-> Instead rely on the rate set on the clock (using assigned-clock-rates
-> etc.)
-> 
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Carlos Song <carlos.song@nxp.com>
+---
+v3 -> v4
+- Split the patch into two parts: one for the readl_poll_timeout() and one for the atomic implementation.
+- Change the readl_poll_timeout() delay to 0 us to do not change the behavior of the driver.
+- Use err variable consistently.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+v2 -> v3
+- Closes: https://lore.kernel.org/oe-kbuild-all/202505130735.zh3WuTNu-lkp@intel.com/. Using the return value of
+lpi2c_imx_read_msr_poll_timeout() to check for errors.
 
-> ---
->  drivers/media/i2c/imx214.c | 6 ------
->  1 file changed, 6 deletions(-)
-> 
-> diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-> index 19b494c08ece9894de67a4ee34c6f8e6e2708e41..264e897ec6e8e3d2fcd9d58db82090c7dd85d526 100644
-> --- a/drivers/media/i2c/imx214.c
-> +++ b/drivers/media/i2c/imx214.c
-> @@ -32,7 +32,6 @@
->  
->  #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
->  
-> -#define IMX214_DEFAULT_CLK_FREQ	24000000
->  #define IMX214_DEFAULT_LINK_FREQ	600000000
->  /* Keep wrong link frequency for backward compatibility */
->  #define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
-> @@ -1402,11 +1401,6 @@ static int imx214_probe(struct i2c_client *client)
->  		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
->  				     "failed to get xclk\n");
->  
-> -	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret,
-> -				     "failed to set xclk frequency\n");
-> -
->  	ret = imx214_get_regulators(dev, imx214);
->  	if (ret < 0)
->  		return dev_err_probe(dev, ret, "failed to get regulators\n");
+v1 -> v2
+- Rename READL_POLL_TIMEOUT to lpi2c_imx_read_msr_poll_timeout
+- Remove addr and timeout_us parameters from lpi2c_imx_read_msr_poll_timeout since they are used always with the same value
+- add r-b tag from Carlos Song
+---
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 94 ++++++++++++++----------------
+ 1 file changed, 45 insertions(+), 49 deletions(-)
 
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 342d47e67586..91b0f4c2b924 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -16,6 +16,7 @@
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+@@ -187,6 +188,10 @@ struct lpi2c_imx_struct {
+ 	struct i2c_client	*target;
+ };
+ 
++#define lpi2c_imx_read_msr_poll_timeout(val, cond)                            \
++		  readl_poll_timeout(lpi2c_imx->base + LPI2C_MSR, val, cond,  \
++				     0, 500000)
++
+ static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
+ 			      unsigned int enable)
+ {
+@@ -195,33 +200,34 @@ static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
+ 
+ static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-	unsigned long orig_jiffies = jiffies;
++	int err;
+ 	unsigned int temp;
+ 
+-	while (1) {
+-		temp = readl(lpi2c_imx->base + LPI2C_MSR);
+-
+-		/* check for arbitration lost, clear if set */
+-		if (temp & MSR_ALF) {
+-			writel(temp, lpi2c_imx->base + LPI2C_MSR);
+-			return -EAGAIN;
+-		}
++	err = lpi2c_imx_read_msr_poll_timeout(temp,
++					      temp & (MSR_ALF | MSR_BBF | MSR_MBF));
+ 
+-		if (temp & (MSR_BBF | MSR_MBF))
+-			break;
++	/* check for arbitration lost, clear if set */
++	if (temp & MSR_ALF) {
++		writel(temp, lpi2c_imx->base + LPI2C_MSR);
++		return -EAGAIN;
++	}
+ 
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "bus not work\n");
+-			if (lpi2c_imx->adapter.bus_recovery_info)
+-				i2c_recover_bus(&lpi2c_imx->adapter);
+-			return -ETIMEDOUT;
+-		}
+-		schedule();
++	/* check for bus not busy */
++	if (err) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "bus not work\n");
++		if (lpi2c_imx->adapter.bus_recovery_info)
++			i2c_recover_bus(&lpi2c_imx->adapter);
++		return -ETIMEDOUT;
+ 	}
+ 
+ 	return 0;
+ }
+ 
++static u32 lpi2c_imx_txfifo_cnt(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	return readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
++}
++
+ static void lpi2c_imx_set_mode(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+ 	unsigned int bitrate = lpi2c_imx->bitrate;
+@@ -259,25 +265,18 @@ static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
+ 
+ static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-	unsigned long orig_jiffies = jiffies;
+ 	unsigned int temp;
++	int err;
+ 
+ 	writel(GEN_STOP << 8, lpi2c_imx->base + LPI2C_MTDR);
+ 
+-	do {
+-		temp = readl(lpi2c_imx->base + LPI2C_MSR);
+-		if (temp & MSR_SDF)
+-			break;
++	err = lpi2c_imx_read_msr_poll_timeout(temp, temp & MSR_SDF);
+ 
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
+-			if (lpi2c_imx->adapter.bus_recovery_info)
+-				i2c_recover_bus(&lpi2c_imx->adapter);
+-			break;
+-		}
+-		schedule();
+-
+-	} while (1);
++	if (err) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
++		if (lpi2c_imx->adapter.bus_recovery_info)
++			i2c_recover_bus(&lpi2c_imx->adapter);
++	}
+ }
+ 
+ /* CLKLO = I2C_CLK_RATIO * CLKHI, SETHOLD = CLKHI, DATAVD = CLKHI/2 */
+@@ -393,26 +392,23 @@ static int lpi2c_imx_pio_msg_complete(struct lpi2c_imx_struct *lpi2c_imx)
+ 
+ static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-	unsigned long orig_jiffies = jiffies;
+-	u32 txcnt;
+-
+-	do {
+-		txcnt = readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
++	unsigned int temp;
++	int err;
+ 
+-		if (readl(lpi2c_imx->base + LPI2C_MSR) & MSR_NDF) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "NDF detected\n");
+-			return -EIO;
+-		}
++	err = lpi2c_imx_read_msr_poll_timeout(temp,
++					      (temp & MSR_NDF) || !lpi2c_imx_txfifo_cnt(lpi2c_imx));
+ 
+-		if (time_after(jiffies, orig_jiffies + msecs_to_jiffies(500))) {
+-			dev_dbg(&lpi2c_imx->adapter.dev, "txfifo empty timeout\n");
+-			if (lpi2c_imx->adapter.bus_recovery_info)
+-				i2c_recover_bus(&lpi2c_imx->adapter);
+-			return -ETIMEDOUT;
+-		}
+-		schedule();
++	if (temp & MSR_NDF) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "NDF detected\n");
++		return -EIO;
++	}
+ 
+-	} while (txcnt);
++	if (err) {
++		dev_dbg(&lpi2c_imx->adapter.dev, "txfifo empty timeout\n");
++		if (lpi2c_imx->adapter.bus_recovery_info)
++			i2c_recover_bus(&lpi2c_imx->adapter);
++		return -ETIMEDOUT;
++	}
+ 
+ 	return 0;
+ }
 -- 
-Regards,
+2.39.5
 
-Laurent Pinchart
