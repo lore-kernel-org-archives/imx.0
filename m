@@ -1,113 +1,191 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2096.outbound.protection.outlook.com [40.107.20.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DD01DDC2C;
-	Sat, 24 May 2025 10:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748082531; cv=none; b=MA8b6QX3g7VppnhW2sy0QVAVwxnDx3Sytimoj/U6kf9aqeZHMOB30QD+JZbo5lBtIz1R1G3o6mMrt53z1QPkb1+NHZezObh1o9TV4YO2BTd009R4BAA5sAnkQBmqnF4o06aYRC4aqqaTiQ1nG6Wds+mjbCXapHf1RiVLK8fkcbg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748082531; c=relaxed/simple;
-	bh=psdi4796Sb+q+ePNVBR6xRLzzJYOhgE+dtwY5fCMdYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Je2LL8vHmN9En4i9jToY2fOsBGcA9zJQ9H58eAde487yzwFHOXkQ2NsJkVn65xKI2UZT0tB3U7LBCO+Vplb4HNV0juBFo0M5DeBXd9LSpLJ32bqWoS6EK5m+d+0+hLet2RejZhBU2oSYog18Z6IeB0NTF7WAewFcL4WkHidKPuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZtM6fS9l; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E231F1E1C3F
+	for <imx@lists.linux.dev>; Sat, 24 May 2025 11:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.96
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748085820; cv=fail; b=MaUhOY91CKAZWqKWIyPrZyCdRo617otxuwU1JA+6+DOKfLBp3T287ov92/5Z9LG6By9xXdWMXqE6dZc1fkS8o66TJOT7/9xMfqGp+ztoqlXxlb9nU3hUYFK+LLC/2e1BgoWaLwABf/f0wHQyrB89kMDeUHHbbz3YV+gJDbYe918=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748085820; c=relaxed/simple;
+	bh=1MJD7myIZtxYGvB4+YWQbNWuyUdp8wjCd9dWu2S1D0k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PemjC0sPcS56MmaZPRM0Om5EL14RGSaUiYVDezJh5d/tLzIpjFRrnzVsZLRgt4s5YFoFLTYY/CC3X0eydQ6JW3XxUN/hGk1o0/aTaxztQu1GHIn2puba9B+DkFTMV8Q2Fr+xcG+AhWd34PStffCN19GNUn/x7ixa72jP7CkkJsE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=u2dJ/Lv1; arc=fail smtp.client-ip=40.107.20.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZtM6fS9l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748082530; x=1779618530;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=psdi4796Sb+q+ePNVBR6xRLzzJYOhgE+dtwY5fCMdYo=;
-  b=ZtM6fS9l8BJMhYzGEdUEcL8LN6TrurOnSeTStwBtpfb7oGhyvjP0SjBe
-   6wK4bpS8AcFEWWkFzhBbrUgswAVc1TWrDIyYN6EDhJ/Hea0VTJ/epXEcO
-   MmDaEdkL9ELqt0fFSUqGZrAq1z5gzeHi4oM7mVs98cPoqlxaaTs11wtA4
-   wP+bJAUFK0xUzosZ2Df7unQlRnDhGIBaiEfggzLDdlkqzQIcl15d6kmlL
-   UVld0/ShV3+qyxPfNdG8Fpp0SLj7dDZ/rJmCbIiatFeHUKZaL6VHhzO6x
-   dq1lCht1F4MGq6EWICtczqRt8hgJ8sLQJii83xtKCdM1HOyNHfBrZOrXU
-   A==;
-X-CSE-ConnectionGUID: rm6FqWo9QzKNB+1f34wVFA==
-X-CSE-MsgGUID: AjCJsgePQf6SAsXmCltPTg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="49380013"
-X-IronPort-AV: E=Sophos;i="6.15,311,1739865600"; 
-   d="scan'208";a="49380013"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2025 03:28:49 -0700
-X-CSE-ConnectionGUID: eWF/ujWEQS+zyKJZ6wq/dA==
-X-CSE-MsgGUID: Ja1jVy7xQqW7Dr0Hl6XBLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,311,1739865600"; 
-   d="scan'208";a="141381290"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 24 May 2025 03:28:44 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uIm7N-000R7C-22;
-	Sat, 24 May 2025 10:28:41 +0000
-Date: Sat, 24 May 2025 18:27:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sean Anderson <sean.anderson@linux.dev>, netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: Paul Gazzillo <paul@pgazz.com>,
-	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
-	oe-kbuild-all@lists.linux.dev, Lei Wei <quic_leiwei@quicinc.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
-	linux-kernel@vger.kernel.org,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [net-next PATCH v5 05/10] net: pcs: lynx: Convert to an MDIO
- driver
-Message-ID: <202505241840.ILpzEabZ-lkp@intel.com>
-References: <20250523203339.1993685-6-sean.anderson@linux.dev>
+	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="u2dJ/Lv1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DsJr7ZhErQ5GI4t9bAvu+Qa+rj/LZ7ccIx21u0RTqAS2v7g+gp08DTGf8LD4o6uUaNbg9PP1BLJJ6R2BXeqQZ/hzXN/bKr0j6ZggoR4hmvs7T5tNixwpnNDjNq98XI0pfnCp1l2GKReDgaphUtT3ssx62GXmBrAVkXsNwTfx37zpmZcSzfHcP8SFGqmS0gSp/aU+vtBT6c2BFZnjiypLKG3JIUDFikC6KAha+tHeugig8cNoej2QblkTvQlawXI6LNa79YKtt0EUyWnlxhJJMlbodFv6D/9bFtTHZruMAwEheBEOTPCwolhjRM/NwRie8TXqJnqYYSb4Lkvn09Yaqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EqEtNxXkPCfLE9lfWqvfZpKR+Cn0SjiqoEBuxWcVEXs=;
+ b=PZoLGTyjg8aPgeF1SKSyU3eYDgw7f14o2ZwJSyXSOHazWmVvXpzPC1ZPf+Vof0hz1fAXCVBhqZlZpa00y8jCOSt5AVzTeHtc5kxBDMxQ1xpY1yaKjg2hqkZh0bZPAAa/3YZuEGFEehOicEAxqQUBP2Cdzu3vn57COf5ICYAYolyOT92xeoc0zX3MGzxQunajDxCcyeimUMxM7lj8zyhx95jCALnPfBqdHGVUquoV6Y34LfIzIGrRs1lC3KIv5jZyiWeA3a5lISLXYryylLJqNBjvMxyZth0dLfh5nVSTyB60O5kW0qD/T6JAjRHdzivU96u/sJnrZqJTqinezGkhjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 91.26.50.189) smtp.rcpttodomain=kernel.org smtp.mailfrom=phytec.de;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=phytec.de; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EqEtNxXkPCfLE9lfWqvfZpKR+Cn0SjiqoEBuxWcVEXs=;
+ b=u2dJ/Lv1xAMM/X6VbeOMuhzZ43CcaKBawvj1/Xur2B8Q7NKPqnJTmlXnolgzAD+aVcZIYxFoSimoc0u9NTVotvS1glhJLZpSEnhYE3X9It8GqV6blw8pP7caJ+g3XWpBOOT6X+/VE1NMlPEN+3Ac7vkW/aPFqpsPPu320qiq5fGuJnK7gKOPqFSUd9KNEW1h0rQACPeJK1px038AD89UzbW/mjZ46UGVLany07D4ONWON5dcLCV4iYbLDDhIZC9K6rigLvaQ+uBxzM438Xmas7/2udrVEPGNo8Lk2TFFeAaEbNLVRtk/G5wBh4T01yMRplMRj2S6FT9Yo2MHnA3HzQ==
+Received: from AM0PR03CA0018.eurprd03.prod.outlook.com (2603:10a6:208:14::31)
+ by AS4P195MB1669.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:510::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.22; Sat, 24 May
+ 2025 11:23:30 +0000
+Received: from AM4PEPF00027A63.eurprd04.prod.outlook.com
+ (2603:10a6:208:14:cafe::a8) by AM0PR03CA0018.outlook.office365.com
+ (2603:10a6:208:14::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8746.28 via Frontend Transport; Sat,
+ 24 May 2025 11:23:30 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 91.26.50.189)
+ smtp.mailfrom=phytec.de; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=phytec.de;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ phytec.de discourages use of 91.26.50.189 as permitted sender)
+Received: from Diagnostix.phytec.de (91.26.50.189) by
+ AM4PEPF00027A63.mail.protection.outlook.com (10.167.16.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8769.18 via Frontend Transport; Sat, 24 May 2025 11:23:29 +0000
+Received: from Florix.phytec.de (172.25.0.13) by Diagnostix.phytec.de
+ (172.25.0.14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Sat, 24 May
+ 2025 13:23:29 +0200
+Received: from llp-stoidner.fritz.box (172.25.39.157) by Florix.phytec.de
+ (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Sat, 24 May
+ 2025 13:23:29 +0200
+From: Christoph Stoidner <c.stoidner@phytec.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<upstream@lists.phytec.de>, Christoph Stoidner <c.stoidner@phytec.de>
+Subject: [PATCH v3] arm64: dts: freescale: imx93-phycore-som: Delay the phy reset by a gpio
+Date: Sat, 24 May 2025 13:23:15 +0200
+Message-ID: <20250524112315.695376-1-c.stoidner@phytec.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250523203339.1993685-6-sean.anderson@linux.dev>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: Diagnostix.phytec.de (172.25.0.14) To Florix.phytec.de
+ (172.25.0.13)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PEPF00027A63:EE_|AS4P195MB1669:EE_
+X-MS-Office365-Filtering-Correlation-Id: f559f7ff-101e-4d21-4f33-08dd9ab56923
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?cDu2jWnQ4TWGonJb+DCSg+dl+xTrSsxAopW7A6F1u2W8mnK1cATLivysyahh?=
+ =?us-ascii?Q?YuH4MBe2l8tY8n+Tt7HWJodlg5yA5Me6eeiZJetlzcofzG6zNVz0RzgoyjG/?=
+ =?us-ascii?Q?fS/fVcMfoL+bk5YiF9QUJ4r8XyzBYdY0zGlRwsd5GUWaZx1uqN1B+Tb/cC6l?=
+ =?us-ascii?Q?oOE1tODjqS9VmDBtIoHuzugRx7ACsiHMT7YdrDOZyml5pY3j1CICPGYYdnme?=
+ =?us-ascii?Q?uhTjfUUtQpeHT/757sj9Af4IiFpOW6/Hmvix7fO7JZROCGJ4CJRSRxUsIa4e?=
+ =?us-ascii?Q?5yML3PfbPCPKsx2UTowTxNZ4SKj5VlikDii//joxNcRkFSsQERDVdwTmIgo9?=
+ =?us-ascii?Q?k2pMELb6oTVOOdLj/0vBtpxMT7m+niCxv5rqjJPU9IIyoxBfZNAq4O608wJy?=
+ =?us-ascii?Q?JlKr9c+EuBVkNP3qvuLJXyckt/o+yztTWgCrnxJZ/QSYryJdUnA3Xj2zJt/K?=
+ =?us-ascii?Q?f0oYsDHgPwYXYkWrsETIl7v5U1lbPBLhGupv8uCu/me9lxaoX/CUXahEeTNW?=
+ =?us-ascii?Q?mb0hPaMJ1UFSAHhfST9QQ3UjwuY300ka1JKtMp3HCvYSdD4NWfSSlwLDdoJ1?=
+ =?us-ascii?Q?KhFQUb1QKgvbp+dM37JyvsRDX5A47UFSakKHPUpgEPaOS5YwZS8f1MtW3TQi?=
+ =?us-ascii?Q?s4pnMzvZ2zhQCHFNydQFnU8fDGS1BLiD045VLnvfbYMJnu7K1pszMMSc8jBQ?=
+ =?us-ascii?Q?8X8tLNFCLt6amNDk49t3HaK3ItPo/53GJ9lauUiv0A5kgRITirJ4IhiH/mip?=
+ =?us-ascii?Q?B8ArCTLDjuc8J5F058REJZofd3SQg9s9z7uH5JE/ivGw10X9o6eMK/WJf2J9?=
+ =?us-ascii?Q?WUox2qSsPDF2eIgtTcagZ6sFITF7mybyjohbC+s18bYQm/yYhEAOipWgp39u?=
+ =?us-ascii?Q?TFBFPOk4ji0TU8vub/OGLOieaJr12kRfwSP7Rv+xj6Vkk0Op/ZJ+uQihTRxw?=
+ =?us-ascii?Q?rWN0l5P6i2QH1n1faXSxSloijDDCirMtwgS9zS3SizQooWNBHgqf7LyxTToG?=
+ =?us-ascii?Q?MNWObDbH3spX38Wz9Qfhwlgw3WrqEJ4us/GOq+sNVHhdnztgBfv5kQCWchbC?=
+ =?us-ascii?Q?sLzyvc08NetgAnq3lkQIV0qpvjBWSoFp9CbNThbyqKXz4mdUzA1/RAp5wBEu?=
+ =?us-ascii?Q?5MG5CkUSjqdhUafSlKtchak/Fl7BlLVx00UX7VbSsRavL+RKshsfd8nU8zns?=
+ =?us-ascii?Q?yOUcPED8IzIEac0H3Ra16XgS/MQ+SkO0K3NFpy0fzQL+QHqqdHmgtppetB70?=
+ =?us-ascii?Q?Ea2Xt7CFw1Ye8U/Kx0M7/a6Sj60OrPoZKOFhuJCRbz0PQ/38c9NUo/8Fo8KA?=
+ =?us-ascii?Q?mCAzsT1mYIhcf22ENEJVMRxvEH+2txtfoWpVL9VPwft0O8JFp4PuQ3o2Li19?=
+ =?us-ascii?Q?j9DYvUDZdjx3/6rg1txizHdNCN2VlS4H2VYaVd60Ae2XbpZoLDy0lxaBldFm?=
+ =?us-ascii?Q?zWBjGFd9ZR/SzEAw0u5mTCWipxgbZIP6HXuX6lUqDVikG/kl20u6RHV5a1et?=
+ =?us-ascii?Q?fYBasyzB00HNz9DQ9P7tu5VKMtiIWde+l6i3?=
+X-Forefront-Antispam-Report:
+	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:Diagnostix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(7416014)(376014);DIR:OUT;SFP:1102;
+X-OriginatorOrg: phytec.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2025 11:23:29.9755
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f559f7ff-101e-4d21-4f33-08dd9ab56923
+X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Diagnostix.phytec.de]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00027A63.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4P195MB1669
 
-Hi Sean,
+According to the datasheet the phy needs to be held in reset until the
+reference clock got stable. Even though no issue was observed, fix this
+as the software should always comply with the specification.
 
-kernel test robot noticed the following build warnings:
+Use gpio4 23, which is connected to the phy reset pin. On the same pin
+RX_ER was used before, but this signal is optional and can be dropped.
 
-[auto build test WARNING on net-next/main]
+Note: This comes into effect with the phyCOREs SOM hardware revision 4.
+In revisions before, this gpio is not connected, and the phy reset is
+managed with the global hardware reset circuit.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sean-Anderson/dt-bindings-net-Add-Xilinx-PCS/20250524-043901
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20250523203339.1993685-6-sean.anderson%40linux.dev
-patch subject: [net-next PATCH v5 05/10] net: pcs: lynx: Convert to an MDIO driver
-config: x86_64-kismet-CONFIG_OF_DYNAMIC-CONFIG_FSL_FMAN-0-0 (https://download.01.org/0day-ci/archive/20250524/202505241840.ILpzEabZ-lkp@intel.com/config)
-reproduce: (https://download.01.org/0day-ci/archive/20250524/202505241840.ILpzEabZ-lkp@intel.com/reproduce)
+Signed-off-by: Christoph Stoidner <c.stoidner@phytec.de>
+---
+Changes in v3:
+- use reset-gpios (from ethernet-phy.yaml) instead of phy-reset-gpios
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505241840.ILpzEabZ-lkp@intel.com/
+Changes in v2:
+- remove paragraph "Fix this in the bootloader..." from commit message
+- fix checkpatch warning
 
-kismet warnings: (new ones prefixed by >>)
->> kismet: WARNING: unmet direct dependencies detected for OF_DYNAMIC when selected by FSL_FMAN
-   WARNING: unmet direct dependencies detected for OF_DYNAMIC
-     Depends on [n]: OF [=n]
-     Selected by [y]:
-     - FSL_FMAN [=y] && NETDEVICES [=y] && ETHERNET [=y] && NET_VENDOR_FREESCALE [=y] && (FSL_SOC || ARCH_LAYERSCAPE || COMPILE_TEST [=y])
+ arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+index 88c2657b50e6..b481097f08a4 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+@@ -68,6 +68,8 @@ mdio: mdio {
+ 		ethphy1: ethernet-phy@1 {
+ 			compatible = "ethernet-phy-ieee802.3-c22";
+ 			reg = <1>;
++			reset-gpios = <&gpio4 23 GPIO_ACTIVE_HIGH>;
++			reset-assert-us = <30>;
+ 		};
+ 	};
+ };
+@@ -91,14 +93,17 @@ pinctrl_fec: fecgrp {
+ 		fsl,pins = <
+ 			MX93_PAD_ENET2_MDC__ENET1_MDC			0x50e
+ 			MX93_PAD_ENET2_MDIO__ENET1_MDIO			0x502
+-			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x57e
+-			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x57e
+-			MX93_PAD_ENET2_RXC__ENET1_RX_ER			0x5fe
++			/* the three pins below are connected to PHYs straps,
++			 * that is what the pull-up/down setting is for.
++			 */
++			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x37e
++			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x37e
+ 			MX93_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL	0x57e
+ 			MX93_PAD_ENET2_TD0__ENET1_RGMII_TD0		0x50e
+ 			MX93_PAD_ENET2_TD1__ENET1_RGMII_TD1		0x50e
+ 			MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL	0x50e
+ 			MX93_PAD_ENET2_TD2__ENET1_TX_CLK		0x4000050e
++			MX93_PAD_ENET2_RXC__GPIO4_IO23			0x51e
+ 		>;
+ 	};
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
