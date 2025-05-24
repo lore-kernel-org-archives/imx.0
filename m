@@ -1,122 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FCC7E9;
-	Sat, 24 May 2025 08:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2E24A01;
+	Sat, 24 May 2025 09:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748076223; cv=none; b=sKuLenWzTqetFAkkpRm+mfp+JjIOkaj/msdWj2nuJdZbFcS4ec/kPiT1XCv2goCqZtLWQW3FjnGB4ACI8nhPocjy5QnglIzktoaBsqbPSaCGeamTBkMj2zJwXaTCJASxURa14N3/IrJIJqCOOdO7VEl1fbn1eCRiGLez+botQSU=
+	t=1748078083; cv=none; b=DRnGjSG22hrFtEO9ASDSlNz4/BS04r6g7RetZnyA4bSxSIWtkBoKCTFJTUqnEUgxDpeMU5mQc977YQW9tXWNguV0EzsNx+12b5flonlibHci00W5eWjXnE15DFTmtANA8sbEav06wC1gLxBajTDD4mIXeA9gZFYcO+vjf1JaywE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748076223; c=relaxed/simple;
-	bh=21TpRITYx8gCPyYtnS7+VMQMKDMX408Ws2PCZEAHMeo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ej6f2fwpKZacgXGPnEGj83STP6alGV2lbJV4BRmAaQYZ89HXJL0FZkZs6pmh56s00ExFpOOFbcdwoCW/7u5ekMW/UUMEauZ6aRHLBQn0WUarAIyb9SZNiXvmpX3utv+FOaI4xrFrcW6RS4kaXzY3vgYg1tUDyGIy1szODe6ww/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AA9z5PS9; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1748078083; c=relaxed/simple;
+	bh=CitvJ9lBuFBmvOFYluWUYT8ZBS/Uz4ur42/Hat5GQ4A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Hc2hH8zl6YeSLorS9VlRbFydS7R4hUZZYCd1c7sBAu5R8ZUx9FUZM/lbgnQG95C90CtIl7KBDFCfEjcOX09WqPzH8swP8VsDyiqN0GOURRTNvBZXTlXgZhvK38hr0dmpzzDCIbFk3ToFZM/CXAbcStO0ixKiYStyhGKDViQ+b48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbkwFYrH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AA9z5PS9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748076221; x=1779612221;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=21TpRITYx8gCPyYtnS7+VMQMKDMX408Ws2PCZEAHMeo=;
-  b=AA9z5PS9LMbhc4fnlsMM2jzuCrN7QmWdolHACR97RK1lPQQxvoa07tWV
-   X7XqHAPG7EBVWj5sV+HG6C+DMVETCs51CjLENZQWUm0femuDSVzDZUyfV
-   rQk+FXN7ya+lIh8jooFEv3IOfmafOoEEhjyUBIQRih7xO0cG5Q06Ss9Je
-   d+QNkPYgYbMSwGxQ/1KzX801j834XgILrvWfeA5Pcbom3jF5Cqv2Td8FP
-   RgE11GUp5KgJgmrf8giHXAknpuWGOEUz4fpfYBatU7OM1FjHdSmAAAT6P
-   5rZ9Q4roq8XrO+9kQaPE+QrR4eNfojy1w2sqbUzDZ8TMd9mHew1Mc+cUs
-   w==;
-X-CSE-ConnectionGUID: IYfgCwFCQE27ATePh7dB9A==
-X-CSE-MsgGUID: Zv7nwtyLS6aFB+AcDoFXBQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="50273663"
-X-IronPort-AV: E=Sophos;i="6.15,311,1739865600"; 
-   d="scan'208";a="50273663"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2025 01:43:40 -0700
-X-CSE-ConnectionGUID: 7Kqi4AGlTmisIlrL2d3T2Q==
-X-CSE-MsgGUID: J3rguEQXTV68vf3OENoThw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,311,1739865600"; 
-   d="scan'208";a="141403969"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 24 May 2025 01:43:36 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uIkTd-000R3w-2R;
-	Sat, 24 May 2025 08:43:33 +0000
-Date: Sat, 24 May 2025 16:42:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sean Anderson <sean.anderson@linux.dev>, netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: oe-kbuild-all@lists.linux.dev, Lei Wei <quic_leiwei@quicinc.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
-	linux-kernel@vger.kernel.org,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [net-next PATCH v5 05/10] net: pcs: lynx: Convert to an MDIO
- driver
-Message-ID: <202505241618.qJrsEs8c-lkp@intel.com>
-References: <20250523203339.1993685-6-sean.anderson@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbkwFYrH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C9463C4CEE4;
+	Sat, 24 May 2025 09:14:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748078082;
+	bh=CitvJ9lBuFBmvOFYluWUYT8ZBS/Uz4ur42/Hat5GQ4A=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=hbkwFYrH8MSPiHj7J93++UbWQVp2UTdvzicU5GIFgcJkV6HwlTezTEdFHRu1dQt4N
+	 p0Z0XBUDwJ8gR0lCeuWfNwRBWleGGdm21sakTiXEGSn73AvAB9slZqjQfxB+9fizNe
+	 rbeSn2xot6v+JgEIYLMfq3drmsZzdLT0CxdsbKL6ou6OiQENJrRqBlZe2uYHJdAToS
+	 oOPBbUHnxws9qAwdKmdM1vHSqISUNqn4z8fy11Cz1YaWMAV37cS+creqIKKb2nYPNt
+	 8lc+xEFajGAtghgDNN1skZPGm+ervN5YdppBaKjsjhPi6PUGRe14dFMnJsNyXleHRG
+	 Uo/ijjg/WF0YQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE115C54F2E;
+	Sat, 24 May 2025 09:14:42 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Subject: [PATCH v4 0/5] media: i2c: imx214: Add support for more clock
+ frequencies
+Date: Sat, 24 May 2025 11:14:35 +0200
+Message-Id: <20250524-imx214_ccs_pll-v4-0-f7dc22e5255b@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250523203339.1993685-6-sean.anderson@linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPuNMWgC/2XM3wqCMBTH8VeJXbfYzjatrnqPCJnbWQ5MxZlY4
+ rs3JeiPnKvvgd9nJAFbj4EcNyNpsffB11UMud0QU+jqitTb2AQYKCZZQv1tAC4zY0LWlCVFqdE
+ yPKASQOKoadH5YQHPl9iFD13dPha/5/P3TXH1T/WcMmqFTVO5R+Vye9KN757BFDu8kxnr4QPEW
+ wEQARdtBSzhzvE1IL4A4CtARCB3udSQK2G5/AWmaXoBeiUP6DABAAA=
+X-Change-ID: 20250406-imx214_ccs_pll-e4aed0e9e532
+To: Ricardo Ribalda <ribalda@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>, 
+ Ricardo Ribalda <ribalda@chromium.org>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1748078081; l=2067;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=CitvJ9lBuFBmvOFYluWUYT8ZBS/Uz4ur42/Hat5GQ4A=;
+ b=BQwSNDVlkAXpO8nEP96coicinOVWn6M8dZiuEuOgTvIVnL0Fy1e+8oQOoovx3aIJOm1bleNd8
+ or9MrHm8VCbBCG5To0hdUEKHIbdfu7Yui+3MBu//z78Wl5fl/aUKX8F
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-Hi Sean,
+The imx214 driver currently supports only a 24 MHz external clock. But
+there are devices, like Qualcomm-MSM8916-based phones, which cannot
+provide this frequency. To make the sensor usable by those devices, add
+support for additional clock frequencies.
 
-kernel test robot noticed the following build warnings:
+This series supersedes
+https://lore.kernel.org/linux-media/20250308-imx214_clk_freq-v1-0-467a4c083c35@apitzsch.eu/
 
-[auto build test WARNING on net-next/main]
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+Changes in v4:
+- Add missing colon to error message
+- Add A-b, R-b tags
+- Link to v3: https://lore.kernel.org/r/20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sean-Anderson/dt-bindings-net-Add-Xilinx-PCS/20250524-043901
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20250523203339.1993685-6-sean.anderson%40linux.dev
-patch subject: [net-next PATCH v5 05/10] net: pcs: lynx: Convert to an MDIO driver
-config: x86_64-randconfig-074-20250524 (https://download.01.org/0day-ci/archive/20250524/202505241618.qJrsEs8c-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250524/202505241618.qJrsEs8c-lkp@intel.com/reproduce)
+Changes in v3:
+- Limit range of pll_ip_clk_freq_hz (Sakari)
+- Drop unneeded 'ret'
+- Use pll.pixel_rate_csi for bit rate calculation
+- Add patch that deprecates the clock-frequency property
+- Link to v2: https://lore.kernel.org/r/20250505-imx214_ccs_pll-v2-0-f50452061ff1@apitzsch.eu
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505241618.qJrsEs8c-lkp@intel.com/
+Changes in v2:
+- Add A-b tags
+- Switch to v4l2_ctrl_s_ctrl_int64() to acquire the control handler mutex
+- Add error handling for v4l2_ctrl_s_ctrl_int64() and
+  imx214_pll_update()
+- Replace "read clock frequency from dt" patch by "remove hard-coded
+  external clock frequency" patch
+- Link to v1:
+  https://lore.kernel.org/r/20250415-imx214_ccs_pll-v1-0-d3d7748e5fbd@apitzsch.eu
 
-All warnings (new ones prefixed by >>):
+---
+André Apitzsch (5):
+      media: i2c: imx214: Reorder imx214_parse_fwnode call
+      media: i2c: imx214: Prepare for variable clock frequency
+      media: i2c: imx214: Make use of CCS PLL calculator
+      media: dt-bindings: sony,imx214: Deprecate property clock-frequency
+      media: i2c: imx214: Remove hard-coded external clock frequency
 
->> drivers/net/pcs/pcs-lynx.c:374:34: warning: 'lynx_pcs_of_match' defined but not used [-Wunused-const-variable=]
-     374 | static const struct of_device_id lynx_pcs_of_match[] = {
-         |                                  ^~~~~~~~~~~~~~~~~
+ .../devicetree/bindings/media/i2c/sony,imx214.yaml |  29 ++-
+ drivers/media/i2c/Kconfig                          |   1 +
+ drivers/media/i2c/imx214.c                         | 263 ++++++++++++++++-----
+ 3 files changed, 217 insertions(+), 76 deletions(-)
+---
+base-commit: 176e917e010cb7dcc605f11d2bc33f304292482b
+change-id: 20250406-imx214_ccs_pll-e4aed0e9e532
 
-
-vim +/lynx_pcs_of_match +374 drivers/net/pcs/pcs-lynx.c
-
-   373	
- > 374	static const struct of_device_id lynx_pcs_of_match[] = {
-   375		{ .compatible = "fsl,lynx-pcs" },
-   376		{ },
-   377	};
-   378	MODULE_DEVICE_TABLE(of, lynx_pcs_of_match);
-   379	
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+André Apitzsch <git@apitzsch.eu>
+
+
