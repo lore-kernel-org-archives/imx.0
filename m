@@ -1,113 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD63F18BC3B;
-	Sat, 24 May 2025 09:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DD01DDC2C;
+	Sat, 24 May 2025 10:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748078083; cv=none; b=pN0TuIA+rYWStuvU3TjdEtgjvcFjR+NbUeU54AlLBB3CxpmJ/KXEmbKtU5wLvTNwRf1GU4+Kswv7UGX113s6htTVQNZcLJ9sCzlQ/Fik8oGhaq7NDDRq0ba9wpMGlbtZeP+1iJW8KWwfjfEOhYSKAgaUl2D18zZgNivYFJSRmOk=
+	t=1748082531; cv=none; b=MA8b6QX3g7VppnhW2sy0QVAVwxnDx3Sytimoj/U6kf9aqeZHMOB30QD+JZbo5lBtIz1R1G3o6mMrt53z1QPkb1+NHZezObh1o9TV4YO2BTd009R4BAA5sAnkQBmqnF4o06aYRC4aqqaTiQ1nG6Wds+mjbCXapHf1RiVLK8fkcbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748078083; c=relaxed/simple;
-	bh=QmJJzXeg74/tDMm21ZE8ew95kEfbtH/qiljqYhp4/+A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=I0jDyqfspKOPuveJFwDSO5V5+qDOFXjrGhFettD044GlQrCp0JApmVD5dlxzMNx+99HzHa9gK6lPC8pkmyJ2UPLNr/ouko24RHJf37Ou1as/9zT73b1Fwo5d4P0PlyaLl5O7ex9ASeFZuOl5iHLfnfsyDJRwNeG/x/Sf7TYx8XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5w5otD/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748082531; c=relaxed/simple;
+	bh=psdi4796Sb+q+ePNVBR6xRLzzJYOhgE+dtwY5fCMdYo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Je2LL8vHmN9En4i9jToY2fOsBGcA9zJQ9H58eAde487yzwFHOXkQ2NsJkVn65xKI2UZT0tB3U7LBCO+Vplb4HNV0juBFo0M5DeBXd9LSpLJ32bqWoS6EK5m+d+0+hLet2RejZhBU2oSYog18Z6IeB0NTF7WAewFcL4WkHidKPuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZtM6fS9l; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5w5otD/"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1EF20C4CEFC;
-	Sat, 24 May 2025 09:14:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748078083;
-	bh=QmJJzXeg74/tDMm21ZE8ew95kEfbtH/qiljqYhp4/+A=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=V5w5otD/CRTFSQT6LRbqQUyYXhWIrYu8GOpFp+H3QRDL53u/r+j+qTNdgqX41IcCH
-	 5pXFsdrZa4I0lN0aeP/qw3MUDWQBZMqLUGKhRqPVD/jJO1mEEYmDBTWiAn5pIaMgX9
-	 m82zAL3yVYYEz9hFhhgCI4W3hIIkUrCt7woODA20+wfDrgHu0JuzKCES7EtXOuVT7/
-	 EtsoODSUPWXlCuMd8CVGtys+b4l7yze3NYpmLnFqkvMrqUj9scMy6bNp/AtxUUlive
-	 8UZRpHcF7LHsSRbR/nfVym2Dzn3mJkc9/lZr03FFpZfD9kPtDJVY9tHDnBtCle336u
-	 XZLPbRLF1A4yg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15F2FC54F30;
-	Sat, 24 May 2025 09:14:43 +0000 (UTC)
-From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Sat, 24 May 2025 11:14:40 +0200
-Subject: [PATCH v4 5/5] media: i2c: imx214: Remove hard-coded external
- clock frequency
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZtM6fS9l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748082530; x=1779618530;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=psdi4796Sb+q+ePNVBR6xRLzzJYOhgE+dtwY5fCMdYo=;
+  b=ZtM6fS9l8BJMhYzGEdUEcL8LN6TrurOnSeTStwBtpfb7oGhyvjP0SjBe
+   6wK4bpS8AcFEWWkFzhBbrUgswAVc1TWrDIyYN6EDhJ/Hea0VTJ/epXEcO
+   MmDaEdkL9ELqt0fFSUqGZrAq1z5gzeHi4oM7mVs98cPoqlxaaTs11wtA4
+   wP+bJAUFK0xUzosZ2Df7unQlRnDhGIBaiEfggzLDdlkqzQIcl15d6kmlL
+   UVld0/ShV3+qyxPfNdG8Fpp0SLj7dDZ/rJmCbIiatFeHUKZaL6VHhzO6x
+   dq1lCht1F4MGq6EWICtczqRt8hgJ8sLQJii83xtKCdM1HOyNHfBrZOrXU
+   A==;
+X-CSE-ConnectionGUID: rm6FqWo9QzKNB+1f34wVFA==
+X-CSE-MsgGUID: AjCJsgePQf6SAsXmCltPTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="49380013"
+X-IronPort-AV: E=Sophos;i="6.15,311,1739865600"; 
+   d="scan'208";a="49380013"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2025 03:28:49 -0700
+X-CSE-ConnectionGUID: eWF/ujWEQS+zyKJZ6wq/dA==
+X-CSE-MsgGUID: Ja1jVy7xQqW7Dr0Hl6XBLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,311,1739865600"; 
+   d="scan'208";a="141381290"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 24 May 2025 03:28:44 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uIm7N-000R7C-22;
+	Sat, 24 May 2025 10:28:41 +0000
+Date: Sat, 24 May 2025 18:27:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sean Anderson <sean.anderson@linux.dev>, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Paul Gazzillo <paul@pgazz.com>,
+	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
+	oe-kbuild-all@lists.linux.dev, Lei Wei <quic_leiwei@quicinc.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+	linux-kernel@vger.kernel.org,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, imx@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [net-next PATCH v5 05/10] net: pcs: lynx: Convert to an MDIO
+ driver
+Message-ID: <202505241840.ILpzEabZ-lkp@intel.com>
+References: <20250523203339.1993685-6-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250524-imx214_ccs_pll-v4-5-f7dc22e5255b@apitzsch.eu>
-References: <20250524-imx214_ccs_pll-v4-0-f7dc22e5255b@apitzsch.eu>
-In-Reply-To: <20250524-imx214_ccs_pll-v4-0-f7dc22e5255b@apitzsch.eu>
-To: Ricardo Ribalda <ribalda@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748078081; l=1261;
- i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=roC/yqnwu/rypBv0AK9sWLYwwI91i9Cg/QD5HFxyhEk=;
- b=oS74+YSuz1SReKw3CMPcyGgH0e39XipgsbpyBEb7LbIsCW4gVPPvUkf++YOdCF/KRixS3ghIm
- a69VX8DNsnlDw2IRx/LvZUf5NkbElBqrVMM54PUja1q8jDL+6CoClTd
-X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
- pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
-X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
- auth_id=142
-X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Reply-To: git@apitzsch.eu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250523203339.1993685-6-sean.anderson@linux.dev>
 
-From: André Apitzsch <git@apitzsch.eu>
+Hi Sean,
 
-Instead rely on the rate set on the clock (using assigned-clock-rates
-etc.)
+kernel test robot noticed the following build warnings:
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
----
- drivers/media/i2c/imx214.c | 6 ------
- 1 file changed, 6 deletions(-)
+[auto build test WARNING on net-next/main]
 
-diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index fd03650a5b2bbdbbc677d5797380285f1832baa5..a0cef9e61b41be8ea76a6d6e4b8c9fc4060cfa0f 100644
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -32,7 +32,6 @@
- 
- #define IMX214_REG_FAST_STANDBY_CTRL	CCI_REG8(0x0106)
- 
--#define IMX214_DEFAULT_CLK_FREQ	24000000
- #define IMX214_DEFAULT_LINK_FREQ	600000000
- /* Keep wrong link frequency for backward compatibility */
- #define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
-@@ -1402,11 +1401,6 @@ static int imx214_probe(struct i2c_client *client)
- 		return dev_err_probe(dev, PTR_ERR(imx214->xclk),
- 				     "failed to get xclk\n");
- 
--	ret = clk_set_rate(imx214->xclk, IMX214_DEFAULT_CLK_FREQ);
--	if (ret)
--		return dev_err_probe(dev, ret,
--				     "failed to set xclk frequency\n");
--
- 	ret = imx214_get_regulators(dev, imx214);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "failed to get regulators\n");
+url:    https://github.com/intel-lab-lkp/linux/commits/Sean-Anderson/dt-bindings-net-Add-Xilinx-PCS/20250524-043901
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250523203339.1993685-6-sean.anderson%40linux.dev
+patch subject: [net-next PATCH v5 05/10] net: pcs: lynx: Convert to an MDIO driver
+config: x86_64-kismet-CONFIG_OF_DYNAMIC-CONFIG_FSL_FMAN-0-0 (https://download.01.org/0day-ci/archive/20250524/202505241840.ILpzEabZ-lkp@intel.com/config)
+reproduce: (https://download.01.org/0day-ci/archive/20250524/202505241840.ILpzEabZ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505241840.ILpzEabZ-lkp@intel.com/
+
+kismet warnings: (new ones prefixed by >>)
+>> kismet: WARNING: unmet direct dependencies detected for OF_DYNAMIC when selected by FSL_FMAN
+   WARNING: unmet direct dependencies detected for OF_DYNAMIC
+     Depends on [n]: OF [=n]
+     Selected by [y]:
+     - FSL_FMAN [=y] && NETDEVICES [=y] && ETHERNET [=y] && NET_VENDOR_FREESCALE [=y] && (FSL_SOC || ARCH_LAYERSCAPE || COMPILE_TEST [=y])
 
 -- 
-2.49.0
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
