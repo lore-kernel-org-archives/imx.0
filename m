@@ -1,333 +1,187 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC8F19DF8B
-	for <imx@lists.linux.dev>; Mon, 26 May 2025 09:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B24143C61
+	for <imx@lists.linux.dev>; Mon, 26 May 2025 09:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748251147; cv=none; b=ZUTPEhSfGj3qRkOuGFmMkhLlH2kFjQ18F58WB/NtnQgF9mY8a8+r2Ee0dWachYsyE39mEwdy6yr/b6BVd/tEdRXI94GTPOnxyzvILgE8EcOii8UQYC7tqboPsFOcq5Y9Io735NlWxmIkSqEj+GDSUY3/lHLhPBuQgh8e/OgN/oM=
+	t=1748251453; cv=none; b=RmvMRiTW0yqKr4XFqrw1phXcLCYQgmEh/wpEbaZK7KorcHqI7M7vhVUf802CPfu4ryiYd+ZH0uS2/scRI3WFpwpS6z2tEGlTEUqllasWDW+xcqZ/InRWISgSUO78p5Hn8Bm4afEC/lht9PWUQcPA/qUYPg7FtEyqDCNR4R23/+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748251147; c=relaxed/simple;
-	bh=H2oDc2BAPhOVfLc7NGNX95Ad/OxI6HM89N5f+htCNsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LMtA270i9XZOa06jgqS47t1BJ3Xo1gwf6j+CMSXJXL6XC1Mwqc0eNrXaL+UQ0eqhRRbSVihnkpqQLIg3ddXmnD+Ui14EG3M15g41c35eHWzECBvVkBohCPRqI/HeVkylTUGXFMR7Vo8Zxizmvj0ndy7NPoagSuxxz9YMTJQQNdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uJTyj-0005AD-Dn; Mon, 26 May 2025 11:18:41 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1uJTyj-000E19-0B;
-	Mon, 26 May 2025 11:18:41 +0200
-Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 94A2C419BBC;
-	Mon, 26 May 2025 09:18:40 +0000 (UTC)
-Date: Mon, 26 May 2025 11:18:40 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Fabian Pflug <f.pflug@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH 1/2] ARM: dts: freescale: add support for NXP i.MX93 FRDM
-Message-ID: <20250526-dandelion-rooster-of-bliss-41d420-mkl@pengutronix.de>
-References: <20250523-fpg-nxp-imx93-frdm-v1-0-546b2d342855@pengutronix.de>
- <20250523-fpg-nxp-imx93-frdm-v1-1-546b2d342855@pengutronix.de>
+	s=arc-20240116; t=1748251453; c=relaxed/simple;
+	bh=4JxGc4zLJ01b3yH7eTdFw5QT8vjzTI/e7iMVqU8qg/4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JlRYXfJglX7um49WyCyU2oiXh/b3iJRC2T+id29bIvX3XbzMgpeElP0motY79Gjz3I28kUqkS9ThpbG8Bqg7oFc8C4KhT9dBAfLggqZllmVLauqtQQitMzG++CylC1uYpc+E1Kujap7ZXyn+S7kNPZGEG77U8GF4jIcC+K79FTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=obYWoSYa; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="obYWoSYa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1748251449; x=1748856249; i=wahrenst@gmx.net;
+	bh=yCg6d3ai45oT8m/nEPSdO++snGi9MLhj5lOFq4KJ7so=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=obYWoSYaUa146vLgvmzxYAjeuy5Wh/C9ccUf0YOKYtfaw8aNyVAXqMNIhd7jn53E
+	 tGtZTrP5BM1Gsz7zvgKmt5H/7gKGmS4I90M6Kdn1wK6F/1rvuqqc2d/IB5+kgK+UI
+	 rCg/10Gi/eEi3aNb9wmILR+0dA8ftqPknR3X3109l1tsWIRmqTFLEan3EeEoTNBke
+	 tcFwkjfiFDXsJXXv1sdOesiwnOKdrjsriB4fPL7SB6XdWdDjLxcyZXnWdyBguG8TB
+	 8FAYZjzPTle1dIHDl8ouQ7qOX1hWXu0zara3EfVo6wET4/QKipGgGQxspJZmoH9Es
+	 +paa/f1IvBhV/RHBSg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.105] ([91.41.216.208]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N1fmq-1v3rVY3Ldw-00qpNq; Mon, 26
+ May 2025 11:24:08 +0200
+Message-ID: <7f6d7199-0a20-4370-a8b0-1d05326af052@gmx.net>
+Date: Mon, 26 May 2025 11:24:06 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7u3iuswslneeov4k"
-Content-Disposition: inline
-In-Reply-To: <20250523-fpg-nxp-imx93-frdm-v1-1-546b2d342855@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
-
-
---7u3iuswslneeov4k
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] arm64: dts: freescale: imx93-phycore-som: Delay the
+ phy reset by a gpio
+To: Christoph Stoidner <C.Stoidner@phytec.de>, Andrew Lunn <andrew@lunn.ch>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "upstream@lists.phytec.de" <upstream@lists.phytec.de>
+References: <20250524112315.695376-1-c.stoidner@phytec.de>
+ <047c963e-f24d-4995-aea0-4a8cf8e343f5@lunn.ch>
+ <b2ea6b7f-3623-4486-82a0-cab97053a53e@gmx.net>
+ <34a4441d4b4ed8db7cac585ce93ec2357738cc11.camel@phytec.de>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <34a4441d4b4ed8db7cac585ce93ec2357738cc11.camel@phytec.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/2] ARM: dts: freescale: add support for NXP i.MX93 FRDM
-MIME-Version: 1.0
+X-Provags-ID: V03:K1:j7q0lhQ0aySRq/U/bsaoG9w41iUYKsDm39Kja4EOvuJtWZCRfLo
+ +2LSeOFX9VG/fUgYMj53SHgfLCYEDoKCYEfA33E12ZfiugLZPeROby7eEMTtc9MBlUPhmjs
+ mcOCl177WBPaCC4OOVETXKJ7DHSc1hLq/bUJANOIHXnXMz57WtU0lgRr4lRvjFyVc8EnMJX
+ 6fM+oJT9xvz6kUVDxT3+g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:dSVyBR3f1R0=;PoVBs7v/whf90ft9TG4C3UFjjyT
+ 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
 
-On 23.05.2025 20:16:48, Fabian Pflug wrote:
-> The FRDM i.MX 93 development board is a low-cost and compact development
-> board featuring the i.MX93 applications processor.
->=20
-> It features:
-> - Dual Cortex-A55
-> - 2 GB LPDDR4X / LPDDR4
-> - 32 GB eMMC5.1
-> - MicroSD slot
-> - GbE RJ45 x 2
-> - USB2.0 1x Type C, 1x Type A
->=20
-> This file is based upon the one provided by nxp in their own kernel and
-> yocto meta layer for the device, but adapted for mainline.
->=20
-> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-> ---
->  arch/arm64/boot/dts/freescale/Makefile             |   1 +
->  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 630 +++++++++++++++=
-++++++
->  2 files changed, 631 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts=
-/freescale/Makefile
-> index b6d3fe26d621234ab84353165d20af9d2536f839..c703fce2ebfd8074bd0c6ee76=
-f3c6f9bbd9cf179 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -295,6 +295,7 @@ imx93-9x9-qsb-i3c-dtbs +=3D imx93-9x9-qsb.dtb imx93-9=
-x9-qsb-i3c.dtbo
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-9x9-qsb-i3c.dtb
-> =20
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-11x11-evk.dtb
-> +dtb-$(CONFIG_ARCH_MXC) +=3D imx93-11x11-frdm.dtb
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-14x14-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-kontron-bl-osm-s.dtb
->  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-phyboard-segin.dtb
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/ar=
-m64/boot/dts/freescale/imx93-11x11-frdm.dts
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..f1422946f7eb5799a9cc21fc9=
-3f75fc3a45ebcf5
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
-> @@ -0,0 +1,630 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/usb/pd.h>
-> +#include "imx93.dtsi"
-> +
-> +/ {
-> +	model =3D "NXP i.MX93 11X11 FRDM board";
-> +	compatible =3D "fsl,imx93-11x11-frdm", "fsl,imx93";
-> +
-> +	chosen {
-> +		stdout-path =3D &lpuart1;
-> +	};
-> +
-> +	reserved-memory {
-> +		#address-cells =3D <2>;
-> +		#size-cells =3D <2>;
-> +		ranges;
-> +
-> +		linux,cma {
-> +			compatible =3D "shared-dma-pool";
-> +			reusable;
-> +			alloc-ranges =3D <0 0x80000000 0 0x30000000>;
-> +			size =3D <0 0x10000000>;
-> +			linux,cma-default;
-> +		};
-> +
-> +		vdev0vring0: vdev0vring0@a4000000 {
-> +			reg =3D <0 0xa4000000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev0vring1: vdev0vring1@a4008000 {
-> +			reg =3D <0 0xa4008000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev1vring0: vdev1vring0@a4010000 {
-> +			reg =3D <0 0xa4010000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev1vring1: vdev1vring1@a4018000 {
-> +			reg =3D <0 0xa4018000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		rsc_table: rsc-table@2021e000 {
-> +			reg =3D <0 0x2021e000 0 0x1000>;
-> +			no-map;
-> +		};
-> +
-> +		vdevbuffer: vdevbuffer@a4020000 {
-> +			compatible =3D "shared-dma-pool";
-> +			reg =3D <0 0xa4020000 0 0x100000>;
-> +			no-map;
-> +		};
-> +
-> +	};
-> +
-> +	reg_vdd_12v: regulator-vdd-12v {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "reg_vdd_12v";
-> +		regulator-min-microvolt =3D <12000000>;
-> +		regulator-max-microvolt =3D <12000000>;
-> +		gpio =3D <&pcal6524 14 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +	};
-> +
-> +	reg_vref_1v8: regulator-adc-vref {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "vref_1v8";
-> +		regulator-min-microvolt =3D <1800000>;
-> +		regulator-max-microvolt =3D <1800000>;
-> +	};
-> +
-> +	reg_can2_standby: regulator-can2-stby {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "can2-stby";
-> +		regulator-min-microvolt =3D <3300000>;
-> +		regulator-max-microvolt =3D <3300000>;
-> +		gpio =3D <&pcal6524 23 GPIO_ACTIVE_LOW>;
-> +	};
-> +
-> +	reg_usdhc2_vmmc: regulator-usdhc2 {
-> +		compatible =3D "regulator-fixed";
-> +		pinctrl-names =3D "default";
-> +		pinctrl-0 =3D <&pinctrl_reg_usdhc2_vmmc>;
-> +		regulator-name =3D "VSD_3V3";
-> +		regulator-min-microvolt =3D <3300000>;
-> +		regulator-max-microvolt =3D <3300000>;
-> +		gpio =3D <&gpio3 7 GPIO_ACTIVE_HIGH>;
-> +		off-on-delay-us =3D <12000>;
-> +		enable-active-high;
-> +	};
-> +
-> +	reg_usdhc3_vmmc: regulator-usdhc3 {
-> +		compatible =3D "regulator-fixed";
-> +		regulator-name =3D "WLAN_EN";
-> +		regulator-min-microvolt =3D <3300000>;
-> +		regulator-max-microvolt =3D <3300000>;
-> +		gpio =3D <&pcal6524 20 GPIO_ACTIVE_HIGH>;
-> +		/*
-> +		 * IW612 wifi chip needs more delay than other wifi chips to complete
-> +		 * the host interface initialization after power up, otherwise the
-> +		 * internal state of IW612 may be unstable, resulting in the failure of
-> +		 * the SDIO3.0 switch voltage.
-> +		 */
-> +		startup-delay-us =3D <20000>;
-> +		enable-active-high;
-> +	};
-> +
-> +	usdhc3_pwrseq: usdhc3_pwrseq {
-> +		compatible =3D "mmc-pwrseq-simple";
-> +		reset-gpios =3D <&pcal6524 12 GPIO_ACTIVE_LOW>;
-> +	};
-> +};
-> +
-> +&adc1 {
-> +	vref-supply =3D <&reg_vref_1v8>;
-> +	status =3D "okay";
-> +};
-> +
-> +&cm33 {
-> +	mbox-names =3D "tx", "rx", "rxdb";
-> +	mboxes =3D <&mu1 0 1>,
-> +		 <&mu1 1 1>,
-> +		 <&mu1 3 1>;
-> +	memory-region =3D <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-> +			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-> +	status =3D "okay";
-> +};
-> +
-> +&eqos {
-> +	pinctrl-names =3D "default", "sleep";
-> +	pinctrl-0 =3D <&pinctrl_eqos>;
-> +	pinctrl-1 =3D <&pinctrl_eqos_sleep>;
-> +	phy-mode =3D "rgmii-id";
-> +	phy-handle =3D <&ethphy1>;
-> +	status =3D "okay";
-> +
-> +	mdio {
-> +		compatible =3D "snps,dwmac-mdio";
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +		clock-frequency =3D <5000000>;
-> +
-> +		ethphy1: ethernet-phy@1 {
-> +			reg =3D <1>;
-> +			reset-gpios =3D <&pcal6524 15 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us =3D <10000>;
-> +			reset-deassert-us =3D <80000>;
-> +		};
-> +	};
-> +};
-> +
-> +&fec {
-> +	pinctrl-names =3D "default", "sleep";
-> +	pinctrl-0 =3D <&pinctrl_fec>;
-> +	pinctrl-1 =3D <&pinctrl_fec_sleep>;
-> +	phy-mode =3D "rgmii-id";
-> +	phy-handle =3D <&ethphy2>;
-> +	fsl,magic-packet;
-> +	status =3D "okay";
-> +
-> +	mdio {
-> +		#address-cells =3D <1>;
-> +		#size-cells =3D <0>;
-> +		clock-frequency =3D <5000000>;
-> +
-> +		ethphy2: ethernet-phy@2 {
-> +			reg =3D <2>;
-> +			eee-broken-1000t;
-> +			reset-gpios =3D <&pcal6524 16 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us =3D <10000>;
-> +			reset-deassert-us =3D <80000>;
-> +		};
-> +	};
-> +};
-> +
-> +&flexcan2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_flexcan2>;
-> +	xceiver-supply =3D <&reg_can2_standby>;
-> +	status =3D "okay";
-> +};
+Am 26.05.25 um 11:09 schrieb Christoph Stoidner:
+> Hi Stefan,
+>
+> On Mo, 2025-05-26 at 08:44 +0200, Stefan Wahren wrote:
+>> Hi Andrew,
+>> hi Christoph
+>>
+>> Am 24.05.25 um 19:44 schrieb Andrew Lunn:
+>>>> diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>>>> b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>>>> index 88c2657b50e6..b481097f08a4 100644
+>>>> --- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>>>> +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+>>>> @@ -68,6 +68,8 @@ mdio: mdio {
+>>>>  =C2=A0=C2=A0 ethphy1: ethernet-phy@1 {
+>>>>  =C2=A0=C2=A0 compatible =3D "ethernet-phy-ieee802.3-c22";
+>>>>  =C2=A0=C2=A0 reg =3D <1>;
+>>>> + reset-gpios =3D <&gpio4 23 GPIO_ACTIVE_HIGH>;
+>>>> + reset-assert-us =3D <30>;
+>>> Is there anything in the datasheet about needing a delay after the
+>>> reset? There is a DT property for this:
+>>>
+>>>  =C2=A0=C2=A0 reset-deassert-us:
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0 description:
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Delay after the reset was deasse=
+rted in microseconds. If
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 this property is missing the del=
+ay will be skipped.
+>> is it the time until the PHY finished its post reset stabilization
+>> (datasheet to call it T2 "reset to SMI ready")?
+> The T2 ("Post reset stabilization time") in the datasheet is the time
+> "prior to MDC preamble for register access", that is defined with 2ms.
+> I did not use reset-deassert-us for it, because the first register
+> access does anyway occur much later (I measured 4000ms).
+>
+> And we have the same for T4, the "Post power-up stabilization time".
+> It is defined with a time of 50ms as "prior to MDC preamble for
+> register access". But also here we just know, the register access
+> happens much=C2=A0later - and treated it as enough.
+>
+> Formally, this may be valid to specify the 2ms as reset-deassert-us.
+> But since the first register access is so much later, I thought we can
+> save those 2ms.
+>
+> Are you fine with that?
+I don't insist on an additional "reset-deassert-us". The question was=20
+more about understanding.
+>
+> Regards,
+> Christoph
+>
+>
+>>> Anyway:
+>>>
+>>> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>>>
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0 Andrew
+>>>
 
-Since d80bfde3c57a ("can: flexcan: add transceiver capabilities"), which
-got mainline with v6.15-rc1 there is proper PHY support in the flexcan
-driver. So from my point of view, there's no need to stick to regulator
-hack.
-
-See 87d60c4663b6 ("arm64: dts: ti: k3-j721e-common-proc-board: Add
-support for mcu and main mcan nodes") for an example.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---7u3iuswslneeov4k
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmg0MewACgkQDHRl3/mQ
-kZz50wgAn9Wh9mX7RSnF8dqGdbOYTvM19I/6oNQXlmkMuhckfC5yYnyAaefDkYnP
-bPlGWMo+NBPUox47M0HVeVJF5TNIgJ/wob5cV813+GXi4RZOuDPQspAkwlCR+lQ1
-b/fYoz/b6z9zk23bODHSSlzIaAtgjGjQhKv5CF0vG4au121B4hMfWOMw4ZrzVq9j
-9rCBPgtm7eRlLz1CZavGwsFbwIjabD/SN2PZmmONgeAOOoq4RgugfNzX7rAU3WOa
-CfswrKfatWytTXq7hXBQoJ0NWj8W1bFwMW1v0YvwPkrW1tmrHYyf3ZH9MgYBdbOA
-ib0r84yfp/5y8ugNGPn2am88ii5lSA==
-=GSEO
------END PGP SIGNATURE-----
-
---7u3iuswslneeov4k--
