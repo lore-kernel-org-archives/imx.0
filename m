@@ -1,209 +1,333 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2133.outbound.protection.outlook.com [40.107.20.133])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E8C1EDA12
-	for <imx@lists.linux.dev>; Mon, 26 May 2025 09:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.133
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748250556; cv=fail; b=gB/e+w5TiZKB1jDSi8jSkfOFHihNZS86v74PP14nU+ndfjiMFMjz7X8hE8KKNBXn3VYTlfH4uKbBkGBmNfPMeDSccRge5xXXs2gjc9V4Y26rdUZidHuGrhFZUINfaY/2KJZot4KAh+r7VDhX+kcUdS5A+SXs89FgE/JgQ2CsLwk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748250556; c=relaxed/simple;
-	bh=YkxxkhJrPZQ/tnXiTvIWe6iQ1MVvLiG5Co6S5tx04x0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OvEIY3nEfZjgdxdIo8rJ+4owdExNwtu3mQceDoIuJSRR2Hn+ljtctx3Vw3p4QvwiJaqJu/YAw1u/npsUAw9d9EVPD5PphDLJQIfKdi2ZFm4+qs1d2PaXEEQeELbFoa5BdGf6At9nhXH8ILDKg5mByT6nMNIoxE4g10gCnNyBHmc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=OotwCqAK; arc=fail smtp.client-ip=40.107.20.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="OotwCqAK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XImp+Y/hCYCc+FXW1/Z7r9JcUas4FnqP5uYjlvi++fDbENE6EeZhse4BxOUG4y1xp7TEtv3W2zVuBephDAGw8YFbhYX7Gz6s6Fhe1pduytf/7mgI1q7Vh0s6yQM/TeNHAgpIkrcM4hmqaN8RtPPEdwUGGfrRvY92irFzY9iu8JfSxPacSEKPoSF7j8jb1ZpOnLm8x/IUtMefwHUmYjBy+hPzndyflu57Wqk1BNHDqb1sviMP9/zdOLPkzKfFP8TZh4B7SmYblDM4XPrkSxLYWnKTjzRJDmzq8rSQ7YNwGCBoeREWhY4mNca1uCGe3i2f9JoM/W8MTtiAH1fyn9IOgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YkxxkhJrPZQ/tnXiTvIWe6iQ1MVvLiG5Co6S5tx04x0=;
- b=jt3Lgi2Xfk3e/IOfrpE7C37lOZeeJIL21WLobO8kFkjS3VvvH00Z3erswgyYB3o2aUt9lh8uxFicpwo2cFEqbEfnsIE9mG3j4GaOALAyilL8Szl7JQWGTPNsKf0zh+I9bAY6/8tdaxh8Puzc1SXqHTXNR49ldmySdtwBelH4Gt0VOyz+HSy4ZfzTLZCB7nP6u9TGd8EoVUKNyl5PRBE0bjEnaWo7w89LtPOcowMjplEkK/4Y8e2E5XRHNt5BXRDfdejMKMW6IbnHKMctt/Cx3RE4bUE6NAqjR1d+2OYENAtRixTQMpqkVT3APNe8FFRzslsTdieL3F2dzJnlZXkBPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=phytec.de; dmarc=pass action=none header.from=phytec.de;
- dkim=pass header.d=phytec.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YkxxkhJrPZQ/tnXiTvIWe6iQ1MVvLiG5Co6S5tx04x0=;
- b=OotwCqAKXlVlJ7QIPjCJFpQcu16wfH05JHeHNHxIelnZTvEqCL/y1fYhH0Oop9XQiSA98lQO/q5fb30YcvqkwKwqe0PgSUjhNSDq1EhhGgadtCVGU1QqoDNv4405yGarF+egTWCKirnI+pQbrFbqMaUBwQ4WfLv9vV4BsYKk03ycmr8ZG0ummu2BNOTOv6w8OJbLn51groccR5H8+jkU32uL4H4uEbCn12xD9cBERNey3mUizG6MEqeDNuB5FWMxQAKpdipJibuZcKJQMRIFN4feguGraWw/Ir0KRm3WNtW9DP+nb/2JZ6lF++qBkKRNhSROuJ//pTSHpUKDOh6KxQ==
-Received: from AM0P195MB0257.EURP195.PROD.OUTLOOK.COM (2603:10a6:208:b7::25)
- by AM9P195MB1329.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:3ac::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.32; Mon, 26 May
- 2025 09:09:04 +0000
-Received: from AM0P195MB0257.EURP195.PROD.OUTLOOK.COM
- ([fe80::9b92:3cc:22b3:4c59]) by AM0P195MB0257.EURP195.PROD.OUTLOOK.COM
- ([fe80::9b92:3cc:22b3:4c59%3]) with mapi id 15.20.8769.022; Mon, 26 May 2025
- 09:09:03 +0000
-From: Christoph Stoidner <C.Stoidner@phytec.de>
-To: Stefan Wahren <wahrenst@gmx.net>, Andrew Lunn <andrew@lunn.ch>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "upstream@lists.phytec.de"
-	<upstream@lists.phytec.de>
-Subject: Re: [PATCH v3] arm64: dts: freescale: imx93-phycore-som: Delay the
- phy reset by a gpio
-Thread-Topic: [PATCH v3] arm64: dts: freescale: imx93-phycore-som: Delay the
- phy reset by a gpio
-Thread-Index: AQHbzJ5IkKiCUrqPH06p42f/+549BbPiDcKAgAJsSwCAAChcgA==
-Date: Mon, 26 May 2025 09:09:03 +0000
-Message-ID: <34a4441d4b4ed8db7cac585ce93ec2357738cc11.camel@phytec.de>
-References: <20250524112315.695376-1-c.stoidner@phytec.de>
-	 <047c963e-f24d-4995-aea0-4a8cf8e343f5@lunn.ch>
-	 <b2ea6b7f-3623-4486-82a0-cab97053a53e@gmx.net>
-In-Reply-To: <b2ea6b7f-3623-4486-82a0-cab97053a53e@gmx.net>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=phytec.de;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM0P195MB0257:EE_|AM9P195MB1329:EE_
-x-ms-office365-filtering-correlation-id: 52116976-06d1-4378-870f-08dd9c34f631
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?K1ZRZWhnRHgvSy9rb3ZvZ2NaMDlCMlJhOW9xTit2cG14Ky9sNk05MmxXakZ6?=
- =?utf-8?B?RlpKVEg4YVJ6S2hwK2FDTk1SRkU4Zkx0UmxpN0dBenoyQ0pIQVhENTZCUlUv?=
- =?utf-8?B?T20vVlI1RE1nZzM1UVBzYTVXM09KZEpJbkMzOVYvU2cyZlNlRE82UmJkWkNz?=
- =?utf-8?B?Y2pMdzhwcVFUWXMwd3dKOXJlNkhiUFpNSmhCVXBNaTNrNU1Wams1VjA5U1Bu?=
- =?utf-8?B?K0RZcllETUN6aGY3VThkcndnYVBkQTQ2dVJsaG1mWGIxUlUrbkJWOWZUWHp5?=
- =?utf-8?B?WlFmVDRpTkhlVTI3eEd3bXZGaE8xR2JONXNnNU5PeGxZUzJLUWM5SERDcWZt?=
- =?utf-8?B?YnNPQ3ArOVZxa0FBUDB4SEpMTDJXbklXaEUvTUVFSmdpbm04SlZ4Z1V3dDhT?=
- =?utf-8?B?L3plSisxc2ZBQWJTVFZDb01XZ1J3eDMrVnAzL0t0dTFBK3A1K3MyeTlOcS9H?=
- =?utf-8?B?eEpNV29vb2VmaXk2Wm9PTGVjUlpCRncyZVYwbk1lVnMzQWkvZEsrcEtmbk93?=
- =?utf-8?B?TXlwOVM1ZkxFQW93eTd0Z0hzL0RsTHdwVGF5VHFMNVFzTGwrZzR3eElQbk0z?=
- =?utf-8?B?T3V5aHlzRlVYeUVINEFUM2FzYnM0QUR6alVsckNBN3g1NVpCUjI1NEc5WTgr?=
- =?utf-8?B?N1AyZWNwdEhtNGFxL2l1M2NiNEFRRHVpaGQ3ZWZmS3ZaMUluR0pVNWZoMGNI?=
- =?utf-8?B?U2k0RVlObFVaWCtDdEUxVUhUVktYL0xwOUVSRFFGV0RUOE12aDN0QTVtd09j?=
- =?utf-8?B?R21RcE9uSWNtMDhjQ1ZHWGlWaWluV1dSNnJWaHo0NEtIUUkyMUN0cWxVbnly?=
- =?utf-8?B?UmRGc3hOdVZzdW90ZWZ5MGFMWUtOSkNVMkh1eDJxVkJ0UmRHNG02YUxtTUdC?=
- =?utf-8?B?VlMwQ3luL09RcDJyRDlQRXJtRjg5T2FqZHZHd09NcTN1MEh6MUdONjlpd1ha?=
- =?utf-8?B?RUNLZGIrQUs3d3JTVEc5c21vWVBoR2U1TnJVM3hzdlhUa1pYR2Y0dkJjdER6?=
- =?utf-8?B?dUVncUIzSWMxbmI2aTRUMXFSVGZxSWFJOFhlL2JwSTRwSFN6c2JOY3ZVK0pP?=
- =?utf-8?B?YlprelN4ZjRpNit5RWpjMlVvUkVqdGc3Z2l1dVVvUmNLQ2hlVGhWTG5IeFl3?=
- =?utf-8?B?Z1pjWE1pc1FGa0NxTU5QckZpc3gzb3lBL01EZVF5SVZ3UG1HVXlkbUhkRlEz?=
- =?utf-8?B?bUJ5c1RKVllJOXZiK0YvRm9mcGJiMitWbUdYYThkbmh0R0pLdGgvZm5jU3FB?=
- =?utf-8?B?Z2k3MGhhSE9DMXY4ZDMyWTA0NFFZZy9MNmx5TG1JVlI5S3dZTWo4T2dXY1hu?=
- =?utf-8?B?TDljRnhMM1RJcWRMWTdCM0RuaVJDV1JJSUhUZnB1QzJmM3l4MCtBWFgyaFNW?=
- =?utf-8?B?SUVFbE15ZGwxdVpiNkxLZENUNm4vRi9OUVlXUE0yR3IwY1BpSGxNYVF2VzNm?=
- =?utf-8?B?WVVLZjF5enQzMzhDUUpIWjhCdEFad0s5L3RTNFEvRjF6TGdFZy9BKzV6a1F5?=
- =?utf-8?B?OUIvcWRmd1l6NTBvMWxhd0M2bVpKdkd1eTlWR2UyQ3lVTUdQZ3prOGxFQXlG?=
- =?utf-8?B?bFlhZmw1bmtCNTJnemQzeHV1Z0tuODYvWjhJbDgvY2o2WG12NE8zbk5IV2xl?=
- =?utf-8?B?dVU2ZldXd0pJK09mamhwMnl1a296QTcrbFhGZXBSS1A5dTA2TGJEa2lzUEpa?=
- =?utf-8?B?dHo3Rk5hUDBLdkhXSkRPTE1CYnI4VFlJbjFXa3g3RHdXYWROMUc1eUgwakRW?=
- =?utf-8?B?aGtsSXpLZkN5OWlYK3l4TUhVenpYRnBwWmppTTBaNlA4UG5ydEJxbDlQd01j?=
- =?utf-8?B?Z01XMTI0dWRmVVQ3dWQ4Uzc4M0NaaEZML3ZSVkRBR21sL0VrV3plby83MWpO?=
- =?utf-8?B?a1E1ZWw4VGlUaUpVcGNvcUNYdkZBdUZ6aEI5K29uV29IRy9pcjlPUVBhWnpi?=
- =?utf-8?B?a3RoY3FUZDdTdTNJenpxdjk4YXBZQ0hkRWZtYkdZRHVyR0ZPMzVVbnIwSEpv?=
- =?utf-8?Q?aHTJm7ugU7ZwPkeT0dLuqpexnmxpaw=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0P195MB0257.EURP195.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?TkxFRnpScnJqVE9CTEJBbTFZSGVJV2hNdm5JQjJCcS8weFJHQ2tjNHBibXlQ?=
- =?utf-8?B?NzNpWWI0NFNUWHVwUGRHaWsvMDAxN3g4anVLL3gwbmRkYlhCOSs4NzNycVp6?=
- =?utf-8?B?emNXU2xnSjBDcjNya29uMWNDY0o0WXA2cFVuMGFjZ01xOEtmaEFQQTMxZ0Ji?=
- =?utf-8?B?TGplSkhlbEdGcHlBQS8valhyYnRMT3BWVjJ6UnVvaU1kNkh0RXpkTVp6OTJ2?=
- =?utf-8?B?bVdYYTNqUkdtaHd4TDVhZ3JHZTRxaXJtdnhOa0FQSEk0MVExM0hZMytqb2tw?=
- =?utf-8?B?YmIrV0dSRzRlamh1ZHdkeU9jclFFOHRMVit3YzlJZlN4elJ2cU9Iem5zSUpp?=
- =?utf-8?B?dmkxVHR2QVNWSGltTkx4N3MwM2pRVmN4VHZEeDkxbFIvQlQ5WlBYclZrYjE5?=
- =?utf-8?B?UHFmUWxXNHRRVU1sT3hmMFBCOU0zaUI2THlkWUt3N2pVRTBKV1Z6R3AxOU14?=
- =?utf-8?B?c2RqZC95L2RhN1p6UnhMTml6ZFZWL1IveFgySnBrbGZRU2w3VExFUHZid0NB?=
- =?utf-8?B?NXFtdW41OFdqSW83eUNJTFdKZ1pYbmEzWTFWdE9ZdTREQ2svaVE3cElqSmxZ?=
- =?utf-8?B?aDlqWWhmVHZCZnJZVzRpaDFRckwrbW91SGRCUDExQmQxMDlwdTNDKzZ5MVI3?=
- =?utf-8?B?RXRLQks3WnlyTHczd3VORGhIcEJaZFB0enFaT3FXbm1SRUZPU0RPenMvRmM1?=
- =?utf-8?B?YWt2ZFJ3UHZydndLZmp2MW00dGVjaklQdWxrSklCWjNxamtOZlhLcW41TW96?=
- =?utf-8?B?V1RCblAvNXNZb3cyN1J3dzdGaE1ubHdPdDNCZS8xMFpmZzBvMmZLaTRkZEdY?=
- =?utf-8?B?RUk2RjhSSzNRQ3JGUm1rOVZtRlNBUmFMekk4NnFzMFZtaGJ0d3U5VGxoU1Bi?=
- =?utf-8?B?d285RFU5d0UyVUFkZVAzZ0VLSnFuWk5TODlpTEUyeEpQc3Ira2ZueXRBelBz?=
- =?utf-8?B?VENnQ1lHM0NVdVdnMmhiYzFlcEhLcmF2UjZuQVpRek92OWVXYWltWnl6WS9I?=
- =?utf-8?B?Wi9CVk12YUdabEh4MlcyNXZTYTc5WWlIbHVaMHhudXZDRGFuRnExTU5nVk9E?=
- =?utf-8?B?bVl5RHhsZDR1T1dnaDluSzN5VjlBQ0NFL0lnRlZMcTA0dXF1dDJHN0lJSmkr?=
- =?utf-8?B?SGIwR0V2MHIyZTh4S0dZYTBCelNWMHhwbzlaWW1PUk9QWHV6SmFvOVQzK2w4?=
- =?utf-8?B?UWtTM2ZzUWhyMmoxTTB2TWI1OFlpZnZlTXlxUU1ic2J3c2NGZ0pKWWh0dnBu?=
- =?utf-8?B?Q212ZnprTWgwUkU5RHB0R0p1bVRQL0lzaWdITThsczQ1cW9PeUY2ODcxOXRY?=
- =?utf-8?B?QytWVXVXbnVsUmEveWt1MlVKV0dLM3lRVzl6NDdEcWc4aGUwa0g2V0hBbjJS?=
- =?utf-8?B?cXdxYlkvVnB5Z3R0amo5MXlVVkNFUVc5c2VjQlRORUZPVkw3QWJFT3o1dzJG?=
- =?utf-8?B?NVRTWlZLSE1odDQ4MjFDWlllMFRJRENlTHgvZzRhb1NuemFiT3pjcWw0MEs2?=
- =?utf-8?B?b05jMkFTdjNiYlowbVJhNEpaR284Sk84bVp5ZGNCVEh1VStPWGoyVWdXL0RF?=
- =?utf-8?B?OTU5K1d3N3FFQWtER0s5WkNSVjd0a05JWWZ1WmNlS1c5QmhWTHZHN1BZdWo3?=
- =?utf-8?B?czRHUHh5bklnVlJPZW55STlkRkUzeDZpUHFyTXliU1UzaVVnVllhNFlDbGxt?=
- =?utf-8?B?VmVkKzdpWWYySW1wM0tFK1VIUFp4eGdDMXYzVEZVQW9qYnNESGJjK2RmTkZL?=
- =?utf-8?B?N3d6aUpmL3FNWFVvOXdWRksvV2NaTUFCWHdFOVZHTDg2WC9za2tVMWhHeWlm?=
- =?utf-8?B?d3AwSHBLQTd2QlYrWXZqZ3NZMGduOXZkTmhINUh3NFAwem9Cbk5sOEtMU1JK?=
- =?utf-8?B?WlJWQWxZTW9Ta2dSRFQraFAyM0pXOXlyNTVlbzVWYVBMdXMwaEZjT1Bkb0xO?=
- =?utf-8?B?RHFGVTYya1lDSk1yL2RZbUpRM05PVkIyVmVneEtyNStudjljNDVuY2RZZGV6?=
- =?utf-8?B?amV2TEd5TmY5TG00NUY0clNmejVQb0pTTkMyRUxrWnpjYnpnMVkyNnZDSit4?=
- =?utf-8?B?UFp2Y1lXdjVuaGYyZS9YT2R2RlVEb1I3Q04waGxhQjR1NXVtL2M2akNNRGtM?=
- =?utf-8?Q?/0tarTZOYqatK1Zk2avKAww7c?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <49809CDDB8D259408B1B121FFBD110DC@EURP195.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC8F19DF8B
+	for <imx@lists.linux.dev>; Mon, 26 May 2025 09:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748251147; cv=none; b=ZUTPEhSfGj3qRkOuGFmMkhLlH2kFjQ18F58WB/NtnQgF9mY8a8+r2Ee0dWachYsyE39mEwdy6yr/b6BVd/tEdRXI94GTPOnxyzvILgE8EcOii8UQYC7tqboPsFOcq5Y9Io735NlWxmIkSqEj+GDSUY3/lHLhPBuQgh8e/OgN/oM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748251147; c=relaxed/simple;
+	bh=H2oDc2BAPhOVfLc7NGNX95Ad/OxI6HM89N5f+htCNsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LMtA270i9XZOa06jgqS47t1BJ3Xo1gwf6j+CMSXJXL6XC1Mwqc0eNrXaL+UQ0eqhRRbSVihnkpqQLIg3ddXmnD+Ui14EG3M15g41c35eHWzECBvVkBohCPRqI/HeVkylTUGXFMR7Vo8Zxizmvj0ndy7NPoagSuxxz9YMTJQQNdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uJTyj-0005AD-Dn; Mon, 26 May 2025 11:18:41 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uJTyj-000E19-0B;
+	Mon, 26 May 2025 11:18:41 +0200
+Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 94A2C419BBC;
+	Mon, 26 May 2025 09:18:40 +0000 (UTC)
+Date: Mon, 26 May 2025 11:18:40 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Fabian Pflug <f.pflug@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH 1/2] ARM: dts: freescale: add support for NXP i.MX93 FRDM
+Message-ID: <20250526-dandelion-rooster-of-bliss-41d420-mkl@pengutronix.de>
+References: <20250523-fpg-nxp-imx93-frdm-v1-0-546b2d342855@pengutronix.de>
+ <20250523-fpg-nxp-imx93-frdm-v1-1-546b2d342855@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: phytec.de
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM0P195MB0257.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52116976-06d1-4378-870f-08dd9c34f631
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 May 2025 09:09:03.8855
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: e609157c-80e2-446d-9be3-9c99c2399d29
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uBG2PEinH/y6Wmte2CX6u5l75SQ6/QM/cTgmJojw6I9xTHeTBm8e9KYFZKoNwAnfntoZLiJjNwyyZkjVBx5Nfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P195MB1329
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7u3iuswslneeov4k"
+Content-Disposition: inline
+In-Reply-To: <20250523-fpg-nxp-imx93-frdm-v1-1-546b2d342855@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-SGkgU3RlZmFuLAoKT24gTW8sIDIwMjUtMDUtMjYgYXQgMDg6NDQgKzAyMDAsIFN0ZWZhbiBXYWhy
-ZW4gd3JvdGU6Cj4gSGkgQW5kcmV3LAo+IGhpIENocmlzdG9waAo+IAo+IEFtIDI0LjA1LjI1IHVt
-IDE5OjQ0IHNjaHJpZWIgQW5kcmV3IEx1bm46Cj4gPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0
-L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg5My1waHljb3JlLXNvbS5kdHNpCj4gPiA+IGIvYXJjaC9h
-cm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OTMtcGh5Y29yZS1zb20uZHRzaQo+ID4gPiBpbmRl
-eCA4OGMyNjU3YjUwZTYuLmI0ODEwOTdmMDhhNCAxMDA2NDQKPiA+ID4gLS0tIGEvYXJjaC9hcm02
-NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OTMtcGh5Y29yZS1zb20uZHRzaQo+ID4gPiArKysgYi9h
-cmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg5My1waHljb3JlLXNvbS5kdHNpCj4gPiA+
-IEBAIC02OCw2ICs2OCw4IEBAIG1kaW86IG1kaW8gewo+ID4gPiDCoMKgIGV0aHBoeTE6IGV0aGVy
-bmV0LXBoeUAxIHsKPiA+ID4gwqDCoCBjb21wYXRpYmxlID0gImV0aGVybmV0LXBoeS1pZWVlODAy
-LjMtYzIyIjsKPiA+ID4gwqDCoCByZWcgPSA8MT47Cj4gPiA+ICsgcmVzZXQtZ3Bpb3MgPSA8Jmdw
-aW80IDIzIEdQSU9fQUNUSVZFX0hJR0g+Owo+ID4gPiArIHJlc2V0LWFzc2VydC11cyA9IDwzMD47
-Cj4gPiBJcyB0aGVyZSBhbnl0aGluZyBpbiB0aGUgZGF0YXNoZWV0IGFib3V0IG5lZWRpbmcgYSBk
-ZWxheSBhZnRlciB0aGUKPiA+IHJlc2V0PyBUaGVyZSBpcyBhIERUIHByb3BlcnR5IGZvciB0aGlz
-Ogo+ID4gCj4gPiDCoMKgIHJlc2V0LWRlYXNzZXJ0LXVzOgo+ID4gwqDCoMKgwqAgZGVzY3JpcHRp
-b246Cj4gPiDCoMKgwqDCoMKgwqAgRGVsYXkgYWZ0ZXIgdGhlIHJlc2V0IHdhcyBkZWFzc2VydGVk
-IGluIG1pY3Jvc2Vjb25kcy4gSWYKPiA+IMKgwqDCoMKgwqDCoCB0aGlzIHByb3BlcnR5IGlzIG1p
-c3NpbmcgdGhlIGRlbGF5IHdpbGwgYmUgc2tpcHBlZC4KPiBpcyBpdCB0aGUgdGltZSB1bnRpbCB0
-aGUgUEhZIGZpbmlzaGVkIGl0cyBwb3N0IHJlc2V0IHN0YWJpbGl6YXRpb24gCj4gKGRhdGFzaGVl
-dCB0byBjYWxsIGl0IFQyICJyZXNldCB0byBTTUkgcmVhZHkiKT8KClRoZSBUMiAoIlBvc3QgcmVz
-ZXQgc3RhYmlsaXphdGlvbiB0aW1lIikgaW4gdGhlIGRhdGFzaGVldCBpcyB0aGUgdGltZQoicHJp
-b3IgdG8gTURDIHByZWFtYmxlIGZvciByZWdpc3RlciBhY2Nlc3MiLCB0aGF0IGlzIGRlZmluZWQg
-d2l0aCAybXMuCkkgZGlkIG5vdCB1c2UgcmVzZXQtZGVhc3NlcnQtdXMgZm9yIGl0LCBiZWNhdXNl
-IHRoZSBmaXJzdCByZWdpc3RlcsKgCmFjY2VzcyBkb2VzIGFueXdheSBvY2N1ciBtdWNoIGxhdGVy
-IChJIG1lYXN1cmVkIDQwMDBtcykuCgpBbmQgd2UgaGF2ZSB0aGUgc2FtZSBmb3IgVDQsIHRoZSAi
-UG9zdCBwb3dlci11cCBzdGFiaWxpemF0aW9uIHRpbWUiLsKgCkl0IGlzIGRlZmluZWQgd2l0aCBh
-IHRpbWUgb2YgNTBtcyBhcyAicHJpb3IgdG8gTURDIHByZWFtYmxlIGZvcgpyZWdpc3RlciBhY2Nl
-c3MiLiBCdXQgYWxzbyBoZXJlIHdlIGp1c3Qga25vdywgdGhlIHJlZ2lzdGVyIGFjY2VzcwpoYXBw
-ZW5zIG11Y2jCoGxhdGVyIC0gYW5kIHRyZWF0ZWQgaXQgYXMgZW5vdWdoLgoKRm9ybWFsbHksIHRo
-aXMgbWF5IGJlIHZhbGlkIHRvIHNwZWNpZnkgdGhlIDJtcyBhcyByZXNldC1kZWFzc2VydC11cy4g
-CkJ1dCBzaW5jZSB0aGUgZmlyc3QgcmVnaXN0ZXIgYWNjZXNzIGlzIHNvIG11Y2ggbGF0ZXIsIEkg
-dGhvdWdodCB3ZSBjYW4Kc2F2ZSB0aG9zZSAybXMuCgpBcmUgeW91IGZpbmUgd2l0aCB0aGF0PwoK
-UmVnYXJkcywKQ2hyaXN0b3BoCgoKPiA+IAo+ID4gQW55d2F5Ogo+ID4gCj4gPiBSZXZpZXdlZC1i
-eTogQW5kcmV3IEx1bm4gPGFuZHJld0BsdW5uLmNoPgo+ID4gCj4gPiDCoMKgwqDCoCBBbmRyZXcK
-PiA+IAo+IAo=
+
+--7u3iuswslneeov4k
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/2] ARM: dts: freescale: add support for NXP i.MX93 FRDM
+MIME-Version: 1.0
+
+On 23.05.2025 20:16:48, Fabian Pflug wrote:
+> The FRDM i.MX 93 development board is a low-cost and compact development
+> board featuring the i.MX93 applications processor.
+>=20
+> It features:
+> - Dual Cortex-A55
+> - 2 GB LPDDR4X / LPDDR4
+> - 32 GB eMMC5.1
+> - MicroSD slot
+> - GbE RJ45 x 2
+> - USB2.0 1x Type C, 1x Type A
+>=20
+> This file is based upon the one provided by nxp in their own kernel and
+> yocto meta layer for the device, but adapted for mainline.
+>=20
+> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile             |   1 +
+>  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 630 +++++++++++++++=
+++++++
+>  2 files changed, 631 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts=
+/freescale/Makefile
+> index b6d3fe26d621234ab84353165d20af9d2536f839..c703fce2ebfd8074bd0c6ee76=
+f3c6f9bbd9cf179 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -295,6 +295,7 @@ imx93-9x9-qsb-i3c-dtbs +=3D imx93-9x9-qsb.dtb imx93-9=
+x9-qsb-i3c.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-9x9-qsb-i3c.dtb
+> =20
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-11x11-evk.dtb
+> +dtb-$(CONFIG_ARCH_MXC) +=3D imx93-11x11-frdm.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-14x14-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-kontron-bl-osm-s.dtb
+>  dtb-$(CONFIG_ARCH_MXC) +=3D imx93-phyboard-segin.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/ar=
+m64/boot/dts/freescale/imx93-11x11-frdm.dts
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..f1422946f7eb5799a9cc21fc9=
+3f75fc3a45ebcf5
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+> @@ -0,0 +1,630 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/usb/pd.h>
+> +#include "imx93.dtsi"
+> +
+> +/ {
+> +	model =3D "NXP i.MX93 11X11 FRDM board";
+> +	compatible =3D "fsl,imx93-11x11-frdm", "fsl,imx93";
+> +
+> +	chosen {
+> +		stdout-path =3D &lpuart1;
+> +	};
+> +
+> +	reserved-memory {
+> +		#address-cells =3D <2>;
+> +		#size-cells =3D <2>;
+> +		ranges;
+> +
+> +		linux,cma {
+> +			compatible =3D "shared-dma-pool";
+> +			reusable;
+> +			alloc-ranges =3D <0 0x80000000 0 0x30000000>;
+> +			size =3D <0 0x10000000>;
+> +			linux,cma-default;
+> +		};
+> +
+> +		vdev0vring0: vdev0vring0@a4000000 {
+> +			reg =3D <0 0xa4000000 0 0x8000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev0vring1: vdev0vring1@a4008000 {
+> +			reg =3D <0 0xa4008000 0 0x8000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev1vring0: vdev1vring0@a4010000 {
+> +			reg =3D <0 0xa4010000 0 0x8000>;
+> +			no-map;
+> +		};
+> +
+> +		vdev1vring1: vdev1vring1@a4018000 {
+> +			reg =3D <0 0xa4018000 0 0x8000>;
+> +			no-map;
+> +		};
+> +
+> +		rsc_table: rsc-table@2021e000 {
+> +			reg =3D <0 0x2021e000 0 0x1000>;
+> +			no-map;
+> +		};
+> +
+> +		vdevbuffer: vdevbuffer@a4020000 {
+> +			compatible =3D "shared-dma-pool";
+> +			reg =3D <0 0xa4020000 0 0x100000>;
+> +			no-map;
+> +		};
+> +
+> +	};
+> +
+> +	reg_vdd_12v: regulator-vdd-12v {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "reg_vdd_12v";
+> +		regulator-min-microvolt =3D <12000000>;
+> +		regulator-max-microvolt =3D <12000000>;
+> +		gpio =3D <&pcal6524 14 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+> +	reg_vref_1v8: regulator-adc-vref {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "vref_1v8";
+> +		regulator-min-microvolt =3D <1800000>;
+> +		regulator-max-microvolt =3D <1800000>;
+> +	};
+> +
+> +	reg_can2_standby: regulator-can2-stby {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "can2-stby";
+> +		regulator-min-microvolt =3D <3300000>;
+> +		regulator-max-microvolt =3D <3300000>;
+> +		gpio =3D <&pcal6524 23 GPIO_ACTIVE_LOW>;
+> +	};
+> +
+> +	reg_usdhc2_vmmc: regulator-usdhc2 {
+> +		compatible =3D "regulator-fixed";
+> +		pinctrl-names =3D "default";
+> +		pinctrl-0 =3D <&pinctrl_reg_usdhc2_vmmc>;
+> +		regulator-name =3D "VSD_3V3";
+> +		regulator-min-microvolt =3D <3300000>;
+> +		regulator-max-microvolt =3D <3300000>;
+> +		gpio =3D <&gpio3 7 GPIO_ACTIVE_HIGH>;
+> +		off-on-delay-us =3D <12000>;
+> +		enable-active-high;
+> +	};
+> +
+> +	reg_usdhc3_vmmc: regulator-usdhc3 {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "WLAN_EN";
+> +		regulator-min-microvolt =3D <3300000>;
+> +		regulator-max-microvolt =3D <3300000>;
+> +		gpio =3D <&pcal6524 20 GPIO_ACTIVE_HIGH>;
+> +		/*
+> +		 * IW612 wifi chip needs more delay than other wifi chips to complete
+> +		 * the host interface initialization after power up, otherwise the
+> +		 * internal state of IW612 may be unstable, resulting in the failure of
+> +		 * the SDIO3.0 switch voltage.
+> +		 */
+> +		startup-delay-us =3D <20000>;
+> +		enable-active-high;
+> +	};
+> +
+> +	usdhc3_pwrseq: usdhc3_pwrseq {
+> +		compatible =3D "mmc-pwrseq-simple";
+> +		reset-gpios =3D <&pcal6524 12 GPIO_ACTIVE_LOW>;
+> +	};
+> +};
+> +
+> +&adc1 {
+> +	vref-supply =3D <&reg_vref_1v8>;
+> +	status =3D "okay";
+> +};
+> +
+> +&cm33 {
+> +	mbox-names =3D "tx", "rx", "rxdb";
+> +	mboxes =3D <&mu1 0 1>,
+> +		 <&mu1 1 1>,
+> +		 <&mu1 3 1>;
+> +	memory-region =3D <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
+> +			<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
+> +	status =3D "okay";
+> +};
+> +
+> +&eqos {
+> +	pinctrl-names =3D "default", "sleep";
+> +	pinctrl-0 =3D <&pinctrl_eqos>;
+> +	pinctrl-1 =3D <&pinctrl_eqos_sleep>;
+> +	phy-mode =3D "rgmii-id";
+> +	phy-handle =3D <&ethphy1>;
+> +	status =3D "okay";
+> +
+> +	mdio {
+> +		compatible =3D "snps,dwmac-mdio";
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +		clock-frequency =3D <5000000>;
+> +
+> +		ethphy1: ethernet-phy@1 {
+> +			reg =3D <1>;
+> +			reset-gpios =3D <&pcal6524 15 GPIO_ACTIVE_LOW>;
+> +			reset-assert-us =3D <10000>;
+> +			reset-deassert-us =3D <80000>;
+> +		};
+> +	};
+> +};
+> +
+> +&fec {
+> +	pinctrl-names =3D "default", "sleep";
+> +	pinctrl-0 =3D <&pinctrl_fec>;
+> +	pinctrl-1 =3D <&pinctrl_fec_sleep>;
+> +	phy-mode =3D "rgmii-id";
+> +	phy-handle =3D <&ethphy2>;
+> +	fsl,magic-packet;
+> +	status =3D "okay";
+> +
+> +	mdio {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +		clock-frequency =3D <5000000>;
+> +
+> +		ethphy2: ethernet-phy@2 {
+> +			reg =3D <2>;
+> +			eee-broken-1000t;
+> +			reset-gpios =3D <&pcal6524 16 GPIO_ACTIVE_LOW>;
+> +			reset-assert-us =3D <10000>;
+> +			reset-deassert-us =3D <80000>;
+> +		};
+> +	};
+> +};
+> +
+> +&flexcan2 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pinctrl_flexcan2>;
+> +	xceiver-supply =3D <&reg_can2_standby>;
+> +	status =3D "okay";
+> +};
+
+Since d80bfde3c57a ("can: flexcan: add transceiver capabilities"), which
+got mainline with v6.15-rc1 there is proper PHY support in the flexcan
+driver. So from my point of view, there's no need to stick to regulator
+hack.
+
+See 87d60c4663b6 ("arm64: dts: ti: k3-j721e-common-proc-board: Add
+support for mcu and main mcan nodes") for an example.
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--7u3iuswslneeov4k
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmg0MewACgkQDHRl3/mQ
+kZz50wgAn9Wh9mX7RSnF8dqGdbOYTvM19I/6oNQXlmkMuhckfC5yYnyAaefDkYnP
+bPlGWMo+NBPUox47M0HVeVJF5TNIgJ/wob5cV813+GXi4RZOuDPQspAkwlCR+lQ1
+b/fYoz/b6z9zk23bODHSSlzIaAtgjGjQhKv5CF0vG4au121B4hMfWOMw4ZrzVq9j
+9rCBPgtm7eRlLz1CZavGwsFbwIjabD/SN2PZmmONgeAOOoq4RgugfNzX7rAU3WOa
+CfswrKfatWytTXq7hXBQoJ0NWj8W1bFwMW1v0YvwPkrW1tmrHYyf3ZH9MgYBdbOA
+ib0r84yfp/5y8ugNGPn2am88ii5lSA==
+=GSEO
+-----END PGP SIGNATURE-----
+
+--7u3iuswslneeov4k--
