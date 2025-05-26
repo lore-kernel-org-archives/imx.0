@@ -1,50 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2312A1F1927;
-	Mon, 26 May 2025 15:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4336121421C;
+	Mon, 26 May 2025 15:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748273880; cv=none; b=fvcypybPHvw9v4rL0DAC+KsDXVOyL8paGTHvbFdKQuxIvYEW0vW5VUCrrTUGi8MS3KxdpR+2Fnn/Q5O2AdTF5i/XjThECVK4qnm0H3Oj0wZHkEiOIoTekpCBFY6XaHbZ6AJLdQhoFIjkgpDFJnVuwP+oKv2/TvkWZhzPNCSkmeo=
+	t=1748273965; cv=none; b=aHPzCEoRqCSMwjGp8edX90JKGIX1vZtdWwnU51PrW/Wf6ZJGTDxa4cFppJEPH6L2EwrW/Dzfx1CdIMIraqTf1tSPyxBhEWl8yZQrtRyaubH6+c/Kaqdd6feyoFt82iV993//hnUcM1mhAIzBF0VQxIJ9Te9x8xBxPoJoFAAdwLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748273880; c=relaxed/simple;
-	bh=gZEdcFi4AWB0mQGqJiR9Una+jbLgbOAii8cHYJwyyCM=;
+	s=arc-20240116; t=1748273965; c=relaxed/simple;
+	bh=ch4UlhSRcLszMAM+USq4g6GagJ4v1ZQSXAIVyxnYpP4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ke6D5KOSG4bb5KNflLPRUHuG8yfvEir0LQ5rqXUNvl17ECWVXT5tlINvdMXkbllbM3u9Sit97giP90/d83KcN8J6uXvZMLz8gmaUMBFlvyhRLy0dchi83rXzB3FV1+51lTY69CmQEwr/by28HN3uqe0Z0nyetqGmgoRDMNeqAOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eVeCCn9+; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=pN+BY/l+UmxRIpgvtxVnbl+9p0c7sHO/B36y6dwwjJOy2wwsEgPPztzlJtIzYZAO6yK6hsBWhAz1wdpYjIpNaaJTBbk+pbvXs2bK5AFScEM3efMifF5wqaK/R9zaJcn5Ayjj2Lh5uaIZ5Fj/iTH4MYAEcNjZPqbY0OZf8DH0OfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxwMzAve; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eVeCCn9+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6DAC4CEE7;
-	Mon, 26 May 2025 15:37:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxwMzAve"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE02C4CEE7;
+	Mon, 26 May 2025 15:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748273879;
-	bh=gZEdcFi4AWB0mQGqJiR9Una+jbLgbOAii8cHYJwyyCM=;
+	s=k20201202; t=1748273964;
+	bh=ch4UlhSRcLszMAM+USq4g6GagJ4v1ZQSXAIVyxnYpP4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eVeCCn9+rEbLc+qkCLUyuKo8t7aaVRIHh8jR9LpDHzzYDoqaBW3s9r2BswWH9GnMd
-	 3gg7sgvdnF6/qZLxmzHgW3Uja/7UvtdMu5u5FluGEamqmzXavPG23XcjlMcDKEvXfu
-	 TTHg+YrIGqvY99JX+v12NT3qFpKX9FCegRjhdleaFfUbCJ8NqFUboqRAyoN5RKCPE9
-	 IcCUu2l79NzYNq3ZYXg/1Yo42Cb3zaVVHWhAh2pjDG1M2xP/36hMvAheFksko9zrdi
-	 21KNzoHJhQ8CUrzQiK6N9wiCrYWEuL8gHrCo6PA/R/7a6cFbJpPRaVBcvf5awtAOks
-	 cIrwKfgrhDvLg==
-Date: Mon, 26 May 2025 16:37:54 +0100
+	b=JxwMzAve0DnXzhNrTgDy2B7VSabV9Vr1C04z2hpBcDGcKwxFjzrAWYbCMlXVsJspD
+	 8JOSehSedd7mLgP760iizCeeU6/POxykJBQu9lGounJK9c0UdaNTmSHHNvbLP0j6Oi
+	 JmaZowh5N6bKqZAoJVoji7RVu7+jBdBWiXrwyU/CFUyU17yvKozEjFZx6Ape8wNXnx
+	 kQdKZuJy2VozzXV9ZT23mMyXoMFhE8K0M3D3A0EF/JorevESI5x2RE4bQKmgNI/CVG
+	 Nz+VZ/MfsEQJv5wlU9XHR9O2eGL244MGAFXl/5sZ87iKA+Ff7XcTA0lpPeZbpxjcfx
+	 Ue6nRwhqoApyQ==
+Date: Mon, 26 May 2025 16:39:19 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	"open list:SPI NOR SUBSYSTEM" <linux-mtd@lists.infradead.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: mtd: jedec,spi-nor: Add atmel,at26*
- compatible string
-Message-ID: <20250526-custodian-extruding-3b1889adc7f3@spud>
-References: <20250523155258.546003-1-Frank.Li@nxp.com>
+	open list <linux-kernel@vger.kernel.org>,
+	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: ieee802154: Convert at86rf230.txt yaml
+ format
+Message-ID: <20250526-laborer-repackage-0dd6f7730b2c@spud>
+References: <20250523154743.545245-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,36 +55,159 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="UXH9PATu1F7hJsVg"
+	protocol="application/pgp-signature"; boundary="AX1uLCkW5kwIJMO8"
 Content-Disposition: inline
-In-Reply-To: <20250523155258.546003-1-Frank.Li@nxp.com>
+In-Reply-To: <20250523154743.545245-1-Frank.Li@nxp.com>
 
 
---UXH9PATu1F7hJsVg
+--AX1uLCkW5kwIJMO8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 23, 2025 at 11:52:58AM -0400, Frank Li wrote:
-> Add atmel,at26* compatible string to fix below CHECK_DTB warning:
+On Fri, May 23, 2025 at 11:47:39AM -0400, Frank Li wrote:
+> Convert at86rf230.txt yaml format.
 >=20
-> arch/arm/boot/dts/nxp/vf/vf610-twr.dtb: /soc/bus@40000000/spi@4002c000/at=
-26df081a@0:
->     failed to match any schema with compatible: ['atmel,at26df081a']
+> Additional changes:
+> - Add ref to spi-peripheral-props.yaml.
+> - Add parent spi node in examples.
 >=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/net/ieee802154/at86rf230.txt     | 27 --------
+>  .../net/ieee802154/atmel,at86rf233.yaml       | 65 +++++++++++++++++++
+>  2 files changed, 65 insertions(+), 27 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/net/ieee802154/at86=
+rf230.txt
+>  create mode 100644 Documentation/devicetree/bindings/net/ieee802154/atme=
+l,at86rf233.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/ieee802154/at86rf230.t=
+xt b/Documentation/devicetree/bindings/net/ieee802154/at86rf230.txt
+> deleted file mode 100644
+> index 168f1be509126..0000000000000
+> --- a/Documentation/devicetree/bindings/net/ieee802154/at86rf230.txt
+> +++ /dev/null
+> @@ -1,27 +0,0 @@
+> -* AT86RF230 IEEE 802.15.4 *
+> -
+> -Required properties:
+> -  - compatible:		should be "atmel,at86rf230", "atmel,at86rf231",
+> -			"atmel,at86rf233" or "atmel,at86rf212"
+> -  - spi-max-frequency:	maximal bus speed, should be set to 7500000 depen=
+ds
+> -			sync or async operation mode
+> -  - reg:		the chipselect index
+> -  - interrupts:		the interrupt generated by the device. Non high-level
+> -			can occur deadlocks while handling isr.
+> -
+> -Optional properties:
+> -  - reset-gpio:		GPIO spec for the rstn pin
+> -  - sleep-gpio:		GPIO spec for the slp_tr pin
+> -  - xtal-trim:		u8 value for fine tuning the internal capacitance
+> -			arrays of xtal pins: 0 =3D +0 pF, 0xf =3D +4.5 pF
+> -
+> -Example:
+> -
+> -	at86rf231@0 {
+> -		compatible =3D "atmel,at86rf231";
+> -		spi-max-frequency =3D <7500000>;
+> -		reg =3D <0>;
+> -		interrupts =3D <19 4>;
+> -		interrupt-parent =3D <&gpio3>;
+> -		xtal-trim =3D /bits/ 8 <0x06>;
+> -	};
+> diff --git a/Documentation/devicetree/bindings/net/ieee802154/atmel,at86r=
+f233.yaml b/Documentation/devicetree/bindings/net/ieee802154/atmel,at86rf23=
+3.yaml
+> new file mode 100644
+> index 0000000000000..275e5e4677a46
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/ieee802154/atmel,at86rf233.ya=
+ml
+> @@ -0,0 +1,65 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/ieee802154/atmel,at86rf233.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: AT86RF230 IEEE 802.15.4
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - atmel,at86rf212
+> +      - atmel,at86rf230
+> +      - atmel,at86rf231
+> +      - atmel,at86rf233
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpio:
+> +    maxItems: 1
+> +
+> +  sleep-gpio:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 7500000
+> +
+> +  xtal-trim:
+> +    $ref: /schemas/types.yaml#/definitions/uint8-array
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+I think this is just uint8, not an array of uint8s (in which case you'd
+be missing constraints on how many?)
 
---UXH9PATu1F7hJsVg
+> +    description: |
+> +      u8 value for fine tuning the internal capacitance
+> +      arrays of xtal pins: 0 =3D +0 pF, 0xf =3D +4.5 pF
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        zigbee@0 {
+> +            compatible =3D "atmel,at86rf231";
+> +            reg =3D <0>;
+> +            spi-max-frequency =3D <7500000>;
+> +            interrupts =3D <19 4>;
+> +            interrupt-parent =3D <&gpio3>;
+> +            xtal-trim =3D /bits/ 8 <0x06>;
+> +        };
+> +    };
+> --=20
+> 2.34.1
+>=20
+
+--AX1uLCkW5kwIJMO8
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDSK0gAKCRB4tDGHoIJi
-0rMbAP46/aPf2cqfy3ZoD9HgTAgaGU7QaE0uUCfsNN9liR6RWgEAzie7LzEH2tOs
-Accn0UQQ+IRbSANsvdQYP2eIHvaBegw=
-=lH/v
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDSLJwAKCRB4tDGHoIJi
+0qV3AQDwD/JHyyrPfgpUbSBTgf1HnrVPkzCoveSe40iVlVWiuQEAhXl0mGpT4VHu
+F9AtcPvAsCTjG2v1kpvXN1AAKaU/bAw=
+=siVm
 -----END PGP SIGNATURE-----
 
---UXH9PATu1F7hJsVg--
+--AX1uLCkW5kwIJMO8--
