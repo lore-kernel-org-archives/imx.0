@@ -1,50 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18044A32;
-	Mon, 26 May 2025 15:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2312A1F1927;
+	Mon, 26 May 2025 15:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748273613; cv=none; b=bHz0abN5Ghx3AWgcrkLygHef7Q6FJYi03xmjXNlTDNd9V1w2NuS7j+jnYMhufCHFlBkag40qdKX6LaeKYQdFSpagNFDZyj8c879YZ5+/ZUIhmXyUlzjm3J3J+ifZA1ygHPhwIl7btnCBi9E+/8JcRUFsEMg7Z/duxrQkW4B8nys=
+	t=1748273880; cv=none; b=fvcypybPHvw9v4rL0DAC+KsDXVOyL8paGTHvbFdKQuxIvYEW0vW5VUCrrTUGi8MS3KxdpR+2Fnn/Q5O2AdTF5i/XjThECVK4qnm0H3Oj0wZHkEiOIoTekpCBFY6XaHbZ6AJLdQhoFIjkgpDFJnVuwP+oKv2/TvkWZhzPNCSkmeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748273613; c=relaxed/simple;
-	bh=bTIiweD03lr1R1e1Y1cpiVQxuDlSy72r7CfXuZpCyb0=;
+	s=arc-20240116; t=1748273880; c=relaxed/simple;
+	bh=gZEdcFi4AWB0mQGqJiR9Una+jbLgbOAii8cHYJwyyCM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W2zr6HPam9FH4VReq4qcIpiQD58YKEVRmXBcqtu6h8kO/ThzEKarmmjTpCtfbp24+9Iqb9NWdbDbZNW2UMVKyQLXsS9BacOjLHs1yXJC724DptFtIZT11rlKiRgMAQV1xZybcq/1ESFkAmUFaPGcet1NFwnKIElR+sEyiVIT144=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XpgzDHq8; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ke6D5KOSG4bb5KNflLPRUHuG8yfvEir0LQ5rqXUNvl17ECWVXT5tlINvdMXkbllbM3u9Sit97giP90/d83KcN8J6uXvZMLz8gmaUMBFlvyhRLy0dchi83rXzB3FV1+51lTY69CmQEwr/by28HN3uqe0Z0nyetqGmgoRDMNeqAOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eVeCCn9+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XpgzDHq8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F724C4CEE7;
-	Mon, 26 May 2025 15:33:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eVeCCn9+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6DAC4CEE7;
+	Mon, 26 May 2025 15:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748273613;
-	bh=bTIiweD03lr1R1e1Y1cpiVQxuDlSy72r7CfXuZpCyb0=;
+	s=k20201202; t=1748273879;
+	bh=gZEdcFi4AWB0mQGqJiR9Una+jbLgbOAii8cHYJwyyCM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XpgzDHq8IAUfoS6wq7qPPTet5n4dB+fg6N5zLp0bkDtKEbqKiCKvQmdUge6ThtwS4
-	 g+C5MVkQ+pGzfoPXP0o/Tkn6rBSAOWOoA2UWKgq6Dki7MlIoOxqno7gU81qtidKQsV
-	 Lu0eNkLAYn1V+4WYuZn/XdbMRUONGgzhXJetBx6RAXmjfjMik14xR/A4VdqqXxLiZv
-	 IULYHBNxYnMoXQv+BLfk96/Sc0DmNGpIaQOtYQksJDLUiV7j1aViQS3np3cpBZ70za
-	 Nsb1bW5Fn4uvMFahzAwGKyJO/go310X6uYZ/fxNxj8Fe18s8P/ibtg6AYuCjvW55Zp
-	 Va4NqQE45lWzA==
-Date: Mon, 26 May 2025 16:33:28 +0100
+	b=eVeCCn9+rEbLc+qkCLUyuKo8t7aaVRIHh8jR9LpDHzzYDoqaBW3s9r2BswWH9GnMd
+	 3gg7sgvdnF6/qZLxmzHgW3Uja/7UvtdMu5u5FluGEamqmzXavPG23XcjlMcDKEvXfu
+	 TTHg+YrIGqvY99JX+v12NT3qFpKX9FCegRjhdleaFfUbCJ8NqFUboqRAyoN5RKCPE9
+	 IcCUu2l79NzYNq3ZYXg/1Yo42Cb3zaVVHWhAh2pjDG1M2xP/36hMvAheFksko9zrdi
+	 21KNzoHJhQ8CUrzQiK6N9wiCrYWEuL8gHrCo6PA/R/7a6cFbJpPRaVBcvf5awtAOks
+	 cIrwKfgrhDvLg==
+Date: Mon, 26 May 2025 16:37:54 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>,
-	"moderated list:FREESCALE SOC DRIVERS" <linux-arm-kernel@lists.infradead.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:SPI NOR SUBSYSTEM" <linux-mtd@lists.infradead.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: soc: Add fsl,imx23-digctl.yaml for
- i.MX23 and i.MX28
-Message-ID: <20250526-corset-villain-8b72aefeba75@spud>
-References: <20250523204524.573028-1-Frank.Li@nxp.com>
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: mtd: jedec,spi-nor: Add atmel,at26*
+ compatible string
+Message-ID: <20250526-custodian-extruding-3b1889adc7f3@spud>
+References: <20250523155258.546003-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,99 +52,36 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="0HV2Ae0Z+B5ulyZ6"
+	protocol="application/pgp-signature"; boundary="UXH9PATu1F7hJsVg"
 Content-Disposition: inline
-In-Reply-To: <20250523204524.573028-1-Frank.Li@nxp.com>
+In-Reply-To: <20250523155258.546003-1-Frank.Li@nxp.com>
 
 
---0HV2Ae0Z+B5ulyZ6
+--UXH9PATu1F7hJsVg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 23, 2025 at 04:45:23PM -0400, Frank Li wrote:
-> Add fsl,imx23-digctl.yaml for i.MX23 and i.MX28 to fix below CHECK_DTB
-> warning:
+On Fri, May 23, 2025 at 11:52:58AM -0400, Frank Li wrote:
+> Add atmel,at26* compatible string to fix below CHECK_DTB warning:
 >=20
-> arch/arm/boot/dts/nxp/mxs/imx23-sansa.dtb: /apb@80000000/apbh-bus@8000000=
-0/digctl@8001c000:
->     failed to match any schema with compatible: ['fsl,imx23-digctl']
+> arch/arm/boot/dts/nxp/vf/vf610-twr.dtb: /soc/bus@40000000/spi@4002c000/at=
+26df081a@0:
+>     failed to match any schema with compatible: ['atmel,at26df081a']
 >=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../bindings/soc/fsl/fsl,imx23-digctl.yaml    | 41 +++++++++++++++++++
->  1 file changed, 41 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,imx23-d=
-igctl.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.y=
-aml b/Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.yaml
-> new file mode 100644
-> index 0000000000000..47f92f763bfa3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.yaml
-> @@ -0,0 +1,41 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas//soc/fsl/fsl,imx23-digctl.yaml#
-                                     ^^ I assume it makes no difference,
-but you got a double / here.
 
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale mxs digctrl for i.MX23/i.MX28
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-I have no idea reading this what a "digctrl" is. I think you should add
-a description briefly mentioning what it does.
-
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - fsl,imx28-digctl
-> +          - const: fsl,imx23-digctl
-> +      - const: fsl,imx23-digctl
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    digctl@8001c000 {
-> +        compatible =3D "fsl,imx28-digctl", "fsl,imx23-digctl";
-> +        reg =3D <0x8001c000 0x2000>;
-> +        interrupts =3D <89>;
-> +    };
-> +
-> --=20
-> 2.34.1
->=20
-
---0HV2Ae0Z+B5ulyZ6
+--UXH9PATu1F7hJsVg
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDSJxwAKCRB4tDGHoIJi
-0gCyAP9LAdE1TGf4om1fs4XgX2jkfTuBjGIU5v+EiwczA9egZwD+L6HUreQw17x+
-C0TNwI+EWaCw4LyMxszPbEdFd9lA1g4=
-=cgID
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDSK0gAKCRB4tDGHoIJi
+0rMbAP46/aPf2cqfy3ZoD9HgTAgaGU7QaE0uUCfsNN9liR6RWgEAzie7LzEH2tOs
+Accn0UQQ+IRbSANsvdQYP2eIHvaBegw=
+=lH/v
 -----END PGP SIGNATURE-----
 
---0HV2Ae0Z+B5ulyZ6--
+--UXH9PATu1F7hJsVg--
