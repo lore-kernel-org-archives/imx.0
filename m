@@ -1,69 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D932CCC0;
-	Tue, 27 May 2025 16:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275121E89C;
+	Tue, 27 May 2025 17:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748362405; cv=none; b=CS31QJOov/fLASMvV5LsOYaHqBxOzltQe22dctI1SBS2aKPChn1wj8Zh5Kgt/P1bsEHn6LzcFwGKhaZK/Gj0oTBHqnhyJ6Tt9EQPNpMUGsI9Uxsv8xINjqwd74ndxqkaW3uSJr0jZHqArl7fhwWBd4XE9cnK0Eygsl07DM6pSC8=
+	t=1748366718; cv=none; b=ZyXtXpfZWHf98YlaGFpnkrtmVqhEihJ6wvV7iGwQEhzVwwcjaRIfP7BD48WokQh6iTmkWX8Mi3sgydQxbU6nvcKcbfRNQk4/24viBK0KnyHn3H1PwU0X/oKrPBsivvg4oSNvjSX5wot1Dk4RGPW71eBV6Kq5uuTcE2tSzP0wRYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748362405; c=relaxed/simple;
-	bh=+rOhBA3MDB0wclaiXc132kW6TF3NIYNXXbvmM/76Yu4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=na2BdyytHK58hGbC0UwoPtYPKj1Jv7L6qlZm4ZEvrFFWJr0PBEE/cCiLxYF1GWsYC2aXccydVJsgVVnExjBiWHETvonPf+4uXTWG8ZDLKlcuq+V7Cqk0JnraEXOA0Xs9tmi3fjJyVv9B1VXMmbng+tGH8q84C64XqRIrQcoMnSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gCM4Afd7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748366718; c=relaxed/simple;
+	bh=junkeJlGysPy7xuXICzT2b/jFzfkYfjCQAKr5XJ8z+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AX6PN9/S7AM93ewVKNcR+4rfFScQaHkSQStxlVAWCgY9RE6vIU8ro/GZ4WMCI145UVNuGuOr9/Nat8WBHVZg7rwBOKotuF1bxUVlbOB2PSenGoRKwTwwwfMwiX6A4687hZ0LUs20whm39UXd+JP8SZ2bWbTyrEWssW/PfLH4Rvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CUsJ2P2S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gCM4Afd7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2DEC4CEEB;
-	Tue, 27 May 2025 16:13:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CUsJ2P2S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B24C4CEE9;
+	Tue, 27 May 2025 17:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748362405;
-	bh=+rOhBA3MDB0wclaiXc132kW6TF3NIYNXXbvmM/76Yu4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=gCM4Afd7hOao43lcgZKa5wIrqBtufzW6FH4r94YSR+xFhMj2+EW0AERgnc5R8R5DE
-	 r9KH2tPwU8ZeIJ6I0/UxA9R1Z0FsmJA0R77pWJk8FZ333XU+SJkQDFMZW4WRp3fWa4
-	 /e0rpZxTsYxRQlBRE6+B2CLzgB9+1io/WelunIbc+kNl+e+GiQuRdkqIhzYuTTIO3i
-	 P5mjSBjLKovKN/OU1uVQDt9r+DRyHlM89pSXCc+gCyCiYMBEBkwLCrMaVtqVoYgYLC
-	 Z+R8UVtFkBkxV6o4Z3pKq1jqWt9/JtAWvayCUjGzOSGMHMmYpUT2umT/Vhmmvbz4ks
-	 1R1G5eZulcb2A==
-From: Pratyush Yadav <pratyush@kernel.org>
+	s=k20201202; t=1748366718;
+	bh=junkeJlGysPy7xuXICzT2b/jFzfkYfjCQAKr5XJ8z+Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CUsJ2P2S8joJzEiWaXS91VGajLP7dsGlHthSCBMlTsw9fXmgbnAJ+xX5SWcceq0HL
+	 rFykLPlqp5tr6FgZhMWKOQtgKFfVT7Zq55IM3lvQIhI5XMM7CHvoPAiZg/2kmJhcMG
+	 4vNen0YomaFTBjoNGeNalXEOOR0APDEhbqlxCJu/rdSFLKdTQk4Nd0UkIMP6e1AT/A
+	 5+g21VWvwfc8JKkAVzab6BLMrJJCVhe20xpspqxelT/GigvPxtCOt0MOETKx8V6D+D
+	 /FyMoznRJzje8gAyKP9dSSUbv1XbIlGpWmU39M6O/G1ot4ZW6FgEB5Mi3R7x0IWRtV
+	 K3Je3idb9MG2g==
+Date: Tue, 27 May 2025 12:25:16 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,  Pratyush Yadav
- <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,  Miquel Raynal
- <miquel.raynal@bootlin.com>,  Richard Weinberger <richard@nod.at>,
-  Vignesh Raghavendra <vigneshr@ti.com>,  Rob Herring <robh@kernel.org>,
-  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor Dooley
- <conor+dt@kernel.org>,  linux-mtd@lists.infradead.org (open list:SPI NOR
- SUBSYSTEM),  devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND
- FLATTENED DEVICE TREE BINDINGS),  linux-kernel@vger.kernel.org (open
- list),  imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: mtd: jedec,spi-nor: Add atmel,at26*
- compatible string
-In-Reply-To: <20250523155258.546003-1-Frank.Li@nxp.com>
-References: <20250523155258.546003-1-Frank.Li@nxp.com>
-Date: Tue, 27 May 2025 18:13:22 +0200
-Message-ID: <mafs0r00arpzx.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/1] dt-bindings: watchdog: fsl-imx-wdt: add compatible
+ string fsl,ls1021a-wdt
+Message-ID: <174836671477.753304.3606658463007715272.robh@kernel.org>
+References: <20250522194732.493624-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250522194732.493624-1-Frank.Li@nxp.com>
 
-On Fri, May 23 2025, Frank Li wrote:
 
-> Add atmel,at26* compatible string to fix below CHECK_DTB warning:
->
-> arch/arm/boot/dts/nxp/vf/vf610-twr.dtb: /soc/bus@40000000/spi@4002c000/at26df081a@0:
->     failed to match any schema with compatible: ['atmel,at26df081a']
+On Thu, 22 May 2025 15:47:31 -0400, Frank Li wrote:
+> Add compatible string fsl,ls1021a-wdt for ls1021a SoC. fsl,ls1021a-wdt
+> allow big-endian property.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-Is there any problem with setting the compatible to "jedec,spi-nor" in
-the DTS instead? If not, it would better to do that instead.
+Applied, thanks!
 
-[...]
-
--- 
-Regards,
-Pratyush Yadav
