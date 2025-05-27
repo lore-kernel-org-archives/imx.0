@@ -1,188 +1,183 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC2F12B93;
-	Tue, 27 May 2025 18:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A718110E0;
+	Tue, 27 May 2025 18:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748369887; cv=none; b=i8f1Kl76JPP4c4z1DdG8Zqt7wVEQPJZpoPOYgzKCh2blqbFMxFPkPVCURGLHr0mU9Qztsm3E9g8tb3mU78C8YQkugTaEozs7I0KyIo88cjj9/zsoodT3yOb1A/k8tPU6KbUStSTjQ97BeN01viNdfzrlhYjd5SDmqlfwHtr/o9w=
+	t=1748371333; cv=none; b=pKIms999KHykmN7o06RKNum7fM4WJ+K81u2c0tHm8KAF3UL+yvdubhfPAmREUDNS5v/A4oDbZklPJ7DfCvDoujGbMAXcdLo5BKxAnxmxRqogGLH7eOOW+qlKiNVlgHtrd44+s6LpZSj+hLifx9pMOYbVMzG/IZGbjsVmh4KUnjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748369887; c=relaxed/simple;
-	bh=u2Q2XMni/0JmEMXMetOaDQk6KPODTqKODiQyRO8bX4I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AFvjrEV2mz6syPCTPq/65gKuEaA4t0lX5d+7iwWleVEaYru+YflM8d+UkxjlDL9oC4R70wgN+hjejo/xIujdS6CqKFLujE26VG9LQ4Qmir8FsNeGf6aNQr5WMklt9HxyusjHEP44h5fpL23Ts/J0Yo+fGxC4kkFaVTbnl1k9Nv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bW1PwfHa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748371333; c=relaxed/simple;
+	bh=J2F2a7oDIb8i++RtPJjzNyagYxJNmyPAATFCaksPPZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P1lMYacjWTosri2nPqMgKTDjkWNqTsBbfW4/mkfqXPlnbDoJGCen/AJFStbkNfWXHfqouD6hI3TXT6isk1KmphGdkmJllOXDR2TjLiLP+Ocmlgmf7pyEt6aNt/F2hcp8z3fGPignGoXZ5h2qGj2Ahia4HVIrhFfg9ig72vE6KfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RUGZU5xH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bW1PwfHa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972CAC4CEEB;
-	Tue, 27 May 2025 18:18:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RUGZU5xH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB86EC4CEE9;
+	Tue, 27 May 2025 18:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748369885;
-	bh=u2Q2XMni/0JmEMXMetOaDQk6KPODTqKODiQyRO8bX4I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bW1PwfHaYmYSR7STkMPVjnVHcc/CIOquE5UXw42KaVlkKFGa4BDM2RgY139NhHr+k
-	 CN+59yCKhEyVqDMl5VuxGK/CGr+kfILSwlFaCe7UCovsFg0o7AzrG6ajZrt942K4JQ
-	 ivtLd6lxuPd+52rHCsrHuW7NY0LTCEQatXo/AtN6BdMbnkhhbzFK5cPDI5vKEdZdQx
-	 gHxZ/gy2TgkYrfiNGFIWf5dY/WTshP3WZ6VD4V6f1ZYOKjTJJ3UjfSun+Q9WPvkZk0
-	 tLKq2TzKR7yF0n47fyEuRAsnvZp3fRq5qXNydeBoc8ERIEPmz+6ARmH//zFXhJkO0n
-	 0HDNUqWRSyU0g==
-Date: Tue, 27 May 2025 13:18:03 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	"open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: gpio: Move fsl,mxs-pinctrl.txt into
- gpio-mxs.yaml
-Message-ID: <20250527181803.GA877374-robh@kernel.org>
-References: <20250523203159.570982-1-Frank.Li@nxp.com>
+	s=k20201202; t=1748371333;
+	bh=J2F2a7oDIb8i++RtPJjzNyagYxJNmyPAATFCaksPPZo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RUGZU5xHrhJpqzE0iB2oP+pG2PNC63M8DcwQ+tIk06JhDsJVyqXK3giOBStyCDZ2A
+	 Qn9Zb2AzT41bqJLLlL/zCptYYpKlVRPDIopZi5rHgboUc5Aqg53ZeOFCpz6aI6lELS
+	 9WDmut8gFVqPc7PmjPDOPJjuAEtp4SpS43rjKWgIsQIMF0xSoa6emb/8y/D7usGCEL
+	 cZzo3+J46+/1mE4LXAkm5mB98ZsRPIclQWmrlrh05/D4qqEvAkibXNP7tjKQ/xuuMp
+	 /aW+51YpZKRHFR4udkQBJ3G6l6NmAZw1ewlbzcb3aFF0NFOcIS9kFUtGSmWG9BUaw6
+	 nHxCO7YA/YTxQ==
+Message-ID: <b2ed96a4-a236-4ea2-9e02-6896ff03caaa@kernel.org>
+Date: Tue, 27 May 2025 20:42:07 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250523203159.570982-1-Frank.Li@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: (subset) [PATCH v12 00/19] Support spread spectrum clocking for
+ i.MX8M PLLs
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+ Abel Vesa <abel.vesa@linaro.org>
+Cc: linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
+ Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ linux-amarula@amarulasolutions.com, Abel Vesa <abelvesa@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+References: <20250424062154.2999219-1-dario.binacchi@amarulasolutions.com>
+ <174643143452.2950397.16722215892279685541.b4-ty@linaro.org>
+ <CABGWkvq=pXhrzyCV2ABvQ3uwx4qKYL_G9280p5ECb8nsJ859yw@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <CABGWkvq=pXhrzyCV2ABvQ3uwx4qKYL_G9280p5ECb8nsJ859yw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 23, 2025 at 04:31:57PM -0400, Frank Li wrote:
-> Move mxs-pinctrl part into gpio-mxs.yaml and add pinctrl examples to fix
-> below CHECK_DTB warning:
+On 23/05/2025 17:19, Dario Binacchi wrote:
+> Hello Abel,
 > 
-> arch/arm/boot/dts/nxp/mxs/imx28-xea.dtb: pinctrl@80018000 (fsl,imx28-pinctrl):
->    'auart0-2pins@0', 'auart0@0',  ... 'usb1@1' do not match any of the regexes: 'gpio@[0-9]+$', 'pinctrl-[0-9]+'
+> On Mon, May 5, 2025 at 9:52 AM Abel Vesa <abel.vesa@linaro.org> wrote:
+>>
+>>
+>> On Thu, 24 Apr 2025 08:21:30 +0200, Dario Binacchi wrote:
+>>> This version keeps the version v9 patches that can be merged and
+>>> removes the patches that will need to be modified in case Peng's
+>>> PR https://github.com/devicetree-org/dt-schema/pull/154 is accepted.
+>>> The idea is to speed up the merging of the patches in the series
+>>> that have already been reviewed and are not dependent on the
+>>> introduction of the assigned-clocks-sscs property, and postpone
+>>> the patches for spread spectrum to a future series once it becomes
+>>> clear what needs to be done.
+>>>
+>>> [...]
+>>
+>> Applied, thanks!
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/gpio/gpio-mxs.yaml    |  73 +++++++++-
->  .../bindings/pinctrl/fsl,mxs-pinctrl.txt      | 127 ------------------
->  2 files changed, 69 insertions(+), 131 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/fsl,mxs-pinctrl.txt
+> I was surprised to see that the series has been removed from linux-next.
+
+Did you miss entire email thread explaining why? I think you never
+answered to several emails in this thread... and we - including myself -
+sent them a lot.
+
 > 
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
-> index b58e08c8ecd8a..b3cf4682be3fd 100644
-> --- a/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-mxs.yaml
-> @@ -18,9 +18,11 @@ description: |
->  
->  properties:
->    compatible:
-> -    enum:
-> -      - fsl,imx23-pinctrl
-> -      - fsl,imx28-pinctrl
-> +    items:
-> +      - enum:
-> +          - fsl,imx23-pinctrl
-> +          - fsl,imx28-pinctrl
-> +      - const: simple-bus
+> It’s been 8 months since the first version dated September 28, 2024.
+> The most critical phase was version 3 -
+> https://lore.kernel.org/all/20241106090549.3684963-1-dario.binacchi@amarulasolutions.com/
+> -
+> where two key issues emerged:
+> 
+>  1 The CCM design is flawed because "in the current design, CCM is
+>    taken as the producer of CLK_IMX8M_VIDEO_PLL, not the consumer."
+> 
+>  2 A driver for anatop needs to be implemented because "using clocks
+>    to replace fsl,ssc-clocks is possible under CCM mode, but you need
+>    to develop the fsl,imx8mm-anatop clock driver."
+> 
+> These development guidelines, agreed upon with Krzysztof and Peng,
+> enabled a coherent implementation of both the DT bindings and the
+> code. The following versions, from v4 to v8, were necessary to
+> review and refine those implementations, bringing us to January 2025.
+> 
+> At that point, Peng opened a separate pull request -
+> https://github.com/devicetree-org/dt-schema/pull/154 -
+> for the definition of general-purpose DT bindings for spread spectrum
+> handling, which ended up invalidating mine.
+> 
+> While waiting for his pull request to be accepted, I submitted version 9,
+> trying to at least get the patches for the anatop driver merged,
+> eventually reaching version 12.
+> 
+> This final version was merged, but then a few days ago it was dropped.
 
-I don't think the use of simple-bus is correct here. The addresses are 
-not MMIO (there's no size), and I would guess the child nodes are 
-dependent on the parent.
+And explained why. There were bug reports which you completely ignored.
 
->  
->    '#address-cells':
->      const: 1
-> @@ -31,6 +33,61 @@ properties:
->      maxItems: 1
->  
->  patternProperties:
-> +  "^(?!gpio).*@[0-9]+$":
+> 
+> As it stands now:
+> 
+> - We still don’t have proper spread spectrum handling
+> - Peng’s pull request has been stalled since February 20
+> - We don’t have a driver for anatop
+> - The CCM design remains flawed
+> - Not even the first 4 patches of the series were merged — these were
+>   simply a replication for i.MX8MM and i.MX8MP of patch
+>   bedcf9d1dcf88 ("clk: imx: rename video\_pll1 to video\_pll"), which
+>   was already merged some time ago.
+> 
+> Could you please let me know if you're still interested in this series?
+> If so, could you suggest how to resolve the issues that led you to drop it?
 
-Unit-address should be hex? If not, then another reason this is not a 
-simple-bus.
 
-> +    type: object
-> +    properties:
-> +      fsl,pinmux-ids:
-> +        $ref: /schemas/types.yaml#/definitions/uint32-array
-> +        description: |
-> +          An integer array.  Each integer in the array specify a pin
-> +          with given mux function, with bank, pin and mux packed as below.
-> +
-> +          [15..12] : bank number
-> +          [11..4]  : pin number
-> +          [3..0]   : mux selection
-> +
-> +          This integer with mux selection packed is used as an entity by both group
-> +          and config nodes to identify a pin.  The mux selection in the integer takes
-> +          effects only on group node, and will get ignored by driver with config node,
-> +          since config node is only meant to set up pin configurations.
-> +
-> +          Valid values for these integers are listed below.
-> +
-> +      reg:
-> +        maxItems: 1
+You got several replies what is wrong. Can you respond to these instead
+of coming now surprised?
 
-Would be good to say what 'reg' represents here.
-
-> +
-> +      fsl,drive-strength:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2, 3]
-> +        description: |
-> +          0: MXS_DRIVE_4mA
-> +          1: MXS_DRIVE_8mA
-> +          2: MXS_DRIVE_12mA
-> +          3: MXS_DRIVE_16mA
-> +
-> +      fsl,voltage:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1]
-> +        description: |
-> +          0: MXS_VOLTAGE_LOW  - 1.8 V
-> +          1: MXS_VOLTAGE_HIGH - 3.3 V
-> +
-> +      fsl,pull-up:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1]
-> +        description: |
-> +          0: MXS_PULL_DISABLE - Disable the internal pull-up
-> +          1: MXS_PULL_ENABLE  - Enable the internal pull-up
-> +
-> +          Note that when enabling the pull-up, the internal pad keeper gets disabled.
-> +          Also, some pins doesn't have a pull up, in that case, setting the fsl,pull-up
-> +          will only disable the internal pad keeper.
-> +
-> +    required:
-> +      - fsl,pinmux-ids
-> +
-> +    additionalProperties: false
-> +
->    "gpio@[0-9]+$":
->      type: object
->      properties:
-> @@ -80,7 +137,7 @@ examples:
->      pinctrl@80018000 {
->          #address-cells = <1>;
->          #size-cells = <0>;
-> -        compatible = "fsl,imx28-pinctrl";
-> +        compatible = "fsl,imx28-pinctrl", "simple-bus";
->          reg = <0x80018000 0x2000>;
->  
->          gpio@0 {
-> @@ -132,4 +189,12 @@ examples:
->              interrupt-controller;
->              #interrupt-cells = <2>;
->          };
-> +
-> +        lcdif-apx4@5 {
-> +            reg = <5>;
-> +            fsl,pinmux-ids = <0x1181 0x1191>;
-> +            fsl,drive-strength = <0>;
-> +            fsl,voltage = <0>;
-> +            fsl,pull-up = <0>;
-> +        };
->      };
+Best regards,
+Krzysztof
