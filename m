@@ -1,50 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DA614AD2B;
-	Tue, 27 May 2025 15:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1373C465;
+	Tue, 27 May 2025 15:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748359589; cv=none; b=k1vN2KDlEsUx+uoHmQoUysn4t7lstJK+a/Z6NQ6Nrco07f0mLE5jUqQjVLnkbOu6qQVIib99j1564nHgl/gs89xMBzVwpfK7+77E0Ci+y8mCz+DTpm2vWCa7jl40A3MQxGpv0dICZIxa6cW0JdrW6UVtUAAI90qJ9xGsIaiJrsc=
+	t=1748360870; cv=none; b=DcOAg4qG4VSaeD3N5U0ugcu5p5ahqQAA4JlZrkZ9D05+L1GyqIch0uh+ZVTEGMQsqZ1x3oZsDCxPFlXcnl2aFWGN8tAefJzBaOP81XPBJEUP5zzQelxiem4VRyJ4VoLBw+26z7K5gczbYVYb6i/8+7e4dgvbP7VjBzcswCpx0uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748359589; c=relaxed/simple;
-	bh=YnA1/IvrO7Twz/AlZKv3r93FTZ8BSs9KSJRQMN6qNzc=;
+	s=arc-20240116; t=1748360870; c=relaxed/simple;
+	bh=SXB/W5YGNq6LI6cMa8qdCfbwi61BqnQv3hX2p2dEEaA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=idA43/iOA6c9j2cmMGed67ss8XNQeiCfYplFcJCj5H5U4eXZzaf39lcMUokMv5OQqRoxU9HGtyrh0LHzj/PE2+4hPqeKXAXXeD0JflKJsKwpxIjfz81lbnf09OhUlOkZAhisL8QdM5ETUZ753KvlNAUH6QaunSauKMFcMrc76Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bzgIx9Uw; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=iOqjvFqM2kgEBrFtT7llLUz3Omy4nclXV3JXBzOxoN5xZEnH2ExRQukdEe7f6b/gudi6SMiC3QEyivEBlEUV91ZP+iNwER5uTDvJMy5M6EHBcDRiiN8DFbL9aIpC2BZ88/TIgygP2x6rFf3QB2pr/ZfvsWJ/FOIVvYoNMnSaLlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N89J5Ogf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bzgIx9Uw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278B2C4CEE9;
-	Tue, 27 May 2025 15:26:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N89J5Ogf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D95C4CEE9;
+	Tue, 27 May 2025 15:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748359589;
-	bh=YnA1/IvrO7Twz/AlZKv3r93FTZ8BSs9KSJRQMN6qNzc=;
+	s=k20201202; t=1748360870;
+	bh=SXB/W5YGNq6LI6cMa8qdCfbwi61BqnQv3hX2p2dEEaA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bzgIx9UwCykCNFvylFkgv4bWgjxzHmsmueoxfv/ocntlwYNaIU/IS6QU5HaD4sdFm
-	 vqU63BjYSIovLIVA4C/KbMcJtSgBrN4whSumRpdoeqW9Lh+pe22+yOgsClZgfhocN0
-	 ocbnvkUk2QjBqszwpsCogI37+N9WZeqO3Jutxw541z2AFlSP1n+q0oKPqwrdSKRDlr
-	 J6aZhTO7nS6kxLyI5xE4+1ovrt+Q7JFzncaOJ7ZTtBie727RcqojMpCfjqt7uM1c8i
-	 roigQKMzE3isKqSz5xicEnjzsyZ40HksMZGrK+GNdh9BKF98EcfjbWOaZJrzzTQKZr
-	 7dCNuCJGbou4w==
-Date: Tue, 27 May 2025 16:26:24 +0100
+	b=N89J5Ogf61kkviEXYSEru1lFMfWmBaDCr3850ZewH/QlCOnLhZYGcUGMt7qY6ZDMT
+	 oFO7wik1FJ9+YT9T4cpQi+aaWKc09PiA+40HXWsssxaZIcNoudic/3QkT5jajkcKnw
+	 y5MbqK1W17jxGwOXApecyKtE09bVt8+fLIkoNXmnTss4aTkR571BJqP26vt0ZrfBOn
+	 Lx76dbKMykRXZJd41txdC41Z4gDnQ8Mc0THiQzT7GjGKoCgbHQydmF+veyG1UHawE3
+	 qrj79aiJuqknL1+mDF6ef/rELc33h3fefrsyvC1AsjDFYXz/+J0AeLkwRYoqezXGzo
+	 7OBkjmnn9r1Lw==
+Date: Tue, 27 May 2025 16:47:46 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
+Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." <linux-sound@vger.kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:IRQCHIP DRIVERS" <linux-kernel@vger.kernel.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] ASoC: dt-bindings: covert mxs-audio-sgtl5000.txt to
- yaml format
-Message-ID: <20250527-disloyal-maritime-fea9f6a1d8f4@spud>
-References: <20250523192055.563711-1-Frank.Li@nxp.com>
+	imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: interrupt-controller: Add fsl,icoll.yaml
+Message-ID: <20250527-ancient-monstrous-2b867b95524b@spud>
+References: <20250523192016.563540-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,194 +45,101 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="QgV6b+xA9WWLoYJ+"
+	protocol="application/pgp-signature"; boundary="NabpYVU0Es9zW1+Z"
 Content-Disposition: inline
-In-Reply-To: <20250523192055.563711-1-Frank.Li@nxp.com>
+In-Reply-To: <20250523192016.563540-1-Frank.Li@nxp.com>
 
 
---QgV6b+xA9WWLoYJ+
+--NabpYVU0Es9zW1+Z
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 23, 2025 at 03:20:54PM -0400, Frank Li wrote:
-> Convert mxs-audio-sgtl5000.txt to yaml format.
->=20
-> Additional changes:
-> - Add compatible string:
->     bluegiga,apx4devkit-sgtl5000
->     denx,m28evk-sgtl5000
->     fsl,imx28-mbmx28lc-sgtl500
-
-Really? I don't see them.
-
-> - Remove audio-routing from required list.
-
-Nope, still there?
-
-Confused,
-Conor.
-
+On Fri, May 23, 2025 at 03:20:15PM -0400, Frank Li wrote:
+> Add fsl,icoll.yaml for i.MX23 and i.MX28.
 >=20
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../sound/fsl,mxs-audio-sgtl5000.yaml         | 78 +++++++++++++++++++
->  .../bindings/sound/mxs-audio-sgtl5000.txt     | 42 ----------
->  2 files changed, 78 insertions(+), 42 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/sound/fsl,mxs-audio=
--sgtl5000.yaml
->  delete mode 100644 Documentation/devicetree/bindings/sound/mxs-audio-sgt=
-l5000.txt
+>  .../interrupt-controller/fsl,icoll.yaml       | 45 +++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-controlle=
+r/fsl,icoll.yaml
 >=20
-> diff --git a/Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl50=
-00.yaml b/Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.ya=
-ml
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,i=
+coll.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,icol=
+l.yaml
 > new file mode 100644
-> index 0000000000000..9fe815d6c233d
+> index 0000000000000..7b09fd7d588f2
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.yaml
-> @@ -0,0 +1,78 @@
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,icoll.ya=
+ml
+> @@ -0,0 +1,45 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/sound/fsl,mxs-audio-sgtl5000.yaml#
+> +$id: http://devicetree.org/schemas/interrupt-controller/fsl,icoll.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Freescale MXS audio complex with SGTL5000 codec
+> +title: Freescale MXS icoll Interrupt controller
 > +
 > +maintainers:
 > +  - Frank Li <Frank.Li@nxp.com>
 > +
 > +properties:
 > +  compatible:
-> +    items:
-> +      - enum:
-> +          - fsl,imx28-evk-sgtl5000
-> +      - const: fsl,mxs-audio-sgtl5000
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - fsl,imx23-icoll
+> +              - fsl,imx28-icoll
+> +          - const: fsl,icoll
+
+Given this generic fallback, that would likely not be approved if this
+were actually what it is presented as (a binding for some new device),
+is only acceptable because it is already in use and this is some 15 year
+old device, you should state pretty clearly in your commit message.
+With it pointed out,
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
 > +
-> +  model:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    description: The user-visible name of this sound complex
+> +  reg:
+> +    maxItems: 1
 > +
-> +  saif-controllers:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    description: The phandle list of the MXS SAIF controller
+> +  interrupt-controller: true
 > +
-> +  audio-codec:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: The phandle of the SGTL5000 audio codec
-> +
-> +  audio-routing:
-> +    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-> +    description: |
-> +      A list of the connections between audio components.
-> +      Each entry is a pair of strings, the first being the
-> +      connection's sink, the second being the connection's
-> +      source. Valid names could be power supplies, SGTL5000
-> +      pins, and the jacks on the board:
-> +
-> +      Power supplies:
-> +        * Mic Bias
-> +
-> +      SGTL5000 pins:
-> +        * MIC_IN
-> +        * LINE_IN
-> +        * HP_OUT
-> +        * LINE_OUT
-> +
-> +      Board connectors:
-> +        * Mic Jack
-> +        * Line In Jack
-> +        * Headphone Jack
-> +        * Line Out Jack
-> +        * Ext Spk
+> +  '#interrupt-cells':
+> +    const: 1
 > +
 > +required:
 > +  - compatible
-> +  - saif-controllers
-> +  - audio-codec
-> +  - audio-routing
+> +  - reg
+> +  - interrupt-controller
+> +  - '#interrupt-cells'
 > +
-> +allOf:
-> +  - $ref: dai-common.yaml#
-> +
-> +unevaluatedProperties: false
+> +additionalProperties: false
 > +
 > +examples:
 > +  - |
-> +    sound {
-> +        compatible =3D "fsl,imx28-evk-sgtl5000", "fsl,mxs-audio-sgtl5000=
-";
-> +        model =3D "imx28-evk-sgtl5000";
-> +        saif-controllers =3D <&saif0 &saif1>;
-> +        audio-codec =3D <&sgtl5000>;
-> +        audio-routing =3D
-> +            "MIC_IN", "Mic Jack",
-> +            "Mic Jack", "Mic Bias",
-> +            "Headphone Jack", "HP_OUT";
+> +    interrupt-controller@80000000 {
+> +        compatible =3D "fsl,imx28-icoll", "fsl,icoll";
+> +        reg =3D <0x80000000 0x2000>;
+> +        interrupt-controller;
+> +        #interrupt-cells =3D <1>;
 > +    };
-> diff --git a/Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.t=
-xt b/Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt
-> deleted file mode 100644
-> index 4eb980bd02874..0000000000000
-> --- a/Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt
-> +++ /dev/null
-> @@ -1,42 +0,0 @@
-> -* Freescale MXS audio complex with SGTL5000 codec
-> -
-> -Required properties:
-> -- compatible		: "fsl,mxs-audio-sgtl5000"
-> -- model			: The user-visible name of this sound complex
-> -- saif-controllers	: The phandle list of the MXS SAIF controller
-> -- audio-codec		: The phandle of the SGTL5000 audio codec
-> -- audio-routing		: A list of the connections between audio components.
-> -			  Each entry is a pair of strings, the first being the
-> -			  connection's sink, the second being the connection's
-> -			  source. Valid names could be power supplies, SGTL5000
-> -			  pins, and the jacks on the board:
-> -
-> -			  Power supplies:
-> -			   * Mic Bias
-> -
-> -			  SGTL5000 pins:
-> -			   * MIC_IN
-> -			   * LINE_IN
-> -			   * HP_OUT
-> -			   * LINE_OUT
-> -
-> -			  Board connectors:
-> -			   * Mic Jack
-> -			   * Line In Jack
-> -			   * Headphone Jack
-> -			   * Line Out Jack
-> -			   * Ext Spk
-> -
-> -Example:
-> -
-> -sound {
-> -	compatible =3D "fsl,imx28-evk-sgtl5000",
-> -		     "fsl,mxs-audio-sgtl5000";
-> -	model =3D "imx28-evk-sgtl5000";
-> -	saif-controllers =3D <&saif0 &saif1>;
-> -	audio-codec =3D <&sgtl5000>;
-> -	audio-routing =3D
-> -		"MIC_IN", "Mic Jack",
-> -		"Mic Jack", "Mic Bias",
-> -		"Headphone Jack", "HP_OUT";
-> -};
+> +
 > --=20
 > 2.34.1
 >=20
 
---QgV6b+xA9WWLoYJ+
+--NabpYVU0Es9zW1+Z
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDXZnwAKCRB4tDGHoIJi
-0nEvAP4+0dWY7AbxfwECG2Q0jh6CNsRqWWVvKqxzBboFQZHLnAEArcUEPosW6/FK
-ixi841HYZzgd/3HVGrZSyjMCPRArVgk=
-=5OT+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDXeogAKCRB4tDGHoIJi
+0hOBAPkBv8JYkIsYT13rVU0cUw9lky7j2QGQn086JoDm4uo3aAD9FFXCMfefltTB
+ZwSKCZ6t5+SXVbpCLff58xih4e+JUg4=
+=9mIs
 -----END PGP SIGNATURE-----
 
---QgV6b+xA9WWLoYJ+--
+--NabpYVU0Es9zW1+Z--
