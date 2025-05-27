@@ -1,121 +1,106 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886EC248865;
-	Tue, 27 May 2025 09:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665C73C01;
+	Tue, 27 May 2025 09:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748338065; cv=none; b=P0A8yxrEq/7fkv61NgoqKat7E33FVm1T6lUHWvExnFA+33ZpljyIjqT0PCmXfiNvzYQ4fAhAJdHDFPwC13ph5/z7rCMBnwJJCR0LRR2PGrZhHKFEHAixCK0QRq6re5n+DQ8RVl1CQDXFxbnlP0yZ1+I7COf35Xpj4qqMQxS+0BI=
+	t=1748338196; cv=none; b=uq/d3QJEaDgkx6dw/MTh3gGHDzjpFpvqGLsBLgectLbhF0bYlsmmSx6M3F7BSYR1pbtFN8+RfJORfeWl0bDebx6ymyD9TgMKQ5Vo2NIVSeBhBPdZR+C5pSp8ajoBPDIz3bWl5NZFXGCGwthGYxqZGqtWlj/Fph+iYxqoZ49VB2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748338065; c=relaxed/simple;
-	bh=g8pq9wcZriOUJYhQGj4KOSFMK7K9XvrMl9Z746NyePk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lbP3CA+rRsuwSoLlda1OZwF90gUUjcaeknXIqett/8LaLOnoApfrvhE+L8SxQjJkc02AbDaxIJu2ZUQaq6Jwj1++vL4eTBLTAa6QurAEkGFPUbXywOcYkv9TqTnrgLdWHEh50Dlf6lnWBNiupI4tlmSJM8rkB4Y3Zk2vtAV4TbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=F8TaetyG; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1748338196; c=relaxed/simple;
+	bh=yx44wKhyWSIIz+gEiInWp3kNE5EdMe0ABsYt3dl6KlE=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=ENmcsxdHIk7TNBAW1Sc9MtW3wh26/L2W+NmP8AUYFIGR62dOFQd0R/JcZKiGVPodnaYjGOofjgKW5I7pmeSvPZ2wQUxGkv79zem2LM4CuWp7RsJcOZThZmEZpw1ryghheagqiL61yet8/HqDbHPC+BRCqwlrclRw+UltzzqR2KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZMy6YLI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="F8TaetyG"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 644551FD55;
-	Tue, 27 May 2025 09:27:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1748338055;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ls+q14bBbKBSSH85R41btg1RBJN5OvsL+OQ1fnPsL30=;
-	b=F8TaetyG1KRkwdnwsGP+2qn6/oOFTSaXtxLSp1w6jLX2vUC+84mLp/SeHOXMt13CrWyC5W
-	5bpnUZ9ug8+YA0tkdAR6pVm2ZJU/Qfi3OLCF2F1polb7s1EuevM1diZZ7GTuzCUIXBf3pi
-	NvnhXgJbEHpgWp55tKzp2Am3UoGGp75fHqkQPN/Roi5uIDraDxq70Yk0LMC0+kYZ3wL7J9
-	yFyBZVyQKT9FIYeb9ztqRSDKGM4z1kkfgLjQjDx5Y0H8d3ViXjd/22DHx59KoB/kYDgZIy
-	rDw0mKraSYVVaJ3uwKF3DldpjbWcRDW9Cei3KMUad2AnCYmjoiJXRVDAw9X1DA==
-Date: Tue, 27 May 2025 11:27:25 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Adam Ford <aford173@gmail.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Andrzej Hajda
- <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Laurent Pinchart
- <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Jagan Teki
- <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Douglas Anderson
- <dianders@chromium.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, Krzysztof
- Kozlowski <krzk@kernel.org>, Anusha Srivatsa <asrivats@redhat.com>, Paul
- Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, Hui
- Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
- asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
- chrome-platform@lists.linux.dev, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-amlogic@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-stm32@st-md-mailman.stormreply.com, Manikandan Muralidharan
- <manikandan.m@microchip.com>, Adrien Grassein <adrien.grassein@gmail.com>,
- Aleksandr Mishin <amishin@t-argos.ru>, Andy Yan <andy.yan@rock-chips.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Benson Leung <bleung@chromium.org>, Biju Das <biju.das.jz@bp.renesas.com>,
- Christoph Fritz <chf.fritz@googlemail.com>, Cristian Ciocaltea
- <cristian.ciocaltea@collabora.com>, Detlev Casanova
- <detlev.casanova@collabora.com>, Dharma Balasubiramani
- <dharma.b@microchip.com>, Guenter Roeck <groeck@chromium.org>, Heiko
- Stuebner <heiko@sntech.de>, Jani Nikula <jani.nikula@intel.com>, Janne
- Grunau <j@jannau.net>, Jerome Brunet <jbrunet@baylibre.com>, Jesse Van
- Gavere <jesseevg@gmail.com>, Kevin Hilman <khilman@baylibre.com>, Kieran
- Bingham <kieran.bingham+renesas@ideasonboard.com>, Liu Ying
- <victor.liu@nxp.com>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Matthias Brugger
- <matthias.bgg@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Phong LE
- <ple@baylibre.com>, Sasha Finkelstein <fnkl.kernel@gmail.com>, Sugar Zhang
- <sugar.zhang@rock-chips.com>, Sui Jingfeng <sui.jingfeng@linux.dev>, Tomi
- Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Vitalii Mordan
- <mordan@ispras.ru>
-Subject: Re: [PATCH v3 02/22] drm: convert many bridge drivers from
- devm_kzalloc() to devm_drm_bridge_alloc() API
-Message-ID: <20250527112725.3736e415@booty>
-In-Reply-To: <CAHCN7xLPxmaZcOESvaU2W1gX4o1z-1A_atq4jZdrpAH5Wmht+g@mail.gmail.com>
-References: <20250509-drm-bridge-convert-to-alloc-api-v3-0-b8bc1f16d7aa@bootlin.com>
-	<20250509-drm-bridge-convert-to-alloc-api-v3-2-b8bc1f16d7aa@bootlin.com>
-	<CAHCN7xLPxmaZcOESvaU2W1gX4o1z-1A_atq4jZdrpAH5Wmht+g@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZMy6YLI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A10C4CEE9;
+	Tue, 27 May 2025 09:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748338195;
+	bh=yx44wKhyWSIIz+gEiInWp3kNE5EdMe0ABsYt3dl6KlE=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=VZMy6YLIzi0E+tQikW/k2S3coZ3itQpR7Mk9hxf6fnCc54gCAzsqhOtNJTvFe5vgM
+	 xjfF2OO8kayX4YwTLScTKkK22fQ5iwCT6WFL8J+JophziiQltlMzyUjrzwRhiUCP/f
+	 p1JIKY91iLQM9mCIjkhqRMMOV9t00vnyLx8qYoR5/RbZoWYQSYQIbjop79M4nTsomU
+	 VJzUGOkR97aRojNaoV3l6mmkxQvRTnC5POowQxwOsSyj5n42D4dZbu4tzsSUYPtnSv
+	 l+d8XYzaiCn6VNQQcm0xNiLMbIa7vcCRY/VDVtce7NSsHJ32cFMH/JJj8jpRxR5emG
+	 3jN9vw6i843fA==
+Date: Tue, 27 May 2025 04:29:53 -0500
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvtddtvdculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeglefffefghefhtddvfeeufeeiveekgffgleekieduteekkeetvdehudekgfdvvdenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeikedprhgtphhtthhopegrfhhorhguudejfeesghhmrghilhdrtghomhdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhto
- hepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopegrihhrlhhivggusehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrgh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Thomas Richard <thomas.richard@bootlin.com>, linux-crypto@vger.kernel.org, 
+ Frank Li <Frank.li@nxp.com>, imx@lists.linux.dev, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ linux-arm-kernel@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?Horia_Geant=C4=83?= <horia.geanta@nxp.com>, 
+ Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, 
+ Gaurav Jain <gaurav.jain@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+ linux-kernel@vger.kernel.org, Pankaj Gupta <pankaj.gupta@nxp.com>
+To: John Ernberg <john.ernberg@actia.se>
+In-Reply-To: <20250527071552.1424997-4-john.ernberg@actia.se>
+References: <20250527071552.1424997-1-john.ernberg@actia.se>
+ <20250527071552.1424997-4-john.ernberg@actia.se>
+Message-Id: <174833819381.3537254.5508047100817417003.robh@kernel.org>
+Subject: Re: [PATCH v2 3/4] dt-bindings: crypto: fsl,sec-v4.0: Add power
+ domains for iMX8QM and iMX8QXP
 
-Hello Adam,
 
-On Sun, 25 May 2025 14:40:46 -0500
-Adam Ford <aford173@gmail.com> wrote:
-
-> For: imx8mp-hdmi-pvi.c and adv7511_drv.c
+On Tue, 27 May 2025 07:16:03 +0000, John Ernberg wrote:
+> NXP SoCs like the iMX8QM, iMX8QXP or iMX8DXP use power domains for
+> resource management.
 > 
-> Tested-by: Adam Ford <aford173@gmail.com> #imx8mp-beacon-kit
+> Allow specifying them for such SoCs.
+> 
+> Signed-off-by: John Ernberg <john.ernberg@actia.se>
+> 
+> ---
+> 
+> v2:
+>  - Adjust commit message (Frank Li)
+>  - Only allow power-domains when compatible with imx8qm (Frank Li)
+> ---
+>  .../bindings/crypto/fsl,sec-v4.0.yaml         | 36 +++++++++++++++++++
+>  1 file changed, 36 insertions(+)
+> 
 
-Thanks for your testing, on the v1 as well!
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Sadly your Tested-by tag won't be in the commit because the patch had
-already been applied, but it is useful per se, and in the records
-anyway.
+yamllint warnings/errors:
 
-Kind regards,
-Luca
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml: patternProperties:^jr@[0-9a-f]+$: 'if' is not one of ['type', 'description', 'dependencies', 'dependentRequired', 'dependentSchemas', 'properties', 'patternProperties', 'additionalProperties', 'unevaluatedProperties', 'deprecated', 'required', 'not', 'allOf', 'anyOf', 'oneOf', '$ref']
+	from schema $id: http://devicetree.org/meta-schemas/nodes.yaml#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml: patternProperties:^jr@[0-9a-f]+$: 'then' is not one of ['type', 'description', 'dependencies', 'dependentRequired', 'dependentSchemas', 'properties', 'patternProperties', 'additionalProperties', 'unevaluatedProperties', 'deprecated', 'required', 'not', 'allOf', 'anyOf', 'oneOf', '$ref']
+	from schema $id: http://devicetree.org/meta-schemas/nodes.yaml#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml: patternProperties:^jr@[0-9a-f]+$: 'else' is not one of ['type', 'description', 'dependencies', 'dependentRequired', 'dependentSchemas', 'properties', 'patternProperties', 'additionalProperties', 'unevaluatedProperties', 'deprecated', 'required', 'not', 'allOf', 'anyOf', 'oneOf', '$ref']
+	from schema $id: http://devicetree.org/meta-schemas/nodes.yaml#
 
--- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250527071552.1424997-4-john.ernberg@actia.se
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
