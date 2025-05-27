@@ -1,189 +1,215 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDFF156237
-	for <imx@lists.linux.dev>; Mon, 26 May 2025 18:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B3023A6
+	for <imx@lists.linux.dev>; Tue, 27 May 2025 00:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748283636; cv=none; b=qGjBs+ssXDSkppljXb+ED52XkmXUnhjjyPPwiSVG06VAEbZGYgeDkc66/ArQCa48IffygoGAFggECGlbosyuMInSilN3zAnHgyYK/s9bt0ureITRlIJQn+BMy0je9o5Wm0I+Zfp/nY/EroNw7b5+XQukxluPtDq89ZPySZdhnLQ=
+	t=1748304320; cv=none; b=ebHV2U3Xa7K/ptSGgsmzVTHCDPvjgsgZySpSnKyXRIgxDdobkjlqzSxU2m20WsibFfQHjznRSvYdhnHRFfLPVTvu/yxKAJs1rzv/dogxAmOyhXTF416dTsenhhvlH93o8K6jl2J/zkvq9CNRDb8pXtSwbnv1sKrLPIfB+RZWRlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748283636; c=relaxed/simple;
-	bh=WM/6bLMnHAI8PjYbFLVDPXJEySqlfrUhVK9zQO6tXLU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DRbWRD2OESWr1KtlPMe8+mNdUWfp86m+3zvfM55kxEz0qtua+9igBxBfHe/mnnao05gMdzVGN+nLUmxxSdJpjccG1Cqb87Sy7Jp6HALLSxK9TbMnbnGu1eAg6Vn8iYuWbgAUQVZnlrXUdbAwMqfQdrQW4VWtcwuyZjtC+zvt3sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=MduV8X/m; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1748304320; c=relaxed/simple;
+	bh=r1xxob3cHvQ50YeOPa143G4Cs++QqeFJ5fmfOzctg5A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pXptfkrOxaTwvJwqewfJCBbfU5NNuKE3Y/TB88otfkK9FaN01cPqb5YHATMr4NL+FePzklPoxXsKdE9LP2l24lhFgyUCAHPBa+tHj+1F2q695mAZdjZw+za2yncYktOHFnyCV3QNDjczJCtLDbHgdUmUbgD8PRkh8L/ugRXNaTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EtI3vEj6; arc=none smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="MduV8X/m"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a4dba2c767so746984f8f.1
-        for <imx@lists.linux.dev>; Mon, 26 May 2025 11:20:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EtI3vEj6"
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-52b2290e292so821531e0c.3
+        for <imx@lists.linux.dev>; Mon, 26 May 2025 17:05:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1748283632; x=1748888432; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZLm2u+K+PI/38ypNwBYrTuGrq0xLDvMbTxRXLnz2xDI=;
-        b=MduV8X/mN/55DGQTjYY2LNAXq5g3VwRJZ2qTNrS5w9RUPfwdeeZFo2S+T4QhA72rKu
-         fCgYIC30OlxEtkb6B+WcRR2Vsd7miwdC4kpef7NhTURnccK4lAfsV6wJe+AKjj9SgYeK
-         YtL8Tx0cM/ts6N/TpTW7te+6AaA681Kvhh+CMblMx3cXvfpPkqxBjd6H0pz0V1rkHwpR
-         1ORMt5GoHJpQfRJRPeRfnVnf81j20JGhficC1GVl/DPVsO8wLHIT0hREzynPdjLkOV7g
-         qcNHRquLNxwlyGi0B3jdQsyz+mWTEAUzFAxwTDDCaeRhdoevB/xcORBcN3iyA/CBAELc
-         RhcQ==
+        d=gmail.com; s=20230601; t=1748304317; x=1748909117; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Addthv64Q3TTSQf/2nFhVGk8jr68iUDk2g8AigrRaGQ=;
+        b=EtI3vEj6tJKov7Y5IeQokZjwDTfSz/0HYEezP7EgcwCjqbqn9hhHzEhVvLRCZY1oob
+         CrvHknSn1TVFlD9mnFEzsWxhXL9SAeLeJZ+NvLRBmi1VQMC+aoDrrLIZkjvchh5klZHX
+         k9/ih0dLGYWjys7nLDbrrdHlxsLvWM/yk9MQVFpEoT7OMzIorysVHU4E3wrxLi8fbNz5
+         +edlSd5xf4dSY02VwMvZTfw7ZTVP9yhZcOJB1qqhEm3eB5RtwT6OF1eB0NFl5OSSJPrg
+         pVBqavkzLP4rXDxgzp01Q8iiQqY/ot+og4GOQKEXUr1meSXuTiLs5iysl8a5QZgkR3gK
+         NmAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748283632; x=1748888432;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1748304317; x=1748909117;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZLm2u+K+PI/38ypNwBYrTuGrq0xLDvMbTxRXLnz2xDI=;
-        b=Qg1cGvugImR2AxLkEAna3Rs94SaCX07GNsFARL+1kyYfnMw+P9/Nq+mvZYhfm0RoCZ
-         s5swv8VG5b6Yrrni89sHbCv38xrTlsZ2d6vKQE7Yl+FFTYD9Ng7LzMNBtLzhD1dm+yIq
-         U04SkuESoL09AujA63LLqbAjo68jKAT2MCgKFYBhwagzKdVF8hxElrKcDaO7Tu8tPGY9
-         UfDQqXTEjs7Bd5alQfu9lEgwZwRW0i7HYdkwvklGRRENzg+fjg9p059xiEHqvZcz48wk
-         SiXdq7zxk/eafEMyR0S5eT0u5kcQ0hZfVHdhkCeC8XlC8QoiSCIHMjFaTE5Q+93iUujf
-         HO/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUZUdnKwLycC1qZUDt8RCEOgPHjhWhlgJ2F4/RXP6H7sH/++8AvkFQB7+ri2dbYwD/JZ5k=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwjWkoQlzxz9OeFPz76u0hdTYRP22nmZyv9wkY+LRh2zjhXijn2
-	YjYQ9gnfEN48S1qbbAn3ZLncpcYAOgb/lo0X+KxkZIVRgryk7rEqBujZK7i/Thje668=
-X-Gm-Gg: ASbGncupeNCefrJQaJnm7JlNwX28AV1qiluePS7sZAgzZPVuW7GlqluU9ILMT03L80n
-	liPOPuWqTQQPRkZ3lBEyquTXvhK1GR8Z2PX0FBfMaNF1CB5h7I23tBXNFP4NerY3ATmsuYx1yHd
-	o/cGgIHltLCcuGTbgf9pdhH/G9TNIEFjYoorkFKCLl+U3bUdH9k5nEQexs/n6ELutA2didmxWzG
-	d9lY4QnLyMzbmFUSQ5LlyIINdit4Z1ECYxu53dYf58V+75kgSiS/1rPVZWOPupziANMy0WP1hwW
-	OpQ0Kxwrj/Wh4KemfzP1dMHtwRxTn/xAFk/vHNPGpKQ4oKUEAq7U
-X-Google-Smtp-Source: AGHT+IHu8Gg1J8BbsWgqjCqgkp/CdznFrPX5IKNjnPHBnTXYL0HJEukNqC3gh5NYw3XdXDtRMjCSCg==
-X-Received: by 2002:a5d:588d:0:b0:3a3:6a77:3391 with SMTP id ffacd0b85a97d-3a4ca4139bemr8058309f8f.15.1748283632092;
-        Mon, 26 May 2025 11:20:32 -0700 (PDT)
-Received: from [192.168.2.177] ([91.116.220.47])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4d53ce0b4sm5179796f8f.37.2025.05.26.11.20.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 May 2025 11:20:31 -0700 (PDT)
-Message-ID: <7f986e07-69b5-48fc-89f1-8ae37b998faa@suse.com>
-Date: Mon, 26 May 2025 20:20:30 +0200
+        bh=Addthv64Q3TTSQf/2nFhVGk8jr68iUDk2g8AigrRaGQ=;
+        b=LmHu+pn1X+i6iKBxfnWDQGFge12t1s3PpNixWqsFovLcA4fZv6zxDWTPxnY7nQ7E3D
+         vuNGND1aaM4fWy1eUh2vOtQ+IUR7Z1OQoPhFTL7NV+9bpe48cwtOUW+oS34jeY60w3r7
+         FSBdI3a4hFLbKdnc+4XYIqwigczb3PetfMkRgSjq3lifOGfpqlxhN5pmzSNEqhmcfKPV
+         Hon3a8j1dY71hkFyn06n/cYbWkY/zbjBqVC75mGZ2z2yIdqRM9BPVEnwl75G6V0DRh3G
+         zHJyMbrZQv43jf+2LEAtO/wojQZZTH0CGfYnVBrF4Zt5jsi6bOzFaE1RKC97w4jKZuFS
+         iD1w==
+X-Forwarded-Encrypted: i=1; AJvYcCXZ28tV1wHV7RFZaHAFzZF5wA3f7PmnF28JgmxCp0MbXvefzclJ6rbux3K/8ZbPXS2853k=@lists.linux.dev
+X-Gm-Message-State: AOJu0YztqIhbfUOd1VbLiW5QFMnW0OpZJdcDhVr+KuMRfPQQW7NddHBs
+	iLvVAgz44JCmCNlXd6Se82Bcvp9bjDh/NY1ewNelgAr8kkbIxNa6zJG/
+X-Gm-Gg: ASbGncuRY6rfqPSS38j3qcb+rTEUpGMzgR49u4o0iKYMu/jf+53iHTWU2CL8dgPReVd
+	pBtGCa73RNsw6s2kCJ9d1E1GYx6G/W3ZYka+yFNYbja1hbZCsv+k6RIp8ncy1NqgT4dSZADjbPD
+	eh+L6zuSzCsaz2OKTZUL4iveVCQbcLg8ymzUvYyj7cOvY3l3snXHjbPM0KrY/ygedYuS35cIP59
+	2cvvq8VCeC/cmxRzE3nb/FQ/Z1AbQ/T7BZlnffJjwBN++RPzq1Bi0imBECdD2EZ2u4SZF+rQ4Vd
+	baIDzBNvypf/zufHX1OOs2O/DCaY/yhOwSd/kd1mo3COw7Nbcjk=
+X-Google-Smtp-Source: AGHT+IHEjq49q8FhVaC/VV5WmHQM/CAYARQEncGZ9g1VnXXQ7c/Eg+DEVGvPVjcXeeAr8+7lupfz7w==
+X-Received: by 2002:a05:6122:169b:b0:52a:863f:4189 with SMTP id 71dfb90a1353d-52f2c5923f8mr7340486e0c.8.1748304317399;
+        Mon, 26 May 2025 17:05:17 -0700 (PDT)
+Received: from hiago-nb ([2804:1b3:a7c1:78c2:1931:19db:1830:5cf4])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52f2f73d4b4sm4433946e0c.20.2025.05.26.17.05.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 May 2025 17:05:16 -0700 (PDT)
+Date: Mon, 26 May 2025 21:05:10 -0300
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Peng Fan <peng.fan@oss.nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
+ remote core attachment
+Message-ID: <20250527000510.fofehmsdhifcwlys@hiago-nb>
+References: <CAPDyKFr3yF=yYZ=Xo5FicvSbDPOTx7+fMwc8dMCLYKPBMEtCKA@mail.gmail.com>
+ <20250509191308.6i3ydftzork3sv5c@hiago-nb>
+ <CAPDyKFpnLzk5YR3piksGhdB8ZoGNCzmweBTxm_rDX5=vjLFxqQ@mail.gmail.com>
+ <20250519172357.vfnwehrbkk24vkge@hiago-nb>
+ <CAPDyKFpGcgMzOUHf-JTRTLBviFdLdbjZKrMm8yd37ZqJ1nfkHw@mail.gmail.com>
+ <20250521041306.GA28017@nxa18884-linux>
+ <20250521041840.GB28017@nxa18884-linux>
+ <CAPDyKFpSb+KsfDr1-=uk4TF4Op1dUQ9rDwPP5sSpMfxDRDhnZA@mail.gmail.com>
+ <20250523191713.nylhi74jq6z4hqmr@hiago-nb>
+ <CAPDyKFq6HG6iTZRnBSN25vhCU8Zj1c+r_ufGbiBsJ16N+1bJVg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: s32g: add RTC node
-To: Ciprian Costea <ciprianmarian.costea@oss.nxp.com>,
- Chester Lin <chester62515@gmail.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: NXP S32 Linux Team <s32@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Christophe Lizzi <clizzi@redhat.com>, Alberto Ruiz <aruizrui@redhat.com>,
- Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>
-References: <20250526162140.2460122-1-ciprianmarian.costea@oss.nxp.com>
-Content-Language: en-US, ca-ES, es-ES
-From: Matthias Brugger <mbrugger@suse.com>
-Autocrypt: addr=mbrugger@suse.com; keydata=
- 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
- PVrr2NoUqi/bxI8fFQJD1jVj8K0=
-In-Reply-To: <20250526162140.2460122-1-ciprianmarian.costea@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFq6HG6iTZRnBSN25vhCU8Zj1c+r_ufGbiBsJ16N+1bJVg@mail.gmail.com>
 
-
-
-On 26/05/2025 18:21, Ciprian Costea wrote:
-> From: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+On Mon, May 26, 2025 at 12:07:49PM +0200, Ulf Hansson wrote:
+> On Fri, 23 May 2025 at 21:17, Hiago De Franco <hiagofranco@gmail.com> wrote:
+> >
+> > Hi Ulf,
+> >
+> > On Wed, May 21, 2025 at 02:11:02PM +0200, Ulf Hansson wrote:
+> > > You should not provide any flag (or attach_data to
+> > > dev_pm_domain_attach_list()) at all. In other words just call
+> > > dev_pm_domain_attach_list(dev, NULL, &priv->pd_list), similar to how
+> > > drivers/remoteproc/imx_dsp_rproc.c does it.
+> > >
+> > > In this way, the device_link is created by making the platform->dev
+> > > the consumer and by keeping the supplier-devices (corresponding to the
+> > > genpds) in RPM_SUSPENDED state.
+> > >
+> > > The PM domains (genpds) are then left in their current state, which
+> > > should allow us to call dev_pm_genpd_is_on() for the corresponding
+> > > supplier-devices, to figure out whether the bootloader turned them on
+> > > or not, I think.
+> > >
+> > > Moreover, to make sure the genpds are turned on when needed, we also
+> > > need to call pm_runtime_enable(platform->dev) and
+> > > pm_runtime_get_sync(platform->dev). The easiest approach is probably
+> > > to do that during ->probe() - and then as an improvement on top you
+> > > may want to implement more fine-grained support for runtime PM.
+> > >
+> > > [...]
+> > >
+> > > Kind regards
+> > > Uffe
+> >
+> > I did some tests here and I might be missing something. I used the
+> > dev_pm_genpd_is_on() inside imx_rproc.c with the following changes:
+> >
+> > @@ -902,7 +902,12 @@ static int imx_rproc_attach_pd(struct imx_rproc *priv)
+> >         if (dev->pm_domain)
+> >                 return 0;
+> >
+> >         ret = dev_pm_domain_attach_list(dev, &pd_data, &priv->pd_list);
+> > +       printk("hfranco: returned pd devs is %d", ret);
+> > +       for (int i = 0; i < ret; i++) {
+> > +               test = dev_pm_genpd_is_on(priv->pd_list->pd_devs[i]);
+> > +               printk("hfranco: returned value is %d", test);
+> > +       }
+> >         return ret < 0 ? ret : 0;
+> >  }
+> >
+> > This was a quick test to check the returned value, and it always return
+> > 1 for both pds, even if I did not boot the remote core.
+> >
+> > So I was wondering if it was because of PD_FLAG_DEV_LINK_ON, I removed
+> > it and passed NULL to dev_pm_domain_attach_list().
 > 
-> The RTC module on S32G2/S32G3 based SoCs is used as a wakeup source from
-> system suspend.
+> Right, that's exactly what we should be doing.
 > 
-> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-
-Reviewed-by: Matthias Brugger <mbrugger@suse.com>
-
-> ---
->   arch/arm64/boot/dts/freescale/s32g2.dtsi | 8 ++++++++
->   arch/arm64/boot/dts/freescale/s32g3.dtsi | 9 +++++++++
->   2 files changed, 17 insertions(+)
+> > Booting the kernel
+> > now it correctly reports 0 for both pds, however when I start the
+> > remote core with a hello world firmware and boot the kernel, the CPU
+> > resets with a fault reset ("Reset cause: SCFW fault reset").
+> >
+> > I added both pm functions to probe, just to test:
+> >
+> > @@ -1152,6 +1158,9 @@ static int imx_rproc_probe(struct platform_device *pdev)
+> >                 goto err_put_clk;
+> >         }
+> >
+> > +       pm_runtime_enable(dev);
+> > +       pm_runtime_get_sync(dev);
+> > +
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> index fa054bfe7d5c..39d12422e3f3 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-> @@ -114,6 +114,14 @@ soc@0 {
->   		#size-cells = <1>;
->   		ranges = <0 0 0 0x80000000>;
->   
-> +		rtc0: rtc@40060000 {
-> +			compatible = "nxp,s32g2-rtc";
-> +			reg = <0x40060000 0x1000>;
-> +			interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 54>, <&clks 55>;
-> +			clock-names = "ipg", "source0";
-> +		};
-> +
->   		pinctrl: pinctrl@4009c240 {
->   			compatible = "nxp,s32g2-siul2-pinctrl";
->   				/* MSCR0-MSCR101 registers on siul2_0 */
-> diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> index b4226a9143c8..e71b80e048dc 100644
-> --- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-> @@ -171,6 +171,15 @@ soc@0 {
->   		#size-cells = <1>;
->   		ranges = <0 0 0 0x80000000>;
->   
-> +		rtc0: rtc@40060000 {
-> +			compatible = "nxp,s32g3-rtc",
-> +				     "nxp,s32g2-rtc";
-> +			reg = <0x40060000 0x1000>;
-> +			interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&clks 54>, <&clks 55>;
-> +			clock-names = "ipg", "source0";
-> +		};
-> +
->   		pinctrl: pinctrl@4009c240 {
->   			compatible = "nxp,s32g2-siul2-pinctrl";
->   				/* MSCR0-MSCR101 registers on siul2_0 */
+> Indeed, calling pm_runtime_enable() and then pm_runtime_get_sync()
+> should turn on the PM domains for the device, which I assume is needed
+> at some point.
+> 
+> Although, I wonder if this may be a bit too late, I would expect that
+> you at least need to call these *before* the call to rproc_add(), as I
+> assume the rproc-core may start using the device/driver beyond that
+> point.
+> 
+> >         return 0
+> >
+> > Now the kernel boot with the remote core running, but it still returns
+> > 0 from dev_pm_genpd_is_on(). So basically now it always returns 0, with
+> > or without the remote core running.
+> 
+> dev_pm_genpd_is_on() is returning the current status of the PM domain
+> (genpd) for the device.
+> 
+> Could it be that the genpd provider doesn't register its PM domains
+> with the state that the HW is really in? pm_genpd_init() is the call
+> that allows the genpd provider to specify the initial state.
+> 
+> I think we need Peng's help here to understand what goes on.
+> 
+> >
+> > I tried to move pm_runtime_get_sync() to .prepare function but it make
+> > the kernel not boot anymore (with the SCU fault reset).
+> 
+> Try move pm_runtime_enable() before rproc_add().
 
+Thanks Ulf, that indeed made it work, at least now the kernel does not
+reset anymore with the SCU fault reset. However I am still only getting
+0 from dev_pm_genpd_is_on(), no matter what the state of the remote
+core. Maybe I am missing something in between?
+
+Peng, do you know what could be the issue here?
+
+> 
+> >
+> > Do you have any suggestions? Am I doing something wrong with these PDs?
+> >
+> > Best regards,
+> > Hiago.
+> 
+> Kind regards
+> Uffe
+
+Best regards,
+Hiago
