@@ -1,91 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7275D226CE8;
-	Tue, 27 May 2025 07:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1944116F841
+	for <imx@lists.linux.dev>; Tue, 27 May 2025 08:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748330887; cv=none; b=qC8JmubRYooVx0j16O4Oy/UTjebD9Uk4W4CuvKL9j20BAXHvVZgPAq5LLZrzsaDT+aKnHy2VXJxjsHQ96K3IIc3oDW8Yo0tIDw012sx/kuDw8MakjS/UMEcoF245R/+qz/wOY74TetjzrMpby0tXPDJV7mjVP2QP8JK4FDSAenU=
+	t=1748334314; cv=none; b=P17AzoReo4ldBz7oUu5+QwdT7XwDMD8if00578vLmFvxE6jt71g+bs6r2Dti1+zIx5GuG/FgAk2UEvc+sxBcBVm+UVt1CYB1C5OnXXZ32nm1F0OE9M3iplf2Sr71bGS5GGfsEGeUibWGE8HJeyST3tmP9XxmdR6xtkzZvN67ZxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748330887; c=relaxed/simple;
-	bh=XVQsHomBmGb1LhclIkasP5SGZ5XsvwTi9n6tsMPgyY0=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=WvmnMfnZPw8n/utPxhXmBd8fAKpvz+SBRFbzSxaGZ7Pms1Mg55XsOyEvTyrfwH/uk7Lfjief2mH2O+ZM84TmwxOUAIPXV3O8CRknWX1VkBvMP+xp9e8Cbpo2rwE93s5AxkkFqQA+pZR+lakt7K9P9LKKhxnXmtxYnaHKqobZwpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=skjocDyS; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="skjocDyS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D8EC4CEE9;
-	Tue, 27 May 2025 07:28:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748330886;
-	bh=XVQsHomBmGb1LhclIkasP5SGZ5XsvwTi9n6tsMPgyY0=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=skjocDySfnd0Cx3lKYucz3c8YOKANMO1DxUJmuQc7e5uEcnauo0XOWOxySV6/aNRM
-	 b88/HyISicJURJ5O5/gsdSzKIprrvVJca8eslCOv/NrQaEbhhfuKik7RkdwIg4WO+W
-	 UrWFnNSXFnjw6LE22MKdJVP6nF0kCdayK1wABuPeQfD4/5xMF6lFHuJbfoyWwNIwPA
-	 xjD6j53pn1F1x2c5X5d9eduZeIUyCiBS+L1X03blgL/peQpUPPuoNXGBJQYWwdqLmk
-	 cHO0u6owwUYVnswkUhCaMGZ/u0vRHrgVkJxjmvy41CNCswJGnMThfTcp+mjdcxuFT1
-	 +IR7tmkRzG7bA==
-Date: Tue, 27 May 2025 02:28:04 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1748334314; c=relaxed/simple;
+	bh=MNVQFRdgVR76J2FChLUD7YAoquGb8Y9eYaiMckwgG8g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fR7vR7L21xooQ/fxEHnNIM0H1el+U5JCuxKCqONvnMAOmpcZHOT+OX7Q5ccZGWWrgnJIJ53ap56baLoINjQTlXrEWV9SOu4aFpV+lrSfZMx5ERiRA4JCMN1ouGyUwxyLUVPTiOyQqB34nvf163VquFU/T1fSMX1g/DbArst551c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 16b3a29c3ad411f0b29709d653e92f7d-20250527
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:52dbf973-d560-4d92-ab36-debd7af511ff,IP:0,U
+	RL:0,TC:0,Content:33,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:33
+X-CID-META: VersionHash:6493067,CLOUDID:76905b17bcdc2d36468f4541233e31d5,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:4|50,EDM:-3,IP:nil,UR
+	L:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,S
+	PR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 16b3a29c3ad411f0b29709d653e92f7d-20250527
+Received: from node4.com.cn [(10.44.16.170)] by mailgw.kylinos.cn
+	(envelope-from <aichao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 756001150; Tue, 27 May 2025 16:25:03 +0800
+Received: from node4.com.cn (localhost [127.0.0.1])
+	by node4.com.cn (NSMail) with SMTP id F0C9D16001F49;
+	Tue, 27 May 2025 16:25:02 +0800 (CST)
+X-ns-mid: postfix-683576DD-9767322679
+Received: from kylin-pc.. (unknown [172.25.130.133])
+	by node4.com.cn (NSMail) with ESMTPA id F384916001F49;
+	Tue, 27 May 2025 08:24:57 +0000 (UTC)
+From: Ai Chao <aichao@kylinos.cn>
+To: perex@perex.cz,
+	tiwai@suse.com,
+	johannes@sipsolutions.net,
+	kuninori.morimoto.gx@renesas.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	jbrunet@baylibre.com,
+	neil.armstrong@linaro.org,
+	khilman@baylibre.com,
+	martin.blumenstingl@googlemail.com,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	srinivas.kandagatla@linaro.org
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux-arm-msm@vger.kernel.org,
+	Ai Chao <aichao@kylinos.cn>
+Subject: [PATCH v3 0/6] Use helper function for_each_child_of_node_scoped()
+Date: Tue, 27 May 2025 16:24:40 +0800
+Message-ID: <20250527082446.2265500-1-aichao@kylinos.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-kernel@vger.kernel.org, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, linux@ew.tq-group.com, 
- linux-arm-kernel@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Matthias Schiffer <matthias.schiffer@tq-group.com>, 
- Fabio Estevam <festevam@gmail.com>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-In-Reply-To: <20250527060400.1005757-1-alexander.stein@ew.tq-group.com>
-References: <20250527060400.1005757-1-alexander.stein@ew.tq-group.com>
-Message-Id: <174833088465.3257570.17816254353983478375.robh@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: add TQ-Systems boards
- MBLS1028A and MBLS1028A-IND
+Content-Transfer-Encoding: quoted-printable
 
+This patch series introduces wrapper functions for_each_child_of_node_sco=
+ped().
 
-On Tue, 27 May 2025 08:03:54 +0200, Alexander Stein wrote:
-> From: Matthias Schiffer <matthias.schiffer@tq-group.com>
-> 
-> Add two mainboards for the TQ-Systems TQMLS1028A SoM, based on the NXP
-> Layerscape LS1028A.
-> 
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
+The for_each_child_of_node_scoped() helper provides a scope-based clean-u=
+p
+functionality to put the device_node automatically, and as such, there is
+no need to call of_node_put() directly.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Summary:
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/arm/fsl.yaml:1594:13: [warning] wrong indentation: expected 14 but found 12 (indentation)
+ - Patch 1 ALSA: ppc: Use helper function for_each_child_of_node_scoped()
 
-dtschema/dtc warnings/errors:
+ - Patch 2 ALSA: aoa: Use helper function for_each_child_of_node_scoped()
 
-doc reference errors (make refcheckdocs):
+ - Patch 3 ASoC: renesas: Use helper function for_each_child_of_node_scop=
+ed()
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250527060400.1005757-1-alexander.stein@ew.tq-group.com
+ - Patch 4 ASoC: meson: Use helper function for_each_child_of_node_scoped=
+()
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+ - Patch 5 ASoC: imx-card: Use helper function for_each_child_of_node_sco=
+ped()
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+ - Patch 6 ASoC: qcom: Use helper function for_each_child_of_node_scoped(=
+)
 
-pip3 install dtschema --upgrade
+---
+Changes in v3:
+ - Change Patch name ASoC to ALSA for patch 1,2.
+ - Change commit message information.
+ - for_each_child_of_node_scoped() instead of
+   for_each_child_of_node() in i2cbus_add_dev().
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Changes in v2:
+ - Fix error reported by kernel test rebot
+ - Keep "node"
+---
+
+ sound/aoa/soundbus/i2sbus/core.c   |  7 +++---
+ sound/ppc/tumbler.c                |  5 ++---
+ sound/soc/fsl/imx-card.c           | 13 +++++------
+ sound/soc/meson/axg-card.c         |  3 +--
+ sound/soc/meson/meson-card-utils.c | 16 +++++---------
+ sound/soc/qcom/lpass-cpu.c         |  3 +--
+ sound/soc/qcom/qdsp6/q6afe-dai.c   |  3 +--
+ sound/soc/qcom/qdsp6/q6asm-dai.c   |  4 +---
+ sound/soc/renesas/rcar/core.c      | 35 ++++++++++--------------------
+ sound/soc/renesas/rcar/ctu.c       |  8 ++-----
+ sound/soc/renesas/rcar/dma.c       |  4 +---
+ sound/soc/renesas/rcar/dvc.c       |  8 ++-----
+ sound/soc/renesas/rcar/mix.c       |  8 ++-----
+ sound/soc/renesas/rcar/src.c       | 10 ++-------
+ sound/soc/renesas/rcar/ssi.c       | 18 +++++----------
+ sound/soc/renesas/rcar/ssiu.c      |  7 ++----
+ 16 files changed, 46 insertions(+), 106 deletions(-)
+
+--=20
+2.47.1
 
