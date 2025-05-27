@@ -1,157 +1,84 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645611F4C8E
-	for <imx@lists.linux.dev>; Tue, 27 May 2025 06:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4779B3C2F;
+	Tue, 27 May 2025 06:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748325879; cv=none; b=HqKnh/kMi35I/O5tkAC8G+qlp5utpHRQoMPhHse3tPfLlp86KBt6qqyfOKCTkZ/lEhRMkuXrkqRM7+sLObwPuyWaD023zZ8LOXabgqLQQ3Y9J3Ar/HCt+RehhtPi7gf/Jnynvww56EipbXeGTLN13Mk9fMjBzPhnEFoESnszpYg=
+	t=1748326736; cv=none; b=IEfB+EAgy9r0f1gytZRuWbKw3iLepyYyTwc7iKUZQelUSWqaQ3lmBJQKphgSViHsXqadOjIMqae3gttxbZonaZiyw3pt1aZhZsdb+4ck3rR8a3boexITTnONcErYRxyJu7DtTs34oXIfrx11hixYXT3jCq+J8GQkalEeZRX5fxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748325879; c=relaxed/simple;
-	bh=U8NvlZhaCZrrL+NHIfbNrj2hpCYdKkS7iRK1kw0usz4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hLGuU1hz1BJK+dCJm6yozc2Ks2up45b/jzPD6C5cIkGbuM3g5qbNTH/lSkxqtH/qw2+nM9k5LcbCrhDo85IN/EEGi7Q2lMXSq2XkCxGC4Gh+1xVdbVbuq2RrvRhBVaCqS67KNRntKfJerRCq7nhoAEo/U2uxJmvrG03GaQBjnfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=DSbWcmlW; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1748326736; c=relaxed/simple;
+	bh=09RqvVHkA4jz4eqLTGLvP2nGn8NGNbT2uJ9xt+xPbgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aduvCDOJqmzqkm5dcK3DRQ6DjIDGwq7ap+BVjQmFdbxXv9tod6ke3ehZLhB0HO6FhyTXGRAdziIWuiSFOYExfqTR+ht2kBLJxdq5U9jLyHdGuL9HNF/BnBe7ShORsKnwUZ+Jv2w5qbeL2IcgrQ1Bf3IXiWqU+Dr5aawloHz8uqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MvbMzv+9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="DSbWcmlW"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id BD531240105
-	for <imx@lists.linux.dev>; Tue, 27 May 2025 08:04:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-	t=1748325869; bh=U8NvlZhaCZrrL+NHIfbNrj2hpCYdKkS7iRK1kw0usz4=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:From;
-	b=DSbWcmlWZJTrdpeMg2HTPHm2bY2EbeCCYjwhFwsETAFh6nO9MQ0rq3qrXvvMzpc3s
-	 1Z2m4NoAnuHNHaOeWfXOoZK/XqM24VWpgF08zlT2wqBKzS3N4WxTQ14DrPTOlvISKk
-	 /fQu4K9XG6PhIyUeBwNvC1hNVrAuLGUDYRa+7SQS6K0qhzsCjmosHovddfcQhPCMDC
-	 sK2aVqhkXmfV+Eb1xjW1Jj6cZzsYWcvZJg/TX4Ln0wI82Eg4gDK2BTHx/msvi8CEqt
-	 r8K5fDpvj2H4OXWg+msCyOknlhwDJcCPWu0XQSSwlMfY3bsWIWPlYVHEl5xVzBEPbb
-	 m5AkGEkupgA8w==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4b62CH6myRz9rxK;
-	Tue, 27 May 2025 08:04:27 +0200 (CEST)
-Message-ID: <7b3c24e2e99acb34b1e95e5b5dedb0ccf383162d.camel@posteo.de>
-Subject: Re: [PATCH] arm64: dts: imx8mp: Enable gpu passive throttling
-From: Martin Kepplinger-Novakovic <martink@posteo.de>
-To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org,  s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Date: Tue, 27 May 2025 06:04:27 +0000
-In-Reply-To: <20250508101802.489712-1-martink@posteo.de>
-References: <20250508101802.489712-1-martink@posteo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MvbMzv+9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186E7C4CEEA;
+	Tue, 27 May 2025 06:18:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748326735;
+	bh=09RqvVHkA4jz4eqLTGLvP2nGn8NGNbT2uJ9xt+xPbgk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MvbMzv+9U3ltIoMS75HV/Cn+Oy84J48Vg5O9JYfY2q5pQTMrfBUtInCeZcnp2Yre+
+	 M4eeTGet1CugFz0f1/5yg60jgwYK0eSo75GBgjbtcb35fXQ9xPsbUzUA9o1BD352+0
+	 AExg/8UAV90R/XqLlDMFmhvevijgRV1MzzDHJ3ryTMTncVD8BfG55uWJ61ZKKtpt94
+	 XLqfJrZbi7UL1XCeqoeEBmuH0Fnl3V3WLkXcYrdqpy4yesPeymDrBRgh3uDz2stfls
+	 83tfIgbs8Wea/GgJb2eq/oGFs/QQSTRTmklq1HG9YVA6Wz2UcfEsnz+D0WUvU0p6Uh
+	 FQ8l9H0RE+sDw==
+Date: Tue, 27 May 2025 08:18:52 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"open list:IRQCHIP DRIVERS" <linux-kernel@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: interrupt-controller: Add
+ arm,armv7m-nvic and fix #interrupt-cells
+Message-ID: <20250527-olive-kakapo-of-action-a8d68a@kuoka>
+References: <20250523143637.536759-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250523143637.536759-1-Frank.Li@nxp.com>
 
-QW0gRG9ubmVyc3RhZywgZGVtIDA4LjA1LjIwMjUgdW0gMTA6MTggKzAwMDAgc2NocmllYiBNYXJ0
-aW4gS2VwcGxpbmdlci0KTm92YWtvdmnEhzoKPiBIb29rIHVwIHRoZSBncHUgYXMgYSBwYXNzaXZl
-IGNvb2xpbmcgZGV2aWNlIHRvIHRoZSB0aGVybWFsIHpvbmVzJwo+IGFsZXJ0Cj4gdHJpcCBwb2lu
-dCBqdXN0IGxpa2UgdGhlIGNwdS4KPiAKPiBUaGUgZ3B1IGhlcmUgY29uc2lzdHMgb2YgM0QgR1BV
-LCAyRCBHUFUgYW5kIE5QVS4KPiAKPiBPbmUgd2F5IHRvIHRlc3Qgd291bGQgYmUgdG8gc2V0IG9u
-ZSAiYWxlcnQiIHRyaXAgcG9pbnQgbG93IGVub3VnaAo+IGFuZCB3YXRjaCB0aGUgY29vbGluZyBk
-ZXZpY2Ugc3RhdGUgaW5jcmVhc2U6Cj4gCj4gZWNobyAxMDAwMCA+IC9zeXMvY2xhc3MvdGhlcm1h
-bC90aGVybWFsX3pvbmUwL3RyaXBfcG9pbnRfMF90ZW1wCj4gd2F0Y2ggY2F0IC9zeXMvY2xhc3Mv
-dGhlcm1hbC9jb29saW5nX2RldmljZSovY3VyX3N0YXRlCj4gCj4gQW5kIG9mIGNvdXJzZSBzZXQg
-dGhlIHRyaXAgcG9pbnQgYmFjayB0byBpdHMgb3JpZ2luYWwgdmFsdWUgYW5kIHdhdGNoCj4gdGhl
-IGNvb2xpbmcgZGV2aWNlIHN0YXRlcyBqdW1wIHRvIDAgYWdhaW4uCj4gCj4gU2lnbmVkLW9mZi1i
-eTogTWFydGluIEtlcHBsaW5nZXItTm92YWtvdmnEhyA8bWFydGlua0Bwb3N0ZW8uZGU+Cj4gLS0t
-Cj4gwqBhcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAuZHRzaSB8IDEzICsrKysr
-KysrKysrLS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9u
-cygtKQo+IAo+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4
-bXAuZHRzaQo+IGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLmR0c2kKPiBp
-bmRleCA1MGEwN2M1NmZhZmZjLi5kZWE5MzQyZDA3MWM0IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJt
-NjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtcC5kdHNpCj4gKysrIGIvYXJjaC9hcm02NC9ib290
-L2R0cy9mcmVlc2NhbGUvaW14OG1wLmR0c2kKPiBAQCAtMzIwLDcgKzMyMCwxMCBAQCBtYXAwIHsK
-PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqA8JkE1M18wCj4gVEhFUk1B
-TF9OT19MSU1JVCBUSEVSTUFMX05PX0xJTUlUPiwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqA8JkE1M18xCj4gVEhFUk1BTF9OT19MSU1JVCBUSEVSTUFMX05PX0xJTUlU
-PiwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqA8JkE1M18yCj4gVEhF
-Uk1BTF9OT19MSU1JVCBUSEVSTUFMX05PX0xJTUlUPiwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoDwmQTUzXzMKPiBUSEVSTUFMX05PX0xJTUlUIFRIRVJNQUxfTk9fTElN
-SVQ+Owo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgPCZBNTNfMwo+IFRI
-RVJNQUxfTk9fTElNSVQgVEhFUk1BTF9OT19MSU1JVD4sCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqA8JmdwdTNkCj4gVEhFUk1BTF9OT19MSU1JVCBUSEVSTUFMX05PX0xJ
-TUlUPiwKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoDwmZ3B1MmQKPiBU
-SEVSTUFMX05PX0xJTUlUIFRIRVJNQUxfTk9fTElNSVQ+LAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgPCZucHUKPiBUSEVSTUFMX05PX0xJTUlUIFRIRVJNQUxfTk9fTElN
-SVQ+Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqB9Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoH07Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Owo+IEBAIC0z
-NTAsNyArMzUzLDEwIEBAIG1hcDAgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoDwmQTUzXzAKPiBUSEVSTUFMX05PX0xJTUlUIFRIRVJNQUxfTk9fTElNSVQ+LAo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoDwmQTUzXzEKPiBUSEVSTUFMX05P
-X0xJTUlUIFRIRVJNQUxfTk9fTElNSVQ+LAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoDwmQTUzXzIKPiBUSEVSTUFMX05PX0xJTUlUIFRIRVJNQUxfTk9fTElNSVQ+LAo+
-IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgPCZBNTNfMwo+IFRIRVJNQUxf
-Tk9fTElNSVQgVEhFUk1BTF9OT19MSU1JVD47Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqA8JkE1M18zCj4gVEhFUk1BTF9OT19MSU1JVCBUSEVSTUFMX05PX0xJTUlUPiwK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoDwmZ3B1M2QKPiBUSEVSTUFM
-X05PX0xJTUlUIFRIRVJNQUxfTk9fTElNSVQ+LAo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgPCZncHUyZAo+IFRIRVJNQUxfTk9fTElNSVQgVEhFUk1BTF9OT19MSU1JVD4s
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqA8Jm5wdQo+IFRIRVJNQUxf
-Tk9fTElNSVQgVEhFUk1BTF9OT19MSU1JVD47Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH07Cj4gwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoH07Cj4gQEAgLTIyMjksNiArMjIzNSw3IEBAIGdwdTNkOiBncHVAMzgwMDAw
-MDAgewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgPCZjbGsgSU1YOE1QX0NMS19HUFVfUk9PVD4sCj4gwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCA8JmNs
-ayBJTVg4TVBfQ0xLX0dQVV9BSEI+Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoGNsb2NrLW5hbWVzID0gImNvcmUiLCAic2hhZGVyIiwgImJ1cyIsICJy
-ZWciOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgI2Nv
-b2xpbmctY2VsbHMgPSA8Mj47Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgYXNzaWduZWQtY2xvY2tzID0gPCZjbGsKPiBJTVg4TVBfQ0xLX0dQVTNEX0NP
-UkU+LAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgPCZjbGsKPiBJTVg4TVBfQ0xLX0dQVTNE
-X1NIQURFUl9DT1JFPjsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBhc3NpZ25lZC1jbG9jay1wYXJlbnRzID0gPCZjbGsKPiBJTVg4TVBfU1lTX1BMTDJf
-MTAwME0+LAo+IEBAIC0yMjQ1LDYgKzIyNTIsNyBAQCBncHUyZDogZ3B1QDM4MDA4MDAwIHsKPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIDwmY2xrIElNWDhNUF9DTEtfR1BVX1JPT1Q+LAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgPCZjbGsgSU1YOE1Q
-X0NMS19HUFVfQUhCPjsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBjbG9jay1uYW1lcyA9ICJjb3JlIiwgImJ1cyIsICJyZWciOwo+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgI2Nvb2xpbmctY2VsbHMgPSA8Mj47
-Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYXNzaWdu
-ZWQtY2xvY2tzID0gPCZjbGsKPiBJTVg4TVBfQ0xLX0dQVTJEX0NPUkU+Owo+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFzc2lnbmVkLWNsb2NrLXBhcmVu
-dHMgPSA8JmNsawo+IElNWDhNUF9TWVNfUExMMl8xMDAwTT47Cj4gwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYXNzaWduZWQtY2xvY2stcmF0ZXMgPSA8MTAw
-MDAwMDAwMD47Cj4gQEAgLTIzMDIsNiArMjMxMCw3IEBAIG5wdTogbnB1QDM4NTAwMDAwIHsKPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgIDwmY2xrIElNWDhNUF9DTEtfTUxfQVhJPiwKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDwmY2xrIElNWDhNUF9D
-TEtfTUxfQUhCPjsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqBjbG9jay1uYW1lcyA9ICJjb3JlIiwgInNoYWRlciIsICJidXMiLCAicmVnIjsKPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCNjb29saW5nLWNlbGxz
-ID0gPDI+Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oHBvd2VyLWRvbWFpbnMgPSA8JnBnY19tbG1peD47Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqB9Owo+IMKgCgpoaSBTaGF3biBhbmQgYWxsLAoKRG8geW91IGhhdmUgYW55IG9iamVj
-dGlvbnMgb3Igc2Vjb25kIHRob3VnaHRzIGFib3V0IHRoaXM/Cgp0aGFuayB5b3UsCgogICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgbWFydGluCg==
+On Fri, May 23, 2025 at 10:36:36AM GMT, Frank Li wrote:
+> According to existed dts arch/arm/boot/dts/armv7-m.dtsi, compatible string
+
+and drivers... more important btw.
+
+> should be arm,armv7m-nvic, #interrupt-cells is 1 and
+> arm,num-irq-priority-bits is optional property.
+> 
+> Fix below CHECK_DTB warning:
+> 
+> arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dtb: /interrupt-controller@e000e100:
+>     failed to match any schema with compatible: ['arm,armv7m-nvic']
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../devicetree/bindings/interrupt-controller/arm,nvic.yaml  | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/arm,nvic.yaml b/Documentation/devicetree/bindings/interrupt-controller/arm,nvic.yaml
+> index d89eca956c5fa..a08632804d052 100644
+> --- a/Documentation/devicetree/bindings/interrupt-controller/arm,nvic.yaml
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/arm,nvic.yaml
+> @@ -17,6 +17,7 @@ description:
+>  properties:
+>    compatible:
+>      enum:
+> +      - arm,armv7m-nvic
+>        - arm,v6m-nvic
+>        - arm,v7m-nvic
+
+You need to drop (or deprecate if it is used) old compatible.
+
+Best regards,
+Krzysztof
 
