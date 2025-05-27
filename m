@@ -1,266 +1,605 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013060.outbound.protection.outlook.com [40.107.162.60])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3C8199E89
-	for <imx@lists.linux.dev>; Tue, 27 May 2025 10:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748342766; cv=fail; b=Q36StUcPRXpAlJmSOPJYgVGgS6PAMTVWxp0OMK09Sh8kZg2wY/sxxu6sd4k/NlNfUPhSZekP7vv+4twN4IUTifMjykZbsBPC5W5c4tgsIVB8Zfry3AoyABZBYiSvYIFX41UJ+dqHSdWaKFRK85deI+6ZPvbKiJ4IoUj4E8SWdO8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748342766; c=relaxed/simple;
-	bh=JIEPM0quUX+T6mi2KWCuVwSrOlniCDAJSj3l8g2mCt8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CDZg/Uwyu8I0VVc5+2M7wwAU5jZWimlVsS+YavqsV6CqulPK1IRwyggGJlW8819hSHdW9CagWnSewbQV8x6ZUBUWrRX551tbufb8HKdUSGsM0pAhMeZLv2vvhzf5P0uLLHbO942Mm3FpFKaULWiXqsNtu6nxaNEqzmEHlIBrIA4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AjlJRF6t; arc=fail smtp.client-ip=40.107.162.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C808488
+	for <imx@lists.linux.dev>; Tue, 27 May 2025 11:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748346008; cv=none; b=MotIRdDoFWt8oDQsqGD5Zrt44nFVUEI8p097P3x1uAteSLll0yLi5tj+rlY4/negW37eWcHONUeq9i7kQvou1O/Oa9Rf/G8Cql/cVaw5RMXTxB0SQ54BIozoP6QYPaaKCYFNjxNCv51A2SkehqnJg3+Ut89NNqViiB+qfo2W7KQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748346008; c=relaxed/simple;
+	bh=AZ7mIprUma2O1s4w4SEppk4MGgS2Zpa8dm827ytH4PI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tBlrPDxYhe39tvvwE5oICb0datikUcvkYA5I217jzLbY2XCGnpYPyVSAa5CVA6UQt8qiZXCCPQ6jo26GiPkCexVLun5A6AyGBtQK/t7Yxn9R6scWm/wP+ioeLY95UqPacTrzzSx8xtgYE/sGkD0f0AxYPtOLiyA4YodeOrCozl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OtVR71YC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AjlJRF6t"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RPPorWICj4evJDFCWeHglNXuZw5C7ofw2XlfaCiRjRJTjbmOuCGok5wRndM6UnpFNWNC0gMoXWpLs81a8vrLWd4liq+bOCEVUW6qC6H+XSo+V9n98beXcvwQDGZO1b8wMem2l04JHTxp/2hovOkmy+MNxaowY0IYNXbyrgChYvU5MYW1VQ/6xVUFNwfo87oWG+oYBHWQFTOouHODHJwgEo1MDOR53pwk6pJH7GVu1OyfSwNXyvPAoVNQVFdp+yFKPzikBSnc5GnF2/bdUsnuKqTGeKVCBrDCTerEaH1Q3eLD47jFyt+D//8cgsdhU8o6/HMDU15wtu/ZbjEbyM5PIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S2F6CksKvRJwMP672IaAHLfL2NOGGE+D5stjRz1CfVc=;
- b=R2MUywAg56HUYU9jX90tqmo4Z0C1jkuLEA+HW/Kik4T+YxwXZooeByWxLT0p+ZdXpfScqM6gioXSjRqIYTt3zt8GrbsxgdowgtrDLNjzNNQx273S+ttgmYi+3zBV+Y8MByhOyFl5rFT61SlbaFKytx+mtJxoJmFT+WVP861Er77/2gmjblKiLGCiLBw0e04EYipHUCq7rSgoCecwfoptUYx1G1s6yZJJYB1ESUj2johpGxFr9dymr9pqEIl0VEe+RVMAQWgxJ0Tudnzs15ZPj1Om+cDmiYDyauUxP5CROD1SHvV2Rsh6OUASL7EK5dhJFKXyIPxBKkKdOV4h0xzOEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S2F6CksKvRJwMP672IaAHLfL2NOGGE+D5stjRz1CfVc=;
- b=AjlJRF6tj9DqsZw7fByIuMCJMXWTfB6R3mOy5giXRWApqNY2nMev5J5E8eAjjInU7YWAwBcpwkmd1ymqODvD+M5736R9nue28461W745iHLckJ6OqKyFhB8rZ3tovl5WwlNO9rpgFSGFxdpG2fovUSfRd+htfRqz8V+OKNyTknnPzUV3IbHwjQQ6HCTKTbxISxKL3InNsgsZ18Dm1ljwWHrmr7Rs77kY4vmF3cVJNf9r7irEdJ3N8gUmAH/Z6uaF1ypKG3ofTT5TOxo5rRjrHiFHQTlcD3l6HoDtN+g9grmSharunreSEaY+0D50F9AZ5GN6gYzboqgGXWwS9sScVA==
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- (2603:10a6:800:293::14) by AM8PR04MB7954.eurprd04.prod.outlook.com
- (2603:10a6:20b:237::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.24; Tue, 27 May
- 2025 10:45:59 +0000
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687%6]) with mapi id 15.20.8769.019; Tue, 27 May 2025
- 10:45:57 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Lukasz Kucharczyk <lukasz.kucharczyk@leica-geosystems.com>, Oleksij Rempel
-	<o.rempel@pengutronix.de>, "stefan.eichenberger@toradex.com"
-	<stefan.eichenberger@toradex.com>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Andi Shyti <andi.shyti@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>
-CC: "open list:FREESCALE IMX I2C DRIVER" <linux-i2c@vger.kernel.org>, "open
- list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
-	<linux-arm-kernel@lists.infradead.org>, open list
-	<linux-kernel@vger.kernel.org>, "bsp-development.geo@leica-geosystems.com"
-	<bsp-development.geo@leica-geosystems.com>,
-	"customers.leicageo@pengutronix.de" <customers.leicageo@pengutronix.de>
-Subject: RE: [PATCH] i2c: imx: fix emulated smbus block read
-Thread-Topic: [PATCH] i2c: imx: fix emulated smbus block read
-Thread-Index: AQHbzvSHYtl59UwoREC38OW9/FszFA==
-Date: Tue, 27 May 2025 10:45:57 +0000
-Message-ID:
- <VI2PR04MB11147245BA69A4C19B0DD037EE864A@VI2PR04MB11147.eurprd04.prod.outlook.com>
-References: <20250520122252.1475403-1-lukasz.kucharczyk@leica-geosystems.com>
-In-Reply-To: <20250520122252.1475403-1-lukasz.kucharczyk@leica-geosystems.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI2PR04MB11147:EE_|AM8PR04MB7954:EE_
-x-ms-office365-filtering-correlation-id: 49c797a5-06c0-4974-37b7-08dd9d0ba991
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?ty6oPZlF0rZ+0xuE+fCyPiz/8GQRbF0wwEYz9imeLRSoShwz4MQ2ttTqqzuQ?=
- =?us-ascii?Q?JJYGWvs4ucRuxC+KusxakTLIH2/XDpNakz9oImCl2u49oXrJyYJf15xPiVXe?=
- =?us-ascii?Q?GLRcfB3MyQzx94uMrZ1W+yOciFTtbSw1d8NEbza5j/8JPlIKrIDA1hKI3O6B?=
- =?us-ascii?Q?spUbpb21eRAW143Snd3LIUB4Idiok70W80GrGe9TcKdfhJl3jzI2IbsnpvId?=
- =?us-ascii?Q?rh9irw2/OzHdqRGG09SfNOMvKHxl9EUn+zSR+UGYqS+ZnaZvs3GfJ0wVk7gg?=
- =?us-ascii?Q?XM8H56JNcg+w1Bz7SCemLD4cQIy996Yr+t+APMzHMx39iOQNLeR6RAuObLvc?=
- =?us-ascii?Q?ZLS1Dpp31vFhUSz+aefahd615NcLE6/HYLUHPVYPB9NLrGhteNlKxiwk6GBU?=
- =?us-ascii?Q?mcQKxD8d1P2aFS6x8/kFpjUms6nvO4x3PG1zdUQFdx8LTb6kBbF3jYlHzHhv?=
- =?us-ascii?Q?DLfT1eiuFu+H/e1u8ao6KC0aTa++Js8kKZCsUv6Bq6LbjSU/+sJ3hayBRPIJ?=
- =?us-ascii?Q?S2RBtRi/cV0B98J/q5Q1owMeoD6HtGx6bg21MhCX2iq+14ZoA3FuvvhFu8v2?=
- =?us-ascii?Q?girsjdqWQ8ZGrL0DshJDGSdu4cHHcTsx9rmT/u0535uWyq3PcKkMyI/RZmsf?=
- =?us-ascii?Q?dOLqH7VeQpfEvqab5tkTM7/0Rl4gyGCAXAUP2CGqTeYIPQo0+7Y6H0LGJVY3?=
- =?us-ascii?Q?mCjYemlgRblZwmFzdQ6NXHV7B0eYJ2OaJUNg+8rCpV/1lNmIzfePRLY6hL90?=
- =?us-ascii?Q?9xNtvsPyZiTkYKYAweJy4++3UsPnQq25gFHeBqBYO4Y4aITjqN3sToUpI+S1?=
- =?us-ascii?Q?3emVEc60rJqMNf7vwn9vWCNTkrCztH5SDxH7GbNNJptDCMiFan+HZG9fFXGk?=
- =?us-ascii?Q?512Mus2o0KJA1H46WVUGhSTa3dcKIWuCpXhP2a2QGhBthZZeJv5haNMkTdPf?=
- =?us-ascii?Q?95kqA5PIUt0hpkqv6/r77UG4kg4VJB3rvLbfZ0o7UKbcVqTRhOaRnX/Gml4I?=
- =?us-ascii?Q?GfeNhTS5fkH5f0W1ypuulhDHFFCGavFIJpxx8750W6H0eaMQvbLpqwN8OyAk?=
- =?us-ascii?Q?ciVjk28gT3tdJxDj0RzZdrAaN1acmqrSjyAAYLJOA8R3/qu3ctbPX+eHILYF?=
- =?us-ascii?Q?Ik9gGz2u8/52bf6OZIneig33b2NyrvvaM6TNaQq5xMQzefCzAZdvMzjuGNE0?=
- =?us-ascii?Q?VEKDzfIOhu8NRv0IwF4uQ2ICMS/loxPc6yzcgHMJR2nvMdQ0V2RSgZR8g63D?=
- =?us-ascii?Q?mgUjHK4TPsNo/zv+bTntGiR5+2259NcufhKtjbyGUJx0xxVZLIadUuZ/rqsV?=
- =?us-ascii?Q?w9Xgrxi4i/Uedos2iamA3AtE408aMQTFkduHBMaLFNSwwCYGIanaDyBmBWbi?=
- =?us-ascii?Q?YHrvy4vX0VU2OQPmKjfpYm4jxsFOb53/jUfOUo8w0fISPcrn8wSjdnyBU7Ll?=
- =?us-ascii?Q?lVke+uFbXFcYtR7d5Dw4wjHmt4onJuq3E8Xym2unvHCgKl8PHkjG6A=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?hC7DUOX8ua8GMsvdbv7+AWS4GZCDkn4ydL4QSfL2cR2J7JnI58RZ5YmLIFy5?=
- =?us-ascii?Q?J++CZBAQ6asLeh02OyQZNygTisJKr3bRCsxaNTDBgYcFKVqRrCUrBlD2jAQs?=
- =?us-ascii?Q?ArKN+JnivdGgXT7btqIKtVaXwQm/DOtmDQtpSUoGaLsz6xSrtacp4/8ocgfA?=
- =?us-ascii?Q?rxjpmovhmSrbr+9bPXH4pCIAZMb6eTS7vyih7STPxPxydk+qOWIDAbd0NTCu?=
- =?us-ascii?Q?DRYdIy8XdAPLs+w0Qb59ghceIoPKcdPq+TAaSIGYkK424v3J9z/2GII3GgX4?=
- =?us-ascii?Q?ntm3+toy94sS8nhyH61cJ4DPHuTTeOvm+FD0fuAyJOMEymSX1Ejb0J1XVEPs?=
- =?us-ascii?Q?lqI9ZU2cwoty++gJtoLMQJErZB1o6r2dZz4Wui2zzj/3dTSVjZ73qIaMmx0H?=
- =?us-ascii?Q?o3mNaaZSv2eVIqlSvaEqcChq1lppJgQKA5wcBSgqsAS1uF1juVUodg1k461Q?=
- =?us-ascii?Q?k7wac2skfE9mo/S7cK4GzDpd472D4kGoIXGsdcuy7UQeM9NE1Of4lMMEAmH4?=
- =?us-ascii?Q?mN9T7B6uxPMcQ2Auygfiq53c2rdE+uFHN4qltpWqVnC9cT9oxDdKjXBESTwK?=
- =?us-ascii?Q?UcYPPs98TWPSgIhKYhcPrIU+KdEbLSYLA8hpOPS8l9CzpGIur8LJPmxFbGcn?=
- =?us-ascii?Q?NOyQTCvmcCVwvk1N39LT0+kfSdSdqOlaVQR4ZGkUnlrqSQDi7c2N40iRMDJ9?=
- =?us-ascii?Q?91ObhmB+IUPWGnE6dRc4F1vLV+SeoGf3yQ9qvFXc2Y+FhkVlGOL2n6qlxQQw?=
- =?us-ascii?Q?8xGqVUrzGtYr+lc7gwq9Mws3RXOBzkhAc5sFQz6mNA/YHSll4zXgZwceO6Qy?=
- =?us-ascii?Q?51AayeoPyV+Xy/yKucu+0dGOs0AErmtSwfbp0TeFLhZIDyWmIEBstunlasnM?=
- =?us-ascii?Q?k63/zK8TXHIuY5I1Dw1uPJ60P5yLXxTWgMLme/cQZH1S34srpqU4DlScY4AX?=
- =?us-ascii?Q?QtOOFRzb17eO1hZLzlK6BmzPQnMyyabmQmEmK3bBS/GEtokRWVXDUHnRke4E?=
- =?us-ascii?Q?BSfmrVnQQ0bHg0gmofrI7fzmMcfEUB/PbfYUW5Go1U19+cRgebID04NMzbXC?=
- =?us-ascii?Q?EysARnwz6J8nEwkVK0lMV1h++rSYzWW6V5p8HRlycbjBHQNAdS3X8EVkovne?=
- =?us-ascii?Q?fnpcHySyfwx3d6M4ogDGQrWp59yzzXFNByYJJYKiWcAmMZA1sOYEJp/sL8kD?=
- =?us-ascii?Q?vLEV/+xZtnoGAWGQGY1l1uLoCLN7IQ70TfV2zCIDn2YzCDvExborYshz4npM?=
- =?us-ascii?Q?KmGTujuRP0CcpGuwfkDMb2vQQopYiz9kelHUYhdQsrfqjBHJRr8pzGv2QZEp?=
- =?us-ascii?Q?j4JRc+damgUK+htAEyU5jMAX+T9kDZeNetmhZXriFVGA1/i6vF8y1MUOyx3X?=
- =?us-ascii?Q?fZsu6yv4xSO4Txe2tA9kgH2UmZ0NKKLKw5c9cPTUlXIteEWfP0T2yib/z+h/?=
- =?us-ascii?Q?mzMvVkpcXjjEAlm+3CL6vxWLwbRL977gQSzlLdos/h39wT9BXNeDJwahQ/zz?=
- =?us-ascii?Q?sKvSI6HZPJ4Md3zmLRhZZmW820+GraAVllrMsX8HGbDc9s2hp4qS+MtmDVA0?=
- =?us-ascii?Q?fUcAHWpnDD0d6IxIdNpw81I1QpfTuuPTnd+AjW38?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OtVR71YC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748346005;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nT7cIrRybh6LbikgTpPxvFtoL3MIOWg7nn/7vwDh1rQ=;
+	b=OtVR71YCJ6K7budDQT3TagF8Vv//JLOBkfiwX9rRUW4IqC23FvMz7bPPsIzhzyeXalxpve
+	IT+ilAY/26lDSFPYXVaqtmK7jx802R8U8jO4cUMxpOlxlA0R0Cyfrg8CA0H9K2M5RIXW8/
+	pLaVJbmGmGKxi2UU8lYTl6Zt6nKb5rY=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-407-SLev3HsoMQWW9I93gQXZkQ-1; Tue, 27 May 2025 07:40:04 -0400
+X-MC-Unique: SLev3HsoMQWW9I93gQXZkQ-1
+X-Mimecast-MFC-AGG-ID: SLev3HsoMQWW9I93gQXZkQ_1748346003
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a34f19c977so1535376f8f.0
+        for <imx@lists.linux.dev>; Tue, 27 May 2025 04:40:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748346003; x=1748950803;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nT7cIrRybh6LbikgTpPxvFtoL3MIOWg7nn/7vwDh1rQ=;
+        b=jlS9/cP551CPc9rJqZPkaPaz+aRw0rmnZ+24I91Rm2xy1dEodo8yYLeYB2JOm2LfD8
+         dfZfgCWnUVsp0wc/pKOyqctfZlB1GiDFPGcuSXze/mPjXgQniWW9cSL0eywoMrcbqTzH
+         LkMGi+TJA0UD/iJVq59RH6TPfzMpgGspAYq7725FNLEdLxN75aIdtXeJV/PKsvvHrmA7
+         aVfy3lQqrfUGSzzZrJ6ZdsawZXz6U7cHnLdtbkTEGZSQTPhjS+BIHDO25ghJl5vlddcr
+         kmBEO0KbZwkV+nBuGp1g0osWqY02L0zlf8e1oycCBlK9uvDKARcSwc9KCtW0iHgkojGb
+         3tdg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0v0SRaqlF7Vz/78fwyOuYKNiR/8WqbWqOsUA1ABRHHNbd+qoo8ag1SeXHwrGyW2nEEY4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyfQ6rZfIGDcmhKn24/5MhYpgHIrC2bJREf4bXk+hsved79HphG
+	0rLT2P4dFUqKiTD3qRqJaLAFDsBsMEw8Gm4MiVJubl0R4bXvuhd7Dpl4wCRPX60ZvSuM0oByEey
+	4SCuVifvhTsJS+1bxVE2wPdebHf3Bvwvh3Hs+1RCQlesF3HrAs6YAng==
+X-Gm-Gg: ASbGncvMbyEO/HBR48w1ArU7RbO23bBedfOnhpIOZehdnGlngF1mhJtET8ZQ+FnrUvH
+	PGWKatGLFqvPv/l6dQx0a/H3gVoq2QSlkAIUblHsLTQjvCb1fLSs6lLvQ65lrDGtd+QcrkfXrMY
+	b57DK41xu4XNba0vRDCiruSqg3GaqDT5VX3YpqNLd6kD8PuvX81o2qtSmRmgmm1sTJj3p/2Felv
+	CBzWONSu3X/JhhDE2pjYlRQyP2rwQiJVWEUGH/DSo4HsGh+o73jPgzCEE5j+Q59kQFrLIKsBnQv
+	dybTO6sPrNafQ+jfmU0=
+X-Received: by 2002:a5d:5f55:0:b0:3a4:e1ea:3b38 with SMTP id ffacd0b85a97d-3a4e5e5d241mr322132f8f.7.1748346003051;
+        Tue, 27 May 2025 04:40:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IELMhcsA2f/uFLjMPoJvuMHyXx64VnNfgsaZOJQOZLfdMdByqjQpxsJ0DHCecIbJFbX7bOLwg==
+X-Received: by 2002:a5d:5f55:0:b0:3a4:e1ea:3b38 with SMTP id ffacd0b85a97d-3a4e5e5d241mr322102f8f.7.1748346002542;
+        Tue, 27 May 2025 04:40:02 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2728:e810::f39? ([2a0d:3344:2728:e810::f39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4dc7e69c8sm4613797f8f.95.2025.05.27.04.40.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 May 2025 04:40:02 -0700 (PDT)
+Message-ID: <f738d1ed-7ade-4a37-b8fd-25178f7c1dee@redhat.com>
+Date: Tue, 27 May 2025 13:39:59 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49c797a5-06c0-4974-37b7-08dd9d0ba991
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 May 2025 10:45:57.1516
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: s7w6m3l50tdtslEEdL6Qw/sTLODO/FV2vTm5Pwp+YKyZ1ztlixodEkaV4grlLkng/FPYeFN8napLBDPN5V+LiA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7954
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next v12 4/7] net: mtip: The L2 switch driver for imx287
+To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>,
+ Andrew Lunn <andrew@lunn.ch>
+References: <20250522075455.1723560-1-lukma@denx.de>
+ <20250522075455.1723560-5-lukma@denx.de>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250522075455.1723560-5-lukma@denx.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 14rd6EBY0lxiEDWuFXO9LuXzACM-1G95SCyfxFpCfHo_1748346003
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 5/22/25 9:54 AM, Lukasz Majewski wrote:
+> +/* dynamicms MAC address table learn and migration */
+> +static void
+> +mtip_atable_dynamicms_learn_migration(struct switch_enet_private *fep,
+> +				      int curr_time, unsigned char *mac,
+> +				      u8 *rx_port)
+> +{
+> +	u8 port = MTIP_PORT_FORWARDING_INIT;
+> +	struct mtip_port_info *port_info;
+> +	u32 rx_mac_lo = 0, rx_mac_hi = 0;
+> +	unsigned long flags;
+> +	int index;
+> +
+> +	spin_lock_irqsave(&fep->learn_lock, flags);
 
+AFAICS this is called by napi context and by a plain thread context,
+spin_lock_bh() should be sufficient.
 
-> -----Original Message-----
-> From: Lukasz Kucharczyk <lukasz.kucharczyk@leica-geosystems.com>
-> Sent: Tuesday, May 20, 2025 8:23 PM
-> To: Oleksij Rempel <o.rempel@pengutronix.de>;
-> stefan.eichenberger@toradex.com; Pengutronix Kernel Team
-> <kernel@pengutronix.de>; Andi Shyti <andi.shyti@kernel.org>; Shawn Guo
-> <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>; Fabio
-> Estevam <festevam@gmail.com>
-> Cc: open list:FREESCALE IMX I2C DRIVER <linux-i2c@vger.kernel.org>; open
-> list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE <imx@lists.linux.dev>;
-> moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE
-> <linux-arm-kernel@lists.infradead.org>; open list
-> <linux-kernel@vger.kernel.org>; bsp-development.geo@leica-geosystems.com;
-> customers.leicageo@pengutronix.de; Lukasz Kucharczyk
-> <lukasz.kucharczyk@leica-geosystems.com>
-> Subject: [EXT] [PATCH] i2c: imx: fix emulated smbus block read
->=20
-> [You don't often get email from lukasz.kucharczyk@leica-geosystems.com.
-> Learn why this is important at
-> https://aka.ms/LearnAboutSenderIdentification ]
->=20
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report
-> this email' button
->=20
->=20
-> Acknowledge the byte count submitted by the target.
-> When I2C_SMBUS_BLOCK_DATA read operation is executed by
-> i2c_smbus_xfer_emulated(), the length of the second (read) message is set=
- to 1.
-> Length of the block is supposed to be obtained from the target by the
-> underlying bus driver.
-> The i2c_imx_isr_read() function should emit the acknowledge on i2c bus af=
-ter
-> reading the first byte (i.e., byte count) while processing such message (=
-as
-> defined in Section 6.5.7 of System Management Bus Specification [1]). Wit=
-hout
-> this acknowledge, the target does not submit subsequent bytes and the
-> controller only reads 0xff's.
->=20
-> In addition, store the length of block data obtained from the target in t=
-he
-> buffer provided by i2c_smbus_xfer_emulated() - otherwise the first byte o=
-f
-> actual data is erroneously interpreted as length of the data block.
->=20
-> [1]
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fsmbus=
-.
-> org%2Fspecs%2FSMBus_3_3_20240512.pdf&data=3D05%7C02%7Ccarlos.song%
-> 40nxp.com%7Cd05bf48873224466159808dd97991d7d%7C686ea1d3bc2b4c
-> 6fa92cd99c5c301635%7C0%7C1%7C638833406066875925%7CUnknown%7C
-> TWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXa
-> W4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DdmTE
-> obQKzUzw03sEd%2BDtUo3se7kJ9ZTS4atfs0lGLC8%3D&reserved=3D0
->=20
-> Fixes: 5f5c2d4579ca ("i2c: imx: prevent rescheduling in non dma mode")
-> Signed-off-by: Lukasz Kucharczyk <lukasz.kucharczyk@leica-geosystems.com>
+> +
+> +	if (mac && is_valid_ether_addr(mac)) {
+> +		rx_mac_lo = (u32)((mac[3] << 24) | (mac[2] << 16) |
+> +				  (mac[1] << 8) | mac[0]);
+> +		rx_mac_hi = (u32)((mac[5] << 8) | (mac[4]));
+> +	}
+> +
+> +	port_info = mtip_portinfofifo_read(fep);
+> +	while (port_info) {
+> +		/* get block index from lookup table */
+> +		index = GET_BLOCK_PTR(port_info->hash);
+> +		mtip_update_atable_dynamic1(port_info->maclo, port_info->machi,
+> +					    index, port_info->port,
+> +					    curr_time, fep);
+> +
+> +		if (mac && is_valid_ether_addr(mac) &&
+> +		    port == MTIP_PORT_FORWARDING_INIT) {
+> +			if (rx_mac_lo == port_info->maclo &&
+> +			    rx_mac_hi == port_info->machi) {
+> +				/* The newly learned MAC is the source of
+> +				 * our filtered frame.
+> +				 */
+> +				port = (u8)port_info->port;
+> +			}
+> +		}
+> +		port_info = mtip_portinfofifo_read(fep);
+> +	}
+> +
+> +	if (rx_port)
+> +		*rx_port = port;
+> +
+> +	spin_unlock_irqrestore(&fep->learn_lock, flags);
+> +}
+> +
+> +static void mtip_aging_timer(struct timer_list *t)
+> +{
+> +	struct switch_enet_private *fep = from_timer(fep, t, timer_aging);
+> +
+> +	fep->curr_time = mtip_timeincrement(fep->curr_time);
+> +
+> +	mod_timer(&fep->timer_aging,
+> +		  jiffies + msecs_to_jiffies(LEARNING_AGING_INTERVAL));
+> +}
 
-Hi,
+It's unclear to me why you need to maintain a timer just to update a
+timestamp?!?
 
-Looks this is a nice fix.
+(jiffies >> msecs_to_jiffies(LEARNING_AGING_INTERVAL)) & ((1 <<
+AT_DENTRY_TIMESTAMP_WIDTH) - 1)
 
-I2C SMBUS block read need first read one byte from data length offset then =
-I2C will know how many bytes
-need to continue read. For this issue you can meet " Error: Read failed " w=
-hen using i2cget -f -y bus address offset s to test.
+should yield the same value (and possibly define a bitmask as a shortcut)
 
-So you apply this change to make i2c-imx controller can behavior like this:
+> +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
+> +					struct net_device *dev, int port)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	unsigned short	status;
+> +	unsigned long flags;
+> +	struct cbd_t *bdp;
+> +	void *bufaddr;
+> +
+> +	spin_lock_irqsave(&fep->hw_lock, flags);
 
-S Addr Wr [A] Comm [A] Sr Addr Rd [A] [Count] A [Data] A [Data] A ... A [Da=
-ta] NA P
+AFAICS this lock is acquired only by napi and thread context the _bh
+variant should be sufficient.
 
-Do I understand this right?
+> +
+> +	if (!fep->link[0] && !fep->link[1]) {
+> +		/* Link is down or autonegotiation is in progress. */
+> +		netif_stop_queue(dev);
+> +		spin_unlock_irqrestore(&fep->hw_lock, flags);
+> +		return NETDEV_TX_BUSY;
 
-Carlos
-> ---
->  drivers/i2c/busses/i2c-imx.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c =
-index
-> ee0d25b498cb..4bf550a3b98d 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -1008,7 +1008,7 @@ static inline int i2c_imx_isr_read(struct
-> imx_i2c_struct *i2c_imx)
->         /* setup bus to read data */
->         temp =3D imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
->         temp &=3D ~I2CR_MTX;
-> -       if (i2c_imx->msg->len - 1)
-> +       if ((i2c_imx->msg->len - 1) || (i2c_imx->msg->flags &
-> + I2C_M_RECV_LEN))
->                 temp &=3D ~I2CR_TXAK;
->=20
->         imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR); @@ -1063,6
-> +1063,7 @@ static inline void i2c_imx_isr_read_block_data_len(struct
-> imx_i2c_struct *i2c_im
->                 wake_up(&i2c_imx->queue);
->         }
->         i2c_imx->msg->len +=3D len;
-> +       i2c_imx->msg->buf[i2c_imx->msg_buf_idx++] =3D len;
->  }
->=20
->  static irqreturn_t i2c_imx_master_isr(struct imx_i2c_struct *i2c_imx,
-> unsigned int status)
-> --
-> 2.34.1
->=20
+Intead you should probably stop the queue when such events happen
+
+> +	}
+> +
+> +	/* Fill in a Tx ring entry */
+> +	bdp = fep->cur_tx;
+> +
+> +	status = bdp->cbd_sc;
+> +
+> +	if (status & BD_ENET_TX_READY) {
+> +		/* All transmit buffers are full. Bail out.
+> +		 * This should not happen, since dev->tbusy should be set.
+> +		 */
+> +		dev_err(&fep->pdev->dev, "%s: tx queue full!.\n", dev->name);
+> +		spin_unlock_irqrestore(&fep->hw_lock, flags);
+> +		return NETDEV_TX_BUSY;
+
+Instead you should use
+netif_txq_maybe_stop()/netif_subqueue_maybe_stop() to stop the queue
+eariler.
+
+> +	}
+> +
+> +	/* Clear all of the status flags */
+> +	status &= ~BD_ENET_TX_STATS;
+> +
+> +	/* Set buffer length and buffer pointer */
+> +	bufaddr = skb->data;
+> +	bdp->cbd_datlen = skb->len;
+> +
+> +	/* On some FEC implementations data must be aligned on
+> +	 * 4-byte boundaries. Use bounce buffers to copy data
+> +	 * and get it aligned.
+> +	 */
+> +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
+> +		unsigned int index;
+> +
+> +		index = bdp - fep->tx_bd_base;
+> +		memcpy(fep->tx_bounce[index],
+> +		       (void *)skb->data, skb->len);
+> +		bufaddr = fep->tx_bounce[index];
+> +	}
+> +
+> +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> +		swap_buffer(bufaddr, skb->len);
+
+Ouch, the above will kill performances. Also it looks like it will
+access uninitialized memory if skb->len is not 4 bytes aligned.
+
+> +
+> +	/* Save skb pointer. */
+> +	fep->tx_skbuff[fep->skb_cur] = skb;
+> +
+> +	dev->stats.tx_bytes += skb->len;
+
+It looks like this start is incremented too early, as tx could still
+fail later.
+
+> +	fep->skb_cur = (fep->skb_cur + 1) & TX_RING_MOD_MASK;
+> +
+> +	/* Push the data cache so the CPM does not get stale memory
+> +	 * data.
+> +	 */
+> +	bdp->cbd_bufaddr = dma_map_single(&fep->pdev->dev, bufaddr,
+> +					  MTIP_SWITCH_TX_FRSIZE,
+> +					  DMA_TO_DEVICE);
+> +	if (unlikely(dma_mapping_error(&fep->pdev->dev, bdp->cbd_bufaddr))) {
+> +		dev_err(&fep->pdev->dev,
+> +			"Failed to map descriptor tx buffer\n");
+> +		dev->stats.tx_errors++;
+> +		dev->stats.tx_dropped++;
+> +		dev_kfree_skb_any(skb);
+> +		goto err;
+> +	}
+> +
+> +	/* Send it on its way.  Tell FEC it's ready, interrupt when done,
+> +	 * it's the last BD of the frame, and to put the CRC on the end.
+> +	 */
+> +
+
+Likely you need some memory barrier here to ensure the descriptor status
+update is seen by the device after the buffer addr update.
+
+> +	status |= (BD_ENET_TX_READY | BD_ENET_TX_INTR
+> +			| BD_ENET_TX_LAST | BD_ENET_TX_TC);
+> +	bdp->cbd_sc = status;
+> +
+> +	netif_trans_update(dev);
+> +	skb_tx_timestamp(skb);
+> +
+> +	/* For port separation - force sending via specified port */
+> +	if (!fep->br_offload && port != 0)
+> +		mtip_forced_forward(fep, port, 1);
+> +
+> +	/* Trigger transmission start */
+> +	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);
+
+Possibly you should check skb->xmit_more to avoid ringing the doorbell
+when not needed.
+
+> +static void mtip_timeout(struct net_device *dev, unsigned int txqueue)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	struct cbd_t *bdp;
+> +	int i;
+> +
+> +	dev->stats.tx_errors++;
+> +
+> +	if (IS_ENABLED(CONFIG_SWITCH_DEBUG)) {
+> +		dev_info(&dev->dev, "%s: transmit timed out.\n", dev->name);
+> +		dev_info(&dev->dev,
+> +			 "Ring data: cur_tx %lx%s, dirty_tx %lx cur_rx: %lx\n",
+> +			 (unsigned long)fep->cur_tx,
+> +			 fep->tx_full ? " (full)" : "",
+> +			 (unsigned long)fep->dirty_tx,
+> +			 (unsigned long)fep->cur_rx);
+> +
+> +		bdp = fep->tx_bd_base;
+> +		dev_info(&dev->dev, " tx: %u buffers\n", TX_RING_SIZE);
+> +		for (i = 0; i < TX_RING_SIZE; i++) {
+> +			dev_info(&dev->dev, "  %08lx: %04x %04x %08x\n",
+> +				 (kernel_ulong_t)bdp, bdp->cbd_sc,
+> +				 bdp->cbd_datlen, (int)bdp->cbd_bufaddr);
+> +			bdp++;
+> +		}
+> +
+> +		bdp = fep->rx_bd_base;
+> +		dev_info(&dev->dev, " rx: %lu buffers\n",
+> +			 (unsigned long)RX_RING_SIZE);
+> +		for (i = 0 ; i < RX_RING_SIZE; i++) {
+> +			dev_info(&dev->dev, "  %08lx: %04x %04x %08x\n",
+> +				 (kernel_ulong_t)bdp,
+> +				 bdp->cbd_sc, bdp->cbd_datlen,
+> +				 (int)bdp->cbd_bufaddr);
+> +			bdp++;
+> +		}
+> +	}
+> +
+> +	rtnl_lock();
+
+This is called in atomic scope, you can't acquire a mutex here. Instead
+you could schedule a work and do the reset in such scope.
+
+> +	if (netif_device_present(dev) || netif_running(dev)) {
+> +		napi_disable(&fep->napi);
+> +		netif_tx_lock_bh(dev);
+> +		mtip_switch_restart(dev, fep->full_duplex[0],
+> +				    fep->full_duplex[1]);
+> +		netif_tx_wake_all_queues(dev);
+> +		netif_tx_unlock_bh(dev);
+> +		napi_enable(&fep->napi);
+> +	}
+> +	rtnl_unlock();
+> +}
+
+> +
+> +/* During a receive, the cur_rx points to the current incoming buffer.
+> + * When we update through the ring, if the next incoming buffer has
+> + * not been given to the system, we just set the empty indicator,
+> + * effectively tossing the packet.
+> + */
+> +static int mtip_switch_rx(struct net_device *dev, int budget, int *port)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	u8 *data, rx_port = MTIP_PORT_FORWARDING_INIT;
+> +	struct switch_enet_private *fep = priv->fep;
+> +	unsigned short status, pkt_len;
+> +	struct net_device *pndev;
+> +	struct ethhdr *eth_hdr;
+> +	int pkt_received = 0;
+> +	struct sk_buff *skb;
+> +	unsigned long flags;
+> +	struct cbd_t *bdp;
+> +
+> +	spin_lock_irqsave(&fep->hw_lock, flags);
+> +
+> +	/* First, grab all of the stats for the incoming packet.
+> +	 * These get messed up if we get called due to a busy condition.
+> +	 */
+> +	bdp = fep->cur_rx;
+> +
+> +	while (!((status = bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
+> +		if (pkt_received >= budget)
+> +			break;
+> +
+> +		pkt_received++;
+> +		/* Since we have allocated space to hold a complete frame,
+> +		 * the last indicator should be set.
+> +		 */
+> +		if ((status & BD_ENET_RX_LAST) == 0)
+> +			dev_warn_ratelimited(&dev->dev,
+> +					     "SWITCH ENET: rcv is not +last\n");
+> +
+> +		if (!fep->usage_count)
+> +			goto rx_processing_done;
+> +
+> +		/* Check for errors. */
+> +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH | BD_ENET_RX_NO |
+> +			      BD_ENET_RX_CR | BD_ENET_RX_OV)) {
+> +			dev->stats.rx_errors++;
+> +			if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH)) {
+> +				/* Frame too long or too short. */
+> +				dev->stats.rx_length_errors++;
+> +			}
+> +			if (status & BD_ENET_RX_NO)	/* Frame alignment */
+> +				dev->stats.rx_frame_errors++;
+> +			if (status & BD_ENET_RX_CR)	/* CRC Error */
+> +				dev->stats.rx_crc_errors++;
+> +			if (status & BD_ENET_RX_OV)	/* FIFO overrun */
+> +				dev->stats.rx_fifo_errors++;
+> +		}
+> +
+> +		/* Report late collisions as a frame error.
+> +		 * On this error, the BD is closed, but we don't know what we
+> +		 * have in the buffer.  So, just drop this frame on the floor.
+> +		 */
+> +		if (status & BD_ENET_RX_CL) {
+> +			dev->stats.rx_errors++;
+> +			dev->stats.rx_frame_errors++;
+> +			goto rx_processing_done;
+> +		}
+> +
+> +		/* Process the incoming frame */
+> +		pkt_len = bdp->cbd_datlen;
+> +		data = (__u8 *)__va(bdp->cbd_bufaddr);
+> +
+> +		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
+> +				 bdp->cbd_datlen, DMA_FROM_DEVICE);
+
+I have read your explaination WRT unmap/map. Actually you don't need to
+do any mapping here, since you are unconditionally copying the whole
+buffer (why???) and re-using it.
+
+Still you need a dma_sync_single() to ensure the CPUs see the correct data.
+
+> +
+> +		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> +			swap_buffer(data, pkt_len);
+> +
+> +		if (data) {
+> +			eth_hdr = (struct ethhdr *)data;
+> +			mtip_atable_get_entry_port_number(fep,
+> +							  eth_hdr->h_source,
+> +							  &rx_port);
+> +			if (rx_port == MTIP_PORT_FORWARDING_INIT)
+> +				mtip_atable_dynamicms_learn_migration(fep,
+> +								      fep->curr_time,
+> +								      eth_hdr->h_source,
+> +								      &rx_port);
+> +		}
+> +
+> +		if (!fep->br_offload && (rx_port == 1 || rx_port == 2))
+> +			pndev = fep->ndev[rx_port - 1];
+> +		else
+> +			pndev = dev;
+> +
+> +		*port = rx_port;
+> +		pndev->stats.rx_packets++;
+> +		pndev->stats.rx_bytes += pkt_len;
+
+It looks like the stats are incremented too early, as the packets could
+still be dropped a few lines later
+
+> +
+> +		/* This does 16 byte alignment, exactly what we need.
+> +		 * The packet length includes FCS, but we don't want to
+> +		 * include that when passing upstream as it messes up
+> +		 * bridging applications.
+> +		 */
+> +		skb = netdev_alloc_skb(pndev, pkt_len + NET_IP_ALIGN);
+> +		if (unlikely(!skb)) {
+> +			dev_dbg(&fep->pdev->dev,
+> +				"%s: Memory squeeze, dropping packet.\n",
+> +				pndev->name);
+> +			pndev->stats.rx_dropped++;
+> +			goto err_mem;
+> +		} else {
+> +			skb_reserve(skb, NET_IP_ALIGN);
+> +			skb_put(skb, pkt_len);      /* Make room */
+> +			skb_copy_to_linear_data(skb, data, pkt_len);
+> +			skb->protocol = eth_type_trans(skb, pndev);
+> +			napi_gro_receive(&fep->napi, skb);
+> +		}
+> +
+> +		bdp->cbd_bufaddr = dma_map_single(&fep->pdev->dev, data,
+> +						  bdp->cbd_datlen,
+> +						  DMA_FROM_DEVICE);
+> +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
+> +					       bdp->cbd_bufaddr))) {
+> +			dev_err(&fep->pdev->dev,
+> +				"Failed to map descriptor rx buffer\n");
+> +			pndev->stats.rx_errors++;
+> +			pndev->stats.rx_dropped++;
+> +			dev_kfree_skb_any(skb);
+
+The above statement is wrong even if you intend to keep the
+dma_unmap/dma_map pair (and please, don't do that! ;). At this point the
+skb ownership has been handed to the stack by the previous
+napi_gro_receive(), freeing it here will cause UaF and double free.
+
+> +			goto err_mem;
+> +		}
+> +
+> + rx_processing_done:
+> +		/* Clear the status flags for this buffer */
+> +		status &= ~BD_ENET_RX_STATS;
+
+With the dma map/unmap in place, you likely need a memory barrier to
+ensure the device will see the descriptor status update after bufferptr
+update.
+
+> +static int mtip_alloc_buffers(struct net_device *dev)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	struct sk_buff *skb;
+> +	struct cbd_t *bdp;
+> +	int i;
+> +
+> +	bdp = fep->rx_bd_base;
+> +	for (i = 0; i < RX_RING_SIZE; i++) {
+> +		skb = netdev_alloc_skb(dev, MTIP_SWITCH_RX_FRSIZE);
+> +		if (!skb)
+> +			goto err;
+> +
+> +		fep->rx_skbuff[i] = skb;
+> +
+> +		bdp->cbd_bufaddr = dma_map_single(&fep->pdev->dev, skb->data,
+> +						  MTIP_SWITCH_RX_FRSIZE,
+> +						  DMA_FROM_DEVICE);
+> +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
+> +					       bdp->cbd_bufaddr))) {
+> +			dev_err(&fep->pdev->dev,
+> +				"Failed to map descriptor rx buffer\n");
+> +			dev_kfree_skb_any(skb);
+
+At this point fep->rx_skbuff[i] is still not NULL, and later
+mtip_free_buffers() will try to free it again. You should remove the
+above dev_kfree_skb_any(skb).
+
+> +static const struct ethtool_ops mtip_ethtool_ops = {
+> +	.get_link_ksettings     = phy_ethtool_get_link_ksettings,
+> +	.set_link_ksettings     = phy_ethtool_set_link_ksettings,
+> +	.get_drvinfo            = mtip_get_drvinfo,
+> +	.get_link               = ethtool_op_get_link,
+> +	.get_ts_info		= ethtool_op_get_ts_info,
+> +};
+> +
+> +static const struct net_device_ops mtip_netdev_ops = {
+> +	.ndo_open		= mtip_open,
+> +	.ndo_stop		= mtip_close,
+> +	.ndo_start_xmit	= mtip_start_xmit,
+> +	.ndo_set_rx_mode	= mtip_set_multicast_list,
+> +	.ndo_tx_timeout	= mtip_timeout,
+> +	.ndo_set_mac_address	= mtip_set_mac_address,
+> +};
+> +
+> +bool mtip_is_switch_netdev_port(const struct net_device *ndev)
+> +{
+> +	return ndev->netdev_ops == &mtip_netdev_ops;
+> +}
+> +
+> +static int mtip_switch_dma_init(struct switch_enet_private *fep)
+> +{
+> +	struct cbd_t *bdp, *cbd_base;
+> +	int ret, i;
+> +
+> +	/* Check mask of the streaming and coherent API */
+> +	ret = dma_set_mask_and_coherent(&fep->pdev->dev, DMA_BIT_MASK(32));
+> +	if (ret < 0) {
+> +		dev_err(&fep->pdev->dev, "No suitable DMA available\n");
+> +		return ret;
+> +	}
+> +
+> +	/* Allocate memory for buffer descriptors */
+> +	cbd_base = dma_alloc_coherent(&fep->pdev->dev, PAGE_SIZE, &fep->bd_dma,
+> +				      GFP_KERNEL);
+> +	if (!cbd_base)
+> +		return -ENOMEM;
+> +
+> +	/* Set receive and transmit descriptor base */
+> +	fep->rx_bd_base = cbd_base;
+> +	fep->tx_bd_base = cbd_base + RX_RING_SIZE;
+> +
+> +	/* Initialize the receive buffer descriptors */
+> +	bdp = fep->rx_bd_base;
+> +	for (i = 0; i < RX_RING_SIZE; i++) {
+> +		bdp->cbd_sc = 0;
+> +		bdp++;
+> +	}
+> +
+> +	/* Set the last buffer to wrap */
+> +	bdp--;
+> +	bdp->cbd_sc |= BD_SC_WRAP;
+
+This is a recurring pattern, you should use an helper for it.
+
+> +/* FEC MII MMFR bits definition */
+> +#define FEC_MMFR_ST             BIT(30)
+> +#define FEC_MMFR_OP_READ        BIT(29)
+> +#define FEC_MMFR_OP_WRITE       BIT(28)
+> +#define FEC_MMFR_PA(v)          (((v) & 0x1F) << 23)
+> +#define FEC_MMFR_RA(v)          (((v) & 0x1F) << 18)
+
+Here and elsewhere it looks like you could use FIELD_PREP and friends
+
+This patch is really too big, I'm pretty sure I missed some relevant
+issues. You should split it in multiple ones: i.e. initialization and
+h/w access, rx/tx, others ndos.
+
+/P
+
