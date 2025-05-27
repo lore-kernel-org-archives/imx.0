@@ -1,237 +1,198 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010016.outbound.protection.outlook.com [52.101.69.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94185262FD7
-	for <imx@lists.linux.dev>; Tue, 27 May 2025 11:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748347166; cv=none; b=tDMTit/X+6hBLRA8D6LIFqJ0nDcz7iWvoecdJJgkarrvif26zGmMGdTKywjPuovq97EQov75IUiawdXZY7d83iYgG631/+k6iiWXdMpjlh7ZhXMlu7dhAyHKA3PlrCyU4TvlHF9NySVdQAlGXBqmuQbqjo2XseqaqFQGbCOTcYs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748347166; c=relaxed/simple;
-	bh=U4dckQjpQfIhR/F8/iVTttXAf3SkdZoJAUKOCKjQq68=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hy+906hvrongTdp+5wn5vP71qCGKxuaSi40rrw/ZnnXQaFBPFYHVeGl5DuVUy0g4F3TGCpZQYkdnjV+P29L+LOPGSoETwsxiGeeFEqAqdIThMh5vI/GPXuGobc76BPweU5PRMgCpykC1oZGXXuAI54oEU+crwQmXnFfv+JuxRbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pEf3gBQk; arc=none smtp.client-ip=209.85.219.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF85212B0C
+	for <imx@lists.linux.dev>; Tue, 27 May 2025 12:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748347365; cv=fail; b=GFyik+nvKCRBQgDqeIh7JMB++EX/z6W4NbJBNpHfHmrJM4FxI2HhKF8lUZrWxHcQw8ziRtsC/G3xum54+dfCOgrgEiMKzQmmzBWG1U/fG7qqhsrIMzYoViA8IJZSad8dt8niqB87Yh8rSDi4EYk3cTaDbVSFzeUwgWtIiLaEB5U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748347365; c=relaxed/simple;
+	bh=7JrC0udIghWjc4KyVO/uAkNGsjK3Pkq056eKyg75CSI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=I3yBHTHrQ8i7VK5I1RmDG0LlMnpZd9VETyz5dl7gHN6Hhl04PWLJFatIDBHXNVkI2q/nfIaLF2MtHHTerKt3Ocg59QqihWEk6Fw55Ejd5lv/m1h/IBRAieuLTmHx4vpOl2zBO3z6VIt7vEwbGRW17kCcr7pGqc1gUjYGYiM8dWI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com; spf=fail smtp.mailfrom=leica-geosystems.com; dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b=aPpPtdwO; arc=fail smtp.client-ip=52.101.69.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=leica-geosystems.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pEf3gBQk"
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e7db5c13088so1255976276.1
-        for <imx@lists.linux.dev>; Tue, 27 May 2025 04:59:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748347163; x=1748951963; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=f4szaLzc/F2h1MlyYwOny8uUmi1IH+zWJep2HTDgXGs=;
-        b=pEf3gBQk9dUvXAFheWAabmGlP7owiES/uslvaMRwYtLax/aCnRJi3m9yB6unpGJcw9
-         Oo1TFsAwBYo/PEaLTjSIo5zvDq3pMbTMeKXggEaGnqkyAtqj1nvT5MTNrOr3xH4RT1qD
-         jXp+aumZ85ihOJ0M3EuCyb/kKTgVULTpWuJgG9lmfjMu2cbrAIivjwRG9kyL9QjCJKxt
-         CalA3jhn/tW07T0IE0CU/nJ+UAGPt4s/XGtUhYB8WotZ24QU0SbiOe9YMxarHaCi1GCh
-         ipFOkDPhA3YIup07wFm2a+vxTcU2VH+4jEFfQjmqBohCQNPcFuvE+UoG2KkS8lWMCmim
-         FrpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748347163; x=1748951963;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=f4szaLzc/F2h1MlyYwOny8uUmi1IH+zWJep2HTDgXGs=;
-        b=cruqqh7Yym1ZP/PXgJUTUH2img/9+tGr6GrppCDOBOo/o2v7VgCYtWJW0H0zOqTlLi
-         +vQ+DV8XWG3zqscghpPigH8/uwvPC1VjKaTxFO3F3fw7wsxcgnTYtsxbmWmJ+/PuUqSo
-         i3JRPjHiR4ZxqlEszw0jp5E/8UBcZskAAuNsJN2TbakWBhhrgN1wR63yvfqun5aIuKyr
-         jkPSPOmKfV++tK9k06KJ5Xiuz8Y0faWiO33/B0PyCHTMBkPJ/dZpUkT5YSncEaqHcO5y
-         9CpWQP0zo/WGjxEd9ZTOSdpk5Je13Xs9c6uV2bgog0k9CpKW745B3Z4cljqAXaINjgSV
-         C9Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/Vn9QXnYgXYXltjUcY77FbT+yiA8PcAdggL2DzIyQXsl1CAeyyJYypG7QEGnXNd8M754=@lists.linux.dev
-X-Gm-Message-State: AOJu0YylLQOXT/68jk3FOl5zb1ZnM9hUEeQ4401Y0yDjn3tnBJ1T5qP3
-	e6JDXKQGJYVSk9jhysPu2E6rxUyjqddZuTm0c+Hfw38E6O4myy8Acl0RDShTFY6A6y2BoakLrQy
-	qcKYREKlslKzxCkkMlirnMZLVNsKlYPhdTg+tQ21+2g==
-X-Gm-Gg: ASbGncsyTHzNJedEpHLc/NCu3vwm0WWMciWnMvX+JfrXqTLHqGRoLW1b5rHPGOYUfNy
-	jx/Taq7mCqhe8FhifyqrAmWRan3Cj/dlL5vOHIXayjSuIx0tFoAVV4Ang1mtagjGYUSZvhRKJwy
-	Nh0ZryhvlzHoS0DugseQZfps0ZLhS9/ldrmA==
-X-Google-Smtp-Source: AGHT+IGKfe3vNrVmk4UJNSrzHf1HzxY3z+PLvn7rrFkkGWoEaq5BirzXQytDxVB9kstnSznqWcVD3oPaUzvTQgaFbac=
-X-Received: by 2002:a05:6902:722:b0:e7d:c4e4:3295 with SMTP id
- 3f1490d57ef6-e7dd031e2c1mr376900276.1.1748347163229; Tue, 27 May 2025
- 04:59:23 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b="aPpPtdwO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fKVyzkzTCt91hGcjAXbOoUxBM+pzl3M2rCXSt0tAvE2p+UAoxVK3syW4HAx1GlHk/mJfUJMm7pOr234NvXdByTDKizEltTxciYIwThaUKRSw97HJkI0e/YfHmqbXikkVn48lwvp0PksZwnkUhwb1+UD+CouDavHlqqT1P45BAPlyRXSl6i9bkonxa2M+HOgDpGc42UjHK7Vy2RvbOeM+Y/9JFDnFWTmW9yBT5bLJ0ICrMXnr7wjZa//EHnDAudG0biTow284H+9L/ve5Zly+lDEXLPrpCG8WxY9Voyg8TC2/NkEoOxKF3qQ99uuREYbGleOzqO0gq3OV4KhiPkH+5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7JrC0udIghWjc4KyVO/uAkNGsjK3Pkq056eKyg75CSI=;
+ b=h/lm/iAR8Njo8yU4UD0p9ceL26bsq2HQ4ZxPumGua6OUCLgqdWXRwVlrODF4eYVnwNptRZQ9PBoDdpSSiupNS2aWYIAhh6+KrTdqK+EUAAeVeu3fxHbdXj3Ldicb+uMdadethh/kt+iTsB8Km1/Sq5/x7pmTqizMF8reLylElMRg3qQuM9eyO+S3S6VabLNAEMZmM1faICbdRtiZ4q5yvjG1vMgcm+GQ4dd9cwNgwPgD32Q6Rb+68nM4zR+RAchNQF/kLHr3+3cM1IZ3wY5DuaN6L4refhyC/I7L11KCyo6lbLnN/fBJB7LcVXgk/gOYgR4iRO8TFgOv7x4Iy8eXSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
+ header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7JrC0udIghWjc4KyVO/uAkNGsjK3Pkq056eKyg75CSI=;
+ b=aPpPtdwOWpnskrlYc7xv8XKUYwRLxzcqO/cAdkmi1T9hV+lYQI+wCD4aF5hVibt9GYUyYRo7JIrVLOpgMMwmG+R1+/bSYaHhJ6yPROe1MbVRAGQrtopoDEBoxd8+ALI2QLpvSoOcuoTAnip6G6TZonhGBkVkOnjc1NPScHGUV5c=
+Received: from VI1PR06MB8616.eurprd06.prod.outlook.com (2603:10a6:800:1df::8)
+ by PA1PR06MB10065.eurprd06.prod.outlook.com (2603:10a6:102:4f6::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.21; Tue, 27 May
+ 2025 12:02:39 +0000
+Received: from VI1PR06MB8616.eurprd06.prod.outlook.com
+ ([fe80::fac:a279:d192:7cbb]) by VI1PR06MB8616.eurprd06.prod.outlook.com
+ ([fe80::fac:a279:d192:7cbb%6]) with mapi id 15.20.8769.021; Tue, 27 May 2025
+ 12:02:39 +0000
+From: KUCHARCZYK Lukasz <lukasz.kucharczyk@leica-geosystems.com>
+To: Carlos Song <carlos.song@nxp.com>, Oleksij Rempel
+	<o.rempel@pengutronix.de>, "stefan.eichenberger@toradex.com"
+	<stefan.eichenberger@toradex.com>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Andi Shyti <andi.shyti@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>
+CC: "open list:FREESCALE IMX I2C DRIVER" <linux-i2c@vger.kernel.org>, "open
+ list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+	<linux-arm-kernel@lists.infradead.org>, open list
+	<linux-kernel@vger.kernel.org>, GEO-CHHER-bsp-development
+	<bsp-development.geo@leica-geosystems.com>,
+	"customers.leicageo@pengutronix.de" <customers.leicageo@pengutronix.de>
+Subject: RE: [PATCH] i2c: imx: fix emulated smbus block read
+Thread-Topic: [PATCH] i2c: imx: fix emulated smbus block read
+Thread-Index: AQHbyYH8Q0P//Q72iU2s4gRgqH2X3LPmVgqAgAAUlxA=
+Date: Tue, 27 May 2025 12:02:39 +0000
+Message-ID:
+ <VI1PR06MB8616FBEE8A355BF5A314D504D864A@VI1PR06MB8616.eurprd06.prod.outlook.com>
+References: <20250520122252.1475403-1-lukasz.kucharczyk@leica-geosystems.com>
+ <VI2PR04MB11147245BA69A4C19B0DD037EE864A@VI2PR04MB11147.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <VI2PR04MB11147245BA69A4C19B0DD037EE864A@VI2PR04MB11147.eurprd04.prod.outlook.com>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=leica-geosystems.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI1PR06MB8616:EE_|PA1PR06MB10065:EE_
+x-ms-office365-filtering-correlation-id: 471b8b89-f587-43a1-fca6-08dd9d16609d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?VDcxRUp2L0FkNTl3eks5YnRoVyszS2E0bG91UjJGR0Q3MjgyMTBtUWhpZ0Jw?=
+ =?utf-8?B?Z2VKbDVIeTVqdkpSUkFYM0ZZRy9Qc0pidjZNZmNEVzNyWlhmbHpDWmJoUGtM?=
+ =?utf-8?B?YWh1bjJlcGlkWFYrVmdwYkpxT0lMTEt1OStPMHNpVDQxWHkzWWRvSXZEQ0ZM?=
+ =?utf-8?B?MEppL3piQ3QveisvdlJzZ1JJaFlTTW1pMzlGR2kvblkweC9ya2RuMno2cmZ6?=
+ =?utf-8?B?R2c5b1ZSTXM1ODBScTlDemxFcDNtOEhVNGJCMzkySG5JU3BwcW5jMjFqN2lL?=
+ =?utf-8?B?cFc0eE5pakJmZHpVRFNrK29SeWNhUHpvM2pVaUxvODRvemtYalZ0aHBpVmVv?=
+ =?utf-8?B?dlZKY2V0eWNhMWdhOGFEZmdicktPdGdROFlDRUllWDFXWE4rc2M5bnJabC8w?=
+ =?utf-8?B?aEJaK2FJTnhIZzZRRHlKSjk2SExSUFlPUkkrU3Z1b3BaOXJYaXplTHpadnZj?=
+ =?utf-8?B?Q2JEV1l6aXlxaGt3R0xNVGVqUTR3KzZ4eWhRbW9JOVJGNnk4NWc5Q2tQUjV2?=
+ =?utf-8?B?MkNKME12alAyYkhBYmlLQWMzR1E1YVJVZWI1WFBPRC8zT0pNVmYxcHpaSGFa?=
+ =?utf-8?B?UHd0T0NlMlhnNkRRc3lXaFpSdS9SSWRPeDdBaEZaYlU4UGRucXhtZ1k5UTBH?=
+ =?utf-8?B?allla3JuUXJIaG93aUVIaHMwdmxmWnBmTGd0NnFkVUE1Z2hwYzNNT1NiaFkr?=
+ =?utf-8?B?SHVvV2Zwb0E4cExCVUZuNExEQ1hKMThnTkF2R2laUWtqTDA5VElrRFJXSjFh?=
+ =?utf-8?B?NmtPVTdTQjBlWlhFZ3QvdXBTdHlCQnA1NmR0M1dBa01VdmtNZmV3ZFhXTitP?=
+ =?utf-8?B?NkVlSFN5RDRXTmI4WmovbnFRQ3RoN1htc3grbkxKT25ta044QWhlcHFacmJj?=
+ =?utf-8?B?SWZRRGdHcVRZQmw1YVBjUEx0eUNLUW1JWE9KemFzQndTK09vSm9GK05CMEYy?=
+ =?utf-8?B?T3drcXZkbldRZUVESDlZWDVPVVk0bkh6THNTNzBzM3dqdldZNzVBcGxIMXhn?=
+ =?utf-8?B?U2ZlOTBwM3dFTmpBdi9FbXlEQmZkQXQrS2ZqRkJ4TkJMQm1IVGpaSGhtckJM?=
+ =?utf-8?B?aGRPZ2RkUE9jbTZkTVhQUURrcHRGeXUvOXlGVGh4RWxEMkFka21CeWpzUG9p?=
+ =?utf-8?B?cGlFcHNWTmdDQ0VnYmxsdkRYNUhsdzRacnFxLzhreFdENmNkT0dGSHVaejgz?=
+ =?utf-8?B?aW50RHI5ZktMOUpWUWR6NGlhRVh6YU9aa2xqRjcwVld3MWpIUk8yVkR0UUlp?=
+ =?utf-8?B?TUsyNUxTMVo1cnh1UGNhREFkZy9LMzM2VFJWOHRsaUJENXVTZWZxS282Qldq?=
+ =?utf-8?B?Z05GR056Ry9PaVdUS2FSbEY5MUZ6bklnbGNmL200cVplbTljanMzUVVRcjBT?=
+ =?utf-8?B?N0dpT2ZhVXJVZk5YeGFBQUk3cEFLUW9hQklkazd2bE9VWHJwWmV3ZU0yUlZj?=
+ =?utf-8?B?YWhhZ2JpSENzS3o2QVQyb1pMMUFXRU5Sekk5Qmp3SEtkMThLV1NUdHNFZ0hF?=
+ =?utf-8?B?VytIUlZIT3Z2WHpVTDl6aUNhOW80cDVBdkl3WjIrenZMeTJsQllvUXpHcnZN?=
+ =?utf-8?B?bk5OV0c5VjJzUE9LSkpGTk0wKzFMUytDdWtFREZ1TkU1TkFYUWw5ditGME9S?=
+ =?utf-8?B?RTJYV0FmUU1kZ05tVkRxN1VTb2gxYVhXOGI2OXl5MlhZOTRoOFNCdjRjQjln?=
+ =?utf-8?B?YndiUXRnVDRkaHdqMXJkNENxYldDNC93TkJiZ0EvUVFIa2dxRHpudERlcnBO?=
+ =?utf-8?B?dThUSW8vekpnS2NFYjExVEQzTFp6K0xIM3h3SkMxenllU3Z4NFJHZ3UxZjY3?=
+ =?utf-8?B?WExNTDd4UFhpUU5Rck9tTm9LTEpOMW90akV4aUt1WFNrREZvTHhTNnU0TTVi?=
+ =?utf-8?B?LzFUbUlFMkJUTTliWHJFeXRUUkVRQ3A4QzBYSG81L1dHazYyeUk1NzJ3RStk?=
+ =?utf-8?B?eVhMdmF0dUpVUVNoMVBrMDJHS2xrY1BETk5OaXY5ZzlHUUM4TDdFZ3ZzRW9Z?=
+ =?utf-8?B?Y1RlNVdoMWxnPT0=?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR06MB8616.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?TVhJKzNDbWUrWXdsSmZtMEYveWdmcEhYTGkvUWZNVTNlSWcweTFtMmJsanZP?=
+ =?utf-8?B?RWRLTEo4emlCd2tXa3V5Sjk4bnVhaUdlenk2Y0RQSDdqVmIvMUZlMkZOM3l1?=
+ =?utf-8?B?cWhIWVBQMEFkK3ByYmwwMEhrMkU2bmRzMUJXcytXdzlObkhJZjE5blZ3OUMx?=
+ =?utf-8?B?QWt1TFBCa25sTU5jM0ovdEYydXRGSzRvRWFVdXlZYVg3a3BFSHhPUnVnWjhX?=
+ =?utf-8?B?bVhodXRyS3VHaFVWU09FYnBOcTViajVRWVJUWTJndThWRnFLZ0NueWt0T3Fs?=
+ =?utf-8?B?RUhiNkNpMWxGaGkwU3RsNS85eWFnazNKeExjbm02aGRVazAxaExFbzM3UFZy?=
+ =?utf-8?B?SlY4NjA3Q09kN0xRWGVlOExVNzN6NFBGOGxmVXFzTWREbTQzNExtenMzU3Jo?=
+ =?utf-8?B?NVN4SGYrN1NvK2xoUHNYcmlNUmhHL3R1LzF1bjJud2dpM3pKZVpaNFpWNmhl?=
+ =?utf-8?B?ZWQrZENmYWk3TEFYd3ZOaW5sM3RFL3U0aExrWGwxeVhwNXB3SEYzeDhzSmhR?=
+ =?utf-8?B?ajdCUFNocGxnV0xSaXBkYUhuL2xFbXJ4T0l2T2M0QW84ZGFFZWJBU1JWTkIy?=
+ =?utf-8?B?Z1RlY29nZVl1QitmNXg0WGJUZ2ZuK3pYblY5cUpFaFlPTkFqalFGZnZuVWdr?=
+ =?utf-8?B?bVFYb09qMVRIMFBZcDhSQ2lFcE9sQkpXd0lYNlFidXA4akVkczY2aU9YS3F4?=
+ =?utf-8?B?VWVuai9UQkp6YmV2VUJnY2Q5UDNrd1JJemlkaHErR0h5WnJNaEJEbkVBbmlu?=
+ =?utf-8?B?LzRJa1ZkZVNuQXJub1NnUFdONDhiWEhTSlJjRW8vbFFVTDY1SVhTYlBuWlFn?=
+ =?utf-8?B?Ym40cUFIcm55TjhqUVBlOWNleFBoVEhpbVFPK0FjL1N0djlmM3YxK0ZJQmhj?=
+ =?utf-8?B?YXNmMWN5Q0REaTVYb3NXTnI4a3lITFhjS3RPOWwyWUtLMnVjSkVzcHF0R0lM?=
+ =?utf-8?B?UEpQN0NWeFlhQnhUYWVNVUNPZ0NQd1UxbE1JS3JRL3RyUzVGbkh2a0NqZ1JT?=
+ =?utf-8?B?ejkreVdJcXBxWDdveVVtOE41TkhXTGZvS1lyUVovbkZCQy9wNjEyenVTQnZt?=
+ =?utf-8?B?T1hnUGtlUVRmVnlvK2xjVzBKZm8vSzVoZ2I0U2tQaE8zTFFSUDd0YjM5bUMx?=
+ =?utf-8?B?SjBPdG1MSWhNWkQ1OXh2eWN1MTg0bU8yUjNjNi9qWTJaTG1SamluMkZjTEVK?=
+ =?utf-8?B?R2ozTWFyemt3MmZINWVuZzY4S2l1TmNyaFpnS1p3OW41YnErTzhiL3oyOFh6?=
+ =?utf-8?B?eGtqMXlEUGRCdnpLS2JQWnRyelhhV29JSkoxbFgwb2xsRFhUV0w4WkhsT0hH?=
+ =?utf-8?B?M3hGYjZZaFE4NlJuMnJtLyt5enVGZkVqa2NucmZDNTZkWUtVOUd4OWxCb0Iz?=
+ =?utf-8?B?ZkIwRTdob0d4ZXdjWS83MjM4cUhoaWVxWm80TG5XZmMrRTVxOTF3bzRneGsy?=
+ =?utf-8?B?eWJVb25HdGVIaWIzMDdDU2w3dUE2alZKZm5XMGc1NnVnZHVtZFVSYVNoaUJx?=
+ =?utf-8?B?ejJCZWVCRnhQZk9FWHl1Q2JZaFBic2lwL0hYMzVjMUJvTnBianJkVExGZjhP?=
+ =?utf-8?B?TFFxbG0xMEF0SExWclpoeVkrb29Rb3VzZnY0N3MrVHcvMDh1Zk8rbFNYcmtM?=
+ =?utf-8?B?ZEdhUHBhTmxObHRFaXB5Y3c1WnlxeE8wVktnVEkwdmhzMG1Pd0t0c1dyR1d6?=
+ =?utf-8?B?QVNORWNmZGZCYjN6di9BYUhIWmthUWxzYnFGVW4zaS9uRnNjREJQYkViS0Zs?=
+ =?utf-8?B?WXZzN3FaUEdLamEvZUpjYk9lbGJlc3VDS0xUekgrSTFZbDM2RHFGYlk4MDBa?=
+ =?utf-8?B?Y1lReVVJN3FTMWlPc0hmWlBIdkF4TlNta3pCTzhWL1BnZC9qYzdEQ3pmZHRC?=
+ =?utf-8?B?SSs4SFFFNk5iTTNZc3VNVGdTeStjbWVYdytWYUR3TzE4WUFpcWZjS1gwY3cy?=
+ =?utf-8?B?SFJGbnphbVVOR2xRbjdlbmJnRnV2Wm4zdHVFQ1FWckxzVTdhV0NLRWNiMWhC?=
+ =?utf-8?B?K001Z25UeFBGTGhNMk92RVQ0T1J6QThUM0QrUmVvay9ubkZEL2VnYStMcWI1?=
+ =?utf-8?B?NnBWdmsyckJPYXJiK0NrQ003cGFPejhMV1hPRVdwOWR0S2dFSnRQVmpVMDBy?=
+ =?utf-8?B?UkZrb3RtdzkzNHBOQmxjUDlpcnBFTFpVbGtMZ1p4WktGVUJrTFJRZ0NZYm5R?=
+ =?utf-8?Q?B3guO0A0qv4rSIUwqpVeHlI=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250509191308.6i3ydftzork3sv5c@hiago-nb> <CAPDyKFpnLzk5YR3piksGhdB8ZoGNCzmweBTxm_rDX5=vjLFxqQ@mail.gmail.com>
- <20250519172357.vfnwehrbkk24vkge@hiago-nb> <CAPDyKFpGcgMzOUHf-JTRTLBviFdLdbjZKrMm8yd37ZqJ1nfkHw@mail.gmail.com>
- <20250521041306.GA28017@nxa18884-linux> <20250521041840.GB28017@nxa18884-linux>
- <CAPDyKFpSb+KsfDr1-=uk4TF4Op1dUQ9rDwPP5sSpMfxDRDhnZA@mail.gmail.com>
- <20250523191713.nylhi74jq6z4hqmr@hiago-nb> <CAPDyKFq6HG6iTZRnBSN25vhCU8Zj1c+r_ufGbiBsJ16N+1bJVg@mail.gmail.com>
- <20250527000510.fofehmsdhifcwlys@hiago-nb> <20250527023921.GA14252@nxa18884-linux>
-In-Reply-To: <20250527023921.GA14252@nxa18884-linux>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 27 May 2025 13:58:46 +0200
-X-Gm-Features: AX0GCFsGQsZvMPYEw23_m2_PwaUZ98TXNs_OMa1x3DVp8g7JgD3e4NzGOr3Ljfk
-Message-ID: <CAPDyKFqZkcaGfss=Oi+H9UERFU29jY2t5uTPnGVGQgSAJSeCoA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
- remote core attachment
-To: Hiago De Franco <hiagofranco@gmail.com>, Peng Fan <peng.fan@oss.nxp.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, linux-pm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Bjorn Andersson <andersson@kernel.org>, 
-	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
-	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR06MB8616.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 471b8b89-f587-43a1-fca6-08dd9d16609d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 May 2025 12:02:39.2085
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qW3KSX3hCSiKSpczrqaxtTtQHmE3wK4+A3kGVBYpPR2Qi1Nmc4k4rJph2b71mYceIEYUfj4XvPXd3PP6jApujmKvWcb2z/JbNmm/DPqFnlaj1bJBz0V4SbrvN5DiDSSC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR06MB10065
 
-On Tue, 27 May 2025 at 03:29, Peng Fan <peng.fan@oss.nxp.com> wrote:
->
-> On Mon, May 26, 2025 at 09:05:10PM -0300, Hiago De Franco wrote:
-> >On Mon, May 26, 2025 at 12:07:49PM +0200, Ulf Hansson wrote:
-> >> On Fri, 23 May 2025 at 21:17, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> >> >
-> >> > Hi Ulf,
-> >> >
-> >> > On Wed, May 21, 2025 at 02:11:02PM +0200, Ulf Hansson wrote:
-> >> > > You should not provide any flag (or attach_data to
-> >> > > dev_pm_domain_attach_list()) at all. In other words just call
-> >> > > dev_pm_domain_attach_list(dev, NULL, &priv->pd_list), similar to how
-> >> > > drivers/remoteproc/imx_dsp_rproc.c does it.
-> >> > >
-> >> > > In this way, the device_link is created by making the platform->dev
-> >> > > the consumer and by keeping the supplier-devices (corresponding to the
-> >> > > genpds) in RPM_SUSPENDED state.
-> >> > >
-> >> > > The PM domains (genpds) are then left in their current state, which
-> >> > > should allow us to call dev_pm_genpd_is_on() for the corresponding
-> >> > > supplier-devices, to figure out whether the bootloader turned them on
-> >> > > or not, I think.
-> >> > >
-> >> > > Moreover, to make sure the genpds are turned on when needed, we also
-> >> > > need to call pm_runtime_enable(platform->dev) and
-> >> > > pm_runtime_get_sync(platform->dev). The easiest approach is probably
-> >> > > to do that during ->probe() - and then as an improvement on top you
-> >> > > may want to implement more fine-grained support for runtime PM.
-> >> > >
-> >> > > [...]
-> >> > >
-> >> > > Kind regards
-> >> > > Uffe
-> >> >
-> >> > I did some tests here and I might be missing something. I used the
-> >> > dev_pm_genpd_is_on() inside imx_rproc.c with the following changes:
-> >> >
-> >> > @@ -902,7 +902,12 @@ static int imx_rproc_attach_pd(struct imx_rproc *priv)
-> >> >         if (dev->pm_domain)
-> >> >                 return 0;
-> >> >
-> >> >         ret = dev_pm_domain_attach_list(dev, &pd_data, &priv->pd_list);
-> >> > +       printk("hfranco: returned pd devs is %d", ret);
-> >> > +       for (int i = 0; i < ret; i++) {
-> >> > +               test = dev_pm_genpd_is_on(priv->pd_list->pd_devs[i]);
-> >> > +               printk("hfranco: returned value is %d", test);
-> >> > +       }
-> >> >         return ret < 0 ? ret : 0;
-> >> >  }
-> >> >
-> >> > This was a quick test to check the returned value, and it always return
-> >> > 1 for both pds, even if I did not boot the remote core.
-> >> >
-> >> > So I was wondering if it was because of PD_FLAG_DEV_LINK_ON, I removed
-> >> > it and passed NULL to dev_pm_domain_attach_list().
-> >>
-> >> Right, that's exactly what we should be doing.
-> >>
-> >> > Booting the kernel
-> >> > now it correctly reports 0 for both pds, however when I start the
-> >> > remote core with a hello world firmware and boot the kernel, the CPU
-> >> > resets with a fault reset ("Reset cause: SCFW fault reset").
-> >> >
-> >> > I added both pm functions to probe, just to test:
-> >> >
-> >> > @@ -1152,6 +1158,9 @@ static int imx_rproc_probe(struct platform_device *pdev)
-> >> >                 goto err_put_clk;
-> >> >         }
-> >> >
-> >> > +       pm_runtime_enable(dev);
-> >> > +       pm_runtime_get_sync(dev);
-> >> > +
-> >>
-> >> Indeed, calling pm_runtime_enable() and then pm_runtime_get_sync()
-> >> should turn on the PM domains for the device, which I assume is needed
-> >> at some point.
-> >>
-> >> Although, I wonder if this may be a bit too late, I would expect that
-> >> you at least need to call these *before* the call to rproc_add(), as I
-> >> assume the rproc-core may start using the device/driver beyond that
-> >> point.
-> >>
-> >> >         return 0
-> >> >
-> >> > Now the kernel boot with the remote core running, but it still returns
-> >> > 0 from dev_pm_genpd_is_on(). So basically now it always returns 0, with
-> >> > or without the remote core running.
-> >>
-> >> dev_pm_genpd_is_on() is returning the current status of the PM domain
-> >> (genpd) for the device.
-> >>
-> >> Could it be that the genpd provider doesn't register its PM domains
-> >> with the state that the HW is really in? pm_genpd_init() is the call
-> >> that allows the genpd provider to specify the initial state.
-> >>
-> >> I think we need Peng's help here to understand what goes on.
-> >>
-> >> >
-> >> > I tried to move pm_runtime_get_sync() to .prepare function but it make
-> >> > the kernel not boot anymore (with the SCU fault reset).
-> >>
-> >> Try move pm_runtime_enable() before rproc_add().
-> >
-> >Thanks Ulf, that indeed made it work, at least now the kernel does not
-> >reset anymore with the SCU fault reset. However I am still only getting
-> >0 from dev_pm_genpd_is_on(), no matter what the state of the remote
-> >core. Maybe I am missing something in between?
-> >
-> >Peng, do you know what could be the issue here?
->
-> imx_rproc_attach_pd
->  ->dev_pm_domain_attach_list
->       ->genpd_dev_pm_attach_by_id
->               ->genpd_queue_power_off_work
->                  ->cm40_pid0 is powered off because the genpd is set with is_off=false
->
-> So dev_pm_genpd_is_on will return false after attach.
->
-> This means that with U-Boot kick M4, cm40 might be powered off when
-> attaching the pd even with LINK_ON set, because genpd is set with is_off=false.
->
-> The reason we set genpd to match real hardware status is to avoid RPC call
-> and to save power. But seems it could not work well with U-boot kicking M4.
->
-> I not have good idea on how to address this issue. The current driver
-> could work with linux kick M4, M4 packed in flash.bin and M4 in a standalone
-> partition.
-
-Thanks for the detailed analysis!
-
-This is a very similar issue as many other genpd providers are
-suffering from - and something that I have been working on recently to
-fix.
-
-A few days ago I posted a new version of a series [1], which is based
-upon using the fw_devlink and ->sync_state() support. In principle, we
-need to prevent genpd from power-off a PM domain if it was powered-on
-during boot , until all the consumer-drivers of a PM domain have been
-probed.
-
-I had a look at the DT description of how imx describes power-domain
-providers/consumers, along with the corresponding genpd provider
-implementation in drivers/pmdomain/imx/scu-pd.c. Unless I missed
-something, I think [1] should do the trick for you, without any
-further changes. Can you please give it a try and see if that solves
-this problem?
-
-[...]
-
-Kind regards
-Uffe
-
-[1]
-https://lore.kernel.org/all/20250523134025.75130-1-ulf.hansson@linaro.org/
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBDYXJsb3MgU29uZyA8Y2FybG9z
+LnNvbmdAbnhwLmNvbT4NCj4gU2VudDogMjcgTWF5IDIwMjUgMTI6NDYNCj4gU3ViamVjdDogUkU6
+IFtQQVRDSF0gaTJjOiBpbXg6IGZpeCBlbXVsYXRlZCBzbWJ1cyBibG9jayByZWFkDQo+IA0KPiBJ
+MkMgU01CVVMgYmxvY2sgcmVhZCBuZWVkIGZpcnN0IHJlYWQgb25lIGJ5dGUgZnJvbSBkYXRhIGxl
+bmd0aCBvZmZzZXQgdGhlbg0KPiBJMkMgd2lsbCBrbm93IGhvdyBtYW55IGJ5dGVzIG5lZWQgdG8g
+Y29udGludWUgcmVhZC4gRm9yIHRoaXMgaXNzdWUgeW91IGNhbg0KPiBtZWV0ICIgRXJyb3I6IFJl
+YWQgZmFpbGVkICIgd2hlbiB1c2luZyBpMmNnZXQgLWYgLXkgYnVzIGFkZHJlc3Mgb2Zmc2V0IHMg
+dG8gdGVzdC4NCj4gDQo+IFNvIHlvdSBhcHBseSB0aGlzIGNoYW5nZSB0byBtYWtlIGkyYy1pbXgg
+Y29udHJvbGxlciBjYW4gYmVoYXZpb3IgbGlrZSB0aGlzOg0KPiANCj4gUyBBZGRyIFdyIFtBXSBD
+b21tIFtBXSBTciBBZGRyIFJkIFtBXSBbQ291bnRdIEEgW0RhdGFdIEEgW0RhdGFdIEEgLi4uIEEN
+Cj4gW0RhdGFdIE5BIFANCj4gDQo+IERvIEkgdW5kZXJzdGFuZCB0aGlzIHJpZ2h0Pw0KDQpoaSBD
+YXJsb3M7IHRoYW5rcyBmb3IgdGhlIG1lc3NhZ2UhIFllcywgZXhhY3RseSwgdGhhdCdzIGNvcnJl
+Y3QuDQoNCkkgcnVuIGludG8gdGhpcyBpc3N1ZSB3aGlsZSB0cnlpbmcgdG8gaW50ZWdyYXRlIGEg
+c21hcnQgYmF0dGVyeSBpbnRvIGENCklNWDgtYmFzZWQgc3lzdGVtLiBGZXRjaGluZyBvZiBwcm9w
+ZXJ0aWVzIHRoYXQgcmVseSBvbiBkYXRhIGJsb2NrIHJlYWQNCm9wZXJhdGlvbiAoaS5lLiwgTWFu
+dWZhY3R1cmVyTmFtZSwgRGV2aWNlTmFtZSwgIERldmljZUNoZW1pc3RyeSBhbmQNCk1hbnVmYWN0
+dXJlckRhdGEpIHdhcyBmYWlsaW5nLg0KDQpXaXRoIHRoZSBmaXggdGhlIGJsb2NrIHJlYWQgbG9v
+a3MganVzdCBsaWtlIHlvdSBkZXNjcmliZWQuDQoNCg0KV2l0aG91dCB0aGUgZml4LCB0aGUgdHJh
+bnNhY3Rpb24gb24gdGhlIGJ1cyBsb29rZWQgc29tZWhvdyBsaWtlOg0KUyBBZGRyIFdyIFtBXSBD
+b21tIFtBXSBTciBBZGRyIFJkIFtBXSBbQ291bnRdIE5BIFsweGZmXSBOQSBbMHhmZl0gTkEgLi4u
+IFsweGZmXSBOQSBQDQoNCihpLmUuLCB0aGUgQ291bnQgaXMgbm90IGFja25vd2xlZGdlZCBhbmQg
+U0RBIHJlbWFpbnMgaGlnaCBhZnRlcndhcmRzKS4NCg0KTHVrYXN6DQoNCg==
