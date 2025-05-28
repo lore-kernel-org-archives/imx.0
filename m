@@ -1,258 +1,210 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E271F63F9
-	for <imx@lists.linux.dev>; Wed, 28 May 2025 08:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6846D269D09
+	for <imx@lists.linux.dev>; Wed, 28 May 2025 08:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748420626; cv=none; b=Ks22SWMcyeFeXGwSGN9KUAVpTqabiGlJOm0d3+txC/6EJZCeEnRTB+VQPcUynR+rSo8wZSDuL59Gy94Ptxy+M4t7SK2sbM0setBRmqyGkAYKUj5AIykTHfMJvu+82k1pg09HYwHs7zErnlvhiERUMZAd0fHrGn06i0NAnZWW49c=
+	t=1748421439; cv=none; b=WkK6JT6IcuVxELqsP+O+hrRSS6Ch7jZpGv+0zkNQwxKBKv8SHKe0HHvR0peTuLbYkTRoC0z+6gE7EPCKsSsMxgQNHkxMtvamCVjegHMZ0r82oYn0C7u9KVABUe1+/d51mxbspRZBmGH/50DieSWAvktiFTmo2Ase2+j6rXti6+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748420626; c=relaxed/simple;
-	bh=hPpCkqmIV43PRTAs+6NgJYsugLDjdi0tBiqd5hG+J4U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GAMZ7A1Dxsa5YrndQBWo6Vw13/OT9ocKtKlNHv18OoWiMf28qf8k6ZZYjmhLHjxTdM+dwW+DH2TokE8E+McbkG75cEUz5zwUQAUuS6JouD+SzF4hzoYc8e4iRN3hMru36HnnmTlhU9Nvc2S7hbK2G6YMr0LbiC40v8nCrrx4ZWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XQBmtfRd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dvJt6W9e; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XQBmtfRd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dvJt6W9e; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XQBmtfRd";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dvJt6W9e";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XQBmtfRd";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dvJt6W9e"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5358A21D18;
-	Wed, 28 May 2025 08:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1748420622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IsYeUMzNWf+c4bLmoKUOHp5YpWvtC7v74oJ9jXBtnHM=;
-	b=XQBmtfRd9f0BD+wpJmfsDg89bjVUFtWxyB8+k37xabISALbh+H9l1F8nnknU7GJur2Ir6r
-	Kmlkb+phPU6vHmBUvrOzKLyPdCDiqZ5OX7tAinz1caXlC0ZC8KfcFq7XHirFV3R3ifXNaY
-	lyqWj/ehrK8c6iCWlXr1VU2Q1LKJ/G4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1748420622;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IsYeUMzNWf+c4bLmoKUOHp5YpWvtC7v74oJ9jXBtnHM=;
-	b=dvJt6W9eqTR5Rd+KiuP01H+RwKo8jKPYSaFQcOmtWsSoyOZPFSM4P/6LbT/SZoQfSnPT4b
-	VftOkM9jdhB63YBw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1748420622; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IsYeUMzNWf+c4bLmoKUOHp5YpWvtC7v74oJ9jXBtnHM=;
-	b=XQBmtfRd9f0BD+wpJmfsDg89bjVUFtWxyB8+k37xabISALbh+H9l1F8nnknU7GJur2Ir6r
-	Kmlkb+phPU6vHmBUvrOzKLyPdCDiqZ5OX7tAinz1caXlC0ZC8KfcFq7XHirFV3R3ifXNaY
-	lyqWj/ehrK8c6iCWlXr1VU2Q1LKJ/G4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1748420622;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IsYeUMzNWf+c4bLmoKUOHp5YpWvtC7v74oJ9jXBtnHM=;
-	b=dvJt6W9eqTR5Rd+KiuP01H+RwKo8jKPYSaFQcOmtWsSoyOZPFSM4P/6LbT/SZoQfSnPT4b
-	VftOkM9jdhB63YBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CC0DA136E0;
-	Wed, 28 May 2025 08:23:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pmh/MA3INmgxVwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 28 May 2025 08:23:41 +0000
-Message-ID: <1926848a-9334-4c15-a076-a93ef29c80d6@suse.de>
-Date: Wed, 28 May 2025 10:23:41 +0200
+	s=arc-20240116; t=1748421439; c=relaxed/simple;
+	bh=n8L8hSbrqamAiukg5nHCiSPxIBvhPJ1OR8imom1GXko=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b5VBmkbEMogbERMs/5fzZJgSc2xMbYC0Ua6L0HbVdEqcFX38bcEKFF2kpRiZtPGXyITK4mZlTvMSPiyP9qQTJw52ccyB/XBVYlO9UERVVbVYjXzObk6ZUs7CdlycS/GhNsPMYTaj22Q4XaD7bBQnL7ghFJISEV/3Ix3rzng9aPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uKCHY-0000EX-Uw; Wed, 28 May 2025 10:37:04 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uKCHY-000Yat-1t;
+	Wed, 28 May 2025 10:37:04 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1uKCHY-00ER6A-1T;
+	Wed, 28 May 2025 10:37:04 +0200
+Date: Wed, 28 May 2025 10:37:04 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com, carlos.song@nxp.com
+Subject: Re: [PATCH v2 4/6] arm64: dts: imx943-evk: add sound-wm8962 support
+Message-ID: <20250528083704.ne6wyoj6vcmy7azq@pengutronix.de>
+References: <20250528015837.488376-1-shengjiu.wang@nxp.com>
+ <20250528015837.488376-5-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/25] drm/dumb-buffers: Fix and improve buffer-size
- calculation
-To: simona@ffwll.ch, airlied@gmail.com, mripard@kernel.org,
- maarten.lankhorst@linux.intel.com, geert@linux-m68k.org,
- tomi.valkeinen@ideasonboard.com
-Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
- nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
- spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
- intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org
-References: <20250311155120.442633-1-tzimmermann@suse.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250311155120.442633-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.996];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,kernel.org,linux.intel.com,linux-m68k.org,ideasonboard.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250528015837.488376-5-shengjiu.wang@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-ping
+Hi,
 
-I'm still looking for more reviews; especially patches 1 and 2.
+On 25-05-28, Shengjiu Wang wrote:
+> Add WM8962 codec connected to SAI1 interface.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx943-evk.dts | 79 ++++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx943-evk.dts b/arch/arm64/boot/dts/freescale/imx943-evk.dts
+> index ff6e9ac5477f..da08aaa95904 100644
+> --- a/arch/arm64/boot/dts/freescale/imx943-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx943-evk.dts
+> @@ -36,6 +36,15 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+>  		enable-active-high;
+>  	};
+>  
+> +	reg_audio_pwr: regulator-wm8962-pwr {
+> +		compatible = "regulator-fixed";
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-name = "audio-pwr";
+> +		gpio = <&pcal6416_i2c3_u171 12 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+>  	reserved-memory {
+>  		ranges;
+>  		#address-cells = <2>;
+> @@ -50,6 +59,21 @@ linux,cma {
+>  		};
+>  	};
+>  
+> +	sound-wm8962 {
+> +		compatible = "fsl,imx-audio-wm8962";
 
-Best regards
-Thomas
+Out of curiosity did you considered making use of "audio-graph-card2"?
 
-Am 11.03.25 um 16:47 schrieb Thomas Zimmermann:
-> Dumb-buffer pitch and size is specified by width, height, bits-per-pixel
-> plus various hardware-specific alignments. The calculation of these
-> values is inconsistent and duplicated among drivers. The results for
-> formats with bpp < 8 are sometimes incorrect.
->
-> This series fixes this for most drivers. Default scanline pitch and
-> buffer size are now calculated with the existing 4CC helpers. There is
-> a new helper drm_mode_size_dumb() that calculates scanline pitch and
-> buffer size according to driver requirements.
->
-> The series fixes the common GEM implementations for DMA, SHMEM and
-> VRAM. It further changes most implementations of dumb_create to use
-> the new helper. A small number of drivers has more complicated
-> calculations and will be updated by a later patches.
->
-> v4:
-> - improve UAPI documentation
-> - document bpp special cases
-> - use drm_warn_once()
-> - add TODO lists
-> - armada: fix pitch alignment
-> v3:
-> - document UAPI semantics
-> - fall back to bpp-based allocation for unknown color modes
-> - cleanups
-> v2:
-> - rewrite series
-> - convert many individual drivers besides the shared GEM helpers
->
-> Thomas Zimmermann (25):
->    drm/dumb-buffers: Sanitize output on errors
->    drm/dumb-buffers: Provide helper to set pitch and size
->    drm/gem-dma: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/gem-shmem: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/gem-vram: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/armada: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/exynos: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/gma500: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/hibmc: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/imx/ipuv3: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/loongson: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/mediatek: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/msm: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/nouveau: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/omapdrm: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/qxl: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/renesas/rcar-du: Compute dumb-buffer sizes with
->      drm_mode_size_dumb()
->    drm/renesas/rz-du: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/rockchip: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/tegra: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/virtio: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/vmwgfx: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/xe: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/xen: Compute dumb-buffer sizes with drm_mode_size_dumb()
->    drm/xlnx: Compute dumb-buffer sizes with drm_mode_size_dumb()
->
->   Documentation/gpu/todo.rst                    |  28 +++
->   drivers/gpu/drm/armada/armada_gem.c           |  16 +-
->   drivers/gpu/drm/drm_dumb_buffers.c            | 172 ++++++++++++++++--
->   drivers/gpu/drm/drm_gem_dma_helper.c          |   7 +-
->   drivers/gpu/drm/drm_gem_shmem_helper.c        |  16 +-
->   drivers/gpu/drm/drm_gem_vram_helper.c         |  89 +++------
->   drivers/gpu/drm/exynos/exynos_drm_gem.c       |   8 +-
->   drivers/gpu/drm/gma500/gem.c                  |  21 +--
->   .../gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c   |  25 ++-
->   drivers/gpu/drm/imx/ipuv3/imx-drm-core.c      |  29 ++-
->   drivers/gpu/drm/loongson/lsdc_gem.c           |  29 +--
->   drivers/gpu/drm/mediatek/mtk_gem.c            |  13 +-
->   drivers/gpu/drm/msm/msm_gem.c                 |  27 ++-
->   drivers/gpu/drm/nouveau/nouveau_display.c     |   7 +-
->   drivers/gpu/drm/omapdrm/omap_gem.c            |  15 +-
->   drivers/gpu/drm/qxl/qxl_dumb.c                |  17 +-
->   drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c |   7 +-
->   drivers/gpu/drm/renesas/rz-du/rzg2l_du_kms.c  |   7 +-
->   drivers/gpu/drm/rockchip/rockchip_drm_gem.c   |  12 +-
->   drivers/gpu/drm/tegra/gem.c                   |   8 +-
->   drivers/gpu/drm/virtio/virtgpu_gem.c          |  11 +-
->   drivers/gpu/drm/vmwgfx/vmwgfx_surface.c       |  21 +--
->   drivers/gpu/drm/xe/xe_bo.c                    |   8 +-
->   drivers/gpu/drm/xen/xen_drm_front.c           |   7 +-
->   drivers/gpu/drm/xlnx/zynqmp_kms.c             |   7 +-
->   include/drm/drm_dumb_buffers.h                |  14 ++
->   include/drm/drm_gem_vram_helper.h             |   6 -
->   include/uapi/drm/drm_mode.h                   |  50 ++++-
->   28 files changed, 449 insertions(+), 228 deletions(-)
->   create mode 100644 include/drm/drm_dumb_buffers.h
->
+The "fsl,imx-audio-wm8962" seems like a pretty simple sound card which
+could be added via the "audio-graph-card2" as well. Don't get me wrong,
+it's not wrong what you're doing here but making use of the generic
+sound card would be nice because it's very common to just copy'n'paste
+the audio integration from the corresponding evk.dts file.
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+Regards,
+  Marco
 
+> +		audio-codec = <&wm8962>;
+> +		audio-cpu = <&sai1>;
+> +		audio-routing = "Headphone Jack", "HPOUTL",
+> +			"Headphone Jack", "HPOUTR",
+> +			"Ext Spk", "SPKOUTL",
+> +			"Ext Spk", "SPKOUTR",
+> +			"AMIC", "MICBIAS",
+> +			"IN3R", "AMIC",
+> +			"IN1R", "AMIC";
+> +		hp-det-gpio = <&pcal6416_i2c3_u48 14 GPIO_ACTIVE_HIGH>;
+> +		model = "wm8962-audio";
+> +	};
+> +
+>  	memory@80000000 {
+>  		reg = <0x0 0x80000000 0x0 0x80000000>;
+>  		device_type = "memory";
+> @@ -103,6 +127,28 @@ i2c@4 {
+>  			reg = <4>;
+>  			#address-cells = <1>;
+>  			#size-cells = <0>;
+> +
+> +			wm8962: codec@1a {
+> +				compatible = "wlf,wm8962";
+> +				reg = <0x1a>;
+> +				clocks = <&scmi_clk IMX94_CLK_SAI1>;
+> +				AVDD-supply = <&reg_audio_pwr>;
+> +				CPVDD-supply = <&reg_audio_pwr>;
+> +				DBVDD-supply = <&reg_audio_pwr>;
+> +				DCVDD-supply = <&reg_audio_pwr>;
+> +				gpio-cfg = <
+> +					0x0000 /* 0:Default */
+> +					0x0000 /* 1:Default */
+> +					0x0000 /* 2:FN_DMICCLK */
+> +					0x0000 /* 3:Default */
+> +					0x0000 /* 4:FN_DMICCDAT */
+> +					0x0000 /* 5:Default */
+> +				>;
+> +				MICVDD-supply = <&reg_audio_pwr>;
+> +				PLLVDD-supply = <&reg_audio_pwr>;
+> +				SPKVDD1-supply = <&reg_audio_pwr>;
+> +				SPKVDD2-supply = <&reg_audio_pwr>;
+> +			};
+>  		};
+>  
+>  		i2c@5 {
+> @@ -128,6 +174,12 @@ pcal6416_i2c3_u171: gpio@21 {
+>  				reg = <0x21>;
+>  				#gpio-cells = <2>;
+>  				gpio-controller;
+> +
+> +				audio-pwren-hog {
+> +					gpios = <12 GPIO_ACTIVE_HIGH>;
+> +					gpio-hog;
+> +					output-high;
+> +				};
+>  			};
+>  		};
+>  
+> @@ -262,6 +314,23 @@ &lpuart1 {
+>  	status = "okay";
+>  };
+>  
+> +&sai1 {
+> +	assigned-clocks = <&scmi_clk IMX94_CLK_AUDIOPLL1_VCO>,
+> +			  <&scmi_clk IMX94_CLK_AUDIOPLL2_VCO>,
+> +			  <&scmi_clk IMX94_CLK_AUDIOPLL1>,
+> +			  <&scmi_clk IMX94_CLK_AUDIOPLL2>,
+> +			  <&scmi_clk IMX94_CLK_SAI1>;
+> +	assigned-clock-parents = <0>, <0>, <0>, <0>,
+> +				 <&scmi_clk IMX94_CLK_AUDIOPLL1>;
+> +	assigned-clock-rates = <3932160000>,
+> +			       <3612672000>, <393216000>,
+> +			       <361267200>, <12288000>;
+> +	pinctrl-0 = <&pinctrl_sai1>;
+> +	pinctrl-names = "default";
+> +	fsl,sai-mclk-direction-output;
+> +	status = "okay";
+> +};
+> +
+>  &scmi_iomuxc {
+>  
+>  	pinctrl_ioexpander_int2: ioexpanderint2grp {
+> @@ -297,6 +366,16 @@ IMX94_PAD_GPIO_IO28__LPI2C6_SCL		0x40000b9e
+>  		>;
+>  	};
+>  
+> +	pinctrl_sai1: sai1grp {
+> +		fsl,pins = <
+> +			IMX94_PAD_SAI1_TXFS__SAI1_TX_SYNC	0x31e
+> +			IMX94_PAD_SAI1_TXC__SAI1_TX_BCLK	0x31e
+> +			IMX94_PAD_SAI1_TXD0__SAI1_TX_DATA0	0x31e
+> +			IMX94_PAD_SAI1_RXD0__SAI1_RX_DATA0	0x31e
+> +			IMX94_PAD_I2C2_SDA__SAI1_MCLK		0x31e
+> +		>;
+> +	};
+> +
+>  	pinctrl_uart1: uart1grp {
+>  		fsl,pins = <
+>  			IMX94_PAD_UART1_TXD__LPUART1_TX		0x31e
+> -- 
+> 2.34.1
+> 
+> 
+> 
