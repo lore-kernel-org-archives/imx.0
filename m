@@ -1,308 +1,178 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013066.outbound.protection.outlook.com [40.107.162.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6BD279345
-	for <imx@lists.linux.dev>; Wed, 28 May 2025 16:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748451494; cv=fail; b=PhqpcR2AbgME+IsqzA3dGiLrQg96m8gAgpT5dBouKBhGf2eeSrMEuWTawWS4nuq0YmoB8cCOz0Y1wsatUdBGcrZmWeM5hpfzh3/Xe05Gssb8LomfyuAMgvwfgzENIrx2Hngh/Kj7ZMArICkyZj+H4aJALMmK6oseApGAybDliEs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748451494; c=relaxed/simple;
-	bh=ozOzZY6urZundEvZG4zLf+Lpb0ip7fvQeREuna5HTQU=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=JfZmGRWZLt2WK3m2qzS4X5MLQ5iK1cHtHZGixbuRbq+0x0+lxusJdSboZtzE+uT9/kDDp6VwHaZ9teH2yfuYT63bE7+WQ+V6IgeSQzr+VObgLWmo3QHvBwKGtDXz6bLOxf+hl/FkwGlhSmZfHbHM3rBlkrYRRMkZlmz9QkGR1ts=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ldlis5DB; arc=fail smtp.client-ip=40.107.162.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDD628DEF4
+	for <imx@lists.linux.dev>; Wed, 28 May 2025 17:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748453902; cv=none; b=s6T9DxD58mesmIP1a/SA7+0zhy9hbXDzCbMFepvXqBJC+dpE5NODIAxGKGeIqB9LgvwHSreEHR56CvQIenp28CiMtesueklSc4txVoVyTZuVTf9wRLT/QoK3CUlXTfspltizSd0IGI/Jz02NZVKAv2momKJJYCKh6QScLczVYt4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748453902; c=relaxed/simple;
+	bh=U++dy45I+onFjsonr1vngeU772ZgTI8qI+k6vKRdUN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HDPnr+IbNXVjlJ1N1ZtqUH3YQkSYZAGO9zKVfIcTf0QLBwX/OnQ1F6az2WIDPNnU9yswKjCPBullUR42tGcFSB7mKveeLCeNIA+GOJcuLgeXTNj3+j7S3FW2YTueCBWOLmXDnvf/uuxuqGojrEBMFXSjBj2hQl8onrq6P/RwapM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dj4os/ul; arc=none smtp.client-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ldlis5DB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LETDBSKx5+aS/ov3i785RXH4bgoZ55xttLtZFtJ7uOFAUY0Wba0nX1nO4raqS4uuqnnbiu1o/FB3CoCLa+uqesYTwJDJK0lJJtuB01ivI10BXb7HxDbtMNBDcuv7D0JE/CpPyR2If9yA3L0PbX1mBO/naZRf29+OZjjrOtw+P9ADv9/hWhhgIKCHDtPTEC3/65ryIXLWlQU+oZ+w7HpmUQ61FmqdBlmgC5YIyos+kyleI96vAvxUtVX3EXyW2wzKLHNvY3vRQN2buO4fm7OsPY4qwBhdFNbU+8TmplVpmx9Y+cnFxvIaJbEtJuFtJrR5DWr325kWqh5WyI3iPsQ/kA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zjuWdef5oVzDmwgaKRtYhv2671eT5+5kVduoecCF15k=;
- b=CVpn6IEMP+/8TB75ZhqP2VkeQ0EG7TtqmPGYKo6AuI9XRPFfPrftp2GNh/DIZx6/QYfZ/5H/szmKcwtg5ppBEJ4Gi3nNYxCHUIIShuBjpcDQdmvLAXEkjlWzr+9KOS2lqsRpKzD9hcH/PH0Z1jJY3F8XVQbI/meRw7a6kHSvt+U9BqYHN6B+mDTiTlBiG8p6vrKycNJNOvKJ6Ta9ESHFCTclq5Da4IjvMHEKBmQKcKY9mXrCT84rpW8enKa8i/nZ8rx5XcpbAXWbvlzayoHObtvInmTTCBVrUX459J13J57qUkWH8lCFaMvsHCDXSeKkuZe/0D+HwXBdGmFalVOo+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zjuWdef5oVzDmwgaKRtYhv2671eT5+5kVduoecCF15k=;
- b=ldlis5DBESqPjx3wiGp5uylTZ2glgp06tOe5H3lspEgzn8CX34BjhJrQLNO7qTWp9cz+hA0u+0Hr7DOqr+hUBfuXHsCTrCbM8/2iQHXAdNIcuDdR5vNguWObqE2yilC/WbvGtgMPKwQFzTHvonDG355qP1HSUgwJNXGjtW7ffMIAbZzKeHjvuUns4dXyPwEQ47zDaI75R/ZntWzStQP9RAXX30Bpru+TXjqdGtLf9yjG0z1V0gliTvEbc0cPWkEBe2RNUQzLxow0uLgVjh1bxrcCDpzb79UXOUQVpqrXk94V/XHp8D/BGjoTjuDcuXbWAkCoqc7LuJHMNjiTovF/Gw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI1PR04MB6925.eurprd04.prod.outlook.com (2603:10a6:803:135::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.29; Wed, 28 May
- 2025 16:58:09 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8746.030; Wed, 28 May 2025
- 16:58:09 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dj4os/ul"
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-52f4327a0c8so6518e0c.0
+        for <imx@lists.linux.dev>; Wed, 28 May 2025 10:38:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748453899; x=1749058699; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XuU7vghs/Roa4fUMqe76N60+pRs9TTlZ7VpQ6fcHfmM=;
+        b=dj4os/ulFbZGRGm57/vW75ump+HLpZulPDirePQYE/Hfpcgp379oVs5XHDUJ3qWVZ/
+         HfU1U4zvfe6WVnFE+9LF1/m1Ke/5asdhR4qIXvyozkPUhH3fr+g3BqdGMrOgeGFu+OyM
+         mOV1dEsibbijzmz+zQqxzX5OER7hvn4uCXJ8BByI02MQOnhvnp75ZVtgK9kHPgmGtZQS
+         8pXeESwWHIC0t7anIzKvSGkMfqZ5F/2+iAGgjcOvmu2AZeq0Znzmibu3uUmiOk5UEKZw
+         9kRVn1PDdfyKXWX1lwrQ7aMjmMKIgk4JLG0yJXJNUvZzW0jeWcGXKFe+w89Ngbu0awOV
+         k5Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748453899; x=1749058699;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XuU7vghs/Roa4fUMqe76N60+pRs9TTlZ7VpQ6fcHfmM=;
+        b=lRboVQvdEn8XKNC/4lRCk9G/pVyYCozyVMkijPHvl+valbezr23m4zhZZNnKJBDRT4
+         x+icGj/w3aAqdnX1pMNc9k2880kwbLu9qVFi+ndd0l5ckQF7W/pQDrrxkhoyDA5PvWg0
+         FIfvT6fuM/lAO/Dujd+XLktvK6MI2XWc4xk7NpqyfONkmwUGVV+rNfI2Ua2M/HGbPWyv
+         v5rAlhjjcYo2x9pBYI2I/GphI4MQvrSJIdmlZNkoxfRhK9zhKVnX64G/pvF39yba210V
+         Rhhx9d8SmXHXBN5V8P2OumiokEt5brVJEcbg1XIeczBg7Xn/wiarowM6CU3cNDSEkwCs
+         nY7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWgF+BeMW7FcPFO8xPLkESQ4u/0whXYKsiqfLoB7JQv25ygJPfLqLZszvIQuISaY2xwstI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxrVjujR25kX4yyLjj4HOHr58haKgPlYC6gjbK1d7SypLkgyqTx
+	DPeeQPi2zQuYypcZW5iHslFtUGsnNYCvT4g4tdB7bigLOnQdDjC5uQJ+
+X-Gm-Gg: ASbGncthyf9fLZoA4nwL6Xk1mHCcnk952F/nVtQ0zw0vx+lJ/qK2yNhs8+VLjy9mxZa
+	g2yro7gHEkgYYmVz994JltXgVtXTQ/AT2f524A1DPB4itOsPEfypd3xdhdvQ/iAORAL1O/dEEqk
+	OcG5g3XLBtyk38HmB6LjxZwjVto+LptY5ajTU7ytgU4cUWuBkp6YpM5mQ7nbaAV5TEJILrBpDAe
+	R7UMmxKgJkkdcRJyuUWcmMvgoP4lPFt5I74xshWZfSiNdrhP0Rkvc2oM2IHHGhnw+0ahUtfjR+d
+	utiC64QQ+J76OV9vqjAUXy/zl7+2C1gKnwMO26pY6V1PuRuBSFK48W+pFcTb
+X-Google-Smtp-Source: AGHT+IH0yWuJoUrC0OxGQWzTqljadyq7cuFUTOFbkQW4fn/ETHGhWue+swzwXlHVyYeAv2NimJNc6A==
+X-Received: by 2002:a05:6122:4286:b0:523:dd87:fe95 with SMTP id 71dfb90a1353d-52f2c5919c0mr15157933e0c.9.1748453899161;
+        Wed, 28 May 2025 10:38:19 -0700 (PDT)
+Received: from hiago-nb ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-53066973c62sm1439097e0c.44.2025.05.28.10.38.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 10:38:18 -0700 (PDT)
+Date: Wed, 28 May 2025 14:38:13 -0300
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Peng Fan <peng.fan@oss.nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com,
 	Fabio Estevam <festevam@gmail.com>,
-	linux-sound@vger.kernel.org (open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] ASoC: dt-bindings: covert mxs-audio-sgtl5000.txt to yaml format
-Date: Wed, 28 May 2025 12:57:54 -0400
-Message-Id: <20250528165755.692264-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR05CA0067.namprd05.prod.outlook.com
- (2603:10b6:a03:74::44) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
+ remote core attachment
+Message-ID: <20250528173813.rxqu6pzqgu4m5joo@hiago-nb>
+References: <CAPDyKFpGcgMzOUHf-JTRTLBviFdLdbjZKrMm8yd37ZqJ1nfkHw@mail.gmail.com>
+ <20250521041306.GA28017@nxa18884-linux>
+ <20250521041840.GB28017@nxa18884-linux>
+ <CAPDyKFpSb+KsfDr1-=uk4TF4Op1dUQ9rDwPP5sSpMfxDRDhnZA@mail.gmail.com>
+ <20250523191713.nylhi74jq6z4hqmr@hiago-nb>
+ <CAPDyKFq6HG6iTZRnBSN25vhCU8Zj1c+r_ufGbiBsJ16N+1bJVg@mail.gmail.com>
+ <20250527000510.fofehmsdhifcwlys@hiago-nb>
+ <20250527023921.GA14252@nxa18884-linux>
+ <CAPDyKFqZkcaGfss=Oi+H9UERFU29jY2t5uTPnGVGQgSAJSeCoA@mail.gmail.com>
+ <20250527134525.f7yzs4ww64xxmjmr@hiago-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB6925:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0aa5a42-714e-43a7-da7f-08dd9e08d2d4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+hbf3H+Gw+OCIp1Ygqo+jePT6dJokU7gEMRxY7FLT7Ex4fzZcMDAqZ2OSqdp?=
- =?us-ascii?Q?GHTdgRJyetwUMBdwIFW58jhdQ1cjVkdLDMOzrOuQ/RM+hQj/c1WR/7IzTvKi?=
- =?us-ascii?Q?IqjbjcahlbhcJQ4DqBUCKtQVka6U9UN9Rgot70iXWJNq0IlKcWfNt/5rXK/k?=
- =?us-ascii?Q?NQ0+1UuDNl7TwNmI80Af0V5lmHDz9GLfZU+QBHiVH/ySiS62PkjW9Wkvtflb?=
- =?us-ascii?Q?yGCrZybL4ScMfUKrXd5V6OX0Z+wXRNrTpHo4c42Xt2y84lCWdyMl0juVnk6q?=
- =?us-ascii?Q?xc1li4mfghW283RxdQ2ZHvcqqS4FH5gm4mtjzI5WTpnDG89lTgu4TvCGmNGU?=
- =?us-ascii?Q?ebYPOi86SN8Mcrb+BChv/FdcBnF/uIBCTVLcQZ0zb04y5Wpk4MfUza0/aQIo?=
- =?us-ascii?Q?rgVungpmRZD9rQKaDyOvOJbJDwJaZZFM9cKDKwMZ4YL+cg1EsHiIPtxxbDfI?=
- =?us-ascii?Q?42kFKMSN7IiaVSwj6BdT5iTaJtZtFTys/fxiPfNEuNYgdTjo+Rjb1lngMv+H?=
- =?us-ascii?Q?vBwV2kW9cxBu3Vgn/vV7ibx3nhb9wXPTnD1l8Psls3CpVZF5emSMyWYP/KgD?=
- =?us-ascii?Q?58q/qVB3AZFHVexJdGyW8d5G6A/CgBmyMKdfTFyv0g9Po3jUibp1QVgBoZVN?=
- =?us-ascii?Q?RMFhxDQUfCahIdteqSCT46zHPnRTNqJzHTlfaMTJ7BN+qLeOBQeSBYCElHBw?=
- =?us-ascii?Q?J//Bx4s1JHrGOcqOQrqdTuII0JWySfQ63F3jzt9jPGwozpNDlPKYnPzqf6v/?=
- =?us-ascii?Q?Q9lQPg3oQ4y/T7PBitCp7f2H7pG61AcBOeeDOdFaj3uVqShKPSPJ9FYudKV2?=
- =?us-ascii?Q?ypYzfbbMS4acG3zkv0QRSZMv8bqvXv+8PL3DjQjYK5KqRuolvZs2OqR5DZ//?=
- =?us-ascii?Q?upJ/fRhd3qnYM37yXDu37n0+JR0CDiug0klrgdqppt16fuUQIjJwqMAIiO7z?=
- =?us-ascii?Q?uSf9S/RJ+GD0qbQ8GT32xG7GmB8PCQSvWNW/+Z7S0KYebE3r7YkSFaVA/e3c?=
- =?us-ascii?Q?kVJcs715qe/qFuKNnNhlDWsvGxXk/PTBKpzDkOPNGL+Ayt8t3NRPyMng0iMP?=
- =?us-ascii?Q?K5aUjXd1kE6IuA2mPBb0M7BD2QTzMiPOsG8HklvXlG4vT2yvYwd8eWpZUAK5?=
- =?us-ascii?Q?19jCpRrBMiqyxogjh+gruFO+aNUhk4DU+F8O+Ou7ntmWNeZyodCc3VqHx3wb?=
- =?us-ascii?Q?PFzovKW30U/BXsv20LrQn1pvW20zedChnGC1ZaPweIEiW5T9R4Fnk8L9yJBw?=
- =?us-ascii?Q?Q+X/MP3MFrhOrZO0vY2LPispZwwTPyMaxQy5kepx+MdwIkQZaHnLe2FfbtMa?=
- =?us-ascii?Q?oYzpfOF8vM7nGYLHDMxPeklbZqzlfKCpcGJVH9ImxEP4rcb/wqyKJk3znwJG?=
- =?us-ascii?Q?rISy3u2g7C8kVpbDr6abH2AkgkLOOHLlYl1iFgeybd5HI8Z61E83x0HBUI7o?=
- =?us-ascii?Q?hAC37WX+fcnMieG9y7b8NIie1yK5wx4V?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Vzo/uoW2cIhHhuYoybLRF3MWb2mTmm7JkUDwdiMfY83XnXr5jf6DHUuZDvTB?=
- =?us-ascii?Q?XI7YtbXPTTVOPhQv8w3mh3XXx58QXlZa5jvZpzuc3eBiSnUjD5fbiAgaFm7Z?=
- =?us-ascii?Q?v3ybS5u2g8J1C+lfo9tzgoy+UymXZKZlRDhQt2q6XIoUrAZA6E4zriYyrANP?=
- =?us-ascii?Q?6aJ4Y3fecl+OyM52GK+zz9Qum90bdM1nc9mBBeCIqih5fA6QcMUCX+hDWkJN?=
- =?us-ascii?Q?et3dKzAysemgnlajlIi+Bun14YB26z85nO4LtNmAzYR/r9ON9UvqhA2zTy5k?=
- =?us-ascii?Q?yQCaC0/+axzxE8v2uQkJblelnSyfqxYcsae+l7fY2Xg3D2K9ZyQ7ORywU0vU?=
- =?us-ascii?Q?JF7b09tHa8J8ONmRi6vvByo4gDR/1XgoGxqFnD0S/JeKMuKKfBiTDpOFFLqT?=
- =?us-ascii?Q?B/TJBJh4lGJXjYr6t0af+ncJA3l75SvhnT7RMiG2wVLMv/3Zxk9l91BcGGfl?=
- =?us-ascii?Q?6x7VtsnDEQSLKinpd1HOmJ/S6YsXf3TZu/jBIUBT3YHcM3gxqD5eL1oyGjUt?=
- =?us-ascii?Q?PmNpC1e9zR3nZm3lIKuED6FXE6yL4xNUzlUu5bdtqElElTyj3GC4xj72Dc6U?=
- =?us-ascii?Q?muVrFUza9PBbx0c5R7UuH/sh6Ov9fOEvKM5KGOU3715J1bu5PZcMCGQN/mwZ?=
- =?us-ascii?Q?pbeGwbeOB8fQjH7abr0j1FcpJWgfbGAcVWTA6EtBhpCNbr5vAoqS3k1k0Nko?=
- =?us-ascii?Q?UImUSGNX4HZ9Wx8j7cEO2+77CfkEyhMKAVAUaaDtlmqsvF5YvhlOmO2TzEN4?=
- =?us-ascii?Q?Zr2n9m5h797bIhhZGcTIpqoqjfZamjaYpaW2yZRb4rNYqJyUOk2cLwABNUI1?=
- =?us-ascii?Q?nuW7eVWyEBmTPKF8HQo236lKB6jxvI7kW4savwPStkZWWDmpBy1cgxgkmqjY?=
- =?us-ascii?Q?l/p8iMoOyUrPW+qKGmWSSe/7okLdZ8Yw0FUw6v/tn22bGFw1wK+HiDn3Ge5T?=
- =?us-ascii?Q?zR5y2flMNt/SQlEX3tPcagvQEhKFmeMhxK/EmkW8Pv1f47O0eda3pMvbAm+J?=
- =?us-ascii?Q?m2ZXjZ7f+7Lm5oAd0Xd091GO2Cr38zYQnw5LTKQWNLpVMROiouNQzDD7bnL+?=
- =?us-ascii?Q?no634x/FV4Ci3G6I+iRwecVpqxM5tySrkuJcBPjNlYwUAyVrWYkIqW4XOKGs?=
- =?us-ascii?Q?XmE6rQHnKFX/xLuVze922HQFbgvmG2UwDpU/b2/PNMJYZtwha2Xmq+LFU3ol?=
- =?us-ascii?Q?/h8QCWYUvyPfZpB8tJXmQfSsRVIUHH3h5cXTrjvdz/+QFE82sqZSwtFVZTcQ?=
- =?us-ascii?Q?WPAiuPgTKSAd1FT9xnNuZyB7a58ws0xH9SxWVRlsoIftcPfZDjB7RH9peD2h?=
- =?us-ascii?Q?Lodeg8r/k6YWAj+7zCSOdEpumxFRzw0iYc6D/iDmWrJDq4l2bvlbAvPDkpbW?=
- =?us-ascii?Q?phbKHHBLmTRMbkYZjl7skKLhgnpNybXmx2AgHmUgLMjBwg8cCgh5ZQ9BcG9y?=
- =?us-ascii?Q?rNqK++ZWmJEoy6s+F/QAXAsITZahXuYAU9FO2aUuPs4nzE2kQw/x62VXxeJn?=
- =?us-ascii?Q?PiC9x7PTmRiVmA5J7fh7ToFYQGsdsWuaXMu0k9LvgDl5S9OhE4KS92zgypeE?=
- =?us-ascii?Q?WHVanehpp55R7tw+YTM=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0aa5a42-714e-43a7-da7f-08dd9e08d2d4
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 16:58:09.2756
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IszjMK+vmwx+I/UMGwQxAgPf5eZ2tey43trzmmfj+ZJcniKsxSCYNTqQfB1+LSdIYsF4+yzJE8utX72gGKU2Fg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6925
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250527134525.f7yzs4ww64xxmjmr@hiago-nb>
 
-Convert mxs-audio-sgtl5000.txt to yaml format.
+On Tue, May 27, 2025 at 10:45:25AM -0300, Hiago De Franco wrote:
 
-Additional changes:
-- Add compatible string:
-    bluegiga,apx4devkit-sgtl5000
-    denx,m28evk-sgtl5000
-    fsl,imx28-mbmx28lc-sgtl500
-- Remove audio-routing from required list.
+[...]
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v2
-- add missed commit change (all decleared in Additional changes of commit
-message).
----
- .../sound/fsl,mxs-audio-sgtl5000.yaml         | 81 +++++++++++++++++++
- .../bindings/sound/mxs-audio-sgtl5000.txt     | 42 ----------
- 2 files changed, 81 insertions(+), 42 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.yaml
- delete mode 100644 Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt
+> > 
+> > Thanks for the detailed analysis!
+> > 
+> > This is a very similar issue as many other genpd providers are
+> > suffering from - and something that I have been working on recently to
+> > fix.
+> > 
+> > A few days ago I posted a new version of a series [1], which is based
+> > upon using the fw_devlink and ->sync_state() support. In principle, we
+> > need to prevent genpd from power-off a PM domain if it was powered-on
+> > during boot , until all the consumer-drivers of a PM domain have been
+> > probed.
+> > 
+> > I had a look at the DT description of how imx describes power-domain
+> > providers/consumers, along with the corresponding genpd provider
+> > implementation in drivers/pmdomain/imx/scu-pd.c. Unless I missed
+> > something, I think [1] should do the trick for you, without any
+> > further changes. Can you please give it a try and see if that solves
+> > this problem?
+> 
+> Cool! I can give a try and provide an answer soon. Thanks!
 
-diff --git a/Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.yaml b/Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.yaml
-new file mode 100644
-index 0000000000000..d12774b42a112
---- /dev/null
-+++ b/Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.yaml
-@@ -0,0 +1,81 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/sound/fsl,mxs-audio-sgtl5000.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale MXS audio complex with SGTL5000 codec
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - bluegiga,apx4devkit-sgtl5000
-+          - denx,m28evk-sgtl5000
-+          - fsl,imx28-evk-sgtl5000
-+          - fsl,imx28-mbmx28lc-sgtl5000
-+          - fsl,imx28-tx28-sgtl5000
-+      - const: fsl,mxs-audio-sgtl5000
-+
-+  model:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: The user-visible name of this sound complex
-+
-+  saif-controllers:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description: The phandle list of the MXS SAIF controller
-+
-+  audio-codec:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description: The phandle of the SGTL5000 audio codec
-+
-+  audio-routing:
-+    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
-+    description: |
-+      A list of the connections between audio components.
-+      Each entry is a pair of strings, the first being the
-+      connection's sink, the second being the connection's
-+      source. Valid names could be power supplies, SGTL5000
-+      pins, and the jacks on the board:
-+
-+      Power supplies:
-+        * Mic Bias
-+
-+      SGTL5000 pins:
-+        * MIC_IN
-+        * LINE_IN
-+        * HP_OUT
-+        * LINE_OUT
-+
-+      Board connectors:
-+        * Mic Jack
-+        * Line In Jack
-+        * Headphone Jack
-+        * Line Out Jack
-+        * Ext Spk
-+
-+required:
-+  - compatible
-+  - saif-controllers
-+  - audio-codec
-+
-+allOf:
-+  - $ref: dai-common.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    sound {
-+        compatible = "fsl,imx28-evk-sgtl5000", "fsl,mxs-audio-sgtl5000";
-+        model = "imx28-evk-sgtl5000";
-+        saif-controllers = <&saif0 &saif1>;
-+        audio-codec = <&sgtl5000>;
-+        audio-routing =
-+            "MIC_IN", "Mic Jack",
-+            "Mic Jack", "Mic Bias",
-+            "Headphone Jack", "HP_OUT";
-+    };
-diff --git a/Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt b/Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt
-deleted file mode 100644
-index 4eb980bd02874..0000000000000
---- a/Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt
-+++ /dev/null
-@@ -1,42 +0,0 @@
--* Freescale MXS audio complex with SGTL5000 codec
--
--Required properties:
--- compatible		: "fsl,mxs-audio-sgtl5000"
--- model			: The user-visible name of this sound complex
--- saif-controllers	: The phandle list of the MXS SAIF controller
--- audio-codec		: The phandle of the SGTL5000 audio codec
--- audio-routing		: A list of the connections between audio components.
--			  Each entry is a pair of strings, the first being the
--			  connection's sink, the second being the connection's
--			  source. Valid names could be power supplies, SGTL5000
--			  pins, and the jacks on the board:
--
--			  Power supplies:
--			   * Mic Bias
--
--			  SGTL5000 pins:
--			   * MIC_IN
--			   * LINE_IN
--			   * HP_OUT
--			   * LINE_OUT
--
--			  Board connectors:
--			   * Mic Jack
--			   * Line In Jack
--			   * Headphone Jack
--			   * Line Out Jack
--			   * Ext Spk
--
--Example:
--
--sound {
--	compatible = "fsl,imx28-evk-sgtl5000",
--		     "fsl,mxs-audio-sgtl5000";
--	model = "imx28-evk-sgtl5000";
--	saif-controllers = <&saif0 &saif1>;
--	audio-codec = <&sgtl5000>;
--	audio-routing =
--		"MIC_IN", "Mic Jack",
--		"Mic Jack", "Mic Bias",
--		"Headphone Jack", "HP_OUT";
--};
--- 
-2.34.1
+We are making progress ;-)
 
+With the patches you shared Ulf (I added them on top of the current
+master branch), it works as expected, dev_pm_genpd_is_on() returns 0
+when I boot the kernel without M4 running and it returns 1 when I boot
+the kernel with M4 running with a hello-world demo.
+
+However now I tried to, if dev_pm_genpd_is_on() returns 1, put the
+DETACHED state, something as
+
+if (dev_pm_genpd_is_on(priv->pd_list->pd_devs[0]))
+	priv->rproc->state = RPROC_DETACHED;
+
+In this case I used 0 because I understand this is the
+IMX_SC_R_M4_0_PID0 defined in my device tree overlay:
+
+		power-domains = <&pd IMX_SC_R_M4_0_PID0>,
+				<&pd IMX_SC_R_M4_0_MU_1A>;
+
+But in this case, the kernel does not boot anymore, I see the "Starting
+kernel..." and nothing else.
+
+I am using the pm_runtime functions before rproc_add():
+
+@@ -1146,6 +1154,9 @@ static int imx_rproc_probe(struct platform_device *pdev)
+                }
+        }
+
++       pm_runtime_enable(dev);
++       pm_runtime_get_sync(dev);
++
+        ret = rproc_add(rproc);
+        if (ret) {
+                dev_err(dev, "rproc_add failed\n");
+
+and calling dev_pm_genpd_is_on() after dev_pm_domain_attach_list() has
+been called.
+
+With kernel not starting I cannot even debug it. Do you have any
+suggestion on why this might be happening?
+
+> 
+> > 
+> > [...]
+> > 
+> > Kind regards
+> > Uffe
+> > 
+> > [1]
+> > https://lore.kernel.org/all/20250523134025.75130-1-ulf.hansson@linaro.org/
+> 
+> Best regards,
+> Hiago
+ 
+Best regards,
+Hiago
