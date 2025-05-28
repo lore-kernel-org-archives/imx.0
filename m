@@ -1,150 +1,88 @@
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56ACD284B50
-	for <imx@lists.linux.dev>; Wed, 28 May 2025 12:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4B726A0E0;
+	Wed, 28 May 2025 13:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748435764; cv=none; b=R7uKIYFLyGbbqAf/qfp3KSfKmNN0cHhQgNMdghhDv9pFkoWN9Q7jBeqED5SuHD7k0EHLQ2MWZBN5K/2AkgnfbykCzrRNRLYKVSX1D9MsgmaJWuXgR/wGmMx35e2BiTol4DyVO42zgEYM967zmrn3UCmKO+F47xukKJSLhADObJY=
+	t=1748439586; cv=none; b=R4CAcwUVZhwcltaY74KloXtOTZYHas3jitYKS/NG1r17IeyWyLSXmAYBnhG1CN7aacM65EotwoKvj+GM09gciNzriqmcTE/GtK65mS3lSEJWaco2BcWfVjjpvYBDFeBCk2xevUC6Xbs52YMpBSXgIxm3MAGu/HKBaql4AxunYKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748435764; c=relaxed/simple;
-	bh=ZhZaCx9zTAfydyiSk7i4+D3+796XUnIpYm5sDEhibbk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qsMCFwru/hW1VB2iKylYKKGVTk+NPtS/FNYzpJDyKp1MmnBKwIDf6KgVtL4y3Sug40sGRnojcxskqf7ZfTB6CfOtsfy6wEPOJQ1+bUBWxfOBJQ1upe9EVpxtAMJHMfj3I91bp6amUxfFZKkjWoLBBs7t2YrUlR3Y+V80vhWwAPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=j9ZUE/Dc; arc=none smtp.client-ip=209.85.219.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1748439586; c=relaxed/simple;
+	bh=ZDCkiWTSUutPpidL4yxIxvrpNX9oGUvaRD1iiumCPrA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Slar2TcWOufQSKt+J+NvqNb2/msMeKlplVG6kPa6+iG2qpbx/RsVVkRsjJPIYZOaDxpB3ZiQy70BUa6ZcnmXEU4IwQeXvLqwS0y3rXIbxBmb5jAxdIrQxj4wwuHozza8rrRM+QHXTwM+a7rgiBMtwzIlmGThOwtByBF15mcKCNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IhgsVX/V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="j9ZUE/Dc"
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e7b4ba530feso3348035276.1
-        for <imx@lists.linux.dev>; Wed, 28 May 2025 05:36:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1748435762; x=1749040562; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Y2nJxgpLq/4ajBXNTSM9IN0ALNLXkV13ENJ/HewBaA=;
-        b=j9ZUE/DcIuUfVVRFiZhyecZni3EsFYIesnaaz709NihdamwhEuW3jRvKPhcepUQAoE
-         7lyOpA0FTj3ZdCW6LlYiX98yMTidwCQr7E8qRx47obUWKiFYUe/TqtareOQp42Qrqd6r
-         gKR6Aaw7aMQpqWWt/65+yjbBuaALGkwT7lqms=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748435762; x=1749040562;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2Y2nJxgpLq/4ajBXNTSM9IN0ALNLXkV13ENJ/HewBaA=;
-        b=jFsErBKgoIwdsUO9UBnH3wzlWoJSiLVzyPJRhv/GqvzOQkvL5bCdi572iN6sLSuXx2
-         uyOt/1YS65TpZtDw4jdwThwxXT1NtguFfA6WvBliJfJii/X6fscm64bKCBaOgIu32keI
-         YZ8z8C/JyNcpx7r+u0odM2RWS/bLfopkX+Dfd8ARJRtfcgxPI1OH/e2gqqvOlez+m3MH
-         Fy0bTV0jhjJaA/KtlbAE7RFW69A+/ARm8ciO9gG7uu9WhFXVgLOxz55d9SsR50nJTECW
-         u/qZIh2RIoY0aLDJbhweOXG8X3T7M3ZLvvmpQc81Lz3ScNmoI2Qpvu+UlBh4GFL+HxJt
-         o3eA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdCBh2iOzloKf1qufx8uTfjye+1FWUQqrNJo6D0cJIyvsJqtcoFO3qeJ070vosfyTY+sM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxO1XWv+wzChEVu9hGSQetLF8pB5AQEmoiN/XxVCq8abHxHg1q9
-	Es/9v49GEgH3m4uTYlDaVWlOajDhnfELh5a2SsvKW8JB2PU1+E4kph228VkSVy8ZbgvZ76gt5/K
-	/Med7UYjMXUsp7PA5WP5YwrMjxvv2eXT5c4/vaOdScA==
-X-Gm-Gg: ASbGncvfh0TtfzHAlioIzJliEZ/WFAItTJ/DGm+wsX2/i5HgwN0LCrdYRFxDEk278qa
-	crofIypvvY3t8S4/WgnNm841YswCwxg44tmuqGN0Uxj4oAOcC6PY2LqNPyuWjmxu9b6bS3Hmq1r
-	J1+BPLzBnFXZE4NsyVAiuKmI1LblOtVxXtygyLtl7OUc1IKAB3/M/OTv8q3zjJRjKWig==
-X-Google-Smtp-Source: AGHT+IHBh35vbTwgJCVmI6qYBeU0Sp2Wx1M+Pq2Rp63W3aCe0f9Vwlcw2TxiYl89UFgJ0Ni/gNn9cRNUEGm7TvbhuTg=
-X-Received: by 2002:a05:6902:20c8:b0:e7d:8a63:1a2a with SMTP id
- 3f1490d57ef6-e7d919b04c6mr18500419276.25.1748435762006; Wed, 28 May 2025
- 05:36:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IhgsVX/V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C48C4CEE7;
+	Wed, 28 May 2025 13:39:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748439585;
+	bh=ZDCkiWTSUutPpidL4yxIxvrpNX9oGUvaRD1iiumCPrA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IhgsVX/VgZv4mWKaIDhGq6Sy6mSnktVxPrbhwjX02DgsKX8s2yF6syckTB/0CYKZB
+	 L3fwJ81DTGtaHSvdmzeXNEfxapzoddam2d1YuhPC1fkKX4tT5XoY3MbiShhzzhN2At
+	 QT24NHe9A2T3A+ag5RRG4uef7m2cPbg83mMCJcq66IXft15D4+Rxe+M7hrogLlfTEo
+	 o9LJ0fawVDictOX7WVHoIeHeIRGJqUj44RnxedcsPjjpcmqc4W5eIBsqM3LlCEe410
+	 PGgUd1o9b/L3ELyMpPz8CtS1x54zijcL1yS+w/5+YqjVWX/Um0+mofy0ZwQ1ArElJ7
+	 vscuhtbAGfH1g==
+Date: Wed, 28 May 2025 14:39:39 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, michael@amarulasolutions.com,
+	linux-amarula@amarulasolutions.com,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: mfd: convert mxs-lradc bindings to
+ json-schema
+Message-ID: <20250528-kitchen-snowy-e9a97843419f@spud>
+References: <20250528121306.1464830-1-dario.binacchi@amarulasolutions.com>
+ <20250528121306.1464830-2-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250528121306.1464830-1-dario.binacchi@amarulasolutions.com>
- <20250528121306.1464830-5-dario.binacchi@amarulasolutions.com> <20250528-toucanet-of-utter-conversion-2bb1c7-mkl@pengutronix.de>
-In-Reply-To: <20250528-toucanet-of-utter-conversion-2bb1c7-mkl@pengutronix.de>
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Date: Wed, 28 May 2025 14:35:49 +0200
-X-Gm-Features: AX0GCFsWpbnRJlmj0FdLliCaul8VD_OZHEgOqPPNi4PhesFCouLSLcxJegiNFSU
-Message-ID: <CABGWkvqAy+-mjhXFKc9dkeJnZKLKuC23=Dmn3axJx_1+5fLWSw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] ARM: dts: mxs: support i.MX28 Amarula rmm board
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
-	linux-amarula@amarulasolutions.com, Sascha Hauer <s.hauer@pengutronix.de>, 
-	imx@lists.linux.dev, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, michael@amarulasolutions.com, 
-	Fabio Estevam <festevam@gmail.com>, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="hItL2TUlX6LkKJfG"
+Content-Disposition: inline
+In-Reply-To: <20250528121306.1464830-2-dario.binacchi@amarulasolutions.com>
+
+
+--hItL2TUlX6LkKJfG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 28, 2025 at 2:21=E2=80=AFPM Marc Kleine-Budde <mkl@pengutronix.=
-de> wrote:
->
-> On 28.05.2025 14:11:41, Dario Binacchi wrote:
-> > The board includes the following resources:
-> >  - 256 Mbytes NAND Flash
-> >  - 128 Mbytes DRAM DDR2
-> >  - CAN
-> >  - USB 2.0 high-speed/full-speed
-> >  - Ethernet MAC
-> >
-> > Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
->
-> [...]
->
-> > +     reg_3v3: regulator-3v3 {
-> > +             compatible =3D "regulator-fixed";
-> > +             regulator-name =3D "3v3";
-> > +             regulator-min-microvolt =3D <3300000>;
-> > +             regulator-max-microvolt =3D <3300000>;
-> > +             regulator-always-on;
-> > +     };
->
-> [...]
->
-> > +&can0 {
-> > +     pinctrl-names =3D "default";
-> > +     pinctrl-0 =3D <&can0_pins_a>;
-> > +     xceiver-supply =3D <&reg_3v3>;
->
-> The xceiver-supply "reg_3v3" is an always fixed regulator, that doesn't
-> switch a GPIO, so IMHO, you can remove it. Saves a bit of runtime mem.
+On Wed, May 28, 2025 at 02:11:38PM +0200, Dario Binacchi wrote:
+> Convert the Freescale MXS Low-Resoulution ADC (LRADC) device tree
+> binding documentation to json-schema.
+>=20
+> The clocks and #io-channel-cells properties have also been added; They
+> are present in the respective SoC DTSI files but were missing from the
+> old mxs-lradc.txt file.
+>=20
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-Yes, you're right.
-Removed and verified.
-It works.
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-Thanks and regards,
-Dario
+--hItL2TUlX6LkKJfG
+Content-Type: application/pgp-signature; name="signature.asc"
 
->
-> > +     status =3D "okay";
-> > +};
->
-> regards,
-> Marc
->
-> --
-> Pengutronix e.K.                 | Marc Kleine-Budde          |
-> Embedded Linux                   | https://www.pengutronix.de |
-> Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-> Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDcSGwAKCRB4tDGHoIJi
+0soAAP9SfwHOSL1Ms8FpK7wxpbph1w25Kea+OlBcRLmP/UiQRAEAsqbLvfI5diEw
+y90b4EL9sNqb/XkTmdiiZmLczzii1gU=
+=5qe/
+-----END PGP SIGNATURE-----
 
-
---=20
-
-Dario Binacchi
-
-Senior Embedded Linux Developer
-
-dario.binacchi@amarulasolutions.com
-
-__________________________________
-
-
-Amarula Solutions SRL
-
-Via Le Canevare 30, 31100 Treviso, Veneto, IT
-
-T. +39 042 243 5310
-info@amarulasolutions.com
-
-www.amarulasolutions.com
+--hItL2TUlX6LkKJfG--
