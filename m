@@ -1,76 +1,77 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AED21FF41
-	for <imx@lists.linux.dev>; Wed, 28 May 2025 19:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27FB22069A
+	for <imx@lists.linux.dev>; Wed, 28 May 2025 19:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748462229; cv=none; b=dA6Ib+U6XbwuVG58i36Nv3b4xLJHocVKRonqnweiSGO1TidzmkjxHUGLZYm6lnOm6fbYHQG1WZyvZlgbkbFDk3q60YzzroqnrCSP/0+9BEQbZT0rBwx3Q6FoiKzDG3Iz9q3+81wInsdzZXAQ3BLVFwcVBrdd+Gy4ET8mkomiuhU=
+	t=1748462248; cv=none; b=HXoIcCxBJnG2ysQNS5dKYBT/d3ZRwB/1FxpcY21o1JegcbxvymOzgwUS7sTjJC8lXRVZUxmAVJ66qdIdkZhzbOFvNYQoPSfLAlBIes1K04rIup8jjWo2cmOXv6CiDv74Q5FGJVcQFTE3c8Ni+8fa3rUbibHS/bjACLbkj0sLVjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748462229; c=relaxed/simple;
-	bh=Xsz6XZ7exOnaDVgyk9FhTekrCZof58PjSId5OiV3byk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=cKasLnckEnRFxYE5yWi+3bQ6qEWNSn7gGWIpoy+CE7QHZKuSjmqiXe7eSPxhAUmiXSS8oSQ4/imnNkXwZY4yqT7mZaVRmBDhs1SBd30LCqIACfRwsCJskHrfdzzyhimlV9yB9xdvwtWa4yEFvsJtSsIItR/rWzGVveWb0dNARC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sGgWMHea; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1748462248; c=relaxed/simple;
+	bh=NSe9RzYFBpq47/dJ5qqWUOPu2I/KiKwtwt0jkoCunaY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qyEUH1BAwNmlPWQbRRf2s/esMthiPitR4LcmY5nYpsrcgAuwJZZLTI2l+MT3pwxU/A8MqNYCO3bMDoNfymdDtorysBr8tpGVOYT7Ub5UZbwIjgszzCKjLaGICkboEEw9P9u3t4lYz+nnIrpST0HwJQGQs8FrMaiI+kmEwQd8tss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BtrReA4g; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sGgWMHea"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-450cfb79177so227315e9.0
-        for <imx@lists.linux.dev>; Wed, 28 May 2025 12:57:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BtrReA4g"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cfe63c592so2797825e9.2
+        for <imx@lists.linux.dev>; Wed, 28 May 2025 12:57:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748462226; x=1749067026; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IsxIxIK6IO+/d1azvrpZkxNeZUasvn91vkyCez/ohhE=;
-        b=sGgWMHeakwro9I+uZIHAA1VDHIQOqoHWoaMeTDSrxGJMn9qUe50HjoekU45wJ6LxC5
-         QRx0/kUKKP1wGYb7zEeagkUN+hp7cIjikiBU1Ei5d/x8lR+uPYpAAQsq901h/9g5/RoY
-         z8IuMuS3RcExJOq8es7ziR+HsymSESYXWRxoVNYSd4aLaHLSEZarnkKQNZ8jO8PB6zNv
-         5vH833vJu4S3+92i4ri7ofOwkpdm9Cxn+F+jgFFBJPuNG0mCFTzTL7vBEtK4YKLKwGpw
-         J4h0NrAJpiCWzj0mayf8BzFHwSP2qGyJzaKKEFeOhBSTb0uuT9wtUGEUQb7YdT4G8IYm
-         zRTA==
+        d=linaro.org; s=google; t=1748462245; x=1749067045; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jox9SekNR3rtKHNYCobALo8p2iBIaUa3VzzVOakwrMQ=;
+        b=BtrReA4gwuEjU8fCPnwlvxiNUaGVNINsdh5SbEvxGLDYwTW+oWtFsaLH//FEcoh6QV
+         VvhdLJ7bzb5sk7vUAf49Z+joY/XyPVmXN52omtPYWCfS2xtOE7T2pAvpczvHfvkPEiv7
+         28yXwc1gjA7bIrgZycCmr/Xn1mvN1zW2fog3s2Wri2A/YjXjWiFStXuur4GaIlMWPRrM
+         0t+oOrJ3p1j1HwdcjoqVLUYJgNIPoOWrYyC/NsGH81crS50kHnMI60fDSrGcz0/Oye0Z
+         pstknqCSXcnUnyse78YuVVJD9uMbSzhsfOH/b48ukEtDdtWtoXlMSVYl4w/jO14FPRKm
+         XOtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748462226; x=1749067026;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IsxIxIK6IO+/d1azvrpZkxNeZUasvn91vkyCez/ohhE=;
-        b=B5wqAp8DFMXcO/gBopgZPYoEfn56+UfkFi3MUYIdLTDvHsYAqO5oIjoOYMSkvIYoBy
-         mWPzVI9IRJM2RM1PjSl5Xp1eGmHMGc3N+kg4S7EMxS7GhhC8I8znEMIgdvnRQGQUMgwc
-         ZxSrapRKj7OT3esXn5qIETt0c+IA8yVrspSX4DxH/MpLnKmW7sLzJorfSdBfYUQl3caq
-         zud8M4BF2ZSQmZYCp/7Ur7XDJPZgoNme6AlfrIqilvNrbjwFNCGmIoSL9D9EJC9tU735
-         9unGQCfQwyn8iHpjvywbCz+ugcEFSBtLQarQ7EAEYYBO9YErQ1D7ns216xYfhVD9A7P0
-         QU5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXSAR5Ut0yrPcTOEJ8mTfgCwPvxcMZomj3jylYTU9gSxP6maM/4KluHc+ecrzQP9t+HT0A=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw0Tjyib+aL08iPVHUoc3XyankkRcR55xhZS5JW40KKUk8KUQDZ
-	8a6Jx7cY4ZsXv1/IvGLclqN/07VWusvQ9rYIDKn02flHlUJLpltPYCpvrw6gYvj/m2o=
-X-Gm-Gg: ASbGncvSJGfdwH62k5JkqhqGEvwCPzEvCjEJY11cUBtR+lHssMCFzXODRGtf3LKoTYZ
-	T9GbbMqoCPSQqmTwEY2jpcjyvrST9ZvwXb2jTpeQ8LBt6lyOlejGlHG73caEEAZLHx8SHHyBswI
-	kKQ7EsBonZ63iQX4c2nkvqNixZNF0mrSnkoiUAXFUlFvSyOBtXqDrzy00Pp4cdPw/wv6m0gFRl7
-	m8AxIZvv/MeKg+WHc7ntBsEuaR35LrtqYJ+mOTDq8pn2EFEhwor/3zVJFtM7S6zWcD/nl/Iho/2
-	pDqG9KGcX0NZubo0MH3KpDrYwcX+lxgKZI2LNGN2+hkbYmqS+4t0qIQ=
-X-Google-Smtp-Source: AGHT+IHO8Svq/QgVTHmZClL5gffMevyHOz1Cco0x7cPWvVyVd9ZXnG4onhYM/UN/PlwWdqGJFqmo+g==
-X-Received: by 2002:a05:600c:35d3:b0:442:f4a3:b5ec with SMTP id 5b1f17b1804b1-44c9301650cmr187985425e9.4.1748462226120;
-        Wed, 28 May 2025 12:57:06 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748462245; x=1749067045;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jox9SekNR3rtKHNYCobALo8p2iBIaUa3VzzVOakwrMQ=;
+        b=NFJ6WmIoK/eYD7KFtVw4+mFBhYWkCwn8CYimHt0+sC6lqkQFlUEHsMTvxKHSBwIHnA
+         HZHcElKVbcvgnXJqk/T0wrf3kO3uhsrBdlbglmQZB8WO3yhX2d1r/4KDJe6d/IFdhLBm
+         WyQZQZZMqJYKos2feCOiDO5VkxZ8MzsaJUHz+zc0Ac/j79Z2az8vrre/QhAi9UQp5Fwd
+         uXuo5AIwuTAYP7Zc0z0r5KNNSi7YyZVp83N0enaJZK/6vT50IWqeY823zkZj/j0Zc4FQ
+         a8TQaUbCKWasEgfovgePGU1rcKIU3UPcSPidxhp2HWM8nHAdNnygtOh16F78iQIss9aF
+         oopw==
+X-Forwarded-Encrypted: i=1; AJvYcCUzbnXSTdt9iKsRrl1y+V5U/yYsP9uho5CenrjoQIoRhVzbeNGXW5KOgcroNHmHKeZVIMU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyM5EhlKvkb1V22zMUb4UqY20VN++qoCMWPV5N2mTD3P67MtjXT
+	ojx+WeWshsgUp2gbvkI2gdpQhUO0rntPMyZ5pNLUMhu+MJJlWUK9IhoYt3jikZU7Wjo=
+X-Gm-Gg: ASbGncsQl0rTPess/h7FH0oqNUrxHMFi2sAVJOu3ipsRy6rKCbznXLPHLt78KMJQpTW
+	czkW5TJa7KGPRLxWhuGdQUr7IFdpN+o5b81KVsR68NNx1HIvIR/uuPMSVX1P5MXB8YufRv1M0Wv
+	Yc//1xuXrSmkL2/7hLd45R85PSSigyxl1TNuANBBrIR6j6CcDrUVNBU3N6haU5ve4H+7fiBuTrO
+	DmdbB+uYjkcnQI434PLuKGq6nvbK+ikH820yVLfw5iiVX1E9KiLXuNc9c335BytyqygkCF0c8N8
+	0FNqeyAVtU1dKdLsHAI/XIqIsvszmHieEIofPejnUoQHRvYyKWGHmCgJe3tcwCLE/w==
+X-Google-Smtp-Source: AGHT+IGFimIQlDKktgw+rSB1HgWLv0+JQH4Uvai1EVQNKILhkigc431Q3x3/98hg2t4hXWqFBll7vg==
+X-Received: by 2002:a05:600c:4f43:b0:442:e0e0:250 with SMTP id 5b1f17b1804b1-44c933ed7efmr166096775e9.29.1748462245206;
+        Wed, 28 May 2025 12:57:25 -0700 (PDT)
 Received: from localhost ([41.210.143.146])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-450cfc04120sm638565e9.16.2025.05.28.12.57.05
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-450cfc2d383sm586565e9.32.2025.05.28.12.57.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 12:57:05 -0700 (PDT)
-Date: Wed, 28 May 2025 22:57:01 +0300
+        Wed, 28 May 2025 12:57:24 -0700 (PDT)
+Date: Wed, 28 May 2025 22:57:20 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Peter Chen <peter.chen@kernel.org>, Rob Herring <robh@kernel.org>,
+To: Peter Chen <peter.chen@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Xu Yang <xu.yang_2@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-usb@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
 	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, s32@nxp.com,
 	linaro-s32@linaro.org
-Subject: [PATCH 0/4] usb: chipidea: Add support for s32g2 and s32g3
-Message-ID: <cover.1748453565.git.dan.carpenter@linaro.org>
+Subject: [PATCH 2/4] usb: chipidea: usbmisc: s32g: Add a REINIT_DURING_RESUME
+ flag
+Message-ID: <b1ddbc5993b2906cf916d023fdf27b07088a9672.1748453565.git.dan.carpenter@linaro.org>
+References: <cover.1748453565.git.dan.carpenter@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,21 +80,51 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <cover.1748453565.git.dan.carpenter@linaro.org>
 
-This patchset adds support for the s32g2 and s32g3 chips.
+From: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
 
-Dan Carpenter (4):
-  dt-bindings: usb: Add compatible strings for s32g2/s32g3
-  usb: chipidea: usbmisc: s32g: Re-apply init settings during resume
-  usb: chipidea: s32g: Add usb support for s32g2
-  usb: chipidea: s32g: Add usb support for s32g3
+The s32g2 and s32g3 chips will need to re-initialize in the resume path.
+Add a REINIT_DURING_RESUME flag which will trigger the reinitialization.
 
- .../devicetree/bindings/usb/ci-hdrc-usb2.yaml |  2 +
- .../devicetree/bindings/usb/fsl,usbmisc.yaml  |  2 +
- drivers/usb/chipidea/ci_hdrc_imx.c            |  6 ++
- drivers/usb/chipidea/usbmisc_imx.c            | 91 +++++++++++++++++++
- 4 files changed, 101 insertions(+)
+Signed-off-by: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/usb/chipidea/usbmisc_imx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
+diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
+index 118b9a68496b..95759a4ec60c 100644
+--- a/drivers/usb/chipidea/usbmisc_imx.c
++++ b/drivers/usb/chipidea/usbmisc_imx.c
+@@ -155,6 +155,9 @@
+ 					 BLKCTL_OTG_VBUS_WAKEUP_EN | \
+ 					 BLKCTL_OTG_DPDM_WAKEUP_EN)
+ 
++/* Flags for 'struct imx_usbmisc' */
++#define REINIT_DURING_RESUME	BIT(1)
++
+ struct usbmisc_ops {
+ 	/* It's called once when probe a usb device */
+ 	int (*init)(struct imx_usbmisc_data *data);
+@@ -171,6 +174,7 @@ struct usbmisc_ops {
+ 	/* It's called when system resume from usb power lost */
+ 	int (*power_lost_check)(struct imx_usbmisc_data *data);
+ 	void (*vbus_comparator_on)(struct imx_usbmisc_data *data, bool on);
++	u32 flags;
+ };
+ 
+ struct imx_usbmisc {
+@@ -1266,6 +1270,9 @@ int imx_usbmisc_resume(struct imx_usbmisc_data *data, bool wakeup)
+ 
+ 	usbmisc = dev_get_drvdata(data->dev);
+ 
++	if ((usbmisc->ops->flags & REINIT_DURING_RESUME) && usbmisc->ops->init)
++		usbmisc->ops->init(data);
++
+ 	if (usbmisc->ops->power_lost_check)
+ 		ret = usbmisc->ops->power_lost_check(data);
+ 	if (ret > 0) {
 -- 
 2.47.2
 
