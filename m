@@ -1,314 +1,285 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C05275854;
-	Wed, 28 May 2025 09:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748424600; cv=none; b=ujffNpgDoj552fV5mKIJOHr7mLAIciScpEJ8lwUxdUUeIRYg3t7s/gPBTBCPbLuszV1zYLiQAtM0Zdnjx9k+5CnR7NtGk/cuw2+0UAfIyI1spsagFnlPxZG78cO6Q+YykcsmdAQwmuD7FlDXmIRpz2p9Dhnx6vTG7uLhF1vdNoU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748424600; c=relaxed/simple;
-	bh=j00G/dwW97kfCExu0r+usuJ50t2BSRgmX+trGWNWHTk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EoCvMFMZANXLX9NNcUtSV7j99ZXiYfCvwCuUOit4MGXpcviCJj0EM+zSBnHGzeA2lscsOwFW/MooL+Nj6XnYvfSHNXcDL0GGzXpu0lEoEMyogNbkPq4wMq58isyeMXVPt4FSj6p3lvCTERCXE0KCOYQGeauFrVi6TBO5K6pUeqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=COYg7XrY; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C3C275115
+	for <imx@lists.linux.dev>; Wed, 28 May 2025 10:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748428482; cv=fail; b=hrH2LV3+HIn7Xi8IgoZpkrWRiqXjF87KNhGhSHvO3Cl269xja0Qg48toD3zxkCjVAb3gVb4YIHNjiiB8rXaNbhXnGbJjGPePLV+LBD3ZtpBEg0mRNF90BHn0nJ159hZntu5sEN5USQd99G51tsMN6mBJ6Hd33g/qhAz0SBx9has=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748428482; c=relaxed/simple;
+	bh=0cJiCFRxAp12QhQQ7buvBJiYWLviyldY9uXGEaiqQpo=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Kmsl0H7ZrOSOYLxY48urBTGhBvQvaPD0/hkwk68764HM30vCFzrYfcqf4CcpE9ty2ppC4D6NqrOawcGH1JFYBHyHBBpMI+ZzE6REE1UrG9jJ5ptE8JnNxbXzT2OwaNn5kDoBLMGjAGB439WZ44nLp9ogia953UtlD/nGqGLLIBQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MKBAKRFR; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="COYg7XrY"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BB4C44341E;
-	Wed, 28 May 2025 09:29:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1748424590;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=tcp+3qiZKrZ/yFS9++J4sy6UEvxx9WuKX4FnkxkfHz0=;
-	b=COYg7XrYSHalG4owcEpWOBAsjunxlDmdWc1VFAql1a5dnt3Eq4iRRkHe8TdRFLaIUq/lE3
-	BTjSw2u8n6EW5pI60SAdQE4OEAU2xDNFEYZ/ZXVOZQaEq/evnqR4GQQoLp+stts5l4Xzyh
-	9NxJ5SJLHMAM26XYxsE1dojYL0J8BIYSQmtkEzJac/3nCK8CkQ9z38zM4bvUqdq7jeKKPF
-	L+WvN5GVjQ+BsVjsVYFYgX2Buqlxrda9UW8piAoXYcs47WqLi42eXnFG3tT+UbeakSLn8t
-	pUSmxs5n/Rvf//Npg+HsS3oq5Cw33wds1WdawIaZGSjII/9sfUTORa7Zu0NSYw==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 28 May 2025 11:29:36 +0200
-Subject: [PATCH v4] drm/bridge: tc358767: convert to
- devm_drm_bridge_alloc() API
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MKBAKRFR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748428481; x=1779964481;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=0cJiCFRxAp12QhQQ7buvBJiYWLviyldY9uXGEaiqQpo=;
+  b=MKBAKRFRklxLzSWLhYWYnTzQQT8+SrY5PJxZwQaII/oEIsZOesa8j4E+
+   cHPqS5yMUjMRtu73+GD5Njt1VnNzvZVjw98yvWjcT3tqcnTzoAD21F87I
+   OcP9dWYBuctdbXgfnfj0lLTTwnC87QzKX9uD+qbG5cu64OptGLOZIrk6D
+   x+o2TUC6QptQOfJqyBUwQhSAFowCM0MsNS0J+hl68xlAtUA7SqH/h13Ii
+   l+rIVOq1G3r8BrhnvN4hWlawh4dRw4FvliP9LvA3usfhKNwXznfO6Fqck
+   a7vKWVtgSjTZzZXC4TqgX+20g7zLqaf3OuPM+Js1LFhRU/av6cfxKJEQR
+   Q==;
+X-CSE-ConnectionGUID: nKgqP3dzQviUBuMfgK4C6A==
+X-CSE-MsgGUID: OGiV123dRy2Pu0NbBtgApw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="49695899"
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
+   d="scan'208";a="49695899"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 03:34:40 -0700
+X-CSE-ConnectionGUID: BD7w/KQTTlyDIDe4PAN6yQ==
+X-CSE-MsgGUID: IJ8PDw5PTw6ub/VqusjwMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
+   d="scan'208";a="143235281"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 03:34:40 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 28 May 2025 03:34:39 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Wed, 28 May 2025 03:34:39 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.74)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.55; Wed, 28 May 2025 03:34:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n3WR2mXk6bnKq1eLdOBJ/bRcOaEaa+lwd1e0VYEgFPRv2zwPlIYBf6P+sD1RZB9SYRjvLLI+Y0tBGRF2eEOcHNDegpAdwiJgaU+EkLG6h11WCPMEOu03xcSTLPZOdtRsgmlNPaA5tcIlay/CUbTS3IIeg70OHj41MCG8riE+A7tArzcknHhljrwWsvpr2LxGNcvVFtaXBAngCuwpAaBWLJqhDErZwmFzowualoHWKfkLJTUB4OMlY/AgFCnSQ3tKEmnZtT6RewVyxQNkmHGPtXtvsH9nBumeCH1RMP1xjVGsbDS9N2A9OlH47g37rrC2pWmD60BFtWc5JN0hO77yRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ufb0Ngp376V6g+y/3nGpJCJaYdkATRB/Oe1Dh76cZqU=;
+ b=hM265kaH3K5fC8KmXmekHGo47K3FwJkx1FCXadNvoNlwwlfv9Ljp1FF0Jb2W8SP80KsJEUdrKHMdx5UN+FDMptW2ik5lddk8SU9/H0cbDwPob+73QmjHL5Z73Og0NCdavj3+u3MilE8xVgy3MzwB44qXM2EuPRyueGu1edMJg1xgGZ0DGv/ckpAJ5New1NlZrg/8OZZ5DFDmepa1CQaohje4UcrzqmojDZAuN90dz8eBeAADROUxthsKBGb+JBig3hG6A1GgAsJo4HPwjv2GfvkotYotlCRU1dCbZznfDCGEcnX+VavF+0p2lpwQWIKVssWsW3P/vlBOkA5j45vvrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6054.namprd11.prod.outlook.com (2603:10b6:510:1d2::8)
+ by DM4PR11MB6191.namprd11.prod.outlook.com (2603:10b6:8:ac::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Wed, 28 May
+ 2025 10:34:37 +0000
+Received: from PH7PR11MB6054.namprd11.prod.outlook.com
+ ([fe80::a255:8692:8575:1301]) by PH7PR11MB6054.namprd11.prod.outlook.com
+ ([fe80::a255:8692:8575:1301%6]) with mapi id 15.20.8769.029; Wed, 28 May 2025
+ 10:34:35 +0000
+Message-ID: <6be8a114-7775-415d-a48f-751466cce44d@intel.com>
+Date: Wed, 28 May 2025 13:34:29 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mmc: sdhci-esdhc-imx: refactor clock loopback
+ selection logic
+To: <ziniu.wang_1@nxp.com>, <haibo.chen@nxp.com>, <ulf.hansson@linaro.org>,
+	<linux-mmc@vger.kernel.org>
+CC: <shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
+	<festevam@gmail.com>, <imx@lists.linux.dev>, <s32@nxp.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20250521025502.112030-1-ziniu.wang_1@nxp.com>
+Content-Language: en-US
+From: Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20250521025502.112030-1-ziniu.wang_1@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DU2PR04CA0267.eurprd04.prod.outlook.com
+ (2603:10a6:10:28e::32) To PH7PR11MB6054.namprd11.prod.outlook.com
+ (2603:10b6:510:1d2::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250528-drm-bridge-convert-to-alloc-api-v4-1-f04e698c9a77@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAH/XNmgC/4WNywrCMBBFf6Vk7UgSY7Wu/A/pos3DDrSZkoSgl
- Py7seDa5bkXztlYtAFtZLdmY8FmjEi+gjo0TE+Df1pAU5lJLs9ccQUmLDAGNPXR5LMNCRLBMM+
- kYVgRWqFGq10rZadYtazBOnzthUdfecKYKLz3YBbf9ee+/HVnARyUFOLk3NV0mt9HojSjP2paW
- F9K+QA4RBdR0AAAAA==
-X-Change-ID: 20250404-drm-bridge-convert-to-alloc-api-614becf62294
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Douglas Anderson <dianders@chromium.org>, 
- Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Anusha Srivatsa <asrivats@redhat.com>, 
- Paul Kocialkowski <paulk@sys-base.io>, Dmitry Baryshkov <lumag@kernel.org>, 
- Hui Pu <Hui.Pu@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, asahi@lists.linux.dev, 
- linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- linux-renesas-soc@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
- linux-samsung-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvvdeludculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtkeertdertdejnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepfeeitedtfeefjeeijeejveevleeijefgkefhjeeuffelveelieetleduveetieetnecuffhomhgrihhnpehfrhgvvgguvghskhhtohhprdhorhhgpdhkvghrnhgvlhdrohhrghenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghloheplgduledvrdduieekrddujeekrdejhegnpdhmrghilhhfrhhomheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfeelpdhrtghpthhtohepjhhonhgrsheskhifihgsohhordhsvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidru
- ggvpdhrtghpthhtoheplhhinhhugidqrghrmhdqmhhsmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjrghgrghnsegrmhgrrhhulhgrshholhhuthhiohhnshdrtghomhdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepphgruhhlkhesshihshdqsggrshgvrdhiohdprhgtphhtthhopefnrghurhgvnhhtrdhpihhntghhrghrthesihguvggrshhonhgsohgrrhgurdgtohhm
-X-GND-Sasl: luca.ceresoli@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6054:EE_|DM4PR11MB6191:EE_
+X-MS-Office365-Filtering-Correlation-Id: a29c96c7-7048-4f6e-cfaa-08dd9dd33d93
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?T0RoRGZEWjFraUxrcFh3bjZBODdaYzdWWUhHRFRoME9vV3JxM09qTnVjNVBY?=
+ =?utf-8?B?Y09HVk9nS1I0cEJMQ1JCOGR6TVl5TjFjdTg5aGhNaXdYb0xVR2V6V081NGhs?=
+ =?utf-8?B?dTdjMWRkVnd0eGZycUIwODRhTWQrOC9tSFloNDl6OXJNdkVtckpzdGRNLzFx?=
+ =?utf-8?B?ZU9JNjZMUmxYYWZXUXJxUkZMU3NwOVc4cm1GQ3BPM3RmcHdKOW00eWpwYll4?=
+ =?utf-8?B?ZWhhSEcrUEIyUFh2TUwxaE42Z2wzTmVEalZ5aWJDdzE2c1pqRm13YzRrL1pD?=
+ =?utf-8?B?SktLMVNhWUlDcUFpcDhtWGp6TWsySzNDRmxUb3hHVFRSYkRYcDNEWTZES3JU?=
+ =?utf-8?B?YUlrUkNpOXZNODk5SzFYUVpaZkxhMC9KVDhOUndmYzZTaEVFVzU4STNXbzBJ?=
+ =?utf-8?B?Y0k4N1lpUTMxU3NhUkwyR1lnUnJPNHBzTWFpekxDZDFDMkFhRHhiY3RRWTNP?=
+ =?utf-8?B?V0p6RjZROS9OUVJkdEJSUTNPbzg3R1VIUWpqTEtEZ3hMbTNjZFE2NmtQNVdU?=
+ =?utf-8?B?SDY4VHVjWkpjRCtDcy9ueEdSbmdab2RBcG9WMTdsZDJGbnpVT21oMmxKaVUx?=
+ =?utf-8?B?MGo0Y2M3cDBnZDUrbEEwc1pKNTFXNjhJZEI2OFB1SWtRT2cvRWg4bHZvNTV1?=
+ =?utf-8?B?MXJaMXZDbnQ2SnhRalJra0dBbks0VnY3S0hKRlo4TXlMdGl5dzFJM2habGsx?=
+ =?utf-8?B?TXJ6bzljQUQ1dFpjelFqTktzMHlrUkYrRGx6ZXRNWlhNNUtsSW5KdjNiK1Rp?=
+ =?utf-8?B?TnZCKzF4R0JtbTVZS0t5Rms2SWpqY0FEckJ6L0JyZ2lwSWFHYkNMV29JRzd5?=
+ =?utf-8?B?akkxVzVEWk5RT0p2enU5ek8wU2ZhYU5hQno4WVRJejJEZE5rVkQ4cjEyVjFV?=
+ =?utf-8?B?UVpGaUlYL1dCT0VNbXVGeFVHVTZDajd4Q1pQdmk3RG40YWdyZ1JmR1lCbVQx?=
+ =?utf-8?B?K0x0V0UxczRCK0orOFNRQTJXZDhXaHdYd1JmNlAvS1RtNUwvUnFWTVkxU2lz?=
+ =?utf-8?B?R0RpS3FlcFNoYWJnY2N2QlJJWERHMC9wYjhJV2E0MlJoaytRY0VOMDRoV2lq?=
+ =?utf-8?B?RTAycnBMT0RIN3BpRUxONHdMN1VIVy9rYnFHN3hmTWlKZHpqaDl4RjloMDlY?=
+ =?utf-8?B?WmppUjJkQkhjOVgyb1pnaXh2aEE0eEhiejJIZXFjR2dRSm0rdksxdmY4NWJa?=
+ =?utf-8?B?NmZ3Zm5PZ1V1VmdZekZvV29EUHJycGNRUnJHcTZiejFpSTc4L2xGbG10ODFw?=
+ =?utf-8?B?aklSVUFTYy9KVXpuYm9zb0xFK3FKVlRwTlRWQWZhWm90SVVkTzlVR2VKN0or?=
+ =?utf-8?B?bHVxQzM5WDZCOGdhNHhPM3NXQXdyc3F4bHlOU0EyN2QyMHNxTTJUVlBzY0Nv?=
+ =?utf-8?B?Nm1meWFFQi8vSHNZS3h6Q3FLRjFUMUR6bmpLOFdnTG9lZEx3ZHVZOEZXb2VX?=
+ =?utf-8?B?WnJkcm1NUjNlUnJsMytFclVnQzduVDE5OG4ySllrTXI2RDMvS0tRU2R2MWpN?=
+ =?utf-8?B?eDVnekh1RVhmanUvQnMzaUpaeGxvdnNua080ZXpsY0Y0MkVpTUdndE5tMURm?=
+ =?utf-8?B?WXZ6OWhjenNwS2l4UTF6Y0Z4eE1Ga1dUejlxdjNJZUo5NFZOMTRrZEtDN3BE?=
+ =?utf-8?B?TWhteXZDZ3pEK2trdXBpZzZHdkxTTHZDMENOUEc3QTBYSWF4SVcyZG83R1NP?=
+ =?utf-8?B?aU5DK29IVGY0QlNHcmxnZm10dDZzNDJ6QUpxTFM1THVyVEVBOUExWWRCSHdP?=
+ =?utf-8?B?VlBEV1RUTkUyQkpBU0pBbmp1M0EzSDBMTy8vS0I5aGFHcktmZjhXcDl3eUxm?=
+ =?utf-8?B?US9CaDhIMXhwdFhzZXJwR2V6RU9scXVRRjZ0Q25oWFVkUzQxa1JyREZqYU1S?=
+ =?utf-8?B?U3BReHZWM29ETEhSUGZHdEVza1hueEhIeEM2Q1Y0UkpuMjc5T0pDT29jNlIz?=
+ =?utf-8?Q?FYAkYFlpy8E=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6054.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RDYxZkcvNW1ZcUlLOFIwTHl3cHMwRkJjQWNwMmtJS2liUjd5YlMrd1UrbU03?=
+ =?utf-8?B?amdNYXZrV2dXa1I4dFp1QWdIMnpIcSs1WHhLMEdqT0Zac1FlMkMycmIxemxG?=
+ =?utf-8?B?S1ZDc3NoeFdmN0I0NzhqZ0svVmJVSjVqSHd2Z1lIOVBIaXhPTi9IU1FITkNv?=
+ =?utf-8?B?VWcxOXNiQldnQ3pyK2docjVkVWg0ZjhsV1luSUIxSFRaS2pYZmFuWURzVllT?=
+ =?utf-8?B?cW1JcDdqNEhNb3B2Sng4UW9QN2RyMkNpTDlUaGxpdzRaNU04V2ZZaUg1eXl4?=
+ =?utf-8?B?T3pxcW5vTHNoM3JBSjNZZUtEcTBZOW9zUlpkN1FEeXlSVTRycER4a2pCTHpk?=
+ =?utf-8?B?eDRYYWtySysvQXM5VVNFNnliYjRlbEtiZ053SWlaUFcyRHlSbG0vanQrSEM0?=
+ =?utf-8?B?dkRpdkNUVHZFSXpWYmM1RXpOcWh1Tm9yRGk4NUI2dW9YS0FVWXAxNktsSmdI?=
+ =?utf-8?B?MGx2Y1BMOHd6ZVF6NklGcjdUT3g4WjlqbTk5Q0tYdEh0eEFTb2lSNG1hbE5k?=
+ =?utf-8?B?enN1Wk94bGdRdUk0b3A5L093SHh3bEhPeFBqYXdQSTVwajRlZmk4QjlKeHFq?=
+ =?utf-8?B?K293ak1JZWZWRGdKMXZWZW1qRzFtWWVGaHc3WDlQZkNiaEN5ZkpyNkNDSW1J?=
+ =?utf-8?B?K3N5UVdWVDV5MGxiVnVleGJLL3pkbWZxbTRPTndJY04wbjZ0NUFnS05hT1dP?=
+ =?utf-8?B?K2N5aG5GSHFCcllxNXBiUXROeG1nMUlVa003dUNtTHVuakp5SklJbUdrcFV0?=
+ =?utf-8?B?Vkl6ektaSGxmOTJlb040VE9kcW1scloyNUMrVko2QndNUDFsdy9zbnU5cTZ6?=
+ =?utf-8?B?SFRNN25XZWtSL2h0MEJtckhoTFBTMmRmQzlnK2RZOGJuOTAwTWVoWnQzTFFS?=
+ =?utf-8?B?TkhaSTFGdXFzV1hwYjdlV2JLVzd0bmprSVBoWHhLSXFlRVZrMmZDUGQrWnlk?=
+ =?utf-8?B?azNZSUpvcXVUSFg4eGpSbndsQ3ZZNkt2dE5OWUlkL3Z1citUWHp5RHZnbVcz?=
+ =?utf-8?B?Q2Y5Nks3cWZteVBPM3kzdE90QUtaeVg2b1c1UDRIRlAvM1JkYk52cE9DVHAz?=
+ =?utf-8?B?bVVXbDc3T1NTaHA0a2tOTXlOaHFnNlJ0K3V4NldjMEF0SG93M1cyT3NqdExy?=
+ =?utf-8?B?bW9GTlh3L1VXRWEza2dLdnQ4N0JBTlZ0WG4zQ1VGbHFHeGV2MEx0elkxOGYv?=
+ =?utf-8?B?WkVhd3lPWmlSY2o1d3dRQjc3Q2pzcmdiWjl3aEhIQWovWjc1d0pESEhGVDJU?=
+ =?utf-8?B?L3NUTTdOTUYrU2UvWkRlb1djRngwN3NKKzhqM3RJODRuNXRvQzlwNVhXVWp4?=
+ =?utf-8?B?eFpwR2NpcDAvemduMmV1V1U2R2QvVkQ4a2NGcE14Z1lYMlZXbVlwS2NhZVJl?=
+ =?utf-8?B?UHF5K1BDNkErbjBLdnE4alFWR1JaYVg5OHgyQUdLejJMaEpjbmVydW5wOEdn?=
+ =?utf-8?B?NFRra1hrVkpyQTVpaHZZOVkxdmRtS2FsRE5vQ2JDY1o5bGZ2WmNlekkrbEZD?=
+ =?utf-8?B?Zks1cDNHU0tWZ2VJYjVNVnlWNGxoZ3NuUG80NjFkOURDQmExY2hrMVpxWWQx?=
+ =?utf-8?B?L1FMaTRRQVh3SHkvejFEN0N2SXgwczJuZU5lRDJqOEJ0dGVSOUdaM0xmVVZT?=
+ =?utf-8?B?ZzRnMlNRZzA1UFJJd2lSU0c1SGh4UGJKaDZ6V3I3ekJ4OVdVZWIxcWdnUU1Z?=
+ =?utf-8?B?Vm1pSlhGU1VqcWlkU3g3aHM5ZFA0RVlzWWZta0xkNDljWTArSG1hK2JoZitz?=
+ =?utf-8?B?SUk3aUFUQm80aTRoV2dhSlh1UkdxckE1c1h1c29JTTgyN014ZG11Qmg4VEd4?=
+ =?utf-8?B?cW4vRk1pMnFla0RDUUlvbFBOTnJrTWtNWVZ3ZXI0dEcvQWVQaFAvNENlZDV3?=
+ =?utf-8?B?NnkrUEFPblJhY1NsSDBnNUExblhwc21OOHJCV1VWVndzbmtBaXRUNFA3dFRZ?=
+ =?utf-8?B?UUdZZ0RFblJTR0czcnY4SXpaWTFrYzR6QzNQTmF3MVdyQjlPY3JWczFVUU1V?=
+ =?utf-8?B?YldTK3JyU1UvYzlzVXdPYk5xRlBWWW95SWRDOGcxN0JtcFlLMlcrMi84bHN1?=
+ =?utf-8?B?SFRDYnlaWXd2RTlJZHRjU3ZjalNvVHVrS2tGT1UwT2JvNEJDMTNQVEVqZTB4?=
+ =?utf-8?B?OEFTY0U5M1llaFRHanJRd1c4a1pON3BWWVlpZkMrZ01hblVOVGw1MWk0ckZX?=
+ =?utf-8?B?Y1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a29c96c7-7048-4f6e-cfaa-08dd9dd33d93
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6054.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 10:34:35.5593
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nnBIU3FHixVXa80BE490V+nwfO1aca5Hclnoh50oRQ3lg3/ksE11zJgMBKgfBkOZRBxwP7nCRMAv8pqQ9N9ucg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6191
+X-OriginatorOrg: intel.com
 
-This is the new API for allocating DRM bridges.
+On 21/05/2025 05:55, ziniu.wang_1@nxp.com wrote:
+> From: Luke Wang <ziniu.wang_1@nxp.com>
+> 
+> i.MX reference manual specifies that internal clock loopback should be
+> used for SDR104/HS200/HS400 modes. Move ESDHC_MIX_CTRL_FBCLK_SEL
+> configuration into the timing selection function to:
+> 
+> 1. Explicitly set internal loopback path for SDR104/HS200/HS400 modes
+> 2. Avoid redundant bit manipulation across multiple functions
+> 
+> Preserve ESDHC_MIX_CTRL_FBCLK_SEL during system resume for SDIO devices
+> with MMC_PM_KEEP_POWER and MMC_PM_WAKE_SDIO_IRQ flag, as the controller
+> might lose register state during suspend while skipping card
+> re-initialization.
+> 
+> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
 
-Converting this driver is a bit complex because the drm_bridge funcs
-pointer differs based on the bridge mode. So the current code does:
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
- * tc_probe()
-   * devm_kzalloc() private struct embedding drm_bridge
-   * call tc_probe_bridge_endpoint() which
-     * parses DT description into struct fields
-     * computes the mode
-     * calls different bridge init functions based on the mode
-       * each sets a different bridge.funcs pointer
-
-The new API expects the funcs pointer to be known at alloc time, which does
-not fit in the current code structure.
-
-Solve this by splitting tc_probe_bridge_endpoint() in two functions:
-
- * tc_probe_get_mode(), computing the mode without needing the private
-   driver structure
- * tc_probe_bridge_endpoint(), only initializing the endpoints
-
-So now the mode is known before allocation and so
-is the funcs pointer, while all other operations are still happening after
-allocation, directly into the private struct data, as they used to.
-
-The new code flow is:
-
- * tc_probe()
-   * tc_probe_get_mode()
-     * parses DT description
-     * computes and returns the mode
-   * based onf the mode, pick the funcs pointer
-   * devm_drm_bridfge_alloc(..., funcs)
-   * call tc_probe_bridge_endpoint() which
-     * calls different bridge init functions based on the mode
-       * these don't set the funcs pointer, it was done by _alloc
-
-This solution is chosen to minimize the changes in the driver logical code
-flow. The drawback is we now iterate twice over the endpoints during probe.
-
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
-devm_drm_bridge_alloc() [0] is the new API to allocate and initialize a DRM
-bridge, and the only one supported from now on. It is the first milestone
-towards removal of bridges from a still existing DRM pipeline without
-use-after-free.
-
-The steps in the grand plan [1] are:
-
- 1. ➜ add refcounting to DRM bridges (struct drm_bridge)
- 2. handle gracefully atomic updates during bridge removal
- 3. avoid DSI host drivers to have dangling pointers to DSI devices
- 4. finish the hotplug bridge work, removing the "always-disconnected"
-    connector, moving code to the core and potentially removing the
-    hotplug-bridge itself (this needs to be clarified as points 1-3 are
-    developed)
-
-This series is part of step 1 of the grand plan.
-
-Current tasks in step 1 of the grand plan:
-
- A. ✔ add new alloc API and refcounting -> (now in drm-misc-next)
- B. ➜ convert all bridge drivers to new API (this series)
- C. … documentation, kunit tests (v1 under discussion)
- D. after (B), add get/put to drm_bridge_add/remove() + attach/detech()
- E. after (B), convert accessors; this is a large work and can be done
-    in chunks
- F. debugfs improvements
-
-More info about this series in the v2 cover [2].
-
-Luca
-
-[0] https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/0cc6aadd7fc1e629b715ea3d1ba537ef2da95eec
-[1] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/t/#u
-[2] https://lore.kernel.org/lkml/20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com/
----
-Changes in v4:
-- Removed patches already in drm-misc-next -> only 1 left
-- Improve commit message of patch 1
-- Link to v3: https://lore.kernel.org/all/20250509-drm-bridge-convert-to-alloc-api-v3-0-b8bc1f16d7aa@bootlin.com/
-
-Changes in v3:
-- Fixed issues reported for some patches
-- Added review tags
-- Removed patches that have been applied
-- Added revert for the exynos patch, applied by mistake
-- Update cover with grand plan info and trim some of it
-- Updated bouncing e-mail address in Cc list
-- Link to v2: https://lore.kernel.org/lkml/20250424-drm-bridge-convert-to-alloc-api-v2-0-8f91a404d86b@bootlin.com/
-
-Changes in v2:
-- Improved cover letter with link to commit adding devm_drm_bridge_alloc()
-- add review tags
-- fix bugs in zynqmp, vc4 patches
-- fix patch 1 error code checking
-- Link to v1: https://lore.kernel.org/r/20250407-drm-bridge-convert-to-alloc-api-v1-0-42113ff8d9c0@bootlin.com
----
-
-changes in v4:
-- improved commit message
----
- drivers/gpu/drm/bridge/tc358767.c | 56 ++++++++++++++++++++++++++++-----------
- 1 file changed, 40 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
-index 7e5449fb86a3fcdae8255bc490d12c543ef3f8ae..61559467e2d22b4b1b4223c97766ca3bf58908fd 100644
---- a/drivers/gpu/drm/bridge/tc358767.c
-+++ b/drivers/gpu/drm/bridge/tc358767.c
-@@ -344,6 +344,14 @@
- #define COLOR_BAR_MODE_BARS	2
- #define PLL_DBG			0x0a04
- 
-+enum tc_mode {
-+	mode_dpi_to_edp = BIT(1) | BIT(2),
-+	mode_dpi_to_dp  = BIT(1),
-+	mode_dsi_to_edp = BIT(0) | BIT(2),
-+	mode_dsi_to_dp  = BIT(0),
-+	mode_dsi_to_dpi = BIT(0) | BIT(1),
-+};
-+
- static bool tc_test_pattern;
- module_param_named(test, tc_test_pattern, bool, 0644);
- 
-@@ -2327,7 +2335,6 @@ static int tc_probe_dpi_bridge_endpoint(struct tc_data *tc)
- 	if (bridge) {
- 		tc->panel_bridge = bridge;
- 		tc->bridge.type = DRM_MODE_CONNECTOR_DPI;
--		tc->bridge.funcs = &tc_dpi_bridge_funcs;
- 
- 		return 0;
- 	}
-@@ -2360,7 +2367,6 @@ static int tc_probe_edp_bridge_endpoint(struct tc_data *tc)
- 		tc->bridge.type = DRM_MODE_CONNECTOR_DisplayPort;
- 	}
- 
--	tc->bridge.funcs = &tc_edp_bridge_funcs;
- 	if (tc->hpd_pin >= 0)
- 		tc->bridge.ops |= DRM_BRIDGE_OP_DETECT;
- 	tc->bridge.ops |= DRM_BRIDGE_OP_EDID;
-@@ -2368,17 +2374,11 @@ static int tc_probe_edp_bridge_endpoint(struct tc_data *tc)
- 	return 0;
- }
- 
--static int tc_probe_bridge_endpoint(struct tc_data *tc)
-+static enum tc_mode tc_probe_get_mode(struct device *dev)
- {
--	struct device *dev = tc->dev;
- 	struct of_endpoint endpoint;
- 	struct device_node *node = NULL;
--	const u8 mode_dpi_to_edp = BIT(1) | BIT(2);
--	const u8 mode_dpi_to_dp = BIT(1);
--	const u8 mode_dsi_to_edp = BIT(0) | BIT(2);
--	const u8 mode_dsi_to_dp = BIT(0);
--	const u8 mode_dsi_to_dpi = BIT(0) | BIT(1);
--	u8 mode = 0;
-+	enum tc_mode mode = 0;
- 
- 	/*
- 	 * Determine bridge configuration.
-@@ -2401,7 +2401,27 @@ static int tc_probe_bridge_endpoint(struct tc_data *tc)
- 			return -EINVAL;
- 		}
- 		mode |= BIT(endpoint.port);
-+	}
-+
-+	if (mode != mode_dpi_to_edp &&
-+	    mode != mode_dpi_to_dp  &&
-+	    mode != mode_dsi_to_dpi &&
-+	    mode != mode_dsi_to_edp &&
-+	    mode != mode_dsi_to_dp) {
-+		dev_warn(dev, "Invalid mode (0x%x) is not supported!\n", mode);
-+		return -EINVAL;
-+	}
-+
-+	return mode;
-+}
- 
-+static int tc_probe_bridge_endpoint(struct tc_data *tc, enum tc_mode mode)
-+{
-+	struct device *dev = tc->dev;
-+	struct of_endpoint endpoint;
-+	struct device_node *node = NULL;
-+
-+	for_each_endpoint_of_node(dev->of_node, node) {
- 		if (endpoint.port == 2) {
- 			of_property_read_u8_array(node, "toshiba,pre-emphasis",
- 						  tc->pre_emphasis,
-@@ -2427,24 +2447,28 @@ static int tc_probe_bridge_endpoint(struct tc_data *tc)
- 		return tc_probe_edp_bridge_endpoint(tc);
- 	}
- 
--	dev_warn(dev, "Invalid mode (0x%x) is not supported!\n", mode);
--
-+	/* Should never happen, mode was validated by tc_probe_get_mode() */
- 	return -EINVAL;
- }
- 
- static int tc_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
-+	const struct drm_bridge_funcs *funcs;
- 	struct tc_data *tc;
-+	int mode;
- 	int ret;
- 
--	tc = devm_kzalloc(dev, sizeof(*tc), GFP_KERNEL);
--	if (!tc)
--		return -ENOMEM;
-+	mode = tc_probe_get_mode(dev);
-+	funcs = (mode == mode_dsi_to_dpi) ? &tc_dpi_bridge_funcs : &tc_edp_bridge_funcs;
-+
-+	tc = devm_drm_bridge_alloc(dev, struct tc_data, bridge, funcs);
-+	if (IS_ERR(tc))
-+		return PTR_ERR(tc);
- 
- 	tc->dev = dev;
- 
--	ret = tc_probe_bridge_endpoint(tc);
-+	ret = tc_probe_bridge_endpoint(tc, mode);
- 	if (ret)
- 		return ret;
- 
-
----
-base-commit: 18fb864d3afccf7ecdf13d0435464465d31ccf1d
-change-id: 20250404-drm-bridge-convert-to-alloc-api-614becf62294
-
-Best regards,
--- 
-Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+>  drivers/mmc/host/sdhci-esdhc-imx.c | 27 ++++++++++++++-------------
+>  1 file changed, 14 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+> index 7611682f10c3..c448a53530a5 100644
+> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> @@ -728,23 +728,17 @@ static void esdhc_writew_le(struct sdhci_host *host, u16 val, int reg)
+>  		writel(new_val, host->ioaddr + ESDHC_VENDOR_SPEC);
+>  		if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
+>  			u32 v = readl(host->ioaddr + SDHCI_AUTO_CMD_STATUS);
+> -			u32 m = readl(host->ioaddr + ESDHC_MIX_CTRL);
+> -			if (val & SDHCI_CTRL_TUNED_CLK) {
+> +			if (val & SDHCI_CTRL_TUNED_CLK)
+>  				v |= ESDHC_MIX_CTRL_SMPCLK_SEL;
+> -			} else {
+> +			else
+>  				v &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
+> -				m &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
+> -			}
+>  
+> -			if (val & SDHCI_CTRL_EXEC_TUNING) {
+> +			if (val & SDHCI_CTRL_EXEC_TUNING)
+>  				v |= ESDHC_MIX_CTRL_EXE_TUNE;
+> -				m |= ESDHC_MIX_CTRL_FBCLK_SEL;
+> -			} else {
+> +			else
+>  				v &= ~ESDHC_MIX_CTRL_EXE_TUNE;
+> -			}
+>  
+>  			writel(v, host->ioaddr + SDHCI_AUTO_CMD_STATUS);
+> -			writel(m, host->ioaddr + ESDHC_MIX_CTRL);
+>  		}
+>  		return;
+>  	case SDHCI_TRANSFER_MODE:
+> @@ -1082,7 +1076,6 @@ static void esdhc_reset_tuning(struct sdhci_host *host)
+>  		ctrl &= ~ESDHC_MIX_CTRL_AUTO_TUNE_EN;
+>  		if (imx_data->socdata->flags & ESDHC_FLAG_MAN_TUNING) {
+>  			ctrl &= ~ESDHC_MIX_CTRL_SMPCLK_SEL;
+> -			ctrl &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
+>  			writel(ctrl, host->ioaddr + ESDHC_MIX_CTRL);
+>  			writel(0, host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+>  		} else if (imx_data->socdata->flags & ESDHC_FLAG_STD_TUNING) {
+> @@ -1177,8 +1170,7 @@ static void esdhc_prepare_tuning(struct sdhci_host *host, u32 val)
+>  		"warning! RESET_ALL never complete before sending tuning command\n");
+>  
+>  	reg = readl(host->ioaddr + ESDHC_MIX_CTRL);
+> -	reg |= ESDHC_MIX_CTRL_EXE_TUNE | ESDHC_MIX_CTRL_SMPCLK_SEL |
+> -			ESDHC_MIX_CTRL_FBCLK_SEL;
+> +	reg |= ESDHC_MIX_CTRL_EXE_TUNE | ESDHC_MIX_CTRL_SMPCLK_SEL;
+>  	writel(reg, host->ioaddr + ESDHC_MIX_CTRL);
+>  	writel(FIELD_PREP(ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK, val),
+>  	       host->ioaddr + ESDHC_TUNE_CTRL_STATUS);
+> @@ -1432,6 +1424,15 @@ static void esdhc_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
+>  		break;
+>  	}
+>  
+> +	if (timing == MMC_TIMING_UHS_SDR104 ||
+> +	    timing == MMC_TIMING_MMC_HS200 ||
+> +	    timing == MMC_TIMING_MMC_HS400)
+> +		m |= ESDHC_MIX_CTRL_FBCLK_SEL;
+> +	else
+> +		m &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
+> +
+> +	writel(m, host->ioaddr + ESDHC_MIX_CTRL);
+> +
+>  	esdhc_change_pinstate(host, timing);
+>  }
+>  
 
