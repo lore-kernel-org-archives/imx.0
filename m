@@ -1,27 +1,28 @@
 Received: from mail.actia.se (mail.actia.se [212.181.117.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96A22874E4
-	for <imx@lists.linux.dev>; Wed, 28 May 2025 14:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD1427877B
+	for <imx@lists.linux.dev>; Wed, 28 May 2025 14:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748443394; cv=none; b=mDhYysxRRmVEMDTNTz4A74nGrstIS1nS8Ts67mtHGTzv+/NflYFaKWNaKT8/gIvWraMTCn0b/kmC7jO4fhr171OMdtdyVzYtVr8c9ZLLcAYoWfG3d5j3yr60XEB0yWnitQrIn6iWwhDWoll2oEJc/WD4EcUyOPimfXTxAyQ7OGs=
+	t=1748443395; cv=none; b=OB6r+xbA4zBubrT4bV4syve+onmX6O1CeE9pQQXBrZk6OmXRj+FVCi+dwYlzEzakmiXCEnMGuv93yb+JdRHzSyGPf6MAZWLlclm3utymsD5sGJYrEG+h40ikGdHORFxuMq0RvOAyoU8gzmJDlJG1Q24YckC95xdKAVXyVuRm5eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748443394; c=relaxed/simple;
-	bh=lpHAaiWow+aad2BBKkvtJuEQxaOZwqLxi8ae+QrPWKA=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=QIplcXkZ8yKuDZ+Xd0CQljngiPAM1M9r/FH28cgaOIbvPYOIO3VcCeXwyBO2Ro5TVyICfcL1iPOgn/Z0DVWrey7gZhNrhhy4rNxk1h8qU8n1NzZTWZjXCsPh/wRXiUSDbfUieXTcXXIqp/aMgYkBPJdSERT1COKHQ9WIq77ezKU=
+	s=arc-20240116; t=1748443395; c=relaxed/simple;
+	bh=lPkvLuqnIArzHwKYZ3O4kp4RNaEm/NYSJXDcaA05IOU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=VdkjFEY+z/+D41FG6HHdg6KcmKol1lRy6RGoO2LkpUC6Ej4q838B/72fvs2u6mYDCXcnzdl5P3KJqmXjafPyJ75WWnqGYs7Ei2ynQ7Sh+MXyRExCeLHm/MPUgxxVQAyA4ysDoCFqxwF2bLtiKRyxVaqF8o1ZBKpAjijdbO9Ewvo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S036ANL.actianordic.se
- (10.12.31.117) with Microsoft SMTP Server (version=TLS1_2,
+Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
+ (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 28 May
- 2025 16:43:07 +0200
+ 2025 16:43:08 +0200
 Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
  S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
- 15.01.2507.039; Wed, 28 May 2025 16:43:07 +0200
+ 15.01.2507.039; Wed, 28 May 2025 16:43:08 +0200
 From: John Ernberg <john.ernberg@actia.se>
-To: =?utf-8?B?SG9yaWEgR2VhbnTEgw==?= <horia.geanta@nxp.com>, Pankaj Gupta
+To: =?iso-8859-2?Q?Horia_Geant=E3?= <horia.geanta@nxp.com>, Pankaj Gupta
 	<pankaj.gupta@nxp.com>, Gaurav Jain <gaurav.jain@nxp.com>, Herbert Xu
 	<herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, "Rob
  Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
@@ -35,22 +36,24 @@ CC: Frank Li <Frank.li@nxp.com>, Pengutronix Kernel Team
 	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
 	"linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, John Ernberg <john.ernberg@actia.se>
-Subject: [PATCH v3 0/4] crypto: caam - iMX8QXP support (and related fixes)
-Thread-Topic: [PATCH v3 0/4] crypto: caam - iMX8QXP support (and related
- fixes)
-Thread-Index: AQHbz97TPuW5MW56gEKcuq8Jspje1Q==
+Subject: [PATCH v3 3/4] dt-bindings: crypto: fsl,sec-v4.0: Add power domains
+ for iMX8QM and iMX8QXP
+Thread-Topic: [PATCH v3 3/4] dt-bindings: crypto: fsl,sec-v4.0: Add power
+ domains for iMX8QM and iMX8QXP
+Thread-Index: AQHbz97TDhLekXOKbkmerT2PfEO8vg==
 Date: Wed, 28 May 2025 14:43:07 +0000
-Message-ID: <20250528144259.2603914-1-john.ernberg@actia.se>
+Message-ID: <20250528144259.2603914-4-john.ernberg@actia.se>
+References: <20250528144259.2603914-1-john.ernberg@actia.se>
+In-Reply-To: <20250528144259.2603914-1-john.ernberg@actia.se>
 Accept-Language: en-US, sv-SE
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 x-mailer: git-send-email 2.49.0
 x-esetresult: clean, is OK
-x-esetid: 37303A2955B14453607C60
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <47E64EBDE00C974EAAF9F94B34C0B364@actia.se>
-Content-Transfer-Encoding: base64
+x-esetid: 37303A2956B14453607C60
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,29 +61,111 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
-VGhpcyBzZXJpZXMgZW5hYmxlcyB0aGUgdXNlIG9mIHRoZSBDQUFNIChDcnlwdG9ncmFwaGljIEFj
-Y2VsZXJhdGlvbiBhbmQNCkFzc3VyYW5jZSBNb2R1bGUpIG9uIHRoZSBpTVg4UVhQIChhbmQgaXRz
-IHZhcmlhbnRzKS4NCg0KdjM6IChkZXRhaWxlZCBjaGFuZ2Vsb2cgaW4gZWFjaCBwYXRjaCkNCiAt
-IEZpeCBkZXZpY2V0cmVlIENJIGRldGVjdGVkIGVycm9ycyAoUm9iIEhlcnJpbmcncyBib3QpDQog
-LSBEZWNsYXJlIHRoZSBjb21wYXRpYmxlcyBjb3JyZWN0bHkgaW4gYmluZGluZ3MgKEtyenlzenRv
-ZiBLb3psb3dza2kpDQoNCnYyOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC1jcnlwdG8v
-MjAyNTA1MjcwNzE1NTIuMTQyNDk5Ny0xLWpvaG4uZXJuYmVyZ0BhY3RpYS5zZS9UDQogLSBDbGFy
-aWZ5IGluIHRoZSBjb21taXQgbWVzc2FnZSBob3cgdGhlIGNyYXNoIGZpeCB3b3JrcyAoRnJhbmsg
-TGkpDQogLSBSZXN0cmljdCBwb3dlci1kb21haW5zIG9ubHkgZm9yIGlNWDhRKiBTb0NzIGluIGJp
-bmRpbmdzIChGcmFuayBMaSkNCiAtIENvbGxlY3QgdGFncw0KDQp2MTogaHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvbGludXgtY3J5cHRvLzIwMjUwNTIzMTMxODE0LjEwNDc2NjItMS1qb2huLmVybmJl
-cmdAYWN0aWEuc2UvVA0KDQpIb3JpYSBHZWFudMSDICgxKToNCiAgYXJtNjQ6IGR0czogZnJlZXNj
-YWxlOiBpbXg4cXhwL2lteDhxbTogQWRkIENBQU0gc3VwcG9ydA0KDQpKb2huIEVybmJlcmcgKDMp
-Og0KICBjcnlwdG86IGNhYW0gLSBQcmV2ZW50IGNyYXNoIG9uIHN1c3BlbmQgd2l0aCBpTVg4UU0g
-LyBpTVg4VUxQDQogIGNyeXB0bzogY2FhbSAtIFN1cHBvcnQgaU1YOFFYUCBhbmQgdmFyaWFudHMg
-dGhlcmVvZg0KICBkdC1iaW5kaW5nczogY3J5cHRvOiBmc2wsc2VjLXY0LjA6IEFkZCBwb3dlciBk
-b21haW5zIGZvciBpTVg4UU0gYW5kDQogICAgaU1YOFFYUA0KDQogLi4uL2JpbmRpbmdzL2NyeXB0
-by9mc2wsc2VjLXY0LjAueWFtbCAgICAgICAgIHwgNDUgKysrKysrKysrKysrKysrKysrLQ0KIC4u
-Li9ib290L2R0cy9mcmVlc2NhbGUvaW14OC1zcy1zZWN1cml0eS5kdHNpICB8IDM4ICsrKysrKysr
-KysrKysrKysNCiBhcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4cW0uZHRzaSAgICAg
-fCAgMSArDQogYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OHF4cC5kdHNpICAgIHwg
-IDEgKw0KIGRyaXZlcnMvY3J5cHRvL2NhYW0vY3RybC5jICAgICAgICAgICAgICAgICAgICB8ICA3
-ICstLQ0KIGRyaXZlcnMvY3J5cHRvL2NhYW0vaW50ZXJuLmggICAgICAgICAgICAgICAgICB8ICAx
-ICsNCiA2IGZpbGVzIGNoYW5nZWQsIDg5IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pDQog
-Y3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDgtc3Mt
-c2VjdXJpdHkuZHRzaQ0KDQotLSANCjIuNDkuMA0K
+NXP SoCs like the iMX8QM, iMX8QXP or iMX8DXP use power domains for
+resource management.
+
+Allow specifying them for such SoCs.
+
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+
+---
+
+v3:
+ - Fix warnings discovered by Rob Herring's bot
+ - Declare the compatibles correctly (Krzysztof Kozlowski)
+
+v2:
+ - Adjust commit message (Frank Li)
+ - Only allow power-domains when compatible with imx8qm (Frank Li)
+---
+ .../bindings/crypto/fsl,sec-v4.0.yaml         | 45 ++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml b/D=
+ocumentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml
+index 75afa441e019..a4ada0e2d97c 100644
+--- a/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml
++++ b/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml
+@@ -46,6 +46,7 @@ properties:
+       - items:
+           - enum:
+               - fsl,imx6ul-caam
++              - fsl,imx8qm-caam
+               - fsl,sec-v5.0
+           - const: fsl,sec-v4.0
+       - const: fsl,sec-v4.0
+@@ -77,6 +78,9 @@ properties:
+   interrupts:
+     maxItems: 1
+=20
++  power-domains:
++    maxItems: 1
++
+   fsl,sec-era:
+     description: Defines the 'ERA' of the SEC device.
+     $ref: /schemas/types.yaml#/definitions/uint32
+@@ -106,7 +110,9 @@ patternProperties:
+               - const: fsl,sec-v5.0-job-ring
+               - const: fsl,sec-v4.0-job-ring
+           - items:
+-              - const: fsl,sec-v5.0-job-ring
++              - enum:
++                - fsl,imx8qm-job-ring
++                - fsl,sec-v5.0-job-ring
+               - const: fsl,sec-v4.0-job-ring
+           - const: fsl,sec-v4.0-job-ring
+=20
+@@ -116,6 +122,9 @@ patternProperties:
+       interrupts:
+         maxItems: 1
+=20
++      power-domains:
++        maxItems: 1
++
+       fsl,liodn:
+         description:
+           Specifies the LIODN to be used in conjunction with the ppid-to-l=
+iodn
+@@ -212,6 +221,40 @@ required:
+   - reg
+   - ranges
+=20
++allOf:
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: fsl,imx8qm-caam
++    then:
++      required:
++        - power-domains
++    else:
++      properties:
++        power-domains: false
++
++  - if:
++      patternProperties:
++        '^jr@[0-9a-f]+$':
++          type: object
++          properties:
++            compatible:
++              contains:
++                const: fsl,imx8qm-job-ring
++    then:
++      patternProperties:
++        '^jr@[0-9a-f]+$':
++          type: object
++          required:
++            - power-domains
++    else:
++      patternProperties:
++        '^jr@[0-9a-f]+$':
++          type: object
++          properties:
++            power-domains: false
++
+ additionalProperties: false
+=20
+ examples:
+--=20
+2.49.0
