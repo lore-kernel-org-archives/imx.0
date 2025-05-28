@@ -1,88 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4B726A0E0;
-	Wed, 28 May 2025 13:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B55220E6EB;
+	Wed, 28 May 2025 13:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748439586; cv=none; b=R4CAcwUVZhwcltaY74KloXtOTZYHas3jitYKS/NG1r17IeyWyLSXmAYBnhG1CN7aacM65EotwoKvj+GM09gciNzriqmcTE/GtK65mS3lSEJWaco2BcWfVjjpvYBDFeBCk2xevUC6Xbs52YMpBSXgIxm3MAGu/HKBaql4AxunYKY=
+	t=1748440650; cv=none; b=gTvQoaaRi2i5pk5aa4fjGOepcMEw5WknAcmh3JTXhwmXpIIGiYs81O1cs3yjls0CPFtDHEW1WCjcwMNGNVrsMKAJm9pOL5Qhkvz4mlW+Mjh1nBrJSuQBJ9GR6nq6EsQdFvlwH5Z7J6Y+Qx+ADns8d6apu4VV2nMXs3DUfbm/Yg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748439586; c=relaxed/simple;
-	bh=ZDCkiWTSUutPpidL4yxIxvrpNX9oGUvaRD1iiumCPrA=;
+	s=arc-20240116; t=1748440650; c=relaxed/simple;
+	bh=re9cRmPSpTjjnS1xkzSl4ZvxwlyiJAj7HZDGSgvROcE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Slar2TcWOufQSKt+J+NvqNb2/msMeKlplVG6kPa6+iG2qpbx/RsVVkRsjJPIYZOaDxpB3ZiQy70BUa6ZcnmXEU4IwQeXvLqwS0y3rXIbxBmb5jAxdIrQxj4wwuHozza8rrRM+QHXTwM+a7rgiBMtwzIlmGThOwtByBF15mcKCNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IhgsVX/V; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=dEBR2Rc1zX9POgR8GrQQ5nDWrmmPxe2Z8zgmlNxm1L5iQaub5rNC6pAaC9BclXr233xCjO9yzChTc2C7nEl2dfnpDQYpjZb9SnTy1QAvIm47JbDWaBEVqNQBdZES90/rsXWHWe/IMzc6gDyM181AWF4QTEpPPjlNpYIbOc2oPFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rxx79Xja; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IhgsVX/V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C48C4CEE7;
-	Wed, 28 May 2025 13:39:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rxx79Xja"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89C6C4CEE3;
+	Wed, 28 May 2025 13:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748439585;
-	bh=ZDCkiWTSUutPpidL4yxIxvrpNX9oGUvaRD1iiumCPrA=;
+	s=k20201202; t=1748440649;
+	bh=re9cRmPSpTjjnS1xkzSl4ZvxwlyiJAj7HZDGSgvROcE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IhgsVX/VgZv4mWKaIDhGq6Sy6mSnktVxPrbhwjX02DgsKX8s2yF6syckTB/0CYKZB
-	 L3fwJ81DTGtaHSvdmzeXNEfxapzoddam2d1YuhPC1fkKX4tT5XoY3MbiShhzzhN2At
-	 QT24NHe9A2T3A+ag5RRG4uef7m2cPbg83mMCJcq66IXft15D4+Rxe+M7hrogLlfTEo
-	 o9LJ0fawVDictOX7WVHoIeHeIRGJqUj44RnxedcsPjjpcmqc4W5eIBsqM3LlCEe410
-	 PGgUd1o9b/L3ELyMpPz8CtS1x54zijcL1yS+w/5+YqjVWX/Um0+mofy0ZwQ1ArElJ7
-	 vscuhtbAGfH1g==
-Date: Wed, 28 May 2025 14:39:39 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, michael@amarulasolutions.com,
-	linux-amarula@amarulasolutions.com,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
+	b=Rxx79Xja/lpk9Jv96m91WBwxJVpbig0PH+b3FXzT2BVLwQJHaIUnCM2KsR7/VNAR8
+	 5tLUVDfGrhMpLSU6PxOQUL3e0cigY+a2Ka1u/F4pMOhrbkuV5hW7CKoBcnSCQOtwOW
+	 X685PM4Fq7qW5h8ruQfyMv5aX0uDY//ips2p5osVrAKO4PKBa944IngsY9K02pYWZd
+	 16FE/R9FZQ50P6LkAoStIxhJa6LE1tPnN2dXTmPdug8tM0PVg+yE8V0XTI3RxQyrxW
+	 IO2KMLKlfutlThMmSYvjFi+zj4D/aAf4fBl5Ynl/82H5Gt7Cm+ERZLYeTwJzcfs5gv
+	 M0fjiAHOphslQ==
+Date: Wed, 28 May 2025 08:57:28 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] dt-bindings: mfd: convert mxs-lradc bindings to
- json-schema
-Message-ID: <20250528-kitchen-snowy-e9a97843419f@spud>
-References: <20250528121306.1464830-1-dario.binacchi@amarulasolutions.com>
- <20250528121306.1464830-2-dario.binacchi@amarulasolutions.com>
+	Thomas Gleixner <tglx@linutronix.de>, imx@lists.linux.dev,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: timer: Add fsl,vf610-pit.yaml
+Message-ID: <174844064699.3859704.6624203332315321505.robh@kernel.org>
+References: <20250522205710.502779-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hItL2TUlX6LkKJfG"
-Content-Disposition: inline
-In-Reply-To: <20250528121306.1464830-2-dario.binacchi@amarulasolutions.com>
-
-
---hItL2TUlX6LkKJfG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250522205710.502779-1-Frank.Li@nxp.com>
 
-On Wed, May 28, 2025 at 02:11:38PM +0200, Dario Binacchi wrote:
-> Convert the Freescale MXS Low-Resoulution ADC (LRADC) device tree
-> binding documentation to json-schema.
->=20
-> The clocks and #io-channel-cells properties have also been added; They
-> are present in the respective SoC DTSI files but were missing from the
-> old mxs-lradc.txt file.
->=20
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+On Thu, 22 May 2025 16:57:09 -0400, Frank Li wrote:
+> Add binding doc fsl,vf610-pit.yaml to fix below CHECK_DTB warnings:
+> 
+> arch/arm/boot/dts/nxp/vf/vf610m4-colibri.dtb:
+>   /soc/bus@40000000/pit@40037000: failed to match any schema with compatible: ['fsl,vf610-pit']
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/timer/fsl,vf610-pit.yaml         | 54 +++++++++++++++++++
+>  1 file changed, 54 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/timer/fsl,vf610-pit.yaml
+> 
 
---hItL2TUlX6LkKJfG
-Content-Type: application/pgp-signature; name="signature.asc"
+Applied, thanks!
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDcSGwAKCRB4tDGHoIJi
-0soAAP9SfwHOSL1Ms8FpK7wxpbph1w25Kea+OlBcRLmP/UiQRAEAsqbLvfI5diEw
-y90b4EL9sNqb/XkTmdiiZmLczzii1gU=
-=5qe/
------END PGP SIGNATURE-----
-
---hItL2TUlX6LkKJfG--
