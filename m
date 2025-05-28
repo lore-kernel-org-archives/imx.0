@@ -1,62 +1,69 @@
-Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012030.outbound.protection.outlook.com [52.101.71.30])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013066.outbound.protection.outlook.com [40.107.162.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D169628DEEF
-	for <imx@lists.linux.dev>; Wed, 28 May 2025 16:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6BD279345
+	for <imx@lists.linux.dev>; Wed, 28 May 2025 16:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748451250; cv=fail; b=hlVHjuF8VaRVcP88dGDA4dJmnuFsssEt37G/Ba0UP9AmNbADTRVLfktTlxRBszp5yZZG2O1fxArU8RQF9tR/JxcEhWsNOcexRoYVppXb/hPVkDUeGPeEO6f1upUjedI6GwZsCjdzg7EEbPlf30btJTytwX+c0iRyGpA3eHSOpPY=
+	t=1748451494; cv=fail; b=PhqpcR2AbgME+IsqzA3dGiLrQg96m8gAgpT5dBouKBhGf2eeSrMEuWTawWS4nuq0YmoB8cCOz0Y1wsatUdBGcrZmWeM5hpfzh3/Xe05Gssb8LomfyuAMgvwfgzENIrx2Hngh/Kj7ZMArICkyZj+H4aJALMmK6oseApGAybDliEs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748451250; c=relaxed/simple;
-	bh=9dq44V3jexx/ROrVyBTbo+Vk9UIv52z3tYubsYgRtVg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=sY9wdIZTFwk8MKgh7Xpz3stPBHmASlSuVKt0SJi1ml2tG3LSatgFxCgc5xrP4vBiNop35FvYaQJpsQAzZMUEDO9VPAb4mxkG8uHTjhz7xRcuLnE4aCr/3aIS2M+iprHkbzf0AcBJ1NZXKqw2BLFHQ8pyC7BW0MV8ZPgAJs3I6DI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=F0aidZfZ; arc=fail smtp.client-ip=52.101.71.30
+	s=arc-20240116; t=1748451494; c=relaxed/simple;
+	bh=ozOzZY6urZundEvZG4zLf+Lpb0ip7fvQeREuna5HTQU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=JfZmGRWZLt2WK3m2qzS4X5MLQ5iK1cHtHZGixbuRbq+0x0+lxusJdSboZtzE+uT9/kDDp6VwHaZ9teH2yfuYT63bE7+WQ+V6IgeSQzr+VObgLWmo3QHvBwKGtDXz6bLOxf+hl/FkwGlhSmZfHbHM3rBlkrYRRMkZlmz9QkGR1ts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ldlis5DB; arc=fail smtp.client-ip=40.107.162.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="F0aidZfZ"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ldlis5DB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d98Bo5HorWG7Z/kviIbFx+OqhMWcjJkruYVMpdPvVdOAP01t4HI4dmFFR7cHtljT35bhMjoC1i4B2c74Syugxq0cYxwT6PRCkJp4VDBm1Dt5WvKw0DRYXlTCtQC3dnv6UuhWlcgs3JU+z+PrzXeSVQ+H/LufNmzX5PsySsp2bCjGAL0jR8eTesVU5barsomAZeSc5Pj75sxvl+yULTvoP4H1XgwNCTCOQC9FuiFFCkeaVDk/bnAOUIyVhwv3tYoeBikq5Bbh8q/LDezBmAaY6tKmWdhFfafMf3G51DFBm69IFvIzFmIwhnJJioQk8FtZVpGmmuM/gezV2QTLlX8kew==
+ b=LETDBSKx5+aS/ov3i785RXH4bgoZ55xttLtZFtJ7uOFAUY0Wba0nX1nO4raqS4uuqnnbiu1o/FB3CoCLa+uqesYTwJDJK0lJJtuB01ivI10BXb7HxDbtMNBDcuv7D0JE/CpPyR2If9yA3L0PbX1mBO/naZRf29+OZjjrOtw+P9ADv9/hWhhgIKCHDtPTEC3/65ryIXLWlQU+oZ+w7HpmUQ61FmqdBlmgC5YIyos+kyleI96vAvxUtVX3EXyW2wzKLHNvY3vRQN2buO4fm7OsPY4qwBhdFNbU+8TmplVpmx9Y+cnFxvIaJbEtJuFtJrR5DWr325kWqh5WyI3iPsQ/kA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D5jxRVhVgT+JU6fEKLUnYA9V55vlaWRPJkUb+rvbWRo=;
- b=EPiY4WOyWOvixb8+0BJJWavAJf+ddaSkXzjZSH2lEjmbaUTiVyuB+lKQGENf1iAJeeBz0yTWSJfN5Z3ZegCVHFOWLUaJLldET00HudnxXancU2XOe1d/Vcfkyhv1ZWPpWyRgafVX/yIndDSSLoV8OH8g1lKzPyvyz/qCNl/7V01BWFZ0INkNoL0ET3eH3VwSSnyowchIhWRUL3fxZsUCkUTTPTusu4mwJq7mxYalVBcGhSYuK3ocA1U3fEHKvr/MjEzeHtK3yJxxhx4GDD9mlkUWlCb5qFxVO+U/gRF/h/qaUXWkD9mQXPSPOzt5tnMyake3c5AQM/FOsx4BKvU5ow==
+ bh=zjuWdef5oVzDmwgaKRtYhv2671eT5+5kVduoecCF15k=;
+ b=CVpn6IEMP+/8TB75ZhqP2VkeQ0EG7TtqmPGYKo6AuI9XRPFfPrftp2GNh/DIZx6/QYfZ/5H/szmKcwtg5ppBEJ4Gi3nNYxCHUIIShuBjpcDQdmvLAXEkjlWzr+9KOS2lqsRpKzD9hcH/PH0Z1jJY3F8XVQbI/meRw7a6kHSvt+U9BqYHN6B+mDTiTlBiG8p6vrKycNJNOvKJ6Ta9ESHFCTclq5Da4IjvMHEKBmQKcKY9mXrCT84rpW8enKa8i/nZ8rx5XcpbAXWbvlzayoHObtvInmTTCBVrUX459J13J57qUkWH8lCFaMvsHCDXSeKkuZe/0D+HwXBdGmFalVOo+Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D5jxRVhVgT+JU6fEKLUnYA9V55vlaWRPJkUb+rvbWRo=;
- b=F0aidZfZEPMPIzZsQSE8bA5GsT5mWVFzrMmUQfYXE6cWIXDJ4SmXBC4VzmBkvEOzdZft8N0T5cvDDAz4UdEOm8MIr/LQcqKqKSPvIEUXN0e6eN1aJocJIIXLB0q09BirLH/IwABvjjwaOzP7TUPY9/SIyJFzJ7PQuXeyPp32lSnH4esple3CdRvkMgU++iFtlMM3eANFHp9c08weY17hqIlUCeWvNxIeQpsRQZ1tGgLRF7Rc2QAO0AwJYMI3dXwFXwHAFn+VSi5HIQKseiBBBGsI10b4mnSxerghkq/G1bW8U2y8WC63cnGaBxAMuf+VEJGhr5NyZd9U1BZl8FZcfA==
+ bh=zjuWdef5oVzDmwgaKRtYhv2671eT5+5kVduoecCF15k=;
+ b=ldlis5DBESqPjx3wiGp5uylTZ2glgp06tOe5H3lspEgzn8CX34BjhJrQLNO7qTWp9cz+hA0u+0Hr7DOqr+hUBfuXHsCTrCbM8/2iQHXAdNIcuDdR5vNguWObqE2yilC/WbvGtgMPKwQFzTHvonDG355qP1HSUgwJNXGjtW7ffMIAbZzKeHjvuUns4dXyPwEQ47zDaI75R/ZntWzStQP9RAXX30Bpru+TXjqdGtLf9yjG0z1V0gliTvEbc0cPWkEBe2RNUQzLxow0uLgVjh1bxrcCDpzb79UXOUQVpqrXk94V/XHp8D/BGjoTjuDcuXbWAkCoqc7LuJHMNjiTovF/Gw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AS4PR04MB9265.eurprd04.prod.outlook.com (2603:10a6:20b:4e0::8) with
+ by VI1PR04MB6925.eurprd04.prod.outlook.com (2603:10a6:803:135::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.26; Wed, 28 May
- 2025 16:54:03 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.29; Wed, 28 May
+ 2025 16:58:09 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8746.030; Wed, 28 May 2025
- 16:54:03 +0000
+ 16:58:09 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	linux-kernel@vger.kernel.org (open list:CLOCKSOURCE, CLOCKEVENT DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-sound@vger.kernel.org (open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH v2 1/1] dt-bindings: timer: Add fsl,timrot.yaml
-Date: Wed, 28 May 2025 12:53:50 -0400
-Message-Id: <20250528165351.691848-1-Frank.Li@nxp.com>
+Subject: [PATCH v2 1/1] ASoC: dt-bindings: covert mxs-audio-sgtl5000.txt to yaml format
+Date: Wed, 28 May 2025 12:57:54 -0400
+Message-Id: <20250528165755.692264-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: PH5P220CA0005.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:34a::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BYAPR05CA0067.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::44) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -65,109 +72,115 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS4PR04MB9265:EE_
-X-MS-Office365-Filtering-Correlation-Id: 465a6cc8-6eef-4af4-6736-08dd9e084002
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB6925:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0aa5a42-714e-43a7-da7f-08dd9e08d2d4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|376014|1800799024|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|7416014|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?R7p5wh5/xMDGvwu48bz4446YFg1wZYCDIofEFXMLWHxz+Jin/eSkfJI56/Xw?=
- =?us-ascii?Q?KRlsAyvZul7v42bW7pTG7SlQuMfu0Euz2jbhnZii3I5KBSmnoFsncmvmYAgM?=
- =?us-ascii?Q?agPXaQSOEpyuyM/wMky0k0PBWCvyZbo+wLtW0ua9JRIBw0c2Th8+nas9JPhV?=
- =?us-ascii?Q?1lVMwYdjd0ex3zeXZR3q4jjC5Z9U/MVbslnwRngRNCPZHmv2NlHXwfxAM0OH?=
- =?us-ascii?Q?yeYZgbOXZBAiR2lr5hgD99i2XqGZQqNwwaOhI73vR9QiFRb3OVL1r9EOTRKr?=
- =?us-ascii?Q?jc43/IGWnzLN+j9CKY9LYhZ2nL/eVmhPQ7+qNZr8g96ZkFUeTpbFPE9RmBgC?=
- =?us-ascii?Q?iNriNMw8O0dMuygybLFNndWMgLJf8w8Q+C+0HL+a1k4zSfKTfE7ZdZ5hB40n?=
- =?us-ascii?Q?XQh64tM2+09dKDEZ3D0xn4vy9HqfZYR3IPE3LJ/AB9bkR34OtZlPMZfZan2D?=
- =?us-ascii?Q?lcPrLHMlMXwxGi+2sSPyFIVLoZS/I52QHi4RJIzth238sQcJC8bOqsEb/EcQ?=
- =?us-ascii?Q?kjHuBu4q674Kl7w2o7f5xOO0SNfE1bga6TOX2NXi6RcMClN7q4KFd+9UDp1d?=
- =?us-ascii?Q?jndjouzSTAPePd8WZESxBH1AEFhXNXIYXbAkJjMo4YHvNndymbTeTm7qvVHX?=
- =?us-ascii?Q?PdB+ydTeCs85v+lGJoe6RL1nx968yK4v0oh6nb4HJHXKoyeFN9KNV6JF0uuV?=
- =?us-ascii?Q?aM7xqA6pA6x/MXj38JSWOTlr5fW1r2H5hNopTvh6cgLgfk2uOyEn+zXp+tYN?=
- =?us-ascii?Q?EMwUbqGZ+lmoBp181EQg0CT5vjRWUQe3Kow0gs8Y1crHn96Fcxx7aVOKKSeO?=
- =?us-ascii?Q?AKcjNdmB9tCvTuvOGWL6Zz0xxLURIbxDZeVJqg/ANpDIJY6k1l9gr3T3xoXn?=
- =?us-ascii?Q?tGBE4051z9ywMV/ulJVbZ3i2yLrQ62pqTuvt8kP/2BXxQnb4ODELvljxhJGn?=
- =?us-ascii?Q?lQTXVwIXeRhV7HfTzatZAT62gESEBhyFqhu+9TmFsMZo//QOTyGE5v9ZzSOL?=
- =?us-ascii?Q?u1YbG24zslRpP2qdXpRDGTqW0TKXrsjpMpl91QtZ/9CHIdrsQSUz9LmgcGSe?=
- =?us-ascii?Q?wiUew+Op1nlNZkcuKdj554v3Ira7yl2Tt8HZzeA1r+qh2L5PaCFFiFGBmFOC?=
- =?us-ascii?Q?4y4lPwkpZEUCJqff1lzY8fnmaZqq9zWClR407jY17vko9xaxJE+fh9uAEmri?=
- =?us-ascii?Q?XvoAiRIQR0xvDzdeLlNijPKYObm16jBEPebeQsxKMNCkwlrgyhoxOqkeNzAj?=
- =?us-ascii?Q?ywzjIF2KDyj25+4LC0+v5WuoLDf59t/m0kCrrO9BNxyZ0sALExarW4ikugQ3?=
- =?us-ascii?Q?kWwB1l4XlgrhyjRzTdCAfJbsjJ0CclsihdFRoEby9leMCNG99FjmJrLpPW9a?=
- =?us-ascii?Q?8acEtXw3pGF6ISopc5kY9FHfkQ6hahdNeN6sK8DTtUisxXi0q3ttX26QVDP3?=
- =?us-ascii?Q?V2hZ/NRnDmFTMh5JqiEdfn/kbbpt6rbF?=
+	=?us-ascii?Q?+hbf3H+Gw+OCIp1Ygqo+jePT6dJokU7gEMRxY7FLT7Ex4fzZcMDAqZ2OSqdp?=
+ =?us-ascii?Q?GHTdgRJyetwUMBdwIFW58jhdQ1cjVkdLDMOzrOuQ/RM+hQj/c1WR/7IzTvKi?=
+ =?us-ascii?Q?IqjbjcahlbhcJQ4DqBUCKtQVka6U9UN9Rgot70iXWJNq0IlKcWfNt/5rXK/k?=
+ =?us-ascii?Q?NQ0+1UuDNl7TwNmI80Af0V5lmHDz9GLfZU+QBHiVH/ySiS62PkjW9Wkvtflb?=
+ =?us-ascii?Q?yGCrZybL4ScMfUKrXd5V6OX0Z+wXRNrTpHo4c42Xt2y84lCWdyMl0juVnk6q?=
+ =?us-ascii?Q?xc1li4mfghW283RxdQ2ZHvcqqS4FH5gm4mtjzI5WTpnDG89lTgu4TvCGmNGU?=
+ =?us-ascii?Q?ebYPOi86SN8Mcrb+BChv/FdcBnF/uIBCTVLcQZ0zb04y5Wpk4MfUza0/aQIo?=
+ =?us-ascii?Q?rgVungpmRZD9rQKaDyOvOJbJDwJaZZFM9cKDKwMZ4YL+cg1EsHiIPtxxbDfI?=
+ =?us-ascii?Q?42kFKMSN7IiaVSwj6BdT5iTaJtZtFTys/fxiPfNEuNYgdTjo+Rjb1lngMv+H?=
+ =?us-ascii?Q?vBwV2kW9cxBu3Vgn/vV7ibx3nhb9wXPTnD1l8Psls3CpVZF5emSMyWYP/KgD?=
+ =?us-ascii?Q?58q/qVB3AZFHVexJdGyW8d5G6A/CgBmyMKdfTFyv0g9Po3jUibp1QVgBoZVN?=
+ =?us-ascii?Q?RMFhxDQUfCahIdteqSCT46zHPnRTNqJzHTlfaMTJ7BN+qLeOBQeSBYCElHBw?=
+ =?us-ascii?Q?J//Bx4s1JHrGOcqOQrqdTuII0JWySfQ63F3jzt9jPGwozpNDlPKYnPzqf6v/?=
+ =?us-ascii?Q?Q9lQPg3oQ4y/T7PBitCp7f2H7pG61AcBOeeDOdFaj3uVqShKPSPJ9FYudKV2?=
+ =?us-ascii?Q?ypYzfbbMS4acG3zkv0QRSZMv8bqvXv+8PL3DjQjYK5KqRuolvZs2OqR5DZ//?=
+ =?us-ascii?Q?upJ/fRhd3qnYM37yXDu37n0+JR0CDiug0klrgdqppt16fuUQIjJwqMAIiO7z?=
+ =?us-ascii?Q?uSf9S/RJ+GD0qbQ8GT32xG7GmB8PCQSvWNW/+Z7S0KYebE3r7YkSFaVA/e3c?=
+ =?us-ascii?Q?kVJcs715qe/qFuKNnNhlDWsvGxXk/PTBKpzDkOPNGL+Ayt8t3NRPyMng0iMP?=
+ =?us-ascii?Q?K5aUjXd1kE6IuA2mPBb0M7BD2QTzMiPOsG8HklvXlG4vT2yvYwd8eWpZUAK5?=
+ =?us-ascii?Q?19jCpRrBMiqyxogjh+gruFO+aNUhk4DU+F8O+Ou7ntmWNeZyodCc3VqHx3wb?=
+ =?us-ascii?Q?PFzovKW30U/BXsv20LrQn1pvW20zedChnGC1ZaPweIEiW5T9R4Fnk8L9yJBw?=
+ =?us-ascii?Q?Q+X/MP3MFrhOrZO0vY2LPispZwwTPyMaxQy5kepx+MdwIkQZaHnLe2FfbtMa?=
+ =?us-ascii?Q?oYzpfOF8vM7nGYLHDMxPeklbZqzlfKCpcGJVH9ImxEP4rcb/wqyKJk3znwJG?=
+ =?us-ascii?Q?rISy3u2g7C8kVpbDr6abH2AkgkLOOHLlYl1iFgeybd5HI8Z61E83x0HBUI7o?=
+ =?us-ascii?Q?hAC37WX+fcnMieG9y7b8NIie1yK5wx4V?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GYzX7BYBbKg6hpEgwKa9zpGv3YLabe7JBmNFzVDAabrgpwzVXA6Krx2PcLg+?=
- =?us-ascii?Q?3ifgcDmeAAIHR4kQhwqfBuuK15aTQjgx/3NiAbcXovXyqIUu5tdU4iWwxQbr?=
- =?us-ascii?Q?Mo0IDkVd9q9nCCnfjOTz+p7c0Ah2hXbLIpUqEJsBzj7nIVL6BTTWHMWKkvzm?=
- =?us-ascii?Q?YzoFxsKXL05vpzDVQfCJXlzOM5E1BF60oJ0yGDmKI79EIMgGCDN/Q51m9Zh4?=
- =?us-ascii?Q?gZ3YKOqUIayVRHkT2mANqBwXnVOTg/7wCmqlczba4YuaSQT/+y7PJtdRj5m/?=
- =?us-ascii?Q?j11EJKwxUS71z9AKyboeaBsNyMH+CypSyx5iKVuZn0SALc0HUV4UVQy5rCjb?=
- =?us-ascii?Q?G0c2xMMFJVH58QaxYQqA/PIaBiBl8OvERwUAILKW+RU/HhOf369edTOiz9jo?=
- =?us-ascii?Q?M9TZiEd90BTRGKURj9er8mOEJk9Gax0ZVnC1tkjVsNnAZ7tabmN8736Dhm5v?=
- =?us-ascii?Q?4NmJqoVF3XAs0yLVVoySGkzLKpOJMcw/c8FaXK7+tDzMCAKv3M4o5X7WnF3M?=
- =?us-ascii?Q?X8QLU0aVxodz8qkE6oXRSjUftkIXDjbtmWRZsLqcto3u7Isj9aW0mPuWE1hL?=
- =?us-ascii?Q?9ZWlK9u6qoCC7lwpXocHJjQs4yfR5z6rcbicAEdZjaJr4oRdYhIPxE4d843D?=
- =?us-ascii?Q?c/el+h5JWbACIHPEM+oPh6IcNDSB/vzd3EuvU3+/VXACW8f+gTSMSroswcSO?=
- =?us-ascii?Q?nP2QwguvN4MGVrlqu//j7DfERyqjY2rZ82+iUZU6jmK+9ftvezDcTnORqQaR?=
- =?us-ascii?Q?Qi7wlIghvDvUhkAVVBymR0o2txZEnqL6bnpL5DLE2EO+LXeLGjSdU9pNlPql?=
- =?us-ascii?Q?nULPMQX0mnj8fVGPHGi7rQrWGq1JteWiXt/NSwwrNTSzCGdK9nnbyYjzvPCD?=
- =?us-ascii?Q?PsvrvDPxkfg/R/0X62EQMD22ViCMc4nsdqORHbvRC00aVUNQUBRPFJVDdVxY?=
- =?us-ascii?Q?7OEDhauwA6kI5hf3j7gqLxcX5lQmic6dRLVIMBX32yzMV284vq1gYNv0j0B5?=
- =?us-ascii?Q?895ILRqmuAU14zjsVDSmDEZP3Oe6wOb1BqRhwDD815z5/nUGiubNIYwy+jkm?=
- =?us-ascii?Q?gFWk/TE3r5jpJEuq3uUxLQWtcrwEMx/86PNOK1pXCwdF+a3AAwOI06JeM69e?=
- =?us-ascii?Q?GmnijRZBWO8QWqjFZI3YY0wYbWIGak+tvKhtD5IDby7SRjo+Hbe8IszgRt5i?=
- =?us-ascii?Q?EcCqpDalAD1+zojSRQV/2oh/MJxX5VkMaoGfTrNdl4VhAbe3rZiS7ywq6B7G?=
- =?us-ascii?Q?LFNUK+Jjf7F9ASG1S18kKvpRdikUpgv2Qz9NGg+A646MAYplaYj2Fhx8ap5C?=
- =?us-ascii?Q?71MiKqYOpZThlutdxHR+q8XpFqNsG+npbwt/XOdNtLeEhWiwNaHBowLt3yHT?=
- =?us-ascii?Q?i6E/TsP9MKYkkSPe5BiNIjK/aBTvLMi5AsyMLmZ+tA7xNn1nm6pM9bJYVdDL?=
- =?us-ascii?Q?JEx2YMn/V5t6FGGJmTe19T+64MBb1yNLZZwWbv89hf2ODk6P/yF5YwEt56jN?=
- =?us-ascii?Q?mECpXhKZyhy/QCRnzVZ7bXgm9POb1SfQUv4XOdkoCVIuczoIGNKzrxMcmPBD?=
- =?us-ascii?Q?oHEEW2b5eDmyPoq3TJo=3D?=
+	=?us-ascii?Q?Vzo/uoW2cIhHhuYoybLRF3MWb2mTmm7JkUDwdiMfY83XnXr5jf6DHUuZDvTB?=
+ =?us-ascii?Q?XI7YtbXPTTVOPhQv8w3mh3XXx58QXlZa5jvZpzuc3eBiSnUjD5fbiAgaFm7Z?=
+ =?us-ascii?Q?v3ybS5u2g8J1C+lfo9tzgoy+UymXZKZlRDhQt2q6XIoUrAZA6E4zriYyrANP?=
+ =?us-ascii?Q?6aJ4Y3fecl+OyM52GK+zz9Qum90bdM1nc9mBBeCIqih5fA6QcMUCX+hDWkJN?=
+ =?us-ascii?Q?et3dKzAysemgnlajlIi+Bun14YB26z85nO4LtNmAzYR/r9ON9UvqhA2zTy5k?=
+ =?us-ascii?Q?yQCaC0/+axzxE8v2uQkJblelnSyfqxYcsae+l7fY2Xg3D2K9ZyQ7ORywU0vU?=
+ =?us-ascii?Q?JF7b09tHa8J8ONmRi6vvByo4gDR/1XgoGxqFnD0S/JeKMuKKfBiTDpOFFLqT?=
+ =?us-ascii?Q?B/TJBJh4lGJXjYr6t0af+ncJA3l75SvhnT7RMiG2wVLMv/3Zxk9l91BcGGfl?=
+ =?us-ascii?Q?6x7VtsnDEQSLKinpd1HOmJ/S6YsXf3TZu/jBIUBT3YHcM3gxqD5eL1oyGjUt?=
+ =?us-ascii?Q?PmNpC1e9zR3nZm3lIKuED6FXE6yL4xNUzlUu5bdtqElElTyj3GC4xj72Dc6U?=
+ =?us-ascii?Q?muVrFUza9PBbx0c5R7UuH/sh6Ov9fOEvKM5KGOU3715J1bu5PZcMCGQN/mwZ?=
+ =?us-ascii?Q?pbeGwbeOB8fQjH7abr0j1FcpJWgfbGAcVWTA6EtBhpCNbr5vAoqS3k1k0Nko?=
+ =?us-ascii?Q?UImUSGNX4HZ9Wx8j7cEO2+77CfkEyhMKAVAUaaDtlmqsvF5YvhlOmO2TzEN4?=
+ =?us-ascii?Q?Zr2n9m5h797bIhhZGcTIpqoqjfZamjaYpaW2yZRb4rNYqJyUOk2cLwABNUI1?=
+ =?us-ascii?Q?nuW7eVWyEBmTPKF8HQo236lKB6jxvI7kW4savwPStkZWWDmpBy1cgxgkmqjY?=
+ =?us-ascii?Q?l/p8iMoOyUrPW+qKGmWSSe/7okLdZ8Yw0FUw6v/tn22bGFw1wK+HiDn3Ge5T?=
+ =?us-ascii?Q?zR5y2flMNt/SQlEX3tPcagvQEhKFmeMhxK/EmkW8Pv1f47O0eda3pMvbAm+J?=
+ =?us-ascii?Q?m2ZXjZ7f+7Lm5oAd0Xd091GO2Cr38zYQnw5LTKQWNLpVMROiouNQzDD7bnL+?=
+ =?us-ascii?Q?no634x/FV4Ci3G6I+iRwecVpqxM5tySrkuJcBPjNlYwUAyVrWYkIqW4XOKGs?=
+ =?us-ascii?Q?XmE6rQHnKFX/xLuVze922HQFbgvmG2UwDpU/b2/PNMJYZtwha2Xmq+LFU3ol?=
+ =?us-ascii?Q?/h8QCWYUvyPfZpB8tJXmQfSsRVIUHH3h5cXTrjvdz/+QFE82sqZSwtFVZTcQ?=
+ =?us-ascii?Q?WPAiuPgTKSAd1FT9xnNuZyB7a58ws0xH9SxWVRlsoIftcPfZDjB7RH9peD2h?=
+ =?us-ascii?Q?Lodeg8r/k6YWAj+7zCSOdEpumxFRzw0iYc6D/iDmWrJDq4l2bvlbAvPDkpbW?=
+ =?us-ascii?Q?phbKHHBLmTRMbkYZjl7skKLhgnpNybXmx2AgHmUgLMjBwg8cCgh5ZQ9BcG9y?=
+ =?us-ascii?Q?rNqK++ZWmJEoy6s+F/QAXAsITZahXuYAU9FO2aUuPs4nzE2kQw/x62VXxeJn?=
+ =?us-ascii?Q?PiC9x7PTmRiVmA5J7fh7ToFYQGsdsWuaXMu0k9LvgDl5S9OhE4KS92zgypeE?=
+ =?us-ascii?Q?WHVanehpp55R7tw+YTM=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 465a6cc8-6eef-4af4-6736-08dd9e084002
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0aa5a42-714e-43a7-da7f-08dd9e08d2d4
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 16:54:02.9409
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 16:58:09.2756
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c5fdjdvyzndAa1O2EDlbChaokTlVgqqSZsH8iJv9k8YsIhVtWubinqp8RuBXqyqqVtwfam20VUd+B4SjpxLpbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9265
+X-MS-Exchange-CrossTenant-UserPrincipalName: IszjMK+vmwx+I/UMGwQxAgPf5eZ2tey43trzmmfj+ZJcniKsxSCYNTqQfB1+LSdIYsF4+yzJE8utX72gGKU2Fg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6925
 
-Add fsl,timrot.yaml for i.MX23/i.MX28 timer.
+Convert mxs-audio-sgtl5000.txt to yaml format.
 
-Also add a generic fallback compatible string "fsl,timrot" for legacy
-devices, which have existed for over 15 years.
+Additional changes:
+- Add compatible string:
+    bluegiga,apx4devkit-sgtl5000
+    denx,m28evk-sgtl5000
+    fsl,imx28-mbmx28lc-sgtl500
+- Remove audio-routing from required list.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
 change in v2
-- Use items for interrupts
-- update commit message to said for legancy devices.
+- add missed commit change (all decleared in Additional changes of commit
+message).
 ---
- .../devicetree/bindings/timer/fsl,timrot.yaml | 49 +++++++++++++++++++
- 1 file changed, 49 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/timer/fsl,timrot.yaml
+ .../sound/fsl,mxs-audio-sgtl5000.yaml         | 81 +++++++++++++++++++
+ .../bindings/sound/mxs-audio-sgtl5000.txt     | 42 ----------
+ 2 files changed, 81 insertions(+), 42 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.yaml
+ delete mode 100644 Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt
 
-diff --git a/Documentation/devicetree/bindings/timer/fsl,timrot.yaml b/Documentation/devicetree/bindings/timer/fsl,timrot.yaml
+diff --git a/Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.yaml b/Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.yaml
 new file mode 100644
-index 0000000000000..7c8effa37e494
+index 0000000000000..d12774b42a112
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/timer/fsl,timrot.yaml
-@@ -0,0 +1,49 @@
++++ b/Documentation/devicetree/bindings/sound/fsl,mxs-audio-sgtl5000.yaml
+@@ -0,0 +1,81 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/timer/fsl,timrot.yaml#
++$id: http://devicetree.org/schemas/sound/fsl,mxs-audio-sgtl5000.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale MXS Timer
++title: Freescale MXS audio complex with SGTL5000 codec
 +
 +maintainers:
 +  - Frank Li <Frank.Li@nxp.com>
@@ -176,40 +189,120 @@ index 0000000000000..7c8effa37e494
 +  compatible:
 +    items:
 +      - enum:
-+          - fsl,imx23-timrot
-+          - fsl,imx28-timrot
-+      - const: fsl,timrot
++          - bluegiga,apx4devkit-sgtl5000
++          - denx,m28evk-sgtl5000
++          - fsl,imx28-evk-sgtl5000
++          - fsl,imx28-mbmx28lc-sgtl5000
++          - fsl,imx28-tx28-sgtl5000
++      - const: fsl,mxs-audio-sgtl5000
 +
-+  reg:
-+    maxItems: 1
++  model:
++    $ref: /schemas/types.yaml#/definitions/string
++    description: The user-visible name of this sound complex
 +
-+  interrupts:
-+    items:
-+      - description: irq for timer0
-+      - description: irq for timer1
-+      - description: irq for timer2
-+      - description: irq for timer3
++  saif-controllers:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    description: The phandle list of the MXS SAIF controller
 +
-+  clocks:
-+    maxItems: 1
++  audio-codec:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description: The phandle of the SGTL5000 audio codec
++
++  audio-routing:
++    $ref: /schemas/types.yaml#/definitions/non-unique-string-array
++    description: |
++      A list of the connections between audio components.
++      Each entry is a pair of strings, the first being the
++      connection's sink, the second being the connection's
++      source. Valid names could be power supplies, SGTL5000
++      pins, and the jacks on the board:
++
++      Power supplies:
++        * Mic Bias
++
++      SGTL5000 pins:
++        * MIC_IN
++        * LINE_IN
++        * HP_OUT
++        * LINE_OUT
++
++      Board connectors:
++        * Mic Jack
++        * Line In Jack
++        * Headphone Jack
++        * Line Out Jack
++        * Ext Spk
 +
 +required:
 +  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
++  - saif-controllers
++  - audio-codec
 +
-+additionalProperties: false
++allOf:
++  - $ref: dai-common.yaml#
++
++unevaluatedProperties: false
 +
 +examples:
 +  - |
-+    timer: timer@80068000 {
-+        compatible = "fsl,imx28-timrot", "fsl,timrot";
-+        reg = <0x80068000 0x2000>;
-+        interrupts = <48>, <49>, <50>, <51>;
-+        clocks = <&clks 26>;
++    sound {
++        compatible = "fsl,imx28-evk-sgtl5000", "fsl,mxs-audio-sgtl5000";
++        model = "imx28-evk-sgtl5000";
++        saif-controllers = <&saif0 &saif1>;
++        audio-codec = <&sgtl5000>;
++        audio-routing =
++            "MIC_IN", "Mic Jack",
++            "Mic Jack", "Mic Bias",
++            "Headphone Jack", "HP_OUT";
 +    };
-+
+diff --git a/Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt b/Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt
+deleted file mode 100644
+index 4eb980bd02874..0000000000000
+--- a/Documentation/devicetree/bindings/sound/mxs-audio-sgtl5000.txt
++++ /dev/null
+@@ -1,42 +0,0 @@
+-* Freescale MXS audio complex with SGTL5000 codec
+-
+-Required properties:
+-- compatible		: "fsl,mxs-audio-sgtl5000"
+-- model			: The user-visible name of this sound complex
+-- saif-controllers	: The phandle list of the MXS SAIF controller
+-- audio-codec		: The phandle of the SGTL5000 audio codec
+-- audio-routing		: A list of the connections between audio components.
+-			  Each entry is a pair of strings, the first being the
+-			  connection's sink, the second being the connection's
+-			  source. Valid names could be power supplies, SGTL5000
+-			  pins, and the jacks on the board:
+-
+-			  Power supplies:
+-			   * Mic Bias
+-
+-			  SGTL5000 pins:
+-			   * MIC_IN
+-			   * LINE_IN
+-			   * HP_OUT
+-			   * LINE_OUT
+-
+-			  Board connectors:
+-			   * Mic Jack
+-			   * Line In Jack
+-			   * Headphone Jack
+-			   * Line Out Jack
+-			   * Ext Spk
+-
+-Example:
+-
+-sound {
+-	compatible = "fsl,imx28-evk-sgtl5000",
+-		     "fsl,mxs-audio-sgtl5000";
+-	model = "imx28-evk-sgtl5000";
+-	saif-controllers = <&saif0 &saif1>;
+-	audio-codec = <&sgtl5000>;
+-	audio-routing =
+-		"MIC_IN", "Mic Jack",
+-		"Mic Jack", "Mic Bias",
+-		"Headphone Jack", "HP_OUT";
+-};
 -- 
 2.34.1
 
