@@ -1,58 +1,58 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5981327465B
-	for <imx@lists.linux.dev>; Wed, 28 May 2025 09:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8CE1C84AA
+	for <imx@lists.linux.dev>; Wed, 28 May 2025 09:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748422895; cv=none; b=Z2nG2AUrc9z+S9J8AWHHEaWczzp7yaqz7cLkUqfvTPaUAT8sK3MQ9PqScM7tDvE+yjKXihoBR/AdQW9iLAHdlWxQq/wliKnG7FiSe9EqEh+lHY8PPvD+ZUKphXN3zy4T33OnNI7j/nt+p2U5cV+4Frk51BoQtWru5a6BAI29cQk=
+	t=1748423940; cv=none; b=ik+NO6PubYMFCP95tjDGBq/uOta121xd1b4K23omGDrrRS8fAguuzqEcSoi3bCSfvPqlA7kGzHXS23sKuMnWreosMQVexQc6weiQEL+ZXfWifN8HMiqjwol3BlOa1ijiRs1X84YBWx9WAvrz3NS0D/s5tbdyurYxPONcoy5cDYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748422895; c=relaxed/simple;
-	bh=nsbs8J4i2mBXGtg2YoKcoKar84A9hcImfLp+FZsksrU=;
+	s=arc-20240116; t=1748423940; c=relaxed/simple;
+	bh=lTh4iBr6QXjMUSBl2DaNtNJXY+G1+CpPmIOvfkr3fPI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=Su/AyQ5fpqGvvc04ddNEnk9wuZh1z1N/U7oyzlO47SdZCTZ/JoXrBsdyrI2zYEgV/84Nm58jy5V8TTyHz0VP7bPrQP2g05VAL3LNjNy1+YX/tBstFUEx8VcfWsLFMwVGKl05hoMSizkcsPEcRm5hM37aFu6WADfzlCqGXEcHfDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NxSQ7kbo; arc=none smtp.client-ip=209.85.222.169
+	 To:Content-Type; b=jdBeMn+la7pxVvZFPuk5BxViiZa3VDeaCWne3K5k0YGdyy4twogJTs4JD+EsoAEUxDUSfAEVJ7fEPNWri/W/rbcIskgNcHV7mGgxE6MTqU3eyip50kCGfGSVywEzZEiJxteU5XitT9bZW4lr8leAzql0A1b1z5QSNcEKtlsqE5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UPrk2ubY; arc=none smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NxSQ7kbo"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c96759d9dfso676223385a.3
-        for <imx@lists.linux.dev>; Wed, 28 May 2025 02:01:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UPrk2ubY"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-47663aeff1bso33548261cf.0
+        for <imx@lists.linux.dev>; Wed, 28 May 2025 02:18:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748422892; x=1749027692; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1748423937; x=1749028737; darn=lists.linux.dev;
         h=content-transfer-encoding:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Kta7NMNgiWawN2yqQu1cMys/JcxeBWGOneGw9ln5pKQ=;
-        b=NxSQ7kbouw9+OUHISnv+cwMsYfiZp2gQyFckqOe8m9OzgEreNzj/cVeR9r4v3Lt7rr
-         2d6r7yS7BkfslrSerOGlVQ3PTEJF5VCkcMPSjiJaC3ISDl86Rc/EOjsu6sFnyYRGhpO5
-         K6x9R2xw8RXfxfqDElTfN/7MzZDqychDwcTyCyOU6kdPyCD3k0ngQ85WMRVsE4FuAgsE
-         apmNFlgdy7Ik02l9uOLr/9CNERsPGu9+6/2IZLjpEGsKXI0s0MAAP+J+7Hd4aLgOG7fD
-         uLb9i6mrORPL6qkihg4FLiqh00vlF+0PqSEH75EgqZ3sJJWmm20GdI5EoSUqRS1hbkcA
-         MkCg==
+        bh=lgSKA2W2VDXmaE0PCmq0CnFtkG2OyiAdlD+PPWTrugA=;
+        b=UPrk2ubYJwPJVU6HmBs9X1J0XhyXBHulMjhGo7ROiEmweNEe1JiOuPG5u9I/T7Fflx
+         D6S22Y4azvRFQiBBKOZuDsCsHLWc0VOaqlzF3dF2KVv0ewhQsYvaCClfR2YqG3gQZjAD
+         71BtEkG1W4+IDVGs967Ibi8AVVoM0YwbfgITCf4YakvJ4/k90z/jG7F0zYMTZshaMTHs
+         ewXKT/8NquornFgGw5EENxhoLbJZbyPjKGLMoiRJ63sqj/f7USZ5e9BIV5ACaOYXLxOH
+         42hKOqaNsjV7SscdV310ELa1n//FzkjjiCUQRzzLokf/5V0kfZiXlQq1E1xBakxJjW+d
+         7+Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748422892; x=1749027692;
+        d=1e100.net; s=20230601; t=1748423937; x=1749028737;
         h=content-transfer-encoding:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Kta7NMNgiWawN2yqQu1cMys/JcxeBWGOneGw9ln5pKQ=;
-        b=Z+hQMkDc1rE+br06RdXX1GHur00+Pp2s+/gK3W3O8kOMEAYoOR9PmnHHcsL5kREry2
-         Dhv5bNgC72LSC31sbBTyAh1Eb1d83u81qDmIL3hbKjJmAwlFJonXYSX1EbP/SbAfudOS
-         bGiQR/A5BUDi38RnjhglObqzQXAHtH4M2KUDkCpHIoOPSo8mCkgo6ZeNngxFceOYo41k
-         x1s38eFmiqnYFiGk62ZQgK439NDnTI0asw3UMorqBrj1Qie20/0KhREMKC4oLmgzQBnx
-         rneGha++CkNnIVtYJu4b8YnVzHT0oM4QjvCLpaAPs1oZA4rQ96Ni7CzMrYnDbvFS5TfD
-         XhCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVphj7dmyN7uZ6gIda4g2csMOcGAR8d0zY9kA9Vj67O7X36gz7Js3ie+MI0WBNStX+sbQA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyf05qkxQW24+mSNURUOnJmhMym19prkkqRE8rbbLLYzxxXWrbX
-	8+nMmKJHr4cSr5KHRPLPG18MwMGeBu2z6FzLPOk+jjSZKCzLXCW41ZqiFBaN+u3jlPvckoJRCbh
-	IPTYxXNZ502NoOfLE53SnBYtEPDH3Z3QDuPD+
-X-Gm-Gg: ASbGnctzM72Jo7mrgUAOq4asAxbWwjKtkENdNJSkAgTlAacDqpeCIhLG0+NrKVEeyl3
-	e0Od62yYQj1i5d//Uz6f9ByegCUdx5lmP8coNuX0ArZ+aPSQSmqObHkP4eF5YEozT80gd6YpBLm
-	7RN/1pRWhzR7A2t8gO+fOPmEL1mnM/gY4=
-X-Google-Smtp-Source: AGHT+IF7SVCZfdW1XbSWmRLNGcP+Yoa2Y3dnC4D6fXfCwXExsBTY1RMn7jibuIzKvc5giodSsLk+Jg1YmmVFSqPMaiI=
-X-Received: by 2002:a05:622a:1cca:b0:480:9ba4:3022 with SMTP id
- d75a77b69052e-49f46658074mr256614741cf.17.1748422881298; Wed, 28 May 2025
- 02:01:21 -0700 (PDT)
+        bh=lgSKA2W2VDXmaE0PCmq0CnFtkG2OyiAdlD+PPWTrugA=;
+        b=gutDIHvdRWPdSsljRpC611r1eFziphoLUsBXW+u7NsGNetsu/xThtxAL+/uNzWd10X
+         0aTvppg71tIsF/ZiAK0fvKizbX8dedWta/vTLqVJYMeMqjKON/2m9fbqzGF8IRprubPC
+         medA32bRXVkF6RHvXEufqoZCBAARjnJBVxmNGOl0/mYMgVbUy/Xj4tWNVNEv0A9r2co2
+         jVYzzvHuofuoGI4iqtdU/QJDhg/gF22Y8DuTmESa9G0CizCwSPDwxj4DgWWH+Moq0zws
+         MJuha+x63Qadp+oHyw/WOVJV6WJ3sYsOQMOz2xlBeS8VSPbHN+oQnfUB23TAL8pUAebX
+         /gIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXsNq/8TTXuDn7DYNESEwP32jo5aD260eN55C9YVuGI0qmUBQDJ9JZzKkZD4mcJ/necH68=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyYdMkyW4WmJZdWot2/YG6vuQ8VycjO12ktfr1sEeRzoop66yYW
+	CiJF2kFkknvzUKc8re1qeJwTILHYgELK2c7bQy4KA+27J0pKsZ9SHvyGJdf+mKLL1rQpqjobato
+	ZB7GmiLgarzVXi6TIPIXSFjeTi3yd7gY=
+X-Gm-Gg: ASbGncuhbNhTaCk05FYgz6Yi18tnSFC30niP2v5kOhcr1EbPEtCcsphefKh6pNrFzXI
+	1iVIGGoBkF01fTl1VmS097MN+zP2Lhki/NWqhPhkeRJe4gFG5Q3/w6l7bY0eawBpIQmUhT/pmM3
+	DdflN3Q8OS7aOQ7Px97R0teZsbhaHgGhE=
+X-Google-Smtp-Source: AGHT+IHx1cv9QQtMC5R6VV5cgDID4m/Cf9TK1yy/2Knom4WMjAtVSdA0xWQQcdAVAP+RJq7ZiWMx42v212mbWB/Ou4k=
+X-Received: by 2002:a05:622a:1247:b0:4a3:647b:bac5 with SMTP id
+ d75a77b69052e-4a3647bbbf8mr31632051cf.38.1748423937242; Wed, 28 May 2025
+ 02:18:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,9 +62,9 @@ MIME-Version: 1.0
 References: <CADf4wU9-y5oyBbRTUa46dsHXRz4n8NFVxSfCEvTQPxuU21+wpg@mail.gmail.com>
 In-Reply-To: <CADf4wU9-y5oyBbRTUa46dsHXRz4n8NFVxSfCEvTQPxuU21+wpg@mail.gmail.com>
 From: hiren vadukul <vadukulhiren09@gmail.com>
-Date: Wed, 28 May 2025 14:31:10 +0530
-X-Gm-Features: AX0GCFvQm3blUzJzWgmVrj6ZcoYEBhjmEOdvVwIarIteVel3Auz1rgXNyUFMzbE
-Message-ID: <CADf4wU8Fm68QcTVBsxgwtdXMBXOL73DdbrteJjnYSgep1R_XCA@mail.gmail.com>
+Date: Wed, 28 May 2025 14:48:46 +0530
+X-Gm-Features: AX0GCFudLRMU7vyW4bZTG9Gjznyr1aYFcQUtlcsbV7RP2sU_JL8w6eGL2YRtdrU
+Message-ID: <CADf4wU8iuriQ7gYK4ayu8pt-ntyfXK-xVkrZYc6DSivqqk40NA@mail.gmail.com>
 Subject: =?UTF-8?Q?Re=3A_OV5695_Camera_Bring=2DUp_Issue_on_i=2EMX8ULP_=E2=80=93_Hal?=
 	=?UTF-8?Q?f_Image_Black?=
 To: linux-media@vger.kernel.org, imx@lists.linux.dev
@@ -74,13 +74,14 @@ Content-Transfer-Encoding: quoted-printable
 Hello everyone,
 
 Could you please help me identify the possible cause of the half black
-image issue?
+Image issue?
 I am currently unable to determine whether the issue is with the
 sensor driver or whether there is a configuration error on the BSP
 side.
-
 Thank you in advance for your suggestions.
 
+Best Regards,
+Hiren Vadukul
 
 On Tue, May 27, 2025 at 11:22=E2=80=AFAM hiren vadukul <vadukulhiren09@gmai=
 l.com> wrote:
