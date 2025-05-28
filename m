@@ -1,284 +1,781 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5CD275115
-	for <imx@lists.linux.dev>; Wed, 28 May 2025 10:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748428549; cv=fail; b=NhNXc+o9yqv1NnH1rWXKzurb3v2eTnNpduVSu8c7+LVlwwzQL53JsBitjMb3/sGWqc7M6Uw8n1e2949cwhfDxd8CjWLZwOjjchgOlN2h/4SbHd7ElxbDBxzT4aQpzVuz/wh2IPzxo6D7e5fCl85lrLWUXLmacrXNLYtsqLc78EM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748428549; c=relaxed/simple;
-	bh=AAE3k2PBfMH5mINKwcDbI9LWQw4t3SGUEG3wrtqwJsU=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=pmH04s4tq8fk8bMsJ/ZC14wCiQdzAZnsf6EN71PnKYDlvy/F98afjVSTPiCNcd7v4iaR7SE5ryUTtStKqNe3p7ooVwwSpVmzPqaSffMKKHZd/gIjSgvbACTuOYl/jXalmC0mk1Wp7LzSTKxGEyWWcKnWyn1uEed7oZzGgXbR/48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RGMvHGUo; arc=fail smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7654E21767B
+	for <imx@lists.linux.dev>; Wed, 28 May 2025 10:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748429627; cv=none; b=F+dy3kK8n+MC+spbl5mOchwxn/neU/x+dojBfk6o3MlzeTjMbavqskvMm0MGRxqhPJOpL6z7YlbwESQX/K3Mr7sMZoZuSu1cMhgyrXjFeKIkR2GaU7niBSZ3LLpZvfafFdNzrYxt1A8QGNgslHY6UDT4Cs8AitZyspkZJXdDGeU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748429627; c=relaxed/simple;
+	bh=U05qBBMBZ+zkfz9YMSbX9w+3mmO246ooiae3gxS+BUs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r5OZhARuJqGNaLPHuvtPbH1rXYXGDEznxLycX1BN9zNnGXwre4Ilzhabii7VhMdRb+3ppxBTtqFildERH+kJgXOmcwzALaGV0NjnBnbnD+PUQ9ESejIoB7gHsccBQZhW6pXN6QFhnESZlDXskOvvBMGFV0qtpHVtkLAr+h4eBRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=gOYQmi76; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RGMvHGUo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748428547; x=1779964547;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=AAE3k2PBfMH5mINKwcDbI9LWQw4t3SGUEG3wrtqwJsU=;
-  b=RGMvHGUolGnigg6ZMp9+yVRwsLWn832PgTyU2dzoM3k3aF4pYM6DnlJq
-   pC+euQWa3RyRu+Uml/HabfCZ5W4jJbcuej1DdZBgZNUlp0rDQPUcjNd+Z
-   Wug81bRfqaQZtTObM1gTTJlY1dYfaniiOsHxXZwccbzZ+JJ3WdpCzATEA
-   Xbv1+FHbu7ju+ARTKFA6rZ3Rl3sQhEoxlmQnNkFz9Xgw323FRjOif6mvo
-   0rS239JxYno1mio08kibsy3qkP+3om4yRdcytFVejPR6rWLDqzGJhaHIO
-   U+3HUPPsJSPHJGtQhifFqylc/gEze+D7iBUKVvPizMh7hPeVBjV1LkVzQ
-   A==;
-X-CSE-ConnectionGUID: SdiO5zizTreh9KaxTJ+Jkg==
-X-CSE-MsgGUID: XCchT5ERT8KVdquVT98zzg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="61107513"
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
-   d="scan'208";a="61107513"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 03:35:43 -0700
-X-CSE-ConnectionGUID: dlPculyGSQ2lDeMHC3zGQg==
-X-CSE-MsgGUID: U9lYgVeaR8aBmj/eCk4eqA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
-   d="scan'208";a="148243608"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 03:35:43 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 28 May 2025 03:35:42 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Wed, 28 May 2025 03:35:42 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.70)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Wed, 28 May 2025 03:35:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GB3Z7VXCXp+UBeLo2CfJMfzzxb21npdr3Vti9xQKwsbuB0KvWfrZi3PD8tS68LnFwLQVfsAtSkcPwad4M+EBAQwMlTpMMpYr7c7sN5qhzspCnoFLloeDQ0CzpgHiM4SJqa4/dzJGqU8lhp8fNidy1n7BKyj0ijb2uJCn7XFnR0Jr0MuV7L5mdsWsDfj6mhAOCxCwufkPbNh39KsZYALSKrYus2qDTZV91WUtFGRjQGFTnPj2TTRnddo54jeoDZ/SoaKFVrRIIFK9DBFjj4SnG8qMBws3i1nPPKrFrlq7BSUp1L0IJclBrm5lvQTcZkGtJoaVjsCWClzMTYvRUqORnw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VNfkN4TNMAKkYIVCneQDjqH/x4IOkv/760MsuMcuuac=;
- b=gbJvoQ2QvukKDF2Z1eRIJvy9SO5QyTfXpuFTwDjBnDq4ZDGMrQwGXPycijM83sG7P4aEA/TQmMVt5j9rRFHu4aBflacUuMvSBvwZQ7D8jCpTjsO7pJykHHIPaoPREVdL0YAMWz/RPKFcVFnZcghuvh6RdQ+wfc4nx3lFshhEQLainhHTsXzIXU6LUF9rw7vfIUTLx+FI+yx/hXLVN6HodgQfZs+K35vCVUqNdMIZNujZs3R2xnGy6zblOVRViR45P4Bm/YUbO07yinWUgTGSscz/4hYuy2dQMBlfHCcRcqHET1HZW8YXVMmcqX07XBEofE6BsBVahDZIkQPB6VI7ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6054.namprd11.prod.outlook.com (2603:10b6:510:1d2::8)
- by DM4PR11MB6191.namprd11.prod.outlook.com (2603:10b6:8:ac::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Wed, 28 May
- 2025 10:34:59 +0000
-Received: from PH7PR11MB6054.namprd11.prod.outlook.com
- ([fe80::a255:8692:8575:1301]) by PH7PR11MB6054.namprd11.prod.outlook.com
- ([fe80::a255:8692:8575:1301%6]) with mapi id 15.20.8769.029; Wed, 28 May 2025
- 10:34:59 +0000
-Message-ID: <405271f5-3ae9-4f64-a433-043fb3194834@intel.com>
-Date: Wed, 28 May 2025 13:34:54 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mmc: sdhci-esdhc-imx: optimize clock loopback
- selection with dummy pad support
-To: <ziniu.wang_1@nxp.com>, <haibo.chen@nxp.com>, <ulf.hansson@linaro.org>,
-	<linux-mmc@vger.kernel.org>
-CC: <shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-	<festevam@gmail.com>, <imx@lists.linux.dev>, <s32@nxp.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20250521025502.112030-1-ziniu.wang_1@nxp.com>
- <20250521025502.112030-2-ziniu.wang_1@nxp.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20250521025502.112030-2-ziniu.wang_1@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DU2PR04CA0242.eurprd04.prod.outlook.com
- (2603:10a6:10:28e::7) To PH7PR11MB6054.namprd11.prod.outlook.com
- (2603:10b6:510:1d2::8)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="gOYQmi76"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BFFD2103972A7;
+	Wed, 28 May 2025 12:53:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1748429616; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=Rnlpm1rJuu9LugndshFdGeKyJZbgjRbA1UmZOD2hgzU=;
+	b=gOYQmi76dOC4pVrK0GAyK3s57luwOkQ2slpAqPEpVBuO1ysUf6/hGc+wz1OPbAYnpftvif
+	kMhuBBLGKVc1x9CCnqzb5gTkc41XK0rjoGSv/7XCIkWiu+s8O/Hr5xp+IvbohDx3oO7eo5
+	RIY9Nk79yHpdupcA+chi3PlWYPVydXo3sf8T05BfAHiOvR5TYjtkuW4Jj2s8lovnwQN6Sz
+	+EdXMZaSHhFia50Oo5DpffWSKzi2Xirs+TGIHU/ViuBjJWw03ZwitB9rU6THWNJswnujLP
+	5dW1zX/Cl4cY2YCTN6wmvFssgxfOpvasOE7wwgmYiGsha5xV31RQHPN4o554BA==
+Date: Wed, 28 May 2025 12:53:29 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v12 4/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250528125329.084ab649@wsk>
+In-Reply-To: <f738d1ed-7ade-4a37-b8fd-25178f7c1dee@redhat.com>
+References: <20250522075455.1723560-1-lukma@denx.de>
+	<20250522075455.1723560-5-lukma@denx.de>
+	<f738d1ed-7ade-4a37-b8fd-25178f7c1dee@redhat.com>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6054:EE_|DM4PR11MB6191:EE_
-X-MS-Office365-Filtering-Correlation-Id: a60fc8af-fd72-4f19-98ee-08dd9dd34c08
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?WjJvRmd1TVZDQlI5a3BsSXJrcnNFSkxBWSt6WGllQUxmQ1JuZTF4VGF5OUdj?=
- =?utf-8?B?WVRJaWJQUlpnM2FYd1FuWnBCNGFWZ0c5dElsV0kyb0EwT25lYXRadWFSc1gz?=
- =?utf-8?B?RGRCUVNldHVldVpzMWMzSVY1cG5zR1dVN25UQnZhVzRNbFlDaDdNUzlNZEd5?=
- =?utf-8?B?QjhybGhBYjhVSkNRNi9NR1lIYU40aG1XTmg1TCtWNXBZMlZlUGpxRzlGRzVB?=
- =?utf-8?B?R1JqaGpKYVJyUUpMb0NGQVk5Z0FMWjZld1NZY2tHOWlzR2pPV3B6dWJ6cGU0?=
- =?utf-8?B?cUpjYWdUS2JidGM5bWxNWVdhQmZGNXRnaFlhMkZPUWFrVzB5R0tZdGRCb2JH?=
- =?utf-8?B?Qk9xMDdsRDMwMmo3NDNPK09tWWk1SklJZElzVWkxSGNXdDhJNnYxWktFSnJF?=
- =?utf-8?B?WjlkVW4zRGV2N1pxbWRBNEdQbnNuSTlIbTNOZThPcTNic29IMUwyVHRWT3JL?=
- =?utf-8?B?WFdqL3d3UW9ydGNlNlVWNXBaeGQvMjlZMTNCdlRwanFFL2hCYlI4V1JJM3lt?=
- =?utf-8?B?RGNWcThHcFo5ZEEweTRnUkVGWENCR3JwT2puRDBwdW9jK3hzdTlvS1ZNT3I4?=
- =?utf-8?B?WUtJUFZxVmZYMDJ6K3d3S0l3ck9jT2JwSnY5cEpQUXF5YXR6MTFwMG5kSXN5?=
- =?utf-8?B?ZXp1RlowNVVKVVBkSDR0Vy9tQndyQzkvT3hkSnpnaE5Ca1ZXT3BwNXk4M1Rp?=
- =?utf-8?B?WFYxVXBJTDRPdDFTQThEblVtdXdkT0tXRi9wbFJBcnoxcitRbFhOc2ZxSmlX?=
- =?utf-8?B?cVFvdHhHK01NOVovUmJwUVNwaStGajJ6aHdJNTkreGdEcUpwRE4xckR6czBp?=
- =?utf-8?B?bW9QTFc0aHB3WGJ3RDZOR09rRldoVmthQytyQTRmVW9BdTZ3SXVYblFJYVpR?=
- =?utf-8?B?bGxRSGtYdmNXRGZtQXIrVllKd3l4TE42Q3NOMFVzQ0w3ZjlIYUFsdmZqaDFp?=
- =?utf-8?B?N0o5cFR4R3J5VE9VY0ltVkV3ZjFUcThoUlFkaXphMkRFbTVLczNDc01zMG5X?=
- =?utf-8?B?dklvQSt3cmNpTDNqMVUrZkRQMHZTalNNQWxkdUVaMzlJSjFUcnRoWFJRWWVk?=
- =?utf-8?B?SkFxREZVUnRQY0JrUEE1SGZaQ0N4QTQ4Y2lTL1IrNDltMmNHcVluMjRZM3pt?=
- =?utf-8?B?SWNsNVZ5SlBtSkVQMXNTcWlITzA5akxIc000elZveU10WE1uSy92L3ZvQTdD?=
- =?utf-8?B?dDRNZ2pwY1FXSlFYV1FBb2xIR256TmpHZi85YmppSWFqR2hPVUxoRmRMZkZS?=
- =?utf-8?B?N3djZk9zUnZKSzRqTmpHWUoyaTdScG9GdWtpZkFzRXpZUC9jMHlJYjlUWXh2?=
- =?utf-8?B?ZmJOQ3BaUkdWem1BNXZLQi96bXVubDRKTXNxOTBFdzhrdThVL0xsUFBOeWxn?=
- =?utf-8?B?NzVxS0R5SFcrOG5lUm8vbWNaQVZKS1dMeFRON2dVRmNSNWZ4SVdBY3NxbFp4?=
- =?utf-8?B?ZGc4MmFkaXErSXE1aUpPeEFlNFhSMU9tajNJa2N6RXdvdUVFak5ML2o2SC9h?=
- =?utf-8?B?WHMvSGpTUi91UG9BUXZoY2JhM1ZFODRvQzFYTGhocE1EUTNkZHBIQ2pIRkVQ?=
- =?utf-8?B?dTdXU051M1lNL2s4UlEwa3ZhMUgvdTA3djdidDR2b05Zc0NpMHN5UlhFbGNT?=
- =?utf-8?B?cGMzcVdMZS9SMnJFcmQ2YmlTWXRuaU5hYVFLbVF3UC9QcUJtZTJxd2pFTW5B?=
- =?utf-8?B?Mlc1bU04RXhiOEZwMTBySlNaUG8zK21YKzRaMHdDUWY3ZUJ6TVdhVHhmTkg5?=
- =?utf-8?B?T04zUUNPSDlWU0R4bXNLVHFlaHJPNTdja3E4N09KdGp5S2MzbUEvZ295TlhU?=
- =?utf-8?B?Z2kzbStCR0VTcGIrZFJIZldKNDlZbVhxT2RQSXVQQzc1bWdZMFVpVUVxU2VE?=
- =?utf-8?B?dERTYzF1bjRXVkdSMzd6dnBJZUVGNTg2RFVLa3hCTnlZYWZBczRXRytOcTk0?=
- =?utf-8?Q?GNH3/vMUAXQ=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6054.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZGtJYjVJNjZPVThhVFBZMDFucW9NRnl3K05SVnh6UXkxZGR6Um53bFZ1YWhO?=
- =?utf-8?B?VlVVS05zWkJwTXpMclVsbnVkQ21tYWxkTkpVMTRBdzV0UVhHdWZuY0IwQ1dl?=
- =?utf-8?B?bENZanpsTG5QZm42c1BEeExKQnVoUWRlZHgrNCtnMllwdEJSazl4RzhTamhR?=
- =?utf-8?B?Tkh2L1pQVGM1UmQvbHpjSVhsYTBLL0dpL1JtYXRuY3lLcVhYNVc3Q3pGMGdn?=
- =?utf-8?B?ZllDOXJRbXZ2SExRT2Ezc1BEQUlKQ3p6elZVTEFYN1dTK0tuOEJheXBpZUJQ?=
- =?utf-8?B?L3p1ZEp6Z2kwd2NpZkgzSHF0NlU5dHUyV09jNi82M0svZEJiZWd3YUxscHR1?=
- =?utf-8?B?NlJ3ZmRrZnRjUERHZi9NakdDL3BCbWd5Q2I2Yk1nVHNNaWkvRVVLUVQzSUt4?=
- =?utf-8?B?dzgvQlk0NlBxZ1JQZEZvYlkxZXZTcjk0VkQ2SXAxaDN3Rzd4a2FyOXphUSti?=
- =?utf-8?B?eTlUcUJ5dkQ5QVNqVDh2dllER0hpeG53SmtXcWZySHhHY1RLamtIK2pnVk1u?=
- =?utf-8?B?MXlFUVJ0UnIrc0s1bnlBMXdKMDhFYVNIRnp0dGZDRzh6OFlVRkVvZzlYcmM1?=
- =?utf-8?B?eHhDMW50ckFuQjBWNDJiNnFhaG9zVG1Eb3d5MkZyQzJ2SHVoSjN3aVlmcXpz?=
- =?utf-8?B?cE5ySHh6Qy9HNm1qajc3RUZ6ZDNJOXpaU1ZQZFYzMzFrM2JQbDdSVkdwdk9P?=
- =?utf-8?B?UkVLV1JidVF2U1hOdVJ2ZzNiMDlVUS9VK2UrMnYzTXFUbGp2L2ptV2NtdHFk?=
- =?utf-8?B?OE1ONUwzdzVkcUV3YzREVEl6WW5sclVaMGJVdEFsaDc2ZXZFbkJaV0tibW5j?=
- =?utf-8?B?MUE2ZnUrcmJwYWlMUU5GSTBzcEpvVWdvUVE5bUJqSy91cHl1MGdxVmZvU2Fa?=
- =?utf-8?B?MFVXc1hxY3RZVWdnL0Y2K1gycFZUc04zSmI4UFZRd3MxT2NRYVBhREtibWh4?=
- =?utf-8?B?M3B0SFMvVjk3aU1IVUJTSE9DWkxtRXljUldWSTNYTUprY0xZR21OVFpGYWgw?=
- =?utf-8?B?SE9uOXFpaXhjMUs5Z0ZsQ2p6V0txb1dQNHpHR05TRU5Va0VzUEZ2MmlFbEho?=
- =?utf-8?B?cXpnSDVjbVZnWWV3Y0ViSVM2TWltVmJhSDYzSXFKOU80RkZTN3FjaXp2SXBE?=
- =?utf-8?B?aGVmSDlmclVPZ3A3c3lKc080bEQ3ck51OU1tOS9DWmxtZk84QTllMGExWElG?=
- =?utf-8?B?SGtHN3QvTTNhMlh0QW5HTnlqbTViU3N5emtnQ3Z6VkFVTWJiUmZZSERSNHYy?=
- =?utf-8?B?Sm0yZ0JWZU10NXVFMlo0bWltRVU1ZitZS0svZWFmeEF0T3VOUy9kalhEaGZP?=
- =?utf-8?B?TSs1YlRneU5WNWs0Z0l6U3VZYkowc3hJWDlsYTBJcGZJSXFmNGhsRDQ1MGYr?=
- =?utf-8?B?elo3MnRKdlV5RTk2SDc4MjdZS1NuYkEvN0pEZFV1WldCY0p5S1M1REFoTmsw?=
- =?utf-8?B?cmRsS0V5NHhlWU9VWVFocWo1M2pYMWpXUWtLZ1ErZlR2RFNnYmdkUjErSzg5?=
- =?utf-8?B?NXE5cEZORXQ5TDczU1JOc1p5SHg0ZXBCVG9jZk1UNDF1c09ZcGJVcDhMTDJl?=
- =?utf-8?B?eG40cU5acGxFUFU3OXFqazdOOFlLSkRJLzUzR3FCTTEyWWphaWlLUjFOa0d2?=
- =?utf-8?B?TGtCaGVteHRBVkovbTQyQzAvZCtvczlKNWR4L3V3bnZWNVZjY0Y3eC9uQUdI?=
- =?utf-8?B?MUtIbmJhTjRKdmRjMjc4NkFBYkpLVmtKM1VWNlVSSThWWVN5TFZtbjdpWURn?=
- =?utf-8?B?QkRwcnRNNVdFVWVZYkk2ajlrNi9wN1l1ZTNsRlpSdXN6RWU4QTFIZldaWkJT?=
- =?utf-8?B?QnR1OWxJQUxmN2FEd2RoNFgvWEtqR0VSbEV1QVZ3ZzFBWnFIRUMxSEUvTVZM?=
- =?utf-8?B?cnI1UVJxeklzalY0MjhjMVRiODcwV043M3loUlJmWHVyWldrWFptSE5aZ0Z2?=
- =?utf-8?B?WGpadDRSQW9EbFlTZzJLOWtFRFBZQS9QaU9UR2dSYWFnWTUzTzdwV1RNTXFl?=
- =?utf-8?B?c3RuUTdrV1BTNFIxV2xscTFKYjQ4Nno3TzJZakNtT3VNTnRDMktBMjRuSHpw?=
- =?utf-8?B?RTBtbkFVZE0yZ01Bd3UvZEhBaVdQTVdESnZCamxWVFJFbzZFZHpLRVl4NU80?=
- =?utf-8?B?QlZvdkl2endKd3R1bGV0YVlaQkFJWUNWSnM5NktZNlVpSHpSU0Z3SXBNVUlD?=
- =?utf-8?B?Ymc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a60fc8af-fd72-4f19-98ee-08dd9dd34c08
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6054.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 10:34:59.7906
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KgIAAwaxd6rOmvomwPGj3gV8PUVsc2F5DBHhGhXKYzdxFie3DwGOMuMG385i+fhymen8td+KjdHyc1Y9jF1aXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6191
-X-OriginatorOrg: intel.com
+Content-Type: multipart/signed; boundary="Sig_/9ZmmnzXWe89Ci6PNTA0eE1a";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 21/05/2025 05:55, ziniu.wang_1@nxp.com wrote:
-> From: Luke Wang <ziniu.wang_1@nxp.com>
-> 
-> For legacy platforms without dummy pad:
-> When clock <= 100MHz: Set ESDHC_MIX_CTRL_FBCLK_SEL to 0 (external clock
-> pad loopback) for better bus clock proximity.
-> When clock > 100MHz: Set ESDHC_MIX_CTRL_FBCLK_SEL to 1 (internal clock
-> loopback) to avoid signal reflection noise at high frequency.
-> 
-> For i.MX94/95 with dummy pad support:
-> Keep ESDHC_MIX_CTRL_FBCLK_SEL at 0 for all speed mode. Hardware
-> automatically substitutes clock pad loopback with dummy pad loopback
-> when available, eliminating signal reflections while preserving better
-> bus clock proximity.
-> 
-> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+--Sig_/9ZmmnzXWe89Ci6PNTA0eE1a
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Hi Paolo,
 
-> ---
->  drivers/mmc/host/sdhci-esdhc-imx.c | 25 +++++++++++++++++++++----
->  1 file changed, 21 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-> index c448a53530a5..5f1c45b2bd5d 100644
-> --- a/drivers/mmc/host/sdhci-esdhc-imx.c
-> +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-> @@ -212,6 +212,9 @@
->  /* The IP does not have GPIO CD wake capabilities */
->  #define ESDHC_FLAG_SKIP_CD_WAKE		BIT(18)
->  
-> +/* the controller has dummy pad for clock loopback */
-> +#define ESDHC_FLAG_DUMMY_PAD		BIT(19)
-> +
->  #define ESDHC_AUTO_TUNING_WINDOW	3
->  
->  enum wp_types {
-> @@ -348,6 +351,15 @@ static struct esdhc_soc_data usdhc_imx8mm_data = {
->  	.quirks = SDHCI_QUIRK_NO_LED,
->  };
->  
-> +static struct esdhc_soc_data usdhc_imx95_data = {
-> +	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_MAN_TUNING
-> +			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
-> +			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
-> +			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
-> +			| ESDHC_FLAG_DUMMY_PAD,
-> +	.quirks = SDHCI_QUIRK_NO_LED,
-> +};
-> +
->  struct pltfm_imx_data {
->  	u32 scratchpad;
->  	struct pinctrl *pinctrl;
-> @@ -392,6 +404,8 @@ static const struct of_device_id imx_esdhc_dt_ids[] = {
->  	{ .compatible = "fsl,imx7ulp-usdhc", .data = &usdhc_imx7ulp_data, },
->  	{ .compatible = "fsl,imx8qxp-usdhc", .data = &usdhc_imx8qxp_data, },
->  	{ .compatible = "fsl,imx8mm-usdhc", .data = &usdhc_imx8mm_data, },
-> +	{ .compatible = "fsl,imx94-usdhc", .data = &usdhc_imx95_data, },
-> +	{ .compatible = "fsl,imx95-usdhc", .data = &usdhc_imx95_data, },
->  	{ .compatible = "fsl,imxrt1050-usdhc", .data = &usdhc_imxrt1050_data, },
->  	{ .compatible = "nxp,s32g2-usdhc", .data = &usdhc_s32g2_data, },
->  	{ /* sentinel */ }
-> @@ -1424,9 +1438,10 @@ static void esdhc_set_uhs_signaling(struct sdhci_host *host, unsigned timing)
->  		break;
->  	}
->  
-> -	if (timing == MMC_TIMING_UHS_SDR104 ||
-> -	    timing == MMC_TIMING_MMC_HS200 ||
-> -	    timing == MMC_TIMING_MMC_HS400)
-> +	if (!(imx_data->socdata->flags & ESDHC_FLAG_DUMMY_PAD) &&
-> +	    (timing == MMC_TIMING_UHS_SDR104 ||
-> +	     timing == MMC_TIMING_MMC_HS200 ||
-> +	     timing == MMC_TIMING_MMC_HS400))
->  		m |= ESDHC_MIX_CTRL_FBCLK_SEL;
->  	else
->  		m &= ~ESDHC_MIX_CTRL_FBCLK_SEL;
-> @@ -1678,7 +1693,9 @@ static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
->  		writel(reg, host->ioaddr + ESDHC_TUNING_CTRL);
->  
->  		reg = readl(host->ioaddr + ESDHC_MIX_CTRL);
-> -		reg |= ESDHC_MIX_CTRL_SMPCLK_SEL | ESDHC_MIX_CTRL_FBCLK_SEL;
-> +		reg |= ESDHC_MIX_CTRL_SMPCLK_SEL;
-> +		if (!(imx_data->socdata->flags & ESDHC_FLAG_DUMMY_PAD))
-> +			reg |= ESDHC_MIX_CTRL_FBCLK_SEL;
->  		writel(reg, host->ioaddr + ESDHC_MIX_CTRL);
->  
->  		writel(FIELD_PREP(ESDHC_TUNE_CTRL_STATUS_DLY_CELL_SET_PRE_MASK,
+> On 5/22/25 9:54 AM, Lukasz Majewski wrote:
+> > +/* dynamicms MAC address table learn and migration */
+> > +static void
+> > +mtip_atable_dynamicms_learn_migration(struct switch_enet_private
+> > *fep,
+> > +				      int curr_time, unsigned char
+> > *mac,
+> > +				      u8 *rx_port)
+> > +{
+> > +	u8 port =3D MTIP_PORT_FORWARDING_INIT;
+> > +	struct mtip_port_info *port_info;
+> > +	u32 rx_mac_lo =3D 0, rx_mac_hi =3D 0;
+> > +	unsigned long flags;
+> > +	int index;
+> > +
+> > +	spin_lock_irqsave(&fep->learn_lock, flags); =20
+>=20
+> AFAICS this is called by napi context and by a plain thread context,
+> spin_lock_bh() should be sufficient.
 
+Ok
+
+>=20
+> > +
+> > +	if (mac && is_valid_ether_addr(mac)) {
+> > +		rx_mac_lo =3D (u32)((mac[3] << 24) | (mac[2] << 16) |
+> > +				  (mac[1] << 8) | mac[0]);
+> > +		rx_mac_hi =3D (u32)((mac[5] << 8) | (mac[4]));
+> > +	}
+> > +
+> > +	port_info =3D mtip_portinfofifo_read(fep);
+> > +	while (port_info) {
+> > +		/* get block index from lookup table */
+> > +		index =3D GET_BLOCK_PTR(port_info->hash);
+> > +		mtip_update_atable_dynamic1(port_info->maclo,
+> > port_info->machi,
+> > +					    index, port_info->port,
+> > +					    curr_time, fep);
+> > +
+> > +		if (mac && is_valid_ether_addr(mac) &&
+> > +		    port =3D=3D MTIP_PORT_FORWARDING_INIT) {
+> > +			if (rx_mac_lo =3D=3D port_info->maclo &&
+> > +			    rx_mac_hi =3D=3D port_info->machi) {
+> > +				/* The newly learned MAC is the
+> > source of
+> > +				 * our filtered frame.
+> > +				 */
+> > +				port =3D (u8)port_info->port;
+> > +			}
+> > +		}
+> > +		port_info =3D mtip_portinfofifo_read(fep);
+> > +	}
+> > +
+> > +	if (rx_port)
+> > +		*rx_port =3D port;
+> > +
+> > +	spin_unlock_irqrestore(&fep->learn_lock, flags);
+> > +}
+> > +
+> > +static void mtip_aging_timer(struct timer_list *t)
+> > +{
+> > +	struct switch_enet_private *fep =3D from_timer(fep, t,
+> > timer_aging); +
+> > +	fep->curr_time =3D mtip_timeincrement(fep->curr_time);
+> > +
+> > +	mod_timer(&fep->timer_aging,
+> > +		  jiffies +
+> > msecs_to_jiffies(LEARNING_AGING_INTERVAL)); +} =20
+>=20
+> It's unclear to me why you need to maintain a timer just to update a
+> timestamp?!?
+>=20
+
+This timestamp is afterwards used in:
+mtip_atable_dynamicms_learn_migration(), which in turn manages the
+entries in switch "dynamic" table (it is one of the fields in the
+record.
+
+> (jiffies >> msecs_to_jiffies(LEARNING_AGING_INTERVAL)) & ((1 <<
+> AT_DENTRY_TIMESTAMP_WIDTH) - 1)
+>=20
+
+If I understood you correctly - I shall remove the timer and then just
+use the above line (based on jiffies) when
+mtip_atable_dynamicms_learn_migration() is called (and it requires the
+timestamp)?
+
+Otherwise the mtip_timeincrement() seems like a nice wrapper on
+incrementing the timestamp.
+
+> should yield the same value (and possibly define a bitmask as a
+> shortcut)
+>=20
+> > +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
+> > +					struct net_device *dev,
+> > int port) +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	unsigned short	status;
+> > +	unsigned long flags;
+> > +	struct cbd_t *bdp;
+> > +	void *bufaddr;
+> > +
+> > +	spin_lock_irqsave(&fep->hw_lock, flags); =20
+>=20
+> AFAICS this lock is acquired only by napi and thread context the _bh
+> variant should be sufficient.
+
+Ok.
+
+>=20
+> > +
+> > +	if (!fep->link[0] && !fep->link[1]) {
+> > +		/* Link is down or autonegotiation is in progress.
+> > */
+> > +		netif_stop_queue(dev);
+> > +		spin_unlock_irqrestore(&fep->hw_lock, flags);
+> > +		return NETDEV_TX_BUSY; =20
+>=20
+> Intead you should probably stop the queue when such events happen
+
+Please correct me if I'm wrong - the netif_stop_queue(dev); is called
+before return. Shall something different be also done?
+
+>=20
+> > +	}
+> > +
+> > +	/* Fill in a Tx ring entry */
+> > +	bdp =3D fep->cur_tx;
+> > +
+> > +	status =3D bdp->cbd_sc;
+> > +
+> > +	if (status & BD_ENET_TX_READY) {
+> > +		/* All transmit buffers are full. Bail out.
+> > +		 * This should not happen, since dev->tbusy should
+> > be set.
+> > +		 */
+> > +		dev_err(&fep->pdev->dev, "%s: tx queue full!.\n",
+> > dev->name);
+> > +		spin_unlock_irqrestore(&fep->hw_lock, flags);
+> > +		return NETDEV_TX_BUSY; =20
+>=20
+> Instead you should use
+> netif_txq_maybe_stop()/netif_subqueue_maybe_stop() to stop the queue
+> eariler.
+
+As I don't manage queues - maybe the netif_txq_maybe_stop() seems to be
+an overkill. In the earlier code the netif_stop_queue() is used.
+
+>=20
+> > +	}
+> > +
+> > +	/* Clear all of the status flags */
+> > +	status &=3D ~BD_ENET_TX_STATS;
+> > +
+> > +	/* Set buffer length and buffer pointer */
+> > +	bufaddr =3D skb->data;
+> > +	bdp->cbd_datlen =3D skb->len;
+> > +
+> > +	/* On some FEC implementations data must be aligned on
+> > +	 * 4-byte boundaries. Use bounce buffers to copy data
+> > +	 * and get it aligned.
+> > +	 */
+> > +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
+> > +		unsigned int index;
+> > +
+> > +		index =3D bdp - fep->tx_bd_base;
+> > +		memcpy(fep->tx_bounce[index],
+> > +		       (void *)skb->data, skb->len);
+> > +		bufaddr =3D fep->tx_bounce[index];
+> > +	}
+> > +
+> > +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> > +		swap_buffer(bufaddr, skb->len); =20
+>=20
+> Ouch, the above will kill performances.
+
+This unfortunately must be done in such a way (the same approach is
+present on fec_main.c) as the IP block is implemented in such a way
+(explicit conversion from big endian to little endian).
+
+> Also it looks like it will
+> access uninitialized memory if skb->len is not 4 bytes aligned.
+>=20
+
+There is a few lines above a special code to prevent from such a
+situation ((unsigned long)bufaddr & MTIP_ALIGNMENT).
+
+> > +
+> > +	/* Save skb pointer. */
+> > +	fep->tx_skbuff[fep->skb_cur] =3D skb;
+> > +
+> > +	dev->stats.tx_bytes +=3D skb->len; =20
+>=20
+> It looks like this start is incremented too early, as tx could still
+> fail later.
+
+Ok.
+
+>=20
+> > +	fep->skb_cur =3D (fep->skb_cur + 1) & TX_RING_MOD_MASK;
+> > +
+> > +	/* Push the data cache so the CPM does not get stale memory
+> > +	 * data.
+> > +	 */
+> > +	bdp->cbd_bufaddr =3D dma_map_single(&fep->pdev->dev, bufaddr,
+> > +					  MTIP_SWITCH_TX_FRSIZE,
+> > +					  DMA_TO_DEVICE);
+> > +	if (unlikely(dma_mapping_error(&fep->pdev->dev,
+> > bdp->cbd_bufaddr))) {
+> > +		dev_err(&fep->pdev->dev,
+> > +			"Failed to map descriptor tx buffer\n");
+> > +		dev->stats.tx_errors++;
+> > +		dev->stats.tx_dropped++;
+> > +		dev_kfree_skb_any(skb);
+> > +		goto err;
+> > +	}
+> > +
+> > +	/* Send it on its way.  Tell FEC it's ready, interrupt
+> > when done,
+> > +	 * it's the last BD of the frame, and to put the CRC on
+> > the end.
+> > +	 */
+> > + =20
+>=20
+> Likely you need some memory barrier here to ensure the descriptor
+> status update is seen by the device after the buffer addr update.
+>=20
+> > +	status |=3D (BD_ENET_TX_READY | BD_ENET_TX_INTR
+> > +			| BD_ENET_TX_LAST | BD_ENET_TX_TC);
+
+I will add wmb() here.
+
+> > +	bdp->cbd_sc =3D status;
+> > +
+> > +	netif_trans_update(dev);
+> > +	skb_tx_timestamp(skb);
+> > +
+> > +	/* For port separation - force sending via specified port
+> > */
+> > +	if (!fep->br_offload && port !=3D 0)
+> > +		mtip_forced_forward(fep, port, 1);
+> > +
+> > +	/* Trigger transmission start */
+> > +	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR); =20
+>=20
+> Possibly you should check skb->xmit_more to avoid ringing the doorbell
+> when not needed.
+
+I couldn't find skb->xmit_more in the current sources. Instead, there
+is netdev_xmit_more().
+
+However, the TX code just is supposed to setup one frame transmission
+and hence there is no risk that we trigger "empty" transmission.
+
+>=20
+> > +static void mtip_timeout(struct net_device *dev, unsigned int
+> > txqueue) +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	struct cbd_t *bdp;
+> > +	int i;
+> > +
+> > +	dev->stats.tx_errors++;
+> > +
+> > +	if (IS_ENABLED(CONFIG_SWITCH_DEBUG)) {
+> > +		dev_info(&dev->dev, "%s: transmit timed out.\n",
+> > dev->name);
+> > +		dev_info(&dev->dev,
+> > +			 "Ring data: cur_tx %lx%s, dirty_tx %lx
+> > cur_rx: %lx\n",
+> > +			 (unsigned long)fep->cur_tx,
+> > +			 fep->tx_full ? " (full)" : "",
+> > +			 (unsigned long)fep->dirty_tx,
+> > +			 (unsigned long)fep->cur_rx);
+> > +
+> > +		bdp =3D fep->tx_bd_base;
+> > +		dev_info(&dev->dev, " tx: %u buffers\n",
+> > TX_RING_SIZE);
+> > +		for (i =3D 0; i < TX_RING_SIZE; i++) {
+> > +			dev_info(&dev->dev, "  %08lx: %04x %04x
+> > %08x\n",
+> > +				 (kernel_ulong_t)bdp, bdp->cbd_sc,
+> > +				 bdp->cbd_datlen,
+> > (int)bdp->cbd_bufaddr);
+> > +			bdp++;
+> > +		}
+> > +
+> > +		bdp =3D fep->rx_bd_base;
+> > +		dev_info(&dev->dev, " rx: %lu buffers\n",
+> > +			 (unsigned long)RX_RING_SIZE);
+> > +		for (i =3D 0 ; i < RX_RING_SIZE; i++) {
+> > +			dev_info(&dev->dev, "  %08lx: %04x %04x
+> > %08x\n",
+> > +				 (kernel_ulong_t)bdp,
+> > +				 bdp->cbd_sc, bdp->cbd_datlen,
+> > +				 (int)bdp->cbd_bufaddr);
+> > +			bdp++;
+> > +		}
+> > +	}
+> > +
+> > +	rtnl_lock(); =20
+>=20
+> This is called in atomic scope, you can't acquire a mutex here.
+> Instead you could schedule a work and do the reset in such scope.
+>=20
+
+Yes, you are right. I will rewrite it.
+
+> > +	if (netif_device_present(dev) || netif_running(dev)) {
+> > +		napi_disable(&fep->napi);
+> > +		netif_tx_lock_bh(dev);
+> > +		mtip_switch_restart(dev, fep->full_duplex[0],
+> > +				    fep->full_duplex[1]);
+> > +		netif_tx_wake_all_queues(dev);
+> > +		netif_tx_unlock_bh(dev);
+> > +		napi_enable(&fep->napi);
+> > +	}
+> > +	rtnl_unlock();
+> > +} =20
+>=20
+> > +
+> > +/* During a receive, the cur_rx points to the current incoming
+> > buffer.
+> > + * When we update through the ring, if the next incoming buffer has
+> > + * not been given to the system, we just set the empty indicator,
+> > + * effectively tossing the packet.
+> > + */
+> > +static int mtip_switch_rx(struct net_device *dev, int budget, int
+> > *port) +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	u8 *data, rx_port =3D MTIP_PORT_FORWARDING_INIT;
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	unsigned short status, pkt_len;
+> > +	struct net_device *pndev;
+> > +	struct ethhdr *eth_hdr;
+> > +	int pkt_received =3D 0;
+> > +	struct sk_buff *skb;
+> > +	unsigned long flags;
+> > +	struct cbd_t *bdp;
+> > +
+> > +	spin_lock_irqsave(&fep->hw_lock, flags);
+> > +
+
+It is also called in the NAPI context, so I will change
+spin_lock_irqsave() to spin_lock_bh().
+
+> > +	/* First, grab all of the stats for the incoming packet.
+> > +	 * These get messed up if we get called due to a busy
+> > condition.
+> > +	 */
+> > +	bdp =3D fep->cur_rx;
+> > +
+> > +	while (!((status =3D bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
+> > +		if (pkt_received >=3D budget)
+> > +			break;
+> > +
+> > +		pkt_received++;
+> > +		/* Since we have allocated space to hold a
+> > complete frame,
+> > +		 * the last indicator should be set.
+> > +		 */
+> > +		if ((status & BD_ENET_RX_LAST) =3D=3D 0)
+> > +			dev_warn_ratelimited(&dev->dev,
+> > +					     "SWITCH ENET: rcv is
+> > not +last\n"); +
+> > +		if (!fep->usage_count)
+> > +			goto rx_processing_done;
+> > +
+> > +		/* Check for errors. */
+> > +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH |
+> > BD_ENET_RX_NO |
+> > +			      BD_ENET_RX_CR | BD_ENET_RX_OV)) {
+> > +			dev->stats.rx_errors++;
+> > +			if (status & (BD_ENET_RX_LG |
+> > BD_ENET_RX_SH)) {
+> > +				/* Frame too long or too short. */
+> > +				dev->stats.rx_length_errors++;
+> > +			}
+> > +			if (status & BD_ENET_RX_NO)	/*
+> > Frame alignment */
+> > +				dev->stats.rx_frame_errors++;
+> > +			if (status & BD_ENET_RX_CR)	/* CRC
+> > Error */
+> > +				dev->stats.rx_crc_errors++;
+> > +			if (status & BD_ENET_RX_OV)	/* FIFO
+> > overrun */
+> > +				dev->stats.rx_fifo_errors++;
+> > +		}
+> > +
+> > +		/* Report late collisions as a frame error.
+> > +		 * On this error, the BD is closed, but we don't
+> > know what we
+> > +		 * have in the buffer.  So, just drop this frame
+> > on the floor.
+> > +		 */
+> > +		if (status & BD_ENET_RX_CL) {
+> > +			dev->stats.rx_errors++;
+> > +			dev->stats.rx_frame_errors++;
+> > +			goto rx_processing_done;
+> > +		}
+> > +
+> > +		/* Process the incoming frame */
+> > +		pkt_len =3D bdp->cbd_datlen;
+> > +		data =3D (__u8 *)__va(bdp->cbd_bufaddr);
+> > +
+> > +		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
+> > +				 bdp->cbd_datlen,
+> > DMA_FROM_DEVICE); =20
+>=20
+> I have read your explaination WRT unmap/map. Actually you don't need
+> to do any mapping here,=20
+
+There are 16 cbd_t descriptors allocated (as dma_alloc_coherent). Those
+descriptors contain pointer to data (being read in this case).
+
+Hence the need to perform dma_map_single() for each descriptor, so I
+would hold the correct pointer. However, initially this is done in
+mtip_alloc_buffers().
+
+> since you are unconditionally copying the
+> whole buffer (why???)
+
+Only the value of=20
+pkt_len =3D bdp->cbd_datlen; is copied to SKB (after byte swap_buffer()).
+
+> and re-using it.
+>=20
+> Still you need a dma_sync_single() to ensure the CPUs see the correct
+> data.
+
+The descriptors - i.e. struct cbd_t fields are allocated with
+dma_alloc_coherent(), so this is OK.
+
+The pointer, which is provided by dma_map_single(), is then used by
+cbd_t descriptor to store data read by MTIP IP block.
+
+>=20
+> > +
+> > +		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> > +			swap_buffer(data, pkt_len);
+> > +
+> > +		if (data) {
+> > +			eth_hdr =3D (struct ethhdr *)data;
+> > +			mtip_atable_get_entry_port_number(fep,
+> > +
+> > eth_hdr->h_source,
+> > +
+> > &rx_port);
+> > +			if (rx_port =3D=3D MTIP_PORT_FORWARDING_INIT)
+> > +
+> > mtip_atable_dynamicms_learn_migration(fep,
+> > +
+> >    fep->curr_time,
+> > +
+> >    eth_hdr->h_source,
+> > +
+> >    &rx_port);
+> > +		}
+> > +
+> > +		if (!fep->br_offload && (rx_port =3D=3D 1 || rx_port
+> > =3D=3D 2))
+> > +			pndev =3D fep->ndev[rx_port - 1];
+> > +		else
+> > +			pndev =3D dev;
+> > +
+> > +		*port =3D rx_port;
+> > +		pndev->stats.rx_packets++;
+> > +		pndev->stats.rx_bytes +=3D pkt_len; =20
+>=20
+> It looks like the stats are incremented too early, as the packets
+> could still be dropped a few lines later
+
++1
+
+>=20
+> > +
+> > +		/* This does 16 byte alignment, exactly what we
+> > need.
+> > +		 * The packet length includes FCS, but we don't
+> > want to
+> > +		 * include that when passing upstream as it messes
+> > up
+> > +		 * bridging applications.
+> > +		 */
+> > +		skb =3D netdev_alloc_skb(pndev, pkt_len +
+> > NET_IP_ALIGN);
+> > +		if (unlikely(!skb)) {
+> > +			dev_dbg(&fep->pdev->dev,
+> > +				"%s: Memory squeeze, dropping
+> > packet.\n",
+> > +				pndev->name);
+> > +			pndev->stats.rx_dropped++;
+> > +			goto err_mem;
+> > +		} else {
+> > +			skb_reserve(skb, NET_IP_ALIGN);
+> > +			skb_put(skb, pkt_len);      /* Make room */
+> > +			skb_copy_to_linear_data(skb, data,
+> > pkt_len);
+> > +			skb->protocol =3D eth_type_trans(skb, pndev);
+> > +			napi_gro_receive(&fep->napi, skb);
+> > +		}
+> > +
+> > +		bdp->cbd_bufaddr =3D dma_map_single(&fep->pdev->dev,
+> > data,
+> > +						  bdp->cbd_datlen,
+> > +						  DMA_FROM_DEVICE);
+> > +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
+> > +					       bdp->cbd_bufaddr)))
+> > {
+> > +			dev_err(&fep->pdev->dev,
+> > +				"Failed to map descriptor rx
+> > buffer\n");
+> > +			pndev->stats.rx_errors++;
+> > +			pndev->stats.rx_dropped++;
+> > +			dev_kfree_skb_any(skb); =20
+>=20
+> The above statement is wrong even if you intend to keep the
+> dma_unmap/dma_map pair (and please, don't do that! ;).
+
+It looks like the in the mtip_alloc_buffers() the area to provide
+pointer for bdp->cbd_bufaddr is allocated.
+
+Then in the mtip_switch_rx() (if data is received) - the data (from
+bdp->cbd_bufaddr) is read and the dma_unmap_single() is called.
+
+When the data is "passed" via SKB to upper "layers" of network stack,
+then the dma_map_single() is call (with the same bdp->cbd_datlen
+parameter) to allocate pointer for bdp->cbd_bufaddr.
+
+Indeed, it looks like not optimal solution (maybe there are some side
+effects to cover from this IP block?).=20
+
+I will check if dma_sync_single_for_cpu() can be used instead (so we can
+re-use the descriptors' pointers from the initial allocation).
+
+> At this point
+> the skb ownership has been handed to the stack by the previous
+> napi_gro_receive(), freeing it here will cause UaF and double free.
+>=20
+
+I will remove the call to dev_kfree_skb_any(skb);
+
+> > +			goto err_mem;
+> > +		}
+> > +
+> > + rx_processing_done:
+> > +		/* Clear the status flags for this buffer */
+> > +		status &=3D ~BD_ENET_RX_STATS; =20
+>=20
+> With the dma map/unmap in place, you likely need a memory barrier to
+> ensure the device will see the descriptor status update after
+> bufferptr update.
+
+I will add wmb() here.
+
+>=20
+> > +static int mtip_alloc_buffers(struct net_device *dev)
+> > +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	struct sk_buff *skb;
+> > +	struct cbd_t *bdp;
+> > +	int i;
+> > +
+> > +	bdp =3D fep->rx_bd_base;
+> > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
+> > +		skb =3D netdev_alloc_skb(dev, MTIP_SWITCH_RX_FRSIZE);
+> > +		if (!skb)
+> > +			goto err;
+> > +
+> > +		fep->rx_skbuff[i] =3D skb;
+> > +
+> > +		bdp->cbd_bufaddr =3D dma_map_single(&fep->pdev->dev,
+> > skb->data,
+> > +
+> > MTIP_SWITCH_RX_FRSIZE,
+> > +						  DMA_FROM_DEVICE);
+> > +		if (unlikely(dma_mapping_error(&fep->pdev->dev,
+> > +					       bdp->cbd_bufaddr)))
+> > {
+> > +			dev_err(&fep->pdev->dev,
+> > +				"Failed to map descriptor rx
+> > buffer\n");
+> > +			dev_kfree_skb_any(skb); =20
+>=20
+> At this point fep->rx_skbuff[i] is still not NULL, and later
+> mtip_free_buffers() will try to free it again. You should remove the
+> above dev_kfree_skb_any(skb).
+
++1
+
+>=20
+> > +static const struct ethtool_ops mtip_ethtool_ops =3D {
+> > +	.get_link_ksettings     =3D phy_ethtool_get_link_ksettings,
+> > +	.set_link_ksettings     =3D phy_ethtool_set_link_ksettings,
+> > +	.get_drvinfo            =3D mtip_get_drvinfo,
+> > +	.get_link               =3D ethtool_op_get_link,
+> > +	.get_ts_info		=3D ethtool_op_get_ts_info,
+> > +};
+> > +
+> > +static const struct net_device_ops mtip_netdev_ops =3D {
+> > +	.ndo_open		=3D mtip_open,
+> > +	.ndo_stop		=3D mtip_close,
+> > +	.ndo_start_xmit	=3D mtip_start_xmit,
+> > +	.ndo_set_rx_mode	=3D mtip_set_multicast_list,
+> > +	.ndo_tx_timeout	=3D mtip_timeout,
+> > +	.ndo_set_mac_address	=3D mtip_set_mac_address,
+> > +};
+> > +
+> > +bool mtip_is_switch_netdev_port(const struct net_device *ndev)
+> > +{
+> > +	return ndev->netdev_ops =3D=3D &mtip_netdev_ops;
+> > +}
+> > +
+> > +static int mtip_switch_dma_init(struct switch_enet_private *fep)
+> > +{
+> > +	struct cbd_t *bdp, *cbd_base;
+> > +	int ret, i;
+> > +
+> > +	/* Check mask of the streaming and coherent API */
+> > +	ret =3D dma_set_mask_and_coherent(&fep->pdev->dev,
+> > DMA_BIT_MASK(32));
+> > +	if (ret < 0) {
+> > +		dev_err(&fep->pdev->dev, "No suitable DMA
+> > available\n");
+> > +		return ret;
+> > +	}
+> > +
+> > +	/* Allocate memory for buffer descriptors */
+> > +	cbd_base =3D dma_alloc_coherent(&fep->pdev->dev, PAGE_SIZE,
+> > &fep->bd_dma,
+> > +				      GFP_KERNEL);
+> > +	if (!cbd_base)
+> > +		return -ENOMEM;
+> > +
+> > +	/* Set receive and transmit descriptor base */
+> > +	fep->rx_bd_base =3D cbd_base;
+> > +	fep->tx_bd_base =3D cbd_base + RX_RING_SIZE;
+> > +
+> > +	/* Initialize the receive buffer descriptors */
+> > +	bdp =3D fep->rx_bd_base;
+> > +	for (i =3D 0; i < RX_RING_SIZE; i++) {
+> > +		bdp->cbd_sc =3D 0;
+> > +		bdp++;
+> > +	}
+> > +
+> > +	/* Set the last buffer to wrap */
+> > +	bdp--;
+> > +	bdp->cbd_sc |=3D BD_SC_WRAP; =20
+>=20
+> This is a recurring pattern, you should use an helper for it.
+>=20
+
+Ok.
+
+> > +/* FEC MII MMFR bits definition */
+> > +#define FEC_MMFR_ST             BIT(30)
+> > +#define FEC_MMFR_OP_READ        BIT(29)
+> > +#define FEC_MMFR_OP_WRITE       BIT(28)
+> > +#define FEC_MMFR_PA(v)          (((v) & 0x1F) << 23)
+> > +#define FEC_MMFR_RA(v)          (((v) & 0x1F) << 18) =20
+>=20
+> Here and elsewhere it looks like you could use FIELD_PREP and friends
+
+Ok, I will adjust the code.
+
+>=20
+> This patch is really too big, I'm pretty sure I missed some relevant
+> issues. You should split it in multiple ones: i.e. initialization and
+> h/w access, rx/tx, others ndos.
+
+It is quite hard to "scatter" this patch as:
+
+1. I've already split it to several files (which correspond to
+different "logical" entities - like mtipl2sw_br.c).
+2. The mtipl2sw.c file is the smallest part of the "core" of the
+driver.
+3. If I split it, then at some point I would break bisectability for
+imx28.
+
+>=20
+> /P
+>=20
+
+Big thanks for your comments.
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/9ZmmnzXWe89Ci6PNTA0eE1a
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmg26ykACgkQAR8vZIA0
+zr3NqQgAg/Wms6Es7gJIi5Y1I4OGda037cT9BtwVJAq8YpjkdZSDZ9+t/xbkIx58
+Em4XhPq6hlDM1KLo6kKVqbP55CVYou8Rnen1U6viL9kukWYRNStymTWdfQt0rp7z
+HaBQlTruWw4P2FOSMoica9A28yl37oBtk6Qnf3t9bdgKgJkj/B6eq4sRCAqJFe8E
+UA0OjNcowsMWoI8rUqx5/bxC26Nm/oLdgJL8qVc8KzZNJPOci3TKOswk9So7+Pb8
+fplwy0ynrnnopl4ur4ufHcJa0cchJev202fvyhyt7jIbhsi8MyNOw7fd1ucVRmxx
+Pyx/sTv38i2fGb9DLp0q40ZTXbPl7A==
+=uAU+
+-----END PGP SIGNATURE-----
+
+--Sig_/9ZmmnzXWe89Ci6PNTA0eE1a--
