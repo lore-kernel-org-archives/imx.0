@@ -1,443 +1,486 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1061121B9FC
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 08:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F83F21A459
+	for <imx@lists.linux.dev>; Thu, 29 May 2025 08:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748507537; cv=none; b=YVXET/uChk4vKVO0aT+Xo5N3UTnQ/r7PXOaRXFuZxFV667uluwj4m+y8R5DYf9WpVok5ka9Nkb5uMunUrDPD3C8ya/1M7AjH6XA0dZi4uzy+w72dC0kSIYPgniF9Kq4KZim40CTZGH0dV9uUfA+kUhMd+VXkQwPIhQlCpa6ECfM=
+	t=1748508133; cv=none; b=ERXg17Ac3e1Y5PiToQNpvcoXgVZxM+clhU28vy2mMWkdBXeT8kcDGkVHogTFMxuCElgFPGCXVvZXfdHeJosoiPlwFBB/Hr5HfCBDFAoRsggxe03Qt4H9ogy1Qc6CJD06aBdSdJJ3BRGNu8Y7pko6P5ru+P526YPTsQDXnsd39Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748507537; c=relaxed/simple;
-	bh=FN0vODHV506AuaoFFdrL/yzRzQtnpZglcVSCkCKMPE0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=beXYhm1GadicDaTpeOpUzCZSqD36TjX82sBvnVRZTjGjdSWfOqBgypGnUs6aOmzDWxGw7lwscf+8/crALoSLqWLT1wVWPMGmVf1/t+a8eZ8faLeFcaPDiSmbyVANdkO1mZUVh8XxXHVy3P+Y554I8E8zJ12U3SPqZSQyTALerbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=mmYZRMfd; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	s=arc-20240116; t=1748508133; c=relaxed/simple;
+	bh=OuspnWTVYQSi8/jedqVn217G1Y2qKL3iu0EIvP7BufQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BOhP72XUWEdU2R2/FBtU5B1g4BjJrlGKFtIJ9XcsyQP0l/R0hyDXWtvkSjHCvZPQHwOmBLeY0xtyjJqilbuGxFqQWtkCQlz2aiemXdncm2R7EvWm3VByGXbTJgllW956fBLJTgLq8xQkJJg0d0faXXKXNYeFbLMM80GIEAVwldQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=nPrFQVkw; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="mmYZRMfd"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac34257295dso112513266b.2
-        for <imx@lists.linux.dev>; Thu, 29 May 2025 01:32:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1748507533; x=1749112333; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZgN9AVJjp38qn//MPJ9bGqWJk/ibzEBx7kgTbrCvNV8=;
-        b=mmYZRMfdYzLob4KwM7uLLwkpz0DaqT2hCx5Wx5yNF+RYMekvvgW/N7T4uZymvvaG3o
-         +Yl59hyMt4iwNzxDwP0RPqqw8hDYtGuB3tnJxMmT9vRR8mc03IxS5zBe8NGeFn4HRw6s
-         dl9QWI0NpS5DNbV8Z735ShhiyBZnAyfinqj38=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748507533; x=1749112333;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZgN9AVJjp38qn//MPJ9bGqWJk/ibzEBx7kgTbrCvNV8=;
-        b=UQmi0zELGaJv+IU2tgs6cXLBaZotC8irD1FX8taeXHzh0tcvXgY8xuXIBfNILZwGzw
-         1WRspXRXHEXU1l+YjgksJopmqiosoq7zTxURMXylbnOjxpIm44s7BcQ9wgQZMXD2+LmB
-         N9JqueAZyrWw7TkTwUzAYO3n+7crVOcjdA0ISCxwTdUWpmEIYjSMhJxw4v5YTH45Jq4Z
-         JEbsg1ykDAuOpkFBq0XAijKc4LrTrcrUHcWEbFgJqRmtuXnGMWKI+rU2ov3KyVAe+q9t
-         pacHTAvqZArAJPnDFfRuI2h5iSVTnnR5jIQWZ2QYyTg/DN8o+v6rG8ecHEqTjelpbvtH
-         QCrA==
-X-Forwarded-Encrypted: i=1; AJvYcCWhGlHxfAV4Jx7Ra98y66N1m3sSJd/a42xtszFLq2guegUCue4/Tx6qZjJ46sx8aB37+PI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwHW7IE8XtmOl3dFQCj4n2fl4viNZ+wh3vrsKwAkEhNKQHQU0dC
-	OY34UI3zDMZ6mYTmv2UugL/MYrgIDP3omWj9s7zcrYhQPI6MSaNQmcxN5ejFsP1lwbY=
-X-Gm-Gg: ASbGncuTt3Ap9mYRgOvDgO6XOY0GnKqju8A5rRB7G0IyY4UZU0hRjdPH8VkQSiJzfhV
-	Dwx7+3+7Eu2HSSo/giLRkXlPRh7YR4rI7TMKxLW3JaPtfBiWy8LjGWO73QVqz+hActVzY5xpS31
-	pLOjGNrDjwChDP9gGJwlUEOU644yx+IlQXd41m8ZOH1amgGa2fYywmdQqFHC9zC63kPjJuBoN/m
-	vY/tKSaefDfEbbDRMR71NbsmQ8lhchnl7HfsstS5qrwqn0R57g41dssmVAZssvNkb+7lOtn2Ia6
-	n0fQ78xSOmtzFaU9KNRlJw10UNsZYS5M0+P/72bRgxCZmk2dXMSYCVS7xJ+83+Y8dHomWagHp73
-	KxQEIkHdmg0vq3pPIJ7IDRFr8kCM=
-X-Google-Smtp-Source: AGHT+IHrwgHwBZEwqgmdfFcvMdKs/R/4FvKMtsdtQta3AkpUWAE/0fmR4c4NoqV2g+YZPRTfCoNmvg==
-X-Received: by 2002:a17:907:3d42:b0:ad8:e477:970c with SMTP id a640c23a62f3a-ad8e486d957mr262287266b.23.1748507533480;
-        Thu, 29 May 2025 01:32:13 -0700 (PDT)
-Received: from dario-ThinkPad-T14s-Gen-2i.. ([2.196.42.248])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d82e87esm100609866b.63.2025.05.29.01.32.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 May 2025 01:32:13 -0700 (PDT)
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-To: linux-kernel@vger.kernel.org
-Cc: michael@amarulasolutions.com,
-	linux-amarula@amarulasolutions.com,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v3 4/4] ARM: dts: mxs: support i.MX28 Amarula rmm board
-Date: Thu, 29 May 2025 10:31:07 +0200
-Message-ID: <20250529083201.2286915-5-dario.binacchi@amarulasolutions.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250529083201.2286915-1-dario.binacchi@amarulasolutions.com>
-References: <20250529083201.2286915-1-dario.binacchi@amarulasolutions.com>
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="nPrFQVkw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1748508111; x=1749112911; i=wahrenst@gmx.net;
+	bh=UOD287QS0fpGWmLkl73qXJLRrRdbB/PWBAC8P4gOOcE=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=nPrFQVkwzGVBXHyU834utKM14RjCtEQoD9cyOITpTnRNX4VBCTBioW8aYpw9bSQC
+	 WJiXOeiwlz4ZeHDjtbQR/6o4ORHC2qFkzVG+qMMHbbdRqYkeQ70YGSgV5L+qXpSBt
+	 1nl0Yyx5d+Hr5V2A4ea65RuANN2ftky8WkERJ3IuD7BhNrUGHyZdA8m4t9H8Il3ps
+	 snZyAzscWNswk9tGryWOsHX9GDlI7cAVOZBgdXGmx1FXearejOHvLYpAHZ126dfgn
+	 /GpfB60uS+XPMaIC1+Mmjp2mYis17HvbjolZnft7aORXgmko5jaO7iV0VOV4A//tp
+	 9XRDXiLBcJv7uVpL8Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.104] ([91.41.216.208]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N4zAy-1v3tSk2hcK-00u7UX; Thu, 29
+ May 2025 10:41:50 +0200
+Message-ID: <8c0662e9-3f7a-4b71-80e6-3898842e49de@gmx.net>
+Date: Thu, 29 May 2025 10:41:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] ARM: dts: mxs: support i.MX28 Amarula rmm board
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: michael@amarulasolutions.com, linux-amarula@amarulasolutions.com,
+ linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250528121306.1464830-1-dario.binacchi@amarulasolutions.com>
+ <20250528121306.1464830-5-dario.binacchi@amarulasolutions.com>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20250528121306.1464830-5-dario.binacchi@amarulasolutions.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:HwcLHcfp+wmgZaWwVrg9XzWtKXnek0CBVHSQTgCsObv1iFQZ+/U
+ WaYQCWzAE61a7g6oLCfCpzgmLG00uujGoJUuG6b3Jbkpg7oNWcFzh7gpe5q/0txTtowdX/5
+ DpO1Xt0tz+KYyWsodOrU6sRboAlI3DIjPMqPKbHtzqma0AZ6H2ISrOLcaVe+LNSZnD7c7PC
+ 3j2ojKa4eF2QB3MDo7H0w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:fWyCDTFUc18=;xD8GD5bQclGsIh/jOg3xXELay79
+ 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
+ NNrOIdGlzFi/EWaCsWruLu1yO79X9SN8Ob0rsA==
 
-The board includes the following resources:
- - 256 Mbytes NAND Flash
- - 128 Mbytes DRAM DDR2
- - CAN
- - USB 2.0 high-speed/full-speed
- - Ethernet MAC
+Hi Dario,
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Am 28.05.25 um 14:11 schrieb Dario Binacchi:
+> The board includes the following resources:
+>   - 256 Mbytes NAND Flash
+>   - 128 Mbytes DRAM DDR2
+>   - CAN
+>   - USB 2.0 high-speed/full-speed
+>   - Ethernet MAC
+>
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+>
+> ---
+>
+> Changes in v2:
+> - In imx28-amarula-rmm.dts:
+>    - Replace '-' with '@' for the pinctrl sub-nodes.
+>    - Replace edt,edt-ft5x06 with edt,edt-ft5306.
+>    - Drop LCD reset hog pin.
+>    - Add correct #address-cells and #size-cells to gpmi node.
+>    - Replace edt-ft5x06@38 with touchscreen@38.
+> - Drop from commit messages all references to LCD display.
+> - Add patch [1/4] "dt-bindings: mfd: convert mxs-lradc bindings to
+>    json-schema".
+>
+>   arch/arm/boot/dts/nxp/mxs/Makefile            |   1 +
+>   .../boot/dts/nxp/mxs/imx28-amarula-rmm.dts    | 303 ++++++++++++++++++
+>   2 files changed, 304 insertions(+)
+>   create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
+>
+> diff --git a/arch/arm/boot/dts/nxp/mxs/Makefile b/arch/arm/boot/dts/nxp/=
+mxs/Makefile
+> index 96dd31ea19ba..d72ba702b6fa 100644
+> --- a/arch/arm/boot/dts/nxp/mxs/Makefile
+> +++ b/arch/arm/boot/dts/nxp/mxs/Makefile
+> @@ -5,6 +5,7 @@ dtb-$(CONFIG_ARCH_MXS) +=3D \
+>   	imx23-sansa.dtb \
+>   	imx23-stmp378x_devb.dtb \
+>   	imx23-xfi3.dtb \
+> +	imx28-amarula-rmm.dtb \
+>   	imx28-apf28.dtb \
+>   	imx28-apf28dev.dtb \
+>   	imx28-apx4devkit.dtb \
+> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts b/arch/arm/=
+boot/dts/nxp/mxs/imx28-amarula-rmm.dts
+> new file mode 100644
+> index 000000000000..5daa9e22715d
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
+> @@ -0,0 +1,303 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2025 Amarula Solutions, Dario Binacchi <dario.binacchi=
+@amarulasolutions.com>
+> + */
+> +
+> +/dts-v1/;
+> +#include "imx28.dtsi"
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +/ {
+> +	model =3D "Amarula i.MX28 rmm";
+> +	compatible =3D "amarula,imx28-rmm", "fsl,imx28";
+> +
+> +	memory@40000000 {
+> +		device_type =3D "memory";
+> +		reg =3D <0x40000000 0x08000000>;
+> +	};
+> +
+> +	reg_5v: regulator-5v {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "5v";
+> +		regulator-min-microvolt =3D <5000000>;
+> +		regulator-max-microvolt =3D <5000000>;
+> +		regulator-always-on;
+> +	};
+> +
+> +	reg_3v3: regulator-3v3 {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "3v3";
+> +		regulator-min-microvolt =3D <3300000>;
+> +		regulator-max-microvolt =3D <3300000>;
+> +		regulator-always-on;
+> +	};
+> +
+> +	reg_1v8: regulator-1v8 {
+> +		compatible =3D "regulator-fixed";
+> +		regulator-name =3D "1v8";
+> +		regulator-min-microvolt =3D <1800000>;
+> +		regulator-max-microvolt =3D <1800000>;
+> +	};
+> +
+> +	reg_fec_3v3: regulator-fec-3v3 {
+> +		compatible =3D "regulator-fixed";
+> +		pinctrl-names =3D "default";
+> +		pinctrl-0 =3D <&fec_3v3_enable_pin>;
+> +		regulator-name =3D "fec-3v3";
+> +		regulator-min-microvolt =3D <3300000>;
+> +		regulator-max-microvolt =3D <3300000>;
+> +		gpios =3D <&gpio3 27 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		startup-delay-us =3D <300000>;
+> +		vin-supply =3D <&reg_5v>;
+> +	};
+> +
+> +	reg_usb0_vbus: regulator-usb0-vbus {
+> +		compatible =3D "regulator-fixed";
+> +		pinctrl-names =3D "default";
+> +		pinctrl-0 =3D <&usb0_vbus_enable_pin>;
+> +		regulator-name =3D "usb0_vbus";
+> +		regulator-min-microvolt =3D <5000000>;
+> +		regulator-max-microvolt =3D <5000000>;
+> +		gpio =3D <&gpio2 5 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		regulator-always-on;
+> +	};
+> +
+> +	reg_usb1_vbus: regulator-usb1-vbus {
+> +		compatible =3D "regulator-fixed";
+> +		pinctrl-names =3D "default";
+> +		pinctrl-0 =3D <&usb1_vbus_enable_pin>;
+> +		regulator-name =3D "usb1_vbus";
+> +		regulator-min-microvolt =3D <5000000>;
+> +		regulator-max-microvolt =3D <5000000>;
+> +		gpio =3D <&gpio2 6 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		regulator-always-on;
+> +	};
+> +
+> +	backlight {
+> +		compatible =3D "pwm-backlight";
+> +		pwms =3D <&pwm 4 5000000 0>;
+> +		brightness-levels =3D <0 255>;
+> +		num-interpolated-steps =3D <255>;
+> +		default-brightness-level =3D <255>;
+> +		power-supply =3D <&reg_5v>;
+> +	};
+> +
+> +	beeper {
+> +		compatible =3D "pwm-beeper";
+This driver is not enabled in mxs_defconfig, shouldn't this be added?
+> +		pwms =3D <&pwm 7 100000 0>;
+> +	};
+> +
+> +	leds {
+> +		compatible =3D "gpio-leds";
+> +		pinctrl-names =3D "default";
+> +		pinctrl-0 =3D <&leds_pins>;
+> +
+> +		led-0 {
+> +			label =3D "status";
+According to Documentation/devicetree/bindings/leds/common.yaml this=20
+property is deprecated, please use function and color instead.
+> +			gpios =3D <&gpio2 7 GPIO_ACTIVE_HIGH>;
+> +			default-state =3D "off";
+> +		};
+> +
+> +		led-1 {
+> +			label =3D "x22_5";
+> +			gpios =3D <&gpio3 16 GPIO_ACTIVE_HIGH>;
+> +			default-state =3D "off";
+> +		};
+> +
+> +		led-2 {
+> +			label =3D "x22_4";
+> +			gpios =3D <&gpio3 17 GPIO_ACTIVE_HIGH>;
+> +			default-state =3D "off";
+> +		};
+> +	};
+> +};
+> +
+> +&auart0 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&auart0_2pins_a>;
+> +	status =3D "okay";
+> +};
+> +
+> +&auart1 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&auart1_pins_a>;
+> +	status =3D "okay";
+> +};
+> +
+> +&can0 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&can0_pins_a>;
+> +	xceiver-supply =3D <&reg_3v3>;
+> +	status =3D "okay";
+> +};
+> +
+> +&duart {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&duart_pins_b>;
+> +	status =3D "okay";
+> +};
+> +
+> +&duart_pins_b {
+> +	fsl,voltage =3D <MXS_VOLTAGE_LOW>;
+> +};
+> +
+> +&gpmi {
+> +	#address-cells =3D <1>;
+> +	#size-cells =3D <0>;
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&gpmi_pins_a &gpmi_status_cfg>;
+> +	status =3D "okay";
+> +};
+> +
+> +&i2c0 {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&i2c0_pins_a>;
+> +	status =3D "okay";
+> +
+> +	touchscreen: touchscreen@38 {
+> +		compatible =3D "edt,edt-ft5306";
+This driver isn't enabled in mxs_defconfig, too.
+> +		reg =3D <0x38>;
+> +		pinctrl-names =3D "default";
+> +		pinctrl-0 =3D <&edt_ft5x06_pins &edt_ft5x06_wake_pin>;
+> +		interrupt-parent =3D <&gpio0>;
+> +		interrupts =3D <19 IRQ_TYPE_EDGE_RISING>;
+> +		reset-gpios =3D <&gpio0 21 GPIO_ACTIVE_LOW>;
+> +		wake-gpios =3D <&gpio0 18 GPIO_ACTIVE_HIGH>;
+> +	};
+> +};
+> +
+> +&lradc {
+> +	status =3D "okay";
+> +};
+> +
+> +&mac0 {
+> +	phy-mode =3D "rmii";
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&mac0_pins_a>;
+> +	phy-supply =3D <&reg_fec_3v3>;
+> +	phy-handle =3D <&ethphy>;
+> +	status =3D "okay";
+> +
+> +	mdio {
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <0>;
+> +
+> +		ethphy: ethernet-phy@0 {
+> +			compatible =3D "ethernet-phy-ieee802.3-c22";
+> +			reg =3D <0>;
+> +			max-speed =3D <100>;
+> +			reset-gpios =3D <&gpio3 28 GPIO_ACTIVE_LOW>;
+> +			reset-assert-us =3D <4000>;
+> +			reset-deassert-us =3D <4000>;
+> +		};
+> +	};
+> +};
+> +
+> +&pinctrl {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&hog_pins_a>;
+> +
+> +	hog_pins_a: hog@0 {
+> +		reg =3D <0>;
+> +		fsl,pinmux-ids =3D <
+> +			MX28_PAD_SSP2_SS1__GPIO_2_20  /* External power */
+> +		>;
+> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> +	};
+> +
+> +	edt_ft5x06_pins: edt-ft5x06@0 {
+> +		reg =3D <0>;
+> +		fsl,pinmux-ids =3D <
+> +			MX28_PAD_GPMI_RDY1__GPIO_0_21 /* Reset */
+> +			MX28_PAD_GPMI_CE3N__GPIO_0_19 /* Interrupt */
+> +		>;
+> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up =3D <MXS_PULL_ENABLE>;
+> +	};
+> +
+> +	edt_ft5x06_wake_pin: edt-ft5x06-wake@0 {
+> +		reg =3D <0>;
+> +		fsl,pinmux-ids =3D <MX28_PAD_GPMI_CE2N__GPIO_0_18>;
+> +		fsl,drive-strength =3D <MXS_DRIVE_16mA>;
+> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> +	};
+> +
+> +	fec_3v3_enable_pin: fec-3v3-enable@0 {
+> +		reg =3D <0>;
+> +		fsl,pinmux-ids =3D <MX28_PAD_SPDIF__GPIO_3_27>;
+> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> +	};
+> +
+> +	leds_pins: leds@0 {
+> +		reg =3D <0>;
+> +		fsl,pinmux-ids =3D <
+> +			MX28_PAD_SSP0_DATA7__GPIO_2_7
+> +			MX28_PAD_PWM0__GPIO_3_16
+> +			MX28_PAD_PWM1__GPIO_3_17
+> +		>;
+> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> +	};
+> +
+> +	usb0_vbus_enable_pin: usb0-vbus-enable@0 {
+> +		reg =3D <0>;
+> +		fsl,pinmux-ids =3D <MX28_PAD_SSP0_DATA5__GPIO_2_5>;
+> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> +	};
+> +
+> +	usb1_vbus_enable_pin: usb1-vbus-enable@0 {
+> +		reg =3D <0>;
+> +		fsl,pinmux-ids =3D <MX28_PAD_SSP0_DATA6__GPIO_2_6>;
+> +		fsl,drive-strength =3D <MXS_DRIVE_4mA>;
+> +		fsl,voltage =3D <MXS_VOLTAGE_HIGH>;
+> +		fsl,pull-up =3D <MXS_PULL_DISABLE>;
+> +	};
+> +};
+> +
+> +&pwm {
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&pwm4_pins_a &pwm7_pins_a>;
+> +	status =3D "okay";
+> +};
+> +
+> +&ssp0 {
+Just an advice, sometimes it's helpful to clarify the role of a MMC=20
+interface with a comment like "microSD" or "eMMC" above the whole node.
 
----
-
-Changes in v3:
-- In imx28-amarula-rmm.dts:
-  - Drop xceiver-supply property from can0 node.
-  - Rearrange the order of specific nodes and properties
-    alphabetically.
-
-Changes in v2:
-- In imx28-amarula-rmm.dts:
-  - Replace '-' with '@' for the pinctrl sub-nodes.
-  - Replace edt,edt-ft5x06 with edt,edt-ft5306.
-  - Drop LCD reset hog pin.
-  - Add correct #address-cells and #size-cells to gpmi node.
-  - Replace edt-ft5x06@38 with touchscreen@38.
-- Drop from commit messages all references to LCD display.
-- Add patch [1/4] "dt-bindings: mfd: convert mxs-lradc bindings to
-  json-schema".
-
- arch/arm/boot/dts/nxp/mxs/Makefile            |   1 +
- .../boot/dts/nxp/mxs/imx28-amarula-rmm.dts    | 303 ++++++++++++++++++
- 2 files changed, 304 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-
-diff --git a/arch/arm/boot/dts/nxp/mxs/Makefile b/arch/arm/boot/dts/nxp/mxs/Makefile
-index 96dd31ea19ba..d72ba702b6fa 100644
---- a/arch/arm/boot/dts/nxp/mxs/Makefile
-+++ b/arch/arm/boot/dts/nxp/mxs/Makefile
-@@ -5,6 +5,7 @@ dtb-$(CONFIG_ARCH_MXS) += \
- 	imx23-sansa.dtb \
- 	imx23-stmp378x_devb.dtb \
- 	imx23-xfi3.dtb \
-+	imx28-amarula-rmm.dtb \
- 	imx28-apf28.dtb \
- 	imx28-apf28dev.dtb \
- 	imx28-apx4devkit.dtb \
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-new file mode 100644
-index 000000000000..5824eb9e9557
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-@@ -0,0 +1,303 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2025 Amarula Solutions, Dario Binacchi <dario.binacchi@amarulasolutions.com>
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx28.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
-+/ {
-+	compatible = "amarula,imx28-rmm", "fsl,imx28";
-+	model = "Amarula i.MX28 rmm";
-+
-+	memory@40000000 {
-+		reg = <0x40000000 0x08000000>;
-+		device_type = "memory";
-+	};
-+
-+	backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pwm 4 5000000 0>;
-+		brightness-levels = <0 255>;
-+		num-interpolated-steps = <255>;
-+		default-brightness-level = <255>;
-+		power-supply = <&reg_5v>;
-+	};
-+
-+	beeper {
-+		compatible = "pwm-beeper";
-+		pwms = <&pwm 7 100000 0>;
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&leds_pins>;
-+
-+		led-0 {
-+			label = "status";
-+			gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		led-1 {
-+			label = "x22_5";
-+			gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		led-2 {
-+			label = "x22_4";
-+			gpios = <&gpio3 17 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+	};
-+
-+	reg_1v8: regulator-1v8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1v8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	reg_3v3: regulator-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "3v3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-always-on;
-+	};
-+
-+	reg_5v: regulator-5v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "5v";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		regulator-always-on;
-+	};
-+
-+	reg_fec_3v3: regulator-fec-3v3 {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&fec_3v3_enable_pin>;
-+		regulator-name = "fec-3v3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio3 27 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		startup-delay-us = <300000>;
-+		vin-supply = <&reg_5v>;
-+	};
-+
-+	reg_usb0_vbus: regulator-usb0-vbus {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&usb0_vbus_enable_pin>;
-+		regulator-name = "usb0_vbus";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		gpio = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		regulator-always-on;
-+	};
-+
-+	reg_usb1_vbus: regulator-usb1-vbus {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&usb1_vbus_enable_pin>;
-+		regulator-name = "usb1_vbus";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		gpio = <&gpio2 6 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		regulator-always-on;
-+	};
-+};
-+
-+&auart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&auart0_2pins_a>;
-+	status = "okay";
-+};
-+
-+&auart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&auart1_pins_a>;
-+	status = "okay";
-+};
-+
-+&can0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&can0_pins_a>;
-+	status = "okay";
-+};
-+
-+&duart {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&duart_pins_b>;
-+	status = "okay";
-+};
-+
-+&duart_pins_b {
-+	fsl,voltage = <MXS_VOLTAGE_LOW>;
-+};
-+
-+&gpmi {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&gpmi_pins_a &gpmi_status_cfg>;
-+	status = "okay";
-+};
-+
-+&i2c0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c0_pins_a>;
-+	status = "okay";
-+
-+	touchscreen: touchscreen@38 {
-+		compatible = "edt,edt-ft5306";
-+		reg = <0x38>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&edt_ft5x06_pins &edt_ft5x06_wake_pin>;
-+		interrupt-parent = <&gpio0>;
-+		interrupts = <19 IRQ_TYPE_EDGE_RISING>;
-+		reset-gpios = <&gpio0 21 GPIO_ACTIVE_LOW>;
-+		wake-gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>;
-+	};
-+};
-+
-+&lradc {
-+	status = "okay";
-+};
-+
-+&mac0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mac0_pins_a>;
-+	phy-mode = "rmii";
-+	phy-supply = <&reg_fec_3v3>;
-+	phy-handle = <&ethphy>;
-+	status = "okay";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy: ethernet-phy@0 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <0>;
-+			max-speed = <100>;
-+			reset-gpios = <&gpio3 28 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <4000>;
-+			reset-deassert-us = <4000>;
-+		};
-+	};
-+};
-+
-+&pinctrl {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&hog_pins_a>;
-+
-+	edt_ft5x06_pins: edt-ft5x06@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_GPMI_RDY1__GPIO_0_21 /* Reset */
-+			MX28_PAD_GPMI_CE3N__GPIO_0_19 /* Interrupt */
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,pull-up = <MXS_PULL_ENABLE>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+	};
-+
-+	edt_ft5x06_wake_pin: edt-ft5x06-wake@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <MX28_PAD_GPMI_CE2N__GPIO_0_18>;
-+		fsl,drive-strength = <MXS_DRIVE_16mA>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+	};
-+
-+	fec_3v3_enable_pin: fec-3v3-enable@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <MX28_PAD_SPDIF__GPIO_3_27>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+	};
-+
-+	hog_pins_a: hog@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_SSP2_SS1__GPIO_2_20  /* External power */
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+	};
-+
-+	leds_pins: leds@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <
-+			MX28_PAD_SSP0_DATA7__GPIO_2_7
-+			MX28_PAD_PWM0__GPIO_3_16
-+			MX28_PAD_PWM1__GPIO_3_17
-+		>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+	};
-+
-+	usb0_vbus_enable_pin: usb0-vbus-enable@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA5__GPIO_2_5>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+	};
-+
-+	usb1_vbus_enable_pin: usb1-vbus-enable@0 {
-+		reg = <0>;
-+		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA6__GPIO_2_6>;
-+		fsl,drive-strength = <MXS_DRIVE_4mA>;
-+		fsl,pull-up = <MXS_PULL_DISABLE>;
-+		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-+	};
-+};
-+
-+&pwm {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pwm4_pins_a &pwm7_pins_a>;
-+	status = "okay";
-+};
-+
-+&ssp0 {
-+	compatible = "fsl,imx28-mmc";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mmc0_4bit_pins_a &mmc0_sck_cfg>;
-+	broken-cd;
-+	bus-width = <4>;
-+	status = "okay";
-+};
-+
-+&usb0 {
-+	dr_mode = "host";
-+	vbus-supply = <&reg_usb0_vbus>;
-+	status = "okay";
-+};
-+
-+&usb1 {
-+	dr_mode = "host";
-+	vbus-supply = <&reg_usb1_vbus>;
-+	status = "okay";
-+};
-+
-+&usbphy0 {
-+	status = "okay";
-+};
-+
-+&usbphy1 {
-+	status = "okay";
-+};
--- 
-2.43.0
+Regards
+> +	compatible =3D "fsl,imx28-mmc";
+> +	pinctrl-names =3D "default";
+> +	pinctrl-0 =3D <&mmc0_4bit_pins_a &mmc0_sck_cfg>;
+> +	status =3D "okay";
+> +	bus-width =3D <4>;
+> +	broken-cd;
+> +};
+> +
+> +&usb0 {
+> +	status =3D "okay";
+> +	vbus-supply =3D <&reg_usb0_vbus>;
+> +	dr_mode =3D "host";
+> +};
+> +
+> +&usb1 {
+> +	status =3D "okay";
+> +	vbus-supply =3D <&reg_usb1_vbus>;
+> +	dr_mode =3D "host";
+> +};
+> +
+> +&usbphy0 {
+> +	status =3D "okay";
+> +};
+> +
+> +&usbphy1 {
+> +	status =3D "okay";
+> +};
 
