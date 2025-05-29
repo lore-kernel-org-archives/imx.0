@@ -1,67 +1,66 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011022.outbound.protection.outlook.com [52.101.65.22])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011057.outbound.protection.outlook.com [52.101.65.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D47C22D783
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 15:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25B722D785
+	for <imx@lists.linux.dev>; Thu, 29 May 2025 16:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.57
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748534115; cv=fail; b=gBs0TeWHRXSB3aTN+0oxG79tGBWORDMpbpcHLA11CKrXD/C3QcPo2obkU7QUaNLxNFdIsUZ8GAl4AiHSHAhy99rFgygmOBOvJ8yynwGPkZKHQf3Jc7kNz9lP1QGnDmCx6IJGYYW+nSuvzB/tFGSZUGZINa+bTZUUdQDSz2vccek=
+	t=1748537325; cv=fail; b=S9gmHGbQWDMKGogpzLJOiHJ516Jg+eOXKvfMjNVXai7QZYW4fsAoBKEVrCBBsoKttmdDJodEjkFju+75z2CPZgLb51d42oUjkizrZt1BdCZQ0CRKj5dDMpAxbKJ8Gw8DZ75Aj8Uwhc32o2yjoIi344Zt1AXI70FtQYRngW0FGUI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748534115; c=relaxed/simple;
-	bh=ZtB+cDMkc7NXR5ruHLhJKdiP1mr5VJT8MhK32gO4Va0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IIJadu/2UvmVOPsITKr9lmemsepvqYysU8sR2f0nlMeq2LlHmOq/OxGdVSnu3JhQaCkLVM5dIQZwHydpHbSmM7alDSqDeKvdH9/rILBfNwOSNsRD7hRwdHuLz6U+fyvPp3S/T7G9BQ7RvC0nlWoKbf26gbAo75Vazagc+7zsiBs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EvBQf8ZX; arc=fail smtp.client-ip=52.101.65.22
+	s=arc-20240116; t=1748537325; c=relaxed/simple;
+	bh=ABbOomnyL3jftrHVgXRIXJT0iFfkXZftfKf31hi0N1I=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=kSgm2yYFsoclNntDewwhrBKqYNW9PsAdw6zAIgXF68zJcNB8/5OmplLzvxQ71QflTTXOVvtNRpyTzCM64QulaBCRulVDWNpGEkH4xS0kbDAqh3Bop0Rl2tu16quAX3dXyFkSe1sDXsSvmuZXbq+kJt7hVfBL/2JDFOrGn4bETN0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NX6lwUFV; arc=fail smtp.client-ip=52.101.65.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EvBQf8ZX"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NX6lwUFV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PLAiATnA8V5JChBqZcfgtGrWMSxAbQT31wuAXRYyYcGWX0kLY2LRR8+j7UfJOexpDZCGosbjrqQcdFyjEqIzrbNrb5ydmfwCC7i0EdVOeW3xM1BdO/VuUkVv5iKXYs9y4a8XhUA3AYL4IMlS9t64n+f5rbpRs+tNjojHBk29qlZBG8d/yM8rbpOG1ZDDpN1+CwB3fO6FFM1YXRrv3TWcGdMr03Uq9sVl15XDWIUPpESu8bM7ulBlDOFxe+0t+yNy6CzzxVWfVHDURdxDlecNe2dWaeorKR5L7SZl5A4swi2E/c2VFhNzOhZucjb9cnclzs9uef2PAAziXhQsrYm+dw==
+ b=K+tvVKvL4qwXJjmB1/kujMzKoZyoWnfZcqAnGaneowIU4su2Z+40f9TolqeM2h+Yw3Cn0gME19sXja1x2wCim0adI2rXhxdw+UbyB9lwCIg+ShuQL+lwcF8qsXkCXTkHWMYAUPWFCR8zoeRLSvfvf4dqODZyyPshdrML3E/Dlv7h24AQXZt9EH+0S7aJkk8pdDXcw3rS5591UVmyqy0gQt/+o231kLhUbKY4PGwTGDzFzJlrV93NFOQ2M1dOkvYK/4I45TTohFA3kn3wjR/uFaVHSlg1TAyikYMwX0WQua7BVVsSmTqWDtlTJxgRrRrIIrRPTEAR4SWScMy78yUTDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TZkKYSKxHGsYajQLRT4XDK8Tj1aGCJ3s2OLEqWq5koQ=;
- b=xeEJ8P9V+dWvr/Wfhwe7xO4Dof4tDLg6uznoIKWIMHS6mbyOELQ0R9B9APdAKyfc+zTxo/foHYd+e3bP5cLGnoMHlZG+EBA7izi8UfUPUu5/f7lIn/2iKqID4W5Yq5GXbSlF+lpK9UkxhxOOlJxKuxc9q3gXI+eez3VY6Qs3JP+UaK0uixLpnszl2DoQNvMLaob9DCb6rRbxvRwHJSANVod4R6qQtnNzptgM7zS7xsJ6ycW71acBEH2HSo9tuO1hbDmVpDSb+3zjEXZxHKYLCed0aCagOdgAHZox7qhTckZSZRHFm88Cyb7ygmwgpuFQV0ObuCJSce2g1ClflcaG0Q==
+ bh=vdjosiCtXFx819UxH1RXQjXC7+awOce84PgsJ+PD+T4=;
+ b=qPZqLYoskq8pkdhCY89y98uHIll7Gbdbhx6o9O5XyWfq+CbfOZ72tCUeGl8gok/u3of7O5A5Ur5P1eh1liqI5vH6CxpCrIJxXT8UPSpLOUN9n9i1xJgLgwFbZWBQFB9gS5lBpw46QKiLkPn7C/6ouMhPo0upRQMVsfrL78uqmGStIIjmlytBvhE4KPtaE17MT9aU5VWirjbomCHSC5yG7teOzRPTH1wJin8OvAoX85hhK/87WEKkx6VWO91NwKBS+PZSzS27zjWNe5/ZVXFzk1sQbGXwmW67C6dFq+lanZ8Gu3ljwAR/cV1ltAYwje+QPTpKiHfL+qIh1yIbG+YbPA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TZkKYSKxHGsYajQLRT4XDK8Tj1aGCJ3s2OLEqWq5koQ=;
- b=EvBQf8ZXjhH1FwwsHxb8l+aG2t1ZD5L41SUhb1I9+NFtGMxjU+frWyDbWPy7YHJY9j4l26L4dovks1qp3P1af3vxb7AWmF/g+91fatxPcZcNTLch1Xl5G8JQN0jQy+ya9guOnplMxvuBGIH4sLHS3MWh9RNjkoe9b0KzPUOmbyR8RgjquCBOUvcF24gxby9k8DHN1JvmHv4rB1m6Qm54yXfEfARIA4+kKte5jryUp8Y/S0MvcPeQzsU/i6hPzJChRrLviaE7sF1Y1mo9iOdJ2WoldLFOvdAESoKJM5KNglHAccW7bOwWow1HB0tGFngMTmMHbE+c1DEmRYSl0LnNbg==
+ bh=vdjosiCtXFx819UxH1RXQjXC7+awOce84PgsJ+PD+T4=;
+ b=NX6lwUFVq6SPVoBAUVhyj79vuTroCe9A4OoqSyYHGCh2yV15GrV44JiSXGrSEd4aQg2X41wuRFa/3t6MkOamWpNV6YDPc7794gzURD1C9BzN1elkrAhagZvLh6R4upcWMtLqXU+cCImHw9t2fNWl/i1i4vDb1DtPu5qp6LiQkw/1n7WDgYR6/g1XW2VO7a1U6IPaOLs+HcRAiWx4230CvmUOXEZjteSm4PRimg8u72kc6CvDeVOvyYeWJNDRkp3OwzPk0tRRw9IB18fh93wXFTY4h+9DyHgdEB/Lgh9G/uvWRZy1qWLvNPtmBDjqkXiB8ZxY7vcP72LZpqNMeUiMQQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by VI1PR04MB7104.eurprd04.prod.outlook.com (2603:10a6:800:126::9) with
+ by DBAPR04MB7414.eurprd04.prod.outlook.com (2603:10a6:10:1a0::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.27; Thu, 29 May
- 2025 15:55:07 +0000
+ 2025 16:48:39 +0000
 Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
  ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
  ([fe80::e81:b393:ebc5:bc3d%5]) with mapi id 15.20.8769.022; Thu, 29 May 2025
- 15:55:07 +0000
-Date: Thu, 29 May 2025 11:54:58 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
-	michael@amarulasolutions.com, Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+ 16:48:38 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 4/6] ARM: dts: mxs: support i.MX28 Amarula rmm board
-Message-ID: <aDiDUm6cvrC2q/SP@lizhi-Precision-Tower-5810>
-References: <20250529143544.2381031-1-dario.binacchi@amarulasolutions.com>
- <20250529143544.2381031-5-dario.binacchi@amarulasolutions.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250529143544.2381031-5-dario.binacchi@amarulasolutions.com>
-X-ClientProxiedBy: BYAPR07CA0080.namprd07.prod.outlook.com
- (2603:10b6:a03:12b::21) To DB9PR04MB9626.eurprd04.prod.outlook.com
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: display: convert himax,hx8357d.txt to yaml format
+Date: Thu, 29 May 2025 12:48:21 -0400
+Message-Id: <20250529164822.777908-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH8PR07CA0047.namprd07.prod.outlook.com
+ (2603:10b6:510:2cf::10) To DB9PR04MB9626.eurprd04.prod.outlook.com
  (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -70,440 +69,214 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|VI1PR04MB7104:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8fb60c02-9041-4667-61e5-08dd9ec92f39
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DBAPR04MB7414:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1eb29c2-f28c-4fb5-ea39-08dd9ed0a932
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014|7053199007;
+	BCL:0;ARA:13230040|7416014|52116014|376014|1800799024|366016|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?NtyHO/eR7SVoPe1EwDtLutI86MUbt2zSZdxXpGzodIsBPyeWVkVZBt1LjShT?=
- =?us-ascii?Q?IYzhCcleufveA9uBRQrpDPbHindhdFDCivY0mADgLuteAxskDeqN3aZJa0AE?=
- =?us-ascii?Q?QBihCmhLRzs2pKapdoP/cmcIPiLFzoqnImDeahpvrnExeiOjKaifcCwLmHq3?=
- =?us-ascii?Q?z0/XfEm9Py1LpSTe6aRbieV6vIzw3EXTKf8NAMKm2ORmG8p9ojpLSekaRBdw?=
- =?us-ascii?Q?elt1X1OI+si0GCg3z26k3x9PIRCgNY9DtOyMfzVZ4l3mly9rzcS/kSClS5IO?=
- =?us-ascii?Q?xYreCIqtN1Sv+MlvEZn6S2SdPlOBYU5ceAluaUSyIC9Tzn7FVhSxOYao3b1W?=
- =?us-ascii?Q?ROkC9/KaC1GuqiMZnYyhR/ztVboZSk7nPuWiFH0KYIbC9Y8wWQw+1uiWlGHg?=
- =?us-ascii?Q?fA7ULMlbFZfYPnuRX4H8C8rL90pxOdHrBarj1PpxuwifhdLanYV6slAec6Hi?=
- =?us-ascii?Q?8Ax93iGLQyYfQKXtnYNIrgstuWO/T/1TU/lcL8f2MEGiVr0OKkTDqjbENhxB?=
- =?us-ascii?Q?5Zg086iNxk2QM1oGDzu7wjo8iNOeTtkY+eJEqWxUUmeCcu3UZ0S8fjknh5Bx?=
- =?us-ascii?Q?N2AC5MJU1PHjcFrpf7GFfmFF9wiQsYOg6ui4qACgdDlOdprpctdewz1iDqdk?=
- =?us-ascii?Q?2Nqq5DMSd8Ni5u5Tzqr2Fr03gxa/SxsFB7L+qe/C+pc01G+KAwYK5yuEWCfk?=
- =?us-ascii?Q?dltJbdCec9ETw0ldAJDiDKdQcmYgCZUs967INb1RMIYf74Fvd/Sa8lweEMZa?=
- =?us-ascii?Q?GcfM7B0fpQ6S4370gF9lPgmwXq4oHWc+nYi27ZzyqGkGvWHN2iSxVQ9Jiinm?=
- =?us-ascii?Q?x9V50FSCfWFqxKObPV7zD7iPsakESWLHhiz4Z+OZrzdhHo677rfEUxxTTqLu?=
- =?us-ascii?Q?qRyqCwdj2hFdLvAN8qZ8t4nATW3vZllb4++yhZPXhedpT5yKh1VLY2CLGAmw?=
- =?us-ascii?Q?sQj67Qx9bWc4+BCNTQAz/JuRCplHCzivjCigeeRDXXkChR7OvuVSpB+CwHIf?=
- =?us-ascii?Q?YYXhQqp3OrbSrE5qSC0vqCpv60CFNKFIohR9jj1OwD4nOT25OmnVFj2kbtxt?=
- =?us-ascii?Q?Igv3x/6MVkPvHVDClYbZitNP9aHWzl61DaV1LfC/t+CNlhLYImL5mroNjwAv?=
- =?us-ascii?Q?4RzCrQjnga4v7jRF1KvuafTVFh07F9VK5yYz8Now7qZNg886UvRD9zRSdFM8?=
- =?us-ascii?Q?3xWGdH3xkECBgiuGVApEa0U9lMUNyxz7BA6nvRi2j4d288fi4EWXpkDqKLi4?=
- =?us-ascii?Q?hIVkG/FcMeaaT9eHNFsFG0fUSXWMNRXAK54ldZe7WV3kKFjfqnr3+dZGjtLC?=
- =?us-ascii?Q?oaDSQmOYh/zCW+5EURIsT56Kdde4j3PWWirDG6IGKiSPFQeLHu74GFqrWk6M?=
- =?us-ascii?Q?poJOqmuN1fPEvOxgQQIbuQdqlVOT02RaORtPoK5Nj/TMUtL6MIHNYHI2Pbmx?=
- =?us-ascii?Q?acSSJAE1didQ7gLQEjihixWFhjl6qjQ8Q445KvG9TyupjP4bjKyF0Q=3D=3D?=
+	=?us-ascii?Q?PQw3UPQHE8m4D/YEu9vFr4jOcSJ1LxW9t27ZcMBy/MmndMYhpfh/5pdABECQ?=
+ =?us-ascii?Q?fp2+9K6age2va8fZxQxtc+e5hwheTcX7uoN+/2BO5KC9v41VLQ5KJR1y4vq4?=
+ =?us-ascii?Q?Cq5+uPLC4rBKYNWzamqiVmtoo6Dk3ISm+u5zKcz4TiHkdGJPLHeb/vWJDe3i?=
+ =?us-ascii?Q?GuaxxM1mx0nZxgOIKz4EF+DEF6dSQVNquzwh2LL8QL1q0mn9jMo56gBHKyXd?=
+ =?us-ascii?Q?l5+yIVwx3bDQHh/pBiqXBfMELicfKB2An7pNseGdOeJakD/kh7oOLVWHA+Qt?=
+ =?us-ascii?Q?Qtl/GmPW18BV3lK9QNpcC1McD+h/UfzjEYPdfnowpnupDvEqJQRIu9miPXZR?=
+ =?us-ascii?Q?WsIBLkPcugJn2gAwd7Ox+x2J6EPD4R2Jfp6FlnnP/NDa96tq5RV5SGy5iFZu?=
+ =?us-ascii?Q?k2fSnb4X8/WROu6qkTAe4tiAG5pS5EMSidKeXuqeXFjRkSPXeTGdGFuRg7FY?=
+ =?us-ascii?Q?/5Hoy/UfhJ0VsDh5l4Atzzhv1D6Xk1okj5VIUlXkR28SkabUZ6SvM/Z/05Bj?=
+ =?us-ascii?Q?kh06UAf4hVX6h7Cwlcdl4rhGw/B4Dn/jC2PbkMEO/kv8R+a0K1dpPM4khUou?=
+ =?us-ascii?Q?ZadRgYzFYKhbDzJ023IDa5K4ZfXxVj27gTxDG3B++J+ZmEtdjAkPOTkcixbu?=
+ =?us-ascii?Q?B+VXxyI+HMqxQsBbAWRemWV7akHKIt70ujRBkQ/dhTjC7bt2WyrPxDH7LWDk?=
+ =?us-ascii?Q?Bf7wFPN2r26sv0sAa8NMCaxceUdXP3y/wOJ/bkOft298fXUKiqs05eENPJw6?=
+ =?us-ascii?Q?V4DJNuYyYBIxi5Jg3i5Ebu58MS/J+/XHsCTzChUJ0nH69vX2IVeXRDvBJ1c5?=
+ =?us-ascii?Q?xanKl5ZP9dQx1Duewoy3qrXXIUf4+Uq+yBDqz5/mU7Juv9nzp5ydRBwsb/cs?=
+ =?us-ascii?Q?Xu0zrX9ZvKVoBdEs5c4aDj6PnibEMSWMzrNod5L08op4X69kGvIOvXDEuSCs?=
+ =?us-ascii?Q?gmKZlojB/3T98Uaa7zG347ur8QxV9t5OwzGHwnSBRBYA5V6zkfAQGrpAOknM?=
+ =?us-ascii?Q?43flBWRPHgrPSrtVajq2Ke6N0o70CLX0DzFuUpnoTxJpZHiBh2eAarXJeR7b?=
+ =?us-ascii?Q?/O+ZBOwKStzH5xw96E0gQCnWECli/fI031MOckrEMz70EVHhTCZP6F/6UV5s?=
+ =?us-ascii?Q?nh+JBapDsUScPWGNJnc1fuj2aq1kcQU/JhUQpAiGe4xIuBiSqp2QW+xv6hRG?=
+ =?us-ascii?Q?iJTbnInB8FMdI1x46YX1bX8qMHFCzuDLIxrbg9JiDLkYQ4A3Mkz7M/gqbWy1?=
+ =?us-ascii?Q?YrBlCwohbd8KkspW3yWewj8n7VHI+5pzAvkiAFts9l1JA+HmqgVomxMWs7dg?=
+ =?us-ascii?Q?zsmVw7a/Giv8Mzg46jweM+cXIC3IQpCDVCvDg/6Pz5hymvLNZadIDCbCzC9p?=
+ =?us-ascii?Q?EO1ZI9GmyY6AQ0rEUvMuNWTS4GXe6ir6CvuSpIm5aroppvU9natUqBFUe4nm?=
+ =?us-ascii?Q?IF1snFPGd40ovCwJZcPvNwquz66mIyr/?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?p0hHvOPYTN9CH/z0sJUPlBJyO64nOg1i8tONQ4Tc1HhB023E/7zyRMI0Vg7A?=
- =?us-ascii?Q?3sh0XQC5t5/tvItHYR8TxTVrnGyIMAScplAzbKhxu6euwFqJDzKqC34z/rJn?=
- =?us-ascii?Q?tHSd5evtSjpzcg0mynhFwqan43gvijSMghioomctA671KTh0iTmV6aWbLNO/?=
- =?us-ascii?Q?UWdSpCcIT6wCFZx7nsIYR5GYwJevNgafYTrnkTRz/zTlmaMqHJOYCrf3oADm?=
- =?us-ascii?Q?+1oRH7CiyAEvK940hmGnY+vlFCBe9wQyC8OJ75rZWHA6jiL6/k1fgmiesMit?=
- =?us-ascii?Q?tGz/fw1V3066dibZUymzfAdlBBtTIwS5njx4MSLv5lGiAJwoGMUBcx6GuDX+?=
- =?us-ascii?Q?veVtKbtFllcUMkesTKpvakCI30mifDQ1kJLydzCUcvBnMTEcHcojNprgxJ+A?=
- =?us-ascii?Q?5NUATOt4uvDtJvFurdfxzcpT+4FZRXBIQe8om7juDnlN+4GC5m9B7CNLL4nd?=
- =?us-ascii?Q?kapxLgh9MTNDUul3rLKwCwdZZDJjrrlpODXaWnW0TDFwXsk5PlHeFPCI/iLK?=
- =?us-ascii?Q?SRdmDh55cN2dZx2JNwRkVqRaIfGCxov2n476AhHwprdX817aOYEoI8fo5iHc?=
- =?us-ascii?Q?Pfyi+/lMvANpm7qerls40ZgCzvD6Bs5weQFLCBFQ+t41NQhCVdv/AFyOgIf9?=
- =?us-ascii?Q?X9iPUaJPwsMD18LE047q87zuSTXB4cpETzOmYI8iaiHfUZG5kTz8XOIchh/R?=
- =?us-ascii?Q?wfOYo2GMRvwciZDtSu+cb/WMD5fnMhYySJWe55VjQ2ZZoK29bzLCOrXbcGbu?=
- =?us-ascii?Q?4jQEIQqZnOi/C4d5BsW5hR9K1BjCwp4wrr+JO+s4fIoXEO6ZcgnSgUMBd+xf?=
- =?us-ascii?Q?Pe8/jzN9aeV/7OSK7DGl++2oKZ2mWogTHL4WqviyrjhhmauRL41OYv6IQxbm?=
- =?us-ascii?Q?EWpg7PU1KJ/kDpgJyWdpBqXG+rHvhCHcC7QtdpRMr0txkVvlcVtQix7/e8qr?=
- =?us-ascii?Q?KP+yzrRg+2Ox5qnRrh/7168ql3QKZlDyUsgWGHa95djr0DQh3J8Z9LInDXUp?=
- =?us-ascii?Q?enjUwqHRxxRk6geJLsaTH9RUW6y2z8BmYokTFtxz2H2DjYS4wzfzvawovDox?=
- =?us-ascii?Q?6zAUeso+lUk7M1UwhG7seY+F8pG74kZuqiVGkdForTMPthvjpaXl/4Shp8+x?=
- =?us-ascii?Q?C41Hp6blCihDvT7it7HIp1Kn/i7UYEQSk755Ws64NSCQ/IspJE1jMSUFhpgO?=
- =?us-ascii?Q?4PytCrjPVOl+lXFkczSQON7fLSdm4XkCSYHYGaOgQ8MZpQw/6dVx2TTSPBAp?=
- =?us-ascii?Q?0GMT4+sUKpTKUnX5lGE9Wgi6C9ugRRYcPoU7dDzVdcbeYwT4CLng/HOGsgXz?=
- =?us-ascii?Q?8HXm9JbNxxwojmpeGoymsM+NL4jRe10aOj69BxCHZGLOpzzi5j5+/GP+7EAA?=
- =?us-ascii?Q?DS68s22bfOB+vBsEkHfp2EwRmLAAnfh5/BnswY86RaRO3vUr4ANeK5dhdnte?=
- =?us-ascii?Q?Mz2mf34yJuBznpyXxd79ONQ45/laubo1ixqHXf847xKalVZloaz2Pjy9NS3d?=
- =?us-ascii?Q?AXW8EVWSJ4sMsEggBf0OkiyBN6TPvC/jultIpc6oWh6piTMbjQxSuQDS134H?=
- =?us-ascii?Q?lQvEb2X5CkZ4P/9WrKjY/keJqCWjQdMl0E6ZcLHg?=
+	=?us-ascii?Q?HJfldpavjPUYDGcYqp8dn0f9X5DqMW/FgrWihV8xzOZ27Z36xo2dk3CD7ELb?=
+ =?us-ascii?Q?SJkPKI1TfyidX0abqJnIHEqZFUqoxK8IjV2y6ruBfiYP7IVpnpidLbGOSKiM?=
+ =?us-ascii?Q?/aLZYU/Li3KAt3SPEaxffvt0WbIqoaARrJYwwjH6hcogT2GwJRYxQZrIEVr9?=
+ =?us-ascii?Q?pKMLv9GyRwPzgHze/GeakMnfHfoFOrl3mnxy4RZoHKQbygLfpb/ut+TnGQuY?=
+ =?us-ascii?Q?9ANgc8M5cA3RIQTxvsAwk/ZO2Ykt6YsDP4TM4wf8SsBitdvmm5Yo4ET7AEKl?=
+ =?us-ascii?Q?lRiLqScIFBYzIexLZX7f5u5I1XCR1Pp/zLummu/7g8M2Pgw1LIXnaAGKS+an?=
+ =?us-ascii?Q?mTD4CwoHxrXwML0nLUFlKuu/NpGiq25BjRiAnnV6qKKfaxJ+hJy5e4RH2kRa?=
+ =?us-ascii?Q?cx/ikkgQxMRwpFtBHbZD32Zg9KfxIMzOjPZakSBd9H6rPyC4m9KNTqtyBRlB?=
+ =?us-ascii?Q?/lJ+ZU5U/2oUJSU4OaV2aqAxMRs9/9ABNY5gVqkKHCmTjEc0bl8AfA+ghFUQ?=
+ =?us-ascii?Q?qC/sLLBVT8J2ob9AI46bVbOPfuCRNAdzo6lctlB/GtDS1m+VffW/nz62RwM0?=
+ =?us-ascii?Q?EbnwegtwfNJlTDz236of/YAg7w0TvW/Wypss55L/lLc8v322padleDNGmtpL?=
+ =?us-ascii?Q?o4yT+a8+g00o6oJuC3uZOo3c56vdaJZAOVVKdrgHAKLFOBfN/AC2D+QvZy28?=
+ =?us-ascii?Q?VL9h2bVC9gVUKfT+WoD3CZxA6uW2oMLP0Q2g+ohWJWfU01nIXMIX2n4YBPcK?=
+ =?us-ascii?Q?l7suJVsX8WVzt2E1y9uzmYPdSYCNPBBnJ5QOXk/C7oDBH/w2WJruYY1sKoUu?=
+ =?us-ascii?Q?7pU2v9B70q3v+M1A+AzEdC8/NVztHdRxE1+C020j+6wF0I4ST80IynddFcjI?=
+ =?us-ascii?Q?c5LQXsbXKBUxNI1i/l1p8MC53BvQcrfXBRgM6Y4IMC3suLssxDcOftqz+Id5?=
+ =?us-ascii?Q?IS7CC/hMae0y3BaMFYCN+xGxwOcYLQgtmwMx4D1pEL9zLknU6BvG6xuIwmJT?=
+ =?us-ascii?Q?32kpEAXcVRSH56jWAGXE2WSg+0kBIDNPNvMWUWCDlb2CBRqX2OHmgFPujzTy?=
+ =?us-ascii?Q?Mi3Py2/qkwAIQHrpG14JaRBI9Y1Xb35LVcaSet0YDEmc3bKs1SVHtW5fGpst?=
+ =?us-ascii?Q?nZHGFVpSac2YkRmHowfqxS4+7V7UgAe7yK5L2ETE7mHoOVp8vDACRzOWyT+k?=
+ =?us-ascii?Q?4rfqK0fb9AmxJ5r36yK2PrPK7uELfaiiCjgA5PR+zhuMKwHZ5dHY0nlgtqGt?=
+ =?us-ascii?Q?xHCTN+nApLWymgE2vaZpfeERSrdquuBsdX3C/2oG6KUmUc1zG2AIM9cWGL1Z?=
+ =?us-ascii?Q?Jf7t0oAYSH2quwY9dUprGM5nM67vDbK90tnEi1NlP27aeBJlx/FCF27h2gCA?=
+ =?us-ascii?Q?aO6Cx8MaW1QaCt9JFKiSMeCWtl3b2H01We7begnOe96ArG8E7LfZBFi5ig5M?=
+ =?us-ascii?Q?oJJhfsBj7mDJ3xjQ71frpVlJyEkvScP6phlBeda6+1nsO3dlwFbdd9zpYA0M?=
+ =?us-ascii?Q?WGrNfiZdHx7BF2ouyGKlVVDHc4GHbM/KN5oJOePJv59g1koYOXdhzAVdSQt8?=
+ =?us-ascii?Q?K/dxwUTSAKkw8WrDF+AWwUcQTjwgVT3QcwS266yX?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8fb60c02-9041-4667-61e5-08dd9ec92f39
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1eb29c2-f28c-4fb5-ea39-08dd9ed0a932
 X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 15:55:07.6246
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 16:48:38.7923
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YZcpHd47vH1X+FiMOU5hYNSHFCKaUaKXYar4cLoUQ0e0CtcHMsTMiGqwrFjEWd1x4Wl0+I77zHx8oHf2SGtkLg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7104
+X-MS-Exchange-CrossTenant-UserPrincipalName: nS4SgrjWegf3nJLa6s9DIGQeO6PkyisiNPkiDWAccEuns/QvQoA1tSgBLnJjoEyct+JLUqOs+w24hhnln4S8ew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7414
 
-On Thu, May 29, 2025 at 04:35:11PM +0200, Dario Binacchi wrote:
-> The board includes the following resources:
->  - 256 Mbytes NAND Flash
->  - 128 Mbytes DRAM DDR2
->  - CAN
->  - USB 2.0 high-speed/full-speed
->  - Ethernet MAC
->
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
->
-> ---
->
-> Changes in v4:
-> - Drop label property (deprecated) under the leds sub-nodes.
-> - Add microSD comment above the ssp0 node.
->
-> Changes in v3:
-> - Drop xceiver-supply property from can0 node.
-> - Rearrange the order of specific nodes and properties
->   alphabetically.
->
-> Changes in v2:
-> - Replace '-' with '@' for the pinctrl sub-nodes.
-> - Replace edt,edt-ft5x06 with edt,edt-ft5306.
-> - Drop LCD reset hog pin.
-> - Add correct #address-cells and #size-cells to gpmi node.
-> - Replace edt-ft5x06@38 with touchscreen@38.
->
->  arch/arm/boot/dts/nxp/mxs/Makefile            |   1 +
->  .../boot/dts/nxp/mxs/imx28-amarula-rmm.dts    | 301 ++++++++++++++++++
->  2 files changed, 302 insertions(+)
->  create mode 100644 arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
->
-> diff --git a/arch/arm/boot/dts/nxp/mxs/Makefile b/arch/arm/boot/dts/nxp/mxs/Makefile
-> index 96dd31ea19ba..d72ba702b6fa 100644
-> --- a/arch/arm/boot/dts/nxp/mxs/Makefile
-> +++ b/arch/arm/boot/dts/nxp/mxs/Makefile
-> @@ -5,6 +5,7 @@ dtb-$(CONFIG_ARCH_MXS) += \
->  	imx23-sansa.dtb \
->  	imx23-stmp378x_devb.dtb \
->  	imx23-xfi3.dtb \
-> +	imx28-amarula-rmm.dtb \
->  	imx28-apf28.dtb \
->  	imx28-apf28dev.dtb \
->  	imx28-apx4devkit.dtb \
-> diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-> new file mode 100644
-> index 000000000000..5ef9b79cda1c
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/nxp/mxs/imx28-amarula-rmm.dts
-> @@ -0,0 +1,301 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2025 Amarula Solutions, Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "imx28.dtsi"
-> +#include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +/ {
-> +	compatible = "amarula,imx28-rmm", "fsl,imx28";
-> +	model = "Amarula i.MX28 rmm";
-> +
-> +	memory@40000000 {
-> +		reg = <0x40000000 0x08000000>;
-> +		device_type = "memory";
-> +	};
-> +
-> +	backlight {
-> +		compatible = "pwm-backlight";
-> +		pwms = <&pwm 4 5000000 0>;
-> +		brightness-levels = <0 255>;
-> +		num-interpolated-steps = <255>;
-> +		default-brightness-level = <255>;
-> +		power-supply = <&reg_5v>;
-> +	};
-> +
-> +	beeper {
-> +		compatible = "pwm-beeper";
-> +		pwms = <&pwm 7 100000 0>;
-> +	};
-> +
-> +	leds {
-> +		compatible = "gpio-leds";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&leds_pins>;
-> +
-> +		led-0 {
-> +			gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
-> +			default-state = "off";
-> +		};
-> +
-> +		led-1 {
-> +			gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
-> +			default-state = "off";
-> +		};
-> +
-> +		led-2 {
-> +			gpios = <&gpio3 17 GPIO_ACTIVE_HIGH>;
-> +			default-state = "off";
-> +		};
-> +	};
-> +
-> +	reg_1v8: regulator-1v8 {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "1v8";
-> +		regulator-min-microvolt = <1800000>;
-> +		regulator-max-microvolt = <1800000>;
-> +	};
-> +
-> +	reg_3v3: regulator-3v3 {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "3v3";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		regulator-always-on;
-> +	};
-> +
-> +	reg_5v: regulator-5v {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "5v";
-> +		regulator-min-microvolt = <5000000>;
-> +		regulator-max-microvolt = <5000000>;
-> +		regulator-always-on;
-> +	};
-> +
-> +	reg_fec_3v3: regulator-fec-3v3 {
-> +		compatible = "regulator-fixed";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&fec_3v3_enable_pin>;
-> +		regulator-name = "fec-3v3";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +		gpios = <&gpio3 27 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +		startup-delay-us = <300000>;
-> +		vin-supply = <&reg_5v>;
-> +	};
-> +
-> +	reg_usb0_vbus: regulator-usb0-vbus {
-> +		compatible = "regulator-fixed";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&usb0_vbus_enable_pin>;
-> +		regulator-name = "usb0_vbus";
-> +		regulator-min-microvolt = <5000000>;
-> +		regulator-max-microvolt = <5000000>;
-> +		gpio = <&gpio2 5 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +		regulator-always-on;
-> +	};
-> +
-> +	reg_usb1_vbus: regulator-usb1-vbus {
-> +		compatible = "regulator-fixed";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&usb1_vbus_enable_pin>;
-> +		regulator-name = "usb1_vbus";
-> +		regulator-min-microvolt = <5000000>;
-> +		regulator-max-microvolt = <5000000>;
-> +		gpio = <&gpio2 6 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +		regulator-always-on;
-> +	};
-> +};
-> +
-> +&auart0 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&auart0_2pins_a>;
-> +	status = "okay";
-> +};
-> +
-> +&auart1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&auart1_pins_a>;
-> +	status = "okay";
-> +};
-> +
-> +&can0 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&can0_pins_a>;
-> +	status = "okay";
-> +};
-> +
-> +&duart {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&duart_pins_b>;
-> +	status = "okay";
-> +};
-> +
-> +&duart_pins_b {
-> +	fsl,voltage = <MXS_VOLTAGE_LOW>;
-> +};
-> +
-> +&gpmi {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
+Convert himax,hx8357d.txt to yaml format.
 
-Needn't this, dtsi already set it.
+Additional changes:
+- add spi parent node in examples.
+- ref to spi-peripheral-props.yaml.
+- change himax,hx8357a to himax,hx8357 to align driver and existed dts.
+- add himax,hx8369a and fallback to himax,hx8369.
+- allow gpios-reset, spi-cpha and spi-cpol to align existed dts.
+- add im-gpios for interface selections.
 
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&gpmi_pins_a &gpmi_status_cfg>;
-> +	status = "okay";
-> +};
-> +
-> +&i2c0 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&i2c0_pins_a>;
-> +	status = "okay";
-> +
-> +	touchscreen: touchscreen@38 {
-> +		compatible = "edt,edt-ft5306";
-> +		reg = <0x38>;
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&edt_ft5x06_pins &edt_ft5x06_wake_pin>;
-> +		interrupt-parent = <&gpio0>;
-> +		interrupts = <19 IRQ_TYPE_EDGE_RISING>;
-> +		reset-gpios = <&gpio0 21 GPIO_ACTIVE_LOW>;
-> +		wake-gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>;
-> +	};
-> +};
-> +
-> +&lradc {
-> +	status = "okay";
-> +};
-> +
-> +&mac0 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&mac0_pins_a>;
-> +	phy-mode = "rmii";
-> +	phy-supply = <&reg_fec_3v3>;
-> +	phy-handle = <&ethphy>;
-> +	status = "okay";
-> +
-> +	mdio {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		ethphy: ethernet-phy@0 {
-> +			compatible = "ethernet-phy-ieee802.3-c22";
-> +			reg = <0>;
-> +			max-speed = <100>;
-> +			reset-gpios = <&gpio3 28 GPIO_ACTIVE_LOW>;
-> +			reset-assert-us = <4000>;
-> +			reset-deassert-us = <4000>;
-> +		};
-> +	};
-> +};
-> +
-> +&pinctrl {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&hog_pins_a>;
-> +
-> +	edt_ft5x06_pins: edt-ft5x06@0 {
-> +		reg = <0>;
-> +		fsl,pinmux-ids = <
-> +			MX28_PAD_GPMI_RDY1__GPIO_0_21 /* Reset */
-> +			MX28_PAD_GPMI_CE3N__GPIO_0_19 /* Interrupt */
-> +		>;
-> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> +		fsl,pull-up = <MXS_PULL_ENABLE>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +	};
-> +
-> +	edt_ft5x06_wake_pin: edt-ft5x06-wake@0 {
-> +		reg = <0>;
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../bindings/display/himax,hx8357.yaml        | 77 +++++++++++++++++++
+ .../bindings/display/himax,hx8357d.txt        | 26 -------
+ 2 files changed, 77 insertions(+), 26 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/himax,hx8357.yaml
+ delete mode 100644 Documentation/devicetree/bindings/display/himax,hx8357d.txt
 
-Any warning report if all reg is 0?
+diff --git a/Documentation/devicetree/bindings/display/himax,hx8357.yaml b/Documentation/devicetree/bindings/display/himax,hx8357.yaml
+new file mode 100644
+index 0000000000000..b5e1f77c11102
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/himax,hx8357.yaml
+@@ -0,0 +1,77 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/himax,hx8357.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Himax HX8357D display panel
++
++description:
++  Display panels using a Himax HX8357D controller in SPI
++  mode, such as the Adafruit 3.5" TFT for Raspberry Pi.
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - enum:
++              - adafruit,yx350hv15
++              - himax,hx8357b
++          - const: himax,hx8357
++      - items:
++          - enum:
++              - himax,hx8369a
++          - const: himax,hx8369
++
++  reg:
++    maxItems: 1
++
++  dc-gpios:
++    maxItems: 1
++    description: D/C pin
++
++  rotation:
++    enum: [0, 90, 180, 270]
++
++  backlight:
++    description:
++      phandle of the backlight device attached to the panel
++
++  im-gpios:
++    maxItems: 3
++
++  gpios-reset: true
++
++  spi-cpha: true
++
++  spi-cpol: true
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        display@0 {
++            compatible = "adafruit,yx350hv15", "himax,hx8357";
++            reg = <0>;
++            spi-max-frequency = <32000000>;
++            dc-gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
++            rotation = <90>;
++            backlight = <&backlight>;
++       };
++    };
+diff --git a/Documentation/devicetree/bindings/display/himax,hx8357d.txt b/Documentation/devicetree/bindings/display/himax,hx8357d.txt
+deleted file mode 100644
+index e641f664763d3..0000000000000
+--- a/Documentation/devicetree/bindings/display/himax,hx8357d.txt
++++ /dev/null
+@@ -1,26 +0,0 @@
+-Himax HX8357D display panels
+-
+-This binding is for display panels using a Himax HX8357D controller in SPI
+-mode, such as the Adafruit 3.5" TFT for Raspberry Pi.
+-
+-Required properties:
+-- compatible:	"adafruit,yx350hv15", "himax,hx8357d"
+-- dc-gpios:	D/C pin
+-- reg:		address of the panel on the SPI bus
+-
+-The node for this driver must be a child node of a SPI controller, hence
+-all mandatory properties described in ../spi/spi-bus.txt must be specified.
+-
+-Optional properties:
+-- rotation:	panel rotation in degrees counter clockwise (0,90,180,270)
+-- backlight:	phandle of the backlight device attached to the panel
+-
+-Example:
+-	display@0{
+-		compatible = "adafruit,yx350hv15", "himax,hx8357d";
+-		reg = <0>;
+-		spi-max-frequency = <32000000>;
+-		dc-gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
+-		rotation = <90>;
+-		backlight = <&backlight>;
+-	};
+-- 
+2.34.1
 
-Frank
-> +		fsl,pinmux-ids = <MX28_PAD_GPMI_CE2N__GPIO_0_18>;
-> +		fsl,drive-strength = <MXS_DRIVE_16mA>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +	};
-> +
-> +	fec_3v3_enable_pin: fec-3v3-enable@0 {
-> +		reg = <0>;
-> +		fsl,pinmux-ids = <MX28_PAD_SPDIF__GPIO_3_27>;
-> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +	};
-> +
-> +	hog_pins_a: hog@0 {
-> +		reg = <0>;
-> +		fsl,pinmux-ids = <
-> +			MX28_PAD_SSP2_SS1__GPIO_2_20  /* External power */
-> +		>;
-> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +	};
-> +
-> +	leds_pins: leds@0 {
-> +		reg = <0>;
-> +		fsl,pinmux-ids = <
-> +			MX28_PAD_SSP0_DATA7__GPIO_2_7
-> +			MX28_PAD_PWM0__GPIO_3_16
-> +			MX28_PAD_PWM1__GPIO_3_17
-> +		>;
-> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +	};
-> +
-> +	usb0_vbus_enable_pin: usb0-vbus-enable@0 {
-> +		reg = <0>;
-> +		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA5__GPIO_2_5>;
-> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +	};
-> +
-> +	usb1_vbus_enable_pin: usb1-vbus-enable@0 {
-> +		reg = <0>;
-> +		fsl,pinmux-ids = <MX28_PAD_SSP0_DATA6__GPIO_2_6>;
-> +		fsl,drive-strength = <MXS_DRIVE_4mA>;
-> +		fsl,pull-up = <MXS_PULL_DISABLE>;
-> +		fsl,voltage = <MXS_VOLTAGE_HIGH>;
-> +	};
-> +};
-> +
-> +&pwm {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pwm4_pins_a &pwm7_pins_a>;
-> +	status = "okay";
-> +};
-> +
-> +/* microSD */
-> +&ssp0 {
-> +	compatible = "fsl,imx28-mmc";
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&mmc0_4bit_pins_a &mmc0_sck_cfg>;
-> +	broken-cd;
-> +	bus-width = <4>;
-> +	status = "okay";
-> +};
-> +
-> +&usb0 {
-> +	dr_mode = "host";
-> +	vbus-supply = <&reg_usb0_vbus>;
-> +	status = "okay";
-> +};
-> +
-> +&usb1 {
-> +	dr_mode = "host";
-> +	vbus-supply = <&reg_usb1_vbus>;
-> +	status = "okay";
-> +};
-> +
-> +&usbphy0 {
-> +	status = "okay";
-> +};
-> +
-> +&usbphy1 {
-> +	status = "okay";
-> +};
-> --
-> 2.43.0
->
