@@ -1,262 +1,211 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCE01E492;
-	Thu, 29 May 2025 12:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF415202F6D;
+	Thu, 29 May 2025 12:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748523081; cv=none; b=UEdKW5zB4S9JBCnmsT/6YzbrhMtw0pHgsfdUCErtR7F2zqODLDqw0Af9/07HofcC+tsQeX+rxMtYFMCfLNParD0kVZLLoLZpLzoMOetok7aHqcdUWI/rkfoqdfNGY17MfwDmyKQZQ87ZuBONg7CSM4qC8+dkkybE3mv1fls9nJ8=
+	t=1748523399; cv=none; b=u4PJ0uU9C2hIKvtnuYXPXrhklqN07AgUTrlvlinsaYDdZBqZ8+0RGOeWR9iHZnMh+y+NrHL2Hd/Lwx7HAviZSpcQ96ND5p2FhQf5yNmHdh4XgOxxyofe1Vt9FARzZ5HME0/hM4py+tR5d1gomyaFEHbrUowTDrR2tTWfZJ3ksbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748523081; c=relaxed/simple;
-	bh=N/k5MREBZu4ktJEu5uoYfUk/XOC53RtuRUTknxcukAI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VjduhDbzSmqt49X90qvUiKdJf6UrGhyPVQwhH7X9TMiWrqLkFES5tV8p6DDhk56gsbaF7Eg1q+z1qGLIMfiNRU4nUA57gUXybEwz0RbykvVTfADY3Mt3u4RF7kib6MTBz5RG6RMG3JEong1dlSlz+GWX6F+mqaF64iIvII08QDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IK9kc6oG; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IK9kc6oG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D782C4CEE7;
-	Thu, 29 May 2025 12:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748523079;
-	bh=N/k5MREBZu4ktJEu5uoYfUk/XOC53RtuRUTknxcukAI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IK9kc6oGUgxlgbKvaQ0nUCSs5sBdVtDfgA5KQGSTuN23+qm/4xuYAPC+g+EPi9CNR
-	 UKrm7kUUqzLXZH5kdozgjU9QWgfdX7s9YhSAZrrephnvPRNmZhKCtwTTidizK01jFr
-	 GGk+Jju5D/fejd5JAUkb0LeWXPiw2RtAyE1us9h9rmOgvuEgS2Zs9cGFZedUQ3z/5f
-	 /z7ziZvChpgVmoFNAfM95fdfGqlBQuAvqWCW/jsu9BPAdAC8/lRT+eeRyww5onSNu+
-	 JuzylCnj9V7lU6XVmF/iWY5N9LfLmCHUHCpjX2U0hSb3jWw09v2j683d3Ic42HWin7
-	 wxb4Kp6RFXjXw==
-Date: Thu, 29 May 2025 07:51:17 -0500
-From: Rob Herring <robh@kernel.org>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: linux-kernel@vger.kernel.org, michael@amarulasolutions.com,
-	linux-amarula@amarulasolutions.com,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	s=arc-20240116; t=1748523399; c=relaxed/simple;
+	bh=I/bPDChe/3u4CvRovBNpwJl3q2TTdxNMwFY7EzT22PU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TmGczbH2lTf9iWTSz/Upt+8rZvNe5+dPfotjPgDgAUwqq5gh1xQXlTSHiIAQre397wbuAGIJZDJ7MuMCbYXgvnzcvIMbTPHYYjqR0W30UUZncpF96NF96iFJrgl0OYmpzqZIAkmCeJWabtxI5mPkIdMrF43vxcePfIOL5fRUZVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.3])
+	by gateway (Coremail) with SMTP id _____8Axx2l_WThoIikCAQ--.53145S3;
+	Thu, 29 May 2025 20:56:31 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.3])
+	by front1 (Coremail) with SMTP id qMiowMCxbsV1WThoTrH6AA--.60122S2;
+	Thu, 29 May 2025 20:56:27 +0800 (CST)
+From: Binbin Zhou <zhoubinbin@loongson.cn>
+To: Binbin Zhou <zhoubb.aaron@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	linux-mmc@vger.kernel.org,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Taichi Sugaya <sugaya.taichi@socionext.com>,
+	Takao Orito <orito.takao@socionext.com>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Al Cooper <alcooperx@gmail.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] dt-bindings: mfd: convert mxs-lradc bindings to
- json-schema
-Message-ID: <20250529125117.GA2750225-robh@kernel.org>
-References: <20250529083201.2286915-1-dario.binacchi@amarulasolutions.com>
- <20250529083201.2286915-2-dario.binacchi@amarulasolutions.com>
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	Avi Fishman <avifishman70@gmail.com>,
+	Tomer Maimon <tmaimon77@gmail.com>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Patrick Venture <venture@google.com>,
+	Nancy Yuen <yuenn@google.com>,
+	Benjamin Fair <benjaminfair@google.com>,
+	openbmc@lists.ozlabs.org,
+	Michal Simek <michal.simek@amd.com>,
+	Joel Stanley <joel@jms.id.au>,
+	linux-aspeed@lists.ozlabs.org,
+	Aubin Constans <aubin.constans@microchip.com>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Yixun Lan <dlan@gentoo.org>,
+	linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	linux-tegra@vger.kernel.org,
+	Hu Ziji <huziji@marvell.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: [PATCH v2 00/35] mmc: Cleanup sdhci_pltfm_free()/sdhci_free_host() usage
+Date: Thu, 29 May 2025 20:56:10 +0800
+Message-ID: <cover.1748515612.git.zhoubinbin@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250529083201.2286915-2-dario.binacchi@amarulasolutions.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMCxbsV1WThoTrH6AA--.60122S2
+X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Xw1kXr43tFy8Ary7GFW5CFX_yoW7GrW5pa
+	ySqrWa9r43Cr95WrZxJw1UZw15Xr4rX39Fgry5tw4FqFW3Ca4UKrsrAFy0qryDZ3yxJr48
+	t3WDJw1UGr95K3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUA529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Cr0_Gr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwCFI7km07C267AKxVWUtVW8ZwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Wrv_Gr1UMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU-JKIDUUUU
 
-On Thu, May 29, 2025 at 10:31:04AM +0200, Dario Binacchi wrote:
-> Convert the Freescale MXS Low-Resoulution ADC (LRADC) device tree
-> binding documentation to json-schema.
-> 
-> The clocks and #io-channel-cells properties have also been added; They
-> are present in the respective SoC DTSI files but were missing from the
-> old mxs-lradc.txt file.
-> 
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> 
-> ---
-> 
-> Changes in v3:
-> - Add Reviewed-by tag of Conor Dooley
-> 
->  .../devicetree/bindings/mfd/mxs-lradc.txt     |  45 --------
->  .../devicetree/bindings/mfd/mxs-lradc.yaml    | 106 ++++++++++++++++++
->  2 files changed, 106 insertions(+), 45 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/mfd/mxs-lradc.txt
->  create mode 100644 Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/mxs-lradc.txt b/Documentation/devicetree/bindings/mfd/mxs-lradc.txt
-> deleted file mode 100644
-> index 755cbef0647d..000000000000
-> --- a/Documentation/devicetree/bindings/mfd/mxs-lradc.txt
-> +++ /dev/null
-> @@ -1,45 +0,0 @@
-> -* Freescale MXS LRADC device driver
-> -
-> -Required properties:
-> -- compatible: Should be "fsl,imx23-lradc" for i.MX23 SoC and "fsl,imx28-lradc"
-> -              for i.MX28 SoC
-> -- reg: Address and length of the register set for the device
-> -- interrupts: Should contain the LRADC interrupts
-> -
-> -Optional properties:
-> -- fsl,lradc-touchscreen-wires: Number of wires used to connect the touchscreen
-> -                               to LRADC. Valid value is either 4 or 5. If this
-> -                               property is not present, then the touchscreen is
-> -                               disabled. 5 wires is valid for i.MX28 SoC only.
-> -- fsl,ave-ctrl: number of samples per direction to calculate an average value.
-> -                Allowed value is 1 ... 32, default is 4
-> -- fsl,ave-delay: delay between consecutive samples. Allowed value is
-> -                 2 ... 2048. It is used if 'fsl,ave-ctrl' > 1, counts at
-> -                 2 kHz and its default is 2 (= 1 ms)
-> -- fsl,settling: delay between plate switch to next sample. Allowed value is
-> -                1 ... 2047. It counts at 2 kHz and its default is
-> -                10 (= 5 ms)
-> -
-> -Example for i.MX23 SoC:
-> -
-> -	lradc@80050000 {
-> -		compatible = "fsl,imx23-lradc";
-> -		reg = <0x80050000 0x2000>;
-> -		interrupts = <36 37 38 39 40 41 42 43 44>;
-> -		fsl,lradc-touchscreen-wires = <4>;
-> -		fsl,ave-ctrl = <4>;
-> -		fsl,ave-delay = <2>;
-> -		fsl,settling = <10>;
-> -	};
-> -
-> -Example for i.MX28 SoC:
-> -
-> -	lradc@80050000 {
-> -		compatible = "fsl,imx28-lradc";
-> -		reg = <0x80050000 0x2000>;
-> -		interrupts = <10 14 15 16 17 18 19 20 21 22 23 24 25>;
-> -		fsl,lradc-touchscreen-wires = <5>;
-> -		fsl,ave-ctrl = <4>;
-> -		fsl,ave-delay = <2>;
-> -		fsl,settling = <10>;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
-> new file mode 100644
-> index 000000000000..90391b02c715
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
-> @@ -0,0 +1,106 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/mxs-lradc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale MXS Low-Resoulution ADC (LRADC)
-> +
-> +maintainers:
-> +  - Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> +
-> +description: |
+Hi all:
 
-Don't need '|' unless there is formatting to preserve. 
+After the first part of the cleanup[1], there are sdhci related
+drivers that need further cleanup.
 
-> +  The LRADC provides 16 physical channels of 12-bit resolution
-> +  for analog-to-digital conversion and includes an integrated
-> +  4-wire/5-wire touchscreen controller.
+This patchset is the second part of the cleanup series, and since sdhci has
+sdhci_alloc_host() as the general interface, our main job is to clean up
+sdhci_pltfm_free() and sdhci_free_host().
 
-Wrap lines at 80 char.
+[1]:https://lore.kernel.org/all/cover.1747877175.git.zhoubinbin@loongson.cn/
 
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - fsl,imx23-lradc
-> +          - fsl,imx28-lradc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    minItems: 1
-> +
-> +  interrupts:
-> +    minItems: 9
-> +    maxItems: 13
+Thanks.
 
-Please describe what each interrupt is. Unless they are all the same 
-(e.g. 1 interrupt per ADC channel), you need to list them out.
+-----
+V2:
+- Collect Reviewed-by and Acked-by tags.
+Patch-01:
+ - Set sdhci_free_host() to empty, rather than dropping it.
+Patch-07:
+ - Set sdhci_pltfm_free() to empty, rather than dropping it.
+Patch-22:
+ - As requested by Yixun, keep the goto scheme.
+Patch-35:
+ - New patch;
+ - Since all calls have been cleaned up, sdhci_pltfm_free()/sdhci_free_host()
+   are now dropped directly;
 
-> +
-> +  fsl,lradc-touchscreen-wires:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Number of wires used to connect the touchscreen to LRADC.
-> +      If this property is not present, then the touchscreen is disabled.
+Link to V1:
+https://lore.kernel.org/all/cover.1747792905.git.zhoubinbin@loongson.cn/
 
-Don't need '|'. Unless this is supposed to be 2 paragraphs. In that 
-case, add a blank line between paragraphs. Same comment on the rest.
+Binbin Zhou (35):
+  mmc: sdhci: Use devm_mmc_alloc_host() helper
+  mmc: sdhci-acpi: Drop the use of sdhci_free_host()
+  mmc: sdhci-milbeaut: Drop the use of sdhci_free_host()
+  mmc: sdhci-pci: Drop the use of sdhci_free_host()
+  mmc: sdhci-s3c: Drop the use of sdhci_free_host()
+  mmc: sdhci-spear: Drop the use of sdhci_free_host()
+  mmc: sdhci-pltfm: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-bcm-kona: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-brcmstb: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-cadence: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-dove: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-esdhc-imx: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-esdhc-mcf: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-iproc: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-msm: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-npcm: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-arasan: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-aspeed: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-at91: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-dwcmshc: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-esdhc: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-k1: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-ma35d1: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-sparx5: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-omap: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-pic32: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-pxav2: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-pxav3: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-sprd: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-st: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-tegra: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-xenon: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci_am654: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci_f_sdh30: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci: Drop sdhci_free_host()/sdhci_pltfm_free() definitions
 
-> +
-> +  fsl,ave-ctrl:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 1
-> +    maximum: 32
-> +    default: 4
-> +    description: |
-> +      Number of samples per direction to calculate an average value.
-> +
-> +  fsl,ave-delay:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 2
-> +    maximum: 2048
-> +    default: 2
-> +    description: |
-> +      Delay between consecutive samples.
-> +      It is used if 'fsl,ave-ctrl' > 1, counts at 2 kHz and its
-> +      default value (i. e. 2) is 1 ms.
-> +
-> +  fsl,settling:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 1
-> +    maximum: 2047
-> +    default: 10
-> +    description: |
-> +      Delay between plate switch to next sample.
-> +      It counts at 2 kHz and its default (i. e. 10) is 5 ms.
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - interrupts
-> +
-> +if:
-> +  properties:
-> +    compatible:
-> +      contains:
-> +        enum:
-> +          - fsl,imx23-lradc
-> +then:
-> +  properties:
-> +    fsl,lradc-touchscreen-wires:
-> +      const: 4
-> +else:
-> +  properties:
-> +    fsl,lradc-touchscreen-wires:
-> +      enum: [4, 5]
+ drivers/mmc/host/sdhci-acpi.c       |  3 ---
+ drivers/mmc/host/sdhci-bcm-kona.c   |  2 --
+ drivers/mmc/host/sdhci-brcmstb.c    |  1 -
+ drivers/mmc/host/sdhci-cadence.c    | 21 ++++++------------
+ drivers/mmc/host/sdhci-dove.c       | 12 ++---------
+ drivers/mmc/host/sdhci-esdhc-imx.c  |  3 ---
+ drivers/mmc/host/sdhci-esdhc-mcf.c  | 25 ++++++----------------
+ drivers/mmc/host/sdhci-iproc.c      | 18 ++++------------
+ drivers/mmc/host/sdhci-milbeaut.c   | 19 ++++++-----------
+ drivers/mmc/host/sdhci-msm.c        | 11 ++++------
+ drivers/mmc/host/sdhci-npcm.c       | 15 +++----------
+ drivers/mmc/host/sdhci-of-arasan.c  | 26 +++++++----------------
+ drivers/mmc/host/sdhci-of-aspeed.c  | 10 ++-------
+ drivers/mmc/host/sdhci-of-at91.c    | 23 +++++++-------------
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 14 +++++-------
+ drivers/mmc/host/sdhci-of-esdhc.c   | 11 ++--------
+ drivers/mmc/host/sdhci-of-k1.c      |  1 -
+ drivers/mmc/host/sdhci-of-ma35d1.c  | 23 +++++++-------------
+ drivers/mmc/host/sdhci-of-sparx5.c  | 24 +++++++--------------
+ drivers/mmc/host/sdhci-omap.c       | 21 ++++++------------
+ drivers/mmc/host/sdhci-pci-core.c   |  9 ++------
+ drivers/mmc/host/sdhci-pic32.c      |  9 +++-----
+ drivers/mmc/host/sdhci-pltfm.c      | 16 +-------------
+ drivers/mmc/host/sdhci-pltfm.h      |  1 -
+ drivers/mmc/host/sdhci-pxav2.c      | 26 ++++++-----------------
+ drivers/mmc/host/sdhci-pxav3.c      |  7 +-----
+ drivers/mmc/host/sdhci-s3c.c        | 16 ++++----------
+ drivers/mmc/host/sdhci-spear.c      | 11 ++++------
+ drivers/mmc/host/sdhci-sprd.c       | 33 +++++++++--------------------
+ drivers/mmc/host/sdhci-st.c         |  6 ++----
+ drivers/mmc/host/sdhci-tegra.c      |  9 +++-----
+ drivers/mmc/host/sdhci-xenon.c      |  9 ++------
+ drivers/mmc/host/sdhci.c            |  9 +-------
+ drivers/mmc/host/sdhci.h            |  1 -
+ drivers/mmc/host/sdhci_am654.c      | 20 ++++++-----------
+ drivers/mmc/host/sdhci_f_sdh30.c    | 13 ++++--------
+ 36 files changed, 129 insertions(+), 349 deletions(-)
 
-Move this constraint to the top level and drop the 'else'.
 
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    lradc@80050000 {
-> +        compatible = "fsl,imx23-lradc";
-> +        reg = <0x80050000 0x2000>;
-> +        interrupts = <36>, <37>, <38>, <39>, <40>,
-> +                     <41>, <42>, <43>, <44>;
-> +        clocks = <&clks 26>;
-> +        #io-channel-cells = <1>;
-> +        fsl,lradc-touchscreen-wires = <4>;
-> +        fsl,ave-ctrl = <4>;
-> +        fsl,ave-delay = <2>;
-> +        fsl,settling = <10>;
-> +    };
-> -- 
-> 2.43.0
-> 
+base-commit: d2c6acff6386f43ed307822454b970c831c48f1b
+-- 
+2.47.1
+
