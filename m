@@ -1,70 +1,68 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA1622ACDB
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 14:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C13C22B598
+	for <imx@lists.linux.dev>; Thu, 29 May 2025 14:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748529357; cv=none; b=a+MXGio8uLKORkyf8oQfIhb7P0fRVn5j6zvL9fhOPkPgTIiviHHMekgWsMG5LNBxogy9Y8XU2/BUiudp3cs8aSox+elmTChPrCXvOi3qm/TNZ6fsFkwbWoXDPVhBroTng3TaIcBF10TycANxqow6CBYN0n+NMx3pHxg+pC93who=
+	t=1748529359; cv=none; b=sFRCZMrSMXLAC50j0KR/eDtf5a4QUUbEQYjYZ4K38DL+8wVZPBDEey9NGXBUepXGN3jC6BGLdBrbf7gtcReYu+HZQegYBFe6YD74y1iw8hIQHhRrPYhEC219dRpTF5iJstFS2mzT6a56uONKRAqVmv9aa7gFbhgUwToEfcwIfWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748529357; c=relaxed/simple;
-	bh=lWI4T2RiBW23UkmALNgK+owDgixAhqm2J1H+wTwycSo=;
+	s=arc-20240116; t=1748529359; c=relaxed/simple;
+	bh=b25DzXlkwtKRtrQxMdt2zt8u3SZtqu8bn40z4T7R6MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3hS+ApuVUrlVfdkNMmGQXiYvPd7pm6xS2WGftVuwGXZCp9W37NwDw0H7kpurBFxXHjPwlLKZ8vZhNG3d3O4rLlK0d/mhDlcd3aYQ7nCN0s7purYOelMpj3GoK5sttV+uaZ4tH65vM6GfUi4DJP9mBWGs26lyJyIvfOAV+z3hr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=fQxZPGBw; arc=none smtp.client-ip=209.85.208.41
+	 MIME-Version; b=SF9xL1T3tRnoBo0dlLDS+NhYexTzta0h+W+nrwipS2X141gp4P1Y+aOgIZuRHGxn55ZYSyykLp3gDgYV/yh+3dc3gac9hdyxySL/B1ecAdHe5wKKFPqMjrjGlV6ETIzRdeBuQBp/0s2TQVWg+Dy4NfymG7fHQoIeypthysjbd0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Ns9a7nRz; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="fQxZPGBw"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-60461fc88d7so1858044a12.0
-        for <imx@lists.linux.dev>; Thu, 29 May 2025 07:35:55 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Ns9a7nRz"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ad89333d603so188309166b.2
+        for <imx@lists.linux.dev>; Thu, 29 May 2025 07:35:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1748529354; x=1749134154; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1748529356; x=1749134156; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gZBCgnAET/7svvvAxCFqw/qkQj58y6b6iHWz5ZaJvGE=;
-        b=fQxZPGBwyiigMJHRQ0ccEf1K5JjhNNHAIW1BvO+Lq/t1DJgXA4m+Cti9+oMUSEojQf
-         +n/wc4lYHGaZJU3NOveVsbdPsDOIKuNYzCpIFYOPhSDvEKzFToWHaTa/EagBpt9f0eR6
-         Wp4ooxhr9rPEB0rEF9udWgDSkOBdr2ogxfB20=
+        bh=UkvbYTVTJvU7EjQbzb6YoDEjgSySPh9u6IORDwoh9j4=;
+        b=Ns9a7nRzciNdQc7CDgoUtYaw9xFiJp3X7hQPE11f94d/XJanYWsqYqKyD2OPcuOc64
+         t9vGOfWjjuCSXLuv39XahYZnUPzq+svP4YtpZSW7F+h1Ka+699ztVASCz86zRvOdXQQM
+         as7bLKUMmuHpPjUfs2OX5guYKZ4s2VVA/Efxc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748529354; x=1749134154;
+        d=1e100.net; s=20230601; t=1748529356; x=1749134156;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gZBCgnAET/7svvvAxCFqw/qkQj58y6b6iHWz5ZaJvGE=;
-        b=BmoJw+fluM/2Gd4TgE4dI1UZXkI2Q0BpiFlMYaBTnNUv0y8vpNC8pBJxlY2ztvW/rC
-         aCqTv9xO5jB6moSDXGcvxlM6G6CrbIuSpwRw9f55pL6Lu2MQjfWgy1pP6h7+7OJRZSqL
-         7KNGqo231hGxXlcEi31XLJtRTUZUTV1YusQugcMaqzUeog0TyqWu/N9BDBxx2XhZasJo
-         Lb5Bhkp8wERf69m6cYg5pMy+7p4fTnqIOsxceqOc8eVQv0OfL7lEsAQXVNgneJo93nrZ
-         ZbbW4Tz2SDbAhNrPcgFy08T4EabLEblxU2048bMqMQ/ZRw/XjDPu6GCicWBojYbCZbBx
-         rfFA==
-X-Forwarded-Encrypted: i=1; AJvYcCV02uwQUjPT2n9yCDzrUI/uwj4fj3TMz8UeBJyYV4bE0WCiTIE5DHFYOmrBa9lW5YjI3Q8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwwNRB6pU2tzwyj3pGUz1xijWDZ49kFMz3OIetu+G9RZnvQjkWX
-	ZdShlXuRp3H/YJtEhOjz1LRzZe1LLCtSepUDXIj2ACQrv6fcSp5115IPkABSbQTH48Q=
-X-Gm-Gg: ASbGncsBTXm4s0dqXdrmqKpyZFPgVJ5gnyEddspFKKqtKoZEYMqngcOHj8TsmF5thkD
-	ummEXtE3u9vemmTgrVFh//ZnEnhEc0p/nY7n6vI1a5pKkrsFYDrxra2bh17i5JoncuXsS5gxZFg
-	jOvO2n8qOFx04Muiw4L30DRcp08VtG0xcMkaPdYrDU2pVlggeEjaeJ+Ioabz5VH19T4SfaX2tm/
-	OELuNs70dC4LVA4/BO3RTHQVA1T1PuUKE7c5f6H21qgtN5yilR/tAdNRPeZHy/OrGCpmrEaSCGU
-	WCc4mFAUGHmT64h3vYz6twIN+ppTfxZk5t9nvxrMf/b+AO5T8/BLa3wBVImE6c0jimPph1x0glA
-	5ZfH+XSloEBLwo9jW
-X-Google-Smtp-Source: AGHT+IHa52b+vSbAsyz/N9mzyCKngvFXo9cXYY8r05kAw/BK0bB/NY6TNVZhWWYTAv9SIpftClPn9A==
-X-Received: by 2002:a17:906:b810:b0:adb:2f9c:34bb with SMTP id a640c23a62f3a-adb2f9c7504mr24458666b.49.1748529353961;
-        Thu, 29 May 2025 07:35:53 -0700 (PDT)
+        bh=UkvbYTVTJvU7EjQbzb6YoDEjgSySPh9u6IORDwoh9j4=;
+        b=xLNtrNuFRG280a3ZuX94vZDrMtBv6rTu7K+AvfkYfw1p2eKZ7hgHiZ3jUnpkNbZAUV
+         RjPZnHOSrqUKMlZdHbRLb0ZzfTGWJYzGAHux3ZU2egnUPYrJtW2r3nBa9gOCUQL/RXRx
+         Srtl9nE5SuhrRwnYY+w/W9RXF1fURqKFm3vEOyih4mymx3OoI3SR5HIdqQkMUEh4nRFb
+         lMp7NdrVhx5Q31nrnVDLe/4YnNWazMtfcR3aLKm03OvnZFbNJXmrUC01BXJFghX4H2xE
+         35Xgl8hNP0kK87IoYk82wZhFJeRGoEV9Nsg7ghNzLt2ecaT8G4zfIYkm/kXtnr5jEk5S
+         wgmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVuGKpHSVY71G7ouc3SvKhlN/mJKLjbt2B8cjiwV16iaFjFYan2Jm6tr+XXGkWGtUjNfwk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzIRhQEN7gulExgDAG8lh9KzzfphcPd8rXwdcWIQSmZof4uTeka
+	2OUQYjZhGJa0STIqjOjGkY1aSOJuusQ3gXVweZsBnUgQzvCeOs1ZfqmNVgScny4vCus=
+X-Gm-Gg: ASbGncvhMzYhZxLY4qfc3VN0zR4ve4Yg1T9w+NKLKHUikrwNt0C47eVb4hUbyZeT0b2
+	n08wNqeJGPEBUooPvbuYEq0x+7IyvA42T6DKE1CTtPM+67Ax5pZx3DoiNcgR+EyRFNmJCveGpS5
+	YdwyzDeoSdWy2Pp2PyOfUtK/noa3JRRvDNVPRltVdpXDz9Cks14Ya/680MEADmG2j1vD5/zwVvh
+	RDzvAct8O6WK4juNTx1koxkQmWv1NVIgiZwOQOqgQMk0FlS6ZCn+brwMg3eDFdExv8Co2vtCeKc
+	PgVE5NgewUpxBVRZhQMINbWl5oWMBhXFLzJL+Y/VZ74GPWvo1sjQ2Xc3Zl1H/ZM0PB5re8vfLoq
+	bsdX8fsqNtQlZF940
+X-Google-Smtp-Source: AGHT+IH7hMfCJ++G2vbyG6z3aDCBiHFQjVGVk7csEQiSuSaeqRhezGzT9pf16kPHKXh10/ID/WoiyQ==
+X-Received: by 2002:a17:907:3f29:b0:ad8:8529:4f73 with SMTP id a640c23a62f3a-adadf2a1046mr245445766b.49.1748529355765;
+        Thu, 29 May 2025 07:35:55 -0700 (PDT)
 Received: from dario-ThinkPad-T14s-Gen-2i.. ([2.196.42.248])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d7ff075sm154305866b.37.2025.05.29.07.35.52
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d7ff075sm154305866b.37.2025.05.29.07.35.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 May 2025 07:35:53 -0700 (PDT)
+        Thu, 29 May 2025 07:35:55 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-amarula@amarulasolutions.com,
 	michael@amarulasolutions.com,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
@@ -72,9 +70,9 @@ Cc: linux-amarula@amarulasolutions.com,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 1/6] dt-bindings: mfd: convert mxs-lradc bindings to json-schema
-Date: Thu, 29 May 2025 16:35:08 +0200
-Message-ID: <20250529143544.2381031-2-dario.binacchi@amarulasolutions.com>
+Subject: [PATCH v4 2/6] ARM: dts: imx28: add pwm7 muxing options
+Date: Thu, 29 May 2025 16:35:09 +0200
+Message-ID: <20250529143544.2381031-3-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250529143544.2381031-1-dario.binacchi@amarulasolutions.com>
 References: <20250529143544.2381031-1-dario.binacchi@amarulasolutions.com>
@@ -86,222 +84,41 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert the Freescale MXS Low-Resoulution ADC (LRADC) device tree
-binding documentation to json-schema.
-
-The clocks and #io-channel-cells properties have also been added; They
-are present in the respective SoC DTSI files but were missing from the
-old mxs-lradc.txt file.
+Add alternative pinmuxing for pwm7.
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
 ---
 
-Changes in v4:
-- Fix typo Low-Resoulution -> Low-Resolution'
-- Wrap lines at 80 char.
-- Drop '|' from the description
-- Describe what each interrupt is for.
-- Move touchscreen-wires constraint for imx28 to the top level
+(no changes since v3)
 
 Changes in v3:
-- Add Reviewed-by tag of Conor Dooley
+- Add commit body
 
- .../devicetree/bindings/mfd/mxs-lradc.txt     |  45 ------
- .../devicetree/bindings/mfd/mxs-lradc.yaml    | 131 ++++++++++++++++++
- 2 files changed, 131 insertions(+), 45 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mfd/mxs-lradc.txt
- create mode 100644 Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
+ arch/arm/boot/dts/nxp/mxs/imx28.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mfd/mxs-lradc.txt b/Documentation/devicetree/bindings/mfd/mxs-lradc.txt
-deleted file mode 100644
-index 755cbef0647d..000000000000
---- a/Documentation/devicetree/bindings/mfd/mxs-lradc.txt
-+++ /dev/null
-@@ -1,45 +0,0 @@
--* Freescale MXS LRADC device driver
--
--Required properties:
--- compatible: Should be "fsl,imx23-lradc" for i.MX23 SoC and "fsl,imx28-lradc"
--              for i.MX28 SoC
--- reg: Address and length of the register set for the device
--- interrupts: Should contain the LRADC interrupts
--
--Optional properties:
--- fsl,lradc-touchscreen-wires: Number of wires used to connect the touchscreen
--                               to LRADC. Valid value is either 4 or 5. If this
--                               property is not present, then the touchscreen is
--                               disabled. 5 wires is valid for i.MX28 SoC only.
--- fsl,ave-ctrl: number of samples per direction to calculate an average value.
--                Allowed value is 1 ... 32, default is 4
--- fsl,ave-delay: delay between consecutive samples. Allowed value is
--                 2 ... 2048. It is used if 'fsl,ave-ctrl' > 1, counts at
--                 2 kHz and its default is 2 (= 1 ms)
--- fsl,settling: delay between plate switch to next sample. Allowed value is
--                1 ... 2047. It counts at 2 kHz and its default is
--                10 (= 5 ms)
--
--Example for i.MX23 SoC:
--
--	lradc@80050000 {
--		compatible = "fsl,imx23-lradc";
--		reg = <0x80050000 0x2000>;
--		interrupts = <36 37 38 39 40 41 42 43 44>;
--		fsl,lradc-touchscreen-wires = <4>;
--		fsl,ave-ctrl = <4>;
--		fsl,ave-delay = <2>;
--		fsl,settling = <10>;
--	};
--
--Example for i.MX28 SoC:
--
--	lradc@80050000 {
--		compatible = "fsl,imx28-lradc";
--		reg = <0x80050000 0x2000>;
--		interrupts = <10 14 15 16 17 18 19 20 21 22 23 24 25>;
--		fsl,lradc-touchscreen-wires = <5>;
--		fsl,ave-ctrl = <4>;
--		fsl,ave-delay = <2>;
--		fsl,settling = <10>;
--	};
-diff --git a/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
-new file mode 100644
-index 000000000000..f90fdfbb74a8
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mfd/mxs-lradc.yaml
-@@ -0,0 +1,131 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mfd/mxs-lradc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/arch/arm/boot/dts/nxp/mxs/imx28.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28.dtsi
+index bbea8b77386f..ece46d0e7c7f 100644
+--- a/arch/arm/boot/dts/nxp/mxs/imx28.dtsi
++++ b/arch/arm/boot/dts/nxp/mxs/imx28.dtsi
+@@ -755,6 +755,16 @@ MX28_PAD_PWM4__PWM_4
+ 					fsl,pull-up = <MXS_PULL_DISABLE>;
+ 				};
+ 
++				pwm7_pins_a: pwm7@0 {
++					reg = <0>;
++					fsl,pinmux-ids = <
++						MX28_PAD_SAIF1_SDATA0__PWM_7
++					>;
++					fsl,drive-strength = <MXS_DRIVE_4mA>;
++					fsl,voltage = <MXS_VOLTAGE_HIGH>;
++					fsl,pull-up = <MXS_PULL_DISABLE>;
++				};
 +
-+title: Freescale MXS Low-Resolution ADC (LRADC)
-+
-+maintainers:
-+  - Dario Binacchi <dario.binacchi@amarulasolutions.com>
-+
-+description:
-+  The LRADC provides 16 physical channels of 12-bit resolution for
-+  analog-to-digital conversion and includes an integrated 4-wire/5-wire
-+  touchscreen controller.
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - fsl,imx23-lradc
-+          - fsl,imx28-lradc
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    minItems: 1
-+
-+  interrupts:
-+    minItems: 9
-+    maxItems: 13
-+
-+  fsl,lradc-touchscreen-wires:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [4, 5]
-+    description:
-+      Number of wires used to connect the touchscreen to LRADC.
-+      If this property is not present, then the touchscreen is disabled.
-+
-+  fsl,ave-ctrl:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 1
-+    maximum: 32
-+    default: 4
-+    description: |
-+      Number of samples per direction to calculate an average value.
-+
-+  fsl,ave-delay:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 2
-+    maximum: 2048
-+    default: 2
-+    description:
-+      Delay between consecutive samples.
-+      It is used if 'fsl,ave-ctrl' > 1, counts at 2 kHz and its
-+      default value (i. e. 2) is 1 ms.
-+
-+  fsl,settling:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 1
-+    maximum: 2047
-+    default: 10
-+    description:
-+      Delay between plate switch to next sample.
-+      It counts at 2 kHz and its default (i. e. 10) is 5 ms.
-+
-+  "#io-channel-cells":
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - interrupts
-+
-+if:
-+  properties:
-+    compatible:
-+      contains:
-+        enum:
-+          - fsl,imx23-lradc
-+then:
-+  properties:
-+    interrupts:
-+      items:
-+        - description: channel 0
-+        - description: channel 1
-+        - description: channel 2
-+        - description: channel 3
-+        - description: channel 4
-+        - description: channel 5
-+        - description: touchscreen
-+        - description: channel 6
-+        - description: channel 7
-+    fsl,lradc-touchscreen-wires:
-+      const: 4
-+else:
-+  properties:
-+    interrupts:
-+      items:
-+        - description: threshold 0
-+        - description: threshold 1
-+        - description: channel 0
-+        - description: channel 1
-+        - description: channel 2
-+        - description: channel 3
-+        - description: channel 4
-+        - description: channel 5
-+        - description: button 0
-+        - description: button 1
-+        - description: touchscreen
-+        - description: channel 6
-+        - description: channel 7
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    lradc@80050000 {
-+        compatible = "fsl,imx23-lradc";
-+        reg = <0x80050000 0x2000>;
-+        interrupts = <36>, <37>, <38>, <39>, <40>,
-+                     <41>, <42>, <43>, <44>;
-+        clocks = <&clks 26>;
-+        #io-channel-cells = <1>;
-+        fsl,lradc-touchscreen-wires = <4>;
-+        fsl,ave-ctrl = <4>;
-+        fsl,ave-delay = <2>;
-+        fsl,settling = <10>;
-+    };
+ 				lcdif_24bit_pins_a: lcdif-24bit@0 {
+ 					reg = <0>;
+ 					fsl,pinmux-ids = <
 -- 
 2.43.0
 
