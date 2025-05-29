@@ -1,282 +1,312 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011057.outbound.protection.outlook.com [52.101.65.57])
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25B722D785
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 16:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748537325; cv=fail; b=S9gmHGbQWDMKGogpzLJOiHJ516Jg+eOXKvfMjNVXai7QZYW4fsAoBKEVrCBBsoKttmdDJodEjkFju+75z2CPZgLb51d42oUjkizrZt1BdCZQ0CRKj5dDMpAxbKJ8Gw8DZ75Aj8Uwhc32o2yjoIi344Zt1AXI70FtQYRngW0FGUI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748537325; c=relaxed/simple;
-	bh=ABbOomnyL3jftrHVgXRIXJT0iFfkXZftfKf31hi0N1I=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=kSgm2yYFsoclNntDewwhrBKqYNW9PsAdw6zAIgXF68zJcNB8/5OmplLzvxQ71QflTTXOVvtNRpyTzCM64QulaBCRulVDWNpGEkH4xS0kbDAqh3Bop0Rl2tu16quAX3dXyFkSe1sDXsSvmuZXbq+kJt7hVfBL/2JDFOrGn4bETN0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NX6lwUFV; arc=fail smtp.client-ip=52.101.65.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8252DB67F
+	for <imx@lists.linux.dev>; Thu, 29 May 2025 17:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748539926; cv=none; b=EjQiZhxDA0pZRQHDsCzhJl9HrpWETxjWs9ze1KQ2lJjhb2E46U8TV4ufVZIZh+pQoRcUmZYy+xJWp+UUvjWVTFjnHXjmfKGU+5shxWNvlhtVoP1+Wj2Bjfj5Vgh9v5sERUzJiJ3Z+l0xHq9FSo7Y9nVTh0MnetEkrxqpiWvqNz8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748539926; c=relaxed/simple;
+	bh=u8YmwyVAZLLkn3SGk1Qvanbp3CrGFbZ3j0Nuzo+WD2I=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=pscIDgVDsEjPlTSYCPGDXg9spqKrQ11AqVLSnmw3C2fnyuHW9IZ9WolPcCRo/7L5hRxlXMMOpQVE1pSbkoZF/t+fv1FnkeWWltZ9jv63EF4hCflGNYE+bPRZk0LcQtX63gZa233R22ficXUNnS/fD2McxSVnRwVl1PhWiw72etU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ecMAFBB8; arc=none smtp.client-ip=217.70.178.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NX6lwUFV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K+tvVKvL4qwXJjmB1/kujMzKoZyoWnfZcqAnGaneowIU4su2Z+40f9TolqeM2h+Yw3Cn0gME19sXja1x2wCim0adI2rXhxdw+UbyB9lwCIg+ShuQL+lwcF8qsXkCXTkHWMYAUPWFCR8zoeRLSvfvf4dqODZyyPshdrML3E/Dlv7h24AQXZt9EH+0S7aJkk8pdDXcw3rS5591UVmyqy0gQt/+o231kLhUbKY4PGwTGDzFzJlrV93NFOQ2M1dOkvYK/4I45TTohFA3kn3wjR/uFaVHSlg1TAyikYMwX0WQua7BVVsSmTqWDtlTJxgRrRrIIrRPTEAR4SWScMy78yUTDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vdjosiCtXFx819UxH1RXQjXC7+awOce84PgsJ+PD+T4=;
- b=qPZqLYoskq8pkdhCY89y98uHIll7Gbdbhx6o9O5XyWfq+CbfOZ72tCUeGl8gok/u3of7O5A5Ur5P1eh1liqI5vH6CxpCrIJxXT8UPSpLOUN9n9i1xJgLgwFbZWBQFB9gS5lBpw46QKiLkPn7C/6ouMhPo0upRQMVsfrL78uqmGStIIjmlytBvhE4KPtaE17MT9aU5VWirjbomCHSC5yG7teOzRPTH1wJin8OvAoX85hhK/87WEKkx6VWO91NwKBS+PZSzS27zjWNe5/ZVXFzk1sQbGXwmW67C6dFq+lanZ8Gu3ljwAR/cV1ltAYwje+QPTpKiHfL+qIh1yIbG+YbPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vdjosiCtXFx819UxH1RXQjXC7+awOce84PgsJ+PD+T4=;
- b=NX6lwUFVq6SPVoBAUVhyj79vuTroCe9A4OoqSyYHGCh2yV15GrV44JiSXGrSEd4aQg2X41wuRFa/3t6MkOamWpNV6YDPc7794gzURD1C9BzN1elkrAhagZvLh6R4upcWMtLqXU+cCImHw9t2fNWl/i1i4vDb1DtPu5qp6LiQkw/1n7WDgYR6/g1XW2VO7a1U6IPaOLs+HcRAiWx4230CvmUOXEZjteSm4PRimg8u72kc6CvDeVOvyYeWJNDRkp3OwzPk0tRRw9IB18fh93wXFTY4h+9DyHgdEB/Lgh9G/uvWRZy1qWLvNPtmBDjqkXiB8ZxY7vcP72LZpqNMeUiMQQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by DBAPR04MB7414.eurprd04.prod.outlook.com (2603:10a6:10:1a0::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.27; Thu, 29 May
- 2025 16:48:39 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::e81:b393:ebc5:bc3d%5]) with mapi id 15.20.8769.022; Thu, 29 May 2025
- 16:48:38 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	dri-devel@lists.freedesktop.org (open list:DRM DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: display: convert himax,hx8357d.txt to yaml format
-Date: Thu, 29 May 2025 12:48:21 -0400
-Message-Id: <20250529164822.777908-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH8PR07CA0047.namprd07.prod.outlook.com
- (2603:10b6:510:2cf::10) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ecMAFBB8"
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id 9C48958A53F
+	for <imx@lists.linux.dev>; Thu, 29 May 2025 16:17:48 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AB09D43B46;
+	Thu, 29 May 2025 16:17:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1748535461;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aQcCCRJcmoJGe/Ytwe0GcZgHDaSsO3JHKK47D+mnI3w=;
+	b=ecMAFBB8gulRYOvzlecnreKo0ztVIWO90fKLAItMRQVCsdXgoqN63xBiKB2FnJpIQvs2RQ
+	u4ZvXw5HJuNQ3LeyYyw9DZpnfwIUD2o0NkPOpfu5bO/OOht5HAPXp+tVR6qEkrhWDKQ1Cg
+	K7LOJbOMUZTmwPjFGJ+K2szY0clYVBVIYDpiB1uHI4S9LeWys82YKyiFvp8iXzknmqyJii
+	v/SOxoDcgsxTqCzbuaUkLQgHDTXkMOTCYnwxCj963SpLskoKaemGwVVJHBZcJI4IJYF4Nr
+	bqoI9aLA8kC6QzsNJhuaWio644A1EvC28rFeWTxhJpHmMmzD9Blf59k63KSPaQ==
+Message-ID: <f7689c91-8586-4223-8b4c-9345881ba961@bootlin.com>
+Date: Thu, 29 May 2025 18:17:38 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|DBAPR04MB7414:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1eb29c2-f28c-4fb5-ea39-08dd9ed0a932
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|52116014|376014|1800799024|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PQw3UPQHE8m4D/YEu9vFr4jOcSJ1LxW9t27ZcMBy/MmndMYhpfh/5pdABECQ?=
- =?us-ascii?Q?fp2+9K6age2va8fZxQxtc+e5hwheTcX7uoN+/2BO5KC9v41VLQ5KJR1y4vq4?=
- =?us-ascii?Q?Cq5+uPLC4rBKYNWzamqiVmtoo6Dk3ISm+u5zKcz4TiHkdGJPLHeb/vWJDe3i?=
- =?us-ascii?Q?GuaxxM1mx0nZxgOIKz4EF+DEF6dSQVNquzwh2LL8QL1q0mn9jMo56gBHKyXd?=
- =?us-ascii?Q?l5+yIVwx3bDQHh/pBiqXBfMELicfKB2An7pNseGdOeJakD/kh7oOLVWHA+Qt?=
- =?us-ascii?Q?Qtl/GmPW18BV3lK9QNpcC1McD+h/UfzjEYPdfnowpnupDvEqJQRIu9miPXZR?=
- =?us-ascii?Q?WsIBLkPcugJn2gAwd7Ox+x2J6EPD4R2Jfp6FlnnP/NDa96tq5RV5SGy5iFZu?=
- =?us-ascii?Q?k2fSnb4X8/WROu6qkTAe4tiAG5pS5EMSidKeXuqeXFjRkSPXeTGdGFuRg7FY?=
- =?us-ascii?Q?/5Hoy/UfhJ0VsDh5l4Atzzhv1D6Xk1okj5VIUlXkR28SkabUZ6SvM/Z/05Bj?=
- =?us-ascii?Q?kh06UAf4hVX6h7Cwlcdl4rhGw/B4Dn/jC2PbkMEO/kv8R+a0K1dpPM4khUou?=
- =?us-ascii?Q?ZadRgYzFYKhbDzJ023IDa5K4ZfXxVj27gTxDG3B++J+ZmEtdjAkPOTkcixbu?=
- =?us-ascii?Q?B+VXxyI+HMqxQsBbAWRemWV7akHKIt70ujRBkQ/dhTjC7bt2WyrPxDH7LWDk?=
- =?us-ascii?Q?Bf7wFPN2r26sv0sAa8NMCaxceUdXP3y/wOJ/bkOft298fXUKiqs05eENPJw6?=
- =?us-ascii?Q?V4DJNuYyYBIxi5Jg3i5Ebu58MS/J+/XHsCTzChUJ0nH69vX2IVeXRDvBJ1c5?=
- =?us-ascii?Q?xanKl5ZP9dQx1Duewoy3qrXXIUf4+Uq+yBDqz5/mU7Juv9nzp5ydRBwsb/cs?=
- =?us-ascii?Q?Xu0zrX9ZvKVoBdEs5c4aDj6PnibEMSWMzrNod5L08op4X69kGvIOvXDEuSCs?=
- =?us-ascii?Q?gmKZlojB/3T98Uaa7zG347ur8QxV9t5OwzGHwnSBRBYA5V6zkfAQGrpAOknM?=
- =?us-ascii?Q?43flBWRPHgrPSrtVajq2Ke6N0o70CLX0DzFuUpnoTxJpZHiBh2eAarXJeR7b?=
- =?us-ascii?Q?/O+ZBOwKStzH5xw96E0gQCnWECli/fI031MOckrEMz70EVHhTCZP6F/6UV5s?=
- =?us-ascii?Q?nh+JBapDsUScPWGNJnc1fuj2aq1kcQU/JhUQpAiGe4xIuBiSqp2QW+xv6hRG?=
- =?us-ascii?Q?iJTbnInB8FMdI1x46YX1bX8qMHFCzuDLIxrbg9JiDLkYQ4A3Mkz7M/gqbWy1?=
- =?us-ascii?Q?YrBlCwohbd8KkspW3yWewj8n7VHI+5pzAvkiAFts9l1JA+HmqgVomxMWs7dg?=
- =?us-ascii?Q?zsmVw7a/Giv8Mzg46jweM+cXIC3IQpCDVCvDg/6Pz5hymvLNZadIDCbCzC9p?=
- =?us-ascii?Q?EO1ZI9GmyY6AQ0rEUvMuNWTS4GXe6ir6CvuSpIm5aroppvU9natUqBFUe4nm?=
- =?us-ascii?Q?IF1snFPGd40ovCwJZcPvNwquz66mIyr/?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HJfldpavjPUYDGcYqp8dn0f9X5DqMW/FgrWihV8xzOZ27Z36xo2dk3CD7ELb?=
- =?us-ascii?Q?SJkPKI1TfyidX0abqJnIHEqZFUqoxK8IjV2y6ruBfiYP7IVpnpidLbGOSKiM?=
- =?us-ascii?Q?/aLZYU/Li3KAt3SPEaxffvt0WbIqoaARrJYwwjH6hcogT2GwJRYxQZrIEVr9?=
- =?us-ascii?Q?pKMLv9GyRwPzgHze/GeakMnfHfoFOrl3mnxy4RZoHKQbygLfpb/ut+TnGQuY?=
- =?us-ascii?Q?9ANgc8M5cA3RIQTxvsAwk/ZO2Ykt6YsDP4TM4wf8SsBitdvmm5Yo4ET7AEKl?=
- =?us-ascii?Q?lRiLqScIFBYzIexLZX7f5u5I1XCR1Pp/zLummu/7g8M2Pgw1LIXnaAGKS+an?=
- =?us-ascii?Q?mTD4CwoHxrXwML0nLUFlKuu/NpGiq25BjRiAnnV6qKKfaxJ+hJy5e4RH2kRa?=
- =?us-ascii?Q?cx/ikkgQxMRwpFtBHbZD32Zg9KfxIMzOjPZakSBd9H6rPyC4m9KNTqtyBRlB?=
- =?us-ascii?Q?/lJ+ZU5U/2oUJSU4OaV2aqAxMRs9/9ABNY5gVqkKHCmTjEc0bl8AfA+ghFUQ?=
- =?us-ascii?Q?qC/sLLBVT8J2ob9AI46bVbOPfuCRNAdzo6lctlB/GtDS1m+VffW/nz62RwM0?=
- =?us-ascii?Q?EbnwegtwfNJlTDz236of/YAg7w0TvW/Wypss55L/lLc8v322padleDNGmtpL?=
- =?us-ascii?Q?o4yT+a8+g00o6oJuC3uZOo3c56vdaJZAOVVKdrgHAKLFOBfN/AC2D+QvZy28?=
- =?us-ascii?Q?VL9h2bVC9gVUKfT+WoD3CZxA6uW2oMLP0Q2g+ohWJWfU01nIXMIX2n4YBPcK?=
- =?us-ascii?Q?l7suJVsX8WVzt2E1y9uzmYPdSYCNPBBnJ5QOXk/C7oDBH/w2WJruYY1sKoUu?=
- =?us-ascii?Q?7pU2v9B70q3v+M1A+AzEdC8/NVztHdRxE1+C020j+6wF0I4ST80IynddFcjI?=
- =?us-ascii?Q?c5LQXsbXKBUxNI1i/l1p8MC53BvQcrfXBRgM6Y4IMC3suLssxDcOftqz+Id5?=
- =?us-ascii?Q?IS7CC/hMae0y3BaMFYCN+xGxwOcYLQgtmwMx4D1pEL9zLknU6BvG6xuIwmJT?=
- =?us-ascii?Q?32kpEAXcVRSH56jWAGXE2WSg+0kBIDNPNvMWUWCDlb2CBRqX2OHmgFPujzTy?=
- =?us-ascii?Q?Mi3Py2/qkwAIQHrpG14JaRBI9Y1Xb35LVcaSet0YDEmc3bKs1SVHtW5fGpst?=
- =?us-ascii?Q?nZHGFVpSac2YkRmHowfqxS4+7V7UgAe7yK5L2ETE7mHoOVp8vDACRzOWyT+k?=
- =?us-ascii?Q?4rfqK0fb9AmxJ5r36yK2PrPK7uELfaiiCjgA5PR+zhuMKwHZ5dHY0nlgtqGt?=
- =?us-ascii?Q?xHCTN+nApLWymgE2vaZpfeERSrdquuBsdX3C/2oG6KUmUc1zG2AIM9cWGL1Z?=
- =?us-ascii?Q?Jf7t0oAYSH2quwY9dUprGM5nM67vDbK90tnEi1NlP27aeBJlx/FCF27h2gCA?=
- =?us-ascii?Q?aO6Cx8MaW1QaCt9JFKiSMeCWtl3b2H01We7begnOe96ArG8E7LfZBFi5ig5M?=
- =?us-ascii?Q?oJJhfsBj7mDJ3xjQ71frpVlJyEkvScP6phlBeda6+1nsO3dlwFbdd9zpYA0M?=
- =?us-ascii?Q?WGrNfiZdHx7BF2ouyGKlVVDHc4GHbM/KN5oJOePJv59g1koYOXdhzAVdSQt8?=
- =?us-ascii?Q?K/dxwUTSAKkw8WrDF+AWwUcQTjwgVT3QcwS266yX?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1eb29c2-f28c-4fb5-ea39-08dd9ed0a932
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 16:48:38.7923
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nS4SgrjWegf3nJLa6s9DIGQeO6PkyisiNPkiDWAccEuns/QvQoA1tSgBLnJjoEyct+JLUqOs+w24hhnln4S8ew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7414
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/4] arm64: dts: rockchip: describe I2c Bus 1 and
+ IMX258 world camera on PinePhone Pro
+From: Olivier Benjamin <olivier.benjamin@bootlin.com>
+To: Heiko Stuebner <heiko@sntech.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+ Nicholas Roth <nicholas@rothemail.net>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
+ imx@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
+ Ondrej Jirman <megi@xff.cz>
+References: <20250509-camera-v3-0-dab2772d229a@bootlin.com>
+ <20250509-camera-v3-3-dab2772d229a@bootlin.com> <3359896.e9J7NaK4W3@phil>
+ <e8af352a-bfcf-4aa5-b113-e8b845c3a2c6@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <e8af352a-bfcf-4aa5-b113-e8b845c3a2c6@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvieehkeculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffhvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefqlhhivhhivghruceuvghnjhgrmhhinhcuoeholhhivhhivghrrdgsvghnjhgrmhhinhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfdvfeetudfgfedvkeefleehieetvdejtedvuefgvddtvdegiedvjeehgfffleegnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemvgefgeemvggtfeekmedvgegvtdemfhehtggvmehffeegvdemieehkeejmehfieehieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgefgeemvggtfeekmedvgegvtdemfhehtggvmehffeegvdemieehkeejmehfieehiedphhgvlhhopeglkffrggeimedvrgdtudemvgefgeemvggtfeekmedvgegvtdemfhehtggvmehffeegvdemieehkeejmehfieehiegnpdhmrghilhhfrhhomhepohhlihhvihgvrhdrsggvnhhjrghmihhnsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvvddprhgtphhtthhopehhvghikhhosehsnhhtvggthhdruggvp
+ dhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrtghophhordhmohhnughisehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehnihgthhholhgrshesrhhothhhvghmrghilhdrnhgvthdprhgtphhtthhopehmtghhvghhrggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghkrghrihdrrghilhhusheslhhinhhugidrihhnthgvlhdrtghomh
+X-GND-Sasl: olivier.benjamin@bootlin.com
 
-Convert himax,hx8357d.txt to yaml format.
 
-Additional changes:
-- add spi parent node in examples.
-- ref to spi-peripheral-props.yaml.
-- change himax,hx8357a to himax,hx8357 to align driver and existed dts.
-- add himax,hx8369a and fallback to himax,hx8369.
-- allow gpios-reset, spi-cpha and spi-cpol to align existed dts.
-- add im-gpios for interface selections.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- .../bindings/display/himax,hx8357.yaml        | 77 +++++++++++++++++++
- .../bindings/display/himax,hx8357d.txt        | 26 -------
- 2 files changed, 77 insertions(+), 26 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/display/himax,hx8357.yaml
- delete mode 100644 Documentation/devicetree/bindings/display/himax,hx8357d.txt
+On 5/14/25 06:59, Olivier Benjamin wrote:
+> 
+> 
+> On 5/13/25 20:23, Heiko Stuebner wrote:
+>> Hi Olivier,
+>>
+> Hello Heiko, thanks for having a look!
+> 
+Hi again Heiko,
+>> Am Freitag, 9. Mai 2025, 23:51:39 Mitteleuropäische Sommerzeit schrieb 
+>> Olivier Benjamin:
+>>> Add the description of the rear/world camera (IMX258) on the 
+>>> PinePhone Pro
+>>> to the device dts file.
+>>> It receives commands on the I2C Bus 1 at address 0x1a and transmits data
+>>> over CSI-MIPI.
+>>>
+>>> The I2C address for IMX258 can be found in the IMX258-0AQH5 Software
+>>> Reference Manual, page 24, section 2.3.1: 0b0011010 = 0x1a.
+>>> Section 3 indicates the module has 4 pairs of data lines. While 4-lane
+>>> mode is nominal, 2-lane mode should also be supported.
+>>>
+>>> The pin muxing info was extracted from the PinePhone Pro schematic v1.0
+>>> as well as the RK3399 datasheet revision 1.8.
+>>>
+>>> Table 2-3 in section 2.8 of the RK3399 datasheet contains the mapping
+>>> of IO functions for the SoC pins. Page 52 shows GPIO1_A0, page 54 shows
+>>> GPIO2_D4.
+>>>
+>>> For I2C power, the PinePhone Pro schematic page 11 quadrants A4 and A5:
+>>> RK3399_J.AA8 and RK3399_J.Y8 get power from vcaa1v8_codec, so turn it on
+>>>
+>>> The IMX258 also uses the following regulators, expected by its driver:
+>>>   - vana (2.8V analog), called AVDD2V8_DVP on P.18 q.C1 and derived from
+>>>     VCC1V8_S3 on P.13 q.B2
+>>>   - vdig (1.2V digital core), called DVDD_DVP on P.18 q.C1 and shown on
+>>>     P.18 q.D3 to be equivalent to VCC1V2_DVP derived from VCC3V3_SYS on
+>>>     P.13 q.B3. Note that this regulator's voltage is inconsistently
+>>>     labeled either 1.2V or 1.5V
+>>>
+>>> RK3399_J.AG1 is GPIO4_A1/I2C1_SDA, RK3399_J.Y6 is GPIO4_A2/I2C1_SCL
+>>> This is the default pinctrl "i2c1_xfer" for i2c1 from rk3399-base.
+>>>
+>>> For the reset (RESET) signal:
+>>> page 11 quadrant D2             | p.18 q.C3-4 | p.18 q.C2
+>>> RK3399_E.R25 -> GPIO1_A0 -> Camera_RST -> MIPI_RST0 -> IMX258.12
+>>>
+>>> For the powerdown (PWDN) signal:
+>>> page 11 quadrants B4-5          | p.18 q.C2
+>>> RK3399_G.AF8 -> GPIO2_D4 -> DVP_PDN1_H -> IMX258.14
+>>>
+>>> Helped-by: Dragan Simic <dsimic@manjaro.org>
+>>> Co-developed-by: Ondrej Jirman <megi@xff.cz>
+>>> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+>>> Signed-off-by: Olivier Benjamin <olivier.benjamin@bootlin.com>
+>>
+>> how independent are the devicetree changes from the binding changes?
+>> As the binding change "only" includes other properties.
+>>
+> They are pretty independent: the binding changes are only needed to 
+> suppress warnings on the devicetree.
+> However, the changes to the devicetree are the motivation for the 
+> changes to the binding: the other properties are not strictly necessary 
+> otherwise.
+> 
+Have you had a chance to have a look?
+Are any changes needed in your opinion?
+>> Heiko
+>>
+>>
+>>> ---
+>>>   .../boot/dts/rockchip/rk3399-pinephone-pro.dts     | 94 +++++++++++ 
+>>> +++++++++++
+>>>   1 file changed, 94 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/ 
+>>> arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>>> index 
+>>> 04ba4c4565d0a205e2e46d7535c6a3190993621d..588e2d8a049cc649aa227c7a885bd494f23fbdf8 100644
+>>> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>>> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+>>> @@ -114,6 +114,16 @@ vcc3v3_sys: regulator-vcc3v3-sys {
+>>>           vin-supply = <&vcc_sys>;
+>>>       };
+>>> +    avdd2v8_dvp: regulator-avdd2v8-dvp {
+>>> +        compatible = "regulator-fixed";
+>>> +        regulator-name = "avdd2v8_dvp";
+>>> +        regulator-always-on;
+>>> +        regulator-boot-on;
+>>> +        regulator-min-microvolt = <2800000>;
+>>> +        regulator-max-microvolt = <2800000>;
+>>> +        vin-supply = <&vcc3v3_sys>;
+>>> +    };
+>>> +
+>>>       vcca1v8_s3: regulator-vcc1v8-s3 {
+>>>           compatible = "regulator-fixed";
+>>>           regulator-name = "vcca1v8_s3";
+>>> @@ -136,6 +146,16 @@ vcc1v8_codec: regulator-vcc1v8-codec {
+>>>           vin-supply = <&vcc3v3_sys>;
+>>>       };
+>>> +    vcc1v2_dvp: regulator-vcc1v2-dvp {
+>>> +        compatible = "regulator-fixed";
+>>> +        regulator-name = "vcc1v2_dvp";
+>>> +        regulator-always-on;
+>>> +        regulator-boot-on;
+>>> +        regulator-min-microvolt = <1200000>;
+>>> +        regulator-max-microvolt = <1200000>;
+>>> +        vin-supply = <&vcca1v8_s3>;
+>>> +    };
+>>> +
+>>>       wifi_pwrseq: sdio-wifi-pwrseq {
+>>>           compatible = "mmc-pwrseq-simple";
+>>>           clocks = <&rk818 1>;
+>>> @@ -312,6 +332,8 @@ vcc3v0_touch: LDO_REG2 {
+>>>               vcca1v8_codec: LDO_REG3 {
+>>>                   regulator-name = "vcca1v8_codec";
+>>> +                regulator-always-on;
+>>> +                regulator-boot-on;
+>>>                   regulator-min-microvolt = <1800000>;
+>>>                   regulator-max-microvolt = <1800000>;
+>>>               };
+>>> @@ -420,6 +442,46 @@ regulator-state-mem {
+>>>       };
+>>>   };
+>>> +&i2c1 {
+>>> +    clock-frequency = <400000>;
+>>> +    pinctrl-0 = <&i2c1_xfer &cif_clkouta>;
+>>> +    assigned-clocks = <&cru SCLK_CIF_OUT>;
+>>> +    assigned-clock-rates = <24000000>;
+>>> +    status = "okay";
+>>> +
+>>> +    wcam: camera@1a {
+>>> +        compatible = "sony,imx258";
+>>> +        reg = <0x1a>;
+>>> +        clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK0, derived from 
+>>> CIF_CLKO */
+>>> +        clock-names = "xvclk";
+>>> +        pinctrl-names = "default";
+>>> +        pinctrl-0 = <&wcam_rst>;
+>>> +        /* Note: both cameras also depend on vcca1v8_codec to power 
+>>> the I2C bus. */
+>>> +        vif-supply = <&vcc1v8_dvp>;
+>>> +        vana-supply = <&avdd2v8_dvp>;
+>>> +        vdig-supply = <&vcc1v2_dvp>; /* DVDD_DVP is the same as 
+>>> VCC1V2_DVP */
+>>> +        reset-gpios = <&gpio1 RK_PA0 GPIO_ACTIVE_LOW>;
+>>> +        orientation = <1>; /* V4L2_CAMERA_ORIENTATION_BACK */
+>>> +        rotation = <270>;
+>>> +        lens-focus = <&wcam_lens>;
+>>> +
+>>> +        port {
+>>> +            wcam_out: endpoint {
+>>> +                remote-endpoint = <&mipi_in_wcam>;
+>>> +                data-lanes = <1 2 3 4>;
+>>> +                link-frequencies = /bits/ 64 <636000000>;
+>>> +            };
+>>> +        };
+>>> +    };
+>>> +
+>>> +    wcam_lens: camera-lens@c {
+>>> +        compatible = "dongwoon,dw9714";
+>>> +        reg = <0x0c>;
+>>> +        /* Same I2c bus as both cameras, depends on vcca1v8_codec 
+>>> for power. */
+>>> +        vcc-supply = <&vcc1v8_dvp>;
+>>> +    };
+>>> +};
+>>> +
+>>>   &i2c3 {
+>>>       i2c-scl-rising-time-ns = <450>;
+>>>       i2c-scl-falling-time-ns = <15>;
+>>> @@ -462,6 +524,28 @@ &io_domains {
+>>>       status = "okay";
+>>>   };
+>>> +&isp1 {
+>>> +    status = "okay";
+>>> +
+>>> +    ports {
+>>> +        port@0 {
+>>> +            mipi_in_wcam: endpoint@0 {
+>>> +                reg = <0>;
+>>> +                remote-endpoint = <&wcam_out>;
+>>> +                data-lanes = <1 2 3 4>;
+>>> +            };
+>>> +        };
+>>> +    };
+>>> +};
+>>> +
+>>> +&mipi_dphy_rx0 {
+>>> +    status = "okay";
+>>> +};
+>>> +
+>>> +&isp1_mmu {
+>>> +    status = "okay";
+>>> +};
+>>> +
+>>>   &mipi_dsi {
+>>>       status = "okay";
+>>>       clock-master;
+>>> @@ -495,6 +579,10 @@ mipi_in_panel: endpoint {
+>>>       };
+>>>   };
+>>> +&mipi_dsi1 {
+>>> +    status = "okay";
+>>> +};
+>>> +
+>>>   &pmu_io_domains {
+>>>       pmu1830-supply = <&vcc_1v8>;
+>>>       status = "okay";
+>>> @@ -507,6 +595,12 @@ pwrbtn_pin: pwrbtn-pin {
+>>>           };
+>>>       };
+>>> +    camera {
+>>> +        wcam_rst: wcam-rst {
+>>> +            rockchip,pins = <1 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
+>>> +        };
+>>> +    };
+>>> +
+>>>       leds {
+>>>           red_led_pin: red-led-pin {
+>>>               rockchip,pins = <4 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none>;
+>>>
+>>>
+>>
+>>
+>>
+>>
+>>
+> 
 
-diff --git a/Documentation/devicetree/bindings/display/himax,hx8357.yaml b/Documentation/devicetree/bindings/display/himax,hx8357.yaml
-new file mode 100644
-index 0000000000000..b5e1f77c11102
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/himax,hx8357.yaml
-@@ -0,0 +1,77 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/himax,hx8357.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Himax HX8357D display panel
-+
-+description:
-+  Display panels using a Himax HX8357D controller in SPI
-+  mode, such as the Adafruit 3.5" TFT for Raspberry Pi.
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - adafruit,yx350hv15
-+              - himax,hx8357b
-+          - const: himax,hx8357
-+      - items:
-+          - enum:
-+              - himax,hx8369a
-+          - const: himax,hx8369
-+
-+  reg:
-+    maxItems: 1
-+
-+  dc-gpios:
-+    maxItems: 1
-+    description: D/C pin
-+
-+  rotation:
-+    enum: [0, 90, 180, 270]
-+
-+  backlight:
-+    description:
-+      phandle of the backlight device attached to the panel
-+
-+  im-gpios:
-+    maxItems: 3
-+
-+  gpios-reset: true
-+
-+  spi-cpha: true
-+
-+  spi-cpol: true
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        display@0 {
-+            compatible = "adafruit,yx350hv15", "himax,hx8357";
-+            reg = <0>;
-+            spi-max-frequency = <32000000>;
-+            dc-gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
-+            rotation = <90>;
-+            backlight = <&backlight>;
-+       };
-+    };
-diff --git a/Documentation/devicetree/bindings/display/himax,hx8357d.txt b/Documentation/devicetree/bindings/display/himax,hx8357d.txt
-deleted file mode 100644
-index e641f664763d3..0000000000000
---- a/Documentation/devicetree/bindings/display/himax,hx8357d.txt
-+++ /dev/null
-@@ -1,26 +0,0 @@
--Himax HX8357D display panels
--
--This binding is for display panels using a Himax HX8357D controller in SPI
--mode, such as the Adafruit 3.5" TFT for Raspberry Pi.
--
--Required properties:
--- compatible:	"adafruit,yx350hv15", "himax,hx8357d"
--- dc-gpios:	D/C pin
--- reg:		address of the panel on the SPI bus
--
--The node for this driver must be a child node of a SPI controller, hence
--all mandatory properties described in ../spi/spi-bus.txt must be specified.
--
--Optional properties:
--- rotation:	panel rotation in degrees counter clockwise (0,90,180,270)
--- backlight:	phandle of the backlight device attached to the panel
--
--Example:
--	display@0{
--		compatible = "adafruit,yx350hv15", "himax,hx8357d";
--		reg = <0>;
--		spi-max-frequency = <32000000>;
--		dc-gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
--		rotation = <90>;
--		backlight = <&backlight>;
--	};
 -- 
-2.34.1
+Olivier Benjamin, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
