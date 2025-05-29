@@ -1,144 +1,186 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7585E28DB60
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 09:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420E128E5E6
+	for <imx@lists.linux.dev>; Thu, 29 May 2025 11:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748512307; cv=none; b=pswjRB/iueclrmTZF7UZ84GDZbzQl/fzWrcrBnIv3ZbTXExMksMBpz9PbWjxgve06CvrMjuV0gAJSTbJvnPXKA8nXIRJ8ZAb0YTaVW7BWEwd4e7hBdVV7coVTUHdScJ4AWvP9O3iB69yvJSPqfE13YPA6+H8Czj0NSQLxaky3yM=
+	t=1748517897; cv=none; b=GbNFnuIz9X6UpKKG7OvpXrd501a4JcZWwK1gpHnlWIfxh0jaH9tmpoVCzws4PavCmP41+Ta7ue/hpxskvFVlKR4D+oofk0t6/wdGQSNlP9Gr88IDVW8QPLeQw/657R5GjaXLBrQH6uiFli4nP5L94CneJBbu0PLpoaxgwT3Fwfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748512307; c=relaxed/simple;
-	bh=OZsH8F+7jsk2HU7JWPEzcfoDDPzAr/AyR3QL1nKxMCE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lCRq0hTZASXl6wFbWKg05a+XeBtx8oS7P5HPfnalvdYidEwL08JAwN2IoW5rro6SSUcQVfvIrwXazGROH6b1O96ujBLqjWQ+wUHwNpo1vE3vGN6hnwbRI9XBKcWzxILfSWwisBoo5zbEb2OqgYONz2rvnAgrbQXwHzczSWg9KOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
- (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 29 May
- 2025 11:51:43 +0200
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
- 15.01.2507.039; Thu, 29 May 2025 11:51:43 +0200
-From: John Ernberg <john.ernberg@actia.se>
-To: Frank Li <Frank.li@nxp.com>
-CC: =?iso-8859-2?Q?Horia_Geant=E3?= <horia.geanta@nxp.com>, Pankaj Gupta
-	<pankaj.gupta@nxp.com>, Gaurav Jain <gaurav.jain@nxp.com>, Herbert Xu
-	<herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, "Rob
- Herring" <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Thomas Richard
-	<thomas.richard@bootlin.com>, "linux-crypto@vger.kernel.org"
-	<linux-crypto@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "stable@kernel.org"
-	<stable@kernel.org>
-Subject: Re: [PATCH v3 1/4] crypto: caam - Prevent crash on suspend with
- iMX8QM / iMX8ULP
-Thread-Topic: [PATCH v3 1/4] crypto: caam - Prevent crash on suspend with
- iMX8QM / iMX8ULP
-Thread-Index: AQHbz97TifK0/bkJfUas794AaCBb6bPn/yOAgAE+KIA=
-Date: Thu, 29 May 2025 09:51:43 +0000
-Message-ID: <aDguL2HynKmYyWnS@w447anl.localdomain>
-References: <20250528144259.2603914-1-john.ernberg@actia.se>
- <20250528144259.2603914-2-john.ernberg@actia.se>
- <aDcjS+3ing1W81QY@lizhi-Precision-Tower-5810>
-In-Reply-To: <aDcjS+3ing1W81QY@lizhi-Precision-Tower-5810>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A2956B14453637562
-Content-Type: text/plain; charset="iso-8859-2"
-Content-ID: <BC60B83D8F1AE94D8772162555774B55@actia.se>
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1748517897; c=relaxed/simple;
+	bh=rpsm8eRyeXGMHwqH0z4/V4yOz4McjMeLdc1aaKfmJAM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z+2fPGFaq5ATdmfrOUrRqb7kAwiYKiaSFg/5whKXnJkXD5QQj9BEOcNiYPnv8bGP1PjsYphfE+B6pTVf+nMuGSzoj7/1e/86Bu0tfCXgP3Fn+6gtP14LaaRQvr9/Lam+x1f0nyiADXBg4aFr7OQPQmdIv9bRrtwz9xHuAV+RwV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=luI5Snan; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="luI5Snan"
+Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 54TBOPh03504642;
+	Thu, 29 May 2025 06:24:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1748517865;
+	bh=56qRrAtL/a6koU+ClmQ0T5MnkBdpWG/sJANgtbap56g=;
+	h=From:To:CC:Subject:Date;
+	b=luI5Snan38kNQ+vphh1lKji9/YO3x7//X4p4oebHZ8lkEjIF2yvQsciBH8yUkuK9k
+	 AMLL08bddYOX598TBZijLKU8dGX1Ixll7VZVftQHBWHRij2nORFQbFkhkLBTXk31NU
+	 siM9pFG3dXuCOKZx68YdFvsYdlscM/r5n1TufYYc=
+Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
+	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 54TBOPT2061510
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Thu, 29 May 2025 06:24:25 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 29
+ May 2025 06:24:24 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 29 May 2025 06:24:24 -0500
+Received: from localhost (jayesh-hp-z2-tower-g5-workstation.dhcp.ti.com [172.24.227.14])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 54TBONkn1516428;
+	Thu, 29 May 2025 06:24:24 -0500
+From: Jayesh Choudhary <j-choudhary@ti.com>
+To: <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <neil.armstrong@linaro.org>, <khilman@baylibre.com>,
+        <devicetree@vger.kernel.org>
+CC: <jbrunet@baylibre.com>, <martin.blumenstingl@googlemail.com>,
+        <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
+        <kernel@pengutronix.de>, <festevam@gmail.com>,
+        <cros-qcom-dts-watchers@chromium.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <geert+renesas@glider.be>,
+        <magnus.damm@gmail.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-amlogic@lists.infradead.org>, <imx@lists.linux.dev>,
+        <linux-arm-msm@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
+        <dianders@chromium.org>, <linux-kernel@vger.kernel.org>,
+        <max.krummenacher@toradex.com>, <j-choudhary@ti.com>,
+        <ernestvanhoecke@gmail.com>
+Subject: [PATCH] arm64: dts: Add no-hpd property for all ti-sn65dsi86 bridge consumers
+Date: Thu, 29 May 2025 16:54:23 +0530
+Message-ID: <20250529112423.484232-1-j-choudhary@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi Frank,
+In the SN65DSI86 DSI-2-eDP bridge, HPD is not supported as of now.
+But DisplayPort connector_type usecases does need hpd to be enabled.
+In order not to break any platform from those driver changes, add
+"no-hpd" property to all the existing sn65dsi86 nodes (that don't
+have it already) as hpd is not being used there anyways.
 
-On Wed, May 28, 2025 at 10:52:59AM -0400, Frank Li wrote:
-> On Wed, May 28, 2025 at 02:43:07PM +0000, John Ernberg wrote:
-> > Since the CAAM on these SoCs is managed by another ARM core, called the
-> > SECO (Security Controller) on iMX8QM and Secure Enclave on iMX8ULP, whi=
-ch
-> > also reserves access to register page 0 suspend operations cannot touch
-> > this page.
-> >
-> > This is similar to when running OPTEE, where OPTEE will reserve page 0.
-> >
-> > Track this situation using a new state variable no_page0, reflecting if
-> > page 0 is reserved elsewhere, either by other management cores in SoC o=
-r
-> > by OPTEE.
-> >
-> > Replace the optee_en check in suspend/resume with the new check.
-> >
-> > optee_en cannot go away as it's needed elsewhere to gate OPTEE specific
-> > situations.
-> >
-> > Fixes the following splat at suspend:
-> >
-> >     Internal error: synchronous external abort: 0000000096000010 [#1] S=
-MP
-> >     Hardware name: Freescale i.MX8QXP ACU6C (DT)
-> >     pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
-> >     pc : readl+0x0/0x18
-> >     lr : rd_reg32+0x18/0x3c
-> >     sp : ffffffc08192ba20
-> >     x29: ffffffc08192ba20 x28: ffffff8025190000 x27: 0000000000000000
-> >     x26: ffffffc0808ae808 x25: ffffffc080922338 x24: ffffff8020e89090
-> >     x23: 0000000000000000 x22: ffffffc080922000 x21: ffffff8020e89010
-> >     x20: ffffffc080387ef8 x19: ffffff8020e89010 x18: 000000005d8000d5
-> >     x17: 0000000030f35963 x16: 000000008f785f3f x15: 000000003b8ef57c
-> >     x14: 00000000c418aef8 x13: 00000000f5fea526 x12: 0000000000000001
-> >     x11: 0000000000000002 x10: 0000000000000001 x9 : 0000000000000000
-> >     x8 : ffffff8025190870 x7 : ffffff8021726880 x6 : 0000000000000002
-> >     x5 : ffffff80217268f0 x4 : ffffff8021726880 x3 : ffffffc081200000
-> >     x2 : 0000000000000001 x1 : ffffff8020e89010 x0 : ffffffc081200004
-> >     Call trace:
-> >      readl+0x0/0x18
-> >      caam_ctrl_suspend+0x30/0xdc
-> >      dpm_run_callback.constprop.0+0x24/0x5c
-> >      device_suspend+0x170/0x2e8
-> >      dpm_suspend+0xa0/0x104
-> >      dpm_suspend_start+0x48/0x50
-> >      suspend_devices_and_enter+0x7c/0x45c
-> >      pm_suspend+0x148/0x160
-> >      state_store+0xb4/0xf8
-> >      kobj_attr_store+0x14/0x24
-> >      sysfs_kf_write+0x38/0x48
-> >      kernfs_fop_write_iter+0xb4/0x178
-> >      vfs_write+0x118/0x178
-> >      ksys_write+0x6c/0xd0
-> >      __arm64_sys_write+0x14/0x1c
-> >      invoke_syscall.constprop.0+0x64/0xb0
-> >      do_el0_svc+0x90/0xb0
-> >      el0_svc+0x18/0x44
-> >      el0t_64_sync_handler+0x88/0x124
-> >      el0t_64_sync+0x150/0x154
-> >     Code: 88dffc21 88dffc21 5ac00800 d65f03c0 (b9400000)
-> >
-> > Fixes: d2835701d93c ("crypto: caam - i.MX8ULP donot have CAAM page0 acc=
-ess")
-> > Fixes: 61bb8db6f682 ("crypto: caam - Add support for i.MX8QM")
->=20
-> Why need two fixes tags? It should be enough to keep oldest one.
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+---
 
-It looked to me to improve clarity in affected supported modules by
-highlighting when each module support was added. I'll drop the second one.
+Upcoming driver changes that will break platforms if we do not have this
+property in all the existing sn65dsi86 nodes that assumes hpd is disabled:
+<https://lore.kernel.org/all/20250529110418.481756-1-j-choudhary@ti.com/>
 
-Best regards // John Ernberg
+(sc7180-trogdor-ti-sn65dsi86.dtsi, sdm850-lenovo-yoga-c630.dts and
+sdm845-cheza.dtsi already have this property.)
 
->=20
-> Frank
-> =
+NOTE: Grouping the logical changes together in a single patch even though
+we have multiple vendor dts. I hope that is not an issue.
+
+ .../boot/dts/amlogic/meson-g12b-bananapi-cm4-mnt-reform2.dts     | 1 +
+ arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts             | 1 +
+ arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts                 | 1 +
+ arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi             | 1 +
+ arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts            | 1 +
+ arch/arm64/boot/dts/renesas/r8a779h0-gray-hawk-single.dts        | 1 +
+ arch/arm64/boot/dts/renesas/white-hawk-cpu-common.dtsi           | 1 +
+ 7 files changed, 7 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/amlogic/meson-g12b-bananapi-cm4-mnt-reform2.dts b/arch/arm64/boot/dts/amlogic/meson-g12b-bananapi-cm4-mnt-reform2.dts
+index 0f48c32bec97..6a7d7db3ef8f 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-g12b-bananapi-cm4-mnt-reform2.dts
++++ b/arch/arm64/boot/dts/amlogic/meson-g12b-bananapi-cm4-mnt-reform2.dts
+@@ -292,6 +292,7 @@ edp_bridge: bridge@2c {
+ 		vpll-supply = <&reg_main_1v8>;
+ 		vcca-supply = <&reg_main_1v2>;
+ 		vcc-supply = <&reg_main_1v2>;
++		no-hpd;
+ 
+ 		ports {
+ 			#address-cells = <1>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts b/arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts
+index 3ae3824be027..599a53969326 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts
+@@ -147,6 +147,7 @@ edp_bridge: bridge@2c {
+ 		vpll-supply = <&reg_main_1v8>;
+ 		vcca-supply = <&reg_main_1v2>;
+ 		vcc-supply = <&reg_main_1v2>;
++		no-hpd;
+ 
+ 		ports {
+ 			#address-cells = <1>;
+diff --git a/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts b/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts
+index 672ac4c3afa3..8fa18273684f 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts
++++ b/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts
+@@ -384,6 +384,7 @@ sn65dsi86_bridge: bridge@2c {
+ 
+ 		clocks = <&rpmhcc RPMH_LN_BB_CLK3>;
+ 		clock-names = "refclk";
++		no-hpd;
+ 
+ 		ports {
+ 			#address-cells = <1>;
+diff --git a/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi b/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi
+index 0916fd57d1f1..a115e3fc4cb9 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi
+@@ -214,6 +214,7 @@ bridge@2c {
+ 		vpll-supply = <&reg_1p8v>;
+ 		vcca-supply = <&reg_1p2v>;
+ 		vcc-supply = <&reg_1p2v>;
++		no-hpd;
+ 
+ 		ports {
+ 			#address-cells = <1>;
+diff --git a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
+index 6955eafd8d6a..fcc2d8edd464 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
++++ b/arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts
+@@ -349,6 +349,7 @@ bridge@2c {
+ 				vpll-supply = <&reg_1p8v>;
+ 				vcca-supply = <&reg_1p2v>;
+ 				vcc-supply = <&reg_1p2v>;
++				no-hpd;
+ 
+ 				ports {
+ 					#address-cells = <1>;
+diff --git a/arch/arm64/boot/dts/renesas/r8a779h0-gray-hawk-single.dts b/arch/arm64/boot/dts/renesas/r8a779h0-gray-hawk-single.dts
+index 4d890e0617af..8b9592b87366 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779h0-gray-hawk-single.dts
++++ b/arch/arm64/boot/dts/renesas/r8a779h0-gray-hawk-single.dts
+@@ -460,6 +460,7 @@ bridge@2c {
+ 		vpll-supply = <&reg_1p8v>;
+ 		vcca-supply = <&reg_1p2v>;
+ 		vcc-supply = <&reg_1p2v>;
++		no-hpd;
+ 
+ 		ports {
+ 			#address-cells = <1>;
+diff --git a/arch/arm64/boot/dts/renesas/white-hawk-cpu-common.dtsi b/arch/arm64/boot/dts/renesas/white-hawk-cpu-common.dtsi
+index b4024e85ae5a..686a37a8680f 100644
+--- a/arch/arm64/boot/dts/renesas/white-hawk-cpu-common.dtsi
++++ b/arch/arm64/boot/dts/renesas/white-hawk-cpu-common.dtsi
+@@ -256,6 +256,7 @@ bridge@2c {
+ 		vpll-supply = <&reg_1p8v>;
+ 		vcca-supply = <&reg_1p2v>;
+ 		vcc-supply = <&reg_1p2v>;
++		no-hpd;
+ 
+ 		ports {
+ 			#address-cells = <1>;
+-- 
+2.34.1
+
