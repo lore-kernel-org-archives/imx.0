@@ -1,368 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731FE21ABA8
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 08:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC30F21C183
+	for <imx@lists.linux.dev>; Thu, 29 May 2025 09:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748508245; cv=none; b=ttF6pgdh3BO4syHlHbceuZcDdYtBdwhBa+B/RggFHMxRjHrN2wl26EmbE6tXyWkGrKTtk5GoDUWOT25r9219GBEO8k1sEbxh5I+k8AX/8yUX5K0sphqWyFGbDuR+zcAKA29p7EjDxkNpULweMv5zQWQCIQJj1ZvikjlLLr2DGeQ=
+	t=1748510721; cv=none; b=OA4AESaKSqvp1bFX3zY8q+grYy/pdhE+j61WL45XHRoSNRJz32soRH9wtWR7J7l2q8yuxhQ3snQ3TAr19BZHoO58RGdnl/BrfM8SHkSGQTI9pLHgzdTsg5QhVu/MI1eAcxSAMMozIIk4L79t9P5tUDMAQX2J1MXBDdEPlmrVHVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748508245; c=relaxed/simple;
-	bh=P988X+j2cpjXTunHdywSt5widwrftav4mCwicXbZReQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lqRK0ho0P0YqPC5ph2nPpuay4wEk/LVZcCvODn/DzI+5T4cx7AfHe9eBIFeXCVZ8hMYdZoTPy2W9OwtXwhEXd4V0mS6cnirREjFmTRRWgCh6E6KIf8JebB3WAZdmkbIZTzOjzD2dr2ZL87AqMRORQNDOeQBKdJU7q5c4emBhJK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VfiqJC3M; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VfiqJC3M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748508242;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9F1AyUc8E8n9yeZIf5vw56v5InQeBZLcKuG+dGd7CQc=;
-	b=VfiqJC3MP619VaA0Brr5dg0ySTW2DbwbHcb19w82CQQ8Hf3PUZo5mJ4LUzEfrFiQY17wLr
-	iSH/Ir+VihLlcPXyTvDvragKPhpl2ooHIAf3aOxcSr5+6760lsgdnMWjQ1XvGC61IeC44C
-	J/3UFctgCCO9BDjO+x/PK0i1+G1V+J8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-cRMvocDSPFa2DW3UFvgn2A-1; Thu, 29 May 2025 04:44:00 -0400
-X-MC-Unique: cRMvocDSPFa2DW3UFvgn2A-1
-X-Mimecast-MFC-AGG-ID: cRMvocDSPFa2DW3UFvgn2A_1748508239
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45048826b64so5031945e9.0
-        for <imx@lists.linux.dev>; Thu, 29 May 2025 01:44:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748508239; x=1749113039;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9F1AyUc8E8n9yeZIf5vw56v5InQeBZLcKuG+dGd7CQc=;
-        b=d2wqcuErC3RCh+OecUWY45+Cm8GkYeXkv0VQzl5jGoZP/M2XL7wyckEa4LuzeA2pWu
-         QdqxzqgwxWJ2KNyf7CLewf9kYAs8lc2B5CYdStlb20jEMWMwoDbWseSusulDTfFGc/AV
-         696h5NrRUuuum/me/hwjv/eIJ6CBksy1jqIP9l2FNB49c4e5ehKZVu/rv0W0+yRcC9TY
-         /TbDTOHA/4K05BuV6nHT7ntUbpvnYinK00mSDCfKZEGk8YxjnUp7L66iqcEOo3H1QEwY
-         kQimbzkBji7+hNb7cvQ1SAW9/iFe79CC5nfeLwVf6Q5kWD4ocx+3z9Lh88lkOUvbv7bW
-         Ps5w==
-X-Forwarded-Encrypted: i=1; AJvYcCXpKxYmeXUU/kHeuiKkbxeWkUQRVj2cqFcObQKxEKZwLcS6pJQJbGSOB8u/EXv6tJ785q0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyLKSTLcdWRQS2zkGccJ4jNL3SCrmpH2jRez6FtEBRReHCDmdxn
-	L+8iE/7wFyzvUt/jZBFAgKuCZ5ZZ332yyGuuhYDPzKAd6VNXSgcxJQ1Vcj4gXcvOcILnlYq1/wx
-	6bvr7pXmAWVibzNA2rXWnrgmCYsQh9O0ItyrFl7olT2CeonySdtIVSw==
-X-Gm-Gg: ASbGncsWR28l3h+/qYhq56ycGj3C0I5+ErauAWZNjJEuENoeAD68p5iM6X9TSKuuXmv
-	7qYSZl5CrOUZtU+GlDtxBlmvs00jsXc9fwFglzwC3sf34Rd9NwtT7zMiYpcF00p9oJcquWkhYMQ
-	NAuVhxs748dkN+cQkxFupkpQ/UO6kJsRYtR5IGeVkBINdfIecmy1wxwiNiCTD8f/M44op/PZ2eX
-	V6TJBZD+LN1mZC/ZsmIfXIB53Wcck1OQD13UXJ1mNtRgfEsZB50OdbXoB+wt1mTc7rIVsJEsV1q
-	A9/Wo1v7uo1GiKLnJ2g/AGTN8nA/sQiRunoiYBwx1e9Cx0Gi2u8UUUcxbnQ=
-X-Received: by 2002:a05:600c:6215:b0:43d:fa59:a685 with SMTP id 5b1f17b1804b1-44c933ed932mr180609225e9.33.1748508239272;
-        Thu, 29 May 2025 01:43:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFswQtvfSvNa9PDN1FqTqNOAN2DsMJlj+GqnmV0wxODM5kDCL47pz79wZsKUTl0iK8d06a4FA==
-X-Received: by 2002:a05:600c:6215:b0:43d:fa59:a685 with SMTP id 5b1f17b1804b1-44c933ed932mr180609025e9.33.1748508238797;
-        Thu, 29 May 2025 01:43:58 -0700 (PDT)
-Received: from ?IPV6:2a0d:3341:cce5:2e10:5e9b:1ef6:e9f3:6bc4? ([2a0d:3341:cce5:2e10:5e9b:1ef6:e9f3:6bc4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe6c9d4sm1325738f8f.38.2025.05.29.01.43.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 May 2025 01:43:58 -0700 (PDT)
-Message-ID: <0df20c3e-bd51-415f-bfdf-f88bbd39f260@redhat.com>
-Date: Thu, 29 May 2025 10:43:55 +0200
+	s=arc-20240116; t=1748510721; c=relaxed/simple;
+	bh=9c2gFsqymeTMgjQSpuDxPYXz1vt/sj891vlHdiB3At8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KxHTCrBL9GJAVv/lfRQrIR5ZHgfMbViCNRAhv5fdXq3YjktTjYOEkD2nZMZI9jvBSvEz+bKuovymDFEqi0wPHXoS4AO8D3gBxlz8EKPQZIBKVvDSJDeYh7DHtxNlygIGx5maZ+I4d/j32erEind7AQ2+9ygKt6zzUzffKP3r9R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+	by ni.piap.pl (Postfix) with ESMTPS id CC1DBC3EEAC9;
+	Thu, 29 May 2025 11:25:08 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl CC1DBC3EEAC9
+From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
+To: =?utf-8?Q?S=C3=A9bastien?= Szymanski <sebastien.szymanski@armadeus.com>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,  Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>,  Rui Miguel Silva <rmfrfs@gmail.com>,
+  Martin Kepplinger <martink@posteo.de>,  Purism Kernel Team
+ <kernel@puri.sm>,  Mauro Carvalho Chehab <mchehab@kernel.org>,  Shawn Guo
+ <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
+  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
+ <festevam@gmail.com>,  <linux-media@vger.kernel.org>,
+  <imx@lists.linux.dev>,  <linux-arm-kernel@lists.infradead.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] Enable MIPI filtering by DT on i.MX8M*
+In-Reply-To: <65670a02-e217-4d0f-955d-d13ca0240819@armadeus.com>
+ (=?utf-8?Q?=22S=C3=A9bastien?=
+	Szymanski"'s message of "Fri, 23 May 2025 17:34:01 +0200")
+References: <m3h61u9jy2.fsf@t19.piap.pl>
+	<20250509103733.GE28896@pendragon.ideasonboard.com>
+	<m3o6vn8np5.fsf@t19.piap.pl>
+	<iegnn5xoosqpk52hvipcr73aliwhqtsq6r6ctvt5756bhy6yen@rqcdongb7fdf>
+	<m31psg97dy.fsf@t19.piap.pl> <m3plfz7io0.fsf@t19.piap.pl>
+	<65670a02-e217-4d0f-955d-d13ca0240819@armadeus.com>
+Sender: khalasa@piap.pl
+Date: Thu, 29 May 2025 11:25:08 +0200
+Message-ID: <m3v7pj6a6j.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v12 4/7] net: mtip: The L2 switch driver for imx287
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>
-References: <20250522075455.1723560-1-lukma@denx.de>
- <20250522075455.1723560-5-lukma@denx.de>
- <f738d1ed-7ade-4a37-b8fd-25178f7c1dee@redhat.com>
- <20250528125329.084ab649@wsk>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250528125329.084ab649@wsk>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ArSsecbew-p0U_sxMgdQpxfmtYbCrweeS8EWvD7kqTQ_1748508239
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 5/28/25 12:53 PM, Lukasz Majewski wrote:
->> On 5/22/25 9:54 AM, Lukasz Majewski wrote:
->>> +/* dynamicms MAC address table learn and migration */
->>> +static void mtip_aging_timer(struct timer_list *t)
->>> +{
->>> +	struct switch_enet_private *fep = from_timer(fep, t,
->>> timer_aging); +
->>> +	fep->curr_time = mtip_timeincrement(fep->curr_time);
->>> +
->>> +	mod_timer(&fep->timer_aging,
->>> +		  jiffies +
->>> msecs_to_jiffies(LEARNING_AGING_INTERVAL)); +}  
->>
->> It's unclear to me why you need to maintain a timer just to update a
->> timestamp?!?
->>
-> 
-> This timestamp is afterwards used in:
-> mtip_atable_dynamicms_learn_migration(), which in turn manages the
-> entries in switch "dynamic" table (it is one of the fields in the
-> record.
-> 
->> (jiffies >> msecs_to_jiffies(LEARNING_AGING_INTERVAL)) & ((1 <<
->> AT_DENTRY_TIMESTAMP_WIDTH) - 1)
->>
-> 
-> If I understood you correctly - I shall remove the timer and then just
-> use the above line (based on jiffies) when
-> mtip_atable_dynamicms_learn_migration() is called (and it requires the
-> timestamp)?
-> 
-> Otherwise the mtip_timeincrement() seems like a nice wrapper on
-> incrementing the timestamp.
+Hi S=C3=A9bastien,
 
-Scheduling a timer to obtain a value you can have for free is not a good
-resource usage strategy. Note that is a pending question/check above:
-verify that the suggested expression yield the expected value in all the
-possible use-case.
+S=C3=A9bastien Szymanski <sebastien.szymanski@armadeus.com> writes:
 
->>> +	if (!fep->link[0] && !fep->link[1]) {
->>> +		/* Link is down or autonegotiation is in progress.
->>> */
->>> +		netif_stop_queue(dev);
->>> +		spin_unlock_irqrestore(&fep->hw_lock, flags);
->>> +		return NETDEV_TX_BUSY;  
->>
->> Intead you should probably stop the queue when such events happen
-> 
-> Please correct me if I'm wrong - the netif_stop_queue(dev); is called
-> before return. Shall something different be also done?
+> On i.MX8MM mipi_csi is at 32e30000. NXP kernel (6.12.3) with ov5640 camer=
+a:
+>
+> # devmem 0x32E30000 32
+> 0x03060301
 
-The xmit routine should assume the link is up and the tx ring has enough
-free slot to enqueue a packet. After enqueueing it should check for
-enough space availble for the next xmit and stop the queue, likely using
-the netif_txq_maybe_stop() helper.
+Thanks a lot. So at least the version register is the same as on
+i.MX8MP.
+I wonder if you could test if the CSIC possibly supports filtering by
+DT.
 
-Documentation/networking/driver.rst
+How would such a test be performed?
 
->>> +	}
->>> +
->>> +	/* Clear all of the status flags */
->>> +	status &= ~BD_ENET_TX_STATS;
->>> +
->>> +	/* Set buffer length and buffer pointer */
->>> +	bufaddr = skb->data;
->>> +	bdp->cbd_datlen = skb->len;
->>> +
->>> +	/* On some FEC implementations data must be aligned on
->>> +	 * 4-byte boundaries. Use bounce buffers to copy data
->>> +	 * and get it aligned.
->>> +	 */
->>> +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
->>> +		unsigned int index;
->>> +
->>> +		index = bdp - fep->tx_bd_base;
->>> +		memcpy(fep->tx_bounce[index],
->>> +		       (void *)skb->data, skb->len);
->>> +		bufaddr = fep->tx_bounce[index];
->>> +	}
->>> +
->>> +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
->>> +		swap_buffer(bufaddr, skb->len);  
->>
->> Ouch, the above will kill performances.
-> 
-> This unfortunately must be done in such a way (the same approach is
-> present on fec_main.c) as the IP block is implemented in such a way
-> (explicit conversion from big endian to little endian).
-> 
->> Also it looks like it will
->> access uninitialized memory if skb->len is not 4 bytes aligned.
->>
-> 
-> There is a few lines above a special code to prevent from such a
-> situation ((unsigned long)bufaddr & MTIP_ALIGNMENT).
+Maybe: while streaming (otherwise the system may lock up):
 
-The problem here is not with memory buffer alignment, but with the
-packet length, that can be not a multiple of 4. In such a case the last
-swap will do an out-of-bound read touching uninitialized data.
+I assume 'devmem 0x32E30004 32' shows 0x4305.
+# devmem 0x32E30004 32 0x14705
 
->>> +	bdp->cbd_sc = status;
->>> +
->>> +	netif_trans_update(dev);
->>> +	skb_tx_timestamp(skb);
->>> +
->>> +	/* For port separation - force sending via specified port
->>> */
->>> +	if (!fep->br_offload && port != 0)
->>> +		mtip_forced_forward(fep, port, 1);
->>> +
->>> +	/* Trigger transmission start */
->>> +	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);  
->>
->> Possibly you should check skb->xmit_more to avoid ringing the doorbell
->> when not needed.
-> 
-> I couldn't find skb->xmit_more in the current sources. Instead, there
-> is netdev_xmit_more().
+and:
+- does it change anything? If the streaming stops, you may try
+  restarting and writing with devmem again - writing to this register
+  directly frequently stops streaming on my 8MP.
 
-Yeah, I referred to the old code, sorry.
+- what does the register contain after write?
 
-> However, the TX code just is supposed to setup one frame transmission
-> and hence there is no risk that we trigger "empty" transmission.
+- you may also try:
+  # devmem 0x32E30004 32 0xfffffffd
+  # devmem 0x32E30004 32
 
-The point is that doorbell ringing is usually very expensive (slow) for
-the H/W. And is not needed when netdev_xmit_more() is true, because the
-another xmit operation will follow. If you care about performances you
-should leverage such info.
+On i.MX8MP the above returns:
+# ./devmem write32 0x32Ex0004 0xfffffffd
+# ./devmem read32 0x32Ex0004
+0x0000FF05
+(and the streaming still works, usually).
 
-> 
->>> +	/* First, grab all of the stats for the incoming packet.
->>> +	 * These get messed up if we get called due to a busy
->>> condition.
->>> +	 */
->>> +	bdp = fep->cur_rx;
->>> +
->>> +	while (!((status = bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
->>> +		if (pkt_received >= budget)
->>> +			break;
->>> +
->>> +		pkt_received++;
->>> +		/* Since we have allocated space to hold a
->>> complete frame,
->>> +		 * the last indicator should be set.
->>> +		 */
->>> +		if ((status & BD_ENET_RX_LAST) == 0)
->>> +			dev_warn_ratelimited(&dev->dev,
->>> +					     "SWITCH ENET: rcv is
->>> not +last\n"); +
->>> +		if (!fep->usage_count)
->>> +			goto rx_processing_done;
->>> +
->>> +		/* Check for errors. */
->>> +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH |
->>> BD_ENET_RX_NO |
->>> +			      BD_ENET_RX_CR | BD_ENET_RX_OV)) {
->>> +			dev->stats.rx_errors++;
->>> +			if (status & (BD_ENET_RX_LG |
->>> BD_ENET_RX_SH)) {
->>> +				/* Frame too long or too short. */
->>> +				dev->stats.rx_length_errors++;
->>> +			}
->>> +			if (status & BD_ENET_RX_NO)	/*
->>> Frame alignment */
->>> +				dev->stats.rx_frame_errors++;
->>> +			if (status & BD_ENET_RX_CR)	/* CRC
->>> Error */
->>> +				dev->stats.rx_crc_errors++;
->>> +			if (status & BD_ENET_RX_OV)	/* FIFO
->>> overrun */
->>> +				dev->stats.rx_fifo_errors++;
->>> +		}
->>> +
->>> +		/* Report late collisions as a frame error.
->>> +		 * On this error, the BD is closed, but we don't
->>> know what we
->>> +		 * have in the buffer.  So, just drop this frame
->>> on the floor.
->>> +		 */
->>> +		if (status & BD_ENET_RX_CL) {
->>> +			dev->stats.rx_errors++;
->>> +			dev->stats.rx_frame_errors++;
->>> +			goto rx_processing_done;
->>> +		}
->>> +
->>> +		/* Process the incoming frame */
->>> +		pkt_len = bdp->cbd_datlen;
->>> +		data = (__u8 *)__va(bdp->cbd_bufaddr);
->>> +
->>> +		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
->>> +				 bdp->cbd_datlen,
->>> DMA_FROM_DEVICE);  
->>
->> I have read your explaination WRT unmap/map. Actually you don't need
->> to do any mapping here, 
-> 
-> There are 16 cbd_t descriptors allocated (as dma_alloc_coherent). Those
-> descriptors contain pointer to data (being read in this case).
+The above is not a very good test, I admit, but it may show 8MM really
+doesn't have those/that bit.
 
-I'm referring to the actual packet payload, that is the buffer at
-bdp-cbd_bufaddr with len bdp->cbd_datlen; I'm not discussing the
-descriptors contents.
+TIA.
+--=20
+Krzysztof "Chris" Ha=C5=82asa
 
-> Hence the need to perform dma_map_single() for each descriptor, 
-
-You are not unmapping the descriptor, you are unmapping the packet payload.
-
->> since you are unconditionally copying the
->> whole buffer (why???)
-> 
-> Only the value of 
-> pkt_len = bdp->cbd_datlen; is copied to SKB (after byte swap_buffer()).
-
-The relevant line is:
-
-		skb_copy_to_linear_data(skb, data, pkt_len);
-
-AFAICS that copies whole packet contents, which is usually quite
-sub-optimal from performance PoV.
-
->> and re-using it.
->>
->> Still you need a dma_sync_single() to ensure the CPUs see the correct
->> data.
-> 
-> The descriptors - i.e. struct cbd_t fields are allocated with
-> dma_alloc_coherent(), so this is OK.
-
-I'm talking about packets contents, not packet descriptors. Please
-re-read the above and have a look at other drivers code.
-
-An additional point that I missed in the previous review is that the rx
-allocation schema is quite uncorrect. At ring initialization time you
-allocate full skbs, while what you need and use is just raw buffers for
-the packet payload. Instead you could/should use the page pool:
-
-Documentation/networking/page_pool.rst
-
-That will also help doing the right thing WRT DMA handling.
-
->> This patch is really too big, I'm pretty sure I missed some relevant
->> issues. You should split it in multiple ones: i.e. initialization and
->> h/w access, rx/tx, others ndos.
-> 
-> It is quite hard to "scatter" this patch as:
-> 
-> 1. I've already split it to several files (which correspond to
-> different "logical" entities - like mtipl2sw_br.c).
-> 2. The mtipl2sw.c file is the smallest part of the "core" of the
-> driver.
-> 3. If I split it, then at some point I would break bisectability for
-> imx28.
-
-Note that each patch don't need to provide complete functionality. i.e.
-patch 1 could implement ndo_open()/close and related helper, leaving
-ndo_start_xmit() and napi_poll empty and avoid allocating the rx
-buffers. patch 2 could implement the rx patch, patch 3 the tx path.
-
-The only constraint is that each patch will build successufully, which
-is usually easy to achieve.
-
-A 2K lines patches will probably lead to many more iterations and
-unhappy (or no) reviewers.
-
-/P
-
+Sie=C4=87 Badawcza =C5=81ukasiewicz
+Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
+Al. Jerozolimskie 202, 02-486 Warszawa
