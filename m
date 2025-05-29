@@ -1,102 +1,200 @@
-Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.actia.se (mail.actia.se [212.181.117.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC30F21C183
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 09:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855B121E0AD
+	for <imx@lists.linux.dev>; Thu, 29 May 2025 09:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748510721; cv=none; b=OA4AESaKSqvp1bFX3zY8q+grYy/pdhE+j61WL45XHRoSNRJz32soRH9wtWR7J7l2q8yuxhQ3snQ3TAr19BZHoO58RGdnl/BrfM8SHkSGQTI9pLHgzdTsg5QhVu/MI1eAcxSAMMozIIk4L79t9P5tUDMAQX2J1MXBDdEPlmrVHVQ=
+	t=1748511450; cv=none; b=mImjIkV5NRgDIZnfXIkbGY/iEhUUchvitovTs01L40pr7NyACnKZ3+WZHvBQPRMELaOZbMZcxCToFVHIPwfGPUVzevftjDMQ9jsK3cGl/n5pSFDoSpShd6s3iWxpWSgEmr3JOh7US+7a8lAjg1oYBJIEqro8fzIqW1PgGyTqF+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748510721; c=relaxed/simple;
-	bh=9c2gFsqymeTMgjQSpuDxPYXz1vt/sj891vlHdiB3At8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KxHTCrBL9GJAVv/lfRQrIR5ZHgfMbViCNRAhv5fdXq3YjktTjYOEkD2nZMZI9jvBSvEz+bKuovymDFEqi0wPHXoS4AO8D3gBxlz8EKPQZIBKVvDSJDeYh7DHtxNlygIGx5maZ+I4d/j32erEind7AQ2+9ygKt6zzUzffKP3r9R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id CC1DBC3EEAC9;
-	Thu, 29 May 2025 11:25:08 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl CC1DBC3EEAC9
-From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: =?utf-8?Q?S=C3=A9bastien?= Szymanski <sebastien.szymanski@armadeus.com>
-Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>,  Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>,  Rui Miguel Silva <rmfrfs@gmail.com>,
-  Martin Kepplinger <martink@posteo.de>,  Purism Kernel Team
- <kernel@puri.sm>,  Mauro Carvalho Chehab <mchehab@kernel.org>,  Shawn Guo
- <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
-  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
- <festevam@gmail.com>,  <linux-media@vger.kernel.org>,
-  <imx@lists.linux.dev>,  <linux-arm-kernel@lists.infradead.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] Enable MIPI filtering by DT on i.MX8M*
-In-Reply-To: <65670a02-e217-4d0f-955d-d13ca0240819@armadeus.com>
- (=?utf-8?Q?=22S=C3=A9bastien?=
-	Szymanski"'s message of "Fri, 23 May 2025 17:34:01 +0200")
-References: <m3h61u9jy2.fsf@t19.piap.pl>
-	<20250509103733.GE28896@pendragon.ideasonboard.com>
-	<m3o6vn8np5.fsf@t19.piap.pl>
-	<iegnn5xoosqpk52hvipcr73aliwhqtsq6r6ctvt5756bhy6yen@rqcdongb7fdf>
-	<m31psg97dy.fsf@t19.piap.pl> <m3plfz7io0.fsf@t19.piap.pl>
-	<65670a02-e217-4d0f-955d-d13ca0240819@armadeus.com>
-Sender: khalasa@piap.pl
-Date: Thu, 29 May 2025 11:25:08 +0200
-Message-ID: <m3v7pj6a6j.fsf@t19.piap.pl>
+	s=arc-20240116; t=1748511450; c=relaxed/simple;
+	bh=0A2hvECib8AzzgAufejxO42tkHm5UBhV7QzN/YWOs3k=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fvALRIJaKn5ZVcpqZT6UGnjoNmNmMyyfJ6v4hQ215MoDR6WN3mjlLcLoOzR81APmPSuZIDvRv5YgHJxUaPbQyAxy0JfAs/ieH1+hxjRL+qVJN74Ela3qKKG1ctSTgprNV69YzhnV3vWzNHSuUPuRZijVdzA1OkzcdSYz+asUke0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
+Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
+ (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 29 May
+ 2025 11:37:17 +0200
+Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
+ S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
+ 15.01.2507.039; Thu, 29 May 2025 11:37:17 +0200
+From: John Ernberg <john.ernberg@actia.se>
+To: Rob Herring <robh@kernel.org>
+CC: =?iso-8859-2?Q?Horia_Geant=E3?= <horia.geanta@nxp.com>, Pankaj Gupta
+	<pankaj.gupta@nxp.com>, Gaurav Jain <gaurav.jain@nxp.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	"Frank Li" <Frank.li@nxp.com>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, Thomas Richard
+	<thomas.richard@bootlin.com>, "linux-crypto@vger.kernel.org"
+	<linux-crypto@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v3 3/4] dt-bindings: crypto: fsl,sec-v4.0: Add power
+ domains for iMX8QM and iMX8QXP
+Thread-Topic: [PATCH v3 3/4] dt-bindings: crypto: fsl,sec-v4.0: Add power
+ domains for iMX8QM and iMX8QXP
+Thread-Index: AQHbz97TDhLekXOKbkmerT2PfEO8vrPodECAgADE/QA=
+Date: Thu, 29 May 2025 09:37:17 +0000
+Message-ID: <aDgqyF7773LJjjJO@w447anl.localdomain>
+References: <20250528144259.2603914-1-john.ernberg@actia.se>
+ <20250528144259.2603914-4-john.ernberg@actia.se>
+ <20250528215209.GA862463-robh@kernel.org>
+In-Reply-To: <20250528215209.GA862463-robh@kernel.org>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-esetresult: clean, is OK
+x-esetid: 37303A2956B14453637562
+Content-Type: text/plain; charset="iso-8859-2"
+Content-ID: <11D1FBF7FEE64642BE637CBA54B3C320@actia.se>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Hi S=C3=A9bastien,
+Hi Rob,
 
-S=C3=A9bastien Szymanski <sebastien.szymanski@armadeus.com> writes:
+On Wed, May 28, 2025 at 04:52:09PM -0500, Rob Herring wrote:
+> On Wed, May 28, 2025 at 02:43:07PM +0000, John Ernberg wrote:
+> > NXP SoCs like the iMX8QM, iMX8QXP or iMX8DXP use power domains for
+> > resource management.
+> >=20
+> > Allow specifying them for such SoCs.
+> >=20
+> > Signed-off-by: John Ernberg <john.ernberg@actia.se>
+> >=20
+> > ---
+> >=20
+> > v3:
+> >  - Fix warnings discovered by Rob Herring's bot
+> >  - Declare the compatibles correctly (Krzysztof Kozlowski)
+> >=20
+> > v2:
+> >  - Adjust commit message (Frank Li)
+> >  - Only allow power-domains when compatible with imx8qm (Frank Li)
+> > ---
+> >  .../bindings/crypto/fsl,sec-v4.0.yaml         | 45 ++++++++++++++++++-
+> >  1 file changed, 44 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml=
+ b/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml
+> > index 75afa441e019..a4ada0e2d97c 100644
+> > --- a/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml
+> > +++ b/Documentation/devicetree/bindings/crypto/fsl,sec-v4.0.yaml
+> > @@ -46,6 +46,7 @@ properties:
+> >        - items:
+> >            - enum:
+> >                - fsl,imx6ul-caam
+> > +              - fsl,imx8qm-caam
+> >                - fsl,sec-v5.0
+> >            - const: fsl,sec-v4.0
+> >        - const: fsl,sec-v4.0
+> > @@ -77,6 +78,9 @@ properties:
+> >    interrupts:
+> >      maxItems: 1
+> > =20
+> > +  power-domains:
+> > +    maxItems: 1
+> > +
+> >    fsl,sec-era:
+> >      description: Defines the 'ERA' of the SEC device.
+> >      $ref: /schemas/types.yaml#/definitions/uint32
+> > @@ -106,7 +110,9 @@ patternProperties:
+> >                - const: fsl,sec-v5.0-job-ring
+> >                - const: fsl,sec-v4.0-job-ring
+> >            - items:
+> > -              - const: fsl,sec-v5.0-job-ring
+> > +              - enum:
+> > +                - fsl,imx8qm-job-ring
+> > +                - fsl,sec-v5.0-job-ring
+> >                - const: fsl,sec-v4.0-job-ring
+> >            - const: fsl,sec-v4.0-job-ring
+> > =20
+> > @@ -116,6 +122,9 @@ patternProperties:
+> >        interrupts:
+> >          maxItems: 1
+> > =20
+> > +      power-domains:
+> > +        maxItems: 1
+> > +
+> >        fsl,liodn:
+> >          description:
+> >            Specifies the LIODN to be used in conjunction with the ppid-=
+to-liodn
+> > @@ -212,6 +221,40 @@ required:
+> >    - reg
+> >    - ranges
+> > =20
+> > +allOf:
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            const: fsl,imx8qm-caam
+> > +    then:
+> > +      required:
+> > +        - power-domains
+> > +    else:
+> > +      properties:
+> > +        power-domains: false
+> > +
+> > +  - if:
+>=20
+> This 'if' belongs under the '^jr@[0-9a-f]+$' subschema which will then=20
+> remote a level here.
+>=20
 
-> On i.MX8MM mipi_csi is at 32e30000. NXP kernel (6.12.3) with ov5640 camer=
-a:
->
-> # devmem 0x32E30000 32
-> 0x03060301
+This is what I had in v2 [1], which your bot pointed out is an unexpected
+if-statement [2]. Or should I have wrapped it in an allOf: even though it
+was a single if:?
 
-Thanks a lot. So at least the version register is the same as on
-i.MX8MP.
-I wonder if you could test if the CSIC possibly supports filtering by
-DT.
+    jernberg % pip install --upgrade dtschema
+    Requirement already satisfied: dtschema in ./.venv/lib/python3.13/site-=
+packages (2025.2)
 
-How would such a test be performed?
+[1]: https://lore.kernel.org/linux-crypto/20250527071552.1424997-4-john.ern=
+berg@actia.se/
+[2]: https://lore.kernel.org/linux-crypto/174833819381.3537254.550804710081=
+7417003.robh@kernel.org/
 
-Maybe: while streaming (otherwise the system may lock up):
+Would you mind also letting me know the command line you run validation
+with in the CI? I didn't see the v2 (at first, needed W=3D1 for that) nor
+the v3 complaint in my runs before sending.
 
-I assume 'devmem 0x32E30004 32' shows 0x4305.
-# devmem 0x32E30004 32 0x14705
+Thanks! // John Ernberg
 
-and:
-- does it change anything? If the streaming stops, you may try
-  restarting and writing with devmem again - writing to this register
-  directly frequently stops streaming on my 8MP.
-
-- what does the register contain after write?
-
-- you may also try:
-  # devmem 0x32E30004 32 0xfffffffd
-  # devmem 0x32E30004 32
-
-On i.MX8MP the above returns:
-# ./devmem write32 0x32Ex0004 0xfffffffd
-# ./devmem read32 0x32Ex0004
-0x0000FF05
-(and the streaming still works, usually).
-
-The above is not a very good test, I admit, but it may show 8MM really
-doesn't have those/that bit.
-
-TIA.
---=20
-Krzysztof "Chris" Ha=C5=82asa
-
-Sie=C4=87 Badawcza =C5=81ukasiewicz
-Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-Al. Jerozolimskie 202, 02-486 Warszawa
+> > +      patternProperties:
+> > +        '^jr@[0-9a-f]+$':
+> > +          type: object
+> > +          properties:
+> > +            compatible:
+> > +              contains:
+> > +                const: fsl,imx8qm-job-ring
+> > +    then:
+> > +      patternProperties:
+> > +        '^jr@[0-9a-f]+$':
+> > +          type: object
+> > +          required:
+> > +            - power-domains
+> > +    else:
+> > +      patternProperties:
+> > +        '^jr@[0-9a-f]+$':
+> > +          type: object
+> > +          properties:
+> > +            power-domains: false
+> > +
+> >  additionalProperties: false
+> > =20
+> >  examples:
+> > --=20
+> > 2.49.0=
