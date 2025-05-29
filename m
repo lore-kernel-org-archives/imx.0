@@ -1,312 +1,98 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8252DB67F
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 17:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DCF1A0B08;
+	Thu, 29 May 2025 18:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748539926; cv=none; b=EjQiZhxDA0pZRQHDsCzhJl9HrpWETxjWs9ze1KQ2lJjhb2E46U8TV4ufVZIZh+pQoRcUmZYy+xJWp+UUvjWVTFjnHXjmfKGU+5shxWNvlhtVoP1+Wj2Bjfj5Vgh9v5sERUzJiJ3Z+l0xHq9FSo7Y9nVTh0MnetEkrxqpiWvqNz8=
+	t=1748543260; cv=none; b=ShbX0K1laf26ysZ5rkJSDHpx+1/peYrlksyfsvQhlTcRhLyL9s/wjM67/ssvXb+VZd1La1wF1iks0etWVPcy+CCjeFvgVOd1pWNz0RXg6jfyQuy2rAQja/792qTnCxmlBEDc+O9O6yCqYExmiuuY4l43ho02p+HjDauGV61jeks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748539926; c=relaxed/simple;
-	bh=u8YmwyVAZLLkn3SGk1Qvanbp3CrGFbZ3j0Nuzo+WD2I=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=pscIDgVDsEjPlTSYCPGDXg9spqKrQ11AqVLSnmw3C2fnyuHW9IZ9WolPcCRo/7L5hRxlXMMOpQVE1pSbkoZF/t+fv1FnkeWWltZ9jv63EF4hCflGNYE+bPRZk0LcQtX63gZa233R22ficXUNnS/fD2McxSVnRwVl1PhWiw72etU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ecMAFBB8; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1748543260; c=relaxed/simple;
+	bh=tUOd0i9aWh62z/M/bOtetrCc2SMGSBcYIhoErkaGfCQ=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=LdAiiQwJd9rvs7UvSNs4DnKBzwZ7yR3fSDe2ZB99SviFNI/cyFDJ2+wj15TG9LzeUlEE6VZ8hpnrCqAUtCYSOXvsfhOYU7qlRBmVEsGlqVMz9SNgBSw1MhkfN0/RLyA0xkLB9CO4cuX13rVYH2hqxpfeWI30l8IoJg4/0cJ1IGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5+bEy2q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ecMAFBB8"
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 9C48958A53F
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 16:17:48 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AB09D43B46;
-	Thu, 29 May 2025 16:17:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1748535461;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aQcCCRJcmoJGe/Ytwe0GcZgHDaSsO3JHKK47D+mnI3w=;
-	b=ecMAFBB8gulRYOvzlecnreKo0ztVIWO90fKLAItMRQVCsdXgoqN63xBiKB2FnJpIQvs2RQ
-	u4ZvXw5HJuNQ3LeyYyw9DZpnfwIUD2o0NkPOpfu5bO/OOht5HAPXp+tVR6qEkrhWDKQ1Cg
-	K7LOJbOMUZTmwPjFGJ+K2szY0clYVBVIYDpiB1uHI4S9LeWys82YKyiFvp8iXzknmqyJii
-	v/SOxoDcgsxTqCzbuaUkLQgHDTXkMOTCYnwxCj963SpLskoKaemGwVVJHBZcJI4IJYF4Nr
-	bqoI9aLA8kC6QzsNJhuaWio644A1EvC28rFeWTxhJpHmMmzD9Blf59k63KSPaQ==
-Message-ID: <f7689c91-8586-4223-8b4c-9345881ba961@bootlin.com>
-Date: Thu, 29 May 2025 18:17:38 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5+bEy2q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC670C4CEE7;
+	Thu, 29 May 2025 18:27:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748543260;
+	bh=tUOd0i9aWh62z/M/bOtetrCc2SMGSBcYIhoErkaGfCQ=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=A5+bEy2qePCV8yhkkEUkuAJXwp7ssYOxnY4DRDNXrRySqVYq/nj1yky0Gj1X6oSUj
+	 643A7syOHwYmaSCtb9ttZubWFzSR8yOxkHt441Qa+2K7LeUcUVVCVagA+MngJyS0YJ
+	 yiTGsAx1xrgVd4u6tFsuPZgxqnWEjy0Cbpm2Tb0JX/07iMJm65zTA7vHKq33qqddEA
+	 ZWhp94VWaXHS3hcEtZZYO8wi6lCPUlmYa5pb6UIiTdkCog26rAP+HV85Q7SVrOAYy6
+	 BMux35qsRSjTyCR2G2fjqRTB41Qr2Upw1aYYK42hpVP0si6Mu/patsuAVaTqyZBJLm
+	 UytRZvmITofLA==
+Date: Thu, 29 May 2025 13:27:38 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] arm64: dts: rockchip: describe I2c Bus 1 and
- IMX258 world camera on PinePhone Pro
-From: Olivier Benjamin <olivier.benjamin@bootlin.com>
-To: Heiko Stuebner <heiko@sntech.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
- Nicholas Roth <nicholas@rothemail.net>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
- imx@lists.linux.dev, Dragan Simic <dsimic@manjaro.org>,
- Ondrej Jirman <megi@xff.cz>
-References: <20250509-camera-v3-0-dab2772d229a@bootlin.com>
- <20250509-camera-v3-3-dab2772d229a@bootlin.com> <3359896.e9J7NaK4W3@phil>
- <e8af352a-bfcf-4aa5-b113-e8b845c3a2c6@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <e8af352a-bfcf-4aa5-b113-e8b845c3a2c6@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvieehkeculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffhvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpefqlhhivhhivghruceuvghnjhgrmhhinhcuoeholhhivhhivghrrdgsvghnjhgrmhhinhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfdvfeetudfgfedvkeefleehieetvdejtedvuefgvddtvdegiedvjeehgfffleegnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemvgefgeemvggtfeekmedvgegvtdemfhehtggvmehffeegvdemieehkeejmehfieehieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgefgeemvggtfeekmedvgegvtdemfhehtggvmehffeegvdemieehkeejmehfieehiedphhgvlhhopeglkffrggeimedvrgdtudemvgefgeemvggtfeekmedvgegvtdemfhehtggvmehffeegvdemieehkeejmehfieehiegnpdhmrghilhhfrhhomhepohhlihhvihgvrhdrsggvnhhjrghmihhnsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvvddprhgtphhtthhopehhvghikhhosehsnhhtvggthhdruggvp
- dhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrtghophhordhmohhnughisehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopehnihgthhholhgrshesrhhothhhvghmrghilhdrnhgvthdprhgtphhtthhopehmtghhvghhrggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghkrghrihdrrghilhhusheslhhinhhugidrihhnthgvlhdrtghomh
-X-GND-Sasl: olivier.benjamin@bootlin.com
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+ Thomas Zimmermann <tzimmermann@suse.de>, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Maxime Ripard <mripard@kernel.org>, 
+ dri-devel@lists.freedesktop.org, Simona Vetter <simona@ffwll.ch>, 
+ David Airlie <airlied@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20250529164822.777908-1-Frank.Li@nxp.com>
+References: <20250529164822.777908-1-Frank.Li@nxp.com>
+Message-Id: <174854325819.3595451.10273154567966477690.robh@kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: display: convert himax,hx8357d.txt to
+ yaml format
 
 
-
-On 5/14/25 06:59, Olivier Benjamin wrote:
+On Thu, 29 May 2025 12:48:21 -0400, Frank Li wrote:
+> Convert himax,hx8357d.txt to yaml format.
 > 
+> Additional changes:
+> - add spi parent node in examples.
+> - ref to spi-peripheral-props.yaml.
+> - change himax,hx8357a to himax,hx8357 to align driver and existed dts.
+> - add himax,hx8369a and fallback to himax,hx8369.
+> - allow gpios-reset, spi-cpha and spi-cpol to align existed dts.
+> - add im-gpios for interface selections.
 > 
-> On 5/13/25 20:23, Heiko Stuebner wrote:
->> Hi Olivier,
->>
-> Hello Heiko, thanks for having a look!
-> 
-Hi again Heiko,
->> Am Freitag, 9. Mai 2025, 23:51:39 Mitteleuropäische Sommerzeit schrieb 
->> Olivier Benjamin:
->>> Add the description of the rear/world camera (IMX258) on the 
->>> PinePhone Pro
->>> to the device dts file.
->>> It receives commands on the I2C Bus 1 at address 0x1a and transmits data
->>> over CSI-MIPI.
->>>
->>> The I2C address for IMX258 can be found in the IMX258-0AQH5 Software
->>> Reference Manual, page 24, section 2.3.1: 0b0011010 = 0x1a.
->>> Section 3 indicates the module has 4 pairs of data lines. While 4-lane
->>> mode is nominal, 2-lane mode should also be supported.
->>>
->>> The pin muxing info was extracted from the PinePhone Pro schematic v1.0
->>> as well as the RK3399 datasheet revision 1.8.
->>>
->>> Table 2-3 in section 2.8 of the RK3399 datasheet contains the mapping
->>> of IO functions for the SoC pins. Page 52 shows GPIO1_A0, page 54 shows
->>> GPIO2_D4.
->>>
->>> For I2C power, the PinePhone Pro schematic page 11 quadrants A4 and A5:
->>> RK3399_J.AA8 and RK3399_J.Y8 get power from vcaa1v8_codec, so turn it on
->>>
->>> The IMX258 also uses the following regulators, expected by its driver:
->>>   - vana (2.8V analog), called AVDD2V8_DVP on P.18 q.C1 and derived from
->>>     VCC1V8_S3 on P.13 q.B2
->>>   - vdig (1.2V digital core), called DVDD_DVP on P.18 q.C1 and shown on
->>>     P.18 q.D3 to be equivalent to VCC1V2_DVP derived from VCC3V3_SYS on
->>>     P.13 q.B3. Note that this regulator's voltage is inconsistently
->>>     labeled either 1.2V or 1.5V
->>>
->>> RK3399_J.AG1 is GPIO4_A1/I2C1_SDA, RK3399_J.Y6 is GPIO4_A2/I2C1_SCL
->>> This is the default pinctrl "i2c1_xfer" for i2c1 from rk3399-base.
->>>
->>> For the reset (RESET) signal:
->>> page 11 quadrant D2             | p.18 q.C3-4 | p.18 q.C2
->>> RK3399_E.R25 -> GPIO1_A0 -> Camera_RST -> MIPI_RST0 -> IMX258.12
->>>
->>> For the powerdown (PWDN) signal:
->>> page 11 quadrants B4-5          | p.18 q.C2
->>> RK3399_G.AF8 -> GPIO2_D4 -> DVP_PDN1_H -> IMX258.14
->>>
->>> Helped-by: Dragan Simic <dsimic@manjaro.org>
->>> Co-developed-by: Ondrej Jirman <megi@xff.cz>
->>> Signed-off-by: Ondrej Jirman <megi@xff.cz>
->>> Signed-off-by: Olivier Benjamin <olivier.benjamin@bootlin.com>
->>
->> how independent are the devicetree changes from the binding changes?
->> As the binding change "only" includes other properties.
->>
-> They are pretty independent: the binding changes are only needed to 
-> suppress warnings on the devicetree.
-> However, the changes to the devicetree are the motivation for the 
-> changes to the binding: the other properties are not strictly necessary 
-> otherwise.
-> 
-Have you had a chance to have a look?
-Are any changes needed in your opinion?
->> Heiko
->>
->>
->>> ---
->>>   .../boot/dts/rockchip/rk3399-pinephone-pro.dts     | 94 +++++++++++ 
->>> +++++++++++
->>>   1 file changed, 94 insertions(+)
->>>
->>> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/ 
->>> arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->>> index 
->>> 04ba4c4565d0a205e2e46d7535c6a3190993621d..588e2d8a049cc649aa227c7a885bd494f23fbdf8 100644
->>> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->>> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
->>> @@ -114,6 +114,16 @@ vcc3v3_sys: regulator-vcc3v3-sys {
->>>           vin-supply = <&vcc_sys>;
->>>       };
->>> +    avdd2v8_dvp: regulator-avdd2v8-dvp {
->>> +        compatible = "regulator-fixed";
->>> +        regulator-name = "avdd2v8_dvp";
->>> +        regulator-always-on;
->>> +        regulator-boot-on;
->>> +        regulator-min-microvolt = <2800000>;
->>> +        regulator-max-microvolt = <2800000>;
->>> +        vin-supply = <&vcc3v3_sys>;
->>> +    };
->>> +
->>>       vcca1v8_s3: regulator-vcc1v8-s3 {
->>>           compatible = "regulator-fixed";
->>>           regulator-name = "vcca1v8_s3";
->>> @@ -136,6 +146,16 @@ vcc1v8_codec: regulator-vcc1v8-codec {
->>>           vin-supply = <&vcc3v3_sys>;
->>>       };
->>> +    vcc1v2_dvp: regulator-vcc1v2-dvp {
->>> +        compatible = "regulator-fixed";
->>> +        regulator-name = "vcc1v2_dvp";
->>> +        regulator-always-on;
->>> +        regulator-boot-on;
->>> +        regulator-min-microvolt = <1200000>;
->>> +        regulator-max-microvolt = <1200000>;
->>> +        vin-supply = <&vcca1v8_s3>;
->>> +    };
->>> +
->>>       wifi_pwrseq: sdio-wifi-pwrseq {
->>>           compatible = "mmc-pwrseq-simple";
->>>           clocks = <&rk818 1>;
->>> @@ -312,6 +332,8 @@ vcc3v0_touch: LDO_REG2 {
->>>               vcca1v8_codec: LDO_REG3 {
->>>                   regulator-name = "vcca1v8_codec";
->>> +                regulator-always-on;
->>> +                regulator-boot-on;
->>>                   regulator-min-microvolt = <1800000>;
->>>                   regulator-max-microvolt = <1800000>;
->>>               };
->>> @@ -420,6 +442,46 @@ regulator-state-mem {
->>>       };
->>>   };
->>> +&i2c1 {
->>> +    clock-frequency = <400000>;
->>> +    pinctrl-0 = <&i2c1_xfer &cif_clkouta>;
->>> +    assigned-clocks = <&cru SCLK_CIF_OUT>;
->>> +    assigned-clock-rates = <24000000>;
->>> +    status = "okay";
->>> +
->>> +    wcam: camera@1a {
->>> +        compatible = "sony,imx258";
->>> +        reg = <0x1a>;
->>> +        clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK0, derived from 
->>> CIF_CLKO */
->>> +        clock-names = "xvclk";
->>> +        pinctrl-names = "default";
->>> +        pinctrl-0 = <&wcam_rst>;
->>> +        /* Note: both cameras also depend on vcca1v8_codec to power 
->>> the I2C bus. */
->>> +        vif-supply = <&vcc1v8_dvp>;
->>> +        vana-supply = <&avdd2v8_dvp>;
->>> +        vdig-supply = <&vcc1v2_dvp>; /* DVDD_DVP is the same as 
->>> VCC1V2_DVP */
->>> +        reset-gpios = <&gpio1 RK_PA0 GPIO_ACTIVE_LOW>;
->>> +        orientation = <1>; /* V4L2_CAMERA_ORIENTATION_BACK */
->>> +        rotation = <270>;
->>> +        lens-focus = <&wcam_lens>;
->>> +
->>> +        port {
->>> +            wcam_out: endpoint {
->>> +                remote-endpoint = <&mipi_in_wcam>;
->>> +                data-lanes = <1 2 3 4>;
->>> +                link-frequencies = /bits/ 64 <636000000>;
->>> +            };
->>> +        };
->>> +    };
->>> +
->>> +    wcam_lens: camera-lens@c {
->>> +        compatible = "dongwoon,dw9714";
->>> +        reg = <0x0c>;
->>> +        /* Same I2c bus as both cameras, depends on vcca1v8_codec 
->>> for power. */
->>> +        vcc-supply = <&vcc1v8_dvp>;
->>> +    };
->>> +};
->>> +
->>>   &i2c3 {
->>>       i2c-scl-rising-time-ns = <450>;
->>>       i2c-scl-falling-time-ns = <15>;
->>> @@ -462,6 +524,28 @@ &io_domains {
->>>       status = "okay";
->>>   };
->>> +&isp1 {
->>> +    status = "okay";
->>> +
->>> +    ports {
->>> +        port@0 {
->>> +            mipi_in_wcam: endpoint@0 {
->>> +                reg = <0>;
->>> +                remote-endpoint = <&wcam_out>;
->>> +                data-lanes = <1 2 3 4>;
->>> +            };
->>> +        };
->>> +    };
->>> +};
->>> +
->>> +&mipi_dphy_rx0 {
->>> +    status = "okay";
->>> +};
->>> +
->>> +&isp1_mmu {
->>> +    status = "okay";
->>> +};
->>> +
->>>   &mipi_dsi {
->>>       status = "okay";
->>>       clock-master;
->>> @@ -495,6 +579,10 @@ mipi_in_panel: endpoint {
->>>       };
->>>   };
->>> +&mipi_dsi1 {
->>> +    status = "okay";
->>> +};
->>> +
->>>   &pmu_io_domains {
->>>       pmu1830-supply = <&vcc_1v8>;
->>>       status = "okay";
->>> @@ -507,6 +595,12 @@ pwrbtn_pin: pwrbtn-pin {
->>>           };
->>>       };
->>> +    camera {
->>> +        wcam_rst: wcam-rst {
->>> +            rockchip,pins = <1 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
->>> +        };
->>> +    };
->>> +
->>>       leds {
->>>           red_led_pin: red-led-pin {
->>>               rockchip,pins = <4 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none>;
->>>
->>>
->>
->>
->>
->>
->>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/display/himax,hx8357.yaml        | 77 +++++++++++++++++++
+>  .../bindings/display/himax,hx8357d.txt        | 26 -------
+>  2 files changed, 77 insertions(+), 26 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/display/himax,hx8357.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/display/himax,hx8357d.txt
 > 
 
--- 
-Olivier Benjamin, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/himax,hx8357.yaml: gpios-reset: missing type definition
+
+doc reference errors (make refcheckdocs):
+Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/display/himax,hx8357d.txt
+MAINTAINERS: Documentation/devicetree/bindings/display/himax,hx8357d.txt
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250529164822.777908-1-Frank.Li@nxp.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
