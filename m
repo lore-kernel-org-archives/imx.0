@@ -1,332 +1,245 @@
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A536022FE0D
-	for <imx@lists.linux.dev>; Thu, 29 May 2025 20:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D30323E
+	for <imx@lists.linux.dev>; Fri, 30 May 2025 02:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748549753; cv=none; b=DyMrXM+teqbp3rOmAt6Y9ILNXiIMFUr/3/Civ0cOxfGIjOpHcvC3Tgi4GO9N9YKGZ+3Sn+1qwnysCiB84Or2ulxmn3p5z9Tt7JxQ3iJOggkwWcAc11VQTPIBRg7aGFNH4gDXin4eCeAEzJz/tNHl/iftfoq0YND4ujz1+aDzu/o=
+	t=1748571679; cv=none; b=ZHwEBmp54gVqw1qUH2KonAPnVT4LzBx84eniKRy6fa/gMiizz7rYKInbFStybcmgTEk3I0KRnC+0IV1uD2GVFFz+2/6pRlhyMZ4cFASXknrWzE42WpVPWletefiQ0i92IeDdU7HHWylrHEk7q1Gz/KRKAu2gOAG6A0KEJkhFuVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748549753; c=relaxed/simple;
-	bh=WxXg2OJ/R6QQZXtUX/npv0ZuHFj9HzFHD/6d2xxLGwU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JRiRXoLHQPozpu3xHVmXv5RxSEbfDkanOuVAHqJBpx1NXWiqgHzR4yNDt5E/aw//3v4XaVr8IbOyCSgwyvCFDEbCjeDIwYndRIikJG0MQRBxnMlKXmJ8ROshsQ7BgFrCpYMZwizBkwXhhZ1i6/FMbJ/1sEv1oGjMiOzhpUh+fwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GAtPnT3g; arc=none smtp.client-ip=209.85.217.54
+	s=arc-20240116; t=1748571679; c=relaxed/simple;
+	bh=Z5S/u7bBXJz+UJbmVHinb1QfE/kpI3juJH+VPbf0yqY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TgkXMmgX4e6U6C/iO+4+bVK7vfUV5rJrMOUnupnq0EILiz+koOYEW0licGFrGxHawNfn/UTl9/UkjZIEcQXupIyJWFZv0H6B5zVOrQwnlbrlN8BEMwH3VYqwJZkiOYJcvT94Hb/bduJFBq8aqDWULPACCe8uyQq+opGPsfEkWwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SnMLbaGZ; arc=none smtp.client-ip=209.85.166.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GAtPnT3g"
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-4e58d28ebb0so420013137.3
-        for <imx@lists.linux.dev>; Thu, 29 May 2025 13:15:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SnMLbaGZ"
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3dc83a8a4afso8961835ab.1
+        for <imx@lists.linux.dev>; Thu, 29 May 2025 19:21:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748549750; x=1749154550; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=feoDuyj3wm8ANzQm10okhE/r2LfgWDr6a+GGqveBvZg=;
-        b=GAtPnT3gfqlUcWyR3EZm2etGMB+IC2HXFxH/tY8cgAQiFBxnk1+WG0Ivwd50EYirKU
-         waQlCT0YUuswqzrg/uqB2xDv93ldo6Bc+fo87nKZK2l8QeUHIue5UjGonYNv41T4/iQs
-         sj6M6mkHkascxQRkyU/vNEY5588LKvt1j1wRkiuFK2mzaX5E0K/85dsAyZQdFjjft94g
-         67420Cd9qH8P9ESRUTuvyqP8dN9eY/kalK8yzhIDmBgz9zmizYXtdxICdjl3ghjVDE16
-         lcPo+FAuPDzYjqyWe5tPWIXKjrv6bAA9Nh1a+2vDZBM7tBDMulBq4Nyu8nQ0NXFKGh/e
-         cvhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748549750; x=1749154550;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1748571677; x=1749176477; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=feoDuyj3wm8ANzQm10okhE/r2LfgWDr6a+GGqveBvZg=;
-        b=D4TVc8XK4VKnCmv4OpEza1axgUY8ctRXgUAfsWolRkT9ufycRtTyhmOpYDS852d2Cx
-         6TWXJL+24ydKTzyRp2y5tsC6t5hpzbchnS8oJ99PY+lbF4BcyrWTS9xIMEDQnPJjnisL
-         vYJCmX1crP7GoeQ1Y2n5eqMwSqZpQCqBtpyuKJx8djoihsw9z8hKoU5LuxWF778WVrR2
-         Yn9LGueTrQzxoJ8Nhjzlq4Cq4e6x8lakHaoHthtu5pKsOEEDmVKz9Ya3WY/8DAtfGRse
-         2fcWhXqarb0LRN6S1rcf71W4BMlNIlO+3jcdJjDQaKABvts+dzCAXFJB4F1AvgAlWxAO
-         03MA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCPL5idjUZwDtnQiLGIJeU4VIig4CBuya0azhOvtH1+fct71+R69bCMR9GZzHCbHsDgM4=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxzy8fui6OBaLfrciPfq2qeFj5Rc5OLqfwH1d3lGgu9bXgxk0mO
-	D2L1pvZINZmfkYGqHZde1JR7M4/70FMOXig0XwRazkJv32kWBrgkzCYs
-X-Gm-Gg: ASbGnct0Pb6aa7qmQ+MomztfUybrkeWS/TZADgj2/TgQojVAqznox4vdlLXxUaSwgrn
-	AiILX+3Hls8mnK+jGlu1DR+LgdEOswX209QZ4GU6fLAIz4MzZxXittn0a6NSciBllzAPFMOB8B/
-	zSUjVZUiuiXJ8F3lq9jFKxjnj8d0v7f126DTjBGJ2v66BPvk74kpPP2UO6rEtLN3jrhj1quQi+E
-	Z4wNzjY6/pj3FteRgtJgT3GtqrcEOEw7Nh64e5PeH6oAxF+A0InhtFXx7eCovD5JqC3KEDiBq/t
-	XsPpqBXsAmDeLgOlshAyw1gVjHr8jsL5XO9WCoucB0JgX9pJew==
-X-Google-Smtp-Source: AGHT+IGwAq3hjktBz6xGfJGBPKp4OnbEDRwsJ/PGkc5U8ZAIJddZqt/FeICNOUoTO2GiAb/IluXZUA==
-X-Received: by 2002:a05:6102:441a:b0:4e2:eb32:247c with SMTP id ada2fe7eead31-4e6e40f719dmr1420185137.8.1748549750224;
-        Thu, 29 May 2025 13:15:50 -0700 (PDT)
-Received: from hiago-nb ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-87e2a3b63besm1655803241.30.2025.05.29.13.15.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 May 2025 13:15:49 -0700 (PDT)
-Date: Thu, 29 May 2025 17:15:44 -0300
-From: Hiago De Franco <hiagofranco@gmail.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
-	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	"Iuliana Prodan (OSS)" <iuliana.prodan@oss.nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v2 3/3] remoteproc: imx_rproc: add power mode check for
- remote core attachment
-Message-ID: <20250529201544.azoqdrgnlqfxi6mb@hiago-nb>
-References: <20250521041840.GB28017@nxa18884-linux>
- <CAPDyKFpSb+KsfDr1-=uk4TF4Op1dUQ9rDwPP5sSpMfxDRDhnZA@mail.gmail.com>
- <20250523191713.nylhi74jq6z4hqmr@hiago-nb>
- <CAPDyKFq6HG6iTZRnBSN25vhCU8Zj1c+r_ufGbiBsJ16N+1bJVg@mail.gmail.com>
- <20250527000510.fofehmsdhifcwlys@hiago-nb>
- <20250527023921.GA14252@nxa18884-linux>
- <CAPDyKFqZkcaGfss=Oi+H9UERFU29jY2t5uTPnGVGQgSAJSeCoA@mail.gmail.com>
- <20250527134525.f7yzs4ww64xxmjmr@hiago-nb>
- <20250528173813.rxqu6pzqgu4m5joo@hiago-nb>
- <PAXPR04MB845941FFF347274012A0ECA88866A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+        bh=HmH5dt7dkmT0sqR1VIsfV7vNMyQYFdcO4lpGZIrbck0=;
+        b=SnMLbaGZZx08Iazq30dNLiHE23K/F5SBqDGDUQejb9v+H4O9GV7ShXvLHGPrf5PjG5
+         QjkVKrwcypsKAE33d/6tWRA2EPKN5FRQ78fun02QdFaWJqJVnu/LJxny4V5RL7BYjKx3
+         Q7Btg7Rq8QHcH4KKnfA1fIk/W+BTrTQtijZ/vZJT69QT9r8CdEUllfrxQbRnxIlr4Mbt
+         ye4W56LsJA/OlAy4eY4Rp6rdKRImNbWtntf+3cpc7Gx0sbU9vqygJwZ1gpZ3O5J/EXpY
+         vuttjgkL2uCgn6DX/g+VfXe5Ti7pNbQKyexxT7YowmD4/RWzMdvZM5KWlv2NPWaJg7v7
+         EaXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748571677; x=1749176477;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HmH5dt7dkmT0sqR1VIsfV7vNMyQYFdcO4lpGZIrbck0=;
+        b=E35KKnazIX2VT3KEr5PsE40s+AwXxLJXifIx4ZnUnCsr4Z6Sqtu1A2kPFhQMkzfRfc
+         HoRtSyasJRAffM+YEtAgSiE5mSfH7oBw6UN5Uy9qUSdHtaWRGomtQUVgopPpDUPm4czE
+         btQtp3avOJeX738jxbMrgRXl4h2FXMoZRVgFaoG1uRbOY6MRW+YKTHxXeJ5Sm0GPHDhY
+         o3bOlSu4iUfMsWrYi40uGGH8n9gq/1V/QABpcfRc73O1ppuKkmxMtejjD4+0c7xIBGW7
+         YIsQv5kNbi0LPi5CdqNePHfJueZrx25UtyT9AXFdGrboFQsFBJGfnv8GPOfR+QSEMJl5
+         xN9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWM/hbcPbLg/rrDSCgQczF92i29d5wKjr4RywB60CtWWRPmGn9m0A12IwnCDVnDcnphxbk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwU2z6Liist3htwslXfyPNK1tgjA8cG6frOdqOx1pFFWE/QgEAm
+	v+HBqz3Un9ZCHIkpy3vGWent1iuKRqLfYZF44OP56/DtQPLytThtdPHst4l4iuIc0YHKR9vBUV2
+	I/lNqldgeYdc7o7DWv9pe716f9xJZ64I=
+X-Gm-Gg: ASbGnctrl7OEEZ2pbkdoBeeP8R0nbvW7oOx5Gx4XSB826ObKG4DpG7lIN0QIZbkb8Ks
+	hCx7qlxj3DT9xKUZHlfkrlW8zZQbkX7zmE7yCjhIxaYDSsOpy43ladJrGR99qUbUPjZ3lK3uU7b
+	lLS1RFmZ28aECXArjLEJR6h9+s9BWwlj+N
+X-Google-Smtp-Source: AGHT+IF3V2Reg6jytvBoWQIFfYDbO3xHDMdxyQHBKHDQU6qnKv9QNLMNJun7za9/cXwvOQopUbNOEo2NaT5EoYkZ2lc=
+X-Received: by 2002:a05:6e02:b27:b0:3dc:8a59:9d91 with SMTP id
+ e9e14a558f8ab-3dd9a2f69b8mr15435425ab.5.1748571677153; Thu, 29 May 2025
+ 19:21:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB845941FFF347274012A0ECA88866A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20250528015837.488376-1-shengjiu.wang@nxp.com>
+ <20250528015837.488376-5-shengjiu.wang@nxp.com> <20250528083704.ne6wyoj6vcmy7azq@pengutronix.de>
+In-Reply-To: <20250528083704.ne6wyoj6vcmy7azq@pengutronix.de>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 30 May 2025 10:21:03 +0800
+X-Gm-Features: AX0GCFsoAsJ1BSh1zryHTek_C0ndoEf3QlabWsiqEfnyP_mssnH9rTINpQzDe4g
+Message-ID: <CAA+D8AMDbenx8scnBZdABAxF8MaYsBRzxXZjgGhMRbCJ-1wwcw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] arm64: dts: imx943-evk: add sound-wm8962 support
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, carlos.song@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 29, 2025 at 03:54:47AM +0000, Peng Fan wrote:
+On Wed, May 28, 2025 at 4:37=E2=80=AFPM Marco Felsch <m.felsch@pengutronix.=
+de> wrote:
+>
+> Hi,
+>
+> On 25-05-28, Shengjiu Wang wrote:
+> > Add WM8962 codec connected to SAI1 interface.
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/imx943-evk.dts | 79 ++++++++++++++++++++
+> >  1 file changed, 79 insertions(+)
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx943-evk.dts b/arch/arm64/=
+boot/dts/freescale/imx943-evk.dts
+> > index ff6e9ac5477f..da08aaa95904 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx943-evk.dts
+> > +++ b/arch/arm64/boot/dts/freescale/imx943-evk.dts
+> > @@ -36,6 +36,15 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+> >               enable-active-high;
+> >       };
+> >
+> > +     reg_audio_pwr: regulator-wm8962-pwr {
+> > +             compatible =3D "regulator-fixed";
+> > +             regulator-max-microvolt =3D <3300000>;
+> > +             regulator-min-microvolt =3D <3300000>;
+> > +             regulator-name =3D "audio-pwr";
+> > +             gpio =3D <&pcal6416_i2c3_u171 12 GPIO_ACTIVE_HIGH>;
+> > +             enable-active-high;
+> > +     };
+> > +
+> >       reserved-memory {
+> >               ranges;
+> >               #address-cells =3D <2>;
+> > @@ -50,6 +59,21 @@ linux,cma {
+> >               };
+> >       };
+> >
+> > +     sound-wm8962 {
+> > +             compatible =3D "fsl,imx-audio-wm8962";
+>
+> Out of curiosity did you considered making use of "audio-graph-card2"?
+>
+> The "fsl,imx-audio-wm8962" seems like a pretty simple sound card which
+> could be added via the "audio-graph-card2" as well. Don't get me wrong,
+> it's not wrong what you're doing here but making use of the generic
+> sound card would be nice because it's very common to just copy'n'paste
+> the audio integration from the corresponding evk.dts file.
 
-[...]
+Thanks for the suggestion.
 
-> > We are making progress ;-)
-> > 
-> > With the patches you shared Ulf (I added them on top of the current
-> > master branch), it works as expected, dev_pm_genpd_is_on() returns 0
-> > when I boot the kernel without M4 running and it returns 1 when I
-> > boot the kernel with M4 running with a hello-world demo.
-> > 
-> > However now I tried to, if dev_pm_genpd_is_on() returns 1, put the
-> > DETACHED state, something as
-> > 
-> > if (dev_pm_genpd_is_on(priv->pd_list->pd_devs[0]))
-> > 	priv->rproc->state = RPROC_DETACHED;
-> > 
-> > In this case I used 0 because I understand this is the
-> > IMX_SC_R_M4_0_PID0 defined in my device tree overlay:
-> > 
-> > 		power-domains = <&pd IMX_SC_R_M4_0_PID0>,
-> > 				<&pd IMX_SC_R_M4_0_MU_1A>;
-> > 
-> > But in this case, the kernel does not boot anymore, I see the "Starting
-> > kernel..." and nothing else.
-> 
-> Please add "earlycon" in bootargs to see where it hangs.
+WM8962 has a function .set_pll(), which hasn't been supported in
+audio-graph-card2.  so we still use fsl,imx-audio-wm8962.
 
-Thanks Peng! I was able to catch the kernel panic yesterday, however I
-must say that today I was doing the tests again and the issue is gone.
-Sorry, I might have done something wrong yesterday with the tests.
-Anyway, here is the log:
+Best regards
+Shengjiu Wang
 
-[    1.271163] remoteproc remoteproc0: imx-rproc is available
-[    1.280296] remoteproc remoteproc0: attaching to imx-rproc
-[    1.285756] Unable to handle kernel paging request at virtual address ffff80005ae3dd79
-[    1.293624] Mem abort info:
-[    1.294655] mmc0: SDHCI controller on 5b010000.mmc [5b010000.mmc] using ADMA
-[    1.296386]   ESR = 0x0000000096000005
-[    1.307194]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    1.312473]   SET = 0, FnV = 0
-[    1.315566]   EA = 0, S1PTW = 0
-[    1.318649]   FSC = 0x05: level 1 translation fault
-[    1.323510] Data abort info:
-[    1.326370]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[    1.331846]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[    1.336882]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[    1.342182] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000096bc1000
-[    1.348870] [ffff80005ae3dd79] pgd=0000000000000000, p4d=1000000097054003, pud=0000000000000000
-[    1.357565] Internal error: Oops: 0000000096000005 [#1]  SMP
-[    1.363198] Modules linked in:
-[    1.366236] CPU: 2 UID: 0 PID: 47 Comm: kworker/u16:3 Not tainted 6.15.0-03667-g3f5f09105c40-dirty #826 PREEMPT
-[    1.376405] Hardware name: Toradex Colibri iMX8QXP on Colibri Evaluation Board V3 (DT)
-[    1.384313] Workqueue: events_unbound deferred_probe_work_func
-[    1.390128] pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    1.397076] pc : rproc_handle_resources.constprop.0+0x78/0x1d0
-[    1.402896] lr : rproc_boot+0x368/0x56c
-[    1.406717] sp : ffff8000819c3990
-[    1.410017] x29: ffff8000819c3990 x28: ffff80005ae3dd7d x27: 0000000000000000
-[    1.417145] x26: 0000000000000000 x25: ffff0000015ec038 x24: ffff800080f0c0a8
-[    1.424268] x23: ffff8000813a6110 x22: 00000000d999ad79 x21: ffff0000015ec000
-[    1.431392] x20: 0000000026665683 x19: ffff80005ae3dd79 x18: 0000000000000006
-[    1.438516] x17: ffff000001799400 x16: ffff000001798e00 x15: 4addd15cca11c529
-[    1.445639] x14: 53ebce6d5564d787 x13: 4addd15cca11c529 x12: 53ebce6d5564d787
-[    1.452763] x11: 95a1e33b6b190674 x10: 9e3c9abdb41ca345 x9 : ab17b4eaffd6fd1c
-[    1.459887] x8 : d5da055de4cfbb87 x7 : dfd7fa31596acbbc x6 : 9946d97107d0dcca
-[    1.467011] x5 : ffff0000010c7800 x4 : 00000000000003fc x3 : ffff0000010c7780
-[    1.474134] x2 : fffffffffffffff0 x1 : ffff8000814a3000 x0 : ffff8000814a3000
-[    1.481261] Call trace:
-[    1.483690]  rproc_handle_resources.constprop.0+0x78/0x1d0 (P)
-[    1.487705] mmc0: new HS400 MMC card at address 0001
-[    1.489502]  rproc_boot+0x368/0x56c
-[    1.495349] mmcblk0: mmc0:0001 Q2J55L 7.09 GiB
-[    1.497929]  rproc_add+0x184/0x190
-[    1.504356]  mmcblk0: p1 p2
-[    1.505747]  imx_rproc_probe+0x458/0x528
-[    1.509238] mmcblk0boot0: mmc0:0001 Q2J55L 16.0 MiB
-[    1.512437]  platform_probe+0x68/0xc0
-[    1.512452]  really_probe+0xc0/0x38c
-[    1.520584] mmcblk0boot1: mmc0:0001 Q2J55L 16.0 MiB
-[    1.520951]  __driver_probe_device+0x7c/0x15c
-[    1.527522] mmcblk0rpmb: mmc0:0001 Q2J55L 4.00 MiB, chardev (242:0)
-[    1.529377]  driver_probe_device+0x3c/0x10c
-[    1.544263]  __device_attach_driver+0xbc/0x158
-[    1.548586]  bus_for_each_drv+0x84/0xe0
-[    1.552407]  __device_attach+0x9c/0x1ac
-[    1.556231]  device_initial_probe+0x14/0x20
-[    1.560401]  bus_probe_device+0xac/0xb0
-[    1.564221]  deferred_probe_work_func+0x9c/0xec
-[    1.568741]  process_one_work+0x14c/0x28c
-[    1.572735]  worker_thread+0x2cc/0x3d4
-[    1.576473]  kthread+0x12c/0x208
-[    1.579687]  ret_from_fork+0x10/0x20
-[    1.583253] Code: 8b36c033 9100127c 54000924 d503201f (b9400261)
-[    1.589337] ---[ end trace 0000000000000000 ]---
-
-But again, the issue is not happening anymore ;-) I will keep testing to
-see if the issue happens again, but for now is working fine, I can now
-attach to the remote processor.
-
-This is the git diff on top of Ulf patches I have been testing:
-
-diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-index 6da25e2c81d2..661a6aad40a8 100644
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -599,6 +599,23 @@ int dev_pm_genpd_set_performance_state(struct device *dev, unsigned int state)
- }
- EXPORT_SYMBOL_GPL(dev_pm_genpd_set_performance_state);
- 
-+bool dev_pm_genpd_is_on(struct device *dev)
-+{
-+        struct generic_pm_domain *genpd;
-+        bool is_on;
-+
-+        genpd = dev_to_genpd_safe(dev);
-+        if (!genpd)
-+                return false;
-+
-+        genpd_lock(genpd);
-+        is_on = genpd_status_on(genpd);
-+        genpd_unlock(genpd);
-+
-+        return is_on;
-+}
-+EXPORT_SYMBOL_GPL(dev_pm_genpd_is_on);
-+
- /**
-  * dev_pm_genpd_set_next_wakeup - Notify PM framework of an impending wakeup.
-  *
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 627e57a88db2..9688370f9bb5 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -18,6 +18,7 @@
- #include <linux/of_reserved_mem.h>
- #include <linux/platform_device.h>
- #include <linux/pm_domain.h>
-+#include <linux/pm_runtime.h>
- #include <linux/reboot.h>
- #include <linux/regmap.h>
- #include <linux/remoteproc.h>
-@@ -891,9 +892,7 @@ static int imx_rproc_attach_pd(struct imx_rproc *priv)
- {
- 	struct device *dev = priv->dev;
- 	int ret;
--	struct dev_pm_domain_attach_data pd_data = {
--		.pd_flags = PD_FLAG_DEV_LINK_ON,
--	};
-+	bool test;
- 
- 	/*
- 	 * If there is only one power-domain entry, the platform driver framework
-@@ -902,7 +901,16 @@ static int imx_rproc_attach_pd(struct imx_rproc *priv)
- 	if (dev->pm_domain)
- 		return 0;
- 
--	ret = dev_pm_domain_attach_list(dev, &pd_data, &priv->pd_list);
-+	ret = dev_pm_domain_attach_list(dev, NULL, &priv->pd_list);
-+	printk("hfranco: returned pd devs is %d", ret);
-+	for (int i = 0; i < ret; i++) {
-+		test = dev_pm_genpd_is_on(priv->pd_list->pd_devs[i]);
-+		printk("hfranco: returned value is %d", test);
-+		if (test) {
-+			priv->rproc->state = RPROC_DETACHED;
-+			break;
-+		}
-+	}
- 	return ret < 0 ? ret : 0;
- }
- 
-@@ -1146,6 +1154,9 @@ static int imx_rproc_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	pm_runtime_enable(dev);
-+	pm_runtime_get_sync(dev);
-+
- 	ret = rproc_add(rproc);
- 	if (ret) {
- 		dev_err(dev, "rproc_add failed\n");
-diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index 756b842dcd30..16d1fca2a8c5 100644
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -95,6 +95,7 @@ extern void pm_runtime_put_suppliers(struct device *dev);
- extern void pm_runtime_new_link(struct device *dev);
- extern void pm_runtime_drop_link(struct device_link *link);
- extern void pm_runtime_release_supplier(struct device_link *link);
-+bool dev_pm_genpd_is_on(struct device *dev);
-
- int devm_pm_runtime_set_active_enabled(struct device *dev);
- extern int devm_pm_runtime_enable(struct device *dev);
-
-This is the rproc output when bootaux is used:
-
-root@colibri-imx8x-07308754:~# dmesg | grep hfranco
-[    0.478475] hfranco: returned pd devs is 2
-[    0.478496] hfranco: returned value is 1
-root@colibri-imx8x-07308754:~# dmesg | grep rproc
-[    0.478797] remoteproc remoteproc0: imx-rproc is available
-[    0.478878] remoteproc remoteproc0: attaching to imx-rproc
-[    0.478961] remoteproc remoteproc0: remote processor imx-rproc is now attached
-
-I will cleanup everything and try to come up with a patch. Ulf, in this
-case, as your patches have not yet been merged, should I wait for them?
-
-Thanks for all the help guys.
-
-> 
-> > 
-> > I am using the pm_runtime functions before rproc_add():
-> > 
-> > @@ -1146,6 +1154,9 @@ static int imx_rproc_probe(struct
-> > platform_device *pdev)
-> >                 }
-> >         }
-> > 
-> > +       pm_runtime_enable(dev);
-> > +       pm_runtime_get_sync(dev);
-> 
-> I think only make this apply for i.MX8QX/8QM/DX, then no
-> impact to other patforms.
-
-All right, I will check how to do this. Thanks.
-
-> 
+>
 > Regards,
-> Peng
-
-Best regards,
-Hiago.
+>   Marco
+>
+> > +             audio-codec =3D <&wm8962>;
+> > +             audio-cpu =3D <&sai1>;
+> > +             audio-routing =3D "Headphone Jack", "HPOUTL",
+> > +                     "Headphone Jack", "HPOUTR",
+> > +                     "Ext Spk", "SPKOUTL",
+> > +                     "Ext Spk", "SPKOUTR",
+> > +                     "AMIC", "MICBIAS",
+> > +                     "IN3R", "AMIC",
+> > +                     "IN1R", "AMIC";
+> > +             hp-det-gpio =3D <&pcal6416_i2c3_u48 14 GPIO_ACTIVE_HIGH>;
+> > +             model =3D "wm8962-audio";
+> > +     };
+> > +
+> >       memory@80000000 {
+> >               reg =3D <0x0 0x80000000 0x0 0x80000000>;
+> >               device_type =3D "memory";
+> > @@ -103,6 +127,28 @@ i2c@4 {
+> >                       reg =3D <4>;
+> >                       #address-cells =3D <1>;
+> >                       #size-cells =3D <0>;
+> > +
+> > +                     wm8962: codec@1a {
+> > +                             compatible =3D "wlf,wm8962";
+> > +                             reg =3D <0x1a>;
+> > +                             clocks =3D <&scmi_clk IMX94_CLK_SAI1>;
+> > +                             AVDD-supply =3D <&reg_audio_pwr>;
+> > +                             CPVDD-supply =3D <&reg_audio_pwr>;
+> > +                             DBVDD-supply =3D <&reg_audio_pwr>;
+> > +                             DCVDD-supply =3D <&reg_audio_pwr>;
+> > +                             gpio-cfg =3D <
+> > +                                     0x0000 /* 0:Default */
+> > +                                     0x0000 /* 1:Default */
+> > +                                     0x0000 /* 2:FN_DMICCLK */
+> > +                                     0x0000 /* 3:Default */
+> > +                                     0x0000 /* 4:FN_DMICCDAT */
+> > +                                     0x0000 /* 5:Default */
+> > +                             >;
+> > +                             MICVDD-supply =3D <&reg_audio_pwr>;
+> > +                             PLLVDD-supply =3D <&reg_audio_pwr>;
+> > +                             SPKVDD1-supply =3D <&reg_audio_pwr>;
+> > +                             SPKVDD2-supply =3D <&reg_audio_pwr>;
+> > +                     };
+> >               };
+> >
+> >               i2c@5 {
+> > @@ -128,6 +174,12 @@ pcal6416_i2c3_u171: gpio@21 {
+> >                               reg =3D <0x21>;
+> >                               #gpio-cells =3D <2>;
+> >                               gpio-controller;
+> > +
+> > +                             audio-pwren-hog {
+> > +                                     gpios =3D <12 GPIO_ACTIVE_HIGH>;
+> > +                                     gpio-hog;
+> > +                                     output-high;
+> > +                             };
+> >                       };
+> >               };
+> >
+> > @@ -262,6 +314,23 @@ &lpuart1 {
+> >       status =3D "okay";
+> >  };
+> >
+> > +&sai1 {
+> > +     assigned-clocks =3D <&scmi_clk IMX94_CLK_AUDIOPLL1_VCO>,
+> > +                       <&scmi_clk IMX94_CLK_AUDIOPLL2_VCO>,
+> > +                       <&scmi_clk IMX94_CLK_AUDIOPLL1>,
+> > +                       <&scmi_clk IMX94_CLK_AUDIOPLL2>,
+> > +                       <&scmi_clk IMX94_CLK_SAI1>;
+> > +     assigned-clock-parents =3D <0>, <0>, <0>, <0>,
+> > +                              <&scmi_clk IMX94_CLK_AUDIOPLL1>;
+> > +     assigned-clock-rates =3D <3932160000>,
+> > +                            <3612672000>, <393216000>,
+> > +                            <361267200>, <12288000>;
+> > +     pinctrl-0 =3D <&pinctrl_sai1>;
+> > +     pinctrl-names =3D "default";
+> > +     fsl,sai-mclk-direction-output;
+> > +     status =3D "okay";
+> > +};
+> > +
+> >  &scmi_iomuxc {
+> >
+> >       pinctrl_ioexpander_int2: ioexpanderint2grp {
+> > @@ -297,6 +366,16 @@ IMX94_PAD_GPIO_IO28__LPI2C6_SCL          0x40000b9=
+e
+> >               >;
+> >       };
+> >
+> > +     pinctrl_sai1: sai1grp {
+> > +             fsl,pins =3D <
+> > +                     IMX94_PAD_SAI1_TXFS__SAI1_TX_SYNC       0x31e
+> > +                     IMX94_PAD_SAI1_TXC__SAI1_TX_BCLK        0x31e
+> > +                     IMX94_PAD_SAI1_TXD0__SAI1_TX_DATA0      0x31e
+> > +                     IMX94_PAD_SAI1_RXD0__SAI1_RX_DATA0      0x31e
+> > +                     IMX94_PAD_I2C2_SDA__SAI1_MCLK           0x31e
+> > +             >;
+> > +     };
+> > +
+> >       pinctrl_uart1: uart1grp {
+> >               fsl,pins =3D <
+> >                       IMX94_PAD_UART1_TXD__LPUART1_TX         0x31e
+> > --
+> > 2.34.1
+> >
+> >
+> >
