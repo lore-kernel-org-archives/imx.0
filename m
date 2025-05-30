@@ -1,132 +1,218 @@
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9BB2AE6F
-	for <imx@lists.linux.dev>; Fri, 30 May 2025 07:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09302AE6F
+	for <imx@lists.linux.dev>; Fri, 30 May 2025 07:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748591483; cv=none; b=ouf0BiQUJj3bYWyT2DbPNo2hZVN6GCBozjH3hbFStFTh+wLwVtK+rWZWcKA1e+oKhycyOF2rW2cJp8as8ztBDhrOn6iDK1WM/l5/c0h/Q8n8WwvIt9o2co9BKxPBNnBhTROyGRI9WqQc1hCO/QgSQ1YTqhkBP310Vl7DTuvpTw4=
+	t=1748591799; cv=none; b=AihQEyurVWx155Fp/zlmdH2tQFh62VIZ58claRiEaIL2ab6hsA4iD02/iA50aeoxgMWwuahpIRZpqNp5aidiMaxt5fRRPQ8fsfpSEzoYzzFomCa44VX86yIKgxxLChcH32f/xLxAqTdfyoOYBUxNgv/39Bhn0TWSzL5zLbWkPIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748591483; c=relaxed/simple;
-	bh=kg16i4Orfl2Vn03xor4gIQua0MLqSkj3tvVWVzEOlc4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WsmI7VFT8XEPbt5iFOqZiIfKTzSc1oLq0dAvcJgy4ifD78+iZSCb4Trd/knoXSutbdzzHZqBB8pmrlck/Uf4RCmTwv6+0+I11A3j9l2ggzo7NOjzMPwW6jpqsCS5I90GpMJSBejMzEpv3FdSUHaJoJ17kUFvtYmdrA/cj3XcfkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-52b2290e28eso459900e0c.3
-        for <imx@lists.linux.dev>; Fri, 30 May 2025 00:51:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748591478; x=1749196278;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X2WzxSo6sYbiM6b0F2XSBjn+T4nA2ds5QVgGNEvrhj8=;
-        b=bfWW3rHP0mE6zjAzDZbAZ76YkHY9M4PnTcpSAdDA4Ho3R0MZsgt2ERHXJ5lPIEWl5K
-         Ludqft5+pyie9mGOFKitHIkSEjI2UJW0GD/gfBk0KMS9iExa4SrXKvmIDkiH5OJitFIi
-         7J/wYPLnjrKi5gFOlDsTvL+uRDiDCbcvEsKurOyXDV+/T8YDhrTnWAGanSYtRtpBj62M
-         14f66XsoPILmwmObVJLtWX9Typqe4a6WZ4TpLOmLmo1GNXvamhoOv2Irztv5raFRwD5y
-         NIRaqNwmh42wrxXJYMF9KimwIjfUCgxe7r3zy8OlVZe23kAyQmPVs2WRwDvFE88DQEjD
-         +1gw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLyFjNFt63ik1sHsIYHpTiWBwPP3Iku4B0flRr2nnWZqG29g98+KluPM0Du2deNK7qVhY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxfkUJMXcRYdCTrS9tzV5K5XBBaKfvg/taddKvAzc4ssAI+eOYA
-	uRNjCwycEfNcgYu0CfaJ32aZ9m54K061PFHB17VENi722IY8MHKqoTijINm3h8xf
-X-Gm-Gg: ASbGncvK0gz6c5+uFumUj9lTTGz2MTIH5iWvfNeMYDC1UHp0FynWf2DzMYmbHT8pM4x
-	hbtoUhsihE6UxN5HWXMa6QjXxw5Lgx3I988LKrDV7kUnJsgBIHRxDhyDtQ0DFtCZVWe9QNxf5S2
-	CXfg9RxN4QMAxLZ/Owf5BWwaQmE2Nhs4rdsZJxnOKK2Y/ypHqQV1sRYtcNAETp1h7d8weorMhit
-	Uc9rNfmS2wJW4VUOEt7HjNzNufx3Z9lsu3W2E9eFBWQPr4UIgu7DpKzYivPkOguWMi/E4BosoFr
-	E5emFEB11ZdDR+l+qzhn72hJMnAbBpatDspCDD8Qaf/rfZ3rmOUFyQBHmPok5q90RMksSe0Hgfh
-	aXDcL9Sx9hdFO/G/Mmg==
-X-Google-Smtp-Source: AGHT+IGkBpQi6HJ2v6lmHA4RTDh+2zupupAXw+ZbuFjUGlKlLinhSQ4e9lLeCdEJKm17S/X7Kzqvjg==
-X-Received: by 2002:a05:6122:2188:b0:52f:724a:c748 with SMTP id 71dfb90a1353d-53080f5955bmr1748255e0c.1.1748591478534;
-        Fri, 30 May 2025 00:51:18 -0700 (PDT)
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com. [209.85.221.169])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-53074aaf498sm2700779e0c.5.2025.05.30.00.51.18
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 May 2025 00:51:18 -0700 (PDT)
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-52b2290e28eso459891e0c.3
-        for <imx@lists.linux.dev>; Fri, 30 May 2025 00:51:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX6TOjP9UR0+ltZ0xrKUdukG/qr1dzzYL3SSklx9bzdvKPPs7bVVnFOmEb2tBoMQQZnl58=@lists.linux.dev
-X-Received: by 2002:a05:6122:2188:b0:52f:724a:c748 with SMTP id
- 71dfb90a1353d-53080f5955bmr1748247e0c.1.1748591478153; Fri, 30 May 2025
- 00:51:18 -0700 (PDT)
+	s=arc-20240116; t=1748591799; c=relaxed/simple;
+	bh=uO3O3inxposTI0kQEYf2CJBUDFQHsCwBhLgCj9tgYIE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IXUZ0+1WF67Mf84jzW3H5mrKaiZEY3xc7tWYV7oGLXsaR+jI2mOxV1vsCW1EKEGRXAECBEl7XXZ3zFbkvCLCvd/8L2folky4N8koI9NjUY6/BZhVlpJ9/YCJCmvsF8yiI3GHwpE6nD7YM/9ZSppUQXs/0I5088a1493M53x1fpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=BV1KlzZZ; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="BV1KlzZZ"
+Received: from ideasonboard.com (mob-5-90-143-247.net.vodafone.it [5.90.143.247])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 65AC782E;
+	Fri, 30 May 2025 09:56:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1748591768;
+	bh=uO3O3inxposTI0kQEYf2CJBUDFQHsCwBhLgCj9tgYIE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BV1KlzZZI7s9MALqSYrJAL9VWbB9HE0WU5uVPB39ajpQA8s6PyZjeOUxXn2t5j836
+	 A+T8efsnTiEsKB+363tozLYudNVpQTzQ7lSN2AHPfJWiVAin+/itZAEcPHbrlk2Fl+
+	 2U8T7SgXyamo3LoB5eJOnOUkGgxOYduym9mZsBqA=
+Date: Fri, 30 May 2025 09:56:32 +0200
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>, 
+	Xavier Roumegue <xavier.roumegue@oss.nxp.com>
+Cc: Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Rui Miguel Silva <rmfrfs@gmail.com>, 
+	Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Enable MIPI filtering by DT on i.MX8M*
+Message-ID: <2fd6wgsiwfx4raharcrpmmtayhkipjnz64u2cbprhsxkna3lhv@yshftexhmgns>
+References: <m3h61u9jy2.fsf@t19.piap.pl>
+ <20250509103733.GE28896@pendragon.ideasonboard.com>
+ <m3o6vn8np5.fsf@t19.piap.pl>
+ <iegnn5xoosqpk52hvipcr73aliwhqtsq6r6ctvt5756bhy6yen@rqcdongb7fdf>
+ <m31psg97dy.fsf@t19.piap.pl>
+ <jqjptsphbtdtziuucehxutseaz7j4kjiirz2hk77f3dznswvza@avbjjzu3jcam>
+ <m3o6vb64hv.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250529112423.484232-1-j-choudhary@ti.com>
-In-Reply-To: <20250529112423.484232-1-j-choudhary@ti.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 30 May 2025 09:51:05 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVFrPanoO4CcRKVWhDsXCUm6ty3oayZ6yLs6AksZZJaBg@mail.gmail.com>
-X-Gm-Features: AX0GCFu5SrfJ6XEYDFBe1Hbl2dYZBDrGAQ09XF6wFfWGxGH0eSYgcybRaCFnqRc
-Message-ID: <CAMuHMdVFrPanoO4CcRKVWhDsXCUm6ty3oayZ6yLs6AksZZJaBg@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: Add no-hpd property for all ti-sn65dsi86
- bridge consumers
-To: Jayesh Choudhary <j-choudhary@ti.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	neil.armstrong@linaro.org, khilman@baylibre.com, devicetree@vger.kernel.org, 
-	jbrunet@baylibre.com, martin.blumenstingl@googlemail.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	cros-qcom-dts-watchers@chromium.org, andersson@kernel.org, 
-	konradybcio@kernel.org, geert+renesas@glider.be, magnus.damm@gmail.com, 
-	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
-	imx@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, dianders@chromium.org, 
-	linux-kernel@vger.kernel.org, max.krummenacher@toradex.com, 
-	ernestvanhoecke@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <m3o6vb64hv.fsf@t19.piap.pl>
 
-Hi Jayesh,
+Hi Krzysztof
+  thanks for the detailed analysis
 
-Thanks for your patch!
-
-On Thu, 29 May 2025 at 13:24, Jayesh Choudhary <j-choudhary@ti.com> wrote:
-> In the SN65DSI86 DSI-2-eDP bridge, HPD is not supported as of now.
-> But DisplayPort connector_type usecases does need hpd to be enabled.
-> In order not to break any platform from those driver changes, add
-> "no-hpd" property to all the existing sn65dsi86 nodes (that don't
-> have it already) as hpd is not being used there anyways.
+On Thu, May 29, 2025 at 01:27:56PM +0200, Krzysztof Hałasa wrote:
+> Hi Jacopo,
 >
-> Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+> Jacopo Mondi <jacopo.mondi@ideasonboard.com> writes:
+>
+> >> - 10 User Defined 8-bit Data Type 8 packets, line-sized, DT=0x37, called
+> >>   apparently "Vertical OB" by Sony datasheet
+> >
+> > These are optically black pixels and should probably be discarded by
+> > the gasket as well as embedded data ?
+>
+> Yes, apparently.
+>
+> >> I hope I got this right, this is straight from oscilloscope (only
+> >> checked IDs on IMX462, will confirm IMX290 later but it looks the same).
+> >> In 1280x1080p25 mode there are 4 (not 10) "vertical OB" packets, and 720
+> >> RGGB lines instead of 1080.
+> >
+> > Is this correct ? you ask for 1280x1080 and get back 720 lines ?
+>
+> Well, no, I just checked both modes and these are the differences.
+> IOW, nothing unexpected. Wrong copy & paste or so.
+>
+> >> IMX462 produces just a tiny 2-pixel dot in the left top corner, possibly
+> >> shifting some data to the right (I remember it did that, but I can't
+> >> observe it now - could be a kernel (driver) version change?).
+> >
+> > What are those two pixels ? Does the datasheet describes them ?
+>
+> Nope, I guess it's a silicon bug. It corrupts 3 RAW-12 pixels, though
+> (32 bits > 2 * 12 bits).
+>
+> >>    32EC0138h    2D8000h ISP Dewarp Control Register (ISP_DEWARP_CONTROL)
+> >>       ISP ID mode 0, ISP1: DT 0h (unknown), ISP2: DT 2Ch (RAW12) left-just mode
+> >
+> > But this other register has (again) one other filtering option and
+> > reading the value here it is set to filter RAW12 (mipi_isp2_data_type)
+> >
+> > Weirdly enough, I don't see this register being programmed in the
+> > mainline gasket driver...
+>
+> I guess it's drivers/media/platform/rockchip/rkisp1/rkisp1-isp.c:
+>
+> static int rkisp1_gasket_enable(struct rkisp1_device *rkisp1,
+>                                 struct media_pad *source)
+> {
+> ...
+>         regmap_update_bits(rkisp1->gasket, ISP_DEWARP_CONTROL, mask, val);
 
-DT bindings day:
+Ah indeed, thanks!
 
-  no-hpd:
-    type: boolean
-    description:
-      Set if the HPD line on the bridge isn't hooked up to anything or is
-      otherwise unusable.
+>
+> Now this register doesn't filter data: if you set it with a different
+> value, the data still goes through. It's just processed differently.
+> For example, my sensor is 12-bit (in addition to 10-bit). If I set
+> ISP_DEWARP_CONTROL to 0xB68 (or 0x368) meaning RAW 14-bit, the image
+> only gets darker - ISP thinks it's getting 14-bit samples.
 
-On all Renesas platforms listed below, the DP bridge's HPD pin is wired
-to the HPD pin on the mini-DP connector.  What am I missing?
+Thanks for testing
 
-> Upcoming driver changes that will break platforms if we do not have this
-> property in all the existing sn65dsi86 nodes that assumes hpd is disabled:
-> <https://lore.kernel.org/all/20250529110418.481756-1-j-choudhary@ti.com/>
+>
+> The only filtering (while using ISP) is, apparently, in the ISP
+> Configuration Register (MIPI_CSIS_ISPCONFIG_CH0) and subsequently in its
+> shadow counterpart. And it somehow may be enabled in CSIS Common Control
+> Register (MIPI_CSIS_CMN_CTRL). But if you don't enable it there, the
+> data is still filtered (e.g. wrong value in MIPI_CSIS_ISPCONFIG_CH0
+> prevents data flow). The filtering is only needed for preventing pixel
+> corruption (these 3 pixels).
 
-Breaking backwards-compatibility with existing DTBs is definitely a no-go.
-I'll reply there, too...
+Let me recap all of this.
 
->  .../boot/dts/amlogic/meson-g12b-bananapi-cm4-mnt-reform2.dts     | 1 +
->  arch/arm64/boot/dts/freescale/imx8mq-mnt-reform2.dts             | 1 +
->  arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts                 | 1 +
->  arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi             | 1 +
->  arch/arm64/boot/dts/renesas/r8a779g3-sparrow-hawk.dts            | 1 +
->  arch/arm64/boot/dts/renesas/r8a779h0-gray-hawk-single.dts        | 1 +
->  arch/arm64/boot/dts/renesas/white-hawk-cpu-common.dtsi           | 1 +
->  7 files changed, 7 insertions(+)
+With:
 
-Gr{oetje,eeting}s,
+- MIPI_CSIx_CSIS_COMMON_CTRL[11:10]
+ "Select Interleave mode" = 0x00 = CH0 only, no data interleave
 
-                        Geert
+- MIPI_CSIx_ISP_CONFIGn[7:2]
+  "Image Data Format" = 0x2c = RAW12
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Embedded data and OB pixels are filtered (which means we're filtering
+on DT even if MIPI_CSIx_CSIS_COMMON_CTRL[11:10] = 0x0x would suggest
+filtering is not enabled)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+However corrupted pixels are still sent through.
+
+If you
+
+- MIPI_CSIx_CSIS_COMMON_CTRL[11:10]
+ "Select Interleave mode" = 0x01 = DT (Data type) only
+
+Embedded data and OB pixels are still filtered, and your corrupt
+pixels are filtered as well.
+
+Now, why are "corrupted pixels" filtered away by enabling this option ?
+
+As far as I understand bad pixels are corrupt in their data values,
+the CSI-2 packet header which contains the DT is correct. Is my
+understanding correct ?
+
+
+>
+> So it means, for at least i.MX8MP, the DT filtering bit in
+> MIPI_CSIS_CMN_CTRL should always be enabled.
+
+It would be nice to actually understand what it does before enabling
+it unconditionally.
+
+I've cc-ed Xavier from NXP which maybe can help shed some light on
+that register function ?
+
+Thanks for the investigation
+
+>
+> >> MIPI_CSI2:
+> >>    32E50004h      4705h CSIS Common Control Register (MIPI_CSIS_CMN_CTRL)
+> >
+> > Do you mean 0x14705 ? I'm asking because Shadow Crtl is BIT(16). Surprisingly
+> > BIT(14) is marked as reserved in the datasheet version I have
+>
+> No, it's 0x4705 (usually).
+> With 0xFF05 (resulting from write with 0xfffffffd) it's still working
+> correctly (with DT filtering). Write 0xfffffbfd (= no DT filtering) and
+> the magic light pixels in the left top corner reappear. So it means the
+> INTERLEAVE_MODE bits (11 and 10) are probably two independent bits, with
+> bit 11 probably not used at all.
+>
+>
+> In my copy (i.MX 8M Plus Applications Processor Reference Manual, Rev.
+> 1, 06/2021), CSIS Common Control Register (MIPI_CSIx_CSIS_COMMON_CTRL):
+> - bits 31-17, 15, 13, 12, 7-2 are zero and reserved (though bits 12 and
+>   2 are additionally marked "This read-only field is reserved and always
+>   has the value 0")
+> - bit 14 is reserved and shown as "1"
+> - bit 16 is "UPDATE_SHADOW", and it clears itself after a write (unless
+>   the pipeline locks up or something alike)
+> - bits 11 and 10 are "INTERLEAVE_MODE":
+>     Select Interleave mode
+>     ISP Configuration register of CH# is used for data interleave.
+>       00 CH0 only, no data interleave
+>       01 DT (Data type) only
+>       10 Reserved
+>       11 Reserved
+> - bits 9 and 8 are LANE_NUMBER, 0 to 3 means 1 to 4.
+> - bit 1 is SW_RESET
+> - bit 0 is CSI_EN
+>
+> In fact, bit 2 does not "always have the value 0", it's set to 1. Both
+> bits 14 and 2 can be reset to 0, though (without apparent change in the
+> image).
+> --
+> Krzysztof "Chris" Hałasa
+>
+> Sieć Badawcza Łukasiewicz
+> Przemysłowy Instytut Automatyki i Pomiarów PIAP
+> Al. Jerozolimskie 202, 02-486 Warszawa
+>
