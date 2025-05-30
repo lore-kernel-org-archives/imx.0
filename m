@@ -1,47 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AEAFBF0;
-	Fri, 30 May 2025 15:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4ED22D9E5;
+	Fri, 30 May 2025 15:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748618616; cv=none; b=ClC6QX46feKlb9xqqafiMCnQbS7oOcmCf0WpcT7bxo52PHjib+7pBBk8OLIxKPo+0dcDTWUDqJukcX3YzwR6xx0DoYhwFmjLaV+kC5CX7CgC+I3d96GXsA9w9XSaVJfdNcMg7KS+icVmli+Ju70LGkzh4sNNfZvWF6yZUmLHjk8=
+	t=1748618698; cv=none; b=Z4RHaIDgDMlx5KC07wrt9qmu58lbYsLJ+ung4XWu/QPlFFUNiNDI7YTlgLolftodJqHL8BbY+VxSAhdXgkSN3HM/0gThQFNssYnwYg/TX661802JwypBKnsKTzNEYrK6fC4PNQHaiD8y1gq7iGWOnNhVgK69UsUC3Zc5zZXjgxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748618616; c=relaxed/simple;
-	bh=LWFWoggGe46xQ5RQp18Vq6QjeHfIxauE+ObN41PB7bQ=;
+	s=arc-20240116; t=1748618698; c=relaxed/simple;
+	bh=xIG3Sui9OiCFTTQa85qTNyKEQhSn2TC454W39iD5xaY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c6vD47FfhsGpCOCXLTcYSgzo6kq+hebRkd4NtvM/dEQ/kaLgP+EN6P27rfU67Bjrsl1tX5kEAcGqofdcWyYEm1YhN/aAbTDoaKs4+b19HonRtfIM37l++skpOycnSsbFaJ6YPagp/8HabNITAer7t3dULS0NByD+kd9l0ELCeMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrfVTlxC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=o9oQ3MICvjbi99ztQ6d0CfrSiAasEkw0kJymYpXLXkfcsQ4Ry04Ey2FF6ef7H+/2tahWD/2BIZdnaViPUtrie1OcyFiMXjSCdRJdvbYWkuhYd9/+4JStZg59oUuaFUKjq5ZnZxCchcl44nVhhoz5SLzkY1qfE12C59aWBSaN+0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lx1wEBIO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrfVTlxC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905DAC4CEE9;
-	Fri, 30 May 2025 15:23:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lx1wEBIO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A933C4CEE9;
+	Fri, 30 May 2025 15:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748618615;
-	bh=LWFWoggGe46xQ5RQp18Vq6QjeHfIxauE+ObN41PB7bQ=;
+	s=k20201202; t=1748618697;
+	bh=xIG3Sui9OiCFTTQa85qTNyKEQhSn2TC454W39iD5xaY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KrfVTlxCx05DUwfOjqI/Y+5oFEqvXplJaFVRb0USAmPukce0NtMccV3wPk95cxeDU
-	 bC6SNp+9u2uDpjLj40UgXQ3mlgMKcthZWGBctAe5wBn/owpHTXBs6jQs+QVrB3PjE8
-	 oIofx9Icjcm5lJTPLPCfxMctJGh2waqT554jPb/WyXPHZpwGuvKFtIlWS+75kbw1Kf
-	 3Um/EaSao1rpeCl/teCkz7VPqIx1b/bzTwPNjpWbnKWnAZPObr8aQCyHZWHgXIbNl0
-	 oBxoiaUMqvBevfH6vUUmFLasn5VTzso3O/hrfPWpBO/X5qix1fy24IS/GFFMArfVuo
-	 It81f7ltRlxVQ==
-Date: Fri, 30 May 2025 16:23:31 +0100
+	b=lx1wEBIOAO63u8ZhQUuPgC/vyo7g9uGJ185gwTnofX4yt8gS1kQ0dD2Hs55EVw6Js
+	 6rMXqUT7xEXk32NpYu9bDFTOztCkfkq95GNiFvfPE3XL0eI8ZoMebv3T/vQZ1wlxcA
+	 M9xoeOVk/a4fvAtUyPtfCx/XGclH6hNLTDQteCaMEWjSL78OhFUUNE4DZzqBGpCtwu
+	 wvOP/opjCXJ9otQwldSPYgrlgnpnVPYLHagBjqkF7/FX2gSA2PaX+2coNEHIocN+5t
+	 xUhqjinEP68tg6DqstERqqk5Q0DqgPpd0sQjATvv4W2vEQsY/QyGwzEWChc79yWWvf
+	 rfG7gBj60pqlg==
+Date: Fri, 30 May 2025 16:24:51 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Frank Li <Frank.li@nxp.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Rob Herring <robh@kernel.org>,
+Cc: Vinod Koul <vkoul@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>,
-	"moderated list:FREESCALE SOC DRIVERS" <linux-arm-kernel@lists.infradead.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>,
+	"open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" <dmaengine@vger.kernel.org>,
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: soc: add vf610 reset controller
-Message-ID: <20250530-construct-library-64ec665a6fea@spud>
-References: <20250522213951.506019-1-Frank.Li@nxp.com>
- <20250526-unpaid-mushy-d47196d04ad1@spud>
- <aDcvP975apg/dhQz@lizhi-Precision-Tower-5810>
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: dma: fsl-mxs-dma: allow interrupt-names
+ for fsl,imx23-dma-apbx
+Message-ID: <20250530-those-frequency-f8106275769f@spud>
+References: <20250523213252.582366-1-Frank.Li@nxp.com>
+ <20250526-plural-nifty-b43938d9f180@spud>
+ <aDcw0sgN1ZX0kCCZ@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,69 +53,44 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ldWk4wJW7G7nxwGc"
+	protocol="application/pgp-signature"; boundary="Aj1tJsIztP5dXenP"
 Content-Disposition: inline
-In-Reply-To: <aDcvP975apg/dhQz@lizhi-Precision-Tower-5810>
+In-Reply-To: <aDcw0sgN1ZX0kCCZ@lizhi-Precision-Tower-5810>
 
 
---ldWk4wJW7G7nxwGc
+--Aj1tJsIztP5dXenP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 28, 2025 at 11:43:59AM -0400, Frank Li wrote:
-> On Mon, May 26, 2025 at 04:54:30PM +0100, Conor Dooley wrote:
-> > On Thu, May 22, 2025 at 05:39:50PM -0400, Frank Li wrote:
-> > > Add vf610 reset controller, which used to reboot system to fix below
-> > > CHECK_DTB warnings:
-> > >
-> > > arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e00=
-0:
-> > >     failed to match any schema with compatible: ['fsl,vf610-src', 'sy=
-scon']
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  .../bindings/soc/fsl/fsl,vf610-src.yaml       | 46 +++++++++++++++++=
-++
-> > >  1 file changed, 46 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf6=
-10-src.yaml
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.=
-yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> > > new file mode 100644
-> > > index 0000000000000..4c92a5e4892bf
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> > > @@ -0,0 +1,46 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#
+On Wed, May 28, 2025 at 11:50:42AM -0400, Frank Li wrote:
+> On Mon, May 26, 2025 at 04:28:07PM +0100, Conor Dooley wrote:
+> > On Fri, May 23, 2025 at 05:32:52PM -0400, Frank Li wrote:
+> > > Allow interrupt-names for fsl,imx23-dma-apbx and keep the same restri=
+ction
+> > > for others.
 > >
-> > It's a reset controller then, shouldn't it be in /reset, not //soc?
+> > The content of the patch seems okay, but why are you doing this? What is
+> > the value on this particular platform but not the others?
 >=20
-> It is not reset controller since there are not #reset-cells property to
-> reset other models. It just provides syscon to reboot the whole system.
+> Actually it is not used in dma driver, i.MX23 is quite old chips (over 10=
+year).
 
-| Add vf610 reset controller
-| The System Reset Controller (SRC) generates the resets for the device.
+If they provide no value, why not just delete them?
 
-Giving me mixed signal here chief. If you call something a reset
-controller multiple times without any additional clarification that it
-does not provide resets to peripherals, how is anyone reading the patch
-not supposed to come to the same conclusion as me?
+> Just to match existed dts to reduce warnings.
 
---ldWk4wJW7G7nxwGc
+You should mention this in your commit message.
+
+--Aj1tJsIztP5dXenP
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDnNcwAKCRB4tDGHoIJi
-0k0fAP9xEMP3RDsq99tpKwUODFMvlZc/u4nYb9rlcX/IGT0BUgEA1fwhbAWRvv7y
-JcFusmsVetdwlGO4zY35QGEzwv9h8Qc=
-=ttAW
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDnNwwAKCRB4tDGHoIJi
+0plVAP9xUhFgW9G3H70h10nX3DElaVl3XrEFf30bWGpPQbwUvQEAyjrFGC6Voo7o
+aa/qdRMjImiKKvS4eMDSOBxpXBeWAA8=
+=RMOT
 -----END PGP SIGNATURE-----
 
---ldWk4wJW7G7nxwGc--
+--Aj1tJsIztP5dXenP--
