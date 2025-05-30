@@ -1,90 +1,129 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6811EDA06
-	for <imx@lists.linux.dev>; Fri, 30 May 2025 06:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342251F4E3B
+	for <imx@lists.linux.dev>; Fri, 30 May 2025 06:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748585209; cv=none; b=Pv5DF//qZSfD0FfLn2NBgcLDaoOaqBeK49EZL0vgXcTL9G9C5ZtTchhBfg5h1sJPneKPIHq4B53T1L4GWbrDge+xAFLoRrtnT5FEJyt6Bg1VM1kVX24zza6+euuwine3iZ0tNGGoMG7ecidVDUueZbu3EtAL8WzfQNf2sqoAMQE=
+	t=1748586587; cv=none; b=gFq0dCJuRZWPMTDseAF05b9vdLWvYTOLoaa71vdfMA2sBmHCQ17voCiVUut+zCc5xE15HrR72sweCvwRcnfIMksacvcQH/Q5ZBCASNql/1nx+/IiKMQnssUUTbMlVZR5Cj//7hYsFgldGzUpXCkMojAeQcvO9/my6U2qX43+K20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748585209; c=relaxed/simple;
-	bh=SH221srNFL7pEpU42O3+CTSkBAPPKNwmvmN1SK6EYLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q3pqcy58AYS24Td7uywjF9BVKtIuZvxJ7fDHV475ZQFGLecQ5S3t2oaEpL81p2TaBn39h7roZzUy4h0/8W2oU7Erp1LT5xtEPl53dXN5SjCyBZRMcUA4NOooOoDshukeFW5oobv3IH5M6Cam3c3QpDKUqxpvv2dQRZ3EveAqN2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uKst8-0007Jd-Ci; Fri, 30 May 2025 08:06:42 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uKst7-000vwy-33;
-	Fri, 30 May 2025 08:06:41 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uKst7-000nJw-2f;
-	Fri, 30 May 2025 08:06:41 +0200
-Date: Fri, 30 May 2025 08:06:41 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Troy Mitchell <troymitchell988@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Yongchao Jia <jyc0019@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 1/2] i2c: imx: use guard to take spinlock
-Message-ID: <aDlK8VH3GRSJCKCk@pengutronix.de>
-References: <20250513-i2c-imx-update-v3-0-817b7426a67e@gmail.com>
- <20250513-i2c-imx-update-v3-1-817b7426a67e@gmail.com>
+	s=arc-20240116; t=1748586587; c=relaxed/simple;
+	bh=qhgHA/bJ8v/PS2R6f2L3oGVJ9+DXpMZEvteZ1yfDueE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZaEZQKeovfAr6ZmbWgF2Zq27tELk+bFyEuAeTjsHJJqs+RQ3eNAZzDoi/PUh4JkgXJyI/kt2BFL12LL5UgWSNvVHxre812FzClg83mj6qyPA/1F7+lX1I+LT2jzEweur4HUMyyzJhN9NdaCtZW8EnCylgWZA3LQEqGH5F//EDVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=TCVm8yWe; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=XY8jWu8j reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="TCVm8yWe";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="XY8jWu8j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1748586583; x=1780122583;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xKYfvQUJsCe5Fu3IbEtXJ4DySVzCIAQxIRD4sH/yzi8=;
+  b=TCVm8yWe1jp1sSiaauO/CG5GxiQ5QzgIp2ywtcYUH7mzsfUNxNGmh6NU
+   qVuGqKjMTXiyLxDrf8ROTqlZ/obAdxMDzZ2kTVkGTTX5ppqWX2Fe1vbb5
+   SiTgKX8/42tUYh50bEuBcuhi6jkRc+SPd7rQGCj5CxjNPighOBFwC20lH
+   BS/Je0AGoOp4S2JEGIOqs7qpc1sUbQvUpGzKDrUasaL4uh8wPBLhyFkMu
+   jshHe6pdL0JnWs5+0Q+5q025yV/CNd6ti1cRNJwnzHRZVe/hSbmJipTN+
+   k2pRONKK9RSw3TfdhhpU+XYXKuU2cihnGoEn8YxJR45Z0x/Wg6fuzbt3g
+   Q==;
+X-CSE-ConnectionGUID: qQZGS3Y/Tla+y7MpA+X7nA==
+X-CSE-MsgGUID: OnaFfOnkSiWO/+xrExhjsg==
+X-IronPort-AV: E=Sophos;i="6.16,195,1744063200"; 
+   d="scan'208";a="44364193"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 30 May 2025 08:29:34 +0200
+X-CheckPoint: {6839504E-C-8CF597AF-F8BD95DC}
+X-MAIL-CPID: 5E8F613866FB26B0A053F72B1F8FAD48_3
+X-Control-Analysis: str=0001.0A006396.68395054.0069,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4D027163483;
+	Fri, 30 May 2025 08:29:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1748586569;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xKYfvQUJsCe5Fu3IbEtXJ4DySVzCIAQxIRD4sH/yzi8=;
+	b=XY8jWu8ju4n5JEtBc/cmVFE2Z7uWTpCnd6BhdtlaNX6JwcXtWr6btn1mOz197fc/ggVz79
+	i93PNjpDqIfOjPbeHVSFlYeYpSHSjqJGLfkfWnlzBj4RTrnWRT+xrTyJ6Kg9T28De7YfI/
+	J86SH8jJau2i6X6hmorZLq3cfyplTzwWc77IUDLcFVOJh0B9aYaSZJ1F5tACswlH2QHRha
+	4HfchkwTlHYX6zXPGpEnmAUGIGd8FXJhika7BJEDSRI/ObZeiLAHkvET/JLG6HHkeAW0D9
+	hS7/8bbOipBRRN+yHH1AKeD1SBIBD0utqVO6DDEXr1/4B1IEDQ7U9/bYam2Akg==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Gregor Herburger <gregor.herburger@tq-group.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Subject:
+ Re: [PATCH 2/2] arm64: dts: ls1028a: Add mbls1028a and mbls1028a-ind
+ devicetrees
+Date: Fri, 30 May 2025 08:29:27 +0200
+Message-ID: <7298658.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <aDctWKIvBKwF29lP@lizhi-Precision-Tower-5810>
+References:
+ <20250527060400.1005757-1-alexander.stein@ew.tq-group.com>
+ <20250527060400.1005757-2-alexander.stein@ew.tq-group.com>
+ <aDctWKIvBKwF29lP@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250513-i2c-imx-update-v3-1-817b7426a67e@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, May 13, 2025 at 02:36:13PM +0800, Troy Mitchell wrote:
-> Use guard to automatically release the lock after going out of scope
-> instead of calling it manually.
-> 
-> i2c_imx_slave_handle() can safely be entered with the lock held.
-> 
-> Refactored the i2c_imx_isr function so that i2c_imx_master_isr
-> does not participate in the guard scope
-> 
-> So Using scoped_guard simplifies the control flow
-> by ensuring consistent and automatic unlock,
-> which improves readability without affecting correctness.
-> 
-> Co-developed-by: Yongchao Jia <jyc0019@gmail.com>
-> Signed-off-by: Yongchao Jia <jyc0019@gmail.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Troy Mitchell <troymitchell988@gmail.com>
+Hi Frank,
 
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Am Mittwoch, 28. Mai 2025, 17:35:52 CEST schrieb Frank Li:
+> On Tue, May 27, 2025 at 08:03:55AM +0200, Alexander Stein wrote:
+> > From: Gregor Herburger <gregor.herburger@tq-group.com>
+> >
+> > Add device trees for the MBLS1028A and the MBLS1028A-IND and the SoM
+> > TQMLS1028A.
+> >
+> > Signed-off-by: Gregor Herburger <gregor.herburger@tq-group.com>
+> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > ---
+> >  arch/arm64/boot/dts/freescale/Makefile        |   2 +
+> >  .../fsl-ls1028a-tqmls1028a-mbls1028a-ind.dts  |  68 ++++
+> >  .../fsl-ls1028a-tqmls1028a-mbls1028a.dts      | 118 +++++++
+> >  .../fsl-ls1028a-tqmls1028a-mbls1028a.dtsi     | 291 ++++++++++++++++++
+> >  .../dts/freescale/fsl-ls1028a-tqmls1028a.dtsi | 117 +++++++
+>=20
+> New dts file, suggest run https://github.com/lznuaa/dt-format to nice ord=
+er
 
-Thank you!
+Thanks for the suggestions. It does some improvements, but I also disagree
+with a lot of proposed changes:
+* Wrong indent of SPDX tag
+* model property should come first IMHO
+* {gpio,interrupt}-controller should come before #{gpio,interrupt}-cells
+* gpio-hog property should come first in a hog node
+* sorting gpio-hog nodes by name instead of line number seems wrong
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+There are some more bogus changes, so I'll skip this tool for now.
+
+Thanks & best regards
+Alexander
+
+> Frank
+> [...]
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
