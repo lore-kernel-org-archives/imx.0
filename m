@@ -1,171 +1,199 @@
-Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2113.outbound.protection.outlook.com [40.107.21.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B93813AC1
-	for <imx@lists.linux.dev>; Fri, 30 May 2025 10:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748602131; cv=none; b=TO7pRmfRKhlGYbVYKZiMGVZ1ZZKxWpULuk0O/htgi4xiUy2Scpdip1g7kpEhyPgTiDrTvZM/FIBFn4bw1XDBcDuENPXqQqKC5NbGIkzej5xYuahVrYEwI8vEN9U6zLt/o5567Hzkx99tpzCWUwF2D84wzScYvqd97LB+VaFwPv4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748602131; c=relaxed/simple;
-	bh=UesS92bhejRVBi1FrU3ctF6c0bUMAZZJnak0MPJk3vc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=dAebg4xaODaOmQ/Eul6oYieCCweQEKs1sHILe1GYD3ORill0WpUgNvzUyEZherKUy7mM1bGMWCxqjOxPjW4ur31kZzQgeoBIfvcX7qi1TckYuAQMyu9IlIPp/yrvfhP6HRi2OokY4rkeOfhuWjbO3roA7v4q5hM57B0UuZryOho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
-Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
-	by ni.piap.pl (Postfix) with ESMTPS id D12B4C405A45;
-	Fri, 30 May 2025 12:48:39 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl D12B4C405A45
-From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: Xavier Roumegue <xavier.roumegue@oss.nxp.com>,  Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>,  Rui Miguel Silva <rmfrfs@gmail.com>,
-  Martin Kepplinger <martink@posteo.de>,  Purism Kernel Team
- <kernel@puri.sm>,  Mauro Carvalho Chehab <mchehab@kernel.org>,  Shawn Guo
- <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
-  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
- <festevam@gmail.com>,  linux-media@vger.kernel.org,  imx@lists.linux.dev,
-  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Enable MIPI filtering by DT on i.MX8M*
-In-Reply-To: <2fd6wgsiwfx4raharcrpmmtayhkipjnz64u2cbprhsxkna3lhv@yshftexhmgns>
-	(Jacopo Mondi's message of "Fri, 30 May 2025 09:56:32 +0200")
-References: <m3h61u9jy2.fsf@t19.piap.pl>
-	<20250509103733.GE28896@pendragon.ideasonboard.com>
-	<m3o6vn8np5.fsf@t19.piap.pl>
-	<iegnn5xoosqpk52hvipcr73aliwhqtsq6r6ctvt5756bhy6yen@rqcdongb7fdf>
-	<m31psg97dy.fsf@t19.piap.pl>
-	<jqjptsphbtdtziuucehxutseaz7j4kjiirz2hk77f3dznswvza@avbjjzu3jcam>
-	<m3o6vb64hv.fsf@t19.piap.pl>
-	<2fd6wgsiwfx4raharcrpmmtayhkipjnz64u2cbprhsxkna3lhv@yshftexhmgns>
-Sender: khalasa@piap.pl
-Date: Fri, 30 May 2025 12:48:38 +0200
-Message-ID: <m3frgm5q7t.fsf@t19.piap.pl>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E2B15E97
+	for <imx@lists.linux.dev>; Fri, 30 May 2025 13:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.113
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748612446; cv=fail; b=T5ki73CChuj/HixwGdZ9ZoeV9GGxGcNXaNZ4qVOk6osMGLhn5OdySlDdy96c4dhUBzkIr/T6Bl6i9Beb9MMaAuOdFonhXnkkMQHiurnXFwGqzDtJ+F97AaNy19VYovaSNWjmsAKU6hXmy0+RpS0BXV+NvPIsOfdcBu/wMWz2nvg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748612446; c=relaxed/simple;
+	bh=cPC6MJmOMZFiwLqbplidJcahA9dRBXMLIP5nSyJbUUg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=svtyVCEZZd7bAZi+R5c6OHXDfHB2vxPYSgbGQxtH1ZrEflFxHgTtx7v1v+eN2a4q5x5yv59HCyjHo2YYrF46TXYq/A16CKSu4VQMuHkqVGhYu5Jp3p/cIXL4z99/bkENr5m2AOhFC6YB7btABpigPZMa5t+Qc6TjCmHwMBZpbU0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=M9eCJYfQ; arc=fail smtp.client-ip=40.107.21.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="M9eCJYfQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DLqVC9KoEJA6lC6k8pu9DCWo+90blaOwIC39tWw4cJ2mebCQMJupZEvAZJSs7ozg2oG3oLeKgSBhqBvfJJAt+bPW8wT5cDoWdWYWekLeHlkBYlW4z3/BOUcPIQL2hcGWKaTz0qyG9oTTtrycw7/KHYYNCtyvWv9KixZwJL8B9NSTrXXrzlYYak2GcxvixnjN90EUbb6gOfnjwkn5CGBWg8Z3A7tXvU5M3uO5UP9oTmnsN2XSXnLdIuKAHjm6J8dwprWUdlTnjIp+Q43trWWhbDrbrxD259mMGM5Pjwx6M8Mm7gP22Bfhe6xDYt/kr0YxGPY+LwEkrg/K7B/dZOe2SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cPC6MJmOMZFiwLqbplidJcahA9dRBXMLIP5nSyJbUUg=;
+ b=CFkD3igy34Y9pJTw/dPVF2/16idyNYeCMr+O25GEqpZc7hiYCS/ZgfIUTE30IJguvkFqzLuAKeFcnPASVHkGPEvA8Klk15ANATB2vz7tophzfYu4UhmGbsIuo+AKcr9yv/PJVzRmqHtr0/VPbFX5mHVRI6psun4RwzUQEVpE6jOX+dI1PWxEchgNY2UBXQ478SPbF+21+IQDRZhXnDa6U3QOsko743B9qsoIZahMob/E1tUuCvDONtWi32g8s7m985nI6wa8IGmxizo5n+knNHL4u4XiYUWA7ZbqVH7KfcrcqPyoJq++nSnYDtk4FfSwCJzarbxmJn/yyvFXBNGdow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=phytec.de; dmarc=pass action=none header.from=phytec.de;
+ dkim=pass header.d=phytec.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cPC6MJmOMZFiwLqbplidJcahA9dRBXMLIP5nSyJbUUg=;
+ b=M9eCJYfQJy4QASO0nPmmF7LiWQcpLLacj0QmxQWrRWb4dfXXUCdHNoKcSuFLOCDwmvRr2FMuPy+7C0CDRnjB/gzgi3wGkC9nOqVwIeVr7vfyGb/c3wOyoFx7fVVWqOD1F20l46aIRrFFtXyQZN5nQtCDw/YtAuTiPHuMamfh4cbTUHkc916f3KuAnrxxVlCfCWgU+9DTKeLcpphoowtqGSepeot/xweX4IOjJHVgT3ExBF2k99YRYbc8teJPWlbob3E6H7553s2BtFweDk44UHwqoGxib+e0mF12ZmHEikIjF63qCJwMuJ2EbTbrw91VE8aNtOMFeqZlQ2XDmkBRHg==
+Received: from DB9P195MB1212.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:294::16)
+ by AM9P195MB1298.EURP195.PROD.OUTLOOK.COM (2603:10a6:20b:3ab::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.30; Fri, 30 May
+ 2025 13:40:38 +0000
+Received: from DB9P195MB1212.EURP195.PROD.OUTLOOK.COM
+ ([fe80::2d26:fa56:5972:5247]) by DB9P195MB1212.EURP195.PROD.OUTLOOK.COM
+ ([fe80::2d26:fa56:5972:5247%4]) with mapi id 15.20.8722.031; Fri, 30 May 2025
+ 13:40:38 +0000
+From: Christoph Stoidner <C.Stoidner@phytec.de>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Stefan Wahren <wahrenst@gmx.net>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "upstream@lists.phytec.de"
+	<upstream@lists.phytec.de>
+Subject: Re: [PATCH v3] arm64: dts: freescale: imx93-phycore-som: Delay the
+ phy reset by a gpio
+Thread-Topic: [PATCH v3] arm64: dts: freescale: imx93-phycore-som: Delay the
+ phy reset by a gpio
+Thread-Index:
+ AQHbzJ5IkKiCUrqPH06p42f/+549BbPiDcKAgAJsSwCAAChcgIAABDUAgAALOQCAACRcAIADjdKAgAAQWYCAAsNAAA==
+Date: Fri, 30 May 2025 13:40:38 +0000
+Message-ID: <a948b903766a82897e5fc17a840ab40e29f5eda4.camel@phytec.de>
+References: <20250524112315.695376-1-c.stoidner@phytec.de>
+	 <047c963e-f24d-4995-aea0-4a8cf8e343f5@lunn.ch>
+	 <b2ea6b7f-3623-4486-82a0-cab97053a53e@gmx.net>
+	 <34a4441d4b4ed8db7cac585ce93ec2357738cc11.camel@phytec.de>
+	 <7f6d7199-0a20-4370-a8b0-1d05326af052@gmx.net>
+	 <bf0eb48fc72f4b0abbf62077c2f1fe4438579746.camel@phytec.de>
+	 <967484d9-4165-4b75-bbb7-a203c36e8beb@gmx.net>
+	 <517be266ebc3b55da53372a76a139245f8945cd8.camel@phytec.de>
+	 <5afa6d62-4a3f-4c28-8165-363075ac36d8@lunn.ch>
+In-Reply-To: <5afa6d62-4a3f-4c28-8165-363075ac36d8@lunn.ch>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=phytec.de;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB9P195MB1212:EE_|AM9P195MB1298:EE_
+x-ms-office365-filtering-correlation-id: 5d7b386e-d6b5-4fde-54c9-08dd9f7f9030
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?WFhuczFuNS81VGQ5T1pRRVV6SnhWWnp2TU1VK1lUdEF1MXFjTWlUQ0hRQWtt?=
+ =?utf-8?B?L29VSzJxRlNocVBibTY4QmdsVlhCNUVHT2ZyakRGem9tRmxwcTNtKytyU3FQ?=
+ =?utf-8?B?OFA4MnNHN0RMTXpBWnovWFFQVFgwamxrUHI4ek5vbEplMmQ3cFhHbzZ3ekpC?=
+ =?utf-8?B?bzNsbkQ2WC95WEFINXhLZllqWmNtUXNIOGh0SndsbmJJNDZMU09MYmwvci9P?=
+ =?utf-8?B?Z0JxMHJMRlBadkZEOFVMU2phdGdYUVkrQ3BkYWN0OFNzaWtlTVB2V3hRZnlv?=
+ =?utf-8?B?N1crWG1BRFBkYU42R0loNnpzK0tWQVMzSkY3Qll1VERDMFRrTHpGS1FTRUtt?=
+ =?utf-8?B?ZHlkR2RRM0R2VGlhSmEvSllNb1FoMTIrYnNITkpIVWNaNU1CamIzQmJmUWlI?=
+ =?utf-8?B?Z3B0YnJwOWZZdjZjK1J2U2VmQk5TSDlFR1FYL3FCU0VtaVZTajB0UXQ2SUdV?=
+ =?utf-8?B?TXpyTVRTNUpRSFY5cElqV0d1RTlabnBqby9PRG1LclRwSUN0T2M4ZE1aUGxX?=
+ =?utf-8?B?SnJtREhUTi9XQzJ3YmI2YUVVOElpSk9wdS8wemZzdDlxek0yYnB2aWZPOXJL?=
+ =?utf-8?B?aEw4Y3ZvRlNKOVZpcUs4OTJIS1JOSC9Bb0tzaWRyMkI1Mjl6ZDUvM0NTa3RH?=
+ =?utf-8?B?d2pnMElPNjJnTTZLeHFFM2UvaDR4RVRlbUxHdEo3cGRkYU5rUjdaS05VZkVl?=
+ =?utf-8?B?MmQ4M2Z3TkxoZStBK1hqaWc3ZlRMc3hmOHl1aUV2MlpYRWVBbzBXc0ZDbnM2?=
+ =?utf-8?B?ekR5djRzQ2ViVTNXVksvV29aT0l5U1FqWTdrTVhPMHVtR3c2NnNSQ3RXUU42?=
+ =?utf-8?B?TGZkZDVjV3QvbzA0L2Zkc3I0MVk4WkVRWGt1NjU3bHd6UGdhbFZxdXlYOXRp?=
+ =?utf-8?B?UE1PWEh2UCsvaXpiZDU3dzNWaW12Wjg2d04zdEZYS0ZGbUJRcDBheVFQb1Nw?=
+ =?utf-8?B?bHJDVFkyZUxmd0J0STNMS0xWdUMyY2dCbHJ1WjZWM245N1F4NHowSlpGRWNn?=
+ =?utf-8?B?R2RxT3Bqc056eElwV0tFUU1GMUg5MEI3NkZSU1RvZU5IbkZmcXo3K3ZZM1JT?=
+ =?utf-8?B?VVFFZkt2bE0zYWt0WFY2a2xGdStMUHg0UTdHdTRmQm5pUFBKTlB4dTE1dWh4?=
+ =?utf-8?B?cmNLS1o4ejIzNTdIUUQwUjAwYUJVbjZ2WGV2ZGl3citoTzdMOGZPN1FWVER4?=
+ =?utf-8?B?TFA3TmNZVzR2WFJ1WmlwRHpHK2lmSk5HcnZmM2R0TGx4MW1yWFA5WUJ1aE5K?=
+ =?utf-8?B?VDM2YWIyeE9XZEh6RkRVbTY2SUJZWDRPWkJERE1NZ2pCOFdVMitqOEViZWZw?=
+ =?utf-8?B?Y2NNQ2pvTS81anZmSGM1RFBvYWoxTlU4MXpaRFlkZDdVdWZMSXpvN0NlTTVE?=
+ =?utf-8?B?YWF6ZStTL1lkUmhCQS9rbGZGMTVSbEpFMWNYL2EzOU5ENnRjeUlwSTJLcHdX?=
+ =?utf-8?B?Y1FLQWpZSHFkUmx0SzRMeTdhY2tsNkFCM2xZbXB6T1poOTJhQjlwb1NlaWxD?=
+ =?utf-8?B?Vm1PSU1LRHR4czRUTkZQM1hZQUt6ekMwQWRFTVpjajg0K3NMWVlmeGowSXow?=
+ =?utf-8?B?Y09zVDBwQnF5M2JyZDY5WUZ0QnFHYm9FNTdzY1JFVEtkM0JvdWVKMnNFOGlV?=
+ =?utf-8?B?d0tiUW92WUlZVnhOOUIxY21oeDlxYmorV2dTTko4R21JQUFHdmRxajV6KzVw?=
+ =?utf-8?B?YzhZQTRhWUIvZTFjSDJCSFI5dkNkSEdUVWpuL2JSeGlmS2lZcXUyTjNqOXpD?=
+ =?utf-8?B?UTRYeFZJbkJBaURIaHo1MEJud09XNGt1d3BVNk1OQzdIeS9aaisycVNlWmZJ?=
+ =?utf-8?B?MVV1RHYzL2F5Zmh2VmQwTnVIa0RRei9Kc1ZRMklLaXdiRzFIVGdkcGJIRTg5?=
+ =?utf-8?B?WGVIR243cmRXRHdETjVHUVljZzdOa0xwQ0hmTXp3bDVucUl5bStFNWZKbUxp?=
+ =?utf-8?B?dEpUWXA4dW5lL3l6Q3VQK0V3NFVaMS9maEVrMENabTNPZzJ2V0habWNhVEt0?=
+ =?utf-8?Q?V2efU0350QNsepZSPRwYDfCcphjOt4=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9P195MB1212.EURP195.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?TEcwSWh4b0RhTko0enpBcERVU1dkY3drTFFaTDdNZE1aQVVac0x6N1FMWjRn?=
+ =?utf-8?B?NitjRlB6Tm5IelJUbDhhMzVieHdGRlFlc3VTSWh0MDJnVzIvM2ZOREY5bkUr?=
+ =?utf-8?B?Z1lHc0JpQjZUQ2UrMlV4c2JPZFJmdC9UMWlSb3ZvYmt2aEk2am5mYkJNYkJm?=
+ =?utf-8?B?alMyVzB3RTRiWklad3E4dmtncElMaDRlYzFGUDY5RzFkOUtlTjFJcU5YNVBv?=
+ =?utf-8?B?dXl1Z01mYVhZTndhaWVhTmNweGtzYXp3c0RvQkp5aEIyYm9MK3IreERKNjlG?=
+ =?utf-8?B?SjNYMHhDemx1VlozamhzTmNBUHVHK0hJK2pPeG51WmtDam9BZVlRMkcxR1J3?=
+ =?utf-8?B?S0QzaWdyZzlpS3ZlanBuZ2tFcVRjR1JBUlZINkhXWXo5bjUrWGcxNWU0WXM2?=
+ =?utf-8?B?NnJ4ZFpBTHBBQmt3b0VrUm92WmdWanRKaWxzSjZVNWRVR2graGJuUHFyNUxh?=
+ =?utf-8?B?U3F1V1lLcTNoWTZ1SUl1VXcwc0hOOVpwT3pmaDcxbytXUEVKL0Fpd3ZlanF2?=
+ =?utf-8?B?ODB3YXlKelMyYldFUFpmSml3MGt4eWJuNjZXdzFEVUp3bTF5MXpDMEVqTTRU?=
+ =?utf-8?B?MS9NTm1FVHdPTytVM1ErM0pYdEp3a25LYVdtWU5mVms5MTdpbFRsSjl2SXlU?=
+ =?utf-8?B?ci9SVGx4MEVTa0JEWE1kcjZWQWR2c2haREJxNkhlQ2NTdWF6VkgvYXhyaE5Z?=
+ =?utf-8?B?c0RDUU1kNDlBMWNPQm54eDQ2bVBXSVZSZkdaSzUvRXBqd1YzanI0OVR1T0cv?=
+ =?utf-8?B?VUIyNVF1TnJtclJPL0FMUlZYbDdFb0NFNTJ5NUpwRWJOd1NiQ2IrTE9yQ1FY?=
+ =?utf-8?B?aGxSSkV4VTMzVGw4YzA4TmxyRjl3RzFqYzlFQlZxUVVIbStGQjV2VmthREZi?=
+ =?utf-8?B?eWdPWmlxY204NDFFNmlZRUFDMExZL2tScmE2eHZmKzQ3QkZ0N1JMZUlteFd5?=
+ =?utf-8?B?cVIzY2dYeGxGaUlQU1JHZjhldDJsWUtpY0QrS1kyK0srVUNObDAwVXp3dmJY?=
+ =?utf-8?B?UFk3Nkc3NkhnZVA0ZzVkT1BWZURIbThPZ05aWWx6NjlVTk8vYWJSV0RvMlhR?=
+ =?utf-8?B?UW1uMFNlYUk3VVhkM0hZcVRVVGhyZUlTM1ZnaEttWFBpS0xJSDNOMzNXcWJq?=
+ =?utf-8?B?aXVaZFlsWTJqL2txbFN5MlFSeVVKaUVkN3N6bXFoMC83ZDdCYW1vT2EvUU9N?=
+ =?utf-8?B?Sm1xVGVvbzZyR1RFTWRheTljV1I1NnVoUVVudE85MzJNWk1HMG51dXd1YzV0?=
+ =?utf-8?B?MkxpSWNsVW15bXRWZjhwWm1razA1NUZEUCtqQStjb2FkcTY1emRLUkRKM0hF?=
+ =?utf-8?B?R2NJS1pYRWlSdDJpZHZQOW9YNEoyU3UrMENVV0U4dEJrZWJwRE4zZHFMbTRa?=
+ =?utf-8?B?QzI3dHpzSW9yR05zWFN1MXVxV09Jb1N5YVdrUzRtcUdISzZZVXpGa1lVYUpQ?=
+ =?utf-8?B?L1RmRzlPREMrd2NSek5GQ1Z1ampxY2NPY2RvZUpPZmZnR252QUdQczg3QnhM?=
+ =?utf-8?B?eE9aTjdKbmJZeDduRytPM1hNV3g2b1puVkJwcDEvQzVsQUFWWmROcHdDVmR1?=
+ =?utf-8?B?MUJvOWRnUnNOeGUvWW9BQkpybHFxRmZyc1hqMlFQYzJjVnBLQzJESzZvUGUx?=
+ =?utf-8?B?WHBZMW03dmVNNUxzaVkvb0o2cStWOUk3cnEyTGFBNjdSWUlEdFZVRDBVdElw?=
+ =?utf-8?B?OGpOQkp6eEpMcHhLRkdFeUgraHR5NmdsVUE1MHpta1owNHgyaEE0and1cktD?=
+ =?utf-8?B?QVN4TVF1MDhRYzZHbDU0dzJMSVpjOVFBKzZZcFNvRWdHTHhmMzBiMDI4MEdM?=
+ =?utf-8?B?SU1UWkIvNzY3WGpJVlp4MG9VeUhNY0xVSTFMbUIwWVI3QnYrMmozWE5CSnBo?=
+ =?utf-8?B?d2RSTHhzQUZKY25ERFFsZVpRYjhscGhMMk9tMU9yVTc3czVTMmxPdmZhT0Uy?=
+ =?utf-8?B?SkJJUWg5NHR6alYwK0JjbloxMEtHN0V3MlNWQjBLQkpBZit0dFgrdDYvcDBm?=
+ =?utf-8?B?bHV0cWV0azZBa3J6SVlqK0lWWU1yZUNOalJxeDNzSlFBTGRYa2xJVHpBczJ4?=
+ =?utf-8?B?RFpwWGx6SHdibjZkOUhjT0srV1BwaWtaQW4zckQ4c0dtM1JlT25jd1A1TzBS?=
+ =?utf-8?Q?4YgnFw2Ypeg9KNXcgNz+VRob7?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4E6ADDEDEC068E469430D089486E3383@EURP195.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: phytec.de
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB9P195MB1212.EURP195.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d7b386e-d6b5-4fde-54c9-08dd9f7f9030
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 May 2025 13:40:38.5058
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: e609157c-80e2-446d-9be3-9c99c2399d29
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: GtkmIII6r8WMiWkTYpa2GMEF6xXYjfdcLQFvm7FxKvkPQJLbi+hPwxlf3K7Srzl/CKuDM71KK5ZT6UGFH14pmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P195MB1298
 
-Jacopo,
-
-> Let me recap all of this.
->
-> With:
->
-> - MIPI_CSIx_CSIS_COMMON_CTRL[11:10]
->  "Select Interleave mode" =3D 0x00 =3D CH0 only, no data interleave
->
-> - MIPI_CSIx_ISP_CONFIGn[7:2]
->   "Image Data Format" =3D 0x2c =3D RAW12
->
-> Embedded data and OB pixels are filtered (which means we're filtering
-> on DT even if MIPI_CSIx_CSIS_COMMON_CTRL[11:10] =3D 0x0x would suggest
-> filtering is not enabled)
->
-> However corrupted pixels are still sent through.
-
-Right.
-
-But there is more: there are 3 separate "DT filters":
-
-0x32E40040       0xB0 ISP Configuration Register (ISP_CONFIG_CH0)
-   DT 2Ch (RAW12)
-0x32E40044  0x2D00500 ISP Resolution Register (ISP_RESOLUTION_CH0) =3D> 128=
-0 * 720
-
-0x32E40050       0xDC ISP Configuration Register (ISP_CONFIG_CH1)
-   DT 37h (User Defined 8-bit Data Type 8)
-0x32E40054  0x2D00500 ISP Resolution Register (ISP_RESOLUTION_CH1) =3D> 128=
-0 * 720
-
-0x32E40060       0x48 ISP Configuration Register (ISP_CONFIG_CH2)
-   DT 12h (Embedded 8-bit non Image Data)
-0x32E40064  0x2D00500 ISP Resolution Register (ISP_RESOLUTION_CH2) =3D> 128=
-0 * 720
-
-The 4th set looks the same, but doesn't appear to have its SHADOW
-register set, so I'll ignore it for now. I'm ignoring the SYNC registers
-as well (offsets ...0x58) - they are zeroed.
-
-It appears the 2 LS bits of ISP_CONFIG_CH* are the number of some output
-port. #0 goes to ISP, not sure about the others. Will have a look.
-
-I.e., I can disable CH0 and use CH1 or CH2 to feed image data do ISP -
-it works.
-
-MIPI_CSIx_CSIS_COMMON_CTRL:
-Bits 18, 17 and 16 respectively reload SHADOW registers for CH2, CH1 and
-CH0. For these tests, I have to use
-"devmem write 32-bit CSIS_COMMON_CTRL 0x7xxxx" instead of 0x1xxxx so that
-all 3 shadow sets are updated (and not only #0, the one in the docs and
-used by the drivers).
-
-0x32E40080       0xB0 Shadow Configuration Register (SHADOW_CONFIG_CH0)
-   DT 2Ch (RAW12)
-0x32E40084  0x2D00500 Shadow Resolution Register (SHADOW_RESOLUTION_CH0) =
-=3D> 1280 * 720
-0x32E40090       0xDC Shadow Configuration Register (SHADOW_CONFIG_CH1)
-   DT 37h (User Defined 8-bit Data Type 8)
-0x32E40094  0x2D00500 Shadow Resolution Register (SHADOW_RESOLUTION_CH1) =
-=3D> 1280 * 720
-0x32E400A0       0x48 Shadow Configuration Register (SHADOW_CONFIG_CH2)
-   DT 12h (Embedded 8-bit non Image Data)
-0x32E400A4  0x2D00500 Shadow Resolution Register (SHADOW_RESOLUTION_CH2) =
-=3D> 1280 * 720
-
-Also:
-0x32E40100     0x5F10 Frame Counter (FRAME_COUNTER_CH0)
-0x32E40104     0x57C4 Frame Counter (FRAME_COUNTER_CH1)
-0x32E40108     0x33CF Frame Counter (FRAME_COUNTER_CH2)
-
-Data selected by all 3 sets is somehow fed to the ISP. Now the data
-isn't simply appended to the previous fragment. It seems the DT 37h
-lines (which appear before the actual image data on the MIPI bus)
-somehow overwrite (only) the first line of the image. I'm looking at
-it.
-
-INTERLEAVE_MODE =3D 0 or 2 =3D> only CH0 is used, the first 32 bit in the i=
-mage
-		on CSI1 are corrupted.
-INTERLEAVE_MODE =3D 1 =3D> all 3 CHannels are used, no corruption
-
-There appear to be some subtle differences between 0 and 2, and 1 vs 3.
-
-> If you
->
-> - MIPI_CSIx_CSIS_COMMON_CTRL[11:10]
->  "Select Interleave mode" =3D 0x01 =3D DT (Data type) only
->
-> Embedded data and OB pixels are still filtered, and your corrupt
-> pixels are filtered as well.
-
-Right.
-
-> Now, why are "corrupted pixels" filtered away by enabling this option ?
->
-> As far as I understand bad pixels are corrupt in their data values,
-> the CSI-2 packet header which contains the DT is correct. Is my
-> understanding correct ?
-
-I think so. Maybe the corruption happens after the packets are received,
-on the 32-bit internal bus maybe.
-
-> It would be nice to actually understand what it does before enabling
-> it unconditionally.
-
-Still trying :-) Next Monday, maybe.
-
-Especially I don't know how do I receive multiple DT types, including
-12-bit RAW pixels and 8-bit user data. I know it wasn't probably
-designed for this, but nevertheless.
---=20
-Krzysztof "Chris" Ha=C5=82asa
-
-Sie=C4=87 Badawcza =C5=81ukasiewicz
-Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
-Al. Jerozolimskie 202, 02-486 Warszawa
+CgpPbiBNaSwgMjAyNS0wNS0yOCBhdCAyMToyOSArMDIwMCwgQW5kcmV3IEx1bm4gd3JvdGU6Cj4g
+PiBZZXMsIHRoYXQncyB3aGF0IEkgbWVhc3VyZWQuIEZvciBhbmFseXNpcywgSSBhZGRlZCBzb21l
+Cj4gPiBkZWJ1Z8Kgb3V0cHV0cwo+ID4gdG8KPiA+IHRoZSBwaHkgcmVzZXQgYW5kIHRoZSAxc3Qg
+cGh5IHJlZ2lzdGVyIGFjY2Vzcy4gQW5kIGFzIEkgY2FuIHNlZSwKPiA+IHRoZQo+ID4gcGh5IHJl
+Z2lzdGVyIGFjY2Vzc8KgaGFwcGVucyB3aGVuwqB1c2VybGFuZCBzZXRzIHVwIHRoZSBuZXR3b3Jr
+Ogo+IAo+IFBsZWFzZSByZXBlYXQgdGhlIG1lYXN1cmVtZW50cyB3aXRoIE5GUyByb290Lgo+IAo+
+IFlvdSB3aWxsIGZpbmQgdGhhdCB0aGUga2VybmVsIGJyaW5ncyB0aGUgaW50ZXJmYWNlIHVwIHJp
+Z2h0IGhhdmUKPiByZWdpc3Rlcl9uZXRkZXYoKSBpcyBjYWxsZWQsIGFuZCBzdGFydHMgdHJhbnNt
+aXR0aW5nLiBJdCBjYW4gaGFwcGVuCj4gYmVmb3JlIHJlZ2lzdGVyX25ldGRldigpIGV2ZW4gcmV0
+dXJucy4KClRoYW5rcyBmb3IgdGhhdCBoaW50LiBBcyB5b3Ugc2FpZCwgd2l0aCBuZnMgcm9vdMKg
+dGhlIHJlZ2lzdGVyIGFjY2VzcwpoYXBwZW5zIG11Y2ggZWFybGllci4gSSBtZWFzdXJlZDoKCiAg
+ICAgICBbICAgMS43MTMxODVdIERFQi1QSFk6IG1kaW8gcmVzZXQgZXhldWN0ZWQKICAgICAgIC4u
+LgogICAgICAgLi4uCiAgICAgICAuLi4KICAgICAgIFsgICAyLjY3Mjg5Ml0gREVCLVBIWTogcmVn
+aXN0ZXIgYWNjZXNzCgpIb3dldmVyLCB0aGUgZGVsdGEgdGltZSBvZiAwLjk1OTcwN3MgKDk1OTdt
+cykgc3RpbGwgbWVldHMgdGhlIFQyCigicHJpb3IgdG8gTURDIHByZWFtYmxlIGZvciByZWdpc3Rl
+ciBhY2Nlc3MiKSB0aGF0IGlzIGRlZmluZWQgaW4gdGhlClBIWSdzIGRhdGFzaGVldCB3aXRoIDJt
+cy4KClNlZW1zIHRvIGJlIGZpbmUgZnJvbSBteSBwb2ludCBvZiB2aWV3LgoKUmVnYXJkcywKQ2hy
+aXN0b3BoCgo+IAo+IMKgQW5kcmV3Cg==
