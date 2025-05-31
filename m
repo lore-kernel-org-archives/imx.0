@@ -1,145 +1,177 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010003.outbound.protection.outlook.com [52.101.84.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBB720A5F3
-	for <imx@lists.linux.dev>; Fri, 30 May 2025 22:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748643451; cv=none; b=RIwzZlPyClAaHWPvmfHdjK8wA71zqiWA+vZGdxGlap5rnbKks7BuOmObH7BWk+O8tOOFz73mhgg35rzLs05yofxFE6OIUyCNHbGQtepyfpyrn8TR0eTILa5MGE+/9QcnHuLTooUmvcJvBtKCZpwOi8INZ+S6DmZ02t/izIsgwdc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748643451; c=relaxed/simple;
-	bh=+rOvhQd/jMBSV5uT4L5LEtK0HwicWLzbj+u/i4d3U5U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4HxQShqxsshU/nzjivkrPUQ9zVq3PeHOqUUuVOUrXe84PoIF9+kFUbT9vsauf2bt8E/Yji3VwwXgoBS/sOi9ILpH1ziozAnOBwQBWKDwPcsGiBXYFjH0GaEucLDM+fTrDLr4L4+uHwQtR5DqWz9CmT9WlCWqXmA+Z2BidMnwqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4zhppVI; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AF41CA84
+	for <imx@lists.linux.dev>; Sat, 31 May 2025 01:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748654842; cv=fail; b=BJfE4mxG/fc0oOS50zHyWpFDlJnqIdYID5LAlBJqx+IOw8oF8umkR3hOpqsw6T9kKvQJyX3jGTAsmK9l3DClwDc2y3UmjkAdMpxcC5+iDY7dYMQsJXVYN6s0HEoYdgAuE/So7XvsP3lvyHyxpGgkhoz2kz8Z/7OqrTNRee9KZzg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748654842; c=relaxed/simple;
+	bh=lu2vuKTx/qD/Ts2msM+XMRHV6Kd6xWVIv9zdg4UDvYo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=F6yZyqnfW9zzQlpbTOY+KnQ2UOqvCIDLHF7vToIKDzqEhKslpL2RKnOy3mmcQwHWMUuK/A6vEa/1oJ67SRw/vp/b5ew/O2F5Dzy/9w79qNxXvhBVbrZWve6WrSmQOt5oScfX60vZNAlSocBs3Gsdpp1sXDLXRD09V70MYMNeY9A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gHQRChX4; arc=fail smtp.client-ip=52.101.84.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4zhppVI"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6fad8b4c927so614116d6.0
-        for <imx@lists.linux.dev>; Fri, 30 May 2025 15:17:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748643449; x=1749248249; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=89/6esdxobIB3oXPFQQO57dHmv1o6cOWK2fx905kC30=;
-        b=c4zhppVID5zT/jbzTK2FX2Q+w5tQccue6EeK/sk6xSSnD3R40ilas7y9sZRZgy4+xQ
-         DM373YoBX5bXG7j/ba4yS2pQPCd0H+qG7gYNSQrzRaun/tAQvnA5APW9nu0aDuP4c4Mh
-         XcI1cEHKuy/lJ58Gg+xpDi19zfIbWj0nAfXDwhbDaqjGp2juvc9dohWQTN8Zi98GUtl7
-         DNVyzgKmlrdYPScPCUdUYVbTfgbPkmAxvNDP7tgjbOB2UmjguB/WzftPNIUBqoHc3BMp
-         HGn4iRF0t8JeSbZcLZN1nqeEIN/qiG9rUqmXuK6zil0suTvqb9jOryyM22rkTt7WeuPs
-         P1nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748643449; x=1749248249;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=89/6esdxobIB3oXPFQQO57dHmv1o6cOWK2fx905kC30=;
-        b=BfOhMgvs/h0qSAG5YRghwdpH9JYwKWfihizz0msjwnUMCMcTDj/E5sH3Ang2ct4u2P
-         1l5HxHfA4BV3trFir3DgOJutMQU7DB9M+S+71EpTsyQApaU8FHGMy3l9iPHy57MomGFn
-         +3vKouqAxxJJ35sGbEr7p3dchB2j5O1m9rcOBEeYUFQEhr7S/XLCpVmd84bINZBnY00c
-         5bwN08fvPhd+qzNwN19szva4r+gkq+gXyOzfkGXgOrwlXVQZgsPPSmVSs3tYgbBlnWPs
-         kLoZz/0eC53IMfjrV30wjicoAwvvxnpX8KpoEEFe0NROI6oTsQ6xGykrY11yDo3whWa6
-         2hgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWp4/Kxc2Mo9DdeSnpQElG86oICDRiPRBBKvU5p5nb6DHJrKntN9x4NjJ6ieoSbxw9D7tE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzt/xfPide0ltvNOKdI9KHSOg3cN6pCwhB9vvc1OJvRYg7GFzKc
-	O3KNX8iEEFCZXPknjOFMc6IVh4dPHAv9p8fpEsXGX4ZK+uU96fp5vwuW
-X-Gm-Gg: ASbGnct2YJguXuBuhN1Ir6FRMH80Wl6ft/OKpcXF6dAdnIaGHTIc5MzzqkyeD2V9hUj
-	D88RdXtXbOORrMP+YeZX5Arej7hXaB67X+XYIWZ1l3psoj0gKlS6U1+KnDsSsjEoIG200POWI6v
-	JnrKRspKGR7Wo8AJZomL320+RV9eDbkSmLjXONIy1BJyRTX92ESpibN83TYE0PZ8Mrq8P314Cwr
-	i/UqQrYmsNTGJJy/p1yeqMUl/x6qMn4a+28yteQ7FcSXAF0pjrcpwSYoksCp8v0xElH7nU9Hl0l
-	WwS4pj3FeY6OHX1t6PUzpNhgHU9dH1jkUPCYFjWnK//0REaJhF4hGt4YviIGE5Qw04G462q0kb5
-	cIZCgD4/vRK5bkTHRnKMAG8N2Ew==
-X-Google-Smtp-Source: AGHT+IH6ZsYKk6i7ecLc1HWTvwLW3YahjSaeJf60X60SsGSRpv9givwN0lV3GVO1/HEeeqSYTFYdjA==
-X-Received: by 2002:ad4:574e:0:b0:6d4:19a0:202 with SMTP id 6a1803df08f44-6fad1a9d02amr63019336d6.33.1748643449174;
-        Fri, 30 May 2025 15:17:29 -0700 (PDT)
-Received: from aford-System-Version.. (c-75-72-162-184.hsd1.mn.comcast.net. [75.72.162.184])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fac6d4d0cesm29986866d6.35.2025.05.30.15.17.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 May 2025 15:17:28 -0700 (PDT)
-From: Adam Ford <aford173@gmail.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: aford@beaconembedded.com,
-	m.felsch@pengutronix.de,
-	Adam Ford <aford173@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] arm64: dts: imx8mp: Configure VPU clocks for overdrive
-Date: Fri, 30 May 2025 17:17:11 -0500
-Message-ID: <20250530221713.54804-5-aford173@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250530221713.54804-1-aford173@gmail.com>
-References: <20250530221713.54804-1-aford173@gmail.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gHQRChX4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DOFRBVlQui+thYEi4wabF6CceCnU50ooASnII1iG2gRDd0GL2vV/KG4o+Im5KPwu8LBWi7T/M+7cGzLqW8Reh2zpHuEyroROOpCRbllHhWR9xvAu6DZGPkR2PxR0j3tJ4KRVPijS1D/me5IzmTciR69T6MZaOsdvFgLbz+UgLNTBmeRr+AwFCEncyfYrmOa2vmIyMFMqw4jmYXzq99UfDrWnBDIE47mff1KplD1cshoxxT9I8gvcwAO0immuw+bKhIQes99okRZ1u7NYXtcm48qwUTmIOBfA9P5/VS+aqwb+65M0gmO8P966waHdbEz1D1GsNKRgYVJSVMmL9D72kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lu2vuKTx/qD/Ts2msM+XMRHV6Kd6xWVIv9zdg4UDvYo=;
+ b=XwIt4aaTsbSOpDGS5uXDWyu43OtS0WLyDyqtMHhvSJSYoPy4xaDHSj3lVG1qZNecjt9T9bXib5BrSDEFusoN40WkKQGouSCvETCB6G+5TiBGMVB+2sa0FMQ9H5oPWiCEyXfl5VwZ+aKbKCTLUiRWObrbYz43axiDzuTggosO/W5Bl6ZrKWhe5Ii1UidrhMvEzwL8sIbli84+oa129tJIpkE8bphyoImxJV7aSyNZyEE+86AxYYtrP8oJ+xU0oFe4r2LufnOo402z9yr0JgM02iptJjzA0Aywxb07V67pigc5MKMNIYXTO8Zg/cuUy3wI2NX3tfXVarOU5KfXNcyQ4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lu2vuKTx/qD/Ts2msM+XMRHV6Kd6xWVIv9zdg4UDvYo=;
+ b=gHQRChX4sikbDuDZjQYIFdu9Zh7ETAhwtV6xGVXFlhL2RTmrTusuVm2vlZQuxUT/NR1s+OD34u89SY6bIBOtr7orn3++YJbxSmee7oR5569U9kx2EHOmhEKFUBeBLmQpWe9fe5kyWoxWzIx0LwGg0KQJRlIGPf+NODtldz+tClqnzVLor+jK5CSmUcYkMTNBDeGIfBjsmq/SLcKLT3//E5ji7MrSKvSFjm9TU0XaRXjkg0qpKM+hSkGvTNGwFb9l2N4rBOeUU2mx+cnUS+p2JAFbv63wb1rWKWS2B6PGy/lYZSFDS/8J8dfWsrhDgK8RR+1wj8+PqET5KIeq4OlQyA==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AS8PR04MB8449.eurprd04.prod.outlook.com (2603:10a6:20b:407::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.32; Sat, 31 May
+ 2025 01:27:16 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8769.031; Sat, 31 May 2025
+ 01:27:16 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH net] net: enetc: fix wrong TPID registers and remove dead
+ branch
+Thread-Topic: [PATCH net] net: enetc: fix wrong TPID registers and remove dead
+ branch
+Thread-Index: AQHb0UQJkvk3Nmb+7069SinjV+RcY7PrZIEAgACNsoA=
+Date: Sat, 31 May 2025 01:27:15 +0000
+Message-ID:
+ <PAXPR04MB8510044810B2C0973978B6248860A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250530090012.3989060-1-wei.fang@nxp.com>
+ <20250530165434.xzdroce3i2mmwxcf@skbuf>
+In-Reply-To: <20250530165434.xzdroce3i2mmwxcf@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB8449:EE_
+x-ms-office365-filtering-correlation-id: b9351551-90ab-494a-cb40-08dd9fe2471a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?CBrijKSJUMl/0UrQeLCgT3/LVBs+OFqcasR03J6LbcOzvUeGggVQm9bMyMVh?=
+ =?us-ascii?Q?BiCH6maOZ+Oen8rbXlTCwoOiq0Ojv42S/4ljN41sU3sDKWOhb7J8WCzMs+oI?=
+ =?us-ascii?Q?PDivp8njWepUzYc/zQODaBPIYcosekcz6bHJf+LUUE9F2oFqLao5ofoLnEjc?=
+ =?us-ascii?Q?wvxeiAKOa/AE549FzqRWEsDJpMyXdWi/DVmiTobRAtrkPurYhC9dvJfLWgme?=
+ =?us-ascii?Q?Vdr1rbZ8TAfiH+GXq3JgJK+sq17O0uwM+iW0i7DiPPb8ptkDazvCJcxeZgMa?=
+ =?us-ascii?Q?a9jZe6LDoXRa2RsM8mdmQVHlDyvnhRS5IxmhYN29Ic33sDxwWiA+ofs8u3mc?=
+ =?us-ascii?Q?To9bubbPdN/HORlfPLP+LHEmu9CfNaznd+SFU6FdqnVyD6a6q1iHceiTwEJ1?=
+ =?us-ascii?Q?2yB7nPhXrBdT32JiQ6HnGxZk1ulccx7DX9mR5NU+pvll3x11s5l1tgiXNpzR?=
+ =?us-ascii?Q?B214x1A5PHfC4y9ZUcqqDJe6TrfOhvAmcXDL510tHdA5Q5DjneB2t7UmDxsi?=
+ =?us-ascii?Q?qPrzaj2p7ICFBySxs9kf6zJfomDRKn1/i0DGN8JWeDbl+wc0Et5Ldb3GZoLy?=
+ =?us-ascii?Q?EtMU+sSKc7nGVv8NX2IQNJRnyD+WGLt+ByoXILpdwmJqDzmqLdBZX9GnOd4c?=
+ =?us-ascii?Q?Ua/6wU7jnwsW1WBYXy3E1lJCfuS0rnJyvDAMlPJL8gBuVyoseJR7yZxyRgKv?=
+ =?us-ascii?Q?pYXKE+NBt4kInGM3/kqCOiwTaaCp40S/HcBiLeksUdN9L3wG4Pbtzd+wUzFR?=
+ =?us-ascii?Q?kf3wTHfHX1nKfjvsBt6kI3WDu8gGib45bxWLG9GRCGMYk1LOsh5FVgs209Kn?=
+ =?us-ascii?Q?5/yNE7bLsHHpOVzlakygznA6pkoxBGvx5/iJ6M/A9Kto7ChrMQTjsYR8js8B?=
+ =?us-ascii?Q?cYCIdgcHo+aJvlj1CkXv76o3hO6cx2SDApiVjaFTMZ1mpQY87a021jPHPWr3?=
+ =?us-ascii?Q?5hAazKZ3wgsnQ2jd+nUlW+h6u+640hkob7PQ8f2mlfsZCAmkV+Fs8SwOYub1?=
+ =?us-ascii?Q?V9M39362hhrnHYzQkftfqz6dsX76MFJc6J5bydxFvEyZb3wZZFJeBkpyD3yU?=
+ =?us-ascii?Q?/DTEe7VGwIs9WCHGAVKGlaC8tdqodrqSQvRX/3OuHsSHVXJ46fEvhzniy8ar?=
+ =?us-ascii?Q?6t9g2MwVxP4EpPJVBMZwKX4j1lo7FZGBRDp6UrscAkD+oyOlSkPOu0LFlmqB?=
+ =?us-ascii?Q?KHSW/xv7naWvWDysX1vW4slkXxUpY5TDRz3mMffDOOCwHOfe7yxtO8O4RpFf?=
+ =?us-ascii?Q?jjuVzyTOaCp8Wl6AlyUm2Il73G4+4I0Zu/KXH4nimrCK1pXD2Zezfbzgcnrb?=
+ =?us-ascii?Q?cWqRB41NrTkE/dRc6Q/euZVJrerUmOD/YbOWZR2Cht4bqhzdISRMQbZkKh7X?=
+ =?us-ascii?Q?i7YFIJRqS48R1KvCALWF2ggquNtGyu9TUAv2TerTn8CpTVxEXrE9MT9KaOep?=
+ =?us-ascii?Q?io0LHydQ6ls7ASbH8gPwaHxtZuMgOcgwLdL0+ziNshHWvrNv77POEf3wICJ4?=
+ =?us-ascii?Q?47jx9vjvt/i/WHU=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?A/UCchFZqmfFgbp0Q2SZCP6J4iKiGxbOT57z7/AcjB0PaDV8wCDCE3X/G7HF?=
+ =?us-ascii?Q?Zt15wzevQNGkoY4khp5RCHbi37uRWjNKidt2cBe9z//jkcsy6JGeG0OFnX99?=
+ =?us-ascii?Q?74nt0lRn7qHRZhV6PBiBsCNeXfWA0VPj1OsBfV9oa1tJg6urh2cBCU/a96m/?=
+ =?us-ascii?Q?LPCUZgNpp/PleiaXxX+7BIilQAAm+KbYhkMNrPF8mChTTiW5gtO/DOPjNvro?=
+ =?us-ascii?Q?dI0VB9kSY46gUuVJu3+ike5TQhoDRCuc8vzXHOfYn3uIUyt0PUkaYb3sqTsa?=
+ =?us-ascii?Q?1R8v73Jw3CcHJdUzuNxRqD8uWc0nhuxsXwgUfFtCxpgHV/3HEsNvGxGQyuIC?=
+ =?us-ascii?Q?yqcaIlWkd8jxxesA7n1ddEzT2St7zV8/vyj0Tg7Loh0lq3pH+tMVK1RaUbgG?=
+ =?us-ascii?Q?J0Hs9koiglAe1iknbAN6hlvqAJTE8NqZFoAdfEP1hcXSIq7+tnRCW0/kXXhW?=
+ =?us-ascii?Q?HuwyXliKReNQ6q5pFzitYnrTQbhMYLXPGx964iwPai/lBwaio0RHtWuGMIdn?=
+ =?us-ascii?Q?wls2RleJAXVC6gxVVaVsqPPvIVMOgGdYDgBzeiKy53ENZFt3/4SVoiUjidHB?=
+ =?us-ascii?Q?saVHyJk26MfFq+S5d/szHt4Rx5CdMnVXj0xT24slFHkCktVNKHqzRsYwN+zp?=
+ =?us-ascii?Q?0KbsmlAIulzVpRw01/vsOen1ZqkgNyZ1WNA+kQB+kg8IzYCF1rK/9+i3+YVq?=
+ =?us-ascii?Q?BlAGADw+tSb+UMhM9fmQjOwFt0RAltUhckjlWYEs9kzaxy2oHBaRB3ILhGx6?=
+ =?us-ascii?Q?+l2MZx8UVnyar2sjdzPPnlOzBErqVk0TcDuRvPUT3xWvOpllVqJ7JttdML8V?=
+ =?us-ascii?Q?Q57r9U8SSacs/7Uc95d2Lu1yq0dLBSI3fCxO20TIeNJ3QYY6cvpwuHi+qxcH?=
+ =?us-ascii?Q?l+rDzxEf+CBvWe5qD3ZT/kgrTRXO21s78YJvPcmqXMVYYz7joPmTmvzv1wno?=
+ =?us-ascii?Q?v1YalAqrkVGDGIXWL2vnsjfCK9W+hG6ZXkj5DE5P8G4OmT7eoVesGTPYRsMv?=
+ =?us-ascii?Q?WWKrHFLnrZFDlw/3Cauz5GCgn066Q5Ko/rBQxnpciwogqrdoUvHLBfdDbUk7?=
+ =?us-ascii?Q?3K8Q0oyUWIActHoPgEi5MHCwNzX33l0XrptdS6rG7fHIGUGyXxwQK+yskbFQ?=
+ =?us-ascii?Q?RHZOHFWRTRXEMYgopd1SHpjM3UJe8/aIarsqLh7anHP8wvXrSFFbchdGp+Lb?=
+ =?us-ascii?Q?14YNUjsv0lxIQr4/02R/fBmO0rWfIe7iyUA7hqOeRHFrDSpxLXPIhuMDtleQ?=
+ =?us-ascii?Q?fU35enE6GKEXVpC3UKFJgdqmysdDwvgL1q9cKxH0G0KChFUOgePeb0GwPWPA?=
+ =?us-ascii?Q?7xuwettmjHt2MiERps5pUD4DEXlW7aooP4lkB5WbnTcqdrAMyFcqc+RnS25Z?=
+ =?us-ascii?Q?rc0tNNj9R2u2KjVcyzk6b2V8Z3K6DYnpTtJry4yXg2qBtHz3tL7zJp5SsR4l?=
+ =?us-ascii?Q?uXnMiaNvd0Og+4XwzVi+GjFen7R8dnyF0/BFxUtmjJyEhzvE0LiiI5Y/34/5?=
+ =?us-ascii?Q?mr1ce1TWlJKmFwhFVaKYWoaD/NWs6iL20jKkBlkgGzPvQYo0fsab4dnKl4Cg?=
+ =?us-ascii?Q?F1KbhXk7GxYgu3IRJ74=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9351551-90ab-494a-cb40-08dd9fe2471a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 May 2025 01:27:16.0632
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ifJ2syVtqGMyEG202HQ4dlA2A2YVof125AVnAYEkvFqcFQYDuZ9h1QBJNXs/Lecse3sR3xK2nFo1pij0+kvt6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8449
 
-The defaults for this SoC are configured for overdrive mode, but
-the VPU clocks are currently configured for nominal mode.
-Increase VPU_G1_CLK_ROOT to 800MHZ from 600MHz,
-Increase VPU_G2_CLK_ROOT to 700MHZ from 500MHz, and
-Increase VPU_BUS_CLK_ROOT to 800MHz from 600MHz.
+> > In addition, since ENETC_RXBD_FLAG_TPID is defined as GENMASK(1, 0),
+> > the possible values are only 0, 1, 2, 3, so the default branch will
+> > never be true, so remove the default branch.
+> >
+> > Fixes: 827b6fd04651 ("net: enetc: fix incorrect TPID when receiving 802=
+.1ad
+> tagged packets")
+> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>=20
+> I see what the patch is trying to do, but how did you test/reproduce this=
+?
+> The CVLANR1/CVLANR2 registers are by default zero, and the driver
+> doesn't write them, so I guess custom TPID values are never recognized
+> in net-next. In such situations, I believe fixing a bug that has no
+> consequences should also be considered net-next material (and net-next
+> is currently closed until June 8th).
+>=20
 
-This requires adjusting the clock parents. Since there is already
-800MHz clock references, move the VPU_BUS and G1 clocks to it.
-This frees up the VPU_PLL to be configured at 700MHz to run
-the G2 clock at 700MHz.
+This issue cannot be reproduced because, as you said, the current
+driver does not support custom TPID, so the issue will not be triggered
+in actual use. However, from the perspective of code and combined
+with hardware, this is problematic.
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
----
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 909555a5da4b..848b25c9b752 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -2256,8 +2256,8 @@ vpu_g1: video-codec@38300000 {
- 			interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&clk IMX8MP_CLK_VPU_G1_ROOT>;
- 			assigned-clocks = <&clk IMX8MP_CLK_VPU_G1>;
--			assigned-clock-parents = <&clk IMX8MP_VPU_PLL_OUT>;
--			assigned-clock-rates = <600000000>;
-+			assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
-+			assigned-clock-rates = <800000000>;
- 			power-domains = <&vpumix_blk_ctrl IMX8MP_VPUBLK_PD_G1>;
- 		};
- 
-@@ -2267,8 +2267,8 @@ vpu_g2: video-codec@38310000 {
- 			interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&clk IMX8MP_CLK_VPU_G2_ROOT>;
- 			assigned-clocks = <&clk IMX8MP_CLK_VPU_G2>;
--			assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>;
--			assigned-clock-rates = <500000000>;
-+			assigned-clock-parents = <&clk IMX8MP_VPU_PLL_OUT>;
-+			assigned-clock-rates = <700000000>;
- 			power-domains = <&vpumix_blk_ctrl IMX8MP_VPUBLK_PD_G2>;
- 		};
- 
-@@ -2284,8 +2284,8 @@ vpumix_blk_ctrl: blk-ctrl@38330000 {
- 				 <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
- 			clock-names = "g1", "g2", "vc8000e";
- 			assigned-clocks = <&clk IMX8MP_VPU_PLL>, <&clk IMX8MP_CLK_VPU_BUS>;
--			assigned-clock-parents = <0>, <&clk IMX8MP_VPU_PLL_OUT>;
--			assigned-clock-rates = <600000000>, <600000000>;
-+			assigned-clock-parents = <0>, <&clk IMX8MP_SYS_PLL1_800M>;
-+			assigned-clock-rates = <700000000>, <800000000>;
- 			interconnects = <&noc IMX8MP_ICM_VPU_G1 &noc IMX8MP_ICN_VIDEO>,
- 					<&noc IMX8MP_ICM_VPU_G2 &noc IMX8MP_ICN_VIDEO>,
- 					<&noc IMX8MP_ICM_VPU_H1 &noc IMX8MP_ICN_VIDEO>;
--- 
-2.48.1
+I agree with you, because it does not fix the issue in actual use, this
+patch can also be submitted to the net-next tree as an optimization.
 
