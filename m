@@ -1,83 +1,75 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DA0182B7
-	for <imx@lists.linux.dev>; Sat, 31 May 2025 17:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EFE14F9F9
+	for <imx@lists.linux.dev>; Sat, 31 May 2025 17:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748713645; cv=none; b=beVwT1jbSSMOWbR5Ia9s4CbGNcsdoND/k+YEIzxz5UfpeT+By/dM/lcysvpuWhEaj39UIkTRd3QJ0SiltPhoWbUFIMy51Uw3LWBoAO/Ht1Zyw5hdplkNwbib9eppQZlVAI+C8PEKa/VgWHH0Fg9PMXvBhkqRFnxeag4Cao+lX2o=
+	t=1748713826; cv=none; b=Rhhm7ZBn0l2Ya6scCjFstfOZ2hFlsZRbP2nCFlB2uB3E5PeOPLRh8ez9feQKrMAaXDngpmE10nHsRdQblrjDymxed+XIh9PHbRACPwUDiXK2ft22okeRa1TMiEQrJHho8VrUGbBe9x8mVZlDT2ipOcjSLzCOBBlDT7hN9dV4FQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748713645; c=relaxed/simple;
-	bh=rTj2AIRIccwVu0KtTjttNFvLcxNqqZA9tQ/jwxhFYzY=;
+	s=arc-20240116; t=1748713826; c=relaxed/simple;
+	bh=HCvJG+sgtpgwdiZu6mAcUtxYGNjIK0MPNLZyapgK+HM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hKB17CZopISdFE4Fct63Sxo+CYmsetxSkAOleuRp/QRUtK7ah6dsM3SOW0QgK4Feb+t1578yZ67tW1z2o56MQhtIhDxjb6admx8SCZio0PR8tzzpfNirSx6an5h6qACiRaxCgl+zRIz65CayMqNGjuBUOh1jFHxjZzzQpHX106M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jo3NdQD3; arc=none smtp.client-ip=209.85.210.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=ScNB01YrTVqAPRMdTVX4QMcZWYu/6NvRBo5TZYv6g95yMyyDfSxjoei/11U07dWvfv94RQXq6hcif/72wZcOfEGhtv6sm5/Nae45Y3tQeL0b62WOFopY10j8zA/PemBEblx9+kq152JLUakH0hGBT6KHiDLdKItk7CimpnCcgHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=k8pdxSxw; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jo3NdQD3"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7376e311086so3215418b3a.3
-        for <imx@lists.linux.dev>; Sat, 31 May 2025 10:47:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="k8pdxSxw"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-742caef5896so2411886b3a.3
+        for <imx@lists.linux.dev>; Sat, 31 May 2025 10:50:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748713643; x=1749318443; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1748713822; x=1749318622; darn=lists.linux.dev;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=YBHGQdqSeWvGB9mY6qlXaI9AwWyEpcoU+ydjWvyeZw8=;
-        b=jo3NdQD3GKYzGybaseBj896fkgoP/9Zzx5P9MS5zIXwAEhul6A/sf7zBBvuaiRZanq
-         BRC7o0kxYXMUCmvyCKDIqxO9dwXODFo4zV5n8dXX+kuAKgn0NaygX6TpvkZyX3JSsNU6
-         6W3/+0+MxHqRimgYqeP6E5L8Dj0+t9ky95QYw0eIcpv4zUfii8W1hxVi3wg1+Z7PZnbr
-         I/XeqRMR584Nw/Uwlbdret074Jf/vkGDBCZZD+1bHifyUIWuC09TEatAgCF1/PFTg9/G
-         LDVdm4bValIVja7q7BPlH7oq97FmbHhjTzbk/1o13+DXIjHupIK+c7qKMW3PxJ4Vpd1c
-         Kxyw==
+        bh=5AbNlKkJboN5wZoU7ozNTe8jKHTn2i9ktrC3fw6ibsc=;
+        b=k8pdxSxwLW4laIj6swwtxwXRIFlJDnUm3vGiMc9kHwfli3IQx1ZPjDFZb+TuukWjaH
+         yEbzCrlUvPKvyEC32WY5B388GKn/Iy2MwdTGtwgbcQee+480uGr19QPE2dQbwBojOL/5
+         og3AAKpNYJQ/r7+6nRVrBqKCHd6d/Bju397ARuDPpJ+9dZGD14yXws5qCm4DlVNQIp5W
+         71jbCPz5qz1bjInBa6yOki7wOLTqRJ+SJINzY/c5xqKxyfEyYTjF6vIvf4D1mvCyCw5T
+         Oba1gsHiE6X0oj+jdpL8o7dvLem4ibSq0oAchDwIwSaImboKEa1Kp0+SXdb+93s2uZWM
+         hpzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748713643; x=1749318443;
+        d=1e100.net; s=20230601; t=1748713822; x=1749318622;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YBHGQdqSeWvGB9mY6qlXaI9AwWyEpcoU+ydjWvyeZw8=;
-        b=qRCvxHi+ozXdZ4k8pEAp56riTrTyvC7Mihfxi8h/HwT12uDWbtcyOCPnIodXLSNACL
-         UKg5iW4OU30UsAIyVT6TpBipeou9FJ9C1TY0fYAQlvXWOjZN+6ODtQ9wn6uDyktxdEsi
-         Tf3QWfSKB4VUBYB+UGgWX/f9QWdY9423IYVfnZJ4EfPyD1HLxDo53RKw5JwKSSleBsbe
-         eJmg/0BA8RVrS4tvb9JHCWz7qqJjYFu0fJCD1LE7JN1o6RNgrEBKnup/79QMuk5OQfN0
-         nZo2gPyCjb4XnOriYTf4IN2yoaFDSa6gyeoJauB4aALOXx8pTypOGW30YCNU7eVDHVBT
-         TVhA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0sll7guOEl/IYt6BafUya0tjih4I1BM8heDauKYCH7jFxzrqsX37Ak8B442dRg245+SQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwJsFFQqmjc1PYTXOBHLqKLsiiDAi+7sZEdXDh0Czwbcyc0n1my
-	BCx/64PweniHiXobttjvMAntlsnGvWh7zJPy6g5IIa5APXXYS5qV4Khn84nS1oK44w==
-X-Gm-Gg: ASbGncuBDwu3eqJwo376oxPCTw9feInYy+M7HXi6CyigWOh3GyQ7qd12QUKoAA/P2KV
-	XvMS11mi2wRKTDCQ1OheB+dbAOFfugR3fb4dv+0g/KYuXXxxl2uadj68y2+0+ajvnHA9cI8MMEO
-	T8vR/hy3vARCSV99libBtFImN65My4YvrMD8u8+4Qp1SwepLjutbeTlm83/E+BV5iOM0J0Pfc+1
-	byj3rZCQpSMN3oyt2UQeYIBj9bbh8R6DcT/piD//bxNLuDEK55MzZNJ+QAKuT56yw+j46+TzW5B
-	BByCzJYCDnpBnapedo4AI0gTMAc0gs/LqF3Wl5Zunea84/gEHM3NQRDL8aLk4Oo1uHBnVQXcg+L
-	K7OtNuts=
-X-Google-Smtp-Source: AGHT+IEQudPQU3BshE97L4wC1n51Mdqw3QLAzjvyvN2bu8Bm77uJvbC7suQxxrFON6iwO1js+sJc9Q==
-X-Received: by 2002:a05:6a00:8d0:b0:73e:970:731 with SMTP id d2e1a72fcca58-747d1ab6968mr3580149b3a.16.1748713642662;
-        Sat, 31 May 2025 10:47:22 -0700 (PDT)
+        bh=5AbNlKkJboN5wZoU7ozNTe8jKHTn2i9ktrC3fw6ibsc=;
+        b=vAVfmjghtnO8kPWmKjwrZT4tdK7NSLy8ZcIWUywiMTH7IWHNweOePzgpDLSSdOsHIV
+         pHpHCNyqY4TK/3/3QYjs6AAlNDhWsEmnfQPp279GH6ksT3L7r7H7bASiGg6X1g4oHbgp
+         OWO8j9nz7b0rMAS2BlkcYW1eKkU55E8Vi42BaVoT9Faeoha7MpnYeXF2WOfUHyHQfUPD
+         EmQ7qXl6WgtPmY7dKbRH/OKVqmQg1d8l/5RGcDRmVrH/0aucQJtmj+z7wVoKWp/tLohP
+         Gk2fUxi18t4T1SlVogBIV6g+v9yELNv5CwkmtlbFY1aUKd3R/aaDnwgMLXyIEMYlR+Y6
+         nRag==
+X-Forwarded-Encrypted: i=1; AJvYcCWGirloVay5z/NVdHTLwSYnPIIg3Cd/Yj8NFrRRlCpP2YpTg8sigI516r+4MUmrGGuV7JM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzOLjyb3rPlTXXKyt4jwRnYbC2+70IaqZrMnY0nI6uZKkm+iVY/
+	woHYawBA7DDWj7ZK1Rat+IyCHuYnLhZT4Ygc393BLFlPS0qicoBk7ht3AN1osKyfqg==
+X-Gm-Gg: ASbGncu9rViFX249AGxjVK/pEfO3wRZELy/SzAubztuFuzGiSy3AwaSAXCK4rCj15I7
+	wqQCrDLSelYV2wt2F2iNdxUY9ZVsTw2RfkMzFKc5r8wvU2m0Zf5ySSCvaiBXeb0HQVSbJWsLJCY
+	riGQHuwXVGPxVAKEt/ewS3UbjFCv7JQQBMnJbgNR/dpMYgoRgA0AjxN98UxNvtHPZiJYGDIdW7f
+	30Uk0grIwUrCyl5EPLAIXWju3o8RhsEpd57ftu7yLmuIfU6KgQyesyhIPKELKE1YHLrVSS00GqJ
+	NmDDMcg4Fgs1k8MhHWu+DAT/kE5Xtl5Z62EAKMUUFXXlCzynGWRngPPYrONMuQ==
+X-Google-Smtp-Source: AGHT+IEdPK+JHZ+t44u8hV+Tuwo0Dn5k2WtHvYf+YRYNtFb+Y0T4pf/Gas2+IG+qUK9yX+xyBHPdxg==
+X-Received: by 2002:a05:6a20:1583:b0:218:76dd:a66 with SMTP id adf61e73a8af0-21ad95636d1mr11124498637.13.1748713822539;
+        Sat, 31 May 2025 10:50:22 -0700 (PDT)
 Received: from thinkpad ([120.56.204.95])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747affcf6ebsm5018495b3a.141.2025.05.31.10.47.15
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2ecebb4834sm2748724a12.74.2025.05.31.10.50.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 May 2025 10:47:19 -0700 (PDT)
-Date: Sat, 31 May 2025 23:17:13 +0530
-From: 
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, 
-	Krishna Chaitanya Chundru <quic_krichai@quicinc.com>, "jingoohan1@gmail.com" <jingoohan1@gmail.com>, 
-	Frank Li <frank.li@nxp.com>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kw@linux.com" <kw@linux.com>, 
-	"robh@kernel.org" <robh@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 1/4] PCI: dwc: Add quirk to fix hang issue in L2 poll
- of suspend
-Message-ID: <tv67nul5owjqywhqmekb2cf5q2acyb3jpcfvz6k62jd6sxd5gv@izy7uomaakei>
-References: <20250408065221.1941928-2-hongxing.zhu@nxp.com>
- <20250408145840.GA231894@bhelgaas>
- <AS8PR04MB86766063C3A9E969234779EB8CB42@AS8PR04MB8676.eurprd04.prod.outlook.com>
+        Sat, 31 May 2025 10:50:20 -0700 (PDT)
+Date: Sat, 31 May 2025 23:20:15 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: jingoohan1@gmail.com, frank.li@nxp.com, l.stach@pengutronix.de, 
+	lpieralisi@kernel.org, kw@linux.com, robh@kernel.org, bhelgaas@google.com, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/4] PCI: dwc: Add quirk to fix hang issue when send
+ out PME_Turn_Off Msg TLP
+Message-ID: <xq6ojgyh5tpm4zbpymb2wvtf4at3xq7bai3ztuublgh63e7qdn@vfxan6mew3os>
+References: <20250408065221.1941928-1-hongxing.zhu@nxp.com>
+ <20250408065221.1941928-3-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -87,128 +79,71 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <AS8PR04MB86766063C3A9E969234779EB8CB42@AS8PR04MB8676.eurprd04.prod.outlook.com>
+In-Reply-To: <20250408065221.1941928-3-hongxing.zhu@nxp.com>
 
-On Wed, Apr 09, 2025 at 02:31:22AM +0000, Hongxing Zhu wrote:
-> > -----Original Message-----
-> > From: Bjorn Helgaas <helgaas@kernel.org>
-> > Sent: 2025年4月8日 22:59
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: jingoohan1@gmail.com; Frank Li <frank.li@nxp.com>;
-> > l.stach@pengutronix.de; lpieralisi@kernel.org; kw@linux.com;
-> > manivannan.sadhasivam@linaro.org; robh@kernel.org;
-> > bhelgaas@google.com; shawnguo@kernel.org; s.hauer@pengutronix.de;
-> > kernel@pengutronix.de; festevam@gmail.com; linux-pci@vger.kernel.org;
-> > linux-arm-kernel@lists.infradead.org; imx@lists.linux.dev;
-> > linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH v1 1/4] PCI: dwc: Add quirk to fix hang issue in L2 poll of
-> > suspend
-> > 
-> > On Tue, Apr 08, 2025 at 02:52:18PM +0800, Richard Zhu wrote:
-> > > i.MX6QP PCIe is hang in L2 poll during suspend when one endpoint
-> > > device is connected, for example the Intel e1000e network card.
-> > >
-> > > Refer to Figure5-1 Link Power Management State Flow Diagram of PCI
-> > > Express Base Spec Rev6.0. L0 can be transferred to LDn directly.
-> > 
-> > Please include the section number.  Section numbers are easy to find
-> > because they're in the spec PDF contents, but figures are not.  E.g., "PCIe
-> > r6.0, sec 5.2, fig 5-1"
-> > 
-> Okay, would add them later.
+On Tue, Apr 08, 2025 at 02:52:19PM +0800, Richard Zhu wrote:
+> When no endpoint is connected on i.MX7D PCIe, chip would be freeze when do
+> the dummy write in dw_pcie_pme_turn_off() to issue a PME_Turn_Off Msg TLP.
 > 
-> > > It's harmless to let dw_pcie_suspend_noirq() proceed suspend after the
-> > > PME_Turn_Off is sent out, whatever the ltssm state is in L2 or L3 on
-> > > some PME_Turn_Off handshake broken platforms.
-> > 
-> > Maybe we don't need to poll for these LTSSM states on *any* platform, and
-> > we could just remove the poll and timeout completely?
-> > 
-> Yes, I used to suggest remove the L2 poll and timeout in the following
->  discussion.
-> https://lkml.org/lkml/2024/11/18/200
-> Hi Krishna:
-> Is it feasible to eliminate the L2 poll and timeout in this context?
+> Add one quirk to issue the PME_Turn_Off only when link is up to avoid
+> this problem on the PME_Turn_Off handshake broken platform, for example
+> the i.MX7D.
 > 
 
-Spec r6.0, sec 5.2 mandates L2/L3 Ready state:
-
-"L2/L3 Ready transition protocol support is required."
-
-Also in many places, it suggests waiting for L2/L3 Ready state before powering
-down the device. So I don't think we should just remove the poll for all
-platforms.
-
-> > If not, we need to explain why it is safe to skip the poll on some platforms.
-> > "Skipping the poll avoids a hang" is not a sufficient explanation.
-> > 
-
-So the issue is that the device doesn't transition to L2/L3 Ready state and the
-host platform just 'hangs'? Do we know why the hang happens?
-
-> > s/ltssm/LTSSM/
-> Okay.
-> > 
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> > > @@ -947,7 +947,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)  {
-> > >  	u8 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-> > >  	u32 val;
-> > > -	int ret;
-> > > +	int ret = 0;
-> > >
-> > >  	/*
-> > >  	 * If L1SS is supported, then do not put the link into L2 as some @@
-> > > -964,15 +964,17 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
-> > >  			return ret;
-> > >  	}
-> > >
-> > > -	ret = read_poll_timeout(dw_pcie_get_ltssm, val,
-> > > -				val == DW_PCIE_LTSSM_L2_IDLE ||
-> > > -				val <= DW_PCIE_LTSSM_DETECT_WAIT,
-> > > -				PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > > -				PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> > > -	if (ret) {
-> > > -		/* Only log message when LTSSM isn't in DETECT or POLL */
-> > > -		dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM: 0x%x\n",
-> > val);
-> > > -		return ret;
-> > > +	if (!dwc_check_quirk(pci, QUIRK_NOL2POLL_IN_PM)) {
-> > > +		ret = read_poll_timeout(dw_pcie_get_ltssm, val,
-> > > +					val == DW_PCIE_LTSSM_L2_IDLE ||
-> > > +					val <= DW_PCIE_LTSSM_DETECT_WAIT,
-> > > +					PCIE_PME_TO_L2_TIMEOUT_US/10,
-> > > +					PCIE_PME_TO_L2_TIMEOUT_US, false, pci);
-> > > +		if (ret) {
-> > > +			/* Only log message when LTSSM isn't in DETECT or POLL */
-> > > +			dev_err(pci->dev, "Timeout waiting for L2 entry! LTSSM:
-> > 0x%x\n", val);
-> > > +			return ret;
-> > > +		}
-> > >  	}
-> > >
-> > >  	/*
-> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.h
-> > > b/drivers/pci/controller/dwc/pcie-designware.h
-> > > index 56aafdbcdaca..05fe654d7761 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-designware.h
-> > > +++ b/drivers/pci/controller/dwc/pcie-designware.h
-> > > @@ -282,6 +282,9 @@
-> > >  /* Default eDMA LLP memory size */
-> > >  #define DMA_LLP_MEM_SIZE		PAGE_SIZE
-> > >
-> > > +#define QUIRK_NOL2POLL_IN_PM		BIT(0)
-> > > +#define dwc_check_quirk(pci, val)	(pci->quirk_flag & val)
-> > 
-> > Maybe just my personal preference, but I don't like things named "check"
-> > because that just means "look at"; it doesn't give any hint about how to
-> > interpret the result of looking at it.
-> > 
-> How about dwc_match_quirk(pci, val) (pci->quirk_flag & val)?
-> 
-
-Maybe just dwc_quirk()?
+Why do we need to send PME_Turn_Off if there is no endpoint connected? We should
+skip PME_Turn_Off and L2/L3 Ready transitions in that case.
 
 - Mani
+
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> ---
+>  .../pci/controller/dwc/pcie-designware-host.c    | 16 +++++++++++-----
+>  drivers/pci/controller/dwc/pcie-designware.h     |  1 +
+>  2 files changed, 12 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index 0817df5b8a59..a62bf7e0ade8 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -956,12 +956,18 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+>  	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) & PCI_EXP_LNKCTL_ASPM_L1)
+>  		return 0;
+>  
+> -	if (pci->pp.ops->pme_turn_off) {
+> -		pci->pp.ops->pme_turn_off(&pci->pp);
+> +	if (dw_pcie_get_ltssm(pci) <= DW_PCIE_LTSSM_DETECT_WAIT &&
+> +	    dwc_check_quirk(pci, QUIRK_NOLINK_NOPME)) {
+> +		/* Don't send the PME_TURN_OFF when link is down. */
+> +		;
+>  	} else {
+> -		ret = dw_pcie_pme_turn_off(pci);
+> -		if (ret)
+> -			return ret;
+> +		if (pci->pp.ops->pme_turn_off) {
+> +			pci->pp.ops->pme_turn_off(&pci->pp);
+> +		} else {
+> +			ret = dw_pcie_pme_turn_off(pci);
+> +			if (ret)
+> +				return ret;
+> +		}
+>  	}
+>  
+>  	if (!dwc_check_quirk(pci, QUIRK_NOL2POLL_IN_PM)) {
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 05fe654d7761..d752af660e95 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -283,6 +283,7 @@
+>  #define DMA_LLP_MEM_SIZE		PAGE_SIZE
+>  
+>  #define QUIRK_NOL2POLL_IN_PM		BIT(0)
+> +#define QUIRK_NOLINK_NOPME		BIT(1)
+>  #define dwc_check_quirk(pci, val)	(pci->quirk_flag & val)
+>  
+>  struct dw_pcie;
+> -- 
+> 2.37.1
+> 
 
 -- 
 மணிவண்ணன் சதாசிவம்
