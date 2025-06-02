@@ -1,70 +1,67 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2047.outbound.protection.outlook.com [40.107.21.47])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011059.outbound.protection.outlook.com [52.101.70.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D91819CCEC
-	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 22:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D8F205AB9
+	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 22:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748902776; cv=fail; b=gwIEjS4NBPThNKgRbWaHz8MKV/fCPP76nEiR83e/R4WihNEDm22BG61buFtgO41DuUQJUVjXZQt5CqAMCje3n7HTzNk1J4m8PzvXidmwmDYLkySpTx+omJ9N+uCnMhtlSLK/Y7o+anAtx1/MwEcN5nypZLkS+1Y9lbLYX5Oh75c=
+	t=1748904267; cv=fail; b=A4kgKPxkD07iuRoOVM/udgpocSpbNMrBfDBBmMQPJHtHqUC1HNaBOUrQ2RIapCakMcZahsW89vtMb3uCU3bVYRYiLewHmj5Nr5mjxIAut9eOjLh6xSmEUtMFg4o/lzMwpcKUipDBWBlE9P1GdCJ0CxAN17sDOA1FBRsFfigBNAI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748902776; c=relaxed/simple;
-	bh=nhnxXQT8XLoEzmnKSquaf/sprzlIhuMv6+tN4pEhyuw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=U6S2KRgcqgI4D5cTWrfM5XVfinuIneUiIw1gpqAP3sI/WAUWeO19YX9YLxepaz+PRCGoCp/Sc9l+CCdU7Aa82uGSQJebkk6bjVJVlHT83O0pAZEpLF7FcNBvHLLIYOZnNXXYrStQdeZGJaB/YLaoYHAQ6xn+38lSCRrGrygkVlw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Lvrm+iZl; arc=fail smtp.client-ip=40.107.21.47
+	s=arc-20240116; t=1748904267; c=relaxed/simple;
+	bh=mQXhCADn+udLKdGtDDLoS0uwaT49tPuguIwH750pYRY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=IXAhWsLe/lkXalWIAVXhyrVHv2I6Aufo4LGqzIlsqIPKan0BmqQ6++UEIiL/+NfNK3E9fsYEPyIxzwbuC0t3QdZrLsOKZjNTI6VXgvM44AKx/nubPqg+eNEuiThJJ2mr48GUY/xqdR1XkbqmIqso9ve8ZO5wyQAWwk0is/RSStk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dt2qXwBj; arc=fail smtp.client-ip=52.101.70.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Lvrm+iZl"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dt2qXwBj"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rryzzcqHGx+Bc637uQYSjJ9m3Rh5aWYF37/cRjfSmpln5O5LgRxdKU0gJQhGOsD/Xuvh3xyyXj2GUS02ylU8LU0FP5tbcSF8XMwgX1TAJQlYBwUz5c5tnqp1/Ts0tNfbmp3jg+ghTujvcfc86ei2xGysaCCwwC/X+ZOQdvpn/9ZN3Hm4OZhxh06cee6Rfk5ONd52XeruWh/Ia6Si/HqXpIltkur5f9mWhs1uQ4KfGQRHSx4QxRlJNjT2PQHEHHXnaCpOr9vSVlhn2Zniv9mfBF7M0YoJqUpsAGOjAgF52RanmkgQCwbrm55LgIZyKZ7vlZWyd9gS0a/S/8tkuK+9ig==
+ b=of2Z7JKsD604PgVVrFocxeATK31ROTf/qDw0I81rPPIwmJbqmIiE2hARlvpJrL+cEOOS2y7NwqcE3Wf+SWVNYhJU150nuh6o2JLGBllJjMA3IwvkL9pQwJIYy4zOt+HhSlI1JQnLLHm5UdLebl7HHQ6vNOj9F3flO84bpagLr8RH4XOxlnofKh9/wXDVajwVVsEF/luBYg9Gt4U0hGdjBh2e6n1nRk9OK6qLiqkVE9ZJwb4VwdlS4qlLZQlIKu13v4J/uGutCBUUjVccm41qqtK/FqF5TKGrViqf2oPWzTSDIWPBQWouNQIGgfWwgA1TPGJjO62Uhq/tGI4zC23UTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZeDTaG1eubiLNZ9ntQF1GrxJcR2HS8tkS3LQfZVRu04=;
- b=rFkyV4b8/pHlfvyBztcMKj4dNRHzEXG2xHD514qujt5yY2DTbzOIAg03Q1JeGq0G+e4YIr7t6Ud2reEQwPAi86e+/IJdzBhEJrNOXLjTWuMJnYd2oNseB2Y5ZXWS5Rik+y5mE6on4paHoc8APCNpb8M4y8/zDbsf8k3d6tLxv+Eowr8Fh8IOvuNcS3SoDTJFRdnB60hYxHKhUAJlJdnOdL2OEx091MKdcW1G/MYNkbZO2SqzlNg7gkEIC/g3einv1tK+FymG1lGHW84v25QhR09/ZrFGQbfeMzIAPJDr1vU9XnDj2qOPyOqD4h8aevCEUZqU47sI6PUZRYdH6Pfi8A==
+ bh=3lzZLNjlGOpOCiRswD+SdkgDah3b7KmkBRwzkFA9GE0=;
+ b=mwoh61W5H+9ywGm1vpndjzhQ9yXbiK84otI8PszRMf0PIX03mdGr1LmMQlnAmlspOHNDbn8KkCJrpMjUeTAWJyjpdeQ3GioK0AwggeL99VMey7ICEGPecQ8VxRPP4Q6dL01Tox48V/d+MuHfshJlJ6sNQs60ghGVxm5/iqQvG/rq+W+oDSi3SX/8NlP2lDuHnVvbxQxG80HM6rRuPaoUj8yZa5nDz4h5tcrGPQljPOcX6wXCBVHItybqsAL3E7v4y3bZUGPwtQEpWLrFBufy1uIRKyU3FkHdXduXNn8/B4I2PLTnNd93s0LrDdzMxgN4/ywnMbOevwvGFQ3i4chtKQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZeDTaG1eubiLNZ9ntQF1GrxJcR2HS8tkS3LQfZVRu04=;
- b=Lvrm+iZlhgMd6aYFSMSnO3vRHrRoX8eM3VxlXf7WwQnfXdunNaYcj1ouoUnMjgCCgo8x0brDwmL8YAb0hdMDi2Fcpn//l7GBBevq/XWTqg1i0kWfzH6C0+5wIaDkGPgwWHo+yPpCdH3Hl+rJ9tvKGU8SVZ5mERSlOpgo32638pVWtwxKpbUQhhsM1hGOk7iTwe26VgS+NYpPHfN82j+vouEyVnO14zMdwcVCPy3DNRQyW2V+sKjCSba1LWfShF+hk7CMUb6/KYkTNX5DZRmSmeAHxPFvJplgt32kDBgeJAYSx/SVJobhClDO794sHGOh12KBmJlbSPrISkwa7pk0aA==
+ bh=3lzZLNjlGOpOCiRswD+SdkgDah3b7KmkBRwzkFA9GE0=;
+ b=dt2qXwBjtVkBqMOUjmEROkEEURy0bOw7bqUpzPskdx4XTpm7Qw0jqPbz3SdN7SUCejxLMorugJsZpoN0oBKEYw5Ne4paES/e7lj6Q4BcKSYnke0a2POKp6BdWtaD5Qv8DlfxUBdq3FEB3p3XuHnq7SeKhFFNr2IQ1s8rRHOAr7SfwkFhtu3u1gaZGxbDws3I5OXzm4U260JltzLj9jShhI/dMfthjGy6nBiiXbaDi4lThhJ+yfsfqtjIXUqukITHigagVVudlpSOMXo2GtT04ozlFqi3Ubt7scbcLoWYwPfzKAvcVPxmQvphfQRFyJIWWjEZRgstwJT2XIkx/Xk1Vw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU6PR04MB11231.eurprd04.prod.outlook.com (2603:10a6:10:5c3::10) with
+ by GVXPR04MB10994.eurprd04.prod.outlook.com (2603:10a6:150:224::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.34; Mon, 2 Jun
- 2025 22:19:28 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Mon, 2 Jun
+ 2025 22:44:19 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8769.025; Mon, 2 Jun 2025
- 22:19:28 +0000
-Date: Mon, 2 Jun 2025 18:19:19 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
-	Michael Walle <mwalle@kernel.org>, Fabio Estevam <festevam@denx.de>,
-	Markus Niebel <Markus.Niebel@tq-group.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Tim Harvey <tharvey@gateworks.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: arm: lpc: add missed lpc43xx board
-Message-ID: <aD4jZ3QrOS4fM99s@lizhi-Precision-Tower-5810>
-References: <20250602140613.940785-1-Frank.Li@nxp.com>
- <5014a8ff-aa91-4ea4-81c5-7aeafc13b330@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5014a8ff-aa91-4ea4-81c5-7aeafc13b330@kernel.org>
-X-ClientProxiedBy: BY3PR05CA0057.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ 22:44:19 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v2 1/1] dt-bindings: net: convert qca,qca7000.txt yaml format
+Date: Mon,  2 Jun 2025 18:44:01 -0400
+Message-Id: <20250602224402.1047281-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ2PR07CA0012.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::13) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -73,129 +70,322 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU6PR04MB11231:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27924aad-bb12-4840-3fcc-08dda2238a0b
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10994:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1623b2e-d9ad-4f66-875a-08dda22702f2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|38350700014;
+	BCL:0;ARA:13230040|1800799024|376014|52116014|7416014|366016|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?KRKe329A7TFmmti9puOMFm1cbFAJ8+R2TT4dmwwcvsvLSc5yGP1advwZWEYj?=
- =?us-ascii?Q?XGhaKiYXsvM+b5IU390ZuA3jzkbl37MtVg66PSDkK1qOWGyfIZbGEGNtlHIw?=
- =?us-ascii?Q?NSVm57rJ4/bry6zCUWttVY8EOcOeu3mO4PGCjh9nSE/RsgnGUmIx90spIaCw?=
- =?us-ascii?Q?T8IAxk+gHhb0M96YM5nwXCOooPGVCfSyjo3dCoaULhAoXhcOAnVvJ7Kp9Gbl?=
- =?us-ascii?Q?CxcL/Y1Wjj8nEdKcLuaiXH2scu81iaxqUq413vsIyhoZU8agYtoCedDtxtxz?=
- =?us-ascii?Q?BxQEOFyFbb5Z4uNR1A5/A0PNNeVJYYJDjD05QPlAzBC7Vk/VbR1ESl3aPdDK?=
- =?us-ascii?Q?j4kzvgmqhfUAqoElnPEfh1byxVrvW/lpGAo9f2Rr8NRn/Orfh/EaX1hVGC1x?=
- =?us-ascii?Q?rRPeAhuyvm1jcVkZ6UmzdbhvLzDPwgFrGuYv4/xrn9hcNvYqXgLjbII5/1q/?=
- =?us-ascii?Q?ParCQlU/bAwUmHE+HqKoQldMouRSFnTYo8Y2zxfQF4VnWOvct1BqJLEf0wez?=
- =?us-ascii?Q?SSBbwajVY8BrXD/qavQIJ7HaT0mgh19qOFNNMTkxWF4TO3ZmW7Y+WcVhecd0?=
- =?us-ascii?Q?aZFdqPvBD3EQBjcPm/LbHB2nTFtnQMPfYhkWkCbr7S8uhq+5ZCj+VNpaUiBK?=
- =?us-ascii?Q?EbIVBuskIssZC7kx0Nhu1XbdfDuYyKdRMIKNMAwwlDL8sYzjMA9wTfq65Yhc?=
- =?us-ascii?Q?hUb0zqvWTZ/IX2DqNinLZuyIERcf9GCmydIQctGNeV6oLLeWIGnwoTOcUEbz?=
- =?us-ascii?Q?+QCd12MJsAnp+q2JErgyJiXMX/sQhAgF1ExXV88lahjClRXAP3GsF2WMg0dY?=
- =?us-ascii?Q?7RkpPSytiEvia4kRXtRNxRDyxQe83gig26gIppkjRbVJQUz8cOtzZxtRUebI?=
- =?us-ascii?Q?dmet9NqdJkMdCvEE9hLKIOU+wsY7sLskI2VpCjOb/ykOYw9Uuonyj4QgQMHP?=
- =?us-ascii?Q?RKP4pKOg6BoHXBgVp+Wk1wei0rKU5SPrBj4djD3DDJme67OQfmpaO2u7luNE?=
- =?us-ascii?Q?i82EAZEuWAvIhbCTu/tkJvB6B2XmircP95lhcLnaqoZ8dhagDeL5WZYq/BGv?=
- =?us-ascii?Q?ny3QTHEDnLi0LAVsw6KBwV0ywAGXx4JHyk5Q6J8oknjr7rW1bsuQiEdjNo6L?=
- =?us-ascii?Q?E3pduzuzMCduKmHBY9Vv/QYkmNRqzbumBkCESaA5MhRa3TGsvZvzWT0DQHcy?=
- =?us-ascii?Q?qlRiBekYQ4SrNRjT+4IZyn6Et8WAx4ulzRipIAFS+WVCbpCMsxG1EDa/LIcS?=
- =?us-ascii?Q?UKdXheKG+gE9jzgnjKCKnFLsn3Tx5HztzdOpuNOphld4QszKLlHQL1QkxrMA?=
- =?us-ascii?Q?85+ywDezxs4ImZtrZI1zDnBxBDtj1XGOmXM12hZAvKl5X6ZUZ6UCioXq+qzq?=
- =?us-ascii?Q?R4xhjvMlV5rvhvVV5XMtZpSssQACxkClEUzywLzM8ZJcPz+wQIjbY1/BHeDi?=
- =?us-ascii?Q?NrFXOlFAUquS5GZ7AzL8KDQCWceAsTDlR5rbA+Kaabu5MgWtY+IY6Q=3D=3D?=
+	=?us-ascii?Q?Mgzz4SDBBd41j2jeiEYmEslJTRTA9/sWR6N1YjujA+TWiK9awZfJdjgHMMAj?=
+ =?us-ascii?Q?h7YAzOz54lSdBCPj1vMnIWrMnoJtENPDOvER1sIgDeB34E5+h6eZUhNAwRZf?=
+ =?us-ascii?Q?YagWaol2B730MR6ArXv/id7KRs++hA34yGOYCqJnTe51Pgwfp/ZLcKiJymf/?=
+ =?us-ascii?Q?YcBIb8x+YnYRe0Nd0ZDBWnKj4zAQ0qv1qJL56DLwzZ/7QIFlV38XYqkbTjJT?=
+ =?us-ascii?Q?dT++9YiAa/s0qRTAr6eFuSs+Wb7pmEXXeIjwpNR5PGHb/Nj6+Av2FDEkUPAD?=
+ =?us-ascii?Q?LIB7WOmfPq5X57Hay6Ifmq/OQzQ2B1PYPe3Kni9XXr/Gl3HSC0+kGhoT6xoA?=
+ =?us-ascii?Q?y6hks5gmVACz3oaxa1hQt1Tsxeyw1TVpjiuuPira4Xe+7IDEFag/598sjoF2?=
+ =?us-ascii?Q?Yg9YItxuC8IafWJUWb8/jildmcJas6dbtGW/o3uLG6/fSnK8bI25OfBLSt9I?=
+ =?us-ascii?Q?D5cB+rnfqB9xWYv4GNhRMey5ECk3jAlND/JeKI8Dufy9bAy0o9YmeDyk8QOM?=
+ =?us-ascii?Q?3e7VwejTTaJABIY7T35/jUroZ/osNKXtN81c0fHNMxH0J85IAlznUvgQXeFm?=
+ =?us-ascii?Q?Tj2LN1iIvsqWPgtl2DXdsnlUdY1vYVFP50c+p9qpOo4Gi7VmGtPZur4UFnl5?=
+ =?us-ascii?Q?fDk2AUkHCiUhkSN9+G7LEbGkt4JMMtd46eD0qtWTgS6j2AEzI+JHNhhuK4mz?=
+ =?us-ascii?Q?FrN51AlI+PGStBkJD1zcMn0fA5lRzSnU0YTDeKYNOLTfMLscJFMsJjnK1kY8?=
+ =?us-ascii?Q?nDpo5iA+OvXF4XowpyebgKwI5Q/gwdI0u4to0eAYfuaDs5bYK1rrsqJCxSvK?=
+ =?us-ascii?Q?wk5AGUVFvmrl5geDFfggbSQFfCcYJAwN0nxVOJI0fgxCU6DGQwkx6IYVFWPE?=
+ =?us-ascii?Q?b6o9idIpN8Ui5k9IzUzRnSKSLBf+x0HiUpF1CsBx1mfpn2J677MSyyhp9Nmd?=
+ =?us-ascii?Q?QtgghJmw2wIY+fAbpFq6TOl84/k3/v8ij1tufSoKKyQiAmvGVKQi1v4nK+C9?=
+ =?us-ascii?Q?afO3/R+T1T1f9DwktiJuzSrzHfbVyE7QIEdXrQoKYfLaVor8AF/Yz/nj5k2/?=
+ =?us-ascii?Q?qlhbeADgC8u2X/PNOhncM6wXdqEhHIEkH+apPp+PJDplYwLXv6ZJ/sDkRoOG?=
+ =?us-ascii?Q?E6N+jd07TeN33gADX7RopQJMU4TzJZ+Jb7BsGrpbUWHF5DTwe1x3VYmKhK+p?=
+ =?us-ascii?Q?xtzj7yvL7AIXGKUXQAjboTNE6rjm2IbGYO7411ysX0s3G6C7QjBWael6JjDg?=
+ =?us-ascii?Q?C+dLNcRoqyXE5A8e9JWpy/ops7YcqV+GpjkoQdY7pPtu1fTlys3tDCAKeZW4?=
+ =?us-ascii?Q?DosCEoEoSU10rIdyf10UENPwwAAmNz/MyufIPTH+ZMPjnHzOGI8Hu3KfiGXj?=
+ =?us-ascii?Q?ATnWSiXObe1qusdFmJ4s83qfLu2mz6pl8yYOEV7edVdVuJi+znf/uZ5s++2O?=
+ =?us-ascii?Q?IY64GJPATrMn4gaLGv3m09HGTwQYQs0G?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(7416014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?kVssl+0tmfDs3BiPiKpZGDKwZr3BMBAEgfFGqP5iRuPUu/yohsZH8n6vDDsL?=
- =?us-ascii?Q?U3QYKbh4RS1doL2sxMuGKlrUmYsv90DonAn3rIPebcufVAn41sKqr0/K3sy+?=
- =?us-ascii?Q?ajM6s4JBfu/ZJf6iYXEiE6Q8JSyfmvPXoyA+xjhMwog0WXk19ot59frePGeh?=
- =?us-ascii?Q?vY9D14emtT/5+XHvTRQoSNnj8nltfJXH9Uq6OAEjk4tgZnZvopXYuArFV6OM?=
- =?us-ascii?Q?0Sq8i6mQ4WOYQeNjl6pIvmq6da19zf1Nqu277fZoUacw/oB4hcdBOBXAf4y4?=
- =?us-ascii?Q?8gEfgGVw7Ehmw54kDl3QgKkoEK6MINTQ9GlMDvJHXuoOHZrWGx1bkGFEYJmI?=
- =?us-ascii?Q?1B+sDVHQ/XtTngPueh35fH3AoAwWBU3ynCore5Up72w4u+KnfD+caGB4+kvR?=
- =?us-ascii?Q?UTycDKssdcL4rEkW+qX8fnlebdXSOL0ZWSamYMaVZ6t0ofe8HXM0TAtqSD9N?=
- =?us-ascii?Q?nApZAb+mcMcagkL81Pj8a1+mXorgV4pjr/SNbRl+IziIXVmUq/9unFIGV73v?=
- =?us-ascii?Q?A9qvSbopzjEb//L8o/ss4BogfLPhQ2aN2pt1KNJIL3VJdqowFoVdPrGqozC0?=
- =?us-ascii?Q?w2b8+Q9aW5PT9+v22qFFnSCWAoCql0rFjel7G7OZpYjKedWbg1BBGHiR6SGL?=
- =?us-ascii?Q?s+FPXdCrmlqoGBI0qIs/HKycDBQzJW34yscvbqH9f5R6zljWyGmWVcXcrYqb?=
- =?us-ascii?Q?HA+r64KspcUr0TGh0zUNYwNUNpfwAUOzDykeGxG9ASca/2aUUxlaOFUqKZ0G?=
- =?us-ascii?Q?9PwvSNQN2SOpJglPNnlPZbXEfj6VGtoRteqtzzFYHwuLpkCaCo1Qu/PFZviA?=
- =?us-ascii?Q?j9qoD5iY/M2yckdsWqxlpMON6zn1jT8/z4Tkmhs+OcP/9MltzZ0M1/2bAl9/?=
- =?us-ascii?Q?Xy1uuKV+AA5VH01Pk39zH/SOJs14lOMOi366/7xPSq1H2J9ngHsSov87iw8C?=
- =?us-ascii?Q?hf24usOz7SIO7x505/9MStF6bKNp6o6R77S6nv3ST8DAwXburoqnUnra9LRr?=
- =?us-ascii?Q?DteZQfzuZUE3oBjVrLtLyuXuG1mP7DI4NoC1Yu0rximZsgHe4yrqSUqEK0IL?=
- =?us-ascii?Q?KQTjnzU5Wdxi5moH8bWKdrjq8euts7SkvbrvDKRNyTP4eHAWCfXZAjnGLYlq?=
- =?us-ascii?Q?KxjwkDpInVkjkCIxeDx9TtVMZlSEZ/F8k9mGG0R3h4apH2V0iEXYmJAn+uKU?=
- =?us-ascii?Q?Bs16Kje3IxuxMLMWZ1+uiE50ja6pR9bTl419Pme6yZB0L2qzFndqyfoExKHs?=
- =?us-ascii?Q?kURWCt2jBOtI77Z2uKqLhSUAapKbZuXHcDQSepHpMjSzc0NB+8rKdPRAay+y?=
- =?us-ascii?Q?TcXpuNh72qpPlLZZG/Qjj+iid3apwyG2S1yUkwBjgpZEECfKOuMlqYjtx0th?=
- =?us-ascii?Q?6W0zxPLn2FJG8Po5WBIMrzNrBInB03nIzU4ojzBXNjGnuw1d5Td06CUg6WUi?=
- =?us-ascii?Q?ReG75mfOwu/LnSEKCRBcK221F5XxgMswLKAamTU7c0jPoQ9SCU9zDk6reJ63?=
- =?us-ascii?Q?ydkgG90zu7xWNFoNK6RZv3DUrD9+ziiWpWbXww9pl1XdWduQlMl3qVQ/Gity?=
- =?us-ascii?Q?24BqPWW3wPME2WdRAZHddodLwu/4FmFr9IkudefS?=
+	=?us-ascii?Q?RR91kDBb3JQfvy7ePPpKWcNFwVfcyJpoyRTS8SOxgu+Trz4aAlydTTGs56Nh?=
+ =?us-ascii?Q?YcnopTLJt98PVhUkvZHwUp7rrgleTVjoa/pKO7JSWRSmCO9ZDp8r6NcECA+0?=
+ =?us-ascii?Q?7dLTqRgIE2blCZuxANOIjwl0IkZENWByFRxQZrnt4qQglXEwxK/J1fCcbsJK?=
+ =?us-ascii?Q?adNYZaKX7xxPdRLYioWJG2SEgACn6Uw3cDgLxiJOv747PoFfdH4feWzh2n/+?=
+ =?us-ascii?Q?DyAB3rPzY+UzOTE9vbd96mHuT3VFoj1jUWvQ2LRb0KTySDlMBpATxXp6Ps+6?=
+ =?us-ascii?Q?nPZKjHkN0fTbCEqfmzXKsE7R4Gr5qgWrekPVJ0Cjg5hnKAQ75tqjenbIsDC/?=
+ =?us-ascii?Q?YbhJ/6sAPtZI/AfFmTCCClBOYTYkP6QvuT0Tbx703j6yJCHR0qtDTI13Q+yz?=
+ =?us-ascii?Q?jhZD/uwb8kL7a924UOPCoADbIsXCA9wIL9GRvoOsJs6SUEoX40jiXTVo4Wgz?=
+ =?us-ascii?Q?GNmrAhxk0a515cIVGb6Ta7Cv7l1QRbYpHPYFLKkSXgcCu1Gft/OjN94GtFLb?=
+ =?us-ascii?Q?qV5ErFPXRE3YJeUf4FatLYQzWs38lZ8EfGxXnbRT4CnunajSHUopsAcF1vT3?=
+ =?us-ascii?Q?41edV47dbFTUZ6Rro172To8KHqcfHW9d2GqRnIP3BnsfHmYEfvqhfRn/vrmT?=
+ =?us-ascii?Q?VlzCad/hZIkP6tC+wL67d/BzjdS91vsV65nsUV72qkPbYNA060SPWJ9ck3y6?=
+ =?us-ascii?Q?P5wSKFnX5jnGvAiUaGvE2XrD1v66uomhSimVyUstGqiIUuf+ddkGkB4U5Byi?=
+ =?us-ascii?Q?1viBrnIdBZX5Mn9WF53z9vLiJPosWRMBS88cq+IsenPnFgFWJSqG6aW5/wXO?=
+ =?us-ascii?Q?rCvC6qTpAPb1Sn3R1GZGS0Mbiz3vy7uWEjWo0S+wznqbOCkA31NK6kQms3Ap?=
+ =?us-ascii?Q?rRpto7qxB89br9aJspsim/ZLOZORjWnLFyX9m6EitM4Y6URzlaqxHIuEo7Cc?=
+ =?us-ascii?Q?Q4hFi5i1UHwKqVQxUtHZAYr4kYZW5fZYmQAwW0FdPePbo9aOFxt+zCoaG7rG?=
+ =?us-ascii?Q?WPM+Ho/dFuc/4soA4CGGcXzJ2xCmHxD0ubbe1RQadLEptjYv6/UPipDMdO4U?=
+ =?us-ascii?Q?MwN3EdXehP8OEW7pEfDMdb7ZMiAcnhXLnfJhepmGz3EVm3yuAluxIuGHpuxG?=
+ =?us-ascii?Q?X/9MXagqC/SbuPWCzUsFgHVH15yqSXLtUCygdGNIEc8rN4HaAAx8Ytc2XIym?=
+ =?us-ascii?Q?55W46TvsUCGBBU4+adDYS9TuI6gc6AH+KwtD4HWvqDI6kDE5gPRg80fwsQlK?=
+ =?us-ascii?Q?ohfHRAQG9NuL23orCvsLF51Xv4il/X9iF541VrjELH/X7MBFM75bZCJfhk4b?=
+ =?us-ascii?Q?a9vrTUmsrv/FaK0rK4rIYYDHg6617DwqJgzJbXSiuhKTd7Ao3iDNunF+v8Xd?=
+ =?us-ascii?Q?iKhOil1/zop0ZRuKp0jKOWEAkhSc8v1bV+/PwrwIrOOFptRLLvqgls2M1/FI?=
+ =?us-ascii?Q?hhIlxJ3pew3Mo+FseyUHvepgxgoX3jCjBZXBMgER69HVN2jW9gvlfm6ENq9L?=
+ =?us-ascii?Q?c6dzStvlw9Xqbt7CDvxtroJblm4jTKxjj0tav480Qg9Hqfo9zBpO2h+ZxKcb?=
+ =?us-ascii?Q?0bXWpnsjZ4MvY0L5JaWOvNZNkbKmbogr1sOJJ7G+?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27924aad-bb12-4840-3fcc-08dda2238a0b
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1623b2e-d9ad-4f66-875a-08dda22702f2
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 22:19:28.2033
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 22:44:19.6014
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KN5O8ofFL1Bp7DGWjAJ/jDoA1T1tkYxLIoW/Gy88S0qnchT2ctLGmWdtowIQTnKSVDdubXJLlL4S7ZU56jjg4Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11231
+X-MS-Exchange-CrossTenant-UserPrincipalName: dctF4zJ20mKSc/7+uN3TaJrb0MTYlF1Yo/UbPzVNWRGXP66S6c6Jopdlm0rhMcCoYPlQP9bBdUvol543jkiqJw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10994
 
-On Mon, Jun 02, 2025 at 06:17:49PM +0200, Krzysztof Kozlowski wrote:
-> On 02/06/2025 16:06, Frank Li wrote:
-> > Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
->
-> typo: legacy
->
-> > warnings:
-> > arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
->
->
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  .../devicetree/bindings/arm/fsl.yaml          | 23 +++++++++++++++++++
-> >  1 file changed, 23 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-> > index d3b5e6923e416..75e46ffe9ba8c 100644
-> > --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> > +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> > @@ -1711,6 +1711,29 @@ properties:
-> >                - traverse,ten64            # Ten64 Networking Appliance / Board
-> >            - const: fsl,ls1088a
-> >
-> > +      - description: lpc based Boards
-> > +        items:
-> > +          - enum:
-> > +              - ea,lpc4357-developers-kit
-> > +              - ciaa,lpc4337
-> > +          - enum:
-> > +              - nxp,lpc4337
-> > +              - nxp,lpc4357
->
-> This feels wrong. Why 4337-based board is compatible with 4357 SoC? If
-> this was intentional either DTS is wrong or commit msg needs explanation.
+Convert qca,qca7000.txt yaml format.
 
-I think it is that legacy board dts mess up. I am okay to fix boards's dts.
-but I have not hardware to test such changes. There are some risk to toggle
-such old boards, such as the uboot may check these comaptible string to do
-some fixup. Anyways, these boards is too old.
+Additional changes:
+- add refs: spi-peripheral-props.yaml, serial-peripheral-props.yaml and
+  ethernet-controller.yaml.
+- simple spi and uart node name.
+- use low case for mac address in examples.
+- add check reg choose spi-peripheral-props.yaml or
+  spi-peripheral-props.yaml.
 
-Do you think it worth to fix dts by take some little risk.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+change in v2
+- add Ethernet over UART" description here back
+- add add check reg choose spi-peripheral-props.yaml
+- move spi related properties in if-then branch
+- move uart related properies in if-else branch
+---
+ .../devicetree/bindings/net/qca,qca7000.txt   |  87 ---------------
+ .../devicetree/bindings/net/qca,qca7000.yaml  | 104 ++++++++++++++++++
+ MAINTAINERS                                   |   2 +-
+ 3 files changed, 105 insertions(+), 88 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/net/qca,qca7000.txt
+ create mode 100644 Documentation/devicetree/bindings/net/qca,qca7000.yaml
 
-Frank
+diff --git a/Documentation/devicetree/bindings/net/qca,qca7000.txt b/Documentation/devicetree/bindings/net/qca,qca7000.txt
+deleted file mode 100644
+index 8f5ae0b84eec2..0000000000000
+--- a/Documentation/devicetree/bindings/net/qca,qca7000.txt
++++ /dev/null
+@@ -1,87 +0,0 @@
+-* Qualcomm QCA7000
+-
+-The QCA7000 is a serial-to-powerline bridge with a host interface which could
+-be configured either as SPI or UART slave. This configuration is done by
+-the QCA7000 firmware.
+-
+-(a) Ethernet over SPI
+-
+-In order to use the QCA7000 as SPI device it must be defined as a child of a
+-SPI master in the device tree.
+-
+-Required properties:
+-- compatible	    : Should be "qca,qca7000"
+-- reg		    : Should specify the SPI chip select
+-- interrupts	    : The first cell should specify the index of the source
+-		      interrupt and the second cell should specify the trigger
+-		      type as rising edge
+-- spi-cpha	    : Must be set
+-- spi-cpol	    : Must be set
+-
+-Optional properties:
+-- spi-max-frequency : Maximum frequency of the SPI bus the chip can operate at.
+-		      Numbers smaller than 1000000 or greater than 16000000
+-		      are invalid. Missing the property will set the SPI
+-		      frequency to 8000000 Hertz.
+-- qca,legacy-mode   : Set the SPI data transfer of the QCA7000 to legacy mode.
+-		      In this mode the SPI master must toggle the chip select
+-		      between each data word. In burst mode these gaps aren't
+-		      necessary, which is faster. This setting depends on how
+-		      the QCA7000 is setup via GPIO pin strapping. If the
+-		      property is missing the driver defaults to burst mode.
+-
+-The MAC address will be determined using the optional properties
+-defined in ethernet.txt.
+-
+-SPI Example:
+-
+-/* Freescale i.MX28 SPI master*/
+-ssp2: spi@80014000 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	compatible = "fsl,imx28-spi";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi2_pins_a>;
+-
+-	qca7000: ethernet@0 {
+-		compatible = "qca,qca7000";
+-		reg = <0x0>;
+-		interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
+-		interrupts = <25 0x1>;            /* Index: 25, rising edge */
+-		spi-cpha;                         /* SPI mode: CPHA=1 */
+-		spi-cpol;                         /* SPI mode: CPOL=1 */
+-		spi-max-frequency = <8000000>;    /* freq: 8 MHz */
+-		local-mac-address = [ A0 B0 C0 D0 E0 F0 ];
+-	};
+-};
+-
+-(b) Ethernet over UART
+-
+-In order to use the QCA7000 as UART slave it must be defined as a child of a
+-UART master in the device tree. It is possible to preconfigure the UART
+-settings of the QCA7000 firmware, but it's not possible to change them during
+-runtime.
+-
+-Required properties:
+-- compatible        : Should be "qca,qca7000"
+-
+-Optional properties:
+-- local-mac-address : see ./ethernet.txt
+-- current-speed     : current baud rate of QCA7000 which defaults to 115200
+-		      if absent, see also ../serial/serial.yaml
+-
+-UART Example:
+-
+-/* Freescale i.MX28 UART */
+-auart0: serial@8006a000 {
+-	compatible = "fsl,imx28-auart", "fsl,imx23-auart";
+-	reg = <0x8006a000 0x2000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&auart0_2pins_a>;
+-
+-	qca7000: ethernet {
+-		compatible = "qca,qca7000";
+-		local-mac-address = [ A0 B0 C0 D0 E0 F0 ];
+-		current-speed = <38400>;
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/net/qca,qca7000.yaml b/Documentation/devicetree/bindings/net/qca,qca7000.yaml
+new file mode 100644
+index 0000000000000..5258288132968
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/qca,qca7000.yaml
+@@ -0,0 +1,104 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/qca,qca7000.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm QCA7000
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description: |
++  The QCA7000 is a serial-to-powerline bridge with a host interface which could
++  be configured either as SPI or UART slave. This configuration is done by
++  the QCA7000 firmware.
++
++  (a) Ethernet over SPI
++
++  In order to use the QCA7000 as SPI device it must be defined as a child of a
++  SPI master in the device tree.
++
++  (b) Ethernet over UART
++
++  In order to use the QCA7000 as UART slave it must be defined as a child of a
++  UART master in the device tree. It is possible to preconfigure the UART
++  settings of the QCA7000 firmware, but it's not possible to change them during
++  runtime
++
++properties:
++  compatible:
++    const: qca,qca7000
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++if:
++  required:
++    - reg
++
++then:
++  properties:
++    spi-cpha: true
++
++    spi-cpol: true
++
++    spi-max-frequency:
++      default: 8000000
++      maximum: 16000000
++      minimum: 1000000
++
++    qca,legacy-mode:
++      $ref: /schemas/types.yaml#/definitions/flag
++      description:
++        Set the SPI data transfer of the QCA7000 to legacy mode.
++        In this mode the SPI master must toggle the chip select
++        between each data word. In burst mode these gaps aren't
++        necessary, which is faster. This setting depends on how
++        the QCA7000 is setup via GPIO pin strapping. If the
++        property is missing the driver defaults to burst mode.
++
++  allOf:
++    - $ref: /schemas/spi/spi-peripheral-props.yaml#
++    - $ref: ethernet-controller.yaml#
++
++else:
++  properties:
++    current-speed:
++      default: 115200
++
++  allOf:
++    - $ref: /schemas/serial/serial-peripheral-props.yaml#
++    - $ref: ethernet-controller.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet@0 {
++            compatible = "qca,qca7000";
++            reg = <0x0>;
++            interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
++            interrupts = <25 0x1>;            /* Index: 25, rising edge */
++            spi-cpha;                         /* SPI mode: CPHA=1 */
++            spi-cpol;                         /* SPI mode: CPOL=1 */
++            spi-max-frequency = <8000000>;    /* freq: 8 MHz */
++            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
++        };
++    };
++
++  - |
++    serial {
++        ethernet {
++            compatible = "qca,qca7000";
++            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
++            current-speed = <38400>;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c14da518a214c..6416ada9900af 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -20295,7 +20295,7 @@ QUALCOMM ATHEROS QCA7K ETHERNET DRIVER
+ M:	Stefan Wahren <wahrenst@gmx.net>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/net/qca,qca7000.txt
++F:	Documentation/devicetree/bindings/net/qca,qca7000.yaml
+ F:	drivers/net/ethernet/qualcomm/qca*
+ 
+ QUALCOMM BAM-DMUX WWAN NETWORK DRIVER
+-- 
+2.34.1
 
->
-> > +          - const: nxp,lpc4350
-> > +
-> Best regards,
-> Krzysztof
