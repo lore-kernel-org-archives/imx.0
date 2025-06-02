@@ -1,91 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39C433F7;
-	Mon,  2 Jun 2025 19:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46BA139D
+	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 19:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748891254; cv=none; b=AnX2SK5eWmVOm+YvWp0kmm2sK8LpFxRTCr1xJMq4iEpJdXT5WheVVK5YrqWHXCpdZkhoFKKLNR5XZrb3/b2cjNrR5bKcQlHo+8nFj8CGqjsaiXsD1ydRR3lljCmB9tZrLlRa4c7aUsouQIYR0XaxixqXFYJK5gwtztuGyJBBrGU=
+	t=1748892507; cv=none; b=IoQeHN5+GaDx0t9SVXphZ/PftgABg+VoALG//qv+qJamr1UWJ+J54rJikBdC8soA+yrzAMREtlIt2WBYVvZljDCBtpHqCyNPGnzgTVSftb+GdB2KVPDOKDPqdm1Ib8Mg84Cs0C60Yfb8h4R8zqfDb6r0s78DhL12Mlo8D56kxQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748891254; c=relaxed/simple;
-	bh=7az0m0nsyakWLCwwi+MCKHAsD3u974wVjJ18aoMopQQ=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=ITqBXhD/7cjw/GIxjm49JOlhD7sDusBsSMeI8RyucD+2BUbkPGvOlXpiP15dr+Fpam0oG4ggN6fkOMAEHQTNkry9m7uCjGRv00dmQUc9N4UsBLzCFsY3n5baeTZO5WEFgqrR2ojF8qYjgiDlHVdwSB8P2fZ5JgOnHmwCwtLjgUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUrCKlRf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748892507; c=relaxed/simple;
+	bh=Yir4z9iUxeXhxIOYYiF8Uq4KfXiw2labPtJVGZS0zGI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hv0Y+ITh9BSDjY7MJTIFwHgHuGanNFt1dvOB/G9B/7Gl8D9+2OGE4WUA8TOQBXpd1DoXpfFrtMYBSu4+2lwQYZpVCgUk8dA8aKFuzVH/Q8P8zMauWfv5CcWB/DfCFV0mUHnhvkRaUmpqNMUAqmWEoS34D2NU8V4rwj5Fn3aIhkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=UYJJecdm; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUrCKlRf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20D1C4CEEB;
-	Mon,  2 Jun 2025 19:07:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748891254;
-	bh=7az0m0nsyakWLCwwi+MCKHAsD3u974wVjJ18aoMopQQ=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=aUrCKlRfZ9YMpaymzaEY9TM4p88z4MMSfQfniuU95jWImlRTYO/WiaRviCfPyEn1p
-	 i9YOX17y81Quo8SVzxq+MFeCwtfeXxHg1+K77Pqdf1JuVp/njf8hx/DYIYK3PmECWG
-	 mLm/t7Ar00zUV+jav6oAqLjTPCmPOC4XDwIdWOm3S8E/HJp6GxZeOLjx0r571FEn+h
-	 kEqz0nZ9qOeCMiESKhQJw4NHSYpqh383deckTz+TBLgy/BuK80H8WK2b5TClutCdsl
-	 y/7HOMndBkgfDBrBYmaJipcjCd6Pv/wXBCk5vWeqQ3/6k96wBrBD53IwKkHd2CZP+s
-	 pbf8VLAx82/9A==
-Date: Mon, 02 Jun 2025 14:07:32 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="UYJJecdm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1748892487; x=1749497287; i=wahrenst@gmx.net;
+	bh=q/cg5ojJ/w13pjpukVEUe8AkJtPgaqLfIdxA24RlIUA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=UYJJecdmW0vrnH9nxiziF9AlgmYk9DvISm1WEb7CzxqfSLDoa9v5R5GQOsmsNRy5
+	 Mn4ExrOrtYetdB0mu08qAJboo3xmxNygzLLhT7zU/VmRJ3x0SatZTyoAJhbDFxITg
+	 QFhX0j3QykElnRENPYF1ORMJUWwlRACW5RLWmi+grhUZgTda4Nig1dDLOkl6aJEbZ
+	 wKzho9OvH6RGb/jRPhWkZLqeLzLwPLN/a5lp3YdG823dNKjlty4vWQoklrtL7ihGR
+	 LcuFKV7eShmEx+UvQ140a5NPZWP4r0vu3UmJW47nfKmIt7j7u8/mZAFIr7/Mf5Xm2
+	 +K/1NME73KN4gJzNxg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.103] ([91.41.216.208]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MvsEx-1vBwMi1FVH-013lPJ; Mon, 02
+ Jun 2025 21:28:07 +0200
+Message-ID: <602cc521-9b7e-424b-8956-429d654fc760@gmx.net>
+Date: Mon, 2 Jun 2025 21:28:02 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- Conor Dooley <conor+dt@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev, 
- Srinivas Kandagatla <srini@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-In-Reply-To: <20250602144422.944454-1-Frank.Li@nxp.com>
-References: <20250602144422.944454-1-Frank.Li@nxp.com>
-Message-Id: <174889125206.2528612.6417813590440449143.robh@kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: nvmem: convert lpc1857-eeprom.txt to
- yaml format
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] dt-bindings: net: convert qca,qca7000.txt yaml format
+To: Frank Li <Frank.li@nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ imx@lists.linux.dev
+References: <20250529191727.789915-1-Frank.Li@nxp.com>
+ <047fb49e-1ca8-43a6-b122-0d6fa9a61c74@gmx.net>
+ <aD3E2ONB6Ay1wwmk@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <aD3E2ONB6Ay1wwmk@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:AJQ2ixEvwg/itP70Uj8xnydOVxM6lyLntqA43DPWy193LI9QDFJ
+ BAD5b59iauwBVMTKvwf4334m9vCNhfkI9FLMAnhOdR8F/ya5+BAxDYdyxNztMVoYk0dl5b9
+ 7XkX/SVLLbkYwpg0sPhM+92ddZHu8eQCzLh5UHgyyw7VxREkOCOHM4U/IBuf6LmACfGMPrA
+ 1zJmqnV5mO/tWL2N4kEyA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:uYK9uE2dX1Q=;DKTN5ymCFAqlbh9PnhostIe0JhP
+ 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
 
+Hi Frank,
 
-On Mon, 02 Jun 2025 10:44:21 -0400, Frank Li wrote:
-> Convert lpc1857-eeprom.txt to yaml format.
-> 
-> Additional changes:
-> - remove label in example.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../bindings/nvmem/lpc1857-eeprom.txt         | 28 ---------
->  .../bindings/nvmem/nxp,lpc1857-eeprom.yaml    | 58 +++++++++++++++++++
->  2 files changed, 58 insertions(+), 28 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/nvmem/lpc1857-eeprom.txt
->  create mode 100644 Documentation/devicetree/bindings/nvmem/nxp,lpc1857-eeprom.yaml
-> 
+Am 02.06.25 um 17:35 schrieb Frank Li:
+> On Fri, May 30, 2025 at 10:33:28AM +0200, Stefan Wahren wrote:
+>> Hi Frank,
+>>
+>> thanks for this patch.
+>>
+>> Am 29.05.25 um 21:17 schrieb Frank Li:
+...
+>>> +  - Frank Li <Frank.Li@nxp.com>
+>>> +
+>>> +description: |
+>>> +  The QCA7000 is a serial-to-powerline bridge with a host interface w=
+hich could
+>>> +  be configured either as SPI or UART slave. This configuration is do=
+ne by
+>>> +  the QCA7000 firmware.
+>>> +
+>>> +  (a) Ethernet over SPI
+>>> +
+>>> +  In order to use the QCA7000 as SPI device it must be defined as a c=
+hild of a
+>>> +  SPI master in the device tree.
+>> Could you please add the dropped "(b) Ethernet over UART" description h=
+ere?
+> Okay, I will add back.
+>
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    const: qca,qca7000
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  interrupts:
+>>> +    maxItems: 1
+>>> +
+>>> +  spi-cpha: true
+>>> +
+>>> +  spi-cpol: true
+>> In case of a SPI setup these properties should be required. Unfortunate=
+ly
+>> i'm not sure how to enforce this. Maybe depending on the presence of "r=
+eg"?
+> But It think depend on reg is not good idea, which too obscure.
+I understand, but this was the first idea which comes to my mind.
+>   Ideally it
+> should be use two compatible strings. It should treat as two kinds devic=
+e.
+Back in the days there was a discussion about different compatible=20
+strings and it was rejected [1].
+> It is really old devices and not worth to update compatible string.
+Yes, this powerline communication chip was introduced in 2012 but it's=20
+very widespread. Most of the electric vehicles and DC charging stations=20
+use this chip.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Regards
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/nvmem/nxp,lpc1857-eeprom.yaml: 'maintainers' is a required property
-	hint: Metaschema for devicetree binding documentation
-	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250602144422.944454-1-Frank.Li@nxp.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+[1] - https://lkml.org/lkml/2017/5/19/390
+>
+> Maybe some one in dt team can provide suggestion!
+>
+> Rob and Krzysztof Kozlowski:
+>    any idea about this?
+>
+> Frank
