@@ -1,107 +1,91 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA661DACA1
-	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 17:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39C433F7;
+	Mon,  2 Jun 2025 19:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748884633; cv=none; b=hviKz86XpEpwHm6UYX7IusrJLj4gOIbtwhmelMyQ5DzdmjMO2/5DMFeNLlLSQ+HcQDFau6i6bVWNzD99Rhpe4Jg11unn2ysNHTcLGNVxCZ7MGI6AJnetAy4+ILygOujK2TeKCwuwjHBqXNrNVsOwQYxYMgz89M0tQxhzlq9LBgE=
+	t=1748891254; cv=none; b=AnX2SK5eWmVOm+YvWp0kmm2sK8LpFxRTCr1xJMq4iEpJdXT5WheVVK5YrqWHXCpdZkhoFKKLNR5XZrb3/b2cjNrR5bKcQlHo+8nFj8CGqjsaiXsD1ydRR3lljCmB9tZrLlRa4c7aUsouQIYR0XaxixqXFYJK5gwtztuGyJBBrGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748884633; c=relaxed/simple;
-	bh=h550fCfTltjqsv0qBuski4X0DvmlcPysXPBy1Wek500=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SAL06y7qRrLzWg/Wqoj/QtO7NJeTGGhTyLJaI11CCFWLBuCnE0dmsbaXRKtMP1SMerWdDv49mZ4yY8uilEMD3Nv/ODfOcQTDFQkRCblDcLhmo1OX6ibfIwPUpRjs5lwleWrf+f6TP1D+V+szPgDN8XMTUtIyzOZHSWqyHjIpPlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=kpuUOO4j; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=kpuUOO4j; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	s=arc-20240116; t=1748891254; c=relaxed/simple;
+	bh=7az0m0nsyakWLCwwi+MCKHAsD3u974wVjJ18aoMopQQ=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=ITqBXhD/7cjw/GIxjm49JOlhD7sDusBsSMeI8RyucD+2BUbkPGvOlXpiP15dr+Fpam0oG4ggN6fkOMAEHQTNkry9m7uCjGRv00dmQUc9N4UsBLzCFsY3n5baeTZO5WEFgqrR2ojF8qYjgiDlHVdwSB8P2fZ5JgOnHmwCwtLjgUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUrCKlRf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="kpuUOO4j";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="kpuUOO4j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1748884628; bh=h550fCfTltjqsv0qBuski4X0DvmlcPysXPBy1Wek500=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kpuUOO4jbcDLwgUM9LkrM00QElHiFJBp4l0Lr5Cw83PZGQUCTEMvFHKRuDmnsafCk
-	 xfbza4qUib1JqFbJ85M47DKIFRVFgbH9/FEaHby8Mq7gwIzveBqCs4m3+YB1RFmuOw
-	 5uPJW7AvyZHpFdZZU9O6PYYLILE/VuRcLgYhU0ac9RdohE9Hur5VRJl9KDjW938KQr
-	 NTRaz7zZs4Mw1uI1mBNMqXfnhIX1KalF5WNHdGuEGSr5TTfkzobqySPS3tN4ERF3c9
-	 +yYsEJ75iWIjdBfs4rKeKNn0fhD5A728wRdMHXWeqrlks16WDxiofAPTK4HndVEAR2
-	 EJUizIRA8F5pQ==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id 171053BE084;
-	Mon,  2 Jun 2025 17:17:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1748884628; bh=h550fCfTltjqsv0qBuski4X0DvmlcPysXPBy1Wek500=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kpuUOO4jbcDLwgUM9LkrM00QElHiFJBp4l0Lr5Cw83PZGQUCTEMvFHKRuDmnsafCk
-	 xfbza4qUib1JqFbJ85M47DKIFRVFgbH9/FEaHby8Mq7gwIzveBqCs4m3+YB1RFmuOw
-	 5uPJW7AvyZHpFdZZU9O6PYYLILE/VuRcLgYhU0ac9RdohE9Hur5VRJl9KDjW938KQr
-	 NTRaz7zZs4Mw1uI1mBNMqXfnhIX1KalF5WNHdGuEGSr5TTfkzobqySPS3tN4ERF3c9
-	 +yYsEJ75iWIjdBfs4rKeKNn0fhD5A728wRdMHXWeqrlks16WDxiofAPTK4HndVEAR2
-	 EJUizIRA8F5pQ==
-Message-ID: <09089071-57fc-4495-b6ee-159c59d59650@mleia.com>
-Date: Mon, 2 Jun 2025 20:17:06 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUrCKlRf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20D1C4CEEB;
+	Mon,  2 Jun 2025 19:07:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748891254;
+	bh=7az0m0nsyakWLCwwi+MCKHAsD3u974wVjJ18aoMopQQ=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=aUrCKlRfZ9YMpaymzaEY9TM4p88z4MMSfQfniuU95jWImlRTYO/WiaRviCfPyEn1p
+	 i9YOX17y81Quo8SVzxq+MFeCwtfeXxHg1+K77Pqdf1JuVp/njf8hx/DYIYK3PmECWG
+	 mLm/t7Ar00zUV+jav6oAqLjTPCmPOC4XDwIdWOm3S8E/HJp6GxZeOLjx0r571FEn+h
+	 kEqz0nZ9qOeCMiESKhQJw4NHSYpqh383deckTz+TBLgy/BuK80H8WK2b5TClutCdsl
+	 y/7HOMndBkgfDBrBYmaJipcjCd6Pv/wXBCk5vWeqQ3/6k96wBrBD53IwKkHd2CZP+s
+	 pbf8VLAx82/9A==
+Date: Mon, 02 Jun 2025 14:07:32 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: arm: lpc: add missed lpc43xx board
-Content-Language: ru-RU
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
- Michael Walle <mwalle@kernel.org>, Fabio Estevam <festevam@denx.de>,
- Markus Niebel <Markus.Niebel@tq-group.com>,
- Frieder Schrempf <frieder.schrempf@kontron.de>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Max Merchel <Max.Merchel@ew.tq-group.com>, Tim Harvey
- <tharvey@gateworks.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- imx@lists.linux.dev
-References: <20250602140613.940785-1-Frank.Li@nxp.com>
- <618490ca-cde1-4e13-8638-f5cb65606c6d@mleia.com>
- <aD3Lg+LRUThzm2ce@lizhi-Precision-Tower-5810>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <aD3Lg+LRUThzm2ce@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20250602_171708_116346_A318CD15 
-X-CRM114-Status: GOOD (  10.94  )
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev, 
+ Srinivas Kandagatla <srini@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20250602144422.944454-1-Frank.Li@nxp.com>
+References: <20250602144422.944454-1-Frank.Li@nxp.com>
+Message-Id: <174889125206.2528612.6417813590440449143.robh@kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: nvmem: convert lpc1857-eeprom.txt to
+ yaml format
 
-On 6/2/25 19:04, Frank Li wrote:
-> On Mon, Jun 02, 2025 at 06:34:14PM +0300, Vladimir Zapolskiy wrote:
->> On 6/2/25 17:06, Frank Li wrote:
->>> Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
->>> warnings:
->>> arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
->>>
->>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>> ---
->>>    .../devicetree/bindings/arm/fsl.yaml          | 23 +++++++++++++++++++
->>>    1 file changed, 23 insertions(+)
->>
->> I prefer to see NXP SoC powered boards under Documentation/devicetree/bindings/arm/nxp/
->>
->> LPC18XX/LPC43XX SoCs are not Freescale.
+
+On Mon, 02 Jun 2025 10:44:21 -0400, Frank Li wrote:
+> Convert lpc1857-eeprom.txt to yaml format.
 > 
-> Generally, we don't distingiush that, new s32g chip also in this files.
-> All nxp/fsl was maintained by one person and everyone know these are one
-> company now.
+> Additional changes:
+> - remove label in example.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/nvmem/lpc1857-eeprom.txt         | 28 ---------
+>  .../bindings/nvmem/nxp,lpc1857-eeprom.yaml    | 58 +++++++++++++++++++
+>  2 files changed, 58 insertions(+), 28 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/nvmem/lpc1857-eeprom.txt
+>  create mode 100644 Documentation/devicetree/bindings/nvmem/nxp,lpc1857-eeprom.yaml
+> 
 
-Well, my concern is actually not about the companies, but these two SoC
-families are totally different, the peripherals or core controllers are
-all different, it makes little sense to mix them up.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-I won't raise any questions or insist on the correctness of i.MX placement
-under arm/nxp or arm/freescale, but NXP LPC32xx and NXP LPC18xx/LPC43xx dt
-bindings shall be put under arm/nxp for certain.
+yamllint warnings/errors:
 
---
-Best wishes,
-Vladimir
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/nvmem/nxp,lpc1857-eeprom.yaml: 'maintainers' is a required property
+	hint: Metaschema for devicetree binding documentation
+	from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250602144422.944454-1-Frank.Li@nxp.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
