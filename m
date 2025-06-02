@@ -1,92 +1,248 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011023.outbound.protection.outlook.com [40.107.130.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848BF1C245C
-	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 15:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748879003; cv=none; b=E4NCvAhIQpzy8AQ8jj6XqnAU0O9OChmv8Bbjgkf23IVjd9kqV73AifNt0QnzlGgQD+vDgyDUNBiDi6lz4j/J5x6VDCrxP+Lunks0tkMo528whsOVsJwDvqNExyQTpEg9CLTp9TW39ndApvkVxsPPcPH8IGRinL5L3Lm2dLugy/Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748879003; c=relaxed/simple;
-	bh=DBJwOAmkyX2Nribm1dGA50el7+wrnSk5uZuhbhqZS4s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a3W8kD3VPcKM18Ohfx0NWKYOBbOWIRNEtPXR6Tuvr5q4xb2xhJY5jY57FEby90D0jGPODDBi1XmOusoi0RMeeA1CnNngBMl4fVITJ0l3zDEr/EP3KGDfjcm5rqbKnMJmPwDmyy88BJMKhorP45eon+HFk6Jkz2lPBQs3DGmzscY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=n9azWB/n; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=n9azWB/n; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54542182BC
+	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 16:00:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748880031; cv=fail; b=VE13AqJe598BEad9oSCBks5dCCPI0YMFLY/NTPHkLgmRa46PJ1LdR5Cj04rZ/8fghTWOwJ4hmNZ7ChQMKIhKcldoYcARHgGQ5bIS+cXXiMFQKX2HnTp/8e5qpKSYNRj/esDoEyJqL/GjYO/7pJrCuE2e+4c3xdWDXSiOTdSc4Us=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748880031; c=relaxed/simple;
+	bh=NcN2JVnp/hsUhU2WnU6MbvJ/8s5VtFfRnVL/KCndl10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=um0EKNirjemNmbO3dzx/yg2kCpm4k6kUi8GoUCfQ00petiJ9m1WAh3opLkZObcvB2TPZko7u5pI/5wun18EhcPePd++KEqI1pXa0XzG/EGWG7Qo4aC1UHsKLDnMrDIfIL/WG568dXfxFAJe05Ij14SJvgOKUOaFPThZj1PRGKew=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=khYvc470 reason="signature verification failed"; arc=fail smtp.client-ip=40.107.130.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="n9azWB/n";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="n9azWB/n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1748878455; bh=DBJwOAmkyX2Nribm1dGA50el7+wrnSk5uZuhbhqZS4s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=n9azWB/nVNOjiLwTH70drkA1yuTzOU6cp4vgJ0VU37Q88UZpL/01xyQICw3cQF6Ri
-	 40+E509WAVyz4eVM7uPTYnHFC7UkXQk2N+qVzXyGiypX4hbgOEfhjcexL/3d1KfPYT
-	 XVSWdpJx3e2vMfVz0tV38bWPNPZy5l3EJKN+Fqbd6BjgAGq/JaZSrkRQM35qjC5VBL
-	 BCntMKkeDnF9LpAh79Hp/5tCq5yAtrJt4nobyJB6ix9I9sLBQvTxM9u7WHqrszkLSb
-	 S4G0epOaPOjqoNvuZWyacuqyH0pwAQdyNjCiIarHxb7J9uSsgjTGJgY8QVQqKPiOzO
-	 pdReT7E14GATg==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id C0FD03BE084;
-	Mon,  2 Jun 2025 15:34:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1748878455; bh=DBJwOAmkyX2Nribm1dGA50el7+wrnSk5uZuhbhqZS4s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=n9azWB/nVNOjiLwTH70drkA1yuTzOU6cp4vgJ0VU37Q88UZpL/01xyQICw3cQF6Ri
-	 40+E509WAVyz4eVM7uPTYnHFC7UkXQk2N+qVzXyGiypX4hbgOEfhjcexL/3d1KfPYT
-	 XVSWdpJx3e2vMfVz0tV38bWPNPZy5l3EJKN+Fqbd6BjgAGq/JaZSrkRQM35qjC5VBL
-	 BCntMKkeDnF9LpAh79Hp/5tCq5yAtrJt4nobyJB6ix9I9sLBQvTxM9u7WHqrszkLSb
-	 S4G0epOaPOjqoNvuZWyacuqyH0pwAQdyNjCiIarHxb7J9uSsgjTGJgY8QVQqKPiOzO
-	 pdReT7E14GATg==
-Message-ID: <618490ca-cde1-4e13-8638-f5cb65606c6d@mleia.com>
-Date: Mon, 2 Jun 2025 18:34:14 +0300
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="khYvc470"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JZ7s4K/8BEyu/a9cj/c9XHZm13OtcXeKn9hJxbhMAjMaQigreCSfbdgQcBkVy9XcM3iZiEA8f4xMURa29zO24swBlXHa5VSYzCtGLYiUIVKCnVwC/wFa3GY1aKqPUUCMyA2R3Qm3dgoJ9DVl6o9Dc+mey2Fpw8Dx8odE8ouYvfz+0S6unNUQnSAkzZlVciDkcMwsQHnZeU3j2Qi8OPy4326JImRBPzyE1aeMg04gDAZqPw8jdmkXPddvoyVuxn/d+p/B1VzrlC0a/bwYAZgbAsdvcde6WMru3AkbaZP9cecwCg+RuXBE3M+GaR4G3xGlC/ubXb0MJEmDElb/2R4L/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v6BVatR4QAvTcqLe6csh+18V5rWokCINkNSX936DOjI=;
+ b=qjq5KtCtl44iFFHsp9Q+1TpUopl7ELActbQNFaZ2tEIag+zPHmcj5ckd3EtzTG/KWc/bN3g6NiU686A9GD0XKdyHGJi7/ZSdAiAp7V5uDEVu60e0r/kUiieQC66g42OEbIZ9cH6DJM/zrQTz240aBCKGMhyUzZjp9uHsledXcqIvkybfNvYfwnV4OJ/nYkceO4cELq1BHlci5WpeWTUwoOmM0KDLezl7JBpUZiT181AOrev3L7NnkgNCIOFhupBII+kxNPtOVm81a03/GZZ2ZmryBId8y83Ulp2jiuZtkQJ4n//XnUhPV7ZxSF4ZPeHp+FnMFqdUi9rwyEs1Pey9XQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v6BVatR4QAvTcqLe6csh+18V5rWokCINkNSX936DOjI=;
+ b=khYvc470Tv1BUIbBO486hjM9Lxl/h8aWp1RBJIrLrHKg9VWUwp9d86GGgyBqgRUKhUgqknyOFQEhPS98kXalmuT4+pKG5fTZhEM9hL340ePwMEHGk9FkBDsTKT9V5K1TuBtcDOXcFD+y+EDblWzahfFy8Km7QZL30eDN9D5lKmc2v7V7gGVz9zokSQig3Zoh2glZX7poHgHwbkSi3SsH9Bljva/FdzDzbyZXgjOOCodJN2SeTZnBPGbMoBhEQS84fA37/1DtG9hlwfZ+fLvOmHsNy2tYiVI4h2x6Hisi9mnbuAeO/n/tW5vrUGi1/uT594pelE7L5ozE5TmTjBpXEA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DBBPR04MB7881.eurprd04.prod.outlook.com (2603:10a6:10:1ea::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.34; Mon, 2 Jun
+ 2025 16:00:26 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8769.025; Mon, 2 Jun 2025
+ 16:00:26 +0000
+Date: Mon, 2 Jun 2025 12:00:18 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Gregor Herburger <gregor.herburger@tq-group.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com
+Subject: Re: [PATCH 2/2] arm64: dts: ls1028a: Add mbls1028a and mbls1028a-ind
+ devicetrees
+Message-ID: <aD3KkkSwoUKaWrim@lizhi-Precision-Tower-5810>
+References: <20250527060400.1005757-1-alexander.stein@ew.tq-group.com>
+ <7298658.31r3eYUQgx@steina-w>
+ <aDnZ/KjP/mMDhwF0@lizhi-Precision-Tower-5810>
+ <5019298.31r3eYUQgx@steina-w>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5019298.31r3eYUQgx@steina-w>
+X-ClientProxiedBy: BY3PR03CA0004.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::9) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: arm: lpc: add missed lpc43xx board
-Content-Language: ru-RU
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Alexander Stein <alexander.stein@ew.tq-group.com>,
- Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
- Michael Walle <mwalle@kernel.org>, Fabio Estevam <festevam@denx.de>,
- Markus Niebel <Markus.Niebel@tq-group.com>,
- Frieder Schrempf <frieder.schrempf@kontron.de>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Max Merchel <Max.Merchel@ew.tq-group.com>, Tim Harvey
- <tharvey@gateworks.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20250602140613.940785-1-Frank.Li@nxp.com>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <20250602140613.940785-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20250602_153415_809469_D7AF26E5 
-X-CRM114-Status: UNSURE (   7.42  )
-X-CRM114-Notice: Please train this message. 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7881:EE_
+X-MS-Office365-Filtering-Correlation-Id: f09b5724-0e87-4688-7295-08dda1ee96a0
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|52116014|376014|1800799024|366016|38350700014|7053199007|13003099007;
+X-Microsoft-Antispam-Message-Info:
+ =?iso-8859-1?Q?1i1i0Syqlv9Ez9uvHCACI5+EzNAvjd2j9Q0cz+kmkTGTkj3/FukLK3vB/n?=
+ =?iso-8859-1?Q?DaiIGb0xZpS+0DCB8lyJTRvcQxHTYXfbu3qrCe2msAbzKd9MqrIaZaw4Cb?=
+ =?iso-8859-1?Q?XRJH1wLggXiUgSwJr1gSgkjvFBEQpy4cMlDHYzGxp8ilKCWf7wrz7W2mFW?=
+ =?iso-8859-1?Q?j423TMiXlDa8uPcqAnmHe4L/EKBHHGGRZUrz/qDcB/TAccxS9JAEfl6ZmH?=
+ =?iso-8859-1?Q?dtfvvznh3DAb50F/p/ontjl6wYYYyDy83LU3sJP5yLBChZVUCyz6/N1yeQ?=
+ =?iso-8859-1?Q?PvKkIcCh1AXZJYndIowFnw5w1AHnwfn7wwdW+HdJ1wyH8v9Lud+uy6OkSZ?=
+ =?iso-8859-1?Q?OyIbXX7TthBRWQPMEDnCPdZ3IOdG6t42EygiqJ3xNJKIBIPGsot2v5ne8i?=
+ =?iso-8859-1?Q?LdOAJVfPiHZyclyKlxRInR02KkOx/SQaqEVLbkDdCU5dtWlrL5dgn4zWHM?=
+ =?iso-8859-1?Q?6hPGFmfE7Q/fbcbr2IdRNwPDiY+A0G+I+M24UKcY25W+DU3MBOUd6nte/6?=
+ =?iso-8859-1?Q?CdlSmwc1dd+Pq8pA8rcXC6A0nhq7Ss7HDmZ/eGVlcPXxT/FVS4umDxjG1D?=
+ =?iso-8859-1?Q?JRWAfZTmbMwWbDIaypZ+1Yl9+27GhbJCDYx91em20R33z4nSn2Sfytj3uI?=
+ =?iso-8859-1?Q?mFdlpkaXOsjgfcxo0tnSMTG5hgWT3il/Q+P9BFPVIaXaBskF9pwxqGOYcT?=
+ =?iso-8859-1?Q?S4O3QYhYVAs9kxK24fxUWvIDL89ei4nJU1bsQEYL35EO+cyJKZuPAdE5+n?=
+ =?iso-8859-1?Q?8IJfYf+t9MzYoo5ZqA7tTtwoCkOgLhUkSHTaXGj8cjRhDv3qwVZDyluvHm?=
+ =?iso-8859-1?Q?esGGew51BYBM2TuYCqngDuQc5gXHSNIQiho0A4cAxhAlPApkdgJzOGuY8X?=
+ =?iso-8859-1?Q?qKns3bReSyO/BpqY0Vj2iVxVc8ihJLXDcTOVdD+i5SPorZp8aX/MSoyIzt?=
+ =?iso-8859-1?Q?F6sZ/wQKiK9YyYCMyl/0UYFf/1qKCWZ2xgwDyhU7PyaMWgqJqbzZSUfPJK?=
+ =?iso-8859-1?Q?dhY/UikgOaThCj252qsBWjRy6d6ryMlflAB63a7MDlABlC21ilNerT49tP?=
+ =?iso-8859-1?Q?4kZ8sMbxknhirs+bCIzOXx5wGfHpp5aBoXfXgq5zFMtmpfoVHxqSLS/gfz?=
+ =?iso-8859-1?Q?hCKL1gkkrgO5y8E7tC1wrvMBURbWiZMFSKm/+R4Ret+GHyzj5HtJ2wUXu/?=
+ =?iso-8859-1?Q?oPeKRj53ektbPfdjoqoGuOw9KNgeTmIVJMtFvrS3rS3KN4p0jFPNmS4ERU?=
+ =?iso-8859-1?Q?DYrOTAH2bR0/0lk9z5fSo8SP1SVKeI9HiC3vr3bOoSnmhjXrLTCSKM/xky?=
+ =?iso-8859-1?Q?SnD1MBWZEfeMAFsKl93hCHbjOX+dNxL1wk9Y6KZ0tuHqpSEfUu6GetiWRr?=
+ =?iso-8859-1?Q?v8EBhqJon+UHuEty++TG2W/e+N4lf5GVSM3Jt+BlRpGE5p5eVgHsMX0wis?=
+ =?iso-8859-1?Q?gsdWia+gxNa+9zznxMBxWQ/IZX6sLhZ+CiFJfgYvS3BghLzTqE1TvcYypB?=
+ =?iso-8859-1?Q?w=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(1800799024)(366016)(38350700014)(7053199007)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?iso-8859-1?Q?v7Ljsvzy5/1PJq8wkTdsJk3AUA+Xt6Wqt1SfhsUAay1Un6Mnq7KntvF8c6?=
+ =?iso-8859-1?Q?oy7e3hk5mtctv3oPIL/UK/1UOSpflc38g9qoVY1/mM+OWosDLj2ihuZcJ7?=
+ =?iso-8859-1?Q?azNMb603HgjTIhb5pKmE91JF8muYNvUFn1hJT735HzHPXeh4ivpwqYOqkX?=
+ =?iso-8859-1?Q?Kq4JBJ1jHaUWT2YGHv2XMyQEKZF5A1VoLHxzPl+opi+BqJJVpR5ASet8+H?=
+ =?iso-8859-1?Q?z+jgIA49qq2Ow5YQf15DJLjgBmSbRcVjswtZg1zAotbXstnpS43Nqi90Kk?=
+ =?iso-8859-1?Q?sb9pVNiGZpsBJhVhPmIZSiZd1/H2bWM5lV0lIakqkAaKOy5k5yfGlHrbTL?=
+ =?iso-8859-1?Q?x4qAfqG2GLddLX5D0cnUChSHksTrWSs/VCV8jiCr3QjX2MbX8IRTNQ7/Ai?=
+ =?iso-8859-1?Q?ekSRxQjlRKVsDUntL5+zVNWuxDg2+Pe5/7o9J+5BidPholuZL08gVi12pW?=
+ =?iso-8859-1?Q?XCpNE6HyehNgCoNgCnyAmvcCUcs0eTqO42SNnXFeWn6kGMlP1AMc7YxHLK?=
+ =?iso-8859-1?Q?/hg1WxO2syKsduBamBo2yIabPxqWTErbp2iwmnYhnYwyG0semxcc4Cz1Fr?=
+ =?iso-8859-1?Q?Wg2INXe4FQxk3Ohpuv7PlwMMzGATebyAKD0Bt0kfzm8AnUNE77SGlbbbAe?=
+ =?iso-8859-1?Q?rJkTiuNSUBWfEXbjYDSaOxY8uijVeO30I+H25fCj7vsL+zz8mAQjWQbELf?=
+ =?iso-8859-1?Q?U7EE1U40EV8sBxfhS6dpV5aPw4ij5SX53QJTfo7yIvRxEPa3S5HFNE9lZV?=
+ =?iso-8859-1?Q?ESyX54rpva+lJvg6PVvorGRdiTTPA5w+d05vEKTpBzTfpabnn7aZoPeQpV?=
+ =?iso-8859-1?Q?dVr+9gWMlZep1KzfgXpmgTH+Q8qDoIDD/AkMcmIy0cxW/rtuy2EwumclvN?=
+ =?iso-8859-1?Q?O1WqIkMYb8c/BBAUAAYdpEpI/7XTNhWojC3yPpZQad02XDc8LWIfyoqPR9?=
+ =?iso-8859-1?Q?AsHeka83X09MQ8DThGeUxtg7G8s6y/wY9kHC4b6VmkeL9fqN2pndqqRr6s?=
+ =?iso-8859-1?Q?qecBUsZLyGajw3qzeOj8vFRMZfH14nMYnJG44CGv92ErGyeYeBVAvhfhtQ?=
+ =?iso-8859-1?Q?9tXfMO1w7t6SwmtychYPne/5QL2W38Z65KVeOqFVWKSPzcBAaEWp+ZmnUR?=
+ =?iso-8859-1?Q?5Dm8oOOFyTlwKcijzHwjX5vN5JJK3dP7boufX6slWb1mBTm4O8FgWxMx5o?=
+ =?iso-8859-1?Q?Xto1JBFW9U4ZplU8i6igrqva1DNu3xcSl5cePujjfKNWfWcdMHulAWkQTU?=
+ =?iso-8859-1?Q?+kD7zMKmgB0FYvS05jQNxWQsSkZuSzMLgocBPv3mLxZV3cPeHwvIi/fNPV?=
+ =?iso-8859-1?Q?byZRm5kPoFcQRQldgpDY/QYpO57YbsVpsfQQpZAMp7plsjGQXwDboYUMh9?=
+ =?iso-8859-1?Q?e29kheXjw/4USDmtOzpzYtB0Vk9AAK06J0PZCZnoCBYWA6Ftn1T/eh57Mz?=
+ =?iso-8859-1?Q?s4KEzh+P1F1C9Xa347ulUVrlKvN4EFa/PTqwQrleIVJ6flXEi5z/DlRPib?=
+ =?iso-8859-1?Q?M629C5pRWHsRE51LR3yOsq7BrqP5eENnC/2PJBnPnS3oVpmEycOety/SWY?=
+ =?iso-8859-1?Q?Z0rfpQGcbIN1eCgFeeCGdduYz7+tAcJvaryKhpZxDtATk9LvEX0NTBcnPe?=
+ =?iso-8859-1?Q?OccQYsASxsHY0dIGKsmJ3mWNAIW1m6QwEc?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f09b5724-0e87-4688-7295-08dda1ee96a0
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 16:00:25.9437
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X8lQaZJWWGanYTKamsFdf8j6sMZ06ec56jcO1EQbGSNVGW/1l/AjlVxoxjmqdYgsigFdiLU/buJxOmohAAvuAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7881
 
-On 6/2/25 17:06, Frank Li wrote:
-> Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
-> warnings:
-> arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->   .../devicetree/bindings/arm/fsl.yaml          | 23 +++++++++++++++++++
->   1 file changed, 23 insertions(+)
+On Mon, Jun 02, 2025 at 04:28:55PM +0200, Alexander Stein wrote:
+> Am Freitag, 30. Mai 2025, 18:17:00 CEST schrieb Frank Li:
+> > ********************
+> > Achtung externe E-Mail: Öffnen Sie Anhänge und Links nur, wenn Sie wissen, dass diese aus einer sicheren Quelle stammen und sicher sind. Leiten Sie die E-Mail im Zweifelsfall zur Prüfung an den IT-Helpdesk weiter.
+> > Attention external email: Open attachments and links only if you know that they are from a secure source and are safe. In doubt forward the email to the IT-Helpdesk to check it.
+> > ********************
+> >
+> > On Fri, May 30, 2025 at 08:29:27AM +0200, Alexander Stein wrote:
+> > > Hi Frank,
+> > >
+> > > Am Mittwoch, 28. Mai 2025, 17:35:52 CEST schrieb Frank Li:
+> > > > On Tue, May 27, 2025 at 08:03:55AM +0200, Alexander Stein wrote:
+> > > > > From: Gregor Herburger <gregor.herburger@tq-group.com>
+> > > > >
+> > > > > Add device trees for the MBLS1028A and the MBLS1028A-IND and the SoM
+> > > > > TQMLS1028A.
+> > > > >
+> > > > > Signed-off-by: Gregor Herburger <gregor.herburger@tq-group.com>
+> > > > > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > > > > ---
+> > > > >  arch/arm64/boot/dts/freescale/Makefile        |   2 +
+> > > > >  .../fsl-ls1028a-tqmls1028a-mbls1028a-ind.dts  |  68 ++++
+> > > > >  .../fsl-ls1028a-tqmls1028a-mbls1028a.dts      | 118 +++++++
+> > > > >  .../fsl-ls1028a-tqmls1028a-mbls1028a.dtsi     | 291 ++++++++++++++++++
+> > > > >  .../dts/freescale/fsl-ls1028a-tqmls1028a.dtsi | 117 +++++++
+> > > >
+> > > > New dts file, suggest run https://github.com/lznuaa/dt-format to nice order
+> > >
+> > > Thanks for the suggestions. It does some improvements, but I also disagree
+> > > with a lot of proposed changes:
+> > > * Wrong indent of SPDX tag
+> > > * model property should come first IMHO
+> > > * {gpio,interrupt}-controller should come before #{gpio,interrupt}-cells
+> >
+> > I checked code, it is specific rule to make -cells before -controller. It
+> > should come from previous review comments.
+> >
+> > Do you have document or mail list require -controller before --cells ?
+>
+> There is Documentation/devicetree/bindings/interrupt-controller/interrupts.txt.
+> While not exactly saying anything about property order, "interrupt-controller"
+> is stated in the very first sentence.
+> Also from a readers perspective having "-controller" first seems
+> reasonable, IMHO. "-cells" is necessary because it is a controller.
 
-I prefer to see NXP SoC powered boards under Documentation/devicetree/bindings/arm/nxp/
+This document have not updated since 2019.
 
-LPC18XX/LPC43XX SoCs are not Freescale.
+A rob acked
+https://lore.kernel.org/linux-devicetree/20250513-gicv5-host-v4-1-b36e9b15a6c3@kernel.org/
 
---
-Best wishes,
-Vladimir
+interrupt-cell and msi-cell is before interrupt-controller and
+msi-controller.  The order may not be big deal. -cell carry more impantant
+informaiton than -controller because all consumer needs know -cell number.
+
+Rob:
+  Do you have suggestion about these order, so we can easily follow for new
+dts files
+
+Frank
+
+>
+> Best regards
+> Alexander
+>
+> > Frank
+> >
+> > > * gpio-hog property should come first in a hog node
+> > > * sorting gpio-hog nodes by name instead of line number seems wrong
+> > >
+> > > There are some more bogus changes, so I'll skip this tool for now.
+> > >
+> > > Thanks & best regards
+> > > Alexander
+> > >
+> > > > Frank
+> > > > [...]
+> > > --
+> > > TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> > > Amtsgericht München, HRB 105018
+> > > Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> > > http://www.tq-group.com/
+> > >
+> > >
+> >
+> >
+>
+>
+> --
+> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> Amtsgericht München, HRB 105018
+> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> http://www.tq-group.com/
+>
+>
