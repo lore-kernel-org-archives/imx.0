@@ -1,61 +1,63 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013062.outbound.protection.outlook.com [40.107.159.62])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012008.outbound.protection.outlook.com [52.101.66.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8ABC1D8DFB
-	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 14:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7341EDA02
+	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 14:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875261; cv=fail; b=sBCnQohWIvufhl1/YztpuHpsyjln3Uvmjx+uqBRQw9UOft5Omi7McEYYmQ6oOwP7i35IqEWCXmRsLTM0/BeE/np5xkdBtiVthRTJnUakIuyg9uLWXqfG4wWXX3CnKfNIOM3Z/n3jnGyvv2KMThmiD0wAEo/oCXKiw4QBBaqxQ8s=
+	t=1748875399; cv=fail; b=XLhbYGvVXz43K8YoCq0nWa5e/zIX11ij0/EnIdbxZIMiNkbcLQ8v+Sknw4J3/p9QYqnACdMPg0XBJth7x73WP7lF/n9IajDeDQMi3XcCMI6i8tnOrut2BcyQTFYSEqTuW0gNnISMPbB4HWVCvIsbimX6hUVp0kdRp27/kL9QWDQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875261; c=relaxed/simple;
-	bh=/7czRMIrge0TzMtTbjWHYH2Dvl/kobvy9yR68ub4liQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=uw+bs59LUXVqk2ThK07ubcZ8bhKKzALwrtEUeTQmxgcQi3993ixry3+uF5rqO/LF4o71wc3xkvnXkHRMsrWQHud/Cz+6Ybxg3xI2SOb6ydAvtFzBbmPktbBdqXcTImi121iMnIR7/bv+RCj4ZKqFB16aWEg7yYBQA9OfiWMvKSE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WEUUEo7g; arc=fail smtp.client-ip=40.107.159.62
+	s=arc-20240116; t=1748875399; c=relaxed/simple;
+	bh=lAoYIjnEblCEacuG9ZdktmZwuZ9TnDxePT8zZ+zjP9g=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=OslGgk6UruUHa8suFIzoQnjQQf0Zav6td6jb1esG/YI66q1le1ZiqTAv2iRvZF3zA9wkRhtHthPIAq2PAiuDaxG2FGYEkYKFiTQ17Y8+wwXKhkgduPo0RnpkymlqB8FoD1qbzn3kz5OeMY62SfkQp1UkEUNPkiRDgMFE1+FoFts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SZFyyx4G; arc=fail smtp.client-ip=52.101.66.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WEUUEo7g"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SZFyyx4G"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lua52YhshKJoxyMKF7k+mPId+hpkUumENNY+SjbvtPNzkaZJs+sLYs8Isg3VHYLB0zIwGjaAE1fvaECShJoZ/eKqWYsWbG6+Y/IKb01eYLI/alygIeBJP+MF1aQgfEx2F7c9+cL8RX+LQpfox7W6cRVfhF5scnQP4xu5KvCnkVA1+FxKfyYN6FgGiYWKUfqF9JMw30gscIYxe5b8ZegfnUumD+9EMEDD8cHYXrWV0DMTe2RdHpt9U0NJWK0SPmlx+5yXPKuHOGd8xqlh5xegDmJ6X+WJRjDgf7UPmCkgiKnQr7FBzy5L2fEAFh89PmPPIxgZfpXF5oqXlMm9pZvLGQ==
+ b=qyb3FjJaObXaMFEpsvkUQ7Rwy+3GYLFZSqfPseNKlazdpV/lhNOS6t5adFJfxlTK0THwwLvR11JofoZ7QlE5qDJLyf03WPfk7LKXN6lvIubcmQdSUbV15Iy6sjQE58vQ8Trpm6rsffKWhVmtZdXoJgeoQy+PjPEK6b6wOcO+BwmpsF+VRRKuQz6o12ZlWkhe1mavXlAiTWb+o48ubsHVLU8D7GSgqePe/C+N3cBjDMhYDaAdWylSxQ30XCOBTqGIyBdXKV5mLDw5w7xw+weCPNbOstgyZBJXeY4XqAj2bDpuiGiN14nuz0uAYEX2fjkwEdnbmL3qOI52ebrMIf1vtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AJ+MXxak/xIPZYzRYUdfFjQbdfvhKmz6XKFVFb/Ftyk=;
- b=Jm3xHfimjHTukDjVujVVnMfJFlsCvvrJPaTNe0cq3SiVu/StYAu+7/GTQeD4+/BwoQ4gpXjGk0hJKpk3ZqbTepMK27kQKs+JgcvBistKiOn8mkq79mMGqvUliBT36VCB4MsQNDpPFgGi7G9NZfeIsZgRXmXtZ1jzZU6nKEiIdPtqqsDq2l/5YYYjxo8/ZZ2YP/uu4pwvNE/MuyVHGpu4kqjFIdaKQwnuf5jxZbViPA2Y3gfV7xmK+Nxn+wt4KwNDwI45N1ER1AD7fQa6+9AxNY1pZcJwPbBGTCo7vQHwPDGhoqfgusqsRCviMMJo0XtGTODsZsnMdGx+N69rB1/N2A==
+ bh=MCsxyhjh1JquqQOmUdz7eqmwJ/fJUADSbXlLyNcWpT8=;
+ b=a3lz/zWr33BjmCHmTemCdsKQEwS82F2HVqAGxkCHkb0mlI7k1QRdx85NKLLv/qMHmzVjYXCSTRm0hDfwpL+bJv+zExbmcsL8mtC16M9k1piEsp0EPgC5RFS+5IQy58eVwKccIbkiioxr8rCR0kdV4ANzhERq+i7Gekh8FXCaqVi1ULUAcHlPi4RO19Ron744KSK6m7oP+gi84q+mQaNTT3UrRlrLnbcmgjSqw49yBJV2yCcNlR8pnPcecgw7mamMfzsHLEZ2iHNMI+dUGg4rv5lpnqGXdPyC/O/b5N9SRc5O/Mj/1YQLvK/FrwsGZ5IQz4v1exL2HKYtv63Cw4n3sQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AJ+MXxak/xIPZYzRYUdfFjQbdfvhKmz6XKFVFb/Ftyk=;
- b=WEUUEo7gOF/oA1M9mJBBVJj6wkzDXLeV7TgShchN+vI86yBdnODQ2ZiDITeKY2+vrQ+5wu3yMR8svXkPoN2H9VAu9pOYn+gxb6bSxtn4KLSZS6egIZW/w3J63k54ttIkOIgmcUVfOwupW8FWqwAPfjqqreWnhPeE7W6I/LavI4BSS4bbddCfrDr3hlW2uYE+DQiIfyrBmFBB9oC3aYq3MxMYVGJxIh4h7CjCwmMY1SA3GIvfSvzID0yD/i6fNOcxJ84akmh/AmXlnMK6xtP8027sIEnxA6aKdm3FALggZifRE4IYhW6VtswgnikF838FNu6/f+AlSLQAQO9RhvG4QQ==
+ bh=MCsxyhjh1JquqQOmUdz7eqmwJ/fJUADSbXlLyNcWpT8=;
+ b=SZFyyx4GJbB0ESt2pSpk7BhZME6XT7O+Hk0DRAjsZ1w791m4fBJVJDZVXvoFKUsfUNTNb0KwKxEC9+yzqDI6MdfsvBD1RzSDOq0XjfWZ9K2BdaSvNgLXnxKNM2jTwpNIYJX5yazI+Vw0GjaXqginh0PCnPZk9dUytxkS8X0l3nB7pmd2A25verPnQqoDZahPaZCSXGxMaOffX5CYk5LFNBymhE9quvMUGAlW/S50C40Bga/QZc2RfKs3rBTCYtgP9L1P+S9eLuuhvreJ1D37pX36qVW8h6dwtbB6nNGL2SAQ0o5SA8ahTzfz/d4sGmCakrgavjUc8BkyYfHE3DbRrg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB8289.eurprd04.prod.outlook.com (2603:10a6:20b:3e8::8) with
+ by MRWPR04MB11286.eurprd04.prod.outlook.com (2603:10a6:501:79::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.37; Mon, 2 Jun
- 2025 14:40:55 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Mon, 2 Jun
+ 2025 14:43:11 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8769.025; Mon, 2 Jun 2025
- 14:40:55 +0000
+ 14:43:11 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	linux-gpio@vger.kernel.org (open list:GPIO SUBSYSTEM),
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: reset: convert nxp,lpc1850-rgu.txt to yaml format
-Date: Mon,  2 Jun 2025 10:40:45 -0400
-Message-Id: <20250602144046.943982-1-Frank.Li@nxp.com>
+Subject: [PATCH 1/1] dt-bindings: gpio: convert nxp,lpc1850-gpio.txt to yaml format
+Date: Mon,  2 Jun 2025 10:42:58 -0400
+Message-Id: <20250602144259.944257-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: AS4P191CA0021.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:20b:5d9::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SJ0PR03CA0212.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -64,289 +66,243 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8289:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6302d88f-8bbe-4f96-6981-08dda1e37b3f
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|MRWPR04MB11286:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9a274e5-55e9-4d34-993d-08dda1e3cc64
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|38350700014;
+	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qfMiR1sHY+TM1brhTnBOe/1/s3JQoOR+/NB/k8V66jJetBdmVtXzoTxC6oBJ?=
- =?us-ascii?Q?1OpW+QcHnFJv8ogDnDX1sVA20KDVZAMEDhwV4MVE3UUpeZeWUxcZgDKwsWRo?=
- =?us-ascii?Q?9UVutXG8Sf4jDbH2o0Co/O5UMEDVcX+UavobU5UlYSJ6QBZc+c6MyhG4ecRu?=
- =?us-ascii?Q?4O/v/wLLKR5RcIxu6akMd6WF55F35x2EVi1RmgAacAB2keosjn/50BjdiTgV?=
- =?us-ascii?Q?7HxnuSactLLPT3qqzIoxGT+RendybCDwKwCzKihEfULNkY/DnLJSPYjs2IP1?=
- =?us-ascii?Q?i6gfuW5XuTSf7MnU137AoqkebjC3iT+ACoD4/H7iJnyns9gif8j2CNqBaUyM?=
- =?us-ascii?Q?WwXGUY9wWbA3mZxQhS1Z3CoJPcaxhF2Tn0ybzRTYq0owzEzz1PNi5ewcygRD?=
- =?us-ascii?Q?KgI9P8RudGPaTwO4vB4QEsQlN8eJsHDGEgXSAApi+Sl0LyMu/Rl7AJG2UFQZ?=
- =?us-ascii?Q?ktKeB4chHOtDXXHHJZ1Nx499TfCvmgV0M2Q6/8hjzOjZhJ4WO+oMcijsheso?=
- =?us-ascii?Q?ZzG35EEm9ILpeMlcNAaoYz4fBVNHsTxxvDMvcbhN16xhRrLB4jM/nYd4IODm?=
- =?us-ascii?Q?LrSBFp2rBzoM2Ke+hF4dFjBEFTxUeEHQ1uqEBElxEo4phsS5T203oHyKPLyi?=
- =?us-ascii?Q?YD34lDeZMBuMiGlCsnzVKQqrc8VqmK+r4TM6HqWZcFKObJufl8QzNLQh2pJa?=
- =?us-ascii?Q?BcoyOgZvfBJPWc/7GT6NCyL7MHmvRE6vmQvvWlsJ/zEseDRLLnuGc6Vx77tT?=
- =?us-ascii?Q?yBwc66Gwm8GCU1SF5aABaXixTDH6m5kgU3TS11axvzOLIBXIj2latr3QvxTd?=
- =?us-ascii?Q?CF/vRZFNr/7mCWl7Qr5TWCixsOGdDFyB8Xf6u2+h++ohNrHkX1uXMU0Yte9S?=
- =?us-ascii?Q?i6aB8QeBwvFhAK18GqCIVLPvkap3jvnSNc9HjWmPv6LIIp7NZQVNetdkY/gB?=
- =?us-ascii?Q?6FX2wY81NWIPv2jClAGwxiwnv/NXpdmVX1J6YE9HOUBg/UahFb4PryI/swKC?=
- =?us-ascii?Q?1x7fiaRTRP26dFWmipsPuFkUuiITitbTg+oUFMYYOy5g+a2My8myw1NQUceG?=
- =?us-ascii?Q?fbTxhl/kexxVyJ23clS4Hsz5YReq4fepYLo5leh+rP1vXnUGgbxfD0sJYKu0?=
- =?us-ascii?Q?SsYtUHESiVNaDYAl8rdhqF2lVGpNPgircdj9MfvhYn3+tWFHqW6ESK2kEZlW?=
- =?us-ascii?Q?IIqA0jnpwqN/isV4xlHmoJpopmrMwkvxECcWdv+adPY1QQghX6ECyP6ErdOG?=
- =?us-ascii?Q?PET2H372jPkJGsQV6pQjZZwYnD+otiCDK7AIwShJgG9hAfcCC0stU8AHozeI?=
- =?us-ascii?Q?9Yah6Hn+DZ8y7e+t/y5yz2VIE1PTj3JARWsOotKDYbv15PGbODm1eGAufCiF?=
- =?us-ascii?Q?pjLwgAG/vQc5ix5NmeWGvRUEQLxeotKP03qeivTsvG/7hTDt0WPi5RL2D4wq?=
- =?us-ascii?Q?f7gwCpI3d71+hHtLUX0ETZ3g+K+jQXdQ?=
+	=?us-ascii?Q?fXwv6a7m/oMjtBkCfswhtV56ZkBHCnGIQCdU+FBSdfVWf0JFp4FaTI+qlylS?=
+ =?us-ascii?Q?7KxA/P5yBegpiR4d6Z/sgfKgDjpn24BPwuSC6jF0l3YQ/t9VvB/WFtZtjI54?=
+ =?us-ascii?Q?cK1+y6m0x7H14esCvq3X3GOSQvUKKDBCt1uj45ifkgJ/Xsz5kEYLIBZgQlOb?=
+ =?us-ascii?Q?1Owbl3DcnUCsY1AxNbkh+7CzTuNoJmjWW+1xaYLma0pSXlpe3UIQBrbP7FHR?=
+ =?us-ascii?Q?3WtQ/zwVJtff5RlykYVUqzHnm7QlY9HtLc0/cYK0F3iiSXhn5CQMf2UI2307?=
+ =?us-ascii?Q?DbhH2r1q9oSnbnlrdcS+JSJObJU97MSlhMvHVIAUVSlR+59r/aYCXHBMcsWl?=
+ =?us-ascii?Q?S2JAOEW7CNoURN226bKiPanjj134mYE/B144s7dXAr+6kk7pADIwpe/LUQyB?=
+ =?us-ascii?Q?5Wi7cBvVHqhIKenTD7an1MJN6Jb08CyIrjRQsssT1kTpXlyHpQMru2aS8I3u?=
+ =?us-ascii?Q?x36vojrxRqlgbUszSR5YgXrRiLIhKocjfH+9viZEwGTNDRkGQCtL/NPbtUZE?=
+ =?us-ascii?Q?qxNAZ6plDRJYqZ8bO3I8IXunV9Pk3/CA6vJtJIS4SLW9x//jhpmIyhg9gJ2L?=
+ =?us-ascii?Q?Pkw+kFagvUaRzP3nvMlvzHGm3jHWvLkSbsAEjusbs1QXo+4LQ/BSXvhX8Ebp?=
+ =?us-ascii?Q?4CXZjf2DSovN7sit4qM7CM2vc9zLZXhXKRbCRcwfjBSaQUmhvjcBhEXAx87P?=
+ =?us-ascii?Q?MnksUO24PjkxulQN7lRj7jzfqDtJ3J3+wpG034f1xYu4t6eBuBG/xUbCJ9KC?=
+ =?us-ascii?Q?OJrbo76eMZyTc/TSqhNSPCvUiDsi1tuFLCJZx+/BoXkVWyo7mloiv/9KBmxD?=
+ =?us-ascii?Q?eqo0L+Zb6ULCYPZkMktPr5GIpOYkB8EyOoVmOApsUpdiVpAvbHiIMpNcQuTI?=
+ =?us-ascii?Q?U83l/JMdPB4UZFOIJo6vg53rm6Y7RzAMHjgc/umpJav4KWDFi4dj+MOGj2FK?=
+ =?us-ascii?Q?CJQvyzgRa0iK6l4dCNyJh2Zp3dM8H/Yme8BHTW2TviOzLGqbFfZNpjy1OsPM?=
+ =?us-ascii?Q?eEN4SLqEPsF0w4nWEi+opCnnbNsmBRcF5YrxVWFyMqMsrmi4cbT9DD6R4eua?=
+ =?us-ascii?Q?0wrLQunDP38cl6fcalaBpohSuxHYlehX1SmiPwI2ZVRjeKFwNv5LqSVRLzd1?=
+ =?us-ascii?Q?1w96byL5LxY6dgRlqWNJ9qvcKMhEga+KtoJjhItecChNQa17jw5+GjJthTKR?=
+ =?us-ascii?Q?UAM1z3t580xDS/Me/gasMo4mCee/gjp6sboirSLzLoiyrGyToYemLPURTVvz?=
+ =?us-ascii?Q?3lua+2blubxDSJ44OAlSkY7P8A/H1JtFTCY6sDTamqeQrnwTc9UNRhiScqzh?=
+ =?us-ascii?Q?QcyaEZBxMw8yb977Qgd+OkWAqO4w7mm7pTFu+/eZN35COZKBA+Ez2V2AL5D/?=
+ =?us-ascii?Q?iO71DMAgNizPAyW/rzuILTmYJi+keI+4cYznoACkR0n8NLuOdgnK7L5kIEgn?=
+ =?us-ascii?Q?WD73Uq090RNcRGPXZzASJ7Ui8Y8a2k4E?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?emd1s4HZhb9vbGp0jcZbiLTemlszPxmqqqBkFNobbAcPGxPBfAP5hoGsiHyP?=
- =?us-ascii?Q?gEe8eNrq5KvFcYf/L9Dwpuy8km1BbCymxDJeM2u6F1J9oHbDsdcINsn6y1M6?=
- =?us-ascii?Q?LnWe2Kx/ugaZ1k2cmHq8yoJFVYFZjPKTQHghU8KlatlI6TiAZDtWKC+Kurwm?=
- =?us-ascii?Q?yHJKivyBJtDTy/jfJBoYTHkj6PPHb0QdZZOW4qxCCFnfEialrgap6JM3FRkm?=
- =?us-ascii?Q?fM/olgui4lgkf15ZyxEP13MznS+mMrb/pchBEggF0Fk6lYzbbxQ/guaWydMW?=
- =?us-ascii?Q?dUC4U/QPxKil3SegMNck86F6NV1oQmCO2A62iR40AjTELA8zhP97GEQ68DDM?=
- =?us-ascii?Q?xbqQ/RTiNmdqgYUS+Y8jFSWjORIsm6HLwiq5nhRvIPSDbVMH7Q9EFluL5cg/?=
- =?us-ascii?Q?df8Tz0SJwP6ogjVyokeEh9OCJ9ExV+3EG8XJJQnQSJiQJdqB/Cgj/loVy2Hu?=
- =?us-ascii?Q?XQj1MeiyCvrRwyMHoskl+QJLeS2gqfjENcHd2CPyq4eXCJqrkVGw4pmvbBse?=
- =?us-ascii?Q?aCeDbUYdIlLPg57uXwD6QT0LpBoBH6zqUfn5EaaAclU0ePZoAxSnYt7Ou5mm?=
- =?us-ascii?Q?fMX3R1Hmh/sHcTojXfCYW60aG+6C1/cYKj+m381CgojYcoPbe5Cu8+14FlWA?=
- =?us-ascii?Q?mCceWbstiGZOYeJyjZb3WLsa21PUlcolqR0ZiSTBspBzjftTRld+IYlRre/b?=
- =?us-ascii?Q?J0sV8hVipWfnXCHzmWF7T3raWIJmatTzRY4TUUHvgT+UdXiMg7RVntSb6crr?=
- =?us-ascii?Q?LMDLdqDXpxZt23nOucT2Whh+7581bJZjsnBRBkMw3dVDuXdvjF/UAdAjD+9h?=
- =?us-ascii?Q?ObDw5c3LHW3fON38iPnUiuk4YFHGOkmKyawVxEmzF8WMwr3KVXcXoZkq92TK?=
- =?us-ascii?Q?jnQ5wErJskYRyWciaHTrba5iLiohj63DmJQnMy3XPbnF5+I0Faxs7EpPRMO4?=
- =?us-ascii?Q?/XfL07+V3k9sScc2jfI51GcP2yYw084fLghqBwAn6Lia3GywLrfcJks8OE91?=
- =?us-ascii?Q?sW4GQmZowpI9lTHdKgHW2F84G3TyUR7yH5GBYFPId0L4TYslmybi4qD+sfAA?=
- =?us-ascii?Q?+PiO6jxUdbpW2maC2dW5Ba1XR5+B1VmylmM88hQrONx5IT2zeNBslJ0C/Y+t?=
- =?us-ascii?Q?8a86iVJKkHGr4ebGflshOku0ziRF+2Y1UkowAGRvU+F8otFxQb02dJUkuTfB?=
- =?us-ascii?Q?6xVN2hTlRD3xEaeBgr0h2dWctxuZZewX27+G4nSFYpEoqHNGr9mmAPA3pebF?=
- =?us-ascii?Q?1HHI04mZbmnbs78YuHgZo36b08w8E+xrgvLcfTSea7NxYhHEopCg2KILIVbV?=
- =?us-ascii?Q?/141zf81s1oHejXLziYvv774h3gfP8cGFMct9ZDVUwQ5nmp59BWFffxCskxg?=
- =?us-ascii?Q?CQ59RDPGnxH0GM6Sxa7awPhfetHMPUxLKW4XeZ9PVo5dEC838NDEclQLAktM?=
- =?us-ascii?Q?4qAOcb6HH3GH1wq8kJyW4WAZglx5kRE2wqmVekqwVrTEntDJR1RBzAm71u+6?=
- =?us-ascii?Q?/FcPnSbvFvBZz5D6xgL9uqcXgcqSCocWe15tr6/3KGUtpsrqPfcJxeiX1dot?=
- =?us-ascii?Q?9gMv4i6Ff8rzdJCcn4YkqGJmgpGF9BHGT7HvydVz?=
+	=?us-ascii?Q?d1NYdAmhyS9dxcbclXFa5nOHYybaSqlC4RYhoIpchPAo4LOQM2u2D5dP8GLD?=
+ =?us-ascii?Q?oBIG46ABvHuKAh4FtSRahDNqqdM4eCfMYzGRPBRJGqV8DD1P78HihoWqvOhs?=
+ =?us-ascii?Q?hpz7Sdsr1RgFArlevuAcU76C3NZnZPIwNkeaIjHRfWPQ7DULmlg24f1jY1mj?=
+ =?us-ascii?Q?w+eYu9ekgqCA1OZZPow6s3ihng7hoPt6104AKp+C+Rb26meB8tr28yE2K6I+?=
+ =?us-ascii?Q?PO0QvLew9T2qunV6QNPILhXsRZUIkm/psPRnZVS/TDxhRPPoOIGGIrkxLuqD?=
+ =?us-ascii?Q?L1+SXyMrWcCeBaljHX3+ig7P6p0VJO0RIV3zgJdw6mrEydOk1PeHnVBUWlxU?=
+ =?us-ascii?Q?0mEvbGFxG2ik2AC+2tPUHrMBKOI9hVkdYCKhOZQ0NrYt1oJUcXkPFvyzB6ww?=
+ =?us-ascii?Q?DlOhwi4nde0D8CD935mhLRy31e0aLd1LPnH+BSF7GlA6ZW2qznjkOt+Nb+X/?=
+ =?us-ascii?Q?SenNe6SlmW6QhyDWcsHSke/S4G8IcBq8gSpv1M+hDiIGHhppw2CFrZtNSt4E?=
+ =?us-ascii?Q?RI8wgUortZl5PywqQJs3A5vfU00ApgpKucMMAcx4PNwY3SHKoyllxqmCdzU9?=
+ =?us-ascii?Q?YUy9sAYXQromv6ytI0CmorjO+jcsR8dH39oN6Q4gTB0mlDgKZAD80I/7zEYx?=
+ =?us-ascii?Q?8GUxXj92suqGrG2UuRiHl4qmnQK6MNUfmBSDJdA9gHZ/7TAEDe/r/HA1MwN5?=
+ =?us-ascii?Q?Kg2tuxTaC2FfJ2oWc3ienCe0LaBKGmrtxml4EaHgGE5CqoxKvc3kauPjnN4i?=
+ =?us-ascii?Q?IVS8UlXwzCBoLYdN3KECQHN/Om1+v5NzOkcEqgGkmMiJnZJJvyoRVTHFsXjA?=
+ =?us-ascii?Q?rYOrLpRqC1F956Kehvrt2Vn4iJeItjH+LBUt9KUXP2zs5stpj2LNLB0PpvLx?=
+ =?us-ascii?Q?S6F6mf+eldpzOLoHZB4dp4P4k08FBDogyENJxOkpeDQyDwru6eJqXkiIt3iB?=
+ =?us-ascii?Q?uLa+qSKjx+BeY1rHv2EJMPR9x/rJi8j1RvsRrasARJHPsuY77fV+RRxCrN0L?=
+ =?us-ascii?Q?qqc36tS/7C460VEOZenDX+0vu94rnz4JNzfEU39IPmRcpQNmkmpa+Q6wcOV9?=
+ =?us-ascii?Q?xWt20FcNfqMnohM6b+S+il5GiAS0ut5Jv7lvc/gmkMRdwWV3GQwBn+x/wrnB?=
+ =?us-ascii?Q?NWT8CqNE+9+HzTA2q6NOfqR2c4tR9auHTSnjDiusETAltqBpKCRa5AolJOuC?=
+ =?us-ascii?Q?YzO3Yf/0IX+/LycTcxJ6o0fjwqIlFEcDgDOZVyaEEag/216vxhkb8N6u5cRe?=
+ =?us-ascii?Q?H+0kr3KwBdMaF2cdVJQMnBpWRzdVzffGOWBkX0lptasj1ZXxFeqEYcYq+EWS?=
+ =?us-ascii?Q?o/Tbfuq++kairj289hu3ka83Rtm1JZIS8xHv6bt4iLfCZnLDXQ0kclBNnmwF?=
+ =?us-ascii?Q?K8l8RlFpImJ3OkgiJDogsZQJ5djQASa790N1od5XY0yYQJSUu5OVH2lGWnEC?=
+ =?us-ascii?Q?UpEm8hZPZUHxW5WeFbccgX263uvBwrAhyEUGwyLteeD6TOl5giAGzA3zd9xg?=
+ =?us-ascii?Q?M01jRYrV4OJG2kDHEi9CA5OHElxO34jwb5wKN31b5kBxGLUZ/Ii3NwjdRNEY?=
+ =?us-ascii?Q?z/+Vusmr/1fN2c8QqSxZ0sbsj9WHK1JLwtIBqUf5?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6302d88f-8bbe-4f96-6981-08dda1e37b3f
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9a274e5-55e9-4d34-993d-08dda1e3cc64
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 14:40:55.6724
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 14:43:11.8665
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /SfW36IY8+y0mDpaVESl4rPX8JEV1SW8rbwtltJjgdG3YJ6htQL8h5gN5vZWe65dya4GJJivMEtY+9P1FcaArw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8289
+X-MS-Exchange-CrossTenant-UserPrincipalName: WKEjxeC4rc90xhda5UWfjq8LwaRjbQTpzkcpjDECvetR06p7tzLIw4dbHWR7RmHkRa5Q8n9uhundIqzggF54Xg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB11286
 
-Convert nxp,lpc1850-rgu.txt to yaml format.
+Convert nxp,lpc1850-gpio.txt to yaml format.
 
 Additional changes:
-- remove label in example.
-- remove reset consumer in example.
+- remove interrupt-controller and #interupt-cells from required list to
+  match existed dts files.
+- remove gpio consumer in examples.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../bindings/reset/nxp,lpc1850-rgu.txt        |  83 --------------
- .../bindings/reset/nxp,lpc1850-rgu.yaml       | 101 ++++++++++++++++++
- 2 files changed, 101 insertions(+), 83 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/reset/nxp,lpc1850-rgu.txt
- create mode 100644 Documentation/devicetree/bindings/reset/nxp,lpc1850-rgu.yaml
+ .../bindings/gpio/nxp,lpc1850-gpio.txt        | 59 --------------
+ .../bindings/gpio/nxp,lpc1850-gpio.yaml       | 78 +++++++++++++++++++
+ 2 files changed, 78 insertions(+), 59 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.txt
+ create mode 100644 Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.yaml
 
-diff --git a/Documentation/devicetree/bindings/reset/nxp,lpc1850-rgu.txt b/Documentation/devicetree/bindings/reset/nxp,lpc1850-rgu.txt
+diff --git a/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.txt b/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.txt
 deleted file mode 100644
-index 05d5be48dae44..0000000000000
---- a/Documentation/devicetree/bindings/reset/nxp,lpc1850-rgu.txt
+index 627efc78ecf2d..0000000000000
+--- a/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.txt
 +++ /dev/null
-@@ -1,83 +0,0 @@
--NXP LPC1850  Reset Generation Unit (RGU)
--========================================
--
--Please also refer to reset.txt in this directory for common reset
--controller binding usage.
+@@ -1,59 +0,0 @@
+-NXP LPC18xx/43xx GPIO controller Device Tree Bindings
+------------------------------------------------------
 -
 -Required properties:
--- compatible: Should be "nxp,lpc1850-rgu"
--- reg: register base and length
--- clocks: phandle and clock specifier to RGU clocks
--- clock-names: should contain "delay" and "reg"
--- #reset-cells: should be 1
+-- compatible		: Should be "nxp,lpc1850-gpio"
+-- reg			: List of addresses and lengths of the GPIO controller
+-			  register sets
+-- reg-names		: Should be "gpio", "gpio-pin-ic", "gpio-group0-ic" and
+-			  "gpio-gpoup1-ic"
+-- clocks		: Phandle and clock specifier pair for GPIO controller
+-- resets		: Phandle and reset specifier pair for GPIO controller
+-- gpio-controller	: Marks the device node as a GPIO controller
+-- #gpio-cells 		: Should be two:
+-			  - The first cell is the GPIO line number
+-			  - The second cell is used to specify polarity
+-- interrupt-controller	: Marks the device node as an interrupt controller
+-- #interrupt-cells	: Should be two:
+-			  - The first cell is an interrupt number within
+-			    0..9 range, for GPIO pin interrupts it is equal
+-			    to 'nxp,gpio-pin-interrupt' property value of
+-			    GPIO pin configuration, 8 is for GPIO GROUP0
+-			    interrupt, 9 is for GPIO GROUP1 interrupt
+-			  - The second cell is used to specify interrupt type
 -
--See table below for valid peripheral reset numbers. Numbers not
--in the table below are either reserved or not applicable for
--normal operation.
+-Optional properties:
+-- gpio-ranges		: Mapping between GPIO and pinctrl
 -
--Reset	Peripheral
--  9	System control unit (SCU)
-- 12	ARM Cortex-M0 subsystem core (LPC43xx only)
-- 13	CPU core
-- 16	LCD controller
-- 17	USB0
-- 18	USB1
-- 19	DMA
-- 20	SDIO
-- 21	External memory controller (EMC)
-- 22	Ethernet
-- 25	Flash bank A
-- 27	EEPROM
-- 28	GPIO
-- 29	Flash bank B
-- 32	Timer0
-- 33	Timer1
-- 34	Timer2
-- 35	Timer3
-- 36	Repetitive Interrupt timer (RIT)
-- 37	State Configurable Timer (SCT)
-- 38	Motor control PWM (MCPWM)
-- 39	QEI
-- 40	ADC0
-- 41	ADC1
-- 42	DAC
-- 44	USART0
-- 45	UART1
-- 46	USART2
-- 47	USART3
-- 48	I2C0
-- 49	I2C1
-- 50	SSP0
-- 51	SSP1
-- 52	I2S0 and I2S1
-- 53	Serial Flash Interface (SPIFI)
-- 54	C_CAN1
-- 55	C_CAN0
-- 56	ARM Cortex-M0 application core (LPC4370 only)
-- 57	SGPIO (LPC43xx only)
-- 58	SPI (LPC43xx only)
-- 60	ADCHS (12-bit ADC) (LPC4370 only)
+-Example:
+-#define LPC_GPIO(port, pin)	(port * 32 + pin)
+-#define LPC_PIN(port, pin)	(0x##port * 32 + pin)
 -
--Refer to NXP LPC18xx or LPC43xx user manual for more details about
--the reset signals and the connected block/peripheral.
--
--Reset provider example:
--rgu: reset-controller@40053000 {
--	compatible = "nxp,lpc1850-rgu";
--	reg = <0x40053000 0x1000>;
--	clocks = <&cgu BASE_SAFE_CLK>, <&ccu1 CLK_CPU_BUS>;
--	clock-names = "delay", "reg";
--	#reset-cells = <1>;
+-gpio: gpio@400f4000 {
+-	compatible = "nxp,lpc1850-gpio";
+-	reg = <0x400f4000 0x4000>, <0x40087000 0x1000>,
+-	      <0x40088000 0x1000>, <0x40089000 0x1000>;
+-	reg-names = "gpio", "gpio-pin-ic",
+-		    "gpio-group0-ic", "gpio-gpoup1-ic";
+-	clocks = <&ccu1 CLK_CPU_GPIO>;
+-	resets = <&rgu 28>;
+-	gpio-controller;
+-	#gpio-cells = <2>;
+-	interrupt-controller;
+-	#interrupt-cells = <2>;
+-	gpio-ranges =	<&pinctrl LPC_GPIO(0,0)  LPC_PIN(0,0)  2>,
+-			...
+-			<&pinctrl LPC_GPIO(7,19) LPC_PIN(f,5)  7>;
 -};
 -
--Reset consumer example:
--mac: ethernet@40010000 {
--	compatible = "nxp,lpc1850-dwmac", "snps,dwmac-3.611", "snps,dwmac";
--	reg = <0x40010000 0x2000>;
--	interrupts = <5>;
--	interrupt-names = "macirq";
--	clocks = <&ccu1 CLK_CPU_ETHERNET>;
--	clock-names = "stmmaceth";
--	resets = <&rgu 22>;
--	reset-names = "stmmaceth";
+-gpio_joystick {
+-	compatible = "gpio-keys";
+-	...
+-
+-	button0 {
+-		...
+-		interrupt-parent = <&gpio>;
+-		interrupts = <1 IRQ_TYPE_EDGE_BOTH>;
+-		gpios = <&gpio LPC_GPIO(4,8) GPIO_ACTIVE_LOW>;
+-	};
 -};
-diff --git a/Documentation/devicetree/bindings/reset/nxp,lpc1850-rgu.yaml b/Documentation/devicetree/bindings/reset/nxp,lpc1850-rgu.yaml
+diff --git a/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.yaml b/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.yaml
 new file mode 100644
-index 0000000000000..9c3c13c543c70
+index 0000000000000..0ef5f90f69ff3
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/reset/nxp,lpc1850-rgu.yaml
-@@ -0,0 +1,101 @@
++++ b/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.yaml
+@@ -0,0 +1,78 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/reset/nxp,lpc1850-rgu.yaml#
++$id: http://devicetree.org/schemas/gpio/nxp,lpc1850-gpio.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: NXP LPC1850  Reset Generation Unit (RGU)
++title: NXP LPC18xx/43xx GPIO controller
 +
 +maintainers:
 +  - Frank Li <Frank.Li@nxp.com>
 +
 +properties:
 +  compatible:
-+    const: nxp,lpc1850-rgu
++    const: nxp,lpc1850-gpio
 +
 +  reg:
-+    maxItems: 1
++    minItems: 1
++    maxItems: 4
++
++  reg-names:
++    minItems: 1
++    items:
++      - const: gpio
++      - const: gpio-pin-ic
++      - const: gpio-group0-ic
++      - const: gpio-gpoup1-ic
 +
 +  clocks:
-+    maxItems: 2
++    maxItems: 1
 +
-+  clock-names:
-+    items:
-+      - const: delay
-+      - const: reg
++  resets:
++    maxItems: 1
 +
-+  '#reset-cells':
-+    const: 1
++  gpio-controller: true
++
++  '#gpio-cells':
++    const: 2
++
++  interrupt-controller: true
++
++  '#interrupt-cells':
++    const: 2
 +    description: |
-+      See table below for valid peripheral reset numbers. Numbers not
-+      in the table below are either reserved or not applicable for
-+      normal operation.
++      - The first cell is an interrupt number within
++        0..9 range, for GPIO pin interrupts it is equal
++        to 'nxp,gpio-pin-interrupt' property value of
++        GPIO pin configuration, 8 is for GPIO GROUP0
++        interrupt, 9 is for GPIO GROUP1 interrupt
++      - The second cell is used to specify interrupt type
 +
-+      Reset	Peripheral
-+        9	System control unit (SCU)
-+       12	ARM Cortex-M0 subsystem core (LPC43xx only)
-+       13	CPU core
-+       16	LCD controller
-+       17	USB0
-+       18	USB1
-+       19	DMA
-+       20	SDIO
-+       21	External memory controller (EMC)
-+       22	Ethernet
-+       25	Flash bank A
-+       27	EEPROM
-+       28	GPIO
-+       29	Flash bank B
-+       32	Timer0
-+       33	Timer1
-+       34	Timer2
-+       35	Timer3
-+       36	Repetitive Interrupt timer (RIT)
-+       37	State Configurable Timer (SCT)
-+       38	Motor control PWM (MCPWM)
-+       39	QEI
-+       40	ADC0
-+       41	ADC1
-+       42	DAC
-+       44	USART0
-+       45	UART1
-+       46	USART2
-+       47	USART3
-+       48	I2C0
-+       49	I2C1
-+       50	SSP0
-+       51	SSP1
-+       52	I2S0 and I2S1
-+       53	Serial Flash Interface (SPIFI)
-+       54	C_CAN1
-+       55	C_CAN0
-+       56	ARM Cortex-M0 application core (LPC4370 only)
-+       57	SGPIO (LPC43xx only)
-+       58	SPI (LPC43xx only)
-+       60	ADCHS (12-bit ADC) (LPC4370 only)
-+
-+      Refer to NXP LPC18xx or LPC43xx user manual for more details about
-+      the reset signals and the connected block/peripheral.
++  gpio-ranges: true
 +
 +required:
 +  - compatible
 +  - reg
 +  - clocks
-+  - clock-names
-+  - '#reset-cells'
++  - gpio-controller
++  - '#gpio-cells'
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
 +    #include <dt-bindings/clock/lpc18xx-ccu.h>
-+    #include <dt-bindings/clock/lpc18xx-cgu.h>
 +
-+    reset-controller@40053000 {
-+        compatible = "nxp,lpc1850-rgu";
-+        reg = <0x40053000 0x1000>;
-+        clocks = <&cgu BASE_SAFE_CLK>, <&ccu1 CLK_CPU_BUS>;
-+        clock-names = "delay", "reg";
-+        #reset-cells = <1>;
++    gpio@400f4000 {
++        compatible = "nxp,lpc1850-gpio";
++        reg = <0x400f4000 0x4000>, <0x40087000 0x1000>,
++              <0x40088000 0x1000>, <0x40089000 0x1000>;
++        reg-names = "gpio", "gpio-pin-ic", "gpio-group0-ic", "gpio-gpoup1-ic";
++        clocks = <&ccu1 CLK_CPU_GPIO>;
++        resets = <&rgu 28>;
++        gpio-controller;
++        #gpio-cells = <2>;
++        interrupt-controller;
++        #interrupt-cells = <2>;
 +    };
 +
 -- 
