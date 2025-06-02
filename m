@@ -1,33 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.mleia.com (mleia.com [178.79.152.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56258221F06;
-	Mon,  2 Jun 2025 16:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA661DACA1
+	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 17:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748881087; cv=none; b=isYgoE+YX09jFXl2quOHNG3hwfQAKEcyQIKJYVwCVSsoEWBrE7T+ABdgQdMriciJ+yO8FcZgVA7WZPnH+UOjMn0crpcBZzpf68SojeIQCZAxoaPwCwOyCXxz9FgqPt4hARtZJAKByxHNzjz3J551DBcMzJLRIlR8A0wYH3rAVk8=
+	t=1748884633; cv=none; b=hviKz86XpEpwHm6UYX7IusrJLj4gOIbtwhmelMyQ5DzdmjMO2/5DMFeNLlLSQ+HcQDFau6i6bVWNzD99Rhpe4Jg11unn2ysNHTcLGNVxCZ7MGI6AJnetAy4+ILygOujK2TeKCwuwjHBqXNrNVsOwQYxYMgz89M0tQxhzlq9LBgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748881087; c=relaxed/simple;
-	bh=YjQmoK9bN8uICnaXvLF3/JIFxwLnf5NZb8PDudBJFBM=;
+	s=arc-20240116; t=1748884633; c=relaxed/simple;
+	bh=h550fCfTltjqsv0qBuski4X0DvmlcPysXPBy1Wek500=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h8+06vwgtWebgjEIe/JKaTjWqyacONDTYnMKpa7YKQlyt2F9AVrQOTZYqKJjy9C1OTJIn9z/6QxIFmwIgW7jZkomS1HNgegj5ibd5xwRLWOHia0Df79UBg6PNeI1oJppvPVt3QFDfwvu5jfKyW6iwlJHNwM6QrMpMa0K2qT6COk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxHnr/TS; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=SAL06y7qRrLzWg/Wqoj/QtO7NJeTGGhTyLJaI11CCFWLBuCnE0dmsbaXRKtMP1SMerWdDv49mZ4yY8uilEMD3Nv/ODfOcQTDFQkRCblDcLhmo1OX6ibfIwPUpRjs5lwleWrf+f6TP1D+V+szPgDN8XMTUtIyzOZHSWqyHjIpPlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=kpuUOO4j; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=kpuUOO4j; arc=none smtp.client-ip=178.79.152.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxHnr/TS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63DAC4CEEB;
-	Mon,  2 Jun 2025 16:18:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748881086;
-	bh=YjQmoK9bN8uICnaXvLF3/JIFxwLnf5NZb8PDudBJFBM=;
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="kpuUOO4j";
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="kpuUOO4j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1748884628; bh=h550fCfTltjqsv0qBuski4X0DvmlcPysXPBy1Wek500=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gxHnr/TSGuQtGRvGUH/yzPuiuLy1zQ2SAhLKHOBmfejHUumqQB8n+jvUlYJ8vDvb2
-	 1RHvAXiWAQH4Io0mNXN3nbJHTTzMpIeFrs1GBMU7Vqz/CrEZBdK+LPh1sak7S8Bghx
-	 44J/mvWJ51iZRLcGYAszsKAOHk2AH0cbuxE2R/DRcU/MoR8nKlzkiPP1+6jOkTT4g5
-	 AR0da7VzcX6J8g/ws1rO0XuKRPVDUL2KTpXoVqQ28TMBMqW5bwHbBh2KNiFDiAzv+G
-	 qKLEcHCOpHwiJbvkUkG2NuYZJKO8nx2rgBiNmjK404xY5VjY8nNwQ7ASQg6PA5ktD1
-	 53I8/qbypDRRg==
-Message-ID: <5014a8ff-aa91-4ea4-81c5-7aeafc13b330@kernel.org>
-Date: Mon, 2 Jun 2025 18:17:49 +0200
+	b=kpuUOO4jbcDLwgUM9LkrM00QElHiFJBp4l0Lr5Cw83PZGQUCTEMvFHKRuDmnsafCk
+	 xfbza4qUib1JqFbJ85M47DKIFRVFgbH9/FEaHby8Mq7gwIzveBqCs4m3+YB1RFmuOw
+	 5uPJW7AvyZHpFdZZU9O6PYYLILE/VuRcLgYhU0ac9RdohE9Hur5VRJl9KDjW938KQr
+	 NTRaz7zZs4Mw1uI1mBNMqXfnhIX1KalF5WNHdGuEGSr5TTfkzobqySPS3tN4ERF3c9
+	 +yYsEJ75iWIjdBfs4rKeKNn0fhD5A728wRdMHXWeqrlks16WDxiofAPTK4HndVEAR2
+	 EJUizIRA8F5pQ==
+Received: from mail.mleia.com (localhost [127.0.0.1])
+	by mail.mleia.com (Postfix) with ESMTP id 171053BE084;
+	Mon,  2 Jun 2025 17:17:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1748884628; bh=h550fCfTltjqsv0qBuski4X0DvmlcPysXPBy1Wek500=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kpuUOO4jbcDLwgUM9LkrM00QElHiFJBp4l0Lr5Cw83PZGQUCTEMvFHKRuDmnsafCk
+	 xfbza4qUib1JqFbJ85M47DKIFRVFgbH9/FEaHby8Mq7gwIzveBqCs4m3+YB1RFmuOw
+	 5uPJW7AvyZHpFdZZU9O6PYYLILE/VuRcLgYhU0ac9RdohE9Hur5VRJl9KDjW938KQr
+	 NTRaz7zZs4Mw1uI1mBNMqXfnhIX1KalF5WNHdGuEGSr5TTfkzobqySPS3tN4ERF3c9
+	 +yYsEJ75iWIjdBfs4rKeKNn0fhD5A728wRdMHXWeqrlks16WDxiofAPTK4HndVEAR2
+	 EJUizIRA8F5pQ==
+Message-ID: <09089071-57fc-4495-b6ee-159c59d59650@mleia.com>
+Date: Mon, 2 Jun 2025 20:17:06 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -36,9 +48,10 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/1] dt-bindings: arm: lpc: add missed lpc43xx board
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+Content-Language: ru-RU
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Alexander Stein <alexander.stein@ew.tq-group.com>,
  Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
  Michael Walle <mwalle@kernel.org>, Fabio Estevam <festevam@denx.de>,
@@ -48,94 +61,47 @@ To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
  Max Merchel <Max.Merchel@ew.tq-group.com>, Tim Harvey
  <tharvey@gateworks.com>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ imx@lists.linux.dev
 References: <20250602140613.940785-1-Frank.Li@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250602140613.940785-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+ <618490ca-cde1-4e13-8638-f5cb65606c6d@mleia.com>
+ <aD3Lg+LRUThzm2ce@lizhi-Precision-Tower-5810>
+From: Vladimir Zapolskiy <vz@mleia.com>
+In-Reply-To: <aD3Lg+LRUThzm2ce@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20250602_171708_116346_A318CD15 
+X-CRM114-Status: GOOD (  10.94  )
 
-On 02/06/2025 16:06, Frank Li wrote:
-> Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
-
-typo: legacy
-
-> warnings:
-> arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
-
-
+On 6/2/25 19:04, Frank Li wrote:
+> On Mon, Jun 02, 2025 at 06:34:14PM +0300, Vladimir Zapolskiy wrote:
+>> On 6/2/25 17:06, Frank Li wrote:
+>>> Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
+>>> warnings:
+>>> arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
+>>>
+>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>> ---
+>>>    .../devicetree/bindings/arm/fsl.yaml          | 23 +++++++++++++++++++
+>>>    1 file changed, 23 insertions(+)
+>>
+>> I prefer to see NXP SoC powered boards under Documentation/devicetree/bindings/arm/nxp/
+>>
+>> LPC18XX/LPC43XX SoCs are not Freescale.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../devicetree/bindings/arm/fsl.yaml          | 23 +++++++++++++++++++
->  1 file changed, 23 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-> index d3b5e6923e416..75e46ffe9ba8c 100644
-> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> @@ -1711,6 +1711,29 @@ properties:
->                - traverse,ten64            # Ten64 Networking Appliance / Board
->            - const: fsl,ls1088a
->  
-> +      - description: lpc based Boards
-> +        items:
-> +          - enum:
-> +              - ea,lpc4357-developers-kit
-> +              - ciaa,lpc4337
-> +          - enum:
-> +              - nxp,lpc4337
-> +              - nxp,lpc4357
+> Generally, we don't distingiush that, new s32g chip also in this files.
+> All nxp/fsl was maintained by one person and everyone know these are one
+> company now.
 
-This feels wrong. Why 4337-based board is compatible with 4357 SoC? If
-this was intentional either DTS is wrong or commit msg needs explanation.
+Well, my concern is actually not about the companies, but these two SoC
+families are totally different, the peripherals or core controllers are
+all different, it makes little sense to mix them up.
 
-> +          - const: nxp,lpc4350
-> +
-Best regards,
-Krzysztof
+I won't raise any questions or insist on the correctness of i.MX placement
+under arm/nxp or arm/freescale, but NXP LPC32xx and NXP LPC18xx/LPC43xx dt
+bindings shall be put under arm/nxp for certain.
+
+--
+Best wishes,
+Vladimir
