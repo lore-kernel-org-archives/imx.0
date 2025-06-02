@@ -1,63 +1,61 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012008.outbound.protection.outlook.com [52.101.66.8])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011028.outbound.protection.outlook.com [40.107.130.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7341EDA02
-	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 14:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062D1227E89
+	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 14:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875399; cv=fail; b=XLhbYGvVXz43K8YoCq0nWa5e/zIX11ij0/EnIdbxZIMiNkbcLQ8v+Sknw4J3/p9QYqnACdMPg0XBJth7x73WP7lF/n9IajDeDQMi3XcCMI6i8tnOrut2BcyQTFYSEqTuW0gNnISMPbB4HWVCvIsbimX6hUVp0kdRp27/kL9QWDQ=
+	t=1748875480; cv=fail; b=bEIzidpRWTpEQRWzq2/I+Fvhvpr9idFVi9nktRxUJJUOwgHLe7lyGfg7DgOAIAK8uIGIs8RLzq7cUno2Pfw+oHp6jz7vG1PE2XwcYwiwkHVMqfWGMiCf0EdDw20b0isn+YaIqSrtjBfHT//PIKRyP2Z9aSe3qyIhq+f/OgZT02Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875399; c=relaxed/simple;
-	bh=lAoYIjnEblCEacuG9ZdktmZwuZ9TnDxePT8zZ+zjP9g=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=OslGgk6UruUHa8suFIzoQnjQQf0Zav6td6jb1esG/YI66q1le1ZiqTAv2iRvZF3zA9wkRhtHthPIAq2PAiuDaxG2FGYEkYKFiTQ17Y8+wwXKhkgduPo0RnpkymlqB8FoD1qbzn3kz5OeMY62SfkQp1UkEUNPkiRDgMFE1+FoFts=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SZFyyx4G; arc=fail smtp.client-ip=52.101.66.8
+	s=arc-20240116; t=1748875480; c=relaxed/simple;
+	bh=GDziKO1VK/jDoJgMMb0Fasmg/1sA0rKaOID0VdfJ9QU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=BI9mZhbCtOAoT/E3CUHgMF8PfmfCAFq/VaXbV5EYWVlgd3hIxaeUGsOOqW52JvCyEJBouNs1E095GBHN8nvxUd8f9f18B9DrogQRpkhP4+8bpPtqFOd512BQPVv6W6iQHhWm7C9e25gh9c+wtGElNATzYLsyudK21hmX9TCxHnM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LuyA/1vg; arc=fail smtp.client-ip=40.107.130.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SZFyyx4G"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LuyA/1vg"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qyb3FjJaObXaMFEpsvkUQ7Rwy+3GYLFZSqfPseNKlazdpV/lhNOS6t5adFJfxlTK0THwwLvR11JofoZ7QlE5qDJLyf03WPfk7LKXN6lvIubcmQdSUbV15Iy6sjQE58vQ8Trpm6rsffKWhVmtZdXoJgeoQy+PjPEK6b6wOcO+BwmpsF+VRRKuQz6o12ZlWkhe1mavXlAiTWb+o48ubsHVLU8D7GSgqePe/C+N3cBjDMhYDaAdWylSxQ30XCOBTqGIyBdXKV5mLDw5w7xw+weCPNbOstgyZBJXeY4XqAj2bDpuiGiN14nuz0uAYEX2fjkwEdnbmL3qOI52ebrMIf1vtA==
+ b=WHl6ZA+dmzww+m3hHf81NDmbAyJzDIhXKcmH/xkQoK7HUAjXytFSI4IqM1RQjbKITT739amxM9CfiCzKaB4zsC7myIQo54HwaFruJblYoW/fjmOZjD7vmE+JBKCWCWfbr1D3MmLLSaYAjLVj1KaghatsqR8hkmZwq5A2QlopT7chAHIrq5OMWY3q/sdBWM/2N9F6g3QkBgwNF9TdAahXX33i+s2MContGV2EdL56vBUNnOoWzpmFrfqeNcpRCiyjmpsaLGHlcMob51uhgn3R2GaaS71VIR4yX9h8tON5z3fcM6Onf3sJwxI6g4/MPZemCZ4vwY9gs3+OjIWDloDk3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MCsxyhjh1JquqQOmUdz7eqmwJ/fJUADSbXlLyNcWpT8=;
- b=a3lz/zWr33BjmCHmTemCdsKQEwS82F2HVqAGxkCHkb0mlI7k1QRdx85NKLLv/qMHmzVjYXCSTRm0hDfwpL+bJv+zExbmcsL8mtC16M9k1piEsp0EPgC5RFS+5IQy58eVwKccIbkiioxr8rCR0kdV4ANzhERq+i7Gekh8FXCaqVi1ULUAcHlPi4RO19Ron744KSK6m7oP+gi84q+mQaNTT3UrRlrLnbcmgjSqw49yBJV2yCcNlR8pnPcecgw7mamMfzsHLEZ2iHNMI+dUGg4rv5lpnqGXdPyC/O/b5N9SRc5O/Mj/1YQLvK/FrwsGZ5IQz4v1exL2HKYtv63Cw4n3sQ==
+ bh=FM8jUxCT1kRbv4MJGZ2/KmFwVG3eQvPwBxeZHLnLqeg=;
+ b=ymAyanwDHCvMf/IpPbXzaGhORpt2ynxjJvAaoZgQhE7fXeJP1aICgiGagKGRM8kGnBVpxx7AH2aaGcR10e9RtiZuZiDK3L3hIA0GMICeOFmKjPN717EqVZzTFcbut5gvjM4f6JcLbHmM0vfOIvS+4oXx6/eBzmLYsm4ALb9o3FNHWoE+zq6roIvRAijsDmrsa5+DyrMeHoxxo9xoLfhnzFy5iAL5qoK+o0Lkf3qZrqeyybvFjIpmW9Yru4C3kqA09ZsKuUFqY9y3taMocMWohtt5dy4Mw1ZuB0MLaaf9OWDxj37sKfoz86gzHy6FpJnf49OaU6x+emXY0bczLo6ubg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MCsxyhjh1JquqQOmUdz7eqmwJ/fJUADSbXlLyNcWpT8=;
- b=SZFyyx4GJbB0ESt2pSpk7BhZME6XT7O+Hk0DRAjsZ1w791m4fBJVJDZVXvoFKUsfUNTNb0KwKxEC9+yzqDI6MdfsvBD1RzSDOq0XjfWZ9K2BdaSvNgLXnxKNM2jTwpNIYJX5yazI+Vw0GjaXqginh0PCnPZk9dUytxkS8X0l3nB7pmd2A25verPnQqoDZahPaZCSXGxMaOffX5CYk5LFNBymhE9quvMUGAlW/S50C40Bga/QZc2RfKs3rBTCYtgP9L1P+S9eLuuhvreJ1D37pX36qVW8h6dwtbB6nNGL2SAQ0o5SA8ahTzfz/d4sGmCakrgavjUc8BkyYfHE3DbRrg==
+ bh=FM8jUxCT1kRbv4MJGZ2/KmFwVG3eQvPwBxeZHLnLqeg=;
+ b=LuyA/1vgyXLOErYQXKGh30f7yl2bjeuyO9EIw8BQSlmlL16Bb3jvw3S0zmo55ulw5IK1OwVbvdVIvV0BLTnNvcyoISfm4ztT3UNKLFCGgePGSYr/AOQMSU5dupkZXxb3QSSgZaRa9gizGL6ix5dlHW6extIVwqqFUkON80/d61s0EMnhKH4KBCoIvDv3axqJCOfu2F469PMgS+0iMdZZ3PyfYAz9i9WO9C4BADWIWbglF6pkzcczc0B07j7/LDQkTDFEvlAYvMaXetD82kwwQvk/C2AV8Sr2YJpGTgySubvQ1QpA0YMdYBGfdP0Ikk60Y2MDidUci6GNhOH35Xf8Sw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
  by MRWPR04MB11286.eurprd04.prod.outlook.com (2603:10a6:501:79::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Mon, 2 Jun
- 2025 14:43:11 +0000
+ 2025 14:44:34 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8769.025; Mon, 2 Jun 2025
- 14:43:11 +0000
+ 14:44:34 +0000
 From: Frank Li <Frank.Li@nxp.com>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
+To: Srinivas Kandagatla <srini@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	linux-gpio@vger.kernel.org (open list:GPIO SUBSYSTEM),
 	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
 	linux-kernel@vger.kernel.org (open list)
 Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: gpio: convert nxp,lpc1850-gpio.txt to yaml format
-Date: Mon,  2 Jun 2025 10:42:58 -0400
-Message-Id: <20250602144259.944257-1-Frank.Li@nxp.com>
+Subject: [PATCH 1/1] dt-bindings: nvmem: convert lpc1857-eeprom.txt to yaml format
+Date: Mon,  2 Jun 2025 10:44:21 -0400
+Message-Id: <20250602144422.944454-1-Frank.Li@nxp.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0212.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
+X-ClientProxiedBy: BY3PR05CA0006.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::11) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,224 +65,174 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|MRWPR04MB11286:EE_
-X-MS-Office365-Filtering-Correlation-Id: a9a274e5-55e9-4d34-993d-08dda1e3cc64
+X-MS-Office365-Filtering-Correlation-Id: 067c1b00-63d3-437c-f545-08dda1e3fde0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?fXwv6a7m/oMjtBkCfswhtV56ZkBHCnGIQCdU+FBSdfVWf0JFp4FaTI+qlylS?=
- =?us-ascii?Q?7KxA/P5yBegpiR4d6Z/sgfKgDjpn24BPwuSC6jF0l3YQ/t9VvB/WFtZtjI54?=
- =?us-ascii?Q?cK1+y6m0x7H14esCvq3X3GOSQvUKKDBCt1uj45ifkgJ/Xsz5kEYLIBZgQlOb?=
- =?us-ascii?Q?1Owbl3DcnUCsY1AxNbkh+7CzTuNoJmjWW+1xaYLma0pSXlpe3UIQBrbP7FHR?=
- =?us-ascii?Q?3WtQ/zwVJtff5RlykYVUqzHnm7QlY9HtLc0/cYK0F3iiSXhn5CQMf2UI2307?=
- =?us-ascii?Q?DbhH2r1q9oSnbnlrdcS+JSJObJU97MSlhMvHVIAUVSlR+59r/aYCXHBMcsWl?=
- =?us-ascii?Q?S2JAOEW7CNoURN226bKiPanjj134mYE/B144s7dXAr+6kk7pADIwpe/LUQyB?=
- =?us-ascii?Q?5Wi7cBvVHqhIKenTD7an1MJN6Jb08CyIrjRQsssT1kTpXlyHpQMru2aS8I3u?=
- =?us-ascii?Q?x36vojrxRqlgbUszSR5YgXrRiLIhKocjfH+9viZEwGTNDRkGQCtL/NPbtUZE?=
- =?us-ascii?Q?qxNAZ6plDRJYqZ8bO3I8IXunV9Pk3/CA6vJtJIS4SLW9x//jhpmIyhg9gJ2L?=
- =?us-ascii?Q?Pkw+kFagvUaRzP3nvMlvzHGm3jHWvLkSbsAEjusbs1QXo+4LQ/BSXvhX8Ebp?=
- =?us-ascii?Q?4CXZjf2DSovN7sit4qM7CM2vc9zLZXhXKRbCRcwfjBSaQUmhvjcBhEXAx87P?=
- =?us-ascii?Q?MnksUO24PjkxulQN7lRj7jzfqDtJ3J3+wpG034f1xYu4t6eBuBG/xUbCJ9KC?=
- =?us-ascii?Q?OJrbo76eMZyTc/TSqhNSPCvUiDsi1tuFLCJZx+/BoXkVWyo7mloiv/9KBmxD?=
- =?us-ascii?Q?eqo0L+Zb6ULCYPZkMktPr5GIpOYkB8EyOoVmOApsUpdiVpAvbHiIMpNcQuTI?=
- =?us-ascii?Q?U83l/JMdPB4UZFOIJo6vg53rm6Y7RzAMHjgc/umpJav4KWDFi4dj+MOGj2FK?=
- =?us-ascii?Q?CJQvyzgRa0iK6l4dCNyJh2Zp3dM8H/Yme8BHTW2TviOzLGqbFfZNpjy1OsPM?=
- =?us-ascii?Q?eEN4SLqEPsF0w4nWEi+opCnnbNsmBRcF5YrxVWFyMqMsrmi4cbT9DD6R4eua?=
- =?us-ascii?Q?0wrLQunDP38cl6fcalaBpohSuxHYlehX1SmiPwI2ZVRjeKFwNv5LqSVRLzd1?=
- =?us-ascii?Q?1w96byL5LxY6dgRlqWNJ9qvcKMhEga+KtoJjhItecChNQa17jw5+GjJthTKR?=
- =?us-ascii?Q?UAM1z3t580xDS/Me/gasMo4mCee/gjp6sboirSLzLoiyrGyToYemLPURTVvz?=
- =?us-ascii?Q?3lua+2blubxDSJ44OAlSkY7P8A/H1JtFTCY6sDTamqeQrnwTc9UNRhiScqzh?=
- =?us-ascii?Q?QcyaEZBxMw8yb977Qgd+OkWAqO4w7mm7pTFu+/eZN35COZKBA+Ez2V2AL5D/?=
- =?us-ascii?Q?iO71DMAgNizPAyW/rzuILTmYJi+keI+4cYznoACkR0n8NLuOdgnK7L5kIEgn?=
- =?us-ascii?Q?WD73Uq090RNcRGPXZzASJ7Ui8Y8a2k4E?=
+	=?us-ascii?Q?udB3O4ouFnUxKKslSN0+ZRS6xja5YsI8asV55ObtoHAo0WR4rs8KD3+kB7gW?=
+ =?us-ascii?Q?ZpXN7JChi061vDDHbjRygRfPH1phkj4EWn2tdbi1VrvnIF/6NL5xC9GPFwUe?=
+ =?us-ascii?Q?2yr8as8Zf1/Iis672Ckh2tPj47EBT+tQ1KNup3hdsyX4OSTOoFjt9PbeetTA?=
+ =?us-ascii?Q?VwCJaH1IZz0AWxiPSYZ/qOt7Xklm4+r6pJYKk7LuUNx00cLFqR5NF0ocnSAr?=
+ =?us-ascii?Q?xya+y3oMtCZayPM1mgWQx9nZqaRrQHSVJFmW1tGyPDkckAihPQhqN3CRT7QN?=
+ =?us-ascii?Q?as8ObusVM6GXbJUvTRFO/XwhdkrB7QBLGHaMLwk1pp37lmV75u4f6ijIdbaA?=
+ =?us-ascii?Q?3Ly2o6U+XadebNqFLdZC0qRnWQHNnL34ov7/P+xr6IqRwU6HfbP13LOSu8PG?=
+ =?us-ascii?Q?JrdssqS//BeKgzKraoYvPqmW4AFfzLVEGnfI6wFlbJqqi/W8y9nwoTDhqxBN?=
+ =?us-ascii?Q?tCNr2wzoed6x4qeW8yepiqdYw2Kmx+W7vVORn+d8lHI3xmJ20n27GKDYNWwn?=
+ =?us-ascii?Q?I2SoiWdlbBuqrxXEy/PwENc9Qk0JENUlbttEPrYnsYvuT6sIsEDaOCCZ72v9?=
+ =?us-ascii?Q?xoU6+Q2IIT4m88PRu7++TY6rNU0+Eu1YbjxMx0g/0hnxdvuRd3m/j5uj1FqR?=
+ =?us-ascii?Q?LXFF4vJgM/W8GThjjkUFAH/UpO6jp+eHBJbAiWDCX04YHNqfem7JhtuAJcbs?=
+ =?us-ascii?Q?q0woHXv6V2Bw8M/W/Jr4YyHYlDEt9lTF+EAleIU3ZhMrl4PG4jbHtvHx32aF?=
+ =?us-ascii?Q?0c+ldBFzs3aR+q1ucJQt8SKcx1evfmKQfGfNFbLqe339EQTbovxR+kUZjTCF?=
+ =?us-ascii?Q?GIKrr0NTI76QOHmlsmoq69gnZECBO2QtAJ5jcN2i3fYEVv7r99jneq+sLT/3?=
+ =?us-ascii?Q?cjJwxfFvT8ZBUFSV5llZEWgdkygezpIv/BFBvxbtzioE2foBnwBvaptGXfPT?=
+ =?us-ascii?Q?XEXsQdmj7BCfZjiyOJ7ZArWzKFY439eu7RWhogXKPRL4kJPxnHcJv6oKpDHq?=
+ =?us-ascii?Q?/wylbSePsjun0cKyW9NMIoFz2UG1IzidL9LLTCpKhMzitHnOzn3XOmW4efTv?=
+ =?us-ascii?Q?Ll2cQ+LOgmPZRyyoWZzEwu6J/z8YEsp1sUfikGzfWp2R+2dkHoBhXWLjXY95?=
+ =?us-ascii?Q?6+tu9B/cr7A7xkNtBdz0pVWG7Vt7UDJjfAt75NAgTsug2JO5kYcpzPhuukQ5?=
+ =?us-ascii?Q?92i/wuuhENKhUmTJwrG2ztBUXdzfXaSaBelLNEHYqEUSiPTUNvtZ6cTZoiV1?=
+ =?us-ascii?Q?EDIBfqITu9+sqVjn3Zfqrv8/AcnSKIWIf5rrE5LbVIrMo7zUUApak9s3c37Y?=
+ =?us-ascii?Q?o4y7aBuX1ppnX2NkqjbOzfBnjOY0fc3dU9BPf8768Z0arht2Gep7Nl7xooWU?=
+ =?us-ascii?Q?W3J3DZR+bOjH7dXZ1HYukwc6dPpI8dS8wU0VJmL1xCdon91Wf1K95dJPC53u?=
+ =?us-ascii?Q?HdGrGCoB3i7CrCizCPecUts+YpFA0uZL?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?d1NYdAmhyS9dxcbclXFa5nOHYybaSqlC4RYhoIpchPAo4LOQM2u2D5dP8GLD?=
- =?us-ascii?Q?oBIG46ABvHuKAh4FtSRahDNqqdM4eCfMYzGRPBRJGqV8DD1P78HihoWqvOhs?=
- =?us-ascii?Q?hpz7Sdsr1RgFArlevuAcU76C3NZnZPIwNkeaIjHRfWPQ7DULmlg24f1jY1mj?=
- =?us-ascii?Q?w+eYu9ekgqCA1OZZPow6s3ihng7hoPt6104AKp+C+Rb26meB8tr28yE2K6I+?=
- =?us-ascii?Q?PO0QvLew9T2qunV6QNPILhXsRZUIkm/psPRnZVS/TDxhRPPoOIGGIrkxLuqD?=
- =?us-ascii?Q?L1+SXyMrWcCeBaljHX3+ig7P6p0VJO0RIV3zgJdw6mrEydOk1PeHnVBUWlxU?=
- =?us-ascii?Q?0mEvbGFxG2ik2AC+2tPUHrMBKOI9hVkdYCKhOZQ0NrYt1oJUcXkPFvyzB6ww?=
- =?us-ascii?Q?DlOhwi4nde0D8CD935mhLRy31e0aLd1LPnH+BSF7GlA6ZW2qznjkOt+Nb+X/?=
- =?us-ascii?Q?SenNe6SlmW6QhyDWcsHSke/S4G8IcBq8gSpv1M+hDiIGHhppw2CFrZtNSt4E?=
- =?us-ascii?Q?RI8wgUortZl5PywqQJs3A5vfU00ApgpKucMMAcx4PNwY3SHKoyllxqmCdzU9?=
- =?us-ascii?Q?YUy9sAYXQromv6ytI0CmorjO+jcsR8dH39oN6Q4gTB0mlDgKZAD80I/7zEYx?=
- =?us-ascii?Q?8GUxXj92suqGrG2UuRiHl4qmnQK6MNUfmBSDJdA9gHZ/7TAEDe/r/HA1MwN5?=
- =?us-ascii?Q?Kg2tuxTaC2FfJ2oWc3ienCe0LaBKGmrtxml4EaHgGE5CqoxKvc3kauPjnN4i?=
- =?us-ascii?Q?IVS8UlXwzCBoLYdN3KECQHN/Om1+v5NzOkcEqgGkmMiJnZJJvyoRVTHFsXjA?=
- =?us-ascii?Q?rYOrLpRqC1F956Kehvrt2Vn4iJeItjH+LBUt9KUXP2zs5stpj2LNLB0PpvLx?=
- =?us-ascii?Q?S6F6mf+eldpzOLoHZB4dp4P4k08FBDogyENJxOkpeDQyDwru6eJqXkiIt3iB?=
- =?us-ascii?Q?uLa+qSKjx+BeY1rHv2EJMPR9x/rJi8j1RvsRrasARJHPsuY77fV+RRxCrN0L?=
- =?us-ascii?Q?qqc36tS/7C460VEOZenDX+0vu94rnz4JNzfEU39IPmRcpQNmkmpa+Q6wcOV9?=
- =?us-ascii?Q?xWt20FcNfqMnohM6b+S+il5GiAS0ut5Jv7lvc/gmkMRdwWV3GQwBn+x/wrnB?=
- =?us-ascii?Q?NWT8CqNE+9+HzTA2q6NOfqR2c4tR9auHTSnjDiusETAltqBpKCRa5AolJOuC?=
- =?us-ascii?Q?YzO3Yf/0IX+/LycTcxJ6o0fjwqIlFEcDgDOZVyaEEag/216vxhkb8N6u5cRe?=
- =?us-ascii?Q?H+0kr3KwBdMaF2cdVJQMnBpWRzdVzffGOWBkX0lptasj1ZXxFeqEYcYq+EWS?=
- =?us-ascii?Q?o/Tbfuq++kairj289hu3ka83Rtm1JZIS8xHv6bt4iLfCZnLDXQ0kclBNnmwF?=
- =?us-ascii?Q?K8l8RlFpImJ3OkgiJDogsZQJ5djQASa790N1od5XY0yYQJSUu5OVH2lGWnEC?=
- =?us-ascii?Q?UpEm8hZPZUHxW5WeFbccgX263uvBwrAhyEUGwyLteeD6TOl5giAGzA3zd9xg?=
- =?us-ascii?Q?M01jRYrV4OJG2kDHEi9CA5OHElxO34jwb5wKN31b5kBxGLUZ/Ii3NwjdRNEY?=
- =?us-ascii?Q?z/+Vusmr/1fN2c8QqSxZ0sbsj9WHK1JLwtIBqUf5?=
+	=?us-ascii?Q?JSNVaSARNPGJRW8smkyplqO1Zb+gimoqVWT5JWXtg79txrHqPa7v5d8fj/yF?=
+ =?us-ascii?Q?HTWUhFzYkDMN3XD1aAg/3TBNmN0P4gsJd8NNGLplIsoqxnGPjjS6ROzy+oZH?=
+ =?us-ascii?Q?SRJJTv0dQG4rRhxOHYVGJ4Ql6NNgijB4+uz6nIdxYG+X58Ag/RJsuQoMNdnH?=
+ =?us-ascii?Q?GWv5rbctVDa8VKBVDj88+y2r5dzcUYlntGBhPsvH5RhW5Cm5GiED9xwM9eoa?=
+ =?us-ascii?Q?RTCJLjSyzmY/6OoVvfD/ZgB8ZVI92OaN32tVXS3SoDDpZvG6uCzy5urNX7Wl?=
+ =?us-ascii?Q?2/xs4Bq+iulCRhvT8ZSG5UDFG8wLamLozTZ/Q/8hg9w3ZaptayNpg2W2Abu0?=
+ =?us-ascii?Q?fAFjklJKak7pG7qB2/20L9N+Ch2n5lvcGB5nHEwcG/b0XcaJU3b+frO/r23B?=
+ =?us-ascii?Q?fL1/cXhW2ZPgs9KA1Ef4C2GsIqsr0sTqnkzHG8+c5Jdi4x4Cc4PB5KbFmzr2?=
+ =?us-ascii?Q?vL9Qj7KP5+6ms0zYuQnhKCpY1cPLW+rU558/txoY9uhF6sgWEB3KnkU1CW5M?=
+ =?us-ascii?Q?n6PFALrlsfPoYKAqNW1JI1u0eNTVF5R0jZR8K1EeU0f1ki3BxzWhozbto1jR?=
+ =?us-ascii?Q?2ctcHp8eoAPbn4EKU8q/7ctUfakD6AYhUM4g0+nOcP8ICe4o2zhHHiom56ny?=
+ =?us-ascii?Q?ehx7uCKPfZTKG1VtX2P+cn4wI2oVNtWeoUymdsmZh9CLeeUFxGrPvVRyD9b+?=
+ =?us-ascii?Q?SJcjqYyOaNsaBmDqUBpZahQDyilNW6aKtQ5mJZ9EcdCJAfRByk7O5eHiK+QO?=
+ =?us-ascii?Q?XBhwi889EQtX0kjBXxhwp02tEQpqE/H5NQE7+m5lERTZr4sU6S14g+1aNhf2?=
+ =?us-ascii?Q?8HJBgR11TeWuHa+COeizImFyQPyJUX5w4nVKF2LQZ2nPe5oOvmmDSSxL4ptN?=
+ =?us-ascii?Q?H43i4jMI2ddfsiOIasRtQeAKRtphCnwqCypaXIbyMjqcwQWFbVvCgmy3vQOW?=
+ =?us-ascii?Q?l9zTS2lAdwUySgtYsq9CugtkoAo5qnGS5Gx/wejTOmKk/MYVD+/K5eXm5k5U?=
+ =?us-ascii?Q?PQdUDV0x2jKGGl20vwooxTtwo/0lwjp8mOUCn04cdPP+VEY523PjhspqWUTV?=
+ =?us-ascii?Q?PgAxz+kDAabk++lVt+M+bJ0R7NhQVR15OwKbTHt/XbdoT3uzMVE2o69aZ/ee?=
+ =?us-ascii?Q?rzri6sz0w/5NTlWziZEjHhFaUKQrnxDfTtNxMKfQUWkxbq299XfBLpTsYb2U?=
+ =?us-ascii?Q?noU2hr5Tch7+kz/5ThnNaN1UPYoNq+jow2kS+LEv3UbI6N8zfQIKHlXlnaWK?=
+ =?us-ascii?Q?DDtlkligHLOviHZ5y1ga3LPgtfwYk5AdaQ1daTVeZzgOmUkk6w3T+PnCqY1G?=
+ =?us-ascii?Q?U1nRgnXhtpMagpLPYaE7N86omDuwlDi9Wr3/QCtyMHny7deQVb96HkyFd8x/?=
+ =?us-ascii?Q?FOPv0FC4yyxkfKVtZWXcNVJDrOxqVOiwtGMeTV2ZqgyZT7vERPbigcB+sEPN?=
+ =?us-ascii?Q?CYENotm4WuWZiN4euhVdlTRK6wLaO4mrRPd7l9Py+F2KHceIJMxfSJX1DUWD?=
+ =?us-ascii?Q?Mu18g/hEAYe2P1Ntx/WBlh6+WaztH6O+/7Dj2V4dyps99MJam6nVrYN/tAH5?=
+ =?us-ascii?Q?j7OBeRC/uapVP4rciiw=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9a274e5-55e9-4d34-993d-08dda1e3cc64
+X-MS-Exchange-CrossTenant-Network-Message-Id: 067c1b00-63d3-437c-f545-08dda1e3fde0
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 14:43:11.8665
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 14:44:34.7371
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WKEjxeC4rc90xhda5UWfjq8LwaRjbQTpzkcpjDECvetR06p7tzLIw4dbHWR7RmHkRa5Q8n9uhundIqzggF54Xg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: lcTmn0n3wlrmp6LFj21PXTQu3mxCpjX3+3nFKBTkO5sQoV/2Z2a7+jf9Jc91ig8dh6xtZajQarrYhU/RyM+1hw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB11286
 
-Convert nxp,lpc1850-gpio.txt to yaml format.
+Convert lpc1857-eeprom.txt to yaml format.
 
 Additional changes:
-- remove interrupt-controller and #interupt-cells from required list to
-  match existed dts files.
-- remove gpio consumer in examples.
+- remove label in example.
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../bindings/gpio/nxp,lpc1850-gpio.txt        | 59 --------------
- .../bindings/gpio/nxp,lpc1850-gpio.yaml       | 78 +++++++++++++++++++
- 2 files changed, 78 insertions(+), 59 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.txt
- create mode 100644 Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.yaml
+ .../bindings/nvmem/lpc1857-eeprom.txt         | 28 ---------
+ .../bindings/nvmem/nxp,lpc1857-eeprom.yaml    | 58 +++++++++++++++++++
+ 2 files changed, 58 insertions(+), 28 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/nvmem/lpc1857-eeprom.txt
+ create mode 100644 Documentation/devicetree/bindings/nvmem/nxp,lpc1857-eeprom.yaml
 
-diff --git a/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.txt b/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.txt
+diff --git a/Documentation/devicetree/bindings/nvmem/lpc1857-eeprom.txt b/Documentation/devicetree/bindings/nvmem/lpc1857-eeprom.txt
 deleted file mode 100644
-index 627efc78ecf2d..0000000000000
---- a/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.txt
+index 809df68f6e148..0000000000000
+--- a/Documentation/devicetree/bindings/nvmem/lpc1857-eeprom.txt
 +++ /dev/null
-@@ -1,59 +0,0 @@
--NXP LPC18xx/43xx GPIO controller Device Tree Bindings
-------------------------------------------------------
+@@ -1,28 +0,0 @@
+-* NXP LPC18xx EEPROM memory NVMEM driver
 -
 -Required properties:
--- compatible		: Should be "nxp,lpc1850-gpio"
--- reg			: List of addresses and lengths of the GPIO controller
--			  register sets
--- reg-names		: Should be "gpio", "gpio-pin-ic", "gpio-group0-ic" and
--			  "gpio-gpoup1-ic"
--- clocks		: Phandle and clock specifier pair for GPIO controller
--- resets		: Phandle and reset specifier pair for GPIO controller
--- gpio-controller	: Marks the device node as a GPIO controller
--- #gpio-cells 		: Should be two:
--			  - The first cell is the GPIO line number
--			  - The second cell is used to specify polarity
--- interrupt-controller	: Marks the device node as an interrupt controller
--- #interrupt-cells	: Should be two:
--			  - The first cell is an interrupt number within
--			    0..9 range, for GPIO pin interrupts it is equal
--			    to 'nxp,gpio-pin-interrupt' property value of
--			    GPIO pin configuration, 8 is for GPIO GROUP0
--			    interrupt, 9 is for GPIO GROUP1 interrupt
--			  - The second cell is used to specify interrupt type
--
--Optional properties:
--- gpio-ranges		: Mapping between GPIO and pinctrl
+-  - compatible: Should be "nxp,lpc1857-eeprom"
+-  - reg: Must contain an entry with the physical base address and length
+-    for each entry in reg-names.
+-  - reg-names: Must include the following entries.
+-    - reg: EEPROM registers.
+-    - mem: EEPROM address space.
+-  - clocks: Must contain an entry for each entry in clock-names.
+-  - clock-names: Must include the following entries.
+-    - eeprom: EEPROM operating clock.
+-  - resets: Should contain a reference to the reset controller asserting
+-    the EEPROM in reset.
+-  - interrupts: Should contain EEPROM interrupt.
 -
 -Example:
--#define LPC_GPIO(port, pin)	(port * 32 + pin)
--#define LPC_PIN(port, pin)	(0x##port * 32 + pin)
 -
--gpio: gpio@400f4000 {
--	compatible = "nxp,lpc1850-gpio";
--	reg = <0x400f4000 0x4000>, <0x40087000 0x1000>,
--	      <0x40088000 0x1000>, <0x40089000 0x1000>;
--	reg-names = "gpio", "gpio-pin-ic",
--		    "gpio-group0-ic", "gpio-gpoup1-ic";
--	clocks = <&ccu1 CLK_CPU_GPIO>;
--	resets = <&rgu 28>;
--	gpio-controller;
--	#gpio-cells = <2>;
--	interrupt-controller;
--	#interrupt-cells = <2>;
--	gpio-ranges =	<&pinctrl LPC_GPIO(0,0)  LPC_PIN(0,0)  2>,
--			...
--			<&pinctrl LPC_GPIO(7,19) LPC_PIN(f,5)  7>;
--};
--
--gpio_joystick {
--	compatible = "gpio-keys";
--	...
--
--	button0 {
--		...
--		interrupt-parent = <&gpio>;
--		interrupts = <1 IRQ_TYPE_EDGE_BOTH>;
--		gpios = <&gpio LPC_GPIO(4,8) GPIO_ACTIVE_LOW>;
--	};
--};
-diff --git a/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.yaml b/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.yaml
+-  eeprom: eeprom@4000e000 {
+-    compatible = "nxp,lpc1857-eeprom";
+-    reg = <0x4000e000 0x1000>,
+-          <0x20040000 0x4000>;
+-    reg-names = "reg", "mem";
+-    clocks = <&ccu1 CLK_CPU_EEPROM>;
+-    clock-names = "eeprom";
+-    resets = <&rgu 27>;
+-    interrupts = <4>;
+-  };
+diff --git a/Documentation/devicetree/bindings/nvmem/nxp,lpc1857-eeprom.yaml b/Documentation/devicetree/bindings/nvmem/nxp,lpc1857-eeprom.yaml
 new file mode 100644
-index 0000000000000..0ef5f90f69ff3
+index 0000000000000..df634fdbcaa13
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/nxp,lpc1850-gpio.yaml
-@@ -0,0 +1,78 @@
++++ b/Documentation/devicetree/bindings/nvmem/nxp,lpc1857-eeprom.yaml
+@@ -0,0 +1,58 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/gpio/nxp,lpc1850-gpio.yaml#
++$id: http://devicetree.org/schemas/nvmem/nxp,lpc1857-eeprom.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: NXP LPC18xx/43xx GPIO controller
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
++title: NXP LPC18xx EEPROM memory
 +
 +properties:
 +  compatible:
-+    const: nxp,lpc1850-gpio
++    const: nxp,lpc1857-eeprom
 +
 +  reg:
-+    minItems: 1
-+    maxItems: 4
++    maxItems: 2
 +
 +  reg-names:
-+    minItems: 1
 +    items:
-+      - const: gpio
-+      - const: gpio-pin-ic
-+      - const: gpio-group0-ic
-+      - const: gpio-gpoup1-ic
++      - const: reg
++      - const: mem
 +
 +  clocks:
++    maxItems: 1
++
++  clock-names:
++    items:
++      - const: eeprom
++
++  interrupts:
 +    maxItems: 1
 +
 +  resets:
 +    maxItems: 1
 +
-+  gpio-controller: true
-+
-+  '#gpio-cells':
-+    const: 2
-+
-+  interrupt-controller: true
-+
-+  '#interrupt-cells':
-+    const: 2
-+    description: |
-+      - The first cell is an interrupt number within
-+        0..9 range, for GPIO pin interrupts it is equal
-+        to 'nxp,gpio-pin-interrupt' property value of
-+        GPIO pin configuration, 8 is for GPIO GROUP0
-+        interrupt, 9 is for GPIO GROUP1 interrupt
-+      - The second cell is used to specify interrupt type
-+
-+  gpio-ranges: true
-+
 +required:
 +  - compatible
 +  - reg
++  - reg-names
 +  - clocks
-+  - gpio-controller
-+  - '#gpio-cells'
++  - clock-names
++  - interrupts
++  - resets
 +
 +additionalProperties: false
 +
@@ -292,19 +240,16 @@ index 0000000000000..0ef5f90f69ff3
 +  - |
 +    #include <dt-bindings/clock/lpc18xx-ccu.h>
 +
-+    gpio@400f4000 {
-+        compatible = "nxp,lpc1850-gpio";
-+        reg = <0x400f4000 0x4000>, <0x40087000 0x1000>,
-+              <0x40088000 0x1000>, <0x40089000 0x1000>;
-+        reg-names = "gpio", "gpio-pin-ic", "gpio-group0-ic", "gpio-gpoup1-ic";
-+        clocks = <&ccu1 CLK_CPU_GPIO>;
-+        resets = <&rgu 28>;
-+        gpio-controller;
-+        #gpio-cells = <2>;
-+        interrupt-controller;
-+        #interrupt-cells = <2>;
++    eeprom@4000e000 {
++        compatible = "nxp,lpc1857-eeprom";
++        reg = <0x4000e000 0x1000>,
++              <0x20040000 0x4000>;
++        reg-names = "reg", "mem";
++        clocks = <&ccu1 CLK_CPU_EEPROM>;
++        clock-names = "eeprom";
++        resets = <&rgu 27>;
++        interrupts = <4>;
 +    };
-+
 -- 
 2.34.1
 
