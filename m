@@ -1,92 +1,136 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0210E2192EC;
-	Mon,  2 Jun 2025 12:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0312147E7
+	for <imx@lists.linux.dev>; Mon,  2 Jun 2025 12:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748867219; cv=none; b=gocjaS3MPm/zfxkaEapXkeiITAMCdfvBaaoFsPgRH+ox+RfSkLojrPE2MLa8fxXZF5QM1E4fYSQBSoX6UaxwoDubr4em9IgEu2gOb0tLuGmHl5rZd+Sjkx6EzKNO2rR7c1s0QAXF7ioKwKHXytT67ecwn7xd1UvmA5mhuHttLFk=
+	t=1748868739; cv=none; b=ZX4t6jqKPVnyjieDZCPebhighPHhGCSPJI9p8ponK6eITP9oAsPG9+0aScJjLwdx9S/+RyVRunlVsqZHJ0B2sgLRMZjJtODnjRpTwxktmaxswbkjbMfguu5Bs7pd3aTqNfdXs/cg7B5lGUlWfiW34cyyAOtZzggmLSJpO4uzmFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748867219; c=relaxed/simple;
-	bh=kILwxbA4feAy6G/FB0TXOwKAYb/2jC7u5uf564QQ5yk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DwO7m3yUV8IrfJA2+jVObZxBtnjNEc/XX6UagGmVxHcl1AIXJHqCfRz8meNAG98PGnl62UxP11yeEA4B57hP2pMZdrTLciuPI/ZdUmNeN0e7rlp5/Vesu4bn5zqzsZJbEnifQVfhP8J0BRZcw+/Po9kiwljM/nyoeT+6xv7wPIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=SRKJ7gEk; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1748868739; c=relaxed/simple;
+	bh=kLIQLvncsrMXNhkMSXPH1bKlaURjWeZCyUZk3Ef1v6I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EsPiN97/xTc97B4OAGtwqI34rTCG29rN9KU38cSIXX33Sn0qx7EKdOHLgZVytx+IngzcsabnSfVZZMwMAXhB52jyiOHFcShH5K3eahNK76B+Jy6Z+2paG7dzmBEVY30iqfckm3X5WuodmmccIHjPlsQ65+uCS+v3hdafIuR/b1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=cWqOLWpt; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SRKJ7gEk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DoXTw3y1WZb6kUZwfppvYhZWgShbh4hkC/pckhm4nPo=; b=SRKJ7gEkMMCxuG9Oqpzr9Bzdj2
-	zDXbd5hxeym30p6fcPMATstXSAGFqKZ3jhJm6zi0FYlu8lTqMloZTZnb0vEwJFvX+DxMD/V8aQnZp
-	s7liJX3gjUlGarj8UK7Pdi1CRVgFowN4A13msDkYIzCwkX/Yv7aEsxdXdL7PF2R2ItQw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uM4Fc-00EV7z-UN; Mon, 02 Jun 2025 14:26:48 +0200
-Date: Mon, 2 Jun 2025 14:26:48 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Christoph Stoidner <C.Stoidner@phytec.de>
-Cc: Stefan Wahren <wahrenst@gmx.net>, Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="cWqOLWpt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=ZxhTgCLygSpRzZ9PzHb6ECFgejGwUE72Etj5ELI2Wgw=; b=cWqOLWptPRZS2apnyR7vYHWdOR
+	2s8bFDL8T/eRFZt8GpEJ7XYzh7n9b0DZfcBvXJ1oeFnwupUw1lE2wh11Lrs/lGvvdklnQ4+sGT/2b
+	skDo4BHK4n7cF129X0xlvBDh881I07pno4lsiefN7kUyinnV/hjBqZ+WEoHIkClcElMOzXgdVhq7L
+	QjwcRGB6NO/g+NZltYJJmfqUHpeWl/F2Myi1/J4N+3BiGYxorKLMfSGyGebeIB5E+YACumUNjp9mw
+	YJSbXAbxqA0jiYMmtw5bbdkMKKYdrruQxe8GEEl+5GVIE3WImlFkf6dW9cW+RUF1XbSOEYoK/gXBT
+	EshVYq/g==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:56998 helo=localhost.localdomain)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1uM4e8-007eqG-2L;
+	Mon, 02 Jun 2025 14:52:08 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"upstream@lists.phytec.de" <upstream@lists.phytec.de>
-Subject: Re: [PATCH v3] arm64: dts: freescale: imx93-phycore-som: Delay the
- phy reset by a gpio
-Message-ID: <739f93d0-4cb4-4f1a-8792-84502d4beefe@lunn.ch>
-References: <b2ea6b7f-3623-4486-82a0-cab97053a53e@gmx.net>
- <34a4441d4b4ed8db7cac585ce93ec2357738cc11.camel@phytec.de>
- <7f6d7199-0a20-4370-a8b0-1d05326af052@gmx.net>
- <bf0eb48fc72f4b0abbf62077c2f1fe4438579746.camel@phytec.de>
- <967484d9-4165-4b75-bbb7-a203c36e8beb@gmx.net>
- <517be266ebc3b55da53372a76a139245f8945cd8.camel@phytec.de>
- <5afa6d62-4a3f-4c28-8165-363075ac36d8@lunn.ch>
- <a948b903766a82897e5fc17a840ab40e29f5eda4.camel@phytec.de>
- <8e448625-b4ad-4bf1-8930-6fecdedb1d8d@lunn.ch>
- <78ec24d09d129d52d3442f6319cf1ef5b6ce7f3d.camel@phytec.de>
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH] arm64: dts: freescale: imx93-phyboard-nash: Move ADC vref to SoM
+Date: Mon,  2 Jun 2025 14:52:07 +0200
+Message-Id: <20250602125207.2265222-1-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78ec24d09d129d52d3442f6319cf1ef5b6ce7f3d.camel@phytec.de>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-> > I agree it is long enough, but i'm also surprised how slow the kernel
-> > was. Are you using a fixed IP address, or dhcp?
-> 
-> I use a fixed IP address.
-> 
-> But isn't the bringup of ethernet+phy interface one of the last things
-> that happens during the kernel boot-up?
+Move configuration for ADC voltage reference from board DTS to a SoM
+include file. The SoC ADC reference voltage is connected to a "VDDA_1V8"
+voltage node and supplied by the PMIC's BUCK5 regulator. The reference
+voltage is thus defined by the SoM and cannot be changed by the carrier
+board design and as such belongs into the SoM include file.
 
-Mounting the rootfs is somewhat towards the end of the core
-kernel. But if you have an initramfs, there can be modules loaded both
-before and afterwards, and once the rootfs has been mounted, yet more
-modules can be loaded.
+Moreover, with this in place, customers designing own carrier boards can
+simply include imx93-phycore-som.dtsi and enable adc1 in their own DTS
+without the need to define dummy ADC vref regulator themselves anymore.
 
-> However, what timing would you expect?
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ .../boot/dts/freescale/imx93-phyboard-nash.dts      |  8 --------
+ .../arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 13 +++++++++++++
+ 2 files changed, 13 insertions(+), 8 deletions(-)
 
-I've seen interfaces configured up from deep within
-register_netdev(). I don't remember the exact configuration, but i
-thought it was NFS root. It might be in combination with initramfs. If
-you have the Ethernet driver as a module in the initramfs, and are
-using the "rootwait" option, it could be that you are already past the
-point it would first mount the rootfs, and with every new device
-popping into existence it is trying to see if the just created device
-allows it to do the mount. At that point, register_netdev() is going
-to trigger actions.
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
+index e1c9aa77c000..475913cf0cb9 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
+@@ -53,18 +53,10 @@ reg_vcc_1v8: regulator-vcc-1v8 {
+ 		regulator-max-microvolt = <1800000>;
+ 		regulator-min-microvolt = <1800000>;
+ 	};
+-
+-	reg_vref_1v8: regulator-adc-vref {
+-		compatible = "regulator-fixed";
+-		regulator-name = "VREF_1V8";
+-		regulator-min-microvolt = <1800000>;
+-		regulator-max-microvolt = <1800000>;
+-	};
+ };
+ 
+ /* ADC */
+ &adc1 {
+-	vref-supply = <&reg_vref_1v8>;
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+index 0ea61841e591..26bd801a49bb 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+@@ -46,6 +46,19 @@ led-0 {
+ 			linux,default-trigger = "heartbeat";
+ 		};
+ 	};
++
++	reg_vdda_1v8: regulator-vdda-1v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "VDDA_1V8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		vin-supply = <&buck5>;
++	};
++};
++
++/* ADC */
++&adc1 {
++	vref-supply = <&reg_vdda_1v8>;
+ };
+ 
+ /* Ethernet */
+-- 
+2.34.1
 
-	Andrew
