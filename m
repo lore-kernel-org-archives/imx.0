@@ -1,237 +1,119 @@
-Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012039.outbound.protection.outlook.com [52.101.71.39])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058D0221F31
-	for <imx@lists.linux.dev>; Tue,  3 Jun 2025 20:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.39
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748983513; cv=fail; b=GUN/JDTkZt1oCq5z2bVmq9fr0+PtDSHBmyABb4pfHj7n+YActAbUJMWBN3sFpxml70tcp/sSxL2iRnghhh8JqAA6rD/By2msGsYRY8XaF/mkGPEB27AItLQ01pGtRgOAej835c9e4w60JQ0632UQ2ZlTe8R7fOS/StP8E5HGf7I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748983513; c=relaxed/simple;
-	bh=xSHQYPNvzrCl45Wl70QRWuP2Drl7d8Rf4WhbL+C7mAk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gCopDHXKxDxWUKqNsq26txUu6Lda6GU2LqMiIpsp9DQHzp+30W1h6ujAkGYlrOvT/b9G3D5IpX459bx5mMvSeqrV0dkCykxbEFq2jOlAdMUD7Yy9Bu0M//sR5YWJm5THiZSIrwPgrzMM05eaCcMiom8DIlWj4XbsT+ufWj56X6s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ioyIMqAD; arc=fail smtp.client-ip=52.101.71.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45610224B07
+	for <imx@lists.linux.dev>; Tue,  3 Jun 2025 21:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748985211; cv=none; b=E9MmM0o6Jy1+c4GZ8g4uXSJaaHlHmQI7DaUiCfPey/gLfLmiCQSOH7Zb/sUKDO6PPbCTd7yqQBNIhPbvJE8/rVhoKlOCSJ+sL5G/5utM57eXSOpgoqRyYgSMpTjjwkD/1jx+Urp9nVdlf40/KxfS+1uE4w0APstvG3kRBnqF1eA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748985211; c=relaxed/simple;
+	bh=1BcdnyMHgieTxm8ahEYkMYtEjs8zmaa3HiTW1iXKbeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gu5lDUlk+DXN+vmg7nrIj+nZkLkg4o25ZGjBKUwsrMQdzEjLIjUZRY8ZiMsDc1pnmjGBoSqGPSvVtji47yVydmkMfd8rhzth/1Mc5dDXyEt9HtgcDZHs46qoREBiEcGVTlZ1XNcDyYJSVBLiy/s71vbKafHDGhuYH184qo38TC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=azw+oXlD; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ioyIMqAD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IP8DcUgPI6XqWh8WKhYCOzmx1uO0ky2r/GF7E62lySZxD4hUWkKiTN81tHFXIRwnRmglbE2NsYBfoKtpzsN1Ad3mgpsQ4GOMelhQ5UvVxF6IRlAeM7T+vg+1yFLU0uXWGPO+PDrAqa0/efaicUcNf0wHFYlDReCDI/c8MLvBx0YiGSZqQLGaSQTWX3ts8jwkwxuuO8p91r6M5L9E2lwBrjXdKb5uuvh6MCHhrlB9hwaLe7SMPJOpi+rxgSL4EmDYhiTv50ZyZBgjwZ41zteCjSy9ShqQDdrsV9twK1F54usItySu4DEPWRx+qkV7WKlJ2sN5a73nIdlWdvDQJejamg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z9I07JanY+77tr0/+AOfmSncqNd8TSDl5vePmwqhwkU=;
- b=zFGpZRDQF4v0F9dQCsAK55Irq+Kc1ZXY608qD+97xhTkG7kmBoUwetRln6hT0AaxK03P3AUO5h4Vlkq2MMljQgv2rMYeuv/hx6n2Xs+i0xpJFYKic5dpGsACTjwKDYMPuP8D8Uy9kBFYR26FuqE5kPNqKdUGoHU6qUtmPdeXuxUcxtIC36rQD0TvRORmH8Z0euUb6cxtMvBmmHAQJJwJjaS63i+4Xl1GGti88Mea9K06RHCVFPCW36rzSYY6UH8ZwMwpKRF9OhRlSXWwNxv1BoDqwoXDCqOodQXtlRLz+P42m6TBjb11fJJSwoeeelOElCl7Dnt47yi5W0/NeI1VVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=z9I07JanY+77tr0/+AOfmSncqNd8TSDl5vePmwqhwkU=;
- b=ioyIMqADx61rMJhVeP+o6U9cQ5upf0YUkt5zFyXjiGQbbJlc2714LBspGFGv8oh4Ct5pJHPgYfFNGlRuT8n9F4JREwxae6ARPpWulAPt1FgXRlbDe7fpdW+a5yWcTH05U+CuiXq5Umj+CSU5XwTA3dCfEr3/KhoZOXHv0F4QdEcULLOrMCw8U/jLzjx1i5cPv213r5u42XZBp9gW+BZYen63V6JzLtS8e47DNgZ35dbWEeKg4O8jI+YXi742pVTj9HMvUMktoVTm3yC9NGusmn04aJJp6tzLknabtbP6PjpDUwxdb37TxO+WxiOZTWZwCdBxF8I/a58AsdT4CHNFAA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by PA4PR04MB7566.eurprd04.prod.outlook.com (2603:10a6:102:f0::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.36; Tue, 3 Jun
- 2025 20:45:05 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8792.034; Tue, 3 Jun 2025
- 20:45:04 +0000
-Date: Tue, 3 Jun 2025 23:45:01 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, arnd@kernel.org
-Subject: Re: [PATCH net] net: enetc: fix the netc-lib driver build dependency
-Message-ID: <20250603204501.2lcszfoiy5svbw6s@skbuf>
-References: <20250603105056.4052084-1-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250603105056.4052084-1-wei.fang@nxp.com>
-X-ClientProxiedBy: VI1PR09CA0174.eurprd09.prod.outlook.com
- (2603:10a6:800:120::28) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="azw+oXlD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bmhcf/j9uEBvFmWrno3AXxDLOTU31ZRPLYTptLNTT4I=; b=azw+oXlDU8KhpqtJ+QZTyDEzek
+	az9+bvyrejgDDwDnTYRrsNnwEs/tNrrUkkuW2q6FVstjBRCXHKJ1Rha0xADMT/ZaRsPfeXYTGioDW
+	JhA2xTwSl+wqPb6q+4y9wIrCuWJ3WVuT0C9jEYplZAxw5Qr0XmCD5li7WJfsRwvQllyqBmqsL8B9u
+	dGu/JNl4QIglQ4Qg++Vrr0UtAJDvnvBEWpXisPFirXaG0fki932y5iiP/TqxRAd46JQRK7X9ONHUO
+	rQ77av6uBKHAbqLIpPT7t4sLG58DhRvsc9R1OXyp4vFkr/B7V3a6LcCsBdptVtFcczQOMAhX5enZS
+	VxB5v87A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35734)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uMYwY-0006Qr-1W;
+	Tue, 03 Jun 2025 22:13:10 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uMYwP-0000Ug-2N;
+	Tue, 03 Jun 2025 22:13:01 +0100
+Date: Tue, 3 Jun 2025 22:13:01 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: "Abhishek Chauhan (ABC)" <quic_abchauha@quicinc.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, Wei Fang <wei.fang@nxp.com>,
+	andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	xiaolei.wang@windriver.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH v2 net] net: phy: clear phydev->devlink when the link is
+ deleted
+Message-ID: <aD9lXa1JVRyJKuP_@shell.armlinux.org.uk>
+References: <20250523083759.3741168-1-wei.fang@nxp.com>
+ <8b947cec-f559-40b4-a0e0-7a506fd89341@gmail.com>
+ <d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|PA4PR04MB7566:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7c2bd9c9-02e7-4505-f430-08dda2df847b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?LwnVHqRYSZ4Q1+2EKpKP2dXRNpGwqHn+Tg5Fr5yY7QTmQuoY9Wv4gSHW7hDY?=
- =?us-ascii?Q?jmGcXI4SAz2T0I1uGOD5jPuGBRGeAzCEEICJW2Q7gylSr7Whh8bc2uhk+0mC?=
- =?us-ascii?Q?XVVA+tMelh7afkKmyGBvl6Niqefw57Q0zHaKb/PD4HkC82gNBxLDbPRFT36w?=
- =?us-ascii?Q?6FmIWA2DKqC0k0jR3bUSkC+eNpbo4PglwwnPJJuuByg8BXp3eAkqTA8seSpI?=
- =?us-ascii?Q?ITxz2g2JiUIJxoncIgQWntzlwDmUKS+gosVjqLp5BxQva02ScYgTUgOni4Gj?=
- =?us-ascii?Q?msZaRr82TGbI8dZwQe1lht2rCBBFym1ORhTuHIgEL4oGkDeov4/jzc3ffGfx?=
- =?us-ascii?Q?movbXhhH9t2Uyv/3SqFzFjGNTTnR4XSIuA11b0AaMDYXvCHOq782TrAvgQA6?=
- =?us-ascii?Q?T3uCqfRMLI+IVjQsJtY//E8RnM4RsEaj9orbSdZFR0j4A1ZnXtO4T4gwFV15?=
- =?us-ascii?Q?PJa+GhUe6xTiV+oX4sIQ10kblyymrUnBFYWhvnmGg0gegziPr4ykGNLCSNXH?=
- =?us-ascii?Q?ybSSrrV0n6GR9Su4oyYr71OAcwZ+5y4dr1+0VF85zp3wz48cNAxvR53pPe7g?=
- =?us-ascii?Q?We/L1V3kEFy5zrrZ8/LMjhpYq3VMeFbAecsbR5T+DKJKnyQXV4+LssYOGppc?=
- =?us-ascii?Q?Vm4rMzdROszMiw+GxJyZFxAHGRdzqZEg5l2fojYigHOiuPH+3V3rWHJQmfWQ?=
- =?us-ascii?Q?2VwZxrkZ5IuvKSfa2JGt4PVc6lm5DSCmfI9Ir3Hpk2uJBSASDvrE1RasPqm5?=
- =?us-ascii?Q?56SLGhwKWimESemLE8cdPvGxUWP9vtsHYIvsZWwwDTKikkxfDt0tUabMVozQ?=
- =?us-ascii?Q?wXYm3vyb5B9fjLWmPjDuVM+qeESRXutJr4YU+hWx8QZ/IemNuri1E7Etraiz?=
- =?us-ascii?Q?7JC+LhnQo+7FRDrW72Wg6RXoRCcs0CMx4n9m61ZCLrDzVNIy4VHzgiR6TejN?=
- =?us-ascii?Q?LgbWpJfy7bFDzck5+gQKGfrZ5D6m6n4jTU4PXJVK8uskdaDZ/F/nDLRoCMo7?=
- =?us-ascii?Q?kj8vepa8aX3LIZ3kvNXzAHZmReYD44lhiXmnRdyPXGsjWCFsUX33zWB6/PCv?=
- =?us-ascii?Q?FvtTiXbuKvju9IpaGfLJWc5e253k0VSpLJS1/9ecam1ALQNoQJu9IxV1uQn7?=
- =?us-ascii?Q?w3/EnK0VLH8CHMrZzYXKqtrsDmHy5kAxEVS7Eme7eJ8gn+KddL0EhdN0Tpjs?=
- =?us-ascii?Q?ThAUHAC6W7YuKDALJOcroaRte6efm86D2iuSp1nbp4u2b1go0tk3dPpfN3kk?=
- =?us-ascii?Q?+s4YggCFS6Xi2CSthynPxHFKu/P0n+j2XXWn58seAaDDIY25enRWuvY313TE?=
- =?us-ascii?Q?fcQ/xRrrqDRlGpw8c8ullQrT5pQu2844NoUzMN9VQDd69eEIUuHEWCJ2f5YJ?=
- =?us-ascii?Q?CkOVtnaZp7UlBV4OPTQh1KU5C7hMgs/Ag6Ijb5UGq4Uoe0PCXMJWutd2uVxr?=
- =?us-ascii?Q?oFgpkvoiLy0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+rxeGfB2ZKGsOaKjf89eacFZ4sTLkCWdqYEIpjkThdUQMWgVH1KIdzE9AtE5?=
- =?us-ascii?Q?r93VmojMDg8jt5GQmORIJ0saQdVg+8Xf9wLPxFAzG/e5Vf/YzGyLySjexp81?=
- =?us-ascii?Q?SngdnwijLOmM0uc+psGQYeoEEKbnZvF+QRLucNamOk/Qurdby2ixFQs/GRQX?=
- =?us-ascii?Q?0n3Lp/5Y8177uBRDlx8xfwHIAVQuXO5MvaMEr3fDf2w8QK4Sez4r750ilfeZ?=
- =?us-ascii?Q?sQVJAi1rbkdp1ppDBfjcIMJGVagRxs0MDjaXASIFP4qkp1AXEdhrcx/zREHB?=
- =?us-ascii?Q?Hzz/un5UqK/Dxzbqtw8BlQNrt9cr1cVpC5UQb9+F1H3+6OoyILHCfVxAyD6O?=
- =?us-ascii?Q?tjJnhuUVSb+/xFb2SAKe74DRRNHPqnh3E6quu5d/gbMMUWHIlPr677h7TKXW?=
- =?us-ascii?Q?xz6y8K/NqKwP4rHcL+PpZvI/cS4d/5QG2Q/iuWUAkh8lsYUm46bNeRpb6+1J?=
- =?us-ascii?Q?/bSKyt/rEy6QGkZkXnkI/zS95Ve35iV7lGERhMP2IHyjAnlOskl2ljme2D0k?=
- =?us-ascii?Q?Hxv5PwTXXSqPkzrU8S98Wa+yYixpJOHWLPnv2pAg/xjcMsqqhGh994HDubFQ?=
- =?us-ascii?Q?cX0s11Jyf6ZKSxz3ZeRLR8RIMWFaOoLMVNe9CG8noy17la1/fi4ek9YDZV7D?=
- =?us-ascii?Q?HBdsqvJJAyTM/1WQyYuB11kqfEXv4HWpbcjnkt9pX1P18cFeBMLAJoibRdT9?=
- =?us-ascii?Q?s1OgeVzfylG6pQrxb0iMimEWuYe9WLKW7sC8XdwoyOFuL6olGxQSlQJRiD2p?=
- =?us-ascii?Q?QZm5dC4PA8W4xLOwqaqRqSt8jzrG8muiGXyk+fnJEFw3pFAaZfPYBr2069Bk?=
- =?us-ascii?Q?mr6QH4oEkCm4w3FInzpPEfANU/lw8LFl6OGGUgVDaDTDIKmzYwdqLIry6BmX?=
- =?us-ascii?Q?ZOIKlSuh/LIly6P2zkpgIKtLlL63v+v7ImLNGyA6bDfSksKx7JLxuqDZ/WnN?=
- =?us-ascii?Q?mNqR/WLbMXMQ308ObnNlSYgBASPXahy35GofFsH2SMGOWyENWpeUmCOlSR10?=
- =?us-ascii?Q?x5mHkfXrOCw1+y+oHvs9aPBxDmptoB1mM1uWypBdQxWn5B9JXv19/0PWJvC/?=
- =?us-ascii?Q?h/aAfHQ9VWnq25XKakj3Y3tk9oQfNfAKq6TSqX37ShESrV0q+BqvpSTyzmHJ?=
- =?us-ascii?Q?NRCAcLpSloUbPRWz5iquCJTtH4MbrINUpv8m25Kk7j6f9s4RKFHy6WYD29L5?=
- =?us-ascii?Q?g1NGJbSTkGKlNwByemfldO5qygCA1S0On7z1zF1FCQke4T9jhEL8KfAIx9pa?=
- =?us-ascii?Q?6NQ3DrN1T2ozJ7XUAxfBOD1ujrlc8X7xcMgJOLHcmRG3GThkmqoc0tvCQiK8?=
- =?us-ascii?Q?AhF3ttfMRObf9XA3lQOsWayRB+vggRxWVWj7Zy5QFbS0TtrEagmCdAQNjvfU?=
- =?us-ascii?Q?MimnewIYUN7FUmjcSaU+H/lbbugmO9a1FTLo9gwWMxBYPoI1+FpsTltyjrlj?=
- =?us-ascii?Q?qHYoLxYOVITuWGBm5XTUcWIPOhhepL+b5ctoJrQV2ZGdXqEpTwY06i0+6aGL?=
- =?us-ascii?Q?xAjVvVS/iTEsC13U7HnKiFQh4RYimEmx7bRtATX7jPG/rRMz+kP/aOPVV2pl?=
- =?us-ascii?Q?FCbP/jtRTSELbOrJs0MVSERd0YbjglDEB/boR0DJChVvzhHHntc4HQk4wakx?=
- =?us-ascii?Q?eA=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c2bd9c9-02e7-4505-f430-08dda2df847b
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2025 20:45:04.8415
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Fy6IfXHsZ+S1s03gIhkwKa0iP7g8OC1B1+vm8R5eg1fZ4UIgDIsNNb0Lif2hT5JX2RvLTukSVomi47h+I+5rOA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7566
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Jun 03, 2025 at 06:50:56PM +0800, Wei Fang wrote:
-> The kernel robot reported the following errors when the netc-lib driver
-> was compiled as a loadable module and the enetc-core driver was built-in.
+On Tue, Jun 03, 2025 at 01:39:47PM -0700, Abhishek Chauhan (ABC) wrote:
 > 
-> ld.lld: error: undefined symbol: ntmp_init_cbdr
-> referenced by enetc_cbdr.c:88 (drivers/net/ethernet/freescale/enetc/enetc_cbdr.c:88)
-> ld.lld: error: undefined symbol: ntmp_free_cbdr
-> referenced by enetc_cbdr.c:96 (drivers/net/ethernet/freescale/enetc/enetc_cbdr.c:96)
 > 
-> Simply changing "tristate" to "bool" can fix this issue, but take into
-> account that the netc-lib driver needs to support being compiled as a
-> loadable module. So we can solve this issue and support "tristate" by
-> setting the default value.
+> On 5/23/2025 8:19 AM, Florian Fainelli wrote:
+> > 
+> > 
+> > On 5/23/2025 1:37 AM, Wei Fang wrote:
+> >> There is a potential crash issue when disabling and re-enabling the
+> >> network port. When disabling the network port, phy_detach() calls
+> >> device_link_del() to remove the device link, but it does not clear
+> >> phydev->devlink, so phydev->devlink is not a NULL pointer. Then the
+> >> network port is re-enabled, but if phy_attach_direct() fails before
+> >> calling device_link_add(), the code jumps to the "error" label and
+> >> calls phy_detach(). Since phydev->devlink retains the old value from
+> >> the previous attach/detach cycle, device_link_del() uses the old value,
+> >> which accesses a NULL pointer and causes a crash. The simplified crash
+> >> log is as follows.
+> >>
+> >> [   24.702421] Call trace:
+> >> [   24.704856]  device_link_put_kref+0x20/0x120
+> >> [   24.709124]  device_link_del+0x30/0x48
+> >> [   24.712864]  phy_detach+0x24/0x168
+> >> [   24.716261]  phy_attach_direct+0x168/0x3a4
+> >> [   24.720352]  phylink_fwnode_phy_connect+0xc8/0x14c
+> >> [   24.725140]  phylink_of_phy_connect+0x1c/0x34
+> >>
+> >> Therefore, phydev->devlink needs to be cleared when the device link is
+> >> deleted.
+> >>
+> >> Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
+> >> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> > 
+> @Wei 
+> What happens in case of shared mdio ? 
 > 
-> Reported-by: Arnd Bergmann <arnd@kernel.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202505220734.x6TF6oHR-lkp@intel.com/
-> Fixes: 4701073c3deb ("net: enetc: add initial netc-lib driver to support NTMP")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> Arnd Bergmann has posted a similar patch [1], but it has not been updated
-> since the first version, perhaps he is busy with more important things.
-> In order to fix the issue ASAP, I made this patch. And I added the
-> Reported-by tag to give credit to Arnd Bergmann.
-> [1] https://lore.kernel.org/imx/20250520161218.3581272-1-arnd@kernel.org/
-> ---
-
-Ok, so to summarize, you want nxp-netc-lib.ko to be separate from
-fsl-enetc-core.ko, because when you upstream the switch driver (also a
-consumer of ntmp.o), you want it to depend just on nxp-netc-lib.ko but
-not on the full fsl-enetc-core.ko.
-
-Does it practically matter, given the fact that the yet-to-be-upstreamed
-switch is DSA, and needs the conduit interface driver to load anyway?
-
->  drivers/net/ethernet/freescale/enetc/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+> 1. Device 23040000 has the mdio node of both the ethernet phy and device 23000000 references the phy-handle present in the Device 23040000
+> 2. When rmmod of the driver happens 
+> 3. the parent devlink is already deleted. 
+> 4. This cause the child mdio to access an entry causing a corruption. 
+> 5. Thought this fix would help but i see that its not helping the case. 
 > 
-> diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
-> index e917132d3714..06759bedb193 100644
-> --- a/drivers/net/ethernet/freescale/enetc/Kconfig
-> +++ b/drivers/net/ethernet/freescale/enetc/Kconfig
-> @@ -17,6 +17,7 @@ config NXP_ENETC_PF_COMMON
->  
->  config NXP_NETC_LIB
->  	tristate
-> +	default y if FSL_ENETC_CORE=y && NXP_ENETC4=m
+> Wondering if this is a legacy issue with shared mdio framework. 
 
-So your logic here is: NXP_NETC_LIB has only one select/reverse dependency (NXP_ENETC4)
-and FSL_ENETC_CORE has 3 (FSL_ENETC, NXP_ENETC4, FSL_ENETC_VF).
+The device link does nothing for this as it has DL_FLAG_STATELESS set,
+which only affects suspend/resume/shutdown ordering, and with
+DL_FLAG_PM_RUNTIME also set, runtime PM.
 
-If the only reverse dependency of NXP_NETC_LIB, NXP_ENETC4, becomes m,
-then NXP_NETC_LIB also becomes m, but in reality, FSL_ENETC_CORE, via
-cbdr.o, still depends on symbols from NXP_NETC_LIB.
+The device probe/removal ordering is unaffected. Maybe that's a
+problem, but it needs careful consideration to change.
 
-So you influence NXP_NETC_LIB to not become m when its only selecter is m,
-instead stay y.
-
-Won't this need to change, and become even more complicated when
-NXP_NETC_LIB gains another selecter, the switch driver?
-
->  	help
->  	  This module provides common functionalities for both ENETC and NETC
->  	  Switch, such as NETC Table Management Protocol (NTMP) 2.0, common tc
-> -- 
-> 2.34.1
->
-
-What about this interpretation? cbdr.o uses symbols from NXP_NETC_LIB,
-so the Kconfig option controlling cbdr.o, aka FSL_ENETC_CORE, should
-select NXP_NETC_LIB. This solves the problem in a way which is more
-logical to me, and doesn't need to change when the switch is later added.
-
-Then you can drop "select NXP_NETC_LIB" from NXP_ENETC4, because the
-dependency will transfer transitively via FSL_ENETC_CORE.
-
-diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
-index 616ea22ceabc..ef31eea0fc50 100644
---- a/drivers/net/ethernet/freescale/enetc/Kconfig
-+++ b/drivers/net/ethernet/freescale/enetc/Kconfig
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- config FSL_ENETC_CORE
- 	tristate
-+	select NXP_NETC_LIB
- 	help
- 	  This module supports common functionality between the PF and VF
- 	  drivers for the NXP ENETC controller.
-@@ -47,7 +48,6 @@ config NXP_ENETC4
- 	select FSL_ENETC_CORE
- 	select FSL_ENETC_MDIO
- 	select NXP_ENETC_PF_COMMON
--	select NXP_NETC_LIB
- 	select PHYLINK
- 	select DIMLIB
- 	help
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
