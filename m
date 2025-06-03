@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573FE42A96;
-	Tue,  3 Jun 2025 07:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FABB2686A0;
+	Tue,  3 Jun 2025 07:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748934190; cv=none; b=bx/drrBquExWVNjzjdFuX53kYGeKcvdzrFVM3LMTZDG7rObr8DuP5MOLv5PyZf4LLww+K7xJoINgiXQC95Z83D3JjyqrJUL2Hp7BFraqz1Z+daBie/QgAVV//VvTEjqNmvkOf0MIg8hxOEfFCjzm55DyTJsqVCJJ1ec7R+ms3io=
+	t=1748934776; cv=none; b=h12mxao2dgin06FPlwhy9d+co5ZjQshHUN6J+Anrprq7lZjYMTqsAADAmwjoqtKOywAmVgcx1YPkiWeO1yCNHLPfaoKD5S6TyLJAgICHddgLdxqOleSlTSanMlK7eV3SZHVocJue473Y+YTostbSppY/Ehg1sJgLmaK1clDkSF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748934190; c=relaxed/simple;
-	bh=M2Xxya/1ZnwwtJTmVRkxDpSQKxDN9xfJL6BiBYJNJMY=;
+	s=arc-20240116; t=1748934776; c=relaxed/simple;
+	bh=NX3QBD9ToUMzd3pu1RX4acaj0zG0PVwf8YybhZuaA/k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q7V92mxzyNHpu4dbHmJCSK/H7KchXZQgcyApyNygrLY+D9nVE3BasiUWCbtNP1E5fZnCxB+8hRHxGsM9/YA9GH5nvd9yTTQGWUF7tFgv7sL4QEYcO15msnPbKvG0U9vLLsqdeoB4Iw+/jAzobmhKziFNvcxD4nbUpxPxp6FtKYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MfFapRus; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=dzlC/XeKxzaKWmbIQlGrDNNOAYAYsi5iVLJTu5v8lo1tZKPTUNqFoXesYHPNz/GBQRde/FL9wkgk9rUuS1WsMq/+GAO7LtqQtSjeRT2eWwK00ufYTeM051fMXMzxKWDdZoDwf2qfzgulDeyIje1ZMqYQuO/VLmjOvfNYA8DmomE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRYgIM0C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MfFapRus"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D753AC4CEED;
-	Tue,  3 Jun 2025 07:03:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRYgIM0C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73451C4CEEF;
+	Tue,  3 Jun 2025 07:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748934189;
-	bh=M2Xxya/1ZnwwtJTmVRkxDpSQKxDN9xfJL6BiBYJNJMY=;
+	s=k20201202; t=1748934775;
+	bh=NX3QBD9ToUMzd3pu1RX4acaj0zG0PVwf8YybhZuaA/k=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MfFapRusnhALxbIIJw3w/UyOman+5LnAjY8r12aYf6omFqjJ7M51qQ/eKdvhVfrwL
-	 su06rq1mLGJNVTms8XwHXpnhhqu9yeBkQv1pWEewONdY1Nbl7wzElK31lUmhCJexyg
-	 oRbYYVrSOiR467JHNk5huy/wlAGPH/OQNLne5S1ik944aHf1t+hh1gNPNy1ly4xAQ+
-	 bCeLO716ES2EMFIolP1QIaVESsqTL/tB+vZ3mfQDf3nFFufCR/VYCOoII3mBBezR2r
-	 UwE/UZG1CBPQET2qjMZdG6xpFEtO8OvI9/Jh5gUsmimzJeHQdOJgixbABABBt7tP4f
-	 +eX5pz/5QDepQ==
-Message-ID: <3b22ca31-4a6c-4f94-8623-9b0448699eaa@kernel.org>
-Date: Tue, 3 Jun 2025 09:03:04 +0200
+	b=iRYgIM0CPiwpEr6zeQYx3tvHgiLyM6d3sgWOLYlJcCfMiEgRS9Y4yjh7G5vYlNf1j
+	 KgIjQI8BWjaKaGxKWwKw9znTEPzO80NCblBmzgEcFGlX5Z7tMaH0+070dKg/yyGAlU
+	 4wxks2L13DGV52iC0CzNLNdT61jvGKs20ee7Uw4SO1OvgagpyxhQKXYxS0I4fgGSyd
+	 asXONyULQJWHR+DRsR30vb+5tvDDo+dXkfS1rabCQymaw8qG90h2sCEYKgp02NnXwH
+	 d/dbo68oC4w8prnR/PBom1GS1jqBFtHN7Sci1LPd6X0aXdCU4YnsIlA4Hj7osHn3rk
+	 /yn3NUyOnKVKg==
+Message-ID: <df320682-7641-4e32-ba72-26da5fe55f21@kernel.org>
+Date: Tue, 3 Jun 2025 09:12:49 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,17 +35,20 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: gpio: convert gpio-74xx-mmio.txt to yaml
- format
-To: Frank Li <Frank.Li@nxp.com>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
+Subject: Re: [PATCH 1/1] dt-bindings: trivial-devices: Add compatible string
+ synaptics,synaptics_i2c
+To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, "open list:GPIO SUBSYSTEM"
- <linux-gpio@vger.kernel.org>,
+ <conor+dt@kernel.org>, Guenter Roeck <linux@roeck-us.net>,
+ Noah Wang <noahwang.wang@outlook.com>, Michal Simek <michal.simek@amd.com>,
+ Naresh Solanki <naresh.solanki@9elements.com>,
+ Fabio Estevam <festevam@gmail.com>, Rodrigo Gobbi
+ <rodrigo.gobbi.7@gmail.com>, Grant Peltier <grantpeltier93@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
  <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
 Cc: imx@lists.linux.dev
-References: <20250602145043.945065-1-Frank.Li@nxp.com>
+References: <20250529184828.787082-1-Frank.Li@nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -91,82 +94,32 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250602145043.945065-1-Frank.Li@nxp.com>
+In-Reply-To: <20250529184828.787082-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 02/06/2025 16:50, Frank Li wrote:
-> Convert gpio-74xx-mmio.txt to yaml format.
+On 29/05/2025 20:48, Frank Li wrote:
+> Add compatible string synaptics,synaptics_i2c for synaptics touch pad. It
+> match existed driver drivers/input/mouse/synaptics_i2c.c.
 > 
-> Additional changes:
-> - remove label in example.
-
-No need to mention trivial changes in example. We ask to describe
-changes in the BINDING.
-
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com
-
-...
-
-> new file mode 100644
-> index 0000000000000..2ec33248dfce1
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/gpio/ti,7416374.yaml
-> @@ -0,0 +1,56 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/gpio/ti,7416374.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: 74XX MMIO GPIO driver
-
-TI 74XX MMIO GPIO Controller
-
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,741g125 # for 741G125 (1-bit Input),
-> +      - ti,741g174 # for 741G74 (1-bit Output),
-> +      - ti,742g125 # for 742G125 (2-bit Input),
-> +      - ti,7474    # for 7474 (2-bit Output),
-> +      - ti,74125   # for 74125 (4-bit Input),
-> +      - ti,74175   # for 74175 (4-bit Output),
-> +      - ti,74365   # for 74365 (6-bit Input),
-> +      - ti,74174   # for 74174 (6-bit Output),
-> +      - ti,74244   # for 74244 (8-bit Input),
-> +      - ti,74273   # for 74273 (8-bit Output),
-> +      - ti,741624  # for 741624 (16-bit Input),
-> +      - ti,7416374 # for 7416374 (16-bit Output).
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  gpio-controller: true
-> +
-> +  '#gpio-cells':
-> +    const: 2
-> +    description: |
-> +      The first cell is the pin number and
-> +      the second cell is used to specify the GPIO polarity:
-> +        0 = Active High,
-> +        1 = Active Low.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - gpio-controller
-> +  - '#gpio-cells'
-> +
-> +additionalProperties: true
-
-This cannot be true.
-
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index 38bc1937ff3c9..dbec1300bb7ed 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -362,6 +362,8 @@ properties:
+>            - sparkfun,qwiic-joystick
+>              # Sierra Wireless mangOH Green SPI IoT interface
+>            - swir,mangoh-iotport-spi
+> +            # Synaptics I2C touchpad
+> +          - synaptics,synaptics_i2c
+That's a wrong prefix, so assuming we want to keep everything working
+you need to document it in vendor prefixes with "deprecated: true". See
+Synopsys for example.
 
 Best regards,
 Krzysztof
