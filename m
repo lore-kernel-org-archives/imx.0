@@ -1,142 +1,194 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D782E1F4297
-	for <imx@lists.linux.dev>; Tue,  3 Jun 2025 21:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3824C98
+	for <imx@lists.linux.dev>; Tue,  3 Jun 2025 22:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748986108; cv=none; b=h7tDmuuHDP+YxxG8WESInpG76ey6sliRSOApu5ljK/FN+4JgrRalsVxbm0AlnW27UWs/EWB4B83Wprz4WwZW7NmuaCWZRNiCgi3ti7llQ9TcHaCTiE63hfZjLZmYajYZcsKCNqvrG3/jIceinOoy2sDZV8XzcLD6N89ShxwaLG0=
+	t=1748988885; cv=none; b=jbFrT02xjz7K0nD2GajowhEtzsM3KV9USKPJXrJPzRaOCbyHEIUt/YikTO/1PtwvbYPIyH0mhEbuZbVVDlRCpzJ1mdrx4Y5zcIaXAHacFhjZxFqiTuBf6H+ayMknlQJ4L+fLQMtvsYn79Yiff7zjeh7AGJV3L0DtsYdiO5/4O4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748986108; c=relaxed/simple;
-	bh=Gy9dNaig71hrcxBXbrHTFcnl1mHgKYw+Bxh3hUPJVb4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=dycCj/rK2mU48BxJfaQC6M16ZC36FTthaW8vMVPpTWgJcKvif8y9uyGpG9lEIje2eh3WaJDlkf/E1iFbzW5C5JIfVuD/gcZrYJABr+Ku+P3wJLNU5CeeDRG8CrbT7o285G46sW3atsHrZ4czYQOdnMC8sUBoM8QkZrr1XJs4BFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=AP3SrC7y; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	s=arc-20240116; t=1748988885; c=relaxed/simple;
+	bh=xot+A+rklvBXet1Bsm8MIUc2wvIyDqpj0p5Oekge+mo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C5rmL5nqyXAHN2OQGjGZCoH5HlJwUQE+nB1f2I4HMzaHzKgGV5oWsXWMiquIsKHFLjze4ku/Dz1z5jvtkwh8GOzPI5wfwg9jttqJ91ajupSpeew0giFngohWKNbMvGTHsJa9/n92dwIg7JS5wJ1xc7Ugn/dEOTw/4dZpWyNQnu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JOgzOWv/; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="AP3SrC7y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1748986096; x=1749590896; i=wahrenst@gmx.net;
-	bh=Gy9dNaig71hrcxBXbrHTFcnl1mHgKYw+Bxh3hUPJVb4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=AP3SrC7yoil0xp9VMDOry8/xRmaZJ1JbPWumFqw7RTVB/NkodljDcjYIo5asWiFQ
-	 YQZ9ngnKErej2Kt9TOvP8To7n2fJzIib5umO5Uf69pmlqtAEmgqZmCwzXTk5oaq/z
-	 nKu8UgHPQqcH3vgHUWeV7IxXh4VEpm43jqfxJxhro7wuJbMxarHoC1riTIRXMSXDI
-	 TFfSNcjNC1VZ3dQJ3h+FFu9EkvRYLrrP80UIcjGykES0RYK4+6S/tJd5Z6RxgQEob
-	 NA7r6j8U6MahtbJcmg/qIe74eCSUeVXvFQJya8JyP8hLxoVo6Xebtvx0hDYZlXi+k
-	 mOGcNJabNBhAPuEWRQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.103] ([91.41.216.208]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MHXBp-1u94lt27o9-0075NH; Tue, 03
- Jun 2025 23:28:16 +0200
-Message-ID: <9483df46-0c1d-4646-9ba1-c38014a22495@gmx.net>
-Date: Tue, 3 Jun 2025 23:28:15 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JOgzOWv/"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-450cfb790f7so47939585e9.0
+        for <imx@lists.linux.dev>; Tue, 03 Jun 2025 15:14:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748988882; x=1749593682; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AasV4AhfzhQyQlDU4kMPcfNlkriRO1pkLB0grduEWyk=;
+        b=JOgzOWv/QegChfURrUZBAvemCSPs6/DRPfXlHq7c2TFrojRprow/JQhu021AnjaLxJ
+         cLCs7L1y38dIZGIKlC+qkhtWB9z7TimBa9qv0C83p9JCM2tnZEY1nZHhgqOvm0VFg1eI
+         FJnj2f1uMmyUx0uciBL5yYJxfsnplmGNJZ/bbz4pfwodaoJhXfpVmp1EU/TNP8aF54lt
+         yYLlAQeJZaM6nJWgo8OW+wyMwmF77xSypnZTJOqSY01lyAH7G0JzFJPkly4/qDdMJZTQ
+         /lgHo1ADj+CbrMQkfjUeegH3SRcuV+4KXkVu2K/H3yRzPq/kz66f9GeU1VfQJGFWtyAG
+         3zGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748988882; x=1749593682;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AasV4AhfzhQyQlDU4kMPcfNlkriRO1pkLB0grduEWyk=;
+        b=kwkuhKrDq2DRK6BxYafJPhwjtURjNCL8lpUGNRQq3yo2/DfYOktcd+/lA6BoE0wabN
+         GXIM5ZW370hAxYzm4M5kS2yzKtn8gl6wdZlfCg7nAxlYeLWQfeUju+Ow/0WHGK+gCdVG
+         G2Yvt/8olTw18mjmFZYZ4Tiwn+HmP9mjgGHFs/E+bs6PPZ7LwBmyoLS0XyR+oMHUHFHN
+         9TDE8wYAPkjRlFdOdlKXm0d28qFmylsCCuhcknJnKoc611B7vqls3q0s/gkZKt23I7He
+         4tQvkKLi1DojLMR3JZebIbAsht1lXvF6JtpPMBzcseAMpSG9o4rsIcrw3ZpoB0wNVrlw
+         7h6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWd/yBJcYaiM+KI657+nuRg0SnNa0/pUdDl90No3VlDydqLcBoMCPxQAqPro2sO93LeUPM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyx5MzwimWniuy4U+Teb+RQe/vEhX+3rPUFrtvqyOtckHq+Ex7m
+	O1hGpvOadnkj5ufkjFnXR5iXl+V3qJ8ZWiJEPe1i+NCjmZi7KElZIE8B
+X-Gm-Gg: ASbGnctsJnE23lbDRPcHn6NeJTn57QUYMDGAFynlYROevpIrAhMfNed0qvkC9eTkRg0
+	KDZ5uiwFjXaERKNLhwWyavfYz0Zk9wVxT/UJNMuAwSsEqnNF1oUrWk+7kNVndmrVLGiS8cQleNG
+	v7FX94wEMXO7MQ92f43IDnU2tCKOeyzmXrL/RMDUI42bkApjYIVCNVsXIkY4aryrlQNqmPjawjU
+	LPW7Y2ay7NvAY4ZMILkX7nhlqBfKLzjZPHVk4huwL6ND/o8TCuWRxWIv6Nb0KHjd1/1EmPqPXlx
+	tbNkN6QJYiGrWSfqtuL3bnVlphXHQAQG6AAG97Hapo/ieGSiPxc0DGTcGkBScvNhf3t5i9e8gWv
+	CLmTNUlP1yOtxqHQMkvZVTL4O9V4ymcFDsMvzw7/n15oEWjE=
+X-Google-Smtp-Source: AGHT+IGQNvReqdBMLwSisULLtaJXvRqZHVZBjcgTB3FTflxOyIo48suFe1T2k8yCJFnJA8gYjQjHew==
+X-Received: by 2002:a05:600c:1e89:b0:44b:eb56:1d45 with SMTP id 5b1f17b1804b1-451f0aa7ff9mr3002575e9.15.1748988881667;
+        Tue, 03 Jun 2025 15:14:41 -0700 (PDT)
+Received: from Lord-Beerus.tastitalia.local (net-93-70-53-177.cust.vodafonedsl.it. [93.70.53.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7f8f1c6sm179832435e9.8.2025.06.03.15.14.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Jun 2025 15:14:41 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stefano.radaelli21@gmail.com,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [v1] arm64: dts: freescale: imx93-var-som: update eqos support for MaxLinear PHY
+Date: Wed,  4 Jun 2025 00:14:15 +0200
+Message-ID: <20250603221416.74523-1-stefano.radaelli21@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] dt-bindings: mmc: mxs-mmc: change ref to
- mmc-controller-common.yaml from mmc-controller.yaml
-To: Frank Li <Frank.Li@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- "open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..."
- <linux-mmc@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20250603152245.1068740-1-Frank.Li@nxp.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <20250603152245.1068740-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:9mJJ9KzYyiEND0uwEQ3VH0FpznhMWOfzChMkl4h0E9E6tUmuony
- c+SkdZQP/qOrV16VBQfeHB6kV8gE58rboMRp2PHw68Nxo4dRH7js6jt45IsLrBQzl9ZBR8R
- kfpJZ8FdMqNjCBWGGjnqkqF7Ka09QWEYiGz610GUKXXd/NG4tg8MIIevbxjZqayjspr8809
- QlwzTyFA1u7Hs4pYfXYLw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:wIwnshtLzdM=;E1dtyHGZzuFNMgvAxBEgUe5Ciqt
- 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
- z3wajrF2lunfBwSK
+Content-Transfer-Encoding: 8bit
 
-Am 03.06.25 um 17:22 schrieb Frank Li:
-> Change ref to mmc-controller-common.yaml from mmc-controller.yaml because
-> imx23/imx28 use dual mode controller (spi and mmc). So default dts node
-> name use spi instead of mmc. The legacy reason, it use difference
-> compatible string to distringuish work mode (spi / mmc).
->
-> Fix below CHECK_DTB warnings:
-> arch/arm/boot/dts/nxp/mxs/imx23-olinuxino.dtb: spi@80010000 (fsl,imx23-mmc): $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
->
-> Additional add clocks property.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Variscite has updated the Ethernet PHY on the VAR-SOM-MX93 from the
+Murata CYW43353 to the MaxLinear MXL86110, as documented in the
+August 2023 revision changelog.
+Link: https://variwiki.com/index.php?title=VAR-SOM-MX93_rev_changelog
+
+Update the device tree accordingly:
+- Drop the unused regulator node previously used to power the Murata PHY.
+- Add support for the reset line using GPIO1_IO07 with proper timings.
+- Configure the PHY LEDs via the LED subsystem under /sys/class/leds/,
+  leveraging the support implemented in the mxl86110 PHY driver
+  (drivers/net/phy/mxl-86110.c).
+  Two LEDs are defined to match the LED configuration on the Variscite
+  VAR-SOM Carrier Boards:
+    * LED@0: Yellow, netdev trigger.
+    * LED@1: Green, netdev trigger.
+- Adjust the RGMII clock pad control settings to match the updated PHY
+  requirements.
+
+These changes ensure proper PHY initialization and LED status indication
+for the new MaxLinear MXL86110, improving board compatibility with the
+latest hardware revision.
+
+Signed-off-by: Stefano Radaelli <stefano.radaelli21@gmail.com>
+---
+ .../boot/dts/freescale/imx93-var-som.dtsi     | 40 ++++++++++++-------
+ 1 file changed, 25 insertions(+), 15 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
+index 783938245e4f..402a28d0ed8d 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
+@@ -19,19 +19,6 @@ mmc_pwrseq: mmc-pwrseq {
+ 		reset-gpios = <&gpio4 14 GPIO_ACTIVE_LOW>,	/* WIFI_RESET */
+ 			      <&gpio3 7 GPIO_ACTIVE_LOW>;	/* WIFI_PWR_EN */
+ 	};
+-
+-	reg_eqos_phy: regulator-eqos-phy {
+-		compatible = "regulator-fixed";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_reg_eqos_phy>;
+-		regulator-name = "eth_phy_pwr";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-		startup-delay-us = <100000>;
+-		regulator-always-on;
+-	};
+ };
+ 
+ &eqos {
+@@ -39,6 +26,7 @@ &eqos {
+ 	pinctrl-0 = <&pinctrl_eqos>;
+ 	phy-mode = "rgmii";
+ 	phy-handle = <&ethphy0>;
++	snps,clk-csr = <5>;
+ 	status = "okay";
+ 
+ 	mdio {
+@@ -51,6 +39,27 @@ ethphy0: ethernet-phy@0 {
+ 			compatible = "ethernet-phy-ieee802.3-c22";
+ 			reg = <0>;
+ 			eee-broken-1000t;
++			reset-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <10000>;
++			reset-deassert-us = <100000>;
++			leds {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				led@0 {
++					reg = <0>;
++					color = <LED_COLOR_ID_YELLOW>;
++					function = LED_FUNCTION_LAN;
++					linux,default-trigger = "netdev";
++				};
++
++				led@1 {
++					reg = <1>;
++					color = <LED_COLOR_ID_GREEN>;
++					function = LED_FUNCTION_LAN;
++					linux,default-trigger = "netdev";
++				};
++			};
+ 		};
+ 	};
+ };
+@@ -75,14 +84,15 @@ MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0			0x57e
+ 			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1			0x57e
+ 			MX93_PAD_ENET1_RD2__ENET_QOS_RGMII_RD2			0x57e
+ 			MX93_PAD_ENET1_RD3__ENET_QOS_RGMII_RD3			0x57e
+-			MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x5fe
++			MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x58e
+ 			MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL		0x57e
+ 			MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0			0x57e
+ 			MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1			0x57e
+ 			MX93_PAD_ENET1_TD2__ENET_QOS_RGMII_TD2			0x57e
+ 			MX93_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3			0x57e
+-			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x5fe
++			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x58e
+ 			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x57e
++			MX93_PAD_UART2_TXD__GPIO1_IO07				0x51e
+ 		>;
+ 	};
+ 
+
+base-commit: a9dfb7db96f7bc1f30feae673aab7fdbfbc94e9c
+prerequisite-patch-id: 2335ebcc90360b008c840e7edf7e34a595880edf
+-- 
+2.43.0
+
