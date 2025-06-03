@@ -1,156 +1,181 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013023.outbound.protection.outlook.com [52.101.72.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633201885B8
-	for <imx@lists.linux.dev>; Tue,  3 Jun 2025 14:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748960522; cv=none; b=JFfCGs+QwuneuNoZ2GTJpceShpiAURVgazRFKTiNaeNLPH+QBMAIoTUAqklEhF+JGSC4/uVOmntEmErv+ZDdlUn/qfz8d77U/dpUCeFwo+Sz8C19MYL1Y9uYw2oCSz0Dfw45K1B6GeRLKkxZP3J82GXIC/M6szSvuZN8m/zRfUo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748960522; c=relaxed/simple;
-	bh=LJ+KewoxG7r/WeJ8eTGCl/7+HpY8ip3l8VhsVeTJHSA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H8mhI4KwS6A7U6xnmlZyVC+nLEJr46ZyNMmy2YjtuzebwKCVEUkcCdCu1KHtN6EWKMBdtBELe2i/USgTtZXKPfZkid4kvD3CpWaYvll9V3otC1dvJh3WiXT3bl5HCeuxglBbbgaqfzEsN4zK9aE8c0qn6dKxfIlpUyl7O+R2rrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WEvj4Q/A; arc=none smtp.client-ip=209.85.210.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3F523BF8F
+	for <imx@lists.linux.dev>; Tue,  3 Jun 2025 14:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748962238; cv=fail; b=nRkrs3ADeGKl7XM4eN9FUrgYdVRdC/haN1bcHr05hmr6SGKc8rFfpHR0Xi3J+FqquRF2UVRMtpgmNr/PO2An9VK8g9QeJ04B1ScPo+zqSCzJ2cXaoBrcaGP6rigIExya+5wfVPPBoGISwBWikmqPlAIW5ls5B1+SrO1YEQs4Pvo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748962238; c=relaxed/simple;
+	bh=wNpUnltFTmbh7bleSOELh6g1Gy7B1cGjSgYOrPN/0kY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Y+t7SX6VepY/g17hkADVYsX3gSRUmyzty+JE5ql7A4VlYtS29WaPQUo79kriiNB3/+MFc2VpNUkf7mZHrcDGLqDylcoOkW9fgulT8FVBnXs1T3Bt+6ybxUAVi0uhpM3mZMtH2PFABAIIbw3GhEoGNS1baGbXpy/e9HKhLSQ70uc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=DiakGqOl; arc=fail smtp.client-ip=52.101.72.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WEvj4Q/A"
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-72ecb4d9a10so5733555a34.3
-        for <imx@lists.linux.dev>; Tue, 03 Jun 2025 07:22:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748960520; x=1749565320; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2uRLCXdLzb4exE9EX3UwPPfJOF++R02ZMsB9cLfhyoQ=;
-        b=WEvj4Q/Aj1SqxTO/n4bBobNLWIHGkOyytgfi6U9KuHTko4MQlSqkOHY43D1WEc5ADJ
-         dSU9aYN6V8j+Zkaofj++lI1O+9pY03SSdMejLxqPh/wJ7WeRUlA7Fc72zCYJZZJ3F/80
-         WlYgRo7PrRUKrLYC0hO7U+6oa2LPUNPtTn+yq/CRV57gYbCj8vndPxKe9ujSftOLgmRr
-         BQh0TYEP18pjCFgbK5gZx4naXK2Oo56vJTEXAqZAELTb8R3TRJokUOw8ZOd3UwSRKjHI
-         DCQjy0DJgMVzrsD+g7MW0WJvSPtg75bulEaJQgiabgh8fQObdA0qazTwDuhq+RrY2Yq9
-         5D/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748960520; x=1749565320;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2uRLCXdLzb4exE9EX3UwPPfJOF++R02ZMsB9cLfhyoQ=;
-        b=ZI3tajFVxWBcrUTDkDwJYEs5W9N/65rQKMQo+2pc4VhV4YoPTksMjB+C2EAFptkrrH
-         6nQAbr3BAuPzEch9VuiCmCNdmVqca+XqafFrI9saLBg01SLdgzxDEFBGy8ziHb45tAI1
-         8m+fZPifXVejVGIH8PIKM4JrulqDRs0x+q/M/0khXW3EyCO0ClW0YZyClm0WvWK36TIH
-         PdmMWnPC/ZkXQhrLwz1K708lbpoI6FGFPSwHAHE00CZyPzyDVsyU9qv81jtOHacb2nKp
-         +hGyYXXtB9UPNNPJ3pSxSH3nRwmS2zXHAUb4KweyXBt0Z3uBO7OCEWmect0ylA86Rkjq
-         RxYw==
-X-Forwarded-Encrypted: i=1; AJvYcCUyoAsogC+R5bjIPyUSdKJZb72Bggf1M/ZKAelhmPM04A+RQO7Y5PPjFa+ctMyz5Oo2tWQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyi4eoqV0jWbldWl6V8rZNDWWXZ4+r61xjQweeR+k+rP3haRi86
-	ShM68H94/eR0dEupsG2QauzAs1jPlePEPtrdxu3HmwyG19ivEs4WqeZp
-X-Gm-Gg: ASbGnctq+qxOrF+DhUYIcR5w6eJx3qhVpuSCALzpV0QeihNq87+gHUquUMloN9XmOTW
-	5nZrLEqxpRNUjig4NjtVAPpvHcdvtcAFeMp/e3/nHsk5BnjUvw+eKS1p4qJujb06KQZM2VXCkQ9
-	8zbT7c7xSA8uz0oAYGeFQczXyW3SgsfH45+BaPA/bm94vxARX1F7izIMjqCpun4UkyhV1AIhFD5
-	X1XTPVVT/kjbCT2/SR9AdDk+Z+iOOd/qGwO7M1loPKWG5U5BtbY63u5703BOcApXNYnBDkDweba
-	6fC4xKoRuN/krdKoNohY3ZzFJQgTCxeJ8jSIEAD8rCNY9oUSwDrZU0Mi0/nt
-X-Google-Smtp-Source: AGHT+IFkCT6KXDiNwC9LZ8x7mvQVq5dsUSOwWeNt5tI1w1w2MQsYARI+9tl0cuB6j+Q1q13EXmEjPQ==
-X-Received: by 2002:a05:6830:6687:b0:72b:94d8:9466 with SMTP id 46e09a7af769-73676b969aemr12031524a34.28.1748960520043;
-        Tue, 03 Jun 2025 07:22:00 -0700 (PDT)
-Received: from hiago-nb ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-87e2a38f77dsm7670028241.22.2025.06.03.07.21.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 07:21:59 -0700 (PDT)
-Date: Tue, 3 Jun 2025 11:21:54 -0300
-From: Hiago De Franco <hiagofranco@gmail.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, linux-pm@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com,
-	iuliana.prodan@oss.nxp.com,
-	"Rafael J . Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v4 0/3] remoteproc: imx_rproc: allow attaching to running
- core kicked by the bootloader
-Message-ID: <20250603142154.6xa3q7gd3kxk4kxo@hiago-nb>
-References: <20250602131906.25751-1-hiagofranco@gmail.com>
- <CAPDyKFrUAF5oWkyc3mLf0+R9VAypBotNyR4B5Chr3KQFYJOjbw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="DiakGqOl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wkc/4qmjexDkqzBtx9C46s1UhUPP02pOL5wYTv1Lz9cR16GQ5C4LDARjXBESl8DJrbwBV6Z+koZjQyqiy1836KLkj/FhVYMZbGu4KH6EzlOdaPf3Tsny4CkSHfGa80AZWwSSaJ9Xp1+7WQlnM3XUkikn1+g7fwWVDP09naIQunsF0bm2t7G02DEkxA6OKzyKPgzj+cN2gtwAInLmYHG72jI2P9g4kIiN1W+mxwdGDpVbvtfQyI2ifP2elejnwwxWG8vUH0gFgIIAo6Q+9emdqTaVybMwogkWMRuShiU8AOIj8m80AjeK+64i1nR5LUNBFteHqEFUfR789zHaO0klCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Kll+Nx9B4YkVFlWatnKEXqD86tPOInlKo1AzX+5Twko=;
+ b=A9GMRS1xXT4HPmAl4XLeMUHjw1UAh0MrXqxaMHadb4h4Cg/TPR0mEAiPLQkO0ObkXP1Yclf9ath3arxtaBCm/zsMlSxay0aG9Mfb+/FNjt9To8h7Y6p9REVuYF2+EuJX6A5u3A9ihc+8IF1kmp+c+sUzngHaFSso9Cxy0XG2D5m2ccd3KeFZY4dHvGBQLdotH3YrEqS8mFZU21/6ZGm6TELhpcXULijcaJXTauzXe5dA/43WyyB+ByT8kn4kj087apErNflKTBs3NJbpZGuZBOuQW84+Hduv46YzsfY4vKySJeC7Pu8+9TSvUiW9UFmqh3c84hsURuhL/yrLOrlyJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Kll+Nx9B4YkVFlWatnKEXqD86tPOInlKo1AzX+5Twko=;
+ b=DiakGqOliOB1PODacaOcn1j/NgeldtwPZU5g2v0nMHKDGOGpy05MWBeIzf4HFGsrPHkAFufnrfdCL8qJOLfCZGA+Tnq4NJEz8twSQCXTHKnYbKT1D7eWHrbBROgafoGk6ZnS2cP+OlZHc4q/pxdDl59s+hbWmMWXzKFMVS53uV7dgUqxP/Xw+rQuToBktOtVu4/io3IvMhyLEcVcn2bFB87fNMVxuee7u1jFJ6JYO7F8HI4tz/nE9LcdpOY+IDi22ISJdaTuqs9o+7GW3jJ1KIag60HtOCO6WTqJMNoXsmGjSfJxxLl/SyWluodO70ypxvoelh3XsH57ihYpiITcGQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI0PR04MB10616.eurprd04.prod.outlook.com (2603:10a6:800:263::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.37; Tue, 3 Jun
+ 2025 14:50:27 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8769.025; Tue, 3 Jun 2025
+ 14:50:27 +0000
+Date: Tue, 3 Jun 2025 10:50:18 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Meng Li <Meng.Li@windriver.com>
+Cc: linux@roeck-us.net, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	linux-watchdog@vger.kernel.org, imx@lists.linux.dev,
+	shawnguo@kernel.org, robh@kernel.org, conor+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [v3 PATCH 1/2] dt-bindings: watchdog: fsl-imx-wdt: add
+ compatible string fsl,ls1046a-wdt
+Message-ID: <aD8LqjMrzFF+di6d@lizhi-Precision-Tower-5810>
+References: <20250603040230.2012772-1-Meng.Li@windriver.com>
+ <20250603040230.2012772-2-Meng.Li@windriver.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250603040230.2012772-2-Meng.Li@windriver.com>
+X-ClientProxiedBy: SJ0PR13CA0209.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFrUAF5oWkyc3mLf0+R9VAypBotNyR4B5Chr3KQFYJOjbw@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10616:EE_
+X-MS-Office365-Filtering-Correlation-Id: cdaee69a-6062-40f6-ab9b-08dda2adfa7e
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?RfM+h9CQ3+/fkTgQ+7hlVeQceLiGBc81JmxxLsG0xaaD7RZpvVwcldBxVo8m?=
+ =?us-ascii?Q?Mx6+OV8gOl5rUihPzL92UCXrsDTOJ+KOUzbEpwOVT8qcxFA6UD7pkABYaYJl?=
+ =?us-ascii?Q?QIhsLS+yXM05pA+ySU0zMQzDwlnvzA3K6UAiJGk5B9BDvlstYCQ4ZV+Pw87F?=
+ =?us-ascii?Q?SYSItRv/eQI6sK/UJgiBq6sXWoVxHxw67I0wYTbgl/sX75n0EBwTWWpRBVx/?=
+ =?us-ascii?Q?PdoIgOHS4qUF6BlFUiU92z/MPlMT3nFkjCw9rdqEKkpJIRR22D3kiixEYFyo?=
+ =?us-ascii?Q?XQuzVpMD4Z1iUKTVYggI9MDbc5kdJQfX31Ub//xAf/ziJ9tOgpzkUTGL5NJ6?=
+ =?us-ascii?Q?wE+j44Qut2ETWgiBoVofnl8H5+BnfWupPDe2vIhwDTi4HWNtXmGBww6Hm9kk?=
+ =?us-ascii?Q?udI6gMPpp0wM/DNbkKo2ZniNRG1eU80L4emsksCslclGXHuVWDlkMSKrjKKH?=
+ =?us-ascii?Q?GkzpPCIPVmL0MrzLEY7LLm8itIP4Ues/i8zupWjXDFE7ACUe7HJ2SEdHhMZR?=
+ =?us-ascii?Q?2A6zBx8SkGuXhmg3QQ7AM4JMbLF3QeaQFwtC8mvzgwVKyCX/Q+xnAWb3aHUI?=
+ =?us-ascii?Q?crGevHDvr6FqLTDT5o9u5LkZoUOLZVhd3TQMeVo5m6pFXWjtbdgWbYCn64+E?=
+ =?us-ascii?Q?VagFRK4yXUPKY7MYXfcauYoRRbS7c6sGbJWSslfoWhaVpnJ6sgGYdGahqEW2?=
+ =?us-ascii?Q?LgTnNELgh/pfguwUZOgPpDkFU/wUY/nrcZR7v/85MzUvTTZVhWYtjjwAxF1Y?=
+ =?us-ascii?Q?Ca1MayUbh1GsrSjvbqOi5OUR12026+nTooOUePqETuTGEIGZfBhri/rY+qzN?=
+ =?us-ascii?Q?a3r+YWCB6sX2QGjNzbA4MolSf1icwJ/lZ3AYjog2dhTH+m+iZy8y/91PyN0S?=
+ =?us-ascii?Q?MQEsBkJsAIQ/UISidShD3RaNZeIrzcwbaYGaKMu/L03n5r9tCFqfXhPNI8rL?=
+ =?us-ascii?Q?N18QeSZhg7tYHjGZVaLpfzCPFejfGlUjpOsUipky7Dd4eG/yKLSGZv+Uhvf5?=
+ =?us-ascii?Q?oK5EXqyf03cu05fSQPTg/6EYnd8k/6uJK543GRTZfZF2Rop6/PwzvtDZ7Fc4?=
+ =?us-ascii?Q?xkpo7O0ioZZ2Xf/6rV/+wUxs505I3ZA2gCsWg6bD/AO/WeyGgE24oi+FeSsI?=
+ =?us-ascii?Q?NWsn6EXDDFiOU3nxeBzvicVXXgV8TgW75clljMd4OL5rO/rrwUl5uFolv1EU?=
+ =?us-ascii?Q?F1FUFuPrZfRdBikrBTGRNiOXbOzvkfxHltJ1yLPM2Cs3gHzlJ0Joz6vsfaSE?=
+ =?us-ascii?Q?TH9QLLzIk0k/tU1hmybTsDZ9rd2TjfBiJm48/YTN7HA1RnCD7vY3WcTC89eY?=
+ =?us-ascii?Q?O8caBBzuJ1RUjIcT5eBW3kB2lR/hOlmuCXi2Dqou9bGgqrZwqGiF8LgWvvSB?=
+ =?us-ascii?Q?5pjfoGbTJhwy/y1iVKaHnZ6VkPUvJPBlYG5bS5efBhIAdwCTVbcqPtVvW78G?=
+ =?us-ascii?Q?wesU2qLptHrXpDyGG+eo8CHZMsllT/ZZ4Cg4RpRjfQtu5lx0mosJNUKDNqzA?=
+ =?us-ascii?Q?sX3M4DfFU/013EM=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?0+tRbYekZQAkLI5QQ03+wMaZBacS/RO3LYSFEz+WSuhAPEcXWFlrwteLXt3S?=
+ =?us-ascii?Q?2PIkWsLLMxnpicU0qnh06t9FESZxTRxW6QeUrA+tTVquFSuoh69p/6TflVWn?=
+ =?us-ascii?Q?hgkWrdGNq+57CbWYeYoVrSBeWIHXvvKOHwDX7eAMt8yqix3Yd72hrUIlMY85?=
+ =?us-ascii?Q?gQhJ6p/XgaeVGvP8Bvl8VIrkW30dI/c6FypWo/XfyPao7RsPL/bpVXlnRrjA?=
+ =?us-ascii?Q?yA9jgwDr+xBZSGZsZhl0qWbXYC5r+rBtMyoRadABlNb/dDHAsBOxo1b4B7AA?=
+ =?us-ascii?Q?x7JkmL1fpJvFf7isUPM5VBj8IGiCBCKtUh9VgiIIWQp+y6xqugdPMNmX1zar?=
+ =?us-ascii?Q?JOiqN02GhjH1rVSfr65SDgKd+YyCwasELaEPHt8JxN5LXjSScw8YmAMiy9pr?=
+ =?us-ascii?Q?6wmjNUIjwiX917hqPKop17A+ByRQWa1EeWzv1uxVJ6Xyljf8v/Qhem7DG6KC?=
+ =?us-ascii?Q?14s8uxxIOQkg7TM697HPkBpusMSN+8daLqjzZFMBH9XZZPWNADF9YWAaB7Eg?=
+ =?us-ascii?Q?qZzby0ZGudIvtwtWExtCL2V7UVVDZFTYa0vvKYTN2VAMlPyWLkevN7gwDcy5?=
+ =?us-ascii?Q?tuG1fTJF5B0ItnZqcxmQBKPuTlb63YIsajmrnnq1QaZ+F0Ub0qKtokE8Hmww?=
+ =?us-ascii?Q?X+7X1oekRVodoUjRd4oYBl1HYBf1Q9h2Co4rd4yqOts78GgN0ljzlH10J/6V?=
+ =?us-ascii?Q?yJfxcONG9pqTzYrjG6Cdp0WD59Q3oBjJFhFJYZRjhjkoa9y09i/7cUGTSEfb?=
+ =?us-ascii?Q?lVRRaeHwV6cM8w2kp9nPYfMAjEsslHO3kCM75ltlUU0+gFkR1AHQW0WhJGjJ?=
+ =?us-ascii?Q?4+7STrcnZbC5tWKK8u0s63Qdx8GK6IIygKtANR+q8qlJbGbomJUPyejuw41q?=
+ =?us-ascii?Q?ns18iK9irukZVJ5m9RQw/wI3BlOB0ewgdxoU+BSKN8lzdiXT4LJ1k9JxGEPN?=
+ =?us-ascii?Q?WZ5EHE/xH7ZGKjT2w54rGEhTb+dh6/OpWnbGtoIASkGHaIovr4/TLRYUXlMa?=
+ =?us-ascii?Q?ZID91hy2TyU2hghJlAfRFgfp7CrkC+hoJMgjqV4uRjr3YJq+zZjBeccovat/?=
+ =?us-ascii?Q?wP+qIbCuUz04jmk8J7D4RXzVIHYFLy/DNPAHjE0WUU547M84Qb+tb1lY8E2T?=
+ =?us-ascii?Q?CfWEnN7JUbbuTeYUB0f5B5UOG0boKmO0FMYER3+H8vBZGI2jRHfAO2bV0tGT?=
+ =?us-ascii?Q?muxbUVr9j8d2b3rsv4O6wA22RBBFEU7uLfJnJ1vzAK0Yosqv3Y9CgrCX2ZtF?=
+ =?us-ascii?Q?S/tvIksjhYNKQjUFeUnnCtYewz0e5/ycI77aKmjB3GxIOzMG03ocDufSQppO?=
+ =?us-ascii?Q?zA54HjvRKcQTJsp3kSUdbsSgkv4mG2++SwCFhWLQqS7nESrd7UPEPAipBqwJ?=
+ =?us-ascii?Q?jS4eTJiAOyr3zFuS+nmEVb4xakI8pLy6MCS1JUVtjogt6n4qevRZzkkeYoTt?=
+ =?us-ascii?Q?G4637S48TYVkogoCLYJ1PWJy4oRr68Z8Fr23mS2AdbyEePd91ebeFst0KH2s?=
+ =?us-ascii?Q?mg2v9pw+l3dY8LF/0bypIEa3cxdaKk+jNqhEkmrbiYPncNWBljshN7BkjSni?=
+ =?us-ascii?Q?O4ZnstjRBDYQKdoId/d0EURw2nVWDPDHKAOnvJIs?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cdaee69a-6062-40f6-ab9b-08dda2adfa7e
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2025 14:50:27.3958
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aLR/9y41dcoSQoDDj3VhmPqdAa+OXoLoSE3DGDJ02hNgYuLXLPfz+l2UK7f1LS7KlFAcmEYX3PxSeDqqOyjj8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10616
 
-On Tue, Jun 03, 2025 at 02:09:14PM +0200, Ulf Hansson wrote:
-> On Mon, 2 Jun 2025 at 15:19, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> >
-> > From: Hiago De Franco <hiago.franco@toradex.com>
-> >
-> > This patch series depends on Ulf's patches that are currently under review,
-> > "pmdomain: Add generic ->sync_state() support to genpd" [1]. Without them,
-> > this series is not going to work.
-> >
-> > For the i.MX8X and i.MX8 family SoCs, currently when the remotecore is
-> > started by the bootloader and the M core and A core are in the same
-> > partition, the driver is not capable to detect the remote core and
-> > report the correct state of it.
-> >
-> > This patch series implement a new function, dev_pm_genpd_is_on(), which
-> > returns the power status of a given power domain (M core power domains
-> > IMX_SC_R_M4_0_PID0 and IMX_SC_R_M4_0_MU_1A in this case). If it is already
-> > powered on, the driver will attach to it.
-> >
-> > Finally, the imx_rproc_clk_enable() function was also changed to make it
-> > return before dev_clk_get() is called, as it currently generates an SCU
-> > fault reset if the remote core is already running and the kernel tries
-> > to enable the clock again. These changes are a follow up from a v1 sent
-> > to imx_rproc [2] and from a reported regression [3].
-> >
-> > [1] https://lore.kernel.org/all/20250523134025.75130-1-ulf.hansson@linaro.org/
-> > [2] https://lore.kernel.org/lkml/20250423155131.101473-1-hiagofranco@gmail.com/
-> > [3] https://lore.kernel.org/lkml/20250404141713.ac2ntcsjsf7epdfa@hiago-nb/
-> >
-> > v4:
-> > - dev_pm_genpd_is_on() introduced to drivers/pmdomain/core.c
-> > - imx_rproc.c updated to use the generic power domains instead of the
-> >   SCU API call, which depends on Ulf's patch series.
-> >
-> > v3:
-> > - https://lore.kernel.org/all/20250519171514.61974-1-hiagofranco@gmail.com/
-> >
-> > v2:
-> > - https://lore.kernel.org/lkml/20250507160056.11876-1-hiagofranco@gmail.com/
-> >
-> > v1:
-> > - https://lore.kernel.org/lkml/20250505154849.64889-1-hiagofranco@gmail.com/
-> >
-> > Hiago De Franco (3):
-> >   pmdomain: core: introduce dev_pm_genpd_is_on
-> >   remoteproc: imx_rproc: skip clock enable when M-core is managed by the
-> >     SCU
-> >   remoteproc: imx_rproc: detect and attach to pre-booted remote cores
-> >
-> >  drivers/pmdomain/core.c        | 27 +++++++++++++++++++++++++++
-> >  drivers/remoteproc/imx_rproc.c | 33 ++++++++++++++++++++++++++-------
-> >  include/linux/pm_domain.h      |  6 ++++++
-> >  3 files changed, 59 insertions(+), 7 deletions(-)
-> >
-> 
-> We are awaiting further feedback on the other series [1]. As you have
-> tested it, may I add your tested-by tag for it? Or perhaps if you can
-> send a reply to the cover-letter for it?
-> 
-> Anyway, for $subject series:
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+On Tue, Jun 03, 2025 at 12:02:29PM +0800, Meng Li wrote:
+> Add compatible string fsl,ls1046a-wdt for ls1046a SoC. fsl,ls1046a-wdt
+> allows big-endian property.
+>
+> Signed-off-by: Meng Li <Meng.Li@windriver.com>
 
-Sure, I replied there with my Tested-by. Thanks for the review.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> 
-> Kind regards
-> Uffe
-> 
-
-Best Regards,
-Hiago.
+> ---
+>  Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
+> index 8a6c3a75a547..34951783a633 100644
+> --- a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
+> +++ b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
+> @@ -37,6 +37,7 @@ properties:
+>                - fsl,ls1012a-wdt
+>                - fsl,ls1021a-wdt
+>                - fsl,ls1043a-wdt
+> +              - fsl,ls1046a-wdt
+>                - fsl,vf610-wdt
+>            - const: fsl,imx21-wdt
+>
+> @@ -105,6 +106,7 @@ allOf:
+>                  - fsl,ls1012a-wdt
+>                  - fsl,ls1021a-wdt
+>                  - fsl,ls1043a-wdt
+> +                - fsl,ls1046a-wdt
+>      then:
+>        properties:
+>          big-endian: false
+> --
+> 2.34.1
+>
