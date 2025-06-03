@@ -1,194 +1,182 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3824C98
-	for <imx@lists.linux.dev>; Tue,  3 Jun 2025 22:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193081E0DB0
+	for <imx@lists.linux.dev>; Tue,  3 Jun 2025 23:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748988885; cv=none; b=jbFrT02xjz7K0nD2GajowhEtzsM3KV9USKPJXrJPzRaOCbyHEIUt/YikTO/1PtwvbYPIyH0mhEbuZbVVDlRCpzJ1mdrx4Y5zcIaXAHacFhjZxFqiTuBf6H+ayMknlQJ4L+fLQMtvsYn79Yiff7zjeh7AGJV3L0DtsYdiO5/4O4s=
+	t=1748994673; cv=none; b=UnBSha+seajMsH6v1yOJHDkmqATFndnQOQhKjMDdNq31/mhFlawsUUXXmd8a8fsJhcws24jyAtq6Hd2TBFw7XFxz3BOwTmlztevz8RMcd/BxTMIMQPEISYZwaXIfsMjDJxzopeOUXML18PfcC9iw+Ul6RKUuACI3cym0qFtIGu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748988885; c=relaxed/simple;
-	bh=xot+A+rklvBXet1Bsm8MIUc2wvIyDqpj0p5Oekge+mo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C5rmL5nqyXAHN2OQGjGZCoH5HlJwUQE+nB1f2I4HMzaHzKgGV5oWsXWMiquIsKHFLjze4ku/Dz1z5jvtkwh8GOzPI5wfwg9jttqJ91ajupSpeew0giFngohWKNbMvGTHsJa9/n92dwIg7JS5wJ1xc7Ugn/dEOTw/4dZpWyNQnu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JOgzOWv/; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1748994673; c=relaxed/simple;
+	bh=3iFWj11CkWHH71h9SyiDUGmXnlU/tw+q2bH9dzB+VJs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RZy2Iy3iCiEJZQjGJCFL39xcwevHXwybLA5SOb94tJ+kFd6TwT34RFBJTtlos/CVyMRV57RmjGzUoWTRyd7AJ9zq6JfDZoaGjo2BJ57y9dXz7/2fpdAPmY891wrP0bImn2pXKLC2ksqX+XWQ6Be1eYrVXaoSI+sMXI9JwM0mMAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gBQmbpn1; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JOgzOWv/"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-450cfb790f7so47939585e9.0
-        for <imx@lists.linux.dev>; Tue, 03 Jun 2025 15:14:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gBQmbpn1"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-235ae05d224so2997925ad.1
+        for <imx@lists.linux.dev>; Tue, 03 Jun 2025 16:51:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748988882; x=1749593682; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AasV4AhfzhQyQlDU4kMPcfNlkriRO1pkLB0grduEWyk=;
-        b=JOgzOWv/QegChfURrUZBAvemCSPs6/DRPfXlHq7c2TFrojRprow/JQhu021AnjaLxJ
-         cLCs7L1y38dIZGIKlC+qkhtWB9z7TimBa9qv0C83p9JCM2tnZEY1nZHhgqOvm0VFg1eI
-         FJnj2f1uMmyUx0uciBL5yYJxfsnplmGNJZ/bbz4pfwodaoJhXfpVmp1EU/TNP8aF54lt
-         yYLlAQeJZaM6nJWgo8OW+wyMwmF77xSypnZTJOqSY01lyAH7G0JzFJPkly4/qDdMJZTQ
-         /lgHo1ADj+CbrMQkfjUeegH3SRcuV+4KXkVu2K/H3yRzPq/kz66f9GeU1VfQJGFWtyAG
-         3zGw==
+        d=gmail.com; s=20230601; t=1748994671; x=1749599471; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e9L47Pw4FJq00Mo4o1EG2exd2hnFJSmIOUsOxTsjqiA=;
+        b=gBQmbpn1Ute+jTSqv5wELtd+4TmCzj/fkhJ2fz+HYjROuP9aNvVu4QREoz4r5c+IHP
+         MFfzAaQznATA19puTtVyYTcMMkROfHlC2nXUN/Z+UmnHORag1VF+SqKtIEAu5fzDbd7P
+         BuX9K0szhZ1SCnoCtYwmRc8MAHdvUAS8mjKEMrj0VX/GJ91EUDWk9kEu2FqSpBgKO3U0
+         cTyxO8PCFlcqZE0NWm8CDqjsXQJ6msUHuZskxJismhUIqWPl5rCB//Z+Zpt0vlLNGojo
+         3a4py24hyNwTy5GcSIBbx0eEAhBxre+C9cOZDylk1Slr1UrY7RneA8KSIiKpjcuIxeY3
+         XjYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748988882; x=1749593682;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AasV4AhfzhQyQlDU4kMPcfNlkriRO1pkLB0grduEWyk=;
-        b=kwkuhKrDq2DRK6BxYafJPhwjtURjNCL8lpUGNRQq3yo2/DfYOktcd+/lA6BoE0wabN
-         GXIM5ZW370hAxYzm4M5kS2yzKtn8gl6wdZlfCg7nAxlYeLWQfeUju+Ow/0WHGK+gCdVG
-         G2Yvt/8olTw18mjmFZYZ4Tiwn+HmP9mjgGHFs/E+bs6PPZ7LwBmyoLS0XyR+oMHUHFHN
-         9TDE8wYAPkjRlFdOdlKXm0d28qFmylsCCuhcknJnKoc611B7vqls3q0s/gkZKt23I7He
-         4tQvkKLi1DojLMR3JZebIbAsht1lXvF6JtpPMBzcseAMpSG9o4rsIcrw3ZpoB0wNVrlw
-         7h6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWd/yBJcYaiM+KI657+nuRg0SnNa0/pUdDl90No3VlDydqLcBoMCPxQAqPro2sO93LeUPM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyx5MzwimWniuy4U+Teb+RQe/vEhX+3rPUFrtvqyOtckHq+Ex7m
-	O1hGpvOadnkj5ufkjFnXR5iXl+V3qJ8ZWiJEPe1i+NCjmZi7KElZIE8B
-X-Gm-Gg: ASbGnctsJnE23lbDRPcHn6NeJTn57QUYMDGAFynlYROevpIrAhMfNed0qvkC9eTkRg0
-	KDZ5uiwFjXaERKNLhwWyavfYz0Zk9wVxT/UJNMuAwSsEqnNF1oUrWk+7kNVndmrVLGiS8cQleNG
-	v7FX94wEMXO7MQ92f43IDnU2tCKOeyzmXrL/RMDUI42bkApjYIVCNVsXIkY4aryrlQNqmPjawjU
-	LPW7Y2ay7NvAY4ZMILkX7nhlqBfKLzjZPHVk4huwL6ND/o8TCuWRxWIv6Nb0KHjd1/1EmPqPXlx
-	tbNkN6QJYiGrWSfqtuL3bnVlphXHQAQG6AAG97Hapo/ieGSiPxc0DGTcGkBScvNhf3t5i9e8gWv
-	CLmTNUlP1yOtxqHQMkvZVTL4O9V4ymcFDsMvzw7/n15oEWjE=
-X-Google-Smtp-Source: AGHT+IGQNvReqdBMLwSisULLtaJXvRqZHVZBjcgTB3FTflxOyIo48suFe1T2k8yCJFnJA8gYjQjHew==
-X-Received: by 2002:a05:600c:1e89:b0:44b:eb56:1d45 with SMTP id 5b1f17b1804b1-451f0aa7ff9mr3002575e9.15.1748988881667;
-        Tue, 03 Jun 2025 15:14:41 -0700 (PDT)
-Received: from Lord-Beerus.tastitalia.local (net-93-70-53-177.cust.vodafonedsl.it. [93.70.53.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7f8f1c6sm179832435e9.8.2025.06.03.15.14.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 15:14:41 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stefano.radaelli21@gmail.com,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [v1] arm64: dts: freescale: imx93-var-som: update eqos support for MaxLinear PHY
-Date: Wed,  4 Jun 2025 00:14:15 +0200
-Message-ID: <20250603221416.74523-1-stefano.radaelli21@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1748994671; x=1749599471;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e9L47Pw4FJq00Mo4o1EG2exd2hnFJSmIOUsOxTsjqiA=;
+        b=ve1xU8/kdK9sO5jJRsY3hHRneVeXQ1fy0zhhX3SqNn97wrYZLePsHcRh3qmzf3fjho
+         203NW4l+5Z66hopK0QkFKsDGQqzANDKTzRqxSlVp0mBaG3mUQYYXfA3wYaDWCqhwOTjZ
+         4nkcxhnJxpndGbKoS+4at1xmVpTO+RfFkWg7lB7WnPjGDw6SdZkbQdFUrtLPU3ltnnEf
+         QF5LsHrWE3iocX7WmrCTlblB84Sjm1dwfZmgyLMmlpsa9TqmUPaBeoq/8SZcxEQ38xHQ
+         ANQbh2SuQ+6XztIZ/TOX1yskaiHjTFFzchqQiNl+VpTcB9+9EcNQTzXo+meDFrMtdJv2
+         Wj/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUfn/bmH/frX6Y2IrMfzLw1MtK7g1+tZqhtHdePSKcn6whQqVQygLZOkC9yAs+8e9EHDbc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz33g5AhN/NY7O/4AJEZbDqQF0J9Kgiu8tu9wV1mFo4tHLzCMUA
+	74p2cMyJufAYMro535N+X7jQWI8K/8Q9CHFdv79LUwHz/DQ5yypngDEGWiOyI5b5ALBvd0ScVmQ
+	XTRFlfU5mUnFm/FOrxf68MLRZ3E/6zY8=
+X-Gm-Gg: ASbGncuRnq3SVULtkI4ocYDkK3rYsPsQLF8xHuw+ctbnmUE7fvLP1adpoJ5lTj4hRQt
+	cUidRchGvQ4As9rV6sv4oeOeAvYSiHXio9kiaBB5PEJITDkuqRhw3lXcqzW8gVn8XBkap/GPtQL
+	PEbsnZaYL/SE4Qr1Y63wfFl6K6DzX6b/xA
+X-Google-Smtp-Source: AGHT+IFNst2H7GFHVcub0yd3Kmx7L7dZwZEJToym/csaIT88WJqNMHe3BnbzVXN+qxD/TPW9kbEM0Emgl9txshV4zbM=
+X-Received: by 2002:a17:90b:1c0b:b0:311:abba:53b6 with SMTP id
+ 98e67ed59e1d1-3130dce1bcemr1068222a91.14.1748994671162; Tue, 03 Jun 2025
+ 16:51:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250530221713.54804-1-aford173@gmail.com> <20250530221713.54804-5-aford173@gmail.com>
+ <20250601183620.npuicmipv6kv54z6@pengutronix.de> <CAHCN7xKjEt3rq4VUOSSTqcT4SyWxSCPLHGf6jR6KVHvor5wfKQ@mail.gmail.com>
+In-Reply-To: <CAHCN7xKjEt3rq4VUOSSTqcT4SyWxSCPLHGf6jR6KVHvor5wfKQ@mail.gmail.com>
+From: Adam Ford <aford173@gmail.com>
+Date: Tue, 3 Jun 2025 18:51:00 -0500
+X-Gm-Features: AX0GCFtCdZakQVBK8i9Mwd6h5JPSbdyOFZQ8LmRy0bByuZIyxG3rUNoDH5Gee58
+Message-ID: <CAHCN7xLr-7YQ9P8022g3SNPVgfQcEU8rSzZ-grMMom8kLm6e0Q@mail.gmail.com>
+Subject: Re: [PATCH 4/4] arm64: dts: imx8mp: Configure VPU clocks for overdrive
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Variscite has updated the Ethernet PHY on the VAR-SOM-MX93 from the
-Murata CYW43353 to the MaxLinear MXL86110, as documented in the
-August 2023 revision changelog.
-Link: https://variwiki.com/index.php?title=VAR-SOM-MX93_rev_changelog
+On Mon, Jun 2, 2025 at 10:35=E2=80=AFAM Adam Ford <aford173@gmail.com> wrot=
+e:
+>
+> On Sun, Jun 1, 2025 at 1:36=E2=80=AFPM Marco Felsch <m.felsch@pengutronix=
+.de> wrote:
+> >
+> > Hi Adam,
+> >
+> > thanks for the patch.
+> >
+> > On 25-05-30, Adam Ford wrote:
+> > > The defaults for this SoC are configured for overdrive mode, but
+> > > the VPU clocks are currently configured for nominal mode.
+> > > Increase VPU_G1_CLK_ROOT to 800MHZ from 600MHz,
+> > > Increase VPU_G2_CLK_ROOT to 700MHZ from 500MHz, and
+> > > Increase VPU_BUS_CLK_ROOT to 800MHz from 600MHz.
+> > >
+> > > This requires adjusting the clock parents. Since there is already
+> > > 800MHz clock references, move the VPU_BUS and G1 clocks to it.
+> > > This frees up the VPU_PLL to be configured at 700MHz to run
+> > > the G2 clock at 700MHz.
+> > >
+> > > Signed-off-by: Adam Ford <aford173@gmail.com>
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 12 ++++++------
+> > >  1 file changed, 6 insertions(+), 6 deletions(-)
+> > >
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/b=
+oot/dts/freescale/imx8mp.dtsi
+> > > index 909555a5da4b..848b25c9b752 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+> > > @@ -2256,8 +2256,8 @@ vpu_g1: video-codec@38300000 {
+> > >                       interrupts =3D <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+> > >                       clocks =3D <&clk IMX8MP_CLK_VPU_G1_ROOT>;
+> > >                       assigned-clocks =3D <&clk IMX8MP_CLK_VPU_G1>;
+> > > -                     assigned-clock-parents =3D <&clk IMX8MP_VPU_PLL=
+_OUT>;
+> > > -                     assigned-clock-rates =3D <600000000>;
+> > > +                     assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL=
+1_800M>;
+> > > +                     assigned-clock-rates =3D <800000000>;
+> > >                       power-domains =3D <&vpumix_blk_ctrl IMX8MP_VPUB=
+LK_PD_G1>;
+> > >               };
+> > >
+> > > @@ -2267,8 +2267,8 @@ vpu_g2: video-codec@38310000 {
+> > >                       interrupts =3D <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
+> > >                       clocks =3D <&clk IMX8MP_CLK_VPU_G2_ROOT>;
+> > >                       assigned-clocks =3D <&clk IMX8MP_CLK_VPU_G2>;
+> > > -                     assigned-clock-parents =3D <&clk IMX8MP_SYS_PLL=
+2_1000M>;
+> > > -                     assigned-clock-rates =3D <500000000>;
+> > > +                     assigned-clock-parents =3D <&clk IMX8MP_VPU_PLL=
+_OUT>;
+> > > +                     assigned-clock-rates =3D <700000000>;
+> > >                       power-domains =3D <&vpumix_blk_ctrl IMX8MP_VPUB=
+LK_PD_G2>;
+> > >               };
+> > >
+> > > @@ -2284,8 +2284,8 @@ vpumix_blk_ctrl: blk-ctrl@38330000 {
+> > >                                <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+> > >                       clock-names =3D "g1", "g2", "vc8000e";
+> > >                       assigned-clocks =3D <&clk IMX8MP_VPU_PLL>, <&cl=
+k IMX8MP_CLK_VPU_BUS>;
+> > > -                     assigned-clock-parents =3D <0>, <&clk IMX8MP_VP=
+U_PLL_OUT>;
+> > > -                     assigned-clock-rates =3D <600000000>, <60000000=
+0>;
+> > > +                     assigned-clock-parents =3D <0>, <&clk IMX8MP_SY=
+S_PLL1_800M>;
+> > > +                     assigned-clock-rates =3D <700000000>, <80000000=
+0>;
+> >
+> > I think we can drop the "assigned-clocks =3D <&clk IMX8MP_VPU_PLL>" par=
+t
+> > completely.
+> >
+> > Before your patch the IMX8MP_VPU_PLL_OUT was used as clock-parent for
+> > the IMX8MP_CLK_VPU_BUS. With yout patch IMX8MP_SYS_PLL1_800M is used.
+>
+> I think you're right.  I'll fix that up and do a V2.  I forgot to add
+> my own s-o-b tag, so I'll fix that too.  I'll try to do it this week.
 
-Update the device tree accordingly:
-- Drop the unused regulator node previously used to power the Murata PHY.
-- Add support for the reset line using GPIO1_IO07 with proper timings.
-- Configure the PHY LEDs via the LED subsystem under /sys/class/leds/,
-  leveraging the support implemented in the mxl86110 PHY driver
-  (drivers/net/phy/mxl-86110.c).
-  Two LEDs are defined to match the LED configuration on the Variscite
-  VAR-SOM Carrier Boards:
-    * LED@0: Yellow, netdev trigger.
-    * LED@1: Green, netdev trigger.
-- Adjust the RGMII clock pad control settings to match the updated PHY
-  requirements.
+Marco,
 
-These changes ensure proper PHY initialization and LED status indication
-for the new MaxLinear MXL86110, improving board compatibility with the
-latest hardware revision.
+I tried removing the assigned-clock references to the IMX8MP_VPU_PLL,
+but i found the defaul speed was 800MHz for the PLL even when asking
+G2 to be 700MHz.  The only way that I found to set the G2 to 700MHz
+was to set the VPU_PLL to 700MHz.  I can do that either inside the G2
+node or the vpumix_blk_ctrl node. I generally like to have the
+blk_ctrl do it since it controls the G1_ROOT and G2_ROOT clocks, but
+it doesn't seem to hurt it being inside the G2 node either.  I can see
+the argument for having it insde the G2 node, since the G2 clock is
+what's requiring the VPU_PLL to be 700MHz.
 
-Signed-off-by: Stefano Radaelli <stefano.radaelli21@gmail.com>
----
- .../boot/dts/freescale/imx93-var-som.dtsi     | 40 ++++++++++++-------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+Let me know your preferences, and I'll move forward accordingly.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-index 783938245e4f..402a28d0ed8d 100644
---- a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
-@@ -19,19 +19,6 @@ mmc_pwrseq: mmc-pwrseq {
- 		reset-gpios = <&gpio4 14 GPIO_ACTIVE_LOW>,	/* WIFI_RESET */
- 			      <&gpio3 7 GPIO_ACTIVE_LOW>;	/* WIFI_PWR_EN */
- 	};
--
--	reg_eqos_phy: regulator-eqos-phy {
--		compatible = "regulator-fixed";
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_reg_eqos_phy>;
--		regulator-name = "eth_phy_pwr";
--		regulator-min-microvolt = <3300000>;
--		regulator-max-microvolt = <3300000>;
--		gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
--		enable-active-high;
--		startup-delay-us = <100000>;
--		regulator-always-on;
--	};
- };
- 
- &eqos {
-@@ -39,6 +26,7 @@ &eqos {
- 	pinctrl-0 = <&pinctrl_eqos>;
- 	phy-mode = "rgmii";
- 	phy-handle = <&ethphy0>;
-+	snps,clk-csr = <5>;
- 	status = "okay";
- 
- 	mdio {
-@@ -51,6 +39,27 @@ ethphy0: ethernet-phy@0 {
- 			compatible = "ethernet-phy-ieee802.3-c22";
- 			reg = <0>;
- 			eee-broken-1000t;
-+			reset-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10000>;
-+			reset-deassert-us = <100000>;
-+			leds {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				led@0 {
-+					reg = <0>;
-+					color = <LED_COLOR_ID_YELLOW>;
-+					function = LED_FUNCTION_LAN;
-+					linux,default-trigger = "netdev";
-+				};
-+
-+				led@1 {
-+					reg = <1>;
-+					color = <LED_COLOR_ID_GREEN>;
-+					function = LED_FUNCTION_LAN;
-+					linux,default-trigger = "netdev";
-+				};
-+			};
- 		};
- 	};
- };
-@@ -75,14 +84,15 @@ MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0			0x57e
- 			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1			0x57e
- 			MX93_PAD_ENET1_RD2__ENET_QOS_RGMII_RD2			0x57e
- 			MX93_PAD_ENET1_RD3__ENET_QOS_RGMII_RD3			0x57e
--			MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x5fe
-+			MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x58e
- 			MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL		0x57e
- 			MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0			0x57e
- 			MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1			0x57e
- 			MX93_PAD_ENET1_TD2__ENET_QOS_RGMII_TD2			0x57e
- 			MX93_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3			0x57e
--			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x5fe
-+			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x58e
- 			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x57e
-+			MX93_PAD_UART2_TXD__GPIO1_IO07				0x51e
- 		>;
- 	};
- 
-
-base-commit: a9dfb7db96f7bc1f30feae673aab7fdbfbc94e9c
-prerequisite-patch-id: 2335ebcc90360b008c840e7edf7e34a595880edf
--- 
-2.43.0
-
+adam
+>
+> adam
+> >
+> > Regards,
+> >   Marco
