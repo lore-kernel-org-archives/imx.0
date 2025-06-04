@@ -1,102 +1,100 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7108317A30A
-	for <imx@lists.linux.dev>; Wed,  4 Jun 2025 07:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA4527A90E
+	for <imx@lists.linux.dev>; Wed,  4 Jun 2025 08:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749022678; cv=none; b=P6uZs/AYAPzRONkdilyMpFbP2J4nUIOzHg0jLN2NcIBcVZzXyyC2vOf0Pk1kntpMTvtvmgvBF3fPwTqydPP15ztTrAkN7d+XjHkMvI46lYdZTcT+3IbsjSq8zUL3HrKMf2hvJtmCgw/icJ7oicKfqBHYI6i2Vp5J4Yx8lC+Qjao=
+	t=1749024480; cv=none; b=Yj3k1uA9TnYvRp23DZ0zVl5RZLpNbnEPvS/zl2wq0gJnM+pDaQMYPNcffFNWQEoS3zOKj2RcXuRelVCZ5SMDfqej/pmOjXDabFqRrx8qYRz1bLTFxGq8ZB8BAbphPw8Yce5YfcqH3FhwOxzJpNEbxnmmotahgPYGPS0Pf2uy0Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749022678; c=relaxed/simple;
-	bh=zIk2ydo9E6QXmGm0ISkrWF68PhwzLa29sD+7eFnm62k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HjKSAHstiEWfNH2KxtQOBVRj8tp5Jx4MLc4keYmSeEKgZdPEElZvSkltj4DDO9FI3lKqtjBwrLJcHfhq2VDyTNYU2JHhZlWipkobjzV/Viav+1Oo0fnq2dleu4uj4FWzcpvpX5X9oBqNsRub8IrMIqQ3+1SxmgplNJcOJ6/QVT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LUQQ8uC/; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749024480; c=relaxed/simple;
+	bh=/7JQPneGSdMcZBQxQyUWbhwLUGRX3LY+MRtNfc1CRS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AgOE+8UVR9UVmUDychEwsHtV8KPem23o2N6Fz/UB6/s1qOM9Y3TXgjLu/Gwit0Db6CU1DiD8mAH+zRT7ZuUENLbDII7Ok8cdZ7YXRxMWrwJq+sMgBsbT3oemdB4lcVzfUbm5WNS3k4N1nlp00EesM2fx968IDzb3F5vGDnzpCFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=IGlr3/M+; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LUQQ8uC/"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7086dcab64bso58996657b3.1
-        for <imx@lists.linux.dev>; Wed, 04 Jun 2025 00:37:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749022675; x=1749627475; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UGyEvteZgKnU06vg7rbdizKIZLoS7zNjKeoB/6iPxjM=;
-        b=LUQQ8uC/SKcME5VdQ8qaVgYBquueT+kIr2HLFzDZq7ojI44bnT/I8Ty2OcQ0Mp2rrR
-         H6DeaTuDldLwQjyfIrs1VY/bVdGpdCsELO8bwSTugdmhG5q7VAdiDDcyauhJv11hlmOX
-         tHq0LOi5yaMWiF/6E1Fr4AvySKKa07bvMH+qsEzJobj1FIzUKezE+PNnWqrDmkBffeqR
-         8oYApzprNsFfKCVzKp+kvtkD7fpRgGIAgRu9rsbSgYNK2JLc1KnBhknsZ+Rzqhb/5bKj
-         +eXfuird+RlJ9V9FOnLtsLN7VR0JfDBmV0gh/4sAHv8WiIyqpNwbpzLC+vkzKDW3Aikf
-         0BsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749022675; x=1749627475;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UGyEvteZgKnU06vg7rbdizKIZLoS7zNjKeoB/6iPxjM=;
-        b=fGf7PY3AI/BFoFCWAZ9gQHEGA7eiFNSX0ivvvrDA2KkSA9nGdlH+degJWrnjt9CQ0Q
-         388Lc4UzVSa/o4CZvPa41Vk9KN323HXatTtQBflIhsZVV3xiUSCz/DeYWeeRQCKDID4J
-         4ZJhhdRde1RaFGrYMxM2QpnARh+dyz0ERa1FWTESeqakJJTAw+OzQMb4ecgWidmWe5F/
-         ZSTcK1E3ixm+ykMWtA/Xa8mj/n2CAE/yqkpVu9GEZ9fE789p2b5R0tZyR1tRdhnrCXn1
-         J65Txox/FcXFPKv6wj/s4y0RH7J5zh9RcIHsU2QSnMznxN7VJuSrnp2mF7XSqjr7dgC3
-         +FbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKxMWOFOFf3/YEUMdetyqv8xkO7ME037oHF2paaYCxBr5D6hdl1EI+BYBxRYh8aAyzdf4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwaHHGGLIqvhss7EItzpYtAwfN/scE08t/bNprDT7cs1t1+UZiF
-	zqAlWIfgd/YOq1RMJVrjyPupad+QEIxdOnwDTT96yjBB8TiRmUoRxM0eI4NG6KSrUNytmAgjhgb
-	KkwY5vmDEeDjeiilN6kWUCHSuaCArL4k=
-X-Gm-Gg: ASbGncvpJm7f9h/oXMYAemndTHG9ngTj1hOvxDDEXZteiD/UhoJieUKkFNeoYPXDqjm
-	QKtmqp3QWBL9FDVGvpeIXYPnzWLTE1R9UpaEJX7KnijrPG6ZOMrOVA3CJLegI6BhqOoOfp9CAgR
-	e7QLzJ/GtDZDkOZKQzRfTU4kBSdoCy/iM=
-X-Google-Smtp-Source: AGHT+IGHg4yQNqLxlEDyCRgZJI7fvT2fCV18b3MewIJSWl1vbtr5SlMeusJ8GHaIW23IfmQnep32kSeTquJrDU0sBd0=
-X-Received: by 2002:a05:690c:fc1:b0:70d:f6ff:cc6f with SMTP id
- 00721157ae682-710d99fd79bmr21852057b3.4.1749022675335; Wed, 04 Jun 2025
- 00:37:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="IGlr3/M+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+Bpzrm16WN6oSaQuwLtYmFyc8WV8CsH8T7lwcJTKxAw=; b=IGlr3/M+u/1r5P2aqJThWvquCu
+	OsYWJPLLVhBzFkejTLaGHl9pQ1vnUJdE1iFdHuXwSrfbOYpRboncUFhLXX8GBAeA+S9RvLwS0G/TI
+	0A/UTF0d70Wz1+73Y2wmlgfdGo3xjl0/CcDpNl8G6OlH3mbelHmy0Pw9Bg4XC6PqQBZHy4g7dyOnJ
+	HHc+wck/2Jrvohq4949FEKby8MA4dcuJNoWdZdEmm0vSgpJ0Shl2NotOp0OcdzSZfjmj6qTsBqOvp
+	J0bnLbe8glPR+f7Woe9wfHLBIPIqOnCfjgG0GJAwCo3kuNMnZ698xO2CHQ3oTtzUFSe93/mlAl635
+	7VRjuxWg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46960)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uMj9v-0006xS-2n;
+	Wed, 04 Jun 2025 09:07:39 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uMj9o-00010z-2v;
+	Wed, 04 Jun 2025 09:07:32 +0100
+Date: Wed, 4 Jun 2025 09:07:32 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "Abhishek Chauhan (ABC)" <quic_abchauha@quicinc.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	"andrew@lunn.ch" <andrew@lunn.ch>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"xiaolei.wang@windriver.com" <xiaolei.wang@windriver.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: [PATCH v2 net] net: phy: clear phydev->devlink when the link is
+ deleted
+Message-ID: <aD_-xLBCswtemwee@shell.armlinux.org.uk>
+References: <20250523083759.3741168-1-wei.fang@nxp.com>
+ <8b947cec-f559-40b4-a0e0-7a506fd89341@gmail.com>
+ <d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com>
+ <PAXPR04MB85107D8AB628CC9814C9B230886CA@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250603221416.74523-1-stefano.radaelli21@gmail.com> <54c4a279-a528-4657-8319-c9374add54b7@lunn.ch>
-In-Reply-To: <54c4a279-a528-4657-8319-c9374add54b7@lunn.ch>
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Date: Wed, 4 Jun 2025 09:37:39 +0200
-X-Gm-Features: AX0GCFseUcNPKK85MVzyXpWJtxDlkMihOveN5Hr-KtFZ69h6Q8KR1YgWhWyHsUg
-Message-ID: <CAK+owoihxp-2xAvFfVthvNELshti_3V-pFgD7D7jzd1XqiLgGQ@mail.gmail.com>
-Subject: Re: [v1] arm64: dts: freescale: imx93-var-som: update eqos support
- for MaxLinear PHY
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB85107D8AB628CC9814C9B230886CA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Andrew,
+On Wed, Jun 04, 2025 at 06:00:54AM +0000, Wei Fang wrote:
+> I think this issue is also introduced by the commit bc66fa87d4fd
+> ("net: phy: Add link between phy dev and mac dev"). I suggested
+> to change the DL_FLAG_STATELESS flag to
+> DL_FLAG_AUTOREMOVE_SUPPLIER to solve this issue, so that
+> the consumer (MAC controller) driver will be automatically removed
+> when the link is removed. The changes are as follows.
 
-I double-checked with our hardware team, and it turns out that all required
-RGMII delays are already handled by the hardware on the SOM (trace
-tuning + PHY config).
-So "rgmii" is indeed intentional here, no additional software delay needed.
-Thanks for pointing it out, it made me double-check, which is always a
-good thing.
+I suspect this still has problems. This is fine if the PHY device is
+going away and as you say device_del() is called.
 
-Best Regards,
+However, you need to consider the case where a MAC driver attaches the
+PHY during .ndo_open and releases it during .ndo_release. These will
+happen multiple times.
 
-Stefano
+Each time the MAC driver attaches to the PHY via .ndo_open, we will
+call device_link_add(), but the device link will not be removed when
+.ndo_release is called.
 
-Il giorno mer 4 giu 2025 alle ore 03:19 Andrew Lunn <andrew@lunn.ch> ha scritto:
->
-> >  &eqos {
-> > @@ -39,6 +26,7 @@ &eqos {
-> >       pinctrl-0 = <&pinctrl_eqos>;
-> >       phy-mode = "rgmii";
->
-> I know this is not in the scope of what you are trying to do, but this
-> is probably wrong:
->
-> https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
->
->         Andrew
+Either device_link_add() will fail, or we will eat memory each time
+the device is closed and re-opened.
+
+If that is correct, then we're trading one problem for another.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
