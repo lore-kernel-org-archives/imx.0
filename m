@@ -1,158 +1,169 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156FD1EF0BE
-	for <imx@lists.linux.dev>; Wed,  4 Jun 2025 06:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522002B9A9;
+	Wed,  4 Jun 2025 07:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749020094; cv=none; b=lYcQ+c2pJvOFlQ/S9NPOF3e8cW0U6hoJv/tIEdZCGeVtE6eES5SKjgee6IT90+xbxN1xCJ7M77bd9+5+8e5xpD9Cpp4cnAZ+hDPxpgiXJDmoFQ3yR6Q8lkf6l9XnfNabN7gh59suYsG7Uy4N+m13P3vMyUuvPB3jkPfC/v9u3qo=
+	t=1749021886; cv=none; b=N8loxfyhUWHh4178RbjVMWMuodkDzrSAoGn07KkhduBEGCuLrMRDqrULvM+H0QmTfcDPKAZiCFwbz9wgTKj/FNZptwb1JaLL0LVsoAMSsxGds/8NctpCAj6jiLldydg1kB+V6vq6mpRbIqOn9ujyWAkpef9DvR460T4gXjXkQYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749020094; c=relaxed/simple;
-	bh=4gB+hVpOJCVGHr2cqDf7rYK+pcqrOIKH3M5jL4MbFgI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HUbM/92B5iGPrH9EBRet+BFyo1U9i3Jq8J3ydTieEJs3I6g5+9fuWaJew3Ez/W1yWUc4zl4qrkUsKiYGZf+hmZaUML/8iHSvuAayziQaUO2g0liW1ZTt8GmvkWSch5dUCOlNImnZuW0xdy8EHd8h4TD61Tuwv/17RbMY8RRCG+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uMi1D-0001En-I2; Wed, 04 Jun 2025 08:54:35 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uMi1D-001kRj-0o;
-	Wed, 04 Jun 2025 08:54:35 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uMi1D-00AV4Z-0E;
-	Wed, 04 Jun 2025 08:54:35 +0200
-Date: Wed, 4 Jun 2025 08:54:35 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Adam Ford <aford173@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] arm64: dts: imx8mp: Configure VPU clocks for
- overdrive
-Message-ID: <20250604065435.nl3l6h3wxrwstswl@pengutronix.de>
-References: <20250530221713.54804-1-aford173@gmail.com>
- <20250530221713.54804-5-aford173@gmail.com>
- <20250601183620.npuicmipv6kv54z6@pengutronix.de>
- <CAHCN7xKjEt3rq4VUOSSTqcT4SyWxSCPLHGf6jR6KVHvor5wfKQ@mail.gmail.com>
- <CAHCN7xLr-7YQ9P8022g3SNPVgfQcEU8rSzZ-grMMom8kLm6e0Q@mail.gmail.com>
+	s=arc-20240116; t=1749021886; c=relaxed/simple;
+	bh=5SyUvppNuSDFqKzdDCKf9UQfWjYA+/m0ZdXQA8ZCk04=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=UjEN+dQ5gCLFVOTzU7dWEhFIbhzzbHSXWoNgA9gjBtqW1WOsaatQBc8+k5l4iy1wPrceK3Mi3M/maqSRjRQCAs4V8OBKjBAMfzp+2vsqK5ZkNpR36HR/YC9d14m/5EP95foSB9jofTdDk1JzscqqXfBq4s8hZOlMp567Mj+epBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HB/eFCnp; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HB/eFCnp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7113BC4CEF3;
+	Wed,  4 Jun 2025 07:24:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749021884;
+	bh=5SyUvppNuSDFqKzdDCKf9UQfWjYA+/m0ZdXQA8ZCk04=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=HB/eFCnpX+ZayuBp8txIrg5VYlULfE/p9+roKKsskMKtDPDWg3iddFh9c0PKAwgHQ
+	 Tly9R/+1+C4r+KZn7sSpeEQYBunh1UkK8DGxqRQ0vrGw4RGfSsxB7YM/Sl4WPbQmys
+	 IufgNyTgI00B5gSiglvXfe+Hj3Ksf2yPPGz0V3zMm053tXbb5N5GUg3pgihCdWxBp8
+	 QHOnjbFKzNi19tm6jZVM5NE+CxtQ3bx1kVA6CaxC/PtPcGUqZJDc2N6/cTVmrrfi5v
+	 UiWUewSS13sxl21kkENnQQ7x2ytAbLUNOrGGU8tnls5pKMbPx5F1i2Ga/XEaHehFS7
+	 5auOw4CmWmj7g==
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 53D511200043;
+	Wed,  4 Jun 2025 03:24:43 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Wed, 04 Jun 2025 03:24:43 -0400
+X-ME-Sender: <xms:u_Q_aM0p66c7BTBlfuIYsSicCe_pViw9XN91-QilwIDc3PiTvTfObQ>
+    <xme:u_Q_aHEWoV0s6rTr_mdGh1Z8Zo48w71MXZNmxSxmsnyRP3r7ZMx5rNMRPQ01nrMTO
+    Fi-5oH7tiPLS8-pJT0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddujeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusehkvghrnhgvlh
+    drohhrgheqnecuggftrfgrthhtvghrnhepjeejffetteefteekieejudeguedvgfeffeei
+    tdduieekgeegfeekhfduhfelhfevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
+    thihqdduvdekhedujedtvdegqddvkeejtddtvdeigedqrghrnhgupeepkhgvrhhnvghlrd
+    horhhgsegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpth
+    htohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrges
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidrug
+    gvvhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghp
+    thhtoheptghlrghuughiuhdrmhgrnhhoihhlsehngihprdgtohhmpdhrtghpthhtohepvh
+    hlrgguihhmihhrrdholhhtvggrnhesnhigphdrtghomhdprhgtphhtthhopeifvghirdhf
+    rghnghesnhigphdrtghomhdprhgtphhtthhopeigihgrohhnihhnghdrfigrnhhgsehngi
+    hprdgtohhm
+X-ME-Proxy: <xmx:u_Q_aE5sTD0Kdfr_d2GhRgaixAi4cDUozX84ZsqAQekzD2Odxix8Zw>
+    <xmx:u_Q_aF2do4Prs4IglGpFHWYGkpGD4m9Y-ATuFOpdEw4urR-6I5qIXw>
+    <xmx:u_Q_aPFSCwDMnHJ9SKYi0HZA3GHdSOkGE76ZHFR45MARKZjOFyk2WQ>
+    <xmx:u_Q_aO9yaSbSBjSKAcVGz4qq4Lo_P0Ulge5Vjb0JlDXTyFCTkfh1lw>
+    <xmx:u_Q_aEk7GsFRp93W9iXWe4RGVXQK5UWMlfvk2tVEZ-jz5CImLKGqCYQE>
+Feedback-ID: i36794607:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 2BEE3700060; Wed,  4 Jun 2025 03:24:43 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHCN7xLr-7YQ9P8022g3SNPVgfQcEU8rSzZ-grMMom8kLm6e0Q@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-ThreadId: Tcd26d72acdec76a4
+Date: Wed, 04 Jun 2025 09:24:22 +0200
+From: "Arnd Bergmann" <arnd@kernel.org>
+To: "Wei Fang" <wei.fang@nxp.com>, "Vladimir Oltean" <vladimir.oltean@nxp.com>
+Cc: "Claudiu Manoil" <claudiu.manoil@nxp.com>,
+ "Clark Wang" <xiaoning.wang@nxp.com>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, Netdev <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>
+Message-Id: <b2068b86-dcbb-4fee-b091-4910e975a9b9@app.fastmail.com>
+In-Reply-To: 
+ <PAXPR04MB85104C607BF23FFFD6663ABB886CA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250603105056.4052084-1-wei.fang@nxp.com>
+ <20250603204501.2lcszfoiy5svbw6s@skbuf>
+ <PAXPR04MB85104C607BF23FFFD6663ABB886CA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH net] net: enetc: fix the netc-lib driver build dependency
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On 25-06-03, Adam Ford wrote:
-> On Mon, Jun 2, 2025 at 10:35 AM Adam Ford <aford173@gmail.com> wrote:
-> >
-> > On Sun, Jun 1, 2025 at 1:36 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
-> > >
-> > > Hi Adam,
-> > >
-> > > thanks for the patch.
-> > >
-> > > On 25-05-30, Adam Ford wrote:
-> > > > The defaults for this SoC are configured for overdrive mode, but
-> > > > the VPU clocks are currently configured for nominal mode.
-> > > > Increase VPU_G1_CLK_ROOT to 800MHZ from 600MHz,
-> > > > Increase VPU_G2_CLK_ROOT to 700MHZ from 500MHz, and
-> > > > Increase VPU_BUS_CLK_ROOT to 800MHz from 600MHz.
-> > > >
-> > > > This requires adjusting the clock parents. Since there is already
-> > > > 800MHz clock references, move the VPU_BUS and G1 clocks to it.
-> > > > This frees up the VPU_PLL to be configured at 700MHz to run
-> > > > the G2 clock at 700MHz.
-> > > >
-> > > > Signed-off-by: Adam Ford <aford173@gmail.com>
-> > > > ---
-> > > >  arch/arm64/boot/dts/freescale/imx8mp.dtsi | 12 ++++++------
-> > > >  1 file changed, 6 insertions(+), 6 deletions(-)
-> > > >
-> > > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > index 909555a5da4b..848b25c9b752 100644
-> > > > --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-> > > > @@ -2256,8 +2256,8 @@ vpu_g1: video-codec@38300000 {
-> > > >                       interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
-> > > >                       clocks = <&clk IMX8MP_CLK_VPU_G1_ROOT>;
-> > > >                       assigned-clocks = <&clk IMX8MP_CLK_VPU_G1>;
-> > > > -                     assigned-clock-parents = <&clk IMX8MP_VPU_PLL_OUT>;
-> > > > -                     assigned-clock-rates = <600000000>;
-> > > > +                     assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>;
-> > > > +                     assigned-clock-rates = <800000000>;
-> > > >                       power-domains = <&vpumix_blk_ctrl IMX8MP_VPUBLK_PD_G1>;
-> > > >               };
-> > > >
-> > > > @@ -2267,8 +2267,8 @@ vpu_g2: video-codec@38310000 {
-> > > >                       interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
-> > > >                       clocks = <&clk IMX8MP_CLK_VPU_G2_ROOT>;
-> > > >                       assigned-clocks = <&clk IMX8MP_CLK_VPU_G2>;
-> > > > -                     assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_1000M>;
-> > > > -                     assigned-clock-rates = <500000000>;
-> > > > +                     assigned-clock-parents = <&clk IMX8MP_VPU_PLL_OUT>;
-> > > > +                     assigned-clock-rates = <700000000>;
-> > > >                       power-domains = <&vpumix_blk_ctrl IMX8MP_VPUBLK_PD_G2>;
-> > > >               };
-> > > >
-> > > > @@ -2284,8 +2284,8 @@ vpumix_blk_ctrl: blk-ctrl@38330000 {
-> > > >                                <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
-> > > >                       clock-names = "g1", "g2", "vc8000e";
-> > > >                       assigned-clocks = <&clk IMX8MP_VPU_PLL>, <&clk IMX8MP_CLK_VPU_BUS>;
-> > > > -                     assigned-clock-parents = <0>, <&clk IMX8MP_VPU_PLL_OUT>;
-> > > > -                     assigned-clock-rates = <600000000>, <600000000>;
-> > > > +                     assigned-clock-parents = <0>, <&clk IMX8MP_SYS_PLL1_800M>;
-> > > > +                     assigned-clock-rates = <700000000>, <800000000>;
-> > >
-> > > I think we can drop the "assigned-clocks = <&clk IMX8MP_VPU_PLL>" part
-> > > completely.
-> > >
-> > > Before your patch the IMX8MP_VPU_PLL_OUT was used as clock-parent for
-> > > the IMX8MP_CLK_VPU_BUS. With yout patch IMX8MP_SYS_PLL1_800M is used.
-> >
-> > I think you're right.  I'll fix that up and do a V2.  I forgot to add
-> > my own s-o-b tag, so I'll fix that too.  I'll try to do it this week.
-> 
-> Marco,
-> 
-> I tried removing the assigned-clock references to the IMX8MP_VPU_PLL,
-> but i found the defaul speed was 800MHz for the PLL even when asking
-> G2 to be 700MHz.  The only way that I found to set the G2 to 700MHz
-> was to set the VPU_PLL to 700MHz.  I can do that either inside the G2
-> node or the vpumix_blk_ctrl node. I generally like to have the
-> blk_ctrl do it since it controls the G1_ROOT and G2_ROOT clocks, but
-> it doesn't seem to hurt it being inside the G2 node either.  I can see
-> the argument for having it insde the G2 node, since the G2 clock is
-> what's requiring the VPU_PLL to be 700MHz.
-> 
-> Let me know your preferences, and I'll move forward accordingly.
+On Wed, Jun 4, 2025, at 04:44, Wei Fang wrote:
+>> Ok, so to summarize, you want nxp-netc-lib.ko to be separate from
+>> fsl-enetc-core.ko, because when you upstream the switch driver (also a
+>> consumer of ntmp.o), you want it to depend just on nxp-netc-lib.ko but
+>> not on the full fsl-enetc-core.ko.
+>> If the only reverse dependency of NXP_NETC_LIB, NXP_ENETC4, becomes m,
+>> then NXP_NETC_LIB also becomes m, but in reality, FSL_ENETC_CORE, via
+>> cbdr.o, still depends on symbols from NXP_NETC_LIB.
+>> 
+>> So you influence NXP_NETC_LIB to not become m when its only selecter is m,
+>> instead stay y.
+>> 
+>> Won't this need to change, and become even more complicated when
+>> NXP_NETC_LIB gains another selecter, the switch driver?
+>
+> The dependency needs to be updated as follows when switch driver is
+> added, to avoid the compilation errors.
+>
+> default y if FSL_ENETC_CORE=y && (NXP_ENETC4=m || NET_DSA_NETC_SWITCH=m)
+>
+>> 
+>> >  	help
+>> >  	  This module provides common functionalities for both ENETC and NETC
+>> >  	  Switch, such as NETC Table Management Protocol (NTMP) 2.0, common tc
+>> > --
+>> > 2.34.1
+>> >
+>> 
+>> What about this interpretation? cbdr.o uses symbols from NXP_NETC_LIB,
+>> so the Kconfig option controlling cbdr.o, aka FSL_ENETC_CORE, should
+>> select NXP_NETC_LIB. This solves the problem in a way which is more
+>> logical to me, and doesn't need to change when the switch is later added.
+>> 
+>
+> Yes, this is also a solution. I thought that LS1028A does not need the netc-lib
+> driver at all. Doing so will result in netc-lib being compiled on the LS1028A
+> platform, which may be unacceptable, so I did not do this. Since you think
+> this is better, I will apply this solution next. Thanks.
 
-Hi Adam,
+I think this version should work, and make logical sense:
 
-thanks for testing. IMHO we should do the clock handling within the G2
-node. This requires no comments because the code would be obvious else
-you need to comment the setup of the IMX8MP_VPU_PLL within the
-vpumix_blk_ctrl node because this is not obvious.
+--- a/drivers/net/ethernet/freescale/enetc/Kconfig
++++ b/drivers/net/ethernet/freescale/enetc/Kconfig
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ config FSL_ENETC_CORE
+        tristate
++       select NXP_NETC_LIB if NXP_ENETC_NTMP
+        help
+          This module supports common functionality between the PF and VF
+          drivers for the NXP ENETC controller.
+@@ -22,6 +23,9 @@ config NXP_NETC_LIB
+          Switch, such as NETC Table Management Protocol (NTMP) 2.0, common tc
+          flower and debugfs interfaces and so on.
+ 
++config NXP_ENETC_NTMP
++       bool
++
+ config FSL_ENETC
+        tristate "ENETC PF driver"
+        depends on PCI_MSI
+@@ -45,7 +49,7 @@ config NXP_ENETC4
+        select FSL_ENETC_CORE
+        select FSL_ENETC_MDIO
+        select NXP_ENETC_PF_COMMON
+-       select NXP_NETC_LIB
++       select NXP_ENETC_NTMP
+        select PHYLINK
+        select DIMLIB
+        help
 
-Regards,
-  Marco
+FSL_ENETC selects the feature it actually wants, and FSL_ENETC_CORE
+enables the module based on the set of features that are enabled.
+The switch module can then equally enable bool symbol. Not sure
+what the best name would be for that symbol, that depends on what
+you expect to get added to NXP_NETC_LIB.
+
+     Arnd
