@@ -1,169 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522002B9A9;
-	Wed,  4 Jun 2025 07:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7108317A30A
+	for <imx@lists.linux.dev>; Wed,  4 Jun 2025 07:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749021886; cv=none; b=N8loxfyhUWHh4178RbjVMWMuodkDzrSAoGn07KkhduBEGCuLrMRDqrULvM+H0QmTfcDPKAZiCFwbz9wgTKj/FNZptwb1JaLL0LVsoAMSsxGds/8NctpCAj6jiLldydg1kB+V6vq6mpRbIqOn9ujyWAkpef9DvR460T4gXjXkQYQ=
+	t=1749022678; cv=none; b=P6uZs/AYAPzRONkdilyMpFbP2J4nUIOzHg0jLN2NcIBcVZzXyyC2vOf0Pk1kntpMTvtvmgvBF3fPwTqydPP15ztTrAkN7d+XjHkMvI46lYdZTcT+3IbsjSq8zUL3HrKMf2hvJtmCgw/icJ7oicKfqBHYI6i2Vp5J4Yx8lC+Qjao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749021886; c=relaxed/simple;
-	bh=5SyUvppNuSDFqKzdDCKf9UQfWjYA+/m0ZdXQA8ZCk04=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=UjEN+dQ5gCLFVOTzU7dWEhFIbhzzbHSXWoNgA9gjBtqW1WOsaatQBc8+k5l4iy1wPrceK3Mi3M/maqSRjRQCAs4V8OBKjBAMfzp+2vsqK5ZkNpR36HR/YC9d14m/5EP95foSB9jofTdDk1JzscqqXfBq4s8hZOlMp567Mj+epBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HB/eFCnp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749022678; c=relaxed/simple;
+	bh=zIk2ydo9E6QXmGm0ISkrWF68PhwzLa29sD+7eFnm62k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HjKSAHstiEWfNH2KxtQOBVRj8tp5Jx4MLc4keYmSeEKgZdPEElZvSkltj4DDO9FI3lKqtjBwrLJcHfhq2VDyTNYU2JHhZlWipkobjzV/Viav+1Oo0fnq2dleu4uj4FWzcpvpX5X9oBqNsRub8IrMIqQ3+1SxmgplNJcOJ6/QVT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LUQQ8uC/; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HB/eFCnp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7113BC4CEF3;
-	Wed,  4 Jun 2025 07:24:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749021884;
-	bh=5SyUvppNuSDFqKzdDCKf9UQfWjYA+/m0ZdXQA8ZCk04=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=HB/eFCnpX+ZayuBp8txIrg5VYlULfE/p9+roKKsskMKtDPDWg3iddFh9c0PKAwgHQ
-	 Tly9R/+1+C4r+KZn7sSpeEQYBunh1UkK8DGxqRQ0vrGw4RGfSsxB7YM/Sl4WPbQmys
-	 IufgNyTgI00B5gSiglvXfe+Hj3Ksf2yPPGz0V3zMm053tXbb5N5GUg3pgihCdWxBp8
-	 QHOnjbFKzNi19tm6jZVM5NE+CxtQ3bx1kVA6CaxC/PtPcGUqZJDc2N6/cTVmrrfi5v
-	 UiWUewSS13sxl21kkENnQQ7x2ytAbLUNOrGGU8tnls5pKMbPx5F1i2Ga/XEaHehFS7
-	 5auOw4CmWmj7g==
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 53D511200043;
-	Wed,  4 Jun 2025 03:24:43 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Wed, 04 Jun 2025 03:24:43 -0400
-X-ME-Sender: <xms:u_Q_aM0p66c7BTBlfuIYsSicCe_pViw9XN91-QilwIDc3PiTvTfObQ>
-    <xme:u_Q_aHEWoV0s6rTr_mdGh1Z8Zo48w71MXZNmxSxmsnyRP3r7ZMx5rNMRPQ01nrMTO
-    Fi-5oH7tiPLS8-pJT0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddujeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusehkvghrnhgvlh
-    drohhrgheqnecuggftrfgrthhtvghrnhepjeejffetteefteekieejudeguedvgfeffeei
-    tdduieekgeegfeekhfduhfelhfevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdduvdekhedujedtvdegqddvkeejtddtvdeigedqrghrnhgupeepkhgvrhhnvghlrd
-    horhhgsegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhp
-    ohhuthdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpth
-    htohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrges
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidrug
-    gvvhdprhgtphhtthhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghp
-    thhtoheptghlrghuughiuhdrmhgrnhhoihhlsehngihprdgtohhmpdhrtghpthhtohepvh
-    hlrgguihhmihhrrdholhhtvggrnhesnhigphdrtghomhdprhgtphhtthhopeifvghirdhf
-    rghnghesnhigphdrtghomhdprhgtphhtthhopeigihgrohhnihhnghdrfigrnhhgsehngi
-    hprdgtohhm
-X-ME-Proxy: <xmx:u_Q_aE5sTD0Kdfr_d2GhRgaixAi4cDUozX84ZsqAQekzD2Odxix8Zw>
-    <xmx:u_Q_aF2do4Prs4IglGpFHWYGkpGD4m9Y-ATuFOpdEw4urR-6I5qIXw>
-    <xmx:u_Q_aPFSCwDMnHJ9SKYi0HZA3GHdSOkGE76ZHFR45MARKZjOFyk2WQ>
-    <xmx:u_Q_aO9yaSbSBjSKAcVGz4qq4Lo_P0Ulge5Vjb0JlDXTyFCTkfh1lw>
-    <xmx:u_Q_aEk7GsFRp93W9iXWe4RGVXQK5UWMlfvk2tVEZ-jz5CImLKGqCYQE>
-Feedback-ID: i36794607:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 2BEE3700060; Wed,  4 Jun 2025 03:24:43 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LUQQ8uC/"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7086dcab64bso58996657b3.1
+        for <imx@lists.linux.dev>; Wed, 04 Jun 2025 00:37:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749022675; x=1749627475; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=UGyEvteZgKnU06vg7rbdizKIZLoS7zNjKeoB/6iPxjM=;
+        b=LUQQ8uC/SKcME5VdQ8qaVgYBquueT+kIr2HLFzDZq7ojI44bnT/I8Ty2OcQ0Mp2rrR
+         H6DeaTuDldLwQjyfIrs1VY/bVdGpdCsELO8bwSTugdmhG5q7VAdiDDcyauhJv11hlmOX
+         tHq0LOi5yaMWiF/6E1Fr4AvySKKa07bvMH+qsEzJobj1FIzUKezE+PNnWqrDmkBffeqR
+         8oYApzprNsFfKCVzKp+kvtkD7fpRgGIAgRu9rsbSgYNK2JLc1KnBhknsZ+Rzqhb/5bKj
+         +eXfuird+RlJ9V9FOnLtsLN7VR0JfDBmV0gh/4sAHv8WiIyqpNwbpzLC+vkzKDW3Aikf
+         0BsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749022675; x=1749627475;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UGyEvteZgKnU06vg7rbdizKIZLoS7zNjKeoB/6iPxjM=;
+        b=fGf7PY3AI/BFoFCWAZ9gQHEGA7eiFNSX0ivvvrDA2KkSA9nGdlH+degJWrnjt9CQ0Q
+         388Lc4UzVSa/o4CZvPa41Vk9KN323HXatTtQBflIhsZVV3xiUSCz/DeYWeeRQCKDID4J
+         4ZJhhdRde1RaFGrYMxM2QpnARh+dyz0ERa1FWTESeqakJJTAw+OzQMb4ecgWidmWe5F/
+         ZSTcK1E3ixm+ykMWtA/Xa8mj/n2CAE/yqkpVu9GEZ9fE789p2b5R0tZyR1tRdhnrCXn1
+         J65Txox/FcXFPKv6wj/s4y0RH7J5zh9RcIHsU2QSnMznxN7VJuSrnp2mF7XSqjr7dgC3
+         +FbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUKxMWOFOFf3/YEUMdetyqv8xkO7ME037oHF2paaYCxBr5D6hdl1EI+BYBxRYh8aAyzdf4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwaHHGGLIqvhss7EItzpYtAwfN/scE08t/bNprDT7cs1t1+UZiF
+	zqAlWIfgd/YOq1RMJVrjyPupad+QEIxdOnwDTT96yjBB8TiRmUoRxM0eI4NG6KSrUNytmAgjhgb
+	KkwY5vmDEeDjeiilN6kWUCHSuaCArL4k=
+X-Gm-Gg: ASbGncvpJm7f9h/oXMYAemndTHG9ngTj1hOvxDDEXZteiD/UhoJieUKkFNeoYPXDqjm
+	QKtmqp3QWBL9FDVGvpeIXYPnzWLTE1R9UpaEJX7KnijrPG6ZOMrOVA3CJLegI6BhqOoOfp9CAgR
+	e7QLzJ/GtDZDkOZKQzRfTU4kBSdoCy/iM=
+X-Google-Smtp-Source: AGHT+IGHg4yQNqLxlEDyCRgZJI7fvT2fCV18b3MewIJSWl1vbtr5SlMeusJ8GHaIW23IfmQnep32kSeTquJrDU0sBd0=
+X-Received: by 2002:a05:690c:fc1:b0:70d:f6ff:cc6f with SMTP id
+ 00721157ae682-710d99fd79bmr21852057b3.4.1749022675335; Wed, 04 Jun 2025
+ 00:37:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: Tcd26d72acdec76a4
-Date: Wed, 04 Jun 2025 09:24:22 +0200
-From: "Arnd Bergmann" <arnd@kernel.org>
-To: "Wei Fang" <wei.fang@nxp.com>, "Vladimir Oltean" <vladimir.oltean@nxp.com>
-Cc: "Claudiu Manoil" <claudiu.manoil@nxp.com>,
- "Clark Wang" <xiaoning.wang@nxp.com>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, Netdev <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>
-Message-Id: <b2068b86-dcbb-4fee-b091-4910e975a9b9@app.fastmail.com>
-In-Reply-To: 
- <PAXPR04MB85104C607BF23FFFD6663ABB886CA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250603105056.4052084-1-wei.fang@nxp.com>
- <20250603204501.2lcszfoiy5svbw6s@skbuf>
- <PAXPR04MB85104C607BF23FFFD6663ABB886CA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Subject: Re: [PATCH net] net: enetc: fix the netc-lib driver build dependency
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+References: <20250603221416.74523-1-stefano.radaelli21@gmail.com> <54c4a279-a528-4657-8319-c9374add54b7@lunn.ch>
+In-Reply-To: <54c4a279-a528-4657-8319-c9374add54b7@lunn.ch>
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Date: Wed, 4 Jun 2025 09:37:39 +0200
+X-Gm-Features: AX0GCFseUcNPKK85MVzyXpWJtxDlkMihOveN5Hr-KtFZ69h6Q8KR1YgWhWyHsUg
+Message-ID: <CAK+owoihxp-2xAvFfVthvNELshti_3V-pFgD7D7jzd1XqiLgGQ@mail.gmail.com>
+Subject: Re: [v1] arm64: dts: freescale: imx93-var-som: update eqos support
+ for MaxLinear PHY
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jun 4, 2025, at 04:44, Wei Fang wrote:
->> Ok, so to summarize, you want nxp-netc-lib.ko to be separate from
->> fsl-enetc-core.ko, because when you upstream the switch driver (also a
->> consumer of ntmp.o), you want it to depend just on nxp-netc-lib.ko but
->> not on the full fsl-enetc-core.ko.
->> If the only reverse dependency of NXP_NETC_LIB, NXP_ENETC4, becomes m,
->> then NXP_NETC_LIB also becomes m, but in reality, FSL_ENETC_CORE, via
->> cbdr.o, still depends on symbols from NXP_NETC_LIB.
->> 
->> So you influence NXP_NETC_LIB to not become m when its only selecter is m,
->> instead stay y.
->> 
->> Won't this need to change, and become even more complicated when
->> NXP_NETC_LIB gains another selecter, the switch driver?
+Hi Andrew,
+
+I double-checked with our hardware team, and it turns out that all required
+RGMII delays are already handled by the hardware on the SOM (trace
+tuning + PHY config).
+So "rgmii" is indeed intentional here, no additional software delay needed.
+Thanks for pointing it out, it made me double-check, which is always a
+good thing.
+
+Best Regards,
+
+Stefano
+
+Il giorno mer 4 giu 2025 alle ore 03:19 Andrew Lunn <andrew@lunn.ch> ha scritto:
 >
-> The dependency needs to be updated as follows when switch driver is
-> added, to avoid the compilation errors.
+> >  &eqos {
+> > @@ -39,6 +26,7 @@ &eqos {
+> >       pinctrl-0 = <&pinctrl_eqos>;
+> >       phy-mode = "rgmii";
 >
-> default y if FSL_ENETC_CORE=y && (NXP_ENETC4=m || NET_DSA_NETC_SWITCH=m)
+> I know this is not in the scope of what you are trying to do, but this
+> is probably wrong:
 >
->> 
->> >  	help
->> >  	  This module provides common functionalities for both ENETC and NETC
->> >  	  Switch, such as NETC Table Management Protocol (NTMP) 2.0, common tc
->> > --
->> > 2.34.1
->> >
->> 
->> What about this interpretation? cbdr.o uses symbols from NXP_NETC_LIB,
->> so the Kconfig option controlling cbdr.o, aka FSL_ENETC_CORE, should
->> select NXP_NETC_LIB. This solves the problem in a way which is more
->> logical to me, and doesn't need to change when the switch is later added.
->> 
+> https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
 >
-> Yes, this is also a solution. I thought that LS1028A does not need the netc-lib
-> driver at all. Doing so will result in netc-lib being compiled on the LS1028A
-> platform, which may be unacceptable, so I did not do this. Since you think
-> this is better, I will apply this solution next. Thanks.
-
-I think this version should work, and make logical sense:
-
---- a/drivers/net/ethernet/freescale/enetc/Kconfig
-+++ b/drivers/net/ethernet/freescale/enetc/Kconfig
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- config FSL_ENETC_CORE
-        tristate
-+       select NXP_NETC_LIB if NXP_ENETC_NTMP
-        help
-          This module supports common functionality between the PF and VF
-          drivers for the NXP ENETC controller.
-@@ -22,6 +23,9 @@ config NXP_NETC_LIB
-          Switch, such as NETC Table Management Protocol (NTMP) 2.0, common tc
-          flower and debugfs interfaces and so on.
- 
-+config NXP_ENETC_NTMP
-+       bool
-+
- config FSL_ENETC
-        tristate "ENETC PF driver"
-        depends on PCI_MSI
-@@ -45,7 +49,7 @@ config NXP_ENETC4
-        select FSL_ENETC_CORE
-        select FSL_ENETC_MDIO
-        select NXP_ENETC_PF_COMMON
--       select NXP_NETC_LIB
-+       select NXP_ENETC_NTMP
-        select PHYLINK
-        select DIMLIB
-        help
-
-FSL_ENETC selects the feature it actually wants, and FSL_ENETC_CORE
-enables the module based on the set of features that are enabled.
-The switch module can then equally enable bool symbol. Not sure
-what the best name would be for that symbol, that depends on what
-you expect to get added to NXP_NETC_LIB.
-
-     Arnd
+>         Andrew
