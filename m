@@ -1,75 +1,44 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD5D2153EA
-	for <imx@lists.linux.dev>; Wed,  4 Jun 2025 09:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904E9225A20
+	for <imx@lists.linux.dev>; Wed,  4 Jun 2025 10:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749029506; cv=none; b=qM/wiXOnJtw8w2EjgsBcQP1cTH0OJGGdt0bvNJpdT8xxkDwiUoqRtedeWH69OphosHV+DD6t6XvpDshYpFTzSY2YaaRY6j2BWcoz5r/jtCzUR9CdpvAqV69Tz++LXSNbDy92Jwll6yHS1cturUUEZx3lPgx6qVEEFQOx4hsjom8=
+	t=1749032326; cv=none; b=t3DpS8SRUxN1q+L3FgY16Z4UEM9uueyTVzPzO0d2GyfYWYs6zUHRcYt1mBhseIKvoO2GjuHJlxZr/gI2vGpuxJI/dbO2pdCoqgMo8jl6pHF+rixcShY1NaTrWadllJU57iUaxTqXgGKJFGpKSMnYJNRxWlS3w/VjzB0TUffgddI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749029506; c=relaxed/simple;
-	bh=6HhoIgPukMJS5T7rxs113ykfa+EUpJTQgiJW9H1eZlw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GgeeMYl9CvXPWEQ+8L+3rF6ewa+8Xv8YlNgbLLg9LJziSYw3JhFgbPOv7pbzVz336xNtU2MSHCuKZ31Mu4kS+ppPHOtHmzk3wMw75vQl1AnHw4ffsuFi4Hxs5N/k+QSinNUm8HGAEiWk0O+76akRDKF1ToBhkhZoS3sKhACvr14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=kBzgqvCq; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=qMjaYYAo reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1749032326; c=relaxed/simple;
+	bh=REOQw6a3f1fYJjhQf0S/Rjdc02Lkuwh6/OHFyd/LA5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MT7L/UPwlPF3eoNG88nG32y0pCmqpxAZPioUZe4BT2Yefhly4Yewcf4OyrtObJj6vYpFAXFrmLCTQo0hxlkDPTeLWZVYVpSEJ03amUv5P6Q+QTE1Ox1pGfKW/hybC4FD0nQtAsfSHJ/4rkNxRdjRVrpvEX5PKfbEGQIfMazS0xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=IW72XARO; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="kBzgqvCq";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="qMjaYYAo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1749029504; x=1780565504;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ND5I1wqWQVSRJHCCfO9DhtqF0hOCpub/kFuUDNFnLtY=;
-  b=kBzgqvCqLxxcik0xYO5FV/6RbeZ6t0XOX9naRjEf6uX8mpeSWQHFeFRA
-   tAkqR9HCWDN9SCubOmnqsXJgVRMIaluwwqC9wk+PwaFaxFq7ZbZtdL7V7
-   4FPCsRI51EZm92HF7QqQ3KKDgEEJg4cJW7+PFJ+sZiG7vU5DxHhi7BurE
-   9GkWp+FMg6w8FaN4sGANfxv3/ZXJE+W+hB2NME3DBPe9cFu/OPQnvlPjz
-   0lbOSBm/c6u9edmlcHCQa2v/X0V6NrdPA+LEXMhpvJ7IT/WvZdrGuX6v+
-   uxkEAsbFM9OHGjRfv5N1s6cOZxH2kCxEfraeOMG2uveQVKdSjftndRsZQ
-   A==;
-X-CSE-ConnectionGUID: F7Ph8sD+Q/e2bF0tYrF90g==
-X-CSE-MsgGUID: iBNkwfGuQi6WVFYwDypSOg==
-X-IronPort-AV: E=Sophos;i="6.16,208,1744063200"; 
-   d="scan'208";a="44448632"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 04 Jun 2025 11:31:35 +0200
-X-CheckPoint: {68401277-2E-28ACC837-DD1065DB}
-X-MAIL-CPID: 598B4D6943D72BDFD2099B674382E52C_2
-X-Control-Analysis: str=0001.0A006372.6840129B.0081,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A093E170BCF;
-	Wed,  4 Jun 2025 11:31:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1749029491;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ND5I1wqWQVSRJHCCfO9DhtqF0hOCpub/kFuUDNFnLtY=;
-	b=qMjaYYAoyG2iSRnPM1FeM2/C1cqDqsX8Qx2OVv6BTNz1GKdkHLAErgvW2kruonHN1pPwMW
-	L0JXZ9IGa3Vr9aEKQNjiGfeBYPVl627s38q47LhP5rr67xMY/ufw4KG+r+xNGFSAFFzDME
-	dvDJIKKHZcTLqnHfWxG2MV4LS5stcpe4kNLmWg3w9MWHNo29YhpEcS5nV2B+ceBxjgosYP
-	7CETJ29D0JaGDBTdgGZFdZ7wLUB1MLEjLVP3NIedg2Bt2vi9LF5oOpFVQXGU5GlzWvlE3N
-	XIwdkCyeyN5QGrDLQXX9adHt2sHjY56QtES0MjIVclsXnw+/ilsQpeuBrCP3aQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="IW72XARO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:mime-version:content-transfer-encoding; s=k1; bh=u/cBSgvybZqoNv
+	0F8wSCxbActKREl9YM8Rj729Qsdww=; b=IW72XARO9Hh4cKEDK/yQbafMlgAtdE
+	5fHXmI76kTHfwCnIsxG03NpSw1zcwIdWpxYbqOs/3PR716KAXoKYuc5x/f13q6dj
+	tivo2pjdswolG4ZFR0sC6k5zrcYhribJL+24DM6Bi9aefV1BHhTDK23sbpUufh+o
+	aYTI9mul0a3Ks87JvTNlxG47vEISQnAPIgJuaEEiNaOqh6tkwTT/oLoPuW/Vkk4A
+	9nxq51OxFnnkaAhn+VLMfwHAkmvKwVdpUJQA6Y7iuhtlxZAcC69NCp+OxheiSBMZ
+	QrmAtKf+CIsmqsrvxNLPVFXcVyb6zkZXbTqx+hdSW5Sb3t14y5Iz3mvg==
+Received: (qmail 629158 invoked from network); 4 Jun 2025 12:18:36 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 4 Jun 2025 12:18:36 +0200
+X-UD-Smtp-Session: l3s3148p1@WCLjUbw2hqogAwDPXx36AJSQ3b6GkO36
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-i3c@lists.infradead.org
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH 1/1] arm64: dts: freescale: imx93-tqma9352: add memory node
-Date: Wed,  4 Jun 2025 11:31:21 +0200
-Message-ID: <20250604093122.203929-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	=?UTF-8?q?Przemys=C5=82aw=20Gaj?= <pgaj@cadence.com>
+Subject: [PATCH 0/4] i3c: use adapter timeout value for I2C transfers
+Date: Wed,  4 Jun 2025 12:18:26 +0200
+Message-ID: <20250604101831.56585-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,37 +46,27 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+All I3C adapters so far use a timeout of 1 second for I2C transfers. I2C
+adapters have their own timeout value which can be changed by userspace
+if desired. Use it for I2C transfers. The default is 1Hz, so the default
+behaviour is unchanged.
 
-Although the bootloader should fixup with real memory size,
-add memory node here with smallest assembled size for
-readability.
+Found while finalizing the RFC for the upcoming Renesas I3C driver.
+Looking forward to comments, tests...
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+Wolfram Sang (4):
+  i3c: dw: use adapter timeout value for I2C transfers
+  i3c: master: cdns: use adapter timeout value for I2C transfers
+  i3c: mipi-i3c-hci: use adapter timeout value for I2C transfers
+  i3c: master: svc: use adapter timeout value for I2C transfers
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-index 53e9ee6e9ca3b..3a23e2eb9febe 100644
---- a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-@@ -11,6 +11,12 @@ /{
- 	model = "TQ-Systems i.MX93 TQMa93xxLA/TQMa93xxCA SOM";
- 	compatible = "tq,imx93-tqma9352", "fsl,imx93";
- 
-+	memory@80000000 {
-+		device_type = "memory";
-+		/* our minimum RAM config will be 1024 MiB */
-+		reg = <0x00000000 0x80000000 0 0x40000000>;
-+	};
-+
- 	reserved-memory {
- 		#address-cells = <2>;
- 		#size-cells = <2>;
+ drivers/i3c/master/dw-i3c-master.c     | 2 +-
+ drivers/i3c/master/i3c-master-cdns.c   | 2 +-
+ drivers/i3c/master/mipi-i3c-hci/core.c | 2 +-
+ drivers/i3c/master/svc-i3c-master.c    | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
 -- 
-2.43.0
+2.47.2
 
