@@ -1,91 +1,245 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D921B0F23
-	for <imx@lists.linux.dev>; Thu,  5 Jun 2025 01:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946DB19D07E
+	for <imx@lists.linux.dev>; Thu,  5 Jun 2025 05:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749088280; cv=none; b=TTa1S2S+AP6XAuXe9Y/UNVRB9+wkIg3S3OhLeuS9KHYCdmKJQVC38Lyy/QBG0sLpO1ceh6ZDgc2baeShdjjoI979OBoMeVhn/ijXRO14uN8Soaau6+986NF59rCZRVJqvH41OmjTUxbJjKOUFYc1KcUFK3ejSwBss5yywnWl90g=
+	t=1749099613; cv=none; b=rlO2z26jKgaW0b7+GROUQBZ2PJEfFdgvigG0oTG1G9DrXrWvlgWum5xY6mh8q2QzN1h/vXWIMt4w3dx76SA0CihUYzZ+X1zNmXrzm7Szzj1moVy6jhgkr/41uHIsSzMEwT5xfDD33zhAsPJYkwHTzgh5YsQ3saGkd2JtgPvziAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749088280; c=relaxed/simple;
-	bh=/x4DxIxH0BWpIRnk/qPEJtSiycWgqptgoe9uavKpWAg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CRcuCmMJZQXRqGV1CVgZMW40SE8ElC+tmIqSHhnykcUXDApTYwvaG96DmVWP1QW/FONnnxT7C0D0xlYQz9nqEC+UrLvR5geUtW980y2OjuLDNo10Tpt4a9f2ZtmPXBxaEeLJu7RVtjfMEKZhy4wMOyJfQrjVStlOZjRAlqOVJN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U22Xa950; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749099613; c=relaxed/simple;
+	bh=8ei//ic++rZxYT54f37/ii3rswY6C83GCS9YizWM/+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=XtoVOG+PD+ZtX+qGveWwOsPDX62dtwsPcv7RP/amKsM1ePRm6QJaja2po9EHIGr2PJcFqEHXbv79IhVkKA1UZeYkPulap+0vEUmmez1gDB/AxtnVcZQuGWxGcZBVIeSk/QxDKFwddGwcJm2s8NQedWN9lmsmRC3CXP38XS1pso0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PzhnlvL5; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U22Xa950"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-551fc6d4a76so463930e87.0
-        for <imx@lists.linux.dev>; Wed, 04 Jun 2025 18:51:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749088276; x=1749693076; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+mlWn7On6mtDyUyW8xiNB9TSuIFhA67fSgyfU5pNabg=;
-        b=U22Xa950xAvzafaPBrCjsyVhCBFcodvU5ianitS7BA0UXpYEjm5PkB1mcOx/FFxP1W
-         El6zbPL6tyz1PKJX2AorNJWzYTwJeKXwcbmOj5fV14nMrpGvxU5eBv4dDeFOJG7kZGrS
-         qECzIZ7BywTI6s4Ve0X4+dw6VD09oO7gW+pDDfmPXc/Z9EQn76eQO4SOGAjK2OmepYS/
-         b+Vkw3Wp8619INhahBqfum46S+8iCywV35VPox6Lwd1u8cdJQNFphEVkFDL0ttyOGziz
-         KfN3oBNrNip1U/JM+ycH/JXeuhVrfW7+sg+hHx8HdxZn6jrbkQhKZTWb1itFaJBStvdo
-         UFDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749088276; x=1749693076;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+mlWn7On6mtDyUyW8xiNB9TSuIFhA67fSgyfU5pNabg=;
-        b=un4YXkvei7liHvmz2I3f8oeqQdlcpnksogk9xq2LBc2+P0tq1maoogyEFXep4M9TV0
-         nYB2ng73LaTzxrzzAqsCfCF+6tmvm1wVV+8e5YcK9+negQi7A99Fq59ZggTwkOX/Rdw8
-         LVUsvsVypJiliNkja/8uZ8XYNTad5qMYBMC5IUz4cAGIrU53v0FMzfS7F6CHcOPgsNhc
-         O77dHdqZrsnLn09tZfBNELKiPA6RHpFd28hGd67w/ercoTR1QI6OTuagqzb7g83lXbsj
-         K9yWNki/6PMStmKNRa7zIhXiP5zMxERHsKwFwvHDmcWUBtulk3h6JORu78uYoMIet4tB
-         l33Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUDBvWVaV5nDMaUKeqaWf9L2cx8AQi58En9LQ0ZkZxvhJSLPytv01SxT2SYKu5JNT0QhMM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwtEMR5187g+m/Srf6KNCxh4K0jLtJ6GS96oX8eSFaCZJkjFNeE
-	LPWvoZGVzzCILcFTjTO+Y8JZFyhYpGHAR2HkWpEL92cRXuTaCGiBzjAZRvuJH0jk+RxahgfgC8f
-	4TgVMve/Tt2ykpH5TgN2shMz1TH0gHpC0bwZE
-X-Gm-Gg: ASbGncvoVVev4owe03+BVjUBdLF0Bvdg8jRljuxDA+qPPRyiCR5akh3VsYLevu9BlAY
-	W+4H58cYzqp9r+LLasfyIUGmvhoiI3m8hANR/C4LBAwbZTJtslGWc8B38pO9xYBnPohe8t3gHcH
-	R5LDXHIjv3pwwz2x4mtJ+JuPRYAGcGZbyX8jaDYtHuDDgDSNFBm/XMtaeP/TkF8RrLINyZhHWUB
-	jYn1iNx8lt61Q==
-X-Google-Smtp-Source: AGHT+IEk5Zzw6tHETC9Olgqf21/GWZkYciJCw0USM5fgKHPvApi5DG0a0gN6WZoczUuRV0vhQDc7Mouv0C1rm4TpyHg=
-X-Received: by 2002:a05:6512:e9e:b0:553:302b:85ce with SMTP id
- 2adb3069b0e04-55356ae0fb3mr1520607e87.7.1749088276083; Wed, 04 Jun 2025
- 18:51:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PzhnlvL5"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 554GBiTL007516;
+	Thu, 5 Jun 2025 04:59:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	VCDAPDZBMd3Ybf7L7X6pzUCk1WNQr1j1w6rtdHb7Hvc=; b=PzhnlvL5GHOYQTjC
+	dkKPbrvE6abw/IQbrd8DXs8n1GKPOZmiv2AWjrdV6boreoCJXTeGAEwS6A8gONkR
+	lMhjeUqZG0TbN6IXP0nEchRasId3Wz0VQXhtU2QUg8IPFqBBsqne9NS1JYx+rd2X
+	p0fcytrs+LcSgWfm1GwaNNCxxCtpyr82Wj7l4bCL7FrPCftujd4uVYy/3ddx9gwR
+	uKC6yId0OX6zSJUb07w38/T9YWKt7KJxBwY2ZWG7UbLK5dbms6hCksVEDfOPKcZX
+	/NK3udCes0t7p14tGlQRiLN4gctFAXjq++VBggyJqyyjKOzo9SYHofv0x4ZydtWR
+	CQoYZw==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8t03kp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Jun 2025 04:59:58 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5554xwqY032285
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 5 Jun 2025 04:59:58 GMT
+Received: from [10.216.16.95] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 4 Jun 2025
+ 21:59:53 -0700
+Message-ID: <e6824f1a-c1a9-4c2e-9b46-6fe224877bfc@quicinc.com>
+Date: Thu, 5 Jun 2025 10:29:49 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250604200301.1192096-1-Frank.Li@nxp.com>
-In-Reply-To: <20250604200301.1192096-1-Frank.Li@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 4 Jun 2025 22:51:04 -0300
-X-Gm-Features: AX0GCFvVFxob8EVb6NLsa3nj-286Crhe1GjgNqXQ3KjHN84Y-NY38GeprMrasXw
-Message-ID: <CAOMZO5B4QQmZ3evum871m8AF36UTckbaPCwVyKF8QVN4-Z5=iw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] arm64: dts: imx95-19x19-evk: add adc0 flexcan[1,2]
- i2c[2,3] uart5 spi3 and tpm3
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] net: phy: clear phydev->devlink when the link is
+ deleted
+To: "Abhishek Chauhan (ABC)" <quic_abchauha@quicinc.com>,
+        Wei Fang
+	<wei.fang@nxp.com>
+CC: Florian Fainelli <f.fainelli@gmail.com>,
+        "andrew@lunn.ch"
+	<andrew@lunn.ch>,
+        "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "xiaolei.wang@windriver.com" <xiaolei.wang@windriver.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>
+References: <20250523083759.3741168-1-wei.fang@nxp.com>
+ <8b947cec-f559-40b4-a0e0-7a506fd89341@gmail.com>
+ <d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com>
+ <PAXPR04MB85107D8AB628CC9814C9B230886CA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <0b44c0f5-d922-4d89-8244-f114aedafa03@quicinc.com>
+Content-Language: en-US
+From: Sarosh Hasan <quic_sarohasa@quicinc.com>
+In-Reply-To: <0b44c0f5-d922-4d89-8244-f114aedafa03@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=RMizH5i+ c=1 sm=1 tr=0 ts=6841244f cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=jZjJzmEmTJcjZ5Ws:21 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10
+ a=8AirrxEcAAAA:8 a=zo4qo1mtkRo1JUt1IrUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDA0MSBTYWx0ZWRfX8RWzedTfUh6e
+ 5YG4jULnTUzWwLPHofQqTiSZLxugihItcoOTG/pj336/XqASz0UCmCEACyVG9x5UcZnXX6ODxGT
+ 9916m7x7Sh8SWyROZFlIEOo1JBSi5jkCs2il2TAdq/rJSlzNAhHJfPXi5DTgkP4Y/oHbQJOVLcO
+ B+6q6z4/tDo5HCCKMLB8eLfJq4MxhxLScA/GtxyRJUgudV7AqSsLkfqyRXhc2WKhUPXuACsL9+r
+ qfxfoopYDJkoAoNZc9jehSRJ/kQlhqsFFzCMh5Pm4G2DTmzttUcIufCBCZc4MurltK/cKzaoVjp
+ pfDGf3WgW2/ZZKMiGb2vXGqucL66aRgd4Tc/pIHDGrwdWPZ1uwNWfvrHqS4IZjSScBlzf/5kqnO
+ FdYnCR3u9HWlNFrtRLo2xqXDqO8Hit7rnAmR0Cj2nODFhufY45ocV6V1JoWs4lrtm5TsVaIF
+X-Proofpoint-GUID: T9sPq_QfEuKn_ROq-2DGTnMeSboqpXFm
+X-Proofpoint-ORIG-GUID: T9sPq_QfEuKn_ROq-2DGTnMeSboqpXFm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-05_01,2025-06-03_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 suspectscore=0 adultscore=0 mlxlogscore=999 mlxscore=0
+ clxscore=1011 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506050041
 
-On Wed, Jun 4, 2025 at 5:03=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
 
-> +       spidev0: spi@0 {
-> +               reg =3D <0>;
-> +               compatible =3D "lwn,bk4-spi";
 
-This is wrong.
+On 6/4/2025 11:39 AM, Abhishek Chauhan (ABC) wrote:
+> 
+> 
+> On 6/3/2025 11:00 PM, Wei Fang wrote:
+>>>> On 5/23/2025 1:37 AM, Wei Fang wrote:
+>>>>> There is a potential crash issue when disabling and re-enabling the
+>>>>> network port. When disabling the network port, phy_detach() calls
+>>>>> device_link_del() to remove the device link, but it does not clear
+>>>>> phydev->devlink, so phydev->devlink is not a NULL pointer. Then the
+>>>>> network port is re-enabled, but if phy_attach_direct() fails before
+>>>>> calling device_link_add(), the code jumps to the "error" label and
+>>>>> calls phy_detach(). Since phydev->devlink retains the old value from
+>>>>> the previous attach/detach cycle, device_link_del() uses the old value,
+>>>>> which accesses a NULL pointer and causes a crash. The simplified crash
+>>>>> log is as follows.
+>>>>>
+>>>>> [   24.702421] Call trace:
+>>>>> [   24.704856]  device_link_put_kref+0x20/0x120
+>>>>> [   24.709124]  device_link_del+0x30/0x48
+>>>>> [   24.712864]  phy_detach+0x24/0x168
+>>>>> [   24.716261]  phy_attach_direct+0x168/0x3a4
+>>>>> [   24.720352]  phylink_fwnode_phy_connect+0xc8/0x14c
+>>>>> [   24.725140]  phylink_of_phy_connect+0x1c/0x34
+>>>>>
+>>>>> Therefore, phydev->devlink needs to be cleared when the device link is
+>>>>> deleted.
+>>>>>
+>>>>> Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
+>>>>> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>>>>
+>>> @Wei
+>>> What happens in case of shared mdio ?
+>>>
+>>> 1. Device 23040000 has the mdio node of both the ethernet phy and device
+>>> 23000000 references the phy-handle present in the Device 23040000
+>>> 2. When rmmod of the driver happens
+>>> 3. the parent devlink is already deleted.
+>>> 4. This cause the child mdio to access an entry causing a corruption.
+>>> 5. Thought this fix would help but i see that its not helping the case.
+>>>
+>>
+>> My patch is only to fix the potential crash issue when re-enabling
+>> the network interface. phy_detach() is not called when the MDIO
+>> controller driver is removed. So phydev->devlink is not cleared, but
+>> actually the device link has been removed by phy_device_remove()
+>> --> device_del(). Therefore, it will cause the crash when the MAC
+>> controller driver is removed.
+>>
+>>> Wondering if this is a legacy issue with shared mdio framework.
+>>>
+>>
+>> I think this issue is also introduced by the commit bc66fa87d4fd
+>> ("net: phy: Add link between phy dev and mac dev"). I suggested
+>> to change the DL_FLAG_STATELESS flag to
+>> DL_FLAG_AUTOREMOVE_SUPPLIER to solve this issue, so that
+>> the consumer (MAC controller) driver will be automatically removed
+>> when the link is removed. The changes are as follows.
+>>
+> 
+> thanks a lot , Russell and Wei for your prompt response.
+> I appreciate your help. let me test this change and get back.
+> 
 
-I'm pretty sure there is no "Liebherr's BK4 external SPI controller"
-on this board.
+Myself and Abhishek tested this suggestion from Wei and we now observe 
+that the driver removal is successful without a crash. It looks like the 
+flag 'DL_FLAG_AUTOREMOVE_SUPPLIER' is helping.
+Wei and Russell, please suggest the next steps.
+  >> diff --git a/drivers/net/phy/phy_device.c 
+b/drivers/net/phy/phy_device.c
+>> index 73f9cb2e2844..a6d7acd73391 100644
+>> --- a/drivers/net/phy/phy_device.c
+>> +++ b/drivers/net/phy/phy_device.c
+>> @@ -1515,6 +1515,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+>>          struct mii_bus *bus = phydev->mdio.bus;
+>>          struct device *d = &phydev->mdio.dev;
+>>          struct module *ndev_owner = NULL;
+>> +       struct device_link *devlink;
+>>          bool using_genphy = false;
+>>          int err;
+>>
+>> @@ -1646,9 +1647,16 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+>>           * another mac interface, so we should create a device link between
+>>           * phy dev and mac dev.
+>>           */
+>> -       if (dev && phydev->mdio.bus->parent && dev->dev.parent != phydev->mdio.bus->parent)
+>> -               phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
+>> -                                                 DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
+>> +       if (dev && phydev->mdio.bus->parent &&
+>> +           dev->dev.parent != phydev->mdio.bus->parent) {
+>> +               devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
+>> +                                         DL_FLAG_PM_RUNTIME |
+>> +                                         DL_FLAG_AUTOREMOVE_SUPPLIER);
+>> +               if (!devlink) {
+>> +                       err = -ENOMEM;
+>> +                       goto error;
+>> +               }
+>> +       }
+>>
+>>          return err;
+>>
+>> @@ -1749,11 +1757,6 @@ void phy_detach(struct phy_device *phydev)
+>>          struct module *ndev_owner = NULL;
+>>          struct mii_bus *bus;
+>>
+>> -       if (phydev->devlink) {
+>> -               device_link_del(phydev->devlink);
+>> -               phydev->devlink = NULL;
+>> -       }
+>> -
+>>          if (phydev->sysfs_links) {
+>>                  if (dev)
+>>                          sysfs_remove_link(&dev->dev.kobj, "phydev");
+>> diff --git a/include/linux/phy.h b/include/linux/phy.h
+>> index e194dad1623d..cc1f45c3ff21 100644
+>> --- a/include/linux/phy.h
+>> +++ b/include/linux/phy.h
+>> @@ -505,8 +505,6 @@ struct macsec_ops;
+>>    *
+>>    * @mdio: MDIO bus this PHY is on
+>>    * @drv: Pointer to the driver for this PHY instance
+>> - * @devlink: Create a link between phy dev and mac dev, if the external phy
+>> - *           used by current mac interface is managed by another mac interface.
+>>    * @phyindex: Unique id across the phy's parent tree of phys to address the PHY
+>>    *           from userspace, similar to ifindex. A zero index means the PHY
+>>    *           wasn't assigned an id yet.
+>> @@ -610,8 +608,6 @@ struct phy_device {
+>>          /* And management functions */
+>>          const struct phy_driver *drv;
+>>
+>> -       struct device_link *devlink;
+>> -
+>>          u32 phyindex;
+>>          u32 phy_id;
+>>
