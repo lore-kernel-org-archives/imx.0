@@ -1,125 +1,1036 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF88272E58;
-	Thu,  5 Jun 2025 13:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA7D27465C
+	for <imx@lists.linux.dev>; Thu,  5 Jun 2025 14:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749131467; cv=none; b=c3upx0cG50pvXqxh+eHVGdU2Yv2qlzuvX4Eg3zqcDu80GRTb0bXmsiha2pHDcwAVA+RMJTZqAqurNmnet0itSyKn73cwe7VZkyCfZHdu14SCQC0ZDFHD7HZE/iQZmjkJRb8QSVPWq0z4og9h+QkrvCUjZECbyzkKW4ntAMOAg64=
+	t=1749133667; cv=none; b=bo5ghuzHq9p0gYFYZ86cTneQ0nT28ZK7aywjdHCTdi7lNPgTzTWybLBIbd55Oq4WTHe3BFzJBnNeKILSaRq34wnRT5rBdIIfuV7O2KVX94E101hhfv9i+qEv1+OrBDPtV/0OLRAJbXpa38CJN5vJiYRvdYnpp+72MZJo5aWJXso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749131467; c=relaxed/simple;
-	bh=CUuDv5BSBC048vwcKZzVjZ0CdBHLj4lB/45Mq40wZ9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N3aQI1WIs/9exK5gy+NHjxW+6xJO7Ib9I48YZccBw8tgYPLHWn6rGXLCOnO2sBmVRr+VwWROGcEVmnBA6679zHJMcIwXGUXCCrhhHDWh8WdNbqszpYoSXvC9mSEOUn+lyeBDpO9FOWhnOYMmO9yWKNYS/AtHjNnDzJD6yO6/qrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=spmW2oJY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749133667; c=relaxed/simple;
+	bh=TP1oexDIB/SYGgapbBmOiY781UoUqNbJA7aV9NX2iU8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jRFbZWtjOz3HMbZIgPbHeljfvZTNOeE9+6/SMeVYuBF6UlKBHz7k6S3P9j8ezLWgdT6qMKXRdo0H5xeSU4pZrWyc63axRm9JKIIRKiJcIgmMRPTYCjPusNeaygcESOaXchw/jonoXSJCsmFSYBILRcV47M4Dnl73rnsCv1Nb+hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yage2S85; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="spmW2oJY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE6EC4CEE7;
-	Thu,  5 Jun 2025 13:51:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749131467;
-	bh=CUuDv5BSBC048vwcKZzVjZ0CdBHLj4lB/45Mq40wZ9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=spmW2oJYhmHVT6vzAJCUPszJlMtNr3RDNNOowltKcsHqmeZKjNhKkYyzJ5s21VFFz
-	 uDsXKDJiw+gb8D3iHTdH312J70c4XKw329BUljiMDcEml+8P6xSp2/u0EDhBvCO0YD
-	 bBesROG/7UCwVinKib+h4/dbJ2LaMELnZBtpOVy6ksw+n9/nRM0WtNKj68+lX0cHdw
-	 g2dRbvyNtlKcH3IXDToknqmkMTGXc9t97E2T08b4kz1OYv+aHeYZ3yarjkhfzon4JD
-	 e58ldComiU278MN2luD2aiLyFaTdJf1yGVgI3u003wK7AuMU1goATRHqCXYj4vW47+
-	 DvsOPzCO+NxLQ==
-Date: Thu, 5 Jun 2025 08:51:04 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Simon Horman <horms@kernel.org>, davem@davemloft.net,
-	Paolo Abeni <pabeni@redhat.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yage2S85"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ad89f9bb725so196569966b.2
+        for <imx@lists.linux.dev>; Thu, 05 Jun 2025 07:27:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749133663; x=1749738463; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ByuBC0fVopM6dCW3bOT+z1AD1Oom4HXGFupuuDsjtNI=;
+        b=Yage2S85GCwYpyqUfCa/AOUsPCySTDS8NUMx+IjVHCZuH8gB+ApWjOG43gqtib/8Eo
+         IZJjyIHO/iDLmzk8YoP6L10fZotRSNxALXcux7QEUYYv5PloLl+p7QF+/2Z42/ilInHK
+         kiCTsNHqUzEVd69OUMjacsi0noBczuVDMkprTSGe+vanCKUttHIqlhJAFCBIQu8FqzmP
+         ZiWhTAdqGXKxF2RVAl/zV9FtUDOiN8CO9F0mcOfSi50b8cyPOsf5E7KgELkQgEWEY+KO
+         knCraC7H1NOMhNoROHtFQEtQ7Jp88/z90KWRUYrAnhgzHKbSB6pmetl9UqUKnGsTDDQt
+         Q/lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749133663; x=1749738463;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ByuBC0fVopM6dCW3bOT+z1AD1Oom4HXGFupuuDsjtNI=;
+        b=PIYdjHCaftHbpbWr4KxDcrG2xOsRRfjtsyxlxq/S+SnnTAghNlFmyXBdLFsXf3OJT3
+         mWMBUDJRMTs/NvcByxhP0pXqYqcM7G0dXcMbXM0L9vUH21SoqBDBtuUrmGMSefeO82Vv
+         Fp05xXPaCRwWfh8wWzCn84t99Z74qJINZFeIG/BIKOyxWV8tasHRN969LcOWTN1EGjzv
+         I1+7M9SLam/wQbffA+nkFsS6mwl7t41NYbPBTD4WFxK/6z9tkqhUCY7YOFqd82nt3Z0t
+         VvSobMzxlmeQr2b+pYwDEl8WUorH6UcgFQJUVfrcWEIIWTE1deRjoUhEH+mUWK+uvIpw
+         /beA==
+X-Gm-Message-State: AOJu0YyCN8JzqFpQPOg3yoFyffmDcvZOXWhx9nBKMDX9b+ebjrjukp+l
+	erMlhdLKAURJOJCDz06F1hBXjKDnDXF18YApPnbvsX6fQDiDOCzJXtlM
+X-Gm-Gg: ASbGncu67ECoR0jk1Xu7bhlhuxpmNBXxypF8iGzbAjaH1VqKu0annwPAMygXpChCkmT
+	MfxAIg2ODPJEIg6cgd1wAGhj4KAfOTszw/7yyv+cMngJ7kmOK3rN24p8LtC45s4pekSlBhQPMKX
+	URmZW+xsgT6VPRL4oZcKTOkyIWLlCbRcoUvLtONhrq+PUDWVJ2NODdMmu+b5Vnh+IqNbQBCfnwR
+	sjQK97wOMSKTWLCPTrjZkSR87gRK5ybBiPtI5q81po+o/zyEqBMGnMKyLXUbZTf7Kr5MbJsTqNJ
+	O1HQvv0X5lWilGwAr4/zxm//GhUxYsaOoKu2Byl/rEeU4W9xYxYUj7wn73eYJWdLBQ==
+X-Google-Smtp-Source: AGHT+IFNmjsOc62PxFlwV9m2BZRYaDiZOL/o0d+Dc+3GrP7pJUYw8ZanPqPY6KtY/Y/vWcvqzd5W7w==
+X-Received: by 2002:a17:907:1c90:b0:ad8:9645:798c with SMTP id a640c23a62f3a-addf8fa9711mr701206966b.51.1749133662665;
+        Thu, 05 Jun 2025 07:27:42 -0700 (PDT)
+Received: from wslxew242.. ([188.193.103.108])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d84e75fsm1259338066b.81.2025.06.05.07.27.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Jun 2025 07:27:42 -0700 (PDT)
+From: =?UTF-8?q?Goran=20Ra=C4=91enovi=C4=87?= <goran.radni@gmail.com>
+To: Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, devicetree@vger.kernel.org,
-	Richard Cochran <richardcochran@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
-	Stefan Wahren <wahrenst@gmx.net>, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	netdev@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [net-next v12 1/7] dt-bindings: net: Add MTIP L2 switch
- description
-Message-ID: <174913146314.2458620.483188376722386147.robh@kernel.org>
-References: <20250522075455.1723560-1-lukma@denx.de>
- <20250522075455.1723560-2-lukma@denx.de>
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?q?Goran=20Ra=C4=91enovi=C4=87?= <goran.radni@gmail.com>,
+	=?UTF-8?q?B=C3=B6rge=20Str=C3=BCmpfel?= <boerge.struempfel@gmail.com>
+Cc: imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 3/3] arm64: dts: imx8mp: Add initial support for Ultratronik imx8mp-ultra-mach-sbc board
+Date: Thu,  5 Jun 2025 16:27:26 +0200
+Message-ID: <20250605142728.2891465-4-goran.radni@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250605142728.2891465-1-goran.radni@gmail.com>
+References: <20250605142728.2891465-1-goran.radni@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250522075455.1723560-2-lukma@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+Add initial device tree support for the Ultratronik Ultra-MACH SBC
+based on the NXP i.MX8M Plus SoC with 2GB LPDDR4.
 
-On Thu, 22 May 2025 09:54:49 +0200, Lukasz Majewski wrote:
-> This patch provides description of the MTIP L2 switch available in some
-> NXP's SOCs - e.g. imx287.
-> 
-> Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-> 
-> ---
-> Changes for v2:
-> - Rename the file to match exactly the compatible
->   (nxp,imx287-mtip-switch)
-> 
-> Changes for v3:
-> - Remove '-' from const:'nxp,imx287-mtip-switch'
-> - Use '^port@[12]+$' for port patternProperties
-> - Drop status = "okay";
-> - Provide proper indentation for 'example' binding (replace 8
->   spaces with 4 spaces)
-> - Remove smsc,disable-energy-detect; property
-> - Remove interrupt-parent and interrupts properties as not required
-> - Remove #address-cells and #size-cells from required properties check
-> - remove description from reg:
-> - Add $ref: ethernet-switch.yaml#
-> 
-> Changes for v4:
-> - Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove already
->   referenced properties
-> - Rename file to nxp,imx28-mtip-switch.yaml
-> 
-> Changes for v5:
-> - Provide proper description for 'ethernet-port' node
-> 
-> Changes for v6:
-> - Proper usage of
->   $ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
->   when specifying the 'ethernet-ports' property
-> - Add description and check for interrupt-names property
-> 
-> Changes for v7:
-> - Change switch interrupt name from 'mtipl2sw' to 'enet_switch'
-> 
-> Changes for v8:
-> - None
-> 
-> Changes for v9:
-> - Add GPIO_ACTIVE_LOW to reset-gpios mdio phandle
-> 
-> Changes for v10:
-> - None
-> 
-> Changes for v11:
-> - None
-> 
-> Changes for v12:
-> - Remove 'label' from required properties
-> - Move the reference to $ref: ethernet-switch.yaml#/$defs/ethernet-ports
->   the proper place (under 'allOf:')
-> ---
->  .../bindings/net/nxp,imx28-mtip-switch.yaml   | 150 ++++++++++++++++++
->  1 file changed, 150 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-> 
+The board features:
+- 1 x USB 2.0 Host
+- 1 x USB 2.0 via USB-C
+- Debug UART + 1 x UART + 1 x USART
+- SD card and eMMC support
+- 2 x Ethernet (RJ45)
+- HDMI
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+This initial DTS enables basic board support for booting via
+SD card or eMMC.
+
+Signed-off-by: Goran Rađenović <goran.radni@gmail.com>
+---
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx8mp-ultra-mach-sbc.dts   | 907 ++++++++++++++++++
+ 2 files changed, 908 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts
+
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 0b473a23d120..e2f2500238fe 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -229,6 +229,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revc-tian-g07017.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-toradex-smarc-dev.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-ultra-mach-sbc.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-var-som-symphony.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw71xx-2x.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-venice-gw72xx-2x.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts
+new file mode 100644
+index 000000000000..7a599250e697
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts
+@@ -0,0 +1,907 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (C) 2023 Ultratronik
++ */
++
++/dts-v1/;
++
++#include <dt-bindings/usb/pd.h>
++#include "imx8mp.dtsi"
++
++/ {
++	model = "NXP i.MX8MPlus Ultratronik MMI_A53 board";
++	compatible = "ultratronik,imx8mp-ultra-mach-sbc", "fsl,imx8mp";
++
++	aliases {
++		ethernet0 = &fec;
++		ethernet1 = &eqos;
++		rtc0 = &hwrtc;
++		rtc1 = &snvs_rtc;
++	};
++
++	chosen {
++		stdout-path = &uart2;
++	};
++
++	gpio-sbu-mux {
++		compatible = "nxp,cbdtu02043", "gpio-sbu-mux";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_sbu_mux>;
++		select-gpios = <&gpio4 20 GPIO_ACTIVE_HIGH>;
++		enable-gpios = <&gpio2 20 GPIO_ACTIVE_HIGH>;
++		orientation-switch;
++
++		port {
++			usb3_data_ss: endpoint {
++				remote-endpoint = <&typec_con_ss>;
++			};
++		};
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		button-0 {
++			gpios = <&gpio4 27 GPIO_ACTIVE_LOW>; /* Wakeup */
++			label = "Wakeup";
++			linux,code = <KEY_WAKEUP>;
++			pinctrl-0 = <&pinctrl_gpio_key_wakeup>;
++			pinctrl-names = "default";
++			wakeup-source;
++		};
++	};
++
++	leds {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_leds>;
++
++		led1 {
++			label = "red";
++			gpios = <&gpio4 24 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
++		};
++
++		led2 {
++			label = "green";
++			gpios = <&gpio4 25 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
++		};
++
++		led3 {
++			label = "yellow";
++			gpios = <&gpio4 26 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
++		};
++	};
++
++	reg_usba_vbus: regulator-usba-vbus {
++		compatible = "regulator-fixed";
++		regulator-name = "usb-A-vbus";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&gpio1 12 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++
++		pinctrl-names="default";
++		pinctrl-0 = <&pinctrl_usb1>;
++	};
++
++	reg_usdhc2_vmmc: regulator-usdhc2 {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
++		regulator-name = "VSD_3V3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++};
++
++&A53_0 {
++	cpu-supply = <&buck2>;
++};
++
++&A53_1 {
++	cpu-supply = <&buck2>;
++};
++
++&A53_2 {
++	cpu-supply = <&buck2>;
++};
++
++&A53_3 {
++	cpu-supply = <&buck2>;
++};
++
++&ecspi1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi1 &pinctrl_ecspi1_cs>;
++	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
++	status = "okay";
++
++	slb9670: tpm@0 {
++		compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
++		reg = <0>;
++		spi-max-frequency = <32000000>;
++		status = "okay";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_slb9670>;
++		interrupt-parent = <&gpio1>;
++		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++	};
++};
++
++&ecspi2 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi2 &pinctrl_ecspi2_cs>;
++	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>,
++				<&gpio1 8 GPIO_ACTIVE_LOW>,
++				<&gpio1 9 GPIO_ACTIVE_LOW>;
++	status = "okay";
++
++	nfc: st95hf@1 {
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_nfc>;
++		reg = <1>;
++		compatible = "st,st95hf";
++		spi-max-frequency = <100000>;
++		interrupt-parent = <&gpio1>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		enable-gpio = <&gpio1 6 GPIO_ACTIVE_HIGH>;
++		status = "okay";
++	};
++};
++
++&eqos {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_eqos>;
++	phy-mode = "rgmii-id";
++	phy-handle = <&ethphy0>;
++	status = "okay";
++
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy0: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <0x1>;
++			interrupt-parent = <&gpio4>;
++			interrupts = <18 IRQ_TYPE_LEVEL_LOW>;
++		};
++	};
++};
++
++&fec {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_fec>;
++	phy-mode = "rgmii-id";
++	phy-handle = <&ethphy1>;
++	fsl,magic-packet;
++	status = "okay";
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy1: ethernet-phy@2 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <0x2>;
++			interrupt-parent = <&gpio4>;
++			interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
++		};
++	};
++};
++
++&flexcan1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_flexcan1>;
++	status = "okay";
++};
++
++&gpio1 {
++	gpio-line-names =
++		"#TPM_IRQ", "GPIO1", "", "#PMIC_INT",
++		"SD2_VSEL", "#TOUCH_IRQ", "#NFC_INT_I", "#NFC_INT",
++		"#SPI2_CS2", "#SPI2_CS3", "#RTS4", "",
++		"USB_PWR", "GPIO2", "GPIO3", "";
++};
++
++&gpio2 {
++	gpio-line-names =
++		"", "", "", "", "", "", "", "",
++		"", "", "", "", "#SD2_CD", "", "", "",
++		"", "", "", "", "#USB-C_EN", "", "", "",
++		"", "", "", "", "", "", "", "";
++};
++
++&gpio3 {
++	gpio-line-names =
++		"", "", "", "", "", "", "", "",
++		"", "", "", "", "", "", "", "",
++		"", "", "", "", "", "", "DISP_POW", "GPIO4",
++		"#", "", "", "", "", "", "", "";
++};
++
++&gpio4 {
++	gpio-line-names =
++		"BKL_POW", "#ETH1_INT", "#TPM_RES", "#PCAP_RES",
++		"", "", "", "",
++		"", "", "", "", "", "", "", "",
++		"", "", "#ETH0_INT", "#USB-C_ALERT",
++		"#USB-C_SEL", "", "", "",
++		"LED_RED", "LED_GREEN", "LED_YELLOW", "#WAKEUP",
++		"", "", "", "";
++};
++
++&gpio5 {
++	gpio-line-names =
++		"", "", "", "", "", "", "", "",
++		"", "#SPI1_CS", "", "", "", "#SPI2_CS1", "", "",
++		"", "", "", "", "ENA_KAM", "ENA_LED", "", "",
++		"", "", "", "", "", "", "", "";
++};
++
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	ddc-i2c-bus = <&i2c5>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hdmi>;
++	status = "okay";
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
++&i2c1 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_i2c1>;
++	pinctrl-1 = <&pinctrl_i2c1_gpio>;
++	scl-gpios = <&gpio5 14 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio5 15 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	status = "okay";
++
++	pmic: pca9450@25 {
++		reg = <0x25>;
++		compatible = "nxp,pca9450c";
++		/* PMIC PCA9450 PMIC_nINT GPIO1_IO3 */
++		pinctrl-0 = <&pinctrl_pmic>;
++		interrupt-parent = <&gpio1>;
++		interrupts = <3 GPIO_ACTIVE_LOW>;
++
++		/*
++		 * i.MX 8M Plus Data Sheet for Consumer Products
++		 * 3.1.4 Operating ranges
++		 * MIMX8ML8DVNLZAB
++		 */
++		regulators {
++			buck1: BUCK1 {	/* VDD_SOC (dual-phase with BUCK3) */
++				regulator-min-microvolt = <850000>;
++				regulator-max-microvolt = <1050000>;
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-ramp-delay = <3125>;
++			};
++
++			buck2: BUCK2 {	/* VDD_ARM */
++				regulator-min-microvolt = <850000>;
++				regulator-max-microvolt = <1000000>;
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-ramp-delay = <3125>;
++				nxp,dvs-run-voltage = <950000>;
++				nxp,dvs-standby-voltage = <850000>;
++			};
++
++			buck4: BUCK4 {	/* +3V3 */
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				regulator-boot-on;
++			};
++
++			buck5: BUCK5 {	/* +1V8 */
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-always-on;
++				regulator-boot-on;
++			};
++
++			buck6: BUCK6 {	/* DRAM_1V1 */
++				regulator-min-microvolt = <1100000>;
++				regulator-max-microvolt = <1100000>;
++				regulator-always-on;
++				regulator-boot-on;
++			};
++
++			ldo1: LDO1 {	/* NVCC_SNVS_1V8 */
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-always-on;
++				regulator-boot-on;
++			};
++
++			ldo3: LDO3 {	/* VDDA_1P8 */
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-always-on;
++				regulator-boot-on;
++			};
++
++			ldo4: LDO4 {	/* ENET_2V5 */
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <2500000>;
++				regulator-always-on;
++				regulator-boot-on;
++			};
++
++			ldo5: LDO5 {	/* NVCC_SD2 */
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-always-on;
++				regulator-boot-on;
++			};
++		};
++	};
++
++	atecc508a@35 {
++		compatible = "atmel,atecc508a";
++		reg = <0x35>;
++	};
++
++	eeprom@50 {
++		compatible = "atmel,24c16";
++		reg = <0x50>;
++		pagesize = <16>;
++	};
++};
++
++&i2c2 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_i2c2>;
++	pinctrl-1 = <&pinctrl_i2c2_gpio>;
++	scl-gpios = <&gpio5 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio5 17 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	status = "okay";
++
++	hwrtc: rtc@32 {
++		compatible = "epson,rx8900";
++		reg = <0x32>;
++		epson,vdet-disable;
++		trickle-diode-disable;
++	};
++
++	ptn5110: ptn5110@52 {
++		compatible = "nxp,ptn5110", "tcpci";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_ptn5110>;
++		reg = <0x52>;
++		interrupt-parent = <&gpio4>;
++		interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
++
++		usb_con: connector {
++			compatible = "usb-c-connector";
++			label = "USB-C";
++			power-role = "dual";
++			data-role = "dual";
++			try-power-role = "sink";
++			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
++			sink-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)
++				     PDO_VAR(5000, 5000, 3000)>;
++			op-sink-microwatt = <15000000>;
++			self-powered;
++
++			ports {
++				#address-cells = <1>;
++				#size-cells = <0>;
++				port@0 {
++					reg = <0>;
++					typec_dr_sw: endpoint {
++						remote-endpoint = <&usb3_drd_sw>;
++					};
++				};
++				port@1 {
++					reg = <1>;
++					typec_con_ss: endpoint {
++						remote-endpoint = <&usb3_data_ss>;
++					};
++				};
++			};
++		};
++	};
++};
++
++&i2c3 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	pinctrl-1 = <&pinctrl_i2c3_gpio>;
++	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	status = "okay";
++};
++
++&i2c5 {	/* HDMI EDID bus */
++	clock-frequency = <100000>;
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_i2c5>;
++	pinctrl-1 = <&pinctrl_i2c5_gpio>;
++	scl-gpios = <&gpio3 26 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio3 27 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	status = "okay";
++};
++
++&lcdif3 {
++	status = "okay";
++};
++
++&pwm1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm1>;
++	status = "okay";
++};
++
++&pwm2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm2>;
++	status = "okay";
++};
++
++&snvs_pwrkey {
++	status = "okay";
++};
++
++&uart2 {
++	/* system console */
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart2>;
++	status = "okay";
++};
++
++&uart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart3>;
++	status = "okay";
++};
++
++&uart4 {
++	/* expansion port serial connection */
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart4>;
++	status = "okay";
++};
++
++&usb3_phy0 {
++	status = "okay";
++};
++
++&usb3_0 {
++	status = "okay";
++};
++
++&usb_dwc3_0 {
++	dr_mode = "otg";
++	hnp-disable;
++	srp-disable;
++	adp-disable;
++	usb-role-switch;
++	status = "okay";
++
++	port {
++		usb3_drd_sw: endpoint {
++			remote-endpoint = <&typec_dr_sw>;
++		};
++	};
++};
++
++&usb3_phy1 {
++	vbus-supply = <&reg_usba_vbus>;
++	status = "okay";
++};
++
++&usb3_1 {
++	status = "okay";
++};
++
++&usb_dwc3_1 {
++	dr_mode = "host";
++	status = "okay";
++	snps,hsphy_interface = "utmi";
++};
++
++&usdhc2 {
++	assigned-clocks = <&clk IMX8MP_CLK_USDHC2>;
++	assigned-clock-rates = <400000000>;
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
++	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
++	bus-width = <4>;
++	vmmc-supply = <&reg_usdhc2_vmmc>;
++	vqmmc-supply = <&ldo5>;
++	status = "okay";
++};
++
++&usdhc3 {
++	assigned-clocks = <&clk IMX8MP_CLK_USDHC3>;
++	assigned-clock-rates = <400000000>;
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc3>;
++	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
++	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	vmmc-supply = <&buck4>;
++	vqmmc-supply = <&buck5>;
++	bus-width = <8>;
++	no-sd;
++	no-sdio;
++	non-removable;
++	status = "okay";
++};
++
++&wdog1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_wdog>;
++	fsl,ext-reset-output;
++	status = "okay";
++};
++
++&iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog>;
++
++	pinctrl_ecspi1_cs: ecspi1-cs-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09		0x40	/* #SPI1_CS */
++		>;
++	};
++
++	pinctrl_ecspi1: ecspi1-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ECSPI1_SCLK__ECSPI1_SCLK		0x82
++			MX8MP_IOMUXC_ECSPI1_MOSI__ECSPI1_MOSI		0x82
++			MX8MP_IOMUXC_ECSPI1_MISO__ECSPI1_MISO		0x82
++		>;
++	};
++
++	pinctrl_ecspi2_cs: ecspi2-cs-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ECSPI2_SS0__GPIO5_IO13		0x40	/* #SPI2_CS */
++			MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08		0x40	/* #SPI2_CS2 */
++			MX8MP_IOMUXC_GPIO1_IO09__GPIO1_IO09		0x40	/* #SPI2_CS3 */
++		>;
++	};
++
++	pinctrl_ecspi2: ecspi2-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ECSPI2_SCLK__ECSPI2_SCLK		0x82
++			MX8MP_IOMUXC_ECSPI2_MOSI__ECSPI2_MOSI		0x82
++			MX8MP_IOMUXC_ECSPI2_MISO__ECSPI2_MISO		0x82
++		>;
++	};
++
++	pinctrl_eqos: eqos-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC		0x0
++			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO		0x0
++			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0	0x90
++			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1	0x90
++			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2	0x90
++			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3	0x90
++			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x90
++			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL	0x90
++			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0	0x16
++			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1	0x16
++			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2	0x16
++			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3	0x16
++			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL	0x16
++			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x16
++			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18		0x10	/* #ETH0_INT */
++		>;
++	};
++
++	pinctrl_fec: fec-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI1_RXD2__ENET1_MDC               0x0
++			MX8MP_IOMUXC_SAI1_RXD3__ENET1_MDIO              0x0
++			MX8MP_IOMUXC_SAI1_RXD4__ENET1_RGMII_RD0         0x90
++			MX8MP_IOMUXC_SAI1_RXD5__ENET1_RGMII_RD1         0x90
++			MX8MP_IOMUXC_SAI1_RXD6__ENET1_RGMII_RD2         0x90
++			MX8MP_IOMUXC_SAI1_RXD7__ENET1_RGMII_RD3         0x90
++			MX8MP_IOMUXC_SAI1_TXC__ENET1_RGMII_RXC          0x90
++			MX8MP_IOMUXC_SAI1_TXFS__ENET1_RGMII_RX_CTL      0x90
++			MX8MP_IOMUXC_SAI1_TXD0__ENET1_RGMII_TD0         0x16
++			MX8MP_IOMUXC_SAI1_TXD1__ENET1_RGMII_TD1         0x16
++			MX8MP_IOMUXC_SAI1_TXD2__ENET1_RGMII_TD2         0x16
++			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3         0x16
++			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL      0x16
++			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC         0x16
++			MX8MP_IOMUXC_SAI1_RXC__GPIO4_IO01               0x10	/* #ETH1_INT */
++		>;
++	};
++
++	pinctrl_flexcan1: flexcan1-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SPDIF_RX__CAN1_RX			0x154
++			MX8MP_IOMUXC_SPDIF_TX__CAN1_TX			0x154
++		>;
++	};
++
++	pinctrl_gpio_key_wakeup: gpio-key-wakeup-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI2_MCLK__GPIO4_IO27		0x40	/* #WAKEUP */
++		>;
++	};
++
++	pinctrl_gpio_leds: gpio-leds-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI2_TXFS__GPIO4_IO24		0x40	/* LED_RED */
++			MX8MP_IOMUXC_SAI2_TXC__GPIO4_IO25		0x40	/* LED_GREEN */
++			MX8MP_IOMUXC_SAI2_TXD0__GPIO4_IO26		0x40	/* LED_YELLOW */
++		>;
++	};
++
++	pinctrl_hdmi: hdmi-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x154
++			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x154
++		>;
++	};
++
++	pinctrl_hog: hog-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO01__GPIO1_IO01	0x40	/* GPIO1 */
++			MX8MP_IOMUXC_GPIO1_IO13__GPIO1_IO13	0x40	/* GPIO2 */
++			MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14	0x40	/* GPIO3 */
++			MX8MP_IOMUXC_SAI5_RXD2__GPIO3_IO23	0x40	/* GPIO4 */
++			MX8MP_IOMUXC_I2C4_SCL__GPIO5_IO20	0x40	/* ENA_KAM */
++			MX8MP_IOMUXC_I2C4_SDA__GPIO5_IO21	0x40	/* ENA_LED */
++			MX8MP_IOMUXC_SAI1_RXD1__GPIO4_IO03	0x40	/* #PCAP_RES */
++			MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10	0x40	/* #RTS4 */
++		>;
++	};
++
++	pinctrl_i2c1: i2c1-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL			0x400001c0
++			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA			0x400001c0
++		>;
++	};
++
++	pinctrl_i2c1_gpio: i2c1-gpio-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C1_SCL__GPIO5_IO14		0xc0
++			MX8MP_IOMUXC_I2C1_SDA__GPIO5_IO15		0xc0
++		>;
++	};
++
++	pinctrl_i2c2: i2c2-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL			0x400001c0
++			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA			0x400001c0
++		>;
++	};
++
++	pinctrl_i2c2_gpio: i2c2-gpio-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C2_SCL__GPIO5_IO16		0xc0
++			MX8MP_IOMUXC_I2C2_SDA__GPIO5_IO17		0xc0
++		>;
++	};
++
++	pinctrl_i2c3: i2c3-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL			0x400001c2
++			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA			0x400001c2
++		>;
++	};
++
++	pinctrl_i2c3_gpio: i2c3-gpio-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C3_SCL__GPIO5_IO18		0xc2
++			MX8MP_IOMUXC_I2C3_SDA__GPIO5_IO19		0xc2
++		>;
++	};
++
++	pinctrl_i2c5: i2c5-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_HDMI_DDC_SCL__I2C5_SCL		0x400000c4
++			MX8MP_IOMUXC_HDMI_DDC_SDA__I2C5_SDA		0x400000c4
++		>;
++	};
++
++	pinctrl_i2c5_gpio: i2c5-gpio-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_HDMI_DDC_SCL__GPIO3_IO26		0xc4
++			MX8MP_IOMUXC_HDMI_DDC_SDA__GPIO3_IO27		0xc4
++		>;
++	};
++
++	pinctrl_nfc: nfc-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO06__GPIO1_IO06		0x40	/* NFC_INT_I */
++			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07		0x40	/* NFC_INT */
++		>;
++	};
++
++	pinctrl_pmic: pmic-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x40	/* #PMIC_INT */
++		>;
++	};
++
++	pinctrl_ptn5110: ptn5110-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI1_TXD7__GPIO4_IO19		0x1c4	/* #USB-C_ALERT */
++		>;
++	};
++
++	pinctrl_pwm1: pwm1-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SPDIF_EXT_CLK__PWM1_OUT		0x116
++		>;
++	};
++
++	pinctrl_pwm2: pwm2-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI5_RXD0__PWM2_OUT		0x116	/* EXT_PWM */
++		>;
++	};
++
++	pinctrl_reg_usdhc2_vmmc: reg-usdhc2-vmmc-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19	0x40
++		>;
++	};
++
++	pinctrl_sbu_mux: sbu-mux-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI1_MCLK__GPIO4_IO20		0x16	/* #USB-C_SEL */
++			MX8MP_IOMUXC_SD2_WP__GPIO2_IO20			0x16	/* #USB-C_EN */
++		>;
++	};
++
++	pinctrl_slb9670: slb9670-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO00__GPIO1_IO00		0x40	/* #TPM_IRQ */
++			MX8MP_IOMUXC_SAI1_RXD0__GPIO4_IO02		0x40	/* #TPM_RES */
++		>;
++	};
++
++	pinctrl_uart2: uart2-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX		0x40
++			MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX		0x40
++		>;
++	};
++
++	pinctrl_uart3: uart3-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX		0x40
++			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX		0x40
++		>;
++	};
++
++	pinctrl_uart4: uart4-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX		0x40
++			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX		0x40
++		>;
++	};
++
++	pinctrl_usb1: usb1-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12		0x40	/* USB_PWR */
++		>;
++	};
++
++	pinctrl_usdhc2: usdhc2-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x190
++			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d0
++			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d0
++			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d0
++			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d0
++			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d0
++			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0xc0	/* SD2_VSEL */
++		>;
++	};
++
++	pinctrl_usdhc2_100mhz: usdhc2-100mhz-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x194
++			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d4
++			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d4
++			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d4
++			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d4
++			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d4
++			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0xc0	/* SD2_VSEL */
++		>;
++	};
++
++	pinctrl_usdhc2_200mhz: usdhc2-200mhz-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x196
++			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d6
++			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d6
++			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d6
++			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d6
++			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d6
++			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0xc0	/* SD2_VSEL */
++		>;
++	};
++
++	pinctrl_usdhc2_gpio: usdhc2-gpio-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CD_B__GPIO2_IO12		0x1c4
++		>;
++	};
++
++	pinctrl_usdhc3: usdhc3-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x190
++			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d0
++			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d0
++			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d0
++			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d0
++			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d0
++			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d0
++			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d0
++			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d0
++			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d0
++			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x190
++			MX8MP_IOMUXC_NAND_READY_B__USDHC3_RESET_B	0x40	/* #SD3_RESET */
++		>;
++	};
++
++	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x194
++			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d4
++			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d4
++			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d4
++			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d4
++			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d4
++			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d4
++			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d4
++			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d4
++			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d4
++			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x194
++		>;
++	};
++
++	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x192
++			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d2
++			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d2
++			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d2
++			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d2
++			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d2
++			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d2
++			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d2
++			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d2
++			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d2
++			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x192
++		>;
++	};
++
++	pinctrl_wdog: wdog-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B		0xc6	/* #WDOG */
++		>;
++	};
++};
+-- 
+2.43.0
 
