@@ -1,218 +1,211 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010011.outbound.protection.outlook.com [52.101.69.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD5F143748
-	for <imx@lists.linux.dev>; Thu,  5 Jun 2025 08:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749113778; cv=fail; b=r5J8rU3Agi3ENvRm7l/8U56FLMWSKzYLA9OvnEBTefnxkyVR3CnoTCqB2d2H/iFw2cz97e0ZVH5RyQki6Y5rkqDqmdo7A5hBocui9qZfYxULYuXg7aGVOI6+r9Bt/qYqO+Ziq+plETYpPQrEb0q4GoQ+XGpAHH4bkK+D4snQ7s0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749113778; c=relaxed/simple;
-	bh=wpFc0Jj623OwFj4A0fO5OGz/m+jRLjcnxj7Y1dirxHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jjJGoHDMzcGHZcZFqW7Tydx1qTKYE8ewpoZCfzUv9u1rLomO8t0WfL07BJzMFEcGK1v/mpHNjjK4IcZFTfh1TRwNkWva0oJCN14637oa5R4UvStJlIJ3czpwjWpLX07I1dcqIr2bFdFV7KpJZgLz5bdrJ1xW+aC+wLFFa9u35SY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jJuMMgpC; arc=fail smtp.client-ip=52.101.69.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297A41FF1BF
+	for <imx@lists.linux.dev>; Thu,  5 Jun 2025 08:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749113985; cv=none; b=YTL7SM0DLLQ0R7fN0araPdOvdrHCMjGkhLJjQN/NnO05MccLZ5gijDjvHpNA3BeyS4jT/ggLVJdeX+M11u8tIBksIy5gudpTNUAsKogwMu47FsO0D7T44euERC/JlWPRDZKW0pQPQofDEEEDrhf2pGmwwhpJGegS/0ogOAhQIuc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749113985; c=relaxed/simple;
+	bh=1IQrU1iDuiWW/Hfm8bkjda3OSF3yBkVGdgW8iJKSHIg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B8qOQdeAZRcapoh5cde0EnspVdf1j3yz4CIK6HXylIjhyc92fwQ2IGqxR7EIr+pQIRGIH+rjJ1bRS4nOxDee/t83Kva4qX42WCPsKWEYyMmf+lGwrERz1o6Jpx4D//t/DaHWbPWZBf1CyLEF/fi+BZ29AQ4rvQ0NVr1dBgc3C44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VIR0ZpXc; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jJuMMgpC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r9w4O2y5ZsAjqC3gDx8pmZ+tg9rLvx3PRTlKcWL9UhqE9MBqzgv4+tPR2p5x9+SUyjGUYY77d7aq0aTKUOSQ69tIr2/uSDsePq2t6HJH1dvAr+n/cGNmUYQXIJEqsG0MI/lUn9Fx/jv0Vg6jzIK4qsshyWMJkTOKVMzciiShkQnpytmnz+j9COVQOK8oF3opJQ3TB1ybKS161xGn3AqSOjYhxp7fO/OX2IX5ZQbVT2JXjfQZsq87sRrqPS+8EN4A2qT3qpjBxs2dNF0elaII+Y46SPptDjXO0rlD+Nw6GCyuH7FlOJAM/15nUFNkfxkNIRdbdT1sJzy5lTTJQUyqfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nZjwSsqEV/otGAAelFU0tNt0DqGJZFbtmmUzMrth4ps=;
- b=w3y0a8cBTvw8NWD3e3hy3pY9GAwFKB0+R3EhEHXEUhzZDdClbPn7ZwRw0IprtR9VHorZhgIMSYJCz2l5II/GqsfYeO9dVp9gHngeo0Ux6bruZBwMhb4rFoMua6xnvMzPgKBamvgYLMWrIRgbc6UnejFyjf09fTTI6rAGw4QR3KO9wODjx6Dgtdsd/SQ9W8hAUYEN1Jqqv5gg4hoY7NKRlnwFRlcrC+6bEV+QZ29dWwFZvgZM6YeLTM/KQ3WjD2pAqyXjaxFtXJmxmnPHtlYllx3NDN2OfUpr4h5NllrP2oR6g0xt7k+2dcSCu0CEc3nsDbe2xzIkUP6nnFUdGIzpAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nZjwSsqEV/otGAAelFU0tNt0DqGJZFbtmmUzMrth4ps=;
- b=jJuMMgpCCjE4aknXXuaDUeMebSglSl55CF8y0tvai6g3xZWCx68pIMUsyyhZKmSVjCSRBzVMRM1k8F0ZOJqzsujD1xiINEqoI/iWs2+wWZYzoMwpBCpdN7exH8bhFQBRkz6ALh5zHCVL3e6qpQHCMczxqsgiH7g9HyMcBOERkVaWlYe0m7SIoptE5J7kyrljUBxsfzQS33o1bzyDhE1C6IyqrhKHhLnlAUyTrsZlQx9Ro52YH9JyT4GajY6WAuCwAEy7gVoq4gWwsaPgj+TTV6mk0Ou/S0QCQG0R/Y84BWC7cTnCEzwgPhnaaUbJtdYdvZgnFjPhum1Wx5rNyI07kQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by VI0PR04MB10342.eurprd04.prod.outlook.com (2603:10a6:800:219::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.20; Thu, 5 Jun
- 2025 08:56:11 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8813.018; Thu, 5 Jun 2025
- 08:56:11 +0000
-Date: Thu, 5 Jun 2025 11:56:08 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, arnd@kernel.org
-Subject: Re: [PATCH v2] net: enetc: fix the netc-lib driver build dependency
-Message-ID: <20250605085608.dyfp6zy37c6i3qnp@skbuf>
-References: <20250605060836.4087745-1-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250605060836.4087745-1-wei.fang@nxp.com>
-X-ClientProxiedBy: VI1PR09CA0147.eurprd09.prod.outlook.com
- (2603:10a6:803:12c::31) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VIR0ZpXc"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a4f71831abso669904f8f.3
+        for <imx@lists.linux.dev>; Thu, 05 Jun 2025 01:59:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749113981; x=1749718781; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ogjVDhDiMnU/s3WI4h7hVLm4gcfXJF8zSM1Pe2+EESo=;
+        b=VIR0ZpXcAOIbl75L8Ok0tv4cefRirgHKp/mLYLvB4nPkkbv8g5io1Y3Rm5yuF0virN
+         XhEIr97TDwNBoe2xjmbUaud9euAykbFX6Zhelis9XWf2p8fv04Rv+rKn92rWzd0Az4hH
+         3PbHNvgIDeY8/WnLWYp2rayT3P/hkZrnqPOZFx6H91nlHevg9l+C4lmfKJdN3/TUDfwd
+         TW54OKVQBMUtbvFWx4OuhX/xUC02DC6MAPI4ictMq36cXjFXZ5GdACd7Xdz7sIRcskej
+         ateDEYJIh4jRNheA70ltXRpQ6nFlFvIMXzcwhkMH7vYUgU+JG/LL1GfoIzprj8MOXFub
+         wP0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749113981; x=1749718781;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ogjVDhDiMnU/s3WI4h7hVLm4gcfXJF8zSM1Pe2+EESo=;
+        b=RtGtFeeMa7H7YbG2K/thL+pC7C4BCPKz0XJzCpiSfPGCB+Uzal339Mxfky1ve03w/W
+         WIAzGcdT4XS+AjfQJohhHlwE2Ns9rr/wxZbRnHbOkadGAsXS0wLUw37n41R9YA6TBzQo
+         vXWRZqGyQXbGdmVvbkSSl+9kHveKf+W+zerVK83ZwWe0BCZWSO187yNZ3pHn1Aga2jl6
+         Slcq4g0CMED2yGrUNFPQ5pWVGmSWgQ8fd/o5wYPPQHE0X8bypaG8kTRs38OLPtDCkLsC
+         BSod5K5hOjdBKJOPiW6by6fcDa/0CWD7iYp/UxL+FU1cxMpqxVijjsciIfkL31iMNQzj
+         08Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcSl1btxg9h6RVP9whX2GrnAX/PBnVUzNyZDrmP+LElhq8hNHK+nym+yBJ+giR9sjIBIM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwGLruRyXAJJiSVEGgammDDn3Y3UdYVLS1RT1D54WT4qTDd7aAN
+	c4JUMEj3e4uo23rBuNppO/QFGnNtdPeHnFRQ50dDhurQOZGKzJOsPbje
+X-Gm-Gg: ASbGnctYTzXRuZVACyVtn/bwHwkEJiKbZAJCtE6G7SwpEoRE3xgrfz93vMewAy+iDQD
+	8tgNElvCWcCkSvj+nNMvc1H8KGPls1LikSqgkP/Ag5iWYekRBW/3rlg7ObNyoyj9H+N8oH8Lbyu
+	I8O0LC0kA0xg1G6yJyEqSXUuMvmZDUEQUaJQcJmFmsaUlyw5+HAuX0gk7uBeR0VIaeoKV2uXEFt
+	hMcdtNoBKlAo/temK0M1PC/pW5GefMX2p1/xRyzsqXl3f4RI5D4tTtZZF+GNZtD4ZM7mg1jn0c8
+	YPHocczM8za9yQ35IrMiJvQaabwbkj4cbTjty9Yb57sacBExE1CdGlVBlLEZZtdPfI+xsEgrHn+
+	WsoqWF0ppX6rEnykrite0Kh3n3whRs5j+Fjs=
+X-Google-Smtp-Source: AGHT+IEzo/+1PtqXUJzfqQ4rzJBMvCxovxZsMpL2szL116m7MitSuowtYBLWA/qIIb6W6jeKzOII8w==
+X-Received: by 2002:adf:edc3:0:b0:3a5:2465:c0a4 with SMTP id ffacd0b85a97d-3a52465c359mr3054884f8f.20.1749113981006;
+        Thu, 05 Jun 2025 01:59:41 -0700 (PDT)
+Received: from Lord-Beerus.station (net-93-70-53-177.cust.vodafonedsl.it. [93.70.53.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4f00a00d4sm24281167f8f.92.2025.06.05.01.59.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Jun 2025 01:59:40 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: othacehe@gnu.org,
+	andrew@lunn.ch,
+	Stefano Radaelli <stefano.radaelli21@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3] arm64: dts: freescale: imx93-var-som: update eqos support for MaxLinear PHY
+Date: Thu,  5 Jun 2025 10:59:04 +0200
+Message-ID: <20250605085904.12199-1-stefano.radaelli21@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|VI0PR04MB10342:EE_
-X-MS-Office365-Filtering-Correlation-Id: a43fb57c-67d7-4626-dc64-08dda40ed1b4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BkTessAoIHiff/Os73aPfiWg6gVFg14irRHoVwnD8YngRs7m0Rzab1Fhy4I4?=
- =?us-ascii?Q?Sdl38rssW2NmmXuqubOCXH4EqaRVrfk+a2H9Ves6d6/uoOLF3kG29tkOKNtj?=
- =?us-ascii?Q?phfACJIvjSNekeMgg0qZUhOHROOiLPiaTWebIY9jW6bGfq3UAnw9Gof6RmSi?=
- =?us-ascii?Q?LZ/tZqE8P2sJzrCYqMZ+IMz8yr93gU5dcQaB+qFaJ5Q7NWL6uk/hvFvE8LUw?=
- =?us-ascii?Q?PmZBIC3jrwkpOdPGYiGz92IFnnug5FHzhujWdYEBxcr4NZqLLLaQj+4+pJDO?=
- =?us-ascii?Q?cO/O8HOgDrUhI1H3arlfDGn6rOOt1+WhhxQKTZSqyED1MIHVoEe4ASmJc+Is?=
- =?us-ascii?Q?z/T6Y/UGWR7EsHFekwlVHiDiBckDMnyMIPmtFVo6p8sw2mUs71ikrC6MMqZn?=
- =?us-ascii?Q?mvNAE4fbchInQ+1LREMTuJLxDHAZDdRm1m10LQGk/QyxqhP12JI773RLsHq+?=
- =?us-ascii?Q?4ZDM6sUHsvF3QHmk+NFvJk1ULCjPYP0y6DKcy5MzpD2qVzAFWxj6nOXFgDID?=
- =?us-ascii?Q?JdvjKUEQXtlFZny2BZxFK07dAlLm+xCHSxbt7xIrNgMqUtx8fZ0EbzoAD7a0?=
- =?us-ascii?Q?GS4p1jVFpvHjMkUoPMBrQJ/NqxQExx5ad3JeBQo7oiGx5b9xrlJDWvCt1O7O?=
- =?us-ascii?Q?eRd8Mq+Yl/PWu3x8CD0UwzPAvQF5Yf8EA8IsVg3QNvla4Y5z3Jozrl/JkM9y?=
- =?us-ascii?Q?8IK999x9i2AHoaBt7XrWWmVv5+Prp1/pyUrD1OUPQgc/ct9elhf4nUkyuxkb?=
- =?us-ascii?Q?Ouhv6OPmS6eSwFkIJLt9UIKyMix+95Dcy8cSgWXMPwhfaNABrBQr/rsq2Vuy?=
- =?us-ascii?Q?6aXIkjb1W8wlLZXRn3vfZqfUbYd1ww/Y20Li8j+SdAxiOUw1+OZBQq4RJcw8?=
- =?us-ascii?Q?uHT243h++WkK23tG96aCPXtFbPL52yIitMR1B+Y7/YBAKHYfZe77yBXu/wFJ?=
- =?us-ascii?Q?Zgj/DuOQmo6eKP9vJ4T2sgU05xQzdC8muM9W3AWH3LtZDEzFwm16MBqvGrel?=
- =?us-ascii?Q?/rtBaue02wVBDBJ5yAPtrvMmv8BiDYh9F4t8P7/pODnfMjiyDWtHkvOOBnKr?=
- =?us-ascii?Q?3HrXAY+20hBtgdWoagz7ba/Wwj1Q5Q8DXLHFB6nUUJmnhmuKvB1L8Z5I8YFE?=
- =?us-ascii?Q?LVJf+ur1YieGBHNRKqxK+pxw93jx1HWau+P3COo21hWbWinU5LRKB0acEbiZ?=
- =?us-ascii?Q?xd13z8goMyO8m19TwrQXbLql0FWovnr1804FSqM5oo9XveIEI9+FsQmq1hMv?=
- =?us-ascii?Q?pzz3MMz6LCF/qVzkI7I/hkMYg2KGW6DPmGcs1x9JvtiXY7/pRlTbAcVpyskh?=
- =?us-ascii?Q?r25m4JbMsrXa3TQ+QWX9Z3843TvGocH5uWfTYkh2G8Orn6HmHcA9ZGbfPwOC?=
- =?us-ascii?Q?zwUGVqwXK/O+p78JS9+sYUfmMhcwcof8Z04rSEYvP51QAanUv8cSzoN5zcT7?=
- =?us-ascii?Q?QQQhshZsCYujgDqILiEapQYGe8J/HO++?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6jWJdMlnkF0o1GCa5GsJAkTw4Ktcm+Gx3wHu3suyaUcUgVGLYTIXVeyEhXXG?=
- =?us-ascii?Q?I01LADznWRj4EMy8GeH5NaZblo+RoVdpgS0ELG8s1HhOXAeEGm6IGlUbpGPt?=
- =?us-ascii?Q?fXR6TrfVpyfbRKz++9pLVmoP7dt34YRIk2ZI6df3C2e1lw8OLe+N0HKrq0lg?=
- =?us-ascii?Q?r5qeZGJZH5zKj66g5aa1js55kJMWAdNLJnfqoOCeI2yq2MUpx7V+74ahsOCA?=
- =?us-ascii?Q?NuZPFw9WCHhfcIFJ7nPvvlvXSoAdLimfLOkYf5uTcA0ioBeOJrgca+2tdN7y?=
- =?us-ascii?Q?7K7exYZ10+gmP0FhhhoFKBrS/0FWFG0iN2QlxzzQUplAqBdUwMqjtxAEf1BK?=
- =?us-ascii?Q?KOGg1paWuhJxGn0sba7KjcRP1qh8Gt2telBkzzitfENCM9nWR03bD+pvXs2p?=
- =?us-ascii?Q?MMgHOE/BGnUq3R0cyybUuaaHhjSWdu/HLsdP9zzeQ+GtJJ0+CuduCtWBHBpZ?=
- =?us-ascii?Q?+SzBz01DV+xpCIUrcBQJhkfkyMqBv4u702mvOBCQ5Dv/LhWAISkE7l7cBZbe?=
- =?us-ascii?Q?LDy/kxNiK3rRA6tljrAHMHl5qWmHZnCxtCrzQ4z1rWSi7Qv28aXSr5vjwNFx?=
- =?us-ascii?Q?MvktLIX4mIADVbKlf6gLYSdZtBNZ1CeRD+gPC44ktwR4cqAkNNp8t/k9y9Qi?=
- =?us-ascii?Q?PQs2YmPV5AhkypeOnsSF52IG7sg37gAOMZHblf2cfPFDBZoaZSTanKRyZxYv?=
- =?us-ascii?Q?BOL+GFE8otKHA2xsCNFKu1mTLAovDvR8LkMvVSpwEy1/gjNZ5PHlbREJ7+3W?=
- =?us-ascii?Q?HvmQ6o91EtU2JzTIGGHfm3Jca6/Pw8AadpEAxSgYuVDyuStMhSiteMBgvO8t?=
- =?us-ascii?Q?hG9HUQyx+kvVnrOpMXqG7o0HzHt14V6ExX1PXeC0IUH9nst/26ZvCGsnv0To?=
- =?us-ascii?Q?v5KGbufY4/oWzV3QldYzEXvZOLaoVQ/ykcED/If6W/ozl+ZCzsroo1BSeMEA?=
- =?us-ascii?Q?P/YmgRwHxw34YiJfRAkf5SE1h+ZhMsplnNF+Pp0jdGtjYBgRiMp6EznUU5a+?=
- =?us-ascii?Q?sghb9OolSyMfNtCpEeiIUaDWls0GReBFFz+G4YNq2dbmv07uTyXE2cXYbNQu?=
- =?us-ascii?Q?RWqb81hrirAIEqwHMAfUnW0990OCqb7QvQyit8i+gf6weB1s+bAmuNIYv+Yf?=
- =?us-ascii?Q?LJyazksRZvBHib63HdeHQww2XDR7RUaLnnXxd2rnjVRl8U59tOdJGrXyanpn?=
- =?us-ascii?Q?gdW6+DJFk/ThFlDUNw4OgjhGsUx8gvKEmSUV/uDa6vLzvc5HSuSxz0cYxlhC?=
- =?us-ascii?Q?6ATzMaV9e4QvXBKVcPh4q//eff6j4SAGGE2TeLS5vfKMMbYJpLUXTcIItF+e?=
- =?us-ascii?Q?ZFMhhAE+/oCXHrZlWlgXUpZvuFpkz4DeRoxk893iEoZoJ2+iInOYC0SirXjR?=
- =?us-ascii?Q?a0FW0MkHjZz49RgC6HrhYePyKBBKg7T6jcPs03VS0/BXxTZHJO/zoi7YHGDk?=
- =?us-ascii?Q?JoTJdFG8wMwMVHqkA0RL4EHQsqQXRgZFWqvrpKyQfF40V7vH5nGh7fQq1F+9?=
- =?us-ascii?Q?1ttddjQu9JU1lHvccnqv1TgBOF3WizSiY4NoWhdMy/uI6tEByewzneoxvW4C?=
- =?us-ascii?Q?FpLCKIx7shZf+lVkiT4pXzUgxzTcWqQMNvLiZ3cqlaqc5GCD5v0KNXGhAMwL?=
- =?us-ascii?Q?SQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a43fb57c-67d7-4626-dc64-08dda40ed1b4
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2025 08:56:11.3144
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8NwnvGhTPxuYPrlb7QM1HWgvyqZK+MP7jcyaFPV1gXMQKsJTPn6uavsw5CPp1Xr0FX9ndPoqUosg43STVmyxUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10342
+Content-Transfer-Encoding: 8bit
 
-Hi Wei,
+Variscite has updated the Ethernet PHY on the VAR-SOM-MX93 from the
+ADIN1300BCPZ to the MaxLinear MXL86110, as documented in the
+August 2023 revision changelog.
+Link: https://variwiki.com/index.php?title=VAR-SOM-MX93_rev_changelog
 
-On Thu, Jun 05, 2025 at 02:08:36PM +0800, Wei Fang wrote:
-> The kernel robot reported the following errors when the netc-lib driver
-> was compiled as a loadable module and the enetc-core driver was built-in.
-> 
-> ld.lld: error: undefined symbol: ntmp_init_cbdr
-> referenced by enetc_cbdr.c:88 (drivers/net/ethernet/freescale/enetc/enetc_cbdr.c:88)
-> ld.lld: error: undefined symbol: ntmp_free_cbdr
-> referenced by enetc_cbdr.c:96 (drivers/net/ethernet/freescale/enetc/enetc_cbdr.c:96)
-> 
-> Simply changing "tristate" to "bool" can fix this issue, but considering
-> that the netc-lib driver needs to support being compiled as a loadable
-> module and LS1028 does not need the netc-lib driver. Therefore, we add a
-> boolean symbol 'NXP_NTMP' to enable 'NXP_NETC_LIB' as needed. And when
-> adding NETC switch driver support in the future, there is no need to
-> modify the dependency, just select "NXP_NTMP" and "NXP_NETC_LIB" at the
-> same time.
-> 
-> Reported-by: Arnd Bergmann <arnd@kernel.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202505220734.x6TF6oHR-lkp@intel.com/
-> Fixes: 4701073c3deb ("net: enetc: add initial netc-lib driver to support NTMP")
-> Suggested-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v1 Link: https://lore.kernel.org/imx/20250603105056.4052084-1-wei.fang@nxp.com/
-> v2:
-> 1. Add the boolean symbol 'NXP_NTMP' as Arnd suggested and modify
-> the commit message.
-> ---
->  drivers/net/ethernet/freescale/enetc/Kconfig | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
-> index e917132d3714..54b0f0a5a6bb 100644
-> --- a/drivers/net/ethernet/freescale/enetc/Kconfig
-> +++ b/drivers/net/ethernet/freescale/enetc/Kconfig
-> @@ -1,6 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0
->  config FSL_ENETC_CORE
->  	tristate
-> +	select NXP_NETC_LIB if NXP_NTMP
->  	help
->  	  This module supports common functionality between the PF and VF
->  	  drivers for the NXP ENETC controller.
-> @@ -22,6 +23,9 @@ config NXP_NETC_LIB
->  	  Switch, such as NETC Table Management Protocol (NTMP) 2.0, common tc
->  	  flower and debugfs interfaces and so on.
->  
-> +config NXP_NTMP
-> +	bool
-> +
->  config FSL_ENETC
->  	tristate "ENETC PF driver"
->  	depends on PCI_MSI
-> @@ -45,7 +49,7 @@ config NXP_ENETC4
->  	select FSL_ENETC_CORE
->  	select FSL_ENETC_MDIO
->  	select NXP_ENETC_PF_COMMON
-> -	select NXP_NETC_LIB
-> +	select NXP_NTMP
->  	select PHYLINK
->  	select DIMLIB
->  	help
-> -- 
-> 2.34.1
->
+Update the device tree accordingly:
+- Drop the regulator node used to power the previously PHY.
+- Add support for the reset line using GPIO1_IO07 with proper timings.
+- Configure the PHY LEDs via the LED subsystem under /sys/class/leds/,
+  leveraging the support implemented in the mxl86110 PHY driver
+  (drivers/net/phy/mxl-86110.c).
+  Two LEDs are defined to match the LED configuration on the Variscite
+  VAR-SOM Carrier Boards:
+    * LED@0: Yellow, netdev trigger.
+    * LED@1: Green, netdev trigger.
+- Adjust the RGMII clock pad control settings to match the updated PHY
+  requirements.
 
-I think you slightly misunderstood Arnd's suggestion. NXP_NTMP was named
-"NXP_NETC_NTMP" in his proposal, and it meant "does FSL_ENETC_CORE need
-the functionality from NXP_NETC_LIB?".
+These changes ensure proper PHY initialization and LED status indication
+for the new MaxLinear MXL86110, improving board compatibility with the
+latest hardware revision.
 
-The switch driver shouldn't need to select NXP_NTMP. Just NXP_NETC_LIB.
+Signed-off-by: Stefano Radaelli <stefano.radaelli21@gmail.com>
+---
+v3:
+  - Add "PATCH" to subject line.
+  - Fix wrong reference to previous PHY in commit message.
 
-I don't agree with removing "NETC" from NXP_NETC_NTMP, I think it helps
-clarify that the option pertains just to the NETC drivers.
+v2: https://lore.kernel.org/imx/20250604153510.55689-1-stefano.radaelli21@gmail.com/
+  - Clarified the use of 'rgmii' mode by adding a comment in the DT,
+    explaining that hardware delays are already implemented on the SOM PCB.
+
+v1: https://lore.kernel.org/imx/20250603221416.74523-1-stefano.radaelli21@gmail.com/
+
+ .../boot/dts/freescale/imx93-var-som.dtsi     | 45 ++++++++++++-------
+ 1 file changed, 30 insertions(+), 15 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
+index 783938245e4f..cea8d792328c 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-var-som.dtsi
+@@ -19,26 +19,19 @@ mmc_pwrseq: mmc-pwrseq {
+ 		reset-gpios = <&gpio4 14 GPIO_ACTIVE_LOW>,	/* WIFI_RESET */
+ 			      <&gpio3 7 GPIO_ACTIVE_LOW>;	/* WIFI_PWR_EN */
+ 	};
+-
+-	reg_eqos_phy: regulator-eqos-phy {
+-		compatible = "regulator-fixed";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_reg_eqos_phy>;
+-		regulator-name = "eth_phy_pwr";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-		startup-delay-us = <100000>;
+-		regulator-always-on;
+-	};
+ };
+ 
+ &eqos {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_eqos>;
++	/*
++	 * The required RGMII TX and RX 2ns delays are implemented directly
++	 * in hardware via passive delay elements on the SOM PCB.
++	 * No delay configuration is needed in software via PHY driver.
++	 */
+ 	phy-mode = "rgmii";
+ 	phy-handle = <&ethphy0>;
++	snps,clk-csr = <5>;
+ 	status = "okay";
+ 
+ 	mdio {
+@@ -51,6 +44,27 @@ ethphy0: ethernet-phy@0 {
+ 			compatible = "ethernet-phy-ieee802.3-c22";
+ 			reg = <0>;
+ 			eee-broken-1000t;
++			reset-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <10000>;
++			reset-deassert-us = <100000>;
++			leds {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				led@0 {
++					reg = <0>;
++					color = <LED_COLOR_ID_YELLOW>;
++					function = LED_FUNCTION_LAN;
++					linux,default-trigger = "netdev";
++				};
++
++				led@1 {
++					reg = <1>;
++					color = <LED_COLOR_ID_GREEN>;
++					function = LED_FUNCTION_LAN;
++					linux,default-trigger = "netdev";
++				};
++			};
+ 		};
+ 	};
+ };
+@@ -75,14 +89,15 @@ MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0			0x57e
+ 			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1			0x57e
+ 			MX93_PAD_ENET1_RD2__ENET_QOS_RGMII_RD2			0x57e
+ 			MX93_PAD_ENET1_RD3__ENET_QOS_RGMII_RD3			0x57e
+-			MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x5fe
++			MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x58e
+ 			MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL		0x57e
+ 			MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0			0x57e
+ 			MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1			0x57e
+ 			MX93_PAD_ENET1_TD2__ENET_QOS_RGMII_TD2			0x57e
+ 			MX93_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3			0x57e
+-			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x5fe
++			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x58e
+ 			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x57e
++			MX93_PAD_UART2_TXD__GPIO1_IO07				0x51e
+ 		>;
+ 	};
+ 
+
+base-commit: a9dfb7db96f7bc1f30feae673aab7fdbfbc94e9c
+prerequisite-patch-id: 2335ebcc90360b008c840e7edf7e34a595880edf
+-- 
+2.43.0
+
