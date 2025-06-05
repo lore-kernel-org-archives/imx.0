@@ -1,172 +1,132 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013060.outbound.protection.outlook.com [40.107.162.60])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF75F1C84BF
-	for <imx@lists.linux.dev>; Thu,  5 Jun 2025 12:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749127033; cv=fail; b=B3ypt+HdtWMyjVaqY12dwFvmNIUoWCgLqF6ikUjFp2kf15PSjhjL7biwWdQKz5YzVoPzRV+Ek2o4isKMMXsFHrfT9YxpCm6UzDvnwnEMPpwJwsU6kby+sfFCS1ZGGyeZVMD3X5Ebm+INEaEKLgECtyH9t/U5ImVuF1UwdIJwkFI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749127033; c=relaxed/simple;
-	bh=jdOfCKmja19MbpNHlDs34uzOgNuvb6QKQgtKLZ78ruk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Tse3CJRrVw6m5fHHRVf0uEdDXFrgyVsfTvmEwksjovdwzPRo92NE6IP1FGjmxIwQhxPrq7GkkL65fIgdBhj8sT+tISXPJOJL4I0IEXWJYz/t5iStQCpQmPS0UKDZVIC8s7AOi+sB+Qi8O7GPPAVoMsAnthiSbaIE38+sITB75+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GgAW+7X6; arc=fail smtp.client-ip=40.107.162.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0495E221F38;
+	Thu,  5 Jun 2025 12:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749127774; cv=none; b=eu50wPr3eAWPnRcMQ2EkNX2rMjdYdSoh41tnlJc0BVdDGLfywedLZVC61dFOZf+SD5OjKYCtWJ87O+sBtGDFuA3Q63bBYTmhmI6Ndt3LfSDkYBXTAVsKUycTFQWh+95KlLEe9jPSIyinmyDiqOYzySjGGKH+jaIVg7LJ2zTQmf8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749127774; c=relaxed/simple;
+	bh=wOyBq9EpZecYJyv7wq3MR1rHkJcXHOvYjUqxSvokmTs=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=Xhm/ERbKbdI5I8W2xHWNvjFjXT5SD9oofyAn5crubAuGvNnvrDLipbnDb8YBIyKlMqYFjwgk6ds30GAycm6eae6VtkVNUPVDddGuRQ91aWXcy0BuRW6qEyGW06KcozkO5GHJUxI3AB+hTIV/qhRBfN64l0dgsir7I4QFSV/4w20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TfKV+Pmr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GgAW+7X6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FqPlSP/ipQatX2zl1fiVNMRldfA+5wPLIhDo5y4omkq38wABsK5HqrX1h09+Ie2pCoNMPXc7M+kqGaIiVsKeuGyd3KOgQv7ALCZNmgKUxcxdvovteeeCIjxwXHWcl5TqXAW2v53+BNxWwSk5O5EaUssh2lxV9B1U8kx8oB+FC2dxSVGMIXuHZVBblFlWzyhWp2ykR/pojeh3BliTBO5915KXLt/Z8xO4YFop4DkLjJFFhgTW9/2m9nwE0SmMLAzQm05o4szcQlK7Q9YLxG2mG304MtNRB2u+08F1GP6q8x0BdGdQXmnYQ7s/UUFXQvbyhZ7MgFFbkSLI1I8+ITfnKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E8DZ8bE+k5wtKL17805Hu9YSFfIpj6+zpaVizy5pBrU=;
- b=Ca1/k5Adl+y/KY3m+uItuz7MFa3kXNpBHpdTUOAxW9t0tF1s98ub6yIr4JO3XqY+qRC8lqHQVWp+MLH4vM5h7cZzIy2zMzt+ELmCJ0ed08GD4exrgEPi+YmE9Ji/jvFDXkx80h2pI198uIjwJ7DMnB27qxe9spgMb8SykS/ijwzeB4BtDX8pa8tkP70Gyr5qcFXjcHQ4cxSWzR9q/WQbzgYzyZTPTHI0hzKDp3y4ARw7FrnRG2mTfFs/m3ik4+YzSPx68yWK5l3vx2WIZV7ayCaZSvrBM68s5JkQDpu8Fn+mRVIn2ujOe9esgB7fylDKyPtMLJmeoUyn2qt5WamX3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E8DZ8bE+k5wtKL17805Hu9YSFfIpj6+zpaVizy5pBrU=;
- b=GgAW+7X6eWLEXab6TdbhF4nNQVWPq81S+9Uz7Ip9HYuzisyPvaXX4+mUSU1kirELzGevB/ZIl+aH9eTHhTu5mq9SDXCx7BCGrzlPtci70bnUMjx/RDS8fEtKJsHjg50Vc0u/GJ+C0eGjREKhmkiF2Zh6ua5OzSLff/d6n935sW1UB0mfxQsUPi1tyiObZdQxTDugPiMsWFxB7OLd2PrWRngSiMhWs3QN7mihb7rAKuVMGQFC+R++a5L/Rogx/z07d1nb9JQodTjOhhhxQsK9uCoPHHrYyw8IwhwPsUheIBNDGX+z3xBAO9zmoGpjjBAVHphL2CoI0/NJe2Jr93epwA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by AS8PR04MB8418.eurprd04.prod.outlook.com (2603:10a6:20b:3fa::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.21; Thu, 5 Jun
- 2025 12:37:08 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.8813.018; Thu, 5 Jun 2025
- 12:37:08 +0000
-Date: Thu, 5 Jun 2025 15:37:04 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"arnd@kernel.org" <arnd@kernel.org>
-Subject: Re: [PATCH v2] net: enetc: fix the netc-lib driver build dependency
-Message-ID: <20250605123704.iiavrsaz3pj4ursj@skbuf>
-References: <20250605060836.4087745-1-wei.fang@nxp.com>
- <20250605085608.dyfp6zy37c6i3qnp@skbuf>
- <PAXPR04MB85105D979659D1B8D753FC94886FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB85105D979659D1B8D753FC94886FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-X-ClientProxiedBy: VI1P195CA0044.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:802:5a::33) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TfKV+Pmr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E53C4CEE7;
+	Thu,  5 Jun 2025 12:49:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749127773;
+	bh=wOyBq9EpZecYJyv7wq3MR1rHkJcXHOvYjUqxSvokmTs=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=TfKV+Pmr4EFYF/h1fgPP3YxemfqOZpw0nMbXRgxITIFZqso5TKk+Hx5jlEPHLyuxt
+	 3mc62gPFkfv23qGaYPR+uvCLsKbTCFGzaAEgdShaPBslHe76A95rzyd3wjsOu+Wrls
+	 zbghj0o+6XGS2r4+wSocF3xWXtaow9AkfCk0x2J9IMFLPCZoscSohWBmJX1AC0X3Yo
+	 VVU8OWdUUUI/PgCUkNtG9PInP4pjTJ2lkql8HaUqm98hk9jGPiosrXKo+RGbT8jW5T
+	 jUut+9pTd8famE37mdM/khYhJdXvmnBxz98WJKPCCG39In05ee+3moUlePAaz2gdVK
+	 I4sKpERPkZ/og==
+Date: Thu, 05 Jun 2025 07:49:31 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AS8PR04MB8418:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4326a772-3d9e-410c-323a-08dda42daf6c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?4LgqS+0EFj7H+428xFde0h8VBIppad05R3jXtPkYcX5wi6XJhMopb0GYLb1w?=
- =?us-ascii?Q?nNUQ0duk62UZZf6HeEGPML5wGMimBaPFxW3Nl6wiv8LvCT3rsavUw+RmhzcT?=
- =?us-ascii?Q?CN8945OcMd8H8H1kyxHiM2g5P3kU/ApND6TgpoRztBgn7YMNzrHYInACZjrr?=
- =?us-ascii?Q?VDl+kg+i1ATKA/kqkQ+NB/2m1vmxKRRi5h2YZHFGTnTtCLFHZQoR6EU6/FPU?=
- =?us-ascii?Q?pwvB0/q7dcPzP4Vx1O1t56eh8QNx3ZD0G2NjFx2lDlOX9WKM8OWQNuDUIWnK?=
- =?us-ascii?Q?1Skwc/+mJaB/MNTbTKYg2PYwRPXg0+ID43xRmmXk1ymmPTT+m6YWs5oaUWuw?=
- =?us-ascii?Q?gWn9DD8OfYqbsbIZof7zHN8OeuMYhjEOlrCdrW4xji3NFSyqZWbjowtOA92m?=
- =?us-ascii?Q?op5SxrYkwtXWm5FzRvpd5VBHnd1ThKD/8G2iSTkUslqQbZGJvmhrIMu6t2ey?=
- =?us-ascii?Q?nZ31+bU0a4ZDHCa0m6PgxGhP/u/O9hruCHIFifEsm3i0numW8C2wEI2V/L5U?=
- =?us-ascii?Q?9pPczi+pSR5dd6Vrah6pTa8PG2L4nXco1b3u/m/dW5yo7miMe5W3M5iJDjCA?=
- =?us-ascii?Q?l8tkXx8sBYv/fKbhQmT/C7Oxow39D3T/7ke9ZCi/1luN/m2OtFUnOZfxACzW?=
- =?us-ascii?Q?pxF0JKcXURMtCdNIg0g5uPJIYOtgjKksAtktDYCrz/8v4ONGDLH05Q9p6QZp?=
- =?us-ascii?Q?kYPI0ZL8UaHdeUIGpFA1AS8Sn+ZmTqCqtPKIhDT420HGOWPsD47o/9bgmsUt?=
- =?us-ascii?Q?MDWWTk1yZzR7Tly5Wg22rq5ZrXzm9LIw9zi065mVGBtstf48RSHD++wVHtaY?=
- =?us-ascii?Q?syo4jVighL5TibEmyQf4Dog1DjeIEtx80HDiD/sxQEOgWYtvLUqlH4GHVqIH?=
- =?us-ascii?Q?TDDg6vCbr9m130P3tl6MEa6BNIw3ifLt6X1M5snuGw4L4dmFYS4L37bE8Luf?=
- =?us-ascii?Q?OsMfkexQLfvA47jHRsdcxPtsoO5qj55B3k4MfZjw2fjjgQ24ukFjj9Gxu5v0?=
- =?us-ascii?Q?gqa/wFTp9sebMW7v+btvZ1olaEawVN6V3kP++/bEc+I6CZ42iBZUhRXtFD0I?=
- =?us-ascii?Q?VaA1x138WPwDu6r4YBh9LdhD5qBqOjZj3kF329k6lxwEhEIp7t7x7HzAQcfM?=
- =?us-ascii?Q?tPVrITdmcg8d7DyaX165qlIN6+ICdY7USb1lc8RK2YAWoR1lh6LXr+MggOgd?=
- =?us-ascii?Q?uDZfKOWPZCbFGhFmLGXLYyakLFZk/zOmyX4h7ufj0j5n2H09ACUZhl1VlWmD?=
- =?us-ascii?Q?mn7lwq4toBVuSn08qLxEqd2+uJ6iyR9s4AuPhIIK3qm0AYV4KT2hy1SXZf/9?=
- =?us-ascii?Q?qosBrBCOXECcSbTJRoWVV6N/iuKWvGu7jDkj+k2C8nKd1iXV2b+zgLEc1ORX?=
- =?us-ascii?Q?hSdWA14F5u9LgEioIRkxsUlnvqAvu7nuclFtAsOzcBd1f0zPihiITULL7uNF?=
- =?us-ascii?Q?WIdspYqFyMM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?oNh63QqW5f0IJ+OlP1B7JGLQvQmKN4gBmNcqMtTsjDw+6Zu4eWiudZPJMzy2?=
- =?us-ascii?Q?6xEaPUrBZXhEY8a4Mg5MLsQAsTXKX1VkYu3s1mhDdoDOIpDnLRmmFPkBoGPx?=
- =?us-ascii?Q?xwRPtat809RLq+kn8Bn54ahqOzA2W45ZPwyz58vfvAXUHaOVIXPfDCNiJLgG?=
- =?us-ascii?Q?wkeCkLOl5+vg+U3fTF00ErUCWNnPHNLh7usJJ8+Tt6i1Cq3ULKOuWe14OpyR?=
- =?us-ascii?Q?JStv6sBVHNxfv6X76AJ24gbZhsEy0JJXhJCgGeapvYvj9ik6iEbbiExvhHW7?=
- =?us-ascii?Q?erQi7OR30AfllUOSB4iEpJ4OLh12FuTkMthsQ3CdBOHS1bogkbJpy/+dxXTX?=
- =?us-ascii?Q?zRbFCjq42b36T5qZOwgYuhICzfLtiYBPzgvVRYCacrBNLMM50hQ++pliE5dG?=
- =?us-ascii?Q?PeGuPI4tfeo2C9Nr68zM5kWoFwo5epraXj9T5pLW7VH2cX6BCDMC4qIZphJT?=
- =?us-ascii?Q?G93CfUfy/AmYVja3fRX3pXTwlbQrbu5+IeeucN9cko2WTFHmrArVIUgsGEgr?=
- =?us-ascii?Q?U2hhEmU7q+BHg31BAl2FL6UnO0sJQwSyOD0IgK4o77+IiE5908+yQJsarshq?=
- =?us-ascii?Q?8cgLn5hDY7hbzgypa+VF/HvsDr9IVD3iPN3rjbm230zl5+72GsioPu3Iz2GU?=
- =?us-ascii?Q?fPJ3pXb2w/cGLdGGjWzHLOiGWVG/0r8mhAE8kNBncRuu6pl8vdH4qfTDmZaG?=
- =?us-ascii?Q?gHM1pSirtV58CC0dwYO+ONrCrbHm7PNw52DZR6ol4HHIcoANFJHoLchlHQjS?=
- =?us-ascii?Q?WyS1iqul+2DkZBglZfnaagicZS5Z1ZUvegCIDflGUd/TTlbBE3BWETil6rQa?=
- =?us-ascii?Q?iR3Mig//AYTVyN8XrUAoy9rI3NNgQRXziiHVYPNvnbyvK1YPsMwuclo2fwQ4?=
- =?us-ascii?Q?b7i7whmqOVOn6INcLGG65CE3EDLNm3I/5j4KIdvgMYBI6s+G1HFLRBPu1+MB?=
- =?us-ascii?Q?44YWgyWsFmQp19txrRFCDlZbo4k+qWWNiZ3t0X98k0HGMmEqVYSOK07cFZzh?=
- =?us-ascii?Q?tyalfNP77GITDHazJwAx361PbByPtj8HzazMB4vIHfTJuh94QN32FED97MVl?=
- =?us-ascii?Q?3YjheYwls52bfb/n3tw/r/ltBMIWLMy2Sd1NyYWXAEiCLauYCAmaM93f7lLD?=
- =?us-ascii?Q?vHNTjlbGLoXWeHrgzGNfcSWsL52PZo/8RKwMOQGZfGTyoAEKZ0jFoQjDoWSA?=
- =?us-ascii?Q?z0FFNKJsZ4lniK/8YM3eSSUSfyXVpI4TBvWEN6NGaKgvMDkmbTW44CkzF28q?=
- =?us-ascii?Q?6Oz33K50zhl71P7PjhNPTCh5kxGeP+vrG6wcrZZ+xTNeeRnT26MPf+2zaZNr?=
- =?us-ascii?Q?9rTv/zSzhIF3JwwH9b5DAhooU1LmFDfa6onrJ8Tg9QXIxYl7Pf4voc89wR9X?=
- =?us-ascii?Q?BTgX34pOuHEo2ZHuo8KtAOzIDiDpVEeSS0b3RKjqtuC3lI6VnRaWnvtwaPhN?=
- =?us-ascii?Q?AbDENlaVzEDiMgsCk49UyugaV4BJgmhMzeJVqO4/NyGSyFbAp/D/Nsq7NmrZ?=
- =?us-ascii?Q?pzo1HuLeP7eVBGvjLPDMT7BNnZ0R6yYBaNhfo7V6OFn0J/txqpE+stmbn5Rf?=
- =?us-ascii?Q?xJeBodizs514f/TApE1ivAR3CFSLrkChBdP03R5Yhn2MSNLWddlDp3rL2bfj?=
- =?us-ascii?Q?Wg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4326a772-3d9e-410c-323a-08dda42daf6c
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2025 12:37:08.2162
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5UANri3Lo25yjeIhXAOk0TV1Qn7jcQf3jYjPgpx227RoQr2jKXncRTbgHViSVHCUqy1kY4mHyCUxPNwh+43YSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8418
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Ray Chang <ray.chang@technexion.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>
+To: Richard Hu <richard.hu@technexion.com>
+In-Reply-To: <20250605-add-technexion-edm-g-imx8m-plus-som-v2-0-db5a7bbe3c84@technexion.com>
+References: <20250605-add-technexion-edm-g-imx8m-plus-som-v2-0-db5a7bbe3c84@technexion.com>
+Message-Id: <174912725086.2341088.4909342714758146412.robh@kernel.org>
+Subject: Re: [PATCH v2 0/2] Add TechNexion EDM-G-IMX8M-PLUS SOM and
+ WB-EDM-G carrier board support
 
-On Thu, Jun 05, 2025 at 02:05:47PM +0300, Wei Fang wrote:
-> > I think you slightly misunderstood Arnd's suggestion. NXP_NTMP was named
-> > "NXP_NETC_NTMP" in his proposal, and it meant "does FSL_ENETC_CORE need
-> > the functionality from NXP_NETC_LIB?".
-> > 
-> > The switch driver shouldn't need to select NXP_NTMP. Just NXP_NETC_LIB.
-> > 
-> 
-> For the case :NXP_ENET4=n , FSL_ENETC=y and NXP_NETC_SWITCH=m, if the
-> switch driver only selects NXP_NETC_LIB, then the netc-lib driver will be compiled
-> as a module. So the issue will be reported again. And Arnd also said "The switch
-> module can then equally enable bool symbol."
-> 
-> > I don't agree with removing "NETC" from NXP_NETC_NTMP, I think it helps
-> > clarify that the option pertains just to the NETC drivers.
-> 
-> NTMP means " NETC Table Management Protocol", I don't know why we need
-> to add a 'NETC' again, it does not make sense to me.
 
-Understood, thanks for the example. It was me who misunderstood. In that case
+On Thu, 05 Jun 2025 15:09:40 +0800, Richard Hu wrote:
+> Add initial support for TechNexion EDM-G-IMX8M-PLUS SOM and WB-EDM-G
+> carrier board.
+> 
+> Change in V2:
+> - Ensured accurate `To:` and `Cc:` addresses by utilizing
+>   `b4 prep --auto-to-cc`. (Thanks to Krzysztof Kozlowski for the
+>   tip on this command and helpful suggestion from Rob Herring)
+> 
+> in patch 1/2:
+>         - Add Acked-by tag
+> 
+> in patch 2/2:
+>         - Generic Node Naming: Refactored device tree node names for I2C
+>           GPIO expanders, the USB Type-C controller, and the PMIC to adhere
+>           to generic naming conventions (e.g., `gpio@21`, `usb-typec@67`,
+>           `pmic@25`).
+> 
+>         - Removed Unused SPI Node: Eliminated the `spidev1` node due to an
+>           incorrect and non-existent compatible string (`rohm,dh2228fv`).
+> 
+>         - Minor formatting improvements (e.g., whitespace, indentation).
+> 
+> Signed-off-by: Richard Hu <richard.hu@technexion.com>
+> ---
+> Ray Chang (1):
+>       dt-bindings: arm: fsl: Add EDM-G-IMX8M-PLUS SOM and WB-EDM-G carrier board
+> 
+> Richard Hu (1):
+>       arm64: dts: imx8mp: Add TechNexion EDM-G-IMX8M-PLUS SOM on WB-EDM-G carrier board
+> 
+>  Documentation/devicetree/bindings/arm/fsl.yaml    |   7 +
+>  arch/arm64/boot/dts/freescale/Makefile            |   1 +
+>  arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts | 403 +++++++++++
+>  arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi   | 839 ++++++++++++++++++++++
+>  4 files changed, 1250 insertions(+)
+> ---
+> base-commit: 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
+> change-id: 20250604-add-technexion-edm-g-imx8m-plus-som-79adf0b397eb
+> 
+> Best regards,
+> --
+> Richard Hu <richard.hu@technexion.com>
+> 
+> 
+> 
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: using specified base-commit 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250605-add-technexion-edm-g-imx8m-plus-som-v2-0-db5a7bbe3c84@technexion.com:
+
+arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dtb: i2c-gpio-brd-conf (i2c-gpio): $nodename:0: 'i2c-gpio-brd-conf' does not match '^i2c(@.+|-[a-z0-9]+)?$'
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dtb: i2c-gpio-brd-conf (i2c-gpio): Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'clock-frequency' were unexpected)
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+
+
+
+
+
