@@ -1,180 +1,146 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011045.outbound.protection.outlook.com [52.101.65.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442341FBEA2
-	for <imx@lists.linux.dev>; Fri,  6 Jun 2025 19:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749236524; cv=fail; b=C56In70cs8PefveLMPFzU/MPY6ZnfWRB2VTaY7AHxAyKRqHJ1g2RsmEum5oGFcvrRBAUW2PoFG9QM4b4L5MCY2orva2LiHFSOcXtoTffNIcqUPcSJWholtqo6wTX38zvD1Dwu8e6LFAHnh601zADBBaW5NvW9CLaUjdHHwUCeJU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749236524; c=relaxed/simple;
-	bh=tA+ODSiNg4t12QQ1xIj8Y9YV7euFXzEKfZqQqTG+nxE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NV6W9A4D2U6TWYdBFJmE/nhfsX8YOusRKgY2cKJNLLIspbqHvMMl/baBTEYLljSU6vY+0kiuBfbjEANNDtjx9ZAczvPfVFXJXqVE4h2iAi3eZs0YP8oi5cF2VWkUrQb5WK4B1E05OBiDQ3wtlj/I/rOCbA14G3Gep8jNLurjyWE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HJYsrTMj; arc=fail smtp.client-ip=52.101.65.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36966201013
+	for <imx@lists.linux.dev>; Fri,  6 Jun 2025 21:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749243853; cv=none; b=Hwt9b4p2yYC2hhdSPuqRYDFKIqwdwKTRfF5DVKIB0YmIucHyabytvKd9DIMp84D6heTDXabVHxN/1RBU420cvanKBjeUoaqCVAZLDFqKldmvDMycGDKk2JEvZ9i6yIcROSXwEriZwPvhG7t/QhJy7L92b4GlKPMvqqh+1kUGyuM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749243853; c=relaxed/simple;
+	bh=1Xc1REoGz59kJ4M9DicrjznJxMvjS5pOb4T5OcmR7Qw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fmaDtooWY67NopVC6FMjaFNiAZYX+fqYhK609A3Zi0K1wQVa1QwMJUMyOTyDfTPSTHB/VLNN5lA6DEOkB9xD7/1HIXuSBNQCOgojbMZBwhMSe/dq89+Wg8dXbIA18VtSNELqdQvTyI+EgPsfqnVreYkwK9gFdmtjAuPgCzu4mPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=ZGekj6jO; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HJYsrTMj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TnLXImFvaRU13UgJrpNIrCdlmvn2Q/D5aooPXhW7yZu0kLRCdUe2bnHS0r+XEGVMzf5ui4cxYeWuI9/CvrUBD8Ud3KFFyvg7G9vwbPOzAnigbvSsHdDSet10z8aVK3lzThrJ69kmoWzkMupXELIwNPntcNx1DhTcNda/U9qG57W2kbj0Stv07AiaxVHZ3WZhi42xQFkREP1vhs2p7NJDk2jibZGuyWOhmBy7QAw+Mg9udlgP0Ug/T9CLt1CajxeqloYqLhu7plpNmcS1XNHXLBZrTqbxu1ww9JmZeLN0cR7xycxJJRI7GTa8LMeCRtn2RLKHy1dp0dklTZwNNQrK8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g1tLZZIiKLQv0qjAh5AVUEgiz1sOq215XU2X7u3Qm7o=;
- b=eqi4B5GmZDnFfdz9vfa+CNaOH2ChcItwb/GkzrkSZyL/6OOz6fPFGY1VGv2VXztg2mydGBQhv1f17aoZ2agvlPFGL9E4k6QctbswX7bDj1GE2nUISPSE1RJFXycxngCk8LUsVJWo+8m+UDdyeqJhhsoPABTo6nE17N+3PjZrbs2hReodKGGX35a9d2zE53RnOZZTfvNvpT7k2Xp7ZihklNAA649dyJuxWB2hKo0RI7sK3sa1J5sw75p0XRpcRJNVr2D2wN86a8UX59YGH4yEUi69ehaw2ihEFIfi9LujzEZydiZr5XIjbTRfbX+UG28KWtol2nO82gLM9wsAB+RLkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g1tLZZIiKLQv0qjAh5AVUEgiz1sOq215XU2X7u3Qm7o=;
- b=HJYsrTMjPmqGZ3vyyAggnqdJiEgYB2r6Uium0D7WDYHnMe98q9JiS/dhId13+KBAUOdmAPR6+/pY7dq1Zcu8P6BaQKrI24uSgNnKTlhHKZq7Uh+BemI5/SVgFylmbfxPHb7ueJHNBJPyeoVl3YKa+LqEmDQZpiXihqfHx6HNX73l3Br3fJNxYUunhbXvApzK5leCtxuWtR3B+KU8n30IXNnVZVN5NgwyoeutXGbq6Lkii4E1fv4IabQaJZWjtTd+PlbLgyyV2kuhJ9gz5CHePR50aam6iKch7tY+0b7x/9JpMluv9Filbq8NEWCB8g5MKwkG3WyHvMEMvpxdLot1tA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU6PR04MB11087.eurprd04.prod.outlook.com (2603:10a6:10:5c2::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.20; Fri, 6 Jun
- 2025 19:01:59 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8769.025; Fri, 6 Jun 2025
- 19:01:59 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v2 4/4] arm64: dts: imx95-19x19-evk: add GPIO reset for ethphy0
-Date: Fri,  6 Jun 2025 15:00:44 -0400
-Message-Id: <20250606190045.1438740-4-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250606190045.1438740-1-Frank.Li@nxp.com>
-References: <20250606190045.1438740-1-Frank.Li@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ2PR07CA0007.namprd07.prod.outlook.com
- (2603:10b6:a03:505::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="ZGekj6jO"
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e81877c1ed6so2437402276.0
+        for <imx@lists.linux.dev>; Fri, 06 Jun 2025 14:04:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1749243849; x=1749848649; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u5BUjHtvSQa2fwgei7fhihebHAmQMvtk7aJVJVyEqtY=;
+        b=ZGekj6jOmT8Ew22TE6jdzUZ++uWN8ek3QHrYIroMGSq5/vZUswPBOjM0oIIqGGO5pY
+         8MNiqZgbXVDsUcOKLprsQDej6WLnq+Akn3tNw1a8x/h52qhreogRMRsLnG/idmndJpLL
+         SPXXGuUXOYSpUpZbJcoDEihUymgJRAWVDL51LDcAmQXpRVJZsXFqSsNrESnmcDdglecJ
+         giEbEts+Z8iSP6WqYyDKbDfb+MK+muX1s7fWItifXLJ1qqhXwxBMvODAPLg+aHtCWNIN
+         iy9EoVsaqcwr4bgM7VDJ4IAWA+WguuGbgdT2MAvqIC2IYVbySRZ+3e+bp5492fzbr3zh
+         ZDVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749243849; x=1749848649;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u5BUjHtvSQa2fwgei7fhihebHAmQMvtk7aJVJVyEqtY=;
+        b=w7UTCkmxYyc3ODgtdTxqF5qQlDIO14fUjjxLYcPyeXwRmyA3SyIbUXFsAplz0axvLP
+         0atj/UTGXfFWNbHxtNp0cFCQ2TYiRL7wRZtQmBxsEA88tLbOqVH9Q4LXpvBeJ1evNwzF
+         Gn1nkM53HA8qFri7d85awU+YA43qzQziVcyi26Y09dsxoaI+vH7V9XIfAqzscapHHMEW
+         5oDQukfB+IC45/9+LkkZE7WY+p/8jmoRVCfjrOtEZ01zWZDLL3/UySTKWG86G6vO5+qs
+         ISThtTirMXMatR+2ja21CTDxvlqjKG6JnJWl/0GKqaSmRt5Gs8Vc40YIbORsB23cnMoe
+         qsxg==
+X-Forwarded-Encrypted: i=1; AJvYcCWp4MgSGLwVaoswuiJrAhAKCDjoWZgHSr7Tzuewab14wZtQ7Qz/eTeLNgOgYUr9nmOYeY8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwHGUIan45R/Ieve7E/7TROCkUWHr4pnQHm8usCwC0tRJpohRrv
+	6jVa3Rva2gaqhkCE4TW7K3pHpZg4v6SRLv2Ydvb3o+YzOKJ4Z30he6Z4l2YfcA2yml+KpaYAgUs
+	X1h0zCdSI9rNJri3V/mOPD+IDxZQanOW9AkOmR1IsUw==
+X-Gm-Gg: ASbGncvihD3yKPEW29EwIGPc7yTNbKSU7bZODobvRpVcwH0YQlo6NqtKvW7P1EOnRUI
+	i/rMsAZfgi3N4yYU9A9ukYNE+082g2frz9+3rmwdOdpQMn2Ao7fHH1dYAWiP5nlL+sR+VgifNZ5
+	Gpxy/mK0B4tvliwbuJckHAbU1duk/Ji2G8
+X-Google-Smtp-Source: AGHT+IHz5Vh1WV9nsY/ZJiTiB1W8ok9w5HzbkMh2HaPQU1ew8kA+sOX9MHLa7aQ/uKATj0C5Wdv6l/pIEuTUkbDn4co=
+X-Received: by 2002:a05:6902:138e:b0:e81:566c:3085 with SMTP id
+ 3f1490d57ef6-e81c0fc6b57mr402062276.1.1749243849237; Fri, 06 Jun 2025
+ 14:04:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU6PR04MB11087:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9337426-978a-4742-431d-08dda52c9d11
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|7416014|1800799024|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ubVzq+rRan7gNRm7f2KAT95cpTN2rzgXKo+RdQrmjDj9oVWM5ZcCyIGtMtUD?=
- =?us-ascii?Q?8ThSil9cEC2I7qxpywaGzJe+zAffP6miFPJIUkcOPPBQ9w35nTjPdWJv/MzM?=
- =?us-ascii?Q?NIRd3LzMsyxmSv7xfioNKx0ROopbNymQIgrFyupkYnUJ9WMGeNtzVTwTw+mg?=
- =?us-ascii?Q?7VrNshvaWQsDSoDYwNATG1HIo83cgh4sXVMteibo1YO9mIUwsZACc8DmPDH4?=
- =?us-ascii?Q?tARQRv3yJ00KGCxf6T8AVXqiDkW77YkowUl0l5CPhil350kkO0EqHjCTYpCJ?=
- =?us-ascii?Q?7m8V7jGZuejV9z1wSzpnGzJZSAe9lAFC9PnvBuR0lc2f1/7MKYJCI6u9vUZ8?=
- =?us-ascii?Q?Lz3shbLTHufYPlJcdn9qnP1h25ujcZoiVUE2+HvNDfysSTI0u+gCYCSmk1JW?=
- =?us-ascii?Q?EbHIUwUnFW9iId/+RM0RluE+SRQm/byGyzjFGKljtSW37XaKDF97zOFCQrkz?=
- =?us-ascii?Q?vGPFDFzUSEzy4ec3psD1NgZTD5grgYNkE+xCE3zD1J6REVofz9uREmfZiZAe?=
- =?us-ascii?Q?SXsAafKzUsp2l68JVgyKpJFPVW7Y5/fZoXYE2I2cfeyC+X5kzFVmnsEnFh+7?=
- =?us-ascii?Q?nbcoFxzaTbDw5X9HkubvPstK46whMAN260vyf5mGLbjoFd2Bv4mANgEaAApv?=
- =?us-ascii?Q?G/jQ49D0BGDaQRpcGHZr2zV1JDw66983z/lYoNwwGT16qiPHDRYR38qZscTt?=
- =?us-ascii?Q?7xEmCuTTTg8uD+qhQ+EJaFiB69BZ/yrCWpTFWA84LyUCav1Zu2FZA8vD+THW?=
- =?us-ascii?Q?a2EYOEEX0dZaJUprdY2a6TKSHaGmesi+1cdsXq+NWMuSM5SE2MGzbmiYwe45?=
- =?us-ascii?Q?8I1PcEtYKWcZOoUGh0N165dxN5B3zpA0AV3/Q81k3WabXARN61rE9oxqyFWq?=
- =?us-ascii?Q?ZWrMFlJBF2kge0kbKdbI0YE0PLO2+zsxaAVZflQDjGNJBENUn4kg5a5rcysO?=
- =?us-ascii?Q?qqRt1hsSvbXX4qtFUiT4saA5bUjVCP4XDr7ghKVcV9zVj4H2fttNtP4a4mTv?=
- =?us-ascii?Q?V/wua/nNIbXQ+S0h9ZXk0wSg9MN78XLf0mLZ5g60rSdacwd/iHyw7Xp3Ek/s?=
- =?us-ascii?Q?zNY8iegbaUXv7mFyj0lZHgQ2uzeWb6tgWcRnx7rT5zOVjw1sqgsT/+CUJcqL?=
- =?us-ascii?Q?GNB2AUCLxcNuQjCz3obyyCBbV0eRpA5ORoyzxjFm2YAom9asUdMONe23qabE?=
- =?us-ascii?Q?QW3PIpKbINM2wir2293Au3XiTms7FEZxxOQvUxhAJC5AicRKcn0JPFcCxVer?=
- =?us-ascii?Q?+hv0R2ocXKaIUJldKmeI/JZJc+U8MYBebCUo0Bq8VLdDFksDD8sPeuwc5FWG?=
- =?us-ascii?Q?92K6yHS7tS1P11yD89Cs+MOgw6lC9j0lMzwEwK1RLrf5PDmlII5K+LvOyebQ?=
- =?us-ascii?Q?M0mqpn0/+iu6pRLYun6Vuvjmdv+id3IjIkhhQl3x7Og6PTlm3T9DYkJ1hpjh?=
- =?us-ascii?Q?WAmsTtrh31ob/pdoOnpjbqC0G97xUF6Rbx6eJ13qDm+XfBEaIRnS6oX/0L8i?=
- =?us-ascii?Q?Sol1xSNnILf1qUA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9fem/prTrlRykVVRgSH3OZ+3dglviSMarqZjV4pcowdrDVBeXNzoi2C7X/jQ?=
- =?us-ascii?Q?3FGuXmkHys7asIFpCVyQnOPXKxrUaLdyT/5QiX6klVUREczxJtBV99AP38Cc?=
- =?us-ascii?Q?EGekH5hNxF60+4V/nxy/CB5qqNEQravV3TGo2ifqiX7KSvo2qpHzr81iit4z?=
- =?us-ascii?Q?iKeTfelV5vIXGywyft3iR+s8qh70sXb5BM53LvfEenj3/hB6u2VDacbjOilk?=
- =?us-ascii?Q?vBpN9mSf06cQl+OMeXk09OCi3kiMs2yT262zI4V/UHEfYXxgLw59y1NZ+Vcj?=
- =?us-ascii?Q?peIu5wFHK+GVQxyziVyVuYnFwwNOEb9Qg+p0x3/U/XzgRlWp4JT0Do0BRtD3?=
- =?us-ascii?Q?zowhyYdv+O1ryIn8iLp80uSNO7H9HbfFJ85JyOa7SE+n1hXIXdqX7v0SMXxp?=
- =?us-ascii?Q?6aO2H2OeC/F0/mR/219VhSkV+vzJR6GfSzFxLmGkLpRb/CgCR4lhgq93lLCf?=
- =?us-ascii?Q?XXcsKRTuFfSeomE78YkyAiJNvogR3fi7ub0P4lCb/1ejyd86XSOpWgjqnlSJ?=
- =?us-ascii?Q?ZWTikkQEDpC2ZpD8ixR+XZ7M6Igsl/69v4AFtFoOIeNmLOgxBZBbmec4z+NX?=
- =?us-ascii?Q?1kjmMAtiu3fQwk5YIxGIPddXVrl2szhuFeal75PM+JBAtfdawfONldD2emMP?=
- =?us-ascii?Q?eqrlTkKNuMFLwLAO1YOaAD1cgCW7JK742ZsEdQSoxOS3SkojlG8Ndz1iTq4D?=
- =?us-ascii?Q?yp/cuC8atB195xmRz23uupXHNwbV41fWUxchr+QS3hTYoyWLPXDL+EuKnTeb?=
- =?us-ascii?Q?ez1ycC36D1Ab8aQUhMfLPkN3ItHX7eh0A35ctcbP7K5EM5k0NQPhtg7aIGYZ?=
- =?us-ascii?Q?j0QYuqJVUUM5OB+GaTQzisiTHZA2zgZYvSLpfHNOTvluR5Pfof1kg9CG5tYs?=
- =?us-ascii?Q?HrncxU+HJf9J7MqXR9Cwy+SL/4hjrzL+whc/NhB54gOP34KUWDlRmZ0SIPWV?=
- =?us-ascii?Q?9F4UsVX2ZBIY64uA3x6W9qtecYczClCqPYCGqlTjy7FFHKs+QUtSW4pQ10fG?=
- =?us-ascii?Q?xW4eArH+aX1YgLQrwa7XKSKeKsNy3N3NhHHyPMJW40Xu4CDtckiuqbwKKLkH?=
- =?us-ascii?Q?5ZMq67Of7yL+LKxZOovtkjOyZDBIwNY/t2/cks382XLP80bohdtkuHNoDTS5?=
- =?us-ascii?Q?EH7UJ87JMw73sh1V/you1HB10paujNPdql4AHwVsEi8RrSN9VmJH5wTgKsqr?=
- =?us-ascii?Q?CkxElRwycUKnQI/Ejjt0PtS4ws7gG+uPsiYYV2qWycYPpJivYVI8WB5+bE0g?=
- =?us-ascii?Q?ommZd5Cj5Y8oCF5umFplMYTfHKPD0OJsBQtTSAwHSyTMQMzYbfd5tn1W227D?=
- =?us-ascii?Q?56KPDPiVCgIyx5BTwIaLRJ4QZYOX9dWVLMN9XF+yqKrBX6fwdlJsAh3gxKVS?=
- =?us-ascii?Q?63wK1PxC9fqhbGwv2AiyRe3kMtK0FIf61sJVEZsQTV3clLr0iKTUmnbhpRvJ?=
- =?us-ascii?Q?ma6fajmSTWFcV/9oocS1UrwwAtkDb+Qu8LNUGnEsbD/+dbp78+j299UphpAP?=
- =?us-ascii?Q?zT/bsrti9N9027/VJ94i5JLa+efdedrWdJMeCwcF+KGS/nNbqHPyUdwnPkWD?=
- =?us-ascii?Q?kmJVm/B7Kn0rNjIU7Abjf/sY/xnQhLg9SmmFiCOx?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9337426-978a-4742-431d-08dda52c9d11
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2025 19:01:59.2350
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xMaHGPyg95XODH8N62CL/GIYviDuzDjTAMtAYNm0SZLMNnmAudG6/Q/m7EnN0sXsjeUedajLjw/U/iI/7j/pSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11087
+References: <20241126075702.4099164-1-hongxing.zhu@nxp.com> <20241126075702.4099164-6-hongxing.zhu@nxp.com>
+In-Reply-To: <20241126075702.4099164-6-hongxing.zhu@nxp.com>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Fri, 6 Jun 2025 14:03:57 -0700
+X-Gm-Features: AX0GCFsPTDn7iA-rHigWV1JSUeeni9XBl8RHjYyReEuG_dN3ujPTRzbBW4231V8
+Message-ID: <CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcMHDy+poj9=jSy+w@mail.gmail.com>
+Subject: Re: [PATCH v7 05/10] PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: l.stach@pengutronix.de, bhelgaas@google.com, lpieralisi@kernel.org, 
+	kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	frank.li@nxp.com, s.hauer@pengutronix.de, festevam@gmail.com, 
+	imx@lists.linux.dev, kernel@pengutronix.de, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Wei Fang <wei.fang@nxp.com>
+On Tue, Nov 26, 2024 at 12:03=E2=80=AFAM Richard Zhu <hongxing.zhu@nxp.com>=
+ wrote:
+>
+> Since the apps_reset is asserted in imx_pcie_assert_core_reset(), it shou=
+ld
+> be deasserted in imx_pcie_deassert_core_reset().
+>
+> Fixes: 9b3fe6796d7c ("PCI: imx6: Add code to support i.MX7D")
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
+er/dwc/pci-imx6.c
+> index 3538440601a7..413db182ce9f 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -776,6 +776,7 @@ static void imx_pcie_assert_core_reset(struct imx_pci=
+e *imx_pcie)
+>  static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
+>  {
+>         reset_control_deassert(imx_pcie->pciephy_reset);
+> +       reset_control_deassert(imx_pcie->apps_reset);
+>
+>         if (imx_pcie->drvdata->core_reset)
+>                 imx_pcie->drvdata->core_reset(imx_pcie, false);
+> --
+> 2.37.1
+>
+>
 
-Add GPIO reset for ethphy0.
+Hi Richard,
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v2
-- none
----
- arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts | 3 +++
- 1 file changed, 3 insertions(+)
+I've found that this patch causes a regression on i.MX8MM and i.MX8MP
+boards with hotplug capable bridges:
+i.MX8MM+PI7C9X2G404EV (this switch does not support hotplug) - no issues
+i.MX8MM+PI7C9X2G608GP (hotplug) - fails to reliably enumerate
+downstream devices about 80% of the time
+^^^ when this occurs PCI_PRIMARY_BUS (0x18) for the root complex
+0000:00:00.0 reads 0x00000000 instead of 0x00ff0100 (PCI_SECONDARY_BUS
+is 0 instead of 1 and PCI_SUBBORDINATE_BUS is 0 instead of 0xff)
+i.MX8MP+PI7C9X2G608GP (hotplug) - hangs at imx_pcie_ltssm_enable
+deassert apps_reset
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-index b6822b56374c4..48ca09464e832 100644
---- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-@@ -505,6 +505,9 @@ &netc_emdio {
- 
- 	ethphy0: ethernet-phy@1 {
- 		reg = <1>;
-+		reset-gpios = <&i2c5_pcal6408 2 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <80000>;
- 		realtek,clkout-disable;
- 	};
- };
--- 
-2.34.1
+In both cases here reverting ef61c7d8d032 ("PCI: imx6: Deassert
+apps_reset in imx_pcie_deassert_core_reset()") resolves this.
 
+I notice the sequence of events here is:
+imx_pcie_assert_core_reset asserts apps_reset (disables LTSSM)
+imx_pcie_deassert_core_reset deasserts apps_reset (enables LTSSM)
+imx_pcie_ltssm_enable deasserts apps_reset (enables LTSSM; this is
+where it hangs on imx8mp)
+
+Is there perhaps some issue with de-asserting this (enabling LTSSM)
+when it's already in this state?
+
+In the case where downstream devices do not enumerate some
+investigation points to them not being happy that the link drops so
+perhaps deasserting apps_reset when its already asserted drops the
+link and restarts it?
+
+Best Regards,
+
+Tim
