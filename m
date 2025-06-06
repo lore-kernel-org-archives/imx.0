@@ -1,236 +1,303 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFF2288530
-	for <imx@lists.linux.dev>; Fri,  6 Jun 2025 12:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78CD288CB4;
+	Fri,  6 Jun 2025 13:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749213668; cv=none; b=gF+UjEpm6rVpjCvEbnos4cjuGtRx7ReTLHFeWPNSrUmWxxFb//YQUmIShsOkZnO4CiPw4r2mGD3luB9w5BsjghIHmeMqW3jgF6Z/jGH/ZINk9PFK23lJrOYio+TFit60GU/gnSzwljSjQm0eC91JNDOKtBsOoT0W5+4eN5CdB+o=
+	t=1749216501; cv=none; b=cPzqqEIDs5qAeaIFPGQ9zW8JwyC/BF3xDjgorlowp43nnondjO8hHsxT2l7z8Xcie6lq4krZN2hKsHPQUYmLDKB32y+akXgBmMxPGURNsgGgIqoEOXwGwvQTiSFrrFoT5aiCz8wAjX7jHHAa0fuiGB63o3Kww1gRFY65FWX6B+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749213668; c=relaxed/simple;
-	bh=1N+xCDZJ/0b4qoHVQOlp9TIGFKwd8yBxgETiQhT7ccs=;
+	s=arc-20240116; t=1749216501; c=relaxed/simple;
+	bh=YgSQOMAF2b5WWx7Y03Wg5UQpUV9r7pptM31Y3UsFm78=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ByQurfljhR9C3YLEb9SJ6hGiaRGjZke5Q8Yuni3wSIvSdXU/53hzquBxGiX+WGeug5dwIliV0rXTv7r18LoMjqPMjQdlBjvYN3rY6RSKdk9/xdpb0bi5iG8dMnfUzHXZq3VsjC0I5a65Q6pozVnjj3tvS9x6RfidbtQP3DgpkxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=IjqZbUCB; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=B0q/Gbj9z3CzWVZLi94D32wir9/jDCLgjOH8XAN48Cw23qEyjts2ORFHEoEuOUdQlYHzdQKszXZvB4egorQ7WW4z/qUs4Upj76BoeHvqGSFs+hnmIFiWaoBsEex0kRs+TfmYvb1kceyYBhvAzT9wYKuF82sYydDwhbaAmlDvBtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rN8ugWxS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="IjqZbUCB"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BE0D211DD;
-	Fri,  6 Jun 2025 14:41:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1749213660;
-	bh=1N+xCDZJ/0b4qoHVQOlp9TIGFKwd8yBxgETiQhT7ccs=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rN8ugWxS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA8BC4CEEB;
+	Fri,  6 Jun 2025 13:28:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749216500;
+	bh=YgSQOMAF2b5WWx7Y03Wg5UQpUV9r7pptM31Y3UsFm78=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IjqZbUCBHbdcVQfrDKzQGdv2IuKbNQccf7oIsi9R1bvR9ykq2PAIYLRgiIDNtHKK6
-	 toGy0XWAjz4HHl6lvXBf0RmnGLhIoeBtpydCWlsjLWwmHl4lEBC29XwTc20Ik9ueL3
-	 sjkTh+GGLlqPMLVyrDea76VDk4M/tSfxpQNS02/A=
-Date: Fri, 6 Jun 2025 15:40:54 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Isaac Scott <isaac.scott@ideasonboard.com>
-Cc: kieran.bingham@ideasonboard.com, rmfrfs@gmail.com, martink@posteo.de,
-	kernel@puri.sm, mchehab@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] media: platform: Add user line interrupt to
- imx-mipi-csis driver
-Message-ID: <20250606124054.GC27510@pendragon.ideasonboard.com>
-References: <20250606121403.498153-1-isaac.scott@ideasonboard.com>
- <20250606121403.498153-3-isaac.scott@ideasonboard.com>
+	b=rN8ugWxSko1Du8wyQZwMk9xXJz45NS6VyiTEPvYWNMtRn3xY8qTPvAwSlEk5juxLy
+	 6aZGXIC3ShnkOldnw6uBPRDHwDCr7AaScNEqVzTAhis1wrPGmHIyJKBo1O0QNHvoVD
+	 3wXQe0LzAWWdUImGcdGNHaY22PMKAZN4kxLdElVYJ1cDS//9gSxO4wNqmHb4eYvV+d
+	 UOTGxpaE1NK4RJVae9px0rPmHbJJCiknMjP3LZrAmwbOcVhPPHnRmPv7K/3sXd7XYy
+	 pzBxDVWZWcpXStnkX+1psNpVfpBViZnAdvpo2s9+BBw2GqVVX2J7NRNCK8qklRc1o0
+	 KEPTwteWRB9Tg==
+Date: Fri, 6 Jun 2025 08:28:18 -0500
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: net: convert qca,qca7000.txt yaml
+ format
+Message-ID: <20250606132818.GA1246648-robh@kernel.org>
+References: <20250602224402.1047281-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250606121403.498153-3-isaac.scott@ideasonboard.com>
+In-Reply-To: <20250602224402.1047281-1-Frank.Li@nxp.com>
 
-Hi Isaac,
-
-Thank you for the patch.
-
-On Fri, Jun 06, 2025 at 01:14:03PM +0100, Isaac Scott wrote:
-> The NXP i.MX 8M Plus features an interrupt that triggers after the MIPI
-> CSI receiver counts a user-configurable number of lines. This is useful
-> for debugging, as it allows users to check if the amount of lines per
-> frame equals what they are expecting.
+On Mon, Jun 02, 2025 at 06:44:01PM -0400, Frank Li wrote:
+> Convert qca,qca7000.txt yaml format.
 > 
-> Add support for this interrupt in the driver, and an entry into debugfs to
-> allow the user to configure whether the interrupt is enabled, as well as
-> the number of lines after which to trigger the interrupt.
+> Additional changes:
+> - add refs: spi-peripheral-props.yaml, serial-peripheral-props.yaml and
+>   ethernet-controller.yaml.
+> - simple spi and uart node name.
+> - use low case for mac address in examples.
+> - add check reg choose spi-peripheral-props.yaml or
+>   spi-peripheral-props.yaml.
 > 
-> This debugfs control can be altered while a stream is in progress, with
-> 0 disabling the interrupt and >0 setting a new desired line count.
-> 
-> Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/media/platform/nxp/imx-mipi-csis.c | 45 +++++++++++++++++++++-
->  1 file changed, 44 insertions(+), 1 deletion(-)
+> change in v2
+> - add Ethernet over UART" description here back
+> - add add check reg choose spi-peripheral-props.yaml
+> - move spi related properties in if-then branch
+> - move uart related properies in if-else branch
+> ---
+>  .../devicetree/bindings/net/qca,qca7000.txt   |  87 ---------------
+>  .../devicetree/bindings/net/qca,qca7000.yaml  | 104 ++++++++++++++++++
+>  MAINTAINERS                                   |   2 +-
+>  3 files changed, 105 insertions(+), 88 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/net/qca,qca7000.txt
+>  create mode 100644 Documentation/devicetree/bindings/net/qca,qca7000.yaml
 > 
-> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> index bbc549c22aff..0e6bc3c87be4 100644
-> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> @@ -88,6 +88,10 @@
->  #define MIPI_CSIS_INT_MSK_ERR_CRC		BIT(1)
->  #define MIPI_CSIS_INT_MSK_ERR_UNKNOWN		BIT(0)
->  
-> +/* CSIS Interrupt mask 1 */
-> +#define MIPI_CSIS_INT_MSK_1			0x18
-> +#define MIPI_CSIS_INT_MSK_1_LINE_END		BIT(0)
+> diff --git a/Documentation/devicetree/bindings/net/qca,qca7000.txt b/Documentation/devicetree/bindings/net/qca,qca7000.txt
+> deleted file mode 100644
+> index 8f5ae0b84eec2..0000000000000
+> --- a/Documentation/devicetree/bindings/net/qca,qca7000.txt
+> +++ /dev/null
+> @@ -1,87 +0,0 @@
+> -* Qualcomm QCA7000
+> -
+> -The QCA7000 is a serial-to-powerline bridge with a host interface which could
+> -be configured either as SPI or UART slave. This configuration is done by
+> -the QCA7000 firmware.
+> -
+> -(a) Ethernet over SPI
+> -
+> -In order to use the QCA7000 as SPI device it must be defined as a child of a
+> -SPI master in the device tree.
+> -
+> -Required properties:
+> -- compatible	    : Should be "qca,qca7000"
+> -- reg		    : Should specify the SPI chip select
+> -- interrupts	    : The first cell should specify the index of the source
+> -		      interrupt and the second cell should specify the trigger
+> -		      type as rising edge
+> -- spi-cpha	    : Must be set
+> -- spi-cpol	    : Must be set
+> -
+> -Optional properties:
+> -- spi-max-frequency : Maximum frequency of the SPI bus the chip can operate at.
+> -		      Numbers smaller than 1000000 or greater than 16000000
+> -		      are invalid. Missing the property will set the SPI
+> -		      frequency to 8000000 Hertz.
+> -- qca,legacy-mode   : Set the SPI data transfer of the QCA7000 to legacy mode.
+> -		      In this mode the SPI master must toggle the chip select
+> -		      between each data word. In burst mode these gaps aren't
+> -		      necessary, which is faster. This setting depends on how
+> -		      the QCA7000 is setup via GPIO pin strapping. If the
+> -		      property is missing the driver defaults to burst mode.
+> -
+> -The MAC address will be determined using the optional properties
+> -defined in ethernet.txt.
+> -
+> -SPI Example:
+> -
+> -/* Freescale i.MX28 SPI master*/
+> -ssp2: spi@80014000 {
+> -	#address-cells = <1>;
+> -	#size-cells = <0>;
+> -	compatible = "fsl,imx28-spi";
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&spi2_pins_a>;
+> -
+> -	qca7000: ethernet@0 {
+> -		compatible = "qca,qca7000";
+> -		reg = <0x0>;
+> -		interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
+> -		interrupts = <25 0x1>;            /* Index: 25, rising edge */
+> -		spi-cpha;                         /* SPI mode: CPHA=1 */
+> -		spi-cpol;                         /* SPI mode: CPOL=1 */
+> -		spi-max-frequency = <8000000>;    /* freq: 8 MHz */
+> -		local-mac-address = [ A0 B0 C0 D0 E0 F0 ];
+> -	};
+> -};
+> -
+> -(b) Ethernet over UART
+> -
+> -In order to use the QCA7000 as UART slave it must be defined as a child of a
+> -UART master in the device tree. It is possible to preconfigure the UART
+> -settings of the QCA7000 firmware, but it's not possible to change them during
+> -runtime.
+> -
+> -Required properties:
+> -- compatible        : Should be "qca,qca7000"
+> -
+> -Optional properties:
+> -- local-mac-address : see ./ethernet.txt
+> -- current-speed     : current baud rate of QCA7000 which defaults to 115200
+> -		      if absent, see also ../serial/serial.yaml
+> -
+> -UART Example:
+> -
+> -/* Freescale i.MX28 UART */
+> -auart0: serial@8006a000 {
+> -	compatible = "fsl,imx28-auart", "fsl,imx23-auart";
+> -	reg = <0x8006a000 0x2000>;
+> -	pinctrl-names = "default";
+> -	pinctrl-0 = <&auart0_2pins_a>;
+> -
+> -	qca7000: ethernet {
+> -		compatible = "qca,qca7000";
+> -		local-mac-address = [ A0 B0 C0 D0 E0 F0 ];
+> -		current-speed = <38400>;
+> -	};
+> -};
+> diff --git a/Documentation/devicetree/bindings/net/qca,qca7000.yaml b/Documentation/devicetree/bindings/net/qca,qca7000.yaml
+> new file mode 100644
+> index 0000000000000..5258288132968
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/qca,qca7000.yaml
+> @@ -0,0 +1,104 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/qca,qca7000.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->  /* CSIS Interrupt source */
->  #define MIPI_CSIS_INT_SRC			0x14
->  #define MIPI_CSIS_INT_SRC_EVEN_BEFORE		BIT(31)
-> @@ -109,6 +113,10 @@
->  #define MIPI_CSIS_INT_SRC_ERR_UNKNOWN		BIT(0)
->  #define MIPI_CSIS_INT_SRC_ERRORS		0xfffff
->  
-> +/* CSIS Interrupt source 1 */
-> +#define MIPI_CSIS_INT_SRC_1			0x1c
-> +#define MIPI_CSIS_INT_SRC_1_LINE_END		BIT(0)
+> +title: Qualcomm QCA7000
 > +
->  /* D-PHY status control */
->  #define MIPI_CSIS_DPHY_STATUS			0x20
->  #define MIPI_CSIS_DPHY_STATUS_ULPS_DAT		BIT(8)
-> @@ -221,6 +229,7 @@
->  #define MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE	BIT(0)
->  
->  #define MIPI_CSIS_FRAME_COUNTER_CH(n)		(0x0100 + (n) * 4)
-> +#define MIPI_CSIS_LINE_INTERRUPT_RATIO(n)	(0x0110 + (n) * 4)
->  
->  /* Non-image packet data buffers */
->  #define MIPI_CSIS_PKTDATA_ODD			0x2000
-> @@ -281,6 +290,8 @@ static const struct mipi_csis_event mipi_csis_events[] = {
->  	{ 0, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame End"},
->  	{ 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC Falling Edge"},
->  	{ 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC Rising Edge"},
-> +	/* User Line interrupt */
-> +	{ 2, MIPI_CSIS_INT_SRC_1_LINE_END,		"Line End"}
->  };
->  
->  #define MIPI_CSIS_NUM_EVENTS ARRAY_SIZE(mipi_csis_events)
-> @@ -333,11 +344,14 @@ struct mipi_csis_device {
->  
->  	spinlock_t slock;	/* Protect events */
->  	struct mipi_csis_event events[MIPI_CSIS_NUM_EVENTS];
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
 > +
->  	struct dentry *debugfs_root;
->  	struct {
->  		bool enable;
->  		u32 hs_settle;
->  		u32 clk_settle;
-> +		u32 int_line;
-> +		u32 last_int_line;
->  	} debug;
->  };
->  
-> @@ -686,6 +700,15 @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
->  			MIPI_CSIS_DPHY_BCTRL_L_B_DPHYCTRL(20000000));
->  	mipi_csis_write(csis, MIPI_CSIS_DPHY_BCTRL_H, 0);
->  
-> +	if (csis->debug.int_line > 0)
-> +		mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-> +				csis->debug.int_line - 1);
-
-Should this become 
-
-	mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-			max(csis->debug.int_line, 1U) - 1);
-
-to write MIPI_CSIS_LINE_INTERRUPT_RATIO to 0 when int_lines == 0, like
-below ?
-
+> +description: |
+> +  The QCA7000 is a serial-to-powerline bridge with a host interface which could
+> +  be configured either as SPI or UART slave. This configuration is done by
+> +  the QCA7000 firmware.
 > +
-> +	mipi_csis_write(csis, MIPI_CSIS_INT_MSK_1,
-> +			csis->debug.int_line ?
-> +			MIPI_CSIS_INT_MSK_1_LINE_END : 0);
-
-You should also read csis->debug.int_line into a local variable like in
-the interrupt handler to avoid races.
-
-And you also need to clear MIPI_CSIS_INT_MSK_1 in
-mipi_csis_enable_interrupts() (when on == false).
-
-> +	csis->debug.last_int_line = csis->debug.int_line;
+> +  (a) Ethernet over SPI
 > +
->  	/* Update the shadow register. */
->  	val = mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
->  	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL,
-> @@ -765,10 +788,12 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
->  	struct mipi_csis_device *csis = dev_id;
->  	unsigned long flags;
->  	unsigned int i;
-> -	u32 status[2];
-> +	u32 int_lines;
-> +	u32 status[3];
->  
->  	status[0] = mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
->  	status[1] = mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
-> +	status[2] = mipi_csis_read(csis, MIPI_CSIS_INT_SRC_1);
->  
->  	spin_lock_irqsave(&csis->slock, flags);
->  
-> @@ -785,10 +810,25 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
->  	if (status[0] & MIPI_CSIS_INT_SRC_FRAME_START)
->  		mipi_csis_queue_event_sof(csis);
->  
-> +	int_lines = READ_ONCE(csis->debug.int_line);
-> +	if (int_lines != csis->debug.last_int_line) {
-> +		if (int_lines > 0)
-> +			mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-> +					max(int_lines, 1U) - 1);
-> +		else
-> +			mipi_csis_write(csis,
-> +					MIPI_CSIS_LINE_INTERRUPT_RATIO(0), 0);
+> +  In order to use the QCA7000 as SPI device it must be defined as a child of a
+> +  SPI master in the device tree.
+> +
+> +  (b) Ethernet over UART
+> +
+> +  In order to use the QCA7000 as UART slave it must be defined as a child of a
+> +  UART master in the device tree. It is possible to preconfigure the UART
+> +  settings of the QCA7000 firmware, but it's not possible to change them during
+> +  runtime
+> +
+> +properties:
+> +  compatible:
+> +    const: qca,qca7000
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +if:
+> +  required:
+> +    - reg
+> +
+> +then:
+> +  properties:
+> +    spi-cpha: true
+> +
+> +    spi-cpol: true
+> +
+> +    spi-max-frequency:
+> +      default: 8000000
+> +      maximum: 16000000
+> +      minimum: 1000000
+> +
+> +    qca,legacy-mode:
+> +      $ref: /schemas/types.yaml#/definitions/flag
+> +      description:
+> +        Set the SPI data transfer of the QCA7000 to legacy mode.
+> +        In this mode the SPI master must toggle the chip select
+> +        between each data word. In burst mode these gaps aren't
+> +        necessary, which is faster. This setting depends on how
+> +        the QCA7000 is setup via GPIO pin strapping. If the
+> +        property is missing the driver defaults to burst mode.
+> +
+> +  allOf:
+> +    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +    - $ref: ethernet-controller.yaml#
 
-The whole can be replaced with
-
-		mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-				max(int_lines, 1U) - 1);
+ethernet-controller.yaml should be moved out of the 'if' schemas.
 
 > +
-> +		csis->debug.last_int_line = int_lines;
-> +		mipi_csis_write(csis, MIPI_CSIS_INT_MSK_1,
-> +				int_lines ? MIPI_CSIS_INT_MSK_1_LINE_END : 0);
-> +	}
+> +else:
+> +  properties:
+> +    current-speed:
+> +      default: 115200
 > +
-
-I don't think you need to do any of this with the spinlock held as the
-spinlock covers the events field only, which you don't touch here. You
-can move the code after spin_unlock_irqrestore().
-
->  	spin_unlock_irqrestore(&csis->slock, flags);
+> +  allOf:
+> +    - $ref: /schemas/serial/serial-peripheral-props.yaml#
+> +    - $ref: ethernet-controller.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        ethernet@0 {
+> +            compatible = "qca,qca7000";
+> +            reg = <0x0>;
+> +            interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
+> +            interrupts = <25 0x1>;            /* Index: 25, rising edge */
+> +            spi-cpha;                         /* SPI mode: CPHA=1 */
+> +            spi-cpol;                         /* SPI mode: CPOL=1 */
+> +            spi-max-frequency = <8000000>;    /* freq: 8 MHz */
+> +            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
+> +        };
+> +    };
+> +
+> +  - |
+> +    serial {
+> +        ethernet {
+> +            compatible = "qca,qca7000";
+> +            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
+> +            current-speed = <38400>;
+> +        };
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index c14da518a214c..6416ada9900af 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -20295,7 +20295,7 @@ QUALCOMM ATHEROS QCA7K ETHERNET DRIVER
+>  M:	Stefan Wahren <wahrenst@gmx.net>
+>  L:	netdev@vger.kernel.org
+>  S:	Maintained
+> -F:	Documentation/devicetree/bindings/net/qca,qca7000.txt
+> +F:	Documentation/devicetree/bindings/net/qca,qca7000.yaml
+>  F:	drivers/net/ethernet/qualcomm/qca*
 >  
->  	mipi_csis_write(csis, MIPI_CSIS_INT_SRC, status[0]);
->  	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC, status[1]);
-> +	mipi_csis_write(csis, MIPI_CSIS_INT_SRC_1, status[2]);
->  
->  	return IRQ_HANDLED;
->  }
-> @@ -928,6 +968,7 @@ static void mipi_csis_debugfs_init(struct mipi_csis_device *csis)
->  {
->  	csis->debug.hs_settle = UINT_MAX;
->  	csis->debug.clk_settle = UINT_MAX;
-> +	csis->debug.int_line = 0;
->  
->  	csis->debugfs_root = debugfs_create_dir(dev_name(csis->dev), NULL);
->  
-> @@ -939,6 +980,8 @@ static void mipi_csis_debugfs_init(struct mipi_csis_device *csis)
->  			   &csis->debug.clk_settle);
->  	debugfs_create_u32("ths_settle", 0600, csis->debugfs_root,
->  			   &csis->debug.hs_settle);
-> +	debugfs_create_u32("int_line_0", 0600, csis->debugfs_root,
-> +			   &csis->debug.int_line);
->  }
->  
->  static void mipi_csis_debugfs_exit(struct mipi_csis_device *csis)
-
--- 
-Regards,
-
-Laurent Pinchart
+>  QUALCOMM BAM-DMUX WWAN NETWORK DRIVER
+> -- 
+> 2.34.1
+> 
