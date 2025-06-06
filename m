@@ -1,261 +1,395 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011063.outbound.protection.outlook.com [52.101.70.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0347DEEB5
-	for <imx@lists.linux.dev>; Fri,  6 Jun 2025 15:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749224832; cv=none; b=okd4sUiVKFJN6HJn8jYlGAGldqef873yWWpirn2Gy4YX482Lg25gQcQQFsGUn9Gm2EEKz6Plteik5QRwWAS7zW2sir8l8JR2IO3mAMDu5fPGPgA/uRqRU6rFFGpV3PMSXS6unFuH/CVIPnJj7kS1UOuju3MKugkJ9k5IeBoz3V0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749224832; c=relaxed/simple;
-	bh=RdiDBtVhuf4nlhpFoArx/0tGuceAeEnMRGYWVVGgEW8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=erewlyWpc1Rulb/zRuLDLBpm+06y9FqH/ZLF2NbRp929GdrAPZhq3wIxV8mKR3u/+86KN1fIf5A2Bd44xabet6jCMQZJnPsrA0YIFPnoWES7dYpunKSAcfqpBeEg+R6XW/XHUZgRlBo3DoztTnE7//KW0ZrpXazBC9Gg5I8kYF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=GphpJ9oc; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAAF2A8D0
+	for <imx@lists.linux.dev>; Fri,  6 Jun 2025 15:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749225098; cv=fail; b=soM5Lb76bWFbX2irbuCm5vbtxKA6Q0I890ueZdA/g48Gzr762CKLhDocRaScmUyRQbRuynOeuxud1UsbojKxgn51z3ZeHD0IF33pUPFAO4jVxfeq+UcGQk3ozzGe5wIUhwRXuOWedfEjv34+UKcJ86g+0BpSVN+81Dm+nuXqKDY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749225098; c=relaxed/simple;
+	bh=Z2nZxw7xlM74pEjcBNcRtdgv+G7nkPYLvLnnzYd7qKU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=VFDIadTY0q0Rp7DVUk9OXYs1NIQBzHAquS2yVuN5UQzodPU9qM+Lq08sjPTpqcf3HQ9E5iAeMtTdHuIgLhcDYz2pvR2tVOLzzQL/2d3nvEZKRZZFtKXIPgz0uOK5JI6AcFfx09ZDrt2LWfJYERGob+M829Yvgok9Lg/PdqWFqyY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jvK7vjnP; arc=fail smtp.client-ip=52.101.70.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="GphpJ9oc"
-Received: from isaac-ThinkPad-T16-Gen-2.localdomain (cpc90716-aztw32-2-0-cust408.18-1.cable.virginm.net [86.26.101.153])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0A74A8DB;
-	Fri,  6 Jun 2025 17:47:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1749224824;
-	bh=RdiDBtVhuf4nlhpFoArx/0tGuceAeEnMRGYWVVGgEW8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=GphpJ9ocRRaSKmBGaMe0GY9T6CO1Vr1c30fqd1NVudiCktufhnnq7f2rRPh2/hAxF
-	 8DvNnG5L25nYfAg8FnDOBMJXOQGZy9iAs6aoMq0rfQZIYt+XYxoJk9T+MMkiXM004e
-	 +R3mMgu+29H29kJnrlqV3LEhgSd8rdxh2HOlEZqQ=
-Message-ID: <8e950dd3c54a363d8e2d7252e3f3d93301076b50.camel@ideasonboard.com>
-Subject: Re: [PATCH 1/2] media: platform: Refactor interrupt status registers
-From: Isaac Scott <isaac.scott@ideasonboard.com>
-To: Rui Miguel Silva <rmfrfs@gmail.com>, laurent.pinchart@ideasonboard.com
-Cc: kieran.bingham@ideasonboard.com, martink@posteo.de, kernel@puri.sm, 
-	mchehab@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-media@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Date: Fri, 06 Jun 2025 16:47:04 +0100
-In-Reply-To: <DAFI37JD827I.KWPZ7XCTWPBD@linaro.com>
-References: <20250606121403.498153-1-isaac.scott@ideasonboard.com>
-	 <20250606121403.498153-2-isaac.scott@ideasonboard.com>
-	 <DAFI37JD827I.KWPZ7XCTWPBD@linaro.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 (by Flathub.org) 
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jvK7vjnP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tWonhWv1o7kQitC2W1FPbQg8B4jf5CpnOoCPsiYtFoO0ksijMDuMTmWLIVLEBxccqarAboedc+FmDcZSBWaGtyGzMOBrX4I8+cDFOqKkiy7T0t90Ljt7Y+Z6VH/1/uEIkAIrBQPijuwwEgiuTbqf/utoqSDlnKYiCewTb5YjQJe6bJTS6vcl/egf2+e4riXpFh6iTFQ0/J+RsbBYQ95y3FFixW6qfFqDyDYY6dz+fPVTYtbuMa7GQ76Di5SZDLb7WAUsn5b/Y7vW7a7UDGXa/mwalc+molMBI/DWlMF1omEjE4r8fxoWxa80kZgzKQDd/Bp7DVaz5eZ3d5mta5NAlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e1Mo5uKBiQLLM8CnQZ+YBABLMtKSGePxDMPREtCC8Ag=;
+ b=VpVoEXS0BKmTMMCYHnklSNFCRHVt/DlBnQLwTQfjuWsKpnlHr0X1tWm3Yo1DZdfox+CwZr8MyL/lA7GXg2zbj19XiC0+uwxZNjD0gqk9oK7eGo1b5DmrVaHTyfPDeyBfigCHMKONYW82ja8sI1paV7DREIA2DSeouxKzPS3M8lvnRWppNYbNzVuepMtoZzTGyFrFisSz4ATl5qvgd29qaLVEReD++KC8/9o7H1HCL7sF9ur/AhWqb598iYwTeuHgU8IjzWxhNH7WMzsOGxeffw/Y4aP2vP7p9D99tIhBSWM1tNnzqURixpP/6ASXE4/9lWUpCfAFXwR7R+SUJdeicQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e1Mo5uKBiQLLM8CnQZ+YBABLMtKSGePxDMPREtCC8Ag=;
+ b=jvK7vjnPTa8C0tDqpfA5Bs9t2xIVlYgtOcRe1yDQ59mG514Muj634DuGzvZrjcmmCR7cKeJpz685VjpBm7nSdTtyLmVyuhVkuADmL5PSTFWHDynvh0hF7kiCkNJhtDP+UhQCok3rANer0LikS2fdYmIlh/fwav9UAXvx5nzF47MBoz86jtiXxGl45HcBag5WPRwnRhMdsTdpsCTlt5coSlZCXchwR8MY4rADipUhz65hGz2xkmCCxp0hmKvWh+X7SYQVsoR2XOCvqD/nqIKylEgH3bsBR1g9iAniZ+3S9CziJDAYA0GhcCVl6aL5hJJBzMnQ1Px3zBI+MxonS+Sqng==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA1PR04MB10796.eurprd04.prod.outlook.com (2603:10a6:102:48e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.23; Fri, 6 Jun
+ 2025 15:51:32 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8769.025; Fri, 6 Jun 2025
+ 15:51:31 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v3 1/1] dt-bindings: net: convert qca,qca7000.txt yaml format
+Date: Fri,  6 Jun 2025 11:51:17 -0400
+Message-Id: <20250606155118.1355413-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY3PR10CA0002.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10796:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99339302-6916-4283-ae3b-08dda51201ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?T+WT4VZuTq9dBb7KNzD+KLMbiShbknNyt3rVcA8lpuUZQdYD7UR4HiNQ6fdP?=
+ =?us-ascii?Q?or+tENdEdbyOxHc+pYIqKP0T2kvtN94S5SeDKBTvX2drAt8V6VqP8DfePAFx?=
+ =?us-ascii?Q?mm7ttTi7fUA58+y2s3zr7tgxzvy0xt7h3EcAi2J/rffAWJpduQrG4hT+DYKx?=
+ =?us-ascii?Q?j2Oj4pqQNGesIVaio/+ypvLh/bnbGoqCufGGPRN4Pc5fUmOpckrKATNyXZIs?=
+ =?us-ascii?Q?+bOlGxGSME06bnfEWnj7q9sYw6JiJIejauSABp+u/vSQKc9mgIAFlfJsuLwN?=
+ =?us-ascii?Q?tOZ1GFoFa9DUBrwCJt91O3TUmXvB2GSUs32XSzqjb+aiK50SK8V+n0gInN5X?=
+ =?us-ascii?Q?mfeRv9Ts0nrKS5jVDRd4lUwiLmSCtfHTJOdf9EDrvuYS6dosocx0gal4VVEy?=
+ =?us-ascii?Q?1k+2iUPk2FQSRKyU2J8A0XYzssFcwEBzQg1IclOHRDnAff0BkzzApZlxLhKa?=
+ =?us-ascii?Q?xRpwolqCXxQxYItcXZurVclevwwIbpz8c5KWjCY6Qtg9AoASZtfesVTG6eHq?=
+ =?us-ascii?Q?MhYcR0o2RAohrC6/oQQgJZzMUbNpuJfirtd6gUBL33sT6/1CxrPSepT19OzB?=
+ =?us-ascii?Q?4LczT9RNNnSsGvOY6LJpdVinTF/3UBcnMXtmaEMa/fmu8PPsK0YOaxNhnoo1?=
+ =?us-ascii?Q?8bsPMbRzBys9vN6gv2pMImh0KRdIYU3fgVe0fjW5H1q67Ii4zYC5OOwa1gY6?=
+ =?us-ascii?Q?9GRYG/bC7ZyWRqh1ZZfAM2ndukTE0iP9p2dMeyNUWdXqxaXqKJtAVmIYfT4v?=
+ =?us-ascii?Q?Fl8D25mfDPIhNXbxtQDSTw2CDg0oMvSG7mu9R1Q3b2PT9ZlmqNcLJngPLdEA?=
+ =?us-ascii?Q?B2dDtPCiA8tx4tnWzZQc7jbvHsyqj6VPcgcoZb+AUFE7JrJw3s7G0bbYNi5O?=
+ =?us-ascii?Q?X0VVoumb6bDLn8GioIgkS4kTD7hk9F3pFGa/L3Z+ar7gh7YXVkQ01MqUYMY6?=
+ =?us-ascii?Q?JJUz82CUPrngjJQY0y6dg8XxCxRcxXgel9yGsI/hOFHSHTErFdCu/HrwxOju?=
+ =?us-ascii?Q?Oy7g8MU01OyM6vSZ+/gEc8GJ4BAHYmIeE0RWkOlPrrx/P6DgYh/4IHRyn0ZH?=
+ =?us-ascii?Q?4vnLgEzZmtaQTEgbkQw+Id//9b7JoFcn4p9cJLhYx2rVV3vstlnkyh1Lzpf4?=
+ =?us-ascii?Q?9Xe7kWtmQqkJz/xBSlIhVIbw/1/y+bfR36C6Vr9/0JqmuPYybAfXXZ5lbhiR?=
+ =?us-ascii?Q?aiV85DymMTLgycEKseviCOuvRVUtt2Bc6Ev2HdImipizJsqv50HlKQuATwkG?=
+ =?us-ascii?Q?12wex3aOr4I1H5xRLlHasMfVL9+73oENTmvj/+Ik5/52jIBKkklNqT5p1eCq?=
+ =?us-ascii?Q?lsaiXfmovcHwQ7a85OD1sGklk8LJrxXUcKmZCoGpjtv1woXQkROpqO57GYjF?=
+ =?us-ascii?Q?sP7Kr0oCI05ey2z5jEeb3ieLrXjAciW859w1wC8/T3tJhmkyThi800H9sXNo?=
+ =?us-ascii?Q?vidu4ikjCV/nFtRPaqywgMo+7XYE8yi6?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KtTup7c+xT5VGvGYn4RYh62oL3b4o9hWz+N2utWGbCahg1YhLeuBoI2hn3mg?=
+ =?us-ascii?Q?dP2MZAggHJKSEkMfeOSJpbouAd2mwMlgVxHyAQ8EKDGIe73aa7SJ8YoIx33b?=
+ =?us-ascii?Q?LJ4zZu/4D0b7Xnfz8T/KFQULCyMpXcK/VwuW7oSj6DlLdD9yDPRP1dGEfMki?=
+ =?us-ascii?Q?g/+y6A1f1EGalP2RiX0vcPNZtXXhSshh9Lob4Ou1y3byZKAlfOooFHlSh23+?=
+ =?us-ascii?Q?PIukWRVAKPUK7k7KVnbDucLhM3hvA7ZThX5V3gfQqfR5d4mltzdkSJNFe7Xn?=
+ =?us-ascii?Q?l6eIx8I/k7Z37QaB70jivoywIpMBP4Ygi04yk73dG+YRLbHwf8mkRvMXRln6?=
+ =?us-ascii?Q?I56gnALTx+RKM1V6SfhEUGz5mER9Pbjc5IWAusgNuy6Q5hLRWT32VrHQ0HPm?=
+ =?us-ascii?Q?mZ1n80bq+UuYnBF+Yn8MPj7Xz2jxRayEXiVhfIH6w4YgHN3gH+BAkzxVLNzJ?=
+ =?us-ascii?Q?hsFgbRH/8IpIiaLjsu9sFkgsXaJfnRwoYsiQMcgDahY0rHRIfcRT4t+SKHal?=
+ =?us-ascii?Q?azMUXQ4E8A7ybgOF3AN+HzLAfG4FOTgvnkBib0BaAfjOjNzjl94d+bsu1RkJ?=
+ =?us-ascii?Q?DcvAab887MaXbeApLll6p1ja5dm8BqhAqy4aZOxbYaW4Ls8OHfl1mKX0Gy8y?=
+ =?us-ascii?Q?hgITs8XIcaFqapEL+f6U4rBtYt9cxVaQGqRBKlkcmhxObWujiYvtHGnMlegw?=
+ =?us-ascii?Q?S4UqGnQf3PKGaq9hXX4s2EECdQIDiFatUp3tUfhJDdBbkKhWiSfDGaUUCeP8?=
+ =?us-ascii?Q?l24oDC9UbIxzwhpVUXNA47yc8PRn559a8GCWpZU/hdmLnz07sPXRm27Z8T7h?=
+ =?us-ascii?Q?mkjJZCI8C0smIGawjdz990pzsck2Kjg9MfYdH7H2gzEc33EwhMjCiS3n4n3a?=
+ =?us-ascii?Q?ef6QWWzsJu3lWTzXfD2pSZ7Dc8otGYixjNan13bLck8oE0i2PjbfmmOqRMDF?=
+ =?us-ascii?Q?sPE0C0wcPTePbdZqT2mYu+vAKKsbbMM7GDyabh2fbAlAdvajUWpK6EpYhXhn?=
+ =?us-ascii?Q?tR4+wtMReP5qgDJdQxqVl+7WWfe+hgRUQQ9n21p2CyRSW0F9h0L+YaHFK7to?=
+ =?us-ascii?Q?5Eto9vTe2gBafXM7/GVsYAy8OpH4E2WIYDci6OCDuY4119+i/F5yPkUKB9Sz?=
+ =?us-ascii?Q?mk2PfB9eAUc8kjCs01Dqhbp4OoRzmowEpVXnj8j/yh23l6qlEaQKKCF5YWyO?=
+ =?us-ascii?Q?BEYOOdi4D9MBjbebzRzbUahOLOTTofQn/SKqkBXkZVzGWnR932jWLPdUf+3A?=
+ =?us-ascii?Q?ioxc7daMk7+w/L0TOmhx/i0B8hlQMv1D+RPlLwQcq2+uG+rpPBEcF2ap6lj+?=
+ =?us-ascii?Q?OEJAwK1I7PaJ4HyX+aN+Gf6EYYtlwmVAAAHk2QPb3meGHeULt7VnmEBwLw3c?=
+ =?us-ascii?Q?z8mX7s9KUz0A4Uc4CgEw1UEf3JTdwC18o3RSgD9RcnYcdOi343B35461eZKT?=
+ =?us-ascii?Q?P7+vlYazGu8IbeF2JOEtKqAUf2fftA7+YMjKSQdTLVjp9NvRkQIrfU+N/CaN?=
+ =?us-ascii?Q?0yYFc9yJP2OR/OCBmqN1ojZ+spDKnEU0jYhlWXzu9YqamBtb8sDxWhbmem3s?=
+ =?us-ascii?Q?uvf/xODVC3JTAux2GaeRJ2FiFMTN5rX+G1OtUY4o?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99339302-6916-4283-ae3b-08dda51201ec
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2025 15:51:31.8731
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7cF9oQMRx/9sY9iP3j0w3ZGTLTqcPHE7+mG7w3FzAb0wO3SIZkuWI7i8MpDio/mXCcTfJF2BYBYwr8kskBJuLQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10796
 
-Hi Rui,
+Convert qca,qca7000.txt yaml format.
 
-On Fri, 2025-06-06 at 14:56 +0100, Rui Miguel Silva wrote:
-> Hey Isaac,
-> Thanks for the patch.
->=20
-> On Fri Jun 6, 2025 at 1:14 PM WEST, Isaac Scott wrote:
->=20
-> > The NXP i.MX 8 MP CSI-2 receiver features multiple interrupt and
-> > debug
-> > status sources which span multiple registers. The driver currently
-> > supports two interrupt source registers, and attributes the
-> > mipi_csis_event event entries to those registers through a boolean
-> > debug
-> > field that indicate if the event relates to the main interrupt
-> > status
-> > (false) or debug interrupt status (true) register. To make it
-> > easier to
-> > add new event fields, replace the debug bool with a 'status index'
-> > integer than indicates the index of the corresponding status
-> > register.
-> >=20
-> > Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-> > ---
-> > =C2=A0drivers/media/platform/nxp/imx-mipi-csis.c | 64 +++++++++++------=
+Additional changes:
+- add refs: spi-peripheral-props.yaml, serial-peripheral-props.yaml and
+  ethernet-controller.yaml.
+- simple spi and uart node name.
+- use low case for mac address in examples.
+- add check reg choose spi-peripheral-props.yaml or
+  spi-peripheral-props.yaml.
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+change in v3
+- move ethernet-controller.yaml# out of if branch
+
+change in v2
+- add Ethernet over UART" description here back
+- add add check reg choose spi-peripheral-props.yaml
+- move spi related properties in if-then branch
+- move uart related properies in if-else branch
+---
+ .../devicetree/bindings/net/qca,qca7000.txt   |  87 ---------------
+ .../devicetree/bindings/net/qca,qca7000.yaml  | 105 ++++++++++++++++++
+ MAINTAINERS                                   |   2 +-
+ 3 files changed, 106 insertions(+), 88 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/net/qca,qca7000.txt
+ create mode 100644 Documentation/devicetree/bindings/net/qca,qca7000.yaml
+
+diff --git a/Documentation/devicetree/bindings/net/qca,qca7000.txt b/Documentation/devicetree/bindings/net/qca,qca7000.txt
+deleted file mode 100644
+index 8f5ae0b84eec2..0000000000000
+--- a/Documentation/devicetree/bindings/net/qca,qca7000.txt
++++ /dev/null
+@@ -1,87 +0,0 @@
+-* Qualcomm QCA7000
 -
-> > ----
-> > =C2=A01 file changed, 31 insertions(+), 33 deletions(-)
-> >=20
-> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c
-> > b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > index d060eadebc7a..bbc549c22aff 100644
-> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > @@ -249,7 +249,7 @@
-> > =C2=A0#define MIPI_CSI2_DATA_TYPE_USER(x)		(0x30 + (x))
-> > =C2=A0
-> > =C2=A0struct mipi_csis_event {
-> > -	bool debug;
-> > +	unsigned int status_index;
-> > =C2=A0	u32 mask;
-> > =C2=A0	const char * const name;
-> > =C2=A0	unsigned int counter;
-> > @@ -257,30 +257,30 @@ struct mipi_csis_event {
-> > =C2=A0
-> > =C2=A0static const struct mipi_csis_event mipi_csis_events[] =3D {
-> > =C2=A0	/* Errors */
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS,		"SOT
-> > Error" },
-> > -	{ false,
-> > MIPI_CSIS_INT_SRC_ERR_LOST_FS,		"Lost Frame Start Error" },
-> > -	{ false,
-> > MIPI_CSIS_INT_SRC_ERR_LOST_FE,		"Lost Frame End Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_OVER,		"FIFO
-> > Overflow Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_WRONG_CFG,	"Wrong
-> > Configuration Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_ECC,		"ECC
-> > Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_CRC,		"CRC
-> > Error" },
-> > -	{ false,
-> > MIPI_CSIS_INT_SRC_ERR_UNKNOWN,		"Unknown Error" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT,	"Data Type
-> > Not Supported" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE,	"Data Type
-> > Ignored" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE,	"Frame
-> > Size Error" },
-> > -	{ true,
-> > MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME,	"Truncated Frame" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE,	"Early
-> > Frame End" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS,	"Early
-> > Frame Start" },
-> > +	{ 0, MIPI_CSIS_INT_SRC_ERR_SOT_HS,		"SOT
-> > Error"},
->=20
-> Maybe instead of 0,1,2 (magic indexes)... we could give a meaningful
-> index
-> enums names, don't know, like: main, debug, user??? or something that
-> you think is better.
+-The QCA7000 is a serial-to-powerline bridge with a host interface which could
+-be configured either as SPI or UART slave. This configuration is done by
+-the QCA7000 firmware.
+-
+-(a) Ethernet over SPI
+-
+-In order to use the QCA7000 as SPI device it must be defined as a child of a
+-SPI master in the device tree.
+-
+-Required properties:
+-- compatible	    : Should be "qca,qca7000"
+-- reg		    : Should specify the SPI chip select
+-- interrupts	    : The first cell should specify the index of the source
+-		      interrupt and the second cell should specify the trigger
+-		      type as rising edge
+-- spi-cpha	    : Must be set
+-- spi-cpol	    : Must be set
+-
+-Optional properties:
+-- spi-max-frequency : Maximum frequency of the SPI bus the chip can operate at.
+-		      Numbers smaller than 1000000 or greater than 16000000
+-		      are invalid. Missing the property will set the SPI
+-		      frequency to 8000000 Hertz.
+-- qca,legacy-mode   : Set the SPI data transfer of the QCA7000 to legacy mode.
+-		      In this mode the SPI master must toggle the chip select
+-		      between each data word. In burst mode these gaps aren't
+-		      necessary, which is faster. This setting depends on how
+-		      the QCA7000 is setup via GPIO pin strapping. If the
+-		      property is missing the driver defaults to burst mode.
+-
+-The MAC address will be determined using the optional properties
+-defined in ethernet.txt.
+-
+-SPI Example:
+-
+-/* Freescale i.MX28 SPI master*/
+-ssp2: spi@80014000 {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	compatible = "fsl,imx28-spi";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi2_pins_a>;
+-
+-	qca7000: ethernet@0 {
+-		compatible = "qca,qca7000";
+-		reg = <0x0>;
+-		interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
+-		interrupts = <25 0x1>;            /* Index: 25, rising edge */
+-		spi-cpha;                         /* SPI mode: CPHA=1 */
+-		spi-cpol;                         /* SPI mode: CPOL=1 */
+-		spi-max-frequency = <8000000>;    /* freq: 8 MHz */
+-		local-mac-address = [ A0 B0 C0 D0 E0 F0 ];
+-	};
+-};
+-
+-(b) Ethernet over UART
+-
+-In order to use the QCA7000 as UART slave it must be defined as a child of a
+-UART master in the device tree. It is possible to preconfigure the UART
+-settings of the QCA7000 firmware, but it's not possible to change them during
+-runtime.
+-
+-Required properties:
+-- compatible        : Should be "qca,qca7000"
+-
+-Optional properties:
+-- local-mac-address : see ./ethernet.txt
+-- current-speed     : current baud rate of QCA7000 which defaults to 115200
+-		      if absent, see also ../serial/serial.yaml
+-
+-UART Example:
+-
+-/* Freescale i.MX28 UART */
+-auart0: serial@8006a000 {
+-	compatible = "fsl,imx28-auart", "fsl,imx23-auart";
+-	reg = <0x8006a000 0x2000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&auart0_2pins_a>;
+-
+-	qca7000: ethernet {
+-		compatible = "qca,qca7000";
+-		local-mac-address = [ A0 B0 C0 D0 E0 F0 ];
+-		current-speed = <38400>;
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/net/qca,qca7000.yaml b/Documentation/devicetree/bindings/net/qca,qca7000.yaml
+new file mode 100644
+index 0000000000000..1851055a86af6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/qca,qca7000.yaml
+@@ -0,0 +1,105 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/qca,qca7000.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm QCA7000
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description: |
++  The QCA7000 is a serial-to-powerline bridge with a host interface which could
++  be configured either as SPI or UART slave. This configuration is done by
++  the QCA7000 firmware.
++
++  (a) Ethernet over SPI
++
++  In order to use the QCA7000 as SPI device it must be defined as a child of a
++  SPI master in the device tree.
++
++  (b) Ethernet over UART
++
++  In order to use the QCA7000 as UART slave it must be defined as a child of a
++  UART master in the device tree. It is possible to preconfigure the UART
++  settings of the QCA7000 firmware, but it's not possible to change them during
++  runtime
++
++properties:
++  compatible:
++    const: qca,qca7000
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++if:
++  required:
++    - reg
++
++then:
++  properties:
++    spi-cpha: true
++
++    spi-cpol: true
++
++    spi-max-frequency:
++      default: 8000000
++      maximum: 16000000
++      minimum: 1000000
++
++    qca,legacy-mode:
++      $ref: /schemas/types.yaml#/definitions/flag
++      description:
++        Set the SPI data transfer of the QCA7000 to legacy mode.
++        In this mode the SPI master must toggle the chip select
++        between each data word. In burst mode these gaps aren't
++        necessary, which is faster. This setting depends on how
++        the QCA7000 is setup via GPIO pin strapping. If the
++        property is missing the driver defaults to burst mode.
++
++  allOf:
++    - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++else:
++  properties:
++    current-speed:
++      default: 115200
++
++  allOf:
++    - $ref: /schemas/serial/serial-peripheral-props.yaml#
++
++allOf:
++  - $ref: ethernet-controller.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet@0 {
++            compatible = "qca,qca7000";
++            reg = <0x0>;
++            interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
++            interrupts = <25 0x1>;            /* Index: 25, rising edge */
++            spi-cpha;                         /* SPI mode: CPHA=1 */
++            spi-cpol;                         /* SPI mode: CPOL=1 */
++            spi-max-frequency = <8000000>;    /* freq: 8 MHz */
++            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
++        };
++    };
++
++  - |
++    serial {
++        ethernet {
++            compatible = "qca,qca7000";
++            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
++            current-speed = <38400>;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c14da518a214c..6416ada9900af 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -20295,7 +20295,7 @@ QUALCOMM ATHEROS QCA7K ETHERNET DRIVER
+ M:	Stefan Wahren <wahrenst@gmx.net>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/net/qca,qca7000.txt
++F:	Documentation/devicetree/bindings/net/qca,qca7000.yaml
+ F:	drivers/net/ethernet/qualcomm/qca*
+ 
+ QUALCOMM BAM-DMUX WWAN NETWORK DRIVER
+-- 
+2.34.1
 
-Thanks for the review! I have updated v2 to include an enum instead of
-magic numbers.
-
-Best wishes,
-
-Isaac
-
->=20
-> Cheers,
-> =C2=A0=C2=A0=C2=A0 Rui
->=20
-> > +	{ 0, MIPI_CSIS_INT_SRC_ERR_LOST_FS,		"Lost
-> > Frame Start Error"},
-> > +	{ 0, MIPI_CSIS_INT_SRC_ERR_LOST_FE,		"Lost
-> > Frame End Error"},
-> > +	{ 0, MIPI_CSIS_INT_SRC_ERR_OVER,		"FIFO
-> > Overflow Error"},
-> > +	{ 0, MIPI_CSIS_INT_SRC_ERR_WRONG_CFG,		"Wrong
-> > Configuration Error"},
-> > +	{ 0,
-> > MIPI_CSIS_INT_SRC_ERR_ECC,			"ECC Error"},
-> > +	{ 0,
-> > MIPI_CSIS_INT_SRC_ERR_CRC,			"CRC Error"},
-> > +	{ 0, MIPI_CSIS_INT_SRC_ERR_UNKNOWN,		"Unknown
-> > Error"},
-> > +	{ 1, MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT,	"Data Type
-> > Not Supported"},
-> > +	{ 1, MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE,		"Data Type
-> > Ignored"},
-> > +	{ 1, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE,	"Frame
-> > Size Error"},
-> > +	{ 1, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME,	"Truncated
-> > Frame"},
-> > +	{ 1, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE,		"Early
-> > Frame End"},
-> > +	{ 1, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS,		"Early
-> > Frame Start"},
-> > =C2=A0	/* Non-image data receive events */
-> > -	{ false,
-> > MIPI_CSIS_INT_SRC_EVEN_BEFORE,		"Non-image data before even frame" },
-> > -	{ false, MIPI_CSIS_INT_SRC_EVEN_AFTER,		"Non-image
-> > data after even frame" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ODD_BEFORE,		"Non-image
-> > data before odd frame" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ODD_AFTER,		"Non-image
-> > data after odd frame" },
-> > +	{ 0, MIPI_CSIS_INT_SRC_EVEN_BEFORE,		"Non-image
-> > data before even frame"},
-> > +	{ 0, MIPI_CSIS_INT_SRC_EVEN_AFTER,		"Non-image
-> > data after even frame"},
-> > +	{ 0, MIPI_CSIS_INT_SRC_ODD_BEFORE,		"Non-image
-> > data before odd frame"},
-> > +	{ 0, MIPI_CSIS_INT_SRC_ODD_AFTER,		"Non-image
-> > data after odd frame"},
-> > =C2=A0	/* Frame start/end */
-> > -	{ false,
-> > MIPI_CSIS_INT_SRC_FRAME_START,		"Frame Start" },
-> > -	{ false, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame
-> > End" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC
-> > Falling Edge" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC
-> > Rising Edge" },
-> > +	{ 0, MIPI_CSIS_INT_SRC_FRAME_START,		"Frame
-> > Start"},
-> > +	{ 0, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame
-> > End"},
-> > +	{ 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC
-> > Falling Edge"},
-> > +	{ 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC
-> > Rising Edge"},
-> > =C2=A0};
-> > =C2=A0
-> > =C2=A0#define MIPI_CSIS_NUM_EVENTS ARRAY_SIZE(mipi_csis_events)
-> > @@ -765,32 +765,30 @@ static irqreturn_t mipi_csis_irq_handler(int
-> > irq, void *dev_id)
-> > =C2=A0	struct mipi_csis_device *csis =3D dev_id;
-> > =C2=A0	unsigned long flags;
-> > =C2=A0	unsigned int i;
-> > -	u32 status;
-> > -	u32 dbg_status;
-> > +	u32 status[2];
-> > =C2=A0
-> > -	status =3D mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
-> > -	dbg_status =3D mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
-> > +	status[0] =3D mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
-> > +	status[1] =3D mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
-> > =C2=A0
-> > =C2=A0	spin_lock_irqsave(&csis->slock, flags);
-> > =C2=A0
-> > =C2=A0	/* Update the event/error counters */
-> > -	if ((status & MIPI_CSIS_INT_SRC_ERRORS) || csis-
-> > >debug.enable) {
-> > +	if ((status[0] & MIPI_CSIS_INT_SRC_ERRORS) || csis-
-> > >debug.enable) {
-> > =C2=A0		for (i =3D 0; i < MIPI_CSIS_NUM_EVENTS; i++) {
-> > =C2=A0			struct mipi_csis_event *event =3D &csis-
-> > >events[i];
-> > =C2=A0
-> > -			if ((!event->debug && (status & event-
-> > >mask)) ||
-> > -			=C2=A0=C2=A0=C2=A0 (event->debug && (dbg_status & event-
-> > >mask)))
-> > +			if (status[event->status_index] & event-
-> > >mask)
-> > =C2=A0				event->counter++;
-> > =C2=A0		}
-> > =C2=A0	}
-> > =C2=A0
-> > -	if (status & MIPI_CSIS_INT_SRC_FRAME_START)
-> > +	if (status[0] & MIPI_CSIS_INT_SRC_FRAME_START)
-> > =C2=A0		mipi_csis_queue_event_sof(csis);
-> > =C2=A0
-> > =C2=A0	spin_unlock_irqrestore(&csis->slock, flags);
-> > =C2=A0
-> > -	mipi_csis_write(csis, MIPI_CSIS_INT_SRC, status);
-> > -	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC, dbg_status);
-> > +	mipi_csis_write(csis, MIPI_CSIS_INT_SRC, status[0]);
-> > +	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC, status[1]);
-> > =C2=A0
-> > =C2=A0	return IRQ_HANDLED;
-> > =C2=A0}
-> > --=20
-> > 2.43.0
->=20
->=20
