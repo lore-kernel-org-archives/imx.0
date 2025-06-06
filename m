@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C83D29A1;
-	Fri,  6 Jun 2025 00:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A55A41;
+	Fri,  6 Jun 2025 00:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749168518; cv=none; b=jkI2DzI/6o9e/wcxsu8GQofa7lMilSMK14jLRHXZNaaWOvsWRhH03tp+f3vOvlZYNt92F9bl7AUKh8k2c5L03Q4OpgLpJY2g+r28oQIx7wLoUHOlWK+GqOXojBPYYkBpM14xy4OffYJH5gim6/mRLZkX+g11daLD7vC+odn6XKA=
+	t=1749169082; cv=none; b=Sy5H6FTK/3Cr6+fpg6BJ97EaFFPNk37MTRXCQRIhMjyHBKhj29hpedt33SDOZpXohWMHJ6RhxOwcELLfc/nCHoUzEKWntr13aED+UglgRoj0fCA6xY4wm46+tcwipgrRB6F+ABc4Z0iHgGgMLIj5Zic7+3AQKa6eqjyIJa8KhWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749168518; c=relaxed/simple;
-	bh=096tcwFPpeJG650wQF6YIxLq94RUk9uyR/oF7cR6+RE=;
+	s=arc-20240116; t=1749169082; c=relaxed/simple;
+	bh=2JSpMRGXVXL3JU8MDRMXjV9RVRzGKz5jkToD6byfZsw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y9dzSQzzXt56acdmPIMaWkuAu1MxCrJtG4zUX4sZEKWREp+1RqCOvquxiLSc62IZaWt3c7LBZyCuBdVxiMccdmqnEH6dff4eIgZk1sckukO2NSaIwRzeV2KXksBK14tXMeB5ibQuRr5PRI9mpCWNqUEUt7JMUuc2tgiyluPSED4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tlY3UW/K; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Izg2O1FgmJFRq9vbhJxIfJGKowD6qPWn2sNV4R9lKkW1eRKLBcJxvsTZpJYdg0dMb9uKz8CMxTGRCnFizn2vDXTVWt/F1+g5y2jvwwq+jHjWq//VnpBH/BRpqUudZ8OhndVzdedzMzB2aloO5WYlhPacHHgAduUzEAJkt8rjoSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OvJ+oZ/m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tlY3UW/K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D48C4CEE7;
-	Fri,  6 Jun 2025 00:08:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OvJ+oZ/m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8276CC4CEE7;
+	Fri,  6 Jun 2025 00:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749168517;
-	bh=096tcwFPpeJG650wQF6YIxLq94RUk9uyR/oF7cR6+RE=;
+	s=k20201202; t=1749169081;
+	bh=2JSpMRGXVXL3JU8MDRMXjV9RVRzGKz5jkToD6byfZsw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tlY3UW/K9u2JgwKDcNQfnVeBUy7hC2xfe1v6W6OWg7aZbXOdcl8TXEzA9d1Ny/T16
-	 Wt80q6QSXA35UMSeatSZr8jHqdfyo8/sK7SX9r4uHImRD6+I+0te6ZV5RJ4rXDPVx/
-	 OqRnyGKF89OtAvy9gV5ms9Tk0rwh2ZfjdkKY5ztFUBeS8a5RWiQpSAuPFqWVsKg5Pk
-	 KSQ9XbATQIDUaUscrAfuw+UzTPA8u+WNrLmBe9lhVBS/Yj69CDu9wpktMbeHYunLSb
-	 s8GxzNo6oVfJmTkCKLTRXeqpbDOOzbzSYERp6vX9CMT3BB1f399DwXOAbRSAy8bWjq
-	 Jve6yHyxMRt2Q==
-Date: Thu, 5 Jun 2025 19:08:35 -0500
+	b=OvJ+oZ/mLj+m2ihFhXa2gRLxNybNLg5BImHWyI69A1F2P7+GfMhLr7IJrlPovUrog
+	 3xratbGa7NGEp68YERh01rJbrl7E+sALWK1yoQTggtxvZVHedwBB5LVlSAxE7vUw+l
+	 GJDNLM7ULmffa7Qu8kmwTaeV3p2zlRz6vRMpYAxb5ik3C9ouvPv1OXSSx6NH7hNh/n
+	 XWvKFyo0sag8MunwPYusfs/sU7Ok2F9QTNqrC4lNgOcwRN8VxHvevZNeGII6W7h34x
+	 lWO3+rGLZwd3y1bKBdKxcMwoIlO+zLASZv3nYWkjI7x7qhctc7ORXs5XlziFSIW4GB
+	 plhabQLuee6CA==
+Date: Thu, 5 Jun 2025 19:17:59 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Stephen Boyd <sboyd@kernel.org>, imx@lists.linux.dev,
-	linux-clk@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: clock: convert lpc1850-ccu.txt to yaml
- format
-Message-ID: <174916851320.3533561.1893618858405515968.robh@kernel.org>
-References: <20250602141937.942091-1-Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	imx@lists.linux.dev, linux-rtc@vger.kernel.org
+Subject: Re: [PATCH 1/1] dt-bindings: rtc: nxp,lpc1788-rtc: add compatible
+ string nxp,lpc1850-rtc
+Message-ID: <174916907717.3619367.3745642154654809311.robh@kernel.org>
+References: <20250602142842.942700-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,24 +46,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250602141937.942091-1-Frank.Li@nxp.com>
+In-Reply-To: <20250602142842.942700-1-Frank.Li@nxp.com>
 
 
-On Mon, 02 Jun 2025 10:19:36 -0400, Frank Li wrote:
-> Convert lpc1850-ccu.txt to yaml format.
+On Mon, 02 Jun 2025 10:28:41 -0400, Frank Li wrote:
+> Add compatible string nxp,lpc1850-rtc and fallback to nxp,lpc1788-rtc.
 > 
-> Additional changes:
-> - remove label in examples.
-> - remove clock consumer in examples.
+> Fix below CHECK_DTB warning:
+>   arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: rtc@40046000 (nxp,lpc1850-rtc): compatible: ['nxp,lpc1850-rtc', 'nxp,lpc1788-rtc'] is too long
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  .../devicetree/bindings/clock/lpc1850-ccu.txt |  77 -------------
->  .../bindings/clock/nxp,lpc1850-ccu.yaml       | 104 ++++++++++++++++++
->  2 files changed, 104 insertions(+), 77 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/clock/lpc1850-ccu.txt
->  create mode 100644 Documentation/devicetree/bindings/clock/nxp,lpc1850-ccu.yaml
+>  Documentation/devicetree/bindings/rtc/nxp,lpc1788-rtc.yaml | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
