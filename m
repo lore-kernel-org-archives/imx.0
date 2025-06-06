@@ -1,35 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E848C11;
-	Fri,  6 Jun 2025 11:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717F0284689
+	for <imx@lists.linux.dev>; Fri,  6 Jun 2025 12:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749209397; cv=none; b=s7/r4iViL8RZ6ZGsTP3jVsREky++2H54/Jub7OyLVlpPMpRWYB+Lld5/6Zly2kCERmxuDedGsnaYa52ofg/k0jspgJqh5MWFjwBDfBbf5gi6mWZUa8pOp4XqFOaJnp8eipghVZkdtJPCvw5kyBPFbTFQ3xLPpRyav6G32wUetdA=
+	t=1749212055; cv=none; b=HbSbFfzQqQk7KAS2GMC41ueguQpj0SR6SC1xYWFCDBfcsRpSJzZTxt6/4AaHnHSBkivx5Tk2rDI3Nj/JIfP+1hSZ9P6hzeqpOAm1bfgMZVsN8R/ELOZKIBRkHTwmEzBwsr9PF/0n4eznN+80SleuxEvkp32Xq++YXGEzx67UGRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749209397; c=relaxed/simple;
-	bh=cBiavoyhnUOaPt1BwOXLTc0hTIQzKDyHJgcKWt47iAI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=jb0MOgsb/beu6UhFZUtJ+X7vK5OlISl1peTQGdZrJ+1/bdXf9Cx2Sv+anxgKb/q92DWDyrY2gc9aKn1uFEVIEmoEvAIcjycskfiEbb1J9uBVXy8TIWp64is3dUz748K+NnhplBpXIOHkxvit07n9aKq77r5O8OvVjL4TPGc45pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6ej6Vz1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749212055; c=relaxed/simple;
+	bh=1WJsWhTzFsCD3REzePOpGgsNVGMiEg6va/vljjL/0II=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mrGf1halFHgBhlPpM+5NCzcivOySPTlneCdpFzdPvw8si7nR0GHIioxkDXPcZlwiSf4B3n6774jH0fnlpC74vYhMk7z4sQN3XOF9b3K3qgkW9joIzn1KlfbCGmz9eveHlPmToZvcoWsIXL8UgaeOHhPsx3L1WlUCfO8uSnWhxsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ZDQjazCJ; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6ej6Vz1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF128C4CEEB;
-	Fri,  6 Jun 2025 11:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749209396;
-	bh=cBiavoyhnUOaPt1BwOXLTc0hTIQzKDyHJgcKWt47iAI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=C6ej6Vz1Jl288yUxrmCCiJ/I4RwBIdmmi4qoQYnYFtWa2tKbKZnA4W07ZSLOR/MFv
-	 UPhpJ36O/A/x3CoW6RENq24rPDYdrTT3svNQGYnOnOaBNOfig+pvSoZk6jonX9cgbF
-	 94T/6UDaq7IeVkQ9/xlnwar5F1BSSvubfsr6VlQI78P5wiFP+zGYGcJwRUF3U8B1Um
-	 RDzCTri4NZsNz5CZ1Oxb3siT2493Fox6+QJQYfj2cajcs2k4P3GxjvbGwVeZuNLkmM
-	 akEj0qbPUZKjQR0e7HhTE8qGkT+hVJbEoxPoqbzt/MiB5hOXrUFmV24hsm1se88oeW
-	 PcRLAitpCl/kQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD853805D8E;
-	Fri,  6 Jun 2025 11:30:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ZDQjazCJ"
+Received: from isaac-ThinkPad-T16-Gen-2.localdomain (cpc90716-aztw32-2-0-cust408.18-1.cable.virginm.net [86.26.101.153])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 250D211DD;
+	Fri,  6 Jun 2025 14:14:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1749212046;
+	bh=1WJsWhTzFsCD3REzePOpGgsNVGMiEg6va/vljjL/0II=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZDQjazCJTHMo4obbI5CXD2mDzuNpEWRIbUIi9XKVgSj9VTzvWrRKtrMAdBDUCNrvO
+	 3qCVZtM8hD3f9KVRo49qQAldwRaGLmF3+ni2QtA+NY+zA7qgEviGals6xso/VawfLS
+	 PJbEuuUsaiHTZ9A1u1VOyhAFKJdKfIMkSM1IJIG4=
+From: Isaac Scott <isaac.scott@ideasonboard.com>
+To: laurent.pinchart@ideasonboard.com
+Cc: kieran.bingham@ideasonboard.com,
+	rmfrfs@gmail.com,
+	martink@posteo.de,
+	kernel@puri.sm,
+	mchehab@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	linux-media@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Isaac Scott <isaac.scott@ideasonboard.com>
+Subject: [PATCH 0/2] media: Add line end IRQ to imx-mipi-csis driver 
+Date: Fri,  6 Jun 2025 13:14:01 +0100
+Message-ID: <20250606121403.498153-1-isaac.scott@ideasonboard.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,42 +52,30 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] net: enetc: fix the netc-lib driver build dependency
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174920942850.3814198.2791344535997265319.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Jun 2025 11:30:28 +0000
-References: <20250605060836.4087745-1-wei.fang@nxp.com>
-In-Reply-To: <20250605060836.4087745-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, arnd@kernel.org
 
-Hello:
+Many boards, such as the NXP i.MX 8M Plus, feature multiple interrupt
+registers. This series refactors interrupt status register debug handling to make
+it more intuitive to add other registers such as LINE_END, which has an
+entire register containing only one interrupt. Previously, the
+mipi_csi_events[] list contained a debug enable field, and this replaces
+that with a status_index, which indicates which status register contains
+the mask for the interrupt.
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+The second patch adds the user line interrupt, which is useful for
+debugging, as it allows a user to trigger an interrupt after the MIPI
+CSI receiver has counted a configurable number of lines. This can make
+it possible to discern the true resolution of the image stream reaching
+the CSI receiver. It adds an entry to debugfs which lets users choose
+how many lines are needed to trigger the interrupt, and can be disabled
+both within and outside streaming by setting the value to 0.
 
-On Thu,  5 Jun 2025 14:08:36 +0800 you wrote:
-> The kernel robot reported the following errors when the netc-lib driver
-> was compiled as a loadable module and the enetc-core driver was built-in.
-> 
-> ld.lld: error: undefined symbol: ntmp_init_cbdr
-> referenced by enetc_cbdr.c:88 (drivers/net/ethernet/freescale/enetc/enetc_cbdr.c:88)
-> ld.lld: error: undefined symbol: ntmp_free_cbdr
-> referenced by enetc_cbdr.c:96 (drivers/net/ethernet/freescale/enetc/enetc_cbdr.c:96)
-> 
-> [...]
+Isaac Scott (2):
+  media: platform: Refactor interrupt status registers
+  media: platform: Add user line interrupt to imx-mipi-csis driver
 
-Here is the summary with links:
-  - [v2] net: enetc: fix the netc-lib driver build dependency
-    https://git.kernel.org/netdev/net/c/82cbd06f327f
+ drivers/media/platform/nxp/imx-mipi-csis.c | 107 ++++++++++++++-------
+ 1 file changed, 74 insertions(+), 33 deletions(-)
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
