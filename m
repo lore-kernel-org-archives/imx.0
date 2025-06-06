@@ -1,209 +1,184 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8335A28853B
-	for <imx@lists.linux.dev>; Fri,  6 Jun 2025 12:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C562874FD
+	for <imx@lists.linux.dev>; Fri,  6 Jun 2025 12:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749212059; cv=none; b=IOld23YTRbHht4ebddSQ1xu0QVI/8f12MrMOl3hs4t41qHOs1OIs7GnFbot7RFdceIZvHiXmCLSCByQkrLPmEcWi/U9572bdwbbYYOHLjGRS2/wYsq5MQ4fp/I+FxBeVBrYHyRP+mB/7AhGDKy2m93R8GTfkTBIu+64OjnRhfJc=
+	t=1749213254; cv=none; b=eix9nWLAoefJQB10ge7CON9m0itPTeiYSc46kXqFZSoIGlW530fg1ZRzwEZZZrH+5t1dT8POpdhiFYBJriZ2lhmnCaVJBKiQym7eHC99gXQTFT2AwdiTtIz0b/gmvdesWeBJZhayUEfFpGbJqzLaGhdiSw6gZXFL2D/8QXm61LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749212059; c=relaxed/simple;
-	bh=zG+3efq2Ab+EPeEyhmoGZ6e4roDjDNXBh4f0PORKj38=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnhwXiqFBiaxz6IZrtaPex03OADy9R3qF7ODMQdG3tIcK64BOf0wsqEOzzN6kyhbmLUkbR0m3df59ARvpc/AKHU+qcM29ydrRrWWEfv1F7D3cBNDoiBcz2qZv469MOJQ4AHPF2MwqL5ZTmJDYdAWQzxhZvqZ+4tHjHElxh3jKaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=lCogGrRX; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1749213254; c=relaxed/simple;
+	bh=KUB1zHF41EieIHY6D7XrX8haH8SMgp958TtlLmEVyME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EnJAcdtqRxqILhn/tyHaYPiRAIs7c9HDvmACfslaFju3D1z33P9XDwpL28dUjvUhcbd1db6XeG/Xnt8E2j/q5VXwYltACvn7PKSzatFFKAKkYp+4/p809PgOBzrqK8m8P4zH2kxYiGB/yZtNRtHMUeCYnV+SnHSYCxht78ISYsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=iYmgYv6/; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="lCogGrRX"
-Received: from isaac-ThinkPad-T16-Gen-2.localdomain (cpc90716-aztw32-2-0-cust408.18-1.cable.virginm.net [86.26.101.153])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0E01D149B;
-	Fri,  6 Jun 2025 14:14:11 +0200 (CEST)
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="iYmgYv6/"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 00E1811DD;
+	Fri,  6 Jun 2025 14:34:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1749212051;
-	bh=zG+3efq2Ab+EPeEyhmoGZ6e4roDjDNXBh4f0PORKj38=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCogGrRX3Ai4kjdG6h5Pv8nQW1e0t02ejfLdF8uKg6EWtsgBAm+rNQ+LyRc1m/z5p
-	 KNTpJU34AtmiPR8NhvTrl/GEH1f9ywaJPOFD9Ck+VI7esYXrHMw8+SlqQX1mh91hLX
-	 hKRYTtM4ujGkiM0G3YkO+aPLF8m3+x+ShL9FDvoY=
-From: Isaac Scott <isaac.scott@ideasonboard.com>
-To: laurent.pinchart@ideasonboard.com
-Cc: kieran.bingham@ideasonboard.com,
-	rmfrfs@gmail.com,
-	martink@posteo.de,
-	kernel@puri.sm,
-	mchehab@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-media@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Isaac Scott <isaac.scott@ideasonboard.com>
-Subject: [PATCH 2/2] media: platform: Add user line interrupt to imx-mipi-csis driver
-Date: Fri,  6 Jun 2025 13:14:03 +0100
-Message-ID: <20250606121403.498153-3-isaac.scott@ideasonboard.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250606121403.498153-1-isaac.scott@ideasonboard.com>
+	s=mail; t=1749213247;
+	bh=KUB1zHF41EieIHY6D7XrX8haH8SMgp958TtlLmEVyME=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iYmgYv6/bkOqUY27LwbLH8YpzTftPCEyojGssCbFJDNzi/e7NTTfKskNvC6JTRalL
+	 weTLpS/8iDMAjVRE9f4JNBoBaRviTxp+dQ7r2//TfTQYSbQpKveA36ua5KsYHRFkoe
+	 Jp4lyDEB7i1raRFKlZvqzbOwFywnH6ytawPeQg9k=
+Date: Fri, 6 Jun 2025 15:34:00 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Isaac Scott <isaac.scott@ideasonboard.com>
+Cc: kieran.bingham@ideasonboard.com, rmfrfs@gmail.com, martink@posteo.de,
+	kernel@puri.sm, mchehab@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] media: platform: Refactor interrupt status registers
+Message-ID: <20250606123400.GB27510@pendragon.ideasonboard.com>
 References: <20250606121403.498153-1-isaac.scott@ideasonboard.com>
+ <20250606121403.498153-2-isaac.scott@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250606121403.498153-2-isaac.scott@ideasonboard.com>
 
-The NXP i.MX 8M Plus features an interrupt that triggers after the MIPI
-CSI receiver counts a user-configurable number of lines. This is useful
-for debugging, as it allows users to check if the amount of lines per
-frame equals what they are expecting.
+Hi Isaac,
 
-Add support for this interrupt in the driver, and an entry into debugfs to
-allow the user to configure whether the interrupt is enabled, as well as
-the number of lines after which to trigger the interrupt.
+Thank you for the patch.
 
-This debugfs control can be altered while a stream is in progress, with
-0 disabling the interrupt and >0 setting a new desired line count.
+On Fri, Jun 06, 2025 at 01:14:02PM +0100, Isaac Scott wrote:
+> The NXP i.MX 8 MP CSI-2 receiver features multiple interrupt and debug
+> status sources which span multiple registers. The driver currently
+> supports two interrupt source registers, and attributes the
+> mipi_csis_event event entries to those registers through a boolean debug
+> field that indicate if the event relates to the main interrupt status
+> (false) or debug interrupt status (true) register. To make it easier to
+> add new event fields, replace the debug bool with a 'status index'
+> integer than indicates the index of the corresponding status register.
+> 
+> Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
----
- drivers/media/platform/nxp/imx-mipi-csis.c | 45 +++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-index bbc549c22aff..0e6bc3c87be4 100644
---- a/drivers/media/platform/nxp/imx-mipi-csis.c
-+++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -88,6 +88,10 @@
- #define MIPI_CSIS_INT_MSK_ERR_CRC		BIT(1)
- #define MIPI_CSIS_INT_MSK_ERR_UNKNOWN		BIT(0)
- 
-+/* CSIS Interrupt mask 1 */
-+#define MIPI_CSIS_INT_MSK_1			0x18
-+#define MIPI_CSIS_INT_MSK_1_LINE_END		BIT(0)
-+
- /* CSIS Interrupt source */
- #define MIPI_CSIS_INT_SRC			0x14
- #define MIPI_CSIS_INT_SRC_EVEN_BEFORE		BIT(31)
-@@ -109,6 +113,10 @@
- #define MIPI_CSIS_INT_SRC_ERR_UNKNOWN		BIT(0)
- #define MIPI_CSIS_INT_SRC_ERRORS		0xfffff
- 
-+/* CSIS Interrupt source 1 */
-+#define MIPI_CSIS_INT_SRC_1			0x1c
-+#define MIPI_CSIS_INT_SRC_1_LINE_END		BIT(0)
-+
- /* D-PHY status control */
- #define MIPI_CSIS_DPHY_STATUS			0x20
- #define MIPI_CSIS_DPHY_STATUS_ULPS_DAT		BIT(8)
-@@ -221,6 +229,7 @@
- #define MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE	BIT(0)
- 
- #define MIPI_CSIS_FRAME_COUNTER_CH(n)		(0x0100 + (n) * 4)
-+#define MIPI_CSIS_LINE_INTERRUPT_RATIO(n)	(0x0110 + (n) * 4)
- 
- /* Non-image packet data buffers */
- #define MIPI_CSIS_PKTDATA_ODD			0x2000
-@@ -281,6 +290,8 @@ static const struct mipi_csis_event mipi_csis_events[] = {
- 	{ 0, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame End"},
- 	{ 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC Falling Edge"},
- 	{ 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC Rising Edge"},
-+	/* User Line interrupt */
-+	{ 2, MIPI_CSIS_INT_SRC_1_LINE_END,		"Line End"}
- };
- 
- #define MIPI_CSIS_NUM_EVENTS ARRAY_SIZE(mipi_csis_events)
-@@ -333,11 +344,14 @@ struct mipi_csis_device {
- 
- 	spinlock_t slock;	/* Protect events */
- 	struct mipi_csis_event events[MIPI_CSIS_NUM_EVENTS];
-+
- 	struct dentry *debugfs_root;
- 	struct {
- 		bool enable;
- 		u32 hs_settle;
- 		u32 clk_settle;
-+		u32 int_line;
-+		u32 last_int_line;
- 	} debug;
- };
- 
-@@ -686,6 +700,15 @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
- 			MIPI_CSIS_DPHY_BCTRL_L_B_DPHYCTRL(20000000));
- 	mipi_csis_write(csis, MIPI_CSIS_DPHY_BCTRL_H, 0);
- 
-+	if (csis->debug.int_line > 0)
-+		mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-+				csis->debug.int_line - 1);
-+
-+	mipi_csis_write(csis, MIPI_CSIS_INT_MSK_1,
-+			csis->debug.int_line ?
-+			MIPI_CSIS_INT_MSK_1_LINE_END : 0);
-+	csis->debug.last_int_line = csis->debug.int_line;
-+
- 	/* Update the shadow register. */
- 	val = mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
- 	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL,
-@@ -765,10 +788,12 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
- 	struct mipi_csis_device *csis = dev_id;
- 	unsigned long flags;
- 	unsigned int i;
--	u32 status[2];
-+	u32 int_lines;
-+	u32 status[3];
- 
- 	status[0] = mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
- 	status[1] = mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
-+	status[2] = mipi_csis_read(csis, MIPI_CSIS_INT_SRC_1);
- 
- 	spin_lock_irqsave(&csis->slock, flags);
- 
-@@ -785,10 +810,25 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
- 	if (status[0] & MIPI_CSIS_INT_SRC_FRAME_START)
- 		mipi_csis_queue_event_sof(csis);
- 
-+	int_lines = READ_ONCE(csis->debug.int_line);
-+	if (int_lines != csis->debug.last_int_line) {
-+		if (int_lines > 0)
-+			mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-+					max(int_lines, 1U) - 1);
-+		else
-+			mipi_csis_write(csis,
-+					MIPI_CSIS_LINE_INTERRUPT_RATIO(0), 0);
-+
-+		csis->debug.last_int_line = int_lines;
-+		mipi_csis_write(csis, MIPI_CSIS_INT_MSK_1,
-+				int_lines ? MIPI_CSIS_INT_MSK_1_LINE_END : 0);
-+	}
-+
- 	spin_unlock_irqrestore(&csis->slock, flags);
- 
- 	mipi_csis_write(csis, MIPI_CSIS_INT_SRC, status[0]);
- 	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC, status[1]);
-+	mipi_csis_write(csis, MIPI_CSIS_INT_SRC_1, status[2]);
- 
- 	return IRQ_HANDLED;
- }
-@@ -928,6 +968,7 @@ static void mipi_csis_debugfs_init(struct mipi_csis_device *csis)
- {
- 	csis->debug.hs_settle = UINT_MAX;
- 	csis->debug.clk_settle = UINT_MAX;
-+	csis->debug.int_line = 0;
- 
- 	csis->debugfs_root = debugfs_create_dir(dev_name(csis->dev), NULL);
- 
-@@ -939,6 +980,8 @@ static void mipi_csis_debugfs_init(struct mipi_csis_device *csis)
- 			   &csis->debug.clk_settle);
- 	debugfs_create_u32("ths_settle", 0600, csis->debugfs_root,
- 			   &csis->debug.hs_settle);
-+	debugfs_create_u32("int_line_0", 0600, csis->debugfs_root,
-+			   &csis->debug.int_line);
- }
- 
- static void mipi_csis_debugfs_exit(struct mipi_csis_device *csis)
+> ---
+>  drivers/media/platform/nxp/imx-mipi-csis.c | 64 +++++++++++-----------
+>  1 file changed, 31 insertions(+), 33 deletions(-)
+> 
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> index d060eadebc7a..bbc549c22aff 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -249,7 +249,7 @@
+>  #define MIPI_CSI2_DATA_TYPE_USER(x)		(0x30 + (x))
+>  
+>  struct mipi_csis_event {
+> -	bool debug;
+> +	unsigned int status_index;
+>  	u32 mask;
+>  	const char * const name;
+>  	unsigned int counter;
+> @@ -257,30 +257,30 @@ struct mipi_csis_event {
+>  
+>  static const struct mipi_csis_event mipi_csis_events[] = {
+>  	/* Errors */
+> -	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS,		"SOT Error" },
+> -	{ false, MIPI_CSIS_INT_SRC_ERR_LOST_FS,		"Lost Frame Start Error" },
+> -	{ false, MIPI_CSIS_INT_SRC_ERR_LOST_FE,		"Lost Frame End Error" },
+> -	{ false, MIPI_CSIS_INT_SRC_ERR_OVER,		"FIFO Overflow Error" },
+> -	{ false, MIPI_CSIS_INT_SRC_ERR_WRONG_CFG,	"Wrong Configuration Error" },
+> -	{ false, MIPI_CSIS_INT_SRC_ERR_ECC,		"ECC Error" },
+> -	{ false, MIPI_CSIS_INT_SRC_ERR_CRC,		"CRC Error" },
+> -	{ false, MIPI_CSIS_INT_SRC_ERR_UNKNOWN,		"Unknown Error" },
+> -	{ true, MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT,	"Data Type Not Supported" },
+> -	{ true, MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE,	"Data Type Ignored" },
+> -	{ true, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE,	"Frame Size Error" },
+> -	{ true, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME,	"Truncated Frame" },
+> -	{ true, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE,	"Early Frame End" },
+> -	{ true, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS,	"Early Frame Start" },
+> +	{ 0, MIPI_CSIS_INT_SRC_ERR_SOT_HS,		"SOT Error"},
+> +	{ 0, MIPI_CSIS_INT_SRC_ERR_LOST_FS,		"Lost Frame Start Error"},
+> +	{ 0, MIPI_CSIS_INT_SRC_ERR_LOST_FE,		"Lost Frame End Error"},
+> +	{ 0, MIPI_CSIS_INT_SRC_ERR_OVER,		"FIFO Overflow Error"},
+> +	{ 0, MIPI_CSIS_INT_SRC_ERR_WRONG_CFG,		"Wrong Configuration Error"},
+> +	{ 0, MIPI_CSIS_INT_SRC_ERR_ECC,			"ECC Error"},
+> +	{ 0, MIPI_CSIS_INT_SRC_ERR_CRC,			"CRC Error"},
+> +	{ 0, MIPI_CSIS_INT_SRC_ERR_UNKNOWN,		"Unknown Error"},
+> +	{ 1, MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT,	"Data Type Not Supported"},
+> +	{ 1, MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE,		"Data Type Ignored"},
+> +	{ 1, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE,	"Frame Size Error"},
+> +	{ 1, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME,	"Truncated Frame"},
+> +	{ 1, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE,		"Early Frame End"},
+> +	{ 1, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS,		"Early Frame Start"},
+>  	/* Non-image data receive events */
+> -	{ false, MIPI_CSIS_INT_SRC_EVEN_BEFORE,		"Non-image data before even frame" },
+> -	{ false, MIPI_CSIS_INT_SRC_EVEN_AFTER,		"Non-image data after even frame" },
+> -	{ false, MIPI_CSIS_INT_SRC_ODD_BEFORE,		"Non-image data before odd frame" },
+> -	{ false, MIPI_CSIS_INT_SRC_ODD_AFTER,		"Non-image data after odd frame" },
+> +	{ 0, MIPI_CSIS_INT_SRC_EVEN_BEFORE,		"Non-image data before even frame"},
+> +	{ 0, MIPI_CSIS_INT_SRC_EVEN_AFTER,		"Non-image data after even frame"},
+> +	{ 0, MIPI_CSIS_INT_SRC_ODD_BEFORE,		"Non-image data before odd frame"},
+> +	{ 0, MIPI_CSIS_INT_SRC_ODD_AFTER,		"Non-image data after odd frame"},
+>  	/* Frame start/end */
+> -	{ false, MIPI_CSIS_INT_SRC_FRAME_START,		"Frame Start" },
+> -	{ false, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame End" },
+> -	{ true, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC Falling Edge" },
+> -	{ true, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC Rising Edge" },
+> +	{ 0, MIPI_CSIS_INT_SRC_FRAME_START,		"Frame Start"},
+> +	{ 0, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame End"},
+> +	{ 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC Falling Edge"},
+> +	{ 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC Rising Edge"},
+>  };
+>  
+>  #define MIPI_CSIS_NUM_EVENTS ARRAY_SIZE(mipi_csis_events)
+> @@ -765,32 +765,30 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
+>  	struct mipi_csis_device *csis = dev_id;
+>  	unsigned long flags;
+>  	unsigned int i;
+> -	u32 status;
+> -	u32 dbg_status;
+> +	u32 status[2];
+>  
+> -	status = mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
+> -	dbg_status = mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
+> +	status[0] = mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
+> +	status[1] = mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
+>  
+>  	spin_lock_irqsave(&csis->slock, flags);
+>  
+>  	/* Update the event/error counters */
+> -	if ((status & MIPI_CSIS_INT_SRC_ERRORS) || csis->debug.enable) {
+> +	if ((status[0] & MIPI_CSIS_INT_SRC_ERRORS) || csis->debug.enable) {
+>  		for (i = 0; i < MIPI_CSIS_NUM_EVENTS; i++) {
+>  			struct mipi_csis_event *event = &csis->events[i];
+>  
+> -			if ((!event->debug && (status & event->mask)) ||
+> -			    (event->debug && (dbg_status & event->mask)))
+> +			if (status[event->status_index] & event->mask)
+>  				event->counter++;
+>  		}
+>  	}
+>  
+> -	if (status & MIPI_CSIS_INT_SRC_FRAME_START)
+> +	if (status[0] & MIPI_CSIS_INT_SRC_FRAME_START)
+>  		mipi_csis_queue_event_sof(csis);
+>  
+>  	spin_unlock_irqrestore(&csis->slock, flags);
+>  
+> -	mipi_csis_write(csis, MIPI_CSIS_INT_SRC, status);
+> -	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC, dbg_status);
+> +	mipi_csis_write(csis, MIPI_CSIS_INT_SRC, status[0]);
+> +	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC, status[1]);
+>  
+>  	return IRQ_HANDLED;
+>  }
+
 -- 
-2.43.0
+Regards,
 
+Laurent Pinchart
