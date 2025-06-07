@@ -1,146 +1,223 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36966201013
-	for <imx@lists.linux.dev>; Fri,  6 Jun 2025 21:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB92C2746A;
+	Sat,  7 Jun 2025 07:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749243853; cv=none; b=Hwt9b4p2yYC2hhdSPuqRYDFKIqwdwKTRfF5DVKIB0YmIucHyabytvKd9DIMp84D6heTDXabVHxN/1RBU420cvanKBjeUoaqCVAZLDFqKldmvDMycGDKk2JEvZ9i6yIcROSXwEriZwPvhG7t/QhJy7L92b4GlKPMvqqh+1kUGyuM=
+	t=1749281541; cv=none; b=CryXtMGjw70MvdjGBbniwxvdcH72QvRdUOoZ/bOQMVff+eGeZvGEIl9Kkd15+ZgaNKkVv1hmqr7xcWRQZFPHnAoRoUs9JP5Q8PWrmcYlfdkDULUXFhoXcrXjeUZWa9R1OIPHmAaJoJNabq9w6zT7bP1lHf6cqnPWMf37JAMfVDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749243853; c=relaxed/simple;
-	bh=1Xc1REoGz59kJ4M9DicrjznJxMvjS5pOb4T5OcmR7Qw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fmaDtooWY67NopVC6FMjaFNiAZYX+fqYhK609A3Zi0K1wQVa1QwMJUMyOTyDfTPSTHB/VLNN5lA6DEOkB9xD7/1HIXuSBNQCOgojbMZBwhMSe/dq89+Wg8dXbIA18VtSNELqdQvTyI+EgPsfqnVreYkwK9gFdmtjAuPgCzu4mPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=ZGekj6jO; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="ZGekj6jO"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e81877c1ed6so2437402276.0
-        for <imx@lists.linux.dev>; Fri, 06 Jun 2025 14:04:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gateworks.com; s=google; t=1749243849; x=1749848649; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u5BUjHtvSQa2fwgei7fhihebHAmQMvtk7aJVJVyEqtY=;
-        b=ZGekj6jOmT8Ew22TE6jdzUZ++uWN8ek3QHrYIroMGSq5/vZUswPBOjM0oIIqGGO5pY
-         8MNiqZgbXVDsUcOKLprsQDej6WLnq+Akn3tNw1a8x/h52qhreogRMRsLnG/idmndJpLL
-         SPXXGuUXOYSpUpZbJcoDEihUymgJRAWVDL51LDcAmQXpRVJZsXFqSsNrESnmcDdglecJ
-         giEbEts+Z8iSP6WqYyDKbDfb+MK+muX1s7fWItifXLJ1qqhXwxBMvODAPLg+aHtCWNIN
-         iy9EoVsaqcwr4bgM7VDJ4IAWA+WguuGbgdT2MAvqIC2IYVbySRZ+3e+bp5492fzbr3zh
-         ZDVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749243849; x=1749848649;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u5BUjHtvSQa2fwgei7fhihebHAmQMvtk7aJVJVyEqtY=;
-        b=w7UTCkmxYyc3ODgtdTxqF5qQlDIO14fUjjxLYcPyeXwRmyA3SyIbUXFsAplz0axvLP
-         0atj/UTGXfFWNbHxtNp0cFCQ2TYiRL7wRZtQmBxsEA88tLbOqVH9Q4LXpvBeJ1evNwzF
-         Gn1nkM53HA8qFri7d85awU+YA43qzQziVcyi26Y09dsxoaI+vH7V9XIfAqzscapHHMEW
-         5oDQukfB+IC45/9+LkkZE7WY+p/8jmoRVCfjrOtEZ01zWZDLL3/UySTKWG86G6vO5+qs
-         ISThtTirMXMatR+2ja21CTDxvlqjKG6JnJWl/0GKqaSmRt5Gs8Vc40YIbORsB23cnMoe
-         qsxg==
-X-Forwarded-Encrypted: i=1; AJvYcCWp4MgSGLwVaoswuiJrAhAKCDjoWZgHSr7Tzuewab14wZtQ7Qz/eTeLNgOgYUr9nmOYeY8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwHGUIan45R/Ieve7E/7TROCkUWHr4pnQHm8usCwC0tRJpohRrv
-	6jVa3Rva2gaqhkCE4TW7K3pHpZg4v6SRLv2Ydvb3o+YzOKJ4Z30he6Z4l2YfcA2yml+KpaYAgUs
-	X1h0zCdSI9rNJri3V/mOPD+IDxZQanOW9AkOmR1IsUw==
-X-Gm-Gg: ASbGncvihD3yKPEW29EwIGPc7yTNbKSU7bZODobvRpVcwH0YQlo6NqtKvW7P1EOnRUI
-	i/rMsAZfgi3N4yYU9A9ukYNE+082g2frz9+3rmwdOdpQMn2Ao7fHH1dYAWiP5nlL+sR+VgifNZ5
-	Gpxy/mK0B4tvliwbuJckHAbU1duk/Ji2G8
-X-Google-Smtp-Source: AGHT+IHz5Vh1WV9nsY/ZJiTiB1W8ok9w5HzbkMh2HaPQU1ew8kA+sOX9MHLa7aQ/uKATj0C5Wdv6l/pIEuTUkbDn4co=
-X-Received: by 2002:a05:6902:138e:b0:e81:566c:3085 with SMTP id
- 3f1490d57ef6-e81c0fc6b57mr402062276.1.1749243849237; Fri, 06 Jun 2025
- 14:04:09 -0700 (PDT)
+	s=arc-20240116; t=1749281541; c=relaxed/simple;
+	bh=wRDzN9iQ6/0S6lk+uKXPmqA5/+hY8ARSmqr3+8dxM2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cuC0g7db2e9sS4PaTzZoDz0EdRq8TAbSboDK3qEABvzZnfVzwKXKgDujTMFZD0dNGHdSCgXhiPGsFyPV6wwx2r1ee16FNEycUOfoCGvmOq247IIzEQPjh+OFqoe/tPTcK3V6ahhB25LNxwTIqAVC/JsXapbRnjN61Jw1suwdQMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.3])
+	by gateway (Coremail) with SMTP id _____8DxC3L66kNoABUPAQ--.40469S3;
+	Sat, 07 Jun 2025 15:32:10 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.3])
+	by front1 (Coremail) with SMTP id qMiowMDxu8Tw6kNo4JwOAQ--.43155S2;
+	Sat, 07 Jun 2025 15:32:06 +0800 (CST)
+From: Binbin Zhou <zhoubinbin@loongson.cn>
+To: Binbin Zhou <zhoubb.aaron@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	linux-mmc@vger.kernel.org,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Taichi Sugaya <sugaya.taichi@socionext.com>,
+	Takao Orito <orito.takao@socionext.com>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Jaehoon Chung <jh80.chung@samsung.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Al Cooper <alcooperx@gmail.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	Avi Fishman <avifishman70@gmail.com>,
+	Tomer Maimon <tmaimon77@gmail.com>,
+	Tali Perry <tali.perry1@gmail.com>,
+	Patrick Venture <venture@google.com>,
+	Nancy Yuen <yuenn@google.com>,
+	Benjamin Fair <benjaminfair@google.com>,
+	openbmc@lists.ozlabs.org,
+	Michal Simek <michal.simek@amd.com>,
+	Joel Stanley <joel@jms.id.au>,
+	linux-aspeed@lists.ozlabs.org,
+	Aubin Constans <aubin.constans@microchip.com>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Yixun Lan <dlan@gentoo.org>,
+	linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	linux-tegra@vger.kernel.org,
+	Hu Ziji <huziji@marvell.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: [PATCH v3 00/35] mmc: Cleanup sdhci_pltfm_free()/sdhci_free_host() usage
+Date: Sat,  7 Jun 2025 15:31:50 +0800
+Message-ID: <cover.1749127796.git.zhoubinbin@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241126075702.4099164-1-hongxing.zhu@nxp.com> <20241126075702.4099164-6-hongxing.zhu@nxp.com>
-In-Reply-To: <20241126075702.4099164-6-hongxing.zhu@nxp.com>
-From: Tim Harvey <tharvey@gateworks.com>
-Date: Fri, 6 Jun 2025 14:03:57 -0700
-X-Gm-Features: AX0GCFsPTDn7iA-rHigWV1JSUeeni9XBl8RHjYyReEuG_dN3ujPTRzbBW4231V8
-Message-ID: <CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcMHDy+poj9=jSy+w@mail.gmail.com>
-Subject: Re: [PATCH v7 05/10] PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: l.stach@pengutronix.de, bhelgaas@google.com, lpieralisi@kernel.org, 
-	kw@linux.com, manivannan.sadhasivam@linaro.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	frank.li@nxp.com, s.hauer@pengutronix.de, festevam@gmail.com, 
-	imx@lists.linux.dev, kernel@pengutronix.de, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMDxu8Tw6kNo4JwOAQ--.43155S2
+X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Xw4Utr1UGF4DGFW7Gr17Jwc_yoW7Ar1rpa
+	ySqrWa9r43Cr95WrZxJw1UZw15Xr4rX39Fgry5tw4FqFW3Ca4UKrsrAFy0qryDZ3yxJr48
+	t3WDJw1UGr95K3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUA529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVWxJr0_GcWln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
+	6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26rWY6r4UJwCIc40Y0x0EwIxGrwCI42IY6xII
+	jxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw2
+	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x02
+	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUeVpB3UUUUU==
 
-On Tue, Nov 26, 2024 at 12:03=E2=80=AFAM Richard Zhu <hongxing.zhu@nxp.com>=
- wrote:
->
-> Since the apps_reset is asserted in imx_pcie_assert_core_reset(), it shou=
-ld
-> be deasserted in imx_pcie_deassert_core_reset().
->
-> Fixes: 9b3fe6796d7c ("PCI: imx6: Add code to support i.MX7D")
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
-er/dwc/pci-imx6.c
-> index 3538440601a7..413db182ce9f 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -776,6 +776,7 @@ static void imx_pcie_assert_core_reset(struct imx_pci=
-e *imx_pcie)
->  static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
->  {
->         reset_control_deassert(imx_pcie->pciephy_reset);
-> +       reset_control_deassert(imx_pcie->apps_reset);
->
->         if (imx_pcie->drvdata->core_reset)
->                 imx_pcie->drvdata->core_reset(imx_pcie, false);
-> --
-> 2.37.1
->
->
+Hi all:
 
-Hi Richard,
+After the first part of the cleanup[1], there are sdhci related
+drivers that need further cleanup.
 
-I've found that this patch causes a regression on i.MX8MM and i.MX8MP
-boards with hotplug capable bridges:
-i.MX8MM+PI7C9X2G404EV (this switch does not support hotplug) - no issues
-i.MX8MM+PI7C9X2G608GP (hotplug) - fails to reliably enumerate
-downstream devices about 80% of the time
-^^^ when this occurs PCI_PRIMARY_BUS (0x18) for the root complex
-0000:00:00.0 reads 0x00000000 instead of 0x00ff0100 (PCI_SECONDARY_BUS
-is 0 instead of 1 and PCI_SUBBORDINATE_BUS is 0 instead of 0xff)
-i.MX8MP+PI7C9X2G608GP (hotplug) - hangs at imx_pcie_ltssm_enable
-deassert apps_reset
+This patchset is the second part of the cleanup series, and since sdhci has
+sdhci_alloc_host() as the general interface, our main job is to clean up
+sdhci_pltfm_free() and sdhci_free_host().
 
-In both cases here reverting ef61c7d8d032 ("PCI: imx6: Deassert
-apps_reset in imx_pcie_deassert_core_reset()") resolves this.
+[1]: https://lore.kernel.org/all/cover.1748933789.git.zhoubinbin@loongson.cn/
 
-I notice the sequence of events here is:
-imx_pcie_assert_core_reset asserts apps_reset (disables LTSSM)
-imx_pcie_deassert_core_reset deasserts apps_reset (enables LTSSM)
-imx_pcie_ltssm_enable deasserts apps_reset (enables LTSSM; this is
-where it hangs on imx8mp)
+Thanks.
 
-Is there perhaps some issue with de-asserting this (enabling LTSSM)
-when it's already in this state?
+-----
+V3:
+- Collect Reviewed-by and Acked-by tags.
+Patch-19:
+  - Use dev_err_probe() to cleanup the code.
+Patch-32:
+  - Fix build warning by lkp:
+	https://lore.kernel.org/all/202505300815.tjQRQD6z-lkp@intel.com/
 
-In the case where downstream devices do not enumerate some
-investigation points to them not being happy that the link drops so
-perhaps deasserting apps_reset when its already asserted drops the
-link and restarts it?
+Link to V2:
+https://lore.kernel.org/all/cover.1748515612.git.zhoubinbin@loongson.cn/
 
-Best Regards,
+V2:
+- Collect Reviewed-by and Acked-by tags.
 
-Tim
+Patch-01:
+ - Set sdhci_free_host() to empty, rather than dropping it.
+Patch-07:
+ - Set sdhci_pltfm_free() to empty, rather than dropping it.
+Patch-22:
+ - As requested by Yixun, retain the goto scheme.
+Patch-35:
+ - New patch;
+ - Since all calls have been cleaned up, sdhci_pltfm_free()/sdhci_free_host()
+   are now dropped directly;
+
+Link to V1:
+https://lore.kernel.org/all/cover.1747792905.git.zhoubinbin@loongson.cn/
+
+Binbin Zhou (35):
+  mmc: sdhci: Use devm_mmc_alloc_host() helper
+  mmc: sdhci-acpi: Drop the use of sdhci_free_host()
+  mmc: sdhci-milbeaut: Drop the use of sdhci_free_host()
+  mmc: sdhci-pci: Drop the use of sdhci_free_host()
+  mmc: sdhci-s3c: Drop the use of sdhci_free_host()
+  mmc: sdhci-spear: Drop the use of sdhci_free_host()
+  mmc: sdhci-pltfm: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-bcm-kona: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-brcmstb: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-cadence: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-dove: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-esdhc-imx: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-esdhc-mcf: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-iproc: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-msm: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-npcm: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-arasan: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-aspeed: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-at91: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-dwcmshc: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-esdhc: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-k1: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-ma35d1: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-of-sparx5: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-omap: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-pic32: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-pxav2: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-pxav3: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-sprd: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-st: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-tegra: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci-xenon: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci_am654: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci_f_sdh30: Drop the use of sdhci_pltfm_free()
+  mmc: sdhci: Drop sdhci_free_host()/sdhci_pltfm_free() interface
+
+ drivers/mmc/host/sdhci-acpi.c       |  3 ---
+ drivers/mmc/host/sdhci-bcm-kona.c   |  2 --
+ drivers/mmc/host/sdhci-brcmstb.c    |  1 -
+ drivers/mmc/host/sdhci-cadence.c    | 21 ++++++------------
+ drivers/mmc/host/sdhci-dove.c       | 12 ++---------
+ drivers/mmc/host/sdhci-esdhc-imx.c  |  3 ---
+ drivers/mmc/host/sdhci-esdhc-mcf.c  | 25 ++++++----------------
+ drivers/mmc/host/sdhci-iproc.c      | 18 ++++------------
+ drivers/mmc/host/sdhci-milbeaut.c   | 19 ++++++-----------
+ drivers/mmc/host/sdhci-msm.c        | 11 ++++------
+ drivers/mmc/host/sdhci-npcm.c       | 15 +++----------
+ drivers/mmc/host/sdhci-of-arasan.c  | 26 +++++++----------------
+ drivers/mmc/host/sdhci-of-aspeed.c  | 10 ++-------
+ drivers/mmc/host/sdhci-of-at91.c    | 30 ++++++++++----------------
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 14 +++++-------
+ drivers/mmc/host/sdhci-of-esdhc.c   | 11 ++--------
+ drivers/mmc/host/sdhci-of-k1.c      |  1 -
+ drivers/mmc/host/sdhci-of-ma35d1.c  | 23 +++++++-------------
+ drivers/mmc/host/sdhci-of-sparx5.c  | 24 +++++++--------------
+ drivers/mmc/host/sdhci-omap.c       | 21 ++++++------------
+ drivers/mmc/host/sdhci-pci-core.c   |  9 ++------
+ drivers/mmc/host/sdhci-pic32.c      |  9 +++-----
+ drivers/mmc/host/sdhci-pltfm.c      | 16 +-------------
+ drivers/mmc/host/sdhci-pltfm.h      |  1 -
+ drivers/mmc/host/sdhci-pxav2.c      | 26 ++++++-----------------
+ drivers/mmc/host/sdhci-pxav3.c      |  7 +-----
+ drivers/mmc/host/sdhci-s3c.c        | 16 ++++----------
+ drivers/mmc/host/sdhci-spear.c      | 11 ++++------
+ drivers/mmc/host/sdhci-sprd.c       | 33 +++++++++--------------------
+ drivers/mmc/host/sdhci-st.c         |  6 ++----
+ drivers/mmc/host/sdhci-tegra.c      |  9 +++-----
+ drivers/mmc/host/sdhci-xenon.c      | 15 +++++--------
+ drivers/mmc/host/sdhci.c            |  9 +-------
+ drivers/mmc/host/sdhci.h            |  1 -
+ drivers/mmc/host/sdhci_am654.c      | 20 ++++++-----------
+ drivers/mmc/host/sdhci_f_sdh30.c    | 13 ++++--------
+ 36 files changed, 135 insertions(+), 356 deletions(-)
+
+
+base-commit: d2c6acff6386f43ed307822454b970c831c48f1b
+-- 
+2.47.1
+
