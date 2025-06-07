@@ -1,43 +1,97 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CA91EA7CC
-	for <imx@lists.linux.dev>; Sat,  7 Jun 2025 07:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFEA184F
+	for <imx@lists.linux.dev>; Sat,  7 Jun 2025 09:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749281824; cv=none; b=rr1I8UamOn10RkyFZijfzRzhaIJzXaXacDhbpD9StVMrGbvPyqlHcrtjup245HMmXAGTSifMKYLtG9stTemzBJyGbbYN+0mBqUj2pCx5xZqsipMduzSD3lKYhM9cCatcwQmmGJLvhFkW/filhV5hTyOsbxZ89vvjf66AewYKapM=
+	t=1749288831; cv=none; b=AeoK4zT5FXpaSVsb89TFOjwFlAudZlTbwJcFbARv13kZiO9x9Sy5VrH8TvNCU6RocHT9K7zU3qO4OaXwYyezc6vl2MatdENMOm7H9K+uEqo041cEfXmrvx0i1Hn7/DjpYb2zRATHXDD3zvd+ZqrGjIL0WJfaovkhNVkYDjXKWHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749281824; c=relaxed/simple;
-	bh=3eDQBmQ+AJhNduv18t4R/1/3dV1qU6B9vBte766ow8Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+eza5WHMab1X8DSsyNyZwrHoAqGXXYgvrOtfqRR8w7UU2LCLEFTPKJD7Lv/s9WrCj0gpxzcrgkiUNGzxZzCTGOo3JVQmoeWy2ZWZ8fWh/xvMO7T5v15x6lRXsQfFReNbTl63+hoPb1OvI5yxWhyCM5wu68RAD7bkKB4IrBTXpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.69.3])
-	by gateway (Coremail) with SMTP id _____8DxDeMd7ENoGBYPAQ--.5583S3;
-	Sat, 07 Jun 2025 15:37:01 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.69.3])
-	by front1 (Coremail) with SMTP id qMiowMCxPscX7ENoO54OAQ--.49043S4;
-	Sat, 07 Jun 2025 15:37:00 +0800 (CST)
-From: Binbin Zhou <zhoubinbin@loongson.cn>
-To: Binbin Zhou <zhoubb.aaron@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	linux-mmc@vger.kernel.org,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	s=arc-20240116; t=1749288831; c=relaxed/simple;
+	bh=r/p8vjTholAGUnw7ennp4sAfJrYAwEt+Ralg6aU1yrI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZjI9HmIENLKxD0EB7H9LHkCeS6BSlfXxZUETwPR+SWSEr37eydElnPK9TVZhyHGTDazT471PRbxZ0vH3kk/WGtpKd5bK8boCF3ut3iwZmLA9iUWvGBqSERBqEmE9B7j3GLLNDJxN6AydHBG32yMv60tmfpd9MXNVvz8PqB9scyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=HN4CrKL/; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="HN4CrKL/"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ade4679fba7so28571066b.2
+        for <imx@lists.linux.dev>; Sat, 07 Jun 2025 02:33:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1749288827; x=1749893627; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xn1CB+ZLcGxV8ZFV2HSZz3RsXenQLkjSfas4c7S2PdU=;
+        b=HN4CrKL/aqwPBV5dld5idM8UvNNdon53CUq4c6DdmsVzneTHKmwTdkaQHlovcwsk8b
+         846VMDBHie6zy/KYsZ/Msq6uaLyme9we7CG1HKAJQ0raaaZeNEVJqeB+Hwe7AooOItJJ
+         W/d6xfwpoO2cpX/o4gMF8fZ340wHlQLoiir34=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749288827; x=1749893627;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xn1CB+ZLcGxV8ZFV2HSZz3RsXenQLkjSfas4c7S2PdU=;
+        b=k2brFvL6O4/LSeZekIlV2PTEK+tcuOKeT75dzfYgCQ2znBOHT51ZAYRwQ4X5a73x+E
+         F1AuTmO25r+JM7IXBzFjSLLiVd/hSxL98FtTUe4icST3nYgrNNUJjCvOnGcSMWYsnkBn
+         LDRuvNH6UAh6TBGxjlFi6q5AuXqAWSg59QwXLx/H2bnncv96FJVnqa1nppVYA/tGOzGY
+         fAOIkstZ/v5J+P5UB8d3VUcU/Lo0zuI8z8n4YG7DMGG4Q2kfR3/yt8bxNz80bXl5t3LM
+         kDm9K3WyarU7FpeQ6ajhmIpOXOGiA9BdUKh1Bab7M9dwzwcuzi9CzDCawM1c6tdY0fiz
+         HI5A==
+X-Forwarded-Encrypted: i=1; AJvYcCWmbjXa1faLglc7VSd9Op/HYuB8oF9kJIE7lsXU6O9bJXQZAeZUVgueuN5ZmvC622DgMes=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyA6WWzB92gp+X+YmGyBtDqJJz9a/rO2aTAqQOT3vkTpsWC4w8J
+	ULNQm9PTmaBd5VIBJWstqHTDL/iWoXQ8qOANStomuDhoEAgIcU0u4nxIFRJZzmUxQB0=
+X-Gm-Gg: ASbGncu0TugGBxFQLNhaYmN2gas6mswJEtRlPvwjkwTWyNWBr+LHURFIyKdMllZgMT2
+	GCSmzlm1kKGGOiuTQFXgotx08eCGkBBRaDoQfyJnz4az/AapjWutF98ub/8xmc471oZxw8fA6X1
+	J6uiZYQWFe2QpV9OqQUQA1okvVB0uciowkrVCSdc4BITqehPlfN1POQYRijllYo/mHHWtiq13vb
+	yZgQCpchmv6ZrzOuJCmZJZPq/18cIUkA9lqzk8L9uXeMcU1Hb1TUBFatbVzmi2GFTUsPPwgz8i2
+	wn+9xi8Suh/8sQ5cycZVOdt04mFSfnR+SElqIZWRfHGvtIOCSFXC8AxLaLmu1szPTUZONB5BxyW
+	bIFPG3AFs46kPYOwnXEGNdeLE6+uRLuliVEZIljtvwbICF0/f/qnDD/E60KnIj31QH+knY8nYRH
+	gYDvdxb0IUkJRB
+X-Google-Smtp-Source: AGHT+IFSjDnmW2EWNA+L7rjZYf/CeSyJkQ7tNtchDLVj5RAdGtBJa7XPtmYoEbrLf4khxRuwgaXdPQ==
+X-Received: by 2002:a17:907:9491:b0:ad5:42bd:dfab with SMTP id a640c23a62f3a-ade1aa8db96mr547985866b.30.1749288826712;
+        Sat, 07 Jun 2025 02:33:46 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.homenet.telecomitalia.it (host-87-5-95-99.retail.telecomitalia.it. [87.5.95.99])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1dc1c316sm251541066b.98.2025.06.07.02.33.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Jun 2025 02:33:45 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: Matteo Lisi <matteo.lisi@engicam.com>,
+	linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Fabio Estevam <festevam@denx.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev
-Subject: [PATCH v3 12/35] mmc: sdhci-esdhc-imx: Drop the use of sdhci_pltfm_free()
-Date: Sat,  7 Jun 2025 15:36:45 +0800
-Message-ID: <9b9014749a9870a9cb3c2818fe9b38c013cb46ca.1749127796.git.zhoubinbin@loongson.cn>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1749127796.git.zhoubinbin@loongson.cn>
-References: <cover.1749127796.git.zhoubinbin@loongson.cn>
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Markus Niebel <Markus.Niebel@tq-group.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Rob Herring <robh@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 00/10] Support Engicam MicroGEA boards
+Date: Sat,  7 Jun 2025 11:33:12 +0200
+Message-ID: <20250607093342.2248695-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,61 +99,43 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMCxPscX7ENoO54OAQ--.49043S4
-X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWrtF15CFWrGr1fuF1kGFyfGrX_yoW8Jr4DpF
-	48Wr4Ykr47Jr95t3s0kw1DuF15t3W293yjkrW3W3yrWrW5Kryqqr4SyFyUtr1YyFW8Ka1F
-	qFWvqr4UCFy7twcCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUmFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAF
-	wI0_Cr1j6rxdM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVW3
-	AVW8Xw1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48Icx
-	kI7VAKI48JM4x0Y40E4IxF1VCIxcxG6Fyj6r4UJwCY1x0262kKe7AKxVWUAVWUtwCF04k2
-	0xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUXVWUAwC20s
-	026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
-	Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWDJVCq3wCI42IY6xIIjxv20x
-	vEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280
-	aVAFwI0_Gr1j6F4UJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnU
-	UI43ZEXa7IU5pa0PUUUUU==
 
-Since the devm_mmc_alloc_host() helper is already in use,
-sdhci_pltfm_free() is no longer needed.
+The series adds support for Engicam MicroGEA boards:
 
-Cc: Haibo Chen <haibo.chen@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: imx@lists.linux.dev
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
----
- drivers/mmc/host/sdhci-esdhc-imx.c | 3 ---
- 1 file changed, 3 deletions(-)
+- BMM
+- RMM
+- GTW
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index ac187a8798b7..011b60d21a80 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -1973,7 +1973,6 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
- free_sdhci:
- 	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
- 		cpu_latency_qos_remove_request(&imx_data->pm_qos_req);
--	sdhci_pltfm_free(pdev);
- 	return err;
- }
- 
-@@ -1997,8 +1996,6 @@ static void sdhci_esdhc_imx_remove(struct platform_device *pdev)
- 
- 	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
- 		cpu_latency_qos_remove_request(&imx_data->pm_qos_req);
--
--	sdhci_pltfm_free(pdev);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+based on MicroGEA-MX6UL SoM.
+
+
+Dario Binacchi (10):
+  dt-bindings: arm: fsl: support Engicam MicroGEA BMM board
+  ARM: dts: imx6ul: support Engicam MicroGEA-MX6UL SoM
+  ARM: dts: imx6ul: support Engicam MicroGEA BMM board
+  ARM: imx_v6_v7_defconfig: cleanup mxs_defconfig
+  ARM: imx_v6_v7_defconfig: select CONFIG_INPUT_PWM_BEEPER
+  dt-bindings: arm: fsl: support Engicam MicroGEA RMM board
+  ARM: dts: imx6ul: support Engicam MicroGEA RMM board
+  dt-bindings: arm: fsl: support Engicam MicroGEA GTW board
+  ARM: dts: imx6ul: support Engicam MicroGEA GTW board
+  ARM: imx_v6_v7_defconfig: select CONFIG_USB_HSIC_USB3503
+
+ .../devicetree/bindings/arm/fsl.yaml          |   9 +
+ arch/arm/boot/dts/nxp/imx/Makefile            |   3 +
+ .../nxp/imx/imx6ull-engicam-microgea-bmm.dts  | 306 +++++++++++++++
+ .../nxp/imx/imx6ull-engicam-microgea-gtw.dts  | 164 ++++++++
+ .../nxp/imx/imx6ull-engicam-microgea-rmm.dts  | 362 ++++++++++++++++++
+ .../dts/nxp/imx/imx6ull-engicam-microgea.dtsi |  96 +++++
+ arch/arm/configs/imx_v6_v7_defconfig          |  27 +-
+ 7 files changed, 946 insertions(+), 21 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-bmm.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-gtw.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
+
 -- 
-2.47.1
+2.43.0
 
+base-commit: bdc7f8c5adad50dad2ec762e317f8b212f5782ac
+branch: imx6ull-engicam-microgea
