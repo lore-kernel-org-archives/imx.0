@@ -1,190 +1,217 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D59CA5A
-	for <imx@lists.linux.dev>; Sun,  8 Jun 2025 03:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749354844; cv=fail; b=gJszmOc5qsXb25yD/rAYnlNq46niEKMfNeiS3uLPlayhM6NPRNEeN7X+6zt67aLJ52+UUTKaO4kr8XbK6EVF2mUFXymH2amvEBW+S91RiQos4OodSO2ZTzpcXIG9cR+t7uHVpyIrSwHSNpT5shH4Hc+QT2nC+P3dMqPSqqUMq2k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749354844; c=relaxed/simple;
-	bh=TmHpdgB41lxSXvF9aWnTpEpmchxx7jUBYtgntsB6YME=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EFF20D50B;
+	Sun,  8 Jun 2025 12:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749387287; cv=none; b=AAmjxQGYu9bagykAKA3jAi7Y9+17238pcQp/M/27EcbRSNEp2rDe7XCDd5GHxNDSk8x4e+9eH61iMounVgC37NcBknKywIBvceJ1zJpuWRnbxfRcMGCuNG96HQoG/P1Hm3X9paDi53alqrK+QF56+4LgvWBUCaBs6o9n3aIUoc4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749387287; c=relaxed/simple;
+	bh=oeA8jCBXTd12+Ce4gb12Cz5AdbP0qIMwY7L5mREjuFg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SB9oczPjToMM//q9u3jlTmgUardbDEUhnStNl2jABALpRu+y2HH5N6ceOY4g6TsWcZlYRDE1rlDnhufmhABEzDxIihD7MIc/wcSkLmktNyqeG/LWyCggfI5zYSTMC/qneEJDu6Uuq7VIKBkfb1XMEi5OMLp+pf6y35Vgw+jUNHA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55836qkR029776;
-	Sat, 7 Jun 2025 20:06:52 -0700
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11on2066.outbound.protection.outlook.com [40.107.223.66])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 474mxm0cvu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 07 Jun 2025 20:06:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a8LaCMr9IRSTnA3k+suypmzslL+Ool8tS4XPpnQN5DL2DUVLd3wCbbxV3FGaoTFOSJQezl3xlEIXJfYvSC9Djdwf4sMpO1LhKy1oQrzV2X2+GX6TAA9MV7XAtrisrAh4bVhgXEp0IYzM1y92tvm2jklivRkcjfI4pv9okd8wdULUYsk1WdYnCy60k8pBusaC9L/+xA1Unh2Z+YjHWQi3vJoIY8I2pWc60GwSmNIBE8AOyLd2oKSQ2ROnQZBgRD8i3eqEPcuMjGQXFLAOnUwfLvAZQflpbnUolLcGo6HIPxh8FMphDW5+4br/0tfAvrWuKqj/B4uPfT0bJi4NxfXYAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gvd2UZqMM3qvBf1gaOLfcUffPGu141LJJApJEuiiUGI=;
- b=BfZ0JwIMg0OmABZSA4zZnHPWg+tdM3r8IRrivY2zSTJqWFFXSOGt/XQZzFAfF0JyOV6++PFoEM0SJtC2huBaBdo2oGjKdUu9gtT09WLBjIsVPXotvSORUUyBbvjwdjkAeRrrUe8Cw7LNNr3UoAbdJp65MokOWZmsk9C68/XAGWVFlZTayfXGalh6i5C8/2zAhGBcvNPb1zR4bbqufj6vjLAzAjIcSgHqj50NKzPfN8y3Y721Py5mUqWGLz1EE8qO0lwzOrM8bDu+gHbx4vyAeDvAQd+UWSK4zTVanbUHvyeK9vQnskRUFBBmA5EHo01TIXvvIQxKfDeCSskfAvj34w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CH3PR11MB8773.namprd11.prod.outlook.com (2603:10b6:610:1cb::13)
- by SJ0PR11MB5813.namprd11.prod.outlook.com (2603:10b6:a03:422::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.20; Sun, 8 Jun
- 2025 03:06:50 +0000
-Received: from CH3PR11MB8773.namprd11.prod.outlook.com
- ([fe80::c241:6bd2:b212:f4b2]) by CH3PR11MB8773.namprd11.prod.outlook.com
- ([fe80::c241:6bd2:b212:f4b2%4]) with mapi id 15.20.8813.020; Sun, 8 Jun 2025
- 03:06:50 +0000
-From: Meng Li <Meng.Li@windriver.com>
-To: krzk+dt@kernel.org, linux@roeck-us.net, s.hauer@pengutronix.de,
-        kernel@pengutronix.de, linux-watchdog@vger.kernel.org,
-        imx@lists.linux.dev, shawnguo@kernel.org, robh@kernel.org,
-        conor+dt@kernel.org, Frank.Li@nxp.com
-Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, meng.li@windriver.com
-Subject: [v4 PATCH 1/2] dt-bindings: watchdog: fsl-imx-wdt: add compatible string fsl,ls1046a-wdt
-Date: Sun,  8 Jun 2025 11:06:15 +0800
-Message-Id: <20250608030616.3874517-2-Meng.Li@windriver.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250608030616.3874517-1-Meng.Li@windriver.com>
-References: <20250608030616.3874517-1-Meng.Li@windriver.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0018.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::7) To CH3PR11MB8773.namprd11.prod.outlook.com
- (2603:10b6:610:1cb::13)
+	 MIME-Version:Content-Type; b=Qbc9GippjiruO1maGhJRuzz9XzqqIZAsX3KhG2+5zm6rBpzm4sEdI+ftlHVV5m36aeVNpFhHfJI6ZQR4lr8tFyYC4mipNhcrFDkhCgUh8aS25dTNARzcoU08uJaYSh7CrTwpUIREKJF3o4dDgl6hmhaPZxzkxBnrrTAx8NiULpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHZSKbmU; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHZSKbmU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF002C4CEF5;
+	Sun,  8 Jun 2025 12:54:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749387286;
+	bh=oeA8jCBXTd12+Ce4gb12Cz5AdbP0qIMwY7L5mREjuFg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BHZSKbmUPhJ4nJQkyR888k+1n375fvtQzrQZxBbLGJhhBc1YlsqhKNgEoZ4cJzud9
+	 RT7WjyJlmswe/Fp1U5Qb73akJDesgw+4HuKUFkjN2D2osWp7BafBp5hVFDw6JsxLdT
+	 Fo2zoiO/w+BtI39xQMCsQOFJDrbRUzGfdGJ7lfbiNo04fGa4cB+k6S5w3Fxy+SWt55
+	 j01P6La3o51/qjcKzJhXKbNTNeEQowxw4Gwy1DkU6fly6e01stmpDX3jI1UiCljlBr
+	 euLk+k+bZGvfPNZP4mj14zuqopftqvGWyYo1DdvtyQKfApdDG1mboVp1MT8leU5qvJ
+	 2Cxt1WCW9ZILg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sasha Levin <sashal@kernel.org>,
+	l.stach@pengutronix.de,
+	shawnguo@kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.15 10/10] PCI: imx6: Add workaround for errata ERR051624
+Date: Sun,  8 Jun 2025 08:54:27 -0400
+Message-Id: <20250608125427.933430-10-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250608125427.933430-1-sashal@kernel.org>
+References: <20250608125427.933430-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8773:EE_|SJ0PR11MB5813:EE_
-X-MS-Office365-Filtering-Correlation-Id: 412e7125-5cd3-4a35-9088-08dda639831b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|52116014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YhVEcetKbPyenoVvCgLqhJAFghtPWM4wnf5s1YeMGr3nAy5kcJJ6Xsvtw8YO?=
- =?us-ascii?Q?+lJcfNbDpzcuSVMjHpZU6A2H91dj+hTqXmaXq8WvlssmUV6wPVyH4uJhKvpV?=
- =?us-ascii?Q?H4cwH4TCkU7DVyd94iul/akKyCqirIYCXhkYHSOYLnnByWeEBF+AWjWbP29K?=
- =?us-ascii?Q?Y7YDNzYTzTvkzkW/r1GNo7HxQsOAQ9wyQtikc7AaNYrAZS2UoYEMJAqj64Wh?=
- =?us-ascii?Q?HhdmNhzOsSsoDtnSxaepN5Iv/BAeL2IG01sla5xTDeUYXLsS+U8mfGZA6Udu?=
- =?us-ascii?Q?zRraJSt0pSIBxi7jW/Ci/oVm+q2G3ecoOOvDfX+65cr1XNT9ghGXiNg/sbHo?=
- =?us-ascii?Q?ub5H07T0lqRlj5BlNZgkQVftt9isfPdN/qWs5ZK7klEY1OAaUmNHMXbPoRlC?=
- =?us-ascii?Q?8MIJLnDbF+8qxIrVq6zDb3omkRl9r4ftVBOV/S/CkzU7HdTO4znViC9VXgX+?=
- =?us-ascii?Q?jpsfK7c4feDRdYuE/X4KztcInQxFG1VmROIVFQnNqFBqp240/lOneNMqZ9pq?=
- =?us-ascii?Q?BZ1ItnPbOpwTiD8Ai+Q6ApS13jtVKUtRqHUw0HsveK5RzVH0yWXNhDyn1Bzc?=
- =?us-ascii?Q?a7Qf16SN9XuzkLgk51ISYiDT1IyKmNSKCPOjQSanguT9NTWTwGhOmE5p5grz?=
- =?us-ascii?Q?zfMMp4vYRlka2rfSwcQqHVmjAsxKyv2/2i70MbMMIFyz+N4aSmoe0+eNdagU?=
- =?us-ascii?Q?5mBD6AWYRWh7CYYLe65UkG8d4rZ3/VVoIRFFBBm00+Qsd60KbEK30d5a/CgO?=
- =?us-ascii?Q?pM6ei+2+NwRlCvZZireLyYSObhNLhlk/Hby7Z+3jT3lezqgABu6EwUGQCbIZ?=
- =?us-ascii?Q?t37Q0f5tmquZXzbpkODSwjJV71vR+T5lFbx8q6oRXT3X4zCbolKD8FF/EwDr?=
- =?us-ascii?Q?uBiC64MswqYkPELfZ03HPmdnTbqqhegXFX87197Wn6/ux4LN3bObpqRnU/Jo?=
- =?us-ascii?Q?T5Ld3WYknLh4sHgJqKe+Z458PlegSLc1E1dQDv/PmUCQQ6LE7I2j8jpKcbK1?=
- =?us-ascii?Q?PsTWxlCmNBcpOAHAt8Y6/Xk5BQtlnXIyPMZuQ1qdS6kWdx/XeSTBXlFLdCSd?=
- =?us-ascii?Q?rG9otLo5xuVl59HeiNnhvAthbIy+WQLOh++ukJQ8p6G9ED13Xcyf3jRSWyem?=
- =?us-ascii?Q?JQ7wOtRpgYGmDx/fsWNSOn13Z8EdPklQwNYHSeHVkNOULvMqGfJGR3wi1B2l?=
- =?us-ascii?Q?S10zIoRP9IOrDzgrKHBmGuKo7vDEQwHMUzox0MzILhMtkUR7DhDGJq36852U?=
- =?us-ascii?Q?ibLCVOwEeV6U+oa/jnaMBtE95qK2Lf59j3RGECu45/d4aUvsPw0ArcwFMODS?=
- =?us-ascii?Q?/w4FNHMJA01+MnUsbFuQdLibnJMNHMWsV7JDys9cBIgHnjogz5TNO2rHiCnv?=
- =?us-ascii?Q?/Coa9cY1ngpPvhMo57ouETNKKPK6lZ6EdQ3FkgUlf6ZQnDpp+HZ9MIgqNzsR?=
- =?us-ascii?Q?Ffteq7rLdeAOS5Nq0qS/CF2gIZ8xQibLCpQiMG7GnA+5CxqR90VbM3mGZ3ds?=
- =?us-ascii?Q?ieHTYI6ZDhqs/y0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8773.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RILxurqqYLUzKq2Rp6ZKiOM1e1tOfB3IIUt0WzUKKsTjsAnP7fj/ODNcpG9c?=
- =?us-ascii?Q?DuUU0PsHGY0XS8E87tSv30v4tHhDo+p9T2UVwDd9g4bKbgrW1E9veelqWkaf?=
- =?us-ascii?Q?wXOd/+w9REroFJF9KNN9C1FNTK6aH+x+agPPAFCXsIsg/GKw9pR+QO9j2Frg?=
- =?us-ascii?Q?mwSJY3RiShehnxwSAtpaEsvSVV96teuMoXkEpD8/b43svM6ThHAMsZUH7t1+?=
- =?us-ascii?Q?hBXoJDXm4VlW4Ki8eAiCUko4RUsvwuk5tPGuVtRHlVpSzZUiwfNyCe7up/KI?=
- =?us-ascii?Q?4IMl7eAQBnI7Ds5OFuDfwhkWsbFdBhSGzUs7njRTnpNGstyjgWlt/G06JeT9?=
- =?us-ascii?Q?NUjxEAn7ZmNxRsaejE/XHPdIYLW1tg9iAmACONM5yF279i9rlu/bUiI3HJ4y?=
- =?us-ascii?Q?I0ZY9GFn8WbdXFoHQYBH6MYR/734oF6lcadVhbstGwGhywsiVCKmNN6eiF+W?=
- =?us-ascii?Q?gLxyBhvON1K6CFPgCju9hEVc1/3tQI1O2FdH7oOpov6rc30QXwkF0Eup264s?=
- =?us-ascii?Q?MCZFwJWQNLjcI9TYjcU2m/gf+qPVE7YfdBYuhnn5yjIUOjTAGSJgZsq09tLC?=
- =?us-ascii?Q?KaTU+a/uXE/Jl5FwfSdAP2ct+Hnib4hgesWy4a9bRykXDgQxIEEhInwrya/F?=
- =?us-ascii?Q?xX9JwpWXWZ3gt/nzXuM2G99BgqxBhH4Mu2Yd9giX+2u0VZfySP0Y3B9sccCE?=
- =?us-ascii?Q?KkGU3O9X54Do3Hqi01ioX7CAdsyVZNEJ4n8e2JDjHd+ixYkv+gAi/+Ir7kpS?=
- =?us-ascii?Q?7u/6VFcpcFW8MhS1gs8a3cXPX7v6x687nqHUNjt4ZcTBIJ2vRaL74xFqcGQs?=
- =?us-ascii?Q?LmtN+QX7BUBXdk5kbHT3ftKUtNcz+CmUtPrDFEMuly1GmlqPDeFvUrccpH+x?=
- =?us-ascii?Q?7XTBYM8rS59ZQ0l6XuojDrADbRzG55EFnrhB267Cy0zDE0zLtDBGyXD/vNOF?=
- =?us-ascii?Q?ykdBLZ3nG1gCZom2Dj4+pYwVXO+tXtauFFmR5XcLWaAKMA9VV1hzRGaZBnoF?=
- =?us-ascii?Q?DpuBJJYXqRfB5d5tnYvANPEKpB/HK/OBZhaQRpwFuyy0h5J/9jYoxOJItBYn?=
- =?us-ascii?Q?anuJBbRJMlJ1kyZY+uS1SDweTZnnWOIQs2GbsFjyMvNVh80pgb669x9oMRcZ?=
- =?us-ascii?Q?IOBSd4Q5LKQ0O9Ei2knBKg4U+IHwznnTlilhNypsSKrMPs5SfEwCP13DP+v3?=
- =?us-ascii?Q?ts7gHLhDZ81TLxCzshPR/ew7WDCtBzkLxJZp0L+VrBlxyRZ2uepFdLRU1ZCD?=
- =?us-ascii?Q?zwXLFPNF/aZcG5ms66UUirgturnjHnMSRMTqVAD9+aqt4HQ8LZZDPKByvzS0?=
- =?us-ascii?Q?jHxwBB6VN+0Kql2trFJm8TR3ZsJJaozjAOzF+c8XqHhPVQORpbQMER6e2aem?=
- =?us-ascii?Q?3ginaUJPMSvLfl9SMuFwFdlcwW2DrVZNlhnGH1PtiRSrVEai5WiHold7v2qD?=
- =?us-ascii?Q?htzefRXUrIzwlPQkOMSQ9mYWQPBX35QB02UvbsELwv1Bh459uQNCTeJdMXOT?=
- =?us-ascii?Q?SCpn8rJ7Ugb1cwwFtsm0qiQutgpdvXQBsIDES4O8bnTtZkE/xeb+jYVuXRMW?=
- =?us-ascii?Q?l6ho9+V5MPn4MvalsRDpkBH7plx5qo9+1zU/QCSX?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 412e7125-5cd3-4a35-9088-08dda639831b
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8773.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2025 03:06:50.4896
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: V3OgK+wUC8pX3chm8L1m/z8bDBWeBZYa6GUa7UBOEb+0byUW3MMftqNeZ2ODhdZQeaXRuFmx0EY0KTTbiuS1eQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5813
-X-Proofpoint-GUID: Q1-hFsv2d9yrYjxFU6mLFZe_K6xVXbP7
-X-Authority-Analysis: v=2.4 cv=L74dQ/T8 c=1 sm=1 tr=0 ts=6844fe4c cx=c_pps a=Pyh3CA1es36lNkRVDm3xrw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19
- a=xqWC_Br6kY4A:10 a=6IFa9wvqVegA:10 a=t7CeM3EgAAAA:8 a=URNpuo5YYlQxU1XLGkUA:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA4MDAyMSBTYWx0ZWRfX7/yeJf3GB0tA bvq/JIHGGb50vyTerX8yr2GKs4bscXLTAoGiTLgfXV6MEIFYFxQtVWI11xzgntdC+ofjcc4tkS6 AMiGg8faRKQVnuqP4f5w9FbGVXPcFkDidn4kMo4g2gVyK/Gp4VucsH/dpEZ/8eUR17G6IyE+jCI
- 1y4ong5JV/TRnGkYwiU+4eWXMJWACcUOXGS4qqYL6ThLcO/hu6XbSb3MKyQ3v7SG5EMhhnJUPLq 0TKHlRkGikw0OZrSBF66GwrcsexdTKZAq3iCN690GWpGBVZoZgk1ndzEsGnIa168MPffyrR+wdh rWaFFjBdeZ+qOpN9d1CbA9kCOANeJA9TS7yfA5Y6ThY8v2FP4R77iEJErclccFAz8UXr3yWwXVj
- lzIec9Xe33IT8Z33WRFEXkvoqSVpY0Oiwlf0ZY6zGPRSyg0qeLFNzUGk+p3k94+Ey+NKXSnx
-X-Proofpoint-ORIG-GUID: Q1-hFsv2d9yrYjxFU6mLFZe_K6xVXbP7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-08_01,2025-06-05_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 mlxlogscore=999 adultscore=0 spamscore=0 suspectscore=0
- mlxscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 phishscore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.21.0-2505280000
- definitions=main-2506080021
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add compatible string fsl,ls1046a-wdt for ls1046a SoC. fsl,ls1046a-wdt
-allows big-endian property.
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-Signed-off-by: Meng Li <Meng.Li@windriver.com>
+[ Upstream commit ce0c43e855c7f652b6351110aaaabf9b521debd7 ]
+
+ERR051624: The Controller Without Vaux Cannot Exit L23 Ready Through Beacon
+or PERST# De-assertion
+
+When the auxiliary power is not available, the controller cannot exit from
+L23 Ready with beacon or PERST# de-assertion when main power is not
+removed. So the workaround is to set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
+
+This workaround is required irrespective of whether Vaux is supplied to the
+link partner or not.
+
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[mani: subject and description rewording]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250416081314.3929794-5-hongxing.zhu@nxp.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
-index 8a6c3a75a547..34951783a633 100644
---- a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
-+++ b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
-@@ -37,6 +37,7 @@ properties:
-               - fsl,ls1012a-wdt
-               - fsl,ls1021a-wdt
-               - fsl,ls1043a-wdt
-+              - fsl,ls1046a-wdt
-               - fsl,vf610-wdt
-           - const: fsl,imx21-wdt
+**YES**
+
+This commit should be backported to stable kernel trees. Here's my
+extensive analysis:
+
+## **Primary Justification: Hardware Errata Fix**
+
+**ERR051624** is a documented silicon-level hardware errata affecting
+i.MX95 PCIe controllers. The commit message clearly states this is a
+workaround for a fundamental hardware limitation where "the controller
+cannot exit from L23 Ready with beacon or PERST# de-assertion when main
+power is not removed" when auxiliary power is unavailable.
+
+## **Code Analysis**
+
+The changes are **minimal and targeted**:
+
+```c
++       /*
++        * ERR051624: The Controller Without Vaux Cannot Exit L23 Ready
++        * Through Beacon or PERST# De-assertion
++        *
++        * When the auxiliary power is not available, the controller
++        * cannot exit from L23 Ready with beacon or PERST# de-assertion
++        * when main power is not removed.
++        *
++        * Workaround: Set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
++        */
++       regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
++                       IMX95_PCIE_SYS_AUX_PWR_DET);
+```
+
+The fix is:
+- **Self-contained**: Only affects i.MX95 PCIe initialization path
+  (`imx95_pcie_init_phy`)
+- **Low risk**: Simple register bit set with no complex logic
+- **Well-documented**: Includes detailed errata description and official
+  workaround
+- **Hardware-specific**: No impact on other platforms or subsystems
+
+## **Impact Assessment**
+
+This errata affects **critical system functionality**:
+- **Power Management**: Prevents proper exit from L23 Ready state
+- **System Resume**: Could cause hangs during suspend/resume cycles
+- **Platform Stability**: Affects fundamental PCIe power state
+  transitions
+
+## **Historical Precedent**
+
+Examining similar commits shows a **consistent pattern of hardware
+errata backporting**:
+
+1. **Similar Commit #4 (Status: YES)**: "PCI: dwc: Provide deinit
+   callback for i.MX" - Also addresses i.MX PCIe initialization issues
+   and was backported
+2. **ERR005723 workaround**: Recently backported to stable (`Cc:
+   stable@vger.kernel.org`)
+3. **ERR010728 workaround**: Multiple commits addressing this errata,
+   showing active stable maintenance
+
+## **Stable Tree Criteria Compliance**
+
+✅ **Important bugfix**: Addresses hardware limitation affecting system
+power management
+✅ **Minimal risk**: Single register bit set with no side effects
+✅ **Small and contained**: 13 lines of code, confined to one function
+✅ **No architectural changes**: Simple workaround implementation
+✅ **Critical subsystem**: PCIe power management is fundamental to system
+operation
+✅ **Clear documentation**: Well-documented errata with official
+workaround
+
+## **Risk Analysis**
+
+**Regression Risk: MINIMAL**
+- Only affects i.MX95 platforms specifically
+- Workaround is mandated by hardware vendor (NXP)
+- No conditional logic that could fail
+- Register bit set follows official errata documentation
+
+## **Maintainer Pattern**
+
+The i.MX PCIe driver maintainers (Richard Zhu/NXP, Manivannan
+Sadhasivam) have consistently tagged hardware errata fixes for stable
+backporting, demonstrating their commitment to stable kernel support for
+production hardware issues.
+
+## **Conclusion**
+
+This commit represents a **mandatory workaround for broken hardware**
+that affects basic system functionality (power management). It follows
+established patterns of similar errata fixes that have been successfully
+backported, poses minimal regression risk, and addresses a real-world
+issue that would impact users of i.MX95-based systems in production
+environments.
+
+ drivers/pci/controller/dwc/pci-imx6.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 5f267dd261b51..dbcfa43fd5588 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -48,6 +48,8 @@
+ #define IMX95_PCIE_SS_RW_REG_0			0xf0
+ #define IMX95_PCIE_REF_CLKEN			BIT(23)
+ #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
++#define IMX95_PCIE_SS_RW_REG_1			0xf4
++#define IMX95_PCIE_SYS_AUX_PWR_DET		BIT(31)
  
-@@ -105,6 +106,7 @@ allOf:
-                 - fsl,ls1012a-wdt
-                 - fsl,ls1021a-wdt
-                 - fsl,ls1043a-wdt
-+                - fsl,ls1046a-wdt
-     then:
-       properties:
-         big-endian: false
+ #define IMX95_PE0_GEN_CTRL_1			0x1050
+ #define IMX95_PCIE_DEVICE_TYPE			GENMASK(3, 0)
+@@ -224,6 +226,19 @@ static unsigned int imx_pcie_grp_offset(const struct imx_pcie *imx_pcie)
+ 
+ static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
+ {
++	/*
++	 * ERR051624: The Controller Without Vaux Cannot Exit L23 Ready
++	 * Through Beacon or PERST# De-assertion
++	 *
++	 * When the auxiliary power is not available, the controller
++	 * cannot exit from L23 Ready with beacon or PERST# de-assertion
++	 * when main power is not removed.
++	 *
++	 * Workaround: Set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
++	 */
++	regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
++			IMX95_PCIE_SYS_AUX_PWR_DET);
++
+ 	regmap_update_bits(imx_pcie->iomuxc_gpr,
+ 			IMX95_PCIE_SS_RW_REG_0,
+ 			IMX95_PCIE_PHY_CR_PARA_SEL,
 -- 
-2.34.1
+2.39.5
 
