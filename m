@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F7B205E3E;
-	Sun,  8 Jun 2025 12:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DA21A5BA3;
+	Sun,  8 Jun 2025 12:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749387307; cv=none; b=Cxgg2HD4hUhnxNtEIfP3Ot2hdXZ+FBTqHTICe+SMgl27cuzY4JE1+2hBCmD15MQwl/VgPPC2NjGF70lvU2kBGVIozWyzlXmuEiU3BnnV7iXUvXV429CVWgK9ZinjCnx3/DQPyu08cW75aibh0lkoixkaJXXx5c2pOhY84IAyHFA=
+	t=1749387326; cv=none; b=HhjmDEORM8bMPHCQHQsPXRzzjfBJDAm3UhE5Km89y2EtDsIYQkSuhhRAJdv5SGIs2tKZkDh9WFYGJvwjHF4XNb1ggL8zVv0sqOB3+2wAuWakLIk9jhUSqUZGtVnfl/356xwDgswFs8MFWC5C8u/I6RYcTnMA1PA1bKB7MIx3IXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749387307; c=relaxed/simple;
-	bh=sH8wT/F6fG+SCFjPE7I8DTE0XdwWvqbuYsd+4IkpQ68=;
+	s=arc-20240116; t=1749387326; c=relaxed/simple;
+	bh=k9WQ8zf71PaFQUYStBWojJDS3GDR41VS8kCjbdCtVzs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nQXHFQy4MU98Cf7KaYUH2rytUg5FUPHO9Xp4xuyyasrEnawW2EamrWKwXuB2Vi45LUd95UzZWphdiQrhUeMhoBTcNPfC5ldYhowenmoutMyCBOZOrj7UKQSyl313ZvZY/QKVN1Bof6Sm9HCqcruxCysS72hkDyDs+GJbxriQpt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bCc5AEIl; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=BOr/tIPOXSV6kQG2uRcmQsQiqolXT3avOPHMLp8wO62fvFkBwB/UrktzHH0wNSaZqolpLfJtilxCkaRvrQ57pM1YPb0qC64gKxSyxMZnKpF7dLXu/JjERFPrzwFx64We6SCvj+XbgefZTj7NS7Kd5bgKMxIETwcJyIoEjo7My0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UeCVE0hS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bCc5AEIl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3774C4CEF2;
-	Sun,  8 Jun 2025 12:55:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeCVE0hS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0CBC4CEEE;
+	Sun,  8 Jun 2025 12:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749387306;
-	bh=sH8wT/F6fG+SCFjPE7I8DTE0XdwWvqbuYsd+4IkpQ68=;
+	s=k20201202; t=1749387326;
+	bh=k9WQ8zf71PaFQUYStBWojJDS3GDR41VS8kCjbdCtVzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCc5AEIlE2pm2M5/srwTw+VU7eh9ZYXypJJxY1dtWOqmjlvkDb8kFnwJfT1mHphWO
-	 npCtm3mnAZHYhmJvVPKL0QssWyzfiWPQq/AXfE+FWm+sP7ciFU4Joc/dilR7OUtLiT
-	 /A7mKIIudi5/yXhlmJZAxheOrpuC7u5MZuwcmQJgjVw0Z1wrYqKG4sghVYcAUfGXgg
-	 F5mCB3R3CPuRicc4IqiauswnfmR7Xk+WyQPBNBD7gqvco+98yGCcAi558WLo7N4F0v
-	 Zli7eRcU2HH+gTDQWJ/CcOTg9iJuTapr/WrwUAF5/XTfWt45r5sjWTOCWJCMJH+rYa
-	 Za/PRPeZpteFw==
+	b=UeCVE0hSX9biDHFqZxL3ZkCHo3YwJaPTsZIE68dRBCYaLi6EkRlNw2R+QwU8YWxXv
+	 sMQ+PF4rwDjomdu1bjDOwhurZHZbEj3ynshNMXH/X3SHeXgUrkL6ENxI4DvgSzf983
+	 32BePKdYkdaLhA9AgVu7Grd7+nZxHh8yyatOyZwQpt/ymXLRrRQfGc8Xa2a2qesILn
+	 fDkfS05U2DuD2ZWFZZ9sSArWjJvA4yfLAnzbCDP1nRGL3HqnzyEqmck4LMHhm/ql7J
+	 97J3VADsLzfZi16eAufecKIvD01hV9LmhGeH5UR9vHMl9LFJgx0MPOZS5kr+lCFOQs
+	 gHFHFCMm4E0pQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -38,12 +38,12 @@ Cc: Richard Zhu <hongxing.zhu@nxp.com>,
 	linux-pci@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 10/10] PCI: imx6: Add workaround for errata ERR051624
-Date: Sun,  8 Jun 2025 08:54:47 -0400
-Message-Id: <20250608125447.933686-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 10/10] PCI: imx6: Add workaround for errata ERR051624
+Date: Sun,  8 Jun 2025 08:55:07 -0400
+Message-Id: <20250608125507.934032-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250608125447.933686-1-sashal@kernel.org>
-References: <20250608125447.933686-1-sashal@kernel.org>
+In-Reply-To: <20250608125507.934032-1-sashal@kernel.org>
+References: <20250608125507.934032-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.10
+X-stable-base: Linux 6.12.32
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
@@ -180,10 +180,10 @@ environments.
  1 file changed, 15 insertions(+)
 
 diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 90ace941090f9..38f14b5f50f02 100644
+index ad3028b755d16..3b24fed3177de 100644
 --- a/drivers/pci/controller/dwc/pci-imx6.c
 +++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -49,6 +49,8 @@
+@@ -48,6 +48,8 @@
  #define IMX95_PCIE_SS_RW_REG_0			0xf0
  #define IMX95_PCIE_REF_CLKEN			BIT(23)
  #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
@@ -192,7 +192,7 @@ index 90ace941090f9..38f14b5f50f02 100644
  
  #define IMX95_PE0_GEN_CTRL_1			0x1050
  #define IMX95_PCIE_DEVICE_TYPE			GENMASK(3, 0)
-@@ -228,6 +230,19 @@ static unsigned int imx_pcie_grp_offset(const struct imx_pcie *imx_pcie)
+@@ -206,6 +208,19 @@ static unsigned int imx_pcie_grp_offset(const struct imx_pcie *imx_pcie)
  
  static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
  {
