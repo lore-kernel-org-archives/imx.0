@@ -1,250 +1,261 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE891AC88B
-	for <imx@lists.linux.dev>; Sat,  7 Jun 2025 18:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749321937; cv=none; b=lQvuWNTTDPWHyRNmmgxzbmm52swcIIH8Nod5Hjom7PJMyFYHADHcArYB63MWcmRFJy5tlP7qNz5CEvZKqBeMA+7vRtkjclBck64KwtpwoYqFI9+IH6Yb4SZfSUSliD1Qx3TReKi+9OpDG23jVRYKCI30X/b4/Rq/xGt/zYP7FSU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749321937; c=relaxed/simple;
-	bh=ZCXz4fmL+5NNTmhEahX2jjOy1kgqf8orw3M4ovE4Ms4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=if55r1WDOAzU221gOlEm6HHEpWHKsfiaZN8glTItUHNrhhGh1QADgshW3DXzzUviLglnX+pIgniR4XDE4dfiPPBHnfPWWaHauVs6y/FRlPtu6o7MW3pi9VF9RV/JpoBmA4nOivP1vVmDS5Z0h4fK+cv24/Z++ClsPH4430cfWEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=lbu2Y7SW; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="lbu2Y7SW"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id ADCEB2EC;
-	Sat,  7 Jun 2025 20:45:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1749321928;
-	bh=ZCXz4fmL+5NNTmhEahX2jjOy1kgqf8orw3M4ovE4Ms4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lbu2Y7SWxDDc7ZZA43N6BlLbCW8//A02AX1cxoByct3z3ujKVoh382oy/zCNRXAiK
-	 p2Wtp+70t27Rm5aMIXF4kUwZR5i6sAAJBg4UjUO6gTcWbz/9mU2YY+LtEZ2QJP7Rgz
-	 Urh0DgKODm7wpc6iy7FEYzszmFJiGf3buuzwu6vs=
-Date: Sat, 7 Jun 2025 21:45:22 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Isaac Scott <isaac.scott@ideasonboard.com>
-Cc: kieran.bingham@ideasonboard.com, rmfrfs@gmail.com, martink@posteo.de,
-	kernel@puri.sm, mchehab@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] media: platform: Add user line interrupt to
- imx-mipi-csis driver
-Message-ID: <20250607184522.GE27510@pendragon.ideasonboard.com>
-References: <20250606154414.540290-1-isaac.scott@ideasonboard.com>
- <20250606154414.540290-3-isaac.scott@ideasonboard.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCAE1372
+	for <imx@lists.linux.dev>; Sun,  8 Jun 2025 03:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749353882; cv=fail; b=d5JmosxqWXapOU4ToR/XTRaIEL7PGsfRnsgjn1jHWSOAorbHqiK8fcpL3J/BmGCJV7QZLFGmIFdKiPxnuM87NJeOgGMF6tWReM19MwPfzNQlpooW5Wc98J9vSw3vqCOt9DmQ3WE5HMiMMIEHALfu6a8h8GCEoLKSBTMg575LN6s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749353882; c=relaxed/simple;
+	bh=8H8JbNZSuPrKfP/m1LAmkuq599UjONhRaqh4W+z3SqY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Sw54LHghWgUwfRIWEUDIeeze8pxXJd7/lDRfOgIB2jNwfFUFq7YSXMvAVhV8aYaehnu25QOgXwdnrAgCL/I8x+ogLKoVRABmlQXw0+lDSQq0QKgcUAzk5Mq9Jm6wDXjch8tJLSGoTqTWfUrjyZ5deRzgT5ps+rkARp0lputIeXU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 558303JY022129;
+	Sun, 8 Jun 2025 03:08:08 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11on2052.outbound.protection.outlook.com [40.107.220.52])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 474an2gr3f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 08 Jun 2025 03:08:07 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WsBu6965DaF56rF21v+6Mf5p8JU1C4LLzwcX2LQr4yxTIY7RFz9Vw43UKGAGKx7HF2drfQjYn/zIQT2A9CJfnqEcXmOuCwSiTUz05abspNvKSdgYn0+tNGchpAXndLd9wCiVkYrQJQQpEjYMp30dzZtmgkcKFAdj4CQZ/YN6NL9CXkWSPhYn1CJ/FWpHbIvGswBfFxMQwXm2roBu5EBBSoLw0/5uN9/Dj/8slsHB3ZpdhGqRogUSYrxHRWalB9GdKk++3RScQqgsj+wlomD+sCMMJWhmg+IL16Y5Xec0eeNPflW2YqQp3/jA7T6dolsC3l7/d9WGXsHf9dvoGIdemw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KTKu5QpV3ttok7E6j3zYD3j0eXGyJEfBDY0AaIaQJ64=;
+ b=LLSCYTbZi6ItWlcIszmugasO/mYxpg9FkmR9yaPfxrJD9+PsBjG3N7zMWgkSFCOGV6n+ZCSR9eemT0vgZbY6gLxHdnLosf9eugcohf2+1clRQQTbYIEIuvJeqO61QSiD0qU9T8Fw0RcCyyjfZDH/S9RaFazX8aFiMhTyC0owZdiBXJM210rqKL2yMmX6VXeP/Pcga2EVFgmnsTl/l2Y5cbc4JSU3C4BXDMELgYQtAg2E8JYVrL2oaz3JHwdhnAmHUfPeHSQbQm81yzvvydbcLsycT/gF/iXF/GtWjxU136eRGfqdgk9/N9HUzGlQwr1ZZ/TRH7wJpNB/sSUiFNApKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from CH3PR11MB8773.namprd11.prod.outlook.com (2603:10b6:610:1cb::13)
+ by SJ0PR11MB5813.namprd11.prod.outlook.com (2603:10b6:a03:422::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.20; Sun, 8 Jun
+ 2025 03:08:05 +0000
+Received: from CH3PR11MB8773.namprd11.prod.outlook.com
+ ([fe80::c241:6bd2:b212:f4b2]) by CH3PR11MB8773.namprd11.prod.outlook.com
+ ([fe80::c241:6bd2:b212:f4b2%4]) with mapi id 15.20.8813.020; Sun, 8 Jun 2025
+ 03:08:05 +0000
+From: "Li, Meng" <Meng.Li@windriver.com>
+To: Frank Li <Frank.li@nxp.com>
+CC: "linux@roeck-us.net" <linux@roeck-us.net>,
+        "s.hauer@pengutronix.de"
+	<s.hauer@pengutronix.de>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>,
+        "shawnguo@kernel.org"
+	<shawnguo@kernel.org>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "conor+dt@kernel.org" <conor+dt@kernel.org>,
+        "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [v4 PATCH 0/2] create patches for nxp-ls1046a platform watchdog
+ feature
+Thread-Topic: [v4 PATCH 0/2] create patches for nxp-ls1046a platform watchdog
+ feature
+Thread-Index: AQHb1QLI5R/2ibUE5EeNzvAcdCsKlrP1X0NggADnowCAAlP0cA==
+Date: Sun, 8 Jun 2025 03:08:04 +0000
+Message-ID:
+ <CH3PR11MB877395E7F25D26550D83481AF168A@CH3PR11MB8773.namprd11.prod.outlook.com>
+References: <20250604034246.3234837-1-Meng.Li@windriver.com>
+ <CH3PR11MB8773488D4C9E9C7A9D44DBF9F16EA@CH3PR11MB8773.namprd11.prod.outlook.com>
+ <aEMKeMaka8yLtMEc@lizhi-Precision-Tower-5810>
+In-Reply-To: <aEMKeMaka8yLtMEc@lizhi-Precision-Tower-5810>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB8773:EE_|SJ0PR11MB5813:EE_
+x-ms-office365-filtering-correlation-id: 400a336f-91aa-4014-fc71-08dda639afd2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?YN9IvQKagbqi51D85ERrnroNXtV+A/LVw4kl/CBjB8Xj7faNtGEYQGTSaCFC?=
+ =?us-ascii?Q?OnB1dXetBFyxqWejm9Q+Fa9VA3z3OftC8vJjD302qOktZgB4tqBXoqL4BCBt?=
+ =?us-ascii?Q?VcWFgkmf2HSjmvHtTp8oru3VTmYBzVvUWLXERGfWndWEOn1AF7oIGVc4rrRT?=
+ =?us-ascii?Q?FjHWcw0T3lV+icL7Yp+Y7AOc350YUViWahinx0xMn/QG9Qh74c5ianldQcGw?=
+ =?us-ascii?Q?3nJ+y1TXVHUVF1XDy46O33TCufK3L+DPfH+z6J7PkXt5kb7F+rr4820gBRm1?=
+ =?us-ascii?Q?WECwv+1TQQ+K61gfUg0uz7tNxZe0MHcW/D7aBWp5aqT2gqB28/P0xIUylus8?=
+ =?us-ascii?Q?rRdfcrDZGdUHtUNanbkJExrC1qdKgyqAWoxs1vqUFu7tF57Vw1gZurEhruor?=
+ =?us-ascii?Q?MMRd5dzSXU2a28O+s1ZB//xp+pEa3HyusyzFt+sZM/lGO1nrUQsWK09c3BFZ?=
+ =?us-ascii?Q?LUywkMaeRMkEfu5tAVE5ForwGfp2PilMJd/caHUQ7xYhUyl0scXukRf7FdP2?=
+ =?us-ascii?Q?hfojpMWewq6UYWfrZD2aQLPF2SbsgO0rd+0WDIMOTGI1MzraqMDoZMp6HunE?=
+ =?us-ascii?Q?QZu7Ypx/5+ZO2edAMPK0qZI8q8gb090MPL+sN62AxHZmUD9Rbj4aNY2lNYSx?=
+ =?us-ascii?Q?ZQIiQVSlVDUHrqiDhV3tGVyyprGsTY350WikKuSr8R7/sXMyJnqsiMdJCOwb?=
+ =?us-ascii?Q?NnWyX+e7XVRwkJb8jbR7br9JJaUdS4mPDOjp0ez/S615Rp77bgeN0TTnX5m0?=
+ =?us-ascii?Q?2l/al3f3mDzxhAxUuAdLQjbptjbT+yNKv7lLsKvRaUhLnJItNb9B9AgvRNMX?=
+ =?us-ascii?Q?fF9BFY3BNvHio8lpq+H9A834BxTvq+xYPS8WgON5Zu6lJd9IPIWZSgOvS6Nu?=
+ =?us-ascii?Q?jUW5ma6yU3cqSkvGkSXyyKtVsB1gg+4RzAdFL0F0OesdxuwxiojWoGK3cPaX?=
+ =?us-ascii?Q?6ab74EbwIO0QwjIJTQLguMurnAEHYQ0w4rVC+YnMgjKV2hSV9VMFSyNwL1pX?=
+ =?us-ascii?Q?4KVvXN/E0HWHkINnyt52KCC314sd3ix8OyuIK4Pt6Xm7VbUHWqxMPrSsoIAA?=
+ =?us-ascii?Q?RWeGvogdxwuPnyyZuwOAwtSSoLdv71TslkqFor95HpMq3gAO/RN7PicqJyeS?=
+ =?us-ascii?Q?gZcI9OxnoZ8caPwjSwvDAPipps//s9Gb1TT7GplsbJn4beWLlquAKzyFoNN0?=
+ =?us-ascii?Q?0JZ1Q4tdziUZd65kjdJoK2gn59R0J05jl7wjotsv2ZGtifOcGULs8h+eQc9P?=
+ =?us-ascii?Q?v3DNParaFjyoHhSyP5r77FQ/0WJL7hOJ/dOJ6Y8mU5KGZxry04Suxa05xzgM?=
+ =?us-ascii?Q?MrjHcx9v1S2eMzcQftVceGu7vxGQ1ZFwdrUyvcwXOvWWAI8vvepol2U/pTt+?=
+ =?us-ascii?Q?5VzdojK+X1yZ7LaR1I1DB8YHF+Wvk1mNhcVI8Tbs0Gp8+3eqrbasG3ldBBud?=
+ =?us-ascii?Q?qIFaFQFGnw/VqOh0bBnuZiNiZP4JShG5wpVpufqljC/9JJfSrlIAg+CUG5xs?=
+ =?us-ascii?Q?A7TnddfryuTD2Dc=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8773.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?qrXZd9kFBWeuHHtE/gxV4suwkPytatx1VEP6CIJjtxYiHB82jYLbBFh0jNlu?=
+ =?us-ascii?Q?SNpGZKyDTyQ+BGmmTNTxGnd+8AujlSS+mkZkhfvJ1BbfRX2WJSKk2moOzFIs?=
+ =?us-ascii?Q?hnA0kjWCgwl2LMCN8AjXcrC/vjOGwx6K0EUZUWcJYUc1EagbWxK/YxFZ1GCH?=
+ =?us-ascii?Q?vphb1kl+XR1dBakUJGA9lTcGaQIAjkmsNVT0idkVNpPZtJO07LujzQofAyKG?=
+ =?us-ascii?Q?ZkaslSrculilNAZp+buUbBDKa8WvXW2/CN8xD7MRjDB8DQ3goyanjLu+XdQD?=
+ =?us-ascii?Q?QQD886SyV41hQp9qnnWHT9raQKBdSs4X4wYookVI3tiENLM9pCkua2gcQPuz?=
+ =?us-ascii?Q?xk33mgDiAcaNe2kZK7crGqp6Ay3Q7oR+SR+3d2i8pLrWre7F4dmmXFpEABU4?=
+ =?us-ascii?Q?hAtCEQ8P8H08I0h0D/FTRtzZ4yWAsl2D5Cyy7Wp3RC2q+4F3OPD9f5nAhlV+?=
+ =?us-ascii?Q?9HXKbwTylzCZXXJZKB1Wpxlr0bSGshqXE/4emFt2bBdHI/3CPwZ1ZvyIOKZ0?=
+ =?us-ascii?Q?2co3GhqcbTTmFtrUS3Ww3x9oRl3igY3uyh9zg5/O1CaA4mKmYwCYrE1npk+O?=
+ =?us-ascii?Q?4yNRDa1mvOQr/ESa8KmY/DNP96+yDTW0oL8aIoxQcQ/kE1qwtH4Qn072XVRs?=
+ =?us-ascii?Q?awCSp+BlxoMWFZ6GedvdiGcMZ6KD3P2w++KPDdHOKidU1F1M/5BoHXpdttIF?=
+ =?us-ascii?Q?u8GbevVHtGLb+KsgmiW+7kLssLElU2GhZA9aCLly2fgKuZbDTRQ5wpgdHfpb?=
+ =?us-ascii?Q?gdCJdQnQ03cYHE34XEvLfbFv+bFrJWjAMRn6xeiKJXHNAdOaZ9J171/a3BYz?=
+ =?us-ascii?Q?5Cb1pXYeQv0t0JnatFQsDHAnvgNVluGFLhAzk1KWTZ9md2YyshDJizSLXCY/?=
+ =?us-ascii?Q?xeOXqOdlRkJHZ+81gEDgxjmhGxnb2bEiNAeIHJhUhLyEeLBR0eqpl23wRe2e?=
+ =?us-ascii?Q?o/xX6sI1659aoRwzQzjQYepJCd7BDG9x1N5KH1be5TrcoA502xd5TukyrOzH?=
+ =?us-ascii?Q?fKtkK57p9s7oG2P0/Y7Fmf3kTJyewBpFI810OZ0oNx6D+D9dl+Xg5E9LOti0?=
+ =?us-ascii?Q?xIRAVr8FWP1VHsYUFKK5E0qaks2Vo2jhWrhnwmLvsfdTAy1/nT3uccvJ7Kzx?=
+ =?us-ascii?Q?LqLzeLAP3o+eOfrJWTFvUE8IajmBFKlcD8U37bFT+/m6sUW6pIj5FTjzlkmG?=
+ =?us-ascii?Q?62AxRc5KPvb3GsYj1S2ZLAw1YHQ3waXjwKyDFGLDD1jjVSFO6pDVI2BBE9cB?=
+ =?us-ascii?Q?7ua5GYqfsvtkRkaz1KqiM7JX6x4z5oHP5KKjqbd0mZPjtvP2acj3T1CBvR4d?=
+ =?us-ascii?Q?tl4vOj3sXtNhJK4Nj6cPSUZbWeNswj9REejHTyxwglAniaZK9BxVSwWm8JdB?=
+ =?us-ascii?Q?5xMUs+QEKX1vRXOjB20yZlxIWB9OdiCts33ccuJxVSgwxzBfduZ+eKFmLOtV?=
+ =?us-ascii?Q?iA26lqeSTZQLzGx5b2g4pmPz2z8Sl8P0QbLKU40xRIQ598NMgO7ZVHysz9j9?=
+ =?us-ascii?Q?t6V/+JyjI37glhPfe796RT1ZI4DEV/jjlDz2OWEb7GttSamhUCwdI9QKCJxv?=
+ =?us-ascii?Q?7yGeoEhbrSkdu9W4mRxpGiR+hden/G44n9I6cIzZ?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250606154414.540290-3-isaac.scott@ideasonboard.com>
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8773.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 400a336f-91aa-4014-fc71-08dda639afd2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jun 2025 03:08:04.9550
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PZlMXdxWGXyJ63Aa2hy5TFA1hgqkaj9u3fFE4HQCzSeb8SNOwXOBM0eMVAQ9STvOz8DCdXxQNWs0vgdPIi8Lyw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5813
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA4MDAyMSBTYWx0ZWRfXyfcKEakXNiUz fJ0ZEb9vhrTXN3Ps2F6S2ma/3SX8KFjd+1SXqIIfinl0ZZ4t/jGfbo98ldvxyfx4C12vvQWjtIA 5UgqSAEjsvXYwYEmWMs0Nf2rUva5wL/Iu1BLgv/axfZv9C7ZqYfwWN1s5vMgWe1Lv4eNWmnxIFc
+ VPOabKMA441S8/3P5layAMHq3urM8cR1+TGfgjmNA5QboJqCcnIVcBWcpfbTCioD3oBzYX8PgSK FnvHEPDhwtkISL6GLqG6WA+JjkmYQMl3sBC/JXYBAd2I6JGltwdmN7QBj+5mE+Yfqt0rzgnwiya rc5vVSNVM5qI3WgEQv5egBQHFvkAGoom2pdLWipqcvoPXWodc6fyjrZwlB2n19YSY0QDkk3LmAV
+ PnD+9FNOtx0Y22LYpQg5kFsUBqMuc+3dCsyfqyy3+0g3gvYTZ22qgy87UUQgZTIZ7PGPVA5w
+X-Proofpoint-GUID: mRtSzGWEx-LxnJHO0tPc7MUqlGlBKW54
+X-Authority-Analysis: v=2.4 cv=fdSty1QF c=1 sm=1 tr=0 ts=6844fe97 cx=c_pps a=RuymQIG3+YzwfY4kumoM/w==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6IFa9wvqVegA:10 a=8AirrxEcAAAA:8 a=t7CeM3EgAAAA:8 a=_jlGtV7tAAAA:8 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=tOCxSLjmQqWByJu3keMA:9 a=CjuIK1q_8ugA:10 a=ST-jHhOKWsTCqRlWije3:22 a=FdTzh2GWekK77mhwV6Dw:22 a=nlm17XC03S6CtCLSeiRr:22 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-ORIG-GUID: mRtSzGWEx-LxnJHO0tPc7MUqlGlBKW54
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-08_01,2025-06-05_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=983
+ bulkscore=0 impostorscore=0 clxscore=1015 malwarescore=0 suspectscore=0
+ mlxscore=0 phishscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.21.0-2505280000
+ definitions=main-2506080021
 
-Hi Isaac,
 
-Thank you for the patch.
 
-As for 1/2, The subject line should start with "media: imx-mipi-csis: ".
+> -----Original Message-----
+> From: Frank Li <Frank.li@nxp.com>
+> Sent: Friday, June 6, 2025 11:34 PM
+> To: Li, Meng <Meng.Li@windriver.com>
+> Cc: linux@roeck-us.net; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> linux-watchdog@vger.kernel.org; imx@lists.linux.dev; shawnguo@kernel.org;
+> robh@kernel.org; conor+dt@kernel.org; krzk+dt@kernel.org; linux-arm-
+> kernel@lists.infradead.org; devicetree@vger.kernel.org; linux-
+> kernel@vger.kernel.org
+> Subject: Re: [v4 PATCH 0/2] create patches for nxp-ls1046a platform
+> watchdog feature
+>=20
+> CAUTION: This email comes from a non Wind River email account!
+> Do not click links or open attachments unless you recognize the sender an=
+d
+> know the content is safe.
+>=20
+> On Fri, Jun 06, 2025 at 01:46:56AM +0000, Li, Meng wrote:
+> > Add watchdog binding maintainer for the patch-0001.
+>=20
+> You may need resend whole patches, which included linux-watchdog, they
+> may use patchwork to track patches and miss this one.
+>=20
 
-On Fri, Jun 06, 2025 at 04:44:14PM +0100, Isaac Scott wrote:
-> The NXP i.MX 8M Plus features an interrupt that triggers after the MIPI
-> CSI receiver counts a user-configurable number of lines. This is useful
-> for debugging, as it allows users to check if the amount of lines per
-> frame equals what they are expecting.
-> 
-> Add support for this interrupt in the driver, and an entry into debugfs
-> to allow the user to configure whether the interrupt is enabled, as well
-> as the number of lines after which to trigger the interrupt.
-> 
-> This debugfs control can be altered while a stream is in progress, with
-> 0 disabling the interrupt and >0 setting a new desired line count.
-> 
-> Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-> 
-> ---
-> 
-> Changes since v1:
-> - Moved from magic number to enum in status_index
-> - Clear INT_MSK_1 in enable_interrupts() when on == false
+Thanks for reminding me.
+I have sent the whole patches.
 
-You also modified the logic to enable the interrupt there. I don't think
-that's a good idea, as it means the interrupt will always be enabled,
-even when the feature isn't used. It can increase the load on the
-system.
-
-> - use local variable in set_params() as in the interrupt handler
-> - move interrupt handling code outside of spinlock
-> ---
->  drivers/media/platform/nxp/imx-mipi-csis.c | 40 +++++++++++++++++++++-
->  1 file changed, 39 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> index 394987d72c64..1b71f6c19fa8 100644
-> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> @@ -88,6 +88,10 @@
->  #define MIPI_CSIS_INT_MSK_ERR_CRC		BIT(1)
->  #define MIPI_CSIS_INT_MSK_ERR_UNKNOWN		BIT(0)
->  
-> +/* CSIS Interrupt mask 1 */
-> +#define MIPI_CSIS_INT_MSK_1			0x18
-> +#define MIPI_CSIS_INT_MSK_1_LINE_END		BIT(0)
-> +
->  /* CSIS Interrupt source */
->  #define MIPI_CSIS_INT_SRC			0x14
->  #define MIPI_CSIS_INT_SRC_EVEN_BEFORE		BIT(31)
-> @@ -109,6 +113,10 @@
->  #define MIPI_CSIS_INT_SRC_ERR_UNKNOWN		BIT(0)
->  #define MIPI_CSIS_INT_SRC_ERRORS		0xfffff
->  
-> +/* CSIS Interrupt source 1 */
-> +#define MIPI_CSIS_INT_SRC_1			0x1c
-> +#define MIPI_CSIS_INT_SRC_1_LINE_END		BIT(0)
-> +
->  /* D-PHY status control */
->  #define MIPI_CSIS_DPHY_STATUS			0x20
->  #define MIPI_CSIS_DPHY_STATUS_ULPS_DAT		BIT(8)
-> @@ -221,6 +229,7 @@
->  #define MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE	BIT(0)
->  
->  #define MIPI_CSIS_FRAME_COUNTER_CH(n)		(0x0100 + (n) * 4)
-> +#define MIPI_CSIS_LINE_INTERRUPT_RATIO(n)	(0x0110 + (n) * 4)
->  
->  /* Non-image packet data buffers */
->  #define MIPI_CSIS_PKTDATA_ODD			0x2000
-> @@ -251,6 +260,7 @@
->  enum mipi_csis_event_type {
->  	MAIN = 0,
->  	DEBUG = 1,
-> +	USER = 2,
-
-I don't think "USER" really fits. The MIPI_CSI1_INTERRUPT_SOURCE_1
-register is just the second interrupt source register. MAIN0 and MAIN1
-may be a better fit.
-
->  };
->  
->  struct mipi_csis_event {
-> @@ -286,6 +296,8 @@ static const struct mipi_csis_event mipi_csis_events[] = {
->  	{ MAIN, MIPI_CSIS_INT_SRC_FRAME_END,			"Frame End"},
->  	{ DEBUG, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,		"VSYNC Falling Edge"},
->  	{ DEBUG, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,		"VSYNC Rising Edge"},
-> +	/* User Line interrupt */
-> +	{ USER, MIPI_CSIS_INT_SRC_1_LINE_END,			"Line End"}
->  };
->  
->  #define MIPI_CSIS_NUM_EVENTS ARRAY_SIZE(mipi_csis_events)
-> @@ -338,11 +350,14 @@ struct mipi_csis_device {
->  
->  	spinlock_t slock;	/* Protect events */
->  	struct mipi_csis_event events[MIPI_CSIS_NUM_EVENTS];
-> +
->  	struct dentry *debugfs_root;
->  	struct {
->  		bool enable;
->  		u32 hs_settle;
->  		u32 clk_settle;
-> +		u32 int_line;
-> +		u32 last_int_line;
->  	} debug;
->  };
->  
-> @@ -533,6 +548,8 @@ static void mipi_csis_enable_interrupts(struct mipi_csis_device *csis, bool on)
->  {
->  	mipi_csis_write(csis, MIPI_CSIS_INT_MSK, on ? 0xffffffff : 0);
->  	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_MSK, on ? 0xffffffff : 0);
-> +	mipi_csis_write(csis, MIPI_CSIS_INT_MSK_1,
-> +			on ? MIPI_CSIS_INT_MSK_1_LINE_END : 0);
->  }
->  
->  static void mipi_csis_sw_reset(struct mipi_csis_device *csis)
-> @@ -655,6 +672,7 @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
->  				 const struct csis_pix_format *csis_fmt)
->  {
->  	int lanes = csis->bus.num_data_lanes;
-> +	u32 int_lines;
->  	u32 val;
->  
->  	val = mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
-> @@ -691,6 +709,13 @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
->  			MIPI_CSIS_DPHY_BCTRL_L_B_DPHYCTRL(20000000));
->  	mipi_csis_write(csis, MIPI_CSIS_DPHY_BCTRL_H, 0);
->  
-> +	int_lines = READ_ONCE(csis->debug.int_line);
-> +	if (int_lines > 0)
-> +		mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-> +				max(int_lines, 1U) - 1);
-
-The "int_lines > 0" condition and max(int_lines, 1U) are redundant. I'd
-drop the former, in order to set the MIPI_CSIS_LINE_INTERRUPT_RATIO
-register to 0 when int_line is 0, to match the logic in
-mipi_csis_irq_handler().
-
-> +
-> +	csis->debug.last_int_line = int_lines;
-> +
->  	/* Update the shadow register. */
->  	val = mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
->  	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL,
-> @@ -770,10 +795,12 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
->  	struct mipi_csis_device *csis = dev_id;
->  	unsigned long flags;
->  	unsigned int i;
-> -	u32 status[2];
-> +	u32 int_lines;
-> +	u32 status[3];
->  
->  	status[MAIN] = mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
->  	status[DEBUG] = mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
-> +	status[USER] = mipi_csis_read(csis, MIPI_CSIS_INT_SRC_1);
->  
->  	spin_lock_irqsave(&csis->slock, flags);
->  
-> @@ -792,8 +819,16 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
->  
->  	spin_unlock_irqrestore(&csis->slock, flags);
->  
-> +	int_lines = READ_ONCE(csis->debug.int_line);
-> +	if (int_lines != csis->debug.last_int_line) {
-> +		mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-> +				max(int_lines, 1U) - 1);
-> +		csis->debug.last_int_line = int_lines;
-> +	}
-> +
->  	mipi_csis_write(csis, MIPI_CSIS_INT_SRC, status[MAIN]);
->  	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC, status[DEBUG]);
-> +	mipi_csis_write(csis, MIPI_CSIS_INT_SRC_1, status[USER]);
->  
->  	return IRQ_HANDLED;
->  }
-> @@ -933,6 +968,7 @@ static void mipi_csis_debugfs_init(struct mipi_csis_device *csis)
->  {
->  	csis->debug.hs_settle = UINT_MAX;
->  	csis->debug.clk_settle = UINT_MAX;
-> +	csis->debug.int_line = 0;
->  
->  	csis->debugfs_root = debugfs_create_dir(dev_name(csis->dev), NULL);
->  
-> @@ -944,6 +980,8 @@ static void mipi_csis_debugfs_init(struct mipi_csis_device *csis)
->  			   &csis->debug.clk_settle);
->  	debugfs_create_u32("ths_settle", 0600, csis->debugfs_root,
->  			   &csis->debug.hs_settle);
-> +	debugfs_create_u32("int_line_0", 0600, csis->debugfs_root,
-> +			   &csis->debug.int_line);
->  }
->  
->  static void mipi_csis_debugfs_exit(struct mipi_csis_device *csis)
-
--- 
 Regards,
+Limeng
 
-Laurent Pinchart
+> Frank
+>=20
+> >
+> > Thanks,
+> > Limeng
+> >
+> > > -----Original Message-----
+> > > From: Li, Meng <Meng.Li@windriver.com>
+> > > Sent: Wednesday, June 4, 2025 11:43 AM
+> > > To: linux@roeck-us.net; s.hauer@pengutronix.de;
+> > > kernel@pengutronix.de; linux-watchdog@vger.kernel.org;
+> > > imx@lists.linux.dev; shawnguo@kernel.org; robh@kernel.org;
+> > > conor+dt@kernel.org; Frank.Li@nxp.com
+> > > Cc: linux-arm-kernel@lists.infradead.org;
+> > > devicetree@vger.kernel.org; linux- kernel@vger.kernel.org; Li, Meng
+> > > <Meng.Li@windriver.com>
+> > > Subject: [v4 PATCH 0/2] create patches for nxp-ls1046a platform
+> > > watchdog feature
+> > >
+> > > v4:
+> > >  - Improve commit log of patch0002
+> > >
+> > > v3:
+> > >  - merge patch 0002 into patch 0001
+> > >  - improve the commit log of patches
+> > >
+> > > v2:
+> > >  - improve the commit log of patch 0001
+> > >  - add another 2 patches to fix below warning
+> > >  arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dtb:
+> > > watchdog@2ad0000(fsl,imx21-wdt): big-endian: False schema does not
+> > > allow True
+> > >
+> > > v1:
+> > >  - create patch
+> > > 0001-arch-arm64-dts-add-big-endian-property-back-into-
+> > > wat.patch
+> > >
+> > > Meng Li (2):
+> > >   dt-bindings: watchdog: fsl-imx-wdt: add compatible string
+> > >     fsl,ls1046a-wdt
+> > >   arch: arm64: dts: add big-endian property back into watchdog node
+> > >
+> > >  Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml | 2 ++
+> > >  arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi              | 3 ++-
+> > >  2 files changed, 4 insertions(+), 1 deletion(-)
+> > >
+> > > --
+> > > 2.34.1
+> >
