@@ -1,217 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DA21A5BA3;
-	Sun,  8 Jun 2025 12:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A329526771B
+	for <imx@lists.linux.dev>; Sun,  8 Jun 2025 23:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749387326; cv=none; b=HhjmDEORM8bMPHCQHQsPXRzzjfBJDAm3UhE5Km89y2EtDsIYQkSuhhRAJdv5SGIs2tKZkDh9WFYGJvwjHF4XNb1ggL8zVv0sqOB3+2wAuWakLIk9jhUSqUZGtVnfl/356xwDgswFs8MFWC5C8u/I6RYcTnMA1PA1bKB7MIx3IXs=
+	t=1749427142; cv=none; b=dqHCv1WA9BRBqZHkBNG6V8JG1UrHJLW8I8ZIMY7h9QARSbOG1KFvCHKzVDtZYXo4RIwrf3mbDXrhkrC3nfWYzHO3b2qpFa+l45MdZSsAu4VpDePRRut7sJCJWOVHotEL61e8QO+aINdSK2bM6Uv7AAPCKE2etj2ReJD43dOTAik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749387326; c=relaxed/simple;
-	bh=k9WQ8zf71PaFQUYStBWojJDS3GDR41VS8kCjbdCtVzs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BOr/tIPOXSV6kQG2uRcmQsQiqolXT3avOPHMLp8wO62fvFkBwB/UrktzHH0wNSaZqolpLfJtilxCkaRvrQ57pM1YPb0qC64gKxSyxMZnKpF7dLXu/JjERFPrzwFx64We6SCvj+XbgefZTj7NS7Kd5bgKMxIETwcJyIoEjo7My0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UeCVE0hS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749427142; c=relaxed/simple;
+	bh=ipYLzcWZGX+tRjCGL9FXxMB6odXJQholEUrDk82Bo5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BXYJ+vqMlZb3MHnl/UhRR5OPdkSoYiSpFhQb7wr+GGF/UpTLn0K/WNKa945lGH32aKZzWIUiurMc1okZawr+b3I3OTqsaCWx4OGJCv28PQjJotoVD7FthfZzfoUJsL9hGimMRNw1gll2JCoZd+lT/eUnJxsqJNhnPBAz/YExaU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=L4VOCFaJ; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeCVE0hS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0CBC4CEEE;
-	Sun,  8 Jun 2025 12:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749387326;
-	bh=k9WQ8zf71PaFQUYStBWojJDS3GDR41VS8kCjbdCtVzs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UeCVE0hSX9biDHFqZxL3ZkCHo3YwJaPTsZIE68dRBCYaLi6EkRlNw2R+QwU8YWxXv
-	 sMQ+PF4rwDjomdu1bjDOwhurZHZbEj3ynshNMXH/X3SHeXgUrkL6ENxI4DvgSzf983
-	 32BePKdYkdaLhA9AgVu7Grd7+nZxHh8yyatOyZwQpt/ymXLRrRQfGc8Xa2a2qesILn
-	 fDkfS05U2DuD2ZWFZZ9sSArWjJvA4yfLAnzbCDP1nRGL3HqnzyEqmck4LMHhm/ql7J
-	 97J3VADsLzfZi16eAufecKIvD01hV9LmhGeH5UR9vHMl9LFJgx0MPOZS5kr+lCFOQs
-	 gHFHFCMm4E0pQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sasha Levin <sashal@kernel.org>,
-	l.stach@pengutronix.de,
-	shawnguo@kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 10/10] PCI: imx6: Add workaround for errata ERR051624
-Date: Sun,  8 Jun 2025 08:55:07 -0400
-Message-Id: <20250608125507.934032-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250608125507.934032-1-sashal@kernel.org>
-References: <20250608125507.934032-1-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="L4VOCFaJ"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id AB33AF0B;
+	Mon,  9 Jun 2025 01:58:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1749427126;
+	bh=ipYLzcWZGX+tRjCGL9FXxMB6odXJQholEUrDk82Bo5g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=L4VOCFaJ4mNEABey+F4VUdugQ06jGHxt3Cr60m6TG1llpUNoqEf6hFTDylT9v9DdV
+	 EVZVhLpEOjZ/7E2LA44KoaeJoEeNXBaNd5rF5ik3L/g2C0LIK+TYz3Kig5XExJA8w2
+	 o9olAbNSUjUw8bIWzMd6LMM0XlDG9BCPr2PVrXXY=
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: linux-media@vger.kernel.org
+Cc: Isaac Scott <isaac.scott@ideasonboard.com>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/8] media: imx-mipi-csis: Cleanups and debugging improvements
+Date: Mon,  9 Jun 2025 02:58:32 +0300
+Message-ID: <20250608235840.23871-1-laurent.pinchart@ideasonboard.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.32
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+Hello,
 
-[ Upstream commit ce0c43e855c7f652b6351110aaaabf9b521debd7 ]
+This patch series bring a few miscellaneous improvements to the
+imx-mipi-csis driver, and in particular improves the debugging
+infrastructure.
 
-ERR051624: The Controller Without Vaux Cannot Exit L23 Ready Through Beacon
-or PERST# De-assertion
+Patch 1/8 starts by aligning the code with the reference manual for
+register field names, increasing readability of the driver when read
+alongside the hardware documentation. Patch 2/8 then fixes a small
+alignment issue in register dumps. Patch 3/8 logs per-lane start of
+transmission error instead of supporting the first data lane only,
+easing debugging of D-PHY issues.
 
-When the auxiliary power is not available, the controller cannot exit from
-L23 Ready with beacon or PERST# de-assertion when main power is not
-removed. So the workaround is to set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
+The next two patches deprecate the clock-frequency DT property, which
+shouldn't have been added in the first place. Patch 4/8 improves
+handling of the clock frequency in the driver, and patch 5/8 deprecates
+the property in the DT bindings. The driver still supports the property
+to ensure backward compatibility.
 
-This workaround is required irrespective of whether Vaux is supplied to the
-link partner or not.
+The last three patches introduce support for multiple output channels
+and wire it up in the debugging infrastructure. The CSIS IP core
+supports up to 4 output channels, with the number of instantiated
+channels being a property of the SoC integration. So far, only the
+i.MX8MP is known to have multiple output channels. Patch 6/8 adds a
+corresponding DT property, and patch 7/8 sets it in the i.MX8MP DT.
+Patch 8/8 then adds initial support for that property in the driver, and
+uses it to dump per-channel registers and event counters.
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[mani: subject and description rewording]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250416081314.3929794-5-hongxing.zhu@nxp.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Laurent Pinchart (8):
+  media: imx-mipi-csis: Rename register macros to match reference manual
+  media: imx-mipi-csis: Fix field alignment in register dump
+  media: imx-mipi-csis: Log per-lane start of transmission errors
+  media: imx-mipi-csis: Only set clock rate when specified in DT
+  dt-bindings: media: nxp,imx-mipi-csi2: Mark clock-frequency as
+    deprecated
+  dt-bindings: media: nxp,imx-mipi-csi2: Add fsl,num-channels property
+  arm64: dts: imx8mp: Specify the number of channels for CSI-2 receivers
+  media: imx-mipi-csis: Initial support for multiple output channels
 
-**YES**
+ .../bindings/media/nxp,imx-mipi-csi2.yaml     |  18 +-
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi     |   2 +
+ drivers/media/platform/nxp/imx-mipi-csis.c    | 311 +++++++++++-------
+ 3 files changed, 211 insertions(+), 120 deletions(-)
 
-This commit should be backported to stable kernel trees. Here's my
-extensive analysis:
 
-## **Primary Justification: Hardware Errata Fix**
-
-**ERR051624** is a documented silicon-level hardware errata affecting
-i.MX95 PCIe controllers. The commit message clearly states this is a
-workaround for a fundamental hardware limitation where "the controller
-cannot exit from L23 Ready with beacon or PERST# de-assertion when main
-power is not removed" when auxiliary power is unavailable.
-
-## **Code Analysis**
-
-The changes are **minimal and targeted**:
-
-```c
-+       /*
-+        * ERR051624: The Controller Without Vaux Cannot Exit L23 Ready
-+        * Through Beacon or PERST# De-assertion
-+        *
-+        * When the auxiliary power is not available, the controller
-+        * cannot exit from L23 Ready with beacon or PERST# de-assertion
-+        * when main power is not removed.
-+        *
-+        * Workaround: Set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
-+        */
-+       regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
-+                       IMX95_PCIE_SYS_AUX_PWR_DET);
-```
-
-The fix is:
-- **Self-contained**: Only affects i.MX95 PCIe initialization path
-  (`imx95_pcie_init_phy`)
-- **Low risk**: Simple register bit set with no complex logic
-- **Well-documented**: Includes detailed errata description and official
-  workaround
-- **Hardware-specific**: No impact on other platforms or subsystems
-
-## **Impact Assessment**
-
-This errata affects **critical system functionality**:
-- **Power Management**: Prevents proper exit from L23 Ready state
-- **System Resume**: Could cause hangs during suspend/resume cycles
-- **Platform Stability**: Affects fundamental PCIe power state
-  transitions
-
-## **Historical Precedent**
-
-Examining similar commits shows a **consistent pattern of hardware
-errata backporting**:
-
-1. **Similar Commit #4 (Status: YES)**: "PCI: dwc: Provide deinit
-   callback for i.MX" - Also addresses i.MX PCIe initialization issues
-   and was backported
-2. **ERR005723 workaround**: Recently backported to stable (`Cc:
-   stable@vger.kernel.org`)
-3. **ERR010728 workaround**: Multiple commits addressing this errata,
-   showing active stable maintenance
-
-## **Stable Tree Criteria Compliance**
-
-✅ **Important bugfix**: Addresses hardware limitation affecting system
-power management
-✅ **Minimal risk**: Single register bit set with no side effects
-✅ **Small and contained**: 13 lines of code, confined to one function
-✅ **No architectural changes**: Simple workaround implementation
-✅ **Critical subsystem**: PCIe power management is fundamental to system
-operation
-✅ **Clear documentation**: Well-documented errata with official
-workaround
-
-## **Risk Analysis**
-
-**Regression Risk: MINIMAL**
-- Only affects i.MX95 platforms specifically
-- Workaround is mandated by hardware vendor (NXP)
-- No conditional logic that could fail
-- Register bit set follows official errata documentation
-
-## **Maintainer Pattern**
-
-The i.MX PCIe driver maintainers (Richard Zhu/NXP, Manivannan
-Sadhasivam) have consistently tagged hardware errata fixes for stable
-backporting, demonstrating their commitment to stable kernel support for
-production hardware issues.
-
-## **Conclusion**
-
-This commit represents a **mandatory workaround for broken hardware**
-that affects basic system functionality (power management). It follows
-established patterns of similar errata fixes that have been successfully
-backported, poses minimal regression risk, and addresses a real-world
-issue that would impact users of i.MX95-based systems in production
-environments.
-
- drivers/pci/controller/dwc/pci-imx6.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index ad3028b755d16..3b24fed3177de 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -48,6 +48,8 @@
- #define IMX95_PCIE_SS_RW_REG_0			0xf0
- #define IMX95_PCIE_REF_CLKEN			BIT(23)
- #define IMX95_PCIE_PHY_CR_PARA_SEL		BIT(9)
-+#define IMX95_PCIE_SS_RW_REG_1			0xf4
-+#define IMX95_PCIE_SYS_AUX_PWR_DET		BIT(31)
- 
- #define IMX95_PE0_GEN_CTRL_1			0x1050
- #define IMX95_PCIE_DEVICE_TYPE			GENMASK(3, 0)
-@@ -206,6 +208,19 @@ static unsigned int imx_pcie_grp_offset(const struct imx_pcie *imx_pcie)
- 
- static int imx95_pcie_init_phy(struct imx_pcie *imx_pcie)
- {
-+	/*
-+	 * ERR051624: The Controller Without Vaux Cannot Exit L23 Ready
-+	 * Through Beacon or PERST# De-assertion
-+	 *
-+	 * When the auxiliary power is not available, the controller
-+	 * cannot exit from L23 Ready with beacon or PERST# de-assertion
-+	 * when main power is not removed.
-+	 *
-+	 * Workaround: Set SS_RW_REG_1[SYS_AUX_PWR_DET] to 1.
-+	 */
-+	regmap_set_bits(imx_pcie->iomuxc_gpr, IMX95_PCIE_SS_RW_REG_1,
-+			IMX95_PCIE_SYS_AUX_PWR_DET);
-+
- 	regmap_update_bits(imx_pcie->iomuxc_gpr,
- 			IMX95_PCIE_SS_RW_REG_0,
- 			IMX95_PCIE_PHY_CR_PARA_SEL,
+base-commit: 3c699df678515355e871141e142adae3bbf44216
+prerequisite-patch-id: 7200af6e6d693b425b5cdb9ae6be1c55e23e2a45
 -- 
-2.39.5
+Regards,
+
+Laurent Pinchart
 
