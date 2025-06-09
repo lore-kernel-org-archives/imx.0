@@ -1,79 +1,83 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE2725393E
-	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 10:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4874B253F13
+	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 10:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749464212; cv=none; b=ikgiBjreJsQokd2dkTgQ1E7z8c578ahRhu0F/iuCU+4sNl951RweiP0uSalM0hBbV3i+/ObJ6+F/LjaEO3rzYY3L6dNk0yyyoiYnAZt/XoZgnBloBrXV3+/ZvBTuVFhkGRgTnJL0sCXZ+8TxR4LszjtvEbAQE7cJjJVRLAZExL0=
+	t=1749464213; cv=none; b=IuH7++t54rxBmn6xGb/XF8hldJJGevDS4oc14Eq+oALbDOTNFQvStH9N9Q+PfCbOiO9skc87jeI+/2FCnY5bKBaKssqhsUnqM97amfDpPc75MHK4sKJQ3aVGTy3hX8ZqWYmkyToLgXDaA5DGR9pBLWQhvgsvbU8Kyi8QYARghLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749464212; c=relaxed/simple;
-	bh=vCn3dY1/ui274fMjTTbTYPqAOzoe1XrORIk6YB4lNeE=;
+	s=arc-20240116; t=1749464213; c=relaxed/simple;
+	bh=M6CQ0I9UViOibscaKvlBMNkGUpjdMfPDKx1zLd5FbSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpvH14m/jy6zZetBhLy+gfpN66mmmrADuUaaadkQ1YwTLry/9ui/RDVwbz+TDSeH2rkWtr2cO+HMrKvgyTh9hASkmI/G4pkOZ184nJqwmvEsQP3F8JfPI8vktfa87n7RjW4kwGKM8sHRrKxaZ+dJ9t2O+0/Xg6/PBrFTq+UIXAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=NDczSqFD; arc=none smtp.client-ip=209.85.218.52
+	 MIME-Version; b=RqyedwDCvmsEs317efxv8zI31tsms8pjjJPl5Htfnsj5cZzI1yhdsB2B8EJP/uZENQ+25Y4E/Ezv18n992my8hb0wxk3VRGxe7NEQ4VYH9KOtZK+lGwdb19cAa3PboYGPJ+GND7JXWsYZ5hhUfuN+ScuqdPZTWv/eMoauZKHFm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=rqpIuwHC; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="NDczSqFD"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-adb4e36904bso803111866b.1
-        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 03:16:49 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="rqpIuwHC"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ad89c32a7b5so663057166b.2
+        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 03:16:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1749464208; x=1750069008; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1749464210; x=1750069010; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tCV7VzmvzfcmA29LtCpQQ4a3kNi2sbG4bX6lVPaawMs=;
-        b=NDczSqFDVgpFgCEK0guX/mByqE5lzExsyPAmEJ2sp84PS1hz+HlgKH708pQw3envZ6
-         tsLZUET6XUkqOwQEPd5IqngFmTw8aDn6MZoaKxYBHt2OR42j1a+79C01Ypi0+9PgG/A6
-         426O10DpdwJXkgOxnC3ZLOaYsgqxNpY8e1Jaw=
+        bh=QrMVZ4aXgdDOQEK1eAuHJO+N5MnoZXBYEmVjCNmWh4k=;
+        b=rqpIuwHCGGIpT4DI97sCF+0nyP5ek0YAZfjxjRLoYxFEzRzNDOuZvC0377YdSqf8TG
+         OCxDhThHPoENNX05FRzR0lHQt9rEitIcNq1NIRT4ChwG9/5QOx0ixocz2Gu7d/KgX/PX
+         1F4awFEeVUs5NS/aaEWvisBD51drRcEAV6QAw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749464208; x=1750069008;
+        d=1e100.net; s=20230601; t=1749464210; x=1750069010;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tCV7VzmvzfcmA29LtCpQQ4a3kNi2sbG4bX6lVPaawMs=;
-        b=kkdtFXA8AnP3nN3SUXRndJy8FZ39zy2tB9/e6OhF/R1SE2v4/5nQB8oi5kHwivEXX3
-         oXft5BbBUeNfPfqJcxrQNd2Q4kZA05kQCKZ0bGE437pYiR2PulOjWhfeLGLpfMFoUkpd
-         L3HIn1SAO9zo1EQHsYUFgFC0kaI2CEbB3l5QlSNaEqiUbbueXkaLTvZhwDqTDE7vDDC7
-         g+vmyPEGcu/DJXrxPWqbBEj+jTzYDEFERwA3juinPimlWELv+FurbGOHp1DLGF9xEcAT
-         ukQy8NccQrYtcqNqQ/PH5hN1r022wwtT6WFfe7+Nmj2ZhOtvsva5bH3nLYPF9svCfr+V
-         fp+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWLF1QH5/VfRbJ8gLb8qoxnMNu0jVD39KORdaxww68OaQ+WCBsf1Af4u4isw3HkCBY+yf8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxhrb50twiEeNAS5EntDqmVUZTASYgIKnQjYDDBzZUMDyGsR34m
-	fdT4eWu2e/Kw7r5B7C/Aj5FHloNnVIwv6Bv81d0cg+9O/MdgNiQyXLY39UoYpUODOQw=
-X-Gm-Gg: ASbGncv0k1V0SBvYHQy2CrFohRZXHlDymgU9d7eDQdFkPdfzap4cEgn7MbMC2uUKXYZ
-	jspDnmtMCShvI2eFWS6jq2f3K6IlKUY5sTm02oWXbD+BMvT0yEAnjBK0a8EXR4KriytX9VUN0Xr
-	2IfwDN+u4IkFfj3GJKAT/ULnuntCtwIdhF71P8qbXWjre5CsBTD+HEiZnRY0RzxDtOn0EsrJJKZ
-	k1Ew6Hts7Hc1ZOdnOBJ7p9FPHl0hUEGplnrelaXkQxSK5VUFqvxZZ/AiPMTsv8Mfa8y9dyqcpa6
-	nxiRE4F2rYp0PxaM0WwkpdA7SpJGUojo/pJxoOjm1kt5BAsGhvg1EuqN/8rQYvTkrNyYaih7Zff
-	Zq1kyst2B/xNLc0z3Ijw0f8lyg4h7w/rePPONkffyH2+TIeeGi58=
-X-Google-Smtp-Source: AGHT+IH17UpjRjVv3onBJpVBG+ZwM0GADFSdiqEEFM4VfitHXqXBrL0887HBHqMHZEm082YwnCg9mQ==
-X-Received: by 2002:a17:906:6a0a:b0:ade:17b0:9f48 with SMTP id a640c23a62f3a-ade1a9057eamr1039216066b.23.1749464207898;
-        Mon, 09 Jun 2025 03:16:47 -0700 (PDT)
+        bh=QrMVZ4aXgdDOQEK1eAuHJO+N5MnoZXBYEmVjCNmWh4k=;
+        b=UHTH7NWK0Vr80a1VzOhabfvltxzz90OCFCQ3+9YGJOiZbeu4K32S84k4yoAkfXGONi
+         b9jlKNyTFuqFFFqyW3JVUMPzXMjnVWNAyAsUKTICHYAvw9u/bugrAZ7/ikZIt974/Xrc
+         5tcQHaqtuVDa1gTxrjtpV+f2RKzVLQpMCuX4gnteTWMsJc7s0L1QKETtFkMHeRufEVWl
+         Jjxd5diVVmWnQW0dzJc1QkcDpNytET5eY8xhHt3hbb966m1QzeKHVN5qK1XlHA01Mamj
+         wy2n12fDxs7b8M62Bke//3Oh2OPer3xRunshOAUZuHR3uGGBmzZNCbjL2O8KlIGiGdqu
+         dR3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUNQM9wDVITp7kjde/cluniIwUYgc6iGvlNQlzp2quRtF6JDiYggJ3VICrb8riuaMn3VWc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzGSj22ttEmN8aVd6GG5wnOu5y6Tx9ewBDLPVJYfVCX0Lw8908t
+	rUU/6xTB/I5/XUrbj6RFr9g+4HBfkxXsF/+K0afhANstYUoKkIqEZlYOKsEVXg5sA9o=
+X-Gm-Gg: ASbGncsELsfPGNLmhxL1OSRRPptL4niBMaXkcrM1jq1Ughi+rxKmh9NuIKBUNYUDAiK
+	E6S1yZ/yGVB8I42MAJ9eI+cugk8d498fG3Xktpul9t9NllpRXN3AhMebdHaIFk74tKOCmFkZIjW
+	4c72ziyqjccOPNTqfj8x0snC2OlFsSOrQXcLYhKOAlsy0KWXccUwvfgI+AUk9rYcljvscCe/dOy
+	MeONzU6O4L0zCSTRFd2w3MDDPNRyRS2EKh0ycM4LIxclNuEYvXP2H8Z68MP88EH5qWCAKl/x6Sk
+	MevAj0dEI0yPKg7SKb7+jZbLkNseo2Fu25TciJmv/8RIkC9A5F048q5R+ZNMTFMfZjCpdDtVJIW
+	+ZUzlUQHc/fW4HnEDjw8fu4I22DrMQvQrdsgQ0GcO
+X-Google-Smtp-Source: AGHT+IFa7KGKGst3HxIjv2X6ems3Dy+qMzSZz2I7qhSoC+mrIPD6/xzPfvno9XBDMWS+Ay377+cKrg==
+X-Received: by 2002:a17:907:1b16:b0:adb:469d:221f with SMTP id a640c23a62f3a-ade1aa15864mr1177864166b.31.1749464209509;
+        Mon, 09 Jun 2025 03:16:49 -0700 (PDT)
 Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2.196.40.99])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1db55c7esm529257066b.49.2025.06.09.03.16.46
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1db55c7esm529257066b.49.2025.06.09.03.16.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jun 2025 03:16:47 -0700 (PDT)
+        Mon, 09 Jun 2025 03:16:49 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-amarula@amarulasolutions.com,
 	Matteo Lisi <matteo.lisi@engicam.com>,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Eric Biggers <ebiggers@google.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 03/10] ARM: dts: imx6ul: support Engicam MicroGEA BMM board
-Date: Mon,  9 Jun 2025 12:15:36 +0200
-Message-ID: <20250609101637.2322809-4-dario.binacchi@amarulasolutions.com>
+Subject: [PATCH v2 04/10] ARM: imx_v6_v7_defconfig: cleanup mxs_defconfig
+Date: Mon,  9 Jun 2025 12:15:37 +0200
+Message-ID: <20250609101637.2322809-5-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250609101637.2322809-1-dario.binacchi@amarulasolutions.com>
 References: <20250609101637.2322809-1-dario.binacchi@amarulasolutions.com>
@@ -85,352 +89,145 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Support Engicam MicroGEA BMM board with:
+Generate imx_v6_v7_defconfig by doing:
 
-- 256 Mbytes NAND Flash
-- 512 Mbytes DRAM DDR2
-- CAN
-- Micro SD card connector
-- USB 2.0 high-speed/full-speed
-- Ethernet MAC
+make imx_v6_v7_defconfig
+make savedefconfig
+cp defconfig arch/arm/configs/imx_v6_v7_defconfig
+
+No functional change. The goal here is to cleanup imx_v6_v7_defconfig
+file to make easier and cleaner the addition of new entries.
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-
 ---
 
-Changes in v2:
-- Move iomuxc and iomuxc_snvs nodes to the end of the DTS file.
-- Add Reviewed-by tag of Peng Fan
+(no changes since v1)
 
- arch/arm/boot/dts/nxp/imx/Makefile            |   1 +
- .../nxp/imx/imx6ull-engicam-microgea-bmm.dts  | 305 ++++++++++++++++++
- 2 files changed, 306 insertions(+)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-bmm.dts
+ arch/arm/configs/imx_v6_v7_defconfig | 25 ++++---------------------
+ 1 file changed, 4 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/Makefile b/arch/arm/boot/dts/nxp/imx/Makefile
-index 8b3abe817e12..57f185198217 100644
---- a/arch/arm/boot/dts/nxp/imx/Makefile
-+++ b/arch/arm/boot/dts/nxp/imx/Makefile
-@@ -356,6 +356,7 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
- 	imx6ull-dhcom-pdk2.dtb \
- 	imx6ull-dhcom-picoitx.dtb \
- 	imx6ull-dhcor-maveo-box.dtb \
-+	imx6ull-engicam-microgea-bmm.dtb \
- 	imx6ull-jozacp.dtb \
- 	imx6ull-kontron-bl.dtb \
- 	imx6ull-myir-mys-6ulx-eval.dtb \
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-bmm.dts b/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-bmm.dts
-new file mode 100644
-index 000000000000..e4a3b92e2563
---- /dev/null
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-bmm.dts
-@@ -0,0 +1,305 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2025 Amarula Solutions, Dario Binacchi <dario.binacchi@amarulasolutions.com>
-+ * Copyright (C) 2025 Engicam srl
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx6ull-engicam-microgea.dtsi"
-+
-+/ {
-+	compatible = "engicam,microgea-imx6ull-bmm",
-+		     "engicam,microgea-imx6ull", "fsl,imx6ull";
-+	model = "Engicam MicroGEA i.MX6ULL BMM Board";
-+
-+	backlight {
-+		compatible = "pwm-backlight";
-+		brightness-levels = <0 100>;
-+		num-interpolated-steps = <100>;
-+		default-brightness-level = <85>;
-+		pwms = <&pwm8 0 100000 0>;
-+	};
-+
-+	buzzer {
-+		compatible = "pwm-beeper";
-+		pwms = <&pwm4 0 1000000 0>;
-+	};
-+
-+	reg_1v8: regulator-1v8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "1v8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	reg_3v3: regulator-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "3v3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
-+	reg_usb1_vbus: regulator-usb1-vbus {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_usb1>;
-+		regulator-name = "usb1_vbus";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		gpio = <&gpio5 0 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
-+	reg_usb2_vbus: regulator-usb2-vbus {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_usb2>;
-+		regulator-name = "usbotg_vbus";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		gpio = <&gpio5 3 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+	};
-+
-+	reg_ext_pwr: regulator-ext-pwr {
-+		compatible = "regulator-fixed";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_ext_pwr>;
-+		regulator-name = "ext-pwr";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		gpio = <&gpio5 6 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		regulator-always-on;
-+	};
-+
-+	sound {
-+		compatible = "simple-audio-card";
-+		simple-audio-card,name = "imx6ull-microgea-bmm-sgtl5000";
-+		simple-audio-card,format = "i2s";
-+		simple-audio-card,bitclock-master = <&codec_dai>;
-+		simple-audio-card,frame-master = <&codec_dai>;
-+		simple-audio-card,widgets =
-+			"Microphone", "Mic Jack",
-+			"Headphone", "Headphone Jack";
-+		simple-audio-card,routing =
-+			"MIC_IN", "Mic Jack",
-+			"Mic Jack", "Mic Bias",
-+			"Headphone Jack", "HP_OUT";
-+
-+		cpu_dai: simple-audio-card,cpu {
-+			sound-dai = <&sai2>;
-+		};
-+
-+		codec_dai: simple-audio-card,codec {
-+			sound-dai = <&codec>;
-+		};
-+	};
-+};
-+
-+&can1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_can>;
-+	status = "okay";
-+};
-+
-+&i2c2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	codec: sgtl5000@a {
-+		compatible = "fsl,sgtl5000";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_mclk>;
-+		reg = <0x0a>;
-+		#sound-dai-cells = <0>;
-+		clocks = <&clks IMX6UL_CLK_CKO>;
-+		assigned-clocks = <&clks IMX6UL_CLK_CKO2_SEL>,
-+				  <&clks IMX6UL_CLK_CKO2_PODF>,
-+				  <&clks IMX6UL_CLK_CKO2>,
-+				  <&clks IMX6UL_CLK_CKO>;
-+		assigned-clock-parents = <&clks IMX6UL_CLK_OSC>,
-+					 <&clks IMX6UL_CLK_CKO2_SEL>,
-+					 <&clks IMX6UL_CLK_CKO2_PODF>,
-+					 <&clks IMX6UL_CLK_CKO2>;
-+		VDDA-supply = <&reg_3v3>;
-+		VDDIO-supply = <&reg_3v3>;
-+		VDDD-supply = <&reg_1v8>;
-+	};
-+};
-+
-+&pwm4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm4>;
-+	status = "okay";
-+};
-+
-+&pwm8 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm8>;
-+	status = "okay";
-+};
-+
-+&sai2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sai2>;
-+	status = "okay";
-+};
-+
-+&tsc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_tsc>;
-+	measure-delay-time = <0x9ffff>;
-+	pre-charge-time = <0xfff>;
-+	xnur-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+&usbotg1 {
-+	dr_mode = "host";
-+	vbus-supply = <&reg_usb1_vbus>;
-+	status = "okay";
-+};
-+
-+&usbotg2 {
-+	dr_mode = "host";
-+	vbus-supply = <&reg_usb2_vbus>;
-+	status = "okay";
-+};
-+
-+/* MicroSD */
-+&usdhc1 {
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc1>;
-+	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
-+	vmmc-supply = <&reg_3v3>;
-+	bus-width = <4>;
-+	keep-power-in-suspend;
-+	non-removable;
-+	wakeup-source;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+
-+	pinctrl_can: can-grp {
-+		fsl,pins = <
-+			MX6UL_PAD_UART3_RTS_B__FLEXCAN1_RX	0x1b020
-+			MX6UL_PAD_UART3_CTS_B__FLEXCAN1_TX	0x1b020
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO00__I2C2_SCL		0x4001b8b0
-+			MX6UL_PAD_UART5_RX_DATA__I2C2_SDA	0x4001b8b0
-+		>;
-+	};
-+
-+	pinctrl_mclk: mclkgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_JTAG_TMS__CCM_CLKO1		0x13009
-+		>;
-+	};
-+
-+	pinctrl_pwm4: pwm4grp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO05__PWM4_OUT		0x110b0
-+		>;
-+	};
-+
-+	pinctrl_pwm8: pwm8grp {
-+		fsl,pins = <
-+			MX6UL_PAD_ENET1_RX_ER__PWM8_OUT		0x11008
-+		>;
-+	};
-+
-+	pinctrl_sai2: sai2grp {
-+		fsl,pins = <
-+			MX6UL_PAD_JTAG_TCK__SAI2_RX_DATA	0x130b0
-+			MX6UL_PAD_JTAG_TDI__SAI2_TX_BCLK	0x17088
-+			MX6UL_PAD_JTAG_TDO__SAI2_TX_SYNC	0x17088
-+			MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x120b0
-+		>;
-+	};
-+
-+	pinctrl_tsc: tscgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0x000b0
-+			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0x000b0
-+			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0x000b0
-+			MX6UL_PAD_GPIO1_IO04__GPIO1_IO04	0x000b0
-+		>;
-+	};
-+
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
-+			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
-+		>;
-+	};
-+
-+	pinctrl_usdhc1: usdhc1grp {
-+		fsl,pins = <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x17059
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x10059
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x17059
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x17059
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x17059
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x17059
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170b9
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100b9
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170b9
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170b9
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170b9
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170b9
-+		>;
-+	};
-+
-+	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
-+		fsl,pins = <
-+			MX6UL_PAD_SD1_CMD__USDHC1_CMD		0x170f9
-+			MX6UL_PAD_SD1_CLK__USDHC1_CLK		0x100f9
-+			MX6UL_PAD_SD1_DATA0__USDHC1_DATA0	0x170f9
-+			MX6UL_PAD_SD1_DATA1__USDHC1_DATA1	0x170f9
-+			MX6UL_PAD_SD1_DATA2__USDHC1_DATA2	0x170f9
-+			MX6UL_PAD_SD1_DATA3__USDHC1_DATA3	0x170f9
-+		>;
-+	};
-+};
-+
-+&iomuxc_snvs {
-+
-+	pinctrl_reg_usb1: regusb1grp {
-+		fsl,pins = <
-+			MX6ULL_PAD_SNVS_TAMPER0__GPIO5_IO00	0x17059
-+		>;
-+	};
-+
-+	pinctrl_reg_usb2: regusb2grp {
-+		fsl,pins = <
-+			MX6ULL_PAD_SNVS_TAMPER3__GPIO5_IO03	0x17059
-+		>;
-+	};
-+
-+	pinctrl_reg_ext_pwr: reg-ext-pwrgrp {
-+		fsl,pins = <
-+			MX6ULL_PAD_SNVS_TAMPER6__GPIO5_IO06	0x17059
-+		>;
-+	};
-+};
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 062c1eb8dd60..d40ca9edd264 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -12,6 +12,7 @@ CONFIG_RELAY=y
+ CONFIG_BLK_DEV_INITRD=y
+ CONFIG_EXPERT=y
+ CONFIG_PERF_EVENTS=y
++CONFIG_KEXEC=y
+ CONFIG_ARCH_MULTI_V6=y
+ CONFIG_ARCH_MXC=y
+ CONFIG_SOC_IMX31=y
+@@ -32,7 +33,6 @@ CONFIG_ARM_PSCI=y
+ CONFIG_HIGHMEM=y
+ CONFIG_ARCH_FORCE_MAX_ORDER=13
+ CONFIG_CMDLINE="noinitrd console=ttymxc0,115200"
+-CONFIG_KEXEC=y
+ CONFIG_CPU_FREQ=y
+ CONFIG_CPU_FREQ_STAT=y
+ CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
+@@ -129,7 +129,6 @@ CONFIG_CS89x0_PLATFORM=y
+ CONFIG_QCA7000_SPI=m
+ # CONFIG_NET_VENDOR_SEEQ is not set
+ CONFIG_SMC91X=y
+-CONFIG_SMC911X=y
+ CONFIG_SMSC911X=y
+ # CONFIG_NET_VENDOR_STMICRO is not set
+ CONFIG_MICREL_PHY=y
+@@ -153,9 +152,7 @@ CONFIG_MWIFIEX_PCIE=m
+ CONFIG_WL12XX=m
+ CONFIG_WL18XX=m
+ CONFIG_WLCORE_SDIO=m
+-# CONFIG_WILINK_PLATFORM_DATA is not set
+ CONFIG_INPUT_EVDEV=y
+-CONFIG_INPUT_EVBUG=m
+ CONFIG_KEYBOARD_GPIO=y
+ CONFIG_KEYBOARD_SNVS_PWRKEY=y
+ CONFIG_KEYBOARD_IMX=y
+@@ -190,9 +187,7 @@ CONFIG_SERIAL_IMX_CONSOLE=y
+ CONFIG_SERIAL_FSL_LPUART=y
+ CONFIG_SERIAL_FSL_LPUART_CONSOLE=y
+ CONFIG_SERIAL_DEV_BUS=y
+-# CONFIG_I2C_COMPAT is not set
+ CONFIG_I2C_CHARDEV=y
+-CONFIG_I2C_MUX=y
+ CONFIG_I2C_MUX_GPIO=y
+ # CONFIG_I2C_HELPER_AUTO is not set
+ CONFIG_I2C_ALGOPCF=m
+@@ -204,14 +199,9 @@ CONFIG_SPI_FSL_QUADSPI=y
+ CONFIG_SPI_GPIO=y
+ CONFIG_SPI_IMX=y
+ CONFIG_SPI_FSL_DSPI=y
+-CONFIG_PINCTRL_IMX8MM=y
+-CONFIG_PINCTRL_IMX8MN=y
+-CONFIG_PINCTRL_IMX8MP=y
+-CONFIG_PINCTRL_IMX8MQ=y
+ CONFIG_GPIO_SYSFS=y
+ CONFIG_GPIO_MXC=y
+ CONFIG_GPIO_SIOX=m
+-CONFIG_GPIO_VF610=y
+ CONFIG_GPIO_MAX732X=y
+ CONFIG_GPIO_PCA953X=y
+ CONFIG_GPIO_PCA953X_IRQ=y
+@@ -225,7 +215,6 @@ CONFIG_W1_SLAVE_THERM=m
+ CONFIG_POWER_RESET=y
+ CONFIG_POWER_RESET_SYSCON=y
+ CONFIG_POWER_RESET_SYSCON_POWEROFF=y
+-CONFIG_POWER_SUPPLY=y
+ CONFIG_RN5T618_POWER=m
+ CONFIG_SENSORS_MC13783_ADC=y
+ CONFIG_SENSORS_GPIO_FAN=y
+@@ -283,13 +272,13 @@ CONFIG_VIDEO_OV5645=m
+ CONFIG_VIDEO_ADV7180=m
+ CONFIG_IMX_IPUV3_CORE=y
+ CONFIG_DRM=y
+-CONFIG_DRM_I2C_NXP_TDA998X=y
+ CONFIG_DRM_MSM=y
+ CONFIG_DRM_PANEL_LVDS=y
+-CONFIG_DRM_PANEL_SIMPLE=y
+-CONFIG_DRM_PANEL_EDP=y
+ CONFIG_DRM_PANEL_SEIKO_43WVF1G=y
++CONFIG_DRM_PANEL_EDP=y
++CONFIG_DRM_PANEL_SIMPLE=y
+ CONFIG_DRM_DISPLAY_CONNECTOR=y
++CONFIG_DRM_I2C_NXP_TDA998X=y
+ CONFIG_DRM_LVDS_CODEC=m
+ CONFIG_DRM_SII902X=y
+ CONFIG_DRM_TI_TFP410=y
+@@ -310,7 +299,6 @@ CONFIG_LCD_PLATFORM=y
+ CONFIG_BACKLIGHT_CLASS_DEVICE=y
+ CONFIG_BACKLIGHT_PWM=y
+ CONFIG_BACKLIGHT_GPIO=y
+-CONFIG_FRAMEBUFFER_CONSOLE=y
+ CONFIG_LOGO=y
+ CONFIG_SOUND=y
+ CONFIG_SND=y
+@@ -380,11 +368,8 @@ CONFIG_MMC=y
+ CONFIG_MMC_SDHCI=y
+ CONFIG_MMC_SDHCI_PLTFM=y
+ CONFIG_MMC_SDHCI_ESDHC_IMX=y
+-CONFIG_NEW_LEDS=y
+-CONFIG_LEDS_CLASS=y
+ CONFIG_LEDS_GPIO=y
+ CONFIG_LEDS_PWM=y
+-CONFIG_LEDS_TRIGGERS=y
+ CONFIG_LEDS_TRIGGER_TIMER=y
+ CONFIG_LEDS_TRIGGER_ONESHOT=y
+ CONFIG_LEDS_TRIGGER_HEARTBEAT=y
+@@ -453,7 +438,6 @@ CONFIG_EXT3_FS_POSIX_ACL=y
+ CONFIG_EXT3_FS_SECURITY=y
+ CONFIG_QUOTA=y
+ CONFIG_QUOTA_NETLINK_INTERFACE=y
+-# CONFIG_PRINT_QUOTA_WARNING is not set
+ CONFIG_AUTOFS_FS=y
+ CONFIG_FUSE_FS=y
+ CONFIG_ISO9660_FS=m
+@@ -490,5 +474,4 @@ CONFIG_PRINTK_TIME=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DEBUG_FS=y
+ # CONFIG_SLUB_DEBUG is not set
+-# CONFIG_SCHED_DEBUG is not set
+ # CONFIG_FTRACE is not set
 -- 
 2.43.0
 
