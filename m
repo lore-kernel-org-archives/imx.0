@@ -1,87 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D729125C83E;
-	Mon,  9 Jun 2025 13:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8ACC25A2D8
+	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 13:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749476447; cv=none; b=TVkr8H2T9DwP05acYH7wRfndu8U7oCPT0TbTaX+8XrglRlj5gAJY43usEr9MsYHqPZu0+Lyddvu419IfQG3muiXZZHCG7ucjaqEawSVnp7b1C59vsVO+GxAV5jK34bTQLxZnfuuXMf7jv9owJN67Z0Ew/maob8bhRrMDiQYh2jM=
+	t=1749477290; cv=none; b=mUtMxZXP2GQ6vaO13FLHiC6IrGj2TvQD+4NOebZhHPqFKrsWeS7OToS71RFdAih6Wsqm4vYRZenTOBtfZ2cqorgee7rAdR23epnVnpWGS8cv2TC9/0jbGcGLr3pa0pI4r7aPNHeAvdhD1qGSULMB80q1E7JC/nykmWsVDtODo5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749476447; c=relaxed/simple;
-	bh=LikEvWObK5cLWG5kDOh8WIv3nJ7NrbLjTJ/RRELK4kc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=gMShugR64qeZaUq1O7wF3YLvHiSCmLLuqI0BCaxAF5R+xx8SbxyWGxMqK3Jqdo2qlmIVirHnZ3tmmT/+0i7EQ6vr0N37TeneBaTdunR6qmRqaVKEtDB1WXAXhMIxCj51blOIIR1a4G1vI3oabibA53w134WG/Km75EEPUZDO39k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jbxQAEZ7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749477290; c=relaxed/simple;
+	bh=AtQ5DeLqMLMiqzfDfVnJQLhsl7WhKEqsNLlvztdlvto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W0XYmvwctbwi1jcio8/LY7jUsRGqp+h5bVataxSeUtGBecJdwg5O8L9yc7Z7kGiwqwmmFpMoaRAGmS0GPdHVF/ejd+4C/9uJXOz8rrlYOlUUj5E0A1NXftpqyP6udqdz9ocCT02/atgUiv2tjuzHoI6hHPfNec0TPjHc7r1Z7mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=geRr6UDK; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jbxQAEZ7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2E5C4CEED;
-	Mon,  9 Jun 2025 13:40:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749476446;
-	bh=LikEvWObK5cLWG5kDOh8WIv3nJ7NrbLjTJ/RRELK4kc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=jbxQAEZ7NNI+UWJCL+5wuwHeQk9bhLv9Y7FV2kwU8ZYrBWWkI8Sehiu+z5dX8+/Q7
-	 wsYiuGLoJNXHFBsYnbR7+osZJKsO/HVVXu5LNAP+P/EuiUZDQLp8OtEy3nJO1aiCab
-	 EunIHl2IMy7xrlV6y3i6cBWmsUCU4DhYaUFFTsvCAHycyYkwXcCvcE9u4ifxJspnWr
-	 TKbBPGO9D9ax/aYDJVgp+jkOF9HPRiWuZkUJpvVyeBGgLMoEoUlsyJRy90aEaTf9+f
-	 zP9Gc2WQ3JZQ8m4iFRl/rduCREWoI66Y8IlzpcfZG7wBZs+2atmmJjIvk/aiC8Hrro
-	 gLDa4/3H4snSQ==
-From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Marek Vasut <marex@denx.de>, 
- linux-spi@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20250528222821.728544-1-Frank.Li@nxp.com>
-References: <20250528222821.728544-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] spi: dt-bindings: mxs-spi: allow clocks properpty
-Message-Id: <174947644363.127013.4646317883893758390.b4-ty@kernel.org>
-Date: Mon, 09 Jun 2025 14:40:43 +0100
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="geRr6UDK"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7d219896edeso432465585a.1
+        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 06:54:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1749477287; x=1750082087; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TJhuQ7RdzX4335yHFkIwjS6KGL5adc0rcojL7oXLCRo=;
+        b=geRr6UDKAxsrq2mKj8I06OZb3p+Z7VodzE1FUlSIygWfIpP7xHkbNYQ8RT1rJ600mF
+         LHrt88QLGEW7j9MdVphTo0JvqfM/apr3hmoVtSCjK6cIhc4cD5f2R2Cm6QDUjt8AKZaG
+         ooq5nDYI2zwRBjWyYWDov+HVFfm7WNs1cXOTig+3FEFEfy/fwAIBYv+SWtpms0xIrAXr
+         gGxrTO1AcQgbhgTreox7UupJg4TBPq63mjDPgLkdAHpQEsobJfLEmTsvnal3k11gzh9Y
+         93YO4wP8xfy+LnFpmQyG4msbYsxFla7I4utbgp4n0wYV4GTFIPlZTwPvDYTTo2KjEsEx
+         Si8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749477287; x=1750082087;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TJhuQ7RdzX4335yHFkIwjS6KGL5adc0rcojL7oXLCRo=;
+        b=EiwMOifdwBu8RtrRFbmqFdVR56M+BRJW8c77B2Icc2B5QHSIhp9Tansal3c6jLDDqE
+         FbMsjpo6ZObSW83xy4dRn7/vojsgZio9RucCqZ/iabWdrX/Id44fPnluWoxOmBZ9s7Xr
+         5J/87cOBPnKkK1DFGl5CQcR2i0sNPlO3fUzjqSZolT2bJaHtDpaZ1S0choMMpNrFY3lW
+         kGiYpFzVB0OUwCBQ8xWn4w1dJ7kpQhuIlme90KoVp+RB1cQIZ7j/JgJfSMzylT6QJEMZ
+         3uhVU2sOdy2IWngqRG2LkUIms23LwVJT0Ifg4CgFPa5v9OrTb1EdD9ek2x5m6oXjRqqf
+         Yy6A==
+X-Forwarded-Encrypted: i=1; AJvYcCW+I58vAqxsSs4SxOTel8x7RJsUKkJEqj8qsCzc+0bxDTqimwO86QcgswVSQUZ4CbcgnWE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxT0Vr/++YeGVPc5+mhfBH8BgAc5YkjXBmI5fkT5Wwyn8DkUEXH
+	4wUMBsTWzqAy1F/TLWPpeXT1R4E2p40os870dTYznFfZ24W7Ehb8PIykOIkLAQHt9A==
+X-Gm-Gg: ASbGncud3Mm68dZHdmWkCTQSzuewoUu2rbV7RyHdgvrVAtL6nb7Y5hm+KGheT12Po/U
+	qJNMu6sYVWlwFqHkzYd8QozMw2XWoqZk5MF6QGvQOPvj5nR9XBJjEwdhxkTlG1FjnXtSuQvXX5Y
+	HOZaNYhtREuHXeS+RdhE7Pgpy43AiwEQLzuo3wEoX0dff3P0FCXlxo9m6bxZ7GZaErU023joC6q
+	2SWyuHpK2orUXtOPPjhaF52XRGy72Q33iwkYy6+IHbI0nQ3PIzcwB/e9Rfovod5aWWpeNvkEUDR
+	P8/7fsodUGA+iZ1ffciBzv4jie8ApQF2+k3E8dN4RWfCZYayVySVkq8/drS3qUBr1HFCxHVMgiS
+	Aat6b
+X-Google-Smtp-Source: AGHT+IFmfPwn0la8Bjg0x9fgItMpfqDL+xE2KxSEQfR+WeIFu+KstQKcIkZH8uGDncVhKeEIwi22SA==
+X-Received: by 2002:a05:620a:178c:b0:7c5:962b:e87c with SMTP id af79cd13be357-7d2298ce851mr2069583185a.44.1749477287608;
+        Mon, 09 Jun 2025 06:54:47 -0700 (PDT)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d25a535794sm545282185a.26.2025.06.09.06.54.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 06:54:47 -0700 (PDT)
+Date: Mon, 9 Jun 2025 09:54:45 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Shawn Guo <shawnguo2@yeah.net>, Peter Chen <peter.chen@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, imx@lists.linux.dev,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: i.MX kernel hangup caused by chipidea USB gadget driver
+Message-ID: <c7bfdfec-bc49-4ce5-8dd9-7a69d8e24ceb@rowland.harvard.edu>
+References: <aEZxmlHmjeWcXiF3@dragon>
+ <c56pgxmfscg6tpqxjayu4mvxc2g5kgmfitpvp36lxulpq4jxmg@ces5l7ofab6s>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-c25d1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c56pgxmfscg6tpqxjayu4mvxc2g5kgmfitpvp36lxulpq4jxmg@ces5l7ofab6s>
 
-On Wed, 28 May 2025 18:28:20 -0400, Frank Li wrote:
-> Allow clocks property to fix below CHECK_DTB warnings:
-> arch/arm/boot/dts/nxp/mxs/imx28-btt3-0.dtb: spi@80014000 (fsl,imx28-spi): Unevaluated properties are not allowed ('clocks' was unexpected)
+On Mon, Jun 09, 2025 at 07:53:22PM +0800, Xu Yang wrote:
+> Hi Shawn,
 > 
+> Thanks for your reports!
 > 
+> On Mon, Jun 09, 2025 at 01:31:06PM +0800, Shawn Guo wrote:
+> > Hi Xu, Peter,
+> > 
+> > I'm seeing a kernel hangup on imx8mm-evk board.  It happens when:
+> > 
+> >  - USB gadget is enabled as Ethernet
+> >  - There is data transfer over USB Ethernet
+> >  - Device is going in/out suspend
 
-Applied to
+> During the scp process, the usb host won't put usb device to suspend state.
+> In current design, then the ether driver doesn't know the system has
+> suspended after echo mem. The root cause is that ether driver is still tring
+> to queue usb request after usb controller has suspended where usb clock is off,
+> then the system hang.
+> 
+> With the above changes, I think the ether driver will fail to eth_start_xmit() 
+> at an ealier stage, so the issue can't be triggered.
+> 
+> I think the ether driver needs call gether_suspend() accordingly, to do this,
+> the controller driver need explicitly call suspend() function when it's going
+> to be suspended. Could you check whether below patch fix the issue?
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+The situation is more complicated than this.
 
-Thanks!
+In general, a USB gadget cannot allow itself to be suspended while the 
+USB bus it is connected to remains active.  Not unless it can be set to 
+wake up when a USB packet arrives, and even that probably won't work 
+because the wakeup sequence would take too long and the USB transfer 
+would time out on the host.
 
-[1/1] spi: dt-bindings: mxs-spi: allow clocks properpty
-      commit: 6b500757aef0b5b639253508cf93eb8134a2d340
+The best way to fix this problem is for the gadget to disconnect itself 
+from the USB bus whenever it goes into suspend, and to reconnect when it 
+resumes.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Alan Stern
