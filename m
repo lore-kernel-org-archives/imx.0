@@ -1,227 +1,616 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail.actia.se (mail.actia.se [212.181.117.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32D313C918
-	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 14:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4433425B1FF
+	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 14:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749478049; cv=none; b=fdUwb3ZbQgQl94rP7LO+n5JOSdeqhAdrtcQKyHTShX1rncdcyRW6jU2oAYuSnHLZND8YON8+gVwFXE0z5Q4qNDhCaQ/c5XxnUg0GD5Z/nlKZPLE2VKnmu2DVOiaedhd6Y82fJJT8Mwnoc4QHEhPUp6MtAGsvv3Ak4sABFMU0SHQ=
+	t=1749478657; cv=none; b=EI/vCfHV/s8tOnUuuxgU+y+fQwhxjJIGhgoQ5071eD8hg6x3oXN6Qb9KPctb2aX8JS3MMdcz12tw3T29vXRo07+E/Wpn7o2LE2NcLgenCrz5wGZ8B6xJ2C0Wn24QF1igQuhuhIzCJ6u7UIrN9OOvlijtoe6GjW+8wc7GSfj7Atw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749478049; c=relaxed/simple;
-	bh=wAAJY/HrK/nuKtAaod/22OhduwbiOhuK1jiKS/alY2U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LgF+IQxZeV7pzF8CHIqjTE4JOeQsuDpT+U7H/E73KhOutcoMWT3B7mZWVpjcvrI03y3o+n0s37jTTfxOXASmCHHQYQgKKgzWNiwBlitglLb/HCBt9+R5lxt2VTVVnC/RGdoNIwtr72DgoSKXq5kp0TaLDw9HAGvbiUFW/bvmdhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNbr2gIZ; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNbr2gIZ"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a548a73ff2so1069426f8f.0
-        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 07:07:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749478046; x=1750082846; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wp465GBd29bhYSADM6T0VGSuzx4l+sqGwpURc4OujX4=;
-        b=eNbr2gIZPl4aGqP+q7aryo6k7WUUc2ImlQNTSw9/3hc62m3LVKWMxmA/IMjxiOaYUq
-         +CyvlejowtKvHXi/0ym1BADoFaOo0omLCZOvfx6WF5Ye3acDSHZW5C8ywJQ6bPKCZCYD
-         IZGsBPUDgL59xl6xmCQ9yG0HsQCYwpoFVYSfjJip74UY8OC1QaNRBLyEmzYIRC92JxL+
-         Ak5a2f7fULMQ0lUzfJv40dOfns0Z/uofZ6T/Pjez4cd2te28/ldbXbenZtrmhZ0cLrBG
-         EE/VYcTmeEnKRfpwSR+TaUUCGGxzbv0wAI5adBh3b0ErRWckNBXR9SfDajPObba5KZvu
-         7Wlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749478046; x=1750082846;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wp465GBd29bhYSADM6T0VGSuzx4l+sqGwpURc4OujX4=;
-        b=umpG083owVD6RlvhPJ5L8o+pvfphYYJc0XjX4Qa0CaC9QqFrjXA30C+yncnmCHgT6U
-         qkcK6LN29C16KBTNrWn2cjDzz2YrBOkgboObHU6C1tN/fSriauUBIDVU62Q+4E2AitH1
-         zjbusMRjZLRgpK3U4vuX1ytDmz5zIN5/NV/JlBv6/kebdwdUKqIirDZAYWyr89CKIzEC
-         2YRPlzcW8DXU8CJO/R6adKhsTeS239onuEE3KQV5NVLfYHcxxtVytBtYXWYgkptOfr+X
-         mKrGB8UfuNMheGnlFRDaUzFda+f7Gz3tKDEUcYo53yLnwGRn4Kx82V9Pbkl5yZ8YosM9
-         M6kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVtBm2yTtGeZRAUKmltToEZRd7pJOjxnYa/ZebxMgAVXa6kB0OjtJ2+7OBvDCfpnyYP8d8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyp9rYeEqdF5HamQOC+1UJmXqMW/N+tSm7HepMWF0VTMdlzfADK
-	tewRF7zBz14Oya2oc6/fYR1YITr3aLW4/BYrMuCEYxj6SwVy5A/4q9su
-X-Gm-Gg: ASbGncvmyO35pzdEEn6VEyz24LKgbFFol8kpe2owF0QZGwKU4MUKrdS7QIAW7FGaBfu
-	uIjmc/bx3GyZw7MNh7/uWkYqWk+EWEa4WSZD+Zhjys+6J3FztwvX6/0pwc8XGRV2zBqegHpVsb+
-	8HAufV5fuDw/gcMC34r5M0EfBIK26K6T9HXTBR6vdUyfR2VlqqWV10hgq225qqrbBtdP9hCpqmP
-	ZFiEE0DU9gkVtq76ISQlRhdsoROye31J8oxij6J0NWNAq5Zt+oM/aELc3q5xe1gfxPhUdjvLGhF
-	9sSyyPilixngzvJLmHKWLBTEUy4n/fSwi/jQTfByAibSdqOzsvNF8Wo1qC+ig7Hm4rAzpJkVKxe
-	nd+2xkbmUU/rXidHVEMkZsGryHjgH/pXP1aw=
-X-Google-Smtp-Source: AGHT+IG0REgGH1fHd+dkuiR3Fo6WREiMEfAZe6OZVVichjBI/5GBIj0dx+h9EBokmXQjt5fQUEHrXA==
-X-Received: by 2002:a05:6000:401e:b0:3a4:fb33:85ce with SMTP id ffacd0b85a97d-3a531caf7f1mr11598279f8f.46.1749478045626;
-        Mon, 09 Jun 2025 07:07:25 -0700 (PDT)
-Received: from Lord-Beerus.station (net-93-70-53-177.cust.vodafonedsl.it. [93.70.53.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a53229d9e9sm9803060f8f.13.2025.06.09.07.07.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jun 2025 07:07:25 -0700 (PDT)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: andrew@lunn.ch,
-	Stefano Radaelli <stefano.radaelli21@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v1] arm64: dts: freescale: imx8mp-var-som: Add EQoS support with MaxLinear PHY
-Date: Mon,  9 Jun 2025 16:06:42 +0200
-Message-ID: <20250609140643.26270-1-stefano.radaelli21@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1749478657; c=relaxed/simple;
+	bh=spCiITol/T3YPIXtPcLRoLDm7XQ4E9EShIs4M4QO0nU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=oWS54JAazOFaGIqi77FRoMAjIyqXKnmi2GBoY+w18SQ1/zomfDXFOOqLXeScBNpLo2tGsiOdCQycuEadIBt8RsK0k+ygBvvQCTLZiJorTcrgp3xVmqhFqEzTq2rHcQRUvU5rxGxmZ4xXhTwYwd3OVqxd86J3ugIdMgwmpfnuRYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
+Received: from S036ANL.actianordic.se (10.12.31.117) by S035ANL.actianordic.se
+ (10.12.31.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 9 Jun
+ 2025 16:17:30 +0200
+Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
+ S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
+ 15.01.2507.039; Mon, 9 Jun 2025 16:17:30 +0200
+From: John Ernberg <john.ernberg@actia.se>
+To: Xu Yang <xu.yang_2@nxp.com>
+CC: Shawn Guo <shawnguo2@yeah.net>, Peter Chen <peter.chen@kernel.org>, "Shawn
+ Guo" <shawnguo@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: i.MX kernel hangup caused by chipidea USB gadget driver
+Thread-Topic: i.MX kernel hangup caused by chipidea USB gadget driver
+Thread-Index: AQHb2Uk8r5zPXewyY0SsDNZZa8wLoQ==
+Date: Mon, 9 Jun 2025 14:17:30 +0000
+Message-ID: <aEbstxkQmji4tfjf@w447anl.localdomain>
+References: <aEZxmlHmjeWcXiF3@dragon>
+ <c56pgxmfscg6tpqxjayu4mvxc2g5kgmfitpvp36lxulpq4jxmg@ces5l7ofab6s>
+In-Reply-To: <c56pgxmfscg6tpqxjayu4mvxc2g5kgmfitpvp36lxulpq4jxmg@ces5l7ofab6s>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-esetresult: clean, is OK
+x-esetid: 37303A2956B14453627762
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <C384F9501CD5A549AF8E3FA58E3FA47D@actia.se>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Enable the EQoS Ethernet controller on the i.MX8MP VAR-SOM with the
-integrated Maxlinear MXL86110 PHY. The PHY is connected to the EQOS
-MDIO bus at address 4.
+Hi Shawn, Xu,
 
-This patch adds:
-- EQOS controller configuration with RGMII interface.
-- Proper reset timings.
-- PHY power supply regulators.
-- RGMII pinmux configuration for all data, control and clock signals.
-- LED configuration for link status indication via the LED subsystem
-  under /sys/class/leds/, leveraging the support implemented in the.
-  mxl86110 PHY driver (drivers/net/phy/mxl-86110.c).
-  Two LEDs are defined to match the LED configuration on the Variscite
-  VAR-SOM Carrier Boards:
-    * LED@0: Yellow, netdev trigger.
-    * LED@1: Green, netdev trigger.
+On Mon, Jun 09, 2025 at 07:53:22PM +0800, Xu Yang wrote:
+> Hi Shawn,
+>=20
+> Thanks for your reports!
+>=20
+> On Mon, Jun 09, 2025 at 01:31:06PM +0800, Shawn Guo wrote:
+> > Hi Xu, Peter,
+> >=20
+> > I'm seeing a kernel hangup on imx8mm-evk board.  It happens when:
+> >=20
+> >  - USB gadget is enabled as Ethernet
+> >  - There is data transfer over USB Ethernet
+> >  - Device is going in/out suspend
+> >=20
+> > A simple way to reproduce the issue could be:
+> >=20
+> >  1. Copy a big file (like 500MB) from host PC to device with scp
+> >=20
+> >  2. While the file copy is ongoing, suspend & resume the device like:
+> >=20
+> >     $ echo +3 > /sys/class/rtc/rtc0/wakealarm; echo mem > /sys/power/st=
+ate
+> >=20
+> >  3. The device will hang up there
+> >=20
+> > I reproduced on the following kernels:
+> >=20
+> >  - Mainline kernel
+> >  - NXP kernel lf-6.6.y
+> >  - NXP kernel lf-6.12.y
+> >=20
+> > But NXP kernel lf-6.1.y doesn't have this problem.  I tracked it down t=
+o
+> > Peter's commit [1] on lf-6.1.y, and found that the gadget disconnect &
+> > connect calls got lost from suspend & resume hooks, when the commit wer=
+e
+> > split and pushed upstream.  I confirm that adding the calls back fixes
+> > the hangup.
 
-The RGMII TX/RX delays are implemented in SOM via PCB passive
-delays, so no software delay configuration is required.
+We probably ran into the same problem trying to bring onboard 6.12, going
+from 6.1, on iMX8QXP. I managed to trace the hang to EP priming through a
+combination of debug tracing and BUG_ON experiments. See if it starts
+splatin with the below change.
 
-Signed-off-by: Stefano Radaelli <stefano.radaelli21@gmail.com>
+----------------->8------------------
+
+From 092599ab6f9e20412a7ca1eb118dd2be80cd18ff Mon Sep 17 00:00:00 2001
+From: John Ernberg <john.ernberg@actia.se>
+Date: Mon, 5 May 2025 09:09:01 +0200
+Subject: [PATCH] USB: ci: gadget: Panic if priming when gadget off
+
 ---
- .../boot/dts/freescale/imx8mp-var-som.dtsi    | 87 +++++++++++++++++++
- 1 file changed, 87 insertions(+)
+ drivers/usb/chipidea/udc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-index b59da91fdd04..3be59692849f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-@@ -55,6 +55,24 @@ reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
- 		states = <3300000 0x0 1800000 0x1>;
- 		vin-supply = <&ldo5>;
- 	};
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 2fea263a5e30..544aa4fa2d1d 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -203,8 +203,10 @@ static int hw_ep_prime(struct ci_hdrc *ci, int num, in=
+t dir, int is_ctrl)
+=20
+    hw_write(ci, OP_ENDPTPRIME, ~0, BIT(n));
+=20
+-   while (hw_read(ci, OP_ENDPTPRIME, BIT(n)))
++   while (hw_read(ci, OP_ENDPTPRIME, BIT(n))) {
+        cpu_relax();
++       BUG_ON(dir =3D=3D TX && !hw_read(ci, OP_ENDPTCTRL + num, ENDPTCTRL_=
+TXE));
++   }
+    if (is_ctrl && dir =3D=3D RX && hw_read(ci, OP_ENDPTSETUPSTAT, BIT(num)=
+))
+        return -EAGAIN;
+=20
+----------------->8------------------
+
+On the iMX8QXP you may additionally run into asychronous aborts and SError
+due to resource being disabled.
+
+> >=20
+> > ---8<--------------------
+> >=20
+> > diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+> > index 8a9b31fd5c89..72329a7eac4d 100644
+> > --- a/drivers/usb/chipidea/udc.c
+> > +++ b/drivers/usb/chipidea/udc.c
+> > @@ -2374,6 +2374,9 @@ static void udc_suspend(struct ci_hdrc *ci)
+> >          */
+> >         if (hw_read(ci, OP_ENDPTLISTADDR, ~0) =3D=3D 0)
+> >                 hw_write(ci, OP_ENDPTLISTADDR, ~0, ~0);
+> > +
+> > +       if (ci->driver && ci->vbus_active && (ci->gadget.state !=3D USB=
+_STATE_SUSPENDED))
+> > +               usb_gadget_disconnect(&ci->gadget);
+> >  }
+> > =20
+> >  static void udc_resume(struct ci_hdrc *ci, bool power_lost)
+> > @@ -2384,6 +2387,9 @@ static void udc_resume(struct ci_hdrc *ci, bool p=
+ower_lost)
+> >                                         OTGSC_BSVIS | OTGSC_BSVIE);
+> >                 if (ci->vbus_active)
+> >                         usb_gadget_vbus_disconnect(&ci->gadget);
+> > +       } else {
+> > +               if (ci->driver && ci->vbus_active)
+> > +                       usb_gadget_connect(&ci->gadget);
+> >         }
+> > =20
+> >         /* Restore value 0 if it was set for power lost check */
+> >=20
+> > ---->8------------------
+>=20
+> During the scp process, the usb host won't put usb device to suspend stat=
+e.
+> In current design, then the ether driver doesn't know the system has
+> suspended after echo mem. The root cause is that ether driver is still tr=
+ing
+> to queue usb request after usb controller has suspended where usb clock i=
+s off,
+> then the system hang.
+>=20
+> With the above changes, I think the ether driver will fail to eth_start_x=
+mit()=20
+> at an ealier stage, so the issue can't be triggered.
+>=20
+> I think the ether driver needs call gether_suspend() accordingly, to do t=
+his,
+> the controller driver need explicitly call suspend() function when it's g=
+oing
+> to be suspended. Could you check whether below patch fix the issue?
+>=20
+>  ---8<--------------------
+>=20
+> diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+> index 8a9b31fd5c89..27a7674ed62c 100644
+> --- a/drivers/usb/chipidea/udc.c
+> +++ b/drivers/usb/chipidea/udc.c
+> @@ -2367,6 +2367,8 @@ static void udc_id_switch_for_host(struct ci_hdrc *=
+ci)
+>  #ifdef CONFIG_PM_SLEEP
+>  static void udc_suspend(struct ci_hdrc *ci)
+>  {
+> +       ci->driver->suspend(&ci->gadget);
+> +
+>         /*
+>          * Set OP_ENDPTLISTADDR to be non-zero for
+>          * checking if controller resume from power lost
+> @@ -2389,6 +2391,8 @@ static void udc_resume(struct ci_hdrc *ci, bool pow=
+er_lost)
+>         /* Restore value 0 if it was set for power lost check */
+>         if (hw_read(ci, OP_ENDPTLISTADDR, ~0) =3D=3D 0xFFFFFFFF)
+>                 hw_write(ci, OP_ENDPTLISTADDR, ~0, 0);
+> +
+> +       ci->driver->resume(&ci->gadget);
+>  }
+>  #endif
+>=20
+>  ---->8------------------
+
+I tested this during my debugging and it doesn't work because suspend/resum=
+e
+callbacks on the gadgets are designed for USB triggered suspend/resume and
+not system triggered suspend/resume. Meaning that the link will just be
+woken up again by the next USB transfer.
+
+>=20
+> Thanks,
+> Xu Yang
+>=20
+> >=20
+> > But it's unclear to me why the hangup happens and how the change above
+> > fix the problem.  Do you guys have any insight here?o
+> >=20
+> > Shawn
+> >=20
+> > [1] https://github.com/reMarkable/linux-imx/commit/0791d25578cb0e46fd93=
+ae7a3c36ff7a424f3547
+> >=20
+
+I didn't find the missing lines of code that Shawn found and instead ended
+up looking at why the UDC core isn't suspending the gadgets when the system
+is going to suspend. Because to me it feels like a job of UDC core.
+
+I ended up with the monstrosity below that I have been intended to send as
+an RFC when I'm done thinking about it. It currently applies on 6.12.20.
+
+But since Shawn also ran into the problem I'm including it for the sake of
+discussion about what the correct path of solving it is.
+
+Best regards // John Ernberg
+
+----------------->8------------------
+
+From 3c1d167f1eff0bd010b797530e3d03f6939db322 Mon Sep 17 00:00:00 2001
+From: John Ernberg <john.ernberg@actia.se>
+Date: Mon, 5 May 2025 09:09:50 +0200
+Subject: [PATCH] WIP: Suspend getherlink on system suspend
+
+---
+ drivers/usb/gadget/composite.c        | 68 +++++++++++++++++++++++++++
+ drivers/usb/gadget/configfs.c         | 53 +++++++++++++++++++++
+ drivers/usb/gadget/function/f_ecm.c   | 22 +++++++++
+ drivers/usb/gadget/function/u_ether.c | 34 ++++++++++++++
+ drivers/usb/gadget/function/u_ether.h |  2 +
+ drivers/usb/gadget/udc/core.c         | 29 ++++++++++++
+ include/linux/usb/composite.h         |  4 ++
+ include/linux/usb/gadget.h            |  2 +
+ 8 files changed, 214 insertions(+)
+
+diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.=
+c
+index 8402a86176f4..f1ed1db1e1d0 100644
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -2669,6 +2669,72 @@ void composite_resume(struct usb_gadget *gadget)
+ 	cdev->suspended =3D 0;
+ }
+=20
++int composite_system_suspend(struct usb_gadget *gadget)
++{
++	struct usb_composite_dev	*cdev =3D get_gadget_data(gadget);
++	struct usb_function		*f;
++	int				ret;
 +
-+	reg_phy_supply: regulator-phy-supply {
-+		compatible = "regulator-fixed";
-+		regulator-name = "phy-supply";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-enable-ramp-delay = <20000>;
-+		gpio = <&gpio2 20 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+		regulator-always-on;
-+	};
++	DBG(cdev, "system suspend\n");
++	if (cdev->config) {
++		list_for_each_entry(f, &cdev->config->functions, list) {
++			if (f->system_suspend) {
++				ret =3D f->system_suspend(f);
++				if (ret)
++					return ret;
++			}
++		}
++	}
 +
-+	reg_phy_vddio: regulator-phy-vddio {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vddio-1v8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
++	if (cdev->config &&
++	    cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
++		usb_gadget_set_selfpowered(gadget);
++
++	usb_gadget_vbus_draw(gadget, 2);
++
++	return 0;
++}
++
++int composite_system_resume(struct usb_gadget *gadget)
++{
++	struct usb_composite_dev	*cdev =3D get_gadget_data(gadget);
++	struct usb_function		*f;
++	unsigned			maxpower;
++	int				ret;
++
++	DBG(cdev, "system resume\n");
++	if (cdev->config) {
++		list_for_each_entry(f, &cdev->config->functions, list) {
++			if (f->system_resume) {
++				ret =3D f->system_resume(f);
++				if (ret)
++					return ret;
++			}
++		}
++
++		maxpower =3D cdev->config->MaxPower ?
++			cdev->config->MaxPower : CONFIG_USB_GADGET_VBUS_DRAW;
++		if (gadget->speed < USB_SPEED_SUPER)
++			maxpower =3D min(maxpower, 500U);
++		else
++			maxpower =3D min(maxpower, 900U);
++
++		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW ||
++		    !(cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
++			usb_gadget_clear_selfpowered(gadget);
++		else
++			usb_gadget_set_selfpowered(gadget);
++
++		usb_gadget_vbus_draw(gadget, maxpower);
++	} else {
++		maxpower =3D CONFIG_USB_GADGET_VBUS_DRAW;
++		maxpower =3D min(maxpower, 100U);
++		usb_gadget_vbus_draw(gadget, maxpower);
++	}
++
++	return 0;
++}
++
+ /*------------------------------------------------------------------------=
+-*/
+=20
+ static const struct usb_gadget_driver composite_driver_template =3D {
+@@ -2681,6 +2747,8 @@ static const struct usb_gadget_driver composite_drive=
+r_template =3D {
+=20
+ 	.suspend	=3D composite_suspend,
+ 	.resume		=3D composite_resume,
++	.system_suspend	=3D composite_system_suspend,
++	.system_resume	=3D composite_system_resume,
+=20
+ 	.driver	=3D {
+ 		.owner		=3D THIS_MODULE,
+diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+index 29390d573e23..e0d2f0998e86 100644
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -1962,6 +1962,57 @@ static void configfs_composite_resume(struct usb_gad=
+get *gadget)
+ 	spin_unlock_irqrestore(&gi->spinlock, flags);
+ }
+=20
++static int configfs_composite_system_suspend(struct usb_gadget *gadget)
++{
++	struct usb_composite_dev *cdev;
++	struct gadget_info *gi;
++	unsigned long flags;
++	int ret;
++
++	cdev =3D get_gadget_data(gadget);
++	if (!cdev)
++		return 0;
++
++	gi =3D container_of(cdev, struct gadget_info, cdev);
++	spin_lock_irqsave(&gi->spinlock, flags);
++	cdev =3D get_gadget_data(gadget);
++	if (!cdev || gi->unbind) {
++		spin_unlock_irqrestore(&gi->spinlock, flags);
++		return 0;
++	}
++
++	ret =3D composite_system_suspend(gadget);
++	spin_unlock_irqrestore(&gi->spinlock, flags);
++
++	return ret;
++}
++
++static int configfs_composite_system_resume(struct usb_gadget *gadget)
++{
++	struct usb_composite_dev *cdev;
++	struct gadget_info *gi;
++	unsigned long flags;
++	int ret;
++
++	cdev =3D get_gadget_data(gadget);
++	if (!cdev)
++		return 0;
++
++	gi =3D container_of(cdev, struct gadget_info, cdev);
++	spin_lock_irqsave(&gi->spinlock, flags);
++	cdev =3D get_gadget_data(gadget);
++	if (!cdev || gi->unbind) {
++		spin_unlock_irqrestore(&gi->spinlock, flags);
++		return 0;
++	}
++
++	ret =3D composite_system_resume(gadget);
++	spin_unlock_irqrestore(&gi->spinlock, flags);
++
++	return ret;
++}
++
++
+ static const struct usb_gadget_driver configfs_driver_template =3D {
+ 	.bind           =3D configfs_composite_bind,
+ 	.unbind         =3D configfs_composite_unbind,
+@@ -1972,6 +2023,8 @@ static const struct usb_gadget_driver configfs_driver=
+_template =3D {
+=20
+ 	.suspend	=3D configfs_composite_suspend,
+ 	.resume		=3D configfs_composite_resume,
++	.system_suspend	=3D configfs_composite_system_suspend,
++	.system_resume	=3D configfs_composite_system_resume,
+=20
+ 	.max_speed	=3D USB_SPEED_SUPER_PLUS,
+ 	.driver =3D {
+diff --git a/drivers/usb/gadget/function/f_ecm.c b/drivers/usb/gadget/funct=
+ion/f_ecm.c
+index 6cb7771e8a69..4df67d5ee0fa 100644
+--- a/drivers/usb/gadget/function/f_ecm.c
++++ b/drivers/usb/gadget/function/f_ecm.c
+@@ -892,6 +892,26 @@ static void ecm_resume(struct usb_function *f)
+ 	gether_resume(&ecm->port);
+ }
+=20
++static int ecm_system_suspend(struct usb_function *f)
++{
++	struct f_ecm *ecm =3D func_to_ecm(f);
++	struct usb_composite_dev *cdev =3D ecm->port.func.config->cdev;
++
++	DBG(cdev, "ECM System Suspend\n");
++
++	return gether_system_suspend(&ecm->port);
++}
++
++static int ecm_system_resume(struct usb_function *f)
++{
++	struct f_ecm *ecm =3D func_to_ecm(f);
++	struct usb_composite_dev *cdev =3D ecm->port.func.config->cdev;
++
++	DBG(cdev, "ECM System Resume\n");
++
++	return gether_system_resume(&ecm->port);
++}
++
+ static void ecm_free(struct usb_function *f)
+ {
+ 	struct f_ecm *ecm;
+@@ -961,6 +981,8 @@ static struct usb_function *ecm_alloc(struct usb_functi=
+on_instance *fi)
+ 	ecm->port.func.free_func =3D ecm_free;
+ 	ecm->port.func.suspend =3D ecm_suspend;
+ 	ecm->port.func.resume =3D ecm_resume;
++	ecm->port.func.system_suspend =3D ecm_system_suspend;
++	ecm->port.func.system_resume =3D ecm_system_resume;
+=20
+ 	return &ecm->port.func;
+ }
+diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/fun=
+ction/u_ether.c
+index f58590bf5e02..d4f0e28ffd4d 100644
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1078,6 +1078,40 @@ void gether_resume(struct gether *link)
+ }
+ EXPORT_SYMBOL_GPL(gether_resume);
+=20
++int gether_system_suspend(struct gether *link)
++{
++	struct eth_dev *dev =3D link->ioport;
++	struct net_device *ndev =3D dev->net;
++
++	rtnl_lock();
++	if (netif_running(ndev)) {
++		netif_tx_lock_bh(ndev);
++		netif_device_detach(ndev);
++		netif_tx_unlock_bh(ndev);
++	}
++	rtnl_unlock();
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(gether_system_suspend);
++
++int gether_system_resume(struct gether *link)
++{
++	struct eth_dev *dev =3D link->ioport;
++	struct net_device *ndev =3D dev->net;
++
++	rtnl_lock();
++	if (netif_running(ndev)) {
++		netif_tx_lock_bh(ndev);
++		netif_device_attach(ndev);
++		netif_tx_unlock_bh(ndev);
++	}
++	rtnl_unlock();
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(gether_system_resume);
++
+ /*
+  * gether_cleanup - remove Ethernet-over-USB device
+  * Context: may sleep
+diff --git a/drivers/usb/gadget/function/u_ether.h b/drivers/usb/gadget/fun=
+ction/u_ether.h
+index 34be220cef77..ffd023b7be7b 100644
+--- a/drivers/usb/gadget/function/u_ether.h
++++ b/drivers/usb/gadget/function/u_ether.h
+@@ -261,6 +261,8 @@ void gether_cleanup(struct eth_dev *dev);
+=20
+ void gether_suspend(struct gether *link);
+ void gether_resume(struct gether *link);
++int gether_system_suspend(struct gether *link);
++int gether_system_resume(struct gether *link);
+=20
+ /* connect/disconnect is handled by individual functions */
+ struct net_device *gether_connect(struct gether *);
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index 4b3d5075621a..1e4ee5ffcfbf 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1683,6 +1683,30 @@ static void gadget_unbind_driver(struct device *dev)
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+ }
+=20
++static int gadget_suspend_driver(struct device *dev)
++{
++	struct usb_gadget *gadget =3D dev_to_usb_gadget(dev);
++	struct usb_udc *udc =3D gadget->udc;
++	struct usb_gadget_driver *driver =3D udc->driver;
++
++	if (driver->system_suspend)
++		return driver->system_suspend(gadget);
++
++	return 0;
++}
++
++static int gadget_resume_driver(struct device *dev)
++{
++	struct usb_gadget *gadget =3D dev_to_usb_gadget(dev);
++	struct usb_udc *udc =3D gadget->udc;
++	struct usb_gadget_driver *driver =3D udc->driver;
++
++	if (driver->system_resume)
++		return driver->system_resume(gadget);
++
++	return 0;
++}
++
+ /* -----------------------------------------------------------------------=
+-- */
+=20
+ int usb_gadget_register_driver_owner(struct usb_gadget_driver *driver,
+@@ -1896,11 +1920,16 @@ static const struct class udc_class =3D {
+ 	.dev_uevent	=3D usb_udc_uevent,
  };
- 
- &A53_0 {
-@@ -73,6 +91,54 @@ &A53_3 {
- 	cpu-supply = <&buck2>;
- };
- 
-+&eqos {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_eqos>;
-+	/*
-+	 * The required RGMII TX and RX 2ns delays are implemented directly
-+	 * in hardware via passive delay elements on the SOM PCB.
-+	 * No delay configuration is needed in software via PHY driver.
-+	 */
-+	phy-mode = "rgmii";
-+	phy-handle = <&ethphy0>;
-+	status = "okay";
-+
-+	mdio {
-+		compatible = "snps,dwmac-mdio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy0: ethernet-phy@4 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <4>;
-+			at803x,eee-disabled;
-+			eee-broken-1000t;
-+			reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10000>;
-+			reset-deassert-us = <100000>;
-+			vddio-supply = <&reg_phy_vddio>;
-+			leds {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				led@0 {
-+					reg = <0>;
-+					color = <LED_COLOR_ID_YELLOW>;
-+					function = LED_FUNCTION_LAN;
-+					linux,default-trigger = "netdev";
-+				};
-+
-+				led@1 {
-+					reg = <1>;
-+					color = <LED_COLOR_ID_GREEN>;
-+					function = LED_FUNCTION_LAN;
-+					linux,default-trigger = "netdev";
-+				};
-+			};
-+		};
-+	};
+=20
++static const struct dev_pm_ops gadget_bus_pm_ops =3D {
++	SET_SYSTEM_SLEEP_PM_OPS(gadget_suspend_driver, gadget_resume_driver)
 +};
 +
- &i2c1 {
- 	clock-frequency = <400000>;
- 	pinctrl-names = "default";
-@@ -239,6 +305,27 @@ &wdog1 {
- 
- &iomuxc {
- 
-+	pinctrl_eqos: eqosgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x2
-+			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO				0x2
-+			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0			0x90
-+			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1			0x90
-+			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2			0x90
-+			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3			0x90
-+			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x90
-+			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL			0x90
-+			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0			0x16
-+			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1			0x16
-+			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2			0x16
-+			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3			0x16
-+			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL			0x16
-+			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x16
-+			MX8MP_IOMUXC_SD2_WP__GPIO2_IO20					0x10
-+			MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10				0x150
-+		>;
-+	};
-+
- 	pinctrl_i2c1: i2c1grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SD1_DATA4__I2C1_SCL				0x400001c2
-
-base-commit: e271ed52b344ac02d4581286961d0c40acc54c03
-prerequisite-patch-id: 2335ebcc90360b008c840e7edf7e34a595880edf
--- 
-2.43.0
-
+ static const struct bus_type gadget_bus_type =3D {
+ 	.name =3D "gadget",
+ 	.probe =3D gadget_bind_driver,
+ 	.remove =3D gadget_unbind_driver,
+ 	.match =3D gadget_match_driver,
++	.pm =3D &gadget_bus_pm_ops,
+ };
+=20
+ static int __init usb_udc_init(void)
+diff --git a/include/linux/usb/composite.h b/include/linux/usb/composite.h
+index 6e38fb9d2117..f42ba1cfd181 100644
+--- a/include/linux/usb/composite.h
++++ b/include/linux/usb/composite.h
+@@ -226,6 +226,8 @@ struct usb_function {
+ 					bool config0);
+ 	void			(*suspend)(struct usb_function *);
+ 	void			(*resume)(struct usb_function *);
++	int			(*system_suspend)(struct usb_function *);
++	int			(*system_resume)(struct usb_function *);
+=20
+ 	/* USB 3.0 additions */
+ 	int			(*get_status)(struct usb_function *);
+@@ -522,6 +524,8 @@ extern int composite_setup(struct usb_gadget *gadget,
+ 		const struct usb_ctrlrequest *ctrl);
+ extern void composite_suspend(struct usb_gadget *gadget);
+ extern void composite_resume(struct usb_gadget *gadget);
++extern int composite_system_suspend(struct usb_gadget *gadget);
++extern int composite_system_resume(struct usb_gadget *gadget);
+=20
+ /*
+  * Some systems will need runtime overrides for the  product identifiers
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index df33333650a0..8cdfdece1561 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -744,6 +744,8 @@ struct usb_gadget_driver {
+ 	void			(*disconnect)(struct usb_gadget *);
+ 	void			(*suspend)(struct usb_gadget *);
+ 	void			(*resume)(struct usb_gadget *);
++	int			(*system_suspend)(struct usb_gadget *);
++	int			(*system_resume)(struct usb_gadget *);
+ 	void			(*reset)(struct usb_gadget *);
+=20
+ 	/* FIXME support safe rmmod */=
