@@ -1,120 +1,453 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D564118BBB9
-	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 21:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA8C17DFE7
+	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 23:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749503538; cv=none; b=MaX0yZlKoVOdCg6Vq8oUR/i8SLhu52G4qtns0fKyeB8mHSKYHLDPPphT2QXdoZ+fcCiSb2Y5JxFxszdTCfeo6LSFX1RbIcM/7vLZyXWidovZu7j1nTJS/Krd6U38M3r+JVAdSXZ6s83O3RKSe4eNOz6DEYtUiOQ7NC5dzneWRn0=
+	t=1749510154; cv=none; b=c81BYkJ88HaiDh0pjuEcup6Ef9dlAba/F4bcHhSE+sE8xObs0hsiuUmfYKT0TYBNT/WqLUzdrAgwLD3LuMo5iFS7TfxP+m1vQUl0Pb6f/y4Ooodjj2u/MevhutCPo1ggxSpBuEDSH+z7LKd+YKm+xZqEJt5c4rBjuuEsZmkauKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749503538; c=relaxed/simple;
-	bh=v7Wyj6Fr90JtaXx9mPLXXO6DL0XRpjX4OlNToy9WZjY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=rD3sx5m9ZC954Gb30b6f0R8Gco6JwOqycLhUxS7ngWgwzJhSR+HgoqJd3b4g/ZkIpvb97gdDwYy94HuOIGEF0ylGN/Ewnq7/+GfY/XO5V6lw1pTLzaXAxIlhrMyAOfm2jiAc3EyJVUJO8cvF57hfk97foGmhol09DKuQiZdz9oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OUWpIJ+g; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1749510154; c=relaxed/simple;
+	bh=3jQ2/BwlzDQVu+hIFV83ttrxI9vBK/ZalDlfs2CF0kg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eBiheqBSIEuLByVF2DG2WkCIyFDJXYYlWYb7ge31kt8mTf9d6rzDMTlvMyZ6phUUZTnbzhfrlZXrKBOIVCvUreY8B0l2yYtyTMBEYiPhtJpChCGRi8ucNYoYOZpgJjPQVXQoCbROx3fcF/WYVInsOuFBpcPcrqgggxiAnK1OLJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=VsQoXdVM; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OUWpIJ+g"
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 559LBqg12102748;
-	Mon, 9 Jun 2025 16:11:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1749503512;
-	bh=46ToyLg6oP+8zwm16diPabgfMuXMygGMCndJmaqJXRs=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=OUWpIJ+gkR23sr1WZH3XJOiD/1ICYbhXvrJRY/rFW2cnGm9SKgz7Gegvu2AZ05vmw
-	 6F4qfYUZFF7VVEM75LWcXJ2qe1UQZdjnRVJCjrzsmH7cMxh5r2iJx+c0sVsTVqFFgo
-	 mz8dkAxYbReDt9bCcA+4cIwIoXoNny+m56ljEwj0=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 559LBptj3958032
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 9 Jun 2025 16:11:51 -0500
-Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 9
- Jun 2025 16:11:51 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 9 Jun 2025 16:11:51 -0500
-Received: from [10.249.42.149] ([10.249.42.149])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 559LBoxI1847054;
-	Mon, 9 Jun 2025 16:11:50 -0500
-Message-ID: <1983260a-4362-44ca-af1a-0e20d2fee6db@ti.com>
-Date: Mon, 9 Jun 2025 16:11:49 -0500
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="VsQoXdVM"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9774810397298;
+	Tue, 10 Jun 2025 01:02:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1749510142; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=M1pM0ueTeYF/X9+4fPTVBqoLksdbZ+Cyw0VfJldze0Q=;
+	b=VsQoXdVMiWDNJ9TDQVksppIyT+as0Yv8kWI56ovGxk0wzhwz2mRrO1wXyNJgbURMy+9XLA
+	rthdr+ydytgMKODaaqewotKNqi9OGAHLDGND7m5q6XbRZVdPsSbBGtRV7keLxuwHfPnCVx
+	AarmxHJz+2HfaGPM3tixhVj8/ejakCDSHtx0hg66/viTP0F+hu4YEhlEtcUzYJLZNyHdI2
+	WJK8/YMqScXIC++tGBuh4XXi7G8XqOOoSmq0pPuD4fs0qjAqnXlv9Qnpl/m7N2wSvKOwoY
+	yGac2wLyWvb/ZUaWlrKZZLWZSyqZa/bB6fAFcNm/9lxhoqC+mJkXUTszDrZZxg==
+Date: Tue, 10 Jun 2025 01:02:16 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v12 4/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250610010216.7331ebb5@wsk>
+In-Reply-To: <0df20c3e-bd51-415f-bfdf-f88bbd39f260@redhat.com>
+References: <20250522075455.1723560-1-lukma@denx.de>
+	<20250522075455.1723560-5-lukma@denx.de>
+	<f738d1ed-7ade-4a37-b8fd-25178f7c1dee@redhat.com>
+	<20250528125329.084ab649@wsk>
+	<0df20c3e-bd51-415f-bfdf-f88bbd39f260@redhat.com>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] leds: lp8860: Check return value of
- devm_mutex_init()
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Peter Zijlstra
-	<peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-        Waiman Long
-	<longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Vicentiu Galanopulo
-	<vicentiu.galanopulo@remote-tech.co.uk>,
-        Will Deacon <will@kernel.org>, Han
- Xu <han.xu@nxp.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Yogesh Gaur
-	<yogeshgaur.83@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Lee Jones
-	<lee@kernel.org>,
-        Pavel Machek <pavel@kernel.org>
-CC: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        <linux-kernel@vger.kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
-        Bartosz
- Golaszewski <bartosz.golaszewski@linaro.org>,
-        <linux-spi@vger.kernel.org>, <imx@lists.linux.dev>,
-        <linux-leds@vger.kernel.org>
-References: <20250609-must_check-devm_mutex_init-v6-0-9540d5df9704@weissschuh.net>
- <20250609-must_check-devm_mutex_init-v6-2-9540d5df9704@weissschuh.net>
-Content-Language: en-US
-From: Andrew Davis <afd@ti.com>
-In-Reply-To: <20250609-must_check-devm_mutex_init-v6-2-9540d5df9704@weissschuh.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: multipart/signed; boundary="Sig_/sgnmYD9Yr/9ZQSdJ73NdC6_";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 6/9/25 3:38 PM, Thomas Weißschuh wrote:
-> Even if it's not critical, the avoidance of checking the error code
-> from devm_mutex_init() call today diminishes the point of using devm
-> variant of it. Tomorrow it may even leak something.
-> 
-> Add the missed check.
-> 
-> Fixes: 87a59548af95 ("leds: lp8860: Use new mutex guards to cleanup function exits")
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> ---
->   drivers/leds/leds-lp8860.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/leds/leds-lp8860.c b/drivers/leds/leds-lp8860.c
-> index 52b97c9f2a03567aa12d4f63a951593a5e7017d5..0962c00c215a11f555a7878a3b65824b5219a1fa 100644
-> --- a/drivers/leds/leds-lp8860.c
-> +++ b/drivers/leds/leds-lp8860.c
-> @@ -307,7 +307,9 @@ static int lp8860_probe(struct i2c_client *client)
->   	led->client = client;
->   	led->led_dev.brightness_set_blocking = lp8860_brightness_set;
->   
-> -	devm_mutex_init(&client->dev, &led->lock);
-> +	ret = devm_mutex_init(&client->dev, &led->lock);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret, "Failed to initialize lock\n");
+--Sig_/sgnmYD9Yr/9ZQSdJ73NdC6_
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-I don't think the lock initialization can actually fail, if anything ever breaks
-it will be the devm allocation, which is a ENOMEM situation, so probably not worth
-printing anything. Either way is fine for __must_check sake so,
+Hi Paolo,
 
-Acked-by: Andrew Davis <afd@ti.com>
+> On 5/28/25 12:53 PM, Lukasz Majewski wrote:
+> >> On 5/22/25 9:54 AM, Lukasz Majewski wrote: =20
+> >>> +/* dynamicms MAC address table learn and migration */
+> >>> +static void mtip_aging_timer(struct timer_list *t)
+> >>> +{
+> >>> +	struct switch_enet_private *fep =3D from_timer(fep, t,
+> >>> timer_aging); +
+> >>> +	fep->curr_time =3D mtip_timeincrement(fep->curr_time);
+> >>> +
+> >>> +	mod_timer(&fep->timer_aging,
+> >>> +		  jiffies +
+> >>> msecs_to_jiffies(LEARNING_AGING_INTERVAL)); +}   =20
+> >>
+> >> It's unclear to me why you need to maintain a timer just to update
+> >> a timestamp?!?
+> >> =20
+> >=20
+> > This timestamp is afterwards used in:
+> > mtip_atable_dynamicms_learn_migration(), which in turn manages the
+> > entries in switch "dynamic" table (it is one of the fields in the
+> > record.
+> >  =20
+> >> (jiffies >> msecs_to_jiffies(LEARNING_AGING_INTERVAL)) & ((1 <<
+> >> AT_DENTRY_TIMESTAMP_WIDTH) - 1)
+> >> =20
+> >=20
+> > If I understood you correctly - I shall remove the timer and then
+> > just use the above line (based on jiffies) when
+> > mtip_atable_dynamicms_learn_migration() is called (and it requires
+> > the timestamp)?
+> >=20
+> > Otherwise the mtip_timeincrement() seems like a nice wrapper on
+> > incrementing the timestamp. =20
+>=20
+> Scheduling a timer to obtain a value you can have for free is not a
+> good resource usage strategy. Note that is a pending question/check
+> above: verify that the suggested expression yield the expected value
+> in all the possible use-case.
 
->   
->   	led->regmap = devm_regmap_init_i2c(client, &lp8860_regmap_config);
->   	if (IS_ERR(led->regmap)) {
-> 
+This is a bit more tricky than just getting value from jiffies.
+
+The current code provides a monotonic, starting from 0 time "base" for
+learning and managing entries in internal routing tables for MTIP.
+
+To be more specific - the fep->curr_time is a value incremented after
+each ~10ms.
+
+Simple masking of jiffies would not provide such features.
+
+However, I've rewritten relevant portions where GENMASK() could be used
+to simplify and make the code more readable.
+
+>=20
+> >>> +	if (!fep->link[0] && !fep->link[1]) {
+> >>> +		/* Link is down or autonegotiation is in
+> >>> progress. */
+> >>> +		netif_stop_queue(dev);
+> >>> +		spin_unlock_irqrestore(&fep->hw_lock, flags);
+> >>> +		return NETDEV_TX_BUSY;   =20
+> >>
+> >> Intead you should probably stop the queue when such events happen =20
+> >=20
+> > Please correct me if I'm wrong - the netif_stop_queue(dev); is
+> > called before return. Shall something different be also done? =20
+>=20
+> The xmit routine should assume the link is up and the tx ring has
+> enough free slot to enqueue a packet.
+
+In the case of MTIP driver, there is a circular buffer of 16 "sets" of
+descriptors (allocated as coherent) and corresponding buffer
+(dma_map_single at start).
+
+The size of each "buffer" is set to 2048B to accommodate at least single
+packet.
+
+> After enqueueing it should
+> check for enough space availble for the next xmit and stop the queue,
+> likely using the netif_txq_maybe_stop() helper.
+
+The problem with not using the netif_txq_maybe_stop() is that I'm not
+using the "txq" (netdev_queue).
+
+With the current code it looks like netif_stop_queue() is the most
+suitable one from the network API.
+
+>=20
+> Documentation/networking/driver.rst
+>=20
+> >>> +	}
+> >>> +
+> >>> +	/* Clear all of the status flags */
+> >>> +	status &=3D ~BD_ENET_TX_STATS;
+> >>> +
+> >>> +	/* Set buffer length and buffer pointer */
+> >>> +	bufaddr =3D skb->data;
+> >>> +	bdp->cbd_datlen =3D skb->len;
+> >>> +
+> >>> +	/* On some FEC implementations data must be aligned on
+> >>> +	 * 4-byte boundaries. Use bounce buffers to copy data
+> >>> +	 * and get it aligned.
+> >>> +	 */
+> >>> +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
+> >>> +		unsigned int index;
+> >>> +
+> >>> +		index =3D bdp - fep->tx_bd_base;
+> >>> +		memcpy(fep->tx_bounce[index],
+> >>> +		       (void *)skb->data, skb->len);
+> >>> +		bufaddr =3D fep->tx_bounce[index];
+> >>> +	}
+> >>> +
+> >>> +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> >>> +		swap_buffer(bufaddr, skb->len);   =20
+> >>
+> >> Ouch, the above will kill performances. =20
+> >=20
+> > This unfortunately must be done in such a way (the same approach is
+> > present on fec_main.c) as the IP block is implemented in such a way
+> > (explicit conversion from big endian to little endian).
+> >  =20
+> >> Also it looks like it will
+> >> access uninitialized memory if skb->len is not 4 bytes aligned.
+> >> =20
+> >=20
+> > There is a few lines above a special code to prevent from such a
+> > situation ((unsigned long)bufaddr & MTIP_ALIGNMENT). =20
+>=20
+> The problem here is not with memory buffer alignment, but with the
+> packet length, that can be not a multiple of 4. In such a case the
+> last swap will do an out-of-bound read touching uninitialized data.
+
+On the init function the size of allocation for each buffer is set to
+be 2048 bytes, so there is no such a thread.
+
+>=20
+> >>> +	bdp->cbd_sc =3D status;
+> >>> +
+> >>> +	netif_trans_update(dev);
+> >>> +	skb_tx_timestamp(skb);
+> >>> +
+> >>> +	/* For port separation - force sending via specified port
+> >>> */
+> >>> +	if (!fep->br_offload && port !=3D 0)
+> >>> +		mtip_forced_forward(fep, port, 1);
+> >>> +
+> >>> +	/* Trigger transmission start */
+> >>> +	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);
+> >>>  =20
+> >>
+> >> Possibly you should check skb->xmit_more to avoid ringing the
+> >> doorbell when not needed. =20
+> >=20
+> > I couldn't find skb->xmit_more in the current sources. Instead,
+> > there is netdev_xmit_more(). =20
+>=20
+> Yeah, I referred to the old code, sorry.
+>=20
+> > However, the TX code just is supposed to setup one frame
+> > transmission and hence there is no risk that we trigger "empty"
+> > transmission. =20
+>=20
+> The point is that doorbell ringing is usually very expensive (slow)
+> for the H/W. And is not needed when netdev_xmit_more() is true,
+> because the another xmit operation will follow. If you care about
+> performances you should leverage such info.
+
+I do have an impression, that this is very important for network
+devices having many queues with separate priorities.
+
+In my case - I do have a single uDMA0 port with a single RX and TX
+circular buffer (16 packets can be "queued").
+
+>=20
+> >  =20
+> >>> +	/* First, grab all of the stats for the incoming packet.
+> >>> +	 * These get messed up if we get called due to a busy
+> >>> condition.
+> >>> +	 */
+> >>> +	bdp =3D fep->cur_rx;
+> >>> +
+> >>> +	while (!((status =3D bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
+> >>> +		if (pkt_received >=3D budget)
+> >>> +			break;
+> >>> +
+> >>> +		pkt_received++;
+> >>> +		/* Since we have allocated space to hold a
+> >>> complete frame,
+> >>> +		 * the last indicator should be set.
+> >>> +		 */
+> >>> +		if ((status & BD_ENET_RX_LAST) =3D=3D 0)
+> >>> +			dev_warn_ratelimited(&dev->dev,
+> >>> +					     "SWITCH ENET: rcv is
+> >>> not +last\n"); +
+> >>> +		if (!fep->usage_count)
+> >>> +			goto rx_processing_done;
+> >>> +
+> >>> +		/* Check for errors. */
+> >>> +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH |
+> >>> BD_ENET_RX_NO |
+> >>> +			      BD_ENET_RX_CR | BD_ENET_RX_OV)) {
+> >>> +			dev->stats.rx_errors++;
+> >>> +			if (status & (BD_ENET_RX_LG |
+> >>> BD_ENET_RX_SH)) {
+> >>> +				/* Frame too long or too short.
+> >>> */
+> >>> +				dev->stats.rx_length_errors++;
+> >>> +			}
+> >>> +			if (status & BD_ENET_RX_NO)	/*
+> >>> Frame alignment */
+> >>> +				dev->stats.rx_frame_errors++;
+> >>> +			if (status & BD_ENET_RX_CR)	/* CRC
+> >>> Error */
+> >>> +				dev->stats.rx_crc_errors++;
+> >>> +			if (status & BD_ENET_RX_OV)	/*
+> >>> FIFO overrun */
+> >>> +				dev->stats.rx_fifo_errors++;
+> >>> +		}
+> >>> +
+> >>> +		/* Report late collisions as a frame error.
+> >>> +		 * On this error, the BD is closed, but we don't
+> >>> know what we
+> >>> +		 * have in the buffer.  So, just drop this frame
+> >>> on the floor.
+> >>> +		 */
+> >>> +		if (status & BD_ENET_RX_CL) {
+> >>> +			dev->stats.rx_errors++;
+> >>> +			dev->stats.rx_frame_errors++;
+> >>> +			goto rx_processing_done;
+> >>> +		}
+> >>> +
+> >>> +		/* Process the incoming frame */
+> >>> +		pkt_len =3D bdp->cbd_datlen;
+> >>> +		data =3D (__u8 *)__va(bdp->cbd_bufaddr);
+> >>> +
+> >>> +		dma_unmap_single(&fep->pdev->dev,
+> >>> bdp->cbd_bufaddr,
+> >>> +				 bdp->cbd_datlen,
+> >>> DMA_FROM_DEVICE);   =20
+> >>
+> >> I have read your explaination WRT unmap/map. Actually you don't
+> >> need to do any mapping here,  =20
+> >=20
+> > There are 16 cbd_t descriptors allocated (as dma_alloc_coherent).
+> > Those descriptors contain pointer to data (being read in this
+> > case). =20
+>=20
+> I'm referring to the actual packet payload, that is the buffer at
+> bdp-cbd_bufaddr with len bdp->cbd_datlen; I'm not discussing the
+> descriptors contents.
+
++1
+
+>=20
+> > Hence the need to perform dma_map_single() for each descriptor,  =20
+>=20
+> You are not unmapping the descriptor, you are unmapping the packet
+> payload.
+
++1
+
+>=20
+> >> since you are unconditionally copying the
+> >> whole buffer (why???) =20
+> >=20
+> > Only the value of=20
+> > pkt_len =3D bdp->cbd_datlen; is copied to SKB (after byte
+> > swap_buffer()). =20
+>=20
+> The relevant line is:
+>=20
+> 		skb_copy_to_linear_data(skb, data, pkt_len);
+>=20
+> AFAICS that copies whole packet contents, which is usually quite
+> sub-optimal from performance PoV.
+>=20
+
+fec_main.c just assigns:
+data=C2=B7=3D=C2=B7skb->data;
+
+so I would prefer to keep the:
+skb_copy_to_linear_data(skb, data, pkt_len);
+
+> >> and re-using it.
+> >>
+> >> Still you need a dma_sync_single() to ensure the CPUs see the
+> >> correct data. =20
+> >=20
+> > The descriptors - i.e. struct cbd_t fields are allocated with
+> > dma_alloc_coherent(), so this is OK. =20
+>=20
+> I'm talking about packets contents, not packet descriptors. Please
+> re-read the above and have a look at other drivers code.
+
+The usage of dma_sync_single_for_cpu() works without issues in the
+mtip_switch_rx().
+
+>=20
+> An additional point that I missed in the previous review is that the
+> rx allocation schema is quite uncorrect. At ring initialization time
+> you allocate full skbs, while what you need and use is just raw
+> buffers for the packet payload. Instead you could/should use the page
+> pool:
+>=20
+> Documentation/networking/page_pool.rst
+>=20
+
+Yes, for RX packets payload the page of 2048 bytes is allocated. By
+using dma page pool - I can state the same maximal size, but the usage
+of memory can be much more flexible.
+
+> That will also help doing the right thing WRT DMA handling.
+>=20
+
+The dma_sync_single_for_cpu() shall work correctly with the current
+approach as well.
+
+> >> This patch is really too big, I'm pretty sure I missed some
+> >> relevant issues. You should split it in multiple ones: i.e.
+> >> initialization and h/w access, rx/tx, others ndos. =20
+> >=20
+> > It is quite hard to "scatter" this patch as:
+> >=20
+> > 1. I've already split it to several files (which correspond to
+> > different "logical" entities - like mtipl2sw_br.c).
+> > 2. The mtipl2sw.c file is the smallest part of the "core" of the
+> > driver.
+> > 3. If I split it, then at some point I would break bisectability for
+> > imx28. =20
+>=20
+> Note that each patch don't need to provide complete functionality.
+> i.e. patch 1 could implement ndo_open()/close and related helper,
+> leaving ndo_start_xmit() and napi_poll empty and avoid allocating the
+> rx buffers. patch 2 could implement the rx patch, patch 3 the tx path.
+>=20
+
+Yes, this seems to be a good idea... I will implement such approach.
+
+> The only constraint is that each patch will build successufully, which
+> is usually easy to achieve.
+
++1
+
+>=20
+> A 2K lines patches will probably lead to many more iterations and
+> unhappy (or no) reviewers.
+
+The problem is that all the patches "around" this driver (like *yaml,
+bindings, defconfig) would get outdated very fast if not pull to
+mainline.
+
+In such a way that already done work would need to be redo...
+
+>=20
+> /P
+>=20
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/sgnmYD9Yr/9ZQSdJ73NdC6_
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhHZ/gACgkQAR8vZIA0
+zr35NAf7BsWyM4PkwH9k8LanL+CVfhF1A32/dAugkR1hlODpkay0KHkoIXvmUt2a
++/0jcZiNrVmndySoOy+U6BCQsN6+qh34jg0Pn68gb1++WsLq473e8jldjZcyK35T
+4ke3yvNRDViSgjwIyM9qeoZvIXUrWr7sEWR5wxHPDhRacYRU4vbra4F/ONnrh43A
+e71Np4aSgTadeoPKMe9mkYHft5sE0PRU4Mm0jK6f3ubT4F5Hz086z/LKNmjfSz9F
+YLVkbQXJGUQlB4DJhwdYXc4R1cqCj5cuCBHyLIwbusHDrDaT4TJFinzoOLr3weCq
+q9bXC3suqEgacBcHzqSrZF8cXvjhjQ==
+=FVxJ
+-----END PGP SIGNATURE-----
+
+--Sig_/sgnmYD9Yr/9ZQSdJ73NdC6_--
