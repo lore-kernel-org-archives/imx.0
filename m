@@ -1,31 +1,30 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F7124EA9D
-	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 10:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC5F24EA90
+	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 10:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749463565; cv=none; b=Xo6rtnB3O5czS3riHJltMhjEXo4GexYfb0GE7kKiajsA8a8h43cMWi3QXUtOUN2ZTjs+6BKsEIHuu4XGKWQl7rkRYQRUy4z4q3+e0ZTP4uLj1B2llNeYObs7m/uTW8E1L9Ptf4dyBRT1Kh9oVFc+eK6U3oNOk+CUoXmobYWstME=
+	t=1749463924; cv=none; b=CRv5zPydJ/O0ih+myvRbwTx+aAgnm/m+UJOWwRnc4iikOrIBCKJOIvoO9NIOu1X00aa1OnW+uqLDoaNLqABVlfWmH/WXlVqCDKHHni0L/fLEFWTfnxRcq3VE85vapLR22d+jauoKRcQMJGQaBPx0+8ZjAL6HSzAkXbfblqCzrzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749463565; c=relaxed/simple;
-	bh=nUXwW/kfcyPoabPPGhNF/JzaC/ZMwZ23lGvL1p04f+g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nhxm1Yrr2SKSiD0bnfnUwbiegS5E1ey9ipZgVvwPQmE7IzH3W1MYAOboAgEbI8trwkIp/zYWnzD7u6D55FHtLWXE614cPht2OV0832MOYXPv+jlyFzeTBKEOjIW1WIF3NxQ7pxXhEJONOMEVKIhfC96f0yRhdXNNZWJqmYu2eeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bx7Zpgq9; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1749463924; c=relaxed/simple;
+	bh=e2fCJ9ISiEL3nr4jR1Jaa14oeZ314fLVzRidXKO7Ruo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sTGz9P+PMy/s9Ppv4K4m/bjOlrWr/9zvBHj3SQHlZ7N/Epo6CwCqHB6mV1u+C+CAzT+yicsqt8pnDFAdo5uXfqHwuAzsJjwkpfUChx9Wa2IPoxPs9qDrzQWVul/Gd58LokhlrMKOVvOBZV5iWktL5OsN5BcgT7hlHRUgP/Fh9dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=mN5sw0Iq; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bx7Zpgq9"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="mN5sw0Iq"
 Received: from isaac-ThinkPad-T16-Gen-2.lan (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6DCA9D77;
-	Mon,  9 Jun 2025 12:05:55 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A393B1D8;
+	Mon,  9 Jun 2025 12:05:52 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1749463555;
-	bh=nUXwW/kfcyPoabPPGhNF/JzaC/ZMwZ23lGvL1p04f+g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bx7Zpgq9nLqrpD8n6KV0AaTMF0pjoRUQ/pUw6F/obRckISldifmMdvKXnfoZo4VNC
-	 upH3+JjDtuKvlwBKtVORfh9PQ2SHeGlcTyIGfGOuvpfOCZcBAn0RS9RvjfHbFxE8ox
-	 fluXwEllCLnQYhfHm23m2R6xa+VPZJuqwiRucbD0=
+	s=mail; t=1749463553;
+	bh=e2fCJ9ISiEL3nr4jR1Jaa14oeZ314fLVzRidXKO7Ruo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mN5sw0IqZF55Qvzl81a3hJEZSZORZ1fT1vdzx8zGjkZMQWloxJNrJQd+EjW5rYX6c
+	 P5dQc/v8YVO9MxyVGGxu+03FdyGxIHtdb8hrJ2mduUJwd/voHTgB5jYw77AJHYaWI6
+	 Fq2RH3tPWgTLtH2TH9lJsbwFjOX6lb0tE2kPUM+o=
 From: Isaac Scott <isaac.scott@ideasonboard.com>
 To: laurent.pinchart@ideasonboard.com
 Cc: kieran.bingham@ideasonboard.com,
@@ -41,14 +40,11 @@ Cc: kieran.bingham@ideasonboard.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Rui Miguel Silva <rui.silva@linaro.org>
-Subject: [PATCH v3 2/2] media: imx-mipi-csis: Add user line interrupt to imx-mipi-csis driver
-Date: Mon,  9 Jun 2025 11:05:44 +0100
-Message-ID: <20250609100544.571821-3-isaac.scott@ideasonboard.com>
+	Isaac Scott <isaac.scott@ideasonboard.com>
+Subject: [PATCH v3 0/2] media: imx-mipi-csis: Add line end IRQ to imx-mipi-csis driver 
+Date: Mon,  9 Jun 2025 11:05:42 +0100
+Message-ID: <20250609100544.571821-1-isaac.scott@ideasonboard.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250609100544.571821-1-isaac.scott@ideasonboard.com>
-References: <20250609100544.571821-1-isaac.scott@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,179 +53,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The NXP i.MX 8M Plus features an interrupt that triggers after the MIPI
-CSI receiver counts a user-configurable number of lines. This is useful
-for debugging, as it allows users to check if the amount of lines per
-frame equals what they are expecting.
+Many boards, such as the NXP i.MX 8M Plus, feature multiple interrupt
+registers. This series refactors interrupt status register debug handling to make
+it more intuitive to add other registers such as LINE_END, which has an
+entire register containing only one interrupt. Previously, the
+mipi_csi_events[] list contained a debug enable field, and this replaces
+that with a status_index, which indicates which status register contains
+the mask for the interrupt.
 
-Add support for this interrupt in the driver, and an entry into debugfs
-to allow the user to configure whether the interrupt is enabled, as well
-as the number of lines after which to trigger the interrupt.
+The second patch adds the user line interrupt, which is useful for
+debugging, as it allows a user to trigger an interrupt after the MIPI
+CSI receiver has counted a configurable number of lines. This can make
+it possible to discern the true resolution of the image stream reaching
+the CSI receiver. It adds an entry to debugfs which lets users choose
+how many lines are needed to trigger the interrupt, and can be disabled
+both within and outside streaming by setting the value to 0.
 
-This debugfs control can be altered while a stream is in progress, with
-0 disabling the interrupt and >0 setting a new desired line count.
+Isaac Scott (2):
+  media: imx-mipi-csis: Refactor interrupt status registers
+  media: imx-mipi-csis: Add user line interrupt to imx-mipi-csis driver
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Reviewed-by: Rui Miguel Silva <rui.silva@linaro.org>
+ drivers/media/platform/nxp/imx-mipi-csis.c | 111 +++++++++++++++------
+ 1 file changed, 78 insertions(+), 33 deletions(-)
 
----
-
-Changes since v2:
-- The interrupt is no longer enabled by default when debug is on
-- Renamed enum from USER to MIPI_CSIS_EVENT_TYPE_MAIN_1
-- Removed redundant if statement in set_params()
-- Added imx-mipi-csis to commit title
-
-Changes since v1:
-- Moved from magic number to enum in status_index
-- Clear INT_MSK_1 in enable_interrupts() when on == false
-- use local variable in set_params() as in the interrupt handler
-- move interrupt handling code outside of spinlock
----
- drivers/media/platform/nxp/imx-mipi-csis.c | 39 +++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-index 72432a8062f5..795a9d499de4 100644
---- a/drivers/media/platform/nxp/imx-mipi-csis.c
-+++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -88,6 +88,10 @@
- #define MIPI_CSIS_INT_MSK_ERR_CRC		BIT(1)
- #define MIPI_CSIS_INT_MSK_ERR_UNKNOWN		BIT(0)
- 
-+/* CSIS Interrupt mask 1 */
-+#define MIPI_CSIS_INT_MSK_1			0x18
-+#define MIPI_CSIS_INT_MSK_1_LINE_END		BIT(0)
-+
- /* CSIS Interrupt source */
- #define MIPI_CSIS_INT_SRC			0x14
- #define MIPI_CSIS_INT_SRC_EVEN_BEFORE		BIT(31)
-@@ -109,6 +113,10 @@
- #define MIPI_CSIS_INT_SRC_ERR_UNKNOWN		BIT(0)
- #define MIPI_CSIS_INT_SRC_ERRORS		0xfffff
- 
-+/* CSIS Interrupt source 1 */
-+#define MIPI_CSIS_INT_SRC_1			0x1c
-+#define MIPI_CSIS_INT_SRC_1_LINE_END		BIT(0)
-+
- /* D-PHY status control */
- #define MIPI_CSIS_DPHY_STATUS			0x20
- #define MIPI_CSIS_DPHY_STATUS_ULPS_DAT		BIT(8)
-@@ -221,6 +229,7 @@
- #define MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE	BIT(0)
- 
- #define MIPI_CSIS_FRAME_COUNTER_CH(n)		(0x0100 + (n) * 4)
-+#define MIPI_CSIS_LINE_INTERRUPT_RATIO(n)	(0x0110 + (n) * 4)
- 
- /* Non-image packet data buffers */
- #define MIPI_CSIS_PKTDATA_ODD			0x2000
-@@ -251,6 +260,7 @@
- enum mipi_csis_event_type {
- 	MIPI_CSIS_EVENT_TYPE_MAIN_0 = 0,
- 	MIPI_CSIS_EVENT_TYPE_DEBUG = 1,
-+	MIPI_CSIS_EVENT_TYPE_MAIN_1 = 2,
- };
- 
- struct mipi_csis_event {
-@@ -286,6 +296,8 @@ static const struct mipi_csis_event mipi_csis_events[] = {
- 	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame End"},
- 	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC Falling Edge"},
- 	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC Rising Edge"},
-+	/* User Line interrupt */
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_1, MIPI_CSIS_INT_SRC_1_LINE_END,		"Line End"}
- };
- 
- #define MIPI_CSIS_NUM_EVENTS ARRAY_SIZE(mipi_csis_events)
-@@ -338,11 +350,14 @@ struct mipi_csis_device {
- 
- 	spinlock_t slock;	/* Protect events */
- 	struct mipi_csis_event events[MIPI_CSIS_NUM_EVENTS];
-+
- 	struct dentry *debugfs_root;
- 	struct {
- 		bool enable;
- 		u32 hs_settle;
- 		u32 clk_settle;
-+		u32 int_line;
-+		u32 last_int_line;
- 	} debug;
- };
- 
-@@ -655,6 +670,7 @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
- 				 const struct csis_pix_format *csis_fmt)
- {
- 	int lanes = csis->bus.num_data_lanes;
-+	u32 int_lines;
- 	u32 val;
- 
- 	val = mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
-@@ -691,6 +707,12 @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
- 			MIPI_CSIS_DPHY_BCTRL_L_B_DPHYCTRL(20000000));
- 	mipi_csis_write(csis, MIPI_CSIS_DPHY_BCTRL_H, 0);
- 
-+	int_lines = READ_ONCE(csis->debug.int_line);
-+	mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-+			max(int_lines, 1U) - 1);
-+
-+	csis->debug.last_int_line = int_lines;
-+
- 	/* Update the shadow register. */
- 	val = mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
- 	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL,
-@@ -770,12 +792,15 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
- 	struct mipi_csis_device *csis = dev_id;
- 	unsigned long flags;
- 	unsigned int i;
--	u32 status[2];
-+	u32 int_lines;
-+	u32 status[3];
- 
- 	status[MIPI_CSIS_EVENT_TYPE_MAIN_0] =
- 				mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
- 	status[MIPI_CSIS_EVENT_TYPE_DEBUG] =
- 				mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
-+	status[MIPI_CSIS_EVENT_TYPE_MAIN_1] =
-+				mipi_csis_read(csis, MIPI_CSIS_INT_SRC_1);
- 
- 	spin_lock_irqsave(&csis->slock, flags);
- 
-@@ -795,10 +820,19 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
- 
- 	spin_unlock_irqrestore(&csis->slock, flags);
- 
-+	int_lines = READ_ONCE(csis->debug.int_line);
-+	if (int_lines != csis->debug.last_int_line) {
-+		mipi_csis_write(csis, MIPI_CSIS_LINE_INTERRUPT_RATIO(0),
-+				max(int_lines, 1U) - 1);
-+		csis->debug.last_int_line = int_lines;
-+	}
-+
- 	mipi_csis_write(csis, MIPI_CSIS_INT_SRC,
- 			status[MIPI_CSIS_EVENT_TYPE_MAIN_0]);
- 	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC,
- 			status[MIPI_CSIS_EVENT_TYPE_DEBUG]);
-+	mipi_csis_write(csis, MIPI_CSIS_INT_SRC_1,
-+			status[MIPI_CSIS_EVENT_TYPE_MAIN_1]);
- 
- 	return IRQ_HANDLED;
- }
-@@ -938,6 +972,7 @@ static void mipi_csis_debugfs_init(struct mipi_csis_device *csis)
- {
- 	csis->debug.hs_settle = UINT_MAX;
- 	csis->debug.clk_settle = UINT_MAX;
-+	csis->debug.int_line = 0;
- 
- 	csis->debugfs_root = debugfs_create_dir(dev_name(csis->dev), NULL);
- 
-@@ -949,6 +984,8 @@ static void mipi_csis_debugfs_init(struct mipi_csis_device *csis)
- 			   &csis->debug.clk_settle);
- 	debugfs_create_u32("ths_settle", 0600, csis->debugfs_root,
- 			   &csis->debug.hs_settle);
-+	debugfs_create_u32("int_line_0", 0600, csis->debugfs_root,
-+			   &csis->debug.int_line);
- }
- 
- static void mipi_csis_debugfs_exit(struct mipi_csis_device *csis)
 -- 
 2.43.0
 
