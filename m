@@ -1,54 +1,96 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBF843ABC
-	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 10:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220281E835B
+	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 10:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749463924; cv=none; b=MopQHn+CuAHIWcrchPsS7mUfJS8WjjP0IteJwXIipVEqRW59bDCgBALgYKAU/ekr+eq+dSI3V3MCw07JeziUIMzSJpswE+4G4TJEPlbLBI4H30jDfiAM04taWFPpebwGIRQOoU5p1t+m7HVIT1w26VeWQS6QetXqsptlnRkjiIg=
+	t=1749464206; cv=none; b=IH3cbVuXGH0xSQhDWMPB/iTdK4O4meyS+HkxYt8YvpjcWD7n4SZu7yXPiUkh3onZr7nN1BmBhyLYqsk1CM8kq5P3XP6InoMMpJd0Vrp+XJVreyQ3PEt2y4VOs1+QGnxYOvyxIHibmFiridEQaGDQ9a4oV2gc5c4VH+4n0NPJneA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749463924; c=relaxed/simple;
-	bh=Oxi6CvbtEwJFAIheS0Yjn81hSn8AcxgbUDDVGvBrago=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCIkgRmG3tI2WNgQJDf2+mv6Xp/IDoi3AOD1ZHE1s2T1LvNpLUTaqYcpgrFhAR+uhNKU6jZAQFepWFHDR/vA5cMjMNylf13b19esfI54rWpZ1bM90GNyFPR4Jjn+ye06DM1dPdsYYF4Q6nbMfg3QwdIKg3UgPTOVuY3/Yez+pbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=KqiG/a9D; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1749464206; c=relaxed/simple;
+	bh=M98Y1kBczwFCvKhTPGpt7ZrMVlfH8rYymkcXq0nIq6w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LZwMaT3rX9IYM3zbfv9InzXg6Dht6DMh3woI5IshBPgVxLFy8yXmW/3ycz+suAJx6MfYXhKRqcEn0NVdjbtnku6Zf0LnF5lbyWiQYT0Euw4x0wylzvYLfkH/oTe0jbbCdZ4bSYOFVbcE3mTUgIWbeAl5z8SB3xNBgd2L0Un3/kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Ev0DoA9j; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="KqiG/a9D"
-Received: from isaac-ThinkPad-T16-Gen-2.lan (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 35F967F0;
-	Mon,  9 Jun 2025 12:05:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1749463554;
-	bh=Oxi6CvbtEwJFAIheS0Yjn81hSn8AcxgbUDDVGvBrago=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqiG/a9DhTbbfF1wJw6AV7gP30WzcwlHVANqLm2+Qlfq+XKFk83yU83H9YI7P59ed
-	 p++JtIXxXNcw2Emrfgbsn9tM7BDFRWwDp1uzSEb3zx39UVvwTv8BC8Owb0z4k0igdu
-	 i5fHUWFSlAxdjPaXB1l0LwPAOYHqaTS6KD9qA4EU=
-From: Isaac Scott <isaac.scott@ideasonboard.com>
-To: laurent.pinchart@ideasonboard.com
-Cc: kieran.bingham@ideasonboard.com,
-	rmfrfs@gmail.com,
-	martink@posteo.de,
-	kernel@puri.sm,
-	mchehab@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-media@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Ev0DoA9j"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ad891bb0957so659555566b.3
+        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 03:16:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1749464203; x=1750069003; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TbJ1tbrVzaq9Eu0evFfvKDOWxuNNrI779QMTpMN0PYI=;
+        b=Ev0DoA9jZLLVjygGuq4kWgSUs7839ZXltMIWypZLK9WsdbzM/NccJyHJnKk/3v9HaD
+         /BWzhltAlO3gHckvvPWwjkUyPQz+6m9TBdmcvtsjfqEKmyEVMzQEBYbqbrWvL74wJwkZ
+         hi+M0ew6T/C1dCtMAFpBfctk5jFx2EQAFZpZU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749464203; x=1750069003;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TbJ1tbrVzaq9Eu0evFfvKDOWxuNNrI779QMTpMN0PYI=;
+        b=eAeUJuvfxsQGl8RMNLJme+P/1n1gDi0ihXlyVdsn2BkOCrzwIxGawTEEEJVry7sy7y
+         +Workir4+rR+9ruZdAbwSturi+jmKWgpsOQC80Hn8bMUXzJO5dicrKLLd9hmIwZ2amZO
+         1Vo3IapJ04YmMP7j2KvaO6Vk4y/wJetfm0mjWvUxsOBmNDfl/lUcN1Q2vWnwU/qagTun
+         INbCCbRtV3DAQkKb0PWB2fa4SpSamLtW0wyGJbqAIWfdDaw/3jsG72MBPBp/W7Q7DdAc
+         alxRa1p8e7qKDDQ3CBkrpzO90lpYI3TZ0DbiFS2kvKC0L/pL5Zw4D+sNjZrIlcunrFK6
+         0O0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWkZxwrBgvCQ7+i8zvTPJTWrG/J2Paf7R0caNwDjxIvIcWEB3WH8LqVy7y9zunzaW9zTcQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzvWMPJctkC9HoT6Nwbq/rKGt/wk8IM+Twst4oTSIKm5boGsIcG
+	Ez2NxJ37xUstv2ApBkRsreVCKsPB7Z4L+h4gGsM3VGF/iKeK2mKjrNcxicNVZ5fK6bU=
+X-Gm-Gg: ASbGncuGQDB1GtyASduLSc8GbWa45jeXg8dMNd1OVzIsB6PRbC9yr1Zj1lyIDjvdtin
+	IsAZCH9ush4qYu+7lumP3x8EcDyqs2EeWyNUzED8//5/Bz2/mXVDt6i5EHOUt7mgMFipbVze21B
+	vbK/xTzsRj0FqkJshP9wHOp1WjvoRcbufgFEeKY3CRdmrjZD8z1znK+RghY3+crDvAVvPTqMnqe
+	5toHcQgYBdUsJWlT6ifIb/CLJ9ZFHBPIlwdKMu40jiW13X9HZ4Tz0Z9PvnzYipPxJPQnN6MMV9q
+	9Z4dcoi7l0YxnHiC7dGzoH1iXGUkw6LGGxwiYjpOSnTm09/nAXgrJHuA4HzcUizL6VIJPOpJTpb
+	k2A6FetBr/OQtNoFgNWx1GA5npWqHUSiY3dUKwvOW
+X-Google-Smtp-Source: AGHT+IENu+cN1K/Tck/lkp6DHf9W71FZqSXJAShei9q/DyrSApC2JOSHLAClYdMgr/5JU1IPWNRyUg==
+X-Received: by 2002:a17:907:940a:b0:ad1:81c5:5ec9 with SMTP id a640c23a62f3a-ade1a9c9e50mr1280776066b.4.1749464203323;
+        Mon, 09 Jun 2025 03:16:43 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2.196.40.99])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1db55c7esm529257066b.49.2025.06.09.03.16.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 03:16:42 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Matteo Lisi <matteo.lisi@engicam.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Markus Niebel <Markus.Niebel@tq-group.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Rob Herring <robh@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Rui Miguel Silva <rui.silva@linaro.org>
-Subject: [PATCH v3 1/2] media: imx-mipi-csis: Refactor interrupt status registers
-Date: Mon,  9 Jun 2025 11:05:43 +0100
-Message-ID: <20250609100544.571821-2-isaac.scott@ideasonboard.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 00/10] Support Engicam MicroGEA boards
+Date: Mon,  9 Jun 2025 12:15:33 +0200
+Message-ID: <20250609101637.2322809-1-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250609100544.571821-1-isaac.scott@ideasonboard.com>
-References: <20250609100544.571821-1-isaac.scott@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,150 +99,48 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The NXP i.MX 8 MP CSI-2 receiver features multiple interrupt and debug
-status sources which span multiple registers. The driver currently
-supports two interrupt source registers, and attributes the
-mipi_csis_event event entries to those registers through a boolean debug
-field that indicate if the event relates to the main interrupt status
-(false) or debug interrupt status (true) register. To make it easier to
-add new event fields, replace the debug bool with a 'status index'
-integer than indicates the index of the corresponding status register.
+The series adds support for Engicam MicroGEA boards:
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Rui Miguel Silva <rui.silva@linaro.org>
+- BMM
+- RMM
+- GTW
 
----
+based on MicroGEA-MX6UL SoM.
 
-Changes since v2:
-- Changed enum names to MIPI_CSIS_EVENT_TYPE_MAIN_0 and
-  MIPI_CSIS_EVENT_TYPE_DEBUG
-- Added imx-mipi-csis to commit title
+Changes in v2:
+- Change local-mac-address to 00 00 00 00 00 00. The actual value will
+  be set by the bootloader. The previous one was assigned to Freescale
+  Semiconductor.
+- Move iomuxc and iomuxc_snvs nodes to the end of the DTS files.
+- Drop an extra blank line from the DTS file.
 
-Changes since v1:
-- Switched from magic numbers to enum.
----
- drivers/media/platform/nxp/imx-mipi-csis.c | 74 ++++++++++++----------
- 1 file changed, 41 insertions(+), 33 deletions(-)
+Dario Binacchi (10):
+  dt-bindings: arm: fsl: support Engicam MicroGEA BMM board
+  ARM: dts: imx6ul: support Engicam MicroGEA-MX6UL SoM
+  ARM: dts: imx6ul: support Engicam MicroGEA BMM board
+  ARM: imx_v6_v7_defconfig: cleanup mxs_defconfig
+  ARM: imx_v6_v7_defconfig: select CONFIG_INPUT_PWM_BEEPER
+  dt-bindings: arm: fsl: support Engicam MicroGEA RMM board
+  ARM: dts: imx6ul: support Engicam MicroGEA RMM board
+  dt-bindings: arm: fsl: support Engicam MicroGEA GTW board
+  ARM: dts: imx6ul: support Engicam MicroGEA GTW board
+  ARM: imx_v6_v7_defconfig: select CONFIG_USB_HSIC_USB3503
 
-diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-index d060eadebc7a..72432a8062f5 100644
---- a/drivers/media/platform/nxp/imx-mipi-csis.c
-+++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -248,8 +248,13 @@
- #define MIPI_CSI2_DATA_TYPE_RAW14		0x2d
- #define MIPI_CSI2_DATA_TYPE_USER(x)		(0x30 + (x))
- 
-+enum mipi_csis_event_type {
-+	MIPI_CSIS_EVENT_TYPE_MAIN_0 = 0,
-+	MIPI_CSIS_EVENT_TYPE_DEBUG = 1,
-+};
-+
- struct mipi_csis_event {
--	bool debug;
-+	enum mipi_csis_event_type status_index;
- 	u32 mask;
- 	const char * const name;
- 	unsigned int counter;
-@@ -257,30 +262,30 @@ struct mipi_csis_event {
- 
- static const struct mipi_csis_event mipi_csis_events[] = {
- 	/* Errors */
--	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS,		"SOT Error" },
--	{ false, MIPI_CSIS_INT_SRC_ERR_LOST_FS,		"Lost Frame Start Error" },
--	{ false, MIPI_CSIS_INT_SRC_ERR_LOST_FE,		"Lost Frame End Error" },
--	{ false, MIPI_CSIS_INT_SRC_ERR_OVER,		"FIFO Overflow Error" },
--	{ false, MIPI_CSIS_INT_SRC_ERR_WRONG_CFG,	"Wrong Configuration Error" },
--	{ false, MIPI_CSIS_INT_SRC_ERR_ECC,		"ECC Error" },
--	{ false, MIPI_CSIS_INT_SRC_ERR_CRC,		"CRC Error" },
--	{ false, MIPI_CSIS_INT_SRC_ERR_UNKNOWN,		"Unknown Error" },
--	{ true, MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT,	"Data Type Not Supported" },
--	{ true, MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE,	"Data Type Ignored" },
--	{ true, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE,	"Frame Size Error" },
--	{ true, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME,	"Truncated Frame" },
--	{ true, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE,	"Early Frame End" },
--	{ true, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS,	"Early Frame Start" },
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ERR_SOT_HS,		"SOT Error"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ERR_LOST_FS,		"Lost Frame Start Error"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ERR_LOST_FE,		"Lost Frame End Error"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ERR_OVER,		"FIFO Overflow Error"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ERR_WRONG_CFG,		"Wrong Configuration Error"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ERR_ECC,		"ECC Error"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ERR_CRC,		"CRC Error"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ERR_UNKNOWN,		"Unknown Error"},
-+	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT,	"Data Type Not Supported"},
-+	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE,		"Data Type Ignored"},
-+	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE,	"Frame Size Error"},
-+	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME,	"Truncated Frame"},
-+	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE,		"Early Frame End"},
-+	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS,		"Early Frame Start"},
- 	/* Non-image data receive events */
--	{ false, MIPI_CSIS_INT_SRC_EVEN_BEFORE,		"Non-image data before even frame" },
--	{ false, MIPI_CSIS_INT_SRC_EVEN_AFTER,		"Non-image data after even frame" },
--	{ false, MIPI_CSIS_INT_SRC_ODD_BEFORE,		"Non-image data before odd frame" },
--	{ false, MIPI_CSIS_INT_SRC_ODD_AFTER,		"Non-image data after odd frame" },
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_EVEN_BEFORE,		"Non-image data before even frame"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_EVEN_AFTER,		"Non-image data after even frame"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ODD_BEFORE,		"Non-image data before odd frame"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_ODD_AFTER,		"Non-image data after odd frame"},
- 	/* Frame start/end */
--	{ false, MIPI_CSIS_INT_SRC_FRAME_START,		"Frame Start" },
--	{ false, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame End" },
--	{ true, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC Falling Edge" },
--	{ true, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC Rising Edge" },
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_FRAME_START,		"Frame Start"},
-+	{ MIPI_CSIS_EVENT_TYPE_MAIN_0, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame End"},
-+	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC Falling Edge"},
-+	{ MIPI_CSIS_EVENT_TYPE_DEBUG, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC Rising Edge"},
- };
- 
- #define MIPI_CSIS_NUM_EVENTS ARRAY_SIZE(mipi_csis_events)
-@@ -765,32 +770,35 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
- 	struct mipi_csis_device *csis = dev_id;
- 	unsigned long flags;
- 	unsigned int i;
--	u32 status;
--	u32 dbg_status;
-+	u32 status[2];
- 
--	status = mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
--	dbg_status = mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
-+	status[MIPI_CSIS_EVENT_TYPE_MAIN_0] =
-+				mipi_csis_read(csis, MIPI_CSIS_INT_SRC);
-+	status[MIPI_CSIS_EVENT_TYPE_DEBUG] =
-+				mipi_csis_read(csis, MIPI_CSIS_DBG_INTR_SRC);
- 
- 	spin_lock_irqsave(&csis->slock, flags);
- 
- 	/* Update the event/error counters */
--	if ((status & MIPI_CSIS_INT_SRC_ERRORS) || csis->debug.enable) {
-+	if ((status[MIPI_CSIS_EVENT_TYPE_MAIN_0] & MIPI_CSIS_INT_SRC_ERRORS) ||
-+							csis->debug.enable) {
- 		for (i = 0; i < MIPI_CSIS_NUM_EVENTS; i++) {
- 			struct mipi_csis_event *event = &csis->events[i];
- 
--			if ((!event->debug && (status & event->mask)) ||
--			    (event->debug && (dbg_status & event->mask)))
-+			if (status[event->status_index] & event->mask)
- 				event->counter++;
- 		}
- 	}
- 
--	if (status & MIPI_CSIS_INT_SRC_FRAME_START)
-+	if (status[MIPI_CSIS_EVENT_TYPE_MAIN_0] & MIPI_CSIS_INT_SRC_FRAME_START)
- 		mipi_csis_queue_event_sof(csis);
- 
- 	spin_unlock_irqrestore(&csis->slock, flags);
- 
--	mipi_csis_write(csis, MIPI_CSIS_INT_SRC, status);
--	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC, dbg_status);
-+	mipi_csis_write(csis, MIPI_CSIS_INT_SRC,
-+			status[MIPI_CSIS_EVENT_TYPE_MAIN_0]);
-+	mipi_csis_write(csis, MIPI_CSIS_DBG_INTR_SRC,
-+			status[MIPI_CSIS_EVENT_TYPE_DEBUG]);
- 
- 	return IRQ_HANDLED;
- }
+ .../devicetree/bindings/arm/fsl.yaml          |   9 +
+ arch/arm/boot/dts/nxp/imx/Makefile            |   3 +
+ .../nxp/imx/imx6ull-engicam-microgea-bmm.dts  | 305 +++++++++++++++
+ .../nxp/imx/imx6ull-engicam-microgea-gtw.dts  | 163 ++++++++
+ .../nxp/imx/imx6ull-engicam-microgea-rmm.dts  | 362 ++++++++++++++++++
+ .../dts/nxp/imx/imx6ull-engicam-microgea.dtsi |  96 +++++
+ arch/arm/configs/imx_v6_v7_defconfig          |  27 +-
+ 7 files changed, 944 insertions(+), 21 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-bmm.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-gtw.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
+
 -- 
 2.43.0
 
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+branch: imx6ull-engicam-microgea
