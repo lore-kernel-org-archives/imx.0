@@ -1,31 +1,31 @@
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F99221704
-	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 20:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4A8221717
+	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 20:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749501543; cv=none; b=THJZKsAMhQ+DZmqrQ2oT0rFO/DIKgnGrJ533VNzAMG1G9iiTrvlSonEZ4g37GxMR417R13ncdYunaahrPBKWM+cKQixWioCVJ8EIxEZVhdoUT3a5+Lf35dFp0gYFmRdgJzCuz25vVglhGl6VKVAZt8UJqR338kozbDvXJqRXus4=
+	t=1749501544; cv=none; b=iZ2uNIgbuDcPAOLMc06rn7F7l8qLxgJux8aQsCNmtL95u6LMhCCwkcp2AIcIY2bFbAQ1MvswLkn+qvxeZXphL+z1YOFe0WQNU6gA6XPhKBYzpO+NNO6G85nZGJuHEy3X2HSOajVl6OMxIcIfxJHRp9QDj1WIl5hXkHCa6aYSOAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749501543; c=relaxed/simple;
-	bh=azLvpNS6ccFIPAjwzhhSs7C802wsRdQiR7hKzlK9MIE=;
+	s=arc-20240116; t=1749501544; c=relaxed/simple;
+	bh=G5wPqDXS58NnrzSV5vgw2JHG+OHUUSaZGYOXaC8tXy0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=htMSWBcY7en95XTRcLaY98sQD7akRYDbq+hza5o6A4w53EyKzjmgoSJFF6PgsgRmgFFsk2YOjg2UK9YUnYqrvLnRCdqzpOH3xcth1Nra2anpqtioLZXjg21o4cz0zzKt/7+FF6f7CqShSwuAK/rfKW3Zdl7wtC1tuaXCTvxNXSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=OyJQr67L; arc=none smtp.client-ip=159.69.126.157
+	 In-Reply-To:To:Cc; b=NjwNFLQAtcBVo/VyhKuECjmEVId4ehcyNW9VEzlk1qhEN1Wxb5/FPew+vwUIWbnHgKOvPyXmIMGsSymUgpW132jCPCB9EkremtaSl+2U1ziOziCS0Lai3G4FUpdrE1rTFwdVsRkMUvu16qlI6x4Qxf+qUUtl1TSJCV/mQqUBTq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=AfQ6FJ5f; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="OyJQr67L"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="AfQ6FJ5f"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1749501539;
-	bh=azLvpNS6ccFIPAjwzhhSs7C802wsRdQiR7hKzlK9MIE=;
+	bh=G5wPqDXS58NnrzSV5vgw2JHG+OHUUSaZGYOXaC8tXy0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OyJQr67LA/qATwAcM2WhqumB6/h5LHabx1HOOqJJj/4aqgOxt4mQCoNGLeTYJ3tq0
-	 mw8KIqLu9J10stqYLvrCn/XJNHttRJc/1Azmxulg1VSZC2Ob3A4/pH5LpCNyZe9K53
-	 RZqdxzQIjcTm/Idkzmw9hiYYqMALgBTqK12YJROU=
+	b=AfQ6FJ5ffdnEG9K0pTjGqAbq21xj9jXoU57iahPD5Nx9r9BeTroAB90BDT8QdQWVy
+	 oKkI1UIY6PSUHgSJBDEkMLFxrUEXq+mh0P2aIaANH10FOJEDCsbeXDzZ79aGdG09Xk
+	 4xOXl8lAhjRk6MW8nnuorQNmrRmgwdMe9bto8fJM=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 09 Jun 2025 22:38:37 +0200
-Subject: [PATCH v6 1/3] spi: spi-nxp-fspi: check return value of
+Date: Mon, 09 Jun 2025 22:38:38 +0200
+Subject: [PATCH v6 2/3] leds: lp8860: Check return value of
  devm_mutex_init()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -35,7 +35,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250609-must_check-devm_mutex_init-v6-1-9540d5df9704@weissschuh.net>
+Message-Id: <20250609-must_check-devm_mutex_init-v6-2-9540d5df9704@weissschuh.net>
 References: <20250609-must_check-devm_mutex_init-v6-0-9540d5df9704@weissschuh.net>
 In-Reply-To: <20250609-must_check-devm_mutex_init-v6-0-9540d5df9704@weissschuh.net>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -51,11 +51,11 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-leds@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749501538; l=1078;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749501538; l=1160;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=azLvpNS6ccFIPAjwzhhSs7C802wsRdQiR7hKzlK9MIE=;
- b=7Tex+6NkzoKF+8wCbpZPkHLLVD1gTer+8CN7AMvXQEYZbIKYLsA0sVqRAYKiDEmbz5Dzf9VG4
- NNarAPkm1mbBgfavw87ucpapLycpxvVCZSoxqzH7ufaohe9/dLEgjBG
+ bh=G5wPqDXS58NnrzSV5vgw2JHG+OHUUSaZGYOXaC8tXy0=;
+ b=JOy/hussvTbGS4IAwYip3ZRXXIumOP1ljb9PL4bWOiKX3BAwcYeQ/qv6YgJV1rmGIiioleS6f
+ 6tDWP2BK4uGBiOFZPjS/EGPQVt7jiSfjg0p+AAahpkM40NyDHkO4eES
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
@@ -65,27 +65,27 @@ variant of it. Tomorrow it may even leak something.
 
 Add the missed check.
 
-Fixes: 48900813abd2 ("spi: spi-nxp-fspi: remove the goto in probe")
+Fixes: 87a59548af95 ("leds: lp8860: Use new mutex guards to cleanup function exits")
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- drivers/spi/spi-nxp-fspi.c | 4 +++-
+ drivers/leds/leds-lp8860.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index e63c77e418231cd0698ffb73eeeebfbe63cc3065..f3d5765054132cd18b7257439ece971f58e9ceb2 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1273,7 +1273,9 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to request irq\n");
+diff --git a/drivers/leds/leds-lp8860.c b/drivers/leds/leds-lp8860.c
+index 52b97c9f2a03567aa12d4f63a951593a5e7017d5..0962c00c215a11f555a7878a3b65824b5219a1fa 100644
+--- a/drivers/leds/leds-lp8860.c
++++ b/drivers/leds/leds-lp8860.c
+@@ -307,7 +307,9 @@ static int lp8860_probe(struct i2c_client *client)
+ 	led->client = client;
+ 	led->led_dev.brightness_set_blocking = lp8860_brightness_set;
  
--	devm_mutex_init(dev, &f->lock);
-+	ret = devm_mutex_init(dev, &f->lock);
+-	devm_mutex_init(&client->dev, &led->lock);
++	ret = devm_mutex_init(&client->dev, &led->lock);
 +	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to initialize lock\n");
++		return dev_err_probe(&client->dev, ret, "Failed to initialize lock\n");
  
- 	ctlr->bus_num = -1;
- 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
+ 	led->regmap = devm_regmap_init_i2c(client, &lp8860_regmap_config);
+ 	if (IS_ERR(led->regmap)) {
 
 -- 
 2.49.0
