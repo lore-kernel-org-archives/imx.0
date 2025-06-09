@@ -1,96 +1,81 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220281E835B
-	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 10:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539742528EF
+	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 10:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749464206; cv=none; b=IH3cbVuXGH0xSQhDWMPB/iTdK4O4meyS+HkxYt8YvpjcWD7n4SZu7yXPiUkh3onZr7nN1BmBhyLYqsk1CM8kq5P3XP6InoMMpJd0Vrp+XJVreyQ3PEt2y4VOs1+QGnxYOvyxIHibmFiridEQaGDQ9a4oV2gc5c4VH+4n0NPJneA=
+	t=1749464210; cv=none; b=gWFkLI6zItZlJ65EAM14Yd6K3ztiuW4DtxeuF/0800odplYL5PrVBYlQIUkcIrWWLFrwDvvygsXigEJ08NruQ8Q+iYDW1pMHmlsk4ZF3PAferPwUeAW62q5+9hYZI6gWiX3hTJkLSFaTbNjjPRwIvzTjiQzteDw9lB28x6oeL1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749464206; c=relaxed/simple;
-	bh=M98Y1kBczwFCvKhTPGpt7ZrMVlfH8rYymkcXq0nIq6w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LZwMaT3rX9IYM3zbfv9InzXg6Dht6DMh3woI5IshBPgVxLFy8yXmW/3ycz+suAJx6MfYXhKRqcEn0NVdjbtnku6Zf0LnF5lbyWiQYT0Euw4x0wylzvYLfkH/oTe0jbbCdZ4bSYOFVbcE3mTUgIWbeAl5z8SB3xNBgd2L0Un3/kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Ev0DoA9j; arc=none smtp.client-ip=209.85.218.52
+	s=arc-20240116; t=1749464210; c=relaxed/simple;
+	bh=z9jDIgXVnFv3cwciIBssYX8p6GCmnqHiRlXWkVAtMPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sntdtI9YGVYjXN3wKU91lIYTPPsoR0Sa35UnD6k12A4GI7/NQEmQQQZT0ANG0VvFmvdqNbK8ZpW3v7ieDWylYtnFY/FQuNIfOZ9JCH1ZOtMTd8vjZ1ujRmnFlzb6bMIzXy5moqRoT1LPHCeDOQjPtxeGrkcUYFbtSSZtgaiwjIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=REHJ7lMX; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Ev0DoA9j"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ad891bb0957so659555566b.3
-        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 03:16:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="REHJ7lMX"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-addfe17ec0bso957834866b.1
+        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 03:16:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1749464203; x=1750069003; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TbJ1tbrVzaq9Eu0evFfvKDOWxuNNrI779QMTpMN0PYI=;
-        b=Ev0DoA9jZLLVjygGuq4kWgSUs7839ZXltMIWypZLK9WsdbzM/NccJyHJnKk/3v9HaD
-         /BWzhltAlO3gHckvvPWwjkUyPQz+6m9TBdmcvtsjfqEKmyEVMzQEBYbqbrWvL74wJwkZ
-         hi+M0ew6T/C1dCtMAFpBfctk5jFx2EQAFZpZU=
+        d=amarulasolutions.com; s=google; t=1749464206; x=1750069006; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nYB+Q6YC9SGFtqV+6exS/xy0HUzKtpPCAP8LxcrZFik=;
+        b=REHJ7lMXPTkzudwQ0f5wESp5tynvq+Jx42kOmdMuashwMbMY/fADlxhzMjPj4ZPy8g
+         JJxgzDtrP6Q3rAQG2u95Qu55nJ5C+0JolgruRxroG+GRDBqzaXRTUbipCtN7x4Go8GUV
+         EQAqpuOd6pSClUpYZFJlVo2qWZtuEUaQZV+Cg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749464203; x=1750069003;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TbJ1tbrVzaq9Eu0evFfvKDOWxuNNrI779QMTpMN0PYI=;
-        b=eAeUJuvfxsQGl8RMNLJme+P/1n1gDi0ihXlyVdsn2BkOCrzwIxGawTEEEJVry7sy7y
-         +Workir4+rR+9ruZdAbwSturi+jmKWgpsOQC80Hn8bMUXzJO5dicrKLLd9hmIwZ2amZO
-         1Vo3IapJ04YmMP7j2KvaO6Vk4y/wJetfm0mjWvUxsOBmNDfl/lUcN1Q2vWnwU/qagTun
-         INbCCbRtV3DAQkKb0PWB2fa4SpSamLtW0wyGJbqAIWfdDaw/3jsG72MBPBp/W7Q7DdAc
-         alxRa1p8e7qKDDQ3CBkrpzO90lpYI3TZ0DbiFS2kvKC0L/pL5Zw4D+sNjZrIlcunrFK6
-         0O0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWkZxwrBgvCQ7+i8zvTPJTWrG/J2Paf7R0caNwDjxIvIcWEB3WH8LqVy7y9zunzaW9zTcQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzvWMPJctkC9HoT6Nwbq/rKGt/wk8IM+Twst4oTSIKm5boGsIcG
-	Ez2NxJ37xUstv2ApBkRsreVCKsPB7Z4L+h4gGsM3VGF/iKeK2mKjrNcxicNVZ5fK6bU=
-X-Gm-Gg: ASbGncuGQDB1GtyASduLSc8GbWa45jeXg8dMNd1OVzIsB6PRbC9yr1Zj1lyIDjvdtin
-	IsAZCH9ush4qYu+7lumP3x8EcDyqs2EeWyNUzED8//5/Bz2/mXVDt6i5EHOUt7mgMFipbVze21B
-	vbK/xTzsRj0FqkJshP9wHOp1WjvoRcbufgFEeKY3CRdmrjZD8z1znK+RghY3+crDvAVvPTqMnqe
-	5toHcQgYBdUsJWlT6ifIb/CLJ9ZFHBPIlwdKMu40jiW13X9HZ4Tz0Z9PvnzYipPxJPQnN6MMV9q
-	9Z4dcoi7l0YxnHiC7dGzoH1iXGUkw6LGGxwiYjpOSnTm09/nAXgrJHuA4HzcUizL6VIJPOpJTpb
-	k2A6FetBr/OQtNoFgNWx1GA5npWqHUSiY3dUKwvOW
-X-Google-Smtp-Source: AGHT+IENu+cN1K/Tck/lkp6DHf9W71FZqSXJAShei9q/DyrSApC2JOSHLAClYdMgr/5JU1IPWNRyUg==
-X-Received: by 2002:a17:907:940a:b0:ad1:81c5:5ec9 with SMTP id a640c23a62f3a-ade1a9c9e50mr1280776066b.4.1749464203323;
-        Mon, 09 Jun 2025 03:16:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749464206; x=1750069006;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nYB+Q6YC9SGFtqV+6exS/xy0HUzKtpPCAP8LxcrZFik=;
+        b=ndVpNALBhrn7KpoSpBuYZc3TC+Pv1dEns0ztcYu78InYCPb4OH1Q4OqZDWK+VgkdfD
+         t6B017mXvzH7JCHhaAD7OGJwu7SgJUOMmYpPZiFEZNFT4MOcEaslldJAgbQToEA6ioCx
+         KO/IFNh5y7nsRulphOlxE1RgZI8rcSz+c3dm413Cw0+kq49hAxE9ERZTJRDs5a0Q+/WQ
+         gfh7JzIzCpmwJgfuGytnBJxiVuskvMV2Aw7KzSbu4eUk9z0/IQ0sv+SP7ecOuoJHRji4
+         HOjetNkpJ9ZWkHE1yOXiupbNl+9u/nFNSsOqHqtBzXSOy08wX6dqoxXdL4f3L5SVBJaO
+         Ebrw==
+X-Forwarded-Encrypted: i=1; AJvYcCVynY2QAcrYSR+jK537sTtbbvIYZTsA7Vd+A4jwFON0iytccbV1z8ppNoY2NWAHBegfvlk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzcqMrFdOGHfevpTvhsyM4wkhVa+FIUYmLRmNwQiH9W9w9cCzx+
+	NAOL08sNrq+IZOa2pflsj1YSX8efl+KFI1G5sI97CCgedY1MNRxntP6KI5hebMhj9IE=
+X-Gm-Gg: ASbGncvB0cRDsKd3133Omzd3kcP/Uj2uU4AQSayLaqZzFL2SWBchVeSuWVupLHNuiBJ
+	OSjkkeN2KLGHZNS+tqi/OWOOee6x4Ivl4ATUA8Lh7JwCqJWOCigfQk+2BhOoClbpL+YGN7hPdZe
+	nwx2cIGw4KJUYo0jZmmPNdI4eoBN33vdsR8+Y2K1iNCfZJWOVU4BMRg+wfV1Yyah8O5JezU7WGC
+	ffaPjZwPCT09M4DydjiTst7jsRlY/CEjNS0u2IxX5xND5IvHBIn3NpJ5uX39fbkCAqFIfe54Cpf
+	k0rtS38CNJM0fLhuOPe+dRYLme/AqwlZMuZW4B08th3owFRceF622MHmszoDUT3OUSc/DIFt5Dx
+	ujLajs1V/Yu1oZHUkJaR8UbKOkXedIbTRjpiYEj9d
+X-Google-Smtp-Source: AGHT+IEzCt2lpQuk8YPidZB58M7MjCM7unNRh1I+YNBu+qMokeZXCrvTuyac3gx58Za4jW4DRVeD4A==
+X-Received: by 2002:a17:907:7f14:b0:ad8:adf3:7d6d with SMTP id a640c23a62f3a-ade1aa7dad1mr1032683966b.21.1749464206474;
+        Mon, 09 Jun 2025 03:16:46 -0700 (PDT)
 Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2.196.40.99])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1db55c7esm529257066b.49.2025.06.09.03.16.41
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1db55c7esm529257066b.49.2025.06.09.03.16.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jun 2025 03:16:42 -0700 (PDT)
+        Mon, 09 Jun 2025 03:16:46 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-amarula@amarulasolutions.com,
 	Matteo Lisi <matteo.lisi@engicam.com>,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Ard Biesheuvel <ardb@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Fabio Estevam <festevam@denx.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Marek Vasut <marex@denx.de>,
-	Markus Niebel <Markus.Niebel@tq-group.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Primoz Fiser <primoz.fiser@norik.com>,
 	Rob Herring <robh@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Tim Harvey <tharvey@gateworks.com>,
 	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 00/10] Support Engicam MicroGEA boards
-Date: Mon,  9 Jun 2025 12:15:33 +0200
-Message-ID: <20250609101637.2322809-1-dario.binacchi@amarulasolutions.com>
+Subject: [PATCH v2 02/10] ARM: dts: imx6ul: support Engicam MicroGEA-MX6UL SoM
+Date: Mon,  9 Jun 2025 12:15:35 +0200
+Message-ID: <20250609101637.2322809-3-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250609101637.2322809-1-dario.binacchi@amarulasolutions.com>
+References: <20250609101637.2322809-1-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -99,48 +84,127 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The series adds support for Engicam MicroGEA boards:
+Support Engicam MicroGEA-MX6UL SoM with:
 
-- BMM
-- RMM
-- GTW
+ - 256 Mbytes NAND Flash
+ - 512 Mbytes DRAM DDR2
+ - Ethernet MAC
 
-based on MicroGEA-MX6UL SoM.
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+
+---
 
 Changes in v2:
 - Change local-mac-address to 00 00 00 00 00 00. The actual value will
   be set by the bootloader. The previous one was assigned to Freescale
   Semiconductor.
-- Move iomuxc and iomuxc_snvs nodes to the end of the DTS files.
-- Drop an extra blank line from the DTS file.
 
-Dario Binacchi (10):
-  dt-bindings: arm: fsl: support Engicam MicroGEA BMM board
-  ARM: dts: imx6ul: support Engicam MicroGEA-MX6UL SoM
-  ARM: dts: imx6ul: support Engicam MicroGEA BMM board
-  ARM: imx_v6_v7_defconfig: cleanup mxs_defconfig
-  ARM: imx_v6_v7_defconfig: select CONFIG_INPUT_PWM_BEEPER
-  dt-bindings: arm: fsl: support Engicam MicroGEA RMM board
-  ARM: dts: imx6ul: support Engicam MicroGEA RMM board
-  dt-bindings: arm: fsl: support Engicam MicroGEA GTW board
-  ARM: dts: imx6ul: support Engicam MicroGEA GTW board
-  ARM: imx_v6_v7_defconfig: select CONFIG_USB_HSIC_USB3503
-
- .../devicetree/bindings/arm/fsl.yaml          |   9 +
- arch/arm/boot/dts/nxp/imx/Makefile            |   3 +
- .../nxp/imx/imx6ull-engicam-microgea-bmm.dts  | 305 +++++++++++++++
- .../nxp/imx/imx6ull-engicam-microgea-gtw.dts  | 163 ++++++++
- .../nxp/imx/imx6ull-engicam-microgea-rmm.dts  | 362 ++++++++++++++++++
- .../dts/nxp/imx/imx6ull-engicam-microgea.dtsi |  96 +++++
- arch/arm/configs/imx_v6_v7_defconfig          |  27 +-
- 7 files changed, 944 insertions(+), 21 deletions(-)
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-bmm.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-gtw.dts
- create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts
+ .../dts/nxp/imx/imx6ull-engicam-microgea.dtsi | 96 +++++++++++++++++++
+ 1 file changed, 96 insertions(+)
  create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
+new file mode 100644
+index 000000000000..38971f6512a2
+--- /dev/null
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
+@@ -0,0 +1,96 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2025 Amarula Solutions, Dario Binacchi <dario.binacchi@amarulasolutions.com>
++ * Copyright (C) 2025 Engicam srl
++ */
++
++/dts-v1/;
++
++ #include "imx6ull.dtsi"
++
++/ {
++	compatible = "engicam,microgea-imx6ull", "fsl,imx6ull";
++
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0x80000000 0x20000000>;
++	};
++};
++
++&fec1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_enet1>, <&pinctrl_phy_reset>;
++	phy-mode = "rmii";
++	phy-handle = <&ethphy0>;
++	local-mac-address = [00 00 00 00 00 00];
++	status = "okay";
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy0: ethernet-phy@0 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <0>;
++			reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <4000>;
++			reset-deassert-us = <4000>;
++		};
++	};
++};
++
++/* NAND */
++&gpmi {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpmi_nand>;
++	nand-ecc-mode = "hw";
++	nand-ecc-strength = <0>;
++	nand-ecc-step-size = <0>;
++	nand-on-flash-bbt;
++	status = "okay";
++};
++
++&iomuxc {
++
++	pinctrl_enet1: enet1grp {
++		fsl,pins = <
++			MX6UL_PAD_ENET1_RX_EN__ENET1_RX_EN	0x1b0b0
++			MX6UL_PAD_ENET1_RX_DATA0__ENET1_RDATA00	0x1b0b0
++			MX6UL_PAD_ENET1_RX_DATA1__ENET1_RDATA01	0x1b0b0
++			MX6UL_PAD_ENET1_TX_EN__ENET1_TX_EN	0x1b0b0
++			MX6UL_PAD_ENET1_TX_DATA0__ENET1_TDATA00	0x1b0b0
++			MX6UL_PAD_ENET1_TX_DATA1__ENET1_TDATA01	0x1b0b0
++			MX6UL_PAD_ENET1_TX_CLK__ENET1_REF_CLK1	0x4001b009
++			MX6UL_PAD_GPIO1_IO07__ENET1_MDC		0x1b0b0
++			MX6UL_PAD_GPIO1_IO06__ENET1_MDIO	0x1b0b0
++		>;
++	};
++
++	pinctrl_gpmi_nand: gpminandgrp {
++		fsl,pins = <
++			MX6UL_PAD_NAND_CLE__RAWNAND_CLE		0xb0b1
++			MX6UL_PAD_NAND_ALE__RAWNAND_ALE		0xb0b1
++			MX6UL_PAD_NAND_WP_B__RAWNAND_WP_B	0xb0b1
++			MX6UL_PAD_NAND_READY_B__RAWNAND_READY_B	0xb000
++			MX6UL_PAD_NAND_CE0_B__RAWNAND_CE0_B	0xb0b1
++			MX6UL_PAD_NAND_RE_B__RAWNAND_RE_B	0xb0b1
++			MX6UL_PAD_NAND_WE_B__RAWNAND_WE_B	0xb0b1
++			MX6UL_PAD_NAND_DATA00__RAWNAND_DATA00	0xb0b1
++			MX6UL_PAD_NAND_DATA01__RAWNAND_DATA01	0xb0b1
++			MX6UL_PAD_NAND_DATA02__RAWNAND_DATA02	0xb0b1
++			MX6UL_PAD_NAND_DATA03__RAWNAND_DATA03	0xb0b1
++			MX6UL_PAD_NAND_DATA04__RAWNAND_DATA04	0xb0b1
++			MX6UL_PAD_NAND_DATA05__RAWNAND_DATA05	0xb0b1
++			MX6UL_PAD_NAND_DATA06__RAWNAND_DATA06	0xb0b1
++			MX6UL_PAD_NAND_DATA07__RAWNAND_DATA07	0xb0b1
++		>;
++	};
++};
++
++&iomuxc_snvs {
++	pinctrl_phy_reset: phy-resetgrp {
++		fsl,pins = <
++			MX6ULL_PAD_SNVS_TAMPER9__GPIO5_IO09	0x1b0b0
++		>;
++	};
++};
 -- 
 2.43.0
 
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-branch: imx6ull-engicam-microgea
