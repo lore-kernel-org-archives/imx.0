@@ -1,64 +1,66 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2896A175D53
-	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 15:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC211F37DA
+	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 15:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749483221; cv=none; b=dw/wRAW5tfmEWzZtAuczEv4fodBP3wsPTJIMVglJyPOplfsglwCjATb3xUcA6seg2ExKN13ZDh9Rd0cPOF+u+4tR1y61ns4YKj9HY6UoQsEBbzDZETvO+LI/2MGJrhq40T7yJYXvtlLcmHNPnjIofiZwEKoMnzsOOGCuyWlvGHc=
+	t=1749483221; cv=none; b=kP8AroZRQ4uZYIClRo5ohNoe1hC8AK8/XidIrwzzCupr/8WNmFcYY9EE5soQQir7ptkA56/56cbzAWuqZ29ECiI1+xWM9p3PwWhsDlFggd34O7ReovBNgB5A6xNCM3EYrK3Ue2jmWgHuqEMQOS4G2r3BwpXGGF7kMHWTY/53gVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749483221; c=relaxed/simple;
-	bh=Ey72OPsSmpUH6hcCG9cbHDrh6u+W0gYAKs5MnbTd5ew=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pveNGvvleljuG0t4lBZOf0YrwxxlbW9QrpwN7M/OS0GEzCvPl1qykFrWG/rhv72dPkbq360ptSGbTwrOwgfsgsEIhzVLjRDLNtSHbwjKAfHZ3W1tkgHvAjPWPS4YKc0Tg65Lbaf3Or8PZiG95zBDkSvz391x3sTBCMzO+3rLvas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Zi9cpnTw; arc=none smtp.client-ip=209.85.128.41
+	bh=4LtVV7NunJznOE+EaQyuaoEsQbLFTKYk/hWx//k49f4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=VJmmPIM+RtDM2lMSImDzf44yQwE0ltSyw5XxShzxTEGeWKN2EnEkvJMNvPrqlz4T3S22IA4rz4HL7Z9f4/JeLAsF1bWRPDdLtYHL3zxSygf1dUEly9m69MBkjvPnWxdXGgj0sCMd1F9pNFTJJSfhMLiZNuNmbfDlnj4qhvdVLJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tgJMHfoC; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Zi9cpnTw"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-450dd065828so30130445e9.2
-        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 08:33:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tgJMHfoC"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45300c82c1cso5976675e9.3
+        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 08:33:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749483217; x=1750088017; darn=lists.linux.dev;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PvtGT/gXZy9G0z7KUPcczavaKT2KAY8YSEGerfvgk+k=;
-        b=Zi9cpnTw4Gj9LChWKgAlFloYlbC8JGAZ1SL9zOpbJj/2bvZ+hqAwQgq1biXl3eBvF7
-         Xuzd572vVzzss7fCRqc8IW1vgd14rKcQJExFT2vn4S8Vo9fL7IQCu7S1bTCgFLaOjFxt
-         SLMK9F8/ipWPQ9DIU7pObBANEOyim1gvUkJJeeciMns3W66e3KkHBn+qNA9WpYkYWUUi
-         RzXM48WdQOMo5P/ETqtwQj9Iol+1Ih8kxm4wBVpIjdmaRyiE14yqzfFOxzvp2ynwS3oG
-         VdoiQRowVM+o6yr/24krSfrm316LI6qRYvA58+6s1RkYD0nDDLxN8HejpkbYrsus7zF5
-         FV4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749483217; x=1750088017;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1749483218; x=1750088018; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PvtGT/gXZy9G0z7KUPcczavaKT2KAY8YSEGerfvgk+k=;
-        b=IYcjsBUjtMXdr35mkTmqs+kOmqQJSlDHYyOYYBfy2Xf3nkOiMu2xGxgDzZkW5uP0oX
-         mXGz3pNTsHt2Lwn7Kd/JkLhnhwJrIDjC0ZnZ+Pwpb8AP99FVs1qGS82I5+cnf+bbTmHp
-         RRNVJFMzvgL+QGIkJKMrhz5+1pQqhtcjfFby1ZYDVI3XOUZyFtv33mMQ5rf86IsbsHXu
-         uH9c+5YYfc27s7l+wMXAe1WldvUaaWN2Z/zZuc+9aRiPULwxbcxh1BhxHk3ax/s6oOlM
-         Wk83VmmMweBObTfM4nf2gk1niVJEtI1nTQMZpl/LoTSKpU7t8nyEpOIzIsqH30T9l2E4
-         g5zg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/wv13ATxAzef+MSPTpqmSTjufnwrHr4aajsOzCNxHuhaTG5r6Rc7oBjpx/pZ+k1tjEGI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzp8fyh00wjEWcDDCh92YaEVDIj7Mfz3hMCza7UZGX9m85QXJvI
-	VbCjYVxKzock+LDQq8q+0hFSssbDvjgtj6PpLEUlqFKwoj2UdYVUHNMhEmqIWJfRNQA=
-X-Gm-Gg: ASbGncs7ljAOttO3ngXCi9l34j7hDN+AioBH8pnZKe55N49+yl4Jq/zg4c9UQVmC9ga
-	1+IPvdrr8JudAiOUvWLhp9sy1lqp4Py2jWSLoLmllpaZ6n10DoqpiZQBZq7zKiEeYYS3z3XOQ27
-	Rk5ZqxxHLTeKTmH5A8SNAef46zoJ7VyGWS1l/ONZqYMOXNrgdxZrT6szEVXxetBuU6RTUCyq5yA
-	me9N6KMLlaXoNe38CSwhuLpE/vsS9UIAqU6UAzdIRfXkks7H2XoNgS6dMEjMcmcS448BOyAeI9U
-	mLNQMVHyIwhIFOV3gXZ5JQM1mkoUNonAj1mVIpGsrDKzr/aG6M+uRoZd6nVPS/FcXJOAaNU=
-X-Google-Smtp-Source: AGHT+IGUecRwAIMHRhZ9jzGvMSqw8sw1BbFuESQIxyKOrlJ4Q6pTMh4lszRudkvpP6BGsmhYVVJ00A==
-X-Received: by 2002:a05:600c:8212:b0:450:cd50:3c66 with SMTP id 5b1f17b1804b1-452014b39dfmr121204185e9.29.1749483217347;
-        Mon, 09 Jun 2025 08:33:37 -0700 (PDT)
+        bh=w76Nia4/b18xDXgyG3usj9/ef74AF078cya8aFseaFQ=;
+        b=tgJMHfoC4mFWJWLO2oew6xlJ6JIHU6C9+nEtSSaYehO7O6qR5re+8feH+gvDiMg0ng
+         vR12doQGBaTtHbSgXiHE2GF0PRy+GYBap+VddZhDOVmCrVII0rPWjaFA8TWR+5g+T+Bo
+         TEnLZXa263zv07XegDC00vUO3kqp7FCYmcTLF0gc6yeKFTWbFTnyLyj+rrLT03IT03HH
+         brSM/GEf9XJQigyBbnJaui18RSmmB8OrU3/MUzu+UeIPHRl5Od67l1+kPnInYN3ACRwZ
+         0gpN508xC8ZhYo8Mi8niznnbTW7hXOMDZwFKgUNmS3v+2vbnkRfBnrM6S6fkVLRql3RU
+         8GUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749483218; x=1750088018;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=w76Nia4/b18xDXgyG3usj9/ef74AF078cya8aFseaFQ=;
+        b=S5Eh+c62JacGCrwnIxZBymK8B1hD7XE2LHBWTddTAvqH0DZ3fZzVZOWkfUFf5yOanz
+         RHklrqlrO+vpM+nQcaEp3e+PojbN8KLIEwqrb+rIgRC60vB2wHj3vvadvYuZglLgHm5S
+         iGAGvujgLoSIOWYg5Fgjgcy1mRxPFt9/IDXS2xJGGJoJ8S2owkZwDkGEcumBKlvLa5hS
+         2CmN1OV7ohre9cOyC6BQ/vlcyevGyByW5P8vOzvOgB3uP1db5dm/s6SEPafSv8Jm4u6G
+         hPgZNRzNvBQ82gVaFVNBqM1fioP5XLvbJGnyCRKk5csr68FlPCeXTParQFxuMO/sEMhv
+         XH/g==
+X-Forwarded-Encrypted: i=1; AJvYcCWhKRWQlZqBl6OqGhISNtd1MglPSfX0Vpve9ZVP9/MUm62jsfvS9j33TPhBU4mgh7QbfmA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxUyA9SmaPC9OQgINcNLZFICHW0yymo1SQYjOJlFplf3c8TGfRb
+	bykssLZ2sV1oqme1wbpN0FXSS1vS/RWxZs0STuvf8ER8Idv5Vtw1xWGbObqsv4o8esk=
+X-Gm-Gg: ASbGncutMBBEuRPkb8gNkogV+XQPGPA7kwjH7t+4y7R/VTy7JaoCkjZUkMXf/EEHbzI
+	1xcvRR/1r1ZVHyQ4gz/RzhzJa131gjb9+6LoLwZDbtqHNZPILL96tmkUl7LXS83b0vc2/OdbP6A
+	Fyi6QhtgIu8gsYHNgGdbNVqe02CWgOpben9snyJkUp9mGdwb8j600gHExkSu61htucXyb7hy9e0
+	kRbNq8thKfxlMMfBpmnP9dd1GAcfX0srGj6RS04X5h7OqftJeox/IZpS+FDtAA8NKQH5dvEOHD5
+	kkA1aPFXzd8JYKBA6GO7tfUGSdLhzvYf5N4dJoFgs224Z7MPUxLO02DmCEcN
+X-Google-Smtp-Source: AGHT+IHTutHePoysGpxZsOPgKbbegSZRp1NNHCZCZ3DEAcLjya2vTKpfVY2DnsnGhoEdBoFuhmwPoA==
+X-Received: by 2002:a5d:64ed:0:b0:3a3:6a9a:5ebf with SMTP id ffacd0b85a97d-3a531cabb5cmr10875439f8f.20.1749483218204;
+        Mon, 09 Jun 2025 08:33:38 -0700 (PDT)
 Received: from ho-tower-lan.lan ([37.18.136.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-452137277basm115728695e9.32.2025.06.09.08.33.36
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-452137277basm115728695e9.32.2025.06.09.08.33.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jun 2025 08:33:36 -0700 (PDT)
+        Mon, 09 Jun 2025 08:33:37 -0700 (PDT)
 From: James Clark <james.clark@linaro.org>
-Subject: [PATCH 0/4] spi: spi-fsl-dspi: Target mode improvements
-Date: Mon, 09 Jun 2025 16:32:37 +0100
-Message-Id: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
+Date: Mon, 09 Jun 2025 16:32:38 +0100
+Subject: [PATCH 1/4] spi: spi-fsl-dspi: Clear completion counter before
+ initiating transfer
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,44 +69,53 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJX+RmgC/22NQQ6CMBBFr0Jm7Zi2hgquuIdh0cIUxkhLWkMwh
- LtbSdy5fC/572+QKDIluBUbRFo4cfAZ5KmAbjR+IOQ+MyihSlEqhQ8zUUK/zphmxn4yaOr6Spa
- ss9pC3s2RHK9H895mHjm9QnwfF4v82l+t+lNbJAqUQlekLiQ6p5snexPDOcQB2n3fP+qH+z+zA
- AAA
+Message-Id: <20250609-james-nxp-spi-dma-v1-1-2b831e714be2@linaro.org>
+References: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
+In-Reply-To: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
 To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>
 Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, linux-spi@vger.kernel.org, 
  imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
- James Clark <james.clark@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
- Larisa Grigore <larisa.grigore@nxp.com>
+ James Clark <james.clark@linaro.org>
 X-Mailer: b4 0.14.0
 
-Improve usability of target mode by reporting FIFO errors and increasing
-the buffer size when DMA is used. While we're touching DMA stuff also
-switch to non-coherent memory, although this is unrelated to target
-mode.
+In target mode, extra interrupts can be received between the end of a
+transfer and halting the module if the host continues sending more data.
+If the interrupt from this occurs after the reinit_completion() then the
+completion counter is left at a non-zero value. The next unrelated
+transfer initiated by userspace will then complete immediately without
+waiting for the interrupt or writing to the RX buffer.
 
-The first commit is marked as a fix because it can fix intermittent
-issues with existing transfers, rather than the later fixes which
-improve larger than FIFO target mode transfers which would have never
-worked.
+Fix it by resetting the counter before the transfer so that lingering
+values are cleared. This is done after clearing the FIFOs and the
+status register but before the transfer is initiated, so no interrupts
+should be received at this point resulting in other race conditions.
 
+Fixes: 4f5ee75ea171 ("spi: spi-fsl-dspi: Replace interruptible wait queue with a simple completion")
 Signed-off-by: James Clark <james.clark@linaro.org>
 ---
-James Clark (3):
-      spi: spi-fsl-dspi: Clear completion counter before initiating transfer
-      spi: spi-fsl-dspi: Use non-coherent memory for DMA
-      spi: spi-fsl-dspi: Report FIFO overflows as errors
+ drivers/spi/spi-fsl-dspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Larisa Grigore (1):
-      spi: spi-fsl-dspi: Increase DMA buffer size
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 863781ba6c16..386a17871e79 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -983,11 +983,13 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+ 			status = dspi_dma_xfer(dspi);
+ 		} else {
++			if (dspi->irq)
++				reinit_completion(&dspi->xfer_done);
++
+ 			dspi_fifo_write(dspi);
+ 
+ 			if (dspi->irq) {
+ 				wait_for_completion(&dspi->xfer_done);
+-				reinit_completion(&dspi->xfer_done);
+ 			} else {
+ 				do {
+ 					status = dspi_poll(dspi);
 
- drivers/spi/spi-fsl-dspi.c | 128 ++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 102 insertions(+), 26 deletions(-)
----
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-change-id: 20250522-james-nxp-spi-dma-a997ebebfb6b
-
-Best regards,
 -- 
-James Clark <james.clark@linaro.org>
+2.34.1
 
