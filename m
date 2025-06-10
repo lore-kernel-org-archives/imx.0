@@ -1,139 +1,163 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E001A8F6D
-	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 07:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADF922B8CB;
+	Tue, 10 Jun 2025 07:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749539850; cv=none; b=WEPpLvwFihu1XQCQN0BMBf0knwTHVS+GX1ZVP0sJPchSBi46eoWW/8DNx48af6FeMw8vGThaOREvt7kjernxKCu/0kKxnSeNZlQIkquxykhELwgbLQuJvpuTSVVZ87Ru7DMZtzyeEt+p108e74/aA2WPW8mE98/7FEf6LGYrENA=
+	t=1749540283; cv=none; b=a5w5T64sR80XZ2xpCiRNLowKynFPMgYdmfry18zi4OlXkXUWkImwDeR3IpdQMit0LHs4ygSZhBps8ylJFkwklnaPOorY0TN3oPeCGWd/5NfNeyccHR6rd9tEP7NISaZIMIcBKVVIsinncAGFYFMPtPY0waL5OvM9XqJm6SsOSlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749539850; c=relaxed/simple;
-	bh=b524pXN0OU7FxMQnzBXONAWxgxBRb1kNYLmMh0RMgMs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t9EvK9tBooc17WBiuRETlilyF5w4QLw3YefQoLCS/WmW1INBpDXWyFAcg5dvI3mj1v06row+xswDR1F7u0Vqgbv9mD458WSxF6YDIx/loI5NWkukRsqykRrtpOb5IRRK6k10rQtOqkZeB1+2NGLXlqCDQoD/akOLYNBock9S7/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=S9xEOQ0N; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=R6H7mn5w reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1749540283; c=relaxed/simple;
+	bh=lc8UFtQQBjZAimb2twHYvmy8+mDtymOWgoS4qaJHG1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GJVnT/FzSQvzd12zVZB7mB7FoD2XKsEGOHtnnQ0PKblQFqp2Nwq+MismI8pI8/QAHxA0W7FMMmuV55ppqgJyqevZfL5oqPGvU5/jGBq0JHsgK0TxxbCjm6d07xFfAEXiRWiHNLtGQ1CmVxQHO5joMFU9TFfCbv0u92kw9hLeipQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pdJ99Gbl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="S9xEOQ0N";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="R6H7mn5w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1749539848; x=1781075848;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5UniAvZESTfn+wymekpIinnCdI455GXxoi6+/rhJB6I=;
-  b=S9xEOQ0N0nmZ88rvu/GdubQ3Wb41WoW3K2wDXiBfNPHuMAH+DQ0qSJG/
-   N2dD1OWwriSp0FdfEXDScDjvmtcDdnTAHWWuO6gFg28MnFr6ijQgEDUSw
-   EK1koQkGl8W5RN4gJFHLRE3B7ey71ppopc1K/yWKy10MplzPD83128/35
-   t/lE3RYctYns3JSPgZiU0ZP2gSktplLCg6MD+twh7XM3uYWGG5p4FWOsy
-   ptPOjdkubgLD870TJI4GJ/2XnowxIc0U/8dW1q6xPFdBi8GaN6c7oMRGv
-   PxNpof3LRnIMF8NEd/m2hHC8G93X+dBnvhFrwqmEzvhAx3eiO2BNCCrpX
-   w==;
-X-CSE-ConnectionGUID: 72KKQk/iQpGdmGt2S3iHxQ==
-X-CSE-MsgGUID: kcsNPqIcT7i6fBLfqngXGw==
-X-IronPort-AV: E=Sophos;i="6.16,224,1744063200"; 
-   d="scan'208";a="44535224"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 10 Jun 2025 09:17:25 +0200
-X-CheckPoint: {6847DC05-1E-569BE4A0-ECC5EE08}
-X-MAIL-CPID: 6C1A0426CFBAA0EE75CFBB7B038D90B1_3
-X-Control-Analysis: str=0001.0A006372.6847DC2D.0002,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 827F4164205;
-	Tue, 10 Jun 2025 09:17:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1749539841;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5UniAvZESTfn+wymekpIinnCdI455GXxoi6+/rhJB6I=;
-	b=R6H7mn5wx8Yy1iyCyKn5ow/XqlgymnT62kYF+4BvsSfoR27tqm8c7A4pnUvpGXztHfePgM
-	xADbNnPcy2kdOyMtcA3gSUFmyUM+0QR87TGSKmPrEJbdXMCrmnu1LdmiDr/9EEbtckPQcb
-	0GjHa1XG1YjD4gVASESHYz9Ju4mi9jJkcN/Dwo8C2s4/axza7JtmEn1ksAk0h6no3reGOV
-	eQqSLia3zNlF76r87KWnrg+u9LxiEP9qp/Mkr3uqxt/OAk9x/dECdVyGs0lrlFVX9n2hRr
-	/bHuKKxJ+jb5h1GzAQKpI0IQ8c9aZ3tzILA5aJxWAf1QG2P6JJ0CiSm8N0ZwOA==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: linux-media@vger.kernel.org,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Isaac Scott <isaac.scott@ideasonboard.com>,
- Rui Miguel Silva <rmfrfs@gmail.com>, Martin Kepplinger <martink@posteo.de>,
- Purism Kernel Team <kernel@puri.sm>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject:
- Re: [PATCH 3/8] media: imx-mipi-csis: Log per-lane start of transmission
- errors
-Date: Tue, 10 Jun 2025 09:17:20 +0200
-Message-ID: <5020258.31r3eYUQgx@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250608235840.23871-4-laurent.pinchart@ideasonboard.com>
-References:
- <20250608235840.23871-1-laurent.pinchart@ideasonboard.com>
- <20250608235840.23871-4-laurent.pinchart@ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pdJ99Gbl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FC8C4CEEF;
+	Tue, 10 Jun 2025 07:24:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749540282;
+	bh=lc8UFtQQBjZAimb2twHYvmy8+mDtymOWgoS4qaJHG1U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pdJ99GblQqDmDeQjiQqHTN1/NuxDWFmZFZ/bda0ZG1QdUi3pBpQ5tXVbSn0D7f4kf
+	 Xct4CyZAzfA2d2ivm0KkOm/dQXMQo8VUmhHSWH8EkPPQr7wSauBON4gRaE0f71sZu5
+	 h0dkEvGY0o6YXF5tH6ZSrSxz4b34xkyAy2pDTmr4HCRL8Gf943jQC5X9mZ327fJ22+
+	 CDm9yB5RnTRzcMQjztOow3EVG98qfU8LAWoAEd5DN9hHo6aByYYSjK+FRAf2r1/UH4
+	 6yzhwWPgrAuYCDqfxzqJ3mmyvObuDDdS02sw6JLhsgWtXpf2C0D3qV7cEzqeRGInfV
+	 fSVn14mi17zIw==
+Date: Tue, 10 Jun 2025 09:24:40 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Stefan Wahren <wahrenst@gmx.net>, "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v3 1/1] dt-bindings: net: convert qca,qca7000.txt yaml
+ format
+Message-ID: <20250610-thick-gifted-tuna-7eab4f@kuoka>
+References: <20250606155118.1355413-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250606155118.1355413-1-Frank.Li@nxp.com>
 
-Hi Laurent,
+On Fri, Jun 06, 2025 at 11:51:17AM GMT, Frank Li wrote:
+> +description: |
+> +  The QCA7000 is a serial-to-powerline bridge with a host interface which could
+> +  be configured either as SPI or UART slave. This configuration is done by
+> +  the QCA7000 firmware.
+> +
+> +  (a) Ethernet over SPI
+> +
+> +  In order to use the QCA7000 as SPI device it must be defined as a child of a
+> +  SPI master in the device tree.
+> +
+> +  (b) Ethernet over UART
+> +
+> +  In order to use the QCA7000 as UART slave it must be defined as a child of a
+> +  UART master in the device tree. It is possible to preconfigure the UART
+> +  settings of the QCA7000 firmware, but it's not possible to change them during
+> +  runtime
+> +
+> +properties:
+> +  compatible:
+> +    const: qca,qca7000
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +if:
 
-thanks for the patch.
+Please put this if: inside allOf: section, so you won't need to
+re-indent it when adding one more if-clause.
 
-Am Montag, 9. Juni 2025, 01:58:35 CEST schrieb Laurent Pinchart:
-> The CSIS has per-line start of transmission error interrupts. Log them
-> all, instead of only the first data lane.
->=20
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> +  required:
+> +    - reg
+> +
+> +then:
+> +  properties:
+> +    spi-cpha: true
+> +
+> +    spi-cpol: true
+> +
+> +    spi-max-frequency:
+> +      default: 8000000
+> +      maximum: 16000000
+> +      minimum: 1000000
+> +
+> +    qca,legacy-mode:
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+This should be defined in top-level properties and you only do:
+"foo: false" in "else:" part.
 
-> ---
->  drivers/media/platform/nxp/imx-mipi-csis.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/p=
-latform/nxp/imx-mipi-csis.c
-> index b652d59851c2..e27467e6372f 100644
-> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> @@ -100,7 +100,7 @@
->  #define MIPI_CSIS_INT_SRC_NON_IMAGE_DATA	(0xf << 28)
->  #define MIPI_CSIS_INT_SRC_FRAME_START		BIT(24)
->  #define MIPI_CSIS_INT_SRC_FRAME_END		BIT(20)
-> -#define MIPI_CSIS_INT_SRC_ERR_SOT_HS		BIT(16)
-> +#define MIPI_CSIS_INT_SRC_ERR_SOT_HS(n)		BIT((n) + 16)
->  #define MIPI_CSIS_INT_SRC_ERR_LOST_FS		BIT(12)
->  #define MIPI_CSIS_INT_SRC_ERR_LOST_FE		BIT(8)
->  #define MIPI_CSIS_INT_SRC_ERR_OVER		BIT(4)
-> @@ -241,7 +241,10 @@ struct mipi_csis_event {
-> =20
->  static const struct mipi_csis_event mipi_csis_events[] =3D {
->  	/* Errors */
-> -	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS,		"SOT Error" },
-> +	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS(0),	"SOT 0 Error" },
-> +	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS(1),	"SOT 1 Error" },
-> +	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS(2),	"SOT 2 Error" },
-> +	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS(3),	"SOT 3 Error" },
->  	{ false, MIPI_CSIS_INT_SRC_ERR_LOST_FS,		"Lost Frame Start Error" },
->  	{ false, MIPI_CSIS_INT_SRC_ERR_LOST_FE,		"Lost Frame End Error" },
->  	{ false, MIPI_CSIS_INT_SRC_ERR_OVER,		"FIFO Overflow Error" },
->=20
+> +      $ref: /schemas/types.yaml#/definitions/flag
+> +      description:
+> +        Set the SPI data transfer of the QCA7000 to legacy mode.
+> +        In this mode the SPI master must toggle the chip select
+> +        between each data word. In burst mode these gaps aren't
+> +        necessary, which is faster. This setting depends on how
+> +        the QCA7000 is setup via GPIO pin strapping. If the
+> +        property is missing the driver defaults to burst mode.
+> +
+> +  allOf:
+> +    - $ref: /schemas/spi/spi-peripheral-props.yaml#
 
+This should be part of top-level allOf.
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+> +
+> +else:
+> +  properties:
+> +    current-speed:
+> +      default: 115200
+> +
+> +  allOf:
+> +    - $ref: /schemas/serial/serial-peripheral-props.yaml#
 
+Same here.
+
+> +
+> +allOf:
+> +  - $ref: ethernet-controller.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        ethernet@0 {
+> +            compatible = "qca,qca7000";
+> +            reg = <0x0>;
+> +            interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
+> +            interrupts = <25 0x1>;            /* Index: 25, rising edge */
+> +            spi-cpha;                         /* SPI mode: CPHA=1 */
+> +            spi-cpol;                         /* SPI mode: CPOL=1 */
+> +            spi-max-frequency = <8000000>;    /* freq: 8 MHz */
+> +            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
+> +        };
+> +    };
+> +
+> +  - |
+> +    serial {
+> +        ethernet {
+> +            compatible = "qca,qca7000";
+> +            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
+> +            current-speed = <38400>;
+> +        };
+
+Best regards,
+Krzysztof
 
