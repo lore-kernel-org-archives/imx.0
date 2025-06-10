@@ -1,453 +1,253 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA8C17DFE7
-	for <imx@lists.linux.dev>; Mon,  9 Jun 2025 23:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A5F2A1BF
+	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 00:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749510154; cv=none; b=c81BYkJ88HaiDh0pjuEcup6Ef9dlAba/F4bcHhSE+sE8xObs0hsiuUmfYKT0TYBNT/WqLUzdrAgwLD3LuMo5iFS7TfxP+m1vQUl0Pb6f/y4Ooodjj2u/MevhutCPo1ggxSpBuEDSH+z7LKd+YKm+xZqEJt5c4rBjuuEsZmkauKU=
+	t=1749515059; cv=none; b=sUB7JGWZQrTYK4H0rassy8ZTAW0AuGe4/DYURsQzqa9Z2QmtKY0GdL9U+ZfKQLYeKNMPJ0/kGKs5NxnQGdrcXZQP/yp7N7R34g68j31vQGBR4kxU3MMnaK3FTYvGHpry3gr7mBTafM7ZcGOAyfAl9meB9eKEtiZe89wmHblZvQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749510154; c=relaxed/simple;
-	bh=3jQ2/BwlzDQVu+hIFV83ttrxI9vBK/ZalDlfs2CF0kg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eBiheqBSIEuLByVF2DG2WkCIyFDJXYYlWYb7ge31kt8mTf9d6rzDMTlvMyZ6phUUZTnbzhfrlZXrKBOIVCvUreY8B0l2yYtyTMBEYiPhtJpChCGRi8ucNYoYOZpgJjPQVXQoCbROx3fcF/WYVInsOuFBpcPcrqgggxiAnK1OLJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=VsQoXdVM; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1749515059; c=relaxed/simple;
+	bh=7jmPTNP5wXkOM5VKAK8B4cmHLCsgMV0sC67D2Tc8tnw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WXhUPg/EIqYAh27K5UA76uPG8yPwkA9EF94owCK4cqWFrlaASwJU+KNj3V3yxQBtwANbJuXJz8PlJPX2MoL+ms00yq0pxtpkN4aOeENq/FjvHEj3SdNU74LZa8WSvsAITXNLG/rcWNfmhyJkDJ3Vi056OHjVapEMp58oYw+UaM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=TUETExIF; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="VsQoXdVM"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9774810397298;
-	Tue, 10 Jun 2025 01:02:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1749510142; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=M1pM0ueTeYF/X9+4fPTVBqoLksdbZ+Cyw0VfJldze0Q=;
-	b=VsQoXdVMiWDNJ9TDQVksppIyT+as0Yv8kWI56ovGxk0wzhwz2mRrO1wXyNJgbURMy+9XLA
-	rthdr+ydytgMKODaaqewotKNqi9OGAHLDGND7m5q6XbRZVdPsSbBGtRV7keLxuwHfPnCVx
-	AarmxHJz+2HfaGPM3tixhVj8/ejakCDSHtx0hg66/viTP0F+hu4YEhlEtcUzYJLZNyHdI2
-	WJK8/YMqScXIC++tGBuh4XXi7G8XqOOoSmq0pPuD4fs0qjAqnXlv9Qnpl/m7N2wSvKOwoY
-	yGac2wLyWvb/ZUaWlrKZZLWZSyqZa/bB6fAFcNm/9lxhoqC+mJkXUTszDrZZxg==
-Date: Tue, 10 Jun 2025 01:02:16 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [net-next v12 4/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250610010216.7331ebb5@wsk>
-In-Reply-To: <0df20c3e-bd51-415f-bfdf-f88bbd39f260@redhat.com>
-References: <20250522075455.1723560-1-lukma@denx.de>
-	<20250522075455.1723560-5-lukma@denx.de>
-	<f738d1ed-7ade-4a37-b8fd-25178f7c1dee@redhat.com>
-	<20250528125329.084ab649@wsk>
-	<0df20c3e-bd51-415f-bfdf-f88bbd39f260@redhat.com>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="TUETExIF"
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e81ec95d944so727594276.1
+        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 17:24:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1749515055; x=1750119855; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4p6WWlOvtLKrokUmhKFbxMIWiiDCNI86TAtn3rEDUQM=;
+        b=TUETExIFiCa2Dus17zneZa7c0RcbRVjxuEed7CWN9VLjPL0hyEUPi+vArNad33Vp0X
+         eODFNgeYpqJTCUVT+Qb0yr/xgDp51CRrLrVjBTtp6mInQrJl6R9rM4Hg39kCuQTD/DQS
+         leVMitaR2GBg2Sm3SMrmIjKtZYfU7WcVKXmHCwNFfYy1bFTpfesRxB0DK015xZg5snfp
+         452R/JvT4BrByTlT1XHmwdNLYGG8OL51IwoGQ3gdM6gh8Hih51HxKoN7gQGViW3Au7x+
+         xvxyUgtPr9JG/J0YkZ7mAe6LCFnnKqpAo7o3acpM1ne1pnmrQKx8e35uk5Fm2FZZHxXx
+         O6eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749515055; x=1750119855;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4p6WWlOvtLKrokUmhKFbxMIWiiDCNI86TAtn3rEDUQM=;
+        b=WNGYZSK8eY1NJz6ouSEc51m99JSMee0UhXj9h71jVvW6xneLzHjVjET1jAWKbd4RHF
+         AE/vJlyYBhj9QJqCMBST+KuIkHoQveh8wahC4FtdJW1vkdtpfg6wTwptFF3dw/iBZ2db
+         cR9sfwP5FOfP5NKD39xpKLwjtevjeyz7ATUFPQFf+pc0Epa1ifBbNWI0gHolC06ZUsjG
+         fPScu9xyw+KusrYqFSth7+mYbVILrePo4QlqPKEkwYMBOf37iysAXKaq9NjitYrZzwXY
+         2mWdqRX6moaScISArCyPHTl/Uj8QC/SsnmglDV+tXlnjdB7N/aEP5MqEyoRiPtKGX/Lu
+         G2hA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDxV6Uc+vhX+CXx2p+j7e7sdCTi8m9YysLyx6nmz6zz8nKKaG4qL/VHzxPBGAjUqeqPy8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyNFuvPri+3lxKrLCS7fCLRkmBgUV+CXTVS8FLcspE9WigP0qyb
+	54troniE0DR3NSUCLFIr1xSHlKrUh8McNBrcnMGygDXT2wmIbcIO9CZdeZHxzLw+fyO8Y7fCMT2
+	QaMFEGN3/lqdD/ByMNmfkcdUsf2WgRCdJx3tqYUlMMw==
+X-Gm-Gg: ASbGncsQ45Is7l+Rz6yqKp0PEzn+xFWO5LOcXA3x4UgVlKeVnSbTVkmnW4peNzdc/j5
+	D4L+A5zatkAXAvG5zm8PwHsiDUYwa31zXAwLqusjO3wc3o15LspUYfrxDWmJc0UuErDjUpJHJGY
+	3E+W6LCXezQF+zZbaYp/2ytxS7Owv7f2vuQC15urose4X6TnBYTSy0GA==
+X-Google-Smtp-Source: AGHT+IEIwckNC6Mk3FUMcw8lzb7oJYprV7CNZkimjX4sCr2WuaRjl9EYST/x4A5RYQYDa8DuCIr4jskjKGm1oKna1b0=
+X-Received: by 2002:a05:690c:7204:b0:70e:76eb:8fb0 with SMTP id
+ 00721157ae682-71133929d3dmr23571387b3.13.1749515055615; Mon, 09 Jun 2025
+ 17:24:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/sgnmYD9Yr/9ZQSdJ73NdC6_";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
-
---Sig_/sgnmYD9Yr/9ZQSdJ73NdC6_
-Content-Type: text/plain; charset=UTF-8
+References: <20241126075702.4099164-1-hongxing.zhu@nxp.com>
+ <20241126075702.4099164-6-hongxing.zhu@nxp.com> <CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcMHDy+poj9=jSy+w@mail.gmail.com>
+ <AS8PR04MB8676C1206066A3215DB5F3B78C6BA@AS8PR04MB8676.eurprd04.prod.outlook.com>
+In-Reply-To: <AS8PR04MB8676C1206066A3215DB5F3B78C6BA@AS8PR04MB8676.eurprd04.prod.outlook.com>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Mon, 9 Jun 2025 17:24:04 -0700
+X-Gm-Features: AX0GCFvJVHqxJw3QT2Hj1OmwNvuRPr_efH3vouQUS0tjvRGC0_axQFmE3cNvLZA
+Message-ID: <CAJ+vNU0rO0tJyon6HGYTZHu5oii5vH-dPpnSH7RQj43+nE1KDQ@mail.gmail.com>
+Subject: Re: [PATCH v7 05/10] PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: "l.stach@pengutronix.de" <l.stach@pengutronix.de>, "bhelgaas@google.com" <bhelgaas@google.com>, 
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kw@linux.com" <kw@linux.com>, 
+	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>, "robh@kernel.org" <robh@kernel.org>, 
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, Frank Li <frank.li@nxp.com>, 
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Paolo,
+On Mon, Jun 9, 2025 at 1:03=E2=80=AFAM Hongxing Zhu <hongxing.zhu@nxp.com> =
+wrote:
+>
+> > -----Original Message-----
+> > From: Tim Harvey <tharvey@gateworks.com>
+> > Sent: 2025=E5=B9=B46=E6=9C=887=E6=97=A5 5:04
+> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > Cc: l.stach@pengutronix.de; bhelgaas@google.com; lpieralisi@kernel.org;
+> > kw@linux.com; manivannan.sadhasivam@linaro.org; robh@kernel.org;
+> > krzk+dt@kernel.org; conor+dt@kernel.org; shawnguo@kernel.org; Frank Li
+> > <frank.li@nxp.com>; s.hauer@pengutronix.de; festevam@gmail.com;
+> > imx@lists.linux.dev; kernel@pengutronix.de; linux-pci@vger.kernel.org;
+> > linux-arm-kernel@lists.infradead.org; devicetree@vger.kernel.org;
+> > linux-kernel@vger.kernel.org
+> > Subject: Re: [PATCH v7 05/10] PCI: imx6: Deassert apps_reset in
+> > imx_pcie_deassert_core_reset()
+> >
+> > On Tue, Nov 26, 2024 at 12:03=E2=80=AFAM Richard Zhu <hongxing.zhu@nxp.=
+com>
+> > wrote:
+> > >
+> > > Since the apps_reset is asserted in imx_pcie_assert_core_reset(), it
+> > > should be deasserted in imx_pcie_deassert_core_reset().
+> > >
+> > > Fixes: 9b3fe6796d7c ("PCI: imx6: Add code to support i.MX7D")
+> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > > Reviewed-by: Manivannan Sadhasivam
+> > <manivannan.sadhasivam@linaro.org>
+> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > ---
+> > >  drivers/pci/controller/dwc/pci-imx6.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
+> > > b/drivers/pci/controller/dwc/pci-imx6.c
+> > > index 3538440601a7..413db182ce9f 100644
+> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > > @@ -776,6 +776,7 @@ static void imx_pcie_assert_core_reset(struct
+> > > imx_pcie *imx_pcie)  static int imx_pcie_deassert_core_reset(struct
+> > > imx_pcie *imx_pcie)  {
+> > >         reset_control_deassert(imx_pcie->pciephy_reset);
+> > > +       reset_control_deassert(imx_pcie->apps_reset);
+> > >
+> > >         if (imx_pcie->drvdata->core_reset)
+> > >                 imx_pcie->drvdata->core_reset(imx_pcie, false);
+> > > --
+> > > 2.37.1
+> > >
+> > >
+> >
+> > Hi Richard,
+> >
+> > I've found that this patch causes a regression on i.MX8MM and i.MX8MP
+> > boards with hotplug capable bridges:
+> > i.MX8MM+PI7C9X2G404EV (this switch does not support hotplug) - no issue=
+s
+> > i.MX8MM+PI7C9X2G608GP (hotplug) - fails to reliably enumerate
+> > downstream devices about 80% of the time ^^^ when this occurs
+> > PCI_PRIMARY_BUS (0x18) for the root complex
+> > 0000:00:00.0 reads 0x00000000 instead of 0x00ff0100
+> > (PCI_SECONDARY_BUS is 0 instead of 1 and PCI_SUBBORDINATE_BUS is 0
+> > instead of 0xff) i.MX8MP+PI7C9X2G608GP (hotplug) - hangs at
+> > imx_pcie_ltssm_enable deassert apps_reset
+> >
+> > In both cases here reverting ef61c7d8d032 ("PCI: imx6: Deassert apps_re=
+set
+> > in imx_pcie_deassert_core_reset()") resolves this.
+> >
+> [Richard Zhu] I'm afraid that the ltssm_en bit assert to 1b'1 in
+>  imx_pcie_deassert_core_reset() is not correct in your use case.
+>
 
-> On 5/28/25 12:53 PM, Lukasz Majewski wrote:
-> >> On 5/22/25 9:54 AM, Lukasz Majewski wrote: =20
-> >>> +/* dynamicms MAC address table learn and migration */
-> >>> +static void mtip_aging_timer(struct timer_list *t)
-> >>> +{
-> >>> +	struct switch_enet_private *fep =3D from_timer(fep, t,
-> >>> timer_aging); +
-> >>> +	fep->curr_time =3D mtip_timeincrement(fep->curr_time);
-> >>> +
-> >>> +	mod_timer(&fep->timer_aging,
-> >>> +		  jiffies +
-> >>> msecs_to_jiffies(LEARNING_AGING_INTERVAL)); +}   =20
-> >>
-> >> It's unclear to me why you need to maintain a timer just to update
-> >> a timestamp?!?
-> >> =20
-> >=20
-> > This timestamp is afterwards used in:
-> > mtip_atable_dynamicms_learn_migration(), which in turn manages the
-> > entries in switch "dynamic" table (it is one of the fields in the
-> > record.
-> >  =20
-> >> (jiffies >> msecs_to_jiffies(LEARNING_AGING_INTERVAL)) & ((1 <<
-> >> AT_DENTRY_TIMESTAMP_WIDTH) - 1)
-> >> =20
-> >=20
-> > If I understood you correctly - I shall remove the timer and then
-> > just use the above line (based on jiffies) when
-> > mtip_atable_dynamicms_learn_migration() is called (and it requires
-> > the timestamp)?
-> >=20
-> > Otherwise the mtip_timeincrement() seems like a nice wrapper on
-> > incrementing the timestamp. =20
->=20
-> Scheduling a timer to obtain a value you can have for free is not a
-> good resource usage strategy. Note that is a pending question/check
-> above: verify that the suggested expression yield the expected value
-> in all the possible use-case.
+Hi Richard,
 
-This is a bit more tricky than just getting value from jiffies.
+Thanks for your quick response. Do you mean not correct for newer IP
+core in i.MX8MM/i.MX8MP or in the case of a bridge?
 
-The current code provides a monotonic, starting from 0 time "base" for
-learning and managing entries in internal routing tables for MTIP.
+> Actually, the apps_reset isn't a real reset. It's the ltssm_en bit.
+> From this perspective view, It's inappropriate to toggle the ltssm_en bit=
+ in
+>  imx_pcie_assert/deassert_core_reset() functions.
+> I consider to move the apps_reset out of _reset_ functions.
+> Can you help to test the following changes in you use-case?
+>
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -776,7 +776,6 @@ static int imx7d_pcie_core_reset(struct imx_pcie *imx=
+_pcie, bool assert)
+>  static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
+>  {
+>         reset_control_assert(imx_pcie->pciephy_reset);
+> -       reset_control_assert(imx_pcie->apps_reset);
+>
+>         if (imx_pcie->drvdata->core_reset)
+>                 imx_pcie->drvdata->core_reset(imx_pcie, true);
+> @@ -788,7 +787,6 @@ static void imx_pcie_assert_core_reset(struct imx_pci=
+e *imx_pcie)
+>  static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
+>  {
+>         reset_control_deassert(imx_pcie->pciephy_reset);
+> -       reset_control_deassert(imx_pcie->apps_reset);
+>
+>         if (imx_pcie->drvdata->core_reset)
+>                 imx_pcie->drvdata->core_reset(imx_pcie, false);
+> @@ -1176,6 +1174,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp=
+)
+>                 }
+>         }
+>
+> +       /* Make sure that PCIe LTSSM is cleared */
+> +       imx_pcie_ltssm_disable(dev);
+> +
+>         ret =3D imx_pcie_deassert_core_reset(imx_pcie);
+>         if (ret < 0) {
+>                 dev_err(dev, "pcie deassert core reset failed: %d\n", ret=
+);
+>
 
-To be more specific - the fep->curr_time is a value incremented after
-each ~10ms.
+Yes this resolves the regression of failing to reliably enumerate
+downstream devices. I think that should be submitted with a fixes tag.
 
-Simple masking of jiffies would not provide such features.
+The i.MX8MP+PI7C9X2G608GP switch hanging issue was hardware related...
+i was sadly testing on an old board with a defect. I did previously
+have a hang issue there discussed previously here [1] but it was
+resolved with commit 9c03e30e3ade ("PCI: imx6: Skip link up workaround
+for newer platforms").
 
-However, I've rewritten relevant portions where GENMASK() could be used
-to simplify and make the code more readable.
+How much testing is done with i.MX8M{M,P} board with a switch? I feel
+like I'm the only one with these SoC's and a switch and I need to get
+better at monitoring patches to the IMX6 PCI controller driver and
+testing these scenarios.
 
->=20
-> >>> +	if (!fep->link[0] && !fep->link[1]) {
-> >>> +		/* Link is down or autonegotiation is in
-> >>> progress. */
-> >>> +		netif_stop_queue(dev);
-> >>> +		spin_unlock_irqrestore(&fep->hw_lock, flags);
-> >>> +		return NETDEV_TX_BUSY;   =20
-> >>
-> >> Intead you should probably stop the queue when such events happen =20
-> >=20
-> > Please correct me if I'm wrong - the netif_stop_queue(dev); is
-> > called before return. Shall something different be also done? =20
->=20
-> The xmit routine should assume the link is up and the tx ring has
-> enough free slot to enqueue a packet.
+Best Regards,
 
-In the case of MTIP driver, there is a circular buffer of 16 "sets" of
-descriptors (allocated as coherent) and corresponding buffer
-(dma_map_single at start).
-
-The size of each "buffer" is set to 2048B to accommodate at least single
-packet.
-
-> After enqueueing it should
-> check for enough space availble for the next xmit and stop the queue,
-> likely using the netif_txq_maybe_stop() helper.
-
-The problem with not using the netif_txq_maybe_stop() is that I'm not
-using the "txq" (netdev_queue).
-
-With the current code it looks like netif_stop_queue() is the most
-suitable one from the network API.
-
->=20
-> Documentation/networking/driver.rst
->=20
-> >>> +	}
-> >>> +
-> >>> +	/* Clear all of the status flags */
-> >>> +	status &=3D ~BD_ENET_TX_STATS;
-> >>> +
-> >>> +	/* Set buffer length and buffer pointer */
-> >>> +	bufaddr =3D skb->data;
-> >>> +	bdp->cbd_datlen =3D skb->len;
-> >>> +
-> >>> +	/* On some FEC implementations data must be aligned on
-> >>> +	 * 4-byte boundaries. Use bounce buffers to copy data
-> >>> +	 * and get it aligned.
-> >>> +	 */
-> >>> +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
-> >>> +		unsigned int index;
-> >>> +
-> >>> +		index =3D bdp - fep->tx_bd_base;
-> >>> +		memcpy(fep->tx_bounce[index],
-> >>> +		       (void *)skb->data, skb->len);
-> >>> +		bufaddr =3D fep->tx_bounce[index];
-> >>> +	}
-> >>> +
-> >>> +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
-> >>> +		swap_buffer(bufaddr, skb->len);   =20
-> >>
-> >> Ouch, the above will kill performances. =20
-> >=20
-> > This unfortunately must be done in such a way (the same approach is
-> > present on fec_main.c) as the IP block is implemented in such a way
-> > (explicit conversion from big endian to little endian).
-> >  =20
-> >> Also it looks like it will
-> >> access uninitialized memory if skb->len is not 4 bytes aligned.
-> >> =20
-> >=20
-> > There is a few lines above a special code to prevent from such a
-> > situation ((unsigned long)bufaddr & MTIP_ALIGNMENT). =20
->=20
-> The problem here is not with memory buffer alignment, but with the
-> packet length, that can be not a multiple of 4. In such a case the
-> last swap will do an out-of-bound read touching uninitialized data.
-
-On the init function the size of allocation for each buffer is set to
-be 2048 bytes, so there is no such a thread.
-
->=20
-> >>> +	bdp->cbd_sc =3D status;
-> >>> +
-> >>> +	netif_trans_update(dev);
-> >>> +	skb_tx_timestamp(skb);
-> >>> +
-> >>> +	/* For port separation - force sending via specified port
-> >>> */
-> >>> +	if (!fep->br_offload && port !=3D 0)
-> >>> +		mtip_forced_forward(fep, port, 1);
-> >>> +
-> >>> +	/* Trigger transmission start */
-> >>> +	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);
-> >>>  =20
-> >>
-> >> Possibly you should check skb->xmit_more to avoid ringing the
-> >> doorbell when not needed. =20
-> >=20
-> > I couldn't find skb->xmit_more in the current sources. Instead,
-> > there is netdev_xmit_more(). =20
->=20
-> Yeah, I referred to the old code, sorry.
->=20
-> > However, the TX code just is supposed to setup one frame
-> > transmission and hence there is no risk that we trigger "empty"
-> > transmission. =20
->=20
-> The point is that doorbell ringing is usually very expensive (slow)
-> for the H/W. And is not needed when netdev_xmit_more() is true,
-> because the another xmit operation will follow. If you care about
-> performances you should leverage such info.
-
-I do have an impression, that this is very important for network
-devices having many queues with separate priorities.
-
-In my case - I do have a single uDMA0 port with a single RX and TX
-circular buffer (16 packets can be "queued").
-
->=20
-> >  =20
-> >>> +	/* First, grab all of the stats for the incoming packet.
-> >>> +	 * These get messed up if we get called due to a busy
-> >>> condition.
-> >>> +	 */
-> >>> +	bdp =3D fep->cur_rx;
-> >>> +
-> >>> +	while (!((status =3D bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
-> >>> +		if (pkt_received >=3D budget)
-> >>> +			break;
-> >>> +
-> >>> +		pkt_received++;
-> >>> +		/* Since we have allocated space to hold a
-> >>> complete frame,
-> >>> +		 * the last indicator should be set.
-> >>> +		 */
-> >>> +		if ((status & BD_ENET_RX_LAST) =3D=3D 0)
-> >>> +			dev_warn_ratelimited(&dev->dev,
-> >>> +					     "SWITCH ENET: rcv is
-> >>> not +last\n"); +
-> >>> +		if (!fep->usage_count)
-> >>> +			goto rx_processing_done;
-> >>> +
-> >>> +		/* Check for errors. */
-> >>> +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH |
-> >>> BD_ENET_RX_NO |
-> >>> +			      BD_ENET_RX_CR | BD_ENET_RX_OV)) {
-> >>> +			dev->stats.rx_errors++;
-> >>> +			if (status & (BD_ENET_RX_LG |
-> >>> BD_ENET_RX_SH)) {
-> >>> +				/* Frame too long or too short.
-> >>> */
-> >>> +				dev->stats.rx_length_errors++;
-> >>> +			}
-> >>> +			if (status & BD_ENET_RX_NO)	/*
-> >>> Frame alignment */
-> >>> +				dev->stats.rx_frame_errors++;
-> >>> +			if (status & BD_ENET_RX_CR)	/* CRC
-> >>> Error */
-> >>> +				dev->stats.rx_crc_errors++;
-> >>> +			if (status & BD_ENET_RX_OV)	/*
-> >>> FIFO overrun */
-> >>> +				dev->stats.rx_fifo_errors++;
-> >>> +		}
-> >>> +
-> >>> +		/* Report late collisions as a frame error.
-> >>> +		 * On this error, the BD is closed, but we don't
-> >>> know what we
-> >>> +		 * have in the buffer.  So, just drop this frame
-> >>> on the floor.
-> >>> +		 */
-> >>> +		if (status & BD_ENET_RX_CL) {
-> >>> +			dev->stats.rx_errors++;
-> >>> +			dev->stats.rx_frame_errors++;
-> >>> +			goto rx_processing_done;
-> >>> +		}
-> >>> +
-> >>> +		/* Process the incoming frame */
-> >>> +		pkt_len =3D bdp->cbd_datlen;
-> >>> +		data =3D (__u8 *)__va(bdp->cbd_bufaddr);
-> >>> +
-> >>> +		dma_unmap_single(&fep->pdev->dev,
-> >>> bdp->cbd_bufaddr,
-> >>> +				 bdp->cbd_datlen,
-> >>> DMA_FROM_DEVICE);   =20
-> >>
-> >> I have read your explaination WRT unmap/map. Actually you don't
-> >> need to do any mapping here,  =20
-> >=20
-> > There are 16 cbd_t descriptors allocated (as dma_alloc_coherent).
-> > Those descriptors contain pointer to data (being read in this
-> > case). =20
->=20
-> I'm referring to the actual packet payload, that is the buffer at
-> bdp-cbd_bufaddr with len bdp->cbd_datlen; I'm not discussing the
-> descriptors contents.
-
-+1
-
->=20
-> > Hence the need to perform dma_map_single() for each descriptor,  =20
->=20
-> You are not unmapping the descriptor, you are unmapping the packet
-> payload.
-
-+1
-
->=20
-> >> since you are unconditionally copying the
-> >> whole buffer (why???) =20
-> >=20
-> > Only the value of=20
-> > pkt_len =3D bdp->cbd_datlen; is copied to SKB (after byte
-> > swap_buffer()). =20
->=20
-> The relevant line is:
->=20
-> 		skb_copy_to_linear_data(skb, data, pkt_len);
->=20
-> AFAICS that copies whole packet contents, which is usually quite
-> sub-optimal from performance PoV.
->=20
-
-fec_main.c just assigns:
-data=C2=B7=3D=C2=B7skb->data;
-
-so I would prefer to keep the:
-skb_copy_to_linear_data(skb, data, pkt_len);
-
-> >> and re-using it.
-> >>
-> >> Still you need a dma_sync_single() to ensure the CPUs see the
-> >> correct data. =20
-> >=20
-> > The descriptors - i.e. struct cbd_t fields are allocated with
-> > dma_alloc_coherent(), so this is OK. =20
->=20
-> I'm talking about packets contents, not packet descriptors. Please
-> re-read the above and have a look at other drivers code.
-
-The usage of dma_sync_single_for_cpu() works without issues in the
-mtip_switch_rx().
-
->=20
-> An additional point that I missed in the previous review is that the
-> rx allocation schema is quite uncorrect. At ring initialization time
-> you allocate full skbs, while what you need and use is just raw
-> buffers for the packet payload. Instead you could/should use the page
-> pool:
->=20
-> Documentation/networking/page_pool.rst
->=20
-
-Yes, for RX packets payload the page of 2048 bytes is allocated. By
-using dma page pool - I can state the same maximal size, but the usage
-of memory can be much more flexible.
-
-> That will also help doing the right thing WRT DMA handling.
->=20
-
-The dma_sync_single_for_cpu() shall work correctly with the current
-approach as well.
-
-> >> This patch is really too big, I'm pretty sure I missed some
-> >> relevant issues. You should split it in multiple ones: i.e.
-> >> initialization and h/w access, rx/tx, others ndos. =20
-> >=20
-> > It is quite hard to "scatter" this patch as:
-> >=20
-> > 1. I've already split it to several files (which correspond to
-> > different "logical" entities - like mtipl2sw_br.c).
-> > 2. The mtipl2sw.c file is the smallest part of the "core" of the
-> > driver.
-> > 3. If I split it, then at some point I would break bisectability for
-> > imx28. =20
->=20
-> Note that each patch don't need to provide complete functionality.
-> i.e. patch 1 could implement ndo_open()/close and related helper,
-> leaving ndo_start_xmit() and napi_poll empty and avoid allocating the
-> rx buffers. patch 2 could implement the rx patch, patch 3 the tx path.
->=20
-
-Yes, this seems to be a good idea... I will implement such approach.
-
-> The only constraint is that each patch will build successufully, which
-> is usually easy to achieve.
-
-+1
-
->=20
-> A 2K lines patches will probably lead to many more iterations and
-> unhappy (or no) reviewers.
-
-The problem is that all the patches "around" this driver (like *yaml,
-bindings, defconfig) would get outdated very fast if not pull to
-mainline.
-
-In such a way that already done work would need to be redo...
-
->=20
-> /P
->=20
+Tim
+[1] https://www.spinics.net/lists/linux-pci/msg142764.html
 
 
 
 
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/sgnmYD9Yr/9ZQSdJ73NdC6_
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhHZ/gACgkQAR8vZIA0
-zr35NAf7BsWyM4PkwH9k8LanL+CVfhF1A32/dAugkR1hlODpkay0KHkoIXvmUt2a
-+/0jcZiNrVmndySoOy+U6BCQsN6+qh34jg0Pn68gb1++WsLq473e8jldjZcyK35T
-4ke3yvNRDViSgjwIyM9qeoZvIXUrWr7sEWR5wxHPDhRacYRU4vbra4F/ONnrh43A
-e71Np4aSgTadeoPKMe9mkYHft5sE0PRU4Mm0jK6f3ubT4F5Hz086z/LKNmjfSz9F
-YLVkbQXJGUQlB4DJhwdYXc4R1cqCj5cuCBHyLIwbusHDrDaT4TJFinzoOLr3weCq
-q9bXC3suqEgacBcHzqSrZF8cXvjhjQ==
-=FVxJ
------END PGP SIGNATURE-----
-
---Sig_/sgnmYD9Yr/9ZQSdJ73NdC6_--
+> > I notice the sequence of events here is:
+> > imx_pcie_assert_core_reset asserts apps_reset (disables LTSSM)
+> > imx_pcie_deassert_core_reset deasserts apps_reset (enables LTSSM)
+> > imx_pcie_ltssm_enable deasserts apps_reset (enables LTSSM; this is wher=
+e it
+> > hangs on imx8mp)
+> >
+> > Is there perhaps some issue with de-asserting this (enabling LTSSM) whe=
+n it's
+> > already in this state?
+> [Richard Zhu]The apps_reset is updated by src driver by regmap_update_bit=
+s().
+> I can't find the exceptions to update one bit, already has the according =
+value.
+>
+> Best Regards
+> Richard Zhu
+> >
+> > In the case where downstream devices do not enumerate some investigatio=
+n
+> > points to them not being happy that the link drops so perhaps deasserti=
+ng
+> > apps_reset when its already asserted drops the link and restarts it?
+> >
+> > Best Regards,
+> >
+> > Tim
