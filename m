@@ -1,150 +1,187 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF6E28C5AB;
-	Tue, 10 Jun 2025 10:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEDD204583;
+	Tue, 10 Jun 2025 11:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749550910; cv=none; b=cqLK5NdDFUNm5TIRkGWPgtHPglcuQe9/268VPaCzBN6TcggT/TSGabXkKVJyn4lDs2OJUFQfG/eM+WVc8dHvrycCrgLprMAwfR1Sz3yqQsAM/CYmQIeFnr8lm/p8QDt4NTjxFWQIXs1L20amlzeRoGYisL/rCnCkbM9580YtYvA=
+	t=1749554142; cv=none; b=Gnge4+s1GoiHRz+lQRi78gFywyyGvEbTKLyxDEWL2oN8+myYdcw4OzsrdSWbE978E+o3Sw++7VmcSNj9/DajFXcr0b/OutYxkvUjLz/xHvhj6zSLmsE6YXJw4NcwQP21q/4Zd9+tN4z3MMAev1DAmEgAUnrHatqk9ZYDZjfmKQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749550910; c=relaxed/simple;
-	bh=83dLs1W0SUF6G9on9GAeFmui9zBttsQCPVnOanN018I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nuDN4eOB75XxREiR3ZzWqJGF7lVR25JtJe27vkv+GR7JGXZwl0aFbLiLwu8dmggHMTLGvR2hl0rX7F0upTldc1q9xyEhv5+qZ57kUe2nut0SgzwB8Lw1FVif46Cc9kmucdR5Dv5JLwLvd0JMHPO31TyeNmFKyvexpM5kPNwK1XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.69.3])
-	by gateway (Coremail) with SMTP id _____8CxNHAyB0hoQZgSAQ--.45546S3;
-	Tue, 10 Jun 2025 18:21:38 +0800 (CST)
-Received: from [127.0.0.1] (unknown [223.64.69.3])
-	by front1 (Coremail) with SMTP id qMiowMDxOcQoB0hoWTcUAQ--.17S2;
-	Tue, 10 Jun 2025 18:21:34 +0800 (CST)
-Message-ID: <6ab83033-1349-4d5e-8d1f-8a13d851abf4@loongson.cn>
-Date: Tue, 10 Jun 2025 18:21:27 +0800
+	s=arc-20240116; t=1749554142; c=relaxed/simple;
+	bh=kixFWX+byclEyz7YAnHZb47/51TtOQ7bpoYAftt4bro=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QAW7RahBIEh1LNryNxkFIFZKq9leNgzG4oCEpfV8ZJFA6C7YCYQnBaFnGIMXnKSkApiefdoF/ijYDw6f4teQzAqk1XTliL6wE+ZAcgnIwSk40ApSfZIbEvELFi4r9KNx7FX7lkrpBDB7mAaM++6r9CZfI97EnNRcPWfaykLgPAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cRQRiEDo; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cRQRiEDo"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a4f78ebec8so3172834f8f.0;
+        Tue, 10 Jun 2025 04:15:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749554139; x=1750158939; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UxiKx3fQ2UN0TdQSGe7J2LZQJpdb1R/YSkx1+hJ6ixs=;
+        b=cRQRiEDoeJ7rIEVWPNfxzkWHbmqkXLb5mopDp6kURbvheg8NpAevqzwmLKnmocbXoT
+         T5sIrn3tbYkvPAIlgJMKlZq1qG7jBzUaB7cOD1o8P1df6fIMiRNjTss2YlT6zdBzsA5Y
+         uwUJu+kOXw2PHPKORAfEl1qpRlrEOLpphlyyRjd25M8GP7ZffMgdZ1JNmFDPd6BBYFLS
+         IyHTTX1gcyCnQiZCmF/FavYQ/JQ0Db/WttSmm3QAXAwwp1sf+W2FgM0fSuY0wYuN+n6S
+         wyIRHJutXcvPbuNPHnn3X+w6fCVtUWze68sEnG3c9nzfdGBIFkIgjctFk/zTDhXiV9L0
+         juBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749554139; x=1750158939;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UxiKx3fQ2UN0TdQSGe7J2LZQJpdb1R/YSkx1+hJ6ixs=;
+        b=mixdp2wbG/tLGITzkjUrbCgp9DynoYovRY3RgTvtF4R7v0LGi4liB1Gl/jZ4+tkMYZ
+         qhwrMvTSSxCfQmIVRRuQPPIDLI4f9yUT44QvcSAub+Swgq+68nvBX6DGCrYTwN+PAfxx
+         kiFp4uSTgzYs/9ykx+Ufng/HP5au1X90Y1mHIHfhOVinwB/8vMcM0pL2ag+kWJRGLiw4
+         aGZF6uqLfCKTmQabTTCdiRG33QtGLt65b6Q0egUQIUD7imE0hHN6PEPGkbIS6Gmy6AoN
+         i2jJMLtOKZKMNXS5A4H7/178b19yXdz7tdUrZ45zRNn1MAC1G/krkgf2Vr8kRIL2uVNr
+         FbYg==
+X-Forwarded-Encrypted: i=1; AJvYcCWfvG2RM+qCGu1+hFvFljrUuVnJlq41YXZmEhPzMuWwVLjhGL+VYMFRqNxgbutgfoHJYgY=@lists.linux.dev, AJvYcCXYN9tyyH9eDkNaqj/gqVgS/44oOvNbU2ONtNDb5IMOSHrwea3/iLbyeiCNQTcEBp4bimXVchRv9gI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywg5/3eO6OwzKQuhvcyKjxjJgHWW+saJ3hq3BgMNQ9xFvjzcX/g
+	6oJgqoXdxdfqd7BGpjjv4Y1tzvNcxS3uhntksfQ30DaWGVX0ZBkkcMmA
+X-Gm-Gg: ASbGncuxp+XXTA5EnTIv9etQ3LvGVP5LVYkOh+d6+8OUOPA/9KNdGA2SNJL/xN7zoug
+	buTnQ3NC0irXc4eLFhGfVhwK6W9p6cfcohomu49KFK+CZFNbWGNXkH1WXzVTpAIsZWt+QYiTauw
+	M/QtxugwtQDfZvWSpel2cAkMB7VK45QbRFwzb2G9z2yZo4mR/1FkC1SeIjmMgVk6Oijv+SD4HQ1
+	YmSG7KQ86xWfZuzIK5WTgFUVVnav6yqdaJoiJEZr9wKqtCCkG1yZ/Su37wBJNaRfcMwC10iOXeh
+	KPgJzcFODvurWG+ToeNPJtF75zndGp+LFzASE9vPrd7f+fH8DWbTNVOIYxnfZdRj4OAYDP3Rbbg
+	cxjcSupFYZ8C0htqryJdKs8w8GX2nF/X6NevapbrtNb34KTAh
+X-Google-Smtp-Source: AGHT+IEq5h6QpOWbOPcXEokI/1kkApz0WSZPNMsqb+qTO25Obu6S4fRERowIAa6crf+gSKsbxpYBWg==
+X-Received: by 2002:a05:6000:2891:b0:3a5:2b75:56cc with SMTP id ffacd0b85a97d-3a531cac39cmr14409541f8f.23.1749554139143;
+        Tue, 10 Jun 2025 04:15:39 -0700 (PDT)
+Received: from orome (p200300e41f281b00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1b00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5323ad414sm12186802f8f.31.2025.06.10.04.15.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 04:15:37 -0700 (PDT)
+Date: Tue, 10 Jun 2025 13:15:35 +0200
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, 
+	Huacai Chen <chenhuacai@loongson.cn>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Huacai Chen <chenhuacai@kernel.org>, linux-mmc@vger.kernel.org, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Taichi Sugaya <sugaya.taichi@socionext.com>, 
+	Takao Orito <orito.takao@socionext.com>, Ben Dooks <ben-linux@fluff.org>, 
+	Jaehoon Chung <jh80.chung@samsung.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Kamal Dasu <kamal.dasu@broadcom.com>, Al Cooper <alcooperx@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, Avi Fishman <avifishman70@gmail.com>, 
+	Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, 
+	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, 
+	Benjamin Fair <benjaminfair@google.com>, openbmc@lists.ozlabs.org, Michal Simek <michal.simek@amd.com>, 
+	Joel Stanley <joel@jms.id.au>, linux-aspeed@lists.ozlabs.org, 
+	Aubin Constans <aubin.constans@microchip.com>, Eugen Hristev <eugen.hristev@linaro.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Yixun Lan <dlan@gentoo.org>, linux-riscv@lists.infradead.org, 
+	spacemit@lists.linux.dev, Jacky Huang <ychuang3@nuvoton.com>, 
+	Shan-Chun Hung <schung@nuvoton.com>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
+	Daniel Machon <daniel.machon@microchip.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	linux-tegra@vger.kernel.org, Hu Ziji <huziji@marvell.com>
+Subject: Re: [PATCH v3 01/35] mmc: sdhci: Use devm_mmc_alloc_host() helper
+Message-ID: <72va4ohv5djerrqe6jwtas6j2yg5f4xkcfxpsmadclh25mhjlh@2zwl3d52ubvy>
+References: <cover.1749127796.git.zhoubinbin@loongson.cn>
+ <dcfce3ddf980563c590f82c1b4e8840c29497887.1749127796.git.zhoubinbin@loongson.cn>
+ <t5caqkvguurw2dwzn7wkbjo5ryv3jp3eppjzhdwgx6q6vro2q2@onqqr6v3whdo>
+ <6ab83033-1349-4d5e-8d1f-8a13d851abf4@loongson.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="k45u4zwumvcsy4c2"
+Content-Disposition: inline
+In-Reply-To: <6ab83033-1349-4d5e-8d1f-8a13d851abf4@loongson.cn>
+
+
+--k45u4zwumvcsy4c2
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 Subject: Re: [PATCH v3 01/35] mmc: sdhci: Use devm_mmc_alloc_host() helper
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, Huacai Chen
- <chenhuacai@loongson.cn>, Ulf Hansson <ulf.hansson@linaro.org>,
- Adrian Hunter <adrian.hunter@intel.com>, Huacai Chen
- <chenhuacai@kernel.org>, linux-mmc@vger.kernel.org,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Taichi Sugaya <sugaya.taichi@socionext.com>,
- Takao Orito <orito.takao@socionext.com>, Ben Dooks <ben-linux@fluff.org>,
- Jaehoon Chung <jh80.chung@samsung.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Kamal Dasu <kamal.dasu@broadcom.com>, Al Cooper <alcooperx@gmail.com>,
- Haibo Chen <haibo.chen@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- imx@lists.linux.dev, Avi Fishman <avifishman70@gmail.com>,
- Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>,
- Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
- Benjamin Fair <benjaminfair@google.com>, openbmc@lists.ozlabs.org,
- Michal Simek <michal.simek@amd.com>, Joel Stanley <joel@jms.id.au>,
- linux-aspeed@lists.ozlabs.org, Aubin Constans
- <aubin.constans@microchip.com>, Eugen Hristev <eugen.hristev@linaro.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Yixun Lan <dlan@gentoo.org>,
- linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
- Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
- Steen Hegelund <Steen.Hegelund@microchip.com>,
- Daniel Machon <daniel.machon@microchip.com>,
- Vignesh Raghavendra <vigneshr@ti.com>,
- Patrice Chotard <patrice.chotard@foss.st.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, linux-tegra@vger.kernel.org,
- Hu Ziji <huziji@marvell.com>
-References: <cover.1749127796.git.zhoubinbin@loongson.cn>
- <dcfce3ddf980563c590f82c1b4e8840c29497887.1749127796.git.zhoubinbin@loongson.cn>
- <t5caqkvguurw2dwzn7wkbjo5ryv3jp3eppjzhdwgx6q6vro2q2@onqqr6v3whdo>
-From: Binbin Zhou <zhoubinbin@loongson.cn>
-In-Reply-To: <t5caqkvguurw2dwzn7wkbjo5ryv3jp3eppjzhdwgx6q6vro2q2@onqqr6v3whdo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:qMiowMDxOcQoB0hoWTcUAQ--.17S2
-X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7WFWxKr47tF1xXryUXw13Awc_yoW8uw1rpa
-	15Za48Cr4UWF45KrZrA3WjkFyvqw40qrWUK34fXw1rZF4jyryqqFZxCFWjvFn8Cr1UKa4I
-	vF4kWF15CFy8AabCm3ZEXasCq-sJn29KB7ZKAUJUUUUA529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Eb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	GcCE3s1ln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
-	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5
-	McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7
-	CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l
-	4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxV
-	WUGVWUWwC2zVAF1VAY17CE14v26rWY6r4UJwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
-	14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20x
-	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8
-	JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUeVpB3UUUUU==
+MIME-Version: 1.0
 
-Hi Thierry:
+On Tue, Jun 10, 2025 at 06:21:27PM +0800, Binbin Zhou wrote:
+> Hi Thierry:
+>=20
+> On 2025/6/10 17:42, Thierry Reding wrote:
+> > On Sat, Jun 07, 2025 at 03:33:34PM +0800, Binbin Zhou wrote:
+> > > Use new function devm_mmc_alloc_host() to simplify the code.
+> > >=20
+> > > Although sdhci_free_host() is no longer needed, to avoid drivers that=
+ still
+> > > use this function from failing to compile, sdhci_free_host() is tempo=
+rarily
+> > > set to empty. Finally, it will be removed when there are no more call=
+ers.
+> > >=20
+> > > Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+> > > ---
+> > >   drivers/mmc/host/sdhci.c | 3 +--
+> > >   1 file changed, 1 insertion(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> > > index 32fa0b2bb912..ee5a5ae4db31 100644
+> > > --- a/drivers/mmc/host/sdhci.c
+> > > +++ b/drivers/mmc/host/sdhci.c
+> > > @@ -4076,7 +4076,7 @@ struct sdhci_host *sdhci_alloc_host(struct devi=
+ce *dev,
+> > >   	WARN_ON(dev =3D=3D NULL);
+> > > -	mmc =3D mmc_alloc_host(sizeof(struct sdhci_host) + priv_size, dev);
+> > > +	mmc =3D devm_mmc_alloc_host(dev, sizeof(struct sdhci_host) + priv_s=
+ize);
+> > >   	if (!mmc)
+> > >   		return ERR_PTR(-ENOMEM);
+> > > @@ -5002,7 +5002,6 @@ EXPORT_SYMBOL_GPL(sdhci_remove_host);
+> > >   void sdhci_free_host(struct sdhci_host *host)
+> > >   {
+> > > -	mmc_free_host(host->mmc);
+> > >   }
+> > Is there any point in keeping the sdhci_free_host() function around now?
+> > I only see patches 1 and 31, so not sure if anything happens in between.
+>=20
+> To minimize email delivery failures, I handle each driver patch by sending
+> it to the relevant person, while sending patches 0 and 1 to everyone.
+>=20
+> Keeping sdhci_free_host() as suggested by Adrian[1] is to minimize
+> disruption to the compilation process. We first set sdhci_free_host() to
+> empty, and once all callers have been cleaned up, we will remove it[2].
+>=20
+> Of course, perhaps I should also CC the final patch[2] to everyone, which
+> would make the entire process clearer.
 
-On 2025/6/10 17:42, Thierry Reding wrote:
-> On Sat, Jun 07, 2025 at 03:33:34PM +0800, Binbin Zhou wrote:
->> Use new function devm_mmc_alloc_host() to simplify the code.
->>
->> Although sdhci_free_host() is no longer needed, to avoid drivers that still
->> use this function from failing to compile, sdhci_free_host() is temporarily
->> set to empty. Finally, it will be removed when there are no more callers.
->>
->> Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
->> ---
->>   drivers/mmc/host/sdhci.c | 3 +--
->>   1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
->> index 32fa0b2bb912..ee5a5ae4db31 100644
->> --- a/drivers/mmc/host/sdhci.c
->> +++ b/drivers/mmc/host/sdhci.c
->> @@ -4076,7 +4076,7 @@ struct sdhci_host *sdhci_alloc_host(struct device *dev,
->>   
->>   	WARN_ON(dev == NULL);
->>   
->> -	mmc = mmc_alloc_host(sizeof(struct sdhci_host) + priv_size, dev);
->> +	mmc = devm_mmc_alloc_host(dev, sizeof(struct sdhci_host) + priv_size);
->>   	if (!mmc)
->>   		return ERR_PTR(-ENOMEM);
->>   
->> @@ -5002,7 +5002,6 @@ EXPORT_SYMBOL_GPL(sdhci_remove_host);
->>   
->>   void sdhci_free_host(struct sdhci_host *host)
->>   {
->> -	mmc_free_host(host->mmc);
->>   }
-> Is there any point in keeping the sdhci_free_host() function around now?
-> I only see patches 1 and 31, so not sure if anything happens in between.
+Makes sense, and no worries. There's no great solution to this. Either
+you send to everyone and you get complaints, or you send to too few
+people and you get complaints.
 
-To minimize email delivery failures, I handle each driver patch by 
-sending it to the relevant person, while sending patches 0 and 1 to 
-everyone.
+Thanks for clarifying.
 
-Keeping sdhci_free_host() as suggested by Adrian[1] is to minimize 
-disruption to the compilation process. We first set sdhci_free_host() to 
-empty, and once all callers have been cleaned up, we will remove it[2].
+Thierry
 
-Of course, perhaps I should also CC the final patch[2] to everyone, 
-which would make the entire process clearer.
+--k45u4zwumvcsy4c2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-[1]: 
-https://lore.kernel.org/all/78ffbae6-1c75-46ac-a5d7-bbc07bca1fd0@intel.com/
+-----BEGIN PGP SIGNATURE-----
 
-[2]: 
-https://lore.kernel.org/all/8adcfef00fd4bc40f33f5fd42d2e5e73d72e68e4.1749127796.git.zhoubinbin@loongson.cn/
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmhIE9cACgkQ3SOs138+
+s6GQBA//Uwo2UNmg6Kz2FmjupP6jInce88oeU0wuRA2eXLJxily+e6i9k6VcnYrB
+FwkVmYo7qNRUixAA6TkZuDe74mN5rUrDAgMaF8pLMvQ2tFXS8BO+02jTedHffhet
+v6GXZJ4hARWlGL6EY5jGfWa7PIMtlXGyPiRmCH8gXSW3qoo6O5mfLLdWi6brHhts
+lX3z6DxsSVN52Pa/95zoQQQ8eyQtdcYDWHqeTivi5Y82gDy6P24+1BLWiTfCTzEw
+D2Cl3DgKUu1qKrMwG9V0gQyc6bmNFdJuS3BLA37hKPFOMrD0zS7SQsX2pt+yoMxO
+zKjO5P3kkQFTJJhP6gDoXscax9d80EsHUgKOOdkLVp+3SmGLZ039rI94BGhHc1by
+78S5I+HpQKr3B+WlwRBQqoQtTDDFB8lP2D0LRClGyW50bIDHwHU087JYcoCck13W
+xHDXXMIsVCU3NKmXT8bI5GFF4WVlI8oAcHEtRTZRJy8IcSZa7fn8QYdIDwOmTjM7
+Y5SY2/GHPYmcfHeUaGACsFGB8vCCdVi9qVCQtw9M3OjORZ3Hu6wCQ3BpQesJsJO+
+CHX7XcTnKxG/o9LGeeimJMjqHK/oA4HU9/HXoqJgmlIDDr0nI3N6EVOPDL3CNATV
+L81QfkNDQ+ORICzcQsgi8Q5Rbi5P7fOsmRpdcEck9u4NZGbgD4M=
+=tny8
+-----END PGP SIGNATURE-----
 
-
-Thanks.
-Binbin
-
->
-> Thierry
-
+--k45u4zwumvcsy4c2--
