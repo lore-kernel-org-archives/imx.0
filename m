@@ -1,90 +1,130 @@
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6302213790B
-	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 06:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CA121D594
+	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 07:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749536190; cv=none; b=LGcA9ASODwzae8o0JWca5tJazZenNye2zgNBiJlHIxMB9JkCIRu+yv8XrOXlqXa3Rx6wNnQxcHuFRgPEjbs/870uBTidXtFOlNyU31o715gzMVHaj+L2Suy1hQ+knNDjo/XgJhShJ73MPxkAQLmP6D4pR8q2xp9A4Er+jFQqIx8=
+	t=1749539563; cv=none; b=NUaeN5IDkdGQThWeTWpI/KUzq1g0zTrN99JPdaIgNpzy0La2Ir01pINRmaW/bgWLYL8r281MwuorAHiQfvcdNuRtYS3lEK4Ap+UCAmNbqyyzxxSasNYTSLP2wz8/U9FeeWyyTI990CwIQJz1ujLffWVHTV6b3rI240pZxfB/Q0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749536190; c=relaxed/simple;
-	bh=x0Xt63bNLSJDQD8ocdTTG0aGRtfg3vP02MPH/I2anUs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q2GnCm5+ivCb4T85qN+MY6lFgyJV6QIfnaDzDCFfxCQ+HHsw2wXhmrJYGIC4C7f1pPfGH/jpP51Gs+k4460+PXymW4U8cq0S0vIsS0MwHb2tTDv03wGKunx69rAx7mM7b46i3EJJaUmw4G9IR75n+6Q8jNThnUJe6U341Kn2D20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=DxP4gN/o; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+	s=arc-20240116; t=1749539563; c=relaxed/simple;
+	bh=DXw/aHoO9WgBP02VjUM0ndsg+Bzs/qIHJdOqcWLJZsc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l23pa2eTlZYTlTKqO4jdEhA7Wkl9PfemtGOVUJ2snJMBb/rv3uDNjKMNfnbFxIv/9cCnKp98XzvIPs65n8pFzaLmStjAmjDFwTMpCgSgEHjcBk/YMXA1gKvNGXPnY7SW2R9XjcB/k40Uqi7lfyNzW1ahu9tsJlBij4Gqtpvmnas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=kzSTQtMJ; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=LMsECaz/ reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="DxP4gN/o"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AB8E81485BB5;
-	Tue, 10 Jun 2025 08:08:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1749535683; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=I4ti+/foQg3QbjYgEJL1AVz6uH68ooxEzV0rGfw+TYU=;
-	b=DxP4gN/oqr6gN9kmsdPBSyeLw6tkZIOAmwNldabPG+7Hhp9EtGCtotcehqu0dNUnjHlOAT
-	LUIMnguyEn0vT5FWSRzuscfaELFyJOCVX1wO0fZcHVSYt+HJDqUwaayGGPj3Hakr3cg0Gn
-	bnaPOVZtSmsP/J+kZRd8jUoHnr+ratbdESmBrU1vRgAaK+m8fShfZXIYEUyJ+Wv6C3AC1m
-	Nv1QLKDjAZcP5FBDWSbj7o0TrI97MxCRCFA8K8AuiGpw9v8KPJxU4DSPYyKKEG2J9K2UnP
-	9U+cEqXuI8FsOxG9eSbLlMNp0TuSRFkP9Vgel0sLaD5fzh6IZdzJry7VcrjbEw==
-From: Alexander Dahl <ada@thorsis.com>
-To: devicetree@vger.kernel.org
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] arm64: dts: imx8dxl-ss-conn: Disable USB3 nodes
-Date: Tue, 10 Jun 2025 08:07:56 +0200
-Message-Id: <20250610060756.8212-1-ada@thorsis.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="kzSTQtMJ";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="LMsECaz/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1749539560; x=1781075560;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=IA7dsIXLKv7cmvpo+Mybfca1vUSev2LFZHY5ABbB46A=;
+  b=kzSTQtMJLxjT2xtm53rzhkGvilF3ple1IFiylaGbA8CL+cteRP9XUBiM
+   C/IcdrP7qDZiGReqC+fBBhryRU0jtOtCalV0aiYa3bSQ9SeWJ8bUy4kK1
+   579fGEE8MZePOzFjFW56uUoPnO7E0wBd3tdP4xGr/XqPFNwcwBkOCH0m2
+   JxTqB8Dic2e0sEErWr3V0VkQF5G3Ybg+6utGkx9u2+Xb96wbvITPm0TSH
+   n0YmsV1vZtNjNS0utNkOu1M+rAEiV8FmH368uUqb0LuLgBfxkcOdjDtvB
+   H6fE3QJrEX/KxVvoDEEhoGbFa0RZrvDJuMD7iPQ73JfG3stKhmm4+uscU
+   g==;
+X-CSE-ConnectionGUID: fA3TVHqiRBOxqf/Q+mGaRw==
+X-CSE-MsgGUID: rGinyqaER6WoZUKPcnwIwg==
+X-IronPort-AV: E=Sophos;i="6.16,224,1744063200"; 
+   d="scan'208";a="44535023"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 10 Jun 2025 09:12:32 +0200
+X-CheckPoint: {6847DAE0-18-476CAA88-C60F6DCB}
+X-MAIL-CPID: 1FD1400D779E047ACCE98C823177DC56_1
+X-Control-Analysis: str=0001.0A00639C.6847DB01.000A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8EBD51644F0;
+	Tue, 10 Jun 2025 09:12:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1749539548;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IA7dsIXLKv7cmvpo+Mybfca1vUSev2LFZHY5ABbB46A=;
+	b=LMsECaz/6WqFjW9c9hSzKZqdCwCDa7iRyEGktjb4aXxAdE5PcO/HeMC4dPHYHX7JQPA1El
+	vXGolpoMVPdD7IQJnJ6KwBqcC4k45BGMW7vwqyQ/YmC67Uv4eRwEXUiGINXBn+Uy+4NMn2
+	bPwnSoUdO8j+Xd/1/t2eGCBNBiEW1sCC8cA7ra3vAoRVQZlSZ0z20Zn7ebMuDCSEMhrxqD
+	i9HSyP3CGV7a67V/4HtqEUdfrYbINCxTkuxz09QQBjiCqaVbClP/Sx6mWEIcLHEiNvzYyn
+	Uju+GLjSwjvb33OwFT7TTbhiulKoA85W4XOkn3JVfHYfAqKi/CNvKCPPMEWLHA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: linux-media@vger.kernel.org,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Isaac Scott <isaac.scott@ideasonboard.com>,
+ Rui Miguel Silva <rmfrfs@gmail.com>, Martin Kepplinger <martink@posteo.de>,
+ Purism Kernel Team <kernel@puri.sm>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject:
+ Re: [PATCH 2/8] media: imx-mipi-csis: Fix field alignment in register dump
+Date: Tue, 10 Jun 2025 09:12:26 +0200
+Message-ID: <12685072.O9o76ZdvQC@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250608235840.23871-3-laurent.pinchart@ideasonboard.com>
+References:
+ <20250608235840.23871-1-laurent.pinchart@ideasonboard.com>
+ <20250608235840.23871-3-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 X-Last-TLS-Session-Version: TLSv1.3
 
-The i.MX 8DualXLite/8SoloXLite has a different connectivity memory map
-than the generic i.MX8 has.  One conflicting resource is usb, where the
-imx8dxl has a second usb2 phy @5b110000, while the generic imx8 dtsi has
-one usb2 phy and one usb3 phy, and the usb3otg @5b110000.  When
-including both imx8dxl-ss-conn.dtsi and imx8-ss-conn.dtsi as done in
-imx8dxl.dtsi this leads to a duplicate unit-address warning.
+Hi Laurent,
 
-The usb3otg node was introduced after the initial imx8dxl support with
-commit a8bd7f155126 ("arm64: dts: imx8qxp: add cadence usb3 support")
-and since then leads to warnings like this (when building with ptxdist):
+thanks for the patch.
 
-    CPP generic/platform-v8a/build-target/linux-6.12/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-    DTC generic/platform-v8a/packages/linux-6.12/boot/imx8dxl-evk.dtb
-    /home/adahl/Work/bsp/thorsis/generic/platform-v8a/build-target/linux-6.12/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi:148.24-182.4: Warning (unique_unit_address): /bus@5b000000/usb@5b110000: duplicate unit-address (also used in node /bus@5b000000/usbphy@5b110000)
+Am Montag, 9. Juni 2025, 01:58:34 CEST schrieb Laurent Pinchart:
+> Commit 95a1379004cb ("media: staging: media: imx: imx7-mipi-csis: Dump
+> MIPI_CSIS_FRAME_COUNTER_CH0 register") forgot to increase the maximum
+> register name length, resulting in misalignment of names printed in the
+> kernel log. Fix it.
 
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
----
- arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+Does this warrant a Fixes tag? Anyway
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-index 9b114bed084b..a66ba6d0a8c0 100644
---- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-@@ -5,6 +5,8 @@
- 
- /delete-node/ &enet1_lpcg;
- /delete-node/ &fec2;
-+/delete-node/ &usbotg3;
-+/delete-node/ &usb3_phy;
- 
- / {
- 	conn_enet0_root_clk: clock-conn-enet0-root {
+>=20
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+>  drivers/media/platform/nxp/imx-mipi-csis.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/p=
+latform/nxp/imx-mipi-csis.c
+> index d59666ef7545..b652d59851c2 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -895,7 +895,7 @@ static int mipi_csis_dump_regs(struct mipi_csis_devic=
+e *csis)
+> =20
+>  	for (i =3D 0; i < ARRAY_SIZE(registers); i++) {
+>  		cfg =3D mipi_csis_read(csis, registers[i].offset);
+> -		dev_info(csis->dev, "%14s: 0x%08x\n", registers[i].name, cfg);
+> +		dev_info(csis->dev, "%17s: 0x%08x\n", registers[i].name, cfg);
+>  	}
+> =20
+>  	pm_runtime_put(csis->dev);
+>=20
 
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
--- 
-2.39.5
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
