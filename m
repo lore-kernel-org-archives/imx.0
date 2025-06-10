@@ -1,44 +1,52 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADF922B8CB;
-	Tue, 10 Jun 2025 07:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17631C8611
+	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 07:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749540283; cv=none; b=a5w5T64sR80XZ2xpCiRNLowKynFPMgYdmfry18zi4OlXkXUWkImwDeR3IpdQMit0LHs4ygSZhBps8ylJFkwklnaPOorY0TN3oPeCGWd/5NfNeyccHR6rd9tEP7NISaZIMIcBKVVIsinncAGFYFMPtPY0waL5OvM9XqJm6SsOSlg=
+	t=1749541682; cv=none; b=aaeSj03GWHAMbIr/h8w/FYO/OXDVqvtCQOdAT5d0psiCTb7hiYDN8JJVRZ4544d3nVOTllRHWJmA8v/WDkV4/hRPIxlEPzpkVRBA2rrlhv8rcgZHbixqvIZnW4sQgiaxKY0IHL4gHia/8FY12vIFy0Z479GCRWczOTqtfRAxSo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749540283; c=relaxed/simple;
-	bh=lc8UFtQQBjZAimb2twHYvmy8+mDtymOWgoS4qaJHG1U=;
+	s=arc-20240116; t=1749541682; c=relaxed/simple;
+	bh=b51keoelKKzth1odgCRNUV1Z6FySj2LHiGzcMDL7AiY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GJVnT/FzSQvzd12zVZB7mB7FoD2XKsEGOHtnnQ0PKblQFqp2Nwq+MismI8pI8/QAHxA0W7FMMmuV55ppqgJyqevZfL5oqPGvU5/jGBq0JHsgK0TxxbCjm6d07xFfAEXiRWiHNLtGQ1CmVxQHO5joMFU9TFfCbv0u92kw9hLeipQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pdJ99Gbl; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GYy5A/8tCh8zxQJtNAfWyY7PIfAucbPVNdTS3EImNYl8sWXX4cBZNZInH14Iq39fZBG71shpQQ8ptlndA2xZMdI9e/DdXKZTvUM7dyCOP2d81Q7PGY2VZF0FwPMHsB/QBwkPmeeLATvZd4iJctx4Ki/jbHrQK8fJOsSEEHZuzVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=at/McZg3; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pdJ99Gbl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FC8C4CEEF;
-	Tue, 10 Jun 2025 07:24:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749540282;
-	bh=lc8UFtQQBjZAimb2twHYvmy8+mDtymOWgoS4qaJHG1U=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="at/McZg3"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 574032EC;
+	Tue, 10 Jun 2025 09:47:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1749541664;
+	bh=b51keoelKKzth1odgCRNUV1Z6FySj2LHiGzcMDL7AiY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pdJ99GblQqDmDeQjiQqHTN1/NuxDWFmZFZ/bda0ZG1QdUi3pBpQ5tXVbSn0D7f4kf
-	 Xct4CyZAzfA2d2ivm0KkOm/dQXMQo8VUmhHSWH8EkPPQr7wSauBON4gRaE0f71sZu5
-	 h0dkEvGY0o6YXF5tH6ZSrSxz4b34xkyAy2pDTmr4HCRL8Gf943jQC5X9mZ327fJ22+
-	 CDm9yB5RnTRzcMQjztOow3EVG98qfU8LAWoAEd5DN9hHo6aByYYSjK+FRAf2r1/UH4
-	 6yzhwWPgrAuYCDqfxzqJ3mmyvObuDDdS02sw6JLhsgWtXpf2C0D3qV7cEzqeRGInfV
-	 fSVn14mi17zIw==
-Date: Tue, 10 Jun 2025 09:24:40 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Stefan Wahren <wahrenst@gmx.net>, "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: net: convert qca,qca7000.txt yaml
- format
-Message-ID: <20250610-thick-gifted-tuna-7eab4f@kuoka>
-References: <20250606155118.1355413-1-Frank.Li@nxp.com>
+	b=at/McZg3E4l7ZhmPDrIOKzUL3dOSMjSSjFr0m9sVsPl/DGEJhD/sffQ1JzfSXaHNi
+	 teOAt95GmnZiIMfTwQ9EAu0GO/ldTrYBv5PsItaK+l/bXKx9EssMnx+e1j8lVqV4aK
+	 5LYLpgkWkCR7V/xTnk8CNRW3zbTbtPr4wq9mQewo=
+Date: Tue, 10 Jun 2025 10:47:39 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux-media@vger.kernel.org, Isaac Scott <isaac.scott@ideasonboard.com>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/8] media: imx-mipi-csis: Fix field alignment in
+ register dump
+Message-ID: <20250610074739.GC24465@pendragon.ideasonboard.com>
+References: <20250608235840.23871-1-laurent.pinchart@ideasonboard.com>
+ <20250608235840.23871-3-laurent.pinchart@ideasonboard.com>
+ <12685072.O9o76ZdvQC@steina-w>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,117 +55,43 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250606155118.1355413-1-Frank.Li@nxp.com>
+In-Reply-To: <12685072.O9o76ZdvQC@steina-w>
 
-On Fri, Jun 06, 2025 at 11:51:17AM GMT, Frank Li wrote:
-> +description: |
-> +  The QCA7000 is a serial-to-powerline bridge with a host interface which could
-> +  be configured either as SPI or UART slave. This configuration is done by
-> +  the QCA7000 firmware.
-> +
-> +  (a) Ethernet over SPI
-> +
-> +  In order to use the QCA7000 as SPI device it must be defined as a child of a
-> +  SPI master in the device tree.
-> +
-> +  (b) Ethernet over UART
-> +
-> +  In order to use the QCA7000 as UART slave it must be defined as a child of a
-> +  UART master in the device tree. It is possible to preconfigure the UART
-> +  settings of the QCA7000 firmware, but it's not possible to change them during
-> +  runtime
-> +
-> +properties:
-> +  compatible:
-> +    const: qca,qca7000
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +if:
+On Tue, Jun 10, 2025 at 09:12:26AM +0200, Alexander Stein wrote:
+> Am Montag, 9. Juni 2025, 01:58:34 CEST schrieb Laurent Pinchart:
+> > Commit 95a1379004cb ("media: staging: media: imx: imx7-mipi-csis: Dump
+> > MIPI_CSIS_FRAME_COUNTER_CH0 register") forgot to increase the maximum
+> > register name length, resulting in misalignment of names printed in the
+> > kernel log. Fix it.
+> 
+> Does this warrant a Fixes tag? Anyway
 
-Please put this if: inside allOf: section, so you won't need to
-re-indent it when adding one more if-clause.
+I would then have to Cc stable as per the media subsystem rules, and I
+really don't think this patch warrants being backported to stable
+kernels.
 
-> +  required:
-> +    - reg
-> +
-> +then:
-> +  properties:
-> +    spi-cpha: true
-> +
-> +    spi-cpol: true
-> +
-> +    spi-max-frequency:
-> +      default: 8000000
-> +      maximum: 16000000
-> +      minimum: 1000000
-> +
-> +    qca,legacy-mode:
+> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> 
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > ---
+> >  drivers/media/platform/nxp/imx-mipi-csis.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > index d59666ef7545..b652d59851c2 100644
+> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > @@ -895,7 +895,7 @@ static int mipi_csis_dump_regs(struct mipi_csis_device *csis)
+> >  
+> >  	for (i = 0; i < ARRAY_SIZE(registers); i++) {
+> >  		cfg = mipi_csis_read(csis, registers[i].offset);
+> > -		dev_info(csis->dev, "%14s: 0x%08x\n", registers[i].name, cfg);
+> > +		dev_info(csis->dev, "%17s: 0x%08x\n", registers[i].name, cfg);
+> >  	}
+> >  
+> >  	pm_runtime_put(csis->dev);
 
-This should be defined in top-level properties and you only do:
-"foo: false" in "else:" part.
+-- 
+Regards,
 
-> +      $ref: /schemas/types.yaml#/definitions/flag
-> +      description:
-> +        Set the SPI data transfer of the QCA7000 to legacy mode.
-> +        In this mode the SPI master must toggle the chip select
-> +        between each data word. In burst mode these gaps aren't
-> +        necessary, which is faster. This setting depends on how
-> +        the QCA7000 is setup via GPIO pin strapping. If the
-> +        property is missing the driver defaults to burst mode.
-> +
-> +  allOf:
-> +    - $ref: /schemas/spi/spi-peripheral-props.yaml#
-
-This should be part of top-level allOf.
-
-> +
-> +else:
-> +  properties:
-> +    current-speed:
-> +      default: 115200
-> +
-> +  allOf:
-> +    - $ref: /schemas/serial/serial-peripheral-props.yaml#
-
-Same here.
-
-> +
-> +allOf:
-> +  - $ref: ethernet-controller.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        ethernet@0 {
-> +            compatible = "qca,qca7000";
-> +            reg = <0x0>;
-> +            interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
-> +            interrupts = <25 0x1>;            /* Index: 25, rising edge */
-> +            spi-cpha;                         /* SPI mode: CPHA=1 */
-> +            spi-cpol;                         /* SPI mode: CPOL=1 */
-> +            spi-max-frequency = <8000000>;    /* freq: 8 MHz */
-> +            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
-> +        };
-> +    };
-> +
-> +  - |
-> +    serial {
-> +        ethernet {
-> +            compatible = "qca,qca7000";
-> +            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
-> +            current-speed = <38400>;
-> +        };
-
-Best regards,
-Krzysztof
-
+Laurent Pinchart
