@@ -1,91 +1,150 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD6721B9FF
-	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 10:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF6E28C5AB;
+	Tue, 10 Jun 2025 10:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749550673; cv=none; b=u+gCMnB7V78mhr1vbt52MgZhHN1/GCrjRsEvOesYslLcLvk3my/QJ0HT/FzjtJG7/TsNVkU+5JORRAz82LGTcw8NRDPgKnVrBz6YHdaZA1dr0y3zVWTDczr+usqF9cG0oy6ALPlbnfoDEbAnN5jVQDQgs0Sfbro7A/EGxeTP+gA=
+	t=1749550910; cv=none; b=cqLK5NdDFUNm5TIRkGWPgtHPglcuQe9/268VPaCzBN6TcggT/TSGabXkKVJyn4lDs2OJUFQfG/eM+WVc8dHvrycCrgLprMAwfR1Sz3yqQsAM/CYmQIeFnr8lm/p8QDt4NTjxFWQIXs1L20amlzeRoGYisL/rCnCkbM9580YtYvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749550673; c=relaxed/simple;
-	bh=zPVnp1uFz6ezXexDiXFt/QExs+FjII/ZQVdaoHxweBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tuN6c8vUhxwC4OND4pevsVbpiIDluIkRpDCRsQWltgvOXhene+Gt25/DjZsLfGiBHhgIgjwiwe52F+1kiZLfkbzKS5izux7BJC1x/B0m1rYqQ2uJS//vOwY9DJSt1xrgANzZSoGj0SrFQ1TbLjeBZFHttBKo4h0EInxp1lEaLJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=jG12wcnh; arc=none smtp.client-ip=220.197.32.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="jG12wcnh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=Pgg2mLehIG4sW1T+6g2YquviHKO39IVuKuCo2yGa6ec=;
-	b=jG12wcnhget0oYtzN2fj4tLvRJetIqjOpBoGVKmuIbqv8rcHUCsfvHsqh9zDyO
-	tXh5wa75Egbi9zPJFsL3SN8TZ5c6SXffLIWMIruvnmn8ni7LjSRCKekefFo0GAJp
-	SENzwVIxKPLZLaWicytt7ptq20dmOOj0A3PsFr3EVqA9U=
-Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgAHnk8wBkhoU2NXAA--.14402S3;
-	Tue, 10 Jun 2025 18:17:22 +0800 (CST)
-Date: Tue, 10 Jun 2025 18:17:20 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: "Peter Chen (CIX)" <peter.chen@kernel.org>
-Cc: John Ernberg <john.ernberg@actia.se>, Xu Yang <xu.yang_2@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: i.MX kernel hangup caused by chipidea USB gadget driver
-Message-ID: <aEgGMCCdO3rc6Dkg@dragon>
-References: <aEZxmlHmjeWcXiF3@dragon>
- <c56pgxmfscg6tpqxjayu4mvxc2g5kgmfitpvp36lxulpq4jxmg@ces5l7ofab6s>
- <aEbstxkQmji4tfjf@w447anl.localdomain>
- <20250610021243.GA1610560@nchen-desktop>
+	s=arc-20240116; t=1749550910; c=relaxed/simple;
+	bh=83dLs1W0SUF6G9on9GAeFmui9zBttsQCPVnOanN018I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nuDN4eOB75XxREiR3ZzWqJGF7lVR25JtJe27vkv+GR7JGXZwl0aFbLiLwu8dmggHMTLGvR2hl0rX7F0upTldc1q9xyEhv5+qZ57kUe2nut0SgzwB8Lw1FVif46Cc9kmucdR5Dv5JLwLvd0JMHPO31TyeNmFKyvexpM5kPNwK1XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.3])
+	by gateway (Coremail) with SMTP id _____8CxNHAyB0hoQZgSAQ--.45546S3;
+	Tue, 10 Jun 2025 18:21:38 +0800 (CST)
+Received: from [127.0.0.1] (unknown [223.64.69.3])
+	by front1 (Coremail) with SMTP id qMiowMDxOcQoB0hoWTcUAQ--.17S2;
+	Tue, 10 Jun 2025 18:21:34 +0800 (CST)
+Message-ID: <6ab83033-1349-4d5e-8d1f-8a13d851abf4@loongson.cn>
+Date: Tue, 10 Jun 2025 18:21:27 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250610021243.GA1610560@nchen-desktop>
-X-CM-TRANSID:Mc8vCgAHnk8wBkhoU2NXAA--.14402S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uFWfXFWfury8Xw47Cr45ZFb_yoW8Ww1fpa
-	yakw4fKw4DtrWYyFnF9r1xta4jkan8tr45CrZrJ345Za43u34Sqr4xKry5K3WUGr13uw1q
-	vr4jqw18CrnruaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Um_M3UUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNBK5H2hIBjIyvQAA3b
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/35] mmc: sdhci: Use devm_mmc_alloc_host() helper
+To: Thierry Reding <thierry.reding@gmail.com>
+Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, Huacai Chen
+ <chenhuacai@loongson.cn>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Adrian Hunter <adrian.hunter@intel.com>, Huacai Chen
+ <chenhuacai@kernel.org>, linux-mmc@vger.kernel.org,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Taichi Sugaya <sugaya.taichi@socionext.com>,
+ Takao Orito <orito.takao@socionext.com>, Ben Dooks <ben-linux@fluff.org>,
+ Jaehoon Chung <jh80.chung@samsung.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Kamal Dasu <kamal.dasu@broadcom.com>, Al Cooper <alcooperx@gmail.com>,
+ Haibo Chen <haibo.chen@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ imx@lists.linux.dev, Avi Fishman <avifishman70@gmail.com>,
+ Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>,
+ Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>,
+ Benjamin Fair <benjaminfair@google.com>, openbmc@lists.ozlabs.org,
+ Michal Simek <michal.simek@amd.com>, Joel Stanley <joel@jms.id.au>,
+ linux-aspeed@lists.ozlabs.org, Aubin Constans
+ <aubin.constans@microchip.com>, Eugen Hristev <eugen.hristev@linaro.org>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Yixun Lan <dlan@gentoo.org>,
+ linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+ Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>,
+ Daniel Machon <daniel.machon@microchip.com>,
+ Vignesh Raghavendra <vigneshr@ti.com>,
+ Patrice Chotard <patrice.chotard@foss.st.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, linux-tegra@vger.kernel.org,
+ Hu Ziji <huziji@marvell.com>
+References: <cover.1749127796.git.zhoubinbin@loongson.cn>
+ <dcfce3ddf980563c590f82c1b4e8840c29497887.1749127796.git.zhoubinbin@loongson.cn>
+ <t5caqkvguurw2dwzn7wkbjo5ryv3jp3eppjzhdwgx6q6vro2q2@onqqr6v3whdo>
+From: Binbin Zhou <zhoubinbin@loongson.cn>
+In-Reply-To: <t5caqkvguurw2dwzn7wkbjo5ryv3jp3eppjzhdwgx6q6vro2q2@onqqr6v3whdo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:qMiowMDxOcQoB0hoWTcUAQ--.17S2
+X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7WFWxKr47tF1xXryUXw13Awc_yoW8uw1rpa
+	15Za48Cr4UWF45KrZrA3WjkFyvqw40qrWUK34fXw1rZF4jyryqqFZxCFWjvFn8Cr1UKa4I
+	vF4kWF15CFy8AabCm3ZEXasCq-sJn29KB7ZKAUJUUUUA529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Eb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5
+	McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7
+	CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l
+	4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxV
+	WUGVWUWwC2zVAF1VAY17CE14v26rWY6r4UJwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
+	14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20x
+	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8
+	JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUeVpB3UUUUU==
 
-On Tue, Jun 10, 2025 at 10:12:43AM +0800, Peter Chen (CIX) wrote:
-> Like Alan and Xu's suggestion, there are probably two problems here:
-> - When the system enters the suspend, the USB bus may neither at suspend
-> nor disconnect state if USB controller/phy's power is not off and VBUS
-> is there. So, the host still considers the device is active, it could
-> trigger transfer any time. If the transfer occurs during system resume,
-> the USB controller triggers interrupt to CPU, and USB's interrupt handler
-> is triggered. If the USB's hardware is still at low power mode (or clock
-> is gated off), it may cause system hang (CPU gets error response from USB)
-> after access register.
-> 
-> With Shawn's change, it pulls D+ down during the suspend, and the host
-> is notified of disconnection, so the host will not trigger transfer
-> until D+ is pulled up by calling usb_gadget_connect. The USB leaves
-> low power mode (and turn clock on) before that, the access register
-> will not cause system hang.
+Hi Thierry:
 
-Thanks for the input, Peter!  It's very helpful and well explaining what
-I'm seeing here.
+On 2025/6/10 17:42, Thierry Reding wrote:
+> On Sat, Jun 07, 2025 at 03:33:34PM +0800, Binbin Zhou wrote:
+>> Use new function devm_mmc_alloc_host() to simplify the code.
+>>
+>> Although sdhci_free_host() is no longer needed, to avoid drivers that still
+>> use this function from failing to compile, sdhci_free_host() is temporarily
+>> set to empty. Finally, it will be removed when there are no more callers.
+>>
+>> Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+>> ---
+>>   drivers/mmc/host/sdhci.c | 3 +--
+>>   1 file changed, 1 insertion(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+>> index 32fa0b2bb912..ee5a5ae4db31 100644
+>> --- a/drivers/mmc/host/sdhci.c
+>> +++ b/drivers/mmc/host/sdhci.c
+>> @@ -4076,7 +4076,7 @@ struct sdhci_host *sdhci_alloc_host(struct device *dev,
+>>   
+>>   	WARN_ON(dev == NULL);
+>>   
+>> -	mmc = mmc_alloc_host(sizeof(struct sdhci_host) + priv_size, dev);
+>> +	mmc = devm_mmc_alloc_host(dev, sizeof(struct sdhci_host) + priv_size);
+>>   	if (!mmc)
+>>   		return ERR_PTR(-ENOMEM);
+>>   
+>> @@ -5002,7 +5002,6 @@ EXPORT_SYMBOL_GPL(sdhci_remove_host);
+>>   
+>>   void sdhci_free_host(struct sdhci_host *host)
+>>   {
+>> -	mmc_free_host(host->mmc);
+>>   }
+> Is there any point in keeping the sdhci_free_host() function around now?
+> I only see patches 1 and 31, so not sure if anything happens in between.
 
-> - The current chipidea driver doesn't notify gadget driver when it
-> enters system suspend routine. In fact, during system suspend/resume,
-> the controller driver may not respond middle layer's (network) request 
-> well due to it enters low power mode, so calling usb_gadget_driver->
-> disconnect (composite_disconnect) is needed during controller's suspend
-> routine, it calls function->disable for USB function driver and
-> ends/stop middle layer process.
+To minimize email delivery failures, I handle each driver patch by 
+sending it to the relevant person, while sending patches 0 and 1 to 
+everyone.
 
-This problem can also be addressed by Xu's suggestion, i.e. calling
-gadget driver's suspend hook from udc_suspend()?
+Keeping sdhci_free_host() as suggested by Adrian[1] is to minimize 
+disruption to the compilation process. We first set sdhci_free_host() to 
+empty, and once all callers have been cleaned up, we will remove it[2].
 
-Shawn
+Of course, perhaps I should also CC the final patch[2] to everyone, 
+which would make the entire process clearer.
+
+[1]: 
+https://lore.kernel.org/all/78ffbae6-1c75-46ac-a5d7-bbc07bca1fd0@intel.com/
+
+[2]: 
+https://lore.kernel.org/all/8adcfef00fd4bc40f33f5fd42d2e5e73d72e68e4.1749127796.git.zhoubinbin@loongson.cn/
+
+
+Thanks.
+Binbin
+
+>
+> Thierry
 
