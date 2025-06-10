@@ -1,96 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C35D24728D;
-	Tue, 10 Jun 2025 18:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9DF20A5EC
+	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 18:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749578903; cv=none; b=aK7oQDK3G9tOEg95C/YEeGFXqP1UIDvwEZ9BwEVq1CZAVD/NPof/gJU+/jmEeEvNOOHvZj8Kq2WW5nYaOE+BalaokGgSPWqQDqT8qjvVq1FlhwJ7+/fKvGRN3o4C5cLm/0a8YB5kmebstsFM2Iu32R5zgHAcxI0QJ2jQiIvtVGk=
+	t=1749579579; cv=none; b=j288ZOVEvsodzSRs5jI9Vm7S+NYrRHD11oJXDwpiZ5kJfQ4q/vGgP0n9rEN9DrRCfO2Y1jNHunPcj4jgk4++xfvFwnAMAJxNlm+wNAI59S1KFpxAu1DWId2xhORyO9LbZl3nJ7N+zpMmsKKa0Y646JF2emVSps8/nfj7GpuojGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749578903; c=relaxed/simple;
-	bh=EqLBaFrOMBGQ7zuSKchgyUU5IO7yC/PR2AFrIa0Lguc=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=NWhh/nOxuIkLk6ntZUAAdm+sck7MLjGLqBRI7na4VQML/nJR1CRi9xfvp1v09etQ4yaONd46hhbmCsskXgCMhuvL+iKhFWTdCySElbnVnfjn74STRyK4tHzh6iuXgRHsO1hebO49KoYU5/A0GqbXSFoXo10Tz4G1vJeb8g8aBRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C4X6Ytvx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749579579; c=relaxed/simple;
+	bh=Sf+/PTs/Lz5YxcSzgeZ6krRCOhaKZUsHSbB6B664SQM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sAwi8Pqz3p8Jl0XiNiHiTxgsnPfjzqP6Dt1ngT2wRLlo6La3QzuKyCymElQ7a5jdsrgBa7gr1p5wrLMUqAq3XGDs0DEgHcejQ1OmJgWoxy9dCqE4nd0zAiO9qZXKomu5UdL8F42g+19i44hn22jAIDjtn0148LO7bJDezheDwzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=W1JWv9Kp; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C4X6Ytvx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B3EC4CEF0;
-	Tue, 10 Jun 2025 18:08:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749578902;
-	bh=EqLBaFrOMBGQ7zuSKchgyUU5IO7yC/PR2AFrIa0Lguc=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=C4X6YtvxjNpCzlR1Bfd/uK4KIHTn08RKsw9h+sQqFVu++ch1HzPm5Sb7a0LUKSFCr
-	 zcGersk+Ab0EW6D/F8A/Fqy6EBrSjCeqoL4aJtCGzalh8XdjGLuiIDbMjU4J/PDxeF
-	 e09b/Z6WmqyICn8P2i4nTOMONatoAGYiehJmX8VqkuJsA0LUuVoMgHez5j1RrBDleM
-	 ikKLTWU1MTN6SZjSZBSWCSFqmgHyu+fwaTO/R53MExZCiP7gsejtuvFTHiTb0gmNhd
-	 gp4Xqno3mkhXX9cA1CfLRRrCEbg1gW3vmV2u0QgbuMkVhNGHoS+MXEANOfRRphhd7G
-	 ymwpq6B1xElpA==
-Date: Tue, 10 Jun 2025 13:08:18 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="W1JWv9Kp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1749579569;
+	bh=Sf+/PTs/Lz5YxcSzgeZ6krRCOhaKZUsHSbB6B664SQM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=W1JWv9KpviFteALr6LtWRjuNi/DB62SY7Z7oPEpnHgI/4Lfy85z1VLQ+27tsGhOxY
+	 vRxxj/L5s8IpBFHQuyOPcflvF7qUr87yiWLTk9ezT/TWxhfODcCbJIh34EPjqKGM3h
+	 wrDIld7ZbHxppg0CNIkKJkh2h7ioXurEzICh4rsVOGu8shQgfzrRPxXym+8iqz1Gcc
+	 d6QC7gHCDkaxNsqQggPfMPbkoXAI4w417r4SV+ituO8JQjEynKMllEBoQ9zoLGkfAa
+	 9emBbI3vCLjLtvkCek1B6kkL/ZpMXmcjeoaOoQxGLD1lKy0Wbknxog7jm7VJj9RnSf
+	 g/Y2ednB6sYtw==
+Received: from [172.19.207.65] (unknown [66.205.13.70])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id E891C17E0FAD;
+	Tue, 10 Jun 2025 20:19:09 +0200 (CEST)
+Message-ID: <c666ab1bbc619cbb99fa38b96891a24ca22c9672.camel@collabora.com>
+Subject: Re: [RFC PATCH 00/11] VC8000E H.264 V4L2 Stateless Encoder
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Marco Felsch <m.felsch@pengutronix.de>, benjamin.gaignard@collabora.com,
+ 	p.zabel@pengutronix.de, mchehab@kernel.org, shawnguo@kernel.org, Sascha
+ Hauer	 <s.hauer@pengutronix.de>, kernel@pengutronix.de, festevam@gmail.com,
+ 	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ paulk@sys-base.io, 	hverkuil@xs4all.nl, laurent.pinchart@ideasonboard.com, 
+	sebastian.fricke@collabora.com, ming.qian@nxp.com
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
+Date: Tue, 10 Jun 2025 14:19:02 -0400
+In-Reply-To: <20250502150513.4169098-1-m.felsch@pengutronix.de>
+References: <20250502150513.4169098-1-m.felsch@pengutronix.de>
+Organization: Collabora Canada
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Marco Felsch <m.felsch@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
- Daniel Baluta <daniel.baluta@nxp.com>, Conor Dooley <conor+dt@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- linux-kernel@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, 
- Marc Kleine-Budde <mkl@pengutronix.de>, 
- Shengjiu Wang <shengjiu.wang@nxp.com>, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, Shawn Guo <shawnguo@kernel.org>, 
- linux-arm-kernel@lists.infradead.org, 
- Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <20250610160152.1113930-2-laurentiumihalcea111@gmail.com>
-References: <20250610160152.1113930-1-laurentiumihalcea111@gmail.com>
- <20250610160152.1113930-2-laurentiumihalcea111@gmail.com>
-Message-Id: <174957889856.2397515.16063954809229071708.robh@kernel.org>
-Subject: Re: [PATCH v7 1/6] dt-bindings: bus: document the IMX AIPSTZ
- bridge
+Content-Transfer-Encoding: 8bit
+
+Hi Marco,
 
 
-On Tue, 10 Jun 2025 12:01:47 -0400, Laurentiu Mihalcea wrote:
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+Le vendredi 02 mai 2025 à 17:05 +0200, Marco Felsch a écrit
 > 
-> Add documentation for IMX AIPSTZ bridge.
-> 
-> Co-developed-by: Daniel Baluta <daniel.baluta@nxp.com>
-> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  .../bindings/bus/fsl,imx8mp-aipstz.yaml       | 104 ++++++++++++++++++
->  1 file changed, 104 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml
-> 
+> [1] https://github.com/bootlin/linux/tree/hantro/h264-encoding-v5.11
+> [2] https://gitlab.freedesktop.org/dude/gstreamer/-/tree/h264-stateless-encoder
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Can you rebase against the upstream work:
 
-yamllint warnings/errors:
+https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/5676
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/bus/fsl,imx8mp-aipstz.yaml: oneOf: Missing additionalProperties/unevaluatedProperties constraint
+A lot of changes Michael made in your branch are already in the upstream MR
+branch. An example, in the upstream version, the src pad (CAPTURE) is already
+being set before the sink pad (OUTPUT).
 
-doc reference errors (make refcheckdocs):
+I'd like to open the discussion about sizes, as I'm writing things down.
+In your modification, you affirm that the encoder must ignore the size
+set on the CAPTURE. At the moment I tend to disagree with this
+interpretation and would like some feedback.
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250610160152.1113930-2-laurentiumihalcea111@gmail.com
+There is couple of different sizes we'll have to support:
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+1. Allocation sizes
+2. coded size
+3. display size
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+My believe is that we want to split the size in 1 and 2 since the padding
+added to the allocated size should not affect the amount of bits that will
+be compressed. We should be able to further pad frames without increasing
+the compressed size.
 
-pip3 install dtschema --upgrade
+For this, I wanted to mimic the stateless decoders, and define the coded
+size, the one that occupy space in the bitstream and found in the sequence
+headers to match the CATPURE size.
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+3. does not exists in stateless decoders, since it has no implication
+in the decoding process. This one I'll leave open for now, since its
+only needed if we have to generate some headers in the kernel. We have
+had a lot of discussion toward that, and if so, I will pull in the
+use of S_SELECTION.
 
+regards,
+Nicolas
+
+ 
