@@ -1,253 +1,621 @@
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A5F2A1BF
-	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 00:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C732417C3;
+	Tue, 10 Jun 2025 02:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749515059; cv=none; b=sUB7JGWZQrTYK4H0rassy8ZTAW0AuGe4/DYURsQzqa9Z2QmtKY0GdL9U+ZfKQLYeKNMPJ0/kGKs5NxnQGdrcXZQP/yp7N7R34g68j31vQGBR4kxU3MMnaK3FTYvGHpry3gr7mBTafM7ZcGOAyfAl9meB9eKEtiZe89wmHblZvQI=
+	t=1749521573; cv=none; b=IsuZ44Zc39EtTAwvTxIPB3VxWSAC30dlXFqPAYGP18c6EXfCjZHS5zq55fXMOKRjEyM5UEqk0X4Tuw0a7RAi1JPWW/7hkIbirB7DNuMDn67r0jZGOy19SKQlHfjBwj1/aRhL/vE8qEFbo2eVTVGvhmkUrtyB3/v1ny6L5UCAyp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749515059; c=relaxed/simple;
-	bh=7jmPTNP5wXkOM5VKAK8B4cmHLCsgMV0sC67D2Tc8tnw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WXhUPg/EIqYAh27K5UA76uPG8yPwkA9EF94owCK4cqWFrlaASwJU+KNj3V3yxQBtwANbJuXJz8PlJPX2MoL+ms00yq0pxtpkN4aOeENq/FjvHEj3SdNU74LZa8WSvsAITXNLG/rcWNfmhyJkDJ3Vi056OHjVapEMp58oYw+UaM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=TUETExIF; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+	s=arc-20240116; t=1749521573; c=relaxed/simple;
+	bh=NAv2hCN7En1PoZdqOHvjJQX5puZrkNe7Ii3+2hcJ03w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g6jq7HZNnHM8xMexS2AEgjBzLU9Q8CSUE0p7i//wS5eXUFFltJhB5n82DhIJ0G7J9iWLVQarzI3ehBHwL8TrlaS1PYdCIC/En6+ZwKk+9g+J+LWVrZQbDpgNQOzxpmxYtKIycjGKzMo7/t2TIemtLmSjkTLbFUgj3MOYnZMj0c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rTlewb5G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="TUETExIF"
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e81ec95d944so727594276.1
-        for <imx@lists.linux.dev>; Mon, 09 Jun 2025 17:24:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gateworks.com; s=google; t=1749515055; x=1750119855; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4p6WWlOvtLKrokUmhKFbxMIWiiDCNI86TAtn3rEDUQM=;
-        b=TUETExIFiCa2Dus17zneZa7c0RcbRVjxuEed7CWN9VLjPL0hyEUPi+vArNad33Vp0X
-         eODFNgeYpqJTCUVT+Qb0yr/xgDp51CRrLrVjBTtp6mInQrJl6R9rM4Hg39kCuQTD/DQS
-         leVMitaR2GBg2Sm3SMrmIjKtZYfU7WcVKXmHCwNFfYy1bFTpfesRxB0DK015xZg5snfp
-         452R/JvT4BrByTlT1XHmwdNLYGG8OL51IwoGQ3gdM6gh8Hih51HxKoN7gQGViW3Au7x+
-         xvxyUgtPr9JG/J0YkZ7mAe6LCFnnKqpAo7o3acpM1ne1pnmrQKx8e35uk5Fm2FZZHxXx
-         O6eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749515055; x=1750119855;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4p6WWlOvtLKrokUmhKFbxMIWiiDCNI86TAtn3rEDUQM=;
-        b=WNGYZSK8eY1NJz6ouSEc51m99JSMee0UhXj9h71jVvW6xneLzHjVjET1jAWKbd4RHF
-         AE/vJlyYBhj9QJqCMBST+KuIkHoQveh8wahC4FtdJW1vkdtpfg6wTwptFF3dw/iBZ2db
-         cR9sfwP5FOfP5NKD39xpKLwjtevjeyz7ATUFPQFf+pc0Epa1ifBbNWI0gHolC06ZUsjG
-         fPScu9xyw+KusrYqFSth7+mYbVILrePo4QlqPKEkwYMBOf37iysAXKaq9NjitYrZzwXY
-         2mWdqRX6moaScISArCyPHTl/Uj8QC/SsnmglDV+tXlnjdB7N/aEP5MqEyoRiPtKGX/Lu
-         G2hA==
-X-Forwarded-Encrypted: i=1; AJvYcCUDxV6Uc+vhX+CXx2p+j7e7sdCTi8m9YysLyx6nmz6zz8nKKaG4qL/VHzxPBGAjUqeqPy8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyNFuvPri+3lxKrLCS7fCLRkmBgUV+CXTVS8FLcspE9WigP0qyb
-	54troniE0DR3NSUCLFIr1xSHlKrUh8McNBrcnMGygDXT2wmIbcIO9CZdeZHxzLw+fyO8Y7fCMT2
-	QaMFEGN3/lqdD/ByMNmfkcdUsf2WgRCdJx3tqYUlMMw==
-X-Gm-Gg: ASbGncsQ45Is7l+Rz6yqKp0PEzn+xFWO5LOcXA3x4UgVlKeVnSbTVkmnW4peNzdc/j5
-	D4L+A5zatkAXAvG5zm8PwHsiDUYwa31zXAwLqusjO3wc3o15LspUYfrxDWmJc0UuErDjUpJHJGY
-	3E+W6LCXezQF+zZbaYp/2ytxS7Owv7f2vuQC15urose4X6TnBYTSy0GA==
-X-Google-Smtp-Source: AGHT+IEIwckNC6Mk3FUMcw8lzb7oJYprV7CNZkimjX4sCr2WuaRjl9EYST/x4A5RYQYDa8DuCIr4jskjKGm1oKna1b0=
-X-Received: by 2002:a05:690c:7204:b0:70e:76eb:8fb0 with SMTP id
- 00721157ae682-71133929d3dmr23571387b3.13.1749515055615; Mon, 09 Jun 2025
- 17:24:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rTlewb5G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154B8C4CEEB;
+	Tue, 10 Jun 2025 02:12:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749521572;
+	bh=NAv2hCN7En1PoZdqOHvjJQX5puZrkNe7Ii3+2hcJ03w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rTlewb5GLEEeQuxsXGy7AwFt/F1y0eUQeAqYpet0SanFaM4uB8GpLdAw1y8LLLCPz
+	 /qijWRe2oQKzoDVomHcSkAXwDfPmvl15nOO3eAk4qT4L+K55ykgEKuaKl60xyX38Rx
+	 W/zGx3GfJzdZnjp221+4hD0H6RpgHc/ft2+fb9ytx3jD0HNaQu8WRvCTNZJqnkKyo5
+	 9/yrdclQrGTkK0Wui6j3Jui1z6z2QLnY7Zk9lmPi2GLxlZ3Fg0kyuuTjbgEK6hNFTN
+	 8H86bSMBj4dZAnr4A31rI+IfDgQaqQ1t3p2l5I6QxhetDk+QuU7+EFr0LChPJvwogY
+	 VMA7NKY+/xF8w==
+Date: Tue, 10 Jun 2025 10:12:43 +0800
+From: "Peter Chen (CIX)" <peter.chen@kernel.org>
+To: John Ernberg <john.ernberg@actia.se>
+Cc: Xu Yang <xu.yang_2@nxp.com>, Shawn Guo <shawnguo2@yeah.net>,
+	Shawn Guo <shawnguo@kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: i.MX kernel hangup caused by chipidea USB gadget driver
+Message-ID: <20250610021243.GA1610560@nchen-desktop>
+References: <aEZxmlHmjeWcXiF3@dragon>
+ <c56pgxmfscg6tpqxjayu4mvxc2g5kgmfitpvp36lxulpq4jxmg@ces5l7ofab6s>
+ <aEbstxkQmji4tfjf@w447anl.localdomain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241126075702.4099164-1-hongxing.zhu@nxp.com>
- <20241126075702.4099164-6-hongxing.zhu@nxp.com> <CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcMHDy+poj9=jSy+w@mail.gmail.com>
- <AS8PR04MB8676C1206066A3215DB5F3B78C6BA@AS8PR04MB8676.eurprd04.prod.outlook.com>
-In-Reply-To: <AS8PR04MB8676C1206066A3215DB5F3B78C6BA@AS8PR04MB8676.eurprd04.prod.outlook.com>
-From: Tim Harvey <tharvey@gateworks.com>
-Date: Mon, 9 Jun 2025 17:24:04 -0700
-X-Gm-Features: AX0GCFvJVHqxJw3QT2Hj1OmwNvuRPr_efH3vouQUS0tjvRGC0_axQFmE3cNvLZA
-Message-ID: <CAJ+vNU0rO0tJyon6HGYTZHu5oii5vH-dPpnSH7RQj43+nE1KDQ@mail.gmail.com>
-Subject: Re: [PATCH v7 05/10] PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: "l.stach@pengutronix.de" <l.stach@pengutronix.de>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, "kw@linux.com" <kw@linux.com>, 
-	"manivannan.sadhasivam@linaro.org" <manivannan.sadhasivam@linaro.org>, "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aEbstxkQmji4tfjf@w447anl.localdomain>
 
-On Mon, Jun 9, 2025 at 1:03=E2=80=AFAM Hongxing Zhu <hongxing.zhu@nxp.com> =
-wrote:
->
-> > -----Original Message-----
-> > From: Tim Harvey <tharvey@gateworks.com>
-> > Sent: 2025=E5=B9=B46=E6=9C=887=E6=97=A5 5:04
-> > To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > Cc: l.stach@pengutronix.de; bhelgaas@google.com; lpieralisi@kernel.org;
-> > kw@linux.com; manivannan.sadhasivam@linaro.org; robh@kernel.org;
-> > krzk+dt@kernel.org; conor+dt@kernel.org; shawnguo@kernel.org; Frank Li
-> > <frank.li@nxp.com>; s.hauer@pengutronix.de; festevam@gmail.com;
-> > imx@lists.linux.dev; kernel@pengutronix.de; linux-pci@vger.kernel.org;
-> > linux-arm-kernel@lists.infradead.org; devicetree@vger.kernel.org;
-> > linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH v7 05/10] PCI: imx6: Deassert apps_reset in
-> > imx_pcie_deassert_core_reset()
-> >
-> > On Tue, Nov 26, 2024 at 12:03=E2=80=AFAM Richard Zhu <hongxing.zhu@nxp.=
-com>
-> > wrote:
-> > >
-> > > Since the apps_reset is asserted in imx_pcie_assert_core_reset(), it
-> > > should be deasserted in imx_pcie_deassert_core_reset().
-> > >
-> > > Fixes: 9b3fe6796d7c ("PCI: imx6: Add code to support i.MX7D")
-> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > > Reviewed-by: Manivannan Sadhasivam
-> > <manivannan.sadhasivam@linaro.org>
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  drivers/pci/controller/dwc/pci-imx6.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
-> > > b/drivers/pci/controller/dwc/pci-imx6.c
-> > > index 3538440601a7..413db182ce9f 100644
-> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
-> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> > > @@ -776,6 +776,7 @@ static void imx_pcie_assert_core_reset(struct
-> > > imx_pcie *imx_pcie)  static int imx_pcie_deassert_core_reset(struct
-> > > imx_pcie *imx_pcie)  {
-> > >         reset_control_deassert(imx_pcie->pciephy_reset);
-> > > +       reset_control_deassert(imx_pcie->apps_reset);
-> > >
-> > >         if (imx_pcie->drvdata->core_reset)
-> > >                 imx_pcie->drvdata->core_reset(imx_pcie, false);
-> > > --
-> > > 2.37.1
-> > >
-> > >
-> >
-> > Hi Richard,
-> >
-> > I've found that this patch causes a regression on i.MX8MM and i.MX8MP
-> > boards with hotplug capable bridges:
-> > i.MX8MM+PI7C9X2G404EV (this switch does not support hotplug) - no issue=
-s
-> > i.MX8MM+PI7C9X2G608GP (hotplug) - fails to reliably enumerate
-> > downstream devices about 80% of the time ^^^ when this occurs
-> > PCI_PRIMARY_BUS (0x18) for the root complex
-> > 0000:00:00.0 reads 0x00000000 instead of 0x00ff0100
-> > (PCI_SECONDARY_BUS is 0 instead of 1 and PCI_SUBBORDINATE_BUS is 0
-> > instead of 0xff) i.MX8MP+PI7C9X2G608GP (hotplug) - hangs at
-> > imx_pcie_ltssm_enable deassert apps_reset
-> >
-> > In both cases here reverting ef61c7d8d032 ("PCI: imx6: Deassert apps_re=
-set
-> > in imx_pcie_deassert_core_reset()") resolves this.
-> >
-> [Richard Zhu] I'm afraid that the ltssm_en bit assert to 1b'1 in
->  imx_pcie_deassert_core_reset() is not correct in your use case.
->
+On 25-06-09 14:17:30, John Ernberg wrote:
+> Hi Shawn, Xu,
+> 
+> On Mon, Jun 09, 2025 at 07:53:22PM +0800, Xu Yang wrote:
+> > Hi Shawn,
+> > 
+> > Thanks for your reports!
+> > 
+> > On Mon, Jun 09, 2025 at 01:31:06PM +0800, Shawn Guo wrote:
+> > > Hi Xu, Peter,
+> > > 
+> > > I'm seeing a kernel hangup on imx8mm-evk board.  It happens when:
+> > > 
+> > >  - USB gadget is enabled as Ethernet
+> > >  - There is data transfer over USB Ethernet
+> > >  - Device is going in/out suspend
+> > > 
+> > > A simple way to reproduce the issue could be:
+> > > 
+> > >  1. Copy a big file (like 500MB) from host PC to device with scp
+> > > 
+> > >  2. While the file copy is ongoing, suspend & resume the device like:
+> > > 
+> > >     $ echo +3 > /sys/class/rtc/rtc0/wakealarm; echo mem > /sys/power/state
+> > > 
+> > >  3. The device will hang up there
+> > > 
+> > > I reproduced on the following kernels:
+> > > 
+> > >  - Mainline kernel
+> > >  - NXP kernel lf-6.6.y
+> > >  - NXP kernel lf-6.12.y
+> > > 
+> > > But NXP kernel lf-6.1.y doesn't have this problem.  I tracked it down to
+> > > Peter's commit [1] on lf-6.1.y, and found that the gadget disconnect &
+> > > connect calls got lost from suspend & resume hooks, when the commit were
+> > > split and pushed upstream.  I confirm that adding the calls back fixes
+> > > the hangup.
+> 
+> We probably ran into the same problem trying to bring onboard 6.12, going
+> from 6.1, on iMX8QXP. I managed to trace the hang to EP priming through a
+> combination of debug tracing and BUG_ON experiments. See if it starts
+> splatin with the below change.
 
-Hi Richard,
+Hi John and Shawn,
 
-Thanks for your quick response. Do you mean not correct for newer IP
-core in i.MX8MM/i.MX8MP or in the case of a bridge?
+Like Alan and Xu's suggestion, there are probably two problems here:
+- When the system enters the suspend, the USB bus may neither at suspend
+nor disconnect state if USB controller/phy's power is not off and VBUS
+is there. So, the host still considers the device is active, it could
+trigger transfer any time. If the transfer occurs during system resume,
+the USB controller triggers interrupt to CPU, and USB's interrupt handler
+is triggered. If the USB's hardware is still at low power mode (or clock
+is gated off), it may cause system hang (CPU gets error response from USB)
+after access register.
 
-> Actually, the apps_reset isn't a real reset. It's the ltssm_en bit.
-> From this perspective view, It's inappropriate to toggle the ltssm_en bit=
- in
->  imx_pcie_assert/deassert_core_reset() functions.
-> I consider to move the apps_reset out of _reset_ functions.
-> Can you help to test the following changes in you use-case?
->
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -776,7 +776,6 @@ static int imx7d_pcie_core_reset(struct imx_pcie *imx=
-_pcie, bool assert)
->  static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
->  {
->         reset_control_assert(imx_pcie->pciephy_reset);
-> -       reset_control_assert(imx_pcie->apps_reset);
->
->         if (imx_pcie->drvdata->core_reset)
->                 imx_pcie->drvdata->core_reset(imx_pcie, true);
-> @@ -788,7 +787,6 @@ static void imx_pcie_assert_core_reset(struct imx_pci=
-e *imx_pcie)
->  static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
->  {
->         reset_control_deassert(imx_pcie->pciephy_reset);
-> -       reset_control_deassert(imx_pcie->apps_reset);
->
->         if (imx_pcie->drvdata->core_reset)
->                 imx_pcie->drvdata->core_reset(imx_pcie, false);
-> @@ -1176,6 +1174,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp=
-)
->                 }
->         }
->
-> +       /* Make sure that PCIe LTSSM is cleared */
-> +       imx_pcie_ltssm_disable(dev);
+With Shawn's change, it pulls D+ down during the suspend, and the host
+is notified of disconnection, so the host will not trigger transfer
+until D+ is pulled up by calling usb_gadget_connect. The USB leaves
+low power mode (and turn clock on) before that, the access register
+will not cause system hang.
+
+- The current chipidea driver doesn't notify gadget driver when it
+enters system suspend routine. In fact, during system suspend/resume,
+the controller driver may not respond middle layer's (network) request 
+well due to it enters low power mode, so calling usb_gadget_driver->
+disconnect (composite_disconnect) is needed during controller's suspend
+routine, it calls function->disable for USB function driver and
+ends/stop middle layer process.
+
+Peter
+
+> 
+> ----------------->8------------------
+> 
+> From 092599ab6f9e20412a7ca1eb118dd2be80cd18ff Mon Sep 17 00:00:00 2001
+> From: John Ernberg <john.ernberg@actia.se>
+> Date: Mon, 5 May 2025 09:09:01 +0200
+> Subject: [PATCH] USB: ci: gadget: Panic if priming when gadget off
+> 
+> ---
+>  drivers/usb/chipidea/udc.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+> index 2fea263a5e30..544aa4fa2d1d 100644
+> --- a/drivers/usb/chipidea/udc.c
+> +++ b/drivers/usb/chipidea/udc.c
+> @@ -203,8 +203,10 @@ static int hw_ep_prime(struct ci_hdrc *ci, int num, int dir, int is_ctrl)
+>  
+>     hw_write(ci, OP_ENDPTPRIME, ~0, BIT(n));
+>  
+> -   while (hw_read(ci, OP_ENDPTPRIME, BIT(n)))
+> +   while (hw_read(ci, OP_ENDPTPRIME, BIT(n))) {
+>         cpu_relax();
+> +       BUG_ON(dir == TX && !hw_read(ci, OP_ENDPTCTRL + num, ENDPTCTRL_TXE));
+> +   }
+>     if (is_ctrl && dir == RX && hw_read(ci, OP_ENDPTSETUPSTAT, BIT(num)))
+>         return -EAGAIN;
+>  
+> ----------------->8------------------
+> 
+> On the iMX8QXP you may additionally run into asychronous aborts and SError
+> due to resource being disabled.
+> 
+> > > 
+> > > ---8<--------------------
+> > > 
+> > > diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+> > > index 8a9b31fd5c89..72329a7eac4d 100644
+> > > --- a/drivers/usb/chipidea/udc.c
+> > > +++ b/drivers/usb/chipidea/udc.c
+> > > @@ -2374,6 +2374,9 @@ static void udc_suspend(struct ci_hdrc *ci)
+> > >          */
+> > >         if (hw_read(ci, OP_ENDPTLISTADDR, ~0) == 0)
+> > >                 hw_write(ci, OP_ENDPTLISTADDR, ~0, ~0);
+> > > +
+> > > +       if (ci->driver && ci->vbus_active && (ci->gadget.state != USB_STATE_SUSPENDED))
+> > > +               usb_gadget_disconnect(&ci->gadget);
+> > >  }
+> > >  
+> > >  static void udc_resume(struct ci_hdrc *ci, bool power_lost)
+> > > @@ -2384,6 +2387,9 @@ static void udc_resume(struct ci_hdrc *ci, bool power_lost)
+> > >                                         OTGSC_BSVIS | OTGSC_BSVIE);
+> > >                 if (ci->vbus_active)
+> > >                         usb_gadget_vbus_disconnect(&ci->gadget);
+> > > +       } else {
+> > > +               if (ci->driver && ci->vbus_active)
+> > > +                       usb_gadget_connect(&ci->gadget);
+> > >         }
+> > >  
+> > >         /* Restore value 0 if it was set for power lost check */
+> > > 
+> > > ---->8------------------
+> > 
+> > During the scp process, the usb host won't put usb device to suspend state.
+> > In current design, then the ether driver doesn't know the system has
+> > suspended after echo mem. The root cause is that ether driver is still tring
+> > to queue usb request after usb controller has suspended where usb clock is off,
+> > then the system hang.
+> > 
+> > With the above changes, I think the ether driver will fail to eth_start_xmit() 
+> > at an ealier stage, so the issue can't be triggered.
+> > 
+> > I think the ether driver needs call gether_suspend() accordingly, to do this,
+> > the controller driver need explicitly call suspend() function when it's going
+> > to be suspended. Could you check whether below patch fix the issue?
+> > 
+> >  ---8<--------------------
+> > 
+> > diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+> > index 8a9b31fd5c89..27a7674ed62c 100644
+> > --- a/drivers/usb/chipidea/udc.c
+> > +++ b/drivers/usb/chipidea/udc.c
+> > @@ -2367,6 +2367,8 @@ static void udc_id_switch_for_host(struct ci_hdrc *ci)
+> >  #ifdef CONFIG_PM_SLEEP
+> >  static void udc_suspend(struct ci_hdrc *ci)
+> >  {
+> > +       ci->driver->suspend(&ci->gadget);
+> > +
+> >         /*
+> >          * Set OP_ENDPTLISTADDR to be non-zero for
+> >          * checking if controller resume from power lost
+> > @@ -2389,6 +2391,8 @@ static void udc_resume(struct ci_hdrc *ci, bool power_lost)
+> >         /* Restore value 0 if it was set for power lost check */
+> >         if (hw_read(ci, OP_ENDPTLISTADDR, ~0) == 0xFFFFFFFF)
+> >                 hw_write(ci, OP_ENDPTLISTADDR, ~0, 0);
+> > +
+> > +       ci->driver->resume(&ci->gadget);
+> >  }
+> >  #endif
+> > 
+> >  ---->8------------------
+> 
+> I tested this during my debugging and it doesn't work because suspend/resume
+> callbacks on the gadgets are designed for USB triggered suspend/resume and
+> not system triggered suspend/resume. Meaning that the link will just be
+> woken up again by the next USB transfer.
+> 
+> > 
+> > Thanks,
+> > Xu Yang
+> > 
+> > > 
+> > > But it's unclear to me why the hangup happens and how the change above
+> > > fix the problem.  Do you guys have any insight here?o
+> > > 
+> > > Shawn
+> > > 
+> > > [1] https://github.com/reMarkable/linux-imx/commit/0791d25578cb0e46fd93ae7a3c36ff7a424f3547
+> > > 
+> 
+> I didn't find the missing lines of code that Shawn found and instead ended
+> up looking at why the UDC core isn't suspending the gadgets when the system
+> is going to suspend. Because to me it feels like a job of UDC core.
+> 
+> I ended up with the monstrosity below that I have been intended to send as
+> an RFC when I'm done thinking about it. It currently applies on 6.12.20.
+> 
+> But since Shawn also ran into the problem I'm including it for the sake of
+> discussion about what the correct path of solving it is.
+> 
+> Best regards // John Ernberg
+> 
+> ----------------->8------------------
+> 
+> From 3c1d167f1eff0bd010b797530e3d03f6939db322 Mon Sep 17 00:00:00 2001
+> From: John Ernberg <john.ernberg@actia.se>
+> Date: Mon, 5 May 2025 09:09:50 +0200
+> Subject: [PATCH] WIP: Suspend getherlink on system suspend
+> 
+> ---
+>  drivers/usb/gadget/composite.c        | 68 +++++++++++++++++++++++++++
+>  drivers/usb/gadget/configfs.c         | 53 +++++++++++++++++++++
+>  drivers/usb/gadget/function/f_ecm.c   | 22 +++++++++
+>  drivers/usb/gadget/function/u_ether.c | 34 ++++++++++++++
+>  drivers/usb/gadget/function/u_ether.h |  2 +
+>  drivers/usb/gadget/udc/core.c         | 29 ++++++++++++
+>  include/linux/usb/composite.h         |  4 ++
+>  include/linux/usb/gadget.h            |  2 +
+>  8 files changed, 214 insertions(+)
+> 
+> diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
+> index 8402a86176f4..f1ed1db1e1d0 100644
+> --- a/drivers/usb/gadget/composite.c
+> +++ b/drivers/usb/gadget/composite.c
+> @@ -2669,6 +2669,72 @@ void composite_resume(struct usb_gadget *gadget)
+>  	cdev->suspended = 0;
+>  }
+>  
+> +int composite_system_suspend(struct usb_gadget *gadget)
+> +{
+> +	struct usb_composite_dev	*cdev = get_gadget_data(gadget);
+> +	struct usb_function		*f;
+> +	int				ret;
 > +
->         ret =3D imx_pcie_deassert_core_reset(imx_pcie);
->         if (ret < 0) {
->                 dev_err(dev, "pcie deassert core reset failed: %d\n", ret=
-);
->
+> +	DBG(cdev, "system suspend\n");
+> +	if (cdev->config) {
+> +		list_for_each_entry(f, &cdev->config->functions, list) {
+> +			if (f->system_suspend) {
+> +				ret = f->system_suspend(f);
+> +				if (ret)
+> +					return ret;
+> +			}
+> +		}
+> +	}
+> +
+> +	if (cdev->config &&
+> +	    cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER)
+> +		usb_gadget_set_selfpowered(gadget);
+> +
+> +	usb_gadget_vbus_draw(gadget, 2);
+> +
+> +	return 0;
+> +}
+> +
+> +int composite_system_resume(struct usb_gadget *gadget)
+> +{
+> +	struct usb_composite_dev	*cdev = get_gadget_data(gadget);
+> +	struct usb_function		*f;
+> +	unsigned			maxpower;
+> +	int				ret;
+> +
+> +	DBG(cdev, "system resume\n");
+> +	if (cdev->config) {
+> +		list_for_each_entry(f, &cdev->config->functions, list) {
+> +			if (f->system_resume) {
+> +				ret = f->system_resume(f);
+> +				if (ret)
+> +					return ret;
+> +			}
+> +		}
+> +
+> +		maxpower = cdev->config->MaxPower ?
+> +			cdev->config->MaxPower : CONFIG_USB_GADGET_VBUS_DRAW;
+> +		if (gadget->speed < USB_SPEED_SUPER)
+> +			maxpower = min(maxpower, 500U);
+> +		else
+> +			maxpower = min(maxpower, 900U);
+> +
+> +		if (maxpower > USB_SELF_POWER_VBUS_MAX_DRAW ||
+> +		    !(cdev->config->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
+> +			usb_gadget_clear_selfpowered(gadget);
+> +		else
+> +			usb_gadget_set_selfpowered(gadget);
+> +
+> +		usb_gadget_vbus_draw(gadget, maxpower);
+> +	} else {
+> +		maxpower = CONFIG_USB_GADGET_VBUS_DRAW;
+> +		maxpower = min(maxpower, 100U);
+> +		usb_gadget_vbus_draw(gadget, maxpower);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  /*-------------------------------------------------------------------------*/
+>  
+>  static const struct usb_gadget_driver composite_driver_template = {
+> @@ -2681,6 +2747,8 @@ static const struct usb_gadget_driver composite_driver_template = {
+>  
+>  	.suspend	= composite_suspend,
+>  	.resume		= composite_resume,
+> +	.system_suspend	= composite_system_suspend,
+> +	.system_resume	= composite_system_resume,
+>  
+>  	.driver	= {
+>  		.owner		= THIS_MODULE,
+> diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+> index 29390d573e23..e0d2f0998e86 100644
+> --- a/drivers/usb/gadget/configfs.c
+> +++ b/drivers/usb/gadget/configfs.c
+> @@ -1962,6 +1962,57 @@ static void configfs_composite_resume(struct usb_gadget *gadget)
+>  	spin_unlock_irqrestore(&gi->spinlock, flags);
+>  }
+>  
+> +static int configfs_composite_system_suspend(struct usb_gadget *gadget)
+> +{
+> +	struct usb_composite_dev *cdev;
+> +	struct gadget_info *gi;
+> +	unsigned long flags;
+> +	int ret;
+> +
+> +	cdev = get_gadget_data(gadget);
+> +	if (!cdev)
+> +		return 0;
+> +
+> +	gi = container_of(cdev, struct gadget_info, cdev);
+> +	spin_lock_irqsave(&gi->spinlock, flags);
+> +	cdev = get_gadget_data(gadget);
+> +	if (!cdev || gi->unbind) {
+> +		spin_unlock_irqrestore(&gi->spinlock, flags);
+> +		return 0;
+> +	}
+> +
+> +	ret = composite_system_suspend(gadget);
+> +	spin_unlock_irqrestore(&gi->spinlock, flags);
+> +
+> +	return ret;
+> +}
+> +
+> +static int configfs_composite_system_resume(struct usb_gadget *gadget)
+> +{
+> +	struct usb_composite_dev *cdev;
+> +	struct gadget_info *gi;
+> +	unsigned long flags;
+> +	int ret;
+> +
+> +	cdev = get_gadget_data(gadget);
+> +	if (!cdev)
+> +		return 0;
+> +
+> +	gi = container_of(cdev, struct gadget_info, cdev);
+> +	spin_lock_irqsave(&gi->spinlock, flags);
+> +	cdev = get_gadget_data(gadget);
+> +	if (!cdev || gi->unbind) {
+> +		spin_unlock_irqrestore(&gi->spinlock, flags);
+> +		return 0;
+> +	}
+> +
+> +	ret = composite_system_resume(gadget);
+> +	spin_unlock_irqrestore(&gi->spinlock, flags);
+> +
+> +	return ret;
+> +}
+> +
+> +
+>  static const struct usb_gadget_driver configfs_driver_template = {
+>  	.bind           = configfs_composite_bind,
+>  	.unbind         = configfs_composite_unbind,
+> @@ -1972,6 +2023,8 @@ static const struct usb_gadget_driver configfs_driver_template = {
+>  
+>  	.suspend	= configfs_composite_suspend,
+>  	.resume		= configfs_composite_resume,
+> +	.system_suspend	= configfs_composite_system_suspend,
+> +	.system_resume	= configfs_composite_system_resume,
+>  
+>  	.max_speed	= USB_SPEED_SUPER_PLUS,
+>  	.driver = {
+> diff --git a/drivers/usb/gadget/function/f_ecm.c b/drivers/usb/gadget/function/f_ecm.c
+> index 6cb7771e8a69..4df67d5ee0fa 100644
+> --- a/drivers/usb/gadget/function/f_ecm.c
+> +++ b/drivers/usb/gadget/function/f_ecm.c
+> @@ -892,6 +892,26 @@ static void ecm_resume(struct usb_function *f)
+>  	gether_resume(&ecm->port);
+>  }
+>  
+> +static int ecm_system_suspend(struct usb_function *f)
+> +{
+> +	struct f_ecm *ecm = func_to_ecm(f);
+> +	struct usb_composite_dev *cdev = ecm->port.func.config->cdev;
+> +
+> +	DBG(cdev, "ECM System Suspend\n");
+> +
+> +	return gether_system_suspend(&ecm->port);
+> +}
+> +
+> +static int ecm_system_resume(struct usb_function *f)
+> +{
+> +	struct f_ecm *ecm = func_to_ecm(f);
+> +	struct usb_composite_dev *cdev = ecm->port.func.config->cdev;
+> +
+> +	DBG(cdev, "ECM System Resume\n");
+> +
+> +	return gether_system_resume(&ecm->port);
+> +}
+> +
+>  static void ecm_free(struct usb_function *f)
+>  {
+>  	struct f_ecm *ecm;
+> @@ -961,6 +981,8 @@ static struct usb_function *ecm_alloc(struct usb_function_instance *fi)
+>  	ecm->port.func.free_func = ecm_free;
+>  	ecm->port.func.suspend = ecm_suspend;
+>  	ecm->port.func.resume = ecm_resume;
+> +	ecm->port.func.system_suspend = ecm_system_suspend;
+> +	ecm->port.func.system_resume = ecm_system_resume;
+>  
+>  	return &ecm->port.func;
+>  }
+> diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+> index f58590bf5e02..d4f0e28ffd4d 100644
+> --- a/drivers/usb/gadget/function/u_ether.c
+> +++ b/drivers/usb/gadget/function/u_ether.c
+> @@ -1078,6 +1078,40 @@ void gether_resume(struct gether *link)
+>  }
+>  EXPORT_SYMBOL_GPL(gether_resume);
+>  
+> +int gether_system_suspend(struct gether *link)
+> +{
+> +	struct eth_dev *dev = link->ioport;
+> +	struct net_device *ndev = dev->net;
+> +
+> +	rtnl_lock();
+> +	if (netif_running(ndev)) {
+> +		netif_tx_lock_bh(ndev);
+> +		netif_device_detach(ndev);
+> +		netif_tx_unlock_bh(ndev);
+> +	}
+> +	rtnl_unlock();
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(gether_system_suspend);
+> +
+> +int gether_system_resume(struct gether *link)
+> +{
+> +	struct eth_dev *dev = link->ioport;
+> +	struct net_device *ndev = dev->net;
+> +
+> +	rtnl_lock();
+> +	if (netif_running(ndev)) {
+> +		netif_tx_lock_bh(ndev);
+> +		netif_device_attach(ndev);
+> +		netif_tx_unlock_bh(ndev);
+> +	}
+> +	rtnl_unlock();
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(gether_system_resume);
+> +
+>  /*
+>   * gether_cleanup - remove Ethernet-over-USB device
+>   * Context: may sleep
+> diff --git a/drivers/usb/gadget/function/u_ether.h b/drivers/usb/gadget/function/u_ether.h
+> index 34be220cef77..ffd023b7be7b 100644
+> --- a/drivers/usb/gadget/function/u_ether.h
+> +++ b/drivers/usb/gadget/function/u_ether.h
+> @@ -261,6 +261,8 @@ void gether_cleanup(struct eth_dev *dev);
+>  
+>  void gether_suspend(struct gether *link);
+>  void gether_resume(struct gether *link);
+> +int gether_system_suspend(struct gether *link);
+> +int gether_system_resume(struct gether *link);
+>  
+>  /* connect/disconnect is handled by individual functions */
+>  struct net_device *gether_connect(struct gether *);
+> diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+> index 4b3d5075621a..1e4ee5ffcfbf 100644
+> --- a/drivers/usb/gadget/udc/core.c
+> +++ b/drivers/usb/gadget/udc/core.c
+> @@ -1683,6 +1683,30 @@ static void gadget_unbind_driver(struct device *dev)
+>  	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+>  }
+>  
+> +static int gadget_suspend_driver(struct device *dev)
+> +{
+> +	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
+> +	struct usb_udc *udc = gadget->udc;
+> +	struct usb_gadget_driver *driver = udc->driver;
+> +
+> +	if (driver->system_suspend)
+> +		return driver->system_suspend(gadget);
+> +
+> +	return 0;
+> +}
+> +
+> +static int gadget_resume_driver(struct device *dev)
+> +{
+> +	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
+> +	struct usb_udc *udc = gadget->udc;
+> +	struct usb_gadget_driver *driver = udc->driver;
+> +
+> +	if (driver->system_resume)
+> +		return driver->system_resume(gadget);
+> +
+> +	return 0;
+> +}
+> +
+>  /* ------------------------------------------------------------------------- */
+>  
+>  int usb_gadget_register_driver_owner(struct usb_gadget_driver *driver,
+> @@ -1896,11 +1920,16 @@ static const struct class udc_class = {
+>  	.dev_uevent	= usb_udc_uevent,
+>  };
+>  
+> +static const struct dev_pm_ops gadget_bus_pm_ops = {
+> +	SET_SYSTEM_SLEEP_PM_OPS(gadget_suspend_driver, gadget_resume_driver)
+> +};
+> +
+>  static const struct bus_type gadget_bus_type = {
+>  	.name = "gadget",
+>  	.probe = gadget_bind_driver,
+>  	.remove = gadget_unbind_driver,
+>  	.match = gadget_match_driver,
+> +	.pm = &gadget_bus_pm_ops,
+>  };
+>  
+>  static int __init usb_udc_init(void)
+> diff --git a/include/linux/usb/composite.h b/include/linux/usb/composite.h
+> index 6e38fb9d2117..f42ba1cfd181 100644
+> --- a/include/linux/usb/composite.h
+> +++ b/include/linux/usb/composite.h
+> @@ -226,6 +226,8 @@ struct usb_function {
+>  					bool config0);
+>  	void			(*suspend)(struct usb_function *);
+>  	void			(*resume)(struct usb_function *);
+> +	int			(*system_suspend)(struct usb_function *);
+> +	int			(*system_resume)(struct usb_function *);
+>  
+>  	/* USB 3.0 additions */
+>  	int			(*get_status)(struct usb_function *);
+> @@ -522,6 +524,8 @@ extern int composite_setup(struct usb_gadget *gadget,
+>  		const struct usb_ctrlrequest *ctrl);
+>  extern void composite_suspend(struct usb_gadget *gadget);
+>  extern void composite_resume(struct usb_gadget *gadget);
+> +extern int composite_system_suspend(struct usb_gadget *gadget);
+> +extern int composite_system_resume(struct usb_gadget *gadget);
+>  
+>  /*
+>   * Some systems will need runtime overrides for the  product identifiers
+> diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+> index df33333650a0..8cdfdece1561 100644
+> --- a/include/linux/usb/gadget.h
+> +++ b/include/linux/usb/gadget.h
+> @@ -744,6 +744,8 @@ struct usb_gadget_driver {
+>  	void			(*disconnect)(struct usb_gadget *);
+>  	void			(*suspend)(struct usb_gadget *);
+>  	void			(*resume)(struct usb_gadget *);
+> +	int			(*system_suspend)(struct usb_gadget *);
+> +	int			(*system_resume)(struct usb_gadget *);
+>  	void			(*reset)(struct usb_gadget *);
+>  
+>  	/* FIXME support safe rmmod */
 
-Yes this resolves the regression of failing to reliably enumerate
-downstream devices. I think that should be submitted with a fixes tag.
+-- 
 
-The i.MX8MP+PI7C9X2G608GP switch hanging issue was hardware related...
-i was sadly testing on an old board with a defect. I did previously
-have a hang issue there discussed previously here [1] but it was
-resolved with commit 9c03e30e3ade ("PCI: imx6: Skip link up workaround
-for newer platforms").
-
-How much testing is done with i.MX8M{M,P} board with a switch? I feel
-like I'm the only one with these SoC's and a switch and I need to get
-better at monitoring patches to the IMX6 PCI controller driver and
-testing these scenarios.
-
-Best Regards,
-
-Tim
-[1] https://www.spinics.net/lists/linux-pci/msg142764.html
-
-
-
-
-> > I notice the sequence of events here is:
-> > imx_pcie_assert_core_reset asserts apps_reset (disables LTSSM)
-> > imx_pcie_deassert_core_reset deasserts apps_reset (enables LTSSM)
-> > imx_pcie_ltssm_enable deasserts apps_reset (enables LTSSM; this is wher=
-e it
-> > hangs on imx8mp)
-> >
-> > Is there perhaps some issue with de-asserting this (enabling LTSSM) whe=
-n it's
-> > already in this state?
-> [Richard Zhu]The apps_reset is updated by src driver by regmap_update_bit=
-s().
-> I can't find the exceptions to update one bit, already has the according =
-value.
->
-> Best Regards
-> Richard Zhu
-> >
-> > In the case where downstream devices do not enumerate some investigatio=
-n
-> > points to them not being happy that the link drops so perhaps deasserti=
-ng
-> > apps_reset when its already asserted drops the link and restarts it?
-> >
-> > Best Regards,
-> >
-> > Tim
+Best regards,
+Peter
