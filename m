@@ -1,431 +1,168 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B248928B3F6
-	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 09:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBADC28B4EE;
+	Tue, 10 Jun 2025 09:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749547943; cv=none; b=TV46DThqNTriB7Q7qaHy0raqABdDx1b36oWWaYX3LM2SLDFhUKAoQeA8Bf7AWVe6XXk50khAK4aF17YdeYUjvRRZF9Z+xpQx1pXcOwFKPK6B5vXSbUX6bklvNtN+9YwY4sJfljmanR5Se5A5xt6uhi+AMxAc5lo1hrkMVlYpbkg=
+	t=1749548581; cv=none; b=ZAf34XBMdKEyyBeZUcx17JBJkKIFKahOGn3hf9i3svUvHeDpv4ZvdvHm0iJbLWeFK8jPg8qKQ8dsXf7mG2gp6vrbkUMqLddbX03WqNve5VcjV1qsbbC9crLKKy3Uh9a9zHwkhhkIpQyB7mBZXl8vftZhS4ps8ez6bzT1508ZJ2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749547943; c=relaxed/simple;
-	bh=C6Zhzb/G86QNZdEJ5leHirFcsjyNiAO6zvhF2TqCGPA=;
+	s=arc-20240116; t=1749548581; c=relaxed/simple;
+	bh=tyKr67fYhAjWFX35wOMg10PP3CbAB1AknXTB7vztMAI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P/xmmVpxHyAgR+Qkj22hAo1aOxtDqXyE4ZCyilV7Mlb2tas2Npy5cGzSYrk9Z7tOTZz34OSM09CP2IS4lye1l94oXMy2YaVq+lX1YDYYUFeqv+RZmQiY4DgUvRaV792Si62Mnd3T5wW67d25jlPSgersir7DQONHSfTsG3H9H+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=pJd4tPd+; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=TV0avA52irIby8Oqv9Pxb/APkXHiPa0CFNMRbSr5VXNYtTqj9LBafhSkM8T5tSqEXV8HzRGyBoyAMNuoRUEoy9+J/y1j+mfMD2TGbdMangZWh2IHlvmjo022aVOynQsiM6q0OJysc+hbqR670Ye4F+IXkqwO4DOsgrxMuTpHLgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R4WzxtwJ; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="pJd4tPd+"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id F0D472EC;
-	Tue, 10 Jun 2025 11:32:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1749547933;
-	bh=C6Zhzb/G86QNZdEJ5leHirFcsjyNiAO6zvhF2TqCGPA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pJd4tPd+5RgIEbW9bHpKZKBzzxbRWhqjU9FpeldUYC5VWVDZ9iWwIu3Gqub6H0GJf
-	 MuohCk6Xi8n/OBIGYTWapLVO/opsYs8jdcTMXJn6mI8ChEHaAXpwYc3gNA9265ucxZ
-	 Xvi/ZiKXM9/PlPRlEbCAmXmZGrBSFZYFmJVm/i4Y=
-Date: Tue, 10 Jun 2025 12:32:07 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: linux-media@vger.kernel.org, Isaac Scott <isaac.scott@ideasonboard.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 8/8] media: imx-mipi-csis: Initial support for multiple
- output channels
-Message-ID: <20250610093207.GO27510@pendragon.ideasonboard.com>
-References: <20250608235840.23871-1-laurent.pinchart@ideasonboard.com>
- <20250608235840.23871-9-laurent.pinchart@ideasonboard.com>
- <aEcASWJSRagWp23C@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R4WzxtwJ"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a4f78ebec8so3114517f8f.0;
+        Tue, 10 Jun 2025 02:42:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749548578; x=1750153378; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hy4HQMp4/QVu7y941pMtwqO2t1zabov2n9nxhccD5I8=;
+        b=R4WzxtwJT/U6Afl+VRBRFtxjP4sALaVvRsK/Q7DvBYJiaz+nNEO6/ukZ+j8iBzUo5a
+         OQBKwZ0zMfGtKsvUnBalMIMMMCqtKnN8QZxCYjFRByce2PKSUCUf0nttOIsZLhh3TpFr
+         0wnkXKgNuBq+nKhHqKmAdQixCZKZobyrr7aG/eXzRyniDVIYC+JhZXSTyTrbon/6E5Jq
+         uLKIJ6qLrLiwPEUVIHccS3UTSJ7XkdWoDjWn2wHaceumtdinTgV7SZRIFg+W4B9xDcr/
+         Yha2MXU2M/Gy2AHRP16+1zMKq0bxJZ8CHNy1QLV8/gSxAP3HpxGTeGcjQHPG6xvOgypu
+         n2Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749548578; x=1750153378;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hy4HQMp4/QVu7y941pMtwqO2t1zabov2n9nxhccD5I8=;
+        b=Nqcwvx/v0x04MU5AEfJARNVKU7/xENLqt/B1SXcPolbCNl5mAVz3nqCe569RFD9jwy
+         qluJayCy7YVRPCp6eqgOKZfzMref1vpTgY0cCPn06z9A3kQq1zpZdJrGIWqMmJjLssEi
+         qhVFUMRisKbuDP+9eD0d5OjPaX079t1EA4etWdpENb6SQef/67BdTQNaUw+nI20FAQTX
+         dER7+Fl+Tkkn6iKukQU0/SJBwyuqbR/2Gcg2To9lfiHGf/hQKTQKYq88NaMNdKkibQfD
+         NxBk3dZHwKx9BEY6wnH0ox4iNMzVFDCUbCAbQVs17TNDHPUcgUwuHxk4oimxsSiLQnrM
+         X69A==
+X-Forwarded-Encrypted: i=1; AJvYcCVFtdXn0q3w6x5rQuVpDEwjoalT2PJ1rJNIvll5L+iJ77GHuWYwGmUqns6O4SGhltnctMs=@lists.linux.dev, AJvYcCVVYaI6KcY/UFzh65q49nE/hOGOPsYP+s70cRvnk1A+bEgxSB0FDRL2Ugy0YyVO35gwE3MJKOTsvck=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyBlCmSANKAezPEy5s9Vo1v3x9KVPzaYGuxPV+QrxeaAEL9TQV8
+	ndfvDIWy0Zhhp0qrIsBLFFBXh24eMV7+5+sgR2DaAJpuEm1Cx/klbZJC
+X-Gm-Gg: ASbGnctmG+NFWY/kLNQPgh/oA68m4mG2a5s6ID/3htL4oiMjEpjRA4t9BYYUz6kHHC6
+	b5JwJbXvrKV9esxhWDIhj++k7xllovLBDMuFoSM0h8nB9fxi9YReb35r7GavTy3l2FtArIdlPVT
+	Je/d9iGvS37LcFRmSnn27/TqUwK9+QQOHZSgD297daf3ydKW1oNxX8wWnovwsqjI3MO80up9LfB
+	6qphJTxWzmMLOjn9dhfIpzvZNtXHIPJoql7uqzfRsLy22q9C+5kJv+csQ7BQ3fgY0mTqiJfpgE0
+	mV2MX/etGup+bIR+YN2/UEMy6vjygroFfkSpaJwzfFKPquaOFrDwKq/5i/Xco71wSTMygt7tk4Z
+	sdJkee8Wkzr7wxB7H5IslwlVEjDaJuUZqq2x6TxwckR+mUbBj
+X-Google-Smtp-Source: AGHT+IExWHAWVGdsU8NZWtNNaxdbfHHyFINoY6jGqsgVAuuDRCnCkj/k/dAfVKD2bDGIuerocgV4wQ==
+X-Received: by 2002:a05:6000:1a88:b0:3a5:2f23:3780 with SMTP id ffacd0b85a97d-3a531caa458mr12387967f8f.18.1749548577777;
+        Tue, 10 Jun 2025 02:42:57 -0700 (PDT)
+Received: from orome (p200300e41f281b00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1b00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5323bee86sm11546484f8f.43.2025.06.10.02.42.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 02:42:56 -0700 (PDT)
+Date: Tue, 10 Jun 2025 11:42:53 +0200
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, 
+	Huacai Chen <chenhuacai@loongson.cn>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Huacai Chen <chenhuacai@kernel.org>, linux-mmc@vger.kernel.org, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Taichi Sugaya <sugaya.taichi@socionext.com>, 
+	Takao Orito <orito.takao@socionext.com>, Ben Dooks <ben-linux@fluff.org>, 
+	Jaehoon Chung <jh80.chung@samsung.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Kamal Dasu <kamal.dasu@broadcom.com>, Al Cooper <alcooperx@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, Avi Fishman <avifishman70@gmail.com>, 
+	Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, 
+	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, 
+	Benjamin Fair <benjaminfair@google.com>, openbmc@lists.ozlabs.org, Michal Simek <michal.simek@amd.com>, 
+	Joel Stanley <joel@jms.id.au>, linux-aspeed@lists.ozlabs.org, 
+	Aubin Constans <aubin.constans@microchip.com>, Eugen Hristev <eugen.hristev@linaro.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Yixun Lan <dlan@gentoo.org>, linux-riscv@lists.infradead.org, 
+	spacemit@lists.linux.dev, Jacky Huang <ychuang3@nuvoton.com>, 
+	Shan-Chun Hung <schung@nuvoton.com>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
+	Daniel Machon <daniel.machon@microchip.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	linux-tegra@vger.kernel.org, Hu Ziji <huziji@marvell.com>
+Subject: Re: [PATCH v3 01/35] mmc: sdhci: Use devm_mmc_alloc_host() helper
+Message-ID: <t5caqkvguurw2dwzn7wkbjo5ryv3jp3eppjzhdwgx6q6vro2q2@onqqr6v3whdo>
+References: <cover.1749127796.git.zhoubinbin@loongson.cn>
+ <dcfce3ddf980563c590f82c1b4e8840c29497887.1749127796.git.zhoubinbin@loongson.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ebq3qw5vudglyq6u"
 Content-Disposition: inline
-In-Reply-To: <aEcASWJSRagWp23C@lizhi-Precision-Tower-5810>
+In-Reply-To: <dcfce3ddf980563c590f82c1b4e8840c29497887.1749127796.git.zhoubinbin@loongson.cn>
 
-On Mon, Jun 09, 2025 at 11:39:53AM -0400, Frank Li wrote:
-> On Mon, Jun 09, 2025 at 02:58:40AM +0300, Laurent Pinchart wrote:
-> > Some CSIS instances feature more than one output channel. Parse the
-> > number of channels from the device tree, and update register dumps and
-> > event counters accordingly. Support for routing virtual channels and
-> > data types to output channels through the subdev internal routing API
-> > will come later.
-> >
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > ---
-> >  drivers/media/platform/nxp/imx-mipi-csis.c | 224 ++++++++++++++-------
-> >  1 file changed, 146 insertions(+), 78 deletions(-)
-> >
-> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > index 080e40837463..4cc358d93187 100644
-> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > @@ -98,12 +98,12 @@
-> >  #define MIPI_CSIS_INT_SRC_ODD_AFTER		BIT(28)
-> >  #define MIPI_CSIS_INT_SRC_ODD			(0x3 << 28)
-> >  #define MIPI_CSIS_INT_SRC_NON_IMAGE_DATA	(0xf << 28)
-> > -#define MIPI_CSIS_INT_SRC_FRAME_START		BIT(24)
-> > -#define MIPI_CSIS_INT_SRC_FRAME_END		BIT(20)
-> > +#define MIPI_CSIS_INT_SRC_FRAME_START(n)	BIT((n) + 24)
-> > +#define MIPI_CSIS_INT_SRC_FRAME_END(n)		BIT((n) + 20)
-> >  #define MIPI_CSIS_INT_SRC_ERR_SOT_HS(n)		BIT((n) + 16)
-> > -#define MIPI_CSIS_INT_SRC_ERR_LOST_FS		BIT(12)
-> > -#define MIPI_CSIS_INT_SRC_ERR_LOST_FE		BIT(8)
-> > -#define MIPI_CSIS_INT_SRC_ERR_OVER		BIT(4)
-> > +#define MIPI_CSIS_INT_SRC_ERR_LOST_FS(n)	BIT((n) + 12)
-> > +#define MIPI_CSIS_INT_SRC_ERR_LOST_FE(n)	BIT((n) + 8)
-> > +#define MIPI_CSIS_INT_SRC_ERR_OVER(n)		BIT((n) + 4)
-> >  #define MIPI_CSIS_INT_SRC_ERR_WRONG_CFG		BIT(3)
-> >  #define MIPI_CSIS_INT_SRC_ERR_ECC		BIT(2)
-> >  #define MIPI_CSIS_INT_SRC_ERR_CRC		BIT(1)
-> > @@ -205,23 +205,23 @@
-> >  /* Debug control register */
-> >  #define MIPI_CSIS_DBG_CTRL			0xc0
-> >  #define MIPI_CSIS_DBG_INTR_MSK			0xc4
-> > -#define MIPI_CSIS_DBG_INTR_MSK_DT_NOT_SUPPORT	BIT(25)
-> > -#define MIPI_CSIS_DBG_INTR_MSK_DT_IGNORE	BIT(24)
-> > -#define MIPI_CSIS_DBG_INTR_MSK_ERR_FRAME_SIZE	BIT(20)
-> > -#define MIPI_CSIS_DBG_INTR_MSK_TRUNCATED_FRAME	BIT(16)
-> > -#define MIPI_CSIS_DBG_INTR_MSK_EARLY_FE		BIT(12)
-> > -#define MIPI_CSIS_DBG_INTR_MSK_EARLY_FS		BIT(8)
-> > -#define MIPI_CSIS_DBG_INTR_MSK_CAM_VSYNC_FALL	BIT(4)
-> > -#define MIPI_CSIS_DBG_INTR_MSK_CAM_VSYNC_RISE	BIT(0)
-> > +#define MIPI_CSIS_DBG_INTR_MSK_DT_NOT_SUPPORT		BIT(25)
-> > +#define MIPI_CSIS_DBG_INTR_MSK_DT_IGNORE		BIT(24)
-> 
-> not sure why cause above two line changes.
 
-Because the whole block is reindented due to longer names. Those two
-lines change from
+--ebq3qw5vudglyq6u
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 01/35] mmc: sdhci: Use devm_mmc_alloc_host() helper
+MIME-Version: 1.0
 
-#define MIPI_CSIS_DBG_INTR_MSK_CAM_VSYNC_FALL	BIT(4)
-#define MIPI_CSIS_DBG_INTR_MSK_CAM_VSYNC_RISE	BIT(0)
+On Sat, Jun 07, 2025 at 03:33:34PM +0800, Binbin Zhou wrote:
+> Use new function devm_mmc_alloc_host() to simplify the code.
+>=20
+> Although sdhci_free_host() is no longer needed, to avoid drivers that sti=
+ll
+> use this function from failing to compile, sdhci_free_host() is temporari=
+ly
+> set to empty. Finally, it will be removed when there are no more callers.
+>=20
+> Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+> ---
+>  drivers/mmc/host/sdhci.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+> index 32fa0b2bb912..ee5a5ae4db31 100644
+> --- a/drivers/mmc/host/sdhci.c
+> +++ b/drivers/mmc/host/sdhci.c
+> @@ -4076,7 +4076,7 @@ struct sdhci_host *sdhci_alloc_host(struct device *=
+dev,
+> =20
+>  	WARN_ON(dev =3D=3D NULL);
+> =20
+> -	mmc =3D mmc_alloc_host(sizeof(struct sdhci_host) + priv_size, dev);
+> +	mmc =3D devm_mmc_alloc_host(dev, sizeof(struct sdhci_host) + priv_size);
+>  	if (!mmc)
+>  		return ERR_PTR(-ENOMEM);
+> =20
+> @@ -5002,7 +5002,6 @@ EXPORT_SYMBOL_GPL(sdhci_remove_host);
+> =20
+>  void sdhci_free_host(struct sdhci_host *host)
+>  {
+> -	mmc_free_host(host->mmc);
+>  }
 
-to
+Is there any point in keeping the sdhci_free_host() function around now?
+I only see patches 1 and 31, so not sure if anything happens in between.
 
-#define MIPI_CSIS_DBG_INTR_MSK_DT_NOT_SUPPORT		BIT(25)
-#define MIPI_CSIS_DBG_INTR_MSK_DT_IGNORE		BIT(24)
+Thierry
 
-(one extra tab between the macro name and the value)
+--ebq3qw5vudglyq6u
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> > +#define MIPI_CSIS_DBG_INTR_MSK_ERR_FRAME_SIZE(n)	BIT((n) + 20)
-> > +#define MIPI_CSIS_DBG_INTR_MSK_TRUNCATED_FRAME(n)	BIT((n) + 16)
-> > +#define MIPI_CSIS_DBG_INTR_MSK_EARLY_FE(n)		BIT((n) + 12)
-> > +#define MIPI_CSIS_DBG_INTR_MSK_EARLY_FS(n)		BIT((n) + 8)
-> > +#define MIPI_CSIS_DBG_INTR_MSK_CAM_VSYNC_FALL(n)	BIT((n) + 4)
-> > +#define MIPI_CSIS_DBG_INTR_MSK_CAM_VSYNC_RISE(n)	BIT((n) + 0)
-> >  #define MIPI_CSIS_DBG_INTR_SRC			0xc8
-> > -#define MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT	BIT(25)
-> > -#define MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE	BIT(24)
-> > -#define MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE	BIT(20)
-> > -#define MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME	BIT(16)
-> > -#define MIPI_CSIS_DBG_INTR_SRC_EARLY_FE		BIT(12)
-> > -#define MIPI_CSIS_DBG_INTR_SRC_EARLY_FS		BIT(8)
-> > -#define MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL	BIT(4)
-> > -#define MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE	BIT(0)
-> > +#define MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT		BIT(25)
-> > +#define MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE		BIT(24)
-> 
-> the same here.
-> 
-> > +#define MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE(n)	BIT((n) + 20)
-> > +#define MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME(n)	BIT((n) + 16)
-> > +#define MIPI_CSIS_DBG_INTR_SRC_EARLY_FE(n)		BIT((n) + 12)
-> > +#define MIPI_CSIS_DBG_INTR_SRC_EARLY_FS(n)		BIT((n) + 8)
-> > +#define MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL(n)	BIT((n) + 4)
-> > +#define MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE(n)	BIT((n) + 0)
-> >
-> >  #define MIPI_CSIS_FRAME_COUNTER_CH(n)		(0x0100 + (n) * 4)
-> >
-> > @@ -230,8 +230,11 @@
-> >  #define MIPI_CSIS_PKTDATA_EVEN			0x3000
-> >  #define MIPI_CSIS_PKTDATA_SIZE			SZ_4K
-> >
-> > +#define MIPI_CSIS_MAX_CHANNELS			4
-> > +
-> >  struct mipi_csis_event {
-> >  	bool debug;
-> > +	unsigned int channel;
-> >  	u32 mask;
-> >  	const char * const name;
-> >  	unsigned int counter;
-> > @@ -239,36 +242,70 @@ struct mipi_csis_event {
-> >
-> >  static const struct mipi_csis_event mipi_csis_events[] = {
-> >  	/* Errors */
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS(0),	"SOT 0 Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS(1),	"SOT 1 Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS(2),	"SOT 2 Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_SOT_HS(3),	"SOT 3 Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_LOST_FS,		"Lost Frame Start Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_LOST_FE,		"Lost Frame End Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_OVER,		"FIFO Overflow Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_WRONG_CFG,	"Wrong Configuration Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_ECC,		"ECC Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_CRC,		"CRC Error" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ERR_ID,		"Unknown ID Error" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT,	"Data Type Not Supported" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE,	"Data Type Ignored" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE,	"Frame Size Error" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME,	"Truncated Frame" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE,	"Early Frame End" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS,	"Early Frame Start" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_SOT_HS(0),		"SOT 0 Error" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_SOT_HS(1),		"SOT 1 Error" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_SOT_HS(2),		"SOT 2 Error" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_SOT_HS(3),		"SOT 3 Error" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_LOST_FS(0),		"Lost Frame Start Error 0" },
-> > +	{ false, 1, MIPI_CSIS_INT_SRC_ERR_LOST_FS(1),		"Lost Frame Start Error 1" },
-> > +	{ false, 2, MIPI_CSIS_INT_SRC_ERR_LOST_FS(2),		"Lost Frame Start Error 2" },
-> > +	{ false, 3, MIPI_CSIS_INT_SRC_ERR_LOST_FS(3),		"Lost Frame Start Error 3" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_LOST_FE(0),		"Lost Frame End Error 0" },
-> > +	{ false, 1, MIPI_CSIS_INT_SRC_ERR_LOST_FE(1),		"Lost Frame End Error 1" },
-> > +	{ false, 2, MIPI_CSIS_INT_SRC_ERR_LOST_FE(2),		"Lost Frame End Error 2" },
-> > +	{ false, 3, MIPI_CSIS_INT_SRC_ERR_LOST_FE(3),		"Lost Frame End Error 3" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_OVER(0),		"FIFO Overflow Error 0" },
-> > +	{ false, 1, MIPI_CSIS_INT_SRC_ERR_OVER(1),		"FIFO Overflow Error 1" },
-> > +	{ false, 2, MIPI_CSIS_INT_SRC_ERR_OVER(2),		"FIFO Overflow Error 2" },
-> > +	{ false, 3, MIPI_CSIS_INT_SRC_ERR_OVER(3),		"FIFO Overflow Error 3" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_WRONG_CFG,		"Wrong Configuration Error" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_ECC,			"ECC Error" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_CRC,			"CRC Error" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ERR_ID,			"Unknown ID Error" },
-> > +	{ true, 0, MIPI_CSIS_DBG_INTR_SRC_DT_NOT_SUPPORT,	"Data Type Not Supported" },
-> > +	{ true, 0, MIPI_CSIS_DBG_INTR_SRC_DT_IGNORE,		"Data Type Ignored" },
-> > +	{ true, 0, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE(0),	"Frame Size Error 0" },
-> > +	{ true, 1, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE(1),	"Frame Size Error 1" },
-> > +	{ true, 2, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE(2),	"Frame Size Error 2" },
-> > +	{ true, 3, MIPI_CSIS_DBG_INTR_SRC_ERR_FRAME_SIZE(3),	"Frame Size Error 3" },
-> > +	{ true, 0, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME(0),	"Truncated Frame 0" },
-> > +	{ true, 1, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME(1),	"Truncated Frame 1" },
-> > +	{ true, 2, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME(2),	"Truncated Frame 2" },
-> > +	{ true, 3, MIPI_CSIS_DBG_INTR_SRC_TRUNCATED_FRAME(3),	"Truncated Frame 3" },
-> > +	{ true, 0, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE(0),		"Early Frame End 0" },
-> > +	{ true, 1, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE(1),		"Early Frame End 1" },
-> > +	{ true, 2, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE(2),		"Early Frame End 2" },
-> > +	{ true, 3, MIPI_CSIS_DBG_INTR_SRC_EARLY_FE(3),		"Early Frame End 3" },
-> > +	{ true, 0, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS(0),		"Early Frame Start 0" },
-> > +	{ true, 1, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS(1),		"Early Frame Start 1" },
-> > +	{ true, 2, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS(2),		"Early Frame Start 2" },
-> > +	{ true, 3, MIPI_CSIS_DBG_INTR_SRC_EARLY_FS(3),		"Early Frame Start 3" },
-> >  	/* Non-image data receive events */
-> > -	{ false, MIPI_CSIS_INT_SRC_EVEN_BEFORE,		"Non-image data before even frame" },
-> > -	{ false, MIPI_CSIS_INT_SRC_EVEN_AFTER,		"Non-image data after even frame" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ODD_BEFORE,		"Non-image data before odd frame" },
-> > -	{ false, MIPI_CSIS_INT_SRC_ODD_AFTER,		"Non-image data after odd frame" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_EVEN_BEFORE,		"Non-image data before even frame" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_EVEN_AFTER,		"Non-image data after even frame" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ODD_BEFORE,		"Non-image data before odd frame" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_ODD_AFTER,		"Non-image data after odd frame" },
-> >  	/* Frame start/end */
-> > -	{ false, MIPI_CSIS_INT_SRC_FRAME_START,		"Frame Start" },
-> > -	{ false, MIPI_CSIS_INT_SRC_FRAME_END,		"Frame End" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL,	"VSYNC Falling Edge" },
-> > -	{ true, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE,	"VSYNC Rising Edge" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_FRAME_START(0),		"Frame Start 0" },
-> > +	{ false, 1, MIPI_CSIS_INT_SRC_FRAME_START(1),		"Frame Start 1" },
-> > +	{ false, 2, MIPI_CSIS_INT_SRC_FRAME_START(2),		"Frame Start 2" },
-> > +	{ false, 3, MIPI_CSIS_INT_SRC_FRAME_START(3),		"Frame Start 3" },
-> > +	{ false, 0, MIPI_CSIS_INT_SRC_FRAME_END(0),		"Frame End 0" },
-> > +	{ false, 1, MIPI_CSIS_INT_SRC_FRAME_END(1),		"Frame End 1" },
-> > +	{ false, 2, MIPI_CSIS_INT_SRC_FRAME_END(2),		"Frame End 2" },
-> > +	{ false, 3, MIPI_CSIS_INT_SRC_FRAME_END(3),		"Frame End 3" },
-> > +	{ true, 0, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL(0),	"VSYNC Falling Edge 0" },
-> > +	{ true, 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL(1),	"VSYNC Falling Edge 1" },
-> > +	{ true, 2, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL(2),	"VSYNC Falling Edge 2" },
-> > +	{ true, 3, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_FALL(3),	"VSYNC Falling Edge 3" },
-> > +	{ true, 0, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE(0),	"VSYNC Rising Edge 0" },
-> > +	{ true, 1, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE(1),	"VSYNC Rising Edge 1" },
-> > +	{ true, 2, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE(2),	"VSYNC Rising Edge 2" },
-> > +	{ true, 3, MIPI_CSIS_DBG_INTR_SRC_CAM_VSYNC_RISE(3),	"VSYNC Rising Edge 3" },
-> >  };
-> >
-> > -#define MIPI_CSIS_NUM_EVENTS ARRAY_SIZE(mipi_csis_events)
-> > +#define MIPI_CSIS_NUM_EVENTS		ARRAY_SIZE(mipi_csis_events)
-> > +#define MIPI_CSIS_NUM_ERROR_EVENTS	(MIPI_CSIS_NUM_EVENTS - 20)
-> >
-> >  enum mipi_csis_clk {
-> >  	MIPI_CSIS_CLK_PCLK,
-> > @@ -300,7 +337,9 @@ struct mipi_csis_device {
-> >  	struct clk_bulk_data *clks;
-> >  	struct reset_control *mrst;
-> >  	struct regulator *mipi_phy_regulator;
-> > +
-> >  	const struct mipi_csis_info *info;
-> > +	unsigned int num_channels;
-> >
-> >  	struct v4l2_subdev sd;
-> >  	struct media_pad pads[CSIS_PADS_NUM];
-> > @@ -766,16 +805,19 @@ static irqreturn_t mipi_csis_irq_handler(int irq, void *dev_id)
-> >
-> >  	/* Update the event/error counters */
-> >  	if ((status & MIPI_CSIS_INT_SRC_ERRORS) || csis->debug.enable) {
-> > -		for (i = 0; i < MIPI_CSIS_NUM_EVENTS; i++) {
-> > +		for (i = 0; i < ARRAY_SIZE(csis->events); i++) {
-> >  			struct mipi_csis_event *event = &csis->events[i];
-> >
-> > +			if (event->channel >= csis->num_channels)
-> > +				continue;
-> > +
-> >  			if ((!event->debug && (status & event->mask)) ||
-> >  			    (event->debug && (dbg_status & event->mask)))
-> >  				event->counter++;
-> >  		}
-> >  	}
-> >
-> > -	if (status & MIPI_CSIS_INT_SRC_FRAME_START)
-> > +	if (status & MIPI_CSIS_INT_SRC_FRAME_START(0))
-> >  		mipi_csis_queue_event_sof(csis);
-> >
-> >  	spin_unlock_irqrestore(&csis->slock, flags);
-> > @@ -852,7 +894,7 @@ static void mipi_csis_clear_counters(struct mipi_csis_device *csis)
-> >  static void mipi_csis_log_counters(struct mipi_csis_device *csis, bool non_errors)
-> >  {
-> >  	unsigned int num_events = non_errors ? MIPI_CSIS_NUM_EVENTS
-> > -				: MIPI_CSIS_NUM_EVENTS - 8;
-> > +				: MIPI_CSIS_NUM_ERROR_EVENTS;
-> >  	unsigned int counters[MIPI_CSIS_NUM_EVENTS];
-> >  	unsigned long flags;
-> >  	unsigned int i;
-> > @@ -863,45 +905,67 @@ static void mipi_csis_log_counters(struct mipi_csis_device *csis, bool non_error
-> >  	spin_unlock_irqrestore(&csis->slock, flags);
-> >
-> >  	for (i = 0; i < num_events; ++i) {
-> > +		const struct mipi_csis_event *event = &csis->events[i];
-> > +
-> > +		if (event->channel >= csis->num_channels)
-> > +			continue;
-> > +
-> >  		if (counters[i] > 0 || csis->debug.enable)
-> >  			dev_info(csis->dev, "%s events: %d\n",
-> > -				 csis->events[i].name,
-> > -				 counters[i]);
-> > +				 event->name, counters[i]);
-> >  	}
-> >  }
-> >
-> > +struct mipi_csis_reg_info {
-> > +	u32 addr;
-> > +	unsigned int offset;
-> > +	const char * const name;
-> > +};
-> > +
-> > +static void mipi_csis_dump_channel_reg(struct mipi_csis_device *csis,
-> > +				       const struct mipi_csis_reg_info *reg,
-> > +				       unsigned int channel)
-> > +{
-> > +	dev_info(csis->dev, "%16s%u: 0x%08x\n", reg->name, channel,
-> > +		 mipi_csis_read(csis, reg->addr + channel * reg->offset));
-> > +}
-> > +
-> >  static int mipi_csis_dump_regs(struct mipi_csis_device *csis)
-> >  {
-> > -	static const struct {
-> > -		u32 offset;
-> > -		const char * const name;
-> > -	} registers[] = {
-> > -		{ MIPI_CSIS_CMN_CTRL, "CMN_CTRL" },
-> > -		{ MIPI_CSIS_CLK_CTRL, "CLK_CTRL" },
-> > -		{ MIPI_CSIS_INT_MSK, "INT_MSK" },
-> > -		{ MIPI_CSIS_DPHY_STATUS, "DPHY_STATUS" },
-> > -		{ MIPI_CSIS_DPHY_CMN_CTRL, "DPHY_CMN_CTRL" },
-> > -		{ MIPI_CSIS_DPHY_SCTRL_L, "DPHY_SCTRL_L" },
-> > -		{ MIPI_CSIS_DPHY_SCTRL_H, "DPHY_SCTRL_H" },
-> > -		{ MIPI_CSIS_ISP_CONFIG_CH(0), "ISP_CONFIG_CH0" },
-> > -		{ MIPI_CSIS_ISP_RESOL_CH(0), "ISP_RESOL_CH0" },
-> > -		{ MIPI_CSIS_SDW_CONFIG_CH(0), "SDW_CONFIG_CH0" },
-> > -		{ MIPI_CSIS_SDW_RESOL_CH(0), "SDW_RESOL_CH0" },
-> > -		{ MIPI_CSIS_DBG_CTRL, "DBG_CTRL" },
-> > -		{ MIPI_CSIS_FRAME_COUNTER_CH(0), "FRAME_COUNTER_CH0" },
-> > +	static const struct mipi_csis_reg_info common_registers[] = {
-> > +		{ MIPI_CSIS_CMN_CTRL, 0, "CMN_CTRL" },
-> > +		{ MIPI_CSIS_CLK_CTRL, 0, "CLK_CTRL" },
-> > +		{ MIPI_CSIS_INT_MSK, 0, "INT_MSK" },
-> > +		{ MIPI_CSIS_DPHY_STATUS, 0, "DPHY_STATUS" },
-> > +		{ MIPI_CSIS_DPHY_CMN_CTRL, 0, "DPHY_CMN_CTRL" },
-> > +		{ MIPI_CSIS_DPHY_SCTRL_L, 0, "DPHY_SCTRL_L" },
-> > +		{ MIPI_CSIS_DPHY_SCTRL_H, 0, "DPHY_SCTRL_H" },
-> > +		{ MIPI_CSIS_DBG_CTRL, 0, "DBG_CTRL" },
-> > +	};
-> > +	static const struct mipi_csis_reg_info channel_registers[] = {
-> > +		{ MIPI_CSIS_ISP_CONFIG_CH(0), 0x10, "ISP_CONFIG_CH" },
-> > +		{ MIPI_CSIS_ISP_RESOL_CH(0), 0x10, "ISP_RESOL_CH" },
-> > +		{ MIPI_CSIS_SDW_CONFIG_CH(0), 0x10, "SDW_CONFIG_CH" },
-> > +		{ MIPI_CSIS_SDW_RESOL_CH(0), 0x10, "SDW_RESOL_CH" },
-> > +		{ MIPI_CSIS_FRAME_COUNTER_CH(0), 4, "FRAME_COUNTER_CH" },
-> >  	};
-> > -
-> > -	unsigned int i;
-> > -	u32 cfg;
-> >
-> >  	if (!pm_runtime_get_if_in_use(csis->dev))
-> >  		return 0;
-> >
-> >  	dev_info(csis->dev, "--- REGISTERS ---\n");
-> >
-> > -	for (i = 0; i < ARRAY_SIZE(registers); i++) {
-> > -		cfg = mipi_csis_read(csis, registers[i].offset);
-> > -		dev_info(csis->dev, "%17s: 0x%08x\n", registers[i].name, cfg);
-> > +	for (unsigned int i = 0; i < ARRAY_SIZE(common_registers); i++) {
-> > +		const struct mipi_csis_reg_info *reg = &common_registers[i];
-> > +
-> > +		dev_info(csis->dev, "%17s: 0x%08x\n", reg->name,
-> > +			 mipi_csis_read(csis, reg->addr));
-> > +	}
-> > +
-> > +	for (unsigned int chan = 0; chan < csis->num_channels; chan++) {
-> > +		for (unsigned int i = 0; i < ARRAY_SIZE(channel_registers); ++i)
-> > +			mipi_csis_dump_channel_reg(csis, &channel_registers[i],
-> > +						   chan);
-> >  	}
-> >
-> >  	pm_runtime_put(csis->dev);
-> > @@ -1424,6 +1488,12 @@ static int mipi_csis_parse_dt(struct mipi_csis_device *csis)
-> >
-> >  	of_property_read_u32(node, "clock-frequency", &csis->clk_frequency);
-> >
-> > +	csis->num_channels = 1;
-> > +	of_property_read_u32(node, "fsl,num-channels", &csis->num_channels);
-> 
-> Wait for dt team comments, most likely they do not agree add fsl,num-channels.
-> 
-> Frank
-> 
-> > +	if (csis->num_channels < 1 || csis->num_channels > MIPI_CSIS_MAX_CHANNELS)
-> > +		return dev_err_probe(csis->dev, -EINVAL,
-> > +				     "Invalid fsl,num-channels value\n");
-> > +
-> >  	return 0;
-> >  }
-> >
-> > @@ -1447,10 +1517,8 @@ static int mipi_csis_probe(struct platform_device *pdev)
-> >
-> >  	/* Parse DT properties. */
-> >  	ret = mipi_csis_parse_dt(csis);
-> > -	if (ret < 0) {
-> > -		dev_err(dev, "Failed to parse device tree: %d\n", ret);
-> > +	if (ret < 0)
-> >  		return ret;
-> > -	}
-> >
-> >  	/* Acquire resources. */
-> >  	csis->regs = devm_platform_ioremap_resource(pdev, 0);
+-----BEGIN PGP SIGNATURE-----
 
--- 
-Regards,
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmhH/h0ACgkQ3SOs138+
+s6Ed0Q/8DpTJQXo20TdxekQF0hnrIFHjlPauJ5ZtKpB7NF/fe3sNtEeoyrxts1E+
+6CikEMpo4L/9bzrdo8rcGjuzMgcpss6NFQPLN31d61YD04Ue/ib1QRzc9s8WeRhm
+d2h52zCebC+C0o89UyR09Z9yAMPLBo3dFbY4ibo7x+QETIAVk1ylMTTHxsna2lbA
+rD8sWJHCrQSEVKJpRPHCF+GD693iCP/q8Dgm47QSRtgpXWKoP4sWMdhMnELuTc1C
+49SbTj2Q6FJc4T7jMesthftnLrwTnk4RQCgGzty0EbXAX/FXgdBpBTn2TqYASH/e
+qDjx7z9K2S8VESBxTes5vkv5Z0AT8qv7Vzm/2zHTGjo237lZL5oa1b7HsTmj7mby
+VLmkcfGVct/6SmGGGEEbH+Eyvsi7CMjv6Xls6fUs9nQOMzUmx3T+mfs9Ue4G/HlY
+h30GPSXXwUAmq99Q30qXxH53S8JE0GnfuusLlKdR3T09CmgxIFlV8Tx0MOr76Jvi
+RolNAGHx546QFtJsQfxIA2OUBGMqeXr/wOtRb5hJNfHfvM2QpmlKklVesiuaexvk
+CJ8iC9/tiE5asSU69f++Wmzl8Z7+k/PefX4vWbYQCv30JQUqqxorXZ8NApulKlen
+/uPDSM0UyLzvefatJZYZIolhaRuG+4CpstVYXqzMfvA3Ci4F2FE=
+=J2Mb
+-----END PGP SIGNATURE-----
 
-Laurent Pinchart
+--ebq3qw5vudglyq6u--
