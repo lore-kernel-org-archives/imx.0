@@ -1,100 +1,154 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAB528C016
-	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 09:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DA59460
+	for <imx@lists.linux.dev>; Tue, 10 Jun 2025 10:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749549468; cv=none; b=GBakR3LZnRgstDVDk2my5sTc3HmduVBjMPrSwtJ/UsOokRn8t3BpJbXDVUf9Vr2HvOtfPSGKYlksx71Kn5c/PnDJlw3Qi+lTlHHRtWzfQL6aa5XjklfoRuHhj3l2yHR5jFicqZJBtCGt+lmTprW+DJcZ8QT4IDmuwahaIsQh3U4=
+	t=1749549707; cv=none; b=a44yh6+iZxbDIsa/CEEmQPYbG7yrCRXfVSq61isr3CESwOSsSB6oOt9SO5s6WqSdWjUCBFuM1IoIX9XmGinaMz24+Vd6ZdrumIYRRI2wivRFfUHiKEDyM5scWb7ykM0fbFLQaRD3Y/D5Q0ndk5dO3Et598CkO6Vm7ed5SwGLnOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749549468; c=relaxed/simple;
-	bh=ImjjDdcR0PDR/B0hW6U6b9uAanK0m2+0ZrpHzZLv2xM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dPupk8Dp6ROHD+tbRZwDb5GQvLaxek2VUhhDaGw7q8Zycn8bfMxJXNrTgWY2HbHkj21YfEVDXhtfSnx3gZaPakmJwDA7+pxUCK65nnMBfrUXyMXIKa29TXBc7UC8Mv96EGV5/JsB8hCEseQZVNQaHKDPWyUH0Y2/sfA1nk/JIa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PKHygNYQ; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1749549707; c=relaxed/simple;
+	bh=BBsO/QzFamCFKBviOR6aJuGOuWb7j+QU2IdRMrxiOmI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ht/xXJ7jB/t2/4RiUxi5RUakyyGiziMasnsbvTQcLy+8FS0R7z87L2PJh2tDydAUtZywZUmHxsW3DgFxgxvA0l2lTDe2Q8CNAezvAN4fvNp9p5On907eUd0Eaw2LvcbfxmHp6S5MPY7bJYkM9Gp4ROakxucPW/wyr3vZdO7gds0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=dc3srmLv; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PKHygNYQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749549467; x=1781085467;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ImjjDdcR0PDR/B0hW6U6b9uAanK0m2+0ZrpHzZLv2xM=;
-  b=PKHygNYQdI9D4flMuzw7JPdbRKP0Zkw75AdmARP6p0LIroSZjc4uyyJI
-   VNmfIQVOwqy1o2Q05S55tv36fQZUnd36QOSVMCf4ArXfoukWJxlqpppSa
-   8cHrJ9ee7rAKTFP9J62Cdxoj7Xgv2PKNbYe7MfaW7DVqMtm/lO8+TWzsu
-   tDsB2hMb2kUZBHoHZKP+mcoImdBQkzZdDruFj7EaasQE2ExJm+qxzr94+
-   PpZLTHDLCq3QNmDlcITE+2bVotMyEUDck4HUKonw+8z7+8eAppo1xzTcT
-   WfGrIClVmei8Qe+7UA9gThZsV/C8cwni8IYWuBiqcA4ZUiMCgsBImhjFp
-   g==;
-X-CSE-ConnectionGUID: nC8aYl2lSne7VyjdYmkpMw==
-X-CSE-MsgGUID: BH1VElF9TieJ+sIDSZwpog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="74184747"
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="74184747"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 02:57:46 -0700
-X-CSE-ConnectionGUID: 5j80a83bTXmxzQIG+3ulhA==
-X-CSE-MsgGUID: 2r67tEUWSUKZ8gLPPEVWxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="177719736"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 02:57:41 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uOvjd-00000005JZB-3lD4;
-	Tue, 10 Jun 2025 12:57:37 +0300
-Date: Tue, 10 Jun 2025 12:57:37 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Vicentiu Galanopulo <vicentiu.galanopulo@remote-tech.co.uk>,
-	Will Deacon <will@kernel.org>, Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Andrew Davis <afd@ti.com>,
-	linux-kernel@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-leds@vger.kernel.org
-Subject: Re: [PATCH v6 1/3] spi: spi-nxp-fspi: check return value of
- devm_mutex_init()
-Message-ID: <aEgBkROmEV2df4rA@smile.fi.intel.com>
-References: <20250609-must_check-devm_mutex_init-v6-0-9540d5df9704@weissschuh.net>
- <20250609-must_check-devm_mutex_init-v6-1-9540d5df9704@weissschuh.net>
- <7afc214a-affd-4a99-8528-c58c31fbcc59@sirena.org.uk>
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="dc3srmLv"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-607cf70b00aso5065813a12.2
+        for <imx@lists.linux.dev>; Tue, 10 Jun 2025 03:01:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1749549704; x=1750154504; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tNFLgO9kfRuOPSKdW9yn0XSFMUHevRdsYw2FI16nNfU=;
+        b=dc3srmLv+tLXp9qEZyH1QLjPJq/ExeMr899j7rWPJyD5wmYzXDiN2qzns7DXa1t8Fr
+         a/6CvV075+WoIKarPdl0WD9AH7fx1WpI1AIDY6ZLRRUApGVL+6A8O7ZEbbH6fgtmFbRc
+         k4ZhUkfZddYmKsYFUnJkgXAJvw+Qyu5E6xMbo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749549704; x=1750154504;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tNFLgO9kfRuOPSKdW9yn0XSFMUHevRdsYw2FI16nNfU=;
+        b=eKH+AqBc4WXPgrL1OPG7g1bKXtOD1kS+cBcy13vCRvO4zOhmojeHW3t8TottaSL9cE
+         E0OZZXCQ+tnvS2pk3sy+kHufUiUvmMfrYtqUcgRnIOZJ3970/+9tNouCZ9OXPfRE6s8P
+         rPmeaoA84T2iZ72c9REEtiePUIZQoTT5pgDEh6fbZbRavRXjKqNpb6KR3wYliV9nFC+u
+         CaNHbJmOAQWO3HoyXX5pqVuEMO1UMJpG8i68HyTM2HN/F9eWOnIn3EUnzhj/qvk4mfqQ
+         XVEagaAISM2bDiHuKRVhIbu3UjZesklPbXXT5vF0UBcfwtOFnUe8/RaeiQ+vNHDJQ3l9
+         BE5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXs57xO8LkTeOVNZde9rPy0tU3OkPFGIgqyya0Fi1m+P7+uRxhmP5I4qpbmIa7Uu9S2VK8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxpqew9xAtJLfbqIzysYahIt829JsZs3KZKO2rCL3aCFXBTPAN2
+	Oes5FV6YPcSp2x24I2iTGWN9k8C142cMQ+Z+tv6YFzbAsgkXCfkd/QMVC0Usw29267Y=
+X-Gm-Gg: ASbGncuGljPQ1+JyFSx6uQBgisJbTHrwHUN+iybMsmODKjKLxaYIFDOqQpncus95SI2
+	P37P0c+uFrvM4Md1FBU2I0PB6v2bA0f804piPvKo5a409YyxayteLDoSVy0MscjcIeMzOZ0mTSG
+	sWaq4dyho0Z2EJ5TM8ScTSSLKIHZWJheMuYz/cl8uqlcIXKysFKm58gOgXiu7yrgnbBgqeCK7r+
+	chx7AEwOrlF+1oDaBebxMGwKTCRajEdVRP+o/IKg2P+sIQmeDoeikCwUEuqbgxocUjTQT7f/0Kj
+	vlN9NoOiPilnl5a9rb9pPxDPATjWAf862FdkTi4Kq74fSq6J1ah8tGIsThYwDOw74b4AZVLlJGQ
+	gA9lDROV4Ep64j1KGIvdWkham8UM=
+X-Google-Smtp-Source: AGHT+IG57PZ6Xm8M/Dqr4czCnzfYZyTYEAAg9doQ7EidKIaUDhSXFwVRX2wpqWFLIhoaLQHBuY9O5Q==
+X-Received: by 2002:a05:6402:26c6:b0:607:5987:5ba1 with SMTP id 4fb4d7f45d1cf-6082d9b3428mr1770004a12.20.1749549704176;
+        Tue, 10 Jun 2025 03:01:44 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.. ([2.196.40.179])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6077837ed0bsm5953438a12.36.2025.06.10.03.01.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 03:01:43 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: Matteo Lisi <matteo.lisi@engicam.com>,
+	linux-amarula@amarulasolutions.com,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Markus Niebel <Markus.Niebel@tq-group.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Rob Herring <robh@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3 00/10] Support Engicam MicroGEA boards
+Date: Tue, 10 Jun 2025 12:00:13 +0200
+Message-ID: <20250610100139.2476555-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7afc214a-affd-4a99-8528-c58c31fbcc59@sirena.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Jun 09, 2025 at 09:59:46PM +0100, Mark Brown wrote:
-> On Mon, Jun 09, 2025 at 10:38:37PM +0200, Thomas Weißschuh wrote:
-> > Even if it's not critical, the avoidance of checking the error code
-> > from devm_mutex_init() call today diminishes the point of using devm
-> > variant of it. Tomorrow it may even leak something.
-> 
-> I don't understand the comment about leaking here?  We might end up with
-> an unitialised mutex but how would we leak anything?
+The series adds support for Engicam MicroGEA boards:
 
-In case if the mutex_init() allocates something that needs to be freed
-(in the future).
+- BMM
+- RMM
+- GTW
+
+based on MicroGEA-MX6UL SoM.
+
+Changes in v3:
+- Drop extra blank lines from iomuxc and iomuxc_snvs nodes.
+- Rename sgtl5000 node to audio-codec.
+- Move the reg property of the audio-codec node right
+  after the compatible property.
+
+Changes in v2:
+- Change local-mac-address to 00 00 00 00 00 00. The actual value will
+  be set by the bootloader. The previous one was assigned to Freescale
+  Semiconductor.
+- Move iomuxc and iomuxc_snvs nodes to the end of the DTS file.
+- Move iomuxc and iomuxc_snvs nodes to the end of the DTS file.
+- Drop an extra blank line
+- Move iomuxc and iomuxc_snvs nodes to the end of the DTS file.
+
+Dario Binacchi (10):
+  dt-bindings: arm: fsl: support Engicam MicroGEA BMM board
+  ARM: dts: imx6ul: support Engicam MicroGEA-MX6UL SoM
+  ARM: dts: imx6ul: support Engicam MicroGEA BMM board
+  ARM: imx_v6_v7_defconfig: cleanup mxs_defconfig
+  ARM: imx_v6_v7_defconfig: select CONFIG_INPUT_PWM_BEEPER
+  dt-bindings: arm: fsl: support Engicam MicroGEA RMM board
+  ARM: dts: imx6ul: support Engicam MicroGEA RMM board
+  dt-bindings: arm: fsl: support Engicam MicroGEA GTW board
+  ARM: dts: imx6ul: support Engicam MicroGEA GTW board
+  ARM: imx_v6_v7_defconfig: select CONFIG_USB_HSIC_USB3503
+
+ .../devicetree/bindings/arm/fsl.yaml          |   9 +
+ arch/arm/boot/dts/nxp/imx/Makefile            |   3 +
+ .../nxp/imx/imx6ull-engicam-microgea-bmm.dts  | 303 +++++++++++++++
+ .../nxp/imx/imx6ull-engicam-microgea-gtw.dts  | 162 ++++++++
+ .../nxp/imx/imx6ull-engicam-microgea-rmm.dts  | 360 ++++++++++++++++++
+ .../dts/nxp/imx/imx6ull-engicam-microgea.dtsi |  95 +++++
+ arch/arm/configs/imx_v6_v7_defconfig          |  27 +-
+ 7 files changed, 938 insertions(+), 21 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-bmm.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-gtw.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.43.0
 
-
+base-commit: f09079bd04a924c72d555cd97942d5f8d7eca98c
+branch: imx6ull-engicam-microgea
