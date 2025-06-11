@@ -1,135 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF1A21B19D;
-	Wed, 11 Jun 2025 06:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FED34CF5
+	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 07:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749623537; cv=none; b=gRpYShnjmpx2Y//HeCod/NBsIMgDiuLoIEQX2RRQysYBfK+gADEPxf67dLzPOymfQZAk2mqatDIIksgeYk/CS+fVjX6jifm84oNAxP5S9wIc3jnZa8HymOJWHXZSKwoNpQakOitKL5ft9mfkjroywsPz906MGUnamcRaDZ9Pso4=
+	t=1749625269; cv=none; b=u1bWUOgx3aYvdhiH6UaPFRNnIvjxWyI7Ec4D8dq++Me6NeJedq0sGWMCDMufYKZsx1hZnUM/6yp/fxKy8jKzO/O1LOShd7Uisp4AzNBoj4c5V67yuXTB9O3ZNoAQFAFQOmBWqogByeLsadp3mhE+lQEe74QFCfknviNrbbGZPBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749623537; c=relaxed/simple;
-	bh=J3UGwgi7fwDEC+FexveDUmJHugoo+CsBZ5+yIQEJbUU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=StFT4G2z3S3s3H3mL/OIOjNyh22LAtu/LjvnKBQPFXy19b29K8Opb9kYazz/h1iKQG/pbujMQhGzE/Ly2sawZa3BzNrXcgBtjMOnLsy1a3/7wsxbb1yVHMZ+W0u1iuxy8dGg1x8LrcpT270GA5PZkRg6meVLNQMubaYL+AUUJV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVMQlmEW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749625269; c=relaxed/simple;
+	bh=uLQDwJB/urYyPbeL9ZhxsxsU9KjYS3PXOlljJwleSZc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YHCAAwZff7xQXSNcgGzuAxmO7LC2jB1QB96igvGWxD6NMxmJCWBvKQbgeK82e1TvquO0IVFy6k6+gaOg+Z/6+3mDEvge3aBDUXoiEnvKN8O346cTMMJdIjaZVhZYr5f09PsjYMO5RnGtUAK0KVjDy7V0IdMEkvjHSThURAfFplg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=eQx2s46S; arc=none smtp.client-ip=217.92.40.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVMQlmEW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3228EC4CEEF;
-	Wed, 11 Jun 2025 06:32:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749623535;
-	bh=J3UGwgi7fwDEC+FexveDUmJHugoo+CsBZ5+yIQEJbUU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IVMQlmEW+ijtbmKTyDHg7FCcoEq+Ygux3RaWTquf9ajIdFOIyWuDPGwkXWQHq2CMg
-	 UYEa9GibvvAX8tnfxrnEF75PAfSAmSAoy6kJr0tzrhzOMLjkYLsbJdI1fHYITTtdKK
-	 mZNL/v+w3w2hSt6ysmnYfEN46Zg0AgwHi0fsaSqm5z5JuPtWzAQQdeSulwKJgtcQr0
-	 8euWoK08HuDq/25lCI4IodeWSQmv+X0OKwPZoc5ajfrx5QI0lEwpJxnsvIFbB24Rmp
-	 D9j0q8Az7Ga9g9AciHKYlvTvVOpKK+AsD18Ztr5aEi5XvfhQeUE4rC0nAjrmHfkoae
-	 ungWZ97qQvReQ==
-Message-ID: <d0b13867-9aa4-4fb1-8492-0cc58e92c61d@kernel.org>
-Date: Wed, 11 Jun 2025 08:32:10 +0200
+	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="eQx2s46S"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90F2C1485657;
+	Wed, 11 Jun 2025 09:00:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
+	t=1749625258; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=y9+jn47auQ8C9viZG2l85GSY3kGgdeG6PFjEMxhDHHU=;
+	b=eQx2s46SHQCZ0jYl8XxIcc+yhUFyAF0jkOaw9RpQ0IBXzyKuKkHuo3Wa4E+Jhsw8yDZs2F
+	n44T2u0fL6S1PDj072QY5sywdaYuL4nvzeO/6cbJPdcjdFh2ik+0ZOYdkyOG+ctPqpukS4
+	ATXTH8/mkxkfKZGFch4xvNbmKCX5gJ5nVGm/4vd1k4J1Jlb9WK/Z8/Ub92BOVx7IsPcc0q
+	vOqRMogCAoQPEkpzdBe9QMb0zXr7fR8s9KsiXQ3tY2RTassBnOptivN1X1eJGwrn1HP+1q
+	nZCxQI+eajprNS5pMgEXFnL2LWQu24GCojcK9voBxIux+aWbz3+Gd7v5ISPRAw==
+Date: Wed, 11 Jun 2025 09:00:51 +0200
+From: Alexander Dahl <ada@thorsis.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Alexander Dahl <ada@thorsis.com>, devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx8dxl-ss-conn: Disable USB3 nodes
+Message-ID: <20250611-unread-other-a559c3b98494@thorsis.com>
+Mail-Followup-To: Frank Li <Frank.li@nxp.com>, devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+References: <20250610060756.8212-1-ada@thorsis.com>
+ <aEhQfvmJMf/SyGmK@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] dt-bindings: net: convert qca,qca7000.txt yaml
- format
-To: Frank Li <Frank.li@nxp.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Stefan Wahren <wahrenst@gmx.net>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- imx@lists.linux.dev
-References: <20250606155118.1355413-1-Frank.Li@nxp.com>
- <20250610-thick-gifted-tuna-7eab4f@kuoka>
- <aEhPTXHHulIP5MqG@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aEhPTXHHulIP5MqG@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aEhQfvmJMf/SyGmK@lizhi-Precision-Tower-5810>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/06/2025 17:29, Frank Li wrote:
->>
->>> +      $ref: /schemas/types.yaml#/definitions/flag
->>> +      description:
->>> +        Set the SPI data transfer of the QCA7000 to legacy mode.
->>> +        In this mode the SPI master must toggle the chip select
->>> +        between each data word. In burst mode these gaps aren't
->>> +        necessary, which is faster. This setting depends on how
->>> +        the QCA7000 is setup via GPIO pin strapping. If the
->>> +        property is missing the driver defaults to burst mode.
->>> +
->>> +  allOf:
->>> +    - $ref: /schemas/spi/spi-peripheral-props.yaml#
->>
->> This should be part of top-level allOf.
->>
->>> +
->>> +else:
->>> +  properties:
->>> +    current-speed:
->>> +      default: 115200
->>> +
->>> +  allOf:
->>> +    - $ref: /schemas/serial/serial-peripheral-props.yaml#
->>
->> Same here.
+Hello Frank,
+
+thanks for reviewing.
+
+Am Tue, Jun 10, 2025 at 11:34:22AM -0400 schrieb Frank Li:
+> On Tue, Jun 10, 2025 at 08:07:56AM +0200, Alexander Dahl wrote:
+> > The i.MX 8DualXLite/8SoloXLite has a different connectivity memory map
+> > than the generic i.MX8 has.  One conflicting resource is usb, where the
+> > imx8dxl has a second usb2 phy @5b110000, while the generic imx8 dtsi has
+> > one usb2 phy and one usb3 phy, and the usb3otg @5b110000.  When
+> > including both imx8dxl-ss-conn.dtsi and imx8-ss-conn.dtsi as done in
+> > imx8dxl.dtsi this leads to a duplicate unit-address warning.
+> >
+> > The usb3otg node was introduced after the initial imx8dxl support with
+> > commit a8bd7f155126 ("arm64: dts: imx8qxp: add cadence usb3 support")
+> > and since then leads to warnings like this (when building with ptxdist):
+> >
+> >     CPP generic/platform-v8a/build-target/linux-6.12/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+> >     DTC generic/platform-v8a/packages/linux-6.12/boot/imx8dxl-evk.dtb
+> >     /home/adahl/Work/bsp/thorsis/generic/platform-v8a/build-target/linux-6.12/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi:148.24-182.4: Warning (unique_unit_address): /bus@5b000000/usb@5b110000: duplicate unit-address (also used in node /bus@5b000000/usbphy@5b110000)
 > 
-> If it is one top, how to disable all properties in serial-peripheral-props.yaml
-> if it connect to spi (reg exist).
-You do not have to disallow them. If this is somehow useful, it can stay
-here, although the earlier properties still need to be defined in top level.
+> why linux-6.12? maybe just your directory name. trim down
+> "generic/platform-v8a/build-target/linux-6.12/" just keep kernel's related
+> patch here.
 
-Best regards,
-Krzysztof
+Yes, just my directory name.  Sorry about that.
+Same happens when building recent v6.16-rc1 or master.
+
+> what command do you use? I have not met this warning.
+
+This is ptxdist [1] building dtb files with its own recipe, not going
+through kernel's make dtbs.  I could reproduce it on a clean kernel
+tree however like this (with PATH and ARCH=arm64 set):
+
+    make defconfig
+    make W=2 dtbs
+
+Output (stripped) is this in that case:
+
+      DTC     arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
+    …/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi:148.24-182.4: Warning (unique_unit_address): /bus@5b000000/usb@5b110000: duplicate unit-address (also used in node /bus@5b000000/usbphy@5b110000)
+    …/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi:52.23-81.4: Warning (unique_unit_address): /bus@5f000000/pcie@5f010000: duplicate unit-address (also used in node /bus@5f000000/pcie-ep@5f010000)
+      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi:41.23-50.4
+      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts:645.8-653.3
+
+These warnings do not show up with W=1.
+
+So why do I get this?  kernel build calls dtc with
+-Wno-unique_unit_address or not depending on warning level.
+ptxdist does not call dtc with that option, so those warnings are not
+silenced (details for the curious at [2]).
+
+Do we fix issues coming up with W=2?
+If yes I would adapt the commit message and send a v2.
+
+Greets
+Alex
+
+[1] https://www.ptxdist.org/
+[2] https://git.pengutronix.de/cgit/ptxdist/tree/scripts/lib/ptxd_make_world_dtb.sh
