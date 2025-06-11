@@ -1,129 +1,105 @@
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FED34CF5
-	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 07:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E012356B3
+	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 08:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749625269; cv=none; b=u1bWUOgx3aYvdhiH6UaPFRNnIvjxWyI7Ec4D8dq++Me6NeJedq0sGWMCDMufYKZsx1hZnUM/6yp/fxKy8jKzO/O1LOShd7Uisp4AzNBoj4c5V67yuXTB9O3ZNoAQFAFQOmBWqogByeLsadp3mhE+lQEe74QFCfknviNrbbGZPBk=
+	t=1749631059; cv=none; b=Y08sS4DWdIWaUskc1URLG+6bbn0pGP2/g4HoqrftA4VHf3mMiQI8OpSR8w2aMAH/6GXzqvOkpb+QFMl7wPEVooZMehqQOGQJFuxV300yH5uHLht5cAdRIKrw8QwZjfmJzaKzc5UG2X50OqqvhTZteZJDmMeMkz031ZXz8bgkASI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749625269; c=relaxed/simple;
-	bh=uLQDwJB/urYyPbeL9ZhxsxsU9KjYS3PXOlljJwleSZc=;
+	s=arc-20240116; t=1749631059; c=relaxed/simple;
+	bh=2kinzhlmz4ZC51GgMVeRamrxVg5pzwaLxW8qfc0MaDM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YHCAAwZff7xQXSNcgGzuAxmO7LC2jB1QB96igvGWxD6NMxmJCWBvKQbgeK82e1TvquO0IVFy6k6+gaOg+Z/6+3mDEvge3aBDUXoiEnvKN8O346cTMMJdIjaZVhZYr5f09PsjYMO5RnGtUAK0KVjDy7V0IdMEkvjHSThURAfFplg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=eQx2s46S; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=c01CyxVPnRUu1LB2Y63wXhzbe4eaa9s+0RwHTbs6oM4UIJhenSsTB3m/Hs+KziGdeaAMWAPKhr5fGwj+BxzfOl3Ykur07KPg4bhXvmjDbj+2N9adhHiVA5nos+Po5QnjcmK15ek4pQm8mixO57vqvSpWeWjnyDj8QOfcKw4yDxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CdNvndDk; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="eQx2s46S"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90F2C1485657;
-	Wed, 11 Jun 2025 09:00:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1749625258; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=y9+jn47auQ8C9viZG2l85GSY3kGgdeG6PFjEMxhDHHU=;
-	b=eQx2s46SHQCZ0jYl8XxIcc+yhUFyAF0jkOaw9RpQ0IBXzyKuKkHuo3Wa4E+Jhsw8yDZs2F
-	n44T2u0fL6S1PDj072QY5sywdaYuL4nvzeO/6cbJPdcjdFh2ik+0ZOYdkyOG+ctPqpukS4
-	ATXTH8/mkxkfKZGFch4xvNbmKCX5gJ5nVGm/4vd1k4J1Jlb9WK/Z8/Ub92BOVx7IsPcc0q
-	vOqRMogCAoQPEkpzdBe9QMb0zXr7fR8s9KsiXQ3tY2RTassBnOptivN1X1eJGwrn1HP+1q
-	nZCxQI+eajprNS5pMgEXFnL2LWQu24GCojcK9voBxIux+aWbz3+Gd7v5ISPRAw==
-Date: Wed, 11 Jun 2025 09:00:51 +0200
-From: Alexander Dahl <ada@thorsis.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Alexander Dahl <ada@thorsis.com>, devicetree@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8dxl-ss-conn: Disable USB3 nodes
-Message-ID: <20250611-unread-other-a559c3b98494@thorsis.com>
-Mail-Followup-To: Frank Li <Frank.li@nxp.com>, devicetree@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-References: <20250610060756.8212-1-ada@thorsis.com>
- <aEhQfvmJMf/SyGmK@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CdNvndDk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749631058; x=1781167058;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2kinzhlmz4ZC51GgMVeRamrxVg5pzwaLxW8qfc0MaDM=;
+  b=CdNvndDkP0b7COAUHx0Z00lP+Dx10MJLDcGu7LP/waYvOzHFaZ6zRUwb
+   tB4qio/H7utrMKNzeSgS982jBHUn/XzF1puSHUgr82XNbZLWYoKdQGa+B
+   SO5b32a2Hin937JVyEA7on4sUhliOFp8mWX3voOe5mrixFGCId+pJvgk8
+   QWPTpIgRxsgU/n5pdNk/YdYPLmdizfDEw5/oTcNBP6Kx5CLdfqzZKrO7P
+   R2bPjQobHJUa0GLcZeolYTH9dbjqRacohhvvRLWXwad86RBv09MJWpDXZ
+   y4l/jTmLbQY3TAP1FpNEw2lHo3z8bZ7KBXorkxTZWNwdXWRMEtDRdUWxT
+   g==;
+X-CSE-ConnectionGUID: 9+5g2U5xQ9uTPdf5QM1xrA==
+X-CSE-MsgGUID: OxjYJWUOQnKH1vNVaHizog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="62418526"
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
+   d="scan'208";a="62418526"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 01:37:36 -0700
+X-CSE-ConnectionGUID: WUkEGOYpTlWF1DvX0mYXGA==
+X-CSE-MsgGUID: FopgQGVwQVO8ZzHiCd1LqA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
+   d="scan'208";a="184332570"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 01:33:18 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uPGtX-00000005aOn-1tE9;
+	Wed, 11 Jun 2025 11:33:15 +0300
+Date: Wed, 11 Jun 2025 11:33:15 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Vicentiu Galanopulo <vicentiu.galanopulo@remote-tech.co.uk>,
+	Will Deacon <will@kernel.org>, Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Yogesh Gaur <yogeshgaur.83@gmail.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Andrew Davis <afd@ti.com>,
+	linux-kernel@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	linux-leds@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] spi: spi-nxp-fspi: check return value of
+ devm_mutex_init()
+Message-ID: <aEk_Sx2qht6WK6yQ@smile.fi.intel.com>
+References: <20250609-must_check-devm_mutex_init-v6-0-9540d5df9704@weissschuh.net>
+ <20250609-must_check-devm_mutex_init-v6-1-9540d5df9704@weissschuh.net>
+ <7afc214a-affd-4a99-8528-c58c31fbcc59@sirena.org.uk>
+ <aEgBkROmEV2df4rA@smile.fi.intel.com>
+ <d8d1ee94-ee95-461f-a5d8-040bb2a1cfee@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aEhQfvmJMf/SyGmK@lizhi-Precision-Tower-5810>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <d8d1ee94-ee95-461f-a5d8-040bb2a1cfee@sirena.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hello Frank,
-
-thanks for reviewing.
-
-Am Tue, Jun 10, 2025 at 11:34:22AM -0400 schrieb Frank Li:
-> On Tue, Jun 10, 2025 at 08:07:56AM +0200, Alexander Dahl wrote:
-> > The i.MX 8DualXLite/8SoloXLite has a different connectivity memory map
-> > than the generic i.MX8 has.  One conflicting resource is usb, where the
-> > imx8dxl has a second usb2 phy @5b110000, while the generic imx8 dtsi has
-> > one usb2 phy and one usb3 phy, and the usb3otg @5b110000.  When
-> > including both imx8dxl-ss-conn.dtsi and imx8-ss-conn.dtsi as done in
-> > imx8dxl.dtsi this leads to a duplicate unit-address warning.
-> >
-> > The usb3otg node was introduced after the initial imx8dxl support with
-> > commit a8bd7f155126 ("arm64: dts: imx8qxp: add cadence usb3 support")
-> > and since then leads to warnings like this (when building with ptxdist):
-> >
-> >     CPP generic/platform-v8a/build-target/linux-6.12/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> >     DTC generic/platform-v8a/packages/linux-6.12/boot/imx8dxl-evk.dtb
-> >     /home/adahl/Work/bsp/thorsis/generic/platform-v8a/build-target/linux-6.12/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi:148.24-182.4: Warning (unique_unit_address): /bus@5b000000/usb@5b110000: duplicate unit-address (also used in node /bus@5b000000/usbphy@5b110000)
+On Tue, Jun 10, 2025 at 12:46:12PM +0100, Mark Brown wrote:
+> On Tue, Jun 10, 2025 at 12:57:37PM +0300, Andy Shevchenko wrote:
+> > On Mon, Jun 09, 2025 at 09:59:46PM +0100, Mark Brown wrote:
 > 
-> why linux-6.12? maybe just your directory name. trim down
-> "generic/platform-v8a/build-target/linux-6.12/" just keep kernel's related
-> patch here.
+> > > I don't understand the comment about leaking here?  We might end up with
+> > > an unitialised mutex but how would we leak anything?
+> 
+> > In case if the mutex_init() allocates something that needs to be freed
+> > (in the future).
+> 
+> I don't see how checking the return value impacts that?  The management
+> via devm is still there either way.
 
-Yes, just my directory name.  Sorry about that.
-Same happens when building recent v6.16-rc1 or master.
+I see now what you mean. Yes, this is more likely applicable to non-devm case.
+Thomas, can you adjust the commit message(s), please, for v7?
 
-> what command do you use? I have not met this warning.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-This is ptxdist [1] building dtb files with its own recipe, not going
-through kernel's make dtbs.  I could reproduce it on a clean kernel
-tree however like this (with PATH and ARCH=arm64 set):
 
-    make defconfig
-    make W=2 dtbs
-
-Output (stripped) is this in that case:
-
-      DTC     arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
-    …/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi:148.24-182.4: Warning (unique_unit_address): /bus@5b000000/usb@5b110000: duplicate unit-address (also used in node /bus@5b000000/usbphy@5b110000)
-    …/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi:52.23-81.4: Warning (unique_unit_address): /bus@5f000000/pcie@5f010000: duplicate unit-address (also used in node /bus@5f000000/pcie-ep@5f010000)
-      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi:41.23-50.4
-      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts:645.8-653.3
-
-These warnings do not show up with W=1.
-
-So why do I get this?  kernel build calls dtc with
--Wno-unique_unit_address or not depending on warning level.
-ptxdist does not call dtc with that option, so those warnings are not
-silenced (details for the curious at [2]).
-
-Do we fix issues coming up with W=2?
-If yes I would adapt the commit message and send a v2.
-
-Greets
-Alex
-
-[1] https://www.ptxdist.org/
-[2] https://git.pengutronix.de/cgit/ptxdist/tree/scripts/lib/ptxd_make_world_dtb.sh
