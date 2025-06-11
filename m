@@ -1,121 +1,194 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BCA198A1A
-	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 19:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4671779B8;
+	Wed, 11 Jun 2025 20:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749669472; cv=none; b=lEXPtUy9kQM+1Jd9D1jBvKvhoPvoCWkRnwZ1lp8a87W1QokBCKPFJBIRMsjvorWtPBXLHYLPdqextY9sgDDVqTFrtVc+vb2+iXGyqgvLqKzgIAWOw6+bCkS/Se9jMz61WTgM6aSzCQbogLfJxiE8f2/0MVuve6DLalsEiMYCkB8=
+	t=1749672180; cv=none; b=lJyAbIgvjR1GXA+fNKNq9E2UyeD3PxTaqJQO84Hk7xOCYEnSObvwirIopMUdZt0u3nQuqyiuXE7Y0HbUn82dIH5JRt17qvKBBVBMUjVBC63yqrPuoP91xRugdKd9X5DT84FSVXXJM+x9l8anz6k6ibrJXYt96N9ma/2DnawFay0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749669472; c=relaxed/simple;
-	bh=fUrUvj/NKrnOKNMJe9QMJYc8JHU2TblrN3dQxgOBq8w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HUK1ZLYpvzlzN2qy0m0DlNPeHpHru7vd9AQ9+7zjJOWgD8l8Cj6sFuk0LqsLdaEEyUzyodWP9UknrKIAeZImRI03oScl2+gcul95I1Y+nLq6APwTxVN4hVniDhBweSZRFfaXyhTNnW75qtR61uI61LViO4BmwAe5kC2TbvTkOOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=y1CXcam8; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1749672180; c=relaxed/simple;
+	bh=Y91AIqXiYb2KFSBw95LNtXg6HYm3TMJd6I6LrNYm+hU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aCU4HgUhw2k8pF6JWf8wNlS/USnd0byyQwQC8EGn8Bmp9jjXuskrhOVsQoxWMvUPHj+oqn+czq4Nw/VjRJZSlz7G2cmeVQk8djDOW7mwo6jeFQpUlZmKnOCNvItumMCc/XE2/r6ucXwMfDxUk1wAt9bPzArhHdfktzbXojzUUMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dV3ebDPL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="y1CXcam8"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4531e146a24so973485e9.0
-        for <imx@lists.linux.dev>; Wed, 11 Jun 2025 12:17:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749669469; x=1750274269; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cnqd7Mp+YWPevCABnNJ+cz/TVLBtwGacs5s2BQshssM=;
-        b=y1CXcam8mkHeGNEF3YDAxMywDTWDYdQ/ME/Iv1xwDnDs1yx45vbfkDXcBTDeF4g1DT
-         ukRRg0RzQ4iI7pfqr+K57e6vURgC1UsTRL7sop5IARxyT3sqPPhxh2l9YjLYtwtcuVUG
-         TAcKZQlq0Kjbj4f3S8XqLmfyjSji59VfsS/ipsANVFNkFAwRl41MLDRMJ9JOM7vM0Hul
-         Mz1DrgKaHqyJ50gs2kOMy+ERYPafcIsTxWkfsyM0EyMRxBsqAUhrJ21F8DZrJGx4s+qk
-         KmFtWVuE4xlowHHaMo3hVD4ktKMgSWahbWbaM2WbikJfx7S2x/gDBpfucau8zXXLtbg8
-         VaFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749669469; x=1750274269;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cnqd7Mp+YWPevCABnNJ+cz/TVLBtwGacs5s2BQshssM=;
-        b=tVPrLJsdD0uMOSUcyJMOx2Q5pH06FyMj4Uh9dmzeXPeK/UzMs6/qyrbYENDoLKv3KQ
-         aWQlBsUFIYmPjin6MN63s5Xavn9MPB92PVCWEXlsx0SmVOQZ0vnFrjl+nuJ1A2SdyAl3
-         iysbVDPAYQNHxNvvlJzGZhOM5jFeWV7DROJoV+mQsJ2SSBg1HrHdiwq6JD3VsSH06A8Q
-         EFPa1kPq7M+6lqUaZxUuuXRL30SXwZ9IiIPApzfGwdJXsZnXXpNkhTXGAx3YSEPzG1Xe
-         iVtS9PyI1tFenqimCjU0ZKV1bAmzTf0aPcegoEBU2a6YG1Fzk8++ywK0zFKNyv0SXjpP
-         UjNw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0ZTg66NH+eaUoOTnm+3rJUck1AhCMRV4P/LomoMHlMyNb/DiUWhMtmehqEBhipd7auUU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyUiem8fMGo7pMiKQLwXFMmPtX+rlxf3OOC2/HdtnnUmFMbr4QR
-	pFDwlYg3yc6uHPq3SNDzOb/1nePE1ZqHIV/y/7/8AS5IyaH/OE6419iZPj44V79E8a0=
-X-Gm-Gg: ASbGncv6jCuTv2TsI4iE9uQp5c6nawPfASYmoVzomk40NXjzoxn19TEaYUgU6QaVHdi
-	+TW2lTdBbR62mEgu21Cg5I8SrrL1cYBHG4I+sjYwS9xXwOBcIq57mP04//W9r6EI54L8VLwTrA9
-	w1Oz+UE1BtIfo20jj27OvxCko9wKUORAVLkMLsphRP9q40zImmVOMVpE0P0V1EP3B7tcuWjOh4t
-	L4XZ+AEWY7KRrTTKweHSbQF4XlW0xTSMGTh3ets+n2xBBIkYAF3qCSG4Ix78zk3+QOID7vzeDd8
-	QHl72yLF+HO3pEIXHHXFsMjIXVc8fAIpeiWlphYgtds9q9BnTIAnsFP6Pg6XwYjMtSg=
-X-Google-Smtp-Source: AGHT+IGJ3NQ8AU+WANwLf0nZAuX7XDSfVjhF8GwX89vHnWLiFcZb6a/55FgYJ7VjRdDmwl1wu3ltxw==
-X-Received: by 2002:a05:600c:6612:b0:44a:ac77:26d5 with SMTP id 5b1f17b1804b1-4532487b346mr48416505e9.14.1749669468976;
-        Wed, 11 Jun 2025 12:17:48 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45325176cf5sm29370725e9.21.2025.06.11.12.17.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 12:17:48 -0700 (PDT)
-Date: Wed, 11 Jun 2025 22:17:44 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, s32@nxp.com,
-	linaro-s32@linaro.org
-Subject: Re: [PATCH 4/4] usb: chipidea: s32g: Add usb support for s32g3
-Message-ID: <aEnWWPgXseRGdSz1@stanley.mountain>
-References: <cover.1748453565.git.dan.carpenter@linaro.org>
- <c7c9319793b439cb35909621381ca2d4a78699dd.1748461536.git.dan.carpenter@linaro.org>
- <aDeCwUsYTh7z7uuo@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dV3ebDPL"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C13BEC4CEE3;
+	Wed, 11 Jun 2025 20:02:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749672179;
+	bh=Y91AIqXiYb2KFSBw95LNtXg6HYm3TMJd6I6LrNYm+hU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=dV3ebDPLcFhnmvWvMkOQNDCU1Hu9LzpZQPmtCSh8tRb6QbiiSGxy+mOOyLHCL7MN/
+	 bHDO/DUYxiv3g3Lbmq2A2/1wcqNJt+3/AuyMpFI9KL0lOKAl/h273PGjyZtNG/JEA+
+	 aCOe1DqA2X+Pj9jNMGme1mZi9bp3VnCxOYhtODt4bJuIyhZABtDw/iYYhtQbllJgl1
+	 BWYQ5rk0oIaXwnr7qJLaHuYplwn2IPwr3V+XZuAyO9AJiDy70F+sBfVGb3Ej1OntzR
+	 WKo/EruFL/Yz1uu0NO7UeydkebwWdQ5t+2LbwZMigRBoKyPiFJGejjyViKz+e2bCLQ
+	 Vj8A9WN0olENQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9DF3C71135;
+	Wed, 11 Jun 2025 20:02:59 +0000 (UTC)
+From: Samuel Kayode via B4 Relay <devnull+samuel.kayode.savoirfairelinux.com@kernel.org>
+Subject: [PATCH v6 0/6] add support for pf1550 PMIC MFD-based drivers
+Date: Wed, 11 Jun 2025 16:02:57 -0400
+Message-Id: <20250611-pf1550-v6-0-34f2ddfe045e@savoirfairelinux.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aDeCwUsYTh7z7uuo@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPHgSWgC/33OQW7CMBAF0KtEXmM0jj0JYcU9EAvHHpeRSgJ2s
+ KhQ7l4TJKgqtcs/+np/7iJRZEpiW91FpMyJx6GEZlUJd7TDB0n2JYsaagSsW3kOChGkN6ACeGj
+ 7DYhSPkcKfFug/eGZI12uxZueR9HbRNKNpxNP2yo3a4XiUTxymsb4tTyQ9dL8vZW1BGkwNJ1B7
+ TyqXbJ55BgsR/rk4XpbF3fRsnkLDeiXYIrQBx9QEWHn3D8C/hAUvAQsAnnwHWlrrWv/EOZ5/gZ
+ ThFDFVAEAAA==
+X-Change-ID: 20250527-pf1550-d401f0d07b80
+To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>
+Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, 
+ linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, 
+ Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>, 
+ Robin Gong <yibin.gong@nxp.com>, 
+ Enric Balletbo i Serra <eballetbo@gmail.com>, 
+ Samuel Kayode <samuel.kayode@savoirfairelinux.com>, 
+ Abel Vesa <abelvesa@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749672178; l=5702;
+ i=samuel.kayode@savoirfairelinux.com; s=20250527;
+ h=from:subject:message-id;
+ bh=Y91AIqXiYb2KFSBw95LNtXg6HYm3TMJd6I6LrNYm+hU=;
+ b=KhQKypj8p61lIPfOxcvU2HW0f7+RjCrKcWknRH21uY3VXARHYJ5hKE780E1ymPx2g+TWxPxKi
+ Btp3YoyEidaCagdEBKtIEywWlB9NZxEzNgwfcJhzWegimhPlyogC/Og
+X-Developer-Key: i=samuel.kayode@savoirfairelinux.com; a=ed25519;
+ pk=TPSQGQ5kywnnPyGs0EQqLajLFbdDu17ahXz8/gxMfio=
+X-Endpoint-Received: by B4 Relay for
+ samuel.kayode@savoirfairelinux.com/20250527 with auth_id=412
+X-Original-From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+Reply-To: samuel.kayode@savoirfairelinux.com
 
-On Wed, May 28, 2025 at 05:40:17PM -0400, Frank Li wrote:
-> On Wed, May 28, 2025 at 10:57:39PM +0300, Dan Carpenter wrote:
-> > From: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-> >
-> > Enable USB driver for the s32g3 USB device.
-> >
-> > Signed-off-by: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-> > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > ---
-> >  drivers/usb/chipidea/ci_hdrc_imx.c |  1 +
-> >  drivers/usb/chipidea/usbmisc_imx.c | 15 +++++++++++++++
-> >  2 files changed, 16 insertions(+)
-> >
-> > diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> > index ce207f8566d5..d062399ce15e 100644
-> > --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> > +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> > @@ -95,6 +95,7 @@ static const struct of_device_id ci_hdrc_imx_dt_ids[] = {
-> >  	{ .compatible = "fsl,imx7ulp-usb", .data = &imx7ulp_usb_data},
-> >  	{ .compatible = "fsl,imx8ulp-usb", .data = &imx8ulp_usb_data},
-> >  	{ .compatible = "nxp,s32g2-usb", .data = &s32g_usb_data},
-> > +	{ .compatible = "nxp,s32g3-usb", .data = &s32g_usb_data},
-> 
-> If it is same, suggest compatible string fallback to nxp,s32g2-usb
-> 
-> compatible = "nxp,s32g3-usb", "nxp,s32g2-usb".
-> 
+This series adds support for pf1550 PMIC. It provides the core mfd driver and a
+set of three sub-drivers for the regulator, power supply and input subsystems.
 
-These are the same, yeah.  I'm not sure I understand.  Did you mean just
-add the "nxp,s32g2-usb" string to the driver, and put both the g2 and g3
-in the devicetree file?
+Patch 1 adds the DT binding document for the PMIC. Patches 2-5 adds the
+pertinent drivers. Last patch adds a MAINTAINERS entry for the drivers.
 
-regards,
-dan carpenter
+Changes since v1:
+   - DT bindings for all devices included
+   - Add onkey driver
+   - Add driver for the regulators
+   - Ensure charger is activated as some variants have it off by default
+   - Update mfd and charger driver per feedback from eballetbo@gmail.com
+   - Add myself as maintainer for these drivers
+   - Link to v1: https://lore.kernel.org/1523974819-8711-1-git-send-email-abel.vesa@nxp.com/
+
+Changes since v2:
+   - Rebase on recent mainline kernel v6.15
+   - Single yaml file containing dt bindings for all pf1550 devices
+   - irq mapping done in MFD driver as suggested by Dmitry Torokhov
+   - Drop unnecessary includes in drivers
+   - Replace dev_err with dev_err_probe in probe method of drivers
+   - Drop compatible string from drivers of the sub-devices
+   - Remove dependency on OF from drivers of the sub-devices
+   - onkey: move driver from input/keyboard into input/misc
+   - onkey: remove dependency on OF
+   - onkey: use onkey virqs instead of central irq
+   - onkey: fix integer overflow for regmap_write when unmasking
+     interrupts during pf1550_onkey_resume
+   - charger: add support for monitored-battery which is used in setting
+     a constant voltage for the charger.
+   - Address other feedback from Dmitry Torokhov and Krzysztof Kozlowski
+   - Link to v2: https://lore.kernel.org/cover.1747409892.git.samuel.kayode@savoirfairelinux.com/
+
+Changes since v3:
+   - Update manufacturer from Freescale to NXP in compatible,
+     dt-binding and Kconfigs
+   - Use C++ style comments for SPDX license in .c code
+   - Add portions copyright to source code
+   - irqs are defined as struct resource in mfd cell such that
+     platform_get_irq is used in the sub-devices
+   - Make struct pf1550_dev of type const in sub-device driver
+   - irq variable dropped from sub-device driver struct
+   - EXPORT_SYMBOL of global pf1550_read_otp function for use in
+     regulator driver
+   - Drop unneeded info in driver_data when defining device table id
+   - regulator: validate ramp_delay
+   - regulator: report overcurrent and over temperature events
+   - onkey: drop unnecessary keycode variable
+   - onkey: change wakeup variable to type bool
+   - onkey: replace (error < 0) with error in if statement when possible
+   - onkey: use pm_sleep_ptr when defining driver.pm
+   - charger: finish handling of some interrupts in threaded irq handler
+   - Link to v3: https://lore.kernel.org/20250527-pf1550-v3-0-45f69453cd51@savoirfairelinux.com/
+
+Changes since v4:
+   - Use top level interrupt to minimize number of registers checked on
+     each interrupt
+   - Fix bad offset for temperature interrupts of regulator irq chip
+   - Address Krzysztof's comments for dt-binding
+   - regulator: add comments to clarify difference in its interrupts
+   - regulator: issue warn event for _LS interrupt and error event for
+     _HS interrupt
+   - regulator: validate maximum and minimum ramp_delay
+   - charger: drop lock in battery and charger delayed_work
+   - charger: more conservative locking for vbus delayed_work
+   - charger: apply lock when setting power_supply type during register
+     intialization
+   - Link to v4: https://lore.kernel.org/r/20250603-pf1550-v4-0-bfdf51ee59cc@savoirfairelinux.com
+
+Changes since v5:
+   - Ensure lowercase when assigning hex values
+   - Add imx@lists.linux.dev to relevant mailing list in MAINTAINERS file
+   - Use GENMASK macro
+   - Drop unused chips variable
+   - Read the OTP in the mfd driver probe for new dvs_enb variable
+   - Hardcode IRQ flags in pf1550_add_child function
+   - charger: drop the mutex entirely
+   - charger: reverse christmas tree style local variable definition in
+     probe
+   - Link to v5: https://lore.kernel.org/r/20250610-pf1550-v5-0-ed0d9e3aaac7@savoirfairelinux.com
+
+Signed-off-by: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+---
+---
+Samuel Kayode (6):
+      dt-bindings: mfd: add pf1550
+      mfd: pf1550: add core mfd driver
+      regulator: pf1550: add support for regulator
+      input: pf1550: add onkey support
+      power: supply: pf1550: add battery charger support
+      MAINTAINERS: add an entry for pf1550 mfd driver
+
+ .../devicetree/bindings/mfd/nxp,pf1550.yaml        | 137 +++++
+ MAINTAINERS                                        |  11 +
+ drivers/input/misc/Kconfig                         |  11 +
+ drivers/input/misc/Makefile                        |   1 +
+ drivers/input/misc/pf1550-onkey.c                  | 183 ++++++
+ drivers/mfd/Kconfig                                |  14 +
+ drivers/mfd/Makefile                               |   2 +
+ drivers/mfd/pf1550.c                               | 339 +++++++++++
+ drivers/power/supply/Kconfig                       |  11 +
+ drivers/power/supply/Makefile                      |   1 +
+ drivers/power/supply/pf1550-charger.c              | 633 +++++++++++++++++++++
+ drivers/regulator/Kconfig                          |   9 +
+ drivers/regulator/Makefile                         |   1 +
+ drivers/regulator/pf1550-regulator.c               | 362 ++++++++++++
+ include/linux/mfd/pf1550.h                         | 254 +++++++++
+ 15 files changed, 1969 insertions(+)
+---
+base-commit: 0a4b866d08c6adaea2f4592d31edac6deeb4dcbd
+change-id: 20250527-pf1550-d401f0d07b80
+
+Best regards,
+-- 
+Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+
 
