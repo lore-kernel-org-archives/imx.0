@@ -1,67 +1,66 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2107.outbound.protection.outlook.com [40.107.20.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCF2283CAA
-	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 12:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749646463; cv=none; b=NnNvk8HE++6JbhksUC5n2u0RtsPnC82al2HgZz9QPvuQI6B5BVRhITDWq8pvgjztirTptzbp19R4fPQOTjrnsz3W2b9yerrhkXZXRnHIqssrySTTl4KWI0VddKPVTo5DrooG7AMzlvGQhXsaci4GnPDJ4EeZa6mc4fomZ9F7RQg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749646463; c=relaxed/simple;
-	bh=huEY8ThqIGGefkr+NwFuL0lRYACFVhJDRBYG4OTx8VY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=k4RPwtmZsBt+6Gb4qomb+b8kf8LwdYwOWDUmJdNNGpP+YyFsyXpqECe1lBhJgl11v8vr7uJPaHjZk4rm+pA03Kh3NsWN58l0DAPfD6gYQMbVqTj6qQ9VnGRl12kUwPAtp3z6n8k+gWzMjvefkwb9KSrXfQ9F/rKIctCpg7m4lc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Tn36xTu7; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7E5277808
+	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 13:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.107
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749647169; cv=fail; b=sN4J3N3Hx3EV95noJ+slMzdgIWyJboqcviq5ThNE1JsJouAhi050klaVpHhTn62AdrBKZftQXWnMxeO1759yLrdRK0dKCe8lFyvObDKZJy+RBg+tTTPhtrlSAgEnrPfKDHgn/bPejbmSEnuhko7lyMFxtJ1zSLQJeAI2LEYhevY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749647169; c=relaxed/simple;
+	bh=4k06rxndBzTzfGNNrWYAiJYf4KovcU479vrS9GJ0AKI=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=eD6EnuCyvP1t1hMItGl3MSqUFB61kZgpFijy7fYNtY6hCEiFKd3ePitvHdlqiZK34TPup5giFEgMdrFF+9i4jvRssd6r8LVa8NTFl6t3fBRbMByHZM1xCurUiyu2DKdc+py7id9DzBbj89SSK3HuE/rbbT8VOVXTlDqZYmYV+rA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=E/SqZSL3; arc=fail smtp.client-ip=40.107.20.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Tn36xTu7"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-442fda876a6so60315405e9.0
-        for <imx@lists.linux.dev>; Wed, 11 Jun 2025 05:54:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749646459; x=1750251259; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KdZFjl2fccvj0QADc8xzOcmXiXilDJiFfw1wc4K1F9g=;
-        b=Tn36xTu7goQDK0h1AdAboV0godrVEnV+8GOJ8e17+A95QQcTBqr3zReYeVqP1Cnx7v
-         m9puGsSfZh1rKQPkIFPnl3my2pq2ThSvl8yhcyQ5WHhLKWnJ/ysbMyoY8OaLxOIUL7du
-         k26ymZuG8qoMlEKxOO7eTg1hv+5q30gbh+9zfDUPXV8XDlyKgyaGCQ50fdk9nUSv5icj
-         oN4PpsZZbBqplQRc2BdPDuonNEFikyBx0KnTXYp+VQ9Bi9gubfkO/1B/EWK+ggpLIgMe
-         UnZdsaF6dMbuKCD58+kkqRG0JtkNnrPXhKS3KmdB6pNbg3OF7q3jRaCWUjfNlwj/GG3j
-         aMjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749646459; x=1750251259;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KdZFjl2fccvj0QADc8xzOcmXiXilDJiFfw1wc4K1F9g=;
-        b=GGxaXka/8lTbvEwvyfZ/OJ4bzJeMXDzYid2H46/noQyCpUEA+3SoTjtj2+uMbWctRJ
-         ZUbrnxHfyfJXwE6vgeq7AlsbNgHsTgP2NvQI6Z/hd475v1lk5iJ8uroSoViAsvep/7lC
-         DcVJkoNygUgONucO/xiAFM1C8mw2bb+Ixh3nHq+TZZQ8TNOwsJ0hWibimPeoBXw99q0z
-         LBiwwXiincfvfLJvVfCpMCxOaEryylUMJ/c9is3XsD+m2FnjdRiJsefvUUyRoa95jO6k
-         ixe5UjCI6eEk3XQviolwJyjydZwPkh55RQCrlJeJEjY0HLnxaPZPTcoe7G4hgmyOpTg2
-         3CuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVPhTpeKaa84KXoj+C4IQcsqdHXWl06TDoDOoGLJlLEYdigMme/lg5aUA3d6w2JTycc008=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxMDrj4Rtvw8XhvP+8QtW1h7w6uPBfx/zki0A4zU3PHarfkaOTa
-	xhblX4ozi+BNSOoZ2FlGCs+eJeHSMdqEaxUOGMZw/Nb6mX+1MKOCZ1wL+2l66zcXJis=
-X-Gm-Gg: ASbGncuhcoL7d5rOzceU5MDh7lSwzDp99iJnEJNseNx1ZmSlCxw9uT2irHr1+SOLZi7
-	vIVdBA6wuXlbDspcJTUV+8f8kNvqykU1sSU3ozGmM4DlOlkOVzS0kZqwq/58OcN8PV2x1LJx5G9
-	ga1MDd+mVDABStuuEn6JHv9Jsb9T43P1eI0d/SO4DFjNip+DRs8DC8cT6yhNlPGQe0i0g04FyUA
-	1+NPvIQGyWC2JNuRirpK6Q8fp9ctm8Ed1e/xtmLPrT+ErycBCgpNrV2iSyXPNVz9fzLA8SyfAzJ
-	8awJAC6wQtDRvnxCei+oy6G8Pvgwcf2OZKS56OFZPAhJVOwSxxcZMU5dMjXkObPP+kvXM2HebxT
-	y
-X-Google-Smtp-Source: AGHT+IFwVwM1VBdaMyjnvhb9KUvhpjuoSTMLyxFLI5Ds1mjnS+Tvk4Fdx9g7hYxsolgprYuijG/Grg==
-X-Received: by 2002:a05:600c:83c6:b0:442:ccf0:41e6 with SMTP id 5b1f17b1804b1-45324879755mr33205135e9.3.1749646458645;
-        Wed, 11 Jun 2025 05:54:18 -0700 (PDT)
-Received: from toaster.baylibre.com ([2a01:e0a:3c5:5fb1:8ef3:a82f:ccaa:91b5])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3a53245275esm15225486f8f.76.2025.06.11.05.54.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 05:54:18 -0700 (PDT)
-From: Jerome Brunet <jbrunet@baylibre.com>
-Date: Wed, 11 Jun 2025 14:53:59 +0200
-Subject: [PATCH 4/4] clk: amlogic: axg-audio: use the auxiliary reset
- driver
+	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="E/SqZSL3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MXyH+E2dO0CtO4inGcvyf4GI5KZN8/5qOa4xF3kFyIF7OJi8THBW9j+Lb8VEcBy9J8Ptz2R7XF4OUYySX8NUX2q7o4eSUsSZHvyq4pdHkpG7iJEtV71y1igDURNNiwghd+rlA+8XYfGgJ8dhuz+IRM6tBknZ+WxPWVD+zYRE4j3qJAkDplJ9/WUj4cwykCRJOrXIj8n+8cklsT4+QYpo+DFt3DLrjI5PDeyksRFqk7MHino4Hxj/baEVD4rQgHvSXWqUcCsGJ0xpzgEGeDcVAqZlXF5wfEuSwyog1BKw+2/eBWGYi6/ICoeHkV54dsWTt8Ti6HpI/1FSE13Z94EKlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+IUBYy2YfpxDgtci0XNauvXmiSDiYYwOMbpBWictcAc=;
+ b=k7XGS21Z1CqcDe/1jZOt6s2nKh1pLzRy8HHe6bFqAXBjDzT+C0myoTlfk9KP+MKAast5xxJ/OH3oeW0tS2v6lSODWcIL15ijOESe7osk25PzAiUetckgm4svPw/FxrZ1ByOAQm+Z7q8m70E7uDMbdnYTiY+hLAow/lHgS/3BD5Cag/g+qM1Ol6/6TGaBlX0TFooOr7gPe8yU0zLQx/SZnQgU2vy50LPUQBimCxjq2N1oxIAQ9XACWZ9RViLiUUd3xvWkiHVzGD1uRgWRudU37eysxVtm0ehCY9pl34i1eGH3Mq0u1u2VKXX6OMbiVPbyc5zOWn5xXacxZQuFz6ujBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
+ is 91.26.50.189) smtp.rcpttodomain=arm.com smtp.mailfrom=phytec.de;
+ dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
+ header.from=phytec.de; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+IUBYy2YfpxDgtci0XNauvXmiSDiYYwOMbpBWictcAc=;
+ b=E/SqZSL3d5EbQsElTOeaM493vjU5UGyhIxhJyfzHr3oFSLtwyrJu7MV+4TPRolzjfLs5SwBA476Ko0AAJ/dAOsGiGTTJas+WgcNJwWKlV/iYinDzLyd5hUqQBmfCORAdY2fL1le7WixQNsoBgWTsINrGvGeXAfB1zv1yrLPmrAqDA2UDjzTd0F6r+vUF7TuYQNsTuDqL4F9ZSu/UxVXGLEpGxWXvQsqG0t8F2nLkbbjNF1KWw6C0R5Msp3ZDMimStd5xO3sixP8yymOxXWlkJIe6VJWjaJhzVhqrJMsg+aF9g0CdrmtB6FJDfKVifxm9DY3U5bMohpDqFDrJsc+/hw==
+Received: from DB3PR08CA0027.eurprd08.prod.outlook.com (2603:10a6:8::40) by
+ PAXP195MB1134.EURP195.PROD.OUTLOOK.COM (2603:10a6:102:19a::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8835.18; Wed, 11 Jun 2025 13:06:02 +0000
+Received: from DU2PEPF00028D0A.eurprd03.prod.outlook.com
+ (2603:10a6:8:0:cafe::ee) by DB3PR08CA0027.outlook.office365.com
+ (2603:10a6:8::40) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.19 via Frontend Transport; Wed,
+ 11 Jun 2025 13:06:02 +0000
+X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 91.26.50.189)
+ smtp.mailfrom=phytec.de; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=phytec.de;
+Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
+ phytec.de discourages use of 91.26.50.189 as permitted sender)
+Received: from Diagnostix.phytec.de (91.26.50.189) by
+ DU2PEPF00028D0A.mail.protection.outlook.com (10.167.242.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8835.15 via Frontend Transport; Wed, 11 Jun 2025 13:06:02 +0000
+Received: from Florix.phytec.de (172.25.0.13) by Diagnostix.phytec.de
+ (172.25.0.14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Wed, 11 Jun
+ 2025 15:06:01 +0200
+Received: from llp-moog.phytec.de (172.25.32.81) by Florix.phytec.de
+ (172.25.0.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Wed, 11 Jun
+ 2025 15:06:01 +0200
+From: Yannic Moog <y.moog@phytec.de>
+Subject: [PATCH v3 0/2] Add new imx imx95-libra-rdk-fpsc SBC
+Date: Wed, 11 Jun 2025 15:05:29 +0200
+Message-ID: <20250611-wip-y-moog-phytec-de-imx95-libra-v3-0-c8d09f1bdbf0@phytec.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,243 +69,121 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250611-clk-aux-v1-4-fb6575ed86a7@baylibre.com>
-References: <20250611-clk-aux-v1-0-fb6575ed86a7@baylibre.com>
-In-Reply-To: <20250611-clk-aux-v1-0-fb6575ed86a7@baylibre.com>
-To: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
- Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: linux-mips@vger.kernel.org, linux-clk@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- Jerome Brunet <jbrunet@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIABl/SWgC/43NQQ6DIBQE0KsY1v0NIMTSVe/RdCHwVZIqBg3VG
+ O9e1I27djmTyZuFDBgcDuSeLSRgdIPzXQr5JSOmKbsawdmUCadcUsEkfFwPM7Te19A384gGbNq
+ 0k5LwdjqUwAujDEoptWIkMX3Ayk37xfOVcuOG0Yd5f4xsaw9c0uI3HhlQELrIbyIvrTD2ceyuF
+ smGR34G1R8gBw6aC1YqJiuu8Qyu6/oFr+p1/yEBAAA=
+X-Change-ID: 20250415-wip-y-moog-phytec-de-imx95-libra-27c9ce555b91
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+CC: <upstream@lists.phytec.de>, Benjamin Hahn <b.hahn@phytec.de>, "Teresa
+ Remmet" <t.remmet@phytec.de>, Yashwanth Varakala <y.varakala@phytec.de>, "Jan
+ Remmet" <j.remmet@phytec.de>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, Conor Dooley
+	<conor.dooley@microchip.com>, Yannic Moog <y.moog@phytec.de>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5930; i=jbrunet@baylibre.com;
- h=from:subject:message-id; bh=huEY8ThqIGGefkr+NwFuL0lRYACFVhJDRBYG4OTx8VY=;
- b=owEBbQKS/ZANAwAKAeb8Dxw38tqFAcsmYgBoSXx0TIJvPb4pFL/m7UQSR8q8Mbmnm6OXPs6eY
- BlR75emBm6JAjMEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCaEl8dAAKCRDm/A8cN/La
- hYBdD/4q4nR6sR3pGrG2npIFVDhtrUeD2xlhg3MU+t88JlBrPmoOz41y1Wf/bedDpP/faKO/bBr
- TOoSV5jth7KOZPGgyHqDPHAsKRsHJbhqNCunHDD2lrgPZ1G5sFpWda3g4iTBjdRcQA/hejB/ms+
- k5kKyGyh2k5q+aslEn26t+PeUGNpnURdMTXra3MoWA5iNFxnRyBwh/kYcv/SxH7xOvYdjSuuQ8E
- 3O/rX23FNPho4XyEsvHCxK6eNI8G/drzYrSTR7x0ho6tYHGXQyO8kiVyz6X4VNpDaxSjhFZgtVs
- 27d3xyfPLL9D3gANvpytNJ2TDCZsxI/bnxBzvX3PWBNnqFEsMtzQL3AbbDXmszrQ7KZoWmYGgIr
- kol4jbVM1bYwt1uW7lFipMrRLaPUOBp0ZgU8cEXKBdjBEbvBTNPYPiONQgGcjLC5wORPH0Tx/bX
- EOgo9478Bt3rTMhrDtnvInIoRkS/hWafp/2eyaerWzpsG2CT7gPmDEgGPCFYpEeDbmxUgFSDaPu
- gaPRwD8xreYmjOVrY8ouBs8ZP5hRfRPj99j8QNqli0LMOWUgollWYlxxCg176YGEd1Ahlod6wdZ
- VlYbRSa049s3x8nrmijC9a0qHqGHNlDHhkm9JTN8P+uDvgj4y+wuGe+UNy3WC/9xpve12kAEbiW
- Zd2BjFIZ3ZYGjVA==
-X-Developer-Key: i=jbrunet@baylibre.com; a=openpgp;
- fpr=F29F26CF27BAE1A9719AE6BDC3C92AAF3E60AED9
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749647161; l=1247;
+ i=y.moog@phytec.de; s=20250509; h=from:subject:message-id;
+ bh=4k06rxndBzTzfGNNrWYAiJYf4KovcU479vrS9GJ0AKI=;
+ b=oWJWByku1vfgZIiCmJ7TT0LMKQE1YbQs4mJribW1QYQN47L3mQGWxoVcYaM1sfqD5a0SfxHwF
+ NWr79ahuK//Dzc2QqOoLC5nB51VFn2QRLeuYfJzgNPxi8pswj1mvUbY
+X-Developer-Key: i=y.moog@phytec.de; a=ed25519;
+ pk=rpKoEJ4E7nD9qsrU/rfKVwMTWNWYaTBylZuJUXUiFr8=
+X-ClientProxiedBy: Diagnostix.phytec.de (172.25.0.14) To Florix.phytec.de
+ (172.25.0.13)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PEPF00028D0A:EE_|PAXP195MB1134:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6de72ff6-a3f8-4ad1-2101-08dda8e8b7ab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bWNsWWRJczZOMkNaZXdzSHpucVliRzBjTTVsMFdHVnlOMDR4elczZWZjQ3hB?=
+ =?utf-8?B?Z2RUbHRHc0ZveE81OTI0TkJYSXNNaEZrRHp2ai8yZm5OYVMxVFRVd2NhWUFv?=
+ =?utf-8?B?cHVjaE9TdW5TNmhwLysrK0RQNW9HN1NYRkdnYXVvYWZyekR1UFh6ZTdsekc0?=
+ =?utf-8?B?RGNWeEo3dk1BTWdtc1RDV2VrTkZIOGVHZjFqZWRibHdTMnBqTjhjVWVkWFUw?=
+ =?utf-8?B?WTFrL2E1L0V0c3VRZ0lzZ3ZDY08rNnptcWZvN2U1WDRLUVpyaDlxdXltSVIr?=
+ =?utf-8?B?ZDd1endYR0I3dE1ORzZvU1hYNWsrK1JRSWhwYkMrVHBuSksvOXIreE1YM29n?=
+ =?utf-8?B?TEFrMlF4cU91d05nZ0RUNkNpUE9xZk1GUENaUlB0MzhYcEdiaWk2VlhoUzVj?=
+ =?utf-8?B?YkdVVmsvTi8xYnIyaVk0QWpLdmZ2VHErQTdaOHVtT3hsbzUxcjlFMlY0SXlI?=
+ =?utf-8?B?VkNIa3dCSitGZU40bWhFeEtmbzdBK1pTN3EyYUpNdFhvWURyaXprWk5BbVEr?=
+ =?utf-8?B?ZHpzejdGOTdzZHhIY2VBNm9ZdEdXdHpVWHV4cm9IemZUdGhLa09qam5iQlRO?=
+ =?utf-8?B?ZWpXWHhVdWRjMGszbDc2TkZydUFFVzZwNjAraFV2US81d1F1cC9ZWmVVTW5t?=
+ =?utf-8?B?T04rdTlNei9ZVGl5czhacERIanFVOXFaRXRVN3VMMEphbFF1TlNvT3VHZUJD?=
+ =?utf-8?B?RXdlRVkvSDVVV2hsQnpxeThJYkgrcHZORkVyUnhzeXY4c0ozZXUyWlNoNk9F?=
+ =?utf-8?B?MkFxZ0FGemlvMmRmcDdsNTR2ak1KRzlSM1FNdVVKdTdSNEpyV3U5amFOTkc3?=
+ =?utf-8?B?T28xT252RTh6SGI3eTJzQ0ttMFp5ZmFlVGJOQklhOTZyb3BhNTRkWWJ1K2ZZ?=
+ =?utf-8?B?bXBFZTNkNmpCUjNXajU3cDUyQk1qdW1yZlNOTXEvZkxINHg5TjBvdnJWKzN1?=
+ =?utf-8?B?ZFlycGRQMmxwYXhlbzE5bnBSbytYREF3TFdTWUpaNGFIYkNpQXhrSHQ5eDd4?=
+ =?utf-8?B?WndIa1Z1R3NmeFZWWlRmWlY5SHFRQkppWnVUeGZCcHhNNkdQRS80djA4MnFt?=
+ =?utf-8?B?bjRSb0w2cElhOHpJRHBYSy9jcHlnYVplMzVYckZPRGE2NVlndjc0S2dJeDFI?=
+ =?utf-8?B?bHRhOFJYV1U5VFo0VFlPK3M0V25YaUFQWTNBczJIeG5hMUJqM1B5MVlEbmFH?=
+ =?utf-8?B?dXNyWjFZc05oV1lJSjYwTFNqaWlyS1FqRFcwYlBJOHlDTHVBaDEveThjd0tP?=
+ =?utf-8?B?YWkwTU5JYkUyRVN4T0d2NzE0QkJuRTIrZ1JPUERyN1YwS2g1T1ZIdkhLczRW?=
+ =?utf-8?B?ZXFhTUEyalFwRC9nek1WS1JKZkw5N1FQcjJhMGpYQnRiQWhNMXJyWmpKdHdE?=
+ =?utf-8?B?WDNVNWtHWGwzOU5YZkxEbmxUenhBTk9TbmErM1BPOEJWcUJtVTNTU1FlR002?=
+ =?utf-8?B?NFhCRkdQektKMWhPU3VuZllNMzRyTnhlT1hzcDhIRWdXWU0xdVh6UGxsd2U0?=
+ =?utf-8?B?Z056aDU3L24raWtIa2lDK2xSblpTVDF1VzZISVlvWXYzWmloYk1FdlhZNmRt?=
+ =?utf-8?B?K0QyeWxJTXZ0YUVrUEphWXhubk9IR3oyTlBtS2FWRmpWWEpKRVE4bi9hNmNv?=
+ =?utf-8?B?QzVDcHZ4U0VQTy9hS08xZHpUSitVcTU4K1NTOFlHS29LaFhtSTFtMjl6ay93?=
+ =?utf-8?B?REFuWTRLSWdKOGtJZEJHV1ZVQWhMMUZUNTViQXlsS0NhWGlKalJweWdCd1pH?=
+ =?utf-8?B?YTFYTFc4V01oVStmQmw1RjlGUk9aVDQyR0dhRGUza05aVUZtQXh6SFRNa2J5?=
+ =?utf-8?B?QWtIV2x1Y1FiUTJiUlpUNFgrTXdLa1pqMWpRM3AwMFNxNFlueWk4TGcyUUNL?=
+ =?utf-8?B?OUZxOWxlVUxzME9LYWdtMUNHWnFPU3JQaHdKcjlySTdBNklMcHQra0JHbGlJ?=
+ =?utf-8?B?OUNzTTFjQzkxRTNZN0R3dTZYQ1VORU05NXp3U3IvSVhsdEVKV2c5WFF1ZXEw?=
+ =?utf-8?B?VFZHS1VvQzUxRGYycnhST3JJblIxVXFxTGNwUzJmZkpJbzRHS0Jhcm9TY2RO?=
+ =?utf-8?B?L0VmbmlrV21Tb3NONStUUzcvZU9aZmZ2MDcxdz09?=
+X-Forefront-Antispam-Report:
+	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:Diagnostix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026);DIR:OUT;SFP:1102;
+X-OriginatorOrg: phytec.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2025 13:06:02.3076
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6de72ff6-a3f8-4ad1-2101-08dda8e8b7ab
+X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Diagnostix.phytec.de]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF00028D0A.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXP195MB1134
 
-Remove the implementation of the reset driver in axg audio
-clock driver and migrate to the one provided by reset framework
-on the auxiliary bus.
+The Libra i.MX 95 is a SBC that consists of the Libra base board
+and the phyCORE i.MX 95 FPSC SoM.
+This series adds its binding and device trees.
 
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 ---
- drivers/clk/meson/Kconfig     |   3 +-
- drivers/clk/meson/axg-audio.c | 114 +++++-------------------------------------
- 2 files changed, 15 insertions(+), 102 deletions(-)
+Changes in v3:
+- fix more style issues
+- remove the rs232/485 gpio hog -> switch on the board is used instead
+- remove erroneously added build artefacts
+- Link to v2: https://lore.kernel.org/r/20250509-wip-y-moog-phytec-de-imx95-libra-v2-2-b241a915f2be@phytec.de
 
-diff --git a/drivers/clk/meson/Kconfig b/drivers/clk/meson/Kconfig
-index ff003dc5ab20d904c91fc34c701ba499a11d0b63..5c669b2e2f268c7608c8d9c64bba3c5b54da39b2 100644
---- a/drivers/clk/meson/Kconfig
-+++ b/drivers/clk/meson/Kconfig
-@@ -106,7 +106,8 @@ config COMMON_CLK_AXG_AUDIO
- 	select COMMON_CLK_MESON_SCLK_DIV
- 	select COMMON_CLK_MESON_CLKC_UTILS
- 	select REGMAP_MMIO
--	select RESET_CONTROLLER
-+	select AUXILIARY_BUS
-+	imply RESET_MESON_AUX
- 	help
- 	  Support for the audio clock controller on AmLogic A113D devices,
- 	  aka axg, Say Y if you want audio subsystem to work.
-diff --git a/drivers/clk/meson/axg-audio.c b/drivers/clk/meson/axg-audio.c
-index 9df627b142f89788966ede0262aaaf39e13f0b49..3948f5d0faca372dd5cc4ed6dc95f9c89fe5bae8 100644
---- a/drivers/clk/meson/axg-audio.c
-+++ b/drivers/clk/meson/axg-audio.c
-@@ -4,6 +4,7 @@
-  * Author: Jerome Brunet <jbrunet@baylibre.com>
-  */
- 
-+#include <linux/auxiliary_bus.h>
- #include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/init.h>
-@@ -12,7 +13,6 @@
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <linux/reset.h>
--#include <linux/reset-controller.h>
- #include <linux/slab.h>
- 
- #include "meson-clkc-utils.h"
-@@ -1678,84 +1678,6 @@ static struct clk_regmap *const sm1_clk_regmaps[] = {
- 	&sm1_earcrx_dmac_clk,
- };
- 
--struct axg_audio_reset_data {
--	struct reset_controller_dev rstc;
--	struct regmap *map;
--	unsigned int offset;
--};
--
--static void axg_audio_reset_reg_and_bit(struct axg_audio_reset_data *rst,
--					unsigned long id,
--					unsigned int *reg,
--					unsigned int *bit)
--{
--	unsigned int stride = regmap_get_reg_stride(rst->map);
--
--	*reg = (id / (stride * BITS_PER_BYTE)) * stride;
--	*reg += rst->offset;
--	*bit = id % (stride * BITS_PER_BYTE);
--}
--
--static int axg_audio_reset_update(struct reset_controller_dev *rcdev,
--				unsigned long id, bool assert)
--{
--	struct axg_audio_reset_data *rst =
--		container_of(rcdev, struct axg_audio_reset_data, rstc);
--	unsigned int offset, bit;
--
--	axg_audio_reset_reg_and_bit(rst, id, &offset, &bit);
--
--	regmap_update_bits(rst->map, offset, BIT(bit),
--			assert ? BIT(bit) : 0);
--
--	return 0;
--}
--
--static int axg_audio_reset_status(struct reset_controller_dev *rcdev,
--				unsigned long id)
--{
--	struct axg_audio_reset_data *rst =
--		container_of(rcdev, struct axg_audio_reset_data, rstc);
--	unsigned int val, offset, bit;
--
--	axg_audio_reset_reg_and_bit(rst, id, &offset, &bit);
--
--	regmap_read(rst->map, offset, &val);
--
--	return !!(val & BIT(bit));
--}
--
--static int axg_audio_reset_assert(struct reset_controller_dev *rcdev,
--				unsigned long id)
--{
--	return axg_audio_reset_update(rcdev, id, true);
--}
--
--static int axg_audio_reset_deassert(struct reset_controller_dev *rcdev,
--				unsigned long id)
--{
--	return axg_audio_reset_update(rcdev, id, false);
--}
--
--static int axg_audio_reset_toggle(struct reset_controller_dev *rcdev,
--				unsigned long id)
--{
--	int ret;
--
--	ret = axg_audio_reset_assert(rcdev, id);
--	if (ret)
--		return ret;
--
--	return axg_audio_reset_deassert(rcdev, id);
--}
--
--static const struct reset_control_ops axg_audio_rstc_ops = {
--	.assert = axg_audio_reset_assert,
--	.deassert = axg_audio_reset_deassert,
--	.reset = axg_audio_reset_toggle,
--	.status = axg_audio_reset_status,
--};
--
- static struct regmap_config axg_audio_regmap_cfg = {
- 	.reg_bits	= 32,
- 	.val_bits	= 32,
-@@ -1766,8 +1688,7 @@ struct audioclk_data {
- 	struct clk_regmap *const *regmap_clks;
- 	unsigned int regmap_clk_num;
- 	struct meson_clk_hw_data hw_clks;
--	unsigned int reset_offset;
--	unsigned int reset_num;
-+	const char *rst_drvname;
- 	unsigned int max_register;
- };
- 
-@@ -1775,7 +1696,7 @@ static int axg_audio_clkc_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	const struct audioclk_data *data;
--	struct axg_audio_reset_data *rst;
-+	struct auxiliary_device *auxdev;
- 	struct regmap *map;
- 	void __iomem *regs;
- 	struct clk_hw *hw;
-@@ -1834,22 +1755,15 @@ static int axg_audio_clkc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	/* Stop here if there is no reset */
--	if (!data->reset_num)
--		return 0;
--
--	rst = devm_kzalloc(dev, sizeof(*rst), GFP_KERNEL);
--	if (!rst)
--		return -ENOMEM;
--
--	rst->map = map;
--	rst->offset = data->reset_offset;
--	rst->rstc.nr_resets = data->reset_num;
--	rst->rstc.ops = &axg_audio_rstc_ops;
--	rst->rstc.of_node = dev->of_node;
--	rst->rstc.owner = THIS_MODULE;
-+	/* Register auxiliary reset driver when applicable */
-+	if (data->rst_drvname) {
-+		auxdev = __devm_auxiliary_device_create(dev, dev->driver->name,
-+							data->rst_drvname, NULL, 0);
-+		if (!auxdev)
-+			return -ENODEV;
-+	}
- 
--	return devm_reset_controller_register(dev, &rst->rstc);
-+	return 0;
- }
- 
- static const struct audioclk_data axg_audioclk_data = {
-@@ -1869,8 +1783,7 @@ static const struct audioclk_data g12a_audioclk_data = {
- 		.hws = g12a_audio_hw_clks,
- 		.num = ARRAY_SIZE(g12a_audio_hw_clks),
- 	},
--	.reset_offset = AUDIO_SW_RESET,
--	.reset_num = 26,
-+	.rst_drvname = "rst-g12a",
- 	.max_register = AUDIO_CLK_SPDIFOUT_B_CTRL,
- };
- 
-@@ -1881,8 +1794,7 @@ static const struct audioclk_data sm1_audioclk_data = {
- 		.hws = sm1_audio_hw_clks,
- 		.num = ARRAY_SIZE(sm1_audio_hw_clks),
- 	},
--	.reset_offset = AUDIO_SM1_SW_RESET0,
--	.reset_num = 39,
-+	.rst_drvname = "rst-sm1",
- 	.max_register = AUDIO_EARCRX_DMAC_CLK_CTRL,
- };
- 
+Changes in v2:
+- fix indentation error in bindings
+- align alias naming with FPSC enumeration
+- Link to v1: https://lore.kernel.org/r/20250507-wip-y-moog-phytec-de-imx95-libra-v1-0-4b73843ad4cd@phytec.de
 
+---
+Yannic Moog (2):
+      dt-bindings: add imx95-libra-rdk-fpsc
+      arm64: dts: add imx95-libra-rdk-fpsc board
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   7 +
+ arch/arm64/boot/dts/freescale/Makefile             |   1 +
+ .../boot/dts/freescale/imx95-libra-rdk-fpsc.dts    | 318 ++++++++++
+ .../boot/dts/freescale/imx95-phycore-fpsc.dtsi     | 656 +++++++++++++++++++++
+ 4 files changed, 982 insertions(+)
+---
+base-commit: 68087d05675e3ac0ed632bc7b175abf06617c584
+change-id: 20250415-wip-y-moog-phytec-de-imx95-libra-27c9ce555b91
+
+Best regards,
 -- 
-2.47.2
+Yannic Moog <y.moog@phytec.de>
 
