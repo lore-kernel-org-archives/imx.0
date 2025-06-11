@@ -1,109 +1,108 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6E8320B
-	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 15:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C9915B102
+	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 15:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749654045; cv=none; b=O9U0XvgeJoROUhFHw/Vc/tWjWaF89thXXgNn7Li4HfnY3FUWQW/pm3yvf523Z+XRccANlLYhkeMbVWIUpKJhSIsBSM2BpcRbb1THhcuZDmuK2rks4rpwyZ68EZxFmdG6msR1BaNOH1aA7q9Y0i7nnlQKvkNM1pWeyP9hi47/OT4=
+	t=1749655099; cv=none; b=pw/S3cgCnQGfwc5v1VY4LH02I62DWMc+hTIAupQFChGIoN4Kbb1xfuUKaCQjth2zqYSaQ8HeEjOcFkBh79gyy2gZ1SWSEaOzTtfnvj1IxbsiTcgNKbx1yOORbl0rFAux+XroVuzJN9gFJKhfgvs3UykplJki8dZ5vQejT6cd/os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749654045; c=relaxed/simple;
-	bh=ya+nEh00fQFy2gMFSp7ZKYL/qH5nwJRnW3gq9p3hfHI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uSMnJLRvp44uFIUGdBztIHBQ82yeA22iHfPhv5sPli4ZgKr4qDFJUwgHTu0zlKOL6ZaAmB40RvNcfZOgjPCJ0R80tpMAE+5qFfJ/GN7+sO5fgP+felphsEUAhw/JApvyRFxfnlPMeDlB6vnf7l08Y9UKf37EgWU/SyVXxzVBsSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=efoxoSke; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="efoxoSke"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4508287895dso6920805e9.1
-        for <imx@lists.linux.dev>; Wed, 11 Jun 2025 08:00:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749654040; x=1750258840; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=edmPMFPNCGBbcUfHWPuxKmJMbMtdOOjJESV7iS8XvxY=;
-        b=efoxoSkeZrsxg+T0ZrU2BlTGfaelgI3ZVWUkD/8DX1JgnLw4xo6C05O4j0PVM0xuvk
-         LgwfsA4cqLUcPlZsTTKn449Lmh+Rd5y0XTTg3rlaSSQlrygJM+MDBhB9UQC9GyHlEqYm
-         RIfAus72eFr4Rroz7IwjQi13Jc/4mfvGDFRUKyQS4SUpnqlSFiWlYQGZxw8CNYmvT6PA
-         fDODv+uYd14w0qLs/I4+5MxKeBVcHEErnT+4ScWmW08sTxvgiOvRKb+5b8fvjuqPBwjR
-         ZAOTwOvXycuizHdz3FXqOQNjYs8fbShkUGhb3vOtHVfYq5i25B3Y3eJlkHrCeu2wxmK0
-         lpqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749654040; x=1750258840;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=edmPMFPNCGBbcUfHWPuxKmJMbMtdOOjJESV7iS8XvxY=;
-        b=Nm2/uZuen57VpOH1wyBLFK8OR9I6hgUGX6qFOCPMFqaey0oLmcE7yF9lRwu6+xYpj4
-         GtFxIYb2l90c1PDaL2dWdrP6KBCr374aCj1dFnVolKCHxktyaFjXr+Jf8vOwwXmjV85g
-         qase4lU3fc0IDTNh++aiEdlokP1Xg9fYgeWSYE1oHtWHIL6EnPBwSJaVPK9UwD5M3I2N
-         b4t4b7XfoWLJU9rLUbdK9VdS2fcAjI6aTqeT0UpNJQSBXHw8hzCeVbufWCZuPGpWnU3p
-         0ZodNSjV+vbTiBhRhl8gmFftp5RDwa5EKxUMwL/24D2enHmxmrmExiiuP6I2H8sqFhkl
-         ozPg==
-X-Forwarded-Encrypted: i=1; AJvYcCXP/pmJlqhuvFJHLTTarLMhQgs5UvwG5W6+C3VqdS1yrX21AXSyX+QlXresDCCzrqf3zpY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy1dxjQ+TDfPM6OVkBzaxUjQg12OoOhu0aIgbif6gU9G9xFHRxe
-	BoSt6KcNKtB+FG47ITM6v/lkalUGDgBvR9prjmrKKRCb01PNH4S72exc03vQfV/iyyOuGrfE31c
-	ZqOJ8
-X-Gm-Gg: ASbGncs+LvlaLtDk1ekq6eiIQjwETmp7el7TX+iJtsBG0B3oEuCGIC8oyxZw/mswtvo
-	M5b/v/YXPtFWEfN3CVrYefEPjfJbfvc4NMkvzwMlZNf73qZ2xauCL19SLU5PjgthzNNxx+Pg787
-	pK91ONAKB4qUeyO03kAZ0CqX9oemPdZP4cncI0NDhdhE0oXG5P5RUskAMYuLgZ4bxzbdizVeIi/
-	D1g0pkFuBaHD5EOr0ewhKgMGVjriWEYZVM48L5NXWI2+6LEyfj9DvP66x9ioNtJSz510T9jj3vp
-	LrqjW62zia8F38nvFfUEV0jqhlMqPXDCxu7AAKBrqiN5ZLdQkOyWnMQGxv604kSjsao=
-X-Google-Smtp-Source: AGHT+IEzzhcppUbW1+BdtVXwBwJBi0yjHM3LGcXgg4DBHtCKKJdkIrDeqab0FDLQ5lwfVDcVY6scNA==
-X-Received: by 2002:a05:6000:18ac:b0:3a4:f70e:bc25 with SMTP id ffacd0b85a97d-3a55825d69dmr3535626f8f.27.1749654040196;
-        Wed, 11 Jun 2025 08:00:40 -0700 (PDT)
-Received: from [192.168.1.3] ([37.18.136.128])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a532464e3csm15804587f8f.99.2025.06.11.08.00.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jun 2025 08:00:39 -0700 (PDT)
-Message-ID: <472a47da-e442-4335-92f3-9a0263107fc8@linaro.org>
-Date: Wed, 11 Jun 2025 16:00:39 +0100
+	s=arc-20240116; t=1749655099; c=relaxed/simple;
+	bh=uEsItBPGgeCWoFaCt1VlZRMS1vfKbhl7qPQIzFhVU0E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lq52U1y2Acc0trQ91cRPOrefr0TEyWvdP2bLh4pL/u4D6/bCAmPaKTz0sn473SIx1uvw2Qj3sGH8D5B0hX8whh1vNZs2pYlCZZtys2ubtzLgVFKQ+q+zughwxBMT4SqGSemSDoDxhQzGLsygIXMRQqRfCqB6Otwcv3BWqw3BMAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: Q8S3E/nlQ4ST3wFhG7jDXg==
+X-CSE-MsgGUID: vsnWuzhmSZCYu77FAOdlCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="62839535"
+X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
+   d="scan'208";a="62839535"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 08:18:18 -0700
+X-CSE-ConnectionGUID: wJ16Cb+nRaC7FDUPLS4m5A==
+X-CSE-MsgGUID: mdZBOygwSXumz5p8Y8VXaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,228,1744095600"; 
+   d="scan'208";a="148128870"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 08:18:12 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andy@kernel.org>)
+	id 1uPNDM-00000005gLk-42DS;
+	Wed, 11 Jun 2025 18:18:08 +0300
+Date: Wed, 11 Jun 2025 18:18:08 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: linux-kernel@vger.kernel.org, tglx@linutronix.de,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Keerthy <j-keerthy@ti.com>, Vladimir Zapolskiy <vz@mleia.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Heiko Stuebner <heiko@sntech.de>, linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-pwm@vger.kernel.org,
+	imx@lists.linux.dev, linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH] gpio: Use dev_fwnode()
+Message-ID: <aEmeMOW5e3q9TrUu@smile.fi.intel.com>
+References: <20250611104348.192092-1-jirislaby@kernel.org>
+ <20250611104348.192092-6-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] spi: spi-fsl-dspi: Report FIFO overflows as errors
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
- <20250609-james-nxp-spi-dma-v1-4-2b831e714be2@linaro.org>
- <20250610215233.35ikv4sslkyukgwr@skbuf>
- <d95fbd83-995e-48ca-bf23-147caa80b9e1@linaro.org>
- <20250611145634.ncbzl6wwwxlidjl7@skbuf>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <20250611145634.ncbzl6wwwxlidjl7@skbuf>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250611104348.192092-6-jirislaby@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-
-
-On 11/06/2025 3:56 pm, Vladimir Oltean wrote:
-> On Wed, Jun 11, 2025 at 03:40:40PM +0100, James Clark wrote:
->>> Also, could there be individual error messages for TFUF and for RFOF?
->>> If you are concerned about the penalty for the error-free case, make the
->>> check two-level. First for all errors, then for individual errors.
->>>
->>
->> If I was going to split them I would probably let the compiler optimize it
->> whichever way was best. The real reason for combining them is because
->> usually you get them both together. As long as the message and fifos are
->> configured correctly you'd always get TFUF and RFOF at the same time and I
->> wanted to avoid printing twice for one event.
+On Wed, Jun 11, 2025 at 12:43:34PM +0200, Jiri Slaby (SUSE) wrote:
+> irq_domain_create_simple() takes fwnode as the first argument. It can be
+> extracted from the struct device using dev_fwnode() helper instead of
+> using of_node with of_fwnode_handle().
 > 
-> In that case, why not:
-> 	if (spi_sr & (SPI_SR_TFUF | SPI_SR_RFOF)) {
-> 		dev_err_ratelimited(dev, "FIFO errors:%s%s\n",
-> 				    spi_sr & SPI_SR_TFUF ? " TX underflow," : "",
-> 				    spi_sr & SPI_SR_RFOF ? " RX overflow," : "");
-> 		}
-> 	}
+> So use the dev_fwnode() helper.
 
-Yep that looks good, will do that
+Thanks for this change. See my nit-pick below.
+
+...
+
+> @@ -436,10 +436,8 @@ static int brcmstb_gpio_irq_setup(struct platform_device *pdev,
+>  	struct device_node *np = dev->of_node;
+>  	int err;
+>  
+> -	priv->irq_domain =
+> -		irq_domain_create_linear(of_fwnode_handle(np), priv->num_gpios,
+> -				      &brcmstb_gpio_irq_domain_ops,
+> -				      priv);
+> +	priv->irq_domain = irq_domain_create_linear(dev_fwnode(dev), priv->num_gpios,
+> +						    &brcmstb_gpio_irq_domain_ops, priv);
+
+In cases like this, I would rather see something like
+
+	struct fwnode_handle *fwnode = dev_fwnode(dev);
+
+just near to the respective of node extraction. This will help to reduce churn
+when converting the rest of the code to use fwnode instead of of_node/np.
+
+>  	if (!priv->irq_domain) {
+>  		dev_err(dev, "Couldn't allocate IRQ domain\n");
+>  		return -ENXIO;
+
+Other than that I appreciate the series!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
