@@ -1,53 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160E127B4E8;
-	Wed, 11 Jun 2025 10:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584722749FE;
+	Wed, 11 Jun 2025 10:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749638657; cv=none; b=EKBLcM1rxTsfifgFMPHqMWE6bbb4m0jcIW6b7NCNZbZDqLNWC4cPPiROImENkO7i4KNlv6C5YilcL3Z/xZWD6jvhFhUqQWwHkAY0P1NXALcuQxcIPJrKeQspvMP9f1owNNHhpD+BnPfWYQ7buZylTZuRoXJKIjLA5ohEhRg7CFs=
+	t=1749638666; cv=none; b=hx0TrluXkqsB8Bd9/1DgqdTdtn+jHqcEsycsQ76DYf/LpymPvyQvBNZKu86REwbvx7JxyXDBxykzxfOxM6JCU8RwfnWYPSTKUMusrTVOSJbSVXNGAdZH9HsB9QjEM//KyHZAFf1f6Fzhy/oLklrh6GLAizr2k4riPBoHs7//VCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749638657; c=relaxed/simple;
-	bh=Val6gvNLmwc93YXiRLAyyfulj6tIKO76zAealvKQvYg=;
+	s=arc-20240116; t=1749638666; c=relaxed/simple;
+	bh=nZEHCyf1wViLq4HI/tYy5LRKqqJyp4jta9zEgDjuh9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpzpJt2rqMvG60zuSAgo5F8hTIixoEksXmhiXZfus7s8Tbcad7u5tqb8qTYJtxboh/7h+LHKMPmsYmeoxHjcZ+K6CPtJbNLQI4vSVqHXEkK3GqyCL3mnMy0+biMmHMzZf9PJxRIEnym5hfUHGC832FCNqyhiSxI+ut7zId8/NNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZ+t+3NE; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Cz2Pg52Vxnjk6whC0MDZ+XngGRnMl/0pwjRJQy3tyyRrkUhTSgSQGWspHCDDDmWwycKNAsul3TaPXg7xbr/JOKjBgm639AOdoLRAwtmguMC35RuRhBh3WcEFGFUS4AauDsde6+DGZQn9SbCkwW+MQHSvhz1qVrDTBHhQm9nfbck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyHpeuv3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZ+t+3NE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA93C4CEEE;
-	Wed, 11 Jun 2025 10:44:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyHpeuv3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D775C4CEEE;
+	Wed, 11 Jun 2025 10:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749638656;
-	bh=Val6gvNLmwc93YXiRLAyyfulj6tIKO76zAealvKQvYg=;
+	s=k20201202; t=1749638666;
+	bh=nZEHCyf1wViLq4HI/tYy5LRKqqJyp4jta9zEgDjuh9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZ+t+3NEBw9nCqlnTSklRNo11YQsU6g3oJrKcf7NaVbF0/9Bvb7+qZ8TQtvsnRiRg
-	 UAv7HO4pMGsP9DnsXyP9OUG0SAb6azvHEd24CqEUMWwNKSnXgmQavGbPC3aDYuHMfw
-	 mIO4QCWHiQZuEyJa6xupGtK2xWAEz3qr2PP9gH5z9G9CRGI40FYahHibI0zfc9iYFU
-	 VcwM/rjfmW8cfbebKCU2VAo3SqAk+ybbHw9xPH8E1czaTvZ9X7XIKtWGFsStzl4rjk
-	 BrFLwQYcJBQ+F5Tai1Js9B4CAKMTy57T6m00qamMSXJ/KoOw9c9MStEGR8xPkspTNt
-	 w0MKlaVmGbNNw==
+	b=pyHpeuv3BVU8OP1oC49OuLmvAsS4N/mu9V6m2BrDoR/y98PKOa4nzrV4zyxLaDHVQ
+	 fbQmG3Gv5gsyhOJGBFaGTlBLfOpBidLXjIRIDr5wzfW++zdQdz7q2zNR/8NCpjjqnu
+	 gHk+PYDWOkIAIIA5vpKCxbK8YIs8JEvNutmvthP3kwUVUe9x/oM88mRQqzhBE3ftuF
+	 7UMsjcIYXx7VYtl7VZVcklfY89lZqEcB36NkxNce7nptCAQ2HrR/Da1ybB7uhxFEfD
+	 mmB0bbkeaf2y1dR5Ktn0SlJ+w77bHGSDlm3d4siYuNmu2GyZnMz2QNE59SQNxb4uwW
+	 CBGN1WbJVmzaw==
 From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: tglx@linutronix.de,
 	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
 	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Nishanth Menon <nm@ti.com>,
-	Tero Kristo <kristo@kernel.org>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	imx@lists.linux.dev,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
 	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH] irqchip: Use dev_fwnode()
-Date: Wed, 11 Jun 2025 12:43:38 +0200
-Message-ID: <20250611104348.192092-10-jirislaby@kernel.org>
+	imx@lists.linux.dev,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-omap@vger.kernel.org,
+	patches@opensource.cirrus.com
+Subject: [PATCH] mfd: Use dev_fwnode()
+Date: Wed, 11 Jun 2025 12:43:41 +0200
+Message-ID: <20250611104348.192092-13-jirislaby@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250611104348.192092-1-jirislaby@kernel.org>
 References: <20250611104348.192092-1-jirislaby@kernel.org>
@@ -66,239 +73,216 @@ using of_node with of_fwnode_handle().
 So use the dev_fwnode() helper.
 
 Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Lee Jones <lee@kernel.org>
 
 ---
+Cc: Linus Walleij <linus.walleij@linaro.org>
 Cc: Shawn Guo <shawnguo@kernel.org>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
 Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>
-Cc: Gregory Clement <gregory.clement@bootlin.com>
-Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
 Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Nishanth Menon <nm@ti.com>
-Cc: Tero Kristo <kristo@kernel.org>
-Cc: Santosh Shilimkar <ssantosh@kernel.org>
-Cc: imx@lists.linux.dev
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Andreas Kemnade <andreas@kemnade.info>
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: Roger Quadros <rogerq@kernel.org>
+Cc: Tony Lindgren <tony@atomide.com>
 Cc: linux-arm-kernel@lists.infradead.org
+Cc: imx@lists.linux.dev
+Cc: linux-mediatek@lists.infradead.org
+Cc: linux-arm-msm@vger.kernel.org
 Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-omap@vger.kernel.org
+Cc: patches@opensource.cirrus.com
 ---
- drivers/irqchip/irq-imgpdc.c              | 2 +-
- drivers/irqchip/irq-imx-irqsteer.c        | 2 +-
- drivers/irqchip/irq-keystone.c            | 4 ++--
- drivers/irqchip/irq-mvebu-pic.c           | 2 +-
- drivers/irqchip/irq-pruss-intc.c          | 2 +-
- drivers/irqchip/irq-renesas-intc-irqpin.c | 6 ++----
- drivers/irqchip/irq-renesas-irqc.c        | 2 +-
- drivers/irqchip/irq-renesas-rza1.c        | 5 ++---
- drivers/irqchip/irq-renesas-rzg2l.c       | 5 ++---
- drivers/irqchip/irq-renesas-rzv2h.c       | 2 +-
- drivers/irqchip/irq-stm32mp-exti.c        | 4 +---
- drivers/irqchip/irq-ti-sci-inta.c         | 3 +--
- drivers/irqchip/irq-ti-sci-intr.c         | 3 +--
- drivers/irqchip/irq-ts4800.c              | 2 +-
- 14 files changed, 18 insertions(+), 26 deletions(-)
+ drivers/mfd/ab8500-core.c     |  3 +--
+ drivers/mfd/fsl-imx25-tsadc.c |  4 ++--
+ drivers/mfd/lp8788-irq.c      |  2 +-
+ drivers/mfd/mt6358-irq.c      |  3 +--
+ drivers/mfd/mt6397-irq.c      |  4 ++--
+ drivers/mfd/qcom-pm8xxx.c     |  4 ++--
+ drivers/mfd/stmfx.c           |  5 ++---
+ drivers/mfd/tps65217.c        |  4 ++--
+ drivers/mfd/tps6586x.c        |  6 +++---
+ drivers/mfd/twl6030-irq.c     |  5 ++---
+ drivers/mfd/wm831x-irq.c      | 10 ++++------
+ 11 files changed, 22 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/irqchip/irq-imgpdc.c b/drivers/irqchip/irq-imgpdc.c
-index f0410d5d7315..484a089e7f6d 100644
---- a/drivers/irqchip/irq-imgpdc.c
-+++ b/drivers/irqchip/irq-imgpdc.c
-@@ -372,7 +372,7 @@ static int pdc_intc_probe(struct platform_device *pdev)
- 	priv->syswake_irq = irq;
+diff --git a/drivers/mfd/ab8500-core.c b/drivers/mfd/ab8500-core.c
+index 049abcbd71ce..f0bc0b5a6f4a 100644
+--- a/drivers/mfd/ab8500-core.c
++++ b/drivers/mfd/ab8500-core.c
+@@ -580,8 +580,7 @@ static int ab8500_irq_init(struct ab8500 *ab8500, struct device_node *np)
+ 		num_irqs = AB8500_NR_IRQS;
  
- 	/* Set up an IRQ domain */
--	priv->domain = irq_domain_create_linear(of_fwnode_handle(node), 16, &irq_generic_chip_ops,
-+	priv->domain = irq_domain_create_linear(dev_fwnode(&pdev->dev), 16, &irq_generic_chip_ops,
- 					     priv);
- 	if (unlikely(!priv->domain)) {
- 		dev_err(&pdev->dev, "cannot add IRQ domain\n");
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index 6dc9ac48fee5..bb2b09f528fd 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -212,7 +212,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 	/* steer all IRQs into configured channel */
- 	writel_relaxed(BIT(data->channel), data->regs + CHANCTRL);
+ 	/* If ->irq_base is zero this will give a linear mapping */
+-	ab8500->domain = irq_domain_create_simple(of_fwnode_handle(ab8500->dev->of_node),
+-						  num_irqs, 0,
++	ab8500->domain = irq_domain_create_simple(dev_fwnode(ab8500->dev), num_irqs, 0,
+ 						  &ab8500_irq_ops, ab8500);
  
--	data->domain = irq_domain_create_linear(of_fwnode_handle(np), data->reg_num * 32,
-+	data->domain = irq_domain_create_linear(dev_fwnode(&pdev->dev), data->reg_num * 32,
- 					     &imx_irqsteer_domain_ops, data);
- 	if (!data->domain) {
- 		dev_err(&pdev->dev, "failed to create IRQ domain\n");
-diff --git a/drivers/irqchip/irq-keystone.c b/drivers/irqchip/irq-keystone.c
-index c9e902b7bf48..922fff09354f 100644
---- a/drivers/irqchip/irq-keystone.c
-+++ b/drivers/irqchip/irq-keystone.c
-@@ -157,8 +157,8 @@ static int keystone_irq_probe(struct platform_device *pdev)
- 	kirq->chip.irq_mask	= keystone_irq_setmask;
- 	kirq->chip.irq_unmask	= keystone_irq_unmask;
+ 	if (!ab8500->domain) {
+diff --git a/drivers/mfd/fsl-imx25-tsadc.c b/drivers/mfd/fsl-imx25-tsadc.c
+index d47152467951..0aab6428e042 100644
+--- a/drivers/mfd/fsl-imx25-tsadc.c
++++ b/drivers/mfd/fsl-imx25-tsadc.c
+@@ -71,8 +71,8 @@ static int mx25_tsadc_setup_irq(struct platform_device *pdev,
+ 	if (irq < 0)
+ 		return irq;
  
--	kirq->irqd = irq_domain_create_linear(of_fwnode_handle(np), KEYSTONE_N_IRQ,
--					      &keystone_irq_ops, kirq);
-+	kirq->irqd = irq_domain_create_linear(dev_fwnode(dev), KEYSTONE_N_IRQ, &keystone_irq_ops,
-+					      kirq);
- 	if (!kirq->irqd) {
- 		dev_err(dev, "IRQ domain registration failed\n");
+-	tsadc->domain = irq_domain_create_simple(of_fwnode_handle(dev->of_node), 2, 0,
+-						 &mx25_tsadc_domain_ops, tsadc);
++	tsadc->domain = irq_domain_create_simple(dev_fwnode(dev), 2, 0, &mx25_tsadc_domain_ops,
++						 tsadc);
+ 	if (!tsadc->domain) {
+ 		dev_err(dev, "Failed to add irq domain\n");
+ 		return -ENOMEM;
+diff --git a/drivers/mfd/lp8788-irq.c b/drivers/mfd/lp8788-irq.c
+index ea0fdf7a4b6e..f62fa2d7f010 100644
+--- a/drivers/mfd/lp8788-irq.c
++++ b/drivers/mfd/lp8788-irq.c
+@@ -161,7 +161,7 @@ int lp8788_irq_init(struct lp8788 *lp, int irq)
+ 		return -ENOMEM;
+ 
+ 	irqd->lp = lp;
+-	irqd->domain = irq_domain_create_linear(of_fwnode_handle(lp->dev->of_node), LP8788_INT_MAX,
++	irqd->domain = irq_domain_create_linear(dev_fwnode(lp->dev), LP8788_INT_MAX,
+ 					&lp8788_domain_ops, irqd);
+ 	if (!irqd->domain) {
+ 		dev_err(lp->dev, "failed to add irq domain err\n");
+diff --git a/drivers/mfd/mt6358-irq.c b/drivers/mfd/mt6358-irq.c
+index 9f0bcc3ad7a1..f467b00d2366 100644
+--- a/drivers/mfd/mt6358-irq.c
++++ b/drivers/mfd/mt6358-irq.c
+@@ -272,8 +272,7 @@ int mt6358_irq_init(struct mt6397_chip *chip)
+ 				     irqd->pmic_ints[i].en_reg_shift * j, 0);
+ 	}
+ 
+-	chip->irq_domain = irq_domain_create_linear(of_fwnode_handle(chip->dev->of_node),
+-						    irqd->num_pmic_irqs,
++	chip->irq_domain = irq_domain_create_linear(dev_fwnode(chip->dev), irqd->num_pmic_irqs,
+ 						    &mt6358_irq_domain_ops, chip);
+ 	if (!chip->irq_domain) {
+ 		dev_err(chip->dev, "Could not create IRQ domain\n");
+diff --git a/drivers/mfd/mt6397-irq.c b/drivers/mfd/mt6397-irq.c
+index badc614b4345..0e463026c5a9 100644
+--- a/drivers/mfd/mt6397-irq.c
++++ b/drivers/mfd/mt6397-irq.c
+@@ -216,8 +216,8 @@ int mt6397_irq_init(struct mt6397_chip *chip)
+ 		regmap_write(chip->regmap, chip->int_con[2], 0x0);
+ 
+ 	chip->pm_nb.notifier_call = mt6397_irq_pm_notifier;
+-	chip->irq_domain = irq_domain_create_linear(of_fwnode_handle(chip->dev->of_node),
+-						    MT6397_IRQ_NR, &mt6397_irq_domain_ops, chip);
++	chip->irq_domain = irq_domain_create_linear(dev_fwnode(chip->dev), MT6397_IRQ_NR,
++						    &mt6397_irq_domain_ops, chip);
+ 	if (!chip->irq_domain) {
+ 		dev_err(chip->dev, "could not create irq domain\n");
+ 		return -ENOMEM;
+diff --git a/drivers/mfd/qcom-pm8xxx.c b/drivers/mfd/qcom-pm8xxx.c
+index c96ea6fbede8..1149f7102a36 100644
+--- a/drivers/mfd/qcom-pm8xxx.c
++++ b/drivers/mfd/qcom-pm8xxx.c
+@@ -559,8 +559,8 @@ static int pm8xxx_probe(struct platform_device *pdev)
+ 	chip->pm_irq_data = data;
+ 	spin_lock_init(&chip->pm_irq_lock);
+ 
+-	chip->irqdomain = irq_domain_create_linear(of_fwnode_handle(pdev->dev.of_node),
+-						   data->num_irqs, &pm8xxx_irq_domain_ops, chip);
++	chip->irqdomain = irq_domain_create_linear(dev_fwnode(&pdev->dev), data->num_irqs,
++						   &pm8xxx_irq_domain_ops, chip);
+ 	if (!chip->irqdomain)
  		return -ENODEV;
-diff --git a/drivers/irqchip/irq-mvebu-pic.c b/drivers/irqchip/irq-mvebu-pic.c
-index 8db638aa21d2..cd8b73482b9f 100644
---- a/drivers/irqchip/irq-mvebu-pic.c
-+++ b/drivers/irqchip/irq-mvebu-pic.c
-@@ -150,7 +150,7 @@ static int mvebu_pic_probe(struct platform_device *pdev)
+ 
+diff --git a/drivers/mfd/stmfx.c b/drivers/mfd/stmfx.c
+index 823b1d29389e..f683fdb6ece6 100644
+--- a/drivers/mfd/stmfx.c
++++ b/drivers/mfd/stmfx.c
+@@ -269,9 +269,8 @@ static int stmfx_irq_init(struct i2c_client *client)
+ 	u32 irqoutpin = 0, irqtrigger;
+ 	int ret;
+ 
+-	stmfx->irq_domain = irq_domain_create_simple(of_fwnode_handle(stmfx->dev->of_node),
+-						  STMFX_REG_IRQ_SRC_MAX, 0,
+-						  &stmfx_irq_ops, stmfx);
++	stmfx->irq_domain = irq_domain_create_simple(dev_fwnode(stmfx->dev), STMFX_REG_IRQ_SRC_MAX,
++						     0, &stmfx_irq_ops, stmfx);
+ 	if (!stmfx->irq_domain) {
+ 		dev_err(stmfx->dev, "Failed to create IRQ domain\n");
  		return -EINVAL;
- 	}
+diff --git a/drivers/mfd/tps65217.c b/drivers/mfd/tps65217.c
+index 4e9669d327b4..c240fac0ede7 100644
+--- a/drivers/mfd/tps65217.c
++++ b/drivers/mfd/tps65217.c
+@@ -158,8 +158,8 @@ static int tps65217_irq_init(struct tps65217 *tps, int irq)
+ 	tps65217_set_bits(tps, TPS65217_REG_INT, TPS65217_INT_MASK,
+ 			  TPS65217_INT_MASK, TPS65217_PROTECT_NONE);
  
--	pic->domain = irq_domain_create_linear(of_fwnode_handle(node), PIC_MAX_IRQS,
-+	pic->domain = irq_domain_create_linear(dev_fwnode(&pdev->dev), PIC_MAX_IRQS,
- 					       &mvebu_pic_domain_ops, pic);
- 	if (!pic->domain) {
- 		dev_err(&pdev->dev, "Failed to allocate irq domain\n");
-diff --git a/drivers/irqchip/irq-pruss-intc.c b/drivers/irqchip/irq-pruss-intc.c
-index 87a5813fd835..81078d56f38d 100644
---- a/drivers/irqchip/irq-pruss-intc.c
-+++ b/drivers/irqchip/irq-pruss-intc.c
-@@ -555,7 +555,7 @@ static int pruss_intc_probe(struct platform_device *pdev)
- 
- 	mutex_init(&intc->lock);
- 
--	intc->domain = irq_domain_create_linear(of_fwnode_handle(dev->of_node), max_system_events,
-+	intc->domain = irq_domain_create_linear(dev_fwnode(dev), max_system_events,
- 						&pruss_intc_irq_domain_ops, intc);
- 	if (!intc->domain)
+-	tps->irq_domain = irq_domain_create_linear(of_fwnode_handle(tps->dev->of_node),
+-		TPS65217_NUM_IRQ, &tps65217_irq_domain_ops, tps);
++	tps->irq_domain = irq_domain_create_linear(dev_fwnode(tps->dev), TPS65217_NUM_IRQ,
++						   &tps65217_irq_domain_ops, tps);
+ 	if (!tps->irq_domain) {
+ 		dev_err(tps->dev, "Could not create IRQ domain\n");
  		return -ENOMEM;
-diff --git a/drivers/irqchip/irq-renesas-intc-irqpin.c b/drivers/irqchip/irq-renesas-intc-irqpin.c
-index 0959ed43b1a9..117b74b635ea 100644
---- a/drivers/irqchip/irq-renesas-intc-irqpin.c
-+++ b/drivers/irqchip/irq-renesas-intc-irqpin.c
-@@ -513,10 +513,8 @@ static int intc_irqpin_probe(struct platform_device *pdev)
- 	irq_chip->irq_set_wake = intc_irqpin_irq_set_wake;
- 	irq_chip->flags	= IRQCHIP_MASK_ON_SUSPEND;
- 
--	p->irq_domain = irq_domain_create_simple(of_fwnode_handle(dev->of_node),
--						 nirqs, 0,
--						 &intc_irqpin_irq_domain_ops,
--						 p);
-+	p->irq_domain = irq_domain_create_simple(dev_fwnode(dev), nirqs, 0,
-+						 &intc_irqpin_irq_domain_ops, p);
- 	if (!p->irq_domain) {
- 		ret = -ENXIO;
- 		dev_err(dev, "cannot initialize irq domain\n");
-diff --git a/drivers/irqchip/irq-renesas-irqc.c b/drivers/irqchip/irq-renesas-irqc.c
-index 5c3196e5a437..b46bbb66c264 100644
---- a/drivers/irqchip/irq-renesas-irqc.c
-+++ b/drivers/irqchip/irq-renesas-irqc.c
-@@ -168,7 +168,7 @@ static int irqc_probe(struct platform_device *pdev)
- 
- 	p->cpu_int_base = p->iomem + IRQC_INT_CPU_BASE(0); /* SYS-SPI */
- 
--	p->irq_domain = irq_domain_create_linear(of_fwnode_handle(dev->of_node), p->number_of_irqs,
-+	p->irq_domain = irq_domain_create_linear(dev_fwnode(dev), p->number_of_irqs,
- 						 &irq_generic_chip_ops, p);
- 	if (!p->irq_domain) {
- 		ret = -ENXIO;
-diff --git a/drivers/irqchip/irq-renesas-rza1.c b/drivers/irqchip/irq-renesas-rza1.c
-index 0a9640ba0adb..a697eb55ac90 100644
---- a/drivers/irqchip/irq-renesas-rza1.c
-+++ b/drivers/irqchip/irq-renesas-rza1.c
-@@ -231,9 +231,8 @@ static int rza1_irqc_probe(struct platform_device *pdev)
- 	priv->chip.irq_set_type = rza1_irqc_set_type;
- 	priv->chip.flags = IRQCHIP_MASK_ON_SUSPEND | IRQCHIP_SKIP_SET_WAKE;
- 
--	priv->irq_domain = irq_domain_create_hierarchy(parent, 0, IRQC_NUM_IRQ,
--						       of_fwnode_handle(np), &rza1_irqc_domain_ops,
--						       priv);
-+	priv->irq_domain = irq_domain_create_hierarchy(parent, 0, IRQC_NUM_IRQ, dev_fwnode(dev),
-+						       &rza1_irqc_domain_ops, priv);
- 	if (!priv->irq_domain) {
- 		dev_err(dev, "cannot initialize irq domain\n");
- 		ret = -ENOMEM;
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 1e861bd64f97..360d88687e4f 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -574,9 +574,8 @@ static int rzg2l_irqc_common_init(struct device_node *node, struct device_node *
- 
- 	raw_spin_lock_init(&rzg2l_irqc_data->lock);
- 
--	irq_domain = irq_domain_create_hierarchy(parent_domain, 0, IRQC_NUM_IRQ,
--						 of_fwnode_handle(node), &rzg2l_irqc_domain_ops,
--						 rzg2l_irqc_data);
-+	irq_domain = irq_domain_create_hierarchy(parent_domain, 0, IRQC_NUM_IRQ, dev_fwnode(dev),
-+						 &rzg2l_irqc_domain_ops, rzg2l_irqc_data);
- 	if (!irq_domain) {
- 		pm_runtime_put(dev);
- 		return dev_err_probe(dev, -ENOMEM, "failed to add irq domain\n");
-diff --git a/drivers/irqchip/irq-renesas-rzv2h.c b/drivers/irqchip/irq-renesas-rzv2h.c
-index 69b32c19e8ff..57c5a3c008c9 100644
---- a/drivers/irqchip/irq-renesas-rzv2h.c
-+++ b/drivers/irqchip/irq-renesas-rzv2h.c
-@@ -558,7 +558,7 @@ static int rzv2h_icu_init_common(struct device_node *node, struct device_node *p
- 	raw_spin_lock_init(&rzv2h_icu_data->lock);
- 
- 	irq_domain = irq_domain_create_hierarchy(parent_domain, 0, ICU_NUM_IRQ,
--						 of_fwnode_handle(node), &rzv2h_icu_domain_ops,
-+						 dev_fwnode(&pdev->dev), &rzv2h_icu_domain_ops,
- 						 rzv2h_icu_data);
- 	if (!irq_domain) {
- 		dev_err(&pdev->dev, "failed to add irq domain\n");
-diff --git a/drivers/irqchip/irq-stm32mp-exti.c b/drivers/irqchip/irq-stm32mp-exti.c
-index c6b4407d05f9..a24f4f1a4f8f 100644
---- a/drivers/irqchip/irq-stm32mp-exti.c
-+++ b/drivers/irqchip/irq-stm32mp-exti.c
-@@ -683,9 +683,7 @@ static int stm32mp_exti_probe(struct platform_device *pdev)
+diff --git a/drivers/mfd/tps6586x.c b/drivers/mfd/tps6586x.c
+index 853c48286071..8d5fe2b60bfa 100644
+--- a/drivers/mfd/tps6586x.c
++++ b/drivers/mfd/tps6586x.c
+@@ -363,9 +363,9 @@ static int tps6586x_irq_init(struct tps6586x *tps6586x, int irq,
+ 		new_irq_base = 0;
  	}
  
- 	domain = irq_domain_create_hierarchy(parent_domain, 0, drv_data->bank_nr * IRQS_PER_BANK,
--					     of_fwnode_handle(np), &stm32mp_exti_domain_ops,
--					     host_data);
--
-+					     dev_fwnode(dev), &stm32mp_exti_domain_ops, host_data);
- 	if (!domain) {
- 		dev_err(dev, "Could not register exti domain\n");
+-	tps6586x->irq_domain = irq_domain_create_simple(of_fwnode_handle(tps6586x->dev->of_node),
+-				irq_num, new_irq_base, &tps6586x_domain_ops,
+-				tps6586x);
++	tps6586x->irq_domain = irq_domain_create_simple(dev_fwnode(tps6586x->dev), irq_num,
++							new_irq_base, &tps6586x_domain_ops,
++							tps6586x);
+ 	if (!tps6586x->irq_domain) {
+ 		dev_err(tps6586x->dev, "Failed to create IRQ domain\n");
  		return -ENOMEM;
-diff --git a/drivers/irqchip/irq-ti-sci-inta.c b/drivers/irqchip/irq-ti-sci-inta.c
-index 7de59238e6b0..01963d36cfaf 100644
---- a/drivers/irqchip/irq-ti-sci-inta.c
-+++ b/drivers/irqchip/irq-ti-sci-inta.c
-@@ -701,8 +701,7 @@ static int ti_sci_inta_irq_domain_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/mfd/twl6030-irq.c b/drivers/mfd/twl6030-irq.c
+index 00b14cef1dfb..df87b5168ae9 100644
+--- a/drivers/mfd/twl6030-irq.c
++++ b/drivers/mfd/twl6030-irq.c
+@@ -410,9 +410,8 @@ int twl6030_init_irq(struct device *dev, int irq_num)
+ 	atomic_set(&twl6030_irq->wakeirqs, 0);
+ 	twl6030_irq->irq_mapping_tbl = of_id->data;
  
--	domain = irq_domain_create_linear(of_fwnode_handle(dev_of_node(dev)),
--					  ti_sci_get_num_resources(inta->vint),
-+	domain = irq_domain_create_linear(dev_fwnode(dev), ti_sci_get_num_resources(inta->vint),
- 					  &ti_sci_inta_irq_domain_ops, inta);
- 	if (!domain) {
- 		dev_err(dev, "Failed to allocate IRQ domain\n");
-diff --git a/drivers/irqchip/irq-ti-sci-intr.c b/drivers/irqchip/irq-ti-sci-intr.c
-index 07fff5ae5ce0..354613e74ad0 100644
---- a/drivers/irqchip/irq-ti-sci-intr.c
-+++ b/drivers/irqchip/irq-ti-sci-intr.c
-@@ -274,8 +274,7 @@ static int ti_sci_intr_irq_domain_probe(struct platform_device *pdev)
- 		return PTR_ERR(intr->out_irqs);
- 	}
- 
--	domain = irq_domain_create_hierarchy(parent_domain, 0, 0,
--					     of_fwnode_handle(dev_of_node(dev)),
-+	domain = irq_domain_create_hierarchy(parent_domain, 0, 0, dev_fwnode(dev),
- 					     &ti_sci_intr_irq_domain_ops, intr);
- 	if (!domain) {
- 		dev_err(dev, "Failed to allocate IRQ domain\n");
-diff --git a/drivers/irqchip/irq-ts4800.c b/drivers/irqchip/irq-ts4800.c
-index e625f4fb2bb8..1e236d5b7516 100644
---- a/drivers/irqchip/irq-ts4800.c
-+++ b/drivers/irqchip/irq-ts4800.c
-@@ -125,7 +125,7 @@ static int ts4800_ic_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
--	data->domain = irq_domain_create_linear(of_fwnode_handle(node), 8, &ts4800_ic_ops, data);
-+	data->domain = irq_domain_create_linear(dev_fwnode(&pdev->dev), 8, &ts4800_ic_ops, data);
- 	if (!data->domain) {
- 		dev_err(&pdev->dev, "cannot add IRQ domain\n");
+-	twl6030_irq->irq_domain =
+-		irq_domain_create_linear(of_fwnode_handle(dev->of_node), nr_irqs,
+-					 &twl6030_irq_domain_ops, twl6030_irq);
++	twl6030_irq->irq_domain = irq_domain_create_linear(dev_fwnode(dev), nr_irqs,
++							   &twl6030_irq_domain_ops, twl6030_irq);
+ 	if (!twl6030_irq->irq_domain) {
+ 		dev_err(dev, "Can't add irq_domain\n");
  		return -ENOMEM;
+diff --git a/drivers/mfd/wm831x-irq.c b/drivers/mfd/wm831x-irq.c
+index b3883fa5dd9f..defd5f173eb6 100644
+--- a/drivers/mfd/wm831x-irq.c
++++ b/drivers/mfd/wm831x-irq.c
+@@ -587,13 +587,11 @@ int wm831x_irq_init(struct wm831x *wm831x, int irq)
+ 	}
+ 
+ 	if (irq_base)
+-		domain = irq_domain_create_legacy(of_fwnode_handle(wm831x->dev->of_node),
+-						  ARRAY_SIZE(wm831x_irqs), irq_base, 0,
+-						  &wm831x_irq_domain_ops, wm831x);
++		domain = irq_domain_create_legacy(dev_fwnode(wm831x->dev), ARRAY_SIZE(wm831x_irqs),
++						  irq_base, 0, &wm831x_irq_domain_ops, wm831x);
+ 	else
+-		domain = irq_domain_create_linear(of_fwnode_handle(wm831x->dev->of_node),
+-						  ARRAY_SIZE(wm831x_irqs), &wm831x_irq_domain_ops,
+-						  wm831x);
++		domain = irq_domain_create_linear(dev_fwnode(wm831x->dev), ARRAY_SIZE(wm831x_irqs),
++						  &wm831x_irq_domain_ops, wm831x);
+ 
+ 	if (!domain) {
+ 		dev_warn(wm831x->dev, "Failed to allocate IRQ domain\n");
 -- 
 2.49.0
 
