@@ -1,166 +1,258 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DACB283151
-	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 14:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28212BDC32
+	for <imx@lists.linux.dev>; Wed, 11 Jun 2025 14:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749651921; cv=none; b=qtN/NN1lxBT70WsRajvJIDz/iarj3Xl2u/mtfm0RBI0YFTVDqne44rjovPmj3W+4/q1VlWrvWWXv4M1EIvXgF/cKqcPmi6B89j98qgLyyR3hU8Ymdci4FvpAhmHKdb8KyCZrsdX5VR8SBHOcS6faTZN0Mcnx0Nq9MZvfxcHVfvI=
+	t=1749652845; cv=none; b=FvbpBKLmnW8kzeVtL3ySy2+gzrCSIrpc4iWfhEdSbKcrEM8+M9FZGQOsig3zOuCmHkK+Tw59B22AQCAZx7IuYdH2aN+sN2enHoMEwW/8dtR/PF0mHHVjEd8yqMNI0BbaqnJX3AkLL6Vs2xEORNa6+PYB33kHpoGljTFonmHaj38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749651921; c=relaxed/simple;
-	bh=ydw5XstCOj0yxT3ihCpLEUcyvE3z56cERDKWAm+csSg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PRRq3x576cnBR1AckHwBRLP7jqPXG2BhHCfoGH17LWUZ1UukbAyxT4K11kfqrsL0lZbo+grUNq+Wydd65qO6MPdqz3b8pXunR9+qqgL1zeDEwUfdYmBd82WkKp3Lf4OqIR5RBbawL7TRgwyOnLbCLYPDG4nj9aTGC60W/tWP5Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=JZcUDvbJ; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1749652845; c=relaxed/simple;
+	bh=LPFa+9psyfZ/kUWmfuHembHpxCJT9UYctI5V70BrYhc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t98k5dmTLfLjHtc0FPbmScXG+OG7raUz3o5TLx9/ELO/uT+HzaWFwbtqwbQUUf8o/82TeooW8QuR/BwXwzzopflJWPRLlhMZMjwjadfAg6rEqBKXMd8lbLN3fql2BFsy2pUQIa6NfT773a5xzL7TatL1VhmVxLGuoQWV/a7rKww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VcsO/a9k; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="JZcUDvbJ"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 23B992329;
-	Wed, 11 Jun 2025 16:25:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1749651908;
-	bh=ydw5XstCOj0yxT3ihCpLEUcyvE3z56cERDKWAm+csSg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JZcUDvbJTHLRCMKztArv5XRBV2UHFvGOjmfkOUZFrAhTDdy9AxA7voYcK2/vHn6Nu
-	 WyMEobdEFcsh1Q9xpCzPWwsRiRv8z60zykAImLj8Brf+fdGkALvw/eDug2eansN/FX
-	 dBXPhuJWGeeBKrFPsRq82hjT9uHQJ3lRkp960daM=
-Date: Wed, 11 Jun 2025 17:25:03 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Robert Chiras <robert.chiras@nxp.com>,
-	"Guoniu.zhou" <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH v5 00/13] media: imx8: add camera support
-Message-ID: <20250611142503.GB22730@pendragon.ideasonboard.com>
-References: <20250522-8qxp_camera-v5-0-d4be869fdb7e@nxp.com>
- <aEcUGXeAdf/gBBFX@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VcsO/a9k"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a51d552de4so3715314f8f.0
+        for <imx@lists.linux.dev>; Wed, 11 Jun 2025 07:40:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749652842; x=1750257642; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=g3oNjI0+fE5a1sp5ezyw/B8kijMIdxGNtB5JPW69Z4Q=;
+        b=VcsO/a9kgzoSB20cCRFNK5J7exlgr4SRGNN+ImKjMwNvaW4mpGOMWWOAZfRxxZX6fE
+         qazeVS05M258kDN0WV2CNT/G1ZKT1+NjylEEUADdjoftdHtza5RYPMtrkEt/7rAPCkwe
+         72OWHkIC6ZrQ/6EdHjWCWLJaFMWdDjbJme9ui3jNb0rFHj541YoOzS68ODzZ1HgRBryG
+         Oegvi/JUe1Na5aA2Q89Q+U1LEADmM7Tzlybq7ISRlcLT3y6NsLUvf3PwW2UoZjKEEyng
+         /tUCRKFV9pvncoUguQ9gQ+y1AfcVTojA23Oi7/UZ8fw8nVm0X6FMGGPB5AlgkL76pf3j
+         MMLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749652842; x=1750257642;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g3oNjI0+fE5a1sp5ezyw/B8kijMIdxGNtB5JPW69Z4Q=;
+        b=Ag+xrE4fDTeCkbGKz7CkTfb0n43LzysTLQL4NmMKzhGrhFZxb5mnZ4l3B6w/ZG28ph
+         E2llzZHl8u/0OlK3dfvKy3VnZ0pvASRQXi1ljYEdEVCqVVU9jQsVTli8n8vAwUHnGM/a
+         K34GrRAoLmSND2OXMIwShxOBxLAonhf952xAdLClg4iVFT+J5u7DYvfR2yFH/Z3Uutiq
+         eKefSfCBNlaeOrFMQJNSql9X0329BCmBG+Aobw4CR5nJjLeSVHeTpVnj0eE7cxuNYYbP
+         hJO1sr07Vn7GIr8Q3dkD0woELJkqUUtmt0mfh9pnwV39BPUrID66qrmrIqU/p7zGX1lG
+         qJeg==
+X-Forwarded-Encrypted: i=1; AJvYcCXgnYqDWHPQ25Pz8RkZ3N+yP+DDiMenjGoKtabuYtBnNmUrj1KG0zEc9wyD0HJxTVk2bzA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzKrftHmq+jSon7bhPIul7fTqmDl2gDxDV2lqRDHs/+yMC+vp3o
+	pkLJlx129wY83MwZ6P6/jhcPMn0ggioA2dzymc3cfe9NBWfZztTWt27B0CQ/eziZILc=
+X-Gm-Gg: ASbGncsaexppsdbQCDjuAvah1LFacnMR53blEIrlwtVMX+/rssZdmDTB6c8sWXR78hN
+	j9g7767XPw5o9r87ZWHKDXtyofqrI/UelHc3tLbpUuxlkeWQKm0Lexo+WtlT/WxRSpNlxYyKIcY
+	YYmrGZio4qRT1hfmrtF7QGZFTrC13zxt2+WWE0HvZh93AXW//+QTvWYZ2P9ns+SGPO24gpxOT1k
+	eY6vZ8wcuAEzG8m4s4eLm4XWBQCW+aKmbkhYuWx55IQctfTL1vQ3j90MmsmsgIuzNfHdwF0siX5
+	HFwzdS0y+Yj88x0fNvCwOlsX9bJ3mQdyA+mab+/wDicwmUS2/H5X+0kErPdhMtX54DM=
+X-Google-Smtp-Source: AGHT+IHHQOnypMfj2r2sUTTE3yi43SalVUjfXgPbPaXOLleRnpOnnpVeqGUKny8eXtf60DNIIRrgmg==
+X-Received: by 2002:a05:6000:430a:b0:3a4:e665:ca5 with SMTP id ffacd0b85a97d-3a558aa5739mr2648236f8f.23.1749652841923;
+        Wed, 11 Jun 2025 07:40:41 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a53244e0e3sm15790400f8f.68.2025.06.11.07.40.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Jun 2025 07:40:41 -0700 (PDT)
+Message-ID: <d95fbd83-995e-48ca-bf23-147caa80b9e1@linaro.org>
+Date: Wed, 11 Jun 2025 15:40:40 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aEcUGXeAdf/gBBFX@lizhi-Precision-Tower-5810>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] spi: spi-fsl-dspi: Report FIFO overflows as errors
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
+ <20250609-james-nxp-spi-dma-v1-4-2b831e714be2@linaro.org>
+ <20250610215233.35ikv4sslkyukgwr@skbuf>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20250610215233.35ikv4sslkyukgwr@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Frank,
 
-On Mon, Jun 09, 2025 at 01:04:25PM -0400, Frank Li wrote:
-> On Thu, May 22, 2025 at 01:56:38PM -0400, Frank Li wrote:
-> > Add SCU reset driver for i.MX8QM/i.MX8QXP.
-> > Update binding doc.
-> > Update driver for imx8qxp and imx8qm.
-> > Add dts files for it.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+On 10/06/2025 10:52 pm, Vladimir Oltean wrote:
+> On Mon, Jun 09, 2025 at 04:32:41PM +0100, James Clark wrote:
+>> In target mode, the host sending more data than can be consumed would be
+>> a common problem for any message exceeding the FIFO or DMA buffer size.
+>> Cancel the whole message as soon as this condition is hit as the message
+>> will be corrupted.
+>>
+>> Only do this for target mode in a DMA transfer because we need to add a
+>> register read. In IRQ and polling modes always do it because SPI_SR was
+>> already read and it might catch some host mode programming/buffer
+>> management errors too.
+>>
+>> Signed-off-by: James Clark <james.clark@linaro.org>
+>> ---
+>>   drivers/spi/spi-fsl-dspi.c | 31 ++++++++++++++++++++++++++++---
+>>   1 file changed, 28 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+>> index e211e44e977f..75767d756496 100644
+>> --- a/drivers/spi/spi-fsl-dspi.c
+>> +++ b/drivers/spi/spi-fsl-dspi.c
+>> @@ -228,6 +228,7 @@ struct fsl_dspi {
+>>   	const struct fsl_dspi_devtype_data	*devtype_data;
+>>   
+>>   	struct completion			xfer_done;
+>> +	int                                     xfer_status;
 > 
-> Laurent Pinchart:
+> This is certainly simple, and simple is not bad.
 > 
-> 	Do you have chance to check these patches? Only below patch
-> media: nxp: imx8-isi: Use devm_clk_bulk_get_all() to fetch clocks
-> missed your review tag.
-
-I've just pinged Rob in the v4 thread.
-
-> 	DT team member still have not any comments about your concern by
-> use devm_clk_bulk_get_all(). I have quite confidence about this
-> devm_clk_bulk_get_all(), many drivers already switched to use
-> devm_clk_bulk_get_all() recently.
+> But based on the fact that you care about the xfer_status only when
+> there's an associated dspi->cur_msg, have you considered to update
+> dspi->cur_msg->status directly?
 > 
-> 	Do you need me rebase to v6.16-rc1?
+> You'd need to reset dspi->cur_msg to NULL at the end of
+> dspi_transfer_one_message(), and then check for NULL when you update
+> the transfer status.
+> 
 
-The patches apply cleanly on v6.16-rc1, no need to rebase. I'll wait a
-few more days for Rob's reply.
+That will work. I can use it for polling and DMA modes too and I think 
+it looks a bit better after a refactor.
 
-> > Changes in v5:
-> > - collect Laurent Pinchart's review tags
-> > - remove empty endpoint in dts
-> >
-> > Changes in v4:
-> > - Add 4 clean up patches
-> > 	media: nxp: imx8-isi: Remove unused offset in mxc_isi_reg and use BIT() macro for mask
-> > 	media: nxp: imx8-isi: Use dev_err_probe() simplify code
-> > 	media: nxp: imx8-isi: Remove redundant check for dma_set_mask_and_coherent()
-> > 	media: nxp: imx8-isi: Use devm_clk_bulk_get_all() to fetch clocks
-> > - rebase to v6.15-rc1.
-> > - Remove scu reset patches, which already in linux-next
-> > - Remove patch
-> > 	 Add fixed clock node clock-xtal24m to prepare to add camera support.
-> > - other detail change log see each patch's change log
-> > - Link to v3: https://lore.kernel.org/r/20250210-8qxp_camera-v3-0-324f5105accc@nxp.com
-> >
-> > Changes in v3:
-> > - Remove phy driver parts.
-> > - csr is dedicate for mipi csi2, so add it as second register space. csr is
-> > mixed with PHY and link control with csi2.
-> > - Link to v2: https://lore.kernel.org/r/20250205-8qxp_camera-v2-0-731a3edf2744@nxp.com
-> >
-> > Changes in v2:
-> > - move scu reset binding doc to top scu doc.
-> > - isi use seperate binding doc for imx8qxp and imx8qm.
-> > - phy and csi2, compatible string 8qm fallback to qxp
-> > - remove internal review tags
-> > - Link to v1: https://lore.kernel.org/r/20250131-8qxp_camera-v1-0-319402ab606a@nxp.com
-> >
-> > ---
-> > Frank Li (10):
-> >       media: dt-bindings: Add binding doc for i.MX8QXP and i.MX8QM ISI
-> >       media: nxp: imx8-isi: Allow num_sources to be greater than num_sink
-> >       media: nxp: imx8-isi: Remove unused offset in mxc_isi_reg and use BIT() macro for mask
-> >       media: nxp: imx8-isi: Use devm_clk_bulk_get_all() to fetch clocks
-> >       media: nxp: imx8-isi: Remove redundant check for dma_set_mask_and_coherent()
-> >       media: nxp: imx8-isi: Use dev_err_probe() to simplify code
-> >       media: imx8mq-mipi-csi2: Add support for i.MX8QXP
-> >       arm64: dts: imx8: add capture controller for i.MX8's img subsystem
-> >       arm64: dts: imx8q: add linux,cma node for imx8qm-mek and imx8qxp-mek
-> >       arm64: dts: imx8q: add camera ov5640 support for imx8qm-mek and imx8qxp-mek
-> >
-> > Guoniu.zhou (1):
-> >       media: imx8mq-mipi-csi2: Add imx8mq_plat_data for different compatible strings
-> >
-> > Robert Chiras (2):
-> >       media: imx8-isi: Add support for i.MX8QM and i.MX8QXP
-> >       media: dt-bindings: nxp,imx8mq-mipi-csi2: Add i.MX8QM(QXP) compatible strings
-> >
-> >  .../devicetree/bindings/media/fsl,imx8qm-isi.yaml  | 117 +++++++
-> >  .../devicetree/bindings/media/fsl,imx8qxp-isi.yaml | 106 ++++++
-> >  .../bindings/media/nxp,imx8mq-mipi-csi2.yaml       |  38 ++-
-> >  MAINTAINERS                                        |   1 +
-> >  arch/arm64/boot/dts/freescale/Makefile             |  11 +
-> >  arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi     | 362 +++++++++++++++++++++
-> >  .../boot/dts/freescale/imx8qm-mek-ov5640-csi0.dtso |  64 ++++
-> >  .../boot/dts/freescale/imx8qm-mek-ov5640-csi1.dtso |  64 ++++
-> >  arch/arm64/boot/dts/freescale/imx8qm-mek.dts       |  67 ++++
-> >  arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi   |  79 +++++
-> >  arch/arm64/boot/dts/freescale/imx8qm.dtsi          |   5 +
-> >  .../boot/dts/freescale/imx8qxp-mek-ov5640-csi.dtso |  63 ++++
-> >  arch/arm64/boot/dts/freescale/imx8qxp-mek.dts      |  45 +++
-> >  arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi  |  83 +++++
-> >  arch/arm64/boot/dts/freescale/imx8qxp.dtsi         |   5 +
-> >  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 135 ++++----
-> >  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |   6 +-
-> >  .../platform/nxp/imx8-isi/imx8-isi-crossbar.c      |   8 +-
-> >  drivers/media/platform/nxp/imx8mq-mipi-csi2.c      | 169 +++++++++-
-> >  19 files changed, 1334 insertions(+), 94 deletions(-)
-> > ---
-> > base-commit: ae1fdcf4b210cd66ac7e97b24219c160e4bb7be5
-> > change-id: 20250114-8qxp_camera-c1af5749d304
+>>   
+>>   	struct fsl_dspi_dma			*dma;
+>>   
+>> @@ -504,12 +505,22 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+>>   
+>>   static void dspi_setup_accel(struct fsl_dspi *dspi);
+>>   
+>> +static bool dspi_is_fifo_overflow(struct fsl_dspi *dspi, u32 spi_sr)
+> 
+> Can you name this some way else, like dspi_fifo_error()? It's strange
+> for a reader for this to return true on an underflow.
+> 
 
--- 
-Regards,
+Will do
 
-Laurent Pinchart
+>> +{
+>> +	if (spi_sr & (SPI_SR_TFUF | SPI_SR_RFOF)) {
+>> +		dev_err(&dspi->pdev->dev, "FIFO under/overflow");
+> 
+> Missing \n.
+> 
+> And you should use dev_err_ratelimited(), as you don't want an external
+> entity, when in target mode, to DoS you.
+>
+
+Ack
+
+> Also, could there be individual error messages for TFUF and for RFOF?
+> If you are concerned about the penalty for the error-free case, make the
+> check two-level. First for all errors, then for individual errors.
+> 
+
+If I was going to split them I would probably let the compiler optimize 
+it whichever way was best. The real reason for combining them is because 
+usually you get them both together. As long as the message and fifos are 
+configured correctly you'd always get TFUF and RFOF at the same time and 
+I wanted to avoid printing twice for one event.
+
+We could have 3 different warnings, TFUF/RFOF, TFUF and RFOF but I don't 
+think that's useful to an end user. At that level of debugging you'd 
+probably have a load of other debug printfs added anyway.
+
+>> +		return true;
+>> +	}
+>> +	return false;
+>> +}
+>> +
+>>   static int dspi_dma_xfer(struct fsl_dspi *dspi)
+>>   {
+>>   	struct spi_message *message = dspi->cur_msg;
+>>   	int max_words = dspi_dma_max_datawords(dspi);
+>>   	struct device *dev = &dspi->pdev->dev;
+>>   	int ret = 0;
+>> +	u32 spi_sr;
+>>   
+>>   	/*
+>>   	 * dspi->len gets decremented by dspi_pop_tx_pushr in
+>> @@ -531,6 +542,12 @@ static int dspi_dma_xfer(struct fsl_dspi *dspi)
+>>   			dev_err(dev, "DMA transfer failed\n");
+>>   			break;
+>>   		}
+>> +
+>> +		if (spi_controller_is_target(dspi->ctlr)) {
+>> +			regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+>> +			if (dspi_is_fifo_overflow(dspi, spi_sr))
+>> +				return -EIO;
+>> +		}
+>>   	}
+> 
+> Can this go within this block from dspi_next_xfer_dma_submit() instead?
+> 
+> 	if (spi_controller_is_target(dspi->ctlr)) {
+> 		wait_for_completion_interruptible(&dspi->dma->cmd_rx_complete);
+> 		// here
+> 		return 0;
+> 	}
+> 
+
+Makes sense yeah
+
+>>   
+>>   	return ret;
+>> @@ -918,6 +935,8 @@ static int dspi_poll(struct fsl_dspi *dspi)
+>>   		regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+>>   		regmap_write(dspi->regmap, SPI_SR, spi_sr);
+>>   
+>> +		if (dspi_is_fifo_overflow(dspi, spi_sr))
+>> +			return -EIO;
+>>   		if (spi_sr & SPI_SR_CMDTCF)
+>>   			break;
+>>   	} while (--tries);
+>> @@ -939,8 +958,12 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+>>   	if (!(spi_sr & SPI_SR_CMDTCF))
+>>   		return IRQ_NONE;
+>>   
+>> -	if (dspi_rxtx(dspi) == 0)
+>> +	if (dspi_is_fifo_overflow(dspi, spi_sr)) {
+>> +		WRITE_ONCE(dspi->xfer_status, -EIO);
+>> +		complete(&dspi->xfer_done);
+>> +	} else if (dspi_rxtx(dspi) == 0) {
+>>   		complete(&dspi->xfer_done);
+>> +	}
+>>   
+>>   	return IRQ_HANDLED;
+>>   }
+>> @@ -1032,13 +1055,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+>>   		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+>>   			status = dspi_dma_xfer(dspi);
+>>   		} else {
+>> -			if (dspi->irq)
+>> +			if (dspi->irq) {
+>> +				WRITE_ONCE(dspi->xfer_status, 0);
+>>   				reinit_completion(&dspi->xfer_done);
+>> -
+> 
+> Nitpick: The blank line was doing fine here.
+> 
+
+Ack
+
+>> +			}
+>>   			dspi_fifo_write(dspi);
+>>   
+>>   			if (dspi->irq) {
+>>   				wait_for_completion(&dspi->xfer_done);
+>> +				status = READ_ONCE(dspi->xfer_status);
+>>   			} else {
+>>   				do {
+>>   					status = dspi_poll(dspi);
+>>
+>> -- 
+>> 2.34.1
+>>
+
