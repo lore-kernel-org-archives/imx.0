@@ -1,187 +1,162 @@
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D8A20C031
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 08:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.149.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749718185; cv=fail; b=M0BZswZ/87VO4tER4Q06cpq++AsjwSc8lTf5OcTJtanDEblYWlRSNjrEShLVY8iLXnd5ZCh5Fp73/GnqzvKzotRow/EUXpCztjw6DPfNv3/aJguoWUB0jWGhHWzYky7lO1uSSc/bbvKEWAO8OX19ZNdJMy8ymSOof60fczAS4D8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749718185; c=relaxed/simple;
-	bh=uw8n3M7lQUmZkNFbxrXqFpnyi3xAcemFOWAiyXW1w/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WqM/aFP09w/Ul1opO2x6mWcc1F1LWx4oUzXdQdqnd4nghEnJeqx8a+J54OUjaRzODlJDdbbqQOfMdPA2jM8uKSghVhWiPdo4HRgHxjOuAbmwBjmbqhk42LfEFpF9KQ/V9Yk6Fhcdj5ZduhcA7jUkuRrnCkljezEaT2lDUWmXJbw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=fAf7by06; dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=i6bGHfJu; arc=fail smtp.client-ip=67.231.149.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8857C222593
+	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 09:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749719310; cv=none; b=JARl567dM5pARgdPnwj8FQ4GiECI2lz1GkHpGH/4LQ4Zd2TFHlvVae3ZR9DHvbsTBlukrrDk6dBz/JfSmzMUBMpLmCngngHf2I3sVJ4WPvaDa04ldLzjBrAojWGq7mAeDQhSM/lEp7zmZRmWnfonjLAJQFbL3/SqUU63YG2m3pc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749719310; c=relaxed/simple;
+	bh=6KfPFbuiFd+XjZqq79kzPL/jMNedVQKHcM7hei2cEc4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mcnrUzIcoCwzMdw6uZuwFYQzIThw8nPx63hjZ20y8fiFN+S+wnnZaLFQPWqj25EoFTKMcUPpu5Pzlf2bUPwIkiHuLl8dIivW0FpTDGSYIN40l8GGOI9UXh57hgNCsjQzx/lK3/kGeyq/iXFjdHCz2bwvNPbFOQ044KYqRL3VLyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=c5fSeSod; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="fAf7by06";
-	dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b="i6bGHfJu"
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-	by mx0a-001ae601.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55C5a2vm001079;
-	Thu, 12 Jun 2025 03:48:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=PODMain02222019; bh=Mp6wAFt2Iu0N/IFXUq
-	gfrt9eZl/zWHCCsWhPrJjoqoU=; b=fAf7by06bEsAT3M7A/2gkS6m/YRvHt+mvq
-	y+BF7aGL/WCbf02t+7cJYfp7TDhcYNWcdYhgCpv12rFB8n24XWhQNXp1plrOz4Sl
-	6LFexsmWeHWUZVNOPVnx4lWw9E1tRpze5KBf/xW2yk34erPaXqkzghX6hfsrZTKe
-	Gb8u2rXiM+MKS+HJtO+SamvYpsI1dw19mZv/mcrULo/h3SfuL0Z7cqDSqcLHGbQd
-	LXC1t8/PV46lSuKHk8BsW7ATWrXyLw25Kpg2OdF940W33swBmuNgZGGRx+IyqNU4
-	98dpsiXELapCi5m4fEqMUxKVuqJ8IU5r/b9rGFq6VbNYcZ7nva7w==
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11hn2210.outbound.protection.outlook.com [52.100.172.210])
-	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 476ksdbhh6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Jun 2025 03:48:59 -0500 (CDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ohnJR3sdTe7zeE0S0f6C6zShs7r0hUfEtn9Hx0gsvZ4kL4ABfmAJqmFYOu8VMGu6R1Meaag+DnCTCJw9gVybFIu6mA0NC8DMX5+wRO5srUVk3KaPc2zsqErLhW4g6WfQyP9fkjgGB8YYdcFSuGukPN0GLPR1N6gdILpoAeSLLXCcpxOlHMSCIxjguJiPbGUaSQ4yvmf3q1RdpOh2ECGR1MdKtC3vNPukR7rzoTOY96jEfLHQ4DK5cOkzMNo5rtv3BXYtolmkNT3+9cxxq+fwyIsgWFkUTer/r1WQjxn6ucDVTdx5RdzSisiz+Ib2Q3IjGpsFzK3oOYDmqoEqBI2uDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mp6wAFt2Iu0N/IFXUqgfrt9eZl/zWHCCsWhPrJjoqoU=;
- b=d32RYyKsA2gFEUxqyNEE8TJsvICOD2Gaczj7hEJdAcn7EX4qqOE2ebhz3P4YwdzyFTi+l0BCPfBCz7qdBIT0E9mZnnDIvwv/hJXsXPegaT/XMjx9lCzUM65YctvIGiQ3t53FoyPs5/mQA4Ix1StiXNQt2XQ+pnfns43QFPhLZk1bgrNCY4r10E2O0HQFwYfzGnwUpy1G9ydmEcB79QqdW3Yy8NUhH7hVcIg25N+x1jbLlO30thAIJpQj0bv422PxWiN90BGY2LTY46B7kibcQu5+HqZ1FVp73hwJs9HA6vixZ89kQpyO8A2CipGvCXDJU1itIFOkxOevDc5My6jd3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 84.19.233.75) smtp.rcpttodomain=atomide.com
- smtp.mailfrom=opensource.cirrus.com; dmarc=fail (p=reject sp=reject pct=100)
- action=oreject header.from=opensource.cirrus.com; dkim=none (message not
- signed); arc=none (0)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="c5fSeSod"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6077d0b9bbeso1314439a12.3
+        for <imx@lists.linux.dev>; Thu, 12 Jun 2025 02:08:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mp6wAFt2Iu0N/IFXUqgfrt9eZl/zWHCCsWhPrJjoqoU=;
- b=i6bGHfJuejK97DVCXKpcwwnG8Ft485dJq9HAI2jL1EnEJ/xcLqpM+iFEF3CERUPgq63/VXF43urOzySrKSRb6BfTehlDyfIoYrn9Ydix/C+YtFpzzOy+vCFsKwHjW+Ffz9QiDfMCEJBnGtrvLf5dfEQixdvX2XtHB6aeZ/xprBM=
-Received: from PH0PR07CA0008.namprd07.prod.outlook.com (2603:10b6:510:5::13)
- by SA6PR19MB8594.namprd19.prod.outlook.com (2603:10b6:806:412::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Thu, 12 Jun
- 2025 08:48:54 +0000
-Received: from CY4PEPF0000E9D0.namprd03.prod.outlook.com
- (2603:10b6:510:5:cafe::ef) by PH0PR07CA0008.outlook.office365.com
- (2603:10b6:510:5::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.21 via Frontend Transport; Thu,
- 12 Jun 2025 08:48:54 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 84.19.233.75)
- smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
-Received-SPF: Fail (protection.outlook.com: domain of opensource.cirrus.com
- does not designate 84.19.233.75 as permitted sender)
- receiver=protection.outlook.com; client-ip=84.19.233.75;
- helo=edirelay1.ad.cirrus.com;
-Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
- CY4PEPF0000E9D0.mail.protection.outlook.com (10.167.241.135) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.15
- via Frontend Transport; Thu, 12 Jun 2025 08:48:53 +0000
-Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id 324FE406541;
-	Thu, 12 Jun 2025 08:48:52 +0000 (UTC)
-Received: from opensource.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id 15114820249;
-	Thu, 12 Jun 2025 08:48:52 +0000 (UTC)
-Date: Thu, 12 Jun 2025 09:48:50 +0100
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: linux-kernel@vger.kernel.org, tglx@linutronix.de,
-        Lee Jones <lee@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Aaro Koskinen <aaro.koskinen@iki.fi>,
-        Andreas Kemnade <andreas@kemnade.info>,
-        Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, linux-arm-kernel@lists.infradead.org,
-        imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, linux-omap@vger.kernel.org,
-        patches@opensource.cirrus.com
-Subject: Re: [PATCH] mfd: Use dev_fwnode()
-Message-ID: <aEqUcjZ3q0UcVSSf@opensource.cirrus.com>
-References: <20250611104348.192092-1-jirislaby@kernel.org>
- <20250611104348.192092-13-jirislaby@kernel.org>
+        d=amarulasolutions.com; s=google; t=1749719307; x=1750324107; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8NxJW8a0rDs+8sBFsEtXBrcHDs56LoiAx3JrdQr1I1I=;
+        b=c5fSeSodmfU0G3iCr5ZMQxjJHSKcvyxTOOGiJzJl+w10HI1wbUpb+5eiDjE/6Iuc6x
+         YEyLv2e3MgTgEqTrYLjddn+t/Gt5bk9dTscMyY8meE8b6mo1Tuv0doi8Q/CoUrfAkLNn
+         fIRRnDT5QPcJ2QnoIeYtMEiYq8U0Tkq0UUE8U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749719307; x=1750324107;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8NxJW8a0rDs+8sBFsEtXBrcHDs56LoiAx3JrdQr1I1I=;
+        b=JtpY2P0zOPdAgFNiedc17hdcbG8M31hLDz73/jt9dTX2wvC3bgg9swH3uFOo7f9l/x
+         8NKhGJBqCNKdGW+HIbTx7UgahiEPXChADVLPc4IssC8JFpl65QiEH3uwgiklLCul8e5G
+         PgTjS4eIvxSHceUtXhSZ5+Wr5Zlqfx0ETquttUjroXfgDYGs0hlf2OxTc0IIjXd0PdEO
+         wqmW4KGORp2jbcvDpeiMExZ9XRI6yZt1rtNzjXaM0v5/mFh+uOTq1PigZcMnc0m7hri9
+         cXCNiUWSaHuPmCbmUHv99R6XcYNfR8nVJNysbRvRjzN40EyTNQb/3ZBl0f9q0BV9GYkz
+         hZRw==
+X-Forwarded-Encrypted: i=1; AJvYcCVSgsAIdeekwwjA5dVpxZWi1nZ2vyA//slIbTqwIkNiNpYQmU0trSP4yQWTwPOFamHHRlY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YySM6DWp66Imuhvg4jA6gStU6bh+otvGFkPGRe3iT66eOAzzIVz
+	aj7lcOGdZY0S69vat3+un6+YggKhPqADKRSlmb5EqwQRe9vjSoiG15CbAxpBvo37PxU=
+X-Gm-Gg: ASbGncunYny95IK8gk27z7JwybLzLT7IQR8BWIjvTJaCbuHBwK+ZVkP+9Q8xCfGTHe/
+	l1iuU0xRiKIsSSwzQf7aGFyFY8IpcvTTPCkzRmT5me2ze38+MTBa62qlA70sctGe37IqvaQsTd5
+	g/7EtJc72SJ7tphMe3OLFt3o4bEuxLSP3LXS3ArQKnqC8Ucxx4stkmsBOTxuF22Z+QqN+0xthBS
+	Yd/qhxlMbuphrGWCzrFP3sNUIaGViiTd9YaTM3/Yog8vd8t/LUARVUd1gyEyT8ib9xemT5Wu+az
+	x2vwS3KZPH453BjTnl+xa8IC4yrUdLnAobr7Ia8+ntbGvkFCOJQcWkIgPYbNFOE1reFYDaYXhAz
+	8xKIHMjVNiv0BizhZtYFeg3J7n8LIlJPteNV6
+X-Google-Smtp-Source: AGHT+IHXDyupYzZCXJi0eiJsh48G5Ym1bzk1PJGvBlaIo3IRc/SJXPwW1VjHYYpk3eeIYvpgukMg0A==
+X-Received: by 2002:a17:907:c807:b0:ad5:e18:2141 with SMTP id a640c23a62f3a-adea273e373mr294920066b.53.1749719306831;
+        Thu, 12 Jun 2025 02:08:26 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.. ([2.196.42.38])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-adead4cf274sm99933366b.31.2025.06.12.02.08.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Jun 2025 02:08:26 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-amarula@amarulasolutions.com,
+	Matteo Lisi <matteo.lisi@engicam.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Markus Niebel <Markus.Niebel@tq-group.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Rob Herring <robh@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v4 00/10] Support Engicam MicroGEA boards
+Date: Thu, 12 Jun 2025 11:07:45 +0200
+Message-ID: <20250612090823.2519183-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250611104348.192092-13-jirislaby@kernel.org>
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D0:EE_|SA6PR19MB8594:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41410a49-d510-4b43-d0bf-08dda98df600
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|34020700016|36860700013|7416014|376014|61400799027|12100799063;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EflOBUD9AvXV/qaOi93hQwM3TJ6aCqaBvdhPOv1a2VpuCk/iKme+bmU588hV?=
- =?us-ascii?Q?C94yYWEqtyp2MslCfaPOrEWH8HqRx2SfmYT4lIL7KIz0DZUShqKVhqJq/wDI?=
- =?us-ascii?Q?Yy2AVX/+Sw4o0tuB98MKvHwbxxuDOqRuopgNeeoKxd6KcgR54JDj4rsnJzBq?=
- =?us-ascii?Q?Ypv7wkKT8ZMqgOeBTGLQzpZGPVhLOBwlRBf9XNAmwkp+NkRKvWgAqfjxj8zp?=
- =?us-ascii?Q?Y4qOTLwyOjIwuLeNJvQYCIAzWqDRi4zLg3mUbVoBrceWYKCFK9SkUrwxtQFa?=
- =?us-ascii?Q?JfdVFUMKrBikCZW4zMDgIwGsn0qL+qo6Oc0ob3xjH6Iha3X3WmIptafKkBfY?=
- =?us-ascii?Q?E+sYveLRB5Z45wE+KZnVWkAkonbyHTy5/azQ1yb+spL3NyaBDjfCkK9+Iabt?=
- =?us-ascii?Q?AV6PWy0Ojf2CH9MEZurUXe6QI1ARz1adxQbVSLF2sO0msnQZ3/hVvDxbicCB?=
- =?us-ascii?Q?NZCo729IJz4RRKAqpMh4XmHjsSWlgnI482Cvlv39LSU4sBN9F4mIGQwGa+Jd?=
- =?us-ascii?Q?I0FHm8GbC+ZMdAqqBHDh1LRd7sEjzBdKGuLIPM7QvnX1fgfjm5KewjV5Xsl9?=
- =?us-ascii?Q?DrxFzlYSxAU6hktDysQPjqIsnVXq2PHyNY5YxF7mRU89WYCQ2aCWxSuvN3DU?=
- =?us-ascii?Q?DBQW9UaK4jr3hzWe03B1qbOGVNtm499vbXlQ/XIfF/QnKCqkuIkQiDhJMTIk?=
- =?us-ascii?Q?uFTSpCno5PwBQYoByt09Y5qV9UL8FYCbat4/Gz0PpuyxSmXdyaRuqs8iN4+c?=
- =?us-ascii?Q?1D29N0DXBiqHzoexh5Cs2CGJCN3+0g2FdmdY42PALK20/1qXhr4aR9eciR8L?=
- =?us-ascii?Q?sPM1OygbIA8O5d9uj3S/khYlolhflnuiC7bE+YMUyMuJLESfuixi3AYDxsXN?=
- =?us-ascii?Q?UIEGzModC6746vBCP9yYF+Qvwc1thPUxRiJaJtomxExcadoOY83HUIfJLB7o?=
- =?us-ascii?Q?pcJ+2Hq4U3ekOFFJOB7+1Yao4LuQfBBBEznrM/lS6GTtAlzyNM5bSNSDeryI?=
- =?us-ascii?Q?12W2Dkw4A0h8Prt34/ME7JHuOySFM9rvtFhgPLaz5OaQnX8nOmS3PLXKSXBB?=
- =?us-ascii?Q?Rpkg/VXEYG3B3cVt8yqIcstcD/cJLYbKFDHXMHYJLy1bZ6U80LAeYxbFPbCc?=
- =?us-ascii?Q?b8YWzp51/jewrrIYWjL3M+WeLj7Bogh0K/5ENaRnIaoDJ3bqUGOpwyV/oR7y?=
- =?us-ascii?Q?AJMks9ivffMtQL4KVnrp4EvsoChbD/0o8Lz+a8Uz6yBbPRK0xBCBXIe/mw89?=
- =?us-ascii?Q?mymMVZ0aoTskRqPLdmAAbyC4MSZS1PfsABg+GPAUaZo65IDzMtLE4yyqHAlT?=
- =?us-ascii?Q?LUFarRtsIoFMcbKEqfXiXoUwFAiiWamH2972KDAf7TkgryNqlSM72Gx8Kuqu?=
- =?us-ascii?Q?rgPZh6PRBAi6BIRVqeSdOAa2lcmTN8wom0q6VekA0NJ4tDSSMLc2msxhcSXo?=
- =?us-ascii?Q?+PFZpz4yyuIlDnRzJzfCfSn6Qe0j/iXY5bw+bRDnLNcjn3IdREAarsmvoZpr?=
- =?us-ascii?Q?IafLGCXfzo5tRwy6cklAEqVFrkOu7f774s9n?=
-X-Forefront-Antispam-Report:
-	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(34020700016)(36860700013)(7416014)(376014)(61400799027)(12100799063);DIR:OUT;SFP:1501;
-X-OriginatorOrg: opensource.cirrus.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 08:48:53.6238
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41410a49-d510-4b43-d0bf-08dda98df600
-X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9D0.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR19MB8594
-X-Proofpoint-GUID: MI1o5d_OcAduM1Cq0ic6z3Ct2T16YFPj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDA2NyBTYWx0ZWRfX3dtSLqtgUovA aSKqR1OMT2jEO0IknB+dodUrjfguhdNDEWt5FhI77WrSyTzlcHLXcLM84jCmVpZDUxJkU8pfWIZ 7GfoaZFZdp22z6jDJJ1B/ofe7Xia8ShuVPnL4Kh9ZY+8uvIF3Dj4a/fcIUC6CYjNnC7RuftK/Y4
- RTzvFcxFElbwBWzTgwXxtGAlIx1nb802NLYZTsnnQr4pW1oJW41JcDHr9Yigd0ss5IcshIP111+ ZE6/cXwOgKNPMNGeovSsGYtwVshC2j8fN72ICPmx9qiAnbasNzbLb7iW1zaGn/+SSzkj8ZcR2Aq o+qws/q/FRZzCmLye2TLhklYcObiXlRpHPllkQV90GYGLjwYENIYoXitO+O7dAR589qJe/jvfZY
- 5HWuJLGb8gPzEIz+gBmmxk/fKTDiYaA6SC6TR2SN546LBYig6io/495mb/XXdmu0JM/6GYTI
-X-Authority-Analysis: v=2.4 cv=c5OrQQ9l c=1 sm=1 tr=0 ts=684a947b cx=c_pps a=KMTg/8RFoxcndjAm0j+8Gg==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=kj9zAlcOel0A:10
- a=6IFa9wvqVegA:10 a=s63m1ICgrNkA:10 a=RWc_ulEos4gA:10 a=VwQbUJbxAAAA:8 a=w1d2syhTAAAA:8 a=GpktXrwMqSbe8FIqCiwA:9 a=CjuIK1q_8ugA:10 a=jZz-an6Pvt0H8_Yc_ROU:22
-X-Proofpoint-ORIG-GUID: MI1o5d_OcAduM1Cq0ic6z3Ct2T16YFPj
-X-Proofpoint-Spam-Reason: safe
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 11, 2025 at 12:43:41PM +0200, Jiri Slaby (SUSE) wrote:
-> irq_domain_create_simple() takes fwnode as the first argument. It can be
-> extracted from the struct device using dev_fwnode() helper instead of
-> using of_node with of_fwnode_handle().
-> 
-> So use the dev_fwnode() helper.
-> 
-> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> Cc: Lee Jones <lee@kernel.org>
-> 
-> ---
+The series adds support for Engicam MicroGEA boards:
 
-For wm831x:
+- BMM
+- RMM
+- GTW
 
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+based on MicroGEA-MX6UL SoM.
 
-Thanks,
-Charles
+Changes in v4:
+- Fix commit title. It was referring to a wrong configuration
+
+Changes in v3:
+- Drop an extra blank line from the iomuxc node.
+- Rename sgtl5000 node to audio-codec.
+- Move the reg property of the audio-codec node right
+  after the compatible property.
+- Drop an extra blank line from iomuxc and iomuxc_snvs nodes.
+- Rename sgtl5000 node to audio-codec.
+- Move the reg property of the audio-codec node right
+  after the compatible property.
+- Drop an extra blank line from iomuxc and iomuxc_snvs nodes.
+- Drop an extra blank line from the iomuxc node.
+
+Changes in v2:
+- Change local-mac-address to 00 00 00 00 00 00. The actual value will
+  be set by the bootloader. The previous one was assigned to Freescale
+  Semiconductor.
+- Move iomuxc and iomuxc_snvs nodes to the end of the DTS file.
+- Move iomuxc and iomuxc_snvs nodes to the end of the DTS file.
+- Drop an extra blank line
+- Move iomuxc and iomuxc_snvs nodes to the end of the DTS file.
+
+Dario Binacchi (10):
+  dt-bindings: arm: fsl: support Engicam MicroGEA BMM board
+  ARM: dts: imx6ul: support Engicam MicroGEA-MX6UL SoM
+  ARM: dts: imx6ul: support Engicam MicroGEA BMM board
+  ARM: imx_v6_v7_defconfig: cleanup with savedefconfig
+  ARM: imx_v6_v7_defconfig: select CONFIG_INPUT_PWM_BEEPER
+  dt-bindings: arm: fsl: support Engicam MicroGEA RMM board
+  ARM: dts: imx6ul: support Engicam MicroGEA RMM board
+  dt-bindings: arm: fsl: support Engicam MicroGEA GTW board
+  ARM: dts: imx6ul: support Engicam MicroGEA GTW board
+  ARM: imx_v6_v7_defconfig: select CONFIG_USB_HSIC_USB3503
+
+ .../devicetree/bindings/arm/fsl.yaml          |   9 +
+ arch/arm/boot/dts/nxp/imx/Makefile            |   3 +
+ .../nxp/imx/imx6ull-engicam-microgea-bmm.dts  | 303 +++++++++++++++
+ .../nxp/imx/imx6ull-engicam-microgea-gtw.dts  | 162 ++++++++
+ .../nxp/imx/imx6ull-engicam-microgea-rmm.dts  | 360 ++++++++++++++++++
+ .../dts/nxp/imx/imx6ull-engicam-microgea.dtsi |  95 +++++
+ arch/arm/configs/imx_v6_v7_defconfig          |  27 +-
+ 7 files changed, 938 insertions(+), 21 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-bmm.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-gtw.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea-rmm.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi
+
+-- 
+2.43.0
+
+base-commit: 2c4a1f3fe03edab80db66688360685031802160a
+branch: imx6ull-engicam-microgea
