@@ -1,136 +1,157 @@
-Received: from mail.actia.se (mail.actia.se [212.181.117.226])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAC02744D
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 13:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.181.117.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE08518A6AD
+	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749734622; cv=none; b=JBM9u3oUUzfmqzvlA8ylhO3EZf/aJjCw5mdl77lKeOu1QSl5tzxXR6GXHPzeHXqiQWvi6CVH0ZsEn6I0K953pAjE4dPyMSbUTHh91V+edmnJ0ERn0ptJbyvZmn5FGE5AeP/PAjnELtvnDiAUcEA42tY9TznDKcaJ338rTTcb/EM=
+	t=1749737677; cv=none; b=pqeAh8tOD5x5XgkSgEM9OOVNRjgNjiOSinWmH9jTnZzi5lRnWb7yKnMQV+Lbw+D7E7wDaa/6I3+879nULOL6uSg74gOrf+0BAPUsQbUBWD0sMOrt590BzEQHWl26elhDj83tNe2UQo7sgOX/h5F1xSrVSuoYLm1zcjoIcpoNi/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749734622; c=relaxed/simple;
-	bh=CjC/uGzJEVUpBaE85gY/ClqB7/INXmnC+09yAR3VxZs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=upvbGcsm/3+MKh0yB4k45qyMOKqVJ6TUeFpPQhw73rbJcpb5uht5CNAHb6M8swJKMCBgGp1/Cfq2UJyW+vgur+WhqGIBdmzJygYMX7pBhZOAR4hngN4dj+qgLmkXss+hLLCqt6ygCM/Fs7270cKiilKYJXKs6l3Gku5st5/UhAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se; spf=pass smtp.mailfrom=actia.se; arc=none smtp.client-ip=212.181.117.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=actia.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=actia.se
-Received: from S036ANL.actianordic.se (10.12.31.117) by S036ANL.actianordic.se
- (10.12.31.117) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 12 Jun
- 2025 15:23:29 +0200
-Received: from S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69]) by
- S036ANL.actianordic.se ([fe80::e13e:1feb:4ea6:ec69%3]) with mapi id
- 15.01.2507.039; Thu, 12 Jun 2025 15:23:29 +0200
-From: John Ernberg <john.ernberg@actia.se>
-To: Xu Yang <xu.yang_2@nxp.com>, Shawn Guo <shawnguo@kernel.org>
-CC: Peter Chen <peter.chen@kernel.org>, Shawn Guo <shawnguo2@yeah.net>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: i.MX kernel hangup caused by chipidea USB gadget driver
-Thread-Topic: i.MX kernel hangup caused by chipidea USB gadget driver
-Thread-Index: AQHb2Uk8r5zPXewyY0SsDNZZa8wLobP8IguAgANEOoA=
-Date: Thu, 12 Jun 2025 13:23:29 +0000
-Message-ID: <5acfd382-28d5-4d74-997c-361499cc0bb0@actia.se>
-References: <aEZxmlHmjeWcXiF3@dragon>
- <c56pgxmfscg6tpqxjayu4mvxc2g5kgmfitpvp36lxulpq4jxmg@ces5l7ofab6s>
- <aEbstxkQmji4tfjf@w447anl.localdomain>
- <k6j2za47cp4ccyfkevwpx2x5s4bjrxxqhqvteyspbf2n7yxcff@ccztqeuhn2di>
-In-Reply-To: <k6j2za47cp4ccyfkevwpx2x5s4bjrxxqhqvteyspbf2n7yxcff@ccztqeuhn2di>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-esetresult: clean, is OK
-x-esetid: 37303A2955B14453627066
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8EC7C100E2B7A54AB77B49BD07CAB556@actia.se>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1749737677; c=relaxed/simple;
+	bh=60WDQiWn4ERcM4sXmxu8hCFJPSCd2H/JsWpNpGO9EBs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EYVJg3+kKe2RFQRQygd7RNTuTHzYul2IyN1wrwo3LXJ9wcXqWn1PsIsRZNP5zDzJ3EWb93VfHsoL8rDGUV8mgqnTxA8s1Z55HtRx5vPtCNcoBDjZaLkP/V7DHGrPHX4wWwRUh8ncOZMgrtpcJJ59a69IA47jHPLJ0CUo0y1jQ6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g1880hKS; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g1880hKS"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a525eee2e3so871408f8f.2
+        for <imx@lists.linux.dev>; Thu, 12 Jun 2025 07:14:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749737674; x=1750342474; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J19QzIs1SpN2V+Z84587yjfC+A6S3Z0DqJUi8/rsIps=;
+        b=g1880hKSqq6cuvJ3zHVZ6GWB+aoJV0Wij5cEhl53Wqk0FZKLyR6Xk7U/vov4b6V4jA
+         Hl14+Q09CAuRJvvfZGrN6G5w/YreFjSylyeW6cSnthN0ratLu6dVZaUjLQOjJNADaEqh
+         XLSAAj2O7F6gY07epaPZRynHkLq79Ht0ZBgJ2FkAGMOZ8wXCztT05VveRuX86L6KOrnQ
+         RMFYP0kFaDXgQb/50nmzgY93unuy7fgTP0s+7V+EERYxPXehAkyFcuLD+12cgSszZRma
+         kewxn0fY+n7QTzDxb1laWgQVybcu6tAiEs1tDAd7zSJJAzimH94O6m7rr7vt/HQ6ALBj
+         OqNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749737674; x=1750342474;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J19QzIs1SpN2V+Z84587yjfC+A6S3Z0DqJUi8/rsIps=;
+        b=jjtp3bMTn4uc5yRYs1JbKRTr/buiVacy95KnV+i82mOn//y46kt4EJnWxOoELcVoXk
+         Bmp96k++zRlUrqcpx2I1DL63PcRk8s0I7M+esBR30mfF/GZzx1C4Njc8RDjHW8c2XYrp
+         y8phq9vInbHv0QQEe90g27FjEPHfEDWhAGeWCv/kGAK/6XaHlnI/aroDWTl2LFhUOoHQ
+         LObhgDfYpXMtHY/0OtuJDYiTxVY+mgpHHoagM+cOSvuiUpYKL+80N61mZpA4CUyWYIkx
+         xBENB1KTcqsVokPTJjxl65RPbqVqAr6zCESNoWNrh7f+BOx3oNO9VKIIRP0RLCi5BDSl
+         v1nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUuGUtanQaZSveKjB3JQntnwgGFJCEBzsOL1aUzZ+ZI4YHAEFqPutqpi9zk5uMtu2H7D4M=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx+pMTbo+XpUmau0g0bcSXHfP/9PHi0iz8dDFXBjV3+oPkM4xRX
+	XT2+wngQF+mhlaygop5kAX4/KlIomkJqN3af3JiZTlnlVkeTbqrjWylVa20fCthvuKA=
+X-Gm-Gg: ASbGncuEHkE9oGa/Gwj01qAavQqrWam6XcQTwSg9oKL/CymnOswUoMTRAc82xm25soc
+	cOImtZ/hrT0eNF5whpS6mGQZ3+gZCdoOa/haliEsoPRdLxEtXA9UTcbjLDV4VUCEQaosVa6OcJU
+	CSDJD13J6mF/fBUl5WNA7XdCz3eNyqEslnJ+ZkSH2JxX+OD4WoVoKUtyfs4TzJ7b2M8pU+jNLmF
+	Z1WEmq+BJJ0oPe4qlVltN/DFfF1G3sP3zAP5zIXRNIc8BetSa4VCbZ/sMcQa2ZzQlyW+CahNucR
+	s32L+iJhwc/RolHvokHYg80C8I2DepYs0de6am0CEtoIm+Tqu0r1hDaJnnyUZUAfBVEnhAd1isO
+	K3w==
+X-Google-Smtp-Source: AGHT+IGMvfoiQPigVo7iO2Dw6iilpFxrDO4WGsQDGLouqfPnH55vE1SO0OF49/vNlZbAzHfxJoNlPQ==
+X-Received: by 2002:a5d:64c5:0:b0:3a4:d700:f773 with SMTP id ffacd0b85a97d-3a5606a2f5amr2978490f8f.11.1749737674171;
+        Thu, 12 Jun 2025 07:14:34 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a56198f827sm2077031f8f.29.2025.06.12.07.14.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Jun 2025 07:14:33 -0700 (PDT)
+Message-ID: <ad7e9aa7-74a3-449d-8ed9-cb270fd5c718@linaro.org>
+Date: Thu, 12 Jun 2025 15:14:32 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] spi: spi-fsl-dspi: Use non-coherent memory for DMA
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, Arnd Bergmann <arnd@arndb.de>
+Cc: Frank Li <Frank.li@nxp.com>, Vladimir Oltean <olteanv@gmail.com>,
+ Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
+ <20250609-james-nxp-spi-dma-v1-2-2b831e714be2@linaro.org>
+ <aEhMBsqlx9I4XqJS@lizhi-Precision-Tower-5810>
+ <de7142ac-f1a3-412f-9f00-502222b20165@app.fastmail.com>
+ <aEhVsrEk0qv+38r3@lizhi-Precision-Tower-5810>
+ <20250611090107.t35zatn47vetnvse@skbuf>
+ <c65c752a-5b60-4f30-8d51-9a903ddd55a6@linaro.org>
+ <20250612111514.rfb3gpmlilznrfxs@skbuf>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20250612111514.rfb3gpmlilznrfxs@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-SGkgWHUsIFNoYXduLA0KDQpPbiA2LzEwLzI1IDE6MzAgUE0sIFh1IFlhbmcgd3JvdGU6DQo+IEhp
-IEpvaG4sDQo+IA0KPiBPbiBNb24sIEp1biAwOSwgMjAyNSBhdCAwMjoxNzozMFBNICswMDAwLCBK
-b2huIEVybmJlcmcgd3JvdGU6DQo+PiBIaSBTaGF3biwgWHUsDQo+Pg0KPj4gT24gTW9uLCBKdW4g
-MDksIDIwMjUgYXQgMDc6NTM6MjJQTSArMDgwMCwgWHUgWWFuZyB3cm90ZToNCj4+PiBIaSBTaGF3
-biwNCj4+Pg0KPj4+IFRoYW5rcyBmb3IgeW91ciByZXBvcnRzIQ0KPj4+DQo+Pj4gT24gTW9uLCBK
-dW4gMDksIDIwMjUgYXQgMDE6MzE6MDZQTSArMDgwMCwgU2hhd24gR3VvIHdyb3RlOg0KPj4+PiBI
-aSBYdSwgUGV0ZXIsDQo+Pj4+DQo+Pj4+IEknbSBzZWVpbmcgYSBrZXJuZWwgaGFuZ3VwIG9uIGlt
-eDhtbS1ldmsgYm9hcmQuICBJdCBoYXBwZW5zIHdoZW46DQo+Pj4+DQo+Pj4+ICAgLSBVU0IgZ2Fk
-Z2V0IGlzIGVuYWJsZWQgYXMgRXRoZXJuZXQNCj4+Pj4gICAtIFRoZXJlIGlzIGRhdGEgdHJhbnNm
-ZXIgb3ZlciBVU0IgRXRoZXJuZXQNCj4+Pj4gICAtIERldmljZSBpcyBnb2luZyBpbi9vdXQgc3Vz
-cGVuZA0KPj4+Pg0KPj4+PiBBIHNpbXBsZSB3YXkgdG8gcmVwcm9kdWNlIHRoZSBpc3N1ZSBjb3Vs
-ZCBiZToNCj4+Pj4NCj4+Pj4gICAxLiBDb3B5IGEgYmlnIGZpbGUgKGxpa2UgNTAwTUIpIGZyb20g
-aG9zdCBQQyB0byBkZXZpY2Ugd2l0aCBzY3ANCj4+Pj4NCj4+Pj4gICAyLiBXaGlsZSB0aGUgZmls
-ZSBjb3B5IGlzIG9uZ29pbmcsIHN1c3BlbmQgJiByZXN1bWUgdGhlIGRldmljZSBsaWtlOg0KPj4+
-Pg0KPj4+PiAgICAgICQgZWNobyArMyA+IC9zeXMvY2xhc3MvcnRjL3J0YzAvd2FrZWFsYXJtOyBl
-Y2hvIG1lbSA+IC9zeXMvcG93ZXIvc3RhdGUNCj4+Pj4NCj4+Pj4gICAzLiBUaGUgZGV2aWNlIHdp
-bGwgaGFuZyB1cCB0aGVyZQ0KPj4+Pg0KPj4+PiBJIHJlcHJvZHVjZWQgb24gdGhlIGZvbGxvd2lu
-ZyBrZXJuZWxzOg0KPj4+Pg0KPj4+PiAgIC0gTWFpbmxpbmUga2VybmVsDQo+Pj4+ICAgLSBOWFAg
-a2VybmVsIGxmLTYuNi55DQo+Pj4+ICAgLSBOWFAga2VybmVsIGxmLTYuMTIueQ0KPj4+Pg0KPj4+
-PiBCdXQgTlhQIGtlcm5lbCBsZi02LjEueSBkb2Vzbid0IGhhdmUgdGhpcyBwcm9ibGVtLiAgSSB0
-cmFja2VkIGl0IGRvd24gdG8NCj4+Pj4gUGV0ZXIncyBjb21taXQgWzFdIG9uIGxmLTYuMS55LCBh
-bmQgZm91bmQgdGhhdCB0aGUgZ2FkZ2V0IGRpc2Nvbm5lY3QgJg0KPj4+PiBjb25uZWN0IGNhbGxz
-IGdvdCBsb3N0IGZyb20gc3VzcGVuZCAmIHJlc3VtZSBob29rcywgd2hlbiB0aGUgY29tbWl0IHdl
-cmUNCj4+Pj4gc3BsaXQgYW5kIHB1c2hlZCB1cHN0cmVhbS4gIEkgY29uZmlybSB0aGF0IGFkZGlu
-ZyB0aGUgY2FsbHMgYmFjayBmaXhlcw0KPj4+PiB0aGUgaGFuZ3VwLg0KPj4NCj4+IFdlIHByb2Jh
-Ymx5IHJhbiBpbnRvIHRoZSBzYW1lIHByb2JsZW0gdHJ5aW5nIHRvIGJyaW5nIG9uYm9hcmQgNi4x
-MiwgZ29pbmcNCj4+IGZyb20gNi4xLCBvbiBpTVg4UVhQLiBJIG1hbmFnZWQgdG8gdHJhY2UgdGhl
-IGhhbmcgdG8gRVAgcHJpbWluZyB0aHJvdWdoIGENCj4+IGNvbWJpbmF0aW9uIG9mIGRlYnVnIHRy
-YWNpbmcgYW5kIEJVR19PTiBleHBlcmltZW50cy4gU2VlIGlmIGl0IHN0YXJ0cw0KPj4gc3BsYXRp
-biB3aXRoIHRoZSBiZWxvdyBjaGFuZ2UuDQo+Pg0KPj4gLS0tLS0tLS0tLS0tLS0tLS0+OC0tLS0t
-LS0tLS0tLS0tLS0tLQ0KPj4NCj4+ID5Gcm9tIDA5MjU5OWFiNmY5ZTIwNDEyYTdjYTFlYjExOGRk
-MmJlODBjZDE4ZmYgTW9uIFNlcCAxNyAwMDowMDowMCAyMDAxDQo+PiBGcm9tOiBKb2huIEVybmJl
-cmcgPGpvaG4uZXJuYmVyZ0BhY3RpYS5zZT4NCj4+IERhdGU6IE1vbiwgNSBNYXkgMjAyNSAwOTow
-OTowMSArMDIwMA0KPj4gU3ViamVjdDogW1BBVENIXSBVU0I6IGNpOiBnYWRnZXQ6IFBhbmljIGlm
-IHByaW1pbmcgd2hlbiBnYWRnZXQgb2ZmDQo+Pg0KPj4gLS0tDQo+PiAgIGRyaXZlcnMvdXNiL2No
-aXBpZGVhL3VkYy5jIHwgNCArKystDQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMo
-KyksIDEgZGVsZXRpb24oLSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy91c2IvY2hpcGlk
-ZWEvdWRjLmMgYi9kcml2ZXJzL3VzYi9jaGlwaWRlYS91ZGMuYw0KPj4gaW5kZXggMmZlYTI2M2E1
-ZTMwLi41NDRhYTRmYTJkMWQgMTAwNjQ0DQo+PiAtLS0gYS9kcml2ZXJzL3VzYi9jaGlwaWRlYS91
-ZGMuYw0KPj4gKysrIGIvZHJpdmVycy91c2IvY2hpcGlkZWEvdWRjLmMNCj4+IEBAIC0yMDMsOCAr
-MjAzLDEwIEBAIHN0YXRpYyBpbnQgaHdfZXBfcHJpbWUoc3RydWN0IGNpX2hkcmMgKmNpLCBpbnQg
-bnVtLCBpbnQgZGlyLCBpbnQgaXNfY3RybCkNCj4+DQo+PiAgICAgIGh3X3dyaXRlKGNpLCBPUF9F
-TkRQVFBSSU1FLCB+MCwgQklUKG4pKTsNCj4+DQo+PiAtICAgd2hpbGUgKGh3X3JlYWQoY2ksIE9Q
-X0VORFBUUFJJTUUsIEJJVChuKSkpDQo+PiArICAgd2hpbGUgKGh3X3JlYWQoY2ksIE9QX0VORFBU
-UFJJTUUsIEJJVChuKSkpIHsNCj4+ICAgICAgICAgIGNwdV9yZWxheCgpOw0KPj4gKyAgICAgICBC
-VUdfT04oZGlyID09IFRYICYmICFod19yZWFkKGNpLCBPUF9FTkRQVENUUkwgKyBudW0sIEVORFBU
-Q1RSTF9UWEUpKTsNCj4+ICsgICB9DQo+PiAgICAgIGlmIChpc19jdHJsICYmIGRpciA9PSBSWCAm
-JiBod19yZWFkKGNpLCBPUF9FTkRQVFNFVFVQU1RBVCwgQklUKG51bSkpKQ0KPj4gICAgICAgICAg
-cmV0dXJuIC1FQUdBSU47DQo+Pg0KPj4gLS0tLS0tLS0tLS0tLS0tLS0+OC0tLS0tLS0tLS0tLS0t
-LS0tLQ0KPj4NCj4+IE9uIHRoZSBpTVg4UVhQIHlvdSBtYXkgYWRkaXRpb25hbGx5IHJ1biBpbnRv
-IGFzeWNocm9ub3VzIGFib3J0cyBhbmQgU0Vycm9yDQo+PiBkdWUgdG8gcmVzb3VyY2UgYmVpbmcg
-ZGlzYWJsZWQuDQo+Pg0KPj4+Pg0KPj4+PiAtLS04PC0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+Pj4+
-DQo+Pj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3VzYi9jaGlwaWRlYS91ZGMuYyBiL2RyaXZlcnMv
-dXNiL2NoaXBpZGVhL3VkYy5jDQo+Pj4+IGluZGV4IDhhOWIzMWZkNWM4OS4uNzIzMjlhN2VhYzRk
-IDEwMDY0NA0KPj4+PiAtLS0gYS9kcml2ZXJzL3VzYi9jaGlwaWRlYS91ZGMuYw0KPj4+PiArKysg
-Yi9kcml2ZXJzL3VzYi9jaGlwaWRlYS91ZGMuYw0KPj4+PiBAQCAtMjM3NCw2ICsyMzc0LDkgQEAg
-c3RhdGljIHZvaWQgdWRjX3N1c3BlbmQoc3RydWN0IGNpX2hkcmMgKmNpKQ0KPj4+PiAgICAgICAg
-ICAgKi8NCj4+Pj4gICAgICAgICAgaWYgKGh3X3JlYWQoY2ksIE9QX0VORFBUTElTVEFERFIsIH4w
-KSA9PSAwKQ0KPj4+PiAgICAgICAgICAgICAgICAgIGh3X3dyaXRlKGNpLCBPUF9FTkRQVExJU1RB
-RERSLCB+MCwgfjApOw0KPj4+PiArDQo+Pj4+ICsgICAgICAgaWYgKGNpLT5kcml2ZXIgJiYgY2kt
-PnZidXNfYWN0aXZlICYmIChjaS0+Z2FkZ2V0LnN0YXRlICE9IFVTQl9TVEFURV9TVVNQRU5ERUQp
-KQ0KPj4+PiArICAgICAgICAgICAgICAgdXNiX2dhZGdldF9kaXNjb25uZWN0KCZjaS0+Z2FkZ2V0
-KTsNCj4+Pj4gICB9DQo+Pj4+DQo+Pj4+ICAgc3RhdGljIHZvaWQgdWRjX3Jlc3VtZShzdHJ1Y3Qg
-Y2lfaGRyYyAqY2ksIGJvb2wgcG93ZXJfbG9zdCkNCj4+Pj4gQEAgLTIzODQsNiArMjM4Nyw5IEBA
-IHN0YXRpYyB2b2lkIHVkY19yZXN1bWUoc3RydWN0IGNpX2hkcmMgKmNpLCBib29sIHBvd2VyX2xv
-c3QpDQo+Pj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgT1RHU0Nf
-QlNWSVMgfCBPVEdTQ19CU1ZJRSk7DQo+Pj4+ICAgICAgICAgICAgICAgICAgaWYgKGNpLT52YnVz
-X2FjdGl2ZSkNCj4+Pj4gICAgICAgICAgICAgICAgICAgICAgICAgIHVzYl9nYWRnZXRfdmJ1c19k
-aXNjb25uZWN0KCZjaS0+Z2FkZ2V0KTsNCj4+Pj4gKyAgICAgICB9IGVsc2Ugew0KPj4+PiArICAg
-ICAgICAgICAgICAgaWYgKGNpLT5kcml2ZXIgJiYgY2ktPnZidXNfYWN0aXZlKQ0KPj4+PiArICAg
-ICAgICAgICAgICAgICAgICAgICB1c2JfZ2FkZ2V0X2Nvbm5lY3QoJmNpLT5nYWRnZXQpOw0KPj4+
-PiAgICAgICAgICB9DQo+Pj4+DQo+Pj4+ICAgICAgICAgIC8qIFJlc3RvcmUgdmFsdWUgMCBpZiBp
-dCB3YXMgc2V0IGZvciBwb3dlciBsb3N0IGNoZWNrICovDQo+Pj4+DQo+Pj4+IC0tLS0+OC0tLS0t
-LS0tLS0tLS0tLS0tLQ0KPiANCj4gRG9lcyBhYm92ZSBjaGFuZ2Ugd29yayBmb3IgeW91Pw0KPiAN
-Cg0KSSBoYXZlIHJhbiBzdXNwZW5kL3Jlc3VtZSB0ZXN0cyBmb3IgYWJvdXQgMTIgaG91cnMgbm93
-IHdpdGggdGhpcyBjaGFuZ2UgDQphbmQgbm90IGhhZCBhbnkgdHJvdWJsZSBvbiBpTVg4UVhQLCB3
-aGVyZSBpdCB3YXMgbm90IHBvc3NpYmxlIHRvIHJ1biANCnN1Y2ggdGVzdHMgZm9yIHNvIGxvbmcg
-YmVmb3JlLg0KDQpQbGVhc2UgcGljayB1cCBpZiB5b3Ugc3VibWl0IHRoaXMgZm9ybWFsbHk6DQoN
-ClRlc3RlZC1ieTogSm9obiBFcm5iZXJnIDxqb2huLmVybmJlcmdAYWN0aWEuc2U+ICMgaU1YOFFY
-UA0KDQpUaGFua3MhIC8vIEpvaG4gRXJuYmVyZw==
+
+
+On 12/06/2025 12:15 pm, Vladimir Oltean wrote:
+> On Thu, Jun 12, 2025 at 12:05:26PM +0100, James Clark wrote:
+>> (No idea why it goes faster when it's under load, but I hope that can be
+>> ignored for this test)
+> 
+> Might be because of dynamic CPU frequency scaling as done by the governor.
+> If the CPU utilization of spidev_test isn't high enough, the governor
+> will prefer lower CPU frequencies. You can try to repeat the test with
+> the "performance" governor and/or setting the min frequency equal to the
+> max one.
+> 
+
+That doesn't seem to make a difference, I get the same results with 
+this. Even for the "fixed" DMA test results below there is a similar 
+small performance increase when stressing the system:
+
+   # cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq
+   1300000
+   ...
+
+   # cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_max_freq
+   1300000
+   ...
+
+   # cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+   performance
+   ...
+
+> That's why I don't like the DMA mode in DSPI, it's still CPU-bound,
+> because the DMA buffers are very small (you can only provide one TX FIFO
+> worth of data per DMA transfer, rather than the whole buffer).
+
+Is that right? The FIFO size isn't used in any of the DMA codepaths, it 
+looks like the whole DMA buffer is filled before initiating the 
+transfer. And we increase the buffer to 4k in this patchset to fully use 
+the existing allocation.
+
+> 
+> FWIW, the XSPI FIFO performance should be higher.
+
+This leads me to realise a mistake in my original figures. My head was 
+stuck in target mode where we use DMA so I forgot to force DMA in host 
+mode to run the performance tests. The previous figures were all XSPI 
+mode and the small difference in performance could have been just down 
+to the layout of the code changing?
+
+Changing it to DMA mode gives figures that make much more sense:
+
+Coherent (4096 byte transfers): 6534 kbps
+Non-coherent:                   7347 kbps
+
+Coherent (16 byte transfers):    447 kbps
+Non-coherent:                    448 kbps
+
+
+Just for comparison running the same test in XSPI mode:
+
+4096 byte transfers:            2143 kbps
+16 byte transfers:               637 kbps
+
+
+So for small transfers XSPI is slightly better but for large ones DMA is 
+much better, with non-coherent memory giving another 800kbps gain. 
+Perhaps we could find the midpoint and then auto select the mode 
+depending on the size, but maybe there is latency to consider too which 
+could be important.
+
