@@ -1,153 +1,68 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901C522538F
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 09:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD6F1F4E57
+	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 09:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749720264; cv=none; b=SiSIEFBvikGc91FLDHC/mgri/kmmjL3A0A0EeS7Gc0PnpNmyIWiCclymZHJe8N9PhWDSnGOqdVaOah19FHQbxiMW+BZOnUjkUnwqY/w239c9IX+G9Z4IGCx5FKCze/32SOxZAH8xWLzSOOIMK0ozT5GmG7KgaWeMsm3CSiC3z+A=
+	t=1749721186; cv=none; b=spMOhwXM0EGT7NTtaJc+Tr9ayjYyIKQqMT1vgdTKfMZPtJu/7J/IedDAjg3h/GsiFoK0Pq/Xygx97X0xZ5bMO9+NM/WZ2QETIGCd39wrf4UMHopxBUOGFOtDv6LSlBCuAqUFX/CIguKBIDjy+u4gPQnFhOTJvI86+vDtEQkaU/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749720264; c=relaxed/simple;
-	bh=3snzu0SfCD0pw94QVsHtKNeANdkpHitmprp9y4GHtAE=;
+	s=arc-20240116; t=1749721186; c=relaxed/simple;
+	bh=X0WyNzqdNdMYgNmtykgr5YdK/wDKDI9dptgfeOw9HhY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G9zDxmUNzSF5ZJ/fI0Uf4sb8ZE7sXxUN9LBlDlSgNnVbOedlyR9x4Zqa4KxZq9SsJyc6+k5YGns2WeikaNxpiADUuYKNSbc9dLLrD04BKZxAihdyhDZMi6/mpG3YWNzik2eCiZZywzrvYAtsJxNeRAgJVNUO4sBSwhOQ1kXBCsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=jys0qIJN; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=alMuulGtO2J4YEMqLdTOLwtdq+uVE5WClqBR0MQQ0C1rBvxzIilSbzTE6NGBJV9m29HxcS+UisjZfZS/LYl3XF4tE+LnGI3vFNQJMEZcqtV/tl8H+xyDMCZKwPhdAZ8z4xprRdblT838oLSdTTSd9QehJfdk+Krzz3NaL/5ling=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gCgCKhQb; arc=none smtp.client-ip=220.197.32.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="jys0qIJN"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 00152B5;
-	Thu, 12 Jun 2025 11:24:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1749720252;
-	bh=3snzu0SfCD0pw94QVsHtKNeANdkpHitmprp9y4GHtAE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jys0qIJNVvDqeJayRT/6VHkhCnMKuSNrQl65UkN/+XjUqxy2ZoarhzFRVgf4ePgdw
-	 MpABW9SbsYQnMsBmZX8iikp5YzBShZUqV3DgFPeUvdDe4BT5KBaB0+4ZPlprB2LMfv
-	 NFgOwZrVxU03cv52/tdtKxgvPK7Y99B0CkvovB0w=
-Date: Thu, 12 Jun 2025 12:24:06 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Tarang Raval <tarang.raval@siliconsignals.io>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	"open list:DMA BUFFER SHARING FRAMEWORK:Keyword: bdma_(?:buf|fence|resv) b" <linux-media@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>
-Subject: Re: Issue: Stuck After Successful VIDIOC_STREAMON with OV5695
-Message-ID: <20250612092406.GA25137@pendragon.ideasonboard.com>
-References: <PN3P287MB18297E8A4F568F064D19A1D18B74A@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gCgCKhQb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=PWsK6/4szkHoVXHrnAm4LALSER2jQ1ghC7Ix2DLbky0=;
+	b=gCgCKhQbohyOe0xUCPsJ3o4Ew/mFa7zLgMkmqU0BS9KZaD06obYbyN0WtRyCXQ
+	RdKxtQYtBavGjIlWxi3tSqzVWp0Tb1ZBRikMCHdkTfX0e9JdZegrO4h+PgwDcLLC
+	vEc/cl7bkv8Y6lRYN4tOAocJ4iuR0/3xVKMRC2NKkkiVI=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD31+0yoEpo1rB_AA--.16809S3;
+	Thu, 12 Jun 2025 17:39:00 +0800 (CST)
+Date: Thu, 12 Jun 2025 17:38:57 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v17 1/7] Documentation/firmware: add imx/se to
+ other_interfaces
+Message-ID: <aEqgMVHl0C07/dPz@dragon>
+References: <20250426-imx-se-if-v17-0-0c85155a50d1@nxp.com>
+ <20250426-imx-se-if-v17-1-0c85155a50d1@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PN3P287MB18297E8A4F568F064D19A1D18B74A@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+In-Reply-To: <20250426-imx-se-if-v17-1-0c85155a50d1@nxp.com>
+X-CM-TRANSID:Ms8vCgD31+0yoEpo1rB_AA--.16809S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUYJPEUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAR5qZWhKmz8VvgAAs9
 
-Hi Tarang,
+On Sat, Apr 26, 2025 at 12:31:32AM +0530, Pankaj Gupta wrote:
+> Documents i.MX SoC's Service layer and C_DEV driver for selected SoC(s)
+> that contains the NXP hardware IP(s) for Secure Enclaves(se) like:
+> - NXP EdgeLock Enclave on i.MX93 & i.MX8ULP
+> 
+> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
 
-On Thu, Jun 12, 2025 at 07:52:32AM +0000, Tarang Raval wrote:
-> Hi
-> 
-> I’m trying to bring up the OV5695 camera sensor on the Debix Model A board.
-> 
-> Kernel Version: v6.15-rc2
-> 
-> The issue occurs when attempting to capture a frame, the system hangs at 
-> the VIDIOC_STREAMON call.
+No one cared to give a Reviewed-by on this one?
 
-When you say "hang", do you mean that it freezes completely and becomes
-unresponsive (no serial console, no network, ...), or that it doesn't
-capture frames ?
+Shawn
 
-> 1. I've verified the data lane connections, and they are correct.
-> 
-> 2. Regarding link frequency:
-> In the mainline driver, the default link frequency is set to 420 MHz, but according 
-> to the sensor's datasheet, the MIPI data rate can go up to 1000 MHz. So, I also tried 
-> configuring the link frequency to 500 MHz, but the issue still persists.
-
-I assume you meant 1000 Mbps, not 1000 MHz.
-
-> but the issue still persists.
-> 
-> Could this be a driver-related bug, or is there something else I should be checking? 
-> I would appreciate any guidance on the possible causes or the correct direction to 
-> investigate.
-> 
-> Best Regards,
-> Tarang
-> 
-> ##########################################################################
-> debix@imx8mp-debix:~$ v4l2-ctl --device /dev/video0 --set-fmt-video=width=1920,height=1080,pixelformat=BG10 --stream-mmap --stream-to=image.raw --stream-count=1 --verbose
-
-What device is /dev/video0 ?
-
->  
-> VIDIOC_QUERYCAP: ok
-> VIDIOC_G_FMT: ok
-> VIDIOC_S_FMT: ok
-> Format Video Capture Multiplanar:
->         Width/Height      : 1920/1080
->         Pixel Format      : 'BG10' (10-bit Bayer BGBG/GRGR)
->         Field             : None
->         Number of planes  : 1
->         Flags             : 
->         Colorspace        : sRGB
->         Transfer Function : sRGB
->         YCbCr/HSV Encoding: ITU-R 601
->         Quantization      : Limited Range
->         Plane 0           :
->            Bytes per Line : 3840
->            Size Image     : 4147200
->                 VIDIOC_REQBUFS returned 0 (Success)
->                 VIDIOC_QUERYBUF returned 0 (Success)
->                 VIDIOC_QUERYBUF returned 0 (Success)
->                 VIDIOC_QUERYBUF returned 0 (Success)
->                 VIDIOC_QUERYBUF returned 0 (Success)
->                 VIDIOC_QBUF returned 0 (Success)
->                 VIDIOC_QBUF returned 0 (Success)
->                 VIDIOC_QBUF returned 0 (Success)
->                 VIDIOC_QBUF returned 0 (Success)
->                 VIDIOC_STREAMON returned 0 (Success)
-> 
-> 
-> ################################################################################
-> 
-> echo 8 > /sys/module/videobuf2_common/parameters/debug
-> echo 8 > /sys/module/videobuf2_v4l2/parameters/debug
-> 
-> Logs:
-> 
-> [  133.181274] videobuf2_common: [cap-(____ptrval____)] __setup_offsets: buffer 0, plane 0 offset 0x00000000
-> [  133.182569] videobuf2_common: [cap-(____ptrval____)] __setup_offsets: buffer 1, plane 0 offset 0x00008000
-> [  133.183766] videobuf2_common: [cap-(____ptrval____)] __setup_offsets: buffer 2, plane 0 offset 0x00010000
-> [  133.185209] videobuf2_common: [cap-(____ptrval____)] __setup_offsets: buffer 3, plane 0 offset 0x00018000
-> [  133.185230] videobuf2_common: [cap-(____ptrval____)] __vb2_queue_alloc: allocated 4 buffers, 1 plane(s) each
-> [  133.185607] videobuf2_common: [cap-(____ptrval____)] vb2_mmap: buffer 0, plane 0 successfully mapped
-> [  133.185678] videobuf2_common: [cap-(____ptrval____)] vb2_mmap: buffer 1, plane 0 successfully mapped
-> [  133.185763] videobuf2_common: [cap-(____ptrval____)] vb2_mmap: buffer 2, plane 0 successfully mapped
-> [  133.185822] videobuf2_common: [cap-(____ptrval____)] vb2_mmap: buffer 3, plane 0 successfully mapped
-> [  133.185847] videobuf2_common: [cap-(____ptrval____)] vb2_core_qbuf: qbuf of buffer 0 succeeded
-> [  133.185879] videobuf2_common: [cap-(____ptrval____)] vb2_core_qbuf: qbuf of buffer 1 succeeded
-> [  133.185907] videobuf2_common: [cap-(____ptrval____)] vb2_core_qbuf: qbuf of buffer 2 succeeded
-> [  133.185942] videobuf2_common: [cap-(____ptrval____)] vb2_core_qbuf: qbuf of buffer 3 succeeded
-> [  133.501480] videobuf2_common: [cap-(____ptrval____)] vb2_core_streamon: successful
-> [  133.501579] videobuf2_common: [cap-(____ptrval____)] __vb2_wait_for_done_vb: will sleep waiting for buffers
-> [  147.031310] videobuf2_common: [cap-(____ptrval____)] __vb2_wait_for_done_vb: sleep was interrupted
-> [  147.039118] videobuf2_common: [cap-(____ptrval____)] vb2_buffer_done: done processing on buffer 0, state: error
-> [  147.039135] videobuf2_common: [cap-(____ptrval____)] vb2_buffer_done: done processing on buffer 1, state: error
-> [  147.039141] videobuf2_common: [cap-(____ptrval____)] vb2_buffer_done: done processing on buffer 2, state: error
-> [  147.039146] videobuf2_common: [cap-(____ptrval____)] vb2_buffer_done: done processing on buffer 3, state: error
-> [  147.039603] videobuf2_common: [cap-(____ptrval____)] __vb2_buf_mem_free: freed plane 0 of buffer 0
-> [  147.040152] videobuf2_common: [cap-(____ptrval____)] __vb2_buf_mem_free: freed plane 0 of buffer 1
-> [  147.040595] videobuf2_common: [cap-(____ptrval____)] __vb2_buf_mem_free: freed plane 0 of buffer 2
-> [  147.041036] videobuf2_common: [cap-(____ptrval____)] __vb2_buf_mem_free: freed plane 0 of buffer 3
-
--- 
-Regards,
-
-Laurent Pinchart
