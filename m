@@ -1,160 +1,293 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565E423C51F
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 11:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C29022B5B8
+	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 11:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749727037; cv=none; b=EvlUWOkMIrhnae2GxRS2nC46Z6jjv/ZUR/1dghkutqkw5Vix6fKrbRBvZsZbA1zXuNAcoafHUUoDJMEWk/H3DRfVl/tX9GOlPcw/GFnS5/PCkVfIHVrDIn6OOUAbZ9SIpRSVpf3RSzwYMxpbhx17dABm3dWTogTBNPuZyCNN4Lk=
+	t=1749727690; cv=none; b=aZjSP5KHh2vnuI2e1SpvU54zv77GW3qvIg6m+CIXZJjR4WcJP9uXhK+dthP+b3+8OuLKRrhTUYtTzy0qRP1VJRiYvGe1svPDAs/um/lbxFvzbIeTzjlEwPjTDinQVedZgB9YYfJA2mLBViY+KnjQ/JQDFX/Oc52sSr15zThFKes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749727037; c=relaxed/simple;
-	bh=/ob1+R4rK+evjYyQ9GByv2Tek8HEKPX3CQI3lK8yogc=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=rY+TXGiUGStFCpomvWHeDKdXgYedu/Fs7olxRj6GN0iYpf+8paSrYP89REkD1jNOew7aRmJCRikli0ArpB4orCWd7kPk124ulifvPb5TITOEL/xglFVFzB0/Hhg8mx/TPNC46lFaGh/JXxKSP1wO/eYXAiEtXpwkBzHSrleVv3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=MCTXa7ei; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dTCct3G8; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1749727690; c=relaxed/simple;
+	bh=KJOMLdW5SZrj0U8wr3nzWhzkEPKy7Riiqfhctyf16Bg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K/K3C2ajPg9RjMDEDL86LrJeL0sSaPHJC7WJFpL/XLTY/D5ZBb6hqghqEtWCSYtQgMtr0RKE78IKDbjfsxlkYN8y3vloMcAI+VrhmpHvQwxhAZaWIjmSoHttRynxcywtGUOim1oWW45fu6khpXRfzo7DN+Zc9iJ4dSPZtk1PInY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=a5GB2kdh; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="MCTXa7ei";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dTCct3G8"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 4FAE91380440;
-	Thu, 12 Jun 2025 07:17:14 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Thu, 12 Jun 2025 07:17:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1749727034;
-	 x=1749813434; bh=Akc6NrVjz9IseDhIujJxCPwAB8Hadsgbs8m/AeaTufM=; b=
-	MCTXa7eiQfCsN4qWW/Aod0S/H/S6b8PkjbtX1QZKgo6oFyLBi4kY6BCI3NeemNtr
-	35fuMoSfVhVWD+hnlY1Tefnl5dEXc7LVsMUoi5UyCPBvP9JjsQ/2ZV9iblWwH9JN
-	fb/bJd0SnMp3xoQIKfRSCI1haGxRJM8B71P+PUlOTnzswsEwhoZYcZeZ4GPADTp1
-	iXDXCgJwELvhLmkw5FEYounFTCjpcwvU0l23ucugf7uxzTA3uErTcGDWE90ZdihC
-	bg7TMWDqSuBe2Cz1CcSHLXgAfUVHjq6ab6DVvfhFefbyieC/6CqyBbH5yADWoLmz
-	mg9ycZoQIZhetAVlSmyBkQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1749727034; x=
-	1749813434; bh=Akc6NrVjz9IseDhIujJxCPwAB8Hadsgbs8m/AeaTufM=; b=d
-	TCct3G8shRUsRRt6Yi4Rz6wrOtCPwcnDPD94IjI95FajbNrvArqbSD/KlTl99D0N
-	w3OvTdq5L4EiiSlD8FMUDhrzQOkjyCXtgUanyohRjtPV+hkc9peXsjoyw9wbPsiE
-	k3PLP4mtah5jEvRHVfzdNl8GDVDYi425L1OmnGpdR6jypxFRLGwVTwardK/r5jGy
-	lZXGOYir0jtocN2qVrwsutw6oCO+UkC/08JO7ewXR5zUgBuDqhhv+IHt6C6uDLF7
-	1bBgaZ2XPpc4nxXp5Wv5xOI4BRrx6w0xxAdtbY+uYE6Eg7KOfUl9e/8cj3o1Ld69
-	VI8ZlS3wjL2gcvdGnve/g==
-X-ME-Sender: <xms:OrdKaEf2yaeMGn2ojVwzGtOc8zu7ch3DQiFQh6BQ2hNMNa2QTA0zVw>
-    <xme:OrdKaGPCq8fT9zKn9Uaz5nWjusbhIaJqpfM2rWMbRN-I6Hj_VWKMard778NJHEiVm
-    dF-OjIGNydy5KHlqK0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddugeelfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
-    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeek
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeholhhtvggrnhhvsehgmhgrihhlrd
-    gtohhmpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    ohepjhgrmhgvshdrtghlrghrkheslhhinhgrrhhordhorhhgpdhrtghpthhtohepihhmgi
-    eslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehfrhgrnhhkrdhlihesnhig
-    phdrtghomhdprhgtphhtthhopehvlhgrughimhhirhdrohhlthgvrghnsehngihprdgtoh
-    hmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheplhhinhhugidqshhpihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:OrdKaFgOa1me-KdjCnVxcsMd9M-hNdUO0ATAHVI_iNNwwLjxkolnSA>
-    <xmx:OrdKaJ-Xew_3gsCafIcDynKd5c4i9HOEOx1aPVgw5DHkBA32A0ixdA>
-    <xmx:OrdKaAstsIZ-IAMzFZvJ_bayL4A1Q56tFacr2KQK7iflqxi6yRAPjQ>
-    <xmx:OrdKaAGshTIhhfCpZDkn52Ipnf6clQrbL-P0zcO7DerC8PsIgzhDgg>
-    <xmx:OrdKaKFsUt5hutpYek-P1YJWWoYctQ1w6yC-j2q69brnnzC9bjoZWQR->
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id EBD10700062; Thu, 12 Jun 2025 07:17:13 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="a5GB2kdh"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6F2F17E4;
+	Thu, 12 Jun 2025 13:27:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1749727677;
+	bh=KJOMLdW5SZrj0U8wr3nzWhzkEPKy7Riiqfhctyf16Bg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a5GB2kdhed57nns/4smxDjVFQdefhbzR2CkeiJwGvFWy5F0gLtl4JhcwaLRplxIEH
+	 QNMOIhM/3dKzDTeR/NB/0hOTg45RsCcaDGIgmgQeJt3J2FRWXia1G/pTHrA8mtWSOH
+	 X7rdgAcdQYooBvVAeCoNkHRb/UrWrSGGZaX6bhlg=
+Date: Thu, 12 Jun 2025 14:27:52 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Tarang Raval <tarang.raval@siliconsignals.io>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	"open list:DMA BUFFER SHARING FRAMEWORK:Keyword: bdma_(?:buf|fence|resv) b" <linux-media@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>
+Subject: Re: Issue: Stuck After Successful VIDIOC_STREAMON with OV5695
+Message-ID: <20250612112752.GD11428@pendragon.ideasonboard.com>
+References: <PN3P287MB18297E8A4F568F064D19A1D18B74A@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+ <20250612092406.GA25137@pendragon.ideasonboard.com>
+ <PN3P287MB1829C80107E00CFDBD3133718B74A@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
+ <20250612101635.GF25137@pendragon.ideasonboard.com>
+ <PN3P287MB18299D56B38B6CCCFD8CD79E8B74A@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: T7ec8a5524929d219
-Date: Thu, 12 Jun 2025 13:15:46 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "James Clark" <james.clark@linaro.org>,
- "Vladimir Oltean" <vladimir.oltean@nxp.com>, "Frank Li" <Frank.li@nxp.com>
-Cc: "Vladimir Oltean" <olteanv@gmail.com>, "Mark Brown" <broonie@kernel.org>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Message-Id: <e8752d90-5087-4b02-92bc-b3636b5e705d@app.fastmail.com>
-In-Reply-To: <c65c752a-5b60-4f30-8d51-9a903ddd55a6@linaro.org>
-References: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
- <20250609-james-nxp-spi-dma-v1-2-2b831e714be2@linaro.org>
- <aEhMBsqlx9I4XqJS@lizhi-Precision-Tower-5810>
- <de7142ac-f1a3-412f-9f00-502222b20165@app.fastmail.com>
- <aEhVsrEk0qv+38r3@lizhi-Precision-Tower-5810>
- <20250611090107.t35zatn47vetnvse@skbuf>
- <c65c752a-5b60-4f30-8d51-9a903ddd55a6@linaro.org>
-Subject: Re: [PATCH 2/4] spi: spi-fsl-dspi: Use non-coherent memory for DMA
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PN3P287MB18299D56B38B6CCCFD8CD79E8B74A@PN3P287MB1829.INDP287.PROD.OUTLOOK.COM>
 
-On Thu, Jun 12, 2025, at 13:05, James Clark wrote:
-> On 11/06/2025 10:01 am, Vladimir Oltean wrote:
->> On Tue, Jun 10, 2025 at 11:56:34AM -0400, Frank Li wrote:
->>> Can you add performance beneafit information after use non-coherent memory
->>> in commit message to let reviewer easily know your intention.
->> 
->> To expand on that, you can post the output of something like this
->> (before and after):
->> $ spidev_test --device /dev/spidev1.0 --bpw 8 --size 256 --cpha --iter 10000000 --speed 10000000
->> where /dev/spidev1.0 is an unconnected chip select with a dummy entry in
->> the device tree.
->
-> Coherent (before):
->
-> rate: tx 385.8kbps, rx 385.8kbps
-> rate: tx 1215.7kbps, rx 1215.7kbps
-> rate: tx 1845.2kbps, rx 1845.2kbps
-> rate: tx 1844.0kbps, rx 1844.0kbps
-> rate: tx 1846.1kbps, rx 1846.1kbps
-> rate: tx 1844.8kbps, rx 1844.8kbps
-> rate: tx 1844.4kbps, rx 1844.4kbps
-> rate: tx 1846.9kbps, rx 1846.9kbps
-> rate: tx 1846.5kbps, rx 1846.5kbps
-> rate: tx 1843.2kbps, rx 1843.2kbps
-> rate: tx 1844.8kbps, rx 1844.8kbps
-> rate: tx 1845.2kbps, rx 1845.2kbps
-> rate: tx 1846.5kbps, rx 1846.5kbps
->
-> Non-coherent (after):
->
-> rate: tx 314.6kbps, rx 314.6kbps
-> rate: tx 748.3kbps, rx 748.3kbps
-> rate: tx 1845.2kbps, rx 1845.2kbps
-> rate: tx 1849.3kbps, rx 1849.3kbps
-> rate: tx 1846.1kbps, rx 1846.1kbps
-> rate: tx 1847.3kbps, rx 1847.3kbps
-> rate: tx 1845.7kbps, rx 1845.7kbps
-> rate: tx 1846.5kbps, rx 1846.5kbps
-> rate: tx 1844.4kbps, rx 1844.4kbps
-> rate: tx 1847.3kbps, rx 1847.3kbps
-> rate: tx 1847.3kbps, rx 1847.3kbps
-> rate: tx 1845.7kbps, rx 1845.7kbps
-> rate: tx 1846.5kbps, rx 1846.5kbps
->
-> Ignoring anything less than 1800 as starting up, coherent has an average 
-> of 1845.2kbps and non-coherent 1846.5kbps. Not sure if that's just noise 
-> or an actual effect.
+On Thu, Jun 12, 2025 at 10:57:28AM +0000, Tarang Raval wrote:
+> > On Thu, Jun 12, 2025 at 09:50:22AM +0000, Tarang Raval wrote:
+> > > > On Thu, Jun 12, 2025 at 07:52:32AM +0000, Tarang Raval wrote:
+> > > > > Hi
+> > > > >
+> > > > > I’m trying to bring up the OV5695 camera sensor on the Debix Model A board.
+> > > > >
+> > > > > Kernel Version: v6.15-rc2
+> > > > >
+> > > > > The issue occurs when attempting to capture a frame, the system hangs at
+> > > > > the VIDIOC_STREAMON call.
+> > > >
+> > > > When you say "hang", do you mean that it freezes completely and becomes
+> > > > unresponsive (no serial console, no network, ...), or that it doesn't
+> > > > capture frames ?
+> > >
+> > > The system remains responsive—console, serial, and network are all working fine.
+> > >
+> > > However, after calling VIDIOC_STREAMON, although it returns 0 (success), the frame
+> > > Capture does not proceed. I have to manually terminate the process using Ctrl + C.
+> > 
+> > Then it probably means that the ISI doesn't receive full images. There
+> > are lots of reasons why this could happen, from bad pipeline
+> > configurations to incorrect sensor configurations. I would recommend
+> > starting from the beginning of the pipeline and trying to validate
+> > proper operation of the components by looking at the various registers
+> > that can provide you with debugging information in all the hardware
+> > blocks of the SoC.
+> 
+> I didn't get this :  "components by looking at the various registers that can 
+> provide debugging information in all the hardware blocks of the SoC" 
+> 
+> which registers exactly are you referring to?
+> 
+> Are you talking about the camera sensor registers, or registers inside the 
+> SoC like the ISI or others block?
+> 
+> Could you please clarify which registers I should check for debugging?
 
-The extra cache flushes do introduce some overhead as well, so I
-would expect the noncoherent case to be slightly slower for
-small transfers, but the coherent case to be faster for large
-transfers.
+Check the i.MX8MP reference manual, and all the blocks related to the
+camera pipeline. There are lots of settings, lots of interrupts, and
+lots of status registers. I don't know where the problem lies so I can't
+point to one particular area, I'm afraid you'll have to do your homework
+yourself. Cameras are not easy, there's a reason they require experience
+and expertise. It can be a fun ride though, you get the opportunity to
+learn a lot :-)
 
-"--size 256" presumably means 256 bytes, i.e. four cachelines?
-If it's easy to reproduce, can you check with smaller sizes
-that still use the DMA codepath (e.g. 64 bytes) and much larger
-transfers (e.g. 2048 bytes)?
+> > > > > 1. I've verified the data lane connections, and they are correct.
+> > > > >
+> > > > > 2. Regarding link frequency:
+> > > > > In the mainline driver, the default link frequency is set to 420 MHz, but according
+> > > > > to the sensor's datasheet, the MIPI data rate can go up to 1000 MHz. So, I also tried
+> > > > > configuring the link frequency to 500 MHz, but the issue still persists.
+> > > >
+> > > > I assume you meant 1000 Mbps, not 1000 MHz.
+> > >
+> > > Oops, yes, 1000 Mbps.
+> > >
+> > > > > but the issue still persists.
+> > > > >
+> > > > > Could this be a driver-related bug, or is there something else I should be checking?
+> > > > > I would appreciate any guidance on the possible causes or the correct direction to
+> > > > > investigate.
+> > > > >
+> > > > > Best Regards,
+> > > > > Tarang
+> > > > >
+> > > > > ##########################################################################
+> > > > > debix@imx8mp-debix:~$ v4l2-ctl --device /dev/video0 --set-fmt-video=width=1920,height=1080,pixelformat=BG10 --stream-mmap --stream-to=image.raw --stream-count=1 --verbose
+> > > >
+> > > > What device is /dev/video0 ?
+> > >
+> > > /dev/video0 corresponds to the mxc_isi.0.capture device
+> > 
+> > I assume you've first configured the MC pipeline appropriately.
+> 
+> Yes, I configured
+> 
+> media-ctl --device /dev/media0 --links "'ov5695 1-0036':0->'csis-32e40000.csi':0[1]"
+> media-ctl -v -d /dev/media0 -V "'ov5695 1-0036':0 [fmt:SBGGR10_1X10/1920x1080 field:none colorspace:raw]"
+> media-ctl -v -d /dev/media0 -V "'crossbar':0 [fmt:SBGGR10_1X10/1920x1080 field:none colorspace:raw]"
+> media-ctl -v -d /dev/media0 -V "'mxc_isi.0':0 [fmt:SBGGR10_1X10/1920x1080 field:none colorspace:raw]"
+> 
+> debix@imx8mp-debix:~$ media-ctl -p
+> Media controller API version 6.14.0
+> 
+> Media device information
+> ------------------------
+> driver          mxc-isi
+> model           FSL Capture Media Device
+> serial          
+> bus info        platform:32e00000.isi
+> hw revision     0x0
+> driver version  6.14.0
+> 
+> Device topology
+> - entity 1: crossbar (5 pads, 4 links)
+>             type V4L2 subdev subtype Unknown flags 0
+>             device node name /dev/v4l-subdev0
+>         pad0: Sink
+>                 [fmt:SBGGR10_1X10/1920x1080 field:none colorspace:raw]
+>                 <- "csis-32e40000.csi":1 [ENABLED,IMMUTABLE]
+>         pad1: Sink
+>                 [fmt:UYVY8_1X16/1920x1080 field:none colorspace:srgb xfer:srgb ycbcr:601 quantization:lim-range]
+>         pad2: Sink
+>                 <- "mxc_isi.output":0 [ENABLED,IMMUTABLE]
+>         pad3: Source
+>                 [fmt:SBGGR10_1X10/1920x1080 field:none colorspace:raw]
+>                 -> "mxc_isi.0":0 [ENABLED,IMMUTABLE]
+>         pad4: Source
+>                 [fmt:UYVY8_1X16/1920x1080 field:none colorspace:srgb xfer:srgb ycbcr:601 quantization:lim-range]
+>                 -> "mxc_isi.1":0 [ENABLED,IMMUTABLE]
+> 
+> - entity 7: mxc_isi.0 (2 pads, 2 links)
+>             type V4L2 subdev subtype Unknown flags 0
+>             device node name /dev/v4l-subdev1
+>         pad0: Sink
+>                 [fmt:SBGGR10_1X10/1920x1080 field:none colorspace:raw
+>                  compose.bounds:(0,0)/1920x1080
+>                  compose:(0,0)/1920x1080]
+>                 <- "crossbar":3 [ENABLED,IMMUTABLE]
+>         pad1: Source
+>                 [fmt:SBGGR10_1X10/1920x1080 field:none colorspace:raw
+>                  crop.bounds:(0,0)/1920x1080
+>                  crop:(0,0)/1920x1080]
+>                 -> "mxc_isi.0.capture":0 [ENABLED,IMMUTABLE]
+> 
+> - entity 10: mxc_isi.0.capture (1 pad, 1 link)
+>              type Node subtype V4L flags 0
+>              device node name /dev/video0
+>         pad0: Sink
+>                 <- "mxc_isi.0":1 [ENABLED,IMMUTABLE]
+> 
+> - entity 18: mxc_isi.1 (2 pads, 2 links)
+>              type V4L2 subdev subtype Unknown flags 0
+>              device node name /dev/v4l-subdev2
+>         pad0: Sink
+>                 [fmt:UYVY8_1X16/1920x1080 field:none colorspace:jpeg xfer:srgb ycbcr:601 quantization:full-range
+>                  compose.bounds:(0,0)/1920x1080
+>                  compose:(0,0)/1920x1080]
+>                 <- "crossbar":4 [ENABLED,IMMUTABLE]
+>         pad1: Source
+>                 [fmt:YUV8_1X24/1920x1080 field:none colorspace:jpeg xfer:srgb ycbcr:601 quantization:full-range
+>                  crop.bounds:(0,0)/1920x1080
+>                  crop:(0,0)/1920x1080]
+>                 -> "mxc_isi.1.capture":0 [ENABLED,IMMUTABLE]
+> 
+> - entity 21: mxc_isi.1.capture (1 pad, 1 link)
+>              type Node subtype V4L flags 0
+>              device node name /dev/video1
+>         pad0: Sink
+>                 <- "mxc_isi.1":1 [ENABLED,IMMUTABLE]
+> 
+> - entity 29: mxc_isi.output (1 pad, 1 link)
+>              type Node subtype V4L flags 0
+>         pad0: Source
+>                 -> "crossbar":2 [ENABLED,IMMUTABLE]
+> 
+> - entity 36: csis-32e40000.csi (2 pads, 2 links)
+>              type V4L2 subdev subtype Unknown flags 0
+>              device node name /dev/v4l-subdev3
+>         pad0: Sink
+>                 [fmt:SBGGR10_1X10/1920x1080 field:none colorspace:raw]
+>                 <- "ov5695 1-0036":0 [ENABLED]
+>         pad1: Source
+>                 [fmt:SBGGR10_1X10/1920x1080 field:none colorspace:raw]
+>                 -> "crossbar":0 [ENABLED,IMMUTABLE]
+> 
+> - entity 41: ov5695 1-0036 (1 pad, 1 link)
+>              type V4L2 subdev subtype Sensor flags 0
+>              device node name /dev/v4l-subdev4
+>         pad0: Source
+>                 [fmt:SBGGR10_1X10/1920x1080 field:none]
+>                 -> "csis-32e40000.csi":0 [ENABLED]
+> 
+> > > > >
+> > > > > VIDIOC_QUERYCAP: ok
+> > > > > VIDIOC_G_FMT: ok
+> > > > > VIDIOC_S_FMT: ok
+> > > > > Format Video Capture Multiplanar:
+> > > > >         Width/Height      : 1920/1080
+> > > > >         Pixel Format      : 'BG10' (10-bit Bayer BGBG/GRGR)
+> > > > >         Field             : None
+> > > > >         Number of planes  : 1
+> > > > >         Flags             :
+> > > > >         Colorspace        : sRGB
+> > > > >         Transfer Function : sRGB
+> > > > >         YCbCr/HSV Encoding: ITU-R 601
+> > > > >         Quantization      : Limited Range
+> > > > >         Plane 0           :
+> > > > >            Bytes per Line : 3840
+> > > > >            Size Image     : 4147200
+> > > > >                 VIDIOC_REQBUFS returned 0 (Success)
+> > > > >                 VIDIOC_QUERYBUF returned 0 (Success)
+> > > > >                 VIDIOC_QUERYBUF returned 0 (Success)
+> > > > >                 VIDIOC_QUERYBUF returned 0 (Success)
+> > > > >                 VIDIOC_QUERYBUF returned 0 (Success)
+> > > > >                 VIDIOC_QBUF returned 0 (Success)
+> > > > >                 VIDIOC_QBUF returned 0 (Success)
+> > > > >                 VIDIOC_QBUF returned 0 (Success)
+> > > > >                 VIDIOC_QBUF returned 0 (Success)
+> > > > >                 VIDIOC_STREAMON returned 0 (Success)
+> > > > >
+> > > > >
+> > > > > ################################################################################
+> > > > >
+> > > > > echo 8 > /sys/module/videobuf2_common/parameters/debug
+> > > > > echo 8 > /sys/module/videobuf2_v4l2/parameters/debug
+> > > > >
+> > > > > Logs:
+> > > > >
+> > > > > [  133.181274] videobuf2_common: [cap-(____ptrval____)] __setup_offsets: buffer 0, plane 0 offset 0x00000000
+> > > > > [  133.182569] videobuf2_common: [cap-(____ptrval____)] __setup_offsets: buffer 1, plane 0 offset 0x00008000
+> > > > > [  133.183766] videobuf2_common: [cap-(____ptrval____)] __setup_offsets: buffer 2, plane 0 offset 0x00010000
+> > > > > [  133.185209] videobuf2_common: [cap-(____ptrval____)] __setup_offsets: buffer 3, plane 0 offset 0x00018000
+> > > > > [  133.185230] videobuf2_common: [cap-(____ptrval____)] __vb2_queue_alloc: allocated 4 buffers, 1 plane(s) each
+> > > > > [  133.185607] videobuf2_common: [cap-(____ptrval____)] vb2_mmap: buffer 0, plane 0 successfully mapped
+> > > > > [  133.185678] videobuf2_common: [cap-(____ptrval____)] vb2_mmap: buffer 1, plane 0 successfully mapped
+> > > > > [  133.185763] videobuf2_common: [cap-(____ptrval____)] vb2_mmap: buffer 2, plane 0 successfully mapped
+> > > > > [  133.185822] videobuf2_common: [cap-(____ptrval____)] vb2_mmap: buffer 3, plane 0 successfully mapped
+> > > > > [  133.185847] videobuf2_common: [cap-(____ptrval____)] vb2_core_qbuf: qbuf of buffer 0 succeeded
+> > > > > [  133.185879] videobuf2_common: [cap-(____ptrval____)] vb2_core_qbuf: qbuf of buffer 1 succeeded
+> > > > > [  133.185907] videobuf2_common: [cap-(____ptrval____)] vb2_core_qbuf: qbuf of buffer 2 succeeded
+> > > > > [  133.185942] videobuf2_common: [cap-(____ptrval____)] vb2_core_qbuf: qbuf of buffer 3 succeeded
+> > > > > [  133.501480] videobuf2_common: [cap-(____ptrval____)] vb2_core_streamon: successful
+> > > > > [  133.501579] videobuf2_common: [cap-(____ptrval____)] __vb2_wait_for_done_vb: will sleep waiting for buffers
+> > > > > [  147.031310] videobuf2_common: [cap-(____ptrval____)] __vb2_wait_for_done_vb: sleep was interrupted
+> > > > > [  147.039118] videobuf2_common: [cap-(____ptrval____)] vb2_buffer_done: done processing on buffer 0, state: error
+> > > > > [  147.039135] videobuf2_common: [cap-(____ptrval____)] vb2_buffer_done: done processing on buffer 1, state: error
+> > > > > [  147.039141] videobuf2_common: [cap-(____ptrval____)] vb2_buffer_done: done processing on buffer 2, state: error
+> > > > > [  147.039146] videobuf2_common: [cap-(____ptrval____)] vb2_buffer_done: done processing on buffer 3, state: error
+> > > > > [  147.039603] videobuf2_common: [cap-(____ptrval____)] __vb2_buf_mem_free: freed plane 0 of buffer 0
+> > > > > [  147.040152] videobuf2_common: [cap-(____ptrval____)] __vb2_buf_mem_free: freed plane 0 of buffer 1
+> > > > > [  147.040595] videobuf2_common: [cap-(____ptrval____)] __vb2_buf_mem_free: freed plane 0 of buffer 2
+> > > > > [  147.041036] videobuf2_common: [cap-(____ptrval____)] __vb2_buf_mem_free: freed plane 0 of buffer 3
 
-      Arnd
+-- 
+Regards,
+
+Laurent Pinchart
