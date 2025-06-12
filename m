@@ -1,136 +1,107 @@
-Received: from glittertind.blackshift.org (glittertind.blackshift.org [116.203.23.228])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623AD19007D
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.23.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D3718DF9D
+	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749737793; cv=none; b=I+QDJsi2XWL5yUZ+ngvLimElIfOqqFv7R81EOR0iNDD2lZnMOg6c/S2+ZmBrdSd8K0kbOEUHmqK/KLJBz8lOk0Xe84SdpDa2y+SuDjt/SQbCtZzaASfu8sUT5JeJQo+ypSlhkEEhhjuVZdqoWl5rBsjK+O2PRWRCsQFdbGms6hQ=
+	t=1749737910; cv=none; b=UhmZcRETSBUirj54XyWc2LFclUrewrdeEbiqZM+O/gp+Erdt+1AwGwChLnC47ZCh1gki4um31s1qQFbJbUq0nIMEwFq+Pci8uL9qITmqCMHsOLjYESMQuMxP4TwRBXNuEwV/2IAZuoUjcbJ6j9Kx8e0ny/aGSrqDUScHlcbPagk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749737793; c=relaxed/simple;
-	bh=zxr1W4n2Z/cWnxc0Gq4EvhifvDpWYxQwAgl7scCcZBk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=J4X++EIOrRqh+MheO7/awEvtB3K5g5dcD2v8NLeHYgCTepUg6rH9+vQkFiXpXW7j4tOH4pXq8cR6BMGj1eMhtkDauKoo69Fcu13Y+94QnEJVgGj/PQ04jZNxKgXcHS62p9rl7n+YG+lePXa9y1KOVgoji4JtKpZD5nBQJ4Oqq9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=none smtp.mailfrom=hardanger.blackshift.org; arc=none smtp.client-ip=116.203.23.228
+	s=arc-20240116; t=1749737910; c=relaxed/simple;
+	bh=YCwaBT/KPxVMxYpvM60UEqcste5hrihsbKqBXMlAEAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H7CH8XSLpnyaFkOj9hictq5cnB4EIftROK1y9yzA172mKB9WEu/t2GbH/xIr0+bmQH0cTZ7JeFjeibhUVgm/sb7wdDj/BNjv2Q7zHi0oBjaiDLNAEqcGfEC5btYClhVAZTJZdfE1Fd7yAauuQEQK9TGRJcRFT+11ntXW2/+LsMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hardanger.blackshift.org
-Received: from bjornoya.blackshift.org (unknown [IPv6:2003:e3:7f3d:bb00:e75c:5124:23a3:4f62])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1)
-	 client-signature RSA-PSS (4096 bits))
-	(Client CN "bjornoya.blackshift.org", Issuer "R10" (verified OK))
-	by glittertind.blackshift.org (Postfix) with ESMTPS id 67FAC66BBCA
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:23 +0000 (UTC)
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 38E0F42648F
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:23 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uPil5-0002qa-Em; Thu, 12 Jun 2025 16:18:23 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uPil4-0038bV-0Y;
+	Thu, 12 Jun 2025 16:18:22 +0200
+Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 16459426434;
-	Thu, 12 Jun 2025 14:16:19 +0000 (UTC)
-Received: from hardanger.blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id d34e7594;
-	Thu, 12 Jun 2025 14:16:17 +0000 (UTC)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id C0FD9426516;
+	Thu, 12 Jun 2025 14:18:21 +0000 (UTC)
+Date: Thu, 12 Jun 2025 16:18:21 +0200
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 12 Jun 2025 16:16:02 +0200
-Subject: [PATCH net-next v2 09/10] net: fec: fec_enet_rx_queue(): move_call
- to _vlan_hwaccel_put_tag()
+To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH net-next v2 00/10] net: fec: cleanups, update quirk,
+ update IRQ naming
+Message-ID: <20250612-nostalgic-elk-of-vigor-fc7df7-mkl@pengutronix.de>
+References: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-fec-cleanups-v2-9-ae7c36df185e@pengutronix.de>
-References: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dzhx7la3oo7i3jre"
+Content-Disposition: inline
 In-Reply-To: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
-To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
- Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
- Marc Kleine-Budde <mkl@pengutronix.de>, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.15-dev-6f78e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2262; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=zxr1W4n2Z/cWnxc0Gq4EvhifvDpWYxQwAgl7scCcZBk=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoSuEthVLCV/aRTKUvu3khrpwNKipc4CESu4EzV
- zqxm7rHxB2JATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaErhLQAKCRAMdGXf+ZCR
- nF2nB/9n9cK+9F8CEd0JTEHr04bWI7c9WuoKalux+7LuKoIIXtRtmhElHSJcxH0jzaShaezGvzF
- RuzvnRC8fOdR6UWsYm/m4af67Byv4mJ/I6jYgU1FTYBYz2m5Na72N/Ugzazo519v/jozmL1P2Zw
- Z7S4APKhbIg+4WMWIRzs4RHhtPd9df5eBW+0ZPqaHbKHWeEHfmIF5uf1RcOelsM/jRaMZdNzFfR
- /yt4q4CsRv68c8ojlmxil5eoP2fV+XQ+d8/4mh2zOoJOVFMDfOBnIi3NSH0dE7JcesxPsvvR3QB
- 87oQn7vBJibOzmblk0H41AV7jZ+kG/5n783Y81ul6KCUY2tx
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-
-Move __vlan_hwaccel_put_tag() into the if statement that sets
-vlan_packet_rcvd = true. This change eliminates the unnecessary
-vlan_packet_rcvd variable, simplifying the code and improving clarity.
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/ethernet/freescale/fec_main.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index bc547be59dae..021cf7c2dcf6 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1723,8 +1723,6 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
- 	ushort	pkt_len;
- 	int	pkt_received = 0;
- 	struct	bufdesc_ex *ebdp = NULL;
--	bool	vlan_packet_rcvd = false;
--	u16	vlan_tag;
- 	int	index = 0;
- 	bool	need_swap = fep->quirks & FEC_QUIRK_SWAP_FRAME;
- 	struct bpf_prog *xdp_prog = READ_ONCE(fep->xdp_prog);
-@@ -1855,18 +1853,18 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
- 			ebdp = (struct bufdesc_ex *)bdp;
- 
- 		/* If this is a VLAN packet remove the VLAN Tag */
--		vlan_packet_rcvd = false;
- 		if ((ndev->features & NETIF_F_HW_VLAN_CTAG_RX) &&
- 		    fep->bufdesc_ex &&
- 		    (ebdp->cbd_esc & cpu_to_fec32(BD_ENET_RX_VLAN))) {
- 			/* Push and remove the vlan tag */
- 			struct vlan_ethhdr *vlan_header = skb_vlan_eth_hdr(skb);
--			vlan_tag = ntohs(vlan_header->h_vlan_TCI);
--
--			vlan_packet_rcvd = true;
-+			u16 vlan_tag = ntohs(vlan_header->h_vlan_TCI);
- 
- 			memmove(skb->data + VLAN_HLEN, skb->data, ETH_ALEN * 2);
- 			skb_pull(skb, VLAN_HLEN);
-+			__vlan_hwaccel_put_tag(skb,
-+					       htons(ETH_P_8021Q),
-+					       vlan_tag);
- 		}
- 
- 		skb->protocol = eth_type_trans(skb, ndev);
-@@ -1886,12 +1884,6 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
- 			}
- 		}
- 
--		/* Handle received VLAN packets */
--		if (vlan_packet_rcvd)
--			__vlan_hwaccel_put_tag(skb,
--					       htons(ETH_P_8021Q),
--					       vlan_tag);
--
- 		skb_record_rx_queue(skb, queue_id);
- 		napi_gro_receive(&fep->napi, skb);
- 
-
--- 
-2.47.2
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
 
+--dzhx7la3oo7i3jre
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next v2 00/10] net: fec: cleanups, update quirk,
+ update IRQ naming
+MIME-Version: 1.0
+
+On 12.06.2025 16:15:53, Marc Kleine-Budde wrote:
+> This series first cleans up the fec driver a bit (typos, obsolete
+> comments, add missing header files, rename struct, replace magic
+> number by defines).
+>=20
+> The next 2 patches update the order of IRQs in the driver and gives
+> them names that reflect their function.
+
+Doh! These 2 patches have been removed, I'll send an updated series
+tomorrow.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--dzhx7la3oo7i3jre
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmhK4aoACgkQDHRl3/mQ
+kZxd4Qf+NgQA3YDIotiqNaXKN7WPLp57fc+c89S7jwiViLkjXwqg66qwgsSPFvVE
+ZKEpzCzmPfvAAqdtSH6oloApRjsmd+V7D63jEQ0bVpxElp3ycEsLWfDhPqT2Jk+G
+FMzhTIrCrnfWi4nmUkUhU9zdHkrOgYR02Qsm8rcUavvlZjVgSV8/ClsBCka+yiFJ
+kxlnUGMHNuDwrhf0pWzXxLbgDCjEfc2FH62eiWxBB70V0yx3X7tfgV3WomIbdVvS
+7OtjJNO6RWhrIgvBMT/CzMRb0EhebpHW2dYVrxS8s3aeDH7CABZEGxQSxh0I4sSs
+eM0lDD/IZmdofJwKvVmNTTKKkAO//w==
+=XGqy
+-----END PGP SIGNATURE-----
+
+--dzhx7la3oo7i3jre--
