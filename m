@@ -1,114 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED3827147C;
-	Thu, 12 Jun 2025 14:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120182F433B
+	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 15:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749740361; cv=none; b=fwnJGmavKcZ1XnW9gt5vFA9uAPAMpYI7KEybLekx4f05SLyUrO2N31HNW7SYN0Fy9Re1YCFaYreWxZ5mH6D4j0akJEujXqBy6YbE+7XQaxs2T39348he1Z4fGSv10v7mrUI2dhJv+HGg/kppAAxJkex6XVqhxcnHOcG0zIm24NA=
+	t=1749742600; cv=none; b=IgV5PdBJMQa0zFiXw7ffQex+P3KG/JIe0cT0H2aQF9ZV9YXlrWfYVsu+yzri838yjWqzo+VUDi4a6Fm7bdfz/h+xHQKQr2BRk/arixEIfrk5MKFG3MNAb7p5R9ZeYtIoDOUvUmR5yrN1f/GW0c6ngx5+yAvSJBGM6rfwBdK78RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749740361; c=relaxed/simple;
-	bh=UjvYRqjrtZPvhprK+jn7Vt31iFSNrReNe6hMrP9h1X8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BxmJsOCcqzG8TXgTV/Eg3pxu2c2Yg8mjHk9W2KRDvugJjwnjz7Gh7AS8FycHgNxi1swHMgAf99Q7LO7o3hLdK5w4yK+xtIJol0chc4IiC3jYm0FEZnWYji6WmIbRZTvja8C7MgFsVXUYgWUY0INRhTdn2in7YpYyp/rhR7UeziQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OL01XOdY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749742600; c=relaxed/simple;
+	bh=gfSkNsEDvHrBasjkaxzkBzgE2ArloUcp9iGt4cd2kgs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eZzPs17L3bBgsZFhkmyoqH1p9p4gYobt7MfhhmUZHuDHygsgU14rBqbMXX1v2xVT2jIcssZbVZsd0hUDZmzCva0HVzrJ6zL0nCX9aI3xDT7FbWxeRwaNV2A4JLkv9u8JQTgfQIWzU25AQ6Mc2Age844JTi3eJNf9UMIE8LyeIEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MPKL17uy; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OL01XOdY"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 392B3C113CF;
-	Thu, 12 Jun 2025 14:59:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749740361;
-	bh=UjvYRqjrtZPvhprK+jn7Vt31iFSNrReNe6hMrP9h1X8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OL01XOdYmaNwne1MERUHHvRUipWxrQcSPz8pZuKqodc1zSQxwaJIlUprMjuOh+fRI
-	 WKZ1eMEkBZPdBpW1WROH7ro423Eg35+uDyBVM5NCJAVWYDup6BV2BhDYmMr++czErm
-	 i4+arUgbEvAzMDAZ9bbJvUZxjDnuMt14aAlsn9nno5HbAiLkTAMoP1Bp9gzypNtBWq
-	 ubV4wcOR5LUfR0TTlme7YcOR6QRxfIpUg7ejoWKK9Pm+ht6zgYtRVQT13/LI5nOCFi
-	 72NBR3JSUjAJ7cjHbscAKWuaNe/FiEOa6xHCk83MooIo0a0HZYXLz+8mdU/qBXbG3x
-	 CfbKOj3jiKLFQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27EC8C71149;
-	Thu, 12 Jun 2025 14:59:21 +0000 (UTC)
-From: Samuel Kayode via B4 Relay <devnull+samuel.kayode.savoirfairelinux.com@kernel.org>
-Date: Thu, 12 Jun 2025 10:55:48 -0400
-Subject: [PATCH v7 6/6] MAINTAINERS: add an entry for pf1550 mfd driver
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MPKL17uy"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4533027c0ceso6082085e9.1
+        for <imx@lists.linux.dev>; Thu, 12 Jun 2025 08:36:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749742597; x=1750347397; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Y/ljv00glv7rh1spp86bQ43dOcZbrTy283SQsKA4sfY=;
+        b=MPKL17uyVjOfqZjMS7j1ajeI7cr8Gs7hWI2dqvzlWcBHaGov4Kw3tiAE6u2g66b9Bn
+         GwuUFwu08g/t4PiHEJjUXMQnOVAlh3nvVIUYWDgIqF+SadRY6dYOmdCuqW7z7ZmDgArn
+         M9xhZQNQtKd0elL9ArnuUKOqCS5jF//J9WpS1tE8VIDH5umFB7hA/YhIyjeVJGdE5lPc
+         QTetyy5OrFvw4ZiNNdJ9D8f7hhZFlOO6NYwzqubY4qscAT0tZn/KCuP3lFKIaezeau4X
+         SkBXvIOFJE0jNTVg1cbaEK9/8JPJY01fUmx/yM856lFVJ3s4v3fuxEYFMnFzri4CFGeL
+         p+VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749742597; x=1750347397;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y/ljv00glv7rh1spp86bQ43dOcZbrTy283SQsKA4sfY=;
+        b=BYCmF3u97lDanFWro1aoQlHgMYd4SD9x5Vcw05KxiKrA/H9D5CTXS2TNoLljn+rwrC
+         eCq6PukPHJcbXBym2jIVcqMNhkzRigG+QzV3WoFMJraUc2LoaPSTEcM4/QRxeEa2cgmX
+         BKbUzQ2Dd0Q+QR/0AKArF+z+Fcy9WkaqROxvfzq8FfbUcRx29anZ9N0TeHXHTBh01QYE
+         mw9tm0WF8L5KE0Rmvjizmflh13FFRReagBJY742g9QF2LH3iShCC/x+Ype+F1/7cZcXn
+         T1adBIf7INgBUglnPQ4toc7APWiOnhCFEw0UpjOd1GZVD3nWW13gicpkJ+2O+zVvLoya
+         VVDw==
+X-Forwarded-Encrypted: i=1; AJvYcCWvu5BjnTGGbaAs8UvUNXLuuCyjxJ3j8tHjLbeA5UBfJOn7Qc2H1HardBlDFelOuVukjZ8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzN3atyBhOsJ3nK892E+9DBTgLqdYhFxUwLeFEpKc2FAYRE8U92
+	A7FqxpKBsfsFpPdxtiYjT5SNcZsDXNxP8FLO7HW7luK2hMas422eiAbom0VEzh7p+U4=
+X-Gm-Gg: ASbGnctfOOkaWWBFooZ1v/nmKUuomMMCyhLlpQLw3j5yPeAQq9sSjORtvRCQc3K70Tz
+	6OYaWj6rJe5WmXkCzAr75zl1kQGsBgW4pMs0xlwYhR/dvWgNyQgr39mlcaBOIu3KA1YAf2ZGB61
+	sNr1eZkYodtpmvdH4Jpc02I5gzqqz2l0v8KhVC4Wz1tw3wNO4JOYJUJdxEGrvYQiA6T4EtIlVfA
+	KGjDIY54Tz0zqO0r9aZvMsNo5rwelV5t6Zs8wKdK+Z1z4ImXUXzHIQqRss/AX/NwpLIsrPi7RON
+	AeaVVvLuy7zGYkApLqRL/McGFm6CrB5ZJo1URYjHhx7oElmO/JFrjmX4ds8XNokkOlQ=
+X-Google-Smtp-Source: AGHT+IFSR8e8jVVCJqCvh7kcoUQB+Aw0Y24SkOD/mG2mZV1+q1ECgdVeqvoTrAvrNH8EzxirHatO2g==
+X-Received: by 2002:a05:600c:1ca8:b0:442:ccfa:18c with SMTP id 5b1f17b1804b1-4532b941335mr36533255e9.32.1749742597338;
+        Thu, 12 Jun 2025 08:36:37 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532dea17d7sm24007395e9.10.2025.06.12.08.36.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Jun 2025 08:36:36 -0700 (PDT)
+Message-ID: <7e4bcfe4-cf79-4b21-865d-a1248e09ffee@linaro.org>
+Date: Thu, 12 Jun 2025 16:36:36 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] spi: spi-fsl-dspi: Use non-coherent memory for DMA
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Frank Li <Frank.li@nxp.com>,
+ Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
+ <20250609-james-nxp-spi-dma-v1-2-2b831e714be2@linaro.org>
+ <aEhMBsqlx9I4XqJS@lizhi-Precision-Tower-5810>
+ <de7142ac-f1a3-412f-9f00-502222b20165@app.fastmail.com>
+ <aEhVsrEk0qv+38r3@lizhi-Precision-Tower-5810>
+ <20250611090107.t35zatn47vetnvse@skbuf>
+ <c65c752a-5b60-4f30-8d51-9a903ddd55a6@linaro.org>
+ <20250612111514.rfb3gpmlilznrfxs@skbuf>
+ <ad7e9aa7-74a3-449d-8ed9-cb270fd5c718@linaro.org>
+ <20250612143644.cmw6d4iiootipafp@skbuf>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20250612143644.cmw6d4iiootipafp@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-pf1550-v7-6-0e393b0f45d7@savoirfairelinux.com>
-References: <20250612-pf1550-v7-0-0e393b0f45d7@savoirfairelinux.com>
-In-Reply-To: <20250612-pf1550-v7-0-0e393b0f45d7@savoirfairelinux.com>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>
-Cc: imx@lists.linux.dev, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, 
- linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, 
- Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>, 
- Robin Gong <yibin.gong@nxp.com>, 
- Enric Balletbo i Serra <eballetbo@gmail.com>, 
- Samuel Kayode <samuel.kayode@savoirfairelinux.com>, 
- Abel Vesa <abelvesa@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749740359; l=1098;
- i=samuel.kayode@savoirfairelinux.com; s=20250527;
- h=from:subject:message-id;
- bh=A2g1QBfQcrzU9z5M8QRFE0Nrt7Jq7rU2GZY3TiYW/3Y=;
- b=LkPveKIT4xgllL0334QP/yG1Yp5MPvFVgruoTOfhSZDIhvsOhErRIs4/So7fX17ibaDf4Yfxi
- j/u4ssmzcS3BVyNyAsMdRqG0Bohxw/H3lE0T8o1oBCnYH44MJhOiX37
-X-Developer-Key: i=samuel.kayode@savoirfairelinux.com; a=ed25519;
- pk=TPSQGQ5kywnnPyGs0EQqLajLFbdDu17ahXz8/gxMfio=
-X-Endpoint-Received: by B4 Relay for
- samuel.kayode@savoirfairelinux.com/20250527 with auth_id=412
-X-Original-From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-Reply-To: samuel.kayode@savoirfairelinux.com
 
-From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
 
-Add MAINTAINERS entry for pf1550 PMIC.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
----
-v6:
- - Add imx mailing list
----
- MAINTAINERS | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+On 12/06/2025 3:36 pm, Vladimir Oltean wrote:
+> On Thu, Jun 12, 2025 at 03:14:32PM +0100, James Clark wrote:
+>>> FWIW, the XSPI FIFO performance should be higher.
+>>
+>> This leads me to realise a mistake in my original figures. My head was stuck
+>> in target mode where we use DMA so I forgot to force DMA in host mode to run
+>> the performance tests. The previous figures were all XSPI mode and the small
+>> difference in performance could have been just down to the layout of the
+>> code changing?
+>>
+>> Changing it to DMA mode gives figures that make much more sense:
+>>
+>> Coherent (4096 byte transfers): 6534 kbps
+>> Non-coherent:                   7347 kbps
+>>
+>> Coherent (16 byte transfers):    447 kbps
+>> Non-coherent:                    448 kbps
+>>
+>>
+>> Just for comparison running the same test in XSPI mode:
+>>
+>> 4096 byte transfers:            2143 kbps
+>> 16 byte transfers:               637 kbps
+> 
+> So to be clear, the 'non-coherent' test was done just with patch 2
+> applied, or also with 3?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 98201e1f4ab5908ff49d32d19275e123cedb4b66..5547fdafa7e1bb11903d5d5bef246c2e1a20fbca 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17853,6 +17853,17 @@ F:	Documentation/devicetree/bindings/clock/imx*
- F:	drivers/clk/imx/
- F:	include/dt-bindings/clock/imx*
- 
-+NXP PF1550 PMIC MFD DRIVER
-+M:	Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-+L:	imx@lists.linux.dev
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/mfd/nxp,pf1550.yaml
-+F:	drivers/input/misc/pf1550-onkey.c
-+F:	drivers/mfd/pf1550.c
-+F:	drivers/power/supply/pf1550-charger.c
-+F:	drivers/regulator/pf1550-regulator.c
-+F:	include/linux/mfd/pfd1550.h
-+
- NXP PF8100/PF8121A/PF8200 PMIC REGULATOR DEVICE DRIVER
- M:	Jagan Teki <jagan@amarulasolutions.com>
- S:	Maintained
-
--- 
-2.49.0
-
+The whole set, and then the non-coherent patch reverted.
 
