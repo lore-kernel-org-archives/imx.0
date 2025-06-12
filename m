@@ -1,16 +1,16 @@
 Received: from glittertind.blackshift.org (glittertind.blackshift.org [116.203.23.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6240F19066D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624B3196C7C
 	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.23.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749737792; cv=none; b=aiCc86ju25yjkkTaR56KNJTbd4vwYIWQ95c8l7kJqu/j/WvszqKvlcugOmQB/GcSsa+TpbF2QCJmgGh3jEtBh9BPK3x0ivi+pdTBzZJRtPydfCQQ97KfGFlv0KZHUAOtH5KSFuy6uWolLJqm91sQ5G4ScXBJfKGt8hzxpJhoHQ8=
+	t=1749737792; cv=none; b=uiKLkdQwDdotKcA3QquRLqvcqyzRfwbzgHkmigrtKlDmOpaDjMk1OfXISn5z5Zh46Bfbd6ouu+lL85pWokdmmv+d9qPzIleLv75gyxutAsmnNSDFyhbKC7hoc2ry+US1cwzNcEPZTLNRWVJtlHDMGpHNLxMKr6MTT6DGDAp7mJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749737792; c=relaxed/simple;
-	bh=LyJrLbbVnlKXsSbL7xyqgKeGY8RTbecxMuFSWf+ZNo4=;
+	bh=YFzMRwy9IG++4sminbXVq/FQxPNDCu0SWEnO/TFE3og=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mOZ3/5JEpfqkNX2W9T2N7CzPpUmESP+tRtxnKk+Za47D0NfIC7gSHeIve98AR+JH4fG9fVb30Bw7hw8rJ+5VIe38AUvAEd0RJ8SohkE1A5+lgQVo4eFtiTLWS+fczXZ95zSXfs+E5zH6wuxZ6GxT5Shh9fbSEef8XrOZbB8jz1k=
+	 In-Reply-To:To:Cc; b=B82x73f+Y2Vl5/oVMyqAPXi5I8p0C9dyfzPF7f2tK8QncEOxt0thSSy+EANuXRBfavMd5WLtBVuyxRFGb2k/X2R6AyEMZNVsdG3rr6LgJgFp1HKKQaVk7CsAP4akvUS6a0Q3uW2ES+y0pHN54CIOBWJmTy3UiHjGsB3iKSadAcg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=none smtp.mailfrom=hardanger.blackshift.org; arc=none smtp.client-ip=116.203.23.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hardanger.blackshift.org
@@ -19,24 +19,24 @@ Received: from bjornoya.blackshift.org (unknown [IPv6:2003:e3:7f3d:bb00:e75c:512
 	 key-exchange X25519 server-signature ECDSA (secp384r1)
 	 client-signature RSA-PSS (4096 bits))
 	(Client CN "bjornoya.blackshift.org", Issuer "R10" (verified OK))
-	by glittertind.blackshift.org (Postfix) with ESMTPS id 5CAFA66BBC9
+	by glittertind.blackshift.org (Postfix) with ESMTPS id 36E8C66BBC3
 	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:23 +0000 (UTC)
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 2C27742648E
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:23 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id 0443D42648A
+	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:22 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id E3130426431;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 85DC3426427;
 	Thu, 12 Jun 2025 14:16:18 +0000 (UTC)
 Received: from hardanger.blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 2c0caf85;
-	Thu, 12 Jun 2025 14:16:17 +0000 (UTC)
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 20a1ad9a;
+	Thu, 12 Jun 2025 14:16:16 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 12 Jun 2025 16:16:01 +0200
-Subject: [PATCH net-next v2 08/10] net: fec: fec_enet_rx_queue(): reduce
- scope of data
+Date: Thu, 12 Jun 2025 16:15:58 +0200
+Subject: [PATCH net-next v2 05/10] net: fec: fec_restart(): introduce a
+ define for FEC_ECR_SPEED
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-fec-cleanups-v2-8-ae7c36df185e@pengutronix.de>
+Message-Id: <20250612-fec-cleanups-v2-5-ae7c36df185e@pengutronix.de>
 References: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
 In-Reply-To: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
 To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
@@ -57,61 +57,49 @@ Cc: imx@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
  Marc Kleine-Budde <mkl@pengutronix.de>, Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.15-dev-6f78e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1498; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=LyJrLbbVnlKXsSbL7xyqgKeGY8RTbecxMuFSWf+ZNo4=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoSuErPL4DJ89NnHGzgWszt1Np6Y25wotvfmGAI
- JqA1bCHu0uJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaErhKwAKCRAMdGXf+ZCR
- nE43B/4hKlRe4t/GjGdJEjCQIRCKPlWxdEix6OqBEyWk6i1ONQjIQ12qDswsd53PtRBQGr7xGMs
- pqA5FBNrhJBn4SZkiSYvL7+hFxIeILhuhNByskmhD09tCZFcDdO68kkUJmyTgMFZ9h1pqiIjZHR
- M9g3H1b1x4NgasVyPR7ZAlZRCv4leDnKLMxagpPbJl2qmzfxAgcOLZRXp6+fLWVWX0T6EAWP8x3
- HK/NKoV55umkt+LX0bwJB1zfwTPA0S1CJB/caGpfkOVYPLwJbwjAbLUBu5w0nj0n5PDLZN09VFA
- G0GnaULNy8QtDibyqEynGuF8EnwgDvK5NQyYcqrTveRR7Qj7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1277; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=YFzMRwy9IG++4sminbXVq/FQxPNDCu0SWEnO/TFE3og=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoSuElt40k9n1UTKfWSqO6oA3qeM/XZmq2GIQuI
+ Q43hNuSKI+JATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaErhJQAKCRAMdGXf+ZCR
+ nITpB/0bNEaKUOnAETSPdWJqb3BLpec/VizA7IK4XqkH66xSO4JLX8IVlBCF8NuQZsmuhBy1qa6
+ 5FH3bIdvgTNpTY5nLV1HIlJSfErDprRrrEYJwIKsORsEnhOLpUxeLlpe51B2bVTnmYSx8NFJwjk
+ Z9wN6sSlFs89+szZ+3zj6PMBPhTluXSdgVrceV6T7SOgWS+FwYW2ToNHvqPXCeu56PduD0DrJ+J
+ LCYSKAIVrzFYdmzRcWjrdD9SNqZRc0w+OrhjAk3jZq3c7mXbSQ2JmVWk/k89D6n3hLPSo2Mz1dg
+ ZxhuNU3B9syM+p25OvMNmLoQiowDbxG0J7xOCcZ0+n5blFQq
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-In order to clean up of the VLAN handling, reduce the scope of data.
+Replace "1 << 5" for configuring 1000 MBit/s with a defined constant to
+improve code readability and maintainability.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f238cb60aa65..bc547be59dae 100644
+index e0d7365e5b4f..21891baa2fc5 100644
 --- a/drivers/net/ethernet/freescale/fec_main.c
 +++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1721,7 +1721,6 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
- 	unsigned short status;
- 	struct  sk_buff *skb;
- 	ushort	pkt_len;
--	__u8 *data;
- 	int	pkt_received = 0;
- 	struct	bufdesc_ex *ebdp = NULL;
- 	bool	vlan_packet_rcvd = false;
-@@ -1844,10 +1843,11 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
- 		skb_mark_for_recycle(skb);
- 
- 		if (unlikely(need_swap)) {
-+			u8 *data;
-+
- 			data = page_address(page) + FEC_ENET_XDP_HEADROOM;
- 			swap_buffer(data, pkt_len);
- 		}
--		data = skb->data;
- 
- 		/* Extract the enhanced buffer descriptor */
- 		ebdp = NULL;
-@@ -1865,7 +1865,7 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
- 
- 			vlan_packet_rcvd = true;
- 
--			memmove(skb->data + VLAN_HLEN, data, ETH_ALEN * 2);
-+			memmove(skb->data + VLAN_HLEN, skb->data, ETH_ALEN * 2);
- 			skb_pull(skb, VLAN_HLEN);
- 		}
- 
+@@ -276,6 +276,7 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC address");
+ #define FEC_ECR_MAGICEN         BIT(2)
+ #define FEC_ECR_SLEEP           BIT(3)
+ #define FEC_ECR_EN1588          BIT(4)
++#define FEC_ECR_SPEED           BIT(5)
+ #define FEC_ECR_BYTESWP         BIT(8)
+ /* FEC RCR bits definition */
+ #define FEC_RCR_LOOP            BIT(0)
+@@ -1207,7 +1208,7 @@ fec_restart(struct net_device *ndev)
+ 		/* 1G, 100M or 10M */
+ 		if (ndev->phydev) {
+ 			if (ndev->phydev->speed == SPEED_1000)
+-				ecntl |= (1 << 5);
++				ecntl |= FEC_ECR_SPEED;
+ 			else if (ndev->phydev->speed == SPEED_100)
+ 				rcntl &= ~FEC_RCR_10BASET;
+ 			else
 
 -- 
 2.47.2
