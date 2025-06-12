@@ -1,194 +1,101 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011028.outbound.protection.outlook.com [52.101.65.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39D619C560
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 16:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749744201; cv=fail; b=BdFbrPW6OZKFGral4qEVxJkCMU0s6VYBdaC6VyLoN5tw2fuMqH1wgRRJMzZGc+S6H008Pt8SnySpoP4iX664lQXEZk8nyJWeKt6hrhQGNYlGvKeLn1CQPSNnzqD7f9WXPmy7c/4janS9Qkh+cygmHRBXc8RNL2eFEnngJTctVHo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749744201; c=relaxed/simple;
-	bh=Kn7L+fiY/X171XHjbF2kMEOq/dMu/VoyCUK2LN9Sn9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=KGrmPmpg5vCNA2W27dvkf4u0rO7kaxBJJp9ioP9JuRgwQbTcZjq7UVRhoAdRmGM64Zuyye6ANTrae/KAsbdNsThLpj243cBAG1Ey26fNtFX7Oj3GdtUhDuJSdUWxxOgIFs3Te55rcUzzFIa3ptrB6zo5lZQ3LxixKtKvAwgA4WU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=mTHA8NTp; arc=fail smtp.client-ip=52.101.65.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FFD299A9C;
+	Thu, 12 Jun 2025 16:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749744523; cv=none; b=DJ6lr3xxZeFMfrELEjtETS7Uedw73Af6GPQF1huEpBwZnoTkCEl2vF7u8EpppSW35PxYTjp88DBjDlwpiUUw2fmdBb+n4aW/ww+lrrvzqPpoSexGTXLDPCLlwnYFlw1up9K2PutMDMKZ2vqti1gLe4CwsszihzJu+Qnggm2iVo8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749744523; c=relaxed/simple;
+	bh=7+b3JmMUKKzZHXO8vtquG03ptonMmn+AG6H+hfCo32c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f5xFf9FUnxZXfQcm5M/EIq6WId+1i0d6Jz8k/Fzf05MxbIA/m2anwVsURt7vF4LExxXxzNwcH30vv1pQfhDRsdUQUsHH0mzWAB8ihKgfhPZMyEG5S9p7kt+R7YNr8mj0zmr/DWLpZoYH9LIl+xTwgr67xzx1t9P9V45WrWzzFf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yu1eX2+y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="mTHA8NTp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u0na2guu+Wk8WIc0T95IIFRXcIohGF6M61OZK+ZCZ/L9pFHZ9PeXGTxFtZVQL7FRy8dyl1CujsUxmt6a21GsJrpntmatzn/crYH0zqDwfhmohJnIv0RVodIezcsFYYKFEijOxD20okc1N0IOblJpwq1cU2odX21yMLyJNY4sYtWJNK8UzzCWbXxjwNRBJsr0QDM47hMWrU/BZq8VAG2fNuuPMEMJb/W2NLBL0dBHc50CQHTmAcnotZVlvJFw0H2W/ex2t9UM9gIhXJ8ZmGWQIcvUfgygSKRh1+3Z5AB1O5UUBs9jFzukHIJcEdYxDbGisdHqhBjL7vDkD633Y6k3qQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AGk/riKjEZ4e8PuPy3S2DeQ6Jp1lAKkl1KdE8Ngtxkg=;
- b=xslxiJmic6PumuoNzPFsfvIyso4msJ6HXFBCSnngn0QfedjcwYVRZYq+HcPujruyzrglx4+3dnHYu1LMW3VAn9mAVv/A9icH01gU+BXcLKnWyI34b8dR8uYNAflL9jz+0pWmODWFQIVJdyAY2lN2ytKdQyJ+R1Q3mTUAgkfjbT1U4s94HdZtJQvX5wtPghiVtqA9JRDJvCMULRvfu+e2s6CJfdqHyI/p6+P9IIU8cdRhuXVe5NfVAidBhnq6/cRFatifCfIcNpEbxnt8GcsHqPASVgEa+jP4Al8q70IHkd5cLh7X2q5jEI3Fmn1pT4eOXu65UMDOf1Goh5xVDU66kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AGk/riKjEZ4e8PuPy3S2DeQ6Jp1lAKkl1KdE8Ngtxkg=;
- b=mTHA8NTpDi8QLpA/iTVJj6933l1tT3K++LO0GczxAnZp0i6eR9FA59lH9Ad9qw37BDMVdt2XUtv64fKhH/ak+fO/qjx7m0dDh7o+F7/TRlyST31UnH8icxWuvqli+JTIe1eniK/gSxbXetUUu6igqQNMh3ibWckxMYU2jigOowTcK8Ek5F9nnY3Wqpnvz2eLIqDC/Mzp7nbrxE8K/+611qEWwz+pI5wndpHmTkF5nya4q8/8+4maWDC24cv5K9BAROsFaCLSC5Zrn4nViAFbWw25LDiATBqA4Q2tQ0UqwkfzUDvH2D8dRDfspjIS8oNj9jzEluQaho2T0XIqfnBdXQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DU0PR04MB9347.eurprd04.prod.outlook.com (2603:10a6:10:357::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.22; Thu, 12 Jun
- 2025 16:03:15 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8813.024; Thu, 12 Jun 2025
- 16:03:15 +0000
-Date: Thu, 12 Jun 2025 12:03:07 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: samuel.kayode@savoirfairelinux.com
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-input@vger.kernel.org, linux-pm@vger.kernel.org,
-	Abel Vesa <abelvesa@kernel.org>, Abel Vesa <abelvesa@linux.com>,
-	Robin Gong <b38343@freescale.com>, Robin Gong <yibin.gong@nxp.com>,
-	Enric Balletbo i Serra <eballetbo@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v7 6/6] MAINTAINERS: add an entry for pf1550 mfd driver
-Message-ID: <aEr6OyUokESLlrCs@lizhi-Precision-Tower-5810>
-References: <20250612-pf1550-v7-0-0e393b0f45d7@savoirfairelinux.com>
- <20250612-pf1550-v7-6-0e393b0f45d7@savoirfairelinux.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250612-pf1550-v7-6-0e393b0f45d7@savoirfairelinux.com>
-X-ClientProxiedBy: PH5P222CA0009.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:34b::14) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yu1eX2+y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62BAC4CEEB;
+	Thu, 12 Jun 2025 16:08:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749744523;
+	bh=7+b3JmMUKKzZHXO8vtquG03ptonMmn+AG6H+hfCo32c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Yu1eX2+yaTkbsl/d4yM4lfN2qNWWfjohdrJaOUTEURh2W67frVLVNJ9rRCgFxQrZf
+	 ndFlg8mMHcvOcqS4PhqSjZpEbYibip25n9/WMXx9yOX9Qth3pi9r1Ayvek6EEAdSHv
+	 dpNwxRCRDKpCbTYgUBrbAGwJ94lvMUwnRRjqgU+jxCip+i+JE/KLG2QPyM/zn8B4rJ
+	 Q8E6oTzwL6dbMpRzg3e6H8iuHtrL7hK+9Sl08Ggg407bIOdcfokMKeKs+14qTtTgx8
+	 HyWxtWvtY4MFq9igWIknEFRf4dzrpbgGHF6GMIobafqVsAe1ZXwkLzRnaepfDdulDX
+	 7aP4hDoAddGvQ==
+Date: Thu, 12 Jun 2025 21:38:32 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	Niklas Cassel <cassel@kernel.org>
+Subject: Re: [PATCH v11 10/11] PCI: dwc: Print warning message when
+ cpu_addr_fixup() exists
+Message-ID: <az74rxjpfahjwmz7fg5agn47org7arpblariuauujhovkaieha@d6r2yp23vqan>
+References: <20250313-pci_fixup_addr-v11-0-01d2313502ab@nxp.com>
+ <20250313-pci_fixup_addr-v11-10-01d2313502ab@nxp.com>
+ <v77jy5tldwuasjzqirlwx45zigt6bpnaiz67e4w7r2lxqrdsek@5qzzobothf5r>
+ <aEr3nGCqRuyIwA37@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU0PR04MB9347:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd44cf38-f0ca-4b65-461e-08dda9caa3fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|366016|376014|7416014|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XnJZHRGVel1puzM8SXQSjT90ql/q00My1xMvBOWqHafrDTU1PrdIiQKH01aq?=
- =?us-ascii?Q?8Ae0z9HTiQ0w7O+z9ZAbAntmVbdvF74qj11r1jE4cDk+Uv/pQoMlHZelqTrJ?=
- =?us-ascii?Q?bq/PdWem2OsZ6X9rlIVf01z3gtkLfOrauyckQCPGky6oH+Z5/s4mY5dEYFFJ?=
- =?us-ascii?Q?jZ9zrdW9+9s0BGX+PNept9H1Yzf12S0VA2sR3meVHF4NT+pkaFC4lx5+lgkj?=
- =?us-ascii?Q?GDtAyt3pFKj2PqMUMYGiztSRViI9B92UWSALouN1tT+IqSkdjTe2jCHnu4bA?=
- =?us-ascii?Q?KrDXiH3x9ctXMqyW+19mXhMmW2UT5DV2WvC3YGBdE1mng3fYPle96pFCrLSS?=
- =?us-ascii?Q?yG/3qBU8F4PQz6l/csAVwJUSc1drmOO19Zj4MWQyh41LNVKqeRAVSTn+ZOZU?=
- =?us-ascii?Q?8AkVsSSmQbx+5LZ97JVfxU0AG7INhEJRwOcJIK3bH6m96q4OcrFA/xtcpc+9?=
- =?us-ascii?Q?qFI+ZpBVdVj92Ai2qmVVrQfrQKjV1aclo/6SIeWUgz1LPWqpkyxHtNMhPlcw?=
- =?us-ascii?Q?E2mp0I5rQ5Urf68iE5vZAUuTvlQl3g41H2+XL+y+1nqaeAO2UZWV+UtqDhfy?=
- =?us-ascii?Q?Lh+vq7Xz0hccQsFYqONKFc+H9LX0y9V4C2W936la3RN5rGBcMBAQAsd9WjEX?=
- =?us-ascii?Q?G2i02PEqoYfaSSUXsQAUXif8jjtInW6vi8FtXmSAYQ8PAXSWJoh1Bx0JmiR5?=
- =?us-ascii?Q?s8hhAEdaH2hLtipmsICBBC1CHn77Pjh00jcj+LmzVBrb9/9tz8bDojc1BEdW?=
- =?us-ascii?Q?AtwWZbTKWaJXR6mbSvH4nL1s+E960Hl+dw53wO/fUTLebNEAYgBPA8SBHi1b?=
- =?us-ascii?Q?mXdXXw8QQem1SVG+UFVmlnFzpvO7NjR7sT63GWZgAmmkmghRB1OuabEHIuwL?=
- =?us-ascii?Q?tzerf22ZnFL+mQZU9AgiLCDpa3a87CnapgRoMLqsVISjMImpCSOGL5/ZIhNH?=
- =?us-ascii?Q?HPVo36nt0CUWmuEJ1EpNmCNiQaasxaJZP+cFOsrvvwdMAZI9FvEYH9wZww/G?=
- =?us-ascii?Q?mO2ADrbbJCxQecjyrkIgfkgOfatQq0lo30RfplvWjSfsKfT5a6Mcezh4OgO+?=
- =?us-ascii?Q?XoDyJg4ndLahVE83LTEiH6EInD5Xw/qzzcU4SFRd2Tf1dM1cGQAN8E3un3Ie?=
- =?us-ascii?Q?A2KpIzJErWa/nRZcoRELqv4NcNf7rCgjKI4qVplH9x4aIKKyIGmC2Dzl1Uh/?=
- =?us-ascii?Q?6aMe9YmxFo+kOprWcGRIHvwpkEEOyHgKKb1GL+0/ZaTzmwrBw7YJ5w+Q1Ah/?=
- =?us-ascii?Q?ETzT+Cp1mPJFlT0EaKuGEzecR4YlXE2n/nmV07o4jSPnS6mR3NkiEGgdMEOG?=
- =?us-ascii?Q?gEnKqma96VV/QE6hWGblYk1E6i7wqiBihbGOVL3NFWugRT6YNFDTapH61pi6?=
- =?us-ascii?Q?/WYRLh2o9QjCaTTYfHq9OYBb1E+jDjEp2QIBd9qfE8d86xm90BzwP75W1cCp?=
- =?us-ascii?Q?245LQNh9GHnzjGUyBKLLkp13392jpwAyqGjYsM2mU6exPsb3c3HpIg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(366016)(376014)(7416014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?M7rhADnV1VmZyeRoXaEwKRucWJyan6KJVChVJOMSvsgUnu0saEWFZ7Ea3iQ4?=
- =?us-ascii?Q?v+pzcq/I8ACKDQpUARXtJjkoddWgF98olamBLcBHo/0hOqn58yTblyRFLx1o?=
- =?us-ascii?Q?epCQ/6xxTdSZ0uNe1df7AJpEL6In4EiGu06UvDgI35Yy7hNuMwpt1QpJ8M3i?=
- =?us-ascii?Q?4UDyPdwnoSA+MlGo1FtZtbnVoQk3cu/DywRMHAPsDxRz4j/PFNnYlBiph9p7?=
- =?us-ascii?Q?rgEGuafn0MfFAVWsozcdBip4glWVGMVU8TDSo4O3KKaHrAZFQwyqLjuKpIsQ?=
- =?us-ascii?Q?Yr0CyFV+WGwJuD7a2wCkTbrLTHDf9ouqblN+E0msENr31h6KwSlBAH6lpPL9?=
- =?us-ascii?Q?aQN/ymtn9BOw+kO7JJXt825Q1Fi9rZA3k/xVZ3+U94yQ0VyFa3j3amPTQyN5?=
- =?us-ascii?Q?3a5onI0wny/TkkUyh1dbBzMt81pZXmjB89UA+tUxIW0TgrYN4d9pQjJdgl/4?=
- =?us-ascii?Q?Rq3x3PTlcFTRaL95Phzn7XQ+lkM4EFCYVM22lPq94nv7DMdEWpi5HcX5/l8C?=
- =?us-ascii?Q?m6eZww6xTit9J/FiUUyy9A8854M6qELS3LqL6+duTk/fSdVadFVHu/KsTXWg?=
- =?us-ascii?Q?5O/jkxO7FwpKpQ3aO5CIbCxJn/9QmcE1BPSIhj0zhAz5Bbj71wjciFwp1++p?=
- =?us-ascii?Q?wfQzWkT7vHFTUe31ugJfeyXagZ+ZE9j8kcucAew22hvj/cHZJojR1K3pCZFI?=
- =?us-ascii?Q?+ZNq7gHvx5zktc0TATX5rm91FINoChD0Zm47igabdsdvxoRN4WRiWOaaVcuz?=
- =?us-ascii?Q?79bfa8EHRYS80+nb9KoH4yIyUH7Ms3hJmkrP3/1JjOSFnQUJxPIQC1Jyx8gF?=
- =?us-ascii?Q?w5a3vL7FaGGwQwmxTO0g+FHLW+t0SFoGp7nBxMZt4qKJMPHSTQU/gOMD8eRN?=
- =?us-ascii?Q?I5z5YzRzat7jaxSptigqpwFnwhJum/SZol2uuY3xYzP/W4bh1e+iojwaELrz?=
- =?us-ascii?Q?r6YIiCITZDhkdzxtcuyLnHyQvnV3zGkgi5PCAFtgNgCPTSmwc3jLh0C5wj29?=
- =?us-ascii?Q?LV0hhnasdRckcsXlHolsaQf8qe+JnTb/sKyAlky2s5rfQHzlcSxZMDA3it8r?=
- =?us-ascii?Q?CEvX07kgmf6eKS8OFZ10E2XSQHJN4IKsynxenRWb80PT3wAbLK7IHLQ1uNlD?=
- =?us-ascii?Q?34U4l/UJs95OzTRdyZLSD+ByF48gIFWT4mtjoz3NLZppi0c9y8GvNk+dVSzu?=
- =?us-ascii?Q?hqVPwFrwaCKpughLht0IqqFyoN9ABYvuATv+WtqEPd6WrFUwIy84Nvcu2xCF?=
- =?us-ascii?Q?ORHkiMWA/xAWywBsHtvZlQjLXORhjB5NEBSoiJsklhMYXPU3YKzbhsZ/jTkg?=
- =?us-ascii?Q?CIKBuZoiubGL3cH1ztEVRsUpWjpODno6BsvKOXxdCXiikEONYnF6ebXL7xTu?=
- =?us-ascii?Q?JrK2SLuDN9lAoFVp2YlvyJXykuA59Ma5QebK480PDlfN5GQ2Nq/yblahlT2d?=
- =?us-ascii?Q?uU/l57CJp6s53FlKZ46v58Px5vmDrCaMU1KqlypUMVOlW06T5osdWw1wlrfS?=
- =?us-ascii?Q?GwbVHUlQ/1Rbp8KgCcCums3pe0svw7prbNModLfv+OLFskSWm9kNMU5j9IuT?=
- =?us-ascii?Q?EtzSKJhNdpgCp0QXKR0k9v+LFSh46Y8fsmckbORG?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd44cf38-f0ca-4b65-461e-08dda9caa3fc
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 16:03:15.7661
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rANvMHrTOW1u59XwiLAHgRPQjJ7fzSL7iG/imVXZJMGo6sXKTw4wQtR+Ka1p7YgKbk08xGRlLmoF3rua5mbd7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9347
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aEr3nGCqRuyIwA37@lizhi-Precision-Tower-5810>
 
-On Thu, Jun 12, 2025 at 10:55:48AM -0400, Samuel Kayode via B4 Relay wrote:
-> From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
->
-> Add MAINTAINERS entry for pf1550 PMIC.
->
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+On Thu, Jun 12, 2025 at 11:51:56AM -0400, Frank Li wrote:
+> On Thu, Jun 12, 2025 at 08:16:03PM +0530, Manivannan Sadhasivam wrote:
+> > On Thu, Mar 13, 2025 at 11:38:46AM -0400, Frank Li wrote:
+> > > If the parent 'ranges' property in DT correctly describes the address
+> > > translation, the cpu_addr_fixup() callback is not needed. Print a warning
+> > > message to inform users to correct their DTB files and prepare to remove
+> > > cpu_addr_fixup().
+> > >
+> >
+> > This patch seem to have dropped, but I do see a value in printing the warning to
+> > encourage developers/users to fix the DTB in some way. Since we fixed the driver
+> > to parse the DT 'ranges' properly, the presence of cpu_addr_fixup() callback
+> > indicates that the translation is not properly described in DT. So DT has to be
+> > fixed.
+> 
+> This patch already in mainline with Bjorn's fine tuned at when merge.
+> 
+> 	fixup = pci->ops ? pci->ops->cpu_addr_fixup : NULL;
+>         if (fixup) {
+>                 fixup_addr = fixup(pci, cpu_phys_addr);
+>                 if (reg_addr == fixup_addr) {
+>                         dev_info(dev, "%s reg[%d] %#010llx == %#010llx == fixup(cpu %#010llx); %ps is redundant with this devicetree\n",
+>                                  reg_name, index, reg_addr, fixup_addr,
+>                                  (unsigned long long) cpu_phys_addr, fixup);
+>                 } else {
+>                         dev_warn(dev, "%s reg[%d] %#010llx != %#010llx == fixup(cpu %#010llx); devicetree is broken\n",
+>                                  reg_name, index, reg_addr, fixup_addr,
+>                                  (unsigned long long) cpu_phys_addr);
+>                         reg_addr = fixup_addr;
+>                 }
+> 
+>                 return cpu_phys_addr - reg_addr;
+>         }
+> 
+> I have not seen this "dev_warn(pci->dev, "cpu_addr_fixup() usage detected. Please fix your DTB!\n");"
+> 
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> v6:
->  - Add imx mailing list
-> ---
->  MAINTAINERS | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 98201e1f4ab5908ff49d32d19275e123cedb4b66..5547fdafa7e1bb11903d5d5bef246c2e1a20fbca 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17853,6 +17853,17 @@ F:	Documentation/devicetree/bindings/clock/imx*
->  F:	drivers/clk/imx/
->  F:	include/dt-bindings/clock/imx*
->
-> +NXP PF1550 PMIC MFD DRIVER
-> +M:	Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-> +L:	imx@lists.linux.dev
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/mfd/nxp,pf1550.yaml
-> +F:	drivers/input/misc/pf1550-onkey.c
-> +F:	drivers/mfd/pf1550.c
-> +F:	drivers/power/supply/pf1550-charger.c
-> +F:	drivers/regulator/pf1550-regulator.c
-> +F:	include/linux/mfd/pfd1550.h
-> +
->  NXP PF8100/PF8121A/PF8200 PMIC REGULATOR DEVICE DRIVER
->  M:	Jagan Teki <jagan@amarulasolutions.com>
->  S:	Maintained
->
-> --
-> 2.49.0
->
->
+This patch is supposed to add this warning and nothing else.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
