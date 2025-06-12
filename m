@@ -1,16 +1,16 @@
 Received: from glittertind.blackshift.org (glittertind.blackshift.org [116.203.23.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CB0246BB3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4664239E9E
 	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.23.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749738314; cv=none; b=uPdcRP414t5lSlOtEQdt5Y+h/3+kg2g+KxNTEmNASKqTDJYojh8I3DkMUnMYtIjyNmS584x10Iga/OZU1oqhgt6UbxFY3XqWtVVDs2a5K9bif0kNxVs/lkgPvOHEyE/W9B8SM3ifI8theYWn4zNW5cvB21GPkQ1z+O8jFpv0w+0=
+	t=1749738315; cv=none; b=sKT5jU/ImLrGvEGK/3WxQVjEfxgcq9itVsI2dyZUSn08r9K0wmjthkzGt26w07qDgh99JkCCVS2GVlxqhYlU+ZZSEz+jRTYrY9W62hxVYTLHPVxSU10nzDo45oNyDRstTDi8FVAdDsajgUMm1hbM4VHWTH+i8qh9hzj5APNmMaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749738314; c=relaxed/simple;
-	bh=Emt1YpF4s/JoqxKThhmx8HqvPvs7S3WPKPOleUx7LiE=;
+	s=arc-20240116; t=1749738315; c=relaxed/simple;
+	bh=kCODGNufEATWUsO5X4PzU2baeEaUlG0c2KOVUCs6+Sk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qc28wWBSMtu/gQigHPru3Gb2HU7qOW2WIpkbtH5CAFqA4K6n2jNicMn2ZM+WKB7vG6pcUy+rGOjAHlq9J4PX9D+t1M9GlT08N2W+gNOTEBgS8ghe39h1qOkB2honKyDqF4zFqjTRL3+mNYM6+5yoWhMlFNPFRh5ipC8wL15d5yM=
+	 In-Reply-To:To:Cc; b=i3+Bkvz+KYri/eEdmRyTVcFdXleSw/JHP1U4lNlseQu9e7UZ1ncmz7gjW6Cpt8bTtzK17EIWFliao5j4hS3S0ftQldZ1xH/Nxtp89xIerGeLulHDrc1DQgtO6L12z2v6PMjqnv8W6wJlHtVjBJ/56NdRIrxaeIQ+x8m2FKRLPyE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=none smtp.mailfrom=hardanger.blackshift.org; arc=none smtp.client-ip=116.203.23.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hardanger.blackshift.org
@@ -19,24 +19,23 @@ Received: from bjornoya.blackshift.org (unknown [IPv6:2003:e3:7f3d:bb00:e75c:512
 	 key-exchange X25519 server-signature ECDSA (secp384r1)
 	 client-signature RSA-PSS (4096 bits))
 	(Client CN "bjornoya.blackshift.org", Issuer "R10" (verified OK))
-	by glittertind.blackshift.org (Postfix) with ESMTPS id 09DC266BB71
-	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:20 +0000 (UTC)
+	by glittertind.blackshift.org (Postfix) with ESMTPS id DE4F966BB6C
+	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:19 +0000 (UTC)
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id C97D3426444
+	by bjornoya.blackshift.org (Postfix) with SMTP id A5292426441
 	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:19 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 6A344426425;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 28B3A426421;
 	Thu, 12 Jun 2025 14:16:18 +0000 (UTC)
 Received: from hardanger.blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 5ae98956;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id ff9af168;
 	Thu, 12 Jun 2025 14:16:16 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 12 Jun 2025 16:15:57 +0200
-Subject: [PATCH net-next v2 04/10] net: fec: rename struct fec_devinfo
- fec_imx6x_info -> fec_imx6sx_info
+Date: Thu, 12 Jun 2025 16:15:56 +0200
+Subject: [PATCH net-next v2 03/10] net: fec: add missing header files
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +44,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-fec-cleanups-v2-4-ae7c36df185e@pengutronix.de>
+Message-Id: <20250612-fec-cleanups-v2-3-ae7c36df185e@pengutronix.de>
 References: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
 In-Reply-To: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
 To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
@@ -57,56 +56,42 @@ Cc: imx@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
  Marc Kleine-Budde <mkl@pengutronix.de>, Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.15-dev-6f78e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1840; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=Emt1YpF4s/JoqxKThhmx8HqvPvs7S3WPKPOleUx7LiE=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoSuEjAzhgxRuqvxEpMLBbgh+AaICU6MCHgMHo2
- 5kKMcGrg9yJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaErhIwAKCRAMdGXf+ZCR
- nFS9B/4vp5Lly4DRq8PDAm+JDAZb7FtiLjAMlJG+dTDDGymkPRwzFMtAFV1S/zvhM7bKzrctKkt
- D7mUQMhoCVwMhI+oN3DU/RMSTO9TXMFzLjC/u5c/bSI3wlIwdjkwXVVgtHBy6d39fkJ0cgZskPB
- l8f8qlaIL4yRk0IDbbAe9pfIc7ypNAas5LVmHUsOGdd0JXiwM+MeeIMzgrLezvwY/mY0w7SE75j
- K1hDnNWdk0gkqKv7aghmOi246/ZDoFJZsEBME+4SCJDgEvAUrLNfcWgYhLiYI3Nq0LZMbZ/Zvkz
- ZzN3+HTY8BBa65JjR3lM21jaYvuwvSUjVKSzWiCyMhD4u4Cu
+X-Developer-Signature: v=1; a=openpgp-sha256; l=896; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=kCODGNufEATWUsO5X4PzU2baeEaUlG0c2KOVUCs6+Sk=;
+ b=owGbwMvMwMXIU5J6/+eEiXMYT6slMWR4PVSat90xYf5Ul8XJ6W65P+wbOdcrZfPxHznj+pqrS
+ CDJP6Kzk9GYhYGRi0FWTJFl/m+eG+vTV8T/Ec35DDOIlQlkCgMXpwBMxFaTg6Hby2XxApOg96kO
+ 6hpvJtmbXCj/eu9YzaLpHxhOq+nxfPoQNZdjwpasCvX8JXNto5Y5Tov1mcOsYdemwp3JGFm2Zm/
+ C+1Mmcq+dDtlkRfU+Ctl0s4vzxJevnozVxzdETDVZIXBb+3WO8P3mk0slnB3e8zAW7/JRXmD6fk
+ 1kq3K59yG7nAkczAXJE6bUReqcfWXvL9n2g8eMUSh7qVTf3aqUm65xMZV63Z8POfxgiPu5oumy8
+ CmByk8lCueP7HgWy+Up2z87YRfvOjOFNqUPwk+OmsouD3/RErq5yV79ktV0baeLBvo25nuVJHwb
+ 1lUqyyvnx3xTOFG6fLOd4ZFlOoVTvX4ahO2YZ2AqP7MfAA==
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-In da722186f654 ("net: fec: set GPR bit on suspend by DT
-configuration.") the platform_device_id fec_devtype::driver_data was
-converted from holding the quirks to a pointing to struct fec_devinfo.
-
-The struct fec_devinfo holding the information for the i.MX6SX was
-named fec_imx6x_info.
-
-Rename fec_imx6x_info to fec_imx6sx_info to align with the SoC's name.
+The fec.h isn't self contained. Add missing header files, so that it can be
+parsed by language servers without errors.
 
 Reviewed-by: Wei Fang <wei.fang@nxp.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/fec.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 17e9bddb9ddd..e0d7365e5b4f 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -131,7 +131,7 @@ static const struct fec_devinfo fec_mvf600_info = {
- 		  FEC_QUIRK_HAS_MDIO_C45,
- };
+diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+index ce1e4fe4d492..4098d439a6ff 100644
+--- a/drivers/net/ethernet/freescale/fec.h
++++ b/drivers/net/ethernet/freescale/fec.h
+@@ -15,7 +15,9 @@
+ /****************************************************************************/
  
--static const struct fec_devinfo fec_imx6x_info = {
-+static const struct fec_devinfo fec_imx6sx_info = {
- 	.quirks = FEC_QUIRK_ENET_MAC | FEC_QUIRK_HAS_GBIT |
- 		  FEC_QUIRK_HAS_BUFDESC_EX | FEC_QUIRK_HAS_CSUM |
- 		  FEC_QUIRK_HAS_VLAN | FEC_QUIRK_HAS_AVB |
-@@ -196,7 +196,7 @@ static const struct of_device_id fec_dt_ids[] = {
- 	{ .compatible = "fsl,imx28-fec", .data = &fec_imx28_info, },
- 	{ .compatible = "fsl,imx6q-fec", .data = &fec_imx6q_info, },
- 	{ .compatible = "fsl,mvf600-fec", .data = &fec_mvf600_info, },
--	{ .compatible = "fsl,imx6sx-fec", .data = &fec_imx6x_info, },
-+	{ .compatible = "fsl,imx6sx-fec", .data = &fec_imx6sx_info, },
- 	{ .compatible = "fsl,imx6ul-fec", .data = &fec_imx6ul_info, },
- 	{ .compatible = "fsl,imx8mq-fec", .data = &fec_imx8mq_info, },
- 	{ .compatible = "fsl,imx8qm-fec", .data = &fec_imx8qm_info, },
+ #include <linux/clocksource.h>
++#include <linux/ethtool.h>
+ #include <linux/net_tstamp.h>
++#include <linux/phy.h>
+ #include <linux/pm_qos.h>
+ #include <linux/bpf.h>
+ #include <linux/ptp_clock_kernel.h>
 
 -- 
 2.47.2
