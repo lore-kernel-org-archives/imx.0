@@ -1,15 +1,16 @@
 Received: from glittertind.blackshift.org (glittertind.blackshift.org [116.203.23.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C3C18FC91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D112472BD
 	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.23.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749738313; cv=none; b=Dh68uzQ7F/ud+1wmURVQMtulKRFOTpw+9X/qUD2J4Ifh8bG0LatMcJtN8OSpF6I3L6GM1WcUx/+H3ibTPgOPi9S2cABwnQ1TRjy+fB3VMzmPVb4I5yWXIvM4xFQzAkhdNi3qi8U0Zrxzf2IYfUQ/uOAVoXeWHHdRoFMnu39pSFo=
+	t=1749738314; cv=none; b=uFOmIe1utR1FlRf4f/cuaU4K4gmYzK6ygaw0g/OmvJYCzW4uhsoxvjqpR+PFMUKGjL0xFYPyYFhIxgtp/X25/Qyjd/n3saL5iiEAxxmwf7AsrjoxASXZrDBXV8lZzRbc9l9AHIiFkszPXuJIvUz986QIGo/e7GyYKnzK+top6/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749738313; c=relaxed/simple;
-	bh=cU0YxEDE2UjP6n/4f3vNPORMNpitnn9kuSiOsDU/GHY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=FcFT7xOwOorbKbnDJGC/0jFz95ID9ZywZfZxyr+02gvzXkdfeVmPSg2WRLLlZ25pSz5gvOFCo2pbcnfmJifyFgi24Cd++1CITVL8aLq/XeyAwLU21QOLHBx6MMiKjM6Z8GtLmkZmuWF75udledr6TJV99NzK2aFGJ1LtkKDOLZ0=
+	s=arc-20240116; t=1749738314; c=relaxed/simple;
+	bh=V8ff7fDbtrBpOwcc2k1XD/2X9ZfI4Jix++SEAjR5Wf0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=DwCagLJz7oeRPA3OBmBXu+ZQpxGD6TZ2lJykjFmJVYfonRxEOhG9iuxWxK6G/wMbG7Fxo41YcjJFnsow5pA9gfeDOGwAyPDZWl9nAg36knjDqDNhu2LqRvzBm96jZhG4lkBtmq1kTA/JnCHqfOXqaM3YJ7gurL/oqvQeboKpMqU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=none smtp.mailfrom=hardanger.blackshift.org; arc=none smtp.client-ip=116.203.23.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hardanger.blackshift.org
@@ -18,25 +19,24 @@ Received: from bjornoya.blackshift.org (unknown [IPv6:2003:e3:7f3d:bb00:e75c:512
 	 key-exchange X25519 server-signature ECDSA (secp384r1)
 	 client-signature RSA-PSS (4096 bits))
 	(Client CN "bjornoya.blackshift.org", Issuer "R10" (verified OK))
-	by glittertind.blackshift.org (Postfix) with ESMTPS id 7899366BB5E
+	by glittertind.blackshift.org (Postfix) with ESMTPS id A320A66BB66
 	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:19 +0000 (UTC)
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 41207426439
+	by bjornoya.blackshift.org (Postfix) with SMTP id 6CCE942643D
 	for <imx@lists.linux.dev>; Thu, 12 Jun 2025 14:16:19 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id D98AA42641D;
-	Thu, 12 Jun 2025 14:16:17 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 0B04F42641F;
+	Thu, 12 Jun 2025 14:16:18 +0000 (UTC)
 Received: from hardanger.blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 055e1c19;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id fcc4cc8b;
 	Thu, 12 Jun 2025 14:16:16 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next v2 00/10] net: fec: cleanups, update quirk, update
- IRQ naming
-Date: Thu, 12 Jun 2025 16:15:53 +0200
-Message-Id: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
+Date: Thu, 12 Jun 2025 16:15:55 +0200
+Subject: [PATCH net-next v2 02/10] net: fec: struct fec_enet_private:
+ remove obsolete comment
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,11 +45,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABnhSmgC/1WNQQ6CMBBFr0Jm7Zi2tgiuvIdhAe0ATcxA2kIwh
- Ltb2bl8efnv7xApeIrwKHYItProJ86gLgXYseWB0LvMoITSolYGe7Jo39TyMke0dWeM1p2tjIY
- 8mQP1fjtzL2BKyLQlaLIZfUxT+Jw/qzz9LymFLP+Tq0SBju7VrXPSUNk+Z+JhSWFiv10dQXMcx
- xfnBamrtwAAAA==
-X-Change-ID: 20240925-fec-cleanups-c9b5544bc854
+Message-Id: <20250612-fec-cleanups-v2-2-ae7c36df185e@pengutronix.de>
+References: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
+In-Reply-To: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
 To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
  Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
@@ -59,66 +57,43 @@ Cc: imx@lists.linux.dev, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
  Marc Kleine-Budde <mkl@pengutronix.de>, Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.15-dev-6f78e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2076; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=cU0YxEDE2UjP6n/4f3vNPORMNpitnn9kuSiOsDU/GHY=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoSuEbClArwX+nTRoEhDnrwcdDMtqdx3HQNnFzt
- SkZ3vNrzyGJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaErhGwAKCRAMdGXf+ZCR
- nLCoB/4pDPVR0Pde2JRt6ZBeDv4IAOBgoCmF67KSKDbUhFNXSkfmsoG3Vuu+oM1XEMNI/lHRzSJ
- qud67Uhl3tB4zFKBUzy0wyotA3p68oxoGMnuZxF5CtUanm+I9IKB0UgQJ/gC+GQFv18bFJN3NXb
- Qcu4cZhJhm/WnBWWA56asy2YUlZs1e+iWLvpz6+JnW0fZXZob/ipezoIXnPELz7UMkl22dZ8SOr
- J9iqVWH7Frjs8ghxAVOWRXP+G3Dv6hDP3d8r1H5uzW5fP9y0rJJa0Fo2QL0qzQxLo3/iRoxCIog
- 5tPMojNoTgCqnF53Abhdaq+JdEEOBhuj3oqlnesUf5uXzFXC
+X-Developer-Signature: v=1; a=openpgp-sha256; l=970; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=V8ff7fDbtrBpOwcc2k1XD/2X9ZfI4Jix++SEAjR5Wf0=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoSuEgGxr/m2fNxi/tQG3/OmRmy2aYxJwSlpKms
+ T5J1yjvkvGJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaErhIAAKCRAMdGXf+ZCR
+ nNnKCACNGqT+Oob2vRXPlWR+BG/fc1lVEPu+6PMdLRFkxb/KyykjSOLo83N0uDlPovLcH4zrpKi
+ xTmtuExPhs3rDcbMeGHnCgYoUOJE8uaKHl6hjd1Mgc+7m9ety0sUFJ1o3z/8Yp3R/m7MD1SAPTj
+ +AsHYlrlRW8lD7/BthGHIDK7UAyhejA6fItZ0VQwrDFrJBk2cIdl5zAR1xSUvSLwZzC/G/DcmV+
+ 4F/oEAPLVzpdV5suzmiJucc8PCmSRQOm0kPTjAr1Nmrv6zCrJUGRVmKD1QA+05nbtKEnMow8Dr8
+ 575j17y+gJcYhvFw/p8Hjvx7AI4M3GKTxQ04wtDHrdqiQ5+L
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-This series first cleans up the fec driver a bit (typos, obsolete
-comments, add missing header files, rename struct, replace magic
-number by defines).
+In commit 4d494cdc92b3 ("net: fec: change data structure to support
+multiqueue") the data structures were changed, so that the comment about
+the sent-in-place skb doesn't apply any more. Remove it.
 
-The next 2 patches update the order of IRQs in the driver and gives
-them names that reflect their function.
-
-The last 5 patches clean up the fec_enet_rx_queue() function,
-including VLAN handling.
-
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
-Changes in v2:
-- removed patches 7, 8 for now
-- rebased to recent net-next/main:
-  dropped patch 6
-- 2, 3: wrap patch description at 75 chars:
-  (thanks Frank Li)
-- 4, 5, 6, 7, 9: updated wording of patch description
-  (thanks Frank Li)
-- 10: move VLAN_header into the if statement (thanks Wei Fang)
-- 10: mark several variables const
-- collected Wei Fang's and Frank Li's Reviewed-by
-- Link to v1: https://patch.msgid.link/20241016-fec-cleanups-v1-0-de783bd15e6a@pengutronix.de
+ drivers/net/ethernet/freescale/fec.h | 1 -
+ 1 file changed, 1 deletion(-)
 
----
-Marc Kleine-Budde (10):
-      net: fec: fix typos found by codespell
-      net: fec: struct fec_enet_private: remove obsolete comment
-      net: fec: add missing header files
-      net: fec: rename struct fec_devinfo fec_imx6x_info -> fec_imx6sx_info
-      net: fec: fec_restart(): introduce a define for FEC_ECR_SPEED
-      net: fec: fec_enet_rx_queue(): use same signature as fec_enet_tx_queue()
-      net: fec: fec_enet_rx_queue(): replace manual VLAN header calculation with skb_vlan_eth_hdr()
-      net: fec: fec_enet_rx_queue(): reduce scope of data
-      net: fec: fec_enet_rx_queue(): move_call to _vlan_hwaccel_put_tag()
-      net: fec: fec_enet_rx_queue(): factor out VLAN handling into separate function fec_enet_rx_vlan()
+diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+index 3cce9bba5dee..ce1e4fe4d492 100644
+--- a/drivers/net/ethernet/freescale/fec.h
++++ b/drivers/net/ethernet/freescale/fec.h
+@@ -614,7 +614,6 @@ struct fec_enet_private {
+ 	unsigned int num_tx_queues;
+ 	unsigned int num_rx_queues;
+ 
+-	/* The saved address of a sent-in-place packet/buffer, for skfree(). */
+ 	struct fec_enet_priv_tx_q *tx_queue[FEC_ENET_MAX_TX_QS];
+ 	struct fec_enet_priv_rx_q *rx_queue[FEC_ENET_MAX_RX_QS];
+ 
 
- drivers/net/ethernet/freescale/fec.h      | 11 +++---
- drivers/net/ethernet/freescale/fec_main.c | 56 +++++++++++++++----------------
- drivers/net/ethernet/freescale/fec_ptp.c  |  4 +--
- 3 files changed, 35 insertions(+), 36 deletions(-)
----
-base-commit: 5d6d67c4cb10a4b4d3ae35758d5eeed6239afdc8
-change-id: 20240925-fec-cleanups-c9b5544bc854
-
-Best regards,
 -- 
-Marc Kleine-Budde <mkl@pengutronix.de>
+2.47.2
 
 
