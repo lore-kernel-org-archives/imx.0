@@ -1,241 +1,122 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310CD28136E
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 07:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B955B19DF62
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 07:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749798945; cv=none; b=Aqn80k+F+zuuZls2BrsMhnyVtDXer+uUis/x3JmDCZF3iTbA0NRKS+SmvEqZ7AD3uaIggRcyMd14iFakg1e+DKlB/t/kH1XuP86rT8tyeWU3pJdQCm2MkQvQERQY0iLIZxOsJyrnUf4eM2NIn/2z+jOe6IyTQTscME7OiFaedVo=
+	t=1749801588; cv=none; b=fTKwyIZveJUPj/5t0qkdT14/vG+PxEc+ckUQ8Nes7chPENUHcAntoliOa3a0D9ZuqnbI+aGgwaRf4g+uMIhk1Ovkqg34MNgCE3s0TWmfMtLsekGJGsaOL/6ufHka+ECpQ6wGyfVp6BDDeQ3DZx0AemUI59stGoSyfavs0WFomrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749798945; c=relaxed/simple;
-	bh=e3dLQ/YRXOTD4FzppCJsMoagmEwKwp+kqjL5L3nh8IM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SolOPc5ifly5TJBw95wZmU09ejTpNoKX9vnvnHOgtZVuQiuJaE/5G8ZsrrRlEETgwtHZ+6XobmnrG4+XucF1HAO0fX0fhingPBOB8FL5999jf2276JeKgsV3PVvyKKqwbW1gulexP9wIydGPi20cLfVWnip1lQQ2D4yMu8pID5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wpnxcqgj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kPjofHKQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wpnxcqgj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=kPjofHKQ; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1749801588; c=relaxed/simple;
+	bh=c6dX2sgFdLDHE4jlcSg/9dMZ1jCJv0teKwm6uep1Bw0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n+5HIMRTmyz6iZ3DR1lfW7XCwQRnAcx4ukTLXkeAakG510tAbz11xE+BQta+fbJSxH9ODcuZ7tvRCUTQv8GN7+SE5JTe9W3smPL5h6o5dCjod5D2119l9ptpxDveDbd3ab2ZG4Ycz4aAD6Db4AhN4X9GspYwu8rcR2eP7NnIYRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=SSUav9z0; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=KscqKR3X reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wpnxcqgj";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kPjofHKQ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wpnxcqgj";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="kPjofHKQ"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4F20B2115E;
-	Fri, 13 Jun 2025 07:15:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749798941; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AFKIeJdzd7Bm1UfGUYdUXTMZwzn7kuZf09ynXcNd27k=;
-	b=wpnxcqgjRop7dkbkBQ/X1iuElaw96F5zP50QsPn5I4PbCQYjlf8kTIsBu6JxfU6RPDJuDp
-	RxQ4MhnWMcmky2ZNo4wk7bRNFuuNxkOpgFB9eXHAcKu2tTzWDaCYQ4M/VUWfplABYgNbFh
-	sVh+N4mU2AnW9XJXV/M4hBmN1ndOy/w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749798941;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AFKIeJdzd7Bm1UfGUYdUXTMZwzn7kuZf09ynXcNd27k=;
-	b=kPjofHKQaFEdsoc79AwOm7JvdSfaz141myzJctvWsea6Z/9xOjZvLdd1Jo7NEsyl0iHep4
-	TeHnsN5rMrD7G5Aw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749798941; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AFKIeJdzd7Bm1UfGUYdUXTMZwzn7kuZf09ynXcNd27k=;
-	b=wpnxcqgjRop7dkbkBQ/X1iuElaw96F5zP50QsPn5I4PbCQYjlf8kTIsBu6JxfU6RPDJuDp
-	RxQ4MhnWMcmky2ZNo4wk7bRNFuuNxkOpgFB9eXHAcKu2tTzWDaCYQ4M/VUWfplABYgNbFh
-	sVh+N4mU2AnW9XJXV/M4hBmN1ndOy/w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749798941;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AFKIeJdzd7Bm1UfGUYdUXTMZwzn7kuZf09ynXcNd27k=;
-	b=kPjofHKQaFEdsoc79AwOm7JvdSfaz141myzJctvWsea6Z/9xOjZvLdd1Jo7NEsyl0iHep4
-	TeHnsN5rMrD7G5Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CB0A513782;
-	Fri, 13 Jun 2025 07:15:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TbJIMBzQS2iFFgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 13 Jun 2025 07:15:40 +0000
-Message-ID: <e2478a92-4e37-407c-8f2a-017d8f0e77ba@suse.de>
-Date: Fri, 13 Jun 2025 09:15:40 +0200
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="SSUav9z0";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="KscqKR3X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1749801586; x=1781337586;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DNSVoSPbN0xw1Vl35sz6w62zrgvAGm/58iSlaXRrh0A=;
+  b=SSUav9z0GGJyVY9zr29zmLE9MBGkquFAUserXQVM1Hl2esE7t6vwaGvY
+   0nKXDUUb0yerjgTgboguoFUEU4aOayuVfYdL2NJ94ygOpVVWvP77m5r5m
+   DicDXn1mb1FvFGaccdaSMjjGy/LnA07mxH0HA36ovIiCwB13jxFv2j54a
+   ZcIiJcrI5XaFjHtlP9fRtBxPbHM8I/Ibq1M0d8cXDyLQT53SbOCiNrxsE
+   MHB0W8l16xU4hnfLKAAgDcQAw/HDAKZdzLSxWW66uelq2rJW0rsHltkeh
+   4xqYpTSHIPPs7j8KRCBSiV1USlpTQgph9O3EkEmY33ywmoQchrv1zstoR
+   g==;
+X-CSE-ConnectionGUID: ohkuIZVGTPSxJQ2LAH775w==
+X-CSE-MsgGUID: BXNNdm4PTICTcwQoF0kxSg==
+X-IronPort-AV: E=Sophos;i="6.16,233,1744063200"; 
+   d="scan'208";a="44619241"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 13 Jun 2025 09:59:37 +0200
+X-CheckPoint: {684BDA69-2B-569BE4A0-ECC5EE08}
+X-MAIL-CPID: 358E842842ABC3833C4F485B546D080D_3
+X-Control-Analysis: str=0001.0A006371.684BDA7B.006E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4D85A170669;
+	Fri, 13 Jun 2025 09:59:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1749801573;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DNSVoSPbN0xw1Vl35sz6w62zrgvAGm/58iSlaXRrh0A=;
+	b=KscqKR3XLu8BOQs4LA8yo4NPygiDtQERFHDqqVTaDJv5+58YSJubHPc5DOm+nnFGutkwhZ
+	gbwvlTrD2irSOqtzJu1X7SZA3UIHRl3kgx42EYylzJZbiJTNw76F0ViNG+vekOFqSrV9Ro
+	6rkUoYitJl8w/dfmXES0lb+lRx+O2S4Ls/R/otX35AdLwJSC3SBT43C0fBTlxMArC++Ut/
+	jvyrn1z2Y6vY04qVWIzEtjWWncqH+Dq5cpOR1KvzwsTp7pgTiV7AXOYYsD4cQEDqH7dgLt
+	iFazszDIyG/veLC3MVqXvOaqdZ3ZMGd1TmIcyFrW/Ip0czOuN0OoDXPk554h2w==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux@ew.tq-group.com,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v3 1/2] dt: bindings: arm: add bindings for TQMLS1012AL
+Date: Fri, 13 Jun 2025 09:59:24 +0200
+Message-ID: <20250613075927.392499-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/25] drm/gem-dma: Compute dumb-buffer sizes with
- drm_mode_size_dumb()
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
- freedreno@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- imx@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
- nouveau@lists.freedesktop.org, virtualization@lists.linux.dev,
- spice-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
- intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
- simona@ffwll.ch, airlied@gmail.com, mripard@kernel.org,
- maarten.lankhorst@linux.intel.com, geert@linux-m68k.org
-References: <20250311155120.442633-1-tzimmermann@suse.de>
- <20250311155120.442633-4-tzimmermann@suse.de>
- <d7e016fd-3d0e-4822-a404-a53ba11e5dc4@ideasonboard.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <d7e016fd-3d0e-4822-a404-a53ba11e5dc4@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,lists.infradead.org,vger.kernel.org,lists.linux.dev,lists.xenproject.org,ffwll.ch,gmail.com,kernel.org,linux.intel.com,linux-m68k.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi
+From: Matthias Schiffer <matthias.schiffer@tq-group.com>
 
-Am 12.06.25 um 10:43 schrieb Tomi Valkeinen:
-> Hi,
->
-> On 11/03/2025 17:47, Thomas Zimmermann wrote:
->> Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch and
->> buffer size. Align the pitch to a multiple of 8.
->>
->> Push the current calculation into the only direct caller imx. Imx's
->> hardware requires the framebuffer width to be aligned to 8. The
->> driver's current approach is actually incorrect, as it only guarantees
->> this implicitly and requires bpp to be a multiple of 8 already. A
->> later commit will fix this problem by aligning the scanline pitch
->> such that an aligned width still fits into each scanline's memory.
->>
->> A number of other drivers are build on top of gem-dma helpers and
->> implement their own dumb-buffer allocation. These drivers invoke
->> drm_gem_dma_dumb_create_internal(), which is not affected by this
->> commit.
->>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> ---
->>   drivers/gpu/drm/drm_gem_dma_helper.c     | 7 +++++--
->>   drivers/gpu/drm/imx/ipuv3/imx-drm-core.c | 2 ++
->>   2 files changed, 7 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_gem_dma_helper.c b/drivers/gpu/drm/drm_gem_dma_helper.c
->> index b7f033d4352a..49be9b033610 100644
->> --- a/drivers/gpu/drm/drm_gem_dma_helper.c
->> +++ b/drivers/gpu/drm/drm_gem_dma_helper.c
->> @@ -20,6 +20,7 @@
->>   #include <drm/drm.h>
->>   #include <drm/drm_device.h>
->>   #include <drm/drm_drv.h>
->> +#include <drm/drm_dumb_buffers.h>
->>   #include <drm/drm_gem_dma_helper.h>
->>   #include <drm/drm_vma_manager.h>
->>   
->> @@ -304,9 +305,11 @@ int drm_gem_dma_dumb_create(struct drm_file *file_priv,
->>   			    struct drm_mode_create_dumb *args)
->>   {
->>   	struct drm_gem_dma_object *dma_obj;
->> +	int ret;
->>   
->> -	args->pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
->> -	args->size = args->pitch * args->height;
->> +	ret = drm_mode_size_dumb(drm, args, SZ_8, 0);
->> +	if (ret)
->> +		return ret;
->>   
->>   	dma_obj = drm_gem_dma_create_with_handle(file_priv, drm, args->size,
->>   						 &args->handle);
->> diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
->> index ec5fd9a01f1e..e7025df7b978 100644
->> --- a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
->> +++ b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
->> @@ -145,6 +145,8 @@ static int imx_drm_dumb_create(struct drm_file *file_priv,
->>   	int ret;
->>   
->>   	args->width = ALIGN(width, 8);
->> +	args->pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
->> +	args->size = args->pitch * args->height;
->>   
->>   	ret = drm_gem_dma_dumb_create(file_priv, drm, args);
->>   	if (ret)
-> Won't the pitch and size just be overwritten by the
-> drm_gem_dma_dumb_create() call?
+TQMLS1012AL is a SOM using NXP LS1012A CPU. MBLS1012AL is a carrier
+reference design.
 
-Right, looks like it. Thanks for looking over this. The call to 
-drm_gem_dma_dumb_create() needs to be changed 
-drm_gem_dma_dumb_create_internal(). The latter doesn't modify the 
-arguments besides some sanity checks. BTW patch 10 cleans up imx 
-entirely. Best regards Thomas
->
->   Tomi
->
+[1] https://www.tq-group.com/en/products/tq-embedded/qoriq-layerscape/tqmls1012al
 
+Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+---
+Changes in v3:
+* None
+
+Changes in v2:
+* Collected Conor's A-b
+
+ Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 4fb323fb8ab4f..d828fbd4d988c 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1553,6 +1553,12 @@ properties:
+               - fsl,ls1012a-qds
+           - const: fsl,ls1012a
+ 
++      - description: TQ Systems TQMLS12AL SoM on MBLS1012AL board
++        items:
++          - const: tq,ls1012a-tqmls1012al-mbls1012al
++          - const: tq,ls1012a-tqmls1012al
++          - const: fsl,ls1012a
++
+       - description: LS1021A based Boards
+         items:
+           - enum:
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+2.43.0
 
