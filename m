@@ -1,35 +1,35 @@
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7AF2E610A
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 13:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E942E6115
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 13:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749822542; cv=none; b=R2jUMa/0D+mSe4Q8VARpm5/YxL4Y4eus1GqBGeuhaOhArYNRl0jtqGlRwIgG+e7y8XQ5CDLgWNEqe7Yzr7orCfMigOuPQkX1Zu6Oxiwqb+smu+jVi4pr4JPZKN7NMn/nc3Ty8GbHJNsiKKDDw07YNf4KPFqgxh+xJ26+96/k4CU=
+	t=1749822545; cv=none; b=HXUTxZOocNtspze4ps8Qd4cEuKOfHRKW1zTtC1ksvB4o58nVv1IlUF+83Je6ntPlexUMjP+WOwaMF6bhi1yZRyC7YXnriDn1/Di1kH2vPXa6l9BEnXCtt8////jhdaMB90aKEIki9dWck8vatheuNlPyY3U9E0wbPa4eZzInppU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749822542; c=relaxed/simple;
-	bh=zBqHITwGuYkeuA/f3UiJuEYsx0W573bKNGiHk0mgAHk=;
+	s=arc-20240116; t=1749822545; c=relaxed/simple;
+	bh=76jhIoac+l7wY7kRu+SgDLSKx7quBRo7jrrXD2szRuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgJkKcArsfN2PPxtiAOHdZI06OftcRRvdDbniaG50pAs9BvruwU9kTr4wn/aCgQSrwtJjVi6MKitl18ZMni+DIT5VrZsPOoQudzG1YKvms4CF69UULmXGPyg4c4B/jYscQNdwu27jCC7bKshsbmN0Aqo6/3+1Kx3swBR5rjYcwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Hg1YrEqF; arc=none smtp.client-ip=217.70.183.199
+	 MIME-Version; b=MwaJl8Jeg6K3qTJygvGo5ObHNLGBgFeeIWJyYqkAjwSW7mdw45Tu22OTUTW3ZLVx4Esa/AHFZ65QahJAI8wRKOhYCkO06jPKE8UXBpxPOhwuT+3s33SJQcndp1hSIldWi6xV0jOHFAPnR71jy/YA+d9xE+DhCE9SX+O5UBofIbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=adlR8BkX; arc=none smtp.client-ip=217.70.183.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Hg1YrEqF"
-Received: by mail.gandi.net (Postfix) with ESMTPA id 20A3B442CB;
-	Fri, 13 Jun 2025 13:48:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="adlR8BkX"
+Received: by mail.gandi.net (Postfix) with ESMTPA id 8971C42E77;
+	Fri, 13 Jun 2025 13:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749822539;
+	t=1749822541;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bGVqaU+Que4M9qvQmzpxGWFZ1E/ComP2nHfd9io9TGU=;
-	b=Hg1YrEqFq8YxJIEZNa8SZlOwoofL+G2t43urtdlT4z/gLcAQM+xlmhA9/Jlz9B7PoluI+A
-	f0akg42zyOfdhobiT9ciiVs089LMz1FUsmpGNOZS60jdWFVGCjfrPAOzohvgmH2a5QpHi8
-	FK7v/5OZLOdbWYGNd+13UO3jCyUS8h6hLWP3YBrO2BiS9TIEkidOjgkXtVquFYrWEm1HAs
-	2rlkgY3yD+cNLLWYUOosi9UUKBBsO4qAMdhajY1XxYKrHr1xymp7DzD2q6nd2uTu5Fwp+7
-	MlKNzeafqMzjI/zTi0PZPIQbrG9rNxmx8JPpDoix+PylIr6mgLjVo5uPvdEPJg==
+	bh=KVpFY9cJTFG3+SXwZWcq2Mk8FXznG01vlFE4IEFImPE=;
+	b=adlR8BkXJAse71AhOs7Yc5jczpPTRxqxbwmj0FhTvvld9hVkgsUrPkovvKEuZ8qMkIW43B
+	yBB4qZ7WUY0APUhgT6EwRT6I9IxipdAil3v4bvhISEHkDEWCIYWmJ5oNm8YT1FE5NtLIg8
+	8qnr5dgFC2u0KuLUfQ0ZjcZY9VP7ElldulkRa6Y4HKwMp81Gz67LEyZHuyk4HNOwyvfZEO
+	dg+1tw2SuDYGIqoAgOlUZT8Y41d/BTeVKPVY1jSLDr4+lySJJfHjLsXu17jDmPb+/Q7PdI
+	ztlibfiuwYQAugIK1ztcavc2kFcNRYS6SxWHk6E0bpv2c/XGRyTz8xTF9ypU5A==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -80,9 +80,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v3 06/28] driver core: fw_devlink: Introduce fw_devlink_set_device()
-Date: Fri, 13 Jun 2025 15:47:46 +0200
-Message-ID: <20250613134817.681832-7-herve.codina@bootlin.com>
+Subject: [PATCH v3 07/28] drivers: core: Use fw_devlink_set_device()
+Date: Fri, 13 Jun 2025 15:47:47 +0200
+Message-ID: <20250613134817.681832-8-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250613134817.681832-1-herve.codina@bootlin.com>
 References: <20250613134817.681832-1-herve.codina@bootlin.com>
@@ -99,32 +99,38 @@ X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeduudcutefuodetggdotef
  ghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
 X-GND-Sasl: herve.codina@bootlin.com
 
-Setting fwnode->dev is specific to fw_devlink.
+The code set directly fwnode->dev field.
 
-In order to avoid having a direct 'fwnode->dev = dev;' in several
-place in the kernel, introduce fw_devlink_set_device() helper to perform
-this operation.
+Use the dedicated fw_devlink_set_device() helper to perform this
+operation.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- include/linux/fwnode.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/base/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index a921ca2fe940..a1345e274125 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -231,4 +231,10 @@ void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
- void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode);
- bool fw_devlink_is_strict(void);
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index ce367c44f642..3afe821f37f2 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3742,7 +3742,7 @@ int device_add(struct device *dev)
+ 	 * device and the driver sync_state callback is called for this device.
+ 	 */
+ 	if (dev->fwnode && !dev->fwnode->dev) {
+-		dev->fwnode->dev = dev;
++		fw_devlink_set_device(dev->fwnode, dev);
+ 		fw_devlink_link_device(dev);
+ 	}
  
-+static inline void fw_devlink_set_device(struct fwnode_handle *fwnode,
-+					 struct device *dev)
-+{
-+	fwnode->dev = dev;
-+}
-+
- #endif
+@@ -3902,7 +3902,7 @@ void device_del(struct device *dev)
+ 	device_unlock(dev);
+ 
+ 	if (dev->fwnode && dev->fwnode->dev == dev)
+-		dev->fwnode->dev = NULL;
++		fw_devlink_set_device(dev->fwnode, NULL);
+ 
+ 	/* Notify clients of device removal.  This call must come
+ 	 * before dpm_sysfs_remove().
 -- 
 2.49.0
 
