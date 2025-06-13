@@ -1,35 +1,35 @@
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696172E7F3F
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 13:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EE62E7F3F
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 13:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749822552; cv=none; b=i8yuO0sOouD8VGzFRe0Y9dgUGQ5De8wR2VJ/qVs7h+/LRH6aUUpwGB9jWKZR4kwiWWgi6YJ7vxGMRCDe1L5vjmb0jOcONKSfsMJGmlw8kphboM/2NqugEY+TuEeXhU4XHAoLWqCLA9B81WrSQ3X4nPHN4fZucKDTgvxfWCtptfs=
+	t=1749822554; cv=none; b=qF3wsXNbeMdu+R3U7WAz9+UCd98VFTUaJS45dJG04kRiMx5eQ61BNJjpluAIP2zPx/ogQ2xsKIWyrXZqkwQ11wCC9Ee0iZcjbUAv0FyXGUxvm2PvHMZbcNFs93je+EorNzzhfW5Gcel+BEJgFgFJ2wmXkEcybUB4A8106OgfEIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749822552; c=relaxed/simple;
-	bh=XAuPSgZ/0v6OXmcrnIV8xZwxIlUqBxgqFFPfuhF1+co=;
+	s=arc-20240116; t=1749822554; c=relaxed/simple;
+	bh=q75V33+lA4BwW9AaeyyrodDxS+RvJEN4Q01X82YzC34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SeRctvzEyygRVprKwxxaVk8Bfh5N/OAAJqEh1Ba/z7M9it85nSk21OxA8C+NVK2oOw+GRyiakGivT71tbkDIaiL5V+KpVeTJj62y7osAH9Kv0E/nq99KTaKg5ATjvZLto5fylz/3eCU8aalU8yQ+8IUODt3scoN2jz4IOEDWJCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RV5XLwfl; arc=none smtp.client-ip=217.70.183.199
+	 MIME-Version; b=bMTGYAYTa6gH8Y9RMXGHstGwFxsFSW86hyCseWdIKatPmHpBnv/6SirH8zmmInthoDgfilaOBtnGw7Ln8jfF/z0DZbIFN5f/R6XBnxro6BJeor+9CF1SwujcqA+z304umC4eRrNCulRP729qoFnVMlKjh9zlJqiHzsnJ+Tkg1uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PHllxcB0; arc=none smtp.client-ip=217.70.183.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RV5XLwfl"
-Received: by mail.gandi.net (Postfix) with ESMTPA id ACB434429B;
-	Fri, 13 Jun 2025 13:49:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PHllxcB0"
+Received: by mail.gandi.net (Postfix) with ESMTPA id 14CF344288;
+	Fri, 13 Jun 2025 13:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749822549;
+	t=1749822551;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bGj5HXIGlGMQZaKvLbze0Pn2mzo5+WUvyC1TOvLZ/so=;
-	b=RV5XLwfl4YN3CPo61ILIXWjTLLX24SBCk52CWu3xzSrZIgWkxKWCW2VUsUyXzq6dd7aQQO
-	z9OBurcx/LyzzaYDz/JDUxjMaztmhz5nu/0MP02kce7ITftGjRgHMIVHlWGAqc7VhbYkuA
-	mG82P2W6Ml4BblhjAFs1rKHMUfuqTBxEyqCX7lFiSkfYCQ8nTj8SI6q9emfvZJtzXFH+8g
-	/vSHx8YH42tCGIB9ncHc1VCOsQdhIqyPNrYoSmM6m4OZNu3snGrjnuxgUt804MoEq7K1UM
-	Ka5RWNNRXyp4TgCvvF2FoWNo1+NhBBq7amf5Bl7o+0dpkloD1sOEtOJp8A1v4A==
+	bh=YjS4FgumbpMzv9fEu22F5Rks2OfWmnc/lcG4e4ZImik=;
+	b=PHllxcB0wok/L5Muc2Um9HeoTDJGmHvMvHrVVv3lLJe5BL5XKkaIJ5ttmfK27pE+ifENRM
+	9lH+tJpw4tOEsOuO6eh4xFfVLeJVj2gCfizN+1DirJCJ67Oc0u4n2QhHtmzVSxYYZ7rb48
+	8DU0NcwST/xddWDWg54ae6EJEdr/JlkWGvUqDLbtncritg1WKu0azwrJvjyMcuKZayH9WH
+	5TEUK863LhZatYxNVv3LKIB52DuJaNL6TdrmBVYSi8B6Z7Zgn83SiLKBae52EgAEF5NWZv
+	i9bed/g5gpFkYuyYvDW7tXX3VLaUuilXsxH3Zb1VhDbgPoEkWz+wTIGQDnXX9A==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -80,9 +80,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v3 10/28] cxl/test: Use fw_devlink_set_device()
-Date: Fri, 13 Jun 2025 15:47:50 +0200
-Message-ID: <20250613134817.681832-11-herve.codina@bootlin.com>
+Subject: [PATCH v3 11/28] PCI: of: Use fw_devlink_set_device()
+Date: Fri, 13 Jun 2025 15:47:51 +0200
+Message-ID: <20250613134817.681832-12-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250613134817.681832-1-herve.codina@bootlin.com>
 References: <20250613134817.681832-1-herve.codina@bootlin.com>
@@ -95,7 +95,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehffeigfejueelueeuffelueefgfelhfejhfehieegudekteeiledttdfhffekffenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpeegnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeelpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhr
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehffeigfejueelueeuffelueefgfelhfejhfehieegudekteeiledttdfhffekffenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpeejnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeelpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhr
  ghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
 X-GND-Sasl: herve.codina@bootlin.com
 
@@ -106,22 +106,22 @@ operation.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- tools/testing/cxl/test/cxl.c | 2 +-
+ drivers/pci/of.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-index 1db7732a70df..80e6fb3c9a43 100644
---- a/tools/testing/cxl/test/cxl.c
-+++ b/tools/testing/cxl/test/cxl.c
-@@ -1047,7 +1047,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
- 	device_initialize(&adev->dev);
- 	fwnode_init(&adev->fwnode, NULL);
- 	device_set_node(dev, &adev->fwnode);
--	adev->fwnode.dev = dev;
-+	fw_devlink_set_device(&adev->fwnode, dev);
- }
+diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+index 3579265f1198..95baa29d4c2d 100644
+--- a/drivers/pci/of.c
++++ b/drivers/pci/of.c
+@@ -803,7 +803,7 @@ void of_pci_make_host_bridge_node(struct pci_host_bridge *bridge)
+ 	 * bus. Avoid any new device creation.
+ 	 */
+ 	of_node_set_flag(np, OF_POPULATED);
+-	np->fwnode.dev = &bridge->dev;
++	fw_devlink_set_device(&np->fwnode, &bridge->dev);
+ 	fwnode_dev_initialized(&np->fwnode, true);
  
- #ifndef SZ_64G
+ 	ret = of_changeset_apply(cset);
 -- 
 2.49.0
 
