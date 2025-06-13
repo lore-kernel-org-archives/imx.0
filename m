@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB591F463A
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 15:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA471FCFF0
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 15:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749830293; cv=none; b=gOlFJFrA3T72gVwWFp7f2I5AbXUf4bKxHoKpOVNXMCyRsLK7NgKn3aiIit2XpvY/CvxTUCGOiC5VmuLTpf3zEZAVoNFqjajZXoHmh+rnWeirE1p1Vm5fY1PH6h53/2QH9Z0lwAqA4qrV3hHiCie0qA0rCpW5WsNElQA16Hf8szA=
+	t=1749830307; cv=none; b=gxgbaGatlbM8KIj+QzX8TEZQtNMrbJH/wO8bLC8xB8CSDZw7ZkPOv3qsI0piovBkMpOZiX5AbmLEtQaPrRZhV4OfBaczngemD2tzAu+HU7XMwrf+HF+RaMzgoxKwrwpsoAvDgv2wSRsbKq/buRgCTFtDW6uBjnFO7Ap6OIWEDo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749830293; c=relaxed/simple;
-	bh=V9FMKPIwnq1H9P0zOSWLaguOqdABhVFp/9v1hViBzRA=;
+	s=arc-20240116; t=1749830307; c=relaxed/simple;
+	bh=cGUKaP6dgfpeo+RKTZCV94jyFa+uREbM3iubZvhap0M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EBvgMlu5onEHnI5h61B8sftNdirO+Q6lc3KNPSemUhyB36vIl7B1DQLiyZL3CjGpHEjBo+1YbdJfKf0g1FrH7NvFYBRKV+P1zozg/MhwmziJsvxUQUS4P5MoEdNgISTDH+DjQRBlhSrlTrUpQTaO4q99+jPoHTz+20VT0rjYAak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jp7oVDfN; arc=none smtp.client-ip=192.198.163.16
+	 In-Reply-To:Content-Type; b=AERuzSMFxAo1Ox0A/jVGt+7XeGyNLIc4xlduXzeSeQyu3GmC9MwOwXzRoeFVQhnrPCHCxvfdAR8M0bb6sgdgrypOO9sBV9s3p/Bn319t9oevVPZV65cHm2DhRYnX0xdk1FGCPh3ztdwvuAEDj+LXRNr0TWotB3afeel6PX3y5wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HBU1XVFP; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jp7oVDfN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HBU1XVFP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749830292; x=1781366292;
+  t=1749830306; x=1781366306;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=V9FMKPIwnq1H9P0zOSWLaguOqdABhVFp/9v1hViBzRA=;
-  b=Jp7oVDfNEy3d4G4pfI1R7iyCS7QJO1QsDLVR3BCjCFfPx/TkOompHJqf
-   kpKjForpN517uaV/HwV56eoWXQenafURwRfGO6KkgS3w2EyZYH0q3Zig4
-   JRoj/Xy1D0sqNseTKBjNELfwmfjt+Hd9SOpy1vu8g4TeyVA+P1+ErLguo
-   TrU4TN0/KF1MDASxNkjGc6L8dh/9zYn4y/owGcKvdWjJsBU0Mg9m2JS2i
-   kcORaEjA+vlspD5kekcg6qD5JwIzI/qdK5JDkK4FyhVPooPFP2d60vume
-   VkTYEaW+uxdqN996mJx5HpTXStu6Zdeo5z9VAlSuUm5cD1vAhBupu9sK0
+  bh=cGUKaP6dgfpeo+RKTZCV94jyFa+uREbM3iubZvhap0M=;
+  b=HBU1XVFPV8XhW42dZkmcid3Y0fWN/0j9SeK71+te33TWDYhnSy0SJEkx
+   yziElKiJo+AodNE2q3cnT3KKkGLuuqGxoEbd9IR+NOCrGp4UESlKosLc8
+   SBT5+xQHtHMXt/HV+eg9pIHNpyXwIgR9GgIEKKz69dZR3gNUk1xf1uvEU
+   hW+OWCMrIv6ShL8PKJlq5NUNtB31bH2JBAKTSfK8Zowu7P4ZxSe7b2jLL
+   4i33B6VuWwZeXEN2bfkSQRqC1/GLv+o2NUHv4vSkIuCE6UbRLx+GGV7FB
+   8b6OrF/qK+hAj/od6fQRR70lL0WEH4esGsHuLPiEtEiVN3F88N5UWmKm4
    A==;
-X-CSE-ConnectionGUID: 8V7TXZcsQjmbXiWgvrN5wA==
-X-CSE-MsgGUID: 52tA8/rmTbOBBu4wJtaYYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11463"; a="39661072"
+X-CSE-ConnectionGUID: b3p4dT50RiOuTN98sDLUEA==
+X-CSE-MsgGUID: PcT1BU+zTYOgWbrUAyc0Bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11463"; a="63403150"
 X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
-   d="scan'208";a="39661072"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:58:11 -0700
-X-CSE-ConnectionGUID: VA2G6141T8+w5h4vLYaebA==
-X-CSE-MsgGUID: ASlK1NJbQtSiVGGS5YDhrA==
+   d="scan'208";a="63403150"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:58:25 -0700
+X-CSE-ConnectionGUID: ZNpjhcVcQvCbGVVMZUTnnQ==
+X-CSE-MsgGUID: Q3OrfPCuRPKKipwCiTZe7w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
-   d="scan'208";a="178842660"
+   d="scan'208";a="147743732"
 Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.111.232]) ([10.125.111.232])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:58:06 -0700
-Message-ID: <f9ca87ab-e565-431a-9866-d56278cf465f@intel.com>
-Date: Fri, 13 Jun 2025 08:58:03 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:58:19 -0700
+Message-ID: <4fed7722-d0f7-4bde-a06b-a003718651ea@intel.com>
+Date: Fri, 13 Jun 2025 08:58:17 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,7 +52,7 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/28] cxl/test: Use device_set_node()
+Subject: Re: [PATCH v3 10/28] cxl/test: Use fw_devlink_set_device()
 To: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
@@ -87,19 +87,20 @@ Cc: Wolfram Sang <wsa@kernel.org>,
  Luca Ceresoli <luca.ceresoli@bootlin.com>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 References: <20250613134817.681832-1-herve.codina@bootlin.com>
- <20250613134817.681832-10-herve.codina@bootlin.com>
+ <20250613134817.681832-11-herve.codina@bootlin.com>
 Content-Language: en-US
 From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20250613134817.681832-10-herve.codina@bootlin.com>
+In-Reply-To: <20250613134817.681832-11-herve.codina@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 6/13/25 6:47 AM, Herve Codina wrote:
-> The code set directly dev->fwnode.
+> The code set directly fwnode.dev field.
 > 
-> Use the dedicated helper to perform this operation.
+> Use the dedicated fw_devlink_set_device() helper to perform this
+> operation.
 > 
 > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 
@@ -109,16 +110,16 @@ Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-> index 8a5815ca870d..1db7732a70df 100644
+> index 1db7732a70df..80e6fb3c9a43 100644
 > --- a/tools/testing/cxl/test/cxl.c
 > +++ b/tools/testing/cxl/test/cxl.c
-> @@ -1046,7 +1046,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
->  {
+> @@ -1047,7 +1047,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
 >  	device_initialize(&adev->dev);
 >  	fwnode_init(&adev->fwnode, NULL);
-> -	dev->fwnode = &adev->fwnode;
-> +	device_set_node(dev, &adev->fwnode);
->  	adev->fwnode.dev = dev;
+>  	device_set_node(dev, &adev->fwnode);
+> -	adev->fwnode.dev = dev;
+> +	fw_devlink_set_device(&adev->fwnode, dev);
 >  }
 >  
+>  #ifndef SZ_64G
 
