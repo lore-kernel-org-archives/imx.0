@@ -1,63 +1,63 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6267082A
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 05:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0871EB5E5
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 05:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749793407; cv=none; b=gZ9ep3gWIZiuZuaz2M1rrjrLGKqinCVjeDA9uFCXjxynwBFaDYndfssMGH1cmtf9aVZ/IPdXnHOYlu2YBcMWW7HnzWOh9tuY+RNUU1rNO3z8AvVLtPq0eho46g2ZJEts+GKrcFMqFJ2lM1zQ5sbQQNGVA3LZxqhAudUHMm0K1xg=
+	t=1749793461; cv=none; b=YeJenqDT61+q3FGOnpVn03NL/apCY5/0ipaQ5Ul0FebXcVuoSGbtxcbQ7I8bfdMMiqxNHpPF7aNhH5+HUs8c7DlIVwsJtK+TjcGtklxzbzbC6eatjHZbJEeMwpfu0Xaz7m2iiwn1wYghY+SAiMMIOisrpMXCFKYyuwLiGgX0BjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749793407; c=relaxed/simple;
-	bh=sXAT8ctTP9IbddpnEz+KTnjlv2skjI0nKsYoiKEG7SI=;
+	s=arc-20240116; t=1749793461; c=relaxed/simple;
+	bh=/u0arpuLxhgzKttnYWprTMY06QyGbNmIwT2mkYUqVZg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GCxrWA3ZS4KEfBzqO7pTdZu323eUskfElOEFdQlr8IJDdG0373CRAz5cmMgB48Xhpp3MwLw2tcTtV8Cm0t6Yv/K/cmAvnW2VLZPGm6XcFYljEoTOeN+/LPMzepVHWXMahtO0XG31Kaco3NA//NrLqvhbRIQ2CC+/EY5yhZLs7o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=JWYiyIRx; arc=none smtp.client-ip=209.85.128.45
+	 Content-Type:Content-Disposition:In-Reply-To; b=taf9KZp2X0ZdYaDQsMIu8HAPV207CGqda5WjvStVrKK2oGCugNIe3hJeYS0pTOWajf+P66hhar4aMBQdOC+Mj1kGfO/BTRfLZQdgh58pks3inhrAX00dljqYu//pKoLtL0AM5vCWzywcwEua0DoLAHOUzVVpCLHlOB1sT5EPTvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=n4q9/zZx; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="JWYiyIRx"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-450ccda1a6eso15083925e9.2
-        for <imx@lists.linux.dev>; Thu, 12 Jun 2025 22:43:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="n4q9/zZx"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4508287895dso17907745e9.1
+        for <imx@lists.linux.dev>; Thu, 12 Jun 2025 22:44:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1749793404; x=1750398204; darn=lists.linux.dev;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1749793458; x=1750398258; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3435kYLA9wFlF8SNOcs53XbvVp6eAORHpcfv9oWBQ8Q=;
-        b=JWYiyIRxtHXhzwMH3V3V30k3Zk4odEufwDE8cXDAy7NWtIoLS4EiTd5K98EX+mQ+ug
-         do5gNMCxtfYIliOlkb58dfW6ZYh6FMWfikFii6k+reWvzryWExkRmKq73ngs61qh+0Uj
-         9v3oQxBFJRom2WANbAkn85WZPLz1Gm3AIsMe2zTNh3rtdvENBoHll3yi/cGsz1SUp4pn
-         dvgMS9acDSBuoqJNpLwNbYhTII82OioL8QWMFP04Vdhr8OxpKBqeoAHgzT9055cg5vMe
-         sWwZDEEhuK8E5ukvo4xNO6FjHampNObe9r1O7PFihlv2HdjXgRtixoqVTDnwyqqEDk/z
-         9p9w==
+        bh=gykoMnS52RP7gDSHkbQWw5lL6WmevKJQr79bb2ZfQk4=;
+        b=n4q9/zZxv6ucDuLG7EmT6VMl7p+UrrTReY2eC+y1r/A9nC5u+OR9PiVTa4c8mFdnPh
+         gX6/KnrROltoVnkxU4Ssfj4Ga6eUrJuFwBlcYDKjv2qExtP7PqN1aTF2V5PNRBlPVsGg
+         Sjd6Yp+nESJsFkZGq6ykJ+VKMMHnsad7cWExmjTnVkOmczWVTGX2dyLal5z1B4Tkrl5V
+         mAofGW8mewGhRZuO8qF2jMycaWrPiwiqxGQTW7gE1eJ8aUmEbvHu+c59sIsN+z+qG5zE
+         E0/15/gRK1jNNmRF0FavRA6MlpnvLh0rA/iNhMsVgpi1OI2RErBBcb4PNd8zjwxrtFBT
+         dflw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749793404; x=1750398204;
+        d=1e100.net; s=20230601; t=1749793458; x=1750398258;
         h=in-reply-to:content-disposition:mime-version:references
          :mail-followup-to:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3435kYLA9wFlF8SNOcs53XbvVp6eAORHpcfv9oWBQ8Q=;
-        b=ugVu2dzM26BT+qvLSx/PbMmfQ1sA9DFlmqRTmtsh/w7bpQ/yKOlTC1qx/MXTcvovt2
-         K1f8YDdQAhe0SixDnaVWGz9YQUB8du6K5odZFyA1xgHPuyVENJp+0YAtFryBouUMHAl9
-         f7CwJhpR7zQ95UByyVE1JKVItbhw6Y3QP2S51fLDTebFr0QNK2VtyroYAyeTLbNNzpt+
-         QvrISCOMf9x3VFa0zJEE0b3xryZQzcDhsavAUS+16fkVBLB4pWwSDFIUTI/PAPaiWzCS
-         WM0ccBvnfmou+c3wJTovWN7On1ZZx19gZAplSck8JSypIk1bVKQKPCTj2oPBoe77ZHgh
-         pCfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1+1DZTq0h52/rKBhzv0606NZsjt8QK4PC0DE+i4IcBH1bIo4kKUXh0jp8Un5kVI2W30Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxjtOv1OKr5p+F4O8ORoCipEk1cu22NTCpfTVwZvSfc6+XgDbzn
-	Y7nr4fB/cDLQbCt6dB2NYJTnc11t+yk+EeL1WKs1YXsgL0BFjGjsivG5O/xkLBlQfwY=
-X-Gm-Gg: ASbGncvdLs8u1sMx0JT7CsT2Fea3pyFOOp0JpMeE6BIgT0x5Rl88dR3yMGooUi5NTm/
-	2fEvaO6H0aiYLqsKkP/wJQj/5K2ctpiYJwcB31EI9S/u147dxGWKVEZBv2ybQJz4ezUxxu2+imv
-	FzTfoNOr+1EpqPw4itwBkEsNZ06hrEKSQEP1iMKkBb82d8Lqul7R5ydEDjX/hw+jRKMaabsuwCL
-	P9eqWQaJBbhcimof6xN+CCGqLw+besWCSVvgm+tZjY7f9tkVptWBxr+gvvj5xPE49u82Y8FOMPG
-	G83Ex/QC0EF0PZZsGdhrKDKQwC7G8FvHDgvxWul8JzIke405rcKqZoU2WMbS2+iCVV0=
-X-Google-Smtp-Source: AGHT+IEJFuFqUOnlnGjQjN5WVFL6UkUwlFwEqG0OO5kQPnwz42x6Pj+XObkjiX2VL5pxxrvm4wOE5g==
-X-Received: by 2002:a05:600c:45c8:b0:43d:1b74:e89a with SMTP id 5b1f17b1804b1-45334ad46e0mr14604425e9.9.1749793404493;
-        Thu, 12 Jun 2025 22:43:24 -0700 (PDT)
+        bh=gykoMnS52RP7gDSHkbQWw5lL6WmevKJQr79bb2ZfQk4=;
+        b=lfbE1mKQp8weGJd+HJC8tDe5Rr7EBC+tdvDv8EWGxi5aVmHRYOFt+JAtjGB+xOzEct
+         PNPUcjICCKWmTftZIhVulJQV6LXSWLoQYbkje9KqRfxtM/xaV2/KPJTowmvqvO8CsQfr
+         cq3nnvArX4bTTvBmKl60S9BYyGFFmrrKuDE4FtPddA1f9cf/ldadw0iz9zCYJq3bI8kP
+         63DWsPq0zSBvYu+87ZcxGYSi+SXhBcFJAvckK0njjFW+HKbJfAxJ04djitTZKFN25Pk9
+         QC3yenY1EsShFsAf+JMoO8Mdu6lsiNy0r3qN2SpnHtHZfFJCwbSJtDERvcero6+mzTTY
+         3VIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFTTUMpR+c1N16dqfsJcSbD8aYc28FxbdjaTKo74pP/+oMsyk56eZfQJ6WsesodWI764I=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxvMU/wCmGdrZTMMu31V5+S0ZtMMiAY1XtG8ES+Nu426LdKFZxo
+	1IH6a0cELfBpiQzZ+4zeZTWNp+Rn4LYPDbonTqbaVc6Jm/fcFRVnpAnUOEl/sKJQNWY=
+X-Gm-Gg: ASbGncuk1ea4EQNQJ1fRn7vHYVctE6wb9p1R/uzZ+YKCI8Kb0Ilujpd+OOHWD3OF3RQ
+	P6HWprwq4dNK4OZrqIPSUzCJuF+QobVFkqQEweQmOxRdQIGgvkg7xeLX8E5F74mLFKNmS6RHgrW
+	8h5obfmBxli8yqQZ4/AXSx76FtAZmyMv9wKygPs8/lUDU4iiexIu3d7/R5ninmaWN83w39croLB
+	nSd+c30xXiloOZ/AxQdYXTvE0Q2uh6b/dED0a0Uso5gu7QGy84FYKVMzCj/dHhRNYBNHGQMZGDC
+	nbexARO5W5mSnhJJFNi15jrQFZlw42eo0CIkkoIESXJCeZ9sJLaQLNci3atYfECV16Q=
+X-Google-Smtp-Source: AGHT+IGBv3Aqwtn7lt6O5w5s9XFTW33H9ZaQD+WHnSPEU2tjIcBqQ3CXdzA4IBwXSMWFuMfZRQ00dQ==
+X-Received: by 2002:a05:600c:6207:b0:450:cabc:a6c6 with SMTP id 5b1f17b1804b1-453372c1b4fmr10520265e9.15.1749793457478;
+        Thu, 12 Jun 2025 22:44:17 -0700 (PDT)
 Received: from MacBook-Air.local ([5.100.243.24])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e184724sm40465025e9.39.2025.06.12.22.43.22
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e14f283sm40965495e9.27.2025.06.12.22.44.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jun 2025 22:43:24 -0700 (PDT)
-Date: Fri, 13 Jun 2025 08:43:20 +0300
+        Thu, 12 Jun 2025 22:44:17 -0700 (PDT)
+Date: Fri, 13 Jun 2025 08:44:13 +0300
 From: Joe Damato <joe@dama.to>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
@@ -67,8 +67,8 @@ Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
 	xiaoning.wang@nxp.com, anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com, bryan.whitehead@microchip.com,
 	ecree.xilinx@gmail.com, rosenp@gmail.com, imx@lists.linux.dev
-Subject: Re: [PATCH net-next 2/6] eth: cxgb4: migrate to new RXFH callbacks
-Message-ID: <aEu6eGlVvNzZnpk0@MacBook-Air.local>
+Subject: Re: [PATCH net-next 3/6] eth: lan743x: migrate to new RXFH callbacks
+Message-ID: <aEu6rQHAW4pXJ-1Q@MacBook-Air.local>
 Mail-Followup-To: Joe Damato <joe@dama.to>,
 	Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
 	netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
@@ -79,7 +79,7 @@ Mail-Followup-To: Joe Damato <joe@dama.to>,
 	bryan.whitehead@microchip.com, ecree.xilinx@gmail.com,
 	rosenp@gmail.com, imx@lists.linux.dev
 References: <20250613005409.3544529-1-kuba@kernel.org>
- <20250613005409.3544529-3-kuba@kernel.org>
+ <20250613005409.3544529-4-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -88,9 +88,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250613005409.3544529-3-kuba@kernel.org>
+In-Reply-To: <20250613005409.3544529-4-kuba@kernel.org>
 
-On Thu, Jun 12, 2025 at 05:54:05PM -0700, Jakub Kicinski wrote:
+On Thu, Jun 12, 2025 at 05:54:06PM -0700, Jakub Kicinski wrote:
 > Migrate to new callbacks added by commit 9bb00786fc61 ("net: ethtool:
 > add dedicated callbacks for getting and setting rxfh fields").
 > This driver's RXFH config is read only / fixed so the conversion
@@ -98,7 +98,7 @@ On Thu, Jun 12, 2025 at 05:54:05PM -0700, Jakub Kicinski wrote:
 > 
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > ---
->  .../ethernet/chelsio/cxgb4/cxgb4_ethtool.c    | 105 +++++++++---------
->  1 file changed, 55 insertions(+), 50 deletions(-)
+>  .../net/ethernet/microchip/lan743x_ethtool.c  | 31 ++++++++++++-------
+>  1 file changed, 19 insertions(+), 12 deletions(-)
 
 Reviewed-by: Joe Damato <joe@dama.to>
