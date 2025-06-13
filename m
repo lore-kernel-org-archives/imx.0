@@ -1,35 +1,35 @@
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E385E2EBDDD
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 13:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A65C2EB5D4
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 13:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749822573; cv=none; b=I05qHXbN0ycgA2dCOApD4zmj7dBkVjC8uCMCFVY1EVG03BJLujUhfCdB+v8IX3PzudxuelSxJE/7NazgLtEK/gPk9J+d4CjDOhDzMbp0/NPAoxgF29UPA8chbhD4NhpxoeOj4ZXariAB5FDUF9d7eSxtx01LxgU/2fe+RNgVH1A=
+	t=1749822576; cv=none; b=hIHaWYIMw/Ef1F4DDmi8oPMwti7rrv/DptQj/467BFB4q3K24HzZXX7+UHUzRyQ5Y1a5CkznuV3JIVk0s6FpRFq+z9b/C5oPY5gv9ZBLekxjPTH76bVLuPaPL5HQBhCixb9dYAB2PjnjglDb/UXOt1ozGQjoTcoPpaMRTUEvehk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749822573; c=relaxed/simple;
-	bh=hkfd6Gh/wEI+E/rejW4nRR6uvwD9wpr+kq7Q4MDtZoI=;
+	s=arc-20240116; t=1749822576; c=relaxed/simple;
+	bh=7U2u8m1HOWXvCAPhiY3kNJj8ufRZpQp8UFUQ9o3/ctA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ez9gg5BRUPSWZtETqP/g7vfZuudCj4xZ1Pr56dCKWmJ1ocXgZq44yrWYxaLtWyhulbYchAhnZnRK+HP3to100NmYLEc5ut6VJr0XX8IN4MnsFTeO/W1V78cjXZcP5Tv1sBv1BtGyS4bmnB2eBSE9UNwAaFQ6CSGIFlkDzYS2tQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XnM39ycK; arc=none smtp.client-ip=217.70.183.199
+	 MIME-Version; b=irFzbRtNZ1/dYcw8nDAY4nhlNrgFzMbIvQkcjhjl3GS2GpGvoHKp7rRPDa4x6gC+q9fSARKOwZs4n1vmHCNHVseOXAujb5+/w5QDdS4j3dXV6PPX4hOH1ar0dLPbk09amPDm+FonlM6ZDo15FgeInyvM3b12A66XUNuyTy18v6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SbIpdGi3; arc=none smtp.client-ip=217.70.183.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XnM39ycK"
-Received: by mail.gandi.net (Postfix) with ESMTPA id 3700C44288;
-	Fri, 13 Jun 2025 13:49:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SbIpdGi3"
+Received: by mail.gandi.net (Postfix) with ESMTPA id AB787442A5;
+	Fri, 13 Jun 2025 13:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749822570;
+	t=1749822572;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3ENkYJtSSz11PHbWU+IQIKoCc5oQ5nWPLWyZhqyIoyE=;
-	b=XnM39ycKxN8idtJEZv1bhoHy7/ipo2La6nKjDzN2WKME3lorJMj4cGq2dHw8zaCxwIjv+o
-	WTBU32mzTTCcuvyBhCaWfGkPZi0oTgJxQKwL5LUuFwEXlY670CF+E/RPHQa++PT/PjT+Zt
-	zM2/2+3q5JE4wINFNvHvValmYzBPOW7zhWoKyp4kW7x9I71Sq3X0379+AblIZ0uCaDBN0L
-	UEPtl6D7jOLjQIwrbf0wrgykkfM+RSRx/eSQcb6goSKMtjDCAJdDTayxyYPILlWkXvV5Ld
-	jtnNCawawNuh154aYKU3syEdrYU6t/6Dx5LfIOPP8c/w3UuszgWBUzLOUT5OGg==
+	bh=S8nX3ZunU99BISVsH+Xvvdch5WbnynZcsdscJ5d2dMU=;
+	b=SbIpdGi3c+2sySfWj8RCDjApl5uswMDpchCsgYKcsB/THBpWHdDJ1/FRQCAK3kbYh0ZUBf
+	ty/6qbi7tODVm9eOKpDE4QiZVpJ/FPE5grt44TQqesg3HZQz78zrGT9d2IPqEfFHg7+oSF
+	ByQY0L35I6kNpJVWQDmntCG3sqbq44Gry3dwH/RBuS6uVuANcElm1lstyszZgSf0l2P+ca
+	4YM9B/l0xKg2q4stYQbFTjQtSSvwg45/EAEaUY5jBk0oH5tuosXYtVmLIbc/B2Nm+Wuf+M
+	eaqWdd+cBZoLjAD/mjdhM7lUEfcpV33ygTYAwexth3aHjPUE15v+UoKufA1KBQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -80,9 +80,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v3 18/28] of: property: Allow fw_devlink device-tree on x86 when PCI device-tree node creation is enabled
-Date: Fri, 13 Jun 2025 15:47:58 +0200
-Message-ID: <20250613134817.681832-19-herve.codina@bootlin.com>
+Subject: [PATCH v3 19/28] clk: lan966x: Add MCHP_LAN966X_PCI dependency
+Date: Fri, 13 Jun 2025 15:47:59 +0200
+Message-ID: <20250613134817.681832-20-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250613134817.681832-1-herve.codina@bootlin.com>
 References: <20250613134817.681832-1-herve.codina@bootlin.com>
@@ -95,72 +95,34 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeelffduleduffelvdeiffettdffffejhefhieffleetjedtuefggffgffduffehgeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgepfeenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegledprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvr
- hhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehffeigfejueelueeuffelueefgfelhfejhfehieegudekteeiledttdfhffekffenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedufeenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegledprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrh
+ hgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
 X-GND-Sasl: herve.codina@bootlin.com
 
-PCI drivers can use a device-tree overlay to describe the hardware
-available on the PCI board. This is the case, for instance, of the
-LAN966x PCI device driver.
+The lan966x clock controller depends on the LAN969x architecture or the
+LAN966x SoC.
 
-Adding some more nodes in the device-tree overlay adds some more
-consumer/supplier relationship between devices instantiated from this
-overlay.
-
-Those fw_node consumer/supplier relationships are handled by fw_devlink
-and are created based on the device-tree parsing done by the
-of_fwnode_add_links() function.
-
-Those consumer/supplier links are needed in order to ensure a correct PM
-runtime management and a correct removal order between devices.
-
-For instance, without those links a supplier can be removed before its
-consumers is removed leading to all kind of issue if this consumer still
-want the use the already removed supplier.
-
-The support for the usage of an overlay from a PCI driver has been added
-on x86 systems in commit 1f340724419ed ("PCI: of: Create device tree PCI
-host bridge node").
-
-In the past, support for fw_devlink on x86 had been tried but this
-support has been removed in commit 4a48b66b3f52 ("of: property: Disable
-fw_devlink DT support for X86"). Indeed, this support was breaking some
-x86 systems such as OLPC system and the regression was reported in [0].
-
-Instead of disabling this support for all x86 system, a first approach
-would be to use a finer grain and disable this support only for the
-possible problematic subset of x86 systems (at least OLPC and CE4100).
-
-This first approach could still leads to issues. Indeed, the list of
-possible problematic system and the way to identify them using Kconfig
-symbols is not well defined and so some system can be missed leading to
-kernel regressions on those missing systems.
-
-Use an other way and enable the support on x86 system only when this
-support is needed by some specific feature. The usage of a device-tree
-overlay by a PCI driver and thus the creation of PCI device-tree nodes
-is a feature that needs it.
+This clock controller can be used by the LAN966x PCI device and so it
+needs to be available when the LAN966x PCI device is enabled.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/lkml/3c1f2473-92ad-bfc4-258e-a5a08ad73dd0@web.de/ [0]
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/of/property.c | 2 +-
+ drivers/clk/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index c1feb631e383..8b5cfee696e2 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1605,7 +1605,7 @@ static int of_fwnode_add_links(struct fwnode_handle *fwnode)
- 	const struct property *p;
- 	struct device_node *con_np = to_of_node(fwnode);
- 
--	if (IS_ENABLED(CONFIG_X86))
-+	if (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_PCI_DYNAMIC_OF_NODES))
- 		return 0;
- 
- 	if (!con_np)
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index 19c1ed280fd7..97ae87d384b7 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -270,7 +270,7 @@ config COMMON_CLK_LAN966X
+ 	tristate "Generic Clock Controller driver for LAN966X SoC"
+ 	depends on HAS_IOMEM
+ 	depends on OF
+-	depends on SOC_LAN966 || ARCH_LAN969X || COMPILE_TEST
++	depends on SOC_LAN966 || ARCH_LAN969X || MCHP_LAN966X_PCI || COMPILE_TEST
+ 	help
+ 	  This driver provides support for Generic Clock Controller(GCK) on
+ 	  LAN966X SoC. GCK generates and supplies clock to various peripherals
 -- 
 2.49.0
 
