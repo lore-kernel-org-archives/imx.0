@@ -1,107 +1,124 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4FD1FECBD
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 15:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB591F463A
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 15:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749830204; cv=none; b=jWnIyv6DWrc32imvn2o6xfvDg8KWVdGVQGlkRJgLln7Jk+vO/Zplb9cxgNOEH0k8hbzQ8rzhOoBixL4pIB6TE5162vlh/0WZN6NpifixC2u59VBcpz7D1v+CdAUvmRkmVysB4ne9dhQ0ni5eVhRA8rOa2WB/2/FNmDTXUAynSQ0=
+	t=1749830293; cv=none; b=gOlFJFrA3T72gVwWFp7f2I5AbXUf4bKxHoKpOVNXMCyRsLK7NgKn3aiIit2XpvY/CvxTUCGOiC5VmuLTpf3zEZAVoNFqjajZXoHmh+rnWeirE1p1Vm5fY1PH6h53/2QH9Z0lwAqA4qrV3hHiCie0qA0rCpW5WsNElQA16Hf8szA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749830204; c=relaxed/simple;
-	bh=OwWwJMJMz1gVCx/M2Des8/aF3uScnadX1L2LxSc73zo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lia9isCdDn+IcmhDXLd2Q8vDRPSTI5AXPs4EZgDLbgPuPCZmBc+U41vrVvEqoPkdRbW/hKVcuiyBIkBcgVot/CkH7BeuPse1QyWWeXYqNBHAS8GPZnGI8H+1tvE0RTMl0aAT8DNWQaWgEigtIu+g9DagAb8GSOV9hLwnNOYdVvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=APNttakw; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749830293; c=relaxed/simple;
+	bh=V9FMKPIwnq1H9P0zOSWLaguOqdABhVFp/9v1hViBzRA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EBvgMlu5onEHnI5h61B8sftNdirO+Q6lc3KNPSemUhyB36vIl7B1DQLiyZL3CjGpHEjBo+1YbdJfKf0g1FrH7NvFYBRKV+P1zozg/MhwmziJsvxUQUS4P5MoEdNgISTDH+DjQRBlhSrlTrUpQTaO4q99+jPoHTz+20VT0rjYAak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jp7oVDfN; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="APNttakw"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a5123c1533so1455328f8f.2
-        for <imx@lists.linux.dev>; Fri, 13 Jun 2025 08:56:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749830201; x=1750435001; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qPo6H/9j3Ay9teefhcqMxpNsx0jvAC7MjlPzeeLu5rE=;
-        b=APNttakw40d0mzxaUbKlzPCP6i5mHOqIQOIFF7PMXAgsrLfbaRI8tliDrHNDV0Uxza
-         2c5kIcbLlVUvy/giECxy4eeGF5RhDXBmL6aYvXGUx1HDPR7KOHOga1HLoq3Fx7n+upEB
-         nc7htfjonVARWgl21o2+UPq5kdJICHQ3wxLl5Myd7yg0zu5VbgSPz0TlsIMlCWg9e8Zl
-         MJD+GV2tjJVWOwZAh6hE39Nv5rLbzHqwULy5jSgFCU1zW4KEOarxfyrs+5NLXfKmLxrK
-         gHtXVCEhdAPyEL5/BNce7TR/dtBkrPbBURiWrfqkYkKxBBCYZj2zODp8DWkWn9pmCCCE
-         9T7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749830201; x=1750435001;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qPo6H/9j3Ay9teefhcqMxpNsx0jvAC7MjlPzeeLu5rE=;
-        b=kzkSDmsS+UXO8O9G+Zw+IWhiFeqpdug4jyZgoVUMZpSYu2CelI5M5xtIwQ0r0mF/0K
-         M5q4PSSH9jm6P9p4T8YHSlBefcY9pH1gN9+G91wd2VVmV1/bQbCzrP0/7zrW9tI5HgBb
-         mIO81UQ+1ZhB1zk+UawV/kbeVgJueKIzNA34gDEOw0ZhnfUUF8UWp315UvAzLeShOiwL
-         AWEt3+hHULXDThWnV/whtG93gIZ9YsDUKn/x0dL5mp3sSeai5jAf9K18bC90xbOmbYNA
-         WMTIAp1JNaaFLQ+RZGDDA4Yd4BaOoHy8IZKtv0aHWjb3BrGjawPyNNgD4abc/ZNMWtBT
-         UOCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXI7QNyuZxzpmfyYtMU40GJBTMdFHSqTN5RdfIffa16FhLT8PozAvw/+AmZ8iYWiNSkByc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxGNBH83yAecgYlzZmVtvQqi1fMB4ByZpf8mtQXW5ppJ7DD3R33
-	P7M6OYJoMofFmnAeg7j7GYbeviKfY/gLxMNFtBMTVFXHMYWFSK5Wu+Ge
-X-Gm-Gg: ASbGncvtpr2jRGpXrsNSlsPZDdj5nRmomiloINoT0+kIuLL3vCuGXevNBbDZnYcLgma
-	whcJZSidw1U6kj/nhKBU7FUyaNAvz/c80wPUnBV/UwXVXJ/3jb/zhnvrgELKlGHy+W/LBgsJE3Y
-	1VRoXkf3jT6NvdE7rquFi/rLbdV81maUwoCrf9v3qvexfjzOl/Z7hR/27pdcpUIXaLsOfpxYDeZ
-	eTFv1msfOUyvXmCq0TLfzGzQl33+UdFVslzvWxkgAf+yusl8I61kF2gq529LlVlqmIU/iSIe8Ht
-	Fi3oVs5sKkgCdk/OHzfv6TuJPf28Dcv+7x7Ky0Z/V9EMoPonDZGBhLaR6MUgPTEQ7Xw5zFWbqnh
-	oixqd4TzEokLprR2pkO5LegWv
-X-Google-Smtp-Source: AGHT+IEek+xBG8qH6etYMJhHA/6eRULw+qWjFJ15S/9q/UV/dFart736CLdrph6JJHU+y3p0PfPeMA==
-X-Received: by 2002:a05:6000:4284:b0:3a4:da87:3a73 with SMTP id ffacd0b85a97d-3a572e8cd82mr226657f8f.42.1749830200407;
-        Fri, 13 Jun 2025 08:56:40 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a54b7asm2782895f8f.16.2025.06.13.08.56.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Jun 2025 08:56:40 -0700 (PDT)
-Date: Fri, 13 Jun 2025 16:56:38 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: James Clark <james.clark@linaro.org>
-Cc: Frank Li <Frank.li@nxp.com>, Vladimir Oltean <olteanv@gmail.com>, Mark
- Brown <broonie@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 2/4] spi: spi-fsl-dspi: Use non-coherent memory for DMA
-Message-ID: <20250613165638.5d8ed000@pumpkin>
-In-Reply-To: <d364667f-e0b1-4f1b-9034-2fadfd5d457b@linaro.org>
-References: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
-	<20250609-james-nxp-spi-dma-v1-2-2b831e714be2@linaro.org>
-	<aEhMBsqlx9I4XqJS@lizhi-Precision-Tower-5810>
-	<d364667f-e0b1-4f1b-9034-2fadfd5d457b@linaro.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jp7oVDfN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749830292; x=1781366292;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=V9FMKPIwnq1H9P0zOSWLaguOqdABhVFp/9v1hViBzRA=;
+  b=Jp7oVDfNEy3d4G4pfI1R7iyCS7QJO1QsDLVR3BCjCFfPx/TkOompHJqf
+   kpKjForpN517uaV/HwV56eoWXQenafURwRfGO6KkgS3w2EyZYH0q3Zig4
+   JRoj/Xy1D0sqNseTKBjNELfwmfjt+Hd9SOpy1vu8g4TeyVA+P1+ErLguo
+   TrU4TN0/KF1MDASxNkjGc6L8dh/9zYn4y/owGcKvdWjJsBU0Mg9m2JS2i
+   kcORaEjA+vlspD5kekcg6qD5JwIzI/qdK5JDkK4FyhVPooPFP2d60vume
+   VkTYEaW+uxdqN996mJx5HpTXStu6Zdeo5z9VAlSuUm5cD1vAhBupu9sK0
+   A==;
+X-CSE-ConnectionGUID: 8V7TXZcsQjmbXiWgvrN5wA==
+X-CSE-MsgGUID: 52tA8/rmTbOBBu4wJtaYYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11463"; a="39661072"
+X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
+   d="scan'208";a="39661072"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:58:11 -0700
+X-CSE-ConnectionGUID: VA2G6141T8+w5h4vLYaebA==
+X-CSE-MsgGUID: ASlK1NJbQtSiVGGS5YDhrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,234,1744095600"; 
+   d="scan'208";a="178842660"
+Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.111.232]) ([10.125.111.232])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 08:58:06 -0700
+Message-ID: <f9ca87ab-e565-431a-9866-d56278cf465f@intel.com>
+Date: Fri, 13 Jun 2025 08:58:03 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/28] cxl/test: Use device_set_node()
+To: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Peter Rosin <peda@axentia.se>, Derek Kiernan <derek.kiernan@amd.com>,
+ Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>,
+ Len Brown <lenb@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Wolfram Sang <wsa@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>,
+ Steen Hegelund <steen.hegelund@microchip.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+ <20250613134817.681832-10-herve.codina@bootlin.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20250613134817.681832-10-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Jun 2025 16:46:36 +0100
-James Clark <james.clark@linaro.org> wrote:
 
-> On 10/06/2025 4:15 pm, Frank Li wrote:
-> > On Mon, Jun 09, 2025 at 04:32:39PM +0100, James Clark wrote:  
-> >> Using coherent memory here isn't functionally necessary.
-> >> Because the
-> >> change to use non-coherent memory isn't overly complex and only a few
-> >> synchronization points are required, we might as well do it while fixing
-> >> up some other DMA issues.  
-> > 
-> > Any beanfit by use on-coherent memory here?
-> > 
-> > Frank
-> >   
+
+On 6/13/25 6:47 AM, Herve Codina wrote:
+> The code set directly dev->fwnode.
 > 
-> Presumably less cache maintenance traffic?
+> Use the dedicated helper to perform this operation.
+> 
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 
-I bet it only helps when cache-coherent memory has to be uncached.
-Otherwise the software cache operations are pretty much guaranteed
-to be more expensive than the hardware ones.
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+>  tools/testing/cxl/test/cxl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
+> index 8a5815ca870d..1db7732a70df 100644
+> --- a/tools/testing/cxl/test/cxl.c
+> +++ b/tools/testing/cxl/test/cxl.c
+> @@ -1046,7 +1046,7 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
+>  {
+>  	device_initialize(&adev->dev);
+>  	fwnode_init(&adev->fwnode, NULL);
+> -	dev->fwnode = &adev->fwnode;
+> +	device_set_node(dev, &adev->fwnode);
+>  	adev->fwnode.dev = dev;
+>  }
+>  
 
-	David
