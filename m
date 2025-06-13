@@ -1,35 +1,35 @@
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E942E6115
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 13:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917342E7639
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 13:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749822545; cv=none; b=HXUTxZOocNtspze4ps8Qd4cEuKOfHRKW1zTtC1ksvB4o58nVv1IlUF+83Je6ntPlexUMjP+WOwaMF6bhi1yZRyC7YXnriDn1/Di1kH2vPXa6l9BEnXCtt8////jhdaMB90aKEIki9dWck8vatheuNlPyY3U9E0wbPa4eZzInppU=
+	t=1749822547; cv=none; b=g/B96/ioDgux10SvwOG8/j4LE5MKSQNE/m9M6uC5eDzj7JLBOfohYqSaZXCv2HEZrhPqwn2Iq2xKMw8EeiI5EpbtA1Ep+A7ueL7cC0zToHL6QFP8rMqH40Kn5RC5A5SSeFfdaOrXI+L3ugiQ1HISulLWkxHllAIXh6Yn6EkPwLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749822545; c=relaxed/simple;
-	bh=76jhIoac+l7wY7kRu+SgDLSKx7quBRo7jrrXD2szRuU=;
+	s=arc-20240116; t=1749822547; c=relaxed/simple;
+	bh=cBc+ed62ycW7P2dJewe9jbMgZQ5PQ5lzTXBJxMDSnGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwaJl8Jeg6K3qTJygvGo5ObHNLGBgFeeIWJyYqkAjwSW7mdw45Tu22OTUTW3ZLVx4Esa/AHFZ65QahJAI8wRKOhYCkO06jPKE8UXBpxPOhwuT+3s33SJQcndp1hSIldWi6xV0jOHFAPnR71jy/YA+d9xE+DhCE9SX+O5UBofIbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=adlR8BkX; arc=none smtp.client-ip=217.70.183.199
+	 MIME-Version; b=tOuMu+7gSBea1HlqmQiX12uGUBg/lE/V7ugBPfBTLKsMkVVqWMgWN5Vzsj7EeI+m57Jf1o65m6akyk6Wz2PHneTxJFE4dmvIJCMY0N+tHYiM996nr8nusnIB9OMjNGc7EeEhm5Uph3XpL/d4eL/IPnKPwIz22+UDYXcLvr/Kh2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nWvBQ595; arc=none smtp.client-ip=217.70.183.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="adlR8BkX"
-Received: by mail.gandi.net (Postfix) with ESMTPA id 8971C42E77;
-	Fri, 13 Jun 2025 13:48:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nWvBQ595"
+Received: by mail.gandi.net (Postfix) with ESMTPA id EBDE544288;
+	Fri, 13 Jun 2025 13:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749822541;
+	t=1749822544;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KVpFY9cJTFG3+SXwZWcq2Mk8FXznG01vlFE4IEFImPE=;
-	b=adlR8BkXJAse71AhOs7Yc5jczpPTRxqxbwmj0FhTvvld9hVkgsUrPkovvKEuZ8qMkIW43B
-	yBB4qZ7WUY0APUhgT6EwRT6I9IxipdAil3v4bvhISEHkDEWCIYWmJ5oNm8YT1FE5NtLIg8
-	8qnr5dgFC2u0KuLUfQ0ZjcZY9VP7ElldulkRa6Y4HKwMp81Gz67LEyZHuyk4HNOwyvfZEO
-	dg+1tw2SuDYGIqoAgOlUZT8Y41d/BTeVKPVY1jSLDr4+lySJJfHjLsXu17jDmPb+/Q7PdI
-	ztlibfiuwYQAugIK1ztcavc2kFcNRYS6SxWHk6E0bpv2c/XGRyTz8xTF9ypU5A==
+	bh=ovXseJZiJWVWPvrIc7eb6FCjvf38EUrDMlBZAD6sv1A=;
+	b=nWvBQ595N65lsfKoJPVNz0CpTNv8kThmQaEsJZxbw6ogv8VZc9h8JgfjeCVngX5eYSZOYp
+	PsRTL3R/1A9fQNi352cQNbq/UFykgs3qdTbdn6uVGju6YyQbvC3Ak2ZA5j0f6RcD8DnuXl
+	XkR+8QuhgrLleU6/SFtGY2WPVxDEK0xXCk+PkYQKuC2jDh/aZ1lKvpO+eKHuhgSzjfKtMy
+	NBLselHKglfaYXslrdtBnridbHndsGOWnSivJD53lAUc0Eveloj2tOm2pk5XMMJ82A7MhW
+	2iN2/n6i9oFXzj4uluWr1fo46jtJDWwbkVjPSazeTUHD3BNoTNH0MlCL6fRUlQ==
 From: Herve Codina <herve.codina@bootlin.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -80,9 +80,9 @@ Cc: Wolfram Sang <wsa@kernel.org>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v3 07/28] drivers: core: Use fw_devlink_set_device()
-Date: Fri, 13 Jun 2025 15:47:47 +0200
-Message-ID: <20250613134817.681832-8-herve.codina@bootlin.com>
+Subject: [PATCH v3 08/28] pinctrl: cs42l43: Use fw_devlink_set_device()
+Date: Fri, 13 Jun 2025 15:47:48 +0200
+Message-ID: <20250613134817.681832-9-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250613134817.681832-1-herve.codina@bootlin.com>
 References: <20250613134817.681832-1-herve.codina@bootlin.com>
@@ -95,7 +95,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehffeigfejueelueeuffelueefgfelhfejhfehieegudekteeiledttdfhffekffenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedvnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeelpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhr
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehffeigfejueelueeuffelueefgfelhfejhfehieegudekteeiledttdfhffekffenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpeegnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeelpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhr
  ghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
 X-GND-Sasl: herve.codina@bootlin.com
 
@@ -106,31 +106,22 @@ operation.
 
 Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/base/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/cirrus/pinctrl-cs42l43.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index ce367c44f642..3afe821f37f2 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -3742,7 +3742,7 @@ int device_add(struct device *dev)
- 	 * device and the driver sync_state callback is called for this device.
- 	 */
- 	if (dev->fwnode && !dev->fwnode->dev) {
--		dev->fwnode->dev = dev;
-+		fw_devlink_set_device(dev->fwnode, dev);
- 		fw_devlink_link_device(dev);
+diff --git a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
+index 628b60ccc2b0..8df85ec5a02e 100644
+--- a/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
++++ b/drivers/pinctrl/cirrus/pinctrl-cs42l43.c
+@@ -561,7 +561,7 @@ static int cs42l43_pin_probe(struct platform_device *pdev)
+ 		fwnode = fwnode_get_named_child_node(fwnode, "pinctrl");
+ 
+ 		if (fwnode && !fwnode->dev)
+-			fwnode->dev = priv->dev;
++			fw_devlink_set_device(fwnode, priv->dev);
  	}
  
-@@ -3902,7 +3902,7 @@ void device_del(struct device *dev)
- 	device_unlock(dev);
- 
- 	if (dev->fwnode && dev->fwnode->dev == dev)
--		dev->fwnode->dev = NULL;
-+		fw_devlink_set_device(dev->fwnode, NULL);
- 
- 	/* Notify clients of device removal.  This call must come
- 	 * before dpm_sysfs_remove().
+ 	priv->gpio_chip.fwnode = fwnode;
 -- 
 2.49.0
 
