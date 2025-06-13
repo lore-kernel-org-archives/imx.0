@@ -1,141 +1,75 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956B12D1311
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 13:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71552293C43;
+	Fri, 13 Jun 2025 13:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749822598; cv=none; b=ZdAqbKDWqL2YVxfkjlF8PCqR+jUlgWD06hDKiiv8cxM46r/jOXRxPfhYXtJZYj5xwxSo9g5CyPZM6YvyA93pr4jYGjI9k/Txl/EiOZUZ35zLHtu8tLMedwNp1UqmUnBmMMZMmclORyDkMGPI3XwQWErcs2IJihococrEyskQXRQ=
+	t=1749823040; cv=none; b=VZM35EFG0XnG6KdEEoM7oNLAXaVFP6hmRhNXhj7dYpjjdWODkCtDPY3/zOqX5TSzKGGikP4nwA6sbRwocEv0WTECK3zKtoJuWfpAbvATnJ6zuGUnRISyA+8KJ3/8j+sXDTyxRaeWwrWIXZfSuCrIbYCIfJ5BpZwLqQds4LJ/XIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749822598; c=relaxed/simple;
-	bh=XfaFZJbpPnn5P7AWNKZTZI2bEWtKdKvNZh+ex9dhxL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUCaQT2z0IwATkhwRSS2Fg27502cMDVkuec2P9n6TiIakyTpIkRj119woO8B2V2rUr5JlWBat/8Xt8xHgMBj2J9rs7sC7BT+csu8+2tg6rJhVLzvmt3jTkEoYeibB/ZNswVEw00Nd8osh+m9iCG548cRZwMCuvIh+7qrcdQ3pqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PmOtPKRp; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1749823040; c=relaxed/simple;
+	bh=Ap3YfoMrAAPUvNenAlN6PgDCXyKScfqGCsqAZOV8aE0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=U/fQmeEAfRyLsVSbHtUl/hzEe6MQi9c4RK+MJhJL/ygDqHqH+CeI5+0SXPlJrMAsZF6PwKBYLso/VSUmWGmSV34wT7horJnlr9BDDp4XyaPLNjh3zVnZ1ERdTLqeFhOB9PmznrQ59QtBqaEFrjSy+2feg0PQs0Tuxukumt8jvfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0YJdYSB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PmOtPKRp"
-Received: by mail.gandi.net (Postfix) with ESMTPA id 8D746439C1;
-	Fri, 13 Jun 2025 13:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749822595;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2WUtGaDXoMVBG3In2EoMbIWbQFZXS/XzmECPUwP3qOk=;
-	b=PmOtPKRpo1zl6cFiM5WFK+zH72UPlsNWbWesWXOzOa13dF6NrYrd9tHWFSan/VDfOYZOtN
-	xt+fP9HV1YOyX2zl/UKObG4aETC/HfctdPOOhMjHTs3ZPB+AK//6w0cexG7wgr28Bubksh
-	Mt0ksWeZwRWyDAfpjI5FDGeeShEkkBnWwTrsfvOOt06Kz4md8o01HZ7aRvtLolqxtpa6vL
-	/AWfl50UTlHeMmMLmg3fxUhKXGz+sb0o/5dsfIWYBLdU188iXAJyVZypSn0COvpAKXwM8T
-	IvKwRxUx9AAsjO/F3aRHAXycD9nv1X6CegugSnEgpzrYo8J02vEsGAtlEN+DbQ==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v3 28/28] misc: lan966x_pci: Add drivers needed to support SFPs in Kconfig help
-Date: Fri, 13 Jun 2025 15:48:08 +0200
-Message-ID: <20250613134817.681832-29-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250613134817.681832-1-herve.codina@bootlin.com>
-References: <20250613134817.681832-1-herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0YJdYSB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F558C4CEEF;
+	Fri, 13 Jun 2025 13:57:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749823040;
+	bh=Ap3YfoMrAAPUvNenAlN6PgDCXyKScfqGCsqAZOV8aE0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=f0YJdYSBM0NhkuR+ilaaiG+/5suEAkg6qQuSWwqD3/t3vGt6i6iY6Jy80l2nyrq0+
+	 ffodXlfZP5yW3t0K9NdkZ/3yYqP7rsy6xkOWF8lOIhHT1nlzwziFnL3v8Feefxc/JS
+	 pxr+pksRSwTJ4ujPRXd0aGwlC5yq0ktpox+/ynb2N4PLfyYzfkAySNAg8R08EjUJDX
+	 SNz0+U2Heyh40/Uru2pNo4yoNuXLvnN6L8ttdcqbXx6FW5inZpl5tgaocbCx94IxKe
+	 RSm3rk9bRz/y5BGo5U+alYKWtttJ8B2MT7IRoo/HmAcCf9Es2ZMStJZox7i7jksnwl
+	 4ooZuaNqRwMiA==
+From: Lee Jones <lee@kernel.org>
+To: linux-kernel@vger.kernel.org, 
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: michael@amarulasolutions.com, Frank Li <Frank.Li@nxp.com>, 
+ linux-amarula@amarulasolutions.com, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20250530160748.2476088-2-dario.binacchi@amarulasolutions.com>
+References: <20250530160748.2476088-1-dario.binacchi@amarulasolutions.com>
+ <20250530160748.2476088-2-dario.binacchi@amarulasolutions.com>
+Subject: Re: (subset) [PATCH v5 1/6] dt-bindings: mfd: convert mxs-lradc
+ bindings to json-schema
+Message-Id: <174982303687.920028.789914432686351362.b4-ty@kernel.org>
+Date: Fri, 13 Jun 2025 14:57:16 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeduudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehffeigfejueelueeuffelueefgfelhfejhfehieegudekteeiledttdfhffekffenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedvudenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegledprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrh
- hgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomh
-X-GND-Sasl: herve.codina@bootlin.com
+X-Mailer: b4 0.15-dev-459a0
 
-Recently, new device-tree nodes were added in the overlay to add support
-for SFPs on LAN966x PCI device.
+On Fri, 30 May 2025 18:07:32 +0200, Dario Binacchi wrote:
+> Convert the Freescale MXS Low-Resoulution ADC (LRADC) device tree
+> binding documentation to json-schema.
+> 
+> The clocks and #io-channel-cells properties have also been added; They
+> are present in the respective SoC DTSI files but were missing from the
+> old mxs-lradc.txt file.
+> 
+> [...]
 
-The LAN966X Kconfig help section mentions drivers related to devices
-added based on the overlay description.
+Applied, thanks!
 
-Add drivers related to devices described by those new nodes in the
-already existing driver list.
+[1/6] dt-bindings: mfd: convert mxs-lradc bindings to json-schema
+      commit: e528f715cd30110137fb4830eceea6c817285163
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/misc/Kconfig | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index b05fddff8f97..ab6a94b201be 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -636,13 +636,18 @@ config MCHP_LAN966X_PCI
- 	  Even if this driver does not depend on those other drivers, in order
- 	  to have a fully functional board, the following drivers are needed:
- 	    - fixed-clock (COMMON_CLK)
-+	    - i2c-mux-pinctrl (I2C_MUX_PINCTRL)
- 	    - lan966x-cpu-syscon (MFD_SYSCON)
-+	    - lan966x-gck (COMMON_CLK_LAN966X)
- 	    - lan966x-miim (MDIO_MSCC_MIIM)
- 	    - lan966x-oic (LAN966X_OIC)
- 	    - lan966x-pinctrl (PINCTRL_OCELOT)
- 	    - lan966x-serdes (PHY_LAN966X_SERDES)
- 	    - lan966x-switch (LAN966X_SWITCH)
- 	    - lan966x-switch-reset (RESET_MCHP_SPARX5)
-+	    - sam9x60-i2c (I2C_AT91)
-+	    - sama5d2-flexcom (MFD_ATMEL_FLEXCOM)
-+	    - sfp (SFP)
- 
- source "drivers/misc/c2port/Kconfig"
- source "drivers/misc/eeprom/Kconfig"
--- 
-2.49.0
+--
+Lee Jones [李琼斯]
 
