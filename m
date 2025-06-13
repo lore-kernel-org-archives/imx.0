@@ -1,181 +1,146 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671E9279DC6
-	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 09:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EADE24DD1A
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 09:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749805579; cv=none; b=dOACrJAStSIe0pvhGBNB7qzdvA59bsij2ehzVPpN0lNHyGeUovKbrxdflTvajnKyJi6lwvKih667yFh+yW5N3AXfWO/W+bvTaMb3zHxPCmBNm3JxXNsqeZsJwQuKZrFJpywoacAXwCkY8J4NOit0gLXYdov8JvyC/vTst4aCbog=
+	t=1749806965; cv=none; b=nf2pnkTqbVQsKUFgMUunz0qhM4FYfCnCGzyaVXt4E8ErdOoCO2VVSv6CZCv+hgkastplI421SKBhZlHU1P9uq5fIPpOJUrGgU7Sz1wKwQ3UDJDEPWld04gsZ0PUhrJucBlFUC5pJOx/wiyrrUiWzArW7GI5a/zU3paYcIHMuySU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749805579; c=relaxed/simple;
-	bh=6UPQVCHRLuTslti+Nm1GQGr24XJwCMN6HPSLLzHPlDU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn9Z6bbFnFTpZ+q3Tk4k+d25TdltDPhV6NvQrFfAtA87mnlUnPcoLm9DGD1Bc9eLUGEH+luaDOI+9VKh4qI5QAUfvpNQQ75s4/P3h/SztB2tuFoEEGAJ4hU+UpN6e6bcAp33qlcgn0JlaIRH8BOBCu8y/xbzVpvxpuAwm/wNRRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rn6TtKGP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=f0RIyjap; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=O6Z0PRGP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GxplLMXk; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1749806965; c=relaxed/simple;
+	bh=7p1mVSNV29y4bRDyz82Q/GbdEY/tcWDm2Ne86B3G/wc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=E4kpJ9bF+hGxXP9d2geeamgQKi2DN3a5b1Urie3KzSFqx7ZkX06FB0GMz+/XA77tm0qolFlHNksLY1VSlKZ8aNAyOwehLgYrfk9IWm7YEMQiQl3Hb7/olhWjptrnDWBTfb1wI3b96aAD0nDOUOZs1aqDQzHSc/vhxttzq3Zg1YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LWuLjdnV; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rn6TtKGP";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="f0RIyjap";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="O6Z0PRGP";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GxplLMXk"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EF9B41F8A8;
-	Fri, 13 Jun 2025 09:04:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749805494; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xTgJLZKjv1ShNDiAP6gz2e2IBWIMv9+AKE3JgrfHkhY=;
-	b=rn6TtKGPOJFjUMFwbSCJZfAkpnCGSmgDNkjnf/6To20/nOznZ/odaS1mr2MD2JpTgph0Lc
-	Jhz/eiLZN72mNMs8kA8onVO+3x28S59aRsqOX0xFOHYROP9AeRrVw0ArWqBR4G14ktRi/b
-	qEzXSiJCRFe+4cAih2yx9mEBcHaJGb8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749805494;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xTgJLZKjv1ShNDiAP6gz2e2IBWIMv9+AKE3JgrfHkhY=;
-	b=f0RIyjapDNaqegxghUGTlgNwmkujbOrE2wlhF0Oy99TvxOmzchXRGN2Vf83d/rhmLHYcxk
-	M/dcwZkEFKZF4iAA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749805493; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xTgJLZKjv1ShNDiAP6gz2e2IBWIMv9+AKE3JgrfHkhY=;
-	b=O6Z0PRGPpq8mmeve6mEtv2wlDyR3y4S617WpIQTDLVGyU5wuFemZB68O8J5ngmSWkIhtLj
-	xyoqh0PR2FCuuxDLNRwv4jOFam7oa8P0Lek5eCKAMkUJp4DYlkA1mu8nH5WJu9ug6B72Gv
-	liWA+CEHcnaG23m9PlyRvCNaEkGzkhg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749805493;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xTgJLZKjv1ShNDiAP6gz2e2IBWIMv9+AKE3JgrfHkhY=;
-	b=GxplLMXkE2H32FCXiXASCcEVUHD/OZuHNzugRRtn2fz2Qc/U+QCSPGp/8hgatFA36DcWVs
-	cnySRfhImxN7gKDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 62C7213A9C;
-	Fri, 13 Jun 2025 09:04:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eCq/FrXpS2inNAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 13 Jun 2025 09:04:53 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: simona@ffwll.ch,
-	airlied@gmail.com,
-	mripard@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	geert@linux-m68k.org,
-	tomi.valkeinen@ideasonboard.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	freedreno@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-samsung-soc@vger.kernel.org,
-	nouveau@lists.freedesktop.org,
-	virtualization@lists.linux.dev,
-	spice-devel@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-tegra@vger.kernel.org,
-	intel-xe@lists.freedesktop.org,
-	xen-devel@lists.xenproject.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH v5 25/25] drm/xlnx: Compute dumb-buffer sizes with drm_mode_size_dumb()
-Date: Fri, 13 Jun 2025 11:00:44 +0200
-Message-ID: <20250613090431.127087-26-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250613090431.127087-1-tzimmermann@suse.de>
-References: <20250613090431.127087-1-tzimmermann@suse.de>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LWuLjdnV"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a531fcaa05so1099999f8f.3
+        for <imx@lists.linux.dev>; Fri, 13 Jun 2025 02:29:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749806962; x=1750411762; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aXXFdWVcp6O0/7ql+/EjZalJcJlxIhnM45D+Krf1y+k=;
+        b=LWuLjdnVYcEjXexAb6Qx0ANmcKkoZdAHJ3bJqEARy8zUDdqeikRjPOCbm5/L6dAjkx
+         QOx2TmERhyCicOdqneGa4u1IRSyipQHMfLa2GvTCZhwRIvq26uk6Z2A49sdWKQ+bvId6
+         hhOlz979IOOoYdFwuqdz9kCbAEJ+HPX0+B64V7vs6xxU7QseflF/W9AozbGfCQ1soWef
+         7njpgx3p5mygrZP0sBO1AJUfH2eDeKOwA9qKFr8CATU/mLPBewK8f2iTm9OgGN8Sn0s8
+         nEI4Y2bxMjk7jRBe6OpOMOkDwlYtnio+4AahpofRCmR2xi3chKVM0ubJ4QJNpBiqYg01
+         5Cow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749806962; x=1750411762;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aXXFdWVcp6O0/7ql+/EjZalJcJlxIhnM45D+Krf1y+k=;
+        b=JhZN0s8+jbQ4N1+Fink/NqriqVCamF+6SDrulc+1xwzXVcA2u84S+HMzVqYTOTlApP
+         e8OMwCb/q3ZuiRVLsN9xNihorhHVtIpjyebIv4630P/SmZfCn0pRN9zgsyEeNzqjPLgJ
+         D0GgBEB12PvMASm0UgbozYOUCUNbbfFifksGijoY5n+qWrktG2bHWHrsqV/q7/KsN+Vz
+         DfBmfEcTvtSuFnnjG6Ra5Ik+bHIrMa/bkpT9wsz7ktnKg1m9eh97np4RCS1LP5q6Jqs6
+         0Q69IN1zPukNQhWWpchQa2fvOLDTLJUiNP8OqNOa1t9fA5ZokdE+DEFJsmFFwACPuZS+
+         qD/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVkEGGwV6g84/CJJRs2iLi3VSTj1jVXII8+adM00zR8vOrhQcYSPiR+s4kZqLl/Yg5nb7Q=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyPauM03h7H3sN1cRd6uouJans+OL2b70ju7A1NFKyGXMvp4AwC
+	Ra/qBB+aJq9FG3QOok4slKICHjSHVSccQnfehi5RhtR1vGAhdCzFsgt1959DQ4RRz/o=
+X-Gm-Gg: ASbGncsIKgrlkpyuh0psTqDdMNHM1g/+tOCyhYNjr0LxnRBNhlrkJg+jKisIPr7xkZh
+	20pbzIrd1wXwaErwqoiX4Udy7ESYHh35WEyKHCjSIU76o9gD71ktRaTy4/TYbIjmBM3wmEXY0LP
+	ff0U6wwrCNlLOKnQBhYtTjHW2cye6pPdbRezs7uFPMtF9kVFzxmRxo61ef1f6aNyjPaMpsBON3Y
+	BT2mK7LJPCHgHd2FAWurxks4LkBCWcun2iBbOmrdbbuewkrEQ6Bq2TUPQzaaayNPrOApb84cnGG
+	UJ7ktlULRPuZWTekOkmurVGYKy2CDrI4p2YT45rDYH7coi8W1RBVeay2KZuwWnP4YH5wSd0zKev
+	FEAGvXA==
+X-Google-Smtp-Source: AGHT+IEf7+ii7ddVnHoaRI33MyA3PGEpFJri/RW3ePQZatTIPD6EJ8REtOXCa7Ftpau/vL6emVs8iA==
+X-Received: by 2002:a05:6000:310d:b0:3a4:f6bc:d6f1 with SMTP id ffacd0b85a97d-3a56866f804mr2073713f8f.14.1749806961939;
+        Fri, 13 Jun 2025 02:29:21 -0700 (PDT)
+Received: from ho-tower-lan.lan ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568b08a2bsm1805946f8f.62.2025.06.13.02.29.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 02:29:21 -0700 (PDT)
+From: James Clark <james.clark@linaro.org>
+Subject: [PATCH v2 0/5] spi: spi-fsl-dspi: Target mode improvements
+Date: Fri, 13 Jun 2025 10:28:55 +0100
+Message-Id: <20250613-james-nxp-spi-dma-v2-0-017eecf24aab@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-5.30 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	FREEMAIL_TO(0.00)[ffwll.ch,gmail.com,kernel.org,linux.intel.com,linux-m68k.org,ideasonboard.com];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLqirfcw6gnbcr9a9yhi49fhi6)];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	URIBL_BLOCKED(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ideasonboard.com:email,suse.de:email,suse.de:mid];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -5.30
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFfvS2gC/3WNyw6CMBBFf4V07Zh2kJcr/8OwaGGAMdqS1hAM4
+ d8tJCYudHlucs5dRCDPFMQ5WYSniQM7GwEPiWgGbXsCbiMLlJjJDBFu+kEB7DxCGBnahwZdVQU
+ ZMp3JjYje6KnjeW9e68gDh6fzr/1iUtv6qZU/apMCCUrmJWFKsunyy52t9u7ofL/VdzWX1T8VT
+ ZkqKtTJEH6r9bqubymLa4/uAAAA
+To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Larisa Grigore <larisa.grigore@nxp.com>, 
+ Frank Li <Frank.li@nxp.com>, linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, James Clark <james.clark@linaro.org>
+X-Mailer: b4 0.14.0
 
-Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch and
-buffer size. Align the pitch according to hardware requirements.
+Improve usability of target mode by reporting FIFO errors and increasing
+the buffer size when DMA is used. While we're touching DMA stuff also
+switch to non-coherent memory, although this is unrelated to target
+mode.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+The first commit is marked as a fix because it can fix intermittent
+issues with existing transfers, rather than the later fixes which
+improve larger than FIFO target mode transfers which would have never
+worked.
+
+With the combination of the commit to increase the DMA buffer size and
+the commit to use non-coherent memory, the host mode performance figures
+are as follows on S32G3:
+
+  # spidev_test --device /dev/spidev1.0 --bpw 8 --size <test_size> --cpha --iter 10000000 --speed 10000000
+
+  Coherent (4096 byte transfers): 6534 kbps
+  Non-coherent:                   7347 kbps
+
+  Coherent (16 byte transfers):    447 kbps
+  Non-coherent:                    448 kbps
+
+Just for comparison running the same test in XSPI mode:
+
+  4096 byte transfers:            2143 kbps
+  16 byte transfers:               637 kbps
+
+These tests required hacking S32G3 to use DMA in host mode, although
+the figures should be representative of target mode too where DMA is
+used. And the other devices that use DMA in host mode should see similar
+improvements.
+
+Signed-off-by: James Clark <james.clark@linaro.org>
 ---
- drivers/gpu/drm/xlnx/zynqmp_kms.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Changes in v2:
+- Store status in cur_msg->status rather than adding xfer_status
+- Show exact underflow/overflow flags in error message
+- Rate limit error messages
+- Add a comment about resetting the completion counter prior to transfer
+- Rename dspi_is_fifo_overflow() -> dspi_fifo_error()
+- Add performance figures to cover letter
+- Rebase onto https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git/for-next
+  to avoid some conflicts
+- Link to v1: https://lore.kernel.org/r/20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org
 
-diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-index b47463473472..7ea0cd4f71d3 100644
---- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
-+++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-@@ -19,6 +19,7 @@
- #include <drm/drm_crtc.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
-+#include <drm/drm_dumb_buffers.h>
- #include <drm/drm_encoder.h>
- #include <drm/drm_fbdev_dma.h>
- #include <drm/drm_fourcc.h>
-@@ -363,10 +364,12 @@ static int zynqmp_dpsub_dumb_create(struct drm_file *file_priv,
- 				    struct drm_mode_create_dumb *args)
- {
- 	struct zynqmp_dpsub *dpsub = to_zynqmp_dpsub(drm);
--	unsigned int pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
-+	int ret;
- 
- 	/* Enforce the alignment constraints of the DMA engine. */
--	args->pitch = ALIGN(pitch, dpsub->dma_align);
-+	ret = drm_mode_size_dumb(drm, args, dpsub->dma_align, 0);
-+	if (ret)
-+		return ret;
- 
- 	return drm_gem_dma_dumb_create_internal(file_priv, drm, args);
- }
+---
+James Clark (4):
+      spi: spi-fsl-dspi: Clear completion counter before initiating transfer
+      spi: spi-fsl-dspi: Use non-coherent memory for DMA
+      spi: spi-fsl-dspi: Store status directly in cur_msg->status
+      spi: spi-fsl-dspi: Report FIFO overflows as errors
+
+Larisa Grigore (1):
+      spi: spi-fsl-dspi: Increase DMA buffer size
+
+ drivers/spi/spi-fsl-dspi.c | 203 ++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 144 insertions(+), 59 deletions(-)
+---
+base-commit: 3adf5ba9ad767e33db2d6aab01bbca396bcb614b
+change-id: 20250522-james-nxp-spi-dma-a997ebebfb6b
+
+Best regards,
 -- 
-2.49.0
+James Clark <james.clark@linaro.org>
 
