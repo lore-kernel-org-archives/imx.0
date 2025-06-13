@@ -1,152 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730091DE884;
-	Fri, 13 Jun 2025 00:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CE1155725
+	for <imx@lists.linux.dev>; Fri, 13 Jun 2025 01:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749776091; cv=none; b=EjHgJwNc2ZYeyveh3+I9O7rjiC0fhtSR7LUdSw2oDPAdnWjtQ4qVgaxqJVtHk/mycKimOeE7zItAa87z4Y28SVg93KnPlT4m4/IKwoK56Z/+F+VEceB8gjNsxjQO88ebyu+UWHf7I8CMDqFx9YSaCzgML4qfJ6kwWQkAGQGSSbc=
+	t=1749778945; cv=none; b=r87oe52cM1wzPwrWHFVicXM57pjJPkWssQTYzXdm6nbpZuGWEaVDYktoPJpf9vpFDv6F3QvQRjYMbgJ1ekFBfVhM61UO5pHMHOA8QZzwr6WYaNipgc5dw45hmALJ6LR3hx3ffNYi8SWX7ulB/xGZ7wEeilogWDxABAG56ct5vig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749776091; c=relaxed/simple;
-	bh=DxdKppymL/PIhFq67u/hOifSsa2/rVcZavandpvYWUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzBDoqblg9qC0lw+8svu3mrYx1B3FA6Y7Wo9Q0oxzw0gmfrRky62Iyhz1KBPK089m49tPaHVqbBK13oE+KVRn5hFrKwCqd2P9aRg3ZI8K4dxUI2x6OJZ1NkuBBezk6PKxSBApTc9weScLjt1Lfn/av8xHdWq7a0i1ZiySV1FqL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ezh/tMpF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749778945; c=relaxed/simple;
+	bh=tLzU6/YncIma45YYmBLecwFz7bOFDq/gxS/2axTLZGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YyC4OX+9tv9wz3pGrVxcqE9yeiYdX7uZXeZIBt/j4lo1tmBRvOaVquhKVrcG3Vb85yEIAhivkMbe9tLMrfz42NOEb0iLxxr3Po99szYaEws/bGkelq33KcEdPmo4yvKJ9nWrQqc2F8qvGENhhPBIfr5NtcMu/oE1UZhcC34MJFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=SAVjJQ1t; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ezh/tMpF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FB1C4CEEA;
-	Fri, 13 Jun 2025 00:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749776091;
-	bh=DxdKppymL/PIhFq67u/hOifSsa2/rVcZavandpvYWUo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ezh/tMpFhng8jS9u/M3Rez6fkiQK2j2oAT6ZRIUBVHIXCMiPX5i4VKTpOzKMGAP5N
-	 /oUkvocGvF22bOColo0qyFv2zM2vs+jnBpAevkubiehFIeNaJM7pqf96jWbnPK3Zry
-	 REfhetxkvXsk8eYfNadlLp6cu2nVE8gU8QBRZQExFrZC7vpON6op1VbtkTxFv7CgCA
-	 ySHJ2ETOJJebnbRlHnxI6koMmmMGRe3qTJKe8+BtqNgw/FXojPiPmwKAe0cOW/qEh2
-	 RYBO1EqNDEPJWm5PO+aiUiAQG6s4gUQhUg71KjHJbYxX0LDXdBgeVbphHIMMeWlVgY
-	 4uUiaULEd3T/w==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	bharat@chelsio.com,
-	benve@cisco.com,
-	satishkh@cisco.com,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	wei.fang@nxp.com,
-	xiaoning.wang@nxp.com,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	bryan.whitehead@microchip.com,
-	ecree.xilinx@gmail.com,
-	rosenp@gmail.com,
-	imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 6/6] eth: sfc: falcon: migrate to new RXFH callbacks
-Date: Thu, 12 Jun 2025 17:54:09 -0700
-Message-ID: <20250613005409.3544529-7-kuba@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250613005409.3544529-1-kuba@kernel.org>
-References: <20250613005409.3544529-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="SAVjJQ1t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=/YsHuhFMK2Ld2dcwyKaSNTxrpFLRS6RlejH9OKuA/eg=;
+	b=SAVjJQ1tBeMju1DMkOjVOy3pjosvQPsZfbFEAOZx+cRnHqbiV+y/m5pO4OxLBV
+	G8Nw9FA5TsCVis34LPiCVD8CMgMUik8JTZdO0itfFjPzed0H0d1atWHwkYh6IUN5
+	HqIRZMHCI6T7PUoopJlJ8hz5+ktjf8ZeAYGRcn06R5dBU=
+Received: from dragon (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgD3nzvWgUtoaZmIAA--.34451S3;
+	Fri, 13 Jun 2025 09:41:44 +0800 (CST)
+Date: Fri, 13 Jun 2025 09:41:42 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	Frank Li <frank.li@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v17 0/7] firmware: imx: driver for NXP
+ secure-enclave
+Message-ID: <aEuB1qgd6aVl0i7i@dragon>
+References: <20250426-imx-se-if-v17-0-0c85155a50d1@nxp.com>
+ <aEqMSG8k+NpQ7ROH@dragon>
+ <AM9PR04MB86048A698B03E974CFD3DB489574A@AM9PR04MB8604.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM9PR04MB86048A698B03E974CFD3DB489574A@AM9PR04MB8604.eurprd04.prod.outlook.com>
+X-CM-TRANSID:M88vCgD3nzvWgUtoaZmIAA--.34451S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUYJPEUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCwVrZWhLXLObUwAAsE
 
-Migrate to new callbacks added by commit 9bb00786fc61 ("net: ethtool:
-add dedicated callbacks for getting and setting rxfh fields").
-This driver's RXFH config is read only / fixed so the conversion
-is purely factoring out the handling into a helper.
+On Thu, Jun 12, 2025 at 09:42:46AM +0000, Pankaj Gupta wrote:
+> Hi Shawn,
+> 
+> To test it on MX93, you need additional patches on top of these.
+> 
+> The plan was to send the next patch-set to enable the support for MX93, once
+> these got merged.
+> 
+> If you suggest, I can share the patche-set to enable MX93, as an attachment
+> to you only.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/sfc/falcon/ethtool.c | 51 +++++++++++++----------
- 1 file changed, 28 insertions(+), 23 deletions(-)
+Yes, please.  I would like to test the driver before it gets merged,
+thanks!
 
-diff --git a/drivers/net/ethernet/sfc/falcon/ethtool.c b/drivers/net/ethernet/sfc/falcon/ethtool.c
-index 04766448a545..6685e71ab13f 100644
---- a/drivers/net/ethernet/sfc/falcon/ethtool.c
-+++ b/drivers/net/ethernet/sfc/falcon/ethtool.c
-@@ -943,6 +943,33 @@ static int ef4_ethtool_get_class_rule(struct ef4_nic *efx,
- 	return rc;
- }
- 
-+static int
-+ef4_ethtool_get_rxfh_fields(struct net_device *net_dev,
-+			    struct ethtool_rxfh_fields *info)
-+{
-+	struct ef4_nic *efx = netdev_priv(net_dev);
-+	unsigned int min_revision = 0;
-+
-+	info->data = 0;
-+	switch (info->flow_type) {
-+	case TCP_V4_FLOW:
-+		info->data |= RXH_L4_B_0_1 | RXH_L4_B_2_3;
-+		fallthrough;
-+	case UDP_V4_FLOW:
-+	case SCTP_V4_FLOW:
-+	case AH_ESP_V4_FLOW:
-+	case IPV4_FLOW:
-+		info->data |= RXH_IP_SRC | RXH_IP_DST;
-+		min_revision = EF4_REV_FALCON_B0;
-+		break;
-+	default:
-+		break;
-+	}
-+	if (ef4_nic_rev(efx) < min_revision)
-+		info->data = 0;
-+	return 0;
-+}
-+
- static int
- ef4_ethtool_get_rxnfc(struct net_device *net_dev,
- 		      struct ethtool_rxnfc *info, u32 *rule_locs)
-@@ -954,29 +981,6 @@ ef4_ethtool_get_rxnfc(struct net_device *net_dev,
- 		info->data = efx->n_rx_channels;
- 		return 0;
- 
--	case ETHTOOL_GRXFH: {
--		unsigned min_revision = 0;
--
--		info->data = 0;
--		switch (info->flow_type) {
--		case TCP_V4_FLOW:
--			info->data |= RXH_L4_B_0_1 | RXH_L4_B_2_3;
--			fallthrough;
--		case UDP_V4_FLOW:
--		case SCTP_V4_FLOW:
--		case AH_ESP_V4_FLOW:
--		case IPV4_FLOW:
--			info->data |= RXH_IP_SRC | RXH_IP_DST;
--			min_revision = EF4_REV_FALCON_B0;
--			break;
--		default:
--			break;
--		}
--		if (ef4_nic_rev(efx) < min_revision)
--			info->data = 0;
--		return 0;
--	}
--
- 	case ETHTOOL_GRXCLSRLCNT:
- 		info->data = ef4_filter_get_rx_id_limit(efx);
- 		if (info->data == 0)
-@@ -1343,6 +1347,7 @@ const struct ethtool_ops ef4_ethtool_ops = {
- 	.get_rxfh_indir_size	= ef4_ethtool_get_rxfh_indir_size,
- 	.get_rxfh		= ef4_ethtool_get_rxfh,
- 	.set_rxfh		= ef4_ethtool_set_rxfh,
-+	.get_rxfh_fields	= ef4_ethtool_get_rxfh_fields,
- 	.get_module_info	= ef4_ethtool_get_module_info,
- 	.get_module_eeprom	= ef4_ethtool_get_module_eeprom,
- 	.get_link_ksettings	= ef4_ethtool_get_link_ksettings,
--- 
-2.49.0
+Shawn
 
