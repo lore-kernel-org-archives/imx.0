@@ -1,160 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D892229898A;
-	Mon, 16 Jun 2025 10:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B12C2882D6
+	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 10:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750069984; cv=none; b=nhfRGF3QIrc+bMuGAucXcTGLzPf/th1FJi3WcESIccEmwyVAYAFbfKIdBPN0IIUUBxPy5S44qse8NhOQK4oSIyMNLNHh4iZmj3ClftO8UjMnUVV7mRZFxrGePld1np5xtIo7YeUFCfmylx1Pa2jasyq+Yfu+uKDzhRlT5tG3pOM=
+	t=1750070553; cv=none; b=SIkYTY9ybGmJ5Yun9Iaz4uqn5wl8PJTBSaZW1yW4Q0m9wnrVZorPNacx+J4kTrUQF6rAEJbLca5ORF1Afx88B96Fu941ShARrRYQQxVn18Ptix+Bw4se1Tna7gQqzYRcc/5MUk7LPF+4/JLSsC6wzIvfzv08KMw08qmlGXmNme4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750069984; c=relaxed/simple;
-	bh=evebD+70FLqdj7CqaCuFWQrCrqnpoUVPYITOothIMUo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TpW5eIoe2b9Zaf+U5NUlDGAfw9g4laj5kB1uQx686la89hkITCQpfmWfgripBN3IJU9PtUM6iO3oDt3OlBD6A9wRouy3AyPPUQVI8/zRggEYARFN2/Q47a6vy30hJnWkvy6lpoj0Qh4PfG58qeUpgGmSOvYfLv5V8pKCM/1gLes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pBZvAe1J; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750070553; c=relaxed/simple;
+	bh=Fhsd6q/hRQwGHerpb6eGxJc9LhHttkXql2QisPijFJE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h9PFdOyhP/K5ex3dSL1+DvgEIY+c9Eggn9Ya6cUJBq0FGO0uGjny2EUitm/CBNkOaqb52p+Q4KIww+WgcTUcQLmfpCGZnndDZVNPOn45GbbGvSdsqfU+O+bPqsRWf1qKDt2xy75P/U1Nwf3la3vnJWI89LOTGJOZHEyJkSriLKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LwgMrHV0; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pBZvAe1J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DF7C4CEF1;
-	Mon, 16 Jun 2025 10:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750069983;
-	bh=evebD+70FLqdj7CqaCuFWQrCrqnpoUVPYITOothIMUo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pBZvAe1JwqIjZIXUCdnEdbNESOcXJYUVo2Dh+TNhazCeEjkhj7MFrAdVctShgprte
-	 COR7DxjuTGHlMU6e0PCqLAlBlCDn11H1Xzc2gIOxLn+BN+GciwEiwMFcR85T/4Zl4D
-	 rLN3a6gBFPEa+j4ShJ321w+jfUoifuabcAFvtZgS9lLIwZhmveSIBlN7+8A5LeGraM
-	 EGS3XA9KSkSlxBXANUQM+oEoehvRT+eM59R4d+Gf3A07IIIuhCWEAEC8z6kePziEe7
-	 s2ioqxbBGouAmk+DTSRGKjPbesuMwIGuPIq/kwakiks5PuLqINnE8EjtFS+rkJU6qG
-	 CUyeGEB9erfcA==
-Message-ID: <5a4a9d58-d0c1-40f4-b18b-8b1a3dee55c2@kernel.org>
-Date: Mon, 16 Jun 2025 12:32:54 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LwgMrHV0"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3137c20213cso5345601a91.3
+        for <imx@lists.linux.dev>; Mon, 16 Jun 2025 03:42:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750070551; x=1750675351; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WTabLOpgCLwYv8rCyGl7CwHdWBc3RbnKBwJmaj/inH4=;
+        b=LwgMrHV0xn6bqGJnrF8SpUjzZuol1+escGfqk4ZTM3xhMsJhpNB5oYM0O2IOvNjflc
+         trGmANryPPJ2WQM6nlqBJFYg4wOWLEr/uI1EXa0gkso3CDzXaQOr54HaPVUhhji4IpoP
+         STAEj8bfp4vTt1CNHo3h6jcNoAG5hvz7myCvEsOm05JG7fsLZTouGwfpivjSc20ppbGi
+         rOcHaFYJnUe1Kfya71X2Rnappp2hhwyUdcypW3hlWtuVQHtwGrANDm0ZR4LMl/ks2HHJ
+         xnZdEQY0oo/c9jMSmquT+QHRYHyK/3s2fnc1592r6AynG8aom28ModW7HybQyo4Me6mR
+         T2BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750070551; x=1750675351;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WTabLOpgCLwYv8rCyGl7CwHdWBc3RbnKBwJmaj/inH4=;
+        b=eslP/tXauzMtOpTCBZAL1gyQarDNx0XNuvn2EFNEe2mTj2sSKQDTU4ny93ZsnDMcPb
+         EWE89FAVHiNOkbGcYXd8Tye1G72L8IWjaa3wXIrLzjRrXVBMMbcpxGYcAYN5Xgi3Myn0
+         UHS5EstwF0HbcJZsMfrJ7lZW3s8LpdkwRCQazwlUF8DFIKXXHY4X5xF2GVf6waznVlOo
+         WNkjmm2iZGGq8rGCwtvJGDZ8Jv/cUJOZKlnD1wAwVE21AJfLDDmpTUxtNsrzOmmWXyhG
+         eHSzowhFtJGHfLKb+6r11aWnjReu35RPD/iGNlm3kNxT5yJUjmB5CTiJ+Y1fPJHnK11T
+         o0rw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPZAIwXfGWDLZ4zgUBdUtTVIKJWWRAhCq0YvuUyz5HFXlDEmOFtaSFR6jLHOR1hOGvkq4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YynzSQ275IE0+PF15f5umRPWwfUQAlLdN+ax02dB2kwTJr7f9uD
+	hbHcWEezCPArfkI4ffES3xtQTOoiigxiyZQ1BkkSndz8wNFlR7nUlHyXa4swKLfcohCnp+tuDIo
+	usLUM3u102V1BEOur1aSYKoiJU3L5TVA=
+X-Gm-Gg: ASbGncvyJ4I2w3ON6WvPxAg4fbPcTzNhZXuOZ4zFs1paKFY3sScx9ujCGg7Xo+JxovU
+	bm9Q9OHIpptptfb4xwlWgigQE0DW6RSTDiiOeEtEzoyk3JAR9fhnJZIjHVx3afP45J4VB/2EkkL
+	wLq1tZyZtBbz9yThJYsbhCbMQpfIRkEEaUFjG6ID4o
+X-Google-Smtp-Source: AGHT+IGdvq4Jz7wCl7O5nLF8AdUqsnNZK/jUgiSEfeGbfX1YCA4ekJ6+LuyEXZu02NW4N5RvWGmagNrrauMC8JexM5M=
+X-Received: by 2002:a17:90b:274d:b0:311:9e59:7aba with SMTP id
+ 98e67ed59e1d1-313f1be899bmr14937709a91.2.1750070550782; Mon, 16 Jun 2025
+ 03:42:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20250613100255.2131800-1-joy.zou@nxp.com> <20250613100255.2131800-5-joy.zou@nxp.com>
+In-Reply-To: <20250613100255.2131800-5-joy.zou@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Mon, 16 Jun 2025 13:44:31 +0300
+X-Gm-Features: AX0GCFu6L7Akim9BySCPjWCa7aS9JinLbW1qVZSuSXFVwqMzcBMNsyM6unHsnmE
+Message-ID: <CAEnQRZAp8TX84AygSjWGx-cNiLyZXZwUx5C-DLDuyB6hO3gXMw@mail.gmail.com>
 Subject: Re: [PATCH v5 4/9] arm64: dts: imx93: move i.MX93 specific part from
  imx91_93_common.dtsi to imx93.dtsi
-To: Joy Zou <joy.zou@nxp.com>, "robh@kernel.org" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>,
- "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
- <pabeni@redhat.com>, "mcoquelin.stm32@gmail.com"
- <mcoquelin.stm32@gmail.com>,
- "alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>,
- "ulf.hansson@linaro.org" <ulf.hansson@linaro.org>,
- "richardcochran@gmail.com" <richardcochran@gmail.com>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-stm32@st-md-mailman.stormreply.com"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- Frank Li <frank.li@nxp.com>, Ye Li <ye.li@nxp.com>,
- Jacky Bai <ping.bai@nxp.com>, Peng Fan <peng.fan@nxp.com>,
- Aisheng Dong <aisheng.dong@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>
-References: <20250613100255.2131800-1-joy.zou@nxp.com>
- <20250613100255.2131800-5-joy.zou@nxp.com>
- <27ca7dfa-9dee-43f5-9e97-78de5e964f6e@kernel.org>
- <AS4PR04MB9386F7BB0586AD1ADEB35237E170A@AS4PR04MB9386.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <AS4PR04MB9386F7BB0586AD1ADEB35237E170A@AS4PR04MB9386.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+To: Joy Zou <joy.zou@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, catalin.marinas@arm.com, 
+	will@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
+	ulf.hansson@linaro.org, richardcochran@gmail.com, kernel@pengutronix.de, 
+	festevam@gmail.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-pm@vger.kernel.org, frank.li@nxp.com, ye.li@nxp.com, ping.bai@nxp.com, 
+	peng.fan@nxp.com, aisheng.dong@nxp.com, xiaoning.wang@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 16/06/2025 09:42, Joy Zou wrote:
-> 
->> -----Original Message-----
->> From: Krzysztof Kozlowski <krzk@kernel.org>
->> Sent: 2025年6月13日 18:44
->> To: Joy Zou <joy.zou@nxp.com>; robh@kernel.org; krzk+dt@kernel.org;
->> conor+dt@kernel.org; shawnguo@kernel.org; s.hauer@pengutronix.de;
->> catalin.marinas@arm.com; will@kernel.org; andrew+netdev@lunn.ch;
->> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
->> pabeni@redhat.com; mcoquelin.stm32@gmail.com;
->> alexandre.torgue@foss.st.com; ulf.hansson@linaro.org;
->> richardcochran@gmail.com; kernel@pengutronix.de; festevam@gmail.com
->> Cc: devicetree@vger.kernel.org; linux-kernel@vger.kernel.org;
->> imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org;
->> netdev@vger.kernel.org; linux-stm32@st-md-mailman.stormreply.com;
->> linux-pm@vger.kernel.org; Frank Li <frank.li@nxp.com>; Ye Li <ye.li@nxp.com>;
->> Jacky Bai <ping.bai@nxp.com>; Peng Fan <peng.fan@nxp.com>; Aisheng Dong
->> <aisheng.dong@nxp.com>; Clark Wang <xiaoning.wang@nxp.com>
->> Subject: Re: [PATCH v5 4/9] arm64: dts: imx93: move i.MX93 specific
->> part from imx91_93_common.dtsi to imx93.dtsi
->>
->> On 13/06/2025 12:02, Joy Zou wrote:
->>> Move i.MX93 specific part from imx91_93_common.dtsi to imx93.dtsi.
->>
->> You just moved them to the common file. Why are you moving the same line
->> again?
-> Thanks for your comments!
-> These are the differences for the convenience of review.
+On Fri, Jun 13, 2025 at 1:08=E2=80=AFPM Joy Zou <joy.zou@nxp.com> wrote:
+>
+> Move i.MX93 specific part from imx91_93_common.dtsi to imx93.dtsi.
+>
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> ---
+>  .../boot/dts/freescale/imx91_93_common.dtsi   | 140 +---------------
+>  arch/arm64/boot/dts/freescale/imx93.dtsi      | 155 ++++++++++++++++++
+>  2 files changed, 157 insertions(+), 138 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/ar=
+m64/boot/dts/freescale/imx91_93_common.dtsi
+> index 64cd0776b43d..da4c1c0699b3 100644
+> --- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+>  /*
+> - * Copyright 2022 NXP
+> + * Copyright 2025 NXP
 
-So you just keep changing same lines for a review? No. It makes
-everything difficult to review.
+This should  be Copyright 2022,2025 NXP,  as per NXP internal guidelines.
 
-Organize your patches in logical chunks, as requested by submitting patches.
+Am I missing something?
 
-
-
-Best regards,
-Krzysztof
+thanks,
+Daniel.
