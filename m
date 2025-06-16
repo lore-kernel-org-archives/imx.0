@@ -1,111 +1,157 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B12C2882D6
-	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 10:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911592C3242
+	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 11:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750070553; cv=none; b=SIkYTY9ybGmJ5Yun9Iaz4uqn5wl8PJTBSaZW1yW4Q0m9wnrVZorPNacx+J4kTrUQF6rAEJbLca5ORF1Afx88B96Fu941ShARrRYQQxVn18Ptix+Bw4se1Tna7gQqzYRcc/5MUk7LPF+4/JLSsC6wzIvfzv08KMw08qmlGXmNme4=
+	t=1750072721; cv=none; b=oBO/AqlFWwCa/+iGSxf3XUCYNlmrILm4aqQL3QudA8yUPGoPqd5XpUevh9dr3JLEjgqNGfMLQgdEfhtFfX7uq82ZL+DgIic5qz8OdN6cV4/aT1CoI9gTIagN32BNNSZ2QbIwpF7JhOlwUvHVQxyvNBWhmTooQ4FOBbnS6qd0+Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750070553; c=relaxed/simple;
-	bh=Fhsd6q/hRQwGHerpb6eGxJc9LhHttkXql2QisPijFJE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h9PFdOyhP/K5ex3dSL1+DvgEIY+c9Eggn9Ya6cUJBq0FGO0uGjny2EUitm/CBNkOaqb52p+Q4KIww+WgcTUcQLmfpCGZnndDZVNPOn45GbbGvSdsqfU+O+bPqsRWf1qKDt2xy75P/U1Nwf3la3vnJWI89LOTGJOZHEyJkSriLKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LwgMrHV0; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750072721; c=relaxed/simple;
+	bh=hrasx9LpaBhIfwmbsVUucBku/W+eFelK4E1GYnytmA4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Av2XBEY6g2hqKfm2J/GccgCIvbVcromHTk7XJHSdO1bobYCdzczASR0XgGWNOdiPlpptPmqjyQREmSdaYSsXrjJSYSa2+19tHuMyRaISh+VPFDQKZCPNRpzu3ycm7rdyjswYKf9u0g+bIbNyraq6UltpavG09tbvK36cpuvBZ+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iUwoHhao; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LwgMrHV0"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3137c20213cso5345601a91.3
-        for <imx@lists.linux.dev>; Mon, 16 Jun 2025 03:42:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iUwoHhao"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-441ab63a415so51104465e9.3
+        for <imx@lists.linux.dev>; Mon, 16 Jun 2025 04:18:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750070551; x=1750675351; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1750072718; x=1750677518; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WTabLOpgCLwYv8rCyGl7CwHdWBc3RbnKBwJmaj/inH4=;
-        b=LwgMrHV0xn6bqGJnrF8SpUjzZuol1+escGfqk4ZTM3xhMsJhpNB5oYM0O2IOvNjflc
-         trGmANryPPJ2WQM6nlqBJFYg4wOWLEr/uI1EXa0gkso3CDzXaQOr54HaPVUhhji4IpoP
-         STAEj8bfp4vTt1CNHo3h6jcNoAG5hvz7myCvEsOm05JG7fsLZTouGwfpivjSc20ppbGi
-         rOcHaFYJnUe1Kfya71X2Rnappp2hhwyUdcypW3hlWtuVQHtwGrANDm0ZR4LMl/ks2HHJ
-         xnZdEQY0oo/c9jMSmquT+QHRYHyK/3s2fnc1592r6AynG8aom28ModW7HybQyo4Me6mR
-         T2BQ==
+        bh=vFRRbT8s9vGTGk+mkini82Ing/hSasgp2YN4IKINJ8I=;
+        b=iUwoHhaoX3vfP+L9DqQTh896JKx/j2IgDVQxS2aEpBJDs2el3p9P63TEGSgJxVnhN5
+         b4T4DOYex2xovuEDhxDCJXtg9SNlwcSc0kUhH1suXRVhqhKxxZkoeiVuYeKGzxfoGaUS
+         gDn4t9jYPGStUVvEB3iMyW3+xVI3tnXAdRxZrXRB3Sf2V5DCByL+4QyGCrm1CCeNrp2D
+         M/R5qMvLASF9AewDfHT/2d3bBVMVePO3zZMkvD6AekSdIeT0YgaMOWTJTQ1DFbAYDhz4
+         Lq42S/UNwGb8eSykPjgeghV3lRskk83wxzIudrpGe5QpoQmz0/AsXFO4ZZB5K6gYAttN
+         bpkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750070551; x=1750675351;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1750072718; x=1750677518;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WTabLOpgCLwYv8rCyGl7CwHdWBc3RbnKBwJmaj/inH4=;
-        b=eslP/tXauzMtOpTCBZAL1gyQarDNx0XNuvn2EFNEe2mTj2sSKQDTU4ny93ZsnDMcPb
-         EWE89FAVHiNOkbGcYXd8Tye1G72L8IWjaa3wXIrLzjRrXVBMMbcpxGYcAYN5Xgi3Myn0
-         UHS5EstwF0HbcJZsMfrJ7lZW3s8LpdkwRCQazwlUF8DFIKXXHY4X5xF2GVf6waznVlOo
-         WNkjmm2iZGGq8rGCwtvJGDZ8Jv/cUJOZKlnD1wAwVE21AJfLDDmpTUxtNsrzOmmWXyhG
-         eHSzowhFtJGHfLKb+6r11aWnjReu35RPD/iGNlm3kNxT5yJUjmB5CTiJ+Y1fPJHnK11T
-         o0rw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPZAIwXfGWDLZ4zgUBdUtTVIKJWWRAhCq0YvuUyz5HFXlDEmOFtaSFR6jLHOR1hOGvkq4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YynzSQ275IE0+PF15f5umRPWwfUQAlLdN+ax02dB2kwTJr7f9uD
-	hbHcWEezCPArfkI4ffES3xtQTOoiigxiyZQ1BkkSndz8wNFlR7nUlHyXa4swKLfcohCnp+tuDIo
-	usLUM3u102V1BEOur1aSYKoiJU3L5TVA=
-X-Gm-Gg: ASbGncvyJ4I2w3ON6WvPxAg4fbPcTzNhZXuOZ4zFs1paKFY3sScx9ujCGg7Xo+JxovU
-	bm9Q9OHIpptptfb4xwlWgigQE0DW6RSTDiiOeEtEzoyk3JAR9fhnJZIjHVx3afP45J4VB/2EkkL
-	wLq1tZyZtBbz9yThJYsbhCbMQpfIRkEEaUFjG6ID4o
-X-Google-Smtp-Source: AGHT+IGdvq4Jz7wCl7O5nLF8AdUqsnNZK/jUgiSEfeGbfX1YCA4ekJ6+LuyEXZu02NW4N5RvWGmagNrrauMC8JexM5M=
-X-Received: by 2002:a17:90b:274d:b0:311:9e59:7aba with SMTP id
- 98e67ed59e1d1-313f1be899bmr14937709a91.2.1750070550782; Mon, 16 Jun 2025
- 03:42:30 -0700 (PDT)
+        bh=vFRRbT8s9vGTGk+mkini82Ing/hSasgp2YN4IKINJ8I=;
+        b=QTyNash8ehIAm/w26N7i17wWZoXnVwkmXrUosI6Ba1WCj+7lnJol1eigVJoxDnWN1W
+         x/Jh64slHDU4GqX7lMsd3Nv+m2Sybo/7yvzJti4j5Ns1pI8M2yZimc9io9PxQWkMOPmv
+         OPpwXTCiVm9LmWtYYCxn1SrRPdOcyNMqFXo4aI6e1Me2tAz4h365ypk8Y1yZBOMXasvN
+         ItM7/V3E10N/zmul3nuSUMOk4DQWHP7ph8rJ+kkhRJ2hVpJKpoHpwLRJb8MCl4WI1rk4
+         C+T+gBLCwecFX+wjcJkF1yy/NnvSRy6JMfMQXAIfVScxPEc2lhwyfnmc78w5uhfsBWFa
+         m4Hg==
+X-Forwarded-Encrypted: i=1; AJvYcCWcPQDAbmToKOS5TlxcF2/SCVr7stKZihGB8VB0ftD3fZmgfXehLGE+2DaYjYUi7Z968FI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwGGi5Zw7YjJtHle0tYEkBYPD63PO7TWD9TePCPjjd9DIq9VVWF
+	MHRYM77s1vh8lsvhrslHRX1ccMRUdg82HsMYBS2/4OANI1gukHqecqQJZFDn+sA0iC4=
+X-Gm-Gg: ASbGncuoqYIGsgwKu0uVY1zPB1W5RqzicIM7GFPTxxI/xmBO7nuHmryoHGfvqLKEhhN
+	t4s6ALwQPwtj7CKhVbnAU+iC2EWwkIUdcN2WS5+rrPs44HrI0yA/zCHEvgLQfHNcTIBLnIFbGk4
+	BhQTzxBpcpQ7Pa4ohsYF7eDQYDRGQ0lzzVV/4LP5K3ELjvlIlz3N48YCrlmjqvVIBoPEyZZNSzl
+	tig2ttPTiFDS61PZl0uFqMh3KzoLyGsY1q5Aq6tleSAxRDyAdj6+y/Q6jVdr06ApZTwsVPS7g17
+	IvEk9rmv6NEi+DDFGX3UD30Napaek2CuwhmpDSKbSTnXXO4lWs5jJ75Lbco7ezPgJqjHXlLhaOA
+	iwg==
+X-Google-Smtp-Source: AGHT+IF204pDh3GMb9mprc3RWx877M/hSlys4cJP5Klv0u7H3rkiPLZ3mCZ6j16z/jbKHnJ8e4e+kw==
+X-Received: by 2002:a05:600c:3e18:b0:450:cfa7:5ea1 with SMTP id 5b1f17b1804b1-4533caa629amr84883665e9.16.1750072717932;
+        Mon, 16 Jun 2025 04:18:37 -0700 (PDT)
+Received: from localhost.localdomain ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a54a36sm10931250f8f.15.2025.06.16.04.18.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jun 2025 04:18:37 -0700 (PDT)
+From: James Clark <james.clark@linaro.org>
+To: hch@lst.de
+Cc: olteanv@gmail.com,
+	broonie@kernel.org,
+	oe-kbuild-all@lists.linux.dev,
+	arnd@arndb.de,
+	larisa.grigore@nxp.com,
+	Frank.li@nxp.com,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	James Clark <james.clark@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	iommu@lists.linux.dev
+Subject: [PATCH] dma-mapping: Stub out dma_{alloc,free,map}_pages() API
+Date: Mon, 16 Jun 2025 12:17:49 +0100
+Message-Id: <20250616111749.316413-1-james.clark@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <202506160036.t9VDxF6p-lkp@intel.com>
+References: <202506160036.t9VDxF6p-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250613100255.2131800-1-joy.zou@nxp.com> <20250613100255.2131800-5-joy.zou@nxp.com>
-In-Reply-To: <20250613100255.2131800-5-joy.zou@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Mon, 16 Jun 2025 13:44:31 +0300
-X-Gm-Features: AX0GCFu6L7Akim9BySCPjWCa7aS9JinLbW1qVZSuSXFVwqMzcBMNsyM6unHsnmE
-Message-ID: <CAEnQRZAp8TX84AygSjWGx-cNiLyZXZwUx5C-DLDuyB6hO3gXMw@mail.gmail.com>
-Subject: Re: [PATCH v5 4/9] arm64: dts: imx93: move i.MX93 specific part from
- imx91_93_common.dtsi to imx93.dtsi
-To: Joy Zou <joy.zou@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, catalin.marinas@arm.com, 
-	will@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
-	ulf.hansson@linaro.org, richardcochran@gmail.com, kernel@pengutronix.de, 
-	festevam@gmail.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-pm@vger.kernel.org, frank.li@nxp.com, ye.li@nxp.com, ping.bai@nxp.com, 
-	peng.fan@nxp.com, aisheng.dong@nxp.com, xiaoning.wang@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 13, 2025 at 1:08=E2=80=AFPM Joy Zou <joy.zou@nxp.com> wrote:
->
-> Move i.MX93 specific part from imx91_93_common.dtsi to imx93.dtsi.
->
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> ---
->  .../boot/dts/freescale/imx91_93_common.dtsi   | 140 +---------------
->  arch/arm64/boot/dts/freescale/imx93.dtsi      | 155 ++++++++++++++++++
->  2 files changed, 157 insertions(+), 138 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/ar=
-m64/boot/dts/freescale/imx91_93_common.dtsi
-> index 64cd0776b43d..da4c1c0699b3 100644
-> --- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
->  /*
-> - * Copyright 2022 NXP
-> + * Copyright 2025 NXP
+The implementations are in mapping.c which requires HAS_DMA so stub them
+out if not present. This is required for some drivers to pass randconfig
+builds.
 
-This should  be Copyright 2022,2025 NXP,  as per NXP internal guidelines.
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506160036.t9VDxF6p-lkp@intel.com/
+Signed-off-by: James Clark <james.clark@linaro.org>
+---
+ include/linux/dma-mapping.h | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-Am I missing something?
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index 55c03e5fe8cb..766f28a0e11f 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -161,6 +161,12 @@ void *dma_vmap_noncontiguous(struct device *dev, size_t size,
+ void dma_vunmap_noncontiguous(struct device *dev, void *vaddr);
+ int dma_mmap_noncontiguous(struct device *dev, struct vm_area_struct *vma,
+ 		size_t size, struct sg_table *sgt);
++struct page *dma_alloc_pages(struct device *dev, size_t size,
++		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp);
++void dma_free_pages(struct device *dev, size_t size, struct page *page,
++		dma_addr_t dma_handle, enum dma_data_direction dir);
++int dma_mmap_pages(struct device *dev, struct vm_area_struct *vma,
++		size_t size, struct page *page);
+ #else /* CONFIG_HAS_DMA */
+ static inline dma_addr_t dma_map_page_attrs(struct device *dev,
+ 		struct page *page, size_t offset, size_t size,
+@@ -291,6 +297,21 @@ static inline int dma_mmap_noncontiguous(struct device *dev,
+ {
+ 	return -EINVAL;
+ }
++static inline struct page *dma_alloc_pages(struct device *dev, size_t size,
++		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp)
++{
++	return NULL;
++}
++static inline void dma_free_pages(struct device *dev, size_t size,
++		struct page *page, dma_addr_t dma_handle,
++		enum dma_data_direction dir)
++{
++}
++static inline int dma_mmap_pages(struct device *dev, struct vm_area_struct *vma,
++				 size_t size, struct page *page)
++{
++	return -EINVAL;
++}
+ #endif /* CONFIG_HAS_DMA */
+ 
+ #ifdef CONFIG_IOMMU_DMA
+@@ -438,13 +459,6 @@ static inline bool dma_need_unmap(struct device *dev)
+ }
+ #endif /* !CONFIG_HAS_DMA || !CONFIG_DMA_NEED_SYNC */
+ 
+-struct page *dma_alloc_pages(struct device *dev, size_t size,
+-		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp);
+-void dma_free_pages(struct device *dev, size_t size, struct page *page,
+-		dma_addr_t dma_handle, enum dma_data_direction dir);
+-int dma_mmap_pages(struct device *dev, struct vm_area_struct *vma,
+-		size_t size, struct page *page);
+-
+ static inline void *dma_alloc_noncoherent(struct device *dev, size_t size,
+ 		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp)
+ {
+-- 
+2.34.1
 
-thanks,
-Daniel.
