@@ -1,104 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2521D2BF01A;
-	Mon, 16 Jun 2025 13:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497272877F4;
+	Mon, 16 Jun 2025 13:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750081254; cv=none; b=P2YG912tQqPjRFNfbSf7eoH8UZpeqSaYHke/r+fT7wqUUQv3Njxi8afzZM0twciLDpnleuwmxJqnpk5sqPX2+achEj18582OMD6Oda1NoF0FVTIEvo8/8S52qQMBUHInGt0YRdLQ4Rz9Pa5gKqLOIRKdlJwI0V4IWTJ0aAqznvA=
+	t=1750081423; cv=none; b=tHhZv8+KpQ1FRXz013wVg/GXYh/RcwrBtPdRpU6U0d4Ozl4ymFnhk4xpcX1CPX0aoQezMFb3abwKivN9xYRtMajQmOOmhUs2NDHnDj2Do0DS2h2LCL8gh3In1Nxb+nBxzF5NSiVQJESQbXPG8qCGyjzB77f/uEo2hZe4uwki5VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750081254; c=relaxed/simple;
-	bh=rdv9kLnOvyNV5TOzVtFB/uj865WbpER5B4I4p9ckmR4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CHwJ5yfrAF+lp+EqCcFxvfcJrz5tsz/gEfVOKFqFFSlZycYXTCcnmwRXv2s2SFnt+vjYx+Y5iRjIxqgg05oUsaDPcz1CGkI+tg3DDbVmE5NU+eFYF4BQJtGnCxP5Bp7AFIlfE8wONznogHyGIdezoaUPALBX3leWginIYOtQ8tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IplYXVmP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750081423; c=relaxed/simple;
+	bh=k7LiXmpneGGZlKOZqJATN5n77gx0tL5sRJlWmRS/GVk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C/oUJ6alN11geMoP1s3Q8+6/CDJ25LP3eXoQ/e4OltgjePI3Db/S01tgyP68qp4UsF+2sTl4KTxozlwMrcMCt0l4tV+Y++aXwb7gUHWDdaSmY/Sv8yS3tCDtXFTTeEO8EebScTR1EVIlajXUt2oufXLGYam6t+WoQLNh6pOpZQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kVOWMnbB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IplYXVmP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25630C4CEED;
-	Mon, 16 Jun 2025 13:40:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kVOWMnbB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F13C4CEED;
+	Mon, 16 Jun 2025 13:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750081253;
-	bh=rdv9kLnOvyNV5TOzVtFB/uj865WbpER5B4I4p9ckmR4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IplYXVmP7vw4qSpQym/7rxQLwKuwNI2e8pBTRu/r17RN5mvo97RENr4I4q50uDB9z
-	 t3IXRMwwFu4tpBq8wDxHCNQm7EZ8D6+rfHfsnlpRzc3J6ADCRb00Jaff2WjFtcKnov
-	 Ocd658g+eaqFfCzrHNDXIpYgGX8gnfr6atwHt7Lp1hBUnuGUF2wMz+0oiU9Q5sqpfP
-	 +0rOAC7mhbC1gemvOOXRfCcnGmH3ybxlgV5UBHOSVjEVmeUEY7KNwEb4apo63ukbHQ
-	 Was0gsB6EAsSNE4ZrvIhqwcNjf9GVHDesnO3JMC9xwp36co9VscAofw7gb60Sc2QvV
-	 6lpTJgl42aimw==
-Date: Mon, 16 Jun 2025 15:40:50 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	"open list:PWM SUBSYSTEM" <linux-pwm@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: pwm: convert lpc1850-sct-pwm.txt to
- yaml format
-Message-ID: <hzcpjqvc7jygzt2xj25y7467b55gjv5w6bhgqq7plvzsom44wr@hzfzf6gth2we>
-References: <20250602140722.941002-1-Frank.Li@nxp.com>
+	s=k20201202; t=1750081422;
+	bh=k7LiXmpneGGZlKOZqJATN5n77gx0tL5sRJlWmRS/GVk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kVOWMnbBQoMPe8SvitQMN7FT5af8R2dLwfFhrJnhKNg90ZNk9w6nYrswggObowW9b
+	 /G9SLzGPT9C2kDEw1P5U/Vowp2ELFxQMffaKoA199d/tVDOUjimfC2P3o9oX9tpN/l
+	 juUiSJoBYpqRhtQbnuRMzCN/rsktvkgAJ9rYDk/BUHUb0IPNF5cVo2wlLB/eIC+HNM
+	 kFx4TEZreikiDnjGugENNwmpquggC1yozLmliPDfEgNujCX+G++VsXm7YSNKPmeW5P
+	 X5tvtypzLS4TAbGM2WU2SM1Cy7Y9u4K994xENnZyXwismWtslqp+b1ASJ1EQBT08dw
+	 JmG7+uahAKJNg==
+Message-ID: <6c414772-6bff-4509-b7ec-4aef2982e758@kernel.org>
+Date: Mon, 16 Jun 2025 15:43:38 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ren6ciqm735ki2cb"
-Content-Disposition: inline
-In-Reply-To: <20250602140722.941002-1-Frank.Li@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] media: uvcvideo: add URB_USBMON_NEED_SYNC urb flag
+To: Xu Yang <xu.yang_2@nxp.com>, gregkh@linuxfoundation.org,
+ stern@rowland.harvard.edu, laurent.pinchart@ideasonboard.com,
+ mchehab@kernel.org, jeff.johnson@oss.qualcomm.com
+Cc: linux-media@vger.kernel.org, linux-usb@vger.kernel.org, jun.li@nxp.com,
+ imx@lists.linux.dev
+References: <20250614132446.251218-1-xu.yang_2@nxp.com>
+ <20250614132446.251218-2-xu.yang_2@nxp.com>
+Content-Language: en-US, nl
+From: Hans de Goede <hansg@kernel.org>
+In-Reply-To: <20250614132446.251218-2-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+On 14-Jun-25 15:24, Xu Yang wrote:
+> Since commit "20e1dbf2bbe2 media: uvcvideo: Use dma_alloc_noncontiguous
+> API", the driver is allocating non-coherent buffer for urb. This will
+> add URB_USBMON_NEED_SYNC flag to inform usb monitor needs do dma sync
+> when record data.
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+
+Thanks, patch looks good to me:
+
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+
+Regards,
+
+Hans
 
 
---ren6ciqm735ki2cb
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH 1/1] dt-bindings: pwm: convert lpc1850-sct-pwm.txt to
- yaml format
-MIME-Version: 1.0
+> ---
+>  drivers/media/usb/uvc/uvc_video.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> index e3567aeb0007..446b3f16545d 100644
+> --- a/drivers/media/usb/uvc/uvc_video.c
+> +++ b/drivers/media/usb/uvc/uvc_video.c
+> @@ -1946,7 +1946,8 @@ static int uvc_init_video_isoc(struct uvc_streaming *stream,
+>  		urb->context = uvc_urb;
+>  		urb->pipe = usb_rcvisocpipe(stream->dev->udev,
+>  				ep->desc.bEndpointAddress);
+> -		urb->transfer_flags = URB_ISO_ASAP | URB_NO_TRANSFER_DMA_MAP;
+> +		urb->transfer_flags = URB_ISO_ASAP | URB_NO_TRANSFER_DMA_MAP |
+> +				      URB_USBMON_NEED_SYNC;
+>  		urb->transfer_dma = uvc_urb->dma;
+>  		urb->interval = ep->desc.bInterval;
+>  		urb->transfer_buffer = uvc_urb->buffer;
 
-Hello Frank,
-
-On Mon, Jun 02, 2025 at 10:07:21AM -0400, Frank Li wrote:
-> +properties:
-> +  compatible:
-> +    const: nxp,lpc1850-sct-pwm
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    items:
-> +      - const: pwm
-> +
-> +  resets:
-> +    maxItems: 1
-
-Please add:
-
-  '#pwm-cells':
-    const: 3
-
-Otherwise looks fine.
-
-Best regards
-Uwe
-
---ren6ciqm735ki2cb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhQHt4ACgkQj4D7WH0S
-/k6RoAf/U5Cx+rqRYS2ZdCPFHIdMoeLmobyj02rswAVnjmxl0ABjsH4OfMakH6tj
-76A4BaXMJG0cV8rtj546BuslYkMXGo9ekZ8XwGBSx4mv2i7/12jhXJLqYraJNZ5D
-Z1Kq7/KfOi4VN9A5iYOQwbIbYTnbX8DqvaoYg3jODYKRjSBrvox+JJ9+WHGhSmpm
-rXTp1Q3O7dCP9JVxFS5BBfSKDmkuUH/P7mX7abfnw2E93W7foFlKOJtBvrhxWPN3
-LPqrY6tkXKtjJ9QC9J28WFM7+f5HvEDA/V3QZm99fRQbkw2T6A863sgbTG4iA/qU
-V/V5ST9owWyF5szHnkzCikG7CROvhQ==
-=tzl7
------END PGP SIGNATURE-----
-
---ren6ciqm735ki2cb--
