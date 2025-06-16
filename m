@@ -1,64 +1,65 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D470292B4D
-	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 13:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDB9292B2E
+	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 13:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750079223; cv=none; b=J+Mozt+exThdfRDcorl0s9br1oOIBQg2KnfilPCWtnZyFFihILG2cZBWP5Pv1hRY4xzX78RYi3UqmC8hTD01zQmsSoYqTydNHsTvm1QWEAlFq7wLToImV51B0lw1SRP1lrvVnWuUgYpv3+efg8PnDm7dEYiImvbvinI1fDz+yRY=
+	t=1750079445; cv=none; b=qq8tBP6lqCcKi6AeNCFgMF3udQVOJH9bq3mudSy0mj8Rng5sDzM3u6YLr8T4d0XoE+IMyr9zsyP7KcTO63zPyw4joweKobxpE3CxPcCaDee8MK8vLT5YrUrBTgxTVNNsZ2rGCKFmEw3Y0pFmsPCVP7V0YiMberGpaG8796hqfUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750079223; c=relaxed/simple;
-	bh=ee/RwBi8FKq9VtJWA9MlNDaZc7H3g32sL1jjfJsCjaU=;
+	s=arc-20240116; t=1750079445; c=relaxed/simple;
+	bh=pFqG/js0pAlqzBZAvPKECVmOa3/ZW9gFrsfeSebvWj0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UmTidbKTBD01JDXMqfOyaFgN2FnUp4E8TejNzrJMTB0mAcyUTyLPQb5I1qPNbNVdK8GPhL1yDhSGL34VYpenVagi6rmjhp6zIB4maerrbhvQ/zkS0IR6fsNeAoS3KW66F4yuubdbD50cW7H4K/8VSSmOlF9NPRDixCqlzSd7Klc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tY+NktBr; arc=none smtp.client-ip=209.85.128.47
+	 In-Reply-To:Content-Type; b=g1i6msGSo/LEFtYmYgMZXxE4jl6ELr/yUEPaPaI2FKKqojtGqPUNVs6lCkjoInA/6/wlObukuQoohCsg3Pmim5GGzk9WUYO53NMsmWcjut+DvINJTg/rzJbwdmpUrO2rDiwgzKM+kvgZO+5OkbJbPagsjPby/haD2/+FnW74zro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uBqQW11L; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tY+NktBr"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-451d7b50815so37324415e9.2
-        for <imx@lists.linux.dev>; Mon, 16 Jun 2025 06:07:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uBqQW11L"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a35c894313so5118465f8f.2
+        for <imx@lists.linux.dev>; Mon, 16 Jun 2025 06:10:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750079220; x=1750684020; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1750079442; x=1750684242; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=VvG8EvOBERndyafhh0R3gUvPVZ3AkVSl0zI3A6MAIiE=;
-        b=tY+NktBrEZR6wO92Rvt57XsSrbALkwgm9ukx6/jGljaOocd34NRo3FTlrhIswtiifA
-         QFxvZZGQeOhPV85VnPi1NjxSObFO9Q5qVuWrIlVTNt3vLEOUAYyCsWNYInIBsREMwmt9
-         9cLpAYF/x/VakiHHaDPiFxoeeF6xfFjHIYiX7Z24eK3NB4UchLx3yacRwDufD4ScwdwY
-         nDKNJAqNf/OCKcLDWcG7jAQP4G8N6rgwcocbvWI51RyMXhEGvQuLobSgzHc+kJdVVy3q
-         wNp0hW1J5LHxH+mptqHM46vGZCKF2xJWhPhfFkDbadRiajsFt1arqYQpyABQHfEXJ1iY
-         UiVA==
+        bh=x1cp+4QPv/1PUyqDV9F6cY2KZxx/RBlLdAVmrPE1MfI=;
+        b=uBqQW11LcQNWPq85EvmQfqmCKqt7gvjzxZvP8ntBmn80Xu++r0gi7xqHbwoJBCnxbg
+         VJLtwJoWpC/oJsv7XoAocb4AFdhUEMpPCESSMQEsbxfX4Ks37YKhNBG48zpDOf5nNE4Q
+         TUgHWRh8UqLP1Q+AQUCYRpDo29ph8NVPlVwkbR1GwwbowQtmQvnxPoZ6UF1tw2KecamW
+         pA5gtq/nKBVeFwMapa7EiiKSlqQ/ygFD9VJ28GGi/32KeG4alWTe90WnkdjBqa5WG5Ko
+         Vy68v5bQPDVLjiGBx8UhFHPHC5iKsFubmcv+iZxKQVynbDLb5WrPaSBLNKn0v2Q5DYVA
+         cqrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750079220; x=1750684020;
+        d=1e100.net; s=20230601; t=1750079442; x=1750684242;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VvG8EvOBERndyafhh0R3gUvPVZ3AkVSl0zI3A6MAIiE=;
-        b=YjxIxj/AJkX5F+/Igk3YL41M5rFEJRnZdm1XyXcrrSErWkxJfKTszeMzVi0KZIonN3
-         wlu6tpB2rV59iNdZRt29gy1PZh8EN3A3Qf5e6E8XV3bh7CO3m2b3ifGADc7O9I4foFA7
-         S/Y6kl8jv6HTYKXiPnwGWjkEgP2eIKsGzq0g0g3NbISIpSBBw6na5+mS4hYcE/v2MA+c
-         7Pk2Ieax21R0WfCKGgUTN8PXzxt7lPJDaTQbzNu5UOzD//bL8C59R6io9ZyK/H0B349e
-         F+t4zQkR5qIbo0I50MmGqg43MGDbZLB4Ou+FEDpiidWmsDrOgAeX1eexB/TWqu7YDQA9
-         07eA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBv8a75iy4IJKYUebfqOgrUv4vMM4yRVushKgTSicRdYuI1mER5Qcho8n1PEj2ku5o+6w=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz6nR+R+FHSyxicubxmJ1oGNRyrPvQqWEchjFFd1dq/Jgirr5uk
-	mMHIpgy2/jO22TTD15S5kjlnHcbdXLyuZotiPu/sFpazk1YldZ0OQ1YSXu3Dp34Ns3g=
-X-Gm-Gg: ASbGncsrDwO3TZqu6uR7O95K2qBZKNTLqLXgj7ielP61eXMSbQXfXGCfOnxSioQIed2
-	y1hNmITQNxxBNQvmkyL/E37s+g89UNL2VLIVu5jdCA44a44Y5HtWfBd/+XC70EAfxXCM7YNF9Eq
-	6SkaTPIpQJSdUwpm/kXThWN1uxKc13484mhjbL1Z8+hbpS6JzbTvmTZwKr1hi81eaazYEeUziGX
-	qyrTyQamtkt/Ve7wQdZBtSYWv6VNye1zXqDmRwyU9Neph0zL3xGtcqJxWfACwEUOKwDcXQ8IF+M
-	7plna6Xosq9O31QtPISD+eE4wK/M1uzG/ofVx3dKPVyiEBJhATfLoUbjCOgO6JLsElU=
-X-Google-Smtp-Source: AGHT+IG90jrm0/YmUPPNZ3DkrXfamsqfYyknv5iOIGHsAtWVD7TaDVkBdpDcbQNvCeQ9SbB64y/LyQ==
-X-Received: by 2002:a05:600c:1ca1:b0:43c:ea1a:720a with SMTP id 5b1f17b1804b1-4533cacf2d1mr70512635e9.1.1750079219441;
-        Mon, 16 Jun 2025 06:06:59 -0700 (PDT)
+        bh=x1cp+4QPv/1PUyqDV9F6cY2KZxx/RBlLdAVmrPE1MfI=;
+        b=VqneoqmbY/xQJr9r+5ZGpprOP931KIdCNklLsvy1E6KxUXblh3ZkmyOMFxd40ckWBQ
+         Ha9nm6HfZ179252HFl7amwpS5gxH0sFwH0T0rQ92atzpT2z8UpeA2yVxCXjh3CS1OrIA
+         9ckM9Rxle3oLbhAV7bTR0iEhqu2/XXVf2HXJ46rNdPHlWMpEXRVZOLJHmkckBn69jN6L
+         dQbqK5pwR/BRniNLrqQ4pNbHZaNGbvwyGYAz+Su46jLTpy/1qKTisFcDA+47XgtpiqqX
+         stGMKsnztmtix2SvV5DLbV5oqAjPuVJFmTLv3fDzg9REWlsJ+ww8j1STw4L5wWRc2LUR
+         yQZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPLWAtgTsraGBg1+62WAMZEEtSIxS2mgNHoMYebrNVrmmwGfdoHOJIeJRX2+7c73ty8tM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZa7LMlbyqvut/rOS1FYm7BQfWZ94pjcwEHvFE/1LiUlIenRMm
+	kpLJ79UasLt+g9+NrcKzGmckRxrcbDJzZVJUahvRsNfJ76DfsVu8lY3Oh5B9EvEuDOE=
+X-Gm-Gg: ASbGncsBeIJZLREi7W0MBZymGeU9xtvCU08Iaz54AP8ZI9hYuI277MclcpHz0jMbG5R
+	hFFaqEYy/IB0LuoNAtQLcAoIvfr7tYsXVYNT1Uje1cLFnN7lqq4GP3Y9wEPVP85O9WAbD4lQD/N
+	iqqP4MhGVxF26gPkv0rI8zcwv9912V9rgRbveFWny8t1VkqTmwWSMPHerwb4sVg0Ms0RwnOONhy
+	31sBs72/TvqRk68l7X5H/CcB17Icqjnxn5lzZoDVUXth2Do7dnWG8jKobZo7ZDhqECnxYf3cnNz
+	Tf2sbQR+plzqx6JJgC3CGrkLeFeptaC9g0ExxINDRVBmovYJj95jZuYI721erctnJYc4rSYCVot
+	dVg==
+X-Google-Smtp-Source: AGHT+IFNHg0hyF1PNKI8qLbgZNCoz4YroOmMfvQ93hu1uR9eCFCC/xZl5Wbo20JN2FbWxFzP2HZ79A==
+X-Received: by 2002:a05:6000:4284:b0:3a4:e6e6:a026 with SMTP id ffacd0b85a97d-3a572e6bb83mr7546401f8f.28.1750079441882;
+        Mon, 16 Jun 2025 06:10:41 -0700 (PDT)
 Received: from [192.168.1.3] ([37.18.136.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e2384cesm142172555e9.16.2025.06.16.06.06.58
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a54aeasm11271121f8f.14.2025.06.16.06.10.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Jun 2025 06:06:59 -0700 (PDT)
-Message-ID: <a0291b82-5441-421b-9338-eef26d72544e@linaro.org>
-Date: Mon, 16 Jun 2025 14:06:58 +0100
+        Mon, 16 Jun 2025 06:10:41 -0700 (PDT)
+Message-ID: <7cfcf919-3c7d-4f0c-911f-697ea3141080@linaro.org>
+Date: Mon, 16 Jun 2025 14:10:40 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -66,183 +67,51 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] spi: spi-fsl-dspi: Use non-coherent memory for DMA
-To: Robin Murphy <robin.murphy@arm.com>, Vladimir Oltean <olteanv@gmail.com>,
- Mark Brown <broonie@kernel.org>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
- Larisa Grigore <larisa.grigore@nxp.com>, Frank Li <Frank.li@nxp.com>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20250613-james-nxp-spi-dma-v2-0-017eecf24aab@linaro.org>
- <20250613-james-nxp-spi-dma-v2-2-017eecf24aab@linaro.org>
- <adbbfc9c-5d21-4c8f-ba71-ae1103569037@arm.com>
+Subject: Re: [PATCH] dma-mapping: Stub out dma_{alloc,free,map}_pages() API
+To: Christoph Hellwig <hch@lst.de>, Mark Brown <broonie@kernel.org>
+Cc: olteanv@gmail.com, oe-kbuild-all@lists.linux.dev, arnd@arndb.de,
+ larisa.grigore@nxp.com, Frank.li@nxp.com, linux-spi@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kernel test robot <lkp@intel.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev
+References: <202506160036.t9VDxF6p-lkp@intel.com>
+ <20250616111749.316413-1-james.clark@linaro.org>
+ <20250616112927.GA21689@lst.de>
+ <5f1ca0ac-b66c-4b92-8f69-027c2468b117@sirena.org.uk>
+ <20250616120832.GA24959@lst.de>
+ <2d62254e-5cbe-4174-95d8-e80cae4f4543@sirena.org.uk>
+ <20250616121444.GA25443@lst.de>
 Content-Language: en-US
 From: James Clark <james.clark@linaro.org>
-In-Reply-To: <adbbfc9c-5d21-4c8f-ba71-ae1103569037@arm.com>
+In-Reply-To: <20250616121444.GA25443@lst.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
-On 16/06/2025 12:56 pm, Robin Murphy wrote:
-> On 2025-06-13 10:28 am, James Clark wrote:
->> Using coherent memory here isn't functionally necessary. Because the
->> change to use non-coherent memory isn't overly complex and only a few
->> synchronization points are required, we might as well do it while fixing
->> up some other DMA issues.
+On 16/06/2025 1:14 pm, Christoph Hellwig wrote:
+> On Mon, Jun 16, 2025 at 01:11:49PM +0100, Mark Brown wrote:
+>> already tied to a platform that needs DMA needing to add the dependency
+>> which nobody is going to notice without doing build testing for
+>> randconfigs or similar non-useful configs - it's not a productive use of
+>> time.
 > 
-> If it doesn't need coherent memory then does the driver really need to 
-> do its own bounce-buffering at all? Could you not simplify the whole lot 
-> even more by getting rid of {tx,rx}_dma_buf altogether and relying on 
-> the SPI core helpers to DMA-map the messages in-place?
-> 
-> Thanks,
-> Robin.
-> 
+> Stop your unproductive whining and just fix your dependencies.
 
-In this case the device needs a control word to be written into the 
-buffer for every SPI word to be sent, so it didn't fit into what was in 
-the core layer. But we did look into doing it that way.
+The change introduces consistency with the existing declarations in 
+dma-mapping.h. Surely there is value in consistency and it doesn't do 
+any harm to define new ones with stubs the same as the other ones. That 
+way when you change an existing device that has DMA stuff to use a new 
+part of the API you don't have to predict that it will behave 
+differently to another part of the API.
 
+I suppose it is possible to #ifdef out the DMA stuff in this driver, but 
+IMO it would be quite messy, and I don't think randomly not stubbing out 
+some functions is the right way to move towards fixing all the 
+dependencies in all drivers. We should continue with the stubs for now 
+and fix whole drivers one by one as a proper effort.
+
+Thanks
 James
-
->> Suggested-by: Arnd Bergmann <arnd@arndb.de>
->> Signed-off-by: James Clark <james.clark@linaro.org>
->> ---
->>   drivers/spi/spi-fsl-dspi.c | 55 ++++++++++++++++++++++++++++ 
->> +-----------------
->>   1 file changed, 35 insertions(+), 20 deletions(-)
->>
->> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
->> index 744dfc561db2..f19404e10c92 100644
->> --- a/drivers/spi/spi-fsl-dspi.c
->> +++ b/drivers/spi/spi-fsl-dspi.c
->> @@ -379,6 +379,11 @@ static bool is_s32g_dspi(struct fsl_dspi *data)
->>              data->devtype_data == &devtype_data[S32G_TARGET];
->>   }
->> +static int dspi_dma_transfer_size(struct fsl_dspi *dspi)
->> +{
->> +    return dspi->words_in_flight * DMA_SLAVE_BUSWIDTH_4_BYTES;
->> +}
->> +
->>   static void dspi_native_host_to_dev(struct fsl_dspi *dspi, u32 *txdata)
->>   {
->>       switch (dspi->oper_word_size) {
->> @@ -493,7 +498,10 @@ static void dspi_tx_dma_callback(void *arg)
->>   {
->>       struct fsl_dspi *dspi = arg;
->>       struct fsl_dspi_dma *dma = dspi->dma;
->> +    struct device *dev = &dspi->pdev->dev;
->> +    dma_sync_single_for_cpu(dev, dma->tx_dma_phys,
->> +                dspi_dma_transfer_size(dspi), DMA_TO_DEVICE);
->>       complete(&dma->cmd_tx_complete);
->>   }
->> @@ -501,9 +509,13 @@ static void dspi_rx_dma_callback(void *arg)
->>   {
->>       struct fsl_dspi *dspi = arg;
->>       struct fsl_dspi_dma *dma = dspi->dma;
->> +    struct device *dev = &dspi->pdev->dev;
->>       int i;
->>       if (dspi->rx) {
->> +        dma_sync_single_for_cpu(dev, dma->rx_dma_phys,
->> +                    dspi_dma_transfer_size(dspi),
->> +                    DMA_FROM_DEVICE);
->>           for (i = 0; i < dspi->words_in_flight; i++)
->>               dspi_push_rx(dspi, dspi->dma->rx_dma_buf[i]);
->>       }
->> @@ -513,6 +525,7 @@ static void dspi_rx_dma_callback(void *arg)
->>   static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
->>   {
->> +    size_t size = dspi_dma_transfer_size(dspi);
->>       struct device *dev = &dspi->pdev->dev;
->>       struct fsl_dspi_dma *dma = dspi->dma;
->>       int time_left;
->> @@ -521,10 +534,9 @@ static int dspi_next_xfer_dma_submit(struct 
->> fsl_dspi *dspi)
->>       for (i = 0; i < dspi->words_in_flight; i++)
->>           dspi->dma->tx_dma_buf[i] = dspi_pop_tx_pushr(dspi);
->> +    dma_sync_single_for_device(dev, dma->tx_dma_phys, size, 
->> DMA_TO_DEVICE);
->>       dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
->> -                    dma->tx_dma_phys,
->> -                    dspi->words_in_flight *
->> -                    DMA_SLAVE_BUSWIDTH_4_BYTES,
->> +                    dma->tx_dma_phys, size,
->>                       DMA_MEM_TO_DEV,
->>                       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
->>       if (!dma->tx_desc) {
->> @@ -539,10 +551,10 @@ static int dspi_next_xfer_dma_submit(struct 
->> fsl_dspi *dspi)
->>           return -EINVAL;
->>       }
->> +    dma_sync_single_for_device(dev, dma->rx_dma_phys, size,
->> +                   DMA_FROM_DEVICE);
->>       dma->rx_desc = dmaengine_prep_slave_single(dma->chan_rx,
->> -                    dma->rx_dma_phys,
->> -                    dspi->words_in_flight *
->> -                    DMA_SLAVE_BUSWIDTH_4_BYTES,
->> +                    dma->rx_dma_phys, size,
->>                       DMA_DEV_TO_MEM,
->>                       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
->>       if (!dma->rx_desc) {
->> @@ -644,17 +656,17 @@ static int dspi_request_dma(struct fsl_dspi 
->> *dspi, phys_addr_t phy_addr)
->>           goto err_tx_channel;
->>       }
->> -    dma->tx_dma_buf = dma_alloc_coherent(dma->chan_tx->device->dev,
->> -                         dma_bufsize, &dma->tx_dma_phys,
->> -                         GFP_KERNEL);
->> +    dma->tx_dma_buf = dma_alloc_noncoherent(dma->chan_tx->device->dev,
->> +                        dma_bufsize, &dma->tx_dma_phys,
->> +                        DMA_TO_DEVICE, GFP_KERNEL);
->>       if (!dma->tx_dma_buf) {
->>           ret = -ENOMEM;
->>           goto err_tx_dma_buf;
->>       }
->> -    dma->rx_dma_buf = dma_alloc_coherent(dma->chan_rx->device->dev,
->> -                         dma_bufsize, &dma->rx_dma_phys,
->> -                         GFP_KERNEL);
->> +    dma->rx_dma_buf = dma_alloc_noncoherent(dma->chan_rx->device->dev,
->> +                        dma_bufsize, &dma->rx_dma_phys,
->> +                        DMA_FROM_DEVICE, GFP_KERNEL);
->>       if (!dma->rx_dma_buf) {
->>           ret = -ENOMEM;
->>           goto err_rx_dma_buf;
->> @@ -689,11 +701,12 @@ static int dspi_request_dma(struct fsl_dspi 
->> *dspi, phys_addr_t phy_addr)
->>       return 0;
->>   err_slave_config:
->> -    dma_free_coherent(dma->chan_rx->device->dev,
->> -              dma_bufsize, dma->rx_dma_buf, dma->rx_dma_phys);
->> +    dma_free_noncoherent(dma->chan_rx->device->dev, dma_bufsize,
->> +                 dma->rx_dma_buf, dma->rx_dma_phys,
->> +                 DMA_FROM_DEVICE);
->>   err_rx_dma_buf:
->> -    dma_free_coherent(dma->chan_tx->device->dev,
->> -              dma_bufsize, dma->tx_dma_buf, dma->tx_dma_phys);
->> +    dma_free_noncoherent(dma->chan_tx->device->dev, dma_bufsize,
->> +                 dma->tx_dma_buf, dma->tx_dma_phys, DMA_TO_DEVICE);
->>   err_tx_dma_buf:
->>       dma_release_channel(dma->chan_tx);
->>   err_tx_channel:
->> @@ -714,14 +727,16 @@ static void dspi_release_dma(struct fsl_dspi *dspi)
->>           return;
->>       if (dma->chan_tx) {
->> -        dma_free_coherent(dma->chan_tx->device->dev, dma_bufsize,
->> -                  dma->tx_dma_buf, dma->tx_dma_phys);
->> +        dma_free_noncoherent(dma->chan_tx->device->dev, dma_bufsize,
->> +                     dma->tx_dma_buf, dma->tx_dma_phys,
->> +                     DMA_TO_DEVICE);
->>           dma_release_channel(dma->chan_tx);
->>       }
->>       if (dma->chan_rx) {
->> -        dma_free_coherent(dma->chan_rx->device->dev, dma_bufsize,
->> -                  dma->rx_dma_buf, dma->rx_dma_phys);
->> +        dma_free_noncoherent(dma->chan_rx->device->dev, dma_bufsize,
->> +                     dma->rx_dma_buf, dma->rx_dma_phys,
->> +                     DMA_FROM_DEVICE);
->>           dma_release_channel(dma->chan_rx);
->>       }
->>   }
->>
-> 
 
