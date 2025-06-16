@@ -1,104 +1,94 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E5E205ABF
-	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 15:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F305820DD54;
+	Mon, 16 Jun 2025 15:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750087950; cv=none; b=SBwCGpgechcp593vVUfiNvpNP04+bXPdIvgo2t/29QP2Rpve2jS9OtxCzDJ9vNfaS7POPV/jxURHAeNTxyzxowqJtR67XqfgpSo++9uci8cQ4n/H3KPo0tRDnZqZkx8LdLJ/XpiafwdOCDuNOTmwWpglt/gTxBm1DGA5O739cd0=
+	t=1750089049; cv=none; b=MFue+oJgAVj3ZKX5j09cH6gggvUMtrwpN38SljNc4ZLd8R4iRCn+WHVC/1tvOzqP4A+HW7/mGa/tCsquRSSbucvnmd3FL4Y7Le2cV3g4RC7EGAyjfSIOjeoQptXBkQR11K1WusvgLTxl/UiJ+l8VKQ5ATEBc51XYTSbNLPTbSww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750087950; c=relaxed/simple;
-	bh=C6QPic8D5Dr50NLEToijBW2WnLlcIvUtBHNraPM+3Y0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ji1h8P4SdyN9i0kqiW2BjBVMN2CJrFYXzwGDLPU4dYERa6cWMCY1IeELKf9Hk6Pc+HeTSx6rXzFGd3OnClBblOgP+96vU0SXINshfvOifbJ6FZyyqMt0WF3EKWF8du5/Q64lYYpFWAlCKLz9VNj1NWPuukw3cfA9zQUwV0I6xKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iZkXFR4f; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750089049; c=relaxed/simple;
+	bh=ZvyxT+BLHx5DS2IcO1NmOuiRk2nhSfoLDrUKrw0sJe4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=i/ZmbFraZA63OA40Se9/W10KOcekRRdKv2+U5qLdfbNMPk1P0OWstht73m6qXfrdRxsG0bPuOjoVj9nmfKfr2P3FvE+qug3Klf9V8GaYyCfFYd/BBN90oTCXH0HOkQv3uK2NgZ5cbrDHfd4XQSxIQ9NFyNbbms3og/bY5Hvz5ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVqfnmM4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iZkXFR4f"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so40500705e9.1
-        for <imx@lists.linux.dev>; Mon, 16 Jun 2025 08:32:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750087947; x=1750692747; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b9ECxgnlBEPN1ZzmbVKIFZnjMrIIq7xUCsgOdWC4cAE=;
-        b=iZkXFR4fsimSOJZzFkGrFjnPoysRbbnwULIJBUhSJlpIKeQdbs4VqBI5coJyUZUAov
-         Dy1widKVWQT59O7pOrtMdzjKbkQSxCZ4PDi4SY8W6mcRPAgNccaKBG5DlJaX1tAmEUZI
-         PUMohXtNj9abzDFatydFL3UDrb4Q4vQhcNY2MMRiklC/OjMgVHiof7J3XFUfAhOUklQ4
-         tKYoqdL44N2rKDGfcXlLRXv1mVxb6cxxh3kWeXzWexj9sQo2rDhbYQqd0sezIwK/yBKk
-         SiiJl/gVKHntzbp6eCBx8HKaAbulqXFe1KDO9yPcI2siN8jQS3syU8hu19RMBYpDYw55
-         VkcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750087947; x=1750692747;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b9ECxgnlBEPN1ZzmbVKIFZnjMrIIq7xUCsgOdWC4cAE=;
-        b=uRG5N4a/v4ycPLB/eSBufS5wejywIyI4T8AO9GivzLxt6agn0vKzDIVXvXUOmidjQT
-         hmj9IqWCyy7mObhqJe8/gC04KCWwvpjFnBjP8xiMmUex+xn1L8kSGsve5Mj5vZsIYefl
-         6GCAjlb1JiIqYsVE+Y5R8480/zLN9T8dAQ+EmI8REQ+wqdoGsO6jjUl53/No/yU6XVh4
-         alqHi5/UVuGWeMhsuAvxQ3lcofNSiB6XQOP9mChkqqB48UYk+5V7E/IbUxrR3D+z7UBK
-         xA9OnJrrw3rXW//JHVTVCAAKh3Qr7zqcOx4bV1uBYpKMd0ZiqXQgPGWTZaZA94mkc5VY
-         lOVw==
-X-Forwarded-Encrypted: i=1; AJvYcCXKfQJmXYhxp4aw0sw/rjoiSDVGbJMVCaQCtwavwrrjshjV+6NF1u9/OAuD5yrcAU8EFrA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YydS1tHZ7dm8fXSr5v3vlMBxEnT/yJVRL3P+8nz4/P6ZUwi8TZa
-	+Bw3fr32PEZdE51asWZVXRR1RxV6TYQ+lcpRBoPteoiJl9BEnnqbc2kl
-X-Gm-Gg: ASbGnctDz/CxIssXRlT9RphOw84+cVIVex+A6iCJfx9nNGUoCU5Duvob6tfnm5dhUlc
-	FqTfMUNp0d3T1L6NUZ98AoYhdQTZbXN/jDWY9D65/gU9q/i3bR6dVdY2s/XfUpIYHU6wXb/MlgM
-	1zYBLA2KCaNBC07Q81YyCwZbbDKIol5DneoA43WjtyLhcMHagXXdedS/v4nm24tUmGhNJu8JAe1
-	8P4dfsTCbLoP96YOPkzzElDcCDeydKax7W3VgtjZADV7P78oJ+nwvD78KbMblgEajcILuWMmjJ/
-	E1azbaDVSxAwyHPGiszOBtKuBrHrE7OdvMBDPE8K1wlcpE+EKo5ud4uy/zAngjqKl1GbplAK1Hp
-	r7578ih8Jaq83S51Q0GDb30ekCHaptmCN8CLcvfA4CdgubOtFGw==
-X-Google-Smtp-Source: AGHT+IHkq8LrLQrzxsyZlo9tlv7aQOJfSxIwHgrNYLkM2fTsGTC8YWwjLvcQgoK3b9PbquhF+UHucQ==
-X-Received: by 2002:a05:600c:4ed1:b0:453:78f:fa9f with SMTP id 5b1f17b1804b1-4533ca510afmr88788005e9.11.1750087947230;
-        Mon, 16 Jun 2025 08:32:27 -0700 (PDT)
-Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a6078csm11245581f8f.21.2025.06.16.08.32.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Jun 2025 08:32:26 -0700 (PDT)
-Message-ID: <98a48c7b-539e-41b3-ab3c-e2398401c7f7@gmail.com>
-Date: Mon, 16 Jun 2025 16:32:25 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVqfnmM4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06D7C4CEED;
+	Mon, 16 Jun 2025 15:50:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750089048;
+	bh=ZvyxT+BLHx5DS2IcO1NmOuiRk2nhSfoLDrUKrw0sJe4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=jVqfnmM4ALR/uTwNxSGtcmpMOVWFdjt5LUfVJpp7JZYIr0QuNZfLz73BQqbEy1t3S
+	 IrlhJI7Xhl3chkELWQyR/m8TizEKWCE2ytTm1Ji9FLDupIZz9hv3ONjur2qAi2yXrh
+	 ZgIzoHZAuLCWRoitic7YQaXFz50W/AFd/r3tnR61OLPj69/cv7kAtoutAMdn+Vx18U
+	 rqFlMi2Rm9yBPEWzfIlKY9ozQ5V3YrBErnoiM1KXQZ2HyBw7VfiPT28uh8DwLMyj4t
+	 +BU7G3N39Z83aF3WLRRgED1QHlNbvZrIhtW5+6wKuOBRgKdARHFfbIaKfS18GnUHLB
+	 71ceJxjs5NWsg==
+From: Mark Brown <broonie@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>, 
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+ Bard Liao <yung-chuan.liao@linux.intel.com>, 
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, 
+ Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: linux-sound@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250613194310.1128733-1-laurentiumihalcea111@gmail.com>
+References: <20250613194310.1128733-1-laurentiumihalcea111@gmail.com>
+Subject: Re: [PATCH] ASoC: SOF: imx8: add core shutdown operation for
+ imx8/imx8x
+Message-Id: <175008904672.262284.1831269930819653048.b4-ty@kernel.org>
+Date: Mon, 16 Jun 2025 16:50:46 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 6/6] eth: sfc: falcon: migrate to new RXFH
- callbacks
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- bharat@chelsio.com, benve@cisco.com, satishkh@cisco.com,
- claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
- xiaoning.wang@nxp.com, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, bryan.whitehead@microchip.com,
- rosenp@gmail.com, imx@lists.linux.dev
-References: <20250613005409.3544529-1-kuba@kernel.org>
- <20250613005409.3544529-7-kuba@kernel.org>
- <6425933b-3b17-4509-86be-be4a75f12e17@gmail.com>
- <20250613075010.0b59564d@kernel.org>
-Content-Language: en-GB
-From: Edward Cree <ecree.xilinx@gmail.com>
-In-Reply-To: <20250613075010.0b59564d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-08c49
 
-On 13/06/2025 15:50, Jakub Kicinski wrote:
-> On Fri, 13 Jun 2025 14:44:40 +0100 Edward Cree wrote:
->> So granted that you're only moving code, but looking at this it doesn't
->>  actually make sense, since every path that sets info->data to nonzero
->>  also sets min_revision, so why not just do the ef4_nic_rev() check at
->>  the start?  Answer, from git log spelunking, is that when this code was
->>  shared with Siena, EFX_REV_SIENA_A0 supported IPv6 here.
+On Fri, 13 Jun 2025 15:43:10 -0400, Laurentiu Mihalcea wrote:
+> Currently, the DSP core from i.MX8QM/i.MX8QXP is able to operate while the
+> firmware image is being loaded. Because of this, the DSP may change the
+> content of the firmware data just after it was loaded, thus leading to the
+> data having unexpected values when the DSP is reset (via run()).
 > 
-> Ack, I was tempted to clean this up, but it felt slightly outside of 
-> the objective. Looks like I need to respin for enetc - I can change 
-> it in v2 if you'd like?
+> Fix this by implementing the core_shutdown() operation that will put the
+> DSP in stall during suspend(). The stall will be removed during the run()
+> opertion, thus guaranteeing that the DSP core will not be able to run
+> while the firmware image is being loaded.
+> 
+> [...]
 
-I'd say just keep your patch as is, then I'll send a follow-up that does
- the refactor and also adds a comment about why the hashing config is what
- it is.
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: SOF: imx8: add core shutdown operation for imx8/imx8x
+      commit: b081d8564e4a396843a78788476fdcbf70efed06
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
