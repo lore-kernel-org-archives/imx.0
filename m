@@ -1,113 +1,104 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894051DE3DB;
-	Mon, 16 Jun 2025 15:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E5E205ABF
+	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 15:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750086849; cv=none; b=Hc21zb7xYvTSGRweeyQzOL0pFDSmniciBZrHlXgL8D78HfcGxNB6GOE0+EnXGqm0mndcp8hP3IqW1sw2x7f8YJwS8aM0al5NYd60SqeiCS06KnjNvSmYgSqQ2l5Tmca3KR7lbjh9F9WTjbci2Ud35lsImoPG9bD1qNX22J65v+Y=
+	t=1750087950; cv=none; b=SBwCGpgechcp593vVUfiNvpNP04+bXPdIvgo2t/29QP2Rpve2jS9OtxCzDJ9vNfaS7POPV/jxURHAeNTxyzxowqJtR67XqfgpSo++9uci8cQ4n/H3KPo0tRDnZqZkx8LdLJ/XpiafwdOCDuNOTmwWpglt/gTxBm1DGA5O739cd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750086849; c=relaxed/simple;
-	bh=aNDbKOOjHpsSVm/u+QK5zaGokrrj0d/sOrb/9/P49gE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rSRwcog2hxUkTSo9hk79Kgx7LWVgXEn+tRy9NxmfreksQ+Nf6jWR34U2uCdeDwxAyzhx2R8T4VGAppbWb8NnvlilNxDKJXgLPMH4X9Ht9gF/R2PToNNtw+wkKLxlqKSLjhmAfT5k5voos3wV2QL4ps/JPudbr2vs4Y+i3IIoyzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=QM67Xzx9; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1750087950; c=relaxed/simple;
+	bh=C6QPic8D5Dr50NLEToijBW2WnLlcIvUtBHNraPM+3Y0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ji1h8P4SdyN9i0kqiW2BjBVMN2CJrFYXzwGDLPU4dYERa6cWMCY1IeELKf9Hk6Pc+HeTSx6rXzFGd3OnClBblOgP+96vU0SXINshfvOifbJ6FZyyqMt0WF3EKWF8du5/Q64lYYpFWAlCKLz9VNj1NWPuukw3cfA9zQUwV0I6xKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iZkXFR4f; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="QM67Xzx9"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 55562346;
-	Mon, 16 Jun 2025 17:13:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1750086834;
-	bh=aNDbKOOjHpsSVm/u+QK5zaGokrrj0d/sOrb/9/P49gE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QM67Xzx99jtSxFtbVWkxi9ny3lkeshszCYykwUWs4y08YnSKdKJ/O207ngwOCheOQ
-	 TcS9TWQkg/ZF3B5IT/PRnJdD6ZeF54pordOC63Upxph3fPlOeSwafp7l71BiZ0xPAD
-	 TAv/k4j+OiUsCXXAJRp6zom83aLOsyaQGJY4FajI=
-Date: Mon, 16 Jun 2025 18:13:50 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: simona@ffwll.ch, airlied@gmail.com, mripard@kernel.org,
-	maarten.lankhorst@linux.intel.com, geert@linux-m68k.org,
-	tomi.valkeinen@ideasonboard.com, dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org, freedreno@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev,
-	linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org,
-	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
-	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Subject: Re: [PATCH v5 17/25] drm/renesas/rcar-du: Compute dumb-buffer sizes
- with drm_mode_size_dumb()
-Message-ID: <20250616151350.GG10542@pendragon.ideasonboard.com>
-References: <20250613090431.127087-1-tzimmermann@suse.de>
- <20250613090431.127087-18-tzimmermann@suse.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iZkXFR4f"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so40500705e9.1
+        for <imx@lists.linux.dev>; Mon, 16 Jun 2025 08:32:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750087947; x=1750692747; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b9ECxgnlBEPN1ZzmbVKIFZnjMrIIq7xUCsgOdWC4cAE=;
+        b=iZkXFR4fsimSOJZzFkGrFjnPoysRbbnwULIJBUhSJlpIKeQdbs4VqBI5coJyUZUAov
+         Dy1widKVWQT59O7pOrtMdzjKbkQSxCZ4PDi4SY8W6mcRPAgNccaKBG5DlJaX1tAmEUZI
+         PUMohXtNj9abzDFatydFL3UDrb4Q4vQhcNY2MMRiklC/OjMgVHiof7J3XFUfAhOUklQ4
+         tKYoqdL44N2rKDGfcXlLRXv1mVxb6cxxh3kWeXzWexj9sQo2rDhbYQqd0sezIwK/yBKk
+         SiiJl/gVKHntzbp6eCBx8HKaAbulqXFe1KDO9yPcI2siN8jQS3syU8hu19RMBYpDYw55
+         VkcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750087947; x=1750692747;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b9ECxgnlBEPN1ZzmbVKIFZnjMrIIq7xUCsgOdWC4cAE=;
+        b=uRG5N4a/v4ycPLB/eSBufS5wejywIyI4T8AO9GivzLxt6agn0vKzDIVXvXUOmidjQT
+         hmj9IqWCyy7mObhqJe8/gC04KCWwvpjFnBjP8xiMmUex+xn1L8kSGsve5Mj5vZsIYefl
+         6GCAjlb1JiIqYsVE+Y5R8480/zLN9T8dAQ+EmI8REQ+wqdoGsO6jjUl53/No/yU6XVh4
+         alqHi5/UVuGWeMhsuAvxQ3lcofNSiB6XQOP9mChkqqB48UYk+5V7E/IbUxrR3D+z7UBK
+         xA9OnJrrw3rXW//JHVTVCAAKh3Qr7zqcOx4bV1uBYpKMd0ZiqXQgPGWTZaZA94mkc5VY
+         lOVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXKfQJmXYhxp4aw0sw/rjoiSDVGbJMVCaQCtwavwrrjshjV+6NF1u9/OAuD5yrcAU8EFrA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YydS1tHZ7dm8fXSr5v3vlMBxEnT/yJVRL3P+8nz4/P6ZUwi8TZa
+	+Bw3fr32PEZdE51asWZVXRR1RxV6TYQ+lcpRBoPteoiJl9BEnnqbc2kl
+X-Gm-Gg: ASbGnctDz/CxIssXRlT9RphOw84+cVIVex+A6iCJfx9nNGUoCU5Duvob6tfnm5dhUlc
+	FqTfMUNp0d3T1L6NUZ98AoYhdQTZbXN/jDWY9D65/gU9q/i3bR6dVdY2s/XfUpIYHU6wXb/MlgM
+	1zYBLA2KCaNBC07Q81YyCwZbbDKIol5DneoA43WjtyLhcMHagXXdedS/v4nm24tUmGhNJu8JAe1
+	8P4dfsTCbLoP96YOPkzzElDcCDeydKax7W3VgtjZADV7P78oJ+nwvD78KbMblgEajcILuWMmjJ/
+	E1azbaDVSxAwyHPGiszOBtKuBrHrE7OdvMBDPE8K1wlcpE+EKo5ud4uy/zAngjqKl1GbplAK1Hp
+	r7578ih8Jaq83S51Q0GDb30ekCHaptmCN8CLcvfA4CdgubOtFGw==
+X-Google-Smtp-Source: AGHT+IHkq8LrLQrzxsyZlo9tlv7aQOJfSxIwHgrNYLkM2fTsGTC8YWwjLvcQgoK3b9PbquhF+UHucQ==
+X-Received: by 2002:a05:600c:4ed1:b0:453:78f:fa9f with SMTP id 5b1f17b1804b1-4533ca510afmr88788005e9.11.1750087947230;
+        Mon, 16 Jun 2025 08:32:27 -0700 (PDT)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a6078csm11245581f8f.21.2025.06.16.08.32.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Jun 2025 08:32:26 -0700 (PDT)
+Message-ID: <98a48c7b-539e-41b3-ab3c-e2398401c7f7@gmail.com>
+Date: Mon, 16 Jun 2025 16:32:25 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250613090431.127087-18-tzimmermann@suse.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 6/6] eth: sfc: falcon: migrate to new RXFH
+ callbacks
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ bharat@chelsio.com, benve@cisco.com, satishkh@cisco.com,
+ claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, anthony.l.nguyen@intel.com,
+ przemyslaw.kitszel@intel.com, bryan.whitehead@microchip.com,
+ rosenp@gmail.com, imx@lists.linux.dev
+References: <20250613005409.3544529-1-kuba@kernel.org>
+ <20250613005409.3544529-7-kuba@kernel.org>
+ <6425933b-3b17-4509-86be-be4a75f12e17@gmail.com>
+ <20250613075010.0b59564d@kernel.org>
+Content-Language: en-GB
+From: Edward Cree <ecree.xilinx@gmail.com>
+In-Reply-To: <20250613075010.0b59564d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Thomas,
-
-Thank you for the patch.
-
-On Fri, Jun 13, 2025 at 11:00:36AM +0200, Thomas Zimmermann wrote:
-> Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch and
-> buffer size. Align the pitch according to hardware requirements.
+On 13/06/2025 15:50, Jakub Kicinski wrote:
+> On Fri, 13 Jun 2025 14:44:40 +0100 Edward Cree wrote:
+>> So granted that you're only moving code, but looking at this it doesn't
+>>  actually make sense, since every path that sets info->data to nonzero
+>>  also sets min_revision, so why not just do the ef4_nic_rev() check at
+>>  the start?  Answer, from git log spelunking, is that when this code was
+>>  shared with Siena, EFX_REV_SIENA_A0 supported IPv6 here.
 > 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Cc: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+> Ack, I was tempted to clean this up, but it felt slightly outside of 
+> the objective. Looks like I need to respin for enetc - I can change 
+> it in v2 if you'd like?
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-
-> ---
->  drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c b/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c
-> index 4c8fe83dd610..dd353fb858ef 100644
-> --- a/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c
-> +++ b/drivers/gpu/drm/renesas/rcar-du/rcar_du_kms.c
-> @@ -11,6 +11,7 @@
->  #include <drm/drm_atomic_helper.h>
->  #include <drm/drm_crtc.h>
->  #include <drm/drm_device.h>
-> +#include <drm/drm_dumb_buffers.h>
->  #include <drm/drm_framebuffer.h>
->  #include <drm/drm_gem_dma_helper.h>
->  #include <drm/drm_gem_framebuffer_helper.h>
-> @@ -407,8 +408,8 @@ int rcar_du_dumb_create(struct drm_file *file, struct drm_device *dev,
->  			struct drm_mode_create_dumb *args)
->  {
->  	struct rcar_du_device *rcdu = to_rcar_du_device(dev);
-> -	unsigned int min_pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
->  	unsigned int align;
-> +	int ret;
->  
->  	/*
->  	 * The R8A7779 DU requires a 16 pixels pitch alignment as documented,
-> @@ -419,7 +420,9 @@ int rcar_du_dumb_create(struct drm_file *file, struct drm_device *dev,
->  	else
->  		align = 16 * args->bpp / 8;
->  
-> -	args->pitch = roundup(min_pitch, align);
-> +	ret = drm_mode_size_dumb(dev, args, align, 0);
-> +	if (ret)
-> +		return ret;
->  
->  	return drm_gem_dma_dumb_create_internal(file, dev, args);
->  }
-
--- 
-Regards,
-
-Laurent Pinchart
+I'd say just keep your patch as is, then I'll send a follow-up that does
+ the refactor and also adds a comment about why the hashing config is what
+ it is.
