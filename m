@@ -1,53 +1,53 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F91429CB48
-	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 11:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DAC4279903
+	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 11:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750073995; cv=none; b=PjSqZHYliU73dH5lnCCEQeXjlxcM72sPlqQUiHxD/3Y7RtvhhfQ9MATUoigWMrvFZq+AECdudSIFh4KIqqWfegW4BsftsJhKe5ZS4iqqKraypNV6PtE644pgKPKgHp1B9Srlx+5PrBo3mie7OFK9FqcL35IVJAB2+13nGfkeWZw=
+	t=1750074356; cv=none; b=ON7FNkBEr0TKrEcebcb2mOOgCvRKlC1RmbVJh9GtWzxnI0NlB9+wQQeJnVD5SWJDAnHDtPrQcnVjgpKIiAaNrhOxV7ytk7H7wR6b+sid2sddigj4y6cYR0wrZdR0R8yfG8JhAjo1NsdxIYoQm/s8VILBT1DjzOFJCrZjsX2VnmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750073995; c=relaxed/simple;
-	bh=Ma9+AWd3cIZf5Lwt4Vp92HukPMmMYh/Kb6RRViodh+0=;
+	s=arc-20240116; t=1750074356; c=relaxed/simple;
+	bh=O7zqOTuFLCOrB6zke/k+DoaYmhGkvGgv200R9Xh9Rv0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MdxBppgHuZjKge/U3GanL/uD/mpzyaSyE8bHe3E2fyxVma9fkH5J3fZ6lPsErtlgNY1K//KXtTlZ2y3iTBuv9Hqylr32rdhwsD6u0SThBg1l6Skt1wScwbUKwPtG98RLmtL5ioqD+kFChQDe/ozB8i9RzytCpiURrgtZ7gBihX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RQl8sq20; arc=none smtp.client-ip=198.175.65.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=ezQLdBVYIAPNVrfOrTG8PgXHagpSIIN9CuAWgPsNicmqU/jVmN74Lyqdqdqj5hMs6Eh18cnd7zU8jk88ky0jTwJGNIR0dMVkgrkvUL5yTCskVnTtga43uqI22GIHZh2LBRJnj84RPuzc6dAinn9Bisj0oBB2ucB2GYu4+HS4Z4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kbf3Mba5; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RQl8sq20"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kbf3Mba5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750073994; x=1781609994;
+  t=1750074355; x=1781610355;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Ma9+AWd3cIZf5Lwt4Vp92HukPMmMYh/Kb6RRViodh+0=;
-  b=RQl8sq20vMv3fxNKRmqNp0Sc2ODwBAjvN3nctJYJHKywa+mCheKwKWzj
-   yjXZm+nALaiXK/vxd1O1mdFC5kkGwKE14y+t4KPPVxpGBpsKSZY1clikA
-   UiMfruklXMBkVmGsCV+c9sgOIFKxNabHPypyCMFI5sy4pXdnS/SPNKC6T
-   QAr2iHiZX4HbRa8PGIv4wn8tjqVC/ZyaSrZGhHcC4Z19WqtYjtnpTJLK8
-   KPenbezXJosXM9G+6ZqvtMl8bZgVURMiWiQ73BdidB8LXJYXi11IS6g+d
-   TDGUrVvjI+kF/p8qYh55h+3AWP67xLWku1g5aJl4wfjL5e/GdmunDXpyj
-   g==;
-X-CSE-ConnectionGUID: HlxBbEBEScGXxTe3mJ/zmw==
-X-CSE-MsgGUID: UB0XRPY6STy90s+jPTND9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52303588"
+  bh=O7zqOTuFLCOrB6zke/k+DoaYmhGkvGgv200R9Xh9Rv0=;
+  b=Kbf3Mba5ujKZypBR2wIFKFyXP2jDydWZiWqnkCWSjV//2oHf4L7KLUZ3
+   mPIGNyf+4BzQIebMf7pl0Wu8IHJMsjAGgHQKHiV/jZxc+sD3ctOpTA0RU
+   dYO2a5NKyt2iikZchHcvHXhjdlecC2zncKbekLVeZOK4NlI5T+BHkFM8+
+   GUyHDDx0tREYPRdz9FXd4bNHyImr2TlctrXJFwOEFd8I1KEq1EV19nKvV
+   4OduPrG3PjfJdmR64+1t5s2xzVMRp2efzhdI8rIlCco3zNbIGX3VD1S1V
+   F/zzrfnBNKo3ybIRp3NpUcDRtaSi3oluzFaVEgB4zBGR7zh2pYmMMCAH4
+   Q==;
+X-CSE-ConnectionGUID: y7b38mS6R8qzL56bB97P8w==
+X-CSE-MsgGUID: lrQNzLn4RCqHzFaw/1XmKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="63629548"
 X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; 
-   d="scan'208";a="52303588"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 04:39:54 -0700
-X-CSE-ConnectionGUID: 4QcUPl3STGqo4EMxHH73Ew==
-X-CSE-MsgGUID: hF5ltUg9SAaHsRMrX3NVog==
+   d="scan'208";a="63629548"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 04:45:54 -0700
+X-CSE-ConnectionGUID: YPoKs+xPTJS23+lwLuQK+g==
+X-CSE-MsgGUID: 2/EHphBLS6e1qatprLVKeA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; 
-   d="scan'208";a="148282666"
+   d="scan'208";a="148991459"
 Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 04:39:43 -0700
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 04:45:42 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uR8Be-000000073pQ-0wKC;
-	Mon, 16 Jun 2025 14:39:38 +0300
-Date: Mon, 16 Jun 2025 14:39:38 +0300
+	id 1uR8HR-000000073td-2aiv;
+	Mon, 16 Jun 2025 14:45:37 +0300
+Date: Mon, 16 Jun 2025 14:45:37 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Herve Codina <herve.codina@bootlin.com>
 Cc: Andrew Lunn <andrew@lunn.ch>,
@@ -88,10 +88,10 @@ Cc: Andrew Lunn <andrew@lunn.ch>,
 	Steen Hegelund <steen.hegelund@microchip.com>,
 	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 07/28] drivers: core: Use fw_devlink_set_device()
-Message-ID: <aFACeiO9ysybUwtv@smile.fi.intel.com>
+Subject: Re: [PATCH v3 11/28] PCI: of: Use fw_devlink_set_device()
+Message-ID: <aFAD4czF-qPxoc-X@smile.fi.intel.com>
 References: <20250613134817.681832-1-herve.codina@bootlin.com>
- <20250613134817.681832-8-herve.codina@bootlin.com>
+ <20250613134817.681832-12-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -100,12 +100,12 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250613134817.681832-8-herve.codina@bootlin.com>
+In-Reply-To: <20250613134817.681832-12-herve.codina@bootlin.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Jun 13, 2025 at 03:47:47PM +0200, Herve Codina wrote:
-> The code set directly fwnode->dev field.
+On Fri, Jun 13, 2025 at 03:47:51PM +0200, Herve Codina wrote:
+> The code set directly fwnode.dev field.
 > 
 > Use the dedicated fw_devlink_set_device() helper to perform this
 > operation.
