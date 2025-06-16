@@ -1,100 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E0E76026;
-	Sun, 15 Jun 2025 16:31:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41182E11C1
+	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 01:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750005086; cv=none; b=VJdJDh4i4Ka0G8VssWELZPBwtKUomIY5g3UZi0RcI97efTWqErxy0Tu5LaunoJzjwD0oRJr35f70PleSofnm2vs+1p/bbFLFfn+TcBrLOXF7IDg5XjryByV+gLIR6T+Dj6V6Y1bigBjeoBVHg3lD1sNE47ypvfnsLx31nYHf+vc=
+	t=1750036300; cv=none; b=nbuP8T7AgwbNYCjYdr+emwA99wt0d0PexsSzr0z1VgPA57ySvkgLPqk1OmePoMIolyj3hZ4vUs+Eagyp3QdmE8mvHu8O8Fo/oDGvQrZIy1llp9n9+gA6uHlKeDgWUCR7wbl6krs7iaKzDt7IcPGZdMtrmZhuawAYFYWEizr25Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750005086; c=relaxed/simple;
-	bh=UKlMClGuNsXjKmfdW7rUH1K/XPOnrNGPMUMQ2rUIPKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YZbrJekFPBl2DObcfK7F901aXeGL5q3q0S+urDtgIHz/HcU3j1owiAV+mE7LJB3ONmmgOzchpjAHpK8oS6+iTn6WANgA8Z9Ul1r/zo3NnwK7ldfO9Lac9Gi7wOj4wE/+i2TCTnOFmXyDmM8z+kuMDI/dKveCXH7Soe8AIURztWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L+jWMPE8; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1750036300; c=relaxed/simple;
+	bh=qAYK7QG3ajbAt09rfSm4ch3HgN3Q+fSiynbGtLRHRZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LqjhODmmvyeKmTA5K4jhacQU7C/iHntiQtuUEvtW9bGGRUj4Zq2SARqHc70DPRjXoKfEJUzAvLbh9enZJY28v9Y1u0jVyBACq95HI+Hi9GX23kh0wPQB0f5WRXqQ472knQLU+SxoCbqt3OVJqJNsxecCa3951dWRZkO35GCSYIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=je2Wvz8W; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L+jWMPE8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750005085; x=1781541085;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UKlMClGuNsXjKmfdW7rUH1K/XPOnrNGPMUMQ2rUIPKA=;
-  b=L+jWMPE8wrSYaU/wYiZ6NfgYYc/2dtW+n+MtnXc57VuiuEY0kPtFTsfx
-   ylGNznxFse/whFM0vmDVVy8E/W3Ut9J40wkVAIsMwkC+rbxrWV4JA+RD4
-   aq5B25wRfCdzf0LoPrVG45CcG/nuPey4XmgjL8LwXN+6z1DTPWY0fe0R6
-   BwCllGysGD1H4nUvJBF0baTu7bdxlMe4Lny41WZK0FuVHrHS5GE2wDIRd
-   XKA8EIGGKWWNKNQWXwDjsVfquanh3HDhaFpA8tp1464RDQJ6fXv/tGxhZ
-   LqTbV8PvkwSxftkt1Pald2u5bZTTxIEhMxQI6oHut9zbPVDgIwVuUws/z
-   Q==;
-X-CSE-ConnectionGUID: tjRDEg68RWaGB9Lw79GeTw==
-X-CSE-MsgGUID: HxNwf0BbQLm3SIL77E71yg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="62763348"
-X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; 
-   d="scan'208";a="62763348"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2025 09:31:24 -0700
-X-CSE-ConnectionGUID: 8Vm6Y6fWSTGRTRUSflE0lg==
-X-CSE-MsgGUID: k8ugKqjsRUC/SWEJKWPE8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; 
-   d="scan'208";a="171470314"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 15 Jun 2025 09:31:22 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uQqGO-000EQa-0y;
-	Sun, 15 Jun 2025 16:31:20 +0000
-Date: Mon, 16 Jun 2025 00:31:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: James Clark <james.clark@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Frank Li <Frank.li@nxp.com>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	James Clark <james.clark@linaro.org>
-Subject: Re: [PATCH v2 2/5] spi: spi-fsl-dspi: Use non-coherent memory for DMA
-Message-ID: <202506160036.t9VDxF6p-lkp@intel.com>
-References: <20250613-james-nxp-spi-dma-v2-2-017eecf24aab@linaro.org>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="je2Wvz8W"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BB3CE465;
+	Mon, 16 Jun 2025 03:11:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1750036278;
+	bh=qAYK7QG3ajbAt09rfSm4ch3HgN3Q+fSiynbGtLRHRZY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=je2Wvz8WxEa8Gonr2WMJ/2klH8QAwbcs9kdqdPxnfcz4bUhJ1mUiAbPhu2hh3X3rm
+	 fQC+OUUHmBVn/bo4aHTh0ZJOKNuxlNEJkuxVBRUhp3tfE6oqHxXG1uRrYV4dDSYMFa
+	 lJUQXTc8nUqu+zIaqr+4TonpKQJrQtGrn+6hKclw=
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: linux-media@vger.kernel.org
+Cc: Stefan Klug <stefan.klug@ideasonboard.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Dafna Hirschfeld <dafna@fastmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH 0/6] media: rkisp1: Prepare for HDR stitching support
+Date: Mon, 16 Jun 2025 04:11:09 +0300
+Message-ID: <20250616011115.19515-1-laurent.pinchart@ideasonboard.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250613-james-nxp-spi-dma-v2-2-017eecf24aab@linaro.org>
+Content-Transfer-Encoding: 8bit
 
-Hi James,
+Hello everybody,
 
-kernel test robot noticed the following build errors:
+This patch series prepares the rkisp1 driver for HDR stitching support
+by adding a new clock and power domain.
 
-[auto build test ERROR on 3adf5ba9ad767e33db2d6aab01bbca396bcb614b]
+The ISP instance integrated in the NXP i.MX8MP includes an HDR stitching
+module. Unlike other ISP modules, the HDR stitching module requires the
+pixel clock to be enabled to access control registers, otherwise the
+system freezes. To make the problem more complex, the pixel clock is
+gated by the media-blk, which controls the clock gate through the
+MIPI_CSI2 power domain.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/James-Clark/spi-spi-fsl-dspi-Clear-completion-counter-before-initiating-transfer/20250613-173429
-base:   3adf5ba9ad767e33db2d6aab01bbca396bcb614b
-patch link:    https://lore.kernel.org/r/20250613-james-nxp-spi-dma-v2-2-017eecf24aab%40linaro.org
-patch subject: [PATCH v2 2/5] spi: spi-fsl-dspi: Use non-coherent memory for DMA
-config: m68k-randconfig-r113-20250615 (https://download.01.org/0day-ci/archive/20250616/202506160036.t9VDxF6p-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 14.3.0
-reproduce: (https://download.01.org/0day-ci/archive/20250616/202506160036.t9VDxF6p-lkp@intel.com/reproduce)
+Adding the pixel clock to the ISP DT node is easy, but enabling the gate
+as part of the ISP power domain would be more difficult. This series
+instead adds the MIPI_CSI2 power domain as a secondary power domain for
+the ISP. Given that the ISP can't be used without the CSI-2 receiver in
+the i.MX8MP, this won't result in extra power consumption. Lucas, your
+feedback on this approach would be appreciated.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506160036.t9VDxF6p-lkp@intel.com/
+Patches 1/6 and 2/6 update the DT binding to add the clock and power
+domain. Patches 3/6 then refactors clock handling in the rkisp1 driver,
+and patches 4/6 and 5/6 add support for the additional clock and power
+domain. They are optional to avoid breaking backward compatibility with
+older device trees. Finally, patch 6/6 updates imx8mp.dtsi to add the
+clock and power domain.
 
-All errors (new ones prefixed by >>):
+The series has been tested by trying to read the HDR stitching registers
+at probe time. Without these changes the system locks up, with this
+series applied the registers read correctly.
 
-   m68k-linux-ld: drivers/spi/spi-fsl-dspi.o: in function `dspi_release_dma.isra.0':
->> spi-fsl-dspi.c:(.text+0x644): undefined reference to `dma_free_pages'
->> m68k-linux-ld: spi-fsl-dspi.c:(.text+0x67a): undefined reference to `dma_free_pages'
+Laurent Pinchart (6):
+  dt-bindings: media: rkisp1: Require pclk clock on i.MX8MP variant
+  dt-bindings: media: rkisp1: Add second power domain on i.MX8MP
+  media: rkisp1: Refactor clocks initialization
+  media: rkisp1: Acquire pclk clock on i.MX8MP
+  media: rkisp1: Add support for multiple power domains
+  arm64: dts: imx8mp: Add pclk clock and second power domain for the ISP
 
+ .../bindings/media/rockchip-isp1.yaml         |  23 +++-
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi     |  18 ++-
+ .../platform/rockchip/rkisp1/rkisp1-common.h  |  17 ++-
+ .../platform/rockchip/rkisp1/rkisp1-dev.c     | 123 +++++++++++++-----
+ 4 files changed, 140 insertions(+), 41 deletions(-)
+
+
+base-commit: 0ff41df1cb268fc69e703a08a57ee14ae967d0ca
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+
+Laurent Pinchart
+
