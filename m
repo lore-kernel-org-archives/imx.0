@@ -1,119 +1,146 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0F22877F0
-	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 13:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA27927605A
+	for <imx@lists.linux.dev>; Mon, 16 Jun 2025 13:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750080628; cv=none; b=PihIlV5jG07lv5vrnUFVVLqDPiM5q3v1XQxrk2+zl3h+PJpa4NpmqY5sqse5NJSmCRY5vevZYkd5hW1obN9zodZosAh9mxho8glaz03rGi8O9tMsHjNziLsDRmOPfd37rx9RESLQUSgB3KMLMmK70pN4HN/KGlScbfyJxc5bDRM=
+	t=1750080890; cv=none; b=M8std5OgCtj+xOisnnAgDVSeD51YKyE7MY7Dy6ZFnVZvHithxs3MwsIcVJ6159mAAxM0rbEvvacewhlVAeKHWayCn+hcHef/cke8OFWCuzfnOimxXsgPMSBcrJqSuoQdCsQHnMo/NSvAPumIY5kXf7PJVNZ/e6cW939QRd0zss4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750080628; c=relaxed/simple;
-	bh=eSGM/kHiThLG0+4KJzd+4iN5W6WU/gNP8I5Ybs3fFmU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gWSKBFxoPvT01+cKXUNZ2Zt7Fm8fAaPqcAlycJcRISJUsPDLQJy86gxdoTBM0UR2Fvl24an8BFEJlOJ5y3PP/o93OYBCsRHjuNMDrkp9fbFyJJ/5HYMuTCKuAXi2+44BD88FTwJaBYz0rUg0vV6oqoh3XS6HW94EJeoy2JI+WU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jkQvrqBQ; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jkQvrqBQ"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-236470b2dceso37089035ad.0
-        for <imx@lists.linux.dev>; Mon, 16 Jun 2025 06:30:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750080626; x=1750685426; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c0hEZwGp1ZWclkFU1+i1qSi3AaZ5vIDWkPqR7hw0AQY=;
-        b=jkQvrqBQpUR54JwNvUL7VqDq9jDosdlQWXj4E4ZgG8GFN/ZYrlyCkQTS2kkArkj4Yc
-         6yumraEtMEWpj6lzWc5SWzknQMy6TN+CpShyD87wULk9ilvCwyKoiAzBnKqqwyVsoL/n
-         54AKQdFaVfn5gcZ06K4trGtSzIZGsU7kmF+MwXD4zxKKiTqkUHBrwcVaJO/s4iWuhRLo
-         t84gbxEn18z3WsumSu2t88tvIf/JiTCJecMn+uS/EU/bpVxyHf1swnNApdoblGCtrpM5
-         lefxPAtG1wBCRjDlZ+LkNmWRrorBeFdXv1SQZQ+pvLXYd20Voz7fdEdNws2TqucE4z0Y
-         jCtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750080626; x=1750685426;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c0hEZwGp1ZWclkFU1+i1qSi3AaZ5vIDWkPqR7hw0AQY=;
-        b=F+XTwTFgZHafbpVQuD4lQzIKJSV3+2eH+lCap0yMOAWHqUqx6wrl6wC+DP64GdQwNC
-         SsVgyDvSGYUkue3M+NQBXKMhgP0w7Z2qkt51ODgGS64oY/OsDbvmaPaik6ziuqbYhr33
-         N//VntunwsfqQwJZCEolRHlizc5Wc5wDeWoFia+6AiHM8rNRBgo1uy8f1CC37MaQvvV/
-         BoPogJTxn7uJbdU/8TP5JCoZBMJprXdgimMtyyOfSHACdm4myyQPUniN56E8sNvntCK+
-         8vPyfw/OLo/mlJUtRKU7BrbvbZENPBO0qm3HxJxcKt4GN53lSDVdwy0smWhZYBiidLys
-         100w==
-X-Forwarded-Encrypted: i=1; AJvYcCWLaGNlktv4Da+sx+0xgrXRU7traM16LwqCxTvOnqEKeXlTDj9iXRINDdz0VDzubkpUUg4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzYbn0yVX8iuvy7RGRmM0+HN4TYLp8MfGbS4G1upxiXZIKR5HU9
-	vB0XR77Jly11f7E6+iXbpD2vgcOe5z1v4lGIewlFLp9YE1zBwhUi1XzsFG08NmqqEOkz5aeQQLa
-	3hTU8xhoskd/HqyQ2aW/au38k8bnmYls=
-X-Gm-Gg: ASbGncsfQaAQow6k2l4UpZRtnfUneF4yqH7b5QBCe0204cZusIC6FA5Bx0DW3vArDab
-	5tvSyUnOletCy+HkGQAF+j2LeRaDXG+yAREBAOFZ0TS+lmxGntuUOJlXTGoeU22WkpzxNFU113v
-	WzKrS+f8WPh/rsTUVUV51gfG0/hAdb2aqWZeud057P
-X-Google-Smtp-Source: AGHT+IHrnOe9BgEaf7IB6cKO8/zukFqN2HZ5IAYeo7rZcnUwyz06zgXtx6or4FKsocwZQxMzpq7RhmfRl7nR3WTEeSU=
-X-Received: by 2002:a17:903:228a:b0:235:1962:1bf4 with SMTP id
- d9443c01a7336-2366b32ce3amr144470995ad.14.1750080625607; Mon, 16 Jun 2025
- 06:30:25 -0700 (PDT)
+	s=arc-20240116; t=1750080890; c=relaxed/simple;
+	bh=A9wFcAqQwmUZpiuDblwurVpuPc0+SJEASs4pwtKduTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GRFjS5QM2RP+g06du6jWsZ568yov6VO+y9odv4EXqs9hhB2KgH77lCC2/aPQkBhYReG5/71VYg29ZicaA4eQXNgk7bGJ4/2cvf/8y3wrrrxE7xhlH9aF9g1f4xiP8qrLRXO24hFurUtJF2+bLZkYcNoAU/qwZYP+nNdGkmgOvz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uR9z2-0001e3-42; Mon, 16 Jun 2025 15:34:44 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uR9z0-003ocA-2t;
+	Mon, 16 Jun 2025 15:34:42 +0200
+Received: from pengutronix.de (p5b1645f7.dip0.t-ipconnect.de [91.22.69.247])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 66E1F42893E;
+	Mon, 16 Jun 2025 13:34:42 +0000 (UTC)
+Date: Mon, 16 Jun 2025 15:34:40 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, Frank Li <frank.li@nxp.com>
+Subject: Re: [PATCH net-next v2 07/10] net: fec: fec_enet_rx_queue(): replace
+ manual VLAN header calculation with skb_vlan_eth_hdr()
+Message-ID: <20250616-positive-vicugna-of-felicity-9239d9-mkl@pengutronix.de>
+References: <20250612-fec-cleanups-v2-0-ae7c36df185e@pengutronix.de>
+ <20250612-fec-cleanups-v2-7-ae7c36df185e@pengutronix.de>
+ <729dfa8c-6eca-42c6-b9fd-5333208a0a69@lunn.ch>
+ <PAXPR04MB8510A1946372F37B5F97E9F28870A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <4877c76a-d0c1-41d7-95c6-553542e2d9b1@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250606-imx95-rproc-1-v2-0-a2bd64438be9@nxp.com> <20250606-imx95-rproc-1-v2-2-a2bd64438be9@nxp.com>
-In-Reply-To: <20250606-imx95-rproc-1-v2-2-a2bd64438be9@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Mon, 16 Jun 2025 16:32:27 +0300
-X-Gm-Features: AX0GCFsogmtArdg5rIwFR58rkkFYwbGckSH0KHSur5wUDe92Y-KCqAhSavVUQsU
-Message-ID: <CAEnQRZCq45wzoDLd=_vPn8cNkiVrbYrg5LJwbZUSdRndRn_U_g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] remoteproc: imx_rproc: Add support for System
- Manager API
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Iuliana Prodan <iuliana.prodan@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6rzuiur3eqbcevt4"
+Content-Disposition: inline
+In-Reply-To: <4877c76a-d0c1-41d7-95c6-553542e2d9b1@lunn.ch>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
+
+
+--6rzuiur3eqbcevt4
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next v2 07/10] net: fec: fec_enet_rx_queue(): replace
+ manual VLAN header calculation with skb_vlan_eth_hdr()
+MIME-Version: 1.0
 
-On Fri, Jun 6, 2025 at 4:57=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.com=
-> wrote:
->
-> From: Peng Fan <peng.fan@nxp.com>
->
-> i.MX95 features a Cortex-M33 core, six Cortex-A55 cores, and
-> one Cortex-M7 core. The System Control Management Interface(SCMI)
-> firmware runs on the M33 core. The i.MX95 SCMI firmware named System
-> Manager(SM) includes vendor extension protocols, Logical Machine
-> Management(LMM) protocol and CPU protocol and etc.
->
-> There are three cases for M7:
->  (1) M7 in a separate Logical Machine(LM) that Linux can't control it.
->  (2) M7 in a separate Logical Machine that Linux can control it using
->      LMM protocol
->  (3) M7 runs in same Logical Machine as A55, so Linux can control it
->      using CPU protocol
->
-> So extend the driver to using LMM and CPU protocol to manage the M7 core.
->  - Add IMX_RPROC_SM to indicate the remote core runs on a SoC that
->    has System Manager.
->  - Compare linux LM ID(got using scmi_imx_lmm_info) and M7 LM ID(got
->    from DTB), if same, use CPU protocol to start/stop. Otherwise, use
->    LMM protocol to start/stop.
->    Whether using CPU or LMM protocol to start/stop, the M7 status
->    detection could use CPU protocol to detect started or not. So
->    in imx_rproc_detect_mode, use scmi_imx_cpu_started to check the
->    status of M7.
->  - For above case 1 and 2, Use SCMI_IMX_LMM_POWER_ON to detect whether
->    the M7 LM is under control of A55 LM.
->
-> Current setup relies on pre-Linux software(U-Boot) to do
-> M7 TCM ECC initialization. In future, we could add the support in Linux
-> to decouple U-Boot and Linux.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+On 16.06.2025 15:12:37, Andrew Lunn wrote:
+> On Mon, Jun 16, 2025 at 01:42:08AM +0000, Wei Fang wrote:
+> > > >  drivers/net/ethernet/freescale/fec_main.c | 3 +--
+> > > >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/drivers/net/ethernet/freescale/fec_main.c
+> > > > b/drivers/net/ethernet/freescale/fec_main.c
+> > > > index 6b456372de9a..f238cb60aa65 100644
+> > > > --- a/drivers/net/ethernet/freescale/fec_main.c
+> > > > +++ b/drivers/net/ethernet/freescale/fec_main.c
+> > > > @@ -1860,8 +1860,7 @@ fec_enet_rx_queue(struct net_device *ndev, u16
+> > > queue_id, int budget)
+> > > >  		    fep->bufdesc_ex &&
+> > > >  		    (ebdp->cbd_esc & cpu_to_fec32(BD_ENET_RX_VLAN))) {
+> > > >  			/* Push and remove the vlan tag */
+> > > > -			struct vlan_hdr *vlan_header =3D
+> > > > -					(struct vlan_hdr *) (data + ETH_HLEN);
+> > > > +			struct vlan_ethhdr *vlan_header =3D skb_vlan_eth_hdr(skb);
+> > >=20
+> > > This is not 'obviously correct', so probably the commit message needs=
+ expanding.
+> > >=20
+> > > static inline struct vlan_ethhdr *skb_vlan_eth_hdr(const struct sk_bu=
+ff *skb) {
+> > > 	return (struct vlan_ethhdr *)skb->data; }
+> > >=20
+> > > I can see a few lines early:
+> > >=20
+> > > 		data =3D skb->data;
+> > >=20
+> > > but what about the + ETH_HLEN?
+> > >=20
+> >=20
+> > The type of vlan_header has been changed from "struct vlan_hdr *" to
+> > "struct vlan_ethhdr *", so it is correct to use skb->data directly.
+>=20
+> Doh! I missed that, sorry. Maybe extend the commit message, you
+> mention skb_vlan_eth_hdr() but you could add something like
+>=20
+> ... and change the type of vlan_header to struct vlan_ethhdr to take
+> into account the ethernet header plus vlan header is returned.
+>=20
+> With that, please add: Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Will do, thanks!
+
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--6rzuiur3eqbcevt4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmhQHW0ACgkQDHRl3/mQ
+kZzv3QgAj3kbtMjU741HDJh5zzIvnio+zZLg4NbUzRfer3lx2Y4qLI8tWZQFyZZt
+cOUm/G+zu5zKm6UxIHQ+XmPHonj/sz+dRi+Qj1wDuYBdbhZWOTIqYd7S3T61h4SP
+lxwZyhE/j03tE/KeMeSs853eZRvdyCXW4+GYNLN28wR/URs88KdHQZuzwe1pCWYI
+0qT8v3SSU/bDaybETJ+e3BHOgbBBG0QURONMRXlUbCI7FScz/5Sc3FJMABUTkn/S
+N3KXzyFfQpsh7ePqUm8glFEeStublciZgVPN3Wn1Jeogqp+p1hYWBLbyq+hZjS0P
+C8CSppSsEVOLs1HX19284euOGaJtOw==
+=UOCy
+-----END PGP SIGNATURE-----
+
+--6rzuiur3eqbcevt4--
