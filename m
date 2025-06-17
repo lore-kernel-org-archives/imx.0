@@ -1,120 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BCF29291F;
-	Tue, 17 Jun 2025 08:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E1F28FA89;
+	Tue, 17 Jun 2025 08:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750148547; cv=none; b=ljBb0qXUhzaFTnTh/buaUU7xkwwc1kPL9EAS2b73gO2jBUtswpHN39nOVbzI11Z7y6GKDuxoRLVfI8Wfyd1TCeIA6jyOc+xmvO7BRaDInnOGXTGy9DSySpS0Emf26GPCVhSzXa+AjsXcAa6mo+Sg3F2tCfdbcGdh7JudLpN7o0Q=
+	t=1750148835; cv=none; b=mgUZjXMoTBpxnLOUqH71Lj2q47isEOfchhXDVUyZptSHP/GA9NAhQZh5ZWSjO3lEPfvJcJNlK2/MSmTdjqQIxRl1fPAQqXBSRjNlzai8WdQpdq9nyqfLULen4r2C1zca9NqUL3leDQLPzlLVmb2mtQbwBt/D2Z7vln5y/YjRs4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750148547; c=relaxed/simple;
-	bh=qSD98g38tfcqcNCNqmqDfpdR9ZKGR5FnULZGNDZzSp8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CILSxTzkt8BlBDmGUAjU6UqL3i7kJA3FlItl6IWvM6K+sbOpNaEnrzoSPV25Ahj28Zn9k0cAUIE8Ciw6+Z5HzQF5AEE77URBIeJtkFDs87KOBs0YMMWLfIgAcLvENVQ+vj765QR/699v7AFPAonrhD7q+pe1XCRYrSWhrTOSsz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NVtHKPLt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750148835; c=relaxed/simple;
+	bh=p+OBljdaXw+ZNWtuzpzHmw1IKToyT5gfg5mlshVql+U=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=YZhLupDcp5W5o8QGB9nDlAEMXjL0039QRzazAQZEXejI3AgKE85wZX9ZsG+7RdH6dOIzZlgxGnBYFKc81UMk6WNCcTi9Lfj5+mQk+fZ9PtF36uDc+t7w5PJz8r+7yBkO0p6KTGdk7vrzw2UaHnCzTORkW1cHHr396BZ+rXyudc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=JrMdTAX9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TiaGR9+6; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NVtHKPLt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05675C4CEE3;
-	Tue, 17 Jun 2025 08:22:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750148547;
-	bh=qSD98g38tfcqcNCNqmqDfpdR9ZKGR5FnULZGNDZzSp8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NVtHKPLtDFARxy9PIPnoeZW5wpBnGa3PiJ62RBv23mbHM6FKjB1DTP0jfzDqrpoPm
-	 oonC6wXoLHmumULQ7TXmd2+CqswPmZBOWjKlkZ9aHc093/1GXsS10Fr4E29dVM8l6E
-	 kyVCGsIG3c/9obBoNpn0KRqHmdibITsV8qKTjJqj5DbvKrDJRqTRmAT9AHDCUpeewj
-	 6z6ZyOycxbmoZZb2GdmaZZmUylpGNx3ORLLQqMc1kk5hFYoUEE0/f19rRNNNbzGYJ0
-	 hqE0nfv8v/vMni9dsu7npXBtQ5UcqsYFdl1x1u62Yu2Xunqkc7YXIlgXLM05q9Wtrj
-	 U5lR/uNi31e0w==
-Date: Tue, 17 Jun 2025 16:22:20 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, shawnguo@kernel.org, john.ernberg@actia.se,
-	jun.li@nxp.com, linux-usb@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH] usb: chipidea: udc: disconnect/reconnect from host when
- do suspend/resume
-Message-ID: <20250617082220.GB1716298@nchen-desktop>
-References: <20250614124914.207540-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="JrMdTAX9";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TiaGR9+6"
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 7F1431140132;
+	Tue, 17 Jun 2025 04:27:12 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Tue, 17 Jun 2025 04:27:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1750148832;
+	 x=1750235232; bh=AapnD22KoJa7oOuX3gAhhYqhmyCztWp6yYLSnan63Qg=; b=
+	JrMdTAX9qEcDetAUa8gdNPNggBZ0VX3PM6DceesLGYw2IrORWf27TSzqkmnGQASq
+	d4q0/aFTlgN+j151YjXwetWhqU++1gNAAM3/wJcrVezjZbNtokh0wXywUqJnYjWl
+	V22CGr1zRtIchMPQM3uY5QGFYsy8VxPqtJhmDukYplIMKRPF7UNfOUq6FSAKx77s
+	7Dp0nGj3nPCx711tOuHSN9n826eUz0LKOZ5BA3M8lWfA8unAo75XpoNe/xhBHq+L
+	HnYYc6he0p3/8CbJ/guwfDc6Ds4FMOieTbAJDhstQj25DiDaWVdvt6f3dPmxHEzK
+	w9JSCIsZ9NeULOzGArtRzQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1750148832; x=
+	1750235232; bh=AapnD22KoJa7oOuX3gAhhYqhmyCztWp6yYLSnan63Qg=; b=T
+	iaGR9+6KZg4HEiv45FneefPIinNWlBL01WyxEpIk/KeYNg8Csu5vZXBc8lHwFaZZ
+	1Gl4XEIaaiL2dKuGmHgLNYV2JcSDMbMqz8km5xLM4Hu+C6AfqSaIDjUURtBt3Nfk
+	I4gL8viWhaog930ranXn34kuMaMkVyoYxoYtXgtl5ANlPmDs2VWQ7H3YuUokkZhH
+	jYs6thLDTkH2Csy9qczXpbsYSTThicDoruFnMXciVUIn6I6OedUaksxm12ibgrQ/
+	dgP3eliOh4PgtQUhuBrz1LGxlGpmpy3yw+Fj6ykioPGQ9b2z//BBowcB12eu6Dwe
+	P0rpq26f5aX2j9QtAbWtg==
+X-ME-Sender: <xms:4CZRaE87h-nRftsg_6kNXBmMHLJq0HBhc0K1KAq5etLTTfRG0nqD0g>
+    <xme:4CZRaMtWp2Q2rX18Kmb_pYH-BmF7S8Xwm6yhQ4ZlllvofuxN_b0W995PZ9kLgWEZc
+    WV2JFrJwj_OBih0GYs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvkeekjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
+    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedu
+    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhosghinhdrmhhurhhphhihse
+    grrhhmrdgtohhmpdhrtghpthhtohepohhlthgvrghnvhesghhmrghilhdrtghomhdprhgt
+    phhtthhopehlkhhpsehinhhtvghlrdgtohhmpdhrtghpthhtohepsghrohhonhhivgeskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrmhgvshdrtghlrghrkheslhhinhgrrhho
+    rdhorhhgpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtph
+    htthhopehiohhmmhhusehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepohgv
+    qdhksghuihhlugdqrghllheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhope
+    hhtghhsehlshhtrdguvg
+X-ME-Proxy: <xmx:4CZRaKCuvjcZvNREdfFxg7iIlgpJRLaX9h2AZfDfVY1s02hVY8zVBg>
+    <xmx:4CZRaEeGdw1nk2-e77DoTV2ERy4elO4vkVOcQw0mJ0KZa4FHKtkn-g>
+    <xmx:4CZRaJO6P7aes_EnrNS8eMslf1FGeHJ1r8MzJsuZNsXD7hZuTGSX5Q>
+    <xmx:4CZRaOkeLdWNP6cyzVOuqYSq4wEESZMugGAQ2r2vHEWLkjFEkGhByg>
+    <xmx:4CZRaDTJrF_knVLInAnOd3RLFGXBxbBKmsQhFSvAGN7vnQ00aANYMEWt>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 23FDD700062; Tue, 17 Jun 2025 04:27:12 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250614124914.207540-1-xu.yang_2@nxp.com>
+X-ThreadId: T4808b90e09d8ad4f
+Date: Tue, 17 Jun 2025 10:26:51 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Christoph Hellwig" <hch@lst.de>
+Cc: "James Clark" <james.clark@linaro.org>, "Mark Brown" <broonie@kernel.org>,
+ "Vladimir Oltean" <olteanv@gmail.com>, oe-kbuild-all@lists.linux.dev,
+ "Larisa Grigore" <larisa.grigore@nxp.com>, "Frank Li" <Frank.li@nxp.com>,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ "kernel test robot" <lkp@intel.com>,
+ "Marek Szyprowski" <m.szyprowski@samsung.com>,
+ "Robin Murphy" <robin.murphy@arm.com>, iommu@lists.linux.dev
+Message-Id: <76a8c896-d7ea-4471-99a2-34b3a7ac9804@app.fastmail.com>
+In-Reply-To: <5de445aa-048b-4f60-9045-df5d45341436@app.fastmail.com>
+References: <20250616120832.GA24959@lst.de>
+ <2d62254e-5cbe-4174-95d8-e80cae4f4543@sirena.org.uk>
+ <20250616121444.GA25443@lst.de>
+ <7cfcf919-3c7d-4f0c-911f-697ea3141080@linaro.org>
+ <20250616131346.GB29838@lst.de>
+ <83855c1a-c128-4762-9d6b-e17f2c4c8820@linaro.org>
+ <d16bdc40-20d6-49db-bf41-18bb9b8e01fd@linaro.org>
+ <20250616131944.GA30260@lst.de>
+ <f723d490-c228-42d5-9f9f-158df54a092d@linaro.org>
+ <9788991a-ac37-4fde-81db-c55035d00f27@app.fastmail.com>
+ <20250617044833.GE1824@lst.de>
+ <5de445aa-048b-4f60-9045-df5d45341436@app.fastmail.com>
+Subject: Re: [PATCH] dma-mapping: Stub out dma_{alloc,free,map}_pages() API
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On 25-06-14 20:49:14, Xu Yang wrote:
-> Shawn and John reported a hang issue during system suspend as below:
-> 
->  - USB gadget is enabled as Ethernet
->  - There is data transfer over USB Ethernet (scp a big file between host
->                                              and device)
->  - Device is going in/out suspend (echo mem > /sys/power/state)
-> 
-> The root cause is the USB device controller is suspended but the USB bus
-> is still active which caused the USB host continues to transfer data with
-> device and the device continues to queue USB requests (in this case, a
-> delayed TCP ACK packet trigger the issue) after controller is suspended,
-> however the USB controller clock is already gated off. Then if udc driver
-> access registers after that point, the system will hang.
-> 
-> The correct way to avoid such issue is to disconnect device from host when
-> the USB bus is not at suspend state. Then the host will receive disconnect
-> event and stop data transfer in time. To continue make USB gadget device
-> work after system resume, this will reconnect device automatically.
-> 
-> To make usb wakeup work if USB bus is already at suspend state, this will
-> keep connection for it only when USB device controller has enabled wakeup
-> capability.
-> 
-> Reported-by: Shawn Guo <shawnguo@kernel.org>
-> Reported-by: John Ernberg <john.ernberg@actia.se>
-> Closes: https://lore.kernel.org/linux-usb/aEZxmlHmjeWcXiF3@dragon/
-> Tested-by: John Ernberg <john.ernberg@actia.se> # iMX8QXP
-> Fixes: 235ffc17d014 ("usb: chipidea: udc: add suspend/resume support for device controller")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Jun Li <jun.li@nxp.com>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
->  drivers/usb/chipidea/udc.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-> index 8a9b31fd5c89..1a48e6440e6c 100644
-> --- a/drivers/usb/chipidea/udc.c
-> +++ b/drivers/usb/chipidea/udc.c
-> @@ -2374,6 +2374,10 @@ static void udc_suspend(struct ci_hdrc *ci)
->  	 */
->  	if (hw_read(ci, OP_ENDPTLISTADDR, ~0) == 0)
->  		hw_write(ci, OP_ENDPTLISTADDR, ~0, ~0);
-> +
-> +	if (ci->gadget.connected &&
-> +	    (!ci->suspended || !device_may_wakeup(ci->dev)))
-> +		usb_gadget_disconnect(&ci->gadget);
->  }
+On Tue, Jun 17, 2025, at 09:53, Arnd Bergmann wrote:
 
-Don't we need to notify gadget(class) side the disconnect event?
+> Between SH72xx/SH76xx, SUN3 and M68328, I believe the
+> supported machines are all limited to between 1MB and 32MB in
+> the maximum configuration, which is obviously extremely
+> tight.
 
-Peter
->  
->  static void udc_resume(struct ci_hdrc *ci, bool power_lost)
-> @@ -2384,6 +2388,9 @@ static void udc_resume(struct ci_hdrc *ci, bool power_lost)
->  					OTGSC_BSVIS | OTGSC_BSVIE);
->  		if (ci->vbus_active)
->  			usb_gadget_vbus_disconnect(&ci->gadget);
-> +	} else if (ci->vbus_active && ci->driver &&
-> +		   !ci->gadget.connected) {
-> +		usb_gadget_connect(&ci->gadget);
->  	}
->  
->  	/* Restore value 0 if it was set for power lost check */
-> -- 
-> 2.34.1
-> 
+I checked the exact numbers we're talking about here: enabling
+CONFIG_HAS_DMA on rsk7269_defconfig adds 10KB of extra vmlinux
+size, which doesn't seem too bad:
 
--- 
+   text	   data	    bss	    dec	    hex	filename
+3295084	1111396	 112264	4518744	 44f358	vmlinux-before
+3302836	1113652	 112264	4528752	 451a70	vmlinux-after
 
-Best regards,
-Peter
+      Arnd
