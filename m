@@ -1,127 +1,85 @@
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from mail.mleia.com (mleia.com [178.79.152.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E1F28FA89;
-	Tue, 17 Jun 2025 08:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F44A218AAA
+	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 08:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750148835; cv=none; b=mgUZjXMoTBpxnLOUqH71Lj2q47isEOfchhXDVUyZptSHP/GA9NAhQZh5ZWSjO3lEPfvJcJNlK2/MSmTdjqQIxRl1fPAQqXBSRjNlzai8WdQpdq9nyqfLULen4r2C1zca9NqUL3leDQLPzlLVmb2mtQbwBt/D2Z7vln5y/YjRs4A=
+	t=1750148984; cv=none; b=QSgPn8l6xLc7b+z/wIxWnqcjVr1n2woj7XTkcCCXB161OPunJ8IbmFYYoKflDaN35OKXh3YJvWRf1+d6UyAz8NAQJc0VXyyGuseHESN4+208WC9WmXZDVw3ROPMg7WIcHv7pBJKcfKDc2ObP+OCiF/myUZ+1RR+r6DdT5pAadv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750148835; c=relaxed/simple;
-	bh=p+OBljdaXw+ZNWtuzpzHmw1IKToyT5gfg5mlshVql+U=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=YZhLupDcp5W5o8QGB9nDlAEMXjL0039QRzazAQZEXejI3AgKE85wZX9ZsG+7RdH6dOIzZlgxGnBYFKc81UMk6WNCcTi9Lfj5+mQk+fZ9PtF36uDc+t7w5PJz8r+7yBkO0p6KTGdk7vrzw2UaHnCzTORkW1cHHr396BZ+rXyudc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=JrMdTAX9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TiaGR9+6; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1750148984; c=relaxed/simple;
+	bh=h5DYFAuVio36yz2xdt6veVQ5MCUC5Nm4S8ZwBFwoY0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dI/87h7WEU5UOMR7nv2WAp4rgHVD48Nkx3fk6q6EiCp5kkB02V1WvB8G+3qtrJc7FpiZZUFuq582xWEHcTbP31bDJMz5OORE1sPhX+Odj2y5eo6353I82nPD/rUdVSJ2s8G0mDFobGXubtznQYtnbPG8QkGsJDjg7sj2nwhx+JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=C/JOA3gl; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=C/JOA3gl; arc=none smtp.client-ip=178.79.152.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="JrMdTAX9";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TiaGR9+6"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 7F1431140132;
-	Tue, 17 Jun 2025 04:27:12 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Tue, 17 Jun 2025 04:27:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1750148832;
-	 x=1750235232; bh=AapnD22KoJa7oOuX3gAhhYqhmyCztWp6yYLSnan63Qg=; b=
-	JrMdTAX9qEcDetAUa8gdNPNggBZ0VX3PM6DceesLGYw2IrORWf27TSzqkmnGQASq
-	d4q0/aFTlgN+j151YjXwetWhqU++1gNAAM3/wJcrVezjZbNtokh0wXywUqJnYjWl
-	V22CGr1zRtIchMPQM3uY5QGFYsy8VxPqtJhmDukYplIMKRPF7UNfOUq6FSAKx77s
-	7Dp0nGj3nPCx711tOuHSN9n826eUz0LKOZ5BA3M8lWfA8unAo75XpoNe/xhBHq+L
-	HnYYc6he0p3/8CbJ/guwfDc6Ds4FMOieTbAJDhstQj25DiDaWVdvt6f3dPmxHEzK
-	w9JSCIsZ9NeULOzGArtRzQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1750148832; x=
-	1750235232; bh=AapnD22KoJa7oOuX3gAhhYqhmyCztWp6yYLSnan63Qg=; b=T
-	iaGR9+6KZg4HEiv45FneefPIinNWlBL01WyxEpIk/KeYNg8Csu5vZXBc8lHwFaZZ
-	1Gl4XEIaaiL2dKuGmHgLNYV2JcSDMbMqz8km5xLM4Hu+C6AfqSaIDjUURtBt3Nfk
-	I4gL8viWhaog930ranXn34kuMaMkVyoYxoYtXgtl5ANlPmDs2VWQ7H3YuUokkZhH
-	jYs6thLDTkH2Csy9qczXpbsYSTThicDoruFnMXciVUIn6I6OedUaksxm12ibgrQ/
-	dgP3eliOh4PgtQUhuBrz1LGxlGpmpy3yw+Fj6ykioPGQ9b2z//BBowcB12eu6Dwe
-	P0rpq26f5aX2j9QtAbWtg==
-X-ME-Sender: <xms:4CZRaE87h-nRftsg_6kNXBmMHLJq0HBhc0K1KAq5etLTTfRG0nqD0g>
-    <xme:4CZRaMtWp2Q2rX18Kmb_pYH-BmF7S8Xwm6yhQ4ZlllvofuxN_b0W995PZ9kLgWEZc
-    WV2JFrJwj_OBih0GYs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvkeekjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
-    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedu
-    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhosghinhdrmhhurhhphhihse
-    grrhhmrdgtohhmpdhrtghpthhtohepohhlthgvrghnvhesghhmrghilhdrtghomhdprhgt
-    phhtthhopehlkhhpsehinhhtvghlrdgtohhmpdhrtghpthhtohepsghrohhonhhivgeskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrmhgvshdrtghlrghrkheslhhinhgrrhho
-    rdhorhhgpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidruggvvhdprhgtph
-    htthhopehiohhmmhhusehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepohgv
-    qdhksghuihhlugdqrghllheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhope
-    hhtghhsehlshhtrdguvg
-X-ME-Proxy: <xmx:4CZRaKCuvjcZvNREdfFxg7iIlgpJRLaX9h2AZfDfVY1s02hVY8zVBg>
-    <xmx:4CZRaEeGdw1nk2-e77DoTV2ERy4elO4vkVOcQw0mJ0KZa4FHKtkn-g>
-    <xmx:4CZRaJO6P7aes_EnrNS8eMslf1FGeHJ1r8MzJsuZNsXD7hZuTGSX5Q>
-    <xmx:4CZRaOkeLdWNP6cyzVOuqYSq4wEESZMugGAQ2r2vHEWLkjFEkGhByg>
-    <xmx:4CZRaDTJrF_knVLInAnOd3RLFGXBxbBKmsQhFSvAGN7vnQ00aANYMEWt>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 23FDD700062; Tue, 17 Jun 2025 04:27:12 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="C/JOA3gl";
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="C/JOA3gl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1750148981; bh=h5DYFAuVio36yz2xdt6veVQ5MCUC5Nm4S8ZwBFwoY0Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=C/JOA3glTSbRXGeZeqLoLH68R1plBk58aC5zMHcoksNNV/JUU4bj9C+2R6G8aKNWF
+	 jA6ysYWnp70OXrZv6RE8gVfoA36DcMwkjrXxBI8V8tLLd0/mY/xzSrMBhIgLBsevFs
+	 WN1sYLB0i1IwBQ50L2w8lJN1jKaT2ZPH7RX2lYH7oQmy5qhYdrNkd1fWZGiSuaXXj6
+	 3ox0J3azzKkwywV2EfwuOs33LKMjfkMRxs/9ay7QF9lVbVV5fURiNaC7g50bTuzMcr
+	 HySSy8ll6mvUchFt9KygO8PtMVd78w3jB9EpBvNgQ7e59xbkA+tu7ZyO+4zLWqgl5Y
+	 xlddVDVjfAkrQ==
+Received: from mail.mleia.com (localhost [127.0.0.1])
+	by mail.mleia.com (Postfix) with ESMTP id 54F4B3C2B97;
+	Tue, 17 Jun 2025 08:29:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1750148981; bh=h5DYFAuVio36yz2xdt6veVQ5MCUC5Nm4S8ZwBFwoY0Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=C/JOA3glTSbRXGeZeqLoLH68R1plBk58aC5zMHcoksNNV/JUU4bj9C+2R6G8aKNWF
+	 jA6ysYWnp70OXrZv6RE8gVfoA36DcMwkjrXxBI8V8tLLd0/mY/xzSrMBhIgLBsevFs
+	 WN1sYLB0i1IwBQ50L2w8lJN1jKaT2ZPH7RX2lYH7oQmy5qhYdrNkd1fWZGiSuaXXj6
+	 3ox0J3azzKkwywV2EfwuOs33LKMjfkMRxs/9ay7QF9lVbVV5fURiNaC7g50bTuzMcr
+	 HySSy8ll6mvUchFt9KygO8PtMVd78w3jB9EpBvNgQ7e59xbkA+tu7ZyO+4zLWqgl5Y
+	 xlddVDVjfAkrQ==
+Message-ID: <804c0ad1-3ab0-48be-b58e-8c67ac92d12c@mleia.com>
+Date: Tue, 17 Jun 2025 11:29:39 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: T4808b90e09d8ad4f
-Date: Tue, 17 Jun 2025 10:26:51 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christoph Hellwig" <hch@lst.de>
-Cc: "James Clark" <james.clark@linaro.org>, "Mark Brown" <broonie@kernel.org>,
- "Vladimir Oltean" <olteanv@gmail.com>, oe-kbuild-all@lists.linux.dev,
- "Larisa Grigore" <larisa.grigore@nxp.com>, "Frank Li" <Frank.li@nxp.com>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org,
- "kernel test robot" <lkp@intel.com>,
- "Marek Szyprowski" <m.szyprowski@samsung.com>,
- "Robin Murphy" <robin.murphy@arm.com>, iommu@lists.linux.dev
-Message-Id: <76a8c896-d7ea-4471-99a2-34b3a7ac9804@app.fastmail.com>
-In-Reply-To: <5de445aa-048b-4f60-9045-df5d45341436@app.fastmail.com>
-References: <20250616120832.GA24959@lst.de>
- <2d62254e-5cbe-4174-95d8-e80cae4f4543@sirena.org.uk>
- <20250616121444.GA25443@lst.de>
- <7cfcf919-3c7d-4f0c-911f-697ea3141080@linaro.org>
- <20250616131346.GB29838@lst.de>
- <83855c1a-c128-4762-9d6b-e17f2c4c8820@linaro.org>
- <d16bdc40-20d6-49db-bf41-18bb9b8e01fd@linaro.org>
- <20250616131944.GA30260@lst.de>
- <f723d490-c228-42d5-9f9f-158df54a092d@linaro.org>
- <9788991a-ac37-4fde-81db-c55035d00f27@app.fastmail.com>
- <20250617044833.GE1824@lst.de>
- <5de445aa-048b-4f60-9045-df5d45341436@app.fastmail.com>
-Subject: Re: [PATCH] dma-mapping: Stub out dma_{alloc,free,map}_pages() API
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] dt-bindings: arm: lpc: add missed lpc43xx board
+Content-Language: ru-RU
+To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+ Roland Stigge <stigge@antcom.de>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "moderated list:ARM/LPC32XX SOC SUPPORT"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+References: <20250606164012.1363896-1-Frank.Li@nxp.com>
+From: Vladimir Zapolskiy <vz@mleia.com>
+In-Reply-To: <20250606164012.1363896-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20250617_082941_376528_41F3FF3A 
+X-CRM114-Status: UNSURE (   5.72  )
+X-CRM114-Notice: Please train this message. 
 
-On Tue, Jun 17, 2025, at 09:53, Arnd Bergmann wrote:
+On 6/6/25 19:40, Frank Li wrote:
+> Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
+> warnings:
+> arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-> Between SH72xx/SH76xx, SUN3 and M68328, I believe the
-> supported machines are all limited to between 1MB and 32MB in
-> the maximum configuration, which is obviously extremely
-> tight.
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
 
-I checked the exact numbers we're talking about here: enabling
-CONFIG_HAS_DMA on rsk7269_defconfig adds 10KB of extra vmlinux
-size, which doesn't seem too bad:
+Thank you for the change.
 
-   text	   data	    bss	    dec	    hex	filename
-3295084	1111396	 112264	4518744	 44f358	vmlinux-before
-3302836	1113652	 112264	4528752	 451a70	vmlinux-after
-
-      Arnd
+--
+Best wishes,
+Vladimir
