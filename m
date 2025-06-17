@@ -1,85 +1,91 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07172FA65E;
-	Tue, 17 Jun 2025 16:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0120145FE0
+	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 17:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179192; cv=none; b=tUp9SBaTeumoqjHsl+pEM6bquyYlFgP2W5VMEz7oJiI/lXZTddVXe2KKyyzZO342u+ovA/BBFAlD/rqtUMMJJMFC8/tV3BMc2y7u7CC2lodaLrV/I8bvePftKNM+nHQwWa1wgbCtq+KJBsUJp7Jl7X2U114v/0Kb4L4zMYFpuHo=
+	t=1750180099; cv=none; b=VuSoK5UVomGkGUdf20/LNoLJ48TI1YyIJ7MkLxDuOURznVvpxincBLBLHz3/xhJnxFGV9wJ9gw9H4mORtjV7Ex5btVQufYkENzph0mdO9Qv8kzcXmqKb7dhYL34QfBwu0UL6Ihk6KV63IWzd8EIffRfnmCsICHI3xNbgBrFK4uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179192; c=relaxed/simple;
-	bh=EDRaIpa6wJ70zFFE4EgCOpigV30lcRZVVqC50V/lpiM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kLrg4jrYkSN16wR/TzRH44UH9qsrObQMBWLBFLctWK9Aco8nikKrCUVEKm3ucG04AyH2jxs2yrir1LLpuNg3GTrJKpme3DIcoCEwwptW+Pl7bviomKP0WbYJmuNWRES2sJsyyqmaSy3m3PoOmsaroEE5+pHlQ2wNDuMZN0M35kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2azXULNl; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1750180099; c=relaxed/simple;
+	bh=MC5yXiem/XiAOYUpnP0gGjuW0GwRYpDD+n69a4aKMJQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PLf7QvIWJjXroJ+DVfCWxbOY/a2baCxAMlW+OhZNhnDD0araIMbWo/40MOAZYYawTEPK8mYoNlRw+FfJ2pf8j8zHyI600aOzSw5QSw65RxhnmmEde8uhClmtDGHArRyIwDsWSycz6Mf2uOb+Cprgvs5Dk5hdJZ5YC/tdLzjXTBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=cyJeSIYK; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2azXULNl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=qLwy9nWk7FQ2u1fpqK0kJMRSGlwXC3AvpuB1jdFpBfY=; b=2a
-	zXULNlLbVY2lA4WHwdHGKkxblSf0mo45WNp+Gn5lID9vZ7Yf/KTBHQBvKl94A+4xcEO4X0/IkCOv1
-	0fic+BJ5OSeJ4W/fPjKVypf1HB1qvGsVbPWobIcMDIfuSi488jokKwMlWBP90yNvNeBEfMaQ8fn/m
-	DyKUfIC/3rsRfVQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uRZYQ-00GC94-PV; Tue, 17 Jun 2025 18:52:58 +0200
-Date: Tue, 17 Jun 2025 18:52:58 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v4 1/1] dt-bindings: net: convert qca,qca7000.txt yaml
- format
-Message-ID: <c4864e76-cec3-4794-825d-cc9ccbf92e43@lunn.ch>
-References: <20250616184820.1997098-1-Frank.Li@nxp.com>
- <CAOMZO5DwJ9bk26TBU46_fU0ydwQL__dxUoOULuKyZYWRdbJ0YQ@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="cyJeSIYK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1750180095;
+	bh=MC5yXiem/XiAOYUpnP0gGjuW0GwRYpDD+n69a4aKMJQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=cyJeSIYKTkiOrYuqpZKDsNZ6dqqRK/AbUA6Dwz77IgJ4xLP53jwNmt4GzOBZevCwf
+	 ZBZ8wV8viSftEVK9yJgR523I219n53heonys9/4FJlTs1v5FnYTzfuFqa2xo69OAm3
+	 OJKCnt2tVv28aiPtar9iQ5Hb2j8oHpJQb0eJ+N9Q=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Tue, 17 Jun 2025 19:08:12 +0200
+Subject: [PATCH v7 1/3] spi: spi-nxp-fspi: check return value of
+ devm_mutex_init()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOMZO5DwJ9bk26TBU46_fU0ydwQL__dxUoOULuKyZYWRdbJ0YQ@mail.gmail.com>
+Message-Id: <20250617-must_check-devm_mutex_init-v7-1-d9e449f4d224@weissschuh.net>
+References: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
+In-Reply-To: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Vicentiu Galanopulo <vicentiu.galanopulo@remote-tech.co.uk>, 
+ Will Deacon <will@kernel.org>, Han Xu <han.xu@nxp.com>, 
+ Haibo Chen <haibo.chen@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, Lee Jones <lee@kernel.org>, 
+ Pavel Machek <pavel@kernel.org>, Andrew Davis <afd@ti.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ linux-kernel@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-leds@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750180094; l=1010;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=MC5yXiem/XiAOYUpnP0gGjuW0GwRYpDD+n69a4aKMJQ=;
+ b=f4c7YwjcV/UL1ks9Ly8Byx44jZAWULoi9GjwjUjYlbG84xBpsbwHzyUiQd8EhePjN72ThBmAV
+ NC9+IUFuTaWApURrOV2QgGSlId0B5bMlzbfUWSEVw3efoRIQsBZcPKZ
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On Tue, Jun 17, 2025 at 01:09:21PM -0300, Fabio Estevam wrote:
-> On Mon, Jun 16, 2025 at 3:48 PM Frank Li <Frank.Li@nxp.com> wrote:
-> 
-> > +examples:
-> > +  - |
-> > +    spi {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        ethernet@0 {
-> > +            compatible = "qca,qca7000";
-> > +            reg = <0x0>;
-> > +            interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
-> > +            interrupts = <25 0x1>;            /* Index: 25, rising edge */
-> > +            spi-cpha;                         /* SPI mode: CPHA=1 */
-> > +            spi-cpol;                         /* SPI mode: CPOL=1 */
-> > +            spi-max-frequency = <8000000>;    /* freq: 8 MHz */
-> 
-> All of these comments are obvious and don't bring any new information.
-> 
-> I recommend dropping all of them.
+devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will be
+marked as unusable and trigger errors on usage.
 
-I would also suggest replacing 0x1 with IRQ_TYPE_EDGE_RISING.
+Add the missed check.
 
-  Andrew
+Fixes: 48900813abd2 ("spi: spi-nxp-fspi: remove the goto in probe")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+ drivers/spi/spi-nxp-fspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index e63c77e418231cd0698ffb73eeeebfbe63cc3065..f3d5765054132cd18b7257439ece971f58e9ceb2 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1273,7 +1273,9 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to request irq\n");
+ 
+-	devm_mutex_init(dev, &f->lock);
++	ret = devm_mutex_init(dev, &f->lock);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to initialize lock\n");
+ 
+ 	ctlr->bus_num = -1;
+ 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
+
+-- 
+2.50.0
+
