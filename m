@@ -1,69 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A091156F5E;
-	Tue, 17 Jun 2025 08:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C22E28ECCB;
+	Tue, 17 Jun 2025 08:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750148153; cv=none; b=FbJc+tIxL48SCuswhS1ydZLvV2qg6OkHYnXmhn2bFc1xt+e+4HZsAAh1imD0bFF7O1SrGv1bxQctrVx75mW0gAMzlceZszlfPfDQSvlh1hnbQEwfJwzTXryna1UscLwCsBKXXd20t8slWuj2YmNGMLC4Ta4Tuher0Ff/Wd73ujA=
+	t=1750148395; cv=none; b=Ip/JQ6oNnuzpzUVzTf7OVmmmiAk5HzN/gKe2nWQYlllqRPCZnCUvH+oEAzk2nTptncxdUWL/POC8wGu7gkMf8wxEZf7Rjuu/Of4/ikmYCHBJp0ED1euEOLKZE8LOizXkjkGY47PqQUIfrWf1IR8/1AKyoBCGIxErSFdJK7FN1rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750148153; c=relaxed/simple;
-	bh=fk7f/dwAlQZgX1NDAdsyqWiKhDe3Ny7ZLAxMuT9Ey1U=;
+	s=arc-20240116; t=1750148395; c=relaxed/simple;
+	bh=gxwg5xziIv+aRfRJLFFmItst7LG95nO7HUIdm7RqaTc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VkedWdLt1sBF3s9+A/je0xgDAvAhuiGXxNpLxoP/T2kgkAwomrMTRzBxXE0CIlHIGAS3LgJ6cxd5CLQMGxldP2ZQ3ZwfckxsB2yTM6z3FEjKgK6JZ94tmgY4m1XPVKbByuJ9QhGD+dBHtxYClxj8eBswgA+58ARNiNCqBzY41Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qcBYmil9; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=SeUdUdyfn25A2jEQEf3Yol5oaP9/EZqqeczU/C6F9whGgu785inMQC+0ayLu3QnKDv7sum/cKXbo6OZA4MW2ijXC7aVBZ5u6lFO+cupHg7vsyJekSzQi6G0uAgSp58+5U9kKPXG4WAw3iIwvoBZFC8A0d9OT8BeK4ZQvz1lQ3Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KOkIy1gb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qcBYmil9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0BEC4CEE3;
-	Tue, 17 Jun 2025 08:15:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KOkIy1gb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379C4C4CEE3;
+	Tue, 17 Jun 2025 08:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750148153;
-	bh=fk7f/dwAlQZgX1NDAdsyqWiKhDe3Ny7ZLAxMuT9Ey1U=;
+	s=k20201202; t=1750148394;
+	bh=gxwg5xziIv+aRfRJLFFmItst7LG95nO7HUIdm7RqaTc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qcBYmil9r5O3EBpoJ0BbQRjvlMSqAA5PHa5Y+GYe0aRbvCiXSCPO6owyXOPrccGs5
-	 VIkwFIqZ55cM1NZJ5xLZYgXDxGu3ZqXG5PGYhaeC6LW0cK6kvD+Qoa75RXddYQfqIm
-	 +hdGavwnArcWcrwwrfPrzNW6djgn7BjYZyoFBWn05WbXiDcrMkEpFeMgR0BwO+rzwz
-	 OZp+mvnVEKB7CrWw8PNFZ2euCjEOao2ZL7imO+gwOis+2ImQhQuqB6jGhnvfIHtZ7e
-	 /Of9iN5HSskErlb3m5rrkopt3VCletE4ojlET9r9s8A10ISlHBwgKbg8/04nQq3XdS
-	 DhOqBiulVt5ow==
-Date: Tue, 17 Jun 2025 10:15:48 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
-	Roland Stigge <stigge@antcom.de>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
-	"moderated list:ARM/LPC32XX SOC SUPPORT" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: arm: lpc: add missed lpc43xx board
-Message-ID: <20250617-hound-of-improbable-intensity-e7c3c9@kuoka>
-References: <20250606164012.1363896-1-Frank.Li@nxp.com>
+	b=KOkIy1gbpvSM6i19tbNNAQUpDWergsLLSwb06WEOfpdQ3xN3afJyk2bVaXArfuXMk
+	 dxSekLxizTylM2saFYQITnJV/SbPUcGJM95+iVX2sYT04S1R3Zj1LS3IvTP3ACQ/Bb
+	 oiePt/x5k26XSTJxCmrjeGH9QEF2wsFYlyH2VeozUkQjQw9b8wUmdZ72IR/rePLs1C
+	 Ng65cp3eFaPsOLoCJenyzYpOvOdTtJqfTkgRU+r24d4Ss8xWXNQMs7XMUZUqGlX9M7
+	 ebCy9OVysIwsHPlJ4IquqynnuXicv/08g8zIkf+QQz9e/GN+hlamihKkQxbVBNN/FZ
+	 82fZA/zlaN43Q==
+Date: Tue, 17 Jun 2025 16:19:45 +0800
+From: "Peter Chen (CIX)" <peter.chen@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, shawnguo@kernel.org, s.hauer@pengutronix.d,
+	kernel@pengutronix.de, festevam@gmail.com, jun.li@nxp.com,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/3] implement workaround for ERR051725
+Message-ID: <20250617081945.GA1716298@nchen-desktop>
+References: <20250614125645.207732-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250606164012.1363896-1-Frank.Li@nxp.com>
+In-Reply-To: <20250614125645.207732-1-xu.yang_2@nxp.com>
 
-On Fri, Jun 06, 2025 at 12:40:11PM GMT, Frank Li wrote:
-> Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
-> warnings:
-> arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
+On 25-06-14 20:56:42, Xu Yang wrote:
+> Currently, the USB2.0 phy on some imx7d compliant Soc has below issue.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v2
-> - move to nxp lpc32xx.yaml
-> - fix ea,lpc4357-developers-kit include lpc4337
-> ---
->  .../devicetree/bindings/arm/nxp/lpc32xx.yaml  | 22 +++++++++++++++++++
->  1 file changed, 22 insertions(+)
+> ERR051725:
+> USB: With the USB controller configured as device mode, Clearing the RS
+> bit of USBCMD register fails to cause USB device to be detached
+> 
+> Description
+> 1. USB controller working as high speed device mode with USB gadget
+>    function enabled
+> 2. Cable plugged into USB host
+> 3. Use case is software-controlled detach from USB device side
+> 
+> The expected result is device side terminations removed, increase in USB
+> signal amplitude, USB host detect device is detached. But the issue is
+> that the clear RS bit of USBCMD register cannot cause device detach event.
+> 
+> Workaround
+>   - Use the below steps to detach from the host:
+>       write USBCMD.RS = 0b
+>       write CTRL2[7:6] = 01b
+>       write CTRL2[8] = 1b
+>   - As CTRL2[8] is set at detach case, so attach the steps should add clear
+>     CTRL2[8]:
+>       write USBCMD.RS = 1b
+>       write CTRL2[8] = 0b
+> 
+> This will add workaround for it.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Is it imx7d specific PHY issue, since other i.mx SoCs which use chipidea
+IP don't have such issue?
+
+Peter
+> 
+> Xu Yang (3):
+>   usb: chipidea: udc: add CI_HDRC_CONTROLLER_PULLUP_EVENT event
+>   usb: chipidea: imx: add imx_usbmisc_pullup() hook
+>   usb: chipidea: imx: implement workaround for ERR051725
+> 
+>  drivers/usb/chipidea/ci_hdrc_imx.c |  5 ++++
+>  drivers/usb/chipidea/ci_hdrc_imx.h |  1 +
+>  drivers/usb/chipidea/udc.c         |  5 ++++
+>  drivers/usb/chipidea/usbmisc_imx.c | 39 ++++++++++++++++++++++++++++++
+>  include/linux/usb/chipidea.h       |  1 +
+>  5 files changed, 51 insertions(+)
+> 
+> -- 
+> 2.34.1
+> 
+
+-- 
 
 Best regards,
-Krzysztof
-
+Peter
