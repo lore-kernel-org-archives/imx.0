@@ -1,145 +1,162 @@
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E88028C039;
-	Tue, 17 Jun 2025 12:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF8E4502A
+	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 13:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750165188; cv=none; b=FNUQx6r2eZRg3K6jeBnSf2J97bHSgZDRLX5bK5YMrwbeJ/AeTzd5xAYKRRYePpNMvvOaNyT6/QwsCU3D+y4j/m5JXHVKKMy88NlXFYkHNTfVL2Gr+CyPVaMt6rJXcyfJhIh3OqCQONNudjI/ijjGShY1NZExkdzsqIF6iP62TZE=
+	t=1750165501; cv=none; b=SDtNHfMfNKqmuEjxpOJcU8SrNTCDjYUf4Y4BPO2hENla729Ly9J8cPzHLkUw4CnRO73U+j9pXfbbNygZiC9bWyz0DuUcBWJYPgFoOWxgIzuR9lMrh+eSZyxUVG2YFEuHdEsRuPu6V7qSE77PL7sVFMz9HEMuZafICrF8Vlm1t5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750165188; c=relaxed/simple;
-	bh=oYOeIAfsmU4t9r2TCrVIZpfx7hejLpjjsg6BpCI0j9g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=URfdkGoc7al0TQIDd//bPkWjpWzu16JWqQCFrAkqCBj6q01oFQgSoSEkbvLNoy+4WypTDTIiown+KJzcttNU4uyYxtiNekZaszp0fCHx64scaVFenFoFieYRmQ66JYdV6VGx1nb3Lb/nXJgsUH7wSgKvQGbEc8hIrE7n07dUBJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=feHrvWfX; arc=none smtp.client-ip=209.85.221.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750165501; c=relaxed/simple;
+	bh=1LZIrfWJ857NAZTrbkwPrBYTmy6Sp3Z12qHacwq+vM8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cxxbP8U+icxX7txrKeh729I/eUc0dC8rjuL8BA7kOl7d/J5zil2o1fCZjx36ecFOvWEDt7/xJ5x3nnh6NuCTfhSkJAL+cWeFfryP/60U2bDGzVPCKejDqI9mFZ0mLiftYZw/2/SMTaGuxHE6HW9rnXOLZpsTlYNpiHuqmHLVMd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=iOPUzq/W; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="feHrvWfX"
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-525b44b7720so1330719e0c.0;
-        Tue, 17 Jun 2025 05:59:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750165186; x=1750769986; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IJGnTu2P8k2zWLpKT9gQ0C6Ynav6qAdbDTnXBuG6SzE=;
-        b=feHrvWfXnsv5o6FcagI10RufqIfcu3SAAcrDseaBMHq/1OkGHZeGCynOmpOJe82ON2
-         SCVLyhehjlstzUsPt3ioJ4IQhLkW5l3GNTh3ocaYmGSauQElRPFU14b/b7rtUdG1sC+X
-         MfYyaVtAQ8LtSHRq5C2tXLfDVFfoR5u7SKbZZr9VIOld179LDV4sXRn/BP3pPdGFGNAl
-         oBNqvq84q3w0ssBrNsxlLqhCnuzcdSqbePfyqJ5EhcelOJAQWw3yixaHaA5w2x1uBv9W
-         Z7jVm0CjmUhaZrKOfQqJjI9x3LYyxVmOVy9lNlEngfyfJYDd+g7gQQ+3BZFJtdeX89C0
-         DB0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750165186; x=1750769986;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IJGnTu2P8k2zWLpKT9gQ0C6Ynav6qAdbDTnXBuG6SzE=;
-        b=ZvykPzPnWEeaCkB/8qqvStEWYytyeARILF0J391V4e5h7qAc3JfwV/SIHOhdXJPlO4
-         b8NngvTzvPmfv30fdISKpur20QVgcaz/3ucaREc7hDQi8xX1CnxHfnHep7BLLjxRp+e5
-         udvDe4zTfsfpElngGa7YLmnUSaePQ+mlxecgi1CSMBe7xjYVkIMwiZIoI3dxQQfFuIyp
-         10lG4uGepFOsR0g3KwiWWYpNdfoHZcvindb/qwUjsqfYVm7+2eFaKCtHODKUdjimQ8JR
-         IfV2ihOSHPJFDT6VJavaXBI3q6Zn1dg4RGUm0foMxleoHuYR5QJqDaMzEgaGkRgoXuAX
-         kRng==
-X-Forwarded-Encrypted: i=1; AJvYcCUV8MqLO3Z01D4gfEZn250L/NOMrQgu6/wsgfmk7eLJnn/qCE169drCgWjZNas8nhxUjao=@lists.linux.dev, AJvYcCXXP39hfI8FdayUY0H65DM9yz9/S6nRBjEn3gCksWCQoQDsiFPZqDfHpdwGtqwQALG7YvAzum23Ju6zR/NsCeQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwpZ2CaNX21bNwTzrAT2WDQHRDzr3MvAD47YERQiKmFLrGy0WHL
-	EdipTtG/hc1Fbx7sgmKj6bItsCWOLpnWBF1qWW3uve/vaS1jUYLh2Dv+ZjRFwSHLMGGkfFJwIlT
-	EjY4Dqqexf4CzF2cYE4Yucs4doyXyJ4o=
-X-Gm-Gg: ASbGncu75sO4gR0s4agy8jZ73QGllWgCDcEchtXM8u3V4z5tSu2yZf1CHJS4OGHbnmq
-	OkEnbPNAOx7n6PM7JPmgtRCR0S96Hzj4E6KafWIn0T24H22tO+KQWfZHwcRWlk69Va/mVIQQTuE
-	j69ZEW3U+kMVX977Ljn9GntwvOAj0ApsRfA2M+3PJFBA==
-X-Google-Smtp-Source: AGHT+IFyDxk9ofOoSE1jUdDwuXC6uj68bPw86gFHeN0xbFulbam2J1M/auQRgbuNa5uXdcywAXE8tSUc/+x2hYqgo2M=
-X-Received: by 2002:a05:6122:4586:b0:52f:47de:3700 with SMTP id
- 71dfb90a1353d-53149677e4amr8402312e0c.5.1750165185838; Tue, 17 Jun 2025
- 05:59:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="iOPUzq/W"
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55HD4OSn014423;
+	Tue, 17 Jun 2025 08:04:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1750165464;
+	bh=bMoUi4cuL4Udgs4T48YUDRqAwuLLsrWE2yiMKniBN8Q=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=iOPUzq/Wv/zVI915DrZDgofpMJTW9L4QqExXTyKz1FejMUYdWg4LQ/AHhrXt7ypdb
+	 ktgvBsoWBF5nZCatCoTKHFpjX0J0tzQU3MKo2tEH9srz0Ss8BC2Y2Hw36TNwC8Qor/
+	 nscAi77V/8rxjryCvbG/6ddP6GJoiuDrQEZc7Alk=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55HD4OA53625511
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 17 Jun 2025 08:04:24 -0500
+Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 17
+ Jun 2025 08:04:24 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 17 Jun 2025 08:04:23 -0500
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55HD4O6R1941963;
+	Tue, 17 Jun 2025 08:04:24 -0500
+Date: Tue, 17 Jun 2025 08:04:23 -0500
+From: Nishanth Menon <nm@ti.com>
+To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>,
+        Shawn Guo
+	<shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix
+ Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Tero Kristo <kristo@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>, <imx@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: Re: [PATCH] irqchip: Use dev_fwnode()
+Message-ID: <20250617130423.nrqcprlpdxdmddbo@truck>
+References: <20250611104348.192092-1-jirislaby@kernel.org>
+ <20250611104348.192092-10-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250613090431.127087-1-tzimmermann@suse.de> <20250613090431.127087-8-tzimmermann@suse.de>
-In-Reply-To: <20250613090431.127087-8-tzimmermann@suse.de>
-From: Inki Dae <daeinki@gmail.com>
-Date: Tue, 17 Jun 2025 21:59:08 +0900
-X-Gm-Features: Ac12FXy1YqAOwtksyoMPU_mcRXzK8GOxRWP5F_To6gWRQ1V5y95DviShSwJIG6g
-Message-ID: <CAAQKjZOiz3Z42N_GEPzqU=CCfim+Z7oCuyxuji6Guj_dKYsimw@mail.gmail.com>
-Subject: Re: [PATCH v5 07/25] drm/exynos: Compute dumb-buffer sizes with drm_mode_size_dumb()
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: simona@ffwll.ch, airlied@gmail.com, mripard@kernel.org, 
-	maarten.lankhorst@linux.intel.com, geert@linux-m68k.org, 
-	tomi.valkeinen@ideasonboard.com, dri-devel@lists.freedesktop.org, 
-	linux-mediatek@lists.infradead.org, freedreno@lists.freedesktop.org, 
-	linux-arm-msm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	virtualization@lists.linux.dev, spice-devel@lists.freedesktop.org, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, intel-xe@lists.freedesktop.org, 
-	xen-devel@lists.xenproject.org, Seung-Woo Kim <sw0312.kim@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250611104348.192092-10-jirislaby@kernel.org>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-2025=EB=85=84 6=EC=9B=94 13=EC=9D=BC (=EA=B8=88) =EC=98=A4=ED=9B=84 6:05, T=
-homas Zimmermann <tzimmermann@suse.de>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1=
-:
->
-> Call drm_mode_size_dumb() to compute dumb-buffer scanline pitch and
-> buffer size. No alignment required.
->
-
-Acked-by : Inki Dae <inki.dae@samsung.com>
-
-Thanks,
-Inki Dae
-
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Inki Dae <inki.dae@samsung.com>
-> Cc: Seung-Woo Kim <sw0312.kim@samsung.com>
-> Cc: Kyungmin Park <kyungmin.park@samsung.com>
-> Cc: Krzysztof Kozlowski <krzk@kernel.org>
-> Cc: Alim Akhtar <alim.akhtar@samsung.com>
+On 12:43-20250611, Jiri Slaby (SUSE) wrote:
+> irq_domain_create_simple() takes fwnode as the first argument. It can be
+> extracted from the struct device using dev_fwnode() helper instead of
+> using of_node with of_fwnode_handle().
+> 
+> So use the dev_fwnode() helper.
+> 
+> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> 
 > ---
->  drivers/gpu/drm/exynos/exynos_drm_gem.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/exynos/exynos_drm_gem.c b/drivers/gpu/drm/ex=
-ynos/exynos_drm_gem.c
-> index 4787fee4696f..ffa1c02b4b1e 100644
-> --- a/drivers/gpu/drm/exynos/exynos_drm_gem.c
-> +++ b/drivers/gpu/drm/exynos/exynos_drm_gem.c
-> @@ -11,6 +11,7 @@
->  #include <linux/shmem_fs.h>
->  #include <linux/module.h>
->
-> +#include <drm/drm_dumb_buffers.h>
->  #include <drm/drm_prime.h>
->  #include <drm/drm_vma_manager.h>
->  #include <drm/exynos_drm.h>
-> @@ -330,15 +331,16 @@ int exynos_drm_gem_dumb_create(struct drm_file *fil=
-e_priv,
->         unsigned int flags;
->         int ret;
->
-> +       ret =3D drm_mode_size_dumb(dev, args, 0, 0);
-> +       if (ret)
-> +               return ret;
-> +
->         /*
->          * allocate memory to be used for framebuffer.
->          * - this callback would be called by user application
->          *      with DRM_IOCTL_MODE_CREATE_DUMB command.
->          */
->
-> -       args->pitch =3D args->width * ((args->bpp + 7) / 8);
-> -       args->size =3D args->pitch * args->height;
-> -
->         if (is_drm_iommu_supported(dev))
->                 flags =3D EXYNOS_BO_NONCONTIG | EXYNOS_BO_WC;
->         else
-> --
-> 2.49.0
->
->
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: Andrew Lunn <andrew@lunn.ch>
+> Cc: Gregory Clement <gregory.clement@bootlin.com>
+> Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+> Cc: Nishanth Menon <nm@ti.com>
+> Cc: Tero Kristo <kristo@kernel.org>
+> Cc: Santosh Shilimkar <ssantosh@kernel.org>
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-stm32@st-md-mailman.stormreply.com
+> ---
+>  drivers/irqchip/irq-imgpdc.c              | 2 +-
+>  drivers/irqchip/irq-imx-irqsteer.c        | 2 +-
+>  drivers/irqchip/irq-keystone.c            | 4 ++--
+>  drivers/irqchip/irq-mvebu-pic.c           | 2 +-
+>  drivers/irqchip/irq-pruss-intc.c          | 2 +-
+>  drivers/irqchip/irq-renesas-intc-irqpin.c | 6 ++----
+>  drivers/irqchip/irq-renesas-irqc.c        | 2 +-
+>  drivers/irqchip/irq-renesas-rza1.c        | 5 ++---
+>  drivers/irqchip/irq-renesas-rzg2l.c       | 5 ++---
+>  drivers/irqchip/irq-renesas-rzv2h.c       | 2 +-
+>  drivers/irqchip/irq-stm32mp-exti.c        | 4 +---
+>  drivers/irqchip/irq-ti-sci-inta.c         | 3 +--
+>  drivers/irqchip/irq-ti-sci-intr.c         | 3 +--
+>  drivers/irqchip/irq-ts4800.c              | 2 +-
+>  14 files changed, 18 insertions(+), 26 deletions(-)
+> 
+
+[..]
+
+
+> diff --git a/drivers/irqchip/irq-ti-sci-inta.c b/drivers/irqchip/irq-ti-sci-inta.c
+> index 7de59238e6b0..01963d36cfaf 100644
+> --- a/drivers/irqchip/irq-ti-sci-inta.c
+> +++ b/drivers/irqchip/irq-ti-sci-inta.c
+> @@ -701,8 +701,7 @@ static int ti_sci_inta_irq_domain_probe(struct platform_device *pdev)
+>  	if (ret)
+>  		return ret;
+>  
+> -	domain = irq_domain_create_linear(of_fwnode_handle(dev_of_node(dev)),
+> -					  ti_sci_get_num_resources(inta->vint),
+> +	domain = irq_domain_create_linear(dev_fwnode(dev), ti_sci_get_num_resources(inta->vint),
+>  					  &ti_sci_inta_irq_domain_ops, inta);
+>  	if (!domain) {
+>  		dev_err(dev, "Failed to allocate IRQ domain\n");
+> diff --git a/drivers/irqchip/irq-ti-sci-intr.c b/drivers/irqchip/irq-ti-sci-intr.c
+> index 07fff5ae5ce0..354613e74ad0 100644
+> --- a/drivers/irqchip/irq-ti-sci-intr.c
+> +++ b/drivers/irqchip/irq-ti-sci-intr.c
+> @@ -274,8 +274,7 @@ static int ti_sci_intr_irq_domain_probe(struct platform_device *pdev)
+>  		return PTR_ERR(intr->out_irqs);
+>  	}
+>  
+> -	domain = irq_domain_create_hierarchy(parent_domain, 0, 0,
+> -					     of_fwnode_handle(dev_of_node(dev)),
+> +	domain = irq_domain_create_hierarchy(parent_domain, 0, 0, dev_fwnode(dev),
+>  					     &ti_sci_intr_irq_domain_ops, intr);
+>  	if (!domain) {
+>  		dev_err(dev, "Failed to allocate IRQ domain\n");
+
+[..]
+For the ti-sci irqchip drivers:
+
+Reviewed-by: Nishanth Menon <nm@ti.com>
+
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
