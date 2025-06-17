@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630ED202C5D;
-	Tue, 17 Jun 2025 11:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33948230D0E;
+	Tue, 17 Jun 2025 11:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750160689; cv=none; b=FZCDHVek768NHZxDvhN/tD0STBfR/jVKPzI9O+bvSxX3eQ3o8TCyYCSfdZ63eXynXHmGcPs7/pwo3XHimdvqDQ/ifYcdoAbE3t+5GYfysmPVHkOx2rQZHwg26RbTWLH63dJiwWoyE14c3FMX9cIfR7JtnGW2Y+veNiP8pBE9tck=
+	t=1750160964; cv=none; b=RzjS4l9WXa9qK3VWOAmqYuzKuOkXect9UA1uPenffFshpe8kWWsfBEJ/0A2MI559hHiKX/ul8/kOw4DscH4fG7hN4CExj4fOL5EEhRxlWRPk7XhUUZmmFtcong7+DVR+MWBnAbNtzwiHMyqpqRb+TsVKCAIIAS2+6kX5Z3vI8Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750160689; c=relaxed/simple;
-	bh=hMo47zn5Tyk4OZaFrxAF3FN5fCi7aLHrovnuT0ak3VU=;
+	s=arc-20240116; t=1750160964; c=relaxed/simple;
+	bh=ivb8ulGW66xtLXprfpBP9RPgCM0Nn6wscmZr8TdiVX0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WLpdsZXoLSXspOQzc3JqKNrCH9vmLGD67EosRY1E+adxr7aA6gUH+lnDVr8Z1IjWJEsp0mJ70+2DYCN5S2rk6y4SeDjLizzK/7eHPjV8/onHDWUyf/aPrPfNCcN1FoMIfwH1FdFvvFExzKCUilEvC/5g0Z+GWzdXzdf7xEbDT1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKvv/xEL; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=hT/wMhl5RJul6fQkhs2GvzZ0MpMOjA3WdbvP8aKYyo7C1ONFvbuuWWWQSzKX68PpJNY5r/8osiKzb3GrMkHjXmEF6hEduEcnSz6D6aMD2tWqd1bzi4+tXjaqxD+J67zujEeBgN2V4fmczZd1AguCAXpQyLHRTI9uc7QDzoJ4YpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aiQ0xVKI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKvv/xEL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1A9C4CEED;
-	Tue, 17 Jun 2025 11:44:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aiQ0xVKI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34594C4CEE3;
+	Tue, 17 Jun 2025 11:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750160688;
-	bh=hMo47zn5Tyk4OZaFrxAF3FN5fCi7aLHrovnuT0ak3VU=;
+	s=k20201202; t=1750160963;
+	bh=ivb8ulGW66xtLXprfpBP9RPgCM0Nn6wscmZr8TdiVX0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fKvv/xELxMOXEcAbdfOG+LxBnyHDhPUpyHFQqScN+dIgncNYXAPqm8CEepxjEge+n
-	 XbBb85Gj/ltNEr48OONNYK8sqjoZFuXE9pYNHcMWEZU3byR0t7bedc6G4POFHJn+b+
-	 9uxZzbuYR0dGAQoLZFd4VcIpAqnOz+yv+tvaKT4Sxhkb5voB4Nb4XR3UqPo9IZmXFt
-	 WJhuBwpA5PtRhfefGWWE0I4dSpryBxXU5huJMpcpY8xRPAEUp7eYh42VZMbVWA75tE
-	 uB5OOEK4wg9IeQWKv1oKwpO2vumRyoI9RlOPJolHgJzh4qnvfUrn1rUwgqzpOHtual
-	 PUB13WjK3FPbQ==
-Date: Tue, 17 Jun 2025 12:44:43 +0100
+	b=aiQ0xVKIyQhm7iekWpRgkcf7yyvaZanm30HZ8p3qQ02wZjochLt1xbH/qFma6Rkci
+	 FjwWciogtyWOTqecg6vE1KIqTchaLYm6Htkbk6R1pvQCSkLVX9u0mJtsSlcUkeKE+E
+	 37I5msiIyuY7euYuEg2OGSVCcvcQO8ttrJPawqh50RH+dCxjsldbPWDSLEfn9VWs9v
+	 5ywa7UjBNQstlJsHsLPgK6yiR5q9tDjnp3F/Wo1/NOa+9ujYD0agVM0vg6xPBBHyWP
+	 WqzGnxC0kpifJ1YysT5/6vuG0y4jOZLa3J5RUP7//l68lXqILR6ml9/WveJd6N+1oa
+	 bBEEFpBOb9rVw==
+Date: Tue, 17 Jun 2025 12:49:18 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Joy Zou <joy.zou@nxp.com>
 Cc: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org, imx@lists.linux.dev, frank.li@nxp.com,
 	ye.li@nxp.com, ping.bai@nxp.com, aisheng.dong@nxp.com
-Subject: Re: [PATCH v1 2/2] regulator: pf0900: Add PMIC PF0900 support
-Message-ID: <386754b3-8c66-4d20-84ed-87a6052b979f@sirena.org.uk>
+Subject: Re: [PATCH v1 1/2] dt-bindings: regulator: add PF0900 regulator yaml
+Message-ID: <d948dfe4-635d-4ec0-a89f-2e77134c3f75@sirena.org.uk>
 References: <20250617102025.3455544-1-joy.zou@nxp.com>
- <20250617102025.3455544-3-joy.zou@nxp.com>
+ <20250617102025.3455544-2-joy.zou@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,122 +44,49 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9zsvdg93WU2jbOgA"
+	protocol="application/pgp-signature"; boundary="8rP5XpUZqA/isGvS"
 Content-Disposition: inline
-In-Reply-To: <20250617102025.3455544-3-joy.zou@nxp.com>
+In-Reply-To: <20250617102025.3455544-2-joy.zou@nxp.com>
 X-Cookie: It is your destiny.
 
 
---9zsvdg93WU2jbOgA
+--8rP5XpUZqA/isGvS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jun 17, 2025 at 06:20:25PM +0800, Joy Zou wrote:
+On Tue, Jun 17, 2025 at 06:20:24PM +0800, Joy Zou wrote:
 
-> @@ -0,0 +1,1033 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright 2025 NXP.
-> + * NXP PF0900 pmic driver
-> + */
+> +        properties:
+> +          nxp,dvs-run-microvolt:
+> +            minimum: 300000
+> +            maximum: 1350000
+> +            description:
+> +              PMIC default "RUN" state voltage in uV. SW1~5 have such
+> +              dvs(dynamic voltage scaling) property.
 > +
+> +          nxp,dvs-standby-microvolt:
+> +            minimum: 300000
+> +            maximum: 1350000
+> +            description:
+> +              PMIC default "STANDBY" state voltage in uV. SW1~5 have such
+> +              dvs(dynamic voltage scaling) property.
 
-Please make the entire comment block a C++ one so things look more
-consistent.
+What are these states exactly - this feels like something that should be
+either a standard property or discovered at runtime?
 
-> +static int pf0900_pmic_write(struct pf0900 *pf0900, unsigned int reg,
-> +			     unsigned int val, uint8_t mask)
-> +{
-> +	unsigned int rxBuf;
-> +	uint8_t data[2];
-> +	int ret;
-> +
-> +	if (!pf0900 || !pf0900->dev)
-> +		return -EINVAL;
-> +
-> +	if (reg >= PF0900_MAX_REGISTER) {
-> +		dev_err(pf0900->dev, "Invalid register address: 0x%x\n", reg);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* If not updating entire register, perform a read-mod-write */
-> +	data[0] = val;
-
-Having a write operation that includes update_bits() functionality is a
-bit confusing.  In general there's a lot of register I/O code in the
-driver, and open coded copies of the generic regulator regmap helpers.
-You'd save a lot of code by providing a regmap that implements
-reg_read() and reg_write() operations, either stack another regmap
-inside for the physical I/O or just use I2C SMBus operations.  You'd
-also be able to use a cache then, and you'd get all the regmap
-diagnostic infrastructure.
-
-> +static int find_closest_bigger(unsigned int target, const unsigned int *table,
-> +			       unsigned int num_sel, unsigned int *sel)
-
-This should not be open coded in a specific driver.
-
-> +static irqreturn_t pf0900_irq_handler(int irq, void *data)
-> +{
-
-> +	ret = pf0900_pmic_read(pf0900, PF0900_REG_SYSTEM_INT, &system);
-> +	if (ret < 0) {
-> +		dev_err(pf0900->dev, "Failed to read SYSTEM_INT(%d)\n", ret);
-> +		return IRQ_NONE;
-> +	}
-> +
-> +	ret = pf0900_pmic_read(pf0900, PF0900_REG_STATUS1_INT, &status1);
-
-This smells a lot like the system interrupt might tell you if there's
-any need to read the specific status interrupts?
-
-> +	ret = pf0900_pmic_write(pf0900, PF0900_REG_STATUS1_INT, status1, status1);
-> +	if (ret < 0) {
-> +		dev_err(pf0900->dev, "Failed to write STATUS1_INT(%d)\n", ret);
-> +		return IRQ_NONE;
-> +	}
-
-We're unconditionally acking any interrupt we see even if we didn't
-understand them, limiting the ability of the genirq core to manage
-unknown interrupts.
-
-> +	if (system & IRQ_EWARN)
-> +		dev_warn(pf0900->dev, "EWARN interrupt.\n");
-
-It's not clear what this is but it should probably generate a regulator
-notification?
-
-> +	if (system & IRQ_GPIO)
-> +		dev_warn(pf0900->dev, "GPIO interrupt.\n");
-
-This should be a normal interrupt, though you didn't wire up the GPIOs
-as GPIOs.
-
-> +	if (system & IRQ_OV)
-> +		dev_warn(pf0900->dev, "OV interrupt.\n");
-> +
-> +	if (system & IRQ_UV)
-> +		dev_warn(pf0900->dev, "UV interrupt.\n");
-> +
-> +	if (system & IRQ_ILIM)
-> +		dev_warn(pf0900->dev, "ILIM interrupt.\n");
-
-These should definitely be generating regulator notifications, as should
-some of the others probably (eg, the OV and thermal ones).
-
---9zsvdg93WU2jbOgA
+--8rP5XpUZqA/isGvS
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhRVSsACgkQJNaLcl1U
-h9Dp+gf+PaRhc4shJrQNqEou9ev/KFFgCFohnnBFdONzTcLd/wWjsoDQJ8l5SCkJ
-KJ+a+ZHCJCmrGt5zZPWEumR1GymcWj9UwiiLoHY53YvWD0K22PXqsVK02mzVpVBB
-M80saoU5X0nrsQpgo/qW2VL+OHYSa53eT5v1hof575CET9m3BWtCIZvfEOM9lpVG
-sg3p8GJxsKTh7t2FW3cT7C3PwF2QLzsk8NJjWIVSmLCvOMc7S56fwPV/F9NyGatn
-o3fQXlAiP42ZeRQ/8EWhmn/p9EHrBL87BompYpfyd6yaVkXD+yEGIWfyGhLy3uPW
-Zd2QmO/aPVsr1QlwXyDtdKlp1oTUCQ==
-=K+tC
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhRVj0ACgkQJNaLcl1U
+h9DujAf/T1CPnfvus4Y5eE5PTZhQE6QfHOOKjzeE0JojZt3cjd2QwuX3zLWD1+JO
+w9gNp3YGwTS1jCV5Q/++Nt9o1bG+e8mF2/YPu9QKgfANU9aRfhY/K8ujgac3PfA+
+EkbGrk24ohuEinPYs0ou0zd1H0LnbfysuBQXfmiaMeHdziUzL2vAR9LCEd/hnUNQ
+btyAhRD0WABICYjZIxiTUrQYhHRFv08GyTp5BVBRVdTIqjAwpAUMG1kxRqro0Uzd
+CahP4VJ7InNsOPKD6vVhzeSiZNmRmog4MeNTuVz7vzf4Br6uiGR1vRA85R+qcmqB
+0N9/gt1tBNWJohcKy+BRQjPFUnUeCQ==
+=qwXW
 -----END PGP SIGNATURE-----
 
---9zsvdg93WU2jbOgA--
+--8rP5XpUZqA/isGvS--
