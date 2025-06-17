@@ -1,35 +1,36 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9289F2EF645
-	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230D01F541E
+	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 14:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750170572; cv=none; b=Z2byizHAwZtlokqBPmtUArBEaxAc714OEscg0EmyMcLtQYYRPVQxfvqn1i98TyukrhVaB4PrNtnV+LmgYXFR/w4M8wYskWikQe513gPx+tP5AUv5OtbeuZIVYPcqz0+Sh9TwG2mFv95IAg7EF0NahgPVnwURerHRSp43vsgxYps=
+	t=1750170874; cv=none; b=A5nwPNQdRyxqBaslqD3afM6qelru00Q0ESQNdLO9fxerNs0ABHKmggCicI+ESBM72vbx7L/8X3B6UPukx0E1dR46xKF67MTBF7F4kyqBU0D6Z/SNqgbeZrsj+I+F1eoKzcdjP2Rq5SWdQisJUFQX8BBtHOYXL9OvEEwg91P16dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750170572; c=relaxed/simple;
-	bh=6uTWAt2KSetlw4KyfOPztl6CboQRTXwdcr6yCnOKtKc=;
+	s=arc-20240116; t=1750170874; c=relaxed/simple;
+	bh=7eVSwYhRrsGw308e1gWXBm5X3J3BsCedcVcfc7DyDMo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nyFKaNd9whBfQwJ6fnTlMkfS5gnEKHDMcciu4KK2EAZor1xsBKNFDmM8JeCL4XWOyHi2Z8pQfXo/dVj+uQv1jxwhrOjMt7kehWWAWyrdH4mTy9yDDT/gqs1TrN+PiurBDqe29hAn5j9J88MxVSwqxbPPGqEf/QD2ovx+e/4tzLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=YkTc7U6M; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=NnV0xh1pqW+VGkOZO3ofDl8+kRKMuCrTnRQ80PjSjnirbDK4dw7XQEvJ1FgLRCVfpY4O5pus1SsFC8Lxl4K9vEIl1EpJLw9BvEjbl2IJiNUo1Bj3hg6m5NUxvxOkgD7UffCADBXPhnVUIBdfPL0bI9HBQdXc30VFNPuNG4ksq/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=eRFjA2m2; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="YkTc7U6M"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="eRFjA2m2"
 Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 78AFF7E1;
-	Tue, 17 Jun 2025 16:29:16 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2EEB57E1;
+	Tue, 17 Jun 2025 16:34:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1750170556;
-	bh=6uTWAt2KSetlw4KyfOPztl6CboQRTXwdcr6yCnOKtKc=;
+	s=mail; t=1750170859;
+	bh=7eVSwYhRrsGw308e1gWXBm5X3J3BsCedcVcfc7DyDMo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YkTc7U6MN/3MVBRQ8hkw1iU4btFV0Ee/Tm/D4vpiXi1OhANWh9M/iOBCPq6QW9XPu
-	 P0XDSVQFYwg8Opwly8JywbLY5V8e8QqOEC0wUjf2yA0vx7S787jbcM2FXNEFa/UPSW
-	 yGaCxI7kkzWjwdbIr96i91T/g5Gsaf7jV59lkqWU=
-Date: Tue, 17 Jun 2025 17:29:12 +0300
+	b=eRFjA2m2TzJPaNadVlp/g6nZhQtjBw8DzZMp2uaxV4XCS8ILolO/l48V2PRSJkYG7
+	 615Ja/S+EC/SeBscdF5aji3VzhpJUeZz9rvH316vYgyFJ7rrCXG3BHCzHm8kDFKSkv
+	 bpv0l1rrXPZER84ZeLYfbQ/1c6YQqdHsDId+UYeg=
+Date: Tue, 17 Jun 2025 17:34:16 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Frank Li <Frank.li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
@@ -42,17 +43,11 @@ Cc: Frank Li <Frank.li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	Robert Chiras <robert.chiras@nxp.com>,
 	"Guoniu.zhou" <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH v4 04/13] media: nxp: imx8-isi: Use
+Subject: Re: [PATCH v5 04/13] media: nxp: imx8-isi: Use
  devm_clk_bulk_get_all() to fetch clocks
-Message-ID: <20250617142912.GF10006@pendragon.ideasonboard.com>
-References: <20250408-8qxp_camera-v4-0-ef695f1b47c4@nxp.com>
- <20250408-8qxp_camera-v4-4-ef695f1b47c4@nxp.com>
- <20250421211438.GN17813@pendragon.ideasonboard.com>
- <aBQZjFsExJh2uRfK@lizhi-Precision-Tower-5810>
- <20250502155747.GB20093@pendragon.ideasonboard.com>
- <aBylKcZyFInlKQAR@lizhi-Precision-Tower-5810>
- <20250611141449.GA24607@pendragon.ideasonboard.com>
- <20250617141112.GA2051217-robh@kernel.org>
+Message-ID: <20250617143416.GA21052@pendragon.ideasonboard.com>
+References: <20250522-8qxp_camera-v5-0-d4be869fdb7e@nxp.com>
+ <20250522-8qxp_camera-v5-4-d4be869fdb7e@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,158 +56,161 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250617141112.GA2051217-robh@kernel.org>
+In-Reply-To: <20250522-8qxp_camera-v5-4-d4be869fdb7e@nxp.com>
 
-Hi Rob,
+Hi Frank,
 
-On Tue, Jun 17, 2025 at 09:11:12AM -0500, Rob Herring wrote:
-> On Wed, Jun 11, 2025 at 05:14:49PM +0300, Laurent Pinchart wrote:
-> > On Thu, May 08, 2025 at 08:35:53AM -0400, Frank Li wrote:
-> > > On Fri, May 02, 2025 at 06:57:47PM +0300, Laurent Pinchart wrote:
-> > > > On Thu, May 01, 2025 at 09:02:04PM -0400, Frank Li wrote:
-> > > > > On Tue, Apr 22, 2025 at 12:14:38AM +0300, Laurent Pinchart wrote:
-> > > > > > On Tue, Apr 08, 2025 at 05:53:02PM -0400, Frank Li wrote:
-> > > > > > > Use devm_clk_bulk_get_all() helper to simplify clock handle code.
-> > > > > > >
-> > > > > > > No functional changes intended.
-> > > > > > >
-> > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > > > ---
-> > > > > > >  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 46 +++-------------------
-> > > > > > >  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  3 +-
-> > > > > > >  2 files changed, 6 insertions(+), 43 deletions(-)
-> > > > > > >
-> > > > > > > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> > > > > > > index ecfc95882f903..015350c6f2784 100644
-> > > > > > > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> > > > > > > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> > > > > > > @@ -275,11 +275,6 @@ static const struct mxc_isi_set_thd mxc_imx8_isi_thd_v1 = {
-> > > > > > >  	.panic_set_thd_v = { .mask = 0xf0000, .offset = 16, .threshold = 0x7 },
-> > > > > > >  };
-> > > > > > >
-> > > > > > > -static const struct clk_bulk_data mxc_imx8mn_clks[] = {
-> > > > > > > -	{ .id = "axi" },
-> > > > > > > -	{ .id = "apb" },
-> > > > > > > -};
-> > > > > > > -
-> > > > > > >  static const struct mxc_isi_plat_data mxc_imx8mn_data = {
-> > > > > > >  	.model			= MXC_ISI_IMX8MN,
-> > > > > > >  	.num_ports		= 1,
-> > > > > > > @@ -287,8 +282,6 @@ static const struct mxc_isi_plat_data mxc_imx8mn_data = {
-> > > > > > >  	.reg_offset		= 0,
-> > > > > > >  	.ier_reg		= &mxc_imx8_isi_ier_v1,
-> > > > > > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
-> > > > > > > -	.clks			= mxc_imx8mn_clks,
-> > > > > > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
-> > > > > > >  	.buf_active_reverse	= false,
-> > > > > > >  	.gasket_ops		= &mxc_imx8_gasket_ops,
-> > > > > > >  	.has_36bit_dma		= false,
-> > > > > > > @@ -301,8 +294,6 @@ static const struct mxc_isi_plat_data mxc_imx8mp_data = {
-> > > > > > >  	.reg_offset		= 0x2000,
-> > > > > > >  	.ier_reg		= &mxc_imx8_isi_ier_v2,
-> > > > > > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
-> > > > > > > -	.clks			= mxc_imx8mn_clks,
-> > > > > > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
-> > > > > > >  	.buf_active_reverse	= true,
-> > > > > > >  	.gasket_ops		= &mxc_imx8_gasket_ops,
-> > > > > > >  	.has_36bit_dma		= true,
-> > > > > > > @@ -315,8 +306,6 @@ static const struct mxc_isi_plat_data mxc_imx8ulp_data = {
-> > > > > > >  	.reg_offset		= 0x0,
-> > > > > > >  	.ier_reg		= &mxc_imx8_isi_ier_v2,
-> > > > > > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
-> > > > > > > -	.clks			= mxc_imx8mn_clks,
-> > > > > > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
-> > > > > > >  	.buf_active_reverse	= true,
-> > > > > > >  	.has_36bit_dma		= false,
-> > > > > > >  };
-> > > > > > > @@ -328,8 +317,6 @@ static const struct mxc_isi_plat_data mxc_imx93_data = {
-> > > > > > >  	.reg_offset		= 0,
-> > > > > > >  	.ier_reg		= &mxc_imx8_isi_ier_v2,
-> > > > > > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
-> > > > > > > -	.clks			= mxc_imx8mn_clks,
-> > > > > > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
-> > > > > > >  	.buf_active_reverse	= true,
-> > > > > > >  	.gasket_ops		= &mxc_imx93_gasket_ops,
-> > > > > > >  	.has_36bit_dma		= false,
-> > > > > > > @@ -386,7 +373,7 @@ static int mxc_isi_runtime_suspend(struct device *dev)
-> > > > > > >  {
-> > > > > > >  	struct mxc_isi_dev *isi = dev_get_drvdata(dev);
-> > > > > > >
-> > > > > > > -	clk_bulk_disable_unprepare(isi->pdata->num_clks, isi->clks);
-> > > > > > > +	clk_bulk_disable_unprepare(isi->num_clks, isi->clks);
-> > > > > > >
-> > > > > > >  	return 0;
-> > > > > > >  }
-> > > > > > > @@ -396,7 +383,7 @@ static int mxc_isi_runtime_resume(struct device *dev)
-> > > > > > >  	struct mxc_isi_dev *isi = dev_get_drvdata(dev);
-> > > > > > >  	int ret;
-> > > > > > >
-> > > > > > > -	ret = clk_bulk_prepare_enable(isi->pdata->num_clks, isi->clks);
-> > > > > > > +	ret = clk_bulk_prepare_enable(isi->num_clks, isi->clks);
-> > > > > > >  	if (ret) {
-> > > > > > >  		dev_err(dev, "Failed to enable clocks (%d)\n", ret);
-> > > > > > >  		return ret;
-> > > > > > > @@ -414,27 +401,6 @@ static const struct dev_pm_ops mxc_isi_pm_ops = {
-> > > > > > >   * Probe, remove & driver
-> > > > > > >   */
-> > > > > > >
-> > > > > > > -static int mxc_isi_clk_get(struct mxc_isi_dev *isi)
-> > > > > > > -{
-> > > > > > > -	unsigned int size = isi->pdata->num_clks
-> > > > > > > -			  * sizeof(*isi->clks);
-> > > > > > > -	int ret;
-> > > > > > > -
-> > > > > > > -	isi->clks = devm_kmemdup(isi->dev, isi->pdata->clks, size, GFP_KERNEL);
-> > > > > > > -	if (!isi->clks)
-> > > > > > > -		return -ENOMEM;
-> > > > > > > -
-> > > > > > > -	ret = devm_clk_bulk_get(isi->dev, isi->pdata->num_clks,
-> > > > > > > -				isi->clks);
-> > > > > > > -	if (ret < 0) {
-> > > > > > > -		dev_err(isi->dev, "Failed to acquire clocks: %d\n",
-> > > > > > > -			ret);
-> > > > > > > -		return ret;
-> > > > > > > -	}
-> > > > > > > -
-> > > > > > > -	return 0;
-> > > > > > > -}
-> > > > > > > -
-> > > > > > >  static int mxc_isi_probe(struct platform_device *pdev)
-> > > > > > >  {
-> > > > > > >  	struct device *dev = &pdev->dev;
-> > > > > > > @@ -457,11 +423,9 @@ static int mxc_isi_probe(struct platform_device *pdev)
-> > > > > > >  	if (!isi->pipes)
-> > > > > > >  		return -ENOMEM;
-> > > > > > >
-> > > > > > > -	ret = mxc_isi_clk_get(isi);
-> > > > > > > -	if (ret < 0) {
-> > > > > > > -		dev_err(dev, "Failed to get clocks\n");
-> > > > > > > -		return ret;
-> > > > > > > -	}
-> > > > > > > +	isi->num_clks = devm_clk_bulk_get_all(dev, &isi->clks);
-> > > > > >
-> > > > > > This prevents validating that the DT contains the expected clocks, which
-> > > > > > could cause hard to debug issues. Isn't it a problem ?
-> > > > >
-> > > > > It is checked by dt-binding. Now no warning by DTB_CHECK under arm64 freecale.
-> > > > > CHECK_DTB should be enough to find expected clocks.
-> > > >
-> > > > Yes, the DTB check will catch issues at build time, but the driver will
-> > > > not enforce that. I'm not sure if there's a clear policy here, and if
-> > > > ensuring at runtime in drivers that the expected clocks are present is
-> > > > considered as a good practice by the DT maintainers. Rob, Krzysztof,
-> > > > Conor, do you have an opinion ?
-> > > 
-> > > Rob:
-> > > 	can you comment this?
-> > 
-> > Rob, any comment on this ?
+On Thu, May 22, 2025 at 01:56:42PM -0400, Frank Li wrote:
+> Use devm_clk_bulk_get_all() helper to simplify clock handle code.
 > 
-> My preference is to not do validation of the DT in the kernel. Unless 
-> you need greater control of the clocks, I would use 
-> devm_clk_bulk_get_all(). 
+> No functional changes intended.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Thank you for your feedback. We'll go forward with this patch then.
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> ---
+> change in v5
+> - none
+> ---
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 46 +++-------------------
+>  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  3 +-
+>  2 files changed, 6 insertions(+), 43 deletions(-)
+> 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> index ecfc95882f903..015350c6f2784 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> @@ -275,11 +275,6 @@ static const struct mxc_isi_set_thd mxc_imx8_isi_thd_v1 = {
+>  	.panic_set_thd_v = { .mask = 0xf0000, .offset = 16, .threshold = 0x7 },
+>  };
+>  
+> -static const struct clk_bulk_data mxc_imx8mn_clks[] = {
+> -	{ .id = "axi" },
+> -	{ .id = "apb" },
+> -};
+> -
+>  static const struct mxc_isi_plat_data mxc_imx8mn_data = {
+>  	.model			= MXC_ISI_IMX8MN,
+>  	.num_ports		= 1,
+> @@ -287,8 +282,6 @@ static const struct mxc_isi_plat_data mxc_imx8mn_data = {
+>  	.reg_offset		= 0,
+>  	.ier_reg		= &mxc_imx8_isi_ier_v1,
+>  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> -	.clks			= mxc_imx8mn_clks,
+> -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
+>  	.buf_active_reverse	= false,
+>  	.gasket_ops		= &mxc_imx8_gasket_ops,
+>  	.has_36bit_dma		= false,
+> @@ -301,8 +294,6 @@ static const struct mxc_isi_plat_data mxc_imx8mp_data = {
+>  	.reg_offset		= 0x2000,
+>  	.ier_reg		= &mxc_imx8_isi_ier_v2,
+>  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> -	.clks			= mxc_imx8mn_clks,
+> -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
+>  	.buf_active_reverse	= true,
+>  	.gasket_ops		= &mxc_imx8_gasket_ops,
+>  	.has_36bit_dma		= true,
+> @@ -315,8 +306,6 @@ static const struct mxc_isi_plat_data mxc_imx8ulp_data = {
+>  	.reg_offset		= 0x0,
+>  	.ier_reg		= &mxc_imx8_isi_ier_v2,
+>  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> -	.clks			= mxc_imx8mn_clks,
+> -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
+>  	.buf_active_reverse	= true,
+>  	.has_36bit_dma		= false,
+>  };
+> @@ -328,8 +317,6 @@ static const struct mxc_isi_plat_data mxc_imx93_data = {
+>  	.reg_offset		= 0,
+>  	.ier_reg		= &mxc_imx8_isi_ier_v2,
+>  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> -	.clks			= mxc_imx8mn_clks,
+> -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
+>  	.buf_active_reverse	= true,
+>  	.gasket_ops		= &mxc_imx93_gasket_ops,
+>  	.has_36bit_dma		= false,
+> @@ -386,7 +373,7 @@ static int mxc_isi_runtime_suspend(struct device *dev)
+>  {
+>  	struct mxc_isi_dev *isi = dev_get_drvdata(dev);
+>  
+> -	clk_bulk_disable_unprepare(isi->pdata->num_clks, isi->clks);
+> +	clk_bulk_disable_unprepare(isi->num_clks, isi->clks);
+>  
+>  	return 0;
+>  }
+> @@ -396,7 +383,7 @@ static int mxc_isi_runtime_resume(struct device *dev)
+>  	struct mxc_isi_dev *isi = dev_get_drvdata(dev);
+>  	int ret;
+>  
+> -	ret = clk_bulk_prepare_enable(isi->pdata->num_clks, isi->clks);
+> +	ret = clk_bulk_prepare_enable(isi->num_clks, isi->clks);
+>  	if (ret) {
+>  		dev_err(dev, "Failed to enable clocks (%d)\n", ret);
+>  		return ret;
+> @@ -414,27 +401,6 @@ static const struct dev_pm_ops mxc_isi_pm_ops = {
+>   * Probe, remove & driver
+>   */
+>  
+> -static int mxc_isi_clk_get(struct mxc_isi_dev *isi)
+> -{
+> -	unsigned int size = isi->pdata->num_clks
+> -			  * sizeof(*isi->clks);
+> -	int ret;
+> -
+> -	isi->clks = devm_kmemdup(isi->dev, isi->pdata->clks, size, GFP_KERNEL);
+> -	if (!isi->clks)
+> -		return -ENOMEM;
+> -
+> -	ret = devm_clk_bulk_get(isi->dev, isi->pdata->num_clks,
+> -				isi->clks);
+> -	if (ret < 0) {
+> -		dev_err(isi->dev, "Failed to acquire clocks: %d\n",
+> -			ret);
+> -		return ret;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  static int mxc_isi_probe(struct platform_device *pdev)
+>  {
+>  	struct device *dev = &pdev->dev;
+> @@ -457,11 +423,9 @@ static int mxc_isi_probe(struct platform_device *pdev)
+>  	if (!isi->pipes)
+>  		return -ENOMEM;
+>  
+> -	ret = mxc_isi_clk_get(isi);
+> -	if (ret < 0) {
+> -		dev_err(dev, "Failed to get clocks\n");
+> -		return ret;
+> -	}
+> +	isi->num_clks = devm_clk_bulk_get_all(dev, &isi->clks);
+> +	if (isi->num_clks < 0)
+> +		return dev_err_probe(dev, isi->num_clks, "Failed to get clocks\n");
+>  
+>  	isi->regs = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(isi->regs)) {
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> index e7534a80af7b4..bd3cfe5fbe063 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> @@ -169,8 +169,6 @@ struct mxc_isi_plat_data {
+>  	const struct mxc_isi_ier_reg  *ier_reg;
+>  	const struct mxc_isi_set_thd *set_thd;
+>  	const struct mxc_gasket_ops *gasket_ops;
+> -	const struct clk_bulk_data *clks;
+> -	unsigned int num_clks;
+>  	bool buf_active_reverse;
+>  	bool has_36bit_dma;
+>  };
+> @@ -282,6 +280,7 @@ struct mxc_isi_dev {
+>  
+>  	void __iomem			*regs;
+>  	struct clk_bulk_data		*clks;
+> +	int				num_clks;
+>  	struct regmap			*gasket;
+>  
+>  	struct mxc_isi_crossbar		crossbar;
 
 -- 
 Regards,
