@@ -1,42 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B5E1DE4E5;
-	Tue, 17 Jun 2025 13:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8572E3AF7;
+	Tue, 17 Jun 2025 14:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750167841; cv=none; b=M30CvqPktIIByXK+vrqn6w8F0WX0M7wwdNH6gG/TVkcpfdaKRS+Qxk1bI6air/rAlzNpXGohdiStZ+aI0F+xU0Jx8YvlB5f45KSc4/00ph9w0y5LesKkG8iaIRx4MYwgN+EV+e74QoREFUTi9YiTRXtMR0L4bENBNCYCANsqmhc=
+	t=1750169474; cv=none; b=kc2ycmisoqJZ6d5IfubVblIuJFCEB0OaRJFD4KpeoPnXYsxCQ6yW67uIK2KFIZIUDmYlXo8WNxp4gLXjOHjv3HDTbFvaSDDlWjRT95JSYjpzaxpnClUOhSpk7stNztUdQZadegzjhtlPqEpZVrAyyTCckWLb3gomMgvj3HUyv3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750167841; c=relaxed/simple;
-	bh=sEgaAS8/P8uAA+q4Tevugwx8QH0Jyz9OE26t4H0UCyU=;
+	s=arc-20240116; t=1750169474; c=relaxed/simple;
+	bh=9WlmfZQ67G1lNxxsfGnJ+OQDIWmTzBZZJbPLdnS48As=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cyfl8pVxgawfdOuMzXGekUQMxp8JVnttKMpRA5Z6lM9Cq36zF+mYrsh4glJQ23LczS2u/veOaQCdNMCC6eTrD4tVICGbu+H9KDwummlnppNsJ+lG9DQMZnuMikthVgcDvTLIuj6wXuNHO+36gsUzwRxmcqqaIYsNEDjoD8h1K7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VomeLmSo; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AQdCTLZlkDhonV3DCRmjb0OcuZdFKRe8gOSS2xoKCI7x1matzW2SllNtXF3OVvH04dlf4NIeq6NiG0E/gUDPKbMe0vzRZiPuaJMyFtzKphvRgJzDpUsE9ja7jUJfOSfpzLYjuj8gEQ020zi2M2LUWbk1dq1v3btQ+8bnHhYnMr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q7efYNGP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VomeLmSo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D7AC4CEE3;
-	Tue, 17 Jun 2025 13:44:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q7efYNGP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F27BC4CEE3;
+	Tue, 17 Jun 2025 14:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750167840;
-	bh=sEgaAS8/P8uAA+q4Tevugwx8QH0Jyz9OE26t4H0UCyU=;
+	s=k20201202; t=1750169473;
+	bh=9WlmfZQ67G1lNxxsfGnJ+OQDIWmTzBZZJbPLdnS48As=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VomeLmSolsLQ3Xe0vJ5cxJzwu6goEfTFlc1mzihy+DRFo/8jfT94SqSZf5mhWXHkb
-	 SSBYR749aY9a2vVBgtmzgmZLO9+6dj1bq8Dz5qQo8QWhiike0rvkA9EfMm8B6/ZvJL
-	 q+FlEGTd7XEH9o3ab0T3kM5m6zw+7kYG9o8xs/bdHB81aBV4L6wGksPcgyObCDqbHq
-	 D1pijcCjKB5SUcmaHu7hepJWPhNbFdvcJjKnTH27+JPkPJGCfDiQASJ3u5YRlIkzCf
-	 /remcfwstu8879VqY6pAmAZS9n8+Inp03w5lgIQ+zI/E6R2b/lM9wliLFaSlpgmYQ+
-	 h6HtWgcdte/9Q==
-Date: Tue, 17 Jun 2025 08:43:59 -0500
+	b=q7efYNGPtpmIAYzfZU+BTn6ATN9Xa+7W4sseA7c+4857g9AGPqvGZaLTI0RRoQO2G
+	 geTOS7cctwmIl4NJtKDEVpY7EvBUaXzrKayUPJcaUm6XbjtPjljrW/jkTw4H9ZnETc
+	 JS7RCB9IL/tNH36/CQBpNf1pA96EAa99EzzQKqHoF0/N0R+hjBAxKMEAHFHRZC49id
+	 FdSoBwGl66PXTUmzOC3mFHHgHwAU6ehxMo0lh4bn85bRTiojGlOySqOk5Q7KTF+lhV
+	 ZnsWuR1NNytfNNhwlHjYbRfcmgqqnUE9ci1aS5WpUyCippczEzM5MHkeAJkSKj4+9A
+	 Op/fSSo/68ogw==
+Date: Tue, 17 Jun 2025 09:11:12 -0500
 From: Rob Herring <robh@kernel.org>
-To: Joy Zou <joy.zou@nxp.com>
-Cc: lgirdwood@gmail.com, broonie@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev, frank.li@nxp.com,
-	ye.li@nxp.com, ping.bai@nxp.com, aisheng.dong@nxp.com
-Subject: Re: [PATCH v1 1/2] dt-bindings: regulator: add PF0900 regulator yaml
-Message-ID: <20250617134359.GA1895818-robh@kernel.org>
-References: <20250617102025.3455544-1-joy.zou@nxp.com>
- <20250617102025.3455544-2-joy.zou@nxp.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Frank Li <Frank.li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Robert Chiras <robert.chiras@nxp.com>,
+	"Guoniu.zhou" <guoniu.zhou@nxp.com>
+Subject: Re: [PATCH v4 04/13] media: nxp: imx8-isi: Use
+ devm_clk_bulk_get_all() to fetch clocks
+Message-ID: <20250617141112.GA2051217-robh@kernel.org>
+References: <20250408-8qxp_camera-v4-0-ef695f1b47c4@nxp.com>
+ <20250408-8qxp_camera-v4-4-ef695f1b47c4@nxp.com>
+ <20250421211438.GN17813@pendragon.ideasonboard.com>
+ <aBQZjFsExJh2uRfK@lizhi-Precision-Tower-5810>
+ <20250502155747.GB20093@pendragon.ideasonboard.com>
+ <aBylKcZyFInlKQAR@lizhi-Precision-Tower-5810>
+ <20250611141449.GA24607@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,217 +60,154 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250617102025.3455544-2-joy.zou@nxp.com>
+In-Reply-To: <20250611141449.GA24607@pendragon.ideasonboard.com>
 
-On Tue, Jun 17, 2025 at 06:20:24PM +0800, Joy Zou wrote:
-> Add device binding doc for PF0900 PMIC driver.
+On Wed, Jun 11, 2025 at 05:14:49PM +0300, Laurent Pinchart wrote:
+> Hi Rob,
 > 
-> Signed-off-by: Joy Zou <joy.zou@nxp.com>
-> ---
->  .../regulator/nxp,pf0900-regulator.yaml       | 179 ++++++++++++++++++
-
-Filename matching compatible. So drop '-regulator'.
-
->  1 file changed, 179 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/regulator/nxp,pf0900-regulator.yaml
+> On Thu, May 08, 2025 at 08:35:53AM -0400, Frank Li wrote:
+> > On Fri, May 02, 2025 at 06:57:47PM +0300, Laurent Pinchart wrote:
+> > > On Thu, May 01, 2025 at 09:02:04PM -0400, Frank Li wrote:
+> > > > On Tue, Apr 22, 2025 at 12:14:38AM +0300, Laurent Pinchart wrote:
+> > > > > On Tue, Apr 08, 2025 at 05:53:02PM -0400, Frank Li wrote:
+> > > > > > Use devm_clk_bulk_get_all() helper to simplify clock handle code.
+> > > > > >
+> > > > > > No functional changes intended.
+> > > > > >
+> > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > ---
+> > > > > >  .../media/platform/nxp/imx8-isi/imx8-isi-core.c    | 46 +++-------------------
+> > > > > >  .../media/platform/nxp/imx8-isi/imx8-isi-core.h    |  3 +-
+> > > > > >  2 files changed, 6 insertions(+), 43 deletions(-)
+> > > > > >
+> > > > > > diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> > > > > > index ecfc95882f903..015350c6f2784 100644
+> > > > > > --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> > > > > > +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> > > > > > @@ -275,11 +275,6 @@ static const struct mxc_isi_set_thd mxc_imx8_isi_thd_v1 = {
+> > > > > >  	.panic_set_thd_v = { .mask = 0xf0000, .offset = 16, .threshold = 0x7 },
+> > > > > >  };
+> > > > > >
+> > > > > > -static const struct clk_bulk_data mxc_imx8mn_clks[] = {
+> > > > > > -	{ .id = "axi" },
+> > > > > > -	{ .id = "apb" },
+> > > > > > -};
+> > > > > > -
+> > > > > >  static const struct mxc_isi_plat_data mxc_imx8mn_data = {
+> > > > > >  	.model			= MXC_ISI_IMX8MN,
+> > > > > >  	.num_ports		= 1,
+> > > > > > @@ -287,8 +282,6 @@ static const struct mxc_isi_plat_data mxc_imx8mn_data = {
+> > > > > >  	.reg_offset		= 0,
+> > > > > >  	.ier_reg		= &mxc_imx8_isi_ier_v1,
+> > > > > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> > > > > > -	.clks			= mxc_imx8mn_clks,
+> > > > > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
+> > > > > >  	.buf_active_reverse	= false,
+> > > > > >  	.gasket_ops		= &mxc_imx8_gasket_ops,
+> > > > > >  	.has_36bit_dma		= false,
+> > > > > > @@ -301,8 +294,6 @@ static const struct mxc_isi_plat_data mxc_imx8mp_data = {
+> > > > > >  	.reg_offset		= 0x2000,
+> > > > > >  	.ier_reg		= &mxc_imx8_isi_ier_v2,
+> > > > > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> > > > > > -	.clks			= mxc_imx8mn_clks,
+> > > > > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
+> > > > > >  	.buf_active_reverse	= true,
+> > > > > >  	.gasket_ops		= &mxc_imx8_gasket_ops,
+> > > > > >  	.has_36bit_dma		= true,
+> > > > > > @@ -315,8 +306,6 @@ static const struct mxc_isi_plat_data mxc_imx8ulp_data = {
+> > > > > >  	.reg_offset		= 0x0,
+> > > > > >  	.ier_reg		= &mxc_imx8_isi_ier_v2,
+> > > > > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> > > > > > -	.clks			= mxc_imx8mn_clks,
+> > > > > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
+> > > > > >  	.buf_active_reverse	= true,
+> > > > > >  	.has_36bit_dma		= false,
+> > > > > >  };
+> > > > > > @@ -328,8 +317,6 @@ static const struct mxc_isi_plat_data mxc_imx93_data = {
+> > > > > >  	.reg_offset		= 0,
+> > > > > >  	.ier_reg		= &mxc_imx8_isi_ier_v2,
+> > > > > >  	.set_thd		= &mxc_imx8_isi_thd_v1,
+> > > > > > -	.clks			= mxc_imx8mn_clks,
+> > > > > > -	.num_clks		= ARRAY_SIZE(mxc_imx8mn_clks),
+> > > > > >  	.buf_active_reverse	= true,
+> > > > > >  	.gasket_ops		= &mxc_imx93_gasket_ops,
+> > > > > >  	.has_36bit_dma		= false,
+> > > > > > @@ -386,7 +373,7 @@ static int mxc_isi_runtime_suspend(struct device *dev)
+> > > > > >  {
+> > > > > >  	struct mxc_isi_dev *isi = dev_get_drvdata(dev);
+> > > > > >
+> > > > > > -	clk_bulk_disable_unprepare(isi->pdata->num_clks, isi->clks);
+> > > > > > +	clk_bulk_disable_unprepare(isi->num_clks, isi->clks);
+> > > > > >
+> > > > > >  	return 0;
+> > > > > >  }
+> > > > > > @@ -396,7 +383,7 @@ static int mxc_isi_runtime_resume(struct device *dev)
+> > > > > >  	struct mxc_isi_dev *isi = dev_get_drvdata(dev);
+> > > > > >  	int ret;
+> > > > > >
+> > > > > > -	ret = clk_bulk_prepare_enable(isi->pdata->num_clks, isi->clks);
+> > > > > > +	ret = clk_bulk_prepare_enable(isi->num_clks, isi->clks);
+> > > > > >  	if (ret) {
+> > > > > >  		dev_err(dev, "Failed to enable clocks (%d)\n", ret);
+> > > > > >  		return ret;
+> > > > > > @@ -414,27 +401,6 @@ static const struct dev_pm_ops mxc_isi_pm_ops = {
+> > > > > >   * Probe, remove & driver
+> > > > > >   */
+> > > > > >
+> > > > > > -static int mxc_isi_clk_get(struct mxc_isi_dev *isi)
+> > > > > > -{
+> > > > > > -	unsigned int size = isi->pdata->num_clks
+> > > > > > -			  * sizeof(*isi->clks);
+> > > > > > -	int ret;
+> > > > > > -
+> > > > > > -	isi->clks = devm_kmemdup(isi->dev, isi->pdata->clks, size, GFP_KERNEL);
+> > > > > > -	if (!isi->clks)
+> > > > > > -		return -ENOMEM;
+> > > > > > -
+> > > > > > -	ret = devm_clk_bulk_get(isi->dev, isi->pdata->num_clks,
+> > > > > > -				isi->clks);
+> > > > > > -	if (ret < 0) {
+> > > > > > -		dev_err(isi->dev, "Failed to acquire clocks: %d\n",
+> > > > > > -			ret);
+> > > > > > -		return ret;
+> > > > > > -	}
+> > > > > > -
+> > > > > > -	return 0;
+> > > > > > -}
+> > > > > > -
+> > > > > >  static int mxc_isi_probe(struct platform_device *pdev)
+> > > > > >  {
+> > > > > >  	struct device *dev = &pdev->dev;
+> > > > > > @@ -457,11 +423,9 @@ static int mxc_isi_probe(struct platform_device *pdev)
+> > > > > >  	if (!isi->pipes)
+> > > > > >  		return -ENOMEM;
+> > > > > >
+> > > > > > -	ret = mxc_isi_clk_get(isi);
+> > > > > > -	if (ret < 0) {
+> > > > > > -		dev_err(dev, "Failed to get clocks\n");
+> > > > > > -		return ret;
+> > > > > > -	}
+> > > > > > +	isi->num_clks = devm_clk_bulk_get_all(dev, &isi->clks);
+> > > > >
+> > > > > This prevents validating that the DT contains the expected clocks, which
+> > > > > could cause hard to debug issues. Isn't it a problem ?
+> > > >
+> > > > It is checked by dt-binding. Now no warning by DTB_CHECK under arm64 freecale.
+> > > > CHECK_DTB should be enough to find expected clocks.
+> > >
+> > > Yes, the DTB check will catch issues at build time, but the driver will
+> > > not enforce that. I'm not sure if there's a clear policy here, and if
+> > > ensuring at runtime in drivers that the expected clocks are present is
+> > > considered as a good practice by the DT maintainers. Rob, Krzysztof,
+> > > Conor, do you have an opinion ?
+> > 
+> > Rob:
+> > 	can you comment this?
 > 
-> diff --git a/Documentation/devicetree/bindings/regulator/nxp,pf0900-regulator.yaml b/Documentation/devicetree/bindings/regulator/nxp,pf0900-regulator.yaml
-> new file mode 100644
-> index 000000000000..32e2ded92e2c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/regulator/nxp,pf0900-regulator.yaml
-> @@ -0,0 +1,179 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/regulator/nxp,pf0900-regulator.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP PF0900 Power Management Integrated Circuit regulators
-> +
-> +maintainers:
-> +  - Joy Zou <joy.zou@nxp.com>
-> +
-> +description:
-> +  The PF0900 is a power management integrated circuit (PMIC) optimized
-> +  for high performance i.MX9x based applications. It features five high
-> +  efficiency buck converters, three linear and one vaon regulators. It
-> +  provides low quiescent current in Standby and low power off Modes.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nxp,pf0900
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  regulators:
-> +    type: object
-> +
-> +    properties:
-> +      "VAON":
+> Rob, any comment on this ?
 
-Don't need quotes.
+My preference is to not do validation of the DT in the kernel. Unless 
+you need greater control of the clocks, I would use 
+devm_clk_bulk_get_all(). 
 
-> +       type: object
-> +       $ref: regulator.yaml#
-> +
-
-Drop blank line.
-
-> +       unevaluatedProperties: false
-> +
-> +    patternProperties:
-> +      "^LDO[1-3]$":
-> +        type: object
-> +        $ref: regulator.yaml#
-> +        description:
-> +          Properties for single LDO regulator.
-> +
-> +        unevaluatedProperties: false
-
-Move this after the $ref.
-
-> +
-> +      "^SW[1-5]$":
-> +        type: object
-> +        $ref: regulator.yaml#
-> +        description:
-> +          Properties for single SW regulator.
-> +
-> +        properties:
-> +          nxp,dvs-run-microvolt:
-> +            minimum: 300000
-> +            maximum: 1350000
-> +            description:
-> +              PMIC default "RUN" state voltage in uV. SW1~5 have such
-> +              dvs(dynamic voltage scaling) property.
-> +
-> +          nxp,dvs-standby-microvolt:
-> +            minimum: 300000
-> +            maximum: 1350000
-> +            description:
-> +              PMIC default "STANDBY" state voltage in uV. SW1~5 have such
-> +              dvs(dynamic voltage scaling) property.
-> +
-> +        unevaluatedProperties: false
-> +
-> +    additionalProperties: false
-
-Same with these.
-
-> +
-> +  nxp,i2c-crc-enable:
-> +    type: boolean
-> +    description: If the PMIC OTP_I2C_CRC_EN is enable, you need to add this property.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - regulators
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        pmic@8 {
-> +            compatible = "nxp,pf0900";
-> +            reg = <0x08>;
-> +            interrupt-parent = <&pcal6524>;
-> +            interrupts = <89 IRQ_TYPE_LEVEL_LOW>;
-> +            nxp,i2c-crc-enable;
-> +
-> +            regulators {
-> +                VAON {
-> +                    regulator-name = "VAON";
-> +                    regulator-min-microvolt = <1800000>;
-> +                    regulator-max-microvolt = <3300000>;
-> +                    regulator-boot-on;
-> +                    regulator-always-on;
-> +                };
-> +
-> +                SW1 {
-> +                    regulator-name = "SW1";
-> +                    regulator-min-microvolt = <500000>;
-> +                    regulator-max-microvolt = <3300000>;
-> +                    regulator-boot-on;
-> +                    regulator-always-on;
-> +                    regulator-ramp-delay = <1950>;
-> +                };
-> +
-> +                SW2 {
-> +                    regulator-name = "SW2";
-> +                    regulator-min-microvolt = <300000>;
-> +                    regulator-max-microvolt = <3300000>;
-> +                    regulator-boot-on;
-> +                    regulator-always-on;
-> +                    regulator-ramp-delay = <1950>;
-> +                };
-> +
-> +                SW3 {
-> +                    regulator-name = "SW3";
-> +                    regulator-min-microvolt = <300000>;
-> +                    regulator-max-microvolt = <3300000>;
-> +                    regulator-boot-on;
-> +                    regulator-always-on;
-> +                    regulator-ramp-delay = <1950>;
-> +                };
-> +
-> +                SW4 {
-> +                    regulator-name = "SW4";
-> +                    regulator-min-microvolt = <300000>;
-> +                    regulator-max-microvolt = <3300000>;
-> +                    regulator-boot-on;
-> +                    regulator-always-on;
-> +                    regulator-ramp-delay = <1950>;
-> +                };
-> +
-> +                SW5 {
-> +                    regulator-name = "SW5";
-> +                    regulator-min-microvolt = <300000>;
-> +                    regulator-max-microvolt = <3300000>;
-> +                    regulator-boot-on;
-> +                    regulator-always-on;
-> +                    regulator-ramp-delay = <1950>;
-> +                };
-> +
-> +                LDO1 {
-> +                    regulator-name = "LDO1";
-> +                    regulator-min-microvolt = <750000>;
-> +                    regulator-max-microvolt = <3300000>;
-> +                    regulator-boot-on;
-> +                    regulator-always-on;
-> +                };
-> +
-> +                LDO2 {
-> +                    regulator-name = "LDO2";
-> +                    regulator-min-microvolt = <650000>;
-> +                    regulator-max-microvolt = <3300000>;
-> +                    regulator-boot-on;
-> +                    regulator-always-on;
-> +                };
-> +
-> +                LDO3 {
-> +                    regulator-name = "LDO3";
-> +                    regulator-min-microvolt = <650000>;
-> +                    regulator-max-microvolt = <3300000>;
-> +                    regulator-boot-on;
-> +                    regulator-always-on;
-> +                };
-> +            };
-> +        };
-> +     };
-> -- 
-> 2.37.1
-> 
+Rob
