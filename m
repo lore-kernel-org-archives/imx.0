@@ -1,32 +1,32 @@
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0120145FE0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7BC13B5B3
 	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 17:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750180099; cv=none; b=VuSoK5UVomGkGUdf20/LNoLJ48TI1YyIJ7MkLxDuOURznVvpxincBLBLHz3/xhJnxFGV9wJ9gw9H4mORtjV7Ex5btVQufYkENzph0mdO9Qv8kzcXmqKb7dhYL34QfBwu0UL6Ihk6KV63IWzd8EIffRfnmCsICHI3xNbgBrFK4uM=
+	t=1750180099; cv=none; b=bN3fPw0eOvOjskpv/uR47FpCWLbarwzKVku5CnW7X/TETWjmz9AH3+ctFvTK3xs7gOMvd+ScR7Nxd3yv+r+ECsrixVFX2pqZhfOnCiJjTkELZVbYNMOYJ5sh3OGIoisq5p2uQ32JOIOoU1NWwC/NA97ib4l7IRmFX3yec0C+bYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750180099; c=relaxed/simple;
-	bh=MC5yXiem/XiAOYUpnP0gGjuW0GwRYpDD+n69a4aKMJQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PLf7QvIWJjXroJ+DVfCWxbOY/a2baCxAMlW+OhZNhnDD0araIMbWo/40MOAZYYawTEPK8mYoNlRw+FfJ2pf8j8zHyI600aOzSw5QSw65RxhnmmEde8uhClmtDGHArRyIwDsWSycz6Mf2uOb+Cprgvs5Dk5hdJZ5YC/tdLzjXTBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=cyJeSIYK; arc=none smtp.client-ip=159.69.126.157
+	bh=9UyZ0qdaeGy00gRF+j/wrolacZtIlCXXNyNgb7kJrIw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=t+3bUnHQvKoA0r4VA+F9kbCxrwvHvFvZwWCA7XQULyaEOHsNqJHqQmzWrdk5QrjnqrJTkg9bs3qa8KDnJuHuuBGqTDiJ0S9iRIsaklhmiUc0aXcsZ9NESFFkvRuDK8aAaLkElKDAVXwFPPlKxRBPa+C8zZke1ReOK8Pl4qd36ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=ktswG+GO; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="cyJeSIYK"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="ktswG+GO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1750180095;
-	bh=MC5yXiem/XiAOYUpnP0gGjuW0GwRYpDD+n69a4aKMJQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=cyJeSIYKTkiOrYuqpZKDsNZ6dqqRK/AbUA6Dwz77IgJ4xLP53jwNmt4GzOBZevCwf
-	 ZBZ8wV8viSftEVK9yJgR523I219n53heonys9/4FJlTs1v5FnYTzfuFqa2xo69OAm3
-	 OJKCnt2tVv28aiPtar9iQ5Hb2j8oHpJQb0eJ+N9Q=
+	bh=9UyZ0qdaeGy00gRF+j/wrolacZtIlCXXNyNgb7kJrIw=;
+	h=From:Subject:Date:To:Cc:From;
+	b=ktswG+GOeIOYoasueGQUlhW+UxQrm0BD3sE0UvXQt8EIAh1bCLSC4GzRkigYLQX6H
+	 pxm880rM+2J1AD21/1XJakFLjvWzwHCCI3JTLFuKCaZAsiZhxql9rsx6HUjUX/HrD8
+	 gg5D6kUr8X79DkHUffpQdTAVBpMx/vnVL/Tw1avM=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 17 Jun 2025 19:08:12 +0200
-Subject: [PATCH v7 1/3] spi: spi-nxp-fspi: check return value of
- devm_mutex_init()
+Subject: [PATCH v7 0/3] locking/mutex: Mark devm_mutex_init() as
+ __must_check
+Date: Tue, 17 Jun 2025 19:08:11 +0200
+Message-Id: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,9 +35,12 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250617-must_check-devm_mutex_init-v7-1-d9e449f4d224@weissschuh.net>
-References: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
-In-Reply-To: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIAPugUWgC/33P3UrEMBAF4FdZcm0k/2m88j1ESpNMbZB2pWnjy
+ tJ3d3ZFKlhCYODMxTc5V5JhTpDJ0+lKZigpp/OEwT6cSBi66Q1oipiJYEJxJjkd17y0YYDwTiO
+ UsR3XBS5tmtJCQxd0I33smh4IAh8z9Olyx19eMQ8pL+f5636r8Nv2h8VRYwunnIJh4J31TbDi+
+ RNSzjkM6/A4wUJudhG/nmaCqaonKKPWG2F5UN6COfTkX6+pehI9oTQobmMIDg49tXuK2aqnsK9
+ urO8Q642Xh57ePXxVT6PnRN9hWSeDOf6f2T3DXNUz2NdpxaKOvbNM/fO2bfsGai28f1kCAAA=
+X-Change-ID: 20241031-must_check-devm_mutex_init-cac583bda8fe
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
  Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, 
  Vicentiu Galanopulo <vicentiu.galanopulo@remote-tech.co.uk>, 
@@ -51,41 +54,66 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-leds@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1750180094; l=1010;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750180094; l=1974;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=MC5yXiem/XiAOYUpnP0gGjuW0GwRYpDD+n69a4aKMJQ=;
- b=f4c7YwjcV/UL1ks9Ly8Byx44jZAWULoi9GjwjUjYlbG84xBpsbwHzyUiQd8EhePjN72ThBmAV
- NC9+IUFuTaWApURrOV2QgGSlId0B5bMlzbfUWSEVw3efoRIQsBZcPKZ
+ bh=9UyZ0qdaeGy00gRF+j/wrolacZtIlCXXNyNgb7kJrIw=;
+ b=dlvyC101vZs+nXCoUmIbNySmNr8nT+TeesQ8Mixx0XtQV21UErBjjo4urgDl7bM1gZ0h6Pemh
+ TECmbDf8s8yAZhyLe8Z46N38gQQYj0UCkKTTlVi4+viArc0ivEI0bu7
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will be
-marked as unusable and trigger errors on usage.
+devm_mutex_init() can fail. Make sure everybody checks the return value.
+All patches should go through the mutex tree together.
 
-Add the missed check.
+It would be great if this could go in through a single tree at once.
 
-Fixes: 48900813abd2 ("spi: spi-nxp-fspi: remove the goto in probe")
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- drivers/spi/spi-nxp-fspi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes in v7:
+- Pick up Ack from Andrew
+- Reword commit messages
+- Link to v6: https://lore.kernel.org/r/20250609-must_check-devm_mutex_init-v6-0-9540d5df9704@weissschuh.net
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index e63c77e418231cd0698ffb73eeeebfbe63cc3065..f3d5765054132cd18b7257439ece971f58e9ceb2 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1273,7 +1273,9 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to request irq\n");
- 
--	devm_mutex_init(dev, &f->lock);
-+	ret = devm_mutex_init(dev, &f->lock);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to initialize lock\n");
- 
- 	ctlr->bus_num = -1;
- 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
+Changes in v6:
+- Rebase on v6.16-rc1
+- Pick up review tag from Bartosz
+- Fix up spi-nxp-fspi
+- Fix up leds-lp8860
+- Link to v5: https://lore.kernel.org/r/20250505-must_check-devm_mutex_init-v5-1-92fa4b793c6e@weissschuh.net
 
+Changes in v5:
+- Pick up review tag from Andy
+- Link to v4: https://lore.kernel.org/r/20250407-must_check-devm_mutex_init-v4-1-587bacc9f6b3@weissschuh.net
+
+Changes in v4:
+- Drop already applied leds-1202 driver patch
+- Rebase on v6.15-rc1
+- Link to v3: https://lore.kernel.org/r/20250208-must_check-devm_mutex_init-v3-0-245e417dcc9e@weissschuh.net
+
+Changes in v3:
+- Introduce and use helper macro __mutex_init_ret()
+- Link to v2: https://lore.kernel.org/r/20250204-must_check-devm_mutex_init-v2-0-7b6271c4b7e6@weissschuh.net
+
+Changes in v2:
+- Rebase on 6.14-rc1
+- Fix up leds-1202 driver
+- Link to v1: https://lore.kernel.org/r/20241202-must_check-devm_mutex_init-v1-1-e60eb97b8c72@weissschuh.net
+
+---
+Thomas Weißschuh (3):
+      spi: spi-nxp-fspi: check return value of devm_mutex_init()
+      leds: lp8860: Check return value of devm_mutex_init()
+      locking/mutex: Mark devm_mutex_init() as __must_check
+
+ drivers/leds/leds-lp8860.c |  4 +++-
+ drivers/spi/spi-nxp-fspi.c |  4 +++-
+ include/linux/mutex.h      | 11 +++++++----
+ 3 files changed, 13 insertions(+), 6 deletions(-)
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20241031-must_check-devm_mutex_init-cac583bda8fe
+
+Best regards,
 -- 
-2.50.0
+Thomas Weißschuh <linux@weissschuh.net>
 
