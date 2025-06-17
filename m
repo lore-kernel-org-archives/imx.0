@@ -1,92 +1,203 @@
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6845F18A6AE
-	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 17:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386B421B908
+	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 17:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750180100; cv=none; b=Ora72B7YlaWUFhir7uvXlf8rlNOhqO949Rt+Syn4BGO7WFvZkTqVMlDuPX7DLXpX6jtVyP7l5bSe8iEd9CaNx3P9IypqmoOY+lJqRvU161v6ePIDnxkJpi2a3G6GIAARohuyod64lUmBTeDNGlpgGNJv0edHzhxe5MmCLsqKCUI=
+	t=1750181558; cv=none; b=RkZ6IhN4kOIgmH0pFVkqMAXISNOc1GSYtBLeWMl51tQveWhrUyfrG/PUJMc32RU6lxK1fx2ZTRwKwXO4Y3ifKblKOq7IG29bwS5covcNVwhS1zoxREeqpKUy3gq8l5mqsXwGGU6Uhm1SXlsyCNAdFbXj/OE3CVZmtlRlXLAT+kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750180100; c=relaxed/simple;
-	bh=BifUbuDtP8CLX+SSmA8FHwV1Mhck8lXhS243dT68e18=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZcJkK+kcRMPwav0nTueRyoAe/hLyadQhUcxp6/2WN5g7z44qVg13ru6slO9Yfevq2zl6tT3Rivsr38VSp/F2EVqOMAiaP1VlafKJ2lVoc8pOxyQMCOthRYxi4ef9RbxWMMehQAWqH9xcZYgyBtivsaBkVCBFgqXtf6xnVaIbOnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=iijXI0mY; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+	s=arc-20240116; t=1750181558; c=relaxed/simple;
+	bh=327wkh+/VeSwFfG4Pq9N5mo4XYFue+NAe59l+/QO840=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P7UJbw+UcvVCDKambv3tc9udceLWG1FexEWMSAuLVNsbMLjFvtTyZqYOY8fM5iaUp4lm5OLKNioLK7jTjHJLfiyEP41v4bAXTi8d318bgMP9elIF9keCnNvjGzYSk3fXQHCWBc8EJc2r2m928XKYukYxVPvwk7Uuy7wirPxhWkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ih/6MYTG; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="iijXI0mY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1750180095;
-	bh=BifUbuDtP8CLX+SSmA8FHwV1Mhck8lXhS243dT68e18=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=iijXI0mYBGdEOUcbaRTjjLLtqpoGVMIb6VKHJrtP1NfAWi58cBdpBtyTKGsBssKo9
-	 x5zEOxUpU8cSZXucZV9dvxWSxCxUHmlr1zFCDXTc2vjNl6k8VWmYu325ybVW1RlBq3
-	 RkHxhuG8vEN57HdlebcvyqU6l2/gtwOXP2wkOBsA=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 17 Jun 2025 19:08:13 +0200
-Subject: [PATCH v7 2/3] leds: lp8860: Check return value of
- devm_mutex_init()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ih/6MYTG"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7d20451c016so344905285a.1
+        for <imx@lists.linux.dev>; Tue, 17 Jun 2025 10:32:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750181556; x=1750786356; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=wNT96l/L1TKvL+hy9kvQ/IwQtkX/iGPMeGmWPo89yLM=;
+        b=ih/6MYTGRrJxWCxZdRIMuDeKBjf//8ixH4pR/59/Frs2ASSQAITPC+KxJOt7+o0+O1
+         s/uiegcTeeSlwYUCPdoRwWLLcIoVa06iUK3qbxT+rSfxem+JfJqB4M8PE+CxB1LXz7+J
+         u11RYH8ruaY+oDMB0hJHUwnq7Q0+u9VNjA/raD/Qg3OQ6/1HncmzJGlHNYVizB+dswmU
+         r4Hfu6m+NOn9lrzKxe5sgjXkfV2lS5hqKRW1oyCQ27KkhFDZ88s+ZfxuMi5gz0K9Hugy
+         kLYDXD8L0OLhVJg7rWLDsrKq4H/Qw799XKIFRwz/SVg+1f7cJhdIdAJjisRVqxfNQIAJ
+         P49w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750181556; x=1750786356;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wNT96l/L1TKvL+hy9kvQ/IwQtkX/iGPMeGmWPo89yLM=;
+        b=n9LerBdXgyL6ls5RehEEjEUk7Bh/LlMrtK3rGHqsSe0kV11ciZ6WyE/2dDAbKKO76g
+         EqlVXiVXz11kPiK8gDq7jrPawia/Ji6ljgr1LvVVOU/CDGx2JF9jluDTlQYc/X2SZFg3
+         B3bjsYoKW+cF48sAUAUdLxe1fE31/qkUb9xP3f+kh6iaEh5oH5sMemrlUVveKu5M2G60
+         +Q/XdJi3umlBlTZjvKPkehnUNL0CviKEPIVNB8F+cdJeNNkYOMul6zYwSfisR01c0y75
+         mfnsMkRt/sptghVAJnQBA3N4iPrmHWtAQLyLzOYik+vOI9K7LtLx8GZGahSmyjoKMfUN
+         lxLg==
+X-Forwarded-Encrypted: i=1; AJvYcCVfqfxwTFOqZJKcn0aSmI5FyLeBWt3t+8QdsltPAszMDqiIj6zAd2ZOhDjlcA/grb9zcqY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy4pGF39mJn5CYlbvxGgQTpcKiu6VPzRzQMxofkdEemTYcKmnEF
+	jKYfrR8e/gBW0ZSa0BwrlhUTkeP4EhwhDvPD680paYDKWDE/8ZMa8aNK
+X-Gm-Gg: ASbGncs5CMM4hJrcDQ9KF2xoHHldQIwxNiw8mvGzImUprDjQuC2U2NfNvzvznTWdNMg
+	uGHue+U833WtRakbkHrmivZD9qysPF/Ql+TSc3ij9iuFQZB2dadLxmFZKbprX4NVMM0KyOqVFR9
+	DEEaMA+I9bDuSB8RwWpRsVV7QCapOqUEIeW+Q60BmJlEdZ/L/tNUs2IUg8SCXWMHYJMduF2SbyT
+	sEKRFmBxWRkxQELyIgjl05BeCBhnVPYgjqkuHwopnk4dXY25wg2cTNXk1bMNG81/zHbMA/55hCa
+	cIVrfDKwoRLO0X6OADeV8kWpnDt5ggjZSSD5wJJP6DvT72zCR89NBCdiL9U8L7ZmhYcSwSkAZVc
+	TANgxt5HwKNUvaZcIlya+0vtIfVHCWlThSR1ArTBPkMTs/PWLBQ6s
+X-Google-Smtp-Source: AGHT+IHv7jLpK3Ul34lwaxNAM1Cqm+lTjV5Yo9JWoxb+xmYRDOcjMKkdxHpcBnPucHEA9I6sn9hdTA==
+X-Received: by 2002:a05:620a:17aa:b0:7c5:5670:bd77 with SMTP id af79cd13be357-7d3c6d09a79mr2334127885a.55.1750181555789;
+        Tue, 17 Jun 2025 10:32:35 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3b8dce692sm676081185a.14.2025.06.17.10.32.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jun 2025 10:32:35 -0700 (PDT)
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9BAF61200069;
+	Tue, 17 Jun 2025 13:32:34 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Tue, 17 Jun 2025 13:32:34 -0400
+X-ME-Sender: <xms:sqZRaIUQeoNORo-Sg8BO-h_Oq5tXXXNa0jYV79jBEOPSbRh4iD0qng>
+    <xme:sqZRaMmiYn5tWOXttI6vFmUzqs3n0gy83wQ2OmhdxI_40PuO5PhSWCzYUTJcKId0V
+    nm1c-2BamwASYhGZg>
+X-ME-Received: <xmr:sqZRaMY97MSR3Ga5fRLYb3kdtLGPzG12DclM4qns-UHl6c244H7W8clnVpM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdejlecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtuden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpefgleehteekgfduteejjeekhfejfedvieeftdfh
+    hefggfehheeileeihfdtteehfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
+    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
+    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
+    mhgvpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    eplhhinhhugiesfigvihhsshhstghhuhhhrdhnvghtpdhrtghpthhtohepphgvthgvrhii
+    sehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrd
+    gtohhmpdhrtghpthhtoheplhhonhhgmhgrnhesrhgvughhrghtrdgtohhmpdhrtghpthht
+    ohepvhhitggvnhhtihhurdhgrghlrghnohhpuhhlohesrhgvmhhothgvqdhtvggthhdrtg
+    hordhukhdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    hhgrnhdrgihusehngihprdgtohhmpdhrtghpthhtohephhgrihgsohdrtghhvghnsehngi
+    hprdgtohhmpdhrtghpthhtohephihoghgvshhhghgruhhrrdekfeesghhmrghilhdrtgho
+    mh
+X-ME-Proxy: <xmx:sqZRaHWdgQONcxQ7nHIQ13kUD8EY9n1tQ60GxOqsWbEHg_GHZE2wcg>
+    <xmx:sqZRaCntxstgU_tCr0_Y4OkHisP-rVcSJqE96GTsvBb_0MRlkY9m-w>
+    <xmx:sqZRaMdseC0jzyRASpIcQ8UsbYim0tpyIspQ38lf4acYWitFupoeTA>
+    <xmx:sqZRaEGsEtpyVmd2Y7vb6YWJ1ZIGEX_fWt3ol1-bn_UKXGDzxVlTaA>
+    <xmx:sqZRaImKUtP3CYHaC1GhcXMOwYaq6RMJE_sC5VPnyDEzXmC1HWMAftuX>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Jun 2025 13:32:33 -0400 (EDT)
+Date: Tue, 17 Jun 2025 10:32:33 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	Vicentiu Galanopulo <vicentiu.galanopulo@remote-tech.co.uk>,
+	Will Deacon <will@kernel.org>, Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Yogesh Gaur <yogeshgaur.83@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Andrew Davis <afd@ti.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-kernel@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	linux-leds@vger.kernel.org
+Subject: Re: [PATCH v7 3/3] locking/mutex: Mark devm_mutex_init() as
+ __must_check
+Message-ID: <aFGmsXTaVAgfRc_j@tardis.local>
+References: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
+ <20250617-must_check-devm_mutex_init-v7-3-d9e449f4d224@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250617-must_check-devm_mutex_init-v7-2-d9e449f4d224@weissschuh.net>
-References: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
-In-Reply-To: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Vicentiu Galanopulo <vicentiu.galanopulo@remote-tech.co.uk>, 
- Will Deacon <will@kernel.org>, Han Xu <han.xu@nxp.com>, 
- Haibo Chen <haibo.chen@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
- Mark Brown <broonie@kernel.org>, Lee Jones <lee@kernel.org>, 
- Pavel Machek <pavel@kernel.org>, Andrew Davis <afd@ti.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- linux-kernel@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-leds@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1750180094; l=1129;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=BifUbuDtP8CLX+SSmA8FHwV1Mhck8lXhS243dT68e18=;
- b=80MqI6sR99BIQb1YVYOfJ+0gi5QJKk6qvrAw7V7T8mRff9hl5gLsjDaR+ssQk4IPo6L6n7PtH
- XSYnuu5Oy2pCZ98VcjabXnl4QR4FOfVOAlCIjZljKvmWi8N71M+ofRJ
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+In-Reply-To: <20250617-must_check-devm_mutex_init-v7-3-d9e449f4d224@weissschuh.net>
 
-devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will be
-marked as unusable and trigger errors on usage.
+On Tue, Jun 17, 2025 at 07:08:14PM +0200, Thomas Weiﬂschuh wrote:
+> devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will be
+> marked as unusable and trigger errors on usage.
+> Enforce all callers check the return value through the compiler.
+> 
+> As devm_mutex_init() itself is a macro, it can not be annotated
+> directly. Annotate __devm_mutex_init() instead.
+> Unfortunately __must_check/warn_unused_result don't propagate through
+> statement expression. So move the statement expression into the argument
+> list of the call to __devm_mutex_init() through a helper macro.
+> 
 
-Add the missed check.
+Given it's Peter's suggestion [1] for __mutex_init_ret(), I think a
 
-Fixes: 87a59548af95 ("leds: lp8860: Use new mutex guards to cleanup function exits")
-Signed-off-by: Thomas Wei√üschuh <linux@weissschuh.net>
-Acked-by: Andrew Davis <afd@ti.com>
----
- drivers/leds/leds-lp8860.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
 
-diff --git a/drivers/leds/leds-lp8860.c b/drivers/leds/leds-lp8860.c
-index 52b97c9f2a03567aa12d4f63a951593a5e7017d5..0962c00c215a11f555a7878a3b65824b5219a1fa 100644
---- a/drivers/leds/leds-lp8860.c
-+++ b/drivers/leds/leds-lp8860.c
-@@ -307,7 +307,9 @@ static int lp8860_probe(struct i2c_client *client)
- 	led->client = client;
- 	led->led_dev.brightness_set_blocking = lp8860_brightness_set;
- 
--	devm_mutex_init(&client->dev, &led->lock);
-+	ret = devm_mutex_init(&client->dev, &led->lock);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret, "Failed to initialize lock\n");
- 
- 	led->regmap = devm_regmap_init_i2c(client, &lp8860_regmap_config);
- 	if (IS_ERR(led->regmap)) {
+should be added here. No need for a new version just for that. If patch
+#1 got some reviews, I would queue this in my lockdep-for-tip branch.
+Hopefully these will land v6.17.
 
--- 
-2.50.0
+[1]: https://lore.kernel.org/all/20250204090106.GP7145@noisy.programming.kicks-ass.net/
 
+Regards,
+Boqun
+
+> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> ---
+>  include/linux/mutex.h | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+> index a039fa8c17807c700d3b61193feac0418cad1243..00afd341d293ddfcc0a427b576efdce044955e38 100644
+> --- a/include/linux/mutex.h
+> +++ b/include/linux/mutex.h
+> @@ -126,11 +126,11 @@ do {							\
+>  
+>  #ifdef CONFIG_DEBUG_MUTEXES
+>  
+> -int __devm_mutex_init(struct device *dev, struct mutex *lock);
+> +int __must_check __devm_mutex_init(struct device *dev, struct mutex *lock);
+>  
+>  #else
+>  
+> -static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
+> +static inline int __must_check __devm_mutex_init(struct device *dev, struct mutex *lock)
+>  {
+>  	/*
+>  	 * When CONFIG_DEBUG_MUTEXES is off mutex_destroy() is just a nop so
+> @@ -141,14 +141,17 @@ static inline int __devm_mutex_init(struct device *dev, struct mutex *lock)
+>  
+>  #endif
+>  
+> -#define devm_mutex_init(dev, mutex)			\
+> +#define __mutex_init_ret(mutex)				\
+>  ({							\
+>  	typeof(mutex) mutex_ = (mutex);			\
+>  							\
+>  	mutex_init(mutex_);				\
+> -	__devm_mutex_init(dev, mutex_);			\
+> +	mutex_;						\
+>  })
+>  
+> +#define devm_mutex_init(dev, mutex) \
+> +	__devm_mutex_init(dev, __mutex_init_ret(mutex))
+> +
+>  /*
+>   * See kernel/locking/mutex.c for detailed documentation of these APIs.
+>   * Also see Documentation/locking/mutex-design.rst.
+> 
+> -- 
+> 2.50.0
+> 
