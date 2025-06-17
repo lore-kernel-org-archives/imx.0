@@ -1,191 +1,169 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012043.outbound.protection.outlook.com [52.101.66.43])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36DB199947
-	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 07:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750145813; cv=fail; b=i1S1Te6J7EGuSfgmLsqYQg3AJk6lLaprNNj10lT1dGQZdnGLdTTl7anGChy6j8YEoP+LSWx/w0XykjsNMGMb9H/ZVS3xWUFo2yDzoq+UIvWkvJHn0poHI5NXdxkqTy59gBIMXIO3BopWHczA/QFx//qIpDCSyIMYCYgG6CLomlU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750145813; c=relaxed/simple;
-	bh=2RBx5q2nKmjjl8cXzzf7HO9AuSDnInGHBP8P4ENgFDU=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=t7eEQ5YLib7+B+65BFWqP7oVvObteF0BTKl4k+uw4m6jqBuT5ePIDRTkLaxRfVwPhixtud2f0kVFDnScDSOfjcCcul5JD90Z5L3PZronPa3VMcK9yXSK4hqi/ew5LqURRMmtxbIyLaCmAEJ2Yn77MCfnBxwRAbCfkdutJtJ9S40=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nAsG7NAk; arc=fail smtp.client-ip=52.101.66.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED1328C2A3;
+	Tue, 17 Jun 2025 07:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750146835; cv=none; b=S3Tj9N/J3ZiRxm7+JUTy/6VLpY2+C9/W/oOA8dfwndJf7fZt+VhQiFsQ82t94ZdrCRfr+V5GK2m1SpDf7jt86Jo1vSjGsYCSx77IJ3P8A6Fk9jl6tCVBgfyB3KT8U6FGL4XOloWxr9n/gEtx3c6Ov7cPjPPZaXa7yinTZF1ESag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750146835; c=relaxed/simple;
+	bh=OqthscKnASx0MYwBa87Rhel76+HHnEy30Q7AuBEmizk=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=AAOvwiWBQyUQDYeJzdy39c4D0xvSi3sY4qhPEmksbfdKPMayzJXMg6qkMmP/tABnJmPl0Z8IJpQD/99LBRuFWDGbQKbqJTU7WR4avheUPKXV1u62qmOx90cFyoj1hVbrjJsZ6Lt8JKJdGMxQAzHeKN5QOk8SbeGxxmIePyCLST4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=TIrRR1Rf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nyfchuHC; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nAsG7NAk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bLfTBtknCVAVdXVCN1ItsGtZ352tJ8I6KwP0OXzlJR1KVNKBXqOpQb06xJO8ryxLZ54UmR44CNsHqnROr6W2yDUdEpuGimyXX27wEzJSpo16Z1vty1vaEQtFHt4/MYcK+v0ByK/KNkOX5gXrv6xE0wGr3/QopUFjhRD9XPMpojDYCzLGWf7i+Kbrs9EfVoEuN7lWByCi2VdRRrfv6LPsZlqFjoy5nOQjEHnFsT2gXbOpc3KdY4bXGpyEL8qTJKZDtpUHJtayXg/hA+JkjUgsjK80Rcir/qtYeS0CLGOBBmRx+iyLsMoM1QoIn+dtGnJCFVEDnpThB89v3CJxbRU6cA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NaG7TdRK4qA/us1zaqr2Pg7TG2FCT7VQUiqEoXFRiN0=;
- b=NPegTf10MbI4WOtyGDydTZY16ZU2hdrcQiIHeaLNKxQ/tI9BTq0Jbn+oGKHSfdSWoLhT5hI4Sb/xiVyeFJlT8FJvDCbPtdcDH0QPjefqj8sx9vFRyHzQPSfz2/O92TPZ7/OyxxgtFtZFK/dtQcRPoMXghNMZWyUYLdM+OG+8rnqNoCp734QL06WvZoOBGohsqZNXnM9xDQDh1XJkbs1vjBphpJI41xncxTy9aRkZdT9tr7c4plwqlpp9/3StKIw4WiTrWQGc6R1rI6pAMGHcEW1kdrg4ul2Ty8t1s144zgchxew4/SAGKX8yOfFfMyffSChDhlNqeFBa9ltmTWnIMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NaG7TdRK4qA/us1zaqr2Pg7TG2FCT7VQUiqEoXFRiN0=;
- b=nAsG7NAkOE5RcPWkFHZyXNp4maN/k0oZn58q90DmzF6M9DS5anvnN7DDuG/JFzsVIokuZoBy+zxZD/Becou2LzZipi2hvQOgu1ZepYwofj45V0BuyNWiQKWVpR1AIM9pk2m3vLdRbsD6m9MbFZOSwX0N+lyNn8M36oiAsZ3/ybaD5+4wg3xXHtMTrGpJEZF1qSi/NClY7iCVVinvvppO1Q/Ok7cqhD/hXSEMmvOOESmDpMtUdp2UX+EpUecsnBoP3px7TJ06C3HtVx5lbiKofEhHn4/u39tHrpVfUsaQ16qdqZQ4vr8rmvilgzWjOlATwppWTkJ17/HPpypaqswacg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
- by PAWPR04MB10032.eurprd04.prod.outlook.com (2603:10a6:102:38d::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.28; Tue, 17 Jun
- 2025 07:36:47 +0000
-Received: from AS8PR04MB8676.eurprd04.prod.outlook.com
- ([fe80::28b2:de72:ad25:5d93]) by AS8PR04MB8676.eurprd04.prod.outlook.com
- ([fe80::28b2:de72:ad25:5d93%4]) with mapi id 15.20.8835.027; Tue, 17 Jun 2025
- 07:36:46 +0000
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: frank.li@nxp.com,
-	l.stach@pengutronix.de,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v2] PCI: imx6: Correct the epc_features of i.MX8M chips
-Date: Tue, 17 Jun 2025 15:34:41 +0800
-Message-Id: <20250617073441.3228400-1-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.37.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2P153CA0037.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::6)
- To AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="TIrRR1Rf";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nyfchuHC"
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 5D90D1380373;
+	Tue, 17 Jun 2025 03:53:52 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Tue, 17 Jun 2025 03:53:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1750146832;
+	 x=1750233232; bh=N/gVmKjkroaVRvbIjFt+q9mrEuWIbF/Y3kVfpO1Se9g=; b=
+	TIrRR1Rf+lh8N6KUpnEMeoAf5nmqR19q1dPgtLddv+3d++6Zkl2OaVUtoHfVnC95
+	njpNkJ5G9FRiHJ1O6IlymETlfHo0FCNLI3rALHcYifc1/YhM/cX/SnVsDXNB2YS+
+	5sPmQdbM31lfqVY4iacsaUr1xYOr4PStOs/wSeay9WPeDIq7U/nfd8DYe67iNM5K
+	BFBYCt9Bk0fhxPIqK1RpS31UB2M91p/28GEI9LM0fqPfrI9bTlf9Oze6PKjYkJmW
+	EFHJOuMRj2VY25qZ7WOElEvUydRuonaJ0ENu7wvBPRdWVlBSEnJ/GkoIZD5EWufv
+	EdQh3dvim9ZUsD/Zs5cVPA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1750146832; x=
+	1750233232; bh=N/gVmKjkroaVRvbIjFt+q9mrEuWIbF/Y3kVfpO1Se9g=; b=n
+	yfchuHChhwk5xqx5dxSqe0nD3BGS++35HsbZpQonzuGUQytrh89pKLVpcoKHSLDe
+	7VwfnzMVI48ZeYMq/ICoRR3LKCSwYjJ5sx6YujNNWmCMOENLC+9TqhlrDDR+4uvh
+	MD9pf8+lTYjNkMxaJkZ7Gp6tdUCn49uHICEePjtdgcryHT4Nq+CVz0BNXZxiIwqu
+	9ak9iuyZn5PN7N0CR3FAETsA50gTLzylo09LoN77kwP91FukiqUNlQO30WA00IB7
+	cT2suWkM8c2k9YYrrMxlrgUAMWrIogP2Zl/rnJLcSfEKfSFsSVb4LStzzMPwCbg0
+	CApThddOm5cgo3BJ4Irow==
+X-ME-Sender: <xms:Dx9RaLiFYiW4kdhv9J5fhwzdxpuXkj55FXgvbvlsz5LFyY2PFHgLOA>
+    <xme:Dx9RaIBbrIzpPEiZlDN0pEMbPUt_K5hlRE887MJau9botaxAQDz-HKfBPzc7K8af9
+    mc-ln5JnZ71ZGZB3DA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvkeekfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpeehjeejhfeftdfgieehleefleehgedugfevieei
+    veeivedvudegheehudefkefhfeenucffohhmrghinhepphgrshhtvggsihhnrdgtohhmne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgu
+    segrrhhnuggsrdguvgdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhuth
+    dprhgtphhtthhopehrohgsihhnrdhmuhhrphhhhiesrghrmhdrtghomhdprhgtphhtthho
+    peholhhtvggrnhhvsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhkphesihhnthgvlh
+    drtghomhdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehjrghmvghsrdgtlhgrrhhksehlihhnrghrohdrohhrghdprhgtphhtthhopehimh
+    igsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepihhomhhmuheslhhishht
+    shdrlhhinhhugidruggvvhdprhgtphhtthhopehovgdqkhgsuhhilhguqdgrlhhlsehlih
+    hsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohephhgthheslhhsthdruggv
+X-ME-Proxy: <xmx:Dx9RaLFN-BDF7HlEnZmoG3h2MWfQtBwN0hEg2LqmPxJOBQH61u9mTQ>
+    <xmx:Dx9RaISGlbGoQBTDdDAu4eCxm4KVvLeMTUcQ94U9E0MvMOCNlXeRlQ>
+    <xmx:Dx9RaIyieKngvGlAlYEjkdIq7Rftt-f01NPrGMNX74Lt06v6oktVbQ>
+    <xmx:Dx9RaO6ZXUy5vZq_o8DTkzT9MUkMvB-lWT-nMH69GPhby5l22aQ_QQ>
+    <xmx:EB9RaFjLe8GzAum3dkhpQU2-pcdJYSDXSQFoI6gh02h0xGoLujEGqrlB>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3C946700065; Tue, 17 Jun 2025 03:53:51 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8676:EE_|PAWPR04MB10032:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19183ef6-2e1a-44ef-bdd5-08ddad71b692
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|52116014|366016|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AJxIlscAPfxw9eZIoKdJqnEzj7CrQx1RIHMOLBt9UMxbDkg98fSgVekCEM7k?=
- =?us-ascii?Q?x7M/evp0WjaytiHEt7nRelRi5d3kyRRhy+4CA9VulMq3fDZfnVsyowOgMENx?=
- =?us-ascii?Q?2jB6PxaP9qlfJBBJgaHAZ5PgHuWfRY/6tg3TFmuKa2gJ0QAU7Ywu5K1f/Hz1?=
- =?us-ascii?Q?Ml2Mi1PKqSArqmCYyKMwTDWgzFbx0EMnSxP3YuuJOZ5pqXqa4hTvVPB0fa2d?=
- =?us-ascii?Q?Vaz3gF4zIl2DeMZk5/GV/ukD8jjgLA06Dpx/ZL9i31HiRLK5KHMl8IAwlUS/?=
- =?us-ascii?Q?3qyk32erygAXSf73G5IVlvkYUYtVSN1VSg0phqfutZzUyzrKQgWRYwvVkQwi?=
- =?us-ascii?Q?zcMlxiPrXlQCvm37T9esd4NwojA9uOoqhxouXDUGV8xN2vyHokUOZ7pfMjJE?=
- =?us-ascii?Q?tv4FZWz7BiMmuo21x0xPfDU4ss+WyPWA7T6DqxmCaezpqSDndLFVIr1KleRN?=
- =?us-ascii?Q?TavmOHKbJYSvSzPohttzHx4uh/s22/PREYb2dG29tiwy21Jl9R/8qevXPntl?=
- =?us-ascii?Q?CHboosta5Fp6VmR/bHKiP1kjx7FfK1crKq8CvuEW2w2JIAEW6CawgFsgpZDc?=
- =?us-ascii?Q?UOFiIlh53CYP5ZUzcA2LiOOyqkgKr9HYjZCh0NaebJ0dhfGKs+D2JtlTSLdl?=
- =?us-ascii?Q?3iu+qP/WV5yKQ/OONGn2lwEYl8VC54hwC2ZW8hIVamwe8VuhvEH/VLK0vvgY?=
- =?us-ascii?Q?ixzzHIfJsK4RDV7wRWcfGJJ9flm5T9gE9dw7D3LlwvTuSIkzxyvT8qoE5kB7?=
- =?us-ascii?Q?097o53Bnuc4CH8vURDG8RCbBMLOX/t8Bi73M1rpqXof9cHy9kej1mZbpfr9k?=
- =?us-ascii?Q?jnV7Um9LlUEwWI4R+8Ojys2LGW2mC97CYKxQRYcnkrrtF/TK3b23jaMo7o+N?=
- =?us-ascii?Q?SR19JXRvr1luyW/ebJ0gw04FTontLA/n6ga1WprVDHqYUFSOn4AGr+zG3qhg?=
- =?us-ascii?Q?5DEwS1PZgflnWtGBLJgeiMAIoZJfHGGemXzLggSqdOs6GFAVUY0AatvGxivI?=
- =?us-ascii?Q?ajwha/WQ4aS5SyG/XePgirIMODOL3AclvVgxvfVLzIgGAyy5Mnbw3SxXP3yj?=
- =?us-ascii?Q?8umLP++WQtA1EPRhFlFJhTMIfGj42wgvRQwujalTSRj3jIsVLNJrqqxF+DHw?=
- =?us-ascii?Q?yrTsh+hYA1p1S32Ib3jyHhNr00mqctZSdbeuN0XbV4pQIywsFt2Z/57t+mFr?=
- =?us-ascii?Q?Sohs3shgcauIpSfSWj06VMmZFiSJcR9vFp8rwHsWbg8GBvkmBYFBFhc9cTiq?=
- =?us-ascii?Q?qB2gF/XgYntYlfShEcOg1cQJKN3tT+YQvAkfTIvi9noiKDakCJl8r5exHXvd?=
- =?us-ascii?Q?3vRUn9PQqhNISsKjZx8MC/KCRR9blBT/zJ6uaR6Jgr5mnRZfGXUreyM3+LwM?=
- =?us-ascii?Q?CTLvD5l4otUhw9hpi/kBye0NW9mzPsa5L/SDLPSwo0vvpvmY9sgSk3yNeLDs?=
- =?us-ascii?Q?hKXRltfgUEUgbxjV/bUg8S6P7owgQgyo0eaGwUvDBE9I/0Hqwztca3jpV1UH?=
- =?us-ascii?Q?Xv6U4sSs1gxOKr0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8676.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(52116014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2nMhlVShz/QqlMZBvLzlBluPkNYrFw5Yl+ceTIMooOgy0vBOIkZVs5q2RXPF?=
- =?us-ascii?Q?qdjAE+KQro0iFybJBTUPVlGDKMxEkvtXWKcZmMZ1azZPLuG/u4NeEcVjkiiY?=
- =?us-ascii?Q?RiAyQD2/XsmfzX5cBh6EW5I/D1IYx4/nHsTiXEwdZgkPu/7e3tJ3cZYI06XL?=
- =?us-ascii?Q?g8WKPn9spSBhdvhohQxO3kA6hAJRdJ/KD+15IoqoQg3c23krzvkbzqbgGK/4?=
- =?us-ascii?Q?swm4mM8vNaJ8IWprAq4MDSC+3TPwVNqj0Utoh2PVhcyTbCp8QkYBiG5yDyGt?=
- =?us-ascii?Q?NmkUH6LlgQLUGr9hGqcKHxlhgJHWBjOrTLq47Td+bfRIpHu6+atXeTi6TKZd?=
- =?us-ascii?Q?lZsScybJf28LfLadrT2IDkG8SuVHURL0A0SfTwyYC580KdLqWjmpuOU2ws+E?=
- =?us-ascii?Q?eqAvokjK263xvt0CvbrkV6bGdqdPn6omz/UTvc5mVI+kgc+4fp6yrcM0gUxK?=
- =?us-ascii?Q?/BCWseKEKfjyHhPbq4x1PTQrpYBlqKXhtOKqSAl/1YhCv908k+fR9WOK6v3o?=
- =?us-ascii?Q?WYHq+8nQuYTg7RMgxd+kvqCZKBp7Le60H9abgwBNVwjDZcp+gmkKuiOvTbdh?=
- =?us-ascii?Q?Xa0pInOxRKql8Z9Lzy1ZTcT7jvKUDrKOfSRcEAqYXRHQH8CTesWj5ZK4qmWQ?=
- =?us-ascii?Q?2VLuKW4I6yM48nb+4bdInT0vvCmS0jy63kVdw+nK8uVakJNzNVbgpBdLf6iv?=
- =?us-ascii?Q?xyLnE6xxfkQC5cPue6snLmmDhnWC8DNBHGBYpTNpK28dQ1YSxjTtLQ4Fszvg?=
- =?us-ascii?Q?88Avad4ZUL0eZ3Li72m6ZvipZIqfTZjUmpkP3oQHxyLaMhYpRtoRVzq4gN7A?=
- =?us-ascii?Q?S26mg1iAiwQ7fzOyuaTaJqzs6ZHT8h/vO+WSKiX6h3j4Emn4FGV5RNy90n0g?=
- =?us-ascii?Q?bK6qSK8rAUU5rWOysMkKHj7DgTatfDEQ569LWz0rqp2Kn3E1CxnWAiC7yy2o?=
- =?us-ascii?Q?biIxhX9PoBUQ0Ega1c+RY8s2eHbRCEweO/lk4e2J2awQmUS7vU1LQQWDBFjD?=
- =?us-ascii?Q?yZjNx6OEHx9vGj184DdsmuLMI2PvpJy0W1cp3a3cvs2SrUxkFOITh6UxAin/?=
- =?us-ascii?Q?Y556mInVHvpOtdQ+TXyvucMt3X+zcu64urymsOolTPzi8bziiEicnowh8Q1K?=
- =?us-ascii?Q?uH4TXwDX/ON6LDpvgR0CdJHqIM7EmqCPDTYyi88qJ4KCLDo2Ar2NyN/sPsgL?=
- =?us-ascii?Q?o3RQoauResBIrOvZZKvIi5dR6jYXv2e1vSGQwHAumrMrFEXXZGcK5NJAn5vN?=
- =?us-ascii?Q?hjIay6ag4WJRJflzi4Yucoa5tc6WBo4QYM8F5XD5z6iA1w3TdkTLMqbyMP9K?=
- =?us-ascii?Q?N1V9BVutiLpVeHvb/zPOmmZpRjl6xUZviRGkKjkORm6giNz91P16Vb+zVyuZ?=
- =?us-ascii?Q?BM+5+TNdaC1GkkK4UimGy6l52WUsaIiX6ofzA754lF879ZVGA1SgNSLiE4OY?=
- =?us-ascii?Q?iQFKjshJDjKWyADlYaJ9zqtY0w5TQO3Amtbw0PYnk10gkcIGZo6zgTUUSVNR?=
- =?us-ascii?Q?mKWVnIjKFYYVs4Ry0/QnJkVxzjhcHD/jZ2xyMkQtgbd1CukKHPSpgthvsgX6?=
- =?us-ascii?Q?r4FVDDKbcUHkyEbFUSTF3yVYRbtcjt+gAqC5QNS3?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19183ef6-2e1a-44ef-bdd5-08ddad71b692
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8676.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2025 07:36:46.4594
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VQrAx/H+7xJyCDjIDyrmtV14exVnwo7Jge9V9z9bfe+7msAXBtC1FfBZ8VJDiZgiDwLWtVBD0zKL3uVa5uEvwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB10032
+X-ThreadId: T4808b90e09d8ad4f
+Date: Tue, 17 Jun 2025 09:53:22 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Christoph Hellwig" <hch@lst.de>
+Cc: "James Clark" <james.clark@linaro.org>, "Mark Brown" <broonie@kernel.org>,
+ "Vladimir Oltean" <olteanv@gmail.com>, oe-kbuild-all@lists.linux.dev,
+ "Larisa Grigore" <larisa.grigore@nxp.com>, "Frank Li" <Frank.li@nxp.com>,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ "kernel test robot" <lkp@intel.com>,
+ "Marek Szyprowski" <m.szyprowski@samsung.com>,
+ "Robin Murphy" <robin.murphy@arm.com>, iommu@lists.linux.dev
+Message-Id: <5de445aa-048b-4f60-9045-df5d45341436@app.fastmail.com>
+In-Reply-To: <20250617044833.GE1824@lst.de>
+References: <20250616120832.GA24959@lst.de>
+ <2d62254e-5cbe-4174-95d8-e80cae4f4543@sirena.org.uk>
+ <20250616121444.GA25443@lst.de>
+ <7cfcf919-3c7d-4f0c-911f-697ea3141080@linaro.org>
+ <20250616131346.GB29838@lst.de>
+ <83855c1a-c128-4762-9d6b-e17f2c4c8820@linaro.org>
+ <d16bdc40-20d6-49db-bf41-18bb9b8e01fd@linaro.org>
+ <20250616131944.GA30260@lst.de>
+ <f723d490-c228-42d5-9f9f-158df54a092d@linaro.org>
+ <9788991a-ac37-4fde-81db-c55035d00f27@app.fastmail.com>
+ <20250617044833.GE1824@lst.de>
+Subject: Re: [PATCH] dma-mapping: Stub out dma_{alloc,free,map}_pages() API
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-i.MX8MQ PCIes have three 64-bit BAR0/2/4 capable and programmable BARs.
-But i.MX8MM and i.MX8MP PCIes only have BAR0/BAR2 64bit programmable
-BARs, and one 256 bytes size fixed BAR4.
+On Tue, Jun 17, 2025, at 06:48, Christoph Hellwig wrote:
+> On Mon, Jun 16, 2025 at 03:48:50PM +0200, Arnd Bergmann wrote:
+>> As far as I can tell, the difference here is that the
+>> dma_alloc_coherent()/dma_free_coherent() calls all get stubbed
+>> out, so the 827 drivers using those can all build cleanly on
+>> mk68knommu, shnommu and UML, while dma_alloc_noncoherent()/
+>> dma_free_noncoherent() are only used on 15 files that are all
+>> guarded by some other Kconfig dependency at the moment and won't
+>> build on the those platforms.
+>
+> Yes, dma_alloc_coherent is from a time where stubbing out was
+> still very common.
+>
+>> I agree that it would be best to treat the coherent/noncoherent
+>> cases the same, and I also think the existing stubs are a bit
+>> silly, but just removing them would likely require fixing
+>> hundreds of drivers with added Kconfig or IS_ENABLED() checks.
+>
+> I doubt it's that many, as most drivers and even subsystems simply
+> depend on DMA.  There's probably at most a few dozen drivers
+> supporting DMA but not requiring it.
 
-Correct the epc_features for i.MX8MM and i.MX8MP PCIes here. i.MX8MQ is
-the same as i.MX8QXP, so set i.MX8MQ's epc_features to
-imx8q_pcie_epc_features.
+I checked again, and the actual number is 263 modules for a j2
+allmodconfig with the DMA stubs removed, see
+https://pastebin.com/raw/4PFcEe04
 
-Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/pci/controller/dwc/pci-imx6.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This is helped a lot by PCI being unavailable on all four
+targets without DMA. If I force-enable PCI, I see 610 modules
+in allmodconfig that link to one of the dma-mapping helper
+functions but are missing a dependency on CONFIG_HAS_DMA.
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 5a38cfaf989b..9754cc6e09b9 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1385,6 +1385,8 @@ static const struct pci_epc_features imx8m_pcie_epc_features = {
- 	.msix_capable = false,
- 	.bar[BAR_1] = { .type = BAR_RESERVED, },
- 	.bar[BAR_3] = { .type = BAR_RESERVED, },
-+	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = SZ_256, },
-+	.bar[BAR_5] = { .type = BAR_RESERVED, },
- 	.align = SZ_64K,
- };
- 
-@@ -1912,7 +1914,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
- 		.mode_off[1] = IOMUXC_GPR12,
- 		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
--		.epc_features = &imx8m_pcie_epc_features,
-+		.epc_features = &imx8q_pcie_epc_features,
- 		.init_phy = imx8mq_pcie_init_phy,
- 		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
- 	},
--- 
-2.37.1
+>> Maybe we can actually remove CONFIG_NO_DMA/CONFIG_HAS_DMA
+>> entirely and remove all the checks for CONFIG_HAS_DMA? 
+>> My guess is that this would only lead to a small code size
+>> increase on the affected targets, but since they are not
+>> actually trying to do DMA, and they all have a very limited
+>> set of drivers they actually use, it won't break existing
+>> code.
+>
+> Except for uml, the CONFIG_NO_DMA configs are usually very resource
+> constraint, so I don't think that's a good idea.
 
+The J2 Turtleboard has 256MB of RAM, which is not too
+constrained either.
+
+Between SH72xx/SH76xx, SUN3 and M68328, I believe the
+supported machines are all limited to between 1MB and 32MB in
+the maximum configuration, which is obviously extremely
+tight. On the other hand, I really don't think anyone cares
+any more: all three platforms are between 25 and 40 years
+old, kernel support is very minimal and nobody has really
+spent time improving them in at least 15 years. It also
+appears that all three do support DMA in some form, so if
+anyone was serious about using them, they would probably
+want to use the dma-mapping interface for it as well,
+like we do for similarly constrained nommu platforms
+(coldfire, cortex-m3, xtensa)
+
+      Arnd
