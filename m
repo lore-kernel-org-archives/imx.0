@@ -1,91 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F118F54;
-	Tue, 17 Jun 2025 19:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86129238D54
+	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 19:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750186947; cv=none; b=lFIVjXioyChV+cSVRJ0XHB5FoduSfjmIDS3v80tN0Fv5Sz09qPz6Djej1+bZL5MSzucR0izOzX7HU+jacRlRYIgLlgUKf6ouQgj/0x64q0DlAjsAIkejpgwgxtrglIVeIdjVr08sVRDiXMhH+V3mi6Z9iFiP7EEdX57EyP3HBz8=
+	t=1750188962; cv=none; b=O41mwUb45GdrziulSoHVtl9IyeubDP2JHqUm1c26jYM21xZD140lZkoRDd9LkOZpqL2ukpk+TgEyLfHIdF6IplcZxoWdRU2fHpltarTg5WntVx5WYSTZQUB5Z1et+7FG8j96UHzARvEWW3LdIMw6ephDKFl/LzZMt6ms2Ict4b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750186947; c=relaxed/simple;
-	bh=R6HIk76NDv1XIk8WybWPXOJkOb7X10okP0rTRuTfkpg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jFGYvj3lG4JkzUBPRjSFPK7y0rikhlkmfx/Z/W6Jf+ai++QGbrJxbyZC1OD/IqYCxda0AxBab0DfkXZTMeYN+DcL9LRAXEP29jqUUMO7XuRgcy/vmRbTcguAAP/qOLFBlhYCBmD1/LWw//vKqbp8i66FTwb46hrYyRUv6tGN9Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rDm18xTi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750188962; c=relaxed/simple;
+	bh=1uEeGF9p7kz9UCL3FmlVdwCP0lAngpPAygjFaSOXfyM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BQqO+JJ2z7nJq1YR2XkJLlC1FA0Y8NAg3ntaWJnTBzHuYmXKIb796XmxRbRtXuPto/Gub+yIUwqdwjXKVeMW6jeXpAYcT6R82ZmCT6ZrRiocLuGqo+zMIY6nPkI1Rgbqd4ulO+btxDoBF+4tcJslGYsTMerAigEndzuhdj3rxRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fq0TYmkQ; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rDm18xTi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF65C4CEE3;
-	Tue, 17 Jun 2025 19:02:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750186946;
-	bh=R6HIk76NDv1XIk8WybWPXOJkOb7X10okP0rTRuTfkpg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rDm18xTimWFNcL6/ygxtCwBlM3/uGMreMhF1zB5bMe9APb0AYy5tNaEwj0equh764
-	 Scq3LzjJqQMbyq/pf21x489pq7Tm7oMsPF/chSxt2AYdVx2xQJbNsaKPYMv9nKNRJn
-	 jmaKMs4yXIK+huPjVlvCVCL06cKGuRN1krg+LhASZfYcZT7H9Ii4y4VbziJE0fRrao
-	 oIhktH72tb2nYFn++hUb2FbF7R6+G5JBI7PQHnOIpvFq2WgU9lwsCFYSvAl3Wu3z85
-	 TEEYxkhXdkfttsJ6QSFbgJQ8cU8/YbDA1Qjf6s20TIubW3OSZ9eS/idVfw7xsWxkEt
-	 6ChK1MQmWuzfg==
-Date: Tue, 17 Jun 2025 20:02:19 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Vicentiu Galanopulo <vicentiu.galanopulo@remote-tech.co.uk>,
-	Will Deacon <will@kernel.org>, Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Andrew Davis <afd@ti.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-kernel@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-leds@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] spi: spi-nxp-fspi: check return value of
- devm_mutex_init()
-Message-ID: <41c9baef-5c86-41ff-8a95-0cac18d8d558@sirena.org.uk>
-References: <20250617-must_check-devm_mutex_init-v7-0-d9e449f4d224@weissschuh.net>
- <20250617-must_check-devm_mutex_init-v7-1-d9e449f4d224@weissschuh.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fq0TYmkQ"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-748d982e97cso805040b3a.1
+        for <imx@lists.linux.dev>; Tue, 17 Jun 2025 12:36:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750188960; x=1750793760; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ticf1f4PmQmZwFcANzazYxHsrbux47xCzbGTbFHeNUw=;
+        b=fq0TYmkQCKM7X8mxnMJzZf50qh0+dmxTvpnXOg3sz9/P2oPnIr57aFhzlR1Uwou+EC
+         +cK7m4KXJc334hOfZbkKNYpxErMaF/R8jz+eYfqFNog2DMMuvPNayD7SnnSjVYGUglQE
+         o5CemPcuoEOq9b4StzLu4DHjj8ov1NHltN3LrSzclivPsM84ERnu9Vma3DCkoAN6tIQ0
+         Fn+U175XymJYLN+l7JLuiVZmAsDLUxoLIcUPCpTY9MW6xJwb9woXH5wTOGAmWGDMUVxT
+         Ozugm4MMxsd3tHRgUCzYqAMG7vBOO3O+6xZcieT5sUg+nCQcbI/olsfYi9cFDYF7/VYm
+         4Obg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750188960; x=1750793760;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ticf1f4PmQmZwFcANzazYxHsrbux47xCzbGTbFHeNUw=;
+        b=bhTuBxHgJ6Ys8LvmoG9Z4eWa+RmDPCiJeUVw0GN0x1gN6WJXDusBgZ8YsIqdV6dDU1
+         j4qFsly28f1JGgDZN2wAqKuRxXI+R+QmTwP/jbG9j+nCTrMGumG19bg8S90/1qZjTjNn
+         fTRrUOf+9Kp+V2YiA3UpkCMLgjZoE4I6fvyDoX84b7jlUCyaX9YWfKuNNkluQpBmder8
+         an+ZMiZYGw0wAGMgTI+F8qh4VTEwpMbZrVzANejbfbED6Udqeq37KJUxNJclV1Tc0nl8
+         nR8VEtEuoG5EofsFoKH2AcEiJdStnfmFG3x9Ibn3s72W2DFA0M+Lotmcg0RaeHMdGPdi
+         su9A==
+X-Forwarded-Encrypted: i=1; AJvYcCWBq3mRsh0HUssdzhS05iEBUjJEwGozkDYRL5ZZ0rwCJvW4RO756jscNI6rvukpM2eXKJI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz5f+KfvVIZV2bJUhfjb9y8DsPL1Vi3tqjXX0ylRW87rpM2UEI3
+	KLlU/60bGWLJwP/EkItDm8gzVc6T+FQGodn6QCvUWYxp19HO5l9DiL3D
+X-Gm-Gg: ASbGnctUes7UYS+SiqnL+ukAGUzfw5Ke4U+wxaVlgYe0ionlOaKP5zXz2/bR8H0Qr+6
+	XEZvA9vmYWU5G9eBKRgOmjGp9vNOzByGP3Z+xbivbDQRZ4b0uT160lthYlZVZ5j7V7lyGnX0gTz
+	BgaWKeryj80Zi/imkpoWhMvHEvx3RX/6T1gZWu+pag8ukC3R8qUFXm3iIxiK//36F9D3s1GQRGg
+	SmJPZ/EnV+hVYv/2c2UrbvWQXGy8cnfsoXfbZyZdUQw6vCepm4hE1DuBKm0wgdocTh0skwEz1Hb
+	p56mDL/d+dnGrOU6XQznbAvP2237oEz4OBvKMLZjSDSTrJ1taJ+8C3mJoNMdVPhCJ1BbXHCbQ4B
+	oIkdJKQZc
+X-Google-Smtp-Source: AGHT+IFusaGvuCb7ZR1Ws5Y5oPYYDpHSdWxbRb5ZmiLNV78bJUEaevAuOwvHQpQaXM6A0+dTKeJfPQ==
+X-Received: by 2002:a05:6a00:23ce:b0:748:de24:1ade with SMTP id d2e1a72fcca58-748de241b57mr2814970b3a.7.1750188959655;
+        Tue, 17 Jun 2025 12:35:59 -0700 (PDT)
+Received: from hiagof-nb.corp.toradex.com ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-748900d7340sm9648582b3a.179.2025.06.17.12.35.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jun 2025 12:35:59 -0700 (PDT)
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-pm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org
+Cc: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@oss.nxp.com>,
+	daniel.baluta@nxp.com,
+	iuliana.prodan@oss.nxp.com,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Subject: [PATCH v5 0/3] remoteproc: imx_rproc: allow attaching to running core kicked by the bootloader
+Date: Tue, 17 Jun 2025 16:34:47 -0300
+Message-Id: <20250617193450.183889-1-hiagofranco@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="eZcz5BBWoAZIa4y4"
-Content-Disposition: inline
-In-Reply-To: <20250617-must_check-devm_mutex_init-v7-1-d9e449f4d224@weissschuh.net>
-X-Cookie: It is your destiny.
+Content-Transfer-Encoding: 8bit
 
+From: Hiago De Franco <hiago.franco@toradex.com>
 
---eZcz5BBWoAZIa4y4
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch series depends on Ulf's patches that are currently under
+review, "pmdomain: Add generic ->sync_state() support to genpd" [1].
+Without them, this series is not going to work.
 
-On Tue, Jun 17, 2025 at 07:08:12PM +0200, Thomas Wei=DFschuh wrote:
-> devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=3Dy the mutex will =
-be
-> marked as unusable and trigger errors on usage.
->=20
-> Add the missed check.
+For the i.MX8X and i.MX8 family SoCs, currently when the remotecore is
+started by the bootloader and the M core and A core are in the same
+partition, the driver is not capable to detect the remote core and
+report the correct state of it.
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
+This patch series implement a new function, dev_pm_genpd_is_on(), which
+returns the power status of a given power domain (M core power domains
+IMX_SC_R_M4_0_PID0 and IMX_SC_R_M4_0_MU_1A in this case). If it is
+already powered on, the driver will attach to it.
 
---eZcz5BBWoAZIa4y4
-Content-Type: application/pgp-signature; name="signature.asc"
+Finally, the imx_rproc_clk_enable() function was also changed to make it
+return before dev_clk_get() is called, as it currently generates an SCU
+fault reset if the remote core is already running and the kernel tries
+to enable the clock again. These changes are a follow up from a v1 sent
+to imx_rproc [2] and from a reported regression [3].
 
------BEGIN PGP SIGNATURE-----
+[1] https://lore.kernel.org/all/20250523134025.75130-1-ulf.hansson@linaro.org/
+[2] https://lore.kernel.org/lkml/20250423155131.101473-1-hiagofranco@gmail.com/
+[3] https://lore.kernel.org/lkml/20250404141713.ac2ntcsjsf7epdfa@hiago-nb/
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhRu7sACgkQJNaLcl1U
-h9Djzgf7BjmyCihz/P6gU0L4P94mhmO5dgXIPIxPiwFT3Mpl2kAzQWGYY6JeN8T2
-dH4XWEPagzh09mHdcCiV6HhFRgMFs2d3ELDE/gxgzjEEK5WNFI6rgQxvf8MENvgm
-bSTkSPPZlcxn8TJyvr3kbPtU0roSEwrXkRUJIXwKnWPORqGxlTSfOP2LLNLF5klh
-kvQMcwJ8S+Q/QuRoEJanrPAzIDvyl7PZZfSoqH+ZLEP4opBExbtUFQRsEJ8qNByd
-dSejPKSktzkN3cEOFw5JeN9aLDCrEIX/0u5ImnTO7LfqKJG4T1ieV7dRBamnO6M5
-nJp2GTTvmdeA0DS6IE3sJKn0OLrlzQ==
-=iZ19
------END PGP SIGNATURE-----
+v5:
+- pm_runtime_get_sync() removed in favor of pm_runtime_resume_and_get(),
+  checking the return value of it.
+- Added pm_runtime_disable() and pm_runtime_put() to imx_rproc_remove().
+- Fixed missing "()" in dev_pm_genpd_is_on description.
+- Updated dev_pm_genpd_is_on() function description to be explicit the
+  function reflects the current power status of the device and that this
+  might change after the function returns, especially if the genpd is
+  shared.
 
---eZcz5BBWoAZIa4y4--
+v4:
+- https://lore.kernel.org/lkml/20250602131906.25751-1-hiagofranco@gmail.com/
+
+v3:
+- https://lore.kernel.org/all/20250519171514.61974-1-hiagofranco@gmail.com/
+
+v2:
+- https://lore.kernel.org/lkml/20250507160056.11876-1-hiagofranco@gmail.com/
+
+v1:
+- https://lore.kernel.org/lkml/20250505154849.64889-1-hiagofranco@gmail.com/
+
+Hiago De Franco (3):
+  pmdomain: core: introduce dev_pm_genpd_is_on()
+  remoteproc: imx_rproc: skip clock enable when M-core is managed by the
+    SCU
+  remoteproc: imx_rproc: detect and attach to pre-booted remote cores
+
+ drivers/pmdomain/core.c        | 33 +++++++++++++++++++++++++++
+ drivers/remoteproc/imx_rproc.c | 41 ++++++++++++++++++++++++++++------
+ include/linux/pm_domain.h      |  6 +++++
+ 3 files changed, 73 insertions(+), 7 deletions(-)
+
+-- 
+2.39.5
+
