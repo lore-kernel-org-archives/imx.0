@@ -1,16 +1,16 @@
 Received: from glittertind.blackshift.org (glittertind.blackshift.org [116.203.23.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AB628C5A4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A4928C03B
 	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 13:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.23.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750166736; cv=none; b=rHUKRwfv7PG9+k/phkhdyGo2BLudQPgqw2H7aTaq60+5Hj+HXInwqQ+YxEM94FSVswWvOxJEz7GINBkJGb5AJPy4OoIMIgTSiigWjRHrEDVQcxzZFGUtPKYJFe8jQHH3Rvm1oZ+VJIKtXACaaY38L/U8dYXO32DNNzwbutuPrQE=
+	t=1750166736; cv=none; b=PWGlEfVgj0DOmuSQOI4d9EZUXTCcQ8PEO+pQg1QxaWs3bAofH2FAzJrM35A2JE8KIjXDjrabpX6qCwJYri9d+foMOBhueEmVkPGk6EznUh1CeCkfQhYVD3elMidXKHGICqvGUlhU5h03g/eUojcGyGR+F+6mGmsoO7t+gdkHbZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750166736; c=relaxed/simple;
-	bh=zZnkF0g1+NgLVLuMRYVtdKFIaIV0BCv/KjxVB6ihNus=;
+	bh=LyJrLbbVnlKXsSbL7xyqgKeGY8RTbecxMuFSWf+ZNo4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HMeiJkmpkG7NRJRiK61CYAkfr3eFwqrLYybQIu8tfV/C2GL6CUvbjcZhljWzRJXjoJsT0FocyhpiaQc4LlPK7BrouS1G+ufQQ6ckP4dv0vHr2l7Pxy3sQaXNcJzBLo9bveJ4UjDLX0RE6NkOuIiCJo5FxOPlV7PLiZ9KQ4Diw1o=
+	 In-Reply-To:To:Cc; b=gnDZgclFwAK9esoZQbkTpN9AplULz2OrD3C/E2nq0mqN/9SFwTDvzwGGCMVv2CDKmWqZt6VIi+RorwxmUdvJPA3ivxgGRVdWOn011mQtwil8VRaB1FMLHar3EkADKzYWUCJB2RKMJp4tT/renX/tvb9lSDovXxpbUvocdZksFOE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=none smtp.mailfrom=hardanger.blackshift.org; arc=none smtp.client-ip=116.203.23.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hardanger.blackshift.org
@@ -19,24 +19,24 @@ Received: from bjornoya.blackshift.org (unknown [IPv6:2003:e3:7f3d:bb00:e2bf:c3f
 	 key-exchange X25519 server-signature ECDSA (secp384r1)
 	 client-signature RSA-PSS (4096 bits))
 	(Client CN "bjornoya.blackshift.org", Issuer "R10" (verified OK))
-	by glittertind.blackshift.org (Postfix) with ESMTPS id B4A1C66ED20
+	by glittertind.blackshift.org (Postfix) with ESMTPS id CDAAF66ED23
 	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 13:25:26 +0000 (UTC)
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 81E4D42A812
+	by bjornoya.blackshift.org (Postfix) with SMTP id 9B47E42A814
 	for <imx@lists.linux.dev>; Tue, 17 Jun 2025 13:25:26 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id DEC5042A7AB;
-	Tue, 17 Jun 2025 13:25:21 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 412B942A7B4;
+	Tue, 17 Jun 2025 13:25:22 +0000 (UTC)
 Received: from hardanger.blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id cdadae14;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 8cdc6968;
 	Tue, 17 Jun 2025 13:25:20 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Tue, 17 Jun 2025 15:24:56 +0200
-Subject: [PATCH net-next v3 06/10] net: fec: fec_enet_rx_queue(): use same
- signature as fec_enet_tx_queue()
+Date: Tue, 17 Jun 2025 15:24:58 +0200
+Subject: [PATCH net-next v3 08/10] net: fec: fec_enet_rx_queue(): reduce
+ scope of data
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250617-fec-cleanups-v3-6-a57bfb38993f@pengutronix.de>
+Message-Id: <20250617-fec-cleanups-v3-8-a57bfb38993f@pengutronix.de>
 References: <20250617-fec-cleanups-v3-0-a57bfb38993f@pengutronix.de>
 In-Reply-To: <20250617-fec-cleanups-v3-0-a57bfb38993f@pengutronix.de>
 To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
@@ -55,55 +55,63 @@ To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
  Andrew Lunn <andrew+netdev@lunn.ch>
 Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
- Marc Kleine-Budde <mkl@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>
+ Marc Kleine-Budde <mkl@pengutronix.de>, Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.15-dev-6f78e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1492; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=zZnkF0g1+NgLVLuMRYVtdKFIaIV0BCv/KjxVB6ihNus=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoUWy22nuNGMEDjC255Pj31pEFlgnX4R4nR+T9L
- R/Nj384ey6JATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaFFstgAKCRAMdGXf+ZCR
- nD36B/4klelXCL97pKygjz3uKV3IcqsvEZZhOBHY4KZMiQV/YRMNjLpPt690anhMB+GKEUEXFQG
- NNFIlOgm7FOJ4p9wcnac++ayRJhd0z6nAnwKjScV9ilZoH34u3LwX4QNtQmQT79eRvR94vxXmhn
- s35GojXxIkQLpzrGI7HRWOR0jUK2lhG4DgkAHBsamT3UHih8kWEtzrGpNQI7Tu5D2JATjGX0etX
- 6jTgCGU8qxGyPFld/fTQ6TNDO6ExRlJ4bKxCAaf5Hx4DEkY6l/vOx85TKoBd7w04EKhqaXUh+Lr
- aoNiO/XQkWKZ532TQ8slerN79w2HdeTLW80fXzH3bVT/yDt6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1498; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=LyJrLbbVnlKXsSbL7xyqgKeGY8RTbecxMuFSWf+ZNo4=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoUWy6MlbPd68yDK91m2mt0VGDy2zEs0zIwzzd+
+ dSE636IOjGJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaFFsugAKCRAMdGXf+ZCR
+ nNq+B/9+/DWTvo5vsLnqp4DIBunmLsCexvien5LkGa6hYQGOBuRZKJwcTUZ/ttIUrrdSZe9G+wO
+ JRi5MJ2BMCEwAGEvjpIoYtf5Fd3qwH47oIRo6L7d7qXGoS7AL7BOSBzItcqSbRs7SHKrPqekJZl
+ D4hB30+rxNDX4xY8BCKtdDVlwgdNDK0Gt4vx/Kxaw5mqcOpyLu6CkxF+O57mDJ/OCShjrww+pyI
+ RrswSZ4oOIvoDmMCzQsark8AhkWlsejTnAt3KKV99awekHtZK6li5ZPVQXfsJK2wh+yCFghp91K
+ iwxYCk0MdnsMmmiJCiu6w8RbIDsiErvCflSvHJJBIMU+QiYR
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-There are the functions fec_enet_rx_queue() and fec_enet_tx_queue(),
-one for handling the RX queue the other one handles the TX queue.
+In order to clean up of the VLAN handling, reduce the scope of data.
 
-However they don't have the same signature. Align fec_enet_rx_queue()
-argument order with fec_enet_tx_queue() to make code more readable.
-
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 21891baa2fc5..6b456372de9a 100644
+index f238cb60aa65..bc547be59dae 100644
 --- a/drivers/net/ethernet/freescale/fec_main.c
 +++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1713,7 +1713,7 @@ fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
-  * effectively tossing the packet.
-  */
- static int
--fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
-+fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 	struct fec_enet_priv_rx_q *rxq;
-@@ -1940,7 +1940,7 @@ static int fec_enet_rx(struct net_device *ndev, int budget)
+@@ -1721,7 +1721,6 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
+ 	unsigned short status;
+ 	struct  sk_buff *skb;
+ 	ushort	pkt_len;
+-	__u8 *data;
+ 	int	pkt_received = 0;
+ 	struct	bufdesc_ex *ebdp = NULL;
+ 	bool	vlan_packet_rcvd = false;
+@@ -1844,10 +1843,11 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
+ 		skb_mark_for_recycle(skb);
  
- 	/* Make sure that AVB queues are processed first. */
- 	for (i = fep->num_rx_queues - 1; i >= 0; i--)
--		done += fec_enet_rx_queue(ndev, budget - done, i);
-+		done += fec_enet_rx_queue(ndev, i, budget - done);
+ 		if (unlikely(need_swap)) {
++			u8 *data;
++
+ 			data = page_address(page) + FEC_ENET_XDP_HEADROOM;
+ 			swap_buffer(data, pkt_len);
+ 		}
+-		data = skb->data;
  
- 	return done;
- }
+ 		/* Extract the enhanced buffer descriptor */
+ 		ebdp = NULL;
+@@ -1865,7 +1865,7 @@ fec_enet_rx_queue(struct net_device *ndev, u16 queue_id, int budget)
+ 
+ 			vlan_packet_rcvd = true;
+ 
+-			memmove(skb->data + VLAN_HLEN, data, ETH_ALEN * 2);
++			memmove(skb->data + VLAN_HLEN, skb->data, ETH_ALEN * 2);
+ 			skb_pull(skb, VLAN_HLEN);
+ 		}
+ 
 
 -- 
 2.47.2
