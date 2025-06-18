@@ -1,86 +1,120 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDE88460
-	for <imx@lists.linux.dev>; Wed, 18 Jun 2025 09:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FA827E7FC;
+	Wed, 18 Jun 2025 10:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750238349; cv=none; b=H3YdP344tobivh5ExBb4CSnOXkNtjH3Vz4cPEe1OBChHMSMlkwkS7PP5l1AO514r1fLpLxXZEdfKt/Zwv4Mi/0ZntOZGsnjM2YusADeDrUj7qyDSn4C0Q2bLTuh0BNTTy7cdSxLj8Ar1FqZnQ8OMNSszKaXav3aM/47r/cPoLWk=
+	t=1750242813; cv=none; b=HMIaZpeVMn4Tmp6M8hk4C2qc6YVxRMsMKvpkdHhQ379Z/f+TBEGuhcTC1VlLjgvJz2ThDEKHJ15xI72CVar6iG/zSSVljl/NjxOttr7DFIlEWvRmmhNVhLYUDQWvWO14y2Q2+J+chSI9AEBoLZ3mQf6JcB79wUaKnec3EGF/Frw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750238349; c=relaxed/simple;
-	bh=TSoT5Ck3uCBZrqz+LxFrOK/E5khPUOMPB7P6HPWYt/Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OvpVTd5EaqgfPm9Joe9BD2smzgDesu27dHYL9wsiSr+faAQdNhd2W7Lju6Bp6aYfTM8dunodA36LbtP1JMJGCCAr2P0imr3uHz+xEWFzBP6+gIdmfvZAUZtxaJE5A2DBH2qq1ikzaP5xVnmOLIAC9Md5oTwpPsxjdzD0Yl64LPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=p6VbStVw; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1750242813; c=relaxed/simple;
+	bh=NH1gdj2JHsPz7N0JYPEoq2KF4u27xaLK2wSxMVVbO7k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i3gH43wU9UjNh4ynmbLVd9LxNdg7IaRGuseZkrev/KECarv7n8nJ9AK7+1nXXD6Gc8sscp8lVjkASZQRPQMWT76114bDEgFp5rsmW0NVlNAloFsGv6YDBscnR/LH4syeds6rdqXbMaaQmZ3sv0PzuUni+pIQ5JgATf8WJfrOXUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2If1hIL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="p6VbStVw"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-553be4d2fbfso3881857e87.0
-        for <imx@lists.linux.dev>; Wed, 18 Jun 2025 02:19:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750238346; x=1750843146; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TSoT5Ck3uCBZrqz+LxFrOK/E5khPUOMPB7P6HPWYt/Y=;
-        b=p6VbStVwHqSWfRXfn86R3XHiKhJAY6tTkKmkKRfHDa+YFIud2TGebilyhTjXDKdfVX
-         1Rle/ZSTKozVzt3pB+c/Nz7IH4n+8E3RxshpXLQLYmU8oGVMIkSjuEM2mLJfXwgsrhji
-         oCqDGAS54LWnQ2fWsQtLWIeL3jKs3/QY1PHhY42dDff/lMUur+N1N+iMf0h6hSTMrB2B
-         nhCcJZMnRIJN1iiAt4ZgD2eT3P7JJCVXemXv0S7GStCdnP5Xd32RHmnUZtBFOeKMehXf
-         H8TcLKXyk6CrsytzgHx7WMNyg4jf9yi3FKs4UOSOUc8d5Gv7c1wp22V443cYdVC1hjQf
-         xgFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750238346; x=1750843146;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TSoT5Ck3uCBZrqz+LxFrOK/E5khPUOMPB7P6HPWYt/Y=;
-        b=chg4e/5wyAadBHr1W9gHaEOB7XhlVHlRxtIXBE/Jpr5VaRs6iTLcBoz1CzqInSP8Md
-         tWwcoUp0lvFZMTV8ykLl7Hwo/wN6qkLtu4Au0y900USfFtP9+XsLSn7toZshGW8Hf2eg
-         RWosB5nRXv9O36KaR04UDp2nfO8xiqV5npC5zHPEXaUC6QgBvoKZrfytsKnrGJtRSkk/
-         Lk0iMS7kxLhX9B2PCleK7tK9HAzjYxatTqD937OwMpFofPB32askX5JxM4nOlI0Zv8sf
-         cl/Xox4kG59Z5iYIpOFiHGKj7QXglwx6wKunUvS7C0LSsH4OUu1SfsGwzIfd/yve4Ti8
-         2NBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZuMeJsNFZJtZq4lvlHIfpQE9CSpAnIiPLVgzZZCU7dH5qq3pGyC7tQbjW1CJ50YUlyLY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwQdsnRFMcn7UbR1txm2xEhwR+m9jktq6vzTWhAecfbPCZ5QoyC
-	Lkf/7YG7LonyJtSBK846v5CkOUQFYmhMuSXSJuSQozkt1KqK4dVEkQV7sWiflzi9zQtRIcPlgg1
-	jHLPk7FCr+D+dgZ/7/+5BblP6NnEUeFFRdt99pcT24w==
-X-Gm-Gg: ASbGncvJCq2n/PfxtBeLtNqKhUqdtBuWgI2/IqnKQkCYcIG8h7o8z4OxzRlWzozU8S0
-	+eQ4ukGabWC/IevF0fdK8foBGkUv0Qi63htL4UoDGzjYvEdTuLGiO7C8744i1ysnE+ujZlRgLX0
-	kpbZErWZijgBAuMZLOhndW9IGTEfgk+MiHQ0IwoQ19TGU=
-X-Google-Smtp-Source: AGHT+IGDviP5o5BpdYRHMCQZJ0KKYxkJwy63WpJVsRhdouoscbb+olcEs5D4kGqoukI8Mi1y4ymDThNKrTMCoqXbPKI=
-X-Received: by 2002:a05:6512:2212:b0:553:2c93:613d with SMTP id
- 2adb3069b0e04-553b6e713b0mr4277828e87.5.1750238345840; Wed, 18 Jun 2025
- 02:19:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2If1hIL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565AFC4CEE7;
+	Wed, 18 Jun 2025 10:33:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750242811;
+	bh=NH1gdj2JHsPz7N0JYPEoq2KF4u27xaLK2wSxMVVbO7k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k2If1hILU75Fm5Wwemre5KnEqAomySUKfRnRpvbLTPvPgsMzP0pV1XhQn9i/rpi+d
+	 R0t6EYPJoRRfhrmsSycIAZnuQyodbw4B1vt02rS+mSC2u+VyjNQlHYuVE154mGX6WM
+	 KhnsSNc5LmnF2kFHPmlE9p7OGcRAk3D80xuQtlJO79GslXStFAOwUNdFFuNLzS4JZJ
+	 YTQR7daEDvkJjaUdiDydVNVHUQcpOIshwXl+Fxg3d8UjsRtEK0OVFutiNgEfAMmsqC
+	 9yS2jK/DTtHJm0af8MBuUWjuGiw/rhaUm1Iw/+wYdh+M9QSbv1ztkg0KGKd845BF4Q
+	 ReG/aqj3tfUAg==
+Date: Wed, 18 Jun 2025 18:33:23 +0800
+From: "Peter Chen (CIX)" <peter.chen@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, shawnguo@kernel.org, john.ernberg@actia.se,
+	jun.li@nxp.com, linux-usb@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH] usb: chipidea: udc: disconnect/reconnect from host when
+ do suspend/resume
+Message-ID: <20250618103323.GA34284@nchen-desktop>
+References: <20250614124914.207540-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250606160359.1356555-1-Frank.Li@nxp.com>
-In-Reply-To: <20250606160359.1356555-1-Frank.Li@nxp.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Wed, 18 Jun 2025 11:18:54 +0200
-X-Gm-Features: AX0GCFsZz3aglhMm4E6BI1RVEFU98orqUWOtObnRoTsKi2nEtjPjvdxkzVSQEu0
-Message-ID: <CACRpkdb9=PxzA8FGR2=Ox+ndnAoh7LBB+QVte4kU246eucvt5Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] dt-bindings: pinctrl: convert nxp,lpc1850-scu.txt
- to yaml format
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, 
-	"open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>, 
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250614124914.207540-1-xu.yang_2@nxp.com>
 
-On Fri, Jun 6, 2025 at 6:04=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+On 25-06-14 20:49:14, Xu Yang wrote:
+> Shawn and John reported a hang issue during system suspend as below:
+> 
+>  - USB gadget is enabled as Ethernet
+>  - There is data transfer over USB Ethernet (scp a big file between host
+>                                              and device)
+>  - Device is going in/out suspend (echo mem > /sys/power/state)
+> 
+> The root cause is the USB device controller is suspended but the USB bus
+> is still active which caused the USB host continues to transfer data with
+> device and the device continues to queue USB requests (in this case, a
+> delayed TCP ACK packet trigger the issue) after controller is suspended,
+> however the USB controller clock is already gated off. Then if udc driver
+> access registers after that point, the system will hang.
+> 
+> The correct way to avoid such issue is to disconnect device from host when
+> the USB bus is not at suspend state. Then the host will receive disconnect
+> event and stop data transfer in time. To continue make USB gadget device
+> work after system resume, this will reconnect device automatically.
+> 
+> To make usb wakeup work if USB bus is already at suspend state, this will
+> keep connection for it only when USB device controller has enabled wakeup
+> capability.
+> 
+> Reported-by: Shawn Guo <shawnguo@kernel.org>
+> Reported-by: John Ernberg <john.ernberg@actia.se>
+> Closes: https://lore.kernel.org/linux-usb/aEZxmlHmjeWcXiF3@dragon/
+> Tested-by: John Ernberg <john.ernberg@actia.se> # iMX8QXP
+> Fixes: 235ffc17d014 ("usb: chipidea: udc: add suspend/resume support for device controller")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Jun Li <jun.li@nxp.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-> Convert nxp,lpc1850-scu.txt to yaml format.
+Acked-by: Peter Chen <peter.chen@kernel.org>
 
-Can I have a DT binding maintainer ACK on this patch?
+Peter
+> ---
+>  drivers/usb/chipidea/udc.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+> index 8a9b31fd5c89..1a48e6440e6c 100644
+> --- a/drivers/usb/chipidea/udc.c
+> +++ b/drivers/usb/chipidea/udc.c
+> @@ -2374,6 +2374,10 @@ static void udc_suspend(struct ci_hdrc *ci)
+>  	 */
+>  	if (hw_read(ci, OP_ENDPTLISTADDR, ~0) == 0)
+>  		hw_write(ci, OP_ENDPTLISTADDR, ~0, ~0);
+> +
+> +	if (ci->gadget.connected &&
+> +	    (!ci->suspended || !device_may_wakeup(ci->dev)))
+> +		usb_gadget_disconnect(&ci->gadget);
+>  }
+>  
+>  static void udc_resume(struct ci_hdrc *ci, bool power_lost)
+> @@ -2384,6 +2388,9 @@ static void udc_resume(struct ci_hdrc *ci, bool power_lost)
+>  					OTGSC_BSVIS | OTGSC_BSVIE);
+>  		if (ci->vbus_active)
+>  			usb_gadget_vbus_disconnect(&ci->gadget);
+> +	} else if (ci->vbus_active && ci->driver &&
+> +		   !ci->gadget.connected) {
+> +		usb_gadget_connect(&ci->gadget);
+>  	}
+>  
+>  	/* Restore value 0 if it was set for power lost check */
+> -- 
+> 2.34.1
+> 
 
-Yours,
-Linus Walleij
+-- 
+
+Best regards,
+Peter
