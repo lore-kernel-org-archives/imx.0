@@ -1,180 +1,154 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012014.outbound.protection.outlook.com [52.101.66.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED8C1E5702
-	for <imx@lists.linux.dev>; Wed, 18 Jun 2025 02:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750214623; cv=fail; b=PLNW2DqvoBVW1iWyRmCltdEkcH/qWzWdFZoCz/CGh2l8qF1JKH7tRekQY/F45Nzc0Pt48IHJqkSG3GjZYJyOsXO7zdUfdViD2bvnW4mINTKNXkGX7id9qTGIzJcBas0vpdA2PmmxTB+TwmwxlO4WZ1qsXlq7hUknUVuzJJrtDic=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750214623; c=relaxed/simple;
-	bh=1sIeN2sJyBdMRSk6BIvzCS+EPE2IrtkGOGv3xh1ohnA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Yk4qQFAT2fLxoVSmFdCbEFXMTyGizhtXCiyoDP4d7i5TDCShY/oHFhMA35bAs84Vg8Sip+IHCzh6pZVgN72TTMbyu2IC4KkF2Xm9SgGwzOeYsSuBbUop145+v3PfKSjYG72GL5sFF5SG9LgU1pEVTQQ9QzdKDH+qz1lgvaKcuxI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=E1pWvYeS; arc=fail smtp.client-ip=52.101.66.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D27F28F5;
+	Wed, 18 Jun 2025 03:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750215697; cv=none; b=FzM+/XIKaEOFEQbPQGGc92fCbdNDbxwSsWdGMOx0hU/eCgEFsQwfgdPxB2/L4IoRJRPiJFHwls7GROb/lC0lP5twEq6hOnQWQTGaP/Djt64zJwg3AO1nHW2SawS0/tXZOBB+Ec9hMVOViKIKRCaHP9XyWKe+3DwDdLYOCfIOpTY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750215697; c=relaxed/simple;
+	bh=t64bpj/Jy42DYE5bUAkvqiJUO9YUAIAKnwMoETOdEDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rDstVLh4Jg3hZ8oY6+pwKn4gW3coGYfLSf82OodA2S1h8nOa1yDlN4D2DjmX0T7w7rv3Y+obwSKqweNMeq3lPVZGI0s9V4vKyrgtZGHrAcmEDGz8TzjtLNWntRsg8XwkVRKGaoqFXJKbiUlljBBg+yErUj2m3fKAxY53Sg8qtxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zw86FArF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="E1pWvYeS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yqzRkdUvEb6IsezPT7dGv55nuo3F+FOduKu/H6KLQNXTYo3JUpfQuLuK4s1Mq90aG29b0AYXpB9YDawvcpmVmNdLyK/A/TnvoG56h8MnqsFKeR2KkvbZjmsVN+xMzgL4aR1QWGCq16CqBmN9hhVQrIvQhxV1AANvTNK2uev98JYlib3b9L8JkOvZe3EE/ZND9dcji6NkDJ47PNoF81YMCf5eJLHsCW26YO1vKm7+tYwcKiSqgbb3l0h5RCSCt9pB6XMBI4jdsYE1xS2c4HcTvSKTuZ9lc8hsFuIwlR2sfHJNU24MhMxCgoEYK/BdK/Fo5YKQl5z6VzOq/gCUJld8gQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tBwS1/OKanmyHQVkO3wU6a1RKMb2lcefnYN4owJXhWk=;
- b=FnJO6iw32ZIaMqSQ4vD7UUoP7Ioahlqcf5M7LiuOeCCXwvlvS2htlAQyLQIfT2HRJbBf0FbkcHOBUP1JLgCSxDslnUcMhqdYahnp0C0/7Mdqg4qaMTI10pc5jC/v4FRxUo3QLZed+nH5TkiZ4FkVGJ/ePyXmwhwFus9XNrOuhkI4XYsA+kFuPTKWunDWsTTsebzaX22seAFv+wLBsmXeWi5EQQ0dw03LqHcXnJx7KmlQe0a+WtAwD/hQRMwVvZWpvMZpFaqQbKBMzRkTNZ6K+28AsQsPhJLB5c8lWGfeKkyhwNNXPP8aVGBHifnV/NthvGRmiMDMzSG3810N2eSriQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tBwS1/OKanmyHQVkO3wU6a1RKMb2lcefnYN4owJXhWk=;
- b=E1pWvYeSLnIa1AK3Zb4PMdFRGj9s9I0W7FBKW2EIRV+q/G1RRsSEBjtGoAjGr+Bn+n0i02EbHxqiblPeIxO3xjxpKBIonP1rGIx1XD+FzrbO69QzqvChbclpIsOji9LHIaNVva/C4mA42ryT9WvL/gbrpuwLgJ5GRFUbDmrAqH23jBrDzb3CXI14YftijFgOsrIU3CuxvcBHv/zh/+Qv9f+BagWsG9zwIBHSMI1ghAur6uhFTuHDttesTlEAqnf/wNYmDPzeni73f3iSjxcBz1z/Hf15xOW8JZ06T4Ge+rtz9hnaMkY4w/MmJXqc6QhoBHjsJtH84a8X/P4va0cQOw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
- by DU4PR04MB10960.eurprd04.prod.outlook.com (2603:10a6:10:585::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Wed, 18 Jun
- 2025 02:43:39 +0000
-Received: from AS8PR04MB8676.eurprd04.prod.outlook.com
- ([fe80::28b2:de72:ad25:5d93]) by AS8PR04MB8676.eurprd04.prod.outlook.com
- ([fe80::28b2:de72:ad25:5d93%4]) with mapi id 15.20.8835.027; Wed, 18 Jun 2025
- 02:43:39 +0000
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: frank.li@nxp.com,
-	l.stach@pengutronix.de,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>
-Subject: [PATCH v2 5/5] PCI: dwc: Don't return error when wait for link up
-Date: Wed, 18 Jun 2025 10:41:16 +0800
-Message-Id: <20250618024116.3704579-6-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20250618024116.3704579-1-hongxing.zhu@nxp.com>
-References: <20250618024116.3704579-1-hongxing.zhu@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG3P274CA0011.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::23)
- To AS8PR04MB8676.eurprd04.prod.outlook.com (2603:10a6:20b:42b::10)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zw86FArF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130B7C4CEE3;
+	Wed, 18 Jun 2025 03:01:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750215697;
+	bh=t64bpj/Jy42DYE5bUAkvqiJUO9YUAIAKnwMoETOdEDA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zw86FArFjjTfunSWC4ojQFaMimtGRXBLhq27l9ith755fD0O1H55k8KjjENbj6WsW
+	 AsldrcTTz22pbtz9xsU8a2xCAzOvn6XW/Af9lFgUdVW8fjG/QHRZVp31Je0S9QwYkK
+	 39+PcexM/neXhDJuFGfAdfOG+SUpiFrWRM2+8Lbp3nGENhqoGMR9SOw09N3ywCO/8T
+	 kfwWpLN7xJ+jJqsUeArdkXqWhtvW65ojsoueVvYj6KsmRfLmE7C7wTmreWiD2UuZA+
+	 umyu8Ljzmxs0/YbXlDB9oYzIzOEg5c7RYKVFc29/I7wFCU8PKOncJQEcaxwegaAxal
+	 20VNzZl30OlSg==
+Date: Tue, 17 Jun 2025 22:01:34 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Hiago De Franco <hiagofranco@gmail.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, linux-pm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com, 
+	iuliana.prodan@oss.nxp.com, "Rafael J . Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v5 1/3] pmdomain: core: introduce dev_pm_genpd_is_on()
+Message-ID: <ihhh74pzm64nalva27ukpe7v3unx6j2r4opr5yeezm4mefgryi@pi7ky4sv2t7c>
+References: <20250617193450.183889-1-hiagofranco@gmail.com>
+ <20250617193450.183889-2-hiagofranco@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8676:EE_|DU4PR04MB10960:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e9faf74-5068-407a-4430-08ddae11ee58
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|366016|1800799024|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dikeFtMvBzrXkVlKlosHxVMX/fEqPaDH3fTfp0nU3M3Oi3PQB6SDavL7dsTl?=
- =?us-ascii?Q?Sa5UaqVUTlCvJk85mFieMQY88p9eBY3K/l6vhgwqBT1RLz49rX6VdGPYSToj?=
- =?us-ascii?Q?mbQzuDqHu6NXvxTabSA9c2/w59FYNo8xLzycEs5AJxO97gZsNdRAVjYN5p3U?=
- =?us-ascii?Q?rheuyT0M+d7Gbuz9qUxpD3BoulOIx67WVmMHAl5VAqKLBLjPa+o0+Caasvad?=
- =?us-ascii?Q?hMzg21DPku+zTbE9kaoJPNn2/h3M7A2KmeKnmTbquW2JFz4Ekaa9EdfWIKh5?=
- =?us-ascii?Q?rZAWC3LMuYo93D/u6s9qRo9dFKCLZmZQO9SioIUC6OHXebQiEgYSeq09EWOD?=
- =?us-ascii?Q?h2V+btwFasDvVP5hiRj4gkCyei1pzdsuhIXFcOupqt8hjANCIeOYnJc5Ffr/?=
- =?us-ascii?Q?LaxYxI/uPx3EhuKJVYnFJMuSnPyxEAHSyMvMevwacbVb5qzmdqNyuqh38KKu?=
- =?us-ascii?Q?PfNbHhR1eDWdIQYMB/PJjkvBwL0zrt9ZbAISg3R/VqwFqliwVHgJ+EEgDkJY?=
- =?us-ascii?Q?e15CpWQUts7GdDvNhDHsyED47kdh281MlBZezLFBp7G4/QMklNSxMUSSUpAE?=
- =?us-ascii?Q?NOXpMkWyUuTpWgtEE3i+DlfqgFBV8/XU8hUegHijv6ETX/324rSRuS7oKdf7?=
- =?us-ascii?Q?T5KR/QyHvB5QEfbUQOrZtdW//0slCIDJqDIPsjRiAFl9gIKqWMNO9VGyeGEo?=
- =?us-ascii?Q?YRNywenrQINQIiyXvaappbys9KFPikJK1SAByW+QBPreMjSBKvB3u1l3NdkD?=
- =?us-ascii?Q?FjhpWkZB1rSYhdXy6gqWZnZqL92zB7P06o5lNNxguiYULVIqfEl3StSnVFcC?=
- =?us-ascii?Q?iDrBarQ3uCYVpR50mNFuVkL4Zpc25FXMq+pbkL/cwWHek/8RWYvM9V8eeyBb?=
- =?us-ascii?Q?u0u3qeLMgApAMNXoTzAQYxJYwGfnURD8ql+M5flqjTMxc/58AX7lcLYUxtwO?=
- =?us-ascii?Q?/2GobA9B7NYKnozqeO8gZQkBsw2Uvgi3PQK4YstjkQclREyJWOYNSWTFvgvQ?=
- =?us-ascii?Q?wWDCvj72CbnHsxOZVQr+mfbAtyuRuTIhXLwUOdiybtrhA1+ziLIrPZOwKz4N?=
- =?us-ascii?Q?DiQqKUXwXGOQ7DvbVq4LwLjfQHA+mS+Ut7/Osh6i/aAW3PN52FTJ7Sv9W+1n?=
- =?us-ascii?Q?jOYVUprsQbYoF5s58gqcBCewzFtITMGeNhegXKj6eeRQCPFvtPQPd31Rx0EL?=
- =?us-ascii?Q?UVJ/QkDB6XOTS09SUaFHRXxMfeg97lS/BU9BBgEgohR+x5mlQ8s8AF3GayHJ?=
- =?us-ascii?Q?72puhLXAbOVtEUZx2h01iUc4t2MAA+ijijWqKTOdbW98GMOXIZ67ZNKEUpsf?=
- =?us-ascii?Q?1vSOxVYGQD6nfyjvXBYTW6wPX0RTXFMGkA4qWZTzhz06r/IDnCd4Vfv1NjhB?=
- =?us-ascii?Q?rGvHeSqzkc5ZGUZp/eyuN+TGkCmaDr4pEL1XlxKQY6VVTyXczVlPOXqTJurq?=
- =?us-ascii?Q?Bd4KVIJ4HdG+RTs7doiPR+4LxX7JS+1f53Hbsst8qlWzlBRumcAT6J7+B2yb?=
- =?us-ascii?Q?JAQ5qkrPbml1KyY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8676.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(366016)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iIL5AKJVTHb46dBGVSweSfydHTUHTB8PSAC4AEIUpeQOmAta8wKEG+mmku94?=
- =?us-ascii?Q?PEZ6aVdZtkCrsqlKXH/jzqVU/WhzxRwwEzGhB0PBLE/PxQohsd9u74YOWYUC?=
- =?us-ascii?Q?AqhrVMR41qh9PBqCm/mK41SZAxmbT4XLgfO27Qk/VvpoNrfbyFPUL0oBObQX?=
- =?us-ascii?Q?yKkYwhIhwasLhqubiBvQkQP2NqhejRfOCck4Z8AHle35ci+GJNTyMqyUOUUX?=
- =?us-ascii?Q?eQHQGnQX/kTYLKJL8ntnoazFKDGSjNx1VKqWmTucviA+MAMrUpaiVRRrMsbg?=
- =?us-ascii?Q?EUa6nPXweP6zQdeEgC8rHNIjcX5LnKFjrwsOJ35aEBjbfCWrEwfuPcrqh+fZ?=
- =?us-ascii?Q?luQ4ftLzydibLDsm6PA1HCRTV8MlKjaNgpcv+jYXDbloDM/6aKCNrrmm82mZ?=
- =?us-ascii?Q?BOmUgFnN3f1aAOtlj8RPco5Yhy8QE+syNDySNAdPfQST6AG0qwANqR7FvuVw?=
- =?us-ascii?Q?Z0Itqz/1fWZCkuCN1H+DA8cWKkcQYWtWmgXNpkdJYz7mcZwYbTadIhvdwlsu?=
- =?us-ascii?Q?b9yOlLd6vzzgWQ4GR6phJypBAeH7vzLgn0qjuEk7kpU7BHz1S+P+io9WI42v?=
- =?us-ascii?Q?rGUhCtBGvlD0apQ4D0sUZcuNBKjtuRhFGIe2pDWNCSTInBxiLec0zV/PNGPQ?=
- =?us-ascii?Q?LPkoTW92HbTMNDCUDIJkppzc44YzRRPpKOIZQbK5sHMbgsHp6/8kHNogalal?=
- =?us-ascii?Q?lB80PZaPspG4k0AqkNTj2FglioJx0YRDlZENLnJPuyIIrmNVcFs2Rkq6N+il?=
- =?us-ascii?Q?zEWnk70Z5pwWGrUvovPVXhKKwrr1tsLvHGDg7v0F/fZ4eYeHtuV6hgW6HBS7?=
- =?us-ascii?Q?75hATZ7fQ/49JasA/sKR9hU1dE7JViEAyFno5G0cOm2DHjDRQkrZZYGNK3Pz?=
- =?us-ascii?Q?Hn3CxhQ/bjSn4KPRr62O80oFnZuwT+b2PNk9kqNSZmJx0lb525Fx0rxDgdQO?=
- =?us-ascii?Q?irUwNT/uDmgW11qBzDfwXPja1dzDJ1rQ7lh45lbzR7wf6y8LEWOxgtofCjZ5?=
- =?us-ascii?Q?fVnFj2F7efwvScIT+aI8B/dzsib5FojWvjDPbjHi5WL43Ue1Jv+8JJFYgLYK?=
- =?us-ascii?Q?ORqAUvkHS+woi1KmFuvLBwO7A1pdBFvaBkRojFKY1cwQCdn2qakitM1nBtwb?=
- =?us-ascii?Q?syXESwOPdNb6qGkNGrCJ/kr430m7H81dMGaYyzvy5OaowNU1rYzF/7qLDTd0?=
- =?us-ascii?Q?J/TWtrGLvhRAFDZ9I98WD7sWsxnqaAlvypuTulvn6GhF23hFXuSVorvT5l/Y?=
- =?us-ascii?Q?NTJXLoBc0qPCIq6aGD/pEiMze3bfX7+OtRjCKJUWuJuSJN8nk/92G3IqQFQB?=
- =?us-ascii?Q?UNGm5fIgvM3YzccpNLawzB3iJnpXbmUE6R2+H8LbzdA3fUf7FFS36GKy3d47?=
- =?us-ascii?Q?2gq0sPTm1rGD11zkJl8RG2xgDnqOddlzmlR3jto0/vum6a016Nc0oe5Xeqjv?=
- =?us-ascii?Q?/PL/hEHXsTX9N9gARw+4G9Y2CzQ8zpF4ihKngrC/aw2YRDV5KGInYdr+Y4g/?=
- =?us-ascii?Q?jI74d2WpyoavGajv/F/q/Cuuav9Vh9YuZ7tOw1tkbOl1fqa0yg0MQvZAAMPJ?=
- =?us-ascii?Q?PKE6HAS0NJP/3r8o6MxUVgQWU6wqlqxs2Pemi0++?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e9faf74-5068-407a-4430-08ddae11ee58
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8676.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2025 02:43:39.6107
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pf4sFRARyQ8HUtIlfME41AnIsfHEgVRn1x9skp7VuX4tjW0hGfvpZosLBuR78hcIt7LGQDyr2aowueq8YamyBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10960
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250617193450.183889-2-hiagofranco@gmail.com>
 
-When wait for link up, both the link up and link down are normal
-results, not mistakes.
-Don't return error, since the results had been notified.
+On Tue, Jun 17, 2025 at 04:34:48PM -0300, Hiago De Franco wrote:
+> From: Hiago De Franco <hiago.franco@toradex.com>
+> 
+> This helper function returns the current power status of a given generic
+> power domain.
+> 
+> As example, remoteproc/imx_rproc.c can now use this function to check
+> the power status of the remote core to properly set "attached" or
+> "offline" modes.
+> 
+> Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
----
- drivers/pci/controller/dwc/pcie-designware-host.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index 228484e3ea4a..fe6997c9c1d5 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -1108,9 +1108,7 @@ int dw_pcie_resume_noirq(struct dw_pcie *pci)
- 	if (ret)
- 		return ret;
- 
--	ret = dw_pcie_wait_for_link(pci);
--	if (ret)
--		return ret;
-+	dw_pcie_wait_for_link(pci);
- 
- 	return ret;
- }
--- 
-2.37.1
+Regards,
+Bjorn
 
+> ---
+> v4 -> v5:
+> - s/dev_pm_genpd_is_on/dev_pm_genpd_is_on()/ in function description.
+> - Updated function description to be explicit the function reflects the
+>   current power status and that this might change after the function
+>   returns, especially if the genpd is shared.
+> 
+> v3 -> v4:
+> - New patch.
+> ---
+>  drivers/pmdomain/core.c   | 33 +++++++++++++++++++++++++++++++++
+>  include/linux/pm_domain.h |  6 ++++++
+>  2 files changed, 39 insertions(+)
+> 
+> diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
+> index ff5c7f2b69ce..2f387e15cb75 100644
+> --- a/drivers/pmdomain/core.c
+> +++ b/drivers/pmdomain/core.c
+> @@ -758,6 +758,39 @@ int dev_pm_genpd_rpm_always_on(struct device *dev, bool on)
+>  }
+>  EXPORT_SYMBOL_GPL(dev_pm_genpd_rpm_always_on);
+>  
+> +/**
+> + * dev_pm_genpd_is_on() - Get device's current power domain status
+> + *
+> + * @dev: Device to get the current power status
+> + *
+> + * This function checks whether the generic power domain associated with the
+> + * given device is on or not by verifying if genpd_status_on equals
+> + * GENPD_STATE_ON.
+> + *
+> + * Note: this function returns the power status of the genpd at the time of the
+> + * call. The power status may change after due to activity from other devices
+> + * sharing the same genpd. Therefore, this information should not be relied for
+> + * long-term decisions about the device power state.
+> + *
+> + * Return: 'true' if the device's power domain is on, 'false' otherwise.
+> + */
+> +bool dev_pm_genpd_is_on(struct device *dev)
+> +{
+> +	struct generic_pm_domain *genpd;
+> +	bool is_on;
+> +
+> +	genpd = dev_to_genpd_safe(dev);
+> +	if (!genpd)
+> +		return false;
+> +
+> +	genpd_lock(genpd);
+> +	is_on = genpd_status_on(genpd);
+> +	genpd_unlock(genpd);
+> +
+> +	return is_on;
+> +}
+> +EXPORT_SYMBOL_GPL(dev_pm_genpd_is_on);
+> +
+>  /**
+>   * pm_genpd_inc_rejected() - Adjust the rejected/usage counts for an idle-state.
+>   *
+> diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
+> index 0b18160901a2..c12580b6579b 100644
+> --- a/include/linux/pm_domain.h
+> +++ b/include/linux/pm_domain.h
+> @@ -301,6 +301,7 @@ void dev_pm_genpd_synced_poweroff(struct device *dev);
+>  int dev_pm_genpd_set_hwmode(struct device *dev, bool enable);
+>  bool dev_pm_genpd_get_hwmode(struct device *dev);
+>  int dev_pm_genpd_rpm_always_on(struct device *dev, bool on);
+> +bool dev_pm_genpd_is_on(struct device *dev);
+>  
+>  extern struct dev_power_governor simple_qos_governor;
+>  extern struct dev_power_governor pm_domain_always_on_gov;
+> @@ -393,6 +394,11 @@ static inline int dev_pm_genpd_rpm_always_on(struct device *dev, bool on)
+>  	return -EOPNOTSUPP;
+>  }
+>  
+> +static inline bool dev_pm_genpd_is_on(struct device *dev)
+> +{
+> +	return false;
+> +}
+> +
+>  #define simple_qos_governor		(*(struct dev_power_governor *)(NULL))
+>  #define pm_domain_always_on_gov		(*(struct dev_power_governor *)(NULL))
+>  #endif
+> -- 
+> 2.39.5
+> 
