@@ -1,155 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from glittertind.blackshift.org (glittertind.blackshift.org [116.203.23.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A17281369;
-	Wed, 18 Jun 2025 10:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A48A28506F
+	for <imx@lists.linux.dev>; Wed, 18 Jun 2025 12:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.23.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750243221; cv=none; b=O7OqD711IADExdaNQiTZRADKFBXvPPaDiLI5su3c57+pFIB/KyWucY8+NrX+990P9yvXxGfYTT8kCWGZl8HVsOV9BWMYU0usEQW0ECWLCC4ZFZGrK01uG9XuglRVHZw35AvJX33mECVpc4Ok//6qUWNU7LfNKiElRZLcZVU9Tgo=
+	t=1750248034; cv=none; b=bO0OAkUupocd29Ry+4hhSnlcuqee5Rl+enoBRt2MaQ6u+sMPh8oVRVNWcIf9n2mFO0ZR6ggPVseyha6RB10CgMN9pXZ54pl94C/qoH3vm5Lx7WwFPT/gsbENKwuWsAPYJM/izIAW1wvt0F4eCsE42Nak30BttoNUl9Fmgxu/kGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750243221; c=relaxed/simple;
-	bh=AueBCN8tRB74R7bXda+ZgkK2ACmlaLw4HLQJigCYu9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=txnhd3F++eay4U0k+6LgN39tNCfVXO9IBaQrMeOnnpZMjCZjfwp1R4RoIKVtOmzT6XYyE2Zd6ub/Lkek938Iin3LZgzhKqld/9r/JOaM/An5u4b2dYwogrsfCrYYorvAOH6yftH0JA4+qIHUKw9rwUmXmkGJki88sAkUakIX91c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SOAOqYRI; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SOAOqYRI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139BEC4CEED;
-	Wed, 18 Jun 2025 10:40:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750243220;
-	bh=AueBCN8tRB74R7bXda+ZgkK2ACmlaLw4HLQJigCYu9k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SOAOqYRI7zTBWv26itXvLZdWWRRLaHeZ1iwa9q1jcrqFYpArRa1V4qOB9cPvGI8kb
-	 3X1Od12B/08BKQHxbN37k4Z8uO1xZrlOHAFYw9ETGBBzgI2TzLswuWY+K1JQS0u6v0
-	 se8tPwjG3FZejiybWuku+r4enNg0kqg906oWeNdk6wBxv6inRTET6rApN7Yokm1lYg
-	 GZ8ZyH/2dYatyJ+py/2KG6vGeyKgJZmS/4vyBi8ZHxJM+8BDmsmuOzyaQ0coOAepPX
-	 lo1vj+/yCiOSvZHwevxyS1Y5bznqpDAmLftww3FBF+ihoVAD50+Rp+S3hiNPVvfXdm
-	 kBzBc8huXEpaw==
-Date: Wed, 18 Jun 2025 18:40:13 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, shawnguo@kernel.org, s.hauer@pengutronix.d,
-	kernel@pengutronix.de, festevam@gmail.com, jun.li@nxp.com,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/3] usb: chipidea: imx: implement workaround for
- ERR051725
-Message-ID: <20250618104013.GD34284@nchen-desktop>
-References: <20250614125645.207732-1-xu.yang_2@nxp.com>
- <20250614125645.207732-4-xu.yang_2@nxp.com>
+	s=arc-20240116; t=1750248034; c=relaxed/simple;
+	bh=2iqO7eQNAV+YgDrv6QeqkeUmG4rDnaxv9v7CVkxZzwk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=oOGALk91jQAjaVjyfR2oXq5zoUnqnAcsTyd9rLZWP6Vko9E84HyYy8IOzjNLOChZ3rVqtPoVXzhaqWsgAALP7eqJ4fq7MdSybJaGxtdUTBe71riw9s9SsfNAdhldD8X/qriW8Od9M0/DGL8IVJCA4OJLNaiSrdCDAkCEtPMkqaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=none smtp.mailfrom=hardanger.blackshift.org; arc=none smtp.client-ip=116.203.23.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hardanger.blackshift.org
+Received: from bjornoya.blackshift.org (unknown [IPv6:2003:e3:7f3d:bb00:d189:60c:9a01:7dca])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1)
+	 client-signature RSA-PSS (4096 bits))
+	(Client CN "bjornoya.blackshift.org", Issuer "R10" (verified OK))
+	by glittertind.blackshift.org (Postfix) with ESMTPS id DB6BC66FC0E
+	for <imx@lists.linux.dev>; Wed, 18 Jun 2025 12:00:30 +0000 (UTC)
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id A618842B532
+	for <imx@lists.linux.dev>; Wed, 18 Jun 2025 12:00:30 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 29EEB42B50D;
+	Wed, 18 Jun 2025 12:00:29 +0000 (UTC)
+Received: from hardanger.blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 560da31b;
+	Wed, 18 Jun 2025 12:00:28 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Wed, 18 Jun 2025 14:00:03 +0200
+Subject: [PATCH net-next v4 03/11] net: fec: switch from asm/cacheflush.h
+ to linux/cacheflush.h
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250614125645.207732-4-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250618-fec-cleanups-v4-3-c16f9a1af124@pengutronix.de>
+References: <20250618-fec-cleanups-v4-0-c16f9a1af124@pengutronix.de>
+In-Reply-To: <20250618-fec-cleanups-v4-0-c16f9a1af124@pengutronix.de>
+To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+ Clark Wang <xiaoning.wang@nxp.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de, bpf@vger.kernel.org, 
+ Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.15-dev-6f78e
+X-Developer-Signature: v=1; a=openpgp-sha256; l=913; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=2iqO7eQNAV+YgDrv6QeqkeUmG4rDnaxv9v7CVkxZzwk=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBoUqpIOh+pePAfrUw9h11M1LbpjtWPktc4wOq4A
+ eYyf2THEs+JATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaFKqSAAKCRAMdGXf+ZCR
+ nCVWB/0RELPYGv01SjxvDftWfmQ9L9dLEyHXry0UNyxoHcG9pWCxLMD5GUyHw/bewdnSLMlAd4q
+ Jr6Obc8ClsM4S0JBc5LPvR4Zx8i8OPPvl+vIpKjpyLvk5gnny61k0M7pPNZgFi9s7Co8IZf7RN9
+ eekfj0AkzClDDERXhKbO+vQCvHpcTkOjNJgUdWTa+tMEbpNRLE0yj3PQIOdaLc30GkCAJpuY9Jz
+ RYubuwtKmOit3B98Ybe1FTnCN3encL8lwTziXIo/r+bcAqdfkZaiXBLKhNv68bg5RVJACtkFGhm
+ lQj6efYOgI9WW2h4b6AGvlE+qPyOt8wnh9xXko96/C1juOXP
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-On 25-06-14 20:56:45, Xu Yang wrote:
-> ERR051725:
-> USB: With the USB controller configured as device mode, Clearing the RS
-> bit of USBCMD register fails to cause USB device to be detached
-> 
-> Description
-> 1. USB controller working as high speed device mode with USB gadget
->    function enabled
-> 2. Cable plugged into USB host
-> 3. Use case is software-controlled detach from USB device side
-> 
-> The expected result is device side terminations removed, increase in USB
-> signal amplitude, USB host detect device is detached. But the issue is
-> that the clear RS bit of USBCMD register cannot cause device detach event.
-> 
-> Workaround
-> - Use the below steps to detach from the host:
->     write USBCMD.RS = 0b
->     write CTRL2[7:6] = 01b
->     write CTRL2[8] = 1b
-> - As CTRL2[8] is set at detach case, so attach the steps should add clear
->   CTRL2[8]:
->     write USBCMD.RS = 1b
->     write CTRL2[8] = 0b
-> 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+To fix the checkpatch warning, use linux/cacheflush.h instead of
+asm/cacheflush.h.
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/ethernet/freescale/fec_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Peter
-> ---
->  drivers/usb/chipidea/ci_hdrc_imx.c |  5 +++++
->  drivers/usb/chipidea/usbmisc_imx.c | 21 +++++++++++++++++++++
->  2 files changed, 26 insertions(+)
-> 
-> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> index 780f4d151345..79e466e17788 100644
-> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> @@ -331,6 +331,11 @@ static int ci_hdrc_imx_notify_event(struct ci_hdrc *ci, unsigned int event)
->  		if (ci->usb_phy)
->  			schedule_work(&ci->usb_phy->chg_work);
->  		break;
-> +	case CI_HDRC_CONTROLLER_PULLUP_EVENT:
-> +		if (ci->role == CI_ROLE_GADGET)
-> +			imx_usbmisc_pullup(data->usbmisc_data,
-> +					   ci->gadget.connected);
-> +		break;
->  	default:
->  		break;
->  	}
-> diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
-> index 9db67d6d0ec4..415d3ba2e9ad 100644
-> --- a/drivers/usb/chipidea/usbmisc_imx.c
-> +++ b/drivers/usb/chipidea/usbmisc_imx.c
-> @@ -998,6 +998,25 @@ static int usbmisc_imx7ulp_init(struct imx_usbmisc_data *data)
->  	return 0;
->  }
->  
-> +static void usbmisc_imx7d_pullup(struct imx_usbmisc_data *data, bool on)
-> +{
-> +	struct imx_usbmisc *usbmisc = dev_get_drvdata(data->dev);
-> +	unsigned long flags;
-> +	u32 val;
-> +
-> +	spin_lock_irqsave(&usbmisc->lock, flags);
-> +	val = readl(usbmisc->base + MX7D_USBNC_USB_CTRL2);
-> +	if (!on) {
-> +		val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_MASK;
-> +		val |= MX7D_USBNC_USB_CTRL2_OPMODE(1);
-> +		val |= MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
-> +	} else {
-> +		val &= ~MX7D_USBNC_USB_CTRL2_OPMODE_OVERRIDE_EN;
-> +	}
-> +	writel(val, usbmisc->base + MX7D_USBNC_USB_CTRL2);
-> +	spin_unlock_irqrestore(&usbmisc->lock, flags);
-> +}
-> +
->  static int usbmisc_imx7d_power_lost_check(struct imx_usbmisc_data *data)
->  {
->  	struct imx_usbmisc *usbmisc = dev_get_drvdata(data->dev);
-> @@ -1115,6 +1134,7 @@ static const struct usbmisc_ops imx7d_usbmisc_ops = {
->  	.set_wakeup = usbmisc_imx7d_set_wakeup,
->  	.charger_detection = imx7d_charger_detection,
->  	.power_lost_check = usbmisc_imx7d_power_lost_check,
-> +	.pullup = usbmisc_imx7d_pullup,
->  	.vbus_comparator_on = usbmisc_imx7d_vbus_comparator_on,
->  };
->  
-> @@ -1131,6 +1151,7 @@ static const struct usbmisc_ops imx95_usbmisc_ops = {
->  	.set_wakeup = usbmisc_imx95_set_wakeup,
->  	.charger_detection = imx7d_charger_detection,
->  	.power_lost_check = usbmisc_imx7d_power_lost_check,
-> +	.pullup = usbmisc_imx7d_pullup,
->  	.vbus_comparator_on = usbmisc_imx7d_vbus_comparator_on,
->  };
->  
-> -- 
-> 2.34.1
-> 
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 17e9bddb9ddd..dbfc191bcde1 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -49,6 +49,7 @@
+ #include <linux/bitops.h>
+ #include <linux/io.h>
+ #include <linux/irq.h>
++#include <linux/cacheflush.h>
+ #include <linux/clk.h>
+ #include <linux/crc32.h>
+ #include <linux/platform_device.h>
+@@ -71,8 +72,6 @@
+ #include <linux/bpf.h>
+ #include <linux/bpf_trace.h>
+ 
+-#include <asm/cacheflush.h>
+-
+ #include "fec.h"
+ 
+ static void set_multicast_list(struct net_device *ndev);
 
 -- 
+2.47.2
 
-Best regards,
-Peter
+
