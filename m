@@ -1,82 +1,133 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABB03085D4
-	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 04:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DAB7080D
+	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 05:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750307274; cv=none; b=AIMOF31w/7NnZOMkGJ9HqfCtyGhxgu5Oonn4JQs30x215kDlcTQ0866z4dWuZv3N6/A2mLjmz1kULxq0ETyPRN17BfIVEcRFeE/TbYFsuCXYpki2Mvtu/AbMs5thQpaNr2DT40GjgCCOMRmxosbQ41GuH5ko1D5tMhg8tD9+iQ0=
+	t=1750311942; cv=none; b=f1bMe0Uyt2R0VIifhJTVohZM9DSr7c4WvArGFcufroL8YadAx6PTElxmf/jh2P6aUKVIHN5xRi1VH3Ce6QIpM7Jm5OtR0z3OtKg0ez4TcJbRN9Ciwki/GpLPVFQOj+EsIlrDDkyE44DWWSB12eUnp0vBt4IooArLDRzw38OMx80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750307274; c=relaxed/simple;
-	bh=wGPPr8evg8EGvCbT/ay4qY+qSgTYYixp+8b3bm2r8yM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BhIq421IGpXmFc2xuOydIMVgzFfR8kb3GJD0vyIA/UbbMPjfaN+7hH0MfXjDcipbTu8HNMMXrqcqJctBG2lizWS4lxT5ZKPcRGGn0z0ySnxj+vGkZQyZfPRyVOPUFOdXS+Vt3isvGHEw7v+gxtJAXDytuIIbvI8L+vivkHy2Xb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=oIL3Q0De; arc=none smtp.client-ip=220.197.32.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1750311942; c=relaxed/simple;
+	bh=LykC/4ZBPOzMHeLKUB04c2lnziFde8GRpsGni+7FcUQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IbJlTvmMhaK9MItGIt1+lcN1u8N/fOcWe6ExWfHDmU+/LLmOeMo2rj9JnHqllJhvfcdaVXBoyI8E6nOIyqGQRJcL7KF3/0Hdma2roerP/LKLgN2ivDG0fvQU//OgxXSCiKfH3OGryqtFuPvvtwUOM1yQCWi6MFaN6WhW7yPRH88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=SC3gmsLK; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=EA0qTvV8 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="oIL3Q0De"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=7Yv8PVd52JTRw4r6qh65xK+kFgGp7k/YH+t5aN2ivQM=;
-	b=oIL3Q0De6A3nMNlyVAjT96y81tN5M/D0G3WdBE0268+AIXgutdBEL4keyZiTUm
-	Yyo0jkkZjwwl9DbTsUGXq/vAXZzuGxY3gsH+DQZdkDluJnKylod0iDvZ18myVvWA
-	XXc6o43PuZS+Gg4g82XJ7Lw7WMYQTwv5IbLQhY+UoB16A=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgAHfw6ikVNoUc_2AA--.36272S3;
-	Thu, 19 Jun 2025 12:27:16 +0800 (CST)
-Date: Thu, 19 Jun 2025 12:27:14 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Nicolas Dufresne <nicolas@ndufresne.ca>
-Cc: Frank Li <Frank.Li@nxp.com>, mirela.rabulea@nxp.com, mchehab@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, krzysztof.kozlowski@linaro.org,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, ming.qian@nxp.com
-Subject: Re: [PATCH RESEND 1/2] media: dt-bindings: nxp,imx8-jpeg: Add
- compatible strings for IMX95 JPEG
-Message-ID: <aFORokzx/sImgDtA@dragon>
-References: <20250521-95_jpeg-v1-0-392de5d29672@nxp.com>
- <20250521173444.310641-1-Frank.Li@nxp.com>
- <eef5ccd99d82dd33e3a4ecdb5d4a5b75ccb0b972.camel@ndufresne.ca>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="SC3gmsLK";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="EA0qTvV8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1750311939; x=1781847939;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TTVupIh3/NLv+xYBDsRvUPwD/5Acjy4PdaTxo3ztWzE=;
+  b=SC3gmsLKDueN/M9IBwJiIWhC9WIj5Mb+gPmbE2L80QL7RBlkM44Y9PLY
+   CHUg9wIqPOC2ksrfvbReUv/lsEWcTWtXswmcIZY+KCMHskXXWg6bskdxs
+   u4oJXebDyrsekqFttNJnGmjnsQBS+c8nWMY4m2BtEnyM2IP91jNNaeBBt
+   TrXSJ3W/8TxudCinAuynFHFoUicerIDenfklQnvZwyDY1omBVfgdlQU44
+   Iyxm9mEaWgq7aSa45K0PMJMLf9NGq2qnpyWjKhThcEG0/gJZ7rKzZEP0p
+   JuHiSP0hOVom1YVpTjSHi3b1AqGz65LdxKTSV+vpL9CH3xC+7jnFNVG0T
+   g==;
+X-CSE-ConnectionGUID: WD3UMgvQRs+EzjKKO2jI5Q==
+X-CSE-MsgGUID: KE/UAAHXQ5mhrNJ2FGrXVw==
+X-IronPort-AV: E=Sophos;i="6.16,247,1744063200"; 
+   d="scan'208";a="44731634"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 19 Jun 2025 07:45:30 +0200
+X-CheckPoint: {6853A3FA-3-569BE4A0-ECC5EE08}
+X-MAIL-CPID: 034B6BD5CF42ADFF2113C74676D88493_3
+X-Control-Analysis: str=0001.0A006378.6853A411.0009,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EE378160EBC;
+	Thu, 19 Jun 2025 07:45:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1750311925;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TTVupIh3/NLv+xYBDsRvUPwD/5Acjy4PdaTxo3ztWzE=;
+	b=EA0qTvV8oKUkp8vUNmNET8RoIKQnfWcJ7ND4g4sdTre5HFh8HpcjS3ujQM6PLu6Ap1neEe
+	KnZuaRTuykMQJyx2rgzo4nuOOLVjaS2ujXq22i1wBOTMNXQdchKVOQFP5uwXXX5vuzJaN/
+	B1LLafpTbxHiLnEnK6+plKU1R9Yu4rrF0PNOkgG+zbKEmI0j+v0HXSprIesp7QHn7s8P1e
+	jzX3SxQ8VvKN4uUPIDd8+wScrB0Fad7Qb7VooDycqFlnuFPozJ7NCxXGu/dpBkgJkov7Lt
+	J4souz3Xnw6AGOe/HbdKOFH7MkasIaJLYmzIiwtRmHw/kFzeX/acFEpa5p2mzA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux@ew.tq-group.com,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 1/1] arm64: dts: tqma8mpql-mba8mpxl-lvds: Rename overlay to include display name
+Date: Thu, 19 Jun 2025 07:45:11 +0200
+Message-ID: <20250619054513.2134620-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <eef5ccd99d82dd33e3a4ecdb5d4a5b75ccb0b972.camel@ndufresne.ca>
-X-CM-TRANSID:M88vCgAHfw6ikVNoUc_2AA--.36272S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7GFy5tr4rtF45AFy5uw13CFg_yoWfXrbE9w
-	18Zw1Iqay3ZrW3Wry5AFs5C34Fga47XryUXryFyw1kuws0yr98AFZrGrn3XFy5uFZ5WF9F
-	kwnrtw1DCa9FgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1Hq2tUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCwlxZWhTizsX7wAAsl
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, May 23, 2025 at 07:22:04PM -0400, Nicolas Dufresne wrote:
-> Hi,
-> 
-> Le mercredi 21 mai 2025 à 13:34 -0400, Frank Li a écrit :
-> > Add compatible strings "nxp,imx95-jpgdec" and "nxp,imx95-jpgenc", which
-> > are backward compatible with "nxp,imx8qxp-jpgdec" and
-> > "nxp,imx8qxp-jpegenc". i.MX95 just need one power domain which combine
-> > wrap and all slots together. Reduce minItems of power-domains to 1 for
-> > i.MX95 and keep the same restriction for others.
-> > 
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> 
-> Acked-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-> 
-> Krzysztof, will you take this one once the DTS part is ready ?
+This platform supports several displays, so rename the overlay to reflect
+the actual display being used. This also aligns the name to the other
+TQMa8M* modules. Apply the same change for MBa8MP-RAS314 as well, as it
+uses the same overlay.
 
-dt-bindings is the prerequisite of DTS.  DTS patch looks good to me
-and I'm waiting for dt-bindings part to be applied first.
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v2:
+* Rebase to next-20250618
+* Include MBa8MP-RAS314 as well (uses the same overlay)
+* Fix DT order
 
-Shawn
+ arch/arm64/boot/dts/freescale/Makefile               | 12 ++++++------
+ ... imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtso} |  0
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+ rename arch/arm64/boot/dts/freescale/{imx8mp-tqma8mpql-mba8mpxl-lvds.dtso => imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtso} (100%)
+
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 0b473a23d1200..8403253eadb9f 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -260,16 +260,16 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-lvds1-imx-lvds-hdmi.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-mx8-dlvds-lcd1.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk-pcie-ep.dtb
+ 
+-imx8mp-tqma8mpql-mba8mpxl-lvds-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
++imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtbo
+ imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01-dtbs += imx8mp-tqma8mpql-mba8mpxl.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtbo
+ imx8mp-tqma8mpql-mba8mp-ras314-imx219-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtbo
+-imx8mp-tqma8mpql-mba8mp-ras314-lvds-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo
+-imx8mp-tqma8mpql-mba8mp-ras314-lvds-imx219-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds.dtbo imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtbo
+-dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds.dtb
++imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvhg33-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtbo
++imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvhg33-imx219-dtbs += imx8mp-tqma8mpql-mba8mp-ras314.dtb imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtbo imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-g133han01.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-imx219.dtb
+-dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds.dtb
+-dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds-imx219.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvhg33.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-tqma8mpql-mba8mp-ras314-lvds-tm070jvhg33-imx219.dtb
+ 
+ dtb-$(CONFIG_ARCH_MXC) += imx8mq-evk.dtb
+ imx8mq-evk-pcie1-ep-dtbs += imx8mq-evk.dtb imx-pcie1-ep.dtbo
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl-lvds.dtso b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtso
+similarity index 100%
+rename from arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl-lvds.dtso
+rename to arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl-lvds-tm070jvhg33.dtso
+-- 
+2.43.0
 
