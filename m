@@ -1,45 +1,43 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6F821B9CD
-	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 04:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFB021C9E4
+	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 04:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750305909; cv=none; b=r8YKgUkMNYFbxF4FmZVsV9gAFt6jqg1nZ1YxoscoxVStu8oL7J5zOINghnt3km3JcthEnl6GPkLlKYiXra5aD9oGhktrX20HXB/W1Ca12m471sF2klgO2pSqqYtbTr1k/s1Sej1+fCekRT67ONU7cUR2UsDiIp5b5wihb59RuxU=
+	t=1750306390; cv=none; b=d8kPv+lPWIHm8N0ZvUJ/Ka2+45VtKeXRBi3FQ5+RI8xkA+tLElKlz5bZRx6PwU8/d9fAIvzs1KtoCuwsGQjreirBJBBiiX4YpxMKwvjz2mv5ZhKTraScyAYsDvKHG3B6PAS+D2ww4dFEktBlGTQnisdux9kxkwvIyXXOY5aOpRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750305909; c=relaxed/simple;
-	bh=DIG5albF6lOxDimZvvSfwW/v6tUAmJv6CFsTPIwACj8=;
+	s=arc-20240116; t=1750306390; c=relaxed/simple;
+	bh=VnLJTt5TZn/1JqPrr3RK4iKqWM+0/IVu7HJoZcruKak=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SGihT9ebTuQzS7jAEcu6SZgFV2HC3I2dOjGJLdtSBrgOzu2pPPL27ReXBaYrIM5/6RK3CeRr4IEiM4q22AZi8nFtPyLoz+NFSApYCjqEd0WeUgpEKFuEgraRtbTAQqszaje8Qs1Mk2muqC6tV7PahGx5AlmI+O1ArseYXMPelF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=DD9uyEy9; arc=none smtp.client-ip=1.95.21.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=R9Jx7tlUwZ1C391qGhm7PA6yz34RZNEFfXPXN70/7ACUjN+0EBFkbTGfzfjATxCRLslyAqBaQtdoQ2MdGOywk9O4D6d3Fx/5FbZlUUWaJZ0qQkDPkvR3BQQJNB/bJ71BU5ZEegCFms0H5sgrZMW+h5zUclRHmSdImXGQGpIgKXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=EfB0CD/5; arc=none smtp.client-ip=220.197.32.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="DD9uyEy9"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="EfB0CD/5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=SzXacRK9YyFVZryxioMdSBKnpxohJunnJcdvONlrj6s=;
-	b=DD9uyEy90xjxZI9nMIRPXAkeq9hWWuDmp7fJSn8SaodTOeG9gRBe6H8p4pR/2u
-	Ht/s+uJ4KBVe25WCd4+Oste0xNIeqKsJqnGztSCOHrfUMouYfuviEWP9l6PK8/w+
-	lCBDJpkm182xoD/NARtXY5o3QgdM8l60x1iECvsQSKxK4=
+	Content-Type; bh=7mH7c45eSfL+b4MqS/CU4uB/SYh3Jq2So6ySOqYFG+4=;
+	b=EfB0CD/5usDHBil636l93NHjNoxGqOGsvbJ1iKPna7nEh8WxcJO9xotH3n5i54
+	C0FWUjv3btrdYM2t1a0pyrKp1VjzHVIVnQv5JNsnPLyjo78ToApYoBSbrf047v2t
+	dX2q2JTYGXp+IjX4X1Amrdr8Wf27N59b2GblJ3rsipBPI=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgA3rw5SjFNo5nn2AA--.35256S3;
-	Thu, 19 Jun 2025 12:04:36 +0800 (CST)
-Date: Thu, 19 Jun 2025 12:04:34 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDnl4A1jlNoj0T8AA--.46928S3;
+	Thu, 19 Jun 2025 12:12:39 +0800 (CST)
+Date: Thu, 19 Jun 2025 12:12:36 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: maudspierings@gocontroll.com
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v7 8/8] arm64: dts: freescale: Add the BOE av123z7m-n17
- variant of the Moduline Display
-Message-ID: <aFOMUq5JcovQEW5V@dragon>
-References: <20250520-initial_display-v7-0-a8f0195420aa@gocontroll.com>
- <20250520-initial_display-v7-8-a8f0195420aa@gocontroll.com>
+	Fabio Estevam <festevam@gmail.com>, linux@ew.tq-group.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] arm64: dts: tqma8mnql: Add EASRC support
+Message-ID: <aFOONKOejLcYOyLQ@dragon>
+References: <20250520120820.890252-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,20 +46,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250520-initial_display-v7-8-a8f0195420aa@gocontroll.com>
-X-CM-TRANSID:M88vCgA3rw5SjFNo5nn2AA--.35256S3
+In-Reply-To: <20250520120820.890252-1-alexander.stein@ew.tq-group.com>
+X-CM-TRANSID:Mc8vCgDnl4A1jlNoj0T8AA--.46928S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU7sqXDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAR1xZWhTVBnN5wAAsU
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUwhF4DUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNRefBWhTjjdxrwAA3k
 
-On Tue, May 20, 2025 at 08:34:57AM +0200, Maud Spierings via B4 Relay wrote:
-> From: Maud Spierings <maudspierings@gocontroll.com>
+On Tue, May 20, 2025 at 02:08:18PM +0200, Alexander Stein wrote:
+> Enable EASRC support in tlv320aic32x4 sound card.
 > 
-> Add the BOE av123z7m-n17 variant of the Moduline Display, this variant
-> comes with a 12.3" 1920x720 display.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Applied, thanks!
+Applied both, thanks!
 
