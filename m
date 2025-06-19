@@ -1,412 +1,189 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011003.outbound.protection.outlook.com [40.107.130.3])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013056.outbound.protection.outlook.com [40.107.159.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B492F5467
-	for <imx@lists.linux.dev>; Wed, 18 Jun 2025 18:44:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C6C1A23BE
+	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 01:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750272279; cv=fail; b=Ck9I88iUP2fBydHl48BqasZdrUJZoU2YnWikEonoCoyclYJAugqDdYw6TUWt8lMV256U++kwBDuAxghSgquapc1BEjFF5GlMwux/geHpEKnsemrKFX3SWSvIt2nTVJ0/bsTsrE5C9o+A8Y4OOVc4fQ7VY6++tI+GjT0T6EzsIH0=
+	t=1750297197; cv=fail; b=ppMq9mBA27o80jywqAgnNB95kVCFFzvcPaLYac1l80oRZtxn+jk1ds7Vt+Fb7YYWyg1/uHZ37JUJeRJfiaPVsAP6b/8dtIIU0XvwMtc6BGk6K8liEWXfq9Pfs3lwFfrXXKiO4PdGh58II/I2p2cY75A9EQWC2sFbSSxI8Iwvg3I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750272279; c=relaxed/simple;
-	bh=cC5LdU5eZns59T0tY2JxLCizbt+qjXgFJ1Qi7G5bHX4=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=TNtIZQWqv7qtul3VMU2iNXXoA6ce71t+5FApWy0Lby9I6nd9w2ZVy0xkUnYbpdnby3k2iGnY7efeLKsafQpgQ6nGuUu90BBo0BVS/oyUBg/cLwGpUccSwQ365aT6d5btqSg39LH4PYNb/4ycTozymUsga1718jdPkCOLjcM9woE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=V38gq5WI; arc=fail smtp.client-ip=40.107.130.3
+	s=arc-20240116; t=1750297197; c=relaxed/simple;
+	bh=KlanOofqR3k0z0EISPgC9ejeEgGucERPUVD1kNHQeHU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hA0p8r62ivJwQ5sICmQjKLBL8njMN64w7805oH2mTNn8QrtxY83AT6Y5BQxseJWFI8Mm0DvnC6V1L0CUP0iZcjK+TCrIouNyqFE6TC3ee0vm71mb9G85GfUPAAR4i15rdf+rW+sc09cWNO4prZwifT+L7Yyrei/oTgCVTS6dJ3I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AZ6tbQki; arc=fail smtp.client-ip=40.107.159.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="V38gq5WI"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AZ6tbQki"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dvxlyuy6fyB0JuJV03A6LM5+nOg8XNZborboo1RVKlGJNITG1/+mTTnsJ6W+LVLD8qQu9yhyEZrqQtOzMnFTnyKyvtmzEvAfVxBAOcK6T0doL9HmC/6XRwkRo+GBKa218mYsymN3u4cWENIXKSa2y9yEwU6kI9D3gyOYq3dlO77hyc582S1tRtJc8BL52kjHjQSU51Bc1a6vnpw8sx5MJT5tOvCUdGEDF052tO1wSYsSSLA0FOzz8U7lRKMG6EmVPwpGAdjELy0Fe/etBIv3ilXmDk2sNUd9+ouT8qIhmVJMrA3tUug537uYk1r4psawAHkGJ64hC8d7ahJB0OSwUA==
+ b=xDG4CwgfidD2zWr0x5KjWKdv85ywUt2SZ4SGWheFoVGP76DiMLA5Fuj0VVbAo97WmWFAu3yjjVdDRqaOonmExI2mrB5X0sjBYuj4eu4uJJ5DD4pB7G4ouRiGDN5aLICNfj45ptB1yb7nGKqbp8ocWj/9T3pcQ/qsyiZhe8xy6oXvUZdiZ5gSsI7HTlzIU0uQIBq5uCgfKzHA0BvBnE9v5JRkN+ToLJnimDPZvylSQJXdsSU6f8K8xT3soZByd8LFfjY290bfamSMPwBr7iI3Br9PKkitPNNt2a9/32H8tlFiooMtggvSV6z6IMeoEifFVz7Sg3J++2efmhxZQT0YiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cWF0L33H7mc5k6d6hGmaNTXQQ3vffIPM+nU/tIPAqBw=;
- b=DY605KIO1+8bdNc/3QOrvC79sF9f7AADpOFN+CuvkEGl41mt4rBm66YHtgOa78DgJyDfUwzGlxaXaoVUivpSJFb4OIzkTYIt7b5JY84wCf/bTbtQF5i0blfcNeQe7p879JMUVF4y0t7cZl1hXOWO0yDPBHpLFq4K1YAWr0a+UWSLXg0TUqL7/rjWL/E8C2h2WjOJcLh1rTXjSVHK6uaBzQo/cb4+IE2kJR6xDWvlnwtdIwM8BNdsDug6sUkZBZ8sKTQ1rZUVxuaBeTHbbZYPaTIvPsyjU9HAnE1opOo3HGQbRTe6ZJggu87YWtVF/6wyBr4w5i1psNr/j65Sc9m8SQ==
+ bh=KlanOofqR3k0z0EISPgC9ejeEgGucERPUVD1kNHQeHU=;
+ b=Q5MzLQAXvwjyZWTNX7cOP0ZH5h6U9RhJ2fDhf6UN8WSiWEwKoszhgD/5VjhNqJDFNfiHnudPf+OtrTjElEGlHOCoZsE0Fc+Wdjq1gd/Bs+RH8erM/Me5uUeevi6G8XBIvKcSJC75PwvQgBnroZQ7TlmiTbcA5J9VT6cjFRV7FWT98gLErekf6BcAI82QXRgrti90OK9qdmeMpYMigOpnTWp+hQ7DyJjPv7SLxVmqwk8Wl5G1wFl4wvjVYFleBRqyvhlpGDo1TwI6kQLk1eBEBhhGpfRarV+f0wyrq4a7Xu88j4Oi1ltCCLduHiZIQBdY5abYTQsD1VkStuwjd7letw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cWF0L33H7mc5k6d6hGmaNTXQQ3vffIPM+nU/tIPAqBw=;
- b=V38gq5WIP7YNDpRdv7QGaChl4laGoNcqTqNlAhbItGDXFm/cpkrKDjtJfrsrGa3oCpdkJ/piEeUolrXaxcat8905NDMyG/cxn2DNvqxWSC45Sxa3d83wmluhJRDbcuqiHsOQ4ILwXzHt8gpuJ0Bt6vQ8XTJnJoaB7FRZPoBFqmDSYGph8AsYlTAsVlGP+zQ03Dbv5bFjVCgTnM3QFMo64Y6RrzwAJofVbyBfxCFBGPLqRBTBjSJpdYdIP6KYV5fy6Gjl+yOLVIL4ykSBRwZlhtHz0GNxlyFP2/ZiThZHoC5nxd5YxsSPpD/KsODafISCBkF5tHoUIFz+7jm85PVehw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA1PR04MB10324.eurprd04.prod.outlook.com (2603:10a6:102:448::18) with
+ bh=KlanOofqR3k0z0EISPgC9ejeEgGucERPUVD1kNHQeHU=;
+ b=AZ6tbQkimWj3NjR1x5/qUtq+Y5Ip3qBC6XcOZycBtjKwxYSLJ4sQWoJfFrnnEjFVVlfYHEjWfH/T6r7e/c0MCREDFi1pT2SHE00xD4Yvg+Tbd+KMojslWblTdrkNdI5l1KY4nyF7Wx6mIuvm8H5D6E2MubozUbaKVEMFCwn0ZpSU5cpaKNtTy5tjWwobUJYlkQ7AwMGhM2XAR/63mvrgSTKWAAe2CopJwHKVir6zLQInulJwFsI/JL/yL0s0yrJJJbphl33ZBLed3yYbeEy9fV4W+uLfJ/Lu1Ch/fKKOm6KSa6ygZSPg0GZLtAsIDEt/DV9vQSfu8bzEfTH3Nd8NPQ==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by GV1PR04MB9136.eurprd04.prod.outlook.com (2603:10a6:150:27::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Wed, 18 Jun
- 2025 18:44:34 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8835.027; Wed, 18 Jun 2025
- 18:44:34 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH v5 1/1] dt-bindings: net: convert qca,qca7000.txt yaml format
-Date: Wed, 18 Jun 2025 14:44:16 -0400
-Message-Id: <20250618184417.2169745-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0088.namprd03.prod.outlook.com
- (2603:10b6:a03:331::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.22; Thu, 19 Jun
+ 2025 01:39:48 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8835.027; Thu, 19 Jun 2025
+ 01:39:48 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, Shenwei
+ Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Richard Cochran
+	<richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Alexander
+ Lobakin <aleksander.lobakin@intel.com>
+Subject: RE: [PATCH net-next v4 03/11] net: fec: switch from asm/cacheflush.h
+ to linux/cacheflush.h
+Thread-Topic: [PATCH net-next v4 03/11] net: fec: switch from asm/cacheflush.h
+ to linux/cacheflush.h
+Thread-Index: AQHb4Ei89GSCi1UJx0au+4VAwd5Vo7QJtSHQ
+Date: Thu, 19 Jun 2025 01:39:48 +0000
+Message-ID:
+ <PAXPR04MB8510E161D4AE292A961B42CF887DA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250618-fec-cleanups-v4-0-c16f9a1af124@pengutronix.de>
+ <20250618-fec-cleanups-v4-3-c16f9a1af124@pengutronix.de>
+In-Reply-To: <20250618-fec-cleanups-v4-3-c16f9a1af124@pengutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|GV1PR04MB9136:EE_
+x-ms-office365-filtering-correlation-id: e1566fbc-c2b2-47d9-3670-08ddaed22d62
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?UFpwaUlwWXN3SCsvUVF3REQ1REkwa3RBOHFMMmZ6d1FTZmpxM0dCRTIwRHk2?=
+ =?utf-8?B?WTVWUll4MkttQjEvK2Z3dXBSbUp3Y3l1VnVnL3ZYY1BlVnhjbGlBSjJWaS9T?=
+ =?utf-8?B?dGQ1OW9TU0xhVVg0bGtTWnJvcXNpN2lYZjgrU3JSSmtMeU5adHJMWnZ4c1lt?=
+ =?utf-8?B?Uitvb3BQbHl4bFk1ZDIrMWVYekpwRGFmN1FhU1UyL3RqckhDYjVSNWZxc21t?=
+ =?utf-8?B?YWRSaUtNejc0RUNtWVh0K1lsQ21tdGVuNTVyU3RrWk9vZXZLaW1sK21ib2xU?=
+ =?utf-8?B?b05vdnFMdVlXNDFKa1JTZnNQZFRIcTdtbjVHWjFId0VYZlVHWWF3bHN6OEMv?=
+ =?utf-8?B?a3h0YzRKd2I4Rkw4cnN0TjJVMjhSUUxWR1c1M3Jjdkx3aTB3S2hyRUZqaDVO?=
+ =?utf-8?B?emdlT3FTN3NsY0trRW9iYWxMN1YrL2dza1VNUUYzQk8xbmJsQVRyQ29JNjJp?=
+ =?utf-8?B?QS9TUW41ZUhobElaWi9zYWNnc05jMUNzTDJBejE3NzR0Vm84VWtWTWhCNUtr?=
+ =?utf-8?B?Z3BqeEd3cTRnOG9yTDN5SnRzVUdZNE5MdFdUMEp3ek5FNVVFb21WOHBiM2Mw?=
+ =?utf-8?B?dnRtKzJSTTQ1T1k4VVVzaDRZVU13YUs1czdDa2dEN1ZoUjZxWGY2UVF6U1FB?=
+ =?utf-8?B?c0N4cmEwQmtVSlU4MHlnMS90aFk1UUhVNkpxOTZFemhSTVU0anJ5RWxJTG8w?=
+ =?utf-8?B?SFA4VUpDRndsSGM1U3MrYm1rM3Fxako0bVVya1lldndPKzZUM2VRL0JVVVQx?=
+ =?utf-8?B?Tmh4RnpoTDJKVjFvenRMdEZEL0pFN0VUQ0pPdmZNYk1wL3ZXZVVpZjFmVTJs?=
+ =?utf-8?B?YjhJQVluTld5M1pydmJ3aU5Wamlkb1NwWW1sc1NTR2RRZ29ESTZUVUJsSVVh?=
+ =?utf-8?B?RUhJc0RNL0tFQTF3MHVXZ1UyTTJYaTJRMWNleUdud2pQTm15ZFVkUUp6MlFE?=
+ =?utf-8?B?Z1FpYlJCMTUxRzdSc2hQa0FtZ1FFNlBpYVIrSTVlOE9OelBiNG5Cclg4M25Y?=
+ =?utf-8?B?clRjdDJQSzBjOFE3cWRNeHZSVk4yVUtibjFwTXVja2t6OXZHekVTZUdka0Zi?=
+ =?utf-8?B?dFFlTXQzMGNiMERRa3FUd2l0YnRpT1BaMHlYaGcvMEl0SEZKdkw2OE8yOVJj?=
+ =?utf-8?B?SmJBTXpvMEhNU054NFRISkpyVmZPRHRpM0w4SmVLeDA2OWJhVGxETDBaSFd5?=
+ =?utf-8?B?YXJ2d1RwNk92U2hhRWYvZjg0NmZMN0tXUlVQL0ZMZWhsaENEQTdmUEp1Tkwr?=
+ =?utf-8?B?a1doZE9HakhjNnRxYlp6ZkZQU1R4UTY0UGk5ZEd2VXh0NE1qUVZoZ3lrcHhj?=
+ =?utf-8?B?endtelRWZklDNTlGZDV6T0sydEZhOUQxYUwzNlZjVmo1VG55Nis1bVpvMk83?=
+ =?utf-8?B?Z2pOVkNXa1hBRUZNSGlUWjUzQm5DTWF4a0JqT1hkQVJoWXMwN3NhdkZRcG5W?=
+ =?utf-8?B?ODBrNVJMbGk4bldxalAvVHMvcEpWTFBLMHl6OXpJaGFXenBhOUpYWk9sdUsr?=
+ =?utf-8?B?T3VQUzQ3UXI0dTNtcU1ETkpnL3g4bkVCNDE4NDJ0dS95QWhDQUhja2dNb3dZ?=
+ =?utf-8?B?S0VaeVpyV2dqbnFrQUJEYktXc2FDZE5SSHl5aXMzbXVmMkJMN1dudTVzQzVD?=
+ =?utf-8?B?UE13T3I0Lzd6KzBrTnhDeW9OT0FHK1dYQTRsVG5aMEVzZkVqTCthRkFwNnZq?=
+ =?utf-8?B?dEl3bVNpSkpJaEZodGp0VFRkNS9MQnViNEFGcFJ0MHNpWGNBcWo5aGNnSVpi?=
+ =?utf-8?B?a3VNMm9PWDltTDJoWVMrc3p1NGJ5bWV0OXRFWUhjSHhlOG9VZGovMWZvaUxT?=
+ =?utf-8?B?Mmk2VTBtQytwdlo4MHphMGdGc21kSXQ4ZkRhUllHc0h6YWRLRURoTGpMNGgr?=
+ =?utf-8?B?b2hiSi83b1JVTGVKTXJEYW93aFkveTJCZnBucVczclJSOXpaTnBGQ3pUemFO?=
+ =?utf-8?B?Q1ZoSHYvYm44bG5WRXpMTUtpRnRSMVBKYW9BMzlKaVo2ZHlhcFJPRDZLZWNv?=
+ =?utf-8?Q?5huL1RuFiMeeXWscf34YrygHyU+Io4=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?dnh2L2Y0N0dqL055Y1M3bUc3NUc2Vkt1MFQvSzRER3VZR3ZHZEcyN2w5QThi?=
+ =?utf-8?B?RFFVUzA3RDhBT2YxT0JLOHVkaGNLYUJLa0dxaXdlUWVGWDlveEdnMVhhMUtp?=
+ =?utf-8?B?c2kvK2loR3pSck0zRmorSXJTQXRqQWxaOENpZU80clpCYjdKYkhZYUp6S3Zt?=
+ =?utf-8?B?N2dtUW5sQzdCbjM3cUd4NW9NTEVmMi9WOUd0eTV0bUVKeHZQM3FMRlRBdEY4?=
+ =?utf-8?B?ZTYvOUFwSDh3TWxGSVJXQXZQRy8wcWRyUzdUVGpnbXlyc0lQYmx6dWhieVhM?=
+ =?utf-8?B?ejZtSGh5WnNjbDZjYnc1aDYxMU1MWXFHVUxaRmhDbXVqd0pQOTlPWGgwcHJi?=
+ =?utf-8?B?R1hHQjIyeU92OEtGeE56dWowTWtaR0tVMXhxNHVOSFJ5NEpDUTYxa3p3Q3Ru?=
+ =?utf-8?B?S3BJaVJPcGJUQ1JxRk5zeUVJVkNNU2ZReE9KbjhmNGVEbm1DRUQzUzZVcTIx?=
+ =?utf-8?B?OTAxcDgrUFVhOHFXcVIvTDNkK0xtdm95ZWhIUFZiVitVaXFmOFMrMXhhRmly?=
+ =?utf-8?B?YXZudzFUSzhpdWhYQ2VzVUhnVDFPcHg1UFMvY2o3cnRwWkRRZXRmTmZkMnhu?=
+ =?utf-8?B?SSt3MWY4bHFYV051eml5clBNNUVKbmJXVXR6eEZ5bzAvRXArOVNKZnN5VHhT?=
+ =?utf-8?B?UktQNmlPNVZUYU13N1BPYXJjRmhEV3pOMHNsYi8zVDVrejdMSkxZZUN5Uk1y?=
+ =?utf-8?B?U0M5Z1BLUTdzd01JTXZNUGw1ODVnWVBkSS9GTDVqL1ZCNnBnWklSby9EUTVj?=
+ =?utf-8?B?cHBoWTJzQ0hJTnExeXEzNkFTNFZYYmI0akxkZG0vQmZPaDUvV09RQTEwdUJD?=
+ =?utf-8?B?aHhEZXd1NCtrNlA4dG9paTdRKzJBUVFoRVBBK2s0aXFDV3NPOVRDc293L1Q2?=
+ =?utf-8?B?NTlBOC9WVE9aODNOYk5KcG9nbS9BbDhmdjVpZUJTZkluVGNzR2I4VE04dGVi?=
+ =?utf-8?B?WktNZUhqNnBENWZMek9qdkxmUXl1QUYvdG90SG1sVEdwWkgzdVM2TlVpVjFN?=
+ =?utf-8?B?b3dnRy9HUkFkdzdrU3ZXM2llWTBieXFqSUJ1cW1NZ3JwSUlKdzB0YUY4dFcr?=
+ =?utf-8?B?d0NuemhKNUVBdFBPMTMzQmVDVmc3b0hDcTNOZHlCb3lXWHJQc0toSGZVOFFS?=
+ =?utf-8?B?MEVZVHJXVlB2akNuSm1nUkZVMWlsSW85ampkV2U1ejI5VmxJaGYrdWhvRE83?=
+ =?utf-8?B?cTdra1R0Tm5VSFVPVGkyZ3k5Ykg0RTZ1ZmxRak4vczFKaTlmZVBRb0xTZ2dy?=
+ =?utf-8?B?RVRlK0g5QnFkNHkvL2F0NWpZSkZtYm54ZENmc3JkeTF1eVVsVkRjNFFXYUx1?=
+ =?utf-8?B?Rmp2M3c1S1ZPWTBXTXIzMklOOVdOVTgybm9TS2wzdkltZFZvMUg2NU1JcGpq?=
+ =?utf-8?B?ZkN1WmllL2RwYlY5TmwvWHozN2tuWnNidTQ3a1BoV0N6bkxJMlloQTZVSWV2?=
+ =?utf-8?B?bXRwOVA1MGNjdVlVTE5wWVJtT281a29PT2ZmQnJzQ3FzWUlFWEloK2NMdC9x?=
+ =?utf-8?B?U0dOOFJXdjZvMGs3d3U0dDFSUFdoV1o3Wjk0Um1FVm1HazZKQjRRMFVpTDda?=
+ =?utf-8?B?UkFFSnh2NVplOHd0L3phYTdHVS9qbnJLaFhiUVIzZzBDVGU4eDMzd3h4MTRn?=
+ =?utf-8?B?eVVmUmNRQ0VzdTJMRWxKeG9ZaFRrK05hdS9CeCszbmljUTZGaTVTcGpDbDI1?=
+ =?utf-8?B?YnlqY1p5VkJjdGtrU21ZNVRscXZ6OFhteEhPMnpRcUpLMkRDSTJvUmVhSmV3?=
+ =?utf-8?B?L1dHNzhtdEF1bnNLVmF6YjlJbVJwdHJ0R25sbjRrRk5OSTJNcUdOTlRNWVQv?=
+ =?utf-8?B?U3NYSmVLMCtpQjNFU3JwNU9meU9LRDBUQUZDRmc5ZHN4eUtOcUxHUlpRajNn?=
+ =?utf-8?B?L3ZKaUMxR2NMM0FnLzdpL281bFgzbUtHbXNMdXFyUkNvYnRZY3FqM2FxUU5T?=
+ =?utf-8?B?WVN4eWxiR25KZDJzNUJiRHlWa00zOTgrOFRNRUljcDFmRTFWeWlXSkNYYUVp?=
+ =?utf-8?B?MGp3UEZTZC9tOGNuRjJmc2xLZHo0UDJ6MENQelI0VlN3UkE1eVAxWFpYQzNn?=
+ =?utf-8?B?ZFMrbnliZld4MkhWeGRaNm9tRFVJUmRTWmR6UlViakR3NXU2SU1OYnlWcnNX?=
+ =?utf-8?Q?wC0Q=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA1PR04MB10324:EE_
-X-MS-Office365-Filtering-Correlation-Id: 785d0b22-8fa8-4338-cde8-08ddae982b78
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|7416014|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KKOeFjS3rI0A2l4mRAwiAvB91B3tuFq97Qdx+KZa/7IyAKwdby15RDikyFpm?=
- =?us-ascii?Q?V4Arh/ZC0MGHjjUSq5xa8O/PXIs9tNofHbk9Tyg3ibP1PDdNiDeJrKG3Bu1G?=
- =?us-ascii?Q?bBKgKt78sjfi2Xn0CkpsS09B/dcYdKcBJ66P1SMapfzCT6VDny4dRg+ObuB4?=
- =?us-ascii?Q?/p2yLRN9A9mSqLvKWPwWZtjOIf0Ns6M1BmXKbUDQE/+THAFd23KryTDlySy2?=
- =?us-ascii?Q?wgCkqHsrIppG5gsV+FSkqvTrcokj6iXdtxAkVYYR2Y/BQA98QOBgh5R1pUqo?=
- =?us-ascii?Q?EphikJK2rtjq8ZF0jiEkk4yZPFzsFR86siuouTDOo7GCQJdD0Z5Snr0KpCm3?=
- =?us-ascii?Q?Sjg1hcQBgqzCpNDfOjaQzURQB1bnWtoOhpW2emxuzVlxrXJmEWnHgQJZow9e?=
- =?us-ascii?Q?n7omsN8C+AvY+BB0Srj+ohB56Lw7jEyeT4tgt7f3KdpCzil1iO9IOxaARSLN?=
- =?us-ascii?Q?e5KHlNM9KL+RMlXn0/WNnRbun7AbgK6HWlR7oOpSDlIXIWcCVQnxcX+5wO6X?=
- =?us-ascii?Q?mXRVT1anFF9vyA9SaNz2xhK2XfiMzS9iCEoGiziqYbFQV7Y8Eu8bFqffu5nJ?=
- =?us-ascii?Q?Bp8ENYw6Hq5byVeiQ7gnAFsE3n16N07xZwwPqR8ZU3z8u3YCA3arAe1fPEPD?=
- =?us-ascii?Q?baZ1ZNj7HJagah9P3jt1oBvKSHBdCaFSecnIyKEP9D+xtVkAH1magWKG+mbI?=
- =?us-ascii?Q?FK8PHpiFWuCG4i7IWFp4alO+0znCND9OpovVkyGeB4J6zokoxLb6HXpkFlLG?=
- =?us-ascii?Q?v7EIyUB2gT1vUQKbOyCo7+9YNtPWSnQxIB+OpCOj/UKAnLyf+pK3h8gQ1yy4?=
- =?us-ascii?Q?6I3IL5Pwo8179rPb5lZAfpWM+CxNsuN7ufNMw8zD7x9GaKzrKvBqG212dMrr?=
- =?us-ascii?Q?ciVaSnq55xXLr6YJV/Df7JwdY7IExnJbgqbzrABLSXSXmY2SX9KTnjlF3z1z?=
- =?us-ascii?Q?412ikEP1rA2dbaNcucfhy+jdylJys+7WxsrEt+vdfzJtBWG4teE+l2ObddT7?=
- =?us-ascii?Q?kelxMXKUPZtWn3VxKVln3jEjGRB9iItVxmH6mlI2upBKISN/W3jDiJzkO7XB?=
- =?us-ascii?Q?GQ4KNlFZE+eW84YDKCEzHTgbzWTxpZh6YiPEQw2N41r85C93BaSA359JN4cm?=
- =?us-ascii?Q?om/+q2ldDq92eM6GWFF4sIZYLfJDDwLk/nasYXRcxPEOHrW4xDT468FPV+j5?=
- =?us-ascii?Q?1IKZ/Lx/gJ9kazXZULDiCBSfwib+ohCF+zbhvRlenhrw+8qx82vjHzulvWOV?=
- =?us-ascii?Q?ylL1hIQqbDCyuBY1DfGwrOadUAby1vzeoHWnVEiv5XtMh+HxD2kvxUMtFJnO?=
- =?us-ascii?Q?b1vLKxi53EiXp5auVp/aqyCF28kfV3XfWNHZM+4yHoto0/JJn/zCQbL33+U1?=
- =?us-ascii?Q?zIQWWXr/EohFLUbefimRPtpAG09zEnRzXoj0Sz41PmfVuetnYjiK18jK4skV?=
- =?us-ascii?Q?mt34qT7T9JkQMju2CQe659gZxbH1dNGS?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(7416014)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nQAofyhkBztXqww1z+iWwQdoARoTAweBdN7G+GvFH+FLfvVwsUozcoLq8glL?=
- =?us-ascii?Q?tBiwWgW6labARhmU7YZJeVAgzFxgMyPt4eSg8koAq/kSLV74JyIbeS4CQJW+?=
- =?us-ascii?Q?VeD+OaWZ9XKFfqqFRn+XiyOifWy24aYlBxyXNq8EIPy8E5LBzZ2rk6l4vpv0?=
- =?us-ascii?Q?yJsqbhMz+xLumkDcEX5yto6zIcUE/lif+Vx9LmVcOt7+PMynidWiP9IWYRaG?=
- =?us-ascii?Q?jWA9U8zw3r5B9qOvz1AEiCD4bDwWgBt7hBDnJ/q47bgrs3vFQ7Rfn7kZIFsV?=
- =?us-ascii?Q?HrKDprsjzOFHGQPa8U+yQVu3XfLoe2agae32weWT2NcW/+Vq3Ic/rBu1Fn8Q?=
- =?us-ascii?Q?Mqebik21sDuyT6DxjY7a5dJaN63nioOm7o9vCFHwWkR9U0p/73hFKp45sTlN?=
- =?us-ascii?Q?o+qkRd4DLw36ssvhnLfvuftrGR63nabkvmcRlNaUK+6xiBstPXe7+1hnI4DA?=
- =?us-ascii?Q?ZZR+gwQYBVQumZ0Bapl2SrEdMAMARC28Gvr/zxFWomhaeO9MsGCm/MX65wNv?=
- =?us-ascii?Q?QGnj+7poKG7Ruww3/w1/rxrezRWDbb/jaG0qygYq+9UIG+fzBN5sLTmQ1nXD?=
- =?us-ascii?Q?TB54hWubH9QdZQbsycbes/Og7UpsZrMZdwjFm0OFw3934xcVdwu+Q+3hIxmg?=
- =?us-ascii?Q?a6APXL/+x0iAdf1J9O5tvoTGbCqf5q7GElUHbKqMf1ul5jW4H9yjPfKuwrj4?=
- =?us-ascii?Q?lNp5z0K+pRsMg9zysWZ58izQ3yy8qAZ+PejRWadV9FTjRneCvai06YJM6MXU?=
- =?us-ascii?Q?VhptUEAr62Ek8Ea0k4vIybltX4LUDFOWntdidg92CDoERy/gam7QQnyh3/VY?=
- =?us-ascii?Q?j81YP7pzMyaeXoq7wypRS8dHq0MjPCb9PQfFQagwnO2YjBn6XQokrcK0h1Kd?=
- =?us-ascii?Q?Z9Q+ZvxPXz4YUSxQ3dLWAozYqRsG57MIHdlgJaf569khFE8VvUeeBhXPeEcH?=
- =?us-ascii?Q?5Jj2oz4aLFegCjN7UBt/eim4nPaeMDrfZNiME/5TwKMKJSUPE6y0H6DRmEGr?=
- =?us-ascii?Q?eowWBCYXCrtLEYfYdn/saDAthr4pUQEnBIvHgTSwwGqI7v5oCQk2+KSTVqZ3?=
- =?us-ascii?Q?km9E79jSGEOZziRMVoaV3GsL1iY8izgmngtnb7ZeWC1tX0Jzn3OtqsFU1/LP?=
- =?us-ascii?Q?hLKBQBYUaPJSob1zWxgmXHyCZBo6v9Rw3GqzWGlNF6d3V3Po+YtrUOGsKW96?=
- =?us-ascii?Q?e7sJdDBusKURry3QRyJrpmfAQ7Hic2xH6847DLq3y+aEdQA8SPTcG8rzptWh?=
- =?us-ascii?Q?/zjvkFS5R/QfyMVhisMsp+l100MjsVIrTwru+bf8JlD8iBSbBSJCmh4GjFrV?=
- =?us-ascii?Q?1PUAqoy1AMKXzVTHHlVdSOhYs//WdVt4nw6C/FcIKMTFhBIm8kS3CHB/uwlX?=
- =?us-ascii?Q?SsEtmZIGHtAHSvwk678WfDwVzyde22FZ1Y+BBX+PVKQTPXfv8xCYvHarUnmv?=
- =?us-ascii?Q?paUaDrvUsRbdhhp/FuTn1lwqDDo69NcWhK8YveHbCsf81dWT2aSQOTHjTrJy?=
- =?us-ascii?Q?15uPvYxs0C/5hlewUwdm48Z9uTaHKyTqaQA5DsQrHW4bqKYe3U1PKbYZ3pfQ?=
- =?us-ascii?Q?fqA7DzHCZvEOH48VwDXkXqPglwwQtd53ydT/rXrX?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 785d0b22-8fa8-4338-cde8-08ddae982b78
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2025 18:44:34.6419
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1566fbc-c2b2-47d9-3670-08ddaed22d62
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jun 2025 01:39:48.4106
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dRbYVOzYIPlpYggw0Dsw7Zws+jr2rgiveSBZK2RgxaBwe70cZgOAvdzKUzKye1/Qaeb5YBFNGRDqVSk4l+W2Mg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10324
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PwyWrafYM9L4mbUkLYye5ReNbXMr180ZdbuC4cjMpKXTsmINpgjvrlSmKJVt7egXN6Kx7hq2vdHUSbku4UjbhQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB9136
 
-Convert qca,qca7000.txt yaml format.
-
-Additional changes:
-- add refs: spi-peripheral-props.yaml, serial-peripheral-props.yaml and
-  ethernet-controller.yaml.
-- simple spi and uart node name.
-- use low case for mac address in examples.
-- add check reg choose spi-peripheral-props.yaml or
-  spi-peripheral-props.yaml.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v5
-- use IRQ_TYPE_EDGE_RISING.
-- remove comments in examples.
-- add Krzysztof's review tag.
-- add Jacob Keller's review tag.
-
-change in v4
-- move if into allOf
-  move qca,legacy-mode to top and use qca,legacy-mode: false to disallow it
-  for uart
-
-change in v3
-- move ethernet-controller.yaml# out of if branch
-
-change in v2
-- add Ethernet over UART" description here back
-- add add check reg choose spi-peripheral-props.yaml
-- move spi related properties in if-then branch
-- move uart related properies in if-else branch
----
- .../devicetree/bindings/net/qca,qca7000.txt   |  87 --------------
- .../devicetree/bindings/net/qca,qca7000.yaml  | 109 ++++++++++++++++++
- MAINTAINERS                                   |   2 +-
- 3 files changed, 110 insertions(+), 88 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/net/qca,qca7000.txt
- create mode 100644 Documentation/devicetree/bindings/net/qca,qca7000.yaml
-
-diff --git a/Documentation/devicetree/bindings/net/qca,qca7000.txt b/Documentation/devicetree/bindings/net/qca,qca7000.txt
-deleted file mode 100644
-index 8f5ae0b84eec2..0000000000000
---- a/Documentation/devicetree/bindings/net/qca,qca7000.txt
-+++ /dev/null
-@@ -1,87 +0,0 @@
--* Qualcomm QCA7000
--
--The QCA7000 is a serial-to-powerline bridge with a host interface which could
--be configured either as SPI or UART slave. This configuration is done by
--the QCA7000 firmware.
--
--(a) Ethernet over SPI
--
--In order to use the QCA7000 as SPI device it must be defined as a child of a
--SPI master in the device tree.
--
--Required properties:
--- compatible	    : Should be "qca,qca7000"
--- reg		    : Should specify the SPI chip select
--- interrupts	    : The first cell should specify the index of the source
--		      interrupt and the second cell should specify the trigger
--		      type as rising edge
--- spi-cpha	    : Must be set
--- spi-cpol	    : Must be set
--
--Optional properties:
--- spi-max-frequency : Maximum frequency of the SPI bus the chip can operate at.
--		      Numbers smaller than 1000000 or greater than 16000000
--		      are invalid. Missing the property will set the SPI
--		      frequency to 8000000 Hertz.
--- qca,legacy-mode   : Set the SPI data transfer of the QCA7000 to legacy mode.
--		      In this mode the SPI master must toggle the chip select
--		      between each data word. In burst mode these gaps aren't
--		      necessary, which is faster. This setting depends on how
--		      the QCA7000 is setup via GPIO pin strapping. If the
--		      property is missing the driver defaults to burst mode.
--
--The MAC address will be determined using the optional properties
--defined in ethernet.txt.
--
--SPI Example:
--
--/* Freescale i.MX28 SPI master*/
--ssp2: spi@80014000 {
--	#address-cells = <1>;
--	#size-cells = <0>;
--	compatible = "fsl,imx28-spi";
--	pinctrl-names = "default";
--	pinctrl-0 = <&spi2_pins_a>;
--
--	qca7000: ethernet@0 {
--		compatible = "qca,qca7000";
--		reg = <0x0>;
--		interrupt-parent = <&gpio3>;      /* GPIO Bank 3 */
--		interrupts = <25 0x1>;            /* Index: 25, rising edge */
--		spi-cpha;                         /* SPI mode: CPHA=1 */
--		spi-cpol;                         /* SPI mode: CPOL=1 */
--		spi-max-frequency = <8000000>;    /* freq: 8 MHz */
--		local-mac-address = [ A0 B0 C0 D0 E0 F0 ];
--	};
--};
--
--(b) Ethernet over UART
--
--In order to use the QCA7000 as UART slave it must be defined as a child of a
--UART master in the device tree. It is possible to preconfigure the UART
--settings of the QCA7000 firmware, but it's not possible to change them during
--runtime.
--
--Required properties:
--- compatible        : Should be "qca,qca7000"
--
--Optional properties:
--- local-mac-address : see ./ethernet.txt
--- current-speed     : current baud rate of QCA7000 which defaults to 115200
--		      if absent, see also ../serial/serial.yaml
--
--UART Example:
--
--/* Freescale i.MX28 UART */
--auart0: serial@8006a000 {
--	compatible = "fsl,imx28-auart", "fsl,imx23-auart";
--	reg = <0x8006a000 0x2000>;
--	pinctrl-names = "default";
--	pinctrl-0 = <&auart0_2pins_a>;
--
--	qca7000: ethernet {
--		compatible = "qca,qca7000";
--		local-mac-address = [ A0 B0 C0 D0 E0 F0 ];
--		current-speed = <38400>;
--	};
--};
-diff --git a/Documentation/devicetree/bindings/net/qca,qca7000.yaml b/Documentation/devicetree/bindings/net/qca,qca7000.yaml
-new file mode 100644
-index 0000000000000..b503c3aa3616b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/qca,qca7000.yaml
-@@ -0,0 +1,109 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/qca,qca7000.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Qualcomm QCA7000
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: |
-+  The QCA7000 is a serial-to-powerline bridge with a host interface which could
-+  be configured either as SPI or UART slave. This configuration is done by
-+  the QCA7000 firmware.
-+
-+  (a) Ethernet over SPI
-+
-+  In order to use the QCA7000 as SPI device it must be defined as a child of a
-+  SPI master in the device tree.
-+
-+  (b) Ethernet over UART
-+
-+  In order to use the QCA7000 as UART slave it must be defined as a child of a
-+  UART master in the device tree. It is possible to preconfigure the UART
-+  settings of the QCA7000 firmware, but it's not possible to change them during
-+  runtime
-+
-+properties:
-+  compatible:
-+    const: qca,qca7000
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  qca,legacy-mode:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Set the SPI data transfer of the QCA7000 to legacy mode.
-+      In this mode the SPI master must toggle the chip select
-+      between each data word. In burst mode these gaps aren't
-+      necessary, which is faster. This setting depends on how
-+      the QCA7000 is setup via GPIO pin strapping. If the
-+      property is missing the driver defaults to burst mode.
-+
-+allOf:
-+  - $ref: ethernet-controller.yaml#
-+
-+  - if:
-+      required:
-+        - reg
-+
-+    then:
-+      properties:
-+        spi-cpha: true
-+
-+        spi-cpol: true
-+
-+        spi-max-frequency:
-+          default: 8000000
-+          maximum: 16000000
-+          minimum: 1000000
-+
-+      allOf:
-+        - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+    else:
-+      properties:
-+        current-speed:
-+          default: 115200
-+
-+        qca,legacy-mode: false
-+
-+      allOf:
-+        - $ref: /schemas/serial/serial-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ethernet@0 {
-+            compatible = "qca,qca7000";
-+            reg = <0x0>;
-+            interrupt-parent = <&gpio3>;
-+            interrupts = <25 IRQ_TYPE_EDGE_RISING>;
-+            spi-cpha;
-+            spi-cpol;
-+            spi-max-frequency = <8000000>;
-+            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
-+        };
-+    };
-+
-+  - |
-+    serial {
-+        ethernet {
-+            compatible = "qca,qca7000";
-+            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
-+            current-speed = <38400>;
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2c74753e2df41..ffc80ec9b3d6d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20383,7 +20383,7 @@ QUALCOMM ATHEROS QCA7K ETHERNET DRIVER
- M:	Stefan Wahren <wahrenst@gmx.net>
- L:	netdev@vger.kernel.org
- S:	Maintained
--F:	Documentation/devicetree/bindings/net/qca,qca7000.txt
-+F:	Documentation/devicetree/bindings/net/qca,qca7000.yaml
- F:	drivers/net/ethernet/qualcomm/qca*
- 
- QUALCOMM BAM-DMUX WWAN NETWORK DRIVER
--- 
-2.34.1
-
+PiBUbyBmaXggdGhlIGNoZWNrcGF0Y2ggd2FybmluZywgdXNlIGxpbnV4L2NhY2hlZmx1c2guaCBp
+bnN0ZWFkIG9mDQo+IGFzbS9jYWNoZWZsdXNoLmguDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBNYXJj
+IEtsZWluZS1CdWRkZSA8bWtsQHBlbmd1dHJvbml4LmRlPg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0
+L2V0aGVybmV0L2ZyZWVzY2FsZS9mZWNfbWFpbi5jIHwgMyArLS0NCj4gIDEgZmlsZSBjaGFuZ2Vk
+LCAxIGluc2VydGlvbigrKSwgMiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2
+ZXJzL25ldC9ldGhlcm5ldC9mcmVlc2NhbGUvZmVjX21haW4uYw0KPiBiL2RyaXZlcnMvbmV0L2V0
+aGVybmV0L2ZyZWVzY2FsZS9mZWNfbWFpbi5jDQo+IGluZGV4IDE3ZTliZGRiOWRkZC4uZGJmYzE5
+MWJjZGUxIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9mcmVlc2NhbGUvZmVj
+X21haW4uYw0KPiArKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9mcmVlc2NhbGUvZmVjX21haW4u
+Yw0KPiBAQCAtNDksNiArNDksNyBAQA0KPiAgI2luY2x1ZGUgPGxpbnV4L2JpdG9wcy5oPg0KPiAg
+I2luY2x1ZGUgPGxpbnV4L2lvLmg+DQo+ICAjaW5jbHVkZSA8bGludXgvaXJxLmg+DQo+ICsjaW5j
+bHVkZSA8bGludXgvY2FjaGVmbHVzaC5oPg0KPiAgI2luY2x1ZGUgPGxpbnV4L2Nsay5oPg0KPiAg
+I2luY2x1ZGUgPGxpbnV4L2NyYzMyLmg+DQo+ICAjaW5jbHVkZSA8bGludXgvcGxhdGZvcm1fZGV2
+aWNlLmg+DQo+IEBAIC03MSw4ICs3Miw2IEBADQo+ICAjaW5jbHVkZSA8bGludXgvYnBmLmg+DQo+
+ICAjaW5jbHVkZSA8bGludXgvYnBmX3RyYWNlLmg+DQo+IA0KPiAtI2luY2x1ZGUgPGFzbS9jYWNo
+ZWZsdXNoLmg+DQo+IC0NCj4gICNpbmNsdWRlICJmZWMuaCINCj4gDQo+ICBzdGF0aWMgdm9pZCBz
+ZXRfbXVsdGljYXN0X2xpc3Qoc3RydWN0IG5ldF9kZXZpY2UgKm5kZXYpOw0KPiANCg0KUmV2aWV3
+ZWQtYnk6IFdlaSBGYW5nIDx3ZWkuZmFuZ0BueHAuY29tPg0KDQo=
