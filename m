@@ -1,277 +1,155 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C53B2459FA;
-	Thu, 19 Jun 2025 20:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F9830E84B
+	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 21:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750366432; cv=none; b=Oo6PePIkFNi8Qk4Ha/kR1Dg8BJqGHyXm4oqYHw/B+KqeklbmNPYgbe9ojZtFQH9n3UxJppdB7Fbcju/eAhdoKEZpAz5uQz938V3TW5nZvrUqaaO4CweXvIz5ew2kyt3tCHbFkkfiMcDovk7os8YnGspYX+wMMjvtn/hD8liqVtU=
+	t=1750366979; cv=none; b=TD2vqAs8vB6YESw2TG+p3dMUUaX1NhV58aXyWkOudjMYBKB9/gQI3OUy2Y8pzZtxO9tBJI5YoygiccQmvAHIJBxSQ97yLh+PYm8lIL/6zJdzlWnh4vhicj8sBJrpmcebvHBisKL9sFp95836PItMRv78NkRCWkfm1Q8K7yJKMrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750366432; c=relaxed/simple;
-	bh=ybKBBbrvjmL01p8FtzTcnNdCgyhQhALzZsU71BczNpk=;
+	s=arc-20240116; t=1750366979; c=relaxed/simple;
+	bh=cMcgUkKcU4XsVXe3puMc1IqvW3rgKBUEbIiiJLipLQI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DPHnUHyzuTIA7kbzVJdb422/RbZQPBLGu89AL/cJD65t6Ddb7M5vG5nP/2akHXEid6FRxcb/QK6ytbUZT3mGlzvHLq3DhSfiT5Ngkt43+7bIxaGNgyGWR4E5ynngRBu7NHfRvqUXIv+pquzr8z0n0buSc14dFXpat4gwLcUW13U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B6Ebg3WE; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wwz1v7ITBtacYHTNB9HGJGGhoDm6NSLc4iNn9cx6wxqHHL/nRBUg3T68bTR+v+/vxeEdGSScFnqhhOZVCQ/n9hKECOxdKt4YDfwk8+p6oNLWXMgGtsuurzVBl+Xc4f6pqJDp5g1/eIOaqhh1/a9o93OtZKWpgR/2OahuezprUNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=nHzBpkMp; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B6Ebg3WE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750366428; x=1781902428;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ybKBBbrvjmL01p8FtzTcnNdCgyhQhALzZsU71BczNpk=;
-  b=B6Ebg3WEQgiYBytWS2/I66jUKMplCkZGvJ9+OnTO2j1AyZhO2/venLku
-   C9wqNwbQNnPZ8qzwyzH7eGbqzgA+/v8lDyytM4Vq2Yox1OpbuDQElABQB
-   L1ls+zMqHgC/fInOf1R0+CVZbv62Htn9aEqdw5cJY6CPLeffNa+yVi4WB
-   IR/BxA6Dbi7KpIFGm/D5W/jLvh3BRuGxRBwMUbZLDeGVEPrWOWlp6uTnA
-   n8y05oV2IJw5NuxE37HBp3Ydk/C/hrPcYQQNzHHG3qb2lJ8Xjk17sDbZg
-   vPRVeFZBNEBU/StJFxZr1k8abaXKlRyQLs6WDPNDnnKWenpbpY4+cwYIu
-   A==;
-X-CSE-ConnectionGUID: 5LVcySW1TvCxSZVt+g+DRA==
-X-CSE-MsgGUID: 4+pSScTEQyianGlT9GJ2cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="52550784"
-X-IronPort-AV: E=Sophos;i="6.16,249,1744095600"; 
-   d="scan'208";a="52550784"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2025 13:53:47 -0700
-X-CSE-ConnectionGUID: CsHVsW6uQrOgHPs7GKcYtA==
-X-CSE-MsgGUID: /5cZjRSSROeMCHWjvlDFlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,249,1744095600"; 
-   d="scan'208";a="150871999"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 19 Jun 2025 13:53:43 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uSMGT-000L6c-27;
-	Thu, 19 Jun 2025 20:53:41 +0000
-Date: Fri, 20 Jun 2025 04:53:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chancel Liu <chancel.liu@nxp.com>, shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-	tiwai@suse.com, shawnguo@kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] ASoC: imx-card: Add WM8524 support
-Message-ID: <202506200415.ATjQ5KCu-lkp@intel.com>
-References: <20250619062413.3946142-1-chancel.liu@nxp.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="nHzBpkMp"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id EE9192EC;
+	Thu, 19 Jun 2025 23:02:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1750366962;
+	bh=cMcgUkKcU4XsVXe3puMc1IqvW3rgKBUEbIiiJLipLQI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nHzBpkMpW+52bQS9MZNB33ymQm5kq4+JmXeNbxNXzA99jYVDEyEzQxuNgb231G0vw
+	 p9w1Q2rETQcwko4GJ8gIE6Fky1RgWDPPfJ3wYVTN6SdwEkcjARLPrpURRXbzR2YeF8
+	 dGpVql/nGJTd4hl4rsPmDL4igkyFSI1zJgZjmn38=
+Date: Fri, 20 Jun 2025 00:02:37 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Adam Ford <aford173@gmail.com>, Frank Li <Frank.li@nxp.com>,
+	Isaac Scott <isaac.scott@ideasonboard.com>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Purism Kernel Team <kernel@puri.sm>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH 6/8] dt-bindings: media: nxp,imx-mipi-csi2: Add
+ fsl,num-channels property
+Message-ID: <20250619210237.GA21935@pendragon.ideasonboard.com>
+References: <20250608235840.23871-1-laurent.pinchart@ideasonboard.com>
+ <20250608235840.23871-7-laurent.pinchart@ideasonboard.com>
+ <aEb+iTlDh0H/bRMY@lizhi-Precision-Tower-5810>
+ <CAHCN7xJjR1zZXeJAvkXmdNYroP6Jm6TLjHjnPUOF4z7yaL7EFw@mail.gmail.com>
+ <20250609182033.GA11428@pendragon.ideasonboard.com>
+ <aEcxN7xClLfp0STx@lizhi-Precision-Tower-5810>
+ <20250610081829.GC11428@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250619062413.3946142-1-chancel.liu@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250610081829.GC11428@pendragon.ideasonboard.com>
 
-Hi Chancel,
+On Tue, Jun 10, 2025 at 11:18:29AM +0300, Laurent Pinchart wrote:
+> On Mon, Jun 09, 2025 at 03:08:39PM -0400, Frank Li wrote:
+> > On Mon, Jun 09, 2025 at 09:20:33PM +0300, Laurent Pinchart wrote:
+> > > On Mon, Jun 09, 2025 at 12:53:48PM -0500, Adam Ford wrote:
+> > > > On Mon, Jun 9, 2025 at 10:32 AM Frank Li wrote:
+> > > > > On Mon, Jun 09, 2025 at 02:58:38AM +0300, Laurent Pinchart wrote:
+> > > > > > The CSI-2 receiver can be instantiated with up to four output channels.
+> > > > > > This is an integration-specific property, specify the number of
+> > > > > > instantiated channels through a new fsl,num-channels property. The
+> > > > > > property is optional, and defaults to 1 as only one channel is currently
+> > > > > > supported by drivers.
+> > > > > >
+> > > > > > The only known SoC to have more than one channel is the i.MX8MP. As the
+> > > > > > binding examples do not cover that SoC, don't update them.
+> > > > > >
+> > > > > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > > > > ---
+> > > > > >  .../devicetree/bindings/media/nxp,imx-mipi-csi2.yaml       | 7 +++++++
+> > > > > >  1 file changed, 7 insertions(+)
+> > > > > >
+> > > > > > diff --git a/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
+> > > > > > index db4889bf881e..41ad5b84eaeb 100644
+> > > > > > --- a/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
+> > > > > > +++ b/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
+> > > > > > @@ -68,6 +68,13 @@ properties:
+> > > > > >      default: 166000000
+> > > > > >      deprecated: true
+> > > > > >
+> > > > > > +  fsl,num-channels:
+> > > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > > > > > +    description: Number of output channels
+> > > > > > +    minimum: 1
+> > > > > > +    maximum: 4
+> > > > > > +    default: 1
+> > > > > > +
+> > > > >
+> > > > > Look like it is fixed value for each compabiable string, So it is not
+> > > > > suitable for adding new property. It should be in driver data of each
+> > > > > compatible strings.
+> > > > >
+> > > > > I met similar case before. DT team generally don't agree on add such
+> > > > > property, unless there are two instances in the same chip, which have
+> > > > > difference channel number.
+> > > >
+> > > > If the DT changes are rejected, can the number of channels be added to
+> > > > the data structure inside mipi_csis_of_match?  We have compatibles for
+> > > > 8mm and imx7.  If we add an imx8mp compatible we could add a reference
+> > > > to the number of channels.
+> > >
+> > > I thought about it, and decided to add a new property because the number
+> > > of channels is really a synthesis time configuration parameter, and
+> > > could differ between different CSIS instances in the same SoC.
+> > 
+> > Need add such information at binding doc's commit message,
+> 
+> I'll update the commit message.
 
-kernel test robot noticed the following build warnings:
+The commit message in v2 will state
 
-[auto build test WARNING on shawnguo/for-next]
-[also build test WARNING on linus/master v6.16-rc2 next-20250619]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+    dt-bindings: media: nxp,imx-mipi-csi2: Add fsl,num-channels property
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Chancel-Liu/ASoC-imx-card-Add-WM8524-support/20250619-142646
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20250619062413.3946142-1-chancel.liu%40nxp.com
-patch subject: [PATCH] ASoC: imx-card: Add WM8524 support
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20250620/202506200415.ATjQ5KCu-lkp@intel.com/config)
-compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250620/202506200415.ATjQ5KCu-lkp@intel.com/reproduce)
+    The CSI-2 receiver can be instantiated with up to four output channels.
+    This is an integration-specific property, specify the number of
+    instantiated channels through a new fsl,num-channels property. The
+    property is optional, and defaults to 1 as only one channel is currently
+    supported by drivers.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506200415.ATjQ5KCu-lkp@intel.com/
+    Using the compatible string to infer the number of channels has been
+    considered, but multiple instances of the same CSIS in the same SoC
+    could conceptually be synthesized with a different number of channels.
+    An explicit property is therefore more appropriate.
 
-All warnings (new ones prefixed by >>):
+    The only known SoC to have more than one channel is the i.MX8MP. As the
+    binding examples do not cover that SoC, don't update them.
 
->> sound/soc/fsl/imx-card.c:884:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-     884 |                 default:
-         |                 ^
-   sound/soc/fsl/imx-card.c:884:3: note: insert 'break;' to avoid fall-through
-     884 |                 default:
-         |                 ^
-         |                 break; 
-   1 warning generated.
+Rob, Krzysztof, Conor, are you fine with adding this property ?
 
-
-vim +884 sound/soc/fsl/imx-card.c
-
-aa736700f42fa0 Shengjiu Wang     2021-05-17  747  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  748  static int imx_card_probe(struct platform_device *pdev)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  749  {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  750  	struct snd_soc_dai_link *link_be = NULL, *link;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  751  	struct imx_card_plat_data *plat_data;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  752  	struct imx_card_data *data;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  753  	int ret, i;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  754  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  755  	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  756  	if (!data)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  757  		return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  758  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  759  	plat_data = devm_kzalloc(&pdev->dev, sizeof(*plat_data), GFP_KERNEL);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  760  	if (!plat_data)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  761  		return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  762  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  763  	data->plat_data = plat_data;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  764  	data->card.dev = &pdev->dev;
-47d7d3fd72afc7 Hui Wang          2024-10-02  765  	data->card.owner = THIS_MODULE;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  766  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  767  	dev_set_drvdata(&pdev->dev, &data->card);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  768  	snd_soc_card_set_drvdata(&data->card, data);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  769  	ret = imx_card_parse_of(data);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  770  	if (ret)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  771  		return ret;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  772  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  773  	data->num_dapm_routes = plat_data->num_codecs + 1;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  774  	data->dapm_routes = devm_kcalloc(&pdev->dev, data->num_dapm_routes,
-aa736700f42fa0 Shengjiu Wang     2021-05-17  775  					 sizeof(struct snd_soc_dapm_route),
-aa736700f42fa0 Shengjiu Wang     2021-05-17  776  					 GFP_KERNEL);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  777  	if (!data->dapm_routes)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  778  		return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  779  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  780  	/* configure the dapm routes */
-aa736700f42fa0 Shengjiu Wang     2021-05-17  781  	switch (plat_data->type) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  782  	case CODEC_AK4458:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  783  	case CODEC_AK4497:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  784  		if (plat_data->num_codecs == 1) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  785  			data->dapm_routes[0].sink = "Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  786  			data->dapm_routes[0].source = "CPU-Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  787  			i = 1;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  788  		} else {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  789  			for (i = 0; i < plat_data->num_codecs; i++) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  790  				data->dapm_routes[i].sink =
-aa736700f42fa0 Shengjiu Wang     2021-05-17  791  					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
-aa736700f42fa0 Shengjiu Wang     2021-05-17  792  						       i + 1, "Playback");
-93d34608fd162f Henry Martin      2025-04-01  793  				if (!data->dapm_routes[i].sink)
-93d34608fd162f Henry Martin      2025-04-01  794  					return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  795  				data->dapm_routes[i].source = "CPU-Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  796  			}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  797  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  798  		data->dapm_routes[i].sink = "CPU-Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  799  		data->dapm_routes[i].source = "ASRC-Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  800  		break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  801  	case CODEC_AK5558:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  802  	case CODEC_AK5552:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  803  		if (plat_data->num_codecs == 1) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  804  			data->dapm_routes[0].sink = "CPU-Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  805  			data->dapm_routes[0].source = "Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  806  			i = 1;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  807  		} else {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  808  			for (i = 0; i < plat_data->num_codecs; i++) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  809  				data->dapm_routes[i].source =
-aa736700f42fa0 Shengjiu Wang     2021-05-17  810  					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
-aa736700f42fa0 Shengjiu Wang     2021-05-17  811  						       i + 1, "Capture");
-93d34608fd162f Henry Martin      2025-04-01  812  				if (!data->dapm_routes[i].source)
-93d34608fd162f Henry Martin      2025-04-01  813  					return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  814  				data->dapm_routes[i].sink = "CPU-Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  815  			}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  816  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  817  		data->dapm_routes[i].sink = "ASRC-Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  818  		data->dapm_routes[i].source = "CPU-Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  819  		break;
-b39eec95b84d5d Chancel Liu       2024-10-09  820  	case CODEC_CS42888:
-b39eec95b84d5d Chancel Liu       2024-10-09  821  		data->dapm_routes[0].sink = "Playback";
-b39eec95b84d5d Chancel Liu       2024-10-09  822  		data->dapm_routes[0].source = "CPU-Playback";
-b39eec95b84d5d Chancel Liu       2024-10-09  823  		data->dapm_routes[1].sink = "CPU-Capture";
-b39eec95b84d5d Chancel Liu       2024-10-09  824  		data->dapm_routes[1].source = "Capture";
-b39eec95b84d5d Chancel Liu       2024-10-09  825  		break;
-52377234f3ed64 Chancel Liu       2025-06-19  826  	case CODEC_WM8524:
-52377234f3ed64 Chancel Liu       2025-06-19  827  		data->dapm_routes[0].sink = "Playback";
-52377234f3ed64 Chancel Liu       2025-06-19  828  		data->dapm_routes[0].source = "CPU-Playback";
-52377234f3ed64 Chancel Liu       2025-06-19  829  		break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  830  	default:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  831  		break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  832  	}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  833  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  834  	/* default platform data for akcodecs */
-aa736700f42fa0 Shengjiu Wang     2021-05-17  835  	if (codec_is_akcodec(plat_data->type)) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  836  		plat_data->support_rates = akcodec_rates;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  837  		plat_data->num_rates = ARRAY_SIZE(akcodec_rates);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  838  		plat_data->support_tdm_rates = akcodec_tdm_rates;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  839  		plat_data->num_tdm_rates = ARRAY_SIZE(akcodec_tdm_rates);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  840  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  841  		switch (plat_data->type) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  842  		case CODEC_AK4458:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  843  			plat_data->fs_mul = ak4458_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  844  			plat_data->num_fs_mul = ARRAY_SIZE(ak4458_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  845  			plat_data->tdm_fs_mul = ak4458_tdm_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  846  			plat_data->num_tdm_fs_mul = ARRAY_SIZE(ak4458_tdm_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  847  			plat_data->support_channels = ak4458_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  848  			plat_data->num_channels = ARRAY_SIZE(ak4458_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  849  			plat_data->support_tdm_channels = ak4458_tdm_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  850  			plat_data->num_tdm_channels = ARRAY_SIZE(ak4458_tdm_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  851  			break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  852  		case CODEC_AK4497:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  853  			plat_data->fs_mul = ak4497_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  854  			plat_data->num_fs_mul = ARRAY_SIZE(ak4497_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  855  			plat_data->support_channels = ak4458_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  856  			plat_data->num_channels = ARRAY_SIZE(ak4458_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  857  			break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  858  		case CODEC_AK5558:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  859  		case CODEC_AK5552:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  860  			plat_data->fs_mul = ak5558_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  861  			plat_data->num_fs_mul = ARRAY_SIZE(ak5558_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  862  			plat_data->tdm_fs_mul = ak5558_tdm_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  863  			plat_data->num_tdm_fs_mul = ARRAY_SIZE(ak5558_tdm_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  864  			plat_data->support_channels = ak5558_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  865  			plat_data->num_channels = ARRAY_SIZE(ak5558_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  866  			plat_data->support_tdm_channels = ak5558_tdm_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  867  			plat_data->num_tdm_channels = ARRAY_SIZE(ak5558_tdm_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  868  			break;
-b39eec95b84d5d Chancel Liu       2024-10-09  869  		case CODEC_CS42888:
-b39eec95b84d5d Chancel Liu       2024-10-09  870  			plat_data->fs_mul = cs42888_fs_mul;
-b39eec95b84d5d Chancel Liu       2024-10-09  871  			plat_data->num_fs_mul = ARRAY_SIZE(cs42888_fs_mul);
-b39eec95b84d5d Chancel Liu       2024-10-09  872  			plat_data->tdm_fs_mul = cs42888_tdm_fs_mul;
-b39eec95b84d5d Chancel Liu       2024-10-09  873  			plat_data->num_tdm_fs_mul = ARRAY_SIZE(cs42888_tdm_fs_mul);
-b39eec95b84d5d Chancel Liu       2024-10-09  874  			plat_data->support_channels = cs42888_channels;
-b39eec95b84d5d Chancel Liu       2024-10-09  875  			plat_data->num_channels = ARRAY_SIZE(cs42888_channels);
-b39eec95b84d5d Chancel Liu       2024-10-09  876  			plat_data->support_tdm_channels = cs42888_tdm_channels;
-b39eec95b84d5d Chancel Liu       2024-10-09  877  			plat_data->num_tdm_channels = ARRAY_SIZE(cs42888_tdm_channels);
-b39eec95b84d5d Chancel Liu       2024-10-09  878  			break;
-52377234f3ed64 Chancel Liu       2025-06-19  879  		case CODEC_WM8524:
-52377234f3ed64 Chancel Liu       2025-06-19  880  			plat_data->fs_mul = wm8524_fs_mul;
-52377234f3ed64 Chancel Liu       2025-06-19  881  			plat_data->num_fs_mul = ARRAY_SIZE(wm8524_fs_mul);
-52377234f3ed64 Chancel Liu       2025-06-19  882  			plat_data->support_channels = wm8524_channels;
-52377234f3ed64 Chancel Liu       2025-06-19  883  			plat_data->num_channels = ARRAY_SIZE(wm8524_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17 @884  		default:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  885  			break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  886  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  887  	}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  888  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  889  	/* with asrc as front end */
-aa736700f42fa0 Shengjiu Wang     2021-05-17  890  	if (data->card.num_links == 3) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  891  		data->card.dapm_routes = data->dapm_routes;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  892  		data->card.num_dapm_routes = data->num_dapm_routes;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  893  		for_each_card_prelinks(&data->card, i, link) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  894  			if (link->no_pcm == 1)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  895  				link_be = link;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  896  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  897  		for_each_card_prelinks(&data->card, i, link) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  898  			if (link->dynamic == 1 && link_be) {
-efa527f984a110 Kuninori Morimoto 2024-10-20  899  				link->playback_only = link_be->playback_only;
-efa527f984a110 Kuninori Morimoto 2024-10-20  900  				link->capture_only  = link_be->capture_only;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  901  			}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  902  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  903  	}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  904  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  905  	ret = devm_snd_soc_register_card(&pdev->dev, &data->card);
-2e6f557ca35aa3 Kuninori Morimoto 2021-12-14  906  	if (ret)
-2e6f557ca35aa3 Kuninori Morimoto 2021-12-14  907  		return dev_err_probe(&pdev->dev, ret, "snd_soc_register_card failed\n");
-aa736700f42fa0 Shengjiu Wang     2021-05-17  908  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  909  	return 0;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  910  }
-aa736700f42fa0 Shengjiu Wang     2021-05-17  911  
+> > ideally provide an example for it.
+> 
+> That I can't provide because the few SoCs I'm working with do not
+> integrate multiple CSIS instances with different parameters.
+> 
+> > > > > >    ports:
+> > > > > >      $ref: /schemas/graph.yaml#/properties/ports
+> > > > > >
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+
+Laurent Pinchart
