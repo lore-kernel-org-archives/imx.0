@@ -1,39 +1,39 @@
 Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768062472AC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9EA2472BE
 	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 06:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750315207; cv=none; b=majmDzZF7ZdRVgveeODGYDv4lsB0AZWE/Q6sclLlOO/MI63rFBYmyGgn3EaMFwxejJnbs1wawVOsyjfx1HiUHWHNxVxcAeOsDZm7tyErj9YVD7W1ejiiPdsGABAi56Sqqa7HFqwgJQfqn5OUIznI7v1hpFFn/tWQOohihfvHIa0=
+	t=1750315207; cv=none; b=j4MIjqewCK7cgVYNN9thYBvtToShoIAWyjWAyOq7gIRFbBox3Goyn0qNtDlMaKXwvZuokeCp+fqRqUsIPUXr9DdMPk9XHWOVmRi4+9jxY4P36tvQbJg4PsRW6zU81AghZHnMrRAgawdtcV1VmR4RH5IzOXcZLHhU2UXbTUp/fgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750315207; c=relaxed/simple;
-	bh=nOy3Nx2DibxNjNLP0SfXIocEw8S135nN4croUWq13Io=;
+	bh=5Dy8R3r1trSV7SkvB99zlqtFMYecQ8TD4rVB+HmNbng=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kUF5sPfGW7nD6Zx55plkV3L75VNkUGpLKTGtFCyPdu9aglwIb4GY4tdK1HF90FBpx941jPd34IAPdlK55/6Wt+5FQu2jUD63dDq7lNSVc2NUsDVb8XSPYlsTyQ2yKuWNV8fVYWWm9vB29eu0IS+3lqMdP4PDz43VuCxz/1C66JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=SmQSXmTt; arc=none smtp.client-ip=46.19.9.99
+	 MIME-Version; b=NY8BzUC2eBLQZL6rhj3e0NOeGkkDwhNMe9y4Xr5KGKkSY9WXyFz4njMox6qO+rozyUZAY9tnUxMQI2h4XdN9GdT7WbL2NGpUbh9W5OgzS9R8DVDYjQSvWsZKQS4wFcvhEutIzifZFI/hoPOq3nsU5jqFalUHei0TD96ZluSAx6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=jttLxcgD; arc=none smtp.client-ip=46.19.9.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="SmQSXmTt"
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="jttLxcgD"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=Q8MkEn8xqYDWG2RXYRvX0REM6uAl7xLIg9eoqe1BHXM=; b=SmQSXmTtuONEetTxQ0eyMlfXFH
-	5bXl2qjU0hbTx47KKybzwYgb3iZg5uXql8JpBMiedOT8gKXFvgsr+9y+ku6UFZTPu/x3ZeyBamli1
-	pIuqkJMBVQvwEZauFR7Ad4hF61XPv7/vnTtlZ4uyXEgMyMPXN/LrSJiHSrEW7X1OSHYzl1bz3Xr6S
-	jmzf3SC6mmcncCJZv2rg1eHAAn1A+LRMocOWjs7OBczxIki0uYM0NmSBglkkKiPG6H/+gi9yGRPWn
-	eMNRyMP9J0DBWkmzMktK/fpYWKwr277fFkVhKa+kfRYECP7VVOkT3WRIUHboYlKD5OLYwg0NsVZO8
-	YLHWgWXQ==;
+	bh=W7TliLsbfaYS7bb2ke6NaPLrLNQJB72CmG4Z4X0ynZY=; b=jttLxcgD09J+VEGwbEJ0CXBPZN
+	Ld+UvUG0kHf0Gn1biOp4vcm+Vzee0iawOKXQa12OTBoMuMID5Wgz4tuzOin/pmssa1WIMCBKmnH9x
+	SKtgnNREeEf/xlyZj5tQM/c2NLQ7XZcef4TSM6dZVTVR4EHKhU/zuMkxu9KNuN9DONr6AiT4XLjgQ
+	PN8ZETmgx671FTYWWNoysp04FphfxRxd1rpWnZLyKXU4JnJ26Lk4eZ9y5Q8lgaT8+vWPI3uUBRVEx
+	A7ByflVRA8fHi1zs6/CtIF7nYi3XmcIXiY7iJZV+VQkhw5vz1/T8i1wTIbjys4eiOoxUCiAmYJYmq
+	AEsgdMmA==;
 Received: from [89.212.21.243] (port=44058 helo=localhost.localdomain)
 	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <primoz.fiser@norik.com>)
-	id 1uS8wG-00EVcY-2C;
-	Thu, 19 Jun 2025 08:39:56 +0200
+	id 1uS8wG-00EVcY-1b;
+	Thu, 19 Jun 2025 08:39:55 +0200
 From: Primoz Fiser <primoz.fiser@norik.com>
 To: Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
@@ -46,9 +46,9 @@ Cc: imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/4] arm64: dts: imx93-phyboard-segin: Add PEB-WLBT-05 overlay
-Date: Thu, 19 Jun 2025 08:39:53 +0200
-Message-Id: <20250619063954.1730231-4-primoz.fiser@norik.com>
+Subject: [PATCH 1/4] arm64: dts: imx93-phycore-som: Add RPMsg overlay
+Date: Thu, 19 Jun 2025 08:39:51 +0200
+Message-Id: <20250619063954.1730231-2-primoz.fiser@norik.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250619063954.1730231-1-primoz.fiser@norik.com>
 References: <20250619063954.1730231-1-primoz.fiser@norik.com>
@@ -70,130 +70,100 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-Add support for PEB-WLBT-05 WLAN/BT adapter on phyBOARD-Segin-i.MX93.
-The PEB-WLBT-05 is equipped with a Sterling-LWB radio module, which is
-capable of Wi-Fi 802.11 b/g/n and Bluetooth 4.2.
+Add an overlay used for remote processor inter-core communication
+between A55 and M33 cores on the phyCORE-i.MX93 SoM based boards.
+
+Overlay adds the required reserved memory regions and enables the
+mailbox unit and the M33 core for RPMsg (Remote Processor Messaging
+Framework).
 
 Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 ---
- arch/arm64/boot/dts/freescale/Makefile        |  2 +
- .../imx93-phyboard-segin-peb-wlbt-05.dtso     | 93 +++++++++++++++++++
- 2 files changed, 95 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-wlbt-05.dtso
+ arch/arm64/boot/dts/freescale/Makefile        |  4 ++
+ .../dts/freescale/imx93-phycore-rpmsg.dtso    | 60 +++++++++++++++++++
+ 2 files changed, 64 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-phycore-rpmsg.dtso
 
 diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 011b2d58e4f7..3166684ab558 100644
+index 0b473a23d120..08a1de299538 100644
 --- a/arch/arm64/boot/dts/freescale/Makefile
 +++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -326,8 +326,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
+@@ -324,6 +324,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-14x14-evk.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
- 
- imx93-phyboard-segin-peb-eval-01-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-eval-01.dtbo
-+imx93-phyboard-segin-peb-wlbt-05-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-wlbt-05.dtbo
- imx93-phycore-rpmsg-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-segin.dtb imx93-phycore-rpmsg.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-eval-01.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-wlbt-05.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phycore-rpmsg.dtb
- 
++
++imx93-phycore-rpmsg-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-segin.dtb imx93-phycore-rpmsg.dtbo
++dtb-$(CONFIG_ARCH_MXC) += imx93-phycore-rpmsg.dtb
++
  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba91xxca.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-wlbt-05.dtso b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-wlbt-05.dtso
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-rpmsg.dtso b/arch/arm64/boot/dts/freescale/imx93-phycore-rpmsg.dtso
 new file mode 100644
-index 000000000000..fba1362ced72
+index 000000000000..9200113c9ec3
 --- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-wlbt-05.dtso
-@@ -0,0 +1,93 @@
++++ b/arch/arm64/boot/dts/freescale/imx93-phycore-rpmsg.dtso
+@@ -0,0 +1,60 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2025 PHYTEC Messtechnik GmbH
-+ * Author: Andrej Picej <andrej.picej@norik.com>
++ * Author: Primoz Fiser <primoz.fiser@norik.com>
 + */
 +
 +/dts-v1/;
 +/plugin/;
 +
-+#include <dt-bindings/gpio/gpio.h>
-+#include "imx93-pinfunc.h"
-+
 +&{/} {
-+	usdhc3_pwrseq: usdhc3-pwrseq {
-+		compatible = "mmc-pwrseq-simple";
-+		post-power-on-delay-ms = <100>;
-+		power-off-delay-us = <60>;
-+		reset-gpios = <&gpio4 7 GPIO_ACTIVE_LOW>;
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++
++		vdev0vring0: vdev0vring0@a4000000 {
++			reg = <0 0xa4000000 0 0x8000>;
++			no-map;
++		};
++
++		vdev0vring1: vdev0vring1@a4008000 {
++			reg = <0 0xa4008000 0 0x8000>;
++			no-map;
++		};
++
++		vdev1vring0: vdev1vring0@a4010000 {
++			reg = <0 0xa4010000 0 0x8000>;
++			no-map;
++		};
++
++		vdev1vring1: vdev1vring1@a4018000 {
++			reg = <0 0xa4018000 0 0x8000>;
++			no-map;
++		};
++
++		rsc_table: rsc-table@2021e000 {
++			reg = <0 0x2021e000 0 0x1000>;
++			no-map;
++		};
++
++		vdevbuffer: vdevbuffer@a4020000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0xa4020000 0 0x100000>;
++			no-map;
++		};
 +	};
 +};
 +
-+&lpuart5 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart5>;
++&cm33 {
++	mbox-names = "tx", "rx", "rxdb";
++	mboxes = <&mu1 0 1>,
++		 <&mu1 1 1>,
++		 <&mu1 3 1>;
++	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
++		 <&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
 +	status = "okay";
-+
-+	bluetooth {
-+		compatible = "brcm,bcm43438-bt";
-+		shutdown-gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
-+		host-wakeup-gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
-+		max-speed = <2000000>;
-+	};
 +};
 +
-+&usdhc3 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_wlbt>;
-+	pinctrl-1 = <&pinctrl_usdhc3_sleep>, <&pinctrl_wlbt>;
-+	mmc-pwrseq = <&usdhc3_pwrseq>;
-+	bus-width = <4>;
-+	non-removable;
-+	no-1-8-v;
++&mu1 {
 +	status = "okay";
-+
-+	brmcf: wifi@1 {
-+		compatible = "brcm,bcm4329-fmac";
-+		reg = <1>;
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_uart5: uart5grp {
-+		fsl,pins = <
-+			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX	0x31e
-+			MX93_PAD_DAP_TDI__LPUART5_RX		0x31e
-+			MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B	0x31e
-+			MX93_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B	0x31e
-+		>;
-+	};
-+
-+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO22__USDHC3_CLK		0x179e
-+			MX93_PAD_GPIO_IO23__USDHC3_CMD		0x4000139e
-+			MX93_PAD_GPIO_IO24__USDHC3_DATA0	0x4000139e
-+			MX93_PAD_GPIO_IO25__USDHC3_DATA1	0x4000139e
-+			MX93_PAD_GPIO_IO26__USDHC3_DATA2	0x4000139e
-+			MX93_PAD_GPIO_IO27__USDHC3_DATA3	0x4000139e
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_sleep: usdhc3sleepgrp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO22__USDHC3_CLK		0x31e
-+			MX93_PAD_GPIO_IO23__USDHC3_CMD		0x31e
-+			MX93_PAD_GPIO_IO24__USDHC3_DATA0	0x31e
-+			MX93_PAD_GPIO_IO25__USDHC3_DATA1	0x31e
-+			MX93_PAD_GPIO_IO26__USDHC3_DATA2	0x31e
-+			MX93_PAD_GPIO_IO27__USDHC3_DATA3	0x31e
-+		>;
-+	};
-+
-+	pinctrl_wlbt: wlbtgrp {
-+		fsl,pins = <
-+			MX93_PAD_ENET1_RD3__GPIO4_IO13		0x31e	/* BT ENABLE */
-+			MX93_PAD_ENET1_TXC__GPIO4_IO07		0x31e	/* WLAN ENABLE */
-+			MX93_PAD_I2C1_SCL__GPIO1_IO00		0x31e	/* HOST WAKEUP */
-+		>;
-+	};
 +};
 -- 
 2.34.1
