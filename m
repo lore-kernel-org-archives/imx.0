@@ -1,219 +1,153 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E21226D1A
-	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 11:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30A3227B94
+	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 11:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750332031; cv=none; b=V6yt5AXTeUF0aZ08mcbjmi7ajuWtI9JpG0lUCziXJUvYset/tkjXyzwRoHXN2xBUhyfIuRIppKj/NQx2qrGecc9EixeqqkS19aqJ25P0vyCklG3kP7LXuNciirpAkqVq8EGqmhHtx6bXlgjT/De3jvSSUayiBp1G0z+O31farsQ=
+	t=1750332034; cv=none; b=sju37GUh7OaJvJzCJe3pwxMkPTeQU8j+IQdJ6RrZpO4u0F99EEyn9Dx/bicRrk5eGK93221VTEQWRXQO7tUrUozJmTvJiWhe+M2cf5PP9KyYImowPWO01dzmADbMIAGLKyImRioZI4H6lJesuyNdrfWP+kv+Xr5yx0zULA2kvHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750332031; c=relaxed/simple;
-	bh=lYFZw4l/ySiLP9yv1DOpV3NKA5HpDmbgq92YmFRhr7Y=;
+	s=arc-20240116; t=1750332034; c=relaxed/simple;
+	bh=NZ5ua//HRvEUXqDrATHvprzOWGicDxLR60a8JgIYce8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VDswhczLPxZnIGqGI+M3AJ5jt2y0PDYEdgn+4DAYQyHHHzPHk2PLz4k1Epk8Rea7d4GClMWjLRJhWRWr2qQPbJOoejbuljjjHsp0F4BPFdARgv72Lvhw/aaD0T0KZ5X8eq/0HOL4KUTY5wYNdud+AqZKnH2cqjXqE85vg+y1xRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xx2dQAGC; arc=none smtp.client-ip=209.85.219.177
+	 To:Cc:Content-Type; b=IB1DJJiYFFEICGr2zkXTAmKMNuckahLZLWfJs6OnyxvPD45r14negGKlYKCgJ/vG5ePwRzaqxu6/JdfUHfk4ZEsagF0Fe2n3RMH6vniU/3wvT6JjBqNjBZny0mYmMd/zXKRlxFsXgNVCgJZtQnmM31lYY30Kb6U7RCtFYv1bGQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rafYPWDX; arc=none smtp.client-ip=209.85.219.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xx2dQAGC"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e819aa98e7aso620772276.2
-        for <imx@lists.linux.dev>; Thu, 19 Jun 2025 04:20:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rafYPWDX"
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e8273504c67so659351276.0
+        for <imx@lists.linux.dev>; Thu, 19 Jun 2025 04:20:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750332029; x=1750936829; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1750332031; x=1750936831; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PBUsi0YBNMAsSBVKTalCtjkPCy5c9CLBxMjhKRUhDZY=;
-        b=xx2dQAGCkToaLURumuuUApqy/3eZCE7zjKp3CYTHOIjl3KrhPoy0+qPhVXC5zV5S6Y
-         b5bz/DxiHyl61+UshbMZT+2wthoaY5nxHWmdQmWN0lAEr5rVksB9/8Z0KDujzoK7jtT9
-         24g9zqKqhYggUzEYMvLwXGbXgZ/ro8Y4geFJSl5dxwZJMbTZVdHfBfm6bKNnvwnhU7Ir
-         7bV3sEbOmamU5o6MU8lf7zqqv0O07USo9+kr61N9EbCGHAY/oN7nf8tcBp8TxV1UUYOe
-         ftL7cl+DgIE3btd4UhMaJxUNaLqZ6kLeNY5I97hJzp4WSAIQVn6B+k/gBDywsEFKF3cs
-         9G6A==
+        bh=v/7Q/trZ5SbmALMt3c06DmQkKxihbiVngkXZ1QJXJs8=;
+        b=rafYPWDXE7JLttvTXwv3VrgK8foFHRY6WmsALczTJphRbYIxVoN3Np3SfNo4rn73I/
+         V5xhBTEKZLNcp647+v8Nz81j9GbvyyNKSh7c9elu8GdCqgtkJDedcJ0mK577NLcvS1Tk
+         K09WHJDF367xlsaa47XXmxQzjiFyFZdDYjEqoVNnDDbuKsjbLKRamSgzyh7Ncpip2w5T
+         wKc93TAjC0yO89Eu5u4r4Xw+Zft6eMaweaJ7iom039nX468MSrdnCjGofKXBYyUdzSTO
+         KUwV/oG3sOgF5x7jHDH9fYpCBwqUwp4noNyFG0L7HdbRcehudL3HGxkVNzZcALmvHD8h
+         abkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750332029; x=1750936829;
+        d=1e100.net; s=20230601; t=1750332031; x=1750936831;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PBUsi0YBNMAsSBVKTalCtjkPCy5c9CLBxMjhKRUhDZY=;
-        b=ehyfXK93nrT+6hHuHlr7asDr371N514Dx/W+h8SRtI3wPhYxue2LCwhfFTSg8qacWR
-         e0oxoDzghJLx1vZpJb6d4DxFFSawk48uKSZ3kPi8t4yxnaGMtW4kdGqX3WXk366I/rxf
-         4pk+N6tGtvja+E23VuqJhIadeDenjAh82h6Sz8YZHNfMT2WIltes93KazSpj6xLVOIi4
-         a+4q3uqf4In5PrmbkQNxe1lugjsdRvtYGIQYyCqUENuG74buzBDjfYmzM9lZfnKyU0TY
-         V+uWXmaMnKZqQqxuK9/gGDe75EJN/FdVlmbGMLDnB8nowQiQpU+yubL8DUxA5hQXq4JC
-         gwHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVB3l/2D3jNu+GLzN6gekqndmiFw6boMV9nhLp2LyqpoaV98azp3malNUuhyB8+3cd3C9Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxo1kX4Z0llIJq9IUPPJFHt/78q0xIZIl8PJvZJhI7payi6g2mY
-	j52ZKAU/qUmauedAj+mgjdhVd2rQTyKL0s6s+tIAU92iMur+7avCKBU4o01JRnvKrnfiy4sL27F
-	lpTaKvo2m0ELL0AQwh6xrAOSeOV1YboPKsKZW7akIpA==
-X-Gm-Gg: ASbGncu9sYomC9TXjXkJxeeRGGmlovQAeWAtmcuA+a18np7HJo5h9ju2frm6nAN2f5t
-	cNfoXIlzwxN33WbcUumfDx34lzChGpm/l8MGWb8+QIhg+hseDB4zqgNB7JVGU7LbW2Jv3/j7Pk/
-	JlZWqjatNJLOfEihlZg0I7HAN1ZbCrWEITolgOWsOJ44lR
-X-Google-Smtp-Source: AGHT+IHX9ksGPdiWQPczJro/bAe1IGvypwqoP8WCOZDCwwHcVTV4TvNUdtBj0nob0BRaQUU78E2vrWhUpGn208sRiuY=
-X-Received: by 2002:a05:6902:1b04:b0:e82:13f4:6156 with SMTP id
- 3f1490d57ef6-e822acc6b88mr30435408276.13.1750332028965; Thu, 19 Jun 2025
- 04:20:28 -0700 (PDT)
+        bh=v/7Q/trZ5SbmALMt3c06DmQkKxihbiVngkXZ1QJXJs8=;
+        b=QAJkhChW5TDAnXq9nAKKxqeWw7DfXytcCpWWv7wSVfdms8SOkFBUutgnz2jpvBKU4I
+         ocORLpxF5E+6oBWejB/khLodtd6ni9NE+mXUz3Z87XuB4D7KjBzEbgr4RtXsGO92GDut
+         xovit/A6iT33JvLyN+V5nrpznSd9av2vQmpPqLcU7fRhuV5tkdNGVsS9xXn48e5JFJT1
+         RfzZkHHILLQ9P3ObL8xOiQ8MrOQXrhGO2d7SUZOWdjZu2EnxDQuVmfdYzqJlLP6ncrqq
+         VqO8z1jxvahi8r2Fzc3lihwwR/WACJz4fgvdFcz7AecFriC5BTi7FzUmQ2x4kxqBUsKl
+         ffXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHeYt/BpZ+3Qx9Ygb3JbEAy0DizpNzVgqTbOKiPZGxSZhoxMaKwduUIWV8Kn1OWOkmTx8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwMEjAFZj/JMohUpo6++8yacje6udVjCIuNrbdNBN5ZYc6pGexa
+	XBjf5Va6gEV1RHYE0ZZoL6tca08v15o+UvZISOqUqrWQS70SJsE5+FvOtIJq/gFeOXATVI7lUIS
+	rFAXRsyctNGQ+rUXo6MyfegT1Bt+zShMAOT6P8jNWkQ==
+X-Gm-Gg: ASbGncsT1+bmraaFgkAQz60ptCvT1bCqPJuWmPKsANigHWVTG2cCdy7cuNfm23cLAjq
+	Csgns8SYgt/iEg+nsCa6qeEVvGQMBD27Zg6+AAsuAmrLSU/R0RDnGRWoOv/b0y41o1F0VDb7kLX
+	6wUoB4FUDTNK+5y/c8p+yocveSCTgZxnLhya3pM2nphHM0
+X-Google-Smtp-Source: AGHT+IGY/qzZki/fMsjjuqz3QT3bNQU2e2XUVD7CMMeyaBLxvbqSsIzzLZ3yi5RD+SHlUmmOxvGIAhjFnpWIBIUm4EQ=
+X-Received: by 2002:a05:6902:2189:b0:e82:b91:a7d7 with SMTP id
+ 3f1490d57ef6-e822ac8e43cmr26709534276.29.1750332030811; Thu, 19 Jun 2025
+ 04:20:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1749127796.git.zhoubinbin@loongson.cn>
-In-Reply-To: <cover.1749127796.git.zhoubinbin@loongson.cn>
+References: <20250603152245.1068740-1-Frank.Li@nxp.com>
+In-Reply-To: <20250603152245.1068740-1-Frank.Li@nxp.com>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 19 Jun 2025 13:19:50 +0200
-X-Gm-Features: AX0GCFvvZQe_9Nix73DE7Q-G_-P34yyA4RJkioiqjIQNcE5PdVnCw3Am06hW7zc
-Message-ID: <CAPDyKFqbCcHPN8yf9Rzo0b0Gr2uBwXUCJDQNkSnnBesESN+kQA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/35] mmc: Cleanup sdhci_pltfm_free()/sdhci_free_host()
- usage
-To: Binbin Zhou <zhoubinbin@loongson.cn>
-Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, Huacai Chen <chenhuacai@loongson.cn>, 
-	Adrian Hunter <adrian.hunter@intel.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	linux-mmc@vger.kernel.org, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Taichi Sugaya <sugaya.taichi@socionext.com>, Takao Orito <orito.takao@socionext.com>, 
-	Ben Dooks <ben-linux@fluff.org>, Jaehoon Chung <jh80.chung@samsung.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, Kamal Dasu <kamal.dasu@broadcom.com>, 
-	Al Cooper <alcooperx@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
-	Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
-	Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
-	Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, openbmc@lists.ozlabs.org, 
-	Michal Simek <michal.simek@amd.com>, Joel Stanley <joel@jms.id.au>, linux-aspeed@lists.ozlabs.org, 
-	Aubin Constans <aubin.constans@microchip.com>, Eugen Hristev <eugen.hristev@linaro.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Yixun Lan <dlan@gentoo.org>, linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
-	Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
-	Steen Hegelund <Steen.Hegelund@microchip.com>, Daniel Machon <daniel.machon@microchip.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	linux-tegra@vger.kernel.org, Hu Ziji <huziji@marvell.com>
+Date: Thu, 19 Jun 2025 13:19:54 +0200
+X-Gm-Features: AX0GCFt2y5yccN4trdKSkYckbzJZTNRqp_GOOavsdhs8BlNDoJbkpBlOUHNguuE
+Message-ID: <CAPDyKFo1dAkvvrO_xb3fk8pguTspB2OWxcA-zdN+Z1yOkbt4ww@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] dt-bindings: mmc: mxs-mmc: change ref to
+ mmc-controller-common.yaml from mmc-controller.yaml
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	"open list:MULTIMEDIA CARD (MMC), SECURE DIGITAL (SD) AND..." <linux-mmc@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>, 
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, wahrenst@gmx.net
 Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 7 Jun 2025 at 09:32, Binbin Zhou <zhoubinbin@loongson.cn> wrote:
+On Tue, 3 Jun 2025 at 17:23, Frank Li <Frank.Li@nxp.com> wrote:
 >
-> Hi all:
+> Change ref to mmc-controller-common.yaml from mmc-controller.yaml because
+> imx23/imx28 use dual mode controller (spi and mmc). So default dts node
+> name use spi instead of mmc. The legacy reason, it use difference
+> compatible string to distringuish work mode (spi / mmc).
 >
-> After the first part of the cleanup[1], there are sdhci related
-> drivers that need further cleanup.
+> Fix below CHECK_DTB warnings:
+> arch/arm/boot/dts/nxp/mxs/imx23-olinuxino.dtb: spi@80010000 (fsl,imx23-mmc): $nodename:0: 'spi@80010000' does not match '^mmc(@.*)?$'
 >
-> This patchset is the second part of the cleanup series, and since sdhci has
-> sdhci_alloc_host() as the general interface, our main job is to clean up
-> sdhci_pltfm_free() and sdhci_free_host().
+> Additional add clocks property.
 >
-> [1]: https://lore.kernel.org/all/cover.1748933789.git.zhoubinbin@loongson.cn/
->
-> Thanks.
->
-> -----
-> V3:
-> - Collect Reviewed-by and Acked-by tags.
-> Patch-19:
->   - Use dev_err_probe() to cleanup the code.
-> Patch-32:
->   - Fix build warning by lkp:
->         https://lore.kernel.org/all/202505300815.tjQRQD6z-lkp@intel.com/
->
-> Link to V2:
-> https://lore.kernel.org/all/cover.1748515612.git.zhoubinbin@loongson.cn/
->
-> V2:
-> - Collect Reviewed-by and Acked-by tags.
->
-> Patch-01:
->  - Set sdhci_free_host() to empty, rather than dropping it.
-> Patch-07:
->  - Set sdhci_pltfm_free() to empty, rather than dropping it.
-> Patch-22:
->  - As requested by Yixun, retain the goto scheme.
-> Patch-35:
->  - New patch;
->  - Since all calls have been cleaned up, sdhci_pltfm_free()/sdhci_free_host()
->    are now dropped directly;
->
-> Link to V1:
-> https://lore.kernel.org/all/cover.1747792905.git.zhoubinbin@loongson.cn/
->
-> Binbin Zhou (35):
->   mmc: sdhci: Use devm_mmc_alloc_host() helper
->   mmc: sdhci-acpi: Drop the use of sdhci_free_host()
->   mmc: sdhci-milbeaut: Drop the use of sdhci_free_host()
->   mmc: sdhci-pci: Drop the use of sdhci_free_host()
->   mmc: sdhci-s3c: Drop the use of sdhci_free_host()
->   mmc: sdhci-spear: Drop the use of sdhci_free_host()
->   mmc: sdhci-pltfm: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-bcm-kona: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-brcmstb: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-cadence: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-dove: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-esdhc-imx: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-esdhc-mcf: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-iproc: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-msm: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-npcm: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-of-arasan: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-of-aspeed: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-of-at91: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-of-dwcmshc: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-of-esdhc: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-of-k1: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-of-ma35d1: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-of-sparx5: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-omap: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-pic32: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-pxav2: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-pxav3: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-sprd: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-st: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-tegra: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci-xenon: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci_am654: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci_f_sdh30: Drop the use of sdhci_pltfm_free()
->   mmc: sdhci: Drop sdhci_free_host()/sdhci_pltfm_free() interface
->
->  drivers/mmc/host/sdhci-acpi.c       |  3 ---
->  drivers/mmc/host/sdhci-bcm-kona.c   |  2 --
->  drivers/mmc/host/sdhci-brcmstb.c    |  1 -
->  drivers/mmc/host/sdhci-cadence.c    | 21 ++++++------------
->  drivers/mmc/host/sdhci-dove.c       | 12 ++---------
->  drivers/mmc/host/sdhci-esdhc-imx.c  |  3 ---
->  drivers/mmc/host/sdhci-esdhc-mcf.c  | 25 ++++++----------------
->  drivers/mmc/host/sdhci-iproc.c      | 18 ++++------------
->  drivers/mmc/host/sdhci-milbeaut.c   | 19 ++++++-----------
->  drivers/mmc/host/sdhci-msm.c        | 11 ++++------
->  drivers/mmc/host/sdhci-npcm.c       | 15 +++----------
->  drivers/mmc/host/sdhci-of-arasan.c  | 26 +++++++----------------
->  drivers/mmc/host/sdhci-of-aspeed.c  | 10 ++-------
->  drivers/mmc/host/sdhci-of-at91.c    | 30 ++++++++++----------------
->  drivers/mmc/host/sdhci-of-dwcmshc.c | 14 +++++-------
->  drivers/mmc/host/sdhci-of-esdhc.c   | 11 ++--------
->  drivers/mmc/host/sdhci-of-k1.c      |  1 -
->  drivers/mmc/host/sdhci-of-ma35d1.c  | 23 +++++++-------------
->  drivers/mmc/host/sdhci-of-sparx5.c  | 24 +++++++--------------
->  drivers/mmc/host/sdhci-omap.c       | 21 ++++++------------
->  drivers/mmc/host/sdhci-pci-core.c   |  9 ++------
->  drivers/mmc/host/sdhci-pic32.c      |  9 +++-----
->  drivers/mmc/host/sdhci-pltfm.c      | 16 +-------------
->  drivers/mmc/host/sdhci-pltfm.h      |  1 -
->  drivers/mmc/host/sdhci-pxav2.c      | 26 ++++++-----------------
->  drivers/mmc/host/sdhci-pxav3.c      |  7 +-----
->  drivers/mmc/host/sdhci-s3c.c        | 16 ++++----------
->  drivers/mmc/host/sdhci-spear.c      | 11 ++++------
->  drivers/mmc/host/sdhci-sprd.c       | 33 +++++++++--------------------
->  drivers/mmc/host/sdhci-st.c         |  6 ++----
->  drivers/mmc/host/sdhci-tegra.c      |  9 +++-----
->  drivers/mmc/host/sdhci-xenon.c      | 15 +++++--------
->  drivers/mmc/host/sdhci.c            |  9 +-------
->  drivers/mmc/host/sdhci.h            |  1 -
->  drivers/mmc/host/sdhci_am654.c      | 20 ++++++-----------
->  drivers/mmc/host/sdhci_f_sdh30.c    | 13 ++++--------
->  36 files changed, 135 insertions(+), 356 deletions(-)
->
->
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-The series applied for next, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+> change in v3
+> - add clocks in example to fix dt_binding_check warnings/errors.
+>
+> change in v2
+> - add clocks to required
+> - fix typo legancy in commit message
+> ---
+>  Documentation/devicetree/bindings/mmc/mxs-mmc.yaml | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/mmc/mxs-mmc.yaml b/Documentation/devicetree/bindings/mmc/mxs-mmc.yaml
+> index 32e512a68ed61..df07ea3b81d15 100644
+> --- a/Documentation/devicetree/bindings/mmc/mxs-mmc.yaml
+> +++ b/Documentation/devicetree/bindings/mmc/mxs-mmc.yaml
+> @@ -17,7 +17,7 @@ description: |
+>    and the properties used by the mxsmmc driver.
+>
+>  allOf:
+> -  - $ref: mmc-controller.yaml
+> +  - $ref: mmc-controller-common.yaml#
+>
+>  properties:
+>    compatible:
+> @@ -31,6 +31,9 @@ properties:
+>    interrupts:
+>      maxItems: 1
+>
+> +  clocks:
+> +    maxItems: 1
+> +
+>    dmas:
+>      maxItems: 1
+>
+> @@ -41,6 +44,7 @@ required:
+>    - compatible
+>    - reg
+>    - interrupts
+> +  - clocks
+>    - dmas
+>    - dma-names
+>
+> @@ -52,6 +56,7 @@ examples:
+>          compatible = "fsl,imx28-mmc";
+>          reg = <0x80010000 2000>;
+>          interrupts = <96>;
+> +        clocks = <&clks 46>;
+>          dmas = <&dma_apbh 0>;
+>          dma-names = "rx-tx";
+>          bus-width = <8>;
+> --
+> 2.34.1
+>
