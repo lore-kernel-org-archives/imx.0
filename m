@@ -1,182 +1,219 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013004.outbound.protection.outlook.com [40.107.162.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBA42206A8
-	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 09:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750326209; cv=fail; b=H6ZIWJS6642OkT0+7O4hlv0ORzmw8BSfE1p/vEj4Pty6PdwFomLDVDTePYf9hFu/YkWhaDXu7It68V4Bkd3N4bGdXjjHO3kVX5Sy8UpJoBJHsPzPKXlvKvEonxgvM5Bvty+Lho5d5A4H3dNys6JDmroh1dwq89RF5FM2g6+4Uk0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750326209; c=relaxed/simple;
-	bh=2tO8aTzn14tKellQINtahYpqjkEvmM/oQERpDvYaww0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=pxMUSrEzD9q/lJzQYPh8HMH5rwBhsmRd5cMcQrMDhUwyA+W89cV/dMb/5v811MON8OFLvbrqu2oJgSr1iA+WKO2qAhKyMFbAlyQir6vUr6MkbB4HA69Uhe3s829tj1oJCPZw4WRyZX/Z/MEisrY1NN4i05peWGPsrSn6okTNlZI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XvXyyxST; arc=fail smtp.client-ip=40.107.162.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E21226D1A
+	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 11:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750332031; cv=none; b=V6yt5AXTeUF0aZ08mcbjmi7ajuWtI9JpG0lUCziXJUvYset/tkjXyzwRoHXN2xBUhyfIuRIppKj/NQx2qrGecc9EixeqqkS19aqJ25P0vyCklG3kP7LXuNciirpAkqVq8EGqmhHtx6bXlgjT/De3jvSSUayiBp1G0z+O31farsQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750332031; c=relaxed/simple;
+	bh=lYFZw4l/ySiLP9yv1DOpV3NKA5HpDmbgq92YmFRhr7Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VDswhczLPxZnIGqGI+M3AJ5jt2y0PDYEdgn+4DAYQyHHHzPHk2PLz4k1Epk8Rea7d4GClMWjLRJhWRWr2qQPbJOoejbuljjjHsp0F4BPFdARgv72Lvhw/aaD0T0KZ5X8eq/0HOL4KUTY5wYNdud+AqZKnH2cqjXqE85vg+y1xRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xx2dQAGC; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XvXyyxST"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GZWq3ebzxDz7eWmeXFH/cYu2+ofd1WW1FidaLYcmbMTD5uoudZh/AYWO7YHS3xWYlkFN/qStt5O9ZF1r6Wa04eNvasZ0gRw95igqR+EUkL5ZeyP/VKStcFtCFktaUqx4K1aKRttCokE3Mhx4v9YkBDhE0opOStXhTrMhps8G4aUry0QRc66KxF8tIieVgCnRcGwWKp5ZyE264lVNT+HyHvIhMe3Rl7EYbK4Du3qyiBHul4J8NWXsZKGqexcOJNqJv5bewCTvHEXse3H8Gx4uYbzy+s78Jtr4+PxnHqcvDTj9Dvsv1zhnJys/EvQvhI8X4lIohDPrUYnQUe8di9/WAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QcmHx/Co+HaHMGUqthg9KgaH7H+4cupTCuUQAqpTshk=;
- b=kafZkOIlV5mC2n7idPoER+f0M0CRiX+hhASUszuujdVJt0J57XJ+8jnnH8VWlYISV22OLwAEiEA9doIcHKTk/o9eGdVEJGm7yOHkT/6TVaKbycjirTLegom3Kl2z9nqVNAJ98/oNM5lML7Tv3BTEaSeX4sLfcsVgFEouUB/xcqiqDJF9MvHLTpLgHNiCUpQFI2/V5JQRT7KTwVdRvIWIF5x/a4XP1Qi83NSM04tSdif9q9lZLudWO68TRHo0hG2akMrnrvxHSp/q78XhO2xiPpMPI56TnC4aFQhSMrtAq/HMNxGM9guIG3Izv6Xk0aLtAm58QlPyvaZedE3C6Hhb8g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QcmHx/Co+HaHMGUqthg9KgaH7H+4cupTCuUQAqpTshk=;
- b=XvXyyxSTrhrebwywyadaXzr4FG2yr33VWBuGaIkrKl8ptuLdw3mMHktGv66JqxQUp/0A2mKstfcaVqLWghc34k9mY7Z/Tni2nVzxbA2xwGhShFFSWfTyIzDvoSeaWoBrYL2Z2g5yAGagUhGKNW6JE2JvOvOgZru2787gtboqtAmmIjFzmP7WAQHbN+beF4VUuWYQn7fcaNM396O38XaUD81TooHR6zPtUrDsC/ZTv/Q1dyCVbMwUvMM3FxsX9IyK2yz7zuS5N0svKedQYy02mAusvvvMxxebWXAyZ7i1RWdv/SJml4O9KsiZhGEm6XpGtSaNmM+JbJV0A1oK5Fzhog==
-Received: from AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
- by PAXPR04MB9007.eurprd04.prod.outlook.com (2603:10a6:102:20f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.25; Thu, 19 Jun
- 2025 09:43:25 +0000
-Received: from AS4PR04MB9386.eurprd04.prod.outlook.com
- ([fe80::261e:eaf4:f429:5e1c]) by AS4PR04MB9386.eurprd04.prod.outlook.com
- ([fe80::261e:eaf4:f429:5e1c%7]) with mapi id 15.20.8857.021; Thu, 19 Jun 2025
- 09:43:25 +0000
-From: Joy Zou <joy.zou@nxp.com>
-To: Mark Brown <broonie@kernel.org>
-CC: "lgirdwood@gmail.com" <lgirdwood@gmail.com>, "robh@kernel.org"
-	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	Frank Li <frank.li@nxp.com>, Ye Li <ye.li@nxp.com>, Jacky Bai
-	<ping.bai@nxp.com>, Aisheng Dong <aisheng.dong@nxp.com>
-Subject: RE:  Re: [PATCH v1 1/2] dt-bindings: regulator: add PF0900 regulator
- yaml
-Thread-Topic: Re: [PATCH v1 1/2] dt-bindings: regulator: add PF0900 regulator
- yaml
-Thread-Index: AQHb4P6aGFYrfcch60mCvnSQdyUuDA==
-Date: Thu, 19 Jun 2025 09:43:25 +0000
-Message-ID:
- <AS4PR04MB93862132A8A97C63FF43C096E17DA@AS4PR04MB9386.eurprd04.prod.outlook.com>
-References: <20250617102025.3455544-1-joy.zou@nxp.com>
- <20250617102025.3455544-2-joy.zou@nxp.com>
- <d948dfe4-635d-4ec0-a89f-2e77134c3f75@sirena.org.uk>
-In-Reply-To: <d948dfe4-635d-4ec0-a89f-2e77134c3f75@sirena.org.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS4PR04MB9386:EE_|PAXPR04MB9007:EE_
-x-ms-office365-filtering-correlation-id: 76611c29-f613-48fc-f5ca-08ddaf15bcdd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?WYUsSo5TO/2Przm5n/G1ySddABN+FoyX5a9YcNcWc63ctePz8FlAcgWlrvYG?=
- =?us-ascii?Q?EBTq8k7d2Rg01C7BA8RaIE7ik6EJvU0qgOMSOqCzdLpLClpG8seDbr6at7vU?=
- =?us-ascii?Q?l+DJEYwOjJlPfJZcATLuOY6o7wTMvts+lPByar4BXNMT04FnlZG/DRs5CDED?=
- =?us-ascii?Q?C+6apusyjhfNnpEL7TPWeM3TwomN5vMcIgFoVejcVPxfypHHSbxzgS7xr8vR?=
- =?us-ascii?Q?FkX9epeedqcrr7uLP7WDVtuNrhGzPOgJvlhWfna4GokFIZlZwCuWSodWBjJ1?=
- =?us-ascii?Q?XAV6bO+M1dzgE+kcM1TQFYKs6/+1K+/yGOfW+bb4iWFv+yWH3PMmGGHUdtq1?=
- =?us-ascii?Q?5h/ymH5Nihqlfi/WlltabO0NovVl9G5gAXKjgs1d9x4Ktuns7Mdx1YIKW+AC?=
- =?us-ascii?Q?zzbpaKW+X90pDnaFza3DnlaYUSIcEYo0rrGNeB0p5XvV5MemAOAumTs0HnQ8?=
- =?us-ascii?Q?hCEn3JC8pQJIxCyN7zxc/ecMgG0+iVV8fSGd8T1DQ5tAFag/B4WULNa5FlYd?=
- =?us-ascii?Q?bm5wEGGJ7shlVrhQoN53GTbqfH0SiswwV4djoDcz1rfPL+OSHJ16vr/5Tlxl?=
- =?us-ascii?Q?wdcip5F8txTLaHU2wFYcXrex76fbzbSccuzATOA8GqSUvAf38dfgT1i8dvLR?=
- =?us-ascii?Q?tPSUQ13GRQ1vOgcmvGu1Srw7lk/sHkKbXRtDaRbyy52ZA4QzlYX3WV1prRzR?=
- =?us-ascii?Q?5rGfHR6e2TfjC9WKjnwC6jm+vp28rqu1yqCediTOhT0dZrtVmeFcWIXTb8kG?=
- =?us-ascii?Q?7EnZU3YVAtZwAdSGiItQoHYM3Tx0BgtGN63RIcTm8CTolYCS348BUniwxbrM?=
- =?us-ascii?Q?r1yuJVtR962AIL03pFEzNLdfC4raucpIzDr2uVgN6rZZrFe+L/4+/fSksMdD?=
- =?us-ascii?Q?hdhMaNWrf57d4ku/qCL/8xv4g6wrmAA+HVzICj0rNh0ZycdwNZnbp1Xp7BAV?=
- =?us-ascii?Q?ydB395ra+xsbVRhyLPequCZGn6BDvTX5+YQ4z2eGGKrfU/LbNgSPIb+DDYi8?=
- =?us-ascii?Q?HuGh9R0Db2om1mCShaAxE6UYZ/hUEcXxGwL84KaMdRl2NuEAEmU0Fpx6M4y1?=
- =?us-ascii?Q?D41j1jLxJeqx9QyDcKKbZFIDDQK0KAAwIGl0E+Tuf18Uv7/LrUavcrtiNt1b?=
- =?us-ascii?Q?NFgW+cgJ9le8XhjX/SVDA56u69Kzo5wJxhmICLE6h/vFJwfNWotFuHgEe/jC?=
- =?us-ascii?Q?3LJiR9+AgvpwgSMe02lwBDyk/MSiWDYQ24hIcBqENY2B5YFkpEPsPihMLoiE?=
- =?us-ascii?Q?jx1RtAWFHmK8w2hIbvsHbKsyyHcmk6Ud/RuJ1L4GGmde0Vx7RHX4Mct4wJt4?=
- =?us-ascii?Q?Yy/f4L6kLRkSlbQbVljfPMmF+iji8in6xbMAjLC4OCSI+Jlxeosqj9sKe3TC?=
- =?us-ascii?Q?KX47oKS/Eobon7ZyrpiEZHxDUJQ00JPhXYyQJqb7yILaew2q+B3dksgiuNmD?=
- =?us-ascii?Q?P4YxloClPv7JgbhmF6SQeu8Q86QvOKnX+Ubi2lsJ1jchi0Ok5c2wRlrDDMmT?=
- =?us-ascii?Q?WoenjigtU4CMkU4=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9386.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?4qO9q+RtXGM1oav0R8mX6PoljxGWZUMmqcNUvxVLRKCed7JG1uWS1IAFVEIH?=
- =?us-ascii?Q?HbnOv2Ryk4yG56dnF7wrGjtRsGCPzvyWAHw8TZWo1OeHb6DR43VLUxqz5p5H?=
- =?us-ascii?Q?ARUIcAMt99jgy1GLhwJGeksVrA8ggkYvGa0aIJYSbpDopBEuDHEIupODuncP?=
- =?us-ascii?Q?d9I7WIYXAPfa5ttDwrv2VvUGEDjcIR1AqXLDev1e3sdKrOct6glW4YvE2LOs?=
- =?us-ascii?Q?m6A17CQ82TB6t9dmNRr9RPGagA2Jugyjef4pRIi5AhQ0k7NwW6ORVes3X/ai?=
- =?us-ascii?Q?CoEGMU41efzz0IEyHz6YoblMZVb2n1kyis2TO2eq9/ZP8R79lbsMMuQMlc2I?=
- =?us-ascii?Q?M92uuIEL7rzG2Ujf8At/rDiNGyKkE05q2jIR+iHwL4WElWGRM/VMzFp3HgfR?=
- =?us-ascii?Q?IhlvCuVcrB+w3603tu6UUXl8+yUFED94Ru7OFW/uc+IS7TtcgjYLJwu7EoUk?=
- =?us-ascii?Q?Ck/9Ba/UdFGXJRzZMgXGKhIvc44DcEp/X6J45rpmVcgLn4imQC5WP7m7I08j?=
- =?us-ascii?Q?wQMxYeyt3hUv1goTRH5PMLrjDo/9ESr321dWnsKOjkLslX/oBI5cRgtRJ4ae?=
- =?us-ascii?Q?jOoKG34UcgzTdikFMViCjoxEnzkiTLhlq5H3TnkV/bmUer40IkhreLyBA1eq?=
- =?us-ascii?Q?oUzjAy1GcHqm1KVsSS05qm9ugVlD2BGqnn+XX+dJXvqdJLIw1ZqObZZD6Sic?=
- =?us-ascii?Q?C8SaCDzFcPCnJTL9ePwWYDXNdD4Z6RmRN0SJeC84u0J8DX5EPK1Xz4b6y1iV?=
- =?us-ascii?Q?0sSKaohZ9uwTNminZFAP5tLy7zoA9RdzvHDcqmp1HDAZumYlH7sRFRX0fxI5?=
- =?us-ascii?Q?5ihLlCd9YMvSYs59VYG9c952ZA9AvGU3opkqi7Zin1jJSppuWPjRX6poQaUi?=
- =?us-ascii?Q?BU04v6fGVZ6+d3gpBg+IhjqsTA6q79ZA08/c/rDNnRLa2IbwibMtUw0DbDwD?=
- =?us-ascii?Q?3SIb3aB0pCaZGU4V6X4cDBKHEHOfeq5XgyORCgDOMMgN7zRM+HawaKglUxqj?=
- =?us-ascii?Q?r+5do/ddDJEjgJ8o7FKnr1fleApO3sKJIYj4nCZ0jV1SSYgfe3Fm+SmltYeG?=
- =?us-ascii?Q?ZppqBu530fOYo5R2SWtnjNcNgDxAcAzQl1/IVNU861TSKc8upQOmeWkujRbq?=
- =?us-ascii?Q?FntHJkjTTmnGB9G/Zz1JqfKdo6LjMo6J1qxnnN48uttf13YwbHg5SIzyOaly?=
- =?us-ascii?Q?yS4hu0oUaAJPyM0SS3ZjR9hVm0IuPxUqxRyKmJ+mSapO+xbqz0fCe1nw+VFS?=
- =?us-ascii?Q?FG3pv5DGK1r0Rdxp+eQTACuKFlL9wNTAmhamt75D+FIkqOy0ttrhPC+hPG8W?=
- =?us-ascii?Q?6huMQdew2R4f3e7Ys9CLTuiXN6tZ1CqdpPhN2xT4kh+/U5XmkyGcKZ9Vigwy?=
- =?us-ascii?Q?Fva+FZbAmZecAOBlBGow6R91vysYBqimOfYhKefMld0kDS3Q4iPPFrTkgnXS?=
- =?us-ascii?Q?ZPwSD+2wY6VbRk0d2585o6uo3dxz8Tr/ShXYRU8/57tmALWZf5d76DXiecn3?=
- =?us-ascii?Q?suEDWCAvmN+h/6myWvHRoRkRvHxURaVFoU8ZEOEam7MIpsPUdjQDBvTHwOuu?=
- =?us-ascii?Q?3gYD1rCXbyOfWQEIFRk=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xx2dQAGC"
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e819aa98e7aso620772276.2
+        for <imx@lists.linux.dev>; Thu, 19 Jun 2025 04:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750332029; x=1750936829; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PBUsi0YBNMAsSBVKTalCtjkPCy5c9CLBxMjhKRUhDZY=;
+        b=xx2dQAGCkToaLURumuuUApqy/3eZCE7zjKp3CYTHOIjl3KrhPoy0+qPhVXC5zV5S6Y
+         b5bz/DxiHyl61+UshbMZT+2wthoaY5nxHWmdQmWN0lAEr5rVksB9/8Z0KDujzoK7jtT9
+         24g9zqKqhYggUzEYMvLwXGbXgZ/ro8Y4geFJSl5dxwZJMbTZVdHfBfm6bKNnvwnhU7Ir
+         7bV3sEbOmamU5o6MU8lf7zqqv0O07USo9+kr61N9EbCGHAY/oN7nf8tcBp8TxV1UUYOe
+         ftL7cl+DgIE3btd4UhMaJxUNaLqZ6kLeNY5I97hJzp4WSAIQVn6B+k/gBDywsEFKF3cs
+         9G6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750332029; x=1750936829;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PBUsi0YBNMAsSBVKTalCtjkPCy5c9CLBxMjhKRUhDZY=;
+        b=ehyfXK93nrT+6hHuHlr7asDr371N514Dx/W+h8SRtI3wPhYxue2LCwhfFTSg8qacWR
+         e0oxoDzghJLx1vZpJb6d4DxFFSawk48uKSZ3kPi8t4yxnaGMtW4kdGqX3WXk366I/rxf
+         4pk+N6tGtvja+E23VuqJhIadeDenjAh82h6Sz8YZHNfMT2WIltes93KazSpj6xLVOIi4
+         a+4q3uqf4In5PrmbkQNxe1lugjsdRvtYGIQYyCqUENuG74buzBDjfYmzM9lZfnKyU0TY
+         V+uWXmaMnKZqQqxuK9/gGDe75EJN/FdVlmbGMLDnB8nowQiQpU+yubL8DUxA5hQXq4JC
+         gwHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVB3l/2D3jNu+GLzN6gekqndmiFw6boMV9nhLp2LyqpoaV98azp3malNUuhyB8+3cd3C9Q=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxo1kX4Z0llIJq9IUPPJFHt/78q0xIZIl8PJvZJhI7payi6g2mY
+	j52ZKAU/qUmauedAj+mgjdhVd2rQTyKL0s6s+tIAU92iMur+7avCKBU4o01JRnvKrnfiy4sL27F
+	lpTaKvo2m0ELL0AQwh6xrAOSeOV1YboPKsKZW7akIpA==
+X-Gm-Gg: ASbGncu9sYomC9TXjXkJxeeRGGmlovQAeWAtmcuA+a18np7HJo5h9ju2frm6nAN2f5t
+	cNfoXIlzwxN33WbcUumfDx34lzChGpm/l8MGWb8+QIhg+hseDB4zqgNB7JVGU7LbW2Jv3/j7Pk/
+	JlZWqjatNJLOfEihlZg0I7HAN1ZbCrWEITolgOWsOJ44lR
+X-Google-Smtp-Source: AGHT+IHX9ksGPdiWQPczJro/bAe1IGvypwqoP8WCOZDCwwHcVTV4TvNUdtBj0nob0BRaQUU78E2vrWhUpGn208sRiuY=
+X-Received: by 2002:a05:6902:1b04:b0:e82:13f4:6156 with SMTP id
+ 3f1490d57ef6-e822acc6b88mr30435408276.13.1750332028965; Thu, 19 Jun 2025
+ 04:20:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9386.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76611c29-f613-48fc-f5ca-08ddaf15bcdd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jun 2025 09:43:25.3940
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EM+gSLQXLOW7U1s8eTRFZ4UKFeaimHklX5mnInorlC+TFYc+Sq2w3IqozV6VDviJ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9007
+References: <cover.1749127796.git.zhoubinbin@loongson.cn>
+In-Reply-To: <cover.1749127796.git.zhoubinbin@loongson.cn>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Thu, 19 Jun 2025 13:19:50 +0200
+X-Gm-Features: AX0GCFvvZQe_9Nix73DE7Q-G_-P34yyA4RJkioiqjIQNcE5PdVnCw3Am06hW7zc
+Message-ID: <CAPDyKFqbCcHPN8yf9Rzo0b0Gr2uBwXUCJDQNkSnnBesESN+kQA@mail.gmail.com>
+Subject: Re: [PATCH v3 00/35] mmc: Cleanup sdhci_pltfm_free()/sdhci_free_host()
+ usage
+To: Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, Huacai Chen <chenhuacai@loongson.cn>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	linux-mmc@vger.kernel.org, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Taichi Sugaya <sugaya.taichi@socionext.com>, Takao Orito <orito.takao@socionext.com>, 
+	Ben Dooks <ben-linux@fluff.org>, Jaehoon Chung <jh80.chung@samsung.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, Kamal Dasu <kamal.dasu@broadcom.com>, 
+	Al Cooper <alcooperx@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+	Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
+	Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
+	Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, openbmc@lists.ozlabs.org, 
+	Michal Simek <michal.simek@amd.com>, Joel Stanley <joel@jms.id.au>, linux-aspeed@lists.ozlabs.org, 
+	Aubin Constans <aubin.constans@microchip.com>, Eugen Hristev <eugen.hristev@linaro.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Yixun Lan <dlan@gentoo.org>, linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
+	Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, 
+	Steen Hegelund <Steen.Hegelund@microchip.com>, Daniel Machon <daniel.machon@microchip.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	linux-tegra@vger.kernel.org, Hu Ziji <huziji@marvell.com>
+Content-Type: text/plain; charset="UTF-8"
 
+On Sat, 7 Jun 2025 at 09:32, Binbin Zhou <zhoubinbin@loongson.cn> wrote:
+>
+> Hi all:
+>
+> After the first part of the cleanup[1], there are sdhci related
+> drivers that need further cleanup.
+>
+> This patchset is the second part of the cleanup series, and since sdhci has
+> sdhci_alloc_host() as the general interface, our main job is to clean up
+> sdhci_pltfm_free() and sdhci_free_host().
+>
+> [1]: https://lore.kernel.org/all/cover.1748933789.git.zhoubinbin@loongson.cn/
+>
+> Thanks.
+>
+> -----
+> V3:
+> - Collect Reviewed-by and Acked-by tags.
+> Patch-19:
+>   - Use dev_err_probe() to cleanup the code.
+> Patch-32:
+>   - Fix build warning by lkp:
+>         https://lore.kernel.org/all/202505300815.tjQRQD6z-lkp@intel.com/
+>
+> Link to V2:
+> https://lore.kernel.org/all/cover.1748515612.git.zhoubinbin@loongson.cn/
+>
+> V2:
+> - Collect Reviewed-by and Acked-by tags.
+>
+> Patch-01:
+>  - Set sdhci_free_host() to empty, rather than dropping it.
+> Patch-07:
+>  - Set sdhci_pltfm_free() to empty, rather than dropping it.
+> Patch-22:
+>  - As requested by Yixun, retain the goto scheme.
+> Patch-35:
+>  - New patch;
+>  - Since all calls have been cleaned up, sdhci_pltfm_free()/sdhci_free_host()
+>    are now dropped directly;
+>
+> Link to V1:
+> https://lore.kernel.org/all/cover.1747792905.git.zhoubinbin@loongson.cn/
+>
+> Binbin Zhou (35):
+>   mmc: sdhci: Use devm_mmc_alloc_host() helper
+>   mmc: sdhci-acpi: Drop the use of sdhci_free_host()
+>   mmc: sdhci-milbeaut: Drop the use of sdhci_free_host()
+>   mmc: sdhci-pci: Drop the use of sdhci_free_host()
+>   mmc: sdhci-s3c: Drop the use of sdhci_free_host()
+>   mmc: sdhci-spear: Drop the use of sdhci_free_host()
+>   mmc: sdhci-pltfm: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-bcm-kona: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-brcmstb: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-cadence: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-dove: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-esdhc-imx: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-esdhc-mcf: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-iproc: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-msm: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-npcm: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-of-arasan: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-of-aspeed: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-of-at91: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-of-dwcmshc: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-of-esdhc: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-of-k1: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-of-ma35d1: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-of-sparx5: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-omap: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-pic32: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-pxav2: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-pxav3: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-sprd: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-st: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-tegra: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci-xenon: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci_am654: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci_f_sdh30: Drop the use of sdhci_pltfm_free()
+>   mmc: sdhci: Drop sdhci_free_host()/sdhci_pltfm_free() interface
+>
+>  drivers/mmc/host/sdhci-acpi.c       |  3 ---
+>  drivers/mmc/host/sdhci-bcm-kona.c   |  2 --
+>  drivers/mmc/host/sdhci-brcmstb.c    |  1 -
+>  drivers/mmc/host/sdhci-cadence.c    | 21 ++++++------------
+>  drivers/mmc/host/sdhci-dove.c       | 12 ++---------
+>  drivers/mmc/host/sdhci-esdhc-imx.c  |  3 ---
+>  drivers/mmc/host/sdhci-esdhc-mcf.c  | 25 ++++++----------------
+>  drivers/mmc/host/sdhci-iproc.c      | 18 ++++------------
+>  drivers/mmc/host/sdhci-milbeaut.c   | 19 ++++++-----------
+>  drivers/mmc/host/sdhci-msm.c        | 11 ++++------
+>  drivers/mmc/host/sdhci-npcm.c       | 15 +++----------
+>  drivers/mmc/host/sdhci-of-arasan.c  | 26 +++++++----------------
+>  drivers/mmc/host/sdhci-of-aspeed.c  | 10 ++-------
+>  drivers/mmc/host/sdhci-of-at91.c    | 30 ++++++++++----------------
+>  drivers/mmc/host/sdhci-of-dwcmshc.c | 14 +++++-------
+>  drivers/mmc/host/sdhci-of-esdhc.c   | 11 ++--------
+>  drivers/mmc/host/sdhci-of-k1.c      |  1 -
+>  drivers/mmc/host/sdhci-of-ma35d1.c  | 23 +++++++-------------
+>  drivers/mmc/host/sdhci-of-sparx5.c  | 24 +++++++--------------
+>  drivers/mmc/host/sdhci-omap.c       | 21 ++++++------------
+>  drivers/mmc/host/sdhci-pci-core.c   |  9 ++------
+>  drivers/mmc/host/sdhci-pic32.c      |  9 +++-----
+>  drivers/mmc/host/sdhci-pltfm.c      | 16 +-------------
+>  drivers/mmc/host/sdhci-pltfm.h      |  1 -
+>  drivers/mmc/host/sdhci-pxav2.c      | 26 ++++++-----------------
+>  drivers/mmc/host/sdhci-pxav3.c      |  7 +-----
+>  drivers/mmc/host/sdhci-s3c.c        | 16 ++++----------
+>  drivers/mmc/host/sdhci-spear.c      | 11 ++++------
+>  drivers/mmc/host/sdhci-sprd.c       | 33 +++++++++--------------------
+>  drivers/mmc/host/sdhci-st.c         |  6 ++----
+>  drivers/mmc/host/sdhci-tegra.c      |  9 +++-----
+>  drivers/mmc/host/sdhci-xenon.c      | 15 +++++--------
+>  drivers/mmc/host/sdhci.c            |  9 +-------
+>  drivers/mmc/host/sdhci.h            |  1 -
+>  drivers/mmc/host/sdhci_am654.c      | 20 ++++++-----------
+>  drivers/mmc/host/sdhci_f_sdh30.c    | 13 ++++--------
+>  36 files changed, 135 insertions(+), 356 deletions(-)
+>
+>
 
+The series applied for next, thanks!
 
-> -----Original Message-----
->=20
-> On Tue, Jun 17, 2025 at 06:20:24PM +0800, Joy Zou wrote:
->=20
-> > +        properties:
-> > +          nxp,dvs-run-microvolt:
-> > +            minimum: 300000
-> > +            maximum: 1350000
-> > +            description:
-> > +              PMIC default "RUN" state voltage in uV. SW1~5 have such
-> > +              dvs(dynamic voltage scaling) property.
-> > +
-> > +          nxp,dvs-standby-microvolt:
-> > +            minimum: 300000
-> > +            maximum: 1350000
-> > +            description:
-> > +              PMIC default "STANDBY" state voltage in uV. SW1~5 have
-> such
-> > +              dvs(dynamic voltage scaling) property.
->=20
-> What are these states exactly - this feels like something that should be =
-either a
-> standard property or discovered at runtime?
-These two properties are mainly to facilitate customers to set their run an=
-d standby voltage
-according to their board in PMIC regulator initialization.
-BR
-Joy Zou
+Kind regards
+Uffe
