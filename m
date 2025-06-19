@@ -1,88 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FCC2566F7;
-	Thu, 19 Jun 2025 07:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FD31624FE
+	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 07:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750318080; cv=none; b=ZBMMdXi1PYdmDaqz8DTQli1vCx/K1gd5b6fENDwV1eWduSFCfGHKkbePorVxoEZO8hS43s4dlOIK+sRwLJCvJ44QvieX2wOStvq31JheczNRlYEdQ+8BeFMZGUB2nbgsb7LgnpbxKKKQ++r2PfCEKpwodRnoIrVehGOIgRlYfu4=
+	t=1750318412; cv=none; b=m2PIMK3KHLRI4jN8pe1zT9Yf8O56ZQngBm85Dnq/h0LPAcA5u7f9259xtxEHLkIW1xH44rPYEPa8tW5XxuAON6gXvTxE789cZZZHMQv2ALNeST/qgAIdM1TJI05ehPea4e/7Lsc3yMQEuf7q1nQwYg66hflLNB+ghE0INs3Q72c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750318080; c=relaxed/simple;
-	bh=iOlTmiQ7xPFtsZHsUbIdlvX7JUBY0JdnvF8PrsNFm/8=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=mbzc3wBslvszedACC+rysZJzfh6cUNLLUXcDHZQSsYz529pYzU/ErHZfju56pyd1DGjnWhvnYBmjZJxs+amtIt20EaJaj5ajH+/ez2Pi0Gg8Sg0tKeIsf8Y2BvHpcjgqfqVYm7N/m6bTacwBpB+e2FYXkNrlE3axhDn2oCyOvYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gaB5u+bE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750318412; c=relaxed/simple;
+	bh=Qrruz0ihY1HWjqyIP6ErG3IY/GM/vgxQHIPcy+7dJyQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ss2i/NbQHpXiZd674coUatsQQCo/DEZWogOn+NZIldzfGU6tnLhWcKyW/hytmqA1n73161Ya26f6gIDrzOX37W4wcFrbk0JhtE4U8/NWNyaLnyXGA2oJgR4Gh0D4PlIQ5z/meuE1lkC6Lo1DGqoqO5l6+vn84SpvYWFqf784IKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=lxTLwirY; arc=none smtp.client-ip=1.95.21.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gaB5u+bE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378CFC4CEEA;
-	Thu, 19 Jun 2025 07:27:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750318079;
-	bh=iOlTmiQ7xPFtsZHsUbIdlvX7JUBY0JdnvF8PrsNFm/8=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=gaB5u+bEVxLD/mYsswxJ16PKoBySIRDFJpEeE1ylH9QSBF3kiOCIzpulEVop8KvxS
-	 PV2ZFo5ZCrL91xwCAbpFVz+IA6T8Ra/P67KjkQQBSFnhVt8wu4yX2EnjGHMcSP/95c
-	 a1QZPLXopETaPIm08x5jL9alv0s5YBieBIhYFgGImJKFJFiLBv5FxoTN+JOW5qerPy
-	 MZ3g8of7MXQ1q3mYdICkEaxh/zQ3xGYS/svB/QWASvSywyUjakkGh9DsvoX4pG9blZ
-	 FEBn4gCTXx/dKoOeE0aCxIgmr1vVBBhp1/tApFxKbYP7ii6IC9ZoN3HX0WQdyZCDK1
-	 MgooyxDkuJ0jg==
-Date: Thu, 19 Jun 2025 02:27:58 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="lxTLwirY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=qQc8KBNXic1DZnFfIwGfGX0puZguj5Ag4lvx2OkjmOM=;
+	b=lxTLwirY93ccLYht3790YvQzbm2YudORaWDoDB3WQ4mKTfszjLri6EFbpbUF9l
+	x65H8Uhi1E33Ds5odQC0owBP2s0cw3RvxDrcwRx0ajC/wXUMGUxzgbV33MURRIQZ
+	zxh32iF+9i9aIC0XwrDAGyK7TUgkBlwu5RR4AUESYidvo=
+Received: from dragon (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgBXVlEzvVNo33X_AA--.29592S3;
+	Thu, 19 Jun 2025 15:33:08 +0800 (CST)
+Date: Thu, 19 Jun 2025 15:33:06 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Primoz Fiser <primoz.fiser@norik.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+Subject: Re: [PATCH 1/2] arm64: dts: freescale: imx93-phycore-som: Move
+ ethernet0 alias to SoM
+Message-ID: <aFO9MpNOSzTGfyJU@dragon>
+References: <20250522083909.533567-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: lpieralisi@kernel.org, l.stach@pengutronix.de, mani@kernel.org, 
- krzk+dt@kernel.org, shawnguo@kernel.org, linux-pci@vger.kernel.org, 
- s.hauer@pengutronix.de, imx@lists.linux.dev, kernel@pengutronix.de, 
- bhelgaas@google.com, frank.li@nxp.com, devicetree@vger.kernel.org, 
- kwilczynski@kernel.org, conor+dt@kernel.org, festevam@gmail.com, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Richard Zhu <hongxing.zhu@nxp.com>
-In-Reply-To: <20250619055515.74675-2-hongxing.zhu@nxp.com>
-References: <20250619055515.74675-1-hongxing.zhu@nxp.com>
- <20250619055515.74675-2-hongxing.zhu@nxp.com>
-Message-Id: <175031807810.3855277.3097205651899770638.robh@kernel.org>
-Subject: Re: [RESEND PATCH v1 1/2] dt-binding: pci-imx6: Add external
- reference clock mode support
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250522083909.533567-1-primoz.fiser@norik.com>
+X-CM-TRANSID:Mc8vCgBXVlEzvVNo33X_AA--.29592S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrGw43Kr4fXF4fJr4xJry7ZFb_yoWxArc_CF
+	W8u3WDAw4UAFya9343CFyFy3s3tw1kJr1IvrWagr93t34Fg3s3Gryvvas5CF4xW39xtr13
+	u3WSkFWSqrnagjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjMmh5UUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIRVr0GhTvTVkkAAA3I
 
-
-On Thu, 19 Jun 2025 13:55:14 +0800, Richard Zhu wrote:
-> On i.MX, the PCIe reference clock might come from either internal
-> system PLL or external clock source.
-> Add the external reference clock source for reference clock.
+On Thu, May 22, 2025 at 10:39:08AM +0200, Primoz Fiser wrote:
+> Move alias for ethernet0 interface to the phyCORE-i.MX93 SoM include
+> file. The reason behind it is that the physical location of the PHY chip
+> connected to FEC interface is on the SoM itself and alias thus belongs
+> into the SoM device-tree. Consequently, it can be used by all boards
+> based on the phyCORE-i.MX93 SoM (phyBOARD-Segin and phyBOARD-Nash).
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> ---
->  Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+> This also enables us to mark FEC interface as the primary / first for
+> networking in the bootloader and systemd (predictable interface names).
 > 
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml:224:15: [warning] wrong indentation: expected 16 but found 14 (indentation)
-
-dtschema/dtc warnings/errors:
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250619055515.74675-2-hongxing.zhu@nxp.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Applied both, thanks!
 
