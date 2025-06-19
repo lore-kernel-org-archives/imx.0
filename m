@@ -1,155 +1,99 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F9830E84B
-	for <imx@lists.linux.dev>; Thu, 19 Jun 2025 21:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8A1FBE8B;
+	Thu, 19 Jun 2025 22:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750366979; cv=none; b=TD2vqAs8vB6YESw2TG+p3dMUUaX1NhV58aXyWkOudjMYBKB9/gQI3OUy2Y8pzZtxO9tBJI5YoygiccQmvAHIJBxSQ97yLh+PYm8lIL/6zJdzlWnh4vhicj8sBJrpmcebvHBisKL9sFp95836PItMRv78NkRCWkfm1Q8K7yJKMrI=
+	t=1750372797; cv=none; b=RyrvSfAPIQwJXgwUF4zqopR/hRVJgsZX/Ye5hnnKFbT6wYdiJEJ+sY/EiwyuE76RYGrK2VaASWEHsoI3ljcDx5EJ985HWTDM55HAxdledG/spnpSbCv+l5VPXjt4YnWlZIDd3+DyKoxLFAw+ui9QyjJv1NWSMdE2Ko2RWJjWMUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750366979; c=relaxed/simple;
-	bh=cMcgUkKcU4XsVXe3puMc1IqvW3rgKBUEbIiiJLipLQI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wwz1v7ITBtacYHTNB9HGJGGhoDm6NSLc4iNn9cx6wxqHHL/nRBUg3T68bTR+v+/vxeEdGSScFnqhhOZVCQ/n9hKECOxdKt4YDfwk8+p6oNLWXMgGtsuurzVBl+Xc4f6pqJDp5g1/eIOaqhh1/a9o93OtZKWpgR/2OahuezprUNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=nHzBpkMp; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1750372797; c=relaxed/simple;
+	bh=75c4S8adQQnHNd/zO6XocENI2O2MLyqODhXEw4RIaNA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=spMDm+eo8Zwasr3lA5HLU5eiefjQ2MKE3qqwDGL/D7eoj/ZhJq1omQYtDFNxeKe2HyemsLVnF7jYP0uBR3kzd3GjiX3UqwiM5dXSJ8f1TggzeMk/Q7tjxWn7Hbk1X6JVLdAHBKjVBEXncL33USeBDUCKAr+o4pW/TsIsIih5Mpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eoOaF+hY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="nHzBpkMp"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id EE9192EC;
-	Thu, 19 Jun 2025 23:02:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1750366962;
-	bh=cMcgUkKcU4XsVXe3puMc1IqvW3rgKBUEbIiiJLipLQI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nHzBpkMpW+52bQS9MZNB33ymQm5kq4+JmXeNbxNXzA99jYVDEyEzQxuNgb231G0vw
-	 p9w1Q2rETQcwko4GJ8gIE6Fky1RgWDPPfJ3wYVTN6SdwEkcjARLPrpURRXbzR2YeF8
-	 dGpVql/nGJTd4hl4rsPmDL4igkyFSI1zJgZjmn38=
-Date: Fri, 20 Jun 2025 00:02:37 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Adam Ford <aford173@gmail.com>, Frank Li <Frank.li@nxp.com>,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Purism Kernel Team <kernel@puri.sm>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH 6/8] dt-bindings: media: nxp,imx-mipi-csi2: Add
- fsl,num-channels property
-Message-ID: <20250619210237.GA21935@pendragon.ideasonboard.com>
-References: <20250608235840.23871-1-laurent.pinchart@ideasonboard.com>
- <20250608235840.23871-7-laurent.pinchart@ideasonboard.com>
- <aEb+iTlDh0H/bRMY@lizhi-Precision-Tower-5810>
- <CAHCN7xJjR1zZXeJAvkXmdNYroP6Jm6TLjHjnPUOF4z7yaL7EFw@mail.gmail.com>
- <20250609182033.GA11428@pendragon.ideasonboard.com>
- <aEcxN7xClLfp0STx@lizhi-Precision-Tower-5810>
- <20250610081829.GC11428@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eoOaF+hY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CE7C4CEEA;
+	Thu, 19 Jun 2025 22:39:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750372796;
+	bh=75c4S8adQQnHNd/zO6XocENI2O2MLyqODhXEw4RIaNA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=eoOaF+hY9mZ2EZr0AtsIAyH8YftKqZWjg+wLJxL+tzO3rpIisDECrg52MQk8Nn0JV
+	 z1G/oYAvbvtzAma/CQl6DgKH0IBSWI3WH6EUQ4KZfFEsHwWPeivJda2pPJXi6SV4eP
+	 gNT9HVmIwyhhJXOzwotPY3KTHV/7iXKkbros4fNnXLBx3vHdX2+5H4B+gl2Rv9EPIv
+	 +021fxeoFCKZIZtkov4aR+/LDNrtEW08l7e8isaurzST6tSkaxhNenMHNjIxyxcZ9H
+	 b10D5VqsD6bofY+AvKGu4J8vXXBMuA4ESYLhauFfRDsEwEn8H+nQmnqaGRVRwjB36b
+	 1VKJ5Ch/gdjaA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C5938111DD;
+	Thu, 19 Jun 2025 22:40:26 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250610081829.GC11428@pendragon.ideasonboard.com>
+Subject: Re: [PATCH net-next v4 00/11] net: fec: general + VLAN cleanups
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175037282500.1008441.15490348725238364188.git-patchwork-notify@kernel.org>
+Date: Thu, 19 Jun 2025 22:40:25 +0000
+References: <20250618-fec-cleanups-v4-0-c16f9a1af124@pengutronix.de>
+In-Reply-To: <20250618-fec-cleanups-v4-0-c16f9a1af124@pengutronix.de>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: wei.fang@nxp.com, shenwei.wang@nxp.com, xiaoning.wang@nxp.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ richardcochran@gmail.com, andrew+netdev@lunn.ch,
+ aleksander.lobakin@intel.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de, bpf@vger.kernel.org,
+ Frank.Li@nxp.com, andrew@lunn.ch
 
-On Tue, Jun 10, 2025 at 11:18:29AM +0300, Laurent Pinchart wrote:
-> On Mon, Jun 09, 2025 at 03:08:39PM -0400, Frank Li wrote:
-> > On Mon, Jun 09, 2025 at 09:20:33PM +0300, Laurent Pinchart wrote:
-> > > On Mon, Jun 09, 2025 at 12:53:48PM -0500, Adam Ford wrote:
-> > > > On Mon, Jun 9, 2025 at 10:32 AM Frank Li wrote:
-> > > > > On Mon, Jun 09, 2025 at 02:58:38AM +0300, Laurent Pinchart wrote:
-> > > > > > The CSI-2 receiver can be instantiated with up to four output channels.
-> > > > > > This is an integration-specific property, specify the number of
-> > > > > > instantiated channels through a new fsl,num-channels property. The
-> > > > > > property is optional, and defaults to 1 as only one channel is currently
-> > > > > > supported by drivers.
-> > > > > >
-> > > > > > The only known SoC to have more than one channel is the i.MX8MP. As the
-> > > > > > binding examples do not cover that SoC, don't update them.
-> > > > > >
-> > > > > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > > > > ---
-> > > > > >  .../devicetree/bindings/media/nxp,imx-mipi-csi2.yaml       | 7 +++++++
-> > > > > >  1 file changed, 7 insertions(+)
-> > > > > >
-> > > > > > diff --git a/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
-> > > > > > index db4889bf881e..41ad5b84eaeb 100644
-> > > > > > --- a/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
-> > > > > > +++ b/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
-> > > > > > @@ -68,6 +68,13 @@ properties:
-> > > > > >      default: 166000000
-> > > > > >      deprecated: true
-> > > > > >
-> > > > > > +  fsl,num-channels:
-> > > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > > > +    description: Number of output channels
-> > > > > > +    minimum: 1
-> > > > > > +    maximum: 4
-> > > > > > +    default: 1
-> > > > > > +
-> > > > >
-> > > > > Look like it is fixed value for each compabiable string, So it is not
-> > > > > suitable for adding new property. It should be in driver data of each
-> > > > > compatible strings.
-> > > > >
-> > > > > I met similar case before. DT team generally don't agree on add such
-> > > > > property, unless there are two instances in the same chip, which have
-> > > > > difference channel number.
-> > > >
-> > > > If the DT changes are rejected, can the number of channels be added to
-> > > > the data structure inside mipi_csis_of_match?  We have compatibles for
-> > > > 8mm and imx7.  If we add an imx8mp compatible we could add a reference
-> > > > to the number of channels.
-> > >
-> > > I thought about it, and decided to add a new property because the number
-> > > of channels is really a synthesis time configuration parameter, and
-> > > could differ between different CSIS instances in the same SoC.
-> > 
-> > Need add such information at binding doc's commit message,
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 18 Jun 2025 14:00:00 +0200 you wrote:
+> This series first cleans up the fec driver a bit (typos, obsolete
+> comments, add missing header files, rename struct, replace magic
+> number by defines).
 > 
-> I'll update the commit message.
-
-The commit message in v2 will state
-
-    dt-bindings: media: nxp,imx-mipi-csi2: Add fsl,num-channels property
-
-    The CSI-2 receiver can be instantiated with up to four output channels.
-    This is an integration-specific property, specify the number of
-    instantiated channels through a new fsl,num-channels property. The
-    property is optional, and defaults to 1 as only one channel is currently
-    supported by drivers.
-
-    Using the compatible string to infer the number of channels has been
-    considered, but multiple instances of the same CSIS in the same SoC
-    could conceptually be synthesized with a different number of channels.
-    An explicit property is therefore more appropriate.
-
-    The only known SoC to have more than one channel is the i.MX8MP. As the
-    binding examples do not cover that SoC, don't update them.
-
-Rob, Krzysztof, Conor, are you fine with adding this property ?
-
-> > ideally provide an example for it.
+> The last 5 patches clean up the fec_enet_rx_queue() function,
+> including VLAN handling.
 > 
-> That I can't provide because the few SoCs I'm working with do not
-> integrate multiple CSIS instances with different parameters.
-> 
-> > > > > >    ports:
-> > > > > >      $ref: /schemas/graph.yaml#/properties/ports
-> > > > > >
+> [...]
 
+Here is the summary with links:
+  - [net-next,v4,01/11] net: fec: fix typos found by codespell
+    https://git.kernel.org/netdev/net-next/c/a822bdb23b3b
+  - [net-next,v4,02/11] net: fec: struct fec_enet_private: remove obsolete comment
+    https://git.kernel.org/netdev/net-next/c/3e03dad543fd
+  - [net-next,v4,03/11] net: fec: switch from asm/cacheflush.h to linux/cacheflush.h
+    https://git.kernel.org/netdev/net-next/c/99d171ae9595
+  - [net-next,v4,04/11] net: fec: sort the includes by alphabetic order
+    https://git.kernel.org/netdev/net-next/c/658e25f770de
+  - [net-next,v4,05/11] net: fec: rename struct fec_devinfo fec_imx6x_info -> fec_imx6sx_info
+    https://git.kernel.org/netdev/net-next/c/4e8594a88656
+  - [net-next,v4,06/11] net: fec: fec_restart(): introduce a define for FEC_ECR_SPEED
+    https://git.kernel.org/netdev/net-next/c/a4addc337745
+  - [net-next,v4,07/11] net: fec: fec_enet_rx_queue(): use same signature as fec_enet_tx_queue()
+    https://git.kernel.org/netdev/net-next/c/e222c08f9669
+  - [net-next,v4,08/11] net: fec: fec_enet_rx_queue(): replace manual VLAN header calculation with skb_vlan_eth_hdr()
+    https://git.kernel.org/netdev/net-next/c/e4a3659a986e
+  - [net-next,v4,09/11] net: fec: fec_enet_rx_queue(): reduce scope of data
+    https://git.kernel.org/netdev/net-next/c/33b9f31893bd
+  - [net-next,v4,10/11] net: fec: fec_enet_rx_queue(): move_call to _vlan_hwaccel_put_tag()
+    https://git.kernel.org/netdev/net-next/c/4dffaf379104
+  - [net-next,v4,11/11] net: fec: fec_enet_rx_queue(): factor out VLAN handling into separate function fec_enet_rx_vlan()
+    https://git.kernel.org/netdev/net-next/c/0593f8df66e5
+
+You are awesome, thank you!
 -- 
-Regards,
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Laurent Pinchart
+
