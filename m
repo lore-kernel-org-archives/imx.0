@@ -1,195 +1,146 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011012.outbound.protection.outlook.com [52.101.70.12])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38609270572
-	for <imx@lists.linux.dev>; Fri, 20 Jun 2025 08:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750409185; cv=fail; b=i4bM+eyeWsOLdAaH4r6ijsuJ0K86QB1BKNVOBCrUc4gzH49gAoDKRIb4a0c9KkqU1n0dtjPc1HGGnLTuoTS9LaDmWHPaB6WLfgBNQFIU8v+DqXliJz8IamsnathVRI70Pl5l4DgSR4pDh0eHryxYMZqOGLNutUJFDanIIhUHJx8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750409185; c=relaxed/simple;
-	bh=x9+WGhML9my4sChRs8UT9nNdVpTMliu1hz9rJNIKICM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oxbeOxMp1OtgKyk8/lxVzt8SxgJxfHzeap6Qj4JBGaWRJgX2p4w2gmTmOlBAkiNOR6ZE2sIyf8ELllTAfxGixRr3nJnHjqdmFKc6Ebow0aSm1V6dCjjhFbD2YFCWVknXbrUW/XAQFNMJGRMZ70hPdsJnMkwufpxQxsQ0a0VPBac=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com; spf=fail smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=bc6lIj/Y; arc=fail smtp.client-ip=52.101.70.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=mt.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B582356C7
+	for <imx@lists.linux.dev>; Fri, 20 Jun 2025 09:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750410342; cv=none; b=RfGy8yotuOPjpwgMt7vq2i4v7AX/QKcVU2/DqnHTTV5/RNIsfYYUSfy+PN58PSK9+fFH7K95qHmszSoBHEV0F2nLMVfsNFV/mnaPr0ia9a67HFwhWZ5huEG9UJSVZ7B8EuJPm2gvHb9eqpkyALi6bM7jymEl9Urn4OIbNwihLs0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750410342; c=relaxed/simple;
+	bh=kU18AO5fHeDlpTLOvQ5TMfEqT+YYlTBLMsNF83QbMIo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nhaQ33ofOTBtHFFzs1a2rZk1gKTmOQ7t6tbShfdEEW5gu6ZkMYKSJGkw34L+RXJ7XUjyr21U8Wm0675S4CAuK7TOlFKtASOvf8MhpFzGJa1s5m/6I5kW8kt1xcjZDxvzgTBwdzEAJMfwGjsw0d3JwvHtXzwg6KzvxN1q8UCBCQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=f83o3sZb; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="bc6lIj/Y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m38oKjtEBKQiwm3jgLaxUg2WaRchPBTYqW0+yUDq0qqhWs7Z+ko5kPQyfPWsXEXMoN8tcbH+u/UyscQy9bmwiABozaWemlPo+MDCtlKBnV/YQ31y1GgWXATvgoIk1rw3JAP/5k1Ma6nrRKE1GPjHo7nLjmtEECFrzDgXtUZPTNsWstw/Xo/xaw4wzKm2nEErnCRUuvrGkVDiDozqbcmZ+gSyT7WymAHLX5sm8w+MLzViiMfIDxS7eExsbpOJgttSP4tde80mOUUvZAP9RgtJNLLIUa1Nz8lCJGbg12G9KobtojuCejLK7yM62Ga9XdA9rC0ZAD7Ly0/vNR6zxa8EIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4+Q4DtEDAkGgyCm64bhcklWZJRyc5WKXJAzBuPtDojE=;
- b=g6od2C6xykgeyZiEvINijcvr6hFc8qiCq9AUIx031nIcFE8vICoNewec5h0US4pGpDMmfAqQBl7J886ZwP9vJSnlKi6ZFAwXrvkyWH5mReQOrmaso9ppRXRvAr1QN4ip29WsWYBZqLOsy0HcV5u/C+lpDzD8CBrBAL1UtgVfWm7NT599Zy9lOCzwIQbes6e3BPL1HFS+YYsust984uEeJETqPJID88q37y8TPg3O+7c17V6FKDlmrUd8JVisfdGwuro7Uz3hb475y0ECMOJf+5v+imxZbCAgexGh8j9LgJ16jNdXZ2f6U9+Fbewyddpg4XSuE+bDHuw82Mrqt4ph2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
- header.d=mt.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4+Q4DtEDAkGgyCm64bhcklWZJRyc5WKXJAzBuPtDojE=;
- b=bc6lIj/Yb2PYFBuWjYCcnYRh8HIA/gjOnZ0XawZc6i8n7T2x6vnrB7aCxDpqUI+Q6Iis2SX5B4/01TzV/53E+SMs/7N0ktRyV29BgKYrRI/MlULnq5KQC9zrBCfpu/d7C0H6RisgxRdJXjjzrPPm5vz+WqLnVkB/aRXmB8vTDDOPMIBHOUgpv0oK58c49QXfrwYD2HP3Vp9DGh30aOTV9C+7aihED6FfPkuiIrtRkFW0CDGry4epsEzrvvyCbG7tb0ABXoa310/p2wos8RsWwFwbcqgmRFbYq3y2gaB2XVm1DCSVG6KWgJrx0faTAeaIDaGZQV5D5bxWdVUDo82AgA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mt.com;
-Received: from VI1PR03MB3856.eurprd03.prod.outlook.com (2603:10a6:803:66::33)
- by AS2PR03MB9490.eurprd03.prod.outlook.com (2603:10a6:20b:59a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.23; Fri, 20 Jun
- 2025 08:46:15 +0000
-Received: from VI1PR03MB3856.eurprd03.prod.outlook.com
- ([fe80::e9fe:470f:27e0:b265]) by VI1PR03MB3856.eurprd03.prod.outlook.com
- ([fe80::e9fe:470f:27e0:b265%5]) with mapi id 15.20.8857.016; Fri, 20 Jun 2025
- 08:46:15 +0000
-From: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
-To: linux-kernel@vger.kernel.org
-Cc: Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Wojciech Dubowik <wojciech.dubowik@mt.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Marek Vasut <marex@denx.de>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Markus Niebel <Markus.Niebel@tq-group.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Heiko Schocher <hs@denx.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Tim Harvey <tharvey@gateworks.com>,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 4/4] MAINTAINERS: Add entry for METTLER TOLEDO BOARD SUPPORT
-Date: Fri, 20 Jun 2025 10:41:45 +0200
-Message-ID: <20250620084512.31147-5-Wojciech.Dubowik@mt.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250620084512.31147-1-Wojciech.Dubowik@mt.com>
-References: <20250620084512.31147-1-Wojciech.Dubowik@mt.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZR2P278CA0088.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:65::19) To VI1PR03MB3856.eurprd03.prod.outlook.com
- (2603:10a6:803:66::33)
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="f83o3sZb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1750410311; x=1751015111; i=wahrenst@gmx.net;
+	bh=kU18AO5fHeDlpTLOvQ5TMfEqT+YYlTBLMsNF83QbMIo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=f83o3sZbXzqo+s/sfu59GrqELmlRR0txGbkKRUjASCXGiE3CIndw6zr0Ag2FXjyZ
+	 Idh4+mgs6ZVNXnmMjePt3ZcwYLZyc55G8uwwjzu8n2M+NC9jkis5cF9ZjEMDCre6Y
+	 cdqbI0XBPRZtLqAoGuX/ExSSBhr9Af7CPm6RClFG1fnVhhB/mP8domh2OrnNWfeAI
+	 3R2jaQpXtnxyavFK+OUdLs9a0mOiGueXsmpBLjQefbh0FS0GM8YtjHfBkHuygwFYf
+	 s62uzDfI9h36ucTCsxyX8Lwo3JYkdHhf/qXrZ4xdTtpG5OI1iA+F57r0bYFqIEBOm
+	 7noXz1j2mjVdqqCq2A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.103] ([91.41.216.208]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mel81-1v0V3S0TGn-00iJdW; Fri, 20
+ Jun 2025 11:05:11 +0200
+Message-ID: <cb757d69-2e14-4b8b-9db4-5f3362be37dc@gmx.net>
+Date: Fri, 20 Jun 2025 11:05:07 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR03MB3856:EE_|AS2PR03MB9490:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf5d664e-a0cb-40fb-56a3-08ddafd6eaea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|366016|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cFbSFsHUtBtO7+jRCW+/dvd0fW1b4FMfwvAvdV136AlHGbRQ3awIh53zECsG?=
- =?us-ascii?Q?kqGtv3TK2zsmf546iQIlq1Z8ONc+fiq/3m/T3p0sDtj6OWto9MEWXBEgm5js?=
- =?us-ascii?Q?2Tvr7r7hEfzFqWqtNW4HmOwcH+VGyDH7uyGKz0PznS0dijiOut6BniWnn0AL?=
- =?us-ascii?Q?/SS+Q2EeR5freAi4SP+HJyhGmW6DWxQBRGalXTu/23i2IStkT96FvIG+Rr2s?=
- =?us-ascii?Q?l/fwGRoiDFxi1l9kJexPL7uO+t44ie0/MFuNZb92blyRE82tvqpUvrww5lZs?=
- =?us-ascii?Q?N5nupAwAGsvpNeCEjmI+65NKe8ZaigG3RPRIP0+KunhPeiieuahFmG6qQlyx?=
- =?us-ascii?Q?bUJEbrXIKZQPJjJPmEKfb5TY05G8+yWL2ZtDq62UE3sphYVvhUMx+ql0rrZ4?=
- =?us-ascii?Q?mOY7VXOHlM4GZoDDHg18+Tnzyp1uaVnMBUxt7vKogDqjHyDn9psGrUYgej5W?=
- =?us-ascii?Q?TBseynjKz0mVbdLTB8dFkGCXffVi3BECFkzmkuH36we1FzdoZawpBGA5CZo3?=
- =?us-ascii?Q?GugLyN8OtH1Vf7DGNqUiWmRwGZDSieIQBFGibVI6ebHJrmp8ojqPVwQX+GhS?=
- =?us-ascii?Q?rclStE8kYGmEZYH8pv7wE3IZTqkPvwiheW7SVC5tQkaWIb8iZT9U57U6XNq2?=
- =?us-ascii?Q?7dwLyIzSR2oa7JdlLVNE8gXCImvIDMz+O6P8bWgY6CPxgV+7LCHphF2KJCV0?=
- =?us-ascii?Q?kzHYStgMxCHpc/OeFEVW+ActXPFR6+ul7kGfcyUL9cE1OtjNB5YpJoLy8ufJ?=
- =?us-ascii?Q?jQfPtaPkBwBXyF0xortXBIQeDAyrW54JMQly1m4lHP7j8syRaGzp6TFznwQl?=
- =?us-ascii?Q?KpvcaTWrY5E3yXVQKKzSYFMAbWqAxfCjqJ235pRHNtLvIDKqBX+nIO+vJPpf?=
- =?us-ascii?Q?PAqmD/dZvfQCrqB75OaXKekoWfmbSMLKnXexQLSPQQOhaSf4NeYLLOr1iIP6?=
- =?us-ascii?Q?ZPFj0lq/ZwflSKfoZ3P3DbBV6uBvVfkl+NrrvaO+ChzrGoVJf1ndyWpwiYEw?=
- =?us-ascii?Q?p8x3BKCmap55z5pXR/xT1I6xfpV0Ofyu4J8SOQCDnHRUo4JyyoJ3rHZudOxQ?=
- =?us-ascii?Q?Y0F6gJ+gpKA8bl4j+5stbbeW8TLQ4Es3aPI3AtmR9G8aRAxgwR7m8zweumOQ?=
- =?us-ascii?Q?biCaR4GuJYCmf053chSM+A7pfr0uUdBI7KayE1/LWsAK1y5b/TxzTYCe5oVG?=
- =?us-ascii?Q?tO2/58t+9yhblLSNa9Bh50Y6XAaUPNQExwmjO471s4aZ126D1qBc8Kp4Ihl7?=
- =?us-ascii?Q?Y4FEevewiG96esyeKUtL+72yu9WDju2iwKweuON+ciBaukcOjTbGPtaStB0C?=
- =?us-ascii?Q?oMvCNAYQxACMFGyPGdxoJUsDGjtk+JtnBu1E4gdSvsRsB4316KBiKtY7NTgG?=
- =?us-ascii?Q?t7xMGkOmoNESaZ9Ts4AogAdpASDHok25WKPIHYlWqXQiQpskBOKY26YUuG6q?=
- =?us-ascii?Q?tBgqHIgcHGI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR03MB3856.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(366016)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5uVcdbQvLTquxUaGQKEM0WNRbzAqQMcQ57CH+p+Eubg0HL1Ky9oCCUrhWqGr?=
- =?us-ascii?Q?PTUEdm3LZ8tOYiAk+VeeSYNwHZGX0sCUdYS4NrryAn1FGjAVlqyA86T/4AHd?=
- =?us-ascii?Q?4o9330Op11tPYYUCyM1o6/cGLyNkGajljA5HE6bik7PWKquDmY2bmPasVURy?=
- =?us-ascii?Q?I2njNEMpjJJj8RGkH0oT6ri7YjVeQrIzmNoN8DCKcBOSXl4q1ysOnOHenC6Z?=
- =?us-ascii?Q?uzU05Xa+cWBkB/BUq90fFQs7wV1FW+DxHQXar6K6v3/S13gqExpQH4qEyu2W?=
- =?us-ascii?Q?Eu4W58sOgtgDxSdHzIgpzXxDn+P9hqfXDN/w5d17mIdvV8e4GaDV4X3VZHyD?=
- =?us-ascii?Q?RMRJWrC94inquGhrYLMUpv04lWjkTe8Y7TBLGOj/1xTTgjd2H0+HnqJz05pZ?=
- =?us-ascii?Q?kfqIYxIoWeMFDXUEwr7mvjjPGaljkDkTDpVoOvbiw1dtZXb1KzDde7B0aQtB?=
- =?us-ascii?Q?aSd87bQW2T4numTm7Z3VeNjpOHUOPPCKylfzd+ZHo3Ad2RAuGQJEPOFwcgVS?=
- =?us-ascii?Q?gHe+FIFgJ2AIScdtdiDbWVuQODX7n0FQJxad0v3edomet46ADnXuJMi+LjKE?=
- =?us-ascii?Q?zUBDo9eLc3HEtz8k3kWfjPOTEjxranH6XMwsp20+dx9w/6RYpvokfuaPDYF7?=
- =?us-ascii?Q?PBPmzHCM7258Eh8DFt0miouHvJumNxZ6INE9g0ykumhUu8K5iv/ayuNO1FbY?=
- =?us-ascii?Q?fUdJI1KcaJG15RZ4yBZhjWsi76yd3bQp6wT73blJ/jjL5+7AZQzj4OLhsDiJ?=
- =?us-ascii?Q?55NrmUThKDKQ8IUO4N69bWYdpLM3n/EtA6by3Rh/W+/s5R0cBEbUJI+1FhQO?=
- =?us-ascii?Q?pKSn5+9WqiHGd+U+qnhRhU3q09vnfxtnVw2LBtuKCNqVxiz2tLZCQJcgdqti?=
- =?us-ascii?Q?WXc/8/iQQeT2kS6E9puyegx2+2fwwBJOtOIYfrvSQ2xn1VdSfgyW124N3gSl?=
- =?us-ascii?Q?KWOBKUR7kYURl/ZgjP/HYJQ+XJsZfkainwSyM4YI1MqWHRLeaKjjzVVxMeA4?=
- =?us-ascii?Q?tiD8p4A9rKvCzgUljT0dqy2j6ki96NU6dgq7OXknaqAwnvxn7L0iYqMcHZTv?=
- =?us-ascii?Q?lneU0BmAYfAmWEc8deaR59hSlL4b097z1mqf09pj4AU6rl8zub6fHPKh5vfe?=
- =?us-ascii?Q?bjyLQgpdBbIo/CuvkH81qnvoP7hT00cTVHhFnOecyoxxRcNpOSWF3T8j67p6?=
- =?us-ascii?Q?tdag7pAo873sqPUgmWZziBTWX2lQvyGBTY4eBEuQlSogyqDTlelYYZ9ue6A8?=
- =?us-ascii?Q?RncuNwJlOE6eQdUPZ0jl5zVIZ+mTJ+B9Cgb9rgPdArog63mYwZA6CrYN/thN?=
- =?us-ascii?Q?T6IOi9lOd9WP5lb0SyyOy01pZDCAAmtbIeLq1YHLiUjdEltRchjpTMw7xLAD?=
- =?us-ascii?Q?nOkdjGAOKWAQ6TUIj3y07ZpiaQM+193qMZyzw+sow/FsXsv6htl5eyTPnSO4?=
- =?us-ascii?Q?CQNDC/IjziPy3oZIPpFfJ4VAp7pmFgVZ5R45uaODFdr+wQNE6jZED4vNzCvM?=
- =?us-ascii?Q?wWXlajz0sKphiglALUYXNizB77PfqHkh5xVUgfZxKDMrpd6AEJ3dNqd+vQdL?=
- =?us-ascii?Q?hFYx3a7t3Xwl/G1X4YwtldQAcpIryRlns4tlnPgFg2jHpylzsryLNvbw17f7?=
- =?us-ascii?Q?h5K64VWl/wAqq+IdN8q+KMh0RGF3kAvTGF7/q5k7EYCv2Gh6RbvZ+xOzmPSt?=
- =?us-ascii?Q?M8iAag=3D=3D?=
-X-OriginatorOrg: mt.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf5d664e-a0cb-40fb-56a3-08ddafd6eaea
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3856.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2025 08:46:15.6614
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vT6IALvau1FzxLEKhWwtDotiVZGAY9EPU1FjqCH25w1xXWSY9lUFkrsD9O3C7tsobXhSKxeVL0PnvNSav1Aowg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR03MB9490
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] serial: imx: Restore original RXTL for console to fix
+ data loss
+To: Fabio Estevam <festevam@gmail.com>, gregkh@linuxfoundation.org
+Cc: shawnguo@kernel.org, kernel@pengutronix.de, tomasz.mon@camlingroup.com,
+ linux-serial@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+References: <20250619114617.2791939-1-festevam@gmail.com>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+Autocrypt: addr=wahrenst@gmx.net; keydata=
+ xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
+ IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
+ NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
+ JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
+ TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
+ f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
+ V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
+ aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
+In-Reply-To: <20250619114617.2791939-1-festevam@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Thch/4Ltr6WoV61mvpZp3tIF3t2DnKOj7DHP+dB60vdav7ssDNX
+ ZO3ytzS0VzjdhkzJ6tP+jV1cia6LPtMqASFY9nMnhRQxK35n2gfWAm2tvxkrv0UQwlFXP2Q
+ MrgTh46qzepn8cFbcny/fOMILpUZMLeO4FePFlSadTCNI4PdfTTVFhFEJVao3HAPG8oryFV
+ UkJmeZDNMKAB3hl6qlTXA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:rkVqxm2aGVQ=;zGF5F+1kVEEo/LZX2VGPsSS2dfB
+ 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
 
-Add a new MAINTAINERS section for the METTLER TOLEDO BOARD
-SUPPORT covering imx8mm-mt-* device tree files.
+Am 19.06.25 um 13:46 schrieb Fabio Estevam:
+> Commit 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
+> introduced a regression on the i.MX6UL EVK board. The issue can be
+> reproduced with the following steps:
+>
+> - Open vi on the board.
+> - Paste a text file (~150 characters).
+> - Save the file, then repeat the process.
+> - Compare the sha256sum of the saved files.
+>
+> The checksums do not match due to missing characters or entire lines.
+>
+> Fix this by restoring the RXTL value to 1 when the UART is used as a
+> console.
+>
+> This ensures timely RX interrupts and reliable data reception in console
+> mode.
+>
+> With this change, pasted content is saved correctly, and checksums are
+> always consistent.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
+> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
 
-Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f584e170cfc3..a81fae7ccec2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16109,6 +16109,11 @@ S:	Maintained
- F:	arch/arm64/boot/dts/marvell/armada-3720-eDPU.dts
- F:	arch/arm64/boot/dts/marvell/armada-3720-uDPU.*
- 
-+METTLER TOLEDO BOARD SUPPORT
-+M:	Wojciech Dubowik <wojciech.dubowik@mt.com>
-+S:	Maintained
-+F:	arch/arm64/boot/dts/freescale/imx8mm-mt-*
-+
- MHI BUS
- M:	Manivannan Sadhasivam <mani@kernel.org>
- L:	mhi@lists.linux.dev
--- 
-2.47.2
-
+Thanks
