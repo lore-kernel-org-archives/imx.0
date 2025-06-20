@@ -1,277 +1,110 @@
-Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC13136988
-	for <imx@lists.linux.dev>; Fri, 20 Jun 2025 18:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1891F2376EF
+	for <imx@lists.linux.dev>; Fri, 20 Jun 2025 21:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750445011; cv=none; b=dKXRX5OuvU9HeCwYIiTUwd2mQSAHCmwVo2IAzWXALjrFHeqDp8RbbtfInCp6tly0RihC8XY7Ue1JwXoohNGcTcOqvyfIbj4X5KcXD4Qy+L97mQCPlH7sufgyh40za7n43ZOoliXXWU46JqPFv/VbkhCSCgmQ/cI9ySb5ft55ziA=
+	t=1750455292; cv=none; b=JpOW+o6obDVHRVcG+JuDTO0oP3DYlQ0nqxwAWokypRz38iBYS8G8olsyiT8TCAU2vWJlVC3i4aP4ks1lAOLReqoCm+FfFNXm5KgSIjhwOKXJ5o2fXmY9H0af1+I+QQKDY9Ko7Y5nD1NeIbSOMmzPx3FD2KBj7plet+oFADbLXUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750445011; c=relaxed/simple;
-	bh=hfeTC/LbrTNu/kIwcjwzlqTcJlOSBsGVhxjsYYmiXcY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EOv9vPdUC5wmBby9XCzDpWSxhz99lmd7Aon6vXfXiJ7xrbxzUusymWrJSfWRSPj6Y+J29Kr8UPxPrN483tUyAkclMyH45h86pes0ZL0akcoOXGTdG8PeSYPTf7thLNB5MO4+LuQSdaf0JFmDdj+6H/WCFwwH+2sKrt8KkHeQEaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=XmJvixB3; arc=none smtp.client-ip=208.88.110.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
+	s=arc-20240116; t=1750455292; c=relaxed/simple;
+	bh=JZcPrmMT5XJkv0+F82G6GQ0CgzHmHpYaIi6+hrUGM9c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KUItEEM8Ej4Jmg/RG8qo4UWY5E6zd2d4bRoIDax5S6vi+ZzATQQrOt8eBe8S884pufBD7dQLjsNVvj3OCXsgy8c2bEdyXEq62TdWUnEeRv84uWxmTD6M0HPr4q2EXo/gOOHNJLVrV9THg5/BHiWbMa+2Yv8rnm/mwMDnkN9HnzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HygtWGK9; arc=none smtp.client-ip=209.85.166.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="XmJvixB3"
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id 393753D8762C;
-	Fri, 20 Jun 2025 14:43:21 -0400 (EDT)
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
- with ESMTP id gYTgZfNRbSRD; Fri, 20 Jun 2025 14:43:20 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id 4683A3D8762F;
-	Fri, 20 Jun 2025 14:43:20 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 4683A3D8762F
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HygtWGK9"
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3dda399db09so23616545ab.3
+        for <imx@lists.linux.dev>; Fri, 20 Jun 2025 14:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
-	t=1750445000; bh=TaQQHObo8HRDlJD+n70gAPQXWO2RtYiWYUzJBZk6vh4=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=XmJvixB32vMJfc7yNrKh45ZFj1uA5zrDmuGUdWoqrIS0o+GaD0hiTpxl6/iHNj4jV
-	 9DSmGcn1Xn2WVxgfx9Fs4NiCpGxZCPwkI4J8yVkcm6fax7kpPPyw0AE0icPxyHP8Su
-	 58ZYgmgvW/JVQtM/6AT000t9zJ21VLYPF18qhAgQqafGsUZ6jk5lzph6/RUYVWSG01
-	 o6Vrqj9JvyDjBJSRgi6Pwf4i+7CZcyJWuTEB19ja0OV4kl0KxsL/WhqwEIH9xUfAu2
-	 Q02xezEjgxiS+qMZZ0xrMWBv/e+j1J6aGjsBJx3sTyqTHKECxrT3acwep6l9mWb5LJ
-	 D+d5YMoK7r1wQ==
-X-Virus-Scanned: amavis at mail.savoirfairelinux.com
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
- with ESMTP id uB8q18XrN1G8; Fri, 20 Jun 2025 14:43:20 -0400 (EDT)
-Received: from fedora (unknown [192.168.51.254])
-	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id DCFEA3D8762C;
-	Fri, 20 Jun 2025 14:43:19 -0400 (EDT)
-Date: Fri, 20 Jun 2025 14:43:18 -0400
-From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-To: Lee Jones <lee@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        d=gmail.com; s=20230601; t=1750455290; x=1751060090; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2bV4/erAwfXPlPi2hHxXtxfl2Kz2FSJD4cbVQEOlp7w=;
+        b=HygtWGK9gKyiY9NDQpl/wGmyCXshjeFvmcXLcjtzYbAKXXRx42I1hm1i3BkxCW5U89
+         PlMpFbhrbKCBKwZ2m1MBghY+EX0Ratl4juyvK++yhrxyzn0a1tGFZApw+aVYwdZHogCN
+         cb2Qr+yQucZk1R7CNqDR8poQ3TxJc7n51omqr8K+ogYAFMsTL+FYkpmiiPtpql8D0X7x
+         nRn5Kd20DdjS4brIVnNU7w++R8erfqEkp0kjd0ei5R+gUt9gjDPVbsEPcyOshGga4viG
+         aUb4f3oMCLmXUD5obwxPD0gOLfI+ARw2HrueDklMQVIG1lKQcnEWNeaTz+xppjPtubAd
+         8rjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750455290; x=1751060090;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2bV4/erAwfXPlPi2hHxXtxfl2Kz2FSJD4cbVQEOlp7w=;
+        b=SnUu6I2q5rsrMVpHGV+9TczxxODZChxZdbWmsvs6N8+otGcd6TohTtXLx04ECPq/ch
+         b5LpdG1M3DIgKBe8XaoaN7fnzf0f7HQmXlVvQumEA9TvyQUEcCYPjJGExbRunvE+Yox/
+         TNilgpAv9noJgr0/KtXyncS5sHWHU27GgxGVRmyLkAREaE6HJ/pW84YxblwEuX/eR1Y3
+         JAmHAhsLS6gI1M7jIcSvk34L0qknRbZejFl3EzxNqwVl5JGMKp3LQ+KiytZLTBKKTJI9
+         +pLL8I40Ld6aYhq0Xkfwoekm3jwnOSHjIflbt/UXMFHOifiwSBMS9/5gTcQQgChcWdKs
+         OtFg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9o8ChzSVtJ+OEjj/f48a0CgwTl+nFITWuVePkZgMYh2eisya5HHpXfHOrs6FhgYTesM8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxyFnWaA6l1ijFCHpj6mPfRpaBEYGXTM6rJMope4VIjS7pJyrOd
+	5OH4V7cdyM1LXCJ6jO/E/dIPZ7Clx1Im3lKQWMtxnH5Q2VtvXbiKDy84
+X-Gm-Gg: ASbGncv/5+lIHhldyJeQ08iKc+18GUOgzHUOCEWQWzKCFM+myHxhLbD6AAMcqjh5kMw
+	vBxyeNMXs18DGfKtWvffPvTKaNkb3BkQzkeFdemqA1WGnJ6VfNbQ51VHXdXPsDP6CHoDDPnODRq
+	AYtI+eYpM1SRxujlLpqe5/KFtwpH+HxMt78DR+1MEF4KJWaF4DfJLvLVUZvz9IHQpjkje7lDaF7
+	RY8zK7u8/90BS8fu28/3I8mJkJJEhIoJS1l9jFRKfXjv6oQ7A0gPRz7YwxIO87crD5EMx+o4A2l
+	uXqHSxrCP3RlS6fSrupx8UlAXLoY0VEfFyB9ME7MmyjFo8rI7wf8bT/LH+kp8/FOanXa4/NfoN3
+	yHt50rHifXbvBb3oY/m+pGdoHWWiYy2b3X3Zb
+X-Google-Smtp-Source: AGHT+IFXCoHIdC1hxKQ8Wh2O6ePURz9GDmLlEmjUZKSPhjqSp4Y9n5TQYb99KGPA9gmaBHSnoG7uqw==
+X-Received: by 2002:a05:6e02:228e:b0:3dc:87c7:a5a6 with SMTP id e9e14a558f8ab-3de38c1e68cmr54940105ab.4.1750455290137;
+        Fri, 20 Jun 2025 14:34:50 -0700 (PDT)
+Received: from aford-System-Version.. (c-75-72-162-184.hsd1.mn.comcast.net. [75.72.162.184])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5019e0d03e7sm546707173.139.2025.06.20.14.34.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jun 2025 14:34:49 -0700 (PDT)
+From: Adam Ford <aford173@gmail.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: aford@beaconembedded.com,
+	Adam Ford <aford173@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
-	Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>,
-	Robin Gong <yibin.gong@nxp.com>,
-	Enric Balletbo i Serra <eballetbo@gmail.com>
-Subject: Re: [PATCH v7 2/6] mfd: pf1550: add core mfd driver
-Message-ID: <aFWrxtArHjb5nc0M@fedora>
-References: <20250612-pf1550-v7-0-0e393b0f45d7@savoirfairelinux.com>
- <20250612-pf1550-v7-2-0e393b0f45d7@savoirfairelinux.com>
- <20250619130337.GA795775@google.com>
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
+Date: Fri, 20 Jun 2025 16:34:45 -0500
+Message-ID: <20250620213447.56392-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250619130337.GA795775@google.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Lee,
+The reference manual for the i.MX8MM states the clock rate in
+MMC mode is 1/2 of the input clock, therefore to properly run
+at HS400 rates, the input clock must be 400MHz to operate at
+200MHz.  Currently the clock is set to 200MHz which is half the
+rate it should be, so the throughput is half of what it should be
+for HS400 operation.
 
-Thanks a lot for the review.
+Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
 
-On Thu, Jun 19, 2025 at 02:03:37PM +0100, Lee Jones wrote:
-> > +static int pf1550_read_otp(const struct pf1550_dev *pf1550, unsigned int index,
-> 
-> What does OTP mean?
->
-It's a One-Time Programmable memory with configuration for the pf1550. I will
-expand on this in the commit description of the next version.
-> Why do you have to write to 4 registers first?
-> 
-The pf1550 was designed such that the registers of the accompanying OTP is
-accessed indirectly. Valid keys have to be written to specific pf1550
-registers. After writing the keys, the address of the OTP register to be read
-is then written to PF1550_TEST_REG_FMRADDR and its corresponding value read from
-PF1550_TEST_REG_FMRDATA.
-> This should all be made clear in some way or another.
-> 
-I'll be adding comments on this in the next version.
-> > +			   unsigned int *val)
-> > +{
-> > +	int ret = 0;
-> > +
-> > +	ret = regmap_write(pf1550->regmap, PF1550_PMIC_REG_KEY, 0x15);
-> 
-> No magic numbers.  These should all be defined.
-Will do.
-> 
-> > +	if (ret)
-> > +		goto read_err;
-> > +	ret = regmap_write(pf1550->regmap, PF1550_CHARG_REG_CHGR_KEY2, 0x50);
-> > +	if (ret)
-> > +		goto read_err;
-> > +	ret = regmap_write(pf1550->regmap, PF1550_TEST_REG_KEY3, 0xab);
-> > +	if (ret)
-> > +		goto read_err;
-> > +	ret = regmap_write(pf1550->regmap, PF1550_TEST_REG_FMRADDR, index);
-> > +	if (ret)
-> > +		goto read_err;
-> > +	ret = regmap_read(pf1550->regmap, PF1550_TEST_REG_FMRDATA, val);
-> > +	if (ret)
-> > +		goto read_err;
-> > +
-> > +	return 0;
-> > +
-> > +read_err:
-> > +	dev_err_probe(pf1550->dev, ret, "read otp reg %x found!\n", index);
-...
-> > +static int pf1550_add_child_device(struct pf1550_dev *pmic,
-> > +				   const struct mfd_cell *cell,
-> > +				   struct regmap_irq_chip_data *pdata,
-> 
-> This is not pdata.
-> 
-> > +				   int pirq,
-> > +				   const struct regmap_irq_chip *chip,
-> > +				   struct regmap_irq_chip_data **data)
-> > +{
-> > +	struct device *dev = pmic->dev;
-> > +	struct irq_domain *domain;
-> > +	int irq, ret;
-> > +
-> > +	irq = regmap_irq_get_virq(pdata, pirq);
-> > +	if (irq < 0)
-> > +		return dev_err_probe(dev, irq,
-> > +				     "Failed to get parent vIRQ(%d) for chip %s\n",
-> > +				     pirq, chip->name);
-> > +
-> > +	ret = devm_regmap_add_irq_chip(dev, pmic->regmap, irq,
-> > +				       IRQF_ONESHOT | IRQF_SHARED |
-> > +				       IRQF_TRIGGER_FALLING, 0, chip, data);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret,
-> > +				     "Failed to add %s IRQ chip\n",
-> > +				     chip->name);
-> > +
-> > +	domain = regmap_irq_get_domain(*data);
-> > +
-> > +	return devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE, cell, 1,
-> > +				    NULL, 0, domain);
-> 
-> Why can't all 3 devices be registered in one call?
-> 
-The 3 devices use different regmap_irq_chip s. I have to register them
-separately cause they have different irq domains but perhaps there is a better
-way to handle this?
-> > +}
-> 
-> To be honest, the premise around this function is a bit of a mess.
-> 
-> Please move all of this into .probe().
-Will do.
-> 
-> > +static int pf1550_i2c_probe(struct i2c_client *i2c)
-> > +{
-> > +	const struct mfd_cell *regulator = &pf1550_regulator_cell;
-> > +	const struct mfd_cell *charger = &pf1550_charger_cell;
-> > +	const struct mfd_cell *onkey = &pf1550_onkey_cell;
-> > +	unsigned int reg_data = 0, otp_data = 0;
-> > +	struct pf1550_dev *pf1550;
-> > +	int ret = 0;
-> > +
-> > +	pf1550 = devm_kzalloc(&i2c->dev, sizeof(*pf1550), GFP_KERNEL);
-> > +	if (!pf1550)
-> > +		return -ENOMEM;
-> > +
-> > +	i2c_set_clientdata(i2c, pf1550);
-> > +	pf1550->dev = &i2c->dev;
-> > +	pf1550->i2c = i2c;
-> 
-> What are you storing i2c for?
-> 
-It doesn't need to be stored.
-> Either store dev and irq OR i2c.  You don't need all three.
-> 
-Will do.
-> > +	ret = regmap_read(pf1550->regmap, PF1550_PMIC_REG_DEVICE_ID, &reg_data);
-> > +	if (ret < 0 || reg_data != PF1550_DEVICE_ID)
-> > +		return dev_err_probe(pf1550->dev, ret ?: -EINVAL,
-> > +				     "device not found!\n");
-> 
-> Are you sure?  What if the wrong device was found?
->
-I can change the error log here to "Invalid device ID: ..."?
->
-...
-> > +	/* add top level interrupts */
-> > +	ret = devm_regmap_add_irq_chip(pf1550->dev, pf1550->regmap, pf1550->irq,
-> > +				       IRQF_ONESHOT | IRQF_SHARED |
-> > +				       IRQF_TRIGGER_FALLING,
-> > +				       0, &pf1550_irq_chip,
-> > +				       &pf1550->irq_data);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = pf1550_add_child_device(pf1550, regulator, pf1550->irq_data,
-> > +				      PF1550_IRQ_REGULATOR,
-> > +				      &pf1550_regulator_irq_chip,
-> > +				      &pf1550->irq_data_regulator);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = pf1550_add_child_device(pf1550, onkey, pf1550->irq_data,
-> > +				      PF1550_IRQ_ONKEY,
-> > +				      &pf1550_onkey_irq_chip,
-> > +				      &pf1550->irq_data_onkey);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = pf1550_add_child_device(pf1550, charger, pf1550->irq_data,
-> > +				      PF1550_IRQ_CHG,
-> > +				      &pf1550_charger_irq_chip,
-> > +				      &pf1550->irq_data_charger);
-> > +	return ret;
-> > +}
-> > +
-> > +static int pf1550_suspend(struct device *dev)
-> > +{
-> > +	struct i2c_client *i2c = container_of(dev, struct i2c_client, dev);
-> > +	struct pf1550_dev *pf1550 = i2c_get_clientdata(i2c);
-> 
-> You can swap all of this for:
-> 
-> 	struct pf1550_dev *pf1550 = dev_get_drvdata(dev).
-> 
-Will do.
-> > +
-> > +	if (device_may_wakeup(dev)) {
-> > +		enable_irq_wake(pf1550->irq);
-> > +		disable_irq(pf1550->irq);
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int pf1550_resume(struct device *dev)
-> > +{
-> > +	struct i2c_client *i2c = container_of(dev, struct i2c_client, dev);
-> > +	struct pf1550_dev *pf1550 = i2c_get_clientdata(i2c);
-> 
-> As above.
-> 
-> > +
-> > +	if (device_may_wakeup(dev)) {
-> > +		disable_irq_wake(pf1550->irq);
-> > +		enable_irq(pf1550->irq);
-> 
-> I would normally expect these to be around the opposite way to the ones
-> in .suspend().
-Do you mean enable_irq_wake and disable_irq in .resume() and the opposite for
-.suspend()?
-> 
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+index 21bcd82fd092..8287a7f66ed3 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+@@ -294,6 +294,8 @@ &usdhc3 {
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
++	assigned-clock-rates = <400000000>;
+ 	bus-width = <8>;
+ 	non-removable;
+ 	status = "okay";
+-- 
+2.48.1
 
-Thanks,
-Sam
