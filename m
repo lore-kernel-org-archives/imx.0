@@ -1,187 +1,148 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EF12D1F4D
-	for <imx@lists.linux.dev>; Fri, 20 Jun 2025 15:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DE628A415
+	for <imx@lists.linux.dev>; Fri, 20 Jun 2025 16:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750432910; cv=none; b=QJLCSbwMHvQiWKaFA8IoXmSc5t87rbDfBIqDzAihmPjzbI4QCpI+3b7Wrpj23D/4p0qCUwn30CpQNDqHzPobPaCxl1kSWEVxkHZnEdOvykIfT8vpur7lnsE4FTyot6D9lEyXZMLbJhK7Ilpc4lQ3VexuqCkmTme9iUb/3Yh5wDQ=
+	t=1750435970; cv=none; b=TvRx+VPx1mvHgRp5PrXWUw2BqC67RhU4IkrZNV/n08HWLXSfeaizPTtc5DPxZFeY5OH6wyGw8giIdNq8NTYlCBJ5KJ6+ouativ1g/n8rBD7XD5ldg0DztugJuT7feu/YMnpTK46x1GY+0hNne9nVpgVd8EDgYXea+X1gOvl+WV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750432910; c=relaxed/simple;
-	bh=LGnSFN9H9rbozGSNGVsWo0FtVKSQwW61jLk2zd/IGI8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VCZFl4/3iyBFS/X4HjwUuBQHdMxQ+zWmmdEN6uNOd3qjJfTpgIxiH4xwoe739AhXEW+fS+w7qyPbVlbZTfClAE+UregpegGzvTPv0txMWQjNcco6cMaD/eSoVYTd8F2jlU4sm6lcn2ZJFyEFg4RD4Ru1MjdcgL0uj/r2CqhrVJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FBEHMOt3; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1750435970; c=relaxed/simple;
+	bh=dSrlAF32I5lH3btMaCGJWgljcuhVLfSPBYtyqJZd7k0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rqyWdhE5VcAu7UgaWRBAl9A1d9XMItI3ECbZMLrZYSMffXeXb6Pvrh5P9syCFSfd+Wr5m1kYJsWoFtwiNjzBSCR4eCnziC8dpsxIEYNEj9kDeGCMaxdGVE+QZ2Q/k4u6aGRtEQu5Q2YCak2y5hEXqsTtIL/9ux3xXQ+LSJqVdX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=dlVbOFZC; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FBEHMOt3"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CB8D44326A;
-	Fri, 20 Jun 2025 15:21:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750432906;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9nY0S3h9TNbvjPa0oqXiKssMDiiZYbdnLuZAy4PGUKk=;
-	b=FBEHMOt3QA2tcRmg1IhTgJpD0kDH1a6QghFDUG9YKdXBL1/I3I536lWB8AdIqODJiCAcW2
-	9Q6vTKNX4DtrAwGRqJCs3M/aZP+6z4/Ukoik0FB2Tn6Rz5GlXr7meC6NihPF7CnWK0mDzs
-	WRPnbP8uJaefVnSXFc6P6McyZqyvx3cFUrLzRtPdHu00FzmdVbmq3C69sTBTtjh6QLO9fm
-	yEQMPP2E+WLiwC238XM5Tgz6zmFNWEUATafkTmf/D6P+A27pWzQr0FOX+2xFSdlgdobxOi
-	00dJ9s42pIeng7pJay1IdSM/asFH6pz0hsUYQWhXGLaE31YcQu01MbP1+aLC/w==
-From: Olivier Benjamin <olivier.benjamin@bootlin.com>
-Date: Fri, 20 Jun 2025 17:21:35 +0200
-Subject: [PATCH v4 4/4] arm64: dts: rockchip: describe the OV8858 user
- camera on PinePhone Pro
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="dlVbOFZC"
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-610d86b3da9so437043eaf.0
+        for <imx@lists.linux.dev>; Fri, 20 Jun 2025 09:12:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1750435966; x=1751040766; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uk1h/OSRQW76dr7YBIYqdBe7lZw8tZ9KpxMBcLXXza8=;
+        b=dlVbOFZCcCHSOECM811ThcSMv0YPcs/Gt4YR9LKrXwqfZ6ua9pcFtSxh2dBMdulIkp
+         xH1yILXcf3N0EwA60Y/mBeC2Ih9B+kDLJMETSyc4N1HgrM/hB9/00TTLuuapeBPfo2Xl
+         0ulm50LbdrfP/RPYjwflw4iNy5aVUxuzocSnS/ym/5NvucAO/5nRfvUiA6HGi8Qb8X1h
+         ardl93oFZE7WHWfhin68XhVFWtv84zi4nUX2HmgnA28sa6MsB7Vtcqeru6JefupzN84J
+         QTGbVNAU0Mn2OR3VWf4uXHUJEz2B+CfSSZLhlzS5dIn50xyGKzQSgSYhWqG3nJsUtGuH
+         TbRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750435966; x=1751040766;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uk1h/OSRQW76dr7YBIYqdBe7lZw8tZ9KpxMBcLXXza8=;
+        b=Y8Qxlw3wnSwblwYtDb3UyMqYseMWl+C3yW34qJRrCOKm3+Npk8sdtqL+SnYmqpqnjh
+         pkYWBsqOdoVef/jh0D2FY81YvefTelyEMeky4Uoac9PjOhLl2X8+ISC+cxGyTuX0fP1K
+         ots2q2JlUAiHFHacChHPLqyzOz5xkgfKTH5Akdb+8nLeANtSXc0tNlWY+Bu3XaqCynh/
+         T4urhvLPjEidAyTdbwYJNNWW5ktAePyNtoowkoFutHtE4G+asOe/SL13Sphnx7pYdcgv
+         UFIJ2o47xqttnOuEOkmibas+P3cPRlSgGFQ6K68+ep28vxQ4/ZgB4e/VRBpcN9KgbDen
+         nRTA==
+X-Forwarded-Encrypted: i=1; AJvYcCUh9iIZOU+0ImWi4X6WIDALIs28qxU2duvgKmsqkxbL45PVrIKzYAuboEP/zBG8BYNBmbc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw/PBWUT+6hGZcaGP8PoHkUDj35uJLv1QZV8S9KU5fd4gtFUrvI
+	Wu/QI17KSiuDhj1GobWujZrDymWkwsF5BOWki4vua3taN9YRQlMUuyU//uHdNxAtbh1+ZrwAVTJ
+	LUdmgyRfblI2dSDG+YIPJlw6IGEz3WB0sK2qBj+DlcQ==
+X-Gm-Gg: ASbGncv+L8WKKH0bdQsaP2k/pS1f2IWPMc4uT2oGV3VrHAaM47K4MEDMNZrkPOPkb45
+	q+VOBfdtojUPoXHn6tQCxRRG4KsWOKPtQGZbS7ObdklMxQZWPOSt8/XL4n+ku8Wzo0T9dP8uwWb
+	q1YBWKnYYXdTZEG6HCZ18BVLP4xoSV1xU+gZKI7V9piAk=
+X-Google-Smtp-Source: AGHT+IEWHRk01AMNXUO3Iti/LVUHyPY06MPi2HY582F4LaypQ5ZkZqqgLLKeo/FHsS0LAg4XUMcQcmQIpTlGgPfCCxs=
+X-Received: by 2002:a05:6820:1e87:b0:610:fc12:cbb4 with SMTP id
+ 006d021491bc7-6115b8a077cmr2461053eaf.1.1750435966109; Fri, 20 Jun 2025
+ 09:12:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250620-camera-v4-4-0201a8ed5fae@bootlin.com>
-References: <20250620-camera-v4-0-0201a8ed5fae@bootlin.com>
-In-Reply-To: <20250620-camera-v4-0-0201a8ed5fae@bootlin.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
- Nicholas Roth <nicholas@rothemail.net>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-media@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
- imx@lists.linux.dev, Olivier Benjamin <olivier.benjamin@bootlin.com>, 
- ~diederik/pine64-discuss@lists.sr.ht, Dragan Simic <dsimic@manjaro.org>, 
- Ondrej Jirman <megi@xff.cz>
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdekjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomhepqfhlihhvihgvrhcuuegvnhhjrghmihhnuceoohhlihhvihgvrhdrsggvnhhjrghmihhnsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegueegiedvvdevveevvddufeejvefftdeugfffkeeileehheefieehgfelfeeileenucfkphepvdgrtddumegvfeegmegvtgefkeemvdegvgdtmehfhegtvgemfhefgedvmeeiheekjeemfheiheeinecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehinhgvthepvdgrtddumegvfeegmegvtgefkeemvdegvgdtmehfhegtvgemfhefgedvmeeiheekjeemfheiheeipdhhvghloheplgduledvrdduieekrddurddvtdgnpdhmrghilhhfrhhomhepohhlihhvihgvrhdrsggvnhhjrghmihhnsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvgedprhgtphhtthhopeimughivgguvghrihhksdhpihhnvgeigedqughishgtuhhssheslhhishhtshdrshhrrdhhthdprhgtphhtthhopehrohgshheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhhitghhohhlrghssehrohhth
- hgvmhgrihhlrdhnvghtpdhrtghpthhtohepjhgrtghophhordhmohhnughisehiuggvrghsohhnsghorghrugdrtghomhdprhgtphhtthhopeholhhivhhivghrrdgsvghnjhgrmhhinhessghoohhtlhhinhdrtghomhdprhgtphhtthhopehmtghhvghhrggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkrhiikhdoughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrdguvghv
-X-GND-Sasl: olivier.benjamin@bootlin.com
+References: <20250616085742.2684742-1-hongxing.zhu@nxp.com> <20250616085742.2684742-2-hongxing.zhu@nxp.com>
+In-Reply-To: <20250616085742.2684742-2-hongxing.zhu@nxp.com>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Fri, 20 Jun 2025 09:12:35 -0700
+X-Gm-Features: AX0GCFupqyePYKY1h7Imt92So6Th1StimJuRSWH0VvVxy1uS8kPjLbLXM76L3Es
+Message-ID: <CAJ+vNU15XpyLuxO4EowyqO9P+ZUqNApoH2Wu261iu-5b2GrkGw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] PCI: imx6: Remove apps_reset toggle in _core_reset functions
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org, bhelgaas@google.com, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add the description of the front/user camera (OV8858) on the PinePhone Pro
-to the device dts file.
-It receives commands over SCCB, an I2C-compatible protocol, at
-I2C address 0x36 and transmits data over CSI-MIPI.
-I confirmed this address experimentally.
+On Mon, Jun 16, 2025 at 1:59=E2=80=AFAM Richard Zhu <hongxing.zhu@nxp.com> =
+wrote:
+>
+> apps_reset is LTSSM_EN on i.MX7, i.MX8MQ, i.MX8MM and i.MX8MP platforms.
+> Since the assertion/de-assertion of apps_reset(LTSSM_EN bit) had been
+> wrappered in imx_pcie_ltssm_enable() and imx_pcie_ltssm_disable();
+>
+> Remove apps_reset toggle in imx_pcie_assert_core_reset() and
+> imx_pcie_deassert_core_reset() functions. Use imx_pcie_ltssm_enable()
+> and imx_pcie_ltssm_disable() to configure apps_reset directly.
+>
+> Fix fail to enumerate reliably PI7C9X2G608GP (hotplug) at i.MX8MM, which
+> reported By Tim.
+>
+> Reported-by: Tim Harvey <tharvey@gateworks.com>
+> Closes: https://lore.kernel.org/all/CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcM=
+HDy+poj9=3DjSy+w@mail.gmail.com/
+> Fixes: ef61c7d8d032 ("PCI: imx6: Deassert apps_reset in imx_pcie_deassert=
+_core_reset()")
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controll=
+er/dwc/pci-imx6.c
+> index 9754cc6e09b9..f5f2ac638f4b 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -860,7 +860,6 @@ static int imx95_pcie_core_reset(struct imx_pcie *imx=
+_pcie, bool assert)
+>  static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
+>  {
+>         reset_control_assert(imx_pcie->pciephy_reset);
+> -       reset_control_assert(imx_pcie->apps_reset);
+>
+>         if (imx_pcie->drvdata->core_reset)
+>                 imx_pcie->drvdata->core_reset(imx_pcie, true);
+> @@ -872,7 +871,6 @@ static void imx_pcie_assert_core_reset(struct imx_pci=
+e *imx_pcie)
+>  static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
+>  {
+>         reset_control_deassert(imx_pcie->pciephy_reset);
+> -       reset_control_deassert(imx_pcie->apps_reset);
+>
+>         if (imx_pcie->drvdata->core_reset)
+>                 imx_pcie->drvdata->core_reset(imx_pcie, false);
+> @@ -1247,6 +1245,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp=
+)
+>                 }
+>         }
+>
+> +       /* Make sure that PCIe LTSSM is cleared */
+> +       imx_pcie_ltssm_disable(dev);
+> +
+>         ret =3D imx_pcie_deassert_core_reset(imx_pcie);
+>         if (ret < 0) {
+>                 dev_err(dev, "pcie deassert core reset failed: %d\n", ret=
+);
+> --
+> 2.37.1
+>
 
-The pin control mapping was again extracted from the PinePhone Pro
-schematic v1.0 as well as the RK3399 datasheet revision 1.8.
+Tested-by: Tim Harvey <tharvey@gateworks.com> # imx8mp-venice-gw74xx
+(i.MX8MP + hotplug capable switch)
 
-Table 2-3 in section 2.8 of the RK3399 datasheet contains the mapping
-of IO functions for the SoC pins. Page 52 shows GPIO1_A4, page 54 shows
-GPIO2_B4.
+Best Regards,
 
-For the reset (RESET) signal:
-page 11 quadrant D2             | p.18 q.B3-4 | p.18 q.C2
-RK3399_E.R28 -> GPIO1_A4 -> Camera2_RST -> MIPI_RST1 -> OV8858.12
-
-For the powerdown (PWDN) signal:
-page 9 quadrants D4-5          | p.18 q.B2
-RK3399_L.F31 -> GPIO2_B4 -> DVP_PDN0_H -> OV8858.14
-
-Helped-by: Dragan Simic <dsimic@manjaro.org>
-Co-developed-by: Ondrej Jirman <megi@xff.cz>
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Signed-off-by: Olivier Benjamin <olivier.benjamin@bootlin.com>
----
- .../boot/dts/rockchip/rk3399-pinephone-pro.dts     | 49 +++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-index b335d044138b413359ba54269ab646142254a55f..c1a151ed4215638895ef5c9872d746dca38cb671 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-@@ -454,7 +454,7 @@ wcam: camera@1a {
- 		reg = <0x1a>;
- 		clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK0, derived from CIF_CLKO */
- 		pinctrl-names = "default";
--		pinctrl-0 = <&camera_rst>;
-+		pinctrl-0 = <&camera_rst_l>;
- 		/* Note: both cameras also depend on vcca1v8_codec to power the I2C bus. */
- 		vif-supply = <&vcc1v8_dvp>;
- 		vana-supply = <&avdd2v8_dvp>;
-@@ -479,6 +479,27 @@ wcam_lens: camera-lens@c {
- 		/* Same I2c bus as both cameras, depends on vcca1v8_codec for power. */
- 		vcc-supply = <&vcc1v8_dvp>;
- 	};
-+
-+	ucam: camera@36 {
-+		compatible = "ovti,ov8858";
-+		reg = <0x36>;
-+		clocks = <&cru SCLK_CIF_OUT>; /* MIPI_MCLK1, derived from CIF_CLK0 */
-+		clock-names = "xvclk";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&camera2_rst_l &dvp_pdn0_h>;
-+		dovdd-supply = <&vcc1v8_dvp>;
-+		reset-gpios = <&gpio1 RK_PA4 GPIO_ACTIVE_LOW>;
-+		powerdown-gpios = <&gpio2 RK_PB4 GPIO_ACTIVE_LOW>;
-+		orientation = <0>; /* V4L2_CAMERA_ORIENTATION_FRONT */
-+		rotation = <90>;
-+
-+		port {
-+			ucam_out: endpoint {
-+				remote-endpoint = <&mipi_in_ucam>;
-+				data-lanes = <1 2 3 4>;
-+			};
-+		};
-+	};
- };
- 
- &i2c3 {
-@@ -523,6 +544,24 @@ &io_domains {
- 	status = "okay";
- };
- 
-+&isp0 {
-+	status = "okay";
-+
-+	ports {
-+		port@0 {
-+			mipi_in_ucam: endpoint@0 {
-+				reg = <0>;
-+				remote-endpoint = <&ucam_out>;
-+				data-lanes = <1 2 3 4>;
-+			};
-+		};
-+	};
-+};
-+
-+&isp0_mmu {
-+	status = "okay";
-+};
-+
- &isp1 {
- 	status = "okay";
- 
-@@ -594,10 +633,16 @@ pwrbtn_pin: pwrbtn-pin {
- 		};
- 	};
- 
--	camera {
-+	cameras {
- 		camera_rst_l: camera-rst-l {
- 			rockchip,pins = <1 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
- 		};
-+		camera2_rst_l: camera2-rst-l {
-+			rockchip,pins = <1 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+		dvp_pdn0_h: dvp-pdn0-h {
-+			rockchip,pins = <2 RK_PB4 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
- 	};
- 
- 	leds {
-
--- 
-2.49.0
-
+Tim
