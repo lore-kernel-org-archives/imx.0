@@ -1,41 +1,33 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B582356C7
-	for <imx@lists.linux.dev>; Fri, 20 Jun 2025 09:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9736E1E2607;
+	Fri, 20 Jun 2025 09:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750410342; cv=none; b=RfGy8yotuOPjpwgMt7vq2i4v7AX/QKcVU2/DqnHTTV5/RNIsfYYUSfy+PN58PSK9+fFH7K95qHmszSoBHEV0F2nLMVfsNFV/mnaPr0ia9a67HFwhWZ5huEG9UJSVZ7B8EuJPm2gvHb9eqpkyALi6bM7jymEl9Urn4OIbNwihLs0=
+	t=1750411207; cv=none; b=kUBCR1S6SASAEI5d811jb3BJk36P7tyhR7vHWnYwmX0BvxEEPxuN6tQh9ANxFO424/uZKT3ka9NwMmP4TbLu6quaex6+v7UmiQHIOV4svwwfKY4EGXq8eb5Qp9/3E7YxCDJejKrSCmxbI+Ind5XPqTyvdUlX0fq0BSyooJLxlyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750410342; c=relaxed/simple;
-	bh=kU18AO5fHeDlpTLOvQ5TMfEqT+YYlTBLMsNF83QbMIo=;
+	s=arc-20240116; t=1750411207; c=relaxed/simple;
+	bh=pYC/ISpQojUw9ozQVsIBqPPUCtFFg0eYzpwvNDiDyx4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nhaQ33ofOTBtHFFzs1a2rZk1gKTmOQ7t6tbShfdEEW5gu6ZkMYKSJGkw34L+RXJ7XUjyr21U8Wm0675S4CAuK7TOlFKtASOvf8MhpFzGJa1s5m/6I5kW8kt1xcjZDxvzgTBwdzEAJMfwGjsw0d3JwvHtXzwg6KzvxN1q8UCBCQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=f83o3sZb; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+	 In-Reply-To:Content-Type; b=TjZ80T20Aq34I9rRsr7k0B0Zpv0FC6Rjomf4wkCi4tZcRoB2PeS8B7w17C/xi/jvs5mLFYo7dFx4IBddpdmePttBG3UwssCc0vLIKcc8pCqwOzW6jlwCRzbgqYN3AAVVkzv2QU4GKV9d4Knjh6lkURWf7T0uRIwt0xDmAi/tCMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jkju6hwe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="f83o3sZb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1750410311; x=1751015111; i=wahrenst@gmx.net;
-	bh=kU18AO5fHeDlpTLOvQ5TMfEqT+YYlTBLMsNF83QbMIo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=f83o3sZbXzqo+s/sfu59GrqELmlRR0txGbkKRUjASCXGiE3CIndw6zr0Ag2FXjyZ
-	 Idh4+mgs6ZVNXnmMjePt3ZcwYLZyc55G8uwwjzu8n2M+NC9jkis5cF9ZjEMDCre6Y
-	 cdqbI0XBPRZtLqAoGuX/ExSSBhr9Af7CPm6RClFG1fnVhhB/mP8domh2OrnNWfeAI
-	 3R2jaQpXtnxyavFK+OUdLs9a0mOiGueXsmpBLjQefbh0FS0GM8YtjHfBkHuygwFYf
-	 s62uzDfI9h36ucTCsxyX8Lwo3JYkdHhf/qXrZ4xdTtpG5OI1iA+F57r0bYFqIEBOm
-	 7noXz1j2mjVdqqCq2A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.103] ([91.41.216.208]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mel81-1v0V3S0TGn-00iJdW; Fri, 20
- Jun 2025 11:05:11 +0200
-Message-ID: <cb757d69-2e14-4b8b-9db4-5f3362be37dc@gmx.net>
-Date: Fri, 20 Jun 2025 11:05:07 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jkju6hwe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B687C4CEE3;
+	Fri, 20 Jun 2025 09:20:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750411207;
+	bh=pYC/ISpQojUw9ozQVsIBqPPUCtFFg0eYzpwvNDiDyx4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jkju6hweJ397tt5Z0cLK/rJHQ1FylaFrQKV8dUkoi1kpuLEJmRNDfqrkuLchnLAsn
+	 V7wTfCI0pPW6Jv9gf3lGSIulaNyiZskrDpQLO46ssykUI7x2XVaeYG3H23Lkeqq+5v
+	 V0uD8/VV34/q3q1oDXvhObSFre8bwEoNZ1KOK6yIYeb+lU3iJkZLheWpmHH3+XhpBg
+	 gHzVhCq/hLCvxdIC3lza5KFeaYHEIsEjGSruEE77puPXUFK8+CuK06eazj9FxwfFXb
+	 pwbJuaV1saLogvwyLJwRCpWQ0fdmVi1DMEh+aRm1Jumq0lSh3rATgjLYLG8g+OOKo2
+	 qFKLhOI3qI9yA==
+Message-ID: <1a8d023e-f27e-47ae-86ec-3f0760a7e74a@kernel.org>
+Date: Fri, 20 Jun 2025 11:19:59 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,104 +35,102 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] serial: imx: Restore original RXTL for console to fix
- data loss
-To: Fabio Estevam <festevam@gmail.com>, gregkh@linuxfoundation.org
-Cc: shawnguo@kernel.org, kernel@pengutronix.de, tomasz.mon@camlingroup.com,
- linux-serial@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20250619114617.2791939-1-festevam@gmail.com>
+Subject: Re: [PATCH v2 1/4] dt-bindings: vendor-prefixes: Add Mettler-Toledo
+To: Wojciech Dubowik <Wojciech.Dubowik@mt.com>, linux-kernel@vger.kernel.org
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Marek Vasut <marex@denx.de>, Frieder Schrempf <frieder.schrempf@kontron.de>,
+ Markus Niebel <Markus.Niebel@tq-group.com>, Frank Li <Frank.Li@nxp.com>,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+ Michael Walle <mwalle@kernel.org>, Heiko Schocher <hs@denx.de>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Max Merchel <Max.Merchel@ew.tq-group.com>, Tim Harvey
+ <tharvey@gateworks.com>, Primoz Fiser <primoz.fiser@norik.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Heiko Stuebner
+ <heiko@sntech.de>, Manivannan Sadhasivam <mani@kernel.org>,
+ Kever Yang <kever.yang@rock-chips.com>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+References: <20250620084512.31147-1-Wojciech.Dubowik@mt.com>
+ <20250620084512.31147-2-Wojciech.Dubowik@mt.com>
 Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-Autocrypt: addr=wahrenst@gmx.net; keydata=
- xjMEZ1dOJBYJKwYBBAHaRw8BAQdA7H2MMG3q8FV7kAPko5vOAeaa4UA1I0hMgga1j5iYTTvN
- IFN0ZWZhbiBXYWhyZW4gPHdhaHJlbnN0QGdteC5uZXQ+wo8EExYIADcWIQT3FXg+ApsOhPDN
- NNFuwvLLwiAwigUCZ1dOJAUJB4TOAAIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEG7C8svCIDCK
- JQ4BAP4Y9uuHAxbAhHSQf6UZ+hl5BDznsZVBJvH8cZe2dSZ6AQCNgoc1Lxw1tvPscuC1Jd1C
- TZomrGfQI47OiiJ3vGktBc44BGdXTiQSCisGAQQBl1UBBQEBB0B5M0B2E2XxySUQhU6emMYx
- f5QR/BrEK0hs3bLT6Hb9WgMBCAfCfgQYFggAJhYhBPcVeD4Cmw6E8M000W7C8svCIDCKBQJn
- V04kBQkHhM4AAhsMAAoJEG7C8svCIDCKJxoA/i+kqD5bphZEucrJHw77ujnOQbiKY2rLb0pE
- aHMQoiECAQDVbj827W1Yai/0XEABIr8Ci6a+/qZ8Vz6MZzL5GJosAA==
-In-Reply-To: <20250619114617.2791939-1-festevam@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250620084512.31147-2-Wojciech.Dubowik@mt.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:Thch/4Ltr6WoV61mvpZp3tIF3t2DnKOj7DHP+dB60vdav7ssDNX
- ZO3ytzS0VzjdhkzJ6tP+jV1cia6LPtMqASFY9nMnhRQxK35n2gfWAm2tvxkrv0UQwlFXP2Q
- MrgTh46qzepn8cFbcny/fOMILpUZMLeO4FePFlSadTCNI4PdfTTVFhFEJVao3HAPG8oryFV
- UkJmeZDNMKAB3hl6qlTXA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:rkVqxm2aGVQ=;zGF5F+1kVEEo/LZX2VGPsSS2dfB
- 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
 
-Am 19.06.25 um 13:46 schrieb Fabio Estevam:
-> Commit 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
-> introduced a regression on the i.MX6UL EVK board. The issue can be
-> reproduced with the following steps:
->
-> - Open vi on the board.
-> - Paste a text file (~150 characters).
-> - Save the file, then repeat the process.
-> - Compare the sha256sum of the saved files.
->
-> The checksums do not match due to missing characters or entire lines.
->
-> Fix this by restoring the RXTL value to 1 when the UART is used as a
-> console.
->
-> This ensures timely RX interrupts and reliable data reception in console
-> mode.
->
-> With this change, pasted content is saved correctly, and checksums are
-> always consistent.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 7a637784d517 ("serial: imx: reduce RX interrupt frequency")
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
->
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+On 20/06/2025 10:41, Wojciech Dubowik wrote:
+> Add the "mt" vendor prefix for Mettler-Toledo.
+> 
+> Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Thanks
+<form letter>
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, just skip it entirely
+(please do not feel offended by me posting it here - no bad intentions
+intended, no patronizing, I just want to avoid wasted efforts). If you
+do not know the process, here is a short explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
+of patchset, under or above your Signed-off-by tag, unless patch changed
+significantly (e.g. new properties added to the DT bindings). Tag is
+"received", when provided in a message replied to you on the mailing
+list. Tools like b4 can help here ('b4 trailers -u ...'). However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for tags received on the version they apply.
+
+Full context and explanation:
+https://elixir.bootlin.com/linux/v6.15/source/Documentation/process/submitting-patches.rst#L591
+</form letter>
+
+Best regards,
+Krzysztof
