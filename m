@@ -1,60 +1,60 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0FE239E84
-	for <imx@lists.linux.dev>; Fri, 20 Jun 2025 08:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1821723AB88
+	for <imx@lists.linux.dev>; Fri, 20 Jun 2025 08:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750408071; cv=none; b=oNoNauzRZ3J/iJmqw/zDbrcYTbvIt+60izL1AxyWZuPTgcRd50df1ptJdep4Aou5/XrMjPhoDixksLkngqKD/D6lQfBPQWnDTUyGTcFhQflXnXvUtM5YXoQA4e1EsVExFB8LtCqnAaJPlIR9t2tTsMBVzxvFswtQ91+8dqGVkTc=
+	t=1750408072; cv=none; b=AqtB3okIGGsHVRwVZdS41dNtJsESfQICOgJ6PHCU94xc4HPVurUngS4xL6L+zHnghA1qYnpupchAgRW25N31FyADQEVvpAO36bM4qXeBLyFLfFs+m+fx58xEcGwXPTHKwQENj0inaCm+4Nx9UgpnGTP+BFHBDrrTV9ZeZYce62U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750408071; c=relaxed/simple;
-	bh=8ifJB4hg/p3+muYHK02GRujAVjrJjqz6OwSqDSpqHFE=;
+	s=arc-20240116; t=1750408072; c=relaxed/simple;
+	bh=1EQ2d2sJwVwWPbVXNM0qlXgvYAJxPsfqyjjgpjMJ+BM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4z9BKhU3c3SicUH1O1kYYZtcwnm/vezkff+ghou5rf0PYGIO9l7KWTxTL0MwJ4vMpiDQc+eWj1uyBwubBmyAZxLAZHin2QM5012mywYYhzUx6Wa9l5B010/QabkE8xk3moz5dewHQAnNuM1b1G17EKhDBibm0LhRfxqsTx8Les=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=Z5NDG5m4; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version; b=tQ082Q0YalzrKIp2uzZ0/Ev6lzHH8F4+2faf+P4ZCKTALmk6/H+GiYsfG4YerQFx7ynxGwCfnk+Mru9CeKsI2NAFqaaUu9B/EkQlXlZj+R23kvHtlU5ff7kextxHi3BzAmNoZdfcmnlimFIGXoRfFSD3DdEo3TZSjEpHQlPr9pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=KzfW3lEQ; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="Z5NDG5m4"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-450cfb790f7so11842165e9.0
-        for <imx@lists.linux.dev>; Fri, 20 Jun 2025 01:27:49 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="KzfW3lEQ"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-451d54214adso11630215e9.3
+        for <imx@lists.linux.dev>; Fri, 20 Jun 2025 01:27:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1750408068; x=1751012868; darn=lists.linux.dev;
+        d=amarulasolutions.com; s=google; t=1750408069; x=1751012869; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O28qAmYDQtgK9Y67h6VNYLousdi9GmznEuxxlZe6y6g=;
-        b=Z5NDG5m4fBkjNmgr/HlHdHsk9SVpxkRMq0JJNMT7K7oaUV2pFMPbFGpQ6Atfa2iAix
-         1MY1XhrUZw5mEkOHa37cToD5fzrAfpGTVc4bckvanczXOvZ8DJlucgjMg8SIkr8x6Heo
-         mZbxCGRvYG32vxp51daaE7YPD4T8w/6Vpva3w=
+        bh=cjWUaZj830iJEScbjAkMyM8p8jFPI25PYUQdDEHFIkg=;
+        b=KzfW3lEQOtCNqSKNYuMFZXzzX6Gx56oxL76xFK0ycJQhiHQ4kHw8KLMobuah7hxSDv
+         x/vO0aGxJXzTDG3zSHbvyIRaQCdpvChqvqZ91S+SaiPlefMsfmix/Op6vKpzPgmXAOMd
+         T5b0AVnj2rZsqdCAklJ+qS3MLpU0nBNXmd4jg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750408068; x=1751012868;
+        d=1e100.net; s=20230601; t=1750408069; x=1751012869;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O28qAmYDQtgK9Y67h6VNYLousdi9GmznEuxxlZe6y6g=;
-        b=HLab8Dhj8imPgMpiABCkB2o0KAYF/LSXwKVWRrngIwStUjAiGxvtMsugOBnBCiDSNk
-         iwbrnlHwOAmYZZzGt5TyB0D2xD2OqqmN44Cw/IA4S4tcsxLv1ga1XJqoCMIY3b23+KUQ
-         QKa5TK9k30XtAqpigApQGQzJhg+fjsS3aNFv0UYJG0J1p6OjtmMhGwJFcoRm9l2hvWBO
-         54geK/JfF7jB5JVT7n4M2LKNPalyVeXfXUkD2NkocCLTHGGwfxaElffyM4TvZnMspfdC
-         TmarF8Zbb1dxd8xnhjctGQYTMkSIz8mtmeseejZztebOvIptVKSAir4Mt87VeeGYdOFg
-         rRRw==
-X-Forwarded-Encrypted: i=1; AJvYcCX68al4yZ97Pxkw20oryIMwjVSvb26/v9BFMZPNt/UN+3Sqf/KzD11AkBiZd7MAlW+YNfI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxR+g3+Ug/i2j/F5BT6RvL4ALRjwNUYc1Zk6wCqzbUrA0UD0RH
-	gazqNuoyigG3C/3vVvds/4OCiwNRV5N1zZj97gBB2YIVXPRTH1LPfezRMtZbb5FZsfk=
-X-Gm-Gg: ASbGncsa/gNX7V/AjRZ1f/uPpQu8sCVR9GKwDGRvjCYfO/4L6W/cqxwNrwOqsAJPL5W
-	X2oZkAU5Xlcx4WTYkFfFz5ErF44MB3qtwhQlnrByYkhPDhBd2ojSUcCJRMg9xHiSTQIzVe1IJ5x
-	p4E+77ATxmJbn9NS22hXTfIHzelH0ztyT3tQ3H9eGWAMrkQQpwju7YdEqVQUuLCq3/ZdaUiX7YI
-	SF8YIQ/Zk98vmctgjE4M6DmDfdbSGJfP+KEfONom/HF6OfGVKeUhws4CbWEdXj9/RDudj+DTO6E
-	gmI8UwPxaI/U4p8UdRm+xiVK/BMzgYZv2jjxv7R6jHPscy6UXTjOTenlq0wZFrptjafxjY2IwHz
-	GjF3ykfg+UhtCeoeYwXCrfGg5DSX2779RtLaZBefYm9lTYuR0xjXPy6rPDJTxVrM=
-X-Google-Smtp-Source: AGHT+IE6799z70WQfBU1IcgH3oBxGNspG8cVG3rmAiTDaD82iSiOfSFLbYc4fh6FZFb4zd+WUFFT4w==
-X-Received: by 2002:a05:600c:1e0d:b0:442:e9eb:cba2 with SMTP id 5b1f17b1804b1-45364791b6cmr20461665e9.0.1750408067639;
-        Fri, 20 Jun 2025 01:27:47 -0700 (PDT)
+        bh=cjWUaZj830iJEScbjAkMyM8p8jFPI25PYUQdDEHFIkg=;
+        b=fNyfeiW6VBBJiB2TNztqRA+RjXK9MRLUwPN09Na790Yacf/FrsJS18KxvbDOkSbdbk
+         ybZlEg3NDGkLK3c+Chl2645JN0q9ADlkK6ZniItmtChXrH0Fvt/zj5jrsmBPakhTYmGX
+         9d5STwoR0vGw7VoGlBCkDxbuz/U6oZGJ5C1FTl9zB9uf1NcqY723UN/remx05vuoZQc7
+         j/CgomnuPT7779zjG0bVQJ9aoYminOBvKsNubarQ7QOF9HSUCfq/Kgiak6h/7Bbmbc8I
+         1z4k6HnuiGpAM3D6CVX4gI9zu0s55O67ewg2p8FW/1uu5+iWqxyZfsTxkwQvNM1SkIhu
+         7RYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXv1qd4rTL4kX5dnvQilCekBqE2PubanQBOYUWzRl/BjgGQm1ze7tU2DAkC9ytT65dgg/E=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw3lsHtOdG7/lDyoWbl4cwXSXHUQZd0uaYPeF2cTz0n/K0ImVDF
+	AhqsJSYbSRUM4GhKO8ebOQMrUBTY+U+4jttxD3KQmgxxnPtYLXWT07BRT/8FGMcA8Mk=
+X-Gm-Gg: ASbGnctpPjOhR3sz7IkR7MRWDGxddmd6gcDYzOAb1uujZG3luMZSKP9pV23e/Db1T3u
+	vM2lMynmEztMBOj7wA+GRDwQHPz6wqIOeC6FbgZ5ct5ud4KS1VUQvilnvyRVB4uujLgq2HL5Nt/
+	AZ/27YWpC29Gd9uRSP7TQ0cwvroUaF6bRyW5fytWi00MiaQHYSb8QYU33fV35rLBD4ifa7TTHUg
+	usTzOMAo+w6gdiKmA1wndgc/kfdnljS663WRmwDEDMu9HDg9OJrtBVOSlC6uenujRxzyAbr71Uj
+	UjPe8bC16F7JWPpqFLxFFDoU8+63e3J9CChN29o9zF3GeXj1zV9DnofGYCEVFXFmtNC3AqBvBjh
+	N76qEpf99dhwCqxVoZUd+MiPbcNzeMdup273zEJ4/mE14jj0Vecku
+X-Google-Smtp-Source: AGHT+IFxJQt2EMofYFFEc+wI60+FOtOAa7Jz8MXXVt/8qC8IgOmSsAJ9wzBvAyuIOyuqmNjPgJydyg==
+X-Received: by 2002:a05:6000:40da:b0:3a5:67d5:a400 with SMTP id ffacd0b85a97d-3a6d1322ba4mr1436177f8f.33.1750408069390;
+        Fri, 20 Jun 2025 01:27:49 -0700 (PDT)
 Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com ([2.196.43.224])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4535e9844a9sm52274285e9.12.2025.06.20.01.27.45
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4535e9844a9sm52274285e9.12.2025.06.20.01.27.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 01:27:47 -0700 (PDT)
+        Fri, 20 Jun 2025 01:27:49 -0700 (PDT)
 From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-amarula@amarulasolutions.com,
@@ -63,7 +63,6 @@ Cc: linux-amarula@amarulasolutions.com,
 	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Andreas Kemnade <andreas@kemnade.info>,
 	Ard Biesheuvel <ardb@kernel.org>,
-	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
 	Eric Biggers <ebiggers@google.com>,
 	Fabio Estevam <festevam@gmail.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
@@ -74,9 +73,9 @@ Cc: linux-amarula@amarulasolutions.com,
 	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [RESEND PATCH v4 04/10] ARM: imx_v6_v7_defconfig: cleanup with savedefconfig
-Date: Fri, 20 Jun 2025 10:27:08 +0200
-Message-ID: <20250620082736.3582691-5-dario.binacchi@amarulasolutions.com>
+Subject: [RESEND PATCH v4 05/10] ARM: imx_v6_v7_defconfig: select CONFIG_INPUT_PWM_BEEPER
+Date: Fri, 20 Jun 2025 10:27:09 +0200
+Message-ID: <20250620082736.3582691-6-dario.binacchi@amarulasolutions.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250620082736.3582691-1-dario.binacchi@amarulasolutions.com>
 References: <20250620082736.3582691-1-dario.binacchi@amarulasolutions.com>
@@ -88,147 +87,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Generate imx_v6_v7_defconfig by doing:
-
-make imx_v6_v7_defconfig
-make savedefconfig
-cp defconfig arch/arm/configs/imx_v6_v7_defconfig
-
-No functional change. The goal here is to cleanup imx_v6_v7_defconfig
-file to make easier and cleaner the addition of new entries.
+The driver is required by the Engicam MicroGEA BMM board.
 
 Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-
 ---
 
-Changes in v4:
-- Fix commit title. It was referring to a wrong configuration
+(no changes since v1)
 
- arch/arm/configs/imx_v6_v7_defconfig | 25 ++++---------------------
- 1 file changed, 4 insertions(+), 21 deletions(-)
+ arch/arm/configs/imx_v6_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
-index 062c1eb8dd60..d40ca9edd264 100644
+index d40ca9edd264..917bc8a27794 100644
 --- a/arch/arm/configs/imx_v6_v7_defconfig
 +++ b/arch/arm/configs/imx_v6_v7_defconfig
-@@ -12,6 +12,7 @@ CONFIG_RELAY=y
- CONFIG_BLK_DEV_INITRD=y
- CONFIG_EXPERT=y
- CONFIG_PERF_EVENTS=y
-+CONFIG_KEXEC=y
- CONFIG_ARCH_MULTI_V6=y
- CONFIG_ARCH_MXC=y
- CONFIG_SOC_IMX31=y
-@@ -32,7 +33,6 @@ CONFIG_ARM_PSCI=y
- CONFIG_HIGHMEM=y
- CONFIG_ARCH_FORCE_MAX_ORDER=13
- CONFIG_CMDLINE="noinitrd console=ttymxc0,115200"
--CONFIG_KEXEC=y
- CONFIG_CPU_FREQ=y
- CONFIG_CPU_FREQ_STAT=y
- CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
-@@ -129,7 +129,6 @@ CONFIG_CS89x0_PLATFORM=y
- CONFIG_QCA7000_SPI=m
- # CONFIG_NET_VENDOR_SEEQ is not set
- CONFIG_SMC91X=y
--CONFIG_SMC911X=y
- CONFIG_SMSC911X=y
- # CONFIG_NET_VENDOR_STMICRO is not set
- CONFIG_MICREL_PHY=y
-@@ -153,9 +152,7 @@ CONFIG_MWIFIEX_PCIE=m
- CONFIG_WL12XX=m
- CONFIG_WL18XX=m
- CONFIG_WLCORE_SDIO=m
--# CONFIG_WILINK_PLATFORM_DATA is not set
- CONFIG_INPUT_EVDEV=y
--CONFIG_INPUT_EVBUG=m
- CONFIG_KEYBOARD_GPIO=y
- CONFIG_KEYBOARD_SNVS_PWRKEY=y
- CONFIG_KEYBOARD_IMX=y
-@@ -190,9 +187,7 @@ CONFIG_SERIAL_IMX_CONSOLE=y
- CONFIG_SERIAL_FSL_LPUART=y
- CONFIG_SERIAL_FSL_LPUART_CONSOLE=y
- CONFIG_SERIAL_DEV_BUS=y
--# CONFIG_I2C_COMPAT is not set
- CONFIG_I2C_CHARDEV=y
--CONFIG_I2C_MUX=y
- CONFIG_I2C_MUX_GPIO=y
- # CONFIG_I2C_HELPER_AUTO is not set
- CONFIG_I2C_ALGOPCF=m
-@@ -204,14 +199,9 @@ CONFIG_SPI_FSL_QUADSPI=y
- CONFIG_SPI_GPIO=y
- CONFIG_SPI_IMX=y
- CONFIG_SPI_FSL_DSPI=y
--CONFIG_PINCTRL_IMX8MM=y
--CONFIG_PINCTRL_IMX8MN=y
--CONFIG_PINCTRL_IMX8MP=y
--CONFIG_PINCTRL_IMX8MQ=y
- CONFIG_GPIO_SYSFS=y
- CONFIG_GPIO_MXC=y
- CONFIG_GPIO_SIOX=m
--CONFIG_GPIO_VF610=y
- CONFIG_GPIO_MAX732X=y
- CONFIG_GPIO_PCA953X=y
- CONFIG_GPIO_PCA953X_IRQ=y
-@@ -225,7 +215,6 @@ CONFIG_W1_SLAVE_THERM=m
- CONFIG_POWER_RESET=y
- CONFIG_POWER_RESET_SYSCON=y
- CONFIG_POWER_RESET_SYSCON_POWEROFF=y
--CONFIG_POWER_SUPPLY=y
- CONFIG_RN5T618_POWER=m
- CONFIG_SENSORS_MC13783_ADC=y
- CONFIG_SENSORS_GPIO_FAN=y
-@@ -283,13 +272,13 @@ CONFIG_VIDEO_OV5645=m
- CONFIG_VIDEO_ADV7180=m
- CONFIG_IMX_IPUV3_CORE=y
- CONFIG_DRM=y
--CONFIG_DRM_I2C_NXP_TDA998X=y
- CONFIG_DRM_MSM=y
- CONFIG_DRM_PANEL_LVDS=y
--CONFIG_DRM_PANEL_SIMPLE=y
--CONFIG_DRM_PANEL_EDP=y
- CONFIG_DRM_PANEL_SEIKO_43WVF1G=y
-+CONFIG_DRM_PANEL_EDP=y
-+CONFIG_DRM_PANEL_SIMPLE=y
- CONFIG_DRM_DISPLAY_CONNECTOR=y
-+CONFIG_DRM_I2C_NXP_TDA998X=y
- CONFIG_DRM_LVDS_CODEC=m
- CONFIG_DRM_SII902X=y
- CONFIG_DRM_TI_TFP410=y
-@@ -310,7 +299,6 @@ CONFIG_LCD_PLATFORM=y
- CONFIG_BACKLIGHT_CLASS_DEVICE=y
- CONFIG_BACKLIGHT_PWM=y
- CONFIG_BACKLIGHT_GPIO=y
--CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_LOGO=y
- CONFIG_SOUND=y
- CONFIG_SND=y
-@@ -380,11 +368,8 @@ CONFIG_MMC=y
- CONFIG_MMC_SDHCI=y
- CONFIG_MMC_SDHCI_PLTFM=y
- CONFIG_MMC_SDHCI_ESDHC_IMX=y
--CONFIG_NEW_LEDS=y
--CONFIG_LEDS_CLASS=y
- CONFIG_LEDS_GPIO=y
- CONFIG_LEDS_PWM=y
--CONFIG_LEDS_TRIGGERS=y
- CONFIG_LEDS_TRIGGER_TIMER=y
- CONFIG_LEDS_TRIGGER_ONESHOT=y
- CONFIG_LEDS_TRIGGER_HEARTBEAT=y
-@@ -453,7 +438,6 @@ CONFIG_EXT3_FS_POSIX_ACL=y
- CONFIG_EXT3_FS_SECURITY=y
- CONFIG_QUOTA=y
- CONFIG_QUOTA_NETLINK_INTERFACE=y
--# CONFIG_PRINT_QUOTA_WARNING is not set
- CONFIG_AUTOFS_FS=y
- CONFIG_FUSE_FS=y
- CONFIG_ISO9660_FS=m
-@@ -490,5 +474,4 @@ CONFIG_PRINTK_TIME=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DEBUG_FS=y
- # CONFIG_SLUB_DEBUG is not set
--# CONFIG_SCHED_DEBUG is not set
- # CONFIG_FTRACE is not set
+@@ -180,6 +180,7 @@ CONFIG_TOUCHSCREEN_COLIBRI_VF50=y
+ CONFIG_INPUT_MISC=y
+ CONFIG_INPUT_MMA8450=y
+ CONFIG_INPUT_GPIO_BEEPER=m
++CONFIG_INPUT_PWM_BEEPER=y
+ CONFIG_SERIO_SERPORT=m
+ # CONFIG_LEGACY_PTYS is not set
+ CONFIG_SERIAL_IMX=y
 -- 
 2.43.0
 
