@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE06B28033F;
-	Fri, 20 Jun 2025 09:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1651280CD9;
+	Fri, 20 Jun 2025 09:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750411217; cv=none; b=sGPSwnEyeEFjgrtIkWvOzHmik1yu7jjJZFC0UCenkW7GE/2RV/0FQkiC6z0yt6X9N/tCZdcCWiZfx8u6lRP+mITzqVWFI2ntGDB3Ixcj56RqNYJSjIc8pqYACp42FYiNkb1j0wVrpBxyxqbLvYorvr/VGmNS3Qvfw4B8MScOZ1c=
+	t=1750411432; cv=none; b=rKL6+kGSwf7yb0hAslQ0rBvT6KiCwyY4+rhios+A9d3mnDxUEU+D7PIm4FqZReGw/+E093HmLLCr5sabJI82PfEmf8peLUQOCODrqGZNsv+mnQQztKactuGEHMvvSC5jW9MqarNTHRaj+FwVvjms3BMHfGd91xBQ15I/hTB5BYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750411217; c=relaxed/simple;
-	bh=ZclNXEJGgmtvivW3+zTBau1Wqx9MCt1Nu5jQDpqLs1U=;
+	s=arc-20240116; t=1750411432; c=relaxed/simple;
+	bh=gFqKMGB+599gWiIDRuPwLjV0AGFzK9hvlcYgaGWzgvY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W95N3CwuT5oIM7RaMyt6ieqdwASNkwoKw8whQfibMQziAKfj477bM9IEebnHzWpp2AJWJWj12b2SNmmglxM5vNqWNMSOhURj8BP8xwfQ3Lg/KeO7eyfQM3hioplNvUWBA/UuGSqA4Ty7TV94RIjzZ79iFZTkPLwh5g8fJHNX9V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=taqNcruz; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=T+POmuoUb3NC01yPoeOspeCyZcO5j6I7fG34hoiGW3bwSURuggHwvaCqiJsjiadL+4FmrSneVP8TPO4XfRL5xl6L+hOoyz3AzfoirRjJwtvI53eECDcCOHQgqjGvCH9RkXGTK1cqQPMBaS3i6MwIXr5APNNOyETLBcchUZveR3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRNalUTQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="taqNcruz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6C7C4CEEF;
-	Fri, 20 Jun 2025 09:20:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRNalUTQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13606C4CEED;
+	Fri, 20 Jun 2025 09:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750411216;
-	bh=ZclNXEJGgmtvivW3+zTBau1Wqx9MCt1Nu5jQDpqLs1U=;
+	s=k20201202; t=1750411432;
+	bh=gFqKMGB+599gWiIDRuPwLjV0AGFzK9hvlcYgaGWzgvY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=taqNcruz4qiBDwEUxWLJi6i8RZdIS2nFjggQS6vFH30g5XqOf/aYaP5sPvxbPVwO+
-	 op9N6ifVe4ci97R1wvnuTwLjf98eH069n9Srxtgq4XS9vJ/EkGSdTJpJ3K3oNjzSWB
-	 kkTLr5ru2/Yj6BrW/auJ9rvi9F3BZLMVSwhmnjHWq1qPEzH13tDnuonBPuW2ujMaKt
-	 +cXI8l5vGDvKnbY7VrCS/v0S7uCR7466Z52GiYMXn3jtFhFyuqaR/Ll/RYFAEzwxQ5
-	 E2I2rr0C92H+JYHr2B36D4bgfDq9PNchbQ1gUlXRwmHfXAmEdoZGzTR1nk4Ff/RKdf
-	 izrQfbw4STafQ==
-Message-ID: <1a4b060e-475e-46a1-9ff5-aae16a7d326a@kernel.org>
-Date: Fri, 20 Jun 2025 11:20:10 +0200
+	b=uRNalUTQ5gxcjvSaBaopQhZFUT6v9dCfyTuq9SEEvAtoGA7gQDel3vreSKWnZIXIs
+	 a3BqJe3+kgEPbRgUCEXcMC6AgKxnZ8jnx+B0YWA0aTb0JsjJ6K6+6HRYdf2+cpRvjs
+	 5TWmbfeXAglJ2sVFzVGxaMsmKMAbJaudbip8N7bG40c0agXcZlHtzxsYgvPjxT8dis
+	 uyR42v2Fzw8HLgY112XHfv7G1ekIHDnHjvauUvqtD3r24kBfBq14HaBGnYfSw1ukig
+	 835Kk5pYJ3DQFi+9bGebYH50tSgdxn4v7A7VQozKxvSgLqM7CxeazzRliEXnhsgmk/
+	 L7S0Ghv5/5uDw==
+Message-ID: <47a7209a-5f8b-40d0-9bba-19339fd4fc5b@kernel.org>
+Date: Fri, 20 Jun 2025 11:23:43 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] dt-bindings: arm: fsl: Add Mettler-Toledo
- Snowflake V2 board
+Subject: Re: [PATCH v2 3/4] arm64: dts: freescale: Add Mettler-Toledo
+ Snowflake V2 support
 To: Wojciech Dubowik <Wojciech.Dubowik@mt.com>, linux-kernel@vger.kernel.org
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -54,9 +54,10 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Neil Armstrong <neil.armstrong@linaro.org>, Heiko Stuebner
  <heiko@sntech.de>, Manivannan Sadhasivam <mani@kernel.org>,
  Kever Yang <kever.yang@rock-chips.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Tobias Graemer <Tobias.Graemer@mt.com>
 References: <20250620084512.31147-1-Wojciech.Dubowik@mt.com>
- <20250620084512.31147-3-Wojciech.Dubowik@mt.com>
+ <20250620084512.31147-4-Wojciech.Dubowik@mt.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,20 +103,173 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250620084512.31147-3-Wojciech.Dubowik@mt.com>
+In-Reply-To: <20250620084512.31147-4-Wojciech.Dubowik@mt.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 20/06/2025 10:41, Wojciech Dubowik wrote:
-> Add bindings for Mettler-Toledo Snowflake V2 terminal. The board
-> is using Kontron SL i.MX 8M Mini SoM.
-> Split the existing Kontron BL i.MX8MM as it uses the same module.
-> 
-> Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
-> ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 6 ++++--
+> +
+> +	ili2511: ili2511@41 {
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Node names should be generic. See also an explanation and list of
+examples (not exhaustive) in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+
+> +		compatible = "ilitek,ili251x";
+> +		reg = <0x41>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_touch>;
+> +		interrupt-parent = <&gpio1>;
+> +		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
+> +		reset-gpios = <&gpio3 16 GPIO_ACTIVE_LOW>;
+> +	};
+> +
+> +	lvds: lvds@2c {
+> +		compatible = "ti,sn65dsi83";
+> +		reg = <0x2c>;
+> +		vcc-supply = <&reg_sn65dsi83_1v8>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_sn65dsi83>;
+> +		status = "okay";
+
+Was it disabled anywhere?
+
+> +		ports {
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			port@0 {
+> +				reg = <0>;
+> +				bridge_in: endpoint {
+> +					remote-endpoint = <&mipi_dsi_out>;
+> +					data-lanes = <1 2>;
+> +				};
+> +			};
+> +
+> +			port@2 {
+> +				reg = <2>;
+> +				bridge_out: endpoint {
+> +					remote-endpoint = <&panel_in>;
+> +					data-lanes = <4 3 2 1>;
+> +				};
+> +			};
+> +		};
+> +	};
+> +
+> +	usbc-cc-controller@61 {
+> +		compatible = "ti,tusb320";
+> +		reg = <0x61>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_usbc_controller>;
+> +		interrupts-extended = <&gpio1 6 IRQ_TYPE_LEVEL_LOW>;
+> +	};
+> +};
+> +
+> +&mipi_dsi {
+> +	status = "okay";
+> +	vddio-supply = <&reg_sn65dsi83_1v8>;
+> +	assigned-clocks = <&clk IMX8MM_CLK_DSI_CORE>,
+> +			  <&clk IMX8MM_VIDEO_PLL1_OUT>,
+> +			  <&clk IMX8MM_CLK_DSI_PHY_REF>;
+> +	assigned-clock-parents = <&clk IMX8MM_SYS_PLL1_266M>,
+> +			  <&clk IMX8MM_VIDEO_PLL1_BYPASS>,
+> +			  <&clk IMX8MM_CLK_24M>;
+> +	assigned-clock-rates = <266000000>, <594000000>, <12000000>;
+> +	samsung,pll-clock-frequency = <12000000>;
+> +	samsung,burst-clock-frequency = <891000000>;
+> +	samsung,esc-clock-frequency = <54000000>;
+> +};
+> +
+> +&mipi_dsi_out {
+> +	remote-endpoint = <&bridge_in>;
+> +};
+> +
+> +&lcdif {
+> +	status = "okay";
+> +};
+> +
+> +&gpu_2d {
+> +	status = "okay";
+> +};
+> +
+> +&gpu_3d {
+> +	status = "okay";
+> +};
+> +
+> +&ecspi1 {
+> +	status = "disabled";
+> +};
+> +
+> +&gpio1 {
+> +	bootph-pre-ram;
+> +};
+> +
+> +&gpio2 {
+> +	bootph-pre-ram;
+> +};
+> +
+> +&gpio3 {
+> +	bootph-pre-ram;
+> +};
+> +
+> +&gpio4 {
+> +	bootph-pre-ram;
+> +};
+> +
+> +&gpio5 {
+> +	bootph-pre-ram;
+> +	status_led_controller_oe: status-led-controller-hog {
+> +		gpio-hog;
+> +		gpios = <4 GPIO_ACTIVE_HIGH>;
+> +		output-low;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_hog_status_led_controller>;
+> +	};
+> +};
+> +
+> +&pca9450 {
+> +	bootph-pre-ram;
+> +};
+> +
+> +&{/soc@0/bus@30800000/i2c@30a20000/pmic@25/regulators} {
+
+There is no label to override it? Probably should be added.
+
+
+> +	bootph-pre-ram;
+> +};
+> +
+
+
+
+
+> +&usbotg2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	disable-over-current;
+> +	dr_mode = "host";
+> +	status = "okay";
+> +
+> +	usb1@1 {
+
+usb@
+
+Why usb1?
+
+> +		reg = <1>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		usbnet: ethernet@1 {
+> +			compatible = "usb424,9500";
+> +			reg = <1>;
+> +			mac-address = [ 00 00 00 00 00 00 ];
+> +		};
+> +	};
+> +};
+
+
 
 Best regards,
 Krzysztof
