@@ -1,112 +1,171 @@
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7C31F0E50
-	for <imx@lists.linux.dev>; Sat, 21 Jun 2025 11:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6669A30E83E;
+	Sat, 21 Jun 2025 15:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750504998; cv=none; b=JyD8TZy+E4oZa69X9NKfevTjM4Q3hIuwKn4pcmRLN/1HYuhbYlwQSBYUPkpkfJ2zZXueb5j7IlA0aZOMtclfA2s90OT5fokDZAD8FVC/C311w7HNiEF5TAS8/r3d7UTqp2TquUkzbDKQaukqUo77nxT+wwgMlcYaSwdloeKUzac=
+	t=1750521534; cv=none; b=FGSPxIS99/SCxnyZZcX3fJA7mprQ2eaD61Dyxt89zxMvoWf5EIhH7abUSJ2tYztuJmKxmp2pHggT5bl7qo4fd3HwKtDZITiNfkyH+b6YXHwWNFcLfCErMAr/83sokyklzQsDFVdOcOfcIeGBd2AVDOeEujjm1zUC8/KbolWFrNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750504998; c=relaxed/simple;
-	bh=7NM1yG5YzQ8JicsWuohUOCWC31cpq61zxWivMC3BXFw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUECgc2ijLCvqekY8jfCi7bjb14uWLR5Uq6b9Y1uLm0VTrkVyQ2PHonxieHgjwwlH3YjlwkoXzNCB093FAR5Zz7ofvWDZys0quxPqzEZrA8XJQGwIU0pYyItKsp4Km+ursyRco18bFD8TUeAa0eFjNCNjQr6ltgwuJrEIrOZdz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V5cPQD6X; arc=none smtp.client-ip=209.85.166.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750521534; c=relaxed/simple;
+	bh=uD1aowYPmj+UJLXVDosDmzbGxqXKB+j7Khv6FiWy4dI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BBy30HOB8RGQFl3XkMZmpKcNULnLFXpYzNmhVI9dUa84e0gV5lPFPXnT08Km3L1N1ALXqPUZTs9buyAj4Fe7zKUCq/Y7ttpebSOgXneC9M5O5ACksS9T0AfoKYQEDi/hjN3hz4sUt9RVGCS1BW8O+uor4SrXe2EsdC73fcOXxsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uuiBzVRc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V5cPQD6X"
-Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3de2b02c69eso8771655ab.1
-        for <imx@lists.linux.dev>; Sat, 21 Jun 2025 04:23:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750504996; x=1751109796; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fyspq0V2HWwwS+VnZ1WgkjemW6T0dfdq87ixJii18ZY=;
-        b=V5cPQD6XPgG1g9mNZT44ypGygSSTBzkeOYqyaqoRqqs9ZMw0v412TD2Rhu1CQMYWYu
-         pQ5e9NKK6i5gF8LRXTusth/h9Gfy0SQyiJncGMtPMQ/nqJW4BUZcjP8G0BgAsQ5I0JVL
-         vM+O8787vj81jUaH/ObQD8+ZbrXH0T7P58kpefVpyYlJnH/iaL3wRPz8XyGuTYAWoBOd
-         +cCaqgqXr+s/N3kbpBqHlY5habmQmBzuKn5Huo/+5AvuPvDjvb9lvjwtuZFfCFK+m218
-         nGkkvkTYTKFzvrQ2ks/DGHUFPYtjZdHKWWk5+X28/UawcV/uTGD87VkRuMQljMvUA8TG
-         jnfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750504996; x=1751109796;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fyspq0V2HWwwS+VnZ1WgkjemW6T0dfdq87ixJii18ZY=;
-        b=BZEH/Jj0d++u6/3x2EiKnXDCk7lqdPuCWA9bLSIAiiDf4LC8uUlvtU0fcARp/SLNfR
-         SLgxS22KjmkiLtLkz6P34pG9Io/6AnzM012k1DzQFvfclKyUj26/HKeVXyNin05VfoOV
-         4sWn+/dXfzaRMrExXEGp9Cg9DvadfWyg28HlVuXsUcDKgr3fcm3669zJnXcoPMwy8GuY
-         jB2gzGII5tDcBRPAtkoqk7Vh81ZEFlLivjnLULlislfBK45A0ZuRlrjc/zgT8w2mXiN3
-         f8w/1CkaCnnLv5p5c+rKqXyUcKvWQI9h+jTelpVJXZOlWGDF3uRyxd7SbMWYeX57Qv8/
-         viPA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbqhrDvJ3YzfIRMWII1hhxcRn0IpOiqqrRUqCnbw3nrg60Rmp68oLROVwquGfhI8iIfc8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz6Q2osGmU8CqIONtnZilc7FZgegbcAXgV8pQms8xmdFMEM4jiU
-	m373ldk/6wzTE880xbU0/kYhoUKGgTRFWnpB6REGA0dPhcV/FMhc0qbK
-X-Gm-Gg: ASbGncsvSaCshtttU/iUVqYXqMfendCCXdrdbpjXPq52mtbWylQF5/ppwapAAqb1Utz
-	CJAw750FmouGN6pxi4kBbXV35T5YLjyFj2YwCCxD1cDa+ijOMFdrFIaHS1dF1PBN0xkH9ib0fr0
-	9XHPdVX3fU5Y54FQD5Pob9N1h4C1XicOZXWGlfU8C5Mp+eyCSqf71LrL9NaiLYTYQsejpcGIN7j
-	tRqYh2VdFiLGEOUZKRGag+JOb3fX9mg1o0RmWEzk/ZVWHK08ZQ8Tqp893fO9y23gDujB8I+JnHl
-	zZxoJ7fmCzHpFOwO9rIwbG/O5o+yDNBB+ZTIpwCb8cm/fcZFmYPyuEgXsx+1wmaFUrlujGvalLT
-	l5kLz8o43ELmfgPjVbaqWv4MWoeQDp1PbWLEK
-X-Google-Smtp-Source: AGHT+IEbOxBx/Sd+Bsqwp70aHm+2E+WsoOI4o1sbT5qYTMXDbDTw25OzNNsCWFVkE+Cq2EY8YZaaAg==
-X-Received: by 2002:a92:c267:0:b0:3de:25cb:42c2 with SMTP id e9e14a558f8ab-3de38cc4f87mr72766065ab.18.1750504995670;
-        Sat, 21 Jun 2025 04:23:15 -0700 (PDT)
-Received: from aford-System-Version.. (c-75-72-162-184.hsd1.mn.comcast.net. [75.72.162.184])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3de3761874esm13654385ab.9.2025.06.21.04.23.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Jun 2025 04:23:15 -0700 (PDT)
-From: Adam Ford <aford173@gmail.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: aford@beaconembedded.com,
-	Adam Ford <aford173@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] arm64: dts: imx8mn: Configure DMA on UART2
-Date: Sat, 21 Jun 2025 06:23:10 -0500
-Message-ID: <20250621112311.68101-2-aford173@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250621112311.68101-1-aford173@gmail.com>
-References: <20250621112311.68101-1-aford173@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uuiBzVRc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A87C4CEE7;
+	Sat, 21 Jun 2025 15:58:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750521533;
+	bh=uD1aowYPmj+UJLXVDosDmzbGxqXKB+j7Khv6FiWy4dI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uuiBzVRcEkC2Sxa/8Sv+mVWSSwv0SA0+lxjSMoXxmEthDJ53F1UsDFQEV7vqtLof3
+	 I4gpSGdr20sf6S838T6kun/3W9EqYXLnQGcBVSCdjAi0MNlWQfbqxdAFFSj+bwAgqe
+	 JRgA/xHLyAdD7wHRhQox0MLHZbOsdJEstsEhZPNFRuAV3U4NcUOvDGEDHlFlPzjIwO
+	 bmhnC7b6CjMUd6Ce1g9AOpH/bnAx2pM7Zxqh53r/E0IDNy/QpHeFFLTHjntlZroK5n
+	 YZZksBuIIBPlFaol+MiAKyZkT+lkp7OymawE/gkYy5hGQl7qQrT7PHLkbasgrCrkRX
+	 vr8xdY7xTk/8Q==
+Date: Sat, 21 Jun 2025 16:58:44 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: David Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: imx93_adc: load calibrated values even
+ calibration failed
+Message-ID: <20250621165845.0bd7ac7f@jic23-huawei>
+In-Reply-To: <DU0PR04MB94962C741E378CAC3F8910E69073A@DU0PR04MB9496.eurprd04.prod.outlook.com>
+References: <20250423-adcpatch-v1-1-b0e84c27ae98@nxp.com>
+	<DU0PR04MB94962C741E378CAC3F8910E69073A@DU0PR04MB9496.eurprd04.prod.outlook.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-UART2 is often used as the console, so the DMA was likely left
-off on purpose, since it's recomended to not use the DMA on the
-console. Beacause, the driver checks to see if the UART is used for
-the console when determining if it should initialize DMA, it
-should be safe to enable DMA on UART2 for all users.
+On Tue, 17 Jun 2025 03:07:11 +0000
+Bough Chen <haibo.chen@nxp.com> wrote:
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
+> Any comment for this patch?
+I guess you didn't receive this mail from Andy for some reason?
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn.dtsi b/arch/arm64/boot/dts/freescale/imx8mn.dtsi
-index 848ba5e46ee6..b98b3d0ddf25 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn.dtsi
-@@ -860,6 +860,8 @@ uart2: serial@30890000 {
- 					clocks = <&clk IMX8MN_CLK_UART2_ROOT>,
- 						 <&clk IMX8MN_CLK_UART2_ROOT>;
- 					clock-names = "ipg", "per";
-+					dmas = <&sdma1 24 4 0>, <&sdma1 25 4 0>;
-+					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
- 			};
--- 
-2.48.1
+https://lore.kernel.org/all/aAkYvE6VtoQItM5o@smile.fi.intel.com/
+
+There were a few minor requested changes in there.
+>=20
+> > -----Original Message-----
+> > From: Bough Chen <haibo.chen@nxp.com>
+> > Sent: 2025=E5=B9=B44=E6=9C=8823=E6=97=A5 16:03
+> > To: Jonathan Cameron <jic23@kernel.org>; David Lechner
+> > <dlechner@baylibre.com>; Nuno S=C3=A1 <nuno.sa@analog.com>; Andy Shevch=
+enko
+> > <andy@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
+> > <s.hauer@pengutronix.de>; Pengutronix Kernel Team
+> > <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>
+> > Cc: linux-iio@vger.kernel.org; imx@lists.linux.dev;
+> > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; Bou=
+gh
+> > Chen <haibo.chen@nxp.com>
+> > Subject: [PATCH] iio: adc: imx93_adc: load calibrated values even calib=
+ration
+> > failed
+> >=20
+> > ADC calibration might fail because of the noise on reference voltage.
+> > To avoid calibration fail, need to meet the following requirement:
+> > ADC reference voltage Noise < 1.8V * 1/2^ENOB
+> >=20
+> > For the case which the ADC reference voltage on board do not meet the
+> > requirement, still load the calibrated values, so ADC can also work but=
+ maybe
+> > not that accurate.
+> >=20
+> > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> > ---
+> >  drivers/iio/adc/imx93_adc.c | 21 ++++++++++++++++-----
+> >  1 file changed, 16 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c =
+index
+> > 7feaafd2316f246bd0c32fea99309900b5c65099..ebf976db746f02431a315b1faa
+> > 86f151bb67132e 100644
+> > --- a/drivers/iio/adc/imx93_adc.c
+> > +++ b/drivers/iio/adc/imx93_adc.c
+> > @@ -38,6 +38,7 @@
+> >  #define IMX93_ADC_PCDR6		0x118
+> >  #define IMX93_ADC_PCDR7		0x11c
+> >  #define IMX93_ADC_CALSTAT	0x39C
+> > +#define IMX93_ADC_CALCFG0	0X3A0
+> >=20
+> >  /* ADC bit shift */
+> >  #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
+> > @@ -58,6 +59,8 @@
+> >  #define IMX93_ADC_IMR_ECH_MASK			BIT(0)
+> >  #define IMX93_ADC_PCDR_CDATA_MASK		GENMASK(11, 0)
+> >=20
+> > +#define IMX93_ADC_CALCFG0_LDFAIL_MASK		BIT(4)
+> > +
+> >  /* ADC status */
+> >  #define IMX93_ADC_MSR_ADCSTATUS_IDLE			0
+> >  #define IMX93_ADC_MSR_ADCSTATUS_POWER_DOWN		1
+> > @@ -145,7 +148,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc
+> > *adc)
+> >=20
+> >  static int imx93_adc_calibration(struct imx93_adc *adc)  {
+> > -	u32 mcr, msr;
+> > +	u32 mcr, msr, calcfg;
+> >  	int ret;
+> >=20
+> >  	/* make sure ADC in power down mode */ @@ -158,6 +161,11 @@ static
+> > int imx93_adc_calibration(struct imx93_adc *adc)
+> >=20
+> >  	imx93_adc_power_up(adc);
+> >=20
+> > +	/* Enable loading of calibrated values even in fail condition */
+> > +	calcfg =3D readl(adc->regs + IMX93_ADC_CALCFG0);
+> > +	calcfg |=3D IMX93_ADC_CALCFG0_LDFAIL_MASK;
+> > +	writel(calcfg, adc->regs + IMX93_ADC_CALCFG0);
+> > +
+> >  	/*
+> >  	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
+> >  	 * can add the setting of these bit if need in future.
+> > @@ -179,11 +187,14 @@ static int imx93_adc_calibration(struct imx93_adc
+> > *adc)
+> >=20
+> >  	/* check whether calbration is success or not */
+> >  	msr =3D readl(adc->regs + IMX93_ADC_MSR);
+> > -	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
+> > +	if (msr & IMX93_ADC_MSR_CALFAIL_MASK)
+> > +		/*
+> > +		 * Only give warning here, this means the noise of the
+> > +		 * reference voltage do not meet the requirement:
+> > +		 *     ADC reference voltage Noise < 1.8V * 1/2^ENOB
+> > +		 * And the reault of ADC is not that accurate.
+> > +		 */
+> >  		dev_warn(adc->dev, "ADC calibration failed!\n");
+> > -		imx93_adc_power_down(adc);
+> > -		return -EAGAIN;
+> > -	}
+> >=20
+> >  	return 0;
+> >  }
+> >=20
+> > ---
+> > base-commit: bc8aa6cdadcc00862f2b5720e5de2e17f696a081
+> > change-id: 20250423-adcpatch-cb59c5255961
+> >=20
+> > Best regards,
+> > --
+> > Haibo Chen <haibo.chen@nxp.com> =20
+>=20
 
