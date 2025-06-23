@@ -1,137 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4C81624D5;
-	Mon, 23 Jun 2025 06:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852FB1D63C5
+	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 06:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750661368; cv=none; b=HFh3rUe4TZATd8c8a10V/Uku5WSeXt+Z0e1BNaSU5hsiACx0vYZZlXsOTWxu/c0gX8txL1Y0U3T5kwjNdPlZO31DZxls+pvUNKTAyOGQKWr6Nx3GrBJIogreiP3UJ7jvhs2ucs/mXw4tQYvwpEgiZ1CNtjQY1SQ0KXXdrGO2gZA=
+	t=1750661451; cv=none; b=OoFNwgMSRjAPNVD2RQPFhGBLOklCoM+f31UO1GBYNMycFx98WOYuwHvCBH2my/Hyu6Ri6STmxwpRVsDfFlZjZ50q6CtUwEBt6o2Qaafu1NcHuo1lff5MxjgiuVnc4twGXcvYe7d2qJ2TGlA1hw0NVvmj7SqRKQIJeMQh/OJdhCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750661368; c=relaxed/simple;
-	bh=r9Scpc1y8oJqW4ki1b+GiwK273muM/HU6bqva5wjWW8=;
+	s=arc-20240116; t=1750661451; c=relaxed/simple;
+	bh=ID0tYhe+3AnmdvyD6ijER8q96Dh67gLD5peP97R3a94=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U0hfKl9S+gfigLrJxdiRSnLeQtNq7BifefFio6H5AU88S7IR1/hoHNRy1INj/eVZ0oBtemY9nOtBw3M1BQULTbooyOuMlQtJbdVaNIUOVKTxrCFxMj3xEgL7s180QQSBkYgdKnh8/ECbdpKqjMOJ/+8y+Ltre+d670czx6rUiik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Reo5hLSe; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=MyC6cwswDd0ofniTa8cUOAAWQQ3y1AA6v7VhXn1ApxHdfRdelVPXebGGt/S+sS5m7WvvFjsBM/O8c8uF4cuC2GCpbs92sUZAeCpdiygoo/f0GOGq5i0okCKFoBBC1QNoe7UxkfIEXyJ84N4+MCE52BSNHvU0phuXZqKVsiL6kiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B1dH1yPc; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Reo5hLSe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1310C4CEEF;
-	Mon, 23 Jun 2025 06:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750661368;
-	bh=r9Scpc1y8oJqW4ki1b+GiwK273muM/HU6bqva5wjWW8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Reo5hLSe/U1rF9RuZzNW2HAPmWlHsw75zDA4E9EJZ4CHd1N6CD0yi1jYLiIWjjjZg
-	 cS5or16waGa2Abl8GElKRO34Nvj0oBa1vVkX8OpIgZv8CpiUc/Go3s+Bw1FsDTBOC9
-	 IJMjK8F3vkEYzed9jRWeIFyTrqBiaUsb5tPNuCf5CpKe0xJ+JaGD7l7osRt4CLdWGF
-	 06VNojU6DZZV4Se9G6Z7OQ3jTfkOz8FofW6jMjxBhziH3qVB7UlVQ6PTWx3wXdDdiy
-	 tumRgV0cTeXEYZtIDL49sxr9SmCr6aDoxZpkA8pPq0VoOnnQe+J47AVXS3Jp1fBmKB
-	 Fl8U4or6V6aZQ==
-Date: Mon, 23 Jun 2025 08:49:25 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Hongxing Zhu <hongxing.zhu@nxp.com>, 
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "mani@kernel.org" <mani@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, 
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] dt-binding: pci-imx6: Add external reference
- clock mode support
-Message-ID: <6ojwsgzi4rrn7zoiktiutdjgaly4uhbe7xc35lafyxgl5yacwv@oajobetnqsps>
-References: <20250620031350.674442-1-hongxing.zhu@nxp.com>
- <20250620031350.674442-2-hongxing.zhu@nxp.com>
- <20250620-honored-versed-donkey-6d7ef4@kuoka>
- <AS8PR04MB8676FBE47C2ECE074E5B14768C7CA@AS8PR04MB8676.eurprd04.prod.outlook.com>
- <130fe1fc-913b-48cf-b2a4-e9c4952354fd@kernel.org>
- <aFVy9OMxL4WXEOzz@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B1dH1yPc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750661450; x=1782197450;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ID0tYhe+3AnmdvyD6ijER8q96Dh67gLD5peP97R3a94=;
+  b=B1dH1yPco738zrd9MAEzeSUD9mL8q8uOo1QLJRskVyss7XvkSxcji/4t
+   6l697NfCmd87hVLGlRbgzAQePo88EyuBnsGGyrvwvKrm4jueENmOn7Owy
+   R5zM4se99i3VYmNIGKeLsJh2vpff/njbAVEDNF9/yOUODTxl3BoRnnKFL
+   zI/4cuejSicsIF5JS/B5k4Fam1hW6G1A5TJqI//FMha+fOHBICqo5qPk/
+   0jXjFRcXB7OuymiAKDxtwrAUjAHkx21/dJmHekm29IeAwBI7Kmicuwmvb
+   hhl/94jUn4yh5H5SMUzPEBukKysyfDGRaSx66BYCKPlbeaWRuLqmRNgPa
+   Q==;
+X-CSE-ConnectionGUID: 7DaCaKRXTkS0LUfypQZ7Zg==
+X-CSE-MsgGUID: BPgv8fhEQUywIky26kaPCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52987256"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="52987256"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 23:50:50 -0700
+X-CSE-ConnectionGUID: 8+RVV+lORPq9cNr/+qIs5g==
+X-CSE-MsgGUID: i4cX/fd5SYK6vhXNVZNv/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="152184805"
+Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.8])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 23:50:45 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id EEE3D11FC36;
+	Mon, 23 Jun 2025 09:50:42 +0300 (EEST)
+Date: Mon, 23 Jun 2025 06:50:42 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: git@apitzsch.eu
+Cc: Ricardo Ribalda <ribalda@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH RESEND v4 0/5] media: i2c: imx214: Add support for more
+ clock frequencies
+Message-ID: <aFj5QnPBO0We5SBQ@kekkonen.localdomain>
+References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <aFVy9OMxL4WXEOzz@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
 
-On Fri, Jun 20, 2025 at 10:40:52AM -0400, Frank Li wrote:
-> On Fri, Jun 20, 2025 at 03:08:16PM +0200, Krzysztof Kozlowski wrote:
-> > On 20/06/2025 10:26, Hongxing Zhu wrote:
-> > >> -----Original Message-----
-> > >> From: Krzysztof Kozlowski <krzk@kernel.org>
-> > >> Sent: 2025=E5=B9=B46=E6=9C=8820=E6=97=A5 15:53
-> > >> To: Hongxing Zhu <hongxing.zhu@nxp.com>
-> > >> Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de;
-> > >> lpieralisi@kernel.org; kwilczynski@kernel.org; mani@kernel.org;
-> > >> robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
-> > >> bhelgaas@google.com; shawnguo@kernel.org; s.hauer@pengutronix.de;
-> > >> kernel@pengutronix.de; festevam@gmail.com; linux-pci@vger.kernel.org;
-> > >> linux-arm-kernel@lists.infradead.org; devicetree@vger.kernel.org;
-> > >> imx@lists.linux.dev; linux-kernel@vger.kernel.org
-> > >> Subject: Re: [PATCH v3 1/2] dt-binding: pci-imx6: Add external refer=
-ence clock
-> > >> mode support
-> > >>
-> > >> On Fri, Jun 20, 2025 at 11:13:49AM GMT, Richard Zhu wrote:
-> > >>> On i.MX, the PCIe reference clock might come from either internal
-> > >>> system PLL or external clock source.
-> > >>> Add the external reference clock source for reference clock.
-> > >>>
-> > >>> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> > >>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > >>> ---
-> > >>>  Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml | 7 ++++=
-++-
-> > >>>  1 file changed, 6 insertions(+), 1 deletion(-)
-> > >>>
-> > >>> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.y=
-aml
-> > >>> b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> > >>> index ca5f2970f217..c472a5daae6e 100644
-> > >>> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> > >>> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-> > >>> @@ -219,7 +219,12 @@ allOf:
-> > >>>              - const: pcie_bus
-> > >>>              - const: pcie_phy
-> > >>>              - const: pcie_aux
-> > >>> -            - const: ref
-> > >>> +            - description: PCIe reference clock.
-> > >>> +              oneOf:
-> > >>> +                - description: The controller might be configured
-> > >> clocking
-> > >>> +                    coming in from either an internal system PLL or
-> > >> an
-> > >>> +                    external clock source.
-> > >>> +                  enum: [ref, gio]
-> > >>
-> > >> Internal like within PCIe or coming from other SoC block? What does =
-"gio"
-> > >> mean?
-> > > Internal means that the PCIe reference clock is coming from other
-> > >  internal SoC block, such as system PLL. "gio" is on behalf that the
-> > > reference clock comes form external crystal oscillator.
-> >
-> > Then what does "ref" mean, if gio is the clock supplied externally?
->=20
-> In snps,dw-pcie-common.yaml
->=20
-> 	- description:
->             Generic reference clock. In case if there are several
->             interfaces fed up with a common clock source it's advisable to
->             define it with this name (for instance pipe, core and aux can
->             be connected to a single source of the periodic signal).
->           const: ref
->=20
->         - description: See native 'ref' clock for details.
->           enum: [ gio ]
+Hi André,
 
-=2E.. ok, but the rest of description is saying: don't use it.
+On Sat, Jun 21, 2025 at 11:37:24AM +0200, André Apitzsch via B4 Relay wrote:
+> The imx214 driver currently supports only a 24 MHz external clock. But
+> there are devices, like Qualcomm-MSM8916-based phones, which cannot
+> provide this frequency. To make the sensor usable by those devices, add
+> support for additional clock frequencies.
+> 
+> This series supersedes
+> https://lore.kernel.org/linux-media/20250308-imx214_clk_freq-v1-0-467a4c083c35@apitzsch.eu/
 
-Best regards,
-Krzysztof
+Is there a difference in this set from the v4 you posted previously?
 
+> 
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> ---
+> Changes in v4:
+> - Add missing colon to error message
+> - Add A-b, R-b tags
+> - Link to v3: https://lore.kernel.org/r/20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@apitzsch.eu
+> 
+> Changes in v3:
+> - Limit range of pll_ip_clk_freq_hz (Sakari)
+> - Drop unneeded 'ret'
+> - Use pll.pixel_rate_csi for bit rate calculation
+> - Add patch that deprecates the clock-frequency property
+> - Link to v2: https://lore.kernel.org/r/20250505-imx214_ccs_pll-v2-0-f50452061ff1@apitzsch.eu
+> 
+> Changes in v2:
+> - Add A-b tags
+> - Switch to v4l2_ctrl_s_ctrl_int64() to acquire the control handler mutex
+> - Add error handling for v4l2_ctrl_s_ctrl_int64() and
+>   imx214_pll_update()
+> - Replace "read clock frequency from dt" patch by "remove hard-coded
+>   external clock frequency" patch
+> - Link to v1:
+>   https://lore.kernel.org/r/20250415-imx214_ccs_pll-v1-0-d3d7748e5fbd@apitzsch.eu
+> 
+> ---
+> André Apitzsch (5):
+>       media: i2c: imx214: Reorder imx214_parse_fwnode call
+>       media: i2c: imx214: Prepare for variable clock frequency
+>       media: i2c: imx214: Make use of CCS PLL calculator
+>       media: dt-bindings: sony,imx214: Deprecate property clock-frequency
+>       media: i2c: imx214: Remove hard-coded external clock frequency
+> 
+>  .../devicetree/bindings/media/i2c/sony,imx214.yaml |  29 ++-
+>  drivers/media/i2c/Kconfig                          |   1 +
+>  drivers/media/i2c/imx214.c                         | 263 ++++++++++++++++-----
+>  3 files changed, 217 insertions(+), 76 deletions(-)
+> ---
+> base-commit: 176e917e010cb7dcc605f11d2bc33f304292482b
+> change-id: 20250406-imx214_ccs_pll-e4aed0e9e532
+> 
+> Best regards,
+
+-- 
+Regards,
+
+Sakari Ailus
