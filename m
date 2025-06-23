@@ -1,110 +1,156 @@
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2806D72625
-	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 08:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5965C1DF75A
+	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 08:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750665732; cv=none; b=urFyTtta/Str/IUJFvBuD9bf3Exm0TDpOtoM2LTClP7s7QCwSVDEEvKNsQWaSVEdbeYyIpXvYVtTwUEZGGHyc0krYH97+/xQlkigY8s2b4NeDaFMxXStV8Q/j94IHflFSzMFDFOHjuYHNGICFYMcnqqw8j9JdTokTc6T/cBTLIo=
+	t=1750668265; cv=none; b=mGdJF4Lwgaj5osfux1V8FB8twIYkGQTfGiIkMsCAyidATnRq6zof2+Mt4d+feA/rWLPWLFP43hSTZcQ4Qru27TsLmm1q6RKE9Ywqt6C8k732n7JlfLTCmgBr4UgUQkoW/ideknGsV/+hL8vu9z9n9ESFRlixiCD5Snp3eLWLry8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750665732; c=relaxed/simple;
-	bh=qxuJWLlQd045xAY1mNgWXGUHyPX2arHVAHJ1hv5sGK0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=pFoBY3NBvPg0a2/AoTs7hjXryfuE49os6BUtXu9ZO8V7gKWqut0zuYYTVR5M+v/nhF3XriYHmYnGGX5eXmwKDC+XTKFpzAxq4oDzfOYChofYXXv3RpeDSKrtecJmMU0IYkRPWie0RfxMFf9aAXNQeJfc8rafwvM+1k28RrNGBKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=mGrnUBXQ; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+	s=arc-20240116; t=1750668265; c=relaxed/simple;
+	bh=gI1ErGb0vQdrPAGEAUZHDjNpr3h9UEqh+5lgNTiM3h8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cOhWFZ5Du7t5LKE1D+au9ao2drAGh1027LFy2v3EPn7WYn98yLA5sSGZupWv8/mNQ90JMHwqolOjac2RJA3Oz+QMLcooiI9pTqR3qo0/m2kHK2dCpe8St/At+kMTjBlU/NsKY/2mV6G7ZWJjOi6pQW0MHPuEP7d7ROU1IhLBm4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de; spf=pass smtp.mailfrom=innosonix.de; dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b=TgCbKCce; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innosonix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="mGrnUBXQ"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DF04A1483FA8;
-	Mon, 23 Jun 2025 09:54:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1750665287; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=rgy/dV9hiRjmDOzfF33PTkPljLUb2D+gAPORxCVHCIs=;
-	b=mGrnUBXQSd6JgDYmcwpPh+ViDk6d1h6HhcQasoJc59Wb8uiEOFTS1UgAPwf5pVbMsv87Ue
-	v777pYevIAsD9XK2LrVt9ZD8uI4QG31yRei4ZQRBW3WFDAP5lQ2ZTMVDuOFCkyw1Tk0Ai0
-	pclHWthQnVeu9ixc30A39lUT2u+iqL/P2KR+E+zcBqwy1fZVn/MDFY8v6gwKGOUv6Lvc8R
-	6x9dYz2jHyHgoaNpsdPGwFJ3afpwoFENDeEghsxqWkTj60pONDVX2gSr94Vq2lTM5D97tp
-	D+RsoyrVGWgocXrgdaVGJqLMzJn4OPRyJhrgjViXWJ6urCnBnoHo1wkr7Q4BDw==
-From: Alexander Dahl <ada@thorsis.com>
-To: devicetree@vger.kernel.org
-Cc: Frank Li <Frank.li@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b="TgCbKCce"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a4e749d7b2so736919f8f.0
+        for <imx@lists.linux.dev>; Mon, 23 Jun 2025 01:44:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=innosonix.de; s=google; t=1750668261; x=1751273061; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/wEOD3FOK1XNyQ/YyTEnECjOhDUHmpEcYDOM9V4Bw4Y=;
+        b=TgCbKCcerm0j1ZaGAGYgKe7jHcfU2KMTgy7Ui+y3UC6OMqG1rkLUZBX5BzFb9bInR8
+         7bEvPZnCMS7cW5apwrmkBVIFB6k+WKAjmdetBbAyoNucuBQxgHKYFMWT/2wscA42hudA
+         J4sEiIeSn24Mgt0OaUwZ4UXGRDQk2ODdwlRCdlWla5k5ZTyYmLPI9cGEeXoJZkW+E5V2
+         63Z49ePtTQCYJycRCHwcL4cJH8cVXr1C132carCQBuMJftQlYRU6XJuJc5vS5FeIcVpR
+         iUqATEhRtFPeNXXsKq5H/GFzw56LyMayJz5NyTUEopOKxWxlvlZV6Rwj56jac4WQwixc
+         jG0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750668261; x=1751273061;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/wEOD3FOK1XNyQ/YyTEnECjOhDUHmpEcYDOM9V4Bw4Y=;
+        b=wmAlsQ7fzndP6qmKoLVvPTHK2rFhiRxmfoN1uCxVlj/gpNGRXfOrPikmS1UWVqVn+g
+         3wsJSlK14rHMLkZRGYaAYP4v4Nw7x9rbYQAF1sVciECkmzPi0viMF1FJ4+LVg2BfpicP
+         +7Nvm70t189uqYtv/gScYX2yPzXEMYgiKk5BvFP55kiiPvTw1EhQ2Uy5qkV9+IHzw88D
+         mQuXO8TPOf4oGZY4fWHhZnE6Hg4OsbuoJ6WiwKRrBjyaxGRAvTJaIcU4rbAemeSU1BUz
+         3xgkfZM6I3vCiFoopbSAGhRjEyQOGlyBf4/VPlidYXaEXeW3AEiUxdu662Iq1E1dKwrv
+         2rBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWdrhXhN9sTJXaB1Qn2+6VFxlUyZqod6lm2t5Wx5YUJ0ZBc2T3sQEl78Ph/2L3s2e7K9RU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxQ0Lgv40jY6r6qIU/+koSszFJlNzeQ0Y75KkZ2V74waMM527L4
+	piTqg8GZPixzRxOUyCRV+0xIATbRRkCEU8HG4JQ55U2TPwV8iN+qrSLB3nBAzofjbbi1UH52ykt
+	VwhnhvhqPUOJi3uyIXKwIKL5yPaxiNUmGfhOf7TJAenr6H5c=
+X-Gm-Gg: ASbGnctSt7YU9CbNpv/RyBNAnSxaGxMWx3OnNgLO/HgV3EygVJPbGKGe+WgLFCDH9sz
+	dW37qAM9JPxOdgbbvYmGfTYeOEPl+cyPSk74dCxVqQ0NsutW4LkXD+mTm/P3/Zcplkg5/apJm/H
+	Y9znV5wEWCJRKyn5+fTmp9L2lLAC3kulftOAQu/5CG1fnalTSosqTEwzIkcNgb+LF6jaMasQHj3
+	eQrQl9ULEnLljPaa0PW++I/ZuD9YDx4DjhEua6jit2H3Jvwt2+VhIXvBhgtXgs22ReV05MJmxO+
+	P45Qa6JJcY/swCIo2+YnJrw7qgut2dVtdqo9ACNge1ZzdLBy7PfxKFAGKjte3ClSj4z06cMXKmx
+	th/roedDLuwT17RFX1N6Oag==
+X-Google-Smtp-Source: AGHT+IEWhvT9kJ4u3LtaSyEodBMjwnY5987G/5eQkLBt7VVzz2bNjSEBbmFEI7Y+I6ci+DYcirb26g==
+X-Received: by 2002:a05:6000:220e:b0:3a5:1306:3c30 with SMTP id ffacd0b85a97d-3a6d112f3a6mr3539913f8f.0.1750668260596;
+        Mon, 23 Jun 2025 01:44:20 -0700 (PDT)
+Received: from steffen-linux.. (p57b79c3d.dip0.t-ipconnect.de. [87.183.156.61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d0f1057esm8987316f8f.10.2025.06.23.01.44.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jun 2025 01:44:19 -0700 (PDT)
+From: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>
+To: 
+Cc: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
+	stable@vger.kernel.org,
+	Srinivas Kandagatla <srini@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2] arm64: dts: imx8dxl-ss-conn: Disable USB3 nodes
-Date: Mon, 23 Jun 2025 09:54:40 +0200
-Message-Id: <20250623075440.36660-1-ada@thorsis.com>
-X-Mailer: git-send-email 2.39.5
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] nvmem: imx-ocotp: fix MAC address byte length
+Date: Mon, 23 Jun 2025 10:43:45 +0200
+Message-ID: <20250623084351.1734037-1-steffen@innosonix.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The i.MX 8DualXLite/8SoloXLite has a different connectivity memory map
-than the generic i.MX8 has.  One conflicting resource is usb, where the
-imx8dxl has a second usb2 phy @5b110000, while the generic imx8 dtsi has
-one usb2 phy and one usb3 phy, and the usb3otg @5b110000.  When
-including both imx8dxl-ss-conn.dtsi and imx8-ss-conn.dtsi as done in
-imx8dxl.dtsi this leads to a duplicate unit-address warning.
+The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
+extension of the "mac-address" cell from 6 to 8 bytes due to word_size
+of 4 bytes.
 
-The usb3otg node was introduced after the initial imx8dxl support with
-commit a8bd7f155126 ("arm64: dts: imx8qxp: add cadence usb3 support")
-and since then leads to warnings like this (when built with W=2):
+Thus, the required byte swap for the mac-address of the full buffer length,
+caused an trucation of the read mac-address.
+From the original address 70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14
 
-      DTC     arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
-    …/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi:148.24-182.4: Warning (unique_unit_address): /bus@5b000000/usb@5b110000: duplicate unit-address (also used in node /bus@5b000000/usbphy@5b110000)
-    …/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi:52.23-81.4: Warning (unique_unit_address): /bus@5f000000/pcie@5f010000: duplicate unit-address (also used in node /bus@5f000000/pcie-ep@5f010000)
-      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi:41.23-50.4
-      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts:645.8-653.3
+After swapping only the first 6 bytes, the mac-address is correctly passed
+to the upper layers.
 
-After the change that usb related warning is gone:
-
-      DTC     arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
-    …/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi:52.23-81.4: Warning (unique_unit_address): /bus@5f000000/pcie@5f010000: duplicate unit-address (also used in node /bus@5f000000/pcie-ep@5f010000)
-      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi:41.23-50.4
-      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts:645.8-653.3
-
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
+Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
+Cc: stable@vger.kernel.org
+Signed-off-by: Steffen B=C3=A4tz <steffen@innosonix.de>
 ---
+v2:
+- Add Cc: stable@vger.kernel.org as requested by Greg KH's patch bot
+ drivers/nvmem/imx-ocotp-ele.c | 2 ++
+ drivers/nvmem/imx-ocotp.c     | 2 ++
+ 2 files changed, 4 insertions(+)
 
-Notes:
-    v2:
-    - reworded commit message (build on mainline with W=2)
-    - rebased on v6.16-rc3
-    
-    v1:
-    - Link: https://lore.kernel.org/linux-devicetree/20250610060756.8212-1-ada@thorsis.com/
+diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+index ca6dd71d8a2e..3af7968f5a34 100644
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -119,6 +119,8 @@ static int imx_ocotp_cell_pp(void *context, const char =
+*id, int index,
+=20
+ 	/* Deal with some post processing of nvmem cell data */
+ 	if (id && !strcmp(id, "mac-address"))
++		if (bytes > 6)
++			bytes =3D 6;
+ 		for (i =3D 0; i < bytes / 2; i++)
+ 			swap(buf[i], buf[bytes - i - 1]);
+=20
+diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
+index 79dd4fda0329..63e9974d9618 100644
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -228,6 +228,8 @@ static int imx_ocotp_cell_pp(void *context, const char =
+*id, int index,
+=20
+ 	/* Deal with some post processing of nvmem cell data */
+ 	if (id && !strcmp(id, "mac-address"))
++		if (bytes > 6)
++			bytes =3D 6;
+ 		for (i =3D 0; i < bytes / 2; i++)
+ 			swap(buf[i], buf[bytes - i - 1]);
+=20
+--=20
+2.43.0
 
- arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-index 9b114bed084b..a66ba6d0a8c0 100644
---- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
-@@ -5,6 +5,8 @@
- 
- /delete-node/ &enet1_lpcg;
- /delete-node/ &fec2;
-+/delete-node/ &usbotg3;
-+/delete-node/ &usb3_phy;
- 
- / {
- 	conn_enet0_root_clk: clock-conn-enet0-root {
+--=20
 
-base-commit: 86731a2a651e58953fc949573895f2fa6d456841
--- 
-2.39.5
 
+*innosonix GmbH*
+Hauptstr. 35
+96482 Ahorn
+central: +49 9561 7459980
+www.innosonix.de <http://www.innosonix.de>
+
+innosonix GmbH
+Gesch=C3=A4ftsf=C3=BChrer:=20
+Markus B=C3=A4tz, Steffen B=C3=A4tz
+USt.-IdNr / VAT-Nr.: DE266020313
+EORI-Nr.:=20
+DE240121536680271
+HRB 5192 Coburg
+WEEE-Reg.-Nr. DE88021242
