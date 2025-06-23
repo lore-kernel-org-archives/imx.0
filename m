@@ -1,191 +1,229 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011048.outbound.protection.outlook.com [40.107.130.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D920425DCE3
-	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 15:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750692558; cv=fail; b=nuX9FzJGx8YYpcPqXavMcz3BfTIzVKL1QX6WB2rTVaujieFhlSyPPJIbN/EDCjzOZwqoXmjtcZKR1bW/DAJ8cK0b35C5dtHIR+wdE/dv5mpdgzI74lmPfq5rtC9dONUsFcam1qonmyq9CMEQLIxEDaRvNKMXCeGxSe1rTmteco8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750692558; c=relaxed/simple;
-	bh=A9x8D20xzy3c9+C4MR321n8VKsPpqqINT2a36tH2nzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=T5J3T1rIP2SleGfgSobVciN/pREEE/2lq+4QeAGGLWUYeuDy9PVoEc2DJ//n9Cprima1rUTsOJu7xmDaL19AFcDsCxuwDENVkjtjSKieOuTxUI1E2V7u0zeYecam1M5i3TUuI0oE3+d544NR1paXsrMGK93fT8A8l2JhafeAyKg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=K4DW89Oh; arc=fail smtp.client-ip=40.107.130.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A176A28D8CE
+	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 15:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750692593; cv=none; b=oY5HBxSzT4VHrcrtSMy29ntpixNgbxN9WNCkqyKpebwkQVCks6eN4OuqQDaiAx09/twB8j1CW659wpnDFQt7QrOHBa4l66EYw8trTSx9CPZVo8m5giNyjolGOsC0sLKqFx6s4b94xdg1gDDTc1+hAL0j6lKj65ISa2Fcs2sNL34=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750692593; c=relaxed/simple;
+	bh=rvlexOk2KxBUOGBjG89VU+HC4brRNmm9u14ZwZa9zuo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GB0m0I8eKGvyxsSj1ML/69bo3n69WtEsi1K2nRgm89X7ralawcHFMQwrwQB06qIoPg3XH5XxKZz5p4FsIBvcWetkrRMmHyvJHUXZa5w4c3N2NJbf5I5QePdzG8k6mxd7WVir2EhKjdI3Qs0jK+4l9fJMrJLNDhH44Q/PJWQRRXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uxSLlvUY; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="K4DW89Oh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sERXJYFplD52oIJO0+RB/ZW/jujKEAswsxEsjJFrbviB03hMk5IxLNd5qxfJPXCfw4QnnyhU3PyclCIbWHq+BOIJn5NHZ+M3hECUVcl/DFhJyZBgDgqEHdnq3BHpfUP8tCYgmvf/CnBi2rlrGi35G8yEI+3JspioPZkq11YFZs1uvd9GyzZ7NvN8ooSEZ9OhQwGopDONaz9qggIgAOgsD/SwcVYjHEpnG3+SS9xq8SRq8KOV/Iqu6pjJP5L4k/Qkl4RewtCyaEpMkHebpmooL9cW2JNWH81uovuLZMGDwWsEd0xXuBV6GZPDAJakme97hHEnD2FMc5rGrUM+8OeJ1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A9x8D20xzy3c9+C4MR321n8VKsPpqqINT2a36tH2nzE=;
- b=FOkfWV1tazAdEZN4yoOVKW9OSjSvSO4EypZLltgKZzku08AjESQNqHAQgts9wSYno62NKyq8uzh+CVOvCJBnTl2uNlTYmna55/JiugQKbs4MTwrLw4THNZV/2CpGn5KCf+ttUobplf4Nmj5c6gHXrFvbhlowjRVKeIEoLS1KcAFIYAjL8n1HCtscvoIj63qAPTrT7+5adF6XoBlOZynUP7Ljos8FKizz1zWra8WObGDhs8tHMqOprrHSJYH2gizTwZSkL4j2QhYVcTq0GkH6terJKz3mBlntwz7EsHO1dPdXmWiR/WkY+/TNUDMaSyvbDqwA2a9wPsxcAcseJDfWQQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A9x8D20xzy3c9+C4MR321n8VKsPpqqINT2a36tH2nzE=;
- b=K4DW89OhZuFUmSHi0oplAazgEvv6Ldoj0LOz69MxT50yXs4Z0voJ0CJI5oYpHGGziZqMh0XMNq4IAuvS9DyJDugnJh38dI+Hqu/rJOOJAF52l6nKI9NTycuuXeU5Avq5XedZjaxmOn4EoL53sL2lj/G05c6FsRuq4Y9Aihewg+qN9jm6Cb0h9esbEKql8CFLOWSTead2XWwB4JL6w9tymYnKkp0ZLanJ7LbpQGEeCEwKeDGCxI17zuOdJTX0JLAFJ3FJImLOs3zb910y/5CdPVBwpvme6VUs9auLo/Brh5vOVoK924UYsEG8jl2fB3XwMX1XF1tH3iOvKHEjfjKF1Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM7PR04MB6983.eurprd04.prod.outlook.com (2603:10a6:20b:102::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.28; Mon, 23 Jun
- 2025 15:29:11 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8835.027; Mon, 23 Jun 2025
- 15:29:11 +0000
-Date: Mon, 23 Jun 2025 11:29:02 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Adam Ford <aford173@gmail.com>, linux-arm-kernel@lists.infradead.org,
-	aford@beaconembedded.com, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uxSLlvUY"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-22c33677183so39170305ad.2
+        for <imx@lists.linux.dev>; Mon, 23 Jun 2025 08:29:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750692591; x=1751297391; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+jAVqu/xxn5U99+rZ3TEpqjiwAM44h/eW9lw9VkDNhA=;
+        b=uxSLlvUYEeFZOYyMJ+E10Xuo6z8e/peFx394UQjy+9J0cD+LOA8fbdSnroNcS4GKgc
+         bCsSyXq4ibuLjT1CldwoWUWiXgo1VLLJM4iQNhxer+YDi54FUpgfb3+xwg0Ezo6+ATc3
+         NRV/qiwO1MNlK3i/v+JZAwkrNt32bUkNY3DEQ/gFnsD6U57K/RWwUseEJdJhwV7RrKfG
+         5u5sW/0x6wshi1XwmyTGacj3ZfJhWMOBB49EKoQZYLunZPcCBtvTuQ/AmbaR1t6WyyUZ
+         iPf3mL+HENOjdjDHAPZOE5rI+72i+LtoP8uykHjU8W+qZl2UkGFYPCjNkQ3k4gW6hKFI
+         UPaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750692591; x=1751297391;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+jAVqu/xxn5U99+rZ3TEpqjiwAM44h/eW9lw9VkDNhA=;
+        b=fNXQno0A+mULAvK0C85qF+KCQB0HlLbyxbTUUChVqzDYpztK0NcQ/D3xH2Lh86uoP+
+         mD5/kvdVl83puysHyvdTUh7NPcU4uwpyE04rpJikq+1YB1lmx+jV2Ah1tFcH3VFNY1jK
+         xsL/MsHuRdVj539A6arcX5o/9NYXp/u+uFlrg5kVE651Z7mMleznnj1YjTiO9ioRnr2t
+         rBz/in+0KOta+P35uNlJwFtDVJ8lL6h/FzA+xn+AvC/ggtDOkwoavvYFmrTVd0NlL7Il
+         hyOQtddGYz7g1lysRsgqUgNYhLl0O1biLwVthV9s0eDzAuGv1l2UEDjY4QGE2A69I0C5
+         /R6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVJYZh3yv/PPExbNv2cQ5iu7vb/mClg2ET4crHoaErr/jrAZwAEaA7J7z9SrGFNnZI13Fg=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy3Joq+KlVJkenicZb1BOktWCcPOKnxMlRIb3wBJB9FoNvSuZnO
+	qqzUziCcHAkPr0mBrbBSmnKiavIBjngS+YD49I8X7vZ2HUYVHsA2SMTTR2r8qgdj7BE=
+X-Gm-Gg: ASbGncvFS8tH5Qp/OFyfVdnXOet27i8Na3elLSEmhAwvzTuthtJTW9gm0sKJFeaiC/4
+	4kfQYQ/0HB+umS82ESOo6Mq1ev6s3AJZYrhxdtwILfy/NIG823/oJxLeVmf1BOI0n3wp+7JLhXD
+	BKZhs00z8LRDzRGIBpvLJXtK4KnG4b6erBv4QFJCjBA89PSQ8vGOi7RiAbMfBK979mezqSkVL9a
+	oJfT/0Qirma9vRlEkmASrA9uuQtEQMPF0NJBwXGrG6KnaawXTT3JDW2aI3YGOErRivVzgUAth0h
+	d29xX03m0rIdAzxgL9Tkef1rIqKXE6+uM1IzhlBUouaeCNxU1pX5/Fu6Cbvj8dR40sR0AE2lZKA
+	=
+X-Google-Smtp-Source: AGHT+IE/tDEriXoZY84SIRgiQjRfx7Nqv/jCO1aRGKRzkXGAXMW0IvvtgLzNFd2r0jGkIlFdCJKogw==
+X-Received: by 2002:a17:902:d501:b0:235:f3df:bc26 with SMTP id d9443c01a7336-237d976311fmr188832525ad.3.1750692590758;
+        Mon, 23 Jun 2025 08:29:50 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:d145:b99:ea4b:a65f])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b31f12427cdsm7052225a12.39.2025.06.23.08.29.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jun 2025 08:29:50 -0700 (PDT)
+Date: Mon, 23 Jun 2025 09:29:47 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Hiago De Franco <hiagofranco@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, linux-pm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] arm64: dts: imx8mm: Configure DMA on UART2
-Message-ID: <aFlyvv8GcbQiUvtO@lizhi-Precision-Tower-5810>
-References: <20250621112311.68101-1-aford173@gmail.com>
- <CAOMZO5DUVVBmxfrJPjcZPCQGFg-rVNTUch6APWfSKF6LY1DWHQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOMZO5DUVVBmxfrJPjcZPCQGFg-rVNTUch6APWfSKF6LY1DWHQ@mail.gmail.com>
-X-ClientProxiedBy: BYAPR07CA0033.namprd07.prod.outlook.com
- (2603:10b6:a02:bc::46) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Bjorn Andersson <andersson@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com,
+	iuliana.prodan@oss.nxp.com,
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH v5 3/3] remoteproc: imx_rproc: detect and attach to
+ pre-booted remote cores
+Message-ID: <aFly61yCMttkp12e@p14s>
+References: <20250617193450.183889-1-hiagofranco@gmail.com>
+ <20250617193450.183889-4-hiagofranco@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM7PR04MB6983:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9079a14e-47e8-429d-1172-08ddb26ab424
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|7416014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Vk16eDRQYk1YOGJPc0dHckU3MVJ1bmFVR2xTa1F6UDUzczlNY1FNVlpVTU1O?=
- =?utf-8?B?c3NjVDhxQjFwVU45K1d3UHplY1dyRE82WXZXS1p1KzdCVUpEeGE1ZEM1WGhS?=
- =?utf-8?B?MFhtMEhmSmhYTHlvQkttdDZsRVR1c0RiUEs4cmRrMzkrajVpVlJ5QVVFeGVM?=
- =?utf-8?B?TGh5aUFoQy9LZzR4SWEvbmM2emdyY0VtN1Fpb2ZZWnkxOW5JSkIzVWhPM3Vv?=
- =?utf-8?B?alFncFRTeDd0ZWZKeGZiK1owYXh2dWFFakJqR3NkdEtySVlUTnVzTytsL21o?=
- =?utf-8?B?VVZZWXV2Y3VtL3Jrc0FVak5wS256a0hDdFpSQjUzeUk5UzFUSGsxbktmUVBF?=
- =?utf-8?B?cmNvRFplYkVtdzdHRytUWnc3RUtreDdkbS9hSkRpbVlDMW4xOERPcjFlTHp4?=
- =?utf-8?B?djB4S0UyYXpyeWRTVzYwaHlqZkFOb0pyV0g1eTloOER5MGp6cVZicmtKSU5R?=
- =?utf-8?B?Qy95RGJXdnF0eGE1dU1Xc2dReC94VjhIZWJNak51enRKWG1jNERKMmtUQ000?=
- =?utf-8?B?MnY2dkhsN1RMdEl3VFJlYUV6djFGamg3cHQwdlI4bkl2RnFCTGN4cjhxcXoz?=
- =?utf-8?B?bGhIUEIvTkRTczM3ZGJadzgvbzlwMWFrc3N4anR0V0szOEFhWkc4WHJpazZO?=
- =?utf-8?B?bXRYL0JHQ1lYTHBKa1V4T0l4cDdTZ2ZCa0Y4Q3FEdmlxYm9aR1huZnJSN21m?=
- =?utf-8?B?NWVZVk91UWlHb1lzUzhwR0JOd29JamUyeUVQNkhPanpsQjhHL3FjQ042TTFW?=
- =?utf-8?B?bFpScjZrc1Nja1JUWFpQdWJUbWFubkFPVG9UNnczUWJ4SU5MdGR1dGNPekpU?=
- =?utf-8?B?dEpSem5jVG1IVDlqWEFyNXlzVSs2Nk8xOXJWSTA2YmVMSDdieVE3MThNcytQ?=
- =?utf-8?B?NGNtOEptM29SMHIzd1ZPUUI1MWJXT1lveDJBOVd2SFAvZ0w4N2MxMmlTOE00?=
- =?utf-8?B?bHh6ZzNxWlMrOTlmOHpRNEdMNTBwUTdOLzVPdXBqbk1ob0pwVE4ra2VxRzFE?=
- =?utf-8?B?K3NkNitaVy9hUElESVlsQm1iRTRhS1VmRjFjWEpRdTVKdGZZMFZIS3RhV3dL?=
- =?utf-8?B?VEtNWWhHUTdsaHhMVzVsWDlxanNvdmlNZHdtOWI3dERLTzVuMDYvazRuckx1?=
- =?utf-8?B?eTVNQ0YrYnNLamxXWVNmSW11ZVdwcURISTIxcW9XZ0pYeEFtUXVaaFJzQ3dB?=
- =?utf-8?B?ODFQdTVkaXlxL3d1R3FWbFgvVnMrSlo5RnNYTzhzejVUVWlGZHNLVWU0aWdE?=
- =?utf-8?B?R1JrcWJvVTRxNjJLVkhKY25xUjFKNktVck5UNjJ0SmZzMzB1SW9hTEx5ZUZY?=
- =?utf-8?B?TjBKV0htOHFUN1RoRnhwOHZ0QXZLWUZwdzdDZ2x4WUc0cXhkVDNORng1RkJu?=
- =?utf-8?B?SkNXOFAzRnp1TGoxdjVmcW9pcFNGaDdyRWd3RG1OczcrakZwYkh2Mk0yNTlp?=
- =?utf-8?B?blIxVEpSODBsRE02RnhlN2xjRmZ6SlZsQlV1cU5tTUZXbDFDNS9lK2RGQklZ?=
- =?utf-8?B?cFVFY3BZRU5GUFk4bnpUdGpFTkYxZmZidU1RTFhRVEoyNVNFT0piOTE4WUMw?=
- =?utf-8?B?cFR2UXRza29lL1MyaXpBTHpPR1hvTXNsL3pwd3Z6UStQa3pybjlwWU1mdC9I?=
- =?utf-8?B?U2NGay9XQ3F2QjI1OWxoaTJZSGh5SGdKTDlZcDhsNU94SzcrSk1qTFR6QXBs?=
- =?utf-8?B?RVVPTXoxUUVxbjB2TzFrU2JyNkN5SHdPV0cvZ3NWeStPdVhZUXVZY2hnd0Vj?=
- =?utf-8?B?a1JXdU1ib0F3TFp4ZklZV0dNNGNRZEdqWlM4akVjS3NzYithU25nQXZxc2JG?=
- =?utf-8?B?RlBTazNuWnc4dElZZFR3VFVsNzVuRW9UT0tmVFoyamF0bTl6dGZqYXlaQS84?=
- =?utf-8?B?dDZaajIyay9aNzgyZzZ4UXE2aE1RU2FwU2pnT1FwVEhPSWJvS2tZdmJ3Vklh?=
- =?utf-8?B?KzRLOS9sNnAwdjJKWjZCbVhtSGlmSXBLVnpDV1R6NVBuRnBlTXVVUkpQc3Z1?=
- =?utf-8?B?VWVzM1dYRjRBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(7416014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MkpnSHh4a2E3OUN4dnJZQi9kOXd1Z2ZwSS9oY24wN0MrU2s5TFNWcEZXRzFQ?=
- =?utf-8?B?OGQ3dzg5VUFtOHlmWXVtSG5KRk1ZeXhxMEJlYnp3UlZuaGJWV0RLY0pNZWxS?=
- =?utf-8?B?WjVIS2pEZ1ZVMHI5bnlrKzg1NkFnZ3JKZHEvaFprU2FRaVU2THRCZ0x5bGph?=
- =?utf-8?B?UmhJZDBHWmJoaGoybC9pRlFyY1hGOEJNa1BVMkJoTFpiMS9QdW81QVVHTEZn?=
- =?utf-8?B?ODZmZlJscUlFSFlZeWR6VkxqMjEzTExkRkNGejQ0V0tlMHRrNDhnekFOclp3?=
- =?utf-8?B?WHR5WVFnSW9rczA2ZFRvRE1OMHRsbFltMTJpYTJ1YXV5S05JOU5KZXhHUjFw?=
- =?utf-8?B?UzE4eUtvZSt5ckVOUThRTGFDMXRtL0h3bW1hZXZoczBhTUVJakwrZC9JWTVS?=
- =?utf-8?B?TkxJUklSUGlGOWdaenl2eEExSGpweW5TbExIbmtQNnQyWHBFbXI1bVdDNjND?=
- =?utf-8?B?Q3JwcGhLNzhGbU1aVkk1YjFKbFkyVnpMYWE2cFRaZ2huaUNQeFN6Nk0zN1pm?=
- =?utf-8?B?anVaU1BGZVV4Szc1VkxNc2RocW83Ylg1OS9ZaGJyQWRKYk9iN0twRk9Sb2hB?=
- =?utf-8?B?MU5Bdmh6NEl4a290Rysra29tWFdFcEhVcE0xQXVKdzBsQTV6ZXNucUlGRkFS?=
- =?utf-8?B?RHJTUS9RS1dSN2tJSXJpZk9kRFZDYko4MVRVK3BVSWZoYzh1dUoyU1JONGJQ?=
- =?utf-8?B?YkYzdjloWE1xNU93T0dQa0cvUDFGUkJ2a3N6NCs0TGQvWjJJTTlsSFl6ajVT?=
- =?utf-8?B?VjEyYk1tRFFmblh4TEJPakhmV29Nb0p5RmtlMkFCeWppbUFUNk1md2doYXk2?=
- =?utf-8?B?c1djdytza2w1TEtEMUdtdmRHanBRMUI1dFgwV3dVZlFVc2M1L2EzY0hLaU1Z?=
- =?utf-8?B?enRRV1hXa1VLblVEbGFQNU1JdHFKeXkrVVFxQ1NLejRtMlVpOGhOaVQ2TnZl?=
- =?utf-8?B?d2hvcFFMYnkrcjZPSnJaT0FIcHhLV0tMSC9hbXZvSmZ5TFRabmg2NEU3Z1ZN?=
- =?utf-8?B?SEZFMDNIczlHQTVFRk1iYkE3UmJJTU1WZ1VGcWRtVUNGVGljUGp3SzBpZzlN?=
- =?utf-8?B?QnlwVllzWk5aZUMrLzVpb3hiQlRpaXZXQ3I0WVlxZU9LdHZXb0FlVENCNVV4?=
- =?utf-8?B?cythcEFleVNwb1BoUktZekp1QkplK3lxSXhDYmk5Z0FmNUtUbk1rQ254eUsy?=
- =?utf-8?B?eThXa2ZzakxtYlpHbzNpWU9uVy8xUC83TWVUcGlmRisxZy9xRDRveEpOa2Za?=
- =?utf-8?B?SjR1OTRENUZZeTRReHFUNVBkYTJhOHozODN2R3ArREVoelFDSnorQjZ5RGVK?=
- =?utf-8?B?cnZ1eGhkMWRUazZiMVFTYzNKZXNMUXg2WG1HQ1A0ZUdobHNjUlRlQ3lOOXhX?=
- =?utf-8?B?ZFRZQVZ6STdNanNrQ29rTVliVUN1RWVYdGNEVHpzV2Y5ZHY5UTBYMU9UcGJX?=
- =?utf-8?B?ZkFybmJ4NkhPZEEzQVllWmJvMTl2WVVKY1l1dFNkZWVCcW9acnl5K0wrTEtQ?=
- =?utf-8?B?bEwwUDlHbTgycTNLYlpxN3FoTnUweTZBdlFjNVVKWG45U01KdTFSbWQzeDZy?=
- =?utf-8?B?SUhxU2RudXZ0ekYrYVhSYlJMaXQrVW03RmhXRkdiRUxjcU1JSTdKMkVGUDgv?=
- =?utf-8?B?T2hOUDUwMUdsUzgrekdoOE9xdVc4SFVMVlNPVEJPbm5GQ0VaeC9mYnVybHV5?=
- =?utf-8?B?MlJOVzkwSzFEUTFsblZvRGtacnUxUHNFOHpQM0c1VG8zcTJkNnphaTdmelln?=
- =?utf-8?B?YlZub0hLMUFJSEY3YzZlYlUySC9LWUV2bUR3dXFCY1FOSDFjb1J1eXdJNFhv?=
- =?utf-8?B?NmlPMHZXbXVYNGJZVHRDclFKdFZ3dWtTR0lMckx3TzA0UzVpZ2ZtbWk2Yjdt?=
- =?utf-8?B?ZHFKeUJ0bzVPQWNndGR0bnZSUEZzcFBkUU9RZFM0WDlVd2hRakpmMXdydjBW?=
- =?utf-8?B?ZnpyUzNHWXBkdEVWeHhJWXpOTjlHUzJpWC9hR1BRMHN5VzhVMGNqelJRc3pz?=
- =?utf-8?B?amZ4VGdQV2xEVGRKU1pkbHkwaDNvaVVJWDl1ZXJpK3JhTzdyQkdKTDJ6UjUz?=
- =?utf-8?B?TUtPd1lEM0VwenZvOENORjdoNExIVm56RzFONm9oZnl0UHRrQThyaXVzU3E4?=
- =?utf-8?Q?LHxN8i5WyhdDJHcTJ4+rxfRFZ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9079a14e-47e8-429d-1172-08ddb26ab424
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2025 15:29:11.7303
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aMDBF7nrY6A5oO/GPV/jgs23gLqq52nlikKDKhZ1e1/WMvzjhr0QXD7mw3xpdZ+n6H1FVcwcDgHoqtbjRnTR7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6983
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250617193450.183889-4-hiagofranco@gmail.com>
 
-On Sat, Jun 21, 2025 at 02:07:56PM -0300, Fabio Estevam wrote:
-> On Sat, Jun 21, 2025 at 8:23 AM Adam Ford <aford173@gmail.com> wrote:
-> >
-> > UART2 is often used as the console, so the DMA was likely left
-> > off on purpose, since it's recomended to not use the DMA on the
->
-> Typo: recommended
->
->
-> > console. Beacause, the driver checks to see if the UART is used for
->
-> Typo: Because
->
-> > the console when determining if it should initialize DMA, it
-> > should be safe to enable DMA on UART2 for all users.
->
-> The same comment applies to the other patch.
+On Tue, Jun 17, 2025 at 04:34:50PM -0300, Hiago De Franco wrote:
+> From: Hiago De Franco <hiago.franco@toradex.com>
+> 
+> When the remote core is started before Linux boots (e.g., by the
+> bootloader), the driver currently is not able to attach because it only
+> checks for cores running in different partitions. If the core was kicked
 
-Please run below command to check spell error before post patches.
+Again, we have a nomenclature issue here with "If the core was kicked by the
+bootloader".  What does "kicked" mean here?  Is it just powered and held in
+reset or is it executing.  And are you referring to the A core or the M core?
 
-./scripts/checkpatch.pl --codespell --strict
 
-Frank
+> by the bootloader, it is in the same partition as Linux and it is
+> already up and running.
+> 
+> This adds power mode verification through dev_pm_genpd_is_on(), enabling
+> the driver to detect when the remote core is already running and
+> properly attach to it if all the power domain devices are on.
+> 
+> To accomplish this, we need to avoid passing any attach_data or flags to
+> dev_pm_domain_attach_list(), letting the platform device become a
+> consumer of the power domain provider. With that the current power state
+> of the genpds will not change, allowing the detection of the remote core
+> power state.
+> 
+> We enable and sync the device runtime PM during probe to make sure the
+> power domains are correctly managed when the core is controlled by the
+> kernel.
+> 
+> Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+> ---
+> v4 -> v5:
+>  - pm_runtime_get_sync() removed in favor of
+>    pm_runtime_resume_and_get(). Now it also checks the return value of
+>    this function.
+>  - Added pm_runtime_disable() and pm_runtime_put() to imx_rproc_remove()
+>    function.
+> v3 -> v4:
+>  - Changed to use the new dev_pm_genpd_is_on() function instead, as
+>    suggested by Ulf. This will now get the power status of the two
+>    remote cores power domains to decided if imx_rpoc needs to attach or
+>    not. In order to do that, pm_runtime_enable() and
+>    pm_runtime_get_sync() were introduced and pd_data was removed.
+> v2 -> v3:
+>  - Unchanged.
+> v1 -> v2:
+>  - Dropped unecessary include. Removed the imx_rproc_is_on function, as
+>    suggested.
+> ---
+>  drivers/remoteproc/imx_rproc.c | 37 +++++++++++++++++++++++++++++-----
+>  1 file changed, 32 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 627e57a88db2..b53083f2553e 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/of_reserved_mem.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_domain.h>
+> +#include <linux/pm_runtime.h>
+>  #include <linux/reboot.h>
+>  #include <linux/regmap.h>
+>  #include <linux/remoteproc.h>
+> @@ -890,10 +891,8 @@ static int imx_rproc_partition_notify(struct notifier_block *nb,
+>  static int imx_rproc_attach_pd(struct imx_rproc *priv)
+>  {
+>  	struct device *dev = priv->dev;
+> -	int ret;
+> -	struct dev_pm_domain_attach_data pd_data = {
+> -		.pd_flags = PD_FLAG_DEV_LINK_ON,
+> -	};
+> +	int ret, i;
+> +	bool detached = true;
+>  
+>  	/*
+>  	 * If there is only one power-domain entry, the platform driver framework
+> @@ -902,7 +901,22 @@ static int imx_rproc_attach_pd(struct imx_rproc *priv)
+>  	if (dev->pm_domain)
+>  		return 0;
+>  
+> -	ret = dev_pm_domain_attach_list(dev, &pd_data, &priv->pd_list);
+> +	ret = dev_pm_domain_attach_list(dev, NULL, &priv->pd_list);
+> +	/*
+> +	 * If all the power domain devices are already turned on, the remote
+> +	 * core is already up when the kernel booted (e.g. kicked by the
+> +	 * bootloader). In this case attach to it.
 
->
-> Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Same comment as above.  What got kicked?  A core or M core.  And what does
+"kicked" mean?  I can guess what is happening but guessing rarely leads to
+anything positive.
+
+In the next revision, please use other words than "kicked".
+
+
+> +	 */
+> +	for (i = 0; i < ret; i++) {
+> +		if (!dev_pm_genpd_is_on(priv->pd_list->pd_devs[i])) {
+> +			detached = false;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (detached)
+> +		priv->rproc->state = RPROC_DETACHED;
+> +
+
+Ok for the above.
+
+>  	return ret < 0 ? ret : 0;
+>  }
+>  
+> @@ -1146,6 +1160,15 @@ static int imx_rproc_probe(struct platform_device *pdev)
+>  		}
+>  	}
+>  
+> +	if (dcfg->method == IMX_RPROC_SCU_API) {
+> +		pm_runtime_enable(dev);
+> +		ret = pm_runtime_resume_and_get(dev);
+> +		if (ret) {
+> +			dev_err(dev, "pm_runtime get failed: %d\n", ret);
+> +			goto err_put_clk;
+> +		}
+> +	}
+> +
+>  	ret = rproc_add(rproc);
+>  	if (ret) {
+>  		dev_err(dev, "rproc_add failed\n");
+> @@ -1171,6 +1194,10 @@ static void imx_rproc_remove(struct platform_device *pdev)
+>  	struct rproc *rproc = platform_get_drvdata(pdev);
+>  	struct imx_rproc *priv = rproc->priv;
+>  
+> +	if (priv->dcfg->method == IMX_RPROC_SCU_API) {
+> +		pm_runtime_disable(priv->dev);
+> +		pm_runtime_put(priv->dev);
+> +	}
+>  	clk_disable_unprepare(priv->clk);
+>  	rproc_del(rproc);
+>  	imx_rproc_put_scu(rproc);
+> -- 
+> 2.39.5
+> 
