@@ -1,112 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E998155CBD
-	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 06:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4C81624D5;
+	Mon, 23 Jun 2025 06:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750661276; cv=none; b=m7Gl8Yg2B88sLDfIXPv202teQ8WhCnSFgh3ZXNBN74qWqQbF3e7iiNJPbClU+aRG9n552GxOXEF8POJe+cqjB7P+W1jnYeMgZ4upy4dQW5zUyLbgXJslkQqsSs5n+X+Ei7VkYPq8DcoMOHqJwo+EWzbDKPHlnL3uGxSf2/vV4tI=
+	t=1750661368; cv=none; b=HFh3rUe4TZATd8c8a10V/Uku5WSeXt+Z0e1BNaSU5hsiACx0vYZZlXsOTWxu/c0gX8txL1Y0U3T5kwjNdPlZO31DZxls+pvUNKTAyOGQKWr6Nx3GrBJIogreiP3UJ7jvhs2ucs/mXw4tQYvwpEgiZ1CNtjQY1SQ0KXXdrGO2gZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750661276; c=relaxed/simple;
-	bh=YS5QfchkXQuDpizebXwc+i/GQO/Ujou+O/e0qMENePo=;
+	s=arc-20240116; t=1750661368; c=relaxed/simple;
+	bh=r9Scpc1y8oJqW4ki1b+GiwK273muM/HU6bqva5wjWW8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d0mm40utq9hf5gmZUnAgu7fl6hqLS3yJzKTeFJW0EOZT5gJFoQY1kbBL25bZVRr2JHNggzVMYdIm2M+2dDfAm4xCY185o8+2fGpEU0PRQASOpxQvb3ny3+jcVwDmlQ8YRCFuJyPOPOdobTJ38pN2Em6Nn5i2w1itu0bgYy6hOew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SwPXFBpd; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=U0hfKl9S+gfigLrJxdiRSnLeQtNq7BifefFio6H5AU88S7IR1/hoHNRy1INj/eVZ0oBtemY9nOtBw3M1BQULTbooyOuMlQtJbdVaNIUOVKTxrCFxMj3xEgL7s180QQSBkYgdKnh8/ECbdpKqjMOJ/+8y+Ltre+d670czx6rUiik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Reo5hLSe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SwPXFBpd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750661273; x=1782197273;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YS5QfchkXQuDpizebXwc+i/GQO/Ujou+O/e0qMENePo=;
-  b=SwPXFBpdFwt+CSnBgkBnprVADEbNvKzDB8vyxuue6b2yjBAmNT4PKd0n
-   w44dyr2LC6dqkrX+2ybT/ZKccu/A6N6QqkNHLskiGL7xtSF+xZul/Z7zR
-   AOZLG376z8PtvuNw9NjYy82JkNelJYjp0bvbiwv8aVrIo6aA147jRCYVB
-   bR/sBqgoGvCvZUJqpCMuEDMNcbQMC9npVFWzLzqOGeRU0FyDEpZKdbG+I
-   qCK46NlYG78GO9x2z1gOc3WCohQfM35q1ySwZ7pIjMXT7XjjBPxZtys3W
-   Q5smpqjuLlB01MFmne2+hBLBR14G8U+cOS0Iicf4GW3WnzFAVcxb/izZF
-   g==;
-X-CSE-ConnectionGUID: KkriXjW6RPuONCjR8V7l0w==
-X-CSE-MsgGUID: bnyYNUbLTrSxrxKLttwIZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52991722"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="52991722"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 23:47:52 -0700
-X-CSE-ConnectionGUID: mNrnjtrWSK6xeohGlUJjsw==
-X-CSE-MsgGUID: Pz/9sXzLRiW91MMh1pUT1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="150924944"
-Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.8])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 23:47:48 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 9431E1201F7;
-	Mon, 23 Jun 2025 09:47:44 +0300 (EEST)
-Date: Mon, 23 Jun 2025 06:47:44 +0000
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Olivier Benjamin <olivier.benjamin@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Nicholas Roth <nicholas@rothemail.net>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
-	imx@lists.linux.dev, ~diederik/pine64-discuss@lists.sr.ht,
-	Dragan Simic <dsimic@manjaro.org>, Ondrej Jirman <megi@xff.cz>
-Subject: Re: [PATCH v4 0/4] Describe the cameras in the PinePhone Pro dts
-Message-ID: <aFj4kAXEhrR4Wbnz@kekkonen.localdomain>
-References: <20250620-camera-v4-0-0201a8ed5fae@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Reo5hLSe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1310C4CEEF;
+	Mon, 23 Jun 2025 06:49:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750661368;
+	bh=r9Scpc1y8oJqW4ki1b+GiwK273muM/HU6bqva5wjWW8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Reo5hLSe/U1rF9RuZzNW2HAPmWlHsw75zDA4E9EJZ4CHd1N6CD0yi1jYLiIWjjjZg
+	 cS5or16waGa2Abl8GElKRO34Nvj0oBa1vVkX8OpIgZv8CpiUc/Go3s+Bw1FsDTBOC9
+	 IJMjK8F3vkEYzed9jRWeIFyTrqBiaUsb5tPNuCf5CpKe0xJ+JaGD7l7osRt4CLdWGF
+	 06VNojU6DZZV4Se9G6Z7OQ3jTfkOz8FofW6jMjxBhziH3qVB7UlVQ6PTWx3wXdDdiy
+	 tumRgV0cTeXEYZtIDL49sxr9SmCr6aDoxZpkA8pPq0VoOnnQe+J47AVXS3Jp1fBmKB
+	 Fl8U4or6V6aZQ==
+Date: Mon, 23 Jun 2025 08:49:25 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Hongxing Zhu <hongxing.zhu@nxp.com>, 
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "mani@kernel.org" <mani@kernel.org>, 
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>, 
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "bhelgaas@google.com" <bhelgaas@google.com>, 
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/2] dt-binding: pci-imx6: Add external reference
+ clock mode support
+Message-ID: <6ojwsgzi4rrn7zoiktiutdjgaly4uhbe7xc35lafyxgl5yacwv@oajobetnqsps>
+References: <20250620031350.674442-1-hongxing.zhu@nxp.com>
+ <20250620031350.674442-2-hongxing.zhu@nxp.com>
+ <20250620-honored-versed-donkey-6d7ef4@kuoka>
+ <AS8PR04MB8676FBE47C2ECE074E5B14768C7CA@AS8PR04MB8676.eurprd04.prod.outlook.com>
+ <130fe1fc-913b-48cf-b2a4-e9c4952354fd@kernel.org>
+ <aFVy9OMxL4WXEOzz@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250620-camera-v4-0-0201a8ed5fae@bootlin.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <aFVy9OMxL4WXEOzz@lizhi-Precision-Tower-5810>
 
-Hi Olivier,
+On Fri, Jun 20, 2025 at 10:40:52AM -0400, Frank Li wrote:
+> On Fri, Jun 20, 2025 at 03:08:16PM +0200, Krzysztof Kozlowski wrote:
+> > On 20/06/2025 10:26, Hongxing Zhu wrote:
+> > >> -----Original Message-----
+> > >> From: Krzysztof Kozlowski <krzk@kernel.org>
+> > >> Sent: 2025=E5=B9=B46=E6=9C=8820=E6=97=A5 15:53
+> > >> To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > >> Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de;
+> > >> lpieralisi@kernel.org; kwilczynski@kernel.org; mani@kernel.org;
+> > >> robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
+> > >> bhelgaas@google.com; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> > >> kernel@pengutronix.de; festevam@gmail.com; linux-pci@vger.kernel.org;
+> > >> linux-arm-kernel@lists.infradead.org; devicetree@vger.kernel.org;
+> > >> imx@lists.linux.dev; linux-kernel@vger.kernel.org
+> > >> Subject: Re: [PATCH v3 1/2] dt-binding: pci-imx6: Add external refer=
+ence clock
+> > >> mode support
+> > >>
+> > >> On Fri, Jun 20, 2025 at 11:13:49AM GMT, Richard Zhu wrote:
+> > >>> On i.MX, the PCIe reference clock might come from either internal
+> > >>> system PLL or external clock source.
+> > >>> Add the external reference clock source for reference clock.
+> > >>>
+> > >>> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > >>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > >>> ---
+> > >>>  Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml | 7 ++++=
+++-
+> > >>>  1 file changed, 6 insertions(+), 1 deletion(-)
+> > >>>
+> > >>> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.y=
+aml
+> > >>> b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> > >>> index ca5f2970f217..c472a5daae6e 100644
+> > >>> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> > >>> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> > >>> @@ -219,7 +219,12 @@ allOf:
+> > >>>              - const: pcie_bus
+> > >>>              - const: pcie_phy
+> > >>>              - const: pcie_aux
+> > >>> -            - const: ref
+> > >>> +            - description: PCIe reference clock.
+> > >>> +              oneOf:
+> > >>> +                - description: The controller might be configured
+> > >> clocking
+> > >>> +                    coming in from either an internal system PLL or
+> > >> an
+> > >>> +                    external clock source.
+> > >>> +                  enum: [ref, gio]
+> > >>
+> > >> Internal like within PCIe or coming from other SoC block? What does =
+"gio"
+> > >> mean?
+> > > Internal means that the PCIe reference clock is coming from other
+> > >  internal SoC block, such as system PLL. "gio" is on behalf that the
+> > > reference clock comes form external crystal oscillator.
+> >
+> > Then what does "ref" mean, if gio is the clock supplied externally?
+>=20
+> In snps,dw-pcie-common.yaml
+>=20
+> 	- description:
+>             Generic reference clock. In case if there are several
+>             interfaces fed up with a common clock source it's advisable to
+>             define it with this name (for instance pipe, core and aux can
+>             be connected to a single source of the periodic signal).
+>           const: ref
+>=20
+>         - description: See native 'ref' clock for details.
+>           enum: [ gio ]
 
-On Fri, Jun 20, 2025 at 05:21:31PM +0200, Olivier Benjamin wrote:
-> This series adds support for the Pine64 PinePhone Pro's rear and front
-> cameras in Device Tree.
-> This is based on some of Ondrej Jirman's patches hosted in his tree at
-> https://codeberg.org/megi/linux, but I have also fully reviewed and
-> re-written the code from the RK3399 datasheet, the PinePhone Pro
-> schematic, and the IMX258-0AQH5 software reference manual.
-> 
-> I have tested these changes on my PinePhone Pro and am able to take
-> photos from both cameras using libcamera's cam.
-> 
-> This series has raised a question about the proper label name for the
-> front/user camera and rear/world camera for phones.
-> This series is using "ucam" and "wcam", which is used in a few other
-> Rockship DTBs:
->  - arch/arm64/boot/dts/rockchip/px30-evb.dts
->  - rk3399-gru-scarlet.dtsi
-> 
-> Signed-off-by: Olivier Benjamin <olivier.benjamin@bootlin.com>
+=2E.. ok, but the rest of description is saying: don't use it.
 
-Thanks for the patches.
+Best regards,
+Krzysztof
 
-I've picked the first two in the set, presumably the rest will be merged
-via another tree?
-
--- 
-Regards,
-
-Sakari Ailus
