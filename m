@@ -1,128 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C95E1F3FE8;
-	Mon, 23 Jun 2025 07:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2806D72625
+	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 08:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750663160; cv=none; b=rAR4S3zCQj9m0hhllkJTig3JKOGTiw9XpWR+ay1L2+Zisg17JnskBL+z3z6VHm/09atien83Y5yZMgFa9/BREgJsta6e26NtmnnCanI0RnLs19NmwZMyTf7LII1e1YGfWHNRHCiWVcGZK8P+lblNIDbR5qRgawjJiiz4C+jiT2w=
+	t=1750665732; cv=none; b=urFyTtta/Str/IUJFvBuD9bf3Exm0TDpOtoM2LTClP7s7QCwSVDEEvKNsQWaSVEdbeYyIpXvYVtTwUEZGGHyc0krYH97+/xQlkigY8s2b4NeDaFMxXStV8Q/j94IHflFSzMFDFOHjuYHNGICFYMcnqqw8j9JdTokTc6T/cBTLIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750663160; c=relaxed/simple;
-	bh=avq5GSOpmlAjDpFvdLk3ekAvTWbX29Z9+MPrZVT0QmM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r8EFa/O2BsOsWt/JfU36HsDU6kWOBAssUZkbXcnwu2ecpvyKX1KnNBeaRrsYHgQz381Jif9ZtHCISWLQJ3fre6IsqG1808X9HfVm+Mz/mILlXhn/plwvwcphwg/DSSBqoLEtspCfvzQNctYkQHIzMDrFaUKGlMIDLwxVv9Fuc3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3CB5ov4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750665732; c=relaxed/simple;
+	bh=qxuJWLlQd045xAY1mNgWXGUHyPX2arHVAHJ1hv5sGK0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=pFoBY3NBvPg0a2/AoTs7hjXryfuE49os6BUtXu9ZO8V7gKWqut0zuYYTVR5M+v/nhF3XriYHmYnGGX5eXmwKDC+XTKFpzAxq4oDzfOYChofYXXv3RpeDSKrtecJmMU0IYkRPWie0RfxMFf9aAXNQeJfc8rafwvM+1k28RrNGBKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=mGrnUBXQ; arc=none smtp.client-ip=217.92.40.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3CB5ov4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957F3C4CEED;
-	Mon, 23 Jun 2025 07:19:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750663159;
-	bh=avq5GSOpmlAjDpFvdLk3ekAvTWbX29Z9+MPrZVT0QmM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L3CB5ov49BFO3mcFgc1jfxdnpFJ8pU813wFSa11t6BFh8aj/LDIhjwUKpcO03X+dx
-	 Mngjod4kQru3gGTO4OuTcKx4TZDiBHEPa1WnaA+M1E44RnyrIs8U6XA0LXVmO4SGoI
-	 EQbdlbm95hIQ7WCMdqd3HkRdHOqnqbg3fYySh7NQ=
-Date: Mon, 23 Jun 2025 09:19:13 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Steffen =?iso-8859-1?Q?B=E4tz?= <steffen@innosonix.de>
-Cc: Srinivas Kandagatla <srini@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="mGrnUBXQ"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DF04A1483FA8;
+	Mon, 23 Jun 2025 09:54:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
+	t=1750665287; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=rgy/dV9hiRjmDOzfF33PTkPljLUb2D+gAPORxCVHCIs=;
+	b=mGrnUBXQSd6JgDYmcwpPh+ViDk6d1h6HhcQasoJc59Wb8uiEOFTS1UgAPwf5pVbMsv87Ue
+	v777pYevIAsD9XK2LrVt9ZD8uI4QG31yRei4ZQRBW3WFDAP5lQ2ZTMVDuOFCkyw1Tk0Ai0
+	pclHWthQnVeu9ixc30A39lUT2u+iqL/P2KR+E+zcBqwy1fZVn/MDFY8v6gwKGOUv6Lvc8R
+	6x9dYz2jHyHgoaNpsdPGwFJ3afpwoFENDeEghsxqWkTj60pONDVX2gSr94Vq2lTM5D97tp
+	D+RsoyrVGWgocXrgdaVGJqLMzJn4OPRyJhrgjViXWJ6urCnBnoHo1wkr7Q4BDw==
+From: Alexander Dahl <ada@thorsis.com>
+To: devicetree@vger.kernel.org
+Cc: Frank Li <Frank.li@nxp.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Dmitry Baryshkov <lumag@kernel.org>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] nvmem: imx-ocotp: fix MAC address byte length
-Message-ID: <2025062357-pulp-unlaced-cdd9@gregkh>
-References: <20250623070901.1733755-1-steffen@innosonix.de>
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2] arm64: dts: imx8dxl-ss-conn: Disable USB3 nodes
+Date: Mon, 23 Jun 2025 09:54:40 +0200
+Message-Id: <20250623075440.36660-1-ada@thorsis.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250623070901.1733755-1-steffen@innosonix.de>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Jun 23, 2025 at 09:08:49AM +0200, Steffen B�tz wrote:
-> The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
-> extension of the "mac-address" cell from 6 to 8 bytes due to word_size
-> of 4 bytes.
-> 
-> Thus, the required byte swap for the mac-address of the full buffer length,
-> caused an trucation of the read mac-address.
-> >From the original address 70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14
-> 
-> After swapping only the first 6 bytes, the mac-address is correctly passed
-> to the upper layers.
-> 
-> Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
-> Signed-off-by: Steffen B�tz <steffen@innosonix.de>
-> ---
->  drivers/nvmem/imx-ocotp-ele.c | 2 ++
->  drivers/nvmem/imx-ocotp.c     | 2 ++
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-> index ca6dd71d8a2e..3af7968f5a34 100644
-> --- a/drivers/nvmem/imx-ocotp-ele.c
-> +++ b/drivers/nvmem/imx-ocotp-ele.c
-> @@ -119,6 +119,8 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
->  
->  	/* Deal with some post processing of nvmem cell data */
->  	if (id && !strcmp(id, "mac-address"))
-> +		if (bytes > 6)
-> +			bytes = 6;
->  		for (i = 0; i < bytes / 2; i++)
->  			swap(buf[i], buf[bytes - i - 1]);
->  
-> diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-> index 79dd4fda0329..63e9974d9618 100644
-> --- a/drivers/nvmem/imx-ocotp.c
-> +++ b/drivers/nvmem/imx-ocotp.c
-> @@ -228,6 +228,8 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
->  
->  	/* Deal with some post processing of nvmem cell data */
->  	if (id && !strcmp(id, "mac-address"))
-> +		if (bytes > 6)
-> +			bytes = 6;
->  		for (i = 0; i < bytes / 2; i++)
->  			swap(buf[i], buf[bytes - i - 1]);
->  
-> -- 
-> 2.43.0
-> 
-> 
-> -- 
+The i.MX 8DualXLite/8SoloXLite has a different connectivity memory map
+than the generic i.MX8 has.  One conflicting resource is usb, where the
+imx8dxl has a second usb2 phy @5b110000, while the generic imx8 dtsi has
+one usb2 phy and one usb3 phy, and the usb3otg @5b110000.  When
+including both imx8dxl-ss-conn.dtsi and imx8-ss-conn.dtsi as done in
+imx8dxl.dtsi this leads to a duplicate unit-address warning.
 
-Hi,
+The usb3otg node was introduced after the initial imx8dxl support with
+commit a8bd7f155126 ("arm64: dts: imx8qxp: add cadence usb3 support")
+and since then leads to warnings like this (when built with W=2):
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+      DTC     arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
+    …/arch/arm64/boot/dts/freescale/imx8-ss-conn.dtsi:148.24-182.4: Warning (unique_unit_address): /bus@5b000000/usb@5b110000: duplicate unit-address (also used in node /bus@5b000000/usbphy@5b110000)
+    …/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi:52.23-81.4: Warning (unique_unit_address): /bus@5f000000/pcie@5f010000: duplicate unit-address (also used in node /bus@5f000000/pcie-ep@5f010000)
+      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi:41.23-50.4
+      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts:645.8-653.3
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+After the change that usb related warning is gone:
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
+      DTC     arch/arm64/boot/dts/freescale/imx8dxl-evk.dtb
+    …/arch/arm64/boot/dts/freescale/imx8-ss-hsio.dtsi:52.23-81.4: Warning (unique_unit_address): /bus@5f000000/pcie@5f010000: duplicate unit-address (also used in node /bus@5f000000/pcie-ep@5f010000)
+      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi:41.23-50.4
+      also defined at …/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts:645.8-653.3
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+Signed-off-by: Alexander Dahl <ada@thorsis.com>
+---
 
-thanks,
+Notes:
+    v2:
+    - reworded commit message (build on mainline with W=2)
+    - rebased on v6.16-rc3
+    
+    v1:
+    - Link: https://lore.kernel.org/linux-devicetree/20250610060756.8212-1-ada@thorsis.com/
 
-greg k-h's patch email bot
+ arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
+index 9b114bed084b..a66ba6d0a8c0 100644
+--- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
+@@ -5,6 +5,8 @@
+ 
+ /delete-node/ &enet1_lpcg;
+ /delete-node/ &fec2;
++/delete-node/ &usbotg3;
++/delete-node/ &usb3_phy;
+ 
+ / {
+ 	conn_enet0_root_clk: clock-conn-enet0-root {
+
+base-commit: 86731a2a651e58953fc949573895f2fa6d456841
+-- 
+2.39.5
+
