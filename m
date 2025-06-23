@@ -1,184 +1,126 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E08248893
-	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 17:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B136727146B
+	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 17:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750698786; cv=none; b=Su/lAJii3UDKdT30rnpWLu2ibdsT8ZxF8ujT0ohivxlX2eSX5FyzXBH9p38CMPPnRa0O3dfQOhjgpCQO3G/9Fs3kD0znJsEyXaWWU80RTjIz5KbzjFPetqJ7qwhjOp4B1is+Pyz1uv+JOVvQV3hyOiGEacrk5OLvSqCsnsnJmDI=
+	t=1750700007; cv=none; b=YSQM+A4kfPj6hrKeapTyoqk/YRuPn3vQOizNHtepbqBeb8S3QgXOOV6pg/aUzhU99mlEwbVlmjwldTkwbkg09CFtp4JZVfe4lxIziU9wD4kvYyRL4RUnWZUyHgWGioSJp/n4qlYzgsrN4kad69BZcwAC2M8OwEcl82EkwjoWXeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750698786; c=relaxed/simple;
-	bh=wv9r1Nau37bZDlcKTni8vX3dpCtckh8QUn8ksWrvjzc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BdkFHvbzMhjxjqmiRFJ2zhGsQvI5L5Pg9/MvvHolimcvelS/rORC/sFGoUW4S2NgS0Ws0TdUIYxd6GlDo5DeVd1SsUwIpNd+u6H9Vl6EMK1POkEgNakP9CWAmF7GVTa7dEljhH7JH5iVaQ6pLz/qKVL5xGoXamj2L4ZqXi6yM8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de; spf=pass smtp.mailfrom=innosonix.de; dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b=eHhbx9jw; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innosonix.de
+	s=arc-20240116; t=1750700007; c=relaxed/simple;
+	bh=9ESxItapZGpeX27bCqCWykYCjM+yU4vTWbwqb34xOmU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ja2xCneYI6rIiMHZ7/t7h9cx/Uy9qZ2jvH6TliuES+WmTaLiKCEVtexuyji4KTW4z1iFo2qcqOrCAsUO5jLYO+/EPM5dcWxyI0l2Vq7UqUkvD5QYZL2P/Sew/ZtXH6yYCOjonlRMxImDWSnVuuGjw2WbLo4+yJnWvJaimYXMjf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=omitYBv2; arc=none smtp.client-ip=209.85.161.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b="eHhbx9jw"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4533fbbd21bso2133575e9.2
-        for <imx@lists.linux.dev>; Mon, 23 Jun 2025 10:13:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="omitYBv2"
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-605f7d3215cso2155512eaf.0
+        for <imx@lists.linux.dev>; Mon, 23 Jun 2025 10:33:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=innosonix.de; s=google; t=1750698783; x=1751303583; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fFVerlv1rup6mF5IH5Ew1KKnD+3iU06ke4X3UNXN3IU=;
-        b=eHhbx9jwtdnuVaYcWg8D9+iiN9zjI6O3hED1nhi2GYf/zBL4vIpJtPl4dSYQk6oxxC
-         oBkhHxSQj38vb5cz/QkfiGJp9Np3Vps1aIzSeYXq4H9R8foFQgYhB+A/hx0J/BeJPfzP
-         SYlvkSzIZ24RXcpIkchPHdPt9qGP/u2bevEzrXxoui8Qixv2b2hQN7VCPAJwcoNvdIex
-         UgCvTAfF+t7mgVTTWpixib65LunE7UsxwqAHXMIxBYJ5ZaGrkBLDu+x6gv5LC90dti53
-         JnZE9mqxhsOCUYN9gj94AIv9KhaDIH1BP0me7a1JYFtMe1dmCDxTee8WF2o/zs0sT3/4
-         N5Zg==
+        d=gateworks.com; s=google; t=1750700005; x=1751304805; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9ESxItapZGpeX27bCqCWykYCjM+yU4vTWbwqb34xOmU=;
+        b=omitYBv2o2qusOAed6FByaZ9WNbI4QOFBc41ErD6SJyFznhkLkoTd5UtpJZz8I8jPW
+         nTODtubFh5GaEXl/uIKAh2VWD9hZ9BuqbSJ63TlY2Lws43O9jmwis5ivjNu8vsEWbwAW
+         ocFlhSn/Vkhqpuh/vxcIRjg1lwlySEnzVTVqRT5VPLW+qbjzRXU1spYM49tpOfTG4YeQ
+         BxjoadgPFaHBvzau+ctDqGQvRNqnN+qkCAfT0YtwISvv5wpxkGeUt52MLCdHKCji5cNP
+         IBBkD9wZg9itzHHbhX3RSH7hi+7PkdTf/OqUG2Z6GstmJOgiAPYTWiiYm/ukSzjehB/v
+         7q0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750698783; x=1751303583;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fFVerlv1rup6mF5IH5Ew1KKnD+3iU06ke4X3UNXN3IU=;
-        b=G/P0KSSzu0KlfGhnLUywJcl+INw0ZWjhUsqJhOT6OvdM3eSWbzeI/WhTvPFKPEeCul
-         pnezqWhwhV0vx5fpQCtD5lxIqLBJNBcUagSkAAgS5WvvFHSVthoNN2504vyV+qfikRwt
-         cEQWShxe7fJ69MuEx+8tPy4Anc4Ymy3C6HWVhF4HyEhgvu8hPhKf3yUDYUZezD111qUB
-         2zv5r3EiXAnk2MbHYHQT+w0u0IC5lqqBWzKN35MhlQkWLAS4ouvpud8GtTte/KDkN4zt
-         f792h+2Grxbt66lhDVbZa51gvS9Pk+CvTHEtMDGIotpxLJHBT03e/il8ozF9bvQCtcMZ
-         nWbg==
-X-Forwarded-Encrypted: i=1; AJvYcCWB/UhN7r5lMd/P8K0UIGXD/dQ/IEXpEmcV80XWaAIbczQ41EciDdi28cFD2e2LsChM4jI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz1pW3ladQ3DReUJRz5lXDdgBwDqs4OoGhKtfnb1Hi943M0hMLF
-	GOWt2a4CQ7zyHVIRXIITdAdfqb9+C6qNPeTYfNGp6/JzODvTsCmBDfR995wQDb34PSuqy5EXW7w
-	ZepI5DNkV54Y1GlPYISrFTbHFLvDWASQWRoq+Jk4H6QKq37pOplPhHJfWaLYs6r0ZUA==
-X-Gm-Gg: ASbGncucV4Z2ZzHVDmOEOhF7mI98ByY1dXJM4qXwuvJkFu7zTkMAretHWxbAmwhujf9
-	82DTVwxhrwRHRj2LmiTrYKqvJ+51zFV0qKR1mTKV3mtqgdIWdVJ1NvtySLTnZ9bxjGi4jkTRLT6
-	Uo7DDp0UiXGDB1npfY0k0+Q4WgXCnMtRzuxlzAsFHGAZWd/9Lr+kjF89dJl92fmroTeyHnzoS1P
-	hPXyjdvzbiyMOyOzpaPT/xyleVQECMiwGyC3HlXhpte0ipP2nFoOEga1VNv4lxWKSXlbK//2Gd6
-	ouBlza+0WB/SWmwsskEuZ5/sketxTlSTyBiwc6S/hjDFShgn45C5PwTYOkvTKITViBQ=
-X-Google-Smtp-Source: AGHT+IErer93kOXokwq6+DGSfC4ugUszBo78NJco3EFwM9G1wiRi3El8E+vg0RKm5OXQE67tFwgtNQ==
-X-Received: by 2002:a05:600c:5494:b0:453:590b:d392 with SMTP id 5b1f17b1804b1-453657bf79cmr45941935e9.2.1750698783204;
-        Mon, 23 Jun 2025 10:13:03 -0700 (PDT)
-Received: from steffen-linux.. ([24.134.20.169])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453646cb57fsm118001245e9.1.2025.06.23.10.13.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 10:13:02 -0700 (PDT)
-From: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>
-To: 
-Cc: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
-	stable@vger.kernel.org,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] nvmem: imx-ocotp: fix MAC address byte length
-Date: Mon, 23 Jun 2025 19:09:55 +0200
-Message-ID: <20250623171003.1875027-1-steffen@innosonix.de>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1750700005; x=1751304805;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9ESxItapZGpeX27bCqCWykYCjM+yU4vTWbwqb34xOmU=;
+        b=iQ5LqE4POZU0ZzADj1BCyMpiC8tjLAsJBDLpDxkTVHTC5HnZw0GKVfbSlQyzk/gyu8
+         CW//QLg2jqXeCHyD08VbfFX1JJGBc4fNDTl4YTkJOWjGA4T7QJjP1+TSVmuUi0rDZGId
+         jUcgIRSnY6ADN8rGo/9fikR+XI6d39j/nRQepqQ3E7yIpVhQ7HA+f1fVFLeHNUCW+G5R
+         OA/QRwSCqSIen60Yw5MX12Cn22Z2Jv8hpa04L9Sy+NDG2gQ1vVqo15oLKwvtmE70S4Aj
+         tjQCWVH0+ux/CHKheGFOEDdO5sKDOyiYYiMRPPWdTNGInOXk3QHlTyyZuUy51ihyf/K0
+         ndLw==
+X-Forwarded-Encrypted: i=1; AJvYcCXe0Xa1ziUR2L0B4RMygI35JshryyeJQZ6yx+2rlo099Qorwk7TdekD0qzuioZ1pYtAnT0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywb8Tf+lnNxqgkdnWB486YPC0OXHRi0Tzsa4mhBzYkUKL8K2aFs
+	h3aibpHcoP6UAmVjxy6D+azBL4ZdpHAzmLqMJE954TOP64u4SmjVKUcdKAXstebAwef8s8f5Vwu
+	iTjs7xRcJ+GJAr3gbwbkCk1C6uQPGhnwFx8S53NjXfQ==
+X-Gm-Gg: ASbGncsCCAdo1GsBTTS5csNkRqlyPtRGlQhxn62deXLIpoghOnzWfSyaDTgB3oPgIZM
+	oy1jpNkHW9ijZrFhj0y4Gizjx7GcPbaR5YHNnHgPhSWS15hTTN06TYZp6xH7LSw2/AYSiBtLl6W
+	qm7ulusNeOuD02KbjGsNeh37oBrhoLqceuytbd4wxu6JI=
+X-Google-Smtp-Source: AGHT+IEnQISZoeoPxj8JEGlUaibukW91WXz6xwGvL5sx8yj9FeldaqG5qJs0cowqWl1mZaAAU6aoFwKpwix2JbTKO8M=
+X-Received: by 2002:a05:6820:1b07:b0:611:7f80:6474 with SMTP id
+ 006d021491bc7-6117f806825mr4229278eaf.3.1750700004712; Mon, 23 Jun 2025
+ 10:33:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20250616085742.2684742-1-hongxing.zhu@nxp.com>
+ <20250616085742.2684742-2-hongxing.zhu@nxp.com> <kjsaipr2xq777dmiv2ac7qzrxw47nevc75j7ryma32vsnyr2le@mrwurn6rgnac>
+In-Reply-To: <kjsaipr2xq777dmiv2ac7qzrxw47nevc75j7ryma32vsnyr2le@mrwurn6rgnac>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Mon, 23 Jun 2025 10:33:13 -0700
+X-Gm-Features: AX0GCFtnkiV6JnGTj19oSXnEDcUfrmPAyTPCGVHfXU5cEeF-T0n_k13y5pEP9X4
+Message-ID: <CAJ+vNU3mKiEE86SYFS0aEabkqRKADFDJN0giX73E0cA=GOyhjA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] PCI: imx6: Remove apps_reset toggle in _core_reset functions
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>, frank.li@nxp.com, l.stach@pengutronix.de, 
+	lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
+	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
-extension of the "mac-address" cell from 6 to 8 bytes due to word_size
-of 4 bytes.
+On Mon, Jun 23, 2025 at 4:42=E2=80=AFAM Manivannan Sadhasivam <mani@kernel.=
+org> wrote:
+>
+> On Mon, Jun 16, 2025 at 04:57:41PM +0800, Richard Zhu wrote:
+> > apps_reset is LTSSM_EN on i.MX7, i.MX8MQ, i.MX8MM and i.MX8MP platforms=
+.
+> > Since the assertion/de-assertion of apps_reset(LTSSM_EN bit) had been
+> > wrappered in imx_pcie_ltssm_enable() and imx_pcie_ltssm_disable();
+> >
+>
+> What about other i.MX chipsets like 6Q and its cousins? Wouldn't this cha=
+nge
+> affect them since they treat 'apps_reset' differently?
+>
+> - Mani
 
-Thus, the required byte swap for the mac-address of the full buffer length,
-caused an trucation of the read mac-address.
-From the original address 70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14
+Hi Main,
 
-After swapping only the first 6 bytes, the mac-address is correctly passed
-to the upper layers.
+This patch effectively brings back the behavior prior to commit
+ef61c7d8d032 ("PCI: imx6: Deassert apps_reset in
+imx_pcie_deassert_core_reset()") which caused the original
+regressions.
 
-Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
-Cc: stable@vger.kernel.org
-Signed-off-by: Steffen B=C3=A4tz <steffen@innosonix.de>
----
-v3:
-- replace magic number 6 with ETH_ALEN
-- Fix misleading indentation and properly group 'mac-address' statements
-v2:
-- Add Cc: stable@vger.kernel.org as requested by Greg KH's patch bot
- drivers/nvmem/imx-ocotp-ele.c | 6 +++++-
- drivers/nvmem/imx-ocotp.c     | 6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+To ease your concerns I've tested this patch on top of v6.16-rc3 with
+the following IMX6 boards I have here with and without a PCI device
+attached:
+imx6q-gw51xx - no switch
+imx6q-gw54xx - switch
 
-diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index ca6dd71d8a2e..9ef01c91dfa6 100644
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -12,6 +12,7 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-+#include <linux/if_ether.h>	/* ETH_ALEN */
-=20
- enum fuse_type {
- 	FUSE_FSB =3D BIT(0),
-@@ -118,9 +119,12 @@ static int imx_ocotp_cell_pp(void *context, const char=
- *id, int index,
- 	int i;
-=20
- 	/* Deal with some post processing of nvmem cell data */
--	if (id && !strcmp(id, "mac-address"))
-+	if (id && !strcmp(id, "mac-address")) {
-+		if (bytes > ETH_ALEN)
-+			bytes =3D ETH_ALEN;
- 		for (i =3D 0; i < bytes / 2; i++)
- 			swap(buf[i], buf[bytes - i - 1]);
-+	}
-=20
- 	return 0;
- }
-diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-index 79dd4fda0329..1343cafc37cc 100644
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -23,6 +23,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/delay.h>
-+#include <linux/if_ether.h>	/* ETH_ALEN */
-=20
- #define IMX_OCOTP_OFFSET_B0W0		0x400 /* Offset from base address of the
- 					       * OTP Bank0 Word0
-@@ -227,9 +228,12 @@ static int imx_ocotp_cell_pp(void *context, const char=
- *id, int index,
- 	int i;
-=20
- 	/* Deal with some post processing of nvmem cell data */
--	if (id && !strcmp(id, "mac-address"))
-+	if (id && !strcmp(id, "mac-address")) {
-+		if (bytes > ETH_ALEN)
-+			bytes =3D ETH_ALEN;
- 		for (i =3D 0; i < bytes / 2; i++)
- 			swap(buf[i], buf[bytes - i - 1]);
-+	}
-=20
- 	return 0;
- }
---=20
-2.43.0
+I only have imx6qdl/imx8mm/imx8mp boards to test with.
 
+From what I can tell it doesn't look like the original patch that
+added the 'symmetric' apps_reset de-assert was necessarily well
+tested. It started out being added because as far as I can tell it
+'looked' like the right thing to do [1]. You requested changes to the
+commit log for wording [2],[3] but I'm unclear that anyone tested
+this.
 
---=20
+Best Regards,
 
-
-*innosonix GmbH*
-Hauptstr. 35
-96482 Ahorn
-central: +49 9561 7459980
-www.innosonix.de <http://www.innosonix.de>
-
-innosonix GmbH
-Gesch=C3=A4ftsf=C3=BChrer:=20
-Markus B=C3=A4tz, Steffen B=C3=A4tz
-USt.-IdNr / VAT-Nr.: DE266020313
-EORI-Nr.:=20
-DE240121536680271
-HRB 5192 Coburg
-WEEE-Reg.-Nr. DE88021242
+Tim
+[1] https://patchwork.kernel.org/project/linux-pci/patch/1727148464-14341-6=
+-git-send-email-hongxing.zhu@nxp.com/
+[2] https://patchwork.kernel.org/project/linux-pci/patch/1728981213-8771-6-=
+git-send-email-hongxing.zhu@nxp.com/
+[3] https://patchwork.kernel.org/project/linux-pci/patch/20241101070610.126=
+7391-6-hongxing.zhu@nxp.com/
