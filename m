@@ -1,96 +1,121 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50D670808
-	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 14:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7A07DA7F
+	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 14:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750687271; cv=none; b=guorgCvW+XtJvYyrv/wkFp49848dEYOGJgEYmn8w+KbL0q2/x0kTQb5PgmcMzzgyotOgFfJesGh4FVVYBsQp2U5oefespfxGQq5j0PrhY0HW5Nnakm57dPGEIxRNYrV80GchWMf2VZXZJzniX66/pqBHLnG0+FedxtkSGr6Of6Y=
+	t=1750687757; cv=none; b=lugLyxfHR/6pSMdMLg3UR6zKijisQmqLImSeZYKMm7pP1xjjZRHGwYt9UgbyjulJy8mcBT7TpNG7PMSevt4ZT4CRJcPQ1T1VyP4Rs0GoaxIRdxtT6wSpbnn/tq1cLPkl6ZOxr6S62U5afhDX8ch95E1yd6q5btDUlr+z8IAWSIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750687271; c=relaxed/simple;
-	bh=Eio71w/pYJ//+HPI/HFvrWn6wFXbMzWKf+fC/EVlazI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oSIdstz/tHkMDAbHfxbfQEetvitA2dM9rX2oadC2CaykRVxuudsvKnqIMvb8dPoHCGlh0Kux4MAwYKMtH/WlU7SMZiOSO109Q3CCcp2mkI3RtUNXWF0galV6HjOOk8DSo7aFuV7DMYsPKLs0WTVdVfYLF6cYWmzl6ppWTX7Xb30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CVMOwqg3; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750687757; c=relaxed/simple;
+	bh=omIX37Jx2+teGU3j6f2wLpR3Hg1fkW8WDD81Xqu82dk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U6kITVU4ALpr43uvEPUurQ0pSSj0EOPpove/ywPELHTr4UIxSQqrVcVQQeJsPTqLcWpupfzrl/vkfiO2PC0q1WTIUlZMYKlxEyjELrMKpLZOso9cmyi8Er+BvdkySjzgIzpNVfKG+9X5slfEqsQwi4+UecWwQ6bAHLg7hhflosc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OSVBBqfT; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CVMOwqg3"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5535652f42cso4425743e87.2
-        for <imx@lists.linux.dev>; Mon, 23 Jun 2025 07:01:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750687268; x=1751292068; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Eio71w/pYJ//+HPI/HFvrWn6wFXbMzWKf+fC/EVlazI=;
-        b=CVMOwqg3FZACV0fvNlGx1LvGkW6CfPjQa/zgV0OHicI2w5E6kyJxXdX2VF94tUuICM
-         KehQCYkRgem1OFBYnp+C5YFTxASZFM0doRQ+LpSPcCj8TzyTWw7t38qdHWW/BllFQcBs
-         EeqQ4yLyhtZf1JJ44ttl7Spl88GIlnkcn3IMq9RyFPlIe9DSNTvN3HIDP2D9Uj1VXtV/
-         sZWw6sPW8TneqCDoNWzCA7+lkXNN9b2zEgA3kOOYiwuRkij/stV+JuKUwpO68NuPW9k4
-         zt05oEw6AgHK9ekJNkt7mzNO52eo3yYfV2k3g28xWq4Q1IYxihC9aSK4F99x3/JSvuXS
-         fH6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750687268; x=1751292068;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Eio71w/pYJ//+HPI/HFvrWn6wFXbMzWKf+fC/EVlazI=;
-        b=lsqzzSZ8pT+rCQ6jn5rcvvu2bAtSyCDMaRHxqM1TenEiUxDbTT88A4uMSXdmCCX82B
-         oXlUJWNCDTeulSD8ybV5ThBSzVUoyVH/bDKbo38yEgDPpJxKczQUkb4Q4XZfEMFPBcN1
-         Rz6lA9nDGOyQlRnnH+wb/GYm3OqPI7ReW0nl+oeQxAlSLsT13WzhcXWHCTKip3lpNpmV
-         rfA1l103E2gZPbb83GgfA8eL4FAdwgs0OC3sS0aYcx6O08oQU+ZvRFrFKxZBmsXlzSJs
-         FXIrd8sRZ3Q2lBr7keyidU7HyG8Yhh6xxNUd5sj7zfHDN1B34MKgoAkZ3WVFzq8AlL8S
-         hwBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMGKmEyqQkrQ1klQSpCCTGc0M8fEmD6Zp0KkoOuc8x4CEm74VBu6VQXyD7OvcDutwfpuA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YydVATq/jPUa3trAe2jugYhjKYf5ABSbOrLAnvVlo3oO6WtSXhb
-	kl+pbK5/nt01ofQdMIUOKEM9jIpfCHnt+Kc+9MUwuHgL5ybRYLPmzf4wc6USc7r54N4TCJoX5Fm
-	XhtrIv9DUw8LsHB0zScrEe9ZIz87Z7SY=
-X-Gm-Gg: ASbGncvIeneg8Cc7xZADNYCc+rnIGEnklEO3P2jbDUATTeWEbEWAdkfbEa7sQh2kCZX
-	HHO/jwobsu7zbKFGC6bQDrwAkINe0TAv//okshh/HqyHZk94d6ZzZoJ9XIZ/KLimM+D/YN1Qtgj
-	DwBMBor7SF+SJgCkyui/IWwohSVaLhJrh9hUWvHcv8HFSSrQYEfqreaCzW6QjNHqVuW32/Jt7lj
-	1U=
-X-Google-Smtp-Source: AGHT+IGR9uZU02Z1imHj7MAxQiJrfcrFgQl4Iwi1qMx4X/39RI/yLTLvi2E9TpExz966iw2AnrUaGavuIu6muZwN6T8=
-X-Received: by 2002:a05:6512:3ca6:b0:553:24f4:872a with SMTP id
- 2adb3069b0e04-553e3bf9f18mr3657639e87.40.1750687266759; Mon, 23 Jun 2025
- 07:01:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OSVBBqfT"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0A41720453;
+	Mon, 23 Jun 2025 14:09:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1750687747;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9ePt40yJvrO33B0QpVlIo/HV5dJRHpWVq5OdajjSVb8=;
+	b=OSVBBqfTG09UyTei7Nq8pZ1s6OMA19TYtgRlgZ4Ttnj3iFPs2YpySG3Mn3qtN+76gAu7MP
+	3G4DI8MqOZs3EMfOuCPQRw63/ZIw3L1Wfn0lJHTiampezCEtlJWz2TgatjDj7O+RddT8nI
+	LqLRQWIBq/hrcGNZii8aoSetSIQt/sHQxmt7+56BHG4e8082Jjd+WeftitpLQuC4nVa3/s
+	06evNf5AbkOY2mrVGNV0NJYeUvF8mNAW/s7asxH6Xev6U8bDUv0HsCGDiUQXnHDQtCZIPj
+	pAUOyi2Z5kXS73OklkeGvOtk3gSwvyJX7r6R1/+x5kp3eVUNRFJwyvUwfeOaTg==
+Date: Mon, 23 Jun 2025 16:09:03 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Liu Ying <victor.liu@nxp.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Andrzej
+ Hajda <andrzej.hajda@intel.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
+ Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Marek Vasut
+ <marex@denx.de>, Stefan Agner <stefan@agner.ch>, Shawn Guo
+ <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v8 2/5] drm/bridge: get the bridge returned by
+ drm_bridge_chain_get_first_bridge()
+Message-ID: <20250623160903.01c56bfc@booty>
+In-Reply-To: <be6a4d90-2c6e-42be-9948-df1840fd2f83@nxp.com>
+References: <20250620-drm-bridge-alloc-getput-drm_bridge_chain_get_first_bridge-v8-0-0321845fcafb@bootlin.com>
+	<20250620-drm-bridge-alloc-getput-drm_bridge_chain_get_first_bridge-v8-2-0321845fcafb@bootlin.com>
+	<be6a4d90-2c6e-42be-9948-df1840fd2f83@nxp.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250620122353.150700-1-goran.radni@gmail.com>
- <20250620122353.150700-4-goran.radni@gmail.com> <aFVz48C3d+HHVHvv@lizhi-Precision-Tower-5810>
- <00cf9c47-e101-4335-b918-f0b3a3c71de9@gmail.com>
-In-Reply-To: <00cf9c47-e101-4335-b918-f0b3a3c71de9@gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 23 Jun 2025 11:00:55 -0300
-X-Gm-Features: AX0GCFty6Y9honVX8KF-AR5BMA9uPsSpLblXjl7-3v4sjeMadYrJm6ZLkkE2tuQ
-Message-ID: <CAOMZO5B39pBzWuXBoo5=eqQzZLxS3zBxCJw_GBYmABKT_cdQww@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] arm64: dts: imx8mp: Add initial support for
- Ultratronik imx8mp-ultra-mach-sbc board
-To: Goran Radenovic <goran.radni@gmail.com>
-Cc: Frank Li <Frank.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?QsO2cmdlIFN0csO8bXBmZWw=?= <boerge.struempfel@gmail.com>, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddujedvvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeglefffefghefhtddvfeeufeeiveekgffgleekieduteekkeetvdehudekgfdvvdenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvgedprhgtphhtthhopehvihgtthhorhdrlhhiuhesnhigphdrtghomhdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepmhhrihhprghrugeskhgvr
+ hhnvghlrdhorhhgpdhrtghpthhtohepthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopefnrghurhgvnhhtrdhpihhntghhrghrthesihguvggrshhonhgsohgrrhgurdgtohhm
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-On Mon, Jun 23, 2025 at 10:17=E2=80=AFAM Goran Radenovic <goran.radni@gmail=
-.com> wrote:
+Hello Liu,
 
-> I was using git send-email, and I did not notice any problems with
-> dry-run. I have 3 patches and a cover letter. All were marked correctly
-> v3 0/3 - v3 3/3.
-> Everything looks fine here:
-> https://lore.kernel.org/all/20250620122353.150700-1-goran.radni@gmail.com=
-/
-> Or am I missing something completely?
+On Mon, 23 Jun 2025 10:56:13 +0800
+Liu Ying <victor.liu@nxp.com> wrote:
 
-I only received the patch 3/3 in my Inbox.
+> On 06/21/2025, Luca Ceresoli wrote:
+> > drm_bridge_chain_get_first_bridge() returns a bridge pointer that the
+> > caller could hold for a long time. Increment the refcount of the returned
+> > bridge and document it must be put by the caller.  
+> 
+> To make sure the incremented refcount is decremented once this patch is
+> applied, does it make sense to squash patch 3, 4 and 5 into this one?
 
-It seems you missed copying everyone on the three patches.
+I see there is a trade off here between bisectability and patch
+readability.
+
+However about bisectability the problem is limited for this series. To
+get an actual get/put imbalance you'd have to be able to remove the
+bridge, but removing (part of) the bridge chain is not at all supported
+right now, and it won't be until after chapter 4 of this work (see
+cover letter).
+
+However I realize there is an issue if:
+* patch 2 is applied but patches 3/4/5 are not
+  (it does not make sense to apply this series partially, but this
+  might happen when cherry-picking?)
+* an entire DRM card is removed where
+  drm_bridge_chain_get_first_bridge() is used by some components
+
+If both happen we'd have a get without put, thus a missing free and a
+memory leak for the container struct.
+
+Note that, besides drm_bridge_chain_get_first_bridge() that this
+series covers, there are various other accessors: see items 1.E.{2..8}
+in cover letter. For some of those there are many more changes to apply
+because they are called in more places. Squashing them would result in
+a really large patch that is likely hard to review and manage.
+
+So I'll leave the decision to DRM subsystem maintainers. For the time
+being I'm keeping the current approach given that Maxime already
+reviewed these patches in the past, not squashed.
+
+Best regards,
+Luca
+
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
