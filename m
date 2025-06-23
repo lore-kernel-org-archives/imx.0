@@ -1,207 +1,123 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18571F3FC6
-	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 09:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60692940F;
+	Mon, 23 Jun 2025 09:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750669458; cv=none; b=N6CtJk90kMvW1Dazb9GjH6uxqwg7QCLxRrl0J69/8x0CfCnsHS7SWYcmZLIljmNMSJfNlaxO7Qa7APyT0UnoN/sepBLQVJH9SCZrhNpdAQ1endizmrQwFLoCtALUyERRca6VPjSVzrkBHZOTtb31MAL7R6gUYfwmuFZJc5PwMA8=
+	t=1750670297; cv=none; b=ra3TWF0bM9VoGhzpHFXhT19+zZm0ITmwJCj8PIcVCR18nFEcuVWwIhetM81eqYkQCxg/zwwjOCzQseKUSBE+GEDKtRrgzRYfLbGB5O/DOG4FnaYTZTDrqwwrIuArZkpvcKWRW9rQbiQtL7sWQwt2vNGWLrPJ1d1JD/K76/1wtvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750669458; c=relaxed/simple;
-	bh=SPCcFqbrzfIHwolmZbtkAZSKbGxU/6xQjBXOl8gkX1o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Na6Fu5RNGLOM02p4xNcybDRTUwR/NbHo9j5k+BYVTVsNoiBVlKqf/+b4xjeKHBb/b9S3BFfbpdTXTQoasPm2fSPvOFOFkPRJJmE0zkUWAC6WRWlPl4wgGkzNKgWw1sz59BsCs1B2W06Od6KoWuNDJJBOIr+bCByQwpd5cYCuzNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XOdWoMX4; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1750670297; c=relaxed/simple;
+	bh=uUCG0PtgoY0CiWy/SYGswt6YhPYBd5m46i/7r2ff9zg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IJNTSvUTPnxuAXN0FSOLjpdRzi+OlTRu0zxXqF3NCL3fXzrzyBFAfSBGCgMbuFUDnmvevuNDdI2lKtZdnIxyhLRk4Vo6bfVEU/odA6nfU0DeOccq6KDYVE0/uRDYAFzAJThoCyfbhBwmfsH6iqz91imTAe99Lxw0LJyV4GltOGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=drXULibQ; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XOdWoMX4"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-450ce3a2dd5so37365535e9.3
-        for <imx@lists.linux.dev>; Mon, 23 Jun 2025 02:04:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1750669454; x=1751274254; darn=lists.linux.dev;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mGJGLljVH09RHHvcPmR2xlgcJlbWSurnIEnT57zI1pg=;
-        b=XOdWoMX46TpRhv9qOFm6QLnIsp8lLAagLxFy6/DagVRsko0FmbKXZiNUNSdqqy44KN
-         0JLdF6mKM81kl4Mj0eT6nJEi/byBt+hkLGKW7p+aOQRi6A2xbwd6IhVp//avKa3xWQ5I
-         h2hSZBhbngVBEKcmIheHbCovwYrLWA+tfYEgIkPN32LfR1HkZSh4SOgC9vR6VXmH52kK
-         EYlcEpP+mr6/0ZIRepwtxjlHFSrZ87Z6VGLV4uzdvg/TW3zw+VOaJnhAOYKR+2NT5fpU
-         Ejnd6vbIgJtpBzCHOsncIMBci41goQGNOrSb4jYkKBSX6vZg15celac5XVEjnbId7Y5u
-         llmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750669454; x=1751274254;
-        h=mime-version:message-id:date:user-agent:references:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mGJGLljVH09RHHvcPmR2xlgcJlbWSurnIEnT57zI1pg=;
-        b=v8D/zkV3T0d0e6Vt5j4VAa7GfiEczG2EjHgwjSKNA5i6av5j2EBRdGqSjuNHlbNzPB
-         EAm1bh14wu1cJsIXjcV5Lk5x4UQVj5PWh2kOcG/+bZmd0pHRNtwUvYvBqSdfXxpUlYGY
-         zsD2Gyr3vwEP4KD9yZn9oERMx06iz/zpHwZ57dQLp7hikN/dgNwy94BZEDIcveyb/THA
-         04isIqoTLkLNG3s7YjwGlk/QASkP0hmtR/JP1aA8lrPnALxJ0hyXvgxY43FOvJY5ruCy
-         8ACfXGpo+ZB6Y9RJWLKOK9uIvhUR/nP/z3yCaSo8z6I2bUT5cwHCMsrUfo2jjgtOwlYk
-         IuRg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ+/om6ifhtiC14XevKUW1Zl2UifgSGx5D/BGEouqWr+LOnYWExZJBjrILcow4x9VgTO0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyke/ILvQlARf5j+Xm+1o83MpjuiPXTBJ56N9bgoxTBXS01IH9A
-	WwIm3jlpWTS2FWT4EHuEvFlEAh4pT3GI5sjz1SHV6iZQqJoeU5A7rALo5aTXUufvB2k=
-X-Gm-Gg: ASbGncsvY+Uw/BwyfUCo9GH7v09n3BcsxTVM5Ze28rU+FxqcfaL3eCAlt0NCaC3CojH
-	FofJOUjg+GNbS8taRzG7Wm998vi3S7S7vqgv3F+YyMlQegOSr+fxkMfs8GiqNzlFc6Ass8cIiRj
-	sGy34rr6HAegkviBrl2H2VdjaWOTfHloR79uklyEd43XTC0fE5uWdwRSk11z0M4LmeGegNOFpGD
-	4ybHQjI7IbGGVLXs8cmApnczhK6XG2ut5cSUs2TxMxSWAuv00wShFNAEOLw5DcfqL3EnU/AWIRY
-	ot5ixaI3a98wIVxWmg/CJifmoMAGTzHNe9JQgAOsWMKPNE6XxB5+RO8RsqgD
-X-Google-Smtp-Source: AGHT+IHPFVP2GzxWqyLYPOcDDU16rCAlS0TgolK5wkPSR8zZb2Tfrc8wGwUYkTiUhGSu8NLF6anogw==
-X-Received: by 2002:a5d:5f4b:0:b0:3a5:21c8:af31 with SMTP id ffacd0b85a97d-3a6d12a41a1mr9212783f8f.16.1750669453679;
-        Mon, 23 Jun 2025 02:04:13 -0700 (PDT)
-Received: from localhost ([2a01:e0a:3c5:5fb1:dd07:164c:d535:3e5])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3a6d117c66esm8705949f8f.47.2025.06.23.02.04.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 02:04:13 -0700 (PDT)
-From: Jerome Brunet <jbrunet@baylibre.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,  Gregory CLEMENT
- <gregory.clement@bootlin.com>,  =?utf-8?Q?Th=C3=A9o?= Lebrun
- <theo.lebrun@bootlin.com>,
-  Michael Turquette <mturquette@baylibre.com>,  Stephen Boyd
- <sboyd@kernel.org>,  Philipp Zabel <p.zabel@pengutronix.de>,  Abel Vesa
- <abelvesa@kernel.org>,  Peng Fan <peng.fan@nxp.com>,  Shawn Guo
- <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
-  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
- <festevam@gmail.com>,  Neil Armstrong <neil.armstrong@linaro.org>,  Kevin
- Hilman <khilman@baylibre.com>,  Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>,  linux-mips@vger.kernel.org,
-  linux-clk@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
-  linux-amlogic@lists.infradead.org
-Subject: Re: [PATCH 3/4] clk: clk-imx8mp-audiomix: use the auxiliary device
- creation helper
-In-Reply-To: <aEmzRrhQC+olmywj@lizhi-Precision-Tower-5810> (Frank Li's message
-	of "Wed, 11 Jun 2025 12:48:06 -0400")
-References: <20250611-clk-aux-v1-0-fb6575ed86a7@baylibre.com>
-	<20250611-clk-aux-v1-3-fb6575ed86a7@baylibre.com>
-	<aEmzRrhQC+olmywj@lizhi-Precision-Tower-5810>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Mon, 23 Jun 2025 11:04:12 +0200
-Message-ID: <1jikkmkewj.fsf@starbuckisacylon.baylibre.com>
+	dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="drXULibQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=34TxypIJyscDJLphDBw7+DPinr1/GPNGSO+jpo8aCL0=; b=drXULibQwGxgidQrP7A6XdplMP
+	YFYg4bPm5y2irU5k0RG2tJU3tjk1xkOdUXoGbpAwV4RRbDVk910WkE8wC58VhuBZRBKmLJQnwnWJj
+	KtYTWmlYqxuQzTjNv8/n8vd4hUySlo5Kksl8XPEGCru9CFj9LyS+36CbPd0cKCDBejg7li2yWTNFj
+	3imYR6R3fVY6gu/hg6Qsj1r/6QEpzZ664vd8QneO6gv+WXT36RFg1EAvXl2/JQRf8QFT4y3drW6M5
+	JI+F1P4YabWroEYJ7GSS+4OdKvlYzmTLaRrsutQBIZLncxkYJ6owHvSvswAE5D/HwmIrY/l6gYVPd
+	OjQP0/3g==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1uTd3z-000FU3-1a;
+	Mon, 23 Jun 2025 17:18:00 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 23 Jun 2025 17:17:59 +0800
+Date: Mon, 23 Jun 2025 17:17:59 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: John Ernberg <john.ernberg@actia.se>
+Cc: Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v6 0/4] crypto: caam - iMX8QXP support (and related fixes)
+Message-ID: <aFkbx_39WopOdwdV@gondor.apana.org.au>
+References: <20250611113748.2986988-1-john.ernberg@actia.se>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250611113748.2986988-1-john.ernberg@actia.se>
 
-On Wed 11 Jun 2025 at 12:48, Frank Li <Frank.li@nxp.com> wrote:
+On Wed, Jun 11, 2025 at 11:38:08AM +0000, John Ernberg wrote:
+> This series enables the use of the CAAM (Cryptographic Acceleration and
+> Assurance Module) on the iMX8QXP (and its variants).
+> 
+> v6: (detailed changelog in each patch)
+>  - Fix property order in bindings (Frank Li)
+>  - Collect tags
+> 
+> v5: https://lore.kernel.org/linux-crypto/20250610085110.2295392-1-john.ernberg@actia.se/T
+>  - Fix indentation issues in bindings (Rob Herring's bot)
+>  - Collect tags
+> 
+> v4: https://lore.kernel.org/linux-crypto/20250605132754.1771368-1-john.ernberg@actia.se/T
+>  - Declare more compatibles in bindings (Frank Li)
+>  - Move job-ring compat check under the job-ring subschema (Rob Herring)
+> 
+> v3: https://lore.kernel.org/linux-crypto/20250528144259.2603914-1-john.ernberg@actia.se/T
+>  - Fix devicetree CI detected errors (Rob Herring's bot)
+>  - Declare the compatibles correctly in bindings (Krzysztof Kozlowski)
+> 
+> v2: https://lore.kernel.org/linux-crypto/20250527071552.1424997-1-john.ernberg@actia.se/T
+>  - Clarify in the commit message how the crash fix works (Frank Li)
+>  - Restrict power-domains only for iMX8Q* SoCs in bindings (Frank Li)
+>  - Collect tags
+> 
+> v1: https://lore.kernel.org/linux-crypto/20250523131814.1047662-1-john.ernberg@actia.se/T
+> 
+> Horia Geantă (1):
+>   arm64: dts: freescale: imx8qxp/imx8qm: Add CAAM support
+> 
+> John Ernberg (3):
+>   crypto: caam - Prevent crash on suspend with iMX8QM / iMX8ULP
+>   crypto: caam - Support iMX8QXP and variants thereof
+>   dt-bindings: crypto: fsl,sec-v4.0: Add power domains for iMX8QM and
+>     iMX8QXP
+> 
+>  .../bindings/crypto/fsl,sec-v4.0.yaml         | 41 ++++++++++++++++++-
+>  .../boot/dts/freescale/imx8-ss-security.dtsi  | 38 +++++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx8qm.dtsi     |  1 +
+>  .../dts/freescale/imx8qxp-ss-security.dtsi    | 16 ++++++++
+>  arch/arm64/boot/dts/freescale/imx8qxp.dtsi    |  2 +
+>  drivers/crypto/caam/ctrl.c                    |  7 ++--
+>  drivers/crypto/caam/intern.h                  |  1 +
+>  7 files changed, 102 insertions(+), 4 deletions(-)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8-ss-security.dtsi
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8qxp-ss-security.dtsi
+> 
+> -- 
+> 2.49.0
 
-> On Wed, Jun 11, 2025 at 02:53:58PM +0200, Jerome Brunet wrote:
->> The auxiliary device creation of this driver is simple enough to
->> use the available auxiliary device creation helper.
->>
->> Use it and remove some boilerplate code.
->
-> Actaully, you also remove unused struct clk_imx8mp_audiomix_priv *priv
-> at clk_imx8mp_audiomix_reset_controller_register().
->
-> Please add it into comments.
-
-That's merely a side effect of removing the boilerplate code.
-Like for the other changes of the same kind, I don't think listing the
-symbols removed would be useful to the change description
-
->
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->
->>
->> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
->> ---
->>  drivers/clk/imx/clk-imx8mp-audiomix.c | 49 ++++++-----------------------------
->>  1 file changed, 8 insertions(+), 41 deletions(-)
->>
->> diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
->> index 775f62dddb11d8cfd17a4ebf7a677ef399c5e617..765fb1f5bd4fa2b039d7414abd89471438ee41dd 100644
->> --- a/drivers/clk/imx/clk-imx8mp-audiomix.c
->> +++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
->> @@ -230,61 +230,28 @@ struct clk_imx8mp_audiomix_priv {
->>
->>  #if IS_ENABLED(CONFIG_RESET_CONTROLLER)
->>
->> -static void clk_imx8mp_audiomix_reset_unregister_adev(void *_adev)
->> +static int clk_imx8mp_audiomix_reset_controller_register(struct device *dev)
->>  {
->> -	struct auxiliary_device *adev = _adev;
->> -
->> -	auxiliary_device_delete(adev);
->> -	auxiliary_device_uninit(adev);
->> -}
->> -
->> -static void clk_imx8mp_audiomix_reset_adev_release(struct device *dev)
->> -{
->> -	struct auxiliary_device *adev = to_auxiliary_dev(dev);
->> -
->> -	kfree(adev);
->> -}
->> -
->> -static int clk_imx8mp_audiomix_reset_controller_register(struct device *dev,
->> -							 struct clk_imx8mp_audiomix_priv *priv)
->> -{
->> -	struct auxiliary_device *adev __free(kfree) = NULL;
->> -	int ret;
->> +	struct auxiliary_device *adev;
->>
->>  	if (!of_property_present(dev->of_node, "#reset-cells"))
->>  		return 0;
->>
->> -	adev = kzalloc(sizeof(*adev), GFP_KERNEL);
->> +	adev = devm_auxiliary_device_create(dev, "reset", NULL);
->>  	if (!adev)
->> -		return -ENOMEM;
->> -
->> -	adev->name = "reset";
->> -	adev->dev.parent = dev;
->> -	adev->dev.release = clk_imx8mp_audiomix_reset_adev_release;
->> -
->> -	ret = auxiliary_device_init(adev);
->> -	if (ret)
->> -		return ret;
->> +		return -ENODEV;
->>
->> -	ret = auxiliary_device_add(adev);
->> -	if (ret) {
->> -		auxiliary_device_uninit(adev);
->> -		return ret;
->> -	}
->> -
->> -	return devm_add_action_or_reset(dev, clk_imx8mp_audiomix_reset_unregister_adev,
->> -					no_free_ptr(adev));
->> +	return 0;
->>  }
->>
->>  #else /* !CONFIG_RESET_CONTROLLER */
->>
->> -static int clk_imx8mp_audiomix_reset_controller_register(struct device *dev,
->> -							 struct clk_imx8mp_audiomix_priv *priv)
->> +static int clk_imx8mp_audiomix_reset_controller_register(struct device *dev)
->>  {
->>  	return 0;
->>  }
->>
->> -#endif /* !CONFIG_RESET_CONTROLLER */
->> +#endif
->>
->>  static void clk_imx8mp_audiomix_save_restore(struct device *dev, bool save)
->>  {
->> @@ -408,7 +375,7 @@ static int clk_imx8mp_audiomix_probe(struct platform_device *pdev)
->>  	if (ret)
->>  		goto err_clk_register;
->>
->> -	ret = clk_imx8mp_audiomix_reset_controller_register(dev, priv);
->> +	ret = clk_imx8mp_audiomix_reset_controller_register(dev);
->>  	if (ret)
->>  		goto err_clk_register;
->>
->>
->> --
->> 2.47.2
->>
-
+Patches 1-3 applied.  Thanks.
 -- 
-Jerome
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
