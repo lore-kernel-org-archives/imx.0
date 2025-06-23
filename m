@@ -1,207 +1,370 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010058.outbound.protection.outlook.com [52.101.69.58])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B14B2D3A97
-	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 20:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750711272; cv=fail; b=cbiB318P35jUW5D7fpKMxsc62ddrPrTZ7bi5+H5JfwOX7l1TaIqzpNsBHDNcM8SKpza3J4yE43YMqWQ/pgqWw8PoYTpttxlGPdknsbOdvOnT8ufz/TuvI2o7zONkm2WsfTmSgeuXc3FZ9iC5qWPHYm9UF0GcLcwXQulZ4BcO3BA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750711272; c=relaxed/simple;
-	bh=C5hYULTvsu+uCQpNdJmLCaqtpHmVUrFpvYQIwDu6C2o=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Ppvl3wyYsy0HxEKJHv2pKEK5eiG61k/5aF9Oiu2gr0uMZXHNQwxsTz2TncaW/YbHcZQe2I+TFiIi+wcWvOO4ayN5b5hT+OYB1YW0Wb41mQXv3GKwU9OoWM2Pr9pC8gNdXnc++fmvHwpMs2Dg8quR4s3gkEm1i8gZ7Z5Xw9G6x2c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=e3qpw8GI; arc=fail smtp.client-ip=52.101.69.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699271D9346
+	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 22:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750718493; cv=none; b=c9eM3Me+sIeGqn4y2QVrE57R9i/lzdqhBfd+l31dc2/9HSQZM352BPXX8R5VKujbXn208k6Q0joIf42LBXp5ZJRsg/Z9N8o1BDNKZQCqmbSiW1ZPo+veN6V++H09kmoqKhOr4ybWohVWcFruGio8AzAVl9aMIr9B8Bc0liur3r0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750718493; c=relaxed/simple;
+	bh=8QM9xe4p3Jw9CvHmj8FE269+kxfNiJ5TSyIZOJ7WgvU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tyukxlNSkjWzsklMGFHsjGYK7Y4m0dW9y7u584xjkRMWo6gWaAkgprzDrRGvwNV8Bom+mlMoAPlRIeq0fQWWAi+GZ8kmpEbJWIUtm//Wp6CzIlOpc3563kcYFcpXaJxfz16LIEjqe7mVU8i7r72xattO2YzIKIpR4F0Rg7A4j+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=S3R3KxG0; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="e3qpw8GI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dB5wtEr0YItEot4cy/dHXdKBvQZ56VN1WIu7BeT5VbTj/FMzAsFCY+N035pUPGz0k8kpeYRuFu4PlqGUhGKo0yUzaGZcE25ZRHLdAz0TbYtuiGCYEUL75TsbWSnh5iz2t7IQHHJ+7OwPH8/8Y41TNA5TTNo2ak9ku7Zp87rbV59mMAXkOzlgKp75mE7sEP6pCuHxeYktI1TdLECO/3ezl2kG1fPSh1g1/IsJ4tzg7JHdtKnO8KuqMsDqRepezIdPJUCKx1EfJZK/cPmsUvF00VWa81v+DoMEPLEWuTWIWVUkW51Qf0pJjXlmWcxfQqTgKHHvuApjrPEqH861bEbd6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LGRLR1RiE1m4cV/vpYfuV8bVcjLYgmRRcrMjnNI42tc=;
- b=hC+vq2aNXBsjQnupEM+MFVGKqX7Ch3fdo8b1q0eDn6YODEUZgIIqW4LkWXKqKubX1b1vyVSSbryudtwbYLWbE+q2QduUWhuAelv9l8jVObtl3BcGi1L8S3KhlCEWhaThH6DDmDKG5bNzKiozdBFYHvpQTy+XE3Yt1z38umQem60BGUX6nH6q6aeA2xqjLysNRYfyjaCk+b7zT4WgMYbjWr0izkyW8JToJJJIDRUYJBuydW6G7OzXbbni4mLxRi3nF5IuQ0qQOYi0t5Qk1neNqwuLkA4sDjj/rPW01enVavOiYhnV8bBeVwsz56CV0qrF0qqEhax032aBX6idv8IMDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LGRLR1RiE1m4cV/vpYfuV8bVcjLYgmRRcrMjnNI42tc=;
- b=e3qpw8GIrftljLnyzn6Hc33lI14PwJ0OeFCzJadsqcEYK3w8R0pUXZbLUGRQ8E4xkSSLwrWAl8C79L46OMHQ33Nl4/ocg5znK2ebmBZurTDK2ivs6BqwqhgLK8TBQ28iKDPsfkyQ9tbrdXut/GGe11WQrren33nyYpjExXkZZVfmEJW0ffW7//ek8uvMOJ5LBX4SKiz3aOVNzB+Je4zjAJOnXJQca+gdS+pKJvFmMMybTMhbq2Q0pzUCxAEGkJpB3Dj0/yFUS9TY9Kp77djS62+NCio0nA9ggNihCyJJ4QTMMN3xz26Te9WgySch/UEyPMvknHjc0oEDHQB9NOu79w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DUZPR04MB10061.eurprd04.prod.outlook.com (2603:10a6:10:4df::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.29; Mon, 23 Jun
- 2025 20:41:05 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8835.027; Mon, 23 Jun 2025
- 20:41:04 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Rob Herring <robh@kernel.org>,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="S3R3KxG0"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id B100B741;
+	Tue, 24 Jun 2025 00:41:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1750718472;
+	bh=8QM9xe4p3Jw9CvHmj8FE269+kxfNiJ5TSyIZOJ7WgvU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S3R3KxG0CNk+VS4gi/5mUmt/vTjZ0Cp1iuT+AnGfMyHxFaLVdFxt3iCmsMtuN80Kn
+	 PHJsqbCjFqZaBzEKjP/Dujigdu3fsIFRgmqodnzss7w2mfmtjIALkRFn7GHyXflbKP
+	 pLUCM3gN+yQHiGrirlQdrZzo5YA6kk9648J/PMOs=
+Date: Tue, 24 Jun 2025 01:41:09 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Michal Simek <michal.simek@amd.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
-	Naresh Solanki <naresh.solanki@9elements.com>,
-	Grant Peltier <grantpeltier93@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list),
-	linux-usb@vger.kernel.org (open list:USB SUBSYSTEM)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] dt-bindings: trivial-devices: add compatible string nxp,isp1301 from isp1301.txt
-Date: Mon, 23 Jun 2025 16:40:46 -0400
-Message-Id: <20250623204048.2493819-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0002.namprd05.prod.outlook.com
- (2603:10b6:a03:33b::7) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Kumar M <anil.mamidala@xilinx.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, "Guoniu.zhou" <guoniu.zhou@nxp.com>,
+	Stefan Hladnik <stefan.hladnik@gmail.com>,
+	Florian Rebaudo <frebaudo@witekio.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: media: i2c: Add bindings for AP1302
+ and AR0144
+Message-ID: <20250623224109.GD15951@pendragon.ideasonboard.com>
+References: <20250623-ap1302-v3-0-c9ca5b791494@nxp.com>
+ <20250623-ap1302-v3-1-c9ca5b791494@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DUZPR04MB10061:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d18ea3f-d7f5-4cf4-6e4a-08ddb2964605
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|366016|52116014|7416014|376014|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?i0KE5VrTaUPjTMqa62lIGcVRbs4fCI4zca3Rw7SmY9Fy/hUua5k59hVS4YaS?=
- =?us-ascii?Q?qUdfH8+TLrNaSCLpJDPyYxDVO8MPHtOTsxImhNcJl8b/s2iWnQiiwMVSUQTA?=
- =?us-ascii?Q?ZZtNxCSz/KlCg+FA4D8RMSw7C2x7m5D5O1zMVio67de9v6KJgWX6vGGaRGPh?=
- =?us-ascii?Q?YoKOlN3DF5CnUIAxQ1ChWvxZj0zZoZcEFkeSdh6ViCeTi+1nndRQfTOkTMCz?=
- =?us-ascii?Q?XzuvmR3qrB/aDfYzOQIMrSdAXb4usaPpleW6Rj2GfOw7e5+66wuTiVgmrtW8?=
- =?us-ascii?Q?nK1XsrMFTjWlpSauppwsrE/qmrra11algI4uv+GoWCnyRSjCyuZENHGFwDbL?=
- =?us-ascii?Q?OFrkpqtKYP3I2NqqrxirtRHjSBR6JI3dKx7cYYvAG5FwNjo6av+rB22Q4w3V?=
- =?us-ascii?Q?SUQpFO29iv2cVj0WMU7Bb2AU8nivf0+hMBuDSTRsChuhyaoj1KfxcZpUHaCE?=
- =?us-ascii?Q?1hyprBHy/4OuV2rxPYzZSalNDk9RdNmVmUxr+FXlpirZsaGyTb4QQPbCFBtW?=
- =?us-ascii?Q?4prPH++h/SnzdjAQRSfVqD1IvkqwLqyEvCAe2mLK10Ocl90CQq3uZ/2YWeHC?=
- =?us-ascii?Q?nIia3f+eEG2xFvobhBQqABzNkjAthJX9gfC/zQpXVRNpXFyuwrhB2cZZ9QLf?=
- =?us-ascii?Q?AtSAs6msKmcFbewAXq61iSSv4miJeJjZA0W9HFpjU4AEX5groI0JNcu7YSA7?=
- =?us-ascii?Q?CzqaudUqFXf6UmM9pb+VSyDkNdhjKkH7kS6XNWzJ0pkeOGl8ldd8lG4lJnmX?=
- =?us-ascii?Q?pPhHb4N+MejMQ3uhhCoQN57+mXB2VepWuV4JUTj/VSttqQM+B2AYjll7mPFG?=
- =?us-ascii?Q?XY2HCqY6ig2S3gZ32EF+rSCnQXX18yYQAesWKgxE+bl0F4MEZ2uGijSuoBn4?=
- =?us-ascii?Q?iaW+QpG8oovML27PEZz+Fhd/LYHLgFtK3jravrwowy7ODLAJqdLWlQq4pewn?=
- =?us-ascii?Q?Hr7oyCaEUjgUsNwHcm2EFKq5mMqd14Tl03G7xwpr5T38uyyTPeDu2tFgJ0pf?=
- =?us-ascii?Q?HtxNjBek642fI0ve+NA8NpuuJ/STCF/ix/6ywe1ynyScY0BdeDfAQrmh8lmw?=
- =?us-ascii?Q?5ibDUMiBGpWOMCwYicIO8Hq9uAejvCUhef5rq0xZd50CplKksMnb8K/pm49N?=
- =?us-ascii?Q?K3z2UBPEGQrJ9IeqCFTZM4p8LenpEXaIyQGdpdu9nFFNK/yA8FwSEKJNYKQ8?=
- =?us-ascii?Q?ewtcivv9Bdx2PnqKUhPpVYRM/wNCuC2NBwYG/grJx6OSeui2b3+foemdyxQZ?=
- =?us-ascii?Q?zyTUD0H9jtkSococFOJSJQfS7E2G+ZIolOENR/S61m070NS1gD3TaXGn0J2F?=
- =?us-ascii?Q?6JyCeUAJFqBwozcZAISbcFn7sJkfOjVOp/FSZygQhJfEv+VVQVN+WCkl9V25?=
- =?us-ascii?Q?hbtJTHYs1tkQWZJCkqYVPQGrp09DHNb+qrZbwAdYMwKWgaV5WarCNPgivBH5?=
- =?us-ascii?Q?1ndrtKb6jvU5LtdmBZuQBbag1+2twEYVc1ewo+iSTWjQ04zP+6YxInqH6Xpm?=
- =?us-ascii?Q?CZ/XIE64LGqDsgY=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(7416014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?CV4vBvGTccXyv2n0TOmw3QjkpcPGfwh9CaYDaTgqI7daG7ezkie717eaR6eP?=
- =?us-ascii?Q?bfX7Krsup5xb8BJodokwigTTa0no+Zdm50uOt3ntmhCVSXtKrGJPOuGHdar9?=
- =?us-ascii?Q?FySVxV1He9mLTvUw3tZv22paVdciY/+HIsKpbhT0vgfPeTpHFEwVj7IJ1h6u?=
- =?us-ascii?Q?sbGsMENNz/Qh8/KmYGodyZyh6AeOwpYnxEwvchCssA0kJd7cQiA0UlhjZJdt?=
- =?us-ascii?Q?C2N3VGKNKxC2sbqoY3fipKadXGnIe0dLlOMLroh12VYb1eysaIXIam56p9t7?=
- =?us-ascii?Q?nRMebSzsdVEdQKBS1MwlMy3wGViY5sGueZi3TXwlM++D0+VahfuKmfJ5Vl4J?=
- =?us-ascii?Q?CwKHTItTHDp6eGOqqrbT//7xT0dpWxPF/GmV3l2+D+Hd647NrfTiGFMNQzca?=
- =?us-ascii?Q?HR/K5DkccDeZ6qVugRd6hEfLfprRhjR85Eul9EJLG50dKsLtyj8YOS+RA4FZ?=
- =?us-ascii?Q?VpW0agzx3SEEF7iQQ1Bq+EYQt6+jaTfzzoFRtb7v9H4R2LrV51nMpKe6VAUN?=
- =?us-ascii?Q?GYHvXHJJCUVjOJbMo3qTdiLx63X5bRUOinH3yWDTkrkMyIhTGcuos1oqC85+?=
- =?us-ascii?Q?SbXTsfzUBL1Avy1kggUtKdkb0o8Bg31Tv9WMYId5cWRXPmhq8VwE/kHCUger?=
- =?us-ascii?Q?W9lCILIbiqy0NWw2fwNpJE6y0YFZ7x3IZFHko4YNuAqV3pMRLMvWfwWm2TR6?=
- =?us-ascii?Q?ONXUi9b/HD9nsU/BOtRUK6KSe8t/eqmkzrVm37QvUM50wwMHWPLd9sFG7NXQ?=
- =?us-ascii?Q?FiSY1FOE8dXdnnYKK33ySyCowEAlk52lrsfXmpBbYYxYl27jFIAoIzQjaFfs?=
- =?us-ascii?Q?K8LEGkzfHh2u/WsoqBLLISp51xw3Qo7GaxuUCb2JOB0sG0eeIaSVhGM/JzwB?=
- =?us-ascii?Q?dXYr3NHURy2U/5UGbZM2aTz4XlYb5pF7E0V1akNGL5YAvk5PZ0eemXIg37H5?=
- =?us-ascii?Q?Mnwy+M8W1luzXgLyhxHpepasXHLBu9fgdc9UE9iwjH6PQXfS9LLTHpbXjJWf?=
- =?us-ascii?Q?s+KRUvKCJBB6+RzZYZtvBwjzxpu5MykHPJXHSWCoOA9PKRSPmkHHQq94rmJU?=
- =?us-ascii?Q?+lbOtFONKLhpD2pPwZOTK2B/VGWSP0QGekeg2L5eeRfQDHqRHuJm5F3LAUBB?=
- =?us-ascii?Q?Fc6ksG/0N7buAJMTfuSeiFUwLRopDMCfk09oJg22Iynej9CM4n7cxqatTRyA?=
- =?us-ascii?Q?3O107baJWZyt4Yi7BrFshIR0k2zx4WU/gRdHMgbBJOCwJwMHCLNqse+0gm/C?=
- =?us-ascii?Q?K9sCr9EGjR/E9xjp92V0Nm4nB/JAA0JAmIuCTbrx0gW5ReF7rRkiJ8ZTQPf1?=
- =?us-ascii?Q?DEIi7yDi1BqRDVTo162LQ8j65vllpl2KQft9z6vKz5BG3KGNd5/nNB+x/Qjm?=
- =?us-ascii?Q?lIjjEi1Vh3MmOO8tGhaKhh5DsOmzPRxPR32oQt/Q9GgMg0PRKNDYtxJIQpfu?=
- =?us-ascii?Q?36+IYlllhxXfybPRlMnoXcqwz3Uslvk+269MchchpFi5sxUF0NEtqdJBKJEb?=
- =?us-ascii?Q?YxzeJTM0qHxqo1og4yrrbEeWjvHFYldol0Qfe+MNyISYaLR1MkCjBh1uY1Fg?=
- =?us-ascii?Q?zTd3MSC748RddhrG4TZsivbE8hcLKYJJl8/6AXWN?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d18ea3f-d7f5-4cf4-6e4a-08ddb2964605
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2025 20:41:04.8212
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nF8EEBvNC6je0TJch7AbjJdhS1jJOKCgQn9PlnVEQ+oHhf/dW6c3TQnz8HMTDcWHB5mLKyZdVWQAa85IBlJSZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB10061
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250623-ap1302-v3-1-c9ca5b791494@nxp.com>
 
-Delete isp1301.txt and add compatible string nxp,isp1301 to trivial-devices
-because this i2c device have only reg propepty.
+Hi Frank,
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- .../devicetree/bindings/trivial-devices.yaml  |  2 ++
- .../devicetree/bindings/usb/isp1301.txt       | 24 -------------------
- 2 files changed, 2 insertions(+), 24 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/usb/isp1301.txt
+Thank you for the patch.
 
-diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-index dbec1300bb7ed..c2d5159054596 100644
---- a/Documentation/devicetree/bindings/trivial-devices.yaml
-+++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-@@ -310,6 +310,8 @@ properties:
-           - national,lm92
-             # Nuvoton Temperature Sensor
-           - nuvoton,w83773g
-+            # NXP ISP1301 USB transceiver
-+          - nxp,isp1301
-             # OKI ML86V7667 video decoder
-           - oki,ml86v7667
-             # ON Semiconductor ADT7462 Temperature, Voltage Monitor and Fan Controller
-diff --git a/Documentation/devicetree/bindings/usb/isp1301.txt b/Documentation/devicetree/bindings/usb/isp1301.txt
-deleted file mode 100644
-index ecd607dacba55..0000000000000
---- a/Documentation/devicetree/bindings/usb/isp1301.txt
-+++ /dev/null
-@@ -1,24 +0,0 @@
--* NXP ISP1301 USB transceiver
--
--Required properties:
--- compatible: must be "nxp,isp1301"
--- reg: I2C address of the ISP1301 device
--
--Optional properties of devices using ISP1301:
--- transceiver: phandle of isp1301 - this helps the ISP1301 driver to find the
--               ISP1301 instance associated with the respective USB driver
--
--Example:
--
--	isp1301: usb-transceiver@2c {
--		compatible = "nxp,isp1301";
--		reg = <0x2c>;
--	};
--
--	usbd@31020000 {
--		compatible = "nxp,lpc3220-udc";
--		reg = <0x31020000 0x300>;
--		interrupt-parent = <&mic>;
--		interrupts = <0x3d 0>, <0x3e 0>, <0x3c 0>, <0x3a 0>;
--		transceiver = <&isp1301>;
--	};
+On Mon, Jun 23, 2025 at 03:17:37PM -0400, Frank Li wrote:
+> From: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
+> 
+> The AP1302 is a standalone ISP for ON Semiconductor sensors, which can
+> connect RAW sensors (AR0144).
+> 
+> Add corresponding DT bindings.
+> 
+> Signed-off-by: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Signed-off-by: Stefan Hladnik <stefan.hladnik@gmail.com>
+> Signed-off-by: Florian Rebaudo <frebaudo@witekio.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Previous try:
+> https://lore.kernel.org/linux-media/1631091372-16191-2-git-send-email-anil.mamidala@xilinx.com/
+> 
+> Change in v3:
+> - Move sensors under ports
+> - use compatible string to indentify connected raw sensors
+> - Add onnn,ar0144.yaml
+> ---
+>  .../devicetree/bindings/media/i2c/onnn,ap1302.yaml | 151 +++++++++++++++++++++
+>  .../devicetree/bindings/media/i2c/onnn,ar0144.yaml |  75 ++++++++++
+>  MAINTAINERS                                        |   9 ++
+>  3 files changed, 235 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml b/Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml
+> new file mode 100644
+> index 0000000000000..6b745dcf3fd3f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml
+> @@ -0,0 +1,151 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/i2c/onnn,ap1302.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ON Semiconductor AP1302 Advanced Image Coprocessor
+> +
+> +maintainers:
+> +  - Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> +  - Anil Kumar M <anil.mamidala@xilinx.com>
+> +
+> +description:
+> +  The AP1302 is a standalone ISP for ON Semiconductor sensors. It interfaces to
+> +  up to two RAW CMOS sensors over MIPI CSI-2 connections, processes the two
+> +  video streams and outputs YUV frames to the host over a MIPI CSI-2 interface.
+> +  Frames are output side by side or on two virtual channels.
+> +
+> +  The sensors must be identical. They are connected to the AP1302 on dedicated
+> +  I2C buses, and are controlled by the AP1302 firmware. They are not accessible
+> +  from the host.
+> +
+> +properties:
+> +  compatible:
+> +    const: onnn,ap1302
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description:
+> +          Reference to the CLK clock.
+> +
+> +  reset-gpios:
+> +    items:
+> +      - description:
+> +          Reference to the GPIO connected to the RST pin (active low).
+> +
+> +  standby-gpios:
+> +    items:
+> +      - description:
+> +          Reference to the GPIO connected to the STANDBY pin (active high).
+> +
+> +  enable-gpios:
+> +    items:
+> +      - description:
+> +          Reference to the GPIO connected to the EN pin (active high).
+> +
+> +  dvdd-supply: true
+> +
+> +  hmisc-supply: true
+> +
+> +  smisc-supply: true
+> +
+> +  ports:
+> +    $ref: /schemas/graph.yaml#/properties/ports
+> +    unevaluatedProperties: false
+> +
+> +    patternProperties:
+> +      "^port@[01]":
+> +        description:
+> +          Sensors connected to the first and second input, if no sensor
+> +          connect, isp generate test pattern. The compatible string under
+> +          port@0 and port@1 have to be the same.
+> +
+> +        allOf:
+> +          - $ref: /schemas/graph.yaml#/$defs/port-base
+> +          - $ref: onnn,ar0144.yaml
+
+You can't do that, that's plain wrong, sorry. There are issue raised in
+the review of v2, please try to understand the problem and propose a
+solution there. This is not what we need.
+
+> +
+> +        unevaluatedProperties: false
+> +
+> +    properties:
+> +      port@2:
+> +        $ref: /schemas/graph.yaml#/$defs/port-base
+> +        unevaluatedProperties: false
+> +        properties:
+> +          endpoint:
+> +            $ref: /schemas/media/video-interfaces.yaml#
+> +            unevaluatedProperties: false
+> +            properties:
+> +              clock-noncontinuous:
+> +                type: boolean
+> +
+> +              data-lanes:
+> +                oneOf:
+> +                  - items:
+> +                      - const: 1
+> +                  - items:
+> +                      - const: 1
+> +                      - const: 2
+> +                  - items:
+> +                      - const: 1
+> +                      - const: 2
+> +                      - const: 3
+> +                      - const: 4
+> +
+> +            required:
+> +              - data-lanes
+> +
+> +    required:
+> +      - port@2
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - ports
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        camera@3c {
+> +            compatible = "onnn,ap1302";
+> +            reg = <0x3c>;
+> +
+> +            clocks = <&clk24mhz>;
+> +
+> +            reset-gpios = <&pio 102 GPIO_ACTIVE_LOW>;
+> +            standby-gpios = <&pio 40 GPIO_ACTIVE_HIGH>;
+> +
+> +            ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                port@0 {
+> +                    compatible = "onnn,ar0144";
+> +                    reg = <0>;
+> +                    vaa-supply = <&vaa_regulator>;
+> +                };
+> +
+> +                port@2 {
+> +                    reg = <2>;
+> +
+> +                    endpoint {
+> +                        remote-endpoint = <&seninf_in1>;
+> +                        clock-noncontinuous;
+> +                        data-lanes = <1 2 3 4>;
+> +                    };
+> +                };
+> +            };
+> +        };
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/media/i2c/onnn,ar0144.yaml b/Documentation/devicetree/bindings/media/i2c/onnn,ar0144.yaml
+> new file mode 100644
+> index 0000000000000..68562cf4c00ca
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/i2c/onnn,ar0144.yaml
+> @@ -0,0 +1,75 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/i2c/onnn,ar0144.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ON Semiconductor AP0144 RAW CMOS sensor
+
+AP0144 seems to be a typo.
+
+> +
+> +maintainers:
+> +  - Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> +  - Anil Kumar M <anil.mamidala@xilinx.com>
+
+Listing people as maintainers when they had nothing to do with
+development of a file isn't very polite.
+
+> +
+> +description:
+> +  AP0144 RAW CMOS can be use standalone with any SOCs, or work with AP1302
+> +  ISP.
+
+How a sensor is used is not relevant for its DT bindings.
+
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - onnn,ar0144
+> +      - onnn,ar0330
+> +      - onnn,ar1335
+
+There's also no explanation for this.
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  vaa-supply: true
+> +
+> +  vdd-supply: true
+> +
+> +  vddio-supply: true
+> +
+> +  vddpll-supply: true
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: /schemas/media/video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          not:
+> +            contains:
+> +              const: onnn,ar0330
+> +    then:
+> +      properties:
+> +        vddpll-supply: false
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        camera@10 {
+> +            compatible = "onnn,ar0144";
+> +            reg = <0x10>;
+> +            vaa-supply = <&vaa>;
+> +            vddio-supply = <&vddio>;
+> +            vdd-supply = <&vdd>;
+
+No input clock, reset signal, ports ?
+
+> +        };
+> +    };
+> +
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d6f1670290589..1362d351f2574 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1766,6 +1766,15 @@ L:	linux-sound@vger.kernel.org
+>  S:	Maintained
+>  F:	sound/aoa/
+>  
+> +AP1302 ON SEMICONDUCTOR ISP DRIVER
+> +M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> +R:	Frank Li <Frank.Li@nxp.com>
+> +L:	linux-media@vger.kernel.org
+> +S:	Maintained
+> +T:	git git://linuxtv.org/media.git
+> +F:	Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml
+> +F:	Documentation/devicetree/bindings/media/i2c/onnn,ar0144.yaml
+> +
+>  APEX EMBEDDED SYSTEMS STX104 IIO DRIVER
+>  M:	William Breathitt Gray <wbg@kernel.org>
+>  L:	linux-iio@vger.kernel.org
+
 -- 
-2.34.1
+Regards,
 
+Laurent Pinchart
