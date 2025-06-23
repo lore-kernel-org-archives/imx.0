@@ -1,160 +1,115 @@
-Received: from www637.your-server.de (www637.your-server.de [168.119.26.117])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6380121ABCB;
-	Mon, 23 Jun 2025 11:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.26.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A7B219A86;
+	Mon, 23 Jun 2025 11:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750678459; cv=none; b=CAZmeAH26IImRXqklhp4jkOwQU3tQ+OYupINxuTb3KP+Q6HycCJYIN/GV550leeGGYnSav6yp7aEqJL1AFmUqVvyzOGxMcqgzGWh09IJFSp3WyPFBocdfpyOXxK1BUU0F21j04h0VmG+Egh4DOu+W5vvn/V7v8NzPXZ03nwxkpA=
+	t=1750678972; cv=none; b=IpNIuk6TnkIv5b1Hk0+jyaVJMu+ysc1KaaqKgUJgpZtJ6czm7uneD3XnvfpFPAjetvhhEfYGHqcLEQDrfB38BMUMH4EfhfDr9w/dutAqmdGcUb5k/GDU8txfWwaxIILLSHTU6hbgLj0oXOhrXyfqllNbCumL9In3FNx4rJfA/WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750678459; c=relaxed/simple;
-	bh=tKcDIsLtDkJF8WnaZ9J4aPyfYmz76ZwgpoDVX5vadBE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TkOk6uKYAxjbKDJovvJxT+laZL2a0nEpZmySzLPOJTpxLv4xClmC4B3dLyutK3rxJ2Wq0PqCsvYWU4g2+9ENQxzHP048uoVmrl/j30i9NwxQ2L+62JDUKJn5xnP52VaWsFA7QvyhDH+0LowqcAjrgt1CT/BTwxjzIx7QRkI9jZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b=MuSaY5n7; arc=none smtp.client-ip=168.119.26.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+	s=arc-20240116; t=1750678972; c=relaxed/simple;
+	bh=2m5CfZQaw2dv5R3Bx1BYdCmiNkSM8d2I9a7oqNpDaJg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FbTP4YF6ZYZt0fjClHQyHa244UnULPiiqT4GISgFYXkxynPwAdroTL4toWMOpF+ausimBsaTlpPTowoGkElsnh4Ib59IKIoMItdeC+tIBGAf1oHe2LUmwuK1A2HBdS/OdZf1jYbklFKcg/hmQAzJBgU5J5ts2pCLATRD9s32Lo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJQ3ID8q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=apitzsch.eu header.i=@apitzsch.eu header.b="MuSaY5n7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=apitzsch.eu
-	; s=default2410; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
-	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=tKcDIsLtDkJF8WnaZ9J4aPyfYmz76ZwgpoDVX5vadBE=; b=MuSaY5n74FI9fcbi6OCoUj2h6L
-	HCrKEel8kuCKkMraPu6hSn0aioGtpsMeoANQbEi05Fy14IFgoJxbT7PHgS6iFy7ZJivHtKa4vmOfX
-	HDb0aXCeQfAiJYqvkMaOHH9ltryHJpRUusEren5v5dZSFUhDP1ljSp16R4mwckW8/iWrkBrAaoxmm
-	Eiub8zq0wzFE0V6X1IHwxYyQvrPlmFgkVxQ6tzL3rrCUdxb6aJp3xgCC8LzbiTmDpF6vRsg7Xcjmw
-	LDFkgdZ4J9+rgAiSwtMQ0Il/O0WdaM4Nl4BeAB1cPWbqn33xIxk1SHbfUqSIX5+C1FkqG2JJ2FPF/
-	eUNcZ1Uw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-	by www637.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uTfR8-000P6I-1o;
-	Mon, 23 Jun 2025 13:34:07 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <git@apitzsch.eu>)
-	id 1uTfR7-0002er-0U;
-	Mon, 23 Jun 2025 13:34:06 +0200
-Message-ID: <46a681a84a7493e2d0a6d3a4eedb6c86ccd9903f.camel@apitzsch.eu>
-Subject: Re: [PATCH RESEND v4 0/5] media: i2c: imx214: Add support for more
- clock frequencies
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Ricardo Ribalda <ribalda@kernel.org>, Mauro Carvalho Chehab
-	 <mchehab@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	 <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, Laurent Pinchart
-	 <laurent.pinchart@ideasonboard.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Ricardo Ribalda
-	 <ribalda@chromium.org>, Conor Dooley <conor.dooley@microchip.com>
-Date: Mon, 23 Jun 2025 13:34:03 +0200
-In-Reply-To: <aFj5QnPBO0We5SBQ@kekkonen.localdomain>
-References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
-	 <aFj5QnPBO0We5SBQ@kekkonen.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJQ3ID8q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E13C4CEEA;
+	Mon, 23 Jun 2025 11:42:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750678972;
+	bh=2m5CfZQaw2dv5R3Bx1BYdCmiNkSM8d2I9a7oqNpDaJg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vJQ3ID8qLCiFR8Pxde6rF2KJJUAOZVH8hsgrPoPWLp9XsVub8YquvV1sgl7Xc7+ep
+	 owTauxF/ndQDiCzVeTf2yjAcNYDE/pW79OdZKaH6JbutbKuWrCSeGIi/Joi25lDODC
+	 uBi3KqSVZav3oTXjLfjJadHCrwVa2fHUmhMBabGYPVDhK2i1vkp/9Tmg72GCOdjQn8
+	 1la1NsNuC4JyZ59DCFc9mXQT/RJHTgQrYRjZA5yhQMrCbFzuvCAbURgwj65ULx4ayz
+	 E2Pi5T2PJt/7QLTKK7VUDglj7VtKrzyylDa9NGdbCYpWq1IBICjrRHHdWc/z9tCqyJ
+	 8ZOHbkT/1SwBg==
+Date: Mon, 23 Jun 2025 05:42:50 -0600
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Tim Harvey <tharvey@gateworks.com>
+Subject: Re: [PATCH v3 1/2] PCI: imx6: Remove apps_reset toggle in
+ _core_reset functions
+Message-ID: <kjsaipr2xq777dmiv2ac7qzrxw47nevc75j7ryma32vsnyr2le@mrwurn6rgnac>
+References: <20250616085742.2684742-1-hongxing.zhu@nxp.com>
+ <20250616085742.2684742-2-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27678/Mon Jun 23 10:34:34 2025)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250616085742.2684742-2-hongxing.zhu@nxp.com>
 
-Hi Sakari,
+On Mon, Jun 16, 2025 at 04:57:41PM +0800, Richard Zhu wrote:
+> apps_reset is LTSSM_EN on i.MX7, i.MX8MQ, i.MX8MM and i.MX8MP platforms.
+> Since the assertion/de-assertion of apps_reset(LTSSM_EN bit) had been
+> wrappered in imx_pcie_ltssm_enable() and imx_pcie_ltssm_disable();
+> 
 
-Am Montag, dem 23.06.2025 um 06:50 +0000 schrieb Sakari Ailus:
-> Hi Andr=C3=A9,
->=20
-> On Sat, Jun 21, 2025 at 11:37:24AM +0200, Andr=C3=A9 Apitzsch via B4 Rela=
-y
-> wrote:
-> > The imx214 driver currently supports only a 24 MHz external clock.
-> > But
-> > there are devices, like Qualcomm-MSM8916-based phones, which cannot
-> > provide this frequency. To make the sensor usable by those devices,
-> > add
-> > support for additional clock frequencies.
-> >=20
-> > This series supersedes
-> > https://lore.kernel.org/linux-media/20250308-imx214_clk_freq-v1-0-467a4=
-c083c35@apitzsch.eu/
->=20
-> Is there a difference in this set from the v4 you posted previously?
+What about other i.MX chipsets like 6Q and its cousins? Wouldn't this change
+affect them since they treat 'apps_reset' differently?
 
-There is no difference to the v4 posted previously. This is a resend
-because there was no activity in the original v4.
+- Mani
 
-Best regards,
-Andr=C3=A9
->=20
-> >=20
-> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
-> > ---
-> > Changes in v4:
-> > - Add missing colon to error message
-> > - Add A-b, R-b tags
-> > - Link to v3:
-> > https://lore.kernel.org/r/20250521-imx214_ccs_pll-v3-0-bfb4a2b53d14@api=
-tzsch.eu
-> >=20
-> > Changes in v3:
-> > - Limit range of pll_ip_clk_freq_hz (Sakari)
-> > - Drop unneeded 'ret'
-> > - Use pll.pixel_rate_csi for bit rate calculation
-> > - Add patch that deprecates the clock-frequency property
-> > - Link to v2:
-> > https://lore.kernel.org/r/20250505-imx214_ccs_pll-v2-0-f50452061ff1@api=
-tzsch.eu
-> >=20
-> > Changes in v2:
-> > - Add A-b tags
-> > - Switch to v4l2_ctrl_s_ctrl_int64() to acquire the control handler
-> > mutex
-> > - Add error handling for v4l2_ctrl_s_ctrl_int64() and
-> > =C2=A0 imx214_pll_update()
-> > - Replace "read clock frequency from dt" patch by "remove hard-
-> > coded
-> > =C2=A0 external clock frequency" patch
-> > - Link to v1:
-> > =C2=A0
-> > https://lore.kernel.org/r/20250415-imx214_ccs_pll-v1-0-d3d7748e5fbd@api=
-tzsch.eu
-> >=20
-> > ---
-> > Andr=C3=A9 Apitzsch (5):
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Reorder imx214_parse=
-_fwnode call
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Prepare for variable=
- clock frequency
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Make use of CCS PLL =
-calculator
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: dt-bindings: sony,imx214: Depreca=
-te property clock-
-> > frequency
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 media: i2c: imx214: Remove hard-coded ex=
-ternal clock
-> > frequency
-> >=20
-> > =C2=A0.../devicetree/bindings/media/i2c/sony,imx214.yaml |=C2=A0 29 ++-
-> > =C2=A0drivers/media/i2c/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> > =C2=A0drivers/media/i2c/imx214.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 263
-> > ++++++++++++++++-----
-> > =C2=A03 files changed, 217 insertions(+), 76 deletions(-)
-> > ---
-> > base-commit: 176e917e010cb7dcc605f11d2bc33f304292482b
-> > change-id: 20250406-imx214_ccs_pll-e4aed0e9e532
-> >=20
-> > Best regards,
+> Remove apps_reset toggle in imx_pcie_assert_core_reset() and
+> imx_pcie_deassert_core_reset() functions. Use imx_pcie_ltssm_enable()
+> and imx_pcie_ltssm_disable() to configure apps_reset directly.
+> 
+> Fix fail to enumerate reliably PI7C9X2G608GP (hotplug) at i.MX8MM, which
+> reported By Tim.
+> 
+> Reported-by: Tim Harvey <tharvey@gateworks.com>
+> Closes: https://lore.kernel.org/all/CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcMHDy+poj9=jSy+w@mail.gmail.com/
+> Fixes: ef61c7d8d032 ("PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()")
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 9754cc6e09b9..f5f2ac638f4b 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -860,7 +860,6 @@ static int imx95_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
+>  static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
+>  {
+>  	reset_control_assert(imx_pcie->pciephy_reset);
+> -	reset_control_assert(imx_pcie->apps_reset);
+>  
+>  	if (imx_pcie->drvdata->core_reset)
+>  		imx_pcie->drvdata->core_reset(imx_pcie, true);
+> @@ -872,7 +871,6 @@ static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
+>  static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
+>  {
+>  	reset_control_deassert(imx_pcie->pciephy_reset);
+> -	reset_control_deassert(imx_pcie->apps_reset);
+>  
+>  	if (imx_pcie->drvdata->core_reset)
+>  		imx_pcie->drvdata->core_reset(imx_pcie, false);
+> @@ -1247,6 +1245,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
+>  		}
+>  	}
+>  
+> +	/* Make sure that PCIe LTSSM is cleared */
+> +	imx_pcie_ltssm_disable(dev);
+> +
+>  	ret = imx_pcie_deassert_core_reset(imx_pcie);
+>  	if (ret < 0) {
+>  		dev_err(dev, "pcie deassert core reset failed: %d\n", ret);
+> -- 
+> 2.37.1
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
