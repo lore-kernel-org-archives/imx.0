@@ -1,104 +1,127 @@
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC11BB663;
-	Mon, 23 Jun 2025 10:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E96B663
+	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 10:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750673135; cv=none; b=Lv2KkVPW+vN/B8ltHY1DUztU/geiNAJqdcswuFsdSHX8Xo8plX94t/JfrovGopa2mFMmJHk1kjKhkDRvGpyDfN+NZejym2YoJTIOEJWt64b4N+NsmDnUenjV8SXez3vpLH/Ik5MNF8F97Gzk/W7lT13E/EN1wuMCEiDXs4evjp8=
+	t=1750673296; cv=none; b=sn3NCogB9gMbXaOHRDaQR9s6f9j4CzJgRN5GDwNZucSmIw6rqh7vs02BcVBaRqkyQgmuSfNGelBsjKf5pfKW/QwgVvB5lfG6uHPx9LXQPciifDwrrpnqCiNDGRJGMyF5xa0vcCFOpn8YtpfrOPj84m9PJunsC0iMYMITQJt2hAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750673135; c=relaxed/simple;
-	bh=vr/v7+HNQA9PBO0CTD04rUzWOcoal2+aqe6MzSRZyaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hbwjEjoMcDo8kWNV01BgbX55KvWBmNP3tZjFuPWeTZhdO8MQQ8brXH1MaGIc8SwPIQftMm3beYyUogNn6tD/lE/KhOJEZo80sENPQEqXfHOPgncII+WQjTKML+PW3wNcqzjBAV19fz6vkgWhHjrgvHETadrZtGjl8bhqr6Rr920=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=L86h1ro2; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	s=arc-20240116; t=1750673296; c=relaxed/simple;
+	bh=dix0Yhu3c8boRB+3OYeK+56zmV1v3N5vctgiK7sTU9I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jf/9ksFHZW8nIYo0GpVNNZ6uOhZdRErUXAxwSNsArS6WZRJeeV+M5jU2n7AxAFMVoLeWpwbSuENOrf0DrXxkZN0z1gljCAHGlLvuZ9P7iOmen9OWBgYFVYmycgo0Z9J8X+bARKCp7dwDirR7WcG1d26ix4RjgBis6sdwaBI/QW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=alt1eMxf; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="L86h1ro2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=CwBZWncXMFHUNfKxRF00wCCVLbZJy1TDoDay/M48Z+I=; b=L86h1ro29XqjaL+eCgRkkXLern
-	75+0ic4ZPZQA9jgsZHU+m6s6A2g1sjBn8ch86nVuI/mPsm+t10x6oPsYBhqLPIQIrNtzVhkQykPlD
-	GS6K5lvxSgSfYFgxVCGxHbCyZJr9sJG8cHlMxOsXGWp3xZSWPA+YRD0J0ug3eUzpFk8RG8q4SVWqQ
-	TOR2KrK1AeFq1O+2IjRT6Sxz8JfV9KsVPDxIse6QRLv8ohmlIyxP9kaPKQw4t3nnlQoZnyzyHIkQL
-	h6O0JmWJF9FZOYiJ72bt6fz7XaHXYoqvT90EPSJ6+HRhkGFcR9xFgmumcVFR0doDchPrQUOcr2uVj
-	k3uVs64Q==;
-Received: from [185.15.108.45] (helo=phil.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1uTe3H-00084G-Br; Mon, 23 Jun 2025 12:05:23 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: Olivier Benjamin <olivier.benjamin@bootlin.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
- Nicholas Roth <nicholas@rothemail.net>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
- ~diederik/pine64-discuss@lists.sr.ht, Dragan Simic <dsimic@manjaro.org>,
- Ondrej Jirman <megi@xff.cz>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="alt1eMxf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750673295; x=1782209295;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=dix0Yhu3c8boRB+3OYeK+56zmV1v3N5vctgiK7sTU9I=;
+  b=alt1eMxfR2YNfH5FQ56VKCliDoU79taO9Lity1B5H2xxOyw/XlIXyGEo
+   Ss7paGoKhbalhHDwxEmQeKKGFxbrzhI7hWisttGmQ0kiKFILHu53YdHiz
+   QVkrKaCDasyWi71GkCgOjhrx5YjOvXuYgFRq+q+ZwKhQkNTCq2R5XH+zi
+   Eeo+VpJsFQWdWAjqwsxVIW1BQ4EU6JO2Vei39/6UjFQraQsCZrBc39W0Z
+   JY46Vo1lBVuG4pn3Hecu9+Aw9kYvEONj1CYKJCaGXuiwMNfDDBZ++atRn
+   rS2d37B+106vjNpwLkILGSL6AYnAFA2ve3znfQbTxV/j5DVBAUMzvr7H7
+   w==;
+X-CSE-ConnectionGUID: ZtoBuDmMRUSRBruly0jXWQ==
+X-CSE-MsgGUID: 9gpVsSzWT++R5/ZwjbmcMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="52740984"
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="52740984"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 03:08:14 -0700
+X-CSE-ConnectionGUID: b1RtfYh9QqGx1/7cVXdpcA==
+X-CSE-MsgGUID: lQO2/vW8TGuyVMaj/z1Yig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
+   d="scan'208";a="175160611"
+Received: from abityuts-desk.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.8])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 03:08:11 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 42C691201F7;
+	Mon, 23 Jun 2025 13:08:07 +0300 (EEST)
+Date: Mon, 23 Jun 2025 10:08:07 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Heiko Stuebner <heiko@sntech.de>
+Cc: Olivier Benjamin <olivier.benjamin@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Nicholas Roth <nicholas@rothemail.net>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
+	imx@lists.linux.dev, ~diederik/pine64-discuss@lists.sr.ht,
+	Dragan Simic <dsimic@manjaro.org>, Ondrej Jirman <megi@xff.cz>
 Subject: Re: [PATCH v4 0/4] Describe the cameras in the PinePhone Pro dts
-Date: Mon, 23 Jun 2025 12:05:22 +0200
-Message-ID: <13788127.uLZWGnKmhe@phil>
-In-Reply-To: <aFj4kAXEhrR4Wbnz@kekkonen.localdomain>
-References:
- <20250620-camera-v4-0-0201a8ed5fae@bootlin.com>
+Message-ID: <aFknh7weIKoGKajQ@kekkonen.localdomain>
+References: <20250620-camera-v4-0-0201a8ed5fae@bootlin.com>
  <aFj4kAXEhrR4Wbnz@kekkonen.localdomain>
+ <13788127.uLZWGnKmhe@phil>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <13788127.uLZWGnKmhe@phil>
 
-Hi,
+Hi Heiko,
 
-Am Montag, 23. Juni 2025, 08:47:44 Mitteleurop=C3=A4ische Sommerzeit schrie=
-b Sakari Ailus:
-> Hi Olivier,
->=20
-> On Fri, Jun 20, 2025 at 05:21:31PM +0200, Olivier Benjamin wrote:
-> > This series adds support for the Pine64 PinePhone Pro's rear and front
-> > cameras in Device Tree.
-> > This is based on some of Ondrej Jirman's patches hosted in his tree at
-> > https://codeberg.org/megi/linux, but I have also fully reviewed and
-> > re-written the code from the RK3399 datasheet, the PinePhone Pro
-> > schematic, and the IMX258-0AQH5 software reference manual.
-> >=20
-> > I have tested these changes on my PinePhone Pro and am able to take
-> > photos from both cameras using libcamera's cam.
-> >=20
-> > This series has raised a question about the proper label name for the
-> > front/user camera and rear/world camera for phones.
-> > This series is using "ucam" and "wcam", which is used in a few other
-> > Rockship DTBs:
-> >  - arch/arm64/boot/dts/rockchip/px30-evb.dts
-> >  - rk3399-gru-scarlet.dtsi
-> >=20
-> > Signed-off-by: Olivier Benjamin <olivier.benjamin@bootlin.com>
->=20
-> Thanks for the patches.
->=20
-> I've picked the first two in the set, presumably the rest will be merged
-> via another tree?
+On Mon, Jun 23, 2025 at 12:05:22PM +0200, Heiko Stuebner wrote:
+> Hi,
+> 
+> Am Montag, 23. Juni 2025, 08:47:44 Mitteleuropäische Sommerzeit schrieb Sakari Ailus:
+> > Hi Olivier,
+> > 
+> > On Fri, Jun 20, 2025 at 05:21:31PM +0200, Olivier Benjamin wrote:
+> > > This series adds support for the Pine64 PinePhone Pro's rear and front
+> > > cameras in Device Tree.
+> > > This is based on some of Ondrej Jirman's patches hosted in his tree at
+> > > https://codeberg.org/megi/linux, but I have also fully reviewed and
+> > > re-written the code from the RK3399 datasheet, the PinePhone Pro
+> > > schematic, and the IMX258-0AQH5 software reference manual.
+> > > 
+> > > I have tested these changes on my PinePhone Pro and am able to take
+> > > photos from both cameras using libcamera's cam.
+> > > 
+> > > This series has raised a question about the proper label name for the
+> > > front/user camera and rear/world camera for phones.
+> > > This series is using "ucam" and "wcam", which is used in a few other
+> > > Rockship DTBs:
+> > >  - arch/arm64/boot/dts/rockchip/px30-evb.dts
+> > >  - rk3399-gru-scarlet.dtsi
+> > > 
+> > > Signed-off-by: Olivier Benjamin <olivier.benjamin@bootlin.com>
+> > 
+> > Thanks for the patches.
+> > 
+> > I've picked the first two in the set, presumably the rest will be merged
+> > via another tree?
+> 
+> correct, and with the first two being applied, I can now also safely pick
+> the other two :-)
 
-correct, and with the first two being applied, I can now also safely pick
-the other two :-)
+Once in my tree, they'll next end up to the media committers' tree and
+after some time you should be able to find them in linux-next. This process
+will take some time. Just FYI.
 
-Thanks a lot
-Heiko
-
-
-
+-- 
+Sakari Ailus
