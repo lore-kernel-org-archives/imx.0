@@ -1,44 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A7B219A86;
-	Mon, 23 Jun 2025 11:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7FF1C32
+	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 11:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750678972; cv=none; b=IpNIuk6TnkIv5b1Hk0+jyaVJMu+ysc1KaaqKgUJgpZtJ6czm7uneD3XnvfpFPAjetvhhEfYGHqcLEQDrfB38BMUMH4EfhfDr9w/dutAqmdGcUb5k/GDU8txfWwaxIILLSHTU6hbgLj0oXOhrXyfqllNbCumL9In3FNx4rJfA/WE=
+	t=1750679242; cv=none; b=gFsHZbo87gpYDeOqiLihE0mRBiVGTXEvNrJyrQ+gnJa5Mzqqw4n4Olx5ojFF8DwSNhU8xR6KtVm4d5Y/I7Gocpf+JFVZh7odGg5IQtlzbD+7iXodpJrDdVC/wNkRMxTE90Jzt9ILK33FqgtOavjBVNE/OBR6+inqG0imp6m9R20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750678972; c=relaxed/simple;
-	bh=2m5CfZQaw2dv5R3Bx1BYdCmiNkSM8d2I9a7oqNpDaJg=;
+	s=arc-20240116; t=1750679242; c=relaxed/simple;
+	bh=oHIQGmhVZk1bws7ooyBVG45/Q0gIQsMf18p3cWsR55Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FbTP4YF6ZYZt0fjClHQyHa244UnULPiiqT4GISgFYXkxynPwAdroTL4toWMOpF+ausimBsaTlpPTowoGkElsnh4Ib59IKIoMItdeC+tIBGAf1oHe2LUmwuK1A2HBdS/OdZf1jYbklFKcg/hmQAzJBgU5J5ts2pCLATRD9s32Lo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJQ3ID8q; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sl9JllWsHUkbXKEKCS6wietsHBjByi3ldQ8GxlfGO01YpFlKJ8aks6xrB8HVlGlhk/3Ye3QG5GOn5f+LJ8WPenOrRnYmBR/woLVY3v08DT0+vf0VSclxeTzUn+c4cRtwzR/Raiqwwnc22oxP14Qa0/5daXnpqgOlcayvsF69nPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bnO4gPuN; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJQ3ID8q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E13C4CEEA;
-	Mon, 23 Jun 2025 11:42:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750678972;
-	bh=2m5CfZQaw2dv5R3Bx1BYdCmiNkSM8d2I9a7oqNpDaJg=;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bnO4gPuN"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id B07C2198D;
+	Mon, 23 Jun 2025 13:47:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1750679221;
+	bh=oHIQGmhVZk1bws7ooyBVG45/Q0gIQsMf18p3cWsR55Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vJQ3ID8qLCiFR8Pxde6rF2KJJUAOZVH8hsgrPoPWLp9XsVub8YquvV1sgl7Xc7+ep
-	 owTauxF/ndQDiCzVeTf2yjAcNYDE/pW79OdZKaH6JbutbKuWrCSeGIi/Joi25lDODC
-	 uBi3KqSVZav3oTXjLfjJadHCrwVa2fHUmhMBabGYPVDhK2i1vkp/9Tmg72GCOdjQn8
-	 1la1NsNuC4JyZ59DCFc9mXQT/RJHTgQrYRjZA5yhQMrCbFzuvCAbURgwj65ULx4ayz
-	 E2Pi5T2PJt/7QLTKK7VUDglj7VtKrzyylDa9NGdbCYpWq1IBICjrRHHdWc/z9tCqyJ
-	 8ZOHbkT/1SwBg==
-Date: Mon, 23 Jun 2025 05:42:50 -0600
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Tim Harvey <tharvey@gateworks.com>
-Subject: Re: [PATCH v3 1/2] PCI: imx6: Remove apps_reset toggle in
- _core_reset functions
-Message-ID: <kjsaipr2xq777dmiv2ac7qzrxw47nevc75j7ryma32vsnyr2le@mrwurn6rgnac>
-References: <20250616085742.2684742-1-hongxing.zhu@nxp.com>
- <20250616085742.2684742-2-hongxing.zhu@nxp.com>
+	b=bnO4gPuNBRCiyLmakXSRcFDiwdhL4FGmCD3/CF2YxwUjHyDOFd/uaOn5dYBqvaFTk
+	 bzzZyvDeqxO0ftEUIKTgViC3lylvEzfyf+XTjhROhYB+inUyHKlSjJaZaIWRtIYTZy
+	 OdjH/PzrwzCKQ3lHlwC11awVPI0dYDESYbEHllww=
+Date: Mon, 23 Jun 2025 14:46:58 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda Delgado <ribalda@kernel.org>
+Cc: =?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Ricardo Ribalda <ribalda@chromium.org>
+Subject: Re: [PATCH RESEND v4 3/5] media: i2c: imx214: Make use of CCS PLL
+ calculator
+Message-ID: <20250623114658.GB32376@pendragon.ideasonboard.com>
+References: <20250621-imx214_ccs_pll-v4-0-12178e5eb989@apitzsch.eu>
+ <20250621-imx214_ccs_pll-v4-3-12178e5eb989@apitzsch.eu>
+ <20250621181751.GA9125@pendragon.ideasonboard.com>
+ <ed0b8fe3a20111477cafb1de7b399afb99caaa0c.camel@apitzsch.eu>
+ <20250622171320.GA826@pendragon.ideasonboard.com>
+ <CAPybu_2WF=t4jnwsrTSCiSZ4T7Sck4-fCoub33=P_6KvdZ5ePg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,68 +61,243 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250616085742.2684742-2-hongxing.zhu@nxp.com>
+In-Reply-To: <CAPybu_2WF=t4jnwsrTSCiSZ4T7Sck4-fCoub33=P_6KvdZ5ePg@mail.gmail.com>
 
-On Mon, Jun 16, 2025 at 04:57:41PM +0800, Richard Zhu wrote:
-> apps_reset is LTSSM_EN on i.MX7, i.MX8MQ, i.MX8MM and i.MX8MP platforms.
-> Since the assertion/de-assertion of apps_reset(LTSSM_EN bit) had been
-> wrappered in imx_pcie_ltssm_enable() and imx_pcie_ltssm_disable();
-> 
+Hi Ricardo,
 
-What about other i.MX chipsets like 6Q and its cousins? Wouldn't this change
-affect them since they treat 'apps_reset' differently?
+On Mon, Jun 23, 2025 at 11:31:17AM +0200, Ricardo Ribalda Delgado wrote:
+> On Sun, Jun 22, 2025 at 7:13 PM Laurent Pinchart wrote:
+> > On Sun, Jun 22, 2025 at 05:34:56PM +0200, André Apitzsch wrote:
+> > > Am Samstag, dem 21.06.2025 um 21:17 +0300 schrieb Laurent Pinchart:
+> > > > On Sat, Jun 21, 2025 at 11:37:27AM +0200, André Apitzsch via B4 Relay wrote:
+> > > > > From: André Apitzsch <git@apitzsch.eu>
+> > > > >
+> > > > > Calculate PLL parameters based on clock frequency and link
+> > > > > frequency.
+> > > > >
+> > > > > Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+> > > > > Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> > > > > ---
+> > > > >  drivers/media/i2c/Kconfig  |   1 +
+> > > > >  drivers/media/i2c/imx214.c | 213 ++++++++++++++++++++++++++++++++++++---------
+> > > > >  2 files changed, 175 insertions(+), 39 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
+> > > > > index
+> > > > > e68202954a8fd4711d108cf295d5771246fbc406..08db8abeea218080b0bf5bfe6
+> > > > > cf82f1c0b100c4a 100644
+> > > > > --- a/drivers/media/i2c/Kconfig
+> > > > > +++ b/drivers/media/i2c/Kconfig
+> > > > > [..]
+> > > > > @@ -1224,42 +1336,52 @@ static int imx214_parse_fwnode(struct
+> > > > > device *dev)
+> > > > >   if (!endpoint)
+> > > > >   return dev_err_probe(dev, -EINVAL, "endpoint node not found\n");
+> > > > >
+> > > > > - ret = v4l2_fwnode_endpoint_alloc_parse(endpoint, &bus_cfg);
+> > > > > + bus_cfg->bus_type = V4L2_MBUS_CSI2_DPHY;
+> > > > > + ret = v4l2_fwnode_endpoint_alloc_parse(endpoint, bus_cfg);
+> > > > > + fwnode_handle_put(endpoint);
+> > > >
+> > > > ... drop this. Up to you.
+> > > >
+> > > > >   if (ret) {
+> > > > >   dev_err_probe(dev, ret, "parsing endpoint node failed\n");
+> > > > > - goto done;
+> > > > > + goto error;
+> > > >
+> > > > You can return ret here.
+> > > >
+> > > > >   }
+> > > > >
+> > > > >   /* Check the number of MIPI CSI2 data lanes */
+> > > > > - if (bus_cfg.bus.mipi_csi2.num_data_lanes != 4) {
+> > > > > + if (bus_cfg->bus.mipi_csi2.num_data_lanes != 4) {
+> > > > >   ret = dev_err_probe(dev, -EINVAL,
+> > > > >       "only 4 data lanes are currently supported\n");
+> > > > > - goto done;
+> > > > > + goto error;
+> > > > >   }
+> > > > >
+> > > > > - if (bus_cfg.nr_of_link_frequencies != 1)
+> > > > > + if (bus_cfg->nr_of_link_frequencies != 1)
+> > > > >   dev_warn(dev, "Only one link-frequency supported, please review
+> > > > > your DT. Continuing anyway\n");
+> > > >
+> > > > Now that the driver can calculate PLL parameters dynamically, it
+> > > > would be nice to lift this restriction and make the link frequency
+> > > > control writable, in a separate patch on top of this series.
+> > >
+> > > Maybe this could be postponed, as I don't have any use for it at the
+> > > moment and I don't want to further delay this series.
+> >
+> > When I said "on top", I didn't mean in a new version of this series. We
+> > can merge this first, and then lift this restriction. I don't have an
+> > imx214-based device so I can't do it myself and test it :-/
+> >
+> > > > > - for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++) {
+> > > > > - if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
+> > > > > + for (i = 0; i < bus_cfg->nr_of_link_frequencies; i++) {
+> > > > > + u64 freq = bus_cfg->link_frequencies[i];
+> > > > > + struct ccs_pll pll;
+> > > > > +
+> > > > > + if (!imx214_pll_calculate(imx214, &pll, freq))
+> > > > >   break;
+> > > > > - if (bus_cfg.link_frequencies[i] ==
+> > > > > -     IMX214_DEFAULT_LINK_FREQ_LEGACY) {
+> > > > > + if (freq == IMX214_DEFAULT_LINK_FREQ_LEGACY) {
+> > > > >   dev_warn(dev,
+> > > > >   "link-frequencies %d not supported, please review your DT.
+> > > > > Continuing anyway\n",
+> > > > >   IMX214_DEFAULT_LINK_FREQ);
+> > > > > + freq = IMX214_DEFAULT_LINK_FREQ;
+> > > > > + if (imx214_pll_calculate(imx214, &pll, freq))
+> > > > > + continue;
+> > > > > + bus_cfg->link_frequencies[i] = freq;
+> > > > >   break;
+> > > > >   }
+> > > >
+> > > > How about separating the IMX214_DEFAULT_LINK_FREQ_LEGACY check from
+> > > > the PLL calculation ? Something like
+> > > >
+> > > >  u64 freq = bus_cfg->link_frequencies[i];
+> > > >  struct ccs_pll pll;
+> > > >
+> > > >  if (freq == IMX214_DEFAULT_LINK_FREQ_LEGACY) {
+> > > >  dev_warn(dev,
+> > > >  "link-frequencies %d not supported, please review your DT.
+> > > > Continuing anyway\n",
+> > > >  IMX214_DEFAULT_LINK_FREQ);
+> > > >  freq = IMX214_DEFAULT_LINK_FREQ;
+> > > >  bus_cfg->link_frequencies[i] = freq;
+> > > >  }
+> > >
+> > > With PLL calculation, 480000000 (=IMX214_DEFAULT_LINK_FREQ_LEGACY)
+> > > might be a valid link frequency explicitly set by the user. I'm not
+> > > sure whether it is a good idea to overwrite the link frequency, before
+> > > trying the PLL calculation. That's why I would keep the code the way it
+> > > is.
+> >
+> > The current code accepts both IMX214_DEFAULT_LINK_FREQ (600 MHz) and
+> > IMX214_DEFAULT_LINK_FREQ_LEGACY (400 MHz), and programs the PLL with (as
+> > far as I understand) a 600 MHz clock frequency in either case. To avoid
+> > a change in behaviour, I think overriding the 400 MHz frequency with 600
+> > MHz in this patch would be best. We could then drop that in a later
+> > patch, possibly by patching the clock frequency in a platform-specific
+> > driver instead of the imx214 driver.
+> >
+> > > >  if (!imx214_pll_calculate(imx214, &pll, freq))
+> > > >  break;
+> > > >
+> > > > It will then become easier to drop this legacy support from the
+> > > > driver. What platform(s) are know to specify an incorrect link
+> > > > frequency ?
+> > >
+> > > I don't know.
+> >
+> > Ricardo, do you have any information about this ?
+> 
+> This was for a development platform for Qualcomm, think of a pizero
+> like, but with a Snapdragon device.
+> 
+> There was a Qtechnology product based on that platform. I asked them
+> if they could provide me a device for testing, but it has been
+> discontinued and  replaced with something better.
+> 
+> We can start to deprecate the clock quirk if you want.
 
-- Mani
+That would be great. Thanks for the confirmation.
 
-> Remove apps_reset toggle in imx_pcie_assert_core_reset() and
-> imx_pcie_deassert_core_reset() functions. Use imx_pcie_ltssm_enable()
-> and imx_pcie_ltssm_disable() to configure apps_reset directly.
-> 
-> Fix fail to enumerate reliably PI7C9X2G608GP (hotplug) at i.MX8MM, which
-> reported By Tim.
-> 
-> Reported-by: Tim Harvey <tharvey@gateworks.com>
-> Closes: https://lore.kernel.org/all/CAJ+vNU3ohR2YKTwC4xoYrc1z-neDoH2TTZcMHDy+poj9=jSy+w@mail.gmail.com/
-> Fixes: ef61c7d8d032 ("PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()")
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 9754cc6e09b9..f5f2ac638f4b 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -860,7 +860,6 @@ static int imx95_pcie_core_reset(struct imx_pcie *imx_pcie, bool assert)
->  static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
->  {
->  	reset_control_assert(imx_pcie->pciephy_reset);
-> -	reset_control_assert(imx_pcie->apps_reset);
->  
->  	if (imx_pcie->drvdata->core_reset)
->  		imx_pcie->drvdata->core_reset(imx_pcie, true);
-> @@ -872,7 +871,6 @@ static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
->  static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
->  {
->  	reset_control_deassert(imx_pcie->pciephy_reset);
-> -	reset_control_deassert(imx_pcie->apps_reset);
->  
->  	if (imx_pcie->drvdata->core_reset)
->  		imx_pcie->drvdata->core_reset(imx_pcie, false);
-> @@ -1247,6 +1245,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
->  		}
->  	}
->  
-> +	/* Make sure that PCIe LTSSM is cleared */
-> +	imx_pcie_ltssm_disable(dev);
-> +
->  	ret = imx_pcie_deassert_core_reset(imx_pcie);
->  	if (ret < 0) {
->  		dev_err(dev, "pcie deassert core reset failed: %d\n", ret);
-> -- 
-> 2.37.1
-> 
+By deprecate, do you mean first printing a message for a few kernel
+releases, or can we just drop it in the next version of this patch ?
+
+> > > > >   }
+> > > > >
+> > > > > - if (i == bus_cfg.nr_of_link_frequencies)
+> > > > > + if (i == bus_cfg->nr_of_link_frequencies)
+> > > > >   ret = dev_err_probe(dev, -EINVAL,
+> > > > > -     "link-frequencies %d not supported, please review your DT\n",
+> > > > > -     IMX214_DEFAULT_LINK_FREQ);
+> > > > > +     "link-frequencies %lld not supported, please review your
+> > > > > DT\n",
+> > > > > +     bus_cfg->nr_of_link_frequencies ?
+> > > > > +     bus_cfg->link_frequencies[0] : 0);
+> > > > >
+> > > > > -done:
+> > > > > - v4l2_fwnode_endpoint_free(&bus_cfg);
+> > > > > - fwnode_handle_put(endpoint);
+> > > > > + return 0;
+> > > > > +
+> > > > > +error:
+> > > > > + v4l2_fwnode_endpoint_free(&imx214->bus_cfg);
+> > > > >   return ret;
+> > > > >  }
+> > > > >
+> > > > > @@ -1299,7 +1421,7 @@ static int imx214_probe(struct i2c_client
+> > > > > *client)
+> > > > >   return dev_err_probe(dev, PTR_ERR(imx214->regmap),
+> > > > >        "failed to initialize CCI\n");
+> > > > >
+> > > > > - ret = imx214_parse_fwnode(dev);
+> > > > > + ret = imx214_parse_fwnode(dev, imx214);
+> > > > >   if (ret)
+> > > > >   return ret;
+> > > > >
+> > > > > @@ -1310,7 +1432,9 @@ static int imx214_probe(struct i2c_client
+> > > > > *client)
+> > > > >   * Enable power initially, to avoid warnings
+> > > > >   * from clk_disable on power_off
+> > > > >   */
+> > > > > - imx214_power_on(imx214->dev);
+> > > > > + ret = imx214_power_on(imx214->dev);
+> > > > > + if (ret < 0)
+> > > > > + goto error_fwnode;
+> > > >
+> > > > This change seems to belong to a separate patch.
+> > > >
+> > > > >
+> > > > >   ret = imx214_identify_module(imx214);
+> > > > >   if (ret)
+> > > > > @@ -1341,6 +1465,12 @@ static int imx214_probe(struct i2c_client
+> > > > > *client)
+> > > > >   pm_runtime_set_active(imx214->dev);
+> > > > >   pm_runtime_enable(imx214->dev);
+> > > > >
+> > > > > + ret = imx214_pll_update(imx214);
+> > > > > + if (ret < 0) {
+> > > > > + dev_err_probe(dev, ret, "failed to update PLL\n");
+> > > > > + goto error_subdev_cleanup;
+> > > > > + }
+> > > >
+> > > > I would move this to imx214_ctrls_init().
+> > > >
+> > > > > +
+> > > > >   ret = v4l2_async_register_subdev_sensor(&imx214->sd);
+> > > > >   if (ret < 0) {
+> > > > >   dev_err_probe(dev, ret,
+> > > > > @@ -1366,6 +1496,9 @@ static int imx214_probe(struct i2c_client
+> > > > > *client)
+> > > > >  error_power_off:
+> > > > >   imx214_power_off(imx214->dev);
+> > > > >
+> > > > > +error_fwnode:
+> > > > > + v4l2_fwnode_endpoint_free(&imx214->bus_cfg);
+> > > > > +
+> > > > >   return ret;
+> > > > >  }
+> > > > >
+> > > > > @@ -1378,6 +1511,8 @@ static void imx214_remove(struct i2c_client
+> > > > > *client)
+> > > > >   v4l2_subdev_cleanup(sd);
+> > > > >   media_entity_cleanup(&imx214->sd.entity);
+> > > > >   v4l2_ctrl_handler_free(&imx214->ctrls);
+> > > > > + v4l2_fwnode_endpoint_free(&imx214->bus_cfg);
+> > > > > +
+> > > > >   pm_runtime_disable(&client->dev);
+> > > > >   if (!pm_runtime_status_suspended(&client->dev)) {
+> > > > >   imx214_power_off(imx214->dev);
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Regards,
+
+Laurent Pinchart
