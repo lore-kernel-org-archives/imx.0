@@ -1,212 +1,99 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010005.outbound.protection.outlook.com [52.101.84.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FC12E2EF0
-	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 16:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750782606; cv=fail; b=IANLNCqdlfqbJZnTU9Q1zHHoyfOG7FtTtas3sA8sU1/pqJ/a0utE4Uiu1RxMfZBish631yT3+aBXYJxKk5vH9hz/dp2N9Bg5ebV/0cit3r6g1bKnSJzSBbmm4HY5ozpaPdbFAL8j4t/xQMGrBw3pX8KzTtS62h+jfodH4bXM5+I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750782606; c=relaxed/simple;
-	bh=FsbOPS1W9x8964Zh0lcl+IIHXBLY6wj/uRSHyk9ht8Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IRL+jZixOvexNFhSsZW/yduOVTBu9yEko/IWRhrj7cDrA5X1M5PCQeFaQKSA08WW9rTcCJc5amcExyvEfulTbF2wlUWjM9kfUzksp8atQqDJNcPUmJZd5UvVCuUu30DXZx81PEcfC+XbKB3BNr/QC+Pm8JcDiUiu123g6SyK/Vg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=EjfuGLSJ; arc=fail smtp.client-ip=52.101.84.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EB02E2F13;
+	Tue, 24 Jun 2025 16:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750782922; cv=none; b=WzK5w2RHqZpiJy4XSlHOYlNcOu5qcl9SFrBj45uLbiIRhdbJrOtzms+dMPLId58a2apvE8OE/tvjs99d+oLvTUdu6nldWrUYfIu0yKasAK4h/tTn5OmnECgG1bxi98Cvpei49RVoQVOPBuq0sI0E91Lz8JIE0JAtSjo/+hSaEYE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750782922; c=relaxed/simple;
+	bh=D0kBtQioBvRgs3uooJIz8gMkV3mDK6d8t6NvwidXjTE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NtBuC5ALVld2hYrp45UELhVyGgmo6Si4RN9pm38SHmuxZiqauHEvy0pby3yN0K6cYqZNUrZArAnhHebXubl0+pipPDWIdTECv+2Kh3Bzk2l0eUHAOECmTECkV3V2wkLmZWyD/MU73fKTGt1lPQa9wq5KkBPAlOrd3ORiIr9aBwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJzCLe6v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="EjfuGLSJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XK/yNLhtooA5W5Agtqq0TCYIq2NfZhfvxTzvYvxVL1IH5NrlWDgu5NvSeuto90roowgs3QdLqonUB84ybCtevfv0DLLp8aY5DywACDZZDuRIkc0ZcRPQbTgklsE9yreeLF2RSEzuqhITH5jhITW4Ttru+6O5tl1iF/xlqTGBIZoYCrOjmVJQNmvb7w42RpPoDzCgTEz825swVRQ03teh0bY1hzFyYioWBdEsYvbruat1ZlxN/AYaKwIwfbp/KQuDQ9OF/1Z0sxgphflu7MuuGkJeQaE0abpS0jqmVeKSFZFEiDKClv0QxjmAxGvqpUbrV1Iiqukc2iIm04Jm4r5WVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hZf1DB8pwk75R78BOeHGrz6heW5G3F7G3+J8Mh0DKRQ=;
- b=PrxvaVSuP8m1vX7fOx9+Zg+VxW+gWLaKSDoU4w/QLuF2e4Ack07QHATdW8ZYmd5ylvAxFIKCeA6APqNEnZe+84EOiI4Sg7fDlwMyNbtymR1NdU2zKr6rLUiMV+aSRv5Ja799jfxsOnDH+G6OGg7QOclEMf7NmHDUUbVZGIwoWHMCB4gTG2rNOGrKr6hHgzyz2jYKj7+9VENQQP6lm6VnscCDojexfOm7eLozLSNq+nDCimapJYKlXmN51/RIlB1yWvmxzRv+g16pEk3wtaA+L8D/GoTVn8sfFeZzDlaWfL6W0vAGjpa6wC+Q4Oq5PGXpBtUoDKpUWvvL2NKcWlXfng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hZf1DB8pwk75R78BOeHGrz6heW5G3F7G3+J8Mh0DKRQ=;
- b=EjfuGLSJW2cy5ahVFAeLi9k2RRluK+zOicXKQPyig/n+A7KPgDcIE+DwY+OJc7/O4H1NkU8/S1NwdhlgTn6Y+kbdCpHWKfH0piDmVxPGy/eik/3kAwSuxip2pZbsFET2wzm+ZzTd7+bmgItCXBu9jWbDE9o36GxKLOQGaCxCSzy/vDPPXd0rwRRf205RoXy6LP1TrgxV6JyCoSD0XadE13NMRYO2PyMwc/y1YjzLKOrqu3zcVcpUGbKWejbVtW+JF7YL7gMrBd2HuewMAL1OUsTkgoghkfQb+aax4YDY4qNfEMWmrVDl3GgO7q8l+kqPJhC7VnB1lP32y5hh5H6NOg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA4PR04MB9591.eurprd04.prod.outlook.com (2603:10a6:102:270::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.28; Tue, 24 Jun
- 2025 16:29:59 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8880.015; Tue, 24 Jun 2025
- 16:29:59 +0000
-Date: Tue, 24 Jun 2025 12:29:52 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: James Clark <james.clark@linaro.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Christoph Hellwig <hch@lst.de>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] spi: spi-fsl-dspi: Stub out DMA functions
-Message-ID: <aFrSgJ5xZfccEX9x@lizhi-Precision-Tower-5810>
-References: <20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org>
- <20250624-james-nxp-spi-dma-v3-3-e7d574f5f62c@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624-james-nxp-spi-dma-v3-3-e7d574f5f62c@linaro.org>
-X-ClientProxiedBy: PH7PR13CA0022.namprd13.prod.outlook.com
- (2603:10b6:510:174::24) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJzCLe6v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CCEC4CEE3;
+	Tue, 24 Jun 2025 16:35:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750782921;
+	bh=D0kBtQioBvRgs3uooJIz8gMkV3mDK6d8t6NvwidXjTE=;
+	h=From:Date:Subject:To:Cc:From;
+	b=JJzCLe6vS5DxgSBqUuvg8/4mkOG/wfe35bPl/UTkQov12S45OR91nqfvdN/u6Qipv
+	 CZWSKayi7gr7a16AJCPX3ZL8fUBHjHy54U3hVkMuVTH5kc1yHHBMj/CeuYM1APr1ye
+	 j3tKCXLzCHbVLo/mGdOGwgXf6Pv9/xNrE3ESHE7T7wrmu57PlUj1zaUgZgesrz2IbZ
+	 c8fBYoqc2iYpTBhs1MTBqdI5cSqe7NjE9FMBZHvh8m1ILdrYNEaKN80nNDenBo/MJj
+	 9RnoBHm+nDqFDE7rcmVh8nfxUJsh9vtD7sftlVGw+VMhzlSJgPqskoRS7n7GTf1MpW
+	 7ZrNo9IPjMvxg==
+From: Simon Horman <horms@kernel.org>
+Date: Tue, 24 Jun 2025 17:35:12 +0100
+Subject: [PATCH net] net: enetc: Correct endianness handling in
+ _enetc_rd_reg64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB9591:EE_
-X-MS-Office365-Filtering-Correlation-Id: 283fb7bc-d82d-4be0-be0d-08ddb33c5cc7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|52116014|1800799024|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1F0LrEwZFYg9ntwZcYPa/Cjf1+U+0AhC7oml8bU18tCuFgwS/tLiijbfWj+Y?=
- =?us-ascii?Q?QcmiRSt5fj50NYfREDq/0djPXWTRsPXmrXm54h3TE4NS/KZB3EGeLrtkt6Pj?=
- =?us-ascii?Q?a4dsupW9O4BZL6cSt5k0vrfDEUtSzxRkw5P1GL2qxaZyCE0y9AJi7t/q74q8?=
- =?us-ascii?Q?W4EjklKOtMc05a9eQST2Cx91cAlnoJn8YfnP1L1U9074rLOslMticiFXpeQR?=
- =?us-ascii?Q?KuEQlLbEoCk29xq4w4JMvUagKVoA+1tre55VpExca1IrTTnKUzh/7X3BSeZe?=
- =?us-ascii?Q?tR7IsB1ytwjdBeSoYru44X1QV2Zo25ScFlKoolZuGcX/eehy2MTt3Ys8vNLj?=
- =?us-ascii?Q?h+0YC1JnRV3QLGxCQYDojF53dTnrul/SX3DBHwobvc0gp5sddaCCRLcr/AB3?=
- =?us-ascii?Q?j40YMwVHSJHg+IURJ+/iB8MCQW/h3WC7UOh0ZlnnWcpCY6Ujjr8XxEw8aCDq?=
- =?us-ascii?Q?RvWxZqo4U8xJYddNbiS9UolbU8PJ3mhv2shPwngB/zOrlLkUHcf+J49Ff32x?=
- =?us-ascii?Q?m7lj2w4diEZ/XxPaHYMLDyLDCqe7qkx19wPYH3uEejJoPFn+nI60d7vlzbKs?=
- =?us-ascii?Q?UJ7m9eFaYWdjW1DD/nlTHIa9E2/4jGPhFsUp+2dh1HKN+DejKyn0BblrKZZI?=
- =?us-ascii?Q?CugN43LaKKNih5mbaQFGOAztjjBj/Khm4Hb9aKDVefdRgpMa6MsCiRvAqi8E?=
- =?us-ascii?Q?Ly+/cFkIekq3/67FBAfxJkzaeSwiwkmAKBMnUNmZ/HIX3WQR2r2nrePlAS7y?=
- =?us-ascii?Q?dckngpMmBeDO8aVe70XDCCW7FsbqbuPbt/SnUpG7VZ0EirSOeg8yKyK8QNPd?=
- =?us-ascii?Q?klB4WrRASGUWHsuTYxKuWTqN09IEIjAAHaofJDQOkrrHaXGE/Xkg4fW4JyZD?=
- =?us-ascii?Q?WjVUYqgcJcH9xGn3vp3Q3MBYUVJxWU7GV3wIx+g0vjCp2sW/fyj1SKsS+25n?=
- =?us-ascii?Q?AGLp5uDZiFBpuoDxMaCAZ9RMwJAUQq8EcnnLrFREFbz9jAF0+6UtgH5Exgct?=
- =?us-ascii?Q?G0OdUdsu1I+tpyFdpDPeFNAu9pzxMTylgjAZka+C2x3DCt3+uNuNRw+/9dqf?=
- =?us-ascii?Q?ZW5VMqEcKx71JAyj1Bnmh1Skq1b1AAMXk9vPxoW+YvlUTa1QnM/jZ/UJ6152?=
- =?us-ascii?Q?OgzZnuoZWOnIM8k7Yhjh76ZyqlBGf3zAM5N8pua+We3jXgHsWRH92KZ1sZot?=
- =?us-ascii?Q?tWeTg+dyHj7+JE+zwoIgVsgbWzNloV6cXfx3TvuCwvWA5qg3h/zAWC2EeRXd?=
- =?us-ascii?Q?Ow6zBCOhjkDcefnTFbd+rJ6JtV//6JpnfaB5YQOOUv7phr3+cDHFoJ854Ho+?=
- =?us-ascii?Q?Ub0QL2KOuUp/cJ0Ab+Z7DWguy/YgSVRchNAyxYeYpWq0nUU9jfLSW0c4xuBL?=
- =?us-ascii?Q?5+IAhxXc8UNepBRadXeuS8wmiC30y8kylP3zYbeTdnzoYelw7bBga+d9D1vT?=
- =?us-ascii?Q?lmHOlRI73Rxt2zAyqs719aalAnRGB207ZzBSsrK3fQgThgX9Da5kTg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(52116014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?i9hALz/OjoZgsT/kW2dGmhoZScFD2TIM7SDDRnw86MEXAzIsP7EoqA8AxDT/?=
- =?us-ascii?Q?ZEhh+ifuDunY9piYx7ij1vPPS4N0+CyKrCs1SrA+p8I4uFGY95hb4vaFCQUf?=
- =?us-ascii?Q?PIGiKQV8A9x7fgxwc6Ke4YJGevCFDYgZ8uBQZqAj9taLDN29GMfe+21csMwb?=
- =?us-ascii?Q?x0wgA+E2FdLeFFPX/6vIeSH7vsSdFO3wgL8N+ShalVqG7soYa20rxvNzGu7B?=
- =?us-ascii?Q?RdH77WitR1Bg6ZM1cG+laK7b8AYf1UsNXo64AnnJXzIscYS3wgIe8kpttAqQ?=
- =?us-ascii?Q?Cb2ZuH6x2qNcw23uB6Ojb7/tGj209UXSLevS/0BVgnX25OrhCIfSmXGXcaIf?=
- =?us-ascii?Q?q5tyhwIfYL+5BVKyXwI7fFAelUOp5otMykppjJ2Y16r8lfOL0za4jZdN7FrB?=
- =?us-ascii?Q?e9yG+VYov+VZWBL5nBdWkPauhiAbzxNZMeJFkD4be0LJJd1Wrvb0NpbdHCvJ?=
- =?us-ascii?Q?yoh3guUTQErnlwQt9N4ESMfY7doGEfZD2pDj4WBl5RcbYRA9nvsYkJK3aDGQ?=
- =?us-ascii?Q?9ZM8stZbe/dqtAtt275OObmXopMTB1T13lapgtji8kT+XmvLZtRy3GPEBW/G?=
- =?us-ascii?Q?nT8G3s2wW0fFSkz0bV0KiEIEtAydL0VaVnyVSLe7W5Hz4qNb+iZTjqBzSX3a?=
- =?us-ascii?Q?uUyOSpDjP/oEPC3oYJG6k71qo+T/vLgSYfCPYD3jU2tTf5kHv1wWESBcgmuo?=
- =?us-ascii?Q?LfOJEirzsDjVA28hM3D95ZuBfFz+68ne2N8b6RQ195p6jbYA/CruWzNIqPJy?=
- =?us-ascii?Q?P4GlOzOVkIb4iGFBEdRA0WMviG1QXKA4K6zl+KG9Bvb1MQuBuDhpI6/6Xmf7?=
- =?us-ascii?Q?1VQ+D6kVgilNXBGfv9N7dm3PusNdCTV5snMR6hzSsdcJWqEJhNx26JNd4Boy?=
- =?us-ascii?Q?Mkiapokx+juhB7l6vnXRD1fA+2EaYkY6EHvfEPtpDBVuW8I4TVBrOmPuGwVy?=
- =?us-ascii?Q?ReoHEvvL9HJDLD+ouw84HnIDQLSs03c9F7/F6YS0/geifqin+Wau33FDmigk?=
- =?us-ascii?Q?qImveQvEK8tn3D7GLD8qbR8TPvla7c+WI1rFyDKHZCeccbPXu4jaRRCcbvX0?=
- =?us-ascii?Q?X1PR9PSPlStuKqvGnckGLiZUpQCm5k12C7hhZ10HrLV5cNXMAzmwc4hZGDjW?=
- =?us-ascii?Q?K+v3BMKz7BUK6XgEeJ3u+U+MVnzQ5NnCMBoDCF+zp9gRjtZ71SVHq12OfCXn?=
- =?us-ascii?Q?llKJpJjjWrfU2U+hvoqWP7LxM2oROygzfEbjzSlSqYrtz0kxAVz1r3jydAIN?=
- =?us-ascii?Q?wnxJOUHiK2kpozzf44222FykY7GGtHMjvU4mEsofTaapUG4vIr6cChfoYj+i?=
- =?us-ascii?Q?OI4665ftVq7oQEu23rxrpIm6H5JpRVBit5Mq3vsZ2UDndw0gouSTxUFgfmyZ?=
- =?us-ascii?Q?Uii+ZiP4OkIRS8mFkmwFI/bQkjqhEXU7G6Ntp/60q9jCjWdYwqPx2Pv3fWYd?=
- =?us-ascii?Q?WPxYgKKVQ0Ma2ytK7BFovArMiudZznwkB9WpABv5XY0/WbyPG36EfuOaZX1W?=
- =?us-ascii?Q?lWhWe2tO//2xvJVfyavwZ5qVfwKrdUwMl6jHL6ZxxNWEUNwxne1Nb9LQCCji?=
- =?us-ascii?Q?HIIItz1QuaF0RcN7npED4vgYUIwH91ZAqqkXfpXc?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 283fb7bc-d82d-4be0-be0d-08ddb33c5cc7
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 16:29:59.4307
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iH+1T5JG27ueOA+dvw+QktMlLnHlcCWJO6dCLjOZYu0c7XBI7u6QwF61Uz6nqm1zVOFosYrTnTd1YMZ1IbWrRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9591
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAL/TWmgC/x3MQQqAIBBG4avErBNKRomuEi3M/mogLFQiiO6et
+ Hzw8R5KiIJEffVQxCVJjlCirSvymwsrlMylSTfaNFazQg7IXu1QLRs3gdka7qj4M2KR+38NVBC
+ N7/sBq/v+DmAAAAA=
+To: Claudiu Manoil <claudiu.manoil@nxp.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>, 
+ Clark Wang <xiaoning.wang@nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alex Marginean <alexandru.marginean@nxp.com>, imx@lists.linux.dev, 
+ netdev@vger.kernel.org
+X-Mailer: b4 0.14.0
 
-On Tue, Jun 24, 2025 at 11:35:33AM +0100, James Clark wrote:
-> This will allow the build to succeed with !CONFIG_HAS_DMA, either due to
-> a randconfig build test or when the target only uses one of the non-DMA
+enetc_hw.h provides two versions of _enetc_rd_reg64.
+One which simply calls ioread64() when available.
+And another that composes the 64-bit result from ioread32() calls.
 
-I supposed you met kbuild error. If yes, can you add kbuild build report
-tags.
+In the second case the code appears to assume that each ioread32() call
+returns a little-endian value. However both the shift and logical or
+used to compose the return value would not work correctly on big endian
+systems if this were the case. Moreover, this is inconsistent with the
+first case where the return value of ioread64() is assumed to be in host
+byte order.
 
-Frank
-> transfer modes which this driver supports.
->
-> Signed-off-by: James Clark <james.clark@linaro.org>
-> ---
->  drivers/spi/spi-fsl-dspi.c | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index feb29bb92a77..8212c4193536 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -373,6 +373,8 @@ struct fsl_dspi {
->  	void (*dev_to_host)(struct fsl_dspi *dspi, u32 rxdata);
->  };
->
-> +static void dspi_setup_accel(struct fsl_dspi *dspi);
-> +
->  static bool is_s32g_dspi(struct fsl_dspi *data)
->  {
->  	return data->devtype_data == &devtype_data[S32G] ||
-> @@ -489,6 +491,7 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
->  	dspi->dev_to_host(dspi, rxdata);
->  }
->
-> +#if IS_ENABLED(CONFIG_HAS_DMA)
->  static void dspi_tx_dma_callback(void *arg)
->  {
->  	struct fsl_dspi *dspi = arg;
-> @@ -589,8 +592,6 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
->  	return 0;
->  }
->
-> -static void dspi_setup_accel(struct fsl_dspi *dspi);
-> -
->  static void dspi_dma_xfer(struct fsl_dspi *dspi)
->  {
->  	struct spi_message *message = dspi->cur_msg;
-> @@ -722,6 +723,18 @@ static void dspi_release_dma(struct fsl_dspi *dspi)
->  		dma_release_channel(dma->chan_rx);
->  	}
->  }
-> +#else
-> +static void dspi_dma_xfer(struct fsl_dspi *dspi)
-> +{
-> +	sdpi->cur_msg->status = -EINVAL;
-> +}
-> +static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
-> +{
-> +	dev_err(&dspi->pdev->dev, "DMA support not enabled in kernel\n");
-> +	return -EINVAL;
-> +}
-> +static void dspi_release_dma(struct fsl_dspi *dspi) {}
-> +#endif
->
->  static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
->  			   unsigned long clkrate, bool mtf_enabled)
->
-> --
-> 2.34.1
->
+It appears that the correct approach is for both versions to treat the
+return value of ioread*() functions as being in host byte order. And
+this patch corrects the ioread32()-based version to do so.
+
+This is a bug but would only manifest on big endian systems
+that make use of the ioread32-based implementation of _enetc_rd_reg64.
+While all in-tree users of this driver are little endian and
+make use of the ioread64-based implementation of _enetc_rd_reg64.
+Thus, no in-tree user of this driver is affected by this bug.
+
+Flagged by Sparse.
+Compile tested only.
+
+Cc: Wei Fang <wei.fang@nxp.com>
+Fixes: 16eb4c85c964 ("enetc: Add ethtool statistics")
+Closes: https://lore.kernel.org/all/AM9PR04MB850500D3FC24FE23DEFCEA158879A@AM9PR04MB8505.eurprd04.prod.outlook.com/
+Signed-off-by: Simon Horman <horms@kernel.org>
+---
+ drivers/net/ethernet/freescale/enetc/enetc_hw.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+index 4098f01479bc..53e8d18c7a34 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
+@@ -507,7 +507,7 @@ static inline u64 _enetc_rd_reg64(void __iomem *reg)
+ 		tmp = ioread32(reg + 4);
+ 	} while (high != tmp);
+ 
+-	return le64_to_cpu((__le64)high << 32 | low);
++	return (u64)high << 32 | low;
+ }
+ #endif
+ 
+
