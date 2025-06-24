@@ -1,71 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F80328313D
-	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 13:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB76B28ECE2
+	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 13:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750772242; cv=none; b=AeQZEDb4+rM0/bS2neiLrm7nn25xhWEt0++Nd6x8LBFQggsVkAQOJMSGUN+VAEgi52qJbjvf541EHGsu9AH3FTHUophQfGiilpIE2ROujTZAkGznxIXEVyD2eFXoFgxrLsQpCmllVuyjsBhgrq5ojnG9UsDWCcR4aqkV20iGZ18=
+	t=1750772556; cv=none; b=JyqLoIXn9Z/I06IS3MvGq+TSUN/VgFuBmaJQKEM0ju6VPqTWl3NWveb3Cexf4e6KzY0Hj+Cp3mjYpWr7g6uTWXhVHz3E0RezXHXMpT2AS0P3UzYXyXglHPTCtywE0jK0J6o52eZmSG5AO9reECOptUcsVxcWTPURlvCU+VylzfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750772242; c=relaxed/simple;
-	bh=w/IDMkNJyCUUzyRjdmPql/8lwhxsnPEA40uW7VzKY3k=;
+	s=arc-20240116; t=1750772556; c=relaxed/simple;
+	bh=fkCKFp+R4NgDfnzuO2tWofrBCbSr7XsJ+eRJJT2WB5A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t/K1EWHVUR5x9TiqXrZhDElG2QfKhzOnp1/tBX1t2V1D4UyUXhC6B/bNG9K8jdJN50VL65xsSxGaa81H/NkGNwjGKgo5UJ6H0otudlk25ZFhCSZ46FS2H80EYfagkzI8K3FFr8ZJNTmoAfu4ltvMM0bNC67joa8zOVD21mFXLhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CZwLVjHV; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=QvrICUQMozKMr0+E97vL46ElRTdamJK7xCvgZEn/kH3octGHRFIAcruHjr4NE0l2XpVTRIioaTNgm0c24NgtRs9aHlM8YtdVr8BSLnxBWgImU1ozYNoUyAXam7rB4cHHbW6OIARYFEkGfttM6VO+cgxw7BovAJWicp5NQIrzKeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BHXsXaBS; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CZwLVjHV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BHXsXaBS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750772239;
+	s=mimecast20190719; t=1750772554;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kdLNi82PU1S92ENBnDfDaMCmZjF6GA2bHRYIMCa5Xtg=;
-	b=CZwLVjHVxraU7h8CzE7F4dY+qYxZjBlszzfB2qNF8T7B5NH3cDWAwgmtvgng43I4APshJR
-	93obTMNXzv64NccZ/+d1OyhW+NrfDcuyrZtTmzUt1DUluG0H0W1Pm+cg6Fby5rv17qZu5m
-	6sOhi5UPy+JTI3voewjoeg1gAGclF+Y=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=JvwWzJ+xEypawpGYP8KNWgLGz+0unVKUFrWTYj+42lI=;
+	b=BHXsXaBStaPWx1AK3qrc6qkU27kg8DSBeR3wc5UWLHXoG7l+3sISOMoSSl6q8u5LCtwySh
+	AZpOf9tl0BxDyCQ6BMWzSbOsEjAC/HFk/C/RKGTTs0NsGDN6celS9JftfYLPnTqhqzdvtZ
+	gEfGRpOEi7CFlRXannEBuNDq2CoAQKY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-280-6WCQfMSpPK2cwRVEcfpIxQ-1; Tue, 24 Jun 2025 09:37:17 -0400
-X-MC-Unique: 6WCQfMSpPK2cwRVEcfpIxQ-1
-X-Mimecast-MFC-AGG-ID: 6WCQfMSpPK2cwRVEcfpIxQ_1750772236
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-450d6768d4dso35593885e9.2
-        for <imx@lists.linux.dev>; Tue, 24 Jun 2025 06:37:17 -0700 (PDT)
+ us-mta-322-XfYvuUDNM6W2FdUn91cLtw-1; Tue, 24 Jun 2025 09:42:33 -0400
+X-MC-Unique: XfYvuUDNM6W2FdUn91cLtw-1
+X-Mimecast-MFC-AGG-ID: XfYvuUDNM6W2FdUn91cLtw_1750772552
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-450df53d461so39958145e9.1
+        for <imx@lists.linux.dev>; Tue, 24 Jun 2025 06:42:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750772236; x=1751377036;
+        d=1e100.net; s=20230601; t=1750772552; x=1751377352;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kdLNi82PU1S92ENBnDfDaMCmZjF6GA2bHRYIMCa5Xtg=;
-        b=uBv/d7YssgNHzRopklfqeYipSo7TAxiaOjaTBnDugxe6KZPBkHW1J63brBK5qGx+4i
-         znyt2lRGV+Sn4BUVJQNW3oOK0FtQVbDAYN6IlwQR8lPzU3/w9aqMCZgSJ191PZ2ziMFd
-         c7OWc4bTnuZIaDY1Nm4jWyMxO2zNVMQbGJCoJ3ICv9C7lTOBUh+ZoauiCHn5aKK5O8sU
-         7bLEqC2YCnX3WAqsw0hGsy7TyqZeGIEjWBKuWZm1k5Nn9T+ePWrhOJdbT69vTZijo4HD
-         fmOSVZRt5e6cbM6DBEK+pPCD+Ue6cnhUObdB8Vf88TLewyn8ga5YXYtDuwp808ikAiZT
-         YfCA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/+6OApjoRtZKgSddl1vWNseqmiJT+tCF7cdSerXiQfnchs1qLAL9X2BXouFV6yWvOVhI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxFky5eT6QgOTMJ9uTVrzyRX4zxCGMzOkE4lB3XTvnOYWOvA01C
-	mp3EvADLbT7F17oec5H9FgR6uAsbyz9r/ljTM+Lgn8YZl3yfnMUlovquZfsD+/tQSCo6cZ61o/t
-	LFAQtGhwo7k7aKKh1022OmM9hbK7g2ytARS1xJmIzsYN4TUZNb2uiAg==
-X-Gm-Gg: ASbGncuKd2RrjVKMH1TN8J2yEAPIW/jry5OAbts8OhcppWG94K98k4QsJo0bdjJC93J
-	ncQ04vTrYJ/d0FwlGJbd8uXnDUQ5bzXPzqR3scEMguNcFhWy5wxH0J8zz9bkh3C+fLONNuEox8z
-	RqXcEVUYU1D1Pu+CvGl1SjijP3RqosH4pDZ/jxV8w7gmMpFRtZMsG++jF5pbgUOMRdWzi5o793s
-	FgPctIxi/CAkRc0cvR1jJYgvbLK0VB9R1RIUTrx8nNH9zXL8HuX0BwLF+Jk3kn5mVnKOkXI2zSx
-	B1IBDHbIXhU+vcThQHdQBkTLhJY7gg==
-X-Received: by 2002:a05:600c:8b67:b0:453:6ca:16a6 with SMTP id 5b1f17b1804b1-453659c9b5cmr178056685e9.10.1750772236040;
-        Tue, 24 Jun 2025 06:37:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCDctwjBQaSlAXYgDwmWAr33weRLLnC8b8hgrnzKmiQvzZklRmZK8SJHQ3VS2Chx7RMg6ong==
-X-Received: by 2002:a05:600c:8b67:b0:453:6ca:16a6 with SMTP id 5b1f17b1804b1-453659c9b5cmr178056295e9.10.1750772235622;
-        Tue, 24 Jun 2025 06:37:15 -0700 (PDT)
+        bh=JvwWzJ+xEypawpGYP8KNWgLGz+0unVKUFrWTYj+42lI=;
+        b=Mz3d47jkbrw0Itx6WQoSmyrPuO5fm1O9uJkYIWhxWYlxGh0+3HkoPqXRcifQZ/yk5K
+         qCYYXrd3YeXVkCbKKbQ3AjPOc70CIReDfE9sdbvONhawBwLPo9YH0y+m4+OSpJeEOhs1
+         wtFrUGBFD2PA8UzfN6sCJB+fPll10LH2L5nqsj6L7LO8AQcoQSK9eqC9xwWGt78hjQWh
+         ADupGL4cp9cjQSYI+OLyLmp5Tp06z4N4Q9x3PPhzIfVYm3hn3c9cqAvjVKfhequIcOO9
+         4gKdVWLX7hrR+iheE7wVJad0IiLi61JUTXe13FQbNaR5RcBC3v6tPWBzxz2VnAThVc/q
+         ufng==
+X-Forwarded-Encrypted: i=1; AJvYcCUqba4bWqXMZ0kL//UHsXPXiDqW09ogdzWZI1tCdUNBeXIF7kEWvoKVC/e6bPV48SWB/4A=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzap+eE3Gf7d+acF0eGdVjWAbod01PmI/2sV5Y+KSmm0lGMsLD4
+	eP+9tAAlg8qt1GaeAV2ZA37lgH6xFPpCH7p2eyuJQfYOcQkUDFiNaBqO3lmHsWN9f2wVJWqaNYU
+	k/QuDPBxqVVTa+yUOiwuu2+h1wCDaggXzE7JzhoqPL/HkQFOLcycjEQ==
+X-Gm-Gg: ASbGnctmnw/zk2gPxICYfY2A05JYW5mfDOOBbupmq1utFGebwebw9Z7ObOsnCKo6VQY
+	0omh7B5T7znmNyfuMmhTAt7zx+S9jbup548yrH+F5xshCdjKGxvAn1nYWN8+bmsUdPk2MsKH5GY
+	5YgxzvhLIgOmDmucW3LzlDrkdpsrPysO9Fm7zL2zM66ZAmHAVFbImUOOpgK9qkgmO9lx481qcE7
+	r3CFDwX0D2aa3AxobuUlx81hHJ6V6x2s6ogJECmb1AU5V5XG9cpLfTrjxhUb0kANuoLV/FkncOq
+	5O3PYmJxYAIIUpeDqTuUZoBcrkWKgg==
+X-Received: by 2002:a05:600c:a07:b0:450:d3c6:84d8 with SMTP id 5b1f17b1804b1-453659caaddmr170383475e9.14.1750772551221;
+        Tue, 24 Jun 2025 06:42:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH2Sny+uxCfoL7TQtqauFQPpY8QI669KPmHR2EgF9N41ErRRuNQBKLCDGmFU7bbd2Ddpv4HTQ==
+X-Received: by 2002:a05:600c:a07:b0:450:d3c6:84d8 with SMTP id 5b1f17b1804b1-453659caaddmr170382835e9.14.1750772550636;
+        Tue, 24 Jun 2025 06:42:30 -0700 (PDT)
 Received: from ?IPV6:2a0d:3344:2445:d510::f39? ([2a0d:3344:2445:d510::f39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453646fd589sm142741035e9.26.2025.06.24.06.37.08
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45374582452sm67189385e9.31.2025.06.24.06.42.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jun 2025 06:37:15 -0700 (PDT)
-Message-ID: <17f789c6-cf64-4940-ac7b-0107b7b96031@redhat.com>
-Date: Tue, 24 Jun 2025 15:37:08 +0200
+        Tue, 24 Jun 2025 06:42:30 -0700 (PDT)
+Message-ID: <c82c19a6-fd0f-4efe-9d93-838b52102ff4@redhat.com>
+Date: Tue, 24 Jun 2025 15:42:28 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,7 +73,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v13 04/11] net: mtip: The L2 switch driver for imx287
+Subject: Re: [net-next v13 05/11] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
 To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
  davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -85,34 +86,206 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>,
  Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>
+ Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
 References: <20250622093756.2895000-1-lukma@denx.de>
- <20250622093756.2895000-5-lukma@denx.de>
+ <20250622093756.2895000-6-lukma@denx.de>
 From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250622093756.2895000-5-lukma@denx.de>
+In-Reply-To: <20250622093756.2895000-6-lukma@denx.de>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -etC50GLM78Mt496EoY9AcXuayjrYPJr-kGrTgs-OvE_1750772236
+X-Mimecast-MFC-PROC-ID: dYqzyCpyaCxA1nCw-jzeArBnmktgRy34Z-jAZcegal8_1750772552
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/22/25 11:37 AM, Lukasz Majewski wrote:
-> +static void mtip_adjust_link(struct net_device *dev)
+> This patch provides callbacks for struct net_device_ops for MTIP
+> L2 switch.
+> 
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
+> 
+> ---
+> Changes for v13:
+> - New patch - created by excluding some code from large (i.e. v12 and
+>   earlier) MTIP driver
+> ---
+>  .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 273 ++++++++++++++++++
+>  1 file changed, 273 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> index 5142f647d939..813cd39d6d56 100644
+> --- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> @@ -43,6 +43,15 @@
+>  
+>  #include "mtipl2sw.h"
+>  
+> +static void swap_buffer(void *bufaddr, int len)
+> +{
+> +	int i;
+> +	unsigned int *buf = bufaddr;
+> +
+> +	for (i = 0; i < len; i += 4, buf++)
+> +		swab32s(buf);
+> +}
+> +
+>  /* Set the last buffer to wrap */
+>  static void mtip_set_last_buf_to_wrap(struct cbd_t *bdp)
+>  {
+> @@ -444,6 +453,128 @@ static void mtip_config_switch(struct switch_enet_private *fep)
+>  	       fep->hwp + ESW_IMR);
+>  }
+>  
+> +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
+> +					struct net_device *dev, int port)
 > +{
 > +	struct mtip_ndev_priv *priv = netdev_priv(dev);
 > +	struct switch_enet_private *fep = priv->fep;
-> +	struct phy_device *phy_dev;
-> +	int status_change = 0, idx;
-> +	unsigned long flags;
+> +	unsigned short status;
+> +	struct cbd_t *bdp;
+> +	void *bufaddr;
 > +
-> +	spin_lock_irqsave(&fep->hw_lock, flags);
+> +	spin_lock_bh(&fep->hw_lock);
+> +
+> +	if (!fep->link[0] && !fep->link[1]) {
+> +		/* Link is down or autonegotiation is in progress. */
+> +		netif_stop_queue(dev);
+> +		spin_unlock_bh(&fep->hw_lock);
+> +		return NETDEV_TX_BUSY;
+> +	}
+> +
+> +	/* Fill in a Tx ring entry */
+> +	bdp = fep->cur_tx;
+> +
+> +	status = bdp->cbd_sc;
+> +
+> +	if (status & BD_ENET_TX_READY) {
+> +		/* All transmit buffers are full. Bail out.
+> +		 * This should not happen, since dev->tbusy should be set.
+> +		 */
+> +		netif_stop_queue(dev);
+> +		dev_err(&fep->pdev->dev, "%s: tx queue full!.\n", dev->name);
+> +		spin_unlock_bh(&fep->hw_lock);
+> +		return NETDEV_TX_BUSY;
+> +	}
+> +
+> +	/* Clear all of the status flags */
+> +	status &= ~BD_ENET_TX_STATS;
+> +
+> +	/* Set buffer length and buffer pointer */
+> +	bufaddr = skb->data;
+> +	bdp->cbd_datlen = skb->len;
+> +
+> +	/* On some FEC implementations data must be aligned on
+> +	 * 4-byte boundaries. Use bounce buffers to copy data
+> +	 * and get it aligned.spin
+> +	 */
+> +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
+> +		unsigned int index;
+> +
+> +		index = bdp - fep->tx_bd_base;
+> +		memcpy(fep->tx_bounce[index],
+> +		       (void *)skb->data, skb->len);
+> +		bufaddr = fep->tx_bounce[index];
+> +	}
+> +
+> +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> +		swap_buffer(bufaddr, skb->len);
+> +
+> +	/* Save skb pointer. */
+> +	fep->tx_skbuff[fep->skb_cur] = skb;
+> +
+> +	fep->skb_cur = (fep->skb_cur + 1) & TX_RING_MOD_MASK;
+> +
+> +	/* Push the data cache so the CPM does not get stale memory
+> +	 * data.
+> +	 */
+> +	bdp->cbd_bufaddr = dma_map_single(&fep->pdev->dev, bufaddr,
+> +					  MTIP_SWITCH_TX_FRSIZE,
+> +					  DMA_TO_DEVICE);
+> +	if (unlikely(dma_mapping_error(&fep->pdev->dev, bdp->cbd_bufaddr))) {
+> +		dev_err(&fep->pdev->dev,
+> +			"Failed to map descriptor tx buffer\n");
+> +		dev->stats.tx_errors++;
+> +		dev->stats.tx_dropped++;
+> +		dev_kfree_skb_any(skb);
+> +		goto err;
+> +	}
+> +
+> +	/* Send it on its way.  Tell FEC it's ready, interrupt when done,
+> +	 * it's the last BD of the frame, and to put the CRC on the end.
+> +	 */
+> +
+> +	status |= (BD_ENET_TX_READY | BD_ENET_TX_INTR
+> +			| BD_ENET_TX_LAST | BD_ENET_TX_TC);
+> +
+> +	/* Synchronize all descriptor writes */
+> +	wmb();
+> +	bdp->cbd_sc = status;
+> +
+> +	netif_trans_update(dev);
+> +	skb_tx_timestamp(skb);
+> +
+> +	/* Trigger transmission start */
+> +	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);
+> +
+> +	dev->stats.tx_bytes += skb->len;
+> +	/* If this was the last BD in the ring,
+> +	 * start at the beginning again.
+> +	 */
+> +	if (status & BD_ENET_TX_WRAP)
+> +		bdp = fep->tx_bd_base;
+> +	else
+> +		bdp++;
+> +
+> +	if (bdp == fep->dirty_tx) {
+> +		fep->tx_full = 1;
+> +		netif_stop_queue(dev);
 
-The above kind of lock look incorrect. In later patch you use
-spin_lock_bh(), and the context here is never irq.
+You may want to stop the queue earlier, i.e. when 75% or the like of the
+tx ring is full. Also you can use netif_txq_maybe_stop() - with txq ==
+netdev_get_tx_queue(dev, 0)
 
-Should be spin_lock_bh()
+[...]
+> +static void mtip_timeout(struct net_device *dev, unsigned int txqueue)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	struct cbd_t *bdp;
+> +	int i;
+> +
+> +	dev->stats.tx_errors++;
+> +
+> +	if (IS_ENABLED(CONFIG_SWITCH_DEBUG)) {
+> +		dev_info(&dev->dev, "%s: transmit timed out.\n", dev->name);
+> +		dev_info(&dev->dev,
+> +			 "Ring data: cur_tx %lx%s, dirty_tx %lx cur_rx: %lx\n",
+> +			 (unsigned long)fep->cur_tx,
+> +			 fep->tx_full ? " (full)" : "",
+> +			 (unsigned long)fep->dirty_tx,
+> +			 (unsigned long)fep->cur_rx);
+> +
+> +		bdp = fep->tx_bd_base;
+> +		dev_info(&dev->dev, " tx: %u buffers\n", TX_RING_SIZE);
+> +		for (i = 0; i < TX_RING_SIZE; i++) {
+> +			dev_info(&dev->dev, "  %08lx: %04x %04x %08x\n",
+> +				 (kernel_ulong_t)bdp, bdp->cbd_sc,
+> +				 bdp->cbd_datlen, (int)bdp->cbd_bufaddr);
+> +			bdp++;
+> +		}
+> +
+> +		bdp = fep->rx_bd_base;
+> +		dev_info(&dev->dev, " rx: %lu buffers\n",
+> +			 (unsigned long)RX_RING_SIZE);
+> +		for (i = 0 ; i < RX_RING_SIZE; i++) {
+> +			dev_info(&dev->dev, "  %08lx: %04x %04x %08x\n",
+> +				 (kernel_ulong_t)bdp,
+> +				 bdp->cbd_sc, bdp->cbd_datlen,
+> +				 (int)bdp->cbd_bufaddr);
+> +			bdp++;
+> +		}
+
+Here you are traversing both rings without any lock, which looks race prone.
 
 /P
 
