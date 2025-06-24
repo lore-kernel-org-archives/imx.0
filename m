@@ -1,94 +1,123 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F66A94A
-	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 06:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E652D2472B0;
+	Tue, 24 Jun 2025 06:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750745613; cv=none; b=JCLK3i8NeZD5mD4JLYkARXzcLS2QWY/3uiZ0blZ//54uj46q9Qt2Jwe414yAQtdlKXVErs9JhdrE+dU2jcdn9Sh6pc0dthfwkkkMHWJQKGkX+/YP9MaOKwKmT4NIhbb4BgZfYXHqSyBTqSYVS0UG/WETuPy3prNFzlYP6kDm1z4=
+	t=1750747840; cv=none; b=necHLagBkq+MrPhjRFajlBznMAo8bLDWI8PMgusIM8KDX7adBMA+yw2GaWlHxTxLeksSFdI9rJ+/ZAEJzSpL81kygVXHOv3Pec4N1RzH9PAq7wNX1XzqaDAtfQz/oS7RZOnPZhT/l9AFKiqdRON/vQV7guSBPoyHCRonAf/Y4fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750745613; c=relaxed/simple;
-	bh=iQKW8jtVQ5hokU5L9keV/DmzueNNXB3lLUmIeed/Q0E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mHWbTkU/1xtHI5EP9wjtYTQ6ninxXDlTyqh0sAB01FLmDv+ctlQOmj4TtnrE/bT4RnAo7j8zMkg5dwAnfvQ/zYNmo+pAKkW5P3ueBp6/ma9pCxwZbh5Keybrj15+rurz9UwhlYCk9xVG7WrDqTH7EC89QNHcc/ArPWGvBKKFXug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
-Received: from [89.212.21.243] (port=55180 helo=localhost.localdomain)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1uTwuL-002jD9-0R;
-	Tue, 24 Jun 2025 08:13:24 +0200
-From: Primoz Fiser <primoz.fiser@norik.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de
-Subject: [PATCH] arm64: dts: freescale: imx93-phycore-som: Fix watchdog reset
-Date: Tue, 24 Jun 2025 08:13:23 +0200
-Message-Id: <20250624061323.601550-1-primoz.fiser@norik.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1750747840; c=relaxed/simple;
+	bh=I+9jn/5mNynKo4iayBDgivuT7YRumXcy0+7d7mJcko0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=XJe2eBW19eIuNVobwG5eKjWJx8C++zbU2teOeeJjhsoqp1tFrcpU4laeJfZG+qsNQZW67cKy1scHh1oaIuWGOTxFliFyY3J1iCJNLdZY/gvV4vnjLDG5i4fa3pUtLWjWPTgpDBh7aVgJfKI/gDs/UB1wLd0oDhX6oKpaf9f2jiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFjkbAii; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFjkbAii"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52ECDC4CEE3;
+	Tue, 24 Jun 2025 06:50:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750747839;
+	bh=I+9jn/5mNynKo4iayBDgivuT7YRumXcy0+7d7mJcko0=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=XFjkbAiikXOVASbLYYspYyAw1rAjLioxTdi3CE3eXBia2YrKkRDbDfsEkpXGj8atH
+	 15WV3AaOO7ssmlcHMrZdw3tMhb+uKqSyALdGc3t5jjOCwmlKo5RnMjo5JkM3cAzNbi
+	 wH22N6GMitJkzWrYF98N/7LRtGA1Xht6zOxpU8W0H+lr62kgYEjjzWdwvleJiweNMw
+	 +GhBVpFqUS16cjweBgoG8OghVzvMWv56ecGKJragXqTIHfm3FK5LBP4Rf2a/tAaLm6
+	 6DAyz8w28aDpB7ZGGeuBBmd1NbMOZH4JnD71H9wuU66ANo1xiYRyuJ5QkPRpty8F/l
+	 3mJ4zBKICqHdA==
+Message-ID: <00e76ce2-126a-40ab-badd-210a20041843@kernel.org>
+Date: Tue, 24 Jun 2025 08:50:35 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] nvmem: imx-ocotp: Use helper function
+ devm_clk_get_enabled()
+To: Huan Tang <tanghuan@vivo.com>, srini@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250624032318.246-1-tanghuan@vivo.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250624032318.246-1-tanghuan@vivo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On phyCORE-i.MX93 SoM, the SoC WDOG_ANY output line is connected to the
-external pca9451a PMIC WDOG_B input. Apply pinctrl and set the property
-"fsl,ext-reset-output" for watchdog to trigger board reset via PMIC on
-timeout/reset.
+On 24/06/2025 05:23, Huan Tang wrote:
+> Use devm_clk_get_enabled() helper to simplify code.
+> 
+> Signed-off-by: Huan Tang <tanghuan@vivo.com>
+> ---
+>  drivers/nvmem/imx-ocotp.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
+> index 79dd4fda0329..ce5970ba4033 100644
+> --- a/drivers/nvmem/imx-ocotp.c
+> +++ b/drivers/nvmem/imx-ocotp.c
+> @@ -605,7 +605,7 @@ static int imx_ocotp_probe(struct platform_device *pdev)
+>  	if (IS_ERR(priv->base))
+>  		return PTR_ERR(priv->base);
+>  
+> -	priv->clk = devm_clk_get(dev, NULL);
+> +	priv->clk = devm_clk_get_enabled(dev, NULL);
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
----
- arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+This is just confusing or even wrong. You do not understand the code,
+just blindly do some changes pointed by scripting.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-index 5ee52774e7bf..729c26f9ac94 100644
---- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
-@@ -191,6 +191,9 @@ &usdhc1 {
- 
- /* Watchdog */
- &wdog3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_wdog>;
-+	fsl,ext-reset-output;
- 	status = "okay";
- };
- 
-@@ -279,4 +282,10 @@ MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x400013be
- 			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x179e
- 		>;
- 	};
-+
-+	pinctrl_wdog: wdoggrp {
-+		fsl,pins = <
-+			MX93_PAD_WDOG_ANY__WDOG1_WDOG_ANY	0x31e
-+		>;
-+	};
- };
--- 
-2.34.1
+NAK.
 
+
+>  
+
+
+Best regards,
+Krzysztof
