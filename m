@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E652D2472B0;
-	Tue, 24 Jun 2025 06:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB482561A8;
+	Tue, 24 Jun 2025 06:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750747840; cv=none; b=necHLagBkq+MrPhjRFajlBznMAo8bLDWI8PMgusIM8KDX7adBMA+yw2GaWlHxTxLeksSFdI9rJ+/ZAEJzSpL81kygVXHOv3Pec4N1RzH9PAq7wNX1XzqaDAtfQz/oS7RZOnPZhT/l9AFKiqdRON/vQV7guSBPoyHCRonAf/Y4fk=
+	t=1750747970; cv=none; b=YMlCPQLD73yXux6rpN5qAnMfUA74kasmX1gZyBSdJdgziPI/QHq7BuQZ3FkPlyK5Bh4XZmZSgaP3lnM77sp1Sp9Jghe0pebWHNYHk4TtvX2yLUdEy67KmjzLWS+srHXgdbU+5svBn2T4XncrivM9ixGTWgFYmXcMRbMgpbzcTuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750747840; c=relaxed/simple;
-	bh=I+9jn/5mNynKo4iayBDgivuT7YRumXcy0+7d7mJcko0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=XJe2eBW19eIuNVobwG5eKjWJx8C++zbU2teOeeJjhsoqp1tFrcpU4laeJfZG+qsNQZW67cKy1scHh1oaIuWGOTxFliFyY3J1iCJNLdZY/gvV4vnjLDG5i4fa3pUtLWjWPTgpDBh7aVgJfKI/gDs/UB1wLd0oDhX6oKpaf9f2jiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFjkbAii; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750747970; c=relaxed/simple;
+	bh=ielXhQn2tAd/cBABc1ulVCuVpd2+vBXHyp93ILHOp+Q=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=sonOCEoyEGvX8JtR9bn1FDC/9a0OyJIPNKu6PptzTK/xRf7MY4oeDRWFloCQk3mDwR3mr7GIAdWeDnYCyJK1QAhBbFx9uxBxaBMmVFfgitrHCb8YC10dYBB2xzfcdTt9c8dCmuebDOh5bQ7tVTnW5w3SEIH+h7tu+SpHBrSh4Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DTOa9Kvy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFjkbAii"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52ECDC4CEE3;
-	Tue, 24 Jun 2025 06:50:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DTOa9Kvy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F4CC4CEF3;
+	Tue, 24 Jun 2025 06:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750747839;
-	bh=I+9jn/5mNynKo4iayBDgivuT7YRumXcy0+7d7mJcko0=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=XFjkbAiikXOVASbLYYspYyAw1rAjLioxTdi3CE3eXBia2YrKkRDbDfsEkpXGj8atH
-	 15WV3AaOO7ssmlcHMrZdw3tMhb+uKqSyALdGc3t5jjOCwmlKo5RnMjo5JkM3cAzNbi
-	 wH22N6GMitJkzWrYF98N/7LRtGA1Xht6zOxpU8W0H+lr62kgYEjjzWdwvleJiweNMw
-	 +GhBVpFqUS16cjweBgoG8OghVzvMWv56ecGKJragXqTIHfm3FK5LBP4Rf2a/tAaLm6
-	 6DAyz8w28aDpB7ZGGeuBBmd1NbMOZH4JnD71H9wuU66ANo1xiYRyuJ5QkPRpty8F/l
-	 3mJ4zBKICqHdA==
-Message-ID: <00e76ce2-126a-40ab-badd-210a20041843@kernel.org>
-Date: Tue, 24 Jun 2025 08:50:35 +0200
+	s=k20201202; t=1750747969;
+	bh=ielXhQn2tAd/cBABc1ulVCuVpd2+vBXHyp93ILHOp+Q=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=DTOa9KvysM4PuKKcoj4vfPlRfcyGSc2s5paPrZ6M7jcnwQFN/b4w9LNBRZxJU355p
+	 oO+g4TR99LFJnDMf+nkkSKrTURd1TVVE8FxnKMSNo9w7psP+pg9VckcQY3l6cgDvhY
+	 pV2fk2ymfVjRRSGk+eyNPzRVVyMmQ/zWEkZTDVmC5zXORcd0+73vLSTWmlViCCgVkJ
+	 KChootqhaJGsRSTn+ncCOyn6zuLit+a8BBy+6mYGfEaHEX0e7Xq62D8gqWs+XrgUNG
+	 2HIx28UYtvyUINcWmMjAPFsDhQT0yBBDcECZU3PI8NWv9lbbGcPshnuiA3ENE336eY
+	 YyKqrfSHfWiSA==
+Message-ID: <5b048b32-36b4-4c4f-aefb-058674147b76@kernel.org>
+Date: Tue, 24 Jun 2025 08:52:45 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,12 +37,13 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] nvmem: imx-ocotp: Use helper function
  devm_clk_get_enabled()
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Huan Tang <tanghuan@vivo.com>, srini@kernel.org, shawnguo@kernel.org,
  s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
 References: <20250624032318.246-1-tanghuan@vivo.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <00e76ce2-126a-40ab-badd-210a20041843@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -87,37 +88,40 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250624032318.246-1-tanghuan@vivo.com>
+In-Reply-To: <00e76ce2-126a-40ab-badd-210a20041843@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 24/06/2025 05:23, Huan Tang wrote:
-> Use devm_clk_get_enabled() helper to simplify code.
+On 24/06/2025 08:50, Krzysztof Kozlowski wrote:
+> On 24/06/2025 05:23, Huan Tang wrote:
+>> Use devm_clk_get_enabled() helper to simplify code.
+>>
+>> Signed-off-by: Huan Tang <tanghuan@vivo.com>
+>> ---
+>>  drivers/nvmem/imx-ocotp.c | 3 +--
+>>  1 file changed, 1 insertion(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
+>> index 79dd4fda0329..ce5970ba4033 100644
+>> --- a/drivers/nvmem/imx-ocotp.c
+>> +++ b/drivers/nvmem/imx-ocotp.c
+>> @@ -605,7 +605,7 @@ static int imx_ocotp_probe(struct platform_device *pdev)
+>>  	if (IS_ERR(priv->base))
+>>  		return PTR_ERR(priv->base);
+>>  
+>> -	priv->clk = devm_clk_get(dev, NULL);
+>> +	priv->clk = devm_clk_get_enabled(dev, NULL);
 > 
-> Signed-off-by: Huan Tang <tanghuan@vivo.com>
-> ---
->  drivers/nvmem/imx-ocotp.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+> This is just confusing or even wrong. You do not understand the code,
+> just blindly do some changes pointed by scripting.
 > 
-> diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-> index 79dd4fda0329..ce5970ba4033 100644
-> --- a/drivers/nvmem/imx-ocotp.c
-> +++ b/drivers/nvmem/imx-ocotp.c
-> @@ -605,7 +605,7 @@ static int imx_ocotp_probe(struct platform_device *pdev)
->  	if (IS_ERR(priv->base))
->  		return PTR_ERR(priv->base);
->  
-> -	priv->clk = devm_clk_get(dev, NULL);
-> +	priv->clk = devm_clk_get_enabled(dev, NULL);
-
-This is just confusing or even wrong. You do not understand the code,
-just blindly do some changes pointed by scripting.
-
-NAK.
+> NAK.
 
 
->  
+I spotted error path further, so let's correct above: it is not only
+confusing, but you introduce actual bugs!
 
+No for another round of terrible vivo.com scripted bugs.
 
 Best regards,
 Krzysztof
