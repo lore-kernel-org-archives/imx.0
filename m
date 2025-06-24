@@ -1,63 +1,168 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453A5335BA;
-	Tue, 24 Jun 2025 07:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CB624EA85;
+	Tue, 24 Jun 2025 07:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750749082; cv=none; b=rQugeG1lR96UGF9RSLv3ZD0U6Sxaq+LLdWJs/hWvyzIgNvu3KEcCKt19cNpaxDIQKsC97QEHL3SQ/odUnDE0y5K6zmtNQ+iD5eKUmBDZ1sHsvWYJCqWCst+vhg+ObR577Rysx58bEjVDh9YSo9NL0sSzLBlbGeiSZwARicJQ/pM=
+	t=1750750126; cv=none; b=g1WvrpTxne0P6s514wSqk+3FdkitxxclbBJrf805L5gZxrNgLtgUuOnFx6qNrHG3aZySwZICLqUzr9+a511MS3bKfDbEE8n32FdgOYGH6Xl+F5HIpWB90xth81PIGf0V9x4to0jB7UYyx/9ePi+3bgkE8+bfvJONBw+fY9M5Y4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750749082; c=relaxed/simple;
-	bh=yJDKd5+dKK2xzoUm23JVLkaJJEcp1/KtgKkWApjEWtY=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=Kj+aQz1s/Vpw2j1EQmqZ9pk5p7vm+ahWx1EKQIixAp9e2BcxEycmdNRQNdvKW+Hz4AU85ntWv2qVHPabIHnJFd1H7HznAzvJrHrIGgokb52Fx1EPbVNK+p+6vDJ+ljupD2qWnIbrvDICJY/M1ixp5s+/qVh/yW2yGHo/JKGr0eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3xKKSls; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750750126; c=relaxed/simple;
+	bh=g0pXc/fIN30kvH2Virs4nkVnamuyy0huOlw1+j0TCiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r5nb35kzmqObpReTOqCii6eV1iMi2sX/JA+0QoalAlHDkCoogWTFBDFgZ5TOygyEfUG5lsz4Qo/v+yiV8uZcSHg6uJ7eHrARBWKj+5wdgvikfLso+x1dMM56zGx2QWBB3mmZe46cuhk9A4T8FYk4B5VC8Wjg4AJqLngX/P6xBts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gukn8GYs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3xKKSls"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C64C4CEE3;
-	Tue, 24 Jun 2025 07:11:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gukn8GYs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532B9C4CEE3;
+	Tue, 24 Jun 2025 07:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750749081;
-	bh=yJDKd5+dKK2xzoUm23JVLkaJJEcp1/KtgKkWApjEWtY=;
-	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=J3xKKSlsiZo6RsDo6+oL9tA3PzHpoCx/xIdEv0xHuYFNnWMun83Uv70+HHZxocJH9
-	 lbDLJOUAgxzoq0XUcqU7/FkESMHZnS/MTq6WbzhY4XfJPLhcYrtnSlUkpOi5Iy7RAe
-	 aV5hvTLj2WxyFLIj0DB7Np0t+x1NbMeTD8efL3bDlabjvVuri03n/h6tfevhHLN4lj
-	 XO5eXE2xkoY7BaCXNZi9v2jaQdCB89GfcUqvVpEqstdGQjWakECjn4n0I024RzRNOI
-	 aYWYOhrgqlNT+9gm4ETZmz7KNswFU1fSzV2g1qdrSostmeDrLACTZwHwyiuCWrjUQ6
-	 J+w4jYeG21yig==
-Message-ID: <0b92d749fcd2714db7b501e5a6fe4a7f@kernel.org>
-Date: Tue, 24 Jun 2025 07:11:19 +0000
-From: "Maxime Ripard" <mripard@kernel.org>
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v8 4/5] drm/atomic-helper: put the bridge returned by
- drm_bridge_chain_get_first_bridge()
-In-Reply-To: <20250620-drm-bridge-alloc-getput-drm_bridge_chain_get_first_bridge-v8-4-0321845fcafb@bootlin.com>
-References: <20250620-drm-bridge-alloc-getput-drm_bridge_chain_get_first_bridge-v8-4-0321845fcafb@bootlin.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Andrzej
- Hajda" <andrzej.hajda@intel.com>, "David Airlie" <airlied@gmail.com>, "Fabio
- Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Jernej
- Skrabec" <jernej.skrabec@gmail.com>, "Jonas Karlman" <jonas@kwiboo.se>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek
- Vasut" <marex@denx.de>, "Maxime Ripard" <mripard@kernel.org>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Robert
- Foss" <rfoss@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn
- Guo" <shawnguo@kernel.org>, "Simona Vetter" <simona@ffwll.ch>, "Stefan
- Agner" <stefan@agner.ch>, "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas
- Zimmermann" <tzimmermann@suse.de>
-Content-Transfer-Encoding: 7bit
+	s=k20201202; t=1750750126;
+	bh=g0pXc/fIN30kvH2Virs4nkVnamuyy0huOlw1+j0TCiE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gukn8GYs+wpCJs8dwZyrg7QtHcLeHxgvHUf5Q6yYFg2C9BOEmDGLZizI6sGEa26dd
+	 AXs2VFgQ42jn313Jggk4V0ILiINJVwDGLMci1cSQWA/Wnat7vTWZPJqUqLwIF40C2w
+	 DB5SetH/wVRGB4WLiqemm7k1keA5ZvZmhtE6Frd6ifdr8+9XFWkT36y+r7uY0iPWVK
+	 7wqVd1s0PcAv5xA2AqsBduQdkOjE/CGEwb+m9pvBvE3rpcfh+prPNg4r7+X/NZWbZj
+	 vz5KuBRA5M7nLhYwD3ZCbZbORFWCzuMpELU5hnh9Hkq8OxdNOzUNWWy2+/pxZnl9TL
+	 tv2j3pfN4Gt8w==
+Date: Tue, 24 Jun 2025 09:28:43 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Joy Zou <joy.zou@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, catalin.marinas@arm.com, will@kernel.org, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
+	ulf.hansson@linaro.org, richardcochran@gmail.com, kernel@pengutronix.de, 
+	festevam@gmail.com, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-pm@vger.kernel.or, frank.li@nxp.com, ye.li@nxp.com, 
+	ping.bai@nxp.com, aisheng.dong@nxp.com
+Subject: Re: [PATCH v6 2/9] dt-bindings: soc: imx-blk-ctrl: add i.MX91
+ blk-ctrl compatible
+Message-ID: <urgfsmkl25woqy5emucfkqs52qu624po6rd532hpusg3fdnyg3@s5iwmhnfsi26>
+References: <20250623095732.2139853-1-joy.zou@nxp.com>
+ <20250623095732.2139853-3-joy.zou@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250623095732.2139853-3-joy.zou@nxp.com>
 
-On Fri, 20 Jun 2025 19:26:16 +0200, Luca Ceresoli wrote:
-> The bridge returned by drm_bridge_chain_get_first_bridge() is
-> refcounted. Put it when done.
+On Mon, Jun 23, 2025 at 05:57:25PM +0800, Joy Zou wrote:
+> Add new compatible string "fsl,imx91-media-blk-ctrl" for i.MX91,
+> which has different input clocks compared to i.MX93. Update the
+> clock-names list and handle it in the if-else branch accordingly.
 > 
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> Keep the same restriction for the existed compatible strings.
+> 
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> ---
+> Changes for v5:
+> 1. modify the imx93-blk-ctrl binding for imx91 support.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
+This is just vague. Anything can be "modify". Why are you doing this?
+What are you doing here?
 
-Thanks!
-Maxime
+> ---
+>  .../soc/imx/fsl,imx93-media-blk-ctrl.yaml     | 55 +++++++++++++++----
+>  1 file changed, 43 insertions(+), 12 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> index b3554e7f9e76..db5ee65f8eb8 100644
+> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> @@ -18,7 +18,9 @@ description:
+>  properties:
+>    compatible:
+>      items:
+> -      - const: fsl,imx93-media-blk-ctrl
+> +      - enum:
+> +          - fsl,imx91-media-blk-ctrl
+> +          - fsl,imx93-media-blk-ctrl
+>        - const: syscon
+>  
+>    reg:
+> @@ -31,21 +33,50 @@ properties:
+>      maxItems: 1
+>  
+>    clocks:
+> +    minItems: 8
+>      maxItems: 10
+>  
+>    clock-names:
+> -    items:
+> -      - const: apb
+> -      - const: axi
+> -      - const: nic
+> -      - const: disp
+> -      - const: cam
+> -      - const: pxp
+> -      - const: lcdif
+> -      - const: isi
+> -      - const: csi
+> -      - const: dsi
+> +    minItems: 8
+> +    maxItems: 10
+>  
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx93-media-blk-ctrl
+> +    then:
+> +      properties:
+
+Missing constraints for clocks
+
+> +        clock-names:
+> +          items:
+> +            - const: apb
+> +            - const: axi
+> +            - const: nic
+> +            - const: disp
+> +            - const: cam
+> +            - const: pxp
+> +            - const: lcdif
+> +            - const: isi
+> +            - const: csi
+> +            - const: dsi
+
+Keep list in comon part.
+
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx91-media-blk-ctrl
+
+This should be before if: for imx93. 91 < 93
+
+> +    then:
+> +      properties:
+
+Why imx91 now has 10 clocks?
+
+v6 and this has basic issues. The quality of NXP patches decreases :/
+
+> +        clock-names:
+> +          items:
+> +            - const: apb
+> +            - const: axi
+> +            - const: nic
+> +            - const: disp
+> +            - const: cam
+> +            - const: lcdif
+> +            - const: isi
+> +            - const: csi
+
+No, look at other bindings how they share clock lists.
+
+Best regards,
+Krzysztof
+
