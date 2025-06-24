@@ -1,119 +1,81 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5681E1E1DFE
-	for <imx@lists.linux.dev>; Mon, 23 Jun 2025 22:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEC1158218;
+	Tue, 24 Jun 2025 00:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750718844; cv=none; b=c1e6bwZmI7zPrGgvgqZzqrZr/qUSpI2wg7mJL5CUQ80ivfT92KvAb59HukgrV4ORW1giR3+0tA524FU144KP8q0LwHbO/OgEhpU4k409ZAwdtjrw3yzN33/0Ce6sDwLTawTAi30a3cPSMUdMfBolOrvTy4ELWdGE3JIQuhI6GYM=
+	t=1750723799; cv=none; b=AIr2jHC6EtDMIlEQYufoDRgsjc5i9c8qnDx5zseQagGmGjFLzG+ZH0E0b7uGSvTpV1cibAUdlqIGiDh8qg6aB7kUF7X2khfOvChE3urqRdxrR4O/k3yD3aFxibJ+t6+pWMtDymwgSu34XSw482+8Q2O/8JR64N45vMBfP7FpVIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750718844; c=relaxed/simple;
-	bh=F0Eful+LsC18qHuUWUpPOReAr7tTH2VPyfj+njae52A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a7R7HbgqS+A5gFIvoUQtmYD5A0iOMeyqJDSrhNQ33nIZ+qelwMMym0glPJXuHK+AqKeA0ML0EcOhNFBw1B8LgIdEW3rZm9KVtLCzY16ySpF7y9Ob/724JRSzJEAYtPgleUAu1qSt4FHXh5f05DwZTjzzl8wbzCjOSjjZsz7mOyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Q3XYhwpu; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1750723799; c=relaxed/simple;
+	bh=pW95yHEMeVn3jqyr3o19XpeEtpyPZ5xPH60sWih6rNY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=QwIrfEn5mYdN3n8LpoJLf3rYM0qOD64nMqTLq5OhuKfmIYaxr8S9Jrwi3fPK+jq6JQS2hVZ9lFyLpfiNvZPBlZ0Pb+r4ZJR02joIoHqP0rdzUe/TFev/E6UZ0NKtlp6IUDSqnIRLIOJmpL95IlHSlkTepLCnnvBT9KamUeHNqdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIdQQ3Zl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Q3XYhwpu"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 6739FD77;
-	Tue, 24 Jun 2025 00:47:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1750718824;
-	bh=F0Eful+LsC18qHuUWUpPOReAr7tTH2VPyfj+njae52A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q3XYhwpuqK0L+qXf1fWK9gwowy4XCVUHuCVlFzCmRdfy2X0UvLLwlc0AYCc8hKp2o
-	 bZNJ/0p65erJO9q7Rig5OR+oqdTlGtgAsmSzo0Jx0MDPpqmFAw5BxjjeIqwigHRFbe
-	 k/bvmAhvpIzZPtDbOS36WYcNcxOHOHVMIILyyMkM=
-Date: Tue, 24 Jun 2025 01:47:01 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Kumar M <anil.mamidala@xilinx.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, "Guoniu.zhou" <guoniu.zhou@nxp.com>,
-	Stefan Hladnik <stefan.hladnik@gmail.com>,
-	Florian Rebaudo <frebaudo@witekio.com>
-Subject: Re: [PATCH v3 2/2] media: i2c: Add ON Semiconductor AP1302 ISP driver
-Message-ID: <20250623224701.GE15951@pendragon.ideasonboard.com>
-References: <20250623-ap1302-v3-0-c9ca5b791494@nxp.com>
- <20250623-ap1302-v3-2-c9ca5b791494@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIdQQ3Zl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69746C4CEEF;
+	Tue, 24 Jun 2025 00:09:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750723799;
+	bh=pW95yHEMeVn3jqyr3o19XpeEtpyPZ5xPH60sWih6rNY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=TIdQQ3ZlSgkRTvLmxvRTWgcrsAdZrnzyBBn5KYMrIIEoM3rIdBnNjvY5t4nGcnS6b
+	 jXOjsB4M/J8jdBijuWYgMALfmkITQtHm4lWEqfOWrgyT+RNabNMhK48GijEqRI02Ge
+	 nusssNnjIzn3dxuLpfmgglWTIoPj9QqBrhB/CZK3keI2Fl8x/aFOq7+ynBH/GY4wf2
+	 asHj654lUO4m2qO6iWm0dmroXVjwMcVXGT+Mg63Hu8lWRvDRKZLjXrwPlfGxAsm2Yi
+	 nePgetepVtxdba0BamkkDn/bdITuy31jEyRnd/l9oj+jNyO28BT4nFeyQWxAH7yyFT
+	 FZjSafKtSBm8Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE4839FEB7D;
+	Tue, 24 Jun 2025 00:10:27 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250623-ap1302-v3-2-c9ca5b791494@nxp.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v5 1/1] dt-bindings: net: convert qca,qca7000.txt yaml
+ format
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175072382624.3339593.9446372641368170641.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Jun 2025 00:10:26 +0000
+References: <20250618184417.2169745-1-Frank.Li@nxp.com>
+In-Reply-To: <20250618184417.2169745-1-Frank.Li@nxp.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, wahrenst@gmx.net, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
-Hi Frank,
+Hello:
 
-Thank you for the patch.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, Jun 23, 2025 at 03:17:38PM -0400, Frank Li wrote:
-> From: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
+On Wed, 18 Jun 2025 14:44:16 -0400 you wrote:
+> Convert qca,qca7000.txt yaml format.
 > 
-> The AP1302 is a standalone ISP for ON Semiconductor sensors.
-> AP1302 ISP supports single and dual sensor inputs. The driver
-> code supports AR1335, AR0144 and AR0330 sensors with single and
-> dual mode by loading the corresponding firmware.
+> Additional changes:
+> - add refs: spi-peripheral-props.yaml, serial-peripheral-props.yaml and
+>   ethernet-controller.yaml.
+> - simple spi and uart node name.
+> - use low case for mac address in examples.
+> - add check reg choose spi-peripheral-props.yaml or
+>   spi-peripheral-props.yaml.
 > 
-> Signed-off-by: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Signed-off-by: Stefan Hladnik <stefan.hladnik@gmail.com>
-> Signed-off-by: Florian Rebaudo <frebaudo@witekio.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change in v3:
-> - add extra empty line between difference register define
-> - add bits.h
-> - use GEN_MASK and align regiser bit define from 31 to 0.
-> - add ap1302_sensor_supply
-> - add enable gpio
-> - update firmware header format
+> [...]
 
-One of the main issues with this driver is that we need to standardize
-the header format. The standardized format will need to be approved by
-onsemi as we will need to provide not just a driver, but also a
-toolchain that will produce firmwares in the right format. Furthermore,
-some time ago the AP1302 firmware was extended with the ability to
-dynamically compute PLL parameters IIRC. This needs to be taken into
-account.
+Here is the summary with links:
+  - [v5,1/1] dt-bindings: net: convert qca,qca7000.txt yaml format
+    https://git.kernel.org/netdev/net-next/c/bf92ffb0d332
 
-I want to resuscitate this driver and get it merged. There's more work
-to do, in collaboration with onsemi, and I haven't had time to tackle
-it. If you want to propose a proper design for firmware handling I would
-be happy to participate in the discussion.
-
-> - update raw sensor supply delay time
-> - use gpiod_set_value_cansleep() insteand gpiod_set_value()
-> - update use latest v4l2 api
-> - use ctrl_to_sd() helper function
-> - add ap1302_g_volatile_ctrl()
-> - remove ap1302_get_fmt()
-> - use guard for mutex.
-> - use dev_err_probe
-> - use devm_add_action_or_reset to simple error handle at probe.
-> - use read_poll_timeout() simple dma idle polling.
-> 
-> previous upstream:
-> https://lore.kernel.org/linux-media/1631091372-16191-1-git-send-email-anil.mamidala@xilinx.com/
-> ---
->  MAINTAINERS                |    1 +
->  drivers/media/i2c/Kconfig  |    9 +
->  drivers/media/i2c/Makefile |    1 +
->  drivers/media/i2c/ap1302.c | 2838 ++++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 2849 insertions(+)
-
-[snip]
-
+You are awesome, thank you!
 -- 
-Regards,
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Laurent Pinchart
+
