@@ -1,279 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9103074AB;
-	Tue, 24 Jun 2025 16:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725CF26CE3E
+	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 16:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750780963; cv=none; b=m9AZzW+hPqGqamP7T3ftKRmzRu/uJRQ3uFwEQxyCOhpXvIvosbfuGgSLpiqkZQO4dIVZCRgosAZkTlKZEUA9lG0AgIQdUY63acCAled11Wf3SZWCVmW9ws/8WUhCUz/lFGRfwWT0/b9Htx3MPdBB6+/KYL8luL3o6Dncxe9QP/k=
+	t=1750781709; cv=none; b=J/f6gX/JgQuoepgNVQfghBI6vK5nPAICyVTFJ76uQt+12zrcWD0t/NW84wK6/+H+dRziTyyxT9jNaV2y1MjsbJmnqQhL6VIxjijnyWtCAzXKuDJ6NUk/VQveK3izxGRmel72690Uzp5XtFUBzCt3JRvzOUjMmYzgvbpdZgjqXyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750780963; c=relaxed/simple;
-	bh=FPCSlDVYJ3mJwkIKhhgrkGwH4ruAR20+CRSWbEpS8NA=;
+	s=arc-20240116; t=1750781709; c=relaxed/simple;
+	bh=lvGwQAAObMcMpnGSVKYiVQnRJ15AOjLbSCae8dPzrUE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mJ8lLoCV24+3M8e+l9jYXSAT9v7D9m+7egsDuLoTHYlmxVqcpJA1URzyo9b0K2oPE60DDVNoQpXit6V6TEFM4gC3Eyj1J5X+MHb0qjUUCumD5OyFNZWQ3Ib9C5ich8ZhLcV/VCukuDvd9U+y2BuJPfSqzBxGmQldI59FeNS7u2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+/ZQg3E; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=S8StAmCtOIYqMmuLbaqRA5ef6GMQGhHJmLF9UCUXjlhr9lO8HP8LIWAZTR1vkphUbYy6yvPYqJDZ8zv/wd2so6xi6cyOqG/6mOL1XLjFqKvlxVt03SQic7976lIhR9clKLXQvokuj3E+gbOO56G1+Y2YynUj1ksE9/Ij6WyAKbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gC5x/Zb1; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+/ZQg3E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41142C4CEE3;
-	Tue, 24 Jun 2025 16:02:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750780962;
-	bh=FPCSlDVYJ3mJwkIKhhgrkGwH4ruAR20+CRSWbEpS8NA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n+/ZQg3Eo0DYsVZpgfKjlHN/ec6EHGcm0Kz+VDqNGyfGTZlPD0T/0+rk6LxkAb+IF
-	 /EnxzEzdA6UkghrvTuQEvZC1VIK/6pxCcm7Um9CkcMsGfrDvL28BFwq0JYV67oaNvF
-	 DHORjlAvYhtsVDuQW5HGeVCSfKzTmd+XhHjjxe8/aeHwOHWhveFouxaQEZEBrji4gt
-	 kedCy4q5qt3RQqjK8HRoFQCahCnPxJ5lKREnu65VNaYHoD4KbTXGJIZ/iyKhB11OiL
-	 FRAkzhP2xOFkqqXnr/paG5FamftxJPSwzLmMF9oCrqmEI78Pzvvt4J3/ar08XSZ1DZ
-	 cRQBvwhgAybYQ==
-Date: Tue, 24 Jun 2025 17:02:35 +0100
-From: Lee Jones <lee@kernel.org>
-To: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
-	Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>,
-	Robin Gong <yibin.gong@nxp.com>,
-	Enric Balletbo i Serra <eballetbo@gmail.com>
-Subject: Re: [PATCH v7 2/6] mfd: pf1550: add core mfd driver
-Message-ID: <20250624160235.GM795775@google.com>
-References: <20250612-pf1550-v7-0-0e393b0f45d7@savoirfairelinux.com>
- <20250612-pf1550-v7-2-0e393b0f45d7@savoirfairelinux.com>
- <20250619130337.GA795775@google.com>
- <aFWrxtArHjb5nc0M@fedora>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gC5x/Zb1"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-23602481460so7816585ad.0
+        for <imx@lists.linux.dev>; Tue, 24 Jun 2025 09:15:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750781707; x=1751386507; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NOFa14hzPvC6t+oIp0DexT1UxNfRS4Cl15Pgd6Dy9Oc=;
+        b=gC5x/Zb1trO52d9Jew/b1cK9EFz8C0BsPABsfklM10mNjjoH+JVzgtYvQjP/gUPEtr
+         dtCNsP1a++ONmOO044JwpbF1PZtCguk2L81lyV2J9Yxu7RLA2lcBEdOOfmekqhoZiiGQ
+         0u9NlPcTcBMSMXMatoYrYJudouKfCrOHkiy88ZGZQIHfyRYPFsVpe80LHy/bkrunxu9O
+         dCnm5AT3Zlkxc6BtywaBOYUdeuyEi2HYe2bhIUM7fyBvPpQ12iC4lDniw73kwEnnIBf2
+         wy7xV/0GehfTv9kovbT4VpJqyxaxW9RQzpJ2uuu4O+/mLSLuZ5VJrKDwJ4EsFkM/Hfb+
+         S6MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750781707; x=1751386507;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NOFa14hzPvC6t+oIp0DexT1UxNfRS4Cl15Pgd6Dy9Oc=;
+        b=cXIp+NMSiZimtU8/CxwGZurzTdQc0YdcwxzDm52Rtqfk+YySvuG5rRsDjOGkCSd5Ue
+         EDxggywAPsDGtGDfOIoOL7ZDRK3cfrTRHWE/cuWpUDkMa87jFZuYaJzUIFERg6ym9o1J
+         9m9f/UbvWgPUyO47JsJ9ebsw46fmCyOA+5dyceOy84H4jfqVY+ULM3EIxxqJAPSiimyQ
+         SJn3X3PcpPJop//hginebk+RdbnRoRKm4zfVw+VYPdBPeBibShZ3zeCrB8KgF20T+Rem
+         5c/kmxGMScMfDe79agZz79c56cIdDjxqsFM0aZ3R0AcWoA8yLyzJSv/cgyjEv5ZzWDxB
+         FmSg==
+X-Forwarded-Encrypted: i=1; AJvYcCWqaZgU7HCbrzrcolig76Xm4W/lt4bcSKycUTBZyGl+swMscffFjQ4KziWo+hOUDQyHDKQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJ+zKgl1/vVoVvZ5GKZMyl3xXi8CEFx2+mClQGMQHm4pHYnZRz
+	dpyPhU2AYznlUqLq9TpOep1lOMW49jhdWXWNdoUJ7PDCujsKPB0f+jxK
+X-Gm-Gg: ASbGncsFJsjvQBtHD5ayqDmw68nSh/lkLj6JaqENzziuj6sivIW10iOKqv3tkwY6bz9
+	i9w5vg8gxu/HaNg4hXk3Vl+N9B9Tp6KWtUHQUF5ihX8fojRSzZLUlzl4XjoRm9gk0ctmu80cS9Z
+	szdo/K/x7aiSuPGEBkCiQ9sMqVWVtvoA+itUrlIBdWrrbcH5uUkcpbt2rLoPaVbvQFNaqmABfQ8
+	Jbi3kYB4IgXgYp7lwDBs0CInOi2SxL7LHlAuH4o2PF1lNAHHmeWt0FN4X8SjiwpHYKPg2NZPY0c
+	SBUCH9PbgCQc3v8UDXc7jFMAu/pyySfVGjLVBkumCQz/GW9qObWU6PeTjRc=
+X-Google-Smtp-Source: AGHT+IHG7rYkinFLRzsG4MwI6gkoEJZsqgBi83L3LCSzHE9voyWIDchNPTp5X+xH8/2vrw7ovBDS3g==
+X-Received: by 2002:a17:902:f54f:b0:235:ea0d:ae23 with SMTP id d9443c01a7336-2381ddd180dmr3846685ad.6.1750781706256;
+        Tue, 24 Jun 2025 09:15:06 -0700 (PDT)
+Received: from hiagonb ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d839618esm115515765ad.33.2025.06.24.09.15.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jun 2025 09:15:05 -0700 (PDT)
+Date: Tue, 24 Jun 2025 13:15:00 -0300
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, linux-pm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com,
+	iuliana.prodan@oss.nxp.com,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v5 2/3] remoteproc: imx_rproc: skip clock enable when
+ M-core is managed by the SCU
+Message-ID: <20250624161500.odnopjv5jqvyyus2@hiagonb>
+References: <20250617193450.183889-1-hiagofranco@gmail.com>
+ <20250617193450.183889-3-hiagofranco@gmail.com>
+ <aFlvqK6SHvWHIpMn@p14s>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aFWrxtArHjb5nc0M@fedora>
+In-Reply-To: <aFlvqK6SHvWHIpMn@p14s>
 
-On Fri, 20 Jun 2025, Samuel Kayode wrote:
+Hi Mathieu,
 
-> Hi Lee,
+On Mon, Jun 23, 2025 at 09:15:52AM -0600, Mathieu Poirier wrote:
+> Hi Hiago,
 > 
-> Thanks a lot for the review.
+> On Tue, Jun 17, 2025 at 04:34:49PM -0300, Hiago De Franco wrote:
+> > From: Hiago De Franco <hiago.franco@toradex.com>
+> > 
+> > For the i.MX8X and i.MX8 family SoCs, when the M-core is powered up
+> > by the bootloader, M-core and Linux are in same SCFW (System Controller
+> > Firmware) partition, so linux has permission to control M-core.
 > 
-> On Thu, Jun 19, 2025 at 02:03:37PM +0100, Lee Jones wrote:
-> > > +static int pf1550_read_otp(const struct pf1550_dev *pf1550, unsigned int index,
+> Ok
+> 
 > > 
-> > What does OTP mean?
-> >
-> It's a One-Time Programmable memory with configuration for the pf1550. I will
-> expand on this in the commit description of the next version.
+> > But when M-core is started, the SCFW will automatically enable the clock
+> 
+> I find the "But when M-core is started" part confusing.  Started by who?  And
+> are you making a distinction between "powered up" and "started"?  It is not
+> possible for someone that doesn't have HW documentation to understand what is
+> going on.
 
-Place it in a comment please.
+Ok, understood, I will improve this in the next revision. Just to make
+clear, I am talking about Cortex-A bootloader starting Cortex-M (U-Boot
+bootaux command in this case). This means powered up, started and
+running.
 
-> > Why do you have to write to 4 registers first?
+> 
+> > and configure the rate, and any users that want to enable the clock will
+> > get error 'LOCKED' from SCFW. So current imx_rproc.c probe function
+> > fails because clk_prepare_enable also fails. With that, the M-core power
+> > domain is powered off when it is still running, causing a SCU (System
+> > Controller Unit) fault reset, and the system restarts.
 > > 
-> The pf1550 was designed such that the registers of the accompanying OTP is
-> accessed indirectly. Valid keys have to be written to specific pf1550
-> registers. After writing the keys, the address of the OTP register to be read
-> is then written to PF1550_TEST_REG_FMRADDR and its corresponding value read from
-> PF1550_TEST_REG_FMRDATA.
-
-In a comment please.  If I wondered, so with others.
-
-> > This should all be made clear in some way or another.
+> > To address the issue, ignore handling the clk for i.MX8X and i.MX8 M-core,
+> > because SCFW will automatically enable and configure the clock.
 > > 
-> I'll be adding comments on this in the next version.
-
-Great!
-
-> > > +			   unsigned int *val)
-> > > +{
-> > > +	int ret = 0;
-> > > +
-> > > +	ret = regmap_write(pf1550->regmap, PF1550_PMIC_REG_KEY, 0x15);
+> > Suggested-by: Peng Fan <peng.fan@nxp.com>
+> > Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+> > ---
+> > v4 -> v5:
+> >  - Unchanged.
+> > v3 -> v4:
+> >  - Unchanged.
+> > v2 -> v3:
+> >  - Unchanged.
+> > v1 -> v2:
+> >  - Commit description updated, as suggested. Fixed Peng Fan email.
+> > ---
+> >  drivers/remoteproc/imx_rproc.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
 > > 
-> > No magic numbers.  These should all be defined.
-> Will do.
+> > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> > index 74299af1d7f1..627e57a88db2 100644
+> > --- a/drivers/remoteproc/imx_rproc.c
+> > +++ b/drivers/remoteproc/imx_rproc.c
+> > @@ -1029,8 +1029,8 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
+> >  	struct device *dev = priv->dev;
+> >  	int ret;
+> >  
+> > -	/* Remote core is not under control of Linux */
+> > -	if (dcfg->method == IMX_RPROC_NONE)
+> > +	/* Remote core is not under control of Linux or it is managed by SCU API */
+> > +	if (dcfg->method == IMX_RPROC_NONE || dcfg->method == IMX_RPROC_SCU_API)
+> >  		return 0;
+> >  
+> >  	priv->clk = devm_clk_get(dev, NULL);
+> > -- 
+> > 2.39.5
 > > 
-> > > +	if (ret)
-> > > +		goto read_err;
-> > > +	ret = regmap_write(pf1550->regmap, PF1550_CHARG_REG_CHGR_KEY2, 0x50);
-> > > +	if (ret)
-> > > +		goto read_err;
-> > > +	ret = regmap_write(pf1550->regmap, PF1550_TEST_REG_KEY3, 0xab);
-> > > +	if (ret)
-> > > +		goto read_err;
-> > > +	ret = regmap_write(pf1550->regmap, PF1550_TEST_REG_FMRADDR, index);
-> > > +	if (ret)
-> > > +		goto read_err;
-> > > +	ret = regmap_read(pf1550->regmap, PF1550_TEST_REG_FMRDATA, val);
-> > > +	if (ret)
-> > > +		goto read_err;
-> > > +
-> > > +	return 0;
-> > > +
-> > > +read_err:
-> > > +	dev_err_probe(pf1550->dev, ret, "read otp reg %x found!\n", index);
-> ...
-> > > +static int pf1550_add_child_device(struct pf1550_dev *pmic,
-> > > +				   const struct mfd_cell *cell,
-> > > +				   struct regmap_irq_chip_data *pdata,
-> > 
-> > This is not pdata.
-> > 
-> > > +				   int pirq,
-> > > +				   const struct regmap_irq_chip *chip,
-> > > +				   struct regmap_irq_chip_data **data)
-> > > +{
-> > > +	struct device *dev = pmic->dev;
-> > > +	struct irq_domain *domain;
-> > > +	int irq, ret;
-> > > +
-> > > +	irq = regmap_irq_get_virq(pdata, pirq);
-> > > +	if (irq < 0)
-> > > +		return dev_err_probe(dev, irq,
-> > > +				     "Failed to get parent vIRQ(%d) for chip %s\n",
-> > > +				     pirq, chip->name);
-> > > +
-> > > +	ret = devm_regmap_add_irq_chip(dev, pmic->regmap, irq,
-> > > +				       IRQF_ONESHOT | IRQF_SHARED |
-> > > +				       IRQF_TRIGGER_FALLING, 0, chip, data);
-> > > +	if (ret)
-> > > +		return dev_err_probe(dev, ret,
-> > > +				     "Failed to add %s IRQ chip\n",
-> > > +				     chip->name);
-> > > +
-> > > +	domain = regmap_irq_get_domain(*data);
-> > > +
-> > > +	return devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE, cell, 1,
-> > > +				    NULL, 0, domain);
-> > 
-> > Why can't all 3 devices be registered in one call?
-> > 
-> The 3 devices use different regmap_irq_chip s. I have to register them
-> separately cause they have different irq domains but perhaps there is a better
-> way to handle this?
-
-That's okay, just do 3 calls.
-
-Must neater than what we have here.
-
-> > > +}
-> > 
-> > To be honest, the premise around this function is a bit of a mess.
-> > 
-> > Please move all of this into .probe().
-> Will do.
-> > 
-> > > +static int pf1550_i2c_probe(struct i2c_client *i2c)
-> > > +{
-> > > +	const struct mfd_cell *regulator = &pf1550_regulator_cell;
-> > > +	const struct mfd_cell *charger = &pf1550_charger_cell;
-> > > +	const struct mfd_cell *onkey = &pf1550_onkey_cell;
-> > > +	unsigned int reg_data = 0, otp_data = 0;
-> > > +	struct pf1550_dev *pf1550;
-> > > +	int ret = 0;
-> > > +
-> > > +	pf1550 = devm_kzalloc(&i2c->dev, sizeof(*pf1550), GFP_KERNEL);
-> > > +	if (!pf1550)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	i2c_set_clientdata(i2c, pf1550);
-> > > +	pf1550->dev = &i2c->dev;
-> > > +	pf1550->i2c = i2c;
-> > 
-> > What are you storing i2c for?
-> > 
-> It doesn't need to be stored.
-> > Either store dev and irq OR i2c.  You don't need all three.
-> > 
-> Will do.
-> > > +	ret = regmap_read(pf1550->regmap, PF1550_PMIC_REG_DEVICE_ID, &reg_data);
-> > > +	if (ret < 0 || reg_data != PF1550_DEVICE_ID)
-> > > +		return dev_err_probe(pf1550->dev, ret ?: -EINVAL,
-> > > +				     "device not found!\n");
-> > 
-> > Are you sure?  What if the wrong device was found?
-> >
-> I can change the error log here to "Invalid device ID: ..."?
-
-Right.  Invalid or unsupported, etc.
-
-> >
-> ...
-> > > +	/* add top level interrupts */
-> > > +	ret = devm_regmap_add_irq_chip(pf1550->dev, pf1550->regmap, pf1550->irq,
-> > > +				       IRQF_ONESHOT | IRQF_SHARED |
-> > > +				       IRQF_TRIGGER_FALLING,
-> > > +				       0, &pf1550_irq_chip,
-> > > +				       &pf1550->irq_data);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	ret = pf1550_add_child_device(pf1550, regulator, pf1550->irq_data,
-> > > +				      PF1550_IRQ_REGULATOR,
-> > > +				      &pf1550_regulator_irq_chip,
-> > > +				      &pf1550->irq_data_regulator);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	ret = pf1550_add_child_device(pf1550, onkey, pf1550->irq_data,
-> > > +				      PF1550_IRQ_ONKEY,
-> > > +				      &pf1550_onkey_irq_chip,
-> > > +				      &pf1550->irq_data_onkey);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	ret = pf1550_add_child_device(pf1550, charger, pf1550->irq_data,
-> > > +				      PF1550_IRQ_CHG,
-> > > +				      &pf1550_charger_irq_chip,
-> > > +				      &pf1550->irq_data_charger);
-> > > +	return ret;
-> > > +}
-> > > +
-> > > +static int pf1550_suspend(struct device *dev)
-> > > +{
-> > > +	struct i2c_client *i2c = container_of(dev, struct i2c_client, dev);
-> > > +	struct pf1550_dev *pf1550 = i2c_get_clientdata(i2c);
-> > 
-> > You can swap all of this for:
-> > 
-> > 	struct pf1550_dev *pf1550 = dev_get_drvdata(dev).
-> > 
-> Will do.
-> > > +
-> > > +	if (device_may_wakeup(dev)) {
-> > > +		enable_irq_wake(pf1550->irq);
-> > > +		disable_irq(pf1550->irq);
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static int pf1550_resume(struct device *dev)
-> > > +{
-> > > +	struct i2c_client *i2c = container_of(dev, struct i2c_client, dev);
-> > > +	struct pf1550_dev *pf1550 = i2c_get_clientdata(i2c);
-> > 
-> > As above.
-> > 
-> > > +
-> > > +	if (device_may_wakeup(dev)) {
-> > > +		disable_irq_wake(pf1550->irq);
-> > > +		enable_irq(pf1550->irq);
-> > 
-> > I would normally expect these to be around the opposite way to the ones
-> > in .suspend().
-> Do you mean enable_irq_wake and disable_irq in .resume() and the opposite for
-> .suspend()?
-
-Yes.  Or whatever fits best.
-
-Maybe the h/w doesn't work that way, I just found it odd.
-
--- 
-Lee Jones [李琼斯]
