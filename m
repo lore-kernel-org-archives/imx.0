@@ -1,32 +1,32 @@
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F16487BF
-	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 21:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2732940F
+	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 21:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750800831; cv=none; b=TkaO+sXin8P0dnujlxlvJR//0D4SVloiher5KSD+RL6uYmbOqp4FuRppScqIhQKNPs/uh6QpsWi5pYDxz3WCVnxWGTIXsxAtfTiPI3zDjMvc39SAyad/qSMzE/vzheFC0OMCJR7YHi5h5dePi6cECCGLNWtVDFDYYws6VS+RqnE=
+	t=1750802105; cv=none; b=tLzQRLJ0zbhD4WchGmxsP3YORtKx8vBJ4tqRShjtq+UrGAXTKN7Rrh11khxpRvMZ5XDgU/s3eIKGR4mCuBUKp6xL0zFWYR8hGoH9iKiVN168IdOvjANkt71JGDczCacVoME7MR1Sw5h847HpokCMmN7IDugdFAMZvYqPYC/umys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750800831; c=relaxed/simple;
-	bh=XvV2LFwwGDVCD40N53CynB35B7zAILqG5eY1mC/1fLk=;
+	s=arc-20240116; t=1750802105; c=relaxed/simple;
+	bh=RGPs7S63v/I54qBaN+QmXIOCfFMTLum6TtCdl6KmHbc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dH0mWlyjBIrYjV9s8THnne4O5sk7nI9QKTVGPUFz4XVBpiZj4OgAdzNhPEmgRRJH8UHkkTzDhPUAdbVCKdMq8YW3oUAhlL1kT+4pLvFhMIDdq8655v/VgwmltuiolJ9+Uhjza/t6H7A5GducN7MYrkt01eg1LlhwZPIWCLhsC5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=BhtecKHF; arc=none smtp.client-ip=89.58.32.78
+	 MIME-Version:Content-Type; b=bPNANfJq6oMCy1bNWzXSNfPxW/jnSC3jv068xOXw6A8CnJAQsC9JPgcbQJUHqRT3Uf40SJLdFfmRbyVO1zYGfnMygMjTSIUp46hNlDlzanlGFMfPU0dNT+PAvVMKKe+OhI+01CQqQ66Ug3e2nChgeN9Ebba52Ozw9EC4wniOBIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=RJgakawT; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="BhtecKHF"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 813B0101DC30D;
-	Tue, 24 Jun 2025 23:33:44 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="RJgakawT"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7C4AF101E8501;
+	Tue, 24 Jun 2025 23:54:56 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1750800826; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=4UhNAC3lKdYVhIoChsWVA+SRZl7G6DDkisMf4TzuHdo=;
-	b=BhtecKHFSH40sq5dBlZLZSkAGauBEg3kEus/1IipfnwaDjZu3QDaNMxlbQJV2bOLttJivj
-	7qsER9CSOEEC+QIH4qDqBcFgCnG2Dkykui8GOkUjvQHhr9z+yFkw5eJlXMmA4mb/TxnNfI
-	FH4uSgDuaUwm/zX0NCVeN9r6+Wo9DvNpwWnJNWWGnE+w2ULZHPnSvB2h84fwVg7rkUm+eK
-	blREfwEWax3TCwtFSTs55KLhW6Bjvo44vTOlPgdFLbHdbabb7XqcuwQaHo9Uh13vQFSbel
-	C+h3F6hw2krNjW3lZsoeogcpPoQuuEwOhrIqGtqUtdzq236ivTUwd1Gky8OAig==
-Date: Tue, 24 Jun 2025 23:33:42 +0200
+	t=1750802100; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=wGahUqCdf5meXkcjTq5OK95LkheDAyTPie1mUYbgP78=;
+	b=RJgakawTrO/SDfig9PyagjMfiQukmvus9v/OOWf32WB0Rol8PnMAFUaqO9yYwtFGkb2eZr
+	8ETiK8jI411rC7apwziHw2QUjkIUhnubRG7WgHjQjS+hwq/Co2vaJYWsKHgGLISZHwBqua
+	biK80g4vB0MM0MJ0OhvEzOOP86velfSX8Nd2BkP2TE/m2VubbwqbDReGzeY9aDU7fnvPwI
+	wi4FFgDaKZjhByrDqQe06PNhlKvSkrmm+EL1wTQfCP1YwP0+dzM8QYZtoI0pdW+q60cOOx
+	ctexi56Wro4TtaGCJColMP1RAzFC9FE8piD5UXQN3EjC2qpFxp9U327aoAnIYA==
+Date: Tue, 24 Jun 2025 23:54:54 +0200
 From: Lukasz Majewski <lukma@denx.de>
 To: Paolo Abeni <pabeni@redhat.com>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
@@ -39,13 +39,13 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
  <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v13 05/11] net: mtip: Add net_device_ops functions to
- the L2 switch driver
-Message-ID: <20250624233342.5fdb37af@wsk>
-In-Reply-To: <c82c19a6-fd0f-4efe-9d93-838b52102ff4@redhat.com>
+Subject: Re: [net-next v13 06/11] net: mtip: Add mtip_switch_{rx|tx}
+ functions to the L2 switch driver
+Message-ID: <20250624235454.1bf0b96a@wsk>
+In-Reply-To: <0de412ee-c9ce-463b-92ef-58a33fd132d1@redhat.com>
 References: <20250622093756.2895000-1-lukma@denx.de>
-	<20250622093756.2895000-6-lukma@denx.de>
-	<c82c19a6-fd0f-4efe-9d93-838b52102ff4@redhat.com>
+	<20250622093756.2895000-7-lukma@denx.de>
+	<0de412ee-c9ce-463b-92ef-58a33fd132d1@redhat.com>
 Organization: denx.de
 X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
@@ -54,238 +54,370 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/CJrMgWIo4Z=lmZ0vE4F4UWW";
+Content-Type: multipart/signed; boundary="Sig_/V++v/0cAATHYMBWHAJHNfXt";
  protocol="application/pgp-signature"; micalg=pgp-sha512
 X-Last-TLS-Session-Version: TLSv1.3
 
---Sig_/CJrMgWIo4Z=lmZ0vE4F4UWW
+--Sig_/V++v/0cAATHYMBWHAJHNfXt
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
 Hi Paolo,
 
 > On 6/22/25 11:37 AM, Lukasz Majewski wrote:
-> > This patch provides callbacks for struct net_device_ops for MTIP
-> > L2 switch.
+> > This patch provides mtip_switch_tx and mtip_switch_rx functions
+> > code for MTIP L2 switch.
 > >=20
 > > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> >=20
 > > ---
 > > Changes for v13:
 > > - New patch - created by excluding some code from large (i.e. v12
 > > and earlier) MTIP driver
 > > ---
-> >  .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 273
-> > ++++++++++++++++++ 1 file changed, 273 insertions(+)
+> >  .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 252
+> > ++++++++++++++++++ 1 file changed, 252 insertions(+)
 > >=20
 > > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
 > > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c index
-> > 5142f647d939..813cd39d6d56 100644 ---
+> > 813cd39d6d56..a4e38e0d773e 100644 ---
 > > a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c +++
-> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c @@ -43,6 +43,15
-> > @@=20
-> >  #include "mtipl2sw.h"
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c @@ -228,6
+> > +228,39 @@ struct mtip_port_info *mtip_portinfofifo_read(struct
+> > switch_enet_private *fep) return info; }
 > > =20
-> > +static void swap_buffer(void *bufaddr, int len)
-> > +{
-> > +	int i;
-> > +	unsigned int *buf =3D bufaddr;
+> > +static void mtip_atable_get_entry_port_number(struct
+> > switch_enet_private *fep,
+> > +					      unsigned char
+> > *mac_addr, u8 *port) +{
+> > +	int block_index, block_index_end, entry;
+> > +	u32 mac_addr_lo, mac_addr_hi;
+> > +	u32 read_lo, read_hi;
 > > +
-> > +	for (i =3D 0; i < len; i +=3D 4, buf++)
-> > +		swab32s(buf);
+> > +	mac_addr_lo =3D (u32)((mac_addr[3] << 24) | (mac_addr[2] <<
+> > 16) |
+> > +			    (mac_addr[1] << 8) | mac_addr[0]);
+> > +	mac_addr_hi =3D (u32)((mac_addr[5] << 8) | (mac_addr[4]));
+> > +
+> > +	block_index =3D GET_BLOCK_PTR(crc8_calc(mac_addr));
+> > +	block_index_end =3D block_index + ATABLE_ENTRY_PER_SLOT;
+> > +
+> > +	/* now search all the entries in the selected block */
+> > +	for (entry =3D block_index; entry < block_index_end;
+> > entry++) {
+> > +		mtip_read_atable(fep, entry, &read_lo, &read_hi);
+> > +		*port =3D MTIP_PORT_FORWARDING_INIT;
+> > +
+> > +		if (read_lo =3D=3D mac_addr_lo &&
+> > +		    ((read_hi & 0x0000FFFF) =3D=3D
+> > +		     (mac_addr_hi & 0x0000FFFF))) {
+> > +			/* found the correct address */
+> > +			if ((read_hi & (1 << 16)) && (!(read_hi &
+> > (1 << 17))))
+> > +				*port =3D FIELD_GET(AT_PORT_MASK,
+> > read_hi);
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	dev_dbg(&fep->pdev->dev, "%s: MAC: %pM PORT: 0x%x\n",
+> > __func__,
+> > +		mac_addr, *port);
 > > +}
 > > +
-> >  /* Set the last buffer to wrap */
-> >  static void mtip_set_last_buf_to_wrap(struct cbd_t *bdp)
+> >  /* Clear complete MAC Look Up Table */
+> >  void mtip_clear_atable(struct switch_enet_private *fep)
 > >  {
-> > @@ -444,6 +453,128 @@ static void mtip_config_switch(struct
-> > switch_enet_private *fep) fep->hwp + ESW_IMR);
-> >  }
-> > =20
-> > +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
-> > +					struct net_device *dev,
-> > int port) +{
+> > @@ -820,10 +853,229 @@ static irqreturn_t mtip_interrupt(int irq,
+> > void *ptr_fep)=20
+> >  static void mtip_switch_tx(struct net_device *dev)
+> >  {
 > > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
 > > +	struct switch_enet_private *fep =3D priv->fep;
 > > +	unsigned short status;
+> > +	struct sk_buff *skb;
+> > +	unsigned long flags;
 > > +	struct cbd_t *bdp;
-> > +	void *bufaddr;
 > > +
-> > +	spin_lock_bh(&fep->hw_lock);
-> > +
-> > +	if (!fep->link[0] && !fep->link[1]) {
-> > +		/* Link is down or autonegotiation is in progress.
-> > */
-> > +		netif_stop_queue(dev);
-> > +		spin_unlock_bh(&fep->hw_lock);
-> > +		return NETDEV_TX_BUSY;
-> > +	}
-> > +
-> > +	/* Fill in a Tx ring entry */
-> > +	bdp =3D fep->cur_tx;
-> > +
-> > +	status =3D bdp->cbd_sc;
-> > +
-> > +	if (status & BD_ENET_TX_READY) {
-> > +		/* All transmit buffers are full. Bail out.
-> > +		 * This should not happen, since dev->tbusy should
-> > be set.
-> > +		 */
-> > +		netif_stop_queue(dev);
-> > +		dev_err(&fep->pdev->dev, "%s: tx queue full!.\n",
-> > dev->name);
-> > +		spin_unlock_bh(&fep->hw_lock);
-> > +		return NETDEV_TX_BUSY;
-> > +	}
-> > +
-> > +	/* Clear all of the status flags */
-> > +	status &=3D ~BD_ENET_TX_STATS;
-> > +
-> > +	/* Set buffer length and buffer pointer */
-> > +	bufaddr =3D skb->data;
-> > +	bdp->cbd_datlen =3D skb->len;
-> > +
-> > +	/* On some FEC implementations data must be aligned on
-> > +	 * 4-byte boundaries. Use bounce buffers to copy data
-> > +	 * and get it aligned.spin
-> > +	 */
-> > +	if ((unsigned long)bufaddr & MTIP_ALIGNMENT) {
-> > +		unsigned int index;
-> > +
-> > +		index =3D bdp - fep->tx_bd_base;
-> > +		memcpy(fep->tx_bounce[index],
-> > +		       (void *)skb->data, skb->len);
-> > +		bufaddr =3D fep->tx_bounce[index];
-> > +	}
-> > +
-> > +	if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
-> > +		swap_buffer(bufaddr, skb->len);
-> > +
-> > +	/* Save skb pointer. */
-> > +	fep->tx_skbuff[fep->skb_cur] =3D skb;
-> > +
-> > +	fep->skb_cur =3D (fep->skb_cur + 1) & TX_RING_MOD_MASK;
-> > +
-> > +	/* Push the data cache so the CPM does not get stale memory
-> > +	 * data.
-> > +	 */
-> > +	bdp->cbd_bufaddr =3D dma_map_single(&fep->pdev->dev, bufaddr,
-> > +					  MTIP_SWITCH_TX_FRSIZE,
-> > +					  DMA_TO_DEVICE);
-> > +	if (unlikely(dma_mapping_error(&fep->pdev->dev,
-> > bdp->cbd_bufaddr))) {
-> > +		dev_err(&fep->pdev->dev,
-> > +			"Failed to map descriptor tx buffer\n");
-> > +		dev->stats.tx_errors++;
-> > +		dev->stats.tx_dropped++;
-> > +		dev_kfree_skb_any(skb);
-> > +		goto err;
-> > +	}
-> > +
-> > +	/* Send it on its way.  Tell FEC it's ready, interrupt
-> > when done,
-> > +	 * it's the last BD of the frame, and to put the CRC on
-> > the end.
-> > +	 */
-> > +
-> > +	status |=3D (BD_ENET_TX_READY | BD_ENET_TX_INTR
-> > +			| BD_ENET_TX_LAST | BD_ENET_TX_TC);
-> > +
-> > +	/* Synchronize all descriptor writes */
-> > +	wmb();
-> > +	bdp->cbd_sc =3D status;
-> > +
-> > +	netif_trans_update(dev);
-> > +	skb_tx_timestamp(skb);
-> > +
-> > +	/* Trigger transmission start */
-> > +	writel(MCF_ESW_TDAR_X_DES_ACTIVE, fep->hwp + ESW_TDAR);
-> > +
-> > +	dev->stats.tx_bytes +=3D skb->len;
-> > +	/* If this was the last BD in the ring,
-> > +	 * start at the beginning again.
-> > +	 */
-> > +	if (status & BD_ENET_TX_WRAP)
-> > +		bdp =3D fep->tx_bd_base;
-> > +	else
-> > +		bdp++;
-> > +
-> > +	if (bdp =3D=3D fep->dirty_tx) {
-> > +		fep->tx_full =3D 1;
-> > +		netif_stop_queue(dev); =20
+> > +	spin_lock_irqsave(&fep->hw_lock, flags); =20
 >=20
-> You may want to stop the queue earlier, i.e. when 75% or the like of
-> the tx ring is full. Also you can use netif_txq_maybe_stop() - with
-> txq =3D=3D netdev_get_tx_queue(dev, 0)
-
-There are two main reasons why the netif queue management is so rugged:
-
-1. Due to simplicity - this driver is not using txq (queues), so I
-cannot use APIs using as input argument queues. That is why functions
-accepting only struct netdev pointer are used.
-
-2. My feeling is that I would need to use queues abstraction only for
-one queue - so this would be extra code overhead. I'm trying to
-upstream driver which in fact has very simple internals (i.e. ringbuf
-with 16 descriptors for tx/rx).
-
+> This is called from napi (bh) context, and every other caller
+> is/should be BH, too. You should use
 >=20
-> [...]
-> > +static void mtip_timeout(struct net_device *dev, unsigned int
-> > txqueue) +{
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	struct cbd_t *bdp;
-> > +	int i;
-> > +
-> > +	dev->stats.tx_errors++;
-> > +
-> > +	if (IS_ENABLED(CONFIG_SWITCH_DEBUG)) {
-> > +		dev_info(&dev->dev, "%s: transmit timed out.\n",
-> > dev->name);
-> > +		dev_info(&dev->dev,
-> > +			 "Ring data: cur_tx %lx%s, dirty_tx %lx
-> > cur_rx: %lx\n",
-> > +			 (unsigned long)fep->cur_tx,
-> > +			 fep->tx_full ? " (full)" : "",
-> > +			 (unsigned long)fep->dirty_tx,
-> > +			 (unsigned long)fep->cur_rx);
-> > +
-> > +		bdp =3D fep->tx_bd_base;
-> > +		dev_info(&dev->dev, " tx: %u buffers\n",
-> > TX_RING_SIZE);
-> > +		for (i =3D 0; i < TX_RING_SIZE; i++) {
-> > +			dev_info(&dev->dev, "  %08lx: %04x %04x
-> > %08x\n",
-> > +				 (kernel_ulong_t)bdp, bdp->cbd_sc,
-> > +				 bdp->cbd_datlen,
-> > (int)bdp->cbd_bufaddr);
-> > +			bdp++;
-> > +		}
-> > +
-> > +		bdp =3D fep->rx_bd_base;
-> > +		dev_info(&dev->dev, " rx: %lu buffers\n",
-> > +			 (unsigned long)RX_RING_SIZE);
-> > +		for (i =3D 0 ; i < RX_RING_SIZE; i++) {
-> > +			dev_info(&dev->dev, "  %08lx: %04x %04x
-> > %08x\n",
-> > +				 (kernel_ulong_t)bdp,
-> > +				 bdp->cbd_sc, bdp->cbd_datlen,
-> > +				 (int)bdp->cbd_bufaddr);
-> > +			bdp++;
-> > +		} =20
+> 	spin_lock_bh()
 >=20
-> Here you are traversing both rings without any lock, which looks race
-> prone.
 
-I will add  spin_{un}lock_bh(&fep->hw_lock); (this is only code used
-for debugging, not production)
+Ok.
+
+> Also please test your patches with CONFIG_LOCKDEP and
+> CONFIG_DEBUG_SPINLOCK enabled, thet will help finding this king of
+> issues.
+
+Ok. I will check with lockdep.
 
 >=20
 > /P
 >=20
+> > +	bdp =3D fep->dirty_tx;
+> > +
+> > +	while (((status =3D bdp->cbd_sc) & BD_ENET_TX_READY) =3D=3D 0) {
+> > +		if (bdp =3D=3D fep->cur_tx && fep->tx_full =3D=3D 0)
+> > +			break;
+> > +
+> > +		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
+> > +				 MTIP_SWITCH_TX_FRSIZE,
+> > DMA_TO_DEVICE);
+> > +		bdp->cbd_bufaddr =3D 0;
+> > +		skb =3D fep->tx_skbuff[fep->skb_dirty];
+> > +		/* Check for errors */
+> > +		if (status & (BD_ENET_TX_HB | BD_ENET_TX_LC |
+> > +				   BD_ENET_TX_RL | BD_ENET_TX_UN |
+> > +				   BD_ENET_TX_CSL)) {
+> > +			dev->stats.tx_errors++;
+> > +			if (status & BD_ENET_TX_HB)  /* No
+> > heartbeat */
+> > +				dev->stats.tx_heartbeat_errors++;
+> > +			if (status & BD_ENET_TX_LC)  /* Late
+> > collision */
+> > +				dev->stats.tx_window_errors++;
+> > +			if (status & BD_ENET_TX_RL)  /* Retrans
+> > limit */
+> > +				dev->stats.tx_aborted_errors++;
+> > +			if (status & BD_ENET_TX_UN)  /* Underrun */
+> > +				dev->stats.tx_fifo_errors++;
+> > +			if (status & BD_ENET_TX_CSL) /* Carrier
+> > lost */
+> > +				dev->stats.tx_carrier_errors++;
+> > +		} else {
+> > +			dev->stats.tx_packets++;
+> > +		}
+> > +
+> > +		if (status & BD_ENET_TX_READY)
+> > +			dev_err(&fep->pdev->dev,
+> > +				"Enet xmit interrupt and
+> > TX_READY.\n"); +
+> > +		/* Deferred means some collisions occurred during
+> > transmit,
+> > +		 * but we eventually sent the packet OK.
+> > +		 */
+> > +		if (status & BD_ENET_TX_DEF)
+> > +			dev->stats.collisions++;
+> > +
+> > +		/* Free the sk buffer associated with this last
+> > transmit */
+> > +		dev_consume_skb_irq(skb);
+> > +		fep->tx_skbuff[fep->skb_dirty] =3D NULL;
+> > +		fep->skb_dirty =3D (fep->skb_dirty + 1) &
+> > TX_RING_MOD_MASK; +
+> > +		/* Update pointer to next buffer descriptor to be
+> > transmitted */
+> > +		if (status & BD_ENET_TX_WRAP)
+> > +			bdp =3D fep->tx_bd_base;
+> > +		else
+> > +			bdp++;
+> > +
+> > +		/* Since we have freed up a buffer, the ring is no
+> > longer
+> > +		 * full.
+> > +		 */
+> > +		if (fep->tx_full) {
+> > +			fep->tx_full =3D 0;
+> > +			if (netif_queue_stopped(dev))
+> > +				netif_wake_queue(dev);
+> > +		}
+> > +	}
+> > +	fep->dirty_tx =3D bdp;
+> > +	spin_unlock_irqrestore(&fep->hw_lock, flags);
+> >  }
+> > =20
+> > +/* During a receive, the cur_rx points to the current incoming
+> > buffer.
+> > + * When we update through the ring, if the next incoming buffer has
+> > + * not been given to the system, we just set the empty indicator,
+> > + * effectively tossing the packet.
+> > + */
+> >  static int mtip_switch_rx(struct net_device *dev, int budget, int
+> > *port) {
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	u8 *data, rx_port =3D MTIP_PORT_FORWARDING_INIT;
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	unsigned short status, pkt_len;
+> > +	struct net_device *pndev;
+> > +	struct ethhdr *eth_hdr;
+> > +	int pkt_received =3D 0;
+> > +	struct sk_buff *skb;
+> > +	struct cbd_t *bdp;
+> > +	struct page *page;
+> > +
+> > +	spin_lock_bh(&fep->hw_lock);
+> > +
+> > +	/* First, grab all of the stats for the incoming packet.
+> > +	 * These get messed up if we get called due to a busy
+> > condition.
+> > +	 */
+> > +	bdp =3D fep->cur_rx;
+> > +
+> > +	while (!((status =3D bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
+> > +		if (pkt_received >=3D budget)
+> > +			break;
+> > +
+> > +		pkt_received++;
+> > +		/* Since we have allocated space to hold a
+> > complete frame,
+> > +		 * the last indicator should be set.
+> > +		 */
+> > +		if ((status & BD_ENET_RX_LAST) =3D=3D 0)
+> > +			dev_warn_ratelimited(&dev->dev,
+> > +					     "SWITCH ENET: rcv is
+> > not +last\n"); =20
+>=20
+> Probably you want to break the look when this condition is hit.
+
+Ok.
+
+>=20
+> > +
+> > +		if (!fep->usage_count)
+> > +			goto rx_processing_done;
+> > +
+> > +		/* Check for errors. */
+> > +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH |
+> > BD_ENET_RX_NO |
+> > +			      BD_ENET_RX_CR | BD_ENET_RX_OV)) {
+> > +			dev->stats.rx_errors++;
+> > +			if (status & (BD_ENET_RX_LG |
+> > BD_ENET_RX_SH)) {
+> > +				/* Frame too long or too short. */
+> > +				dev->stats.rx_length_errors++;
+> > +			}
+> > +			if (status & BD_ENET_RX_NO)	/*
+> > Frame alignment */
+> > +				dev->stats.rx_frame_errors++;
+> > +			if (status & BD_ENET_RX_CR)	/* CRC
+> > Error */
+> > +				dev->stats.rx_crc_errors++;
+> > +			if (status & BD_ENET_RX_OV)	/* FIFO
+> > overrun */
+> > +				dev->stats.rx_fifo_errors++;
+> > +		}
+> > +
+> > +		/* Report late collisions as a frame error.
+> > +		 * On this error, the BD is closed, but we don't
+> > know what we
+> > +		 * have in the buffer.  So, just drop this frame
+> > on the floor.
+> > +		 */
+> > +		if (status & BD_ENET_RX_CL) {
+> > +			dev->stats.rx_errors++;
+> > +			dev->stats.rx_frame_errors++;
+> > +			goto rx_processing_done;
+> > +		}
+> > +
+> > +		/* Get correct RX page */
+> > +		page =3D fep->page[bdp - fep->rx_bd_base];
+> > +		/* Process the incoming frame */
+> > +		pkt_len =3D bdp->cbd_datlen;
+> > +		data =3D (__u8 *)__va(bdp->cbd_bufaddr);
+> > +
+> > +		dma_sync_single_for_cpu(&fep->pdev->dev,
+> > bdp->cbd_bufaddr,
+> > +					pkt_len, DMA_FROM_DEVICE);
+> > +		prefetch(page_address(page)); =20
+>=20
+> Use net_prefetch() instead
+>=20
+
+Ok.
+
+> > +
+> > +		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> > +			swap_buffer(data, pkt_len);
+> > +
+> > +		if (data) {
+> > +			eth_hdr =3D (struct ethhdr *)data;
+> > +			mtip_atable_get_entry_port_number(fep,
+> > +
+> > eth_hdr->h_source,
+> > +
+> > &rx_port);
+> > +			if (rx_port =3D=3D MTIP_PORT_FORWARDING_INIT)
+> > +
+> > mtip_atable_dynamicms_learn_migration(fep,
+> > +
+> >    fep->curr_time,
+> > +
+> >    eth_hdr->h_source,
+> > +
+> >    &rx_port);
+> > +		}
+> > +
+> > +		if ((rx_port =3D=3D 1 || rx_port =3D=3D 2) &&
+> > fep->ndev[rx_port - 1])
+> > +			pndev =3D fep->ndev[rx_port - 1];
+> > +		else
+> > +			pndev =3D dev;
+> > +
+> > +		*port =3D rx_port; =20
+>=20
+> Do i read correctly that several network device use the same napi
+> instance? That will break napi assumptions and will incorrectly allow
+> napi merging packets coming from different devices.
+
+Isn't that for what the L2 switch is for? :-)
 
 
+To present the problem is this IP block:
+
+1. I will put aside the "separate" mode, which is only used until the
+bridge is created [*]. In this mode we do have separate uDMAs for each
+ports (i.e. uDMA0 and uDMA1).
+
+2. When offloading in HW L2 frames switching we do have single uDMA0 for
+the bridge (other such devices have separate DMAs for each port - like
+ti's cpsw - the offloading is only by setting one bit - i.e. this bit
+enables switching without touching DMA configuration/setup).
+
+That is why the NAPI is as single instance defined inside
+struct switch_enet_private. It reflects the single uDMA0 used when
+switching offloading is activated.
+
+>=20
+> > +
+> > +		/* This does 16 byte alignment, exactly what we
+> > need.
+> > +		 * The packet length includes FCS, but we don't
+> > want to
+> > +		 * include that when passing upstream as it messes
+> > up
+> > +		 * bridging applications.
+> > +		 */
+> > +		skb =3D netdev_alloc_skb(pndev, pkt_len +
+> > NET_IP_ALIGN);
+> > +		if (unlikely(!skb)) {
+> > +			dev_dbg(&fep->pdev->dev,
+> > +				"%s: Memory squeeze, dropping
+> > packet.\n",
+> > +				pndev->name);
+> > +			page_pool_recycle_direct(fep->page_pool,
+> > page);
+> > +			pndev->stats.rx_dropped++;
+> > +			goto err_mem;
+> > +		} else { =20
+>=20
+> No need for the else statement above.
+>=20
+
+Ok.
+
+> /P
+>=20
+
+Note:
+
+[*]:
+
+ip link add name br0 type bridge;
+ip link set lan0 master br0;=20
+ip link set lan1 master br0;=20
 
 
 Best regards,
@@ -298,20 +430,20 @@ DENX Software Engineering GmbH,      Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
 
---Sig_/CJrMgWIo4Z=lmZ0vE4F4UWW
+--Sig_/V++v/0cAATHYMBWHAJHNfXt
 Content-Type: application/pgp-signature
 Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhbGbYACgkQAR8vZIA0
-zr1nQAf8DbYsGNqHDbFPU8PQZ/XrmTtF041853WB8TNnJwaOsUnvvoywrOrdDFqt
-9jzOpwf2AB6RZB1BDHGVyzNeOHW1UdfkrAL/z5Ko7r9Nx5vkicMSFTX+Orf1NJtX
-FCHTxYxx0uN/rbHUmKXaqgN9pvXc+AlpoB7eC/v2CJnvbSMF8S3iklvBhpJ6YVm/
-LQS/WjrmKmJSL+NZO5hy3TaMbsLi3Hv4yQAao4xmYDf7JG5xcy+VewQSv8+CY1Fj
-T4a91/L5+ueoyZ1Pwlnzr/RrRrhnHKspVRIrnexH1dQJ2oCUB3X1KmsSC+yjIDAb
-pC4DEXZZu3VOA+HDAikhW8tGF5DM4A==
-=HTk3
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhbHq4ACgkQAR8vZIA0
+zr0uBQf8ClaEXIB7Av4OnhGxTJenAk/pKse6Lyj4+j5Y4PKNcWZTCIP5Pot96HqJ
+Bw64dbS5itTjrWt3ondaTumtSiW2FmravAH1CsauaFa+3RH9LHe7TXop/ac+FATr
+6ZbwU2g1fo5uUXVx9Lj63be0cDYCED9PubhcIPh0cL/wsKatiUG0nn2bz3/IMfT+
+2zlgwcPh1gUKis+IoZ1gAYdaRxn3MUkSdNF8GqQNE55sZVittTErhi8UzwV178Qg
+IWtJxrjoxp8uQyEQvDfFVunGmLEJ724XFtxlt44OTsD+wsTeKbHDmU/JIrsO1cKt
+Q7G4GIjvo5BaL0QZvXbACBWaJcxvJA==
+=kw5E
 -----END PGP SIGNATURE-----
 
---Sig_/CJrMgWIo4Z=lmZ0vE4F4UWW--
+--Sig_/V++v/0cAATHYMBWHAJHNfXt--
