@@ -1,449 +1,188 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010059.outbound.protection.outlook.com [52.101.84.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2732940F
-	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 21:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750802105; cv=none; b=tLzQRLJ0zbhD4WchGmxsP3YORtKx8vBJ4tqRShjtq+UrGAXTKN7Rrh11khxpRvMZ5XDgU/s3eIKGR4mCuBUKp6xL0zFWYR8hGoH9iKiVN168IdOvjANkt71JGDczCacVoME7MR1Sw5h847HpokCMmN7IDugdFAMZvYqPYC/umys=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750802105; c=relaxed/simple;
-	bh=RGPs7S63v/I54qBaN+QmXIOCfFMTLum6TtCdl6KmHbc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bPNANfJq6oMCy1bNWzXSNfPxW/jnSC3jv068xOXw6A8CnJAQsC9JPgcbQJUHqRT3Uf40SJLdFfmRbyVO1zYGfnMygMjTSIUp46hNlDlzanlGFMfPU0dNT+PAvVMKKe+OhI+01CQqQ66Ug3e2nChgeN9Ebba52Ozw9EC4wniOBIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=RJgakawT; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ABE72617
+	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 22:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750805209; cv=fail; b=NISUejU7LFSW8zyZhVPnCSidJWVWBqjHL1/QLZQ9BEbtiaqswoJUEfUAVZY/k9EUE2eGdOtOnHv6V1v7iT0x4ZaKXHslk6J8N5avqAFHd00VUmVObhjHokm6dagjuHKrP5M3SCCVYdWx/4GTXK/lYCbt95tqixQZF+XQGUQpmpA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750805209; c=relaxed/simple;
+	bh=lUWnUYNDoe5clqDu7FIIuBWdv2YF7Xxxmvg+zcJNSu8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ET8H0ld0gKfpcuAA/vPJHpkbG29BGAIoZ2obGOuXJWSRISRvvcthPjaKFHOHi2k+B35lYrNUO/Fq+YBA/VLAkO5c+pY6bNH2GHQqE2owd4IeUphtUdMVZhz8VQl+3LG6ylJSkduLh0JGsObNKpKX/gWFHHvuoOctnF8Rw7hJd9o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SVxHiyfl; arc=fail smtp.client-ip=52.101.84.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="RJgakawT"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7C4AF101E8501;
-	Tue, 24 Jun 2025 23:54:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1750802100; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=wGahUqCdf5meXkcjTq5OK95LkheDAyTPie1mUYbgP78=;
-	b=RJgakawTrO/SDfig9PyagjMfiQukmvus9v/OOWf32WB0Rol8PnMAFUaqO9yYwtFGkb2eZr
-	8ETiK8jI411rC7apwziHw2QUjkIUhnubRG7WgHjQjS+hwq/Co2vaJYWsKHgGLISZHwBqua
-	biK80g4vB0MM0MJ0OhvEzOOP86velfSX8Nd2BkP2TE/m2VubbwqbDReGzeY9aDU7fnvPwI
-	wi4FFgDaKZjhByrDqQe06PNhlKvSkrmm+EL1wTQfCP1YwP0+dzM8QYZtoI0pdW+q60cOOx
-	ctexi56Wro4TtaGCJColMP1RAzFC9FE8piD5UXQN3EjC2qpFxp9U327aoAnIYA==
-Date: Tue, 24 Jun 2025 23:54:54 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v13 06/11] net: mtip: Add mtip_switch_{rx|tx}
- functions to the L2 switch driver
-Message-ID: <20250624235454.1bf0b96a@wsk>
-In-Reply-To: <0de412ee-c9ce-463b-92ef-58a33fd132d1@redhat.com>
-References: <20250622093756.2895000-1-lukma@denx.de>
-	<20250622093756.2895000-7-lukma@denx.de>
-	<0de412ee-c9ce-463b-92ef-58a33fd132d1@redhat.com>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SVxHiyfl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Bd0CnAzmeVbUxUhsEL+arV5xyo6LBQY3vE0t0vfOEZK01Q2Nnfue8WTALW71jTwLF9ccT36jFl4ErnnN7f1IjA6badIJzl8lQdef4TYdtP1ZFz2Wec6e6O9by9DsRQZHW/ofR+Ws2Hchsct4TWooQrdCgPrxMQHEdLvTHavLQ/XYgWuCALYStNt7PRvEND8xCDVxDy6mlhpL76OjaWq/yhdYoF19edO+k2LXXaQMyXj/Ba3IYBF+HorhRpWMJl6UjeBPHgkio3EtVROEfcvQTWUKuo2gCl+bIgXJGL1qUev2igV7/X8S41bfguSnmjq4EIDKosYkFgPFBpBxsZWsFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oMbaFIUOgOxR6eAOIl6T0Lz4pZNl6KuD4Zsrc/CBMdA=;
+ b=EO2Bg5Yfcs+FXlqgzR0TARfWpsW36bDVWvpm8ICTKAGh49f2OH4WGM0SDwAZWFmGkh9IgzwI6F3yQkbVTRKq0JPOYMFcIwQ/Ge7U2JBB1N5ksti78v7DJdrhVykmIk+fEtdueq5xQdiTFwnl5Whgh/28zcpr6poo0DGkniSd6hAXWtpRB++41aPXmEPbqSb8O4t75D2Z3lNCloPxgdanEsgPtperkKRhlNlo1jiQbCagHkeHZ9sS2H6OUjrL98IaR3rVQ3mCAxGX3fdzYFCmZ8MD3ONDHYgNFroYVDGMf4RrZil+V1KyDMdTkVNWckwJ41q1ke2n8qhqU0S8KVL+3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oMbaFIUOgOxR6eAOIl6T0Lz4pZNl6KuD4Zsrc/CBMdA=;
+ b=SVxHiyflZ0EVP6znZaRfH0KPeYpBl0i0SoFHUdo3cgRDTlg8bdo8c+zOd2TJoR6vPr8KhGXwbZd70yO2JkLyaBY5ayisIwaSU54AKSc6MLFVw7cipfEDLCpjavp03ijYVJrJmLeENPrRpxvJ2XXqWmmSH5c60qqucbn5fvC85UI/iLBOE1eG2Lcv1JTzzqjcqg2cRA2G0OcKhh6Uef98VuP5Y32h8CS+SdF24jZRNATLyJMU4ZaW1H8ncMzBF2UBCGjmOp8kwXxNYBFr9xg+Vq8POuyAFL0N+Xrq2UDyBkPuz1bqzgGJRL+RDZPDjIBBiLln98Ek6tWtx/laTVJIGA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PAXPR04MB8237.eurprd04.prod.outlook.com (2603:10a6:102:1cc::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.16; Tue, 24 Jun
+ 2025 22:46:44 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8880.015; Tue, 24 Jun 2025
+ 22:46:44 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-kernel@vger.kernel.org (open list:IRQCHIP DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS)
+Cc: imx@lists.linux.dev
+Subject: [PATCH v3 1/1] dt-bindings: interrupt-controller: Add arm,armv7m-nvic and fix #interrupt-cells
+Date: Tue, 24 Jun 2025 18:46:30 -0400
+Message-Id: <20250624224630.2518776-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AM0PR06CA0140.eurprd06.prod.outlook.com
+ (2603:10a6:208:ab::45) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/V++v/0cAATHYMBWHAJHNfXt";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8237:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68b8b2df-c242-48df-a016-08ddb370fe4f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?0mFplX1chEUd7M92Fe7ydYSbsuTQ4qCULdh2V6pavEPdfjLwwao8Sl2ndBVd?=
+ =?us-ascii?Q?bwIYrSCxjWRoczNzrz9/Np16y+3FuoZiZQb04NEMKW7spICz8AtlWjqtgPGk?=
+ =?us-ascii?Q?2gPTN3vypeGBalmzXnKRRCGS1Nqr/K6+7kLN9qLth+uYe1bfoBrYiuqvmrHP?=
+ =?us-ascii?Q?vKYL9+k8yHcFvROpZS9HOqqqJx4NOZTkklxKYgC5Dc6oX/WKsX8WSvq9Cdhx?=
+ =?us-ascii?Q?38lNFdhboIaI3R1c9686BGlO1yRELOtuyMV9mwkTl9vJmFV8rR9EkpJznVSe?=
+ =?us-ascii?Q?9vd5vWDxMzgzJQfR3eU/xGEa8qmXJQhZqujjnEIoL6uk+K0UWhu+ImvOeN4q?=
+ =?us-ascii?Q?HzfH67+8aL8tS4tff3KZPwATO/htEADj9fdpdYbkcW0UtlUbO8V4u5Cw5NND?=
+ =?us-ascii?Q?kUpxcRTLR2Ip+ROycmafsikShQUJUSZZN+SW64E6/USKVRbSnTS8VFw89/f1?=
+ =?us-ascii?Q?CQtlViAYgLnwTFC8hNBAh4S2rRA/6FfGB0cVdG+BCAsC8pfVWACWQFdbpULE?=
+ =?us-ascii?Q?dayk2nNcSThp2YWkpQf9aib5GApFdTklAS2CgBPRhyaFa4Mj2XiQppgALlpf?=
+ =?us-ascii?Q?/DceHx1hO/W75DIBsFnSlPGmsa+Ya3YHXJCLqWyWfK8P72SH/BrGZAiSnRy0?=
+ =?us-ascii?Q?qp1sBxy9UkgAPrYDY0ntBSB76wLaJWy/YQgl2cbeN7fl+oU9RJjxIfUNvPR/?=
+ =?us-ascii?Q?FdNA1GCtcyjxOp8CJJb9acvb9FG6BMeMdadC/9lruXenm+WaRkdJwtglZWn6?=
+ =?us-ascii?Q?MdgwQn18DAZIJT2Bpfk0oAdyK9Tyxp4rYwB+1+m2JVcRIbz8PlGBv+tvyMHq?=
+ =?us-ascii?Q?vUVgXQrKcs4wrA762VBCFRhb8CDfoGxDHVKdOxR4fCyA22Ne71dk0lLq+Z3f?=
+ =?us-ascii?Q?bQGbxrhEmH+Y795lOTetKswCrBK4e3eIL9YuldW/jESxYZj9tiEG54joaWCX?=
+ =?us-ascii?Q?UqGn1llSATRxH1N4qdwbu/M0IVhLX5r7R/eQ2SXFwC5gmbnjo1MO4iCaFFjy?=
+ =?us-ascii?Q?4+lS+U3qBI3O0RZXLC5K5LFN1EDz2sVbOFQ40+XtZLDeVCSHdfZdKdtfN7nA?=
+ =?us-ascii?Q?5isFQv7+dD4ORZ/xIQJJ7RINOw741M1Z+cRs3VLdSglccRZwvH7Jpqpr6yFk?=
+ =?us-ascii?Q?b78EwrbrGMGQuc/NSG1V7Cjm2EdgAaT5tEDISM0rlcOywpqgFbDRdroogXxa?=
+ =?us-ascii?Q?94/uCitCCpTbbTRWqcCLctFLmMZqJDEf2gAMlUX7KyJRU+Ve8t6EL4sa1By7?=
+ =?us-ascii?Q?w3MaCLn0GwPld9aLs+m2x6/PhpGIKH+3WWJpFwqdJ519sF5qZpKQa1K82G5M?=
+ =?us-ascii?Q?AayFSENwJNv7m1QC6ovE2H/XCi69L7UYhB2qMZkodtnYL+FcT40KC0CD+QZu?=
+ =?us-ascii?Q?bF56GGAtcFNk8Ud5Sy1FrGL0SptfGx7nk9o0NbvB6+nDcfOyQ28GRDf0OSKb?=
+ =?us-ascii?Q?DLOhqQQSOrLP1SrGrpFDAeoVjMU0CLfZVnqRRIYy4Rd5Ti9aKb9v/A=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mTZIIkLzOFhgyESoCwi+cUe6Xj/VahagW/T/oyeYtBmIU2GCdNAGxc1vDTUV?=
+ =?us-ascii?Q?nmNw6kczj2EwOFm2vZdPuIRiOuz6kJu05aMlyp5DRrCK9zv7oi2ttNUbN2Bo?=
+ =?us-ascii?Q?Y2mMMSQabLGI/OBJgqp6SqcIN6msixBOxVEKqYCaNJGdt0CqpRK2hgcm1RCP?=
+ =?us-ascii?Q?1QmOdrYcXny/K+7uv2BEj+Nez8XleMRYHB26GkH9d1SEw5NEHCMnwi1X13lP?=
+ =?us-ascii?Q?Z/i9y3eQ9kbFeN+5LnbmqgEvC+z1JOOv1lD3zUpkRlHrUZgYQiU3Lv/MRpaB?=
+ =?us-ascii?Q?mAc0keA8WIygQ4HE1GDHRUT7Pz0jP72PuFENg8CcAJRUNVEFHpvDvnrsgj3m?=
+ =?us-ascii?Q?lpBbbKi/teWxSW3NMek+nDWKu/kKpc8RArGltueqaNDkqiPQr7ykzeElHkjz?=
+ =?us-ascii?Q?w2oWdJS0vQwQLPjKBmG4qGRPqpEGs/ZvU3z/CFQzqYm1py4BinmoflQYuD36?=
+ =?us-ascii?Q?HK3+FTCaEZu7cW2HoyDsJkuA5s/smsRkZ67xsOAa2sQ3eJQXmNxYQjhja6Ye?=
+ =?us-ascii?Q?ekUwN4b6U2O1Z+EIDNS8wqKfT9bwOahQU6n+01DpraW0voFMwlp8qmGSLMmP?=
+ =?us-ascii?Q?SRu/kSp0lGGeuwwWC3gno9nLu8LdvgbXEe1RLOY3dDwQnkJ2VQ5Xvvu4BrSC?=
+ =?us-ascii?Q?gXtbw1o8iiPs8AwkVioeI6gQGHLhuPq19BAALjU49qTaJNKRYc4PGh0NJS01?=
+ =?us-ascii?Q?lVFmBqvl0Vj21M0KBChROutXO5l6/JDMCQU388JD81CY5myKhSWNB+Caioqv?=
+ =?us-ascii?Q?jEnVHz5y/kV9QlSi6kF0S7EzitVRpPgCDbQ+Sq7slblGTVas1x8OMwiXEOR2?=
+ =?us-ascii?Q?JTMP+DSk7Yz013cINxXZtgePNFRAHanJRVN8+izLnvC+9Il30cVCzlMButyu?=
+ =?us-ascii?Q?X3YNf/4nMkkPnxP4WliirTY0nB9x/nOoIbu37/ApO9vkntZFkxgm2NnB20oB?=
+ =?us-ascii?Q?zB17mjwgViap05n8F9Xn3M3Bl9obaxFqL2BCzRPXrL3+nCYzQ4qiWrsiDXV6?=
+ =?us-ascii?Q?G449xBXNrMVP56QjzITRXHn5t9pA0g3DSABWkEUnme+ht4KyoSBSNssl2BKG?=
+ =?us-ascii?Q?xwWEX82YEYQspU+HGkAJyekGdzWIyr1jpCspLfwEF4zEC9U168U/6JWh2RU3?=
+ =?us-ascii?Q?m9ZgxEodF0ESK4BsQDf3nny1SuGuNKpCG4QbWfEJ70/yWKNO7JUnD5rPEk69?=
+ =?us-ascii?Q?jnF+Jb+7tKKN1aMf0Cko2At7kpeQVhNt7ka6JRAwRwnOI6JUPeLJiCAKyA61?=
+ =?us-ascii?Q?UZ+S6eknK728Uc/1fHmvJhJbKrJ2/E83hwwQQCR3HzVMGuQ/yuybNTd+rsmF?=
+ =?us-ascii?Q?kip48uKpYGyQcFhl8t4tNaAnMoxG6MVLqDjOgV1QGaF5U0Gr1yDDglC3RYu3?=
+ =?us-ascii?Q?eukoOPUT7Gw8OzchRn0gi8fNtFNZlaFWBeGN2y4ZPpYgzE7OECd36b5w4KMX?=
+ =?us-ascii?Q?rCk/9LlOJ9FJB9/uMgO8xcj/FjQHd5O94itiNdkQOyV5YIDmwCotElhvMl2l?=
+ =?us-ascii?Q?VAJ2SrKy8HPKqy0ypdu390hB9J0n/2wy9oWVWbYQ4U265gEfSjFLYb++uZmB?=
+ =?us-ascii?Q?ElpgvHssOyBmzKrTJy8=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68b8b2df-c242-48df-a016-08ddb370fe4f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 22:46:44.4203
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E/2RPpaLnPzARKpy5sTFkuv9rB0Kt0k6H39SlKFSk2E+HlmJHqRKm4ftq93qxo4d1nBgASQ/07DWd89ztxnqQg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8237
 
---Sig_/V++v/0cAATHYMBWHAJHNfXt
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+According to existed dts arch/arm/boot/dts/armv7-m.dtsi and driver
+drivers/irqchip/irq-nvic.c, compatible string should be arm,armv7m-nvic,
 
-Hi Paolo,
+Fix below CHECK_DTB warning:
 
-> On 6/22/25 11:37 AM, Lukasz Majewski wrote:
-> > This patch provides mtip_switch_tx and mtip_switch_rx functions
-> > code for MTIP L2 switch.
-> >=20
-> > Signed-off-by: Lukasz Majewski <lukma@denx.de>
-> > ---
-> > Changes for v13:
-> > - New patch - created by excluding some code from large (i.e. v12
-> > and earlier) MTIP driver
-> > ---
-> >  .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 252
-> > ++++++++++++++++++ 1 file changed, 252 insertions(+)
-> >=20
-> > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c index
-> > 813cd39d6d56..a4e38e0d773e 100644 ---
-> > a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c +++
-> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c @@ -228,6
-> > +228,39 @@ struct mtip_port_info *mtip_portinfofifo_read(struct
-> > switch_enet_private *fep) return info; }
-> > =20
-> > +static void mtip_atable_get_entry_port_number(struct
-> > switch_enet_private *fep,
-> > +					      unsigned char
-> > *mac_addr, u8 *port) +{
-> > +	int block_index, block_index_end, entry;
-> > +	u32 mac_addr_lo, mac_addr_hi;
-> > +	u32 read_lo, read_hi;
-> > +
-> > +	mac_addr_lo =3D (u32)((mac_addr[3] << 24) | (mac_addr[2] <<
-> > 16) |
-> > +			    (mac_addr[1] << 8) | mac_addr[0]);
-> > +	mac_addr_hi =3D (u32)((mac_addr[5] << 8) | (mac_addr[4]));
-> > +
-> > +	block_index =3D GET_BLOCK_PTR(crc8_calc(mac_addr));
-> > +	block_index_end =3D block_index + ATABLE_ENTRY_PER_SLOT;
-> > +
-> > +	/* now search all the entries in the selected block */
-> > +	for (entry =3D block_index; entry < block_index_end;
-> > entry++) {
-> > +		mtip_read_atable(fep, entry, &read_lo, &read_hi);
-> > +		*port =3D MTIP_PORT_FORWARDING_INIT;
-> > +
-> > +		if (read_lo =3D=3D mac_addr_lo &&
-> > +		    ((read_hi & 0x0000FFFF) =3D=3D
-> > +		     (mac_addr_hi & 0x0000FFFF))) {
-> > +			/* found the correct address */
-> > +			if ((read_hi & (1 << 16)) && (!(read_hi &
-> > (1 << 17))))
-> > +				*port =3D FIELD_GET(AT_PORT_MASK,
-> > read_hi);
-> > +			break;
-> > +		}
-> > +	}
-> > +
-> > +	dev_dbg(&fep->pdev->dev, "%s: MAC: %pM PORT: 0x%x\n",
-> > __func__,
-> > +		mac_addr, *port);
-> > +}
-> > +
-> >  /* Clear complete MAC Look Up Table */
-> >  void mtip_clear_atable(struct switch_enet_private *fep)
-> >  {
-> > @@ -820,10 +853,229 @@ static irqreturn_t mtip_interrupt(int irq,
-> > void *ptr_fep)=20
-> >  static void mtip_switch_tx(struct net_device *dev)
-> >  {
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	unsigned short status;
-> > +	struct sk_buff *skb;
-> > +	unsigned long flags;
-> > +	struct cbd_t *bdp;
-> > +
-> > +	spin_lock_irqsave(&fep->hw_lock, flags); =20
->=20
-> This is called from napi (bh) context, and every other caller
-> is/should be BH, too. You should use
->=20
-> 	spin_lock_bh()
->=20
+arch/arm/boot/dts/nxp/vf/vf610m4-cosmic.dtb: /interrupt-controller@e000e100:
+    failed to match any schema with compatible: ['arm,armv7m-nvic']
 
-Ok.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+change in v3
+- keep arm,v7(6,8)m-nvic compatible string according to rob's suggestion
+- allow 1 and 2 for #interrupt-cells according to rob's suggestion
+- keep arm,num-irq-priority-bits as required according to rob's suggestion
 
-> Also please test your patches with CONFIG_LOCKDEP and
-> CONFIG_DEBUG_SPINLOCK enabled, thet will help finding this king of
-> issues.
+change in v2:
+- fix example interrupt-cells
+- commit message add driver information
+- remove unused compatible string
+---
+ .../devicetree/bindings/interrupt-controller/arm,nvic.yaml     | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Ok. I will check with lockdep.
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/arm,nvic.yaml b/Documentation/devicetree/bindings/interrupt-controller/arm,nvic.yaml
+index d89eca956c5fa..32dfa2bf05d84 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/arm,nvic.yaml
++++ b/Documentation/devicetree/bindings/interrupt-controller/arm,nvic.yaml
+@@ -17,6 +17,7 @@ description:
+ properties:
+   compatible:
+     enum:
++      - arm,armv7m-nvic # deprecated
+       - arm,v6m-nvic
+       - arm,v7m-nvic
+       - arm,v8m-nvic
+@@ -30,7 +31,7 @@ properties:
+   interrupt-controller: true
+ 
+   '#interrupt-cells':
+-    const: 2
++    enum: [1, 2]
+     description: |
+       Number of cells to encode an interrupt source:
+       first = interrupt number, second = priority.
+-- 
+2.34.1
 
->=20
-> /P
->=20
-> > +	bdp =3D fep->dirty_tx;
-> > +
-> > +	while (((status =3D bdp->cbd_sc) & BD_ENET_TX_READY) =3D=3D 0) {
-> > +		if (bdp =3D=3D fep->cur_tx && fep->tx_full =3D=3D 0)
-> > +			break;
-> > +
-> > +		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
-> > +				 MTIP_SWITCH_TX_FRSIZE,
-> > DMA_TO_DEVICE);
-> > +		bdp->cbd_bufaddr =3D 0;
-> > +		skb =3D fep->tx_skbuff[fep->skb_dirty];
-> > +		/* Check for errors */
-> > +		if (status & (BD_ENET_TX_HB | BD_ENET_TX_LC |
-> > +				   BD_ENET_TX_RL | BD_ENET_TX_UN |
-> > +				   BD_ENET_TX_CSL)) {
-> > +			dev->stats.tx_errors++;
-> > +			if (status & BD_ENET_TX_HB)  /* No
-> > heartbeat */
-> > +				dev->stats.tx_heartbeat_errors++;
-> > +			if (status & BD_ENET_TX_LC)  /* Late
-> > collision */
-> > +				dev->stats.tx_window_errors++;
-> > +			if (status & BD_ENET_TX_RL)  /* Retrans
-> > limit */
-> > +				dev->stats.tx_aborted_errors++;
-> > +			if (status & BD_ENET_TX_UN)  /* Underrun */
-> > +				dev->stats.tx_fifo_errors++;
-> > +			if (status & BD_ENET_TX_CSL) /* Carrier
-> > lost */
-> > +				dev->stats.tx_carrier_errors++;
-> > +		} else {
-> > +			dev->stats.tx_packets++;
-> > +		}
-> > +
-> > +		if (status & BD_ENET_TX_READY)
-> > +			dev_err(&fep->pdev->dev,
-> > +				"Enet xmit interrupt and
-> > TX_READY.\n"); +
-> > +		/* Deferred means some collisions occurred during
-> > transmit,
-> > +		 * but we eventually sent the packet OK.
-> > +		 */
-> > +		if (status & BD_ENET_TX_DEF)
-> > +			dev->stats.collisions++;
-> > +
-> > +		/* Free the sk buffer associated with this last
-> > transmit */
-> > +		dev_consume_skb_irq(skb);
-> > +		fep->tx_skbuff[fep->skb_dirty] =3D NULL;
-> > +		fep->skb_dirty =3D (fep->skb_dirty + 1) &
-> > TX_RING_MOD_MASK; +
-> > +		/* Update pointer to next buffer descriptor to be
-> > transmitted */
-> > +		if (status & BD_ENET_TX_WRAP)
-> > +			bdp =3D fep->tx_bd_base;
-> > +		else
-> > +			bdp++;
-> > +
-> > +		/* Since we have freed up a buffer, the ring is no
-> > longer
-> > +		 * full.
-> > +		 */
-> > +		if (fep->tx_full) {
-> > +			fep->tx_full =3D 0;
-> > +			if (netif_queue_stopped(dev))
-> > +				netif_wake_queue(dev);
-> > +		}
-> > +	}
-> > +	fep->dirty_tx =3D bdp;
-> > +	spin_unlock_irqrestore(&fep->hw_lock, flags);
-> >  }
-> > =20
-> > +/* During a receive, the cur_rx points to the current incoming
-> > buffer.
-> > + * When we update through the ring, if the next incoming buffer has
-> > + * not been given to the system, we just set the empty indicator,
-> > + * effectively tossing the packet.
-> > + */
-> >  static int mtip_switch_rx(struct net_device *dev, int budget, int
-> > *port) {
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	u8 *data, rx_port =3D MTIP_PORT_FORWARDING_INIT;
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	unsigned short status, pkt_len;
-> > +	struct net_device *pndev;
-> > +	struct ethhdr *eth_hdr;
-> > +	int pkt_received =3D 0;
-> > +	struct sk_buff *skb;
-> > +	struct cbd_t *bdp;
-> > +	struct page *page;
-> > +
-> > +	spin_lock_bh(&fep->hw_lock);
-> > +
-> > +	/* First, grab all of the stats for the incoming packet.
-> > +	 * These get messed up if we get called due to a busy
-> > condition.
-> > +	 */
-> > +	bdp =3D fep->cur_rx;
-> > +
-> > +	while (!((status =3D bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
-> > +		if (pkt_received >=3D budget)
-> > +			break;
-> > +
-> > +		pkt_received++;
-> > +		/* Since we have allocated space to hold a
-> > complete frame,
-> > +		 * the last indicator should be set.
-> > +		 */
-> > +		if ((status & BD_ENET_RX_LAST) =3D=3D 0)
-> > +			dev_warn_ratelimited(&dev->dev,
-> > +					     "SWITCH ENET: rcv is
-> > not +last\n"); =20
->=20
-> Probably you want to break the look when this condition is hit.
-
-Ok.
-
->=20
-> > +
-> > +		if (!fep->usage_count)
-> > +			goto rx_processing_done;
-> > +
-> > +		/* Check for errors. */
-> > +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH |
-> > BD_ENET_RX_NO |
-> > +			      BD_ENET_RX_CR | BD_ENET_RX_OV)) {
-> > +			dev->stats.rx_errors++;
-> > +			if (status & (BD_ENET_RX_LG |
-> > BD_ENET_RX_SH)) {
-> > +				/* Frame too long or too short. */
-> > +				dev->stats.rx_length_errors++;
-> > +			}
-> > +			if (status & BD_ENET_RX_NO)	/*
-> > Frame alignment */
-> > +				dev->stats.rx_frame_errors++;
-> > +			if (status & BD_ENET_RX_CR)	/* CRC
-> > Error */
-> > +				dev->stats.rx_crc_errors++;
-> > +			if (status & BD_ENET_RX_OV)	/* FIFO
-> > overrun */
-> > +				dev->stats.rx_fifo_errors++;
-> > +		}
-> > +
-> > +		/* Report late collisions as a frame error.
-> > +		 * On this error, the BD is closed, but we don't
-> > know what we
-> > +		 * have in the buffer.  So, just drop this frame
-> > on the floor.
-> > +		 */
-> > +		if (status & BD_ENET_RX_CL) {
-> > +			dev->stats.rx_errors++;
-> > +			dev->stats.rx_frame_errors++;
-> > +			goto rx_processing_done;
-> > +		}
-> > +
-> > +		/* Get correct RX page */
-> > +		page =3D fep->page[bdp - fep->rx_bd_base];
-> > +		/* Process the incoming frame */
-> > +		pkt_len =3D bdp->cbd_datlen;
-> > +		data =3D (__u8 *)__va(bdp->cbd_bufaddr);
-> > +
-> > +		dma_sync_single_for_cpu(&fep->pdev->dev,
-> > bdp->cbd_bufaddr,
-> > +					pkt_len, DMA_FROM_DEVICE);
-> > +		prefetch(page_address(page)); =20
->=20
-> Use net_prefetch() instead
->=20
-
-Ok.
-
-> > +
-> > +		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
-> > +			swap_buffer(data, pkt_len);
-> > +
-> > +		if (data) {
-> > +			eth_hdr =3D (struct ethhdr *)data;
-> > +			mtip_atable_get_entry_port_number(fep,
-> > +
-> > eth_hdr->h_source,
-> > +
-> > &rx_port);
-> > +			if (rx_port =3D=3D MTIP_PORT_FORWARDING_INIT)
-> > +
-> > mtip_atable_dynamicms_learn_migration(fep,
-> > +
-> >    fep->curr_time,
-> > +
-> >    eth_hdr->h_source,
-> > +
-> >    &rx_port);
-> > +		}
-> > +
-> > +		if ((rx_port =3D=3D 1 || rx_port =3D=3D 2) &&
-> > fep->ndev[rx_port - 1])
-> > +			pndev =3D fep->ndev[rx_port - 1];
-> > +		else
-> > +			pndev =3D dev;
-> > +
-> > +		*port =3D rx_port; =20
->=20
-> Do i read correctly that several network device use the same napi
-> instance? That will break napi assumptions and will incorrectly allow
-> napi merging packets coming from different devices.
-
-Isn't that for what the L2 switch is for? :-)
-
-
-To present the problem is this IP block:
-
-1. I will put aside the "separate" mode, which is only used until the
-bridge is created [*]. In this mode we do have separate uDMAs for each
-ports (i.e. uDMA0 and uDMA1).
-
-2. When offloading in HW L2 frames switching we do have single uDMA0 for
-the bridge (other such devices have separate DMAs for each port - like
-ti's cpsw - the offloading is only by setting one bit - i.e. this bit
-enables switching without touching DMA configuration/setup).
-
-That is why the NAPI is as single instance defined inside
-struct switch_enet_private. It reflects the single uDMA0 used when
-switching offloading is activated.
-
->=20
-> > +
-> > +		/* This does 16 byte alignment, exactly what we
-> > need.
-> > +		 * The packet length includes FCS, but we don't
-> > want to
-> > +		 * include that when passing upstream as it messes
-> > up
-> > +		 * bridging applications.
-> > +		 */
-> > +		skb =3D netdev_alloc_skb(pndev, pkt_len +
-> > NET_IP_ALIGN);
-> > +		if (unlikely(!skb)) {
-> > +			dev_dbg(&fep->pdev->dev,
-> > +				"%s: Memory squeeze, dropping
-> > packet.\n",
-> > +				pndev->name);
-> > +			page_pool_recycle_direct(fep->page_pool,
-> > page);
-> > +			pndev->stats.rx_dropped++;
-> > +			goto err_mem;
-> > +		} else { =20
->=20
-> No need for the else statement above.
->=20
-
-Ok.
-
-> /P
->=20
-
-Note:
-
-[*]:
-
-ip link add name br0 type bridge;
-ip link set lan0 master br0;=20
-ip link set lan1 master br0;=20
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/V++v/0cAATHYMBWHAJHNfXt
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhbHq4ACgkQAR8vZIA0
-zr0uBQf8ClaEXIB7Av4OnhGxTJenAk/pKse6Lyj4+j5Y4PKNcWZTCIP5Pot96HqJ
-Bw64dbS5itTjrWt3ondaTumtSiW2FmravAH1CsauaFa+3RH9LHe7TXop/ac+FATr
-6ZbwU2g1fo5uUXVx9Lj63be0cDYCED9PubhcIPh0cL/wsKatiUG0nn2bz3/IMfT+
-2zlgwcPh1gUKis+IoZ1gAYdaRxn3MUkSdNF8GqQNE55sZVittTErhi8UzwV178Qg
-IWtJxrjoxp8uQyEQvDfFVunGmLEJ724XFtxlt44OTsD+wsTeKbHDmU/JIrsO1cKt
-Q7G4GIjvo5BaL0QZvXbACBWaJcxvJA==
-=kw5E
------END PGP SIGNATURE-----
-
---Sig_/V++v/0cAATHYMBWHAJHNfXt--
