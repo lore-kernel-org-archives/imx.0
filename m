@@ -1,174 +1,94 @@
-Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11013002.outbound.protection.outlook.com [40.107.44.2])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B00A1DED69
-	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 03:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.44.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750735415; cv=fail; b=TQRqnNIA0NFel6zEHHTNB1LwKdAQ+coeMElNRNpZQPtbH5YVgo14kWnFEYOm3j7QWI++ud/wN3GnDLk3xQGgnMUngGNd3/T2p6HhQZ466Kizf4gHRclnOh804l84w02ozNvk65NolQKiyo6eq7Ehoi5z8ikb7xVKLvAIweN0XlI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750735415; c=relaxed/simple;
-	bh=qzhKCziwVvgffCPJn8e53WyLnMJPu1K5681Pf5/zdUA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=qriZ/yhAiHL9I0VIAVnv2X9YzS0+gApQ2YdnqHbNfd+fX1iWq7mC95opkFwVEgz9SDO4xJjnl1VI1m7K/Nf7Y+uyTv+TZrEYYiTWn3Yik+eq0jdqPS4Fh9YocTrtG/uAl7Yv7TatFlHVLAkh0+VczVC7/uMaj9D5jT8Q7j6pXAs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=H78LrDXz; arc=fail smtp.client-ip=40.107.44.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="H78LrDXz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eMfu793mEqxrBOegURlL8EYA/WDdlNebAVZfush8uxlcGA4h5w+ki0mDxqSDeKFwz90YenSqZWgc/b/8umdhn4DU+37LAa77vw2ICroqL23hipTLfrF/3P35fEm0KN137QtZfQXFvT2sOxF0TGulhSIOPqRsvS0fmtv3gfP8ppXJiANIuxk7oZ9hDrOy+ZnBnFLU8Ffzg8jQKrLz+eLiTpBsixy1xIjtmttma3sKBCn1KfEr5JmuRhz93PCosiiRvF19B83LuNLX6pmzRh2DIjYp6cU14fXLTv7obbpob5L0SkiYrSnpVxduXxi9qT9ux7HdMWPf/Qnid2rokoK0sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O620oYQNBksCom8vNjMM6BZvsqvdF7Ae9NgLAZJvHr0=;
- b=amrYY/q59faIH43m6utsxOzrWE0G6N5by1zlhSJ3u2auFn8XcFndeQ+8r753WPR65L1EFa4ixivXlyjJQ3YYDf8Ef0TSCyVZrlwOAqpYuOum+KlIuFzRGgzZJQW9Y1cYxxWC/UZWDsfjMTlOZ3R7gorm9+T5VGus/qjNa6iAjZz5cOKURNOmZ1eh+/wJlhI4lpEAJA0xsGQWjVzD1MPs5LeuU4rWeknLM27ipj/Qriv4GBZ1+nyBDkJDWigvC2ixTl1SUj4qNoADlfmz4rb8ytH08MDtkCFmamttY4lc9TB2axQ4ORe7LgHpSJmlbqtrZlREWwEN6lhV7SNxt5ChMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O620oYQNBksCom8vNjMM6BZvsqvdF7Ae9NgLAZJvHr0=;
- b=H78LrDXzXg3FgsDj9lSPfyWbnC+wVJgR7Fwk9Aa2A069mPWTjF0UynszA67MOvgoYMlzIYzqWSKGA1OYlslDp+g+0iX0Gsudx7Q4igOAdn3NHO8G9TMQL5eEalNQNsKmbOw9/Fk4aeWg1yaEFadaVEvUXLP02GzcGd6+G5qwvLzflb1dtELoYdYzTayRT7JHH5qZCbB4cMVsA4tWJzdYuC5GpDgLNiMn+QrqmtynwOaGISNY65wzeSPYuUG/dcd+f0VA/DDlYOBkYm5xotRmEIbg7LmKdj8KPPSVmn4eMhPRTuIJ/Nr3w/1JiIkHhTVB/qql2PiqditDoaZRnZLvWg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from KL1PR06MB6273.apcprd06.prod.outlook.com (2603:1096:820:ec::10)
- by TYZPR06MB6699.apcprd06.prod.outlook.com (2603:1096:400:45b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Tue, 24 Jun
- 2025 03:23:29 +0000
-Received: from KL1PR06MB6273.apcprd06.prod.outlook.com
- ([fe80::1f06:daf8:cbb3:a0be]) by KL1PR06MB6273.apcprd06.prod.outlook.com
- ([fe80::1f06:daf8:cbb3:a0be%3]) with mapi id 15.20.8857.026; Tue, 24 Jun 2025
- 03:23:29 +0000
-From: Huan Tang <tanghuan@vivo.com>
-To: srini@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F66A94A
+	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 06:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750745613; cv=none; b=JCLK3i8NeZD5mD4JLYkARXzcLS2QWY/3uiZ0blZ//54uj46q9Qt2Jwe414yAQtdlKXVErs9JhdrE+dU2jcdn9Sh6pc0dthfwkkkMHWJQKGkX+/YP9MaOKwKmT4NIhbb4BgZfYXHqSyBTqSYVS0UG/WETuPy3prNFzlYP6kDm1z4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750745613; c=relaxed/simple;
+	bh=iQKW8jtVQ5hokU5L9keV/DmzueNNXB3lLUmIeed/Q0E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mHWbTkU/1xtHI5EP9wjtYTQ6ninxXDlTyqh0sAB01FLmDv+ctlQOmj4TtnrE/bT4RnAo7j8zMkg5dwAnfvQ/zYNmo+pAKkW5P3ueBp6/ma9pCxwZbh5Keybrj15+rurz9UwhlYCk9xVG7WrDqTH7EC89QNHcc/ArPWGvBKKFXug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+Received: from [89.212.21.243] (port=55180 helo=localhost.localdomain)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1uTwuL-002jD9-0R;
+	Tue, 24 Jun 2025 08:13:24 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Huan Tang <tanghuan@vivo.com>
-Subject: [PATCH] nvmem: imx-ocotp: Use helper function devm_clk_get_enabled()
-Date: Tue, 24 Jun 2025 11:23:18 +0800
-Message-Id: <20250624032318.246-1-tanghuan@vivo.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCP286CA0010.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:26c::18) To KL1PR06MB6273.apcprd06.prod.outlook.com
- (2603:1096:820:ec::10)
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH] arm64: dts: freescale: imx93-phycore-som: Fix watchdog reset
+Date: Tue, 24 Jun 2025 08:13:23 +0200
+Message-Id: <20250624061323.601550-1-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: KL1PR06MB6273:EE_|TYZPR06MB6699:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81f26b3a-e77d-4419-68ed-08ddb2ce7d2a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?WYPiCx+k+mjd/9aSiJwZwlI00i082+N5XrqeABNbxqdDsYRYuLrsGZa7dAUj?=
- =?us-ascii?Q?tXz1LGmJTahpnMPGod4M2rC4RxCK5bzvfcXkTcSga0cOb7+vwLMsD+0YFiQH?=
- =?us-ascii?Q?FyuT6eEK7AYt/ANZXJA0g6kPT2x+FC1cJp/EQ9Vpcs3urRHBrvwAxi4s5K6u?=
- =?us-ascii?Q?2hANGgurq4/iurecin3FHEU11cBGg+jtSIBGtZhqrt9BaIuHqrr1eix29zLy?=
- =?us-ascii?Q?VNYevLUj/PaWjdwdxJQeGYEN8QXn6nJUSGsz5yy6pXjyMxvtEw1b3F6OJUMs?=
- =?us-ascii?Q?IWRjgiZ/DbfpcSbcJYg/ULizUhl1hBLTJjsM+e2+6Apg44O8MvJEoVdgkWn4?=
- =?us-ascii?Q?JYMFYdDeQZ6dcd0twNIsD5bQtS2x89/EJ48ld7R3eL70Znb4PnTj/ySlgg7X?=
- =?us-ascii?Q?9JQJPJWZwOuRFtXJWpQ3weCoZcIPfGGo6xKp1vxQA4gW8SQrT67AnARoxfF/?=
- =?us-ascii?Q?zQogxDmUWvRiuN+Eo2SKvNyQe3cIseG2dXyD96Y6/BnzMPUx8cT5/CFpHZJI?=
- =?us-ascii?Q?j6rXsDwanUrF+7ba/3B/WHpF6ok+OKZN2v0WezBa1tnyJAmLoCfO92nHrxsK?=
- =?us-ascii?Q?E9Efpr/Pemk3Hh59etZRNpluA49xK7tZ+Slg7Lbr3iXOutoKhVmr8h64PYGf?=
- =?us-ascii?Q?hMDsfmWKQevDPYkRzCFRhyGrjuLy39yrg+9kUV9xwn1LJYCqUjZdeKHoNN1J?=
- =?us-ascii?Q?sFMNT8LNYEj4RNIZ7jGBOTYfRUHoDUh4jG6a1wbzv8X+tgdgwjESCbTRMmzo?=
- =?us-ascii?Q?9GshIorB/hE0lKzigmXavUIiGPaD4Xlzfd75OSTxDw7JUYgQSaZgQC/22y/2?=
- =?us-ascii?Q?ArOtKEWJGJkyNKiTo3CnMXmike4WEJBi3VjJJK1YBGHaW32qyLSm+GlY0fFS?=
- =?us-ascii?Q?G96WugFA2qxnpY4TZFPOmEa2xml/KGFcaWh8SsE6ToRaFYjQS+YSj3KqiDkf?=
- =?us-ascii?Q?1aIH6IRqKSxDKe4LVPcAgKcTNoV5fP86aygZ+WnDlNKexZ6K/8vxidW/+GC+?=
- =?us-ascii?Q?G/r1+8az147tg8y1Ie79ky7d5PnDx92tpIgxpY20jtzuVDU65xhi9Eyoudpx?=
- =?us-ascii?Q?YreYCDWtevIgOS+lPmgzekMeVIfmE91DNI0ZLqE5va4WWC45UQorqL5sCAC7?=
- =?us-ascii?Q?wu/fYHcqm8RZ7PWvFOOb59IK/pdgc8AhdfjzZXjRB3QUvt2ODN8hk47m093s?=
- =?us-ascii?Q?qx3fzxYySv2Rql81TaiGJHLMFiOI6StqKNcQBzYM2u1ZbsEDckPvKk4rDees?=
- =?us-ascii?Q?ZPteBXjPi5YoXYJEad3IFXdTurpVtsC2z69PYZgOsQejq13EJV5lfdrUFBpc?=
- =?us-ascii?Q?uIFlX+POyn/EVlrVv5p1NMheMK78FH6bSa4DDZSWJCnWARJvVPLrLgTCLDUz?=
- =?us-ascii?Q?k4vqj0DoPxUzLUgR+IgEwup3bVuPtiiNUzcZpvAEnyGM7pp9yDskrAF+lyAR?=
- =?us-ascii?Q?SvfiydW9GSlJM+McGHy4SNikPL6682EOpzKB5hcmIxHREFDQZG+89Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR06MB6273.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?t4Qs96wcbZha0ESnZyTynO2ArKfLtHTct7YbGHnNA72IsWuAwRki86PawFxN?=
- =?us-ascii?Q?8QKn2QEgPr3eM+W3XbsRyNMoDkNBTbUYgscS94AJoLDAGt/bYkCB9mzi5GDP?=
- =?us-ascii?Q?L7m4yx5hGJpzVB4ECM0Qry9DkJQ+gumHsMgHPRQXyuvUv4Lwb9rbCc3iFX1F?=
- =?us-ascii?Q?zIe1rCpCwBk+YmPobwC6PAJhyHNefayI46MFNyhFlEkNbHefN78B6CuRkr6u?=
- =?us-ascii?Q?swZD7JfQEB09orhsRMUBFokaTOqZOCSy2FqPksvGm7QslL3t9wfIEcINlXAH?=
- =?us-ascii?Q?SrNfPMgZttuFjfePUFSO4vPOoiSXhPE3Q/TwWkr1dE5IrDJxscz9qQCCIPhF?=
- =?us-ascii?Q?FnzMjcXVq0xFsNcWwtrP8M8BzymR0SaVVFVXYOT2PahD+hdc8c+P4GwvfBR6?=
- =?us-ascii?Q?qe3P/DstdJhYYX3ok4t7P2Bhkr2bRILlDmo6UmENvy4LrYGjVjY0UTAFwz93?=
- =?us-ascii?Q?GUbJueGt7hATM714LlXxet4MrGwELin4mnBHcv+RqbvHfcSeo/xixqViwaND?=
- =?us-ascii?Q?XoY5RvTr62PHeiiElHrxyEcVAkQxagDlExg7nksAnGSQwBrJpaKH8MHNbWyb?=
- =?us-ascii?Q?Q1OpelR3sCkjIuhEf55updm7tm5JecfZNkIWa84eL4BIt6GYp01TVqfiNXjk?=
- =?us-ascii?Q?nF8pwAN1hkIUoNjkGhraGIC6IGIzhy/hte05yruDyO/ea8NAhboN94Z4vrll?=
- =?us-ascii?Q?ZJXN0olGi8pHGWF7V8tvjJwtyVkNsTTprLSPNEJvaMwFFibR0skbgwHjdRyx?=
- =?us-ascii?Q?COmCmmY3dmapAgOpfz89BkzJx3jiQGbKP+cdJji72+JIDK5Lh4Rd7C/Dz2u1?=
- =?us-ascii?Q?zAn8qa7+opjOvyX6o2I0cDw3awTuzFywLNle8PA/uKr5V974egBDdg8MUq+e?=
- =?us-ascii?Q?6yzNoqXWgt75JX7JaLC6gGcKhiiNfnPH7AkG/vu4KkDiwb+99YT8YDBYCyNI?=
- =?us-ascii?Q?g1k79ROVgNjeXa9iVKCwWrx4GMKOEKwnEJSftG+OR8FQeP08wSs1dsDRux9d?=
- =?us-ascii?Q?OCLRFh/HbbmXId8baqH34ln0QhPU58J2PdhAlN4TtoSaPjdeO9ithrMYTIX+?=
- =?us-ascii?Q?lC0jVbzpmNdvmYohU8FT7O76VBWIQRAfdI7EGWxZyOzpK8EIpR/BNGYdZmeu?=
- =?us-ascii?Q?1MvkH6+DZMEMS7gkedCtX9lNOhgBu40us5JDZrYTrJQvtjesOpoScDZenPAD?=
- =?us-ascii?Q?c9mjH4qqpqMQxomUYuygYFMeeXZkGw82I7xumsmMaKFnrqPhO2oPEGPiP+MV?=
- =?us-ascii?Q?V+aQmn3cF//aLk/LdW7LJqvAOfpHCJXoxXr4YBe7KmPvviTuRJnoA7LJFA7D?=
- =?us-ascii?Q?opfL9PtEnEYBxT8pOxqkRsq+JCajEKWFNCC7oxNI814dG8Obf9s++XnfepwN?=
- =?us-ascii?Q?lw4ipxr3hV2dzLMSr7r1C/iJJAmiQVX8XmNUoB+RKliJtJaa2CM/eOYbS0a1?=
- =?us-ascii?Q?B25D6iv4OGJwoHIclz0gNdGPg80SBViYYE+H8VstPg4Mvjd1RbCE0qDHpK/4?=
- =?us-ascii?Q?gpI6dxz9qu3YoUkQNFDIZHoOwQIlhHGw3xMvrjiZgMRueZIZMQZCNP/0qU7M?=
- =?us-ascii?Q?nQUqSn0+4+OvgIm6paA9jvVddbmVo2BdC6+oDnk9?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81f26b3a-e77d-4419-68ed-08ddb2ce7d2a
-X-MS-Exchange-CrossTenant-AuthSource: KL1PR06MB6273.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 03:23:29.3090
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lSAZex+s3tS1F+Pl5GOvS8xgZk4KLzzsJwk77+7ZMYlOcDin1ff0plOV53Lix05ZrRIHKcUlKz8HO0n1tN7CuQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB6699
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Use devm_clk_get_enabled() helper to simplify code.
+On phyCORE-i.MX93 SoM, the SoC WDOG_ANY output line is connected to the
+external pca9451a PMIC WDOG_B input. Apply pinctrl and set the property
+"fsl,ext-reset-output" for watchdog to trigger board reset via PMIC on
+timeout/reset.
 
-Signed-off-by: Huan Tang <tanghuan@vivo.com>
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 ---
- drivers/nvmem/imx-ocotp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-index 79dd4fda0329..ce5970ba4033 100644
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -605,7 +605,7 @@ static int imx_ocotp_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->base))
- 		return PTR_ERR(priv->base);
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+index 5ee52774e7bf..729c26f9ac94 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi
+@@ -191,6 +191,9 @@ &usdhc1 {
  
--	priv->clk = devm_clk_get(dev, NULL);
-+	priv->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(priv->clk))
- 		return PTR_ERR(priv->clk);
+ /* Watchdog */
+ &wdog3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_wdog>;
++	fsl,ext-reset-output;
+ 	status = "okay";
+ };
  
-@@ -618,7 +618,6 @@ static int imx_ocotp_probe(struct platform_device *pdev)
- 
- 	priv->config = &imx_ocotp_nvmem_config;
- 
--	clk_prepare_enable(priv->clk);
- 	imx_ocotp_clr_err_if_set(priv);
- 	clk_disable_unprepare(priv->clk);
- 
+@@ -279,4 +282,10 @@ MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x400013be
+ 			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x179e
+ 		>;
+ 	};
++
++	pinctrl_wdog: wdoggrp {
++		fsl,pins = <
++			MX93_PAD_WDOG_ANY__WDOG1_WDOG_ANY	0x31e
++		>;
++	};
+ };
 -- 
-2.48.1
+2.34.1
 
