@@ -1,206 +1,279 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011030.outbound.protection.outlook.com [52.101.70.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF4026CE0A
-	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 15:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750780733; cv=fail; b=S8cSiq44/WSYJisrCYhpSYyMDOnHuxchL2Qiwh0p43BzQndq93cwGsGFO6mJjgzLO3B9kcSYi16dPhYXjLdcYaiOVAIxiUs9tGgHZfGuMxPb29EDqR+MlTK4LmVJ6EjjzNS8KyirD1vyjeOT14tvCqFqpdX9X/bkiu/ZeQAXFqw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750780733; c=relaxed/simple;
-	bh=rCwHCVOHBKT2vSNGo0brTeZdq1QpzOeQgDXOfzY5wd0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AK8PPDDRaSnZh6zq86RSeS8CZW+nvldfSZdJTacuVXtZuwWrU/yRcVymUY2hqN8m+BwKllL0DN3D9tIx3IV+qCxRtLODE1LDKlo3h/WUbxRkm5oxTdM4i63RKoqqUvjlm7A128AlXd13oCiMgaJ1zvNvC9fSINbey8pK6TyzcB4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=P+1RE6O5; arc=fail smtp.client-ip=52.101.70.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9103074AB;
+	Tue, 24 Jun 2025 16:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750780963; cv=none; b=m9AZzW+hPqGqamP7T3ftKRmzRu/uJRQ3uFwEQxyCOhpXvIvosbfuGgSLpiqkZQO4dIVZCRgosAZkTlKZEUA9lG0AgIQdUY63acCAled11Wf3SZWCVmW9ws/8WUhCUz/lFGRfwWT0/b9Htx3MPdBB6+/KYL8luL3o6Dncxe9QP/k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750780963; c=relaxed/simple;
+	bh=FPCSlDVYJ3mJwkIKhhgrkGwH4ruAR20+CRSWbEpS8NA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mJ8lLoCV24+3M8e+l9jYXSAT9v7D9m+7egsDuLoTHYlmxVqcpJA1URzyo9b0K2oPE60DDVNoQpXit6V6TEFM4gC3Eyj1J5X+MHb0qjUUCumD5OyFNZWQ3Ib9C5ich8ZhLcV/VCukuDvd9U+y2BuJPfSqzBxGmQldI59FeNS7u2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+/ZQg3E; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="P+1RE6O5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MhoG7R/7GLE48rrlCGo6s3hhU9YzIRuBEXNWkShiF/I8A1gSoYQxNVjv52nXmbhtuNXP8Txst4y60QK9O6yTxpba34HfK+I5Usu5lfcMIf5z0Upwj9sZ8iwssl8XMztMlqKfqlEjpEOV+kkKk0zBhnrqe3pkXmdi45a4cN5KrSd1zNaLUHtCMzqzgK6L8BAF+rYvi+dbx2XZFEqU3jE7vtRCjI9IhTqkuPPldj9/GkpfJVGMGUpKGE6lzkL4wlvZgJK+DsMWgawI+Du1L0DtmAuQALUO3kdW0THpp5wlmkTGyEX7ymcpOC6ZrdoObiNYOkHu31O+Ejnb0Q5PJo+eTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9hOc8724IsQJrp80p15sennOc5+6yp7VAZ/TJy/3mi8=;
- b=MvRjCIvkj0/qyaS3pMjTwETQkATizI0WwkWqcqnX6afgvIigtSpgPxHxD5sqsYmFd1vm38vtme9RTgrDJgczWTNoeEnT5veW2BXLfmIdvipBWjtOTE5NvuSpAe4txrBzVJaMg0xwke1LbnBtLx2gmwFbG2RELTPjMR31oiB6UzkJnqbwC0RyPkh4w7I+5NfO9iydrYaqa/18lapFKm0zy71Rqrd8sLU8BUZ4PmCrw6dS5zXKsI1hTzNDo0po6y3F1InEF7r6b4o9UVvVq2IdXja1Jwjhx6EK0XbYD87YJ292zZYC3z5zu6qwpKHSEND3egoKOc0mfTt5EsayZMqMiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9hOc8724IsQJrp80p15sennOc5+6yp7VAZ/TJy/3mi8=;
- b=P+1RE6O5zQefhewX8q+J6y+2WeNthqwWTYvdUVK97kjTBDkJJ9UixTsXyM3kqyS9vSh/vCmA0a4eaXb4oJoMhA0yG+VYGXmzXCUl3Wc+rO1jGB5QuYuSqpDO3b5HoQMwbN/9ye42PKRu+AyIXTJFmU0OSjFvlXyZohGvGfNYxkdUuR4TRlUZpnWpXDhann17sUi9/XJVMbNsX169HSY1NrTszBxvkEtf1uZtHbevjcLZB9ULlmrBusuO9HHRDuvPrjcw8l+VZS3mLu2UPTfyC5RMuvjujwiKhSsVvTPxuxFxKuJBJ3Y8f25+EQok4qh70sL/wdCO+sZ5Za5UhBCuWQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB9232.eurprd04.prod.outlook.com (2603:10a6:102:2ba::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.27; Tue, 24 Jun
- 2025 15:58:47 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8880.015; Tue, 24 Jun 2025
- 15:58:47 +0000
-Date: Tue, 24 Jun 2025 11:58:40 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: James Clark <james.clark@linaro.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Christoph Hellwig <hch@lst.de>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] spi: spi-fsl-dspi: Clear completion counter
- before initiating transfer
-Message-ID: <aFrLMCq6hRJj5FjI@lizhi-Precision-Tower-5810>
-References: <20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org>
- <20250624-james-nxp-spi-dma-v3-1-e7d574f5f62c@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624-james-nxp-spi-dma-v3-1-e7d574f5f62c@linaro.org>
-X-ClientProxiedBy: SJ0PR03CA0226.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::21) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+/ZQg3E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41142C4CEE3;
+	Tue, 24 Jun 2025 16:02:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750780962;
+	bh=FPCSlDVYJ3mJwkIKhhgrkGwH4ruAR20+CRSWbEpS8NA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n+/ZQg3Eo0DYsVZpgfKjlHN/ec6EHGcm0Kz+VDqNGyfGTZlPD0T/0+rk6LxkAb+IF
+	 /EnxzEzdA6UkghrvTuQEvZC1VIK/6pxCcm7Um9CkcMsGfrDvL28BFwq0JYV67oaNvF
+	 DHORjlAvYhtsVDuQW5HGeVCSfKzTmd+XhHjjxe8/aeHwOHWhveFouxaQEZEBrji4gt
+	 kedCy4q5qt3RQqjK8HRoFQCahCnPxJ5lKREnu65VNaYHoD4KbTXGJIZ/iyKhB11OiL
+	 FRAkzhP2xOFkqqXnr/paG5FamftxJPSwzLmMF9oCrqmEI78Pzvvt4J3/ar08XSZ1DZ
+	 cRQBvwhgAybYQ==
+Date: Tue, 24 Jun 2025 17:02:35 +0100
+From: Lee Jones <lee@kernel.org>
+To: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
+	Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>,
+	Robin Gong <yibin.gong@nxp.com>,
+	Enric Balletbo i Serra <eballetbo@gmail.com>
+Subject: Re: [PATCH v7 2/6] mfd: pf1550: add core mfd driver
+Message-ID: <20250624160235.GM795775@google.com>
+References: <20250612-pf1550-v7-0-0e393b0f45d7@savoirfairelinux.com>
+ <20250612-pf1550-v7-2-0e393b0f45d7@savoirfairelinux.com>
+ <20250619130337.GA795775@google.com>
+ <aFWrxtArHjb5nc0M@fedora>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB9232:EE_
-X-MS-Office365-Filtering-Correlation-Id: cd50b99d-83a1-4466-7e0a-08ddb3380138
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BUrNb3VWW//XVqnnoycOsSeB5zh34a9Oh6j8na4sNASSatCQHHjwQN35rCAW?=
- =?us-ascii?Q?bRkeTZ87HBaco/qJpCJGjkAda7RfyXx+2CxYuo/1CAzJiMW/HxjlnTXkHl35?=
- =?us-ascii?Q?Zix9SawVylZsu3811RQUTJw9gpPTyblJkxkaDoLSwa6g3bFOsnUeOhDcy+ij?=
- =?us-ascii?Q?1lHOAsbzG8NQ0+XGTuRhmGgYcNOo7Xza6ceJ9fdphBnT1HBo8CfB/az+1i0o?=
- =?us-ascii?Q?L3qPtvGCH6JMwWS1Opj3AIJ7ENOPTSCuG4Mo65JSnkNE2FCGeCuHZAAS6GXl?=
- =?us-ascii?Q?N32pHifJ5TahdDZW6SEjYpLVTkhKqX5948MbuHxdTg/pzeOAkA5iexnyfTMs?=
- =?us-ascii?Q?uam9tXyYRZmqWuRnigeVCAyPI2ot0AGQGtUt0m5HBmGQkJqxgST6y2kuNV9m?=
- =?us-ascii?Q?JONGMBWs8UwAzN0CPnxowOAJZFtvU2YweA8B1VDhOOHRwxRyFGIb9XLmW4Qe?=
- =?us-ascii?Q?54Ky/s/gDq/tL8To/xOfG2ldnUJKPuc7wEwZmKkxzJl82TLnwRKXJG5Ccjtf?=
- =?us-ascii?Q?0Dru7vCk5Mdso02NLt0ebU4fijIoocBAOAS85yyoY5m1fMRBxgXro2j7hCST?=
- =?us-ascii?Q?HCzzIHpElVlcD9CJNc2qwBLhBBUS1BTmY67FZlpF9qPq89hY+uknFxVQ77+C?=
- =?us-ascii?Q?vLVdtbLwr82UZPUcH+52pGlA2pKNtmbb9ZnZoGXzqTvvPDJRSi5aX8oz1QDq?=
- =?us-ascii?Q?+Gkj+xeE1Hf16zMz+XFzLA2E5+43S0dpYHqfq1LhhqlLYYglbkznMxqEWL9j?=
- =?us-ascii?Q?Q2FQLJpriovY5hTqANeF7j65+EjrqDtwbFJ/gbIcJtR6N28c0gSd98hdHnUJ?=
- =?us-ascii?Q?ZbN5tQ2rWspbU5ipzKKGvQ1eekVlivQ/f7y4df3dNg8bYQFXX6cCdQpkZQOm?=
- =?us-ascii?Q?QEr91uks2HKJIDwkbTdWEJvWpGDQ9fWXe907BHNpo0OyqFhrpD3A0Yp6uOms?=
- =?us-ascii?Q?z5ij6iu9yG08X+2tTdYKXqEW8aH6KIWycLEcrA/adGeHGUd67koyZcAYmcnR?=
- =?us-ascii?Q?1P+y4TFD/S0W8sEJnh+3VvY5NiIWn790HTbFb2HJ3NgWAe/reem/4iRdencK?=
- =?us-ascii?Q?RaV0lVKlHDA+9W9dqRKVA+ZwVBEjLwSxl+ZqpHJHsdnMw/dvMJ2osfVrRokf?=
- =?us-ascii?Q?A2T1WJfwq9Uv/UnYX9hosJDOWg/gz1PerthXRP37bvVwHKX0HMCguzLsvipb?=
- =?us-ascii?Q?urPPd3yIs4QRPHE4Ebm8StoV13EDgs1qVitDMmS88Yd074Lu08w571rmZPG8?=
- =?us-ascii?Q?92VK+hjDgnpP9OiOk/tbp2Sp8eJjCofuMatwCLMykZU5PdnMns4qpqKA2Hsv?=
- =?us-ascii?Q?k1z3sdM0TV0Nireygi82/RHrcQtkumphI645HtXV2O7pY1CjSwkFndbT2y+E?=
- =?us-ascii?Q?OUW+uxT4u3YzDzybUz8iPn105iF+r9mJAMZrJx6VJMAwxZB3MO4kVdXHIs3s?=
- =?us-ascii?Q?7KY5MrEQRid0eIW4zfpgYJIdPRgL0RD6LS4qcz0QIZAsUvrn2JZiBA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Vu0gms5GYlxKN0tLTf1x5eVeDzmGwa04plYELbEidKPGFLbXD6eSga2ibmif?=
- =?us-ascii?Q?BF2ciHBQx2iRHi+xc6tY/nFxN0wob/8M2GSOaXc/Y+3J42gqIqUKs9pwRciU?=
- =?us-ascii?Q?rjB1oXIXmXWvLU7tnA+rtr8Yc48w+IbNnb8IPHi2uSnzS+sxtNsMaALygtMs?=
- =?us-ascii?Q?uPuQpAtKQtuXBbTrfLBeg6hQ4tP/71PF0zqRBTtQ/HBU0f0BG8/eUOeXcI68?=
- =?us-ascii?Q?euP6IKGu+A/IUiSM0Vo9vSncxLopJz0zY8GkSOkDVwTP9vy8lPdfN/Gnosy8?=
- =?us-ascii?Q?vG2kQqIaMq8XcUlqmcVNuuSJD6yfGa0lLZMIy3o6kTmpVvbAVExNXbXmXl+x?=
- =?us-ascii?Q?pHPHwNJEM4E1/zW38/0lJlOcG+pJaQvdiVSW2QX4YBSTNv12DhqXtH096Nwo?=
- =?us-ascii?Q?kFY6pIJczKbj+Y5hCK9ZV4xVY7jGTh/8rXkYPpb2jgMgwQ3t1O8PAcimCR4g?=
- =?us-ascii?Q?zzRfuvagXkUVQxPbuYhV/pbYFwbh9zNIAM8EdUTZA1wcE37nvYy2KKt+E+2V?=
- =?us-ascii?Q?JCbYZkSqdDfMZasjS/B5tK9WML3bhwLP6u8tGela0ru7kD45Dbs9ebClSxKl?=
- =?us-ascii?Q?nsweqNtNXrPSLhCHhdVGTbHceOJOutQZ0R+sCmbwrswcZkCXiYbWPqO/b9hj?=
- =?us-ascii?Q?NVwgAvMgZTRLLx+YJXvpaRLTSJ/ch9143jB0LaHX22W4ZLzTYbmB8axYwZxW?=
- =?us-ascii?Q?XiwzqK/8jfCm3Mt9rux0ecXawwpPuDVZT0X2Uy4bfzxbZSNbGChMB/CtDot4?=
- =?us-ascii?Q?K7OiC4IjLE39Rn6fBc3EKDFy40D8NMAGLAn6x+OY3Nd7pERQ3MtwVvdnh0EE?=
- =?us-ascii?Q?Dkb1P/eqQEMLupt8kl3OKVJy8vnAuTU0xtrmp9q7f30FwgQK0d3E+fV2sJM1?=
- =?us-ascii?Q?uN/5YSW56fyu18eKxeHQsN9m5yR5/E5TGmf+GtbMuR3nHgWXEeU7s3WWeaCh?=
- =?us-ascii?Q?GDmG9bg84Evjwns07vYvGGiAQoKOmE47oc0soS6OX8lMs6kuAlsFpqvCrhe1?=
- =?us-ascii?Q?l7HOaizFDhLMYZBGNMjeFge1mt3I2j0TaSRQUnEtCQzynoLS0wTc7v0EHYi2?=
- =?us-ascii?Q?FMfA+sZ0vFeV7Rsk+AM8H/OWlPoGOXMbMSpSqk6qo/pSPiiKsHN01lCNmyrd?=
- =?us-ascii?Q?PQUw/AJRbQG/p3ugio2JdQTzbuQjqastxV4xJ/ld588jdIL3FSSNKA2f2f4Z?=
- =?us-ascii?Q?ptSAQjkNXCo6IyhOm8PJUw8DbbBUeV2xX8AXt8o7lwB/wNjO9mbkyyq7NDXz?=
- =?us-ascii?Q?b009F+yZ52dDZTXAqG9Jmi+j2Q5YSy84Ce78szf4C/iGhZnPRYAnIrVblya3?=
- =?us-ascii?Q?9dd8npnVXAnbrPuS4hVYH6+4vHr6uBHUFIyifUhJpsRGNNZLH+u1Qo9N7Xqc?=
- =?us-ascii?Q?quBWny/yVUxqKBLfx2dYxbcmWgg6IcNdPEnD6e+4Sxljmz1bNboKnyUwmMIG?=
- =?us-ascii?Q?jPgPXsNa2rQ3Xx99a5kGftrmw2UUTsj6VXHuX29PhrOpfUeUYKH4tIycCrvP?=
- =?us-ascii?Q?+RT51e9DrqIorBtcvfFVtv6wmpqoPfmaCcRNWGXO9FpT/MbW3PPo/L0IaiFo?=
- =?us-ascii?Q?kF5rwd3m7EV+ut6tfo8jMCXIg56ZeGWqlZ/jVAmC?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cd50b99d-83a1-4466-7e0a-08ddb3380138
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 15:58:47.7950
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AzkAXrWOdBq9SfPza1N27O9SxdW2dOPqrK0n0pa55KvRn9GTSsMHmZ6ZCj2rqnAwoAYt+waBdme56PqDxWJWGA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9232
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aFWrxtArHjb5nc0M@fedora>
 
-On Tue, Jun 24, 2025 at 11:35:31AM +0100, James Clark wrote:
-> In target mode, extra interrupts can be received between the end of a
-> transfer and halting the module if the host continues sending more data.
-> If the interrupt from this occurs after the reinit_completion() then the
-> completion counter is left at a non-zero value. The next unrelated
-> transfer initiated by userspace will then complete immediately without
-> waiting for the interrupt or writing to the RX buffer.
->
-> Fix it by resetting the counter before the transfer so that lingering
-> values are cleared. This is done after clearing the FIFOs and the
-> status register but before the transfer is initiated, so no interrupts
-> should be received at this point resulting in other race conditions.
->
-> Fixes: 4f5ee75ea171 ("spi: spi-fsl-dspi: Replace interruptible wait queue with a simple completion")
-> Signed-off-by: James Clark <james.clark@linaro.org>
-> ---
->  drivers/spi/spi-fsl-dspi.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 04c88d090c4d..744dfc561db2 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -1122,11 +1122,19 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
->  		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
->  			status = dspi_dma_xfer(dspi);
->  		} else {
-> +			/*
-> +			 * Reset completion counter to clear any extra
-> +			 * complete()s from spurious interrupts that may have
-> +			 * happened after the last message's completion but
-> +			 * before the module was fully in stop mode.
-> +			 */
+On Fri, 20 Jun 2025, Samuel Kayode wrote:
 
-I think you change is correct. reinit_completion() should be called before
-dspi_fifo_write().
+> Hi Lee,
+> 
+> Thanks a lot for the review.
+> 
+> On Thu, Jun 19, 2025 at 02:03:37PM +0100, Lee Jones wrote:
+> > > +static int pf1550_read_otp(const struct pf1550_dev *pf1550, unsigned int index,
+> > 
+> > What does OTP mean?
+> >
+> It's a One-Time Programmable memory with configuration for the pf1550. I will
+> expand on this in the commit description of the next version.
 
-comments is quite confused. how about below comments?
+Place it in a comment please.
 
-/*
- * Reinitialize the completion before transferring data to avoid the case where
- * it might remain in the done state due to a spurious interrupt from a previous
- * transfer. This could falsely signal that the current transfer has completed.
- */
+> > Why do you have to write to 4 registers first?
+> > 
+> The pf1550 was designed such that the registers of the accompanying OTP is
+> accessed indirectly. Valid keys have to be written to specific pf1550
+> registers. After writing the keys, the address of the OTP register to be read
+> is then written to PF1550_TEST_REG_FMRADDR and its corresponding value read from
+> PF1550_TEST_REG_FMRDATA.
 
-Frank
-> +			if (dspi->irq)
-> +				reinit_completion(&dspi->xfer_done);
-> +
->  			dspi_fifo_write(dspi);
->
->  			if (dspi->irq) {
->  				wait_for_completion(&dspi->xfer_done);
-> -				reinit_completion(&dspi->xfer_done);
->  			} else {
->  				do {
->  					status = dspi_poll(dspi);
->
-> --
-> 2.34.1
->
+In a comment please.  If I wondered, so with others.
+
+> > This should all be made clear in some way or another.
+> > 
+> I'll be adding comments on this in the next version.
+
+Great!
+
+> > > +			   unsigned int *val)
+> > > +{
+> > > +	int ret = 0;
+> > > +
+> > > +	ret = regmap_write(pf1550->regmap, PF1550_PMIC_REG_KEY, 0x15);
+> > 
+> > No magic numbers.  These should all be defined.
+> Will do.
+> > 
+> > > +	if (ret)
+> > > +		goto read_err;
+> > > +	ret = regmap_write(pf1550->regmap, PF1550_CHARG_REG_CHGR_KEY2, 0x50);
+> > > +	if (ret)
+> > > +		goto read_err;
+> > > +	ret = regmap_write(pf1550->regmap, PF1550_TEST_REG_KEY3, 0xab);
+> > > +	if (ret)
+> > > +		goto read_err;
+> > > +	ret = regmap_write(pf1550->regmap, PF1550_TEST_REG_FMRADDR, index);
+> > > +	if (ret)
+> > > +		goto read_err;
+> > > +	ret = regmap_read(pf1550->regmap, PF1550_TEST_REG_FMRDATA, val);
+> > > +	if (ret)
+> > > +		goto read_err;
+> > > +
+> > > +	return 0;
+> > > +
+> > > +read_err:
+> > > +	dev_err_probe(pf1550->dev, ret, "read otp reg %x found!\n", index);
+> ...
+> > > +static int pf1550_add_child_device(struct pf1550_dev *pmic,
+> > > +				   const struct mfd_cell *cell,
+> > > +				   struct regmap_irq_chip_data *pdata,
+> > 
+> > This is not pdata.
+> > 
+> > > +				   int pirq,
+> > > +				   const struct regmap_irq_chip *chip,
+> > > +				   struct regmap_irq_chip_data **data)
+> > > +{
+> > > +	struct device *dev = pmic->dev;
+> > > +	struct irq_domain *domain;
+> > > +	int irq, ret;
+> > > +
+> > > +	irq = regmap_irq_get_virq(pdata, pirq);
+> > > +	if (irq < 0)
+> > > +		return dev_err_probe(dev, irq,
+> > > +				     "Failed to get parent vIRQ(%d) for chip %s\n",
+> > > +				     pirq, chip->name);
+> > > +
+> > > +	ret = devm_regmap_add_irq_chip(dev, pmic->regmap, irq,
+> > > +				       IRQF_ONESHOT | IRQF_SHARED |
+> > > +				       IRQF_TRIGGER_FALLING, 0, chip, data);
+> > > +	if (ret)
+> > > +		return dev_err_probe(dev, ret,
+> > > +				     "Failed to add %s IRQ chip\n",
+> > > +				     chip->name);
+> > > +
+> > > +	domain = regmap_irq_get_domain(*data);
+> > > +
+> > > +	return devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE, cell, 1,
+> > > +				    NULL, 0, domain);
+> > 
+> > Why can't all 3 devices be registered in one call?
+> > 
+> The 3 devices use different regmap_irq_chip s. I have to register them
+> separately cause they have different irq domains but perhaps there is a better
+> way to handle this?
+
+That's okay, just do 3 calls.
+
+Must neater than what we have here.
+
+> > > +}
+> > 
+> > To be honest, the premise around this function is a bit of a mess.
+> > 
+> > Please move all of this into .probe().
+> Will do.
+> > 
+> > > +static int pf1550_i2c_probe(struct i2c_client *i2c)
+> > > +{
+> > > +	const struct mfd_cell *regulator = &pf1550_regulator_cell;
+> > > +	const struct mfd_cell *charger = &pf1550_charger_cell;
+> > > +	const struct mfd_cell *onkey = &pf1550_onkey_cell;
+> > > +	unsigned int reg_data = 0, otp_data = 0;
+> > > +	struct pf1550_dev *pf1550;
+> > > +	int ret = 0;
+> > > +
+> > > +	pf1550 = devm_kzalloc(&i2c->dev, sizeof(*pf1550), GFP_KERNEL);
+> > > +	if (!pf1550)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	i2c_set_clientdata(i2c, pf1550);
+> > > +	pf1550->dev = &i2c->dev;
+> > > +	pf1550->i2c = i2c;
+> > 
+> > What are you storing i2c for?
+> > 
+> It doesn't need to be stored.
+> > Either store dev and irq OR i2c.  You don't need all three.
+> > 
+> Will do.
+> > > +	ret = regmap_read(pf1550->regmap, PF1550_PMIC_REG_DEVICE_ID, &reg_data);
+> > > +	if (ret < 0 || reg_data != PF1550_DEVICE_ID)
+> > > +		return dev_err_probe(pf1550->dev, ret ?: -EINVAL,
+> > > +				     "device not found!\n");
+> > 
+> > Are you sure?  What if the wrong device was found?
+> >
+> I can change the error log here to "Invalid device ID: ..."?
+
+Right.  Invalid or unsupported, etc.
+
+> >
+> ...
+> > > +	/* add top level interrupts */
+> > > +	ret = devm_regmap_add_irq_chip(pf1550->dev, pf1550->regmap, pf1550->irq,
+> > > +				       IRQF_ONESHOT | IRQF_SHARED |
+> > > +				       IRQF_TRIGGER_FALLING,
+> > > +				       0, &pf1550_irq_chip,
+> > > +				       &pf1550->irq_data);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = pf1550_add_child_device(pf1550, regulator, pf1550->irq_data,
+> > > +				      PF1550_IRQ_REGULATOR,
+> > > +				      &pf1550_regulator_irq_chip,
+> > > +				      &pf1550->irq_data_regulator);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = pf1550_add_child_device(pf1550, onkey, pf1550->irq_data,
+> > > +				      PF1550_IRQ_ONKEY,
+> > > +				      &pf1550_onkey_irq_chip,
+> > > +				      &pf1550->irq_data_onkey);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = pf1550_add_child_device(pf1550, charger, pf1550->irq_data,
+> > > +				      PF1550_IRQ_CHG,
+> > > +				      &pf1550_charger_irq_chip,
+> > > +				      &pf1550->irq_data_charger);
+> > > +	return ret;
+> > > +}
+> > > +
+> > > +static int pf1550_suspend(struct device *dev)
+> > > +{
+> > > +	struct i2c_client *i2c = container_of(dev, struct i2c_client, dev);
+> > > +	struct pf1550_dev *pf1550 = i2c_get_clientdata(i2c);
+> > 
+> > You can swap all of this for:
+> > 
+> > 	struct pf1550_dev *pf1550 = dev_get_drvdata(dev).
+> > 
+> Will do.
+> > > +
+> > > +	if (device_may_wakeup(dev)) {
+> > > +		enable_irq_wake(pf1550->irq);
+> > > +		disable_irq(pf1550->irq);
+> > > +	}
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int pf1550_resume(struct device *dev)
+> > > +{
+> > > +	struct i2c_client *i2c = container_of(dev, struct i2c_client, dev);
+> > > +	struct pf1550_dev *pf1550 = i2c_get_clientdata(i2c);
+> > 
+> > As above.
+> > 
+> > > +
+> > > +	if (device_may_wakeup(dev)) {
+> > > +		disable_irq_wake(pf1550->irq);
+> > > +		enable_irq(pf1550->irq);
+> > 
+> > I would normally expect these to be around the opposite way to the ones
+> > in .suspend().
+> Do you mean enable_irq_wake and disable_irq in .resume() and the opposite for
+> .suspend()?
+
+Yes.  Or whatever fits best.
+
+Maybe the h/w doesn't work that way, I just found it odd.
+
+-- 
+Lee Jones [李琼斯]
