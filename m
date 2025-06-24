@@ -1,66 +1,66 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB463218ABA
-	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 10:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD868284B3C
+	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 10:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750761398; cv=none; b=LkhZNMcAAFbW2VqAoK5bBAKHhfdIGPZ48Tkpw80xDzessdefpQjuUsYACV17VnqUiWbh1lPaoEtB3tPue5+ASoi/J/+HwLxMfO4kZ3STZPccSyWBloQLPU3neBL2ePpmAv5C0F8BYhNp/najZgIdSaAWBnvH1De7f0mrbO9Dq2M=
+	t=1750761398; cv=none; b=IEpNUJk0GJBjBo9+ARjml9Uhu0dhuY3+Ye/SroN48Tg3I9nWGjuf0nl07nnY7SOWj2MaL5xorlaZ1eMDKudrZcCVNdtu46isMTCp50TYbkwvaFisa2aom0oqZrdDBmtwYHeq6ypec/bdASmko5L5BR7lDy4fSEmrw7jVzNk2DdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750761398; c=relaxed/simple;
-	bh=I6Uh0W1U/pEscoVd7miIYAu5wzDsffordzyPGY3jblE=;
+	bh=rPPHmIeX2TaVZwC9/dZT7uMHCVr3ystFWnOCxGonJdE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rj/6iAwT+yy7QltfOh1Pu9m762fqrpHGP30MbPU41nCjxn2h9QHtUPDnaVZ6ki6H2hqb90tXBQxuUtZB/pMyGq3GczYqEwEEV9eFmY0/iNknp35xTAw6KSXD/TnJd+mt/laPsMZe/wSaq5CUUtSw0XXm6k8wHk50NKPhD9vBMv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YtsS8Ih3; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:To:Cc; b=S1tpzz7NAp1BrjZDBa64cPXZcWdcDTajEWzwiEtSvEMsiear/23xZeCeJhnXo74akG88Gvwt7gbriTEaiNODclg8iFMWCSruTpJW1o/2FLj3niZI6KwOm0SbOTq8GaXiwto3QSgvWrmDbew2MpxCKdqMsF4IhbfRhbcPdJL0k6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HdhySrUw; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YtsS8Ih3"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-450cf214200so46626385e9.1
-        for <imx@lists.linux.dev>; Tue, 24 Jun 2025 03:36:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HdhySrUw"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-453398e90e9so34769725e9.1
+        for <imx@lists.linux.dev>; Tue, 24 Jun 2025 03:36:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750761394; x=1751366194; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1750761395; x=1751366195; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jkMuSosV7oMRxRtp9yYE+2UdziIG4xoxewf16F9X2EY=;
-        b=YtsS8Ih37yEPYhGzkCpBt4ll5ZpCuP2QpGO6jJGyHaImGX4xMCqWxUUnwkxf9Vt37n
-         aTxJDdDkcy7Jk/c98nlSlSlgKbaK0Qyzej3ANnCTPvIAFq3txEQ+hwWa5lXT0HSMbB0p
-         uZcCfpA3ZAS3dO6/Mab77XGJBERF4+r8LTngyWIfgweMku6VUilvFIHIB7sR8oJ/yAiQ
-         32eKBzW6JgEwOXhF+r0Afe/6Euhc3kxki/q6kSbDj/SNDcgzUDe7uYYEW7jXb5F3aOD9
-         T825EuHgUcBiTvbkgG+ZYOjPx9I1cBwsl5VvpoAE4cvlkcZTLbwIk1VrtL12zL9H3QDe
-         NuaQ==
+        bh=gysqRRatTbP7tTmH3nSH2f9cu6jlsK5Aa8DruBZasIA=;
+        b=HdhySrUwm9kCuizED5tKEPrvJLvApOAGVOeqItDV/0klaOno+FhZUHsXDVezOJAPxW
+         r+lO6Q6ZIMUr2K8mjQKmouj/L/mdATYAKfkKjWmADrzZ7KZ8I0GJ7ldZ2IJcugBIcyyD
+         132MT8HxFg6MdiDajYWBWcldOIfZGGEcJhSCsxpOmaU8mxqhibjHf2QCLTkmDLQIAFkb
+         kdt5fNUa4lURmf8+lhkifUHhnjw204kdfHTtQyfLWK/TiWYHclpQh4jwrK4S/jBTHUlP
+         h/0ujPD0fPTwRhE6vTdJu53Yzr6umat/Qg3U/uTF/Fm7TaLwiZuErRDyECEyDiqshiYT
+         MdXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750761394; x=1751366194;
+        d=1e100.net; s=20230601; t=1750761395; x=1751366195;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jkMuSosV7oMRxRtp9yYE+2UdziIG4xoxewf16F9X2EY=;
-        b=TXvBoOiRAOqxId4wgPDktA9lYEkBfAmZzpmEPeMLp7EwAD3Xf4OCJALz8yq5j45rlj
-         E6cYntt+tpp2Lx4xVMQHlKsdn/BwmIM+kZSPmiLXrv3+/NGdlraF4WAHHXnNrJOS15m3
-         10JGTi4BwWtnPBDdxX07rGaRIsZIqWec63XdQ3rOYNrq1TfYhlEfO+5NIDKgDCDvqdCK
-         C4cADynA/v6rh9ticaVok+n1YnayDBM/Pt+nZr9dBkl1LL1oI21ZyWWOWIAWSjs9Mi0B
-         kFaFoZXD+h4eEZlK7vCzRNbb3xKDTWznKJzZwdgsuP62r8gmVKT2e50ELKJgpysTe0NS
-         zOjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVH8spcDcgoh3h/aLBF3RxM9anFBpTfti09KXiSZu+1f30/W/alCRvY+ODImsorGXxbnbg=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx1ZMXPpkWUhwbJfOuuvaa85vwYEeuyUIC1muS3MLGAmy8uEEBE
-	56cvUuk2SpUeCl70TZKESdE1woAOoIKvrLRycy1AaswIuighrFKCcKhl/cncjRh+59I=
-X-Gm-Gg: ASbGncsl6jqdLdCDyZI7Z5HmbU+da4cMMVb73nbfX3h2R3W82x+/N4jjxN/5f/QSawv
-	tFQxVquc0/9X8J5hZi72LbXhsxF0Ou2gXXS41IRqL6upcb8MUlhfzEpruF9GXZD+IG2mqLu+v/z
-	WTVY+XcjaoCxvwjphwrh8/DYQpuh4z2lfaaepvfhB0zkuib7kYVLNDnTDiyFixtJoOL8cF9QqAs
-	v7MG3ivHVxjd5MaDPAc+ktlsQIBOggUts1Qs7+nivdV2x0VHAr7qGVtOs4ePXy9YXMmT2mrIOFK
-	Npt44t7YN7KwGNOiLGU/GvtPjERgweqPq3SOYloNqIINI7cjkxLHvEe81zEVfptBJYX1XeU=
-X-Google-Smtp-Source: AGHT+IE1yzuJW1JyGG/GLYl2/Ucg2KNK2xeS+Q9P5XhB9Map8hlfvdK3p5oXRvu10nUbdGxDztsgdQ==
-X-Received: by 2002:a05:600c:8b14:b0:453:a88:d509 with SMTP id 5b1f17b1804b1-453659ca92cmr182600865e9.10.1750761393938;
-        Tue, 24 Jun 2025 03:36:33 -0700 (PDT)
+        bh=gysqRRatTbP7tTmH3nSH2f9cu6jlsK5Aa8DruBZasIA=;
+        b=hb+0pXH3DU0klxi+8xgbRPYxYne3gpvKK28riebKKxQag+WIoyBuD0NRKPYRSR/cU0
+         CPWv2A3rsMRkPugrwk80ALLn6iQ+EqNWWTCiONMp3+AHmAO4aHDpgg8UfVYXodvKSF8Q
+         T9ZgmEmvmtd7WpG6bu6qYIj6GaSyH9FZUymlQsMrYGwJ3g7cFvgwpZl2lAKcmB/goDdj
+         0FX+noeF0q/zM0wGCXIuQO12YqRWNfad6AIXT7MPWK1i4W5PzinTngAeB/iHNFRkuIUx
+         epIRx4yNqIc665/YW1tgS3T+ppZmTUtAy8d5AbTwwvfzrkqYg7PDkNWQhsgq7jTE7mR+
+         D2eg==
+X-Forwarded-Encrypted: i=1; AJvYcCUuQ1yw5JZYbLMQzrDzLmtNJoQlCAPxNTdYnC6dR4fctmHykN0xLVIY77B39k+fCJXar1I=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgB8Qsnbvs7BxGG/BolFkAexcfpQoyV5ZrTqT4rtx37y7dgrQs
+	QJwBAXkFME13Ebom6BtYQ6orfA4asSQO1MZ7PTLcBT9hadPqjyQq6xrgAtEpJaPHGl4=
+X-Gm-Gg: ASbGncvc1AJXfVijF1pWlBYQjL7WqZY7qx5zXIrA1iQEv8iWEDyIAaOkW9n+KlM/1Wt
+	5LqE/mL5/mM0YAhNyowvh+fsNyb96gX0UNigmw+pmJSXvUpZq276qhRSBAH9JyXAyv/zor4XJuc
+	ncGg1BCnzh3PsBU5ZyKPAPTho2sMVh1a/KTaxZM11IzbBiv4ndJ79yt11WAsvot/lk8WUS+YqKE
+	z4LDuHBzoYWheBxgih6UEJEds3JR8DarzkoDOg/8O7SlltJN9sOUQE5GeiW/zTx0lwd+ltqPErx
+	3yN7JtDMuK0TjOfexVEJIbzne/t2ZqNaLy6gcdZaiSyFvtTCl3XOn5Bmp82eVAz4u6jawf0=
+X-Google-Smtp-Source: AGHT+IFw0SflV4Dcc0L4irSH0AC03LWWYU+kHmLLJTkRqnESJXIae3FlSgpPvJNiF5otB/q7x9CqBw==
+X-Received: by 2002:a05:600c:1991:b0:444:c28f:e81a with SMTP id 5b1f17b1804b1-453659f5888mr134601975e9.27.1750761395024;
+        Tue, 24 Jun 2025 03:36:35 -0700 (PDT)
 Received: from ho-tower-lan.lan ([37.18.136.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453646cb641sm143398245e9.3.2025.06.24.03.36.32
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453646cb641sm143398245e9.3.2025.06.24.03.36.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Jun 2025 03:36:33 -0700 (PDT)
+        Tue, 24 Jun 2025 03:36:34 -0700 (PDT)
 From: James Clark <james.clark@linaro.org>
-Date: Tue, 24 Jun 2025 11:35:31 +0100
-Subject: [PATCH v3 1/6] spi: spi-fsl-dspi: Clear completion counter before
- initiating transfer
+Date: Tue, 24 Jun 2025 11:35:32 +0100
+Subject: [PATCH v3 2/6] spi: spi-fsl-dspi: Store status directly in
+ cur_msg->status
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,7 +69,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250624-james-nxp-spi-dma-v3-1-e7d574f5f62c@linaro.org>
+Message-Id: <20250624-james-nxp-spi-dma-v3-2-e7d574f5f62c@linaro.org>
 References: <20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org>
 In-Reply-To: <20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org>
 To: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -80,49 +80,186 @@ Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev,
  linux-kernel@vger.kernel.org, James Clark <james.clark@linaro.org>
 X-Mailer: b4 0.14.0
 
-In target mode, extra interrupts can be received between the end of a
-transfer and halting the module if the host continues sending more data.
-If the interrupt from this occurs after the reinit_completion() then the
-completion counter is left at a non-zero value. The next unrelated
-transfer initiated by userspace will then complete immediately without
-waiting for the interrupt or writing to the RX buffer.
+This will allow us to return a status from the interrupt handler in a
+later commit and avoids copying it at the end of
+dspi_transfer_one_message(). For consistency make polling and DMA modes
+use the same mechanism.
 
-Fix it by resetting the counter before the transfer so that lingering
-values are cleared. This is done after clearing the FIFOs and the
-status register but before the transfer is initiated, so no interrupts
-should be received at this point resulting in other race conditions.
+Refactor dspi_rxtx() and dspi_poll() to not return -EINPROGRESS because
+this isn't actually a status that was ever returned to the core layer
+but some internal state. Wherever that was used we can look at dspi->len
+instead.
 
-Fixes: 4f5ee75ea171 ("spi: spi-fsl-dspi: Replace interruptible wait queue with a simple completion")
+No functional changes intended.
+
 Signed-off-by: James Clark <james.clark@linaro.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 68 ++++++++++++++++++++++++----------------------
+ 1 file changed, 35 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 04c88d090c4d..744dfc561db2 100644
+index 744dfc561db2..feb29bb92a77 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1122,11 +1122,19 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
- 			status = dspi_dma_xfer(dspi);
- 		} else {
-+			/*
-+			 * Reset completion counter to clear any extra
-+			 * complete()s from spurious interrupts that may have
-+			 * happened after the last message's completion but
-+			 * before the module was fully in stop mode.
-+			 */
-+			if (dspi->irq)
-+				reinit_completion(&dspi->xfer_done);
+@@ -591,11 +591,10 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+ 
+ static void dspi_setup_accel(struct fsl_dspi *dspi);
+ 
+-static int dspi_dma_xfer(struct fsl_dspi *dspi)
++static void dspi_dma_xfer(struct fsl_dspi *dspi)
+ {
+ 	struct spi_message *message = dspi->cur_msg;
+ 	struct device *dev = &dspi->pdev->dev;
+-	int ret = 0;
+ 
+ 	/*
+ 	 * dspi->len gets decremented by dspi_pop_tx_pushr in
+@@ -612,14 +611,12 @@ static int dspi_dma_xfer(struct fsl_dspi *dspi)
+ 		message->actual_length += dspi->words_in_flight *
+ 					  dspi->oper_word_size;
+ 
+-		ret = dspi_next_xfer_dma_submit(dspi);
+-		if (ret) {
++		message->status = dspi_next_xfer_dma_submit(dspi);
++		if (message->status) {
+ 			dev_err(dev, "DMA transfer failed\n");
+ 			break;
+ 		}
+ 	}
+-
+-	return ret;
+ }
+ 
+ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+@@ -986,36 +983,40 @@ static void dspi_fifo_write(struct fsl_dspi *dspi)
+ 				dspi->progress, !dspi->irq);
+ }
+ 
+-static int dspi_rxtx(struct fsl_dspi *dspi)
++static void dspi_rxtx(struct fsl_dspi *dspi)
+ {
+ 	dspi_fifo_read(dspi);
+ 
+ 	if (!dspi->len)
+ 		/* Success! */
+-		return 0;
++		return;
+ 
+ 	dspi_fifo_write(dspi);
+-
+-	return -EINPROGRESS;
+ }
+ 
+-static int dspi_poll(struct fsl_dspi *dspi)
++static void dspi_poll(struct fsl_dspi *dspi)
+ {
+ 	int tries = 1000;
+ 	u32 spi_sr;
+ 
+-	do {
+-		regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+-		regmap_write(dspi->regmap, SPI_SR, spi_sr);
++	while (dspi->len) {
++		do {
++			regmap_read(dspi->regmap, SPI_SR, &spi_sr);
++			regmap_write(dspi->regmap, SPI_SR, spi_sr);
+ 
+-		if (spi_sr & SPI_SR_CMDTCF)
+-			break;
+-	} while (--tries);
++			if (spi_sr & SPI_SR_CMDTCF)
++				break;
++		} while (--tries);
+ 
+-	if (!tries)
+-		return -ETIMEDOUT;
++		if (!tries) {
++			dspi->cur_msg->status = -ETIMEDOUT;
++			return;
++		}
+ 
+-	return dspi_rxtx(dspi);
++		dspi_rxtx(dspi);
++	}
 +
++	dspi->cur_msg->status = 0;
+ }
+ 
+ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+@@ -1029,8 +1030,13 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ 	if (!(spi_sr & SPI_SR_CMDTCF))
+ 		return IRQ_NONE;
+ 
+-	if (dspi_rxtx(dspi) == 0)
++	dspi_rxtx(dspi);
++
++	if (!dspi->len) {
++		if (dspi->cur_msg)
++			WRITE_ONCE(dspi->cur_msg->status, 0);
+ 		complete(&dspi->xfer_done);
++	}
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -1060,7 +1066,6 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 	struct spi_device *spi = message->spi;
+ 	struct spi_transfer *transfer;
+ 	bool cs = false;
+-	int status = 0;
+ 	u32 val = 0;
+ 	bool cs_change = false;
+ 
+@@ -1120,7 +1125,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 				       dspi->progress, !dspi->irq);
+ 
+ 		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+-			status = dspi_dma_xfer(dspi);
++			dspi_dma_xfer(dspi);
+ 		} else {
+ 			/*
+ 			 * Reset completion counter to clear any extra
+@@ -1133,15 +1138,12 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 
  			dspi_fifo_write(dspi);
  
- 			if (dspi->irq) {
+-			if (dspi->irq) {
++			if (dspi->irq)
  				wait_for_completion(&dspi->xfer_done);
--				reinit_completion(&dspi->xfer_done);
- 			} else {
- 				do {
- 					status = dspi_poll(dspi);
+-			} else {
+-				do {
+-					status = dspi_poll(dspi);
+-				} while (status == -EINPROGRESS);
+-			}
++			else
++				dspi_poll(dspi);
+ 		}
+-		if (status)
++		if (READ_ONCE(message->status))
+ 			break;
+ 
+ 		spi_transfer_delay_exec(transfer);
+@@ -1150,7 +1152,8 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 			dspi_deassert_cs(spi, &cs);
+ 	}
+ 
+-	if (status || !cs_change) {
++	dspi->cur_msg = NULL;
++	if (message->status || !cs_change) {
+ 		/* Put DSPI in stop mode */
+ 		regmap_update_bits(dspi->regmap, SPI_MCR,
+ 				   SPI_MCR_HALT, SPI_MCR_HALT);
+@@ -1159,10 +1162,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 			;
+ 	}
+ 
+-	message->status = status;
+ 	spi_finalize_current_message(ctlr);
+ 
+-	return status;
++	return message->status;
+ }
+ 
+ static int dspi_set_mtf(struct fsl_dspi *dspi)
 
 -- 
 2.34.1
