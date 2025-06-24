@@ -1,216 +1,209 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011052.outbound.protection.outlook.com [52.101.70.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63727285CB2;
-	Tue, 24 Jun 2025 10:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750761608; cv=none; b=FuPcJFRsJ+Bww/noX25X4+VM5IDT5yZqKqGqRCfTtFyhi1zJ7HGXOcAXV7Kngn5aPYjl9bKwacmLrJJs95/kiwW1LCrP/ORcMgIPFg5i5DX22phmzhjSqAZO7yM91MGqMuhEaPu/1hqW80kKhjtIGn717Mp/lQTWHSeYpjEB5cc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750761608; c=relaxed/simple;
-	bh=f8XsI5O1CkfkYFDeROjVLKjcyy9Tl6y4vwZNlHiFsyg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tjThz95qko1jdp62Woitsl4tBSXhfUFR4zcCw8XutgYJpxiO5ApPZcE4Lou+eGEf7p8bLkiduklBFMfoCJOiqyb+3Bc0upuRfDHsM4yU5huM6cXumdamrWXshuRkN6ESzZq3VxD7vsoNj3iStrlb5UjSdhYKiR1VsNE6PDrGC/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v1IFWcFr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3q5D0uT4; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2725286D56
+	for <imx@lists.linux.dev>; Tue, 24 Jun 2025 11:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750763097; cv=fail; b=qt7vunp9ABStqXamGUAjS20VPlwAXYky2LoZFH52JowzEgBxs9j13thkj785o+6w9vuchLoB0MVO5c3ONgKl6zG+zblJtdtjb75s8mlsEwgzQGUxknqGDrVXTBv26mHnut7ix6XhUHFbW9NXg9RItdDF1ECDwShM/+CW+V1ihV0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750763097; c=relaxed/simple;
+	bh=lMMv1gEUZTqbp7KjQ3ffYb0PWpOdbOMMuV+FgzDmGrg=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=icZMboPD33JrK7kRqRiXSeXlQQeiaPItkgn0oMMNtoIfcbIKSvi0zoz/XtJxvc/GLemgx2LVzpuUeLKzAF/4KDBJF7RR077fuDymwL+Yo9jEpj56N/lPtHHYWHy3yqELv5EpHmToulV9RRe+1sGAOoqZt+WGz+yn2FlP6TZySZo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mt.com; spf=fail smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=Iz8QDTYs; arc=fail smtp.client-ip=52.101.70.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=mt.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v1IFWcFr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3q5D0uT4"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1750761604;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PmKtYLO9DDYaj9Me5RnB2od40m2nfSC9/3iVyLRTgPc=;
-	b=v1IFWcFrbObYtAZ/RT0Kppv2+R1ysQJUiAOhyBDBdBD7GRafKVhWIJlEp4M1/MAbW7r3Ca
-	o8ExT+FJNwE1MLi5ZHj7mixRk7DPF7y0JESsK+b/BXPx0H36L3GknAlPGKQ80sDZSd8kX8
-	c7tk3xzYOhkh9+PB8l0sOAqBJbObspXXOYombtNTWorYQc/dnlFuIdXCWjoZNydWHsEEfw
-	BxAB1cxurgSdDrVSKVwi91WSkw72/7/zhYIxKx2zfbMR8WyyBWVel7X/khQj5qlBzANr+W
-	waHxljQ3WDmwbOBvDQ6fj/PD/LbBRXtKBrQTzgU9iEnxcn0NlO2wYO/ak4OZtw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1750761604;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PmKtYLO9DDYaj9Me5RnB2od40m2nfSC9/3iVyLRTgPc=;
-	b=3q5D0uT4oSfP2VhfCp/l4dQktoBuSpc64H38sBuCNB8bE8D63GfRugryCyLDa3R+2guT87
-	o5CUyJOaQUdlplCw==
-To: Pan Chuang <panchuang@vivo.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui
- <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, Markus Mayer <mmayer@broadcom.com>, Broadcom
- internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- zhanghongchen <zhanghongchen@loongson.cn>, Yinbo Zhu
- <zhuyinbo@loongson.cn>, Amit Kucheria <amitk@kernel.org>, Thara Gopinath
- <thara.gopinath@gmail.com>, Niklas =?utf-8?Q?S=C3=B6derlund?=
- <niklas.soderlund@ragnatech.se>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Heiko
- Stuebner <heiko@sntech.de>, Bartlomiej Zolnierkiewicz
- <bzolnier@gmail.com>, Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Vasily Khoruzhick
- <anarsoul@gmail.com>, Yangtao Li <tiny.windzz@gmail.com>, Chen-Yu Tsai
- <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
- <samuel@sholland.org>, Thierry Reding <thierry.reding@gmail.com>, Jonathan
- Hunter <jonathanh@nvidia.com>, Kunihiko Hayashi
- <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, Srinivas Pandruvada
- <srinivas.pandruvada@linux.intel.com>, Greg KH
- <gregkh@linuxfoundation.org>, Peter Zijlstra <peterz@infradead.org>,
- =?utf-8?Q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>,
- Conor Dooley
- <conor.dooley@microchip.com>, Julien Panis <jpanis@baylibre.com>, Arnd
- Bergmann <arnd@arndb.de>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=
- <u.kleine-koenig@baylibre.com>,
- Colin Ian King <colin.i.king@gmail.com>, Raphael Gallais-Pou
- <rgallaispou@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Jiri Slaby (SUSE)"
- <jirislaby@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Andrew Morton <akpm@linux-foundation.org>, Costa Shulyupin
- <costa.shul@redhat.com>, Yury Norov <yury.norov@gmail.com>, Cheng-Yang
- Chou <yphbchou0911@gmail.com>, Caleb Sander Mateos
- <csander@purestorage.com>, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
- linux-tegra@vger.kernel.org, linux-mediatek@lists.infradead.org
-Cc: Yangtao Li <frank.li@vivo.com>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=
- <u.kleine-koenig@pengutronix.de>, Jonathan Cameron
- <Jonathan.Cameron@Huawei.com>, Pan Chuang <panchuang@vivo.com>
-Subject: Re: [PATCH v6 01/24] genirq/devres: Add
- devm_request_threaded_irq_probe() and devm_request_irq_probe()
-In-Reply-To: <20250623123054.472216-2-panchuang@vivo.com>
-References: <20250623123054.472216-1-panchuang@vivo.com>
- <20250623123054.472216-2-panchuang@vivo.com>
-Date: Tue, 24 Jun 2025 10:13:10 +0200
-Message-ID: <87h605o8vd.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="Iz8QDTYs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gnEjAyr194NcFl/WFAwH5W5RN6IH4apOTCPxF8cKSf/vnx/Da3J3vhKiJ28ztSW/QziEFaJKMF0DaGAG6JkI1FwVQ7jVTX6toJummJZVs9cNHHLHjugbFFglj5qSVPlD0b0SMjYT32NZb3KFWDXeaTbRg0S+Zlh3f1vMYypMRzBEVCZYB9wknkguENECkJTzQxfzVwu149EhFQObWZjS+ZJw06+cj6a+jrSEJYtWjHX8jArdNExuNBsZKjyOo/OMfIjG7O2hRNgKJjSxWlgYN53vghVQoIiu2qbfG7LqdI4lFyWjh9+AYz5H8bQXcTwA90gzYrUL4BmaiMag607Dlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MoT5YNGQ/JkzWfCB+CF+raKTLgx3XFq6uog751OCn5A=;
+ b=aN2tD3B3kAh0MrlWpkwjyB70x17IE+bmmNNI2zsshrQVviPhO828dKYnRTolTMS0BxBCsjUylYmFd0AcomtuuC0dmsDaetCWRf7mnShOfMkdrdTSYMhqBNxc15tX3zu0JBAcc7pCL42iAZER93c+jI8kGt4FzEORTEQ8KUDgWfHL6lYZuv0MY8FXKPEQHAuCGvsmfWlfY7RdB+HwCvqA3TA7Bgn6ZRS/BDXsgFBZy15bZ44raSUbiZnmF+hUZyYezfCMvAdPGt4hSdqFSRWorgJI/4T7UqOJia2Jc723H1q6ja7yptD36faBndGw/myDOE0YOF4FIe4241dwvgQOwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
+ header.d=mt.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MoT5YNGQ/JkzWfCB+CF+raKTLgx3XFq6uog751OCn5A=;
+ b=Iz8QDTYscc4Nyhx/mBD87TIIfngbnzCfx7Ar+MjR37UDhTeNSHBj2AXys+AjWjue88pHM3rikfHziq911hcEIZjoKa57fjuZJrwnEToyb+yI62dKGYdkAPNtswb583tiWPftB/QPrmkif8uoqpYsz5lOacIB4rnIQe5G+GMMx2pXi3y9PPNN6SJc0+fc4HAz7m0cjVt8CMClrxmuwgxD4KNWW0qkscqkh2Jz8rkkL8u5ZVN3gkItfJEOX/gIcJ7HVVlSKXsl1+t1QrKMkdbfZ3442t/tMAwkq0P+ND7/zKmZ4xNEcg/bY0tVWcWHAMUKqFdcpMxAfPlJ77QrzpC6Mw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mt.com;
+Received: from VI1PR03MB3856.eurprd03.prod.outlook.com (2603:10a6:803:66::33)
+ by GV1PR03MB10728.eurprd03.prod.outlook.com (2603:10a6:150:202::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Tue, 24 Jun
+ 2025 11:04:52 +0000
+Received: from VI1PR03MB3856.eurprd03.prod.outlook.com
+ ([fe80::e9fe:470f:27e0:b265]) by VI1PR03MB3856.eurprd03.prod.outlook.com
+ ([fe80::e9fe:470f:27e0:b265%5]) with mapi id 15.20.8857.016; Tue, 24 Jun 2025
+ 11:04:51 +0000
+From: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+To: linux-kernel@vger.kernel.org
+Cc: Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Wojciech Dubowik <wojciech.dubowik@mt.com>,
+	Kees Cook <kees@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Marek Vasut <marex@denx.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Markus Niebel <Markus.Niebel@tq-group.com>,
+	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Michael Walle <mwalle@kernel.org>,
+	Heiko Schocher <hs@denx.de>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Caleb James DeLisle <cjd@cjdns.fr>,
+	Junhao Xie <bigfoot@classfun.cn>,
+	Andre Przywara <andre.przywara@arm.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Kever Yang <kever.yang@rock-chips.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH v3 0/4] Support i.MX8MM Mettler Toledo Snowflake board
+Date: Tue, 24 Jun 2025 13:03:58 +0200
+Message-ID: <20250624110408.128283-1-Wojciech.Dubowik@mt.com>
+X-Mailer: git-send-email 2.47.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: ZR2P278CA0078.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:65::13) To VI1PR03MB3856.eurprd03.prod.outlook.com
+ (2603:10a6:803:66::33)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR03MB3856:EE_|GV1PR03MB10728:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0cb69cc5-87b2-4d8c-e8bd-08ddb30ef149
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|7416014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5CW1v8+VL6AvEjA5a56rTZTmtrmf7bx6DpHYMcR6qffMEzIbXTBJWDiKqzZm?=
+ =?us-ascii?Q?GSMIWw4ymvX7T2tIHuEB0TW1ajaY/QH3aoqT7R/lkTwEqU1s54XNX+IRxzTV?=
+ =?us-ascii?Q?bUt0n+lzg0SAvxAt27uIDgenS0GNK973nZmJZCfWK80asugP6k7DInU6r2HI?=
+ =?us-ascii?Q?PzQmDDUvLHvXZf9LlBQdhD+C5KylPoLbYXTIvC3R525PIhU/nFmcnUHPC1IP?=
+ =?us-ascii?Q?mvpesZF+KRmPLXxeQ+bKdRQ32FDtQYP2/Do8HIXvxaHf6AKw2Bk1fTsgbWwE?=
+ =?us-ascii?Q?T1H0pEDuFY3t9wb0tWGx9Jkk9IOc2lt8H+MP5kncTD2pdUZCT6m5FPvxeL41?=
+ =?us-ascii?Q?qTGClZbM6FvxqkNDUU52cej5fn9tzreSlQ3evAdl7M2u3H9hX00bo9Kgw7gG?=
+ =?us-ascii?Q?KUzHHxcpsi8VKHu99aJsOUnSTvX2jpy88QEiCZuY4IUgylqkCZ9AAK1d3ruk?=
+ =?us-ascii?Q?S2D8c/f8xfnD2Ckc6yTIL0hwCi53L96hzswdjN9EKK7F/rfI6HTxjUxpkU40?=
+ =?us-ascii?Q?oa434rWOPI9SL12uf/Ztr4GfZlmMs3uGj/fg/I2jvrK51gZuMQyr2TEMIMYl?=
+ =?us-ascii?Q?4QGWMG0/kgwBp8d9i57Se/VuyULno/v6JlJchOooXlrIlCo4sWvUckCzpXe+?=
+ =?us-ascii?Q?ooGKw8pRQCXnJ7ubhZAPxPMVoq0HHZaX5kQeIdOK159p88adkgRvQExIG0EO?=
+ =?us-ascii?Q?F6wj16elnsyqc/SnaBjfrD3RRdy9MSz3wCacuTgjaAce/CNQUcJ9u1A7N5d0?=
+ =?us-ascii?Q?AT9Y3LjMbtr9sPT4KNKZajLJHW4Xs7+UJg9c4l1idIW0cJRkrg0tPsO36zUw?=
+ =?us-ascii?Q?d5zwMI7RvYykXWYjMVgw3rAfWamN95OA3loWAUkUpl/qBA6OXM82wujIx4d2?=
+ =?us-ascii?Q?3WspFXAfJhcDrQrPp88KLzdQZ8iQwBvY7BQuC6URfS7xUSGM/DHPs7EaUv5c?=
+ =?us-ascii?Q?ViS/LqTLyqHoVJO5ktzLneT1i12oSCfHgdni/4kPGXdCq0PAZjLXxSiVv/fz?=
+ =?us-ascii?Q?ml97MyFjHa5U9sureCM0wpqzaRubzolNxAulngI1rYrPX7BTmRwHyHdkxhCh?=
+ =?us-ascii?Q?55enBwMtRNshj5mj0KHkx/RAjSftMUN91+38YgaW4F9/jNAwNCaoCZkooW5Y?=
+ =?us-ascii?Q?Z64f0bPV8YIeEKmGhcgdg+nNHW7DChfs5CFnIIXh2KR6HU3bRL9DYrDgCXzm?=
+ =?us-ascii?Q?0dSXCVozc9/qN7IcchQo+WzdEZotThAPFdtUnVl37sUWr6mwpTIs3TckUAyY?=
+ =?us-ascii?Q?kFErjbiYho2mcuKLmxyHNPnrAZ2bBdJTtb42KhbEWm9NVEDFaBnz79JTDvuh?=
+ =?us-ascii?Q?+USbmEl4S2NqaSCJs2yBkY0epePZqQwpdwW2a0cOpAd/OlJ+XKV/GUFjaeao?=
+ =?us-ascii?Q?x4M5CzzOnG1fKHxyoJzVokeDl9rL48i1d/O4eJlzfaExHIJ03RSDwWlU0Iaw?=
+ =?us-ascii?Q?qL6WOTBeq7cO3fcvYeJxnUXjFYZZbVedSzoUAKCvBtJiilM8lMQ+vA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR03MB3856.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5sPArDe0Rs5z5zeeNGi5ynGvR2++HHm3k4YZoSgr/rWxjIiZMZ/3ePUFs3p4?=
+ =?us-ascii?Q?THzH+BTVmIo/v00mXdZB4dKJkBHFlwDj8HXIeLC5eR7O+RG7cJuTW0UjA8Mx?=
+ =?us-ascii?Q?JjHV94/Qn4i//bPTKy9kRN+D27cr96OXgMF7QtMMRTG2kHsOmZEzOoX9T78h?=
+ =?us-ascii?Q?Q6vXmYdLPMOpJY6Zg3UWFEvxir3aXp9tQpaoDuPn7bLbo4bEG7OBn3x6fM81?=
+ =?us-ascii?Q?txQsNsvDDPBFTwysRewfZhuJ/35Bja6qgWqko2rXp1iWhPlB/IPd+ykBDivg?=
+ =?us-ascii?Q?hL4EzM+Hucmp2UkoCuYbKYfKzecMGCwIxM9mHAxN9KROdz357i23toi7ek0z?=
+ =?us-ascii?Q?SJshQDBJZQem6pu9erTMliAN+ua4ALsOQp/LwnPHyLjJRF7iDWuBAR+4zQf3?=
+ =?us-ascii?Q?++h8zQiZjkorWTGFmBgwdPzlIS+C6YNLE80kFf1oNUF+PoAQy8z2a0KWpUvB?=
+ =?us-ascii?Q?0uXv0nwgk8mZqj9aGtmG2LcfGJfwWflYehzq15I602FGujzn3LM0k+/uIZey?=
+ =?us-ascii?Q?cvrH/+0bBwTHzLdx6BcfuTiX8ElsJ0ro9JGSo4RxbOr61PXIc0HadTl2ad2t?=
+ =?us-ascii?Q?1U0Cx2/C43LWFREnXak1Wizg232OsEyAJj92sBT+ISxlOuufDHum0MAydx9P?=
+ =?us-ascii?Q?bGU3w/ST7CjBtZ4dgrb07cbTxFEidFES8howsWUs2mKLnB1p4Hjt4FghvdiN?=
+ =?us-ascii?Q?p/C5zWzvUcSyvBLQxwXsXk1JuSkP1xz2jhyV7CXFesT6/9YlIZqaGVFXwgDE?=
+ =?us-ascii?Q?QtjvwEsTiFy8Lhh7rn2x1KsFv7uAil+QYzIZxDQTdd2iFfKcVBDlPPbYsE0r?=
+ =?us-ascii?Q?L6vdxkytM7++6F0Msz72n8Hr33eSFG6BMkqQOdGgbvQvqDqhqjF+Mf1ChWCz?=
+ =?us-ascii?Q?OYijFvrLMdBKN/6rlT6G95u7g7weEYVgAnpssWjZx0oz0FmNYXzTnMtmhTJX?=
+ =?us-ascii?Q?mw9V84Qmj1nspl/GWsJp4witwVEY7nuG95FzhxukRyP7abfCQsmz4W5BX3BC?=
+ =?us-ascii?Q?KFjThQSyKdnmHckw4eIbEKA1kL7kBbKvKAmQ6qu57wkylVxvy1I7vQ+Zm+3Y?=
+ =?us-ascii?Q?Wvl6dCoeBQc/gmfHPBaYpggY/5GR/Xs6h4dVnSrfi4hwo4eQv3XLnIyCb003?=
+ =?us-ascii?Q?GWkrnsxzVoHfTERzU7LvCTi/fuqziULZxyWnSbUv+JDWMM315LSM2woLmP1B?=
+ =?us-ascii?Q?ckxRge08+LO1GP8oNtel8qZ3gtk0Mp37W5tlN1JxV+8Iood76FflE6hioQl7?=
+ =?us-ascii?Q?vjfhtlHeWCda03cjI0nhTwwk87h0Kb5P8SvjfTEmLAUtmmgn+du7IaMnVDYb?=
+ =?us-ascii?Q?QGipnv19J9pOeCknroARewU3ujVsUUbY4Df0P7Htn8U/kO6NQSaiYELe2kCB?=
+ =?us-ascii?Q?pqBNXWdioHxriOLwW/7VSlrdhDcCR1lQ7t1psjf28Tj+XYKaYxVyOZC7SMd8?=
+ =?us-ascii?Q?qgi8scotTuTgLjC5zT410nW8K+clO7ZFN+N1Fn5cfT4BsmlLSRVMOPb4ml0q?=
+ =?us-ascii?Q?RMaLFd+sR3PAhRNU/BOEf9IdQzU8v4PaGsItmYVlIdY7jQbb6Z8vNQLrNK6Z?=
+ =?us-ascii?Q?OkEi+3CBnxgXb+mayFZczP7IX36oQN0MjQWEwiGP?=
+X-OriginatorOrg: mt.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0cb69cc5-87b2-4d8c-e8bd-08ddb30ef149
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3856.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 11:04:51.6818
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xq5dEPTJXJdIA+QKUrWcQO5EEP5j/Oh/NDbOR+824Z14/6poasR9fQ4gV3z7MzfVcHCIGvAlfTd7p8bGUWnRdQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR03MB10728
 
-On Mon, Jun 23 2025 at 20:30, Pan Chuang wrote:
-> +/**
-> + * devm_request_threaded_irq_probe - request irq for a managed device with error msg (recommended in probe)
-> + * @dev:	Device to request interrupt for
-> + * @irq:	Interrupt line to allocate
-> + * @handler:	Function to be called when the IRQ occurs
-> + * @thread_fn:	Function to be called in a threaded interrupt context. NULL
-> + *		for devices which handle everything in @handler
-> + * @irqflags:	Interrupt type flags
-> + * @devname:	An ascii name for the claiming device, dev_name(dev) if NULL
-> + * @dev_id:	A cookie passed back to the handler function
-> + * @info:	Optional additional error log
-> + *
-> + * This is a variant of the devm_request_threaded_irq function.
-> + * It will print an error message by default when the request fails,
-> + * and the consumer can add a special error msg.
-> + *
-> + * Except for the extra @info argument, this function takes the
-> + * same arguments and performs the same function as
-> + * devm_request_threaded_irq(). IRQs requested with this function will be
-> + * automatically freed on driver detach.
+Add initial support for Mettler-Toledo Snowflake V2 terminal.
+The board is using Kontron SL i.MX 8M Mini SoM with 1GB RAM.
+   
+Supported board features:
+* 7" Display with touchscreen
+* RS-232
+* I2S Audio
+* SD-card/eMMC
+* USB
 
-I really have to ask why you need the extra info argument. It's not
-providing any really value.
+Changes in v3:
+- cleanup labels
+- remove unneeded status entry
 
-What's important when the interrupt request fails?
+Changes in v2:
+- In imx8mm-mt-snowflake-v2:
+  - Reformat with dt-format as suggested by Frank Li
+- Separate patch for dt-bindings
+- Add bindings for Mettler-Toledo vendor prefix
+- Add me as a maintainer for MT device tree files
 
-    1) The device, which is identifiable by @devname and/or dev_name(@dev)
+Wojciech Dubowik (4):
+  dt-bindings: vendor-prefixes: Add Mettler-Toledo
+  dt-bindings: arm: fsl: Add Mettler-Toledo Snowflake V2 board
+  arm64: dts: freescale: Add Mettler-Toledo Snowflake V2 support
+  MAINTAINERS: Add entry for METTLER TOLEDO BOARD SUPPORT
 
-    2) The interrupt number
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +-
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   5 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx8mm-mt-snowflake-v2.dts  | 482 ++++++++++++++++++
+ 5 files changed, 494 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-mt-snowflake-v2.dts
 
-    3) The error code
+-- 
+2.47.2
 
-If you want to be more expressive then you can also print out the
-handler function symbols, which makes it even more useful to map back
-into the affected driver.
-
-As you cited correctly I said back then:
-
-  "So there is certainly an argument to be made that this particular
-   function should print a well formatted and informative error
-   message."
-
-This particular function is: devm_request_threaded_irq().
-
-IOW, I did not ask you should go an create a new one, right?
-
-The extra @info argument is just proliferating the nonsensical
-information which driver developers put into the output. I just looked
-through a couple of your thermal patches (hint, I had to chase them
-manually because you failed to thread them properly). While most of them
-provide NULL, the two adding 'alarm' are really not providing any useful
-information.
-
-The point is, that the information is aimed at developers and not to be
-helpful for Joe User to identify/fix a problem. If the driver
-developer/maintainer is not able to track back the information (name,
-number, error code) to the driver in question, then the added "foo" info
-is not going to make him any smarter.
-
-If that happens, then being able to map it back to the driver is only 1%
-of the problem analysis, simply because you need to decode the
-underlying problem (DT, vector exhaustion, memory exhaustion ....) to be
-able to address it.
-
-So just make devm_request.*irq() emit a uniform and informative message
-on fail and you can go and remove all the homebrewn useless error prints
-from the drivers.
-
-It does not matter at all if there are duplicated error messages for a
-release or two until all drivers have been cleaned up. This is not the
-common case and only rarely triggered. So what?
-
-> +int devm_request_threaded_irq_probe(struct device *dev, unsigned int irq,
-> +				    irq_handler_t handler, irq_handler_t thread_fn,
-> +				    unsigned long irqflags, const char *devname,
-> +				    void *dev_id, const char *info)
-> +{
-> +	int rc;
-> +
-> +	rc = devm_request_threaded_irq(dev, irq, handler, NULL, irqflags, devname, dev_id);
-
-This is just wrong as you fail to hand in thread_fn.
-
-Q: How was this code ever tested?
-A: Not at all.
-
-> Could you please consider merging the entire series into your branch? 
-
-You're seriously asking that for something which is so obviously broken?
-
-> +	if (rc) {
-> +		return dev_err_probe(dev, rc, "Failed to request %sinterrupt %u %s %s\n",
-> +				     thread_fn ? "threaded " : "", irq, devname ? : dev_name(dev),
-> +				     info ? : "");
-
-This is wrong too because devm_request_threaded_irq() allows you to hand
-in both a hard interrupt and a threaded handler and either one of them
-can be NULL.
-
-So what you want to add in devm_request_threaded_irq() is something like
-this:
-
-	if (rc < 0) {
-		return dev_err_probe(dev, rc, "request_irq(%u) %pS %pS %s\n",
-                        	     handler, thread_fn, devname ? : "");
-        }
-
-dev_err_probe() already prefixes the caller string with 'error ', so
-there is no need for a lenghty 'failed to request ....' novel.
-
-Thanks,
-
-        tglx
