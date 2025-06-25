@@ -1,45 +1,45 @@
 Received: from mail.mleia.com (mleia.com [178.79.152.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E589E17BA5
-	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 00:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0FA481B6
+	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 00:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750811593; cv=none; b=daiFXPW4VKGQSWvM74XkOio6vP5HAe+UQNs1hhz9hCd8Bs9JdsU4XcI82pCR/8GyFFWOGgjvWL6DX2DZPgwGbuPuESjTZQs6SgEC39nkqXSnXdmZSakPZSYXRb0tUMSfx/UG91wNSStMyX/MXRenFce73cvbwRQDZptJFlAx9G4=
+	t=1750811873; cv=none; b=sZtYRxrDGyO9bpa60jzY2+7xThq+rKeM++JYuwnyoGYRmYFgc64TbXtrWvhTSPhZ1aV7++VAYYM05F56fA8bUIDTUQLqAszlehXzcvm7NeY8Zgm+OfIX5m7W/eXWAaJ/g0y68ECPXnv8ZrMyBBJl6XmcA92n/TPxIqsoYEtdNlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750811593; c=relaxed/simple;
-	bh=ms3WGlOprzDLUzYMZcYywfUti3aVLPF3z/nEEQvXhrk=;
+	s=arc-20240116; t=1750811873; c=relaxed/simple;
+	bh=uAdDQOZBr2xxgHWEJYA1qKLjMi1UEW7xBPT8xSxiCLo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TU4Y++mfnF4RwLt62iRQ3v5LwP2zhnUgzy7h6VuSyQsIAHK4boWKNih7JxfzA9a3c1XtgYWbZ4pgAdX99Z3v8o0UYLR7svY6M9V4YXpxLhpKypRNRg80zDkZCBQTFgajwUpUxqdUVOx+nxA4qNDvT7S8VeXkevoQEPD5ah3+eH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=sSQQz0OQ; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=sSQQz0OQ; arc=none smtp.client-ip=178.79.152.223
+	 In-Reply-To:Content-Type; b=ru5A7dE890NeKFuMIHlcBVzaDttOJw6HMsPazjccvO4DpGkV6EkL8AuG1zPd09kKSoevNRY0SFQ8piNAqvjDpRqvxc1d8ZVsz/8+zuJ8NrWoC7nRQv8WK6ILdM4NNZ837IuC2HpSmWrbSzN2GrliARFr+BGq6uuQNUHWhx76/Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=FNQwi2Mw; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=FNQwi2Mw; arc=none smtp.client-ip=178.79.152.223
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="sSQQz0OQ";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="sSQQz0OQ"
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="FNQwi2Mw";
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="FNQwi2Mw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1750811590; bh=ms3WGlOprzDLUzYMZcYywfUti3aVLPF3z/nEEQvXhrk=;
+	t=1750811870; bh=uAdDQOZBr2xxgHWEJYA1qKLjMi1UEW7xBPT8xSxiCLo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sSQQz0OQm9lCEeKuVh4ox28UFocW3eGPqwamBIA0Xp8OaN2Ezo/uoeC6jVnZNwxVO
-	 JjK6qL8NllT2RjvMOEgZ8QJJkL+g0wtaqGeXn4CFZdYGInb6ovbWgE2WfyiBdMF9Jn
-	 nrlhWT7VbwdYE75scHJVVPPpCW3VVkWp+9hSOaJuqlXNI6Nunt+royyZ+ZGMa+piV+
-	 /zhcIAUsRdA+2WY9MA9Vx6jkLs1v5QdVPTyVxn1vZQ6Ed1q/g4KkOnotWOTm7+gKr9
-	 14bQsXa+hNuZlHu8qn1Hgz/iY7oRboMDK5aXecgWfI73dmu2199GKB9q02iEp6wIW+
-	 rM7AkOZSZTTKQ==
+	b=FNQwi2Mw3fcOJsFaMm6tl2xSstff+1H9QgLAn5FoEqRG96wCy4iELWkbXjzJwGn3E
+	 LRVCdmVOI3BebMrxRMTaofBOf6Jff5IkPdyKsVH5T8WBoHZkBWUvo0atJ+w5mQMwbC
+	 0Slg4d0rfDOEcnOKJdJhc/9hmUrCjZSrXLQjJ3j86LK/LkM6SUpTw9WY8L/nkpPpZS
+	 Fu4gudcYi8gUnoXvdIrc+FPge1zMXOrnxasWrPP6CawAo0/Hi5LbVZDLcxUsHsmPZq
+	 QGhhvfyFo3J09H253PB+06UlC2ZBHvtBRYTK3+ejCRKnsLOXdqF8a+hT1ZGI3CEz1X
+	 UIABdMs8K8IDw==
 Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id 6E0BA3C43A8;
-	Wed, 25 Jun 2025 00:33:10 +0000 (UTC)
+	by mail.mleia.com (Postfix) with ESMTP id C429E3C43A8;
+	Wed, 25 Jun 2025 00:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1750811590; bh=ms3WGlOprzDLUzYMZcYywfUti3aVLPF3z/nEEQvXhrk=;
+	t=1750811870; bh=uAdDQOZBr2xxgHWEJYA1qKLjMi1UEW7xBPT8xSxiCLo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sSQQz0OQm9lCEeKuVh4ox28UFocW3eGPqwamBIA0Xp8OaN2Ezo/uoeC6jVnZNwxVO
-	 JjK6qL8NllT2RjvMOEgZ8QJJkL+g0wtaqGeXn4CFZdYGInb6ovbWgE2WfyiBdMF9Jn
-	 nrlhWT7VbwdYE75scHJVVPPpCW3VVkWp+9hSOaJuqlXNI6Nunt+royyZ+ZGMa+piV+
-	 /zhcIAUsRdA+2WY9MA9Vx6jkLs1v5QdVPTyVxn1vZQ6Ed1q/g4KkOnotWOTm7+gKr9
-	 14bQsXa+hNuZlHu8qn1Hgz/iY7oRboMDK5aXecgWfI73dmu2199GKB9q02iEp6wIW+
-	 rM7AkOZSZTTKQ==
-Message-ID: <07f1d17d-5a14-4a87-90a2-5bd181ccce3a@mleia.com>
-Date: Wed, 25 Jun 2025 03:33:08 +0300
+	b=FNQwi2Mw3fcOJsFaMm6tl2xSstff+1H9QgLAn5FoEqRG96wCy4iELWkbXjzJwGn3E
+	 LRVCdmVOI3BebMrxRMTaofBOf6Jff5IkPdyKsVH5T8WBoHZkBWUvo0atJ+w5mQMwbC
+	 0Slg4d0rfDOEcnOKJdJhc/9hmUrCjZSrXLQjJ3j86LK/LkM6SUpTw9WY8L/nkpPpZS
+	 Fu4gudcYi8gUnoXvdIrc+FPge1zMXOrnxasWrPP6CawAo0/Hi5LbVZDLcxUsHsmPZq
+	 QGhhvfyFo3J09H253PB+06UlC2ZBHvtBRYTK3+ejCRKnsLOXdqF8a+hT1ZGI3CEz1X
+	 UIABdMs8K8IDw==
+Message-ID: <94e42d9b-fae3-4e3a-a72f-dc284d0b4abc@mleia.com>
+Date: Wed, 25 Jun 2025 03:37:49 +0300
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,116 +47,122 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: input: touchscreen: convert
- lpc32xx-tsc.txt to yaml format
-To: Frank Li <Frank.Li@nxp.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Guo Ren <guoren@kernel.org>,
- "open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..."
- <linux-input@vger.kernel.org>,
+Subject: Re: [PATCH 1/1] dt-bindings: pwm: convert lpc32xx-pwm.txt to yaml
+ format
+To: Frank Li <Frank.Li@nxp.com>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+ "open list:PWM SUBSYSTEM" <linux-pwm@vger.kernel.org>,
  "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
  <devicetree@vger.kernel.org>,
  "moderated list:ARM/LPC32XX SOC SUPPORT"
  <linux-arm-kernel@lists.infradead.org>,
  open list <linux-kernel@vger.kernel.org>
 Cc: imx@lists.linux.dev
-References: <20250624201151.2515150-1-Frank.Li@nxp.com>
+References: <20250624200955.2514896-1-Frank.Li@nxp.com>
 From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <20250624201151.2515150-1-Frank.Li@nxp.com>
+In-Reply-To: <20250624200955.2514896-1-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20250625_003310_471608_DAB3BC9B 
-X-CRM114-Status: GOOD (  15.79  )
+X-CRM114-CacheID: sfid-20250625_003750_821844_CBF1CDBA 
+X-CRM114-Status: GOOD (  16.68  )
 
-On 6/24/25 23:11, Frank Li wrote:
-> Convert lpc32xx-tsc.txt to yaml format.
+On 6/24/25 23:09, Frank Li wrote:
+> Convert pc32xx-pwm.txt to yaml format.
+> 
+> Additional changes:
+> - add ref to pwm.yaml
+> - restrict #pwm-cells to 3
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->   .../input/touchscreen/lpc32xx-tsc.txt         | 16 --------
->   .../input/touchscreen/nxp,lpc3220-tsc.yaml    | 39 +++++++++++++++++++
->   2 files changed, 39 insertions(+), 16 deletions(-)
->   delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/lpc32xx-tsc.txt
->   create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nxp,lpc3220-tsc.yaml
+>   .../devicetree/bindings/pwm/lpc32xx-pwm.txt   | 17 --------
+>   .../bindings/pwm/nxp,lpc3220-pwm.yaml         | 41 +++++++++++++++++++
+>   2 files changed, 41 insertions(+), 17 deletions(-)
+>   delete mode 100644 Documentation/devicetree/bindings/pwm/lpc32xx-pwm.txt
+>   create mode 100644 Documentation/devicetree/bindings/pwm/nxp,lpc3220-pwm.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/lpc32xx-tsc.txt b/Documentation/devicetree/bindings/input/touchscreen/lpc32xx-tsc.txt
+> diff --git a/Documentation/devicetree/bindings/pwm/lpc32xx-pwm.txt b/Documentation/devicetree/bindings/pwm/lpc32xx-pwm.txt
 > deleted file mode 100644
-> index 41cbf4b7a670d..0000000000000
-> --- a/Documentation/devicetree/bindings/input/touchscreen/lpc32xx-tsc.txt
+> index 74b5bc5dd19ac..0000000000000
+> --- a/Documentation/devicetree/bindings/pwm/lpc32xx-pwm.txt
 > +++ /dev/null
-> @@ -1,16 +0,0 @@
-> -* NXP LPC32xx SoC Touchscreen Controller (TSC)
+> @@ -1,17 +0,0 @@
+> -LPC32XX PWM controller
 > -
 > -Required properties:
-> -- compatible: must be "nxp,lpc3220-tsc"
-> -- reg: physical base address of the controller and length of memory mapped
-> -  region.
-> -- interrupts: The TSC/ADC interrupt
+> -- compatible: should be "nxp,lpc3220-pwm"
+> -- reg: physical base address and length of the controller's registers
 > -
-> -Example:
+> -Examples:
 > -
-> -	tsc@40048000 {
-> -		compatible = "nxp,lpc3220-tsc";
-> -		reg = <0x40048000 0x1000>;
-> -		interrupt-parent = <&mic>;
-> -		interrupts = <39 0>;
-> -	};
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/nxp,lpc3220-tsc.yaml b/Documentation/devicetree/bindings/input/touchscreen/nxp,lpc3220-tsc.yaml
+> -pwm@4005c000 {
+> -	compatible = "nxp,lpc3220-pwm";
+> -	reg = <0x4005c000 0x4>;
+> -};
+> -
+> -pwm@4005c004 {
+> -	compatible = "nxp,lpc3220-pwm";
+> -	reg = <0x4005c004 0x4>;
+> -};
+> diff --git a/Documentation/devicetree/bindings/pwm/nxp,lpc3220-pwm.yaml b/Documentation/devicetree/bindings/pwm/nxp,lpc3220-pwm.yaml
 > new file mode 100644
-> index 0000000000000..34cb8b68216aa
+> index 0000000000000..b82d52f583df8
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/nxp,lpc3220-tsc.yaml
-> @@ -0,0 +1,39 @@
+> +++ b/Documentation/devicetree/bindings/pwm/nxp,lpc3220-pwm.yaml
+> @@ -0,0 +1,41 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/input/touchscreen/nxp,lpc3220-tsc.yaml#
+> +$id: http://devicetree.org/schemas/pwm/nxp,lpc3220-pwm.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: NXP LPC32xx SoC Touchscreen Controller (TSC)
+> +title: NXP LPC32XX PWM controller
 > +
 > +maintainers:
 > +  - Frank Li <Frank.Li@nxp.com>
 > +
 > +properties:
 > +  compatible:
-> +    const: nxp,lpc3220-tsc
+> +    enum:
+> +      - nxp,lpc3220-pwm
+> +      - nxp,lpc3220-motor-pwm
 > +
 > +  reg:
 > +    maxItems: 1
 > +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
+> +  '#pwm-cells':
+> +    const: 3
 > +
 > +required:
 > +  - compatible
 > +  - reg
-> +  - interrupts
-
-"clocks" property is mandatory, the old scheme is broken in this sense.
-
-Please either fix the old scheme before conversion, or at least mention
-the difference between the old scheme and the new one in the commit
-message, and please add "clocks" to the list of required properties.
-
+> +  - '#pwm-cells'
 > +
-> +additionalProperties: false
+> +allOf:
+> +  - $ref: pwm.yaml#
+> +
+> +unevaluatedProperties: false
 > +
 > +examples:
 > +  - |
-> +    touchscreen@40048000 {
-> +        compatible = "nxp,lpc3220-tsc";
-> +        reg = <0x40048000 0x1000>;
-> +        interrupt-parent = <&mic>;
-> +        interrupts = <39 0>;
+> +    pwm@4005c000 {
+> +        compatible = "nxp,lpc3220-pwm";
+> +        reg = <0x4005c000 0x4>;
+> +        #pwm-cells = <3>;
 > +    };
+> +
 
---
+"clocks" and "assigned-clock-parents" properties are required.
+
+Please fix the old .txt scheme, or the new one.
+
+I will have to NAK any converted yaml file, if there is a clear
+difference between the actual and proper description of controllers
+from lpc32xx.dtsi and new proposed schemes.
+
+-- 
 Best wishes,
 Vladimir
