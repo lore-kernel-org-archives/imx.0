@@ -1,113 +1,147 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E85A48
-	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 10:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BCC29B771
+	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 10:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750847681; cv=none; b=ho1usftk0V1UGhoPK3i5739tYoMV1yAaarXhY9auLW6qjWWx94X6yKOwIVFUeTEMi91xu1r9RlTt+0sp1jy/qOX7LTNVcm3N+EdfLwTAYkY46ZITBxBLf9YKhRhnpGFBoAYzbfTI0VEwaj5E/ad/iRiw5G6NmkNpecwQHjjdKJg=
+	t=1750848865; cv=none; b=hABnj6qhK1Mf77NLTDo8l0MNlkPjojHqstNvDa6I55SR6obIbyUylw3IKgVJt53R/G19zMhrES0W9PEOfhRWsQjyk2fN6DZ8xPoBjR9heOIfnIys3SJjfqBM42NW3z8nIaCjEYw4aJg+ukkfhIYZFWXyESsn+meJ426iw8+cLXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750847681; c=relaxed/simple;
-	bh=MN0a0M5SY8qVye0UR6x7OgeBX33RCLWkHTWSqb1SIG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yku0/vPFcsqp3WreQQ+jgnzknd/y76+8ns8bkDrSCA1hVBbtbzHHbQzPQbmO6ksai9W2rWn9sOoT6X/JoR3uPFHOoNG9zBY5n5Ffu99io7LPNmJyBye6XBr0SoUWSXtP6vovjYV2A/0MgYG7SU/m0Y44bY8rUSwPdNHFZDg9H3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uUNSO-0007Kd-Gq; Wed, 25 Jun 2025 12:34:20 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uUNSO-005GSi-08;
-	Wed, 25 Jun 2025 12:34:20 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uUNSN-00H7jR-2z;
-	Wed, 25 Jun 2025 12:34:19 +0200
-Date: Wed, 25 Jun 2025 12:34:19 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-doc@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v18 0/7] firmware: imx: driver for NXP secure-enclave
-Message-ID: <20250625103419.h32apyxfjztpoi7k@pengutronix.de>
-References: <20250619-imx-se-if-v18-0-c98391ba446d@nxp.com>
+	s=arc-20240116; t=1750848865; c=relaxed/simple;
+	bh=QrX85Qk8+fEb6NVTU9wtJF8ZOywbTwF2zcUmByN2bvc=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=qw7lu2FV4ub1jINJnQ4H2aPpe3P4T2uWiO4/uCHtyXJLY5Hd4NVqj6Z6vFcxqcuW+gwISVDpHKjJ06s//DXvaWYuF2Sm5jGVvog7zuxQpmyzfc/V1+RYwy0s9WYhxA6qWh/5eUCWMttwa2OnrLpg4RQqu5BmnzhLDEkVHSFcHGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=IviJ/koI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hmBVKdb2; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="IviJ/koI";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hmBVKdb2"
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 182227A0178;
+	Wed, 25 Jun 2025 06:54:23 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Wed, 25 Jun 2025 06:54:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1750848862;
+	 x=1750935262; bh=Q5dyaO3jSBoJfpd1LXwtd5ZZDDPtXRhCCAifrLMtgYI=; b=
+	IviJ/koIrcB8hPHAZrglLq1oI90x4D5pgi6phAXBeDVtKK4ntPx+cM27UyZX70Jh
+	zKL+yH0ZaZHTOxkvU61I7BcvL/f70FgUlQlQjS5lXvdbzzsquI1MAsCcyDFpUptO
+	+6tbMsm3P1ePCGMTJt8TyPIJ0DvD/2hO4PSpdOxXUgDYOKLTsHAUKPAbZUbdfMfv
+	nm5nuiUHaGea76co97MAxu5l4vdztm5YiuTVEpQnTnYER0NxDIMqWwCMJg88Dkux
+	udr+KUyZJBaiRkSdB3kMz+iTSVf5KMFmi4w2p+OZ+cE6Q8e/+JHJ2MzzCI9aq2rr
+	UYBmY647rUjCctUCUnNqzQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1750848862; x=
+	1750935262; bh=Q5dyaO3jSBoJfpd1LXwtd5ZZDDPtXRhCCAifrLMtgYI=; b=h
+	mBVKdb2EGEVl9P/hu6cVlskdKonc6kBTr5iO+fl8VkDuEodtZYpy9fCVOAttkFkl
+	wf/pz1qRzXkwf+9iya+Dn8dbcKZIlR5l8jq6erDs+JUDz1eZdDECqJxwfI5QnlJf
+	Z/+GYeJHTqo0UlMMOY+5Oj9HNwyXKwzyKbKz6BLKG2Y2PdaHmSOsxPPmZyeNVeXR
+	sJiLpiWwRa1FWtaxVOQWHOy4TGsPidrL40fJXLBO38HX99q8B3xuFX04f4Y/yhhl
+	ei8296LW/2mJUgII2fH0xwnCAlqz5GfQtl7SHIY/p2y7RWCH9YnVh5Vh78ADZuV6
+	3Juz57yTaCp5AwU0nIQ2g==
+X-ME-Sender: <xms:XtVbaGsW2vsBl-CUeudkQbooqUKrAFFLaMMa0worurSJ3RALyS1DYQ>
+    <xme:XtVbaLfJmeiJG2rchMmRHWnbPCTc7RGWwZA8_rDCIgmOCDKBnM6OlkuG7b1IY13sL
+    gf6DPhuFKlefMUdUKQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvvdehlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtohepohhlthgvrghnvhesghhmrghilhdrtghomhdprhgtphhtthhopegsrh
+    hoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjrghmvghsrdgtlhgrrhhk
+    sehlihhnrghrohdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrd
+    guvghvpdhrtghpthhtohephhgthheslhhsthdruggvpdhrtghpthhtohepfhhrrghnkhdr
+    lhhisehngihprdgtohhmpdhrtghpthhtoheplhgrrhhishgrrdhgrhhighhorhgvsehngi
+    hprdgtohhmpdhrtghpthhtohepvhhlrgguihhmihhrrdholhhtvggrnhesnhigphdrtgho
+    mhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
+    hrgh
+X-ME-Proxy: <xmx:XtVbaBylydIhWBMIDzwS7NgF-ok3CrK0h5mJKkOcCq9Oa2KV84lAyw>
+    <xmx:XtVbaBPh5ayWHdjhaHdE_Cc0X2eu7Nq7J4CoSekFy51qfAbo9k4yGg>
+    <xmx:XtVbaG-r31mxLpOHBCCFm-LasbaMmwUxqw3zZsgNXLCQLW3k8WXtgQ>
+    <xmx:XtVbaJVUfAVFcPntLalkbFh5NZLavbapYMMLOV4jGMF-1e1RjwaXHg>
+    <xmx:XtVbaBp2SfdOSv5Okgh2WLL6JrNgVhTc_-YwW38zyk9lZkV4RH4gDfo3>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id A2792700063; Wed, 25 Jun 2025 06:54:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250619-imx-se-if-v18-0-c98391ba446d@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-ThreadId: T588a20d0ffbb3e40
+Date: Wed, 25 Jun 2025 12:54:02 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "James Clark" <james.clark@linaro.org>, "Frank Li" <Frank.li@nxp.com>
+Cc: "Vladimir Oltean" <olteanv@gmail.com>, "Mark Brown" <broonie@kernel.org>,
+ "Vladimir Oltean" <vladimir.oltean@nxp.com>,
+ "Larisa Grigore" <larisa.grigore@nxp.com>, "Christoph Hellwig" <hch@lst.de>,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Message-Id: <82824032-26d4-42a6-8a92-3e4a410741c5@app.fastmail.com>
+In-Reply-To: <884e86be-112b-44dd-a827-30355a5fdba6@linaro.org>
+References: <20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org>
+ <20250624-james-nxp-spi-dma-v3-3-e7d574f5f62c@linaro.org>
+ <aFrSgJ5xZfccEX9x@lizhi-Precision-Tower-5810>
+ <290fc244-e88f-47a3-8dd3-0ec27eb5c60b@app.fastmail.com>
+ <0c6c78da-575a-4d29-a79a-3903aa801b42@linaro.org>
+ <0f904f12-295c-48fe-96c7-c64c461cdbbd@app.fastmail.com>
+ <884e86be-112b-44dd-a827-30355a5fdba6@linaro.org>
+Subject: Re: [PATCH v3 3/6] spi: spi-fsl-dspi: Stub out DMA functions
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Hi Pankaj,
+On Wed, Jun 25, 2025, at 12:19, James Clark wrote:
+> On 25/06/2025 11:00 am, Arnd Bergmann wrote:
+>> On Wed, Jun 25, 2025, at 11:19, James Clark wrote:
+>>> On 24/06/2025 6:16 pm, Arnd Bergmann wrote:
+>
+> Wouldn't that allow someone to break it by disabling (or not enabling) 
+> that option? The driver won't fall back to the other modes if DMA isn't 
+> configured, it just won't work. In this case it seems like it's better 
+> to depend directly on DMA_ENGINE because that fixes the randconfig 
+> issues, which is the whole reason for the discussion.
 
-thank you for the patchset and sorry for jumping late.
+It would be the same as disabling DMA_ENGINE today when running on an
+SoC that supports DMA mode in DSPI. Ideally that should fall back
+to non-accelerated mode. I see a lot of checks for
+trans_mode == DSPI_DMA_MODE, and I it's probably best to change
+them to a function call like
 
-On 25-06-19, Pankaj Gupta wrote:
+static inline bool dsp_dma_mode(struct fsl_dspi *dspi)
+{
+     if (!IS_ENABLED(CONFIG_DMA_ENGINE)) // or CONFIG_FSL_DSPI_USE_DMA
+          return false;
 
-...
-> ---
-> Pankaj Gupta (7):
->       Documentation/firmware: add imx/se to other_interfaces
->       dt-bindings: arm: fsl: add imx-se-fw binding doc
->       firmware: imx: add driver for NXP EdgeLock Enclave
->       firmware: imx: device context dedicated to priv
->       firmware: drivers: imx: adds miscdev
+     return dspi->devtype_data->trans_mode == DSPI_DMA_MODE;
+}
 
-I didn't had the time for a detailed review but the patches3-5 (e.g. all
-firmware: *) can be squashed. In patch3 you add a set of files which
-you're going to patch in patch4 and patch5.
+> Would someone really want an option to disable compilation of two 
+> functions if their DSPI device is one that doesn't use DMA? Seems like 
+> this option would always be on anyway.
 
-Please have a look at my comment on patch3.
+It's probably mainly relevant if they want to completely turn off
+CONFIG_DMA_ENGINE, which is substantially bigger. Using a check
+for that symbol in the driver is certainly simpler for the user,
+as they can't accidentally turn it off the custom symbol.
 
-Regards,
-  Marco
+In theory you may also want to turn off DMA mode for testing,
+which is supported by at least the DW_DMA driver.
 
->       arm64: dts: imx8ulp: add secure enclave node
->       arm64: dts: imx8ulp-evk: add reserved memory property
-> 
->  Documentation/ABI/testing/se-cdev                  |   43 +
->  .../devicetree/bindings/firmware/fsl,imx-se.yaml   |   91 ++
->  .../driver-api/firmware/other_interfaces.rst       |  123 +++
->  arch/arm64/boot/dts/freescale/imx8ulp-evk.dts      |   12 +-
->  arch/arm64/boot/dts/freescale/imx8ulp.dtsi         |   11 +-
->  drivers/firmware/imx/Kconfig                       |   13 +
->  drivers/firmware/imx/Makefile                      |    2 +
->  drivers/firmware/imx/ele_base_msg.c                |  269 +++++
->  drivers/firmware/imx/ele_base_msg.h                |   95 ++
->  drivers/firmware/imx/ele_common.c                  |  354 ++++++
->  drivers/firmware/imx/ele_common.h                  |   49 +
->  drivers/firmware/imx/se_ctrl.c                     | 1145 ++++++++++++++++++++
->  drivers/firmware/imx/se_ctrl.h                     |  128 +++
->  include/linux/firmware/imx/se_api.h                |   14 +
->  include/uapi/linux/se_ioctl.h                      |   97 ++
->  15 files changed, 2443 insertions(+), 3 deletions(-)
-> ---
-> base-commit: 9e9eef5925a5d2b1938484c4edc906e384145959
-> change-id: 20240507-imx-se-if-a40055093dc6
-> 
-> Best regards,
-> -- 
-> Pankaj Gupta <pankaj.gupta@nxp.com>
-> 
-> 
-> 
+I see that SPI_TEGRA114 has a dependency on TEGRA20_APB_DMA,
+which is yet another variation. This is clearly done for
+usability purposes since that SPI driver only ever works with
+the specific DMA driver in practice, but it seems worse
+conceptually.
+
+     Arnd
