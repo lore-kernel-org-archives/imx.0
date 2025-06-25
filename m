@@ -1,165 +1,162 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F971FECAD
-	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 19:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78722DCC1A;
+	Wed, 25 Jun 2025 20:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750880084; cv=none; b=h5oRgz6FNC30v6bvco+tJK5+juSSFdKX04jP/Wn4ref8+iE+HV6SqYPkp72RxB1mu7guw2cUl6I/K6u1DIr1d09boznxRXZUMZfRp8LAgeNDKTeE42btT6LPJQxaR/q/Spz+r/fc7ZRhXgcmYU3IfAqQnvjc5t/JwVlq/9m9ybc=
+	t=1750883119; cv=none; b=khrTeJMC4TGz3FlweBBxlLTMD5gE0Xwc0Nmi4hezXAVV0eRcf4TvE3c/FnrONwfZcvr6RyG/uSwzEAm/ujUYhBV9CR+Jqo3LF+xSs+vZPO21bKIEON0E4tSroRau16KnLcZIqEAUD7d9fWyIlXdUjt133JuAfukK542izuazw3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750880084; c=relaxed/simple;
-	bh=KX8ESLOsVI5lykUMCHvwiR4DNef+po6luXp0o93XLls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B61+oGFXcTpGN+g5c+Chcp4a7tb1RSyVfWL2BPEfZyDGqYp1//5nx6yvjukcstIdzVMFvxTApETIXBnNfUUC4utZlnWmH1WsgSrJ0uCWYbCGHRY627rJ9CK1wmwZPOpgpe0pP35i2fjY0u+O5BUZojnpH0KTamUNdUo4dwwaHM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ZldvsvGL; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1750883119; c=relaxed/simple;
+	bh=TziOv0cm8azgsxSTr1XbfSHXohOwDnljw555dksH0d0=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=kpQP5zCehxR3OAOmFt/0Z2P+mAykl/vveS69kiEfGDxgLWS4fdkjJRvO8PryZpG7DTstJbZR0l9It1y3KsJSBuTnEvKaOSHrmit1RuY1KfHq2uzvzAwSWmTO+/shDP0cewGF8goKeosFfN3kPONQIbfV6EHRTBHRoHJ6PGKDHkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BbWsS7Tv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ZldvsvGL"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 4EE886F3;
-	Wed, 25 Jun 2025 21:34:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1750880062;
-	bh=KX8ESLOsVI5lykUMCHvwiR4DNef+po6luXp0o93XLls=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZldvsvGL7NWob8nF/x4LAYjano2AsMONQ28+SbO3taxdV/7eKtyo/Ab5G/FSeWkS5
-	 WN4HTy9KnQLleqbdxPrDOroEHBwi6uY9DthYK+D3bMSg/ehFWT22YcCnms4E2Cw31Y
-	 FTQQge526MV+/DVxrguvJJMh6p2tYYSr3DV092kg=
-Date: Wed, 25 Jun 2025 22:34:18 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Adam Ford <aford173@gmail.com>,
-	Frank Li <Frank.li@nxp.com>,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Purism Kernel Team <kernel@puri.sm>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH 6/8] dt-bindings: media: nxp,imx-mipi-csi2: Add
- fsl,num-channels property
-Message-ID: <20250625193418.GA32071@pendragon.ideasonboard.com>
-References: <20250608235840.23871-1-laurent.pinchart@ideasonboard.com>
- <20250608235840.23871-7-laurent.pinchart@ideasonboard.com>
- <aEb+iTlDh0H/bRMY@lizhi-Precision-Tower-5810>
- <CAHCN7xJjR1zZXeJAvkXmdNYroP6Jm6TLjHjnPUOF4z7yaL7EFw@mail.gmail.com>
- <20250609182033.GA11428@pendragon.ideasonboard.com>
- <aEcxN7xClLfp0STx@lizhi-Precision-Tower-5810>
- <20250610081829.GC11428@pendragon.ideasonboard.com>
- <20250619210237.GA21935@pendragon.ideasonboard.com>
- <20250625192728.GA2072001-robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BbWsS7Tv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E348C4CEF2;
+	Wed, 25 Jun 2025 20:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750883119;
+	bh=TziOv0cm8azgsxSTr1XbfSHXohOwDnljw555dksH0d0=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=BbWsS7TvvcQOXUDiR1RQKIoUGhBretA5etFDHMA/VgYxIUwUe0h5CUh71IQNJun9a
+	 kO5WbZmvPC3d43pDdg01pdyGTPNkcK27IUD4fc+Ug5I/YB27ssZfWWPtd3nbE6h39w
+	 srb6lW5QC8V6HS33obz5sKGX9uXI/xlb7EJjGnSSm1LimV5lKhaa/22zY+Ln5wH6BD
+	 GCF7fL0drw6+h1RY3tXBNkuqTIBVN/J0axjzYafv/yNXnTjvXvVlBpzWaTWmb/+3+l
+	 NNr5cTYwjLhdKGz1ceGRS099s2+U04cg3dK4PCKx+y9HxQ8+WFIpqvPih+wXk82xmi
+	 4/MX9h+cz6qRw==
+Date: Wed, 25 Jun 2025 15:25:18 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250625192728.GA2072001-robh@kernel.org>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Peng Fan <peng.fan@nxp.com>, Bjorn Andersson <andersson@kernel.org>, 
+ devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+ Frank Li <frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, Iuliana Prodan <iuliana.prodan@nxp.com>, 
+ linux-arm-kernel@lists.infradead.org, Daniel Baluta <daniel.baluta@nxp.com>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+In-Reply-To: <20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com>
+References: <20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com>
+Message-Id: <175088289381.2146689.9089577049350520635.robh@kernel.org>
+Subject: Re: [PATCH v3 0/5] remoteproc: imx_rproc: Support i.MX95
 
-On Wed, Jun 25, 2025 at 02:27:28PM -0500, Rob Herring wrote:
-> On Fri, Jun 20, 2025 at 12:02:37AM +0300, Laurent Pinchart wrote:
-> > On Tue, Jun 10, 2025 at 11:18:29AM +0300, Laurent Pinchart wrote:
-> > > On Mon, Jun 09, 2025 at 03:08:39PM -0400, Frank Li wrote:
-> > > > On Mon, Jun 09, 2025 at 09:20:33PM +0300, Laurent Pinchart wrote:
-> > > > > On Mon, Jun 09, 2025 at 12:53:48PM -0500, Adam Ford wrote:
-> > > > > > On Mon, Jun 9, 2025 at 10:32 AM Frank Li wrote:
-> > > > > > > On Mon, Jun 09, 2025 at 02:58:38AM +0300, Laurent Pinchart wrote:
-> > > > > > > > The CSI-2 receiver can be instantiated with up to four output channels.
-> > > > > > > > This is an integration-specific property, specify the number of
-> > > > > > > > instantiated channels through a new fsl,num-channels property. The
-> > > > > > > > property is optional, and defaults to 1 as only one channel is currently
-> > > > > > > > supported by drivers.
-> > > > > > > >
-> > > > > > > > The only known SoC to have more than one channel is the i.MX8MP. As the
-> > > > > > > > binding examples do not cover that SoC, don't update them.
-> > > > > > > >
-> > > > > > > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > > > > > > ---
-> > > > > > > >  .../devicetree/bindings/media/nxp,imx-mipi-csi2.yaml       | 7 +++++++
-> > > > > > > >  1 file changed, 7 insertions(+)
-> > > > > > > >
-> > > > > > > > diff --git a/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
-> > > > > > > > index db4889bf881e..41ad5b84eaeb 100644
-> > > > > > > > --- a/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
-> > > > > > > > +++ b/Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
-> > > > > > > > @@ -68,6 +68,13 @@ properties:
-> > > > > > > >      default: 166000000
-> > > > > > > >      deprecated: true
-> > > > > > > >
-> > > > > > > > +  fsl,num-channels:
-> > > > > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > > > > > +    description: Number of output channels
-> > > > > > > > +    minimum: 1
-> > > > > > > > +    maximum: 4
-> > > > > > > > +    default: 1
-> > > > > > > > +
-> > > > > > >
-> > > > > > > Look like it is fixed value for each compabiable string, So it is not
-> > > > > > > suitable for adding new property. It should be in driver data of each
-> > > > > > > compatible strings.
-> > > > > > >
-> > > > > > > I met similar case before. DT team generally don't agree on add such
-> > > > > > > property, unless there are two instances in the same chip, which have
-> > > > > > > difference channel number.
-> > > > > >
-> > > > > > If the DT changes are rejected, can the number of channels be added to
-> > > > > > the data structure inside mipi_csis_of_match?  We have compatibles for
-> > > > > > 8mm and imx7.  If we add an imx8mp compatible we could add a reference
-> > > > > > to the number of channels.
-> > > > >
-> > > > > I thought about it, and decided to add a new property because the number
-> > > > > of channels is really a synthesis time configuration parameter, and
-> > > > > could differ between different CSIS instances in the same SoC.
-> > > > 
-> > > > Need add such information at binding doc's commit message,
-> > > 
-> > > I'll update the commit message.
-> > 
-> > The commit message in v2 will state
-> > 
-> >     dt-bindings: media: nxp,imx-mipi-csi2: Add fsl,num-channels property
-> > 
-> >     The CSI-2 receiver can be instantiated with up to four output channels.
-> >     This is an integration-specific property, specify the number of
-> >     instantiated channels through a new fsl,num-channels property. The
-> >     property is optional, and defaults to 1 as only one channel is currently
-> >     supported by drivers.
-> > 
-> >     Using the compatible string to infer the number of channels has been
-> >     considered, but multiple instances of the same CSIS in the same SoC
-> >     could conceptually be synthesized with a different number of channels.
-> >     An explicit property is therefore more appropriate.
-> > 
-> >     The only known SoC to have more than one channel is the i.MX8MP. As the
-> >     binding examples do not cover that SoC, don't update them.
+
+On Wed, 25 Jun 2025 10:23:26 +0800, Peng Fan (OSS) wrote:
+> i.MX95 features a Cortex-M33 core, six Cortex-A55 cores, and
+> one Cortex-M7 core. The System Control Management Interface(SCMI)
+> firmware runs on the M33 core. The i.MX95 SCMI firmware named System
+> Manager(SM) includes vendor extension protocols, Logical Machine
+> Management(LMM) protocol and CPU protocol and etc.
 > 
-> So how many channels does i.MX8MP have in a DT without this property? 
-> It's either 1 or the driver overrides it to 2.
-
-Only 1. I only realized a few weeks ago that the CSIS has multiple
-output channels on i.MX8MP. This wasn't documented anywhere, and
-understanding how all of this works took lots of trial-and-error.
-
-> > Rob, Krzysztof, Conor, are you fine with adding this property ?
+> There are three cases for M7:
+> (1) M7 in a separate Logical Machine(LM) that Linux couldn't control it.
+> (2) M7 in a separate Logical Machine that Linux could control it using
+>     LMM protocol
+> (3) M7 runs in same Logical Machine as A55, so Linux could control it
+>     using CPU protocol
 > 
-> Yes, but seems a little late.
+> In patch 2, Use LMM and CPU protocol to manage M7. More info could be
+> found in the patch commit log
+> 
+> Current setup relies on pre-Linux software(U-Boot) to do
+> M7 TCM ECC initialization. In future, we could add the support in Linux
+> to decouple U-Boot and Linux.
+> 
+> Patchset was tested with below boot images when the patchset based on next-20250526:
+> imx-boot-variant-rpmsg-imx95-19x19-lpddr5-evk-sd.bin-flash_lpboot_sm_a55 (Use LMM protocol)
+> imx-boot-variant-alt-imx95-19x19-lpddr5-evk-sd.bin-flash_alt (Use CPU protocol)
+> imx-boot-imx95-19x19-lpddr5-evk-sd.bin-flash_a55 (M7 not under A55 control)
+> imx-boot-imx95-19x19-lpddr5-evk-sd.bin-flash_all (M7 not under A55 control)
+> 
+> Patchset was tested again with rebase on next-20250623
+> 
+> Patchset is re-based on next-20250603.
+> 
+> Thanks for Daniel/Frank helping review the patchset before posting out to list.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+> Changes in v3:
+> - Drop fsl,lmm-id and fsl,cpu-id for binding in patch 1
+> - Add lmid and cpuid in driver patch 2.
+> - Add i.MX95 lmid and cpuid in patch 3
+> - Rebased to linux-next-6-23 and tested with this new rebased version
+> - Add dtsi/dts patch 4,5 to give people a view on how it is used per Krzysztof
+> - Daniel's R-b are still kept after talk with Daniel
+> - Link to v2: https://lore.kernel.org/r/20250606-imx95-rproc-1-v2-0-a2bd64438be9@nxp.com
+> 
+> Changes in v2:
+> - Typo fix in patch 2 commit message
+> - Move the m7 address mapping array from patch 2 to patch 3
+> - Add R-b from Daniel to patch 3
+> - Link to v1: https://lore.kernel.org/r/20250604-imx95-rproc-1-v1-0-a6e5f512731c@nxp.com
+> 
+> ---
+> Peng Fan (5):
+>       dt-bindings: remoteproc: fsl,imx-rproc: Add support for i.MX95
+>       remoteproc: imx_rproc: Add support for System Manager API
+>       remoteproc: imx_rproc: Add support for i.MX95
+>       arm64: dts: imx95: Add SCMI LMM/CPU nodes
+>       arm64: dts: imx95-19x19-evk: Add CM7 nodes and vdev related memory regions
+> 
+>  .../bindings/remoteproc/fsl,imx-rproc.yaml         |   1 +
+>  arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts  |  45 +++++++
+>  arch/arm64/boot/dts/freescale/imx95.dtsi           |   8 ++
+>  drivers/remoteproc/imx_rproc.c                     | 138 ++++++++++++++++++++-
+>  drivers/remoteproc/imx_rproc.h                     |   5 +
+>  5 files changed, 195 insertions(+), 2 deletions(-)
+> ---
+> base-commit: fda740558acb4303fcf377e5cf9139f795b1d85b
+> change-id: 20250525-imx95-rproc-1-20bb74ddc8af
+> 
+> Best regards,
+> --
+> Peng Fan <peng.fan@nxp.com>
+> 
+> 
+> 
 
-It is, I wish I had known about this hardware feature years ago. Now I
-need to figure out how to properly support it in the driver and expose
-it to userspace through V4L2 without breaking backward compatibility
-with existing applications. The DT binding is the easy part :-)
 
--- 
-Regards,
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Laurent Pinchart
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: base-commit fda740558acb4303fcf377e5cf9139f795b1d85b not known, ignoring
+ Base: attempting to guess base-commit...
+ Base: tags/next-20250625 (exact match)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com:
+
+arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dtb: scmi (arm,scmi): Unevaluated properties are not allowed ('protocol@80', 'protocol@81', 'protocol@82', 'protocol@84' were unexpected)
+	from schema $id: http://devicetree.org/schemas/firmware/arm,scmi.yaml#
+
+
+
+
+
