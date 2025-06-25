@@ -1,280 +1,291 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012050.outbound.protection.outlook.com [52.101.71.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174D426A088
-	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 14:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750862386; cv=none; b=KLISpZOAqvEDMs/J2qqZdJ/C+cHc27zRMP/K1XQDYTDJM/5g9c7RNW/W5TKgSq6+oWf/8WPZDnmpvYysmo9hCJ46vvdSXR/mhYs+ZQHrbnA3y7tjYrje/8DoHW04XcNYH0bL43vcDX6PO/OCh9q7W5w51E4f47wUbMke8gQiTS0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750862386; c=relaxed/simple;
-	bh=6s8tdeXIh3dpEBSXcHHnBmYJKc+NPpS/AdGrW0S1RaY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KDJJGAwGZSsLbfouOqCicOi1/wj13fM+udx234/iVGxDFJlG4SZj6CQD1BsyUwhbfM8Fd2jnC7e4NVyN+VvBxlyATYWcFZKclkZcxlOvzytlVYCIvA/NysFLYydBMrxhiCQWxtc3wLUKbxxaQ7jgRNAoBW3HP/YFwC92dT3PHWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vQV4aQDN; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF5917BEBF
+	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 14:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750863367; cv=fail; b=UsMgtk/jKquPa6D3TIFt9ih7GfJPrXwK4+qmaUfVfZcgyroV/YYECe9oJ891ED87DVK4SCDx0CMZkGyzliqTqI93tgqrp2XMKzjDcEs9VoDeC+H0PZKTXS/vi51/Dwujgcbw+8a0wC7LeWV3yJjyAiKOtKdqLEi5WsgIEMlpseo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750863367; c=relaxed/simple;
+	bh=aP6IOJXQFZOW5NXufcQCdzZ2MkcV0eiXmyEuU5B1RHY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ISJPe38ZCk03CXYYYnqLvouNJnxC/MSlBOkwrzL9KMK+XrXxbdjRcSlBxv7LGFQWrnHesBeUkY58n3N+/iLlxouvvkzMV/oqbYh9PsURjWN5qVEkR5dLBRrzn4MPac5h+jhYly9l+2O13e5TcF60NamOINCNwgtvyl1VpHR9OP0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cPyFZYQR; arc=fail smtp.client-ip=52.101.71.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vQV4aQDN"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-60c4f796446so1163185a12.1
-        for <imx@lists.linux.dev>; Wed, 25 Jun 2025 07:39:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750862381; x=1751467181; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3nfLaDrIv4HHM2VYxZ0QSILSPZOjC+nFi2raIsra4eo=;
-        b=vQV4aQDNRecYmfC1GwxVLLXiJJCHroGDivbcGVibHBNkmtHe/6qnVttwCGn1qSYgL9
-         JtnieK/dCgbCM1Rj+NTs61GI94gwGcPlDZ1oBo6NiIF62RnfrSFwWW20aXQyD3Ny24zQ
-         t9xnXSl/YIp0fHfjt9vmBQPWsXFO6KbRPrl47IXpO1DWH55y3jtuNYWB8KtfZaXqvGmv
-         aYE8T9ePgRXKh7tXUeDbFlXhvabtko7UoGami5AwPfsF4LTpH2uwyKHEidz9t+W/QudI
-         Tgoj2KoyN75xBOlpmmCwY3DlQGT68cR51BIrEWBaMhtP+ybIXdHu2Wy3hb2qx6XxlHTh
-         D4JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750862381; x=1751467181;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3nfLaDrIv4HHM2VYxZ0QSILSPZOjC+nFi2raIsra4eo=;
-        b=h/ajBOwbQRRSCrO1FLH0SJPXQK0jGh7BT1pvcKMIcs/L1YChootouUvq0TPs1uNULR
-         U3Q4JPBjQRiTc4VC0Qfvf+Sbdqy3/aEySe5uUGIRWZ6bwwLATMDw533Q1lZG5tzL8DvR
-         VOCXSn4b3BjbmfRz5BAg98TlmpgZB59rX3Ge13qgYyLYzOV7itFsXTwpvxoaNEqJSTmL
-         /UZDKQOfevSsstcoldL6Ed5XYlmcjSWD7yzRLvoh9CUO5eBS5mh3EDPlXYqGd7vR6oZ7
-         yHvwYwGdHfrVchuwunbaW8gYILEpkojtrvoLxIX3/QiTTxKZa6yW76zcMiw61cXe7hHj
-         KRyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVlKmYR1k1Pd8unTipyAILXqAnA8HBe/0QvOWMCi9JHdzX3iuysukiWjnhmKLpJyhgaBE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwaFwzB2UhYDY8PIgx+hS+wXSBlLZK+e1H+Jm2nGRwNUHe+e0uA
-	iC5NUHOmG7D1Z2MT0ShM8KzdlXVEqIEpuuVs4qT4rK6QSi1OVUsjmt9mV9lbnFov+7/8IUKzV29
-	CI2ye6mWdK7NkYutEZwdUzadmKmnRcnatVv2ZHuv/Ow==
-X-Gm-Gg: ASbGncuRTJYhFz7LUArpK3cgo3KD3juDlZcbwzxgPglwY1D6N5dFdDXG6vUICm5u6dX
-	uijStjzB+s6CaAf5LL9G95JpUTIkqAM6vxRqMFf8EZGIT9LLuZnQ/tT0A721UvSrV/1waVRMVmf
-	IiaXTM6Ai3Vaos/nk8RmGuxrUVvWkR65xiJ8can3xtc3gC8xEuCQppTgyb/EIahPLRAV+SiPJKr
-	ziaiw==
-X-Google-Smtp-Source: AGHT+IE3R4XbiDX3SYA4jSl4fNvcu/S1vq69n8Iz6TYDCXbK45875fCSUjjDmvhS6/h6ekIgErdfshIIh5wv3ORIDiQ=
-X-Received: by 2002:a17:907:6d0b:b0:ae0:c539:b89a with SMTP id
- a640c23a62f3a-ae0c539bd16mr311563366b.19.1750862381102; Wed, 25 Jun 2025
- 07:39:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cPyFZYQR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vGez9J/8d7HILBV+rFVvDQDow9LGwv3VXvtqg1xlQscdB7584veaY37b5UTtouhoOCRz3tanz2BwHRKQ89smCJSiX9ysM0CZESNbnK8p/d5vq248xJhNjgTNskrEwx3/QbrejG882DqwLzMW+dLhYgDgpyzhjey+N5O/6bUGmELLUZlFWdvJTso/yG49MKggqYglffhjV/6SkzRLojWINYo7zHqFvADQZxb209QFejT1YLb4kG19vvvgg4RqkJTAx2UfFw0Qaqr8xdYaa1VvVN+Vqi+QPYGa3KaKiQY/KSS7bmp1+fWbZEMYNtyfdGWV7aTu/0KhfM9lPxfN39J9Hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0iDa8fY1UtHC+s+EqUo9CngrppWi0ejINAB6dpVfrYY=;
+ b=E8vc3TCEjE2KIq3n2luavmaypmsR7mJ0ik1xZe63q12+HHBU7EG7gZ3HYedc1R/kNW2rMmGLHFooU30Zw5hYRI/9US5W3ObO3zgZoFXNuZFtoKgCTIIn+Nhszt48Ong1xSlnO95DuZtCHcuBNRESheROowL0x0ngW/9YHg98yULwNPmYW18wOzirZ9BOy6fTg/E7O1Av2lcsleWi6LOdkGKI+Tbcnh9s8GgKt6sm3tDv/AGfMdXxrqograbWZJzGY3IoF1ecUETBXQT2Q09LT5B4zzddwn421ZjHwZvLjLYemdCU02DyAOEAJyna2RGAEDT7n0mJsEbcMJnyo/YhVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0iDa8fY1UtHC+s+EqUo9CngrppWi0ejINAB6dpVfrYY=;
+ b=cPyFZYQRl3ruPjKfG6JaQkBxz/j4tmjjmkwrQok2lBGWOtM9ZJdoxBm1W9u9JAr0uLEvRRDlVDL4iPuVKqTCMnXXHcaT68ocuJGQ5IbGLgNMu1CLGH5OFa1XrGbmUbPqprF9Aizgwgr7qP5rqpmqmA0IlSjzxbibAfEEdpzPrmRPf7tqMZkpA0WqbYJM7HVaTDB0zJbJP9G5nRt5l2iYEZGFwdUh2dWVtucNmv5xNQttw0hTwpjMC+2+nzACtnniCrKferEMVwOjOBHdoDLZI8nMm96fWY8UMUl0of9/iqJQNlJlJYcs9I2c+I2M7AjVzY9WHKjWIqPUmqzxQhnHAg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GV2PR04MB11448.eurprd04.prod.outlook.com (2603:10a6:150:2a3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.28; Wed, 25 Jun
+ 2025 14:56:01 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8880.015; Wed, 25 Jun 2025
+ 14:56:01 +0000
+Date: Wed, 25 Jun 2025 10:55:56 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: James Clark <james.clark@linaro.org>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	Christoph Hellwig <hch@lst.de>, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 6/6] spi: spi-fsl-dspi: Report FIFO overflows as errors
+Message-ID: <aFwN/LlXEmv82PcF@lizhi-Precision-Tower-5810>
+References: <20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org>
+ <20250624-james-nxp-spi-dma-v3-6-e7d574f5f62c@linaro.org>
+ <aFrXRDJmMgt0qTlL@lizhi-Precision-Tower-5810>
+ <0e26494d-7b85-4874-a2e4-a498ce1864c8@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0e26494d-7b85-4874-a2e4-a498ce1864c8@linaro.org>
+X-ClientProxiedBy: AS4P191CA0020.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d9::8) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250618062644.3895785-1-shengjiu.wang@nxp.com>
- <20250618062644.3895785-2-shengjiu.wang@nxp.com> <aFltBpXuEXVZ5gKn@p14s> <CAA+D8AP47xyftzPZki8MXEeWEfbocug6e134uaJgFH+tx7mH2Q@mail.gmail.com>
-In-Reply-To: <CAA+D8AP47xyftzPZki8MXEeWEfbocug6e134uaJgFH+tx7mH2Q@mail.gmail.com>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Wed, 25 Jun 2025 08:39:30 -0600
-X-Gm-Features: Ac12FXxfnFqETZmTye9WOASdoWQr8KdaOBSc0QxWt1fCM_5NlgRJzqlsQfx7gyU
-Message-ID: <CANLsYkz2JMMMhBAXjt9YSzU4n-0Ld6EvJHC=7Ospsefoxc6BGA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] remoteproc: imx_dsp_rproc: Add support of recovery process
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andersson@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV2PR04MB11448:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9b925e1-9716-485b-f490-08ddb3f8669e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?hek4beFCoHRfFXJcr6loG++0MzQnTrUJRKwVfHhu/kXT6XEKXm0eu+6vhSMo?=
+ =?us-ascii?Q?+HVoW+fTpgfqMc9UdQiPbe0X/Ot3C479YB8j1JhUAT5baFasmSqO3ZD6rP9j?=
+ =?us-ascii?Q?xms4DrZYkZSMFgYQ9yQxzWrqV1HxcpmCi7drpKqa8/H6vv7ZIru1tRSOYOZx?=
+ =?us-ascii?Q?paltPW9grD5lloodYtYZbd1yu6Qzdw2upoWTSHJCWpdnbXx4O0O2UNeKEUYI?=
+ =?us-ascii?Q?GXIuUFl5z00UcGM1IY1Rnrqt9qEfskOYyyMbGqbigQYR15+Cbt8PngZLC0GL?=
+ =?us-ascii?Q?uOMG6cdFqFsUH3UdPZ+5N6ik4CEgmWtzS1HxQ4jtSCjLc4bogoLiBzy2PxcE?=
+ =?us-ascii?Q?vdMCSiAlPuqiaSALoMfNuIDIFdj0U8FEcMxMwQSXJrsnsnvK6FL02cVdDYMU?=
+ =?us-ascii?Q?khp/48aaJNqYKmjW8IolPVq9Wrtpb63NqfkximjMYtluC/Z/sTUHlTSJuVgV?=
+ =?us-ascii?Q?qoz2OM8wD58dHipbqFxipbU6mXNaSJB3HNqV3Zavl63zGO7j3mit7wjs0MYC?=
+ =?us-ascii?Q?TE2t8GbcTE9SKoOyyE/2z28svk6dnQ1My3IM1Vlu/sMne3Lk9+oaTvQqHJx4?=
+ =?us-ascii?Q?pSF11z23LCk6OGJ7rOte4BZiyQxDeomNNVHP63L1qUD2+jOYJ9Y7kXYNDNbA?=
+ =?us-ascii?Q?i97zdEIaBYikJkgJQGpGO0jt9MJk/tY6nXZ1YCadkELM7rgF2G+GzWo0a4LN?=
+ =?us-ascii?Q?ObUIWzCbgIHy4tQwirUCL1ny5MVhAzQ1yBayVgLAvvTFyDrVQScZmaJOz33S?=
+ =?us-ascii?Q?0ZkZLi5ooqFL5WPt2IHt/Rv9dueueZeDILQaJ3KvXubUsC0wuCQLFmrYDKWG?=
+ =?us-ascii?Q?KxzY49M+UFcB9firbFfti8W4T49/PB+KzssCLrMjUf5eCOPkfdjG3CoB+xrb?=
+ =?us-ascii?Q?GWix7ORBNehFFU43QjE/11CBa2/c/zwl9ZT7dFsgV8PxDdJZUc+kqjH39edN?=
+ =?us-ascii?Q?jv4kI7f1cJywRkaiTYsWV6M6LAVuuuKKxmkQrJGeO4kwJXFgCCuQf2iHKHzz?=
+ =?us-ascii?Q?rbgAP7ojK5HyzBcy9AaHvU2+HLxGnLn42jzBeKhhsdsMH+JgcgESCcXk0wkO?=
+ =?us-ascii?Q?GGjO4dYh3KlQILJrqdJj355zt0fgW2R5WxEVV6o75Vx9k8dih8Kp6qEb1lmg?=
+ =?us-ascii?Q?BKmoXRjHLorIooreNvPpphfoEPr+gk6eKbb2JHxoHqfACFfPrsUDLi2IXGPC?=
+ =?us-ascii?Q?7cI1sXgE0vuMIOowwNWNmR56TSNIucI1x+iUefH0P8ZqRo/ZYdReTfJniUE9?=
+ =?us-ascii?Q?Jee3n4R7B9BOq0QY8XbNM/RC6YTn9vy8n631qiIjSfmShfgNZKNquIPss4vM?=
+ =?us-ascii?Q?iyn0ndJGn25Bh6EicQAZoCGrYPo1N414opoh23XqXhZk3tavrLRpdpYvuyib?=
+ =?us-ascii?Q?fAfChOlMYgxifKvI05ejp24je0ktlG3hMRj4MxV93v969yVQMGGhMQbzCZgF?=
+ =?us-ascii?Q?ZOmsBbfdbw8O/bzRdbsxZmQb73LXeo5C00UXFIj68d1+Qy+8/PqJsQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HogdzWuzqKq+ZZCMm4dnvbqOWs9s63mt9MZZTJue8vU8VvidvdF0WXugY9gs?=
+ =?us-ascii?Q?5i+yx9L0LLWt6xWwhwa1bFJTOadgu7IPLrDnLfwMdW+UZ4tWIGJqJ+242zi6?=
+ =?us-ascii?Q?xGgwS+WxQFWXdnYpqXcpc4TtQaoo4nSceisVKbFGc32X+/25MrpAvgE9mbKL?=
+ =?us-ascii?Q?4FLR/2aWI4j8y5ucF+MrWSoonhXL6rwwUPRMBbGoyvuWnnbJXc3RFCor+5dN?=
+ =?us-ascii?Q?ZU8BAuN4iRSazul3WbCbqzyaoxHpLd1FeUnMiQpdYl4dmqiSZ5iyFwt7bFO/?=
+ =?us-ascii?Q?UInkuZ5QLHc/KCLSKugtcL5AkOFuK1Y8+gFwqFOdjDM9+iD9JDttnwmcZymO?=
+ =?us-ascii?Q?Nd2yV2cGKMTnrvHtHh+feRjapekFGLeozg6Wd70FDXiC80/p1nCzpxgNZCaC?=
+ =?us-ascii?Q?E9AlYYfnEhoxhsPE+VSfE3Cbr4fluTKMXQ9NBs/gHO+tEIzSQdIOJ5+zkdVz?=
+ =?us-ascii?Q?ZVt/GoAEFTiyE3N4Hmd6O0IY1lgMFdDJ2TD+Y8jyGKst9pWn7ALlPiFLXdTa?=
+ =?us-ascii?Q?BnUZh5xDUtMmDSvNqZnA0yDT+Yce/KvEZ0jvjsp25UkVUVlMRm1TYX+jYrhz?=
+ =?us-ascii?Q?x6wow7sLe04nKNqVuw8bZVe76JU4PO7p129HpEQl3iSqMdE1nykZzLHslDIM?=
+ =?us-ascii?Q?AYMrbsShv6TNFrsgni4SNJ+UyTyHbLMdIncro/9lzDPRLv4fw264U3BAieoV?=
+ =?us-ascii?Q?scQT1fXC2itGNlyDSneEOadlh0lA3r6GdlYCBlIYIYgMtYNqapG3Yw/KkmXC?=
+ =?us-ascii?Q?ZVbqkfTx603L5WV6zJsT+5GRj7PgKV5O3eX7FhXr1II0oo0r4wKwQfOxl9BM?=
+ =?us-ascii?Q?i4YOeuT0pt6E8FNODtjTfgX0Kid4h40dW0TQ/urtFsjMvJksztezJKbzVDFA?=
+ =?us-ascii?Q?hLp01oUtuGeweTkpVm/VjJHEcF7WmRmvIepsWYpH3fdJk1Y4KlUWEbQG5oSi?=
+ =?us-ascii?Q?7lHMkNemjYymVCvpiYD+tsTw+LSyKn58N+sSEpQIPZ/25spvy+PKFJp8KJsK?=
+ =?us-ascii?Q?8enAqVqgTIK5wkfpHxMCW4rHx5ILBGu1YL34TIqPCQb1daz4VnFb2YAPNkdo?=
+ =?us-ascii?Q?XgN9hIh+oKSnRLFk9JWL+6YqXZ/PU8uPawHd+bGLl3vccCCKgyiZ6NXqUyLy?=
+ =?us-ascii?Q?fd/cmzl2LZJWgUXf3oz7VNEWnGT4gJpYkZGn+KZ88or/ZtgXRweV+I3ccfey?=
+ =?us-ascii?Q?88CHNSS8z1wCbT2UC+kPFmzO/iFQI2EOojPRA1KMuEnXFvVmyjJheVlJ2EoT?=
+ =?us-ascii?Q?dL4lWEoqnzY7vWtVwZRvomMiqhKb52gHepRntexHy9uR6xaKo9XRoBlMmbsn?=
+ =?us-ascii?Q?5xmiVGwk9FnNsWpTII7wMHp/KWfhHZWf0fgW/UOwk7Bk2MznGUf52dxxXOeY?=
+ =?us-ascii?Q?YXdk7dqjraddNSmehGqOwMNsNuo4auUy7yYd38bMgzdW0bY6V7nWaqF3on6P?=
+ =?us-ascii?Q?QtKxnKPn4EKcfnY/HgwRI7qUbgGFhZQU+2Hkw+ZwuHLdWesyfLWXHo0A8JZb?=
+ =?us-ascii?Q?cSl60p2KgAaINnY3MJBAVMhFGNo30MY5l0bHHaWY+F/SOANmx3IgaDYhZwx0?=
+ =?us-ascii?Q?rPUNm5OoiJJrFq6Spbc=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9b925e1-9716-485b-f490-08ddb3f8669e
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2025 14:56:01.3017
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KV20t7uOhWT2XNiU4ILEKmk4hpZvMZZ/4FWr7ZcjAEZAuo6rxHgnIeEo9U1lm2oimpX0NPYbcXETcigvk6j8DA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11448
 
-On Tue, 24 Jun 2025 at 21:25, Shengjiu Wang <shengjiu.wang@gmail.com> wrote=
-:
+On Wed, Jun 25, 2025 at 11:09:57AM +0100, James Clark wrote:
 >
-> On Mon, Jun 23, 2025 at 11:11=E2=80=AFPM Mathieu Poirier
-> <mathieu.poirier@linaro.org> wrote:
-> >
-> > Good day,
-> >
-> > On Wed, Jun 18, 2025 at 02:26:43PM +0800, Shengjiu Wang wrote:
-> > > when recovery is triggered, rproc_stop() is called first then
-> > > rproc_start(), but there is no rproc_unprepare_device() and
-> > > rproc_prepare_device() in the flow.
+>
+> On 24/06/2025 5:50 pm, Frank Li wrote:
+> > On Tue, Jun 24, 2025 at 11:35:36AM +0100, James Clark wrote:
+> > > In target mode, the host sending more data than can be consumed would be
+> > > a common problem for any message exceeding the FIFO or DMA buffer size.
+> > > Cancel the whole message as soon as this condition is hit as the message
+> > > will be corrupted.
 > > >
-> > > So power enablement needs to be moved from prepare callback to start
-> > > callback, power disablement needs to be moved from unprepare callback
-> > > to stop callback, loading elf function also needs to be moved to star=
-t
-> > > callback, the load callback only store the firmware handler.
+> > > Only do this for target mode in a DMA transfer because we need to add a
+> > > register read.
+> >
+> > "We need to add a register read" is not reason.
+> >
+>
+> Maybe: "It's not likely to catch any errors in host mode so optimize by
+> avoiding an extra register read"?
+>
+> > Add checking FIFO error status at target mode in a DMA transfer since PIO
+> > mode already do it. It help catch some host mode ...
+> >
+>
+> Are you suggesting that we check for FIFO errors in host mode too? It
+> requires an extra read and check in dspi_tx_dma_callback(), but I'm not sure
+> what it could catch. Realistically as long as everything is setup correctly
+> then neither of those flags will be set. It will either always work or never
+> work.
+>
+> It might be better to add it later if a use becomes apparent otherwise it's
+> extra noise in the code.
+
+I think your origial last phrase is not good enough. You may rephrase it
+to make it clear.
+
+for example: according to your patch
+
+"Only do this for target mode in a DMA transfer because we need to add a register read."
+
+"add a register read" is result, not a reason. the reason should be "you want
+host side capture such error."
+
+Frank
+
+
+>
+> > > In IRQ and polling modes always do it because SPI_SR was
+> > > already read and it might catch some host mode programming/buffer
+> > > management errors too.
 > > >
-> > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > Signed-off-by: James Clark <james.clark@linaro.org>
 > > > ---
-> > >  drivers/remoteproc/imx_dsp_rproc.c | 58 ++++++++++++++++++----------=
---
-> > >  1 file changed, 36 insertions(+), 22 deletions(-)
+> > >   drivers/spi/spi-fsl-dspi.c | 28 +++++++++++++++++++++++++++-
+> > >   1 file changed, 27 insertions(+), 1 deletion(-)
 > > >
-> > > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/=
-imx_dsp_rproc.c
-> > > index 5ee622bf5352..9b9cddb224b0 100644
-> > > --- a/drivers/remoteproc/imx_dsp_rproc.c
-> > > +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> > > @@ -122,6 +122,7 @@ enum imx_dsp_rp_mbox_messages {
-> > >   * @ipc_handle: System Control Unit ipc handle
-> > >   * @rproc_work: work for processing virtio interrupts
-> > >   * @pm_comp: completion primitive to sync for suspend response
-> > > + * @firmware: firmware handler
-> > >   * @flags: control flags
-> > >   */
-> > >  struct imx_dsp_rproc {
-> > > @@ -139,6 +140,7 @@ struct imx_dsp_rproc {
-> > >       struct imx_sc_ipc                       *ipc_handle;
-> > >       struct work_struct                      rproc_work;
-> > >       struct completion                       pm_comp;
-> > > +     const struct firmware                   *firmware;
-> > >       u32                                     flags;
-> > >  };
+> > > diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> > > index 58881911e74a..16a9769f518d 100644
+> > > --- a/drivers/spi/spi-fsl-dspi.c
+> > > +++ b/drivers/spi/spi-fsl-dspi.c
+> > > @@ -560,12 +560,24 @@ static void dspi_rx_dma_callback(void *arg)
+> > >   	complete(&dma->cmd_rx_complete);
+> > >   }
 > > >
-> > > @@ -211,6 +213,7 @@ static const struct imx_rproc_att imx_dsp_rproc_a=
-tt_imx8ulp[] =3D {
-> > >
-> > >  /* Initialize the mailboxes between cores, if exists */
-> > >  static int (*imx_dsp_rproc_mbox_init)(struct imx_dsp_rproc *priv);
-> > > +static int imx_dsp_rproc_elf_load_segments(struct rproc *rproc, cons=
-t struct firmware *fw);
-> > >
-> > >  /* Reset function for DSP on i.MX8MP */
-> > >  static int imx8mp_dsp_reset(struct imx_dsp_rproc *priv)
-> > > @@ -402,8 +405,24 @@ static int imx_dsp_rproc_start(struct rproc *rpr=
-oc)
-> > >       const struct imx_dsp_rproc_dcfg *dsp_dcfg =3D priv->dsp_dcfg;
-> > >       const struct imx_rproc_dcfg *dcfg =3D dsp_dcfg->dcfg;
-> > >       struct device *dev =3D rproc->dev.parent;
-> > > +     struct rproc_mem_entry *carveout;
-> > >       int ret;
-> > >
-> > > +     pm_runtime_get_sync(dev);
-> > > +
-> > > +     /*
-> > > +      * Clear buffers after pm rumtime for internal ocram is not
-> > > +      * accessible if power and clock are not enabled.
-> > > +      */
-> > > +     list_for_each_entry(carveout, &rproc->carveouts, node) {
-> > > +             if (carveout->va)
-> > > +                     memset(carveout->va, 0, carveout->len);
-> > > +     }
-> > > +
-> > > +     ret =3D imx_dsp_rproc_elf_load_segments(rproc, priv->firmware);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > >       switch (dcfg->method) {
-> > >       case IMX_RPROC_MMIO:
-> > >               ret =3D regmap_update_bits(priv->regmap,
-> > > @@ -446,6 +465,7 @@ static int imx_dsp_rproc_stop(struct rproc *rproc=
-)
-> > >
-> > >       if (rproc->state =3D=3D RPROC_CRASHED) {
-> > >               priv->flags &=3D ~REMOTE_IS_READY;
-> > > +             pm_runtime_put_sync(dev);
-> >
-> > From this patch I understand that for a recovery to be successful, the
-> > remote processor _has_ to go through a hard reset.  But here the PM run=
-time API
-> > is used, meaning the remote processor won't be switched off if another =
-device in
-> > the same power domain still neeeds power.  If that is the case, the sol=
-ution in
-> > tihs patch won't work.
->
-> Thanks for reviewing.
-> With the case you mentioned, there is software reset to make the
-> recovery process work.
-
-
-Are you talking about a manual software reset of some other mechanism?
-
-If manual software reset, the recovery may or may not work and we
-simply don't know when that might be.  If it's another mechanism, then
-that mechanism should be used in all cases.  Either way, I don't see
-how we can move forward with this patch.
-
->
->
-> best regards
-> Shengjiu Wang
->
-> >
-> > Thanks,
-> > Mathieu
-> >
-> > >               return 0;
-> > >       }
-> > >
-> > > @@ -472,6 +492,8 @@ static int imx_dsp_rproc_stop(struct rproc *rproc=
-)
-> > >       else
-> > >               priv->flags &=3D ~REMOTE_IS_READY;
-> > >
-> > > +     pm_runtime_put_sync(dev);
-> > > +
-> > >       return ret;
-> > >  }
-> > >
-> > > @@ -774,7 +796,6 @@ static int imx_dsp_rproc_prepare(struct rproc *rp=
-roc)
-> > >  {
-> > >       struct imx_dsp_rproc *priv =3D rproc->priv;
-> > >       struct device *dev =3D rproc->dev.parent;
-> > > -     struct rproc_mem_entry *carveout;
-> > >       int ret;
-> > >
-> > >       ret =3D imx_dsp_rproc_add_carveout(priv);
-> > > @@ -783,25 +804,6 @@ static int imx_dsp_rproc_prepare(struct rproc *r=
-proc)
-> > >               return ret;
-> > >       }
-> > >
-> > > -     pm_runtime_get_sync(dev);
-> > > -
-> > > -     /*
-> > > -      * Clear buffers after pm rumtime for internal ocram is not
-> > > -      * accessible if power and clock are not enabled.
-> > > -      */
-> > > -     list_for_each_entry(carveout, &rproc->carveouts, node) {
-> > > -             if (carveout->va)
-> > > -                     memset(carveout->va, 0, carveout->len);
-> > > -     }
-> > > -
-> > > -     return  0;
-> > > -}
-> > > -
-> > > -/* Unprepare function for rproc_ops */
-> > > -static int imx_dsp_rproc_unprepare(struct rproc *rproc)
-> > > -{
-> > > -     pm_runtime_put_sync(rproc->dev.parent);
-> > > -
-> > >       return  0;
-> > >  }
-> > >
-> > > @@ -1022,13 +1024,25 @@ static int imx_dsp_rproc_parse_fw(struct rpro=
-c *rproc, const struct firmware *fw
-> > >       return 0;
-> > >  }
-> > >
-> > > +static int imx_dsp_rproc_load(struct rproc *rproc, const struct firm=
-ware *fw)
+> > > +static int dspi_fifo_error(struct fsl_dspi *dspi, u32 spi_sr)
 > > > +{
-> > > +     struct imx_dsp_rproc *priv =3D rproc->priv;
-> > > +
-> > > +     /*
-> > > +      * Just save the fw handler, the firmware loading will be after
-> > > +      * power enabled
-> > > +      */
-> > > +     priv->firmware =3D fw;
-> > > +
-> > > +     return 0;
+> > > +	if (spi_sr & (SPI_SR_TFUF | SPI_SR_RFOF)) {
+> > > +		dev_err_ratelimited(&dspi->pdev->dev, "FIFO errors:%s%s\n",
+> > > +				    spi_sr & SPI_SR_TFUF ? " TX underflow," : "",
+> > > +				    spi_sr & SPI_SR_RFOF ? " RX overflow," : "");
+> > > +		return -EIO;
+> > > +	}
+> > > +	return 0;
 > > > +}
 > > > +
-> > >  static const struct rproc_ops imx_dsp_rproc_ops =3D {
-> > >       .prepare        =3D imx_dsp_rproc_prepare,
-> > > -     .unprepare      =3D imx_dsp_rproc_unprepare,
-> > >       .start          =3D imx_dsp_rproc_start,
-> > >       .stop           =3D imx_dsp_rproc_stop,
-> > >       .kick           =3D imx_dsp_rproc_kick,
-> > > -     .load           =3D imx_dsp_rproc_elf_load_segments,
-> > > +     .load           =3D imx_dsp_rproc_load,
-> > >       .parse_fw       =3D imx_dsp_rproc_parse_fw,
-> > >       .handle_rsc     =3D imx_dsp_rproc_handle_rsc,
-> > >       .find_loaded_rsc_table =3D rproc_elf_find_loaded_rsc_table,
+> > >   static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+> > >   {
+> > >   	size_t size = dspi_dma_transfer_size(dspi);
+> > >   	struct device *dev = &dspi->pdev->dev;
+> > >   	struct fsl_dspi_dma *dma = dspi->dma;
+> > >   	int time_left;
+> > > +	u32 spi_sr;
+> > >   	int i;
+> > >
+> > >   	for (i = 0; i < dspi->words_in_flight; i++)
+> > > @@ -614,7 +626,8 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+> > >
+> > >   	if (spi_controller_is_target(dspi->ctlr)) {
+> > >   		wait_for_completion_interruptible(&dspi->dma->cmd_rx_complete);
+> > > -		return 0;
+> > > +		regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+> > > +		return dspi_fifo_error(dspi, spi_sr);
+> > >   	}
+> > >
+> > >   	time_left = wait_for_completion_timeout(&dspi->dma->cmd_tx_complete,
+> > > @@ -1069,6 +1082,10 @@ static void dspi_poll(struct fsl_dspi *dspi)
+> > >
+> > >   			if (spi_sr & SPI_SR_CMDTCF)
+> > >   				break;
+> > > +
+> > > +			dspi->cur_msg->status = dspi_fifo_error(dspi, spi_sr);
+> > > +			if (dspi->cur_msg->status)
+> > > +				return;
+> >
+> >
+> > Although fifo error may happen after you check, it may reduce some possilbity
+> > and catch some problems.
+> >
+> > Frak
+> >
+>
+> Not sure what you mean by this one. But I've seen a few small errors now
+> that I look again. The error check should be before the transfer complete
+> break. And tries should be reset for each part of the message.
+>
+> > >   		} while (--tries);
+> > >
+> > >   		if (!tries) {
+> > > @@ -1085,6 +1102,7 @@ static void dspi_poll(struct fsl_dspi *dspi)
+> > >   static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+> > >   {
+> > >   	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
+> > > +	int status;
+> > >   	u32 spi_sr;
+> > >
+> > >   	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+> > > @@ -1093,6 +1111,14 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+> > >   	if (!(spi_sr & SPI_SR_CMDTCF))
+> > >   		return IRQ_NONE;
+> > >
+> > > +	status = dspi_fifo_error(dspi, spi_sr);
+> > > +	if (status) {
+> > > +		if (dspi->cur_msg)
+> > > +			WRITE_ONCE(dspi->cur_msg->status, status);
+> > > +		complete(&dspi->xfer_done);
+> > > +		return IRQ_HANDLED;
+> > > +	}
+> > > +
+> > >   	dspi_rxtx(dspi);
+> > >
+> > >   	if (!dspi->len) {
+> > >
 > > > --
 > > > 2.34.1
 > > >
-> >
+>
