@@ -1,145 +1,133 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDF815442A;
-	Wed, 25 Jun 2025 05:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC822307498;
+	Wed, 25 Jun 2025 06:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750829161; cv=none; b=DTe4m1RWmiBVcJ+oAIiJs82rYa2MUkfk7AmlHnN4g4QWSAOLjxag4dbPB/g5vfHJ6qOBckmg77hYon/WMPUNky+GEy8YQ4FVA5O0349JShF/OYHqoYQnOUtpvsujDa/IQzJcmIddLSwbxreFpxiKJ/8Z+frAxNHYh3XQGgWHLZU=
+	t=1750831813; cv=none; b=ev1N62trm3C70nsgcdEGst5USo+VRqle3a8t2keH3uIk1f6C55CFSswYzuGKfiz8JnCppj3FtWgpUZL8X3YSq5WjTiJ4RagjhM3wn+OrncM0hoQjSnLAmLbJjv205d+E6nit4sTdMSlN1mxTBv8ZC7mMVtVbXbmlitMRCi73aDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750829161; c=relaxed/simple;
-	bh=0hRDN1u+td/ykRY2vm1L2kpHhMG55EsaPbIq6V+qxC0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J60YUxAY/g802fQ9kILVQUpJxL7HsjYxZB7tOTWlBF8+8J09dW1JUkhOzc/TxylR9eFX1J+aVlsMKwT/vmMMh+ig4URukr0t52vidcprTrnG2H0MnXJB0R2YPOkVUxObrInyJC7BN4I5uxmvJM9Sb9ZYRwhnWrAcU1cVcfg9ugI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V49jy8Wg; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1750831813; c=relaxed/simple;
+	bh=TEf+0zBo4DYSNOvhVuH60cDQ+vbZMzygF71dL+Jh798=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dLEcULn9nFlbC9/VAV6UGZsvcoLv40AGFcdV5YMxdwBIRWLVvzYRvJPh3Ge+E8jvYWgFBGdOnMmxtOtrvCIbsWy4mKaL4UZ9DHSL0ej/PkHYEgaSOf2i0WaBEhJrAMVTBgJYj6oEgM+ixSqPYMYkqJ0KjeSQBjT/37eSx5kCeF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YHt7DH9H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V49jy8Wg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750829160; x=1782365160;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0hRDN1u+td/ykRY2vm1L2kpHhMG55EsaPbIq6V+qxC0=;
-  b=V49jy8WgEE097EUng++RcmCiKAwGXnvmCh4UGrYlba8ZS8TMm32k9SX3
-   8sps8j3zBjymv/KBsWs6u4JTzxFfFClRhlE5JBx7Bt2+SMEuO3+8sKMBU
-   AWmN0Y7EYpMlDDzZ9k6jswAojsL3vNPuokpRhRs7zg3HPDGC1IYQ2qb4W
-   55d3T6Y1T5qEV/VuHxRIEC5BtTj3DHQRgmNoEvU4efYGHssquMMsxV5sv
-   oPKiiyRnBGA8Vqt5bJ5qBV3XG2z5N1H+VpCgdkDmXT0eJJlp3dMEogr8e
-   cQxPHb6L4YMcsBTvsIhYEP2+lFysx7U878RvwmrgzzPoc1YfCfV7I/9dO
-   A==;
-X-CSE-ConnectionGUID: XpTMP+kZRkya+xOef9QTCQ==
-X-CSE-MsgGUID: 7S1wrLr8Qiac/4SEBeLbpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="56761506"
-X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; 
-   d="scan'208";a="56761506"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 22:26:00 -0700
-X-CSE-ConnectionGUID: ixov8sJuSMyuGT/+aXJspQ==
-X-CSE-MsgGUID: rAcO2f4sTmWHpLFigXyuZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; 
-   d="scan'208";a="156145722"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 24 Jun 2025 22:25:56 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uUIdu-000Smg-1O;
-	Wed, 25 Jun 2025 05:25:54 +0000
-Date: Wed, 25 Jun 2025 13:25:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: James Clark <james.clark@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Frank Li <Frank.li@nxp.com>, Christoph Hellwig <hch@lst.de>
-Cc: oe-kbuild-all@lists.linux.dev, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	James Clark <james.clark@linaro.org>
-Subject: Re: [PATCH v3 3/6] spi: spi-fsl-dspi: Stub out DMA functions
-Message-ID: <202506251332.thYB4ced-lkp@intel.com>
-References: <20250624-james-nxp-spi-dma-v3-3-e7d574f5f62c@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YHt7DH9H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889EAC4CEEA;
+	Wed, 25 Jun 2025 06:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750831813;
+	bh=TEf+0zBo4DYSNOvhVuH60cDQ+vbZMzygF71dL+Jh798=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YHt7DH9HLA5kBMzdtXsLfXrnOhUdtHDP4wZC/HNvVcwcIAn+kqlRrPXMZk/Trh2QJ
+	 oQ/YvsxqF8mGocksilcrPtZgaEmeXWDo7lrvXCG1dJ9OjyOo1BgEhZ9gIt3E5y7ZP1
+	 YI8Z+06o7onSqrN9VUIuQ1PAR1HdvZU/I4LLULSx991gQ8ZlSNfxMJCUBueVY+v+4m
+	 ldMMqaTZnEKxw8T0pQllV7ZrLNEoPfWHWlMINdGN2lUe7qUMn/qFkZ1zVKmVT7bLVh
+	 lsJOmzEFc2CGOSO8AjAiduJRTDDwuUOSMPiUm6aAH2PNjwaheLw/d7xxLlZDJu1/4o
+	 3lPOZV/1BQYEA==
+Message-ID: <22d911a2-3bf1-45ee-9037-c6d8cbd686fa@kernel.org>
+Date: Wed, 25 Jun 2025 08:10:04 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624-james-nxp-spi-dma-v3-3-e7d574f5f62c@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/9] dt-bindings: soc: imx-blk-ctrl: add i.MX91
+ blk-ctrl compatible
+To: Frank Li <Frank.li@nxp.com>
+Cc: Joy Zou <joy.zou@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ catalin.marinas@arm.com, will@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ ulf.hansson@linaro.org, richardcochran@gmail.com, kernel@pengutronix.de,
+ festevam@gmail.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-pm@vger.kernel.or,
+ ye.li@nxp.com, ping.bai@nxp.com, aisheng.dong@nxp.com
+References: <20250623095732.2139853-1-joy.zou@nxp.com>
+ <20250623095732.2139853-3-joy.zou@nxp.com>
+ <urgfsmkl25woqy5emucfkqs52qu624po6rd532hpusg3fdnyg3@s5iwmhnfsi26>
+ <aFq7WJ3Fqe9p0EhA@lizhi-Precision-Tower-5810>
+ <e32c3a47-e32e-4f93-becb-ebad31065b73@kernel.org>
+ <aFr3yExb6vObn5W4@lizhi-Precision-Tower-5810>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <aFr3yExb6vObn5W4@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi James,
+On 24/06/2025 21:08, Frank Li wrote:
+>>>>> +        clock-names:
+>>>>> +          items:
+>>>>> +            - const: apb
+>>>>> +            - const: axi
+>>>>> +            - const: nic
+>>>>> +            - const: disp
+>>>>> +            - const: cam
+>>>>> +            - const: lcdif
+>>>>> +            - const: isi
+>>>>> +            - const: csi
+>>>>
+>>>> No, look at other bindings how they share clock lists.
+>>>
+>>> Sorry, this method is what I suggested. becuase there are pxp between cam
+>>> and lcdif, can't use simple minItems/maxItems to limit list.
+>>
+>> The point is to put new items, so pxp, at the end.
+> 
+> There are already a list for imx93. If change list order, it will break
+> ABI. This was rejected at other binding doc review.
+I see, I mixed the SoCs. It is a pity you upstream that way and do not
+try to make the list common. Anyway names indeed need to be constrained
+per variant, but the rest of the comments stay.
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on 4f326fa6236787ca516ea6eab8e5e9dc5c236f03]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/James-Clark/spi-spi-fsl-dspi-Clear-completion-counter-before-initiating-transfer/20250624-183952
-base:   4f326fa6236787ca516ea6eab8e5e9dc5c236f03
-patch link:    https://lore.kernel.org/r/20250624-james-nxp-spi-dma-v3-3-e7d574f5f62c%40linaro.org
-patch subject: [PATCH v3 3/6] spi: spi-fsl-dspi: Stub out DMA functions
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20250625/202506251332.thYB4ced-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250625/202506251332.thYB4ced-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506251332.thYB4ced-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   drivers/spi/spi-fsl-dspi.c: In function 'dspi_dma_xfer':
->> drivers/spi/spi-fsl-dspi.c:729:9: error: 'sdpi' undeclared (first use in this function); did you mean 'dspi'?
-     729 |         sdpi->cur_msg->status = -EINVAL;
-         |         ^~~~
-         |         dspi
-   drivers/spi/spi-fsl-dspi.c:729:9: note: each undeclared identifier is reported only once for each function it appears in
-   drivers/spi/spi-fsl-dspi.c: At top level:
->> drivers/spi/spi-fsl-dspi.c:474:12: warning: 'dspi_pop_tx_pushr' defined but not used [-Wunused-function]
-     474 | static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
-         |            ^~~~~~~~~~~~~~~~~
-
-
-vim +729 drivers/spi/spi-fsl-dspi.c
-
-   705	
-   706	static void dspi_release_dma(struct fsl_dspi *dspi)
-   707	{
-   708		int dma_bufsize = dspi->devtype_data->fifo_size * 2;
-   709		struct fsl_dspi_dma *dma = dspi->dma;
-   710	
-   711		if (!dma)
-   712			return;
-   713	
-   714		if (dma->chan_tx) {
-   715			dma_free_coherent(dma->chan_tx->device->dev, dma_bufsize,
-   716					  dma->tx_dma_buf, dma->tx_dma_phys);
-   717			dma_release_channel(dma->chan_tx);
-   718		}
-   719	
-   720		if (dma->chan_rx) {
-   721			dma_free_coherent(dma->chan_rx->device->dev, dma_bufsize,
-   722					  dma->rx_dma_buf, dma->rx_dma_phys);
-   723			dma_release_channel(dma->chan_rx);
-   724		}
-   725	}
-   726	#else
-   727	static void dspi_dma_xfer(struct fsl_dspi *dspi)
-   728	{
- > 729		sdpi->cur_msg->status = -EINVAL;
-   730	}
-   731	static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
-   732	{
-   733		dev_err(&dspi->pdev->dev, "DMA support not enabled in kernel\n");
-   734		return -EINVAL;
-   735	}
-   736	static void dspi_release_dma(struct fsl_dspi *dspi) {}
-   737	#endif
-   738	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best regards,
+Krzysztof
