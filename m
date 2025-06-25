@@ -1,49 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5D32E0B6C;
-	Wed, 25 Jun 2025 19:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360DB1F4CB2;
+	Wed, 25 Jun 2025 19:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750878396; cv=none; b=KN28uGRkk5zcseMr3hl1nc4OREw8aTxPlYDlBZz2pfh6EvWmQmiDVZJnRToHlsuauFNvfbSNR2brUDOEOPMMsAfXZKJMpwqHmLC8fsMN+cycwJhFM/H8n2panykWk4AgZJrP5ER1bMGMO3DjBraASw+Wbbi6e8jH7LzL8yRhuc8=
+	t=1750878520; cv=none; b=kZ0JRsmb8AaIxNsKsL5d2dGHvhUxv9WPxDoloOFs3FbOhybs8Mo0o+he+VzZUXleeEJxXtAYdj8zrqEbhf0FeD4DSZo7HDXwlqOn3q4jSNXrflCUhkCwdsBFxF+z7hJtCga8Y0zzBFr2prJ08jM+m12YnlceMEXvz+CJoKyPH/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750878396; c=relaxed/simple;
-	bh=mt41Fb0q1YhHKfjDtHyYRotEsd67rfLrbLZk+qxV9gA=;
+	s=arc-20240116; t=1750878520; c=relaxed/simple;
+	bh=z1gAPx6OY/jnhOzLuEXFWO6EY4yZIbfg2MNyRqOx1gM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qiQYNa3IGMe3HJijgbaYS9Ycp7VsM7Jc7DlCYn3VNyOt/oVyyNEAIddXsGxaDpIIE7QyuvGwPhe7xQ+JTXYrTduwberrUyk0bultiiBzBYXYu9jYeWtejLE0l2A9e3P18v9RZrrzzNMHSDqXtHEDP5koOXG5mrkXMwtL0stkzMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBIWj6da; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=muptMqLdmy/b5iP94ILjkAXwnn6ku7GK32IjHbKHwCTdYZG6ay2e7L3GkU2Hov4eS0oVlwr/wd0eLqqo47oN26bcduZ8gxISwC/ZXXjObVyoL9ZWzklEePOzg2a+OeudnUpzTd9Zgo/yY2U4zFisU7nxKzsRmjSYZCkLXmV8j6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T/vTAuvU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBIWj6da"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF815C4CEEA;
-	Wed, 25 Jun 2025 19:06:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T/vTAuvU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E8BC4CEEA;
+	Wed, 25 Jun 2025 19:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750878395;
-	bh=mt41Fb0q1YhHKfjDtHyYRotEsd67rfLrbLZk+qxV9gA=;
+	s=k20201202; t=1750878519;
+	bh=z1gAPx6OY/jnhOzLuEXFWO6EY4yZIbfg2MNyRqOx1gM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cBIWj6daJ2/j7eMRSz1WZoK1fQzvuFIbKA3ujFVOwzwFQgQUFqRzb4VcI/0TzmRi1
-	 MQbK8UqQ6+wrYd03mjrTGw5QunO6u3fJv7XIqGo4REHjwJVmoC4FsonsRF+f49FB1o
-	 Qcc9662DGCUZjVJc+4CmJZ+ZvmbuAgOidrrSsdfAoNBaMcfXgEgtngQKc+DbgoO4f4
-	 HDGvy/v3iBv6jZH8P0oU4gs5s5LZe+3SJ2X0lgDObx2FLzYmT3dHpaQE5LqDWvwkKy
-	 iMrGDmDFZyR9l7ask/n02TT40PPBSKyfUaJx6tbPFoFg13B7F0d0r+7RXB+Ubv0BJP
-	 lNCjQgJv5rH1A==
-Date: Wed, 25 Jun 2025 14:06:34 -0500
+	b=T/vTAuvUGg/KVt0IJdr0wIXFd/t8bkhpVODu6rIOR28WRkw6V+0OGpCxlT3IMYRUq
+	 f7B90yIqOEG/rtEiW1chW8G/7nmsdLKZy8nYRR/tWIgNZKtIisfMgLWER+eMfBf5+H
+	 6fx04ngDGVbDlU0Ble9/LyyVU9MjFMIrUtWzNOpD5+M8OWiW+zsNAF2+alr5ZZhapN
+	 fHHbY7Ot3y0p9GocrEGPTvgxLk0CY7WJKirZ2PzHhTtsAXvz/Yj+aBLilEHpcabtxn
+	 XvZtVHXtaTHAjCZ/KlJlsZ7awvmfhn5Nbt5In4DVomA1EJUpPJaLtPoaajWQ7q4jZs
+	 kTdlJoEE+b+Qg==
+Date: Wed, 25 Jun 2025 14:08:38 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Conor Dooley <conor+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH v3 1/1] dt-bindings: ieee802154: Convert at86rf230.txt
- yaml format
-Message-ID: <175087839356.2050766.5864325742697685736.robh@kernel.org>
-References: <20250606155638.1355908-1-Frank.Li@nxp.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>, imx@lists.linux.dev,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] dt-bindings: pinctrl: convert nxp,lpc1850-scu.txt
+ to yaml format
+Message-ID: <175087851837.2053063.15257795513103591902.robh@kernel.org>
+References: <20250606160359.1356555-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,30 +46,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250606155638.1355908-1-Frank.Li@nxp.com>
+In-Reply-To: <20250606160359.1356555-1-Frank.Li@nxp.com>
 
 
-On Fri, 06 Jun 2025 11:56:33 -0400, Frank Li wrote:
-> Convert at86rf230.txt yaml format.
+On Fri, 06 Jun 2025 12:03:58 -0400, Frank Li wrote:
+> Convert nxp,lpc1850-scu.txt to yaml format.
 > 
 > Additional changes:
-> - Add ref to spi-peripheral-props.yaml.
-> - Add parent spi node in examples.
+> - keep child name *_cfg to align legancy very old platform dts file.
+> - remove label in examples.
+> - just keep one examples.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
-> change in v3
-> - add maximum: 0xf for xtal-trim
-> - drop 'u8 value ...' for xtal-trim's description
-> 
 > change in v2
-> - xtal-trim to uint8
+> - drop generic pin list at top description
+> - fix subject miss n at vendor prefix
 > ---
->  .../bindings/net/ieee802154/at86rf230.txt     | 27 --------
->  .../net/ieee802154/atmel,at86rf233.yaml       | 66 +++++++++++++++++++
->  2 files changed, 66 insertions(+), 27 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/net/ieee802154/at86rf230.txt
->  create mode 100644 Documentation/devicetree/bindings/net/ieee802154/atmel,at86rf233.yaml
+>  .../bindings/pinctrl/nxp,lpc1850-scu.txt      | 71 -----------------
+>  .../bindings/pinctrl/nxp,lpc1850-scu.yaml     | 79 +++++++++++++++++++
+>  2 files changed, 79 insertions(+), 71 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/pinctrl/nxp,lpc1850-scu.txt
+>  create mode 100644 Documentation/devicetree/bindings/pinctrl/nxp,lpc1850-scu.yaml
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
