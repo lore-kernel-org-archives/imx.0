@@ -1,125 +1,214 @@
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2562487BF
-	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 10:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF05C1F460B
+	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 10:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750845673; cv=none; b=qRcip1a5cRV1o9n+HacNbjLZXp1ovTG5+HriFK06Exi3stVlxjczn/Q+dfSYU4ukRhZkGDkq0I8Wy6qyUH7Q+c0LD8Z7d7zQvCOAQx+QTESTYfDwyHrgNJihz6+IFXca+FtFykayBLJsVfG9k3509FgNkr3QNh5aG8SjUIbKA4A=
+	t=1750846202; cv=none; b=niDyd8vLcExlh+TKfoHvlWhRzK3fKRsUbw9sRb+feaIGSgLXHoobRku1MqqTc4mvZNLCesVxTN+E94pwGJNz2chNlhfdZl9Z8c5V2wh3tk2wSvHI7QH/7crwOihDlB3dVblE5HFPRjMuPH8KoXSP0P2GBptl3O2oqUtSNGz5rTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750845673; c=relaxed/simple;
-	bh=okf+uhv/zJ5RP4VyNn9+JcXWCFO9Ssru835UGwlg64I=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=PT2/6OmzHaRSAhvjdJ+iDXj+eq40Lap5aR4+/kHAEXGbnI6x72jkzwyFikrGITDIDegVEAGxJEp7t0EX0Y86vWz5lzWJO9hzzsvOj2gYI0h+BVVnEWPZ7+0LABVnHcutOPo4jmiFCubk28sNS9ZoRO0WJfrtApqFafXfOLXzHFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=aSO5IlNj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eKaE3kNN; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1750846202; c=relaxed/simple;
+	bh=OylUmlOteTQZOUB8k3gp2U6i5Fi2b03eFfECFDhsR6A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ANosPYEu4a8m2wFdEntthpa1zBKOTDp4iC++zAS4t+cR6OpbUNsnHOMRFyFR+hbvchopanv+kxJlQlvasvF+3butayuRTLpPHee/nWbbMLOdN36F2+IJL/r8YSYwPRnCHSgOrlecGVsbDgafjVtOZqgQrxSCb0KJZKgaRMb0mog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=baiRxtFb; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="aSO5IlNj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eKaE3kNN"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id ABEDC7A0033;
-	Wed, 25 Jun 2025 06:01:09 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Wed, 25 Jun 2025 06:01:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1750845669;
-	 x=1750932069; bh=EfvRO+VLg3uMgXOHdRqJ5eu4+EMuM3Jf+0bB1Ld8A/4=; b=
-	aSO5IlNjFL/Xvlv9qEsBqBxGZ5d588t6Aw9UbV6KLH+3iZFUh47nom9d+qvjl1wM
-	NVCzpr/Fgz+avB975g7UEjvJbr1QAVj7yAbQtiTbr+w9fTIToUpYuilnF+9nAaBA
-	cxGfbDmeVAEymtlhcX3pA+Vp1/FqV5ac6jJNxoI3kL3F+EwhBJid25ojPbQESJbk
-	mS4BUEH+qE/1XPQ8ZFlj4BtY3R7OHMTji7B2KItH7kn2t1CKnzhrbLvreBZNQuL9
-	w1NgZQDlN1Y8L+P98WGBtOBgueCmxQpu+AFkIM/ihvzNLVWweqrps4gnCR+mnQ7M
-	tWbpuH51L+nRDfcq6+bB5g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1750845669; x=
-	1750932069; bh=EfvRO+VLg3uMgXOHdRqJ5eu4+EMuM3Jf+0bB1Ld8A/4=; b=e
-	KaE3kNN7HJIEic2k6+1G+GF7ePJP0nA/wonf850w3ykY+yDhtpw8XzOy85ddKHGN
-	dRNBEF8LyT0T5ppzl9DnYIivWnXabW+dmG5Mo7yfFpUsDM9e7TCj3w9Bbh0yh0Ql
-	KaeU3/nM8aSw31Vvk5IDCnOviPbg+EeYu6m+S8Mz2D+g9ETAoXm2m/95JzFLlNSZ
-	+1lksCRxw8X5CckHAmtaZtdSwZ9ss6Fp0ZsWZw66v49OyR7YGkvUpp4kuTeMowDs
-	Qfnux7FQFoGH1Jh6OGwpNDEh2F8w34htIdmlTkhQq04klFvOx/eiWZc9yE/JOfdk
-	iFP0O4wap2QfVTEi3tUkA==
-X-ME-Sender: <xms:5chbaFjfUD7_TUCLeMDpbNYagpx7O4d5Eplfh9DQvs6dtn3I71GoPA>
-    <xme:5chbaKBELq7w4GfHsksQm6F2re8rNtyuZP0RoSg5U9wswKxH_CKby5Mca4AgpGMZG
-    eKnOOSVLX8najO_cgU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvvdegkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtohepohhlthgvrghnvhesghhmrghilhdrtghomhdprhgtphhtthhopegsrh
-    hoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjrghmvghsrdgtlhgrrhhk
-    sehlihhnrghrohdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrd
-    guvghvpdhrtghpthhtohephhgthheslhhsthdruggvpdhrtghpthhtohepfhhrrghnkhdr
-    lhhisehngihprdgtohhmpdhrtghpthhtoheplhgrrhhishgrrdhgrhhighhorhgvsehngi
-    hprdgtohhmpdhrtghpthhtohepvhhlrgguihhmihhrrdholhhtvggrnhesnhigphdrtgho
-    mhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
-    hrgh
-X-ME-Proxy: <xmx:5chbaFFQO7awfCCnnjw9iCd3Gcw0yCmXlgAjmFW579u_osew0f6aJA>
-    <xmx:5chbaKRk-W492bLzwwrvLbkWVLAvc8DXnIbHHyCnI81cNazNZuswmg>
-    <xmx:5chbaCz2Dox169bEa-9sajgmj7jwvO6gVRUi4MgobpMS8Qfrd_4ruw>
-    <xmx:5chbaA71AK2aKmG56pTEbT2dczGklsfAR4mv0duP7W7bkFJ5XvCsrQ>
-    <xmx:5chbaDt4N_OcTNTD9DXLvhC-vrZzFR55wrgZf0KKO6J6C9ZmgnT7AfZK>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 0DD83700065; Wed, 25 Jun 2025 06:01:09 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="baiRxtFb"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a52874d593so6121419f8f.0
+        for <imx@lists.linux.dev>; Wed, 25 Jun 2025 03:10:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750846199; x=1751450999; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=y4I1PJPpHezpA836vKI44sV4N989fSWCkW53dGjnJDg=;
+        b=baiRxtFbXhwvFia0OdtYsICXTuqvulZLT9j/GPBQn91zE8paqeSPdD1ZqsINih4aFn
+         wSrBmpkb2Em+F2H1hD8bIUpNoNt/kHiEbAh3iv0mHgaYgpS+PhXHPD0fMMu4mZN9era5
+         XZJvmyS+a4cdLoNgrpGhcvZVLShMskOC46G9u3KCWaOajriUJFeM82HxvZWUrB9AEzLq
+         kErgSlg/5JvXV11B+GozoV9kat0ewu+vXp8IyAlVBH7xh2QSlK3TyQnpK+vkgSuXzbLr
+         FQduIZ8wWb8/6a2LxthzV+Sd+7q54PoPfVORZ0GGy70RCnwejQ+zFxbvXV/QGui0wXFS
+         TXCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750846199; x=1751450999;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y4I1PJPpHezpA836vKI44sV4N989fSWCkW53dGjnJDg=;
+        b=iSfF7ql16/fMl4XfVj7oclyx4ljabqXz7dh+FovlxMrPcxOI2yv7P10VJ25pv1EsTe
+         OCz+b+wPj2P4lLhpjFuta9AP9yGs7peFbkm6etZcrLL25EA8oY3QHMQOspEOsFYa58US
+         LzFh5mBB0sswnmNzXws2kMuevPRt482G7xy+UssSJkN8L7rjc/6bcte/RgbfG9TtxcWa
+         0lafoZdAaITb0D6MqiAWR3SIMddKI9W7V1emyNFkqJ0+vWlodrzfCxKYnX7ZQSgdUXw5
+         83U7Vc+kLvPhM2w5dSYBgx92kvag4IPSC6IlJ0hm+qeXZFnz/QIuPVuy22QGPT85J4HP
+         2wfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaJj1ZkpeAghzBIZkoPHe3HqiecQ+UKu6LQWr5K3wIM8TIQ50RFwhF69C08UFdi0qA/sQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yylnan3LTCXwSlMYhDzIxqsiKR2QL8uf5i0lmGhZcYZkiNdIDYB
+	7zcoWetNRaa+f/cPwsbd2eeN6ArsNlYYmpvqccWDyzgYEalc6FdyEhncJkzCazOvDC8=
+X-Gm-Gg: ASbGncsn8bThPmvna50q8ltMvZX7O/X/hp8fJwnhVx7bWsFZhRi8f3nVSSbKj2fU/+9
+	rGV+s9bpxlvFOq3SUpZ6gkJnOI6jU+BKBfJ7J7l16OWerPB2IZdyvSui0xZFane0qM13JU0FU5q
+	Nnj2t9Ln3Xn0v8TvlBoBJ+BTNq1xvOtnPT22ks4d3/mbNgBPhr4cgRacGNrwKacQCWhMKl9i2pk
+	sE1BR2+s5Fiq/YcgCgMCD9VyhyqLj7FHrmkgZDxDXpz43D6k2I23ZQOLomCqqEVxHSNal7QveKb
+	2ta/2PhYkwt4zxKSnLOTeJYp4B3mXqblr7+p8TCQUmwtbu1CF8fZMfl9t4IocgqMWMVxWmTrHed
+	F5Q==
+X-Google-Smtp-Source: AGHT+IEUMHqgZbLFHpHfwdSLV9qr4L6CCkcPkB2BptUFawy9i4DhryIcnKtQz1y2O+KERfW+BoO8YQ==
+X-Received: by 2002:a05:6000:2207:b0:3a4:dfa9:ce28 with SMTP id ffacd0b85a97d-3a6ed5b880amr1909565f8f.5.1750846199010;
+        Wed, 25 Jun 2025 03:09:59 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538233a895sm15457165e9.3.2025.06.25.03.09.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Jun 2025 03:09:58 -0700 (PDT)
+Message-ID: <0e26494d-7b85-4874-a2e4-a498ce1864c8@linaro.org>
+Date: Wed, 25 Jun 2025 11:09:57 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: T588a20d0ffbb3e40
-Date: Wed, 25 Jun 2025 12:00:38 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "James Clark" <james.clark@linaro.org>, "Frank Li" <Frank.li@nxp.com>
-Cc: "Vladimir Oltean" <olteanv@gmail.com>, "Mark Brown" <broonie@kernel.org>,
- "Vladimir Oltean" <vladimir.oltean@nxp.com>,
- "Larisa Grigore" <larisa.grigore@nxp.com>, "Christoph Hellwig" <hch@lst.de>,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/6] spi: spi-fsl-dspi: Report FIFO overflows as errors
+To: Frank Li <Frank.li@nxp.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Christoph Hellwig <hch@lst.de>,
  linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Message-Id: <0f904f12-295c-48fe-96c7-c64c461cdbbd@app.fastmail.com>
-In-Reply-To: <0c6c78da-575a-4d29-a79a-3903aa801b42@linaro.org>
 References: <20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org>
- <20250624-james-nxp-spi-dma-v3-3-e7d574f5f62c@linaro.org>
- <aFrSgJ5xZfccEX9x@lizhi-Precision-Tower-5810>
- <290fc244-e88f-47a3-8dd3-0ec27eb5c60b@app.fastmail.com>
- <0c6c78da-575a-4d29-a79a-3903aa801b42@linaro.org>
-Subject: Re: [PATCH v3 3/6] spi: spi-fsl-dspi: Stub out DMA functions
-Content-Type: text/plain
+ <20250624-james-nxp-spi-dma-v3-6-e7d574f5f62c@linaro.org>
+ <aFrXRDJmMgt0qTlL@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <aFrXRDJmMgt0qTlL@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 25, 2025, at 11:19, James Clark wrote:
-> On 24/06/2025 6:16 pm, Arnd Bergmann wrote:
->> On Tue, Jun 24, 2025, at 18:29, Frank Li wrote:
->
->> It would also be simpler to enforce this in Kconfig if we only
->> care about users that use the DMA support.
->
-> But most of the devices supported by the driver don't do any DMA. That 
-> was the reason to stub them out rather than add the Kconfig depends.
-
-Ah right. So even when running on SoCs that have a DMA engine,
-you can end up not using it?
-
-In this case you could have an extra Kconfig symbol to configure
-DMA support for this driver and use that in the source code:
-
-config SPI_FSL_DSPI_DMA
-      bool "Use DMA engine for offloading Freescale DSPI transfers"
-      depends on SPI_FSL_DSPI && DMA_ENGINE
-      help
-         ....
 
 
-     Arnd
+On 24/06/2025 5:50 pm, Frank Li wrote:
+> On Tue, Jun 24, 2025 at 11:35:36AM +0100, James Clark wrote:
+>> In target mode, the host sending more data than can be consumed would be
+>> a common problem for any message exceeding the FIFO or DMA buffer size.
+>> Cancel the whole message as soon as this condition is hit as the message
+>> will be corrupted.
+>>
+>> Only do this for target mode in a DMA transfer because we need to add a
+>> register read.
+> 
+> "We need to add a register read" is not reason.
+> 
+
+Maybe: "It's not likely to catch any errors in host mode so optimize by 
+avoiding an extra register read"?
+
+> Add checking FIFO error status at target mode in a DMA transfer since PIO
+> mode already do it. It help catch some host mode ...
+> 
+
+Are you suggesting that we check for FIFO errors in host mode too? It 
+requires an extra read and check in dspi_tx_dma_callback(), but I'm not 
+sure what it could catch. Realistically as long as everything is setup 
+correctly then neither of those flags will be set. It will either always 
+work or never work.
+
+It might be better to add it later if a use becomes apparent otherwise 
+it's extra noise in the code.
+
+>> In IRQ and polling modes always do it because SPI_SR was
+>> already read and it might catch some host mode programming/buffer
+>> management errors too.
+>>
+>> Signed-off-by: James Clark <james.clark@linaro.org>
+>> ---
+>>   drivers/spi/spi-fsl-dspi.c | 28 +++++++++++++++++++++++++++-
+>>   1 file changed, 27 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+>> index 58881911e74a..16a9769f518d 100644
+>> --- a/drivers/spi/spi-fsl-dspi.c
+>> +++ b/drivers/spi/spi-fsl-dspi.c
+>> @@ -560,12 +560,24 @@ static void dspi_rx_dma_callback(void *arg)
+>>   	complete(&dma->cmd_rx_complete);
+>>   }
+>>
+>> +static int dspi_fifo_error(struct fsl_dspi *dspi, u32 spi_sr)
+>> +{
+>> +	if (spi_sr & (SPI_SR_TFUF | SPI_SR_RFOF)) {
+>> +		dev_err_ratelimited(&dspi->pdev->dev, "FIFO errors:%s%s\n",
+>> +				    spi_sr & SPI_SR_TFUF ? " TX underflow," : "",
+>> +				    spi_sr & SPI_SR_RFOF ? " RX overflow," : "");
+>> +		return -EIO;
+>> +	}
+>> +	return 0;
+>> +}
+>> +
+>>   static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+>>   {
+>>   	size_t size = dspi_dma_transfer_size(dspi);
+>>   	struct device *dev = &dspi->pdev->dev;
+>>   	struct fsl_dspi_dma *dma = dspi->dma;
+>>   	int time_left;
+>> +	u32 spi_sr;
+>>   	int i;
+>>
+>>   	for (i = 0; i < dspi->words_in_flight; i++)
+>> @@ -614,7 +626,8 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+>>
+>>   	if (spi_controller_is_target(dspi->ctlr)) {
+>>   		wait_for_completion_interruptible(&dspi->dma->cmd_rx_complete);
+>> -		return 0;
+>> +		regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+>> +		return dspi_fifo_error(dspi, spi_sr);
+>>   	}
+>>
+>>   	time_left = wait_for_completion_timeout(&dspi->dma->cmd_tx_complete,
+>> @@ -1069,6 +1082,10 @@ static void dspi_poll(struct fsl_dspi *dspi)
+>>
+>>   			if (spi_sr & SPI_SR_CMDTCF)
+>>   				break;
+>> +
+>> +			dspi->cur_msg->status = dspi_fifo_error(dspi, spi_sr);
+>> +			if (dspi->cur_msg->status)
+>> +				return;
+> 
+> 
+> Although fifo error may happen after you check, it may reduce some possilbity
+> and catch some problems.
+> 
+> Frak
+> 
+
+Not sure what you mean by this one. But I've seen a few small errors now 
+that I look again. The error check should be before the transfer 
+complete break. And tries should be reset for each part of the message.
+
+>>   		} while (--tries);
+>>
+>>   		if (!tries) {
+>> @@ -1085,6 +1102,7 @@ static void dspi_poll(struct fsl_dspi *dspi)
+>>   static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+>>   {
+>>   	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
+>> +	int status;
+>>   	u32 spi_sr;
+>>
+>>   	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+>> @@ -1093,6 +1111,14 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+>>   	if (!(spi_sr & SPI_SR_CMDTCF))
+>>   		return IRQ_NONE;
+>>
+>> +	status = dspi_fifo_error(dspi, spi_sr);
+>> +	if (status) {
+>> +		if (dspi->cur_msg)
+>> +			WRITE_ONCE(dspi->cur_msg->status, status);
+>> +		complete(&dspi->xfer_done);
+>> +		return IRQ_HANDLED;
+>> +	}
+>> +
+>>   	dspi_rxtx(dspi);
+>>
+>>   	if (!dspi->len) {
+>>
+>> --
+>> 2.34.1
+>>
+
