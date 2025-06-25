@@ -1,71 +1,64 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BD620E718
-	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 07:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58081284B2E
+	for <imx@lists.linux.dev>; Wed, 25 Jun 2025 09:00:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750835592; cv=none; b=Jf8kBWV0A/AN0bcqjmOQ1F8km0yo+MEOA5HOGkKFxc3sVM0djSFtPk3RNqx4SWU7vw3WEY1aYK+25dezm913JSg161XTXBre9PlA8X0I0w86iFX8c2vluxy6oMxBB5IviOWM/J1z/3rfHCUs9H2q9qAW9PtsB/Z97vKJyRW43cE=
+	t=1750842046; cv=none; b=TyRTjyDthW3BR4jXL8ZeeQDD0YOYn8nn/X2bDSVNty4BLDO16hCKhOlOBERWk04g655/7EIURRLZ1PHQeFM47Fd0Jry9rYY5WIqYYpEHNen5wFDjBX57Fz42SrUGmWKmqhs+kbBvFMtoKLr+5d/Y/Pck6dhW2x3WBP5RTInPlCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750835592; c=relaxed/simple;
-	bh=Ds7IUTDTvw2CV2lBhtiAyxq24lOIiiA5IpHwJwPyoJ4=;
+	s=arc-20240116; t=1750842046; c=relaxed/simple;
+	bh=k6H7pwR+nMUj5KnUuh/03FFNHh50oWg7WEJQvNlPz9A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ljocK0ThPyCCSmUSz2Jf/eU9gsjgCfNBysx9oBAxYtYuOLlKOtMP1h4kkfk0OfEk42wp7oWs07C64YHcqOQ9dTO9PHIEIaiTNm6suzXhmqsQi0ifZvAuem4+5wPSyZnHEko/nMrfIBFwPqsMmd3H2ZHNcsfo5NmunBdkilg3jJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z2tXCIli; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=g9lc37nPPyXxgfhI6KXOyojESlZMPWTDTDG89EBdmtj9u17a/QZINrNpEHdqv9JNcakGGzO2aBGe7z8ryJ5b2UFGNDxaCxgU/H/Y3Qftmpx0mBUK29J+sGyB+TGFy8DLmJ9qjaOOb1zWpBYARNwEUMxc0e77wRyrEC5KpZhEiTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=O4xIp4Eh; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z2tXCIli"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750835589;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UvazZI9dix5Ccz8uQdaazIH2SdfSX8TXp65gCpdhwKo=;
-	b=Z2tXCIlihhVFw44wErbQZN7GgttNTqra7K8DKvxjvo1yc0jMeNcKpuKh7OO+99h202zjUj
-	udJBVX8rVdJlmDPB0isk+uBO+CuJaK0fO3SoYublRZ3NlQEB/YnvnRsCtfGCRCEgeYp0Bh
-	AcyNOZqRa4XHYkYgxYPWxhKyXtONDrY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-N81Or4PtNRioBY3IauoISQ-1; Wed, 25 Jun 2025 03:13:07 -0400
-X-MC-Unique: N81Or4PtNRioBY3IauoISQ-1
-X-Mimecast-MFC-AGG-ID: N81Or4PtNRioBY3IauoISQ_1750835587
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4532514dee8so9930795e9.0
-        for <imx@lists.linux.dev>; Wed, 25 Jun 2025 00:13:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="O4xIp4Eh"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-451ebd3d149so34729105e9.2
+        for <imx@lists.linux.dev>; Wed, 25 Jun 2025 02:00:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750842042; x=1751446842; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ot7b9ErTkUK0Fj2KHvqM8J01nkmxPY1lP+gz/TagS8M=;
+        b=O4xIp4Eh5SBUnG1/u0HsTvBt4sz/frM7UWqZtr0mWxJ7Lpb2wWkwSD0ZQ6bRm4Jbzl
+         zPc2m1Ii34mw4RDiXsegjKlRg05frJhAT4l+0Rl4w4AzUx0EJYBqC7MbTpOIo4ap799n
+         ttjbDZbEt20WGWwrpHLK5wLr5S5JaYXrTLbWieSuUN5oGNWthQ7mbaV5kfb5yJwWHezg
+         PbfjFQuJJDts+FI94AmISsB0k/I+kt3Jyr+txulOvaJUFuedqVN+WZvex1KOqSHAYrFs
+         ORhhFcmJDFzl0SJUM8W3cNfOuEnLTDZFrX+IHv2PgAGoA0B4GX2sGNt0gQMK1eSfrr5Z
+         4stQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750835586; x=1751440386;
+        d=1e100.net; s=20230601; t=1750842042; x=1751446842;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UvazZI9dix5Ccz8uQdaazIH2SdfSX8TXp65gCpdhwKo=;
-        b=uCqijWkAdYglpCMX4R3FhjME9dWRADaI5myFOpV13XpVdnjG3AF3hvBnulTwj5eqZw
-         eCRS145qR6Txm1QWzN+/yEFYng/sBRoOMw4MEPtK/mLEnIrpAop+yXgpaIDnVb/xy3Bc
-         LA6HtnZ83MFGmJMwE1Dq4osAloUAqAkIyaMNS1vbC5R6/AHXLngaTh4VzO85/9JHs1js
-         Z0uMEArqg3h+UNGi+U9g5Nam1N8DGXdc0HUOkc7mS5qLqLlbt7s7xhQmVxRtptYoKMz/
-         TT3RgC8h5va21TwE8nDhPld19JRmAv5ypjmPKrOoscf/GORdNhX5JRT6/57PXKWnNPDY
-         FAng==
-X-Forwarded-Encrypted: i=1; AJvYcCW7kpYI0CRosdT66FNJ3MSNjgBOt2AEQ6hGXn1u0qNsGYqvz1w6/AiN0NXhPzP5b1Qz5CE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx0FqOzqRYINZra9ekVJSz/kMbudP1/xQ19dfST05j4PvyTWC6Z
-	i75PD8B9vJnGC/nnQYqKccLAtwOCnbsNtJJZZzajeMPozFQV3loTGkXgLWuxSztP1h+5ouEimOn
-	Iojqg3y6pf7AZkicllYz1hcFpZo5MXcrSRGo0blytLfzyhcT34/DbMg==
-X-Gm-Gg: ASbGncuHU1eh+d20RIxqBbHeq3P2jOGrgzcA9EyV7UoB4ok+5KmhL/SuEzoZiey5qBG
-	58Tl3QvKNSdK30LUt8eYRoWxhZGL3YKilQr15PnnMYh2hx3+d1u61cxPQBJgE3DhVMla3QQA0po
-	xfIUKNZvU04aGhHFwcv3GqMLYdeb66W6fQKqcn+I4rUWUS3hCkMlLcN90DKUnnVuN5qLt+v/nOm
-	3nnp41jeQLtPu5DnUyyBLEJgkNt7sMdphCo2max+efz52JUBEyLEFscNIyDakAelM7kKdWpBvJY
-	mO+cPfRWhbEjB9u3hs8kaKJtIPEj6KjhXbKzRkk35RH35U44DKCz+KEK/w5eo9OgthgXYQ==
-X-Received: by 2002:a05:600c:c166:b0:453:2433:1c5b with SMTP id 5b1f17b1804b1-45381aeaf59mr16247345e9.5.1750835586440;
-        Wed, 25 Jun 2025 00:13:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF3iA3F1mdUK03DtATl2924qBuUv87aDvuUQRfj1Hbnrj8+86URjh4kC1Jl7WzPkyXWYI1Cug==
-X-Received: by 2002:a05:600c:c166:b0:453:2433:1c5b with SMTP id 5b1f17b1804b1-45381aeaf59mr16246855e9.5.1750835585911;
-        Wed, 25 Jun 2025 00:13:05 -0700 (PDT)
-Received: from ?IPV6:2a0d:3341:cc86:3510:2b4a:1654:ed63:3802? ([2a0d:3341:cc86:3510:2b4a:1654:ed63:3802])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e8069534sm3692041f8f.44.2025.06.25.00.13.03
+        bh=ot7b9ErTkUK0Fj2KHvqM8J01nkmxPY1lP+gz/TagS8M=;
+        b=BOcJl9EPYZiIo37XVzHI28xn5Qf0YciZEUXOX1kkCmLUIDaZcxhhnGlyRbC9RMUh7W
+         1DO7dAE4mmGqoBNp9aHwZ+1lbsQn3YYs4BNWIfOBsEdiUcOLmQs2yidj/aDc4LHotqiE
+         6sAf6woWjp51gErwdNBMtAkZTVnDlNXL4hosqRmwKrjkMIhvaGy0EmLriKt5eYStCOU1
+         oZ0VYBhTJZ97sRxArqOYVIRJMEFg1V8Bnk0bYE9BDtxiuTyDIrBbnyjAxsKcV8J9uScI
+         C1fcxJcHZ8NjjLlUCoCDXPLi3cWj0R4E2esZNJ36FBt72q/umptPrZd2vnprqbjzFmrQ
+         C2mg==
+X-Forwarded-Encrypted: i=1; AJvYcCVt1StQG+xFUtVn4A0D+1LXEGCUfoOZ2iyy0iS6U2PsW53/m0x7BlDEduVXOz13TkC+KSg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzqwEML4mrFLB52Ey3ajyrXE299WbKE91X0TS9Aa3P44Ly5eXmo
+	/UQv6Zztbn9lCddOTerG4cqa96P5KUfYVptjjDmVf5NO/qDQpx6woLf4SYHuw5ibevU=
+X-Gm-Gg: ASbGncvQ3dWuZFGmU58jTFJCjykPg3LRca2KHGa507vZcjuNi4C8s8Yiqx0/tfD2Bcy
+	acIIPUnkEEFqbM50dJtR97by6AIGoWmVKL5Z0PLhk0ygwKPSxozmysIYypf5Dm4/yNiqmuQ+veW
+	xgHACiWFF45xkwNLC3Ge1cBHONXgyqEHZlJsThCF1NxoIOlC+4I+R9Lh8Akugx8i8O8VI4IIz3v
+	JEGuvmCbLEQZ1oj3HiAyFic12n5Ir+nsl0sHJF6Afk13YmXgVZo8P3qpicF2zr3gYv8hu/34+on
+	XrWOd0Q0Egs+B+oNq/wQmq6enIOfkwp3zjpoDWx5gBhw25E5hGN5DzvVzgfC9mzC75I=
+X-Google-Smtp-Source: AGHT+IFqGmOeAo+r0qrrLle282Rq2mdNx8SfBQVv9o5JsGQYYGmqzMjOzIO0MEBF2wayeOF8rShFiQ==
+X-Received: by 2002:a05:600c:1d16:b0:453:8042:ba47 with SMTP id 5b1f17b1804b1-45381b0aa8bmr17801875e9.19.1750842042500;
+        Wed, 25 Jun 2025 02:00:42 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6e805d1e2sm3997701f8f.24.2025.06.25.02.00.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Jun 2025 00:13:05 -0700 (PDT)
-Message-ID: <20159d14-7d6b-4c16-9f00-ae993cc16f90@redhat.com>
-Date: Wed, 25 Jun 2025 09:13:02 +0200
+        Wed, 25 Jun 2025 02:00:41 -0700 (PDT)
+Message-ID: <228fc6f7-52c2-48a8-af7e-6f2cfa7b9168@linaro.org>
+Date: Wed, 25 Jun 2025 10:00:41 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,132 +66,57 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v13 04/11] net: mtip: The L2 switch driver for imx287
-To: Lukasz Majewski <lukma@denx.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>
-References: <20250622093756.2895000-1-lukma@denx.de>
- <20250622093756.2895000-5-lukma@denx.de>
- <b31793de-e34f-438c-aa37-d68f3cb42b80@redhat.com>
- <20250624230437.1ede2bcb@wsk>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250624230437.1ede2bcb@wsk>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: IGq_y4IZ44pFlkDzAV5KBMDJm2Ad7TDiEhtA4NgdPg0_1750835587
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v3 4/6] spi: spi-fsl-dspi: Use non-coherent memory for DMA
+To: Frank Li <Frank.li@nxp.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Christoph Hellwig <hch@lst.de>,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org>
+ <20250624-james-nxp-spi-dma-v3-4-e7d574f5f62c@linaro.org>
+ <aFrUqW0ijRt7CJzw@lizhi-Precision-Tower-5810>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <aFrUqW0ijRt7CJzw@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/24/25 11:04 PM, Lukasz Majewski wrote:
->> On 6/22/25 11:37 AM, Lukasz Majewski wrote:
->>> +static void mtip_aging_timer(struct timer_list *t)
->>> +{
->>> +	struct switch_enet_private *fep = timer_container_of(fep,
->>> t,
->>> +
->>> timer_aging); +
->>> +	fep->curr_time = mtip_timeincrement(fep->curr_time);
->>> +
->>> +	mod_timer(&fep->timer_aging,
->>> +		  jiffies +
->>> msecs_to_jiffies(LEARNING_AGING_INTERVAL)); +}  
+
+
+On 24/06/2025 5:39 pm, Frank Li wrote:
+> On Tue, Jun 24, 2025 at 11:35:34AM +0100, James Clark wrote:
+>> Using coherent memory here isn't functionally necessary. Because the
+>> change to use non-coherent memory isn't overly complex and only a few
+>> synchronization points are required, we might as well do it while fixing
+>> up some other DMA issues.
 >>
->> It's unclear to me why you decided to maintain this function and timer
->> while you could/should have used a macro around jiffies instead.
+>> Suggested-by: Arnd Bergmann <arnd@arndb.de>
+>> Signed-off-by: James Clark <james.clark@linaro.org>
 > 
-> This is a bit more tricky than just getting value from jiffies.
+> In https://lore.kernel.org/imx/c65c752a-5b60-4f30-8d51-9a903ddd55a6@linaro.org/
 > 
-> The current code provides a monotonic, starting from 0 time "base" for
-> learning and managing entries in internal routing tables for MTIP.
+> look like less performance, why need this patch.
 > 
-> To be more specific - the fep->curr_time is a value incremented after
-> each ~10ms.
+> In https://lore.kernel.org/imx/ad7e9aa7-74a3-449d-8ed9-cb270fd5c718@linaro.org/
+> look like better.
 > 
-> Simple masking of jiffies would not provide such features.
+> Any conclusion?
+> 
+> Need performance gain here if it is better.
+> 
+> Frank
+> 
 
-I guess you can get the same effect storing computing the difference
-from an initial jiffies value and using jiffies_to_msecs(<delta>)/10.
+Hi Frank,
 
->> [...]
->>> +static int mtip_sw_learning(void *arg)
->>> +{
->>> +	struct switch_enet_private *fep = arg;
->>> +
->>> +	while (!kthread_should_stop()) {
->>> +		set_current_state(TASK_INTERRUPTIBLE);
->>> +		/* check learning record valid */
->>> +		mtip_atable_dynamicms_learn_migration(fep,
->>> fep->curr_time,
->>> +						      NULL, NULL);
->>> +		schedule_timeout(HZ / 100);
->>> +	}
->>> +
->>> +	return 0;
->>> +}  
->>
->> Why are you using a full blown kernel thread here? 
-> 
-> The MTIP IP block requires the thread for learning. It is a HW based
-> switching accelerator, but the learning feature must be performed by
-> SW (by writing values to its registers).
-> 
->> Here a timer could
->> possibly make more sense.
-> 
-> Unfortunately, not - the code (in
-> mtip_atable_dynamicms_learn_migration() must be called). This function
-> has another role - it updates internal routing table with timestamps
-> (provided by timer mentioned above).
+The performance figures for this set are in the cover letter. It's 
+either the same or faster, there is no evidence of worse performance. 
+The one you linked was a bad result from not testing it in DMA mode, but 
+it's corrected later in that thread.
 
-Why a periodic timer can't call such function?
+The reason the figures aren't in this commit is because it requires this 
+change and the one to increase the size of the buffer.
 
-> 
->> Why are checking the table every 10ms, while
->> the learning intervall is 100ms? 
-> 
-> Yes, this is correct. In 10ms interval the internal routing table is
-> updated. 100 ms is for learning.
-> 
->> I guess you could/should align the
->> frequency here with such interval.
-> 
-> IMHO learning with 10ms interval would bring a lot of overhead.
-> 
-> Just to mention - the MTIP IP block can generate interrupt for
-> learning event. However, it has been advised (bu NXP support), that a
-> thread with 100ms interval shall be used to avoid too many interrupts.
-
-FTR, my suggestion is to increase the
-mtip_atable_dynamicms_learn_migration's call period to 100ms
-
->> Side note: I think you should move the buffer management to a later
->> patch: this one is still IMHO too big.
-> 
-> And this is problematic - the most time I've spent for v13 to separate
-> the code - i.e. I exclude one function, then there are warnings that
-> other function is unused (and of course WARNINGS in a separate patches
-> are a legitimate reason to call for another patch set revision).
-
-A trick to break that kind of dependencies chain is to leave a function
-implementation empty.
-
-On the same topic, you could have left mtip_rx_napi() implementation
-empty up to patch 6 or you could have introduced napi initialization and
-cleanup only after such patch.
-
-In a similar way, you could introduce buffer managements in a later
-patch and add the relevant calls afterwards.
-
-/P
+Thanks
+James
 
