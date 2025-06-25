@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9BA1F8AC8;
-	Wed, 25 Jun 2025 19:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3049A1DE3A4;
+	Wed, 25 Jun 2025 19:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750878647; cv=none; b=PTw079em+GmpIruJ2ezyMPFX8S/vD70MFO8z90jisz7jYHhQacnY2f/9aYhbcITfgFey5VwlIDIPWq1PP5AOOsUd1P7M6g6ssqIijK9AtZGXCLbCieAPboTj+zCfZzmNUnZo2hfVh08rzZJxaKlgn7xqrA9qrNGRdq9U7r5HmDs=
+	t=1750879097; cv=none; b=ZBQaW5NHNnf229DjlZRriIgP2AbcBh3Y4pbxWqX2RCUcypkuvIjta4FsK0CTNfWL5UvOD0CVz98EppZ4lUhDphuXSB6coX+/7aV02uRCG4defYcrsJ/SruJUNS8Lw2QMXX03kISqr1O+0iqselNzcjNv2kehyhw3pHsEiQlRXW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750878647; c=relaxed/simple;
-	bh=ajoB8sB1vgRax8Ggii7vw43UBv8w9ctfsgeLnoJDteA=;
+	s=arc-20240116; t=1750879097; c=relaxed/simple;
+	bh=gHCQBjUalx0Y3g9T4zD8PIbtEQMq7KaGuUuK92H4mtw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cY6SMB/eb6X6Opz/coaxLaXJY4OGWuf/MnohHZJSUbcH4EPno2uQGeQRAUD2rQrl0ExBTxhUCNuxcCm4v20Xw6Vt8Tmef7c8bYFMKvpOCOvu1zWH6Vtd/ahP0LXacBEbt2Obg8M3Y3V099Il5ES3OKWAqrFoX8VlJxIA3CtVsrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WkAVxRJU; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=WnZP+yKkP+M09L33+KCGSLmFGz49UVVl97+aTo1YGwl+PL11A+Zvv/OXu4FbW/jR5102kD46E2oO+n7KSYNmuzIe0Bj5la6hTxzqc5k5k2wvAzCOms+1rbYAr1RTskgE5dIJIkQ25k9CNK6ftwzaTpcVLtblYowHALOgruoy5ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jCJ9peai; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WkAVxRJU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BAFC4CEEE;
-	Wed, 25 Jun 2025 19:10:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jCJ9peai"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76E7C4CEEA;
+	Wed, 25 Jun 2025 19:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750878647;
-	bh=ajoB8sB1vgRax8Ggii7vw43UBv8w9ctfsgeLnoJDteA=;
+	s=k20201202; t=1750879095;
+	bh=gHCQBjUalx0Y3g9T4zD8PIbtEQMq7KaGuUuK92H4mtw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WkAVxRJUq79jfSIUaEZlH1H3beUjt9/r+DJXuE6xroxlOpYy9rcTiEhYerJZXDNPQ
-	 /93UGZ6OwWEXDhzYuLdQ/pnIjzS12EuhUpcaz+6BQoISUOKQ7k7EG69LQbAgLOlN8q
-	 rPpdk7wvtD8YHWYiljJMcLIk5EWs3BtwO1MV2aYbJIul2cVZSe2uWPvvxoSAWZsWq7
-	 PWYYl8j9xUsA73/hJApuAR0SU1Ovpz2bepGbnkylLFVwEsg9LpBk8RlEsJAdaVFGBC
-	 wjMyeqwshlFDyPn5x+DzYqR3owI/iXo+JitzCwgk80MeOUaZeswRt1mpr5d7rON9gs
-	 GV8zUqcqAAJNA==
-Date: Wed, 25 Jun 2025 14:10:46 -0500
+	b=jCJ9peai6qZRUopyJ5ElBV4r1lltdc0dVDpADSySrOBflEpNkyeVbM5/KJkQzUNPA
+	 GXLF/HQXVepjn7UohLf+lSwlMo8djXj9hKAvJ/BTvCpvcvLnGdiORr/r9+saHV0yxG
+	 p5OzrhMfg77kT4tnXYoVhRl2RJcw8b2nohcrBiKZ6dIuM5cPi/jtRixgzPpeA72MFf
+	 D2S3ASK/Wx/rjY/E0woF48+/hbXcMhoH0E4Ta5yZWSBVIBj/7UtvH/UkcuAbN5dF7q
+	 AQmFYDVt93M08ALe/mSA4LvdRkq42glIC3C4d/xqCUZf/deToaA12xNQqMLZwlkuJN
+	 IfjJ2W20UYDnA==
+Date: Wed, 25 Jun 2025 14:18:14 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	imx@lists.linux.dev, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [PATCH v2 1/1] dt-bindings: clock: convert lpc1850-cgu.txt to
- yaml format
-Message-ID: <175087864578.2055525.4510390315154712025.robh@kernel.org>
-References: <20250606162410.1361169-1-Frank.Li@nxp.com>
+To: Meng Li <Meng.Li@windriver.com>
+Cc: linux@roeck-us.net, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, conor+dt@kernel.org, Frank.Li@nxp.com,
+	devicetree@vger.kernel.org, kernel@pengutronix.de,
+	s.hauer@pengutronix.de, shawnguo@kernel.org, meng.li@windriver.com,
+	krzk+dt@kernel.org, linux-watchdog@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [v4 PATCH 1/2] dt-bindings: watchdog: fsl-imx-wdt: add
+ compatible string fsl,ls1046a-wdt
+Message-ID: <175087909415.2065485.13242460443229220947.robh@kernel.org>
+References: <20250608030616.3874517-1-Meng.Li@windriver.com>
+ <20250608030616.3874517-2-Meng.Li@windriver.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,29 +48,17 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250606162410.1361169-1-Frank.Li@nxp.com>
+In-Reply-To: <20250608030616.3874517-2-Meng.Li@windriver.com>
 
 
-On Fri, 06 Jun 2025 12:24:09 -0400, Frank Li wrote:
-> Convert lpc1850-cgu.txt to yaml format.
+On Sun, 08 Jun 2025 11:06:15 +0800, Meng Li wrote:
+> Add compatible string fsl,ls1046a-wdt for ls1046a SoC. fsl,ls1046a-wdt
+> allows big-endian property.
 > 
-> Additional changes:
-> - remove extra clock source nodes in example.
-> - remove clock consumer in example.
-> - remove clock-output-names and clock-clock-indices from required list to
->   match existed dts.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Meng Li <Meng.Li@windriver.com>
 > ---
-> change in v2
-> - fix clock-indice and clock-output-name allow 1-27 items
-> - add > at top decription according to rob's suggestion
-> ---
->  .../devicetree/bindings/clock/lpc1850-cgu.txt | 131 ------------------
->  .../bindings/clock/nxp,lpc1850-cgu.yaml       |  99 +++++++++++++
->  2 files changed, 99 insertions(+), 131 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/clock/lpc1850-cgu.txt
->  create mode 100644 Documentation/devicetree/bindings/clock/nxp,lpc1850-cgu.yaml
+>  Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
