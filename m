@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360DB1F4CB2;
-	Wed, 25 Jun 2025 19:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9BA1F8AC8;
+	Wed, 25 Jun 2025 19:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750878520; cv=none; b=kZ0JRsmb8AaIxNsKsL5d2dGHvhUxv9WPxDoloOFs3FbOhybs8Mo0o+he+VzZUXleeEJxXtAYdj8zrqEbhf0FeD4DSZo7HDXwlqOn3q4jSNXrflCUhkCwdsBFxF+z7hJtCga8Y0zzBFr2prJ08jM+m12YnlceMEXvz+CJoKyPH/I=
+	t=1750878647; cv=none; b=PTw079em+GmpIruJ2ezyMPFX8S/vD70MFO8z90jisz7jYHhQacnY2f/9aYhbcITfgFey5VwlIDIPWq1PP5AOOsUd1P7M6g6ssqIijK9AtZGXCLbCieAPboTj+zCfZzmNUnZo2hfVh08rzZJxaKlgn7xqrA9qrNGRdq9U7r5HmDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750878520; c=relaxed/simple;
-	bh=z1gAPx6OY/jnhOzLuEXFWO6EY4yZIbfg2MNyRqOx1gM=;
+	s=arc-20240116; t=1750878647; c=relaxed/simple;
+	bh=ajoB8sB1vgRax8Ggii7vw43UBv8w9ctfsgeLnoJDteA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=muptMqLdmy/b5iP94ILjkAXwnn6ku7GK32IjHbKHwCTdYZG6ay2e7L3GkU2Hov4eS0oVlwr/wd0eLqqo47oN26bcduZ8gxISwC/ZXXjObVyoL9ZWzklEePOzg2a+OeudnUpzTd9Zgo/yY2U4zFisU7nxKzsRmjSYZCkLXmV8j6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T/vTAuvU; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=cY6SMB/eb6X6Opz/coaxLaXJY4OGWuf/MnohHZJSUbcH4EPno2uQGeQRAUD2rQrl0ExBTxhUCNuxcCm4v20Xw6Vt8Tmef7c8bYFMKvpOCOvu1zWH6Vtd/ahP0LXacBEbt2Obg8M3Y3V099Il5ES3OKWAqrFoX8VlJxIA3CtVsrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WkAVxRJU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T/vTAuvU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E8BC4CEEA;
-	Wed, 25 Jun 2025 19:08:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WkAVxRJU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BAFC4CEEE;
+	Wed, 25 Jun 2025 19:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750878519;
-	bh=z1gAPx6OY/jnhOzLuEXFWO6EY4yZIbfg2MNyRqOx1gM=;
+	s=k20201202; t=1750878647;
+	bh=ajoB8sB1vgRax8Ggii7vw43UBv8w9ctfsgeLnoJDteA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T/vTAuvUGg/KVt0IJdr0wIXFd/t8bkhpVODu6rIOR28WRkw6V+0OGpCxlT3IMYRUq
-	 f7B90yIqOEG/rtEiW1chW8G/7nmsdLKZy8nYRR/tWIgNZKtIisfMgLWER+eMfBf5+H
-	 6fx04ngDGVbDlU0Ble9/LyyVU9MjFMIrUtWzNOpD5+M8OWiW+zsNAF2+alr5ZZhapN
-	 fHHbY7Ot3y0p9GocrEGPTvgxLk0CY7WJKirZ2PzHhTtsAXvz/Yj+aBLilEHpcabtxn
-	 XvZtVHXtaTHAjCZ/KlJlsZ7awvmfhn5Nbt5In4DVomA1EJUpPJaLtPoaajWQ7q4jZs
-	 kTdlJoEE+b+Qg==
-Date: Wed, 25 Jun 2025 14:08:38 -0500
+	b=WkAVxRJUq79jfSIUaEZlH1H3beUjt9/r+DJXuE6xroxlOpYy9rcTiEhYerJZXDNPQ
+	 /93UGZ6OwWEXDhzYuLdQ/pnIjzS12EuhUpcaz+6BQoISUOKQ7k7EG69LQbAgLOlN8q
+	 rPpdk7wvtD8YHWYiljJMcLIk5EWs3BtwO1MV2aYbJIul2cVZSe2uWPvvxoSAWZsWq7
+	 PWYYl8j9xUsA73/hJApuAR0SU1Ovpz2bepGbnkylLFVwEsg9LpBk8RlEsJAdaVFGBC
+	 wjMyeqwshlFDyPn5x+DzYqR3owI/iXo+JitzCwgk80MeOUaZeswRt1mpr5d7rON9gs
+	 GV8zUqcqAAJNA==
+Date: Wed, 25 Jun 2025 14:10:46 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>, imx@lists.linux.dev,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] dt-bindings: pinctrl: convert nxp,lpc1850-scu.txt
- to yaml format
-Message-ID: <175087851837.2053063.15257795513103591902.robh@kernel.org>
-References: <20250606160359.1356555-1-Frank.Li@nxp.com>
+	Michael Turquette <mturquette@baylibre.com>,
+	linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	imx@lists.linux.dev, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>
+Subject: Re: [PATCH v2 1/1] dt-bindings: clock: convert lpc1850-cgu.txt to
+ yaml format
+Message-ID: <175087864578.2055525.4510390315154712025.robh@kernel.org>
+References: <20250606162410.1361169-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,28 +46,29 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250606160359.1356555-1-Frank.Li@nxp.com>
+In-Reply-To: <20250606162410.1361169-1-Frank.Li@nxp.com>
 
 
-On Fri, 06 Jun 2025 12:03:58 -0400, Frank Li wrote:
-> Convert nxp,lpc1850-scu.txt to yaml format.
+On Fri, 06 Jun 2025 12:24:09 -0400, Frank Li wrote:
+> Convert lpc1850-cgu.txt to yaml format.
 > 
 > Additional changes:
-> - keep child name *_cfg to align legancy very old platform dts file.
-> - remove label in examples.
-> - just keep one examples.
+> - remove extra clock source nodes in example.
+> - remove clock consumer in example.
+> - remove clock-output-names and clock-clock-indices from required list to
+>   match existed dts.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
 > change in v2
-> - drop generic pin list at top description
-> - fix subject miss n at vendor prefix
+> - fix clock-indice and clock-output-name allow 1-27 items
+> - add > at top decription according to rob's suggestion
 > ---
->  .../bindings/pinctrl/nxp,lpc1850-scu.txt      | 71 -----------------
->  .../bindings/pinctrl/nxp,lpc1850-scu.yaml     | 79 +++++++++++++++++++
->  2 files changed, 79 insertions(+), 71 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/pinctrl/nxp,lpc1850-scu.txt
->  create mode 100644 Documentation/devicetree/bindings/pinctrl/nxp,lpc1850-scu.yaml
+>  .../devicetree/bindings/clock/lpc1850-cgu.txt | 131 ------------------
+>  .../bindings/clock/nxp,lpc1850-cgu.yaml       |  99 +++++++++++++
+>  2 files changed, 99 insertions(+), 131 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/clock/lpc1850-cgu.txt
+>  create mode 100644 Documentation/devicetree/bindings/clock/nxp,lpc1850-cgu.yaml
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
