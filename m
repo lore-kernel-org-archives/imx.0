@@ -1,202 +1,260 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013008.outbound.protection.outlook.com [40.107.162.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9BC2FA657
-	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 14:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750949382; cv=none; b=ScLJjFD8eOYDjjNYcpFxKoHr06mX5nfA0szfJkB1rVKr4g0Aqf43/qmfTPRNCiSCIomPnzT/TQka0veXtqQlMORQi4dDwulK7u24NTqKPChuAvPafhuwXYWRDPb/OpsYNDXrWgdIzd4RrCdkRQ8fgPIqYKnD0NA5FPUZIw7nx6o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750949382; c=relaxed/simple;
-	bh=dp2qjOL8O21ilGvN3hcyhYQWqyZCYJvTUAiWti124QY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hWZBAmkaYMD25/Q03QFLgeBTbpyHCpfbEYW1Wm1yJnU2hZkadftQBpJpF9u6+CV0bAl4T73ujXfvvxYAVNA1AxsCMjRExs8pvHmgVNT708RdrLcyn514xQuDzREAnBOf+7lH8cRiH4q6BI/y/dzOkRPvHfqAhuUAsweLCZN8lT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RM5tpvvs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3g8rK+mp; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12C82EACE3
+	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 14:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750949941; cv=fail; b=gmN7kHI2OFlaTjtt/VKbfV9GxUsulSMwC9jQP76hUn7As6FzlrJvLtUiy9zXyu8O3Louz1HAdTomXiYU3H5h8iwDbW4tmwWaT2U4P2nyIXtIsAgHlVCp8wdQwt8Gliej702r/268TinEwvcr+4fcXX7nr2SEX7jLVZC6AjC5+Ok=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750949941; c=relaxed/simple;
+	bh=0EoPE+lgozMwme7OBgnq2a79gulSW18EWI4YbW+uOvw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=RNGHS49oUxL6153B7hlSj4C9hFujVqyWxhXnBgO5No3T/Lt82FKHqt+ORUIDk4yO10moNotgaGbQL8TOHPGDEOu/HDRNFom/gqwnrNhkO7y6Ghb4E/uQk0TtF9yvqxtT9W/cuOm270bnlJwM1MiVG8pKdAz+1Q+9ImjFyosRd2I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aYZQymBo; arc=fail smtp.client-ip=40.107.162.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RM5tpvvs";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3g8rK+mp"
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1750949379;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MIhKQ4RQQi3D5IJg+JFkYdGIygyIoXiLyEsOtUGkCjs=;
-	b=RM5tpvvs+MbLl9f7SQ4Y4ZdLiJ6gkF0qGYmpFYd1vgciUYEome+/nKuo3y8YNQqaRl9zlG
-	vK1suWMloNhESxrs+IfhZ0Ir0uq+WbbIHtZTJ2H8ZkutgRI3Yum3zAczYWNoJ3VR71Mex6
-	fsgdiE+j3itHmBfek6RXeFNDcJE66HYbToqjerqVB4SG9GKNoyqLM6ubDDe3bIVCXzYX6C
-	4Ix6zqpNBaIWk0L9nYtIJstz4x+qM9MLqKMPz+0eqHFX2bnBPOr8e8oaetpxb9aab4Myd+
-	l22+2HQLy3/qGyN+ylhIfZaBxzJtN+2HcbXXw2XRaqbVdVinmwc752tr4tm6OQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1750949379;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MIhKQ4RQQi3D5IJg+JFkYdGIygyIoXiLyEsOtUGkCjs=;
-	b=3g8rK+mpfrVGe4Vw+aUfM9tHYiyJfZRoezDvLVA2kq5SNuyB89vV0NChva4wdm0ota7ehM
-	z4hy2jp1szfWSsCw==
-To: Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Antoine Tenart <atenart@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Anup Patel <anup@brainfault.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Cc: Nam Cao <namcao@linutronix.de>
-Subject: [PATCH 12/12] irqchip/ls-scfg-msi: Switch to use msi_create_parent_irq_domain()
-Date: Thu, 26 Jun 2025 16:49:09 +0200
-Message-Id: <6d23d93fa1f1e65526698f97c9888fa5d12abc7b.1750860131.git.namcao@linutronix.de>
-In-Reply-To: <cover.1750860131.git.namcao@linutronix.de>
-References: <cover.1750860131.git.namcao@linutronix.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aYZQymBo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K3ZUhizdGU9mMQ1nuo7yTfa5Qooj5rERH8OoVNP4HQ9/D2z3r7+Wnv7QcOUnZ2QUbSMP3P/l6/CLri6GDFYL1afcICOlpOln2n98VGMt/XtsLDxnpfQq5aZu2R8isHVvAWcTqqZ+qZTvtQFQWZ2VlxHIXiAGdqP/WakdUZsdgSNsaWBlWw8JxtxPxXV1SFpqH7TOFB2YNnokBpmfM/OUbWOKrcDiiYDOHR8D2erW8vh2V1nOjfCpQj8ItCvge9Thzd58SwWHjzCG3gOcj5XxUNJxwM27S10m9yqDe94ctlBnF89BEKNI3XjiDKG3KKFQhUkVh1gJZlUvnJBOjIr8/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Fr0GLTkojtx4mcGiZPz9uMMWE+SjPmqYqOLDy5Krr8Q=;
+ b=dn+Pq7oio93ww6slTslCFhT+A2RERqWPKHww2jayGa/xEe9Fp2hcmsHk69LnLJova6HBnZTTte3rgvYKHkbhIciDL+szp+tPbV8gpk9WQeQiuYt5ycOfdULv3B0yz5ndMarMygZEd9a3lJeL6EVM3bNc8j8hSD/WtFDMe63aPGI/Xggcug3WbgszdC6Z8X6Jb1Lkqo3BklbDG5At9vQxWq2U1fDMU74sJJYK6s1fcPF0NAczRVqP/9AREcy7BNfv2jRDoSzsNRW5OgO1OBYowhlU6fm5w91+7BpaDcHP2r4fvvaq9exLWWRg5UpBcP6TgCrtj39SHLiGkpzwUSU61w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fr0GLTkojtx4mcGiZPz9uMMWE+SjPmqYqOLDy5Krr8Q=;
+ b=aYZQymBoQ6gtavOK4oWZzAMg0bzkB88vhjXlSqyaZCagnU9YP4HmGQqvXBhgctARhmMxyiQ/Y3kEOKLjCvwBezCng9dK4Gg8ekFiOKqywsk5V0z2rpDzqizghWmpjO1qHQfl6bpShkOmebA7mM4/wDy5PskLTNFMuDvULLSxVIUo2r6AqVyW+lphhHvQO5WuJ1YSOiroHJXN1pd20Fe0Ccfbe5sYfFVNsJdQDkWo7qtJdZU3i6XKvkMmpSkUDPtbe/Lt7HngbIyhHZMh2Ct8C4RMi/BK/qtYaQy2V41PSj83Fvb++Y2vsI8IWbHkDzsg/bPzE3PNaxjMdDtBI+bLCA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PAXPR04MB8653.eurprd04.prod.outlook.com (2603:10a6:102:21c::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.21; Thu, 26 Jun
+ 2025 14:58:55 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8880.015; Thu, 26 Jun 2025
+ 14:58:55 +0000
+Date: Thu, 26 Jun 2025 10:58:48 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Kumar M <anil.mamidala@xilinx.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, "Guoniu.zhou" <guoniu.zhou@nxp.com>,
+	Stefan Hladnik <stefan.hladnik@gmail.com>,
+	Florian Rebaudo <frebaudo@witekio.com>
+Subject: Re: [PATCH v3 2/2] media: i2c: Add ON Semiconductor AP1302 ISP driver
+Message-ID: <aF1gKGjpbEPZYBr2@lizhi-Precision-Tower-5810>
+References: <20250623-ap1302-v3-0-c9ca5b791494@nxp.com>
+ <20250623-ap1302-v3-2-c9ca5b791494@nxp.com>
+ <20250623224701.GE15951@pendragon.ideasonboard.com>
+ <aFryrpyDByI6wu5b@lizhi-Precision-Tower-5810>
+ <20250624185643.GE20757@pendragon.ideasonboard.com>
+ <aFr6Ehpl5Kk+nt7m@lizhi-Precision-Tower-5810>
+ <20250626124224.GK8738@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250626124224.GK8738@pendragon.ideasonboard.com>
+X-ClientProxiedBy: AS4P189CA0055.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:659::22) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8653:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25fa7ef7-b190-43e5-f716-08ddb4c1f8fc
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?ek8i3344kY3GthSlH+VghhEzqKfU7lIDGtzu5Oc0SLDLMjpTN77NAkVgA1bl?=
+ =?us-ascii?Q?eUeUZVJFrfsAzBWc5uHgyLsvGX0Dp10HLo8tk/hVyd5S0k961aj0yiN4DudC?=
+ =?us-ascii?Q?y0ANSYhDJvRX6/7DW2nx9eRvIa7kqA0kDD3XNRNO5q/V31zll/2kUnriZlhA?=
+ =?us-ascii?Q?immrsIvecKo1NgZo20nBFubZv1GpZEBTx0gKLVN/k1D2e3DDiZFIGqTcZwMV?=
+ =?us-ascii?Q?paYg4mSmtLY2qYdzb7CwBT45Z40W/LCVElnYcAIjUN5dS5TiAwId4xUZT+TA?=
+ =?us-ascii?Q?/F+wX5e4uVMv+r2oJGahN9Mx7ip8jLj7wIS9wEeyFtlp/b+VjuGqqFba197S?=
+ =?us-ascii?Q?b3rTd3DtRexc+8ULG2iWYZDyYX4e9ooca0wUv+D1/KIg4z7XSNLm7kvXasG7?=
+ =?us-ascii?Q?QTMkVXsdE1CZSWATNg72K+tWF4bOzDHbGvtJTfDjY8VCOVBGoq8dRu+yIAsU?=
+ =?us-ascii?Q?aj8qQ8YHp+XpFf2SP0bA6DvSrJ+Yxq8qBjz/WkjGrR37q4gvqlRE/L750AXq?=
+ =?us-ascii?Q?jpTMB5XO6mU0EC71d8Gp8ZLh/mk0zcivF9Zr025cnCK13BLSq0I6ko7cWrb6?=
+ =?us-ascii?Q?aTYeMmAD/e3HA1I3WAkP6D3D12GG48sC8jpVyjsCclWfl8oqnPMsujmSejcU?=
+ =?us-ascii?Q?UoOZJFwBVeVBp9FtFx0tiZ4Vv9qQmLLEAYg9tGXX0JXPudv6t7Yr0Z+tK0FO?=
+ =?us-ascii?Q?EHFdvFeAsDuxl2sqTFD12l9YGpYTahf21bzASRQPrixRtRFM0w/d++z1hHmx?=
+ =?us-ascii?Q?xp3lyCU/XRm82Im+7G9UA6o2naTR+XlhQqCZsCD8SBC0NTXmFhNAkXEwe+LW?=
+ =?us-ascii?Q?Fv4xwitpdODoL+iw7070ByFkGhAHRFFruO4IeqLFXpgITUphv/vsiFuQgoa7?=
+ =?us-ascii?Q?QBIaaXmh7Pif0K+MR2TKcqez4VapCk+PxLxdMkasiJx0JqeHxxp0e7nmORIZ?=
+ =?us-ascii?Q?TBaZY4RUoLqaOFups00EH8fS/taxeYZGu6eZ+4UiFNEYNWIHKOA9OVncY8UV?=
+ =?us-ascii?Q?AZzVXP7UAMIqZDInGc9hB6BtyGFPV00bFffbMb8au1gTL2IukwzEAoocAFeP?=
+ =?us-ascii?Q?4Heq6dJMekBPWncNLtQtOnc09WdkENkZrVmeUMOnWrgIyAY7Jv81uQl77TQS?=
+ =?us-ascii?Q?KpUAhOo2GMuW6jwSNBPGvXPZs305FgRNLLHHInIpZWEKH3tQbFi7HCYWBiry?=
+ =?us-ascii?Q?vlz/aHiJqUe3vGh7o7CmwPuQUjumb87Y4kpJ8VDc1vWYDblH3maPcezug/qG?=
+ =?us-ascii?Q?9ebviqnbxV4G8YQ4v2mNp7crnwHvhuX9KIwjJPUDcst/eEE891F6ROf7FI4+?=
+ =?us-ascii?Q?BgHfe1qhVs6hlpkSvcIy1d9XNOdYUCcTcrMWLMxt+7FikW7+WzgrvJLZdaOu?=
+ =?us-ascii?Q?PhpmhBb0jpEGBwtu+PWQMh5XcbmJnISGKoo4X3EAZZBhKrV3SefZkQRLtzQM?=
+ =?us-ascii?Q?2/VVnC7tpnv/9qT/quUeJOIYMPjhVs7BguJhKkgzUTWlISSiWFUIRA=3D=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?6Ozh9iSuXvhSZDXhxs4GOCnVXKNpsQo3Yumsbj033Hz9150efSbXzZvdDf+T?=
+ =?us-ascii?Q?6d0fFNIuQ3vhs692bsGgaqCpWvxaFvdf0nx/DhbRcAX3RfkpHP9IObZYsdXq?=
+ =?us-ascii?Q?40ugwhpjV0aKEU3AisZExABTVI5yMwfZhzix72gmPD4+y555dSBWqNBnMZvi?=
+ =?us-ascii?Q?V8aVruLwD+0g8HIFWymRdarEv4UsZmpA54WpFaI/UeyC8zaEWQJ8l+fZTf5+?=
+ =?us-ascii?Q?n/DP+S0wt3a+paHt506MNVYKzfqidmDZnKc7rH37OvphVk2/OsnAKlczi1fl?=
+ =?us-ascii?Q?ufBh11LZTV6kc6/7NTanba7UOKoeLNvpk/GXcB9p4rSMIyc4BRgxVVv3MuJm?=
+ =?us-ascii?Q?HUHbLLBhrjoiaEQHBih2fOA09xlc57zb0aADZAZdXU4Z039CjYkMxQ2AWVAB?=
+ =?us-ascii?Q?v4FoblmvRTHovpdMtQEuJyGGQJBFk5zzOw9JLCczC17s3M5Xxw1ILrMyfwWr?=
+ =?us-ascii?Q?7blhzNNyNPXRRt6lkvfQVN50r5efKLc/DzH7LWcdEky3gWYT63K8Waxt7B+E?=
+ =?us-ascii?Q?psmBAplodo1Xvyv3iCDWk2v9HPX9K0CzbHd24UqWxk4XemtcmmJ5iL4rKAVm?=
+ =?us-ascii?Q?Y13fOjpDFc1N747TpOGZWK8bQwAqCLP72gPgjlgdAKfZLLXckF0uGiBnoDJg?=
+ =?us-ascii?Q?q4W0rWq7si/PEc3S2VkdKLUkeQHpsic1bnhkxLQ/n6dwvDkY3gUdRxTwgDqB?=
+ =?us-ascii?Q?uULr6/ZB+U677xAEQk/hhAXLBAmzoG61qRJ+0QdRFV5Dc0CRe0/07SdkhV5g?=
+ =?us-ascii?Q?nYi65jFZtoFvQQJSpm2ZnQcOdmOWpQ39sP5Jr4B9Yj/zS7s3qIgAdqOW+IYE?=
+ =?us-ascii?Q?CrdAeY/EEXn2omWW2o4iMmJmSU2dl0pUwCTNI/XXat8OYu7zqjbpF2dgnKtc?=
+ =?us-ascii?Q?GyePM/Tzax0olYUp++4oMtoBi5j+KIFawBuVEIlQp7JJuBCC66ZN6x84yCK6?=
+ =?us-ascii?Q?OTNUDtaCrcLDPw9I3E811hQ95Suw0WHsNbFHWJZ804KBuofLanMqc4zeaGLw?=
+ =?us-ascii?Q?0RTa9YfL3X8orD8pjin7Net66HpU+5Bigax0TFlEzphvq+VFimHZjQ4Hq2sI?=
+ =?us-ascii?Q?l0RwMm2tFVxzRYmlDy0lDokYw4vabhU9FQBVjPdFW32eA7f33bcZnJwM9pt8?=
+ =?us-ascii?Q?OP6qzWETYpvZ6/qlVKVMP/gz6coDmaA6Ob9JcXq1Rn6rhzWdNOHoITrtr6r4?=
+ =?us-ascii?Q?mT3cUEzjXD8RERUhjrH5TdIeP2DAk8luO9UZn7NG4Un0XcY+NdMIcx0sbNbo?=
+ =?us-ascii?Q?zMkGiPijDY5zt9n8f3/WPCdBubHeIuaw2ldW0xtbwhx1s+VPfj7iXpzbMCCw?=
+ =?us-ascii?Q?AgaoerPbs712CF20NpU7Erd1eFgLfddDhQiGiuRFDoQkgCCJqEVas1rQnxyF?=
+ =?us-ascii?Q?SN8p7IO+z/nZJCyJfXOIGi6YARBzf/P0Gdv6upoc+A07ORU17HbGBZuxt6e8?=
+ =?us-ascii?Q?DxyUovI2DuQlX+NaAbUpMlRK80H979W4RPpMK1JHpPSGEzaQvZ/N0eTv8Xm2?=
+ =?us-ascii?Q?GVDfzhJQUybRzt7mD90t1gzs35zVYJTIdVbcZhVYOexWOxjWW9F8cSia6ru1?=
+ =?us-ascii?Q?3o6P3JS4I9hYg4SqvF3iduMSN5GGWyrY8q1Xznt7?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25fa7ef7-b190-43e5-f716-08ddb4c1f8fc
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 14:58:55.7109
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MBhODxYQxcEiOjscHitAqm6JvJLk+uTKpFSO5CdYe2gveUYPD+3R7lrEVy5iLesCXT7uPTJZHQ4ce/f1TkdPlQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8653
 
-Move away from the legacy MSI domain setup, switch to use
-msi_create_parent_irq_domain().
+On Thu, Jun 26, 2025 at 03:42:24PM +0300, Laurent Pinchart wrote:
+> On Tue, Jun 24, 2025 at 03:18:42PM -0400, Frank Li wrote:
+> > On Tue, Jun 24, 2025 at 09:56:43PM +0300, Laurent Pinchart wrote:
+> > > On Tue, Jun 24, 2025 at 02:47:10PM -0400, Frank Li wrote:
+> > > > On Tue, Jun 24, 2025 at 01:47:01AM +0300, Laurent Pinchart wrote:
+> > > > > On Mon, Jun 23, 2025 at 03:17:38PM -0400, Frank Li wrote:
+> > > > > > From: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
+> > > > > >
+> > > > > > The AP1302 is a standalone ISP for ON Semiconductor sensors.
+> > > > > > AP1302 ISP supports single and dual sensor inputs. The driver
+> > > > > > code supports AR1335, AR0144 and AR0330 sensors with single and
+> > > > > > dual mode by loading the corresponding firmware.
+> > > > > >
+> > > > > > Signed-off-by: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
+> > > > > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > > > > Signed-off-by: Stefan Hladnik <stefan.hladnik@gmail.com>
+> > > > > > Signed-off-by: Florian Rebaudo <frebaudo@witekio.com>
+> > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > ---
+> > > > > > Change in v3:
+> > > > > > - add extra empty line between difference register define
+> > > > > > - add bits.h
+> > > > > > - use GEN_MASK and align regiser bit define from 31 to 0.
+> > > > > > - add ap1302_sensor_supply
+> > > > > > - add enable gpio
+> > > > > > - update firmware header format
+> > > > >
+> > > > > One of the main issues with this driver is that we need to standardize
+> > > > > the header format. The standardized format will need to be approved by
+> > > > > onsemi as we will need to provide not just a driver, but also a
+> > > > > toolchain that will produce firmwares in the right format. Furthermore,
+> > > > > some time ago the AP1302 firmware was extended with the ability to
+> > > > > dynamically compute PLL parameters IIRC. This needs to be taken into
+> > > > > account.
+> > > >
+> > > > It is quite common when work with firmwares. Generally, it need version
+> > > > information at header.
+> > > >
+> > > > The driver need check firmware's API version, if miss match or incompatible,
+> > > > just return and report error.
+> > > >
+> > > > we can't assume firmware always align driver code because many user just
+> > > > update kernel without update rootfs or firmware package.
+> > >
+> > > Sure, but that's not the point. The point is that there are multiple
+> > > out-of-tree ap1302 driver versions, developed or adapted by different
+> > > SoC vendors. Those variants use firmware files produced by those SoC
+> > > vendors, and they not standard.
+> >
+> > I am not sure if firwmare is open source. Most like not.
+>
+> The firmware is not open-source, but I don't think that's relevant.
+>
+> > We need create
+> > difference compatible string for difference Soc vendor.
+>
+> No, that we must absolutely not do :-) If it's the same AP1302 and same
+> camera sensor, we must not have different compatible strings when the
+> AP1302 is connected to an NXP SoC or a MediaTek SoC.
 
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
- drivers/irqchip/Kconfig           |  1 +
- drivers/irqchip/irq-ls-scfg-msi.c | 49 ++++++++++++++-----------------
- 2 files changed, 23 insertions(+), 27 deletions(-)
+After read code, firwmare header only used for sanity checks. can remove
+it for initialization version?
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index afd7bae30a788..f1aaf3a0fcdb0 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -436,6 +436,7 @@ config LS_SCFG_MSI
- 	def_bool y if SOC_LS1021A || ARCH_LAYERSCAPE
- 	select IRQ_MSI_IOMMU
- 	depends on PCI_MSI
-+	select IRQ_MSI_LIB
-=20
- config PARTITION_PERCPU
- 	bool
-diff --git a/drivers/irqchip/irq-ls-scfg-msi.c b/drivers/irqchip/irq-ls-scf=
-g-msi.c
-index 84bc5e4b47cf5..7eca751d6548b 100644
---- a/drivers/irqchip/irq-ls-scfg-msi.c
-+++ b/drivers/irqchip/irq-ls-scfg-msi.c
-@@ -14,6 +14,7 @@
- #include <linux/iommu.h>
- #include <linux/irq.h>
- #include <linux/irqchip/chained_irq.h>
-+#include <linux/irqchip/irq-msi-lib.h>
- #include <linux/irqdomain.h>
- #include <linux/of_irq.h>
- #include <linux/of_pci.h>
-@@ -47,7 +48,6 @@ struct ls_scfg_msi {
- 	spinlock_t		lock;
- 	struct platform_device	*pdev;
- 	struct irq_domain	*parent;
--	struct irq_domain	*msi_domain;
- 	void __iomem		*regs;
- 	phys_addr_t		msiir_addr;
- 	struct ls_scfg_msi_cfg	*cfg;
-@@ -57,17 +57,18 @@ struct ls_scfg_msi {
- 	unsigned long		*used;
- };
-=20
--static struct irq_chip ls_scfg_msi_irq_chip =3D {
--	.name =3D "MSI",
--	.irq_mask	=3D pci_msi_mask_irq,
--	.irq_unmask	=3D pci_msi_unmask_irq,
--};
--
--static struct msi_domain_info ls_scfg_msi_domain_info =3D {
--	.flags	=3D (MSI_FLAG_USE_DEF_DOM_OPS |
--		   MSI_FLAG_USE_DEF_CHIP_OPS |
--		   MSI_FLAG_PCI_MSIX),
--	.chip	=3D &ls_scfg_msi_irq_chip,
-+#define MPIC_MSI_FLAGS_REQUIRED (MSI_FLAG_USE_DEF_DOM_OPS | \
-+				 MSI_FLAG_USE_DEF_CHIP_OPS)
-+#define MPIC_MSI_FLAGS_SUPPORTED (MSI_FLAG_PCI_MSIX       | \
-+				  MSI_GENERIC_FLAGS_MASK)
-+
-+static const struct msi_parent_ops ls_scfg_msi_parent_ops =3D {
-+	.required_flags		=3D MPIC_MSI_FLAGS_REQUIRED,
-+	.supported_flags	=3D MPIC_MSI_FLAGS_SUPPORTED,
-+	.bus_select_token	=3D DOMAIN_BUS_NEXUS,
-+	.bus_select_mask	=3D MATCH_PCI_MSI,
-+	.prefix			=3D "MSI-",
-+	.init_dev_msi_info	=3D msi_lib_init_dev_msi_info,
- };
-=20
- static int msi_affinity_flag =3D 1;
-@@ -185,6 +186,7 @@ static void ls_scfg_msi_domain_irq_free(struct irq_doma=
-in *domain,
- }
-=20
- static const struct irq_domain_ops ls_scfg_msi_domain_ops =3D {
-+	.select	=3D msi_lib_irq_domain_select,
- 	.alloc	=3D ls_scfg_msi_domain_irq_alloc,
- 	.free	=3D ls_scfg_msi_domain_irq_free,
- };
-@@ -214,21 +216,15 @@ static void ls_scfg_msi_irq_handler(struct irq_desc *=
-desc)
-=20
- static int ls_scfg_msi_domains_init(struct ls_scfg_msi *msi_data)
- {
--	/* Initialize MSI domain parent */
--	msi_data->parent =3D irq_domain_create_linear(NULL,
--						    msi_data->irqs_num,
--						    &ls_scfg_msi_domain_ops,
--						    msi_data);
-+	struct irq_domain_info info =3D {
-+		.fwnode		=3D of_fwnode_handle(msi_data->pdev->dev.of_node),
-+		.ops		=3D &ls_scfg_msi_domain_ops,
-+		.host_data	=3D msi_data,
-+		.size		=3D msi_data->irqs_num,
-+	};
-+
-+	msi_data->parent =3D msi_create_parent_irq_domain(&info, &ls_scfg_msi_par=
-ent_ops);
- 	if (!msi_data->parent) {
--		dev_err(&msi_data->pdev->dev, "failed to create IRQ domain\n");
--		return -ENOMEM;
--	}
--
--	msi_data->msi_domain =3D pci_msi_create_irq_domain(
--				of_fwnode_handle(msi_data->pdev->dev.of_node),
--				&ls_scfg_msi_domain_info,
--				msi_data->parent);
--	if (!msi_data->msi_domain) {
- 		dev_err(&msi_data->pdev->dev, "failed to create MSI domain\n");
- 		irq_domain_remove(msi_data->parent);
- 		return -ENOMEM;
-@@ -405,7 +401,6 @@ static void ls_scfg_msi_remove(struct platform_device *=
-pdev)
- 	for (i =3D 0; i < msi_data->msir_num; i++)
- 		ls_scfg_msi_teardown_hwirq(&msi_data->msir[i]);
-=20
--	irq_domain_remove(msi_data->msi_domain);
- 	irq_domain_remove(msi_data->parent);
-=20
- 	platform_set_drvdata(pdev, NULL);
---=20
-2.39.5
+Frank
 
+>
+> > > We need to standardize on a firmware
+> > > format to upstream a driver, and that standardization needs to involve
+> > > the device manufacturer.
+> >
+> > we need workable version (easy extend) firstly, when let other vendor follow.
+> >
+> > Frank Li
+> > >
+> > > > > I want to resuscitate this driver and get it merged. There's more work
+> > > > > to do, in collaboration with onsemi, and I haven't had time to tackle
+> > > > > it. If you want to propose a proper design for firmware handling I would
+> > > > > be happy to participate in the discussion.
+> > > >
+> > > > who is onsemi contact windows.
+> > > >
+> > > > > > - update raw sensor supply delay time
+> > > > > > - use gpiod_set_value_cansleep() insteand gpiod_set_value()
+> > > > > > - update use latest v4l2 api
+> > > > > > - use ctrl_to_sd() helper function
+> > > > > > - add ap1302_g_volatile_ctrl()
+> > > > > > - remove ap1302_get_fmt()
+> > > > > > - use guard for mutex.
+> > > > > > - use dev_err_probe
+> > > > > > - use devm_add_action_or_reset to simple error handle at probe.
+> > > > > > - use read_poll_timeout() simple dma idle polling.
+> > > > > >
+> > > > > > previous upstream:
+> > > > > > https://lore.kernel.org/linux-media/1631091372-16191-1-git-send-email-anil.mamidala@xilinx.com/
+> > > > > > ---
+> > > > > >  MAINTAINERS                |    1 +
+> > > > > >  drivers/media/i2c/Kconfig  |    9 +
+> > > > > >  drivers/media/i2c/Makefile |    1 +
+> > > > > >  drivers/media/i2c/ap1302.c | 2838 ++++++++++++++++++++++++++++++++++++++++++++
+> > > > > >  4 files changed, 2849 insertions(+)
+> > > > >
+> > > > > [snip]
+>
+> --
+> Regards,
+>
+> Laurent Pinchart
