@@ -1,136 +1,123 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470092E7632
-	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 13:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEEB2F3C12
+	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 14:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750945461; cv=none; b=lULPO00/4+8wkV0VGOXLqxDHiPKPJBPGhdNui0Z8dUSY7COAajEGzJE00gKCGhmNIer2yEbGWNpfhqQh8AsP8IpCpXSNC/SVjmjIuAML2KAgHJDGktWxBzsRWcwRSnlGf8ZFvugfim76i7Qzl6F7jYXGKHgmtq4P0N8OQhgWI3I=
+	t=1750949372; cv=none; b=K+tlh465XTOJpbP+yJ/AZyADOmwl698jHefY94Wv/1uIlIruaBHvsP18+3NKqMm6vmKwi/l3xJ1voVMhM8lP2OUo9Co5S+zF9RvYe0iFUVGWraTgm7/FG85/S4NWLf0SFx7vzdQOjV9qVt0fHyezbwnhuDgOfQ+M4Oit8o3H2NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750945461; c=relaxed/simple;
-	bh=lOIhZPwjq2iRUH2/8/px4H6GSxHqp5XVL22e3XXy7z8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PpWiuFPCf196gXgwRDR/8iWZWSxEJTPTuPw3TyAPpGJPBEbJEaRAJ59Re34BYxFtVM2ux1QRyugjgzi4VlleBWLAuOpwRzkwUNkLR0MKMYfePVkV6R1wHk4SkZxETIkyhO+ne851GVSUhd2zjS6iABWfTxuRwKD0ZriVxie+93k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1uUmte-0004GB-8X; Thu, 26 Jun 2025 15:44:10 +0200
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Thu, 26 Jun 2025 15:44:02 +0200
-Subject: [PATCH v2] net: fec: allow disable coalescing
+	s=arc-20240116; t=1750949372; c=relaxed/simple;
+	bh=3c7vs8Cm8xKVUdvXoMQb0+CBp/UzsXS8rN6WJvQ1oek=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kNemfdeH/j4yrcp80TsvP/4UkzJysMbjqTxZbsZJvnN0WWh9WLMtNclawhd/EkfgcTjXqvZBfILq4GpTgYRoUoH9jUVpf30tKdz8zlFg9wWYyHHLmhPEd1gCxzXRhXBU+P9rSxAmAh8s/8r7QWKjGRZCC63jUHTMzs6ELBD1fKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=czaI2DSB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=psVI2LjH; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="czaI2DSB";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="psVI2LjH"
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1750949369;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=RH4Oypq2KUDQkhJZzAt8JVIWri/iIyk+GulHVMw8GJw=;
+	b=czaI2DSBz6lv453TNMwhAu26IwFz1BOoWFI49qdBHgvJndJ7A+gK6ojqrK1HnfjGXuz17+
+	4Wuz0KYBKa1I2pk0/mfDJJxSnvY+p4Wbmm+IbJlukddbCxUshXcBP3t7CpmcasNzvVQxX4
+	VtMF9rbnmKc1lfvRsU2yYmsCdDudNWLz2KQmA8rUpwvP9biyrYKuUnw/fYWwfdAcqQiHPG
+	skQFntKLytgiyj9iW2LuPqkkbcC8f3R5e6b8EiH3LFRbcpKEOVGcj+NZ1uK/PlcKWvwF4H
+	66+ARZm2c8+m5rMvuG2rTeAkaK6QYZRQBKiVct0HkLubGJWu7G9hY3zRpXFUQg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1750949369;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=RH4Oypq2KUDQkhJZzAt8JVIWri/iIyk+GulHVMw8GJw=;
+	b=psVI2LjHAPIUXeFXC3qVXazEejx7vgLn8YmfK3c6xPNOeqTwCFROQJgUanCk0avAHuqWR5
+	SEtZrEmwxGV9x1DA==
+To: Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Antoine Tenart <atenart@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Cc: Nam Cao <namcao@linutronix.de>
+Subject: [PATCH 00/12] irqchip: MSI cleanup and conversion to MSI parent domain
+Date: Thu, 26 Jun 2025 16:48:57 +0200
+Message-Id: <cover.1750860131.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250626-fec_deactivate_coalescing-v2-1-0b217f2e80da@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAKFOXWgC/42NQQrCMBBFr1JmbaSJTRRX3kNKGZJpOyBJSWKol
- N7d2BO4fA/++xskikwJ7s0GkQonDr6COjVgZ/QTCXaVQbVKt0ZpMZIdHKHNXDDTYAO+KFn2k7B
- mvDnZoXTGQN0vkUZej/azrzxzyiF+jqsif/afapFCCn1FSZ3ETrvLYyE/vXMMntezI+j3ff8CC
- mFWLMcAAAA=
-X-Change-ID: 20250625-fec_deactivate_coalescing-c6f8d14a1d66
-To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
- Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
- Jonas Rebmann <jre@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3113; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=lOIhZPwjq2iRUH2/8/px4H6GSxHqp5XVL22e3XXy7z8=;
- b=owGbwMvMwCF2ZcYT3onnbjcwnlZLYsiI9Vvx4OHE6n/nVJLubsl8WbztT/rihy+8LZfZnFnsV
- d+394WAU0cpC4MYB4OsmCJLrJqcgpCx/3WzSrtYmDmsTCBDGLg4BWAic40Y/vvq6XwWsDDStV++
- aeWlK3EHNFpK2zeHhrqnbrV90dbjUc7w34GDW3TyRK0ic8GQ5Q+nHfUIsr28IufcJd6DzmVSn/Q
- t+AA=
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
-X-SA-Exim-Mail-From: jre@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
 
-In the current implementation, IP coalescing is always enabled and
-cannot be disabled.
+The initial implementation of PCI/MSI interrupt domains in the hierarchical
+interrupt domain model used a shortcut by providing a global PCI/MSI
+domain.
 
-As setting maximum frames to 0 or 1, or setting delay to zero implies
-immediate delivery of single packets/IRQs, disable coalescing in
-hardware in these cases.
+This works because the PCI/MSI[X] hardware is standardized and uniform, but
+it violates the basic design principle of hierarchical interrupt domains:
+Each hardware block involved in the interrupt delivery chain should have a
+separate interrupt domain.
 
-This also guarantees that coalescing is never enabled with ICFT or ICTT
-set to zero, a configuration that could lead to unpredictable behaviour
-according to i.MX8MP reference manual.
+For PCI/MSI[X], the interrupt controller is per PCI device and not a global
+made-up entity.
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
----
-Changes in v2:
-- Adjust type of rx_itr, tx_itr (Thanks, Wei)
-- Set multiple FEC_ITR_ flags in one line for more compact code (Thanks, Wei)
-- Commit Message: mention ICFT/CTT fields constraints (Thanks, Andrew)
-- Link to v1: https://lore.kernel.org/r/20250625-fec_deactivate_coalescing-v1-1-57a1e41a45d3@pengutronix.de
----
- drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++++++----------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+Unsurprisingly, the shortcut turned out to have downsides as it does not
+allow dynamic allocation of interrupt vectors after initialization and it
+prevents supporting IMS on PCI. For further details, see:
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 63dac42720453a8b8a847bdd1eec76ac072030bf..d4eed252ad4098a7962f615bce98338bc3d12f5c 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3121,27 +3121,25 @@ static int fec_enet_us_to_itr_clock(struct net_device *ndev, int us)
- static void fec_enet_itr_coal_set(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	int rx_itr, tx_itr;
-+	u32 rx_itr = 0, tx_itr = 0;
-+	int rx_ictt, tx_ictt;
- 
--	/* Must be greater than zero to avoid unpredictable behavior */
--	if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
--	    !fep->tx_time_itr || !fep->tx_pkts_itr)
--		return;
--
--	/* Select enet system clock as Interrupt Coalescing
--	 * timer Clock Source
--	 */
--	rx_itr = FEC_ITR_CLK_SEL;
--	tx_itr = FEC_ITR_CLK_SEL;
-+	rx_ictt = fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr);
-+	tx_ictt = fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr);
- 
--	/* set ICFT and ICTT */
--	rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
--	rx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr));
--	tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
--	tx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr));
-+	if (rx_ictt > 0 && fep->rx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		rx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
-+		rx_itr |= FEC_ITR_ICTT(rx_ictt);
-+	}
- 
--	rx_itr |= FEC_ITR_EN;
--	tx_itr |= FEC_ITR_EN;
-+	if (tx_ictt > 0 && fep->tx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		tx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
-+		tx_itr |= FEC_ITR_ICTT(tx_ictt);
-+	}
- 
- 	writel(tx_itr, fep->hwp + FEC_TXIC0);
- 	writel(rx_itr, fep->hwp + FEC_RXIC0);
+https://lore.kernel.org/lkml/20221111120501.026511281@linutronix.de/
 
----
-base-commit: 8dacfd92dbefee829ca555a860e86108fdd1d55b
-change-id: 20250625-fec_deactivate_coalescing-c6f8d14a1d66
+The solution is implementing per device MSI domains, this means the
+entities which provide global PCI/MSI domain so far have to implement MSI
+parent domain functionality instead.
 
-Best regards,
--- 
-Jonas Rebmann <jre@pengutronix.de>
+Aside from that, the creation of MSI parent domains has been simplified by
+new helper functions, which are not yet used by all drivers.
+
+This series addresses this by:
+
+   - Converting the remaining global PCI/MSI domain providers to MSI parent
+     domains
+
+   - Converting the existing MSI parent domain implementations to the
+     simplified setup function
+
+ drivers/irqchip/Kconfig                    |   3 +
+ drivers/irqchip/irq-alpine-msi.c           | 155 ++++++++-------------
+ drivers/irqchip/irq-armada-370-xp.c        |  48 ++++---
+ drivers/irqchip/irq-bcm2712-mip.c          |  20 +--
+ drivers/irqchip/irq-imx-mu-msi.c           |  14 +-
+ drivers/irqchip/irq-loongson-pch-msi.c     |  25 ++--
+ drivers/irqchip/irq-ls-scfg-msi.c          |  49 +++----
+ drivers/irqchip/irq-riscv-imsic-platform.c |  12 +-
+ drivers/irqchip/irq-sg2042-msi.c           |  20 ++-
+ include/linux/irqdomain.h                  |   2 +
+ include/linux/msi.h                        |   2 +
+ kernel/irq/irqdomain.c                     |   1 +
+ kernel/irq/msi.c                           |   3 +-
+ 13 files changed, 155 insertions(+), 199 deletions(-)
+
+--=20
+2.39.5
 
