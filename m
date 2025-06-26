@@ -1,82 +1,90 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181A628D8EE
-	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 08:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBF9269806
+	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 08:32:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750926644; cv=none; b=lyyTtaYt87J6I5UQCLFl3OKyrDgqNi+/ON1P89aVFcp5WFEUECXAPSg/yYFW7h3qSwTfC+Vqgc2Nd2HxJhm61S55JIsccR2Z+6bwwRHjrF/nL/Y490QHb+KvzxhEYSC2/NAlYB5rQ7sWMMoc2kEmZgQDHqZD6Wo9jwkSe6vXdRs=
+	t=1750926726; cv=none; b=doTMwmETUz1z4sYcBvfrvvUpWw1qHYcypiqN99CZg2aT3TAeyxQPaP4zlDSMo+7S+iQBo0XTc04PZuQ/QSQRb4uz27EgvORdqwzdka3r+UW2cJBF0lTZWpJtRaQVG3lmlJf57cLRwcW5WNUPSdsDSIfBCzijQks0jyTQ38kUeiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750926644; c=relaxed/simple;
-	bh=RVnpBzh8Pk5p+vp6PHEE6etS4VhqUXMMyitmtLtuxXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gdPDa8amn2Wu/TdT2nk8NrvccPl2RRxlxG6XON4+5WNrKY9NNHStohWezGtIKVNPc+KnnVM37+BJtpG7D8z6Ix1r2wItifiGOEgtzQi7jkTPWJOE4CsBvl1HnDFuuy+sXaO+pmJGj1rmYqJ9Z/z8P6SRkbNt8NwGRqjNRmwYTaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=JnZNiqDI; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="JnZNiqDI"
-Received: from pendragon.ideasonboard.com (85-76-34-12-nat.elisa-mobile.fi [85.76.34.12])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 239736BE;
-	Thu, 26 Jun 2025 10:30:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1750926622;
-	bh=RVnpBzh8Pk5p+vp6PHEE6etS4VhqUXMMyitmtLtuxXc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JnZNiqDIFGYXfGGL7aQWAxeqFgx9ZF9/ernbTltasxc6pNHH5rZWWn+9JbL7NaGuY
-	 5v5mc2tL3AKzjxAbtoVi+/CUOnZW3CMFstArDIP+baStQOkQHcXBpNGF36M0V/u5yC
-	 c21JZlXODDVrhJreiowp64kWXjd+/SQSo3huKuUw=
-Date: Thu, 26 Jun 2025 11:30:18 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] media: imx8mq-mipi-csi2: Fix error code in
- imx8mq_mipi_csi_parse_dt()
-Message-ID: <20250626083018.GB8738@pendragon.ideasonboard.com>
-References: <9b6c7925-c9c4-44bd-acd5-1ef0e698eb87@sabinyo.mountain>
- <20250626002053.GA12213@pendragon.ideasonboard.com>
- <473ad0ce-5180-40e9-b159-a6cfe77f792f@suswa.mountain>
+	s=arc-20240116; t=1750926726; c=relaxed/simple;
+	bh=uP/rFDx8e9z3sNXc4VRTDpBmgU3yeg67Y/han+fosNQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FhkU8/31LEUV2rROH6Q3ELz0oRXviSvTKjmrREhwtYubRrttUrXIKgTtSegaKSa4kEMrkQKlw4vctloTNb99wccWfogsNvpwV+/t9C6yCBIpan3WQ/1OyJdfAXGRBv/h+dSpT696JMTYhPp3pVp+PbOu5j2WbyPwHlL1kkPyTFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1uUi1Y-0000AH-3U; Thu, 26 Jun 2025 10:32:00 +0200
+Message-ID: <f2647407-3de0-4afd-bc79-5b58e13f10aa@pengutronix.de>
+Date: Thu, 26 Jun 2025 10:33:51 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <473ad0ce-5180-40e9-b159-a6cfe77f792f@suswa.mountain>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: fec: allow disable coalescing
+To: Andrew Lunn <andrew@lunn.ch>, Wei Fang <wei.fang@nxp.com>
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20250625-fec_deactivate_coalescing-v1-1-57a1e41a45d3@pengutronix.de>
+ <PAXPR04MB8510C17E1980D456FD9F094F887AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <d60808b3-eb20-40ab-b952-d9cd8d8d68a7@lunn.ch>
+Content-Language: en-US
+From: Jonas Rebmann <jre@pengutronix.de>
+In-Reply-To: <d60808b3-eb20-40ab-b952-d9cd8d8d68a7@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: jre@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, Jun 26, 2025 at 03:32:50AM +0300, Dan Carpenter wrote:
-> On Thu, Jun 26, 2025 at 03:20:53AM +0300, Laurent Pinchart wrote:
-> > On Wed, Jun 25, 2025 at 10:22:32AM -0500, Dan Carpenter wrote:
-> > > This was returning IS_ERR() where PTR_ERR() was intended.
-> > > 
-> > > Fixes: 642b70d526ab ("media: imx8mq-mipi-csi2: Add support for i.MX8QXP")
-> > 
-> > I'll add a
-> > 
-> > Cc: stable@vger.kernel.org
-> > 
-> > to obey the media subsystem CI rules.
+Hi Andrew,
+
+On 2025-06-26 10:12, Andrew Lunn wrote:
+> On Thu, Jun 26, 2025 at 02:36:37AM +0000, Wei Fang wrote:
+>>>
+>>> -       /* Must be greater than zero to avoid unpredictable behavior */
+>>> -       if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
+>>> -           !fep->tx_time_itr || !fep->tx_pkts_itr)
+>>> -               return;
 > 
-> Wait, what?  The original commit hasn't hit Linus's tree and it's
-> not marked for stable either.
+> Hi Wei
+> 
+> When i see a comment like this being removed, i wounder if there is
+> any danger of side effects? Do you know what is being done here is
+> actually safe, for all the different versions of the FEC which support
+> coalescence?
 
-I'm personally not in favour of adding Cc: stable on all patches that
-have a Fixes: line. I'll let Mauro defend the rule, and I'm happy to
-drop the Cc line and fix the CI.
+For reference, this comment is taken in plain from section 11.6.4.1.16.3
+in the i.MX 8M Plus Applications Processor Reference Manual (and is the
+same for the 6UL).
+
+I was also worried about this so I made sure that in any case where
+either of those is zero, the coalescing enable bit (FEC_ITR_EN) is
+explicitly disabled.
+
+fec_enet_itr_coal_set is only ever called if FEC_QUIRK_HAS_COALESCE is
+set and for those models, we expect disabling coalescing via FEC_ITR_EN
+-- and consequently also setting the parameters to zero -- to be
+unproblematic. This is also the reset default.
+
+Regards,
+Jonas
 
 -- 
-Regards,
-
-Laurent Pinchart
+Pengutronix e.K.                           | Jonas Rebmann               |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
