@@ -1,82 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF952F3651;
-	Wed, 25 Jun 2025 22:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE402F1FDD
+	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 00:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750891182; cv=none; b=PH3Ei5BDPKpHcfzZG2+j6idSsytxG2wbMGdn0E0p8Ic3Ub0L9WXproPZpgGfAqEzRGGdLr5FYgPEXltOiohhcNSNJ1O7UM+y8eLZDkceI20WSSkObGFjMsRBibrMzjkAVsEkjMNHGAgPRk+3L3XdHE3tdSjDrsA/q9oZn66lips=
+	t=1750897279; cv=none; b=R3wKJgO5HGB4e4ARXtcPMnLOHcR+Dti37W3D+OSPFEFm+NsEqy22FXK4su2GvFu9yApb7LrxwWQ7fRtfVS/rDky2Q2yj1DImu744aEt8uhDvNy340LdpUk9lCUcoF5RhG2HPTjXY8YtOokRZLTTzydzisbQ9uzWFFxbP9JiMg2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750891182; c=relaxed/simple;
-	bh=KflG/bFntSILaW2n864Y7HOxjPnyzNJWCHuKZyS8TIk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ANMPVFUF5n05YwEYu/hLMSQe7GQbl+0zStfa2sqvcQajItRQp4I5eNsz8oi9ouDcZtx8+x3Bpu2IPIlpN73SAQKzIUbwyqeUS5jN7WY0AA1ARH8bsOtFnSj4l5oBYEwp9kqIVa3FPk8JVWkulmobmHReQojXM/2xl3WPzx5fwTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIUNhuOA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750897279; c=relaxed/simple;
+	bh=U1ICztOIDUCyPeAYVX53i1F5GRZlw7dH50fsuIjkLmI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oTLtgYuZMCZRCmD1x3rjkXyBWK2Ja0ecM9GmJYWlG6KQesYZKy0j+3oEqoM7sckHv8uTbtxFSPFYwWgtHNpuRlzMjWaqUqciFY03smxSkPBmyOA5FMFfpRAHJSHOy94+POOSGKhv39SxgEktwgwSgNlJ+MxpbgiC3TXcX+yRtLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=DW7rl2da; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIUNhuOA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394C8C4CEF0;
-	Wed, 25 Jun 2025 22:39:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750891182;
-	bh=KflG/bFntSILaW2n864Y7HOxjPnyzNJWCHuKZyS8TIk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=RIUNhuOAKQ9zgUbYtX0jCi38HEgaVk6OT0T/yjW3R/+WEEqAaDlCBxOE0gGGZzV9t
-	 4G74o+imweSmw07p4yT7yU55RCnP9ixg7eXJiUyRCpeIJ1g+0DiF+2JFWCJm/VgWvS
-	 2Nnvs3jZB0WNVJO5w+onI9A1ZNndtnAXEAnt89sUH/s1ET0w+Ayqgfhp7SYFZtYpxj
-	 x8AaXR1/wz+jP72tV9UvJlMlMnSaNFfz7z+f1UkNUW6ksoFwmOkPCFAA+J1I6rmzLO
-	 QDuY3S3QKSP6/mvoDfvdTGsTjf+stnEmTp+Ek7Y1SuETVQdBOdx/LeJmIGvE8thZsX
-	 thHkHRbftmTbg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB3EB3A40FCB;
-	Wed, 25 Jun 2025 22:40:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="DW7rl2da"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id AAF606AE;
+	Thu, 26 Jun 2025 02:20:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1750897257;
+	bh=U1ICztOIDUCyPeAYVX53i1F5GRZlw7dH50fsuIjkLmI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DW7rl2daZtr9GyL34OOAorSXxnABGt1BELfCR3m6Rli6Ho56iZ1uyXW3JAfoo1Byu
+	 nP+ubCMj8+rQqwV7pJ4EG9J3KKLA/n2geVzeyvGa1Dlw48L7+L1hLIdvqPt13+w0Bu
+	 mosqxUW8pvYDXznMZFbMY2YNzwWC90l9AcaNysTA=
+Date: Thu, 26 Jun 2025 03:20:53 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] media: imx8mq-mipi-csi2: Fix error code in
+ imx8mq_mipi_csi_parse_dt()
+Message-ID: <20250626002053.GA12213@pendragon.ideasonboard.com>
+References: <9b6c7925-c9c4-44bd-acd5-1ef0e698eb87@sabinyo.mountain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: enetc: Correct endianness handling in
- _enetc_rd_reg64
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175089120849.644002.10005432355573220641.git-patchwork-notify@kernel.org>
-Date: Wed, 25 Jun 2025 22:40:08 +0000
-References: <20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org>
-In-Reply-To: <20250624-etnetc-le-v1-1-a73a95d96e4e@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
- xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- alexandru.marginean@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9b6c7925-c9c4-44bd-acd5-1ef0e698eb87@sabinyo.mountain>
 
-Hello:
+Hi Dan,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Thank you for the patch.
 
-On Tue, 24 Jun 2025 17:35:12 +0100 you wrote:
-> enetc_hw.h provides two versions of _enetc_rd_reg64.
-> One which simply calls ioread64() when available.
-> And another that composes the 64-bit result from ioread32() calls.
+On Wed, Jun 25, 2025 at 10:22:32AM -0500, Dan Carpenter wrote:
+> This was returning IS_ERR() where PTR_ERR() was intended.
 > 
-> In the second case the code appears to assume that each ioread32() call
-> returns a little-endian value. However both the shift and logical or
-> used to compose the return value would not work correctly on big endian
-> systems if this were the case. Moreover, this is inconsistent with the
-> first case where the return value of ioread64() is assumed to be in host
-> byte order.
+> Fixes: 642b70d526ab ("media: imx8mq-mipi-csi2: Add support for i.MX8QXP")
+
+I'll add a
+
+Cc: stable@vger.kernel.org
+
+to obey the media subsystem CI rules.
+
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+> ---
+>  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> [...]
+> diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> index 6501843ae72d..3a4645f59a44 100644
+> --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> @@ -966,7 +966,7 @@ static int imx8mq_mipi_csi_parse_dt(struct csi_state *state)
+>  
+>  		base = devm_platform_ioremap_resource(to_platform_device(dev), 1);
+>  		if (IS_ERR(base))
+> -			return dev_err_probe(dev, IS_ERR(base), "Missing CSR register\n");
+> +			return dev_err_probe(dev, PTR_ERR(base), "Missing CSR register\n");
+>  
+>  		state->phy_gpr = devm_regmap_init_mmio(dev, base, &regmap_config);
+>  		if (IS_ERR(state->phy_gpr))
 
-Here is the summary with links:
-  - [net] net: enetc: Correct endianness handling in _enetc_rd_reg64
-    https://git.kernel.org/netdev/net/c/7b515f35a911
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Regards,
 
-
+Laurent Pinchart
