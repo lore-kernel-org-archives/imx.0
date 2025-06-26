@@ -1,158 +1,136 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6231272635
-	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 12:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470092E7632
+	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 13:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750941771; cv=none; b=rT0Jt3ROC/Uh1fHmyPLdzhjIF4n47FO067dmTyVA/fgbtNPzzv93seQkr762V52rLD+Blz6hMpTJAfc4/b+wS6GR4YY0+wWD4eILWp5lVThsBON6i4r36C5AvEhX5wIymJu9ClY5GJJzeC0I8+RS0DHyyFfTYN7KXCV4ccfzl38=
+	t=1750945461; cv=none; b=lULPO00/4+8wkV0VGOXLqxDHiPKPJBPGhdNui0Z8dUSY7COAajEGzJE00gKCGhmNIer2yEbGWNpfhqQh8AsP8IpCpXSNC/SVjmjIuAML2KAgHJDGktWxBzsRWcwRSnlGf8ZFvugfim76i7Qzl6F7jYXGKHgmtq4P0N8OQhgWI3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750941771; c=relaxed/simple;
-	bh=/a+MiBN3U4KcgRah2otQEl2ZAfbGFptjDWZeI5tiwVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AwhbKc+8l5aud5HGrrEZ4oPrLQhEqmPM4dx4aYGegcDNkNbTDizbqx2V309phDJrbQdRizpNZM+eADgzjVEDXWWDPr/PAR5XKN9kjIkAM09xir8jWH8QuyTRdTOxzjLeUqpMhcwRQlferYLS8LEKMPz2WvmQjI6Orv/tAHIVblQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Bq4Wvv7+; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Bq4Wvv7+"
-Received: from pendragon.ideasonboard.com (85-76-34-12-nat.elisa-mobile.fi [85.76.34.12])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 132F13D5;
-	Thu, 26 Jun 2025 14:42:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1750941750;
-	bh=/a+MiBN3U4KcgRah2otQEl2ZAfbGFptjDWZeI5tiwVM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bq4Wvv7+34jFLzYlwax7THsGzi1+IcvoqEvmMityKXbu1cRceUKUfyPc9xLPq6Yg1
-	 5e7lBeQMd1mjDDUf7CAbCWM6vKjjRSCnysXhkVZNSJHFXG8dQxWTAF/53UWhBurTCL
-	 nwcJ1NV6NnTQjYrHmqVW+4izlymLQFc3gg4w9n5c=
-Date: Thu, 26 Jun 2025 15:42:24 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Kumar M <anil.mamidala@xilinx.com>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, "Guoniu.zhou" <guoniu.zhou@nxp.com>,
-	Stefan Hladnik <stefan.hladnik@gmail.com>,
-	Florian Rebaudo <frebaudo@witekio.com>
-Subject: Re: [PATCH v3 2/2] media: i2c: Add ON Semiconductor AP1302 ISP driver
-Message-ID: <20250626124224.GK8738@pendragon.ideasonboard.com>
-References: <20250623-ap1302-v3-0-c9ca5b791494@nxp.com>
- <20250623-ap1302-v3-2-c9ca5b791494@nxp.com>
- <20250623224701.GE15951@pendragon.ideasonboard.com>
- <aFryrpyDByI6wu5b@lizhi-Precision-Tower-5810>
- <20250624185643.GE20757@pendragon.ideasonboard.com>
- <aFr6Ehpl5Kk+nt7m@lizhi-Precision-Tower-5810>
+	s=arc-20240116; t=1750945461; c=relaxed/simple;
+	bh=lOIhZPwjq2iRUH2/8/px4H6GSxHqp5XVL22e3XXy7z8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PpWiuFPCf196gXgwRDR/8iWZWSxEJTPTuPw3TyAPpGJPBEbJEaRAJ59Re34BYxFtVM2ux1QRyugjgzi4VlleBWLAuOpwRzkwUNkLR0MKMYfePVkV6R1wHk4SkZxETIkyhO+ne851GVSUhd2zjS6iABWfTxuRwKD0ZriVxie+93k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1uUmte-0004GB-8X; Thu, 26 Jun 2025 15:44:10 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Thu, 26 Jun 2025 15:44:02 +0200
+Subject: [PATCH v2] net: fec: allow disable coalescing
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aFr6Ehpl5Kk+nt7m@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250626-fec_deactivate_coalescing-v2-1-0b217f2e80da@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAKFOXWgC/42NQQrCMBBFr1JmbaSJTRRX3kNKGZJpOyBJSWKol
+ N7d2BO4fA/++xskikwJ7s0GkQonDr6COjVgZ/QTCXaVQbVKt0ZpMZIdHKHNXDDTYAO+KFn2k7B
+ mvDnZoXTGQN0vkUZej/azrzxzyiF+jqsif/afapFCCn1FSZ3ETrvLYyE/vXMMntezI+j3ff8CC
+ mFWLMcAAAA=
+X-Change-ID: 20250625-fec_deactivate_coalescing-c6f8d14a1d66
+To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+ Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: imx@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
+ Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3113; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=lOIhZPwjq2iRUH2/8/px4H6GSxHqp5XVL22e3XXy7z8=;
+ b=owGbwMvMwCF2ZcYT3onnbjcwnlZLYsiI9Vvx4OHE6n/nVJLubsl8WbztT/rihy+8LZfZnFnsV
+ d+394WAU0cpC4MYB4OsmCJLrJqcgpCx/3WzSrtYmDmsTCBDGLg4BWAic40Y/vvq6XwWsDDStV++
+ aeWlK3EHNFpK2zeHhrqnbrV90dbjUc7w34GDW3TyRK0ic8GQ5Q+nHfUIsr28IufcJd6DzmVSn/Q
+ t+AA=
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
+X-SA-Exim-Mail-From: jre@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, Jun 24, 2025 at 03:18:42PM -0400, Frank Li wrote:
-> On Tue, Jun 24, 2025 at 09:56:43PM +0300, Laurent Pinchart wrote:
-> > On Tue, Jun 24, 2025 at 02:47:10PM -0400, Frank Li wrote:
-> > > On Tue, Jun 24, 2025 at 01:47:01AM +0300, Laurent Pinchart wrote:
-> > > > On Mon, Jun 23, 2025 at 03:17:38PM -0400, Frank Li wrote:
-> > > > > From: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
-> > > > >
-> > > > > The AP1302 is a standalone ISP for ON Semiconductor sensors.
-> > > > > AP1302 ISP supports single and dual sensor inputs. The driver
-> > > > > code supports AR1335, AR0144 and AR0330 sensors with single and
-> > > > > dual mode by loading the corresponding firmware.
-> > > > >
-> > > > > Signed-off-by: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
-> > > > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > > > Signed-off-by: Stefan Hladnik <stefan.hladnik@gmail.com>
-> > > > > Signed-off-by: Florian Rebaudo <frebaudo@witekio.com>
-> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > ---
-> > > > > Change in v3:
-> > > > > - add extra empty line between difference register define
-> > > > > - add bits.h
-> > > > > - use GEN_MASK and align regiser bit define from 31 to 0.
-> > > > > - add ap1302_sensor_supply
-> > > > > - add enable gpio
-> > > > > - update firmware header format
-> > > >
-> > > > One of the main issues with this driver is that we need to standardize
-> > > > the header format. The standardized format will need to be approved by
-> > > > onsemi as we will need to provide not just a driver, but also a
-> > > > toolchain that will produce firmwares in the right format. Furthermore,
-> > > > some time ago the AP1302 firmware was extended with the ability to
-> > > > dynamically compute PLL parameters IIRC. This needs to be taken into
-> > > > account.
-> > >
-> > > It is quite common when work with firmwares. Generally, it need version
-> > > information at header.
-> > >
-> > > The driver need check firmware's API version, if miss match or incompatible,
-> > > just return and report error.
-> > >
-> > > we can't assume firmware always align driver code because many user just
-> > > update kernel without update rootfs or firmware package.
-> >
-> > Sure, but that's not the point. The point is that there are multiple
-> > out-of-tree ap1302 driver versions, developed or adapted by different
-> > SoC vendors. Those variants use firmware files produced by those SoC
-> > vendors, and they not standard.
-> 
-> I am not sure if firwmare is open source. Most like not.
+In the current implementation, IP coalescing is always enabled and
+cannot be disabled.
 
-The firmware is not open-source, but I don't think that's relevant.
+As setting maximum frames to 0 or 1, or setting delay to zero implies
+immediate delivery of single packets/IRQs, disable coalescing in
+hardware in these cases.
 
-> We need create
-> difference compatible string for difference Soc vendor.
+This also guarantees that coalescing is never enabled with ICFT or ICTT
+set to zero, a configuration that could lead to unpredictable behaviour
+according to i.MX8MP reference manual.
 
-No, that we must absolutely not do :-) If it's the same AP1302 and same
-camera sensor, we must not have different compatible strings when the
-AP1302 is connected to an NXP SoC or a MediaTek SoC.
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+---
+Changes in v2:
+- Adjust type of rx_itr, tx_itr (Thanks, Wei)
+- Set multiple FEC_ITR_ flags in one line for more compact code (Thanks, Wei)
+- Commit Message: mention ICFT/CTT fields constraints (Thanks, Andrew)
+- Link to v1: https://lore.kernel.org/r/20250625-fec_deactivate_coalescing-v1-1-57a1e41a45d3@pengutronix.de
+---
+ drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-> > We need to standardize on a firmware
-> > format to upstream a driver, and that standardization needs to involve
-> > the device manufacturer.
-> 
-> we need workable version (easy extend) firstly, when let other vendor follow.
-> 
-> Frank Li
-> >
-> > > > I want to resuscitate this driver and get it merged. There's more work
-> > > > to do, in collaboration with onsemi, and I haven't had time to tackle
-> > > > it. If you want to propose a proper design for firmware handling I would
-> > > > be happy to participate in the discussion.
-> > >
-> > > who is onsemi contact windows.
-> > >
-> > > > > - update raw sensor supply delay time
-> > > > > - use gpiod_set_value_cansleep() insteand gpiod_set_value()
-> > > > > - update use latest v4l2 api
-> > > > > - use ctrl_to_sd() helper function
-> > > > > - add ap1302_g_volatile_ctrl()
-> > > > > - remove ap1302_get_fmt()
-> > > > > - use guard for mutex.
-> > > > > - use dev_err_probe
-> > > > > - use devm_add_action_or_reset to simple error handle at probe.
-> > > > > - use read_poll_timeout() simple dma idle polling.
-> > > > >
-> > > > > previous upstream:
-> > > > > https://lore.kernel.org/linux-media/1631091372-16191-1-git-send-email-anil.mamidala@xilinx.com/
-> > > > > ---
-> > > > >  MAINTAINERS                |    1 +
-> > > > >  drivers/media/i2c/Kconfig  |    9 +
-> > > > >  drivers/media/i2c/Makefile |    1 +
-> > > > >  drivers/media/i2c/ap1302.c | 2838 ++++++++++++++++++++++++++++++++++++++++++++
-> > > > >  4 files changed, 2849 insertions(+)
-> > > >
-> > > > [snip]
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 63dac42720453a8b8a847bdd1eec76ac072030bf..d4eed252ad4098a7962f615bce98338bc3d12f5c 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3121,27 +3121,25 @@ static int fec_enet_us_to_itr_clock(struct net_device *ndev, int us)
+ static void fec_enet_itr_coal_set(struct net_device *ndev)
+ {
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+-	int rx_itr, tx_itr;
++	u32 rx_itr = 0, tx_itr = 0;
++	int rx_ictt, tx_ictt;
+ 
+-	/* Must be greater than zero to avoid unpredictable behavior */
+-	if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
+-	    !fep->tx_time_itr || !fep->tx_pkts_itr)
+-		return;
+-
+-	/* Select enet system clock as Interrupt Coalescing
+-	 * timer Clock Source
+-	 */
+-	rx_itr = FEC_ITR_CLK_SEL;
+-	tx_itr = FEC_ITR_CLK_SEL;
++	rx_ictt = fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr);
++	tx_ictt = fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr);
+ 
+-	/* set ICFT and ICTT */
+-	rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
+-	rx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr));
+-	tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
+-	tx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr));
++	if (rx_ictt > 0 && fep->rx_pkts_itr > 1) {
++		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
++		rx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
++		rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
++		rx_itr |= FEC_ITR_ICTT(rx_ictt);
++	}
+ 
+-	rx_itr |= FEC_ITR_EN;
+-	tx_itr |= FEC_ITR_EN;
++	if (tx_ictt > 0 && fep->tx_pkts_itr > 1) {
++		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
++		tx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
++		tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
++		tx_itr |= FEC_ITR_ICTT(tx_ictt);
++	}
+ 
+ 	writel(tx_itr, fep->hwp + FEC_TXIC0);
+ 	writel(rx_itr, fep->hwp + FEC_RXIC0);
 
+---
+base-commit: 8dacfd92dbefee829ca555a860e86108fdd1d55b
+change-id: 20250625-fec_deactivate_coalescing-c6f8d14a1d66
+
+Best regards,
 -- 
-Regards,
+Jonas Rebmann <jre@pengutronix.de>
 
-Laurent Pinchart
