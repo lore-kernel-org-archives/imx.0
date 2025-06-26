@@ -1,328 +1,207 @@
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011042.outbound.protection.outlook.com [40.107.130.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5476189F56
-	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 01:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750901541; cv=none; b=F7ga3RjdKaxF6m3Gz7RG8NOxNWNT+CFEBNrL+5eK+qwAr9qqscS5Akqp9gQPFnl4BQn30o5CELbu+ys350tzEylmavT9F97nOOX8Cu+rrmmL4LQCENLC979PMIi0ZGsE2mt1VCIeBvJ2g1oxiZwM3BfdX5dhCbzxF/mds7L5hPU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750901541; c=relaxed/simple;
-	bh=RRk0bVfv69b98hbgb34JA+coRJKQ/hyCvbMrpI7vj40=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g59AMTQti+xJxd+RXzS26zLuRUw1Rzoggxd6YmoxzZPIFVag/S3ccDXP3wTVC++Mfa5OITzJO7vHkQ7W0akOO7ikRtvfwW7YoVEsELFuJh/HP9daEe48de9sR53cL7gC1zRZZFbTk/g9DNXWBJYbOj4UKJ9Y5ti+ZvrHvZuQ+fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=koE6UKf/; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE3D1B043C
+	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 01:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750902028; cv=fail; b=sA8b8CRhewAzhq5FtWUU6QcLML29DSsRCBU15iddZMF7PkZ+0xBNESpmHWRr2hDf05cZ2VLau3F9cBuWuXDpp/fGXiOAXWsViBZdHidQKHP7AiX9dqtF6Lyq3a8DiRQprgGIsE+4XSC7HbVxhOOCBbKdorv1od4qMegZoYFifxk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750902028; c=relaxed/simple;
+	bh=4qnVbmZ6XuqIIq0TEFoOuV4JX5SXvyaFRA3lugkDlGg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tqh1X/nVzUbcugv4XdtMQijQD842hqz+9VBs3u3nSKwM+2X8tGRJBYljUCHm+0HjHl1wBbrO2kVESUrWaV9S1ZNDyfI36bDbvKXQtn6afiFTLCQt/DzN73Sd4D/bZjS3c/XgRYf13Zp9Ce5ociuqaLfIC8hf9meTna67fa1FIug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=liTdJozf; arc=fail smtp.client-ip=40.107.130.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="koE6UKf/"
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3de252f75d7so4967855ab.3
-        for <imx@lists.linux.dev>; Wed, 25 Jun 2025 18:32:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750901538; x=1751506338; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h2EwLg93SXSSQVXZxXCP07cbUPvvbYIPUncv9vbnwSI=;
-        b=koE6UKf//99dhvGAkeMd+L6dB80H9zpmqllAH57kbcV8dmD3sG4XTkY3i7dxXUvExl
-         FtATQgYgI3npsQGDRIAa/6syjxxlBYSNIo342feF2ivSN0iSE4tTbojTO5r2vfUUFS0J
-         6WGAqmj7Pb5mB1v+MCEFnVUj3OFyiZaK35vdl0hrVdHb3etsbZbqemkOnTEySFkJJIiz
-         rW8w16zZVMZVVMf1ZOSBq01gl+PiMcma1w6mJHmUucZvl+Ql7YQRp9Iu2Er1dmkVZDF6
-         AiguU+5QEOKoy4Kt6cx/qZaW6v6aAdKpwdhDzHjZ+6BImJff82RCCK8rt0uOEnVBMfrK
-         hfoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750901538; x=1751506338;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h2EwLg93SXSSQVXZxXCP07cbUPvvbYIPUncv9vbnwSI=;
-        b=hRS41SmD1Ioow1lcu+VRLCmKbOWL9yo5CFOdSVZNo1MZn9XTQy2qyFVTqSMCJzKqJX
-         6LzbZtfkSbcZSGVrEoO3OHvb99cXwCYwfsiinLAkiTv7oj0Wwmwoo9zI5RPv15DJPh5K
-         GUviFKR74S9MGVb81ZlfJgG7y8IMuH1kmLcluWlSaRcilYc7SHghyHiDC4z4SnXw71cx
-         MdhN1sDJ9JfPd72B3aCKLfGhQw9Sf2EHXkyNyK7KriMVye2+mAy4cvx0Q1VzTSnm/4XU
-         BEj4OMrC7eKJmY9TZNOWs7AB4bl1NLkRrMIU5O4KTvBl+CYugsuuntXmp/cT6FnoJcsR
-         pQgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW5q1q+fLomxNEipecjH3xYit5N0D4j/eqw4sG67XipjQGep+Dnat809snkLCxw+f59blY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzegEzIH6hRkm2tAzxsziAkPBXF9vT6nkDCmmFUgEENC/8Q14g9
-	HaaHypDORD7xvIHBDwPOE68uirpGLwjfeK0R0o4qUhiLlKX/2yxBhQEmozyV+qNvhKZ3xh6LElC
-	VXubBO6S53Hw+o5UHoZSUVYRN/sTMWSU=
-X-Gm-Gg: ASbGncvL5sYJ+pfedT+VPdeWGVvMNYJmIyiMD1orUPjkVuCs435jycEzEmCKDiLKjii
-	oRVBaX9xvaOKkm89/nkUZh8DqCPnxTIkuoh+RVhkatVJhXyXWTIK7LWB7Xep5qjcdZU84vAo0W5
-	Cbzla79Ro/27rTjf8zWYwIGNYrKlBFmyBSfgLfSrFCPWA=
-X-Google-Smtp-Source: AGHT+IHz+VsrRavqFHcBYE4ToM940Svxo+zF/Y7cUyGrx0/zEzml+SYXAqKOyb1f1Bo8G4+cR0SQBG/7tugWWFi/fUA=
-X-Received: by 2002:a05:6e02:250f:b0:3df:43d1:6a58 with SMTP id
- e9e14a558f8ab-3df43d16cadmr1016265ab.20.1750901537921; Wed, 25 Jun 2025
- 18:32:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="liTdJozf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eIy7lb9GS9MSHxSMCnZ/4M/tcnqBZqJXfmrPBaL/OPid5DIn3r+f9T0MdmcpNSo+3DNdBDKUtOPZvSvkMmr3VfBCSl6VsNUhhP2+2N4+HLzplJtG3Sre5V/20Zpgbmprjj2nV6NAXbv3luqB5TD8L5ArZyD+D3tWpCsStxfNRCnn9/rttP18dv1Wc55q79z1jSD1yt7wdXaIjRjMeeO7mROLT+v5kEW8O1XJmGSZDGa22/H1iYM/oEmKDdJC02Veu6GyE2biW5UO1HfjgHSewIk3+ZLXrXXuge0yZjdHUCoJmRgZFolgrujLfPIRiDxO4+xEUGoQrDOeyQER4YakUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aZzctlB+GjqIjfX7qC5RSOMU/GIg1KE6DpdXkSffGRk=;
+ b=i5oZQfsz7XJ07p2SCVK6r1iWEXexKPLD6scShMV0LrUrMtYyNBqFIFj5fH3XjYF+YkpFXP5N7a5Uc8FT/PNmBQBU13bZlquaDgDVPg9EySEFplUNYkYZtvN7szskvl4VtIakPFq6/FKnmLYsKftRlLIqTvVdx8vGI+llUZqBzWgmiEAA6YcIX4i5PxF4hU7aEIPFxwE5zHdyUqwpZ891xtiP2KkMXnJRDeJq7QfBOE958FQRFy4OmoVNgoou09/tGLRgZenupF9ITeM39UkQzsDn+MEgb/gIoob8S7tkwKFrVaMaEm/vguEy7gG11VrC8VC4KHEadMiRpf3qmVzw5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aZzctlB+GjqIjfX7qC5RSOMU/GIg1KE6DpdXkSffGRk=;
+ b=liTdJozfZBIxdzK7NcIBdcmmzTEHN1/7z+QanMd5daSZ1DEwrLne0hJ84DQ9lLH8yMctwZJOUBNz6X5j1nWtrnVgwkNto4uYQsUmDq77tEHjDRAROboD+mJpXs3c59rfI5KBXhFIUzQoSsOcgOREz27HGKLfkWq1Tzt34ES/gURh5oWjHgRZ/u6FruJzr05EJ8Szzm4HmdJTO7h9DXB3sE0HaX0JITeLXY8F/uCxONltD5ybuDGfOwSteLD1MLb0HvtH+zm02P+BKa0q9k3TayITvbS5pLYb4ramJxdjqZnzoQqDXBuuXkthkMaoglTR6BYQ0pEsIIoqBZxwaWuqkw==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PA4PR04MB9320.eurprd04.prod.outlook.com (2603:10a6:102:2a7::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Thu, 26 Jun
+ 2025 01:40:23 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8857.026; Thu, 26 Jun 2025
+ 01:40:23 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH v2 net-next 0/3] change some statistics to 64-bit
+Thread-Topic: [PATCH v2 net-next 0/3] change some statistics to 64-bit
+Thread-Index: AQHb5PCefeDeoGBcAU2O+0gg3q53zrQTEliAgAARsWCAAPBEgIAAQlUAgABVrYA=
+Date: Thu, 26 Jun 2025 01:40:23 +0000
+Message-ID:
+ <PAXPR04MB8510510F60881BA59CD532F4887AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250624101548.2669522-1-wei.fang@nxp.com>
+	<20250624181143.6206a518@kernel.org>
+	<PAXPR04MB8510EDB597AD25F666C450ED887BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	<20250625163459.GD152961@horms.kernel.org>
+ <20250625133224.275a8635@kernel.org>
+In-Reply-To: <20250625133224.275a8635@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PA4PR04MB9320:EE_
+x-ms-office365-filtering-correlation-id: 0a58acca-29f7-4d93-49ea-08ddb4526b25
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?0wtEiSlcGRY7paw5N2Hp486tGh4ycyMCf8nJrFEWyd5tWXJET8m/YIQj9Gv3?=
+ =?us-ascii?Q?N9o0ldjwjwzKddodQ1FN9m9RveE9oVl33zNqDn0UxnDCGqcFyw6uAk2Tsvct?=
+ =?us-ascii?Q?OCiH5UIUnPVENWFyBEpwNCwVqer/XbIh2OtUmp6dq7TsDvpBz1AvPD8gFdxK?=
+ =?us-ascii?Q?dGbqIsz57vJX4WTAsIjvVVTcGWJNmyNVXjrGQBToIEk+ta7NVtOGDrM6/6RI?=
+ =?us-ascii?Q?9ekJZg2TAlk4efXVHGTGcN5rySI9nZ6ypoQOmRvgPsHvlXlgVlxYUiPdNqnP?=
+ =?us-ascii?Q?rphEtCCYnOtO1eX4ITXb9lE0JZXssolBOCGP5qT7MmVdxB0K6U69tA5GKXuf?=
+ =?us-ascii?Q?7TKvSJC0bCFh66ouxRdqbFP9G+AjXTNR1J/pwoAzFHFkEGy/BO9jW9Yetrr+?=
+ =?us-ascii?Q?37It3lXlpQllIPyk/tS9qXwhzFNyJzpOjoJnlwHsUx0R/CYnXR6t1Ea0zl+z?=
+ =?us-ascii?Q?cq8bp2UNd7pUD5GEkyLXzFOsf+SsgoV42FCckZeYel28WXWbK8XEAaJcM08K?=
+ =?us-ascii?Q?GK7/RkTYLZasOAeZvTq3c8sRl4Djn1btrqW6ya4wiCbS3DYJm09hgBKDARo+?=
+ =?us-ascii?Q?X3w7GXTDyhAlMsLdV1lKsQEwY9eqxmgBglxFxGH9BtNfTuBXeev5a73qwVH1?=
+ =?us-ascii?Q?AR15iS1Eg20vhqsJ/o6aQuCltXln9oa0J71rWj+kPxWHV5gAUfNPNDp9VpqY?=
+ =?us-ascii?Q?mYeClSRJ7ZEZc5ObuHS7PrQuWI+lSJMqyFnJ0d2o6rnefsWsdMxp3rQ64//g?=
+ =?us-ascii?Q?71VyAvDM7AsO/EXRtmwkcqCAl4d1IdRWvRReFCGSg72aso9Ayxwy+bLAyTyc?=
+ =?us-ascii?Q?OY65mUC1DQlUqt9jXtrM7SSxH6F20QYFnomFRvrqvVlAzQDdR+GzuoV1A9va?=
+ =?us-ascii?Q?eWL3oHbEhymGGUB9R4SgQDoi+nxbECsAx5mT0h4Tb8Cb+Bvwj+MUDyoQB4Sd?=
+ =?us-ascii?Q?G/J8/DS6xXWjp4nq6SVerQJJBFGLMny/PZcyvaUlOdp4A10jX7Zyp/5alo/O?=
+ =?us-ascii?Q?aeRylGYSHjZ6Cw+q7Mok2+bLdi4z00LWcFUnHbgXHUbJCbkPXMVtTOeZIDgi?=
+ =?us-ascii?Q?qwKmFgdQBkA1WZFdAWp5XhsKOU+Ki2pGQulCHjDVEJ2BjG+qV8ADxq2GSTiw?=
+ =?us-ascii?Q?mRgFR+li3EhCii4Wg2UMj1gL8gOQn7XuVc8Ps3hMsIK33u0LXsz5QAVDTmfv?=
+ =?us-ascii?Q?koCyS2wn0J2EAnHL8P0cgLIGut1A5Ae0LZh1LKhWjJlvOLL8AnIxRpG6mEgl?=
+ =?us-ascii?Q?4ibY5wthGFCrX3b8CaCO3WtvlvscsSL2VA0C1mi5q3H9RMfYLVeWDpl2fZ0h?=
+ =?us-ascii?Q?vjsPXEWSiEGMydXFA8BRQttQbFB3aY3FUfFb9jPCAVhoqNsSE0d5CDZ7fnAa?=
+ =?us-ascii?Q?F8IS3DgIAizycZdrGg/EuiKabPWbH9LkvXZoTDIgsuTaJUIVltbVoZziAySW?=
+ =?us-ascii?Q?fpy0qNBXht0=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?6TXXZlWP5xae0KS3r6QIt8UBDLDSE+pYh9ivCXMPwEwvGh3sRBJswvMOKS6S?=
+ =?us-ascii?Q?8liTdevZmD/lwhDR6eoBWaqRC/c/kMurE+upeXU+I2T6K5fORWQUI0qVdkMi?=
+ =?us-ascii?Q?EUa+EdzSTLVNg9La1vjrCx2eJW+4O4HsFxRNzeKKqckEN4IUX7qX2hoQPdB+?=
+ =?us-ascii?Q?Gd+1KgCbBDfpqqEYM3rvzbLUa1Qcl2xGO0Qi7CIeN848dNGK81/86Qvg8iNE?=
+ =?us-ascii?Q?Ej6/3ienPYG2DQdhL6ENSRPUDHfZrLTuGAbCiikOyiZ7TT9x1FXxTtDmBGea?=
+ =?us-ascii?Q?1qYvoYaCZCBFJA1o10eif2T4zZRJZEtDqTSBDtNfiRPKpYAc0fcUiTWYUtxI?=
+ =?us-ascii?Q?eNr/s1Y93ZqyNjYzrTpOTAPAFO7OQSo4p6oK5HXA9ntmO1i8WQKKDb/xdDqL?=
+ =?us-ascii?Q?eyVsZuX7QzFeDlFi2+JA/mUb3qUypcecxX0JxqHIZOwgJ+AQfN9jYMlWNy8w?=
+ =?us-ascii?Q?ppCOBLYbcQ842p4geVhCD6iYarCjJfhcNaxx7vd6OgwaG2Hqy/OjOef4adb2?=
+ =?us-ascii?Q?XHExFdMWFvQEX0fKotoR23ws//1MsuVrd+r9hhnS08WGFGBBNCaY2XXwOxji?=
+ =?us-ascii?Q?i/+RkyrsOefNQCXv6Qz6QWbNpQFXK9k0Ypw4+WNgYWJc+7E4pE/M81MqlhLt?=
+ =?us-ascii?Q?NAIUIhbt1HaxjeoE7klxZjlcHyuclPFcBDv2NVdg/MevcYV+4IEpX4f4nF11?=
+ =?us-ascii?Q?05Z4Eb6PinH3SlKjZyM2/sF+kz/hgrS2Hc1xq4HX8435rPIItFPp64xO98Jv?=
+ =?us-ascii?Q?OIxbb6gcg5eAbOKWMxT7OLThL2ZXF1lmSaXOLdDrKZh2B99wBwSUamPWUmQN?=
+ =?us-ascii?Q?aNc8CrZVmassB2Eywi94eLYlztXp62E/ic/cov9b/nXcyfv+YsxFrnI35p0j?=
+ =?us-ascii?Q?UETav4y5lE34srfkpzQinDNHcbhEnHmNVCWUpU31NdFDndWhvYg8+B9thGfO?=
+ =?us-ascii?Q?ukCbRNvYHByP0PAem1NB/e8hBlLkUDgtb+2t2KZwmvGAfBuUusDPlUdY+Czk?=
+ =?us-ascii?Q?BHeXe0xEo2xLMlvmrpu5XKvl9C/TQLAC7WCJD46OhZDBptl2j43ikR+Mkg1g?=
+ =?us-ascii?Q?dTgPzx+UH3VXhCVojOHQg42kQfyjxhtY3pdNOTPycPQruoSP5vcEOhus7xJF?=
+ =?us-ascii?Q?ecQoUxaJ/ZuoiR9ioOY+e34xUxcjNbhTEvZvXmXiDmsD7FfAB2/pzxothZ9z?=
+ =?us-ascii?Q?K9lTviQp2UO1CeUFyfm89naHQg2ZL/aCH+5sumj08tXgqDKmdgjJ6RoNZwHw?=
+ =?us-ascii?Q?+3i2UxaDc+65Cm5kIuSkm37S17GMM40i6o0e6mHUEU1pXkMzbGej/fpest8h?=
+ =?us-ascii?Q?g6JoWYpH8cWwU3juFtrq7ia+OwiqmOC/lMGJZvaytBP50q/Kv1mSYh0ewvlj?=
+ =?us-ascii?Q?DQ/Al/M4aNV6RaNMm0uZUGQrL/+wsx452lD2FwbeZnwAfsN4l90XJcWpO1J+?=
+ =?us-ascii?Q?2lsx6Xd1eJ14w+/rB41YIl9r5x/XglD+dEeoQFM1+Y/fmfPhShr0RxMoewN3?=
+ =?us-ascii?Q?JNWl/IJZOMUTtPdPcO/FEo2Opv1XZ/Jmv79DYW+Qwv5w+LA3HatGZPSV3mnn?=
+ =?us-ascii?Q?WFf2LjwJPl6RSF+LNaE=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250618062644.3895785-1-shengjiu.wang@nxp.com>
- <20250618062644.3895785-2-shengjiu.wang@nxp.com> <aFltBpXuEXVZ5gKn@p14s>
- <CAA+D8AP47xyftzPZki8MXEeWEfbocug6e134uaJgFH+tx7mH2Q@mail.gmail.com> <CANLsYkz2JMMMhBAXjt9YSzU4n-0Ld6EvJHC=7Ospsefoxc6BGA@mail.gmail.com>
-In-Reply-To: <CANLsYkz2JMMMhBAXjt9YSzU4n-0Ld6EvJHC=7Ospsefoxc6BGA@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 26 Jun 2025 09:32:06 +0800
-X-Gm-Features: Ac12FXxhWHni_zYrB3Bk_G8eq5XhUuxIqHIxn2dIntxFypfP4zKffU6DWcZMA_E
-Message-ID: <CAA+D8AM47P7xw2Ppgcr9d=DB2eSkQg6uQ_F22Te_=HFuMCNXxw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] remoteproc: imx_dsp_rproc: Add support of recovery process
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andersson@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a58acca-29f7-4d93-49ea-08ddb4526b25
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jun 2025 01:40:23.4022
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tnKxbHxByt9IbYgdt/pKWosMRiKZ9LHdmPegTHyFATzpUnyirXF4PE3Mu0Jdkp0tu+nVj2QwpsuSqAetINf1yw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9320
 
-On Wed, Jun 25, 2025 at 10:39=E2=80=AFPM Mathieu Poirier
-<mathieu.poirier@linaro.org> wrote:
->
-> On Tue, 24 Jun 2025 at 21:25, Shengjiu Wang <shengjiu.wang@gmail.com> wro=
-te:
+> On Wed, 25 Jun 2025 17:34:59 +0100 Simon Horman wrote:
+> > > Simon has posted a patch [1] to fix the sparse warnings. Do I need to=
+ wait
+> until
+> > > Simon's patch is applied to the net-next tree and then resend this pa=
+tch set?
+> > >
+> > > [1]
+> https://lore.kern/
+> el.org%2Fimx%2F20250624-etnetc-le-v1-1-a73a95d96e4e%40kernel.org%2F&d
+> ata=3D05%7C02%7Cwei.fang%40nxp.com%7Ca68166be285a4e0f081908ddb4276
+> 67a%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C63886480348665
+> 4949%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjA
+> uMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7
+> C%7C&sdata=3DX1UJzBeU2dYFir7YQaMHkpoS03axSQGqQJm%2F2EIIh0E%3D&res
+> erved=3D0
 > >
-> > On Mon, Jun 23, 2025 at 11:11=E2=80=AFPM Mathieu Poirier
-> > <mathieu.poirier@linaro.org> wrote:
-> > >
-> > > Good day,
-> > >
-> > > On Wed, Jun 18, 2025 at 02:26:43PM +0800, Shengjiu Wang wrote:
-> > > > when recovery is triggered, rproc_stop() is called first then
-> > > > rproc_start(), but there is no rproc_unprepare_device() and
-> > > > rproc_prepare_device() in the flow.
-> > > >
-> > > > So power enablement needs to be moved from prepare callback to star=
-t
-> > > > callback, power disablement needs to be moved from unprepare callba=
-ck
-> > > > to stop callback, loading elf function also needs to be moved to st=
-art
-> > > > callback, the load callback only store the firmware handler.
-> > > >
-> > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > > ---
-> > > >  drivers/remoteproc/imx_dsp_rproc.c | 58 ++++++++++++++++++--------=
-----
-> > > >  1 file changed, 36 insertions(+), 22 deletions(-)
-> > > >
-> > > > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remotepro=
-c/imx_dsp_rproc.c
-> > > > index 5ee622bf5352..9b9cddb224b0 100644
-> > > > --- a/drivers/remoteproc/imx_dsp_rproc.c
-> > > > +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> > > > @@ -122,6 +122,7 @@ enum imx_dsp_rp_mbox_messages {
-> > > >   * @ipc_handle: System Control Unit ipc handle
-> > > >   * @rproc_work: work for processing virtio interrupts
-> > > >   * @pm_comp: completion primitive to sync for suspend response
-> > > > + * @firmware: firmware handler
-> > > >   * @flags: control flags
-> > > >   */
-> > > >  struct imx_dsp_rproc {
-> > > > @@ -139,6 +140,7 @@ struct imx_dsp_rproc {
-> > > >       struct imx_sc_ipc                       *ipc_handle;
-> > > >       struct work_struct                      rproc_work;
-> > > >       struct completion                       pm_comp;
-> > > > +     const struct firmware                   *firmware;
-> > > >       u32                                     flags;
-> > > >  };
-> > > >
-> > > > @@ -211,6 +213,7 @@ static const struct imx_rproc_att imx_dsp_rproc=
-_att_imx8ulp[] =3D {
-> > > >
-> > > >  /* Initialize the mailboxes between cores, if exists */
-> > > >  static int (*imx_dsp_rproc_mbox_init)(struct imx_dsp_rproc *priv);
-> > > > +static int imx_dsp_rproc_elf_load_segments(struct rproc *rproc, co=
-nst struct firmware *fw);
-> > > >
-> > > >  /* Reset function for DSP on i.MX8MP */
-> > > >  static int imx8mp_dsp_reset(struct imx_dsp_rproc *priv)
-> > > > @@ -402,8 +405,24 @@ static int imx_dsp_rproc_start(struct rproc *r=
-proc)
-> > > >       const struct imx_dsp_rproc_dcfg *dsp_dcfg =3D priv->dsp_dcfg;
-> > > >       const struct imx_rproc_dcfg *dcfg =3D dsp_dcfg->dcfg;
-> > > >       struct device *dev =3D rproc->dev.parent;
-> > > > +     struct rproc_mem_entry *carveout;
-> > > >       int ret;
-> > > >
-> > > > +     pm_runtime_get_sync(dev);
-> > > > +
-> > > > +     /*
-> > > > +      * Clear buffers after pm rumtime for internal ocram is not
-> > > > +      * accessible if power and clock are not enabled.
-> > > > +      */
-> > > > +     list_for_each_entry(carveout, &rproc->carveouts, node) {
-> > > > +             if (carveout->va)
-> > > > +                     memset(carveout->va, 0, carveout->len);
-> > > > +     }
-> > > > +
-> > > > +     ret =3D imx_dsp_rproc_elf_load_segments(rproc, priv->firmware=
-);
-> > > > +     if (ret)
-> > > > +             return ret;
-> > > > +
-> > > >       switch (dcfg->method) {
-> > > >       case IMX_RPROC_MMIO:
-> > > >               ret =3D regmap_update_bits(priv->regmap,
-> > > > @@ -446,6 +465,7 @@ static int imx_dsp_rproc_stop(struct rproc *rpr=
-oc)
-> > > >
-> > > >       if (rproc->state =3D=3D RPROC_CRASHED) {
-> > > >               priv->flags &=3D ~REMOTE_IS_READY;
-> > > > +             pm_runtime_put_sync(dev);
-> > >
-> > > From this patch I understand that for a recovery to be successful, th=
-e
-> > > remote processor _has_ to go through a hard reset.  But here the PM r=
-untime API
-> > > is used, meaning the remote processor won't be switched off if anothe=
-r device in
-> > > the same power domain still neeeds power.  If that is the case, the s=
-olution in
-> > > tihs patch won't work.
+> > Yes, I have confirmed that with patch[1] applied this patch-set
+> > does not introduce any Sparse warnings (in my environment).
 > >
-> > Thanks for reviewing.
-> > With the case you mentioned, there is software reset to make the
-> > recovery process work.
->
->
-> Are you talking about a manual software reset of some other mechanism?
->
-> If manual software reset, the recovery may or may not work and we
-> simply don't know when that might be.  If it's another mechanism, then
-> that mechanism should be used in all cases.  Either way, I don't see
-> how we can move forward with this patch.
-
-Not manual software reset,  in this driver we registered .reset() function.
-it has been called at imx_dsp_runtime_resume(),  I paste the function below=
+> > I noticed the Sparse warnings that are otherwise introduced when review=
+ing
+> > v1 of this patchset which is why I crated patch[1].
+> >
+> > The issue is that there is are long standing Sparse warnings - which
+> > highlight a driver bug, albeit one that doesn't manifest with in tree
+> > users. They is due to an unnecessary call to le64_to_cpu(). The warning=
+s
+> > are:
+> >
+> >   .../enetc_hw.h:513:16: warning: cast to restricted __le64
+> >   .../enetc_hw.h:513:16: warning: restricted __le64 degrades to integer
+> >   .../enetc_hw.h:513:16: warning: cast to restricted __le64
+> >
+> > Patches 2/3 and 3/3 multiply the incidence of the above 3 warnings beca=
+use
+> > they increase the callers of the inline function where the problem lies=
 .
-
-And I have tested the case you mentioned, the recovery works.
-
-/* pm runtime functions */
-static int imx_dsp_runtime_resume(struct device *dev)
-{
-        struct rproc *rproc =3D dev_get_drvdata(dev);
-        struct imx_dsp_rproc *priv =3D rproc->priv;
-        const struct imx_dsp_rproc_dcfg *dsp_dcfg =3D priv->dsp_dcfg;
-        int ret;
-
-        /*
-         * There is power domain attached with mailbox, if setup mailbox
-         * in probe(), then the power of mailbox is always enabled,
-         * the power can't be saved.
-         * So move setup of mailbox to runtime resume.
-         */
-        ret =3D imx_dsp_rproc_mbox_init(priv);
-        if (ret) {
-                dev_err(dev, "failed on imx_dsp_rproc_mbox_init\n");
-                return ret;
-        }
-
-        ret =3D clk_bulk_prepare_enable(DSP_RPROC_CLK_MAX, priv->clks);
-        if (ret) {
-                dev_err(dev, "failed on clk_bulk_prepare_enable\n");
-                return ret;
-        }
-
-        /* Reset DSP if needed */
-        if (dsp_dcfg->reset)
-                dsp_dcfg->reset(priv);
-
-        return 0;
-}
-
+> >
+> > But I'd argue that, other than noise, they don't make things worse.
+> > The bug doesn't manifest for in-tree users (and if it did, it would
+> > have been manifesting anyway).
+> >
+> > So I'd advocate accepting this series (or not) independent of resolving
+> > the Sparse warnings. Which should disappear when patch[1], or some vari=
+ant
+> > thereof, is accepted (via net or directly into net-next).
 >
-> >
-> >
-> > best regards
-> > Shengjiu Wang
-> >
-> > >
-> > > Thanks,
-> > > Mathieu
-> > >
-> > > >               return 0;
-> > > >       }
-> > > >
-> > > > @@ -472,6 +492,8 @@ static int imx_dsp_rproc_stop(struct rproc *rpr=
-oc)
-> > > >       else
-> > > >               priv->flags &=3D ~REMOTE_IS_READY;
-> > > >
-> > > > +     pm_runtime_put_sync(dev);
-> > > > +
-> > > >       return ret;
-> > > >  }
-> > > >
-> > > > @@ -774,7 +796,6 @@ static int imx_dsp_rproc_prepare(struct rproc *=
-rproc)
-> > > >  {
-> > > >       struct imx_dsp_rproc *priv =3D rproc->priv;
-> > > >       struct device *dev =3D rproc->dev.parent;
-> > > > -     struct rproc_mem_entry *carveout;
-> > > >       int ret;
-> > > >
-> > > >       ret =3D imx_dsp_rproc_add_carveout(priv);
-> > > > @@ -783,25 +804,6 @@ static int imx_dsp_rproc_prepare(struct rproc =
-*rproc)
-> > > >               return ret;
-> > > >       }
-> > > >
-> > > > -     pm_runtime_get_sync(dev);
-> > > > -
-> > > > -     /*
-> > > > -      * Clear buffers after pm rumtime for internal ocram is not
-> > > > -      * accessible if power and clock are not enabled.
-> > > > -      */
-> > > > -     list_for_each_entry(carveout, &rproc->carveouts, node) {
-> > > > -             if (carveout->va)
-> > > > -                     memset(carveout->va, 0, carveout->len);
-> > > > -     }
-> > > > -
-> > > > -     return  0;
-> > > > -}
-> > > > -
-> > > > -/* Unprepare function for rproc_ops */
-> > > > -static int imx_dsp_rproc_unprepare(struct rproc *rproc)
-> > > > -{
-> > > > -     pm_runtime_put_sync(rproc->dev.parent);
-> > > > -
-> > > >       return  0;
-> > > >  }
-> > > >
-> > > > @@ -1022,13 +1024,25 @@ static int imx_dsp_rproc_parse_fw(struct rp=
-roc *rproc, const struct firmware *fw
-> > > >       return 0;
-> > > >  }
-> > > >
-> > > > +static int imx_dsp_rproc_load(struct rproc *rproc, const struct fi=
-rmware *fw)
-> > > > +{
-> > > > +     struct imx_dsp_rproc *priv =3D rproc->priv;
-> > > > +
-> > > > +     /*
-> > > > +      * Just save the fw handler, the firmware loading will be aft=
-er
-> > > > +      * power enabled
-> > > > +      */
-> > > > +     priv->firmware =3D fw;
-> > > > +
-> > > > +     return 0;
-> > > > +}
-> > > > +
-> > > >  static const struct rproc_ops imx_dsp_rproc_ops =3D {
-> > > >       .prepare        =3D imx_dsp_rproc_prepare,
-> > > > -     .unprepare      =3D imx_dsp_rproc_unprepare,
-> > > >       .start          =3D imx_dsp_rproc_start,
-> > > >       .stop           =3D imx_dsp_rproc_stop,
-> > > >       .kick           =3D imx_dsp_rproc_kick,
-> > > > -     .load           =3D imx_dsp_rproc_elf_load_segments,
-> > > > +     .load           =3D imx_dsp_rproc_load,
-> > > >       .parse_fw       =3D imx_dsp_rproc_parse_fw,
-> > > >       .handle_rsc     =3D imx_dsp_rproc_handle_rsc,
-> > > >       .find_loaded_rsc_table =3D rproc_elf_find_loaded_rsc_table,
-> > > > --
-> > > > 2.34.1
-> > > >
-> > >
+> All fair points, but unfortunately if there is a build issue
+> the patches are not fed into the full CI cycle. Simon's fix
+> will hit net-next tomorrow, let's get these reposted tomorrow
+> so we can avoid any (unlikely) surprises?
+
+No problem, I will resend this patch set after Simon's patch is applied
+to net-next tree. Thanks.
+
