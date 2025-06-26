@@ -1,234 +1,471 @@
-Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012000.outbound.protection.outlook.com [52.101.71.0])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FCD25DCFD
-	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 18:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750963970; cv=fail; b=CfRPgVjHpekePv6oPedRMrrhg7nzSNf2UAKEkKMCFKWVFqCBxlQHtmBVV7/zQ2cYRWM7hB+/dUhCXqPEtMMKMNalCXa3wAlsIN+HHQVznIqc+yGjycHasl1FKBXXi36/4Pq5IceY72WnF2IUXVE+jaYIFR/j++bB94mqra7aDQQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750963970; c=relaxed/simple;
-	bh=ooLKgC3PlcEZPENZGtPXeUzk0LiUnH5U+qJKdURNSDo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=s2FE7Fb+oXhe8ttsKG2L3ud9cGkTrEFtkPRKsK+uduo3uFbx/pFtlDFOIzd6m/XV370dNFACY72IQG8RjTpCPGNcnyloFIB1ueSANnwnoHGBGhlGYcH0v+UJ600nXR+iN17WPjY4E9rKZzL/FHJMvquDziJUaayaKilOVZL7+s4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=b96tU0D6; arc=fail smtp.client-ip=52.101.71.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB512F1FF9
+	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 19:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750964880; cv=none; b=lqXSChwHLnNGFSZjV4xhJTm5UYPsTU97ZbppNwdKyq3ul/999+3iWgx+pWZfRNl5wqWgOERkcCluSnAJk1puP+rn+95SGVfIxqIO98AFbKe4mO3sGiHUdVF825RSe6DOFy8I+z9JiAKl/mZTCrlKtHRnsh0ilw2LV7XuYL+kOFs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750964880; c=relaxed/simple;
+	bh=QFv5xOdIO9YMb/Q6Up40wb0DTN/RO9nljOjrTLjNYME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XfMPXe2d/oo5pzsGK3lRPUCKC4FT7W8bISo7u2BZrPYVIBYOsKkjGg3hSW6DOQjQiI9j7hsv72QMC4DhBQj6BHlPXc+k2MJiW5AA6T2FKvomLqAttQ6PtxeR1vCKySNRVjVByKxmxXC2604LwW8GWDBDYqZYNY1PLGTxQ6eElMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ZLozK05F; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="b96tU0D6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BE95VlIuACKcd6pQ59SfMNsTFq8iUmDvjq3AdTXuXNPOySZB8N1sV4SkoNNLzSdUIF7Gq8hPdAUvBcUXh/tIJxSSiWey+Q3hizNCeDdoT/uCr14ZkoSKlC4l9V+yB9KphhLE+C/Bz1yUuzIzcgntXOCDwqGrjrwQjy5Upv1S5MOcoMCqWwAnAQgE3yrKrxQA0w1tGW3sL4eYV1pHX98UWPNw9WzLtoVBedCyinGcnc0hJVk0lta31kaBha4yR36NgcMF1LdZ4b5rplndI3OYg6fdvTt0XOWbUP8o79JBdvW1hXbW2x62uNJJN/WyMHXY6p7MT+Z7AmDg4zc18704Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3AkAQcPHI2NNKdAm6rnz3srSSxC3rU+pFvG1rDKnB1c=;
- b=Dd130i+UMPCYkKzncMfuFZHBa6qdJcGUGBrnrblLq5vEpdHbJUiUp3qQ6ngWXz/IAk9SdUeWzX4+k0zrjRWZE75Qx0TceapmcuirpAHahWsN5YSD5T5BPLxboGPl7YDBlywnxfvxCDvhlI4ZZPTPAbxj5EN45lwoxNHoC76M70qntgdjybE2HfMeT9b8dWuds9/knKPLqAbJlr69cOYMPNbBwiCCryi6w5PzcmEDrg4qp7jwj12KQWXl32uz/DK9iTyWWLy0dSnzk4hy5L1HmXsub1Of7I7r93LwkG/PKZriy02CX8VttEiopZZmbmQUGRNqznsC/39/J4fIqee+Vg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3AkAQcPHI2NNKdAm6rnz3srSSxC3rU+pFvG1rDKnB1c=;
- b=b96tU0D6AZ3pOyGIAzAVOntDEdNzcwbbThXZNKJhRWBmjyFZuw60+phH7pkxfs5Z7bEehbiF73qFKVb/GI2js2OVONotmYNX6MfIxjNLV9MyZbULYSCuCaSkBbFzLRdTUby4sh1WxvbzqAo0XkDJ/WMnBe51F+ggJLmQZBj9XadrMXTM9Rd4MnoEk63mUoRbQc0tHW4pTo9+xRonOfMClYZ07s5Pre74MaCA3I6gG9aIK0PyI/PHk6Xurytk7ur91eTaz2sfKJ4MilQrwk/AfbdWdPgATJFBbO3EDUEKBFT9BpdWXKMzJClC57oIm2bu0RIPT/HLnzXbC6qQ8nkbUg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM7PR04MB7126.eurprd04.prod.outlook.com (2603:10a6:20b:117::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.18; Thu, 26 Jun
- 2025 18:52:46 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8880.015; Thu, 26 Jun 2025
- 18:52:45 +0000
-Date: Thu, 26 Jun 2025 14:52:40 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ZLozK05F"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 8BE886A6;
+	Thu, 26 Jun 2025 21:07:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1750964857;
+	bh=QFv5xOdIO9YMb/Q6Up40wb0DTN/RO9nljOjrTLjNYME=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZLozK05F1pbgW0RXy0Uw67OCWx7l6nUCEiXFffp000ufRyJkr82VB92QOTVW85KI8
+	 ZjYpZN937zGmIRSlNPuZ4qrbSXQQyCwt2+mZWTqSX/5k2XEF4+Vwy8WuRvvRYa+gTW
+	 xcQWlKmV14/RZhN7qGugkrUqC7KPMIU6Zb7qc5Lo=
+Date: Thu, 26 Jun 2025 22:07:33 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 5/5] arm64: dts: imx95-19x19-evk: Add CM7 nodes and
- vdev related memory regions
-Message-ID: <aF2W+OG8HhB7W7Ut@lizhi-Precision-Tower-5810>
-References: <20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com>
- <20250625-imx95-rproc-1-v3-5-699031f5926d@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250625-imx95-rproc-1-v3-5-699031f5926d@nxp.com>
-X-ClientProxiedBy: AS4P189CA0056.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:659::26) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Conor Dooley <conor+dt@kernel.org>,
+	Kumar M <anil.mamidala@xilinx.com>, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, "Guoniu.zhou" <guoniu.zhou@nxp.com>,
+	Stefan Hladnik <stefan.hladnik@gmail.com>,
+	Florian Rebaudo <frebaudo@witekio.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: media: i2c: Add bindings for AP1302
+ and AR0144
+Message-ID: <20250626190733.GB30016@pendragon.ideasonboard.com>
+References: <20250623-ap1302-v3-0-c9ca5b791494@nxp.com>
+ <20250623-ap1302-v3-1-c9ca5b791494@nxp.com>
+ <20250623224109.GD15951@pendragon.ideasonboard.com>
+ <aFrxSOapkQ/QIXT8@lizhi-Precision-Tower-5810>
+ <20250624185404.GD20757@pendragon.ideasonboard.com>
+ <aFsAY1Nz2bIFH+t+@lizhi-Precision-Tower-5810>
+ <20250626124002.GJ8738@pendragon.ideasonboard.com>
+ <aF1uKaJyxFMx48HN@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM7PR04MB7126:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6b186bb7-61d6-4682-282c-08ddb4e2a39c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?u2LEhz47v/SyaEpBKDNbeqzODyMxxL9W1Ar7gn2S8Xx052npxdbG9CEHkR+j?=
- =?us-ascii?Q?cPL5Ek0yb8ewGAtJgadgENPB4KZee33cSlpSGnmKWHzfXvqDP6b7YgKiaHhe?=
- =?us-ascii?Q?QDtjycUOWI/q1SO2v/hcp6W1KKlhsesIis58WZlZSzxunvfiZLl1C4InFFzg?=
- =?us-ascii?Q?tdOJgHCQtqr2pPmkT9mH2fWVIOVKezYm9E5895RP1eQQaGg65tUOcL8AZFWZ?=
- =?us-ascii?Q?pjjaQgIdmbN7H3dNtzXrOeXLOQY6oEqn+6XZN9NeSrWQ8kA6ev1vDOMv24ZI?=
- =?us-ascii?Q?wxM8qjh8nflMFKCxb693mYxG+JbV6RUJTZGVPbwFjksDxmu7Oy+IKK+OX0/M?=
- =?us-ascii?Q?1Y2WSlmi3B0JLwPAkPMm6zLpHsbqvzrXQtMdeA0UWwW4SYrNOHCsVh+k+ND6?=
- =?us-ascii?Q?nKvylhIwSm70ptSUjv7Tm32XByIrHeJfToJDbw7QwxYLwsbNAj0WJDnH3Ab/?=
- =?us-ascii?Q?UsVN5oO7epQIklKCpWytYpjOOlpKGwrf/W5V+ABvmH4RTEBN4CnW9J6tOvdX?=
- =?us-ascii?Q?fIeqv68GSUzkdTF/q5y0BkL0Xc+St4DqwdF9Wn1PuFwHLaAwjJNOAGvWmSuC?=
- =?us-ascii?Q?7nzLN0N6sumy6wRCjF06qS3UjTFNpS44iuqwotGBYs2Zyhvk5Jo9veTLTMNq?=
- =?us-ascii?Q?jjzamn0YZ72R69A0E01SSU/yqAQDQ77+ViLOOOEZwCNQ1nWeHFLSUz+8S8AW?=
- =?us-ascii?Q?7GfNEokOW4oMQyE907uAWnyDoRtq33x8YSM5ptABLnQ6zthCU0dGSAay7Jie?=
- =?us-ascii?Q?dxSxEPsrUaTmZ+uGjUFsEsS0a2VrhwXySt3mUyog8np3KE5qXUxQzwYHYLpH?=
- =?us-ascii?Q?DRDpyqzCfBP+1N2gW/NFergLBVPqYFhkI4AWbmMnJaq4po6v6bpbT3qLtXuJ?=
- =?us-ascii?Q?GASgFslAqroOBp26oAZcnRHrf7HxATk6aM2y9kSEr3rtG3J6Tg/kg/Uesz2s?=
- =?us-ascii?Q?i0wCQbajKfdXUcMK0/9dGDL8yngu3qRdjDOqJwVj9ef4OCw+agHXiFLOdwFa?=
- =?us-ascii?Q?yBwCAonDuTICt+arvQVpV31tmGEJmYn0bk8qnDjof77vwtc+hS5ptnRcCP3d?=
- =?us-ascii?Q?zE5AbCLdrcuF4Q1Jjpzamv/TWS/M9hcCjFgvkx9zAHfpFM3AFwp85LNy4Fk6?=
- =?us-ascii?Q?rSWQ/c3qsMVBbN0Mctnk6rqHCVFxeeOZw6lf2Z6b3pTsv/QNJHItGeXyL7n/?=
- =?us-ascii?Q?vTxMCjroWb9jYiOg7amcObeeek2RmKtIkE9SGAyrhDOG1tlO3755TZgiJP6s?=
- =?us-ascii?Q?4jx/lbMzTeFm309O+8oD+TxYf7kwe6rYzX9xIj7ylxeXmVyJ3Izxt/HjbKVO?=
- =?us-ascii?Q?vh47y9YtHRj1MqXBwZkGn2eCfISdiFtT8LdS9CnqekPhBvP+xa0l3One2Xpx?=
- =?us-ascii?Q?SWcdDs5jbzoMRVgeuGHEdu2/d6ieMG+KRE2i7rXDY5eDbMFdU+vfHXr1DR4m?=
- =?us-ascii?Q?tVPbouZB4DWHZxQibao3/+ZYDGdeRh8RSH0gMneEM8CbwskRebTVyw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?lxaJa5crg+VH11fk019jZZ5TzIC1tZJPD6yTzr6aYPajTMBesavUZMfL0kWY?=
- =?us-ascii?Q?EvpLkC8phlXsMgLs54KRrnx94ooqDmBzHyv1BjZ4n7lUzLG81xHQKTBN/xqf?=
- =?us-ascii?Q?2w0tmrEFc0vrn8dTwxXMt+FSoNc6PCYXFWV6aqEUhk7I/Ccn/O4jaBwB9M8B?=
- =?us-ascii?Q?OQ/M841UCaHBw1/t67Zsgq6x7Da596/4AnI59NHHoPkCBfGjb4hXhHuDoTKw?=
- =?us-ascii?Q?foNPVPxbQa0IMfGG2v/AvmZ3+UusgAqQaE30f12a0rBKKX1hw199g2pDDJDq?=
- =?us-ascii?Q?Y2bAu1d+VRwwpPTKNH8ZPUweYu422JctitmyxUy2Z+C3u4d3UTafSxOEBr58?=
- =?us-ascii?Q?QJkG0ZjQ24C/a0D0qpzCOwLDhu24wNdvdiGoDNEv+R5ZqWROv81PYESxUVRz?=
- =?us-ascii?Q?pOI5jHdQ7mgbt1UjOElEWMQq2M5TRdC+E5dAIbuctQ27UUqcILSYYGErzjI6?=
- =?us-ascii?Q?f0Cv5sUP24XmqkQXptuOkvdc02DveDHyJihDjWENJzSMNQcA9KYOSwB9nMIx?=
- =?us-ascii?Q?aE/k88dMDX/pzwIbu7cHtEcktWQFQ3jVavllnuwPDGKRffBLcrQ9mafLfGBc?=
- =?us-ascii?Q?gHSpvdY6/Wtb7u7lxGdT9Atgp9OO/GVuOPs+UzaXSZnI2CaF36Eh2GsW640f?=
- =?us-ascii?Q?54DbtQ9g9UrzBYrhN1lyuVTeScrfaYKrWONaN3oFIbrPM3h8R7aUafqy0BQ7?=
- =?us-ascii?Q?fFCMgNdNX+vURrTCH3dxGuHPq0ztXWMhcAQ7UrzlNB/25zwRlLVBc1LlucnQ?=
- =?us-ascii?Q?Bmxre2idg0CMudCb0i8HO6LZlyZiQ/4jPYaNfS+9kkrGDB2kSoGDRlByIetQ?=
- =?us-ascii?Q?D2txgKMYqKgTJL5r3q5c0WbXTo+qWzmXt5x9xpflsyRFVSD9o4/bSu/xbqCb?=
- =?us-ascii?Q?KiY/RCMjRqRhhIa2BLMSyYPdkeUFg+BZARzleBt+SYGOdKbrQMmJ4oc8gioz?=
- =?us-ascii?Q?aj9AyoUFo2ZpJC236xRjlEomU3gvbeMJVf78HTPxfLRYDqpzl0YeZij738ks?=
- =?us-ascii?Q?4AhmFaKmMzaOlvbVDXJduvNn9mhpfiI/VLE4X0Okt22MPdnUebsvJg5HVYUa?=
- =?us-ascii?Q?EheZeWjrxh9E5krXLgBhu1b0b6vywj9YE4uw6Dv/63oR1uouxBS65euazVqx?=
- =?us-ascii?Q?KfrQc8nz14Co8XY3G+v32yf+TOE1KPSYvKCR65J4fVE+SgWcQv41ue1gpwRE?=
- =?us-ascii?Q?yX+QPQPUFd0ggLey7Eq2x0Fnw8kgJgOirW0pk7NluBioXzZzXLP/DY3x/Mww?=
- =?us-ascii?Q?5C3n+8nKCkqpHlRSkd9ssFxTudaq7R9WQgtVEz/09MXDfewhx/uLA+u32enH?=
- =?us-ascii?Q?eJbqOsrAJByCO5EzFGZz9mLZs9UVKcPdRu0dotPr5zQ7JYgC8egya5A78GE2?=
- =?us-ascii?Q?KXQhWW1y+Y5QUnLiNPA/b/Df/KGl3ezbI8BVMzX6uuNOaGUlNRenl9nA0y6o?=
- =?us-ascii?Q?6iJFyJR+HHvBOJGvwxhsi/HjMCNvolFnYy5xLShpvMajINe77YTLgTNXGy31?=
- =?us-ascii?Q?WaDkIJ352AZtVaQcEjVZu6yA9FBB+6hnJOCVq7Iw5xh9O+EvJdM/2CphS3qS?=
- =?us-ascii?Q?q4FeTdHfNZ7odlETtNX/eD7dzg5wIf2N/xw6V/bF?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b186bb7-61d6-4682-282c-08ddb4e2a39c
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 18:52:45.8700
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N5PnsMpL8xeGXnBALWfjcNf5RCmk3RMmEbu8yurY0xI2Axk53yBX2TtVpF5c4Cp0TUB8uKPrpR53S87YbxNOjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7126
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aF1uKaJyxFMx48HN@lizhi-Precision-Tower-5810>
 
-On Wed, Jun 25, 2025 at 10:23:31AM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->
-> Add CM7 nodes, vdev related memory regions for remoteproc.
-> Enable MU7.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts | 45 +++++++++++++++++++++++
->  1 file changed, 45 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> index 6886ea7666550605d6c2aa3d81ff270164e5796f..70f000b1c4032a449cbf9ceb746c16c9f3062a61 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts
-> @@ -75,6 +75,37 @@ linux_cma: linux,cma {
->  			linux,cma-default;
->  			reusable;
->  		};
-> +
-> +		vdev0vring0: memory@88000000 {
-> +			reg = <0 0x88000000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev0vring1: memory@88008000 {
-> +			reg = <0 0x88008000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev1vring0: memory@88010000 {
-> +			reg = <0 0x88010000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev1vring1: memory@88018000 {
-> +			reg = <0 0x88018000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		rsc_table: memory@88220000 {
-> +			reg = <0 0x88220000 0 0x1000>;
-> +			no-map;
-> +		};
-> +
-> +		vdevbuffer: memory@88020000 {
-> +			compatible = "shared-dma-pool";
-> +			reg = <0 0x88020000 0 0x100000>;
-> +			no-map;
-> +		};
->  	};
->
->  	reg_3p3v: regulator-3p3v {
-> @@ -202,6 +233,20 @@ sound-wm8962 {
->  				"IN3R", "AMIC",
->  				"IN1R", "AMIC";
->  	};
-> +
-> +	remoteproc-cm7 {
-> +		compatible = "fsl,imx95-cm7";
-> +		mbox-names = "tx", "rx", "rxdb";
-> +		mboxes = <&mu7 0 1>,
-> +			 <&mu7 1 1>,
-> +			 <&mu7 3 1>;
-> +		memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-> +				<&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-> +	};
-> +};
-> +
-> +&mu7 {
-> +	status = "okay";
->  };
+On Thu, Jun 26, 2025 at 11:58:33AM -0400, Frank Li wrote:
+> On Thu, Jun 26, 2025 at 03:40:02PM +0300, Laurent Pinchart wrote:
+> > On Tue, Jun 24, 2025 at 03:45:39PM -0400, Frank Li wrote:
+> > > On Tue, Jun 24, 2025 at 09:54:04PM +0300, Laurent Pinchart wrote:
+> > > > On Tue, Jun 24, 2025 at 02:41:12PM -0400, Frank Li wrote:
+> > > > > On Tue, Jun 24, 2025 at 01:41:09AM +0300, Laurent Pinchart wrote:
+> > > > > > On Mon, Jun 23, 2025 at 03:17:37PM -0400, Frank Li wrote:
+> > > > > > > From: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
+> > > > > > >
+> > > > > > > The AP1302 is a standalone ISP for ON Semiconductor sensors, which can
+> > > > > > > connect RAW sensors (AR0144).
+> > > > > > >
+> > > > > > > Add corresponding DT bindings.
+> > > > > > >
+> > > > > > > Signed-off-by: Anil Kumar Mamidala <anil.mamidala@xilinx.com>
+> > > > > > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > > > > > Signed-off-by: Stefan Hladnik <stefan.hladnik@gmail.com>
+> > > > > > > Signed-off-by: Florian Rebaudo <frebaudo@witekio.com>
+> > > > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > > > ---
+> > > > > > > Previous try:
+> > > > > > > https://lore.kernel.org/linux-media/1631091372-16191-2-git-send-email-anil.mamidala@xilinx.com/
+> > > > > > >
+> > > > > > > Change in v3:
+> > > > > > > - Move sensors under ports
+> > > > > > > - use compatible string to indentify connected raw sensors
+> > > > > > > - Add onnn,ar0144.yaml
+> > > > > > > ---
+> > > > > > >  .../devicetree/bindings/media/i2c/onnn,ap1302.yaml | 151 +++++++++++++++++++++
+> > > > > > >  .../devicetree/bindings/media/i2c/onnn,ar0144.yaml |  75 ++++++++++
+> > > > > > >  MAINTAINERS                                        |   9 ++
+> > > > > > >  3 files changed, 235 insertions(+)
+> > > > > > >
+> > > > > > > diff --git a/Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml b/Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml
+> > > > > > > new file mode 100644
+> > > > > > > index 0000000000000..6b745dcf3fd3f
+> > > > > > > --- /dev/null
+> > > > > > > +++ b/Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml
+> > > > > > > @@ -0,0 +1,151 @@
+> > > > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > > > > > +%YAML 1.2
+> > > > > > > +---
+> > > > > > > +$id: http://devicetree.org/schemas/media/i2c/onnn,ap1302.yaml#
+> > > > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > > > > +
+> > > > > > > +title: ON Semiconductor AP1302 Advanced Image Coprocessor
+> > > > > > > +
+> > > > > > > +maintainers:
+> > > > > > > +  - Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > > > > > +  - Anil Kumar M <anil.mamidala@xilinx.com>
+> > > > > > > +
+> > > > > > > +description:
+> > > > > > > +  The AP1302 is a standalone ISP for ON Semiconductor sensors. It interfaces to
+> > > > > > > +  up to two RAW CMOS sensors over MIPI CSI-2 connections, processes the two
+> > > > > > > +  video streams and outputs YUV frames to the host over a MIPI CSI-2 interface.
+> > > > > > > +  Frames are output side by side or on two virtual channels.
+> > > > > > > +
+> > > > > > > +  The sensors must be identical. They are connected to the AP1302 on dedicated
+> > > > > > > +  I2C buses, and are controlled by the AP1302 firmware. They are not accessible
+> > > > > > > +  from the host.
+> > > > > > > +
+> > > > > > > +properties:
+> > > > > > > +  compatible:
+> > > > > > > +    const: onnn,ap1302
+> > > > > > > +
+> > > > > > > +  reg:
+> > > > > > > +    maxItems: 1
+> > > > > > > +
+> > > > > > > +  clocks:
+> > > > > > > +    items:
+> > > > > > > +      - description:
+> > > > > > > +          Reference to the CLK clock.
+> > > > > > > +
+> > > > > > > +  reset-gpios:
+> > > > > > > +    items:
+> > > > > > > +      - description:
+> > > > > > > +          Reference to the GPIO connected to the RST pin (active low).
+> > > > > > > +
+> > > > > > > +  standby-gpios:
+> > > > > > > +    items:
+> > > > > > > +      - description:
+> > > > > > > +          Reference to the GPIO connected to the STANDBY pin (active high).
+> > > > > > > +
+> > > > > > > +  enable-gpios:
+> > > > > > > +    items:
+> > > > > > > +      - description:
+> > > > > > > +          Reference to the GPIO connected to the EN pin (active high).
+> > > > > > > +
+> > > > > > > +  dvdd-supply: true
+> > > > > > > +
+> > > > > > > +  hmisc-supply: true
+> > > > > > > +
+> > > > > > > +  smisc-supply: true
+> > > > > > > +
+> > > > > > > +  ports:
+> > > > > > > +    $ref: /schemas/graph.yaml#/properties/ports
+> > > > > > > +    unevaluatedProperties: false
+> > > > > > > +
+> > > > > > > +    patternProperties:
+> > > > > > > +      "^port@[01]":
+> > > > > > > +        description:
+> > > > > > > +          Sensors connected to the first and second input, if no sensor
+> > > > > > > +          connect, isp generate test pattern. The compatible string under
+> > > > > > > +          port@0 and port@1 have to be the same.
+> > > > > > > +
+> > > > > > > +        allOf:
+> > > > > > > +          - $ref: /schemas/graph.yaml#/$defs/port-base
+> > > > > > > +          - $ref: onnn,ar0144.yaml
+> > > > > >
+> > > > > > You can't do that, that's plain wrong, sorry. There are issue raised in
+> > > > > > the review of v2, please try to understand the problem and propose a
+> > > > > > solution there. This is not what we need.
+> > > > >
+> > > > > After review previous thread, Rob suggest use compatible string instead
+> > > > > vendor specific onnn,model property. I also think Rob's suggest is good
+> > > > > because compatible already descript the raw sensor model, needn't involve
+> > > > > new property for it and we can reuse other property like xxx-supply.
+> > > > >
+> > > > > Your concern is that port0 and port1 have to be the same. Rob suggest check
+> > > > > at the code to make sure both are the same.
+> > > > >
+> > > > > I think Rob may have method to add restriction at binding doc to make dts
+> > > > > have the same compatble string.
+> > > > >
+> > > > > Anything what I misssed?
+> > > >
+> > > > The discussion died out in that thread, I didn't have time to reply
+> > > > right away, and then the mails got buried in my inbox. My bad.
+> > > >
+> > > > The sensor node does not describe a device in the traditional DT sense,
+> > > > as the AP1302 completely hides the sensor from the host.
+> > >
+> > > Yes, but still need some informations like xxx-supply
+> >
+> > That's right, DT needs to provide information to describe how the sensor
+> > is controlled by the AP1302.
+> >
+> > > > The DT node,
+> > > > and its properties, need to be interpreted in the context of the AP1302
+> > > > DT binding. Use a "compatible" property, beside duplicating a value and
+> > > > introducing room for mistakes, is misleading, as "compatible" implies
+> > > > that the node is meant to go through the standard matching procedure
+> > > > with drivers. Sure, we could use a "compatible" property without letting
+> > > > the operating system match it with drivers, but it would still be
+> > > > misleading. I don't see any advantage in using "compatible".
+> > >
+> > > According to what I worked with Rob, DT don't care how driver probe device
+> > > driver, and what they most care is how hardware components connected.
+> > >
+> > > Use "compatible"'s benefit is if sensor direct connect to Soc or other ISP,
+> > > needn't add new property. improve reusability.
+> >
+> > I don't see how it improves reusability, no. There is no generic code
+> > that will parse the "compatible" property for a sensor behind the
+> > AP1302.
+> 
+> - reuse one yaml to do dtb check. For example, new vddio-supply for ar0144
+> added. Needn't add two places, one for standalone and the other for connect
+> to ISP.
 
-can you keep &mu7 as order, at least it should be after &enetc_port0
+But you need different properties when connecting the sensor to the SoC
+or to the external ISP.
 
-Frank
->
->  &enetc_port0 {
->
-> --
-> 2.37.1
->
+> - use of_device_is_compatible(). Anyway need proptery to identify connected
+> module. Assume we use 'module'. The property name 'module' itself is
+> equivalence to 'compatible'.  But whole DT schema is base on 'compatible'
+> to match relatied yaml file. If use 'module' here, have to dupicate all
+> property restriction at two place.
+
+Same comment as above. When connected to the SoC, the AR0144 will have a
+set of mandatory properties. When connected to the AP1302, the set of
+mandatory properties is different. This just can't work as-is. The
+AR0144 is an I2C device, and its DT bindings are meant for a DT node
+instantiated as an I2C device, as a child of an I2C controller. When
+connected to the external ISP the situation is different.
+
+>   If use module here, it may face fallback problem. If new module, ar0145.
+> we have to update binding, code and dts. If use compatible string, just
+> need update binding and dts.
+> 
+>  'compatible's problem is that many people may miss-leading need a driver
+> to match it.
+
+"compatible" means *software*-compatible.
+
+> > > > Regardless, you should *not* reference the ar0144.yaml. A DT binding for
+> > > > the AR0144 (see below for a link to proper DT binding for this sensor)
+> > > > would need to describe the device from the point of view of the host.
+> > >
+> > > DT have not concept about view of the host. It looks like hardware schematic,
+> > > just descript how difference hardware components connected together.
+> >
+> > I don't think that's quite right. DT describes the system from the point
+> > of view of the host. It's quite apparent when you look at the tree
+> > structure, devices are arranged based on what control bus they are
+> > connected to.
+> 
+> This is implement phenomenon. From concept of DT, there are not such limition.
+> driver can grab some children nodes to send to remote async core, like m33.
+
+I disagree with this, it's by design in DT.
+
+> > > > Here you need to describe it from the point of view of the AP1302, which
+> > > > is very different.
+> > >
+> > > what different?
+> >
+> > The sensors are fully controlled by the AP1302. They need to be
+> > identified first and foremost in order to load the correct AP1302
+> > firmware, and also to know which power supplies to control. That's about
+> > it, there's no driver matching the sensors, there will be no device
+> > corresponding to them in the operating system.
+> 
+> Actually, ap1302 driver create one device (maybe not necessary) for it.
+
+I'd like to do away with that, but the Linux regulator framework makes
+it difficult.
+
+> > The data that needs to be provided in DT when the same sensor is
+> > connected directly to the SoC or when it is connected to the AP1302 is
+> > different, as you can see in the DT binding I posted for the AR0144. I
+> > understand your confusion as the hardware component is the same, but
+> > from a DT point of view it's two very different things.
+> 
+> I checked
+> https://lore.kernel.org/linux-devicetree/20240630141802.15830-2-laurent.pinchart@ideasonboard.com/
+> 
+> The property is the same. The only difference is that AP1302 have not used
+> all properties.
+
+That's not true. Look at the reg property. In your patch it's used to
+indicate which port the of the AP1302 the sensor is connected to. When
+connected to a SoC, it indicates the I2C address. That's not the same
+things, you can't use the same bindings.
+
+> Assume in future, AP1302 can support over 100 kinds RAW sensor. It will
+> be big efforts to duplicate such property in AP1302's binding doc.
+
+There won't be 100's of sensors, the AP1302 only supports onsemi
+sensors, and only a subset of them.
+
+> And if there are other ISP chips, it will become NxM 's problem.
+
+Different ISPs will have different requirements. Look at the THP7312 for
+instance, it has DT bindings upstream, and doesn't need to declare power
+supplies for the sensor.
+
+I'm sorry, but using the DT bindings designed for a camera sensor
+connected to a host to describe the same camera sensor abstracted by an
+external ISP (or any other component, really) is not a workable
+solution.
+
+> > > >  Even if we end up using the compatible property to
+> > > > identify the sensor model, that compatible property would *not* match a
+> > > > onnn,ar0144.yaml. That's yet another reason for not using "compatible".
+> > >
+> > > we can add extra restrictions here if need. onnn,ap0144, some time later,
+> > > new compatible model onnn,ap0145 appear, we still use
+> > >
+> > > compatible = "onnn,ap0145", "onnn,ap0144";
+> >
+> > I'm sorry, I don't see how that's related.
+> 
+> see first my reply segment.
+> 
+> > > > > > > +
+> > > > > > > +        unevaluatedProperties: false
+> > > > > > > +
+> > > > >
+> > > > > ...
+> > > > >
+> > > > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > > > > +
+> > > > > > > +title: ON Semiconductor AP0144 RAW CMOS sensor
+> > > > > >
+> > > > > > AP0144 seems to be a typo.
+> > > > > >
+> > > > > > > +
+> > > > > > > +maintainers:
+> > > > > > > +  - Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > > > > > +  - Anil Kumar M <anil.mamidala@xilinx.com>
+> > > > > >
+> > > > > > Listing people as maintainers when they had nothing to do with
+> > > > > > development of a file isn't very polite.
+> > > > >
+> > > > > It is continue previous thread and copy from ap1302, If you have concern
+> > > > > I can put my name here.
+> > > >
+> > > > It's a separate binding, not part of the previous version.
+> > > >
+> > > > > > > +
+> > > > > > > +description:
+> > > > > > > +  AP0144 RAW CMOS can be use standalone with any SOCs, or work with AP1302
+> > > > > > > +  ISP.
+> > > > > >
+> > > > > > How a sensor is used is not relevant for its DT bindings.
+> > > > >
+> > > > > DT is that descript hardware. Many sensors have SPI and I2C interface, but
+> > > > > they use the same binding.
+> > > > >
+> > > > > DT just descript hardware feature, such as how many clocks, how many power
+> > > > > supply. All of property does not related usage at all.
+> > > > >
+> > > > > Some legacy binding related usage, but that is what try to avoid now.
+> > > >
+> > > > Yes, so you shouldn't mention the AP1302 here.
+> > > >
+> > > > > > > +
+> > > > > > > +properties:
+> > > > > > > +  compatible:
+> > > > > > > +    enum:
+> > > > > > > +      - onnn,ar0144
+> > > > > > > +      - onnn,ar0330
+> > > > > > > +      - onnn,ar1335
+> > > > > >
+> > > > > > There's also no explanation for this.
+> > > > >
+> > > > > It is just chip's compatible string, what do you want to add? Most compatible
+> > > > > string have not descrption.
+> > > > >
+> > > > > > > +
+> > > > > > > +  reg:
+> > > > > > > +    maxItems: 1
+> > > > > > > +
+> > > > > > > +  vaa-supply: true
+> > > > > > > +
+> > > > > > > +  vdd-supply: true
+> > > > > > > +
+> > > > > > > +  vddio-supply: true
+> > > > > > > +
+> > > > > > > +  vddpll-supply: true
+> > > > > > > +
+> > > > > > > +  port:
+> > > > > > > +    $ref: /schemas/graph.yaml#/$defs/port-base
+> > > > > > > +    additionalProperties: false
+> > > > > > > +
+> > > > > > > +    properties:
+> > > > > > > +      endpoint:
+> > > > > > > +        $ref: /schemas/media/video-interfaces.yaml#
+> > > > > > > +        unevaluatedProperties: false
+> > > > > > > +
+> > > > > > > +required:
+> > > > > > > +  - compatible
+> > > > > > > +  - reg
+> > > > > > > +
+> > > > > > > +allOf:
+> > > > > > > +  - if:
+> > > > > > > +      properties:
+> > > > > > > +        compatible:
+> > > > > > > +          not:
+> > > > > > > +            contains:
+> > > > > > > +              const: onnn,ar0330
+> > > > > > > +    then:
+> > > > > > > +      properties:
+> > > > > > > +        vddpll-supply: false
+> > > > > > > +
+> > > > > > > +additionalProperties: false
+> > > > > > > +
+> > > > > > > +examples:
+> > > > > > > +  - |
+> > > > > > > +    i2c {
+> > > > > > > +        #address-cells = <1>;
+> > > > > > > +        #size-cells = <0>;
+> > > > > > > +
+> > > > > > > +        camera@10 {
+> > > > > > > +            compatible = "onnn,ar0144";
+> > > > > > > +            reg = <0x10>;
+> > > > > > > +            vaa-supply = <&vaa>;
+> > > > > > > +            vddio-supply = <&vddio>;
+> > > > > > > +            vdd-supply = <&vdd>;
+> > > > > >
+> > > > > > No input clock, reset signal, ports ?
+> > > > >
+> > > > > I am not famillar with this sensor, just extract from code. Do you know
+> > > > > where download spec?
+> > > >
+> > > > The datasheet is not public, but I have posted a driver, with DT
+> > > > bindings, to the linux-media mailing list. See
+> > > > https://lore.kernel.org/linux-media/20240905225308.11267-1-laurent.pinchart@ideasonboard.com
+> > > >
+> > > > > at least ports is needed.
+> > > > >
+> > > > > > > +        };
+> > > > > > > +    };
+> > > > > > > +
+> > > > > > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > > > > > index d6f1670290589..1362d351f2574 100644
+> > > > > > > --- a/MAINTAINERS
+> > > > > > > +++ b/MAINTAINERS
+> > > > > > > @@ -1766,6 +1766,15 @@ L:	linux-sound@vger.kernel.org
+> > > > > > >  S:	Maintained
+> > > > > > >  F:	sound/aoa/
+> > > > > > >
+> > > > > > > +AP1302 ON SEMICONDUCTOR ISP DRIVER
+> > > > > > > +M:	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > > > > > +R:	Frank Li <Frank.Li@nxp.com>
+> > > > > > > +L:	linux-media@vger.kernel.org
+> > > > > > > +S:	Maintained
+> > > > > > > +T:	git git://linuxtv.org/media.git
+> > > > > > > +F:	Documentation/devicetree/bindings/media/i2c/onnn,ap1302.yaml
+> > > > > > > +F:	Documentation/devicetree/bindings/media/i2c/onnn,ar0144.yaml
+> > > > > > > +
+> > > > > > >  APEX EMBEDDED SYSTEMS STX104 IIO DRIVER
+> > > > > > >  M:	William Breathitt Gray <wbg@kernel.org>
+> > > > > > >  L:	linux-iio@vger.kernel.org
+
+-- 
+Regards,
+
+Laurent Pinchart
