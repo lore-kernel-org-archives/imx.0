@@ -1,131 +1,163 @@
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E582B191F7E
-	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 09:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4AD16A94A
+	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 10:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750930750; cv=none; b=QMnspDAmtbfhHrSFHvTdzRVHxaFa5Kw1AOu4ZYaT6o+p1aMzye0n5gR5Btps74mNAoek7+HAfSl5UpwNwCL3HzQwu9WQLxXjBuhfDmvW57JetMUQvpsbXU/XI3s+RkpvolwAwxUBv3oQfoKiOxDVdIi5w/9tDPdFIh67iKXYCHE=
+	t=1750932295; cv=none; b=Wga7xaTWlCXZp2GLnHN27sWaCFQwj/4bsoD/DfrK6ao6j/GH5fSIeR0wvF5sM3yUOxgWjS1sa8nF5uaev6YPT7R2kiaTLeiEnDIJjba7FvmImH7ZLRSSfDRGE78KLgAAteJUh/jKW+SuBWoI29Vtbd9LGlurS9QumurQ+f6U83E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750930750; c=relaxed/simple;
-	bh=o8daXcWZ65Dq/4eEwQX7ZOVyxDaHlvht91ZhpLNM6gU=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=ex3ofQMs2tkYIs4Io3v5BFOOBvTswsVZSQKfn/MaR8Dc77FAMQYgUBPFrYJbUMwy+OBlRyzctUHWQXDqC0B3QObeNJ2dt61Rn7hWIl2CyEIvF0WJXgKsNhV5uCniVHpKrAQZ0q1o6IUYaYDR4XydmBcFAuzQyZII+3/y4uKxJ08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ZegFrSP6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QgnrhQzn; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1750932295; c=relaxed/simple;
+	bh=WQ/9cxE5gGmXPpCJKlnLFbBEfplrIztKZyWOvmdN1kE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QOhaZeRy4RzY7woAoTPGS3dX7DixdLk8TiX/eubikFA9VOAEg3fRtJ2SAOKlhluxX0RRGxJ01c4I7Cd30MbDDR6ocvjx3/M0zKK8mHP+MxuUqQ0mzdbWOeW7+7cLhW1LM/Pcem0iyM/f3aLJn+576aZGxpnmjkmTywH9hCrmmns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DfnndKa8; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ZegFrSP6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QgnrhQzn"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D9B1B1400027;
-	Thu, 26 Jun 2025 05:39:07 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Thu, 26 Jun 2025 05:39:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1750930747;
-	 x=1751017147; bh=o7PyZ2b1nxKZYN5a00rll4tLEFf+nfT8KJoh1Zsbzgw=; b=
-	ZegFrSP6ge0nK92ZfDkIed/4FfgcOvZE84ouT+7AWC1v/QzU3pAgPsaGCbsT09IY
-	3+o4+sHge9vbftXuBCWPc/UGgvyto9xU21cl6UVsJ8XhIXUlBRXna0WKs5mbTjI/
-	Kf5gY8u7kbi2PxGCXtlA6PHXwhsPIzKlSjdpj+D1m87JaAoq7vqkZZ80bkwpDth2
-	3ZEoIsDPXNm98kyM0FzyfHf9T3XR4mm3mxfWl0ioTKXR+SX7SEXfQcq4UmeV8mvb
-	QyKMXomDw3o/8U82th88wcQTk88s9UHlayMLa5Ny40kW6s/4hr45oEw/f3Ib6Rrj
-	QuvqnpXtaUPiyqMqrTV46Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1750930747; x=
-	1751017147; bh=o7PyZ2b1nxKZYN5a00rll4tLEFf+nfT8KJoh1Zsbzgw=; b=Q
-	gnrhQznIWRmfajF5jGYo2wV44X2xUQTJp3fqhLDJD2eZp7NFOyYz6SHOtTDVTj0H
-	Yyj+6TJYdT/wUgXFx0Ev9LF3RRQ+ggnS5j79djWSWZIyijTRmnwIHbOmlJk7EzXg
-	rZInHQ/rXAqsOaNa2RNkDwSjoce2AUCsJB3dJWcaVzglG2+l725pqwUlJw6yUG7J
-	wTAUagAVsa+hV83ZBPj4ogqBIfPNlEnEUa2RtUphIM9+LuV/9ih+jBj2ZSKwnyya
-	9iPuqiJqtG5HXZdYjA666xsqITpIlFpAY9eS8KzcADX97vtvXPRXWh/A+5Qz5KR+
-	ua2NgMhJ6vnrh7ojb48+Q==
-X-ME-Sender: <xms:OxVdaNw_PYfK9AAHYJfQZW7YcZX69X3kYPms8Pik_I-K2zOU0wrI7g>
-    <xme:OxVdaNT0OYvr9aMycvHotFG8fUvXJYGUWhrf6o3EEOyaGNCG6cqVb6XUrRZMnN3Zm
-    KhRSUjfZAM544lMGdw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvheeftdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtohepohhlthgvrghnvhesghhmrghilhdrtghomhdprhgtphhtthhopegsrh
-    hoohhnihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjrghmvghsrdgtlhgrrhhk
-    sehlihhnrghrohdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrd
-    guvghvpdhrtghpthhtohephhgthheslhhsthdruggvpdhrtghpthhtohepfhhrrghnkhdr
-    lhhisehngihprdgtohhmpdhrtghpthhtoheplhgrrhhishgrrdhgrhhighhorhgvsehngi
-    hprdgtohhmpdhrtghpthhtohepvhhlrgguihhmihhrrdholhhtvggrnhesnhigphdrtgho
-    mhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdroh
-    hrgh
-X-ME-Proxy: <xmx:OxVdaHUOdNyMhWBQ6z7f0trSQ8MgYjAR_otszf0Vjitl6mcSx1r6hQ>
-    <xmx:OxVdaPixJjGn_JKn5lMsFQARuPv6gyHifMnW_C5ltrmrHvBCpixIFg>
-    <xmx:OxVdaPBaQg7OZSjE_wSHO3RGF-zqE8JANU52FLDM3t4l8XsPyR1kZQ>
-    <xmx:OxVdaIL0GiZ82VhKnRM_c2-oiyxH_MxjEh_k33YgK70MzIANMGLtDw>
-    <xmx:OxVdaM8IePQ425zVd2U10o0gZaAJwFYmShKAHmsnRDg8RBJuawWsbs23>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3DAB1700063; Thu, 26 Jun 2025 05:39:07 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DfnndKa8"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-451d3f72391so7612085e9.3
+        for <imx@lists.linux.dev>; Thu, 26 Jun 2025 03:04:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1750932292; x=1751537092; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZjxAnOS8rNH0+1NZmQ65jb9c6BDRmhT9+YPsn9/ebwI=;
+        b=DfnndKa8+6BXMgJI4cITafzHZU1J6I8MqD3+dxHeSdqfM5NK/i/q33wS0vMwqVZEzg
+         wu3IcS4CCizHeiXF70BuYfDJ+Nu9y5EnwRLvvzIFdtVmMgOO1Xk9y0HFF9eu5c9YeZ8n
+         nJRCyo1cMhC+8yCa3rc1YzVfK/03fjtZTaFSOk0UkTZr7l1sDsoulQ6zU2+17/6Svkqw
+         UTw/ffjiQZIPhR7yfRFs1J3gBtDM0EbxpWX4b8Mc++Q6HfzTm7z7sCG4i/LjJwKTIGYQ
+         5h4r90dORHe+a4LqCRhxQF85hZTV48ZnxdDaQ8ZLzrxqzlITdfKnySlA/CA07Sh/YGRI
+         vpHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750932292; x=1751537092;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZjxAnOS8rNH0+1NZmQ65jb9c6BDRmhT9+YPsn9/ebwI=;
+        b=HG3NMLtrQtFndsExYc3MCzlmbBOjBkNQhL8pco5Cnq72MFJrulh5cK0WXh901CIcUu
+         t3pS/dxuFGIlVWn2KbB6ND+sUKIut8iPbB/l0h/jaWhEtTObf88JY9SvF3QEBf8HDhjK
+         IWxxVxpicm70olA/gLcdaVnKJitmHQl4L8RMHkgPuQE6jNTpnPAFb/tJLx/UflFjEWL1
+         4qhCN1FwucS8q2u2B4aAncG0P/O1c4VtFsGNg26gHnjZz3tSDdK+NTVKdaVGakVWKvX2
+         A4/cWVBSCDHCgHDFI6gFTkE7hV55Upu6oO1/nJ0OFcXuXfaQvQRz0M679q9oHAchy5+z
+         BQEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWkS6PWBJJloke78uWTcG8lAABOAsqQCO2gv/tC5AVr3SFg2YFOt84oqtH3aFnx73Mc+Ik=@lists.linux.dev
+X-Gm-Message-State: AOJu0YykWlWLLuYJ8ew3b1JNlG7sVLA4c0P+/2FdvWLzp7JXuTzqn2zQ
+	fJWISyAV9N4HvmtlWpWWGv+VRZd566XPOdTlul9bRSivDuR7UeUqBHi8Pk7l6mwR8VM=
+X-Gm-Gg: ASbGncueNfWeLMXNldK1Uo+O9LLwQC5BzjW8BYqRx2fCYBCJGN1h4GVQcWOx1i32vMt
+	Qw0tGzJ/45tWKTVbLmFxkBRDDjXh3EBJpih7S6qOo7/yPuTTA1c5GOVHIiisrL83hHL4X1sMbFb
+	D0QLTjBdmtNqfFTxmlSwgUK+mpY3dQ7zz3iXe+Lz3uwafdak1ARkjMVP3rVq9NxdUt6jj8svJa6
+	I/wLfEJBw9vAXlkx7xb53JkcmgkNC2wcUHLKhdpJDGu0rzpAyv89DenCkt0chEj+BpceMvzMdVk
+	655C0WVhCxa8FyyTg30ypt0n29jJdCHEIFEFdbKm+zdUc2DORWE3low7JLaRD04rI2A=
+X-Google-Smtp-Source: AGHT+IFCIAdj1Md0jSwbK4WcI3GRDjT0JPNkwOFSc+l7/qC5ZuHylf2IYZ0En0415K5jiUPMuSKnLQ==
+X-Received: by 2002:a05:600c:1c25:b0:442:f8e7:25ef with SMTP id 5b1f17b1804b1-45383371376mr51561945e9.11.1750932291936;
+        Thu, 26 Jun 2025 03:04:51 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453814a6275sm33518135e9.1.2025.06.26.03.04.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Jun 2025 03:04:51 -0700 (PDT)
+Message-ID: <faf23c39-af14-40ae-ad22-849aea87a4bd@linaro.org>
+Date: Thu, 26 Jun 2025 11:04:50 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-ThreadId: T5f36973fc3fda5d5
-Date: Thu, 26 Jun 2025 11:38:46 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "James Clark" <james.clark@linaro.org>, "Frank Li" <Frank.li@nxp.com>
-Cc: "Vladimir Oltean" <olteanv@gmail.com>, "Mark Brown" <broonie@kernel.org>,
- "Vladimir Oltean" <vladimir.oltean@nxp.com>,
- "Larisa Grigore" <larisa.grigore@nxp.com>, "Christoph Hellwig" <hch@lst.de>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Message-Id: <a7c71ee8-0931-4af3-a68f-3f21fea840d3@app.fastmail.com>
-In-Reply-To: <6fe9eebc-b050-4b12-a28b-e2f0bcc707e2@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] spi: spi-fsl-dspi: Stub out DMA functions
+To: Arnd Bergmann <arnd@arndb.de>, Frank Li <Frank.li@nxp.com>,
+ Vladimir Oltean <olteanv@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, Larisa Grigore <larisa.grigore@nxp.com>,
+ Christoph Hellwig <hch@lst.de>, linux-spi@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20250624-james-nxp-spi-dma-v3-0-e7d574f5f62c@linaro.org>
- <20250624-james-nxp-spi-dma-v3-4-e7d574f5f62c@linaro.org>
- <aFrUqW0ijRt7CJzw@lizhi-Precision-Tower-5810>
- <228fc6f7-52c2-48a8-af7e-6f2cfa7b9168@linaro.org>
- <aFwQCL0tQh9peb7x@lizhi-Precision-Tower-5810>
- <6fe9eebc-b050-4b12-a28b-e2f0bcc707e2@linaro.org>
-Subject: Re: [PATCH v3 4/6] spi: spi-fsl-dspi: Use non-coherent memory for DMA
-Content-Type: text/plain
+ <20250624-james-nxp-spi-dma-v3-3-e7d574f5f62c@linaro.org>
+ <aFrSgJ5xZfccEX9x@lizhi-Precision-Tower-5810>
+ <290fc244-e88f-47a3-8dd3-0ec27eb5c60b@app.fastmail.com>
+ <0c6c78da-575a-4d29-a79a-3903aa801b42@linaro.org>
+ <0f904f12-295c-48fe-96c7-c64c461cdbbd@app.fastmail.com>
+ <884e86be-112b-44dd-a827-30355a5fdba6@linaro.org>
+ <82824032-26d4-42a6-8a92-3e4a410741c5@app.fastmail.com>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <82824032-26d4-42a6-8a92-3e4a410741c5@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 26, 2025, at 11:14, James Clark wrote:
-> On 25/06/2025 4:04 pm, Frank Li wrote:
+
+
+On 25/06/2025 11:54 am, Arnd Bergmann wrote:
+> On Wed, Jun 25, 2025, at 12:19, James Clark wrote:
+>> On 25/06/2025 11:00 am, Arnd Bergmann wrote:
+>>> On Wed, Jun 25, 2025, at 11:19, James Clark wrote:
+>>>> On 24/06/2025 6:16 pm, Arnd Bergmann wrote:
 >>
->> The cover letter will be lost after patch merge. When someone run git log
->> after some year later, they need know why need this change , what purpose ...
->> 
-> I somewhat disagree with this. Usually maintainers add a 'Link:' to the 
-> mailing list when applying patches, so the cover letter shouldn't be 
-> lost. And these particular performance test results are short lived, in 
-> several years time other things may have changed. The performance is 
-> related to a specific device and the state of the rest of the kernel at 
-> this time. Additionally, I mentioned that it's the combination of two 
-> commits. In order to put figures on this commit message I would have to 
-> run another set of tests with only this commit and not the one to 
-> increase the buffer size which comes after. I did consider reversing the 
-> order of them to do this, but it wasn't straightforward, and I really 
-> didn't think it was worth the effort when I can just put the figures on 
-> the cover letter.
+>> Wouldn't that allow someone to break it by disabling (or not enabling)
+>> that option? The driver won't fall back to the other modes if DMA isn't
+>> configured, it just won't work. In this case it seems like it's better
+>> to depend directly on DMA_ENGINE because that fixes the randconfig
+>> issues, which is the whole reason for the discussion.
+> 
+> It would be the same as disabling DMA_ENGINE today when running on an
+> SoC that supports DMA mode in DSPI. Ideally that should fall back
+> to non-accelerated mode. I see a lot of checks for
+> trans_mode == DSPI_DMA_MODE, and I it's probably best to change
+> them to a function call like
+> 
+> static inline bool dsp_dma_mode(struct fsl_dspi *dspi)
+> {
+>       if (!IS_ENABLED(CONFIG_DMA_ENGINE)) // or CONFIG_FSL_DSPI_USE_DMA
+>            return false;
+> 
+>       return dspi->devtype_data->trans_mode == DSPI_DMA_MODE;
+> }
+> 
 
-If you submit your changes as a pull request for inclusion, the
-common solution is to put the cover letter into the signed tag,
-which then gets used as both the description in 'git request-pull'
-and in the merge commit.
+I think we'd have to check with Vladimir on that. He said that he didn't 
+change some devices that use DMA to use XSPI because he couldn't verify 
+that they would still work [1]. So by adding this fallback we would be 
+making that decision now, which I'm not sure we can do. It would 
+probably be better to add the stubs that make the probe fail rather than 
+register a driver with a fallback that we don't know works.
 
-See e.g. commit 5b31d2d81a4b ("spi: sh-msiof: Transfer size
-improvements and I2S") for how a similar series on another driver
-shows up in the git log.
+>> Would someone really want an option to disable compilation of two
+>> functions if their DSPI device is one that doesn't use DMA? Seems like
+>> this option would always be on anyway.
+> 
+> It's probably mainly relevant if they want to completely turn off
+> CONFIG_DMA_ENGINE, which is substantially bigger. Using a check
+> for that symbol in the driver is certainly simpler for the user,
+> as they can't accidentally turn it off the custom symbol.
 
-    Arnd
+That was my thinking.
+
+> 
+> In theory you may also want to turn off DMA mode for testing,
+> which is supported by at least the DW_DMA driver.
+> 
+> I see that SPI_TEGRA114 has a dependency on TEGRA20_APB_DMA,
+> which is yet another variation. This is clearly done for
+> usability purposes since that SPI driver only ever works with
+> the specific DMA driver in practice, but it seems worse
+> conceptually.
+> 
+>       Arnd
+
+I can add it, I'm just questioning the usefulness of adding a new 
+config option that's unlikely to be used in reality. It only achieves 
+the same thing as doing #if CONFIG_DMA_ENGINE in one place in the code.
+
+Ultimately we're just trying to fix some randconfig error, if we start 
+adding new knobs for people to turn just do that, there's a risk they 
+won't get used and we'll make configuring more complicated for people.
+
+Testing might be a partial justification, but that config wouldn't allow 
+you to force DMA mode where XSPI is used. You would almost certainly be 
+doing that too if you are doing that kind of testing, and you'd have to 
+hack the driver anyway to do that.
+
+[1]: https://lkml.org/lkml/2025/6/12/1385
+
