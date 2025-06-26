@@ -1,273 +1,232 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012040.outbound.protection.outlook.com [52.101.66.40])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E295B40856
-	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 02:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750905944; cv=fail; b=QtM2d7kxjBHrKf36sOCntKSaqhxmYHCSOeaXDWkmevpfZH/6nc7rR4oLJbVU4k52+Euo8b7jlLfkJHBfVm7Go8zI561tIOHAcytPv1zumAjIq4hEzTjs1P0hQ/YZGeDAvfTnr6uVXCJQ8CNrJdlPFmTIDcx6O5ckJsSzoMfWVwc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750905944; c=relaxed/simple;
-	bh=KuiMutl2r9pwZD1qKg9jQC5REIngG5dCTrELmSfz4vI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mQOu58R/fKDvYwoDvNAfXNCGkFumnjiCUqtj5EGbzboKt9y1NTwMW8ZbqQ+ka68C2k2SDZi9UzVys/TNmPJZ1CE/+IR3lezgc7XF4BW3WeIEmFUpT7VwwdvIyLvqpnl1rGsFkQ2Qt4QAe7nLzIccneKPegbptdg0kMd7J8gWS58=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=PNSWITqN; arc=fail smtp.client-ip=52.101.66.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D8422DA1F
+	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 06:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750919292; cv=none; b=dnpCnNp5PW+iZfnrslYG3ePV874tanCciz3NtULPzhKGmQ90vio5KI6kWtkDYXsxP8tX2UxovehcftEXI0YQEq/Co1gG6IInhh8VhilIgARmTJKS59k5kxiyDFvwr5ZZ9OQQNtJEII2b29X9B9SBFEt1k6RIVy05CBN2/yhVMfQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750919292; c=relaxed/simple;
+	bh=N4+EBStamH18yC84cVsW43kn3FrOjyeb1A697dQXwBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NkXriOd1+/DWFFW+DkJrnd6DJtzCvQ/Aju9WKpeHIamFx4JhznmcLGQG7nIFTicSugfKucZId86VldJ0BcpWUFWije+m0MWuxU4uXpuX2aR3Id2Wec9G960OYwku9iGnaXdmYQGxFvr+5MXH+x31xlRUTZdCFBnILHCnHkpFfxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=JmX9FPpJ; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="PNSWITqN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LXfT45LyKpbMBFaZOFd4irMIAGxdQqoUE6M/f/wOciJt9TZkVOGct0OkA1paLkDQs6c9FTx6ecNB6BxWFtZaIvOMh1C2zlD/kS8uJVGEJQ17OtdRZebK8bmzI6735N2we/S/Ia3S7DCY9z0RQ1fYiM/wSclhcAFEbscVwNZmGyEg+T3oTpoMBiildABOWpm1SFX5ZDE6PFf+8EBK7tRbF/H1xEjOJ0mKZU2LcJVehGgHAXOrsU/2uahdhBhEjVN6FqXkdYbXHXI4lOZSp1DGtWddJfPLwEXlNQKzgHBpOocO2MLfSBaJPjyXpcPqpHZkwoR0SiApdZ6fMLLZk4G/Mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SbB5fgaBsek15boj0o+i/wkeMCvviqd+Xe0k3uye8OE=;
- b=HX9ReuTQx4jQskJgpq6FEGOanzrwdKnoCG6ksQyliav/5P72mxeLzOEUIxlqq3z71nMu1Ft+mgYZ03WzWwjEhMW1NMoFdwSXh2DYiABFDoUcwdXp3CVotJPsOc0V1WfqqVleNd/Kg8nJL+174F+WIPNyjJfwk/ZIDnelcaIXzpNiNsCxGwTUvlFnwsBjpaRkAxExwBx8/8JMmxp5XrSD3jQq9iYDT7mu5YSrLN2vsbFG4myMU/DnrBbDZiEIjCO1aRWAYkTlRqqh7ZwUaqSpJcflYxth5OUR3jG4T0PvARTY8M/ookklkZADpBHEdQTpQ+SmM3DDH6fNUbhDVO8iKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SbB5fgaBsek15boj0o+i/wkeMCvviqd+Xe0k3uye8OE=;
- b=PNSWITqNaq24FUm6lJguFO9Hd0vr7TKIYGSJ9L8L9YUXk30rwJ1ot5q0Z5hJWuj322/gPyRwthjI96syGBQxe4vrE/Mc++LPLJDbiaDatAqP7aeD8BeMTKHlkaKGXemKZyOzHdQ2hJDrV9Rh72ghd/mmBkBMkTm0kNItTSMUf4Squde1Re8LVV/1aVBOM7msZvClAWwQ4K1IJS34Kz+Bmqseu7LEn6bTaWHPNMSKt6LNyXp0SBsPHSyH7xJthkWPbgHvC9ZozC/IHSqUmTaU10QYnctkTdqNpaC3fdFnU3S2XdFRTqBkWQkG1ezfdCmEG387AkR9md/9anJPPeBR7Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by DU4PR04MB10529.eurprd04.prod.outlook.com (2603:10a6:10:55a::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.16; Thu, 26 Jun
- 2025 02:45:37 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197%3]) with mapi id 15.20.8880.015; Thu, 26 Jun 2025
- 02:45:37 +0000
-Date: Thu, 26 Jun 2025 11:56:02 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>, Bjorn Andersson <andersson@kernel.org>,
-	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	Frank Li <frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>
-Subject: Re: [PATCH v3 0/5] remoteproc: imx_rproc: Support i.MX95
-Message-ID: <20250626035602.GA13855@nxa18884-linux>
-References: <20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com>
- <175088289381.2146689.9089577049350520635.robh@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <175088289381.2146689.9089577049350520635.robh@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: MA0PR01CA0071.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ad::11) To DB9PR04MB8461.eurprd04.prod.outlook.com
- (2603:10a6:10:2cf::20)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="JmX9FPpJ"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CE4E410397285;
+	Thu, 26 Jun 2025 08:28:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1750919287; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=aOywoeS6URIUGte85xuUw45vaQaD6qm7x5c4nv66H4c=;
+	b=JmX9FPpJWXh0V6wVKXgTn1rrkOMjdlo3mghi+sU4xfc0lg96Y2zMko9v1SQu7DiAedAPsv
+	hHNKZa41SyQks1DP2iTPrQESRjPDxXErLICpQr4fWrp7Gura9dlDBWONhNmGbGpWIBAiz9
+	HUqcLh+NzuNLWEs6tT5entH5znqhMtaRyRaAbu/NxfpeZcpYBX1L6XtxlYTDVfxYh99s7X
+	gtFkiM3JeUs5kTguNZsKluVbETKbaFOevHmqgj5pqFA+6z/FBnf9gw4AFibJOXh1Ydtjvy
+	tpGQ5SxfzKNP2z6Qtv4hvZrjDxj3/cZdgeqWir80bhGiVdd8ZRM91+bfvGTG1w==
+Date: Thu, 26 Jun 2025 08:28:00 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v13 04/11] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250626082800.5ddca021@wsk>
+In-Reply-To: <20159d14-7d6b-4c16-9f00-ae993cc16f90@redhat.com>
+References: <20250622093756.2895000-1-lukma@denx.de>
+	<20250622093756.2895000-5-lukma@denx.de>
+	<b31793de-e34f-438c-aa37-d68f3cb42b80@redhat.com>
+	<20250624230437.1ede2bcb@wsk>
+	<20159d14-7d6b-4c16-9f00-ae993cc16f90@redhat.com>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|DU4PR04MB10529:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4358ddc2-f5c5-42de-fb2d-08ddb45b87fa
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?0Xyv9DIjR5fyXBqpbvsWHvVLTF6w7CR6kEbAT0kjsvg/rD/XlftW1QvWbSi3?=
- =?us-ascii?Q?DIKZJKz/LEDkm7lXEQaGdXGzXxF1eZffRwMq4eyLMpeCeHuxSH5txjzw5wen?=
- =?us-ascii?Q?9kMWXPK4yX4mqIpQbN8jL9rdyteQNaYV9hHP+Nfq6gBjSHYI+H8hfe2uTlEU?=
- =?us-ascii?Q?qD68j9TV4y+zK4Nt0DQEbsy+FOpjDXmypXNfTOEtqOYZu5vKtjWyBTak+sno?=
- =?us-ascii?Q?2E3UBrxJLhL7/yB532fjrohtoE8zS7xcOtkmlHg4uvbrbdi11qaCBY1G+iXe?=
- =?us-ascii?Q?aXfNOXdMqQeZnpz4ImxOO/02GcYOkAcaCkDKfNpgHKGm9963Jr2vqB6LKeCe?=
- =?us-ascii?Q?xOF036DHBJbAIQi9GHmWTSPeo/FHq79YowwFAVpPx1bC5pA+NhqvKOD9C9e9?=
- =?us-ascii?Q?JSce67kd8maVo1R7K3ev70dIrQfSgJN0MfxlKXwTejdXkL2THIVzovqDtiCU?=
- =?us-ascii?Q?4n0biSGk4NVqwS8nU5Mgy1/SrKUpFWkKIjhm9PD/tY6RjiDuu0CMvpu9PQ1b?=
- =?us-ascii?Q?GN6Hf5ffmRusqMVRO1u0BkahbVpn3JIwi4aCn3OthGF8Gs8ibcE8QoiC+qbW?=
- =?us-ascii?Q?256eoZF/AvpxFmNPijtm2B34S2/lvW4Qa44mTCiEjFS1LVRdpiQYPzuQ/TaR?=
- =?us-ascii?Q?9eE5B/v5O7RBL4uoBjphayCR0Rzn/UYlsieP/4lTPzn9kjCcu8N/cWbZlzbL?=
- =?us-ascii?Q?eJY0vaioJ0IrS6tFrFKae9x4xv5GJ4zycZEknytE/zqEfv7wMMAi+kJjrXCN?=
- =?us-ascii?Q?jzOJrl53L6YY8OEBTc2n5WzWErXsMavQwpNlp8n2KajgoxU983dGYBKXrfuV?=
- =?us-ascii?Q?Gl0FnG4Tf6XQzjpx4MLKixAZlSf2MlR0TWpRwOnI3hSzC2zzDBrQxeQTuiup?=
- =?us-ascii?Q?yKO6IjbZoEbyjx0d77qku8v8avUd3YCD6InTL2y8p6xHimvNR6tE/2pr8T4s?=
- =?us-ascii?Q?O2q6Y51i7nbEpLNlOuF+rqwVTS79ykolI4svIaoHcSYEe041aLe6sRbdJDh7?=
- =?us-ascii?Q?Rxr6Z8q7LImfPLHVnJ2X23XXQN0aM7kKJW5ItfqRfUZ/RW+SWngFAjjYZM33?=
- =?us-ascii?Q?b8ydJ8RLuNqfuKBcTvPnhiGdL1Ct+pCK0gudM3ZQNnl9EPAK0tmLjhb0zPPu?=
- =?us-ascii?Q?/nSKHzJrCnfOM5aY3UKYzlKmPijhbTs33JfyIsSzpxNmmCU2Q91De4yvEBKv?=
- =?us-ascii?Q?H4iExTuPHP5cx6WHgdleMSDkPQyeIwiFtWN3zzaXLSag1ka9GMDzmvGfRk/A?=
- =?us-ascii?Q?PZvdxAQZKYsYGPd185KD1n5RhYGwrXHDH5eqHHtch/iGrN9lTByQlWD73UfO?=
- =?us-ascii?Q?/Oty6KbB5H81oMjYo8adGCppOVQwRr4SWLyiB2KnfrefKKtGCYt1SW1EwV4Q?=
- =?us-ascii?Q?l3UL+zS+U5NU4Rqfruwm/Ut9H9+tJbOZCJ0CTdYLojNIqkHF+mvAIAuLMaEo?=
- =?us-ascii?Q?oEA0bumh2tIcciJH4r0+kfR3XwO4YvC2?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OIDlhVGC35ZrgtBolahLKp8Rn5kH9Bx9J7e6DbNgAf4L5CpwvJ+0GAuozhOk?=
- =?us-ascii?Q?Ucc2MWNyTdpfLHo0TM+aFeSakB0vSd/cTqHAAfuH54W8HF+yQa0r37ZXE8RZ?=
- =?us-ascii?Q?LwTzjgYn+tgfb39L88msr3qC2BVdDBB8vXmeFuluTLL2upQD3u8qtJDt+b59?=
- =?us-ascii?Q?XrCHgHUuIrkkPJVdk8Hx9+ayBKRlve1qcFUx9TNUpFJC68DZ/NZg6kAYNpgH?=
- =?us-ascii?Q?D53cqCNkxiTNPxRU1VukH1Y/D+XPlrAa9l2pIUT/DJ2rYkGwO3QpDlUutDnP?=
- =?us-ascii?Q?brMiKYd4O9k6m7uJKVKqT8nBk7zPCOLDgC9Ziq6UWZF39n8YqUC1s/EYL10+?=
- =?us-ascii?Q?jF4OSAZQ1eP2YCTA42RqLMdzmIPrdI8rwax4EGkAZi9n9XPJz1MIy0gu89bJ?=
- =?us-ascii?Q?34RlOsTr+RzvHfm5ipVRM2cNDIbWQXIIuNAhcNL7nYLX3huNm+k1+GwVaKtL?=
- =?us-ascii?Q?ENFPBNFMemE3wH7E5aTah0C1KCe9pmoCrKWCto4jcibKpf11/fw4o6MmUTDh?=
- =?us-ascii?Q?hI4kEFnAll48pv+E56lV3qQcXeCT72oXJ8AK/H4ucYoxLl1XHGzKXRp3n+vr?=
- =?us-ascii?Q?LBF6QAxGWUpSpe0iUprVhRbgXiHU/uvcMn0Bg7FNSneRG0kVcKtJyEs7y6mO?=
- =?us-ascii?Q?TY0ori+cjwE6E03sPCfPjve8l/OnKJr8UIMPzMB+yFUs72N10/mgFDQbdh4u?=
- =?us-ascii?Q?zLA3WangtDg2QBhhPh4s0gaEzHWmDHVatACO7ztiGL/I/bF2l+mO/6K1xMPy?=
- =?us-ascii?Q?DEo1beiB2xUVbIAXeQW54Txmf4Y4vBOhGhqgXxOcSfm/XMmIxzvhUdYo8Xob?=
- =?us-ascii?Q?qWNy7zb3pjyahBG5qrcYeSqgXYvJ4heKJEP5FWkyGUX+6hkoqnuwa3i3JAv6?=
- =?us-ascii?Q?qWv8/tfOW81k+IEnir2juywVqHNgDPsSJDmK3SwZu71tscAEH8bJg1N6BnHx?=
- =?us-ascii?Q?ekOmkQ2QUeZ4lerBJBawpHOynDfwAM4X7h71PV/J6lMb1wvmrymZZA2ltHeR?=
- =?us-ascii?Q?xjOJPIBpGgWktAZc2abDu3bdBmaDIe9Rrjerq87zYYbLkpBTFqOLWoSu+F7s?=
- =?us-ascii?Q?Edyn74UME3OXXzm2/P6hBMrw27Hef5vf8ArlaEcyRkMEBSuUWXB7PNROQWF2?=
- =?us-ascii?Q?TGoJJgmuPIXI/LUlQuGGNKB7HLbyTdfuZsJkA4tEKB58jnDDkMCfbcvV0IJb?=
- =?us-ascii?Q?teFzj95UtGCIPbeGHJv4b82SfJQZnhgRPgZYroYTa/qRxiPlhwIGwp2onchT?=
- =?us-ascii?Q?OIkfNVmBiGN01FwV9zxlKflEcWBKbwErFV6XIaKUDIhG7kCAwqMMrYr8nGZv?=
- =?us-ascii?Q?6zpFyrppMv99q4YJwp9oZBNpsTVCvQBUBhx7z0/hqvDmY5d2ScH41dwKokiT?=
- =?us-ascii?Q?dWRQvb+lN5vU0a2Ql5XRJ7qmzoCMJcCt2RsDet1ieBpf38u9O1/Z7I/fqFRl?=
- =?us-ascii?Q?2teJZu6LO67j/gU7Z0TAykBTmP+BBXgvcqh2aTGJE4HjqVQGI7L9Bez/cvGn?=
- =?us-ascii?Q?4OVAYbfOKooccMbj982qG1xi9oxP94eohBYkafmBnchqEDAff/Oc9PDSldS9?=
- =?us-ascii?Q?+/MCN79lqeraUpx/qTntZ6fciB2OoJ7/BeigRgiD?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4358ddc2-f5c5-42de-fb2d-08ddb45b87fa
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2025 02:45:37.7089
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RnYHbPCIJ1qMlhTu5LVFIiSosMcqdZ5aAnU3qFi72jIxIID6T8vYLX1SzkFMHbE/qYWrdm5svyRA/q9D6lEiyA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10529
+Content-Type: multipart/signed; boundary="Sig_/Fx83fi2=ba.0dUz7yta_/mB";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Rob,
+--Sig_/Fx83fi2=ba.0dUz7yta_/mB
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 25, 2025 at 03:25:18PM -0500, Rob Herring (Arm) wrote:
->
->On Wed, 25 Jun 2025 10:23:26 +0800, Peng Fan (OSS) wrote:
->> i.MX95 features a Cortex-M33 core, six Cortex-A55 cores, and
->> one Cortex-M7 core. The System Control Management Interface(SCMI)
->> firmware runs on the M33 core. The i.MX95 SCMI firmware named System
->> Manager(SM) includes vendor extension protocols, Logical Machine
->> Management(LMM) protocol and CPU protocol and etc.
->> 
->> There are three cases for M7:
->> (1) M7 in a separate Logical Machine(LM) that Linux couldn't control it.
->> (2) M7 in a separate Logical Machine that Linux could control it using
->>     LMM protocol
->> (3) M7 runs in same Logical Machine as A55, so Linux could control it
->>     using CPU protocol
->> 
->> In patch 2, Use LMM and CPU protocol to manage M7. More info could be
->> found in the patch commit log
->> 
->> Current setup relies on pre-Linux software(U-Boot) to do
->> M7 TCM ECC initialization. In future, we could add the support in Linux
->> to decouple U-Boot and Linux.
->> 
->> Patchset was tested with below boot images when the patchset based on next-20250526:
->> imx-boot-variant-rpmsg-imx95-19x19-lpddr5-evk-sd.bin-flash_lpboot_sm_a55 (Use LMM protocol)
->> imx-boot-variant-alt-imx95-19x19-lpddr5-evk-sd.bin-flash_alt (Use CPU protocol)
->> imx-boot-imx95-19x19-lpddr5-evk-sd.bin-flash_a55 (M7 not under A55 control)
->> imx-boot-imx95-19x19-lpddr5-evk-sd.bin-flash_all (M7 not under A55 control)
->> 
->> Patchset was tested again with rebase on next-20250623
->> 
->> Patchset is re-based on next-20250603.
->> 
->> Thanks for Daniel/Frank helping review the patchset before posting out to list.
->> 
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->> ---
->> Changes in v3:
->> - Drop fsl,lmm-id and fsl,cpu-id for binding in patch 1
->> - Add lmid and cpuid in driver patch 2.
->> - Add i.MX95 lmid and cpuid in patch 3
->> - Rebased to linux-next-6-23 and tested with this new rebased version
->> - Add dtsi/dts patch 4,5 to give people a view on how it is used per Krzysztof
->> - Daniel's R-b are still kept after talk with Daniel
->> - Link to v2: https://lore.kernel.org/r/20250606-imx95-rproc-1-v2-0-a2bd64438be9@nxp.com
->> 
->> Changes in v2:
->> - Typo fix in patch 2 commit message
->> - Move the m7 address mapping array from patch 2 to patch 3
->> - Add R-b from Daniel to patch 3
->> - Link to v1: https://lore.kernel.org/r/20250604-imx95-rproc-1-v1-0-a6e5f512731c@nxp.com
->> 
->> ---
->> Peng Fan (5):
->>       dt-bindings: remoteproc: fsl,imx-rproc: Add support for i.MX95
->>       remoteproc: imx_rproc: Add support for System Manager API
->>       remoteproc: imx_rproc: Add support for i.MX95
->>       arm64: dts: imx95: Add SCMI LMM/CPU nodes
->>       arm64: dts: imx95-19x19-evk: Add CM7 nodes and vdev related memory regions
->> 
->>  .../bindings/remoteproc/fsl,imx-rproc.yaml         |   1 +
->>  arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts  |  45 +++++++
->>  arch/arm64/boot/dts/freescale/imx95.dtsi           |   8 ++
->>  drivers/remoteproc/imx_rproc.c                     | 138 ++++++++++++++++++++-
->>  drivers/remoteproc/imx_rproc.h                     |   5 +
->>  5 files changed, 195 insertions(+), 2 deletions(-)
->> ---
->> base-commit: fda740558acb4303fcf377e5cf9139f795b1d85b
->> change-id: 20250525-imx95-rproc-1-20bb74ddc8af
->> 
->> Best regards,
->> --
->> Peng Fan <peng.fan@nxp.com>
->> 
->> 
->> 
->
->
->My bot found new DTB warnings on the .dts files added or changed in this
->series.
->
->Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
->are fixed by another series. Ultimately, it is up to the platform
->maintainer whether these warnings are acceptable or not. No need to reply
->unless the platform maintainer has comments.
->
->If you already ran DT checks and didn't see these error(s), then
->make sure dt-schema is up to date:
->
->  pip3 install dtschema --upgrade
->
->
->This patch series was applied (using b4) to base:
-> Base: base-commit fda740558acb4303fcf377e5cf9139f795b1d85b not known, ignoring
-> Base: attempting to guess base-commit...
-> Base: tags/next-20250625 (exact match)
->
->If this is not the correct base, please add 'base-commit' tag
->(or use b4 which does this automatically)
->
->New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com:
->
->arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dtb: scmi (arm,scmi): Unevaluated properties are not allowed ('protocol@80', 'protocol@81', 'protocol@82', 'protocol@84' were unexpected)
->	from schema $id: http://devicetree.org/schemas/firmware/arm,scmi.yaml#
+Hi Paolo,
 
-This is because [1] is still not picked, not because of my patchset.
+> On 6/24/25 11:04 PM, Lukasz Majewski wrote:
+> >> On 6/22/25 11:37 AM, Lukasz Majewski wrote: =20
+> >>> +static void mtip_aging_timer(struct timer_list *t)
+> >>> +{
+> >>> +	struct switch_enet_private *fep =3D timer_container_of(fep,
+> >>> t,
+> >>> +
+> >>> timer_aging); +
+> >>> +	fep->curr_time =3D mtip_timeincrement(fep->curr_time);
+> >>> +
+> >>> +	mod_timer(&fep->timer_aging,
+> >>> +		  jiffies +
+> >>> msecs_to_jiffies(LEARNING_AGING_INTERVAL)); +}   =20
+> >>
+> >> It's unclear to me why you decided to maintain this function and
+> >> timer while you could/should have used a macro around jiffies
+> >> instead. =20
+> >=20
+> > This is a bit more tricky than just getting value from jiffies.
+> >=20
+> > The current code provides a monotonic, starting from 0 time "base"
+> > for learning and managing entries in internal routing tables for
+> > MTIP.
+> >=20
+> > To be more specific - the fep->curr_time is a value incremented
+> > after each ~10ms.
+> >=20
+> > Simple masking of jiffies would not provide such features. =20
+>=20
+> I guess you can get the same effect storing computing the difference
+> from an initial jiffies value and using jiffies_to_msecs(<delta>)/10.
 
-[1]https://lore.kernel.org/imx/20250513-whimsical-almond-quoll-e3ad5b@sudeepholla/
+With some coding assuring only 10 bit width of the resulting clock
+(based on jiffies) I can have a monotonic clock which will not start
+from 0.
 
-Thanks,
-Peng
+>=20
+> >> [...] =20
+> >>> +static int mtip_sw_learning(void *arg)
+> >>> +{
+> >>> +	struct switch_enet_private *fep =3D arg;
+> >>> +
+> >>> +	while (!kthread_should_stop()) {
+> >>> +		set_current_state(TASK_INTERRUPTIBLE);
+> >>> +		/* check learning record valid */
+> >>> +		mtip_atable_dynamicms_learn_migration(fep,
+> >>> fep->curr_time,
+> >>> +						      NULL,
+> >>> NULL);
+> >>> +		schedule_timeout(HZ / 100);
+> >>> +	}
+> >>> +
+> >>> +	return 0;
+> >>> +}   =20
+> >>
+> >> Why are you using a full blown kernel thread here?  =20
+> >=20
+> > The MTIP IP block requires the thread for learning. It is a HW based
+> > switching accelerator, but the learning feature must be performed by
+> > SW (by writing values to its registers).
+> >  =20
+> >> Here a timer could
+> >> possibly make more sense. =20
+> >=20
+> > Unfortunately, not - the code (in
+> > mtip_atable_dynamicms_learn_migration() must be called). This
+> > function has another role - it updates internal routing table with
+> > timestamps (provided by timer mentioned above). =20
+>=20
+> Why a periodic timer can't call such function?
 
->
->
->
->
->
+Yes, the kthread can be replaced with timer with 100ms period.
+
+Just to explain - the mtip_atable_dynamicms_learn_migration(), which
+requires monotonic value incremented once per 10ms, is called at two
+places:
+
+1. mtip_switch_rx() -> the dynamic table is examined if required (i.e.
+new frame arrives). In this place the counter requires 10ms resolution
+(can be extracted from jiffies).
+
+2. The mtip_sw_learning() - which now is run from kthread, but it can
+be replaced with timer (100ms resolution).
+
+>=20
+> >  =20
+> >> Why are checking the table every 10ms, while
+> >> the learning intervall is 100ms?  =20
+> >=20
+> > Yes, this is correct. In 10ms interval the internal routing table is
+> > updated. 100 ms is for learning.
+> >  =20
+> >> I guess you could/should align the
+> >> frequency here with such interval. =20
+> >=20
+> > IMHO learning with 10ms interval would bring a lot of overhead.
+> >=20
+> > Just to mention - the MTIP IP block can generate interrupt for
+> > learning event. However, it has been advised (bu NXP support), that
+> > a thread with 100ms interval shall be used to avoid too many
+> > interrupts. =20
+>=20
+> FTR, my suggestion is to increase the
+> mtip_atable_dynamicms_learn_migration's call period to 100ms
+
+As mentioned above - it is called in two places. One is in kthread
+started at 100ms period, another one is asynchronous when frame arrives.
+
+>=20
+> >> Side note: I think you should move the buffer management to a later
+> >> patch: this one is still IMHO too big. =20
+> >=20
+> > And this is problematic - the most time I've spent for v13 to
+> > separate the code - i.e. I exclude one function, then there are
+> > warnings that other function is unused (and of course WARNINGS in a
+> > separate patches are a legitimate reason to call for another patch
+> > set revision). =20
+>=20
+> A trick to break that kind of dependencies chain is to leave a
+> function implementation empty.
+>=20
+> On the same topic, you could have left mtip_rx_napi() implementation
+> empty up to patch 6 or you could have introduced napi initialization
+> and cleanup only after such patch.
+>=20
+> In a similar way, you could introduce buffer managements in a later
+> patch and add the relevant calls afterwards.
+
+I get your point.
+
+>=20
+> /P
+>=20
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/Fx83fi2=ba.0dUz7yta_/mB
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhc6HAACgkQAR8vZIA0
+zr0Q6ggAhP76zLQCcS7yPIT4oJTgBppnruWfx1DIYSqVAPc72wii+bwG2zw3wD9P
+zWluiinx+cLcfhysEy4jYVBnrJx0lZRwaISWGByo3/DHcjHxKxlYP6dNO0YdcuWS
+JuE3k8RXNRImfH74zo7HpbXjClU4htBIwJgKH0YsztnqpjPA6Vjlj6MEQdkAefXv
+29Y9mXxloNMt6kmRey8a6i4hoqKUtnQKAK9BjZHYMHecCPhcyDwhF/dIP26yJpS7
+mg2kO096B9sosW3w3AN0GC/poDi2OohgoYq4Yf5DmfVosHTtBXnsTGcNql33Uyct
+qj4aoXLChq3ztyZMeNecCr3QGG8MQQ==
+=Raoa
+-----END PGP SIGNATURE-----
+
+--Sig_/Fx83fi2=ba.0dUz7yta_/mB--
