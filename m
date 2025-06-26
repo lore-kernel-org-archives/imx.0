@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E78B202996;
-	Thu, 26 Jun 2025 20:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AAE5479B;
+	Thu, 26 Jun 2025 21:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750971202; cv=none; b=fRRPhhP+eFvDwZ4li2KDVmQNrKGyr4gExbl4tEYYucTXjOtnVKHk1qqkhOCwrFn6GJJVT5b+Z7ZCEM024+KFMwSFEVfVlUvNNh3yMs1uW6Pm2HmZ91w0k1oa3WDPrPyC00ujypqqWHazs0sAkrz45L+gIT/V12v7kCTrUztepos=
+	t=1750972235; cv=none; b=INEgXvCCEe2qcmB+XQiiyQHBomUl8we3QbZ0WIctQweeJgp3YmHHxMIEEIRUOcWkt4XFp5HLys01I4kYk/xp/Vt1q3QqjJxkvm5ijka2Hbaj43O5xlT3nxUjp+oB0z1PDiUn5yqo3Oznu2X+ou1+IzEXH2B5o4b0ymPzQL5o0pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750971202; c=relaxed/simple;
-	bh=0g7iSied3OEnPT7KVQMAkGAzIEK4A+z+aiw/sGNinZg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dU/CIn0ywiFi+gyZf8NVcXVATztfYjazVhzrPy9OhLOeONRBhaG+2PkOV51TP3JAtu3UOho1ssKjsthn0pUeHXS0adDyu0SudOjDFWkEUsDAlttnsGUZpiPlrslYNQsFI/cTmL6ZOvpM9MUWDCrp0COhQP1IybWxbzkr8ZByOwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXjhJWui; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750972235; c=relaxed/simple;
+	bh=2pVH4lCdwLTdq7UY0LCJQ6LUSrPucSQUm9GeMgpyRv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dXeEYuZmp6uJiK6UyWEgxO53m59kTt7nNxjy9RtoK/4CcDR2KAK7XzNpLTTLO1O+ZvhLL0PR75u4jW0dTAMFBrjLUn5rsbJ9aolYv9QoWw5In6qiYyH+WYIX0KmETzM42ifiuiOHCb5NPCz2JUL3NOjHJpT5sfjH5uaqbK6wzV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q+hlhwPj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXjhJWui"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84894C4CEEB;
-	Thu, 26 Jun 2025 20:53:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q+hlhwPj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC89C4CEEB;
+	Thu, 26 Jun 2025 21:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750971201;
-	bh=0g7iSied3OEnPT7KVQMAkGAzIEK4A+z+aiw/sGNinZg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=AXjhJWui5+w9ZEguUthWz8aOBt63fz+PqDqaMPG7AQM7MW7VMMNYqmR5ot4CkE111
-	 OQaSUdW8eN7vpH8xtVbdzFmvYzMUmvWOlhdQwGt5wUeybDv7I4+tgtjuIsfFa7RQvo
-	 Aen/y5yFfhASs91QlMJ+Wz1z13WZc0fBb3waPzA1N5KjiO3NmgG3u9l/55JVr6fguo
-	 W88NlRFFgagQE//5mHpplVIT8SdZJMASZyBpWMWVarCJQxppT72ohAsxeHTt5fuBh0
-	 30jFvrv4O8D0tGLNyMl2RcKZInFOvKpYu6Erm/I/tMDgIhitgTUmTCCG4Fl07zfvaI
-	 6nOLgPrYBcOfg==
-Date: Thu, 26 Jun 2025 15:53:20 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, bhelgaas@google.com,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] dt-binding: pci-imx6: Add external reference
- clock mode support
-Message-ID: <20250626205320.GA1639629@bhelgaas>
+	s=k20201202; t=1750972234;
+	bh=2pVH4lCdwLTdq7UY0LCJQ6LUSrPucSQUm9GeMgpyRv0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q+hlhwPjR5jNqudoQQnXqbRVXAKa99P9+841M9qjr8qCMsc7NFV0SoklmqxHn7cBa
+	 8vmTt4m5pCqfSNQtoc0uQWEvTK4aosDgoZwliHHi9lmlaLCKrrIlDZjHEYT6FzgKBw
+	 hhJhoZwQvzouiZ4t60TciyNviyhnCyzr9e9Tp9aUd/GiRSmbCDj1K8L+w296Ss/GUo
+	 XsKIqPjJoLzda7hyaOkQTSHgtBFhoDxGDhBsN5vJmpgsxU1FTaaC6dCTr/NGyUQ1SA
+	 YdYjhB/q3DZhQseTyr0CDGQEQjwUQ5eiNZW8eRWsd2ZOjF8OhRG/KEajOsWM1tTvMi
+	 Z05tIi3KzCsrQ==
+Date: Thu, 26 Jun 2025 23:10:28 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Troy Mitchell <troymitchell988@gmail.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-i2c@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Yongchao Jia <jyc0019@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+	Ahmad Fatoum <a.fatoum@pengutronix.de>, Carlos Song <carlos.song@nxp.com>
+Subject: Re: [PATCH v4 0/2] i2c: imx: guard and drop prefix
+Message-ID: <5e2sd4nlwdcbutsxgosij3d45g2ngpzgn6jmn567pjdxsgwzee@gh6duqrxbex3>
+References: <20250531-i2c-imx-update-v4-0-bfad0c8fd45c@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,11 +46,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250626073804.3113757-3-hongxing.zhu@nxp.com>
+In-Reply-To: <20250531-i2c-imx-update-v4-0-bfad0c8fd45c@gmail.com>
 
-On Thu, Jun 26, 2025 at 03:38:03PM +0800, Richard Zhu wrote:
-> On i.MX, the PCIe reference clock might come from either internal
-> system PLL or external clock source.
-> Add the external reference clock source for reference clock.
+Hi Troy,
 
-Add blank line between paragraphs or reflow into a single paragraph.
+> Troy Mitchell (2):
+>       i2c: imx: use guard to take spinlock
+
+I merged this patch to i2c/i2c-host.
+
+>       i2c: imx: drop master prefix
+
+This patch has been already applied here:
+
+614b1c3cbfb0 ("i2c: use inclusive callbacks in struct i2c_algorithm")
+
+Thanks,
+Andi
