@@ -1,46 +1,50 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B9B255E23
-	for <imx@lists.linux.dev>; Thu, 26 Jun 2025 07:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F3125A34F;
+	Thu, 26 Jun 2025 08:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750924733; cv=none; b=KzpTsec7JsP6HadeVC141jhSX9/mOACnrwFjnYmZgvbxVvjDYNdkWGJoiC4kYi4C6ow3axQrWXDC9zeQU5wv7zT7JkXeJcaM1hkPUZYo9SFEjx62ZQg9kfTzGzl8n4TN9520kSQTGbN5oNDYMQ51D6oKlgVl6xnO7YUgy/jg3qQ=
+	t=1750925535; cv=none; b=IsWEA8qFgI9NHSK4vNYUp0OwFXGxdUkatM/DoL39bGsBZ7Bc9MarvZDEjeWuIYWIVh/tBPwICI3RuAZvY5p0Bj0VtDQr22DC+SwdpOP0xYA4vOjLM6cUUuymi+D7LnaqxzW43ZgzrywWwKllifxtZcWSn+HQKNfVTwPtiVKOCdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750924733; c=relaxed/simple;
-	bh=6aY0I+S15EJku5uKlHhCDBcxF7xdmNRSztzOKO7k46I=;
+	s=arc-20240116; t=1750925535; c=relaxed/simple;
+	bh=3dXVafBWOfFefTgO6M446tnYxU8YbifNcRhcTuPy+bM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qIIlf93Bs8mLEAjIO+J8K2WcBXNbd4FsTpR9+1b3yLRXs5jYTJMAXNdgiz0cJ1qDZNkSocrjYQS1f+P4RJ4p4yYxRXOjXrv/Rg9L3P1VUPaXvbbxJpsXvZ/jYa2snJy2XaLH8YE0a8bmzxBDWJ1PaSTkLoiAkz3dA/g3sZC2eig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=MCQAiFkE; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=btzVC1SgMHdPLz+iWTr2CPNjVW57SpvitzftfImx/AKfFe4jBKH2757FsOlsO2+yplTW/M77VMkfWMWkRs1oEGPzbdIWk76cCV9a/G4A46HNkMzAgx+Y03PhH66706MjJRTYiNEOfkMhWBh1mrsBiLNKAEq4WgDLxztXKu0X8yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vB5PW4mg; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="MCQAiFkE"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id BE4D41F8BC;
-	Thu, 26 Jun 2025 09:58:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1750924722;
-	bh=dyiFPqDtFrSQdqxYLEQlpBfXMXYJcQrLo+YRsrs7Dww=; h=From:To:Subject;
-	b=MCQAiFkEd1aMh3AbCF5YmuzB7I392mwNbcwuMLYzTVwrNUWjpy14Ggx/QX8zPU+mK
-	 dHqO09a79r+Xj7G7xLVcFATosAXYjW6bjQ+v23oWK3FCY5KOl2mxUziUIyCoCJwru5
-	 3TK9nhKLaqAF10z9SVDx9RBh4eOFpFJuE+LfOHXHmE1keVQX66adloUle2vk8nJqsL
-	 SdsUMn21RHDDnSUWJfZScXDuti/fRMx6dRLor3hv5YT2ZnTc5vmMO9qF3V3eVIXX8Q
-	 FTtEwcxN7RuKS4lIR4Z81jg1C8s/8Zl3kW4lfgZIaPSe5BcUbw0naOgBjkF+Zg/BHU
-	 Zlb0Apcubz21w==
-Date: Thu, 26 Jun 2025 09:58:37 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Dong Aisheng <aisheng.dong@nxp.com>, Andi Shyti <andi.shyti@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] i2c: lpi2c: implement master_xfer_atomic callback
-Message-ID: <20250626075837.GA9216@francesco-nb>
-References: <20250523082931.23170-1-francesco@dolcini.it>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vB5PW4mg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ur88+4etHFHDs/a+baqh+sIcwjleO3j1Hgj0Dd3LqoY=; b=vB5PW4mgXXYjUI9C6oNGOFXeDK
+	o4aM3W6rA+jXwXIqKRHmdw2qDer5iYy9JWbhPAa4GJN4JCFZ1zP2N/2Dwub4QxJt9AyXdwmZC1oE3
+	9DO0naxQyAOm4AQciEGZGRxjoPdH5ukVqcE5qOEdtr/KzSe3Z2qUIedPdhcsdIopaQl0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uUhiJ-00H173-Ok; Thu, 26 Jun 2025 10:12:07 +0200
+Date: Thu, 26 Jun 2025 10:12:07 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Jonas Rebmann <jre@pengutronix.de>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH] net: fec: allow disable coalescing
+Message-ID: <d60808b3-eb20-40ab-b952-d9cd8d8d68a7@lunn.ch>
+References: <20250625-fec_deactivate_coalescing-v1-1-57a1e41a45d3@pengutronix.de>
+ <PAXPR04MB8510C17E1980D456FD9F094F887AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,24 +53,30 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250523082931.23170-1-francesco@dolcini.it>
+In-Reply-To: <PAXPR04MB8510C17E1980D456FD9F094F887AA@PAXPR04MB8510.eurprd04.prod.outlook.com>
 
-Hello,
-
-On Fri, May 23, 2025 at 10:29:29AM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Thu, Jun 26, 2025 at 02:36:37AM +0000, Wei Fang wrote:
+> >  static void fec_enet_itr_coal_set(struct net_device *ndev)
+> >  {
+> >         struct fec_enet_private *fep = netdev_priv(ndev);
+> > -       int rx_itr, tx_itr;
+> > +       int rx_itr = 0, tx_itr = 0;
 > 
-> This series adds atomic operations support to the imx-lpi2c driver and split
-> the previous v3 patch into two separate patches.
+> Since you modified this line, it would be a good idea to change
+> the type to u32.
 > 
-> The first patch replaces the open-coded polling loops with readl_poll_timeout.
-> This improves readability and consistency, and prepares the code for
-> integration of the second patch, while maintaining the same functionality.
-> 
-> The second patch implements the .master_xfer_atomic() callback, enabling
-> support for atomic I2C transfers.
+> > 
+> > -       /* Must be greater than zero to avoid unpredictable behavior */
+> > -       if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
+> > -           !fep->tx_time_itr || !fep->tx_pkts_itr)
+> > -               return;
 
-Just a gentle ping to not forget about this.
+Hi Wei
 
-Francesco
+When i see a comment like this being removed, i wounder if there is
+any danger of side effects? Do you know what is being done here is
+actually safe, for all the different versions of the FEC which support
+coalescence?
 
+Thanks
+	Andrew
