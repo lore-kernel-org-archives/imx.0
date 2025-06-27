@@ -1,188 +1,131 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A112E4277
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 14:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1732D8DAF
+	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 14:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751034449; cv=none; b=HKmjVHRUsTQexqgJgOzIWuDPOHk6eiACnpweKri/s6VC2itLy36WJQuIQep4nOEXk4FmxHoyaY31FJ8d0WdtnU9AN85gV7JqcUup1nR/ogMzRXww6uZ1xUAYahChZY1HgrGLzdX5RAf37vLeG8YjYtrFMGQXPLUt5f84mKm6MXw=
+	t=1751034539; cv=none; b=hbarhH60kc8zVR85C2AkL3DIzjTQf5cHj3k0iTPMIbqt92wEE11ooMh/49UGEQUWkX5MgWd2Jb2utfHYsnfby0qcz4CYkuLaeXFybfqYRrNmCIu8PbydVO+tf68GGh2cVP+Q8FQEMyLUmyvJWPyZDLVwpI0fik11y1eYAWbGI9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751034449; c=relaxed/simple;
-	bh=ieVn41evUKiucK5EdElW+dWxbLMSlux0+pszLx9BUik=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=S6kEcdd6KIH36Wtpp00uXhqL1FwNmuI9WXpQ0rg5FoXCHvakEaegvtl5xUhq3JKqFBK/mkwC40nGQBatOI/mBxPpadYgSK9+l3qO6IsWpcL9zv+ljkDQ/9mJ1evu8f0l81JACbWpJ5kscuWugI2NYlLut8PzGW6Wldc2BkCZIow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U2Bu/GsQ; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751034539; c=relaxed/simple;
+	bh=KpatdQizjtFhLtep6XDpgDVmkA3+kxWZBf7goof4Im8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S9+UsvjfFXp8FwA+usQ82AiU2wEECWAE4EIvkDuCufPyvgXC/cu7EMPHHgnsT6RsKnId4qQrDrkUqmKcVl3tNsjXV46PNzr+WoObVLsdW38Y2D+uC0kK/XFMS3ouZqQBsyF6qy16BQW6fr3hv18vnLOZhMxK29RoR6AC5xSvH5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=QqeEcX7M; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U2Bu/GsQ"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-605b9488c28so4033892a12.2
-        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 07:27:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="QqeEcX7M"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6fd0a7d3949so32492096d6.0
+        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 07:28:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751034446; x=1751639246; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PY79EKzRYcaTfBmkEn1plelmE3wgG6iSvl/aBwK6Y9E=;
-        b=U2Bu/GsQIxwHs5VUkIRSFWwCnSXxdvWJZ97amDhRJyKKz73Piu0AO/+Qtw61jXtZWJ
-         Tq+vTWU4AO5xuCtCjQj3S863/+vOgEMfiuNTVOG8rEuFlo5fb55YAXxt2VUY82hfNuLq
-         L8jZ8K2lSu+BJlPsT6Sk9F6sXVKtEp9T8pRysTnzYv6gDsH8oGnpAKBePOD0fK/snM99
-         WrSl4A7+reUUxQJDd98UH7AW+5VBCjKunaANRLAsTT1ZOmFA9KBv+tXLa5rz2SJ0B8Kz
-         aIwvXcC/HQkIUU6sSQmLsVxEZemUcJSNbK/UpRlqxu9uYER9SasmHEI0OQ0EK70Ol14S
-         Bscw==
+        d=rowland.harvard.edu; s=google; t=1751034535; x=1751639335; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=C770HeWnbg8TH5iYglRt3200XdihOLprXIOYlhNWMgc=;
+        b=QqeEcX7M2oBcJf+UqdplftOYkPsW52aQ3chSxsANDA4J2i5LCIMHiwiLY2a6Fj2d9i
+         oSzH11+r96VxqNQRwmXe7P7aoT+12IHUwoYixOrw8huJageKh36pnhilsdXKjUGNVpLM
+         +JOM1S1CLySXt3zqOSxCTd+hMixMJkWU30S/gSsJOIy9JuB63GOvsZPe5dbQ3+2Dc8C6
+         lYp/UwoA35IRgPp4kC3+C8Q4xEZeTN9HEsuL3Ul66NuMiTgTJWdl1+nLEnJMR5s/sK8y
+         2n1oXMvAk9nJ8nzu4JgDlWhwP3+cafuayhEeaOMPdpyT6l/fbV0AMpXklTeIYukDznMj
+         CRPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751034446; x=1751639246;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PY79EKzRYcaTfBmkEn1plelmE3wgG6iSvl/aBwK6Y9E=;
-        b=hSw9dmpdmMqoPSCfV1cPx3+4zSBE9mtz+/LKaX63kMto9QiAbXjsabFrRss5hbBoUX
-         HuekhU7bq7yvcMpHEsg0WVLfbDVuLbgdKMwgEKojNwY6Y7z98sV6Ngc357FHQDwxXhRh
-         kw68NTDEIUUm7FCLEJtc0Kb4+DZMWacipLpKKBx0uPuumI/Be/LOkpcSPC48YNeZeFQK
-         KQf6q0R7XLPBcfQkmRLrO+PyU615/vCO53Q2yawguB+lFodkjGBcIDrQ81WMFCzlGR2m
-         riRtV5vhZnf5IjwqO0ZhjPt+GX6umnDG51Mjf16EIUlt8wm5vdmwZx7o5XQOioz3xRBy
-         +rhg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUCKvhIuU+iFcq7n0kMlH/699qKB0eto1wCX+0gH61BO/nx3ESptU/ESjtRqgG6xyTj3M=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyeU92Auh8ogu2f/SQL4Rk/KQuKYO1y4MNx2Ssy/qHQGLHJr63z
-	cY7Tu01OZUxeEFayCGp7TyUApV3QnVDf7lJKY8K/1hKIvKCsWljqXkLNNfSzEQ==
-X-Gm-Gg: ASbGncsjiKW1qjJ5AbMe0/+6Agw9LZ5lvTNOecrzBecGSPWrXRuTXMm0pTuu0plI5xY
-	5c5kOg1iXG+lWD+wm1+8MDgoa0oz9nvCBdeYcowQASOXqj4HWbmdjtx2dUZIOVAW5KRlJl47VUj
-	Gd+j5tDozfKe1ZK8RXIpW6wTgwkpF9zIkAWtMfjwkOXqRtvBhTrrQhRyfnNtlqsSM7cw5Gxnafr
-	+dMFY16OCjXffsetRuyprkEI+Uq5uNs9VOLSfEw0e5cot4LTY/JqAD3eWzF+TE03F6ewtjzRZeY
-	ssUVVQA5VqUoPeZQqJmUXo1i9e4FdiKwXfECxE7FqWnz2j4HsTl2hWdqHx+vgfsHcvluldGD4no
-	kmB2R/KI7OuRJQ6qF8PDkDImInPEM2Nogdw==
-X-Google-Smtp-Source: AGHT+IFnOD06HjYEqKm1S8KuPS4M3Ez8CyJAs1iLSJ2WT8T4Kt7o/r+8yNxZapY+lwfOAyqb7QEm3A==
-X-Received: by 2002:a17:907:961a:b0:ad8:9257:571c with SMTP id a640c23a62f3a-ae34fd6c852mr358792166b.20.1751034446217;
-        Fri, 27 Jun 2025 07:27:26 -0700 (PDT)
-Received: from playground.localdomain ([82.79.237.69])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae35e2dafcbsm98925366b.116.2025.06.27.07.27.25
+        d=1e100.net; s=20230601; t=1751034535; x=1751639335;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C770HeWnbg8TH5iYglRt3200XdihOLprXIOYlhNWMgc=;
+        b=Ie3JQuzqTk1ntyeMXv4DR0yzuBuL1Ak2u3wca8upJwY4EuDq3CGHkI5aZ4OEcW9JA8
+         SQgi85ThTJqkhd53jNIMn5Y68LPahVpYMziyj4eKsx7Irgs3wE4tenw9ZzVil2LYTz35
+         mKktAuY1jDkDq40v9tHGZeMX6+ES1cyO1lP5J2i1fMLyMAtAnTBRNT3wUvSqyRagHwSv
+         vB25oiLqLuZs6JKhQ2KRAMt3zkYuoguYUABA/AMk1Nqb1hWWyLLgt33GkG0RhadmqDrX
+         7f9VSbaBZAnDag1cKg8LjD9eFsX+ok8agxVfMQ/08s8PS5ZDREOV2rjyFajCRGT1pQWO
+         bggA==
+X-Forwarded-Encrypted: i=1; AJvYcCXRW1k0A8fNKnsEtXFRY2FNIoiPvliXCNYWOYaSJ17vSitWBaY609vX7S0U2p4oW+dIUPA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzyuaP3V/2YhHV0jgxRHQ2Yc4TNKaZ1hE7zWcOFhNhK6LfoCiaK
+	Kh4qeQRhCdcOxntRm8FifvWDbZitfu14EY94r78FRX0ULfeYHXlLi6ee+PGOHKmLow==
+X-Gm-Gg: ASbGncthLTbkvt5TEJjMImdTBY2lSPZyo7Tlp3SnWggLseK0/6k7Io9nqbZkLcSncDQ
+	iZkThykeHxkbEaEAdHNUWYetRRfi2+iqn3V2JnpUWpCqJq2FETndJp+d86+2bvnEmLvHAm6+cC+
+	GIsaX7DD4/MSNHZQbIlyXq2ZS+L5XHTt+oUDlm/1qJ+3rXgl/1GAfJSnqrQxI5b/7L2JvWyLcNE
+	+Z8jmkkquxzuCes/aMa4SbyDNEq24HqE6N7LnuNzTCbLKMWYv3vgoAuHHZjRpVS7ewqbsz5XNVw
+	zbg1yc8aFwwDgFGrD+GrorcaFTA3tt6/GEqpTj1vOjSTpgIWZk8ODJ/LJxN853uihoS78Mksz94
+	aHHV0
+X-Google-Smtp-Source: AGHT+IEEz4pxaZd2p26Wd0rHmX3QxRvSCJOIV13uXvr66DRvtIABRuX0xyFBcsiRJ4IyA8rPeXFOdw==
+X-Received: by 2002:a05:6214:5784:b0:6fa:cc39:95 with SMTP id 6a1803df08f44-6fffdcfe051mr54002316d6.11.1751034535284;
+        Fri, 27 Jun 2025 07:28:55 -0700 (PDT)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd7730ac96sm21006076d6.105.2025.06.27.07.28.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jun 2025 07:27:25 -0700 (PDT)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] arm64: dts: imx: add dts for the imx8ulp evk9 board
-Date: Fri, 27 Jun 2025 10:26:45 -0400
-Message-Id: <20250627142645.134256-3-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250627142645.134256-1-laurentiumihalcea111@gmail.com>
-References: <20250627142645.134256-1-laurentiumihalcea111@gmail.com>
+        Fri, 27 Jun 2025 07:28:54 -0700 (PDT)
+Date: Fri, 27 Jun 2025 10:28:53 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: gregkh@linuxfoundation.org, viro@zeniv.linux.org.uk,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH] usb: mon_text: find valid buffer offset for iso transfer
+Message-ID: <8a251c8b-5ec6-4238-bdcd-8d8001fd06df@rowland.harvard.edu>
+References: <20250627105651.3653231-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250627105651.3653231-1-xu.yang_2@nxp.com>
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Fri, Jun 27, 2025 at 06:56:51PM +0800, Xu Yang wrote:
+> The valid data doesn't always begin at the buffer head in case
+> iso_frame_desc is larger than 1. Otherwise, the output info will be
+> meaningless.
 
-Add DTS for the i.MX8ULP EVK9 board.
+Not so.  usbmon intentionally copies the entire isochronous transfer 
+buffer, even if only part of it was used for the actual transfer.
 
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
----
- arch/arm64/boot/dts/freescale/Makefile        |  1 +
- .../boot/dts/freescale/imx8ulp-9x9-evk.dts    | 69 +++++++++++++++++++
- 2 files changed, 70 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk.dts
+> This will find the valid iso transfer frame and return correct start
+> address offset of buffer.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 4da7501ece17..4b288b324d38 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -322,6 +322,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek-pcie-ep.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqps-mb-smarc-2.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8ulp-9x9-evk.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb.dtb
- 
- imx93-9x9-qsb-i3c-dtbs += imx93-9x9-qsb.dtb imx93-9x9-qsb-i3c.dtbo
-diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk.dts b/arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk.dts
-new file mode 100644
-index 000000000000..5497e3d78136
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk.dts
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2025 NXP
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx8ulp-evk.dts"
-+
-+/ {
-+	model = "NXP i.MX8ULP EVK9";
-+	compatible = "fsl,imx8ulp-9x9-evk", "fsl,imx8ulp";
-+};
-+
-+&btcpu {
-+	sound-dai = <&sai6>;
-+};
-+
-+&iomuxc1 {
-+	pinctrl_sai6: sai6grp {
-+		fsl,pins = <
-+			MX8ULP_PAD_PTE10__I2S6_TX_BCLK  0x43
-+			MX8ULP_PAD_PTE11__I2S6_TX_FS    0x43
-+			MX8ULP_PAD_PTE14__I2S6_TXD2     0x43
-+			MX8ULP_PAD_PTE6__I2S6_RXD0      0x43
-+		>;
-+	};
-+};
-+
-+&pinctrl_enet {
-+	fsl,pins = <
-+		MX8ULP_PAD_PTF9__ENET0_MDC		0x43
-+		MX8ULP_PAD_PTF8__ENET0_MDIO             0x43
-+		MX8ULP_PAD_PTF5__ENET0_RXER             0x43
-+		MX8ULP_PAD_PTF6__ENET0_CRS_DV           0x43
-+		MX8ULP_PAD_PTF1__ENET0_RXD0             0x43
-+		MX8ULP_PAD_PTF0__ENET0_RXD1             0x43
-+		MX8ULP_PAD_PTF4__ENET0_TXEN             0x43
-+		MX8ULP_PAD_PTF3__ENET0_TXD0             0x43
-+		MX8ULP_PAD_PTF2__ENET0_TXD1             0x43
-+		MX8ULP_PAD_PTF7__ENET0_REFCLK           0x43
-+		MX8ULP_PAD_PTF10__ENET0_1588_CLKIN      0x43
-+	>;
-+};
-+
-+&pinctrl_usb1 {
-+	fsl,pins = <
-+		MX8ULP_PAD_PTE16__USB0_ID		0x10003
-+		MX8ULP_PAD_PTE18__USB0_OC		0x10003
-+	>;
-+};
-+
-+&pinctrl_usb2 {
-+	fsl,pins = <
-+		MX8ULP_PAD_PTD23__USB1_ID		0x10003
-+		MX8ULP_PAD_PTE20__USB1_OC		0x10003
-+	>;
-+};
-+
-+&sai6 {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_sai6>;
-+	pinctrl-1 = <&pinctrl_sai6>;
-+	assigned-clocks = <&cgc1 IMX8ULP_CLK_SPLL3_PFD1_DIV1>, <&cgc2 IMX8ULP_CLK_SAI6_SEL>;
-+	assigned-clock-parents = <0>, <&cgc1 IMX8ULP_CLK_SPLL3_PFD1_DIV1>;
-+	assigned-clock-rates = <12288000>;
-+	fsl,dataline = <1 0x01 0x04>;
-+	status = "okay";
-+};
--- 
-2.34.1
+Even if this were the right thing to do, how come you didn't make a 
+similar modification to mon_bin.c?
 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/usb/mon/mon_text.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/mon/mon_text.c b/drivers/usb/mon/mon_text.c
+> index 68b9b2b41189..4929c7f5abd0 100644
+> --- a/drivers/usb/mon/mon_text.c
+> +++ b/drivers/usb/mon/mon_text.c
+> @@ -145,6 +145,8 @@ static inline char mon_text_get_setup(struct mon_event_text *ep,
+>  static inline char mon_text_get_data(struct mon_event_text *ep, struct urb *urb,
+>      int len, char ev_type, struct mon_bus *mbus)
+>  {
+> +	struct usb_iso_packet_descriptor *isoc_desc;
+> +	int i, offset = 0;
+>  	void *src;
+>  
+>  	if (len <= 0)
+> @@ -160,8 +162,16 @@ static inline char mon_text_get_data(struct mon_event_text *ep, struct urb *urb,
+>  			return '>';
+>  	}
+>  
+> +	if (usb_pipeisoc(urb->pipe)) {
+> +		isoc_desc = urb->iso_frame_desc;
+> +		for (i = 0; i < urb->number_of_packets &&
+> +		     !isoc_desc[i].actual_length; i++)
+> +			continue;
+> +		offset = isoc_desc[i].offset;
+> +	}
+> +
+>  	if (urb->num_sgs == 0) {
+> -		src = urb->transfer_buffer;
+> +		src = urb->transfer_buffer + offset;
+>  		if (src == NULL)
+>  			return 'Z';	/* '0' would be not as pretty. */
+>  	} else {
+
+And how come you didn't modify this branch of the "if"?
+
+Alan Stern
