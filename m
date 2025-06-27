@@ -1,106 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4BF2BD5A2;
-	Fri, 27 Jun 2025 12:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFCB42BEC3B
+	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 13:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751029099; cv=none; b=NejzDApUDDlEXclt1KetBPiUeeYwh4pM7m7zYO4ViqIUCYR6gJzE/TvXFLyVlTpGARI3Ec8N8xshi47SCBBoOi0oQMtmwSd8Q1BeppG9gX3V5Ba5wmIs/p7a9ugCFhvPK1cKa3CEaEWbij+4pDURYPgFH2Ydck5E70K1ZPRAsEU=
+	t=1751029603; cv=none; b=MloDctvOl2xECkxhNh83j9ag79TJNTU5G1P7ga+fQo/ocf4n0W/Ca/DNlGvVWUQaXkvRf+SzhIZ7QDYSEanEW0X+JM41JMeqFkwgFzeoHguPObhDn4ReNrgMAsoAnMiAFlPFKV9rn5Ad4MyAoCgyw2FKDUHU79xVmxwODeRrRjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751029099; c=relaxed/simple;
-	bh=NLK9LVywafopxTYCHb6PiC+xCymbm8kdUK/ydn2ddaA=;
+	s=arc-20240116; t=1751029603; c=relaxed/simple;
+	bh=BbmtNLL95Ypu1/ePsU9VVYFrEH6wcj//XAmsr+5aadE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D+IHR7aTP33/ASF5XRA1c7IrIrKgePGDDx6TjC+8SOBpW2rpZkQjlaliZWiOH2J6llhaQrvqw8tJkctf8gGE4D8xB8v4rGXsIqZnS5RM26wxpW1hpB6JWwE+iwZfLaN39AIGQIOB6d6sSIyK70rprNe7vPYWMoMg8MO9i1HYyNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HkV4kRSM; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HkV4kRSM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E882CC4CEED;
-	Fri, 27 Jun 2025 12:58:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751029097;
-	bh=NLK9LVywafopxTYCHb6PiC+xCymbm8kdUK/ydn2ddaA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HkV4kRSM6WLllV0xsEAvUFoZk1GvCn53VzRv3t61qWGvnreGTEheBvBqyMY5aM6vx
-	 x/xBD6cnT+/ST1+thGTWUjz+Goxq7Zygw5g0d087qaDjhUMGQ6POj9RcpurfFvMZGL
-	 denfCzTOvqn8ICVFS2Mud3bfr9DiOPBbEGn8m7UeOFqE3JHbuDCiSQQooQxDxPdLbu
-	 ioVjA7tzZWmHKG6xjBXjMVr2onRxqvDzDkxw+1fe1JIRJ8uYj94w6b3gz+1N14HNSw
-	 9xUgjaPxZ3GPTb23QufuJThE38C4PM1PvpUaAiCNTyNDH0oGtwS5WQ5+7eOH5BrUAN
-	 DV8ti1P7umYCw==
-Date: Fri, 27 Jun 2025 13:58:11 +0100
-From: Lee Jones <lee@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Vicentiu Galanopulo <vicentiu.galanopulo@remote-tech.co.uk>,
-	Will Deacon <will@kernel.org>, Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Andrew Davis <afd@ti.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-kernel@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-leds@vger.kernel.org
-Subject: Re: (subset) [PATCH v7 2/3] leds: lp8860: Check return value of
- devm_mutex_init()
-Message-ID: <20250627125811.GH10134@google.com>
-References: <20250617-must_check-devm_mutex_init-v7-2-d9e449f4d224@weissschuh.net>
- <175033649656.801367.11888454651585197053.b4-ty@kernel.org>
- <f1cc8959-d420-4ba3-922f-ed7c6f054f22@t-8ch.de>
- <20250625090439.GQ795775@google.com>
- <e340b32d-8839-43b0-8662-edef1729ad6e@t-8ch.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ef8VZ4lCWC0Bqg53GSPdTZuheH9725yn75GqBQqul1VkdOcH8ycWWGCCav27iWLHeagvRgo2zV8lFcyNEuB7ah4Wh2zeg7SkniJ6/TpaMWAa3UbIUvKWbJdIyO1wiOijkzfE1/aHBR04OvCsbHy2ZCm2nDf29S7TzICBn7EFhEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1442E1A00;
+	Fri, 27 Jun 2025 06:06:24 -0700 (PDT)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5B1823F66E;
+	Fri, 27 Jun 2025 06:06:39 -0700 (PDT)
+Date: Fri, 27 Jun 2025 14:06:36 +0100
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/7] firmware: arm_scmi: imx: Support getting cfg info of
+ MISC protocol
+Message-ID: <aF6XXBuBSvVfvgsP@pluto>
+References: <20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com>
+ <20250627-sm-misc-api-v1-v1-3-2b99481fe825@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e340b32d-8839-43b0-8662-edef1729ad6e@t-8ch.de>
+In-Reply-To: <20250627-sm-misc-api-v1-v1-3-2b99481fe825@nxp.com>
 
-On Thu, 26 Jun 2025, Thomas Weißschuh wrote:
-
-> On 2025-06-25 10:04:39+0100, Lee Jones wrote:
-> > On Thu, 19 Jun 2025, Thomas Weißschuh wrote:
-> > > On 2025-06-19 13:34:56+0100, Lee Jones wrote:
-> > > > On Tue, 17 Jun 2025 19:08:13 +0200, Thomas Weißschuh wrote:
-> > > > > devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will be
-> > > > > marked as unusable and trigger errors on usage.
-> > > > > 
-> > > > > Add the missed check.
-> > > > 
-> > > > Applied, thanks!
-> > > > 
-> > > > [2/3] leds: lp8860: Check return value of devm_mutex_init()
-> > > >       commit: 426e0c8e8eed26b67bbbd138483bb5973724adae
-> > > 
-> > > Thanks, but (as mentioned in the cover letter) these patches should go
-> > > together through the mutex/locking tree.
-> > > Could you drop it on your side and give an Ack instead?
-> > 
-> > There has to be good reasons to do this.
-> >
-> > I didn't see any dependents or dependencies in this patch.
+On Fri, Jun 27, 2025 at 02:03:46PM +0800, Peng Fan wrote:
+> MISC protocol supports getting the System Manager(SM) mode selection
+> and configuration name. Add the API for user to retrieve the information
+> from SM.
 > 
-> Patch 3 depends on patch 1 and 2.
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  .../firmware/arm_scmi/vendors/imx/imx-sm-misc.c    | 30 ++++++++++++++++++++++
+>  include/linux/scmi_imx_protocol.h                  |  5 ++++
+>  2 files changed, 35 insertions(+)
 > 
-> It will break the build for each instance of an ignored return value
-> of devm_mutex_init(). Therefore all such instances need to be resolved
-> before the patch can be applied.
-> So the patches can't go through different trees.
+> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> index 1b24d070c6f4856b92f515fcdba5836fd6498ce6..8ce4bf92e6535af2f30d72a34717678613b35049 100644
+> --- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> @@ -26,6 +26,7 @@ enum scmi_imx_misc_protocol_cmd {
+>  	SCMI_IMX_MISC_CTRL_SET	= 0x3,
+>  	SCMI_IMX_MISC_CTRL_GET	= 0x4,
+>  	SCMI_IMX_MISC_DISCOVER_BUILDINFO = 0x6,
+> +	SCMI_IMX_MISC_CFG_INFO = 0xC,
+>  	SCMI_IMX_MISC_CTRL_NOTIFY = 0x8,
+>  };
+>  
+> @@ -73,6 +74,11 @@ struct scmi_imx_misc_buildinfo_out {
+>  	u8 buildtime[MISC_MAX_BUILDTIME];
+>  };
+>  
+> +struct scmi_imx_misc_cfg_info_out {
+> +	__le32 msel;
+> +	u8 cfgname[MISC_MAX_CFGNAME];
+> +};
+> +
+>  static int scmi_imx_misc_attributes_get(const struct scmi_protocol_handle *ph,
+>  					struct scmi_imx_misc_info *mi)
+>  {
+> @@ -306,7 +312,31 @@ static int scmi_imx_discover_build_info(const struct scmi_protocol_handle *ph,
+>  	return ret;
+>  }
+>  
+> +static int scmi_imx_misc_cfg_info(const struct scmi_protocol_handle *ph,
+> +				  struct scmi_imx_misc_system_info *info)
+> +{
+> +	struct scmi_imx_misc_cfg_info_out *out;
+> +	struct scmi_xfer *t;
+> +	int ret;
+> +
+> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_CFG_INFO, 0, sizeof(*out), &t);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ph->xops->do_xfer(ph, t);
+> +	if (!ret) {
+> +		out = t->rx.buf;
+> +		info->msel = le32_to_cpu(out->msel);
+> +		strscpy(info->cfgname, out->cfgname, MISC_MAX_CFGNAME);
+> +	}
+> +
+> +	ph->xops->xfer_put(ph, t);
+> +
+> +	return ret;
+> +}
+> +
+>  static const struct scmi_imx_misc_proto_ops scmi_imx_misc_proto_ops = {
+> +	.misc_cfg_info = scmi_imx_misc_cfg_info,
+>  	.misc_ctrl_set = scmi_imx_misc_ctrl_set,
+>  	.misc_ctrl_get = scmi_imx_misc_ctrl_get,
+>  	.misc_ctrl_req_notify = scmi_imx_misc_ctrl_notify,
+> diff --git a/include/linux/scmi_imx_protocol.h b/include/linux/scmi_imx_protocol.h
+> index 826402dfe6f4d3b9e6d2e93868d6699f989e9bcc..bb0c35b5d6705acddd6c83c31474482a2667b418 100644
+> --- a/include/linux/scmi_imx_protocol.h
+> +++ b/include/linux/scmi_imx_protocol.h
+> @@ -54,15 +54,20 @@ struct scmi_imx_misc_ctrl_notify_report {
+>  
+>  #define MISC_MAX_BUILDDATE	16
+>  #define MISC_MAX_BUILDTIME	16
+> +#define MISC_MAX_CFGNAME	16
+>  
+>  struct scmi_imx_misc_system_info {
+>  	u32 buildnum;
+>  	u32 buildcommit;
+>  	u8 date[MISC_MAX_BUILDDATE];
+>  	u8 time[MISC_MAX_BUILDTIME];
+> +	u32 msel;
+> +	u8 cfgname[MISC_MAX_CFGNAME];
+>  };
+>
+
+Bit odd that you use the same struct partially as output of one ops
+and partially as outout of this ops....but indeed the 2 sets of data
+have different lifetimes, with one set not changing at all after the
+first call durring the same boot.... so I suppose it will be up to the
+caller not to mess up stuff.  
+
+maybe you could embed 2 different structures colelcting those different
+data and then pass the pointers to such internal structs to the
+caller...
+
+>  struct scmi_imx_misc_proto_ops {
+> +	int (*misc_cfg_info)(const struct scmi_protocol_handle *ph,
+> +			     struct scmi_imx_misc_system_info *info);
+>  	int (*misc_ctrl_set)(const struct scmi_protocol_handle *ph, u32 id,
+>  			     u32 num, u32 *val);
+>  	int (*misc_ctrl_get)(const struct scmi_protocol_handle *ph, u32 id,
 > 
-> In theory we could fix the drivers in this cycle and then change
-> devm_mutex_init() in the next one. But new regressions are introduced
-> over and over. This patch is already in the third cycle...
 
-Fair point.
+Anyway, LGTM.
 
-Acked-by: Lee Jones <lee@kernel.org>
+Reviewd-by: Cristian Marussi <cristian.marussi@arm.com>
 
-And patch removed from LEDs.
-
--- 
-Lee Jones [李琼斯]
+Thanks,
+Cristian
