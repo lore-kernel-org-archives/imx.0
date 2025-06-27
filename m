@@ -1,38 +1,78 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFD12DFF26
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 14:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059372E2652;
+	Fri, 27 Jun 2025 14:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751033470; cv=none; b=YecxJC4ISKm4VqVQgmIjIiy0c+i9J8IVZSXAKdKDp7DYNaKMNZ9T0/6CZGcKBOBQkv2oRIOctiGo7ZfYGpsXCsMk2Fl45nGLJBLiBrQ3p4kIIloUpHgwU4aJUcz6HbsHLr9kh4hrC+yqLNnzCPsE5uEf5RM78uE0JnFZUlnkESk=
+	t=1751033928; cv=none; b=GefjOijEj2Ek8NvH9Vpn2M+N+li3JpaCu0uDaGiQ/XXEOI71ZtithJDEUxkorb5mkUmCxPoRUhS2nTNxUgfE14QdFQfj+EO01QP+5/fKFSb/L/xUNHu9lteiPaOShq+11QTMTA0q6cnCql+zPeTE/pGO5a48jqMF5EpyDBuTHEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751033470; c=relaxed/simple;
-	bh=uboYNezb36JpMkieHdIf/S5jZXhofYW9pF0BqpdRV18=;
+	s=arc-20240116; t=1751033928; c=relaxed/simple;
+	bh=TaiQW3c+noRyzXQvsLousUbpwR3hV32c+YniAy5VZUU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TbaToBWwgveowofi/M+RmS+MXpzW521evEpBVtpK3EqXHeZjGkcW7m9N7eJl0yOTP2PTnOf6rdXqJXiWwHJqOvrEUSLoWYhJC0rAOIcQqPlmKGnXVIK/fYVZQzJn81DsEYP4jHnUWig9XqPz0uZn71eF28hnVPWzfJkr6nprDz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C5BCE1A00;
-	Fri, 27 Jun 2025 07:10:50 -0700 (PDT)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 111523F58B;
-	Fri, 27 Jun 2025 07:11:05 -0700 (PDT)
-Date: Fri, 27 Jun 2025 15:11:03 +0100
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=uFNbUlpVuEtVIuomElPS/dw9NID2yPJPxjq14B6Nr8hJRMbxl/RBDabziUP2hc8oZrCdB+BSaP2l5e0owXMHlQhwDkj4GrR2xF3/Ty9Upf/aS2d8pgtLA3PhF0PP5bEdItn2T5YsxaU7MEqz5+rAsL+92jBgLIt49yYMlDxOj24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMFvBsxh; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMFvBsxh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA384C4CEE3;
+	Fri, 27 Jun 2025 14:18:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751033927;
+	bh=TaiQW3c+noRyzXQvsLousUbpwR3hV32c+YniAy5VZUU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JMFvBsxh25QJ2POJpnOoSHcIiORn+haen7v9wCSZAqbRWEWR8rp168/xP5JajxRet
+	 ABSMKTjuxgMOqYpqxHoeQAIY1ZO/1qnNPS1mZwEAmC6ZGJ+7oPy6aIr9chIwI3mMzx
+	 1LwQNtcBxXDKjAqya0P7p7/blBNf1PY42VO6WrZJIuY+dkKjUMVR2n25EtXJNAYBR9
+	 AXfHsrTv4FYdFOr/WwX1bKOOoWsBgt46qpWbERDFD3NLDjmQReTG1ZBzJlC2KUu2aT
+	 lgwUVSvQu451wB1EMcCCl1itmRUz/iFxcC0/eMTNQtR8zSTF1A1AGP4bgUwFaT/d6Y
+	 QSo2Oo2lIP7sA==
+Date: Fri, 27 Jun 2025 09:18:46 -0500
+From: Rob Herring <robh@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/7] firmware: imx: sm-misc: Dump syslog and system info
-Message-ID: <aF6md8uMuD8EpXvd@pluto>
-References: <20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com>
- <20250627-sm-misc-api-v1-v1-7-2b99481fe825@nxp.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 02/28] driver core: Rename get_dev_from_fwnode()
+ wrapper to get_device_from_fwnode()
+Message-ID: <20250627141846.GA3234475-robh@kernel.org>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+ <20250613134817.681832-3-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,133 +81,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250627-sm-misc-api-v1-v1-7-2b99481fe825@nxp.com>
+In-Reply-To: <20250613134817.681832-3-herve.codina@bootlin.com>
 
-On Fri, Jun 27, 2025 at 02:03:50PM +0800, Peng Fan wrote:
-> Add sysfs interface to read System Manager syslog and system info
+On Fri, Jun 13, 2025 at 03:47:42PM +0200, Herve Codina wrote:
+> get_dev_from_fwnode() calls get_device() and so it acquires a reference
+> on the device returned.
 > 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> In order to be more obvious that this wrapper is a get_device() variant,
+> rename it to get_device_from_fwnode().
+> 
+> Suggested-by: Mark Brown <broonie@kernel.org>
+> Link: https://lore.kernel.org/lkml/CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aYSV=iEkKPNbNOccYmA@mail.gmail.com/
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Saravana Kannan <saravanak@google.com>
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > ---
->  drivers/firmware/imx/sm-misc.c | 97 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 97 insertions(+)
+>  drivers/base/core.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 > 
-> diff --git a/drivers/firmware/imx/sm-misc.c b/drivers/firmware/imx/sm-misc.c
-> index fc3ee12c2be878e0285183e3381c9514a63d5142..55485a3c4a5c615102a377f41025a6911d746770 100644
-> --- a/drivers/firmware/imx/sm-misc.c
-> +++ b/drivers/firmware/imx/sm-misc.c
-> @@ -44,6 +44,100 @@ static int scmi_imx_misc_ctrl_notifier(struct notifier_block *nb,
->  	return 0;
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index cbc0099d8ef2..36ccee91ba9a 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -1881,7 +1881,7 @@ static void fw_devlink_unblock_consumers(struct device *dev)
+>  	device_links_write_unlock();
 >  }
 >  
-> +static ssize_t syslog_show(struct device *device, struct device_attribute *attr,
-> +			   char *buf)
-> +{
-> +	struct scmi_imx_misc_sys_sleep_rec *rec;
-> +	struct scmi_imx_misc_syslog *syslog;
-> +	int ret;
-> +	size_t len = 0;
-> +
-> +	if (!ph)
-> +		return 0;
-> +
-> +	syslog = kmalloc(sizeof(*syslog), GFP_KERNEL);
-> +	if (!syslog)
-> +		return -ENOMEM;
-> +
-> +	ret = imx_misc_ctrl_ops->misc_syslog(ph, sizeof(*syslog), syslog);
+> -#define get_dev_from_fwnode(fwnode)	get_device((fwnode)->dev)
+> +#define get_device_from_fwnode(fwnode)	get_device((fwnode)->dev)
 
-...ah...so you basically cast to void a structure of u32 words and then
-expect that the firmware perfectly aligned with how the struct is
-defined here....size checks assures no out-of-bounds BUT the meaning of
-he blob itself is entirely up to FW and kernel being aligned, since no
-type checking is done of any kind and fields are NOT reference by
-name...so may I ask why ? ..also because the scmi_imx_misc_syslog seems
-pretty tiny to need iterators to parse back the reply...do you have so
-tiny transpotr message size ?
+In patch 3, you add the same define. Is there some reason to not move it 
+to a header?
 
-..anyway I would suggest at least to add some sort of version-field to
-the struct so that at least you can detect if the FW spits out something
-that is not what your driver expect or is ready to handle...especially
-if you plan to extend or modify the layout of the structs in the future.
-
-
-> +	if (ret) {
-> +		kfree(syslog);
-> +		return ret;
-> +	}
-> +
-> +	rec = &syslog->syssleeprecord;
-> +
-> +	len += sysfs_emit_at(buf, len, "Wake Vector = %u\n", rec->wakesource);
-> +	len += sysfs_emit_at(buf, len, "Sys sleep mode = %u\n", rec->syssleepmode);
-> +	len += sysfs_emit_at(buf, len, "Sys sleep flags = 0x%08x\n", rec->syssleepflags);
-> +	len += sysfs_emit_at(buf, len, "MIX power status = 0x%08x\n", rec->mixpwrstat);
-> +	len += sysfs_emit_at(buf, len, "MEM power status = 0x%08x\n", rec->mempwrstat);
-> +	len += sysfs_emit_at(buf, len, "PLL power status = 0x%08x\n", rec->pllpwrstat);
-> +	len += sysfs_emit_at(buf, len, "Sleep latency = %u\n", rec->sleepentryusec);
-> +	len += sysfs_emit_at(buf, len, "Wake latency = %u\n", rec->sleepexitusec);
-> +	len += sysfs_emit_at(buf, len, "Sleep count = %u\n", rec->sleepcnt);
-> +
-
-... how wonder how much is still frowned upon to serve such big multiline
-structured information payloads from sysfs ... (asking for a friend :P)
-
-
-> +	kfree(syslog);
-> +
-> +	return len;
-> +}
-> +
-> +static DEVICE_ATTR_RO(syslog);
-> +
-> +static ssize_t system_info_show(struct device *device, struct device_attribute *attr,
-> +				char *buf)
-> +{
-> +	struct scmi_imx_misc_system_info *info;
-> +	int len = 0;
-> +	int ret;
-> +
-> +	if (!ph)
-> +		return 0;
-> +
-> +	info = kmalloc(sizeof(*info), GFP_KERNEL);
-> +	if (!info)
-> +		return -ENOMEM;
-> +
-> +	ret = imx_misc_ctrl_ops->misc_discover_build_info(ph, info);
-> +	if (ret)
-> +		goto err;
-> +
-> +	ret = imx_misc_ctrl_ops->misc_cfg_info(ph, info);
-> +	if (ret)
-> +		goto err;
-> +
-> +	ret = imx_misc_ctrl_ops->misc_silicon_info(ph, info);
-> +	if (ret)
-> +		goto err;
-> +
-> +	ret = imx_misc_ctrl_ops->misc_board_info(ph, info);
-> +	if (ret)
-> +		goto err;
-> +
-> +	len += sysfs_emit_at(buf, len, "SM Version    = Build %u, Commit 08%x\n",
-> +			     info->buildnum, info->buildcommit);
-> +	len += sysfs_emit_at(buf, len, "SM Config     = %s, mSel=%u\n",
-> +			     info->cfgname, info->msel);
-> +	len += sysfs_emit_at(buf, len, "Silicon       = %s\n", info->siname);
-> +	len += sysfs_emit_at(buf, len, "Board         = %s, attr=0x%08x\n",
-> +			     info->brdname, info->brd_attributes);
-
-...so some of this stuff Build/Silicon/BoaRD info has pretty much
-'forever' lifetime...are you sure you want to query them out of the FW
-each time you issue a sysfs show ?
-
-Cannot you simply dump this stuff once for all at probve time and
-instead query misc_cfg_info() upon each show to refresh only the data
-that will change ?
-
-(this also corroborates my idea that you should somehow partition this
-data into distinct structs by their lifetime...
-
-Thanks,
-Cristian
+Rob
