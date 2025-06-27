@@ -1,45 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775232ED15B;
-	Fri, 27 Jun 2025 21:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC6425E452;
+	Fri, 27 Jun 2025 21:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751058449; cv=none; b=bA+drWgk03xnI4RMs3On/mXQElNwipSmRASd1DTmWrWqGRpvyVRaKSB/kjv6GdeFVQiUnX63V4/u7TUS4Vne4jKzvDsEwCaQ+htauqT9rayVf3lW/h4y35FdCWjx+brPfOgNqbX8WuQSkAyG/nB6kzdzZ2hqSn4AL0RBL2gFPW8=
+	t=1751059151; cv=none; b=o4/Qym9AVJOrdCI6KkfoGfsvtRCjuJFDZuATeQ9ZEYseWmdeDplma4bgbd+r1yCvhk7KeaI2GMBrbbsXFAGUhsRvVPQh8rN1Ak+d+BSrxgsYWcHaQj9mZ04FA8hoXF1GgCa4zRMn1xHpo0/Vuhv/hV8dRPdD9Q0HizjYzT5Khfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751058449; c=relaxed/simple;
-	bh=HoAKHVnVB3TJzjVLPcNtHz4b5bTjyeWIfqzTIsuT44c=;
+	s=arc-20240116; t=1751059151; c=relaxed/simple;
+	bh=DJo/Xw/Bqco4vBD6Mqkh+C8Ix5OPOEQ1fzty/x4dnyk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FwHx97t9xZcsPqs22WNWcB1JzVuAMJU4YBlMRCi8xIo+zwertMNc+gIG2lEMk7RvXLcPU8T0ZgaSCD4vBTIZP6NBsGKg7Ruu+mSr+5DOYA3vlBZsM/SyzNwacZTQp8T9cLDjC3+7jOQylQcP5iC3QHAaYwPtdFtZ7hNYP0MN8oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lv0HznvV; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tNM/ob9thseS/aOl+kOfQd7x132CdAq8ZMoKcq5WA3aMFM19f/UFDd7SLKlQJD4ImDArSoYMvk4wuQKiTZ2q+6Keeoyx7NaD6numWcDMV+Dla7FBg1tYt+PQnY+YCE15/YFOAcz7XVuM0h7dooOohhchRIFJxJbVvPliTbt13/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQD4SIMF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lv0HznvV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEA0C4CEE3;
-	Fri, 27 Jun 2025 21:07:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQD4SIMF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D82C4CEE3;
+	Fri, 27 Jun 2025 21:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751058449;
-	bh=HoAKHVnVB3TJzjVLPcNtHz4b5bTjyeWIfqzTIsuT44c=;
+	s=k20201202; t=1751059150;
+	bh=DJo/Xw/Bqco4vBD6Mqkh+C8Ix5OPOEQ1fzty/x4dnyk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lv0HznvV+eTyOUirCFk2xwJYwCCGDB+GLUnfF/Z6DyyQheCpor//kTA5vQYBlGGKQ
-	 PlJnL/UH+RLwVFeq02Kd3ywr/U+dGpLt1M2IKhRmvF2w7Q/7XCOkmdBj9LUtfasdV3
-	 qggy2QQ9+J81KdZ88zRSmYClCFP8Ix2Db/7PAbsWQ6kX+7LRi1pVHsrHU7pJBDI8FF
-	 vzLcGqOPD9El6+behuhnvWMmxw0r3VubfnJmJ7Tc+/lE3KcpOWQ10A1+0kIhT+Qiru
-	 4PNqvzjI3S2TAR5GBEF14REjZhA5nqjPmKB4Kq1ehzPlKSPQA+CQ9U4imzK+kTXzVj
-	 cxdcQtj67xQPw==
-Date: Fri, 27 Jun 2025 16:07:28 -0500
+	b=gQD4SIMFHjE7kHEjfbyq8Bv9jRE3HgswR1vZshITIExP2INHjVXbvpQjvn/cMhU2k
+	 yTVaVahdRv/vWLPArfKV1XPJiIWWwt+HMY/k05nw4CuTX3XKYL5kepGomHutsXuOSF
+	 elS3CPQ9zaP+SnJZrxHBFwvojxvhvz1y4eZw9bthfI5YTUl0ib81mTB6fGG+1yfR2h
+	 6LSlcDATwYmPn5eJZItgVH3aUPfUqOSr9XCjhT2Z2QKNoE6gwEpcGSDm1cbKVpq5Aj
+	 +KWf5WXxSOW/Q5iPVmQU+dzLty/ZZGeXxaLryvfb9alyGhPZLGbeU69ho8KIbpozyc
+	 xsRljQdH2oBWg==
+Date: Fri, 27 Jun 2025 16:19:09 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
 	Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, linux-usb@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vladimir Zapolskiy <vz@mleia.com>
-Subject: Re: [PATCH v2 1/1] dt-bindings: input: touchscreen: convert
- lpc32xx-tsc.txt to yaml format
-Message-ID: <175105844804.146874.1572190783775455795.robh@kernel.org>
-References: <20250625163431.2543597-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: usb: convert lpc32xx-udc.txt to yaml
+ format
+Message-ID: <175105914924.160757.6319015774337763114.robh@kernel.org>
+References: <20250625214357.2620682-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,25 +49,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250625163431.2543597-1-Frank.Li@nxp.com>
+In-Reply-To: <20250625214357.2620682-1-Frank.Li@nxp.com>
 
 
-On Wed, 25 Jun 2025 12:34:28 -0400, Frank Li wrote:
-> Convert lpc32xx-tsc.txt to yaml format.
+On Wed, 25 Jun 2025 17:43:53 -0400, Frank Li wrote:
+> Convert lpc32xx-udc.txt to yaml format.
 > 
 > Additional changes:
-> - add clocks and put it into required list to match existed lpc32xx.dtsi.
+> - add clocks and put it into required list to match existed lp32xx.dtsi.
+> - remove usb-transceiver@2c at examples.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
 > changes in v2
-> - add clocks and put it into required list to match existed lpc32xx.dtsi.
+> - update commit message by add "additional changes"
+> - add clocks to required list
 > ---
->  .../input/touchscreen/lpc32xx-tsc.txt         | 16 -------
->  .../input/touchscreen/nxp,lpc3220-tsc.yaml    | 43 +++++++++++++++++++
->  2 files changed, 43 insertions(+), 16 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/input/touchscreen/lpc32xx-tsc.txt
->  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/nxp,lpc3220-tsc.yaml
+>  .../devicetree/bindings/usb/lpc32xx-udc.txt   | 28 ----------
+>  .../bindings/usb/nxp,lpc3220-udc.yaml         | 54 +++++++++++++++++++
+>  2 files changed, 54 insertions(+), 28 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/usb/lpc32xx-udc.txt
+>  create mode 100644 Documentation/devicetree/bindings/usb/nxp,lpc3220-udc.yaml
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
