@@ -1,158 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2963819E990;
-	Fri, 27 Jun 2025 15:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB991A9B3D
+	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 16:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751039919; cv=none; b=bR9chPMaORbaIfQnOBSduck6sEDrjc5b6Vjdb0mXWFtcgQaj+9mvp6Lv8cTMv9q6qcj+Eb82xNsumsGSvn1dP9bosnFe5mBYrDu7OXaHvaCJLSpcU4PEYni3rgoODNvxI9sBnkhZAEgTOxM20JAQu9NSdcgVqKDC8ILRGxymOgA=
+	t=1751041047; cv=none; b=bhbiVNxYG0XkefOwiw4S7yf6lcTG/RoT9Gdaw/vuf4xOXUF3UQx9b5uaaCg++TPXKBK6D82OTAaNCHFlwRCm1Dzmr/A0J3s8rEtGfrkLz2KxSy1mwovZ42U+UA7WI5tBKwk2PO/GeNW3t9A4Gfx9ZhZBnHk+3Iefnflotgp9BfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751039919; c=relaxed/simple;
-	bh=tBv0zN4w3fBWkY/nFOn0k+IhVxh6OQEYPfuuw9vKCvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jfiq9Wl2ge9Vvl0GWciZkfrZXqScZ6GVoCwn9lxxARBLQfVGwjv/C+rjGj183umfD84M0ykVcv904w5kHF6kMdnc1IXNyaPrhZFrvXB1snWQSI1Pm2Oaa8DM0JKGqXh/hbc1KT2oqYVQjcm8VKfB41D7bjDWZzZ1pZMiham4WgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4tJ94JZ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4tJ94JZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7B3C4CEE3;
-	Fri, 27 Jun 2025 15:58:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751039918;
-	bh=tBv0zN4w3fBWkY/nFOn0k+IhVxh6OQEYPfuuw9vKCvk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b4tJ94JZTjGfbHmZDMM8bIuOky0BWZylZfr+Z7v8HXEL7evqfsEWw1BgYoEYnFfpX
-	 SdKj4hkTwOEnNMp6O4y/hMVwX+Tk/9SY3kG6RNby6zDETioc5MDSawDH9+LcaRgrsG
-	 Pz3RCeX3aRYkjYStdMtyjYME4zWrNpS+iykXmBun6VP+XXrF6ivxSzv5WeRN87gV/M
-	 HLSMkb13vj/LZuOP9gKQN4koUKfveUcJGZoe0jAWfkjC9sE+Y1rfFm+XLyHfVaaSV5
-	 SQAYvDPy3PQkLshJCnEyhDpwGRkyX80rd1xx5d7Iwju+Cm+YcCtjz9Kx4UzxQ1xIYx
-	 RCWGTryFzxJ0Q==
-Date: Fri, 27 Jun 2025 10:58:37 -0500
-From: Rob Herring <robh@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 00/28] lan966x pci device: Add support for SFPs
-Message-ID: <20250627155837.GC3234475-robh@kernel.org>
-References: <20250613134817.681832-1-herve.codina@bootlin.com>
+	s=arc-20240116; t=1751041047; c=relaxed/simple;
+	bh=2EDYynSAKdcNkoTKt2Z1SNAswFEK8/5Ov1+wsGM+KF4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QAfQ4gIDnyij7YoWXdJsRvc2tfrbO8Zgd1wf7WgfFF5evM4KYXfW5KaoOQ1UIys/tZC67RJsg1rTTZ90lOcWQM6jz3GuxE+cf1sRrFdEAPwkurkMX3ljc/lH/XBw+Zy6UKVv06qnQA02nnGgzA/V64+ydwD9oGggwGTOVWeKJzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1uVBlM-0000VN-W7; Fri, 27 Jun 2025 18:17:17 +0200
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1uVBlM-005e4c-2D;
+	Fri, 27 Jun 2025 18:17:16 +0200
+Received: from pza by lupine with local (Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1uVBlM-000QIt-1v;
+	Fri, 27 Jun 2025 18:17:16 +0200
+Message-ID: <6b9d0c3d9c5a0338b16f32e37a759df836f2c004.camel@pengutronix.de>
+Subject: Re: [PATCH 1/1] dt-bindings: reset: convert nxp,lpc1850-rgu.txt to
+ yaml format
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "open
+ list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Cc: imx@lists.linux.dev
+Date: Fri, 27 Jun 2025 18:17:16 +0200
+In-Reply-To: <20250602144046.943982-1-Frank.Li@nxp.com>
+References: <20250602144046.943982-1-Frank.Li@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250613134817.681832-1-herve.codina@bootlin.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, Jun 13, 2025 at 03:47:40PM +0200, Herve Codina wrote:
-> Hi,
-> 
-> This series add support for SFPs ports available on the LAN966x PCI
-> device. In order to have the SFPs supported, additional devices are
-> needed such as clock controller and I2C.
-> 
-> As a reminder, the LAN966x PCI device driver use a device-tree overlay
-> to describe devices available on the PCI board. Adding support for SFPs
-> ports consists in adding more devices in the already existing
-> device-tree overlay.
-> 
-> With those devices added, the device-tree overlay is more complex and
-> some consumer/supplier relationship are needed in order to remove
-> devices in correct order when the LAN966x PCI driver is removed.
-> 
-> Those links are typically provided by fw_devlink and we faced some
-> issues with fw_devlink and overlays.
-> 
-> This series gives the big picture related to the SFPs support from
-> fixing issues to adding new devices. Of course, it can be split if
-> needed.
-> 
-> The first part of the series (patch 1, 2 and 3) fixes fw_devlink when it
-> is used with overlay. Patches 1 and 3 were previously sent by Saravana
-> [0]. I just rebased them on top of v6.15-rc1 and added patch 2 in order
-> to take into account feedback received on the series sent by Saravana.
-> 
-> Those modification were not sufficient in our case and so, on top of
-> that, patch 4 and 5 fix some more issues related to fw_devlink.
-> 
-> Patches 6 to 12 introduce and use fw_devlink_set_device() in already
-> existing code.
-> 
-> Patches 13 and 14 are related also to fw_devlink but specific to PCI and
-> the device-tree nodes created during enumeration.
-> 
-> Patches 15, 15 and 17 are related fw_devlink too but specific to I2C
-> muxes. Patches purpose is to correctly set a link between an adapter
-> supplier and its consumer. Indeed, an i2c mux adapter's parent is not
-> the i2c mux supplier but the adapter the i2c mux is connected to. Adding
-> a new link between the adapter supplier involved when i2c muxes are used
-> avoid a freeze observed during device removal.
-> 
-> Patch 18 adds support for fw_delink on x86. fw_devlink is needed to have
-> the consumer/supplier relationship between devices in order to ensure a
-> correct device removal order. Adding fw_devlink support for x86 has been
-> tried in the past but was reverted [1] because it broke some systems.
-> Instead of enabling fw_devlink on *all* x86 system or on *all* x86
-> system except on those where it leads to issue, enable it only on system
-> where it is needed.
-> 
-> Patches 19 and 20 allow to build clock and i2c controller used by the
-> LAN966x PCI device when the LAN966x PCI device is enabled.
-> 
-> Patches 21 to 25 are specific to the LAN966x. They touch the current
-> dtso, split it in dtsi/dtso files, rename the dtso and improve the
-> driver to allow easier support for other boards.
-> 
-> The next patch (patch 26) update the LAN966x device-tree overlay itself
-> to have the SPF ports and devices they depends on described.
-> 
-> The last two patches (patches 27 and 28) sort the existing drivers in
-> the needed driver list available in the Kconfig help and add new drivers
-> in this list keep the list up to date with the devices described in the
-> device-tree overlay.
-> 
-> Once again, this series gives the big picture and can be split if
-> needed. Let me know.
+On Mo, 2025-06-02 at 10:40 -0400, Frank Li wrote:
+> Convert nxp,lpc1850-rgu.txt to yaml format.
+>=20
+> Additional changes:
+> - remove label in example.
+> - remove reset consumer in example.
 
-Please suggest how you think this should get merged? There's 8 
-maintainer trees involved here. Some parts can be merged independently? 
-We need to spread over 2 cycles? Greg just takes it all?
+Applied to reset/next, thanks!
 
-Rob
+[1/1] dt-bindings: reset: convert nxp,lpc1850-rgu.txt to yaml format
+      https://git.pengutronix.de/cgit/pza/linux/commit/?id=3D25ef956349a5
+
+regards
+Philipp
