@@ -1,124 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38A32E9ED7
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 17:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C375D2EA742
+	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 17:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751046589; cv=none; b=mrtoOWlqW8Dh8KD+cyxOX9Ujyaev9nbykkS7MyIp5FHp3Zgyg7ZIVoi15vwG9GEBBAPzhoFY13wHobAm9soatPvvFg3OGw0eu84ZE8JVj3cwwmCIEd8ZzjJTy+GTWQy8ruQ6AcxTW2R0t0shzNGaIl1RI/ZksXyv1owND1sSddg=
+	t=1751047021; cv=none; b=KSqgu1gBjcJaxaI1hUuhBPYPmCkm+mseUdL1kCMED5sNmPGnQWya30pgBXi+h4rW8B5up+Sl02rz/7QAD4DJlb+q/JzxaLKvXduJWG98kdr6aer4p6Cnhq/aoii2koFSE+BKXJdNHawSUGXlWeREScG5y63eIemJXvYsqxWuH4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751046589; c=relaxed/simple;
-	bh=fENVGkGcV01nrx8rwyk5yc++tYlpmC/4in3yTWfI+BU=;
+	s=arc-20240116; t=1751047021; c=relaxed/simple;
+	bh=czkJe6P8edZl5EJS+azo4RH37Yqc0TlWj4Ti1g4vPok=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bbMFCZQLINv8QjrLvBc/yfPykhqqF9Cjo00k07ZXilnMn4yDazQ7C/SvMyecXvCsF8WMGL9IFdw7fpWMb9tmE5phn7r/d/9EVwcsZ5TjFU2WKkPgW5Y7hJ9aXuPPnbhW/sEMY7UJVc5IfhyclqB6xT5VSfbNh8BXO7B8Z0lXDdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QDaBKqc7; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=Mx+TT0fuJ2WkE2eYj6Zq4GnrrxzMiTaSyRPgYqovfEZEN/nPHDHykFEfNJLmvgVINWUl8XYMyt1GovLhunqFUQnkiYGFV/qCOI36KXF6ySZypy+4M2EzRGskkUlh0afhHztiKrhsPStHo695HFdpfKwqlTdC/Wxt6DZcAyCLJQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=NxrT0he0; arc=none smtp.client-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QDaBKqc7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D620C4CEF9
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 17:49:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751046589;
-	bh=fENVGkGcV01nrx8rwyk5yc++tYlpmC/4in3yTWfI+BU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QDaBKqc73OAck/HvM0EVd5wtKUjUN7GPsOvpdjQ9yxQfT7gPphE3WJUX18LD5I3cV
-	 3I0DsaAXNiZrzbAjgH5RmUIHzuGV+il3/DAWKdEl1GqN7pgoGcBq/ue07wIRoUWsUt
-	 DTpXWcdsABzLOk1esyLFQ6+vPQhDQTQrIl2/oW859p+ENQfTmHeQIpUI/tNrE7f6Jx
-	 0HaPtNPil8h6RVpt0LhQKj8TbFYuz1YRJsqIZTzOr7g9NNuWwvAtNNz3sRmHxoyX4R
-	 hw1JP/ra1GDPoCgdErvqrQrL0xl6DZHuw+Uqxk597rbpThcBDon2oxslqivu081ygM
-	 1Gw7oJVnPaDng==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ae0c571f137so520580566b.0
-        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 10:49:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVVsd6WVeORsdAnmvJKHuOlFQDsSK827pWLBh/V1xvnBlfsUCRXT+Dq+WdGESRstDIQ7DM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxXV+0gCLRrY3LzUKlPhi8JT6je64OfIX5gEdwxMPzKRMhfTt4+
-	pGlaWoaI+93aZhaYUj3rgBg5qcDQs8wdvEwCa/UKmdeq+WBQAOryMzBu43rHWgK6RkIIKBUIQ3k
-	fyh9L9wzzdbY7cfBPsYhYx7t0N35X/Q==
-X-Google-Smtp-Source: AGHT+IHT5hz4lr0pRGvdH2rjBfGZM81PcOoFrAQguTcQw3WkJwjxgHpGim6dbfGwqFeg5PpW/uAYH3Ohif/f2EVITXw=
-X-Received: by 2002:a17:907:cb86:b0:ae3:55bd:7724 with SMTP id
- a640c23a62f3a-ae355bd77f6mr319698366b.37.1751046587752; Fri, 27 Jun 2025
- 10:49:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="NxrT0he0"
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-610cbca60cdso82160eaf.0
+        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 10:56:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1751047018; x=1751651818; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rbuYeB/znMRVmNnp22re7GbKA0GoKXipcQWP3fhXkwI=;
+        b=NxrT0he0ksrXdW3DuGCBkIdJFgZfo4SulNysBXhaPpfnzlns1k3snDSLA09WKRb8N+
+         mVYYCZSmtD9SpX4gmqwgzZeHnRb2ioaTonB8+JjbEI6wpnniLr2tETJuRQ9vpnXN5yVY
+         AP7qec8+twSNE7CbsKG8HSuxbkKoqObC5rorC+Z4mKpb3F5LwV/KWcOEOvr2PX5Cjm8a
+         teN7VfMpIcOgBZkcSeLawg5Hj1Bac26YiBZDpjZeqK2mZVc1+ibNT5xpPN2xeE4mhusu
+         8ZarZvxha1xeR7xTdPyhJMiOwVfwaqSGDJVUq+GNNGs6yM3KYIAZGABr3iZGuqEZZm/B
+         LMTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751047018; x=1751651818;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rbuYeB/znMRVmNnp22re7GbKA0GoKXipcQWP3fhXkwI=;
+        b=s6Y4fxdA9nU+32wlqednLgeL2I4muruHuEcwYqyx7x7AXRiwrckMYtZiS5pOrD05C2
+         8t503fI8uegxh8a+KgWHn5iUArI+DhLgJZGZDRaKTw0P3ImBt8qT6A0XOjFY2l0/e7Sn
+         VuOsgDiqRo75fBzMSYhbDgRY/5aQNCj9kKM62gvTvQOLKrYax5DBOIF9L2JFwsgPiv7v
+         ZuRh/OSmMqIjb7VJeJD3gzsrOK5sK9u6i1/qrzQS0TecDu/c2YB+9JTaapmeeEHP6+p5
+         +r8G67fSYBepmvERXpQ8wPov/rDxTYfJ/YRhxwSmPwqaZv0RqNxa5m7oj0GpON7QlRLM
+         37vA==
+X-Forwarded-Encrypted: i=1; AJvYcCW7g4vuG9dfzsZM37cqG+4vX1yfiAEyQhMde0yr5L+SF1y4iJMjyh0N9VhFVXnaLlN6Vts=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwtNNiIuWdtrwwm6/EjDN+K4sfQp5rE73AqrCK1NwZxiv0X3jRa
+	lA6LEAN4hHQMQKxUZ7g2VmWWNFPUgOLoA+a9CKUppRDD0Wh4KSeaPKhZn7R4j2tk+Z3uVo6h1Sm
+	7vNu9vkqzC0vz9pSU4dGMBTELYTsgyu2ZE76rLk7A9A==
+X-Gm-Gg: ASbGncvuUWqiaoFumvBuOojXr5o3fwob/IUZPJxk3G1MvDT9mNixmH9WRrDBAs2YUfq
+	pJN+98ScmKn3UfZnmBEyqQBwOVFancnDvKtnvEsuSvm8wvtCyqdRtkja7qISQNNtEwojpNxYUBV
+	eqGpC1yuZP3xkhOB10cbSwsjOtNnZS6ahpaZ9VhMj/OPZTCDmII8Up2g==
+X-Google-Smtp-Source: AGHT+IHn/O+yw4sdAQD7guPzO4j4/3MQOR3FH8Nb/hBYMQX3XW0mdG4bsbuqDOKcybzRbPj3Ume9tDS47O4jmJlhfy8=
+X-Received: by 2002:a05:6820:994:b0:611:b561:258e with SMTP id
+ 006d021491bc7-611b90965aemr2849488eaf.3.1751047017799; Fri, 27 Jun 2025
+ 10:56:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250613134817.681832-1-herve.codina@bootlin.com>
- <20250613134817.681832-19-herve.codina@bootlin.com> <20250627162245.GA3513535-robh@kernel.org>
- <aF7H4-toeb7Ouz3d@smile.fi.intel.com>
-In-Reply-To: <aF7H4-toeb7Ouz3d@smile.fi.intel.com>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 27 Jun 2025 12:49:36 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJCuevzu69bx3yWm3ZR9wZ+UsWuNXscig5KMm2WH4WxOw@mail.gmail.com>
-X-Gm-Features: Ac12FXz-QVHJXTEek87UkxSujkajQAR7GpuL-shCkOttrl-AQQGXN_bA70yoM5c
-Message-ID: <CAL_JsqJCuevzu69bx3yWm3ZR9wZ+UsWuNXscig5KMm2WH4WxOw@mail.gmail.com>
-Subject: Re: [PATCH v3 18/28] of: property: Allow fw_devlink device-tree on
- x86 when PCI device-tree node creation is enabled
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Derek Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20250620213447.56392-1-aford173@gmail.com>
+In-Reply-To: <20250620213447.56392-1-aford173@gmail.com>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Fri, 27 Jun 2025 10:56:46 -0700
+X-Gm-Features: Ac12FXwaCCVUyBeRU0CpBhDP3QxyDWYKIvfZAtJZ7SnZG3kcRW-1EnKbWFLlM-8
+Message-ID: <CAJ+vNU0caeeC6in5dO_jkkbYNAnTL7drBZcmNBsstbrPWqUkHw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
+To: Adam Ford <aford173@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 27, 2025 at 11:33=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Fri, Jun 20, 2025 at 2:52=E2=80=AFPM Adam Ford <aford173@gmail.com> wrot=
+e:
 >
-> On Fri, Jun 27, 2025 at 11:22:45AM -0500, Rob Herring wrote:
-> > On Fri, Jun 13, 2025 at 03:47:58PM +0200, Herve Codina wrote:
+> The reference manual for the i.MX8MM states the clock rate in
+> MMC mode is 1/2 of the input clock, therefore to properly run
+> at HS400 rates, the input clock must be 400MHz to operate at
+> 200MHz.  Currently the clock is set to 200MHz which is half the
+> rate it should be, so the throughput is half of what it should be
+> for HS400 operation.
 >
-> ...
+> Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development=
+ kit")
+> Signed-off-by: Adam Ford <aford173@gmail.com>
 >
-> > > -   if (IS_ENABLED(CONFIG_X86))
-> > > +   if (IS_ENABLED(CONFIG_X86) && !IS_ENABLED(CONFIG_PCI_DYNAMIC_OF_N=
-ODES))
-> >
-> > I really want CONFIG_PCI_DYNAMIC_OF_NODES to go away at some point, not
-> > add more users.
-> >
-> > I think this should instead check for specific platforms not with
-> > kconfig symbols but DT properties. For ce4100, you can just check the
-> > root compatible string. For OLPC, there isn't a root compatible (in the
-> > DT I have). You could check for /architecture =3D=3D OLPC instead. Ther=
-e's
-> > some virtualization guests using DT now too. I would think their DT's
-> > are simple enough to avoid any fw_devlink issues.
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/=
+arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+> index 21bcd82fd092..8287a7f66ed3 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+> @@ -294,6 +294,8 @@ &usdhc3 {
+>         pinctrl-0 =3D <&pinctrl_usdhc3>;
+>         pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
+>         pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
+> +       assigned-clocks =3D <&clk IMX8MM_CLK_USDHC3>;
+> +       assigned-clock-rates =3D <400000000>;
+>         bus-width =3D <8>;
+>         non-removable;
+>         status =3D "okay";
+> --
+> 2.48.1
 >
-> I don't think this is good approach. The above check is more reliable in =
-my
-> opinion.
+>
 
-I'm fine with any solution that doesn't add a
-CONFIG_PCI_DYNAMIC_OF_NODES which we can't remove. Adding it was a
-kick the can down the road to merge the support worry the mixed
-usecase (on ACPI systems) later. It's now later.
+Hi Adam,
 
-> > Alternatively, we could perhaps make x86 fw_devlink default off
->
-> For my (little) knowledge I believe this is not feasible anymore.
-> Some x86 code (drivers) relies on fw_devlink nowadays. But take
-> this with grain of salt, I may be way mistaken.
+This caught my interest. Where in the IMX8MMRM do you see this and
+would it also apply to the IMX8MP? (You've patched your IMX8MM and
+IMX8MN boards).
 
-Doesn't the CONFIG_X86 check disable it?
+Have you encountered any issues when running eMMC at HS400 due to this
+or is it just something you noticed in the RM more recently like with
+my recent patch that lowers SPI clock due to an obscure RM note [1]
 
-Rob
+Best Regards,
+
+Tim
+[1] https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=3D96=
+5976&archive=3Dboth
