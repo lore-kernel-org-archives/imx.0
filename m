@@ -1,170 +1,103 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B08292B5F
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 13:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA662D9EC2
+	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 13:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751029885; cv=none; b=V8lrCITDt8jO8nrdVA1dkaP7bfuj9pEDri674zVbmHL+qkty/h0yzXo6VkoqOgSFhf30xK5E2YzxEIxJ535cej3NVyp/jzw8VqC237iYk4eGjfrr6G1we9Fvz0OUwGPxOL2bXXN/NDkcVKDPvTKuHt/yoBMmK19DiIPcMFclpAg=
+	t=1751030353; cv=none; b=Eq1cQVishRonB+ZSYETWlADP6vyE6lzAYLes/Go37iB0hMtl0FiHRvT1HjuspFmcosh/WGzEN99Ltd5Mc6+tV8fuOXeEeyhMGbyW4q3N6b56Pu/t19uXrnb1GSxWOY41hChNTOnU0qwhbFp7PnxOT8Ov5eTn+tRrGZVVxM28Zj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751029885; c=relaxed/simple;
-	bh=4Vxv6m1FLYRrhTVG6vptpa8t9PYLpynpN3yl3kH7qE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C/7/QzTgW7jLtWOy39Vmf9O0wigPne52mKL8tKAydSnKL6t8h4m6U0nMxQOPrDvxeeNMAHMW44c7sbjSLbS9r6ZuOj0mwBTUY/iWbcyBjYi5B5fhZWNfLcmS+D0RVR0JYv3eQToztnG9Wz7SRsdx4m3P4jFq4aVZAYeYOGwnQHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 717AF1A00;
-	Fri, 27 Jun 2025 06:11:04 -0700 (PDT)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 81E3F3F66E;
-	Fri, 27 Jun 2025 06:11:19 -0700 (PDT)
-Date: Fri, 27 Jun 2025 14:11:16 +0100
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/7] firmware: arm_scmi: imx: Support getting silicon
- info of MISC protocol
-Message-ID: <aF6YdPc6z21XNhWQ@pluto>
-References: <20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com>
- <20250627-sm-misc-api-v1-v1-4-2b99481fe825@nxp.com>
+	s=arc-20240116; t=1751030353; c=relaxed/simple;
+	bh=r+vCHV0VQ3uqAEqelpGMeu4mfO4ZLC4xRqRONU7l88I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GmYO9OhOWbSr46TrCSTYgccO3GIAOG16Xn8T8r748hQz5fcBrxrqJ5pUTsAUFjXch5CynoFhPSoP/TZr6TkYVNt9C8MhfS/2SUlxZLBHwUWj5sI6r3O2VxEcsJJS9/boZxqNzh3vsVLXfVtmfoKVPlTi/tJZk9yCXGoI/vfYORs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hms5Ap57; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hms5Ap57"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3122a63201bso1702007a91.0
+        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 06:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751030351; x=1751635151; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c9vYtlh7hRicrNQ+wKv3jmRTnFEYxCRjACepYVSWnxA=;
+        b=hms5Ap57Jv/FVIu/uF7KWgLhZeAruMek/wOabvwGTkFGko1U4DnhOjzI1RMmC1cuXd
+         qvSPIsojVuEkqmINA/EkFOQX5d3Hcct0VgYyvsJ5FPUroJLL9dfcTk7c6yIUcanRugJ+
+         6ku0LkhVCURiiSE8q9MaRK6j1FmrayeajSNkBQCFIYaoGIouZ/wGxCG3xaMGqgZDS119
+         mQVNyoca4gp5BVx3YoxtUDZVyNsyGd8/Gm544ucSKufWOulRNmACGG9rip2mBiHC7//u
+         kc5hR+FAyeMCIfKJk8NjgA2VaUcWt3X3VSLTm3JCvGcdP1Bgvaw3dUkwf97mVFvGcbbE
+         U1lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751030351; x=1751635151;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c9vYtlh7hRicrNQ+wKv3jmRTnFEYxCRjACepYVSWnxA=;
+        b=tOhPmtT/V33I9voAoYISBwfuxQnupmns6oYSflTMU4Vo0PtLQNYeteSXbNlPqcM+mt
+         bIx9XFPRqWX7IGkUOfZ09SF/FSwSGSyFhos6S9g3mv3fTe1kSYdCXwQryFw2wEZZBvEx
+         84uGLDZdMTdFrffA1cR65V8QOxDc5Vpk98hkOjlPDy7FgJRrsCMPvGq2uBHlbfDlP3xB
+         fnpYDSitzQh7Y9KcugVZ85s2NdVx3coM7oE72w1aPA5Huyas+P6L959Ao13MmUYWSQSM
+         l7S4s68Y8qTYBNlM8oOYz1SwAJEFHQ59yTZaZiFCr5Cj0V2CYbFuGczmLytt81V3TclW
+         pMHg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1aQVg9tqw146GaxKIqTdk4geMVoHrg7Gsd4u46mXWC2Sk9gN1FW7gYi+WKXXajpRp3uc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw4ekApvxB3AOCvFSSFKjmURE8VI1ymdeMi5yMQnvb5qh4hqcNR
+	RHrwusjLIsSmLMu09qLAwr/VvkT+3aHGasjE3N0r27nBJXYLIWUn25XNpxZzayz+xGt/zZBSe5U
+	ePV1iP6FJi1sAuJVCnn52E1ai95CPym0=
+X-Gm-Gg: ASbGncvQppzH3PcDb4yMG45Jt312AtwCHDuhNzBKuXpKh76eScULadD1defXlrdtAIP
+	zq5ZFFDNdbUtEUPBD9DpGlWIkhUJEhSLd4gEi0JnzWKy+My6+tcxrd8aWPskfCiRs4gMgweFnv2
+	EpFAr4t0XAzkjANShp/yomGGinIthwhxBvSiafkbP0o47QNubwXRYN+Q==
+X-Google-Smtp-Source: AGHT+IGuDUwfIqzzDEvXavoJTZSrH/5OLn85eSiig5eyOQ5l/CyM5CDTHx0eNi8xE3Ifw6y62UefXmBp5cIFyf+XDbE=
+X-Received: by 2002:a17:90b:530c:b0:313:28f1:fc1b with SMTP id
+ 98e67ed59e1d1-318c9225e3cmr4981774a91.9.1751030350976; Fri, 27 Jun 2025
+ 06:19:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250627-sm-misc-api-v1-v1-4-2b99481fe825@nxp.com>
+References: <20250530221713.54804-1-aford173@gmail.com> <20250530221713.54804-2-aford173@gmail.com>
+ <20250605013023.GB29462@nxa18884-linux>
+In-Reply-To: <20250605013023.GB29462@nxa18884-linux>
+From: Adam Ford <aford173@gmail.com>
+Date: Fri, 27 Jun 2025 08:18:59 -0500
+X-Gm-Features: Ac12FXxtQU4Km0iG8bo0b1N6dVq9hbbMuCpXJFyZ-RZRycrANe1s_6GUKni-xpQ
+Message-ID: <CAHCN7xJFm5qcnVkiOt2+vQG=oeys=_4gonc7BkMWbXM-p0iURQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] arm64: dts: imx8mp: drop gpcv2 vpu power-domains and clocks
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com, 
+	m.felsch@pengutronix.de, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 27, 2025 at 02:03:47PM +0800, Peng Fan wrote:
-> MISC protocol supports getting the silicon information including revision
-> number, part number and etc. Add the API for user to retrieve the
-> information from SM.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  .../firmware/arm_scmi/vendors/imx/imx-sm-misc.c    | 34 ++++++++++++++++++++++
->  include/linux/scmi_imx_protocol.h                  |  8 +++++
->  2 files changed, 42 insertions(+)
-> 
-> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> index 8ce4bf92e6535af2f30d72a34717678613b35049..d5b24bc4d4ca6c19f4cddfaea6e9d9b32a4c92f7 100644
-> --- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> @@ -26,6 +26,7 @@ enum scmi_imx_misc_protocol_cmd {
->  	SCMI_IMX_MISC_CTRL_SET	= 0x3,
->  	SCMI_IMX_MISC_CTRL_GET	= 0x4,
->  	SCMI_IMX_MISC_DISCOVER_BUILDINFO = 0x6,
-> +	SCMI_IMX_MISC_SI_INFO = 0xB,
->  	SCMI_IMX_MISC_CFG_INFO = 0xC,
->  	SCMI_IMX_MISC_CTRL_NOTIFY = 0x8,
->  };
-> @@ -79,6 +80,13 @@ struct scmi_imx_misc_cfg_info_out {
->  	u8 cfgname[MISC_MAX_CFGNAME];
->  };
->  
-> +struct scmi_imx_misc_si_info_out {
-> +	__le32 deviceid;
-> +	__le32 sirev;
-> +	__le32 partnum;
-> +	u8 siname[MISC_MAX_SINAME];
-> +};
-> +
->  static int scmi_imx_misc_attributes_get(const struct scmi_protocol_handle *ph,
->  					struct scmi_imx_misc_info *mi)
->  {
-> @@ -335,12 +343,38 @@ static int scmi_imx_misc_cfg_info(const struct scmi_protocol_handle *ph,
->  	return ret;
->  }
->  
-> +static int scmi_imx_misc_silicon_info(const struct scmi_protocol_handle *ph,
-> +				      struct scmi_imx_misc_system_info *info)
-> +{
-> +	struct scmi_imx_misc_si_info_out *out;
-> +	struct scmi_xfer *t;
-> +	int ret;
-> +
-> +	ret = ph->xops->xfer_get_init(ph, SCMI_IMX_MISC_SI_INFO, 0, sizeof(*out), &t);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ph->xops->do_xfer(ph, t);
-> +	if (!ret) {
-> +		out = t->rx.buf;
-> +		info->deviceid = le32_to_cpu(out->deviceid);
-> +		info->sirev = le32_to_cpu(out->sirev);
-> +		info->partnum = le32_to_cpu(out->partnum);
-> +		strscpy(info->siname, out->siname, MISC_MAX_SINAME);
-> +	}
-> +
-> +	ph->xops->xfer_put(ph, t);
-> +
-> +	return ret;
-> +}
-> +
->  static const struct scmi_imx_misc_proto_ops scmi_imx_misc_proto_ops = {
->  	.misc_cfg_info = scmi_imx_misc_cfg_info,
->  	.misc_ctrl_set = scmi_imx_misc_ctrl_set,
->  	.misc_ctrl_get = scmi_imx_misc_ctrl_get,
->  	.misc_ctrl_req_notify = scmi_imx_misc_ctrl_notify,
->  	.misc_discover_build_info = scmi_imx_discover_build_info,
-> +	.misc_silicon_info = scmi_imx_misc_silicon_info,
->  };
->  
->  static int scmi_imx_misc_protocol_init(const struct scmi_protocol_handle *ph)
-> diff --git a/include/linux/scmi_imx_protocol.h b/include/linux/scmi_imx_protocol.h
-> index bb0c35b5d6705acddd6c83c31474482a2667b418..0e639dfb5d16e281e2ccf006a63694b316c431f4 100644
-> --- a/include/linux/scmi_imx_protocol.h
-> +++ b/include/linux/scmi_imx_protocol.h
-> @@ -55,6 +55,7 @@ struct scmi_imx_misc_ctrl_notify_report {
->  #define MISC_MAX_BUILDDATE	16
->  #define MISC_MAX_BUILDTIME	16
->  #define MISC_MAX_CFGNAME	16
-> +#define MISC_MAX_SINAME		16
->  
->  struct scmi_imx_misc_system_info {
->  	u32 buildnum;
-> @@ -63,6 +64,11 @@ struct scmi_imx_misc_system_info {
->  	u8 time[MISC_MAX_BUILDTIME];
->  	u32 msel;
->  	u8 cfgname[MISC_MAX_CFGNAME];
-> +	/* silicon */
-> +	u32 deviceid;
-> +	u32 sirev;
-> +	u32 partnum;
-> +	u8 siname[MISC_MAX_SINAME];
->  };
+On Wed, Jun 4, 2025 at 7:20=E2=80=AFPM Peng Fan <peng.fan@oss.nxp.com> wrot=
+e:
+>
+> On Fri, May 30, 2025 at 05:17:08PM -0500, Adam Ford wrote:
+> >From: Marco Felsch <m.felsch@pengutronix.de>
+> >
+> >The GPCv2 G1, G2 and VC8000E power-domain don't need to reference the
+> >VPUMIX power-domain nor their module clocks since the power and reset
+> >handling is done by the VPUMIX blkctrl driver.
+> >
+> >Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+>
+> LGTM: Reviewed-by: Peng Fan <peng.fan@nxp.com>
+>
+> Just curious is there any issues without this change?
 
-Same observation here...maybe embed a struct dedicated to this....BUT in
-this case the silicon_info are NOT meant to change during a boot (and
-even across a reboot really) so why a distinct command from build_info
-since both infos has the same lifetime ? (I understand the quality of
-the info returned is drastically different HW vs SW)
+The vpumix_blk_ctrl driver handles the timing between the vpumix and
+the g1, g2 and vc8000 devices.  From what I can tell, this is required
+to make it not hang on an 8MPQDL where the VPU is not present.
 
->  
->  struct scmi_imx_misc_proto_ops {
-> @@ -76,6 +82,8 @@ struct scmi_imx_misc_proto_ops {
->  				    u32 ctrl_id, u32 evt_id, u32 flags);
->  	int (*misc_discover_build_info)(const struct scmi_protocol_handle *ph,
->  					struct scmi_imx_misc_system_info *info);
-> +	int (*misc_silicon_info)(const struct scmi_protocol_handle *ph,
-> +				 struct scmi_imx_misc_system_info *info);
->  };
->  
->  /* See LMM_ATTRIBUTES in imx95.rst */
-
-
-Other than this, no strong opinion anyway.
-
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-
-Thanks,
-Cristian
+adam
+>
+> Regards,
+> Peng
