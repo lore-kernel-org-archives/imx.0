@@ -1,72 +1,72 @@
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C375D2EA742
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 17:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599351B6CE4
+	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 18:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751047021; cv=none; b=KSqgu1gBjcJaxaI1hUuhBPYPmCkm+mseUdL1kCMED5sNmPGnQWya30pgBXi+h4rW8B5up+Sl02rz/7QAD4DJlb+q/JzxaLKvXduJWG98kdr6aer4p6Cnhq/aoii2koFSE+BKXJdNHawSUGXlWeREScG5y63eIemJXvYsqxWuH4g=
+	t=1751049602; cv=none; b=pP5ImIRCW6ARfNO2BdwRnUdXxBCZ42h6WmZrxI1ITXyCSZ+UANZZfDI5/B2v9SqVl3ByqRvnIFiJCf03csquqx3scC6tLbCgpWChXlK7AEJgCAc3KezaWoXVlDhRtZW2cGWbM1VZBonKDTboARqPooAfYdT2X393VVfutEVXYfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751047021; c=relaxed/simple;
-	bh=czkJe6P8edZl5EJS+azo4RH37Yqc0TlWj4Ti1g4vPok=;
+	s=arc-20240116; t=1751049602; c=relaxed/simple;
+	bh=nVbFmmLKmZhzB8RvT3vMX9q7B5LYHhf8kIaqheREoPk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mx+TT0fuJ2WkE2eYj6Zq4GnrrxzMiTaSyRPgYqovfEZEN/nPHDHykFEfNJLmvgVINWUl8XYMyt1GovLhunqFUQnkiYGFV/qCOI36KXF6ySZypy+4M2EzRGskkUlh0afhHztiKrhsPStHo695HFdpfKwqlTdC/Wxt6DZcAyCLJQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=NxrT0he0; arc=none smtp.client-ip=209.85.161.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+	 To:Cc:Content-Type; b=QAmqPBLngxPwsCdguYoPYu6oN7fQEk0IUqE8Or1dKweg242wooa2nDCod2EK0/KzRG0IberSmAAjOb+7GJ9/FZ79y1XcvbXGiSNrhknsti06JzGEgWfZ6e/1Xs/ijoX0pCAXiHeXLvlY1DxukJrRzdZMo7mB7KuJpgfkY8a/OoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EdWrbszE; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="NxrT0he0"
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-610cbca60cdso82160eaf.0
-        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 10:56:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EdWrbszE"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-747fc7506d4so265492b3a.0
+        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 11:40:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gateworks.com; s=google; t=1751047018; x=1751651818; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1751049601; x=1751654401; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rbuYeB/znMRVmNnp22re7GbKA0GoKXipcQWP3fhXkwI=;
-        b=NxrT0he0ksrXdW3DuGCBkIdJFgZfo4SulNysBXhaPpfnzlns1k3snDSLA09WKRb8N+
-         mVYYCZSmtD9SpX4gmqwgzZeHnRb2ioaTonB8+JjbEI6wpnniLr2tETJuRQ9vpnXN5yVY
-         AP7qec8+twSNE7CbsKG8HSuxbkKoqObC5rorC+Z4mKpb3F5LwV/KWcOEOvr2PX5Cjm8a
-         teN7VfMpIcOgBZkcSeLawg5Hj1Bac26YiBZDpjZeqK2mZVc1+ibNT5xpPN2xeE4mhusu
-         8ZarZvxha1xeR7xTdPyhJMiOwVfwaqSGDJVUq+GNNGs6yM3KYIAZGABr3iZGuqEZZm/B
-         LMTA==
+        bh=siWhviHf5s5kb5i61JeksO/RFhcaUxLVRTQZ76XuioA=;
+        b=EdWrbszE55hUAPsJVNE7JKThz9toZ89h3YKaN3hNszuYJOgW8/U8/ziZJXy+yFoiM+
+         9bCkCQwAqHH2tYHrm8c936WLIuViPmJ9cIPiYLxQ07UgRRjKmLIXKrE9Glqa6DpYnHaL
+         6t/7EGGhMg9pgKjR20to4yJWcaiCHtDOlgIAPhD4w6oOLJwYg3zgOU2Hon/VBxcvad7K
+         /qjHnC+bbTjYeQUT6L2vbZtxXJZm9o2RaamxY7V2XLDcOHhQDrN4iBIu2tJgkHxTRI1f
+         tXFoR+1dD9HuPr3DNAHTayEsHnd4b7lLI17RMZlGLEJzOV5gSVIx7SEmXFNUGNCIt9ME
+         lKmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751047018; x=1751651818;
+        d=1e100.net; s=20230601; t=1751049601; x=1751654401;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rbuYeB/znMRVmNnp22re7GbKA0GoKXipcQWP3fhXkwI=;
-        b=s6Y4fxdA9nU+32wlqednLgeL2I4muruHuEcwYqyx7x7AXRiwrckMYtZiS5pOrD05C2
-         8t503fI8uegxh8a+KgWHn5iUArI+DhLgJZGZDRaKTw0P3ImBt8qT6A0XOjFY2l0/e7Sn
-         VuOsgDiqRo75fBzMSYhbDgRY/5aQNCj9kKM62gvTvQOLKrYax5DBOIF9L2JFwsgPiv7v
-         ZuRh/OSmMqIjb7VJeJD3gzsrOK5sK9u6i1/qrzQS0TecDu/c2YB+9JTaapmeeEHP6+p5
-         +r8G67fSYBepmvERXpQ8wPov/rDxTYfJ/YRhxwSmPwqaZv0RqNxa5m7oj0GpON7QlRLM
-         37vA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7g4vuG9dfzsZM37cqG+4vX1yfiAEyQhMde0yr5L+SF1y4iJMjyh0N9VhFVXnaLlN6Vts=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwtNNiIuWdtrwwm6/EjDN+K4sfQp5rE73AqrCK1NwZxiv0X3jRa
-	lA6LEAN4hHQMQKxUZ7g2VmWWNFPUgOLoA+a9CKUppRDD0Wh4KSeaPKhZn7R4j2tk+Z3uVo6h1Sm
-	7vNu9vkqzC0vz9pSU4dGMBTELYTsgyu2ZE76rLk7A9A==
-X-Gm-Gg: ASbGncvuUWqiaoFumvBuOojXr5o3fwob/IUZPJxk3G1MvDT9mNixmH9WRrDBAs2YUfq
-	pJN+98ScmKn3UfZnmBEyqQBwOVFancnDvKtnvEsuSvm8wvtCyqdRtkja7qISQNNtEwojpNxYUBV
-	eqGpC1yuZP3xkhOB10cbSwsjOtNnZS6ahpaZ9VhMj/OPZTCDmII8Up2g==
-X-Google-Smtp-Source: AGHT+IHn/O+yw4sdAQD7guPzO4j4/3MQOR3FH8Nb/hBYMQX3XW0mdG4bsbuqDOKcybzRbPj3Ume9tDS47O4jmJlhfy8=
-X-Received: by 2002:a05:6820:994:b0:611:b561:258e with SMTP id
- 006d021491bc7-611b90965aemr2849488eaf.3.1751047017799; Fri, 27 Jun 2025
- 10:56:57 -0700 (PDT)
+        bh=siWhviHf5s5kb5i61JeksO/RFhcaUxLVRTQZ76XuioA=;
+        b=W8GyHyvZj1JvbrJ4iSJZ0YYA5OZrjTdDijfiwCukkYJR63eOlIyFL4H+J/iy/WemNo
+         PTzIGuRZLh/qHb9FOtutEXgMp8ZqRxpS9B3UbktY1ZnXqVFbwFGiVgWfox5eBBHKqrtP
+         ILyUxOkYwjfiSJ36lmzTlsx3LW2gcOqqHgC7SIHh0r4jqYSSbgH5XKdAv6LDNEUzdPtl
+         XmMH0Rwzkxqnui/HkG28sp2VDPrCuY73TpcWc1jNQPmvp7HQa531ZUnxpBKsHnTmx1d0
+         b8hbrV9IMHe7TLaJ3yWVogk8p049baHwOD0uBCFfbyVFMftyefXzBPHECt1JhzQX3D77
+         DLoA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7m1BJ8CJpQilnThF1pay7DJ6LXiO5Muft2jy+W3+T7aeTCpOueFlgLzbgALSrp3tK9Yk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzBzxwBVUVPwjgSkgP62bNI8VMhlP3LPcKK03JYOllw/hxgCTM+
+	/cJOszd0g5RYaNxqFsyu+3EJp4SkT9mdo72krwZHIlav/ov9aoXhbJNjmz8hOZClx/8veARYdao
+	qa4aYZKBKxIvY3pkjSytYqPpYhQbwKtU=
+X-Gm-Gg: ASbGncus8D4ukC9Kwmxz/JU0/QP8EDvqYFYtFzrYGUiDUPOYydmw111sS6JBbld3IOZ
+	3nt0mmX4emKpuRwkjgD1rOlmxbUtGh1OUOCHgDi6R3YXmKyuC9ChAgQulM1iP5zAMONzn+TQFdT
+	KcZhftAk7aHl+kthE16sOaozLydCK1X9oqKHqKkhSVxJM=
+X-Google-Smtp-Source: AGHT+IG7DXpgyz78HE/l0Kl92IMNPGEMkpBChVBoXCc4zEE1USg0kAy1xclBltkrt4z/w0HTXdSmRFpCE0CJy5cjrH8=
+X-Received: by 2002:a05:6a00:9283:b0:736:3979:369e with SMTP id
+ d2e1a72fcca58-74af6ee09d2mr5846339b3a.9.1751049600545; Fri, 27 Jun 2025
+ 11:40:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250620213447.56392-1-aford173@gmail.com>
-In-Reply-To: <20250620213447.56392-1-aford173@gmail.com>
-From: Tim Harvey <tharvey@gateworks.com>
-Date: Fri, 27 Jun 2025 10:56:46 -0700
-X-Gm-Features: Ac12FXwaCCVUyBeRU0CpBhDP3QxyDWYKIvfZAtJZ7SnZG3kcRW-1EnKbWFLlM-8
-Message-ID: <CAJ+vNU0caeeC6in5dO_jkkbYNAnTL7drBZcmNBsstbrPWqUkHw@mail.gmail.com>
+References: <20250620213447.56392-1-aford173@gmail.com> <CAJ+vNU0caeeC6in5dO_jkkbYNAnTL7drBZcmNBsstbrPWqUkHw@mail.gmail.com>
+In-Reply-To: <CAJ+vNU0caeeC6in5dO_jkkbYNAnTL7drBZcmNBsstbrPWqUkHw@mail.gmail.com>
+From: Adam Ford <aford173@gmail.com>
+Date: Fri, 27 Jun 2025 13:39:48 -0500
+X-Gm-Features: Ac12FXwEbq0LZniaWzZz7izf_58TqugWsShMRtxczDzTY_dudWpf8_R6poipXQI
+Message-ID: <CAHCN7x++XGXu6DsPaOc2EpAbxzy+RZbDq5A5-j5a4roGDhv4fQ@mail.gmail.com>
 Subject: Re: [PATCH 1/2] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
-To: Adam Ford <aford173@gmail.com>
+To: Tim Harvey <tharvey@gateworks.com>
 Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com, 
 	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -75,51 +75,74 @@ Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 20, 2025 at 2:52=E2=80=AFPM Adam Ford <aford173@gmail.com> wrot=
-e:
+On Fri, Jun 27, 2025 at 12:56=E2=80=AFPM Tim Harvey <tharvey@gateworks.com>=
+ wrote:
 >
-> The reference manual for the i.MX8MM states the clock rate in
-> MMC mode is 1/2 of the input clock, therefore to properly run
-> at HS400 rates, the input clock must be 400MHz to operate at
-> 200MHz.  Currently the clock is set to 200MHz which is half the
-> rate it should be, so the throughput is half of what it should be
-> for HS400 operation.
+> On Fri, Jun 20, 2025 at 2:52=E2=80=AFPM Adam Ford <aford173@gmail.com> wr=
+ote:
+> >
+> > The reference manual for the i.MX8MM states the clock rate in
+> > MMC mode is 1/2 of the input clock, therefore to properly run
+> > at HS400 rates, the input clock must be 400MHz to operate at
+> > 200MHz.  Currently the clock is set to 200MHz which is half the
+> > rate it should be, so the throughput is half of what it should be
+> > for HS400 operation.
+> >
+> > Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini developme=
+nt kit")
+> > Signed-off-by: Adam Ford <aford173@gmail.com>
+> >
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arc=
+h/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+> > index 21bcd82fd092..8287a7f66ed3 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+> > @@ -294,6 +294,8 @@ &usdhc3 {
+> >         pinctrl-0 =3D <&pinctrl_usdhc3>;
+> >         pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
+> >         pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
+> > +       assigned-clocks =3D <&clk IMX8MM_CLK_USDHC3>;
+> > +       assigned-clock-rates =3D <400000000>;
+> >         bus-width =3D <8>;
+> >         non-removable;
+> >         status =3D "okay";
+> > --
+> > 2.48.1
+> >
+> >
 >
-> Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development=
- kit")
-> Signed-off-by: Adam Ford <aford173@gmail.com>
+> Hi Adam,
 >
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/=
-arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> index 21bcd82fd092..8287a7f66ed3 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> @@ -294,6 +294,8 @@ &usdhc3 {
->         pinctrl-0 =3D <&pinctrl_usdhc3>;
->         pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
->         pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
-> +       assigned-clocks =3D <&clk IMX8MM_CLK_USDHC3>;
-> +       assigned-clock-rates =3D <400000000>;
->         bus-width =3D <8>;
->         non-removable;
->         status =3D "okay";
-> --
-> 2.48.1
+> This caught my interest. Where in the IMX8MMRM do you see this and
+> would it also apply to the IMX8MP? (You've patched your IMX8MM and
+> IMX8MN boards).
+
+My 8MP board already appears to be running at 400MHz, but I did check.
+The reference I found was in the 8MM TRM, under 10.3.3.5 Clock
+generator, there is a note:
+
+CLK is different for the SDR and DDR modes.
+- In the SDR mode, CLK is equal to the internal working clock (card_clk).
+- In the DDR mode, CLK is equal to card_clk/2.
+
 >
+> Have you encountered any issues when running eMMC at HS400 due to this
+> or is it just something you noticed in the RM more recently like with
+
+One of my colleagues reported that the eMMC was running slower than he
+expected, and I looked at the reference clock and noticed the 200MHz.
+He asked if it needed to run 2x that since HS400 clocks on both edges.
+I looked it up and found the note from above.  When I increased the
+rate to 400MHz from 200MHz, the throughput doubled. I also noticed
+some other boards, including the reference from NXP had the clock rate
+set to 400MHz, so I don't think anything unreasonable.
+
+adam
+
+> my recent patch that lowers SPI clock due to an obscure RM note [1]
 >
-
-Hi Adam,
-
-This caught my interest. Where in the IMX8MMRM do you see this and
-would it also apply to the IMX8MP? (You've patched your IMX8MM and
-IMX8MN boards).
-
-Have you encountered any issues when running eMMC at HS400 due to this
-or is it just something you noticed in the RM more recently like with
-my recent patch that lowers SPI clock due to an obscure RM note [1]
-
-Best Regards,
-
-Tim
-[1] https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=3D96=
-5976&archive=3Dboth
+> Best Regards,
+>
+> Tim
+> [1] https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=3D=
+965976&archive=3Dboth
