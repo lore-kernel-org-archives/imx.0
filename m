@@ -1,159 +1,125 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09DC2750E7
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 15:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5152EA14C;
+	Fri, 27 Jun 2025 15:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751038842; cv=none; b=deWdfWQRr0b1A5yKxhME4UkqRDSOknKDGts5/BgbWniGOo+BvFMlJWCOfIZmISxvfI2BgPsLXtF0Rw7kZ08dRlSH98liFx+cj2OQzbEl1j72EDMhgUyIdxYs0qqMRytttnM+cICIatqwi/oDUjodPcVOF5QmPpLcWFe7RAWAY8I=
+	t=1751039522; cv=none; b=LEw7Nl1HIzJZGatY7RH84Lx86NIdHR+BQFd18S2OJq5IxqiIl2XFYmEfHGHDJachz8frR5dS2JqLNvVPtp27gSQcY16fvWPp+71ZQNPdms5jOGKiXPrhIfcDjl+NVThwjlmRhEgY2NsFB4KCfmtaZlpBByKmE75wGgD3ZFJJV7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751038842; c=relaxed/simple;
-	bh=d/GwnZrXW005mxplKA0+3KM5bSTcbwWbAmIzKExtCRc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T0q2MSW722R5ufIBOdHQEMo+8ABvGiINVxLyxQuhElG9KE1z3E4Z/4J+2gC2Ka6Ic9q7rxKkbQrVVPjEWicvv+Jr1COY4z6KH4R+q4/hJxHRcPHkMNrWjxoVxcaY2+iFkK1Pfv9YZgxJRwFId1fxfjA2MaUhlBxuYIoxN7ntCSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vj49N1G/; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1751039522; c=relaxed/simple;
+	bh=f0UYA/EuZoGSHsVhZD3Fus+HSK9WipcpF5RxkV+BP5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TGV7y1jQ45g4SXi1xJX7Ki495PudN3emL0VPxvAyvWaOzY5/KK5XiUr++9Ccp4AHluPh7dUAN9kA0ie1Q5HkWuzKi+sBhguyJQxwBK5DIkBlkyUL/ol5BI6D79XMNwvJbGOD4C2meXk3Zp1nM+FkGYN2IWi6WvehwGexpsRQTA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyPdnJ7Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vj49N1G/"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-604bff84741so4329476a12.2
-        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 08:40:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751038838; x=1751643638; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jj2bLybNvPyHSij0xa+7vNe8FDo/UYuhavfR08FTa9E=;
-        b=vj49N1G/KnnS93A2UopVR0KhvIAHIhfMgBqn11Gp7AQz5TLfIB7zu7PQAke5+gh+n9
-         AmdiJBG/9iK93mUAnAmiWRFiBwpnKeAnAcisA/t/tOb6HqOTNeLUt3Zj4uIN9KdQ0e5c
-         0ET76gf/y9KmLHlwYIb6zjgSXwANtDboQTP4m6VpOiRFPeGXmk6Jj+3awf4iHdd1RKWN
-         qKq8Wnq7HoKDqIXA316Roef3xmZhVo5PglYw0qvKxoPF2XRtV0eHtxLrhPb2O4d3gWCa
-         tcQRYsXwCXVHVb8Czt+i5m04Q/jpmlZOtWhwXtTBXZJ0DI7EmRyqRyBeYVGHTJqZGaN0
-         8CjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751038838; x=1751643638;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jj2bLybNvPyHSij0xa+7vNe8FDo/UYuhavfR08FTa9E=;
-        b=vP3J30AWv40GRJ89TykByZOO/ZNSL+RAFWt7bkGi55JRaDmlLuwOLfM2l+bvVVNpH8
-         SubGYJGYc1K638rPzZtLj4/beacQdv1uP5tRXqgCm2ZAWnuBTXQNaYUJpb7Z5oaJfvNj
-         /QaNWCom+t8OXUUIEMI617IH7Di2v5TfDkA3W2nqaxbPDEi/ECi2Jtt+sHblUo2V0ZdO
-         7WfiSZeQZp5bksF5gZiXqNWN+R6eqv6mLBZZw4OB+0+zcZEVHV1sad3vEXSsschBb0WQ
-         eSlNsR5vwikbYbjhcOUcv/057A4PVg3MvyLJnjPQnwGkwgxJJ0e9u1I10UOGIpy9azcb
-         irLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXyJ9/m74PnmXBF2dkPao0t0dFe3z3UlJJ25ponYU0Bry3Pf4ryzEPFALZXTr9kN75Tppc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxmy2zs8EbzVc4Jb+sk4a+4eI4+ahj85BnTgsKGhJk7hO0PTV2s
-	BuTbhVGpqfeHx9Kug0L/Du6PMnQ9c99Hz6Q4SVUB/58yw7t0IwiEez1mRhoORIWu/s9b0bBPkxO
-	M4dE7ryTzPl0ln3/yUY+H3vVHf9Udd/x+tu/CX6cpjQ==
-X-Gm-Gg: ASbGnctOIVodFrzvoaNIjxlkwQ+ocBTT5s2rfnCSJrcG/KpYg3urOGzoW7RLTHtW3mO
-	GK5rd+G9FQpAh1kQ7oY8YTcs0vYPJmbQ5hbnRd8GwIqeL8oiZsxY3M8IEH4d8HCRwxDjigO+ydw
-	M7RtR+ByG6BSm90enNpcOAeob6tEk4iqXS2rUX5ipZiESNXZqMwebxaK60sDPYTyF7lqGQXmCCJ
-	k1+jw==
-X-Google-Smtp-Source: AGHT+IEvkXr4JcCj5oD0vFiY1H6Wn1hmSJv40jglC0KLoMmc4+ZOMxDrQflQwFqUtAQPpKoqyo8PcKiVmvrT6rHam7I=
-X-Received: by 2002:a05:6402:2802:b0:608:6711:a06f with SMTP id
- 4fb4d7f45d1cf-60c88b33e2bmr3273384a12.4.1751038838221; Fri, 27 Jun 2025
- 08:40:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyPdnJ7Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B088C4CEED;
+	Fri, 27 Jun 2025 15:52:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751039521;
+	bh=f0UYA/EuZoGSHsVhZD3Fus+HSK9WipcpF5RxkV+BP5o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pyPdnJ7Q7HuuIiKgrWaMDcrBwxGTZiscgxJc6vl+XrICm0G79l/w04xJOgIgSsiT4
+	 nyJKeqIT4LG/SdOrP9BThyVFe+sK/VvM3jidhmIf4FL5wNqqTU5vXGLNIqJcAXv1fB
+	 qKTpyLWg6gUYFK9zYNPKm3MeePbH4VzwGEN7jkKanOyl7pqQcVspMU/YR0KWDgEe+y
+	 Zv5XPVN4hnsL9/6Codf3WfenmJLS/Wop+OvwNF2usYFuIMsbN5lfU8nIT0Fa6ZEQ9G
+	 1eaaz5yVdyekzbuVGyJ58FdAsHP1VfbszTS+QL47CPNvx+4zmaedL/KBAtCkPkCxRv
+	 NsSgI1XvWhPIA==
+Date: Fri, 27 Jun 2025 10:52:00 -0500
+From: Rob Herring <robh@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Rosin <peda@axentia.se>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 05/28] bus: simple-pm-bus: Populate child nodes at
+ probe
+Message-ID: <20250627155200.GB3234475-robh@kernel.org>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+ <20250613134817.681832-6-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250626215911.5992-1-hiagofranco@gmail.com> <CANLsYkzo32BHkxRzSLY1U_PcidMPOaz7xZjDs8HKtTCQ0ZpF=g@mail.gmail.com>
- <20250627144955.tbmk6ako3rgv3djo@hiagonb>
-In-Reply-To: <20250627144955.tbmk6ako3rgv3djo@hiagonb>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Fri, 27 Jun 2025 09:40:27 -0600
-X-Gm-Features: Ac12FXyUCI-R2q8qxbHAG9epzvsz_v3mTi9fyUrRB-IT5cqGx_PrRwpqh4kxuRo
-Message-ID: <CANLsYkz3SD1PPnVwoBnnKhyCUig67o+=NgoDucq5m+4sQ=xMYQ@mail.gmail.com>
-Subject: Re: [PATCH v6 0/3] remoteproc: imx_rproc: allow attaching to running
- core kicked by the bootloader
-To: Hiago De Franco <hiagofranco@gmail.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, linux-pm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Bjorn Andersson <andersson@kernel.org>, 
-	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
-	"Rafael J . Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250613134817.681832-6-herve.codina@bootlin.com>
 
-On Fri, 27 Jun 2025 at 08:50, Hiago De Franco <hiagofranco@gmail.com> wrote:
->
-> On Fri, Jun 27, 2025 at 08:31:20AM -0600, Mathieu Poirier wrote:
-> > On Thu, 26 Jun 2025 at 15:59, Hiago De Franco <hiagofranco@gmail.com> wrote:
-> > >
-> > > From: Hiago De Franco <hiago.franco@toradex.com>
-> > >
-> > > This patch series depends on Ulf's patches that are currently under
-> > > review, "pmdomain: Add generic ->sync_state() support to genpd" [1].
-> > > Without them, this series is not going to work.
-> > >
-> >
-> > I thought we agreed to repost when the feature referred to above and
-> > the work in drivers/pmdomain/core.c will be merge.  I'm not sure what
-> > to do with this patchset.
->
-> Sorry Mathieu, my goal was to update the whole patch series with your
-> reviews from v5 so you could take a look and then I would resend
-> everything again once the others have been merged.
->
+On Fri, Jun 13, 2025 at 03:47:45PM +0200, Herve Codina wrote:
+> The simple-pm-bus driver handles several simple busses. When it is used
+> with busses other than a compatible "simple-pm-bus", it doesn't populate
+> its child devices during its probe.
+> 
+> This confuses fw_devlink and results in wrong or missing devlinks.
+> 
+> Once a driver is bound to a device and the probe() has been called,
+> device_links_driver_bound() is called.
+> 
+> This function performs operation based on the following assumption:
+>     If a child firmware node of the bound device is not added as a
+>     device, it will never be added.
+> 
+> Among operations done on fw_devlinks of those "never be added" devices,
+> device_links_driver_bound() changes their supplier.
+> 
+> With devices attached to a simple-bus compatible device, this change
+> leads to wrong devlinks where supplier of devices points to the device
+> parent (i.e. simple-bus compatible device) instead of the device itself
+> (i.e. simple-bus child).
+> 
+> When the device attached to the simple-bus is removed, because devlinks
+> are not correct, its consumers are not removed first.
+> 
+> In order to have correct devlinks created, make the simple-pm-bus driver
+> compliant with the devlink assumption and create its child devices
+> during its probe.
 
-Ok, I'll take a look next week.
+IIRC, skipping child nodes was because there were problems with 
+letting the driver handle 'simple-bus'. How does this avoid that now?
 
-> If you prefer I can wait for the other patches to be merged and then
-> send the next v7 corrected.
->
-> Best regards,
-> Hiago.
->
-> >
-> > > For the i.MX8X and i.MX8 family SoCs, currently when the remotecore is
-> > > started by the bootloader and the M core and A core are in the same
-> > > partition, the driver is not capable to detect the remote core and
-> > > report the correct state of it.
-> > >
-> > > This patch series implement a new function, dev_pm_genpd_is_on(), which
-> > > returns the power status of a given power domain (M core power domains
-> > > IMX_SC_R_M4_0_PID0 and IMX_SC_R_M4_0_MU_1A in this case). If it is
-> > > already powered on, the driver will attach to it.
-> > >
-> > > Finally, the imx_rproc_clk_enable() function was also changed to make it
-> > > return before dev_clk_get() is called, as it currently generates an SCU
-> > > fault reset if the remote core is already running and the kernel tries
-> > > to enable the clock again. These changes are a follow up from a v1 sent
-> > > to imx_rproc [2] and from a reported regression [3].
-> > >
-> > > [1] https://lore.kernel.org/all/20250523134025.75130-1-ulf.hansson@linaro.org/
-> > > [2] https://lore.kernel.org/lkml/20250423155131.101473-1-hiagofranco@gmail.com/
-> > > [3] https://lore.kernel.org/lkml/20250404141713.ac2ntcsjsf7epdfa@hiago-nb/
-> > >
-> > > v6:
-> > > - Added "reviewed by" from Ulf and Bjorn.
-> > > - Fixed and improved commit descriptions of patches 2 and 3.
-> > > - Improved the comment inside imx_rproc.c file.
-> > > v5:
-> > > - https://lore.kernel.org/all/20250617193450.183889-1-hiagofranco@gmail.com/
-> > > v4:
-> > > - https://lore.kernel.org/lkml/20250602131906.25751-1-hiagofranco@gmail.com/
-> > > v3:
-> > > - https://lore.kernel.org/all/20250519171514.61974-1-hiagofranco@gmail.com/
-> > > v2:
-> > > - https://lore.kernel.org/lkml/20250507160056.11876-1-hiagofranco@gmail.com/
-> > > v1:
-> > > - https://lore.kernel.org/lkml/20250505154849.64889-1-hiagofranco@gmail.com/
-> > >
-> > > Hiago De Franco (3):
-> > >   pmdomain: core: introduce dev_pm_genpd_is_on()
-> > >   remoteproc: imx_rproc: skip clock enable when M-core is managed by the
-> > >     SCU
-> > >   remoteproc: imx_rproc: detect and attach to pre-booted remote cores
-> > >
-> > >  drivers/pmdomain/core.c        | 33 +++++++++++++++++++++++++++
-> > >  drivers/remoteproc/imx_rproc.c | 41 ++++++++++++++++++++++++++++------
-> > >  include/linux/pm_domain.h      |  6 +++++
-> > >  3 files changed, 73 insertions(+), 7 deletions(-)
-> > >
-> > > --
-> > > 2.39.5
-> > >
+The root of_platform_populate() that created the simple-bus device that 
+gets us to the probe here will continue descending into child nodes. 
+Meanwhile, the probe here is also descending into those same child 
+nodes. Best case, that's just redundant. Worst case, won't you still 
+have the same problem if the first of_platform_populate() creates the 
+devices first?
+
+Rob
