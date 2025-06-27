@@ -1,131 +1,141 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1732D8DAF
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 14:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D56E40BF5
+	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 14:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751034539; cv=none; b=hbarhH60kc8zVR85C2AkL3DIzjTQf5cHj3k0iTPMIbqt92wEE11ooMh/49UGEQUWkX5MgWd2Jb2utfHYsnfby0qcz4CYkuLaeXFybfqYRrNmCIu8PbydVO+tf68GGh2cVP+Q8FQEMyLUmyvJWPyZDLVwpI0fik11y1eYAWbGI9c=
+	t=1751034696; cv=none; b=raHFap64sxeFE+RVLZf6vsELjgOaVeRHF7HNf4E4DZNrj4CbnM1VcSbgc9uFspyzDOQpKnhMZYfnrpOmjYGRV7kkXooaUjQWrs+aWJ0clSJ72o5dcE9QU6sgDnfQAAjIOwyQxC6vkeDwKx1trfdFXFVNqKyrWbjMb3arxvYLtSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751034539; c=relaxed/simple;
-	bh=KpatdQizjtFhLtep6XDpgDVmkA3+kxWZBf7goof4Im8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S9+UsvjfFXp8FwA+usQ82AiU2wEECWAE4EIvkDuCufPyvgXC/cu7EMPHHgnsT6RsKnId4qQrDrkUqmKcVl3tNsjXV46PNzr+WoObVLsdW38Y2D+uC0kK/XFMS3ouZqQBsyF6qy16BQW6fr3hv18vnLOZhMxK29RoR6AC5xSvH5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=QqeEcX7M; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	s=arc-20240116; t=1751034696; c=relaxed/simple;
+	bh=B1BdE0J+jY6ME5BrRSZux1zOeKpTZZ4DlpXlyhs8zxE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l3mf7f0Dd9UQCodauLSp+Yj8pBBcypk637A1DvCe4kt4fx12YuAt0Y6ceEGliEwtCKk+hTb4bYmfVDvqVeIzUsXELP0UuI33wQJAfaNrG6MSx56eSauf/N3BIb3RQiGwN4bADHKZdhXukKtLqHO9rkzmFVKXWClrd5BeInvLKvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gdbpanrV; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="QqeEcX7M"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6fd0a7d3949so32492096d6.0
-        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 07:28:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gdbpanrV"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-605b9488c28so4042260a12.2
+        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 07:31:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1751034535; x=1751639335; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C770HeWnbg8TH5iYglRt3200XdihOLprXIOYlhNWMgc=;
-        b=QqeEcX7M2oBcJf+UqdplftOYkPsW52aQ3chSxsANDA4J2i5LCIMHiwiLY2a6Fj2d9i
-         oSzH11+r96VxqNQRwmXe7P7aoT+12IHUwoYixOrw8huJageKh36pnhilsdXKjUGNVpLM
-         +JOM1S1CLySXt3zqOSxCTd+hMixMJkWU30S/gSsJOIy9JuB63GOvsZPe5dbQ3+2Dc8C6
-         lYp/UwoA35IRgPp4kC3+C8Q4xEZeTN9HEsuL3Ul66NuMiTgTJWdl1+nLEnJMR5s/sK8y
-         2n1oXMvAk9nJ8nzu4JgDlWhwP3+cafuayhEeaOMPdpyT6l/fbV0AMpXklTeIYukDznMj
-         CRPA==
+        d=linaro.org; s=google; t=1751034692; x=1751639492; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8o5xo7GeehPDbRd+X/7D8FpirwN/TZkXVzx9zL2sssc=;
+        b=gdbpanrVoU/2qgjCxQk8KHxJPXqG7C6zbiTxj2M1086cTsmLv/QRsi/+PJmLttgv2a
+         pYbvIX/6fgjSqE5t0TMNED58zgZp3HCg1+QdXook/eUeJeKqOUaG/sV4EQnJsFRatCi7
+         atgWQvHmRn5zA9iuDgx9+oKbNMQIYPjXlDGNPu/j3xVYSRxtk5nOL3tfV6ErmbXyUmse
+         u5lk0gI7w46jFaTMNy05ytvnMAEbyVBisxzCflM4BlDCvMU4dpWX5VxObdec7R9BRTfz
+         fA4Eg7Rl4ODhFAN2ejFVbQEdZ3tV4UQuprzbpQQ5zhVbujfNI4TM/Fsexqrrj1cSnNFM
+         He6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751034535; x=1751639335;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C770HeWnbg8TH5iYglRt3200XdihOLprXIOYlhNWMgc=;
-        b=Ie3JQuzqTk1ntyeMXv4DR0yzuBuL1Ak2u3wca8upJwY4EuDq3CGHkI5aZ4OEcW9JA8
-         SQgi85ThTJqkhd53jNIMn5Y68LPahVpYMziyj4eKsx7Irgs3wE4tenw9ZzVil2LYTz35
-         mKktAuY1jDkDq40v9tHGZeMX6+ES1cyO1lP5J2i1fMLyMAtAnTBRNT3wUvSqyRagHwSv
-         vB25oiLqLuZs6JKhQ2KRAMt3zkYuoguYUABA/AMk1Nqb1hWWyLLgt33GkG0RhadmqDrX
-         7f9VSbaBZAnDag1cKg8LjD9eFsX+ok8agxVfMQ/08s8PS5ZDREOV2rjyFajCRGT1pQWO
-         bggA==
-X-Forwarded-Encrypted: i=1; AJvYcCXRW1k0A8fNKnsEtXFRY2FNIoiPvliXCNYWOYaSJ17vSitWBaY609vX7S0U2p4oW+dIUPA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzyuaP3V/2YhHV0jgxRHQ2Yc4TNKaZ1hE7zWcOFhNhK6LfoCiaK
-	Kh4qeQRhCdcOxntRm8FifvWDbZitfu14EY94r78FRX0ULfeYHXlLi6ee+PGOHKmLow==
-X-Gm-Gg: ASbGncthLTbkvt5TEJjMImdTBY2lSPZyo7Tlp3SnWggLseK0/6k7Io9nqbZkLcSncDQ
-	iZkThykeHxkbEaEAdHNUWYetRRfi2+iqn3V2JnpUWpCqJq2FETndJp+d86+2bvnEmLvHAm6+cC+
-	GIsaX7DD4/MSNHZQbIlyXq2ZS+L5XHTt+oUDlm/1qJ+3rXgl/1GAfJSnqrQxI5b/7L2JvWyLcNE
-	+Z8jmkkquxzuCes/aMa4SbyDNEq24HqE6N7LnuNzTCbLKMWYv3vgoAuHHZjRpVS7ewqbsz5XNVw
-	zbg1yc8aFwwDgFGrD+GrorcaFTA3tt6/GEqpTj1vOjSTpgIWZk8ODJ/LJxN853uihoS78Mksz94
-	aHHV0
-X-Google-Smtp-Source: AGHT+IEEz4pxaZd2p26Wd0rHmX3QxRvSCJOIV13uXvr66DRvtIABRuX0xyFBcsiRJ4IyA8rPeXFOdw==
-X-Received: by 2002:a05:6214:5784:b0:6fa:cc39:95 with SMTP id 6a1803df08f44-6fffdcfe051mr54002316d6.11.1751034535284;
-        Fri, 27 Jun 2025 07:28:55 -0700 (PDT)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd7730ac96sm21006076d6.105.2025.06.27.07.28.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jun 2025 07:28:54 -0700 (PDT)
-Date: Fri, 27 Jun 2025 10:28:53 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, viro@zeniv.linux.org.uk,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] usb: mon_text: find valid buffer offset for iso transfer
-Message-ID: <8a251c8b-5ec6-4238-bdcd-8d8001fd06df@rowland.harvard.edu>
-References: <20250627105651.3653231-1-xu.yang_2@nxp.com>
+        d=1e100.net; s=20230601; t=1751034692; x=1751639492;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8o5xo7GeehPDbRd+X/7D8FpirwN/TZkXVzx9zL2sssc=;
+        b=rbRgP4c36HEe6vFY3ytUcMQzKR5VUMTMTHzHTuXwNhrVZxPCwddU5oDofpFjJPul5m
+         jHr2VFsuPhoSFAvTlMqmP5MKhi1x5bFPkIObyr8NTuFEz2AOLvpiA6owFMD2etzid+Z7
+         CfMyViIT1UP/Be7Sly+NomjTZVdCffqY2n0sPKfYld8SWKlg1Mw0SMam95jaBYw8XUp5
+         7OXOW5GTyK/5iw8/Ee85qlrlmIoxyyd8RRl/yfrMAjj7E2J1tRMd0bKCvzUFkPkLsJUx
+         Resua1stzPwQOwaxXs3fYAocuuzdZoN0XxB2r5Q4YyoDlaLvvT3jbJICRLgzs92hEbRr
+         mEdw==
+X-Forwarded-Encrypted: i=1; AJvYcCXYarxv2awnBz3HljU/bv/2K8ariI5ku7PDNWlzRs9MVs87npCqUN8+M66ciCZtwOtEdQY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZSNBd8xROq1rcL5y5XN6hal3O9cOp71XieZXmmdCbeh+DE8RZ
+	VozO3A4uasf99hif9Wfolo3jLRuOmQwqM+UGLHPpWlOvgsjQgvRj4cGBR0i+dyhRk/9zTIp9en0
+	3tNZ8v4LtgtD8Woa7blhVLKclZzGa4rUdVUfizt3l/g==
+X-Gm-Gg: ASbGnctHXK3/a5x8R0jxZSGhTDxQ9PUVyn0STIBiQ1xUgrHoyUcqC1oJVl8WCS4jSrA
+	DZ7poKgsNkAFk1expxEbCxgy4nHgoJqSkhntOAcHhju6/7Xur60JzeddEuv3lZxMJj1H7oB6gGU
+	mQ5RVnHeGxkl6DWkiWmIdo3yCUzSfQrMDv5i5dBT43/rg4PzRtuh13v2oF6gTYP3tNLX5UBmE8P
+	JcOrA==
+X-Google-Smtp-Source: AGHT+IEL785XIeur6WCbc2OIj5nk/sVLVVNkV3GZ+ObEePJ/qNpPBLIGoWwmBJBgA18YqNdBbv+6Y6RgOuBSpzWsw/4=
+X-Received: by 2002:a05:6402:5bc4:b0:607:eeb1:b18b with SMTP id
+ 4fb4d7f45d1cf-60c88d9c37dmr2283943a12.8.1751034691378; Fri, 27 Jun 2025
+ 07:31:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250627105651.3653231-1-xu.yang_2@nxp.com>
+References: <20250626215911.5992-1-hiagofranco@gmail.com>
+In-Reply-To: <20250626215911.5992-1-hiagofranco@gmail.com>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Fri, 27 Jun 2025 08:31:20 -0600
+X-Gm-Features: Ac12FXyLrcISUGMKifq1LXY0djWn87ywvC4vhLqatRfOsnXR-16wTizuirmCxWY
+Message-ID: <CANLsYkzo32BHkxRzSLY1U_PcidMPOaz7xZjDs8HKtTCQ0ZpF=g@mail.gmail.com>
+Subject: Re: [PATCH v6 0/3] remoteproc: imx_rproc: allow attaching to running
+ core kicked by the bootloader
+To: Hiago De Franco <hiagofranco@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, linux-pm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Bjorn Andersson <andersson@kernel.org>, 
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
+	"Rafael J . Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 27, 2025 at 06:56:51PM +0800, Xu Yang wrote:
-> The valid data doesn't always begin at the buffer head in case
-> iso_frame_desc is larger than 1. Otherwise, the output info will be
-> meaningless.
+On Thu, 26 Jun 2025 at 15:59, Hiago De Franco <hiagofranco@gmail.com> wrote:
+>
+> From: Hiago De Franco <hiago.franco@toradex.com>
+>
+> This patch series depends on Ulf's patches that are currently under
+> review, "pmdomain: Add generic ->sync_state() support to genpd" [1].
+> Without them, this series is not going to work.
+>
 
-Not so.  usbmon intentionally copies the entire isochronous transfer 
-buffer, even if only part of it was used for the actual transfer.
+I thought we agreed to repost when the feature referred to above and
+the work in drivers/pmdomain/core.c will be merge.  I'm not sure what
+to do with this patchset.
 
-> This will find the valid iso transfer frame and return correct start
-> address offset of buffer.
-
-Even if this were the right thing to do, how come you didn't make a 
-similar modification to mon_bin.c?
-
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
->  drivers/usb/mon/mon_text.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/mon/mon_text.c b/drivers/usb/mon/mon_text.c
-> index 68b9b2b41189..4929c7f5abd0 100644
-> --- a/drivers/usb/mon/mon_text.c
-> +++ b/drivers/usb/mon/mon_text.c
-> @@ -145,6 +145,8 @@ static inline char mon_text_get_setup(struct mon_event_text *ep,
->  static inline char mon_text_get_data(struct mon_event_text *ep, struct urb *urb,
->      int len, char ev_type, struct mon_bus *mbus)
->  {
-> +	struct usb_iso_packet_descriptor *isoc_desc;
-> +	int i, offset = 0;
->  	void *src;
->  
->  	if (len <= 0)
-> @@ -160,8 +162,16 @@ static inline char mon_text_get_data(struct mon_event_text *ep, struct urb *urb,
->  			return '>';
->  	}
->  
-> +	if (usb_pipeisoc(urb->pipe)) {
-> +		isoc_desc = urb->iso_frame_desc;
-> +		for (i = 0; i < urb->number_of_packets &&
-> +		     !isoc_desc[i].actual_length; i++)
-> +			continue;
-> +		offset = isoc_desc[i].offset;
-> +	}
-> +
->  	if (urb->num_sgs == 0) {
-> -		src = urb->transfer_buffer;
-> +		src = urb->transfer_buffer + offset;
->  		if (src == NULL)
->  			return 'Z';	/* '0' would be not as pretty. */
->  	} else {
-
-And how come you didn't modify this branch of the "if"?
-
-Alan Stern
+> For the i.MX8X and i.MX8 family SoCs, currently when the remotecore is
+> started by the bootloader and the M core and A core are in the same
+> partition, the driver is not capable to detect the remote core and
+> report the correct state of it.
+>
+> This patch series implement a new function, dev_pm_genpd_is_on(), which
+> returns the power status of a given power domain (M core power domains
+> IMX_SC_R_M4_0_PID0 and IMX_SC_R_M4_0_MU_1A in this case). If it is
+> already powered on, the driver will attach to it.
+>
+> Finally, the imx_rproc_clk_enable() function was also changed to make it
+> return before dev_clk_get() is called, as it currently generates an SCU
+> fault reset if the remote core is already running and the kernel tries
+> to enable the clock again. These changes are a follow up from a v1 sent
+> to imx_rproc [2] and from a reported regression [3].
+>
+> [1] https://lore.kernel.org/all/20250523134025.75130-1-ulf.hansson@linaro.org/
+> [2] https://lore.kernel.org/lkml/20250423155131.101473-1-hiagofranco@gmail.com/
+> [3] https://lore.kernel.org/lkml/20250404141713.ac2ntcsjsf7epdfa@hiago-nb/
+>
+> v6:
+> - Added "reviewed by" from Ulf and Bjorn.
+> - Fixed and improved commit descriptions of patches 2 and 3.
+> - Improved the comment inside imx_rproc.c file.
+> v5:
+> - https://lore.kernel.org/all/20250617193450.183889-1-hiagofranco@gmail.com/
+> v4:
+> - https://lore.kernel.org/lkml/20250602131906.25751-1-hiagofranco@gmail.com/
+> v3:
+> - https://lore.kernel.org/all/20250519171514.61974-1-hiagofranco@gmail.com/
+> v2:
+> - https://lore.kernel.org/lkml/20250507160056.11876-1-hiagofranco@gmail.com/
+> v1:
+> - https://lore.kernel.org/lkml/20250505154849.64889-1-hiagofranco@gmail.com/
+>
+> Hiago De Franco (3):
+>   pmdomain: core: introduce dev_pm_genpd_is_on()
+>   remoteproc: imx_rproc: skip clock enable when M-core is managed by the
+>     SCU
+>   remoteproc: imx_rproc: detect and attach to pre-booted remote cores
+>
+>  drivers/pmdomain/core.c        | 33 +++++++++++++++++++++++++++
+>  drivers/remoteproc/imx_rproc.c | 41 ++++++++++++++++++++++++++++------
+>  include/linux/pm_domain.h      |  6 +++++
+>  3 files changed, 73 insertions(+), 7 deletions(-)
+>
+> --
+> 2.39.5
+>
