@@ -1,148 +1,214 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599351B6CE4
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 18:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693AD4502A;
+	Fri, 27 Jun 2025 18:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751049602; cv=none; b=pP5ImIRCW6ARfNO2BdwRnUdXxBCZ42h6WmZrxI1ITXyCSZ+UANZZfDI5/B2v9SqVl3ByqRvnIFiJCf03csquqx3scC6tLbCgpWChXlK7AEJgCAc3KezaWoXVlDhRtZW2cGWbM1VZBonKDTboARqPooAfYdT2X393VVfutEVXYfU=
+	t=1751050181; cv=none; b=Pa5CigJu58UQdUaWt9oq+o8bhITqk99w5lnKhbvKNKxg98W0bKlrLcoOfTiPv7lrjp6h4/A80xM8uwUROaxnxgCPRKEVOiRu3+uQiY0BodLv8pptIgPsn/Z45tB+B8zNzoI8irOlsL8sR6yqplGAJiDf3nQLjrZXo+FrYospUbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751049602; c=relaxed/simple;
-	bh=nVbFmmLKmZhzB8RvT3vMX9q7B5LYHhf8kIaqheREoPk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QAmqPBLngxPwsCdguYoPYu6oN7fQEk0IUqE8Or1dKweg242wooa2nDCod2EK0/KzRG0IberSmAAjOb+7GJ9/FZ79y1XcvbXGiSNrhknsti06JzGEgWfZ6e/1Xs/ijoX0pCAXiHeXLvlY1DxukJrRzdZMo7mB7KuJpgfkY8a/OoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EdWrbszE; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751050181; c=relaxed/simple;
+	bh=narcaFjXVhe4/7r7kPhjOLSPFF8lb9hRlbz3gP5dDG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q0VX0WrlvAJZ6F1N8qwIxgw/X92WtYGrZd2iF9Y4PctqzMLARkFejRlJAo+ioC/kBb9kthn3PiIPLSgyhRpNjn1nFbH5S6umqiCKDqq+UMfanOJmsxrER94HcdoHbhrckJcmKHF6NH7mki1PEt7wWK97rEH7jGhIc/JGMDUMgbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=agY5s/XZ; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EdWrbszE"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-747fc7506d4so265492b3a.0
-        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 11:40:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751049601; x=1751654401; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=siWhviHf5s5kb5i61JeksO/RFhcaUxLVRTQZ76XuioA=;
-        b=EdWrbszE55hUAPsJVNE7JKThz9toZ89h3YKaN3hNszuYJOgW8/U8/ziZJXy+yFoiM+
-         9bCkCQwAqHH2tYHrm8c936WLIuViPmJ9cIPiYLxQ07UgRRjKmLIXKrE9Glqa6DpYnHaL
-         6t/7EGGhMg9pgKjR20to4yJWcaiCHtDOlgIAPhD4w6oOLJwYg3zgOU2Hon/VBxcvad7K
-         /qjHnC+bbTjYeQUT6L2vbZtxXJZm9o2RaamxY7V2XLDcOHhQDrN4iBIu2tJgkHxTRI1f
-         tXFoR+1dD9HuPr3DNAHTayEsHnd4b7lLI17RMZlGLEJzOV5gSVIx7SEmXFNUGNCIt9ME
-         lKmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751049601; x=1751654401;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=siWhviHf5s5kb5i61JeksO/RFhcaUxLVRTQZ76XuioA=;
-        b=W8GyHyvZj1JvbrJ4iSJZ0YYA5OZrjTdDijfiwCukkYJR63eOlIyFL4H+J/iy/WemNo
-         PTzIGuRZLh/qHb9FOtutEXgMp8ZqRxpS9B3UbktY1ZnXqVFbwFGiVgWfox5eBBHKqrtP
-         ILyUxOkYwjfiSJ36lmzTlsx3LW2gcOqqHgC7SIHh0r4jqYSSbgH5XKdAv6LDNEUzdPtl
-         XmMH0Rwzkxqnui/HkG28sp2VDPrCuY73TpcWc1jNQPmvp7HQa531ZUnxpBKsHnTmx1d0
-         b8hbrV9IMHe7TLaJ3yWVogk8p049baHwOD0uBCFfbyVFMftyefXzBPHECt1JhzQX3D77
-         DLoA==
-X-Forwarded-Encrypted: i=1; AJvYcCX7m1BJ8CJpQilnThF1pay7DJ6LXiO5Muft2jy+W3+T7aeTCpOueFlgLzbgALSrp3tK9Yk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzBzxwBVUVPwjgSkgP62bNI8VMhlP3LPcKK03JYOllw/hxgCTM+
-	/cJOszd0g5RYaNxqFsyu+3EJp4SkT9mdo72krwZHIlav/ov9aoXhbJNjmz8hOZClx/8veARYdao
-	qa4aYZKBKxIvY3pkjSytYqPpYhQbwKtU=
-X-Gm-Gg: ASbGncus8D4ukC9Kwmxz/JU0/QP8EDvqYFYtFzrYGUiDUPOYydmw111sS6JBbld3IOZ
-	3nt0mmX4emKpuRwkjgD1rOlmxbUtGh1OUOCHgDi6R3YXmKyuC9ChAgQulM1iP5zAMONzn+TQFdT
-	KcZhftAk7aHl+kthE16sOaozLydCK1X9oqKHqKkhSVxJM=
-X-Google-Smtp-Source: AGHT+IG7DXpgyz78HE/l0Kl92IMNPGEMkpBChVBoXCc4zEE1USg0kAy1xclBltkrt4z/w0HTXdSmRFpCE0CJy5cjrH8=
-X-Received: by 2002:a05:6a00:9283:b0:736:3979:369e with SMTP id
- d2e1a72fcca58-74af6ee09d2mr5846339b3a.9.1751049600545; Fri, 27 Jun 2025
- 11:40:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="agY5s/XZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751050178; x=1782586178;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=narcaFjXVhe4/7r7kPhjOLSPFF8lb9hRlbz3gP5dDG0=;
+  b=agY5s/XZQocy8Ex2IuFJHX0TUM4XyP1AiT6BUj1VSXRZiT2g57lYyjwU
+   B/JhsHCObpsXQ+S4vGvrliVsff+pkz3kvsRrw+k0HIQ1SEo5uQbla3F2v
+   Qc82jdageexcO/KZRnfvdlTwv4NUQTMXzwreUKtouCYxyj4x7rIjvzkP7
+   iDONiWB5wl2U3pop+iz6alsGcuBa5qKyZzvV/o+MP2JBOzmW7TyVtNAzS
+   0EyPb6l5cb2iDc1pj/8BEta6JLOXqZbSyl6XR17VaKvJhnnlPnXC4Fssy
+   iYCp3E0ICtFwex1ark2x12OyAQsTIEnLsfe51CxzaTKPudKMdJhE3rH5r
+   Q==;
+X-CSE-ConnectionGUID: Wyd4i/bQRQWvZmQ8FPh9NA==
+X-CSE-MsgGUID: kOI4XYj6Q72SVtOpzDYKQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="78810499"
+X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; 
+   d="scan'208";a="78810499"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 11:49:37 -0700
+X-CSE-ConnectionGUID: A7Edkv01Q/aVxm2Gt3qXJQ==
+X-CSE-MsgGUID: Egm5CKSjSTaC/g/ScZ2zJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; 
+   d="scan'208";a="152394717"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 27 Jun 2025 11:49:34 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uVE8h-000WTG-3D;
+	Fri, 27 Jun 2025 18:49:32 +0000
+Date: Sat, 28 Jun 2025 02:49:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Peng Fan <peng.fan@nxp.com>, Sudeep Holla <sudeep.holla@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	arm-scmi@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 7/7] firmware: imx: sm-misc: Dump syslog and system info
+Message-ID: <202506280217.aZih1pGT-lkp@intel.com>
+References: <20250627-sm-misc-api-v1-v1-7-2b99481fe825@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250620213447.56392-1-aford173@gmail.com> <CAJ+vNU0caeeC6in5dO_jkkbYNAnTL7drBZcmNBsstbrPWqUkHw@mail.gmail.com>
-In-Reply-To: <CAJ+vNU0caeeC6in5dO_jkkbYNAnTL7drBZcmNBsstbrPWqUkHw@mail.gmail.com>
-From: Adam Ford <aford173@gmail.com>
-Date: Fri, 27 Jun 2025 13:39:48 -0500
-X-Gm-Features: Ac12FXwEbq0LZniaWzZz7izf_58TqugWsShMRtxczDzTY_dudWpf8_R6poipXQI
-Message-ID: <CAHCN7x++XGXu6DsPaOc2EpAbxzy+RZbDq5A5-j5a4roGDhv4fQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250627-sm-misc-api-v1-v1-7-2b99481fe825@nxp.com>
 
-On Fri, Jun 27, 2025 at 12:56=E2=80=AFPM Tim Harvey <tharvey@gateworks.com>=
- wrote:
->
-> On Fri, Jun 20, 2025 at 2:52=E2=80=AFPM Adam Ford <aford173@gmail.com> wr=
-ote:
-> >
-> > The reference manual for the i.MX8MM states the clock rate in
-> > MMC mode is 1/2 of the input clock, therefore to properly run
-> > at HS400 rates, the input clock must be 400MHz to operate at
-> > 200MHz.  Currently the clock is set to 200MHz which is half the
-> > rate it should be, so the throughput is half of what it should be
-> > for HS400 operation.
-> >
-> > Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini developme=
-nt kit")
-> > Signed-off-by: Adam Ford <aford173@gmail.com>
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arc=
-h/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> > index 21bcd82fd092..8287a7f66ed3 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> > @@ -294,6 +294,8 @@ &usdhc3 {
-> >         pinctrl-0 =3D <&pinctrl_usdhc3>;
-> >         pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
-> >         pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
-> > +       assigned-clocks =3D <&clk IMX8MM_CLK_USDHC3>;
-> > +       assigned-clock-rates =3D <400000000>;
-> >         bus-width =3D <8>;
-> >         non-removable;
-> >         status =3D "okay";
-> > --
-> > 2.48.1
-> >
-> >
->
-> Hi Adam,
->
-> This caught my interest. Where in the IMX8MMRM do you see this and
-> would it also apply to the IMX8MP? (You've patched your IMX8MM and
-> IMX8MN boards).
+Hi Peng,
 
-My 8MP board already appears to be running at 400MHz, but I did check.
-The reference I found was in the 8MM TRM, under 10.3.3.5 Clock
-generator, there is a note:
+kernel test robot noticed the following build errors:
 
-CLK is different for the SDR and DDR modes.
-- In the SDR mode, CLK is equal to the internal working clock (card_clk).
-- In the DDR mode, CLK is equal to card_clk/2.
+[auto build test ERROR on ecb259c4f70dd5c83907809f45bf4dc6869961d7]
 
->
-> Have you encountered any issues when running eMMC at HS400 due to this
-> or is it just something you noticed in the RM more recently like with
+url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan/firmware-arm_scmi-imx-Add-documentation-for-MISC_BOARD_INFO/20250627-140736
+base:   ecb259c4f70dd5c83907809f45bf4dc6869961d7
+patch link:    https://lore.kernel.org/r/20250627-sm-misc-api-v1-v1-7-2b99481fe825%40nxp.com
+patch subject: [PATCH 7/7] firmware: imx: sm-misc: Dump syslog and system info
+config: i386-buildonly-randconfig-001-20250628 (https://download.01.org/0day-ci/archive/20250628/202506280217.aZih1pGT-lkp@intel.com/config)
+compiler: clang version 20.1.7 (https://github.com/llvm/llvm-project 6146a88f60492b520a36f8f8f3231e15f3cc6082)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250628/202506280217.aZih1pGT-lkp@intel.com/reproduce)
 
-One of my colleagues reported that the eMMC was running slower than he
-expected, and I looked at the reference clock and noticed the 200MHz.
-He asked if it needed to run 2x that since HS400 clocks on both edges.
-I looked it up and found the note from above.  When I increased the
-rate to 400MHz from 200MHz, the throughput doubled. I also noticed
-some other boards, including the reference from NXP had the clock rate
-set to 400MHz, so I don't think anything unreasonable.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506280217.aZih1pGT-lkp@intel.com/
 
-adam
+All errors (new ones prefixed by >>):
 
-> my recent patch that lowers SPI clock due to an obscure RM note [1]
->
-> Best Regards,
->
-> Tim
-> [1] https://patchwork.kernel.org/project/linux-arm-kernel/list/?series=3D=
-965976&archive=3Dboth
+>> drivers/firmware/imx/sm-misc.c:58:11: error: call to undeclared function 'kmalloc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      58 |         syslog = kmalloc(sizeof(*syslog), GFP_KERNEL);
+         |                  ^
+   drivers/firmware/imx/sm-misc.c:58:11: note: did you mean 'mm_alloc'?
+   include/linux/sched/mm.h:16:26: note: 'mm_alloc' declared here
+      16 | extern struct mm_struct *mm_alloc(void);
+         |                          ^
+>> drivers/firmware/imx/sm-misc.c:58:9: error: incompatible integer to pointer conversion assigning to 'struct scmi_imx_misc_syslog *' from 'int' [-Wint-conversion]
+      58 |         syslog = kmalloc(sizeof(*syslog), GFP_KERNEL);
+         |                ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/firmware/imx/sm-misc.c:64:3: error: call to undeclared function 'kfree'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      64 |                 kfree(syslog);
+         |                 ^
+   drivers/firmware/imx/sm-misc.c:80:2: error: call to undeclared function 'kfree'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      80 |         kfree(syslog);
+         |         ^
+   drivers/firmware/imx/sm-misc.c:97:9: error: call to undeclared function 'kmalloc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+      97 |         info = kmalloc(sizeof(*info), GFP_KERNEL);
+         |                ^
+>> drivers/firmware/imx/sm-misc.c:97:7: error: incompatible integer to pointer conversion assigning to 'struct scmi_imx_misc_system_info *' from 'int' [-Wint-conversion]
+      97 |         info = kmalloc(sizeof(*info), GFP_KERNEL);
+         |              ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/firmware/imx/sm-misc.c:127:2: error: call to undeclared function 'kfree'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     127 |         kfree(info);
+         |         ^
+   7 errors generated.
+
+
+vim +/kmalloc +58 drivers/firmware/imx/sm-misc.c
+
+    46	
+    47	static ssize_t syslog_show(struct device *device, struct device_attribute *attr,
+    48				   char *buf)
+    49	{
+    50		struct scmi_imx_misc_sys_sleep_rec *rec;
+    51		struct scmi_imx_misc_syslog *syslog;
+    52		int ret;
+    53		size_t len = 0;
+    54	
+    55		if (!ph)
+    56			return 0;
+    57	
+  > 58		syslog = kmalloc(sizeof(*syslog), GFP_KERNEL);
+    59		if (!syslog)
+    60			return -ENOMEM;
+    61	
+    62		ret = imx_misc_ctrl_ops->misc_syslog(ph, sizeof(*syslog), syslog);
+    63		if (ret) {
+  > 64			kfree(syslog);
+    65			return ret;
+    66		}
+    67	
+    68		rec = &syslog->syssleeprecord;
+    69	
+    70		len += sysfs_emit_at(buf, len, "Wake Vector = %u\n", rec->wakesource);
+    71		len += sysfs_emit_at(buf, len, "Sys sleep mode = %u\n", rec->syssleepmode);
+    72		len += sysfs_emit_at(buf, len, "Sys sleep flags = 0x%08x\n", rec->syssleepflags);
+    73		len += sysfs_emit_at(buf, len, "MIX power status = 0x%08x\n", rec->mixpwrstat);
+    74		len += sysfs_emit_at(buf, len, "MEM power status = 0x%08x\n", rec->mempwrstat);
+    75		len += sysfs_emit_at(buf, len, "PLL power status = 0x%08x\n", rec->pllpwrstat);
+    76		len += sysfs_emit_at(buf, len, "Sleep latency = %u\n", rec->sleepentryusec);
+    77		len += sysfs_emit_at(buf, len, "Wake latency = %u\n", rec->sleepexitusec);
+    78		len += sysfs_emit_at(buf, len, "Sleep count = %u\n", rec->sleepcnt);
+    79	
+    80		kfree(syslog);
+    81	
+    82		return len;
+    83	}
+    84	
+    85	static DEVICE_ATTR_RO(syslog);
+    86	
+    87	static ssize_t system_info_show(struct device *device, struct device_attribute *attr,
+    88					char *buf)
+    89	{
+    90		struct scmi_imx_misc_system_info *info;
+    91		int len = 0;
+    92		int ret;
+    93	
+    94		if (!ph)
+    95			return 0;
+    96	
+  > 97		info = kmalloc(sizeof(*info), GFP_KERNEL);
+    98		if (!info)
+    99			return -ENOMEM;
+   100	
+   101		ret = imx_misc_ctrl_ops->misc_discover_build_info(ph, info);
+   102		if (ret)
+   103			goto err;
+   104	
+   105		ret = imx_misc_ctrl_ops->misc_cfg_info(ph, info);
+   106		if (ret)
+   107			goto err;
+   108	
+   109		ret = imx_misc_ctrl_ops->misc_silicon_info(ph, info);
+   110		if (ret)
+   111			goto err;
+   112	
+   113		ret = imx_misc_ctrl_ops->misc_board_info(ph, info);
+   114		if (ret)
+   115			goto err;
+   116	
+   117		len += sysfs_emit_at(buf, len, "SM Version    = Build %u, Commit 08%x\n",
+   118				     info->buildnum, info->buildcommit);
+   119		len += sysfs_emit_at(buf, len, "SM Config     = %s, mSel=%u\n",
+   120				     info->cfgname, info->msel);
+   121		len += sysfs_emit_at(buf, len, "Silicon       = %s\n", info->siname);
+   122		len += sysfs_emit_at(buf, len, "Board         = %s, attr=0x%08x\n",
+   123				     info->brdname, info->brd_attributes);
+   124	
+   125		ret = len;
+   126	err:
+   127		kfree(info);
+   128		return ret;
+   129	}
+   130	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
