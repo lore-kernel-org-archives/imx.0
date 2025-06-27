@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5339421ABA3;
-	Fri, 27 Jun 2025 06:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2411FFC59;
+	Fri, 27 Jun 2025 07:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751007290; cv=none; b=WmfQ1MfcqWPjeqR/noYRgmJ05LzTUrZu4v0k2bZzCHeMWyjxO/GjFs97mwfrSS8JlTKlA0dtWqFYkGxEH0OAo05lPVDc46AdW0apeCgV90zymvSJxDwtiilsdMTLrOX5oYstWjVaj5bZU/KBWunuIMyw54Lm+loubhq/Gn6ymrM=
+	t=1751007982; cv=none; b=kP7uC0wJKkyrqfZFfLy/99y+rZ3jB4CREbgahE+QOdGRondA6TeyeVpQc5tOa4meFlN1yWedVEEaBjgubSRMsgYTbI0iCeUpyvTYJXdp7NvWkk2w9yJIoI5kK0OPrEY0I3MGhCEpfXEWNvuMtW8LnFQBaEHyPOcmvwT+/LK2j9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751007290; c=relaxed/simple;
-	bh=JfCgW9HbTpeOku1zvHWwMxVzRgAAq76SRmjvxE7JOHA=;
+	s=arc-20240116; t=1751007982; c=relaxed/simple;
+	bh=/EqmbAddrBe3sC3E4/NL8P/ElonLTvB2i50FUAlbfZc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e3dhO26XIRTm0YvM6xa7pIJkbF/qG378NE8ZE9nY9j9q03o2W5eRb0HH/DXgtPNGdVSBK+b9UAv2/T5dT8yIHLd5Qnu7xAKH6p6DB6oj0GBueGjnkPzFqGPUsmG7v/QJ0wPbAwoXjIRhnaGhDcWJqZvBTMxEP8Il1LgfGacJ6/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NKoDSdFG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=OZ4ZfPPN+JuIQ0EP6UXeeIMwvP8wZALzN411fENgWHKqjWV0hUbv0imi4XxP9TufLBMQKGQNEg1X3x0sqtkPzuFv0/0srqWIPpakurhYX08tb5Ift6nYmoydL0tVbZFULjKmYGX4D56lY7AvpD3DAb+SX3jWsvPXGf8qulKYMQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QlhhgT01; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKoDSdFG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1128CC4CEE3;
-	Fri, 27 Jun 2025 06:54:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QlhhgT01"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470CBC4CEE3;
+	Fri, 27 Jun 2025 07:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751007289;
-	bh=JfCgW9HbTpeOku1zvHWwMxVzRgAAq76SRmjvxE7JOHA=;
+	s=k20201202; t=1751007982;
+	bh=/EqmbAddrBe3sC3E4/NL8P/ElonLTvB2i50FUAlbfZc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NKoDSdFGJkCNvhF3Xu1UasZIiLobiK8/6c9da6j/VV9fKBmwFDWN77p/WbpQQfSkn
-	 rnb+e8dpEm/mvMYW+NZjEr0bFfD1KWXiQ6y7R3yRMmCMH4s1L7XAAqq7lcigB+6J5c
-	 N5QQMeXpFoIc3IEImjtpc2/PzTRx34UsY6kdQlUmkYR7QfbRA+mR2PjHFjsrqjr2zs
-	 SYVurFWT7N5AtwZdqR/ETq5i13glR8pPLkxRJ1hoXtun39if5eU5Jwy2fvwEv9aEA2
-	 W5Ua5/LSVUXsOUeYSC2KZKaGdvYGN3+e34GW0UBC1p2fOlyd3Oj9eEgY0qXHimvt+B
-	 KU1/tGB99Mdaw==
-Date: Fri, 27 Jun 2025 08:54:46 +0200
+	b=QlhhgT01QFwkK+tQ8E/QRH4IcSsZdRubxsCP2dZRJAySq3PluNhZIBqdISbYnAV1O
+	 KtEOj3fJ++oUiRh/Z6elHNO1LIR/Vog1nwTgItuFfrnsjnB1gPcosJGal/MX++h7p4
+	 Fin51fnxkHL1wDG36Iz7wt2kMmCGufkhRtx6aIJGuEXPH0qXEtgDFTiOacMpTw0XlE
+	 be9IoyfQLpd8wwRMQtsvM9HyLxtWKYi7eZWrRBoWgJTjN32Uy739khE0dlnGH0xAHU
+	 OceAXsyEsN+zMVuruFChe4FakDZgwMMBygplBSFx3fi4LAm+oBgnv8gOrTzJ5Eestl
+	 XNPm502aEcGmA==
+Date: Fri, 27 Jun 2025 09:06:18 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] dt-bindings: PCI: dwc: Add one more reference
- clock
-Message-ID: <20250627-sensible-pigeon-of-reading-b021a3@krzk-bin>
-References: <20250626073804.3113757-1-hongxing.zhu@nxp.com>
- <20250626073804.3113757-2-hongxing.zhu@nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
+	Daniel Baluta <daniel.baluta@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>, 
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v3 1/5] dt-bindings: remoteproc: fsl,imx-rproc: Add
+ support for i.MX95
+Message-ID: <20250627-black-skua-of-admiration-f6ccbb@krzk-bin>
+References: <20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com>
+ <20250625-imx95-rproc-1-v3-1-699031f5926d@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,36 +50,19 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250626073804.3113757-2-hongxing.zhu@nxp.com>
+In-Reply-To: <20250625-imx95-rproc-1-v3-1-699031f5926d@nxp.com>
 
-On Thu, Jun 26, 2025 at 03:38:02PM +0800, Richard Zhu wrote:
-> Add one more reference clock "extref" to be onhalf the reference clock
-> that comes from external crystal oscillator.
+On Wed, Jun 25, 2025 at 10:23:27AM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Add compatible string for the Cortex-M7 core in i.MX95
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  .../devicetree/bindings/pci/snps,dw-pcie-common.yaml        | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml b/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml
-> index 34594972d8db..ee09e0d3bbab 100644
-> --- a/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml
-> +++ b/Documentation/devicetree/bindings/pci/snps,dw-pcie-common.yaml
-> @@ -105,6 +105,12 @@ properties:
->              define it with this name (for instance pipe, core and aux can
->              be connected to a single source of the periodic signal).
->            const: ref
-> +        - description:
-> +            Some dwc wrappers (like i.MX95 PCIes) have two reference clock
-> +            inputs, one from internal PLL, the other from off chip crystal
-> +            oscillator. Use extref clock name to be onhalf of the reference
-> +            clock comes form external crystal oscillator.
+>  Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 
-How internal PLL can be represented as 'ref' clock? Internal means it is
-not outside, so impossible to represent.
-
-Where is the DTS so we can look at big picture?
-
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
