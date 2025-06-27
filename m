@@ -1,214 +1,175 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010012.outbound.protection.outlook.com [52.101.69.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693AD4502A;
-	Fri, 27 Jun 2025 18:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751050181; cv=none; b=Pa5CigJu58UQdUaWt9oq+o8bhITqk99w5lnKhbvKNKxg98W0bKlrLcoOfTiPv7lrjp6h4/A80xM8uwUROaxnxgCPRKEVOiRu3+uQiY0BodLv8pptIgPsn/Z45tB+B8zNzoI8irOlsL8sR6yqplGAJiDf3nQLjrZXo+FrYospUbI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751050181; c=relaxed/simple;
-	bh=narcaFjXVhe4/7r7kPhjOLSPFF8lb9hRlbz3gP5dDG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q0VX0WrlvAJZ6F1N8qwIxgw/X92WtYGrZd2iF9Y4PctqzMLARkFejRlJAo+ioC/kBb9kthn3PiIPLSgyhRpNjn1nFbH5S6umqiCKDqq+UMfanOJmsxrER94HcdoHbhrckJcmKHF6NH7mki1PEt7wWK97rEH7jGhIc/JGMDUMgbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=agY5s/XZ; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44D320A5C4
+	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 19:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751052828; cv=fail; b=osy2C8/NUj6qWYQwV5e+drokadWPr2zutrbd6y8xDPifF2RDoeF2xxuOTSmparSb//2GK2L8c9JsgNE7RXL+Nz4wHmeo3X+MnNL5RS6DryxImGNpNKQblqZxwhNR9mRDmjs8dpRWtlMxQ78MNUD05fa/0GwurzPFgQpkL7i+PcE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751052828; c=relaxed/simple;
+	bh=gkh6NSMoQiT+Lh5xibHYCVc/dBDsjl3T+hBhc6sNrz0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QRrOy7YkaRgfnw6XByAwctt4l2+W0w7sC3gjfkg1SdU4GjaPp0gBcO9H8412IU5VcqWnhGv2r5H5bQ+aggZW6C2BII+KEnuRarvhAzX39Nhc24ziUiixqOrysEcO7qeoCFmhkf0lemeEFnJuq8E9yfT/y298+Zrg42pwL/tyTVs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HcuGoMHO; arc=fail smtp.client-ip=52.101.69.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="agY5s/XZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751050178; x=1782586178;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=narcaFjXVhe4/7r7kPhjOLSPFF8lb9hRlbz3gP5dDG0=;
-  b=agY5s/XZQocy8Ex2IuFJHX0TUM4XyP1AiT6BUj1VSXRZiT2g57lYyjwU
-   B/JhsHCObpsXQ+S4vGvrliVsff+pkz3kvsRrw+k0HIQ1SEo5uQbla3F2v
-   Qc82jdageexcO/KZRnfvdlTwv4NUQTMXzwreUKtouCYxyj4x7rIjvzkP7
-   iDONiWB5wl2U3pop+iz6alsGcuBa5qKyZzvV/o+MP2JBOzmW7TyVtNAzS
-   0EyPb6l5cb2iDc1pj/8BEta6JLOXqZbSyl6XR17VaKvJhnnlPnXC4Fssy
-   iYCp3E0ICtFwex1ark2x12OyAQsTIEnLsfe51CxzaTKPudKMdJhE3rH5r
-   Q==;
-X-CSE-ConnectionGUID: Wyd4i/bQRQWvZmQ8FPh9NA==
-X-CSE-MsgGUID: kOI4XYj6Q72SVtOpzDYKQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11477"; a="78810499"
-X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; 
-   d="scan'208";a="78810499"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 11:49:37 -0700
-X-CSE-ConnectionGUID: A7Edkv01Q/aVxm2Gt3qXJQ==
-X-CSE-MsgGUID: Egm5CKSjSTaC/g/ScZ2zJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,271,1744095600"; 
-   d="scan'208";a="152394717"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 27 Jun 2025 11:49:34 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uVE8h-000WTG-3D;
-	Fri, 27 Jun 2025 18:49:32 +0000
-Date: Sat, 28 Jun 2025 02:49:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Peng Fan <peng.fan@nxp.com>, Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HcuGoMHO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q877rsX+Ax5f+/hM1RBvRSCcdfvyJZpPlybvJ7ODnNTzruXSGBqLwa2Z55kK/vAqxZfD07ODdYTSiKfXuyoeorp+f9MFv5yfNZCtd9hK5YZd0SIsHy8eOL+Wi6AWi3+s/Q4aimW8NXz/bO934ETJe8FUFASHoMmj37uBhwScedc5A1Fj9S1pw4l8Rei8T9fgvukuQE8MAuyA1e40+lcvrZe8JtClaoc5GcSKhC6f+B/94Z3TEj9vxG4LvtabBJsGd9rzCx+9okmC5/Jb+phl7CVrUfCKFeo/3IG9aOJcQH+5/ZSXQ+lFnL9RXuh/cll+FuaYqKLLYb/cYrwmjo7dwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FhPwNoO5ZH28IzSArLRZRwUMuLEa962JWq17ET+F/JI=;
+ b=uLOtQdR6suM77O4zGpMcFZdY57YvaPe11Gac6Pr4DPrxiFE9sEbCIH4uQEqp86B64daZYj9no9ktFNDPQd9FSUBFsImtesfugx5VtstR3wIvWdv1UU4V82/EMtoxsPDXVkrIlUPE1PXou2fr4WUn2rkIulqvkFXniVsKAnHhm26QYWoxfHv7/iEftBAAVxdtamW/uMsokuT6i2OVANoTYfEw1uRmQhE6IkhAG11HICUOgZ8yxlSCX/4hwr71P8zMMT4gEOZllalqpBsCDRCc7tRhOKcKvQ0hXTllD6vzp/OiZy0llpYuucaqIbkgLMECGBJGoWmwTuNEIj2jX05Akg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FhPwNoO5ZH28IzSArLRZRwUMuLEa962JWq17ET+F/JI=;
+ b=HcuGoMHOmRY85Uc2h6qrRVyoF8lgF+xcE7f45HvZlAVDemRcILSiOVzQ++FPX2OKU8fGbJ8LKi+bveMFwfqxsCtFuQJHTIOuX79+4rwMEibyehBnksFJ0ZG4Q9Xj3a+wxXhNH7QIlkliZGq1tAUi5q7rIJ7h0I0Q3AZBc+Sd6pv7sPwM+PD6npHSGkpvp4F0cnel+FbjcIeQYe5DRcLWU0LLUARsBstQuj6H40ddEhaXCbYT6jMYhmWP2LBaKX7SpUasTKZOUnIaSUUl7sWQF7ExJLhmEa43mpDUInPOZ9eebF9BNO4S0TAAvOm/Rr2xBdm65e4kC6jQ7MXbkIiS4A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI1PR04MB6991.eurprd04.prod.outlook.com (2603:10a6:803:12d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Fri, 27 Jun
+ 2025 19:33:41 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8880.015; Fri, 27 Jun 2025
+ 19:33:41 +0000
+Date: Fri, 27 Jun 2025 15:33:35 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	arm-scmi@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 7/7] firmware: imx: sm-misc: Dump syslog and system info
-Message-ID: <202506280217.aZih1pGT-lkp@intel.com>
-References: <20250627-sm-misc-api-v1-v1-7-2b99481fe825@nxp.com>
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: arm: fsl: add i.MX8ULP EVK9 board
+Message-ID: <aF7yD8hWDq8KF4gY@lizhi-Precision-Tower-5810>
+References: <20250627142645.134256-1-laurentiumihalcea111@gmail.com>
+ <20250627142645.134256-2-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250627142645.134256-2-laurentiumihalcea111@gmail.com>
+X-ClientProxiedBy: AS4P191CA0048.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:20b:657::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250627-sm-misc-api-v1-v1-7-2b99481fe825@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI1PR04MB6991:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43302980-5703-46d8-e0bf-08ddb5b18580
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?akL0xxFd1Jxc+2sRDJz1ICODOPXLWEiVoLg2Ta83vS7RO3jtRQ7Ly7AAc6cD?=
+ =?us-ascii?Q?/EyrIGziBPQjAFLPAe8UZRJqprVYGvIqjpPPF0R3qhEesfl8he7oWXXZaThK?=
+ =?us-ascii?Q?i+IBIYMjCH75IIJky+tx7eVFqmd/euAK3xbBWAABgbIhIQE6CUitF4SbnXii?=
+ =?us-ascii?Q?/iqRRU7olnnypCZs9wt7Mr6YPW1Sy0oKvvBaojPc22JEUew1EvYVsixO3auj?=
+ =?us-ascii?Q?wG5vTcnNU1hoUy9CHOoaVHgIgN96zm6CfyU5WQPANmJHsEenAP5VhJQbljIV?=
+ =?us-ascii?Q?/VWYFUefF5qc+cl4ufLDaO5bSpIkDOvFykXiOjCPZujqbrynHLhBDKz5KUZ5?=
+ =?us-ascii?Q?0mA0XvGAAc7INvyESo/77MJlo2VtypyUaK8RhUccaqygDLCXKbhp0NSmTKTN?=
+ =?us-ascii?Q?X0ALqtm3jP4Swr3OkVZTuNJMpPyA6oqgCa+MFwbpBWSDpOWaf1PhGJ/uuWyW?=
+ =?us-ascii?Q?p7j/g0PhEq96IDu18t5tim7nTJXfOG+aTaC4AkaQh/vuOKxEEC8lgICh7B2H?=
+ =?us-ascii?Q?UfUQFq55USxMxQyHNObvp/rcg5HUPPGhZ2bODcZ0gXiSZDjoCwXtAxlts8XX?=
+ =?us-ascii?Q?zQLkl24gZhTwzRsqgTUznx69Zhh/WDJdf89Z4zWT8Ktw2OLmes3DfUG928oX?=
+ =?us-ascii?Q?KpIzFVtoWkOcpVFGnLHYDrh7F2oazFk9+TZGO4k2CwKtG31USXxiN7nKrXRT?=
+ =?us-ascii?Q?684jwTfudHz2G3GKCU5t/NHI1KPwEYYWajZgZceifkNupQ05Y0xqbkDdmwWD?=
+ =?us-ascii?Q?aV7KnQGE5DsOhqTKaqb/igyrFR5pUypMZGggUldX1Y2j+/rgXeXdOTkBwXON?=
+ =?us-ascii?Q?gZhzj5xJj1hmob6q0QsQQJgK0V7b84xytdZT5+vZmQPCFWlk42JZBiQWzCcl?=
+ =?us-ascii?Q?b0tXOgTfBh5sXExKm3Vz2raIX2gd/ot3+wdVqfSCsM148DAEOMl04PCp/3UL?=
+ =?us-ascii?Q?X33rc9TYklCI30yJs2gz9fdSmPJJBT74wCskSNI+/l7k8aGs4Iv9RC5YNc6F?=
+ =?us-ascii?Q?CiEP1Ftq8ExnylL6CD4nB6nc0hcGwia4KPPhgwpANhexuQZ4SFJNxsAemhfM?=
+ =?us-ascii?Q?u3lGgwHYU9KFhzyhi8BicKkUBNjmbztaEkXX2Bv5zNy/w3XT/7f4sFEes/K2?=
+ =?us-ascii?Q?aE5W+BnqqLBE+Eo8AZAhsUvxIuDaiIX3DTbw8X4A8UyclNg8YUbFHGT/poFJ?=
+ =?us-ascii?Q?CPXTb3eI5v7s17L/YiPidSDmbTDJwTbZMSIYCBRN2CnYG8zqVlGXYsf1v/jD?=
+ =?us-ascii?Q?hSRXmv+RhQR+h3NB2ve4+2AJlXB1e5nuuVhB8I8qNnHnQrIbuWd3f/E8QDTY?=
+ =?us-ascii?Q?IJTRvK3357ylz/vJv+Eoyb0ESkvL+0MXEvjr7nJMllrDWjwMOGhM3KkK0FjZ?=
+ =?us-ascii?Q?s9dNvahF+phAJ+8yYglCtzuuLAwcNgViDaxr6CtK/2iiMEDdqRU87C2KFC4y?=
+ =?us-ascii?Q?pijwVkHSsfSh/4KR9U1VQPCmzz+06S750sxlbDVT8Ei7zGW9Mir/+Q=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?3jpU5wsqSlY2w0FcPZ5FzatgTm61iVdNoR6DoJrT3JlXM9bTjCTcykchBW/A?=
+ =?us-ascii?Q?ZDO8GP12N0z8H1M+ahw+MS+f7mQPlAogbrpd71qYeMrZ+B0PAt0jE+HU7YJw?=
+ =?us-ascii?Q?XrzkKaZV7uIalvVn6fTosmPQuacDuZXeOe9GCjlKkrd15sJ+4BxJMvAJIe85?=
+ =?us-ascii?Q?dl/LSWkUUpY0UADbDiGDM0BGKVO0f3zWbc77cBFEk7qwyAshnlgMOvnbrzMV?=
+ =?us-ascii?Q?gBh5McmXWR2QExZilhLsaaMXygi6GOmCiZo2kunMX7V4PxGhP/1iiFaEfedK?=
+ =?us-ascii?Q?Iz4jKe7O7D1J4v+J76/gQsB2Q3ThuDV9q/OH1K9t8UB7f1TzjPFgZihDqmgc?=
+ =?us-ascii?Q?24C6mdj2XGCd+dGcqobd28I/iVKvXW6ePSeaMV8bwP6nYhCSgxHLKpBoXI7g?=
+ =?us-ascii?Q?FbWTLMQVf1Vioh/JPTfu4fMNyesxFyFZ6Gh2JtuTSLjm4RPqYn9vMrYsthFi?=
+ =?us-ascii?Q?De+GOZVhLTW39Ot/2WT1xOdC7j5IhOWRC18qZ5Pn05dXheiwYgk+J//jSqp8?=
+ =?us-ascii?Q?julq+28a8wfPxNd/75aYAlcuv/M+bNfAyJ6nQmdC5BbLYJFek69U8vj60gvj?=
+ =?us-ascii?Q?ux8irOXMe0WtoIhHgLX0JY83VmfS5aGA/FoRU99FJDFWbYlpBtfc3zew+i4+?=
+ =?us-ascii?Q?QIEUQSt8UKQe3sa5z4nZBRciLws/HrK1U9oD16cQAPD17PaA4stbuxPWB/XJ?=
+ =?us-ascii?Q?0XjzFVlQ4kMmlqBf2iu1RXBoizdodkN0+SmcjMZK4FpVIbcyN66oNJi0oEys?=
+ =?us-ascii?Q?xcOReYLwPfQY4jGWhMOThQFvVGmeZ6XYeTHSMQvfnJBzICdaWLnEwQcCA+iy?=
+ =?us-ascii?Q?CHXvENptzj2hlVG19+yX5rzqY+1W6RAVuO/v0ndI65TI8GjcSKZ7guMttlD7?=
+ =?us-ascii?Q?OO8kJngHvBH/pJMWqSHvIk66BhfhpFh3zl4LOY5yZl8xY0Otg7bU0MTOGfxW?=
+ =?us-ascii?Q?hcDArGM5P+2wI9b8utooNHq1dP/krcoPX70QbxXwxpvWmTuOq/CSZVGtXzit?=
+ =?us-ascii?Q?wd68i2x76sR5tsYAiQESpdXjMa7jRy0G9qLsM7AcXUsxdKlP6veet6oti/jk?=
+ =?us-ascii?Q?5WdpfQOKk+1xi2jQRuA82yh9qPxMd9kzYtLVSRh4i3NDwkMjPOwdPZ8UeLg3?=
+ =?us-ascii?Q?r+NWjKtxTfqgxLqzA/9kKHT/zqrXGW9v/DY5vOUuNztJXZIhL1hcdo2AIYPn?=
+ =?us-ascii?Q?FUJxxL9h9adzrrG1yvTV0jkVIUuTorXdqkEULik2M7/uMIXn/hfnne5ucvpq?=
+ =?us-ascii?Q?7jNvniuFMF/f1Fxmrp4UbQoSwEOft5duT+CydQ/Zpgb/+oSvpoudMcmvBW1x?=
+ =?us-ascii?Q?viK0knEmNqtLzJ7FpkjVt5lsjXNEiBp+Se9s95fniCJbA3GQQVhYIm809r9R?=
+ =?us-ascii?Q?iUy3fGXtYHCGijwDha/bC017LcPmHHS5jm/DZ+8u9CIVuz56tzc2PWV4xWkT?=
+ =?us-ascii?Q?J4uGpz/ifCCbP0dwcBoFbTYcBOZHeAckzLG2d7KrwdVUYyBurb+OitZu74mA?=
+ =?us-ascii?Q?S6H8gY+rRKF7n4YgK/XicjQpO6Q4kamXvU8wf8qCQ9S4iQ3cpKq65lFcdTbZ?=
+ =?us-ascii?Q?Jd2dE3nbOGkRplyJdZc=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43302980-5703-46d8-e0bf-08ddb5b18580
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2025 19:33:41.1425
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +iymQ3KdKU0ay5jKlGBljlq3yhFq6vR6VX/LdX88JYiZF898uxaWSm4w1PBAcSg9WYGosn0z3TQ9fkKPkahO/A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6991
 
-Hi Peng,
+On Fri, Jun 27, 2025 at 10:26:44AM -0400, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>
+> Add DT compatible string for the i.MX8ULP EVK9 board.
+>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+> index b23bc1e48866..0563e9522fb7 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1373,6 +1373,7 @@ properties:
+>          items:
+>            - enum:
+>                - fsl,imx8ulp-evk           # i.MX8ULP EVK Board
+> +              - fsl,imx8ulp-9x9-evk       # i.MX8ULP EVK9 Board
 
-kernel test robot noticed the following build errors:
+move fsl,imx8ulp-9x9-evk before fsl,imx8ulp-evk according ascii table
 
-[auto build test ERROR on ecb259c4f70dd5c83907809f45bf4dc6869961d7]
+Frank
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Peng-Fan/firmware-arm_scmi-imx-Add-documentation-for-MISC_BOARD_INFO/20250627-140736
-base:   ecb259c4f70dd5c83907809f45bf4dc6869961d7
-patch link:    https://lore.kernel.org/r/20250627-sm-misc-api-v1-v1-7-2b99481fe825%40nxp.com
-patch subject: [PATCH 7/7] firmware: imx: sm-misc: Dump syslog and system info
-config: i386-buildonly-randconfig-001-20250628 (https://download.01.org/0day-ci/archive/20250628/202506280217.aZih1pGT-lkp@intel.com/config)
-compiler: clang version 20.1.7 (https://github.com/llvm/llvm-project 6146a88f60492b520a36f8f8f3231e15f3cc6082)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250628/202506280217.aZih1pGT-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506280217.aZih1pGT-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/firmware/imx/sm-misc.c:58:11: error: call to undeclared function 'kmalloc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      58 |         syslog = kmalloc(sizeof(*syslog), GFP_KERNEL);
-         |                  ^
-   drivers/firmware/imx/sm-misc.c:58:11: note: did you mean 'mm_alloc'?
-   include/linux/sched/mm.h:16:26: note: 'mm_alloc' declared here
-      16 | extern struct mm_struct *mm_alloc(void);
-         |                          ^
->> drivers/firmware/imx/sm-misc.c:58:9: error: incompatible integer to pointer conversion assigning to 'struct scmi_imx_misc_syslog *' from 'int' [-Wint-conversion]
-      58 |         syslog = kmalloc(sizeof(*syslog), GFP_KERNEL);
-         |                ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> drivers/firmware/imx/sm-misc.c:64:3: error: call to undeclared function 'kfree'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      64 |                 kfree(syslog);
-         |                 ^
-   drivers/firmware/imx/sm-misc.c:80:2: error: call to undeclared function 'kfree'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      80 |         kfree(syslog);
-         |         ^
-   drivers/firmware/imx/sm-misc.c:97:9: error: call to undeclared function 'kmalloc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      97 |         info = kmalloc(sizeof(*info), GFP_KERNEL);
-         |                ^
->> drivers/firmware/imx/sm-misc.c:97:7: error: incompatible integer to pointer conversion assigning to 'struct scmi_imx_misc_system_info *' from 'int' [-Wint-conversion]
-      97 |         info = kmalloc(sizeof(*info), GFP_KERNEL);
-         |              ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/firmware/imx/sm-misc.c:127:2: error: call to undeclared function 'kfree'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     127 |         kfree(info);
-         |         ^
-   7 errors generated.
-
-
-vim +/kmalloc +58 drivers/firmware/imx/sm-misc.c
-
-    46	
-    47	static ssize_t syslog_show(struct device *device, struct device_attribute *attr,
-    48				   char *buf)
-    49	{
-    50		struct scmi_imx_misc_sys_sleep_rec *rec;
-    51		struct scmi_imx_misc_syslog *syslog;
-    52		int ret;
-    53		size_t len = 0;
-    54	
-    55		if (!ph)
-    56			return 0;
-    57	
-  > 58		syslog = kmalloc(sizeof(*syslog), GFP_KERNEL);
-    59		if (!syslog)
-    60			return -ENOMEM;
-    61	
-    62		ret = imx_misc_ctrl_ops->misc_syslog(ph, sizeof(*syslog), syslog);
-    63		if (ret) {
-  > 64			kfree(syslog);
-    65			return ret;
-    66		}
-    67	
-    68		rec = &syslog->syssleeprecord;
-    69	
-    70		len += sysfs_emit_at(buf, len, "Wake Vector = %u\n", rec->wakesource);
-    71		len += sysfs_emit_at(buf, len, "Sys sleep mode = %u\n", rec->syssleepmode);
-    72		len += sysfs_emit_at(buf, len, "Sys sleep flags = 0x%08x\n", rec->syssleepflags);
-    73		len += sysfs_emit_at(buf, len, "MIX power status = 0x%08x\n", rec->mixpwrstat);
-    74		len += sysfs_emit_at(buf, len, "MEM power status = 0x%08x\n", rec->mempwrstat);
-    75		len += sysfs_emit_at(buf, len, "PLL power status = 0x%08x\n", rec->pllpwrstat);
-    76		len += sysfs_emit_at(buf, len, "Sleep latency = %u\n", rec->sleepentryusec);
-    77		len += sysfs_emit_at(buf, len, "Wake latency = %u\n", rec->sleepexitusec);
-    78		len += sysfs_emit_at(buf, len, "Sleep count = %u\n", rec->sleepcnt);
-    79	
-    80		kfree(syslog);
-    81	
-    82		return len;
-    83	}
-    84	
-    85	static DEVICE_ATTR_RO(syslog);
-    86	
-    87	static ssize_t system_info_show(struct device *device, struct device_attribute *attr,
-    88					char *buf)
-    89	{
-    90		struct scmi_imx_misc_system_info *info;
-    91		int len = 0;
-    92		int ret;
-    93	
-    94		if (!ph)
-    95			return 0;
-    96	
-  > 97		info = kmalloc(sizeof(*info), GFP_KERNEL);
-    98		if (!info)
-    99			return -ENOMEM;
-   100	
-   101		ret = imx_misc_ctrl_ops->misc_discover_build_info(ph, info);
-   102		if (ret)
-   103			goto err;
-   104	
-   105		ret = imx_misc_ctrl_ops->misc_cfg_info(ph, info);
-   106		if (ret)
-   107			goto err;
-   108	
-   109		ret = imx_misc_ctrl_ops->misc_silicon_info(ph, info);
-   110		if (ret)
-   111			goto err;
-   112	
-   113		ret = imx_misc_ctrl_ops->misc_board_info(ph, info);
-   114		if (ret)
-   115			goto err;
-   116	
-   117		len += sysfs_emit_at(buf, len, "SM Version    = Build %u, Commit 08%x\n",
-   118				     info->buildnum, info->buildcommit);
-   119		len += sysfs_emit_at(buf, len, "SM Config     = %s, mSel=%u\n",
-   120				     info->cfgname, info->msel);
-   121		len += sysfs_emit_at(buf, len, "Silicon       = %s\n", info->siname);
-   122		len += sysfs_emit_at(buf, len, "Board         = %s, attr=0x%08x\n",
-   123				     info->brdname, info->brd_attributes);
-   124	
-   125		ret = len;
-   126	err:
-   127		kfree(info);
-   128		return ret;
-   129	}
-   130	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>            - const: fsl,imx8ulp
+>
+>        - description: i.MX93 based Boards
+> --
+> 2.34.1
+>
