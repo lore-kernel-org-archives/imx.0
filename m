@@ -1,107 +1,64 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A422BF3DB
-	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 11:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA81019F461;
+	Fri, 27 Jun 2025 12:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751023550; cv=none; b=fCae55vj5Vi3u4DfocGtzgkqLsxMWCANlTcZgOVVTw5rB8FYAe0tYRKz2UhCGF5KEtyi/MMDFfHzWlZ/LIJnqY6v9XnMQny8aTVPfo8di77R3uZHasuUE4/hvrfhhy4n1tukHnNrTdWtUfkC0vCIf77YWZwSF/9GE2vvXhb6wjI=
+	t=1751026190; cv=none; b=g6FYWUYCRNapKCouGKH+WBzpmDYIJ1+21RZgkUq5iTGNuhvOhjD0atZxvsy/ThcliAuZN6RM/IRMQ2oD0chWggkItsRR8ZxkWh1CrtfaqqObFwtNinesMdhT6Ed3gvtOGxwsRcyqcx8ME2uro6TGkKp65iMvqMzTfJKxpZrzODU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751023550; c=relaxed/simple;
-	bh=Euvq24AZjpFuxasyR5DYxDf8px8ML+BoSiYByPWdCJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O1HYXSTPzObjgVL/Wf08U1ZD/Nj15nNM/hHRl8d2mNT5/Xhx0ZttpxVJDs30FzW7TEH9XuXUr0YGuPQ+lfSMX3LIZe3vUGNiDg1TBOL6q4l0scy+crhvjhSpkDsysMF02/h9XrCgc12CMKoXgdreEmvUGwRQcrb4R0wTgmwbhu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P/ZjrE1i; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1751026190; c=relaxed/simple;
+	bh=+Vg2SDvLbTlYtiD21pxDbYD6+IG8r3EWbgiH1xHwNHM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=p+DtZWYovVahg2QBY/CLVedC+P10529PCjfegLejZsdZbXn6zQUcXdACC406yvnNSxM4Oq+tjUnfiThvarCbwlJLLtOdHDJfZRPtn3tXKEmMR4cBEPS0h4yZWl69MHeRvf7Pycl05q3NM2NdQ5qIGSOJmNk2xFbF1RTzXTc1MWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pNh/ZMfz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P/ZjrE1i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751023550; x=1782559550;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Euvq24AZjpFuxasyR5DYxDf8px8ML+BoSiYByPWdCJ4=;
-  b=P/ZjrE1itnms5iZQuxG+U6FmXav3myP8SSS4LcU1WhChLokStGiCWSIG
-   R1yR2MRKgYm5lShXgRi8Vt4hQQSKdUdSXr3Mcz+RFgl939RMbp3gTahUr
-   aGkkyq0s7ctGZTXeGYc0agNihQp4CscSRryuq7wl/p9DRaNVt2DUpEYJC
-   9rqLBEwrRU4xxEHu1nYkYGMPNXdw4xx09CadCvBl9m+QcBRNBpL5jmSAA
-   x5hL0LDqrECRdaaHybgTFLlq/tzjJD6Q6jelkTTAxv+iyDmvxuvCrShg9
-   YzDmDElkxKN36G5SLOmDGab8dNwNe7d/E9HMOiThe2+/bAFtbiPl1VvED
-   A==;
-X-CSE-ConnectionGUID: HOKmLXSmRBSIStBWE2IFBQ==
-X-CSE-MsgGUID: imFRzD19T7+8yWIzDrUeMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="53208741"
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="53208741"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 04:25:49 -0700
-X-CSE-ConnectionGUID: LPjdLtjBQV+FJKWsQfJBCw==
-X-CSE-MsgGUID: cjAbBIO8SyG59+On3GS47w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
-   d="scan'208";a="152960200"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 04:25:45 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uV7DB-0000000ASnS-3uJv;
-	Fri, 27 Jun 2025 14:25:41 +0300
-Date: Fri, 27 Jun 2025 14:25:41 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: ezequiel@vanguardiasur.com.ar, mchehab@kernel.org,
-	laurent.pinchart@ideasonboard.com, hdegoede@redhat.com,
-	gregkh@linuxfoundation.org, mingo@kernel.org, tglx@linutronix.de,
-	viro@zeniv.linux.org.uk, thomas.weissschuh@linutronix.de,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v2 0/3] add dma noncoherent API
-Message-ID: <aF5_td2Bb2vsAJ43@smile.fi.intel.com>
-References: <20250627101939.3649295-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pNh/ZMfz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC6BC4CEE3;
+	Fri, 27 Jun 2025 12:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751026190;
+	bh=+Vg2SDvLbTlYtiD21pxDbYD6+IG8r3EWbgiH1xHwNHM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=pNh/ZMfzCMUHpsyxxY9zMiCmkxbEx4RCV26dl5aw5TyFJH4aQ//Cj5fH/ZShh0DWL
+	 q7N0g7gp1jmRdLvySTNsnqE+SYxY/cHpwIxXLUAZjBEktRFWF2yEEwDWe3nca6Hi+A
+	 PonfFqv9dn5NxZdfhF+mFSkIR3CZrEp5+dSabD9TstgwkgkIG6O0m32GaXgsqboftT
+	 +nIGyA9TDtaGqAP+uN/Bay+PAuCiYVrdTP4quXthZmR7IbnC3SaDN5sq38t56n1R3j
+	 tlKmL990gl0DFHZYPLnJOsiMUnzWCNNiEBeiHta59Z5LiILJPATRLLS9sN7oLLJo4P
+	 iSdqCPnmD/g9w==
+From: Srinivas Kandagatla <srini@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev
+In-Reply-To: <20250603152836.1069326-1-Frank.Li@nxp.com>
+References: <20250603152836.1069326-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 1/1] dt-bindings: nvmem: convert lpc1857-eeprom.txt
+ to yaml format
+Message-Id: <175102618816.6916.17165812030870481659.b4-ty@kernel.org>
+Date: Fri, 27 Jun 2025 13:09:48 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250627101939.3649295-1-xu.yang_2@nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-On Fri, Jun 27, 2025 at 06:19:36PM +0800, Xu Yang wrote:
-> On architectures where there is no coherent caching such as ARM it's
-> proved that using dma_alloc_noncontiguous API and handling manually
 
-dma_alloc_noncontiguous()
-
-> the cache flushing will significantly improve performance.
-
-> Refer to:
-> commit 20e1dbf2bbe2 ("media: uvcvideo: Use dma_alloc_noncontiguous API")
-> commit 68d0c3311ec1 ("media: stk1160: use dma_alloc_noncontiguous API")
+On Tue, 03 Jun 2025 11:28:35 -0400, Frank Li wrote:
+> Convert lpc1857-eeprom.txt to yaml format.
 > 
-> However, it's obvious that there is significant code duplication between
-> these two commits. Beside, a potential user USB Monitor may read outdated
-> data before the driver do dma sync for cpu which will make the data
-
-DMA
-CPU
-
-> unreliable.
 > 
-> To reduce code duplication and avoid USB Monitor result unreliable, this
-> series will introduce dma noncoherent API to usb core. And the USB core
 
-DMA
-USB
+Applied, thanks!
 
-> layer will manage synchronization itself.
+[1/1] dt-bindings: nvmem: convert lpc1857-eeprom.txt to yaml format
+      commit: e315a752a6a5399d711fe413bd3543306ef5e421
 
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Srinivas Kandagatla <srini@kernel.org>
 
