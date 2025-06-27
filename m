@@ -1,83 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E134029CB3C;
-	Fri, 27 Jun 2025 11:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C4429552F
+	for <imx@lists.linux.dev>; Fri, 27 Jun 2025 11:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751022107; cv=none; b=tp/7GkMdS6DQzYqXylnqE1Jo23SS8xc9zBZpPLVNXwz9m/ws0sLdLw2p8U3+48syp9urLSDk1Tj9ZtEfyJDgrt9v7+JMVFPxmnrSTP1SCIbVeDe1ATBYUCHgOm5xp9nGVWUojm3Hkj3BLCZ7BWGMhtSCX/USIiBnBq0WZdep9zw=
+	t=1751023389; cv=none; b=SvgZwLbudVA3UvddJB4WfKhtDJqpIC2jhj/eHRWz4dXw8HPJxjuSXlkukHFNKXAIf5b2OwWxj9qaMN4BG9niicxzmRzCHklUIjC8XjNMo2ITHJ/52cyCJMFRiy6ChDweER16FMhTyb2Z6jWeSg8AelxU7yHs9PpMaNFKy4iVqW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751022107; c=relaxed/simple;
-	bh=A1bxFNSWz35yFvhEfWY+CykpQc2zGdJBAlx9+90e2dY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=BbyE+JDoiV8JDf2VHJQge6VIiS6I+viCr67VZ7rXvF/gU37J+2jZ8ceQSWXMKktK9/ZhP1nGCqMVEmRK4ng4R5BXG/qCnuJf9P0fUkbYl2vCuleSmUFPuXiPBNivqQtcFERGbORUXA2eRSQ08vDN+qpepdGtw8EpuyYumP59tTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vuim5axm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751023389; c=relaxed/simple;
+	bh=4E766QcrHyc6FJQNUYWjsfGgdu/BRMSpFtNgERpjx+c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CpOCZrYp7ihOK/ayuvN5eTP+xCznRRK9sTgT3hwRS6P46DhlOmNkWzWkNMmnnT33VveqTSNLZghrP1PXgKWHDhOpN+ugSsxgFXxh99XXO+74GjJj0VN49y4b0mgPo3IigSZBf7D/1xPst2ppfMFM1CpTaM8G3cTU6S9CtL8++Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aRFg/cEz; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vuim5axm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B3FC4CEEB;
-	Fri, 27 Jun 2025 11:01:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751022106;
-	bh=A1bxFNSWz35yFvhEfWY+CykpQc2zGdJBAlx9+90e2dY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Vuim5axmcv1budcLMxptutxipo6ZXvXL5obJaxzRyYtPfv94hXtUQ50S0joXsI5o3
-	 9kZN1cwE8jTBmE2kvjaQ9swQ5QN15VrgHV1Zu8UPHTSJE5cbn4KCZswpmABjlYHyQC
-	 Fx1fErSFiH43/LDVA7C8QrVBo/5V9REKDIMxsXNsOT3KF3J+raB9qbpnUV3YIt3BYC
-	 Hu9pjITmoTEsHzLTi09CCXiEtuPPEPwJ9JhJXoSNvXtw9oL46iotjuwmYmZmyc64Hg
-	 oAJ4v/eYtXsLLnPpjdwaUKZ4dpYaxQqaXBM5UeKOw7kw0BA7mQdFx0f73RivtvOwdk
-	 1iC2N58+q8Tog==
-From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20250625215255.2640538-1-Frank.Li@nxp.com>
-References: <20250625215255.2640538-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] spi: dt-bindings: add nxp,lpc3220-spi.yaml
-Message-Id: <175102209646.386964.15013271820664016381.b4-ty@kernel.org>
-Date: Fri, 27 Jun 2025 12:01:36 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aRFg/cEz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751023387; x=1782559387;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4E766QcrHyc6FJQNUYWjsfGgdu/BRMSpFtNgERpjx+c=;
+  b=aRFg/cEzfp9Z/1eKoPTRubCTpm7vhkHtulKXVKzp8GOxHzPrX3KGzF6k
+   o94ORfDUGnAW+ajvdZkYMEoC3h/iAxaAqtA8zwNlB/HxHKhF8enLx6Ndk
+   mSRjz430leOnDOsAJDOY9zsbQafpcB7UTvxswoGzZZY3/Poe9AhXrpan4
+   MdfoBvPerCc78z4hkRFT0sMnbjBi4fJowrVeybO9/tIG050KiZDHEqFBR
+   vXcrXk2+uSvKfAP1LItfJYnNPu1/93FQYD52T+4h3MbjJ8Ub3T81H82o3
+   WQhMC0Z5mhLgsAih44DV3wG3fqkvulWG13wUvltCzCnoGbaxKJ2h17gai
+   g==;
+X-CSE-ConnectionGUID: q7KD0m7PRYWjwYWTrh1oFw==
+X-CSE-MsgGUID: xQVxH2D4QMWuNaDi7mmi4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11476"; a="64774537"
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
+   d="scan'208";a="64774537"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 04:23:07 -0700
+X-CSE-ConnectionGUID: pWmaIgjQRVmcrM9GMPJZOw==
+X-CSE-MsgGUID: sUZS+/A6QaWHE3H4M8P7Ow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,270,1744095600"; 
+   d="scan'208";a="153498611"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2025 04:23:03 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1uV7Aa-0000000ASlm-1HHR;
+	Fri, 27 Jun 2025 14:23:00 +0300
+Date: Fri, 27 Jun 2025 14:22:59 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: ezequiel@vanguardiasur.com.ar, mchehab@kernel.org,
+	laurent.pinchart@ideasonboard.com, hdegoede@redhat.com,
+	gregkh@linuxfoundation.org, mingo@kernel.org, tglx@linutronix.de,
+	viro@zeniv.linux.org.uk, thomas.weissschuh@linutronix.de,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v2 1/3] usb: core: add dma-noncoherent buffer alloc and
+ free API
+Message-ID: <aF5_EwSHHMOOMRv9@smile.fi.intel.com>
+References: <20250627101939.3649295-1-xu.yang_2@nxp.com>
+ <20250627101939.3649295-2-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-07fe9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250627101939.3649295-2-xu.yang_2@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, 25 Jun 2025 17:52:54 -0400, Frank Li wrote:
-> Add lpc3220 spi controller binding doc to fix below CHECK_DTBS warning:
->   arch/arm/boot/dts/nxp/lpc/lpc3250-ea3250.dtb: /ahb/apb/spi@20088000: failed to match any schema with compatible: ['nxp,lpc3220-spi']
+On Fri, Jun 27, 2025 at 06:19:37PM +0800, Xu Yang wrote:
+> This will add usb_alloc_noncoherent() and usb_free_noncoherent()
+> functions to support alloc and free buffer in a dma-noncoherent way.
 > 
-> 
+> To explicit manage the memory ownership for the kernel and device,
+> this will also add usb_dma_noncoherent_sync_for_cpu/device() functions
+> and call it at proper time.  The management requires the user save
+> sg_table returned by usb_alloc_noncoherent() to urb->sgt.
 
-Applied to
+...
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+> +/**
+> + * usb_alloc_noncoherent - allocate dma-noncoherent buffer for URB_NO_xxx_DMA_MAP
+> + * @dev: device the buffer will be used with
+> + * @size: requested buffer size
+> + * @mem_flags: affect whether allocation may block
+> + * @dma: used to return DMA address of buffer
+> + * @dir: dma transfer direction
+> + * @table: used to return sg_table of allocated memory
+> + *
+> + * Return: Either null (indicating no buffer could be allocated), or the
+> + * cpu-space pointer to a buffer that may be used to perform DMA to the
+> + * specified device.  Such cpu-space buffers are returned along with the DMA
+> + * address (through the pointer provided).
 
-Thanks!
+Return section should be last in the kernel-doc (this requirement is
+documented).
 
-[1/1] spi: dt-bindings: add nxp,lpc3220-spi.yaml
-      commit: ac4c064f67d3cdf9118b9b09c1e3b28b6c10a7ea
+> + * To explicit manage the memory ownership for the kernel vs the device by
+> + * usb core, the user needs save sg_table to urb->sgt. Then usb core will
+> + * do dma sync for cpu and device properly.
+> + *
+> + * When the buffer is no longer used, free it with usb_free_noncoherent().
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Here and everywhere else in your series, pay respect to acronyms by using them
+as acronyms:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+dma --> DMA
+cpu --> CPU
+usb --> USB
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+and so on...
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
 
-Thanks,
-Mark
+> + */
+> +void *usb_alloc_noncoherent(struct usb_device *dev, size_t size,
+> +			    gfp_t mem_flags, dma_addr_t *dma,
+> +			    enum dma_data_direction dir,
+> +			    struct sg_table **table)
+> +{
+> +	struct device *dmadev;
+> +	struct sg_table *sgt;
+> +	void *buffer;
+> +
+> +	if (!dev || !dev->bus)
+
+When !dev case is possible?
+
+> +		return NULL;
+> +
+> +	dmadev = bus_to_hcd(dev->bus)->self.sysdev;
+> +
+> +	sgt = dma_alloc_noncontiguous(dmadev, size, dir, mem_flags, 0);
+> +	if (!sgt)
+> +		return NULL;
+> +
+> +	buffer = dma_vmap_noncontiguous(dmadev, size, sgt);
+> +	if (!buffer) {
+> +		dma_free_noncontiguous(dmadev, size, sgt, dir);
+> +		return NULL;
+> +	}
+> +
+> +	*table = sgt;
+> +	*dma = sg_dma_address(sgt->sgl);
+> +
+> +	return buffer;
+> +}
+
+...
+
+> +void usb_free_noncoherent(struct usb_device *dev, size_t size,
+> +			  void *addr, enum dma_data_direction dir,
+> +			  struct sg_table *table)
+> +{
+> +	struct device *dmadev;
+> +
+> +	if (!dev || !dev->bus)
+
+Ditto.
+
+> +		return;
+> +	if (!addr)
+> +		return;
+> +
+> +	dmadev = bus_to_hcd(dev->bus)->self.sysdev;
+> +	dma_vunmap_noncontiguous(dmadev, addr);
+> +	dma_free_noncontiguous(dmadev, size, table, dir);
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
