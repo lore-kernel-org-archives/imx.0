@@ -1,123 +1,93 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40AC18B495
-	for <imx@lists.linux.dev>; Sat, 28 Jun 2025 00:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5820B191F91
+	for <imx@lists.linux.dev>; Sat, 28 Jun 2025 00:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751072276; cv=none; b=q0j1VZmqLKYfKHwXhlYpoKw455CN8jcpVI/x1NdaIfV9tModaPa/eXzYkbzmVkLR4LYfzlEnN1KlYGKUdnAwSxOSl9J9ZCcS6OcUnZd/76dMEecob4NtflQpooQUzp74wo2qKne2IeWjJnDLx85PVvMKIGmBwmOO8/kLs2/HqPY=
+	t=1751072374; cv=none; b=KWRNg3Ev3K7YatoNSQH00pW6z5pMtxIpWpwUeXAqwGy9Y/xSz5h9U/RKqMkAHg1T2Oey7yKFxHVF5U0OdgHdOV71eg/I6cy/YApfAFDgAREDra9mAuC7Grds9gqvJy1jWSO3GJOyWSbaTmxgttFGWmZDzPuLvSJqmyrrrI6M/aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751072276; c=relaxed/simple;
-	bh=57q1XTo9fskI3i3LRIZIGt9aWzBFNP8fj6KqbV6kdO8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MuV6t5lvfTcoTbK8FXBwVoYGvNTQixB0DT4rPjIQrjRae2fKUpH4uRc3QJLvFxkEuN3NAT/eHvGvgo1WLDb6xUkpFEjSx4TaAWGIFB8EzYi6dwZKJqOxKjFixDtgGvgydlF9Da4OASGomadhIoLGIfp5yz3ObNX6WKAfafNl8yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=sqyXtFpN; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=sqyXtFpN; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	s=arc-20240116; t=1751072374; c=relaxed/simple;
+	bh=HpWrrf8Gn6Gyqh+K+uViIYoXI0Q2VMcjD3NgY74uW08=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LMIO9T9f8h3MChGqvwzt8UoGzeEOqM4UoPkeMhe0wEpHXJxBPDmmgBcol6s88m1HsFFc+4wTvi1HJgsVkLtiNM0gfwi5cBP6oYXlVRDkj9uLhJ1iGgABXtI6tXmjiU0/BXUO1UXDxYRl7gX3CS04wlSY0lZHXzh28X4C+eo2R+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G1+KBbW7; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="sqyXtFpN";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="sqyXtFpN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1751072266; bh=57q1XTo9fskI3i3LRIZIGt9aWzBFNP8fj6KqbV6kdO8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sqyXtFpN3eSkRFEtmv8vnpqiOcADUPU4b8VCu8pnT2OcrR32qudi+k6PyqJAlIyab
-	 OGQz64BWpA1KV8zA9b6Ws9icCYe6HstLmKcn9Vgxh2WnFssl8GpJ+BQxQDt0AmHv+k
-	 ytloKFip09LlPwvrYWD7MBk4AQTQGsXCA/H2a/yUJRmbyDRma/QHjmq0kf0mv9H8S/
-	 AKmsJqLInIp7supSMr/BAc+FmugXyo3lyu1s2GqqA3RPG4eUw2aeJmdbKnFtptfRdg
-	 zwlIjwtXfhnnjFvyNXp17qhOVy6VW/GuUKPLFPXHSWsJ5j2eDKJ3N9TibNWyh9Yn22
-	 H69Y5TUW/U3PA==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id 5BA6A3C4FE4;
-	Sat, 28 Jun 2025 00:57:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1751072266; bh=57q1XTo9fskI3i3LRIZIGt9aWzBFNP8fj6KqbV6kdO8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sqyXtFpN3eSkRFEtmv8vnpqiOcADUPU4b8VCu8pnT2OcrR32qudi+k6PyqJAlIyab
-	 OGQz64BWpA1KV8zA9b6Ws9icCYe6HstLmKcn9Vgxh2WnFssl8GpJ+BQxQDt0AmHv+k
-	 ytloKFip09LlPwvrYWD7MBk4AQTQGsXCA/H2a/yUJRmbyDRma/QHjmq0kf0mv9H8S/
-	 AKmsJqLInIp7supSMr/BAc+FmugXyo3lyu1s2GqqA3RPG4eUw2aeJmdbKnFtptfRdg
-	 zwlIjwtXfhnnjFvyNXp17qhOVy6VW/GuUKPLFPXHSWsJ5j2eDKJ3N9TibNWyh9Yn22
-	 H69Y5TUW/U3PA==
-Message-ID: <a15cbc55-f0ba-4c15-af27-44b05285bc16@mleia.com>
-Date: Sat, 28 Jun 2025 03:57:44 +0300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G1+KBbW7"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-234bfe37cccso30190325ad.0
+        for <imx@lists.linux.dev>; Fri, 27 Jun 2025 17:59:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751072373; x=1751677173; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6UAiWn8Pi1tnpIPR4P9XJoko/ztItX7ideDEdvEYdzk=;
+        b=G1+KBbW7WQsEArpLPWwZ1Ez1n3+4g0OvytB+7swxaaY83zrMuMSjB9/hb4INbFIAzD
+         ob52wVhdKtgKCRfiUsCvIxSc/BtuFuV9SWxqUCExJOT1/hCx2zeiuzlrjj6hClRs70sk
+         NLIrCaYqXw/3b41czBjyK8ZqaBjV86RcyTq0fQVIirzY9/JMmuNcbeeVmdW1VVWWed1V
+         kQwmlrIdyHx4ILnYP+75qy61me9gJYH8EUKXt/Px/hSrEDLqxUrR+w6xa4A2utb20K0H
+         13QcQ7FVK1b/M+jOAEvxHrBERxt3d2Dnxs+evpiqHaw62WdtaOLHyNGpu5NCosId3JL/
+         sXvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751072373; x=1751677173;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6UAiWn8Pi1tnpIPR4P9XJoko/ztItX7ideDEdvEYdzk=;
+        b=gwFJ+fNq43FtIgf2l/EckNLNAx/lbcVzI3//A13w4Ri/9BbkdnzQlLTQhJLvgMUNh/
+         WplfX81pmJZN0pFXhZ3JUvBeEJzxFZ0wo0Wrb2oZnQv83pQ6cwvt/4F4seOUU8aNWMgD
+         8uFIUArlCMiX4Y7acIhrRaWSsMrXWeWSFL4n4nDFLT6vtqGU/hljB1npxN0IFCP7EOnc
+         T1h3MXrnnXn6a3Zkg4qyJ2J1fQJ5FCm3JYZQLwtPll5901cWQs7OqY+XiNHV/SlGWPId
+         /mZmuonTWKubM/R/IfDDeW5QZlhpu+RmAqAUn1rTQe4p7LVWuwjMUFxs/BlnPsXxe47s
+         Tdnw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2ahsPvdObGsHwLWkh9Fo9VTk7GgTNc8doe2L+wYC+KYXjB752mJuSIbYGmiHISyQSPMU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzDycxa/eODbWzgWTu6lt6Mmxe1+M7kXf2YN1EI0lYeXefZTo2v
+	ZuPoX9v59exr9rPzp1R0A1H8btUjzBgOND2asRPAh5/B18HFV/pHCA48
+X-Gm-Gg: ASbGncseHQsgZut10kWLtb8hlQpuoWrCqWi8ChNMY0LSScS9MqAETq1tswa7rtcLsI/
+	JPbwEi9y96Mf5wX5BY7M4BqCQ1eX3AekRyukQl8Zv2dBCUsDc7aaaOG3CKU7GWBXuc2LpsI8+Hp
+	TPOGmruwrzp5GOv8EDKozvwr8IsN3Bggz8vQx2UAeGqvx2XBL8cKC4VSVB3CKt2Xk7aZSt00i0P
+	epqfFkXyDBWJUuS/++SH4/tvv4x2RqK3aPmKgruiwO5mwhukwEHH0JK6hbd3wU0dxzgO3QRv/Tf
+	tCqTryQWYXq7PS6HoJz8GkjAuIOLQ26bm7Nk2JQOpGHAfxxR63lj6DiM8/DNFg==
+X-Google-Smtp-Source: AGHT+IER8/+9/mIH4JWCr3PocAX0QsvyiFc1zROda2UNkXjcMckY1zi+itiyjtz9p4IRpOfqlqJ/JA==
+X-Received: by 2002:a17:903:32c8:b0:235:2e0:aa9 with SMTP id d9443c01a7336-23ac45d5f4amr79376735ad.14.1751072372489;
+        Fri, 27 Jun 2025 17:59:32 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:d0c7:d92:6a17:eb62])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb2e39f7sm25732775ad.49.2025.06.27.17.59.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jun 2025 17:59:32 -0700 (PDT)
+Date: Fri, 27 Jun 2025 17:59:29 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Vladimir Zapolskiy <vz@mleia.com>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, 
+	"moderated list:ARM/LPC32XX SOC SUPPORT" <linux-arm-kernel@lists.infradead.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: input: touchscreen: convert
+ lpc32xx-tsc.txt to yaml format
+Message-ID: <fw5kqv74vubn5wiarcq767v3aalxnoc7qosg3ao6gchijp7d5w@37vkon4mmnwh>
+References: <20250625163431.2543597-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] dt-bindings: usb: convert lpc32xx-udc.txt to yaml
- format
-To: Frank Li <Frank.Li@nxp.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- "open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "moderated list:ARM/LPC32XX SOC SUPPORT"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20250625214357.2620682-1-Frank.Li@nxp.com>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <20250625214357.2620682-1-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20250628_005746_395375_387E3A1C 
-X-CRM114-Status: UNSURE (   9.27  )
-X-CRM114-Notice: Please train this message. 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250625163431.2543597-1-Frank.Li@nxp.com>
 
-Hi Frank.
-
-On 6/26/25 00:43, Frank Li wrote:
-> Convert lpc32xx-udc.txt to yaml format.
+On Wed, Jun 25, 2025 at 12:34:28PM -0400, Frank Li wrote:
+> Convert lpc32xx-tsc.txt to yaml format.
 > 
 > Additional changes:
-> - add clocks and put it into required list to match existed lp32xx.dtsi.
-> - remove usb-transceiver@2c at examples.
+> - add clocks and put it into required list to match existed lpc32xx.dtsi.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Thank you a lot for doing this massive conversion work of NXP LPC
-device tree bindings, I would appreciate, if you put me to CC for
-all such changes.
-
-While you do one-to-one conversion, you do bring a lot of errors,
-because the .txt descriptions are broken.
-
-Please always reference to arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
-and arch/arm/boot/dts/nxp/lpc/lpc18xx.dtsi, that's the correct
-version of NXP LPC DT bindings, otherwise something important
-can be missed by occasion.
-
-<snip>
-
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/lpc32xx-clock.h>
-> +
-> +    usbd@31020000 {
-> +        compatible = "nxp,lpc3220-udc";
-> +        reg = <0x31020000 0x300>;
-> +        interrupt-parent = <&mic>;
-
-interrupt-parent = <sic1>;
-
-> +        interrupts = <0x3d 0>, <0x3e 0>, <0x3c 0>, <0x3a 0>;
-
-Should subscribe 32 and correct the type:
-
-interrupts = <29 4>, <30 4>, <28 4>, <26 8>;
-
-> +        clocks = <&usbclk LPC32XX_USB_CLK_DEVICE>;
-> +        transceiver = <&isp1301>;
-> +    };
+Applied, thank you.
 
 -- 
-Best wishes,
-Vladimir
+Dmitry
