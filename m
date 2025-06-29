@@ -1,63 +1,63 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F258D238151
-	for <imx@lists.linux.dev>; Sun, 29 Jun 2025 17:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBCF238C1F
+	for <imx@lists.linux.dev>; Sun, 29 Jun 2025 17:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751217938; cv=none; b=Qi0GwYId8v22eSc6NYV0xQg/bdYaDytSHZ/egJetTkH3uxEhdMl26Z+T5GDlJw0naDUrkx2KFDCr/M6Zy/2URXbZjc/zFmjHWOedXyb/CQ3m4g6GEdPIHa/dUV+oxVWoV4V3/840hGw9r0ZVeWAiYL4at0pD53xGXTPe2XpsBMY=
+	t=1751217945; cv=none; b=aXzLlMevwoLNBS+HIEma1uJubCh1yH3AHbvlm/4x9GsjwI5n73vNM3kPEbyb1E42IkAjtT6a2wNuqx4SHTcOJncv8bu5XU5XmjSniX40U0sRItCL252V7SrjEw1qnhynrzv7CLX4osr7YsII7xBsjxBzz4tEUKSlzOucy1yU9S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751217938; c=relaxed/simple;
-	bh=Pzuko6p5X7nNXZXr5mX6MGJAHdvlnWWK8W+rzZlOCQY=;
+	s=arc-20240116; t=1751217945; c=relaxed/simple;
+	bh=tFhG1J9WX6lkOz2RvO67ATCtV9LPDz6zL613qycQaQk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aXdiuvl+e2w4uheNIaej5nS5FvAgBOjQX1VndNMVgG9mhLOk9dr9NxQBRoJENT/PZXm//tlfkhUBwJahxB1pCCCnDUF3r6jtN7K3pj+qNHknUe4caWRWtj4KBqu9cHG9K2xV2iGuXKAqNj74y90d/ArYTLzJdWztSpfR1kwUS9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKSaLtZo; arc=none smtp.client-ip=209.85.160.177
+	 MIME-Version; b=d9oL3tdvlX08ls5+EUgVzruAKD7ti6aT6wLumprLC3MiLMBNzbqqiol3SIDn3PTqy3AlZ28eYPR/jY5lbAq9yBX/brUo0qy2/TMX5RwUGHrZ8JewDTSjgWqY20pivIy+0npxgf0vSsIhmzzKseXguOhZ9YgAKTzNc9UZM8iWJbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gkuq0G8y; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKSaLtZo"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4a440a72584so15895341cf.2
-        for <imx@lists.linux.dev>; Sun, 29 Jun 2025 10:25:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gkuq0G8y"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4a5851764e1so79901441cf.2
+        for <imx@lists.linux.dev>; Sun, 29 Jun 2025 10:25:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751217936; x=1751822736; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1751217942; x=1751822742; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=do+WrCyUk54RUggZsmiUqY5/C6vOQx+Ug7MOVtvuvcQ=;
-        b=kKSaLtZork5FJdK/tWY9zPg1Oy7MdVDMCsBl9Y1SoN5eGpe0I+miG0xKbrWEzMMGUa
-         7Tn4dC//pgxoepdLKcpv/wWuJOtEiNclT3FtRBZ9ddD0V1WiHP+CmQGsT70VSLrGij/l
-         a31gvMKiMapvHJisi/D8TWvOIDZV+p/uoYJylCHhjrRoaET+md4GQgM92tXsr0/qbgk+
-         AoA3KqQWf4C3PscMNNzA8SVzmDMU5QJbt8ZBbyhypzgZP5B77HREno/n+bVVxgkXVxYo
-         9HMGviVNIUzVG6xNaZKCwqSkSMY7oczihFWZnpGZTe3Nfn5thJtE32Fezt0ckUPspnVV
-         zL0A==
+        bh=vBbPPcEdQtei5+NuNnufcyttJ+zLeB0/TIiitwhS+8E=;
+        b=Gkuq0G8y7gwF1+SbF+wQY5hkSPlpNx8+buW60bTaezw91PQbEUYcM8GUbccDaArtRj
+         3idjr8iz4P9jOqwy1y8pfiR+TJyyOVbLgGL93rJ9W4nQGN2NqPb8lb8FOGEQHDJVF/IA
+         fKEd4jDS8UpYxZbWyfCZIepniY8UOocq7eRfEMOPVOs7scKm2HAzmeyM3bbhCES99D/E
+         okAp6oYmPRR5ro6j4YlHbg1XbQ97b1QFBpbeMTpgEAg7XS0J4mS8PRCNB8iD+W4heMxz
+         7p7LLHk4bi5sGhLSqmJTGNLgo09Dsbi0sVJtNSwP39pTyjEUDzGN9EydSTYlCzs9xPmQ
+         IFnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751217936; x=1751822736;
+        d=1e100.net; s=20230601; t=1751217942; x=1751822742;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=do+WrCyUk54RUggZsmiUqY5/C6vOQx+Ug7MOVtvuvcQ=;
-        b=rQ4wmrFmLQkYQqHUAbHlvLBK0Yrq8KIIikiwQn/Z2/bOkSl7ZCeJAVjGOlJ3hIjLMZ
-         qjB/gEx9lj8BQr935avhZL2kMf541/uYD5s1l+zvLx89NVOq+9nuxBErWtMx8T2xXmOQ
-         suDbGaeEakpetjKzNbykWr8ZGfJEkgOKIJqE5bAj7C4HWT7BDjMHFKSfAafx0ku908qQ
-         qtuegqde8u2gHOtiWeWFw6onSAR0GzFtzhvQsR+dS3uni8y2VPubbZG2ybSE0798uE8Z
-         guKM12oHIss2tVihYpxzdH2y8efi0itGYFpMcIklk9ThGRcBlYyfsJbPKA1utz78ZAPi
-         t+NQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4IN4WP/tkLzNkTAdibKoHS3p2YcvwlPdATSsTdDtXS/3JBbKUpGuPC5952Y3qJGyEiKg=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywwpa4JULlAZQB+2WaFLltL3KxrvjD3irXoHjzDZrh8loD/qgde
-	Cvhfe+F8G13NB/ma874viFFTomIKnsPufnY+7yg25t4INIxn59Va7UH4
-X-Gm-Gg: ASbGncuGd2yrFuNwrFcegr0MLfQjLMvpxW2d0mR3K1i3oYbP68Y1ldsG7xtRaRLFJwq
-	z/Ts7TT2CRNQwCObKZd9Ye136VH4FWKKI0ON0vkACRaLwAVBxKl49O5O5WobEUe7N1W8NYurUyO
-	O4ydoHJiqADCocfGIr6MsS4JD3da4HoY1mUxdFfnV21NzF8a1tOlcnYTPwtbSEBzSiq4NICiuUp
-	4xJO7h76XP4z4LSR/Ud0yHCdQ9lF58uWX9e0itn3dGMUaRfwDn9cgB6hWqTwagXdyTOE0yqng8n
-	qU8bMW2naTfvHhogsQmL7tv7HwUVoB45wZSTUUNbFW2XUgLaqt8/rgBDg1+78rN1yK1CirLIygX
-	p8gA=
-X-Google-Smtp-Source: AGHT+IEtbacLnJPOYdFPR4Qbf+3fCv4tbuGcOhmfcatWVey4R8ndXu0J2Fw9Zxydr+PjYKNsz5WN+A==
-X-Received: by 2002:ac8:7c4c:0:b0:4a5:98ad:5640 with SMTP id d75a77b69052e-4a7fca4e44cmr189456211cf.23.1751217935798;
-        Sun, 29 Jun 2025 10:25:35 -0700 (PDT)
+        bh=vBbPPcEdQtei5+NuNnufcyttJ+zLeB0/TIiitwhS+8E=;
+        b=PBEPd+ftcYuAGB8LKeFJAXXDxF56sbddGBkQashUQmYyWSC6OGTp05vRpqbJ+ePK4E
+         r+GZsOVrHhui2FAoDgorsqiZctNucV0MnxDhV9Q1DgqVSAoVUHDj7PdHLmHI869WAcLI
+         0MgRP30D0Ly4+6wsSvIi16BW3Y+mD1EDnVPZ4NjBT8mtg3qYhcrrO+aDqIsAq//jmTUy
+         EDNbjjKzM8KMjoGAdKYuf0PtDOkrhPmteZD/NUrE4xxu5b57ciizyg5M9BpXCv7kfr7C
+         YX11zYVxn3+lIqoIe6Ag2LXT5fym95ey0SIn4VD1u7fBNjl1M4bHkXz5LYJOEp39nn23
+         +6XA==
+X-Forwarded-Encrypted: i=1; AJvYcCWk5OjLCt/weFToMnCWczzBxbgtR7oI3jGeJ4crUk/doXe3XeWNuf6L2syn3mPuab/S4Fk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyBTy5PRopqvzPiKQ28QtLf0T2y/+IG2B6NzQ29hS1aPWuxs6cG
+	MwEdeY+J/V3Gqq/Avtu5jmcnMLuDEpfe6Aq6n8em0aqddGGAs31g4M9m
+X-Gm-Gg: ASbGnctnYxFLVwOxmjXE+IH81rt1wwDqKBm3aCYsAbHtRe/X2kyKAL11djUFdOQZtYh
+	NCcvxo7SQbi98AGZWo/q7HSTXb+1ktRDEIG8qISHqsk+W474P8B0D8viAvPKaCbEg/6qVfxmSS4
+	iioeg91yYB270/r1FnyfI1YhsC2TNRFzrTK6mye9LUSXnn81vWZa5KyXxQU8ydsJqk/HTP5OjYr
+	IjmtXLNsyYWnVqeAw549ij9dgC3qsd4+kV75jnOHuSxaQv+Olfy+WtNO8U1mXosrctgju0mZ13E
+	3i2ekmaGrVVSVpbMXZIQdntieP0R42ZRPP+xOw8jydwyPLQm2hZxCy5oEDhRt5tPXA54D+YrV/n
+	JuuI=
+X-Google-Smtp-Source: AGHT+IH0oA4OuFF0x2nQSxRW9BOpq3H9adGI3VCEA8SilmvSk/JkXEeS26LmCye5qmOTPQlaP6fQKQ==
+X-Received: by 2002:a05:622a:506:b0:4a7:f683:975d with SMTP id d75a77b69052e-4a7fcb3aacbmr184575131cf.49.1751217942253;
+        Sun, 29 Jun 2025 10:25:42 -0700 (PDT)
 Received: from localhost.localdomain ([2804:1b3:a7c3:c88d:6da3:af6d:a237:3289])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a7fc57d7dcsm45549761cf.60.2025.06.29.10.25.30
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a7fc57d7dcsm45549761cf.60.2025.06.29.10.25.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Jun 2025 10:25:35 -0700 (PDT)
+        Sun, 29 Jun 2025 10:25:41 -0700 (PDT)
 From: Hiago De Franco <hiagofranco@gmail.com>
 To: Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
@@ -75,9 +75,9 @@ Cc: Shawn Guo <shawnguo@kernel.org>,
 	iuliana.prodan@oss.nxp.com,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
 	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH v7 1/3] pmdomain: core: introduce dev_pm_genpd_is_on()
-Date: Sun, 29 Jun 2025 14:25:10 -0300
-Message-Id: <20250629172512.14857-2-hiagofranco@gmail.com>
+Subject: [PATCH v7 2/3] remoteproc: imx_rproc: skip clock enable when M-core is managed by the SCU
+Date: Sun, 29 Jun 2025 14:25:11 -0300
+Message-Id: <20250629172512.14857-3-hiagofranco@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250629172512.14857-1-hiagofranco@gmail.com>
 References: <20250629172512.14857-1-hiagofranco@gmail.com>
@@ -91,103 +91,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Hiago De Franco <hiago.franco@toradex.com>
 
-This helper function returns the current power status of a given generic
-power domain.
+For the i.MX8X and i.MX8 family SoCs, when the Cortex-M core is powered
+up and started by the Cortex-A core using the bootloader (e.g., via the
+U-Boot bootaux command), both M-core and Linux run within the same SCFW
+(System Controller Firmware) partition. With that, Linux has permission
+to control the M-core.
 
-As example, remoteproc/imx_rproc.c can now use this function to check
-the power status of the remote core to properly set "attached" or
-"offline" modes.
+But once the M-core is started by the bootloader, the SCFW automatically
+enables its clock and sets the clock rate. If Linux later attempts to
+enable the same clock via clk_prepare_enable(), the SCFW returns a
+'LOCKED' error, as the clock is already configured by the SCFW. This
+causes the probe function in imx_rproc.c to fail, leading to the M-core
+power domain being shut down while the core is still running. This
+results in a fault from the SCU (System Controller Unit) and triggers a
+system reset.
 
-Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+To address this issue, ignore handling the clk for i.MX8X and i.MX8
+M-core, as SCFW already takes care of enabling and configuring the
+clock.
+
+Suggested-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 Reviewed-by: Peng Fan <peng.fan@nxp.com>
 Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
 ---
 v6 -> v7:
-- Added Peng reviewed-by.
+ - Added Peng reviewed-by.
 v5 -> v6:
-- Added Bjorn reviewed-by.
+ - Commit description improved, as suggested.
 v4 -> v5:
-- s/dev_pm_genpd_is_on/dev_pm_genpd_is_on()/ in function description.
-- Updated function description to be explicit the function reflects the
-  current power status and that this might change after the function
-  returns, especially if the genpd is shared.
-
+ - Unchanged.
 v3 -> v4:
-- New patch.
+ - Unchanged.
+v2 -> v3:
+ - Unchanged.
+v1 -> v2:
+ - Commit description updated, as suggested. Fixed Peng Fan email.
 ---
- drivers/pmdomain/core.c   | 33 +++++++++++++++++++++++++++++++++
- include/linux/pm_domain.h |  6 ++++++
- 2 files changed, 39 insertions(+)
+ drivers/remoteproc/imx_rproc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-index ff5c7f2b69ce..2f387e15cb75 100644
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -758,6 +758,39 @@ int dev_pm_genpd_rpm_always_on(struct device *dev, bool on)
- }
- EXPORT_SYMBOL_GPL(dev_pm_genpd_rpm_always_on);
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 74299af1d7f1..627e57a88db2 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -1029,8 +1029,8 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
+ 	struct device *dev = priv->dev;
+ 	int ret;
  
-+/**
-+ * dev_pm_genpd_is_on() - Get device's current power domain status
-+ *
-+ * @dev: Device to get the current power status
-+ *
-+ * This function checks whether the generic power domain associated with the
-+ * given device is on or not by verifying if genpd_status_on equals
-+ * GENPD_STATE_ON.
-+ *
-+ * Note: this function returns the power status of the genpd at the time of the
-+ * call. The power status may change after due to activity from other devices
-+ * sharing the same genpd. Therefore, this information should not be relied for
-+ * long-term decisions about the device power state.
-+ *
-+ * Return: 'true' if the device's power domain is on, 'false' otherwise.
-+ */
-+bool dev_pm_genpd_is_on(struct device *dev)
-+{
-+	struct generic_pm_domain *genpd;
-+	bool is_on;
-+
-+	genpd = dev_to_genpd_safe(dev);
-+	if (!genpd)
-+		return false;
-+
-+	genpd_lock(genpd);
-+	is_on = genpd_status_on(genpd);
-+	genpd_unlock(genpd);
-+
-+	return is_on;
-+}
-+EXPORT_SYMBOL_GPL(dev_pm_genpd_is_on);
-+
- /**
-  * pm_genpd_inc_rejected() - Adjust the rejected/usage counts for an idle-state.
-  *
-diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
-index 0b18160901a2..c12580b6579b 100644
---- a/include/linux/pm_domain.h
-+++ b/include/linux/pm_domain.h
-@@ -301,6 +301,7 @@ void dev_pm_genpd_synced_poweroff(struct device *dev);
- int dev_pm_genpd_set_hwmode(struct device *dev, bool enable);
- bool dev_pm_genpd_get_hwmode(struct device *dev);
- int dev_pm_genpd_rpm_always_on(struct device *dev, bool on);
-+bool dev_pm_genpd_is_on(struct device *dev);
+-	/* Remote core is not under control of Linux */
+-	if (dcfg->method == IMX_RPROC_NONE)
++	/* Remote core is not under control of Linux or it is managed by SCU API */
++	if (dcfg->method == IMX_RPROC_NONE || dcfg->method == IMX_RPROC_SCU_API)
+ 		return 0;
  
- extern struct dev_power_governor simple_qos_governor;
- extern struct dev_power_governor pm_domain_always_on_gov;
-@@ -393,6 +394,11 @@ static inline int dev_pm_genpd_rpm_always_on(struct device *dev, bool on)
- 	return -EOPNOTSUPP;
- }
- 
-+static inline bool dev_pm_genpd_is_on(struct device *dev)
-+{
-+	return false;
-+}
-+
- #define simple_qos_governor		(*(struct dev_power_governor *)(NULL))
- #define pm_domain_always_on_gov		(*(struct dev_power_governor *)(NULL))
- #endif
+ 	priv->clk = devm_clk_get(dev, NULL);
 -- 
 2.39.5
 
