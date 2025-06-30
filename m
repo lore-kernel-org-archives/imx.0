@@ -1,41 +1,41 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F86A59
-	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 03:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A8C3D6F
+	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 03:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751254293; cv=none; b=D6MmQE3tvcZK94khKv8my4HZF7sIe9p6sjKaGmaFpCRuIGx8wHz6J0Ofo6vgiqmssscFjm9CxKShX2e5xwCvdKAyzodRYRAwLqPMK2fjcPveqQ+d7dW2v3jMdrArl9Y4/1u30sVeZpCjVE3ZfH2En2DRBlACQaqpAvyIR80NT80=
+	t=1751254575; cv=none; b=rNds/zaVyQmpWAvC5dhS/owGItMJZEUTTd7qGVqZaluPPkHMNE13ognnGZLzOM0ntevrYhlhOgfiVQ8TYES5vNTTrhzIMf7FUzkkNmAShlSuxxDD+QlQdI1/lGodwJSV3ndxBiMxOlxTsnqAHMQD/Ghx095UKzD2jB6Kusn5kJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751254293; c=relaxed/simple;
-	bh=9HXwaKOCU9N32PhkYUdCh2niibtPEZxJwu0R7t6hyBA=;
+	s=arc-20240116; t=1751254575; c=relaxed/simple;
+	bh=nz/6V9DH4cKVb4lElTTDh2PykRGAK5Z38f16mJFADDg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OvODwM8Ehw21g5/XszkRXDXIAiJ4ZL88hQA7ae1gvx2zRYh7iwWPL+8lGZFAwwgt9BS/o3/yy3w7ugUbXbRXXRTU8b3TPhxP5N+3vhsNKGRGWvwkEyc2YR9LgTSGrePOYGe9JRmiv7xVFUCrhWWjeIbxC0xXmUjm2X+TclCsLXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=JjPxa0dT; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=eWf3JgZcAT+gWOMRJL5SBFTbjMwvEsdgODc5uYu8GHiA5ZoLZRy2IcZIi8foLsL+0Il4pxOgmC3zBm416WfeUQIwB7rZxCydDNJzZewFY8EurDRJ9S6zXBl7XzCE+eJBrhoEYir4t+fFxn/8smvDzo3Z8Nx4OityF9Ox/yHgNoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gvVCSYMT; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="JjPxa0dT"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gvVCSYMT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=eMBvYrfcJhEzV4RAOAmAuxyy61g3GX1XMHx4/6zqp6E=;
-	b=JjPxa0dTW5h72qIOXR/CH0HfNVHEGE/jvjLlQD3CWmgu9Z54+8maopt2F9+Kyw
-	uqE5Bh6yP0YOeo/f5nj49/vi/AnrQF0tHHW4FuVOUvjmd98Z1s5k4Cx3GHrfKwWe
-	vxIq65+m8wtQWHNwJsF53hRfuCCruDKXgmTfD0hNljZNg=
+	Content-Type; bh=qdncWhYOth4XsRh697dCBi3DdkMHRax6Ejf9OY8OaFU=;
+	b=gvVCSYMTCNoxNh/h6g8VWMVoFtxUr7hJIEcpiUCa1SM+RyIi9/56dcfsrqM8kG
+	jg+Q6EPq+v4M1GIa4Kgx1Wt9RXTyzDCcknDaS9p1F9GSMhOvsMb8jjqYHtC6e0++
+	advQTP0riI22qgS3Fq/zsrJJVcnw/hA6RciTrNSfTjI/o=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgBnLxXzBGJoSvnNAQ--.18360S3;
-	Mon, 30 Jun 2025 11:31:01 +0800 (CST)
-Date: Mon, 30 Jun 2025 11:30:59 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgAnnw4RBmJouQnOAQ--.13995S3;
+	Mon, 30 Jun 2025 11:35:47 +0800 (CST)
+Date: Mon, 30 Jun 2025 11:35:45 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
 	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	shengjiu.wang@gmail.com, carlos.song@nxp.com
-Subject: Re: [PATCH v2 0/6] arm64: dts: imx943: Add sound card support
-Message-ID: <aGIE86uLisSjCK+h@dragon>
-References: <20250528015837.488376-1-shengjiu.wang@nxp.com>
+	festevam@gmail.com, Frank.Li@nxp.com, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] update NETC node of i.MX95
+Message-ID: <aGIGEVXNyCQZwE4A@dragon>
+References: <20250528083433.3861625-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,30 +44,21 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250528015837.488376-1-shengjiu.wang@nxp.com>
-X-CM-TRANSID:M88vCgBnLxXzBGJoSvnNAQ--.18360S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUYZ2-UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQ98ZWhh4l2X2QAAsn
+In-Reply-To: <20250528083433.3861625-1-wei.fang@nxp.com>
+X-CM-TRANSID:M88vCgAnnw4RBmJouQnOAQ--.13995S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUeksqDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQ98ZWhh4l2X2QABsm
 
-On Wed, May 28, 2025 at 09:58:31AM +0800, Shengjiu Wang wrote:
-> Add sound card and related i2c device support
-> - micfil
-> - bt-sco
-> - wm8962
+On Wed, May 28, 2025 at 04:34:30PM +0800, Wei Fang wrote:
+> We found that NETC has an overshoot issue, so the drive strength of the
+> related pins needs to be reduced. The first two patches are used to fix
+> this issue. The third patch adds SMMU support for NETC.
 > 
-> changes in v2:
-> - use (FSL_EDMA_MULTI_FIFO | FSL_EDMA_RX)
-> 
-> Carlos Song (2):
->   arm64: dts: imx943-evk: add lpi2c support
->   arm64: dts: imx943-evk: add i2c io expander support
-> 
-> Shengjiu Wang (4):
->   arm64: dts: imx94: Add micfil and mqs device nodes
->   arm64: dts: imx943-evk: add sound-wm8962 support
->   arm64: dts: imx943-evk: add bt-sco sound card support
->   arm64: dts: imx943-evk: Add PDM microphone sound card support
+> Wei Fang (3):
+>   arm64: dts: imx95-19x19-evk: fix the overshoot issue of NETC
+>   arm64: dts: imx95-15x15-evk: fix the overshoot issue of NETC
+>   arm64: dts: imx95: add SMMU support for NETC
 
 Applied all, thanks!
 
