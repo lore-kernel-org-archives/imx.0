@@ -1,41 +1,44 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A8C3D6F
-	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 03:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524922E403
+	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 03:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751254575; cv=none; b=rNds/zaVyQmpWAvC5dhS/owGItMJZEUTTd7qGVqZaluPPkHMNE13ognnGZLzOM0ntevrYhlhOgfiVQ8TYES5vNTTrhzIMf7FUzkkNmAShlSuxxDD+QlQdI1/lGodwJSV3ndxBiMxOlxTsnqAHMQD/Ghx095UKzD2jB6Kusn5kJM=
+	t=1751255265; cv=none; b=IXUpzLsh8Na1TEKduihXpVOfTygyeMDnKN8ZnAAAlzAhh1prCmbpq385omSX+IphaQf0rtya/pLVMyaOjp7zPQjnijVtefp14DgbpzF58op/fQGnmNsi7QvNVDceM9XVe42lOc2TPF+ofSdsZySEHInjGLESDsGqxmsgus7T5P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751254575; c=relaxed/simple;
-	bh=nz/6V9DH4cKVb4lElTTDh2PykRGAK5Z38f16mJFADDg=;
+	s=arc-20240116; t=1751255265; c=relaxed/simple;
+	bh=+t1jPnYCOVF0SdtSuEp+RHL45lFV8uYHWwhOlZuzCAA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eWf3JgZcAT+gWOMRJL5SBFTbjMwvEsdgODc5uYu8GHiA5ZoLZRy2IcZIi8foLsL+0Il4pxOgmC3zBm416WfeUQIwB7rZxCydDNJzZewFY8EurDRJ9S6zXBl7XzCE+eJBrhoEYir4t+fFxn/8smvDzo3Z8Nx4OityF9Ox/yHgNoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gvVCSYMT; arc=none smtp.client-ip=1.95.21.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=J4XDNdW15FnbOPvCqiKQsRr3KhuhBWIlM7wjBALnHhNfD0U7fXLH16RAvOvPyhQGrDt1wv7+IGdxZ5Ab4sxrqXE2WC70d4ei7/iVjNNIVpqYyDqAqMe4y6OkUFnWoElhQEbWkMOa22TgEUmLQf9h6U+WYseNNyiLcy3FMJ7hxZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=N7aGd5qd; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gvVCSYMT"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="N7aGd5qd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=qdncWhYOth4XsRh697dCBi3DdkMHRax6Ejf9OY8OaFU=;
-	b=gvVCSYMTCNoxNh/h6g8VWMVoFtxUr7hJIEcpiUCa1SM+RyIi9/56dcfsrqM8kG
-	jg+Q6EPq+v4M1GIa4Kgx1Wt9RXTyzDCcknDaS9p1F9GSMhOvsMb8jjqYHtC6e0++
-	advQTP0riI22qgS3Fq/zsrJJVcnw/hA6RciTrNSfTjI/o=
+	Content-Type; bh=MC3PpwZilNiTUO9T3N1jve3LMEKnZfHx+jcycfs6XYI=;
+	b=N7aGd5qdzoWWFzieN9fkXxNetlhygQmqSIiZToazHyALyoSFCZESx52z1V66gK
+	he+efT+cy3t+JM44yyIZ1CTxwW+7NzuhOgh7GjvyyP4uUqUrhvLUVSGjCMIC25R9
+	WEszdsj3W6LW0hwHdc3I75YNpYnSDAJ5041WHQNkaTzUM=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgAnnw4RBmJouQnOAQ--.13995S3;
-	Mon, 30 Jun 2025 11:35:47 +0800 (CST)
-Date: Mon, 30 Jun 2025 11:35:45 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgD3nzjFCGJoEjPOAQ--.37623S3;
+	Mon, 30 Jun 2025 11:47:19 +0800 (CST)
+Date: Mon, 30 Jun 2025 11:47:17 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, Frank.Li@nxp.com, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+To: Meng Li <Meng.Li@windriver.com>
+Cc: krzk+dt@kernel.org, linux@roeck-us.net, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, linux-watchdog@vger.kernel.org,
+	imx@lists.linux.dev, shawnguo@kernel.org, robh@kernel.org,
+	conor+dt@kernel.org, Frank.Li@nxp.com,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] update NETC node of i.MX95
-Message-ID: <aGIGEVXNyCQZwE4A@dragon>
-References: <20250528083433.3861625-1-wei.fang@nxp.com>
+Subject: Re: [v4 PATCH 2/2] arch: arm64: dts: add big-endian property back
+ into watchdog node
+Message-ID: <aGIIxTjmpPPhhtpN@dragon>
+References: <20250608030616.3874517-1-Meng.Li@windriver.com>
+ <20250608030616.3874517-3-Meng.Li@windriver.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -44,21 +47,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250528083433.3861625-1-wei.fang@nxp.com>
-X-CM-TRANSID:M88vCgAnnw4RBmJouQnOAQ--.13995S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUeksqDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQ98ZWhh4l2X2QABsm
+In-Reply-To: <20250608030616.3874517-3-Meng.Li@windriver.com>
+X-CM-TRANSID:M88vCgD3nzjFCGJoEjPOAQ--.37623S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZF1fXw1DZw47CFy3Gr4Uurg_yoWxAFgE9F
+	15Cry8WF9xJa4jyws0yan3Zr9YgF4UCrWrG3WrCay3Aa93JFn5JF4ayFsYqa1fAanxZr98
+	Aan5ZFZaqr48CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1D73JUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCQ98ZWhh4l2X2QACsl
 
-On Wed, May 28, 2025 at 04:34:30PM +0800, Wei Fang wrote:
-> We found that NETC has an overshoot issue, so the drive strength of the
-> related pins needs to be reduced. The first two patches are used to fix
-> this issue. The third patch adds SMMU support for NETC.
+On Sun, Jun 08, 2025 at 11:06:16AM +0800, Meng Li wrote:
+> Watchdog doesn't work on NXP ls1046ardb board because in commit
+> 7c8ffc5555cb("arm64: dts: layerscape: remove big-endian for mmc nodes"),
+> it intended to remove the big-endian from mmc node, but the big-endian of
+> watchdog node is also removed by accident. So, add watchdog big-endian
+> property back.
 > 
-> Wei Fang (3):
->   arm64: dts: imx95-19x19-evk: fix the overshoot issue of NETC
->   arm64: dts: imx95-15x15-evk: fix the overshoot issue of NETC
->   arm64: dts: imx95: add SMMU support for NETC
+> In addition, add compatible string fsl,ls1046a-wdt, which allow big-endian
+> property.
+> 
+> Fixes: 7c8ffc5555cb ("arm64: dts: layerscape: remove big-endian for mmc nodes")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Meng Li <Meng.Li@windriver.com>
 
-Applied all, thanks!
+Applied this one, thanks!
 
