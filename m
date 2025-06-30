@@ -1,38 +1,38 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D8F1482E7
-	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 18:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F6B72613
+	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 18:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751308270; cv=none; b=ByU0/8CvUpD34MRMG0TTUcuCJcZCi29FczdxLI7aByWx2Ch9FuM8+AoTGZDe4N/6v/GXDRnl8VyUiIaPbrS2BzbBgtIek7qNY+n40sfZH+ugS7/961pTf1oVcGPgJSycntTPgAU0MbSXHdWOUfc+Sr1Hs0VRIgLPWX/rDbwP+tw=
+	t=1751308292; cv=none; b=QUjC8BSUr9tyD4nbLmnAHIieVL5G65y3AWMVnxfHRzTa5iBaDuwMbKLfa6wSvhLc+CuZM+WsY7SKBbAeVnQFNL7DsmqkjF+SQ/Cm/2FqpRMTfoo03KMqgKiYXaBjF7HycR0aG8qjWcvZce7deA50M3eFtaBIu4WuJQ956/kycCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751308270; c=relaxed/simple;
+	s=arc-20240116; t=1751308292; c=relaxed/simple;
 	bh=QWChR3Bdm/NXwz4NQqvvVjxKeDXNgvFduFPy7gDqv0A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m57ezZfdhgvn9LSaoZxWQQaeMfCLCTQvGUVlIWN7g7PuDleR+fMrwKwldEgkc/izMJja6VTbqw1O7CnmS7iez5VUPNRJj1jmXGWSfBToo6/57TPAHT3JJJv+cUeQez26Ci9WLiZy1lMZgXX97fJAnNav07QmQzrCXYtRSTxg47s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=BrH00oPl; arc=none smtp.client-ip=213.167.242.64
+	 Content-Type:Content-Disposition:In-Reply-To; b=fRfn70WcopDRzk1N0ld7z40tqGjOMNFXR97OtOYaT4uFQWTSOeyt91UU46xDz0BrChEjmlEgkLa6l4dSKyOyXaBjEW8jFPBEcUBC9v5+aph29L89ciPisXzL3fPtOhU+iXxpo1q81JM8X7ycTDAmgh8Jp6TwPS4fGvvvt8c7IWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=iWOD1r6r; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="BrH00oPl"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="iWOD1r6r"
 Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 30718928;
-	Mon, 30 Jun 2025 20:30:45 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id EFCEF928;
+	Mon, 30 Jun 2025 20:31:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1751308245;
+	s=mail; t=1751308268;
 	bh=QWChR3Bdm/NXwz4NQqvvVjxKeDXNgvFduFPy7gDqv0A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BrH00oPlwj6XiobcNQkW8Ica64b5bjxL/g9umDE6MW4K5MEUAdYX14icC4sd4Y/g9
-	 Xa3SigFlepqpIAoOUtewZEdBcX2IKpNKtAKrvIErT8CGY4edlvXKPzDkcP2TUmvxrL
-	 LlaNzl569ykom8IxBWW1sHJyNhC0MbraPsevTwmQ=
-Date: Mon, 30 Jun 2025 21:30:41 +0300
+	b=iWOD1r6r7qsDh4XzrvRYnEO4ppSt2wJKYZWZ9CMuw80d5WfZ7R5t+nu0Ht/aOQgse
+	 UDZtSEEOYe/se0eEZzDsiBBXbeSOreocpnPnnew1YtaRlCzYmIQAxHZ3DEhFM7zlkb
+	 Z6W1uZoukW9gI+0q/te9Z+3+bXg1lHg6EIm8jJYI=
+Date: Mon, 30 Jun 2025 21:31:04 +0300
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: Frank Li <Frank.li@nxp.com>
-Cc: robh@kernel.org, devicetree@vger.kernel.org, inux-media@vger.kernel.org,
-	imx@lists.linux.dev
+Cc: robh@kernel.org, devicetree@vger.kernel.org,
+	linux-media@vger.kernel.org, imx@lists.linux.dev
 Subject: Re: Compatible vs onnn,model at ap1302 binding
-Message-ID: <20250630183041.GA17697@pendragon.ideasonboard.com>
+Message-ID: <20250630183104.GB17697@pendragon.ideasonboard.com>
 References: <aGLRbiqT8qVdG40z@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
