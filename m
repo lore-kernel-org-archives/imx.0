@@ -1,203 +1,216 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011062.outbound.protection.outlook.com [52.101.65.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA7723F40A
-	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 08:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751273982; cv=none; b=FUyHEXV3kSAmPtnsgIL/Lj4p8AptLiXpwkABkKuNDYRAcCCNYoUxsd6IBMRkwOt53wiT4bj0O5TIPyMdKwV0T7NjO/Qqd9w3MBOPxpRqbBNpAFhhtnONLl6h06kkiye3DyR5zNGQrH07/fxXYXVAV7Xqo5uB+4jDvlxDv14YduA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751273982; c=relaxed/simple;
-	bh=0d4NWuuezUBZlI0MbfJ8R55nhZk0xBUsGlRY5Ft/aiM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t4UdI2qC9xzvkeH+tp4oIpq4E+4Kqjxs0oUXQjZsAzg7tUSF32BzCY0EWIPgo69LkK3wSk73WoUlEhiR7Bjr/4/ytrpaYxSinUIoMtuKU2Dmy7fSOhfzCIkjtG1Ui137loQzX6BDk3Mi8AXodm/DlkwhfgWY7VGdwbd879V0LBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jU85wJY4; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713FF4502F
+	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 09:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751275106; cv=fail; b=C/TzbuNZNKLKo2jBd8A6sc0id6zmvcfCB5x8sQ0iGKmYOu/IsrFakAZulDjtffGrLeiIkQ/O7HIiG4qSuWCirtyfSIwg/CZ3bkNiLZwNLVIM0Cd7yFVDRRmkx9uulAFXGF9BeqbjXp6CR6Nexc+AaAgnngz3qWjapUGg0rbLyqg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751275106; c=relaxed/simple;
+	bh=cokV70N2fAPyqKboyNBf14idkfJipfp8+keJxF1qYCc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Idoq2hk7HylfQi7QYAGIO2DY5F7rLALrl9jtDw9sMLJ0N7QuVn15+6/tDu+Wvu3JukjzfCXmKegzQ+nZZ58SDkGi+FJvLx1tr7R0Tw0RD9QshoNbvMjUtkpytfRepcWFpv3vTdqNxI8fjbBV1FdKdWoVYWlmYBPaKyg4kW1+0q8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LjegT8O3; arc=fail smtp.client-ip=52.101.65.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jU85wJY4"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a4e742dc97so3249625f8f.0
-        for <imx@lists.linux.dev>; Mon, 30 Jun 2025 01:59:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751273978; x=1751878778; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VFQu7mhixaS1abvpxxXFoPLoeKYeIfJ3hDE1BdxuAGs=;
-        b=jU85wJY4uZ4oEiV5aNS1RwUCk9ZpFbPzlEwxDfrxlLbXI4oRpReT7kuonzzNmPQ/MS
-         jCO8Y6hW162DriTCfNQrqv5eqtAuhb6aWW4VbrygUuUULmqyIEuufPnlzW9UMxckXMua
-         /F1ZCopthLOtCL4q/v4DDv1MYkIGRSgrFIuinhqOfJ2PC7GHVGOZS1raNbZXm7bgkuka
-         4FWvLem0zGSG0ukXqYG07UxJdDBrGbsm7lwUDanreJ0weXOYsmHp07iwZIqoiOrTFgyg
-         N5Y8/fcGwann/0VtjWx1AXwauHNd26PrFtFeqY6CrIHndbEIUL67u9m/M/ffA9SeMMMh
-         JMjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751273978; x=1751878778;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VFQu7mhixaS1abvpxxXFoPLoeKYeIfJ3hDE1BdxuAGs=;
-        b=OdiY9PI2QQkh3ZOu0KbnRnGpQAjEGyX6la8Dxx8ARBS7eHxl/CXNoZOLJ/VRpvCQQ+
-         nqYYjr20wcakoALHVl8KSxpnEyGbbwo5+8AqfTttkZ2rI4TCrADpREypkaSiEs/JMoIo
-         q8uy6bcJif7wBER2van9eHN43C/SlT4h9ZxHE7ZzuhbAGb9LX+Pa5sUsoAwGKwkpKVMA
-         UzFXXrXo/Ndfc/qjWN+GJMfqdKEO9COFIUK0sZieHYPlthETbQOtFxEtdLP+TuKmQoDM
-         3gwzahxS/Bs4l2wr+k5dUSCYH2DcBIoe30UuIwGmID1zt73jEv8Q5RW0JtVpCFsPeZTj
-         MiFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWSn/CILRLwV0mz/zN/SompNT1tFyZ3eiA1KeKXbuXn9b/OEJyPW6irHH4khU6+jJ9Zv+w=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxKX1cklp78rJkRzR7O/S+hnJ1zygM7D9iKOXDLxo6AT1xpGLqb
-	wdvfYfS2QBsmXxVXq8tFOoI/sMuhjZC925xPNxgJ94Bkcfn1nqMwaZCgBt0aNtnvbpQ=
-X-Gm-Gg: ASbGncvX7ZH5YRtmcSpYdexP1mgJ4RswEAF8kqdu3xiNunqYEsDBQifuBYaBepQSJZ/
-	DNYa7kf2Itj7aM+/MYtcPUYp6O+RPjLNKoBHWqyclWXBKYuAj2SXKtiUJegWEaB89xFrkiLpnx5
-	bzhQ7TJVViiD4+L8Wf3Pnt9cjBiiU1ELG7G9BNMk71C/n3fp1kibSPbU4/5C8FKVowOa6GltdTC
-	cBfyzmDTW5yMf7UvFx2OBslK1SrZvBZ6pU+zj+qs8ZvMu6QVgq/E5sNZOv1vO2Pv+z717A1UTck
-	o4PZGnN+D2PasgV7u7a28FumkFi/X3VPpi6VbX0pggzSy7kMotSxE7afDAadPLTYsAQ=
-X-Google-Smtp-Source: AGHT+IG5ktpnxyBI4y1IzWi1qogVxb1CyTNnkfSh78AccIm7IuhUZAbeEi1X7pwMTpV3iZq17jhRIQ==
-X-Received: by 2002:a05:6000:3103:b0:3a5:5136:bd25 with SMTP id ffacd0b85a97d-3a6f30fc160mr14023708f8f.1.1751273977592;
-        Mon, 30 Jun 2025 01:59:37 -0700 (PDT)
-Received: from [192.168.1.3] ([37.18.136.128])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a88c7fada5sm9958423f8f.32.2025.06.30.01.59.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Jun 2025 01:59:37 -0700 (PDT)
-Message-ID: <65622175-1c5a-4228-831b-6e2f8c05a9f0@linaro.org>
-Date: Mon, 30 Jun 2025 09:59:36 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LjegT8O3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jnu5VDgeKEf/eW8i6fbMDyR3fxu2gM9Sj0yHTL41PYG55uvzj07iZgx7ta6/0KhUOSTMqSZipkD5c2nnqHzWrP9BUDMexiGpvaus37dZ6qabZLm5fL1M5ZudJkX4C2+uLOn4HQP8ZBKNP6Zz49+iZwVcqIqXWaxfWk61T2NWuuQoWaFEAFR6uy5o7RMnha+xS5yfZ+tFM4KjtWPWH7r628fUFfJyKvwfCoQpMeDx7bZco8lnVEnOxOQlgukLJCorrzpq8zrcPxvdgW/tosUPoYPSdF7BuK3LMGREUVR6/uxFw+WfFE21NN/v0A4BQ1Es238wQ0hL9oWs+dwKRT4LGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PmylQMMn3+sIrGZfnW/X+8JDw81cc2kIFAar9VzKfwM=;
+ b=Aq8A8TjA3bbxUdryzf0dRiQoPmkmKAyEjLsr+D09LZ9nbFz6bBlwEaqkFORT1i2f0fW1eCUHnnr49f9LGhWyyPPuDNhYzWgaiFD1Z3bkZRMIiASadlqnNiwYJSc2WgsXTiV3RtLX32xeDx614Qe/wV/ynmsM5xjmJ4mRrTe2SRnhAxuVnVuSAmxEAHUfPQG0HoNhNlE69ym/7EP8GixSLB7SwfDU5MDOgmRu2hiWor/OcN8FB7v4wkqS2y4j8f81DX+UAuC+6jKhTp+GRAjoSr2C/pVdJN7f75i0tQRuE7h8e4Oc+E5D1IPSFr2HMTxHxynvu5DfnxxliRYRYpPhvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PmylQMMn3+sIrGZfnW/X+8JDw81cc2kIFAar9VzKfwM=;
+ b=LjegT8O3PHj/tsNzeQSIuBdFcFATD2l2iaVF/dwFAdNrJv0YJG4/hhikP0Wkv0Cl0T+a/Id6RfLFZQxBgjJAJqthkNYMJqXg4mTZNgmxh+ue5R3G4f8XBKgRl71ROPqQnslyM+mII/GbmP/ScYgEYev/8l3l4sLCdCxAlMLEmVplQV2F0qqyAlLe0orrVtxSyQzJhUwXJuRjY3GJsx1wtak94rDrxc//NwvCHkOxtErcWLhhLWz+LqD2Wm4HU6vqAqWnZFi0b69OKJsxJkW3aVT03PpqDP1v73J2x/NAKz1k3/TUPhSTfjEPIGeBPEDIqziIzW5IIyE1rUtzDPLjAw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by GVXPR04MB10204.eurprd04.prod.outlook.com (2603:10a6:150:1bf::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.26; Mon, 30 Jun
+ 2025 09:18:20 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8880.027; Mon, 30 Jun 2025
+ 09:18:19 +0000
+Date: Mon, 30 Jun 2025 17:13:31 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: gregkh@linuxfoundation.org, viro@zeniv.linux.org.uk, 
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH] usb: mon_text: find valid buffer offset for iso transfer
+Message-ID: <zbxioq4jk2ykd3alu5j6igmgzmsuainlwelhvl5lhz3iczcqyv@uspbdfpyj36j>
+References: <20250627105651.3653231-1-xu.yang_2@nxp.com>
+ <8a251c8b-5ec6-4238-bdcd-8d8001fd06df@rowland.harvard.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8a251c8b-5ec6-4238-bdcd-8d8001fd06df@rowland.harvard.edu>
+X-ClientProxiedBy: MA0PR01CA0093.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ae::20) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5/6] spi: spi-fsl-dspi: Increase DMA buffer size
-To: Frank Li <Frank.li@nxp.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
- Larisa Grigore <larisa.grigore@nxp.com>, Christoph Hellwig <hch@lst.de>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20250627-james-nxp-spi-dma-v4-0-178dba20c120@linaro.org>
- <20250627-james-nxp-spi-dma-v4-5-178dba20c120@linaro.org>
- <aF70skVHeSRU3BTu@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <aF70skVHeSRU3BTu@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|GVXPR04MB10204:EE_
+X-MS-Office365-Filtering-Correlation-Id: 14cbf6f6-3fbc-48f6-f881-08ddb7b70dd8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|52116014|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ZLWV1a/Ob575f8sdCU0rPKpo7s7KiMlCoKlsfmP5+pumB1Wotvz+VbVQ+WKy?=
+ =?us-ascii?Q?hCZOU7/Y6BmZ91CIQXLB3lF0b1lETdJvUn8rMz+WrjkKd4Gs9kcW1Dz6RBS5?=
+ =?us-ascii?Q?ukiivAJPxwIT7jLDyP2C5zqKuj5poPhQ8qt85foID0RhB+EkBiW8JpxQlhSN?=
+ =?us-ascii?Q?c5PuzA1h6IqYphMXNNCosf1H3TFbRbUcfjoF7qnMASVjEiRg6Vx74Ts1BKmB?=
+ =?us-ascii?Q?i+SZmso6thVC+n2S5O5CCNmwLaPA3o++7mShILtqdZ1XGRqPkKq+cfaIxkoL?=
+ =?us-ascii?Q?3TK/dlO2cyYSewTuB76wKO636HEFNqUIl62Xn2BHo6+YmvRDDYCmHkFDpO/a?=
+ =?us-ascii?Q?i66C4eMEy0GRsYl2DnKqMjIdh8rEP25Aa7yzbzvIEZWF9YTCH7/SwJfc1XHM?=
+ =?us-ascii?Q?MeNLxiugiMjH7Jd9KsV4eZDOm/khM/p5iGzYjiGGrOsOrCAc3/FFRgGD7apN?=
+ =?us-ascii?Q?38Zubg6mmwKJxd30ipIkWoirFD1e480rhpGSrZz0hGsVDjpj9lykGqSn5krq?=
+ =?us-ascii?Q?+xzl0SrqFnuYV3AxzTydQuzoFe7WkPaDsaebrVLxX++BOqKIgCnGP/dqBGpE?=
+ =?us-ascii?Q?9pmKhO54wM6QKogx32xtFTsEnz05yfPUAJdwuGka33jMpeDC3OdhICrPZRf+?=
+ =?us-ascii?Q?DAeS6HXgACw00ObnJa3b1WgsVybe8ypAqTQjvxBWfDuGl8Yk5aqktAjkvnHs?=
+ =?us-ascii?Q?DEWtnkkEcQJKhW2rUpykbx/vGecFvSLnXlcy422Qg1WrQmnTpG2iOOBFXmgi?=
+ =?us-ascii?Q?PTNZqj+xOuP7mS+pQ3lkvfLwvg0tMFNV1oXvVKW37onGdIFQcCOvO6c5XoSU?=
+ =?us-ascii?Q?TFSfC6I7heRGa4li84C0CVQFD5he+IIQNucXSQSek8schotwVdETJszaXO/S?=
+ =?us-ascii?Q?7UM+5Qlnxw1t3Ji3UGyjE24jYhxxnQHlOSFYros649X23o/rXH9M+t4sQ9Jd?=
+ =?us-ascii?Q?X4jsc3OvISuOc58RYv4UZHbh4iYmmJYrK77Ewdf3IqE8BGeQ1dlmwfqcTRwT?=
+ =?us-ascii?Q?mqlVOV8BKMEafQwO2+KuO2ZS2lEZvWQjm21OqcC+bE24S0TA+Cart+dzaqgZ?=
+ =?us-ascii?Q?q1LAfGlPZkOI0ikd1Z40gBbjZ0K035+njU3dF6MA3F5WoJXnFxQBUv91g3Wd?=
+ =?us-ascii?Q?Q4pS/YpIQZX7vTBoVjGZAle4jBKK6NVEYLYY0WZkTtRghOVLFrE5gQGmqeJO?=
+ =?us-ascii?Q?h1ksjAHc3YWWq/hTv4Z2fA13r+CaZjO5L3svaoBosZzGso08wVBgLu+1SXTd?=
+ =?us-ascii?Q?YmcfGXvPSTNd05yCgWf4nnR7tkuwR9om3rF66iUkzatVchVus9BNa0IjaCze?=
+ =?us-ascii?Q?RpDgvVFDXaUizJIDdx2oy3f6PpjbchYsnXxK/WnU5bc051Y+WCa3SH8xUfQU?=
+ =?us-ascii?Q?BjNRq5TQVF6BZW76oMVkRH5SUl1SfFeeKLGh5XjkzN44WJkDlV0wCkPbJ1N4?=
+ =?us-ascii?Q?HJiWiaEvlwkYE62DJkpCbFkohQ532yjBUXweZrzdoqxEkFktYz7/VQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hC6/ncTSbqH/X6fRNYLZZBlbQ6Da0Il5PbWuTuuQCy8A41eG1/01YAo+A9/f?=
+ =?us-ascii?Q?Bz0cNBFzurtoChIojte/JjHwvExIW9X6ASUhZxXKyh9FwSsTN6hAi5T09Xgm?=
+ =?us-ascii?Q?69XIqsPJsldMZvm3GWOiqlaBUBNoTiTINWi5maSGE1taYHEo2DFBQ5WTvmGZ?=
+ =?us-ascii?Q?EKRJhp8/K9KUv2gNC0ng+WRg6urDU5XWJXXF88jZ+lMYiggDV1q2xKuGOIHc?=
+ =?us-ascii?Q?SiuKDZtbOTymYT+JnhXHAEhItLdNeDw7HF7rSw2BIQ9OjfzKvFej/svMubDO?=
+ =?us-ascii?Q?T8HbJCg4eEliUSzhPiZKaBW61jc5WThWbU8yal7I0eYPZhv8VPp5kbM7CLlh?=
+ =?us-ascii?Q?6x8dkEns6JcgMYtqSNnreJtOruejTBf3cNUxwIPHvrzFcMKnxhB73tM+eVyL?=
+ =?us-ascii?Q?sAFiQBG7+bp2d2LcKNfc85IHy43Xe650qjs2rB2z7ZibkRYg7a2b7hg0L5Py?=
+ =?us-ascii?Q?4pcpgB7Lcv/6B/9bi2Aw84VSvyMXbyZoOxODN6M+bHMx0MHAk0y0425dgLYN?=
+ =?us-ascii?Q?hDrcX3OzlU56bcD7tSZioMyo/Q+AeqypNswpmddVHgWU+5D8xiY4ur9aV1AT?=
+ =?us-ascii?Q?mcp62q5iplxVGifq1rLF2aTvGUADl4VbZOx6C+47sgbGOet4+yGKKefbdjfY?=
+ =?us-ascii?Q?NAf3HE0reE5MPieNG5N5CRjayt4Fy3MW14Fh3Wb9xm6Ue2kkloBLL22Ul718?=
+ =?us-ascii?Q?EbB3NtlQ1Wc2zqjTgkil3oLtteVssdiZN+Lvm5Wc0c32wab1kkV/m8p4ovMv?=
+ =?us-ascii?Q?CQ3NNzkhy9lmn1s08oHOXzhq8TBhnnCO4qck3bsUPrrMStGjGBOxBE89Tgsp?=
+ =?us-ascii?Q?8l5n1INbZG/BtJwOhrHM2BzpemIN0WjJtlR9M/92tjXTWTk1zvo9CEJ82EHU?=
+ =?us-ascii?Q?LYSdpQJl9ZGnniaMlSlLIBNpW86/a91llX3AUH9l4FutYgvqQCvbrWYCiJSs?=
+ =?us-ascii?Q?o+GuXzpk+NaTcYUnR568O3YrbvQIPEfnMrYv51MSjNDNEvNxA2RxhUDviZUR?=
+ =?us-ascii?Q?UvLBkfs5MR+0NU6SrUl0SzRBNgYgV9NYiGBjbCNG83+/AldgSOdF4SP4sYDb?=
+ =?us-ascii?Q?gfmXGfTZGrQfBTXBy3mNHguI0osR7WAvf7kWwBSZ975LyeL0byQuAUZoFALL?=
+ =?us-ascii?Q?gV9VAYnv0Kwm7kMhqX9W0baWbLUOsf1M+4tYCx5Pm/U83xxf0LpR//7jPFDZ?=
+ =?us-ascii?Q?wOFCI2lDRqK1FogwzDX/QMIUCNZfHCe60zkEt7WoVmHyN3MNyYoyVcM5sHDX?=
+ =?us-ascii?Q?BfRx2X7pdG3pI38Znb7JhsXWTl6wGeVvpnFfhmmstG9mfcDydtXDmHxTv5Y3?=
+ =?us-ascii?Q?ksJuBj+0+ouYN9U2kzoMle5WcjcDiXC5m6xAnsoes0oHNYNNMqYXLOJ6H7US?=
+ =?us-ascii?Q?D0n9/VwrTAt2kh1tZ7+cvzmVOlPlKrbmQqYygDc5E7RUHzfbZnfPOmRwSrWv?=
+ =?us-ascii?Q?TKDK3FaS9aG7YefFjRB+s7CALxxajGDa1Kz/d6M05smQuh90Qy9djysY3ns9?=
+ =?us-ascii?Q?MrDD6OzeEJQxMdslMHlNHipsTTuxakCrtaTtDiBfc9SaqMdee3717y62uGj4?=
+ =?us-ascii?Q?Mw2O8/OBdIlg2Y81tXkQU38bY0GmPihkJqHyIYpr?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14cbf6f6-3fbc-48f6-f881-08ddb7b70dd8
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 09:18:19.8599
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 91eK6ZnP0VHRUwi13cwr7inBQwGkyM6rgJZEmDZBvVJT8dKT2V+AEdr+ty0kY928rnH5seEUtZCq8IPuBd97pg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10204
 
+Hi Alan,
 
-
-On 27/06/2025 8:44 pm, Frank Li wrote:
-> On Fri, Jun 27, 2025 at 11:21:41AM +0100, James Clark wrote:
->> From: Larisa Grigore <larisa.grigore@nxp.com>
->>
->> When the device is configured as a target, the host won't stop sending
->> data while we're draining the buffer which leads to FIFO underflows
->> and corruption.
->>
->> Increase the DMA buffer size to the maximum words that edma can
->> transfer once to reduce the chance of this happening.
->>
->> While we're here, also change the buffer size for host mode back to a
->> page as it was before commit a957499bd437 ("spi: spi-fsl-dspi: Fix
->> bits-per-word acceleration in DMA mode"). dma_alloc_noncoherent()
->> allocations are backed by a full page anyway, so we might as well use it
->> all.
->>
->> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
->> Signed-off-by: James Clark <james.clark@linaro.org>
->> ---
->>   drivers/spi/spi-fsl-dspi.c | 42 ++++++++++++++++++++++++++++++++++++++----
->>   1 file changed, 38 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
->> index e7856f9c9440..46d3cae9efed 100644
->> --- a/drivers/spi/spi-fsl-dspi.c
->> +++ b/drivers/spi/spi-fsl-dspi.c
->> @@ -493,6 +493,39 @@ static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
->>   	return cmd << 16 | data;
->>   }
->>
->> +static int dspi_dma_bufsize(struct fsl_dspi *dspi)
->> +{
->> +	if (spi_controller_is_target(dspi->ctlr)) {
->> +		/*
->> +		 * In target mode we have to be ready to receive the maximum
->> +		 * that can possibly be transferred at once by EDMA without any
->> +		 * FIFO underflows. This is CITER * SSIZE, where SSIZE is a max
->> +		 * of 4 when transferring to a peripheral.
->> +		 */
->> +		return GENMASK(14, 0) * DMA_SLAVE_BUSWIDTH_4_BYTES;
->> +	}
->> +
->> +	return PAGE_SIZE;
->> +}
->> +
->> +static int dspi_dma_max_datawords(struct fsl_dspi *dspi)
->> +{
->> +	/*
->> +	 * Transfers look like this so we always use a full DMA word regardless
->> +	 * of SPI word size:
->> +	 *
->> +	 * 31              16 15                   0
->> +	 * -----------------------------------------
->> +	 * |   CONTROL WORD  |     16-bit DATA     |
->> +	 * -----------------------------------------
->> +	 * or
->> +	 * -----------------------------------------
->> +	 * |   CONTROL WORD  | UNUSED | 8-bit DATA |
->> +	 * -----------------------------------------
->> +	 */
->> +	return dspi_dma_bufsize(dspi) / DMA_SLAVE_BUSWIDTH_4_BYTES;
->> +}
->> +
->>   static int dspi_dma_transfer_size(struct fsl_dspi *dspi)
->>   {
->>   	return dspi->words_in_flight * DMA_SLAVE_BUSWIDTH_4_BYTES;
->> @@ -608,6 +641,7 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
->>   static void dspi_dma_xfer(struct fsl_dspi *dspi)
->>   {
->>   	struct spi_message *message = dspi->cur_msg;
->> +	int max_words = dspi_dma_max_datawords(dspi);
->>   	struct device *dev = &dspi->pdev->dev;
->>
->>   	/*
->> @@ -619,8 +653,8 @@ static void dspi_dma_xfer(struct fsl_dspi *dspi)
->>   		dspi_setup_accel(dspi);
->>
->>   		dspi->words_in_flight = dspi->len / dspi->oper_word_size;
->> -		if (dspi->words_in_flight > dspi->devtype_data->fifo_size)
->> -			dspi->words_in_flight = dspi->devtype_data->fifo_size;
->> +		if (dspi->words_in_flight > max_words)
->> +			dspi->words_in_flight = max_words;
+On Fri, Jun 27, 2025 at 10:28:53AM -0400, Alan Stern wrote:
+> On Fri, Jun 27, 2025 at 06:56:51PM +0800, Xu Yang wrote:
+> > The valid data doesn't always begin at the buffer head in case
+> > iso_frame_desc is larger than 1. Otherwise, the output info will be
+> > meaningless.
 > 
-> you touch this line
+> Not so.  usbmon intentionally copies the entire isochronous transfer 
+> buffer, even if only part of it was used for the actual transfer.
+
+Ah, I see USB monitor only copies DATA_MAX (32) bytes data for mon_text.
+For mon_bin it copies entire transfer length data. So I think whether
+the data is valid or not matters for mon_text.
+
 > 
-> 		dspi->words_in_flight = min(dspi->words_in_flight, max_words);
+> > This will find the valid iso transfer frame and return correct start
+> > address offset of buffer.
 > 
-> Frank
+> Even if this were the right thing to do, how come you didn't make a 
+> similar modification to mon_bin.c?
 
-Ack
+For mon_bin it copies entire transfer length data. So the user could easily
+find the valid data from the results. I assume that the beginning part of
+the data will be 00. But if you prefer to make a similar modification,
+I can do it in next version.
 
->>
->>   		message->actual_length += dspi->words_in_flight *
->>   					  dspi->oper_word_size;
->> @@ -635,7 +669,7 @@ static void dspi_dma_xfer(struct fsl_dspi *dspi)
->>
->>   static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
->>   {
->> -	int dma_bufsize = dspi->devtype_data->fifo_size * 2;
->> +	int dma_bufsize = dspi_dma_bufsize(dspi);
->>   	struct device *dev = &dspi->pdev->dev;
->>   	struct dma_slave_config cfg;
->>   	struct fsl_dspi_dma *dma;
->> @@ -719,7 +753,7 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
->>
->>   static void dspi_release_dma(struct fsl_dspi *dspi)
->>   {
->> -	int dma_bufsize = dspi->devtype_data->fifo_size * 2;
->> +	int dma_bufsize = dspi_dma_bufsize(dspi);
->>   	struct fsl_dspi_dma *dma = dspi->dma;
->>
->>   	if (!dma)
->>
->> --
->> 2.34.1
->>
+> 
+> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > ---
+> >  drivers/usb/mon/mon_text.c | 12 +++++++++++-
+> >  1 file changed, 11 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/usb/mon/mon_text.c b/drivers/usb/mon/mon_text.c
+> > index 68b9b2b41189..4929c7f5abd0 100644
+> > --- a/drivers/usb/mon/mon_text.c
+> > +++ b/drivers/usb/mon/mon_text.c
+> > @@ -145,6 +145,8 @@ static inline char mon_text_get_setup(struct mon_event_text *ep,
+> >  static inline char mon_text_get_data(struct mon_event_text *ep, struct urb *urb,
+> >      int len, char ev_type, struct mon_bus *mbus)
+> >  {
+> > +	struct usb_iso_packet_descriptor *isoc_desc;
+> > +	int i, offset = 0;
+> >  	void *src;
+> >  
+> >  	if (len <= 0)
+> > @@ -160,8 +162,16 @@ static inline char mon_text_get_data(struct mon_event_text *ep, struct urb *urb,
+> >  			return '>';
+> >  	}
+> >  
+> > +	if (usb_pipeisoc(urb->pipe)) {
+> > +		isoc_desc = urb->iso_frame_desc;
+> > +		for (i = 0; i < urb->number_of_packets &&
+> > +		     !isoc_desc[i].actual_length; i++)
+> > +			continue;
+> > +		offset = isoc_desc[i].offset;
+> > +	}
+> > +
+> >  	if (urb->num_sgs == 0) {
+> > -		src = urb->transfer_buffer;
+> > +		src = urb->transfer_buffer + offset;
+> >  		if (src == NULL)
+> >  			return 'Z';	/* '0' would be not as pretty. */
+> >  	} else {
+> 
+> And how come you didn't modify this branch of the "if"?
 
+I looked into it, but didn't find any ISO transfer usecase using sglist
+to manage data, so I skipped it. I'm not sure if my understanding is
+correct, do you have any ideas on sglist?
+
+Thanks,
+Xu Yang
+
+> 
+> Alan Stern
