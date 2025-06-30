@@ -1,129 +1,112 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0808242AA4
-	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 16:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9CC2459F2
+	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 17:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751302595; cv=none; b=RSS23QhJ/mw7aO142mV04oh4jEAuoHMeihID9VTuMx1yqE30wGhvL5e+ZOKxthockGlwqJLO81m0n2Co8s7ou+XOQoPPBaGk9kKmHhx/sAnwE1iTXcqqGpmpdq3c8r7HMg1QWZ5INES2JY2taFklFVxrmxXh/mQ2FYfI2fkEuQg=
+	t=1751305166; cv=none; b=spftoFKiPIgfDMx98jVuUGoe9AlL6jbhnAPDtz5nvjjT7YZJ1a1q/y1ZZxdPoe2ZB/Q3A0lrs8IJm+2AUu/ONZK9+l/cAjx5mX8wpkxr639z5zS065hF/rrTH+BAEO8XuUx/Nihx/GWz/NCpaRTlucINVXPdxbXj0afIcaUTbo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751302595; c=relaxed/simple;
-	bh=QvWVQDEMrJPEoKCjlEPBqgdJEtzpm/ZPTWF2ZHyA28Q=;
+	s=arc-20240116; t=1751305166; c=relaxed/simple;
+	bh=u8fX7/Ls7MJ7zE7uXZsFHq8gKRiPLQqVOwd4iyuc1j0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DW2Xn0XVyCK3h32upMjSNlc6SBk1PDlGSV69ruNgKGTk3JFPo8hN5oK03w9Es6bm6L89U5bV9ZeWX+WQK/WHM+bP/pLOH0N3fkyy222z8tMk2PTT8/TXCStXFUfPg2FNoFh+iczWNRVtkcve9aYQj5vBmiQTxRBSdbhag9+4JLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TA4rjftU; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=H4xsk84cbs4EeazgeNTThvkygJid1e/fpSZf2eR+C7R/xewn5i3Evp463gQo28AgxDkPonP9WFpiOFi/a4TpNsuc1WwuXiUrZRIyHm8zZhHtaB/mahrth15SXuUJZV/E7DyROCbXbsgwDlKJe58VY0jJk+3TH73QwRI/rjy7j24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=NWHHWooW; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TA4rjftU"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b1fd59851baso1906865a12.0
-        for <imx@lists.linux.dev>; Mon, 30 Jun 2025 09:56:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751302592; x=1751907392; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WbkSOKv1c6+ZeTPPDtxvzHXfz9bRwbs8SlvC2AxNK4U=;
-        b=TA4rjftUHQkCt8q2OKgOPxDl0tIsUyQGXPDaMSHxsfLA4Co7OzWkTwDg9Ifeq5JYX/
-         G1bOswPtsbAzbazvbtSrAgbY2G1NzQFdcvvRlQagHAk+WfS2ykko+69xMcdtdgvQ2Aiw
-         xwCRRMRKdwHH0ODgZkKc6YWy/QcS9HWBzIG48zeGSOBVaKC209K247s6dAI2wbYv6AOl
-         41rJ5LQNBw7jG3oqhmpux/VTr8+0WfHc2e+BS2nsJYHjcOQZ5U04GgdSkUgfGRB6ZAeS
-         sVAdR8mLHJp2f1NquONTUdpZ07H6p9BsDm2m7rtTQMzAZK8Licf6F0PnkaaOAwZTxekj
-         bYOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751302592; x=1751907392;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WbkSOKv1c6+ZeTPPDtxvzHXfz9bRwbs8SlvC2AxNK4U=;
-        b=J0wP5pf6uQkhwGphIwtPJOOPUFSCGdxjiDoKCh33sr5A8HM7Jy1dVVI/mdzL1fNml2
-         b0h+Uddy9HZ9JaAYl8Us8v7nEf+sJIYML+YPouQPPfhgwYMxl2Ksa6JoQkL5ax0isGS+
-         PSLqM9nRFT21H7fVO2PhaFE0FzWWRcSUrL5By/gpb2es7Yzsi5PUJMgV5O+Y5Qt7yjbe
-         Owi4HxE4ImGw2bx5EWUl+L8oMnP26/zV2iU+uvEpPoZ4enHYvT6gOoclSjj0dLwYE7Jd
-         rn3XydjF4EYqJmrL5OPXgSGjmqHT7CfVybTcz9p2P1c91OzAK7QGRVd6T5/zuGeoMsFO
-         DG4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU+0Mx8lFvsKtYve3trjUS/a8JVvSNzceV5l9Tds3WA41MNzbxGGkF+GS3LAoAUQOwb0KE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywb1boAX4c5NdCJhMnTMXMriSgOO66N/+Adw4oO7VY5fTj3SDNs
-	5TS6BozrQNdMtuwItUknVT1w5An7WFPmnRmt2EHX7niYDLZRkxy/r9AKmrDW3il32qM=
-X-Gm-Gg: ASbGncsTjY1EBJARZWm9M2MQqogrHfIGH6SbPNwATyJAO2o04u4PR2LfEHJMUFvhrbn
-	m1L3JO+MzKXdTpWCpbyoz3VCPHSi1qQiHzG9Bcs1+oYQcEGKOSGTFsI6WXvHtyCeHKjkUbB+mHM
-	nI3Jen2yj1GVcxSsQpCXj3uzM7EjI/QTqeWgNYx/PdKhl5NkkHDMeET86lC+nO6cTvaLs9CnaZb
-	meXvNuyI1nSol5gMXDbEJn7sWyuIcjCcyeDybVgnd+2hygGB/Z5m5idigJMFdioQIqtTCn1J74p
-	SzlVdzRzpDExX4GkvbjdLGtTzKboQfQ63xD9bM39uoTZVPS1sLvw3rvo488aYZ842g==
-X-Google-Smtp-Source: AGHT+IGWDgD+VJi4svWBlq3PHDkqo771atH5H1zxELbsknAHDzHX9IJdZF8QLWZ//OrPu/7q7cX3qA==
-X-Received: by 2002:a17:90a:d2ce:b0:312:1ae9:1533 with SMTP id 98e67ed59e1d1-318c911beaamr17432196a91.1.1751302592257;
-        Mon, 30 Jun 2025 09:56:32 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:3274:25ba:45cc:d85d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-318c14fd6a9sm9115056a91.40.2025.06.30.09.56.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 09:56:31 -0700 (PDT)
-Date: Mon, 30 Jun 2025 10:56:29 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: andersson@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iuliana.prodan@nxp.com, daniel.baluta@nxp.com
-Subject: Re: [PATCH 2/2] remoteproc: imx_dsp_rproc: Add support of coredump
-Message-ID: <aGLBvXtSRlaKujqM@p14s>
-References: <20250618062644.3895785-1-shengjiu.wang@nxp.com>
- <20250618062644.3895785-3-shengjiu.wang@nxp.com>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="NWHHWooW"
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id EA547667;
+	Mon, 30 Jun 2025 19:38:54 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1751305135;
+	bh=u8fX7/Ls7MJ7zE7uXZsFHq8gKRiPLQqVOwd4iyuc1j0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NWHHWooWumxzLXT1idCf/DInO8fgfGVWLXC4fUvTapZBSmzMEDuRRDRrBk2J66vrj
+	 NZcDPKDqlIRfqORoLkrdnpZZhVE2YCQDYmxRODMiS/IpzDVyf8Cbtq0Atmjy2CXByD
+	 jj54u7+boOAPF4WzqNjGMLFx227jTYQCam06mewY=
+Date: Mon, 30 Jun 2025 20:38:51 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Xu Yang <xu.yang_2@nxp.com>, Christoph Hellwig <hch@lst.de>,
+	ezequiel@vanguardiasur.com.ar, mchehab@kernel.org,
+	hdegoede@redhat.com, gregkh@linuxfoundation.org, mingo@kernel.org,
+	tglx@linutronix.de, andriy.shevchenko@linux.intel.com,
+	viro@zeniv.linux.org.uk, thomas.weissschuh@linutronix.de,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v2 1/3] usb: core: add dma-noncoherent buffer alloc and
+ free API
+Message-ID: <20250630173851.GH20333@pendragon.ideasonboard.com>
+References: <20250627101939.3649295-1-xu.yang_2@nxp.com>
+ <20250627101939.3649295-2-xu.yang_2@nxp.com>
+ <1c4f505f-d684-4643-bf77-89d97e01a9f2@rowland.harvard.edu>
+ <wddmyx4lccthln7mbngkd4zbh6y7mwetdba5e7ob6u4xevecmj@zopp65eqbeuu>
+ <e908261b-2acd-46ac-b3ef-92691eb50f88@rowland.harvard.edu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250618062644.3895785-3-shengjiu.wang@nxp.com>
+In-Reply-To: <e908261b-2acd-46ac-b3ef-92691eb50f88@rowland.harvard.edu>
 
-On Wed, Jun 18, 2025 at 02:26:44PM +0800, Shengjiu Wang wrote:
-> Add call rproc_coredump_set_elf_info() to initialize the elf info for
-> coredump, otherwise coredump will report an error "ELF class is not set".
+Hi Alan,
+
+On Mon, Jun 30, 2025 at 10:16:30AM -0400, Alan Stern wrote:
+> On Mon, Jun 30, 2025 at 04:18:51PM +0800, Xu Yang wrote:
+> > > Also, the material that this routine replaces in the uvc and stk1160 
+> > > drivers do not call flush_kernel_vmap_range().  Why did you add that 
+> > > here?  Was this omission a bug in those drivers?
+> > 
+> > According to dma-api.rst:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/tree/Documentation/core-api/dma-api.rst?h=linux-6.15.y#n664
+> > 
+> > "Once a non-contiguous allocation is mapped using this function, the
+> > flush_kernel_vmap_range() and invalidate_kernel_vmap_range() APIs must
+> > be used to manage the coherency between the kernel mapping, the device
+> > and user space mappings (if any)."
+> > 
+> > Possibly the uvc and stk1160 missed calling it, but since they won't be
+> > the only user of the USB core, so we'd better call these APIs.
 > 
-> Remove the DSP IRAM and DRAM segment in coredump list, because after
-> stop, DSP power is disabled, the IRAM and DRAM can't be accessed.
+> Documentation/core-api/cachetbl.rst says:
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  drivers/remoteproc/imx_dsp_rproc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>   ``void flush_kernel_vmap_range(void *vaddr, int size)``
 > 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index 9b9cddb224b0..9e7efb77b6e5 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -738,9 +738,7 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
->  		mem = rproc_mem_entry_init(dev, (void __force *)cpu_addr, (dma_addr_t)att->sa,
->  					   att->size, da, NULL, NULL, "dsp_mem");
->  
-> -		if (mem)
-> -			rproc_coredump_add_segment(rproc, da, att->size);
-> -		else
-> +		if (!mem)
-
-Flag rproc->recovery_disabled is never set to true, meaning that since this
-driver was introduced, some kind of recovery was available.
-
-I worry that your work will introduce regression for other users.  Daniel and
-Iuliana, once again have to ask you to look at this patchset.
-
-Thanks,
-Mathieu
-
->  			return -ENOMEM;
->  
->  		rproc_add_carveout(rproc, mem);
-> @@ -1203,6 +1201,8 @@ static int imx_dsp_rproc_probe(struct platform_device *pdev)
->  		goto err_detach_domains;
->  	}
->  
-> +	rproc_coredump_set_elf_info(rproc, ELFCLASS32, EM_XTENSA);
-> +
->  	pm_runtime_enable(dev);
->  
->  	return 0;
-> -- 
-> 2.34.1
+>        flushes the kernel cache for a given virtual address range in
+>        the vmap area.  This is to make sure that any data the kernel
+>        modified in the vmap range is made visible to the physical
+>        page.  The design is to make this area safe to perform I/O on.
+>        Note that this API does *not* also flush the offset map alias
+>        of the area.
 > 
+>   ``void invalidate_kernel_vmap_range(void *vaddr, int size) invalidates``
+> 
+>        the cache for a given virtual address range in the vmap area
+>        which prevents the processor from making the cache stale by
+>        speculatively reading data while the I/O was occurring to the
+>        physical pages.  This is only necessary for data reads into the
+>        vmap area.
+> 
+> So invalidate_kernel_vmap_range() is not needed for data writes, that 
+> is, for OUT transfers.  And ironically, flush_kernel_vmap_range() _is_ 
+> needed (but only for OUT transfers).
+
+flush_kernel_vmap_range() for OUT transfers and
+invalidate_kernel_vmap_range() for IN transfers make sense to me.
+
+> On the other hand, Christoph may think these call should be included 
+> regardless.  Let's see what he recommends.  Christoph?
+> 
+> (Actually, I would expect dma_sync_sgtable_for_cpu() and 
+> dma_sync_sgtable_for_device() to handle all of this for us 
+> automatically, but never mind...)
+
+-- 
+Regards,
+
+Laurent Pinchart
