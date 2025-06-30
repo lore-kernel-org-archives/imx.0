@@ -1,132 +1,153 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F98A2036EC
-	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 10:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A21245022
+	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 11:34:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751280405; cv=none; b=JyAnJSkPn8lWwJZeX/Qj9RgS1UMwFnChTEf4i/hNQLsYPR2Aypx3L7VmX7W+VTnQDb9tHMqkH0kToojAmTkkCrMUMwjRs4mY5/oinsBVwM4x71rPy57RCMV2oUiWL0ms6lVPlenP5tNOHec9E3ln3Dhd8K1E5eyZYZduiBfpc2c=
+	t=1751283293; cv=none; b=NJiE6OxQUi49rfplt0uUWtx/aihZRc2HD/GK9F01gH0cWS2xfup8s6+SJurEfHebIRMiPbuYasGHSnEgSzHNcLlNRjEXx0O2lgzFccrV7TjiEVQxNMEXVSXx/RfVnepkRj2FwrJj4qOhjzJ3v3r+WyNbaIu+DhjBwdXpAJ49DHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751280405; c=relaxed/simple;
-	bh=gvyprsey8lBq/cwWETIidXRcGflIGW0KiZP0ucqQnYU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aOzXPTWQRCN26fPsVcXhJ6rDkW2VglfzsDjOTbovIrLYiGHTuLIB9fiYW9+0fQs7eOgdC+R9UaNhfd3wskTGt+ye39hvmMZhhq8pUDIgRXV83kw4Tt++4G7ytm9KaxNP7/NmIL1KLdxKrrRVX7CH1v8YYXo7MZ2fSDPWkodQqic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aniWXFPI; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1751283293; c=relaxed/simple;
+	bh=iw/9MNGT+/hEj/TbjYC3Nc/+P3EMi/fr0CrtpPGl+MA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eLFvhJi7txdGadCneGhm/W8BHiUddrLcfB9+jepn8qwYT0Vc+7HVhHFzMyrYZYmR7E+MFA0NZMqVy/m8JjRXbBiXUsj2IEdKHqi8EY6feim4cbTmdmVp9hVYE3tfW0DpH/3ABflPszEWS/cd+2FVhzb7jNNgfls94bg2G0yYs4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=AQKIf/Ud; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aniWXFPI"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3ab112dea41so910549f8f.1
-        for <imx@lists.linux.dev>; Mon, 30 Jun 2025 03:46:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751280401; x=1751885201; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HFNukEVeOuH7fRtCazTP0zdNBYQLRBbJSaq5WQ9/jSE=;
-        b=aniWXFPIyJzvej1J9sGSkIMo9SlJ9nJNUTfbTFveZwDcA3775mb79qNlW4dOybTCsu
-         qhuk1/G2C/XhR94qnWE/uChdPl52BatbnI26W+QUGZ/WpzpldH3m4G4GYsQ8U0rX+382
-         Q17u2FgjdIO5PdJpPaZeUHUehCI90pyXFlgPavHNt+G+dFP9haoWSq+K4zSAmYz+3pTr
-         Z523q65PF2Go/kMlE64SScCszUioKoUSJyuN3Rqco+yKtKT4CDnXhsWYpE2K9nygVeVO
-         21h6LUfV169oFp5Tc/8sD3LrJfRem/1E6OQ5B3DH/SaFyRdh7BkiiORgUeJ8XMiKaoXv
-         dV2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751280401; x=1751885201;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HFNukEVeOuH7fRtCazTP0zdNBYQLRBbJSaq5WQ9/jSE=;
-        b=K5twMewZ4chE3RbYzqba9fYw0Oo5NohBDYfBSMavd6O3J0VvrZYNlh/1BsQfckL0Ug
-         ztuvmfBuEu6ATY98IXreiOSKXg82iidm58ps0OsH2mjA9nF18bYkqbvnakKkp080RpVL
-         bXURmKrhFEsoPfOO96R81etQTQh6uE7r+7oRB+3arO7+xu2c8wkRBkr3bPR7S3zMapCf
-         uo7NtcJQ0ObRAnvgqqotQJ4JSgET70CPJ/9g5FamISoRyeJjPp7Ekd02oPuaSm/pGLPt
-         CQO/KbvJfX734a6Pa+JsjUeRBQBFHtRV8UXvlOuqiYboSsL+56do9nzhYImI721/S95h
-         gm4g==
-X-Forwarded-Encrypted: i=1; AJvYcCWodPbLxHAbqribxhbrBdf8oOY6Hdu5SjCaR3C/8KKpopWMIKMVPlcbrlK3dW9d3QvSUeI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxwCCKsG55okqLk0DGCJ9l6s4QV1j26p16fhROj/2Z/MDhIvKBo
-	8whiBoYrFlOo96Rz4BLUJlED8dp+48mFC7H/Mi/6PoxFAsFUjxU/KCWHprsLXARQ5Es=
-X-Gm-Gg: ASbGncuWUwFCoNPmOAxtZxYYBwDWs4irD1dYgg/A0cCW9fV68sL2+pMGQOov+6p/6/G
-	L4bJbZWbvR9lki56vksj1ifsFrhj5SgqrkpLLn9xkhI4zri1HOsEhO+qimW+BXAM0UYv2LkZ3WH
-	T4UqzuGYIFdGvN+XwwRdZQRG/KGq9Wnrj4gr07PneGckBeZcvwEACiqCzKj6iUTY0BYm+cYIA+b
-	hjbcCTqnECa0yjl2ZT4z1pR9HT/ys3/L68lCSEuDnftuIuRZdZKyARJl4uGOa+YjT7K7wi4Dgjk
-	OT1OEJuC7Srbi4AeCzHxvqE/dLuD8eGpr9y+bmEFXKtx9oEp98xn+Mhvvyz76BCGRrU=
-X-Google-Smtp-Source: AGHT+IELSI+nHvc6/8x9c+zD3eFzVE2pjiOsqeuYSJZ1xJs78DtrT3WanbqFwCoHNk3vMxHy8BC9hg==
-X-Received: by 2002:a05:6000:2013:b0:3a4:f7dc:8a62 with SMTP id ffacd0b85a97d-3a8f2f34f7cmr10696844f8f.0.1751280401373;
-        Mon, 30 Jun 2025 03:46:41 -0700 (PDT)
-Received: from [192.168.1.3] ([37.18.136.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453814ae64fsm106803355e9.1.2025.06.30.03.46.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Jun 2025 03:46:41 -0700 (PDT)
-Message-ID: <f4616741-9763-4221-b385-74c6d332b092@linaro.org>
-Date: Mon, 30 Jun 2025 11:46:40 +0100
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="AQKIf/Ud"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8878A10380104;
+	Mon, 30 Jun 2025 13:34:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1751283283; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=obn1fFptpDWsfOTGxxja0aYNB+v0Pa/lgexMoMKfewU=;
+	b=AQKIf/Udw+b5eHV6+NEZhbR5iX7W6bnm9XB4i+kaxnIFF7ccKGLFWIWC5uMO3mJ8qit8Ip
+	syY2HMQgXz/9DhT8zh6n3gqlEnCwMxdalNKZL19Gt5E11nFXihxyA9tVQ1ln9KP7QE6Aid
+	swuQKBUviYdIb5tD18Ii2WK8aE1RDLUjJz6jKzA4KZNNfcKsqkRf39KQKht9qDteCaiYkk
+	1lMb68+r+Yd8p9pXy44vqdcBKerwNy6x7dyMARVmvWFTWu921/6iGCr9nFM/LXTunUVRKp
+	jF18ykoSo/sMQUVo7s8rX8Azv5fFl096GpeWJulsTb5gJ1QmdssrG9NCTqk8vw==
+Date: Mon, 30 Jun 2025 13:34:36 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, =?UTF-8?B?xYF1a2Fz?=
+ =?UTF-8?B?eg==?= Majewski <lukasz.majewski@mailbox.org>
+Subject: Re: [net-next v13 06/11] net: mtip: Add mtip_switch_{rx|tx}
+ functions to the L2 switch driver
+Message-ID: <20250630133436.71238a65@wsk>
+In-Reply-To: <0de412ee-c9ce-463b-92ef-58a33fd132d1@redhat.com>
+References: <20250622093756.2895000-1-lukma@denx.de>
+	<20250622093756.2895000-7-lukma@denx.de>
+	<0de412ee-c9ce-463b-92ef-58a33fd132d1@redhat.com>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/6] spi: spi-fsl-dspi: Report FIFO overflows as errors
-To: Mark Brown <broonie@kernel.org>, Frank Li <Frank.li@nxp.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
- Larisa Grigore <larisa.grigore@nxp.com>, Christoph Hellwig <hch@lst.de>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20250627-james-nxp-spi-dma-v4-0-178dba20c120@linaro.org>
- <20250627-james-nxp-spi-dma-v4-6-178dba20c120@linaro.org>
- <aF73e/ggeycsYiaD@lizhi-Precision-Tower-5810>
- <22d69113-fec0-4405-872d-af76bd038c09@sirena.org.uk>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <22d69113-fec0-4405-872d-af76bd038c09@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/ft7tAwYwUt/T1YMHVHAewjX";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
+
+--Sig_/ft7tAwYwUt/T1YMHVHAewjX
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+Hi Paolo,
+
+> >  static void mtip_switch_tx(struct net_device *dev)
+> >  {
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	unsigned short status;
+> > +	struct sk_buff *skb;
+> > +	unsigned long flags;
+> > +	struct cbd_t *bdp;
+> > +
+> > +	spin_lock_irqsave(&fep->hw_lock, flags); =20
+>=20
+> This is called from napi (bh) context, and every other caller
+> is/should be BH, too. You should use
+>=20
+> 	spin_lock_bh()
+
+I've double check the spin locking in the driver - I've also consult
+the fec_main.c.
+
+It looks like the mtip_switch_rx() and fec_enet_rx() are not using
+explicit locks and rely on NAPI locking.
+
+On the other hand - the fec_enet_tx (and corresponding MTIP variant)
+use spin_lock(), not the _bh() variant.
+
+>=20
+> Also please test your patches with CONFIG_LOCKDEP and
+> CONFIG_DEBUG_SPINLOCK enabled, thet will help finding this king of
+> issues.
+
+This was enabled by default. By changing all locks to _bh() there were
+deadlocks observed.
+
+On the MTIP driver (due to this HW IP block) there are some locks which
+must disable interrupts:
+
+1. One is when mtip_adjust_link() is called - as it is the same for
+both switch ports. Moreover, at some use cases it is required that the
+switch IP block is reset.
+
+2. The mtip_atable_dynamicms_learn_migration() - it changes the content
+of dynamic switching table. IRQ from switch shall not be possible at
+this time as it can be called from mtip_switch_rx() (from NAPI) and
+from timer/kthread (at specified period).
 
 
+To sum up:
 
-On 27/06/2025 10:41 pm, Mark Brown wrote:
-> On Fri, Jun 27, 2025 at 03:56:43PM -0400, Frank Li wrote:
->> On Fri, Jun 27, 2025 at 11:21:42AM +0100, James Clark wrote:
-> 
->>> In target mode, the host sending more data than can be consumed would be
->>> a common problem for any message exceeding the FIFO or DMA buffer size.
->>> Cancel the whole message as soon as this condition is hit as the message
->>> will be corrupted.
-> 
->>> Only do this for target mode in a DMA transfer, it's not likely these
->>> flags will be set in host mode
-> 
->> "not likely", I think SPI controller should stop CLK if FIFO empty and full.
->> It should be "never" happen.
-> 
->> Only check FIFO error flags at target mode because it never happen at host mode.
-> 
->> You can remove below whole paragram.
-> 
-> I agree it *should* never happen in host mode but it can be good
-> practice to look in case something gets messed up.  That said extra
-> device accesses in the hot path are probably going to be noticable so
-> likely not worth it, but in the dspi_poll() case:
-> 
+I'm going to prepare the v14 with changes around the timer / kthread
+running mtip_atable_dynamicms_learn_migration() and use time stamps
+extracted from jiffies.
 
-Yeah the point was to be defensive. Even though it shouldn't happen I 
-don't see an issue with checking error flags.
+Locks will be optimized and following paradigm used with fec_main.c
+driver.
 
-We could add a condition to only do it in target mode, but it doesn't 
-make the code more readable, and it wouldn't be any faster than just 
-checking the flags. So I'm not sure what problem we're trying to solve 
-by removing it.
+>=20
+> /P
 
->> @@ -1067,6 +1080,9 @@ static void dspi_poll(struct fsl_dspi *dspi)
->>                          regmap_read(dspi->regmap, SPI_SR, &spi_sr);
->>                          regmap_write(dspi->regmap, SPI_SR, spi_sr);
->>
->> +                       dspi->cur_msg->status = dspi_fifo_error(dspi, spi_sr);
->> +                       if (dspi->cur_msg->status)
->> +                               return;
-> 
-> we're reading the register anyway so the overhead is much lower.
 
-In both poll and interrupt mode we're already reading it. Only DMA mode 
-didn't have a read and I didn't add a check for error flags there anyway.
+Best regards,
 
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/ft7tAwYwUt/T1YMHVHAewjX
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhidkwACgkQAR8vZIA0
+zr1gIwgA5RFaOOf/zToxgLklld0AgiA7amktt6Vm7D+yrAK4VbOKEnAMTahAU7iE
+Z/aSDSy3TmQ6p+k7SOMCK/W7UyAGi4nIffvLFo5N4PGTYmBqVhq+qlpjSm7bnFAU
+mUKTz6s/N3KoneKHrKRf6ogC4PubkGH4RqQ4gVbr0YZgwd4XsA6uEFVoPYeUQ25U
+EVRkOV9W2ouDS/MpoHsQoFN35ottbyK0i2kVUqywK/QGPuQtLXOEfswnnqQ6B692
+nRkf9dcbOPJqCiabDst66cODEgmDJ5brs7f6SZ7nPIB1ASnGmjDaVgIzuT9CuA4G
+LfMIlP/XANgIKp/dLSJtVT7sdEdmDA==
+=eCtd
+-----END PGP SIGNATURE-----
+
+--Sig_/ft7tAwYwUt/T1YMHVHAewjX--
