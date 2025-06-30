@@ -1,201 +1,141 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A353D23ABB4
-	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 12:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1711238151
+	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 12:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751285856; cv=none; b=DFWYLGE1tcjeAETF4nB31JRHMErkg607vhx0ZAqXlg9dK0mxSntoCQLWLoaw20Uu+dgqfxgMrbMMiIrDWZ44P4JZuI7Oos722caVZUTOHJjKavhCt3qs/vPjKoVMEs8skzaVOpFVpLpp1RjUr3OfDZsPzYiy/Ptus7HbAOx5Dng=
+	t=1751286203; cv=none; b=TWI110plcqTKqkni5nmoSzriFX0vnrnjFruCa4X1CZYOjVIPcgCJoNTvd3s1PhfOWnuy8NmefjnW5Bjok0x2ISpE6U/lV/fm23PS5CkbhHxNnCLR9APxFlI36oQRMHLqejs7kCFf1CnrOgGa22BrmaztYCjM8HOm6Wxy0aE91pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751285856; c=relaxed/simple;
-	bh=5dhNh3sdSUsVirKXK90ehWyFI9ZhRpVh6xrGa+wtpeI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c/ySQTPwi6/sHgF0IU2iWHG9ftyomv5IzQFkVXL9fpwIdgihBST07e28sKphOnwGfuq7kVQ+XuUllonO2hGaKfOkwfx8sR5CRutorsW+uiq4Wr0IHS9FhB2aPIdoO3/cGxLlo3hOjE9NEphZzHi+RhwKqPl+mU+doP99HrKtf5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uWDRr-0004km-3r; Mon, 30 Jun 2025 14:17:23 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uWDRq-0066DT-2U;
-	Mon, 30 Jun 2025 14:17:22 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1uWDRq-009ggO-1c;
-	Mon, 30 Jun 2025 14:17:22 +0200
-Date: Mon, 30 Jun 2025 14:17:22 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Frieder Schrempf <frieder.schrempf@kontron.de>
-Cc: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [EXT] Re: [PATCH v18 3/7] firmware: imx: add driver for NXP
- EdgeLock Enclave
-Message-ID: <20250630121722.wviidlggt7hguyt7@pengutronix.de>
-References: <20250619-imx-se-if-v18-0-c98391ba446d@nxp.com>
- <20250619-imx-se-if-v18-3-c98391ba446d@nxp.com>
- <20250625105546.pxuatcnfpe7mssgs@pengutronix.de>
- <AM9PR04MB8604611B8D91B5526C9704E69545A@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20250627084653.6vgwnm3llf3zknlp@pengutronix.de>
- <b02055bb-0995-4fd8-99f3-4ca5146eedd4@kontron.de>
+	s=arc-20240116; t=1751286203; c=relaxed/simple;
+	bh=JLHrBH6b3pfIzRPLJnJLspPSOA6Z6HMCAWPpwMR3Xv4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mKCYNiFi7je6CLvvaCdcHeOrONbLS/WLszXx26mXgKuQIssYgkK44Xl4KPF3hzgT9xus+ClX19T8qdWoP86vVuLMeeNXXAy3I1S4Bs7BGEbsiaI3hQif+xugdxpntnpqBqP+MmG6hX4QJzvdAuOulFX6+0Uwea0O8XPovi/R3I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f13yq/ag; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f13yq/ag"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a52874d593so1744141f8f.0
+        for <imx@lists.linux.dev>; Mon, 30 Jun 2025 05:23:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1751286200; x=1751891000; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+LtAbVIirZlxLY7Yp0KWHNw1TQGQMGY23zMCzJj4uA4=;
+        b=f13yq/agIj9xDDDSSY3nb5mUe8kOtmnmQskHM9JdiT/IiDFKzTq97uU90jTrbo2Jmq
+         ZqoXbH1GpHPFdfFl4kO0A7G8mrdYoxo20Nj2QzDARetMrlS2LzVCnKYIHd/EVDIjs7oH
+         albtwSHbJfSNFdPUC+ifNw83RIGbdD5AYv38iz/X1Zu7krVYSeh/xEe2OEuxGneBS+ja
+         bM28qKgNlrQcdmiGzowsGsQGhnaSMVqy76g1HoAvjb5a8Zmk/Vn+cHn8aHf9rVDXg7ko
+         xO7EZHH/CwscGLmtsK2rj9U4M+dDEuAbJuk9rq1Cat6/lg2qP9K22VsX2e5UiEIpiZEu
+         GrZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751286200; x=1751891000;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+LtAbVIirZlxLY7Yp0KWHNw1TQGQMGY23zMCzJj4uA4=;
+        b=Q+VULl71l7iO89FHuq5ylCoEke2bESxWigNI+IftMjPQJc3a/8ojDWH5JGF/sNZuq1
+         4pnkBjzx0hMQFuP/h0w86PysPxLC8QHkGF/sO6LDWzOGuLKyLHjD+geaI1Jb/QqPHhLQ
+         AlX1sEfTOkvqzrN0x/xgHaFaWFhr6MObRzEbfHgd6Lh8k0La2PySQ4M/OSgvE3Z1dmNe
+         54HdSD/ApXOozWvRTa6g3YaKYCM6fnnC82VQ5Ufg8fsv1lHsw5bN6PRdQuAYybSfwh3F
+         HZvZ/ZOqYI6xWYTlu04ikUsN/LXBPXVh16jfqky35F5GO7s9lhc0xgOlNDnP2c23kikh
+         eIKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWD2qvhMkvXEJ3C20iba40JfY6MKzSynyM683uK/qNWHORESXGif6/Q47rd1bRzBUBEkqM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyEw5QTmyYmux1ARda8PvLuRprVkAqhf2cyDymNLH/rghlT1tqd
+	59Qnkm47KK6qF0ombcAiUYwzTrM7w/G2+O7YO8SwyUHRxeG4pI8ObGKy/Vvp/3W+HK8=
+X-Gm-Gg: ASbGncudLIo3+pwTwzbRo5IwXJctb5dYRMBPpXAgqDu6chBPBBAKVKg7gLUsIUNiUPW
+	/2EZkThH/KenaOEPq15opxabXvBOp6xp/qaGK8cWBRnoJ02Q/XOsd1GnboFWC0Lfitartm6NHF8
+	wqtc4of5wZIbQ4CqjeNt479N8ouHY8euaWz3JyTJ41qzxi67jtOC2TLp7Lv3A9ICwnY8IzJBgQt
+	Ik3vJ7vrZRX5NBL8ojPfhXX2oe234eUxO3Yei0dqsZbpRgJar5QRzm7HvOnw97xogpIurz+GtIl
+	HN9OS7otgmJNaEXytLuzVgUovET8VDEijmtTug+5y9mER/mJohcSxD7c/U9I56IwgCQ=
+X-Google-Smtp-Source: AGHT+IHT1f28riQVw158gQHh9SJOUG5RR8A3OLV9NLCig3hrrsfw6U/Oe87FAXN3XjWp4DKbgVYDNQ==
+X-Received: by 2002:a5d:5f4b:0:b0:3a4:eb7a:2cda with SMTP id ffacd0b85a97d-3a8fee64c9bmr10466507f8f.30.1751286199973;
+        Mon, 30 Jun 2025 05:23:19 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a88c7fa2a7sm10205003f8f.21.2025.06.30.05.23.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Jun 2025 05:23:19 -0700 (PDT)
+Message-ID: <9f707fd9-a9f0-45d3-aaec-e20bad4c4f76@linaro.org>
+Date: Mon, 30 Jun 2025 13:23:18 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b02055bb-0995-4fd8-99f3-4ca5146eedd4@kontron.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] spi: spi-fsl-dspi: Target mode improvements
+To: Mark Brown <broonie@kernel.org>, Vladimir Oltean <olteanv@gmail.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, linux-spi@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Larisa Grigore <larisa.grigore@nxp.com>
+References: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
+ <175128365072.28911.16806664823646528710.b4-ty@kernel.org>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <175128365072.28911.16806664823646528710.b4-ty@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Frieder,
 
-On 25-06-30, Frieder Schrempf wrote:
-> Hi Marco,
+
+On 30/06/2025 12:40 pm, Mark Brown wrote:
+> On Mon, 09 Jun 2025 16:32:37 +0100, James Clark wrote:
+>> Improve usability of target mode by reporting FIFO errors and increasing
+>> the buffer size when DMA is used. While we're touching DMA stuff also
+>> switch to non-coherent memory, although this is unrelated to target
+>> mode.
+>>
+>> The first commit is marked as a fix because it can fix intermittent
+>> issues with existing transfers, rather than the later fixes which
+>> improve larger than FIFO target mode transfers which would have never
+>> worked.
+>>
+>> [...]
 > 
-> Am 27.06.25 um 10:46 schrieb Marco Felsch:
-> > Hi,
-> > 
-> > your e-mail configuration mixed my e-mail with your answer, which makes
-> > it hard to read. Can you please check the quoting next time :)
-> > 
-> > On 25-06-27, Pankaj Gupta wrote:
-> >>>> Add driver for enabling MU based communication interface to
-> >> secure-enclave.
-> >>>>
-> >>>> NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE), are 
-> >>>> embedded in the SoC to support the features like HSM, SHE & V2X, using 
-> >>>> message based communication interface.
-> >>>>
-> >>>> The secure enclave FW communicates with Linux over single or multiple 
-> >>>> dedicated messaging unit(MU) based interface(s).
-> >>>> Exists on i.MX SoC(s) like i.MX8ULP, i.MX93, i.MX95 etc.
-> >>
-> >>> You write single or multiple MUs are possible. I'm aware that the i.MX93
-> >>> has two MUs one for the secure and one for the non-secure world. But I'm
-> >>> really concerned about the fact that both MUs can't be used at the same time
-> >>> from both world:
-> >>
-> >> Yes, you are correct.
-> >>
-> >> Fix is still work in progress.
-> > 
-> > So after ~6 months no fix is available :(
-> > 
-> >>> Also how is the secure and non-secure world talking to the ELE if there is
-> >>> only one MU as you have written?
-> >>
-> >> Till the fix is WIP, either Linux or OPTEE can use the ELE, at one point in
-> >> time.
-> > 
-> > That has nothing to do with the fix. The fix is for platforms/SoCs which
-> > do have 2-MUs, but you also have written that there are platforms with
-> > only 1-MU.
-> > 
-> > This MU can't be shared between secure and non-secure world.
-> > 
-> >>> IMHO it makes much more sense to put the complete ELE communication into
-> >>> (OP-)TEE and let the secure OS taking care of it. All non-secure world
-> >>> requests are passed via (OP-)TEE to the ELE. This involves:
-> >>> - eFuse access (done via OP-TEE i.MX specific PTA)
-> >>> - ELE 23h59m ping (kernel SMC WDG driver, requires OP-TEE watchdog driver)
-> >>> - HW-RNG (kernel OP-TEE HWRNG driver + OP-TEE HWRNG PTA)
-> >>
-> >> There is a dedicated MU "trusted-MU" for OPTEE-OS. The idea to converge to a
-> > 
-> > Yes for systems with 2-MUs there is a "trusted-MU" and a
-> > "non-trusted-MU". As of now, there is no fix available for using both
-> > MUs at the same time. Furhtermore there are platforms/SoCs with only
-> > 1-MU, as you have written in your commit message. This 1-MU system can
-> > have the MU either trusted or non-trusted.
-> > 
-> >> single path via OPTEE-OS, is good. But it will impact the performance of the
-> >> features at Linux side.
-> > 
-> > Performance? We are talking about a ping every 23h59m (I still don't
-> > know if this is a feature or bug), eFuse write/read, and the HW-RNG
-> > which can seed the Linux PRNG.
-> > 
-> >> Since the fix is still WIP. Let's wait till then.
-> > 
-> > The fix is for the 2-MUs SoCs but not the 1-MU case.
-> > 
-> > I would like to have a system design which doesn't differ too much
-> > between SoCs which are equipped with the ELE engine.
+> Applied to
 > 
-> Do we really want to depend on OP-TEE to be available for having things
-> like OTP fuse access and HWRNG? Personally I'd like to be able to build
-> systems with OTP access and HWRNG but without OP-TEE. Requiring OP-TEE
-> only to make the ELE available to the kernel in cases where the secure
-> world isn't used for anything else seems to be unnecessarily complex.
-
-I understand your point. I don't like pulling in more FW neither but we
-need to the face the following facts:
-
- - OTP eFuse R/W access after doing the LOCK_DOWN fuse is no longer
-   possible without OP-TEE. This involves general purpose (GP) eFuses
-   too. We faced this limitation in a current project.
-
- - With new regulations like the EU CRA I think we need some sort of
-   secure-enclave anyway.
-
- - Making it optional cause more paths of potential errors e.g. by not
-   including the correct "secure.dtsi". Multiple paths also require more
-   maintain- and testing effort. IMHO I do think that one of the paths
-   get unmaintened at some point but we would need to keep it for
-   backward compatibility.
-
-   Having one implementation eliminates this since.
-
- - All above points assume that the ELE-FW and -HW is capable of talking
-   to both world, which is not the case. As we learned NXP doesn't have
-   a fix for the 2-MUs ELE yet and even more important there are 1-MU
-   ELE-IPs.
-
-I do see the (minimal) drawback of having +1 FW but I think this is more
-an integration problem.
-Speaking of FW files, for the new i.MX9* you already have plenty fo
-them: bootloader, TF-A, ele-fw, scu-fw (i.MX95). So your integation
-needs to handle multiple firmware files already.
-
-> Anyway, I see your point of having a single implementation for the ELE
-> API in the "right" place. But as far as I know other platforms like
-> STM32MP1 also implement both ways for the HWRNG, secure access via OPTEE
-> and non-secure access via kernel directly.
-
-I'm not a STM32MP1 expert but here you have this setup with the
-*-scmi.dtsi. So you have two code paths which needs to be maintained and
-tested. Also if one customer of yours want to use OP-TEE you need the
-integration anyway, so you (Kontron) needs to maintain multiple
-configuration as well. I don't see the added value.
-
-I think for STM32MP1 the *-scmi.dtsi support was added later because it
-required a lot effort to support it. This is not the case for the i.MX9*
-series.
-
-Regards,
-  Marco
-
-> Thanks
-> Frieder
+>     https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 > 
+> Thanks!
+> 
+> [1/4] spi: spi-fsl-dspi: Clear completion counter before initiating transfer
+>        commit: fa60c094c19b97e103d653f528f8d9c178b6a5f5
+> [2/4] spi: spi-fsl-dspi: Use non-coherent memory for DMA
+>        (no commit info)
+> [3/4] spi: spi-fsl-dspi: Increase DMA buffer size
+>        (no commit info)
+> [4/4] spi: spi-fsl-dspi: Report FIFO overflows as errors
+>        (no commit info)
+> 
+> All being well this means that it will be integrated into the linux-next
+> tree (usually sometime in the next 24 hours) and sent to Linus during
+> the next merge window (or sooner if it is a bug fix), however if
+> problems are discovered then the patch may be dropped or reverted.
+> 
+> You may get further e-mails resulting from automated or manual testing
+> and review of the tree, please engage with people reporting problems and
+> send followup patches addressing any issues that are reported if needed.
+> 
+> If any updates are required or you are submitting further changes they
+> should be sent as incremental updates against current git, existing
+> patches will not be replaced.
+> 
+> Please add any relevant lists and maintainers to the CCs when replying
+> to this mail.
+> 
+> Thanks,
+> Mark
+> 
+
+Hi Mark,
+
+Not sure if this is a mistake in the notification or not, but this one 
+shouldn't be applied. There is a v4 with some issues. Although the 
+notification on V4 that patch 1 was applied is OK.
+
+Thanks
+James
+
