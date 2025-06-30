@@ -1,68 +1,78 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010047.outbound.protection.outlook.com [52.101.84.47])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011016.outbound.protection.outlook.com [52.101.70.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209D721D3D2
-	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 20:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486072405E4
+	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 22:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751316106; cv=fail; b=OjqyHl4X+NsCp69akOD7nfzlFt5zZC4B/y5yad5TKW3o6lGxlPRmRv7qOR7bSLwsOpLTYab27iYKUA33h8+f4F/fk2w/93XoB5UypyAJmXL9PcPPZ2rR2zAvOO/mMMTy/zq5Ksuop7hIOx9KF2DEyc8yt5y1x+ffYM6orphTw24=
+	t=1751322510; cv=fail; b=VQ/kxY2huNdcaB5Uaxc89u+dHc9P4jk7pGP2wCK2tSc8VhypjttXzGY5LcFiAif5+bx/fj3PBJhRrAJjbx098eDsO8lrs33B3sVZZ0OJeAztJj+1AXDC2pcD+1I6RBbiKNb/t50dBjqK0o51K1rNXgCMZ587R3uGqsvv7F4k63Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751316106; c=relaxed/simple;
-	bh=iKWsPsRwD3TP7j25KqvTCbmZrn05/s/fSHeez+SktQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=P91HnPayvxI09ZhpKYwgC0zmaNk3muUrb2XmrhsXfAgiEdY0QZ3oM3NPDzBbSO+N4pu57U1P5+LjgkcnrWZ2/3mINNrMw5ryGnGoLQFTElk5G6/qG7gdlExMinAMsdcoDJ1cyQ61RU6S4O52CLMpz/J/6eavnot9+tvmENklhoA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=d7/L65fe; arc=fail smtp.client-ip=52.101.84.47
+	s=arc-20240116; t=1751322510; c=relaxed/simple;
+	bh=D2cQKYybkbT0MD11MQV15bPk9FO7aJUO14zEh8AhPAY=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=bj//g5bPEG+GPOdGWdUgchRaYU4mLJUVchEWYm310vwvIfOO7q/rxyJcdS6KyCw6OXm9hhdWsQofHMG/5B3+7q/TsUHjaJxtnrofbT4czjyYMVcoxCJhnjaMu/+22mglcKzIN5hupkaNnBgJwtcKcZw6DNBItKz3nFfoMw5O5w4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BzmVx1CA; arc=fail smtp.client-ip=52.101.70.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="d7/L65fe"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BzmVx1CA"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YC4SMM/C7kBqiHiWiSXXNmHgP5X4iGR8iqA/y0i+CvHHd1yriKaC1u1wS9AMzuB/59nq2X/dlEz/2hvGY4ujy3tTn6Bdg6UamjaeAvkwlJ/MS21TYkBBB1+nnZpOrSU+5my4f801JxXFTl2unUWcbbZD6cLhq4BVALVA72mF84XwQRxu5wRb51n6MMkgM9HFt4zeZO8r90OHoZGEb69sB5ZOn2v87go1CvKNHjXeykQ2lNwVM1qmme7jHQMqrmqT3XEs6nTiIcsoKYvWuHuea0dZz7x3Urg+Sg34U9shWJQvpJh51cdjhGTccECX79uoxb6rqh5ySgf6KX6IMw0rlg==
+ b=AfKw1CxwaUk9crt2BOis38Ltfg7XQsdCsZAs8M4GXJiU2LuYzii5BQkTOC9BDtMrKdOLA6FM62+tvdclvI+W1eNmHsHpmPTKt/EIYAAMPRhW0VyvcsUTvibP8DyqOG0hVZSuqDW7qNnDW+6hneOM4gDF6BB3lVjV9/GXdb5sKidyGT1Hvi18OYrv4QsOqQG9+CeQu325vaiVo31GViRfRtYezVXVG0LeYHJqV7v0AeHhuwJFwZgwoEKtdm+PtIIBHHaEVjVq2gPWN/i083XTzBzgdtemWtnva6n4atdQBDKn5/rNW9ty0vZf/W5s0l2G4Yg/Lu2ZSjhrZPVxhpbcow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DLd33txTZrQ4WOjc+Th0lWZgTa/OqpirMMkHQiKzDkA=;
- b=V+NXzlO8vO6KwUNvvzzUhBuwogajhD6YSov0AHDUNceOGYf7S86kxMVOTPMnK8NRkVdGppHPVYIsCyfwuP8pHxNQ7ZyO8ewR6W3AAn+Ys1TgZid/y8qbRwSK3JactzeEngKc2s4NNasmTG3yrNga9o4iWABtiBbHHuPKoisLKXHFppgQCBcQDY7gTOzmc+cUEwIdO2A6EenCD9Z4Tb6CdH/k+oDG8cF2cWIA/uPQWHHUnhtZtS4VFX4hN05qZTWkAPcSLWX9RUyCcuGdALWzhYC4DNOZQdXjhjZQNrY1bCMvxPraFzeFWs98a5ZbcrtubmdBYA8kddr3mo/cPe64eg==
+ bh=r69ApxzGa8I/WbkS3F7Nqt7l2JP7J8isaXe72LhDYxU=;
+ b=IMR1JMNwL1t2xgKnGOJA50ZaathvUyF5KPfxMX5SNzUVsTPKlQB2iW0Pdqz4fhxI6CJdVseR+RMJpPA77XjvKZ0D71gbBrrCBUW8r7jeC8/bunIXM3KIOPZpcGZMRnzLXnca/wK6A2Ylv14grC1yhhal2edyD17qab/O/QkesLttae0w+QNhmyk0TkuDAnkhPJsFAghhC7LIRMUVNZhik9I1mK50mgH1ZQL5m09tH+ja+24sn76+rghqIBTOxwxMyIfEaDTnXAEMpT1UXt+5OrlShhMbtD01R+NZyAcUOlpzzFpPQzVM/heDc39j8fH/zcz7ABAPkKx/4GCIFkN3BQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DLd33txTZrQ4WOjc+Th0lWZgTa/OqpirMMkHQiKzDkA=;
- b=d7/L65feJObMMohq0VsLiB/3OCzaMThWjg0jc5OuUO71dfOct2kagqJu+O9oK7YISIqW1TPxBLKKbW41Vk9D8bqsNOQgtDyJogpDW9qE3OtTYe7rwkPGc1PZecVHkeOXpBK6LZnZsycYW1jT7fnJMtUP8hB8/76iZMkNDZBAM6qpmmu64TfKfNJNEetZ1DWW6CWIsaNGvdZ7b0b+oXaPMS1ekvJf60MFUP52lNrEXZivXebV7so5OoZMMgJEqagMsDTlQZhwyUFqW3+JeVulbrah15tUnBNlgg/YYi3xekij0OZEi6G7LRSY9sj1oOsL7VbKFO8gBujqHq8eBmrEjQ==
+ bh=r69ApxzGa8I/WbkS3F7Nqt7l2JP7J8isaXe72LhDYxU=;
+ b=BzmVx1CAqlWvuYv4V/gOFVBC3g7FhGtPAYNdBKGrNjgkCXV9Kp7PZl+FpNEjwG6kzNMQ25Ukw3iE/i0+EvRN0k67JyfkWa8cl4VzPnFkvNuGIuHj0sxBen8J9wIafwxpwtURH/9fs1qMwDEOtQin6J4LimvY04+QkcuYll9CjucDtLFl5E8W0f0BrDFlhIxwYHhsk/013cqiLWZoxFmD1SA2qyIIvAob9Q/tsy+bH6CFIEmMJtuBu+zFyjCxFWtXCZ0anMpmjReDB0H1lviq9RLIYiPqAJe+PAWL+GOUkZ7WMuO23kVLgLQzAsdGByV5mEFX9l1fZ0HcJV8NfsCCgQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by GV1PR04MB10077.eurprd04.prod.outlook.com (2603:10a6:150:1a5::7) with
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PR3PR04MB7451.eurprd04.prod.outlook.com (2603:10a6:102:93::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.32; Mon, 30 Jun
- 2025 20:41:39 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%7]) with mapi id 15.20.8880.030; Mon, 30 Jun 2025
- 20:41:38 +0000
-Date: Mon, 30 Jun 2025 23:41:35 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: James Clark <james.clark@linaro.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Frank Li <Frank.li@nxp.com>, Christoph Hellwig <hch@lst.de>,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/6] spi: spi-fsl-dspi: Store status directly in
- cur_msg->status
-Message-ID: <20250630204135.gzffv33j3pk3bgx6@skbuf>
-References: <20250627-james-nxp-spi-dma-v4-0-178dba20c120@linaro.org>
- <20250627-james-nxp-spi-dma-v4-2-178dba20c120@linaro.org>
- <20250627213041.vp6yfcgf4xysdklf@skbuf>
- <423f101a-0826-4b7c-ace7-f5e7f4790c4c@linaro.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <423f101a-0826-4b7c-ace7-f5e7f4790c4c@linaro.org>
-X-ClientProxiedBy: VI1PR06CA0193.eurprd06.prod.outlook.com
- (2603:10a6:802:2c::14) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.29; Mon, 30 Jun
+ 2025 22:28:23 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8880.029; Mon, 30 Jun 2025
+ 22:28:23 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 0/5] media: imx8qxp: add parallel camera support
+Date: Mon, 30 Jun 2025 18:28:16 -0400
+Message-Id: <20250630-imx8qxp_pcam-v1-0-eccd38d99201@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIAPY2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDMyMz3czcCovCioL4guTEXN0UC1NDI2MLYxPjZGMloJaCotS0zAqwcdG
+ xtbUAPqdLuV4AAAA=
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rui Miguel Silva <rmfrfs@gmail.com>, 
+ Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
+ Alice Yuan <alice.yuan@nxp.com>, Robert Chiras <robert.chiras@nxp.com>, 
+ Zhipeng Wang <zhipeng.wang_1@nxp.com>
+X-Mailer: b4 0.13-dev-e586c
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1751322499; l=1862;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=D2cQKYybkbT0MD11MQV15bPk9FO7aJUO14zEh8AhPAY=;
+ b=kwYX+LtrnHOm6Il4XGUVkxoqJ4sECjbGja+A983Qv7VrRPRTYdnRhXK9svf1oNW0F1/Hc92It
+ yYpaIdiyt2zBVOrZrl2+kGj91O++3EgNzDQg6BFTjled7Yb+mXat7ph
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: AM8P251CA0025.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21b::30) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,192 +80,144 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|GV1PR04MB10077:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3463799-9a3f-40c3-ad42-08ddb81682f3
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PR3PR04MB7451:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3bd85901-6ec7-4402-d4ca-08ddb8256c7c
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|10070799003|366016|1800799024|7053199007;
+ BCL:0;ARA:13230040|1800799024|7416014|366016|19092799006|52116014|376014|921020|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?rBLtVG9D7sUgqWn+EEKwq6L5bXp9DQnrPaBharYwBE+F9/dzV1pmtMs42cqQ?=
- =?us-ascii?Q?ZLzhtDWzi5AvW8HLfgrnCJapur8Loct3fKpRZbL9zInSiiQqg9oPi8zdfHwB?=
- =?us-ascii?Q?jNFNJB6jBbZZ7+O0fqiMUZb+1p0GpJHydVtuDSHLu0bRsqwhhNeEwcUxjLkJ?=
- =?us-ascii?Q?fOYR9MCih+S9X90GmcOcGi5hfXA5fqk7pdrplTHRw02GFWv53oVUARj0HiKr?=
- =?us-ascii?Q?KDi0IWjlS2qsfmyzqoiwLElgzSBKDwArA3wtVfmTBdQ78XrDN2yjtaF0ejzc?=
- =?us-ascii?Q?YueTyF8MNDSxwsOJx0ZGLTS1BsSljm9Aj2R0THwQ1qHrfj87qtBaH4E8aSdm?=
- =?us-ascii?Q?ajLf/rteLD/SCrPGrlElFpBNfRJA0bL0OIAxATOLzxSjk7Q0V7zSCyPw/LcI?=
- =?us-ascii?Q?dyXF8NGo+4AiEfvm3+KRCBhReYT/2Mc+2/4JALeZ+89bKcfqncdEqvUfsuiJ?=
- =?us-ascii?Q?STrOnMRgYzDM6Z0ngKtutyERNUHLQEelu02VbDjGEA7DxmjsSH/c6uzaJXCG?=
- =?us-ascii?Q?rT4jOvW5W0g3Mls0OP1CCTmdQUlzl1cTdwpJo5Dufqc/byalPI2g2O+s0cPI?=
- =?us-ascii?Q?EdRoH2XKFeNmSd27yWHfKXvdrE5zf2gGp4IwdZXCNLjhjn8YAdca1WzieRjK?=
- =?us-ascii?Q?PUzRkLxTZyEX071gf8InAaodf6AM4QSvMfB2cVm5P1cZ6kVEqMFd58ymSK0k?=
- =?us-ascii?Q?lxrbHV9IVGGp39PYkCtcyPUhfObjeFTWhBwRUBZwuBrCiP9ZklFghtg23tF5?=
- =?us-ascii?Q?OJL+tbTAjxlzgBNoYmXq8iiXHV9Z+E/suhDvuwsKrqN9kb+AnVEpH2UTl1lj?=
- =?us-ascii?Q?sp7i8eUkZCxdzKAFZ/2hLBkVkT51tCD1WjYrIWyfDn7vkXiZgPW+ehdgKhv/?=
- =?us-ascii?Q?12WpdIfU1spH3K87BnN5pUR33sy5XdT00uSdf39X0CxBLWirYw1JTbSL6AMt?=
- =?us-ascii?Q?mCuQghbdH2vxWCDPk/hh0kZd/QNmyZu3JXs4mhPQLCKZYFN15b7CksiyE4DV?=
- =?us-ascii?Q?5FBzgkMTi9l+9mElNmujjl+uDeYKmHNDYGAAI1pP/Rs95kv0wzrcM1regAo6?=
- =?us-ascii?Q?rAjSj37N5nu42IRzvPinAQOZ4emnx6HV0HJk7xuhm5MWIS4etabBiRL0aHVD?=
- =?us-ascii?Q?/xTvXfz1X/cGD/IfgapijQgM4c1nl3iOKxslCCy1Vlk97zgCRmIPEEfJmTfz?=
- =?us-ascii?Q?xIyPTLw5a1rZOFwLgjPHNyOKiWmwG5So2N8keGQ5jiExxI/nODm6XiPulOE+?=
- =?us-ascii?Q?zg7wzpcYxqqR1QRhAzC8laSOGsWrtwTCWdt0KJ6PT9yqUWj2oBPpDQWbNZs9?=
- =?us-ascii?Q?T+McqAjo1KLkWOEg8uDtuqMzDFIesfrKc5l3pX/kW9TJMBKevg4rh+D024Jo?=
- =?us-ascii?Q?3cR4CvX9y64lAY3GqZUUmvcQL3Zr2PYo6Tm7YO2kpJEddzURfw=3D=3D?=
+ =?utf-8?B?bXBDeGYrWC9uNHl6TitnQWNPeDNUYnpLNjBVelp2MzNXR2VTY09zeFVOUjZx?=
+ =?utf-8?B?eG5YeXZRNmdmU1ovQU83ZkFwU0dDOHFycHU1N0Q5cytiamdiYkVBbjZYV1hX?=
+ =?utf-8?B?TURQOWd5WnJCV09oNGtVVTFYbWU3enBCaDJUQUY0TDNUVmh3bm83Qk1zc3ls?=
+ =?utf-8?B?Vkg1SU5tR1B5cGRtOVFrVG9JRFZnV3NMbHN2anFFN2JGZERObkhNaHRGbmR2?=
+ =?utf-8?B?QUFDbWlDWGRyb2IyeDZweVd1UnlxSDlBOGVvemIxd3hkTkJFNUhMV2tkY1lz?=
+ =?utf-8?B?d1JlL2VRUWlFMENVenV6NlZBUVV6dzlRMVVxU0JWbFEySENJdmVDdEE0WjBY?=
+ =?utf-8?B?bVdyMGsveE5adnlwVStOMHc2M2xrV2N0K0ZheitNQUdCTS9BTkhMd0tBWko4?=
+ =?utf-8?B?bmRPODRrVGJmc1ZlQlR0SzVheTFoYysxQzZzY3NLY29aWk9GL2dNZGpKaFM1?=
+ =?utf-8?B?aGt5WEttL3o1ZE1wVGN1cHRrbUNMK04zUjUzbWlzd1VZSnNtd1R1Mm1rNzhh?=
+ =?utf-8?B?YkhYMjhhOG5obEZUaUlSY1dZanhJam5rQzFtcG5RdDY5cTRJUDRzY0Z0RlE4?=
+ =?utf-8?B?a29pMFVwdHRmdTZ1QXZlakFSN2cxOTkrOEdEQmZTTU5xN05zdEU2SS94UXQ4?=
+ =?utf-8?B?K2tBR28zK2xJdEpxVU1BVHJnTUt3RThUMGFMMVNTSWk3d0R1WnZIMHhZMlVM?=
+ =?utf-8?B?SWFQUjVmaEZxbmlvZTh3NjA0WTlUMTQ5S2thb0srUGh0YktJWWZyWTdIWEx2?=
+ =?utf-8?B?ZitQVjlSTlc4QkNVWStET2doaDRTV2VRVDJteDZSR1ZDWldoeHArNHJCZjFq?=
+ =?utf-8?B?QlBzN3hrTFZHVDl4emowa0s3T2ZKWXh3RDJLazJiSjlGc1E1UW9tNDdFL3ls?=
+ =?utf-8?B?VzBLSTJQWW1lenhXa1ViU2ZQaVYrdStTajVCWk54RWowdnFVbWZXZkpvSXhF?=
+ =?utf-8?B?Y1RFV0c4UjIrdHF2SHhlaXdMWGlZVmNYTUhyNFVsTDdaZEFkL3pCd0RyUjZz?=
+ =?utf-8?B?Q3MydHNMa3VzR0FLNVZORm1ZV3dWL2x1MHhzcDFsQk5BNGZlWWVwZmt4dVkz?=
+ =?utf-8?B?UTVhOUpBUHJlOHNSZlFUajNzQjBDT2QvNSthWnZDMXdxTFFkTGJWbWYyT3JB?=
+ =?utf-8?B?clVBQjFhN1VpTWN2aUdnc3Myc2lUblJXVjlERGxRMWJGektmTlZONDNnMzNX?=
+ =?utf-8?B?aXprT0lYdmh4TUhnUE9JdndNVzZSTlVVWFlXb1gzWEdNcEtLWDFmS21SMis0?=
+ =?utf-8?B?ZlpDMWtVNUJtYldudDZSM0NFNUUxemNCa1JSdGlES2c4Y016aFpqYVhIZStl?=
+ =?utf-8?B?emZtdnp3d3lVY0g1OCtMQkd0d0Q5bEZEakpaaTVJcHR0T1pLRVJiVzZLaytK?=
+ =?utf-8?B?UUZqc3crNWpDZm1WQktRTHVpNEZIM0hENFhQNk5jaUlQSVprd2RmdC9EaCtF?=
+ =?utf-8?B?RG83eWJQU242WjF1b3drRGFCL0lma2kzVkdabVpaOU45eEt0NGpqUGIvR2E5?=
+ =?utf-8?B?K1RGc0d0MGlUZUZSeXF6TkNZMmFPdU5XWUJZbmVMYXZPMThHd2JLVmFiVUFK?=
+ =?utf-8?B?OXhGWWFRMC8rQll4WTJJRG1PTGdzWFZwdG1aWFVNeGswTG1HNDc4UUNQYno4?=
+ =?utf-8?B?dUtkN0ZLbVd3djFIakMwTzVLK0NyaDd0NFZpdGJLZzUwYUk1WVdxQVA3clRa?=
+ =?utf-8?B?RWEyVXF0Rm9QWXhlWWpFV01xYjdZUThwTG9ZNlZXNzlzc1FNd3h4cUNFbVhC?=
+ =?utf-8?B?V3ZJdERkT3BlZTZxcEVUY0dpdms2T2s2VE9Cakp6QjFpYWNUSUZkUTVDeXpq?=
+ =?utf-8?B?VzRPeDM0UXJQbTl2L2lyd2ZpZ0p4Tyt1U3VCQzUrUmJuV29SRndDOXl1aStH?=
+ =?utf-8?B?WWtoSEV5czUxdmVES0hLMXNKYWR2VmkyM2lKcXNqSzhqSmhVOTl6Zk40NFU0?=
+ =?utf-8?B?R2tWQWMzb0xJSUFQU2Q4U3pzcGVpZE9wMjlCUVpMamNBcWc4Y3dKR25jYjNY?=
+ =?utf-8?B?Vm9EK25wVElleERKaHhXU0NIVkg1R1FIWXVZR1htUERUckJiMDRBRmxXM3lT?=
+ =?utf-8?Q?twBnvZ?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(10070799003)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(19092799006)(52116014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OHcJKG1hqy7lmNtudyUZvD2Ao65ygzLXwdAOsjflhdlao8kiVIgRVl7CbVCM?=
- =?us-ascii?Q?sZA1LRlDITtvB3sD0x/NaygN7bTVVorDKc4lbUCzPwzDWP1bAtW5viVPDiCI?=
- =?us-ascii?Q?tqQC23QFOJwEf0EipmcPBsjYx2c6E5z0sqfIc2xFC8q2UyfDAY39xCFfZHZJ?=
- =?us-ascii?Q?T+Rhs2fGVmzaEEZ4yf6jK4Ar9X+iuPIL8Vg9OMEBvdzaDjsNzkxHopdXmDXD?=
- =?us-ascii?Q?nIjKJ8p+13O4aLdC4DQ0heYqsEfbzklLLJCVTec5rp4Vq+voi0IlUnx0PaQZ?=
- =?us-ascii?Q?hlRGKL18d5rdKtlGdEZxRzRESP9vQdtohXKwzCu9nsBK8QKXBvUzcG+ao8ak?=
- =?us-ascii?Q?tKSOdMweEJzwLaNN8Qb3BVWmdREJg1aGrJFnstGyFy/YtUJ2sIzUmag5wLJZ?=
- =?us-ascii?Q?qffkEx2ne2O5Cbh2fVL8feK0IFp1JiZqju8ppOjQHaStvG2VL5GAA0kmJUiX?=
- =?us-ascii?Q?CSwdgFfwUhOa4GkzXd7RMreEoElgUlrhAbBSMv8LFdL01+o3VkYHPabzCApO?=
- =?us-ascii?Q?8TSweFmhHWZEPifI/5D5DYqZ8uh3Cx6/woqXHHetFjv1slPZVcoOLlWrBz7E?=
- =?us-ascii?Q?wqv7K/26JGM0YwhRCCR4rRWrqx2KYH/2cr7MSSp+/k0+BcJtKDbLNKElzbmB?=
- =?us-ascii?Q?42ouVqgqnUedhfHcL6BmoULM3VqVm173wX47f1AfPk9rxjCdm6i211Ufhv77?=
- =?us-ascii?Q?bEj34qDxtsNxRHN+nkUPvHolRWMW54T2dx/a5yhRrXRqRsJ3AsTIn545SiEs?=
- =?us-ascii?Q?Qm+rZF5chnm0qgwVgjy8XEzf+tZshU9Nz8DN8DNXVHOdh58rgnPcfK0YFjRd?=
- =?us-ascii?Q?cY/qJNG0EBLqYhU5qAWiPTML4OZ8QPN1IA24spNTKqG3gi04YnKe4/gLI2NR?=
- =?us-ascii?Q?sEYsRUL9iRrMZ+y14kkFXOEOgz9uefAyMeVNhEirqeIEJI+OPXRkxTFE6Eee?=
- =?us-ascii?Q?7LT4oFZiJidPBnkPEuZdhxF+QSGoz+X3eDV4RByXMnAi80m/WczGFrqwrS4r?=
- =?us-ascii?Q?5zWKMWguJtQQeAfl9cdghUUf9rDkpDxTIRhh1g+tjJvFEGz+eCN8T6JycXzB?=
- =?us-ascii?Q?8shC816k97MuTQIHj0oAMdJnMamtFAd6P5/2A2plZaA/iYsXXmC+4oesnp1Z?=
- =?us-ascii?Q?7SU70VfrnxJ8kOWFCHJw+F6QUaRKPntS7g/kwLKsS2sgn2XvroClWYG5FPR/?=
- =?us-ascii?Q?1uGG0q/vn9Gsuz6iA2xjKDZOHgY1YFJub4AKxH6o+ajFZFNqEKMk5LrLKvrT?=
- =?us-ascii?Q?0AP6pM2Kh+A1hthSRUBScLPqOAlSC+WC/6SV0LZzM+xlOQFoMybw1OaQ4fbI?=
- =?us-ascii?Q?JYj5CitPH/uMX5QoSCw9pai1UMO3HGn4Z8pmy8/dBwhV7SEgMe7AOj4vp++W?=
- =?us-ascii?Q?RMFXa7yndDyC4SHfZ8aOIT31LZFqYPxSwuleNE8yeC3+TnF87x4DaXni+EgC?=
- =?us-ascii?Q?5BCXRE71Z2/OqE1B6mlxjkpeeW6XNdsUpP+lTc3cRHKQWdNJxsdKf19ooSU7?=
- =?us-ascii?Q?5BmJAVkz5/ZyfXk2gRi4vfphG5csxe2LYAfWfjf8QvXT94K6h6x/x1vm/okg?=
- =?us-ascii?Q?qVdQ3ero9F6Z9VI0kxvK6ENOcwKeYetnyWeDsjKgRoeC9e8IycgbGtLFPAR7?=
- =?us-ascii?Q?DQvYDNmRztNwhDXnV+GYPB6OIBg2TRRrt4DM59pvd7ZWhOVkz3nFhB3v+5u0?=
- =?us-ascii?Q?ALuleQ=3D=3D?=
+ =?utf-8?B?UTZ0bVZMR01ZV1ZYS1FSaHlXMUtYODgyK1pjWk9hdHFaamhnOVFoS3RMNjAz?=
+ =?utf-8?B?eGxETDFYZVlZWE0yeTNuUXBncm9kTnRQSVdudUVwakVBUFJGN21EdnhFUE5C?=
+ =?utf-8?B?bmM0U0F1YWlFZzNTU05GWE0zZFBjVUVGWUYyZW9NZjdOTzlmc0UxUDZQSGlj?=
+ =?utf-8?B?RzlxRUJZcXhHQU1ZeWlNM2tlbjlaejRscDJJaHZvK3kyaEcrQ3BSRXp5ak1j?=
+ =?utf-8?B?U0p4cm9ZQlZsSncrMUh4cHA2S0E2MWw3dm1wWFcxdjJ5QUZpcjFXSlNkRnhB?=
+ =?utf-8?B?V1krb1MvOXhIYklJdWY4V00ranUwR1YrZkdTeFEveFhEYmM1amdrcEt2SkZy?=
+ =?utf-8?B?SitHTVd0UnozQTFFZ3MxY1BMMFNiUkRRRUFWRUpxN3V0VTQ1clcrNVlhaVZo?=
+ =?utf-8?B?cG43TjI2QXRBTHVySTFiWjVnL25OMDJodUJjekU5MFEvbUxKNndralRXb2dL?=
+ =?utf-8?B?ZGUyTlRSaDVpNVdTZm1STU9xc3FQVXVMVG83RmV5YTFBL0I4a1o0YUh2V0da?=
+ =?utf-8?B?bDRYOVdoRlFWMi9sTlJMZUZzd2Y0OWN5RkFJcTFwd3cvMGlKeGR6MDhkelZI?=
+ =?utf-8?B?azNOZUJDSThneFlOTy9XcWpyV3FXZ2tRdFFDcEJOUzBidHJibnAxdERSeElN?=
+ =?utf-8?B?OHZvMjFJYUg3UTlacWROcUFGWkhsQUFUbkgrQms0ZUNVWUxNcTNOVkVwZGo0?=
+ =?utf-8?B?NnFpaTBNNkVJVkthUUJlNHdDajNFYU5mMmU1YmNWelhLTW84QjhSUExRVStC?=
+ =?utf-8?B?K0hFdUVRV3BJaTlEVjRPOVExeldzYmk2aUk2RjBrbmVMSXVXNnJ2WUpzTG5F?=
+ =?utf-8?B?TCtJYURGaDU1eFp6TnNJOXlKaVM4U1FiWTQ1SUJrb1RWVmZqWHd0azdOQ21x?=
+ =?utf-8?B?WGpzZHI2SkMzcXN2VmxCV3NuSDRpYzdTUmZVdy9pMS9SZXZWRHpKNjQwYkp6?=
+ =?utf-8?B?M2MwMzBuRnpJYmVlY1FQcnNTZlhuQ3RwMXdxL1VJeC9FcDFBdlEycm5UM1VF?=
+ =?utf-8?B?MmpDSCtUSUhQMnNYSHhsdHBKWEJtc0RHSC9wR3hlWit1WFNtRFVCU3lFcGo1?=
+ =?utf-8?B?T1RHTC9iNW1iOVY5S3BVUm14elJtWWwxa0NzU3FQZU9SeUx5WUFoK2pZMVFJ?=
+ =?utf-8?B?cFJRM1NTOVhRM0hjSkl5elQ5WXJTSjVoTVNTdzR0akFIdjYvZEhqNS9lMFFy?=
+ =?utf-8?B?UHFKeHF6L3lMUXp1eldnRE9SSEloR0pZZG9tdy9LOHloZHhaQnVSS3lQWVBY?=
+ =?utf-8?B?ekYwdExzNS8vNE42T3UzclhFcEdtaEtqYlpGYTRIeTF3Y3pYNjVEWUQ2MkFS?=
+ =?utf-8?B?czYzV2tLY3FKMjRxYzdDdDBxa3l6ME1heTJyMzNGcnAzSmFSZzgxMnFZTmFF?=
+ =?utf-8?B?WTZveTNLdFZVbVBWSHI0N2p2SThlSjloM0Nma1ZDNHBJa2twTk1YYmFJaFFy?=
+ =?utf-8?B?bHovc3JUTmxZTTFhR0JIemlOWVp1L1JJdXFHdUNuVm9aSER0NUR2NHJlQ1Zq?=
+ =?utf-8?B?dERSdXJxT2JSNG5zYTZnZ0doTTJjK28xMFA2cjNYTkFUOUtNcitlcW54UGVY?=
+ =?utf-8?B?VXRwb0RjZDhZaWpMQWFCWTV1QWZUYmRBcXNCN0JBL0dHaWxCMnlyd3d0UTZY?=
+ =?utf-8?B?Y2xPS3RDUDJsSm50Z3V5SFBNaForVXdOejVOVXcrYnYzeWM0NUdqK2pya25h?=
+ =?utf-8?B?OFZ4M2NGSzBwR0dPOGxGS3FsOXY4aEdJMVpjR3pIODF0SkIxRktUSndpV3Y2?=
+ =?utf-8?B?Nlp2Wm4zMTI2K2hWbE12ak9SWEZUNWp4SlBTZ1RzUkhHOTBqMjczQ0FlS0RV?=
+ =?utf-8?B?czRGSi9BcVhQb3o5R003ZFdMUXBQOUpocmJhNk1HczBFNnFRMGEzVXFnMnE1?=
+ =?utf-8?B?K0diWk5vVEdvbHA5bFA0NjhJOWxtSjZucDNraEEvdjJRRGdtMy95L0Y5S1pE?=
+ =?utf-8?B?ancwMTB3d3dIVDlwcUkxdWV5Qm9iVll1NlpvcVlIc2NvMVJDTmFMVldocHBr?=
+ =?utf-8?B?RmFqUVBTeTBXTTJLT2ZodVNuc0ZPamdRS2h1aDVoeFFXdDEyak5KbExEYk45?=
+ =?utf-8?B?dGg3eHJBR0pSZXczT3dnOVVkaENKMTZQZE8raW1VR2VsZ09MSHR1eHVqSGY5?=
+ =?utf-8?Q?P4Mk=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3463799-9a3f-40c3-ad42-08ddb81682f3
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3bd85901-6ec7-4402-d4ca-08ddb8256c7c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 20:41:38.7446
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 22:28:23.2291
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kBQlDfbdmMX1yUiTqtGWxhKLtw83S0tYIsNnR4GVM8zlVMKDmfnO66iYSxD7QkGrpfXVVVm9cYkAjwl6YKhWuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10077
+X-MS-Exchange-CrossTenant-UserPrincipalName: VI/0136QOEvQFS6lqUVv4DfHSWhH+GYhhhDDzw/fkdVLuAsJdk7rfweC1qQdFyWb+LdPRD9fntzceYGmoWyBtw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7451
 
-On Mon, Jun 30, 2025 at 01:54:11PM +0100, James Clark wrote:
-> On 27/06/2025 10:30 pm, Vladimir Oltean wrote:
-> > On Fri, Jun 27, 2025 at 11:21:38AM +0100, James Clark wrote:
-> > > This will allow us to return a status from the interrupt handler in a
-> > > later commit and avoids copying it at the end of
-> > > dspi_transfer_one_message(). For consistency make polling and DMA modes
-> > > use the same mechanism.
-> > > 
-> > > Refactor dspi_rxtx() and dspi_poll() to not return -EINPROGRESS because
-> > > this isn't actually a status that was ever returned to the core layer
-> > > but some internal state. Wherever that was used we can look at dspi->len
-> > > instead.
-> > > 
-> > > No functional changes intended.
-> > > 
-> > > Signed-off-by: James Clark <james.clark@linaro.org>
-> > > ---
-> > 
-> > This commit doesn't work, please do not merge this patch.
-> > 
-> > You are changing the logic in DMA mode, interrupt-based FIFO and PIO all
-> > in one go, in a commit whose title and primary purpose is unrelated to
-> > that. Just a mention of the type "while at it, also do that". And in
-> > that process, that bundled refactoring introduces a subtle, but severe bug.
-> > 
-> > No, that is discouraged. Make one patch per logical change, where only
-> > one thing is happening and which is obviously correct. It helps you and
-> > it helps the reviewer.
-> > 
-> > Please find attached a set of 3 patches that represent a broken down and
-> > corrected variant of this one. First 2 should be squashed together in
-> > your next submission, they are just to illustrate the bug that you've
-> > introduced (which can be reproduced on any SoC in XSPI mode).
-> > 
-> 
-> Thanks for the debugging, yes it looks like the patches could be broken down
-> a bit.
-> 
-> Just for clarity, is this bug affecting host+polling mode? I can see the
-> logic bug in dspi_poll() which I must have tested less thoroughly, but I
-> can't actually see any difference in dspi_interrupt().
+Add parallel camera support for i.MX8 chips.
 
-It should affect both, I tested your patches unmodified, i.e. interrupt
-based XSPI FIFO mode (in master mode).
+The below patch to add new format support to test ov5640 sensor
+   media: nxp: isi: add support for UYVY8_2X8 and YUYV8_2X8 bus codes
 
-Assume (not real numbers, just for explanation's sake) dspi->len is 2
-(2 FIFO sizes worth of 32-bit words, but let's assume for simplicity
-that each dspi_pop_tx() call simply decrements the len by 1).
+The bindings and driver for parallel CSI
+   dt-bindings: media: add i.MX parallel csi support
+   media: nxp: add V4L2 subdev driver for parallel CSI
 
-The correct behavior would be this:
+DTS part need depend on previous MIPI CSI patches.
+  https://lore.kernel.org/imx/20250522-8qxp_camera-v5-13-d4be869fdb7e@nxp.com/
 
-dspi_transfer_one_message()
--> dspi->len = 2
--> dspi_fifo_write()
-   -> dspi_xspi_fifo_write()
-      -> dspi_pop_tx()
-         -> dspi->len = 1
--> wait_for_completion(&dspi->xfer_done)
-                                           <IRQ>
-                                           dspi_interrupt()
-                                           -> dspi_rxtx()
-                                              -> dspi_fifo_read()
-                                              -> dspi_fifo_write()
-                                                 -> dspi_xspi_fifo_write()
-                                                    -> dspi_pop_tx()
-                                                       -> dspi->len = 0
-                                           <IRQ>
-                                           dspi_interrupt()
-                                           -> dspi_rxtx()
-                                              -> dspi_fifo_read()
-                                           -> complete(&dspi->xfer_done)
--> reinit_completion(&dspi->xfer_done)
+  arm64: dts: imx8: add parellel csi nodes
+  arm64: dts: imx8qxp-mek: add parallel ov5640 camera support
 
-but the behavior with your proposed logic is this:
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Alice Yuan (3):
+      media: nxp: isi: add support for UYVY8_2X8 and YUYV8_2X8 bus codes
+      dt-bindings: media: add i.MX parallel csi support
+      media: nxp: add V4L2 subdev driver for parallel CSI
 
-dspi_transfer_one_message()
--> dspi->len = 2
--> dspi_fifo_write()
-   -> dspi_xspi_fifo_write()
-      -> dspi_pop_tx()
-         -> dspi->len = 1
--> wait_for_completion(&dspi->xfer_done)
-                                           <IRQ>
-                                           dspi_interrupt()
-                                           -> dspi_rxtx()
-                                              -> dspi_fifo_read()
-                                              -> dspi_fifo_write()
-                                                 -> dspi_xspi_fifo_write()
-                                                    -> dspi_pop_tx()
-                                                       -> dspi->len = 0
-                                           -> complete(&dspi->xfer_done)
--> reinit_completion(&dspi->xfer_done)
-                                           <IRQ>
-                                           dspi_interrupt()
-                                           -> Second interrupt is spurious at
-                                              this point, since the process
-                                              context may have proceeded
-                                              to change pointers in
-                                              dspi->cur_transfer, etc.
+Frank Li (2):
+      arm64: dts: imx8: add parallel CSI node
+      arm64: dts: imx8qxp-mek: add parallel ov5640 camera support
 
-Clearer now? Essentially the complete() call is premature, it needs to
-be not after the dspi_fifo_write() call, but after its subsequent
-dspi_fifo_read(), which comes after yet another IRQ, in the IRQ-triggered
-path.
+ .../bindings/media/fsl,imx93-parallel-csi.yaml     | 108 +++
+ MAINTAINERS                                        |   2 +
+ arch/arm64/boot/dts/freescale/Makefile             |   3 +
+ arch/arm64/boot/dts/freescale/imx8-ss-img.dtsi     |  13 +
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts      |  37 +
+ arch/arm64/boot/dts/freescale/imx8qxp-ss-img.dtsi  |  27 +
+ .../dts/freescale/imx8x-mek-ov5640-parallel.dtso   |  43 +
+ drivers/media/platform/nxp/Kconfig                 |  11 +
+ drivers/media/platform/nxp/Makefile                |   1 +
+ drivers/media/platform/nxp/imx-parallel-csi.c      | 952 +++++++++++++++++++++
+ .../media/platform/nxp/imx8-isi/imx8-isi-pipe.c    |  10 +
+ 11 files changed, 1207 insertions(+)
+---
+base-commit: 93355cfe8aec9e47fc93fbc940f1bbeedd62e249
+change-id: 20250626-imx8qxp_pcam-d851238343c3
 
-Not sure why you are not able to reproduce this, maybe luck had it that
-the complete() call never woke up the process context earlier than the
-second IRQ in the above case triggered?
+Best regards,
+---
+Frank Li <Frank.Li@nxp.com>
 
-I'm not doing anything special in particular, just booted a board with a
-SPI device driver (sja1105). This transfers some sequences of relatively
-large buffers (256 bytes) at probe time, maybe that exercises the
-controller driver more than the average peripheral driver.
