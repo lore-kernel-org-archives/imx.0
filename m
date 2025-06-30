@@ -1,153 +1,96 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A21245022
-	for <imx@lists.linux.dev>; Mon, 30 Jun 2025 11:34:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990DA26560D;
+	Mon, 30 Jun 2025 11:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751283293; cv=none; b=NJiE6OxQUi49rfplt0uUWtx/aihZRc2HD/GK9F01gH0cWS2xfup8s6+SJurEfHebIRMiPbuYasGHSnEgSzHNcLlNRjEXx0O2lgzFccrV7TjiEVQxNMEXVSXx/RfVnepkRj2FwrJj4qOhjzJ3v3r+WyNbaIu+DhjBwdXpAJ49DHo=
+	t=1751283652; cv=none; b=Cr1MaifkomV5sUd0sOquOOxapyuUGdm4gccN3KP9sZus1w/l5ZzwKW5JPrepEhdglzGW+eJQpyRun58sMjzpmN3M3NlQIKJYNX2CUTPsq8rpKVBaDtx+zwQTwz54W/7sWsmo1s8iJCWBcEqJcNgrcO7ebCE+ziiLt9sL9OgTBHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751283293; c=relaxed/simple;
-	bh=iw/9MNGT+/hEj/TbjYC3Nc/+P3EMi/fr0CrtpPGl+MA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eLFvhJi7txdGadCneGhm/W8BHiUddrLcfB9+jepn8qwYT0Vc+7HVhHFzMyrYZYmR7E+MFA0NZMqVy/m8JjRXbBiXUsj2IEdKHqi8EY6feim4cbTmdmVp9hVYE3tfW0DpH/3ABflPszEWS/cd+2FVhzb7jNNgfls94bg2G0yYs4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=AQKIf/Ud; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1751283652; c=relaxed/simple;
+	bh=zPOhc/KELxKgSfy1G+NzpgTe6vDr2341CUf1qfmotxk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=LP2j983W9j0dJ3T0zNKGblYzLFthXfXH7LCUA2yIZfYDMH1VEjLsNhmOFnRNgMCvjv5dy4Nujg6qPqDnFWNkQrVbgGWC2UufpLiz7uQusl82snlj98fG/2urfhvUbIf87VSCAzWPxTz0cNWpbxZ/PhCcHaVR7ZWBeVjHXoD4bDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ta5VRcZq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="AQKIf/Ud"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8878A10380104;
-	Mon, 30 Jun 2025 13:34:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1751283283; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=obn1fFptpDWsfOTGxxja0aYNB+v0Pa/lgexMoMKfewU=;
-	b=AQKIf/Udw+b5eHV6+NEZhbR5iX7W6bnm9XB4i+kaxnIFF7ccKGLFWIWC5uMO3mJ8qit8Ip
-	syY2HMQgXz/9DhT8zh6n3gqlEnCwMxdalNKZL19Gt5E11nFXihxyA9tVQ1ln9KP7QE6Aid
-	swuQKBUviYdIb5tD18Ii2WK8aE1RDLUjJz6jKzA4KZNNfcKsqkRf39KQKht9qDteCaiYkk
-	1lMb68+r+Yd8p9pXy44vqdcBKerwNy6x7dyMARVmvWFTWu921/6iGCr9nFM/LXTunUVRKp
-	jF18ykoSo/sMQUVo7s8rX8Azv5fFl096GpeWJulsTb5gJ1QmdssrG9NCTqk8vw==
-Date: Mon, 30 Jun 2025 13:34:36 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, =?UTF-8?B?xYF1a2Fz?=
- =?UTF-8?B?eg==?= Majewski <lukasz.majewski@mailbox.org>
-Subject: Re: [net-next v13 06/11] net: mtip: Add mtip_switch_{rx|tx}
- functions to the L2 switch driver
-Message-ID: <20250630133436.71238a65@wsk>
-In-Reply-To: <0de412ee-c9ce-463b-92ef-58a33fd132d1@redhat.com>
-References: <20250622093756.2895000-1-lukma@denx.de>
-	<20250622093756.2895000-7-lukma@denx.de>
-	<0de412ee-c9ce-463b-92ef-58a33fd132d1@redhat.com>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ta5VRcZq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0054FC4CEF0;
+	Mon, 30 Jun 2025 11:40:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751283652;
+	bh=zPOhc/KELxKgSfy1G+NzpgTe6vDr2341CUf1qfmotxk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ta5VRcZqQqZj/Xz0XXvjS6DmyvQI45fgkqeVYLq9eHkGODBN/CTxPMt7bns+ZfBYY
+	 6/+mLGhr+8YuK8sM83RzYTm3uMjfSUpKHUo19V/96yN2paN2ybS9IHSAvqcGIlV+Ph
+	 qPwQxxQYXTUPMc7r/dGy5Y8Y+ZGgTnMpB9I34wkADPFtDoSCvZNzCEOkMyhgTJs8IS
+	 RPmyA6vbUojCzCKXvSKfC0pUEb3LRSIWkp2v3JzPyZ4G1kOujjxoAM1i3MgSmqoz5a
+	 31Fhpi6V5NuEGwxqFCEl5xIwDY0pM/XPp7fIwuO0LPbJCUnxCDweZ9nSCWZxB2xYoI
+	 WRhOrHmdOYUiA==
+From: Mark Brown <broonie@kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>, 
+ James Clark <james.clark@linaro.org>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, linux-spi@vger.kernel.org, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Arnd Bergmann <arnd@arndb.de>, Larisa Grigore <larisa.grigore@nxp.com>
+In-Reply-To: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
+References: <20250609-james-nxp-spi-dma-v1-0-2b831e714be2@linaro.org>
+Subject: Re: [PATCH 0/4] spi: spi-fsl-dspi: Target mode improvements
+Message-Id: <175128365072.28911.16806664823646528710.b4-ty@kernel.org>
+Date: Mon, 30 Jun 2025 12:40:50 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/ft7tAwYwUt/T1YMHVHAewjX";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
---Sig_/ft7tAwYwUt/T1YMHVHAewjX
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, 09 Jun 2025 16:32:37 +0100, James Clark wrote:
+> Improve usability of target mode by reporting FIFO errors and increasing
+> the buffer size when DMA is used. While we're touching DMA stuff also
+> switch to non-coherent memory, although this is unrelated to target
+> mode.
+> 
+> The first commit is marked as a fix because it can fix intermittent
+> issues with existing transfers, rather than the later fixes which
+> improve larger than FIFO target mode transfers which would have never
+> worked.
+> 
+> [...]
 
-Hi Paolo,
+Applied to
 
-> >  static void mtip_switch_tx(struct net_device *dev)
-> >  {
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	unsigned short status;
-> > +	struct sk_buff *skb;
-> > +	unsigned long flags;
-> > +	struct cbd_t *bdp;
-> > +
-> > +	spin_lock_irqsave(&fep->hw_lock, flags); =20
->=20
-> This is called from napi (bh) context, and every other caller
-> is/should be BH, too. You should use
->=20
-> 	spin_lock_bh()
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-I've double check the spin locking in the driver - I've also consult
-the fec_main.c.
+Thanks!
 
-It looks like the mtip_switch_rx() and fec_enet_rx() are not using
-explicit locks and rely on NAPI locking.
+[1/4] spi: spi-fsl-dspi: Clear completion counter before initiating transfer
+      commit: fa60c094c19b97e103d653f528f8d9c178b6a5f5
+[2/4] spi: spi-fsl-dspi: Use non-coherent memory for DMA
+      (no commit info)
+[3/4] spi: spi-fsl-dspi: Increase DMA buffer size
+      (no commit info)
+[4/4] spi: spi-fsl-dspi: Report FIFO overflows as errors
+      (no commit info)
 
-On the other hand - the fec_enet_tx (and corresponding MTIP variant)
-use spin_lock(), not the _bh() variant.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
->=20
-> Also please test your patches with CONFIG_LOCKDEP and
-> CONFIG_DEBUG_SPINLOCK enabled, thet will help finding this king of
-> issues.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-This was enabled by default. By changing all locks to _bh() there were
-deadlocks observed.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-On the MTIP driver (due to this HW IP block) there are some locks which
-must disable interrupts:
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-1. One is when mtip_adjust_link() is called - as it is the same for
-both switch ports. Moreover, at some use cases it is required that the
-switch IP block is reset.
+Thanks,
+Mark
 
-2. The mtip_atable_dynamicms_learn_migration() - it changes the content
-of dynamic switching table. IRQ from switch shall not be possible at
-this time as it can be called from mtip_switch_rx() (from NAPI) and
-from timer/kthread (at specified period).
-
-
-To sum up:
-
-I'm going to prepare the v14 with changes around the timer / kthread
-running mtip_atable_dynamicms_learn_migration() and use time stamps
-extracted from jiffies.
-
-Locks will be optimized and following paradigm used with fec_main.c
-driver.
-
->=20
-> /P
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/ft7tAwYwUt/T1YMHVHAewjX
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhidkwACgkQAR8vZIA0
-zr1gIwgA5RFaOOf/zToxgLklld0AgiA7amktt6Vm7D+yrAK4VbOKEnAMTahAU7iE
-Z/aSDSy3TmQ6p+k7SOMCK/W7UyAGi4nIffvLFo5N4PGTYmBqVhq+qlpjSm7bnFAU
-mUKTz6s/N3KoneKHrKRf6ogC4PubkGH4RqQ4gVbr0YZgwd4XsA6uEFVoPYeUQ25U
-EVRkOV9W2ouDS/MpoHsQoFN35ottbyK0i2kVUqywK/QGPuQtLXOEfswnnqQ6B692
-nRkf9dcbOPJqCiabDst66cODEgmDJ5brs7f6SZ7nPIB1ASnGmjDaVgIzuT9CuA4G
-LfMIlP/XANgIKp/dLSJtVT7sdEdmDA==
-=eCtd
------END PGP SIGNATURE-----
-
---Sig_/ft7tAwYwUt/T1YMHVHAewjX--
