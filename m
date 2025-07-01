@@ -1,211 +1,80 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D980A26B772
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 10:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC632367B1
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 10:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751364143; cv=none; b=MMzfBOQLFzc+Q+fimyrZo/Au2HOUa71DTlUOtGVWnF1aVMq7/AyWbgwK3RyUjqPDB+zsMijg8dblFi/N5hyTgiE3FbeGiZCxYSpHnjbX8iohQ8Qbt/fIYjEeyqlLhjFd4Ai18+UgC+mc29NZImv+t3eg0TyH/5LCNrMfgm+s81w=
+	t=1751365064; cv=none; b=J+F+ugGHVZIbA6XUdOCj4k7E6PfZJhzqk3oRttZmwLPKJZ5sHMXwl3uMY71axNTTE4cmOWFLzifRdaC7E+qiPYlhn8a2WzXoNdNQJSSM3pOHQUzD6Gabp4l6avq6Y5TrVGziaNTlmVkw2cgHHJjs3+qb3MPO37k6ZH3VLHpBmzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751364143; c=relaxed/simple;
-	bh=cpyqTOGVeYqY3XRnRs+oIY5hjGnfsVsVIR9fqCXXKXI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uHymJBDaabjcEOBiGxNP9eHznWs5lYxHCYH76yiqf59M07o1/SM3+d3SzcQLFMu5g4ekpxRxMCe9hZL2FDPsBqXgmkeSkPOmg8ylVGPXXW9/un3p3Dgear8cj8LWqc0PVjy/nfcl0MPbaEvnxTV/ni9IBkqdg3rfRGmjRopXbeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fnYZwAEJ; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1751365064; c=relaxed/simple;
+	bh=tDMifouIIip/tg9fh46Bk6xjkcaA79k1SoUewmzsplE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JtOkpi0UJaw+1fQRb/e0HxdKVRxl6uN+yX6luWPRTadkhLe4q6rxpEFD3m4vABRAidsscKcd2ZtgY4qkk/t7iUzEI4+S6/49fQm1OtuelswK6Vlqt/HymTsE3sWa8voG/t6Ept9gAwxeMLksFfhRGpQVFEHkfCFmXs8xqAxBKz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=OzOsME4S; arc=none smtp.client-ip=1.95.21.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fnYZwAEJ"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-453066fad06so36695365e9.2
-        for <imx@lists.linux.dev>; Tue, 01 Jul 2025 03:02:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751364140; x=1751968940; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5ZhhFhh6zreoch3UvbvFqYL168bvoOK/hSQ4W4s5kf0=;
-        b=fnYZwAEJVsw+85lN/Cwcocaj5cXUdlNH7m5Dpl/hvyuDjSTTE+3sA1kT60QycDI+5Y
-         1+zbubxgicPaGbfeB4ZhCwBQBQ/F1I4MV0YA25b4Di7T4ob1rirOHB2ZEGZ6fYoCYKTF
-         1CNQL1WVCcqYeWuWGDEGDXsLAUfPoZrXAcDEyip/KdxZEFS6ULsLlK5AlVIWaz+Smi5A
-         IOsm3+PcJvL1sX0GKsSUcCANKs2rnhFwx6AghznfwxeIqp4eQ1kL2uPb/m5aXHf4jly2
-         Nr9WGGV1D+lk/qAefm9Kl3vwXC9Yf2Tk3r5LniOj5W33232jILod8TLT005nv04Uny2p
-         bV7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751364140; x=1751968940;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ZhhFhh6zreoch3UvbvFqYL168bvoOK/hSQ4W4s5kf0=;
-        b=pJI5ofous474sBvcdZPqs0tPZoUtMlCsoLNHQT44hPLksdMCsd4DobE3lGngCrZl4P
-         aqj4pVDeT++IPEGq7pV7HfxSliK7EgB1NG+fGxPTfKJCxzGmZ2FBB38D6brbJUsQ++PT
-         HlTyOQAqNTpVb6UBq55XYkvWmgehOSbZtbbOVKKonSeyOwflM0eKRFpH9lEF5Yyebze7
-         CGEfyS2MVVc+31lSHe86hRI3NjBgQRN+dp8yqLJ1bqTn+nypQapHNyQX0JrKEOHma/zR
-         ZRCC7kq5q/Mq29FP7wxOh779w0qmZgI0jJoRTWlmXMVN2Gn6gyItKW2ukxo39fPxEtwl
-         4g+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXtNMVTfajkS/3KRIvyzpDeYHGLK8T8xKz+YApZ0Dga3gc/NLArVs+j3QPRSQQwzZV6KRs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx4yYuAH5+H9pOP998CtdVOL97P1RS2Hj7dRsmWs5limg/BMR3h
-	jJRRmSm5CmrpVm28DK88wKQLXsO9XkjnGN9Lao9vBobLW3IFBeh2886/+nb7YqbJhbw=
-X-Gm-Gg: ASbGncsPhEL8DfNzjT50r+nWzDULk6EttKigV1+y1oyLkeIquK31IcEU/GpuNvllb1k
-	o3GljIIy+mOwIoYSfKLZdt0qeDj0x5Uqy3wu5z9QCYrKZUUxi3Gduu6IFgCEznGJOKujQcHvmOM
-	C0SNJB/4M30zeyOi/O/I1rVf45x5bJI/5M2LNyhQLbiSk2hbDlp44Ha16JkvPChmQY83qA/z12A
-	zjTbFQMfv24Rb3cApo490N90PtJU8nAYoHaaBWFVVHAAnyvH/KW3z/JK7W/kghXqNSz9XR+udm2
-	6yGaO/xlGPXB+Y6L4UhJt2RA7qcUgOwXZPUW1aakoce+BdbH3uaFU0efb3ZR2m3vB3Y=
-X-Google-Smtp-Source: AGHT+IHBCQlP9/nR2LptdOeK1mMuPMiYt+Xt6KQSAcgiyQshNwB07NsvhgJqGsj1NDftDmY49jePgw==
-X-Received: by 2002:a5d:4d8f:0:b0:3a5:8a68:b82d with SMTP id ffacd0b85a97d-3a90038b70amr12122291f8f.43.1751364140010;
-        Tue, 01 Jul 2025 03:02:20 -0700 (PDT)
-Received: from [192.168.1.3] ([37.18.136.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823ad0f3sm194486775e9.19.2025.07.01.03.02.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Jul 2025 03:02:19 -0700 (PDT)
-Message-ID: <8eedf34e-b870-4a73-b966-e9745809dff3@linaro.org>
-Date: Tue, 1 Jul 2025 11:02:18 +0100
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="OzOsME4S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=FwWG8EAzKyju2ovmVpNM1zaGxigyV87GlRZT34i7jEc=;
+	b=OzOsME4SUejXZXRUHNAw9BNQri32GIpRd25+TV67NIkjLVWPxv2SsomPyDSX5K
+	kxpPjUpQ3gNiXJq4E3SiFu0uSZ87pSKW1hYC+4Pkqs2mXXehwACEJR+etDRdImSv
+	2kRllq8jQpqTEYVNx/B1Ep8yhX7SJQe/UKsPL4qXLf82A=
+Received: from dragon (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3v1pitWNoVEw9AA--.20470S3;
+	Tue, 01 Jul 2025 18:16:05 +0800 (CST)
+Date: Tue, 1 Jul 2025 18:16:02 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, michael@amarulasolutions.com,
+	linux-amarula@amarulasolutions.com, Frank Li <Frank.Li@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Heiko Schocher <hs@denx.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Markus Niebel <Markus.Niebel@tq-group.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, Tim Harvey <tharvey@gateworks.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v6 0/5] Support i.MX28 Amarula rmm board
+Message-ID: <aGO1YiHpGb0EmWbv@dragon>
+References: <20250620080626.3580397-1-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/6] spi: spi-fsl-dspi: Store status directly in
- cur_msg->status
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Larisa Grigore <larisa.grigore@nxp.com>,
- Frank Li <Frank.li@nxp.com>, Christoph Hellwig <hch@lst.de>,
- linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20250627-james-nxp-spi-dma-v4-0-178dba20c120@linaro.org>
- <20250627-james-nxp-spi-dma-v4-2-178dba20c120@linaro.org>
- <20250627213041.vp6yfcgf4xysdklf@skbuf>
- <423f101a-0826-4b7c-ace7-f5e7f4790c4c@linaro.org>
- <20250630204135.gzffv33j3pk3bgx6@skbuf>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <20250630204135.gzffv33j3pk3bgx6@skbuf>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250620080626.3580397-1-dario.binacchi@amarulasolutions.com>
+X-CM-TRANSID:Mc8vCgD3v1pitWNoVEw9AA--.20470S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU8uc_UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIgV53mhjtWUsrgAA3Z
 
+On Fri, Jun 20, 2025 at 10:06:16AM +0200, Dario Binacchi wrote:
+> Dario Binacchi (5):
+>   ARM: dts: imx28: add pwm7 muxing options
+>   dt-bindings: arm: fsl: add i.MX28 Amarula rmm board
+>   ARM: dts: mxs: support i.MX28 Amarula rmm board
+>   ARM: mxs_defconfig: Cleanup mxs_defconfig
+>   ARM: mxs_defconfig: select new drivers used by imx28-amarula-rmm
 
-
-On 30/06/2025 9:41 pm, Vladimir Oltean wrote:
-> On Mon, Jun 30, 2025 at 01:54:11PM +0100, James Clark wrote:
->> On 27/06/2025 10:30 pm, Vladimir Oltean wrote:
->>> On Fri, Jun 27, 2025 at 11:21:38AM +0100, James Clark wrote:
->>>> This will allow us to return a status from the interrupt handler in a
->>>> later commit and avoids copying it at the end of
->>>> dspi_transfer_one_message(). For consistency make polling and DMA modes
->>>> use the same mechanism.
->>>>
->>>> Refactor dspi_rxtx() and dspi_poll() to not return -EINPROGRESS because
->>>> this isn't actually a status that was ever returned to the core layer
->>>> but some internal state. Wherever that was used we can look at dspi->len
->>>> instead.
->>>>
->>>> No functional changes intended.
->>>>
->>>> Signed-off-by: James Clark <james.clark@linaro.org>
->>>> ---
->>>
->>> This commit doesn't work, please do not merge this patch.
->>>
->>> You are changing the logic in DMA mode, interrupt-based FIFO and PIO all
->>> in one go, in a commit whose title and primary purpose is unrelated to
->>> that. Just a mention of the type "while at it, also do that". And in
->>> that process, that bundled refactoring introduces a subtle, but severe bug.
->>>
->>> No, that is discouraged. Make one patch per logical change, where only
->>> one thing is happening and which is obviously correct. It helps you and
->>> it helps the reviewer.
->>>
->>> Please find attached a set of 3 patches that represent a broken down and
->>> corrected variant of this one. First 2 should be squashed together in
->>> your next submission, they are just to illustrate the bug that you've
->>> introduced (which can be reproduced on any SoC in XSPI mode).
->>>
->>
->> Thanks for the debugging, yes it looks like the patches could be broken down
->> a bit.
->>
->> Just for clarity, is this bug affecting host+polling mode? I can see the
->> logic bug in dspi_poll() which I must have tested less thoroughly, but I
->> can't actually see any difference in dspi_interrupt().
-> 
-> It should affect both, I tested your patches unmodified, i.e. interrupt
-> based XSPI FIFO mode (in master mode).
-> 
-> Assume (not real numbers, just for explanation's sake) dspi->len is 2
-> (2 FIFO sizes worth of 32-bit words, but let's assume for simplicity
-> that each dspi_pop_tx() call simply decrements the len by 1).
-> 
-> The correct behavior would be this:
-> 
-> dspi_transfer_one_message()
-> -> dspi->len = 2
-> -> dspi_fifo_write()
->     -> dspi_xspi_fifo_write()
->        -> dspi_pop_tx()
->           -> dspi->len = 1
-> -> wait_for_completion(&dspi->xfer_done)
->                                             <IRQ>
->                                             dspi_interrupt()
->                                             -> dspi_rxtx()
->                                                -> dspi_fifo_read()
->                                                -> dspi_fifo_write()
->                                                   -> dspi_xspi_fifo_write()
->                                                      -> dspi_pop_tx()
->                                                         -> dspi->len = 0
->                                             <IRQ>
->                                             dspi_interrupt()
->                                             -> dspi_rxtx()
->                                                -> dspi_fifo_read()
->                                             -> complete(&dspi->xfer_done)
-> -> reinit_completion(&dspi->xfer_done)
-> 
-> but the behavior with your proposed logic is this:
-> 
-> dspi_transfer_one_message()
-> -> dspi->len = 2
-> -> dspi_fifo_write()
->     -> dspi_xspi_fifo_write()
->        -> dspi_pop_tx()
->           -> dspi->len = 1
-> -> wait_for_completion(&dspi->xfer_done)
->                                             <IRQ>
->                                             dspi_interrupt()
->                                             -> dspi_rxtx()
->                                                -> dspi_fifo_read()
->                                                -> dspi_fifo_write()
->                                                   -> dspi_xspi_fifo_write()
->                                                      -> dspi_pop_tx()
->                                                         -> dspi->len = 0
->                                             -> complete(&dspi->xfer_done)
-> -> reinit_completion(&dspi->xfer_done)
->                                             <IRQ>
->                                             dspi_interrupt()
->                                             -> Second interrupt is spurious at
->                                                this point, since the process
->                                                context may have proceeded
->                                                to change pointers in
->                                                dspi->cur_transfer, etc.
-> 
-> Clearer now? Essentially the complete() call is premature, it needs to
-> be not after the dspi_fifo_write() call, but after its subsequent
-> dspi_fifo_read(), which comes after yet another IRQ, in the IRQ-triggered
-> path.
-> 
-
-Much clearer, thanks. Not sure how I missed that, maybe a confusion 
-about whether it was dspi_fifo_read() or dspi_fifo_write() that modifies 
-  dspi->len.
-
-> Not sure why you are not able to reproduce this, maybe luck had it that
-> the complete() call never woke up the process context earlier than the
-> second IRQ in the above case triggered?
-> 
-> I'm not doing anything special in particular, just booted a board with a
-> SPI device driver (sja1105). This transfers some sequences of relatively
-> large buffers (256 bytes) at probe time, maybe that exercises the
-> controller driver more than the average peripheral driver.
-
-It's strange because I was stressing it quite a lot, especially with the 
-performance testing.
+Applied all, thanks!
 
