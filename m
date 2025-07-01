@@ -1,58 +1,58 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8613524503F
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 06:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93ED260580
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 06:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751351141; cv=none; b=hE307f1UdBjxWu/9Fb5TSvXXOBTC3NT+oE8Nvpapqb64tnDehGDfzW/9/CCkBp9/yfRgOAo6TLWVxL1379ZVfNhoUsRz18GQS+0DqFp4Ydu+T0a8mYqGmixmV8osNKOtQyhYGOF+ZmtmTjocpkob37tYvhZ3FKfiZWUQkAFMSZs=
+	t=1751351145; cv=none; b=qsJ4swKNn2c0izX/jiUjRy9VJAQegZDfaa6qwte8gud0MMVb4Ab6jl5v7QZeONWesyWmqB2X/OIJZr8kgqapWLd0UYQ/77+ef+7mL8DnJZ4oY55oNlQu9viXFAkEryKc7ttjaF0bpVu3pbapKE/X7ax0ToAYG8VsfN8sEg8RK2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751351141; c=relaxed/simple;
-	bh=rqZSa/la3CnAHBjvC72QRWPND4rYIHwWP5YgFWh81+Y=;
+	s=arc-20240116; t=1751351145; c=relaxed/simple;
+	bh=kqhbusb4G0seCqWwpnGwHlvyQN7dvmsg8Alj6q7/U2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0xVb75ryvIvjOQ1N9C/AsQk7QKVJO3Ei7Hwg2NQQGTlcoaq8d/+ngSrlEi8XtO2XsizMt+UIlFgxaIirOSjZ/KZ0vac0t4JgBlGZFM59/sZUo89XrTVWabHFsPnhKP8FnA0jEIzVw086cPvPj3GnHydT3gq4bPgwobX1z9J6Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=VYqOh8ev; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=SYgu8FkE reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=uIEhdULRPG9kjimqCgEhwsUxEsf4WdClh+JRxK4oCP5xs72JlZbGaEoddkTbIUv8Jb41Y87RsvLt7zFZyDtFbr8MlEguFDR8XXpa4z5e/HbQNiGRwh0zb5dOIu7Q4jf7og/8Ol4EN7fhkmyzkGgm8cWGOC788FEXUbu1mjb5X3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=DwxaYY8d; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=MHCRgmIF reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="VYqOh8ev";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="SYgu8FkE"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="DwxaYY8d";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="MHCRgmIF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1751351138; x=1782887138;
+  t=1751351144; x=1782887144;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Gq5R+w5XrB6J6Y4bhU8dYOmERqkhQgDDpoSeyTTrFX8=;
-  b=VYqOh8evcbUcU7SOhldNMi5EgguIRTF6KZk6aakOj/FOJscnE3lW6bAg
-   il0qw11Dp93uywrC/oix9PEZQHM7h6Cj1LiBKp10eX5xnn4ke/abknwEb
-   5KggqsxQsppcVHv/BwtTqDRFol7bR+el43YJXsEQAB4d2i6s8RxlXYIVH
-   giVQVRecr2zfJ2yLWCCcHj7/4TDpvc8rTmEQQDKp5cTzPJC213aBU0RCq
-   72uH6Vgak2nVHY9GFu7vsei/z9SpuXrnln6PKErXnFbuBaV+GAPyZXsSE
-   tsgp2nCvxUMIDnsY8jLImLdM0huSX2uYA5fjYlYPnY19qm2G04tabx0VD
+  bh=nK4p8G0pyCnC9FqEn0RQ8k/V3iMh88LJHP9Q1eet4ok=;
+  b=DwxaYY8daG/uV35iIeVdEjWIoy2frNYhiQtAsoBvZvhZo07FLDNNXIBA
+   AxCeLMTyVyHloVisDy9tM4FxYtjQygmq4z3IbVrVbpmLUvnXh+CRhDUbA
+   36vsqrDiIfCjCkugNcdHUvGSRmYMTKLo5KPzNdu4cscoULMRdxWtasT+d
+   bLU59YVkSNgnE9eqBvvdHmZ4Fo15Sl17/0kiDAPkplXJ2K0+zGSNRJ18w
+   dZP+Sk0QBL2CTH3+ymeuSUB1f1P7T+6b4LywyN9K2pUztBVGc+Dg/qiAq
+   20iii0BOpBmNTJwdBSHpKnVkso7vzFLx91/Q/9DRiItD+Itsm0Ruihiur
    A==;
-X-CSE-ConnectionGUID: 5FLJjaQlStiVJLpgCH0mAA==
-X-CSE-MsgGUID: fljwx/5ESuqKjj5SqyJQTw==
+X-CSE-ConnectionGUID: 620mXZKuTGS5s7ta6AS+yA==
+X-CSE-MsgGUID: hWxztEe7TpmhUxhrRTX/Bg==
 X-IronPort-AV: E=Sophos;i="6.16,279,1744063200"; 
-   d="scan'208";a="44943382"
+   d="scan'208";a="44943388"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 01 Jul 2025 08:25:37 +0200
-X-CheckPoint: {68637F61-2C-ABFC28F4-D6731B76}
-X-MAIL-CPID: 73E9D8067A412AC0F8CE377BA54C8275_5
-X-Control-Analysis: str=0001.0A006377.68637F6E.005A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CBE716A583;
-	Tue,  1 Jul 2025 08:25:33 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 01 Jul 2025 08:25:43 +0200
+X-CheckPoint: {68637F67-6-468F1319-EAD2FB43}
+X-MAIL-CPID: 9019E50B743E46FF6436B8F25B1106F6_0
+X-Control-Analysis: str=0001.0A006398.68637F96.000E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8719616A570;
+	Tue,  1 Jul 2025 08:25:38 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1751351133;
+	s=dkim; t=1751351138;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Gq5R+w5XrB6J6Y4bhU8dYOmERqkhQgDDpoSeyTTrFX8=;
-	b=SYgu8FkEGPzAHexTMvzd/lmiBcoWTheFuCMMS7chHsWUr9YYPzSpNTCBicYe2hTYoIYQRI
-	QU4MOoT7xCvyO3NTAfmYfQO7yU4bhl2vRNIrRCGU1p71YNM24uK7eDjGw4nsKSnuC/qzBK
-	2bKrI0py84RvPSqTuIpXny9VdFdkeyzFj3iIv4oXMmmDyTeaMSFEXcH1AU4H0qdz3eSegG
-	CnwoPgk2LXTT7cHKa8ceNy9HUNh3gmSzIBHNRPVtaC5wZs00X1dHfDz1O2/2QLl9dbuJ+Y
-	RWOpejlDkHbgoZA7HBnHh93k9iCNy4hWVedLpknpn3O+HhShFuiAI+L6/CKUmA==
+	bh=nK4p8G0pyCnC9FqEn0RQ8k/V3iMh88LJHP9Q1eet4ok=;
+	b=MHCRgmIFBlZwwf4tfLm7JkXog9Lhq0r725SsyHqbDNk6yVNnn6RzFZjMoOYM9xsjXzvH2Q
+	J0DK9FnyF1m6rOm8Lzpjb7I4dX9ZV8+RKv1NzB8xNYkzQHIUGqBELUnl1dvdO1NnYYr1dQ
+	eCZdEvVISX4oWCrPnBjPdpKb8boKJk0MqVb6KV88/2X1YRmo3UqozReQbZqiXllzM+YPqG
+	j8iXo3GB0uaEypxlQbTh0kPJi5LMqV2DfFOQlVkL0ZgC7waJFn2DwXqd1DyF1A3KIJA7f3
+	VzlZkJr3EVMYUmUzsH6lnzXENt7WIFP6BilshJUwPWUepihjSC7uJK3CqNd9Jg==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Shawn Guo <shawnguo@kernel.org>,
 	Rob Herring <robh@kernel.org>,
@@ -67,9 +67,9 @@ Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev
-Subject: [PATCH 5/8] arm64: dts: tqmls1043a: Enable SFP interface
-Date: Tue,  1 Jul 2025 08:24:53 +0200
-Message-ID: <20250701062500.515735-6-alexander.stein@ew.tq-group.com>
+Subject: [PATCH 6/8] arm64: dts: tqmls1046a: Enable SFP interfaces
+Date: Tue,  1 Jul 2025 08:24:54 +0200
+Message-ID: <20250701062500.515735-7-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701062500.515735-1-alexander.stein@ew.tq-group.com>
 References: <20250701062500.515735-1-alexander.stein@ew.tq-group.com>
@@ -82,20 +82,20 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-There is an SFP interface usable on TQMLS1043A. Enable all the
+There are two SFP interfaces usable on TQMLS1046A. Enable all the
 corresponding nodes. U-Boot will configure the connection if the RCW
 is configured accordingly.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- .../freescale/fsl-ls1043a-tqmls1043a-mbls10xxa.dts   | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ .../fsl-ls1046a-tqmls1046a-mbls10xxa.dts      | 22 ++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a-tqmls1043a-mbls10xxa.dts b/arch/arm64/boot/dts/freescale/fsl-ls1043a-tqmls1043a-mbls10xxa.dts
-index 03748a7f657b3..e04483fdb9089 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1043a-tqmls1043a-mbls10xxa.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a-tqmls1043a-mbls10xxa.dts
-@@ -41,9 +41,21 @@ &esdhc {
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-tqmls1046a-mbls10xxa.dts b/arch/arm64/boot/dts/freescale/fsl-ls1046a-tqmls1046a-mbls10xxa.dts
+index 37834ae3deac5..43261cda3fcf5 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1046a-tqmls1046a-mbls10xxa.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-tqmls1046a-mbls10xxa.dts
+@@ -44,6 +44,22 @@ &esdhc {
  	wp-gpios = <&gpio3 3 GPIO_ACTIVE_HIGH>;
  };
  
@@ -103,20 +103,33 @@ index 03748a7f657b3..e04483fdb9089 100644
 +	status = "okay";
 +};
 +
++&sfp2 {
++	status = "okay";
++};
++
 +&sfp1_i2c {
++	status = "okay";
++};
++
++&sfp2_i2c {
 +	status = "okay";
 +};
 +
  &usb2 {
  	status = "okay";
  };
- 
- #include "fsl-ls1043-post.dtsi"
+@@ -51,6 +67,10 @@ &usb2 {
+ #include "fsl-ls1046-post.dtsi"
  #include "tqmls104xa-mbls10xxa-fman.dtsi"
-+
+ 
 +&enet6 {
 +	status = "okay";
 +};
++
+ &enet7 {
+-	status = "disabled";
++	status = "okay";
+ };
 -- 
 2.43.0
 
