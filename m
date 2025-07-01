@@ -1,159 +1,91 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B8D4A0F
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 17:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BFB1B95B
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 18:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751392662; cv=none; b=MuPLHozvneGpLNbP8azYUc+FYrW66+9WW15x23h14Ky8AC4D1M/mz+oaPHAm70clPG1A1LQkchgH/9j230bW9RfVzx87qFI/mfCLHKKO9ybSQdOAGhiNLs7mocSn5OIJjUEJN6B0lNT4IPdd/lK/W8Zp9PoS/DlRLoQ1qyhySl8=
+	t=1751393595; cv=none; b=lx0I8Gf16/aiqyxcdq0HHiRtlWfXGcAnNVgBHkOOikh5NBXjWPhedqFzGEysAKL6oiCU1Httd3YJDbsH1gi0YxSJUJfjC24Aj09lrpad7r87k4qjtPlKrvzK8VgvJ73QYfEMJx2YLh/9iOmtuZW/HO1+ISp/cixOlu5wqbts4GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751392662; c=relaxed/simple;
-	bh=Xcj3t8dS0FcmInmyKWAR0WJhIMN9tZ31T0nM7EtTJpo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CSXhZya4XURCXoKlKZ2QVG4sUG50x0Ww+OmXOfg7ZBKh8r6EG6kZklDtTW0FsRJNa4Cjk8TcBCwVmpOIDs9KM8w8bAmezXKn7pyvCN0UIdsUlm95N1H2EWBkHWLVdhNg6t51QM/bQfDB6ftINs+mThT6dPW7nHogvlT5g81PwLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NVSqrN8Q; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1751393595; c=relaxed/simple;
+	bh=eAu0MRSHV6xH4249WU3u1VjZk+3a4KJwctP9GEQDFLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UdehC54EwMk0qctLfqcT7C2chDgfaRX+zz8YCcHc6HHHgek62mZDb5Gc05lBhOqeAI07yFEU9IRPTTCdqxf1zEBHEF/4GAd3aht/ttToBzZVL3EVz2YlzxkY2L+iW32hl7rrV9+lieAlIgzlKmF/9u9qmbkLvieod/sh2UQnDUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gkVujIhv; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NVSqrN8Q"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-adfb562266cso971625166b.0
-        for <imx@lists.linux.dev>; Tue, 01 Jul 2025 10:57:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gkVujIhv"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-23aeac7d77aso31775385ad.3
+        for <imx@lists.linux.dev>; Tue, 01 Jul 2025 11:13:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751392659; x=1751997459; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pXjfR544OdpbJ9besQg+JvGQxJKjojQewq85hiTyzvw=;
-        b=NVSqrN8Qqr4hRKo2P2nP31T0pjusjUvRyBTBa+qj+L4zsBKJdhKg/zEvh2D820AQhp
-         +ZXXSrJpDr7uH5dlkBeHyRm3/lpaVN+ugZQTOs5c5gpqp9khxdgGlXN4EZpPs/6y9e8H
-         0lwUDzmBcaY3ZWZPHDhcF86QxG3Q2CbTdZ3oEoduJUEna+lIbhgD2WUs0DGqkoJ6Uiiu
-         LU5Xrep23lJK+ZS33bthZvxDne1rwf8Osv2rXsAk0p6TKKInJ8TpuFxX9q3dZwdUzo1M
-         fihz0pU5ARtWc2T07q+s6LhuK0qPO5f59k2xCOXGl6g8SS8yduJp57a74zXQbEk4vaU9
-         9i+Q==
+        d=gmail.com; s=20230601; t=1751393593; x=1751998393; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nepb3zOB889c16aJ25u0uXLI1bBeotorI3Pi5r9+cUo=;
+        b=gkVujIhv3MxwjdSvJDvY/k7jSjMLhKF3NG+fdEu2PyeOSnvknOcORxtcA7U6kaYnIL
+         +PGEC8bLnYyISKBN5vp60P7eg2FatRV5kZpChbPU996LSw3gSHsiCUcjs1S4yVppjCLF
+         i32ekSKe5MF+mbSq71e3VT7Qn9Jajf+WyJEAbJkMqp7qEQMQwZpd3xD1ALSbHF4vqyOA
+         jJUA/Bmapcdz+ijYFj56o+pU+KEcpKIx0SSiJqlPGyMKz1FLJGB5KplKtG006Z5gH15B
+         bAahaRgLUo4bzoqzVN1OPSpit5/nrcyb6uR0UMhR6rqpK3K4rvSBEwe/cJbVfewkcUQa
+         jYOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751392659; x=1751997459;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pXjfR544OdpbJ9besQg+JvGQxJKjojQewq85hiTyzvw=;
-        b=CLJQF49frp+0y5gzenOHkatzvhjdOBTkdSEjQxXFTqbrRlede5OH+yRPvbtTEN/glb
-         oCgbekNebWEnTlWQl1iBEAtxqrkuc6yFD7T6nEfa1YciYKPTrsHov9p6f0+w5656MU58
-         Sv3Bo3cDvHzqv+VbeSyRucVqauC8uD5kUI3z9avvZCbULSSu+LxA7knglPL0/OfHZTL1
-         mDJKeE+aItaEWoa5wohJNNsoD6f8Hvu7834AGR2olKU7z/4ympVwUcLzZHZwuoNfntfY
-         iPu4yGSpxKBaLe/DqXaGblBzHEuyBMtq07jX+B32DqmvbKUflVykPjMc/UBuqImnUxbm
-         ogRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUnapc8ji6Ym+L0LwUnwR1IreHO47ConwVb0efy1FS8Q6atv206d/M5bGcO3q7P2ewI4Rc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzV3w0+3b8MRPNB9RIonv14tnnJrWzydaL17a9YWGUn0LK9Mog3
-	KL9keTLdCUzx1bBlfNM2YqIp0hLug9A8ItDsevFLS3gkLcy8P5NKZN0FVW8qMMefRSvDEOX2dSO
-	FaQz0Gw1YgF0F5Jsov/QIJ3ArabxKVvU=
-X-Gm-Gg: ASbGncvSVvXG/4kj8mID3XCU+DhqqxYVsZAt/4nzo5FFimyUqpVTgGfuF1HRor1qaPw
-	78fE9Hn3ZYjvrysK6DeNV8Ff/zJDTAH3PLRk5o+gBSccDFOXl/23jlp9nkNCxkIRcbe+QTYNtmP
-	2S0Dt5DT3KeeCAoRonAMt4jB8+W2jOEOfaXjb6BVjfIIY=
-X-Google-Smtp-Source: AGHT+IFi2mQZLuvuKUJ5Vmbx2bMFhgEtTB1rODdhMnUJkkTAqMfdBOcO66FNReafO5ChqP0c8B6r5Lro21q2uCkd3k4=
-X-Received: by 2002:a17:907:1c18:b0:ae0:4410:47e3 with SMTP id
- a640c23a62f3a-ae3501a58a6mr1915225466b.51.1751392659068; Tue, 01 Jul 2025
- 10:57:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751393593; x=1751998393;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nepb3zOB889c16aJ25u0uXLI1bBeotorI3Pi5r9+cUo=;
+        b=LPYEj8BC9Ikkkegtx4Coe6MyBhC1KI/46bIwshnpSCSyuCegVhtUzK1Cg29QkJvj7H
+         yOOeEGdfKqBvWf0e0+WyVvum2LePIenPS/etEsaEI8ZmR58OZlLFTVsf9V1G/MnmOAnE
+         9gAoPJm9EwlKddLMld7T5L4mQazD8FzbrpPI/0BxWfd7AnRt0w/4OmcQMj50rGzCuDIr
+         +nkXEIA1WdLocS+Vif3N/65WZguwBTAOlGOPo5qjML1E0UVNe44DDsUpkTdqJtNhPFEz
+         tBaisl67sBxKAhW0dNgbzZGSyj/JUigjQSLp8r+EerzH93nWSLb2sz5t7nlXauwm9zvV
+         cdUA==
+X-Forwarded-Encrypted: i=1; AJvYcCVL0M4qgdBtQFv/JX2c3HVwBjcZqAgPJStVzJA5Skj+zSfVgSj9TIXW+k1WHNjipQRxzjE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz8oDCyJ6rWCjZmQN/rrG6Oi3feecD2AdjDUVVnp37LlYCNbIUp
+	qWIDoXDIT7PcjiCxwv4pbjxAgYZYtNHbeb/F+DbsKqSclbQSIfStLVBZ
+X-Gm-Gg: ASbGncvBFg18JNmphz2D5u7u+2545yJZodbL3ndFGIweBHO9VHr0DwFC0tHkRwlbWAW
+	76JoBv4tMgJtrEPF4EGwLRFaUOvFncl3ogC1ho/dddT+UsC1Pst/NahxyLm4jARPRp5jvET1Lzd
+	N/spmceouJKTmsFjNPZpXzi0uHw2soPLi1tPYI1ydy/Rk2ARal7StGUqa8o0JodVZy9GZE+aAU2
+	1wC3Q5p7/pAUBoSjNdhh/RYYgHiqkpT3lvPcrjamoeflMueh0HjfDf59QopLvagNEDRKo1ZDOny
+	PKLrZfZRS6foMeQLiv0PoX5OCFVegqUrm/gfFtX0TyK5tK++5hSMhw1cOlNkGa8=
+X-Google-Smtp-Source: AGHT+IGAdFjKL0rEV/0i5/agWfz3gy3C3R3l4wEiE5tiTp8xVYfcABnycX6766pzilb4G+WLEWj9pA==
+X-Received: by 2002:a17:903:244c:b0:224:910:23f6 with SMTP id d9443c01a7336-23ac463e8d8mr287205225ad.45.1751393592975;
+        Tue, 01 Jul 2025 11:13:12 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:7bb0:b5bc:35bb:1cb4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb3b85efsm109583475ad.185.2025.07.01.11.13.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Jul 2025 11:13:12 -0700 (PDT)
+Date: Tue, 1 Jul 2025 11:13:09 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)..." <linux-input@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] dt-bindings: input: touchscreen: convert tsc2007.txt
+ to yaml format
+Message-ID: <ooyp7e6gubzqxavo7aadie7xgo4qi37uarw72hkhbbbolno6ht@y6fve3n3rcru>
+References: <20250529193241.793678-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <pnd7c0s6ji2.fsf@axis.com> <ylr7cuxldwb24ccenen4khtyddzq3owgzzfblbohkdxb7p7eeo@qpuddn6wrz3x>
-In-Reply-To: <ylr7cuxldwb24ccenen4khtyddzq3owgzzfblbohkdxb7p7eeo@qpuddn6wrz3x>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 1 Jul 2025 20:57:02 +0300
-X-Gm-Features: Ac12FXyruF9twzstORuqQqTbcXFq7Oy0k32bhmiSfPFWKw8o7JRMkyPmwEAJIYk
-Message-ID: <CAHp75Ve=Zas8=6YKoPeTRrvjCaTyyRAyJG1gBLripqZgQpfg7g@mail.gmail.com>
-Subject: Re: [PATCH] Remove error prints for devm_add_action_or_reset()
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Waqar Hameed <waqar.hameed@axis.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
-	Julien Panis <jpanis@baylibre.com>, William Breathitt Gray <wbg@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Peter Rosin <peda@axentia.se>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Cosmin Tanislav <cosmin.tanislav@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Matteo Martelli <matteomartelli3@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Francesco Dolcini <francesco@dolcini.it>, 
-	=?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, 
-	Mudit Sharma <muditsharma.info@gmail.com>, Gerald Loacker <gerald.loacker@wolfvision.net>, 
-	Song Qiang <songqiang1304521@gmail.com>, Crt Mori <cmo@melexis.com>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Karol Gugala <kgugala@antmicro.com>, Mateusz Holenko <mholenko@antmicro.com>, 
-	Gabriel Somlo <gsomlo@gmail.com>, Joel Stanley <joel@jms.id.au>, 
-	Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, 
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Sebastian Reichel <sre@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Han Xu <han.xu@nxp.com>, 
-	Haibo Chen <haibo.chen@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Avri Altman <avri.altman@wdc.com>, 
-	Bart Van Assche <bvanassche@acm.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, 
-	Souradeep Chowdhury <quic_schowdhu@quicinc.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
-	Bard Liao <yung-chuan.liao@linux.intel.com>, 
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, kernel@axis.com, linux-iio@vger.kernel.org, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, imx@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-usb@vger.kernel.org, sound-open-firmware@alsa-project.org, 
-	linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250529193241.793678-1-Frank.Li@nxp.com>
 
-On Tue, Jul 1, 2025 at 8:44=E2=80=AFPM Uwe Kleine-K=C3=B6nig <ukleinek@kern=
-el.org> wrote:
-> On Tue, Jul 01, 2025 at 05:03:33PM +0200, Waqar Hameed wrote:
+On Thu, May 29, 2025 at 03:32:35PM -0400, Frank Li wrote:
+> Convert tsc2007.txt to yaml format.
+> 
+> Additional changes:
+> - add pendown-gpio property to match existed dts.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-...
+Applied, thank you.
 
-> With that
->
->         ret =3D devm_add_action_or_reset(dev, meson_pwm_s4_put_clk,
->                                        meson->channels[i].clk);
->         if (ret)
->                 return dev_err_probe(dev, ret,
->                                      "Failed to add clk_put action\n");
->
-> from drivers/pwm/pwm-meson.c is optimized to
->
->         ret =3D devm_add_action_or_reset(dev, meson_pwm_s4_put_clk,
->                                        meson->channels[i].clk);
->         if (ret)
->                 return ret;
->
-> .
->
-> I would prefer this approach, because a) there is no need to drop all
-> dev_err_probe()s after devm_add_action_or_reset() and b) the
-> dev_err_probe()s could stay for consistency in the error paths of a
-> driver.
-
-Why do we need a dev_err_probe() after devm_add_action*()? I would
-expect that the original call (if needed) can spit out a message.
-
-
---=20
-With Best Regards,
-Andy Shevchenko
+-- 
+Dmitry
