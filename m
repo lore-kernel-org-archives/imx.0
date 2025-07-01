@@ -1,115 +1,174 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012040.outbound.protection.outlook.com [52.101.71.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052B0191493
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 14:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751381487; cv=none; b=dPB0XNKk4iHt1ZmsGaXKqz123sz9Z+Dsds3qKz6QBGCgeu1y4NBOlPE/XbiOIjbrKUVrEb7ula6wHx1rqp2HKJJKfmxR6O0Vwrq0w8ERoClhi6cMVX5m7Pdiqpim3DlKbquRN6WlVbIex2v/CqawYU3J/1S7RxoL6IK2arKtUBU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751381487; c=relaxed/simple;
-	bh=UzoL7K1DgbELUOr0ui+iyWIzQaK+LJsdOwm+clz8lm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CsFNOf5HIpGJAJYQu50D+TYOsECNpu0Vy2Jc2rJ9zOsoTZdEVMxOetX1ECwFHuI3pUJg9N1AxpB5A/tcEadANERcPgxx7Ae55n34pY82m9GtNBrGbVKXNSfguZxBNu3kSHO+sUJr/4ASCL9TE8H3fhGPsZeeFbtSyO675Wp5LYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=d2mma4FV; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48B1274FFC
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 14:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751381602; cv=fail; b=TA/rv5z7i631Bz9M2KONyYS2ijUQqBLxXPWgcO1AwM4uWDk3BcwRb7FyZ7HNHclFCwVF0K7Xw1OUmxffEmA/o8K5V+ZjwJafxDxQQ54MbHJGeG5/4m4TyenhoeZu/x5QoXSfJxTQHhN+AqItSez/E99i0YslwQE6PrBFGGs4NF4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751381602; c=relaxed/simple;
+	bh=zBHyaXbAzdQB5rV4j5r5Y+RdKbLnQA8XJlqY5xxNaNY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kahXD8yHbVfGdvqLAlLiIH2L3xME1Ql/578L6La7x3CgaiTlDP+kgXq1qEDr+M/IemJs+HBIduEORb0ZOUFt2vYq5Tts8FoOetOQEuTDZTaQJHqENx69u6xWmVfAY1lk6cKfk8r9PK/QEjGtEPX0oiS6xAXx5Y+BU25g2YL85sM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OpUxp2Tp; arc=fail smtp.client-ip=52.101.71.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="d2mma4FV"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4a43afb04a7so23424031cf.0
-        for <imx@lists.linux.dev>; Tue, 01 Jul 2025 07:51:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1751381485; x=1751986285; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vlt6HkWsjPtuDA7DFavNWsclEgVzxWUAqR2DN4vxaeo=;
-        b=d2mma4FVt6X6CznAvvBVH+c8u1AAg/iU0RLdsKabJdpTfYr5Pwbd5OW0YDa6V2xFBV
-         1Wnqn60PliF6gHKk6Jbo/a1XWPSwGY34Qf3W73Y9zruNnOuZysi++WkpeFjK0A/XQSAe
-         vFups2N+ZfX+GHbNRRc3K/uYuWsBz38yIqUnMR4zpZamr+S4O97U+n8JltnszI36SzjT
-         LlsxfnTVj392LTBZ3w8KYOPwG2W2xORbxZffXGjHr8oCBSTaedI4Vd/rHT1m/BjdcclD
-         8hMNV4xt/HpmB43LfqiOznNJx1K57XmtUURY0aeIORMYO+qbWKXWYPcHbY4a2A9W1VlF
-         d7Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751381485; x=1751986285;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vlt6HkWsjPtuDA7DFavNWsclEgVzxWUAqR2DN4vxaeo=;
-        b=CQrP78fmwWqqJS+9hfljqcivO32xa9N0IhrAimTjNNrJD3GejltFShhpibOdvNcsOT
-         F7RLFjekC/oBy0n0mIUNKOf/EeTnIEUzBceU2l7Tf848M7Ue3GLOJ+A0/HvpJyiE+816
-         bE2Qn0oPZ+sFkhmTq2ZvSoKCPYXbtyN6c6TPhGzbj91GD/eIlfDj9qF/Dg5Y89nSkCuP
-         lCJd6MNLHyQB83jL8WCkMAxVNVWOEHfnXqMBPynGp4mTrXTpoRTA9YhzNg1Ah1j8qlgf
-         frCYA9CqiVMXDYjuiqqG55eDdYdFo5TDTCzJ02+K3243ujsfbAeMr4tvj3JewSD6Zdn+
-         ybWg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7lh9cWcsnnR2IE9p8+ks/NIq0zsrzdPJODG/DLKehCnMjmBPnu6zmRp3NASk+r4u27sY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxyBU/8ijO4HOfKRYLmY0Gg2RyfI/scthvyJM3uNX0zMb1ogjD6
-	k6c67Ml8zQ1J2TsmSWtlPW4ESzn4Z7KK0qA4rk45RcsgHG9XM1iCVfV03Viyi48MZg==
-X-Gm-Gg: ASbGnctw3BZDw08QA6BxxhKR36N5X0/fzMLIRy5wkOhLpeNrHZbN2koXzafbzYNlpUJ
-	N866f9FkeWaKP7trcyPAKVMtLVcQwLkYlsiEX8ldD+zXAxWKvEbM65Dk/89J7DrdYdgBmfqtHAq
-	G0H+2wRdpwgDEGwiWuxR/fef1jJ3+ICxvzp8JyQyfFNuaF9Td8irtVrj7zPtv+zmCAJfo9NThUN
-	1/4qRbJ4oI1eNBXyU0tGiOXxBiO5EdsS0L670qUj1Yn6Y7gXusg5OiDQvFF5tPfrZwQws7fXIPO
-	FfEhUH+3km0mBGDGUd1UBXAptEBYWnMrkAHU+YzZtD/q2oWBx9tmWQtEkjMIRMNPLcGIEnTHY0K
-	XBwB4
-X-Google-Smtp-Source: AGHT+IG2WAgD69R5Cx0UOslTbeqnt6ZmQFs9jqLYE9iO9Eo5OndYvPnf3ly/vD3jcuVTySG3VSMUiA==
-X-Received: by 2002:ac8:74a:0:b0:4a7:fbd0:79c4 with SMTP id d75a77b69052e-4a7fca97159mr244132201cf.11.1751381484546;
-        Tue, 01 Jul 2025 07:51:24 -0700 (PDT)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a7fc592cc9sm76815851cf.72.2025.07.01.07.51.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 07:51:24 -0700 (PDT)
-Date: Tue, 1 Jul 2025 10:51:21 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, viro@zeniv.linux.org.uk,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH] usb: mon_text: find valid buffer offset for iso transfer
-Message-ID: <adfbd9c0-4bf5-4dab-974e-4afa61d8492a@rowland.harvard.edu>
-References: <20250627105651.3653231-1-xu.yang_2@nxp.com>
- <8a251c8b-5ec6-4238-bdcd-8d8001fd06df@rowland.harvard.edu>
- <zbxioq4jk2ykd3alu5j6igmgzmsuainlwelhvl5lhz3iczcqyv@uspbdfpyj36j>
- <57695560-d6ef-49bc-976e-836ddc903d13@rowland.harvard.edu>
- <fornnnolaxn5zbw2dnepq2higyf5vw4dkdn4uptgz6tuki4zoe@wnclvwajtila>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OpUxp2Tp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PYBqvrUNssqaYZkGmcfM/J3jpQjgSnHximyZ8HXngi1ds7XHdiz+Ewby2v57I3l901j8tk6RlXlUpajoJIaPrKWCLwQW3pqH4wFdRfGQ/pPQUVjOFsRnaZTcZt/q/zCH5SITDFbDPEkTcNv+z5H6lT/j5FDi/U9rUiIMlcB6usbf/VcFkZgazNwjH6zsUJuZehszPclFllw5X2X0ewVCqqXuC6IpDxiDxNm17CXixrGNOs8YCBFdPfLDFShqsuqhZAERFTt1UvGge3Do3fF5rUh+sllyQOhtVhp7viPp3CEa3Gk04dAAbwK/dbe7vuPw+avVlv+iqs1ohYmgc8TtCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mMEGusoFUTg7BJhz4MmV9LwpZe+eNcWmSzRRhqUl64w=;
+ b=jm9KA38Sl4UanEHWa8zpQzkhOUV2Nw17IaF7LPQxaGFxghSkZdCSi8SXXz9AzeMvtAYiIiKbfepP3EQ3eQBGbiGDRdF3O6j/OdQHhVz9DpYGm6YT/jcp23WYRezbJIyeHVIu5b88mO1tXwpk3+Z/+Gj93/M5rbtuazThO79/pyucylo8JT6Ra0gwF/wFH13rPhDRnkeE7Urj3YlUU20DqYQCTtlZTdPEne9589P7sWGeeClkspP2dnjBPbgI84Be2f79OhYfcfZW7bF81RiB1QLUX+7oCb30Vvv3jfmKmLOXvijMXrl2EIPkFUDiCUS+28Xi7rRFPVjpPbAFaQzeYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mMEGusoFUTg7BJhz4MmV9LwpZe+eNcWmSzRRhqUl64w=;
+ b=OpUxp2TptZty20BRpig94t45epQr/B13a2aMzkakocwx253Z9RFGD7fjoCdHEt0n3zGBEr9HKPRxucy8TAVLrdlNE8bg2D3QFLl85IMDSEQ/MGtoMnFYlMUBNKIsKwzdd/A5p7XbNrJ7P9dV5E3B6CVwFtY5pwObEaJKjFwhSQqnExdjO5Ui+08RiuDiuj+0jyk7zgw3nBU7SxqS9BRt3oHYuzCsrzG6x0E9oXwtaWXQDWN93qiUw56g3yEuaS9cVkGO/Z3zlS01a2bTcFrZfoS6FDo+Bga4sK6MGFBGgSzgcXvLcYa4yqQk+VHWDlW5jP4axtw7UePH5rvx51ac0w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by AM9PR04MB8540.eurprd04.prod.outlook.com (2603:10a6:20b:437::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.30; Tue, 1 Jul
+ 2025 14:53:15 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%7]) with mapi id 15.20.8880.030; Tue, 1 Jul 2025
+ 14:53:15 +0000
+Date: Tue, 1 Jul 2025 17:53:12 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: James Clark <james.clark@linaro.org>,
+	Vladimir Oltean <olteanv@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	Frank Li <Frank.li@nxp.com>, Christoph Hellwig <hch@lst.de>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/6] spi: spi-fsl-dspi: Target mode improvements
+Message-ID: <20250701145312.zx56ji4vvaoxwzkc@skbuf>
+References: <20250627-james-nxp-spi-dma-v4-0-178dba20c120@linaro.org>
+ <20250630152612.npdobwbcezl5nlym@skbuf>
+ <c9bf945b-9fc6-4829-addf-2fb7a7d4eb36@linaro.org>
+ <20250701135747.mns6emamtmxwgpyu@skbuf>
+ <3c3c912c-1f33-4f63-9a37-fe4db5d23527@sirena.org.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3c3c912c-1f33-4f63-9a37-fe4db5d23527@sirena.org.uk>
+X-ClientProxiedBy: VI1PR04CA0096.eurprd04.prod.outlook.com
+ (2603:10a6:803:64::31) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fornnnolaxn5zbw2dnepq2higyf5vw4dkdn4uptgz6tuki4zoe@wnclvwajtila>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AM9PR04MB8540:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3aaaae25-6ee1-46d6-c299-08ddb8af0201
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|19092799006|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?6YrcqlqEOSWC4FNgHRwLxFo1A9eMfRBYf2XBOrRlcMhdfdoNgrDipwBYOVNr?=
+ =?us-ascii?Q?l0KQRnqlBBIv5JNgYDXQYk8JLTZY78d6A2Yj+Kfoda3DaRlUJ2ppZ+ep8k5C?=
+ =?us-ascii?Q?2cUZXJqJAVAkXn2sAN0eV2b2fNEdoD1sdtUBC/078Z47kwgG4Bpw9+MLlOeS?=
+ =?us-ascii?Q?Q/XeYkc6knThrovt/ivhs7PjARLgvOpnWFh2ocpky+asVW2K6uoktvnBKfGl?=
+ =?us-ascii?Q?hnpx01L2MpGWhJk2RCcCaVkyimH/BAsY1NYLJ9wAHIGDek+QbEJ8ENZQafZX?=
+ =?us-ascii?Q?9bEKehwE9wSmd33ZVKC+rOWqPhuYg3t34UaIFkoFrhvCwvel/wsXO30J58bT?=
+ =?us-ascii?Q?cObeJi9sWuoLBbGtOrzcQ8u0dDO1r4biyiMgQ6w2oYck/v9J3STLhRl7L4GF?=
+ =?us-ascii?Q?JkX0kHjOMD5CGmbjRBZdNmLQoy0o/2rG9cvI/4fJsFNPtnMXOQEL6Nk0ec+P?=
+ =?us-ascii?Q?Aj7fGq03PRehEJbiKBxlb7+BQt4aNtXXqOT7QqGlgzQq8zBmi2Ah+I4NrEc3?=
+ =?us-ascii?Q?RG1O7BKwXIGdGRJElf95LmMetpqGDnGR9Esp9lxJ8ljz1S4lTK0feIlA85wD?=
+ =?us-ascii?Q?FRRo/cpL2wNUJy/tuVkGItHTU9PhWwAztQYTbjWFyIIduBZcWESf31H7ozWb?=
+ =?us-ascii?Q?lz+qpH1ti1x/jSXDkgJS8KSmmwi/E9trJvFPOUbdXrk5V98tm3Vpv/ySEKz+?=
+ =?us-ascii?Q?4RzDZdvapSAqVxLlDBGb2txGW4FvxV1jjFb7l4vIg48yqlRnL2GJ+dXLYAiv?=
+ =?us-ascii?Q?Wa4Nrmv3JbYa8SICG8gkNppJIubwA5Ji017mtQcJRUwzl1+SQctkVn41YU0W?=
+ =?us-ascii?Q?sH45ELylZ76w+xeEDTei5uxX8i9jpdpX5UogrW5MyUlWiECIh1fafDmSMtD+?=
+ =?us-ascii?Q?2GmOkJqoJRcPxnsKCLMhRZjrbPEtNbhZx3+mqIjiElL2ARMz+Y9AkssXMDPp?=
+ =?us-ascii?Q?KS6DraOFRoV+oRUQNwKqz2W/tzXX3PMezYCj+kPjD8c3KXfZeDf70pLJe7A0?=
+ =?us-ascii?Q?H1I8Q5/2jICgH5PP7sgwo6z49SDVFIrqwFaRr4AB/dQWXbGDBM+/ppX1Mw9C?=
+ =?us-ascii?Q?CePaq9AsNslBUV1bQADt4Wv8Kf4D2XCSOhxjpFnM21f0RP/6BT7kfrYuE5zn?=
+ =?us-ascii?Q?GYgzGrDdrPLclHkYqriShs9SB39HrF7PQEFAk0qT2+Li/JS2TZ48qGiRD/JE?=
+ =?us-ascii?Q?ASqv4zPbg1LXBD7gaNqHeLE0JJJJme6JeMzhxwt2OY/8j0RXAyEzR5ATyii/?=
+ =?us-ascii?Q?wzkeOPQ967jaEQvQIaJXlODM/iSpWr7xRn/MtnViETNcxxFrCzP60/yKIz7d?=
+ =?us-ascii?Q?EG9yc1ROK/khKaeBMub3CVj8z2WQb8uI3kFx1skoITFuTbKbLTSb/geDfRjj?=
+ =?us-ascii?Q?NcSPbpJqcPhQzPnuI6PfxeAfXz6vDxqtXD5Ipeh0sb3izhN4Lw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(19092799006)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IaskotlPSrVjOLFr42kl6s/Mk+MdWkqxdyIbRgYBJiViIKl+fYLj7VGdPgrJ?=
+ =?us-ascii?Q?Y0xqy7HW0dcb4ghe8BNpQzUwZsvKwsKq4AzwpGa81mW/CC0bMo6kZxbCy6zK?=
+ =?us-ascii?Q?1Rrq9IriHsulI+GX6sF0fkKCPm50VdMUnntIQN8Ov9vbJBA2Zu3pUfPgB8eM?=
+ =?us-ascii?Q?QNCbPzYStu6c6WRAU12FV8Odoqso4r2Ngsgpsq/Rt9YY9sNQAwosfpZJm+3T?=
+ =?us-ascii?Q?oFCPXZgD3dLKBjYoF9xBTYpoTNT2XtVtd8KJ8YX/oMpjqiDwVdjGuTd+z7pD?=
+ =?us-ascii?Q?0hXzw55C0rsSsQ1hO6Emjk+ZH9exRHV/XiLrpK/RXagQYKRozTQotKQmRuLu?=
+ =?us-ascii?Q?ZfY+6b2MHHp6zMDk6ZAfuytOBN7jlJlFvChGuXg34JvEO0PcVsTqQPbLBHcO?=
+ =?us-ascii?Q?2QEtIg3Qab8Z0Iv7fCVP78eZCficiOdQ5kGE+rpA3ho82vKIhQ7D/OrHROy8?=
+ =?us-ascii?Q?IGmPorPv147rAvjihOrh+cSMGhWtauzNQtBSZVMsGxQautwfiu0YY6lwI1qa?=
+ =?us-ascii?Q?oz86B7hH3LbW0lFpbmmFHc9bx4asPKbjQS2ire3L/MliXg0zWkEy4k0Mdide?=
+ =?us-ascii?Q?aPou0/Dr0URakI6tRYUqfQFryrOSVy9rN2PAuZ4t8bOe8wUVcbY//C7nnb5j?=
+ =?us-ascii?Q?lkzMVAg19AdkmKgE0D7wMngJWHZ7Xqi9ZOm3gTEnKNkNx7PlcYlq/68G6ct1?=
+ =?us-ascii?Q?EiGsmvEF57jt+A6TM8AM8ipygrDQeE9K5bowHtLjQMcKhBU0DS176CUGzz0o?=
+ =?us-ascii?Q?TqBZv2GMq+FWkZaxlYNBJkzd5E9YYk8Tg11VKX0zrv6BHkkDaoAVSjA9iZB2?=
+ =?us-ascii?Q?NH0J3Aq/PmIkpVXcWPgfQfG3Fb22Kvg0F2jzR2Lgs4hlmtxZwodsAfO7wh2l?=
+ =?us-ascii?Q?IX9hYVgZGqkIOdZArIsc8yzvD6oxco7h7oCJKYtrdlGqZ7t/JVOy7Mame6Dd?=
+ =?us-ascii?Q?jzI2kChEBpa0nMV54wcIkM0rzixohVQtp9rzV8AbARFRlFg/N0qGDykjQ4V3?=
+ =?us-ascii?Q?N3iqbXVrHstp00Ys64gPQ6ufzHUCeprhTXo7kO9Hv0RrZvL42ykCqrtJD+R4?=
+ =?us-ascii?Q?euThxagPifC5ghmmyD9eI1ZlqlxArjK6pqBVpm0bibwAFOTQEuJ6NWiO5AHQ?=
+ =?us-ascii?Q?1r3dpIu1qxQgTiNdg4Pc/3K+wG5mh+yveYLexafIl3N9wCWRh8R1XaOL7dBJ?=
+ =?us-ascii?Q?yGWfMD64EKmDaq7oUU16dXzm6gJ0CLK/zEezmUfvENhOWRu4VEiTXx/l/Zeh?=
+ =?us-ascii?Q?Gt8MheVO3XnlEpu45HSjlxpNJn802HwrbOJVUQMWSsM1eV44xThZjsPq//F6?=
+ =?us-ascii?Q?Yh2CDO5r3mNrMHOp+uavrpkLAT+nHVKeayMSqumDeE17f+Kleiw/l4RVm6oY?=
+ =?us-ascii?Q?f669YSArTuZziz2tZ/vSMLUrDV3UMEO6ahzBUPqPTLE9Yn6jBpHSAFWRa9Bp?=
+ =?us-ascii?Q?3BLccuhB/7llpcGSALyJs0fAXzjrqm/YyGdixKMpY9szSrqlUpeAQdbvDf6a?=
+ =?us-ascii?Q?EJhzxaOPRbkCTbbDUXWyRnYW5q+yVLs4y+C/hHhuE2RqDLQ7l4Rr124sZnxA?=
+ =?us-ascii?Q?cMMSSwf+fw5AIFVw2HYkI3LujryxDyu3qwqh2DIP7FRCi0u1QlV8J1QJ4juk?=
+ =?us-ascii?Q?kRdFY4oO7KtPF/teNQvrejTiyb+njFINZG6pd22P6ERgF2doNlANrpGCFv2x?=
+ =?us-ascii?Q?ob2lqQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3aaaae25-6ee1-46d6-c299-08ddb8af0201
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2025 14:53:15.0292
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Yb7RpL346t0bzk45kscY3oa7vK38BZ/3HFjyxsXccA/LJikKSlXkEhpQ8QUB0JLjq0O1dnN0Rpdp+r4Qi0n/mw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8540
 
-On Tue, Jul 01, 2025 at 06:16:23PM +0800, Xu Yang wrote:
-> On Mon, Jun 30, 2025 at 10:26:56AM -0400, Alan Stern wrote:
-> > So overall, I guess this change won't make any noticeable difference.  
-> > But theoretically, how would the user know that the usbmon output didn't 
-> > start at the beginning of the buffer?  I think you would need to update 
-> > the documentation as well as the code.
+On Tue, Jul 01, 2025 at 03:36:21PM +0100, Mark Brown wrote:
+> On Tue, Jul 01, 2025 at 04:57:47PM +0300, Vladimir Oltean wrote:
 > 
-> Does the user need know such information? As a user, I don't need it at all.
-> I just want to see the data transferred on the USB bus.
+> > Here, the synchronization offsets in DMA mode are an order of magnitude
+> > worse, so yeah, initial enthusiasm definitely curbed now.
+> 
+> > For me, what matters is not the latency itself, but the ability to
+> > cross-timestamp one byte within the SPI transfer with high granularity,
+> > and for the uncertainty of that timestamp to be as small and constant as
+> > possible.
+> 
+> This is sounding like a copybreak type situation with the mode selected
+> depending on how big the transfer is, that's a very common pattern.
+> I've not looked how easy it is to flip this hardware between modes
+> though.
 
-What you want is relatively unimportant, because this API is meant to be 
-available to _all_ Linux users.  If it is changed, it must be changed in 
-a way that is acceptable to all users.
+I suppose one could try using FIFO mode for transfers which request
+timestamping and DMA for transfers which don't. I don't have an insight
+into what impact that will have on the driver, but I suspect at the very
+least one will have to transform "DSPI_DMA_MODE" into "dspi->dma_available"
+and "dspi->dma_in_use", and reconfigure the SPI_RSER register (interrupt
+routing, to DMA engine or to CPUs) at every transfer rather than at dspi_init().
 
-And of course users need to know how the data is presented.  Otherwise 
-there's no way to understand it.
-
-Currently, Documentation/usb/usbmon.rst says this:
-
-  In the case of an Isochronous input (Zi)
-  completion where the received data is sparse in the buffer, the length of
-  the collected data can be greater than the Data Length value (because Data
-  Length counts only the bytes that were received whereas the Data words
-  contain the entire transfer buffer).
-
-It doesn't say anything about the collected data beginning after the 
-start of the buffer.  Just the opposite, in fact: "... the Data words 
-contain the entire transfer buffer".
-
-If somebody has been using usbmon for a long time, he won't expect its 
-behavior to change suddenly -- particularly if the documentation has not 
-updated.
-
-Alan Stern
+The question is whether you would be willing to see and maintain such
+complexity increase, when AFAIK, the LS1028A FIFO mode passes its
+requirements.
