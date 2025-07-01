@@ -1,58 +1,58 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5753126A1DE
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 09:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A148926B0A7
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 09:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751362137; cv=none; b=FX4cfD4YmRqJD6b/TiYpmyvwoJ5BNRU18W5F5B27JUmid0yP301ucyG/Q26MFVhFnglZa+/lfiangR0ro0oyliI9I/6CnflTeyzdg2VYooqKsB6HohMBiTosGQB6S8DDY1SD92cgGhxwRs6xF0/Z1cg0CDJaw27MJ7+Spb24E7o=
+	t=1751362184; cv=none; b=oG1kcV01IVETBFr5idomKATFzwQqIzCDOYJ8esdPZfyjA6oRvOvNPhAGe9yBQ3h0hUXkoW4irsSoVi5ndCPEfs98rRqpc3y76Yx38w3DU+3Am0ajCKGpXmtIatTFw9QS1QT87YMtMqqzB8gsZvvv7x9Uxgz/8Ar8TQJW45jR/zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751362137; c=relaxed/simple;
-	bh=baD1oT/1E3kXY6Gn5bOXEfsAApfUUQ8npZKA9Kja8lI=;
+	s=arc-20240116; t=1751362184; c=relaxed/simple;
+	bh=+ZRCPww94UA93Eb9ff93WG1kL60VCeaXzIZzAcqf/cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WDtjcPi5BbxGOcYZK/gYv5YPzZXeBl3fXsHBcVAv8hewyeA3KKwgeh2EYxUFgDbTdS5GV4D6Q2vJW6SynD2BUT1nWNfhG3gsLqrJ0GHB6qe7p885pDms4+6DxjFkBapFebQHRbNPAUhQGHjzAhuPwhyX6P1/G5NTNsVEuzVNYl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=J3XXakCA; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=GEm6n63V reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version:Content-Type; b=qYrJ6iz7rxsDH+IilBA/xYRliqHKAFRYdkGqDlxmM58r2v+5Q5mikZCB3DdMPiO8cUOAar8qYBlteKFCx1MBjYfPOfsvcd9IlJst7JuUoLuGYf72roaVM6Lnhrz4EMX1iHKq/cC21IMG3On7ldmghqR/vnbBulVJeCJH4E/ZATw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=JT50v4b+; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=lVOPbZTb reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="J3XXakCA";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="GEm6n63V"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="JT50v4b+";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="lVOPbZTb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1751362135; x=1782898135;
+  t=1751362182; x=1782898182;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jDGoSBlFCIpch8D5WWesNDVa8fVNgGYShrsmZtG4Y84=;
-  b=J3XXakCAWWv9Hr9zVj+LyG5BCzadvNa+tZZjKp/zxDsO9gBbcGtQmcpR
-   Sb7f+AwCc1Qm9ohk7vzBxH54lCb1P7bgoHUjSoEAcYmsXuFydh3OfeGx4
-   Qn8gRAOOjfUZTRF3BP3pcdn9/jTPLtj5ArQBV2Fl+uingFMFIKhXGqgev
-   MPQSGeSl+BXQt6XB7dKEu9Rfw4gNP0p5YANtFBJGu99yQPXOAnWAzUZ/M
-   Tpi9KEBN+LIuPjVMHyYvu+IRGl9XVV/5oz3+RxjvWXH8dnHZDtIbu0PDe
-   vXbu10/w0cWnA6/+mMX1ZzOMqO2y70MiBS7he32Ud+tzfr45chvtQo8GZ
-   A==;
-X-CSE-ConnectionGUID: WiRnyJtIQlKd8eYAiIkgkw==
-X-CSE-MsgGUID: KEvumEGjQeW5ktFmMDa8TQ==
+  bh=8vVcXyX+xtzatyZ67qI3iXm3uKRPpWAgfVSJ1CwJGWU=;
+  b=JT50v4b+cfO30ezknkwhZIdpE9xy5GjCDNlvazFDfAgS/Hw3By/ctNhk
+   1izH9KGE7jx9sy+596GpTSx52mT0bOqWjQGwyQpkbTb+bvI9KFN0a54TZ
+   58vijNOPALcsdx3CsB/h6Oujh/gsl3OqUtxSoYL/vaVC4Pz5dhJYAOv7q
+   qfOCX04YmjZJ/gvWaKscMtU88Rf23LjFsSSvcH8Bne9L8NBCe42T3dE1M
+   p1x0yLcb7dTKvd6dPme7C8a+2XyEmyJMuYPCTxYD2wmKrvvohUyYJ/eoi
+   4kBLegJoCGjUu3kksirUiOePK3jFrETJirCezJ2gj8X4J5xk2gO+afRAU
+   Q==;
+X-CSE-ConnectionGUID: KWegZx3uSZGHf6XTYw6g6w==
+X-CSE-MsgGUID: qmSnhnSMRbaxG+oCZztomQ==
 X-IronPort-AV: E=Sophos;i="6.16,279,1744063200"; 
-   d="scan'208";a="44950481"
+   d="scan'208";a="44950513"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 01 Jul 2025 11:28:52 +0200
-X-CheckPoint: {6863AA54-44-468F1319-EAD2FB43}
-X-MAIL-CPID: F252A9CB289518CC4256D487AD399445_0
-X-Control-Analysis: str=0001.0A006398.6863AA84.000E,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 27EA316ADA1;
-	Tue,  1 Jul 2025 11:28:48 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 01 Jul 2025 11:29:40 +0200
+X-CheckPoint: {6863AA84-E-497D558D-EBA6F5A1}
+X-MAIL-CPID: 981E69C418C58EEAF382A4535AF8D054_3
+X-Control-Analysis: str=0001.0A006374.6863AA90.0033,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5DFB216AFEF;
+	Tue,  1 Jul 2025 11:29:35 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1751362128;
+	s=dkim; t=1751362175;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jDGoSBlFCIpch8D5WWesNDVa8fVNgGYShrsmZtG4Y84=;
-	b=GEm6n63V9oVKKMGrYiNQ87+e3gq75QL7U9Dsu4EUkBLe7AziTzswNqWWP5drp8WY+i6Has
-	osFbvp5LRsU0hRAoxnU5T6U5QNHfGw0wIzBpoBlT2lXrMqrnK3i8zF+kyneY2zEMVn0BOZ
-	I6zLKNdNtnKZrGR603x3cT94pRxYNdCTzQp2HkAztHJzDnkWabZZV9U2Hy04vXVRqHeoSt
-	AvZhuC5NX9X4dJdSt2Pa1QYjxOITrN2OyBTUgMfVfrFjyLd3sh2Ui7SODaWgGgTXUzqW3x
-	oKh3eyePHjmL96j3KQV77xBsEGAntjQtDeDiN8evayfNedMny+/TS9pZmMGcNA==
+	bh=8vVcXyX+xtzatyZ67qI3iXm3uKRPpWAgfVSJ1CwJGWU=;
+	b=lVOPbZTbPJo4LFWHire8cx5wWjMgRq2jKMq62onNgUFtLflzcJbZQCxUeK2vfnqPGryy5Z
+	ZLd5VWGBOisn6mQ1kYJ32BUud4hUYnI81POx4azUVCiKsfKk2eihq2oZ++3h8q8CANHz4Z
+	3lSm74XuT0Kw97NbQLfhAotJ6XOFlHOkYO4kdBccwhLHLDuviy8L3fmQ2tEG3RCPYSgZOz
+	7EWUfWqBrkrtlQCNzg2i0S9A2uSc5oHO6zrgrSz5ZrKnE3TXzDjuKlMqQNK+aKROXj/don
+	LECZXLpgaV8VaT2DPj+4TLYWO2+x957TpLBKsxeQhWESOeUPqZDovjr1AcVNSg==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Michael Turquette <mturquette@baylibre.com>,
  Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
@@ -66,14 +66,14 @@ Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, Abel Vesa <abel.vesa@linaro.org>,
  Peng Fan <peng.fan@nxp.com>
 Subject:
- Re: [PATCH 1/5] dt-bindings: clock: Add support for i.MX94 LVDS/DISPLAY CSR
-Date: Tue, 01 Jul 2025 11:28:47 +0200
-Message-ID: <6173943.lOV4Wx5bFT@steina-w>
+ Re: [PATCH 4/5] clk: imx95-blk-ctl: Add clock for i.MX94 LVDS/Display CSR
+Date: Tue, 01 Jul 2025 11:29:34 +0200
+Message-ID: <4665053.LvFx2qVVIh@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <20250701-imx95-blk-ctl-7-1-v1-1-00db23bd8876@nxp.com>
+In-Reply-To: <20250701-imx95-blk-ctl-7-1-v1-4-00db23bd8876@nxp.com>
 References:
  <20250701-imx95-blk-ctl-7-1-v1-0-00db23bd8876@nxp.com>
- <20250701-imx95-blk-ctl-7-1-v1-1-00db23bd8876@nxp.com>
+ <20250701-imx95-blk-ctl-7-1-v1-4-00db23bd8876@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -88,60 +88,113 @@ Hi,
 
 thanks for the patch.
 
-Am Dienstag, 1. Juli 2025, 09:04:37 CEST schrieb Peng Fan:
-> Add i.MX94 LVDS/DISPLAY CSR compatible string.
+Am Dienstag, 1. Juli 2025, 09:04:40 CEST schrieb Peng Fan:
+> i.MX94 BLK CTL LVDS CSR's LVDS_PHY_CLOCK_CONTRL register controls the clo=
+ck
+> gating logic of LVDS units. Display CSR's DISPLAY_ENGINES_CLOCK_CONTROL
+> register controls the selection of the clock feeding the display engine.
 >=20
-> Add clock index for the two CSRs.
+> Add clock gate support for the two CSRs.
 >=20
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  .../devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml        |  2 ++
->  include/dt-bindings/clock/nxp,imx94-clock.h                 | 13 +++++++=
-++++++
->  2 files changed, 15 insertions(+)
+>  drivers/clk/imx/clk-imx95-blk-ctl.c | 50 +++++++++++++++++++++++++++++++=
++++++-
+>  1 file changed, 49 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.ya=
-ml b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> index d0291bfff23a27cb55683880fe3a1f8b3e2ada5a..4e20e8c8663b3b6665ff91ae6=
-3e1539aa8e9cc9b 100644
-> --- a/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> +++ b/Documentation/devicetree/bindings/clock/nxp,imx95-blk-ctl.yaml
-> @@ -19,6 +19,8 @@ properties:
->            - nxp,imx95-lvds-csr
->            - nxp,imx95-netcmix-blk-ctrl
->            - nxp,imx95-vpu-csr
-> +          - nxp,imx94-display-csr
-> +          - nxp,imx94-lvds-csr
+> diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-im=
+x95-blk-ctl.c
+> index 828ee0a81ff62c6e4f61eef350b9073f19f5351f..5fe582b0d4a9a197f2c1a49dc=
+18f15ca83ccb4a4 100644
+> --- a/drivers/clk/imx/clk-imx95-blk-ctl.c
+> +++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+> @@ -1,8 +1,9 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /*
+> - * Copyright 2024 NXP
+> + * Copyright 2024-2025 NXP
+>   */
+> =20
+> +#include <dt-bindings/clock/nxp,imx94-clock.h>
+>  #include <dt-bindings/clock/nxp,imx95-clock.h>
+>  #include <linux/clk.h>
+>  #include <linux/clk-provider.h>
+> @@ -300,6 +301,51 @@ static const struct imx95_blk_ctl_dev_data hsio_blk_=
+ctl_dev_data =3D {
+>  	.clk_reg_offset =3D 0,
+>  };
+> =20
+> +static const struct imx95_blk_ctl_clk_dev_data imx94_lvds_clk_dev_data[]=
+ =3D {
+> +	[IMX94_CLK_DISPMIX_LVDS_CLK_GATE] =3D {
+> +		.name =3D "lvds_clk_gate",
+> +		.parent_names =3D (const char *[]){ "ldbpll", },
+> +		.num_parents =3D 1,
+> +		.reg =3D 0,
+> +		.bit_idx =3D 1,
+> +		.bit_width =3D 1,
+> +		.type =3D CLK_GATE,
+> +		.flags =3D CLK_SET_RATE_PARENT,
+> +		.flags2 =3D CLK_GATE_SET_TO_DISABLE,
+> +	},
+> +};
+> +
+> +static const struct imx95_blk_ctl_dev_data imx94_lvds_csr_dev_data =3D {
+> +	.num_clks =3D ARRAY_SIZE(imx94_lvds_clk_dev_data),
+> +	.clk_dev_data =3D imx94_lvds_clk_dev_data,
+> +	.clk_reg_offset =3D 0,
+> +	.rpm_enabled =3D true,
+> +};
+> +
+> +static const char * const imx94_disp_engine_parents[] =3D {
+> +	"disppix", "ldb_pll_div7"
+> +};
+> +
+> +static const struct imx95_blk_ctl_clk_dev_data imx94_dispmix_csr_clk_dev=
+_data[] =3D {
+> +	[IMX94_CLK_DISPMIX_CLK_SEL] =3D {
+> +		.name =3D "disp_clk_sel",
+> +		.parent_names =3D imx94_disp_engine_parents,
+> +		.num_parents =3D ARRAY_SIZE(imx94_disp_engine_parents),
+> +		.reg =3D 0,
+> +		.bit_idx =3D 1,
+> +		.bit_width =3D 1,
+> +		.type =3D CLK_MUX,
+> +		.flags =3D CLK_SET_RATE_NO_REPARENT | CLK_SET_RATE_PARENT,
+> +	},
+> +};
+> +
+> +static const struct imx95_blk_ctl_dev_data imx94_dispmix_csr_dev_data =
+=3D {
+> +	.num_clks =3D ARRAY_SIZE(imx94_dispmix_csr_clk_dev_data),
+> +	.clk_dev_data =3D imx94_dispmix_csr_clk_dev_data,
+> +	.clk_reg_offset =3D 0,
+> +	.rpm_enabled =3D true,
+> +};
+> +
+>  static int imx95_bc_probe(struct platform_device *pdev)
+>  {
+>  	struct device *dev =3D &pdev->dev;
+> @@ -474,6 +520,8 @@ static const struct of_device_id imx95_bc_of_match[] =
+=3D {
+>  	{ .compatible =3D "nxp,imx95-hsio-blk-ctl", .data =3D &hsio_blk_ctl_dev=
+_data },
+>  	{ .compatible =3D "nxp,imx95-vpu-csr", .data =3D &vpublk_dev_data },
+>  	{ .compatible =3D "nxp,imx95-netcmix-blk-ctrl", .data =3D &netcmix_dev_=
+data},
+> +	{ .compatible =3D "nxp,imx94-lvds-csr", .data =3D &imx94_lvds_csr_dev_d=
+ata },
+> +	{ .compatible =3D "nxp,imx94-display-csr", .data =3D &imx94_dispmix_csr=
+_dev_data },
 
-Please sort them properly
+Similar to patch 1, sort them properly.
 
 Best regards,
 Alexander
 
->        - const: syscon
-> =20
->    reg:
-> diff --git a/include/dt-bindings/clock/nxp,imx94-clock.h b/include/dt-bin=
-dings/clock/nxp,imx94-clock.h
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..b47f74f00f119ff1c1e6dad88=
-5b5b1e3b1f248a1
-> --- /dev/null
-> +++ b/include/dt-bindings/clock/nxp,imx94-clock.h
-> @@ -0,0 +1,13 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only OR MIT */
-> +/*
-> + * Copyright 2025 NXP
-> + */
-> +
-> +#ifndef __DT_BINDINGS_CLOCK_IMX94_H
-> +#define __DT_BINDINGS_CLOCK_IMX94_H
-> +
-> +#define IMX94_CLK_DISPMIX_CLK_SEL	0
-> +
-> +#define IMX94_CLK_DISPMIX_LVDS_CLK_GATE	0
-> +
-> +#endif /* __DT_BINDINGS_CLOCK_IMX94_H */
+>  	{ /* Sentinel */ },
+>  };
+>  MODULE_DEVICE_TABLE(of, imx95_bc_of_match);
 >=20
 >=20
 
