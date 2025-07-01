@@ -1,298 +1,116 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013057.outbound.protection.outlook.com [40.107.162.57])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9980213AD26
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 03:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751339778; cv=fail; b=BitGJ+kplB7mIsHWzcQ5b1EL5/A35hh1vh5y4Lid4CP8ppXjO6FcLgbkyYBuk7o7rs7BAL+EG9q43L1rttsL7rBo+O23u1iQgvstF9uU1HdTo0yxiGAF2uMqxc3fdPPa0FvRly90vZCm7yK+0y+nHBpHAPo1CQqL3/nAGgCPOpg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751339778; c=relaxed/simple;
-	bh=+itssrshjrhiaih4uXCupq1xd1q0/b1SI0NBTQcZKR4=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=T0s9tgaO3gvkCRKehLKQsnQKd2nFBk+8jFAWNyuptYfzVeiO1P3sX8hX20WaKNw662fop0VvIzvhfZGeYRYnaGEVt8OZV9TmHyPJZSn9r7Si/aB/gDqBJ9aHQtDBblpJCYhW/djzWYyaIlRniBzpULh3jDmEKRylWYs/D7hF5q8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eVtHMsvI; arc=fail smtp.client-ip=40.107.162.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B373189902
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 06:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751351117; cv=none; b=WIezH59Bh0lfCsSgQGj5ntDtEGrIStyz78dZGI/05aQS8XDnGKNygxjwFvPkN1nj2exaPcVncbCt+hdy/dALS+zUTtVj8gkZwE8kbAynVlG4lpLQouLCPJC0IpPIpfMXl8PlB2EN3LSXtQWc7bTvxaVqiFu4w6ZS8AGy7byjIXw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751351117; c=relaxed/simple;
+	bh=hBK1puw3CmwnwUZ8lXhRAEqf7onqewrfI8EIkYdtkR4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E7352hTi95QvFg+zY5xfUH/CPigYd83e1uUwVdMI5rECIqQhggf1SsgeDy3DB5CelD7KxmmtsFT0rD//HiYhNFlOzAvy1DotWhrNvfOnXYJDhQ+qqCyJWFQSBfimUlbFV1sqQBwzQcgOsZF9K0SEDKoiFoBKCPKzDEDWNwx+a48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=EI04OAKk; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=k7zGGGA5 reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eVtHMsvI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BQanxnBpB6gLunlcOHQzp1tSZCgYIiI/aXWXxzU47PYeLM4ezncy3LN9WeGWptaeqrcb+7GOyhID/L5uWR0+hiGXHyc9xMaoy0mnC8JZKIp24MgqNnodjcHdQ2rfnaYauKaGoQU/COlVewrciNERFm8OHH8I4zEi8UOD4jXAGRks7QY5BKTVpDijFkov9s0FeNzTomIH1sN+vXg3MoXfOH8mgxU/+p/r1mUnpLeAUsXq2Baytj1Lep6/Oz8g01RuX+8BaCZdlBzlrlZJ0wGHS+vVV/bILV4dKM/kiCQ36lljY3WigLWntINCPyKfttL95UZJyISzMErdfGPGfr+jXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5puHWyZpEf6K8C1Rk9P0IpByLxsiHJgN5RWne+lKq54=;
- b=rS5DtQlXSI82yqcY2Bzn9iQJRr05KSu1Ciw7sO74d+Co+8cw1Vk2LbzD2DjPwfzFcXRnQlggmclJuzNwb/gtpPdpcOlS97ailUsodToadiusheEHfTXz4oT8YsFOgvTArdqAMVuYjyy84qo7x5TkEj6gHzB0IdYADlrwZTlptfp2wGxVGFpIkB2sTRnIEhwqhaoFOHkeJ39DBdkkRJ1Yb+aIGc+8DdbJWFib8q7THNZ6tFf8M+Mje50ZyCIL+ji+K4Q5yU6nkxc3VKtmS80X3My4jH1ZUCJtJHDTpk7TMhW2zsCEurrE5REUFuPyhSeGBL1cU5Mm23oyiHn7UfW7MQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5puHWyZpEf6K8C1Rk9P0IpByLxsiHJgN5RWne+lKq54=;
- b=eVtHMsvIRNDmRqIKV7XZfUeCVBUd2FZT4q9MFGTjhtVGOMXWLZk69cxGkLXWRMPIr1S6l3zPxiWISgwrh5cJGA89t5K6loABdKNXJWOwqMz2Uk6An8/xhjMOnmFNRGQCV66y416vdB+SmJt1XGHLgickfKWQDYW7JUW40otu/zrEP+lgTqX6MZEzEHfiwBu0S13TJ7QXrBBDe3Uog1kBnuh0qZDzgpgkmuqKdb++bx22Wut4v0UJuP0aQygZ40iWRDSBg3/Mfqc4z2/h4reEHdvbqWKWQyaQgJqyMWZ9jTAl8HeIsJlNnjHCPi621sanXfKLWxILzwQFsQOKzxdwvQ==
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- (2603:10a6:800:293::14) by GV1PR04MB10241.eurprd04.prod.outlook.com
- (2603:10a6:150:1a4::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.27; Tue, 1 Jul
- 2025 03:16:09 +0000
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687%5]) with mapi id 15.20.8880.027; Tue, 1 Jul 2025
- 03:16:08 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: "mturquette@baylibre.com" <mturquette@baylibre.com>, "sboyd@kernel.org"
-	<sboyd@kernel.org>, "rafael@kernel.org" <rafael@kernel.org>,
-	"pavel@kernel.org" <pavel@kernel.org>, "len.brown@intel.com"
-	<len.brown@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"dakr@kernel.org" <dakr@kernel.org>, Aisheng Dong <aisheng.dong@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, Frank Li <frank.li@nxp.com>
-CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-i2c@vger.kernel.org"
-	<linux-i2c@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Bough Chen
-	<haibo.chen@nxp.com>, Jun Li <jun.li@nxp.com>
-Subject: Dead lock with clock global prepare_lock mutex and device's
- power.runtime_status
-Thread-Topic: Dead lock with clock global prepare_lock mutex and device's
- power.runtime_status
-Thread-Index: AdvqLTd7vQl9I6hQRtmdXcy3EGv5Dw==
-Date: Tue, 1 Jul 2025 03:16:08 +0000
-Message-ID:
- <VI2PR04MB11147CCEFE4204B852807AAF2E841A@VI2PR04MB11147.eurprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI2PR04MB11147:EE_|GV1PR04MB10241:EE_
-x-ms-office365-filtering-correlation-id: b4da4a89-8add-4c8b-9bae-08ddb84d9f78
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|19092799006|921020|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?JKIUVNHwfh852LiDyhJMTjw4FSTgWlKJxSXVf711Won9ZFx/m+JaCCYAxE5B?=
- =?us-ascii?Q?E/VjrMBqm+d/litispMMlo5n4eOiwlwygINSvWydkaT/0q0M9NL3u6dv+oCb?=
- =?us-ascii?Q?dR3K/cJYPa7uDkH3RysSF3g5dfrdxkDTSB16L9iL8mkHdorl9QAvjYzDI1Ei?=
- =?us-ascii?Q?fJLUf4e2sg6Zt6tXbZjg8S9SOELhvNvPu/hf60TFHone3GmPyNq/cs09iwPM?=
- =?us-ascii?Q?j2R4BRQDtpoFdq4TreRoZj0mVBR9ZjmMg3bDPLRYNjHpbDIcVOoPmmMRSO26?=
- =?us-ascii?Q?v5sKcgni0nkCqKzQEbqfjOpVk+WG5aiVr/xdmfGigbst5VP5Xzf2yZRnVSKX?=
- =?us-ascii?Q?RSWQ6aP5J+g+oyAJtk9wYHqctEa8AsOhD1MRuTR9ttSA6UMIOicb6Ec6HV1V?=
- =?us-ascii?Q?qU5+GctyIgWjeVpXzVK5U2sl+W0GNQlYY9EZjEfuwKtGurmPFz5xnkksyY6I?=
- =?us-ascii?Q?Bb7MVHLR5okM8CVZ4N6ZZWk0mz25PZztNQOh/PB5VmCls6KMQa4P3gF30tRi?=
- =?us-ascii?Q?5K4DHwhBEuGeOYuBMHCwF2UICjhLqdgWQwqNSWA1tm7g0NNUQGg3kVi6Y5Nj?=
- =?us-ascii?Q?LlbCWNdnbQBCbE47B6K22w59xD3zFTme7QFM0/r5LKtLe/xmQg+A0s7EcC7i?=
- =?us-ascii?Q?rcwWGwMW6w9h85Bo6/49f49fsakYfkJpzNrBknLWiJhQt9KU8w50JrGWjUVP?=
- =?us-ascii?Q?9oHZKPwdWs0AvJcsrkEMh6RGjxsGJZwr7w8TpIiwgZOAworYnLxLd1HqQm4+?=
- =?us-ascii?Q?b/BTd5k2RM+DzjYztVeRQLovJ9BFonqUuAyItHbijaApPS2Kg/l4GVPwyY5s?=
- =?us-ascii?Q?AN9WKcto7E+jsshRZDkC1gwG+yh3jo3RGCxNnKGdeOlZP5WnGun0G2SdLfZZ?=
- =?us-ascii?Q?mYtOanXCqaM4z0Ckw3ep7zeoUE80cKZ3IbIT6f1tIdC9XFj6SGVdOe21LGO7?=
- =?us-ascii?Q?lV2d5HEH0LY9JUUS3vNsZEmFfRlesVZ5dv+QzRNbVsNvuPBcO4/2fbRbGXNO?=
- =?us-ascii?Q?nvHediQG2Y+Tvyc+4clcD4UMbK9Yhd/StkpyfOZIwC2X163rIRLAiB7Zu5sC?=
- =?us-ascii?Q?CWUWa6/U7DxmyvKpOv2r7jtuKKsthpNzm9/8UM7RIefWmoW/IXxYsxa7Ib/B?=
- =?us-ascii?Q?CsvaOKgDFKKnBRkp/GTaXf254eDLE86m37cEL10RubfQiaQ3WjgMXGNZ8ovH?=
- =?us-ascii?Q?Bun97g9klrVXu1sVP55fLQBJl6+rsc7FecFM60MdAf40EpCDw6tdmiZRolsf?=
- =?us-ascii?Q?w7bSQWFmwHrDDKY18C66c7Eq+C3xGcbCCog/8Cu+P7q+I1ZWfyJTqPutQ8Fk?=
- =?us-ascii?Q?KDtQnevAhwk7Uvt0ZqeuQTCU9LDYLJFiFle0kTudHX5LW9H/JE3YupcL1zYJ?=
- =?us-ascii?Q?tpRetNTALlvvlliES1PK7BCCdw0CWWivn1jrMyVR12V+wUhuwNKoKqOaLIUV?=
- =?us-ascii?Q?InbAzdCZSQOu4AxYXuMHXwZPT5yBGWSrKkncCLT3j+yOoEYNxTkgwq25/AQf?=
- =?us-ascii?Q?N0hqw8twtkRZLw8=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(19092799006)(921020)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?SLKKIhEke47UYxEIsYeP4WHz5T5I7A2jvuSVqFoWgmOO6CWoyM+1Dcpiqt6/?=
- =?us-ascii?Q?kNl4J3O1FJHWlpEsFJTK5UGbENUx0oxGcEdFTRBU5xHcrRFPS6NJLMfWq+Dv?=
- =?us-ascii?Q?7+pu+n5xVH4AQrZ7Vws5S9wE+zjwsf5Q9dMvHpcjC/EGKiSABfSOATFsgxG2?=
- =?us-ascii?Q?JlYARY01t59z0kIsAcc8rla+Tu1c+oALdvo3m2/0YQw+gQwKYdaSVyBO3t00?=
- =?us-ascii?Q?bD3a8eeyiVOCHHLwHKA6Q7+b8EjC1AMWEnz7V/FLmy9bSTrbbCeX8Fydd6Sl?=
- =?us-ascii?Q?Z/t/OsyHmvpdefOuedEfRPr/+x8fZnscIx86qe4958vuqRwOPIJZpfkyk7Gf?=
- =?us-ascii?Q?1fmCw9X6jMUJMMyCPTc3ONd2d/mEatBZggA2fBSHT3lrp65raTTzXKe4rRb9?=
- =?us-ascii?Q?iMFUZBwOpG5UPxGZW1xSwKJOIz9Xbzq8Wc4wFahi3bR5Kya/xF23kNtfrCtH?=
- =?us-ascii?Q?Res2dYuu3Dk0K98oWqcqkBrHXLN5lzG/3y6+gfArDpLK5NwlDd7DRA7ZmZNP?=
- =?us-ascii?Q?o/UCAKGCHhoggSUCpGgthdJ5xalBNENOarsNJE1bgDWl40WKKf+QtV3GetP+?=
- =?us-ascii?Q?NibqlRj/3gKW8qHlyyxrTdgqz6WXYDuFSu6GY+jUeS6XqNjpkpUswg5w4Con?=
- =?us-ascii?Q?TcBmjJFIvD+wuUUew1Z8z+qjUeRmp/GgHQv6PrzFghFV9DKBaSnZRXI4pUEN?=
- =?us-ascii?Q?JbqhahCIf/LmHHUdTMKxq77KK0nazgDz2dU/FDwNC/jeybE9qiwOiQZheuxd?=
- =?us-ascii?Q?HOSqIEEngOcTyNc+P6Ho+2PsIotfIYt+tdKzLhcKctJ5n9Rx4AckRE78LLsv?=
- =?us-ascii?Q?4l8P5ExpZKSIfm6JeWxPAeJYz3bBmGKuVnSaZOQT3Z0Vk9WaqGeKUOPE7Xjo?=
- =?us-ascii?Q?m6ijEVzxNMiIbJxyy6YvD79K0CdSaQXGtxHs8ytMRx83cvXNZV8uqn/CMb1e?=
- =?us-ascii?Q?zLXSR3F8hrRHQOLx4GhkdNkGPsVEJSqZrbY6jdAQnKpCk0LuLzIEiaDJj/MY?=
- =?us-ascii?Q?1JM/yhUnpUK/0Vh/b3L1zkY5xaAG9BZ5knfH82ElJyXPYxXOjhkctYOL5IT4?=
- =?us-ascii?Q?/0ovFp/1wxs8A/hyIH4TThNN7ftM47xGwnN9bcaxoN0HZGz+x9VtsZzuWl78?=
- =?us-ascii?Q?w662ZZz1y0Vgh6xWZgdcPBkdCnuZERmiDs/aA8Oj/6XFtS6cwP9+l9D2dB6W?=
- =?us-ascii?Q?IvEi59UcNr7Y5FDjmgGP/KiMzzdWd2+kTBTYzZEum+6hP0M4AFTV9hbKab5U?=
- =?us-ascii?Q?MJwSHdtTelK8jPySzVQ2IDWS5CEyxMBHuFXOPox2Hp+FD2/gIXdkPm2bpUp3?=
- =?us-ascii?Q?uIcc79hI5pxpqtoWDKy6Z4Hha1GmeepvFDVhoXkkDqtlGKB41v45TRnf89LJ?=
- =?us-ascii?Q?ty8OpKvXl4Qd7Vw1D0NPZHeQ2MDsMMrrT/06tVoqauyo+f40vnGz6YgGNxF1?=
- =?us-ascii?Q?wYQfNY7j1bnedYo38DB1RtJQqMrny6iJ/qI54IK81ab5PNDa/XG5wxernWQq?=
- =?us-ascii?Q?wQGhDuGz0Nkb5i2CNKDAne1TVrp/ylQLBqsB7GumVxSBviBwfds0LCSl7ZkZ?=
- =?us-ascii?Q?LUrvvWhihNY8hDd2b7U=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="EI04OAKk";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="k7zGGGA5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1751351115; x=1782887115;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=JxIQLyP26v4rF0viEUEQnw43xKOq8QxXK3Q1+9z51gI=;
+  b=EI04OAKkQyEs8h3Njo4pav1pZIrj70hmAPKdyiMl+TgFMX5KCoIej+++
+   3BJR18293efyJqGEDlbNVDMtBqb6yFpob3+lan873M487L5Gb2t/cCACt
+   UuO58NJKiJe+Ga3du16W8UzaHDa4+MSGEmJ/e+R8m1zqvgqzhQc+2nZK9
+   IFNRD3vLelVwWUgn3+o5MDk1hP8yhRD26ptFXNhW0rNfQLpGGBwx/COEe
+   oX+AYAYHmBuyEJcpi6ZAsBczI90CguQ9b7TrDUjQWg5lG/Q6jH4HxKxRf
+   VGFSxEXrq3CFJbhUHOVQ3DqG/7m6p9awq1xJ5qghrLwnJK/qAYsyD0X0T
+   A==;
+X-CSE-ConnectionGUID: kLXLKSUvSECYNTAmH4TDvg==
+X-CSE-MsgGUID: ZSAxOqnSR+mJTwx/0dmXug==
+X-IronPort-AV: E=Sophos;i="6.16,279,1744063200"; 
+   d="scan'208";a="44943368"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 01 Jul 2025 08:25:12 +0200
+X-CheckPoint: {68637F48-4-ABFC28F4-D6731B76}
+X-MAIL-CPID: 4D93FC8CE74F964E39D083D9A1BE8425_5
+X-Control-Analysis: str=0001.0A006376.68637F79.0065,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E2AD165890;
+	Tue,  1 Jul 2025 08:25:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1751351107;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JxIQLyP26v4rF0viEUEQnw43xKOq8QxXK3Q1+9z51gI=;
+	b=k7zGGGA5zJxR9wVKxccy/UDRfdq5y6EhEtggs8bEFWvgaV+fRV9iDe5y11DVvr9e7uO0NQ
+	z2fsY/1vI1HdFriLCVJAIFw7wSn2fGSbamg6RrK9MfowAs+3Obt7vdL6FSxA9xEraQgnUd
+	LTnzMdnDZxuV0+ty4tg6vdflXiVfWQGNJihdn8PqbP4sFsmS0Fn3F8BEG9gN4lAyT/TaBo
+	d4zvFpeBrcLBvCBKPBCCguwSHfDEGNsmoyCdT/FcAPORFvld5XdDTm9JFLtZ+rw1D1Csub
+	yjrPW22fTv1L4YXZuofBNBaeMnA77cRtiKV1cPIqN1dO8T2dzrAKWi+PvxYNsA==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH 0/8] TQMLS10xxA DT fixes
+Date: Tue,  1 Jul 2025 08:24:48 +0200
+Message-ID: <20250701062500.515735-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4da4a89-8add-4c8b-9bae-08ddb84d9f78
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2025 03:16:08.3661
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: QHozdnSHqBDofYFwkQM/psgtZah+6iOttMiBWjK6Rvo30FQwhieYyoLk/NVcoimrfLf7Il5KCuDM8IyCBA8+BQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10241
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi, All:
+Hi,
 
-We met the dead lock issue recently and think it should be common issue and=
- not sure how to fix it.
+this series adds some fixes for TQMLS10xxA family and consists of several
+groups:
+1. Remove superflous properties for spi-nor
+2. Enable SFP interfaces on TQMLS1043A and TQMLS1046A
+3. Add missing vdd-supply properties
 
-We use gpio-gate-clock clock provider (drivers/clk/clk-gpio.c), gpio is one=
- of i2c gpio expander (drivers/gpio/gpio-pcf857x.c). Our i2c driver enable =
-run time pm (drivers/i2c/busses/i2c-imx-lpi2c.c [1]). System random blocked=
- when at reboot.
+Best regards,
+Alexander
 
-The dead lock happen as below call stacks
+Alexander Stein (8):
+  arm64: dts: fsl-ls1043a: Remove superfluous address and size cells
+  arm64: dts: fsl-ls1046a: Remove superfluous address and size cells
+  arm64: dts: fsl-ls1088a: Remove superfluous address and size cells
+  arm64: dts: tqmls10xxa: Move SFP cage definition to common place
+  arm64: dts: tqmls1043a: Enable SFP interface
+  arm64: dts: tqmls1046a: Enable SFP interfaces
+  arm64: dts: freescale: tqmls10xx-mbls10xxa: Add vdd-supply for i2c mux
+  arm64: dts: freescale: tqmls10xx: Add vdd-supply for spi-nor flash
 
-Task 117                                                Task 120
+ .../fsl-ls1043a-tqmls1043a-mbls10xxa.dts      | 12 ++++++++++
+ .../dts/freescale/fsl-ls1043a-tqmls1043a.dtsi |  3 +--
+ .../fsl-ls1046a-tqmls1046a-mbls10xxa.dts      | 22 ++++++++++++++++++-
+ .../dts/freescale/fsl-ls1046a-tqmls1046a.dtsi |  4 ++--
+ .../fsl-ls1088a-tqmls1088a-mbls10xxa.dts      |  8 +++++++
+ .../dts/freescale/fsl-ls1088a-tqmls1088a.dtsi |  4 ++--
+ .../freescale/tqmls1088a-mbls10xxa-mc.dtsi    | 16 --------------
+ .../dts/freescale/tqmls10xxa-mbls10xxa.dtsi   | 21 ++++++++++++++++++
+ arch/arm64/boot/dts/freescale/tqmls10xxa.dtsi |  8 +++++++
+ 9 files changed, 75 insertions(+), 23 deletions(-)
 
-schedule()
-clk_prepare_lock()--> wait prepare_lock(mutex_lock)     schedule() wait for=
- power.runtime_status exit RPM_SUSPENDING
-                           ^^^^ A                       ^^^^ B
-clk_bulk_unprepare()                                    rpm_resume()
-lpi2c_runtime_suspend()                                 pm_runtime_resume_a=
-nd_get()
-...                                                     lpi2c_imx_xfer()
-                                                        ...
-rpm_suspend() set RPM_SUSPENDING                        pcf857x_set();
-                           ^^^^ B                       ...
-                                                        clk_prepare_lock() =
---> hold prepare_lock
-                                                        ^^^^ A
-                                                        ...
-
-
-Task 117 set power.runtime_status to RPM_SUSPENDING (A) and wait for task 1=
-20 release clock's global prepare mutex (B).
-
-Task 120 hold global prepare mutex (B) and wait for power.runtime_status fi=
-nish suspend (A).
-
-The root cause is that the scope of global prepare_lock is too big. gpio-ga=
-te-clock and lpi2c clock are totally independent.
-
-Although it may not happen at downstream case because [1], there are still =
-have other i2c bus and spi bus, and other bus drivers. clock unprepare is q=
-uite common in runtime suspend functions.
-
-[1] upstream driver have not use clk_unprepare in suspend functions.
-
-The full log as below:
-
-INFO: task kworker/2:3:117(T117) is blocked on a mutex likely owned by task=
- kworker/u16:5:120(T120).
-
-[    6.955479][   T73] imx-lpi2c 42530000.i2c: lpi2c_runtime_suspend2
-[    6.957437][  T120] imx6q-pcie 4c300000.pcie: config reg[1] 0x60100000 =
-=3D=3D cpu 0x60100000
-[    6.957437][  T120] ; no fixup was ever needed for this devicetree
-[    6.964257][  T118] platform regulatory.0: Falling back to sysfs fallbac=
-k for: regulatory.db
-[    6.973579][  T120] imx-lpi2c 42530000.i2c: lpi2c_runtime_resume1
-[    7.027143][  T120] imx-lpi2c 42530000.i2c: lpi2c_runtime_resume2 0
-[    7.033984][  T120] -----------pcf857x_set in
-[    7.038373][  T120] -----------------pcf857x_output in
-[    7.043527][  T120] ----------------- gpio->write in
-[    7.048520][  T117] imx-lpi2c 42530000.i2c: lpi2c_runtime_suspend
-[    7.054774][  T120] i2c i2c-2: msg[0] w0/r1 0, data[0] is 7f
-[    7.060448][  T120] i2c i2c-2: 42530000.i2c: pm_runtime_resume_and_get
-[   67.030316][  T118] cfg80211: failed to load regulatory.db
-[  244.059129][   T40] INFO: task kworker/2:3:117 blocked for more than 121=
- seconds.
-[  244.066619][   T40]       Not tainted 6.15.0-rc2-next-20250417-06621-g7c=
-d761409c73-dirty #7
-[  244.075010][   T40] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" d=
-isables this message.
-[  244.083572][   T40] task:kworker/2:3     state:D stack:0     pid:117   t=
-gid:117   ppid:2      task_flags:0x4208060 flags:0x00000008
-[  244.095438][   T40] Workqueue: pm pm_runtime_work
-[  244.100157][   T40] Call trace:
-[  244.103302][   T40]  __switch_to+0xf8/0x1a0 (T)
-[  244.107882][   T40]  __schedule+0x418/0xfd8
-[  244.112080][   T40]  schedule+0x4c/0x164
-[  244.116055][   T40]  schedule_preempt_disabled+0x24/0x40
-[  244.121392][   T40]  __mutex_lock+0x1d4/0x580
-[  244.125798][   T40]  mutex_lock_nested+0x24/0x30
-[  244.130436][   T40]  clk_prepare_lock+0x4c/0xa8
-[  244.135018][   T40]  clk_unprepare+0x24/0x44
-[  244.139298][   T40]  clk_bulk_unprepare+0x38/0x60
-[  244.144048][   T40]  lpi2c_runtime_suspend+0x64/0x9c
-[  244.149021][   T40]  pm_generic_runtime_suspend+0x2c/0x44
-[  244.154475][   T40]  __rpm_callback+0x48/0x1ec
-[  244.158935][   T40]  rpm_callback+0x74/0x80
-[  244.163167][   T40]  rpm_suspend+0x104/0x668
-[  244.167446][   T40]  pm_runtime_work+0xc8/0xcc
-[  244.171939][   T40]  process_one_work+0x214/0x62c
-[  244.176650][   T40]  worker_thread+0x1ac/0x34c
-[  244.181144][   T40]  kthread+0x144/0x220
-[  244.185082][   T40]  ret_from_fork+0x10/0x20
-[  244.189435][   T40] INFO: task kworker/2:3:117 is blocked on a mutex lik=
-ely owned by task kworker/u16:5:120.
-[  244.199300][   T40] task:kworker/u16:5   state:D stack:0     pid:120   t=
-gid:120   ppid:2      task_flags:0x4208060 flags:0x00000008
-[  244.211164][   T40] Workqueue: async async_run_entry_fn
-[  244.216404][   T40] Call trace:
-[  244.219587][   T40]  __switch_to+0xf8/0x1a0 (T)
-[  244.224127][   T40]  __schedule+0x418/0xfd8
-[  244.228358][   T40]  schedule+0x4c/0x164
-[  244.232298][   T40]  rpm_resume+0x1c8/0x734
-[  244.236531][   T40]  __pm_runtime_resume+0x50/0x98
-[  244.241338][   T40]  lpi2c_imx_xfer+0x58/0xe60
-[  244.245829][   T40]  __i2c_transfer+0x1c4/0x828
-[  244.250377][   T40]  i2c_smbus_xfer_emulated+0x1b8/0x708
-[  244.255735][   T40]  __i2c_smbus_xfer+0x1a0/0x6f0
-[  244.260447][   T40]  i2c_smbus_xfer+0x98/0x120
-[  244.264939][   T40]  i2c_smbus_write_byte+0x2c/0x3c
-[  244.269825][   T40]  i2c_write_le8+0x10/0x20
-[  244.274152][   T40]  pcf857x_output+0x7c/0xc0
-[  244.278527][   T40]  pcf857x_set+0x3c/0x5c
-[  244.282672][   T40]  gpiochip_set+0x68/0xc0
-[  244.286864][   T40]  gpiod_set_raw_value_commit+0xd4/0x1a0
-[  244.292404][   T40]  gpiod_set_value_nocheck+0x34/0x60
-[  244.297549][   T40]  gpiod_set_value_cansleep+0x24/0x60
-[  244.302821][   T40]  clk_sleeping_gpio_gate_prepare+0x18/0x28
-[  244.308582][   T40]  clk_core_prepare+0xbc/0x2a8
-[  244.313247][   T40]  clk_prepare+0x28/0x44
-[  244.317361][   T40]  clk_bulk_prepare+0x34/0xa0
-[  244.321940][   T40]  imx_pcie_host_init+0xe0/0x434
-[  244.326747][   T40]  dw_pcie_host_init+0x1b8/0x758
-[  244.331587][   T40]  imx_pcie_probe+0x380/0x8e0
-[  244.336133][   T40]  platform_probe+0x68/0xd8
-[  244.340539][   T40]  really_probe+0xbc/0x2bc
-[  244.344817][   T40]  __driver_probe_device+0x78/0x120
-[  244.349916][   T40]  driver_probe_device+0x3c/0x160
-[  244.354801][   T40]  __device_attach_driver+0xb8/0x140
-[  244.359986][   T40]  bus_for_each_drv+0x88/0xe8
-[  244.364534][   T40]  __device_attach_async_helper+0xb8/0xdc
-[  244.370161][   T40]  async_run_entry_fn+0x34/0xe0
-[  244.374882][   T40]  process_one_work+0x214/0x62c
-[  244.379634][   T40]  worker_thread+0x1ac/0x34c
-[  244.384102][   T40]  kthread+0x144/0x220
-[  244.388076][   T40]  ret_from_fork+0x10/0x20
-
-Best Regard
-Carlos Song
+-- 
+2.43.0
 
