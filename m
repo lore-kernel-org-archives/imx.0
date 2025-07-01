@@ -1,58 +1,58 @@
 Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CDB25BEFD
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 06:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF8326057C
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 06:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751351151; cv=none; b=LuXm2tz+74UwqH1fmcFjjex7C291MZohp2nS6aYeU7ibJbcNI8S9pC1sqlV1JsSh03FcwpXt2jKS+fWu1ur8OoOmEfdHvCZkWzpRrUfDnlJgj6fxhIEhttT3WJOEwg7Eu/ETrx97CEKhjuelbUJOtb4THnaxj+eZF1aabOlt5Qw=
+	t=1751351156; cv=none; b=S7iRYUNO9rt0Vl7JUhFGj5pR3uM2d6YH1a2+b4Atsl5e2hZkV70wa+QxnoW8VRyHq5Mv3tf1lhxtoWxYsehDuLwHgithzx5O044wfXnrRpnbWaUmCgr6NosjbyezE8SSqwbPoAdrg+DzVGrInn8tvKCGZApSUDOqwRcrW2TcUqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751351151; c=relaxed/simple;
-	bh=ts1HEmGcB2ML2xiAudKYeg2OM2+gY48sIAW2zJhZ1PA=;
+	s=arc-20240116; t=1751351156; c=relaxed/simple;
+	bh=VADQ6MwbWj3js/zVYNuKSW3x5CmxDSYekTsOCj8p9iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k9oF4MjOscBqYR62SUzSfxgz2jAsxM8A7w6Q3e1N7tXRkvmWWA/FfAdkrxoxVBVot496WdBgL5oVtMpg7OHGs0GyKleidlSm17I9U9qh+loDfBGTtqfA0O/5dz/2WWzDJA6TWrK5IScNo9WbowqTFdRaKrng0HRh42UOxGtoTFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=mZGD8Rp6; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=H2oCv6Ov reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+	 MIME-Version; b=F2BFWTVdaL5vJO+374mYMbfUh+hE5MVMgje7PXI1zuxOouxTn4UWWeV+S/GFAELcUjsd5Tr6uqfmzJBVEqzFFe4fZtJrK0Z0v3rrZXoavR5tK3IGHgb7Rvis2fOhMsItbGnboygLczvKhBIn+yMt/TG+zgBzZqpIPDdL9MMUZIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=jUYShg5e; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=oABy/B+x reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="mZGD8Rp6";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="H2oCv6Ov"
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="jUYShg5e";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="oABy/B+x"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1751351149; x=1782887149;
+  t=1751351155; x=1782887155;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uGl5l4cbrW0oZiz5/Hn8qYIROz+YDPJP8w6FEA4IyCw=;
-  b=mZGD8Rp66jKgMH9uDs9YrZLnCcMUpq18Dd61EH4yQirn5hMLmNwukRkP
-   k7hmOlecd8ztuae8nrv/Iu3wBzvh9KPrSnBTSNo7ObJ41SAglQZkq3tuA
-   AY29trEVFwBTJS/u8pir2/Lfgt0hm7QLg+Rmuv6jg0vrfswsbkR3WXAeA
-   HGJvyvBbtrd9mTyu/9h/v/JADfnM27jTQOj+LK8TOc+eSh3jbrIPFPwpV
-   lF+3vVF7gieEqCLVApju2Lh4Y0266ts8ERkAvSGMDk16ZBwHEoailtJ3R
-   6Pb0Dsa5AEpImxjbORZC4t4AETAC2lZMc51CtHwjxvcyYYAXl79DwNHnN
-   Q==;
-X-CSE-ConnectionGUID: kQ0Sl0NvSaKDZ5sTI77HNg==
-X-CSE-MsgGUID: HXn+a99eQiC5kBXXehRZ8A==
+  bh=6NkF+N0UTMUAuCV32wzpvbEEFJ7QOlBg6lBSc9eDzN4=;
+  b=jUYShg5ecFJV/+YAJiSvJjb1mAzBWCq8i18QxoiVDWIHg/uiUL7PA1j6
+   Q0svyfw46482yXd5plCi/kgbCygAL9vreWxokbCoKlK7DiwZKsWhRgGH6
+   GrutUCN6BFsUz5sAaBRcja3uWADtyJGm7NfqCZUYNPDS+p7e8qLoKlTKP
+   ibzthikhkDH9Kd8b6Yqs1KjHZlrhY67qCoqLBaoYDCLBZsjYv/Pvtskhh
+   zr5I6iOOdPehYxPptZWTYZwE+hmsjP80ESxXF0dDId8Y8t2kuUeNhx85Q
+   g1DUdorpEXYgnpKvORByE703wrkJKQXsKsph3qmYUEgzfn2bDVw8Lk2uz
+   w==;
+X-CSE-ConnectionGUID: 4ELenKTjQHCpdQmFjYVtEw==
+X-CSE-MsgGUID: P6lS5ylOTCykmUzLB5Vl8A==
 X-IronPort-AV: E=Sophos;i="6.16,279,1744063200"; 
-   d="scan'208";a="44943389"
+   d="scan'208";a="44943391"
 Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 01 Jul 2025 08:25:48 +0200
-X-CheckPoint: {68637F6C-E-B72BD212-DAE8BA0F}
-X-MAIL-CPID: 7E2F37648E5EFC1D7552387AF6DBB2FE_1
-X-Control-Analysis: str=0001.0A006377.68637F79.003A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C053316A60B;
-	Tue,  1 Jul 2025 08:25:43 +0200 (CEST)
+  by mx1.tq-group.com with ESMTP; 01 Jul 2025 08:25:53 +0200
+X-CheckPoint: {68637F71-46-497D558D-EBA6F5A1}
+X-MAIL-CPID: 05F84F041D6AE13DEE7297BF9477E7D2_3
+X-Control-Analysis: str=0001.0A006378.68637F8D.001C,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 45F0916A623;
+	Tue,  1 Jul 2025 08:25:49 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1751351144;
+	s=dkim; t=1751351149;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uGl5l4cbrW0oZiz5/Hn8qYIROz+YDPJP8w6FEA4IyCw=;
-	b=H2oCv6OvW1wEnz7TbQS2gzetFzUgFUepcTii1esFbzf5kFGX0YcYR9PwlfT9our+XmHUwH
-	87rgW4ir3ixWi1mZI+MENBAZRlJM6En3NSdwgFkelKnqOV1fYvDZ8bUo+UdFZ81UQDr6LQ
-	TwmC3TB2me3dbJQ9jLTMYj1ptdu5uobQcU7XoGt6XgwPUNvagm9Aa8LftuYtQHA8+6pbhb
-	3C5oblHujUluDWzH+6NZZ//Un1dYLS3xn/XWKNeu1Z5zM6cqcw3yKtrcEat+WgD3gn18Uc
-	+69pqjjEoDpx4PaMrBlWeshGqdYcDcRouKEu5hMKjv8OsgrVWFUGn+S9tNemFw==
+	bh=6NkF+N0UTMUAuCV32wzpvbEEFJ7QOlBg6lBSc9eDzN4=;
+	b=oABy/B+xOExrtUzf9jDLKkdHAW6oOE9sq083m6MstFeKcEKypWM+21acdRu2SCvNE3C0Rl
+	SJHmkT8xjAJjsVBISKENbSU7cGD1HQdlxpZ2Ejgr7N0IoK8h8xdcnacQsgvIoVADV3L0yn
+	ClA0UhKz/4Qce+9f5yLqzzkf+Q1ob0bcg/eexKftv7bPRXSc+XIn7aSGSrO9+W0EGiCil6
+	ibnL2nzq5749gH4pFFo9f2o1gODm7Lh7E9mAGRiqtPF58nIgytLC65twPnut335C7WY9qc
+	3a2upIpckF9XEvHF9MRdXvgDNv619XbAYON+i/A80BiizymxfMHB8y+Gb1eT4g==
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Shawn Guo <shawnguo@kernel.org>,
 	Rob Herring <robh@kernel.org>,
@@ -67,9 +67,9 @@ Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev
-Subject: [PATCH 7/8] arm64: dts: freescale: tqmls10xx-mbls10xxa: Add vdd-supply for i2c mux
-Date: Tue,  1 Jul 2025 08:24:55 +0200
-Message-ID: <20250701062500.515735-8-alexander.stein@ew.tq-group.com>
+Subject: [PATCH 8/8] arm64: dts: freescale: tqmls10xx: Add vdd-supply for spi-nor flash
+Date: Tue,  1 Jul 2025 08:24:56 +0200
+Message-ID: <20250701062500.515735-9-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250701062500.515735-1-alexander.stein@ew.tq-group.com>
 References: <20250701062500.515735-1-alexander.stein@ew.tq-group.com>
@@ -79,30 +79,88 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The I²C mux controller is supplied by 3.3V rail. Add the corresponding
-supply.
+(Q)SPI NOR flash is supplied by 1.8V. Add the corresponding supply.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/freescale/tqmls10xxa-mbls10xxa.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/freescale/fsl-ls1043a-tqmls1043a.dtsi | 1 +
+ arch/arm64/boot/dts/freescale/fsl-ls1046a-tqmls1046a.dtsi | 2 ++
+ arch/arm64/boot/dts/freescale/fsl-ls1088a-tqmls1088a.dtsi | 2 ++
+ arch/arm64/boot/dts/freescale/tqmls10xxa.dtsi             | 8 ++++++++
+ 4 files changed, 13 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/tqmls10xxa-mbls10xxa.dtsi b/arch/arm64/boot/dts/freescale/tqmls10xxa-mbls10xxa.dtsi
-index 40fa41eadd836..444bbf5115968 100644
---- a/arch/arm64/boot/dts/freescale/tqmls10xxa-mbls10xxa.dtsi
-+++ b/arch/arm64/boot/dts/freescale/tqmls10xxa-mbls10xxa.dtsi
-@@ -89,6 +89,7 @@ i2c-mux@70 {
- 		reg = <0x70>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
-+		vdd-supply = <&reg_3v3>;
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1043a-tqmls1043a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1043a-tqmls1043a.dtsi
+index e39eaa1759365..257d90bb9c206 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1043a-tqmls1043a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1043a-tqmls1043a.dtsi
+@@ -20,6 +20,7 @@ qflash0: flash@0 {
+ 		spi-max-frequency = <62500000>;
+ 		spi-rx-bus-width = <4>;
+ 		spi-tx-bus-width = <4>;
++		vcc-supply = <&reg_vcc1v8>;
  
- 		i2c@0 {
- 			reg = <0x0>;
+ 		partitions {
+ 			compatible = "fixed-partitions";
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1046a-tqmls1046a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1046a-tqmls1046a.dtsi
+index cafb35f674aa4..fa543db99def6 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1046a-tqmls1046a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1046a-tqmls1046a.dtsi
+@@ -20,6 +20,7 @@ qflash0: flash@0 {
+ 		spi-max-frequency = <62500000>;
+ 		spi-rx-bus-width = <4>;
+ 		spi-tx-bus-width = <4>;
++		vcc-supply = <&reg_vcc1v8>;
+ 
+ 		partitions {
+ 			compatible = "fixed-partitions";
+@@ -36,5 +37,6 @@ qflash1: flash@1 {
+ 		spi-max-frequency = <62500000>;
+ 		spi-rx-bus-width = <4>;
+ 		spi-tx-bus-width = <4>;
++		vcc-supply = <&reg_vcc1v8>;
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1088a-tqmls1088a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1088a-tqmls1088a.dtsi
+index 66a7aff893b32..b8a213df238a5 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1088a-tqmls1088a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1088a-tqmls1088a.dtsi
+@@ -20,6 +20,7 @@ qflash0: flash@0 {
+ 		spi-max-frequency = <62500000>;
+ 		spi-rx-bus-width = <4>;
+ 		spi-tx-bus-width = <4>;
++		vcc-supply = <&reg_vcc1v8>;
+ 
+ 		partitions {
+ 			compatible = "fixed-partitions";
+@@ -36,5 +37,6 @@ qflash1: flash@1 {
+ 		spi-max-frequency = <62500000>;
+ 		spi-rx-bus-width = <4>;
+ 		spi-tx-bus-width = <4>;
++		vcc-supply = <&reg_vcc1v8>;
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/freescale/tqmls10xxa.dtsi b/arch/arm64/boot/dts/freescale/tqmls10xxa.dtsi
+index 138f8778afde6..7da1bfd83cca2 100644
+--- a/arch/arm64/boot/dts/freescale/tqmls10xxa.dtsi
++++ b/arch/arm64/boot/dts/freescale/tqmls10xxa.dtsi
+@@ -8,6 +8,14 @@
+  */
+ 
+ / {
++	reg_vcc1v8: regulator-vcc1v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "VCC1V8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		regulator-always-on;
++	};
++
+ 	reg_vcc3v3: regulator-vcc3v3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "VCC3V3";
 -- 
 2.43.0
 
