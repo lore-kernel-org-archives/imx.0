@@ -1,217 +1,211 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010004.outbound.protection.outlook.com [52.101.84.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07B54A0C
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 09:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751362622; cv=fail; b=I/j6xVNM+y3P3mQivzgblVclJAQpQM3KNhJXPJH0R9hu4n0mNXfpJJigLTk4YZz13HQmDf7AN6BbVoSvBu7XEob7AC8plYsl8j7HXcMzG/iOWnZXr6pIeIcZxlYAp6FDE6h6AioCeFR2lxtyjvxoq3OLHZ/Q3ex2n0indSspkas=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751362622; c=relaxed/simple;
-	bh=+jaxuokSHZsh7PHaeo2V4SlPDU9injMx/ymB187kH+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=g2RiGaxH2ImtSoiZi2H6MnO3EiKaW/zaCdUsi03Uj3UjZwMDuJowm/MyQWjHszZX/c0paueStdquBQh+nUuxs7Enl67e2hRqULt8kag7SBIIFlnJ6GdjCtR/jE+p4bTDjzbtCILAv5p1ueApoY1XX3468PPAu4EcWECt/0U6sN4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oComJHA7; arc=fail smtp.client-ip=52.101.84.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D980A26B772
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 10:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751364143; cv=none; b=MMzfBOQLFzc+Q+fimyrZo/Au2HOUa71DTlUOtGVWnF1aVMq7/AyWbgwK3RyUjqPDB+zsMijg8dblFi/N5hyTgiE3FbeGiZCxYSpHnjbX8iohQ8Qbt/fIYjEeyqlLhjFd4Ai18+UgC+mc29NZImv+t3eg0TyH/5LCNrMfgm+s81w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751364143; c=relaxed/simple;
+	bh=cpyqTOGVeYqY3XRnRs+oIY5hjGnfsVsVIR9fqCXXKXI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uHymJBDaabjcEOBiGxNP9eHznWs5lYxHCYH76yiqf59M07o1/SM3+d3SzcQLFMu5g4ekpxRxMCe9hZL2FDPsBqXgmkeSkPOmg8ylVGPXXW9/un3p3Dgear8cj8LWqc0PVjy/nfcl0MPbaEvnxTV/ni9IBkqdg3rfRGmjRopXbeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fnYZwAEJ; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oComJHA7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e0x1we34AGnhb70q/4PsBSTxeglvv7/yCUvu/3Qla9Za0Lzy49V3l9hmQW/CKs58DJkdU4Vjr+9LRCZIUFLcG8FLRB++4ekjqkTQhVkLG2D+zUJjGogvl1W+DIwjrmlOA2jTHdorzwMM2NrzLovcS+rosdvzS/EAKNF+8YLkUWyKzo2F62VcZXPwGI/ybsHH6Q2+KPic53FH3Tk0Xj9kGlUOQQsvrKrjJjQQDlmxhMORM7k14rRJgBkhLPd1jXa9oDqId7iG8LHQhy3uTFnF3DO3v5evCYuKW96rKJuc6CUJO5jq9K5fZIjkteUHJTPFe4PbXgzfl9T69oDbsCJBHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=al7ply/EvpkMKlpihNL0uRZNIP4lYYXDSRMwCB3+ZpU=;
- b=bItlOJmm6mAbtD/INIzhXB29SQXUX3zTFlk8ihyYk82yhdPQe9XExUrOt+nP59g7IhGuWreG5Efh8vTMDSej0oDj3FN+XQB2gugA/MOd36bMfyjBvF3MT+ZSCHgpNXu9BG2ho+UFDiK2R2Bv5eNdSxWS1L+OjVcEE8BWyRDyaPxSMApjNix28HsTTbdrLLBcMumSoXmAqYDvgccOkfzrEWJy1AFosW9OsIFr4avEB5WurklzvT3yiB/g7BjnUu5Z9ULvNzXes+iYOZEiy6pfiMB87qzBZQLCtnqDVxLHQKQ+ERtuTOi79k2v6WhpFqHfZ/CnDOpzSei6LTDPE8dmLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=al7ply/EvpkMKlpihNL0uRZNIP4lYYXDSRMwCB3+ZpU=;
- b=oComJHA7u5NoSFK7IIw5KfGO6VH8l+44hd8Uj5fQUpsW/qhuR5JSty0HHKNQl1IFnEIXOtMI9Wc+/NW8Xrkq2Iyy7bdtyb9Dh3P52UxcEpIn+zye9bkFmJNFH1TCCrYe6mb5k88AQltzB8THnSyBE5tCfttxtIeuBiIcNw7bab9d8qpxVLRvDa60IZU9wiPf4go5+kq+21jQOBojafcP7mmrO8tgjqfmIgoXB2jLSkk3lFqRmdJ98P260OlmaTzMcV2h0cahTETd05apcdhsUat4hztAYm0+3KcLlL3rCrMAloxsp2QJ8Cg1bcqHUkdhYqSALL8kz8VLRjOgjc7Urg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by PAXPR04MB9186.eurprd04.prod.outlook.com (2603:10a6:102:232::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.29; Tue, 1 Jul
- 2025 09:36:56 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8880.029; Tue, 1 Jul 2025
- 09:36:55 +0000
-Date: Tue, 1 Jul 2025 17:32:03 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Alan Stern <stern@rowland.harvard.edu>, Christoph Hellwig <hch@lst.de>, 
-	ezequiel@vanguardiasur.com.ar, mchehab@kernel.org, hdegoede@redhat.com, 
-	gregkh@linuxfoundation.org, mingo@kernel.org, tglx@linutronix.de, 
-	andriy.shevchenko@linux.intel.com, viro@zeniv.linux.org.uk, thomas.weissschuh@linutronix.de, 
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v2 1/3] usb: core: add dma-noncoherent buffer alloc and
- free API
-Message-ID: <h7ovqshmy4s6kehal3gywuxxj6zf4uajqpu6lxdmo6id5mpvs5@e47v6d5tfe4q>
-References: <20250627101939.3649295-1-xu.yang_2@nxp.com>
- <20250627101939.3649295-2-xu.yang_2@nxp.com>
- <1c4f505f-d684-4643-bf77-89d97e01a9f2@rowland.harvard.edu>
- <wddmyx4lccthln7mbngkd4zbh6y7mwetdba5e7ob6u4xevecmj@zopp65eqbeuu>
- <e908261b-2acd-46ac-b3ef-92691eb50f88@rowland.harvard.edu>
- <20250630173851.GH20333@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250630173851.GH20333@pendragon.ideasonboard.com>
-X-ClientProxiedBy: FR4P281CA0312.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f6::19) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fnYZwAEJ"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-453066fad06so36695365e9.2
+        for <imx@lists.linux.dev>; Tue, 01 Jul 2025 03:02:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1751364140; x=1751968940; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5ZhhFhh6zreoch3UvbvFqYL168bvoOK/hSQ4W4s5kf0=;
+        b=fnYZwAEJVsw+85lN/Cwcocaj5cXUdlNH7m5Dpl/hvyuDjSTTE+3sA1kT60QycDI+5Y
+         1+zbubxgicPaGbfeB4ZhCwBQBQ/F1I4MV0YA25b4Di7T4ob1rirOHB2ZEGZ6fYoCYKTF
+         1CNQL1WVCcqYeWuWGDEGDXsLAUfPoZrXAcDEyip/KdxZEFS6ULsLlK5AlVIWaz+Smi5A
+         IOsm3+PcJvL1sX0GKsSUcCANKs2rnhFwx6AghznfwxeIqp4eQ1kL2uPb/m5aXHf4jly2
+         Nr9WGGV1D+lk/qAefm9Kl3vwXC9Yf2Tk3r5LniOj5W33232jILod8TLT005nv04Uny2p
+         bV7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751364140; x=1751968940;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ZhhFhh6zreoch3UvbvFqYL168bvoOK/hSQ4W4s5kf0=;
+        b=pJI5ofous474sBvcdZPqs0tPZoUtMlCsoLNHQT44hPLksdMCsd4DobE3lGngCrZl4P
+         aqj4pVDeT++IPEGq7pV7HfxSliK7EgB1NG+fGxPTfKJCxzGmZ2FBB38D6brbJUsQ++PT
+         HlTyOQAqNTpVb6UBq55XYkvWmgehOSbZtbbOVKKonSeyOwflM0eKRFpH9lEF5Yyebze7
+         CGEfyS2MVVc+31lSHe86hRI3NjBgQRN+dp8yqLJ1bqTn+nypQapHNyQX0JrKEOHma/zR
+         ZRCC7kq5q/Mq29FP7wxOh779w0qmZgI0jJoRTWlmXMVN2Gn6gyItKW2ukxo39fPxEtwl
+         4g+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXtNMVTfajkS/3KRIvyzpDeYHGLK8T8xKz+YApZ0Dga3gc/NLArVs+j3QPRSQQwzZV6KRs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx4yYuAH5+H9pOP998CtdVOL97P1RS2Hj7dRsmWs5limg/BMR3h
+	jJRRmSm5CmrpVm28DK88wKQLXsO9XkjnGN9Lao9vBobLW3IFBeh2886/+nb7YqbJhbw=
+X-Gm-Gg: ASbGncsPhEL8DfNzjT50r+nWzDULk6EttKigV1+y1oyLkeIquK31IcEU/GpuNvllb1k
+	o3GljIIy+mOwIoYSfKLZdt0qeDj0x5Uqy3wu5z9QCYrKZUUxi3Gduu6IFgCEznGJOKujQcHvmOM
+	C0SNJB/4M30zeyOi/O/I1rVf45x5bJI/5M2LNyhQLbiSk2hbDlp44Ha16JkvPChmQY83qA/z12A
+	zjTbFQMfv24Rb3cApo490N90PtJU8nAYoHaaBWFVVHAAnyvH/KW3z/JK7W/kghXqNSz9XR+udm2
+	6yGaO/xlGPXB+Y6L4UhJt2RA7qcUgOwXZPUW1aakoce+BdbH3uaFU0efb3ZR2m3vB3Y=
+X-Google-Smtp-Source: AGHT+IHBCQlP9/nR2LptdOeK1mMuPMiYt+Xt6KQSAcgiyQshNwB07NsvhgJqGsj1NDftDmY49jePgw==
+X-Received: by 2002:a5d:4d8f:0:b0:3a5:8a68:b82d with SMTP id ffacd0b85a97d-3a90038b70amr12122291f8f.43.1751364140010;
+        Tue, 01 Jul 2025 03:02:20 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.136.128])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823ad0f3sm194486775e9.19.2025.07.01.03.02.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Jul 2025 03:02:19 -0700 (PDT)
+Message-ID: <8eedf34e-b870-4a73-b966-e9745809dff3@linaro.org>
+Date: Tue, 1 Jul 2025 11:02:18 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PAXPR04MB9186:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e02513b-5221-405f-c49b-08ddb882d160
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?/CmWMpjLL9VdoNvgD+vRguIQ7u0sIvEVL8znu3dj5KjtZUawX8KHvLkKxqT2?=
- =?us-ascii?Q?h19rVszCq7S0szPqigsZQRPCRVkWXkOrTVP2ll/sBFnWLZPecyYNIRCaaGZL?=
- =?us-ascii?Q?mfPqbIztHql2aXkl7RiunR3MT8Q9SHJMA9sKBP9SEYwe6HlpW6SjxpK5cKYP?=
- =?us-ascii?Q?rBn3wPV0o12t6IyJICpizCXJbdvkWrmEUkvrlLvL7IyJiY0rre0AdAKjd34l?=
- =?us-ascii?Q?eFje5X1LNg2MzDIDX3mJC6It7XfVh2dQkOLGxskMHYJZxMhaPmQgxfKx9kvf?=
- =?us-ascii?Q?SaYAiVf6krl+SX91Ii8b8R6PO4Wd4IP7aJufFS9TVL3lik0do+lGBZ6M9rk9?=
- =?us-ascii?Q?9JD7gLYtbSijQQIebcnXS3gLdse4HuIn3MqsokKopNk5+qhrwA5IsVCO5Cs0?=
- =?us-ascii?Q?Kys2ZOc0B4vSNVxLdy1roK0wAw4B+K73odhLEKSPWXlyMPL+v8ySKAzHzUJx?=
- =?us-ascii?Q?yhqysylif7Brg2PbsvEer8clhIqJaboTqWsox7AkZqCYcZvW6Q5uJsH/Z51P?=
- =?us-ascii?Q?l0SjlD8DfNkU2T61OOFqheWFyAWTYYPOGsyAcrLib+eWtyxMN9geDbMeCxR+?=
- =?us-ascii?Q?uQHLiqaxWGJXhjTEi05r91rN5ICTt4gVAL5p/WBPEIMIEPszABjbe92GbIDJ?=
- =?us-ascii?Q?M/r+8fbFXiMLFEHRN3GnfraBxT72IwnCcBqC2sZ6MaaLkgkLZHgqJ14jecKv?=
- =?us-ascii?Q?1xokS+NOzRlgCb7ycciID2aejUoOpZokjm5Euw3n+Kx7FKQegrJjCJ9KtfK6?=
- =?us-ascii?Q?JOhtOO49g4n6VdQCqySdtMKo+AKX+wrwJGEDA5E5BSdSHA9FYp8MbL8iL9Bc?=
- =?us-ascii?Q?T/tZ10Sg12svBKanDL1BiXyBO+fzTkKU3NULZFv3ilsc+uHSFbiMGohZ33ky?=
- =?us-ascii?Q?Q/3dasWLpl+n0l6m/qjP0I3ak1jaGTiLSrE/SER+pHaLPSWpaWoWmMvD+YnH?=
- =?us-ascii?Q?M0W8M+j3dUMNZ0iWlQqu4dWqoxvGeee9RwpO71KE7fTaId6kJUWlh60ex91G?=
- =?us-ascii?Q?EovQK/JKVEKTv+E24T9hWupHry4tzAjAU6QYO284yuBnCvY6OVphMwwp2adF?=
- =?us-ascii?Q?E16GIxKOs5Ie8+1BV/FdKQr4KTwfyYICJ5f3XP7iUFy3vP402EPlmfJ6npqt?=
- =?us-ascii?Q?4nLG6V1rIyUtJm9gN/W4YfM9BGUsLw4DqK5sHvLPPxmBtFOlCAfOqptO2TJz?=
- =?us-ascii?Q?ytngPgFeenrk5csmuEE0PeZGrtNx95Wx8T5tbvdvtowRK6tirUd95MXGAoYT?=
- =?us-ascii?Q?2plwV7Dn45zNp7Ikh99/d+KxyTbjvV6dnlecChImzCE8zqSTf40HPBvrdLgp?=
- =?us-ascii?Q?JXwwuFMVsBDC+aQ641WDqQdipkoJlHXfNNGAqlyR8J3Vs6FUqhFhH/T920tl?=
- =?us-ascii?Q?2cbKfacuo3NZqWUXCZDKgZSv/ZbfDjKyonU32/SZBIjLcBU0XYRZ0Ay7ayyG?=
- =?us-ascii?Q?xkkczBRHYs5+sCuc2HwgNgAnUytOYiSFjsA+TUSI+JmOkMJ8sx9wXTHcvJzl?=
- =?us-ascii?Q?Qfv7Hc4hQFotGOk=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?4b7ub7MchxeFUmihIZGwfBCskP3pg0a6v4MEV1PfHX9/Pmo53t8U5nItMe0g?=
- =?us-ascii?Q?VOUPu7EqDBvZjC/eCeh5WnyFW9werlVHJ0/2gi1b+hHonwhIyT7fDBlV5UDF?=
- =?us-ascii?Q?Vy0kRj8U6DDv5CzPnAVa3ISNqW8JT6FrhPcMMFMu4QpUIwPSU9QKQgpYKcnA?=
- =?us-ascii?Q?c97p+SunF/M9w9yyJ8Ch9diOHraZBPgppm2i7N49bRT9jay5jbbycLGKC81a?=
- =?us-ascii?Q?Sk1gaVMDp72n1letVowF9z1QKss0jY+WePYoedElYj/iMC4LPEWK7jf/hk/G?=
- =?us-ascii?Q?+2+4anJnHW2sf2s6YjrbwpKiaBOW0g4U3k8+wRzFQB/GLGRudx8QsJiJ6ri7?=
- =?us-ascii?Q?/NSOena3liifpS6plrw70oDeI8jHCU2Bgg/oiNH12IPTP/v+4dXxF55glbHz?=
- =?us-ascii?Q?hBxu2tDgw+OvALQk1OEM1YYGkVwHvbSp0wIg5x1V0Eb4FX4mvkdBoccnL4OD?=
- =?us-ascii?Q?AhBt2Eot3sbmh1PfEgG64wji3l8iPSm5UVbCcFac3mUF6bCLg4vv5xXV6kVa?=
- =?us-ascii?Q?lyA4l8Z5kjkbA7sdLEkxuy+yw9q1F5LVnhiNQwXuxquikivZZilZk6a6OKdR?=
- =?us-ascii?Q?FeI+0bOawWK8/89MrwHizLSjKPt+COtRVZXuJfJW2fvU6jrdlwsvoAiDdYZK?=
- =?us-ascii?Q?qpX3B0/AcLhta+z90T+JfYqsXT5AArmZHZuf6gXfRNragn4iPMKooLzJ+7fV?=
- =?us-ascii?Q?pl0IQXBE/EveBBrKbqmyipvp1cTGvlL7ZNQHKOs9DrDE5jJPciheEYBYnc1d?=
- =?us-ascii?Q?kF0f1visNGX6+b79/inltP1p42M1HDbPd4afxTRogAeUswoIBgtxblehtW4s?=
- =?us-ascii?Q?1QWKlexTARZ51ZsPKmSzt1WG8dXwtBbrQKDKlPKFR65OWImBv6lHnbegfv5o?=
- =?us-ascii?Q?JJvDSdcbqPWP31xZ1ubivyp2m4fDeVRhSpES2EwQxlWC5E/bHGHfunQXnlHl?=
- =?us-ascii?Q?aresscEylPiFWTAEd/Y9b58wYi2zV1zPetW0TFXQfCmbp+ZN13C1XmQg/hJA?=
- =?us-ascii?Q?bDUbH+uizTpvxhAflhoNZ6hpqBEPY8EwIIEj1kEdoyAKxcYrH3kpL4paYzJW?=
- =?us-ascii?Q?OCsncAFd2wE917/2WVJitldhKUiKmAo0KHGqNC5yvVvH8AMMSxFkch//RGSp?=
- =?us-ascii?Q?rzp2vr+XxPBG/BHqB7RgDye2tVouYUFVrnpwGUZnACvyfIsAujA5U9bbPXup?=
- =?us-ascii?Q?AmFGibYCmTnG3RHrzhqNmvFTgGZeCg9PS1gIvUJAZvhpzicZIWT3oP+IQ6x9?=
- =?us-ascii?Q?hcsB4ywaGRyfrkxep2+cbFA8BEqczd+5XE296mcRy2JTcqBs0LaGkRyJhM9L?=
- =?us-ascii?Q?gedHpna/J53vtUOu34j1qGaNTGX5XmVJYknkNAaRFve69aZxBAEDPrizKI3I?=
- =?us-ascii?Q?9J0dcQBA3k8dn/FzQKdFfi4fMiwUJ5hB5pDrxFwj3D7gx2QjxsYxazjFMgf6?=
- =?us-ascii?Q?cBOuCrpWViuO05C3+0VmbXr31du0NS7RBU02mYWUxv4kEvh0QUJfTglYx8QJ?=
- =?us-ascii?Q?HeGK7hny3bbU8G8qYdEP+WDMUWjNy98vvqdDty+JQX8aycXa4njxLGJ0Ee+p?=
- =?us-ascii?Q?m5EKVz4DNx2foopsy6waif/HV75I1muph4kA+CCP?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e02513b-5221-405f-c49b-08ddb882d160
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2025 09:36:55.6522
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YbKZdnATcsVgWPq+fN3+UTT4dR/9GVp72cjXBIBjvH5v2Yt4I5xkcG7s+lqfOeNQjkOnV1KRLi6CgvBLUGQcxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9186
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/6] spi: spi-fsl-dspi: Store status directly in
+ cur_msg->status
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Larisa Grigore <larisa.grigore@nxp.com>,
+ Frank Li <Frank.li@nxp.com>, Christoph Hellwig <hch@lst.de>,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20250627-james-nxp-spi-dma-v4-0-178dba20c120@linaro.org>
+ <20250627-james-nxp-spi-dma-v4-2-178dba20c120@linaro.org>
+ <20250627213041.vp6yfcgf4xysdklf@skbuf>
+ <423f101a-0826-4b7c-ace7-f5e7f4790c4c@linaro.org>
+ <20250630204135.gzffv33j3pk3bgx6@skbuf>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20250630204135.gzffv33j3pk3bgx6@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Alan and Laurent,
 
-On Mon, Jun 30, 2025 at 08:38:51PM +0300, Laurent Pinchart wrote:
-> Hi Alan,
-> 
-> On Mon, Jun 30, 2025 at 10:16:30AM -0400, Alan Stern wrote:
-> > On Mon, Jun 30, 2025 at 04:18:51PM +0800, Xu Yang wrote:
-> > > > Also, the material that this routine replaces in the uvc and stk1160 
-> > > > drivers do not call flush_kernel_vmap_range().  Why did you add that 
-> > > > here?  Was this omission a bug in those drivers?
-> > > 
-> > > According to dma-api.rst:
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/tree/Documentation/core-api/dma-api.rst?h=linux-6.15.y#n664
-> > > 
-> > > "Once a non-contiguous allocation is mapped using this function, the
-> > > flush_kernel_vmap_range() and invalidate_kernel_vmap_range() APIs must
-> > > be used to manage the coherency between the kernel mapping, the device
-> > > and user space mappings (if any)."
-> > > 
-> > > Possibly the uvc and stk1160 missed calling it, but since they won't be
-> > > the only user of the USB core, so we'd better call these APIs.
-> > 
-> > Documentation/core-api/cachetbl.rst says:
-> > 
-> >   ``void flush_kernel_vmap_range(void *vaddr, int size)``
-> > 
-> >        flushes the kernel cache for a given virtual address range in
-> >        the vmap area.  This is to make sure that any data the kernel
-> >        modified in the vmap range is made visible to the physical
-> >        page.  The design is to make this area safe to perform I/O on.
-> >        Note that this API does *not* also flush the offset map alias
-> >        of the area.
-> > 
-> >   ``void invalidate_kernel_vmap_range(void *vaddr, int size) invalidates``
-> > 
-> >        the cache for a given virtual address range in the vmap area
-> >        which prevents the processor from making the cache stale by
-> >        speculatively reading data while the I/O was occurring to the
-> >        physical pages.  This is only necessary for data reads into the
-> >        vmap area.
-> > 
-> > So invalidate_kernel_vmap_range() is not needed for data writes, that 
-> > is, for OUT transfers.  And ironically, flush_kernel_vmap_range() _is_ 
-> > needed (but only for OUT transfers).
-> 
-> flush_kernel_vmap_range() for OUT transfers and
-> invalidate_kernel_vmap_range() for IN transfers make sense to me.
 
-Many thanks for your suggestions!
-I'll do it in next version.
+On 30/06/2025 9:41 pm, Vladimir Oltean wrote:
+> On Mon, Jun 30, 2025 at 01:54:11PM +0100, James Clark wrote:
+>> On 27/06/2025 10:30 pm, Vladimir Oltean wrote:
+>>> On Fri, Jun 27, 2025 at 11:21:38AM +0100, James Clark wrote:
+>>>> This will allow us to return a status from the interrupt handler in a
+>>>> later commit and avoids copying it at the end of
+>>>> dspi_transfer_one_message(). For consistency make polling and DMA modes
+>>>> use the same mechanism.
+>>>>
+>>>> Refactor dspi_rxtx() and dspi_poll() to not return -EINPROGRESS because
+>>>> this isn't actually a status that was ever returned to the core layer
+>>>> but some internal state. Wherever that was used we can look at dspi->len
+>>>> instead.
+>>>>
+>>>> No functional changes intended.
+>>>>
+>>>> Signed-off-by: James Clark <james.clark@linaro.org>
+>>>> ---
+>>>
+>>> This commit doesn't work, please do not merge this patch.
+>>>
+>>> You are changing the logic in DMA mode, interrupt-based FIFO and PIO all
+>>> in one go, in a commit whose title and primary purpose is unrelated to
+>>> that. Just a mention of the type "while at it, also do that". And in
+>>> that process, that bundled refactoring introduces a subtle, but severe bug.
+>>>
+>>> No, that is discouraged. Make one patch per logical change, where only
+>>> one thing is happening and which is obviously correct. It helps you and
+>>> it helps the reviewer.
+>>>
+>>> Please find attached a set of 3 patches that represent a broken down and
+>>> corrected variant of this one. First 2 should be squashed together in
+>>> your next submission, they are just to illustrate the bug that you've
+>>> introduced (which can be reproduced on any SoC in XSPI mode).
+>>>
+>>
+>> Thanks for the debugging, yes it looks like the patches could be broken down
+>> a bit.
+>>
+>> Just for clarity, is this bug affecting host+polling mode? I can see the
+>> logic bug in dspi_poll() which I must have tested less thoroughly, but I
+>> can't actually see any difference in dspi_interrupt().
+> 
+> It should affect both, I tested your patches unmodified, i.e. interrupt
+> based XSPI FIFO mode (in master mode).
+> 
+> Assume (not real numbers, just for explanation's sake) dspi->len is 2
+> (2 FIFO sizes worth of 32-bit words, but let's assume for simplicity
+> that each dspi_pop_tx() call simply decrements the len by 1).
+> 
+> The correct behavior would be this:
+> 
+> dspi_transfer_one_message()
+> -> dspi->len = 2
+> -> dspi_fifo_write()
+>     -> dspi_xspi_fifo_write()
+>        -> dspi_pop_tx()
+>           -> dspi->len = 1
+> -> wait_for_completion(&dspi->xfer_done)
+>                                             <IRQ>
+>                                             dspi_interrupt()
+>                                             -> dspi_rxtx()
+>                                                -> dspi_fifo_read()
+>                                                -> dspi_fifo_write()
+>                                                   -> dspi_xspi_fifo_write()
+>                                                      -> dspi_pop_tx()
+>                                                         -> dspi->len = 0
+>                                             <IRQ>
+>                                             dspi_interrupt()
+>                                             -> dspi_rxtx()
+>                                                -> dspi_fifo_read()
+>                                             -> complete(&dspi->xfer_done)
+> -> reinit_completion(&dspi->xfer_done)
+> 
+> but the behavior with your proposed logic is this:
+> 
+> dspi_transfer_one_message()
+> -> dspi->len = 2
+> -> dspi_fifo_write()
+>     -> dspi_xspi_fifo_write()
+>        -> dspi_pop_tx()
+>           -> dspi->len = 1
+> -> wait_for_completion(&dspi->xfer_done)
+>                                             <IRQ>
+>                                             dspi_interrupt()
+>                                             -> dspi_rxtx()
+>                                                -> dspi_fifo_read()
+>                                                -> dspi_fifo_write()
+>                                                   -> dspi_xspi_fifo_write()
+>                                                      -> dspi_pop_tx()
+>                                                         -> dspi->len = 0
+>                                             -> complete(&dspi->xfer_done)
+> -> reinit_completion(&dspi->xfer_done)
+>                                             <IRQ>
+>                                             dspi_interrupt()
+>                                             -> Second interrupt is spurious at
+>                                                this point, since the process
+>                                                context may have proceeded
+>                                                to change pointers in
+>                                                dspi->cur_transfer, etc.
+> 
+> Clearer now? Essentially the complete() call is premature, it needs to
+> be not after the dspi_fifo_write() call, but after its subsequent
+> dspi_fifo_read(), which comes after yet another IRQ, in the IRQ-triggered
+> path.
+> 
 
-Thanks,
-Xu Yang
+Much clearer, thanks. Not sure how I missed that, maybe a confusion 
+about whether it was dspi_fifo_read() or dspi_fifo_write() that modifies 
+  dspi->len.
 
+> Not sure why you are not able to reproduce this, maybe luck had it that
+> the complete() call never woke up the process context earlier than the
+> second IRQ in the above case triggered?
 > 
-> > On the other hand, Christoph may think these call should be included 
-> > regardless.  Let's see what he recommends.  Christoph?
-> > 
-> > (Actually, I would expect dma_sync_sgtable_for_cpu() and 
-> > dma_sync_sgtable_for_device() to handle all of this for us 
-> > automatically, but never mind...)
-> 
-> -- 
-> Regards,
-> 
-> Laurent Pinchart
+> I'm not doing anything special in particular, just booted a board with a
+> SPI device driver (sja1105). This transfers some sequences of relatively
+> large buffers (256 bytes) at probe time, maybe that exercises the
+> controller driver more than the average peripheral driver.
+
+It's strange because I was stressing it quite a lot, especially with the 
+performance testing.
+
