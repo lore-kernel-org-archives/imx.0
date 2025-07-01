@@ -1,45 +1,45 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDDC26B755
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 14:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EE8277814
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 14:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751379322; cv=none; b=Ts7KkaAhMFD8kNIJegXWvcq87ACDu54rrmjjFchmj/QgsKq2o9K27d7SXdSV6BUSku3ggrZH6U7WhLiNmwHZR9RyXfXq6M2c65s+VtPXGEv4v94s7AcobfkOkJGCrotaKz1SU3Vn5iqReCCgXXxvhUWrEn18o0SNbzjl1ipgPjA=
+	t=1751379459; cv=none; b=dDrweS3SSVCCcBUTX353TT60xYTnet3ySTpjOjxKBGYDid6CWLvoLy3ICmGR4FVx9XxmgfuINdYG9NKNsFjpQ+Wu+9qgrt6sAHx9v4lRy4jj0Z2LHii9tlw6p+bkrxW9iI5o64J1Oug9THc4xaKogfSMqqVwMo+I5gh65GlR1+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751379322; c=relaxed/simple;
-	bh=jHdi8+bTev54Ym5dBuCrjPQtYHExSbRkMbKWgPuA8Hw=;
+	s=arc-20240116; t=1751379459; c=relaxed/simple;
+	bh=H+d8K1h3HHkTY/7w00DJUJUkTQbVdJUWWJhS4HtXAzo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NJCeSfwIS4mylF5nTifADdzKa2QYEWHoe+p5yR34bgKSZRwt8HaK5eVVYFyC+iWdO3yAOOrtn0Bw1AGpR1nG1ZQuZ4nldnmt92FGl+tweXsktizfSjpqXaS9THA417I0GWB6mQwLPnFjlE9Cp9my7t5T6QbI2asfiPC2zzt2eXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=U3CnYPmP; arc=none smtp.client-ip=1.95.21.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=gPyqZdEQgdAIw3OcdiAXgo3xbCosmgUGOsAmZ9x3phS+8Ibi3PhjwdC9NVH0B8U7rDQlUisVFGeQWdargUzKkNE69JISeDbuJFEsh+CL1n23FodmNtQK0E+xJ9zUDyBsykWWrLaJpbvr/izL2uG3MlB2vseq1pNRs/mMHsF1CR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=TbhgpTn6; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="U3CnYPmP"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="TbhgpTn6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=BTWZ3fHGa7D6q7y60m0EG2fACXLmItVUIq7xJ4IjjQY=;
-	b=U3CnYPmPEVwCoaI0np4ka5Gsdc2I4ORmD17aTa2WfYQDoNSHi9mdV3lbg68Sjk
-	4vQ2dmezvfuCeJRm9pLq4AAGmbVAZaOeQi6zLmghRQrIx3Ww/OaGDjWfAULoj3Ar
-	6EC3XChsX8k1tCEaNfiAbYisoRRFRr9tZ01RSZTiEF/Cw=
+	Content-Type; bh=p26k3iNBH6NEFpUE2GR2mYl5kAA+PXFhcjSGL4mCfPA=;
+	b=TbhgpTn6hdC1rodjsefbUOg8xgpuZ6gyHHbF7NXNUo92APh/KWd1H2pZp/svIw
+	i5RIjX67k8zYHGgNq6g2uzycNnJ0tTxfOqD7E6CMJcm8J1Cmur0DoBbuwYy39JGY
+	hn5bUFQ3+sJ9nzD51RTrnOUiMvqZ4v1+HGOmS+xama+/M=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD336hg7WNovcABAA--.3851S3;
-	Tue, 01 Jul 2025 22:14:58 +0800 (CST)
-Date: Tue, 1 Jul 2025 22:14:56 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgD3V+bs7WNozMcBAA--.4462S3;
+	Tue, 01 Jul 2025 22:17:18 +0800 (CST)
+Date: Tue, 1 Jul 2025 22:17:16 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	andrew@lunn.ch, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2] arm64: dts: freescale: imx8mp-var-som: Add EQoS
- support with MaxLinear PHY
-Message-ID: <aGPtYHLk+UbRscnk@dragon>
-References: <20250609160949.35654-1-stefano.radaelli21@gmail.com>
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/6] arm64: dts: imx93-9x9-qsb: add IMU sensor support
+Message-ID: <aGPt7Cs2jrGDAZ/m@dragon>
+References: <20250609165237.1617560-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,36 +48,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250609160949.35654-1-stefano.radaelli21@gmail.com>
-X-CM-TRANSID:Mc8vCgD336hg7WNovcABAA--.3851S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jr1kKFykCry7XrykKFWxJFb_yoWDAFbE9F
-	W3Xr48J34UtFyfGanYgrW8JF1Fkan5XF10gr4UWr93taySvws3AFyvqa45KF4UXayftrsx
-	Z392krWFv34rWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjVbyJUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCxx9ZWhjvz7WaAAAs7
+In-Reply-To: <20250609165237.1617560-1-Frank.Li@nxp.com>
+X-CM-TRANSID:M88vCgD3V+bs7WNozMcBAA--.4462S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUoYLvDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNA6pD2hj7e6qGAAA3m
 
-On Mon, Jun 09, 2025 at 06:09:48PM +0200, Stefano Radaelli wrote:
-> Enable the EQoS Ethernet controller on the i.MX8MP VAR-SOM with the
-> integrated Maxlinear MXL86110 PHY. The PHY is connected to the EQOS
-> MDIO bus at address 4.
+On Mon, Jun 09, 2025 at 12:52:32PM -0400, Frank Li wrote:
+> From: Haibo Chen <haibo.chen@nxp.com>
 > 
-> This patch adds:
-> - EQOS controller configuration with RGMII interface.
-> - Proper reset timings.
-> - PHY power supply regulators.
-> - RGMII pinmux configuration for all data, control and clock signals.
-> - LED configuration for link status indication via the LED subsystem
->   under /sys/class/leds/, leveraging the support implemented in the.
->   mxl86110 PHY driver (drivers/net/phy/mxl-86110.c).
->   Two LEDs are defined to match the LED configuration on the Variscite
->   VAR-SOM Carrier Boards:
->     * LED@0: Yellow, netdev trigger.
->     * LED@1: Green, netdev trigger.
+> The i.MX93 9x9 qsb has a ST LSM6DSO connected to I2C, which a is 6-axis
+> IMU (inertial measurement unit = accelerometer & gyroscope). So add the
+> missing parts to the DTS file.
 > 
-> The RGMII TX/RX delays are implemented in SOM via PCB passive
-> delays, so no software delay configuration is required.
-> 
-> Signed-off-by: Stefano Radaelli <stefano.radaelli21@gmail.com>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Applied, thanks!
+Applied all, thanks!
 
