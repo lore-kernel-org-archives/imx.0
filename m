@@ -1,45 +1,48 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EE8277814
-	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 14:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEA82749D9
+	for <imx@lists.linux.dev>; Tue,  1 Jul 2025 14:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751379459; cv=none; b=dDrweS3SSVCCcBUTX353TT60xYTnet3ySTpjOjxKBGYDid6CWLvoLy3ICmGR4FVx9XxmgfuINdYG9NKNsFjpQ+Wu+9qgrt6sAHx9v4lRy4jj0Z2LHii9tlw6p+bkrxW9iI5o64J1Oug9THc4xaKogfSMqqVwMo+I5gh65GlR1+A=
+	t=1751379935; cv=none; b=mEW8/1lrXnywt3MVswdH/h6mYUSWtKiUpfoboxDcqUro9YcyS4L3dtp20lWnXRaxYUpj9jTSHzs+vuuItlaVJoJOgxdb4oHVtW8ecrd4Opb2JBIOS+6U6S8Xh+oegSNEa7ZdQKDnuTLPqHIjeocfzgHJGZkt7u1y+F9O2905T0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751379459; c=relaxed/simple;
-	bh=H+d8K1h3HHkTY/7w00DJUJUkTQbVdJUWWJhS4HtXAzo=;
+	s=arc-20240116; t=1751379935; c=relaxed/simple;
+	bh=fF2bUOzQpSBOFHuNq6Eq1S5hjtfwAl2FI5HwXhvyjlc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gPyqZdEQgdAIw3OcdiAXgo3xbCosmgUGOsAmZ9x3phS+8Ibi3PhjwdC9NVH0B8U7rDQlUisVFGeQWdargUzKkNE69JISeDbuJFEsh+CL1n23FodmNtQK0E+xJ9zUDyBsykWWrLaJpbvr/izL2uG3MlB2vseq1pNRs/mMHsF1CR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=TbhgpTn6; arc=none smtp.client-ip=220.197.32.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=OnNwAUMz8STsAFOtvWo6RBBaP3CBx3ZfEfCOigT6Lzcy/oMcBaKMuTsjCo1/02f69GAHEuZTKWQqz6Ho1hHTaldoPTzADvCObrusbrPbwNS9hwjrdwyWz5bjlFLZS48/w82Y6h8wG5IMzAXE1xP2edbbAkofV9fHaU4kwCSryi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=WHijCkm8; arc=none smtp.client-ip=1.95.21.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="TbhgpTn6"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="WHijCkm8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=p26k3iNBH6NEFpUE2GR2mYl5kAA+PXFhcjSGL4mCfPA=;
-	b=TbhgpTn6hdC1rodjsefbUOg8xgpuZ6gyHHbF7NXNUo92APh/KWd1H2pZp/svIw
-	i5RIjX67k8zYHGgNq6g2uzycNnJ0tTxfOqD7E6CMJcm8J1Cmur0DoBbuwYy39JGY
-	hn5bUFQ3+sJ9nzD51RTrnOUiMvqZ4v1+HGOmS+xama+/M=
+	Content-Type; bh=kwmVPhn9mAUb/E0fy/YUOcKm0G2pKmKkb3h1UWnAPoY=;
+	b=WHijCkm8X4zEyATUdjLnTIncBkFZDH6Y7W6eZQ0HQA133zLDcNxiMRqcKXZft8
+	fK3Rc89t7WyZZioVYcCqfZyk19N0o+y7PP3aZKH3ZhpF1NJfZqYbDr0hteJzP9H5
+	z+RbOs/Nj+8/j6hnTmb+DPOFF8u+xkcY8AYtMANALs/0M=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgD3V+bs7WNozMcBAA--.4462S3;
-	Tue, 01 Jul 2025 22:17:18 +0800 (CST)
-Date: Tue, 1 Jul 2025 22:17:16 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDnx6S_72No6tsBAA--.4315S3;
+	Tue, 01 Jul 2025 22:25:05 +0800 (CST)
+Date: Tue, 1 Jul 2025 22:25:03 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/6] arm64: dts: imx93-9x9-qsb: add IMU sensor support
-Message-ID: <aGPt7Cs2jrGDAZ/m@dragon>
-References: <20250609165237.1617560-1-Frank.Li@nxp.com>
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 0/6] imx8mp: add support for the IMX AIPSTZ bridge
+Message-ID: <aGPvv+PNpm6xwsmC@dragon>
+References: <20250610160152.1113930-1-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,22 +51,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250609165237.1617560-1-Frank.Li@nxp.com>
-X-CM-TRANSID:M88vCgD3V+bs7WNozMcBAA--.4462S3
+In-Reply-To: <20250610160152.1113930-1-laurentiumihalcea111@gmail.com>
+X-CM-TRANSID:Mc8vCgDnx6S_72No6tsBAA--.4315S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUoYLvDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNA6pD2hj7e6qGAAA3m
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUrcTmDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAQR9ZWhj6tENkwAAsz
 
-On Mon, Jun 09, 2025 at 12:52:32PM -0400, Frank Li wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> The i.MX93 9x9 qsb has a ST LSM6DSO connected to I2C, which a is 6-axis
-> IMU (inertial measurement unit = accelerometer & gyroscope). So add the
-> missing parts to the DTS file.
-> 
-> Reviewed-by: Peng Fan <peng.fan@nxp.com>
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Tue, Jun 10, 2025 at 12:01:46PM -0400, Laurentiu Mihalcea wrote:
+> Laurentiu Mihalcea (6):
+>   dt-bindings: bus: document the IMX AIPSTZ bridge
+>   dt-bindings: dsp: fsl,dsp: document 'access-controllers' property
+>   bus: add driver for IMX AIPSTZ bridge
+>   arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+>   arm64: dts: imx8mp: add aipstz-related definitions
+>   arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
 
 Applied all, thanks!
 
