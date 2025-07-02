@@ -1,229 +1,285 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEF3223DDF
-	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 21:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DB523C4F1
+	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 21:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751490181; cv=none; b=UtTuUpo3lmax7aATP6it2ztfwtHJ1fPBX7fAY+7XaWuOQ9lqybaIdHoYGqU55731BwSH3I8aH07EpgYrountoZ5aAQuLldreUHK0ucmJ5zrDZtRYiMt/vZcjTfBgqo/x7yYXVVFhOmM3gdMtugEQ5aRKmF/h8Rm/r541WBTGgR4=
+	t=1751492524; cv=none; b=DaoCX7SX2J3OS5O6zI9kY6GlaxEf6U0KDRFZJxHKajEkI4BEUNOrHFHrS7aT9ZmpE13RBr8NK8pvXT7NfZFIMUdW7uUeNNTpY5Bl9RTciBXtM/6wNhDxyaNNQkGr5F7aHWa+VxhMl92KmJ3WWdxXsByw8lMpRUg9FtbiuDQacV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751490181; c=relaxed/simple;
-	bh=4vQ93QOR7sUMLGuKKWYA5MqL8eulcSCyBQPNC6yOAz0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Cw37fck0tlj00So+QNH7Xmtma8P0CNxHQzpUQnDwalWbKQKifo8DLA2KTrr5F/kyhjqAow4mYs2niS+7tMkkTrv/2hDcOyusLnxIo1VtmUqD6uXuuDUP0+iDbt5/MophTQJQjU5yA+wihGrz6erzH/FIilsMa9eukiU/a8U46L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pdfbgyqG; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1751492524; c=relaxed/simple;
+	bh=FYOSJ6rstKG5kJTz/8invdShgT5FvzKnSwW4R8SFOas=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=Rg2OjZcfhu+PmzgCOOuI85oyHGc8kHko02hZIZUvuCmW0gt9+mst5VwWdaLwX8G01T5C7MQqbgUoRaM8NnMcbFWhpf56m0mitHpeau9ZHWMgmJnSVGDuCfUeKsplQrVlW6ufY625QKDmZ+i5EhI86H8RPZOuKhdmjuctPkH0P44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=jEZyiRDh; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pdfbgyqG"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7d20f79a00dso660308985a.0
-        for <imx@lists.linux.dev>; Wed, 02 Jul 2025 14:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751490178; x=1752094978; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EJ91IALf7qL2mLAV9e8zmgMyOJhT80+BeW9rsMA6c10=;
-        b=pdfbgyqGJY8JC7h8st9gwzt6BnKIgAwQ0C5B50+bBu8aGuKHyQDxB2kkWbOrwshGYQ
-         VVmxPgOrmc6bdQe6BakHutBF5g58pwbvEzMnSt2ElIqX4g09tZgqzpfIQXDjNDrLpD7d
-         hB+cnre9lZYlewt8pPBXe5uAYzXRnqbpUYx7EZLPescOae85VDbZ5Kpl7BFvPyOqZEN9
-         Fi2Oe6poqGqkDwG+S7Gk9zd3uN459eQKTCcLHb6IQnUdrk5xfQUsqSYc3IHessGITRET
-         cLTV79hDJYlMiXjCzS8Zwwgk2b1Vd15xOsO9i/37qTSCzEOOF2SbOm0Tf32Ex8SKua4/
-         KV6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751490178; x=1752094978;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EJ91IALf7qL2mLAV9e8zmgMyOJhT80+BeW9rsMA6c10=;
-        b=BA3q7RoiHuCJ0ffno/bRtzq4a9zrp5y7Y5WqJXNmgfWRVm9LkVZDLjVQGMyAN2X6LV
-         G9JYrveFx4TOI9GyHfmJJ1/mUAT9UogT24z2yvxrPtZjJQC9TBK8Roa2Z82NFHIEvNyF
-         ndqQmLXYMVJFj7jQQq2hK4i7O2nfvnGJzJGEoAEJEBDVheeg5fJ5DPUHzNKeCG0KBIqH
-         KLStt9PoV821s2ilsxPXYbm8OLgv6Lp7TaokF+C3SoEYa8EcqT5tcVIGrHd097KddEd4
-         8CIGF8MovqmiU2mhdmactRs68rycTvpPN2kz8LSNGSJzmr/RpVLo6MzGHdw4wmlswWI8
-         ZLRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUAmeiFbdBIfnegYi28CXIoajJm6HfARvBHuYByPawsqcSeKvZT7X2h/nPjSyp9mNv6t0Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyg0dzI8AFXUte/YIAwR4znbSDcl/DAh/Jprk1ZxuW20GP/kiDi
-	/HUY0jPzus1q6V+rCDV3O5w9gbVbCouMMYAQhHpvd0e4Ly/SIyarr1yfBclbtqIh+K3Mganga+p
-	kJ2uE3j/3X7weyYuQBvPBCt7wJRKjfwL7jBb6I/hM
-X-Gm-Gg: ASbGnct3v0hS8xBvyFEfYZ7eUHyQiNzJlDNPa4ssF6MMaZb4AZA/Y/xZOy7n0NnYqmK
-	nCFpmvkNMjCGggO03KfulSL86Q4Sbny/mrCg8/k0cy83+qbJ2pasoUc+HivB2Fcr4SRh7savI6w
-	OJT7MHD+xEbISywirxAnD8bpV2Jw9L3gSjY+Oxpam4jjW3nf5KDj3y48RcXY6aZosvfG9/Er2a
-X-Google-Smtp-Source: AGHT+IHZLJBo9iF9+nKbDyZZYnf6PcVxrcD0+f+tDZM+7z0OQ6NWXKWPaxUOSfKFFIK+EtLpeM3pSDTuYA14QV/DaCA=
-X-Received: by 2002:a05:620a:280d:b0:7d3:f0a0:ea5f with SMTP id
- af79cd13be357-7d5d13f3399mr185371785a.22.1751490177645; Wed, 02 Jul 2025
- 14:02:57 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="jEZyiRDh"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 28C89A0BB5;
+	Wed,  2 Jul 2025 23:41:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=LMptU3Sc5+xY/XVGbDh1B7NKVs+zYhOoavdCfgn5VJc=; b=
+	jEZyiRDhZcQDyBv+pSNXxLtnVwa/vsAxwVRW9FQvK+LgSdxfn4+VKviINSueGJHq
+	hvsD+4CH2D9RwuUfOZGcUh6sgNBn4h+8p/G8cO0ztBuG9XEbB7EsMX4ZHc6Z2wTb
+	+Oz5oMBcIGzTn2e9ZahC2G0vOc24a5/rAHi18NIzpunRFktDHcTTvvpYsKO5c+dV
+	b0vB+JeN3BPaPY+wxhKeQwBnkSJ7COjJYGNb4cBwhH751XOWzk/u4J0st+B3wy6F
+	O3pzmew+Fq2NfYrA/nq4uF9W1nTIXbTIlEjGnv307DH9BsO69Wk5KY1Hx0d3k9iu
+	FPlvE4mXRE6UU/Lz4A1ig6kTGXrQ6Bt2Fz2fTUmBVzFvk0ZpOvZ82Cq4PJc4iXsj
+	n/Bmzu2KrwMFaGDH+KDQAJxmTNnbwK9hWTAB57TBGBELJzbfdCbAPr+GuIdHLnnI
+	NOsuRCJ+qk2idO+jcrcMfmf0nBVBZJ7A0g7qIbIQ5KUZWZ+sCWJhdSZxNUgCLMft
+	UW2RdfISfXf/JazmgnPW2DzUmCsRq5HZvJ1YSq2/cgnLpyfXNlCWZQ2UI8/3dGRs
+	wrWpfHADwW2Gs7UzEWRk2xqxcGswfLf12rKW8p3PR/4V6yiZIL6udlH6Cuj6HsIx
+	n1wkBCsrxsfqHo6tWp2TrkV1tEFMjDPXmfOxL65NEqA=
+From: =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+Date: Wed, 2 Jul 2025 23:41:54 +0200
+Subject: [PATCH] arm: DT: imx6-sr-som: Replace license text comment with
+ SPDX identifier
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250613134817.681832-1-herve.codina@bootlin.com>
- <20250613134817.681832-5-herve.codina@bootlin.com> <CAJZ5v0g01QzAkpnJGdjEuif9h==tyB94tU3nCbumx_Ya3EOoDQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0g01QzAkpnJGdjEuif9h==tyB94tU3nCbumx_Ya3EOoDQ@mail.gmail.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Wed, 2 Jul 2025 14:02:20 -0700
-X-Gm-Features: Ac12FXwhrjwNcoQlswzlpTiwmASKCStdWYLWRIuHlvNKRRZirJ70zPEsjhz1ybo
-Message-ID: <CAGETcx85vKLcFcWBR2G005Nup8UkmVZFLYgd4DuUBOKxHvJn8Q@mail.gmail.com>
-Subject: Re: [PATCH v3 04/28] driver core: Avoid warning when removing a
- device while its supplier is unbinding
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Andi Shyti <andi.shyti@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Peter Rosin <peda@axentia.se>, Derek Kiernan <derek.kiernan@amd.com>, 
-	Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>, Rob Herring <robh@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20250702-sr-som-dts-lic-v1-1-2e8584e6c837@prolan.hu>
+X-B4-Tracking: v=1; b=H4sIAKGnZWgC/x3MQQqEMAxA0atI1gZqQQtzlcFFG+M0MFZJRAbEu
+ 091+Rb/n2Cswgav5gTlQ0zWUtG1DVCO5cMoUzV453sXnEdTtHXBaTf8CmHqhpnC4HpKHmq0Kc/
+ ye4bvsTpFY0waC+V7s0TbWeG6/p1qwMZ5AAAA
+To: Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>
+CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	=?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+X-Mailer: b4 0.13.0
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1751492515;VERSION=7994;MC=3329611887;ID=217464;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A296767155D6C7266
 
-On Wed, Jul 2, 2025 at 11:22=E2=80=AFAM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Fri, Jun 13, 2025 at 3:48=E2=80=AFPM Herve Codina <herve.codina@bootli=
-n.com> wrote:
-> >
-> > During driver removal, the following warning can appear:
-> >    WARNING: CPU: 1 PID: 139 at drivers/base/core.c:1497 __device_links_=
-no_driver+0xcc/0xfc
-> >    ...
-> >    Call trace:
-> >      __device_links_no_driver+0xcc/0xfc (P)
-> >      device_links_driver_cleanup+0xa8/0xf0
-> >      device_release_driver_internal+0x208/0x23c
-> >      device_links_unbind_consumers+0xe0/0x108
-> >      device_release_driver_internal+0xec/0x23c
-> >      device_links_unbind_consumers+0xe0/0x108
-> >      device_release_driver_internal+0xec/0x23c
-> >      device_links_unbind_consumers+0xe0/0x108
-> >      device_release_driver_internal+0xec/0x23c
-> >      driver_detach+0xa0/0x12c
-> >      bus_remove_driver+0x6c/0xbc
-> >      driver_unregister+0x30/0x60
-> >      pci_unregister_driver+0x20/0x9c
-> >      lan966x_pci_driver_exit+0x18/0xa90 [lan966x_pci]
-> >
-> > This warning is triggered when a consumer is removed because the links
-> > status of its supplier is not DL_DEV_DRIVER_BOUND and the link flag
-> > DL_FLAG_SYNC_STATE_ONLY is not set.
-> >
-> > The topology in terms of consumers/suppliers used was the following
-> > (consumer ---> supplier):
-> >
-> >       i2c -----------> OIC ----> PCI device
-> >        |                ^
-> >        |                |
-> >        +---> pinctrl ---+
-> >
-> > When the PCI device is removed, the OIC (interrupt controller) has to b=
-e
-> > removed. In order to remove the OIC, pinctrl and i2c need to be removed
-> > and to remove pinctrl, i2c need to be removed. The removal order is:
-> >   1) i2c
-> >   2) pinctrl
-> >   3) OIC
-> >   4) PCI device
-> >
-> > In details, the removal sequence is the following (with 0000:01:00.0 th=
-e
-> > PCI device):
-> >   driver_detach: call device_release_driver_internal(0000:01:00.0)...
-> >     device_links_busy(0000:01:00.0):
-> >       links->status =3D DL_DEV_UNBINDING
-> >     device_links_unbind_consumers(0000:01:00.0):
-> >       0000:01:00.0--oic link->status =3D DL_STATE_SUPPLIER_UNBIND
-> >       call device_release_driver_internal(oic)...
-> >         device_links_busy(oic):
-> >           links->status =3D DL_DEV_UNBINDING
-> >         device_links_unbind_consumers(oic):
-> >           oic--pinctrl link->status =3D DL_STATE_SUPPLIER_UNBIND
-> >           call device_release_driver_internal(pinctrl)...
-> >             device_links_busy(pinctrl):
-> >               links->status =3D DL_DEV_UNBINDING
-> >             device_links_unbind_consumers(pinctrl):
-> >               pinctrl--i2c link->status =3D DL_STATE_SUPPLIER_UNBIND
-> >               call device_release_driver_internal(i2c)...
-> >                 device_links_busy(i2c): links->status =3D DL_DEV_UNBIND=
-ING
-> >                 __device_links_no_driver(i2c)...
-> >                   pinctrl--i2c link->status is DL_STATE_SUPPLIER_UNBIND
-> >                   oic--i2c link->status is DL_STATE_ACTIVE
-> >                   oic--i2c link->supplier->links.status is DL_DEV_UNBIN=
-DING
-> >
-> > The warning is triggered by the i2c removal because the OIC (supplier)
-> > links status is not DL_DEV_DRIVER_BOUND. Its links status is indeed set
-> > to DL_DEV_UNBINDING.
-> >
-> > It is perfectly legit to have the links status set to DL_DEV_UNBINDING
-> > in that case. Indeed we had started to unbind the OIC which triggered
-> > the consumer unbinding and didn't finish yet when the i2c is unbound.
-> >
-> > Avoid the warning when the supplier links status is set to
-> > DL_DEV_UNBINDING and thus support this removal sequence without any
-> > warnings.
-> >
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
->
-> The change is OK, so
->
-> Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+Replace verbatim license text with a `SPDX-License-Identifier`.
 
-You can add mine too.
+The comment heades mis-attributes this license to be "X11", but the
+license text does not include the last line "Except as contained in this
+notice, the name of the X Consortium shall not be used in advertising or
+otherwise to promote the sale, use or other dealings in this Software
+without prior written authorization from the X Consortium.". Therefore,
+this license is actually equivalent to the SPDX "MIT" license (confirmed
+by text diffing).
 
-Reviewed-by: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+---
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-brcm.dtsi | 38 +---------------------
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-emmc.dtsi | 38 +---------------------
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-ti.dtsi   | 38 +---------------------
+ arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som.dtsi      | 38 +---------------------
+ 4 files changed, 4 insertions(+), 148 deletions(-)
 
--Saravana
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-brcm.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-brcm.dtsi
+index e491f5c9d455..0d7e14a94305 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-brcm.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-brcm.dtsi
+@@ -1,42 +1,6 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+ /*
+  * Copyright (C) 2013,2014 Russell King
+- *
+- * This file is dual-licensed: you can use it either under the terms
+- * of the GPL or the X11 license, at your option. Note that this dual
+- * licensing only applies to this file, and not this project as a
+- * whole.
+- *
+- *  a) This file is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
+- *
+- *     This file is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- * Or, alternatively,
+- *
+- *  b) Permission is hereby granted, free of charge, to any person
+- *     obtaining a copy of this software and associated documentation
+- *     files (the "Software"), to deal in the Software without
+- *     restriction, including without limitation the rights to use,
+- *     copy, modify, merge, publish, distribute, sublicense, and/or
+- *     sell copies of the Software, and to permit persons to whom the
+- *     Software is furnished to do so, subject to the following
+- *     conditions:
+- *
+- *     The above copyright notice and this permission notice shall be
+- *     included in all copies or substantial portions of the Software.
+- *
+- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+  */
+ #include <dt-bindings/gpio/gpio.h>
+ / {
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-emmc.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-emmc.dtsi
+index ddca24414d26..3053a28c42cd 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-emmc.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-emmc.dtsi
+@@ -1,42 +1,6 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+ /*
+  * Copyright (C) 2013,2014 Russell King
+- *
+- * This file is dual-licensed: you can use it either under the terms
+- * of the GPL or the X11 license, at your option. Note that this dual
+- * licensing only applies to this file, and not this project as a
+- * whole.
+- *
+- *  a) This file is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
+- *
+- *     This file is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- * Or, alternatively,
+- *
+- *  b) Permission is hereby granted, free of charge, to any person
+- *     obtaining a copy of this software and associated documentation
+- *     files (the "Software"), to deal in the Software without
+- *     restriction, including without limitation the rights to use,
+- *     copy, modify, merge, publish, distribute, sublicense, and/or
+- *     sell copies of the Software, and to permit persons to whom the
+- *     Software is furnished to do so, subject to the following
+- *     conditions:
+- *
+- *     The above copyright notice and this permission notice shall be
+- *     included in all copies or substantial portions of the Software.
+- *
+- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+  */
+ 
+ &iomuxc {
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-ti.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-ti.dtsi
+index cd1e682f11ad..5a35436bb30a 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-ti.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som-ti.dtsi
+@@ -1,42 +1,6 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+ /*
+  * Copyright (C) 2013,2014 Russell King
+- *
+- * This file is dual-licensed: you can use it either under the terms
+- * of the GPL or the X11 license, at your option. Note that this dual
+- * licensing only applies to this file, and not this project as a
+- * whole.
+- *
+- *  a) This file is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
+- *
+- *     This file is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- * Or, alternatively,
+- *
+- *  b) Permission is hereby granted, free of charge, to any person
+- *     obtaining a copy of this software and associated documentation
+- *     files (the "Software"), to deal in the Software without
+- *     restriction, including without limitation the rights to use,
+- *     copy, modify, merge, publish, distribute, sublicense, and/or
+- *     sell copies of the Software, and to permit persons to whom the
+- *     Software is furnished to do so, subject to the following
+- *     conditions:
+- *
+- *     The above copyright notice and this permission notice shall be
+- *     included in all copies or substantial portions of the Software.
+- *
+- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+  */
+ #include <dt-bindings/gpio/gpio.h>
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som.dtsi
+index 7af74b203e39..6aea7bf06e7a 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sr-som.dtsi
+@@ -1,42 +1,6 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+ /*
+  * Copyright (C) 2013,2014 Russell King
+- *
+- * This file is dual-licensed: you can use it either under the terms
+- * of the GPL or the X11 license, at your option. Note that this dual
+- * licensing only applies to this file, and not this project as a
+- * whole.
+- *
+- *  a) This file is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
+- *
+- *     This file is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- * Or, alternatively,
+- *
+- *  b) Permission is hereby granted, free of charge, to any person
+- *     obtaining a copy of this software and associated documentation
+- *     files (the "Software"), to deal in the Software without
+- *     restriction, including without limitation the rights to use,
+- *     copy, modify, merge, publish, distribute, sublicense, and/or
+- *     sell copies of the Software, and to permit persons to whom the
+- *     Software is furnished to do so, subject to the following
+- *     conditions:
+- *
+- *     The above copyright notice and this permission notice shall be
+- *     included in all copies or substantial portions of the Software.
+- *
+- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+  */
+ #include <dt-bindings/gpio/gpio.h>
+ 
 
->
-> but it will clash with
->
-> https://lore.kernel.org/linux-pm/2793309.mvXUDI8C0e@rjwysocki.net/
->
-> that's been queued up by Greg AFAICS.
->
-> > ---
-> >  drivers/base/core.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > index 8fead097c404..ce367c44f642 100644
-> > --- a/drivers/base/core.c
-> > +++ b/drivers/base/core.c
-> > @@ -1494,7 +1494,8 @@ static void __device_links_no_driver(struct devic=
-e *dev)
-> >                 if (link->supplier->links.status =3D=3D DL_DEV_DRIVER_B=
-OUND) {
-> >                         WRITE_ONCE(link->status, DL_STATE_AVAILABLE);
-> >                 } else {
-> > -                       WARN_ON(!(link->flags & DL_FLAG_SYNC_STATE_ONLY=
-));
-> > +                       WARN_ON(link->supplier->links.status !=3D DL_DE=
-V_UNBINDING &&
-> > +                               !(link->flags & DL_FLAG_SYNC_STATE_ONLY=
-));
-> >                         WRITE_ONCE(link->status, DL_STATE_DORMANT);
-> >                 }
-> >         }
-> > --
-> > 2.49.0
-> >
+---
+base-commit: 66701750d5565c574af42bef0b789ce0203e3071
+change-id: 20250702-sr-som-dts-lic-b16fc7605cb2
+
+Best regards,
+-- 
+Bence Csókás <csokas.bence@prolan.hu>
+
+
