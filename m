@@ -1,92 +1,90 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9BD2417F8
-	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 21:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334CE24E019;
+	Wed,  2 Jul 2025 22:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751493386; cv=none; b=OycOhtIhRJsHWS6v/Mq3/MtmKcWG9f2Z/o5W+oWGSUyeG+4SUHMcpWPmXl+u1wr0WFbySs26HiIV//qFCT3bOYZQdAXUlJs9ODWVd+xYL6IxerC654Ct6vPkkpv95k2NPg3ZNFiN9uCyVWYy+mMJChdHK517y5qaG0ITJDYNz+g=
+	t=1751495923; cv=none; b=H/MTuWFa9OgzBjKR/9p8Qp4an2eoid7JM5zT5YmYlcJ0PkcPkm17d0oQGkGdazc53lJTYI+T7kCVf37rQk1BdIASfxurY9RmE1GMM4ZCuhV3x6vXsG4TueU5Z+xyhqdpiP5llWfYrjNAzPCbJViJTyGoR4fbdu+jF/Ss4VYKRl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751493386; c=relaxed/simple;
-	bh=4fU/Xqk7oxY2MogaKEZwQL5CtwrxPv8uOkGDktPbTs0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=koGjq4cuTS2FkYNteal0fCb9CULSMUoIxjPHwsCDJPIU+DH96I5MqMYlhUZoibzBcVHn/mGnWuw3FgvuqL9aH6cJAHLvPC7DcSyxNPAb+gM8wF7WOycEGsyq0wvngtVkr9lasCcweh5qC27ZX8xzdleP8K1f348v0qtos5LztQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=JgN5qKZR; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1751495923; c=relaxed/simple;
+	bh=yx2d4aBTclOwNRGeNrTRxErm2vCDz/EIKwKSz/rcBto=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=VH4wjJrwbM5/kGlzV+bDdQJfBmUw2tsTW7OT+Z7dRqn9oRuOZ0c28eDEbtADYeMjpzYAxFa0maVAxyXY3/CZV/4E6WCR9UgXstKNMrm3BettArIt4ZDGp0nP520SXvw5URZXlQtoehm0omuLEH5Ngam4Y54yT/OqwBUyHhFtgwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EgwxpzHf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="JgN5qKZR"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 8B62DA0057;
-	Wed,  2 Jul 2025 23:56:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=3e8ZfmzVr8jG57PEK3YQ
-	YM1MaAzpKV6K4dgRXSV1tKw=; b=JgN5qKZRW6ohwswImPvNTLkJthhXf6Ucwfck
-	6Hzv9+aTvM784CoQcqC1aMM+cBU6qNquxGNIswE/Ys8PSL/1ocMGup9xEoC2yss+
-	skPpRdOH2eiSVIx9w/0czjhmErMt/luUpHdHrL97bC4h9yXKF/gaYwWgDEKCRR1j
-	5fiuKain4ROChqGHEirDYj5dU7az0ZVJ+u/6miTU/FC87/PdlFR3NFk+uINhI5Gy
-	DqkEFc3d3HU6wfeit5WhBuv/+CsyOsWeHdBJBYop9yPpBQsoimWrj/xSgoonZVGN
-	0UCH4/4ehmqMolDI4RYZ1EiB8N7lxjCcBSljqneNVzV1ub+JwwtbKdipbRYr//Ss
-	EHGpcm2Yc8BSVTKribB+p9/UYwk7vGi3LyPQ+55MkvADL28VD9fpPIjTl2TbXZXS
-	J/y92lMn4zrvgfzEzVBSa7BPsUMvjzembyaesCm6JqIhH3FUs3TRdXCiVZ/98PE7
-	50/ohY0LNRfMYJq618ervFxHfLwCg+m8gkY0vLhtr5bh8rDpG/CVmFS9j6SjO7xq
-	jokhffH5ArKTvAvHQG6LHn2ZsKi+vD2ceSmeIUfWr3gT2xoVIS0ImTmSa1M1D1zy
-	dCUqeY72S0teCB5QIB/OisfU/I6B3JxR8gCSrYPf2o7T/Yusm+fCm5atZ7x1f18Z
-	yU7HBac=
-Message-ID: <2f628251-5b67-47e0-8038-6c1aeee1ef91@prolan.hu>
-Date: Wed, 2 Jul 2025 23:56:20 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EgwxpzHf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0B8C4CEE7;
+	Wed,  2 Jul 2025 22:38:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751495922;
+	bh=yx2d4aBTclOwNRGeNrTRxErm2vCDz/EIKwKSz/rcBto=;
+	h=Date:From:To:Cc:Subject:From;
+	b=EgwxpzHftC91wGvTOUVDQ72sFVPldAp9or/WyfxdZVzw+9VE6dWs7k762NdyCLJbF
+	 CzRQr2n5g/85+CJi7BEFI4fNqt4IbtdKFJEdwpHMAezu3qD/9zlRZVqQl2geMCs6D1
+	 YP5evZWmCSrChx/jeoaprYGx/3OWuaqTs3EekcaPobdoiYQYnLzx9CDzydUVrRPaZN
+	 y08O3GQMyycQZ3GRfGkeMikNRs2fh2DcmVeNlWIMO2uGj6Ovg2rnwmnxvLSrRxgV/T
+	 op54cZlKrP8cLuWwuy4P2V1Ejp+XIY62X9357OWNN34fOVsk8b5igNbMSyA4+u9APU
+	 X9ylIcu2dv8cQ==
+Date: Wed, 2 Jul 2025 17:38:41 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>
+Cc: Frank Li <Frank.Li@nxp.com>, Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
+	Rob Herring <robh+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org
+Subject: Does dwc/pci-layerscape.c support AER?
+Message-ID: <20250702223841.GA1905230@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm: DT: imx6-sr-som: Replace license text comment with
- SPDX identifier
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	<devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20250702-sr-som-dts-lic-v1-1-2e8584e6c837@prolan.hu>
- <aGWqIzNvSVw4olz5@shell.armlinux.org.uk>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <aGWqIzNvSVw4olz5@shell.armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A296767155D6C7266
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi,
+I see "aer" mentioned in layerscape DT 'interrupt-names':
 
-On 2025. 07. 02. 23:52, Russell King (Oracle) wrote:
-> On Wed, Jul 02, 2025 at 11:41:54PM +0200, Bence Csókás wrote:
->> Replace verbatim license text with a `SPDX-License-Identifier`.
->>
->> The comment heades mis-attributes this license to be "X11", but the
->> license text does not include the last line "Except as contained in this
->> notice, the name of the X Consortium shall not be used in advertising or
->> otherwise to promote the sale, use or other dealings in this Software
->> without prior written authorization from the X Consortium.". Therefore,
->> this license is actually equivalent to the SPDX "MIT" license (confirmed
->> by text diffing).
->>
->> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
-> 
-> As Florian has already mentioned, the preferred format for the summary
-> for arch/arm is "ARM: ... " and by extension for arch/arm/boot/dts,
-> it's "ARM: dts: ...", not "arm: DT: ..."
+  $ git grep "interrupt-names.*aer" Documentation/devicetree/bindings/pci/ arch
+  Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml: interrupt-names = "aer";
+  arch/arm64/boot/dts/freescale/fsl-ls1012a.dtsi: interrupt-names = "pme", "aer";
+  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi: interrupt-names = "pme", "aer";
+  arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi: interrupt-names = "pme", "aer";
+  ...
 
-Ohh, I misread it, I thought it was just about `imx6: board:` -> 
-`imx6-board:`... Ok, I will re-format it for v2.
+But I don't know whether or how these are connected to the AER driver
+(drivers/pci/pcie/aer.c).
 
-Bence
+Does the AER driver actually work on these platforms?
 
+Is there some magic that connects the 'interrupt-names'/'interrupts'
+DT properties to the pcie_device.irq that aer_probe() requests and
+hooks up with the aer_irq() handler?
+
+The pcie_device.irq for AER was assigned by portdrv in this path:
+
+  pcie_portdrv_probe
+    pcie_port_device_register(pci_dev *dev)
+      int irqs[PCIE_PORT_DEVICE_MAXSERVICES]
+      pcie_init_service_irqs(dev, irqs, ...)
+        # try MSI/MSI-X first:
+        pcie_port_enable_irq_vec(dev, irqs, ...)
+          pci_alloc_irq_vectors(PCI_IRQ_MSIX | PCI_IRQ_MSI)
+          pcie_message_numbers(dev, mask, &pme, &aer, &dpc)
+          irqs[PCIE_PORT_SERVICE_AER_SHIFT] = pci_irq_vector(dev, aer)
+        # fall back to INTx if no MSI/MSI-X
+        pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_INTX);
+      for (i = 0; ...; i++)
+        pcie_device_init(pdev, irqs[i])
+          pcie = kzalloc()            # struct pcie_device
+          pcie->irq = irq             # <-- pcie_device.irq
+
+but I only see attempts to use MSI/MSI-X/INTx, which we discover and
+configure based on the MSI or MSI-X Capability or the INTx pin
+advertised at PCI_INTERRUPT_PIN.
+
+I don't see anything related to DT or platform IRQs that I can connect
+with the DT 'interrupts' property.
+
+Bjorn
