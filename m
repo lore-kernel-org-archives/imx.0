@@ -1,44 +1,62 @@
-Received: from proxy41132.mail.163.com (proxy25212.mail.163.com [103.129.252.12])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CF0DF42
-	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 10:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.129.252.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D582A1AA
+	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 10:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751450571; cv=none; b=qG4c+gBDMOrM8K8/nML6NK+MlMc6kv0BnRsCBT8SH4YH58gVqvB3uScPKEyoUAXrERMbf9+Scc4yAtkt3jEmqmIEcYn7Go2Es5/f03XHNTRBzK8JXDO04kzcN2NktfZCAkG0PTLMAXqn1P+8Ru6/HZZoyNyOLk81p4m3jQ5hMf8=
+	t=1751450670; cv=none; b=MtIoTnLtHuiKM8GaBBVNdhcjhGQnv966J5lUpAs9hQOz9541fZZktIWFY8/iAOXZrVa4qgpRPmrdbO043qZPNZxmuB0YwmZp6aqqG4/mqTtFnP9MR6kpQ4RYZtzQCMPy/BEFIygBAhjTkmAzauE1NgY5ZfPHTU/aj2ZLLc3me/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751450571; c=relaxed/simple;
-	bh=oMaM/R8SFUD4LZpCTkVpqQIRRfxIiZ6hh0W2t8wEReI=;
+	s=arc-20240116; t=1751450670; c=relaxed/simple;
+	bh=YmWB2PS5k+I/h85xHtp1DrV94Gk+P3all4vfXIO5H0U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NjhhlYTMCE03cuPtglJ/ZLtXlzayHc/Mkq9PJSfe4C33c6Ohti61ns6vIeXfZ96XGm5wXph/YdxNPPvVSLqNBEgDkVaXC0zY2QgVXdHUMCdF6yr5r3weM28TXRi08+BopOS5BKeW9S9nPtPMTT9pNfF8dBzv2zsVQC9l9xW+1B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=hGA4ZzeS; arc=none smtp.client-ip=103.129.252.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=RdJjy3kb9Ew2lwRRIV0nB/xOHtX4IbUmxAl3vtJbjrS5Fl7iyU94FOSonNKRZd3/XFi6nEuPSe/KN9TxtnFVJdQ+afLYPZit+YAzlsCdMJ24ilbpfimvOuHd6tf/Zf2UHBsxuZlgrULu1favuPmX/eMh4JtZj0HTJJ0jqPXSfQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gkqMxnx3; arc=none smtp.client-ip=220.197.32.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="hGA4ZzeS"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gkqMxnx3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=aBCj5KCtd0YSw2+jeSI15O55rXmA7O2x9Co1/dUd/sc=;
-	b=hGA4ZzeSjGnd+cybXPReqSh4PH2pwX4u9pKlm/oeOv8yq86qURfz/Xt1IbIZyB
-	Wug27aAY1vskf6a32jw0WDNJ5T9BCynkbthhLJXmD+bMtuBff73qOYOmn4ZtmoUU
-	FZPkgcuFdhBZ68eC8rvxcrf73iB7XMs/T8+kH/XsNtOuM=
+	Content-Type; bh=fe/YxVKoC2fn46SpQ1KgS3L3WodKPIMLOl4hzG83lAM=;
+	b=gkqMxnx3uoIlJH5llmNZd4DLnuRBkeFsEB58E8+ZEbFfFGqBeCw4/sRbCMLM4j
+	F9Y/qF4T8goy1lXk5MrOrLEoFE19j37iBv8UWFnZfWYL35QOEg4ZlYSsLBVZxUiY
+	wrt9bgvtw8hviTdpfyXWHYWLzWFWIRbvsOm7B+UnD7K3U=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXfxAkAWVoRbopAA--.51920S3;
-	Wed, 02 Jul 2025 17:51:33 +0800 (CST)
-Date: Wed, 2 Jul 2025 17:51:31 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgC3tuPOA2VoldwpAA--.26848S3;
+	Wed, 02 Jul 2025 18:02:56 +0800 (CST)
+Date: Wed, 2 Jul 2025 18:02:53 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Adam Ford <aford173@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
-	m.felsch@pengutronix.de, Rob Herring <robh@kernel.org>,
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com,
+	Matteo Lisi <matteo.lisi@engicam.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Elinor Montmasson <elinor.montmasson@savoirfairelinux.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Marek Vasut <marex@denx.de>,
+	Markus Niebel <Markus.Niebel@tq-group.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Max Merchel <Max.Merchel@ew.tq-group.com>,
+	Michael Walle <mwalle@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2 0/4] Increase i.MX8MP VPU
-Message-ID: <aGUBIz1lYIkhMCWr@dragon>
-References: <20250612003924.178251-1-aford173@gmail.com>
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Tim Harvey <tharvey@gateworks.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [RESEND PATCH v4 00/10] Support Engicam MicroGEA boards
+Message-ID: <aGUDza5XRGDqfz5n@dragon>
+References: <20250620082736.3582691-1-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,33 +65,26 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250612003924.178251-1-aford173@gmail.com>
-X-CM-TRANSID:Ms8vCgDXfxAkAWVoRbopAA--.51920S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtF43CFyUCFy5Kr4UZFWkJFb_yoW3urc_C3
-	4a9F1xCwn8KFs7Kw4DGan8Z3yDK3y2yr4DZa42qF4fZF1fZF4rZ340gr9avF18GF9akw1q
-	vF98Xw4xAry3CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUj7DGUUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNQa8ImhlASaNiAAA3C
+In-Reply-To: <20250620082736.3582691-1-dario.binacchi@amarulasolutions.com>
+X-CM-TRANSID:Ms8vCgC3tuPOA2VoldwpAA--.26848S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Wr4kuFWkJF4kGF15Gw1fCrg_yoWxtFcEka
+	1rGF48X3yYgrZIqw13uws0qrn0qw1rXr43JFWjvr13Wr9Fyrn0kF4rt3Z3WFWUJ3WYvF1D
+	JFW8Ga4Sqr1DWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUj73kJUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiAQl+ZWhkuzL7xgAAsr
 
-On Wed, Jun 11, 2025 at 07:39:18PM -0500, Adam Ford wrote:
-> Some of the VPU clocks are under rated, even for nominal ratings.
-> Fix the nominial VPU clocks and clock parents, then introduce
-> the overdrive clock rates.  The fluster scores don't change,
-> but they do go faster.
-> 
-> This series was adapted from an RFC from Marco Felsch which
-> was setup to introduce the VC8000E encoder and extacted the
-> parts that affect the existing infrastructure.
-> 
-> V2:  The only change is 4/4.  Patches 1-3 are all unchanged.
-> 
-> Adam Ford (2):
->   arm64: dts: imx8mp-nominal: Explicitly configure nominal VPU clocks
->   arm64: dts: imx8mp: Configure VPU clocks for overdrive
-> 
-> Marco Felsch (2):
->   arm64: dts: imx8mp: drop gpcv2 vpu power-domains and clocks
->   arm64: dts: imx8mp: fix VPU_BUS clock setting
+On Fri, Jun 20, 2025 at 10:27:04AM +0200, Dario Binacchi wrote:
+> Dario Binacchi (10):
+>   dt-bindings: arm: fsl: support Engicam MicroGEA BMM board
+>   ARM: dts: imx6ul: support Engicam MicroGEA-MX6UL SoM
+>   ARM: dts: imx6ul: support Engicam MicroGEA BMM board
+>   ARM: imx_v6_v7_defconfig: cleanup with savedefconfig
+>   ARM: imx_v6_v7_defconfig: select CONFIG_INPUT_PWM_BEEPER
+>   dt-bindings: arm: fsl: support Engicam MicroGEA RMM board
+>   ARM: dts: imx6ul: support Engicam MicroGEA RMM board
+>   dt-bindings: arm: fsl: support Engicam MicroGEA GTW board
+>   ARM: dts: imx6ul: support Engicam MicroGEA GTW board
+>   ARM: imx_v6_v7_defconfig: select CONFIG_USB_HSIC_USB3503
 
 Applied all, thanks!
 
