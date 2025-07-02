@@ -1,117 +1,133 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDB428A725
-	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 14:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754922E718B
+	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 14:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751466049; cv=none; b=goN+7Yg+b/DU16YREs6n87GnTY5BbSfkNJoXPUG8BxBDJs1H9Pqeesr0/V6rCeVcDeCuipOgGgzw2MIVz5DBthydeGq5da+R+OsBy1Xr+7m1AeApDVZEZ3LNYOLP0Dz3kj548ye1OCHxHtbSy5ICCXft50knqk2muV/nN8hLT8M=
+	t=1751466732; cv=none; b=ZdZGOOlLGAN7oAUX/DDPJEs7S0+xN02zxs+iFy3WQ+Z5LmInmGKhr16yN9ciIx9qUfsBtadT1Cgy0/uIoRsmZpdBqiTj8qRtt0EvZGGUFCP4BzfTkXAZZLLCMP+dRd/ype4FKAr2EBhA8nmQurudxSV0cree9uT5DkjSszR00KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751466049; c=relaxed/simple;
-	bh=Pip7qVEFQVYSY76zLUx9PHCExnbAXgnUt8LulPOmRNk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MbGzeo/X8B48c0mI4TircJwZk+lSylNNUJ3970gi3QYr5yaTOIrQE8aL8Vy/OeubVGG655DsGszMyzWER+e2EMSO40WjYAjaLWPxTTNBHEZ4tqDAta+RzLSwf9XBc04zRW420jEFOh2Qik6HiDUOhVP0bJ/cq08zD02bnZYlgbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NKuefcir; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751466732; c=relaxed/simple;
+	bh=kNyuH7WLAtOiZ59gEXSG0VtJ7ygKLG7MtztYM37F/Ng=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YVwa7Jt5qxEg2V7SCwfHVCczhF6BJE4RpGDtIWKB7TB28zrgJJRamMcvnPwbPbN24lj99ojTI9TRT8YwMsCUqk2tec7GouDGGmKaLt+xI0viJBNRnYWu8Dm7Qmy+WCaaQ0rPhYvncf518HwVtNnaZG3X7YZtrmRwZlsfCOR4eZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=urEPfCl4; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKuefcir"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b3226307787so3419705a12.1
-        for <imx@lists.linux.dev>; Wed, 02 Jul 2025 07:20:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="urEPfCl4"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6facc3b9559so60108266d6.0
+        for <imx@lists.linux.dev>; Wed, 02 Jul 2025 07:32:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751466047; x=1752070847; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yGQkzz5zRxRRS2uo+kWwt7fThwG7BuLxpPIngGvvrqc=;
-        b=NKuefcirSJRQzPkj8e9geUEQ60sLDrvMB98PXIjC7dLtiJ00gq7KqtAAzqN8PsXYjg
-         lxs1O78yXZOCLu9RHG2E/DpcfY/62xLwTZXTPO46PXdub1XLI9HivgW3sNe+KFohh4GS
-         pZJTgHMIKcuylWF9PO03eyDiAvXv2g1sG4fsqE6Nx8HvnlhBCcqH5IlMlvidRMwVM/Is
-         zxxzlKGz8XC7GtMI1rMuIsogpk8EVPLbk1Be3evuV14mEkUL0ae/BRD4D534ijpLhx54
-         RyM6N3rq7S5lK9L1bCJfVpbd9fi9SQsiVizvUmmmkSOzhIuRH4A6Y+O1Yx9opjS+apCA
-         uh7w==
+        d=rowland.harvard.edu; s=google; t=1751466729; x=1752071529; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OM0zfei5f0inErN/uNSMXzIQ9/mBfPLCdVqE3t8DrBI=;
+        b=urEPfCl4LvR2529FMUR1lGtGQVkJawbCt9gGir2y0erbXTxNXgSpvdYKsEfsDzQrgn
+         7oN69bOzYfZBC6vB1iqZ2DpThtWWiie3oasLTBOTQy/LUPbO/yyzMT2Dk0E6gMV3/KUr
+         NxJQaG3AEC1qGp9bbyh2NnYLgpqNhEg6RjWOCjjhq9s0sXucB/9lRqhgBryfVT2RZ2tg
+         CQzQHDlcDL1UPkR0K3XLHap+ISLVmb0Gm//nY64fax2UZLv6BzsNOoYp46JnphAfS8yH
+         TX5veVr3AmocTyWIyvr3hstVJe2NJMsrZsWuJxwqg282ii/8k9RMsaYx0S9L9nm1RvS4
+         DngQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751466047; x=1752070847;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yGQkzz5zRxRRS2uo+kWwt7fThwG7BuLxpPIngGvvrqc=;
-        b=n2D0MdOo+qtfYrHX+MfqAY+i3UdzvWrxbALgTsfy9kBjvKaabcDMgft4vuCjb3r4D0
-         o0pcuvjnf5FbTAD7rtztVJdj3P5Sp1Rv48UyJg633IpLJTYt3E1ow0m8u5z+O4git/gw
-         SppqPhiUp5XJCFyyZxNVTtltetcSUjlt9u2Iiaai+9kUsV8muiB8+iQ8TMaixCoZSTh9
-         f6Kic715unej5WOV5l6+MtHElJ0f4BPnwjiVfBIJBD70pjItR7nEKRLdgKRlZ+g6KxVM
-         X/eZxoQDKPGC/PQ8sAw6Apuh/+1WPYuQ8cSThByUjU1tubESOSxq9jbtOVFdEGG160Ny
-         mzuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUk3Kq5pEOSStOz2sjkur4a61oYmvGWTnYQzTJvmYQe0HFjaPqIeqN1CvDl4+H/Sb6tIcg=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz4B/Hss0J2TyZ+T9MHHHUcsKnV5OSPnSxJSX6nMvi1gsLI9jTu
-	QFliwM/5X9l/Pfzp1XDTecHXGP71WrSowU28q7Rc8zuexvwrW2XI06uOH5IZg5O0oa3IAZGU/pF
-	sCq2MN7R085Uu6IHhsUV1kEGptTnlDp7MCA==
-X-Gm-Gg: ASbGncuLvxVE3TF10qIJYgGPVLvqVb+XXh/xcFw7lquzjER4Mx/xHUKhDvvt/4TpCvR
-	7ktlrZFJExOWhcEO8iZDnYye6UdloNdRPIEB1YwyJkN4VCHWlqVDKDXdT1ojfe3MyMATZubU/PF
-	AxojBO8s1/YLDbieivgzXXmPFT3+7F8J15Xe7YtkSHWf8BczfIf8PqHw==
-X-Google-Smtp-Source: AGHT+IHXe/1zFmqCjXQ3C8alvXOHiCKHLQ3bJLFyVQ/G6RNjB0hyZ7QrXCV2jrtHiA4TmMP8JM9c+KanMU9aiN4g/Xk=
-X-Received: by 2002:a17:90b:1c12:b0:31a:947d:6ca1 with SMTP id
- 98e67ed59e1d1-31a947d71e7mr2657565a91.22.1751466046836; Wed, 02 Jul 2025
- 07:20:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751466729; x=1752071529;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OM0zfei5f0inErN/uNSMXzIQ9/mBfPLCdVqE3t8DrBI=;
+        b=JrRylI8aB0LhM3eW8NoFW9JjBkL4lMjDcn3mQ4LittuIOkZCwnaMudQF6erqslvqgl
+         pIXgXtaGF8N7siiVjwPgqq3r/ppvJrUgYVRlvurj/dIpavi0S97DGaEQwfPTbnR2NmkM
+         sJ4I34irKjoGxm4hpO8OFiTt8Znhx/wqQWkgN0KAzI7SQgKKf1d3ZcknbPwH7mIUkECZ
+         3k20pqiBbWPwDAJ+LXkAyaTqHMDCNFv+Bc+VbTF8+NGvrS3vGKPEfNhXUiiVfUiJ1IfZ
+         IXPhN7k15k0DTbu+mFbIgrQTtVwyHSqzv3tK+uQMsHZTn+edgT84yXcbqyYK078rXCiI
+         L15w==
+X-Forwarded-Encrypted: i=1; AJvYcCWUtfn6GdGKC2CLRmDnwrcPKNNgFFw9M5bvs2w3Wk3ajR1Nvuuwjll8cYJzY4KCab4GbIg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzeKKYm3oza0ntYffsb9GuTYE4kxORVDWIVrXpXcRouWdm1U65K
+	VxJ63VfBPfJxQXW9Zk9jVQxaGwAKB2T0WE+wZeHhe2rSUhgiQNKA1VcY5DUNkEpGhw==
+X-Gm-Gg: ASbGncve4piMpWpqkA+/BB6lwsO3hB86AQzG2H4vaeIMJoGoRrbTTXeN2EC9Hw2+DKm
+	JplfzQMLMBAICP9R+2aLTbQ9fzog+Vc1EExoX6NaLu/NAIM+7dnngcgERUPD4ptky9UoIyuEo1W
+	SokOjgXd7N9i4vfMg5jkj9A+qic91fLyEtXtE3dq3UfMZVABF7w0hUaQSy0+ACY5RgbMbhyaqKJ
+	pfZ0KYHgzanvqUEoFI1UJ0Lq8zgJySFaWG7kwmihDZMy8G4SOtOqaG1lsxK2iV27/tDybi0wJp/
+	BVTzJEXlyBDdEJdL1wLXpRVuRmF192zPZbDyq+1K0hNThYupUerynoahbL7IZzTccIoEhVcGUEH
+	LmqCN
+X-Google-Smtp-Source: AGHT+IGUPShe/+yBmwn3/UQ4X2UjDVvrgr8iJo66Gp3M0ocSLCxEcEabV1oGRD+eHhzqQPhNVXK6Ew==
+X-Received: by 2002:a05:6214:1c08:b0:6fd:75e1:16c4 with SMTP id 6a1803df08f44-702b1bb187emr42595926d6.20.1751466724441;
+        Wed, 02 Jul 2025 07:32:04 -0700 (PDT)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd772e4fddsm101024496d6.65.2025.07.02.07.32.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Jul 2025 07:32:04 -0700 (PDT)
+Date: Wed, 2 Jul 2025 10:32:01 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: ezequiel@vanguardiasur.com.ar, mchehab@kernel.org,
+	laurent.pinchart@ideasonboard.com, hdegoede@redhat.com,
+	gregkh@linuxfoundation.org, mingo@kernel.org, tglx@linutronix.de,
+	andriy.shevchenko@linux.intel.com, viro@zeniv.linux.org.uk,
+	thomas.weissschuh@linutronix.de, dafna.hirschfeld@collabora.com,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v3 1/3] usb: core: add dma-noncoherent buffer alloc and
+ free API
+Message-ID: <198ddef7-8623-400f-8e2e-ffd6c4bfd2cf@rowland.harvard.edu>
+References: <20250702110222.3926355-1-xu.yang_2@nxp.com>
+ <20250702110222.3926355-2-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250620213447.56392-1-aford173@gmail.com>
-In-Reply-To: <20250620213447.56392-1-aford173@gmail.com>
-From: Adam Ford <aford173@gmail.com>
-Date: Wed, 2 Jul 2025 09:20:35 -0500
-X-Gm-Features: Ac12FXzt0gezjSCPgKwgvm9n1EIPWkC5-wwtbhI6dVypdKni0yvTumI1x5nEKA8
-Message-ID: <CAHCN7x+2A476SgUP3uWSLovpDU0qxxP=a+sXLbdE0UU6Bv+_YQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
-To: linux-arm-kernel@lists.infradead.org
-Cc: aford@beaconembedded.com, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250702110222.3926355-2-xu.yang_2@nxp.com>
 
-On Fri, Jun 20, 2025 at 4:34=E2=80=AFPM Adam Ford <aford173@gmail.com> wrot=
-e:
->
-> The reference manual for the i.MX8MM states the clock rate in
-> MMC mode is 1/2 of the input clock, therefore to properly run
-> at HS400 rates, the input clock must be 400MHz to operate at
-> 200MHz.  Currently the clock is set to 200MHz which is half the
-> rate it should be, so the throughput is half of what it should be
-> for HS400 operation.
->
+On Wed, Jul 02, 2025 at 07:02:20PM +0800, Xu Yang wrote:
+> This will add usb_alloc_noncoherent() and usb_free_noncoherent()
+> functions to support alloc and free buffer in a dma-noncoherent way.
+> 
+> To explicit manage the memory ownership for the kernel and device,
+> this will also add usb_dma_noncoherent_sync_for_cpu/device() functions
+> and call it at proper time.  The management requires the user save
+> sg_table returned by usb_alloc_noncoherent() to urb->sgt.
+> 
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> 
+> ---
+> Changes in v3:
+>  - put Return section at the end of description
+>  - correct some abbreviations
+>  - remove usb_dma_noncoherent_sync_for_cpu() and
+>    usb_dma_noncoherent_sync_for_device()
+>  - do DMA sync in usb_hcd_map_urb_for_dma() and
+>    usb_hcd_unmap_urb_for_dma()
+>  - call flush_kernel_vmap_range() for OUT transfers
+>    and invalidate_kernel_vmap_range() for IN transfers
+> ---
+>  drivers/usb/core/hcd.c | 19 ++++++++++
+>  drivers/usb/core/usb.c | 80 ++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/usb.h    | 11 ++++++
+>  3 files changed, 110 insertions(+)
+> 
+> diff --git a/drivers/usb/core/hcd.c b/drivers/usb/core/hcd.c
+> index c22de97432a0..e0fa6d6d273b 100644
+> --- a/drivers/usb/core/hcd.c
+> +++ b/drivers/usb/core/hcd.c
+> @@ -1366,6 +1366,14 @@ void usb_hcd_unmap_urb_for_dma(struct usb_hcd *hcd, struct urb *urb)
+>  				urb->transfer_buffer_length,
+>  				dir);
+>  
+> +	if ((urb->transfer_flags & URB_NO_TRANSFER_DMA_MAP) &&
+> +	    urb->sgt) {
 
-Shawn and/or Fabio,
+Shouldn't this be "else if"?  There aren't any circumstances where a 
+driver might want to do two DMA mappings for the same buffer, are there?
 
-Any chance this can get reviewed and possibly applied for the next kernel?
+> +		dma_sync_sgtable_for_cpu(hcd->self.sysdev, urb->sgt, dir);
+> +		if (dir == DMA_FROM_DEVICE)
+> +			invalidate_kernel_vmap_range(urb->transfer_buffer,
+> +						     urb->transfer_buffer_length);
+> +	}
+> +
 
-thank you,
-
-adam
-
-> Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development=
- kit")
-> Signed-off-by: Adam Ford <aford173@gmail.com>
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/=
-arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> index 21bcd82fd092..8287a7f66ed3 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-> @@ -294,6 +294,8 @@ &usdhc3 {
->         pinctrl-0 =3D <&pinctrl_usdhc3>;
->         pinctrl-1 =3D <&pinctrl_usdhc3_100mhz>;
->         pinctrl-2 =3D <&pinctrl_usdhc3_200mhz>;
-> +       assigned-clocks =3D <&clk IMX8MM_CLK_USDHC3>;
-> +       assigned-clock-rates =3D <400000000>;
->         bus-width =3D <8>;
->         non-removable;
->         status =3D "okay";
-> --
-> 2.48.1
->
+Alan Stern
