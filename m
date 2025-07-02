@@ -1,127 +1,172 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA064257431
-	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 12:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB44E1E487;
+	Wed,  2 Jul 2025 12:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751458843; cv=none; b=H3POKgOkRiLAzIeORIcnUk8lsn9Fql5V/CDLFEInrCkuEFg+LsyZ0XA+Fy3W6VaOztBxRD7paEA/pvJ/fVobX8ZJWFTB+mLsveur9o41fupIPoeoQxHrqQpUt/azNjKcAoXtRu6IRefG8UbMYB9Y5T0UvNwmAsUeNuXk74ciqKI=
+	t=1751459497; cv=none; b=HzC1YWoVKuQX58Ek303/twf6hS3wWguYKR6lndw/vtdGQjqQONMK5qXfSeEP2wbfD9Lcu1RdMauulx4Ps/6zzAe+1PQ2kh9dpU5iqD5PxsjL6OQNeg601zB5St11+VNGNJ2SqegvageS9Uhp/0szEUACEqoWcy2R/ctics6Sl1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751458843; c=relaxed/simple;
-	bh=64aTKjc/IcbpGG9gKWt+2nVue/MdoRiwlfPf0ILjKpo=;
+	s=arc-20240116; t=1751459497; c=relaxed/simple;
+	bh=HyLomZoUIsBZI28vt4NzRZMuAo9iSJ1mkcus3zmJ/uI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dMjCVdjsGVRQf5Fwuy8Uz6NcHgJ7dosTiVUOoKjWcFuBEviWECpZJkgjRSdXlS+DwlBwYTUFklx/PW9Ldnn70T09Fm1ce0NMMYDD1sFs3KqnUgmBrshdiqYKUg/P+S/6c8ifrwzJKtfvLPMtk0l/MAJ1XRAunZO2HIiEUh9jHJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aEz897f1; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=EggvUCg+KTQmLANeH4Px+lj+sbk9GMj2UzgZ5CYgxi77/lA4d9I/07rjKzSl+u0zAYmjIMZNFodJXC0esL5XmVNht+uyASLehNnFbIWeFMmIGuOg/aYgUgR/IojQ96WXABQYNO7xS8GmBH8NunfaO5k2n+jmK07CIp3KUYDaisU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQIOuCNM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aEz897f1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751458842; x=1782994842;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=64aTKjc/IcbpGG9gKWt+2nVue/MdoRiwlfPf0ILjKpo=;
-  b=aEz897f1q7bf7XAR9LSt27bLtTKuL51R7K+tQRCij+p0CyJoei91o6Mr
-   2tiORroOnfTJGswRavIVIEPomDZyLT5FB6p2Ief2e7qqvwSH2qCRUkLkA
-   12Qg/P6zkQbXKz90b5j2g8m3vBq6dorFF1vsDsDo5gnn8xHFlJF2j8ztY
-   H1w1dhggL1fbFb33j/sBLgvR+dj1lrSqmSQXWL1cmWB04v4oVOOqAsboB
-   nrscgTxq4dCnsN9nFWnxB90oT/k3YkVSS2qvrRSzCieYjrkLVZVWE4FIo
-   Taz2irBVTvjlo1gM6f5EesUZGH6Kk3gysCdnohh8MHck+bsjGO1CB880a
-   Q==;
-X-CSE-ConnectionGUID: UaPYKrN3QMe7nuabibs71Q==
-X-CSE-MsgGUID: j1/sV2jKQC2s/1DyjhFJbw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11482"; a="53616728"
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="53616728"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 05:20:41 -0700
-X-CSE-ConnectionGUID: 1aETWCKNQ1umOKFoIsAm7Q==
-X-CSE-MsgGUID: ppFS1wN+T+ik1840nkTGjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,281,1744095600"; 
-   d="scan'208";a="158104826"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2025 05:20:37 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uWwS1-0000000Bun0-43Su;
-	Wed, 02 Jul 2025 15:20:33 +0300
-Date: Wed, 2 Jul 2025 15:20:33 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: ezequiel@vanguardiasur.com.ar, mchehab@kernel.org,
-	laurent.pinchart@ideasonboard.com, hdegoede@redhat.com,
-	gregkh@linuxfoundation.org, mingo@kernel.org, tglx@linutronix.de,
-	viro@zeniv.linux.org.uk, thomas.weissschuh@linutronix.de,
-	dafna.hirschfeld@collabora.com, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v3 1/3] usb: core: add dma-noncoherent buffer alloc and
- free API
-Message-ID: <aGUkEbaSOzrtILkZ@smile.fi.intel.com>
-References: <20250702110222.3926355-1-xu.yang_2@nxp.com>
- <20250702110222.3926355-2-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQIOuCNM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0877C4CEED;
+	Wed,  2 Jul 2025 12:31:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751459497;
+	bh=HyLomZoUIsBZI28vt4NzRZMuAo9iSJ1mkcus3zmJ/uI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZQIOuCNMICguAzeBgxu+HHL77MCyaObg/26HSEUCrXWPkUd23kVGSO+krBqrgQDjE
+	 mqpEtRaeIZTNVpMnC7ZSpNLLvoKTfdwSnMAVI6e+ddliSNa4hjOxsmEmAimZUFx9Lt
+	 XjHN+M2S7/rCFQ+9QG1fl2Akq4wqY2suSIJr9x3bxPv3Ge3YAhOIvKQpq+YvdJ8Alr
+	 5FGix2e4Cql3/KPuymrOlR3aEWS3ik5beTXLqXMe1PPIjuw+DmAbw+2FLOWnRdAHhd
+	 Pr6Dw818Pd5W32CmctWaoz/Q8YfP+nMAAw9KII2KckiGPrFrt1HPC9IXKuGhBg7o4+
+	 RUy6Keg7shOYA==
+Date: Wed, 2 Jul 2025 18:01:18 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>, 
+	Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org, jdmason@kudzu.us, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH v19 04/10] PCI: endpoint: Add
+ pci_epf_align_inbound_addr() helper for address alignment
+Message-ID: <n6wdkexskwjd7k5zwaaqeb36zdsxzcshsm7f5czv44rmocswex@pzbpehep2teu>
+References: <20250609-ep-msi-v19-0-77362eaa48fa@nxp.com>
+ <20250609-ep-msi-v19-4-77362eaa48fa@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250702110222.3926355-2-xu.yang_2@nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250609-ep-msi-v19-4-77362eaa48fa@nxp.com>
 
-On Wed, Jul 02, 2025 at 07:02:20PM +0800, Xu Yang wrote:
-> This will add usb_alloc_noncoherent() and usb_free_noncoherent()
-> functions to support alloc and free buffer in a dma-noncoherent way.
+On Mon, Jun 09, 2025 at 12:34:16PM GMT, Frank Li wrote:
+> Introduce the helper function pci_epf_align_inbound_addr() to adjust
+> addresses according to PCI BAR alignment requirements, converting addresses
+> into base and offset values.
 > 
-> To explicit manage the memory ownership for the kernel and device,
-> this will also add usb_dma_noncoherent_sync_for_cpu/device() functions
-> and call it at proper time.  The management requires the user save
-> sg_table returned by usb_alloc_noncoherent() to urb->sgt.
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v15 to v16
+> - none
+> 
+> Change from v14 to v15
+> - change out address type to dma_addr_t to fix below build issue
+> 
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202502082311.G1hWGggF-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    drivers/pci/endpoint/functions/pci-epf-test.c: In function 'pci_epf_test_enable_doorbell':
+> >> drivers/pci/endpoint/functions/pci-epf-test.c:726:42: error: passing argument 4 of 'pci_epf_align_inbound_addr' from incompatible pointer type [-Werror=incompatible-pointer-types]
+>      726 |                                          &epf_test->db_bar.phys_addr, &offset);
+>          |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>          |                                          |
+>          |                                          dma_addr_t * {aka unsigned int *}
+>    In file included from include/linux/pci-epc.h:12,
+> 
+> Change form v9 to v14
+> - none
+> 
+> change from v8 to v9
+> - pci_epf_align_inbound_addr(), base and off must be not NULL
+> - rm pci_epf_align_inbound_addr_lo_hi()
+> 
+> change from v7 to v8
+> - change name to pci_epf_align_inbound_addr()
+> - update comment said only need for memory, which not allocated by
+> pci_epf_alloc_space().
+> 
+> change from v6 to v7
+> - new patch
+> ---
+>  drivers/pci/endpoint/pci-epf-core.c | 44 +++++++++++++++++++++++++++++++++++++
+>  include/linux/pci-epf.h             |  3 +++
+>  2 files changed, 47 insertions(+)
+> 
+> diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
+> index 95fb3d7c1d45e..33e14a6b1549a 100644
+> --- a/drivers/pci/endpoint/pci-epf-core.c
+> +++ b/drivers/pci/endpoint/pci-epf-core.c
+> @@ -481,6 +481,50 @@ struct pci_epf *pci_epf_create(const char *name)
+>  }
+>  EXPORT_SYMBOL_GPL(pci_epf_create);
+>  
+> +/**
+> + * pci_epf_align_inbound_addr() - Get base address and offset that match BAR's
+> + *			  alignment requirement
 
-...
+'Align the given address based on the BAR alignment requirement'
 
-> +	if ((urb->transfer_flags & URB_NO_TRANSFER_DMA_MAP) &&
-> +	    urb->sgt) {
+> + * @epf: the EPF device
+> + * @addr: the address of the memory
 
-Something weird with the indentation. Here you wrapped, but the very next line
-is not, and they both satisfy 80 limit (even though we have it relaxed now).
+'inbound address to be aligned'
 
-> +		dma_sync_sgtable_for_cpu(hcd->self.sysdev, urb->sgt, dir);
-> +		if (dir == DMA_FROM_DEVICE)
-> +			invalidate_kernel_vmap_range(urb->transfer_buffer,
-> +						     urb->transfer_buffer_length);
+> + * @bar: the BAR number corresponding to map addr
+
+s/map addr/the given addr
+
+> + * @base: return base address, which match BAR's alignment requirement.
+
+'base address matching the @bar alignment requirement'
+
+> + * @off: return offset.
+
+'offset to be added to the @base address'
+
+> + *
+> + * Helper function to convert input 'addr' to base and offset, which match
+
+s/convert/align
+
+> + * BAR's alignment requirement.
+> + *
+> + * The pci_epf_alloc_space() function already accounts for alignment. This is
+> + * primarily intended for use with other memory regions not allocated by
+> + * pci_epf_alloc_space(), such as peripheral register spaces or the trigger
+> + * address for a platform MSI controller.
+> + */
+> +int pci_epf_align_inbound_addr(struct pci_epf *epf, enum pci_barno bar,
+> +			       u64 addr, dma_addr_t *base, size_t *off)
+> +{
+> +	const struct pci_epc_features *epc_features;
+> +	u64 align;
+> +
+> +	if (!base || !off)
+> +		return -EINVAL;
+> +
+> +	epc_features = pci_epc_get_features(epf->epc, epf->func_no, epf->vfunc_no);
+> +	if (!epc_features) {
+> +		dev_err(&epf->dev, "epc_features not implemented\n");
+> +		return -EOPNOTSUPP;
 > +	}
-
-...
-
 > +
-> +		return ret;
->  	}
-> +
-> +	if ((urb->transfer_flags & URB_NO_TRANSFER_DMA_MAP) &&
-> +	    urb->sgt) {
+> +	align = epc_features->align;
+> +	align = align ? align : 128;
 
-Why not
+From where this 128 byte alignment comes from?
 
-	} else if {
-
-and drop the above return ret; ?
-
-> +		if (dir == DMA_TO_DEVICE)
-> +			flush_kernel_vmap_range(urb->transfer_buffer,
-> +						urb->transfer_buffer_length);
-> +		dma_sync_sgtable_for_device(hcd->self.sysdev, urb->sgt, dir);
-> +	}
-> +
->  	return ret;
+- Mani
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+மணிவண்ணன் சதாசிவம்
