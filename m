@@ -1,182 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4E21D7E41;
-	Wed,  2 Jul 2025 06:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1003634EC
+	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 07:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751439291; cv=none; b=BjfMjfHkxNG/5DvAGvzbZLvTEKzn+u8ddSmrXTImXjzHopwtvDy6llJmAGdu4eIH0dxlIcqNsl95Hp+PRawPWXTt1DpfcdYajuXsdD3ghRf84pAbjE2Pff8auxKLO4l0zbLwvMpOAJt7U7yU0/RQuojBpyseFN3KVKl2WHyjAe4=
+	t=1751440858; cv=none; b=TpKfod/NyARMisRVTkilobk4wVXe2CbcBuiPzzChhWznmMesojlkbxArxApEfG8um+ZSEH2R9GZS8cMkcq6Rwe7R5hggOrTZJXUbIxUrmaVF+itJn2RLxtesvA3QDMBXBbIlcC2H3bvE0kFMwyvE3egWKq8zeoODSa2prHO4JF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751439291; c=relaxed/simple;
-	bh=OygOYEPels4czGsYfayew2rB/2MBUfzsc+sH9m4SBq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KBBfrUnx9JuUhGVeZWDW8VRQY/VuyV4KM9C+G391oK4/4pwqIrx2j17CoRcnQJYc08TNW90QrZBH4tqaQBI++It2Z9EJTitBWsUQ4tyicMLDtWpnF5+OsFd52mAjMDBcD7SfqGX+famczpUpXpY8NOsxKq2m2qGgos+KJ4lyheQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HgEzaVEs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751440858; c=relaxed/simple;
+	bh=MdYtqvofNcs1ler6sTIPSc9X1xjblJnNld2TD7UDg+c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cF0bkFvbZI9ksGw19XPDobst0KOE8hlI1nPQHsFscdY+gu0t/BaTV+cJx8gwLNtCQU+JpiY5zu7yOPG5rhkdnAo0zxNUjMkPvgEmTelUoUf0ei3qIru4KsQ3/qUsGZ2SineJim41GVm2VM3JxIKCojSIo4DfT5LKWI2KnlghN3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4+9gKpP; arc=none smtp.client-ip=209.85.166.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HgEzaVEs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DADDC4CEEE;
-	Wed,  2 Jul 2025 06:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751439290;
-	bh=OygOYEPels4czGsYfayew2rB/2MBUfzsc+sH9m4SBq0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HgEzaVEsk//JdYC+Qyn/5EKrQUtKGk9503aAH2+MGID4BNeVQ532beH+YUPat8bTE
-	 ksassL7x58UVM8H2z1YiCwar+F03MKvsVVnuzRRKynO2HQG/FWdGtT9efkSLGsT2I7
-	 Ms+P4pZHTOL3Vi5wMI5yX6frOXuS33VSRWuaxiWcuK7ssHBQAM1VMY79ox/M3t/Kkg
-	 MpzSll7uEgbWqbwWs12mIdTWwhhed0E7KABMg9q7RSCMgBIviaW2okigJHox485Vzp
-	 +NGA4KhTUCCW4PB5nkG0t/tcwwrvz8+nBPF7c5fUeC9tKEKmXUIejMhEFiSWJ7w1Sq
-	 ROwcsDKchkEaA==
-Date: Wed, 2 Jul 2025 08:54:48 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Waqar Hameed <waqar.hameed@axis.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, Julien Panis <jpanis@baylibre.com>, 
-	William Breathitt Gray <wbg@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Peter Rosin <peda@axentia.se>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Cosmin Tanislav <cosmin.tanislav@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Matteo Martelli <matteomartelli3@gmail.com>, 
-	Heiko Stuebner <heiko@sntech.de>, Francesco Dolcini <francesco@dolcini.it>, 
-	=?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, Mudit Sharma <muditsharma.info@gmail.com>, 
-	Gerald Loacker <gerald.loacker@wolfvision.net>, Song Qiang <songqiang1304521@gmail.com>, 
-	Crt Mori <cmo@melexis.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Karol Gugala <kgugala@antmicro.com>, 
-	Mateusz Holenko <mholenko@antmicro.com>, Gabriel Somlo <gsomlo@gmail.com>, Joel Stanley <joel@jms.id.au>, 
-	Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, 
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Sebastian Reichel <sre@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Han Xu <han.xu@nxp.com>, Haibo Chen <haibo.chen@nxp.com>, 
-	Yogesh Gaur <yogeshgaur.83@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
-	Souradeep Chowdhury <quic_schowdhu@quicinc.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
-	Bard Liao <yung-chuan.liao@linux.intel.com>, Ranjani Sridharan <ranjani.sridharan@linux.intel.com>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Kai Vehmanen <kai.vehmanen@linux.intel.com>, 
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, kernel@axis.com, 
-	linux-iio@vger.kernel.org, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, imx@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-samsung-soc@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org, 
-	sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH] Remove error prints for devm_add_action_or_reset()
-Message-ID: <jeajjewfbg5qo736imozpghnpxln2pux74aegtqsi57qsbpug2@opndel6zc3m3>
-References: <pnd7c0s6ji2.fsf@axis.com>
- <ylr7cuxldwb24ccenen4khtyddzq3owgzzfblbohkdxb7p7eeo@qpuddn6wrz3x>
- <20250701185519.1410e831@jic23-huawei>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4+9gKpP"
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3e058c64a76so968555ab.0
+        for <imx@lists.linux.dev>; Wed, 02 Jul 2025 00:20:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751440856; x=1752045656; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jlKXcUS3jg408kymTooqcQurJM+0HaAxwssjdjwXTBw=;
+        b=b4+9gKpPwd9nwVzZHl+Njq8/wO8kRLMyANvZq23SNfVp3q1xBCYjHOvxNM5dZPfP1P
+         THf84vt7MZMYYjMpWfb+eLmJ6jcj6yrrkeKIx7HC/XEKEiu4iHdJrHtxCIvuHABClHkQ
+         c5YWOmYoHBsUo5tV1q10PiM6quQeG16/8S0MWkE3pt1BgBBdp1nNt2qfGfaO0brSZUvU
+         lcW/zeLhj24tu+AWpVWKv2FuB12rnCDCRNp84kRsR0ct4ljj1jYJ+uIBkPWVVchyvt5F
+         H4BMu0EFWbKAAWn4j/6SQOLo+O30i4viYoK6KxY0rYdlEqhS/nz9YFm4M+El4j/8tH4j
+         UCpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751440856; x=1752045656;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jlKXcUS3jg408kymTooqcQurJM+0HaAxwssjdjwXTBw=;
+        b=TUcKjV3nJOcrjUdRPmqVsQ61IE05AE2txPaMkLygmpR6JsKw3IiNowDCTRd+varlyG
+         Ytl3hR1LhcufBpO7MaLgMjI77DhaL85rL0No+hlRQcSruZQco2XxfD1eVztmEaXh/6zO
+         m4SyCd9FSGG4ELjvCh8ytpeVm5thN2hIWGuR5auVpcFAaCaFz1hSfA50goFuwKx/qA98
+         n5t1L6Gx5oCLi2eJKv1zJb+RaLux3I3CLbgVCbEb+FNFDEKFtDLpQu41IhnLwb6NgW2c
+         fYonivF0lIvMcvj2kyEqvAgiyBHgSsoz7P6XIqZUD3gjZVc52aRfEclcztQzQO2mZyPx
+         gkEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfYUuUEv/6FUAordKRiAnqqGQz7xHR6jd40st40grY3MRfMuea1YcRUGH/kiU77zx7inI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzyAXHPqTzj8dxB7SgJdYNDk7UsjkLiaw6V87wTjow17+6i6UoI
+	+U9c7Hz0aNMoT0u6ocYKzBEsqycN3YLQYqFKhaLgj8aDDikJ+IgTpKT6uOU7f71511vi6nXaHgr
+	TQb3w4/6xNig2r2W5tKebqx2tHROHWos=
+X-Gm-Gg: ASbGncv+hzqzABZ7ZNwYiKJhA2nzh+ZbhPNLmVESmrfBbqxqOlkyzHdWajNAXYv5eOG
+	LRz4KoXVqAeVw4+8c3iYD5EGW1hXbRKbrirD3CX+SJDIPimyiD/KEZR+4l8M8fDAl0L2U/Jv2Fq
+	Sc4j0aDZXCt33KzeTIJWrCSi/69reyoFmJtJkm+SNRLyo=
+X-Google-Smtp-Source: AGHT+IFHgMa8Mngls2xpKyZO5bXtEpSnlalV27UKMs8KgtahvMNmHCQIvV4/VqDTKCW7KQqdACPzThHXTAdqppHtWsk=
+X-Received: by 2002:a05:6e02:1a61:b0:3e0:4f30:c951 with SMTP id
+ e9e14a558f8ab-3e0549c655bmr22307415ab.14.1751440855622; Wed, 02 Jul 2025
+ 00:20:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yoqxembgtzssn7jy"
-Content-Disposition: inline
-In-Reply-To: <20250701185519.1410e831@jic23-huawei>
-
-
---yoqxembgtzssn7jy
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
+References: <20250618062644.3895785-1-shengjiu.wang@nxp.com>
+ <20250618062644.3895785-3-shengjiu.wang@nxp.com> <aGLBvXtSRlaKujqM@p14s>
+ <CAA+D8AO4o7dqTyL4aZ+H5VnroTQUNAHM-io5rvJ2r_sasPYs9g@mail.gmail.com> <aGP-ZVuhBdd1GPLe@p14s>
+In-Reply-To: <aGP-ZVuhBdd1GPLe@p14s>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 2 Jul 2025 15:20:34 +0800
+X-Gm-Features: Ac12FXxqvi6u6raIhWimY1G1UCrc7Xt2DJUxgPMKdt9-02GjFtqtqI7XWKxLVQE
+Message-ID: <CAA+D8ANtw1xTg7OQOFoDeQcdp05Eo9Uo1t=MKcGjtkSYfJqBVw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] remoteproc: imx_dsp_rproc: Add support of coredump
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andersson@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	iuliana.prodan@nxp.com, daniel.baluta@nxp.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] Remove error prints for devm_add_action_or_reset()
-MIME-Version: 1.0
 
-Hello Jonathan,
-
-On Tue, Jul 01, 2025 at 06:55:19PM +0100, Jonathan Cameron wrote:
-> On Tue, 1 Jul 2025 19:44:17 +0200
-> Uwe Kleine-K=F6nig <ukleinek@kernel.org> wrote:
->=20
-> > On Tue, Jul 01, 2025 at 05:03:33PM +0200, Waqar Hameed wrote:
-> > >  drivers/pwm/pwm-meson.c                          | 3 +-- =20
-> >=20
-> > Looking at this driver I tried the following:
->=20
-> I'm not sure what we actually want here.
->=20
-> My thought when suggesting removing instances of this
-> particular combination wasn't saving on code size, but rather just
-> general removal of pointless code that was getting cut and
-> paste into new drivers and wasting a tiny bit of review bandwidth.
-> I'd consider it bad practice to have patterns like
->=20
-> void *something =3D kmalloc();
-> if  (!something)
-> 	return dev_err_probe(dev, -ENOMEM, ..);
->=20
-> and my assumption was people would take a similar view with
-> devm_add_action_or_reset().
+On Tue, Jul 1, 2025 at 11:27=E2=80=AFPM Mathieu Poirier
+<mathieu.poirier@linaro.org> wrote:
 >
-> It is a bit nuanced to have some cases where we think prints
-> are reasonable and others where they aren't so I get your
-> point about consistency.
+> On Tue, Jul 01, 2025 at 10:28:33AM +0800, Shengjiu Wang wrote:
+> > On Tue, Jul 1, 2025 at 1:05=E2=80=AFAM Mathieu Poirier
+> > <mathieu.poirier@linaro.org> wrote:
+> > >
+> > > On Wed, Jun 18, 2025 at 02:26:44PM +0800, Shengjiu Wang wrote:
+> > > > Add call rproc_coredump_set_elf_info() to initialize the elf info f=
+or
+> > > > coredump, otherwise coredump will report an error "ELF class is not=
+ set".
+> > > >
+> > > > Remove the DSP IRAM and DRAM segment in coredump list, because afte=
+r
+> > > > stop, DSP power is disabled, the IRAM and DRAM can't be accessed.
+> > > >
+> > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > > > ---
+> > > >  drivers/remoteproc/imx_dsp_rproc.c | 6 +++---
+> > > >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > > >
+> > > > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remotepro=
+c/imx_dsp_rproc.c
+> > > > index 9b9cddb224b0..9e7efb77b6e5 100644
+> > > > --- a/drivers/remoteproc/imx_dsp_rproc.c
+> > > > +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> > > > @@ -738,9 +738,7 @@ static int imx_dsp_rproc_add_carveout(struct im=
+x_dsp_rproc *priv)
+> > > >               mem =3D rproc_mem_entry_init(dev, (void __force *)cpu=
+_addr, (dma_addr_t)att->sa,
+> > > >                                          att->size, da, NULL, NULL,=
+ "dsp_mem");
+> > > >
+> > > > -             if (mem)
+> > > > -                     rproc_coredump_add_segment(rproc, da, att->si=
+ze);
+> > > > -             else
+> > > > +             if (!mem)
+> > >
+> > > Flag rproc->recovery_disabled is never set to true, meaning that sinc=
+e this
+> > > driver was introduced, some kind of recovery was available.
+> >
+> > Actually since this driver was introduced, the recovery can't work.
+> > We didn't test the recovery function before. sorry for the mistake.
+>
+> Let me see if I get this right:
+>
+> (1) Almost 5 years ago you sent me a driver with code you did not test.
 
-The problem I see is that there are two classes of functions: a) Those
-that require an error message and b) those that don't. Class b) consists
-of the functions that can only return success or -ENOMEM and the
-functions that emit an error message themselves. (And another problem I
-see is that for the latter the error message is usually non-optimal
-because the function doesn't know the all details of the request. See my
-reply to Andy for more details about that rant.)
+Driver was tested but missed the recovery/coredump function.
 
-IMHO what takes away the review bandwidth is that the reviewer has to
-check which class the failing function is part of. If this effort
-results in more driver authors not adding an error message after
-devm_add_action_or_reset() that's nice, but in two months I have
-forgotten the details of this discussion and I have to recheck if
-devm_add_action_or_reset() is part of a) or b) and so the burden is
-still on me.
+> (2) It took all this time to realize and fix the problem.
 
-So to give my answer on your question "What do we actually want here?":
-Please let us get rid of the need to care for a) or b).
+I just realized that the recovery/coredump is one of the functions supporte=
+d
+by remoteproc.
 
-> The code size reduction is nice so I'd not be against it as an extra
-> if the reduction across a kernel builds is significant and enough
-> people want to keep these non printing prints.
+> (3) I should trust that, this time, you have tested your code.
 
-To complete implementing my wish all API functions would need to stop to
-emit an error message. Unfortunately that isn't without downsides
-because the result is that there are more error strings and so the
-kernel size is increased. So you have to weight if you prefer individual
-error messages and easier review/maintenance at the cost of a bigger
-binary size and more dev_err_probe() calls in drivers eating vertical
-space in your editor.
-
-I know on which side I am, but I bet we won't find agreement about that
-in the kernel community ...
+recovery/coredump has been tested.
 
 Best regards
-Uwe
+Shengjiu Wang
 
---yoqxembgtzssn7jy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhk17UACgkQj4D7WH0S
-/k4YcQgAlm1BDi3/P3JcN5b6Y1UamZV/S9cGOikezq/kf1GhqDBu8DxrVjTBFjOf
-OJoBgw/566zxq5agBq8EUgc7GrJBwe7BhieAXUGmYQI0pBg1Zdhgyj42kXhx7B9R
-u2j6XXXrEWa1Sw58sbK3g8bLeDEo9/kIem6g0Yk6NZX2WibbNU6Bw6UuV3yVwVaX
-TH4uFzMJ5wVvnwJDz2HCuxCLQ9NO25UL0U3DdZWIPI9oeuodG3U3MVNJWMJ5OuXc
-e+Yo5MhzsrnrMpj4nWPaicdD25qLOdVCySFDim72U4oI24wsmtlQBiJmDuNoldf/
-kbQM9dmwp48V3mVs7SFSmrt/TD4bFw==
-=6zPO
------END PGP SIGNATURE-----
-
---yoqxembgtzssn7jy--
+>
+> Did I understand all that correctly?
+>
+> >
+> > >
+> > > I worry that your work will introduce regression for other users.  Da=
+niel and
+> > > Iuliana, once again have to ask you to look at this patchset.
+> > >
+> > > Thanks,
+> > > Mathieu
+> > >
+> > > >                       return -ENOMEM;
+> > > >
+> > > >               rproc_add_carveout(rproc, mem);
+> > > > @@ -1203,6 +1201,8 @@ static int imx_dsp_rproc_probe(struct platfor=
+m_device *pdev)
+> > > >               goto err_detach_domains;
+> > > >       }
+> > > >
+> > > > +     rproc_coredump_set_elf_info(rproc, ELFCLASS32, EM_XTENSA);
+> > > > +
+> > > >       pm_runtime_enable(dev);
+> > > >
+> > > >       return 0;
+> > > > --
+> > > > 2.34.1
+> > > >
+> > >
