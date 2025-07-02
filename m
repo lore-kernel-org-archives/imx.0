@@ -1,72 +1,71 @@
 Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D221823D2B8
-	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 10:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78167248F5A
+	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 10:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751451007; cv=none; b=l7jue92YsugNnnBGAifeDV1J+8FbAgJCWI/djymYQ+2Ihzb4x0BRIKF+zQqaSYV0j+CRc7dBL9v9P6mHqvE/VGgrWB0qRZC57Daj443G0MLrehElv3WUU0MijYk+bhoVw30BvwzCxgaYgDwmR6SSY3hw/vuRkfDXeLnGe7lFHM8=
+	t=1751451815; cv=none; b=LO5L90oGHybtTwZORT+ZM1JmWLhSzeib1mzTG5kgWmaE/1s/T88c9BiD73RgbDYAVWLKf8z92qhV3Sk7yihCqqaUBl7vDQQm+ubMevve3+dZqo96Hmpu6eGl+u8hhOAvdCOAS9gTFGgzzP+Wf/Q9z7QjtWAhiiJMiI3pdqUeLoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751451007; c=relaxed/simple;
-	bh=Avn8QZ56tvBOvMTNHEQSyXrUuokZ4oLrcdRoo87bmq4=;
+	s=arc-20240116; t=1751451815; c=relaxed/simple;
+	bh=Av12LK1mnUPfzSa1s5qDHMGRo6c3vT8kL2n9sQL8Zzs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QXVIk2WXlETu0a+X95ROxZsahDIf5m4W3i6n26eskhoVIB1hXSBHA3WHpvhkFvBUVFLJW2lkRHyCYCpuRL73+PuQgvmY6eZZoFFbRSL478nAPS30RoSZfvwVn8uMi9TE3IJYIu1hD7TaKaajpxlNaqSuyrl37mTb8dP0Ts5Kw0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ivh1EUqD; arc=none smtp.client-ip=220.197.32.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=kwPz7LyGTaTm4c8MBSBYPmFyZ2WctBJ/ufF4c8WXk7xocy25g8mhuxnognyctxU77vqINM4vZ1KK9q5NpwzAT84LLsIzv82Z8PWXPmobIC95vC1ifwVNuJdioevqoJQPmX+5NoTfRchlbx6zR3yrTyO2SoFrP/tB9VQbPG2mXVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=UUNchQHJ; arc=none smtp.client-ip=220.197.32.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ivh1EUqD"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="UUNchQHJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=0szaTJk/2IIh92wT4SYepDsVV45HTf6oeyD1uk5eFNE=;
-	b=ivh1EUqD5vaLYJTdTkbxM/9LL+gDCtSiyyqjWax7fZYIWhMFfOk6AVZ1AxETZ/
-	Zrstmc87LCEp+hHlA6MTYt8Q2sYASbKCJdqtJvc/VTz1Ek6/RJ4SUElNo5MHOdHz
-	AzLaeoJ+jQhKglV+oyZezn1C3R5EgsFHgjqp5yd454e4s=
+	Content-Type; bh=y6uuRBxXrjF0Ae2i4iwLQbYWtBNxDN7FCHlkGJdSue0=;
+	b=UUNchQHJYtiIreHerLC+4ldDYXQdm980I6yqLnHndHjhim136KwOAMoGGgLC5D
+	x90VxOOmhp2O9LworOeZEvAox/NWhcdnoMvGOBb9lRY//EoLGRSOODYdrOu1uJCl
+	O5mOYo/4330hbwt/F0E4fwz7q32mYCX7H+9IGBtQqOVLI=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgD39w9aBWVoE_ApAA--.52421S3;
-	Wed, 02 Jul 2025 18:09:32 +0800 (CST)
-Date: Wed, 2 Jul 2025 18:09:30 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCnpuOLCGVorhUqAA--.26800S3;
+	Wed, 02 Jul 2025 18:23:09 +0800 (CST)
+Date: Wed, 2 Jul 2025 18:23:07 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: =?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>
-Subject: Re: [PATCH] arm64: dts: freescale: imx8mp-toradex-smarc: add fan
- cooling levels
-Message-ID: <aGUFWiXuJ514HlDV@dragon>
-References: <20250613-tdx-smarc-imx8mp-fan-cooling-level-v1-1-59aae8fee2db@toradex.com>
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [resend v2 1/1] arm64: dtsi: imx93: add edma error interrupt
+ support
+Message-ID: <aGUIi62j+5btTDME@dragon>
+References: <20250616181259.1989295-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250613-tdx-smarc-imx8mp-fan-cooling-level-v1-1-59aae8fee2db@toradex.com>
-X-CM-TRANSID:Ms8vCgD39w9aBWVoE_ApAA--.52421S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUYZ2-UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiCRl+ZWhk3iqGNwAAsC
+In-Reply-To: <20250616181259.1989295-1-Frank.Li@nxp.com>
+X-CM-TRANSID:Ms8vCgCnpuOLCGVorhUqAA--.26800S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUzSdyUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIA6Y-WhlCI7XAQAA3W
 
-On Fri, Jun 13, 2025 at 01:35:04PM -0300, João Paulo Gonçalves wrote:
-> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+On Mon, Jun 16, 2025 at 02:12:59PM -0400, Frank Li wrote:
+> From: Joy Zou <joy.zou@nxp.com>
 > 
-> The fan controller on this board cannot work in automatic mode, and
-> requires software control, the reason is that it has no temperature
-> sensor connected.
+> Add edma error irq for imx93.
 > 
-> Given that this board is a development kit and does not have any
-> specific fan, add a default single cooling level that would enable the
-> fan to spin with a 100% duty cycle, enabling a safe default.
-> 
-> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+> Signed-off-by: Joy Zou <joy.zou@nxp.com>
+> Reviewed-by: Alberto Merciai <alb3rt0.m3rciai@gmail.com>
+> Tested-by: Alberto Merciai <alb3rt0.m3rciai@gmail.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Applied, thanks!
+Changed subject prefix to "arm64: dts: imx93: ...", and applied.
+
+Shawn
 
