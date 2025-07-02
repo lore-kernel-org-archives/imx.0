@@ -1,133 +1,293 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012047.outbound.protection.outlook.com [52.101.66.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754922E718B
-	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 14:32:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751466732; cv=none; b=ZdZGOOlLGAN7oAUX/DDPJEs7S0+xN02zxs+iFy3WQ+Z5LmInmGKhr16yN9ciIx9qUfsBtadT1Cgy0/uIoRsmZpdBqiTj8qRtt0EvZGGUFCP4BzfTkXAZZLLCMP+dRd/ype4FKAr2EBhA8nmQurudxSV0cree9uT5DkjSszR00KA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751466732; c=relaxed/simple;
-	bh=kNyuH7WLAtOiZ59gEXSG0VtJ7ygKLG7MtztYM37F/Ng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YVwa7Jt5qxEg2V7SCwfHVCczhF6BJE4RpGDtIWKB7TB28zrgJJRamMcvnPwbPbN24lj99ojTI9TRT8YwMsCUqk2tec7GouDGGmKaLt+xI0viJBNRnYWu8Dm7Qmy+WCaaQ0rPhYvncf518HwVtNnaZG3X7YZtrmRwZlsfCOR4eZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=urEPfCl4; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B3E3093A3
+	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 14:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751467266; cv=fail; b=pgB32ogGV6nrQq+tooWbJNAkdE6UFMB3EZJ117tmN7e7xnryv27Tf7N/hLrSFi1BC8kCoQv/vrWlQfWzDdEuQxhJ8X/voLAfEUXqE5adCwokxTTXZp3TVcx7I4v5gYHdv/gbM+q3qXHsnUTnNPF8X8cvOcfEcYofPO/0LSk02jc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751467266; c=relaxed/simple;
+	bh=YxC82tL1E4DJB/3vs4w4SFCHjE4ulRqhfUum5bE3dwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ry4kak0bSVwWcRJKwinMKizCriVS6jD24wkSASsdupC3zXa+jonXufvrC2/ZQVeOCHvuraDq0LPoK/K5lpFeWQWXaFoUE28Zy5kvnDs/TP2OqMGyH166Sbat2D5CbZXyehJ2hMrrdN+9ePFD0UVoPIhxyWeUP9w9XEZ9YOOGMIQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=fkijzwUg; arc=fail smtp.client-ip=52.101.66.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="urEPfCl4"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6facc3b9559so60108266d6.0
-        for <imx@lists.linux.dev>; Wed, 02 Jul 2025 07:32:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1751466729; x=1752071529; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OM0zfei5f0inErN/uNSMXzIQ9/mBfPLCdVqE3t8DrBI=;
-        b=urEPfCl4LvR2529FMUR1lGtGQVkJawbCt9gGir2y0erbXTxNXgSpvdYKsEfsDzQrgn
-         7oN69bOzYfZBC6vB1iqZ2DpThtWWiie3oasLTBOTQy/LUPbO/yyzMT2Dk0E6gMV3/KUr
-         NxJQaG3AEC1qGp9bbyh2NnYLgpqNhEg6RjWOCjjhq9s0sXucB/9lRqhgBryfVT2RZ2tg
-         CQzQHDlcDL1UPkR0K3XLHap+ISLVmb0Gm//nY64fax2UZLv6BzsNOoYp46JnphAfS8yH
-         TX5veVr3AmocTyWIyvr3hstVJe2NJMsrZsWuJxwqg282ii/8k9RMsaYx0S9L9nm1RvS4
-         DngQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751466729; x=1752071529;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OM0zfei5f0inErN/uNSMXzIQ9/mBfPLCdVqE3t8DrBI=;
-        b=JrRylI8aB0LhM3eW8NoFW9JjBkL4lMjDcn3mQ4LittuIOkZCwnaMudQF6erqslvqgl
-         pIXgXtaGF8N7siiVjwPgqq3r/ppvJrUgYVRlvurj/dIpavi0S97DGaEQwfPTbnR2NmkM
-         sJ4I34irKjoGxm4hpO8OFiTt8Znhx/wqQWkgN0KAzI7SQgKKf1d3ZcknbPwH7mIUkECZ
-         3k20pqiBbWPwDAJ+LXkAyaTqHMDCNFv+Bc+VbTF8+NGvrS3vGKPEfNhXUiiVfUiJ1IfZ
-         IXPhN7k15k0DTbu+mFbIgrQTtVwyHSqzv3tK+uQMsHZTn+edgT84yXcbqyYK078rXCiI
-         L15w==
-X-Forwarded-Encrypted: i=1; AJvYcCWUtfn6GdGKC2CLRmDnwrcPKNNgFFw9M5bvs2w3Wk3ajR1Nvuuwjll8cYJzY4KCab4GbIg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzeKKYm3oza0ntYffsb9GuTYE4kxORVDWIVrXpXcRouWdm1U65K
-	VxJ63VfBPfJxQXW9Zk9jVQxaGwAKB2T0WE+wZeHhe2rSUhgiQNKA1VcY5DUNkEpGhw==
-X-Gm-Gg: ASbGncve4piMpWpqkA+/BB6lwsO3hB86AQzG2H4vaeIMJoGoRrbTTXeN2EC9Hw2+DKm
-	JplfzQMLMBAICP9R+2aLTbQ9fzog+Vc1EExoX6NaLu/NAIM+7dnngcgERUPD4ptky9UoIyuEo1W
-	SokOjgXd7N9i4vfMg5jkj9A+qic91fLyEtXtE3dq3UfMZVABF7w0hUaQSy0+ACY5RgbMbhyaqKJ
-	pfZ0KYHgzanvqUEoFI1UJ0Lq8zgJySFaWG7kwmihDZMy8G4SOtOqaG1lsxK2iV27/tDybi0wJp/
-	BVTzJEXlyBDdEJdL1wLXpRVuRmF192zPZbDyq+1K0hNThYupUerynoahbL7IZzTccIoEhVcGUEH
-	LmqCN
-X-Google-Smtp-Source: AGHT+IGUPShe/+yBmwn3/UQ4X2UjDVvrgr8iJo66Gp3M0ocSLCxEcEabV1oGRD+eHhzqQPhNVXK6Ew==
-X-Received: by 2002:a05:6214:1c08:b0:6fd:75e1:16c4 with SMTP id 6a1803df08f44-702b1bb187emr42595926d6.20.1751466724441;
-        Wed, 02 Jul 2025 07:32:04 -0700 (PDT)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd772e4fddsm101024496d6.65.2025.07.02.07.32.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Jul 2025 07:32:04 -0700 (PDT)
-Date: Wed, 2 Jul 2025 10:32:01 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: ezequiel@vanguardiasur.com.ar, mchehab@kernel.org,
-	laurent.pinchart@ideasonboard.com, hdegoede@redhat.com,
-	gregkh@linuxfoundation.org, mingo@kernel.org, tglx@linutronix.de,
-	andriy.shevchenko@linux.intel.com, viro@zeniv.linux.org.uk,
-	thomas.weissschuh@linutronix.de, dafna.hirschfeld@collabora.com,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v3 1/3] usb: core: add dma-noncoherent buffer alloc and
- free API
-Message-ID: <198ddef7-8623-400f-8e2e-ffd6c4bfd2cf@rowland.harvard.edu>
-References: <20250702110222.3926355-1-xu.yang_2@nxp.com>
- <20250702110222.3926355-2-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="fkijzwUg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BAIGKF6BG7r87XhDp0BhrRoYtK2vwLKQuRbu2yAoS0MW4VDg7IsfoKkRK8z/ANXrH7ECEFb+6L7lSDLouQDlqvVSspqVwTAOxMwkh8gGJ8i5WLOswJIn5vtXKYH6N6AiV216vSGHsDW8pFhvagD5owZJ3tuf1FWlxRkjREgyawCQWawpu5nu78PsDweUX5eIJrQPFS2ZcXrePc6W274s7WH5bL1ttv3SUm8E0GKI/HrBmdRpWPnGa6m0u9JzXH+REKNkYjke/0zzfLnqLDKeNHqH1fOuuA9282454AmpBXVlh5CQfFOH9nSTDuee5UXNeTvrPJlfqLcy+GX7Wt/RKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dt8hIUqyOge39P67f9sAop0Vs88HgwEgpniDi851Mvw=;
+ b=knSPFEffgZxIwL/Pp5uOBuSIo0uKfGLGow1KUQRwdLQmRFlCyuhmZoFAcISuXcWoAJKpDOvhxAGXmzWzq325wnjSUEsBD9B3fm3cyBIC4EhVqdia1h6/WJq5JNo5ceKWv+rB2VTs6UVYCyN3EG6SEe1OiVT4jVLe+LR8YfC29FKtCwpF/SpT9vC4pNi+gDm0QPjhFM0Xg1d3QDkwoiW4YIgfZ0/DH7j9KXhOn+D+ywZTXfb+Zrsd35n+iojIYNGqF37hVsDqAXGSZ/3C2L4RlWKWskbNKqQmIFx6eajSVjPokZPWxamAc3DCEcJvzn7HQqJc9D4ZZPXLbzAbLiXfpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dt8hIUqyOge39P67f9sAop0Vs88HgwEgpniDi851Mvw=;
+ b=fkijzwUgQDPwUYUwp9uObldjTlFMuN5qfQ2SIqEVUDzw5GJiQ8a1Q8Oqgn666m2+OV+dgeGNKujz+r1MK+QryLbRGnmKQ1FiZA5HOUDet02Dml+QvMac27CZEB/kl8M673Zwt2SAgxYK5EamyG5/H4n6WcsF4UA4xK/64J+mifxknqDr6LeNTVlAproK2/LqUMViccucQlG17op6RWty2UdxAZR6xeE5DFnqY1+w6o5oWTmQo0MBnb5nx4j1/BQsqdTytK0cHX4BM6s1PwzmAerwCw+nHHEZccVMx3MAX3J4uYQYk5o0Xq68SDWdKpCShqbBLrWZaZGvqHWB4Ff3Bg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM8PR04MB7907.eurprd04.prod.outlook.com (2603:10a6:20b:237::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.31; Wed, 2 Jul
+ 2025 14:41:01 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8880.029; Wed, 2 Jul 2025
+ 14:41:01 +0000
+Date: Wed, 2 Jul 2025 10:40:53 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Shuah Khan <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org,
+	jdmason@kudzu.us, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v19 01/10] PCI: endpoint: Set ID and of_node for function
+ driver
+Message-ID: <aGVE6veZm3bL0mVJ@lizhi-Precision-Tower-5810>
+References: <20250609-ep-msi-v19-0-77362eaa48fa@nxp.com>
+ <20250609-ep-msi-v19-1-77362eaa48fa@nxp.com>
+ <ne5yrjtdevmndqds4uwo2ppq6gay2wuwjouyf33lqr5g3nfkwr@lkwqlwqjqbmx>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ne5yrjtdevmndqds4uwo2ppq6gay2wuwjouyf33lqr5g3nfkwr@lkwqlwqjqbmx>
+X-ClientProxiedBy: AS4P192CA0010.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5da::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702110222.3926355-2-xu.yang_2@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM8PR04MB7907:EE_
+X-MS-Office365-Filtering-Correlation-Id: c45412c8-e8a9-4a4d-32dc-08ddb97676c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|52116014|7416014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cUwveVNNbnRFWkg4NUhWUEVFWFU4YXNvWEw3MUNMaWo4STdYbVRjaXEvNHhu?=
+ =?utf-8?B?NjlEZXd1K3FzdjNGNjlnWjNkdXIzYkFTa1cxQ0FRbzNYbTZ1QmloaUJNWGdP?=
+ =?utf-8?B?VE1FeFIxTXFxK01UQUNsZ3ExWjhLSmE1b0loa0ZXVEJCSnZjbmcwc2FVSU5N?=
+ =?utf-8?B?NjdkYTBKMVN4SDFaV1luRzVETHpDNVZ0M1krYXlaV1BOYmNKMnBPTnl1OXZ2?=
+ =?utf-8?B?Q1JzL2xIeFpnWjhUNXhMcDVkSHRIamVvOFk3Q1ZkQjJ5Z2U2TmVMdGc0Qlgx?=
+ =?utf-8?B?WEVnU0trdEc2YkF5LzVFSllmWFlPak1FbUpWOFV1ZXlmbUg2aUI2dzFSTzRz?=
+ =?utf-8?B?ZHZqT1U0SU4zVUhJbWpoSUl4V3M0MmdwQ1FIakVVTmU5MU95eUtvK0FqNkZ3?=
+ =?utf-8?B?WU9jL1BjVEZJWkx1ZXlpKzdqS0NBbEJUTXlsZ01HK2hhQzd6Z1lrelJoSnpz?=
+ =?utf-8?B?bUltdWxmV2E3TG5wQXM2aGl3d0F2VWJVOWZnVTF3ai9ML1k1VGdpM3Y4OFgy?=
+ =?utf-8?B?UFkremVGYnA0aHcyMnl3bW0zbmZQUGx0bmVmcXIvelZ6eVdETFlaa21iVFpZ?=
+ =?utf-8?B?TkRKcmRPVXliT0JvY3Y4cFNQYVU0L2dqbG5pVmdvQlJIS0UyME9VZE1JSnk4?=
+ =?utf-8?B?YkhpTjdLeTZKR3RNMFdOektqWUg2cWtxSUNRMk5pYTN5WldUK2UxRUNBNDh6?=
+ =?utf-8?B?YTdlRHRRZ2NYc0RVSnp6ekEzMEZHdXFYOHlITVBvK2ZJQUhHU3l5WHpxdm83?=
+ =?utf-8?B?MlhYZk1vM04xaWlwVnFUUUYrWTZGcW9pbzVxSmlyL2NmZ0g0UzEwTzByN3E4?=
+ =?utf-8?B?eHAxWm5aN2RiWjZUNzNyenBmYWJxRWI0cUh0MUpuY3RLWnFOQjVmN0tOQ1Rq?=
+ =?utf-8?B?RkRwdHRWUVc1WXhKWFJ2SWNOckd4dkxPSkJRemxLQ29JeHU1czEyQTRLa3l1?=
+ =?utf-8?B?RElUQndYNHd5dHpFU2NhMTFhSFU4ekw0d0YvdmVlaDNuZ1JicXFLSzM4cmdV?=
+ =?utf-8?B?S0lIZFpTSzFNL0ZlRysxUGt2SWRlOS9ZSjlCTUQvdWN3WGF3TmhUSTZBMnhH?=
+ =?utf-8?B?QXFPSkxBcHdDL0VvbkE3TVg2Z1V3OHFpLzZGeHFzSWdPTjQwZ0d3RzA5TElQ?=
+ =?utf-8?B?V1BrWGprUGNtUVpTTFdGVE52Q3Fsa0d3YTR2WVJIVGJLTUczZkxzK2F3QmE3?=
+ =?utf-8?B?aVV5YWhCSkdacXlwcDV6dFBHRC9vS1NsRGJ4WUdEUmJuK1NBV1BPY2gyaVdM?=
+ =?utf-8?B?b2xyeHA5N0dBV1pudTI1QW81cUxGOWhXODA5NGFoMHNKekNYV2krTVhveDZ0?=
+ =?utf-8?B?VG5nRlNIQ1NHYk5pNlpkTHdIU2NBem1CVjM1ZjBFR0wxNEFmU2ZjTzRVd25Z?=
+ =?utf-8?B?ZFQvblBZclk3bURncDdCRy9ZQm9XeFhwbTNkbXQ4OVl3NWV3WURZZ3cwWlFQ?=
+ =?utf-8?B?ZkdkeTcwZVZHM3lDc0FRWUpEUjJTazFoZEJNeGxsNjJZMWNHWmVIbXk1eFJv?=
+ =?utf-8?B?bVlGT1IrWWhDa2JyajJmcTVndDFXZ1dLWkcyTHV1WjgvNyttc2NpdWYveDlk?=
+ =?utf-8?B?dGlYSkhuVVZCYTFNcHp1UFUyd25hc3paMzcyQUVRWVJiNmZPL1VVazlOTElo?=
+ =?utf-8?B?d0dpTnJyY0FnMXoySXVJbWVpZ0FuejB1RXVPSitJdDRNNU9GbDk1bmtUYzRS?=
+ =?utf-8?B?dHpKMU9QZjJwSFFQSmNITzVxZVlZOXVrQThCMzVKK3EwTEJ5dWYvR0NkVjZo?=
+ =?utf-8?B?WUdCbTB2ZlkwZ3p3cm5JWitLL296THcyN2F2c3lJUmdUSjlQSWVrNSsyNUFH?=
+ =?utf-8?B?VXlPVlpFbVRnTkN0R1RXTHU5ZGlKKzVJNkNXbHppMno3VmprK3QwQldleUtV?=
+ =?utf-8?B?WklLSzFYQVRaQ3NnN2JZQzBzMFlaRVU4WWVHKzhPNWU5Szh5MlpqUEFvWmp3?=
+ =?utf-8?B?SThmdUxmM0lnSVc3bXFrSUxkUFlKdjg5TFJac2x2c0FVMlNTZmFqQ1FmS3Ry?=
+ =?utf-8?B?Z3VXRDV4bE93PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(7416014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?b0g0dFliSE1XeUZDUy9ybFZZYXUyaDl3UnRlSE5EeFNNUnBaSXVPd3hVV2h6?=
+ =?utf-8?B?NFBJNXkrTGNIRk5HTU1kMHhKSjhwZm14V0tMWEZXanBqRExmQXNrYjlpQXJr?=
+ =?utf-8?B?ZmJMaE5aOW9uNDA4OGtVRXVDWDZQZHRsWm9iVkwva2VCd1dyNVJmZVNXSGFo?=
+ =?utf-8?B?MjZZK1pFK21iSGVYUnlPZ0dQcFBKNzNmeTByVElvSW9UVFUrbS9BY08rWmFX?=
+ =?utf-8?B?SWttQXN4RXZuZ3lPZUN4cTM2QzdGM0k5OU9JeTJUYVVocUhrSmtLOTY0aUxp?=
+ =?utf-8?B?ODJyWm9DT056Q2xXbWN3Z3FqYUJFNmk2Q0w5bkU5RnFSbldCNk5uR0hicFVo?=
+ =?utf-8?B?N3pTQXhiRHZJd3hvOHI4NXhRV2NMUjhRa1ZBSXFPRnkwNnFPQy9CaGtmQ1Yx?=
+ =?utf-8?B?Z3BEZGpycGFqcXlpLzVZT0EyT21WTXhMTXZkMW1XTTdTbGFOZkplTytvOFpv?=
+ =?utf-8?B?alY1NlhqSkNxT0tLYjJuMFhic1BzYjQxb2JkYVYxUi9sajFnWE5kN0loeU53?=
+ =?utf-8?B?OU93UmxQNEVQaVlxRkNlV3g4akQvK09sK1dDZnlBOVB0WG1OVHRua2FCWmlm?=
+ =?utf-8?B?eWM5djRUWDJVWFp6dUdmL3RaV0Z5L3RPSWdSLzIwTmlZbVQ4YzFtUVhXQkJS?=
+ =?utf-8?B?MHIxQXZJQ2pHL0lXUFoxMk44d0NUMXBqVTRKNFRFaFcySHMxRWNydTQvMUJH?=
+ =?utf-8?B?dGVkSEpCTjI0NTJ2R29QZ1ZDM3JsTnpLL2N3RFpQdlFtKzhlRmVBY3lwdG1F?=
+ =?utf-8?B?NXkzQzFKdkE1b2dzMUo0U1BEd0hZSnV1Qm9yVmx2aTI4c25UTlZiU1M0Rm0v?=
+ =?utf-8?B?N2UwUEkvWm9pam0xcDFCanVJcm1HY0tzZkZkVlZtbHVrOS9QTWhtWDVzOFpt?=
+ =?utf-8?B?MjBCdWFMK1YrQzkvSTRIRC9mVjJCdlV5N0IzMENPVERubXBiVHhLVjlZVENK?=
+ =?utf-8?B?WWMxYllBS3Q2YUw0c0RMRENCUXRyUmhwbEFxcnVKeHJSS2ZJbWk1bzExbG9i?=
+ =?utf-8?B?ZjVod0JtQnplSGhXdWdvd0hsbVlHL25aN3JUT3JRRjlSNlluRXdvWnJORVhl?=
+ =?utf-8?B?cXRWV0hGRWxyYk5OT3Z4Yk9nQnVoVFpybHdmZDlIdi9nMDJjN3hXMjF1cDVD?=
+ =?utf-8?B?UHFkaW41R3pjeHBHQngzL283UnQzQUNmV2taZnVrbjlQLzZTd3JqaUZoQ1Bp?=
+ =?utf-8?B?RSt0eHRFVjcvc3FZb1U0TlNLQVB6aC85KzV5SXVtRFVRWWhEbWY4TitzMTBp?=
+ =?utf-8?B?c0RVb2cxYTdJaVMzbzVWcjBpTFhvOTEvVzNDd2hsZ3VrTDROdU9kWXVqY2xy?=
+ =?utf-8?B?c3hzS0FHa1RheHBYT3ZSSGNFTGRHTENvWHo3QU1EZks2YnlscUJMS2FtMnFD?=
+ =?utf-8?B?enpuTlJoU2gxU20wZEkwemVDN1dRbTJTWkdSVGhhVE4xdTJsQ2FXVEpLWm5H?=
+ =?utf-8?B?dDgrSm9ONDhOU1M2T0JjNXJQT0hHMnZIM01RYmhwTTMvUHl6ZXNSM3dkekMr?=
+ =?utf-8?B?MytydTRFOXB1VmJYK1pISkowdFB3MjgweHlkMVFyWlpKclhUVUFhSVFkZ1l0?=
+ =?utf-8?B?NEtEaVVudlJjOVFIOHMvV3hHRThYclJGN1RyZ085UVl1U3UzVUZXYlRoQ3NW?=
+ =?utf-8?B?ejhuaEhxVmo4eEw0VjJxMWlvY25QaDRBNnJ5SW5uZHVPTTVYN1ZUZzU0WTMw?=
+ =?utf-8?B?M3IvdmN4Vm9UUTZXdWM2Y1lWa2FIcFlrb0dFVGFGdVN3SmpybldwSFJjeFZq?=
+ =?utf-8?B?eGRiSUtra0lad2c4dGdyNG52RmliV1AvWENMRHJhbEpXSFlRQzlqZTg5Y3Vr?=
+ =?utf-8?B?ZEZFWXN2ckI0cTYvb3NZbzgwRWpzczA5UFpEZHlCUWE4TXVTSnRleUhhdklh?=
+ =?utf-8?B?d2VQa0N3Mlk4cXRrb0RQUUZ1WVlRMGJ4RW9lNC9udGE1QzBWZ1VMeTNWMDc5?=
+ =?utf-8?B?aWVZUlE1OS8veEF1a29EVXJLTVhsbjE0TDFXb1UzSHFKZll3cHdRTnN5MzZ5?=
+ =?utf-8?B?b1ZTRWZJVmdLV3lrVnhsUUxCK0FiWG15K2hMbldWS0NVa2x0Ti9McmRrVzJV?=
+ =?utf-8?B?N3RHejBTQkFHS1V2cUxuRGYwbXZ5NVJXcUNKQVBSNEV4WVRVVHpsdjN4YTV4?=
+ =?utf-8?Q?2/hthnkhlSuTVCVank55KXfpf?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c45412c8-e8a9-4a4d-32dc-08ddb97676c4
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2025 14:41:00.9648
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jQPvLs3O6X4H7c0LVDOu2fW/uR0JBn+lzxfS+PI9sPTx5Kq3Ptdspps6upm1bVEIXhMp5N383oIqn61K9vNPTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7907
 
-On Wed, Jul 02, 2025 at 07:02:20PM +0800, Xu Yang wrote:
-> This will add usb_alloc_noncoherent() and usb_free_noncoherent()
-> functions to support alloc and free buffer in a dma-noncoherent way.
-> 
-> To explicit manage the memory ownership for the kernel and device,
-> this will also add usb_dma_noncoherent_sync_for_cpu/device() functions
-> and call it at proper time.  The management requires the user save
-> sg_table returned by usb_alloc_noncoherent() to urb->sgt.
-> 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> 
-> ---
-> Changes in v3:
->  - put Return section at the end of description
->  - correct some abbreviations
->  - remove usb_dma_noncoherent_sync_for_cpu() and
->    usb_dma_noncoherent_sync_for_device()
->  - do DMA sync in usb_hcd_map_urb_for_dma() and
->    usb_hcd_unmap_urb_for_dma()
->  - call flush_kernel_vmap_range() for OUT transfers
->    and invalidate_kernel_vmap_range() for IN transfers
-> ---
->  drivers/usb/core/hcd.c | 19 ++++++++++
->  drivers/usb/core/usb.c | 80 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/usb.h    | 11 ++++++
->  3 files changed, 110 insertions(+)
-> 
-> diff --git a/drivers/usb/core/hcd.c b/drivers/usb/core/hcd.c
-> index c22de97432a0..e0fa6d6d273b 100644
-> --- a/drivers/usb/core/hcd.c
-> +++ b/drivers/usb/core/hcd.c
-> @@ -1366,6 +1366,14 @@ void usb_hcd_unmap_urb_for_dma(struct usb_hcd *hcd, struct urb *urb)
->  				urb->transfer_buffer_length,
->  				dir);
->  
-> +	if ((urb->transfer_flags & URB_NO_TRANSFER_DMA_MAP) &&
-> +	    urb->sgt) {
+On Wed, Jul 02, 2025 at 04:30:48PM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Jun 09, 2025 at 12:34:13PM GMT, Frank Li wrote:
+> > Set device ID as 'vfunc_no << 3 | func_no' and use
+> > 'device_set_of_node_from_dev()' to set 'of_node' the same as the EPC parent
+> > device.
+> >
+> > Currently, EPF 'of_node' is NULL, but many functions depend on 'of_node'
+> > settings, such as DMA, IOMMU, and MSI. At present, all DMA allocation
+> > functions use the EPC's device node, but they should use the EPF one.
+> > For multiple function drivers, IOMMU/MSI should be different for each
+> > function driver.
+> >
+>
+> We don't define OF node for any function, so device_set_of_node_from_dev() also
+> ends up reusing the EPC node. So how can you make use of it in multi EPF setup?
 
-Shouldn't this be "else if"?  There aren't any circumstances where a 
-driver might want to do two DMA mappings for the same buffer, are there?
+In mfd devices, children devices reuse parent's of_node
+drivers/gpio/gpio-adp5585.c
+drivers/input/keyboard/adp5589-keys.c
+drivers/pwm/pwm-adp5585.c
 
-> +		dma_sync_sgtable_for_cpu(hcd->self.sysdev, urb->sgt, dir);
-> +		if (dir == DMA_FROM_DEVICE)
-> +			invalidate_kernel_vmap_range(urb->transfer_buffer,
-> +						     urb->transfer_buffer_length);
-> +	}
-> +
+multi EPF should be similar to create multi children devices of mfd.
 
-Alan Stern
+> I don't understand.
+
+>
+> > If multiple function devices share the same EPC device, there will be
+> > no isolation between them. Setting the ID and 'of_node' prepares for
+> > proper support.
+
+Only share the same of_node.
+
+Actually pci host bridge have similar situation, all pci ep devices reuse
+bridge's of node. framework use rid to distringuish it. EPF can use device::id
+to do similar things.
+
+Actually iommu face the similar problem. So far, there are not EP device enable
+iommu yet, because it needs special mapping.
+
+Prevously, I consider create dymatic of_node for each EPF and copy iommu/msi
+information to each children. But when I see adp5585 case, I think direct
+use parent's of_node should be simple and good enough.
+
+In future, I suggest add children dt binding for it. For example: EPF provide
+a mailbox interface. how other dts node to refer to this mailbox's phandle?
+
+
+> >
+>
+> I don't know who you can provide *isolation* by reusing the EPC OF node. It is
+> same as using the EPC node directly.
+
+why it is same?
+
+Frank
+>
+> - Mani
+>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > change from v14 to v16
+> > - none
+> >
+> > change from v13 to v14
+> > new patch
+> > ---
+> >  drivers/pci/endpoint/pci-epf-core.c | 4 ++++
+> >  include/linux/pci-epf.h             | 2 ++
+> >  2 files changed, 6 insertions(+)
+> >
+> > diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
+> > index 577a9e490115c..95fb3d7c1d45e 100644
+> > --- a/drivers/pci/endpoint/pci-epf-core.c
+> > +++ b/drivers/pci/endpoint/pci-epf-core.c
+> > @@ -120,12 +120,16 @@ int pci_epf_bind(struct pci_epf *epf)
+> >  		epf_vf->sec_epc_func_no = epf->sec_epc_func_no;
+> >  		epf_vf->epc = epf->epc;
+> >  		epf_vf->sec_epc = epf->sec_epc;
+> > +		epf_vf->dev.id = PCI_EPF_DEVID(epf->func_no, vfunc_no);
+> > +		device_set_of_node_from_dev(&epf_vf->dev, epc->dev.parent);
+> >  		ret = epf_vf->driver->ops->bind(epf_vf);
+> >  		if (ret)
+> >  			goto ret;
+> >  		epf_vf->is_bound = true;
+> >  	}
+> >
+> > +	epf->dev.id = PCI_EPF_DEVID(epf->func_no, 0);
+> > +	device_set_of_node_from_dev(&epf->dev, epc->dev.parent);
+> >  	ret = epf->driver->ops->bind(epf);
+> >  	if (ret)
+> >  		goto ret;
+> > diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
+> > index 749cee0bcf2cc..c0864935c6864 100644
+> > --- a/include/linux/pci-epf.h
+> > +++ b/include/linux/pci-epf.h
+> > @@ -216,6 +216,8 @@ static inline void *epf_get_drvdata(struct pci_epf *epf)
+> >  	return dev_get_drvdata(&epf->dev);
+> >  }
+> >
+> > +#define PCI_EPF_DEVID(func_no, vfunc_no) ((vfunc_no) << 3 | (func_no))
+> > +
+> >  struct pci_epf *pci_epf_create(const char *name);
+> >  void pci_epf_destroy(struct pci_epf *epf);
+> >  int __pci_epf_register_driver(struct pci_epf_driver *driver,
+> >
+> > --
+> > 2.34.1
+> >
+> >
+>
+> --
+> மணிவண்ணன் சதாசிவம்
