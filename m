@@ -1,192 +1,79 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from proxy41132.mail.163.com (proxy25212.mail.163.com [103.129.252.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD05241686
-	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 09:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CF0DF42
+	for <imx@lists.linux.dev>; Wed,  2 Jul 2025 10:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.129.252.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751450318; cv=none; b=rvj7JB1YJBp49RF0a2pAoCmSsj/N4LPN8xmXKv9WCgEFzS9XYz5KNrQv8zyXci6qsVpmHUarVfndexxe4XEIY5uK1/fJqvXfivG7cO33xFwj9VkM/PY7ivIBoxEGUJL30ds3wdJQXwLCiCzGsMDwrFJDYAxzSY2RxPKn9185fCg=
+	t=1751450571; cv=none; b=qG4c+gBDMOrM8K8/nML6NK+MlMc6kv0BnRsCBT8SH4YH58gVqvB3uScPKEyoUAXrERMbf9+Scc4yAtkt3jEmqmIEcYn7Go2Es5/f03XHNTRBzK8JXDO04kzcN2NktfZCAkG0PTLMAXqn1P+8Ru6/HZZoyNyOLk81p4m3jQ5hMf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751450318; c=relaxed/simple;
-	bh=ac1WHXY9uU6sg9VG9LlQUm/TQKiiff0h5oFc/3+SBzY=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D1o5FWMQg66xzNOBz0Px8/T9GIoyqwDXuFCMmW5HS6VoLme9tUfqt3x1dgIbpPhF8tmangdHgyES6Uy87w/C6qLLiPxAGGH+qPbWonAXVjZZHDXxu3EaHHbHBQWvZ9y8345y/6hx5JBHjjecvQAPWEgegBbZn1OrLDzc98PQgxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bXFdQ6LTjz6L55h;
-	Wed,  2 Jul 2025 17:55:38 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id B5DAB1404FD;
-	Wed,  2 Jul 2025 17:58:31 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 2 Jul
- 2025 11:58:28 +0200
-Date: Wed, 2 Jul 2025 10:58:26 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
-CC: Jonathan Cameron <jic23@kernel.org>, Waqar Hameed <waqar.hameed@axis.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>, "Julien Panis" <jpanis@baylibre.com>,
-	William Breathitt Gray <wbg@kernel.org>, "Linus Walleij"
-	<linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Peter Rosin
-	<peda@axentia.se>, David Lechner <dlechner@baylibre.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Andy Shevchenko
-	<andy@kernel.org>, Cosmin Tanislav <cosmin.tanislav@analog.com>, "Lars-Peter
- Clausen" <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Matteo Martelli
-	<matteomartelli3@gmail.com>, Heiko Stuebner <heiko@sntech.de>, Francesco
- Dolcini <francesco@dolcini.it>, =?ISO-8859-1?Q?Jo=E3o?= Paulo
- =?ISO-8859-1?Q?Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>, Hugo
- Villeneuve <hvilleneuve@dimonoff.com>, Subhajit Ghosh
-	<subhajit.ghosh@tweaklogic.com>, Mudit Sharma <muditsharma.info@gmail.com>,
-	Gerald Loacker <gerald.loacker@wolfvision.net>, Song Qiang
-	<songqiang1304521@gmail.com>, Crt Mori <cmo@melexis.com>, Dmitry Torokhov
-	<dmitry.torokhov@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, Karol
- Gugala <kgugala@antmicro.com>, Mateusz Holenko <mholenko@antmicro.com>,
-	Gabriel Somlo <gsomlo@gmail.com>, Joel Stanley <joel@jms.id.au>, Claudiu
- Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I
-	<kishon@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
-	<alim.akhtar@samsung.com>, Sebastian Reichel <sre@kernel.org>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl
-	<martin.blumenstingl@googlemail.com>, Han Xu <han.xu@nxp.com>, Haibo Chen
-	<haibo.chen@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, Mark Brown
-	<broonie@kernel.org>, Avri Altman <avri.altman@wdc.com>, Bart Van Assche
-	<bvanassche@acm.org>, "James E.J. Bottomley"
-	<James.Bottomley@hansenpartnership.com>, "Martin K. Petersen"
-	<martin.petersen@oracle.com>, Souradeep Chowdhury
-	<quic_schowdhu@quicinc.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, "Peter Ujfalusi"
-	<peter.ujfalusi@linux.intel.com>, Bard Liao
-	<yung-chuan.liao@linux.intel.com>, Ranjani Sridharan
-	<ranjani.sridharan@linux.intel.com>, Daniel Baluta <daniel.baluta@nxp.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>, Pierre-Louis Bossart
-	<pierre-louis.bossart@linux.dev>, Jaroslav Kysela <perex@perex.cz>, "Takashi
- Iwai" <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, <kernel@axis.com>,
-	<linux-iio@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-	<linux-i2c@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>, <linux-rockchip@lists.infradead.org>,
-	<linux-input@vger.kernel.org>, <linux-mmc@vger.kernel.org>,
-	<imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-phy@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
-	<linux-amlogic@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-	<linux-scsi@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-	<linux-usb@vger.kernel.org>, <sound-open-firmware@alsa-project.org>,
-	<linux-sound@vger.kernel.org>, "Joe Perches" <joe@perches.com>, Andy
- Whitcroft <apw@canonical.com>, "Dwaipayan Ray" <dwaipayanray1@gmail.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: Re: [PATCH] Remove error prints for devm_add_action_or_reset()
-Message-ID: <20250702105826.0000315e@huawei.com>
-In-Reply-To: <jeajjewfbg5qo736imozpghnpxln2pux74aegtqsi57qsbpug2@opndel6zc3m3>
-References: <pnd7c0s6ji2.fsf@axis.com>
-	<ylr7cuxldwb24ccenen4khtyddzq3owgzzfblbohkdxb7p7eeo@qpuddn6wrz3x>
-	<20250701185519.1410e831@jic23-huawei>
-	<jeajjewfbg5qo736imozpghnpxln2pux74aegtqsi57qsbpug2@opndel6zc3m3>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1751450571; c=relaxed/simple;
+	bh=oMaM/R8SFUD4LZpCTkVpqQIRRfxIiZ6hh0W2t8wEReI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NjhhlYTMCE03cuPtglJ/ZLtXlzayHc/Mkq9PJSfe4C33c6Ohti61ns6vIeXfZ96XGm5wXph/YdxNPPvVSLqNBEgDkVaXC0zY2QgVXdHUMCdF6yr5r3weM28TXRi08+BopOS5BKeW9S9nPtPMTT9pNfF8dBzv2zsVQC9l9xW+1B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=hGA4ZzeS; arc=none smtp.client-ip=103.129.252.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="hGA4ZzeS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=aBCj5KCtd0YSw2+jeSI15O55rXmA7O2x9Co1/dUd/sc=;
+	b=hGA4ZzeSjGnd+cybXPReqSh4PH2pwX4u9pKlm/oeOv8yq86qURfz/Xt1IbIZyB
+	Wug27aAY1vskf6a32jw0WDNJ5T9BCynkbthhLJXmD+bMtuBff73qOYOmn4ZtmoUU
+	FZPkgcuFdhBZ68eC8rvxcrf73iB7XMs/T8+kH/XsNtOuM=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDXfxAkAWVoRbopAA--.51920S3;
+	Wed, 02 Jul 2025 17:51:33 +0800 (CST)
+Date: Wed, 2 Jul 2025 17:51:31 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Adam Ford <aford173@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, aford@beaconembedded.com,
+	m.felsch@pengutronix.de, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2 0/4] Increase i.MX8MP VPU
+Message-ID: <aGUBIz1lYIkhMCWr@dragon>
+References: <20250612003924.178251-1-aford173@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250612003924.178251-1-aford173@gmail.com>
+X-CM-TRANSID:Ms8vCgDXfxAkAWVoRbopAA--.51920S3
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtF43CFyUCFy5Kr4UZFWkJFb_yoW3urc_C3
+	4a9F1xCwn8KFs7Kw4DGan8Z3yDK3y2yr4DZa42qF4fZF1fZF4rZ340gr9avF18GF9akw1q
+	vF98Xw4xAry3CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUj7DGUUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNQa8ImhlASaNiAAA3C
 
-On Wed, 2 Jul 2025 08:54:48 +0200
-Uwe Kleine-K=F6nig <ukleinek@kernel.org> wrote:
+On Wed, Jun 11, 2025 at 07:39:18PM -0500, Adam Ford wrote:
+> Some of the VPU clocks are under rated, even for nominal ratings.
+> Fix the nominial VPU clocks and clock parents, then introduce
+> the overdrive clock rates.  The fluster scores don't change,
+> but they do go faster.
+> 
+> This series was adapted from an RFC from Marco Felsch which
+> was setup to introduce the VC8000E encoder and extacted the
+> parts that affect the existing infrastructure.
+> 
+> V2:  The only change is 4/4.  Patches 1-3 are all unchanged.
+> 
+> Adam Ford (2):
+>   arm64: dts: imx8mp-nominal: Explicitly configure nominal VPU clocks
+>   arm64: dts: imx8mp: Configure VPU clocks for overdrive
+> 
+> Marco Felsch (2):
+>   arm64: dts: imx8mp: drop gpcv2 vpu power-domains and clocks
+>   arm64: dts: imx8mp: fix VPU_BUS clock setting
 
-> Hello Jonathan,
->=20
-> On Tue, Jul 01, 2025 at 06:55:19PM +0100, Jonathan Cameron wrote:
-> > On Tue, 1 Jul 2025 19:44:17 +0200
-> > Uwe Kleine-K=F6nig <ukleinek@kernel.org> wrote:
-> >  =20
-> > > On Tue, Jul 01, 2025 at 05:03:33PM +0200, Waqar Hameed wrote: =20
-> > > >  drivers/pwm/pwm-meson.c                          | 3 +--   =20
-> > >=20
-> > > Looking at this driver I tried the following: =20
-> >=20
-> > I'm not sure what we actually want here.
-> >=20
-> > My thought when suggesting removing instances of this
-> > particular combination wasn't saving on code size, but rather just
-> > general removal of pointless code that was getting cut and
-> > paste into new drivers and wasting a tiny bit of review bandwidth.
-> > I'd consider it bad practice to have patterns like
-> >=20
-> > void *something =3D kmalloc();
-> > if  (!something)
-> > 	return dev_err_probe(dev, -ENOMEM, ..);
-> >=20
-> > and my assumption was people would take a similar view with
-> > devm_add_action_or_reset().
-> >
-> > It is a bit nuanced to have some cases where we think prints
-> > are reasonable and others where they aren't so I get your
-> > point about consistency. =20
->=20
-> The problem I see is that there are two classes of functions: a) Those
-> that require an error message and b) those that don't. Class b) consists
-> of the functions that can only return success or -ENOMEM and the
-> functions that emit an error message themselves. (And another problem I
-> see is that for the latter the error message is usually non-optimal
-> because the function doesn't know the all details of the request. See my
-> reply to Andy for more details about that rant.)
->=20
-> IMHO what takes away the review bandwidth is that the reviewer has to
-> check which class the failing function is part of. If this effort
-> results in more driver authors not adding an error message after
-> devm_add_action_or_reset() that's nice, but in two months I have
-> forgotten the details of this discussion and I have to recheck if
-> devm_add_action_or_reset() is part of a) or b) and so the burden is
-> still on me.
-
-Maybe this is a job for checkpatch, at least for the common cases.
-
-There is already a check for kmalloc etc.
-https://elixir.bootlin.com/linux/v6.16-rc4/source/scripts/checkpatch.pl#L64=
-42
-
-+CC Joe (who wrote the allocation functions test years ago) and other check=
-patch
-folk.
-
-
->=20
-> So to give my answer on your question "What do we actually want here?":
-> Please let us get rid of the need to care for a) or b).
->=20
-> > The code size reduction is nice so I'd not be against it as an extra
-> > if the reduction across a kernel builds is significant and enough
-> > people want to keep these non printing prints. =20
->=20
-> To complete implementing my wish all API functions would need to stop to
-> emit an error message. Unfortunately that isn't without downsides
-> because the result is that there are more error strings and so the
-> kernel size is increased. So you have to weight if you prefer individual
-> error messages and easier review/maintenance at the cost of a bigger
-> binary size and more dev_err_probe() calls in drivers eating vertical
-> space in your editor.
->=20
-> I know on which side I am, but I bet we won't find agreement about that
-> in the kernel community ...
-
-
->=20
-> Best regards
-> Uwe
->=20
+Applied all, thanks!
 
