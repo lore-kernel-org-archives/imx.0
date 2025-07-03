@@ -1,208 +1,194 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010005.outbound.protection.outlook.com [52.101.84.5])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F71224676D
-	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 08:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751532349; cv=fail; b=HQNsEVzbr+ibiC7q13eat1OlxQcqxCguF9kOTIiJmRRzFzH45pd8tP/LdPqw1zh+waQv9+pj8XFcX9lSiJDAdTUo/fugiEuMAZWSRkqBNBnOuID2V42JpXOChvzZl/8sTltWE8yrAeyC6eufiXUCyHPLfEzDOjWndty2ddy6V+Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751532349; c=relaxed/simple;
-	bh=6/NCAZ32cfFwfIVZbRZUNZxasNJWsrl5amwI0cSmGls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=E9KFdtfGdXrQS2TxQYEvxLX7eEGTTvHzjxHkn/SK3r3CClqhNhyuUGGM/OcJJpM3UezM4UrVJNq6Uh5cqDaU+cyiG9V4IwCn9yuxry5r9TLEvsNk8Fv1tcz4LqeQRExPeFqgOsN8CRbnGY75jhLc3Q3TcZ2crCSllhu1HifIKSs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oO2gBVu6; arc=fail smtp.client-ip=52.101.84.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367DE2D2386
+	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 08:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751532404; cv=none; b=UB5B9+Of6kwI6azdTQITQjNodlp58h9yNxmLraQ2i52Ou8xEqzJQY/nsPdGK/9cS393vUPTUz5Msr/vTI/TExI0308STpjwA/W20ySGmifMF78CeRHCC2wTThOhnq9NGB4/W4BiNx4peYkx/mOXiNLtmDzXkqqe4nhWQORaxEns=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751532404; c=relaxed/simple;
+	bh=oGnwNU54b6KjKEBNmnldSK7G2EHT2bg7bXi44Ajxx2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZTlVjQbavoqy/RYLjNt26kQlmssg0fu3HtBS5JpI8ULqwMpseY0MXRvW/R4cSsVQ0d/DPVlxAnpDnBoUcGyqStsEvwwsHBERdpG2k0ih3X9gFkQTQhvWxj/jwgoyD0WiJVdAvDDfKwCTnCTralagV/KUpZ1HOTrhxTgAUz6CEQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LrYxjxAT; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oO2gBVu6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wB8lBxaz4wZChmyZXsf8nOHi7h7kVLCGYYA1crpbtDoq0GXzOAqof8ujF07YzccIzpxpXm5iCHr3j67X3ApyCtfSzqQ2KMXVNY/u/yI7Ajfct7S1rAhQzwDCqPBx9pYyMbkqJVwNjFEIzBXkHxkbj8wRmZ8ZaZ6cHa+euam8wo+kmPn5CC+EZTgAcBFhbV1RanebGKFSP+eLT+Q0QsRyk+gO12t7TRk8zJmqlBYMHzHim/p1QmGgUnqDb0KRFz0X4Stm9i8hSfKLGeYK0Vh2MDNkyYyStx5CEHk5dE/cbhsULUQdNxh1iRNdPXQ0fjj/lF+m+6n6FtlrOtk3cRWOcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w2SBWI0VZtmCFo8s7CicbOiOKuXqwAJFCoMTswZDYLo=;
- b=jPd/+51dOll6j1talJ2HU9Rsgqj6r2PSDXCdZ3szPVo5GU/PzmTtRCYhFgnLyLR21kjx3EeG6mGPyt4Ld5tk47qNJW+BZezIWYQ3k8hTMaZSgM8wULImzqEZgDcJQ74Tob0rrQJJggOfnkg1IHEcO6kRbP1zzwlF3DWnCSX9Vj3qbrYLOJG+WHIyqvGp9tEv2Y94RtVYm/CSf9mYVPtWexflciSN8n3T8VANHRAC+Vp2A2txggiW6VBAMqhuIX5DskVHFPp2F6nAKZ83KPObdtBn+2wvgp31omhVe/Ics3zOElwb2eMj11bj71YlV63maJlUQEbpMg3TqKiLy7sB7w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w2SBWI0VZtmCFo8s7CicbOiOKuXqwAJFCoMTswZDYLo=;
- b=oO2gBVu6qdP2xW4n5pjfXPvA+ekgHslxotbyunoVpo3zjcsohma32oG1u0NL1lcr++Baw2qTWXVyR+JT41pUNsFmDkEYAemJC37ryn2wE9Id/tIhHO4Zb0sHs4Ik+XLTmN2CS3TZXQKu35ko13bgjl4vzdC2F+o1nfktlNY8cOKgKC8OfuKAMdHX+qdnVLqhwwoHWPPAvKtlslKmPSCbA/IbmmzAzDT396oxvZpJnVNwWS64moMPBVpkDyMfoSrKp08WjiURl9PTnzUNhUYQwDzmhxT4LTNxD7/tMbC2GqfKUD3KaOPAAgYU318D8xbU+nnzczy29kL1qrcKT6QrmQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by DBBPR04MB7818.eurprd04.prod.outlook.com (2603:10a6:10:1f2::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.20; Thu, 3 Jul
- 2025 08:45:44 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8901.021; Thu, 3 Jul 2025
- 08:45:44 +0000
-Date: Thu, 3 Jul 2025 16:40:50 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: ezequiel@vanguardiasur.com.ar, mchehab@kernel.org, 
-	laurent.pinchart@ideasonboard.com, hdegoede@redhat.com, gregkh@linuxfoundation.org, 
-	mingo@kernel.org, tglx@linutronix.de, viro@zeniv.linux.org.uk, 
-	thomas.weissschuh@linutronix.de, dafna.hirschfeld@collabora.com, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v3 1/3] usb: core: add dma-noncoherent buffer alloc and
- free API
-Message-ID: <5wzejydo3aaqoylwcwscjg2m4sovprcwtywkdahshb2f6uigez@zwxk522nnbrj>
-References: <20250702110222.3926355-1-xu.yang_2@nxp.com>
- <20250702110222.3926355-2-xu.yang_2@nxp.com>
- <aGUkEbaSOzrtILkZ@smile.fi.intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aGUkEbaSOzrtILkZ@smile.fi.intel.com>
-X-ClientProxiedBy: FR4P281CA0242.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f5::20) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LrYxjxAT"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7AD90432F4;
+	Thu,  3 Jul 2025 08:46:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751532400;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/cYj0q/giLszIR3kilyQWrZxMIeIjICge0MHLXkjJFo=;
+	b=LrYxjxAThrFQpeyWKPo7KHXblOcrN7BiWBU1ybIgmr/F8jlZn3oMMuFSHLRpDBJCmRCA1w
+	MsFwFPjimMNCZQBEGw0AUhUDK+RAMDTtWJ2veBlFxBS70NDSyClS2oazJsm9GXuSSiABnA
+	oV403Rb+nr5PpxxEXLcxSLdmT4WfVx+scbhDaUmQmv71EzmVWmfh952msl/4kd5FhS3UgG
+	H6v5SK89osI7/Zr7u5WkZX5kRsBq/netzt1snf3UAWVuxgU+g1X7fWrnla9+ir1xgj8s0A
+	kz1ZlldSa5AVR+gsrbQOELucUNukpblb0eV9CI8FzxxdgnsPKwKF60r3zk4j5Q==
+Date: Thu, 3 Jul 2025 10:46:36 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len
+ Brown <lenb@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
+ <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 00/28] lan966x pci device: Add support for SFPs
+Message-ID: <20250703104636.5012907d@bootlin.com>
+In-Reply-To: <20250627155837.GC3234475-robh@kernel.org>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+	<20250627155837.GC3234475-robh@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|DBBPR04MB7818:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25c11d6a-4bc4-471a-5689-08ddba0dff8d
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|52116014|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?7aEtBO8vsvSF+mnFBJjtHbzyJoPc9JnTsaai4SksnDRVRabxmlT73sD9zOtj?=
- =?us-ascii?Q?pDLNHDUVLexdalA3sXaMMdf+ugEBuEjyuCYDopgB+KKKoYE1uza3iPOfuFRA?=
- =?us-ascii?Q?UeBN3nOoAgvO1rCZnJqIlvxv4ukVjQLdBQ91IwztSEWqkDf3Vo3Q6BLIj0d/?=
- =?us-ascii?Q?o7NGaLzq6uYq4QLpfXNA+r2jx1umAEqrMPuCGQoc41GaQiZshZOsx4tMFD6N?=
- =?us-ascii?Q?zea0v9h1yDLRe+7GXkeT0TOukkbazo/aXiy/Hgs6S50xxKfz9CV6jSucqt9f?=
- =?us-ascii?Q?vzAv8l6tmd9NHzgP6vMrE1kXnuSmlu0g8lrbTBeram9hwDICdm0N328avq/M?=
- =?us-ascii?Q?qpq8g9/9xxzdCzv08tAjsUXDjSJFMZXBPLka+hjZCdgDblGZ1JLZ96/uetsQ?=
- =?us-ascii?Q?m6eFRoQLCSJvulYz4qQHOLD9fpdwTFN9m8HvAGNiLD/xa8pmrTGPaSuOnTxJ?=
- =?us-ascii?Q?VXbNcarms5n5DFy4lxgdq/HtOPtmEB0Iwm1Qs/aJbsTJsNr6ivvQOK6Qd4X8?=
- =?us-ascii?Q?wbEGZ/Z23j763nbCQ7aaxqHKq9zNg28/Jduqv4Y3e58bxTB/G8lS0QGrH566?=
- =?us-ascii?Q?x0iTF6g5Qa+ZxVhg4CoH+EovPnV2EY7XoOB3/6/i7FCIcJEMGZZy3fXYvAyV?=
- =?us-ascii?Q?Hm82VUXnhG6WSCGTp9ZMm1ciJzfbzEsmMBtoX8cz0S0antVNjMojHkoZ8cA2?=
- =?us-ascii?Q?sOpVeDYlUrvGvUtZ0Ak/7MbuebPNRB79V164c0QvA2Fc6/XoeSSa4z/l67aC?=
- =?us-ascii?Q?RiUasi0YDnDHcfWBwPMayNoKwpwzTRCj6DqhkMG2gIKdaSuCmrYYmKC3xLo8?=
- =?us-ascii?Q?y7LHBhIf4BUatfQwzT631TLfcPd8+Y6Qys/9Z5fs5exoUPSw9xkvq+ip1bcn?=
- =?us-ascii?Q?8YJrvNRH58YAT9FPbqkrnNUh1hGP5110n9Sv32mjpKNAK//JqUezG26/flT0?=
- =?us-ascii?Q?IHup93haaL7mC4MGyCBIXt7Bzbim+e9gf83HlVy4FLHZ0ooJyYWlHKiY25vG?=
- =?us-ascii?Q?dGk6EMcB4e8X/ZxGFw1jEZXJ95ksfvXwB+RbqZe97Mdk0VxABn2nZQJ7IIb2?=
- =?us-ascii?Q?AMf+fLHCDUhtPKSwtqqW7bR3XyHhsd+XALrgV3s6LKNa4xunx7svxQOTxACu?=
- =?us-ascii?Q?23IkKEEbo6tpZatEztMp01TbYBji3paLdI1aTucmbFsWeNeAl582C76vFFVu?=
- =?us-ascii?Q?Bq50ADXBJPnWYM81hkPluYfXLbChCY7ZLqv36dkhxML8jH8RQtFJVJYbnpWi?=
- =?us-ascii?Q?aAPVUwN53HBYzzFbqeUqUX8zFweYGxF8tMqaIKp536BhtJ8Jr3gxj+Dk63ED?=
- =?us-ascii?Q?yMbdAT6EaHu7Y4fIK4wgIgh7q1Uewjd/3ZwGwcX/h27dM4iQwCnjXoe0ayj6?=
- =?us-ascii?Q?K1vc2yJH0t2dWlRrM/TACazoBLzZez9UPmlbWm5gI0uEdEc81IT8xIUWjX+Y?=
- =?us-ascii?Q?nyU1B/FiWXJGqGq7RW7ghLxB+DiYgO+8la1FxerK1owD9S2rKYjd9KVBSwVO?=
- =?us-ascii?Q?E9RL8/LNKjp/6YU=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(52116014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?e6jNWTDgJfcNYCwgbOmnBo+HycLS2VP5IwS0t1mQPjnLp/ANTwKI7boE8LlF?=
- =?us-ascii?Q?P9ECQrb3QY2ieOpR/IBJ+hfIK7KGP75/NPRUwNzoHZE+OeOoMhiO/gzmQs/L?=
- =?us-ascii?Q?7CqiW0io7r3sU60UVM+fLjrLOeNC72q+rndv0a06BcUz81yLfQmZVtO7n+8N?=
- =?us-ascii?Q?WqETAx2m7c554SA6tyMoviZ2d4PoXvhNCXLEwItITWJXIwGbfVw8WyrOjR4P?=
- =?us-ascii?Q?h/EGJVMOR4L4vb/AtQqvlJT8d/SR7GlcDSSl0W4iFcxr0KohVn9p0iclnUyr?=
- =?us-ascii?Q?+UzcKHodRBQete/aHz/z5dAECR0joK99S5Ji6ZnC/21uUpR/asmd/jRh2n8X?=
- =?us-ascii?Q?VOctIrvFkCe3zYYGNu3xhVqq1IPUMneGRgbskh4NdLO3b0pX7nGGf//2XtFq?=
- =?us-ascii?Q?6/m/JnELTk4L2lgbP2Ly3BNYoy7x0sya5VoEJE3UmnE+bP6Ess6n7cA8E7b8?=
- =?us-ascii?Q?iIIf6Ky8B28o2nSaczbsSnAXr1ArdA4dwNjyC4J3URaeOvSr3SHz9DvU8qgV?=
- =?us-ascii?Q?x8WxA2SnVSGLZILUw75DTxPGSP6s4FMLb+NImwb4bklqEkNW4Gt7iQdCk16B?=
- =?us-ascii?Q?pTtRJFl+6csUDhYQhKxTFTt+sOMGPSWgcF67sI/gtYqJmsfralHnyvvLnQ7l?=
- =?us-ascii?Q?euA6GYtajYZMoUHaY/xQ5ROns6kBkG/ZrNRQU/qOFhuYzZH9L1OB8EqfpZTE?=
- =?us-ascii?Q?3+ItwA/5xKVPePaEajbfUcsIPqnlOr5c7vatvYeEYHmVGa5PHZW2VBqVNwC9?=
- =?us-ascii?Q?Aw9tvbq6xf9gF5yj++1GWmFaeJpWkNNzvpJKyiJJ4hITg6eynkrlgBQ/GPXl?=
- =?us-ascii?Q?RPz43Aape5z5Yac1JZf2m4O+gv2GlkT2jknVKTYBL5vv/sqi75OmceFVGo37?=
- =?us-ascii?Q?JYw7u4jPukmqDpRDxBcADs8HEcqjIwZdJqIyA4paCX4YjRFwurCC7C5fx4EZ?=
- =?us-ascii?Q?BuyXkpeTQj8DcQBx1aRtsZs/2q0a0obZpyr5QcNKqYTLkuxcSJZ4oKrvUIca?=
- =?us-ascii?Q?Zo9ZtpA6gCglR9HgSr3hasxV+y8QoHVWKFDloaW/WuPuSojZNbxo4bvErglv?=
- =?us-ascii?Q?zxSNoTsoAVGFDkfPAmRLg3hHJMgwM4H51QpeGSxi4EqKqZrR5v2+Brz2mxoA?=
- =?us-ascii?Q?dUithPTEpz9vkTUpEyrzgamWztMX9nbbqj9giX26kGeA4KRgtKYRDqH/pEwd?=
- =?us-ascii?Q?k+tV1LEWe+8CTLTygh4K6qMLEtpO0sBXo7imO6UQLRm/C1PhYjIwbyptesen?=
- =?us-ascii?Q?R7vT50YnCJ0FBbLwyxM0tWPukL9AAr6nsnIeM38dq9KCpcTS/uUVnKzfzEi2?=
- =?us-ascii?Q?xOJm2tx8ZQpJtCuSLtN+kVIv/hCNTJHPP8DdaOnUkmKB31FzSuLCsyrR6YKN?=
- =?us-ascii?Q?PTuBloUGqCo4b/J2YOlyNoHSzIUo1awC5rYXhxcbNjvm7qSL8f/+kW5yny7n?=
- =?us-ascii?Q?WetmtudFLYq9CmWTwBb48FZH7OvASBEdtY1++8DJ0DJe0QC7vKkQCM/TWPnH?=
- =?us-ascii?Q?DSdJ1m2wDZt9PWfnmqWfMViOjX+cW7fIuxr55spFR7eBA40SnfxqP9V6UO5M?=
- =?us-ascii?Q?y3QjWFm5TNuGUUiMDXsgXOR2i4ZespMACbXWTmMr?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25c11d6a-4bc4-471a-5689-08ddba0dff8d
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2025 08:45:44.4462
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RsCGHKGCRnwPHQlpSA69YlYUaSKQq0NQz2pCULlZAlyyy70XVacCGjP3vT+qUXl86v93ud6yAGivhSso58KoEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7818
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduleekgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepvdgrtddumegvtdgrmedvkeehmegsleektdemvgegtdgtmeeitgegfeemsgehsggsmegrgedvkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgdtrgemvdekheemsgelkedtmegvgedttgemiegtgeefmegshegssgemrgegvdekpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeekpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgp
+ dhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
+X-GND-Sasl: herve.codina@bootlin.com
 
-On Wed, Jul 02, 2025 at 03:20:33PM +0300, Andy Shevchenko wrote:
-> On Wed, Jul 02, 2025 at 07:02:20PM +0800, Xu Yang wrote:
-> > This will add usb_alloc_noncoherent() and usb_free_noncoherent()
-> > functions to support alloc and free buffer in a dma-noncoherent way.
+Hi Rob,
+
+On Fri, 27 Jun 2025 10:58:37 -0500
+Rob Herring <robh@kernel.org> wrote:
+
+> On Fri, Jun 13, 2025 at 03:47:40PM +0200, Herve Codina wrote:
+> > Hi,
 > > 
-> > To explicit manage the memory ownership for the kernel and device,
-> > this will also add usb_dma_noncoherent_sync_for_cpu/device() functions
-> > and call it at proper time.  The management requires the user save
-> > sg_table returned by usb_alloc_noncoherent() to urb->sgt.
+> > This series add support for SFPs ports available on the LAN966x PCI
+> > device. In order to have the SFPs supported, additional devices are
+> > needed such as clock controller and I2C.
+> > 
+> > As a reminder, the LAN966x PCI device driver use a device-tree overlay
+> > to describe devices available on the PCI board. Adding support for SFPs
+> > ports consists in adding more devices in the already existing
+> > device-tree overlay.
+> > 
+> > With those devices added, the device-tree overlay is more complex and
+> > some consumer/supplier relationship are needed in order to remove
+> > devices in correct order when the LAN966x PCI driver is removed.
+> > 
+> > Those links are typically provided by fw_devlink and we faced some
+> > issues with fw_devlink and overlays.
+> > 
+> > This series gives the big picture related to the SFPs support from
+> > fixing issues to adding new devices. Of course, it can be split if
+> > needed.
+> > 
+> > The first part of the series (patch 1, 2 and 3) fixes fw_devlink when it
+> > is used with overlay. Patches 1 and 3 were previously sent by Saravana
+> > [0]. I just rebased them on top of v6.15-rc1 and added patch 2 in order
+> > to take into account feedback received on the series sent by Saravana.
+> > 
+> > Those modification were not sufficient in our case and so, on top of
+> > that, patch 4 and 5 fix some more issues related to fw_devlink.
+> > 
+> > Patches 6 to 12 introduce and use fw_devlink_set_device() in already
+> > existing code.
+> > 
+> > Patches 13 and 14 are related also to fw_devlink but specific to PCI and
+> > the device-tree nodes created during enumeration.
+> > 
+> > Patches 15, 15 and 17 are related fw_devlink too but specific to I2C
+> > muxes. Patches purpose is to correctly set a link between an adapter
+> > supplier and its consumer. Indeed, an i2c mux adapter's parent is not
+> > the i2c mux supplier but the adapter the i2c mux is connected to. Adding
+> > a new link between the adapter supplier involved when i2c muxes are used
+> > avoid a freeze observed during device removal.
+> > 
+> > Patch 18 adds support for fw_delink on x86. fw_devlink is needed to have
+> > the consumer/supplier relationship between devices in order to ensure a
+> > correct device removal order. Adding fw_devlink support for x86 has been
+> > tried in the past but was reverted [1] because it broke some systems.
+> > Instead of enabling fw_devlink on *all* x86 system or on *all* x86
+> > system except on those where it leads to issue, enable it only on system
+> > where it is needed.
+> > 
+> > Patches 19 and 20 allow to build clock and i2c controller used by the
+> > LAN966x PCI device when the LAN966x PCI device is enabled.
+> > 
+> > Patches 21 to 25 are specific to the LAN966x. They touch the current
+> > dtso, split it in dtsi/dtso files, rename the dtso and improve the
+> > driver to allow easier support for other boards.
+> > 
+> > The next patch (patch 26) update the LAN966x device-tree overlay itself
+> > to have the SPF ports and devices they depends on described.
+> > 
+> > The last two patches (patches 27 and 28) sort the existing drivers in
+> > the needed driver list available in the Kconfig help and add new drivers
+> > in this list keep the list up to date with the devices described in the
+> > device-tree overlay.
+> > 
+> > Once again, this series gives the big picture and can be split if
+> > needed. Let me know.  
 > 
-> ...
+> Please suggest how you think this should get merged? There's 8 
+> maintainer trees involved here. Some parts can be merged independently? 
+> We need to spread over 2 cycles? Greg just takes it all?
 > 
-> > +	if ((urb->transfer_flags & URB_NO_TRANSFER_DMA_MAP) &&
-> > +	    urb->sgt) {
-> 
-> Something weird with the indentation. Here you wrapped, but the very next line
-> is not, and they both satisfy 80 limit (even though we have it relaxed now).
+> Rob
 
-Indeed. Okay, I'll not wrap this line.
+I will add this information in the next iteration.
 
-> 
-> > +		dma_sync_sgtable_for_cpu(hcd->self.sysdev, urb->sgt, dir);
-> > +		if (dir == DMA_FROM_DEVICE)
-> > +			invalidate_kernel_vmap_range(urb->transfer_buffer,
-> > +						     urb->transfer_buffer_length);
-> > +	}
-> 
-> ...
-> 
-> > +
-> > +		return ret;
-> >  	}
-> > +
-> > +	if ((urb->transfer_flags & URB_NO_TRANSFER_DMA_MAP) &&
-> > +	    urb->sgt) {
-> 
-> Why not
-> 
-> 	} else if {
-> 
-> and drop the above return ret; ?
+I think, the merge strategy could be the following:
+ - patches 1 to 14 could be merged by driver core maintainers in cycle N
 
-Okay.
+ - patches 15 to 17 and 20 could be merged by I2C maintainers in cycle N
+   without any dependency issues against other patches.
 
-Thanks,
-Xu Yang
+ - patch 18 could be merged by OF maintainers in cycle N without any
+   dependency issues
 
-> 
-> > +		if (dir == DMA_TO_DEVICE)
-> > +			flush_kernel_vmap_range(urb->transfer_buffer,
-> > +						urb->transfer_buffer_length);
-> > +		dma_sync_sgtable_for_device(hcd->self.sysdev, urb->sgt, dir);
-> > +	}
-> > +
-> >  	return ret;
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+ - patch 19 could be merged by clock maintainers in cycle N without any
+   dependency issues.
+
+ - patch 21 to 25 could be merged by misc maintainers in cycle N without any
+   dependency issues.
+
+ - patch 26 to 28, even if there is no compilation dependencies with other
+   patches, they need the other patches applied to have a working system and
+   so they could be merged in cycle N+1.
+
+Also, as the big picture and the goal of this series has been shown, I can
+extract patches from this series and send them alone depending on maintainers
+preferences.
+
+Maintainers, just tell me.
+
+Best regards,
+Hervé
