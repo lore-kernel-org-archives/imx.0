@@ -1,218 +1,103 @@
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420212D6614
-	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 09:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2A62DCF68
+	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 09:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751534722; cv=none; b=YqSqQffMUcpIHN7JM65tr89iwsukV2nmTsRTI2Pi2ibgZYlWXqli+GrNXGO3e6T0dRgC2+oI4rRR8inhFvcJ8850Tl0fuqXC8DC0wYjzA4RCnJQciJum7jhzLeHDrhlqcQL+IJOGoLpqM+AnNpnUac36LCKLq+L4XfCymBTsgAU=
+	t=1751536648; cv=none; b=csGrzaFajG/qxQUhzhzWB95l8OxSYJ8+B8uwQN6IoE2U9PHMd3j0UKNj/9Te7uqidI61PrP6CXMwzVLeoVyWe7Nn6TJFnEGm6J5bXcl9O7tO/tzrugjZ40CnMglvmjkzqteyIiVCXNSPb6oF/cQX0muLH4zZ8PRiC4Ca4pEd9yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751534722; c=relaxed/simple;
-	bh=v4IoJlg76CmSJ2VtEhP56ipvSCV4NseNd45qWFEYnJo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Uq5HTKHsU/by26RorqIpb5sQB22O/9pY+ItCLy6ekuG+sl7mbCV0wQFcE2DSxIi4YZHcr0RwfK4yeoXXP26+K0hZlf/e1Sw43LcTUnkXJP2Dj8oLGtRbxWktR5ksLEMmBFK5kscxyJGUDB6P2S7esGnk6J4Rs7wmq1zNlqyIDII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NGepe/34; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NGepe/34"
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3de18fde9cfso29868325ab.3
-        for <imx@lists.linux.dev>; Thu, 03 Jul 2025 02:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751534720; x=1752139520; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RQxlXjimiWOLNlkmt82ETYNH1B4xm8nZuHa4F1eDm+Q=;
-        b=NGepe/34JKr1fDxlk20TeXGgjJa/KoS2GmF71lT1STeaExbLbVr5PI4G2/KcwLy6V1
-         ZLIhroGiXL1as97ouDrC1MrwEOkxKd15Y3iRmABjMWezu90Az+wc5xm6UKMWbuRsh0hZ
-         9Il9WvkTA5qfxDgj4ye3izuzimrv2gvIA40u1SY1kftmS+tV+waWwKFp19ujOlwjhj/5
-         /uh6F+gEbzx/oCyqOxHmGp1sFBm0MvQPq0NcOyepm37ct0hKofAYS51sQpHICQl9b5ZH
-         DxMJC66KgkZgBMV1i2mWcL3aClStHiVElgNC5sgyKhswZ6aZ2/hrO9jhvs0CRa9F2at3
-         nPdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751534720; x=1752139520;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RQxlXjimiWOLNlkmt82ETYNH1B4xm8nZuHa4F1eDm+Q=;
-        b=pnqemukbOqlCJ6r8uoiddaHYow20OeRO+L05ViaEyY2Gqv8qqDuDhMJuGOvF+rBT17
-         bjIKdVLua10+U27ElN3/LeoQBhcwvyT/TZrmpG6AJuoyQojshNLffno+k45VpZgS6h8Q
-         tMNydxN9UKQI2FQXYUwTSKx9yTiyuQmc4kW6wXiPdGQmbw6r/8wBag7KPt7ySKG1k/n1
-         Xmk2RA/x/9UPZw2tnWwuzUSuBnH249MV94D6n95Qjoa0ckN8wwcVV06V+QoXq/GWQn6P
-         rLoy9mAAc6nSu3gZbK52iCAYrbJsR72blMKql/1wQPNjSae2CIYVwHzSe9ssID/BgQt4
-         aB+w==
-X-Forwarded-Encrypted: i=1; AJvYcCW09iqQ5wX5YyKZbJHIaH1RU9Of3pHzTlfDmw6iRSj35vAqvb00RXXODIGxXIeoT2bCHrA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YztOBhRZ4U7+reeKxi3XTCF0nZ/nsN8VO/z3y3arCXFMLpqH1g2
-	7lcj3gRvSDaDUXMYOuot7vfTj8bu1kNFYsg755C8ia8leT0KJnB3jR7saOQjpB6yOPCUnD1BWN4
-	PN0xW9Cxt3gp2pZR8mqj11m2OluI5F3w=
-X-Gm-Gg: ASbGncuV0dmMU/VIQXsqUCxiEjRoDUfKc7+tgwM0bySuPMBoX/qFIiWPJdHsDLS5Fqy
-	J9uBF/tQkkqFuZ32gDrVKvNZ5nuc51SJqF7zTy9exbXd/e/vdEwEsbvuWqbtD0zAk8yt6mY8hEb
-	Mgm9afGEjdnmOEj0M+DN4i4ntvUBHb2+OHVZmnD9v/Mss=
-X-Google-Smtp-Source: AGHT+IExz9aStPQQU5jTE1Po0AQPZakEiqsbSsJKe7wO8kX4S2jJmJUZEYtD2nu7s7tlGuCMRGGTZawMXfUO2V+vIVY=
-X-Received: by 2002:a05:6e02:2183:b0:3df:4024:9402 with SMTP id
- e9e14a558f8ab-3e05494a935mr73959465ab.8.1751534720124; Thu, 03 Jul 2025
- 02:25:20 -0700 (PDT)
+	s=arc-20240116; t=1751536648; c=relaxed/simple;
+	bh=c5big+j1eLYqTd9f91QD21CM2Uu+ovktIk2We9V9Kms=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iCq7xanc4XDCC5+fwz+tFSR/uZoDoTgNcQipyEJq55a2+2YXHxoHxUU76JO5vK4m1+Yv9xQWcpIrviicPOvTel2fhow55nZaj5aStNS0vq5HOqviT37sXz98+DpkAcWrAUiQJzu77PCsD/CrFU65f2dEVeaU+yCSMOkFN0x5mA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1uXGgb-0007Za-5y; Thu, 03 Jul 2025 11:56:57 +0200
+Message-ID: <8db56c73-191e-48ec-9a28-cbb0da9a8a80@pengutronix.de>
+Date: Thu, 3 Jul 2025 11:56:56 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250618062644.3895785-1-shengjiu.wang@nxp.com>
- <20250618062644.3895785-3-shengjiu.wang@nxp.com> <aGLBvXtSRlaKujqM@p14s>
- <CAA+D8AO4o7dqTyL4aZ+H5VnroTQUNAHM-io5rvJ2r_sasPYs9g@mail.gmail.com>
- <aGP-ZVuhBdd1GPLe@p14s> <CAA+D8ANtw1xTg7OQOFoDeQcdp05Eo9Uo1t=MKcGjtkSYfJqBVw@mail.gmail.com>
- <CAA+D8AP+RPJpY_=8WjSXoV_VB=9hP0NnFGjjUQHXcoDoz3fgfA@mail.gmail.com>
-In-Reply-To: <CAA+D8AP+RPJpY_=8WjSXoV_VB=9hP0NnFGjjUQHXcoDoz3fgfA@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 3 Jul 2025 17:24:57 +0800
-X-Gm-Features: Ac12FXwGsyCT-FrKcuI-KzJt0SyzwBQ-E9tIqBn9TSAoTP3Lnf3fS8E6YzQ5JhE
-Message-ID: <CAA+D8ANdfOr=iyJQqE9_k+JUCRin2KXOVf9zL6BVxRrV0REvqQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] remoteproc: imx_dsp_rproc: Add support of coredump
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, andersson@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	iuliana.prodan@nxp.com, daniel.baluta@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/6] imx8mp: add support for the IMX AIPSTZ bridge
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
+ <shengjiu.wang@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+ Marco Felsch <m.felsch@pengutronix.de>,
+ Marc Kleine-Budde <mkl@pengutronix.de>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev
+References: <20250610160152.1113930-1-laurentiumihalcea111@gmail.com>
+ <3615415b-7ebd-45e5-8d7b-8a1b26ac7130@pengutronix.de>
+ <10ef8a9a-6d23-4fb9-933f-71ab493d21c7@gmail.com>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <10ef8a9a-6d23-4fb9-933f-71ab493d21c7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Wed, Jul 2, 2025 at 7:48=E2=80=AFPM Shengjiu Wang <shengjiu.wang@gmail.c=
-om> wrote:
->
-> On Wed, Jul 2, 2025 at 3:20=E2=80=AFPM Shengjiu Wang <shengjiu.wang@gmail=
-.com> wrote:
-> >
-> > On Tue, Jul 1, 2025 at 11:27=E2=80=AFPM Mathieu Poirier
-> > <mathieu.poirier@linaro.org> wrote:
-> > >
-> > > On Tue, Jul 01, 2025 at 10:28:33AM +0800, Shengjiu Wang wrote:
-> > > > On Tue, Jul 1, 2025 at 1:05=E2=80=AFAM Mathieu Poirier
-> > > > <mathieu.poirier@linaro.org> wrote:
-> > > > >
-> > > > > On Wed, Jun 18, 2025 at 02:26:44PM +0800, Shengjiu Wang wrote:
-> > > > > > Add call rproc_coredump_set_elf_info() to initialize the elf in=
-fo for
-> > > > > > coredump, otherwise coredump will report an error "ELF class is=
- not set".
-> > > > > >
-> > > > > > Remove the DSP IRAM and DRAM segment in coredump list, because =
-after
-> > > > > > stop, DSP power is disabled, the IRAM and DRAM can't be accesse=
-d.
-> > > > > >
-> > > > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > > > > ---
-> > > > > >  drivers/remoteproc/imx_dsp_rproc.c | 6 +++---
-> > > > > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > > > > >
-> > > > > > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remot=
-eproc/imx_dsp_rproc.c
-> > > > > > index 9b9cddb224b0..9e7efb77b6e5 100644
-> > > > > > --- a/drivers/remoteproc/imx_dsp_rproc.c
-> > > > > > +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> > > > > > @@ -738,9 +738,7 @@ static int imx_dsp_rproc_add_carveout(struc=
-t imx_dsp_rproc *priv)
-> > > > > >               mem =3D rproc_mem_entry_init(dev, (void __force *=
-)cpu_addr, (dma_addr_t)att->sa,
-> > > > > >                                          att->size, da, NULL, N=
-ULL, "dsp_mem");
-> > > > > >
-> > > > > > -             if (mem)
-> > > > > > -                     rproc_coredump_add_segment(rproc, da, att=
-->size);
-> > > > > > -             else
-> > > > > > +             if (!mem)
-> > > > >
-> > > > > Flag rproc->recovery_disabled is never set to true, meaning that =
-since this
-> > > > > driver was introduced, some kind of recovery was available.
-> > > >
-> > > > Actually since this driver was introduced, the recovery can't work.
-> > > > We didn't test the recovery function before. sorry for the mistake.
-> > >
-> > > Let me see if I get this right:
-> > >
-> > > (1) Almost 5 years ago you sent me a driver with code you did not tes=
-t.
-> >
-> > Driver was tested but missed the recovery/coredump function.
-> >
-> > > (2) It took all this time to realize and fix the problem.
-> >
-> > I just realized that the recovery/coredump is one of the functions supp=
-orted
-> > by remoteproc.
-> >
-> > > (3) I should trust that, this time, you have tested your code.
-> >
-> > recovery/coredump has been tested.
->
-> I am not sure if we must power off dsp in .stop() and power on dsp in .st=
-art().
-> because I see such comments in remoteproc_core.c
->         /* power up the remote processor */
->         ret =3D rproc->ops->start(rproc);
->
->         /* power off the remote processor */
->         ret =3D rproc->ops->stop(rproc);
->
-> So I moved pm_runtime_get_sync() to .start() and pm_runtime_put_sync()
-> to .stop()
-> in this patchset.
->
-> previously we called pm_runtime_get_sync() in .prepare(),
-> pm_runtime_put_sync() in
-> .unprepare().
-> If we can keep the power on/off in .prepare()/.unprepare.  maybe we
-> can refine the
-> .load function which is to move .reset to .load(),  then we can reduce
-> the code change
-> and not need to change the coredump scope.
->
-> Before I test this idea I'd like to have your opinion about this.
-> Thanks.
+Hello Laurentiu,
 
-Today I tested this method, it looks good, the code change is smaller.
-I will send v2 for reviewing.
-Thanks.
+On 7/3/25 10:51, Laurentiu Mihalcea wrote:
+> 
+> 
+> On 7/3/2025 11:11 AM, Ahmad Fatoum wrote:
+>> Hello Laurentiu,
+>>
+>> On 10.06.25 18:01, Laurentiu Mihalcea wrote:
+>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>>>
+>>> The AIPSTZ bridge offers some security-related configurations which can
+>>> be used to restrict master access to certain peripherals on the bridge.
+>>>
+>>> Normally, this could be done from a secure environment such as ATF before
+>>> Linux boots but the configuration of AIPSTZ5 is lost each time the power
+>>> domain is powered off and then powered on. Because of this, it has to be
+>>> configured each time the power domain is turned on and before any master
+>>> tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
+>> Sorry if this has been asked before, but I hoped the cover letter or patch
+>> 3/6 would explain if it were.
+>>
+>> What is the default configuration for the AIPSTZ before this series?
+> 
+> the default configuration is the reset configuration since AIPSTZ registers go
+> back to their reset values during domain power cycling.
+> 
+>> I assume the SAIs under AIPS5 can be accessed by SDMA already, so why was
+>> changing the AIPSTZ settings needed for the DSP to work?
+> 
+> AFAIK SDMA transactions to peripherals don't go through AIPS5. They use SPBA, which
+> is why SDMA works even w/o this series. As for the DSP: transactions to peripherals go
+> through AIPS5. With the reset configuration, the DSP is not allowed to access said peripherals,
+> which is why this series was needed.
 
->
-> Best regards
-> Shengjiu Wang
-> >
-> > Best regards
-> > Shengjiu Wang
-> >
-> > >
-> > > Did I understand all that correctly?
-> > >
-> > > >
-> > > > >
-> > > > > I worry that your work will introduce regression for other users.=
-  Daniel and
-> > > > > Iuliana, once again have to ask you to look at this patchset.
-> > > > >
-> > > > > Thanks,
-> > > > > Mathieu
-> > > > >
-> > > > > >                       return -ENOMEM;
-> > > > > >
-> > > > > >               rproc_add_carveout(rproc, mem);
-> > > > > > @@ -1203,6 +1201,8 @@ static int imx_dsp_rproc_probe(struct pla=
-tform_device *pdev)
-> > > > > >               goto err_detach_domains;
-> > > > > >       }
-> > > > > >
-> > > > > > +     rproc_coredump_set_elf_info(rproc, ELFCLASS32, EM_XTENSA)=
-;
-> > > > > > +
-> > > > > >       pm_runtime_enable(dev);
-> > > > > >
-> > > > > >       return 0;
-> > > > > > --
-> > > > > > 2.34.1
-> > > > > >
-> > > > >
+I see. Thanks for tackling this issue and your explanation.
+
+Cheers,
+Ahmad
+
+> 
+
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
