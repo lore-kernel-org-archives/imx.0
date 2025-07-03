@@ -1,121 +1,191 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F072E2D0C89
-	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 08:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8022441A6
+	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 09:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751532697; cv=none; b=qh31eAs1BLH/wktnmlglvG+NsTS1U65aPhWnUBVWVcd/Tvu2cBS60Rr/Npr3hBo0ZjuV2TD970gq324DRS/9a7QJM05Sc+Cjngi3IEvCe3rOPsFuPRJkaKEDxvv5lET7HoCfVtOsqin35nv2i1ulj1ZuniQrJZJRwCsBKLtczeY=
+	t=1751533277; cv=none; b=aTtEC+n9rjmNeQbtEC/P16iO/92yagYVkAhu4tJKqlYiiL3w+5py/B61lH5AlsD8EwjOqMwPYfVYAk75Gz3N2kJwCYLRZhh9f9hGFKOCev37CZA0aUHZ34qkT+5wjOTU58KjqzzdFbMVMTp+PrRjXZFd4Yr4kb4ePjzgOQOlclg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751532697; c=relaxed/simple;
-	bh=hsCXwqcLxI8cRSOYueVTYtswWbZ6ub7fGgL17jIiNL4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cxGMUcEwXx+GqEhWz0j/F02zSXTn7q9/bDOFML3uGSD9jE5ag3RKyP5E8xXqKzEDxSYpPFtnOgEbIO8bvdaHhFJJwmhmq3+iebV4rzO4onDFGc2gS23snvcMFZ6P8Hjxc3qVHHGJwCLTHVgtqRATbEJjSe1LPx7jcSbZcfSlbkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kmr0OGrf; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751533277; c=relaxed/simple;
+	bh=It4Yzf/cq/OZHF/i74LdCyTJ52/QRKsGa2yNEZKCaP4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pDKZpP9ndLGXf06SEC0k2uzI3xubCCh1k/H/LE6/o5+N8bIYZjc9aPWjQgAPddRl2LeKWbWcwAFgOEjhM6W9Isebv0FPM9nxQRcbKzGzAftWPWbnmt+RhmI19mYS0DWtkul428AwB9do8/tXoZyIlXk4t3jODPeCHufCoLaKkDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JZoiMtpI; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kmr0OGrf"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-60780d74c85so11735958a12.2
-        for <imx@lists.linux.dev>; Thu, 03 Jul 2025 01:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751532694; x=1752137494; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hsCXwqcLxI8cRSOYueVTYtswWbZ6ub7fGgL17jIiNL4=;
-        b=Kmr0OGrf5XURlcar01t5NTUjrlGe5AwA72e987mKP4Hp07B+NasFA6mz1afekZYsUN
-         twdlgLEqpN0K1CbpIKxiPN5LsDPdiYoV/aeeZ84K5w2ulwUVpHUT+Qfm9ZI2p+Ig2sjG
-         0xF8+yFq9v8pM1PlIj6wAo/pooyRJ5bAmiNoqnbRn/QWxqcWaACjSKSZbFf+fg+6rNCG
-         xSDCN8GL+qST3pNK1/zIFSMV9xPRk2QI7OA/3amPriTYAthHBm4nImyAvZQSiMtibA65
-         lsII1PTsGh784C0geqecTYAMeWeVM7R6h64dWdfE1QUsoGfjaa7sQqYAC2T/Ycdf778G
-         qqrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751532694; x=1752137494;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hsCXwqcLxI8cRSOYueVTYtswWbZ6ub7fGgL17jIiNL4=;
-        b=dXZ6zZfOqmFTByNUitVFiLC+pTlMhh3RHSQuSXVjNjf3FfPQ/QIH6M2eE6WTLunZnn
-         gkfWoy/3hJH+L/+zNuldKcNyzWrcNBhsNGkEUOls2Vz2O0py0jumZwPo5228uYIulM96
-         3drar4vRI7V7yXBWWjEu/wnyW1SlbupbpjZjQVrY7qVxjoj6CiegBmQgArZcenw5AqON
-         FjSq8ldhFnCiVkA3KdH0rpGsKDwtRDQML6ayBRBB8aouVSPuPi6fa9iFE+vcnDQgoT3f
-         TWarvJy2IK04n2Cg/jYTLYvOHTJVssXckRDXJR/ooAyuHgvDO4B1u00PZ6cKF+B6Z2wQ
-         B9RA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyRJq6fFwjWSxfY0qExxxdzEqGjaUl3MIO8KHEhWgaObfSiTyQv1uY0I+7H+suGCYjTHk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzMkXlrKS2Syk4VyOl7Qz9POFcCajxUF8lhcNsf4gt4lwEaEMf5
-	+1jsF8zkvtFrLYI6EBXgGIaPVqrOBIKeOhVOhstuGo143fNw3rj52Cro
-X-Gm-Gg: ASbGncsiKUYlTfxWxx2S+23vrWcHd+sI3dfpZKEXdt/qunkB1DA+fKPGiTxMbwXQCT4
-	yOharqO7XEM47CVzoFde1xNqCVzJwGtMAygtpbEjgmGY08PoVFdz/2C5r4Rzrqfq2GKugLRRNie
-	RO94cScogvogPb6EZcvT4DvyF7E/w1gJk0JxWNj5YPin9BE6lmB/ogNaaOIBIIWvSeS9jkObxV6
-	AeWiIrpmMuykLE1xlbq4n7THQv1HhxUJ4RBtV8fGVpjgPKv6S7Fa/IZSwGESxFcM70EbQTql2CS
-	3yK5rc+pdi7QroK6XeCZumgb2VYyyr50orSMnevCbHdC2BzGQHSdR81GXgFtcZNPNLgD6hFnTrL
-	UEe58cVEwBrM=
-X-Google-Smtp-Source: AGHT+IF/15k0UhDJHrTcrKwLdwkzfbrEugE0iaN0gMVkMiQ4Upn4VgFsHeYzGWOfl44lDF56ZG+LGw==
-X-Received: by 2002:a17:907:8b85:b0:ae0:cae0:cb35 with SMTP id a640c23a62f3a-ae3c2ce87b1mr512443266b.37.1751532693871;
-        Thu, 03 Jul 2025 01:51:33 -0700 (PDT)
-Received: from [192.168.7.84] ([92.120.5.11])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3b94b3b2esm388690066b.62.2025.07.03.01.51.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Jul 2025 01:51:33 -0700 (PDT)
-Message-ID: <10ef8a9a-6d23-4fb9-933f-71ab493d21c7@gmail.com>
-Date: Thu, 3 Jul 2025 11:51:31 +0300
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JZoiMtpI"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5631xo9d024877;
+	Thu, 3 Jul 2025 09:01:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=ywd6s1HBGy/xILoiidjOHLd2E+10hnFHI88SzQApckA=; b=JZ
+	oiMtpII60AGhwlSiSEVjNqX84F5RPPXCWaocdJmPlejNOBG2iKLgX1TzuyXWgIZc
+	/vUwxuD/scAv3zrqnupKQGLhkirgZyrjH6qypKiYxQZTdCBo2F+5+ioUPHTIjDq4
+	mrPQ6NUEftCQxNHjqKW4Gv3wGQh2FLrYDOy6ecj++c7H5UnA++Ix+w53YjNApGxP
+	v4NKWd4NqZBynmDkCbq8Ex2p1j6VzIL1kzM+IF2A7I0od5kvvQLGMxW1+DV1MAUJ
+	Zo+Jg79oj+Vj67jmwzjnM96VoE/HlKlzEzHV2V9mTZA2MFyyAQF6M6KUyDi5qqpl
+	D7wOU5fW4ocMqG0yjyow==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47j8027j9v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Jul 2025 09:01:01 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 563910BX001271
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 3 Jul 2025 09:01:00 GMT
+Received: from hu-sarohasa-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.10; Thu, 3 Jul 2025 02:00:55 -0700
+From: Sarosh Hasan <quic_sarohasa@quicinc.com>
+To: Wei Fang <wei.fang@nxp.com>, "andrew @ lunn . ch" <andrew@lunn.ch>,
+        Russell King <linux@armlinux.org.uk>,
+        Florian Fainelli
+	<f.fainelli@gmail.com>,
+        "hkallweit1 @ gmail . com" <hkallweit1@gmail.com>,
+        "davem @ davemloft . net" <davem@davemloft.net>,
+        "edumazet @ google . com"
+	<edumazet@google.com>,
+        "kuba @ kernel . org" <kuba@kernel.org>,
+        "pabeni @
+ redhat . com" <pabeni@redhat.com>,
+        "xiaolei . wang @ windriver . com"
+	<xiaolei.wang@windriver.com>,
+        "linux-kernel @ vger . kernel . org"
+	<linux-kernel@vger.kernel.org>,
+        "imx @ lists . linux . dev"
+	<imx@lists.linux.dev>,
+        "netdev @ vger . kernel . org"
+	<netdev@vger.kernel.org>
+CC: Prasad Sodagudi <quic_psodagud@quicinc.com>,
+        Abhishek Chauhan
+	<quic_abchauha@quicinc.com>,
+        Sagar Cheluvegowda <quic_scheluve@quicinc.com>,
+        Girish Potnuru <quic_gpotnuru@quicinc.com>, <kernel@oss.qualcomm.com>
+Subject: [PATCH net v1] net: phy: Change flag to autoremove the consumer
+Date: Thu, 3 Jul 2025 14:30:41 +0530
+Message-ID: <20250703090041.23137-1-quic_sarohasa@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/6] imx8mp: add support for the IMX AIPSTZ bridge
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
- <shengjiu.wang@nxp.com>, Frank Li <Frank.Li@nxp.com>,
- Marco Felsch <m.felsch@pengutronix.de>,
- Marc Kleine-Budde <mkl@pengutronix.de>,
- Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev
-References: <20250610160152.1113930-1-laurentiumihalcea111@gmail.com>
- <3615415b-7ebd-45e5-8d7b-8a1b26ac7130@pengutronix.de>
-Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <3615415b-7ebd-45e5-8d7b-8a1b26ac7130@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: YiaMy12t1KuOcPz3axauiUzftVNYJc04
+X-Authority-Analysis: v=2.4 cv=YPWfyQGx c=1 sm=1 tr=0 ts=686646cd cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
+ a=8AirrxEcAAAA:8 a=m1-PlO-VolDZHzCB4_kA:9 a=TjNXssC_j7lpFel5tvFf:22
+ a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-ORIG-GUID: YiaMy12t1KuOcPz3axauiUzftVNYJc04
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAzMDA3MyBTYWx0ZWRfX2x62OZcuq18L
+ IVSUNgpWqSYJ3CrWMdgOEtjg9l1Ml/Vv3hzJvOzA3B3hXKbYliMG07wSY+CfYlBP3xmVMYHGVlB
+ xpYYdLwbJslpzSEIF4/kjLzjuOjMpgFnZpxtADRbFPV00lj4SabqF2muTUawbm/HIorI2WYaHZn
+ ZLYZ924urdMRNzrvvHcbAGEKgpQn7G8igx2PQzHcCXdx0J5iTUdBceef0kPzVX2cLoTi551nHyM
+ +MpL+HqwXE+DLj/oWXHi7+tD9TTnEpNgteb65SbKHEKgIB0d2J+7hIrsw7J28mYK9ke1olv405E
+ fxS6AwF1AgNePs1Dxz2JxO9Hq2UFSMozSQX8zGz36CKHu6qhjwRqkwSFEvaFfXvcg8bG1hIPf3t
+ +qufYk+awGw/QNZGil+Xs+yFXZ0nK8UvejDu6qHFcBPfjzHUCp6swHSNrL6dTFVQgcPDtvH6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-03_02,2025-07-02_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxlogscore=845 mlxscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 clxscore=1015 impostorscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2507030073
 
+phy_detach() is not called when the MDIO controller driver is
+removed. So phydev->devlink is not cleared, but actually the device
+link has been removed by phy_device_remove()--> device_del().Therefore,
+it will cause the crash when the MAC controller driver is removed.
+In such case delete link between phy dev and mac dev. Change the 
+DL_FLAG_STATELESS flag to DL_FLAG_AUTOREMOVE_SUPPLIER,so that the
+consumer (MAC controller) driver will be automatically removed
+when the link is removed.
 
+Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
+Link: https://lore.kernel.org/all/e6824f1a-c1a9-4c2e-9b46-6fe224877bfc@quicinc.com/
+Suggested-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: Abhishek Chauhan <quic_abchauha@quicinc.com>
+Signed-off-by: Sarosh Hasan <quic_sarohasa@quicinc.com>
+---
+ drivers/net/phy/phy_device.c | 17 +++++++++--------
+ include/linux/phy.h          |  4 ----
+ 2 files changed, 9 insertions(+), 12 deletions(-)
 
-On 7/3/2025 11:11 AM, Ahmad Fatoum wrote:
-> Hello Laurentiu,
->
-> On 10.06.25 18:01, Laurentiu Mihalcea wrote:
->> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>
->> The AIPSTZ bridge offers some security-related configurations which can
->> be used to restrict master access to certain peripherals on the bridge.
->>
->> Normally, this could be done from a secure environment such as ATF before
->> Linux boots but the configuration of AIPSTZ5 is lost each time the power
->> domain is powered off and then powered on. Because of this, it has to be
->> configured each time the power domain is turned on and before any master
->> tries to access the peripherals (e.g: AP, CM7, DSP, on i.MX8MP).
-> Sorry if this has been asked before, but I hoped the cover letter or patch
-> 3/6 would explain if it were.
->
-> What is the default configuration for the AIPSTZ before this series?
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 90951681523c..f3db3dd93c74 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1630,6 +1630,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	struct mii_bus *bus = phydev->mdio.bus;
+ 	struct device *d = &phydev->mdio.dev;
+ 	struct module *ndev_owner = NULL;
++	struct device_link *devlink;
+ 	int err;
+ 
+ 	/* For Ethernet device drivers that register their own MDIO bus, we
+@@ -1760,9 +1761,14 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 	 * another mac interface, so we should create a device link between
+ 	 * phy dev and mac dev.
+ 	 */
+-	if (dev && phydev->mdio.bus->parent && dev->dev.parent != phydev->mdio.bus->parent)
+-		phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
+-						  DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
++	if (dev && phydev->mdio.bus->parent && dev->dev.parent != phydev->mdio.bus->parent) {
++		devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
++					  DL_FLAG_PM_RUNTIME | DL_FLAG_AUTOREMOVE_SUPPLIER);
++		if (!devlink) {
++			err = -ENOMEM;
++			goto error;
++		}
++	}
+ 
+ 	return err;
+ 
+@@ -1834,11 +1840,6 @@ void phy_detach(struct phy_device *phydev)
+ 	struct module *ndev_owner = NULL;
+ 	struct mii_bus *bus;
+ 
+-	if (phydev->devlink) {
+-		device_link_del(phydev->devlink);
+-		phydev->devlink = NULL;
+-	}
+-
+ 	if (phydev->sysfs_links) {
+ 		if (dev)
+ 			sysfs_remove_link(&dev->dev.kobj, "phydev");
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index b037aab7b71d..e20643fb6f41 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -507,8 +507,6 @@ struct macsec_ops;
+  *
+  * @mdio: MDIO bus this PHY is on
+  * @drv: Pointer to the driver for this PHY instance
+- * @devlink: Create a link between phy dev and mac dev, if the external phy
+- *           used by current mac interface is managed by another mac interface.
+  * @phyindex: Unique id across the phy's parent tree of phys to address the PHY
+  *	      from userspace, similar to ifindex. A zero index means the PHY
+  *	      wasn't assigned an id yet.
+@@ -613,8 +611,6 @@ struct phy_device {
+ 	/* And management functions */
+ 	const struct phy_driver *drv;
+ 
+-	struct device_link *devlink;
+-
+ 	u32 phyindex;
+ 	u32 phy_id;
+ 
+-- 
+2.17.1
 
-the default configuration is the reset configuration since AIPSTZ registers go
-back to their reset values during domain power cycling.
-
-> I assume the SAIs under AIPS5 can be accessed by SDMA already, so why was
-> changing the AIPSTZ settings needed for the DSP to work?
-
-AFAIK SDMA transactions to peripherals don't go through AIPS5. They use SPBA, which
-is why SDMA works even w/o this series. As for the DSP: transactions to peripherals go
-through AIPS5. With the reset configuration, the DSP is not allowed to access said peripherals,
-which is why this series was needed.
