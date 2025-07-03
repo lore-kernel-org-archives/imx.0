@@ -1,148 +1,97 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C92227BB5
-	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 07:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5267263D
+	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 08:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751527990; cv=none; b=hjgVI/nTS4EOgtFS/ZQqy9Hp8QeLSt1+ibXJhNUiArl3vVZ6Nd/SyjGOzdLfoCVyswveUQnC0LA0yuJEiRAi/50XRjitiJG7dtXdPNtTJxg5UKQyLtWGaU2OZt618VJ2wnLNLAzk7Ae+0eHI1JtM8SpjX2fT6OViqI87OLVTu6Y=
+	t=1751529860; cv=none; b=TZH61rbP75C/8aLiunBVKo75qhjotQZLUl7OvxraX9WGjZDEqBsirVGcJyo+k85m4mcfeDY5bZygnE9E2uwm25kh52l2Lyc3PSE35LKpUyNYZEaJ0nxJ2fEfKikmNlcU8nt7yLz5+Mze+5SeatMl6EG5plzmxz1Sp93P4bDjGfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751527990; c=relaxed/simple;
-	bh=bBdoyOqxX1N4/kKu9tvAYpQdaHvF4VHbV9k8rIFm3VY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=roVpbt8l+x9ddZZuSOLnNgGxG7RGKRB33mgAVBJU7RNihGs7o6tN4aBzHTw9sOWytEcWmyrJJS2V0Ae121FjT+uak0xSjzP3kaB3fhJaRSHuSBVoJBhWUuvp96NmltaeFrhr35OYRvrOHU5dijmrFk93KA6rjbsScU2ufHztiu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pwBdhWJ/; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1751529860; c=relaxed/simple;
+	bh=qck+zoSNbDS+1fzZEFSAxmGXpteaQLljB30Wp0QvAnA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QjAGUGEeM5Vg/MzJ1SNyIzbupscSdMSl08Bv9sSrTE7/SkC43DCgAjMvKYQ7TXHa1jcYle6IuPiZKmuZbCi6LvTttQ8J+6YquWG/+qSt6RtbaTZ+IOfEhq3jRpbFpROV4IymZM3br77OUS3bnfFNw7mQQ2h+bnareME3Q31hHLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=m+X8rmO7; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pwBdhWJ/"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3A9F94434F;
-	Thu,  3 Jul 2025 07:33:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751527986;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K6WHf5/XL+HMRo9BdoaiRtR1OsAjGQGF9hVUHi3YoI8=;
-	b=pwBdhWJ/3SgTYZZ+WczqkHPciuGzf9A95dIDtbRvuqV2qZXAgnsown6tAunBjPevUJXIi5
-	NSI2ENMobUBEWoZ9H67Pb9pld0WakNKvrWE84aFmg7YDljkOFbHlUtVNzZcgbvyQGC97it
-	fY77ZLVTUpMnmvh7uyU/ltl8E612bvMw7qebyKIDSTPPJC8ber2asvZKpy7jSKwKWjoayA
-	Oj7OErEmp8Lz7Fx1SZu1sfKJ0eoFtSZuOAqPFKgcncxY/VeUEJDB04L2/v6QIkcUoxiXMb
-	fIRQrEf28FLEPkaNqnxy6AZH5Up1zXrIsa8I+S4kJ8YoYcFHx6/ziha8De6olw==
-Date: Thu, 3 Jul 2025 09:33:02 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
- Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
- Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len
- Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
- <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
- linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v3 05/28] bus: simple-pm-bus: Populate child nodes at
- probe
-Message-ID: <20250703093302.4f7743ea@bootlin.com>
-In-Reply-To: <20250627155200.GB3234475-robh@kernel.org>
-References: <20250613134817.681832-1-herve.codina@bootlin.com>
-	<20250613134817.681832-6-herve.codina@bootlin.com>
-	<20250627155200.GB3234475-robh@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="m+X8rmO7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=iurUCQkQ6NU0bD6+V+iw118TmNVywv06hQqDSqml8f4=; b=m+X8rmO7ABcAgVme6uM4LHj+d1
+	WYzvhrViBMOPIoPNblfxEgNGO1uvQRItO3AdLJWOPy/k531y5YFuyWth71nC4/ByK1iCWgfsXPQDo
+	neP4KP+lu27yO8zDeTTWNAVX9bc+j7qY2mq0JEfsLBNbTdoggQOvaV8QBLyLBkb9epgEpsTT06H+u
+	qs9ZlY+I2wofvcd3cJkxEYiTH/fsjrQ1NzuDfyGbRhKaoszL0GPVYwyjZ1wJVKrHgYOjUNoS4bozz
+	PtmhstF51mhw2k+kO4PEAA4il2AJFsIrVErP5Q7YN5KViW1Fl6oO5MQo8e+tn0DhuIURCSvJ9lQwD
+	BUwEH+bQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56566)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uXEvK-0000MI-0j;
+	Thu, 03 Jul 2025 09:04:02 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uXEvI-0004vN-04;
+	Thu, 03 Jul 2025 09:04:00 +0100
+Date: Thu, 3 Jul 2025 09:03:59 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm: DT: imx6-sr-som: Replace license text comment with
+ SPDX identifier
+Message-ID: <aGY5bx1Qpx_7Dqea@shell.armlinux.org.uk>
+References: <20250702-sr-som-dts-lic-v1-1-2e8584e6c837@prolan.hu>
+ <aGWqIzNvSVw4olz5@shell.armlinux.org.uk>
+ <2f628251-5b67-47e0-8038-6c1aeee1ef91@prolan.hu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduleeilecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepvdgrtddumegvtdgrmedvkeehmegsleektdemvgegtdgtmeeitgegfeemsgehsggsmegrgedvkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgdtrgemvdekheemsgelkedtmegvgedttgemiegtgeefmegshegssgemrgegvdekpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeekpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgp
- dhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
-X-GND-Sasl: herve.codina@bootlin.com
+In-Reply-To: <2f628251-5b67-47e0-8038-6c1aeee1ef91@prolan.hu>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Rob,
-
-On Fri, 27 Jun 2025 10:52:00 -0500
-Rob Herring <robh@kernel.org> wrote:
-
-> On Fri, Jun 13, 2025 at 03:47:45PM +0200, Herve Codina wrote:
-> > The simple-pm-bus driver handles several simple busses. When it is used
-> > with busses other than a compatible "simple-pm-bus", it doesn't populate
-> > its child devices during its probe.
-> > 
-> > This confuses fw_devlink and results in wrong or missing devlinks.
-> > 
-> > Once a driver is bound to a device and the probe() has been called,
-> > device_links_driver_bound() is called.
-> > 
-> > This function performs operation based on the following assumption:
-> >     If a child firmware node of the bound device is not added as a
-> >     device, it will never be added.
-> > 
-> > Among operations done on fw_devlinks of those "never be added" devices,
-> > device_links_driver_bound() changes their supplier.
-> > 
-> > With devices attached to a simple-bus compatible device, this change
-> > leads to wrong devlinks where supplier of devices points to the device
-> > parent (i.e. simple-bus compatible device) instead of the device itself
-> > (i.e. simple-bus child).
-> > 
-> > When the device attached to the simple-bus is removed, because devlinks
-> > are not correct, its consumers are not removed first.
-> > 
-> > In order to have correct devlinks created, make the simple-pm-bus driver
-> > compliant with the devlink assumption and create its child devices
-> > during its probe.  
+On Wed, Jul 02, 2025 at 11:56:20PM +0200, Csókás Bence wrote:
+> Hi,
 > 
-> IIRC, skipping child nodes was because there were problems with 
-> letting the driver handle 'simple-bus'. How does this avoid that now?
-
-I don't know about the specific issues related to those problems. Do you
-have some pointers about them?
-
+> On 2025. 07. 02. 23:52, Russell King (Oracle) wrote:
+> > On Wed, Jul 02, 2025 at 11:41:54PM +0200, Bence Csókás wrote:
+> > > Replace verbatim license text with a `SPDX-License-Identifier`.
+> > > 
+> > > The comment heades mis-attributes this license to be "X11", but the
+> > > license text does not include the last line "Except as contained in this
+> > > notice, the name of the X Consortium shall not be used in advertising or
+> > > otherwise to promote the sale, use or other dealings in this Software
+> > > without prior written authorization from the X Consortium.". Therefore,
+> > > this license is actually equivalent to the SPDX "MIT" license (confirmed
+> > > by text diffing).
+> > > 
+> > > Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+> > 
+> > As Florian has already mentioned, the preferred format for the summary
+> > for arch/arm is "ARM: ... " and by extension for arch/arm/boot/dts,
+> > it's "ARM: dts: ...", not "arm: DT: ..."
 > 
-> The root of_platform_populate() that created the simple-bus device that 
-> gets us to the probe here will continue descending into child nodes. 
-> Meanwhile, the probe here is also descending into those same child 
-> nodes. Best case, that's just redundant. Worst case, won't you still 
-> have the same problem if the first of_platform_populate() creates the 
-> devices first?
-> 
+> Ohh, I misread it, I thought it was just about `imx6: board:` ->
+> `imx6-board:`... Ok, I will re-format it for v2.
 
-Maybe we could simply avoid of_platform_populate() to be recursive when a
-device populate by of_platform_populate() is one of devices handled by
-the simple-bus driver and let the simple-bus driver do the job.
+Note that it applies to _all_ patches to arch/arm/boot/dts.
 
-of_platform_populate will handle the first level. It will populate children
-of the node given to of_platform_populate() and the children of those
-children will be populate by the simple-bus driver.
-
-I could try a modification in that way. Do you think it could be a correct
-solution?
-
-Best regards,
-HervÃ©
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
