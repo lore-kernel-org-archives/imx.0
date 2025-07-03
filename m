@@ -1,94 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122E5134CB;
-	Thu,  3 Jul 2025 17:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F262F2341
+	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 17:39:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751562631; cv=none; b=hCSbQOIlcBZ5yTRJwnQ2YZrjoGespQ1fnVmLJsgUUVpzbQvdEwEEfuKQaEaET+s2toEnni4Cm31e/ag5n84M//SHNGeRQqolRvqOZQwRrxRyxpXXB7AtkYBNlpxChPjg1LSQdGtMZl2ED5vrK49IxWFyFePSnwUFROP6GXeEF7M=
+	t=1751564370; cv=none; b=amXtKRHO/W5rTmMxoUwCVRIMAFSU1I6oIjY/eEfi0MXwwhTPwPtk5G6F+jmFQlS7w0Sk1XBTurHMvKXOvW6NO3/v2TqyZKGWFEL2IDtiP7fAOR431Dk1lwGl4mcxE5C0U8KDP9Un1lDWzOo3SxWNyqODSdJn5VrYo8QlotASYcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751562631; c=relaxed/simple;
-	bh=VBNBTHMTAZlDZfjt9bZrrU4QHStDFo99Vh/bJIt/n/s=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=bNREYcxXecK+qZ6ADvZpdglAkfe51rRkwFwFV/qnqt74jC18oWO0yEhEkEDSM9QF7z4w27jEPqPsjEX9ceX6O3pA54Umq/seTVDOqosu2JSPY9CokIu4BvQv3K/IfsvQv8tG7rshgkmxR4hryYuNHWg/gY85eFhFszsivsupAwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkVZJJm1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751564370; c=relaxed/simple;
+	bh=OyLzI9ti5ZF4tK6Y97Gl7vSXaMfHy1WelDatJfxOx4k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UvCEdphRLdtz8TIBi6NgwlSeS4zgNep5j7Q86Y+8RnkKv2hBnZTeslUagMP/x00ECZQVfUmteTs714tOoPMLpZQahxDEZlGXN+jihpFQLQuDI/2A86yuvDg7Ubf4529b90bMlo6CFJU8GwVmqHlwNOaCFpFkWVJjeHuFJwsg8gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IpLD7Qg9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkVZJJm1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDDBC4CEED;
-	Thu,  3 Jul 2025 17:10:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751562630;
-	bh=VBNBTHMTAZlDZfjt9bZrrU4QHStDFo99Vh/bJIt/n/s=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=fkVZJJm1iGyGdp1Ja5Tu7Hch65JO16hxP0lASxwcxLGUwtJQu5KhA+/rbghPX8WOd
-	 n7HF7bEC35BDP86O+2jDjpro7I1wSGc0l8/kzK2wy2Wp8jyIWDFDNTZHSw9b5iLNcW
-	 Yyir5cL8JKJnM6WonM33j4aBQh/yJEW2ZiQV2ybl8LxoLn4vYm2mXZQYHT6Z0vMhsZ
-	 BxiIZSdLAnLWt1XC8t/lQzg1aQOHbpv0mR8aP0/jNKauYtj3QPVvTzy1p2CGCjqp74
-	 PRciY3DOiw0Lw2YQ0dr8aEsMBosEPslC8LW/bMSi26BkNmP4UeWl3j7o/KyDf+Wffj
-	 NsheR+fjLrhCw==
-From: Mark Brown <broonie@kernel.org>
-To: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
- festevam@gmail.com, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- cristian.marussi@arm.com, peng.fan@nxp.com, sudeep.holla@arm.com, 
- arnd@arndb.de, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <20250620055229.965942-1-shengjiu.wang@nxp.com>
-References: <20250620055229.965942-1-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 0/2] ASoC: fsl_mqs: support MQS2 on i.MX94 platform
-Message-Id: <175156262671.651944.3516186569995786227.b4-ty@kernel.org>
-Date: Thu, 03 Jul 2025 18:10:26 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IpLD7Qg9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751564368;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Jr9UUYTDJ7ikkP8jHrSyTuWft6sFVyd5UT0R70tW400=;
+	b=IpLD7Qg9gzOaAEvkt/wNWo8AxBAbpusg44MCMYXkrroFsiLEZbK3E/1x6J/9N4H0U5ZaPM
+	8EKvmeBueWJpdjvP2oxXHnqmxreRj0jmBzEgQAuY4A96z5UAFPZHz6tzKkxpshpNcjeCT8
+	ACdTvWh5503SOm4dkSXuCLDH/JuPzy8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-382-W8nV6t3uN-Ou3Ud00PVttA-1; Thu,
+ 03 Jul 2025 13:39:22 -0400
+X-MC-Unique: W8nV6t3uN-Ou3Ud00PVttA-1
+X-Mimecast-MFC-AGG-ID: W8nV6t3uN-Ou3Ud00PVttA_1751564359
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF94F1808984;
+	Thu,  3 Jul 2025 17:39:17 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.32.252])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0297C1956087;
+	Thu,  3 Jul 2025 17:39:01 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: linux-arm-kernel@lists.infradead.org,
+	Russell King <linux@armlinux.org.uk>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	linux-samsung-soc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH v2 0/2] arm: Replace __ASSEMBLY__ with __ASSEMBLER__ in uapi headers
+Date: Thu,  3 Jul 2025 19:38:57 +0200
+Message-ID: <20250703173859.246664-1-thuth@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-cff91
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-On Fri, 20 Jun 2025 13:52:27 +0800, Shengjiu Wang wrote:
-> ASoC: fsl_mqs: support MQS2 on i.MX94 platform
-> 
-> Shengjiu Wang (2):
->   ASoC: fsl_mqs: Distinguish different modules by system manager indices
->   ASoC: fsl_mqs: rename system manager indices for i.MX95
-> 
-> include/linux/firmware/imx/sm.h | 20 ++++++++++++++------
->  sound/soc/fsl/fsl_mqs.c         | 11 ++++++++---
->  2 files changed, 22 insertions(+), 9 deletions(-)
-> 
-> [...]
+The kernel Makefiles define the __ASSEMBLY__ macro to provide
+a way to use headers in both, assembler and C source code.
+However, all the supported versions of the GCC and Clang compilers
+also define the macro __ASSEMBLER__ automatically already when compiling
+assembly code, so some kernel headers are using __ASSEMBLER__ instead.
+With regards to userspace code, this seems also to be constant source
+of confusion, see for example these links here:
 
-Applied to
+ https://lore.kernel.org/kvm/20250222014526.2302653-1-seanjc@google.com/
+ https://stackoverflow.com/questions/28924355/gcc-assembler-preprocessor-not-compatible-with-standard-headers
+ https://forums.raspberrypi.com/viewtopic.php?p=1652944#p1653834
+ https://github.com/riscv-software-src/opensbi/issues/199
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+To avoid confusion in the future, it would make sense to standardize
+on the macro that gets defined by the compiler, so this patch series
+changes all occurances of __ASSEMBLY__ into __ASSEMBLER__.
 
-Thanks!
+I split the patches per architecture to ease the review, and I also
+split the uapi headers from the normal ones in case we decide that
+uapi needs to be treated differently from the normal headers here.
 
-[1/2] ASoC: fsl_mqs: Distinguish different modules by system manager indices
-      commit: 9931d2899eec3737f4e4fa9fc900be7329816e94
-[2/2] ASoC: fsl_mqs: rename system manager indices for i.MX95
-      commit: baee26a9d6cd3d3c6c3c03c56270aa647a67e4bd
+The related cleanup patches for x86, parisc, sh and arc patches
+already got merged via their specific architecture tree:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=24a295e4ef1ca8
+ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8a141be3233af7
+ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cccaea1d66e94b
+ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e2b6a188625a2b
+ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9cc646950eefda
+ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=179e949719fe81
+ https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2cb74be378675c
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+So I assume the arm patches should go via the arm tree.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+v3:
+- Split the arm patches from the global series
+  (see https://lore.kernel.org/all/20250314071013.1575167-1-thuth@redhat.com/)
+- Rebased the patches on linux-next and fixed the conflicts
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Thomas Huth (2):
+  arm: Replace __ASSEMBLY__ with __ASSEMBLER__ in uapi headers
+  arm: Replace __ASSEMBLY__ with __ASSEMBLER__ in non-uapi headers
 
-Thanks,
-Mark
+ arch/arm/include/asm/arch_gicv3.h                |  4 ++--
+ arch/arm/include/asm/assembler.h                 |  2 +-
+ arch/arm/include/asm/barrier.h                   |  4 ++--
+ arch/arm/include/asm/cache.h                     |  2 +-
+ arch/arm/include/asm/cp15.h                      |  4 ++--
+ arch/arm/include/asm/cputype.h                   |  4 ++--
+ arch/arm/include/asm/current.h                   |  4 ++--
+ arch/arm/include/asm/delay.h                     |  4 ++--
+ arch/arm/include/asm/domain.h                    |  8 ++++----
+ arch/arm/include/asm/fpstate.h                   |  2 +-
+ arch/arm/include/asm/ftrace.h                    |  6 +++---
+ arch/arm/include/asm/hardware/cache-b15-rac.h    |  2 +-
+ arch/arm/include/asm/hardware/cache-l2x0.h       |  4 ++--
+ arch/arm/include/asm/hardware/dec21285.h         |  2 +-
+ arch/arm/include/asm/hardware/ioc.h              |  2 +-
+ arch/arm/include/asm/hardware/iomd.h             |  4 ++--
+ arch/arm/include/asm/hardware/memc.h             |  2 +-
+ arch/arm/include/asm/hwcap.h                     |  2 +-
+ arch/arm/include/asm/irq.h                       |  2 +-
+ arch/arm/include/asm/jump_label.h                |  4 ++--
+ arch/arm/include/asm/kexec.h                     |  4 ++--
+ arch/arm/include/asm/kgdb.h                      |  4 ++--
+ arch/arm/include/asm/mach/arch.h                 |  2 +-
+ arch/arm/include/asm/mcpm.h                      |  4 ++--
+ arch/arm/include/asm/memory.h                    |  4 ++--
+ arch/arm/include/asm/mpu.h                       |  4 ++--
+ arch/arm/include/asm/opcodes.h                   | 12 ++++++------
+ arch/arm/include/asm/page.h                      |  4 ++--
+ arch/arm/include/asm/pgtable-2level.h            |  4 ++--
+ arch/arm/include/asm/pgtable-3level.h            |  4 ++--
+ arch/arm/include/asm/pgtable-nommu.h             |  4 ++--
+ arch/arm/include/asm/pgtable.h                   | 10 +++++-----
+ arch/arm/include/asm/probes.h                    |  4 ++--
+ arch/arm/include/asm/proc-fns.h                  |  4 ++--
+ arch/arm/include/asm/ptrace.h                    |  4 ++--
+ arch/arm/include/asm/system_info.h               |  4 ++--
+ arch/arm/include/asm/system_misc.h               |  4 ++--
+ arch/arm/include/asm/thread_info.h               |  2 +-
+ arch/arm/include/asm/thread_notify.h             |  2 +-
+ arch/arm/include/asm/tlbflush.h                  | 10 +++++-----
+ arch/arm/include/asm/tls.h                       |  4 ++--
+ arch/arm/include/asm/unified.h                   |  6 +++---
+ arch/arm/include/asm/unwind.h                    |  4 ++--
+ arch/arm/include/asm/v7m.h                       |  4 ++--
+ arch/arm/include/asm/vdso.h                      |  4 ++--
+ arch/arm/include/asm/vdso/cp15.h                 |  4 ++--
+ arch/arm/include/asm/vdso/gettimeofday.h         |  4 ++--
+ arch/arm/include/asm/vdso/processor.h            |  4 ++--
+ arch/arm/include/asm/vdso/vsyscall.h             |  4 ++--
+ arch/arm/include/asm/vfp.h                       |  2 +-
+ arch/arm/include/asm/virt.h                      |  4 ++--
+ arch/arm/include/uapi/asm/ptrace.h               |  4 ++--
+ arch/arm/mach-at91/pm.h                          |  2 +-
+ arch/arm/mach-exynos/smc.h                       |  4 ++--
+ arch/arm/mach-footbridge/include/mach/hardware.h |  2 +-
+ arch/arm/mach-imx/hardware.h                     |  2 +-
+ arch/arm/mach-imx/mxc.h                          |  2 +-
+ arch/arm/mach-omap2/control.h                    |  8 ++++----
+ arch/arm/mach-omap2/soc.h                        |  4 ++--
+ arch/arm/mach-omap2/sram.h                       |  4 ++--
+ arch/arm/mach-pxa/irqs.h                         |  2 +-
+ arch/arm/mach-pxa/pxa-regs.h                     |  2 +-
+ arch/arm/mach-s3c/map-base.h                     |  2 +-
+ arch/arm/mach-sa1100/include/mach/bitfield.h     |  2 +-
+ arch/arm/mach-sa1100/include/mach/hardware.h     |  2 +-
+ arch/arm/mach-tegra/reset.h                      |  2 +-
+ arch/arm/mach-tegra/sleep.h                      |  2 +-
+ arch/arm/tools/gen-mach-types                    |  2 +-
+ drivers/memory/emif.h                            |  4 ++--
+ 69 files changed, 129 insertions(+), 129 deletions(-)
+
+-- 
+2.50.0
 
