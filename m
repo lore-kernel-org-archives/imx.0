@@ -1,250 +1,111 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A607D2E425E
-	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 11:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A7D2652B6
+	for <imx@lists.linux.dev>; Thu,  3 Jul 2025 11:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751542473; cv=none; b=bWorA//6gQik639kGK4LKGrzZVnJENFX5IoxI7PjMNTjSUuBLsxZ7vSZpfsPOlRPK/l+dhDn5Pb335cQXsM7K06+RedNOL57NfDSbwBovMm9uArlp4b1PMoDVDaMpSbudszWqSw1CfA+Yjhxl+6/TOU90ydVg3k512Q73L/D6Bc=
+	t=1751542702; cv=none; b=rihvx5eOLabcPDSKjPQkN5YV7IXcYrhzBApiTv/D+ECK9EWAN78pDWZ2EBY943yvqRikN5ZUQWNNY213DeabN4XvkufNhh8Ksn7jov8MfIngSN27tg3ThlzolKD8gG5mgf7vGOGBU9WiwIpI0hVqeYIPf1thtqnfDOBQsFKnP8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751542473; c=relaxed/simple;
-	bh=c2tsJjFJ9vSavOpZnhYvTr4JJmozuk1MtWh1Imcs78Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HYxCu6v9vV0/fQ+lMoGx/UVNo32mIdiFKsX0KV1f+WbJ63Vg85/HJk1HX9AY/bAMapTKOUNM64+OzQYzbY+V1trxF0gJNaWSWDs//XSIaeXIU268vgkeoaIMVQl51KQnUDb8L8lpXa5yMCi0s4P0jIGtV9CtBVSNFjp5z+76aos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=j+hFrh6D; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1751542702; c=relaxed/simple;
+	bh=5R6ckhkY2hESttOY9KT338PgWgQIq75EHvFlZEgFiuw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mhXIyaHrX5A0fG/atiW3IZhWD1pU8jOB/woy9TYM0T0nYRbMSPLv2bPYdfAuwYNeXEBlhrVdw5TuNTWQLl4t0ExisriyEjSnDlCU2OqvPnqk0RNZGEsFSIq8ejUjglA7MhT/rMM+gxz+46HI3XEHmQ//zzRKGB+dE3VAeBURYao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hr9zFVI5; arc=none smtp.client-ip=209.85.166.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="j+hFrh6D"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5561c20e2d5so4494918e87.0
-        for <imx@lists.linux.dev>; Thu, 03 Jul 2025 04:34:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hr9zFVI5"
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-872886ed65aso659450739f.1
+        for <imx@lists.linux.dev>; Thu, 03 Jul 2025 04:38:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1751542470; x=1752147270; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VKu/zfJ+vFov6qPGzjqcOdspoBv6skBDRoDtXZ5kxPY=;
-        b=j+hFrh6DVjHTGIgkikiC3OYqA18+aKSy3+5gVsSFZ3PNJfE6XWtsrTdiAvFzam+utB
-         aFzmDAsTK2TFzgLWyCF4qSWet0DQ3mlGhYGPyBr5qRSrTw7AxfnAavIRsY4kHqK1Tngv
-         jCSRciGicEqkzR4LXbaE4uu0HB7Cp4pJgTDyY=
+        d=gmail.com; s=20230601; t=1751542700; x=1752147500; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OCtxfijaVm+CdySvz4wp4lXx6NKzCfTR5tSHGOmQuhM=;
+        b=Hr9zFVI5XTytcyh8gIlPiP8uFkep3oe2tZDGSPbtt6D3Vfz6fk9qajl8VIYXDjm8JU
+         NBhjuX6haMBghe481Fb/5lOOqkLLkV/FQS3QhaNEIm2QsGOJQ7cxVW41Ol5yfZCFy++i
+         zqLyiO/ucJtd3wDtHJ1+EzMmZ7bqWTAiGXeI8tuzUT4+pvdp28rpitG4/3quM3GxJiAd
+         AUaMsXf5mekE/UW+QNy1r0iKIkhQTPbHhkGi36XC69tq4n2w69fM7Z/xMcgSjBS3T0MG
+         Ai3UHvPV1zw/XYlFDDwVaRjuWcQhJq0z8tpcvAz7sRMG3/19STFVVbLsniBXwHyDJtDn
+         bhnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751542470; x=1752147270;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1751542700; x=1752147500;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VKu/zfJ+vFov6qPGzjqcOdspoBv6skBDRoDtXZ5kxPY=;
-        b=ahRibcc3NXwMMZrdxd3yP66aRqJeTFcghXySUPJIEF203BOfqQ2tVlUZfEznuJ8txl
-         DIm0JFb1VyPmEbqURnjVq5lA6bCp3KqwLatzkZoYoOU0pCmhFAADe/4zoHtZXDoW44ZK
-         X5o2quoXTucLdb+sqQtj3zjCbLWLl7AclNMYvb9c9H/C9Hvvzs7VCoDnpOJrP3DzUSrx
-         uSg6WQ2haP/hS+tWeP25rAFop40dvRrLXAsRAP2GjEsFeh3hkD2zcW33D0xg3LfIGQzq
-         +CdtYXZKilssjCJZ/HcazGO51W17cD1IJS1mg+5bl7u1o6/rEsgy9B354lkvDlhypf/R
-         YFmg==
-X-Forwarded-Encrypted: i=1; AJvYcCUTJS/NG8vFMakmV6FH3YsRnwHOz5V0g6bDAgONyHRqrEuvzhDXum8fVm8IgRnipdLsLLA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwtaD6/uQ9Q3nuP3pfBUQzzvZjwhMwi3+N8NKDNUA38ZTraNHmP
-	nYE2gGW7nmRJWjoS8zn7e15kD+9pMZRCCpkyoc8DTdHE4yH3M5lsuR8Xv5awrWpy7ZGz1p1R57B
-	aXhj9fw==
-X-Gm-Gg: ASbGncuGfltypQPLc7xTp3CYYRCx2bhqK5xQTXjzQvb/lyJCvx5WHsCtfkd1a/OAmuP
-	D6juA5UdMBDKdNzqU8L+Rxtv1Z48wnlpxNpFaFrfaTz0uyZP3A9xelKgplbWNsukRR3iYvFKZXi
-	2TrA4zR0LI7VKTyTwKET/gr+80+e7Hn5lim38dr6maDDuNvkXs1GntR1bYO1eLxFJ6u/kAz6bj7
-	ADUafqINaUfPCwQwvBeGvF3bV6q1iImMX4gaZN99cTgNeNT5HNy1q/OxyfMdlNVQpWeGONX3gOw
-	+S71sJl1F7ZjzWdTMOsfKsE9cChomXuDlfAIzdcMH4d3HqoBtluOljFW5mbtmJEtX5JD/BLqnuO
-	IPP3U4lP8jrCy9u4GVCY8KZ+a
-X-Google-Smtp-Source: AGHT+IGxIKQVddwwqPyD8+N8fAev39CP/1dTeh9UUmo8WDjeVlsrN0GoCoTTXKqdJxRy43TdKDJAkw==
-X-Received: by 2002:a05:6512:1292:b0:553:cfa8:dd33 with SMTP id 2adb3069b0e04-5562ee50a28mr904590e87.19.1751542469547;
-        Thu, 03 Jul 2025 04:34:29 -0700 (PDT)
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5550b2ce864sm2385226e87.178.2025.07.03.04.34.28
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Jul 2025 04:34:28 -0700 (PDT)
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5561ab55c4dso4671616e87.2
-        for <imx@lists.linux.dev>; Thu, 03 Jul 2025 04:34:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXhu5AReibwpX4wkPWXzNKr0lEqr4jClEz+adro7bXRCsLEXVcBxnZNZ3Q3J8COiWvQqfw=@lists.linux.dev
-X-Received: by 2002:a05:6512:3b89:b0:553:252f:adf8 with SMTP id
- 2adb3069b0e04-5562ee21626mr930140e87.9.1751542468121; Thu, 03 Jul 2025
- 04:34:28 -0700 (PDT)
+        bh=OCtxfijaVm+CdySvz4wp4lXx6NKzCfTR5tSHGOmQuhM=;
+        b=EvCoTJWwKTqZcIQHLClnHmBAHo6b9imYhelQZTuXqT1HtUPYn/3qkAOHudtuBw79D2
+         M6TiyIIEi1GuMngupyXpQzDZpFiqtZVYW6TZzxMfyVuUvuS9+BOSd6seHS14R+Io8F2t
+         Es5UsWI42gxbdpfSYSpsOc7D3nze2M3PKr/KIsjaRHQpch8l7hECnwWvSliJ5e3jfAyr
+         fgEhjLolwHdVLwlyzHsukvJOAZeVVoF9hbKhjlsBv47rGDyh62CZlYyutxRo5cXp7s2j
+         cFMq4J/SmV7vzyq7ZECNVa8m04iTZYJkcAnwxmMyOYliDZnP8k7V7xqX9SW6wGrd4EPv
+         c7Zw==
+X-Forwarded-Encrypted: i=1; AJvYcCWv/1hYLyZ0cPBP3IwZxE+LcJ1LOyUYjTbI9i+HwooTk3sl4dmnN7N18hUVqFfNV0Wn4Sc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxsNVQNZ7xQ+ax6jjMVSeB/5/Zw9+Dh6pTVSFo72MMCUWe/iV23
+	NbpH11Kn3Mzbj5VMgQ1IbY+hBcxywi70NA5e7iJsXqL6RGQ4IoJeKLD4
+X-Gm-Gg: ASbGncunYK+X87/NFhn+ElP++J3/gw5vJURGBFVD4t16hy81hAVmuIoBRZO5gJGK3lq
+	O3YRaOuFJMTPprNeo/XNy4zC+ozfnBq6FRN/ohpEVRRzGGQWtA+naSSQLenohjrp/QF6BDcyW2o
+	dS2XvDmIN2tGQWf4IuXc7n8NuFMIjH4v0VAFsGqELigNnO0+3QKbzVaXSJ7ybOijAArDq/PN9Um
+	UfZhJiieNraX9IXcJQWa+44aGG9ipvgNukWhenKjxYS1ytq9PMMFS37lxOBkfsuY3nIaNpG7Ty5
+	GyDz1w2YKjZfqM2rUEe1WrVbcmfoxvDLs3LnZipzjrT9Q30RWPlvaYRZkzxwuUt+P+z1YRsoClR
+	/5lIgnEy2HvnSj4c07KoA48lXHsKP7ZDaJFjL1VBv5Ssv68I=
+X-Google-Smtp-Source: AGHT+IHog5B1MQo5B5fqSCOuRreuMqfrr3E0s/Y/+iP0IZARhEP16EmHsjUPLaXR/JQcDkES5v7T1w==
+X-Received: by 2002:a05:6602:6003:b0:876:5527:fe2a with SMTP id ca18e2360f4ac-876c6a6fd54mr836261839f.11.1751542700238;
+        Thu, 03 Jul 2025 04:38:20 -0700 (PDT)
+Received: from aford-System-Version.. (c-75-72-162-184.hsd1.mn.comcast.net. [75.72.162.184])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50204a57456sm3483544173.72.2025.07.03.04.38.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Jul 2025 04:38:19 -0700 (PDT)
+From: Adam Ford <aford173@gmail.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: aford@beaconembedded.com,
+	Adam Ford <aford173@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V2 1/2] arm64: dts: imx8mm: Configure DMA on UART2
+Date: Thu,  3 Jul 2025 06:38:09 -0500
+Message-ID: <20250703113810.73023-1-aford173@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250703103811.4048542-1-xu.yang_2@nxp.com> <20250703103811.4048542-3-xu.yang_2@nxp.com>
-In-Reply-To: <20250703103811.4048542-3-xu.yang_2@nxp.com>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Thu, 3 Jul 2025 13:34:15 +0200
-X-Gmail-Original-Message-ID: <CANiDSCvYwSb9mrc63=0ioJdSkEik4H19r2c+j7yv7V-43RBxFA@mail.gmail.com>
-X-Gm-Features: Ac12FXyVqorehuUK0wzBq5BWngmbjwNbNsjrYe5IAIc3GAyeQui3lCJ45PdgYOQ
-Message-ID: <CANiDSCvYwSb9mrc63=0ioJdSkEik4H19r2c+j7yv7V-43RBxFA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] media: uvcvideo: use usb_alloc_noncoherent/usb_free_noncoherent()
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: ezequiel@vanguardiasur.com.ar, mchehab@kernel.org, 
-	laurent.pinchart@ideasonboard.com, hdegoede@redhat.com, 
-	gregkh@linuxfoundation.org, mingo@kernel.org, tglx@linutronix.de, 
-	andriy.shevchenko@linux.intel.com, viro@zeniv.linux.org.uk, 
-	thomas.weissschuh@linutronix.de, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, imx@lists.linux.dev, 
-	jun.li@nxp.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, 3 Jul 2025 at 13:02, Xu Yang <xu.yang_2@nxp.com> wrote:
->
-> This will use USB noncoherent API to alloc/free urb buffers, then
-> uvc driver needn't to do dma sync operations by itself.
->
+UART2 is often used as the console, so the DMA was likely left
+off on purpose, since it's recommended to not use the DMA on the
+console. Because, the driver checks to see if the UART is used for
+the console when determining if it should initialize DMA, it
+should be safe to enable DMA on UART2 for all users.
 
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+---
+V2:  Fix spelling errors in commit message
 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
->
-> ---
-> Changes in v4:
->  - remove uvc_stream_to_dmadev()
-> Changes in v3:
->  - no changes
-> ---
->  drivers/media/usb/uvc/uvc_video.c | 61 +++++++------------------------
->  1 file changed, 14 insertions(+), 47 deletions(-)
->
-> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-> index e3567aeb0007..a75af314e46b 100644
-> --- a/drivers/media/usb/uvc/uvc_video.c
-> +++ b/drivers/media/usb/uvc/uvc_video.c
-> @@ -1275,20 +1275,6 @@ static inline enum dma_data_direction uvc_stream_dir(
->                 return DMA_TO_DEVICE;
->  }
->
-> -static inline struct device *uvc_stream_to_dmadev(struct uvc_streaming *stream)
-> -{
-> -       return bus_to_hcd(stream->dev->udev->bus)->self.sysdev;
-> -}
-> -
-> -static int uvc_submit_urb(struct uvc_urb *uvc_urb, gfp_t mem_flags)
-> -{
-> -       /* Sync DMA. */
-> -       dma_sync_sgtable_for_device(uvc_stream_to_dmadev(uvc_urb->stream),
-> -                                   uvc_urb->sgt,
-> -                                   uvc_stream_dir(uvc_urb->stream));
-> -       return usb_submit_urb(uvc_urb->urb, mem_flags);
-> -}
-> -
->  /*
->   * uvc_video_decode_data_work: Asynchronous memcpy processing
->   *
-> @@ -1310,7 +1296,7 @@ static void uvc_video_copy_data_work(struct work_struct *work)
->                 uvc_queue_buffer_release(op->buf);
->         }
->
-> -       ret = uvc_submit_urb(uvc_urb, GFP_KERNEL);
-> +       ret = usb_submit_urb(uvc_urb->urb, GFP_KERNEL);
->         if (ret < 0)
->                 dev_err(&uvc_urb->stream->intf->dev,
->                         "Failed to resubmit video URB (%d).\n", ret);
-> @@ -1736,12 +1722,6 @@ static void uvc_video_complete(struct urb *urb)
->         /* Re-initialise the URB async work. */
->         uvc_urb->async_operations = 0;
->
-> -       /* Sync DMA and invalidate vmap range. */
-> -       dma_sync_sgtable_for_cpu(uvc_stream_to_dmadev(uvc_urb->stream),
-> -                                uvc_urb->sgt, uvc_stream_dir(stream));
-> -       invalidate_kernel_vmap_range(uvc_urb->buffer,
-> -                                    uvc_urb->stream->urb_size);
-> -
->         /*
->          * Process the URB headers, and optionally queue expensive memcpy tasks
->          * to be deferred to a work queue.
-> @@ -1750,7 +1730,7 @@ static void uvc_video_complete(struct urb *urb)
->
->         /* If no async work is needed, resubmit the URB immediately. */
->         if (!uvc_urb->async_operations) {
-> -               ret = uvc_submit_urb(uvc_urb, GFP_ATOMIC);
-> +               ret = usb_submit_urb(uvc_urb->urb, GFP_ATOMIC);
->                 if (ret < 0)
->                         dev_err(&stream->intf->dev,
->                                 "Failed to resubmit video URB (%d).\n", ret);
-> @@ -1765,17 +1745,15 @@ static void uvc_video_complete(struct urb *urb)
->   */
->  static void uvc_free_urb_buffers(struct uvc_streaming *stream)
->  {
-> -       struct device *dma_dev = uvc_stream_to_dmadev(stream);
-> +       struct usb_device *udev = stream->dev->udev;
->         struct uvc_urb *uvc_urb;
->
->         for_each_uvc_urb(uvc_urb, stream) {
->                 if (!uvc_urb->buffer)
->                         continue;
->
-> -               dma_vunmap_noncontiguous(dma_dev, uvc_urb->buffer);
-> -               dma_free_noncontiguous(dma_dev, stream->urb_size, uvc_urb->sgt,
-> -                                      uvc_stream_dir(stream));
-> -
-> +               usb_free_noncoherent(udev, stream->urb_size, uvc_urb->buffer,
-> +                                    uvc_stream_dir(stream), uvc_urb->sgt);
->                 uvc_urb->buffer = NULL;
->                 uvc_urb->sgt = NULL;
->         }
-> @@ -1786,26 +1764,13 @@ static void uvc_free_urb_buffers(struct uvc_streaming *stream)
->  static bool uvc_alloc_urb_buffer(struct uvc_streaming *stream,
->                                  struct uvc_urb *uvc_urb, gfp_t gfp_flags)
->  {
-> -       struct device *dma_dev = uvc_stream_to_dmadev(stream);
-> -
-> -       uvc_urb->sgt = dma_alloc_noncontiguous(dma_dev, stream->urb_size,
-> -                                              uvc_stream_dir(stream),
-> -                                              gfp_flags, 0);
-> -       if (!uvc_urb->sgt)
-> -               return false;
-> -       uvc_urb->dma = uvc_urb->sgt->sgl->dma_address;
-> -
-> -       uvc_urb->buffer = dma_vmap_noncontiguous(dma_dev, stream->urb_size,
-> -                                                uvc_urb->sgt);
-> -       if (!uvc_urb->buffer) {
-> -               dma_free_noncontiguous(dma_dev, stream->urb_size,
-> -                                      uvc_urb->sgt,
-> -                                      uvc_stream_dir(stream));
-> -               uvc_urb->sgt = NULL;
-> -               return false;
-> -       }
-> +       struct usb_device *udev = stream->dev->udev;
->
-> -       return true;
-> +       uvc_urb->buffer = usb_alloc_noncoherent(udev, stream->urb_size,
-> +                                               gfp_flags, &uvc_urb->dma,
-> +                                               uvc_stream_dir(stream),
-> +                                               &uvc_urb->sgt);
-> +       return !!uvc_urb->buffer;
->  }
->
->  /*
-> @@ -1953,6 +1918,7 @@ static int uvc_init_video_isoc(struct uvc_streaming *stream,
->                 urb->complete = uvc_video_complete;
->                 urb->number_of_packets = npackets;
->                 urb->transfer_buffer_length = size;
-> +               urb->sgt = uvc_urb->sgt;
->
->                 for (i = 0; i < npackets; ++i) {
->                         urb->iso_frame_desc[i].offset = i * psize;
-> @@ -2009,6 +1975,7 @@ static int uvc_init_video_bulk(struct uvc_streaming *stream,
->                                   size, uvc_video_complete, uvc_urb);
->                 urb->transfer_flags = URB_NO_TRANSFER_DMA_MAP;
->                 urb->transfer_dma = uvc_urb->dma;
-> +               urb->sgt = uvc_urb->sgt;
->
->                 uvc_urb->urb = urb;
->         }
-> @@ -2120,7 +2087,7 @@ static int uvc_video_start_transfer(struct uvc_streaming *stream,
->
->         /* Submit the URBs. */
->         for_each_uvc_urb(uvc_urb, stream) {
-> -               ret = uvc_submit_urb(uvc_urb, gfp_flags);
-> +               ret = usb_submit_urb(uvc_urb->urb, gfp_flags);
->                 if (ret < 0) {
->                         dev_err(&stream->intf->dev,
->                                 "Failed to submit URB %u (%d).\n",
-> --
-> 2.34.1
->
->
-
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+index cfebaa01217e..ded89b046970 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+@@ -915,6 +915,8 @@ uart2: serial@30890000 {
+ 					clocks = <&clk IMX8MM_CLK_UART2_ROOT>,
+ 						 <&clk IMX8MM_CLK_UART2_ROOT>;
+ 					clock-names = "ipg", "per";
++					dmas = <&sdma1 24 4 0>, <&sdma1 25 4 0>;
++					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
+ 			};
 -- 
-Ricardo Ribalda
+2.48.1
+
