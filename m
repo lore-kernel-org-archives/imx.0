@@ -1,150 +1,124 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421822ECD06
-	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 09:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF85C2882D9
+	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 09:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751620713; cv=none; b=FUwc7yUIMQsFEojyQZP4VRyCHDtMR17zP+Rq0h+GwgDzJkkJ62u/3a46ZzabroXLWj/6uc/U7hB6ewDjMt6dRIHPx3hPqmZnZo40iaU7AuQ7YMVw76A6qRuwwhaz08jU7JIzFn3PswQnQCcjSyj38m2w717AeWBaBYndupilWpA=
+	t=1751621561; cv=none; b=iOa36GeS6u/iBzABf3qBJg6lHaHvAJyx/P1sxe7rrLDkCJccx7HtMZCBhSBf/6RxWeH6+yrNAceyYV6cp1Hhcpr1NiosI/d1Is6EmixvEWRpsOSvlFdKoB0NU2zPPL5lmagLWddDAiGoVZ7vLyQupeKjXBlk+/h6qK6wl4W7pVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751620713; c=relaxed/simple;
-	bh=uakiFyp8ZePVF1tgBOYg2Xyh8hf0lWhL5NbjyXQ+1Go=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uSg18Gxdd/1YH662iL2GR2bumesacaQ5ZV84Wmx/D5CV15ITa3BHpSDEUnBuih9wPWEMVJOJ/ZOZ3pBXS39LB3b35TfeRnm01fUb1XOOOn0Wr8Yv7cRgHBpM37iADcYs6AhgpYPBkiYAsd64V4Hf+g9WJf9fNkGk+YBmDkIv8qA=
+	s=arc-20240116; t=1751621561; c=relaxed/simple;
+	bh=XIa4UkB9x2N5vIytIg3rRwC8NG/2RVLtZzy57PJlv9g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YlE840JvjUkjnk2B8QgU4rIgDCWmv4ZTjQzWSm9WtzT7z7vEnmOQ3C5E5g1jjLMp/os1nGWMgqnNXQVIdQIvOIe1NBgmS7+lrd57Q8FoVMkV/CXEZLDfm2bacom6oDL3DDKepoEw7r/wUltbQsgoATrRImRFf2/tR1BGBaLqEWk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98210152B;
-	Fri,  4 Jul 2025 02:18:17 -0700 (PDT)
-Received: from [10.1.39.21] (e122027.cambridge.arm.com [10.1.39.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DEB0C3F6A8;
-	Fri,  4 Jul 2025 02:18:23 -0700 (PDT)
-Message-ID: <bf64da66-5475-4289-b3ee-a6247b168ff1@arm.com>
-Date: Fri, 4 Jul 2025 10:18:19 +0100
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 29715152B;
+	Fri,  4 Jul 2025 02:32:25 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2EAEA3F6A8;
+	Fri,  4 Jul 2025 02:32:37 -0700 (PDT)
+Date: Fri, 4 Jul 2025 10:32:34 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Peng Fan <peng.fan@nxp.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, <arm-scmi@vger.kernel.org>,
+	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 4/7] firmware: arm_scmi: imx: Support getting silicon
+ info of MISC protocol
+Message-ID: <aGefsqOfnzhlj5Jn@bogus>
+References: <20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com>
+ <20250627-sm-misc-api-v1-v1-4-2b99481fe825@nxp.com>
+ <20250702-sceptical-caracal-of-drama-3cbc63@sudeepholla>
+ <20250704102057.GD4525@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 20/80] drivers: drm: Remove redundant
- pm_runtime_mark_last_busy() calls
-To: Sakari Ailus <sakari.ailus@linux.intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Douglas Anderson <dianders@chromium.org>,
- Lucas Stach <l.stach@pengutronix.de>,
- Russell King <linux+etnaviv@armlinux.org.uk>,
- Christian Gmeiner <christian.gmeiner@gmail.com>,
- Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Qiang Yu <yuq825@gmail.com>,
- Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Liviu Dudau <liviu.dudau@arm.com>, Thierry Reding
- <thierry.reding@gmail.com>, Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Jyri Sarha <jyri.sarha@iki.fi>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Damon Ding <damon.ding@rock-chips.com>,
- Ayushi Makhija <quic_amakhija@quicinc.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
- Chen-Yu Tsai <wenst@chromium.org>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- etnaviv@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- imx@lists.linux.dev, lima@lists.freedesktop.org, linux-tegra@vger.kernel.org
-References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
- <20250704075413.3218307-1-sakari.ailus@linux.intel.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20250704075413.3218307-1-sakari.ailus@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250704102057.GD4525@nxa18884-linux>
 
-On 04/07/2025 08:54, Sakari Ailus wrote:
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
+On Fri, Jul 04, 2025 at 06:20:57PM +0800, Peng Fan wrote:
+> On Wed, Jul 02, 2025 at 04:22:11PM +0100, Sudeep Holla wrote:
+> >On Fri, Jun 27, 2025 at 02:03:47PM +0800, Peng Fan wrote:
+> >> MISC protocol supports getting the silicon information including revision
+> >> number, part number and etc. Add the API for user to retrieve the
+> >> information from SM.
+> >> 
+> >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> >> ---
+> >>  .../firmware/arm_scmi/vendors/imx/imx-sm-misc.c    | 34 ++++++++++++++++++++++
+> >>  include/linux/scmi_imx_protocol.h                  |  8 +++++
+> >>  2 files changed, 42 insertions(+)
+> >> 
+> >> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> >> index 8ce4bf92e6535af2f30d72a34717678613b35049..d5b24bc4d4ca6c19f4cddfaea6e9d9b32a4c92f7 100644
+> >> --- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> >> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
+> >> @@ -26,6 +26,7 @@ enum scmi_imx_misc_protocol_cmd {
+> >>  	SCMI_IMX_MISC_CTRL_SET	= 0x3,
+> >>  	SCMI_IMX_MISC_CTRL_GET	= 0x4,
+> >>  	SCMI_IMX_MISC_DISCOVER_BUILDINFO = 0x6,
+> >> +	SCMI_IMX_MISC_SI_INFO = 0xB,
+> >
+> >Again, this seem to have slipped through in my initial review. How is this
+> >different from SMCCC SOC_ID interface. I am OK to have it as part of your
+> >vendor extensions and be here in the kernel documentation. But I won't
+> >accept any users of this within the kernel. Please provide justification
+> >as why you can't use the standard SMCCC SOC_ID.
+> >
+> >So, clear NACK for adding this support in the kernel for now.
 > 
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
-> The cover letter of the set can be found here
-> <URL:https://lore.kernel.org/linux-pm/20250704075225.3212486-1-sakari.ailus@linux.intel.com>.
+> What I do here is just wanna to let
+> linux could print similar information as what SM shows in its console:
 > 
-> In brief, this patch depends on PM runtime patches adding marking the last
-> busy timestamp in autosuspend related functions. The patches are here, on
-> rc2:
+
+Sure you can dump whatever you want on the console. The main concern is
+another user interface for very similar information that can be obtained
+by SOC_ID or soc_device in the kernel. Just kernel internal use should
+be fine.
+
+> >$ info
+> SM Version    = Build 677, Commit 49a36aaf
+> SM Config     = mx95evk, mSel=0
+> Board         = i.MX95 EVK, attr=0x00000000
+> Silicon       = i.MX95 B0
+> Boot mode     = normal
+> Boot device   = SD2
+> Boot stage    = primary
+> Boot set      = 1
+> ECID          = 0x7BADEECC000001D40001300963E636F1
+> PMIC 0 (0x08) = 0x20, 0x09, 0x20, 0x00, 0x01
+> PMIC 1 (0x2A) = 0x54, 0x22, 0x00, 0x0B
+> PMIC 2 (0x29) = 0x55, 0x22, 0x00, 0x0A
+> Compiler      = gcc 14.2.1 20241119
 > 
->         git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
->                 pm-runtime-6.17-rc1
+> With soc_device_register, dumping the silicon information needs use the
+> other sysfs interface.
+
+So what ?
+
+> Here with this patchset, reading one sysfs file could dump all the information.
 > 
->  drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 2 --
->  drivers/gpu/drm/bridge/analogix/anx7625.c          | 2 --
->  drivers/gpu/drm/bridge/parade-ps8640.c             | 2 --
->  drivers/gpu/drm/bridge/ti-sn65dsi86.c              | 1 -
->  drivers/gpu/drm/etnaviv/etnaviv_gpu.c              | 4 ----
->  drivers/gpu/drm/exynos/exynos_drm_fimc.c           | 2 --
->  drivers/gpu/drm/exynos/exynos_drm_g2d.c            | 2 --
->  drivers/gpu/drm/exynos/exynos_drm_gsc.c            | 2 --
->  drivers/gpu/drm/exynos/exynos_drm_rotator.c        | 1 -
->  drivers/gpu/drm/exynos/exynos_drm_scaler.c         | 1 -
->  drivers/gpu/drm/i915/intel_runtime_pm.c            | 2 --
->  drivers/gpu/drm/imx/dcss/dcss-crtc.c               | 1 -
->  drivers/gpu/drm/lima/lima_sched.c                  | 1 -
->  drivers/gpu/drm/panel/panel-edp.c                  | 3 ---
->  drivers/gpu/drm/panel/panel-samsung-atna33xc20.c   | 2 --
->  drivers/gpu/drm/panel/panel-simple.c               | 2 --
->  drivers/gpu/drm/panthor/panthor_sched.c            | 2 --
 
-Panthor changes are:
+That goes completely again the sysfs policy. Single file single value.
+Convince Greg otherwise, I will consider elsewhere not for this SOC_ID
+for sure.
 
-Reviewed-by: Steven Price <steven.price@arm.com>
-
-Thanks,
-Steve
-
->  drivers/gpu/drm/tegra/submit.c                     | 1 -
->  drivers/gpu/drm/tidss/tidss_drv.c                  | 2 --
->  drivers/gpu/drm/vc4/vc4_v3d.c                      | 1 -
->  20 files changed, 36 deletions(-)
-> 
-[...]
-
-> diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-> index a2248f692a03..f635f26a23f4 100644
-> --- a/drivers/gpu/drm/panthor/panthor_sched.c
-> +++ b/drivers/gpu/drm/panthor/panthor_sched.c
-> @@ -2446,7 +2446,6 @@ static void tick_work(struct work_struct *work)
+> But anyway, ok to drop this patch.
 >  
->  out_unlock:
->  	mutex_unlock(&sched->lock);
-> -	pm_runtime_mark_last_busy(ptdev->base.dev);
->  	pm_runtime_put_autosuspend(ptdev->base.dev);
->  
->  out_dev_exit:
-> @@ -3203,7 +3202,6 @@ queue_run_job(struct drm_sched_job *sched_job)
->  
->  out_unlock:
->  	mutex_unlock(&sched->lock);
-> -	pm_runtime_mark_last_busy(ptdev->base.dev);
->  	pm_runtime_put_autosuspend(ptdev->base.dev);
->  
->  	return done_fence;
+
+Thanks!
+
+-- 
+Regards,
+Sudeep
