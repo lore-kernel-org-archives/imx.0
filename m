@@ -1,128 +1,203 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013008.outbound.protection.outlook.com [40.107.162.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3715A3093C6
-	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 08:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751616701; cv=none; b=Vb2TPow37FDlYM13CzxM54EZ/eYkvO9zr5y9CZUhoc4EK01j37UabM2zP5ytnyYLBKiRmtwwqTSJKZR4BiF5FRbAc2SQU8+9wm/Zw2ygZc0pVBUS7xN4HYrsW1xGDM1XiHI7A6ip0FrBwGEIs0jIoAnxQXEAeyC3ksv/Rr2iQks=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751616701; c=relaxed/simple;
-	bh=hXYmRLx6CndyqgBfjOW2CrFdlMs+3zq1ANJEEZCHtM0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GrV2MP9IM55LHTQSvtoNtX0Y9A84sBcwJeBevyC9p48E1p7X2u/0y8ufgkD1wnEEDDZTni9Z8FXmL2TnR5KF2fYps5n90O9pDWvazBD5DmnwIARpbdcuYWSMXUJKTNFMVRJlv890vDA+VaDp8Jd2FGxFj0/c706hNFl0KStvhws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BI46S5Na; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2585426A0B9
+	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 08:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751617209; cv=fail; b=VpHZEb3K/0FVlAjcz0HtR7HfPYdbh6ngnzyIWn5c9XpPkfua1ozXl7y2OC9IKLfdzFQx3IK58xMMCsWFkfrho82o6ase4NjHlpYr1gjX45Fd3/cG9FEQdUcsoBBJIw/oXo57kf4O+IvqkuTrBRfqcQ4XVofPAgt76ZdUNHDOmnk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751617209; c=relaxed/simple;
+	bh=zgQ6Mb6uNJbFa/dSBxCV2LVzFjNDe+TkrkrFeCRcvoM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hbKuG8dBqKYywQJtfxej5pxKcwUsogwySuSE1mxOoj2iovTyGQV59ku5CbCXsbE9Bx8gJ3/BM5uvUWu5oQBk0ZYIrQ047voumX0HQbBaTtn+mw9Bh6plYg/immqPIjOjBxLA1HIhIIz9Nle04XimUdCDORsihHOJOBBqeK4l7g0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aHZQHVdC; arc=fail smtp.client-ip=40.107.162.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BI46S5Na"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751616699; x=1783152699;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=hXYmRLx6CndyqgBfjOW2CrFdlMs+3zq1ANJEEZCHtM0=;
-  b=BI46S5Naw2+EcTIsU2ORBvTa2ULKftgtyTZWbKJuDIu3AYF3OzrbgfQa
-   iQxy0ezfXaKdDf19i/zUWPdeeV6+xRtj4hewCFjsfVzgy11crYdtN9sLC
-   25nLs/ned1xAPijRRWJ2YIvJVCfoCcr8wCnSrYEcJJ2MsP4hvXim/Hlgi
-   PVdkfJk6wib7wEOf0qZOS5lqXnAOfsgvyDOo3WKJXE+ZCv+w/T+VA0Au7
-   x8x87nDQRR7Kzqf7AXz1rQfdodOQTmiee9F6JrOYu8Q80hAPboOa70o0M
-   MZ7Bxdkl6KWLEN3np1wVB1MkYi7m7eGT0u7KIF103wWffO7aQ5R8XDEA3
-   Q==;
-X-CSE-ConnectionGUID: Mv67EVhVSmWYfcDUkmXeJw==
-X-CSE-MsgGUID: pwLva2/PQlCy855wDK3cfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="65004415"
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="65004415"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:11:38 -0700
-X-CSE-ConnectionGUID: IaKHq96qSDKcGEjh98uuoA==
-X-CSE-MsgGUID: /7bgrxnWTmeUHlLJS9o4qg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="154955604"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.102])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 01:11:21 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, Andrzej Hajda
- <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Laurent Pinchart
- <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Douglas Anderson <dianders@chromium.org>,
- Lucas Stach <l.stach@pengutronix.de>, Russell King
- <linux+etnaviv@armlinux.org.uk>, Christian Gmeiner
- <christian.gmeiner@gmail.com>, Inki Dae <inki.dae@samsung.com>, Seung-Woo
- Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, Laurentiu Palcu
- <laurentiu.palcu@oss.nxp.com>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Qiang Yu
- <yuq825@gmail.com>, Jessica Zhang <jessica.zhang@oss.qualcomm.com>, Boris
- Brezillon <boris.brezillon@collabora.com>, Steven Price
- <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, Thierry Reding
- <thierry.reding@gmail.com>, Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Jyri Sarha <jyri.sarha@iki.fi>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Dave Stevenson
- <dave.stevenson@raspberrypi.com>, =?utf-8?Q?Ma=C3=ADra?= Canal
- <mcanal@igalia.com>,
- Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, Dmitry
- Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Damon Ding
- <damon.ding@rock-chips.com>, Ayushi Makhija <quic_amakhija@quicinc.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>, Uwe =?utf-8?Q?Kleine-K=C3=B6ni?=
- =?utf-8?Q?g?=
- <u.kleine-koenig@baylibre.com>, Chen-Yu Tsai <wenst@chromium.org>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- etnaviv@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- imx@lists.linux.dev, lima@lists.freedesktop.org,
- linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 20/80] drivers: drm: Remove redundant
- pm_runtime_mark_last_busy() calls
-In-Reply-To: <20250704075413.3218307-1-sakari.ailus@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
- <20250704075413.3218307-1-sakari.ailus@linux.intel.com>
-Date: Fri, 04 Jul 2025 11:11:17 +0300
-Message-ID: <a48b77bc632824c6f64bbdb3775f97387e9eedb9@intel.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aHZQHVdC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ePfs6oCviVorFGmSgTHUQUunyCWq9l3C0u9JEMJRCjqOttC1uWXLhA5Qx0E/4+7UVhBBZp5Nx97lw8HYNxzXMXloGcYa10AXSjLDj8YdzBCXlaVJ9AuaYRMNXKt+vuSBKxWBq9qurk6KqgbI/urlAMuUlBfeXjAnz+tJdRsPDQojV+D5/6ixmV7dv3VFoIzobi7wqqeZcZiBHwAZIEk99siCItiaK4g98HrLSqUiXcloWBaCrkTv+R+GE2MS1fQOOICf6Z+WpVx2Q/yZn7NVNWRuptfkr1F6liFLDJWSyBG5An09ajoOYGva42L155NilqGhGUXDahUESTaELZK7cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xBTM62JvcQzpj3010ouc9r0gY1QPtTmlNuJ+awJ0O18=;
+ b=tcBe/0clmTYxGisyA02U1ZWAP3Ju3Ntrzstw4AtpbzjvzKOrmgXeJrD0APXAqLEypUMJlZi3SvWwMxtPOkV3iKRGSMfio72QkDCCk3bRYaIAFVcJSUpWC3Vq/H8LgaI2No2fRXuxN+Vh1WYn+YJFXd6avjMZLw/OOjJacSC6CnE2TUy0OzJiK9fgmJ6f+BVzX8pLND8o9SuEQfxJD/pnitwx2nmOg9/cHBZ137yQNDXTQqCrkTL8aa3Xp7FS+aD6f3KMj9jUQpZLFO0VT8A0smoxeMEEl2iKrhrjc519XUECyKsmapDVM3iutzKWRRv2sTTsbaR6wQdgpskkYUb4Nw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xBTM62JvcQzpj3010ouc9r0gY1QPtTmlNuJ+awJ0O18=;
+ b=aHZQHVdCm+pj4RexF7iup6zErm0RR3LRTfeC8FG0syWUXkgZzb+90mecwOC6rx9rBV/3IIwC4NnV3KGhra6ah45DB573ZzYaM7ImKoqstT83ksYeR6dUnV8UjovgaKczrLT8CUYLtza7RrVrPEaISHjrKWfQ8dN3K5S36iTKGPGhkDbkV+pJuomL12FWlw0qh2CH+Ligq5KhM+mDIhV/KWvQlUiTizySA+gauycMoWxzHo2wBIL4vp/X03UbrnO7v4j7stARlGYGEGV63vHl8NKwaLbHJQloJFshOTD/rAccHevJ0oG8WQIF3Ue5f9lGmhIfrE1/IvXkS+SYsoq1Cg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by VI0PR04MB10231.eurprd04.prod.outlook.com (2603:10a6:800:23f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.22; Fri, 4 Jul
+ 2025 08:20:02 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::4e24:c2c7:bd58:c5c7%6]) with mapi id 15.20.8901.021; Fri, 4 Jul 2025
+ 08:20:01 +0000
+Date: Fri, 4 Jul 2025 16:15:05 +0800
+From: Xu Yang <xu.yang_2@nxp.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: ezequiel@vanguardiasur.com.ar, mchehab@kernel.org, 
+	laurent.pinchart@ideasonboard.com, hdegoede@redhat.com, gregkh@linuxfoundation.org, 
+	mingo@kernel.org, tglx@linutronix.de, viro@zeniv.linux.org.uk, 
+	thomas.weissschuh@linutronix.de, linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-usb@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v4 1/3] usb: core: add dma-noncoherent buffer alloc and
+ free API
+Message-ID: <qkcjh724zierhbmeowmyy7yicfwurjrgfhbqerxojci3uj6ge2@3uccejpgyavg>
+References: <20250703103811.4048542-1-xu.yang_2@nxp.com>
+ <20250703103811.4048542-2-xu.yang_2@nxp.com>
+ <aGaJ0fS25bDoLCfH@smile.fi.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aGaJ0fS25bDoLCfH@smile.fi.intel.com>
+X-ClientProxiedBy: MA0PR01CA0021.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:b8::9) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|VI0PR04MB10231:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51ba42c8-bc30-46ac-12e5-08ddbad3925f
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|1800799024|52116014|19092799006|376014|7416014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?ataojsgPq2CwyKB7FSbz+zY8rCjLlztPimDyE5MsWYAfK30TeqePC9P8/PoJ?=
+ =?us-ascii?Q?iRIeCzYPspeZs7iHfOdcUvWeGbE0/JInN/9RLEuOV+6NX1Bupon2K0yHd5w4?=
+ =?us-ascii?Q?1hjdc9GpFcU6pEwKaFkYFZm8H1ScFaysKUlbP/Xf26x8tfqkor4cLVABmpmO?=
+ =?us-ascii?Q?XXcQQcYa4Q3qB7ODJwVJI0akUlKYxHpOkRZJ5b9Hd7kfWYnUHZCQ9drWgd4Y?=
+ =?us-ascii?Q?cw2GbvaI1u7fDMfezTyitNYFCqticsCC5RbkB7i7NWmLLwpkMT1DpMrJLcyc?=
+ =?us-ascii?Q?iwjxDB6Mo+UxD1galFPD3/MmGTF6GkdS8Z4l+lVzKyhXRMvSMoTRVs7UdyZr?=
+ =?us-ascii?Q?nJYeSXsNCsJ/IFt0DknKePCqVMasFWdK3TcEANnSESSy9ybWLmaTkWhJXZHh?=
+ =?us-ascii?Q?zzxpCjZkXLi8Bo4vQAMA6u+jgUVgaTLrB97CedEhxWeeGIfjCFvwgy/Gg8Ot?=
+ =?us-ascii?Q?3mLg5EHdNoF7wi7yvlgwC2xQwHi+4wdvTuQEOrMYs+A1RVg+Si2btrbrIYYC?=
+ =?us-ascii?Q?keg4hNxF9gZMimPsC7UyZEUtbQDpwknFbJVPna1mf7a/eBweV1HpiNxnvRw5?=
+ =?us-ascii?Q?DIIvl7qr/kyxOLIYaEDxPBS7O9e010HvraNAg1vCWn/XrDwu0t/V+Cw8KSqC?=
+ =?us-ascii?Q?2sZdRruNBoctRLgurK1PADwbzcD8F5bu4AI2BlMiqS03A3pSQ3gWG9cwi3ea?=
+ =?us-ascii?Q?uW0p9ASuyR8aQHP1kEZSuvwUkac0DM/M4sEPdG5NItFtrk0d/Mv7pnLTO2Lw?=
+ =?us-ascii?Q?mNVBNgJlFDp8LUGpjpna/ueYBq7GTC8hJCy84cB7MEHOXbRLQ/VEnJr+WHL0?=
+ =?us-ascii?Q?eX7nP0rBNWEapdEFruwPPlUqSfSGn2uOA8vl80HGOoosi7JGIiubLGIykJXQ?=
+ =?us-ascii?Q?R13zo3Z44tsG+O/E0XuZVyK+0IC8irKQUTd7zmlA+UyCxT88c+kxE90b3Pux?=
+ =?us-ascii?Q?TiYtnC6fyLuU8Wjvz+jwzeLajX6Fhcu2cVgknspq8Pvzro4u32L6rv7BJWSQ?=
+ =?us-ascii?Q?3gUweMWROhQBYOeDFZdxEKqsDtZFKCGapg8LrIypSXH5N3Fg2CdtSOe3fjAG?=
+ =?us-ascii?Q?194bLcP5U/1+zSs+SxaSeZp7uHJ+kCG1JkE/9R9X0D2fwVw8EAoNIq5yJsnS?=
+ =?us-ascii?Q?CNDaUHqZGn0+yldRbr1VAewc4fliAYlNw7Ia57AUxZI9QMeC5s5+rMUnv1ts?=
+ =?us-ascii?Q?8hKpS4Zjb9AESEN0cBPGinCpRYRnHssrSATxNIdqaJ040yMi3tVQdI9GnQ4A?=
+ =?us-ascii?Q?yh5D6wC/oKA9ubvMKsO15YIKfAWJIVNVDueUrWw2k19nYJCuDPZO7isayBo4?=
+ =?us-ascii?Q?mnZ4GERQX9MRLZfbwSIwAZFYY0SB48H9TIder41AaI7gaoo/M5vzOCNOhAiU?=
+ =?us-ascii?Q?0bFURFTvmF+R9BysZKoQIdB9RlPT1YlVkfepxB6kXjXXibn4C9WbOED5HSBS?=
+ =?us-ascii?Q?9QQv3ekDx6wd2msWLjJm7lY0juwm1jwPDmnQrTb3q1fZFiTtLJcO9Q=3D=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(19092799006)(376014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?LnOhMJreqlOr6mBSY7G1ZIxBCA0QU8nmLir6rT7eQqhUlhmZn/2FZibqJ0f3?=
+ =?us-ascii?Q?0Qp8YGw3FBqZcVbBNUIWaGQq/eNqgVnqc5I8TDbRYtU1e/OumMpeKwb3GrFT?=
+ =?us-ascii?Q?LlYpSFn3CNN+LV2qvf5ap/JLVc1XbNK+HaA8aGIJp80nQZMUXjmXpaMfWxVd?=
+ =?us-ascii?Q?WzHZ2XJT3GT+FTqVeVqTmzpIb++DDWAQWZQdXzGGcr7oXnR4tXdA5VGQ3Wic?=
+ =?us-ascii?Q?FtaZjRz58PmwUlVwp1VvmnsSO0+mA8wdT2b5W1rxV9inzMOSB9MOZMlVVjIu?=
+ =?us-ascii?Q?ApmOQz0JKAi8o5AmXPQMwqy+EXAtdp+dRIFJVwIWnObJd/KRJ8YwnKKGVnkD?=
+ =?us-ascii?Q?96thxV0hf7pYyRvKcITZUkE9sD/lwzgJaCyngL0C3aAQe0XN7K4pekULRIyK?=
+ =?us-ascii?Q?aLinT8389sjIN1zvyTK0KhUbxk8If8ZOBPC9etFyPPc1uRf1vuzuGykGZBQ9?=
+ =?us-ascii?Q?hEIqQC0fiBwUofmG5zH5WC2frIEyyVYuaYVwMrZXYDy3g0IEjQFPKL+A82ZK?=
+ =?us-ascii?Q?hfebMJK3yy5uVJzio+wpsMqs7v2tnU2EkcMS/8eXI5x13Xniv5dAyLFi74Jh?=
+ =?us-ascii?Q?gNE+mttFGTVs4pQyxkeoyIgcPLNS90CzYnm1nDElBJlhVfpBkS/tcUV8HYK9?=
+ =?us-ascii?Q?xNdB1hrlJSkZbSSkz5rhot/yt1Beh4vz+/Mxw4BU1Anoh8JQFWaBWI5l/kNm?=
+ =?us-ascii?Q?XxiIhcUFWwgkdnSalYBaVpsMDtQ6Sr2iAu0jCUmc07I5yjkN+MGkVgAF7IHT?=
+ =?us-ascii?Q?XgGUzwVos4XKAk8UFemzovdR8oCufe1ZC43MBIv36QEoHDpanNPSNoHWepWo?=
+ =?us-ascii?Q?so5P2Uw5U1Ctg5NRZgoq0RLO0JpB5tSALXGew3O5a50qNpGyeorY1J69vvoe?=
+ =?us-ascii?Q?q4dP5GpczdaZHovuzyTURvoT62WqjC8PgFRs0WGWA8HBq6cRMh0CsM7EBn/t?=
+ =?us-ascii?Q?QPNkS1du6AqaOVarMIYNQuN2Uk/tyNHo6HIl4qfTb1eXMm/BeIQHMe8Lx/OM?=
+ =?us-ascii?Q?kKOiEp5M/fDYUFi3v5nhaFQGWKVe99opHBb0bUX8rluW5ack5qKhACCIYGwx?=
+ =?us-ascii?Q?x/N2DFmRrLG+m/iM4xotxduo0cGVSVOsP08CGSIddeKts6a0SenogHVCnFSi?=
+ =?us-ascii?Q?3+ShbhdPiZG8B8WSTvLNnayp0zc2qujrbCQX1I2IwWgTqCmx2tPao7rRfvRt?=
+ =?us-ascii?Q?0gw1sL0VOQb4OYWyAFTX6V3sob8Fwn99oZf9tKkPwffJHSMtz08Uqs5WR41x?=
+ =?us-ascii?Q?juxeHP9IuOTF1neR+8ztCjIyFqF/NSjuiRpGi3nJZZByI0wWB6JTZDPD2A//?=
+ =?us-ascii?Q?Dhv6uPfqTxKFvjmH/EHeAI2V0PO4JfFfW2PCcFZiqOQzSWG3LAzx5vKce8Y+?=
+ =?us-ascii?Q?C1RpNXBTYguAsh94Y1+Aw8dEfoiapxAQyGZnc+nVR4Fy3wmWoL7EpVpUeOZs?=
+ =?us-ascii?Q?/1y2RzbW3A/kmsfGfdsZxI1qjcuqvNLWDlmQT2Ki1HEM8BI4s46pe8JO0Lyi?=
+ =?us-ascii?Q?6t1VLh4Cry065cNXZ1oSdh6wm1HkxBiA7FLngbDWPeAM+mKH/eRqCYtC9sPL?=
+ =?us-ascii?Q?oX20QnerFHTv9GPu45GpRAp4nGBAE0fE23nMFAj2?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51ba42c8-bc30-46ac-12e5-08ddbad3925f
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2025 08:20:01.6631
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U714UEqTtyYfK+xJqNK1b8Gn2X+FpuZ07TRVwJvQby/+4r6AE+Ioz+5QQLMINiYiFV1Gk3Xmzhzm++MbkaJrGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10231
 
-On Fri, 04 Jul 2025, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
-> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
-> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
-> pm_runtime_mark_last_busy().
->
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> ---
-> The cover letter of the set can be found here
-> <URL:https://lore.kernel.org/linux-pm/20250704075225.3212486-1-sakari.ailus@linux.intel.com>.
->
-> In brief, this patch depends on PM runtime patches adding marking the last
-> busy timestamp in autosuspend related functions. The patches are here, on
-> rc2:
->
->         git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
->                 pm-runtime-6.17-rc1
+On Thu, Jul 03, 2025 at 04:46:57PM +0300, Andy Shevchenko wrote:
+> On Thu, Jul 03, 2025 at 06:38:09PM +0800, Xu Yang wrote:
+> > This will add usb_alloc_noncoherent() and usb_free_noncoherent()
+> > functions to support alloc and free buffer in a dma-noncoherent way.
+> > 
+> > To explicit manage the memory ownership for the kernel and device,
+> > this will also add usb_dma_noncoherent_sync_for_cpu/device() functions
+> > and call it at proper time.  The management requires the user save
+> > sg_table returned by usb_alloc_noncoherent() to urb->sgt.
+> 
+> ...
+> 
+> >  	dir = usb_urb_dir_in(urb) ? DMA_FROM_DEVICE : DMA_TO_DEVICE;
+> > -	if (urb->transfer_buffer_length != 0
+> > -	    && !(urb->transfer_flags & URB_NO_TRANSFER_DMA_MAP)) {
+> > +	if (!(urb->transfer_flags & URB_NO_TRANSFER_DMA_MAP)) {
+> > +		if (!urb->transfer_buffer_length)
+> > +			return ret;
+> 
+> This return ret out of a sudden are quite fragile. Please, move to use return 0
+> directly where it is supposed to be 0.
 
-I would think it's better to wait for linux-pm to get merged to Linus'
-tree and then backmerged to drm after -rc1 instead of cross-merging that
-directly to drm.
+Okay.
 
-Regardless, for merging the i915 changes via whichever tree,
+> 
+> ...
+> 
+> > +	} else {
+> > +		if (!urb->sgt)
+> > +			return ret;
+> 
+> Ditto.
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+Okay.
 
--- 
-Jani Nikula, Intel
+> 
+> > +		if (dir == DMA_TO_DEVICE)
+> > +			flush_kernel_vmap_range(urb->transfer_buffer,
+> > +						urb->transfer_buffer_length);
+> > +		dma_sync_sgtable_for_device(hcd->self.sysdev, urb->sgt, dir);
+> >  	}
+> 
+> >  	return ret;
+> 
+> Ditto?
+
+With Alan's suggestion, this patch will not touch this line.
+
+Thanks,
+Xu Yang
+
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
