@@ -1,155 +1,89 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425902D0C9E
-	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 11:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634742D640A
+	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 12:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751628612; cv=none; b=cHGQ7Q5+p2z5nytndJkY1jHoNJghM1DBmY/hjIHvT4mbYvkcr2KLblEGBS93WKLOIG0uTauAPbgwqMHsaC9gSn8bItm/SQPoPY0HB7jDEEdaOt5013A35p5YGztnlg07LR77qpFToty0yAcWjAtmnvRvohATi4EtL1l6xissswk=
+	t=1751631706; cv=none; b=XnIbRiLQ0iGqKO+q/w7igjzxdLcy3U15F2GnWlcVlt27AaXbxEQkQ2JSWSqULeDFdE2B+DeKktakrx1R9bJYtPxhFD90GcNdvT3IA/QyzxR68O77bF0ZuthKJG9NHopv82OdlfY+5Xvfk0LkyXpP6Z90RZCuJvQGjGFc5dOdvdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751628612; c=relaxed/simple;
-	bh=LBBKUZPE2gWKJIlUUTuZzM4rUYU+U7D59WGqtSEG+zU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dZSLO5ke68K5hWqz12gaSpZqzgdALLShetov/4/3OgWAtAABqiJUVdDWVJjEzPn/E+OFmal6gdhyh1TFXcQ3SBNwwGxVtF4Dp/29YwTJGhky2NuHdH+1Cx8KMd61+OWj/UztaxD9pHuVRcGlhirya3vnYy46saiAj5EzueOgy2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=OIsG7Ij3; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=W4gdiY2u reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1751631706; c=relaxed/simple;
+	bh=8a4JE7cC0D+vkHlLbZY2UU0DDIew3l1nNVFssbZ4h8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QpnhbrNwTrecvEaVMpeezHRbSYreKgetspFmN4LcxG54J7WFeQFlPfTDx+nA8lSCujBoa8o5JK0yx+J5d3EKraK9ywEtk1MkTmJ3lGrW7ChtB86pIKTXN3/V8Q3bUsgYUj8rd0UDpp45HQTzNtz9MSLNspF7mk9GuYxKZSb0Kzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=J097Db1w; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="OIsG7Ij3";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="W4gdiY2u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1751628608; x=1783164608;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=oQLSCU6s7tadJXW3ijfkRaS6QjwulBRxirc1q6sY6so=;
-  b=OIsG7Ij3AG2IZL3NvAndB4AIBWeWdo28Ty9QKZqB9sStL0AenSZr/cGx
-   CgqALvouK5PdeRlAarSOfrXRgYbbGCL4kwkFYXDlsKYSgcP7lkPLXr6Kt
-   17iUHwTGam1pN2gY+9U6IiJ913coctf/bK8nH86ZNFaMtXVMTwPd9osIY
-   qr6rzJ1oycjjRjIUYi5CbGi13yyIsWr4RnLpvQ6sALQr391oBViziSRGD
-   lj1DR6e7+FqZrVlILIyY4Fc7KKjobRse9P14U8K1kPCQk5hi9NFwFshEB
-   Sy8Eu5S0S288doXeThQJW1bsgs4XqNTCGc7k8eJnjrGOmGY45/x5+C1iZ
-   w==;
-X-CSE-ConnectionGUID: jSRuNTPpRsydYLYRPhbXQg==
-X-CSE-MsgGUID: R+RKeJOgQ+S5uDN6S6S9fA==
-X-IronPort-AV: E=Sophos;i="6.16,287,1744063200"; 
-   d="scan'208";a="45031135"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 04 Jul 2025 13:30:04 +0200
-X-CheckPoint: {6867BB3C-30-4FC15ADB-CD71293B}
-X-MAIL-CPID: 407389F97A04FFAD1E4F8CCE6D42EE93_0
-X-Control-Analysis: str=0001.0A006396.6867BB4C.0063,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AC794165607;
-	Fri,  4 Jul 2025 13:29:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1751628600;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="J097Db1w"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 283F2443D7;
+	Fri,  4 Jul 2025 12:21:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751631702;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oQLSCU6s7tadJXW3ijfkRaS6QjwulBRxirc1q6sY6so=;
-	b=W4gdiY2u+KnVU6AEdD0acwe3gCkG8t/uyJscqkMzNXOpRFSqpVNFfLN9jFk/1GB+71IMXE
-	kWwh6jGmZ+hBi4ZZ98dPY9+hZRc8zDTWF5S42ufc3p0vo0uB7aULUruYxiNzkCrNAT/dIp
-	Qpw3v6qWfXz7EwZcnEe677+Ytex/+2ODif3jwmve/nnfYpoL1eTfa7lWOOciCU3ukcS0hr
-	d0eYqEiAt1eRyuRZmrjbZV+VihawcFagHfXxm7z1ahKQ7+MsGLI4O48PqNOEl8w9aK2jpC
-	vr9n7V6SlBwd92LVSYrWcBgrTkMgNkpj7p61/UB0iymUekecOOfIsYbbIAq8Aw==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dmitry Baryshkov <lumag@kernel.org>,
- dri-devel@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Liu Ying <victor.liu@nxp.com>
-Subject: Re: [PATCH 04/14] drm/imx: dc-fu: Fix dimensions
-Date: Fri, 04 Jul 2025 13:29:57 +0200
-Message-ID: <3702593.R56niFO833@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20250704-imx8-dc-prefetch-v1-4-784c03fd645f@nxp.com>
-References:
- <20250704-imx8-dc-prefetch-v1-0-784c03fd645f@nxp.com>
- <20250704-imx8-dc-prefetch-v1-4-784c03fd645f@nxp.com>
+	bh=14yiLbluiFffVexpfXmhgolj33cjrEQatU2sWBvTEdI=;
+	b=J097Db1wBFOvaRrjiF9azT0bdbkQY94mrPe7zYjitUqSWMfDesYbvsacSuyVVdFQBMdhwg
+	H5h3R65CFuckmQ/22cfTk8dwQIbbo4DefNPG5iBIiBtLUSW7Wwzr9OKqv4ljrAxqgIoiob
+	BXXAWBL0dotvhogtMiDID5oPru3xsZLM3wD6R26Fe6rNW6pMjPmn2exXLYpjORajw23luG
+	sy7osrRw0xoLiFKXrxLrw+Fc6PLu8m/oAhlOSifFzkHeKnmGXH7DTKbnpWEadmujxOF8Rf
+	OpIwn4FtYuUWSHHs7ibiBZ9lsqsLqA9X4pVUu4IL4n1kEEtLkIYOeyBtHoh+Zw==
+Date: Fri, 4 Jul 2025 14:21:38 +0200
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Sarosh Hasan <quic_sarohasa@quicinc.com>
+Cc: Wei Fang <wei.fang@nxp.com>, "andrew @ lunn . ch" <andrew@lunn.ch>,
+ Russell King <linux@armlinux.org.uk>, Florian Fainelli
+ <f.fainelli@gmail.com>, "hkallweit1 @ gmail . com" <hkallweit1@gmail.com>,
+ "davem @ davemloft . net" <davem@davemloft.net>, "edumazet @ google . com"
+ <edumazet@google.com>, "kuba @ kernel . org" <kuba@kernel.org>, "pabeni @
+ redhat . com" <pabeni@redhat.com>, "xiaolei . wang @ windriver . com"
+ <xiaolei.wang@windriver.com>, "linux-kernel @ vger . kernel . org"
+ <linux-kernel@vger.kernel.org>, "imx @ lists . linux . dev"
+ <imx@lists.linux.dev>, "netdev @ vger . kernel . org"
+ <netdev@vger.kernel.org>, Prasad Sodagudi <quic_psodagud@quicinc.com>,
+ Abhishek Chauhan <quic_abchauha@quicinc.com>, Sagar Cheluvegowda
+ <quic_scheluve@quicinc.com>, Girish Potnuru <quic_gpotnuru@quicinc.com>,
+ <kernel@oss.qualcomm.com>
+Subject: Re: [PATCH net v1] net: phy: Change flag to autoremove the consumer
+Message-ID: <20250704142138.3f1a4ec1@fedora.home>
+In-Reply-To: <20250703090041.23137-1-quic_sarohasa@quicinc.com>
+References: <20250703090041.23137-1-quic_sarohasa@quicinc.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvfeduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegveeltddvveeuhefhvefhlefhkeevfedtgfeiudefffeiledttdfgfeeuhfeukeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrrdhhohhmvgdpmhgrihhlfhhrohhmpehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduledprhgtphhtthhopehquhhitggpshgrrhhohhgrshgrsehquhhitghinhgtrdgtohhmpdhrtghpthhtohepfigvihdrfhgrnhhgsehngihprdgtohhmpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhrtghpt
+ hhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehfrdhfrghinhgvlhhlihesghhmrghilhdrtghomhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomh
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-Hi,
+On Thu, 3 Jul 2025 14:30:41 +0530
+Sarosh Hasan <quic_sarohasa@quicinc.com> wrote:
 
-thanks for the patch.
+> phy_detach() is not called when the MDIO controller driver is
+> removed. So phydev->devlink is not cleared, but actually the device
+> link has been removed by phy_device_remove()--> device_del().Therefore,
+> it will cause the crash when the MAC controller driver is removed.
+> In such case delete link between phy dev and mac dev. Change the 
+> DL_FLAG_STATELESS flag to DL_FLAG_AUTOREMOVE_SUPPLIER,so that the
+> consumer (MAC controller) driver will be automatically removed
+> when the link is removed.
 
-Am Freitag, 4. Juli 2025, 11:03:51 CEST schrieb Liu Ying:
-> Fix off-by-one issue in LINEWIDTH, LINECOUNT, FRAMEWIDTH and FRAMEHEIGHT
-> macro definitions.  The first two macros are used to set a fetchunit's
-> source buffer dimension and the other two are used to set a fetchunit's
-> frame dimension.  It appears that display controller itself works ok
-> without this fix, however, it enters panic mode when prefetch engine(DPRC
-> and PRGs) attaches to it without this fix.
->=20
-> Fixes: 0e177d5ce01c ("drm/imx: Add i.MX8qxp Display Controller pixel engi=
-ne")
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+This doesn't work unfortunately, PHY devices can be hot-swappable, e.g.
+when the PHY is in an SFP module. In that case, we must not
+automatically remove the MAC controller driver when the PHY goes away.
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+I gave this patch a quick test on a Macchiatobin, which has an SFP
+module, and indeed when you unplug the module while the link is up, the
+system hangs completely when running a command like "ip a" afterwards.
 
-> ---
->  drivers/gpu/drm/imx/dc/dc-fu.c | 4 ++--
->  drivers/gpu/drm/imx/dc/dc-fu.h | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/imx/dc/dc-fu.c b/drivers/gpu/drm/imx/dc/dc-f=
-u.c
-> index f94c591c815891468a5c2a940076963eeaa4d51c..b36d3034b8d5962eaab212b6b=
-65ebbb5c29f978c 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-fu.c
-> +++ b/drivers/gpu/drm/imx/dc/dc-fu.c
-> @@ -31,8 +31,8 @@
->  #define STRIDE(x)			FIELD_PREP(STRIDE_MASK, (x) - 1)
-> =20
->  /* SOURCEBUFFERDIMENSION */
-> -#define LINEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x))
-> -#define LINECOUNT(x)			FIELD_PREP(GENMASK(29, 16), (x))
-> +#define LINEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x) - 1)
-> +#define LINECOUNT(x)			FIELD_PREP(GENMASK(29, 16), (x) - 1)
-> =20
->  /* LAYEROFFSET */
->  #define LAYERXOFFSET(x)			FIELD_PREP(GENMASK(14, 0), (x))
-> diff --git a/drivers/gpu/drm/imx/dc/dc-fu.h b/drivers/gpu/drm/imx/dc/dc-f=
-u.h
-> index e016e1ea5b4e0471cf6627782603e72d0475c4e8..518d1af49f5ae9d4f67da5e6c=
-2e80abd7e962120 100644
-> --- a/drivers/gpu/drm/imx/dc/dc-fu.h
-> +++ b/drivers/gpu/drm/imx/dc/dc-fu.h
-> @@ -38,8 +38,8 @@
->  #define SOURCEBUFFERENABLE		BIT(31)
-> =20
->  /* FRAMEDIMENSIONS */
-> -#define FRAMEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x))
-> -#define FRAMEHEIGHT(x)			FIELD_PREP(GENMASK(29, 16), (x))
-> +#define FRAMEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x) - 1)
-> +#define FRAMEHEIGHT(x)			FIELD_PREP(GENMASK(29, 16), (x) - 1)
-> =20
->  /* CONTROL */
->  #define INPUTSELECT_MASK		GENMASK(4, 3)
->=20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+Maxime
