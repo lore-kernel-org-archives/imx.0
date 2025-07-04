@@ -1,98 +1,63 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D3B2DCF57;
-	Fri,  4 Jul 2025 07:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520262E0B48
+	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 07:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751615676; cv=none; b=UieVgqQYsZc/y8gno9mMgDxAP49Vkds3u/X4gdJ5MtBwwTkP4Y7bSxtMphKMIz7cnselQENMOs/IARjvrzPwQOq6fYdxOgwE4o0mp78q+57F/Gmpnlx/qAlQPVRZIFjR9Ng2e8+0l20fP11FqA7XtMGYx7jz61tnnOh4hSo2ruw=
+	t=1751615682; cv=none; b=YIkkM4tUxUspsiJi+ey3K5sw07c6r9sGd1YX4o5m72sNRbTLoiopPJ3pbUB4oTxosXTaGRmwHX8Tn2AH1MqxYVQw/yEjJLWcObr3jYHY7EdfDQUTiSt1wriGgMheEaZbuLr/aIhCbrlr08ZCIFaF4eY3hJ2G9o9bueozuTppBTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751615676; c=relaxed/simple;
-	bh=QbMjMby8Pwl0MnNO9PpYJpQ3wUGLrg04vUF7Y6hQgD4=;
+	s=arc-20240116; t=1751615682; c=relaxed/simple;
+	bh=yOOYW/owvwXZgS2+HcQ7G4ePe8nCZzpY+QwYaMpoeI0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IPCG8/RyNwVb1NMcOv9lE9FqXj2gq4Ww2/UcquOb0nfjrqechlK4n0SCuTqVESuY0l9vPwD1mAGO5DFSNfeUBoE/2SZUlD344mrzxLMz0XcbVvRxJqy7oW5+j6MtQdMjF9VmkHxMkg9f0UMqTIlwklbcsm9rMcq1yUy6HGLwbTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mHehWP7b; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=RxBSizwMJNBHO/Yh+oNaIS1X7zniMrEMyDKr1FhemxRUKZGJJPscHT0ExRakwDvu6cRcKGv0PP2rrscKWDIdNgvbCmBKZ2tyhSTYviW2hC1A2Z7HJgJaTS0mlvR5GVDcP5GR5Tc5hz7Budo0NHMIF9vzfZ3NU4XTvCwA1v8SLz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DCNElcvh; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mHehWP7b"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DCNElcvh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751615673; x=1783151673;
+  t=1751615681; x=1783151681;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=QbMjMby8Pwl0MnNO9PpYJpQ3wUGLrg04vUF7Y6hQgD4=;
-  b=mHehWP7bjMHFlKiHfp/f6OWlEkAADUqQRi3/V/VpyDwO6Vk15tO1RH6h
-   iynze6mZvgcfR3LmSmD4z4Kb0p4IEGmJifAhtFUojDZdOcj0da5RuEX9B
-   nY9jfwNdBX5YTNvM0ZZhw/4umap4VuBj/Sv5LRZ4Eh/pnpjIMu4sBsYpE
-   OEzLWOTGhduwj8Yhn3WbAJ2BbdZjLdHH3ncKW/ZdPgzLiY7iT8BChaHaA
-   NnyjAsO+HPrgav5SFPmOHMs/b3TgeXibYJeMpQ+hKejzxz08Da+dZ1tf/
-   WLp2Vvqh1425w3ieqFkqEnSDFgbojcVvXRZjlOzC74Ulgw/VU6vFxRxrN
+  bh=yOOYW/owvwXZgS2+HcQ7G4ePe8nCZzpY+QwYaMpoeI0=;
+  b=DCNElcvh7DSKBh/wl1C2Z6tJW57DxIAs2Tv6SLuJExfKd0lQ6Y3UipNZ
+   TiK/HV5xX6NyU+h3wk8QOY9zN4OstYqx9rG4s8jjJFBL/wznMhXc53VaV
+   GuZMJMtgR0kAd4IO/w/ruVp+koKGDS+EES8JkuP5lkgC41Qx9ZVkxDi8h
+   NnSCpLYMxybXaL7xMoq+Kq/LOpQCCc/cZEGq163pDfhbanfyZviqvfoeN
+   y6ZktoZAr7AP7B6ho+hQC+DjiwwX139r5/RPvhXO46880GsQcDWw5oC1G
+   5eI77CpSiukfXgXAP5WZv2+5Oqqr18SxpBo6qQ07MmZ6WUbCBJRqHb4rh
    w==;
-X-CSE-ConnectionGUID: IQcuNRFMQV2s0DUknFrSHg==
-X-CSE-MsgGUID: qB/CvkXOQj+wipDS6bAeqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="76494749"
+X-CSE-ConnectionGUID: cOVqUynMSJimjU6tnfHO/Q==
+X-CSE-MsgGUID: X+LM3jTfQ3OO63iMBvtn+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="64194115"
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="76494749"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:32 -0700
-X-CSE-ConnectionGUID: +yFu4+TsSMKsGHSqPDp44g==
-X-CSE-MsgGUID: FEA+89GqRpalH70hPrQ1Cw==
+   d="scan'208";a="64194115"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:40 -0700
+X-CSE-ConnectionGUID: /AI2m1pvTg66r4GBAEPbDA==
+X-CSE-MsgGUID: IR5aMR1DS2eGmRE/uCOv2Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="158924258"
+   d="scan'208";a="158616572"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO svinhufvud.fi.intel.com) ([10.245.244.244])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:22 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:37 -0700
 Received: from svinhufvud.lan (localhost [IPv6:::1])
-	by svinhufvud.fi.intel.com (Postfix) with ESMTP id 3391B4488D;
-	Fri,  4 Jul 2025 10:54:20 +0300 (EEST)
+	by svinhufvud.fi.intel.com (Postfix) with ESMTP id 1F96F44424;
+	Fri,  4 Jul 2025 10:54:35 +0300 (EEST)
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Cai Huoqing <cai.huoqing@linux.dev>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Marek Vasut <marek.vasut@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Julien Stephan <jstephan@baylibre.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev
-Subject: [PATCH 28/80] iio: adc: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Fri,  4 Jul 2025 10:54:19 +0300
-Message-Id: <20250704075420.3219092-1-sakari.ailus@linux.intel.com>
+To: Han Xu <han.xu@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Cc: imx@lists.linux.dev,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 45/80] mtd: rawnand: gpmi: Remove redundant pm_runtime_mark_last_busy() calls
+Date: Fri,  4 Jul 2025 10:54:34 +0300
+Message-Id: <20250704075434.3220589-1-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
 References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
@@ -121,324 +86,37 @@ rc2:
         git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
                 pm-runtime-6.17-rc1
 
- drivers/iio/adc/ab8500-gpadc.c     |  1 -
- drivers/iio/adc/at91-sama5d2_adc.c | 10 ----------
- drivers/iio/adc/imx8qxp-adc.c      |  2 --
- drivers/iio/adc/imx93_adc.c        |  1 -
- drivers/iio/adc/rcar-gyroadc.c     |  1 -
- drivers/iio/adc/rzg2l_adc.c        |  3 ---
- drivers/iio/adc/stm32-adc-core.c   |  1 -
- drivers/iio/adc/stm32-adc.c        |  7 -------
- drivers/iio/adc/sun4i-gpadc-iio.c  |  2 --
- drivers/iio/adc/ti-ads1015.c       |  1 -
- drivers/iio/adc/ti-ads1100.c       |  1 -
- drivers/iio/adc/ti-ads1119.c       |  2 --
- 12 files changed, 32 deletions(-)
+ drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ab8500-gpadc.c b/drivers/iio/adc/ab8500-gpadc.c
-index f3b057f92310..8eaa1dd6a89b 100644
---- a/drivers/iio/adc/ab8500-gpadc.c
-+++ b/drivers/iio/adc/ab8500-gpadc.c
-@@ -607,7 +607,6 @@ static int ab8500_gpadc_read(struct ab8500_gpadc *gpadc,
- 	}
+diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+index f4e68008ea03..8c1bf09bdbae 100644
+--- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
++++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+@@ -188,7 +188,6 @@ static int gpmi_init(struct gpmi_nand_data *this)
+ 	       r->gpmi_regs + HW_GPMI_CTRL1_SET);
  
- 	/* This eventually drops the regulator */
--	pm_runtime_mark_last_busy(gpadc->dev);
- 	pm_runtime_put_autosuspend(gpadc->dev);
- 
- 	return (high_data << 8) | low_data;
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index c3450246730e..67846fefe21a 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -896,7 +896,6 @@ static int at91_adc_config_emr(struct at91_adc_state *st,
- 	emr |= osr | AT91_SAMA5D2_TRACKX(trackx);
- 	at91_adc_writel(st, EMR, emr);
- 
--	pm_runtime_mark_last_busy(st->dev);
- 	pm_runtime_put_autosuspend(st->dev);
- 
- 	st->oversampling_ratio = oversampling_ratio;
-@@ -971,7 +970,6 @@ static int at91_adc_configure_touch(struct at91_adc_state *st, bool state)
- 				AT91_SAMA5D2_IER_PEN | AT91_SAMA5D2_IER_NOPEN);
- 		at91_adc_writel(st, TSMR, 0);
- 
--		pm_runtime_mark_last_busy(st->dev);
- 		pm_runtime_put_autosuspend(st->dev);
- 		return 0;
- 	}
-@@ -1143,7 +1141,6 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
- 	at91_adc_configure_trigger_registers(st, state);
- 
- 	if (!state) {
--		pm_runtime_mark_last_busy(st->dev);
- 		pm_runtime_put_autosuspend(st->dev);
- 	}
- 
-@@ -1336,7 +1333,6 @@ static int at91_adc_buffer_prepare(struct iio_dev *indio_dev)
- 		at91_adc_writel(st, IER, AT91_SAMA5D2_IER_DRDY);
- 
- pm_runtime_put:
--	pm_runtime_mark_last_busy(st->dev);
- 	pm_runtime_put_autosuspend(st->dev);
+ err_out:
+-	pm_runtime_mark_last_busy(this->dev);
+ 	pm_runtime_put_autosuspend(this->dev);
  	return ret;
  }
-@@ -1394,7 +1390,6 @@ static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
- 	if (st->dma_st.dma_chan)
- 		dmaengine_terminate_sync(st->dma_st.dma_chan);
- 
--	pm_runtime_mark_last_busy(st->dev);
- 	pm_runtime_put_autosuspend(st->dev);
- 
- 	return 0;
-@@ -1603,7 +1598,6 @@ static void at91_adc_setup_samp_freq(struct iio_dev *indio_dev, unsigned freq,
- 	mr |= AT91_SAMA5D2_MR_TRACKTIM(tracktim);
- 	at91_adc_writel(st, MR, mr);
- 
--	pm_runtime_mark_last_busy(st->dev);
- 	pm_runtime_put_autosuspend(st->dev);
- 
- 	dev_dbg(&indio_dev->dev, "freq: %u, startup: %u, prescal: %u, tracktim=%u\n",
-@@ -1809,7 +1803,6 @@ static int at91_adc_read_info_raw(struct iio_dev *indio_dev,
- 	at91_adc_readl(st, LCDR);
- 
- pm_runtime_put:
--	pm_runtime_mark_last_busy(st->dev);
- 	pm_runtime_put_autosuspend(st->dev);
- 	return ret;
- }
-@@ -1890,7 +1883,6 @@ static int at91_adc_read_temp(struct iio_dev *indio_dev,
- restore_config:
- 	/* Revert previous settings. */
- 	at91_adc_temp_sensor_configure(st, false);
--	pm_runtime_mark_last_busy(st->dev);
- 	pm_runtime_put_autosuspend(st->dev);
- 	if (ret < 0)
- 		return ret;
-@@ -2465,7 +2457,6 @@ static int at91_adc_probe(struct platform_device *pdev)
- 	dev_info(&pdev->dev, "version: %x\n",
- 		 readl_relaxed(st->base + st->soc_info.platform->layout->VERSION));
- 
--	pm_runtime_mark_last_busy(st->dev);
- 	pm_runtime_put_autosuspend(st->dev);
- 
- 	return 0;
-@@ -2567,7 +2558,6 @@ static int at91_adc_resume(struct device *dev)
- 		at91_adc_configure_trigger_registers(st, true);
- 	}
- 
--	pm_runtime_mark_last_busy(st->dev);
- 	pm_runtime_put_autosuspend(st->dev);
- 
- 	return 0;
-diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c
-index be13a6ed7e00..d9da24efdcbe 100644
---- a/drivers/iio/adc/imx8qxp-adc.c
-+++ b/drivers/iio/adc/imx8qxp-adc.c
-@@ -229,7 +229,6 @@ static int imx8qxp_adc_read_raw(struct iio_dev *indio_dev,
- 		ret = wait_for_completion_interruptible_timeout(&adc->completion,
- 								IMX8QXP_ADC_TIMEOUT);
- 
--		pm_runtime_mark_last_busy(dev);
- 		pm_runtime_put_sync_autosuspend(dev);
- 
- 		if (ret == 0) {
-@@ -295,7 +294,6 @@ static int imx8qxp_adc_reg_access(struct iio_dev *indio_dev, unsigned int reg,
- 
- 	*readval = readl(adc->regs + reg);
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_sync_autosuspend(dev);
- 
- 	return 0;
-diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-index 7feaafd2316f..bb5bd22269b9 100644
---- a/drivers/iio/adc/imx93_adc.c
-+++ b/drivers/iio/adc/imx93_adc.c
-@@ -248,7 +248,6 @@ static int imx93_adc_read_raw(struct iio_dev *indio_dev,
- 		mutex_lock(&adc->lock);
- 		ret = imx93_adc_read_channel_conversion(adc, chan->channel, val);
- 		mutex_unlock(&adc->lock);
--		pm_runtime_mark_last_busy(dev);
- 		pm_runtime_put_sync_autosuspend(dev);
- 		if (ret < 0)
- 			return ret;
-diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
-index cc326f21d398..467c6a9213ab 100644
---- a/drivers/iio/adc/rcar-gyroadc.c
-+++ b/drivers/iio/adc/rcar-gyroadc.c
-@@ -166,7 +166,6 @@ static int rcar_gyroadc_set_power(struct rcar_gyroadc *priv, bool on)
- 	if (on) {
- 		return pm_runtime_resume_and_get(dev);
- 	} else {
--		pm_runtime_mark_last_busy(dev);
- 		return pm_runtime_put_autosuspend(dev);
- 	}
- }
-diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-index 9674d48074c9..29264a410def 100644
---- a/drivers/iio/adc/rzg2l_adc.c
-+++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -249,7 +249,6 @@ static int rzg2l_adc_conversion(struct iio_dev *indio_dev, struct rzg2l_adc *adc
- 	rzg2l_adc_start_stop(adc, false);
- 
- rpm_put:
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	return ret;
- }
-@@ -411,7 +410,6 @@ static int rzg2l_adc_hw_init(struct device *dev, struct rzg2l_adc *adc)
- 	rzg2l_adc_writel(adc, RZG2L_ADM(3), reg);
- 
- exit_hw_init:
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	return ret;
- }
-@@ -591,7 +589,6 @@ static int rzg2l_adc_resume(struct device *dev)
- 
- rpm_restore:
- 	if (adc->was_rpm_active) {
--		pm_runtime_mark_last_busy(dev);
- 		pm_runtime_put_autosuspend(dev);
- 	}
- resets_restore:
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index dea166c53369..b42fee4a4695 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -795,7 +795,6 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 		goto err_irq_remove;
- 	}
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return 0;
-diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
-index 588c69e175f5..54147d0afc0f 100644
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -1528,7 +1528,6 @@ static int stm32_adc_single_conv(struct iio_dev *indio_dev,
- 
- 	stm32_adc_conv_irq_disable(adc);
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-@@ -1564,7 +1563,6 @@ static int stm32_adc_write_raw(struct iio_dev *indio_dev,
- 
- 		adc->cfg->set_ovs(indio_dev, idx);
- 
--		pm_runtime_mark_last_busy(dev);
- 		pm_runtime_put_autosuspend(dev);
- 
- 		adc->ovs_idx = idx;
-@@ -1759,7 +1757,6 @@ static int stm32_adc_update_scan_mode(struct iio_dev *indio_dev,
- 	adc->num_conv = bitmap_weight(scan_mask, iio_get_masklength(indio_dev));
- 
- 	ret = stm32_adc_conf_scan_seq(indio_dev, scan_mask);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-@@ -1808,7 +1805,6 @@ static int stm32_adc_debugfs_reg_access(struct iio_dev *indio_dev,
- 	else
- 		*readval = stm32_adc_readl(adc, reg);
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return 0;
-@@ -1954,7 +1950,6 @@ static int stm32_adc_buffer_postenable(struct iio_dev *indio_dev)
- err_clr_trig:
- 	stm32_adc_set_trig(indio_dev, NULL);
- err_pm_put:
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-@@ -1977,7 +1972,6 @@ static int stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
- 	if (stm32_adc_set_trig(indio_dev, NULL))
- 		dev_err(&indio_dev->dev, "Can't clear trigger\n");
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return 0;
-@@ -2614,7 +2608,6 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 		goto err_hw_stop;
- 	}
- 
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	if (IS_ENABLED(CONFIG_DEBUG_FS))
-diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
-index 6b8d6bee1873..a439f4864111 100644
---- a/drivers/iio/adc/sun4i-gpadc-iio.c
-+++ b/drivers/iio/adc/sun4i-gpadc-iio.c
-@@ -245,7 +245,6 @@ static int sun4i_gpadc_read(struct iio_dev *indio_dev, int channel, int *val,
- 		*val = info->temp_data;
+@@ -758,7 +757,6 @@ static int bch_set_geometry(struct gpmi_nand_data *this)
  
  	ret = 0;
--	pm_runtime_mark_last_busy(indio_dev->dev.parent);
+ err_out:
+-	pm_runtime_mark_last_busy(this->dev);
+ 	pm_runtime_put_autosuspend(this->dev);
  
- err:
- 	pm_runtime_put_autosuspend(indio_dev->dev.parent);
-@@ -272,7 +271,6 @@ static int sun4i_gpadc_temp_read(struct iio_dev *indio_dev, int *val)
- 
- 		regmap_read(info->regmap, SUN4I_GPADC_TEMP_DATA, val);
- 
--		pm_runtime_mark_last_busy(indio_dev->dev.parent);
- 		pm_runtime_put_autosuspend(indio_dev->dev.parent);
- 
- 		return 0;
-diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-index 48549d617e5f..d3920fcb131b 100644
---- a/drivers/iio/adc/ti-ads1015.c
-+++ b/drivers/iio/adc/ti-ads1015.c
-@@ -377,7 +377,6 @@ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
- 	if (on) {
- 		ret = pm_runtime_resume_and_get(dev);
- 	} else {
--		pm_runtime_mark_last_busy(dev);
- 		ret = pm_runtime_put_autosuspend(dev);
- 	}
- 
-diff --git a/drivers/iio/adc/ti-ads1100.c b/drivers/iio/adc/ti-ads1100.c
-index b0790e300b18..aa8946063c7d 100644
---- a/drivers/iio/adc/ti-ads1100.c
-+++ b/drivers/iio/adc/ti-ads1100.c
-@@ -105,7 +105,6 @@ static int ads1100_get_adc_result(struct ads1100_data *data, int chan, int *val)
- 
- 	ret = i2c_master_recv(data->client, (char *)&buffer, sizeof(buffer));
- 
--	pm_runtime_mark_last_busy(&data->client->dev);
- 	pm_runtime_put_autosuspend(&data->client->dev);
- 
- 	if (ret < 0) {
-diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
-index d2f86e1ec656..9f576cfe63f9 100644
---- a/drivers/iio/adc/ti-ads1119.c
-+++ b/drivers/iio/adc/ti-ads1119.c
-@@ -291,7 +291,6 @@ static int ads1119_single_conversion(struct ads1119_state *st,
- 	*val = sign_extend32(sample, chan->scan_type.realbits - 1);
- 	ret = IIO_VAL_INT;
- pdown:
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
  	return ret;
- }
-@@ -470,7 +469,6 @@ static int ads1119_triggered_buffer_postdisable(struct iio_dev *indio_dev)
- 	if (ret)
- 		return ret;
+@@ -2664,7 +2662,6 @@ static int gpmi_nfc_exec_op(struct nand_chip *chip,
+ 	this->bch = false;
  
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
+ out_pm:
+-	pm_runtime_mark_last_busy(this->dev);
+ 	pm_runtime_put_autosuspend(this->dev);
  
- 	return 0;
+ 	return ret;
 -- 
 2.39.5
 
