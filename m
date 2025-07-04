@@ -1,79 +1,65 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012038.outbound.protection.outlook.com [52.101.66.38])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013026.outbound.protection.outlook.com [40.107.159.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7A3189B84
-	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 02:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095ED262A6
+	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 02:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.26
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751594706; cv=fail; b=Tkpxb9xPP4kGatx313+3OQGTEomMRtB4OWGFW8B9Wi+A/zQf1aYnewPu5w2ekL0DdKwp8psqZSEmBY2fiscKGzuf/kZaMNPVk3yrD/Y1pCrEyeHhLoUWedP9oj/9jLmrvZpqDHGaCV1BJSB3ypKrZsigMGhzYmK0MAVEpMMvLXk=
+	t=1751595768; cv=fail; b=ttwIxy4U7270O67s5S8i+vf3YgiPg6r3bTNVTibKNrL5C+S3jHzI+DZEhd1IBYPW+i6k7mSGDN/b+fridwPu6CvDY/lAjAiKoA/09X7X5nQVkHHt32po/xtZIMq3uwLlsqTyHkgovMuhxdBE5iyK4bXCi55qS3I94KpgFKrAVNI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751594706; c=relaxed/simple;
-	bh=24VU9zJXdsmVRF4pqwGZ1ePavAzgCzbAAHUlrLKjFyM=;
+	s=arc-20240116; t=1751595768; c=relaxed/simple;
+	bh=YDIWqO6w6YLhoG62dWppdZBl15OBa52J4BNeqrBxbnw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=hthrIM5uqaK4zlfceBBHddSRs81ttHtpBkZzlxQLrmFUq+2J/O82uBSOc3ZZeGTwYFh7qhCHOaNtQ78xWD4j7CaE3NDozfc+Z4+VpwaEq4fLc2BX+KtbqA6mV8ofzHseGrBgiaCB22TrFyBeQpJZdvDJqnGUNCNZSj6xLTh+8W4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oBD2R29W; arc=fail smtp.client-ip=52.101.66.38
+	 Content-Disposition:In-Reply-To:MIME-Version; b=X4uNYvfzlf6xNJ+umCoD7wUcC1sb5H8Kdw76B39w9yqiKcJh8WrgFxPmnt+/+UyJSkF5l9kBFnjwT9vtQIQaJUKbFCNz18MPpGu5ZB2mCkSnmMnXXW03ubykH4oGY5yN9kDUeZGd/Nq4gzBcuXektAYjtIqOgrYHslpSILPXl04=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GbeJBOsp; arc=fail smtp.client-ip=40.107.159.26
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oBD2R29W"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GbeJBOsp"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CsRi1N9W2WyCuYXRWMtMG5Lej60MpP6fWtWObn4qwPOpcwVlyiPSHD+vfStAm1T0O1njn8XxQ0OJsw3kUvv5/rKfnEcJiABpe0gaVFdG+PWb47YSF6KKo4R5wsfhx6PTpeuZesDjCixU0mUTHhlD79FdM/OREKyB+YZ6fTKVFkjtjEwcwg4H6geimNlncXGih+8pMYcYBJjU6IuHCLDigGnyjN6TZCAFxLo4EKwOXVpcDuWFPmwBVlI6UPSGjYWQm8ajns7BKQCZzbovHJ/KR7y2WfrpP5Vl4ao6y2/45pGMl5MlYR6DlcKGz9TP5kO5r6uJFLvHKwzr6IUVerNu4w==
+ b=WGCgydhBJswsabXkzqzlBh0lgHRy/NI5TVkDAEtlj59mkhJnhJ8kLm1Z2N8AY3cAI3i5jp1T6v0124qzMV7jOqoksG7U7EuWystlgFIAyGn5WDGV8v6N0cd42fDAEgYEGMgyrE0axQSv8rsfNl7ePE/cUmRsT/7Fd0m6GyniIl/iRUJaILRePS/Rsl0JRGUsdTJt6+uUCwj5nw2rY++UUBmAfmS/0UeFMz3niPcXfRr4kBSROqTQmQbjEdK9LEIhhC/2EAc8UPoq+z4wkmln6mTCjr4QThEl1IH2eg0BHl/WCONLB74XQMWEkluWZe5dY7XNDznIdTVXP+3K5bdJaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IAEIWLyERDW3c6a20WLkXZpwUKiX9PAax7IA/zHL3cQ=;
- b=BVp2liqKcX1Q9kbmAEraT9C5O04ipctGYVPcP0w8RAX2s0wIyM5ZQVjoyXnFWYnjpU25Drk19VlL+c7ed/FpsVsvG8SyXr4DQVKZKt0PDUTYEJ0BAV+WjW8mIaWbYfptaMq0b6dS5GLpArjwfVKrPVxOe308qIK7PZjOBI+9HFSvdwM3gobaWMBDCPc8GGFVjY50npARmCzEoAfJxPI/8O4UwA5qfv826KkfMKcmjtSZHXlFthcNQ7xy+1o2rN4NtaL0RABZ9AgPgdB6u6v5DTQHszuHlOL1XFkapCJE1sxMUapohVdMJfe6/EXIKeh+P4SacxuCWlk5q+8RmcqjkA==
+ bh=O92F1jcOKd7e7vOkHZvvFlkEU3yIUiWu4+PYAfxM5gg=;
+ b=ALpCBbkP44sCCEncXUxuLfZU8LkRYbVs0rFwAL9KtK9CTsa0XVK0F5yyI1WA1fuTOVnhkSKmADlDnXKpjpWhURCxZl91vDSqfEpI6/pH2dcgephlEuh8fVcY140OWq49Ei1CIt64xSdm2sjWlCv+AHhFuIfrIbKII5PwZ0F3cDZMQD6nbn9//mpFDgPgJ02N8Y71DnCUZOdrfkMq7VJYJjsaJQqBNy5QwsSyMqQZ3+O1kklrf7xZabA0lm9R4+cnaF+VGTq7BnFPNmwxHAG+nP6VpGGIrzKxiclYgLc0l+AUEEEWrRpl/o8aoqRHNoEOqCiIrIg/2JmFo3uKkqKLLQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IAEIWLyERDW3c6a20WLkXZpwUKiX9PAax7IA/zHL3cQ=;
- b=oBD2R29WfQO8euXf7W7XCHfRj9zPct20eRghzBd4g/OllBge9FmGXUAKeK77mu5FBoVHxx6utsplWplHcEoUypKDZeRK0MnFgWQUNPy4T/U+0oNZ3OLWHNC7fQn6yvwA8rHZuR0WjiNJ8I8QKxrMTab+lSoDNnUTRuk/J7P4aiaahlqJ0MuxWugFo1CgwHsNtLd8u6dQCoVdsLflOfxpWY2hPUgH+C3sMEC8UIHtp5eH/O7bZsKptupTwhLQj0pdtAi9CYF9fLl6T/z70cQUgVhgG3sAtHPW41cu2GvmNb0xpGDVR/NZXvmB2DroCVKhcwu5ATJxbjykFEavlexxDQ==
+ bh=O92F1jcOKd7e7vOkHZvvFlkEU3yIUiWu4+PYAfxM5gg=;
+ b=GbeJBOspF+lxjgUxUVJn6S5GIGgToVopdWmlEvS4sZo90VTnzXOEM8kwhzusMWYu/7hHcmd5nqSyNFEUKoEBNnT4rEpA/HyAQsSxaE9JpnQlZT/H3MOnsuMRN4GZUX/WBIwJXMQlSfbTRISBN8wyR9ewn1t1fwotMwkoqP/QG/tP836QQjOxz82QRo2F84QGbUlkw9fQ5M5zNSfG7ilhjjm8nux63ilZuvnSAHgCal90CiXdvS1zWL4+LVc5Ycrva7xky8a2KNWmC6jS2rjCOhQefwhR/ZKoZnECyYPlVZVifrWiULHc+0PCQ4zF7bMYY2/daa98XaPR/Yo2WC2UOw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PAXPR04MB8607.eurprd04.prod.outlook.com (2603:10a6:102:21a::14) with
+ by GVXPR04MB10202.eurprd04.prod.outlook.com (2603:10a6:150:1c2::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.21; Fri, 4 Jul
- 2025 02:05:00 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.23; Fri, 4 Jul
+ 2025 02:22:40 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%7]) with mapi id 15.20.8901.018; Fri, 4 Jul 2025
- 02:05:00 +0000
-Date: Thu, 3 Jul 2025 22:04:52 -0400
+ 02:22:39 +0000
+Date: Thu, 3 Jul 2025 22:22:35 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Alice Yuan <alice.yuan@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-phy@lists.infradead.org, "Guoniu.zhou" <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH 5/7] media: nxp: add DesignWare MIPI CSI2 controller
- driver
-Message-ID: <aGcOj4/0umfWaaTP@lizhi-Precision-Tower-5810>
-References: <20250701-95_cam-v1-0-c5172bab387b@nxp.com>
- <20250701-95_cam-v1-5-c5172bab387b@nxp.com>
- <20250702093806.GF16835@pendragon.ideasonboard.com>
- <aGVWd/bo22pPeKVS@lizhi-Precision-Tower-5810>
+To: Brian Norris <briannorris@chromium.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
+	Rob Herring <robh+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org
+Subject: Re: Does dwc/pci-layerscape.c support AER?
+Message-ID: <aGc666o3EgtXQMGN@lizhi-Precision-Tower-5810>
+References: <20250702223841.GA1905230@bhelgaas>
+ <aGW8NnHUlfv1NO3g@lizhi-Precision-Tower-5810>
+ <aGXEcHTfT2k2ayAj@google.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aGVWd/bo22pPeKVS@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: AM8P190CA0026.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:219::31) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <aGXEcHTfT2k2ayAj@google.com>
+X-ClientProxiedBy: AM0PR02CA0197.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28e::34) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -82,173 +68,142 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB8607:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba742618-74d6-4d1c-3335-08ddba9f2e3f
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10202:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1ca12e7-4d40-46bb-8b26-08ddbaa1a608
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|366016|1800799024|52116014|19092799006|376014|7416014|38350700014;
+	BCL:0;ARA:13230040|19092799006|376014|52116014|1800799024|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?mIJxHrdziC44w6OVeOh0c4W++2zZdgSHd6Ll8pqJC0v4s0smC0mgFSd40reF?=
- =?us-ascii?Q?Nzsx0h41WUTHi0xcXumfXZ5Yn486XApsy7xBfI/kDK2XrKSI9xaL8ykaHU7+?=
- =?us-ascii?Q?Bx/mNbdi/fXg9EZpRLluaDkM8jlbgkhBME2kf5OpE+PYjQNPIRal0+dFE/Bj?=
- =?us-ascii?Q?8IdPkkxJXEK696os5IjDTCf3g6DU8TnZxH31RcwrFTs0Il0qHJ7DLxTX+ctO?=
- =?us-ascii?Q?AX3Z/e3z1XJpSdLM0l3OMl31U0lTrP2EebF/cAzaRWHOYklYGaAJB7cZOMuj?=
- =?us-ascii?Q?CAAfHaKlfrWgBfZh3q3rJmJIk2TOdMSkY3bvKWSfqI0kZkTTuO0QSQ9w9FWP?=
- =?us-ascii?Q?yxtFXxEFTTCdD4vQUtp9mvacdyh1DL3tmDysPwxvcQLJHAvmGsz//Tgar0E6?=
- =?us-ascii?Q?uUiaekP+x6tdmVuq+NH4giPrdVfNY/N7fp4m+BjdV7hOZDjqnLtW2pESakRu?=
- =?us-ascii?Q?a/iDmWZOHrk9bt45xZB4r9dDncmFt6guTi6/NgkLyjDYvq23sbt0eGuKoMIT?=
- =?us-ascii?Q?useKnUUpIspgjYHVWNxujtDfU0PHWq97Lwv1bQ/cfQqnAQEwEzNSz6DQawWJ?=
- =?us-ascii?Q?UdUiLE60pRv1Szw2WXfPEmLZU8VM7ksporTAjiyh55d4pSf6sJZikDpB8pZL?=
- =?us-ascii?Q?ARdFKyB7rMc32jxw6dmlo31ZPdElcw11OvoXvP3i7MMwjlXfG61oAtEdC3Zf?=
- =?us-ascii?Q?5K+/DbktDMdNgLUYJMxmOKxFsEUPYMx8oM6L6Bd1fkKjuMsPc5u4f9PDtPjI?=
- =?us-ascii?Q?aTgCMENfdWpjvD8KQAhTWOUnJSVbjkhfXPH+/uvQ0DfCyQALLmU3TuNDXTjc?=
- =?us-ascii?Q?PFFEPcNDD7lC/wiPGcthVgknZCqLh3PrnG7LK8TwVkkk2dTgXZkxo6jysFq1?=
- =?us-ascii?Q?v/w+AUBNTloxHUhGjxg3kE16Pd7SvkEjbvCCq1dZqyPd6HOyTi8OKZy1c66p?=
- =?us-ascii?Q?JXNuaxCP3uWuFpH2Y4v1LKq43YHW2YhDlzDBhWp97JXCKcNyaksGpG96JjUr?=
- =?us-ascii?Q?eRtkEVDCtC/bMKdR0I5xfXMzbc3jpwyauiesbqqt+Y3sV45Vmki2iYeSGgXV?=
- =?us-ascii?Q?1uOhVb2O1R7/FY6ujcl89HVBCrlVaYpF/QOFkREBUZBxYFra6lOzC2AoSaG1?=
- =?us-ascii?Q?000whPxJF2mar3mqobjffdHLIgETxH7NZmm95dvXJmFPo/T2Xh0ffOsMUEeB?=
- =?us-ascii?Q?Nch2BnnBfoLCLsf7L/Z6bg559m+XN50FjTBuweLW0LMVaDNMoJLjJjHpEgor?=
- =?us-ascii?Q?y0SEYAnvl9GFDe+YRXnKmDNtu7psgbwXVw+79pbanNsJ3eisgLjR4uvn7+bw?=
- =?us-ascii?Q?Br56Wh/98/TxkGkOSa7GI6qdituPW3nKgecsqHbX3PE2M6oBd8SMbON4h9xJ?=
- =?us-ascii?Q?1ju3376K36Ub2RKnCAk6+xrlpyG00+ut40y+HQh4E+1onhCmDoeXSA3pMBfV?=
- =?us-ascii?Q?1Ju0mwbF3XjLwzPtchoNOG5qyK1aoWxQgzsNDK2wPzMX1JsDUvxY3g=3D=3D?=
+	=?us-ascii?Q?x0DhDrO11FU3qIGoG5TTQ/zGP6do2mftBUxXAnQjYxr0FqkWipBNUERMvPGC?=
+ =?us-ascii?Q?ImEc0gDhb0WgC03HUQp9wW+VyxoXY/N2twedC1pc05oj+TldmfTrKXfCdtOC?=
+ =?us-ascii?Q?y4Cbr96gYD+xzqLLHALPySaE/338Gh05L/8xOWgNj3jX6ACrjszr0em7uue2?=
+ =?us-ascii?Q?ckJDkIk/RvzDG0erK4A5vH0sU81SPEVQnpvwRa9wL25uY64/+kSQWQbOjaQD?=
+ =?us-ascii?Q?cf6PlW4c5OFnN9U0aoAWrryA0sNK6lqyKt1B0M7g3bFYIIOKD08+gYwjSVI+?=
+ =?us-ascii?Q?Xn1CZUgoGpgoa58db93u1Puigi0XvSmIJLomXwAid05HXGSDnrC93TuMAmm1?=
+ =?us-ascii?Q?HJdX/2Z6bRAaHBRVndnC5LdsII4Ho0bOQQ1D2apCRgCuA8ygLc8DWhprq/RD?=
+ =?us-ascii?Q?AiyaDz+rjAFTxGvv07yB0pfLqme3knW2PpVI3GG3zYVrqsOjZYZu8FOfNGp5?=
+ =?us-ascii?Q?/k2Jx/qwdADlz8vZb7TGr0mKn128ic2ta6toJdyRQuf2jAyqv8TNLsKwYimV?=
+ =?us-ascii?Q?bfmoFVFvtK1ROkvrEYnka5Rt2NWhbT/Xm9LOcKEM1FEJNYcPtD+IgkAIFU2A?=
+ =?us-ascii?Q?63H+lLCAv2JSVw+UXn2Po4jEZ7nRX7Ie4PIjj7y+4WmMnHOFO1YkNSxUkVkn?=
+ =?us-ascii?Q?OLqpkK+lJC3ld0of7ELn8gC9fyRUbjkh8Ny/zZiGoA9olVt+ivxvhifBXSn8?=
+ =?us-ascii?Q?kosbN9bFLNsjOLpO6sObgyMmSZ1x7tTXmEPpkr5HFnR1mdEb+Alkj5aY2iHM?=
+ =?us-ascii?Q?mnxVyDCCwMw7wfsNolJ8VI3pwY7/OfnHQHRBbB5VdHOazoiDaZ3va7OIIACF?=
+ =?us-ascii?Q?6CCS7zSwp3vXsjYxH6ZxvZyidJYrscW7uaWzkJcA+ovdIUCbCook/KOa5X6G?=
+ =?us-ascii?Q?Z+wbMs1e7Ytq7xvCRpskUEXwJCmj8zKX6rZeGJXgxmhLiP3IrzaCUN0x2AhT?=
+ =?us-ascii?Q?FLpOkPOSju7z37DGR9bVul4ZApMdNwH/qLNhfZfTiqf4MhsvOVGRaT8WjWeu?=
+ =?us-ascii?Q?P7nsqGRH/lqBAucSFgxFBeQ47A0jTIyNjGifiVy0wQrWfpbzh6J17HRxzOEe?=
+ =?us-ascii?Q?deViFz2Oz5PHjHv79CauEBzYDDCtaKH42FeSxW5np+T6nvpGBXTKfxO0PAMy?=
+ =?us-ascii?Q?w1jFtmRtNKSdPf+OdcKTQlnfbt79BrRrPV6ZwOoQMDu6xV5RxsBo7B+Bj6Jj?=
+ =?us-ascii?Q?5XgL9DZvsAee/QIx1NogFRrjSjGcC6oo69PvMcy+YdFIZYlU5gE86oxnE8de?=
+ =?us-ascii?Q?yBPZT1pvDkJxGtip90KvEXKBw/Q7qrkbizxNCi/eZWURO8pYHt528JSJGk62?=
+ =?us-ascii?Q?RwDAC5rgHxP6Vv16SUPqDqkxWk9Z9zoY5RaYj6tj5EZviTo7OXy1p3LbusnP?=
+ =?us-ascii?Q?vM6C5nslRktKiJTOYqC8RI+o4fzlOPUvQi6Q0gbi4Idf4D/Af9pRD6irpfkp?=
+ =?us-ascii?Q?sUTzby+4BbA=3D?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(19092799006)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?XlZfurh5x3P2vFAUZguvnCNTtYwbQjSaCi9gF+SldPdJzbMAOt+eK/j4KY6c?=
- =?us-ascii?Q?3ekPmk2dt58a34+22ONxGfnFmY5zbJiKXGnSsujnqc7uFdwHEArRxkz8z4Kk?=
- =?us-ascii?Q?gNWOXW/Lq/deoeuddyQU/xhXVCRXEgKVgyurgBt3eaDysr52Z5MfBv43Oth8?=
- =?us-ascii?Q?tUUViUiTK2PC5ufTRFo/YkHrKFwOCAzf1IamrdxpNRWpE44TXS+kfWjIUGkU?=
- =?us-ascii?Q?F/F813uE3cBPYGLJtpSokmnKfXITaP0qxsFIkM8lKkE2o608BGfXPSvmueBr?=
- =?us-ascii?Q?SHLDftS/465ZOV0S/naIniAk7pC5muSF/g+Fx1LJ4jroJKMUsRvC5QTx1ANx?=
- =?us-ascii?Q?0c3K4wDBETFk4AQqkTpZ62VwB4lGCdvoBlToOVzTx/KdNrNGJ17TSrvzG0vk?=
- =?us-ascii?Q?yJfDmUyYc5y0KPryTtxMPxbOrz1g53VC9fklSjmnCrQb/2umZwdZj1TRB2c2?=
- =?us-ascii?Q?4tZifzw1N/NSN+XSxvEXkZj31qBlor1F59l8na6qfAIDjxVq4NwlfYEu0USr?=
- =?us-ascii?Q?xUEAlJFUN32X9JEs/sgUJ78fX81sAXTpcJPpyNy7VnkD7Gzt2j6MeEvis57g?=
- =?us-ascii?Q?pL4n8HERFBmEsPs2fe10nD0fKk5Q8SU7tX1fMQLOx5NBt78yGAEukftFY+pY?=
- =?us-ascii?Q?KfUvtahkF/iy5ETHJXQgRjhHbztJwOOpd9g4qrakbuVQkCfF6WwIaUWXlAOU?=
- =?us-ascii?Q?chxClYBMlWFUCTAxZanL/Q0ZsgEA9wwwpIVMXIusKP9NcxOUxI4z+f7TvMo+?=
- =?us-ascii?Q?7adRtAJu/e+90B5sQZKWwY/kSSfwt7bq2iFJ2fhgwzAiv0EKY90864Jrh6DP?=
- =?us-ascii?Q?w8moz7tispsumig9fBKJgsA0NFuEGUJAtaerGyyGliuOKD9712deNi4nBjQA?=
- =?us-ascii?Q?ocCaBh7cgX32bQISeJbG+f2DbXfKam5JOgG+JLkMrP3PhlVrKMreOqn8r7EK?=
- =?us-ascii?Q?UUeATIA9hlzOBVHTHsIaqE8WGpJH1oYzSNewfQjVt+IJqhlt/ttYymehR6h9?=
- =?us-ascii?Q?XVER0J0hORE0kC8ePaXfsm92D0WepJVU92phDjNJUG4Isi3IAjTau//B5xBn?=
- =?us-ascii?Q?oJ9/IYE1Fn2ibwQ0ZUFf+6sSvO+Tg7WfStJNnbK5QvwN6lBIF4PfqssxiVmi?=
- =?us-ascii?Q?/V2ZOkkYfBudfv3K/p5Bspjuj+1z9Luee7H46SyPy2/FssHUbnMI77bMpyQy?=
- =?us-ascii?Q?Sf5Txf5Xd0GAaadNDlBrsOIkQIZexFCZKtE6Kipl9ZO+n9L2yF/7ixuLZ2zv?=
- =?us-ascii?Q?LDj2B2eE+ymm/XCOyHfvS3yquuva2Q3MSOKPsxMs7GFm05WCnJdOjunsY4pe?=
- =?us-ascii?Q?temR1OEBnSuYsOmx/CmVYWGgQJIXhhKCcybKWFzpj8iYIostk4QB3NKvbeLw?=
- =?us-ascii?Q?B3G63w8Ver8+7NQNIduL0/OqOib1p5vq7tFIaxmYL1BOyODOxVAqqT2Rx9oW?=
- =?us-ascii?Q?QA/OV40jJCkgxRAuMwqMRGDieivlFHcl3knj8oEdLuqy67lsC8XBy77PC/71?=
- =?us-ascii?Q?0Q1cjdngduQq2dQSZfgifkKMs7LqBWpO/9GOW7ly4PAT3hOGllocntAU0bNn?=
- =?us-ascii?Q?42mLGQQLHNPev5fbjsg=3D?=
+	=?us-ascii?Q?ObqwIggKnAPaIdG4bnA18cKfsaK2TCCQmKt/J2r9WIYtqTSIMdI+yRvxJO4Q?=
+ =?us-ascii?Q?SV2Yz70GzAbq16QkMHIBDy7KqJm2S3utuM7tot4VcM4Ev1/HadPHv3UEv2xr?=
+ =?us-ascii?Q?Vw2qfqiMo+4CWxS1fel2qMjefhmqDUOClBT55GFD6m52YPqLkiostOsOHJmV?=
+ =?us-ascii?Q?zkL6uyLNbMSoDsx1itaZ8Llo/GDI0wet6q0we8ZI3j/DExAEHC173r3tb1AH?=
+ =?us-ascii?Q?DDvUxv66K9QKVTLIN+Q/KaX1rWc1aSDZvJbEMcrePT2gP+DpOMYKn4PkKkkx?=
+ =?us-ascii?Q?jF7L0r8Kfc7ic/iahOZiNdT24+0UJEfi9ZqCt0tSZu1mvOupT2/IzalxCb16?=
+ =?us-ascii?Q?PnrA8+gZLYI4ZkJ1vb+Tjr/Au1be9cB0NC/DVsK+gkLpa1f+jTa2+HykgS0d?=
+ =?us-ascii?Q?oKljHWVaRFz6EUCon5kGCaLxYBE/lUPBehgRVQjHpdKjcIS5GYTBgdilsLyw?=
+ =?us-ascii?Q?RItdq3p4Y6A/UpqWaqOQntBvU4R+kZp/EDXIwaE/j44V/untWDKEaxLcWq19?=
+ =?us-ascii?Q?es5nY8N20QbA/6wWGApjiZDsw7J99MPlpdlwJsMogV8+IgAW0Z4B+osLaL4x?=
+ =?us-ascii?Q?HmcTZsVAeHTSNbBf3qNCJzeeT9Q/W4q741mgHIVAu2fD6Ddp/s+xRh3MqQvo?=
+ =?us-ascii?Q?1HAwj8WWX0ldqk/1WKgsfXGTRqO/C33L06KPLgh8r4CB+x6AWFyjrVjlVEXO?=
+ =?us-ascii?Q?WsR+mrfiC3q8DQLAUJ/TlrMbPBqYBM4lX7uXDDohUZxPbhAI2KnAkz9prD1/?=
+ =?us-ascii?Q?xDibb+CZ9/4agz5K1SS+BAejK6RH7CUWMMOl8lORthOiCvv97+6pQpnosFJV?=
+ =?us-ascii?Q?5KTdMtoMAwy1i0Rmp+YQ2y5ov3G/R9owXBgrU5IkLWEK5G8VR5rf5QMBebqB?=
+ =?us-ascii?Q?BmbjBnS8Y+FdfyyM8YhAzzlldbLRaQpPQffR+gEfxDq+1DqnVpPfiolJgmYI?=
+ =?us-ascii?Q?qfHzH4MrAlIYkGhcPpRIhjXdljWNpysNab+gBuG4ZCT6LtFuSvyHptYnt/Cx?=
+ =?us-ascii?Q?YGf+e66UEh4U+4s0139DPn+a2mHnEmq7K8VUcvK0CQtYplYqRCNqIL7Fmz3X?=
+ =?us-ascii?Q?jjiCbFz2J5C1vwix6rquRA/qhspyp3rgULO35kLU2NWKl1mO1N7c7Wp9nTLo?=
+ =?us-ascii?Q?3vfBrBRU3fSTViK0x9p28DSDDkJfsM5uW725ygbZta1BMHTeW6EP4TR5s+pB?=
+ =?us-ascii?Q?eRo3+kuFfNZ1crZwQZY3cWyl+g3qGNfNwa516Fb7+8bB+C+n4rUVlyGZkgvj?=
+ =?us-ascii?Q?H4C/Y4zSPxO9hF1XiJ7JqmPuiYdJXnjQXFyvIzq0MRIkHJ3TBdDshCfRYg2N?=
+ =?us-ascii?Q?ni2AwEFqHK6xeKqjlfhsm9P4xhhXRXZ70SXc1OedlUrV1eo/GPhfN1FZvLyN?=
+ =?us-ascii?Q?dlNcgvqz2FRcS/eStH/DfnN13EdLQobW72EOfCgriPip7ZmeC7SFpolw0tlO?=
+ =?us-ascii?Q?d72wzI+FnabohTmr24bz5ta3SHYXjWO8B6k/idkyoxmKRoiwjPf6XTRhWffy?=
+ =?us-ascii?Q?h8pXwUKEupdtk0mCs+SCfcSnFL4ga3FScN4EASMzILhLbiKVHuYK2Bi3/2m4?=
+ =?us-ascii?Q?aBAFhCxLgw3PuB8vsFct/7FdbmCPHBygfePcuKc2?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba742618-74d6-4d1c-3335-08ddba9f2e3f
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1ca12e7-4d40-46bb-8b26-08ddbaa1a608
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2025 02:05:00.4482
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2025 02:22:39.7341
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EkZTzGVJJypkQGo0YJ8mjHrtVZLmcljOWnv3V+uWHYRVaEA9aUA+qFUrOlkPWCT5VvxDDMDL6prgpawHyW5ZIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8607
+X-MS-Exchange-CrossTenant-UserPrincipalName: jTbkf/krEbs3qLSdHviRhQMYLy7ajsV/mzGvEGcrNiHyeir8aed6hkJqZz1afYqVahQDVqoRNqXvzHcHXRkdPg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10202
 
-On Wed, Jul 02, 2025 at 11:55:35AM -0400, Frank Li wrote:
-> On Wed, Jul 02, 2025 at 12:38:06PM +0300, Laurent Pinchart wrote:
-> > Hi Frank,
+On Wed, Jul 02, 2025 at 04:44:48PM -0700, Brian Norris wrote:
+> Hi Frank,
+>
+> On Wed, Jul 02, 2025 at 07:09:42PM -0400, Frank Li wrote:
+> > > Does the AER driver actually work on these platforms?
+> ...
+> > There are several attempts to upstream customer Aer irq support in past years.
 > >
-> > Thank you for the patch.
+> > For example:
+> >   https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1161848.html
 > >
-> > On Tue, Jul 01, 2025 at 06:06:10PM -0400, Frank Li wrote:
-> > > From: "Guoniu.zhou" <guoniu.zhou@nxp.com>
-> > >
-> > > Add V4L2 subdev driver for DesignWare MIPI CSI2 controller.
+> > some change port drivers.
 > >
-> > This seems to be at least the third instance of a driver for the CSI-2
-> > receiver, the first two being
+> > If you think it is valuable to support customer AER IRQ support, I can restart
+> > this work.
 >
-> when I read spec, I known it should be used at other SoC. But I just jump
-> to into this area, not easy to find who use it easily.
+> Interesting thread. I read through it, but I'm still not convinced about
+> one detail:
 >
-> > drivers/media/platform/raspberrypi/rp1-cfe/dphy.c and the second one
+> Are you sure that AER can't possibly work over MSI? Even today, the
+> Synopsys manuals say that their integrated MSI receiver "terminate[s]
+> inbound MSI requests (received on the RX wire)" and after terminating,
+> "an interrupt is signaled locally through the msi_ctrl_int output."
 >
-> I think this one is not good abstraction. it should be phy driver, which
-> use "test" interface to community MIPI phy. I think it'd better create
-> a bus driver, like test_if, DPHY should be child devices of this test_if.
+> That means that their msi_ctrl_int signal only handles MSI requests from
+> downstream functions, and it implies that the default
+> drivers/pci/controller/dwc/pcie-designware-host.c
+> dw_pcie_msi_domain_info implementation will not actually see MSIs from
+> the root port (such as PME and AER). So yes, it *appears* that AER does
+> not work over MSI.
 >
-> like
-> 	csi2@000 {
-> 		...
-> 		phys = <&dphy>;
+> But crucially, it does *not* mean that the port will not generate valid
+> MSI requests, if you have some kind of logic that will receive it. So
+> for instance, I pointed out in another reply that some SoCs choose to
+> hook up GIC ITS:
 >
-> 		dphy: dphy {
-> 			compatible = "...";
-> 		}
-> 	}
+>  commit 9c4cd0aef259 ("arm64: dts: qcom: x1e80100: enable GICv3 ITS for
+>  PCIe")
 >
-> 	The tough problem is that dwc phy have one kind of combo phy, which
-> 	under both dsi and csi controller's test_if.
+> """
+>     Note that using the GIC ITS on x1e80100 will cause Advanced Error
+>     Reporting (AER) interrupts to be received on errors unlike when using
+>     the internal MSI controller. Consequently, notifications about
+>     (correctable) errors may now be logged for errors that previously went
+>     unnoticed.
+> """
 >
-> 	CSI need config such combophy by DSI test_if. I still have not idea
-> 	how to descript this type hardware yet.
+> And in fact, your arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi seems
+> to be doing the same. I'd be surprised if these port MSIs still don't
+> work after that.
 >
-> > drivers/media/platform/renesas/rcar-csi2.c (the latter seems to support
-> > multiple CSI-2 receivers).
->
+> OTOH, I do also believe there are SoCs where DWC PCIe is available, but
+> there is no external MSI controller, and so that same problem still may
+> exist. I may even have such SoCs available...
 
-Are you sure it is use dwc IP? I check regiser layout only few is the same
+I saw AER and PME irq registed. But I have not seen irq increased. I am not
+sure how to inject an error to test it.
 
-#define V4H_N_LANES_REG                                 0x0004
-#define V4H_CSI2_RESETN_REG                             0x0008
-
-#define V4H_PHY_MODE_REG                                0x001c
-#define V4H_PHY_MODE_DPHY                               0
-#define V4H_PHY_MODE_CPHY                               1
-
-#define V4H_PHY_SHUTDOWNZ_REG                           0x0040
-#define V4H_DPHY_RSTZ_REG                               0x0044
-
-Anything I missed?
+I suppose it go through AER irq line.
 
 Frank
 
-> This is one mixed PHY and controller to one drivers, which is not problem
-> when use one big MMIO space.
 >
-> We can create dwc mipi csi common library, let each vendor driver to link
-> it (dwc pci/usb did this). The issue is that I have not their hardware to
-> test it.
->
-> > drivers/staging/media/imx/imx6-mipi-csi2.c
-> > seem related too, likely for an old version of the IP.
->
-> After we create common dw mipi csi library, we can move this to there.
->
-> Frank
->
-> >
-> > Could we please try to avoid code duplication ?
-> >
-> > > Signed-off-by: Guoniu.zhou <guoniu.zhou@nxp.com>
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  MAINTAINERS                                |    1 +
-> > >  drivers/media/platform/nxp/Kconfig         |   11 +
-> > >  drivers/media/platform/nxp/Makefile        |    1 +
-> > >  drivers/media/platform/nxp/dwc-mipi-csi2.c | 1675 ++++++++++++++++++++++++++++
-> >
-> > This should go to drivers/media/platform/synopsys/
-> >
-> > >  4 files changed, 1688 insertions(+)
-> >
-> > [snip]
-> >
-> > --
-> > Regards,
-> >
-> > Laurent Pinchart
+> Brian
