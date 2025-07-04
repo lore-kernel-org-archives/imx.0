@@ -1,113 +1,106 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AB02D8782
-	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 07:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8152DA77A
+	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 07:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751615672; cv=none; b=hdr82ZO2S4Xwwc+zVtYqwhjgQolsjZFsyWCKQ+OMzS5dtvOnaEI5O3p+DlZ0f5Bt82KUZR3/v7BdIjFcbXnTD7jLZyrooYK59SrPEjZwIXgvNrbQqj86YoNGKMieyTnuh9BU7vGwaqXeclck1fhGaWbYjiEgOsPQa6R/OpHpSxc=
+	t=1751615673; cv=none; b=ap5KVJ6115DPijMXJ7vBiFQNSyyrOknQ2G2Qr1QP9IWh8CktuiupCPVDLalORPLkfpM7rAqk4f12D/9kVqsCGGKfvy2vLy1JHu/pTOWYIyw+waI+9CGmeKx0/ojF25kseOt9ChkbHPeK06GJdMmYs+1I7TjV8haJnc5knybjhiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751615672; c=relaxed/simple;
-	bh=tmUXPuvlaoWz6QTEoX4UrTQSVfTa4IbL6SQssU7O328=;
+	s=arc-20240116; t=1751615673; c=relaxed/simple;
+	bh=xYuK9T9+tcQn64AIw71sMLb6RG4OnDJkGt94GjOYXp0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dwlI0QU1KcMOno9cnNXIfL88EyJwr6eM58eUkuStL8IKqjUneAeBZ4t6Y07Z1h0wrb+csnAKhlPUx0OXUHIIuwmTAmXBOBICBWwPnItIy75GS4L0e1XGueNhUWlL2ogkDTenDTfzcZz6c021e5iL8/Vwdk6tnBkDqgZMiagb1xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qwanp9xb; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=sYJ9zzz7eN8LBOaXzg03F/9atli6LqOZur3AHVJUkfgowa8PvY6YoyAJPslfnJ+ulu6zFgnfAIfNvTHoMO6XTum+gjNohL/VfyOYjN84l2DLJFi5wZpmggpkdRVlK2nFnQOJuHtXjZXuN/IIcneYal1nuZplf86Jc3rJPW3eVpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ImNzoyn5; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qwanp9xb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ImNzoyn5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751615668; x=1783151668;
+  t=1751615671; x=1783151671;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=tmUXPuvlaoWz6QTEoX4UrTQSVfTa4IbL6SQssU7O328=;
-  b=Qwanp9xbZYnvoZF8TSwPDt47BqTlSM9gmOKMjl+s4y19zWQgNGa/9g0q
-   9ZAlvCHC6Bq3XaMkXvj3bogd8uT0LichMCo7poWXGcgIsf6JYE1b4+Ucd
-   69H9oq50WZeHZeQwzbiPnyJKgGwgljx0l/OJq1C1N4436qF4Irt3mS6qR
-   XlGX7pyPIRJVqqBqtAvmoM0FHzMmAgXdiAvqv29pZwjZWKm2AYd7W2ebS
-   Vb18HjXenvVwWqPJuRjvrT2+wsxHh+k0dSsjdv9N7aM5SVnzCL14NFZLf
-   lacQCuR9SBGkinyI6MseWj232f+dEx4hH8nqxHay9p/rB0Hbi+c/Jls6d
-   A==;
-X-CSE-ConnectionGUID: VafsOSWNSQy1oG3HpHDzVw==
-X-CSE-MsgGUID: hB5WQ4Y0SIqGdiYpbO/6Wg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="76494656"
+  bh=xYuK9T9+tcQn64AIw71sMLb6RG4OnDJkGt94GjOYXp0=;
+  b=ImNzoyn5QkeNTemk9Y35lx3JtH9bROPuEWHig+YWHSDfsgmYDmbrxQMd
+   fEhP4RV6E5cEhDNeon27+E2xjFERM6/ddbCPDj0VjHNN4KTaEJD/pUuIg
+   H0j5OuOSv53d0DsuuY8buARL8CT2fVwAWTlFZpWg2s36+U3GUhBrDfoCS
+   NGhppPRMrroC8r+lc76Ry9tHJFDb5sf8bbmvRIcKebfp2yvkhyizu6LTM
+   U/KRADHY1BoKlSGDF6SdQhdr41595kCfdMwOyETz98FmS2R0Ie3kFr415
+   6DbEZP1k+BrPnYqW9d4M+IrmEgLHri+BVVQjmLX42jfqJLg9JY6mauBXm
+   w==;
+X-CSE-ConnectionGUID: 2YZgGFfPTxGNssOViQX4Qw==
+X-CSE-MsgGUID: 56aSKcpHScmgeOpXXRgA3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11483"; a="76494689"
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="76494656"
+   d="scan'208";a="76494689"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:28 -0700
-X-CSE-ConnectionGUID: a3aJ5VaaR5igeozOvPlyzg==
-X-CSE-MsgGUID: dj9EO3sxTVqxwdDS7hTK2w==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:30 -0700
+X-CSE-ConnectionGUID: QFWajt0PR7SFOZnG7l1PUA==
+X-CSE-MsgGUID: +OWarQq2Sw+E08H/hywhkQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,286,1744095600"; 
-   d="scan'208";a="158924289"
+   d="scan'208";a="158924245"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO svinhufvud.fi.intel.com) ([10.245.244.244])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:15 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 00:54:18 -0700
 Received: from svinhufvud.lan (localhost [IPv6:::1])
-	by svinhufvud.fi.intel.com (Postfix) with ESMTP id 6099A44394;
-	Fri,  4 Jul 2025 10:54:13 +0300 (EEST)
+	by svinhufvud.fi.intel.com (Postfix) with ESMTP id E8D0944843;
+	Fri,  4 Jul 2025 10:54:15 +0300 (EEST)
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Douglas Anderson <dianders@chromium.org>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Russell King <linux+etnaviv@armlinux.org.uk>,
-	Christian Gmeiner <christian.gmeiner@gmail.com>,
-	Inki Dae <inki.dae@samsung.com>,
-	Seung-Woo Kim <sw0312.kim@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+To: Elie Morisse <syniurge@gmail.com>,
+	Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Michal Simek <michal.simek@amd.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Jan Dabros <jsd@semihalf.com>,
+	Jean Delvare <jdelvare@suse.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Qiang Yu <yuq825@gmail.com>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Jyri Sarha <jyri.sarha@iki.fi>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Damon Ding <damon.ding@rock-chips.com>,
-	Ayushi Makhija <quic_amakhija@quicinc.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Chen-Yu Tsai <wenst@chromium.org>
-Cc: dri-devel@lists.freedesktop.org,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Ajay Gupta <ajayg@nvidia.com>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+	Vignesh R <vigneshr@ti.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Robert Foss <rfoss@kernel.org>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
+	Chris Brandt <chris.brandt@renesas.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: linux-i2c@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	etnaviv@lists.freedesktop.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
 	imx@lists.linux.dev,
-	lima@lists.freedesktop.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH 20/80] drivers: drm: Remove redundant pm_runtime_mark_last_busy() calls
-Date: Fri,  4 Jul 2025 10:54:13 +0300
-Message-Id: <20250704075413.3218307-1-sakari.ailus@linux.intel.com>
+	linux-omap@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH 23/80] i2c: Remove redundant pm_runtime_mark_last_busy() calls
+Date: Fri,  4 Jul 2025 10:54:15 +0300
+Message-Id: <20250704075415.3218608-1-sakari.ailus@linux.intel.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
 References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
@@ -136,387 +129,446 @@ rc2:
         git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
                 pm-runtime-6.17-rc1
 
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 2 --
- drivers/gpu/drm/bridge/analogix/anx7625.c          | 2 --
- drivers/gpu/drm/bridge/parade-ps8640.c             | 2 --
- drivers/gpu/drm/bridge/ti-sn65dsi86.c              | 1 -
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c              | 4 ----
- drivers/gpu/drm/exynos/exynos_drm_fimc.c           | 2 --
- drivers/gpu/drm/exynos/exynos_drm_g2d.c            | 2 --
- drivers/gpu/drm/exynos/exynos_drm_gsc.c            | 2 --
- drivers/gpu/drm/exynos/exynos_drm_rotator.c        | 1 -
- drivers/gpu/drm/exynos/exynos_drm_scaler.c         | 1 -
- drivers/gpu/drm/i915/intel_runtime_pm.c            | 2 --
- drivers/gpu/drm/imx/dcss/dcss-crtc.c               | 1 -
- drivers/gpu/drm/lima/lima_sched.c                  | 1 -
- drivers/gpu/drm/panel/panel-edp.c                  | 3 ---
- drivers/gpu/drm/panel/panel-samsung-atna33xc20.c   | 2 --
- drivers/gpu/drm/panel/panel-simple.c               | 2 --
- drivers/gpu/drm/panthor/panthor_sched.c            | 2 --
- drivers/gpu/drm/tegra/submit.c                     | 1 -
- drivers/gpu/drm/tidss/tidss_drv.c                  | 2 --
- drivers/gpu/drm/vc4/vc4_v3d.c                      | 1 -
- 20 files changed, 36 deletions(-)
+ drivers/i2c/busses/i2c-amd-mp2.h           | 1 -
+ drivers/i2c/busses/i2c-at91-core.c         | 1 -
+ drivers/i2c/busses/i2c-at91-master.c       | 1 -
+ drivers/i2c/busses/i2c-cadence.c           | 1 -
+ drivers/i2c/busses/i2c-davinci.c           | 2 --
+ drivers/i2c/busses/i2c-designware-master.c | 1 -
+ drivers/i2c/busses/i2c-hix5hd2.c           | 1 -
+ drivers/i2c/busses/i2c-i801.c              | 1 -
+ drivers/i2c/busses/i2c-img-scb.c           | 3 ---
+ drivers/i2c/busses/i2c-imx-lpi2c.c         | 4 ----
+ drivers/i2c/busses/i2c-imx.c               | 3 ---
+ drivers/i2c/busses/i2c-mv64xxx.c           | 1 -
+ drivers/i2c/busses/i2c-nvidia-gpu.c        | 1 -
+ drivers/i2c/busses/i2c-omap.c              | 3 ---
+ drivers/i2c/busses/i2c-qcom-cci.c          | 2 --
+ drivers/i2c/busses/i2c-qcom-geni.c         | 1 -
+ drivers/i2c/busses/i2c-qup.c               | 3 ---
+ drivers/i2c/busses/i2c-riic.c              | 2 --
+ drivers/i2c/busses/i2c-rzv2m.c             | 1 -
+ drivers/i2c/busses/i2c-sprd.c              | 2 --
+ drivers/i2c/busses/i2c-stm32f7.c           | 5 -----
+ drivers/i2c/busses/i2c-xiic.c              | 1 -
+ 22 files changed, 41 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index a1bc3e96dd35..2f815e2e02ca 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -1452,7 +1452,6 @@ static ssize_t analogix_dpaux_transfer(struct drm_dp_aux *aux,
+diff --git a/drivers/i2c/busses/i2c-amd-mp2.h b/drivers/i2c/busses/i2c-amd-mp2.h
+index 018a42de8b1e..9b7e9494dd12 100644
+--- a/drivers/i2c/busses/i2c-amd-mp2.h
++++ b/drivers/i2c/busses/i2c-amd-mp2.h
+@@ -207,7 +207,6 @@ static inline void amd_mp2_pm_runtime_get(struct amd_mp2_dev *mp2_dev)
  
- 	ret = analogix_dp_transfer(dp, msg);
- out:
--	pm_runtime_mark_last_busy(dp->dev);
- 	pm_runtime_put_autosuspend(dp->dev);
- 
- 	return ret;
-@@ -1472,7 +1471,6 @@ static int analogix_dpaux_wait_hpd_asserted(struct drm_dp_aux *aux, unsigned lon
- 	ret = readx_poll_timeout(analogix_dp_get_plug_in_status, dp, val, !val,
- 				 wait_us / 100, wait_us);
- 
--	pm_runtime_mark_last_busy(dp->dev);
- 	pm_runtime_put_autosuspend(dp->dev);
- 
- 	return ret;
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 0ac4a82c5a6e..9577409a2eb2 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -1520,7 +1520,6 @@ static int anx7625_wait_hpd_asserted(struct drm_dp_aux *aux,
- 
- 	pm_runtime_get_sync(dev);
- 	ret = _anx7625_hpd_polling(ctx, wait_us);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-@@ -1770,7 +1769,6 @@ static ssize_t anx7625_aux_transfer(struct drm_dp_aux *aux,
- 	if (!ret)
- 		ret = anx7625_aux_trans(ctx, msg->request, msg->address,
- 					msg->size, msg->buffer);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 	mutex_unlock(&ctx->aux_lock);
- 
-diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
-index 825777a5758f..4f46ce2c908e 100644
---- a/drivers/gpu/drm/bridge/parade-ps8640.c
-+++ b/drivers/gpu/drm/bridge/parade-ps8640.c
-@@ -198,7 +198,6 @@ static int ps8640_wait_hpd_asserted(struct drm_dp_aux *aux, unsigned long wait_u
- 	 */
- 	pm_runtime_get_sync(dev);
- 	ret = _ps8640_wait_hpd_asserted(ps_bridge, wait_us);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return ret;
-@@ -353,7 +352,6 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
- 		goto exit;
- 	}
- 	ret = ps8640_aux_transfer_msg(aux, msg);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- exit:
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index db5cc4030238..fc100d4a6276 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -587,7 +587,6 @@ static ssize_t ti_sn_aux_transfer(struct drm_dp_aux *aux,
- 
- exit:
- 	mutex_unlock(&pdata->comms_mutex);
--	pm_runtime_mark_last_busy(pdata->dev);
- 	pm_runtime_put_autosuspend(pdata->dev);
- 
- 	if (ret)
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index cf0d9049bcf1..bc5a94dba2d4 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -916,13 +916,11 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
- 	etnaviv_gpu_hw_init(gpu);
- 	mutex_unlock(&gpu->lock);
- 
--	pm_runtime_mark_last_busy(gpu->dev);
- 	pm_runtime_put_autosuspend(gpu->dev);
- 
- 	return 0;
- 
- fail:
--	pm_runtime_mark_last_busy(gpu->dev);
- pm_put:
- 	pm_runtime_put_autosuspend(gpu->dev);
- 
-@@ -1109,7 +1107,6 @@ int etnaviv_gpu_debugfs(struct etnaviv_gpu *gpu, struct seq_file *m)
- 
- 	ret = 0;
- 
--	pm_runtime_mark_last_busy(gpu->dev);
- pm_put:
- 	pm_runtime_put_autosuspend(gpu->dev);
- 
-@@ -1509,7 +1506,6 @@ void etnaviv_gpu_recover_hang(struct etnaviv_gem_submit *submit)
- 	etnaviv_gpu_hw_init(gpu);
- 
- 	mutex_unlock(&gpu->lock);
--	pm_runtime_mark_last_busy(gpu->dev);
- pm_put:
- 	pm_runtime_put_autosuspend(gpu->dev);
- }
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimc.c b/drivers/gpu/drm/exynos/exynos_drm_fimc.c
-index 09e33a26caaf..13ce35443206 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_fimc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_fimc.c
-@@ -967,7 +967,6 @@ static irqreturn_t fimc_irq_handler(int irq, void *dev_id)
- 		struct exynos_drm_ipp_task *task = ctx->task;
- 
- 		ctx->task = NULL;
--		pm_runtime_mark_last_busy(ctx->dev);
- 		pm_runtime_put_autosuspend(ctx->dev);
- 		exynos_drm_ipp_task_done(task, 0);
- 	}
-@@ -1119,7 +1118,6 @@ static void fimc_abort(struct exynos_drm_ipp *ipp,
- 		struct exynos_drm_ipp_task *task = ctx->task;
- 
- 		ctx->task = NULL;
--		pm_runtime_mark_last_busy(ctx->dev);
- 		pm_runtime_put_autosuspend(ctx->dev);
- 		exynos_drm_ipp_task_done(task, -EIO);
- 	}
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_g2d.c b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-index d32f2474cbaa..58a830ffdcd7 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
-@@ -881,7 +881,6 @@ static void g2d_runqueue_worker(struct work_struct *work)
- 	g2d->runqueue_node = NULL;
- 
- 	if (runqueue_node) {
--		pm_runtime_mark_last_busy(g2d->dev);
- 		pm_runtime_put_autosuspend(g2d->dev);
- 
- 		complete(&runqueue_node->complete);
-@@ -1009,7 +1008,6 @@ static void g2d_wait_finish(struct g2d_data *g2d, struct drm_file *file)
- 	 * the IRQ which triggers the PM runtime put().
- 	 * So do this manually here.
- 	 */
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	complete(&runqueue_node->complete);
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-index e6d516e1976d..3b02126b7174 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-@@ -1053,7 +1053,6 @@ static irqreturn_t gsc_irq_handler(int irq, void *dev_id)
- 		struct exynos_drm_ipp_task *task = ctx->task;
- 
- 		ctx->task = NULL;
--		pm_runtime_mark_last_busy(ctx->dev);
- 		pm_runtime_put_autosuspend(ctx->dev);
- 		exynos_drm_ipp_task_done(task, err);
- 	}
-@@ -1156,7 +1155,6 @@ static void gsc_abort(struct exynos_drm_ipp *ipp,
- 		struct exynos_drm_ipp_task *task = ctx->task;
- 
- 		ctx->task = NULL;
--		pm_runtime_mark_last_busy(ctx->dev);
- 		pm_runtime_put_autosuspend(ctx->dev);
- 		exynos_drm_ipp_task_done(task, -EIO);
- 	}
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_rotator.c b/drivers/gpu/drm/exynos/exynos_drm_rotator.c
-index 7b0f4a98a70a..06a064f5d8b4 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_rotator.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_rotator.c
-@@ -107,7 +107,6 @@ static irqreturn_t rotator_irq_handler(int irq, void *arg)
- 		struct exynos_drm_ipp_task *task = rot->task;
- 
- 		rot->task = NULL;
--		pm_runtime_mark_last_busy(rot->dev);
- 		pm_runtime_put_autosuspend(rot->dev);
- 		exynos_drm_ipp_task_done(task,
- 			irq_status == ROT_IRQ_STATUS_COMPLETE ? 0 : -EINVAL);
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_scaler.c b/drivers/gpu/drm/exynos/exynos_drm_scaler.c
-index c8a1b6b0a29c..b59fa9973beb 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_scaler.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_scaler.c
-@@ -438,7 +438,6 @@ static irqreturn_t scaler_irq_handler(int irq, void *arg)
- 		struct exynos_drm_ipp_task *task = scaler->task;
- 
- 		scaler->task = NULL;
--		pm_runtime_mark_last_busy(scaler->dev);
- 		pm_runtime_put_autosuspend(scaler->dev);
- 		exynos_drm_ipp_task_done(task, scaler_task_done(val));
- 	}
-diff --git a/drivers/gpu/drm/i915/intel_runtime_pm.c b/drivers/gpu/drm/i915/intel_runtime_pm.c
-index 7ce3e6de0c19..8e95afced2ce 100644
---- a/drivers/gpu/drm/i915/intel_runtime_pm.c
-+++ b/drivers/gpu/drm/i915/intel_runtime_pm.c
-@@ -305,7 +305,6 @@ static void __intel_runtime_pm_put(struct intel_runtime_pm *rpm,
- 
- 	intel_runtime_pm_release(rpm, wakelock);
- 
--	pm_runtime_mark_last_busy(kdev);
- 	pm_runtime_put_autosuspend(kdev);
- }
- 
-@@ -383,7 +382,6 @@ void intel_runtime_pm_enable(struct intel_runtime_pm *rpm)
- 	dev_pm_set_driver_flags(kdev, DPM_FLAG_NO_DIRECT_COMPLETE);
- 
- 	pm_runtime_set_autosuspend_delay(kdev, 10000); /* 10s */
--	pm_runtime_mark_last_busy(kdev);
- 
- 	/*
- 	 * Take a permanent reference to disable the RPM functionality and drop
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-crtc.c b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
-index af91e45b5d13..7ad8dfd4367f 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-crtc.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
-@@ -154,7 +154,6 @@ static void dcss_crtc_atomic_disable(struct drm_crtc *crtc,
- 
- 	drm_crtc_vblank_off(crtc);
- 
--	pm_runtime_mark_last_busy(dcss->dev);
- 	pm_runtime_put_autosuspend(dcss->dev);
- }
- 
-diff --git a/drivers/gpu/drm/lima/lima_sched.c b/drivers/gpu/drm/lima/lima_sched.c
-index 954f4325b859..267d5b68031d 100644
---- a/drivers/gpu/drm/lima/lima_sched.c
-+++ b/drivers/gpu/drm/lima/lima_sched.c
-@@ -197,7 +197,6 @@ static void lima_pm_idle(struct lima_device *ldev)
- 	lima_devfreq_record_idle(&ldev->devfreq);
- 
- 	/* GPU can do auto runtime suspend */
--	pm_runtime_mark_last_busy(ldev->dev);
- 	pm_runtime_put_autosuspend(ldev->dev);
- }
- 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index 3796c41629cc..2de51e3ccca2 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -613,7 +613,6 @@ static int panel_edp_get_modes(struct drm_panel *panel,
- 			}
- 		}
- 
--		pm_runtime_mark_last_busy(panel->dev);
- 		pm_runtime_put_autosuspend(panel->dev);
- 	}
- 
-@@ -825,7 +824,6 @@ static int generic_edp_panel_probe(struct device *dev, struct panel_edp *panel)
- 	}
- 
- exit:
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	return 0;
-@@ -917,7 +915,6 @@ static int panel_edp_probe(struct device *dev, const struct panel_desc *desc,
- 	if (!panel->base.backlight && panel->aux) {
- 		pm_runtime_get_sync(dev);
- 		err = drm_panel_dp_aux_backlight(&panel->base, panel->aux);
--		pm_runtime_mark_last_busy(dev);
- 		pm_runtime_put_autosuspend(dev);
- 
- 		/*
-diff --git a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
-index 20ec27d2d6c2..34a90ea4ba7b 100644
---- a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
-+++ b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
-@@ -236,7 +236,6 @@ static int atana33xc20_get_modes(struct drm_panel *panel,
- 
- 	num = drm_edid_connector_add_modes(connector);
- 
--	pm_runtime_mark_last_busy(panel->dev);
- 	pm_runtime_put_autosuspend(panel->dev);
- 
- 	return num;
-@@ -306,7 +305,6 @@ static int atana33xc20_probe(struct dp_aux_ep_device *aux_ep)
- 
- 	pm_runtime_get_sync(dev);
- 	ret = drm_panel_dp_aux_backlight(&panel->base, aux_ep->aux);
--	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
- 
- 	/*
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 3333d4a07504..d6bdee56b32f 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -320,7 +320,6 @@ static int panel_simple_unprepare(struct drm_panel *panel)
+ static inline void amd_mp2_pm_runtime_put(struct amd_mp2_dev *mp2_dev)
  {
- 	int ret;
+-	pm_runtime_mark_last_busy(&mp2_dev->pci_dev->dev);
+ 	pm_runtime_put_autosuspend(&mp2_dev->pci_dev->dev);
+ }
  
--	pm_runtime_mark_last_busy(panel->dev);
- 	ret = pm_runtime_put_autosuspend(panel->dev);
+diff --git a/drivers/i2c/busses/i2c-at91-core.c b/drivers/i2c/busses/i2c-at91-core.c
+index edc047e3e535..b64adef778d4 100644
+--- a/drivers/i2c/busses/i2c-at91-core.c
++++ b/drivers/i2c/busses/i2c-at91-core.c
+@@ -313,7 +313,6 @@ static int __maybe_unused at91_twi_resume_noirq(struct device *dev)
+ 			return ret;
+ 	}
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_request_autosuspend(dev);
+ 
+ 	at91_init_twi_bus(twi_dev);
+diff --git a/drivers/i2c/busses/i2c-at91-master.c b/drivers/i2c/busses/i2c-at91-master.c
+index 59795c1c24ff..894cedbca99f 100644
+--- a/drivers/i2c/busses/i2c-at91-master.c
++++ b/drivers/i2c/busses/i2c-at91-master.c
+@@ -717,7 +717,6 @@ static int at91_twi_xfer(struct i2c_adapter *adap, struct i2c_msg *msg, int num)
+ 
+ 	ret = (ret < 0) ? ret : num;
+ out:
+-	pm_runtime_mark_last_busy(dev->dev);
+ 	pm_runtime_put_autosuspend(dev->dev);
+ 
+ 	return ret;
+diff --git a/drivers/i2c/busses/i2c-cadence.c b/drivers/i2c/busses/i2c-cadence.c
+index 697d095afbe4..0fb728ade92e 100644
+--- a/drivers/i2c/busses/i2c-cadence.c
++++ b/drivers/i2c/busses/i2c-cadence.c
+@@ -1128,7 +1128,6 @@ static int cdns_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
+ 		cdns_i2c_set_mode(CDNS_I2C_MODE_SLAVE, id);
+ #endif
+ 
+-	pm_runtime_mark_last_busy(id->dev);
+ 	pm_runtime_put_autosuspend(id->dev);
+ 	return ret;
+ }
+diff --git a/drivers/i2c/busses/i2c-davinci.c b/drivers/i2c/busses/i2c-davinci.c
+index 6a3d4e9e07f4..a773ba082321 100644
+--- a/drivers/i2c/busses/i2c-davinci.c
++++ b/drivers/i2c/busses/i2c-davinci.c
+@@ -543,7 +543,6 @@ i2c_davinci_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
+ 	ret = num;
+ 
+ out:
+-	pm_runtime_mark_last_busy(dev->dev);
+ 	pm_runtime_put_autosuspend(dev->dev);
+ 
+ 	return ret;
+@@ -821,7 +820,6 @@ static int davinci_i2c_probe(struct platform_device *pdev)
+ 	if (r)
+ 		goto err_unuse_clocks;
+ 
+-	pm_runtime_mark_last_busy(dev->dev);
+ 	pm_runtime_put_autosuspend(dev->dev);
+ 
+ 	return 0;
+diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
+index cbd88ffa5610..181ca0938fb2 100644
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -901,7 +901,6 @@ i2c_dw_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
+ 	i2c_dw_release_lock(dev);
+ 
+ done_nolock:
+-	pm_runtime_mark_last_busy(dev->dev);
+ 	pm_runtime_put_autosuspend(dev->dev);
+ 
+ 	return ret;
+diff --git a/drivers/i2c/busses/i2c-hix5hd2.c b/drivers/i2c/busses/i2c-hix5hd2.c
+index 370f32974763..f8aa1ea0f9a6 100644
+--- a/drivers/i2c/busses/i2c-hix5hd2.c
++++ b/drivers/i2c/busses/i2c-hix5hd2.c
+@@ -373,7 +373,6 @@ static int hix5hd2_i2c_xfer(struct i2c_adapter *adap,
+ 	ret = num;
+ 
+ out:
+-	pm_runtime_mark_last_busy(priv->dev);
+ 	pm_runtime_put_autosuspend(priv->dev);
+ 	return ret;
+ }
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index a7f89946dad4..58088e9121a1 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -928,7 +928,6 @@ static s32 i801_access(struct i2c_adapter *adap, u16 addr,
+ 	 */
+ 	iowrite8(SMBHSTSTS_INUSE_STS | STATUS_FLAGS, SMBHSTSTS(priv));
+ 
+-	pm_runtime_mark_last_busy(&priv->pci_dev->dev);
+ 	pm_runtime_put_autosuspend(&priv->pci_dev->dev);
+ 	return ret;
+ }
+diff --git a/drivers/i2c/busses/i2c-img-scb.c b/drivers/i2c/busses/i2c-img-scb.c
+index a454f9f25146..88192c25c44c 100644
+--- a/drivers/i2c/busses/i2c-img-scb.c
++++ b/drivers/i2c/busses/i2c-img-scb.c
+@@ -1131,7 +1131,6 @@ static int img_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
+ 			break;
+ 	}
+ 
+-	pm_runtime_mark_last_busy(adap->dev.parent);
+ 	pm_runtime_put_autosuspend(adap->dev.parent);
+ 
+ 	return i2c->msg_status ? i2c->msg_status : num;
+@@ -1165,7 +1164,6 @@ static int img_i2c_init(struct img_i2c *i2c)
+ 			 "Unknown hardware revision (%d.%d.%d.%d)\n",
+ 			 (rev >> 24) & 0xff, (rev >> 16) & 0xff,
+ 			 (rev >> 8) & 0xff, rev & 0xff);
+-		pm_runtime_mark_last_busy(i2c->adap.dev.parent);
+ 		pm_runtime_put_autosuspend(i2c->adap.dev.parent);
+ 		return -EINVAL;
+ 	}
+@@ -1317,7 +1315,6 @@ static int img_i2c_init(struct img_i2c *i2c)
+ 	/* Perform a synchronous sequence to reset the bus */
+ 	ret = img_i2c_reset_bus(i2c);
+ 
+-	pm_runtime_mark_last_busy(i2c->adap.dev.parent);
+ 	pm_runtime_put_autosuspend(i2c->adap.dev.parent);
+ 
+ 	return ret;
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 064bc83840a6..6d97998859b1 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -362,7 +362,6 @@ static int lpi2c_imx_master_enable(struct lpi2c_imx_struct *lpi2c_imx)
+ 	return 0;
+ 
+ rpm_put:
+-	pm_runtime_mark_last_busy(lpi2c_imx->adapter.dev.parent);
+ 	pm_runtime_put_autosuspend(lpi2c_imx->adapter.dev.parent);
+ 
+ 	return ret;
+@@ -376,7 +375,6 @@ static int lpi2c_imx_master_disable(struct lpi2c_imx_struct *lpi2c_imx)
+ 	temp &= ~MCR_MEN;
+ 	writel(temp, lpi2c_imx->base + LPI2C_MCR);
+ 
+-	pm_runtime_mark_last_busy(lpi2c_imx->adapter.dev.parent);
+ 	pm_runtime_put_autosuspend(lpi2c_imx->adapter.dev.parent);
+ 
+ 	return 0;
+@@ -1372,7 +1370,6 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto rpm_disable;
+ 
+-	pm_runtime_mark_last_busy(&pdev->dev);
+ 	pm_runtime_put_autosuspend(&pdev->dev);
+ 
+ 	dev_info(&lpi2c_imx->adapter.dev, "LPI2C adapter registered\n");
+@@ -1474,7 +1471,6 @@ static int lpi2c_suspend(struct device *dev)
+ 
+ static int lpi2c_resume(struct device *dev)
+ {
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	return 0;
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 60f5c790ad7c..dcce882f3eba 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -1637,7 +1637,6 @@ static int i2c_imx_xfer(struct i2c_adapter *adapter,
+ 
+ 	result = i2c_imx_xfer_common(adapter, msgs, num, false);
+ 
+-	pm_runtime_mark_last_busy(i2c_imx->adapter.dev.parent);
+ 	pm_runtime_put_autosuspend(i2c_imx->adapter.dev.parent);
+ 
+ 	return result;
+@@ -1822,7 +1821,6 @@ static int i2c_imx_probe(struct platform_device *pdev)
  	if (ret < 0)
- 		return ret;
-@@ -389,7 +388,6 @@ static int panel_simple_get_modes(struct drm_panel *panel,
+ 		goto clk_notifier_unregister;
  
- 		num += drm_edid_connector_add_modes(connector);
+-	pm_runtime_mark_last_busy(&pdev->dev);
+ 	pm_runtime_put_autosuspend(&pdev->dev);
  
--		pm_runtime_mark_last_busy(panel->dev);
- 		pm_runtime_put_autosuspend(panel->dev);
+ 	dev_dbg(&i2c_imx->adapter.dev, "claimed irq %d\n", irq);
+@@ -1928,7 +1926,6 @@ static int i2c_imx_suspend(struct device *dev)
+ 
+ static int i2c_imx_resume(struct device *dev)
+ {
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	return 0;
+diff --git a/drivers/i2c/busses/i2c-mv64xxx.c b/drivers/i2c/busses/i2c-mv64xxx.c
+index 8fc26a511320..1acba628e16c 100644
+--- a/drivers/i2c/busses/i2c-mv64xxx.c
++++ b/drivers/i2c/busses/i2c-mv64xxx.c
+@@ -766,7 +766,6 @@ mv64xxx_i2c_xfer_core(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
+ 	drv_data->num_msgs = 0;
+ 	drv_data->msgs = NULL;
+ 
+-	pm_runtime_mark_last_busy(&adap->dev);
+ 	pm_runtime_put_autosuspend(&adap->dev);
+ 
+ 	return ret;
+diff --git a/drivers/i2c/busses/i2c-nvidia-gpu.c b/drivers/i2c/busses/i2c-nvidia-gpu.c
+index 541d808d62d0..14c059b03945 100644
+--- a/drivers/i2c/busses/i2c-nvidia-gpu.c
++++ b/drivers/i2c/busses/i2c-nvidia-gpu.c
+@@ -216,7 +216,6 @@ static int gpu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 		if (status2 < 0)
+ 			dev_err(i2cd->dev, "i2c stop failed %d\n", status2);
+ 	}
+-	pm_runtime_mark_last_busy(i2cd->dev);
+ 	pm_runtime_put_autosuspend(i2cd->dev);
+ 	return status;
+ }
+diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
+index 8b01df3cc8e9..d62f15d1acfe 100644
+--- a/drivers/i2c/busses/i2c-omap.c
++++ b/drivers/i2c/busses/i2c-omap.c
+@@ -828,7 +828,6 @@ omap_i2c_xfer_common(struct i2c_adapter *adap, struct i2c_msg msgs[], int num,
+ 		omap->set_mpu_wkup_lat(omap->dev, -1);
+ 
+ out:
+-	pm_runtime_mark_last_busy(omap->dev);
+ 	pm_runtime_put_autosuspend(omap->dev);
+ 	return r;
+ }
+@@ -1508,7 +1507,6 @@ omap_i2c_probe(struct platform_device *pdev)
+ 	dev_info(omap->dev, "bus %d rev%d.%d at %d kHz\n", adap->nr,
+ 		 major, minor, omap->speed);
+ 
+-	pm_runtime_mark_last_busy(omap->dev);
+ 	pm_runtime_put_autosuspend(omap->dev);
+ 
+ 	return 0;
+@@ -1602,7 +1600,6 @@ static int omap_i2c_suspend(struct device *dev)
+ 
+ static int omap_i2c_resume(struct device *dev)
+ {
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	return 0;
+diff --git a/drivers/i2c/busses/i2c-qcom-cci.c b/drivers/i2c/busses/i2c-qcom-cci.c
+index a3afa11a71a1..e631d79baf14 100644
+--- a/drivers/i2c/busses/i2c-qcom-cci.c
++++ b/drivers/i2c/busses/i2c-qcom-cci.c
+@@ -450,7 +450,6 @@ static int cci_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
+ 		ret = num;
+ 
+ err:
+-	pm_runtime_mark_last_busy(cci->dev);
+ 	pm_runtime_put_autosuspend(cci->dev);
+ 
+ 	return ret;
+@@ -508,7 +507,6 @@ static int __maybe_unused cci_suspend(struct device *dev)
+ static int __maybe_unused cci_resume(struct device *dev)
+ {
+ 	cci_resume_runtime(dev);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_request_autosuspend(dev);
+ 
+ 	return 0;
+diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
+index 13889f52b6f7..30921e80d30f 100644
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -714,7 +714,6 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
+ 	else
+ 		ret = geni_i2c_fifo_xfer(gi2c, msgs, num);
+ 
+-	pm_runtime_mark_last_busy(gi2c->se.dev);
+ 	pm_runtime_put_autosuspend(gi2c->se.dev);
+ 	gi2c->cur = NULL;
+ 	gi2c->err = 0;
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index 6059f585843e..61207ca13890 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -1137,7 +1137,6 @@ static int qup_i2c_xfer(struct i2c_adapter *adap,
+ 		ret = num;
+ out:
+ 
+-	pm_runtime_mark_last_busy(qup->dev);
+ 	pm_runtime_put_autosuspend(qup->dev);
+ 
+ 	return ret;
+@@ -1622,7 +1621,6 @@ static int qup_i2c_xfer_v2(struct i2c_adapter *adap,
+ 	if (ret == 0)
+ 		ret = num;
+ out:
+-	pm_runtime_mark_last_busy(qup->dev);
+ 	pm_runtime_put_autosuspend(qup->dev);
+ 
+ 	return ret;
+@@ -1989,7 +1987,6 @@ static int qup_i2c_suspend(struct device *device)
+ static int qup_i2c_resume(struct device *device)
+ {
+ 	qup_i2c_pm_resume_runtime(device);
+-	pm_runtime_mark_last_busy(device);
+ 	pm_request_autosuspend(device);
+ 	return 0;
+ }
+diff --git a/drivers/i2c/busses/i2c-riic.c b/drivers/i2c/busses/i2c-riic.c
+index 9c164a4b9bb9..2b7893b6152e 100644
+--- a/drivers/i2c/busses/i2c-riic.c
++++ b/drivers/i2c/busses/i2c-riic.c
+@@ -206,7 +206,6 @@ static int riic_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
  	}
  
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index a2248f692a03..f635f26a23f4 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -2446,7 +2446,6 @@ static void tick_work(struct work_struct *work)
+  out:
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
  
- out_unlock:
- 	mutex_unlock(&sched->lock);
--	pm_runtime_mark_last_busy(ptdev->base.dev);
- 	pm_runtime_put_autosuspend(ptdev->base.dev);
+ 	return riic->err ?: num;
+@@ -452,7 +451,6 @@ static int riic_init_hw(struct riic_dev *riic)
  
- out_dev_exit:
-@@ -3203,7 +3202,6 @@ queue_run_job(struct drm_sched_job *sched_job)
+ 	riic_clear_set_bit(riic, ICCR1_IICRST, 0, RIIC_ICCR1);
  
- out_unlock:
- 	mutex_unlock(&sched->lock);
--	pm_runtime_mark_last_busy(ptdev->base.dev);
- 	pm_runtime_put_autosuspend(ptdev->base.dev);
- 
- 	return done_fence;
-diff --git a/drivers/gpu/drm/tegra/submit.c b/drivers/gpu/drm/tegra/submit.c
-index 2430fcc97448..5e0e76ebc5be 100644
---- a/drivers/gpu/drm/tegra/submit.c
-+++ b/drivers/gpu/drm/tegra/submit.c
-@@ -502,7 +502,6 @@ static void release_job(struct host1x_job *job)
- 	kfree(job_data->used_mappings);
- 	kfree(job_data);
- 
--	pm_runtime_mark_last_busy(client->base.dev);
- 	pm_runtime_put_autosuspend(client->base.dev);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 	return 0;
  }
+diff --git a/drivers/i2c/busses/i2c-rzv2m.c b/drivers/i2c/busses/i2c-rzv2m.c
+index b0e9c0b62429..238714850673 100644
+--- a/drivers/i2c/busses/i2c-rzv2m.c
++++ b/drivers/i2c/busses/i2c-rzv2m.c
+@@ -372,7 +372,6 @@ static int rzv2m_i2c_xfer(struct i2c_adapter *adap,
+ 	ret = num;
  
-diff --git a/drivers/gpu/drm/tidss/tidss_drv.c b/drivers/gpu/drm/tidss/tidss_drv.c
-index a1b12e52aca4..e7e02d6017b4 100644
---- a/drivers/gpu/drm/tidss/tidss_drv.c
-+++ b/drivers/gpu/drm/tidss/tidss_drv.c
-@@ -45,8 +45,6 @@ void tidss_runtime_put(struct tidss_device *tidss)
+ out:
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
  
- 	dev_dbg(tidss->dev, "%s\n", __func__);
+ 	return ret;
+diff --git a/drivers/i2c/busses/i2c-sprd.c b/drivers/i2c/busses/i2c-sprd.c
+index 56b2e5c5fb49..2eddddbc84a1 100644
+--- a/drivers/i2c/busses/i2c-sprd.c
++++ b/drivers/i2c/busses/i2c-sprd.c
+@@ -302,7 +302,6 @@ static int sprd_i2c_xfer(struct i2c_adapter *i2c_adap,
+ 	ret = sprd_i2c_handle_msg(i2c_adap, &msgs[im++], 1);
  
--	pm_runtime_mark_last_busy(tidss->dev);
--
- 	r = pm_runtime_put_autosuspend(tidss->dev);
- 	WARN_ON(r < 0);
- }
-diff --git a/drivers/gpu/drm/vc4/vc4_v3d.c b/drivers/gpu/drm/vc4/vc4_v3d.c
-index bb09df5000bd..11ec7e913974 100644
---- a/drivers/gpu/drm/vc4/vc4_v3d.c
-+++ b/drivers/gpu/drm/vc4/vc4_v3d.c
-@@ -153,7 +153,6 @@ vc4_v3d_pm_put(struct vc4_dev *vc4)
+ err_msg:
+-	pm_runtime_mark_last_busy(i2c_dev->dev);
+ 	pm_runtime_put_autosuspend(i2c_dev->dev);
  
- 	mutex_lock(&vc4->power_lock);
- 	if (--vc4->power_refcount == 0) {
--		pm_runtime_mark_last_busy(&vc4->v3d->pdev->dev);
- 		pm_runtime_put_autosuspend(&vc4->v3d->pdev->dev);
+ 	return ret < 0 ? ret : im;
+@@ -559,7 +558,6 @@ static int sprd_i2c_probe(struct platform_device *pdev)
+ 		goto err_rpm_put;
  	}
- 	mutex_unlock(&vc4->power_lock);
+ 
+-	pm_runtime_mark_last_busy(i2c_dev->dev);
+ 	pm_runtime_put_autosuspend(i2c_dev->dev);
+ 	return 0;
+ 
+diff --git a/drivers/i2c/busses/i2c-stm32f7.c b/drivers/i2c/busses/i2c-stm32f7.c
+index ef15475a7ee1..36843ac5d024 100644
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -1757,7 +1757,6 @@ static int stm32f7_i2c_xfer_core(struct i2c_adapter *i2c_adap,
+ 	}
+ 
+ pm_free:
+-	pm_runtime_mark_last_busy(i2c_dev->dev);
+ 	pm_runtime_put_autosuspend(i2c_dev->dev);
+ 
+ 	return (ret < 0) ? ret : num;
+@@ -1866,7 +1865,6 @@ static int stm32f7_i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
+ 	}
+ 
+ pm_free:
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 	return ret;
+ }
+@@ -1973,7 +1971,6 @@ static int stm32f7_i2c_reg_slave(struct i2c_client *slave)
+ 	if (!stm32f7_i2c_is_slave_registered(i2c_dev))
+ 		stm32f7_i2c_enable_wakeup(i2c_dev, false);
+ 
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	return ret;
+@@ -2011,7 +2008,6 @@ static int stm32f7_i2c_unreg_slave(struct i2c_client *slave)
+ 		stm32f7_i2c_enable_wakeup(i2c_dev, false);
+ 	}
+ 
+-	pm_runtime_mark_last_busy(i2c_dev->dev);
+ 	pm_runtime_put_autosuspend(i2c_dev->dev);
+ 
+ 	return 0;
+@@ -2324,7 +2320,6 @@ static int stm32f7_i2c_probe(struct platform_device *pdev)
+ 
+ 	dev_info(i2c_dev->dev, "STM32F7 I2C-%d bus adapter\n", adap->nr);
+ 
+-	pm_runtime_mark_last_busy(i2c_dev->dev);
+ 	pm_runtime_put_autosuspend(i2c_dev->dev);
+ 
+ 	return 0;
+diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+index 607026c921d6..28015d77599d 100644
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -1349,7 +1349,6 @@ static int xiic_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 	mutex_unlock(&i2c->lock);
+ 
+ out:
+-	pm_runtime_mark_last_busy(i2c->dev);
+ 	pm_runtime_put_autosuspend(i2c->dev);
+ 	return err;
+ }
 -- 
 2.39.5
 
