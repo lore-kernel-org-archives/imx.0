@@ -1,127 +1,155 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B817F1F419B
-	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 10:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425902D0C9E
+	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 11:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751626303; cv=none; b=inkJQQ52Rp+j5hW0d8ccc15G9eCyvilzaAb4eDyyvHLzIWfIdyQuGmLCpKqtl5cbruE0/6rGyrU/iAhpFzVYgiipy1pazA3XJqXHX4uWPwEYT/Hv6KzvtAA69+LdVVPe/IhuhIXwaFbDC9Gw+xPu+LJvUOc7J05TOlwTE5ZOWQE=
+	t=1751628612; cv=none; b=cHGQ7Q5+p2z5nytndJkY1jHoNJghM1DBmY/hjIHvT4mbYvkcr2KLblEGBS93WKLOIG0uTauAPbgwqMHsaC9gSn8bItm/SQPoPY0HB7jDEEdaOt5013A35p5YGztnlg07LR77qpFToty0yAcWjAtmnvRvohATi4EtL1l6xissswk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751626303; c=relaxed/simple;
-	bh=CTT5TQOjHcJ3m47aivFzEehnIpEiVfpXfDkyBs2MDZg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ne+R0VIsL5ND2VKFXlQbFMYFSMblB2gICcuc+TSIA/IW3Tg2y3HkLSazcyzS6zVd6KCCIz3zsP6gJFRBp288U86VGGPwIfb4FiWblm9rSmv/MT+PzUOfa3cm9dYrDiJPszh+NEyIw/Ok6Qhj3KtSM/gWouAWKg/h2GZTdlDP+ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 318F12661;
-	Fri,  4 Jul 2025 03:51:26 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF38A3F6A8;
-	Fri,  4 Jul 2025 03:51:37 -0700 (PDT)
-Date: Fri, 4 Jul 2025 11:51:35 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Chuck Cannon <chuck.cannon@nxp.com>,
-	"Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	"Pengutronix Kernel Team" <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"arm-scmi@vger.kernel.org" <arm-scmi@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/7] firmware: arm_scmi: imx: Support getting cfg info of
- MISC protocol
-Message-ID: <aGeyN4gp4qnLzgj2@bogus>
-References: <20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com>
- <20250627-sm-misc-api-v1-v1-3-2b99481fe825@nxp.com>
- <20250702-arrogant-jackdaw-of-skill-bb9fd3@sudeepholla>
- <20250704100741.GC4525@nxa18884-linux>
- <aGeYomz9DmmAOSEw@bogus>
- <DB9PR04MB8461CD9CBAE26448D5610BF28842A@DB9PR04MB8461.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1751628612; c=relaxed/simple;
+	bh=LBBKUZPE2gWKJIlUUTuZzM4rUYU+U7D59WGqtSEG+zU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dZSLO5ke68K5hWqz12gaSpZqzgdALLShetov/4/3OgWAtAABqiJUVdDWVJjEzPn/E+OFmal6gdhyh1TFXcQ3SBNwwGxVtF4Dp/29YwTJGhky2NuHdH+1Cx8KMd61+OWj/UztaxD9pHuVRcGlhirya3vnYy46saiAj5EzueOgy2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=OIsG7Ij3; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=W4gdiY2u reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="OIsG7Ij3";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="W4gdiY2u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1751628608; x=1783164608;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=oQLSCU6s7tadJXW3ijfkRaS6QjwulBRxirc1q6sY6so=;
+  b=OIsG7Ij3AG2IZL3NvAndB4AIBWeWdo28Ty9QKZqB9sStL0AenSZr/cGx
+   CgqALvouK5PdeRlAarSOfrXRgYbbGCL4kwkFYXDlsKYSgcP7lkPLXr6Kt
+   17iUHwTGam1pN2gY+9U6IiJ913coctf/bK8nH86ZNFaMtXVMTwPd9osIY
+   qr6rzJ1oycjjRjIUYi5CbGi13yyIsWr4RnLpvQ6sALQr391oBViziSRGD
+   lj1DR6e7+FqZrVlILIyY4Fc7KKjobRse9P14U8K1kPCQk5hi9NFwFshEB
+   Sy8Eu5S0S288doXeThQJW1bsgs4XqNTCGc7k8eJnjrGOmGY45/x5+C1iZ
+   w==;
+X-CSE-ConnectionGUID: jSRuNTPpRsydYLYRPhbXQg==
+X-CSE-MsgGUID: R+RKeJOgQ+S5uDN6S6S9fA==
+X-IronPort-AV: E=Sophos;i="6.16,287,1744063200"; 
+   d="scan'208";a="45031135"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 04 Jul 2025 13:30:04 +0200
+X-CheckPoint: {6867BB3C-30-4FC15ADB-CD71293B}
+X-MAIL-CPID: 407389F97A04FFAD1E4F8CCE6D42EE93_0
+X-Control-Analysis: str=0001.0A006396.6867BB4C.0063,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AC794165607;
+	Fri,  4 Jul 2025 13:29:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1751628600;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oQLSCU6s7tadJXW3ijfkRaS6QjwulBRxirc1q6sY6so=;
+	b=W4gdiY2u+KnVU6AEdD0acwe3gCkG8t/uyJscqkMzNXOpRFSqpVNFfLN9jFk/1GB+71IMXE
+	kWwh6jGmZ+hBi4ZZ98dPY9+hZRc8zDTWF5S42ufc3p0vo0uB7aULUruYxiNzkCrNAT/dIp
+	Qpw3v6qWfXz7EwZcnEe677+Ytex/+2ODif3jwmve/nnfYpoL1eTfa7lWOOciCU3ukcS0hr
+	d0eYqEiAt1eRyuRZmrjbZV+VihawcFagHfXxm7z1ahKQ7+MsGLI4O48PqNOEl8w9aK2jpC
+	vr9n7V6SlBwd92LVSYrWcBgrTkMgNkpj7p61/UB0iymUekecOOfIsYbbIAq8Aw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dmitry Baryshkov <lumag@kernel.org>,
+ dri-devel@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Liu Ying <victor.liu@nxp.com>
+Subject: Re: [PATCH 04/14] drm/imx: dc-fu: Fix dimensions
+Date: Fri, 04 Jul 2025 13:29:57 +0200
+Message-ID: <3702593.R56niFO833@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250704-imx8-dc-prefetch-v1-4-784c03fd645f@nxp.com>
+References:
+ <20250704-imx8-dc-prefetch-v1-0-784c03fd645f@nxp.com>
+ <20250704-imx8-dc-prefetch-v1-4-784c03fd645f@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DB9PR04MB8461CD9CBAE26448D5610BF28842A@DB9PR04MB8461.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jul 04, 2025 at 10:39:53AM +0000, Peng Fan wrote:
-> > Subject: Re: [PATCH 3/7] firmware: arm_scmi: imx: Support getting cfg
-> > info of MISC protocol
-> > 
-> > On Fri, Jul 04, 2025 at 06:07:41PM +0800, Peng Fan wrote:
-> > > On Wed, Jul 02, 2025 at 04:21:58PM +0100, Sudeep Holla wrote:
-> > > >On Fri, Jun 27, 2025 at 02:03:46PM +0800, Peng Fan wrote:
-> > > >> MISC protocol supports getting the System Manager(SM) mode
-> > > >> selection and configuration name. Add the API for user to retrieve
-> > > >> the information from SM.
-> > > >>
-> > > >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > > >> ---
-> > > >>  .../firmware/arm_scmi/vendors/imx/imx-sm-misc.c    | 30
-> > ++++++++++++++++++++++
-> > > >>  include/linux/scmi_imx_protocol.h                  |  5 ++++
-> > > >>  2 files changed, 35 insertions(+)
-> > > >>
-> > > >> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> > > >> b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> > > >> index
-> > > >>
-> > 1b24d070c6f4856b92f515fcdba5836fd6498ce6..8ce4bf92e6535af2f3
-> > 0d72a34
-> > > >> 717678613b35049 100644
-> > > >> --- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> > > >> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> > > >> @@ -26,6 +26,7 @@ enum scmi_imx_misc_protocol_cmd {
-> > > >>  	SCMI_IMX_MISC_CTRL_SET	= 0x3,
-> > > >>  	SCMI_IMX_MISC_CTRL_GET	= 0x4,
-> > > >>  	SCMI_IMX_MISC_DISCOVER_BUILDINFO = 0x6,
-> > > >> +	SCMI_IMX_MISC_CFG_INFO = 0xC,
-> > > >>  	SCMI_IMX_MISC_CTRL_NOTIFY = 0x8,
-> > > >>  };
-> > > >>
-> > > >> @@ -73,6 +74,11 @@ struct scmi_imx_misc_buildinfo_out {
-> > > >>  	u8 buildtime[MISC_MAX_BUILDTIME];  };
-> > > >>
-> > > >> +struct scmi_imx_misc_cfg_info_out {
-> > > >> +	__le32 msel;
-> > > >
-> > > >Now, I realise, this mode select is not properly defined in the
-> > document.
-> > > >Just 32-bit word. What are those values ? Any fixed list of values
-> > > >with well defined modes or configurations ? If so, please add to the
-> > document.
-> > >
-> > > The current used value are 0,1,2. It is used to decide the logic
-> > > machine boot order, such as 0 means booting LM0, LM1, LM2, LM3...
-> > > Regarding 0,1,2 using which LM order, it could be defined by user in
-> > > i.MX9 System Manger cfg file. That means 1 could mean LM0, LM2,
-> > LM3,
-> > > LM1 or LM0, LM3, LM1, LM2.
-> > >
-> > 
-> > This sounds like this is not well defined and could change on a different
-> > platform ? If so, how will you manage this extension across i.MX
-> > platforms ?
-> > 
-> > Or the above order is actually fixed and will remain same across the
-> > platforms ?
-> 
-> + Chuck who is the best person to answer this. I may not explain it clear.
-> 
+Hi,
 
-Sorry I missed the mention of i.MX9 System Manger cfg file. So the exact
-order is specified in that file and this seems like an index to that entry.
-It is better to mention that in the document at the least if nothing else
-can be fixed and you need flexibility to keep that variable.
+thanks for the patch.
 
--- 
-Regards,
-Sudeep
+Am Freitag, 4. Juli 2025, 11:03:51 CEST schrieb Liu Ying:
+> Fix off-by-one issue in LINEWIDTH, LINECOUNT, FRAMEWIDTH and FRAMEHEIGHT
+> macro definitions.  The first two macros are used to set a fetchunit's
+> source buffer dimension and the other two are used to set a fetchunit's
+> frame dimension.  It appears that display controller itself works ok
+> without this fix, however, it enters panic mode when prefetch engine(DPRC
+> and PRGs) attaches to it without this fix.
+>=20
+> Fixes: 0e177d5ce01c ("drm/imx: Add i.MX8qxp Display Controller pixel engi=
+ne")
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+> ---
+>  drivers/gpu/drm/imx/dc/dc-fu.c | 4 ++--
+>  drivers/gpu/drm/imx/dc/dc-fu.h | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/imx/dc/dc-fu.c b/drivers/gpu/drm/imx/dc/dc-f=
+u.c
+> index f94c591c815891468a5c2a940076963eeaa4d51c..b36d3034b8d5962eaab212b6b=
+65ebbb5c29f978c 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-fu.c
+> +++ b/drivers/gpu/drm/imx/dc/dc-fu.c
+> @@ -31,8 +31,8 @@
+>  #define STRIDE(x)			FIELD_PREP(STRIDE_MASK, (x) - 1)
+> =20
+>  /* SOURCEBUFFERDIMENSION */
+> -#define LINEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x))
+> -#define LINECOUNT(x)			FIELD_PREP(GENMASK(29, 16), (x))
+> +#define LINEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x) - 1)
+> +#define LINECOUNT(x)			FIELD_PREP(GENMASK(29, 16), (x) - 1)
+> =20
+>  /* LAYEROFFSET */
+>  #define LAYERXOFFSET(x)			FIELD_PREP(GENMASK(14, 0), (x))
+> diff --git a/drivers/gpu/drm/imx/dc/dc-fu.h b/drivers/gpu/drm/imx/dc/dc-f=
+u.h
+> index e016e1ea5b4e0471cf6627782603e72d0475c4e8..518d1af49f5ae9d4f67da5e6c=
+2e80abd7e962120 100644
+> --- a/drivers/gpu/drm/imx/dc/dc-fu.h
+> +++ b/drivers/gpu/drm/imx/dc/dc-fu.h
+> @@ -38,8 +38,8 @@
+>  #define SOURCEBUFFERENABLE		BIT(31)
+> =20
+>  /* FRAMEDIMENSIONS */
+> -#define FRAMEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x))
+> -#define FRAMEHEIGHT(x)			FIELD_PREP(GENMASK(29, 16), (x))
+> +#define FRAMEWIDTH(x)			FIELD_PREP(GENMASK(13, 0), (x) - 1)
+> +#define FRAMEHEIGHT(x)			FIELD_PREP(GENMASK(29, 16), (x) - 1)
+> =20
+>  /* CONTROL */
+>  #define INPUTSELECT_MASK		GENMASK(4, 3)
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
