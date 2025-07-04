@@ -1,204 +1,186 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011016.outbound.protection.outlook.com [52.101.65.16])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852222F4310
-	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 08:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751619423; cv=fail; b=os8HVRQTh9I1XfzO2sACkPtZuZkjK3qFrucpSl0Gpj+NiDcohqk0ySFJSVTFcqdizefssCRwJy2hQhBQymAMXD0KYDVcsduw1ddkc8SbacW16KFHfhO5ku9veJYyPlAg3sw8MXTpIb35QzINYYxv0R9sPGGHU0jjzfHh6Tc1O6E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751619423; c=relaxed/simple;
-	bh=Zqd4dfvz60qllScxDG8A4EsvZG2ckATL6rtSPb2f7Oc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=H2ZaNmO4AI6ZU7cRyHo0fo9UIFJhX3pttrxCI9vgT6SJONRr6xgTTyG8TTJY/ICxjcH/LtMVyL19Ox3d+6btsFRL+nes9FSuWXesTF2wvwnKKVKkWJ2lh85t+6kS/iAyqvMVL21nfBs0RfJkv7ussYxHZyoEFvIttjv+UewQ8V4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=KaxvL040; arc=fail smtp.client-ip=52.101.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3FC2F50B3
+	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 08:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751619463; cv=none; b=L86/pDU0msfuH04OAxTbobE1Y8wGRWFRkRSSuDQPCbBkuGqvi/RLSAZBWJC359Nj7PGISCneut+XvXu+qEaTH+FrYA+hZVLpzopmV1hl9glbXIOCZ2r2rPeWnIJR5EssdvnN/+lDndYztyIxuqC9A4PIi7hlzz7yoMezEDA2xBk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751619463; c=relaxed/simple;
+	bh=Hq3evHZffKrfDtkoD9VkUHgds86PykelMMQhzlru9Hs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gl8DXVVWEq5y7cuOP85zftbo5RKCKjKdBxKyrDkT9UKKDoI1H+N11kMpLaZbxHfa/u84Kmkubpal/EpD7j+LBHLQDLXjbQkeAsY525IvbQuTqEwA2iD7EzEk4tx5eeI9MzowWL3AwRpdP7vdkM00fZW92BgeUcBhqyEotNrEUAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IsFNgvOI; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="KaxvL040"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NVkeXa3J1VtGeQHUTLD2pOCOEXUV4YXYaR1pUnX8A9B1GIsxrY4z4QvUb1iSuIV6Gy0otCx9zCoYBnc8ns+nR0L+LzF33ReimDvEoKpda/0bVX31F7CyKyrCKwPqHOXKOjTsjVFO93C3Xg/KsuosFQbMXKLZErT9uc35ez3FpLIHflqgAHp0jJh8tmdOv6IUwjrimP9TluyrC3OnDhDYw4qQgcpFJLnTNJgP2EX7H/th02IsHCQIRBj2SdXr7HlfNMTVyH1S0RltEvssnptblNsIHw8i3Svs8SyIsuA2x2i2DamiBVDlx7GxGJjOLhbVkb/jL3toSuwqFND6WHQP7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sZuDeiiMFNiHh5DOlLE5Ty1OaFaCma6W7R3cnBne5rk=;
- b=j+KIqy+l869dmSmILFZ75CBMluTIm7UKt2bwFHyCuKu+Ju6IcNIs/jgjssXD56VxfVtPbbzCAzPpuyBObRFcnkXgsQlJKAFiJkU55UUHh0T42hc4bkmZBZFA9GtGziU+/cPjXLGFsaxHpi4FfU8puRm+MjOC7MObW5g6gANxKAiVoFnbtywncXDsrTO7SdxbFX8eLy3/YP+Dnum5kdj9dj+XbeSThfBPIx5oM3otk5Uo7tFnzlKySt0ex+KpOukGDYDP0oJKg8199xnKEmlcrz7bjpX4vYrvQoUH6Agq/KaD8On4bjgWpHu1bRfuGhKzIno8CXTd2Bgj5cFppfBG6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sZuDeiiMFNiHh5DOlLE5Ty1OaFaCma6W7R3cnBne5rk=;
- b=KaxvL040irGdqkJI1YW5WtPLoo6e+XPe13+vkOZ+i3pjbQU5gbw9xj1wYkZuq5aLP3WMCzWoqUIz5PnzyRBTNaJpUIgQkH3333oYrVvz8JJSS6yVcaGNSQ+y7wEB9OA0xEbC7YPqrr9wLj5ypuXgK2LORAOR+HB2aR8mDJH9DC8veWscwTvL6yZRjg1/p7JAtJi2dT7Myp+pkTXFdB4rDMqDfDP34tlltX6LNpPSM9EjO0vzBkZft9r3HGtKDeYdAqJyZGQstFO1XziYoCHKqKENjoEKo5XAM6sfdil13CSH3xv+3zpXRka56hkjrlZljIHUXVx8aMf5rKKUJsg67A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by GV2PR04MB11302.eurprd04.prod.outlook.com (2603:10a6:150:2ae::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.23; Fri, 4 Jul
- 2025 08:56:57 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197%3]) with mapi id 15.20.8901.021; Fri, 4 Jul 2025
- 08:56:57 +0000
-Date: Fri, 4 Jul 2025 18:07:41 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/7] firmware: arm_scmi: imx: Support getting cfg info of
- MISC protocol
-Message-ID: <20250704100741.GC4525@nxa18884-linux>
-References: <20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com>
- <20250627-sm-misc-api-v1-v1-3-2b99481fe825@nxp.com>
- <20250702-arrogant-jackdaw-of-skill-bb9fd3@sudeepholla>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702-arrogant-jackdaw-of-skill-bb9fd3@sudeepholla>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: MA0PR01CA0043.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:81::14) To DB9PR04MB8461.eurprd04.prod.outlook.com
- (2603:10a6:10:2cf::20)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IsFNgvOI"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8E24143AEE;
+	Fri,  4 Jul 2025 08:57:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751619453;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z/ao/2kml8jJZFHPFKKmBePrXHDwomfciEfTApf1ng0=;
+	b=IsFNgvOIXVOwfZalpbJl3HeOSXGJ/b0Br9jNwmVj8c8XWQeGRJ8yNf3TykuiXP9YVWVNg9
+	WswEtsNyDmTb6lPYtNo8jxAwOyYHr7+xBhPVcBIgta1Gmw8VnOWUw/IIgLl0UbPh+PxatT
+	QEnGVRZSbWRjlpWe41sTUlxkGP/Yq4rgQ07Ce2ffpGvDVrPXEuUvzR/vQ7m9UpYt7tin2Y
+	sLZZm9ZYReoWxyEcrLAoB6ePBBOxMVsZYJxN9iYmAivhvHar9hS8v4H3i9GFkWozo5fSTm
+	tDdAojqJukJpigemHSwc8gA9r4PchXfJlcnlZExGtC/OGPUfoanwJMSTvEwmSg==
+Date: Fri, 4 Jul 2025 10:57:25 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len
+ Brown <lenb@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
+ <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 05/28] bus: simple-pm-bus: Populate child nodes at
+ probe
+Message-ID: <20250704105725.50cb72b9@bootlin.com>
+In-Reply-To: <20250703093302.4f7743ea@bootlin.com>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+	<20250613134817.681832-6-herve.codina@bootlin.com>
+	<20250627155200.GB3234475-robh@kernel.org>
+	<20250703093302.4f7743ea@bootlin.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|GV2PR04MB11302:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f5a3fd2-3b9c-4e5d-d4f1-08ddbad8bb27
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RpFaUjTmIXXUXtlRL2MJ6dpy3Wfkby7ypEbCQzrRLPlfQYxmLvnYFY0Nhtcy?=
- =?us-ascii?Q?KiNJexPjKKQHqojB1R+i2fl9mYY1dxANniMLw3os71Ck2NEd2rZM2x1rqheB?=
- =?us-ascii?Q?WEltI+hMl96HRbwxT4XWP8NXH8jOLWiDjabGFq3pU3QaQfXaR3hBXiV8HmoK?=
- =?us-ascii?Q?kMtl3IxR/Hq1scK0QTANZEGTy74EKQm5kwfDkK0t1+wVvtBOtd/9AsAXOUS2?=
- =?us-ascii?Q?XwbhpcCEjNfiCwlZChdYMg21BIJrES918No9thCVIe6jV8QB4QcuJqO2A0LR?=
- =?us-ascii?Q?0gLzqmwevDhseSFlaNVwe5nHKPKApF5Qb5K+O/pTUK0uRoRLuWZb5EFR56uL?=
- =?us-ascii?Q?6Dxlz0zWbZf7QjbpJp/GNGdNkm7S3LlUBkZ/Mh0mXrsU8gei1HBM6owI538d?=
- =?us-ascii?Q?lavI2dkBuyPosaUck+KE2ctFjxvnHEVLqIM3ahsNyDnp9oDoWwdq0iX7p3E8?=
- =?us-ascii?Q?uAOtUwd+RpoR4ynTKj5SFENfwYw2/Bxkv4SybBRz+4UDyof/NjAOffTbWYS4?=
- =?us-ascii?Q?B5zngvF3Ia+FixAf78lBdhlpZYWACZbJ3ESU22Cf0PRmhs2epxmF4aKbvlu1?=
- =?us-ascii?Q?ED+kVlAOCE7IdkL6QzjX2crLRXXnxKRDBAEx0n1fHFsFJ/6zg9Cumj/I5mi8?=
- =?us-ascii?Q?FxuTv7GIss3UqlNgFu5DSpUpYXFRKCirEFfzt2b9tzIa/WwJ0WyotDxhSGqj?=
- =?us-ascii?Q?h6ZdCheysDpMmVNzGRgiW5Nsoq6sfV5JGgLJ8d2+hDis75t0okKdtlGFk8p2?=
- =?us-ascii?Q?Jh6x3Gc3+j196Dbvr+YmxvVpfZFpY6X/mWunzgjtQbb31VGLWTKU64SuZJJ8?=
- =?us-ascii?Q?QlNvt45Jl9R5/oCGig8WRJHUvoaA4Nslws1wne3yVy0cDqGsT1A7fGCUEIu5?=
- =?us-ascii?Q?WE2y2iFVkGIBw2AZi6AB+7rQ0+xAFtshx9103nAHdJGbKud1i6XOcwPDVbg8?=
- =?us-ascii?Q?3BJRqu7r6hNYLRt3M/UXTyo8YhYk1wNxPv3fAd8ksgUv8FCOZoMMf5Mhj2it?=
- =?us-ascii?Q?I71x5PBUn6X2jrTdIefQYt018LD6w4gIvQwAhKlRRo9fbYK+754Ng1HfRu3R?=
- =?us-ascii?Q?hhXuqOZy4xKzKTi7fDGHUsulMCys7QBS4vdgIbrxNrCbpEn5R/dlwAg/Ssve?=
- =?us-ascii?Q?vD6iTDXoOTETLLJxc2OvfVWFU/OGwz2KPIMtcr9tAX8rJ67Ej5b3Cm4R4wQM?=
- =?us-ascii?Q?DPODSDPYaxt7p2BndGV6fPL4Y8L5214ilFnKhO1HlD8gElS3glI46ZbkRRS4?=
- =?us-ascii?Q?FP+37OUSyZXFQ8UwNRAFpINkCWVg9LdEynWNHI6Wjcx33xcAsQuJoHlfq4zy?=
- =?us-ascii?Q?AHlKCqaVd7Jd6/8j2IDjDYnqaVnKkO1ZukzC8FEC5pkqHLJx2CAHxnYdpMRR?=
- =?us-ascii?Q?ntohxArq6d8svGajhTuB7bNTRpC9qB2HApQPjdTcuiEKJcTum/q4BTRDF4N5?=
- =?us-ascii?Q?XdhpbOvyXMwZX1i2hwkDNZYnAWqsuXUO3bmo3AmGDJBNN325SJyUAw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yAP/KyAxDi4bfz8vRAh4NDlIH3aAQZS3braadLCe9re2mDyjDtnyzwxtX8pj?=
- =?us-ascii?Q?yMiYRgXXvZuhBe/BQ0LABHFfmWl6YV6KwqGnJ04FpkAfagZaJXnmvZ9HvecH?=
- =?us-ascii?Q?h/jJuFXAqcF0AuZdlO0whSMV60ugFgWcxMvx2yQohvZeV0UmCgLUCiob43k3?=
- =?us-ascii?Q?QtjoxevlVnsTyOVqoqrKEu61KGILoJCOezeWNytwyTK5npiTTe7fvkXFExe2?=
- =?us-ascii?Q?B5S4DECzbwASRr9i5HsXRrxmJT+j5gt/MnqXTkfd8pxYikwuWe4eOmloKlhE?=
- =?us-ascii?Q?rFyq8GOEVYEKMyUBV/yL7Lt9xri+5Khi7PjsD1GIDdpdwDKTl3XQTvAdJZdt?=
- =?us-ascii?Q?BfkQgrhWLB0lfgRbeAS3Ne8YTkqNp0fB+C09FggyFyLa+1+hGKoWpTHjpn5E?=
- =?us-ascii?Q?MBCllqFYL6SbHJUSiO3J2tJH/Is7X9oHIe7imYBNzY8Q1S6FE3epsE9m+eKl?=
- =?us-ascii?Q?jeiYsWNgJfAc2I+EmpzqLh6xwmoVHOW6kabIZm8ey9si2AmuI4dTVoSkl8iu?=
- =?us-ascii?Q?OPIV8dqqj/67psg8m8bncNBSzXqadVLq/Ij9jlSraZ+fTA1ANsoZnP3NLerg?=
- =?us-ascii?Q?P6pifET3Dju5aQH5RuqVJyD7LitPn9ILLLik1MR9pQM045EBnYNm5mDOTmaU?=
- =?us-ascii?Q?1TJDbAJHEznMQGoP7tY/UNZlNmayIcpXUNBP3w0rI5DMX+86EMDpRGs0Ha/m?=
- =?us-ascii?Q?MG9y0QajcyLolzd8vBilg0mFbD2TerR+SGDVG8x4rJ/LjfN6tYVi9hQx69oo?=
- =?us-ascii?Q?uDpFtWUTHKLrSrDfDB614aDHM8uU90dhnwGQWMJXSoe2+X26uyznmV2AJ1Hk?=
- =?us-ascii?Q?Z2LH/SCDPIu6vC/gwrs9no9stCDyQpfqf6pz5wMnNDanph2oHbhK9ZeVX/Ut?=
- =?us-ascii?Q?W4gyxRXZjBPyrNMPzhXX+Ew0zml+CZ++Arcs+h+zcl6tZsgHqyNDVqogrYro?=
- =?us-ascii?Q?MRS7Rzq4aZ7GjpaqErqCvMd0XLcoOIAbOwbak+R4R5WkAY9iy9A8XKjkO1To?=
- =?us-ascii?Q?mbe8G7WSxSQYd9hN9bEBU6bHQwNw3qRFK4Cs68dueplNw8SzNDbUQbMuDytB?=
- =?us-ascii?Q?aLaLW0Rm6LI1mCP3Jvu7gOn7WEhgKvXHY3nA9olLcW4aGpOOPJiIZCjfn8WK?=
- =?us-ascii?Q?tD+TWOOIHipUxYOsCa35Pld++RL7v2hF+yuj6X/LXoXBwpsVzVZlqKuEt5Wi?=
- =?us-ascii?Q?QRV9fsI3JapyjavIBIH5oFtYr8jDd3YpLKYyymakSKiHmWmkgMepjeYEiXBM?=
- =?us-ascii?Q?whewJZJtmBh+r169gQHNnOP8EIMOtskYxBmb1nS8tv0BtUk/EEDA3CBRPojh?=
- =?us-ascii?Q?1ZrWbM+dr0RylN3WNcwWejLnaLO/J1GPmETrRhMxqx5RAd/mAk0WbTbijBpl?=
- =?us-ascii?Q?+dP2cvMXQW5uAdwHRayc/xgPWci0IH+b/Bb94Z/2H4w/uPA7S4q9qWvHl0z4?=
- =?us-ascii?Q?U3VfJ46q68d2dAPnJKtYDrJ4J8hWmooV9dfR1RwgWTWpfOMyClpL6u0XP+23?=
- =?us-ascii?Q?rdGFpvbBk1yxkv4smAWtoGg3GzUvup92YGtIBu9FFdzXOXyl20T/LksZ4xvZ?=
- =?us-ascii?Q?fVDoA+eHfTUlHKv6F88i+fkZEPLL+ryvmrpus0rv?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f5a3fd2-3b9c-4e5d-d4f1-08ddbad8bb27
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2025 08:56:57.4689
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S++IUh8zNZcLKzdC8qvuyHx6GkzC8G/+oClyvKdYX42JnhzE+8cVGKlpMj/DgGYfAKBdQos7T9KbGRN1iu0Jmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11302
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvvdejfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeekpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhor
+ hhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
+X-GND-Sasl: herve.codina@bootlin.com
 
-On Wed, Jul 02, 2025 at 04:21:58PM +0100, Sudeep Holla wrote:
->On Fri, Jun 27, 2025 at 02:03:46PM +0800, Peng Fan wrote:
->> MISC protocol supports getting the System Manager(SM) mode selection
->> and configuration name. Add the API for user to retrieve the information
->> from SM.
->> 
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->> ---
->>  .../firmware/arm_scmi/vendors/imx/imx-sm-misc.c    | 30 ++++++++++++++++++++++
->>  include/linux/scmi_imx_protocol.h                  |  5 ++++
->>  2 files changed, 35 insertions(+)
->> 
->> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
->> index 1b24d070c6f4856b92f515fcdba5836fd6498ce6..8ce4bf92e6535af2f30d72a34717678613b35049 100644
->> --- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
->> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
->> @@ -26,6 +26,7 @@ enum scmi_imx_misc_protocol_cmd {
->>  	SCMI_IMX_MISC_CTRL_SET	= 0x3,
->>  	SCMI_IMX_MISC_CTRL_GET	= 0x4,
->>  	SCMI_IMX_MISC_DISCOVER_BUILDINFO = 0x6,
->> +	SCMI_IMX_MISC_CFG_INFO = 0xC,
->>  	SCMI_IMX_MISC_CTRL_NOTIFY = 0x8,
->>  };
->>  
->> @@ -73,6 +74,11 @@ struct scmi_imx_misc_buildinfo_out {
->>  	u8 buildtime[MISC_MAX_BUILDTIME];
->>  };
->>  
->> +struct scmi_imx_misc_cfg_info_out {
->> +	__le32 msel;
->
->Now, I realise, this mode select is not properly defined in the document.
->Just 32-bit word. What are those values ? Any fixed list of values with
->well defined modes or configurations ? If so, please add to the document.
+Hi Rob,
 
-The current used value are 0,1,2. It is used to decide the logic machine
-boot order, such as 0 means booting LM0, LM1, LM2, LM3...
-Regarding 0,1,2 using which LM order, it could be defined by user in
-i.MX9 System Manger cfg file. That means 1 could mean LM0, LM2, LM3, LM1
-or LM0, LM3, LM1, LM2.
+On Thu, 3 Jul 2025 09:33:02 +0200
+Herve Codina <herve.codina@bootlin.com> wrote:
 
-I will update doc with below:
-msel is used to decide Logical Machine boot order, it could vary per board,
-because the order is defined in System Manager board configuration file.
+> Hi Rob,
+> 
+> On Fri, 27 Jun 2025 10:52:00 -0500
+> Rob Herring <robh@kernel.org> wrote:
+> 
+> > On Fri, Jun 13, 2025 at 03:47:45PM +0200, Herve Codina wrote:  
+> > > The simple-pm-bus driver handles several simple busses. When it is used
+> > > with busses other than a compatible "simple-pm-bus", it doesn't populate
+> > > its child devices during its probe.
+> > > 
+> > > This confuses fw_devlink and results in wrong or missing devlinks.
+> > > 
+> > > Once a driver is bound to a device and the probe() has been called,
+> > > device_links_driver_bound() is called.
+> > > 
+> > > This function performs operation based on the following assumption:
+> > >     If a child firmware node of the bound device is not added as a
+> > >     device, it will never be added.
+> > > 
+> > > Among operations done on fw_devlinks of those "never be added" devices,
+> > > device_links_driver_bound() changes their supplier.
+> > > 
+> > > With devices attached to a simple-bus compatible device, this change
+> > > leads to wrong devlinks where supplier of devices points to the device
+> > > parent (i.e. simple-bus compatible device) instead of the device itself
+> > > (i.e. simple-bus child).
+> > > 
+> > > When the device attached to the simple-bus is removed, because devlinks
+> > > are not correct, its consumers are not removed first.
+> > > 
+> > > In order to have correct devlinks created, make the simple-pm-bus driver
+> > > compliant with the devlink assumption and create its child devices
+> > > during its probe.    
+> > 
+> > IIRC, skipping child nodes was because there were problems with 
+> > letting the driver handle 'simple-bus'. How does this avoid that now?  
+> 
+> I don't know about the specific issues related to those problems. Do you
+> have some pointers about them?
+> 
+> > 
+> > The root of_platform_populate() that created the simple-bus device that 
+> > gets us to the probe here will continue descending into child nodes. 
+> > Meanwhile, the probe here is also descending into those same child 
+> > nodes. Best case, that's just redundant. Worst case, won't you still 
+> > have the same problem if the first of_platform_populate() creates the 
+> > devices first?
+> >   
+> 
+> Maybe we could simply avoid of_platform_populate() to be recursive when a
+> device populate by of_platform_populate() is one of devices handled by
+> the simple-bus driver and let the simple-bus driver do the job.
+> 
+> of_platform_populate will handle the first level. It will populate children
+> of the node given to of_platform_populate() and the children of those
+> children will be populate by the simple-bus driver.
+> 
+> I could try a modification in that way. Do you think it could be a correct
+> solution?
+> 
 
-Regards,
-Peng
+I have started to look at this solution and it's going to be more complex
+than than I thought.
 
->
->-- 
->Regards,
->Sudeep
+Many MFD drivers uses a compatible of this kind (the same exist for bus
+driver with "simple-bus"):
+  compatible = "foo,bar", "simple-mfd";
+
+Usually the last compatible string ("simple-mfd" here) is a last fallback
+and the first string is the more specific one.
+
+In the problematic case, "foo,bar" has a specific driver and the driver
+performs some operations at probe() but doesn't call of_platform_populate()
+and relies on the core to do the device creations (recursively) based on
+the "simple,mfd" string present in the compatible property.
+
+Some other calls of_platform_populate() in they probe (which I think is
+correct) and in that case, the child device creation can be done at two
+location: specific driver probe() and core.
+
+You pointed out that the core could create devices before the specific
+driver is probed. In that case, some of existing drivers calling
+of_platform_populate() are going to have issues.
+
+I can try to modify existing MFD and bus drivers (compatible fallback to
+simple-mfd, simple-bus, ...) in order to have them call of_platform_populate()
+in they probe() and after all problematic drivers are converted, the
+recursive creation of devices done in the core could be removed.
+
+Before starting in that way, can you confirm that this is the right
+direction?
+
+Best regards,
+Hervé
