@@ -1,217 +1,150 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013042.outbound.protection.outlook.com [40.107.159.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B92291C34
-	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 09:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751620643; cv=fail; b=XPqU3OB0kctpPIPWzlgNcKUzl24sIQm8ukUAJWzK4lkr8HMrhYlJCKjvxa8MX5Ic2j12RwBDM6r5W+ZroTmi6NrBpXXqjzd0wIJX5/l0aFALhYIDG/SfPDwiG/51ACHHDWWz7ccDQKzmiN6xKtwX9XB+X98IJrZUYf6XHoQp+5Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751620643; c=relaxed/simple;
-	bh=vgzztL0Hcc08Z6DZu9GEAs5swSUVS5ty2/PYrvEHP9A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mC0IA7dKVj6u3fQYciq6YIUtB8rBYv6Ht/gXAkSQ5mH08BFV6IegJtYJgR6MI51Epwgh3uw0iUmSzKSlm/NIf0c1hIBK+HPlKfwUkbDMya6tGiACe3EG5W7SL1UD4V8vI9/c8aR6Qic10qpyglri28hl5qdPSrDBmR0ARUlJKOk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=YDLsHiCU; arc=fail smtp.client-ip=40.107.159.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="YDLsHiCU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LZktLfz2YZnD2I6Q/88LHcuWbmI+yqroXJhzQA6d+aWFTmqyzmTFS8ehqyN7n3OuBwjIbONd+RBDoHFxze0ba/Qapvqh1rFbUc7bEPol4LY3zmoTG6V0Nx2pTbz37/yYvJmHsEyxkf22bsM73M+KbO8QEjtckmzJ6yV0IlZJLU47XbeDqsbjEjJhL2YzHbL5YscFjb5tqPJ2rd66DPnet8FheK0BfLhl4mZexYWyLnTK9RgbDhRUgSya6WpSc0WSoSn1qMVZlyVIyJeKLFWlzHv4ZcR4h+WqnfcUnrAfsPZcN+jqOH/RkmD420+tb1MwkmwP2hXO5d8A0mXIfPLCGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Alz6nPBt9rB8O9VfX+APsxW6d2d+igrprREpJzHRnXk=;
- b=oZm94I0Gw0J8QvlYRSXp+E0wXjlbrBxQvg0FvTVxtRXayXlMnJNM+Rmyzowg/eYyDRNBv3AKYZJZPKJKGMmftF/0RjksV669rmFjXJT26KNcCJJ/AfC7au83hZGQjB+NdEihTTfK9doQhVUJn6Xp+/8raqBEXjB4Rv5d4QdwXrdy6oisCiPBWwQRmaEDf6EICpBe7nnWLAAba0uwrjg8RvqTnar2b3MLSMf3LJVlUGtg6QnLv/obKkTDYHAwtD1AETtAg6wWX/bQXfAfEpxAM2x58+j684v9ieMCUvlNuithwo1V7fVdhaqy5SY11O6dXR3H6hRUGe33BqkIfld1ew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Alz6nPBt9rB8O9VfX+APsxW6d2d+igrprREpJzHRnXk=;
- b=YDLsHiCUUEmM0Um3YB2Ia22s2ljtifyM2UL3fTxaBpk4J4QLgriJ13FrQGyKfJKzpfUImKzbUjtRliMv+YDmi7VlETbFdNXXk8zyB2pjgjDyZO4mjo5xQDOEqrRGC4F2WdJZasD3d1Gt6SsC1QkF1C2A1FJ/x+R67PYa945hlqv/naE3Da5LWhb1GLJ/wqmXjPHCms8kf3/5KQjgEp47UaAaFOA6p+qQNMTRKeojX2RwWQjP/WV4zh/J97DveHoU93vY0g4MoIb17weap9ji9dPkAKjUectzA6QIBmz4uzh+HDHMKxjaMC7084ktmxLNgTTyFeYMuXU/0HU55q/dnw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by AS8PR04MB7975.eurprd04.prod.outlook.com (2603:10a6:20b:2a4::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.22; Fri, 4 Jul
- 2025 09:17:17 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197%3]) with mapi id 15.20.8901.021; Fri, 4 Jul 2025
- 09:17:17 +0000
-Date: Fri, 4 Jul 2025 18:28:02 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/7] firmware: imx: sm-misc: Dump syslog and system info
-Message-ID: <20250704102802.GF4525@nxa18884-linux>
-References: <20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com>
- <20250627-sm-misc-api-v1-v1-7-2b99481fe825@nxp.com>
- <20250702-berserk-paper-uakari-74a8bd@sudeepholla>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702-berserk-paper-uakari-74a8bd@sudeepholla>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: MA1PR01CA0175.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:d::10) To DB9PR04MB8461.eurprd04.prod.outlook.com
- (2603:10a6:10:2cf::20)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421822ECD06
+	for <imx@lists.linux.dev>; Fri,  4 Jul 2025 09:18:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751620713; cv=none; b=FUwc7yUIMQsFEojyQZP4VRyCHDtMR17zP+Rq0h+GwgDzJkkJ62u/3a46ZzabroXLWj/6uc/U7hB6ewDjMt6dRIHPx3hPqmZnZo40iaU7AuQ7YMVw76A6qRuwwhaz08jU7JIzFn3PswQnQCcjSyj38m2w717AeWBaBYndupilWpA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751620713; c=relaxed/simple;
+	bh=uakiFyp8ZePVF1tgBOYg2Xyh8hf0lWhL5NbjyXQ+1Go=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uSg18Gxdd/1YH662iL2GR2bumesacaQ5ZV84Wmx/D5CV15ITa3BHpSDEUnBuih9wPWEMVJOJ/ZOZ3pBXS39LB3b35TfeRnm01fUb1XOOOn0Wr8Yv7cRgHBpM37iADcYs6AhgpYPBkiYAsd64V4Hf+g9WJf9fNkGk+YBmDkIv8qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98210152B;
+	Fri,  4 Jul 2025 02:18:17 -0700 (PDT)
+Received: from [10.1.39.21] (e122027.cambridge.arm.com [10.1.39.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DEB0C3F6A8;
+	Fri,  4 Jul 2025 02:18:23 -0700 (PDT)
+Message-ID: <bf64da66-5475-4289-b3ee-a6247b168ff1@arm.com>
+Date: Fri, 4 Jul 2025 10:18:19 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|AS8PR04MB7975:EE_
-X-MS-Office365-Filtering-Correlation-Id: 242a612c-8302-49b4-0474-08ddbadb926c
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|52116014|7416014|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ZL3ziwIFGtpw9fxHtmQRqbprEJG27RaWqdjnQCYrl6A1fgXXmciPN+d6TUnj?=
- =?us-ascii?Q?J9cGCPrqQlhnWx5RcQV9dbVDYIc7AU/wcehTZTd2OMuAuLLYWT1kX9hkYFYO?=
- =?us-ascii?Q?+bfVxoUgmhmVtu52efm9pmgVPR/ssSiVM3UiMspTCzBtc0l9zxdWXGWO2HYv?=
- =?us-ascii?Q?bcA1fDj7DoOXcAikfrOC5CDIbsa6ueDliqa/IMrXCMk1fBn2Nsai0hOJ+jlh?=
- =?us-ascii?Q?I6DVZSJnUdCs16lvoIiZ55DG5woDx9EpjYAXeFtPIa3PPGfzz0b8FP5OBTN2?=
- =?us-ascii?Q?UVvV0Ip542LIc8Jge2q1sYSnLsbNy34w4rKThqbx9/to/CjHeiXFU5DOAdcZ?=
- =?us-ascii?Q?8b7WeadzGZlAhwIWpteLTK08D/n5DWCNTrCeoXDXDAeZz/9Mr2d+HiSM9bgx?=
- =?us-ascii?Q?VXTi3trIqjrUiu1oIO3ExPP0u+NoztyaBBV6RmJDAoYHoEnYaL4XhtYhz3EH?=
- =?us-ascii?Q?THqR2psqMXF0sRsmo7rugRI2zb5kbCzYOztF9875goNXF6W5Jzf9gTYj3/YQ?=
- =?us-ascii?Q?InHwKD5yN/kEOLAJYvCSyd0gKoqboKQ+cP9AvuHThyS8lxidFq2wr01T1x5D?=
- =?us-ascii?Q?ggelTjGQn8XQ8j8PZkNQEbXtTN9Gb1daj3NSmFLZDmVYM9Hji4p7QzZW41TO?=
- =?us-ascii?Q?dUeOoOQ/h1A5l421XK317NtvOf9NssOjympFf7FX3YhfGlN9tRU7PDtpqddp?=
- =?us-ascii?Q?hwaMJPd7q+GLilfLlNWsh700F+g5HNIri2rf8RP7hLLE9EuQ7952Yd6NeFVB?=
- =?us-ascii?Q?7IZwlIAP5aDOmgA54g/3NeyoWjdG8Z7Afyc0+3pK+olN0RNZF4ROY4+wdlSC?=
- =?us-ascii?Q?+7oIZMw7upC2bQwi2kSHvL+ZJ5qZW8518scQNKOu6E3y/1YbOOlXP93uRDzE?=
- =?us-ascii?Q?ZUN/QprbSh09FNAstgrIfc4gM1EQ+iW8YXg5YUDBYInESVBoeYFWxX1gTOLO?=
- =?us-ascii?Q?32SeubPe2apX/4fecHOx2/gndAUwZCDkwgcra0+YgnISiONjsbnjeWcbP/2v?=
- =?us-ascii?Q?cYNjMB7vYBiOosALn51CrYgpw1DcraBwyBiE+JBFggDta/VhvYu0yH0DVngM?=
- =?us-ascii?Q?Wc4cOVrSxfhzqOwCaAHfum2/PlJ0k+aUibqiKFNKHfFpbS3nZB0iVdI1Im3j?=
- =?us-ascii?Q?AW7W+yr+RT6bLnr+FrLsAtm+bbMUg8Q6etPQgMLJgc/VoXZaOn3aU2F9Jc8s?=
- =?us-ascii?Q?GJDC5ZeO5XMKzb670zTdUxvrM/qj1v+4brfBlRsyGXnbHFTc7/kQNxpl0+vC?=
- =?us-ascii?Q?4OkjzumaeeXOkTrWglPPmybXouxzfnVZ6IMC9wjJ7OwEC7qO6jnPDUZcVlkQ?=
- =?us-ascii?Q?wjzajsbFaIjI1dQGRPZqSV0ChNA5OuRU7ilEBzrkZ2jGCSAgJg8Z+/dR+DrQ?=
- =?us-ascii?Q?Ns/2AP32ysiFLcoqMubYIhWabcglHOh5IjcPOSQ/1048ypXC7uVaj3+caskB?=
- =?us-ascii?Q?k6odsjQounYhn1XGeYpSB9fTEhAK4SMU2u00GOVdD6bbli/TskXddQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(52116014)(7416014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YWIIYGXsf0GpbSEElBxiVM37jWcmAls2JCUVZKa3mZSwRPl7VFU7tZLUH4A5?=
- =?us-ascii?Q?xPC07rwwooPR9Uv6VakYFo5XVnN9sKKFwXa8uvbktnGYaoASboFn0nI+og7K?=
- =?us-ascii?Q?SR25UHJshJjZwq5aMTqpMsgYkPQ3sU3hREmCaPFYhMQ8O0+bcK+msvhP5sTB?=
- =?us-ascii?Q?GZLPnyGD3RGwt1VX/DfHmRkbNEkHQF4wHlBWuxl0jxTPT0YNy6/veMC/hJBy?=
- =?us-ascii?Q?kmmzXMjDQ7Z6LI9ATG8u69+2jThQIS4GntAzii/w5srvWyUc06T5P/CGRndy?=
- =?us-ascii?Q?FvQ2dKDsyV0PlM9aYsOoSbg9Wfs0QOZEnRa0lH7VrGecN/k1fyV3VTJcrnhT?=
- =?us-ascii?Q?WqtU1tZ6uXIqkDbOQCkOP91ZuaUG8qWFSVAm7een6UDe346P2MiWC+PSmZX/?=
- =?us-ascii?Q?WrQBSOCKYEDKv5muQwdudXyUt1sNzudZl5dGz+Qk2Fir5XX9ZJfp3/CK9lct?=
- =?us-ascii?Q?9HdpEotnYnbWd2ElSIjVJKyJwYTzbG+DRJoyJ7mYnC+Ok3v5AVl7mtt72/K3?=
- =?us-ascii?Q?zwkPV2X49azz7cEu0UfqhNFBsDMaDQx2gKLjSuubOmZjZCvAeKAP1s35lphS?=
- =?us-ascii?Q?2GUGuXS4iJnQ8AV3YF6x9KpTv8yytd5ViMrEIvhL1vQmFVKE7eyWGqNNJCkZ?=
- =?us-ascii?Q?edJg9eaiK6MqFk6GmuJN9sT/mgqQ5u4bLhAx5BbZB3yGHyjwiuDMplz4Z5hm?=
- =?us-ascii?Q?HZZpTh96JXlYRXGpDRRr+5SadFTrQ55R39J11XHs9wbuXdIsRGzOmhmoGwMs?=
- =?us-ascii?Q?QDrlW4iRiiiF7JEvnr89K1B1wplQUITJC2H12LfQ/DXryxOh/EQ7sqZUQY+f?=
- =?us-ascii?Q?6o4BW9yNCCXNLJMPPHTZTCDqcwRiPnULY0fuu73qDV67Dtx+oojG/qcxt5U+?=
- =?us-ascii?Q?SpzCTALiXKwmbi7TXIO6XrkKiRXo+mKIyt/P0pMP5cNJ596kJJD/24+YeQ5y?=
- =?us-ascii?Q?wXIY+adfuCBjbb4ZB/z1FitxQj8Sl+CDQFWr67x6XuFwPSkDMpgiJs8Y30zE?=
- =?us-ascii?Q?VbQq9PuS6oPaKv2utYJI9JTDGYXE/vaT9b9n9lz0G9xoncFH5RrN24x2cDn0?=
- =?us-ascii?Q?C2WVmoKoTDJmA9crUbO6Smx5Ctr8/54+/cdM7LnyDvfO518owJLbpa4l8bpT?=
- =?us-ascii?Q?CHDoKtCjFNb8CU70Nt14erXKaVkuOda5sUno6cUcMHWEh88D1H8PmdbTuNR3?=
- =?us-ascii?Q?tOqJT6O+gDkplhuJSyXjh/+efrSJwhp3elJqGe30GZbczKxvAiqu66c1Go3C?=
- =?us-ascii?Q?J3eZCju2s+Ca677HCkzY7CVcZtHu+vgL4UuMF5MKRBHLHuBU7WhbwpyrhF1M?=
- =?us-ascii?Q?w8Rs7iZXL+HGzyU6G79kLNOx4eNwkDFZnAVpO0yQhisPHLtzNQtb3FaE4033?=
- =?us-ascii?Q?cMsHdWzao0mGi7XbMPFmMlNOIlgh9pcXmVzqE9OdWcEUMth8NCbEO2nSBjSI?=
- =?us-ascii?Q?sPiMMeoPVEpCQvnxG4NE48VsMn0bIUD3hKOwlP0T0ka5c0F64JQu7cw3/GND?=
- =?us-ascii?Q?ZEHIYD/uVzyLcPh4SFtTfOCFifTJgEM162fXBrkc9eF96QVXi2VlHNmVenfA?=
- =?us-ascii?Q?7+nT5hhmVdJhVN/3dtaHOmXRlfq7db1d6DsA80MV?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 242a612c-8302-49b4-0474-08ddbadb926c
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2025 09:17:17.5057
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 79NolZGQlltwij4C3QN75HESnWQYXvT6iRibvSt4m5h/ibD6bSfpRgmj8UyAA4W1XZrJHmMX+wYKUe2ZDkEPoQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7975
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 20/80] drivers: drm: Remove redundant
+ pm_runtime_mark_last_busy() calls
+To: Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Douglas Anderson <dianders@chromium.org>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Russell King <linux+etnaviv@armlinux.org.uk>,
+ Christian Gmeiner <christian.gmeiner@gmail.com>,
+ Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Qiang Yu <yuq825@gmail.com>,
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Liviu Dudau <liviu.dudau@arm.com>, Thierry Reding
+ <thierry.reding@gmail.com>, Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Jyri Sarha <jyri.sarha@iki.fi>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Damon Ding <damon.ding@rock-chips.com>,
+ Ayushi Makhija <quic_amakhija@quicinc.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Chen-Yu Tsai <wenst@chromium.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ etnaviv@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ imx@lists.linux.dev, lima@lists.freedesktop.org, linux-tegra@vger.kernel.org
+References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
+ <20250704075413.3218307-1-sakari.ailus@linux.intel.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20250704075413.3218307-1-sakari.ailus@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 02, 2025 at 04:22:47PM +0100, Sudeep Holla wrote:
->On Fri, Jun 27, 2025 at 02:03:50PM +0800, Peng Fan wrote:
->> Add sysfs interface to read System Manager syslog and system info
->> 
->> Signed-off-by: Peng Fan <peng.fan@nxp.com>
->> ---
->>  drivers/firmware/imx/sm-misc.c | 97 ++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 97 insertions(+)
->> 
->> diff --git a/drivers/firmware/imx/sm-misc.c b/drivers/firmware/imx/sm-misc.c
->> index fc3ee12c2be878e0285183e3381c9514a63d5142..55485a3c4a5c615102a377f41025a6911d746770 100644
->> --- a/drivers/firmware/imx/sm-misc.c
->> +++ b/drivers/firmware/imx/sm-misc.c
->> @@ -44,6 +44,100 @@ static int scmi_imx_misc_ctrl_notifier(struct notifier_block *nb,
->>  	return 0;
->>  }
->>  
->> +static ssize_t syslog_show(struct device *device, struct device_attribute *attr,
->> +			   char *buf)
->> +{
->> +	struct scmi_imx_misc_sys_sleep_rec *rec;
->> +	struct scmi_imx_misc_syslog *syslog;
->> +	int ret;
->> +	size_t len = 0;
->> +
->> +	if (!ph)
->> +		return 0;
->> +
->> +	syslog = kmalloc(sizeof(*syslog), GFP_KERNEL);
->> +	if (!syslog)
->> +		return -ENOMEM;
->> +
->> +	ret = imx_misc_ctrl_ops->misc_syslog(ph, sizeof(*syslog), syslog);
->> +	if (ret) {
->> +		kfree(syslog);
->> +		return ret;
->> +	}
->> +
->> +	rec = &syslog->syssleeprecord;
->> +
->> +	len += sysfs_emit_at(buf, len, "Wake Vector = %u\n", rec->wakesource);
->> +	len += sysfs_emit_at(buf, len, "Sys sleep mode = %u\n", rec->syssleepmode);
->> +	len += sysfs_emit_at(buf, len, "Sys sleep flags = 0x%08x\n", rec->syssleepflags);
->> +	len += sysfs_emit_at(buf, len, "MIX power status = 0x%08x\n", rec->mixpwrstat);
->> +	len += sysfs_emit_at(buf, len, "MEM power status = 0x%08x\n", rec->mempwrstat);
->> +	len += sysfs_emit_at(buf, len, "PLL power status = 0x%08x\n", rec->pllpwrstat);
->> +	len += sysfs_emit_at(buf, len, "Sleep latency = %u\n", rec->sleepentryusec);
->> +	len += sysfs_emit_at(buf, len, "Wake latency = %u\n", rec->sleepexitusec);
->> +	len += sysfs_emit_at(buf, len, "Sleep count = %u\n", rec->sleepcnt);
->> +
->
->Why can't this be individual files and values ?
+On 04/07/2025 08:54, Sakari Ailus wrote:
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
+> 
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> ---
+> The cover letter of the set can be found here
+> <URL:https://lore.kernel.org/linux-pm/20250704075225.3212486-1-sakari.ailus@linux.intel.com>.
+> 
+> In brief, this patch depends on PM runtime patches adding marking the last
+> busy timestamp in autosuspend related functions. The patches are here, on
+> rc2:
+> 
+>         git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+>                 pm-runtime-6.17-rc1
+> 
+>  drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 2 --
+>  drivers/gpu/drm/bridge/analogix/anx7625.c          | 2 --
+>  drivers/gpu/drm/bridge/parade-ps8640.c             | 2 --
+>  drivers/gpu/drm/bridge/ti-sn65dsi86.c              | 1 -
+>  drivers/gpu/drm/etnaviv/etnaviv_gpu.c              | 4 ----
+>  drivers/gpu/drm/exynos/exynos_drm_fimc.c           | 2 --
+>  drivers/gpu/drm/exynos/exynos_drm_g2d.c            | 2 --
+>  drivers/gpu/drm/exynos/exynos_drm_gsc.c            | 2 --
+>  drivers/gpu/drm/exynos/exynos_drm_rotator.c        | 1 -
+>  drivers/gpu/drm/exynos/exynos_drm_scaler.c         | 1 -
+>  drivers/gpu/drm/i915/intel_runtime_pm.c            | 2 --
+>  drivers/gpu/drm/imx/dcss/dcss-crtc.c               | 1 -
+>  drivers/gpu/drm/lima/lima_sched.c                  | 1 -
+>  drivers/gpu/drm/panel/panel-edp.c                  | 3 ---
+>  drivers/gpu/drm/panel/panel-samsung-atna33xc20.c   | 2 --
+>  drivers/gpu/drm/panel/panel-simple.c               | 2 --
+>  drivers/gpu/drm/panthor/panthor_sched.c            | 2 --
 
-The System manager firmware provides a command "syslog" to dump
-all the information, I just follow same.
+Panthor changes are:
 
-With individual files, some values may not be consistent, because
-system behaviour may change during reading two files.
+Reviewed-by: Steven Price <steven.price@arm.com>
 
-Regards,
-Peng
+Thanks,
+Steve
 
->
->-- 
->Regards,
->Sudeep
+>  drivers/gpu/drm/tegra/submit.c                     | 1 -
+>  drivers/gpu/drm/tidss/tidss_drv.c                  | 2 --
+>  drivers/gpu/drm/vc4/vc4_v3d.c                      | 1 -
+>  20 files changed, 36 deletions(-)
+> 
+[...]
+
+> diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+> index a2248f692a03..f635f26a23f4 100644
+> --- a/drivers/gpu/drm/panthor/panthor_sched.c
+> +++ b/drivers/gpu/drm/panthor/panthor_sched.c
+> @@ -2446,7 +2446,6 @@ static void tick_work(struct work_struct *work)
+>  
+>  out_unlock:
+>  	mutex_unlock(&sched->lock);
+> -	pm_runtime_mark_last_busy(ptdev->base.dev);
+>  	pm_runtime_put_autosuspend(ptdev->base.dev);
+>  
+>  out_dev_exit:
+> @@ -3203,7 +3202,6 @@ queue_run_job(struct drm_sched_job *sched_job)
+>  
+>  out_unlock:
+>  	mutex_unlock(&sched->lock);
+> -	pm_runtime_mark_last_busy(ptdev->base.dev);
+>  	pm_runtime_put_autosuspend(ptdev->base.dev);
+>  
+>  	return done_fence;
