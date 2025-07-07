@@ -1,76 +1,85 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8865218E99
-	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 09:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EA835949
+	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 09:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751879265; cv=none; b=J2mSWbHxkRBRWBh22d1/8zLO5YzgGS4yfpBNM2dwVOuNwrxEsNjG8owVfpo+eVzF79W43KiTn9NFC8EJzjY9U7m4t+cvp0swZlZuvw4qyJFKJA1hN6nYVmGXXplqFBeMeqWuHScNpGJuPrQsXpZ1fDjqDGgbwxzvpJVcE9B9VZ4=
+	t=1751880922; cv=none; b=f9aIaRR82qjkIPmnI5e9diCb/CmASmmvBLNfXZrKWx7AacSL/Mk2X9bmFGAa4PaDGByGC1Ad/Jy43kkcVfYpVWOC3vmwPPxPSO0Xbi5XfKSu9hgFQjJBS6qdp2OI22mBGmVGbcZZsJ3PUFq9dAZM1fTZURfE/PmAUUEFhLg8nhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751879265; c=relaxed/simple;
-	bh=UFYXKaMLVyriQemDuJE4SUe2kDsvSWIBgnTajNtVXp8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YFVdVjext2k7GHRRTK3H/qqSyNyGQeqcdN4KJqu0VIWhBFi1WE6nPP77xnivrgVn/jqgkofLBQTK3t+um6kuycx+3F5LMV9QT2mwB9RzNoIzb4l8ARsqObCkV6PetXhsxGh+Fy+k7rx+kJ/gMZnROhKhJZlWKTZgajUigancQ9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=AurRTncD; arc=none smtp.client-ip=220.197.32.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1751880922; c=relaxed/simple;
+	bh=3La3UPJ4ZAMHJ3BAEXORg3GiHQryGDV9WCTeMDTd35c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F90nm84tbTVLZAERv4/UGbjmkpb0DGCesDeLWZQUvo6KznU08r+qMTfkMWAYWgv3jxttAGkXmLW/ISQx6LKCu7LU3RbLR2s8AFKf2FB/MYnasV/40Or/jbZKBVhVkwEXKA7okwiWaOHTaPJ8E9yswyhDhYqG44TcGp/WrcXuZ5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=c3BDEB8s; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="AurRTncD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=4MOiwSNMYf6g66eBoNmB+RtKMVO+a3roUbWBwjk9v4w=;
-	b=AurRTncD139Z5haFbm6bjf2iTepE3+2gT+0dSgaDAowVz86yfCCT24uLKZjKc4
-	3lLJ7PUl1z8UMDd+CS/c4FtSixbJpSGvmb6cITZJkMv1683sRUxSW7vHwTVJVHl8
-	8fRPhtNOjjQFnQ4o3HIya3M+UYyEH2Okb8PQarksV/BL0=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgDXL3s7jmtoDg89AA--.26376S3;
-	Mon, 07 Jul 2025 17:07:09 +0800 (CST)
-Date: Mon, 7 Jul 2025 17:07:07 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Bence =?iso-8859-1?B?Q3Pza+Fz?= <csokas.bence@prolan.hu>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Lothar =?iso-8859-1?Q?Wa=DFmann?= <LW@karo-electronics.de>
-Subject: Re: [PATCH v2] ARM: dts: imx6-karo: Replace license text comment
- with SPDX identifier
-Message-ID: <aGuOO36kkTWtM2yy@dragon>
-References: <20250703-karo-dts-lic-v2-1-329f4c55913e@prolan.hu>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="c3BDEB8s"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1751880918;
+	bh=3La3UPJ4ZAMHJ3BAEXORg3GiHQryGDV9WCTeMDTd35c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=c3BDEB8slb5r/poY7adzPw/Hl3p3xBCDxOvIY11eDdWzp/JxGpabSNqzSN11D0K0B
+	 SZnx1m2y/a73e+9g1zZ4NK8uaqC2ToQyKbIO+UvckbyqaAT1szEFDwMXonBwRsbzbL
+	 4LPkIToeE9Jp8dZDB6W1zfG2Sv5sZQevtVUedPBmdjrDv09z5u4yPUkHMilaNNBOah
+	 VfY8oqhRF23SXg4IEaiyPXGdxorCHIs24QH5oV3ij1trlsT362waxDEhmX6LcVp/Zv
+	 WkKs3SDrIO9k21cTOh2Y9pdzoYTZydLtH0Ur9YOgitTvJZpX7mQUuhr/8LBHsjaJK3
+	 8DumFN0ZvMVvA==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1F46317E05F0;
+	Mon,  7 Jul 2025 11:35:17 +0200 (CEST)
+Message-ID: <d24bfc7f-c970-4082-83c3-896fb353b0ff@collabora.com>
+Date: Mon, 7 Jul 2025 11:35:16 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250703-karo-dts-lic-v2-1-329f4c55913e@prolan.hu>
-X-CM-TRANSID:M88vCgDXL3s7jmtoDg89AA--.26376S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JryDAF1rtF47GF45GF1rWFg_yoW3ZrXE93
-	y0gw1DAw13KF4I9rWfCF1avasrKFWjvF17XwsYvFy7AF98GrZ8WFnYqrn0vrn5GayfJrnr
-	CFy5X347CwnrujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUb9NVDUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNB2nDWhrjj0DhwAA33
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 67/80] usb: Remove redundant pm_runtime_mark_last_busy()
+ calls
+To: Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Peter Chen <peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>,
+ Roger Quadros <rogerq@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Michal Simek <michal.simek@amd.com>,
+ Chunfeng Yun <chunfeng.yun@mediatek.com>,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Bastien Nocera <hadess@hadess.net>,
+ Bin Liu <b-liu@ti.com>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org,
+ linux-omap@vger.kernel.org
+References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
+ <20250704075453.3222311-1-sakari.ailus@linux.intel.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20250704075453.3222311-1-sakari.ailus@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 03, 2025 at 11:09:24AM +0200, Bence CsÛk·s wrote:
-> Replace verbatim license text with a `SPDX-License-Identifier`
+Il 04/07/25 09:54, Sakari Ailus ha scritto:
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
 > 
-> The comment header mis-attributes this license to be "X11", but the
-> license text does not include the last line "Except as contained in this
-> notice, the name of the X Consortium shall not be used in advertising or
-> otherwise to promote the sale, use or other dealings in this Software
-> without prior written authorization from the X Consortium.". Therefore,
-> this license is actually equivalent to the SPDX "MIT" license (confirmed
-> by text diffing).
-> 
-> Cc: Lothar Waﬂmann <LW@KARO-electronics.de>
-> Acked-By: Lothar Waﬂmann <LW@KARO-electronics.de>
-> Signed-off-by: Bence CsÛk·s <csokas.bence@prolan.hu>
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Applied this v2 instead, thanks!
+
+For MediaTek MTU3:
+
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
