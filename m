@@ -1,129 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332A5288C1D
-	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 17:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFB01D6187;
+	Mon,  7 Jul 2025 19:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751909303; cv=none; b=q0QNwDZilrU9g043f/OcX9ISM5wuDCHXJKNlyTxbD1i3mu+752jvLGYvi7qTV3w8xzGt2GnR33d1Aegn6QNrhhD1bej5Y5j39wuFWA0Qh3UxwqlpILxBnX5UTzCe7mvt75opf0ES/Z8d5OCKQDM8HxqKVGcRfNXqc+Xb7JeDLQM=
+	t=1751916859; cv=none; b=kaJWLYcqj6cjc7Pyk+0ng5TbOJcAha43mONcC39IW41iQbW0ifTMpIVuPrE1sbqSFDz+yEmaRFzgOP/cfT93FOvDC2uD2yhyKXQ6suG1/H3WAvGhhiAgWzqsGEzwh1jHyYqj+t0f0qz7eYLHXsdz2fW7xjB3WQniIOIviysVBqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751909303; c=relaxed/simple;
-	bh=DA0vYq7xQ92l2ohY6lnFRwwvg+usb4Pg+fhbyInf+a4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wyz7BmNaLMnUqnIw92xcJU+12zRQtii7M7qUK6TxuT6E5B89ZOeQj1+JF38lZKNCKpm9cMRFdVUgOwI+duwLmQHX1ZhN2FwIyAaCKS39hWNPvds4HsELNAj+1H0Xj5WXukFIZJickp2LeBjNquc4uQTfwS9L5Mt5ucbruAbOXv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InjHwR5y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751916859; c=relaxed/simple;
+	bh=q4Un9UMyAO/m5V5UCHaW8IYs1wCaLRO9F9XqUTWH3xE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=iSaquByRJ/1cpConJZtVqBIGYuoCydkq6j6oHv+X3hjeAc9hgmeC6f24BFtjnI8uCM7BVYkMwcUZqrV/ujlaqVNPNHFqor63GbF8Dim/ITxB4hHTv/WjX/KScJ68Jgp4cS9eVMC4aUR7Q5v0x0nxmyksTA7puJNPqOCNnh5Lqp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=olvyWCrK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InjHwR5y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3583C4CEF1
-	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 17:28:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="olvyWCrK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF8EC4CEE3;
+	Mon,  7 Jul 2025 19:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751909302;
-	bh=DA0vYq7xQ92l2ohY6lnFRwwvg+usb4Pg+fhbyInf+a4=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=InjHwR5yiJURFc32QyEd1ElrA8jBUJqwZ8RkJ+B4GfK/n7FXD5hG+RGeO/BOKa27A
-	 MwjkvAiYZJtVvqzEawYcHG3VFaCQlA5RKsal9NDycBtcUe2EutUyQkC6Kn9PF8lwq2
-	 sHw/1b1YqW79iFoMlq9bc+odY8w3LceQ4g/JGulNkLQD/oZHxqdFb//OxOm0ZWN4YB
-	 pn09uSlBNDl4zxkQftoT47W9hm9ySJIIKZLneAXTbWEsSRLXZvmoIlXvw2oCtIasu8
-	 40xY/X3u0Y7tdaDe/jBjhbsiF/9FTORO0wAHWXSXVf+uklisW2ns4ZQ+X3rRIZVHXD
-	 8KB5UXjAb/D1Q==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-32b8134ef6aso29732961fa.0
-        for <imx@lists.linux.dev>; Mon, 07 Jul 2025 10:28:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUWGar+7qVJZv61nWrZ998FjImvWc/BqZqaPZFC92P3abPPQ0YfkunzfOr9CUofL4sC6iY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwH3UvmjNycqZxKbk0ViLqCv4PAVojv6YtJLCc5JNCOQrrApeiP
-	uaua9lFar+Hn1b1f38wUyY2Xfxnuy5V6PnV5kabIIo1ySV5Y5iPlLNNgUfzJOIBik5IT7/9QqjP
-	G5ZTenf+Un9dCP/djMlTwvUarQGPNaXk=
-X-Google-Smtp-Source: AGHT+IFY+rLsffZJVhzZIq/tx6edFSvqTm7LgThpPh+tF0NsB2IUIPiOdKkZUrVJDtPq9uSRlUjRqtYSBJv3s5pRILs=
-X-Received: by 2002:a05:651c:552:b0:32f:1f1b:1e68 with SMTP id
- 38308e7fff4ca-32f1f1b32bamr22374831fa.18.1751909301146; Mon, 07 Jul 2025
- 10:28:21 -0700 (PDT)
+	s=k20201202; t=1751916857;
+	bh=q4Un9UMyAO/m5V5UCHaW8IYs1wCaLRO9F9XqUTWH3xE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=olvyWCrKA61vFemOq86pVptJUU70apmXkO1jxlJM/MIPixuIzFTpCaEOnxAvPAIN+
+	 XPZ+T0AMf1zFyP5Ax8dCgixUzT+l4ErYyinB5XaNIvo2oUvj3bj3OHQV0Hu8v4Aacd
+	 rki8Y/zvnAsFt9rAzExc2W8ZCKotFSsp4ETOJGnaffLAN8NtX/c6AIgv9mTT4xnU1i
+	 fbWMeRaoNbYy2H5JcYaIngnm7EwkZGqU9HoRjwOPsXehuh4GHnfb2t7srYQkNzxpn7
+	 sTneFKW+7gU2MCU33a6o5cMT3X8OQezYF97b0Mtf0xYjRDj2PwGuR/oHxuopGppRxw
+	 /Tbcb0SDmJ7dw==
+Date: Mon, 7 Jul 2025 14:34:15 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
+	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] PCI: imx6: Correct the epc_features of i.MX8M chips
+Message-ID: <20250707193415.GA2095765@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <VI2PR04MB11147CCEFE4204B852807AAF2E841A@VI2PR04MB11147.eurprd04.prod.outlook.com>
- <20250707105816.GF11488@nxa18884-linux> <20250707-careful-pragmatic-quail-e1a2d8-mkl@pengutronix.de>
-In-Reply-To: <20250707-careful-pragmatic-quail-e1a2d8-mkl@pengutronix.de>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Tue, 8 Jul 2025 01:28:08 +0800
-X-Gmail-Original-Message-ID: <CAGb2v64PfUiKjrJyhcthuLt6FXQS6VoaShYZ3A3WO__3pu4O+w@mail.gmail.com>
-X-Gm-Features: Ac12FXzWY8P19qDkdGNQUB3iwV0nucG8riI9TSaqcqIAG1yNxhf63TFCmT9amp4
-Message-ID: <CAGb2v64PfUiKjrJyhcthuLt6FXQS6VoaShYZ3A3WO__3pu4O+w@mail.gmail.com>
-Subject: Re: Dead lock with clock global prepare_lock mutex and device's power.runtime_status
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>, Peng Fan <peng.fan@oss.nxp.com>, 
-	Carlos Song <carlos.song@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Stephen Boyd <sboyd@kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"rafael@kernel.org" <rafael@kernel.org>, "mturquette@baylibre.com" <mturquette@baylibre.com>, Frank Li <frank.li@nxp.com>, 
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, "dakr@kernel.org" <dakr@kernel.org>, 
-	"festevam@gmail.com" <festevam@gmail.com>, 
-	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>, "pavel@kernel.org" <pavel@kernel.org>, 
-	Bough Chen <haibo.chen@nxp.com>, "len.brown@intel.com" <len.brown@intel.com>, 
-	Andi Shyti <andi.shyti@kernel.org>, 
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, Aisheng Dong <aisheng.dong@nxp.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "shawnguo@kernel.org" <shawnguo@kernel.org>, Jun Li <jun.li@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250617073441.3228400-1-hongxing.zhu@nxp.com>
 
-Hi,
+On Tue, Jun 17, 2025 at 03:34:41PM +0800, Richard Zhu wrote:
+> i.MX8MQ PCIes have three 64-bit BAR0/2/4 capable and programmable BARs.
+> But i.MX8MM and i.MX8MP PCIes only have BAR0/BAR2 64bit programmable
+> BARs, and one 256 bytes size fixed BAR4.
+> 
+> Correct the epc_features for i.MX8MM and i.MX8MP PCIes here. i.MX8MQ is
+> the same as i.MX8QXP, so set i.MX8MQ's epc_features to
+> imx8q_pcie_epc_features.
+> 
+> Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-On Mon, Jul 7, 2025 at 7:05=E2=80=AFPM Marc Kleine-Budde <mkl@pengutronix.d=
-e> wrote:
->
-> On 07.07.2025 18:58:16, Peng Fan wrote:
-> > On Tue, Jul 01, 2025 at 03:16:08AM +0000, Carlos Song wrote:
-> > >Hi, All:
-> > >
-> > >We met the dead lock issue recently and think it should be common issu=
-e and not sure how to fix it.
-> > >
-> > >We use gpio-gate-clock clock provider (drivers/clk/clk-gpio.c), gpio i=
-s one of i2c gpio expander (drivers/gpio/gpio-pcf857x.c). Our i2c driver en=
-able run time pm (drivers/i2c/busses/i2c-imx-lpi2c.c [1]). System random bl=
-ocked when at reboot.
-> > >
-> > >The dead lock happen as below call stacks
-> > >
-> > >Task 117                                                Task 120
-> > >
-> > >schedule()
-> > >clk_prepare_lock()--> wait prepare_lock(mutex_lock)     schedule() wai=
-t for power.runtime_status exit RPM_SUSPENDING
-> > >                           ^^^^ A                       ^^^^ B
-> > >clk_bulk_unprepare()                                    rpm_resume()
-> > >lpi2c_runtime_suspend()                                 pm_runtime_res=
-ume_and_get()
-> > >...                                                     lpi2c_imx_xfer=
-()
-> > >                                                        ...
-> > >rpm_suspend() set RPM_SUSPENDING                        pcf857x_set();
-> > >                           ^^^^ B                       ...
-> > >                                                        clk_prepare_lo=
-ck() --> hold prepare_lock
-> > >                                                        ^^^^ A
-> > >                                                        ...
-> > >
-> >
-> > This is a common issue that clk use a big prepare lock which is easy
-> > to trigger dead lock with runtime pm. I recalled that pengutronix raise=
-d
-> > this, but could not find the information.
->
-> Alexander Stein stumbled over this issue some time ago:
->
-> | https://lore.kernel.org/all/20230421-kinfolk-glancing-e185fd9c47b4-mkl@=
-pengutronix.de/
->
-> I encountered it too, while trying to add a clock provider driver for a
-> SPI attached CAN controller which uses runtime pm.
+"Correct the epc_features" doesn't include any specific information,
+and it's hard to extract the changes for a device from the commit log.
 
-Miquel from Bootlin posted a more formal description of the problem and
-some possible solutions last year [1].
+This is really two fixes that should be separated so the commit logs
+can be specific:
 
-[1] https://lore.kernel.org/all/20240527181928.4fc6b5f0@xps-13/
+  - For IMX8MQ_EP, use imx8q_pcie_epc_features (64-bit BARs 0, 2, 4)
+    instead of imx8m_pcie_epc_features (64-bit BARs 0, 2).
+
+  - For IMX8MM_EP and IMX8MP_EP, add fixed 256-byte BAR 4 in
+    imx8m_pcie_epc_features.
+
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 5a38cfaf989b..9754cc6e09b9 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1385,6 +1385,8 @@ static const struct pci_epc_features imx8m_pcie_epc_features = {
+>  	.msix_capable = false,
+>  	.bar[BAR_1] = { .type = BAR_RESERVED, },
+>  	.bar[BAR_3] = { .type = BAR_RESERVED, },
+> +	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = SZ_256, },
+> +	.bar[BAR_5] = { .type = BAR_RESERVED, },
+>  	.align = SZ_64K,
+>  };
+>  
+> @@ -1912,7 +1914,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+>  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
+>  		.mode_off[1] = IOMUXC_GPR12,
+>  		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
+> -		.epc_features = &imx8m_pcie_epc_features,
+> +		.epc_features = &imx8q_pcie_epc_features,
+>  		.init_phy = imx8mq_pcie_init_phy,
+>  		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
+>  	},
+> -- 
+> 2.37.1
+> 
