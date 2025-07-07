@@ -1,24 +1,24 @@
 Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC8A24468D;
-	Mon,  7 Jul 2025 20:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E33A264F81;
+	Mon,  7 Jul 2025 20:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751921600; cv=none; b=lNg6Jse7IiXMWc21S60l8/iEjySVmIgPT4d140iGbjFLh8SEayEr0gn7gbxSND+19Dyajls49hYE5TLDr6KluOcvOrsyVcWxqL8S9dp7tK98AWObNftHDb8DTrtASVcZsMaom0QXskR8uUwUYJYBYALdDmL1EAKdJISxdtUkEj4=
+	t=1751921603; cv=none; b=d+YJlnkcZKHPJmo9HeIMw6ntqVFM09bioojyoEXOJUqf4ZTsje/zfxRfay2OiY7LATeuR+JvUsn/D39x1Jg6OdP5y0c3LHAosE1AwJlXPtKPn/YJj+qU0vPSREAx8faw6j86CArwdcrDxH5UMmne4Jy84iAb+PmlfeQv7bncqV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751921600; c=relaxed/simple;
-	bh=B0atENrsMkhng+LnAgCTj80pLdT5Gv3Vbb0FCgc3g+w=;
+	s=arc-20240116; t=1751921603; c=relaxed/simple;
+	bh=8vF7fm7k62PSnORc+G6az6hIqw/bf22dYMf1aYkkPbk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eZTy8f5yb+taoD6ZCFp2ewsIVy8kBt18zt2XS92BhofU3PlwoI8/2VpzcmfxmqUnOiRIPjlP5PSqeddt0zKg/ggdrENOIiQhtP5eLNeWVcP/bZL+gbl2T6NrIhjrsRC65DCu2vWqfSrpVQ4HfU4LKBBMuRpSdnqvvccUgYCEKgA=
+	 MIME-Version; b=oXNpshPvCRPW3WNYoL8OH+gPK8IC8IQE/qyK0qceP+5SH6RVypIXJMABv1Q32mxLyvPbjS3SORrp1XJEvNToqjqzXtJeGj+XubXuHWrMYdqFW/5dpRxyfZbsIDJ5MVSA5md1Z0Uly3V7m6AU+Wuv0o5oqooml+DfH7Fp6wPa2NA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
 Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
 	by finn.localdomain with esmtp (Exim 4.95)
 	(envelope-from <tharvey@gateworks.com>)
-	id 1uYsH0-008ZxD-QA;
-	Mon, 07 Jul 2025 20:17:10 +0000
+	id 1uYsGv-008ZxD-VH;
+	Mon, 07 Jul 2025 20:17:06 +0000
 From: Tim Harvey <tharvey@gateworks.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: Rob Herring <robh@kernel.org>,
@@ -33,9 +33,9 @@ Cc: Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH 7/7] arm64: dts: imx8mm-venice-gw7904: Increase HS400 USDHC clock speed
-Date: Mon,  7 Jul 2025 13:17:02 -0700
-Message-Id: <20250707201702.2930066-7-tharvey@gateworks.com>
+Subject: [PATCH 2/7] arm64: dts: imx8mp-venice-gw702x: Increase HS400 USDHC clock speed
+Date: Mon,  7 Jul 2025 13:16:57 -0700
+Message-Id: <20250707201702.2930066-2-tharvey@gateworks.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250707201702.2930066-1-tharvey@gateworks.com>
 References: <20250707201702.2930066-1-tharvey@gateworks.com>
@@ -47,29 +47,28 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The IMX8M reference manuals indicate in the USDHC Clock generator
-section
+The IMX8M reference manuals indicate in the USDHC Clock generator section
 that the clock rate for DDR is 1/2 the input clock therefore HS400 rates
 clocked at 200Mhz require a 400Mhz SDHC clock.
 
 This showed about a 1.5x improvement in read performance for the eMMC's
-used on the various imx8m{m,n,p}-venice boards.
+used on the various imx8mp-venice boards.
 
-Fixes: b999bdaf0597 ("arm64: dts: imx: Add i.mx8mm Gateworks gw7904 dts support")
+Fixes: 0d5b288c2110 ("arm64: dts: freescale: Add imx8mp-venice-gw7905-2x")
 Signed-off-by: Tim Harvey <tharvey@gateworks.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts | 2 ++
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts
-index 86a610de84fe..99572961d9e1 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7904.dts
-@@ -682,6 +682,8 @@ &usdhc3 {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+index 10713c34ff39..cbf0c9a740fa 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw702x.dtsi
+@@ -434,6 +434,8 @@ &usdhc3 {
  	pinctrl-0 = <&pinctrl_usdhc3>;
  	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
  	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
++	assigned-clocks = <&clk IMX8MP_CLK_USDHC3>;
 +	assigned-clock-rates = <400000000>;
  	bus-width = <8>;
  	non-removable;
