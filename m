@@ -1,151 +1,114 @@
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98716261571
-	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 05:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE26C1D7E54;
+	Mon,  7 Jul 2025 05:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751865112; cv=none; b=VcEoppXzObYq3q/WSgmoT63h25AnNXnlBrHG8nxVskXjBkgpUVXv8twa9rgsobHDgu5MZ3mj9DnIohlyLDdDiwChMsAtHdsDqXWFEqI0uWxEFGrWzYBSY1apgnm0esfmOgqdDIi/fVg/XMhbc0ppAVZjrkzyHyZeEYl+C4fvRTc=
+	t=1751866600; cv=none; b=rC5c7j8HJmWZVlw+wZ+5BY2w2E8InZvVerMmE2v5ELvjg1ur6JguGHJ5LZQud+PPRsy8GwKmlAv0pUSJA5FgwlBa4LwiCF/CgsqbuUnG8nhbQE6YzEKjdyeIPWgOVrSiPMZzCrZRstcQE3viyCTL+SX4gbbbUfViCFIJPScWMn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751865112; c=relaxed/simple;
-	bh=OdRh8/576wHjaSuIhGUDAO/d8lBtbvnSHmhlO2AG8/8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YfbRGXnYUWTlI1mK+mMhRdoKOITHVkKcFzIYg93kDHuruYx/RiUz09OTiPZLgKM+AD71v23i3OL6TKsIKyWMd2eR8TMhL9oKk4GqzWTGuBdnBgoh7wPQ0SeneIZIwO55aBRx39OYYVcaYUbjMujbeUOzzv+5XZWRxMRFDSjQAYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=cjMd4yHr; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Sv/Tj0oC reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1751866600; c=relaxed/simple;
+	bh=5BuEx7FjNvzA4MkaeuqXw6TJ9QqlYqB7xZMann9iXqE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nVbO8dWkJWM2VMCK2A3SJvGawPxc21YjK4rAPWxB15p8JjXJqQ4DiW9WhksVk3tG2lQtEjHB5S6pvqyFGlXKr3btVeg2wZfdhgldlOiDQK/fAEEnrSARVU70/RCiiR6mCzRDp+TT4tOfmunwR0HXWVNOIAoUuHkcKvgl3N6p1ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUcj/OLk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="cjMd4yHr";
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Sv/Tj0oC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1751865109; x=1783401109;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=MS9l5V7rnppikpjmqzYLq+jQty7Y2WLmP6gMpwdm78Y=;
-  b=cjMd4yHrsxR5KDOPZGd3+kdf9FEHS9G/A1BQdjW4m2DIYwJAH/D3FwbJ
-   Yd7U5f0nzJNAE8CJ+gVLmfStHSAP8gWmgyDRgsH1c94O1h1qzUMbiTfac
-   cl/D9drC41VCBWG8ejNY349zJPyVMwpJcO7LP691gSfcZrN1Jslid/7tv
-   D/ieVwk7gMx9KScQ1WWIZsRBI2Q6WlJrL3ylARmAGZim/fVRqQ7pweFqf
-   70ELYGdqeGdVpKmXkEqKCL2v/grdE0KMGnibJQo9behMSUk5MdZDb9DdX
-   n1Cbm+NKbCyqttYTIwcJxdYZGsy8UshOfuMPQf4bvMdSqMLlLCyDDJPDW
-   A==;
-X-CSE-ConnectionGUID: cdaaUOoYQXi065uLnbbgdw==
-X-CSE-MsgGUID: 0JndVCJeRv+mZnXHP+VpkA==
-X-IronPort-AV: E=Sophos;i="6.16,293,1744063200"; 
-   d="scan'208";a="45049649"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 07 Jul 2025 07:11:41 +0200
-X-CheckPoint: {686B570C-37-4FC15ADB-CD71293B}
-X-MAIL-CPID: CDEB1C0A765BD2ADCEED811366CB8CCC_0
-X-Control-Analysis: str=0001.0A00639C.686B573B.0052,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D13916397D;
-	Mon,  7 Jul 2025 07:11:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1751865096;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MS9l5V7rnppikpjmqzYLq+jQty7Y2WLmP6gMpwdm78Y=;
-	b=Sv/Tj0oC82xoMR1uXwWA8qfioW3rO7wpmNR/uZgCiQmeZzZrSn2E63+UVAUlk9V0l4qJuy
-	AJRxZV7EIx62zzv4zAzBSENpA1wsUn9oDEEZsXaiKPg7Io9D+oq60Smn8aUreMEuTeGxE8
-	rji8rJ0gCULqQlmk2/jXlw0m7MYYPpcYXVv2/oVUm4izNYU/H6W84teDFCSAZb4BHQLJrS
-	4+ZPa9rFp0rBvky/PyI9jO6eMErzxoh7QPF8/OZ/EySD/SSDhuLeDGQPDU2ouLGblBG49k
-	v3AkMrqkRNWlloyKomXI2+jSQ0GnDJPMwH2CbW13e8UA9FIBK7F7l/T3ViLtlQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Mark Brown <broonie@kernel.org>, linux-arm-kernel@lists.infradead.org
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
- Frank Li <Frank.Li@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>,
- Marc Kleine-Budde <mkl@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org,
- Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Subject: Re: [PATCH v7 4/6] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
-Date: Mon, 07 Jul 2025 07:11:33 +0200
-Message-ID: <5029548.31r3eYUQgx@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <c3deef24-fed7-4405-9953-804bff118c11@gmail.com>
-References:
- <20250610160152.1113930-1-laurentiumihalcea111@gmail.com>
- <ac1daf6b-ee06-4076-b86f-b436ca0acd6d@sirena.org.uk>
- <c3deef24-fed7-4405-9953-804bff118c11@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUcj/OLk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744ABC4CEE3;
+	Mon,  7 Jul 2025 05:36:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751866599;
+	bh=5BuEx7FjNvzA4MkaeuqXw6TJ9QqlYqB7xZMann9iXqE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fUcj/OLkUVBRZaWGrqyYX8XJcF9kWqCcHG/wV7+I0LRgo4cBSZ4X7aS51I2SMDG+6
+	 nRXvJAG0Dj3p/iD7rQK/hpH3kGS7TAQgUo63tsOGB+b7SzbmwlefvweMLq6YVWE/Ax
+	 sHw4YsSPqagWTxTAm2NaIsecNXkwq0TTdMt6ymNOkJ3n4Dgx4/whezlZ35AQwwhKGR
+	 O9aunO+JDK+Ls/NlhtbSUQHjCBXC1ZVYDTZb+a7MU6kf3oeICXY0G5E+J7xtl3QDtg
+	 n5Yk0FQplNPU402+H38nGkf++z56FtUtUnk9rokCEgog6CK9dKSh3a1UGwk0QC1neT
+	 f8vBFtlHFP7iA==
+Message-ID: <06a6dfbe-92b1-42e8-8b65-b16ff861ad59@kernel.org>
+Date: Mon, 7 Jul 2025 07:36:33 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/6] dt-bindings: clock: Add support for i.MX94
+ LVDS/DISPLAY CSR
+To: Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
+ Frank Li <frank.li@nxp.com>
+Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Abel Vesa <abel.vesa@linaro.org>
+References: <20250707-imx95-blk-ctl-7-1-v3-0-c1b676ec13be@nxp.com>
+ <20250707-imx95-blk-ctl-7-1-v3-1-c1b676ec13be@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250707-imx95-blk-ctl-7-1-v3-1-c1b676ec13be@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 07/07/2025 04:24, Peng Fan wrote:
+> Add i.MX94 LVDS/DISPLAY CSR compatible string.
+> 
+> Add clock index for the two CSRs.
+> 
+> Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
 
-Am Mittwoch, 2. Juli 2025, 21:54:09 CEST schrieb Laurentiu Mihalcea:
-> On 7/2/2025 9:49 PM, Mark Brown wrote:
-> > On Tue, Jun 10, 2025 at 12:01:50PM -0400, Laurentiu Mihalcea wrote:
-> >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> >>
-> >> AIPS5 is actually AIPSTZ5 as it offers some security-related
-> >> configurations. Since these configurations need to be applied before
-> >> accessing any of the peripherals on the bus, it's better to make AIPST=
-Z5
-> >> be their parent instead of keeping AIPS5 and adding a child node for
-> >> AIPSTZ5. Also, because of the security configurations, the address spa=
-ce
-> >> of the bus has to be changed to that of the configuration registers.
-> >>
-> >> Finally, since AIPSTZ5 belongs to the AUDIOMIX power domain, add the
-> >> missing 'power-domains' property. The domain needs to be powered on be=
-fore
-> >> attempting to configure the security-related registers.
-> > I'm seeing failures to probe the audio devices on the i.MX8MP Verdin
-> > system in -next which seem to bisect down to this commit,  I'm seeing
-> > separate boot failures on the EVK so haven't been able to confirm the
-> > status there.  There's no obvious logging, the dt selftest shows:
-> >
-> > # not ok 141 /sound
-> > # not ok 142 /sound-hdmi
-> >
-> > Full log at:
-> >
-> >   https://lava.sirena.org.uk/scheduler/job/1530197#L5119
->=20
-> Hi Mark,
->=20
-> Thanks for catching this!
->=20
-> After browsing through the provided logs it would seem like no device und=
-er the
-> AIPSTZ bus gets probed. Right now, my guess is that the AIPSTZ driver is =
-not being
-> compiled since CONFIG_IMX_AIPSTZ might be set to 'n'.
->=20
-> Which defconfig is the CI using? Is it arch/arm64/configs/defconfig?
-
-I'm also seeing audio problems starting with this commit. In my case I get
-the following error:
-fsl-asoc-card sound: failed to find CPU DAI device
-fsl-asoc-card sound: probe with driver fsl-asoc-card failed with error -22
-
-DAI device is sai5 aka /soc@0/bus@30df0000/spba-bus@30c00000/sai@30c50000.
-It turns out that the module snd_soc_fsl_sai is not even autoloaded. Loading
-manually doesn't have any effect. So I assume starting from this commit
-the subnodes (at least sai5) are not even populated.
-Reverting this commit fixes my setup.
-I've set CONFIG_IMX_AIPSTZ to both  'y' or 'm' and doesn't change anything.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+Krzysztof
