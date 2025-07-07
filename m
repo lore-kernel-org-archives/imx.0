@@ -1,184 +1,262 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011067.outbound.protection.outlook.com [52.101.70.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870CF21B9D6
-	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 16:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751904788; cv=none; b=qty8OY+6iWMXd1HS4lGDFpg/Iru2HKA83U1PlvZs6ie00xwVaGI1Hcxl8KqlIrraK2p9m0eH8PJzjBGBaO7m8eYH1W/XbQqa5XchMUyLazQm16aDW3ZLbbsU7KIkNPk0JzfimlHBB2SnqJ07XtsrbOD+VX+u0ukrPT+zTGVarYM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751904788; c=relaxed/simple;
-	bh=0h2aJlmPnSWDsdCU/F4A5RMFeDhbcjsspm212YRtJYA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tirgHpGlYOpA/SKkWky+21mLDrHRC7gFQMRd4qTl1cCC5BNwFgnBdE0aLfG2NYtSFHs+f6j7CGiVoTJ4O5BFE9QOGUr/eD76jOO3bxEBI/h7O9M69F6kpOJn8OXTFZsHMgonDOvI/B3HtmID5gjlYzN3JED2JdWSvFrRgH8T2Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cCKEjC+a; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E9F4D8CE
+	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 16:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751905835; cv=fail; b=m0LgbTYqHHgAqHp0NwQJqP1dTwoMGYSz1kg5I9gRrV06CVcvZ7DdrU6CA0mCtXS3sjIZTF+CqtNZW0taJ1NAAFG+IjvbMNvyLu4aKTyTzSUUcNiOv73dxyVAK++5jLybDLaKhwYv1b4rbV1SjrUGsltLj+wM0DEl2C6TH3Br11k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751905835; c=relaxed/simple;
+	bh=T2s2pyrfP/b755KkGWHF8dSguyig1LZ9iZRJxhyMWFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EIpX2fHdMiKaL7x/J7Irpjxj3ZA7wOcDrmERg4johT4UhXRZPkPl33TXHuh/NIxQ/l8bZ47mowLh1vr8JCeq896vW91gh+5W8V0pVEp3rXrYrqaViQvWtWJn296HULIHJT3cg9Sj7esW2wMXIwLFNXzDhqgg2320JcSqi3jtVXE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CpDakYP5; arc=fail smtp.client-ip=52.101.70.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cCKEjC+a"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-23526264386so31908805ad.2
-        for <imx@lists.linux.dev>; Mon, 07 Jul 2025 09:13:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751904786; x=1752509586; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rTB9AhUzbXze0SvlJXhNv6ywJb1Le3/qXDwCwOY7m50=;
-        b=cCKEjC+aqkZMu9GsQg0VPoRGVT7SeVmLqO1PvYfV6/HzalT8XXsTcDImi8Lwi5sUHE
-         D3QHm17O9RdXDRkrebDSnYyfknfIDy9/x2LRsmtgsHndy/exXJ9Rumd6V8RlcOId6lM9
-         SOd5xqRGd3nrYg8wK+NyhBnO2+k2puEHt4JgQzACPlj9n2mKshS16VUaPTv8j6ySrHvZ
-         n1cpyYu4AQtY+F8N9Ak6hJ7zEvprblBz7/T8YlpEpWWEERBA8njysG4LV95uW7WtTUuk
-         LMo/zFyJj3RHHCYsDRrgTX68XBDDijwcCnoZzOk7n+zj1sqRW7CrYFJNBtYtNNhDVWqo
-         cUhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751904786; x=1752509586;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rTB9AhUzbXze0SvlJXhNv6ywJb1Le3/qXDwCwOY7m50=;
-        b=vpGJZXMrkjxRaeIoJR4WBLsjNLZjLhmfDdwIUUEkHrxpjqLs6wRr1OGEEViqobpmFi
-         aHg75o8C6SktLvL9oL75koECDuX9NMroOjmhbduE+sHmwDbSDcPjzdXvYtTGLK3zWEHi
-         dwZT2HkEMbruB+yurNilrF3P/HGW/8YqLcjeFhqz9xfyyupaVxh8RM3URv9C6dwrzLTg
-         4ws/fGzywybXp8/g6/RwZw3gWtP1Hfu7l92wI5m7sSsdc69v1N4oP81FXLX6RobmKVXx
-         xV88+ZCmj56esqxDBQ4G8/RQzD/fWlyRU+aDfpqDqBGEW/eyc0Lqi+wsJhHtM5FX2YOF
-         TmPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJO9lpnQCuaAoCfZ3ib36U6prDqfJ1hqyT8lENsDtQOiK/d1HIwkDByrgmqwlWAfJYpak=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywy1kojzDrFdw2Q5CRpOQqWwGeudzwdu5/trX28ujQizPSdXpmr
-	0u9k5zf68eG7mYVY5I2nz+2KUWE+fI6pUg97ahTI4Uo7aY8c/Vhb17CwZIPN4Roiq6A=
-X-Gm-Gg: ASbGncsipOKIh46Jjd0GwV0OQIlYi36nKIAqfrO2Ipf9yS3HhIDHkY9f8dCUncGtRAn
-	c3qOzl9qIrQA92DDWAj100Ws8/ErawvBNzrUdusz6FgGMIJP3BgRhoO3rVOhtIG2Ogo3im4AgPo
-	r5PTFn0Aaz7YiHtYf/CiyLzW7bqOH/btH7Y4+mrVwnxduhupBUdUNheYhL3CQ60nCiNZtc0fYqS
-	BiC8n24udVaF69qd1i1mDTTuwKTaHdp9f2Z5giU/1qK01mIVdVvCmOKwCrG3hzeleiWHPbFJBuV
-	eitL82+cCiOlN/aCu8s6rQ8eSkTTN1PP7k2S9CtW1OpmX0oU4uboIeNtMtQz65JAZw==
-X-Google-Smtp-Source: AGHT+IEQezXaHRglxK6u+wE7BwHS5SdjM0yKB0UdNJiBREdoJn93Iqgm0TzBfL2Hm1mR3xJxK3359A==
-X-Received: by 2002:a17:903:41c1:b0:235:c781:c305 with SMTP id d9443c01a7336-23c8755c92amr199352805ad.24.1751904785665;
-        Mon, 07 Jul 2025 09:13:05 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:1746:c463:9d35:6eed])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b38ee475a3asm9236671a12.17.2025.07.07.09.13.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Jul 2025 09:13:05 -0700 (PDT)
-Date: Mon, 7 Jul 2025 10:13:02 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Hiago De Franco <hiagofranco@gmail.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CpDakYP5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qjjdKSn13jpx34pU9CPTsCmfqQznzv21rYidJah7dlXOj/ljU6g6F+5NVUII2rW99g9DuA4aO+qp98SY7VhO1XjUTgi8Gh0rh8wLx10MbxmwKgpk7rpWaDCmSIryYZjNje/7LQSMu6BIcBT89LjFx0l3zsjbxzOUlYBDGvUYjCyo9ak0DEwW1ejAKLEQcnC6qPy2C3r3IXjsnlsbWmzujy4VukQkfgtU/AU7QF8wsclnn9XAGrBrARvm64o+6JiHV/I9nUKvTUYvuAd9Y61tQEYKFULijFF1t3YV4zrpY3OM0bf5ktdEj16Yg6ol5avVgUiBn/NMCUyY4oxz/pfgfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7VlnYGO+m2VMVsDiJuo2NyXJWz1uRLD1pmS7NZRGfU4=;
+ b=rbQ+ZAMwsKscKxNT3KNmEcFlBhjQpaAYCOP2oPU1e4MzPnICnRZrkRPWR9PmvC9O18d1PIw9VXAdxRMSeXv687uovnh8DWH5j+13z+cxBSl/j1T9vKb6AJY7UM5woSJJ2S+qJnEWEw9+xTG+5ADlD5hRgRyEnUpYfFvHnFW7SBVVMcwnqlHvP5+BMlbRTCxYZ+Fl4wG6j+uct7lRyHscBEr58abm23Q4iWzhIyI5GVN3RzLbDk08MpzfLXBBOqDedDGpUCoP27nusdlYduniACwv18iUl770WYN3VBAyPZqy/E5+3I4va4DZhqnKfj/I57l/MIGnCaeYaO6b7fs93Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7VlnYGO+m2VMVsDiJuo2NyXJWz1uRLD1pmS7NZRGfU4=;
+ b=CpDakYP5g51WBZ70O06wJisxTdtuRpLuv3keJtcJXHXP0wORmiIjoNy5Uy85x3n+7YjzQ2uDvO3si0ySTVjJo9y7PxDrnaG3Vt0+hZUR5+ciET03ic9cXUKWA5eLhi0L0d74MhwX4H7MvbYyajhJRoSwMh5/2qE2lXKuW4uPnMo03nlBSeHKdDPqbLQtvOzkLVEDIrS0kwJ3vZ6kI7eD9m7jAvBl1OlxhWXI3DoCpHjBWDZZuSREy3UZmxPjKbQHT52Q741z+o7TO78MhXFFG0proWBLSV799VRsfr9rCffBph/6et02aZQ1xLuBNXfb6i331M5UTPDb////MbTH+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.25; Mon, 7 Jul
+ 2025 16:30:29 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8901.023; Mon, 7 Jul 2025
+ 16:30:28 +0000
+Date: Mon, 7 Jul 2025 12:30:21 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Shuah Khan <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Ritesh Kumar <ritesh.kumar@toradex.com>
-Subject: Re: [PATCH] remoteproc: imx_rproc: merge ITCM and DTCM regions
-Message-ID: <aGvyDp36iWv5UQ19@p14s>
-References: <20250703130831.18830-1-hiagofranco@gmail.com>
- <aGgAbwToGhsc5VV9@p14s>
- <20250704190816.kth7bdf34ufc2ht6@hiagonb>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org,
+	jdmason@kudzu.us, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v19 01/10] PCI: endpoint: Set ID and of_node for function
+ driver
+Message-ID: <aGv2HWBAsZm6Fi+X@lizhi-Precision-Tower-5810>
+References: <20250609-ep-msi-v19-0-77362eaa48fa@nxp.com>
+ <20250609-ep-msi-v19-1-77362eaa48fa@nxp.com>
+ <ne5yrjtdevmndqds4uwo2ppq6gay2wuwjouyf33lqr5g3nfkwr@lkwqlwqjqbmx>
+ <aGVE6veZm3bL0mVJ@lizhi-Precision-Tower-5810>
+ <75opnvi46fbmsnmykjwn3gmir7r3uqhzp7tfoua42cado6aopu@dmos2v2qd3jn>
+ <aGVN/5yoLumfmlDv@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aGVN/5yoLumfmlDv@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: AM0PR04CA0069.eurprd04.prod.outlook.com
+ (2603:10a6:208:1::46) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250704190816.kth7bdf34ufc2ht6@hiagonb>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU0PR04MB9496:EE_
+X-MS-Office365-Filtering-Correlation-Id: 77005f4d-b8ff-42e3-67a9-08ddbd7395b8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|376014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aXBDdkQwdUJLa0phZ2grbjZsYnBuaGl0UkFqWmNxYmNWcGZnOHdKT3cycUh4?=
+ =?utf-8?B?dE9KSklVRmwwMjZFWHEyMXh6UE44aW5YZFVvVG9aZkRNeVdkNEVrV3BkV0JB?=
+ =?utf-8?B?TFVscXJXZzh5K0sremUwbXNmbnUxcy9lRlVIdUlyS2ozVUxqSnlaOXdpeVNo?=
+ =?utf-8?B?cmlwd2VRYVpoNmF1MmlWQUpNQkVmOWkzclI0OFdzQ2xpWTUzRG1xWG9maEpi?=
+ =?utf-8?B?aWtmcVpzeUVsY3M4MEh5K3JLS1BaL1VVZDJmcG5QUys3a2RXZy9pcUVVYnRU?=
+ =?utf-8?B?aEhwQzgyL0lLUVBYSURVdC9GeHFOMGVxaW5lMHhhVlpNcE9sRTlDWlhrenhP?=
+ =?utf-8?B?WEl3VWs2cXJMTHI3WkFBbk9uVU56VW5rUHlpMUlxTkRtaUFYWTBDaE1DSkZX?=
+ =?utf-8?B?bytnNDJQR0IzR1A4bXpLejhBSzRESUozaXZpNXhTeGM0OXdONTlBZzR0OVUv?=
+ =?utf-8?B?dlJ5MWZHc0J6VktORngzUERqRXVXbnJkcEZOT0pEVTgvcEVsZDVQdiszcTNa?=
+ =?utf-8?B?TFc4TDdIQktGeU1aNUJQd3p0bENnS0dGK1R1dWxFcGZJWlIwMUdteGRaR2Zr?=
+ =?utf-8?B?OEwybDgwZ3R3bHFScjVxKzRzV3BMdHJvckx2aytpMEFra1dVYkcwQWhjalU4?=
+ =?utf-8?B?ejU5NjQzNnNmVEIxWlBKNjNLNHFsdzM0RWlOUjZHWWVxblltN2IzUTEvUFpP?=
+ =?utf-8?B?bkN1aVN4MlBSY0krWW5SS094aFViTzlNRzlrSzluaHNNWVdoU2ZwQUV4Uito?=
+ =?utf-8?B?aURVU0N2K2txcy9oaXBTcmNqMHdNTFI2a1ViUmNlelpHZnN3bko0VFU4MzZB?=
+ =?utf-8?B?TFJDM09nSVJvVXpaU2pXbE8zRTBtdy9aaHJLMmtTaTVvVmNQRTY1a1JVYS9y?=
+ =?utf-8?B?Q2RVRzBueDNHTUpmSDdHRVNzazBTbFNRS2RsSjZJamlpK01rY0NTQTJlODRQ?=
+ =?utf-8?B?UTNGVVlnOHE0djRRNGV5eVRFWjlnZFcycVo0Y0xoRkgyc05LTmJDQ2trTkh3?=
+ =?utf-8?B?MGtVVmdqRG5YR0FhSm11amtra3FXcElmM2p0UEU2YTYxUlBDZ2JBNkFpc0RU?=
+ =?utf-8?B?cys1dmxjQytYQ2U1MFBwa2NFaEVmb0hhRTgzVmx3L3Bla3pyZmNSZHBHQ2o1?=
+ =?utf-8?B?SGxzSStEelQrR3o5QmtzemlrcENoc09qOUg3SnZ2emJXNDNna0RQaU41MkRR?=
+ =?utf-8?B?MHVEL25IZmxxQjNhSVdoMVM4RWpwTnBYY0hpSWVQY0paOTFHNUlRMTZ6bHQx?=
+ =?utf-8?B?Umkvc1NacVIxbGVTb1hYa2ZJWGF0QllIY2Z5bGloRnZlOHRRYWxraDdMNTRY?=
+ =?utf-8?B?bHMxM0lUVVFkeHNWOVZPdkdqZWFqZXIzWWtVUDg4VnNSWWFjUWlmd3hZRjA5?=
+ =?utf-8?B?aWEyN1pBNDFIUXBnNlA4SWpieEZJOGd5SnQ3Y2djRGw4R0xZQmdqdTgwSjdP?=
+ =?utf-8?B?MWMvN3pTMWVOdHowcUZmdlpORDI1aS9zczFHY3Q2QXl0Qzk4NHFxYUhsZFpF?=
+ =?utf-8?B?SlJhTGJlSjV3elVUNERlalhkVHROV0ZudU9KazdENjRCWlVhOEYveGhpTmZ6?=
+ =?utf-8?B?SG5VaFg5aGxGUnREY1BHYlE1a0lRRi9UYjc3VlBBR0xDOWZMbGZKM2lTNVhr?=
+ =?utf-8?B?eVlkUnhML1Q1RkhhU3dGRWQ2UTdGNWJmMkpZbFdrOUpwM3A1QUttVEVmcW84?=
+ =?utf-8?B?S0xRUDA0NWk1QkxkeHB2TG1PTGJCSG5PNXVvMng4c0t2am1MOG0xa0VwZndn?=
+ =?utf-8?B?b2ZTOGxiblRkZDNYUEpEZThZU01EUTZrY0t1d0R6dUJUSEdScWVnc1VpZHEv?=
+ =?utf-8?B?V3g5WDhLYkoxY0laV0JXRTM4cENFT3BjT1l5ZldBbEZCbWxUeDVTSmF0NXU1?=
+ =?utf-8?B?dUI2K0NVWVhYTUVlVjJVaWw1OU9DOUo5UURwaFFsK3VEVFZERklHN2lWdFNR?=
+ =?utf-8?B?eWRXWituUVVSY3F1NlFlRUlyaklxczRQSlVIb2pCYXU4WHFPUXFSTUowVWR1?=
+ =?utf-8?B?THFwbXNPMVZRPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(376014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aEpSazZMbHUxRzdiN3BGWFpRWU9Bb0dTYXUzOUpDc2RWYk9xVmRjVEVRRVBI?=
+ =?utf-8?B?eHF1NlZvV1IrMmhrYVJwN0NpQWdZaE43Y2ErVFJydDVrTnoyQ0RNa1RITTlT?=
+ =?utf-8?B?Nk1GWE1ZWlZwRFZ1VTFUYUdBdlRQU2Q3U0x6REdLL3IwMVVhV3ViV2R3TkJ3?=
+ =?utf-8?B?VlNXS3FxckNwck5yZnFuUFk5ci9ZaUhzL1JIRUlvWGllQTU5azZubHhXY2pW?=
+ =?utf-8?B?SUxDZkJXdXJjd0E3VjE3ZDVHa25FdSt1ZXFRT2luejNuNkJYVk43dzdacmRt?=
+ =?utf-8?B?SkVLMnRQT1JCOGVwcWt4Szl4YjhxRGpHMjd6dGJJQUJob25CLzNZZ2I5bVFZ?=
+ =?utf-8?B?cjdPZnRsb2pQNFBEUk5CNmV5ZnRtaDFidDZYTGczWVQrZHV5aWZqODBvR2V2?=
+ =?utf-8?B?NjkvTSs5TWd4S3JleGttRXlFV2xWVjVweDk5TzNsTDlTc3IrMmJZbS9PRmtD?=
+ =?utf-8?B?VWFmUXljSzQ5YkRTMm40S1RkQ3duMWVQT3l6cWNpSzFFVzhkMUNWOHBUVjg1?=
+ =?utf-8?B?OVFQUitBSldiYXRQUGoxVzFpU3hPY0cvYWxFc3pjcERWUWNTS2FuQVVoaGVs?=
+ =?utf-8?B?dlJLcVdaKzM4b0pTZU12eHZUMHo4WXo2T0lDUzNvVnpBMWVabk9TeXRjVkZ1?=
+ =?utf-8?B?d2xBZWlXUTFWaWhaQWJyVysyOWJhdUZ2K0djUnV6ejNuQUtua2RaWFEycU5Z?=
+ =?utf-8?B?eGwrZ2Vua2NpWW85SG1tUStMVDh2aktEMVROVWtjZlZXSHRQMS9jaFptTjcz?=
+ =?utf-8?B?K0lKR2NFYytmYlhCY09sZ05BbGN1dUszM0VoZ1V6Ny80eFhVK0JzRTRjYXh4?=
+ =?utf-8?B?RGdETGdXR1RocWROSjBlTEo3c3pPYUVIclRIK21iMG4rcDlKcjhYOW9vRk5l?=
+ =?utf-8?B?aTZheDI3NkdIc0RPcXB2dzRBZ20vMzB3WXQ1amwrRGg0L0xYNDJGK2UwRFAv?=
+ =?utf-8?B?N0lFSSthdWhXWnp1emx0U3BubXJJMEJHajRpUDNvQnJSVnNsVE5pU0NMV3do?=
+ =?utf-8?B?YkRzN0tVdW9mc2JLaFVMemlXK3NqLzBJM2ZhU2Q1cUJnR0lqNFJrak9CeXBq?=
+ =?utf-8?B?Z2RTSXFETmdVQ0VNd0RZejFOcmxJWnhRWFlRalVKcVEvK2JWNnBlS09ZdTNO?=
+ =?utf-8?B?cS96ZWpac0NsYTR5ejRTQUYvWHFUaWd2UmRpaHlnbVdFQXhEVVlHc1FycmtH?=
+ =?utf-8?B?YXV4cE5McmxKTFpyWldwN21VaXdJUmtyYXhHTlBUbFdOUkhNbG9udXRuSUJH?=
+ =?utf-8?B?UTQ3eTFnTkxEWkFRV0h0cEU0UFFuWW42MExQc01OQXJXVEhkcnp2M2VIYTR2?=
+ =?utf-8?B?bEJmWHE5a1R0RjlQTEpjeUhucEJHOSt0dVo1bjVLVnBuY3lZWXJLMXI0bjc5?=
+ =?utf-8?B?M3RxSXcvekJHaWFjWGlRdlcxSmdQd1QwdlMvblEzVXplQUxBYUhTZ2pnOStX?=
+ =?utf-8?B?dnpmVzhDS1dTbm1IUXprdWFQM0d2bzVRSDFZbFJYanB2MFJYRldnNmwzVXF3?=
+ =?utf-8?B?MWVPcFVDejFwM3dPL1c1QjZWYW02bTNDSXNNdTBBaTVvKzRKTUZncEQzTTJY?=
+ =?utf-8?B?Y1hkbmI1aEVSMjR0VXNHTGlkaXM5MlltMFJyZTZnOVBwSXBoQThCMHNGdFdV?=
+ =?utf-8?B?bFl0UlBRNmNXTjRSVktIZGs2MXBPTmpyOE5pQnNBaGttdFVqMmorQXBVRi9H?=
+ =?utf-8?B?bVhzVmRaY3ErVFB2Q0VzSFdFbFBaT2JrbTNCZUlNUFRBQmNzTzJXUVNhaXNo?=
+ =?utf-8?B?SytRR25qVU5jMnJuSFMwNGVzamMza2FLRlA1REZXUHZYWm16YVJ4dDNqSUVl?=
+ =?utf-8?B?bGFVSnl2dU5kME5WK0dMNjdIM2ZsbGVmTGk1QS9UYU5KT0IzZEs3TkVENDBD?=
+ =?utf-8?B?NURJZVQxUU1FSDJ2ZDVCbHhBZldtaW1BUHZiNGlsK2dTWjZwcVp2MWxhWmll?=
+ =?utf-8?B?dGFUeDZCTEVDbkFEajFsZ25td2ZibENNNTBuV3Z2V1pXNll2akJhS1JsdXcy?=
+ =?utf-8?B?ZVMyUTF3eDVjMGlwck5IaTFGL2xLcHVjRG1IOEVkR1J5N1JMbGwzV1NFMU5s?=
+ =?utf-8?B?anI1cFVsRWxYU2tyVjNMN2didzcybEE0RUFTdzRpWFNDQ3VFMUVQZGNESDh2?=
+ =?utf-8?Q?8O5Iuk6OR80dvmVOtUK3Lu+pc?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77005f4d-b8ff-42e3-67a9-08ddbd7395b8
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2025 16:30:28.9313
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: c2wwEKmDTWtRzNH/MfXtjvBK5XNqXuv9qIL9Mkx4fDv+WtawcNZMkodSiRV36kA/0Pmre1wDR98+eYevIVyeiQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9496
 
-On Fri, Jul 04, 2025 at 04:08:16PM -0300, Hiago De Franco wrote:
-> Hi Mathieu,
-> 
-> On Fri, Jul 04, 2025 at 10:25:19AM -0600, Mathieu Poirier wrote:
-> > Good morning,
-> > 
-> > On Thu, Jul 03, 2025 at 10:08:31AM -0300, Hiago De Franco wrote:
-> > > From: Hiago De Franco <hiago.franco@toradex.com>
-> > > 
-> > > Merge the contiguous ITCM and DTCM regions into a single region to
-> > > prevent failures when loading ELF files with large sections:
-> > > 
-> > > remoteproc remoteproc0: powering up imx-rproc
-> > > remoteproc remoteproc0: Booting fw image rproc-imx-rproc-fw, size 151824
-> > > imx-rproc imx8mp-cm7: Translation failed: da = 0x1f48 len = 0x1fcb0
-> > > remoteproc remoteproc0: bad phdr da 0x1f48 mem 0x1fcb0
-> > > remoteproc remoteproc0: Failed to load program segments: -22
-> > > remoteproc remoteproc0: Boot failed: -22
-> > > 
-> > > This approach is the same as commit 8749919defb8 ("remoteproc:
-> > > imx_rproc: Merge TCML/U").
-> > > 
-> > > Suggested-by: Ritesh Kumar <ritesh.kumar@toradex.com>
-> > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> > > ---
-> > > Hi,
-> > > 
-> > > The ELF I tested had the following data section:
-> > > 
-> > > Memory region         Used Size  Region Size  %age Used
-> > >     m_interrupts:         680 B         1 KB     66.41%
-> > >           m_text:        6984 B       127 KB      5.37%
-> > >           m_data:      130224 B       128 KB     99.35%
-> > >          m_data2:          0 GB        16 MB      0.00%
-> > > [100%] Built target hello_world_cm7.elf
-> > > 
-> > > Which triggered the error. After this patch, remoteproc was able to boot
-> > > and work fine. Thanks!
-> > > ---
-> > >  drivers/remoteproc/imx_rproc.c | 6 ++----
-> > >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> > > index 74299af1d7f1..bbf089ef48ee 100644
-> > > --- a/drivers/remoteproc/imx_rproc.c
-> > > +++ b/drivers/remoteproc/imx_rproc.c
-> > > @@ -166,8 +166,8 @@ static const struct imx_rproc_att imx_rproc_att_imx8qxp[] = {
-> > >  
-> > >  static const struct imx_rproc_att imx_rproc_att_imx8mn[] = {
-> > >  	/* dev addr , sys addr  , size	    , flags */
-> > > -	/* ITCM   */
-> > > -	{ 0x00000000, 0x007E0000, 0x00020000, ATT_OWN | ATT_IOMEM },
-> > > +	/* D/ITCM */
-> > > +	{ 0x00000000, 0x007E0000, 0x00040000, ATT_OWN | ATT_IOMEM },
-> > >  	/* OCRAM_S */
-> > >  	{ 0x00180000, 0x00180000, 0x00009000, 0 },
-> > >  	/* OCRAM */
-> > > @@ -180,8 +180,6 @@ static const struct imx_rproc_att imx_rproc_att_imx8mn[] = {
-> > >  	{ 0x08000000, 0x08000000, 0x08000000, 0 },
-> > >  	/* DDR (Code) - alias */
-> > >  	{ 0x10000000, 0x40000000, 0x0FFE0000, 0 },
-> > > -	/* DTCM */
-> > > -	{ 0x20000000, 0x00800000, 0x00020000, ATT_OWN | ATT_IOMEM },
-> > 
-> > In commit 8749919defb8 "dev addr" and "sys addr" were both contiguous, but in
-> > this patch "dev addr" is not.  How will this work with new kernel that use old
-> > FW images?  Am I missing something?
-> 
-> No, you are correct, I think the use case I tested was not good enough.
-> 
-> If I understand correctly, this will break older firmware expecting
-> .data at 0x20000000 because dev_addr is no longer mapped for DTCM entry.
-> 
-
-Correct.  Older firmware would still expect DTCM at 0x20000000.
-
-
-> Do you think it is possible (or reccomend) another approach to fix this
-> issue? In this case to keep using the TCM, instead of going to OCRAM or
-> DDR.
+On Wed, Jul 02, 2025 at 11:19:36AM -0400, Frank Li wrote:
+> On Wed, Jul 02, 2025 at 08:25:17PM +0530, Manivannan Sadhasivam wrote:
+> > On Wed, Jul 02, 2025 at 10:40:53AM GMT, Frank Li wrote:
+> > > On Wed, Jul 02, 2025 at 04:30:48PM +0530, Manivannan Sadhasivam wrote:
+> > > > On Mon, Jun 09, 2025 at 12:34:13PM GMT, Frank Li wrote:
+> > > > > Set device ID as 'vfunc_no << 3 | func_no' and use
+> > > > > 'device_set_of_node_from_dev()' to set 'of_node' the same as the EPC parent
+> > > > > device.
+> > > > >
+> > > > > Currently, EPF 'of_node' is NULL, but many functions depend on 'of_node'
+> > > > > settings, such as DMA, IOMMU, and MSI. At present, all DMA allocation
+> > > > > functions use the EPC's device node, but they should use the EPF one.
+> > > > > For multiple function drivers, IOMMU/MSI should be different for each
+> > > > > function driver.
+> > > > >
+> > > >
+> > > > We don't define OF node for any function, so device_set_of_node_from_dev() also
+> > > > ends up reusing the EPC node. So how can you make use of it in multi EPF setup?
+> > >
+> > > In mfd devices, children devices reuse parent's of_node
+> > > drivers/gpio/gpio-adp5585.c
+> > > drivers/input/keyboard/adp5589-keys.c
+> > > drivers/pwm/pwm-adp5585.c
+> > >
+> > > multi EPF should be similar to create multi children devices of mfd.
+> > >
+> >
+> > No, they are not similar. MFD are real physical devices, but EPFs are (so far)
+> > software based entities.
+> >
+> > > > I don't understand.
+> > >
+> > > >
+> > > > > If multiple function devices share the same EPC device, there will be
+> > > > > no isolation between them. Setting the ID and 'of_node' prepares for
+> > > > > proper support.
+> > >
+> > > Only share the same of_node.
+> > >
+> > > Actually pci host bridge have similar situation, all pci ep devices reuse
+> > > bridge's of node. framework use rid to distringuish it. EPF can use device::id
+> > > to do similar things.
+> > >
+> > > Actually iommu face the similar problem. So far, there are not EP device enable
+> > > iommu yet, because it needs special mapping.
+> > >
+> > > Prevously, I consider create dymatic of_node for each EPF and copy iommu/msi
+> > > information to each children. But when I see adp5585 case, I think direct
+> > > use parent's of_node should be simple and good enough.
+> > >
+> > > In future, I suggest add children dt binding for it. For example: EPF provide
+> > > a mailbox interface. how other dts node to refer to this mailbox's phandle?
+> > >
+> >
+> > As I said above, EPFs are not real devices. There is currently only one
+> > exception, MHI, which is backed by a hardware entity. So we cannot add
+> > devicetree nodes for EPF, unless each EPF is a hardware entity.
 >
+> But how resolve this problem, if a DT device need phandle to a EPF? anyway
+> this is off topic. let go back this doorbell.
+>
+> It needs an of_node for EPF device, I tried many method before.
+>
+> Create dymatic of_node for it? MSI framework still go through to parent
+> of_node to get such information. not big differnece as my view.
 
-To me the best way to proceed is understand why using the current mapping is a
-problem.  The changelog describes a failure condition when dealing with large
-sections but does not indicate _why_ that is happening.  I think that's what
-needs to be fixed rather than trying to move mappings around.
- 
-> Thanks,
-> Hiago.
-> 
-> > 
-> > Thanks,
-> > Mathieu
-> > 
-> > >  	/* OCRAM_S - alias */
-> > >  	{ 0x20180000, 0x00180000, 0x00008000, ATT_OWN },
-> > >  	/* OCRAM */
-> > > -- 
-> > > 2.39.5
-> > > 
+Hi, any idea?  how to move forward? we can dynmatic create of_node for it.
+
+Frank
+
+>
+> Frank
+>
+> >
+> > - Mani
+> >
+> > --
+> > மணிவண்ணன் சதாசிவம்
