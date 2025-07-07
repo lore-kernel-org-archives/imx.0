@@ -1,79 +1,167 @@
-Received: from proxy41133.mail.163.com (proxy25213.mail.163.com [103.129.252.13])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37913800
-	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 08:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.129.252.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267D628B4E0
+	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 08:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751875918; cv=none; b=Tcnitq9udx/TyBe06zKKGUfXI+u410rK4gcVO4ohkQnv16xpeEQU8sQataiGkKAkqzzN0jOFeVDbruXsvW2ry1QZlw9tSmwizDYtlwWis0C5k3f9QGWgM2DU5L4GVw3fj90UkFDC51mD38xUj+lHwQkSifzlXyX1A2N1a/2cphc=
+	t=1751877909; cv=none; b=ICDl65PU6teG9jwugTJ3aGSq80+D1ws0fDKLotkjR/bpUplmHbUgFxtBpjvpolcxvgyBXwFe8Yf+vAWB4ZLd1fJ2auBP9uCFmHWfXxCFvZ+YmxCGwUDlhK3SocKAz4vVe32xyRJwZeNqt6AIbaee5axMp2ysFGEtu89HIMfLEDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751875918; c=relaxed/simple;
-	bh=Kq5pU6gDzEffrT+9dFMbOU6haoLKeyQPRrR7upar/HY=;
+	s=arc-20240116; t=1751877909; c=relaxed/simple;
+	bh=fAbrkbbHu5n4B9+4v4yVoWzl2w8+qf9jJb+YrihF6ds=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fFZbXTZl++7MH04LBSUU9shxDOzOFEpDUMcsWLzi14qBHCOH87qu23KpPZvfiTGSfkOqXmQk3vpd/X3AlpSDLUuuhXrI9WSToP2YNdvO5I3S9sE4+eguYejbzi7NZ397CtXariQgynglQT9NV4cBedXICPgrtVr9ESBE2Y+4MoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=LHnDhd9G; arc=none smtp.client-ip=103.129.252.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=uWRBACAd0YO39jjmoIPTVniqW5638NlvSdBvA9CEvZ7cJHiehIheLbC49KcbytR0KZGUQpWT73xtrAQ2itJGVjfckMAF9N2KqYD7Nh1EPs2sLbJ1KpxSElFNUYiI9QtoaNlQtS7W5qkRJGdc+84FwaDRT5+IARMKMSl1CSpiTgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Am+AuqQX; arc=none smtp.client-ip=220.197.32.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="LHnDhd9G"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Am+AuqQX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=wYX/8ebPYdpS41EyMmngCwqiXAfSXeLhLg4jCU+kiWA=;
-	b=LHnDhd9GsZXNX1ANay97WouX3tk3XrUeICgpM53urvzr1D7DXARWl9dysQoJlB
-	R0zHDZe6yMOwl7p7eQPlCbFIWcembZzb1GCmVjNIgVHRhVAjBse4l2FhsNG5XyJm
-	xkykdDU3lBJ893oXW7Ffiyob9/rjaQjdCS5TpWQLOruXI=
+	Content-Type; bh=h+1DDYoaS1Ipu12iZO8xaUeU/BSiLpWZ922LTtPQMUc=;
+	b=Am+AuqQX1OzceuAS0C6wsFLQ1oe+IZyfkfmO9eBiqI7vCsFbRp6lSPeip4n/rL
+	XzoJsG3nF+eO7bifCsGdYTwKSdeTwVEAl05kGBQFqEFHzTDv0qjEkIy6kI45QEE4
+	xnXI6xZZ1Yp7gEDIG4Da5MhwJHWtpaKpfgSY7n1XmbPco=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgDn_3v2gGtoAmE8AA--.26131S3;
-	Mon, 07 Jul 2025 16:10:32 +0800 (CST)
-Date: Mon, 7 Jul 2025 16:10:30 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgB3xsP6iGtoPxw9AA--.22655S3;
+	Mon, 07 Jul 2025 16:44:44 +0800 (CST)
+Date: Mon, 7 Jul 2025 16:44:42 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Bence =?iso-8859-1?B?Q3Pza+Fz?= <csokas.bence@prolan.hu>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Lothar =?iso-8859-1?Q?Wa=DFmann?= <LW@karo-electronics.de>
-Subject: Re: [PATCH] arm: DT: imx6: Replace license text comment with SPDX
- identifier
-Message-ID: <aGuA9gJj2cpCfIZ2@dragon>
-References: <20250626-karo-dts-lic-v1-1-315f43121aaa@prolan.hu>
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] arm64: dts: imx: add dts for the imx8ulp evk9
+ board
+Message-ID: <aGuI-i5bI7lHsFjP@dragon>
+References: <20250701002239.972090-1-laurentiumihalcea111@gmail.com>
+ <20250701002239.972090-3-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250626-karo-dts-lic-v1-1-315f43121aaa@prolan.hu>
-X-CM-TRANSID:M88vCgDn_3v2gGtoAmE8AA--.26131S3
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JryfAF1UGF4DWF18Ww4rKrg_yoW3AFX_ua
-	y8Xw1UAw4agF48KrWfuF1avasrKFWDZr17XwsYqFy7Aa4qqrZ8XFnYgr90vr1DGa1fJrnr
-	uFy5J3y2yw17CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUbSksDUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIRhTuGhrgPgalAAA3n
+In-Reply-To: <20250701002239.972090-3-laurentiumihalcea111@gmail.com>
+X-CM-TRANSID:Mc8vCgB3xsP6iGtoPxw9AA--.22655S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXrWkJrW5tr1kWF13Xry5Jwb_yoW5Zw4fp3
+	Z7Cw45Wws2gr9rtrZIq3Z2qF98Gws3CrnruasI9ry8tr15u343tr48trs3Gw13uwsxA3y7
+	CFWqqrnrCrs8Gw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UivtAUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIBxWu2hriPzw3QAA3L
 
-On Thu, Jun 26, 2025 at 11:19:56AM +0200, Bence Csókás wrote:
-> Replace verbatim license text with a SPDX-License-Identifier:
+On Mon, Jun 30, 2025 at 08:22:39PM -0400, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 > 
-> The comment heades mis-attributes this license to be "X11", but the
-> license text does not include the last line "Except as contained in this
-> notice, the name of the X Consortium shall not be used in advertising or
-> otherwise to promote the sale, use or other dealings in this Software
-> without prior written authorization from the X Consortium.". Therefore,
-> this license is actually equivalent to the SPDX "MIT" license (confirmed
-> by text diffing).
-> 
-> Cc: Lothar Waßmann <LW@KARO-electronics.de>
-> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+> Add DTS for the i.MX8ULP EVK9 board.
 
-Applied with a bit change on subject prefix:
-
-  ARM: dts: imx6-tx: ... 
+Could you highlight the major differences from i.MX8ULP EVK board in the
+commit log?
 
 Shawn
+
+> 
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile        |  1 +
+>  .../boot/dts/freescale/imx8ulp-9x9-evk.dts    | 69 +++++++++++++++++++
+>  2 files changed, 70 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk.dts
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 4da7501ece17..4b288b324d38 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -322,6 +322,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8qxp-mek-pcie-ep.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqp-mba8xx.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8qxp-tqma8xqps-mb-smarc-2.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8ulp-evk.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8ulp-9x9-evk.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb.dtb
+>  
+>  imx93-9x9-qsb-i3c-dtbs += imx93-9x9-qsb.dtb imx93-9x9-qsb-i3c.dtbo
+> diff --git a/arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk.dts b/arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk.dts
+> new file mode 100644
+> index 000000000000..5497e3d78136
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8ulp-9x9-evk.dts
+> @@ -0,0 +1,69 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2025 NXP
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include "imx8ulp-evk.dts"
+> +
+> +/ {
+> +	model = "NXP i.MX8ULP EVK9";
+> +	compatible = "fsl,imx8ulp-9x9-evk", "fsl,imx8ulp";
+> +};
+> +
+> +&btcpu {
+> +	sound-dai = <&sai6>;
+> +};
+> +
+> +&iomuxc1 {
+> +	pinctrl_sai6: sai6grp {
+> +		fsl,pins = <
+> +			MX8ULP_PAD_PTE10__I2S6_TX_BCLK  0x43
+> +			MX8ULP_PAD_PTE11__I2S6_TX_FS    0x43
+> +			MX8ULP_PAD_PTE14__I2S6_TXD2     0x43
+> +			MX8ULP_PAD_PTE6__I2S6_RXD0      0x43
+> +		>;
+> +	};
+> +};
+> +
+> +&pinctrl_enet {
+> +	fsl,pins = <
+> +		MX8ULP_PAD_PTF9__ENET0_MDC		0x43
+> +		MX8ULP_PAD_PTF8__ENET0_MDIO             0x43
+> +		MX8ULP_PAD_PTF5__ENET0_RXER             0x43
+> +		MX8ULP_PAD_PTF6__ENET0_CRS_DV           0x43
+> +		MX8ULP_PAD_PTF1__ENET0_RXD0             0x43
+> +		MX8ULP_PAD_PTF0__ENET0_RXD1             0x43
+> +		MX8ULP_PAD_PTF4__ENET0_TXEN             0x43
+> +		MX8ULP_PAD_PTF3__ENET0_TXD0             0x43
+> +		MX8ULP_PAD_PTF2__ENET0_TXD1             0x43
+> +		MX8ULP_PAD_PTF7__ENET0_REFCLK           0x43
+> +		MX8ULP_PAD_PTF10__ENET0_1588_CLKIN      0x43
+> +	>;
+> +};
+> +
+> +&pinctrl_usb1 {
+> +	fsl,pins = <
+> +		MX8ULP_PAD_PTE16__USB0_ID		0x10003
+> +		MX8ULP_PAD_PTE18__USB0_OC		0x10003
+> +	>;
+> +};
+> +
+> +&pinctrl_usb2 {
+> +	fsl,pins = <
+> +		MX8ULP_PAD_PTD23__USB1_ID		0x10003
+> +		MX8ULP_PAD_PTE20__USB1_OC		0x10003
+> +	>;
+> +};
+> +
+> +&sai6 {
+> +	pinctrl-names = "default", "sleep";
+> +	pinctrl-0 = <&pinctrl_sai6>;
+> +	pinctrl-1 = <&pinctrl_sai6>;
+> +	assigned-clocks = <&cgc1 IMX8ULP_CLK_SPLL3_PFD1_DIV1>, <&cgc2 IMX8ULP_CLK_SAI6_SEL>;
+> +	assigned-clock-parents = <0>, <&cgc1 IMX8ULP_CLK_SPLL3_PFD1_DIV1>;
+> +	assigned-clock-rates = <12288000>;
+> +	fsl,dataline = <1 0x01 0x04>;
+> +	status = "okay";
+> +};
+> -- 
+> 2.34.1
+> 
 
