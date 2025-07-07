@@ -1,162 +1,151 @@
-Received: from mail-8141.vip.163.com (mail-8141.vip.126.com [60.191.81.41])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491231373
-	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 03:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.191.81.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98716261571
+	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 05:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751860066; cv=none; b=kuKA8d+Ws5tOQn5qRSOdO+8ruFOsGTIEVbfYyjkha9hn41CYzsbRIpYMDB43JG7h3JqVk0YYFL4ZzXPsaIGpqCgypoR6OZk/TTaaQEGNjvEJM6EYER0opWzEv9D3T41ng70p5D62sQwMg3ONrQ4feKgNzFCLM88cujcryQIUpiE=
+	t=1751865112; cv=none; b=VcEoppXzObYq3q/WSgmoT63h25AnNXnlBrHG8nxVskXjBkgpUVXv8twa9rgsobHDgu5MZ3mj9DnIohlyLDdDiwChMsAtHdsDqXWFEqI0uWxEFGrWzYBSY1apgnm0esfmOgqdDIi/fVg/XMhbc0ppAVZjrkzyHyZeEYl+C4fvRTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751860066; c=relaxed/simple;
-	bh=k2TdzviJqSo4LBmcVaK4SGuAEg6ja1WQlCxUn6+mvbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ktcOC3LtMA+LR8hyP57n2U19dX4J+pGXJZ2qcWs2NkF9WteV5fWBqfHDTH/cqRIBNZn2vqNd9bobQFjhfZEZmnurN4+nKbE+lvzui+StRx3y6DF2x4W3mlAJYkXffP4XMoKb3pykRjFvgQ27F6tj9l3cLh/exH6oMHJ9SJom85E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=WQQQ3KmE; arc=none smtp.client-ip=60.191.81.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1751865112; c=relaxed/simple;
+	bh=OdRh8/576wHjaSuIhGUDAO/d8lBtbvnSHmhlO2AG8/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YfbRGXnYUWTlI1mK+mMhRdoKOITHVkKcFzIYg93kDHuruYx/RiUz09OTiPZLgKM+AD71v23i3OL6TKsIKyWMd2eR8TMhL9oKk4GqzWTGuBdnBgoh7wPQ0SeneIZIwO55aBRx39OYYVcaYUbjMujbeUOzzv+5XZWRxMRFDSjQAYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=cjMd4yHr; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Sv/Tj0oC reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="WQQQ3KmE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=oesmI5ePY0ossKfajmISjSZfcDhggP0bYnh+lj+buoU=;
-	b=WQQQ3KmEPp5jU24e7Wc/uAmsDbH3yhApgLc+2F73BuqLtNc1F81JKBaS1t9AYL
-	EMZO/hRhaD4y4BU4oiGN0kXBUJ5JWOER0NVuIOwWBTp+BEBaMe9FMf2SFK7gGRxO
-	k05ARgRcGFX16oDqyWIoPV47YgrPs3HM7EG+x1D9F5CAs=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCXluOqQGtoLdp1AA--.56829S3;
-	Mon, 07 Jul 2025 11:36:12 +0800 (CST)
-Date: Mon, 7 Jul 2025 11:36:10 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] arm64: dts: imx93-phycore-som: Add RPMsg overlay
-Message-ID: <aGtAqi7JWbF5F-31@dragon>
-References: <20250619063954.1730231-1-primoz.fiser@norik.com>
- <20250619063954.1730231-2-primoz.fiser@norik.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="cjMd4yHr";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Sv/Tj0oC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1751865109; x=1783401109;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=MS9l5V7rnppikpjmqzYLq+jQty7Y2WLmP6gMpwdm78Y=;
+  b=cjMd4yHrsxR5KDOPZGd3+kdf9FEHS9G/A1BQdjW4m2DIYwJAH/D3FwbJ
+   Yd7U5f0nzJNAE8CJ+gVLmfStHSAP8gWmgyDRgsH1c94O1h1qzUMbiTfac
+   cl/D9drC41VCBWG8ejNY349zJPyVMwpJcO7LP691gSfcZrN1Jslid/7tv
+   D/ieVwk7gMx9KScQ1WWIZsRBI2Q6WlJrL3ylARmAGZim/fVRqQ7pweFqf
+   70ELYGdqeGdVpKmXkEqKCL2v/grdE0KMGnibJQo9behMSUk5MdZDb9DdX
+   n1Cbm+NKbCyqttYTIwcJxdYZGsy8UshOfuMPQf4bvMdSqMLlLCyDDJPDW
+   A==;
+X-CSE-ConnectionGUID: cdaaUOoYQXi065uLnbbgdw==
+X-CSE-MsgGUID: 0JndVCJeRv+mZnXHP+VpkA==
+X-IronPort-AV: E=Sophos;i="6.16,293,1744063200"; 
+   d="scan'208";a="45049649"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 07 Jul 2025 07:11:41 +0200
+X-CheckPoint: {686B570C-37-4FC15ADB-CD71293B}
+X-MAIL-CPID: CDEB1C0A765BD2ADCEED811366CB8CCC_0
+X-Control-Analysis: str=0001.0A00639C.686B573B.0052,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D13916397D;
+	Mon,  7 Jul 2025 07:11:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1751865096;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MS9l5V7rnppikpjmqzYLq+jQty7Y2WLmP6gMpwdm78Y=;
+	b=Sv/Tj0oC82xoMR1uXwWA8qfioW3rO7wpmNR/uZgCiQmeZzZrSn2E63+UVAUlk9V0l4qJuy
+	AJRxZV7EIx62zzv4zAzBSENpA1wsUn9oDEEZsXaiKPg7Io9D+oq60Smn8aUreMEuTeGxE8
+	rji8rJ0gCULqQlmk2/jXlw0m7MYYPpcYXVv2/oVUm4izNYU/H6W84teDFCSAZb4BHQLJrS
+	4+ZPa9rFp0rBvky/PyI9jO6eMErzxoh7QPF8/OZ/EySD/SSDhuLeDGQPDU2ouLGblBG49k
+	v3AkMrqkRNWlloyKomXI2+jSQ0GnDJPMwH2CbW13e8UA9FIBK7F7l/T3ViLtlQ==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Mark Brown <broonie@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Frank Li <Frank.Li@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>,
+ Marc Kleine-Budde <mkl@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org,
+ Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Subject: Re: [PATCH v7 4/6] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
+Date: Mon, 07 Jul 2025 07:11:33 +0200
+Message-ID: <5029548.31r3eYUQgx@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <c3deef24-fed7-4405-9953-804bff118c11@gmail.com>
+References:
+ <20250610160152.1113930-1-laurentiumihalcea111@gmail.com>
+ <ac1daf6b-ee06-4076-b86f-b436ca0acd6d@sirena.org.uk>
+ <c3deef24-fed7-4405-9953-804bff118c11@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250619063954.1730231-2-primoz.fiser@norik.com>
-X-CM-TRANSID:Ms8vCgCXluOqQGtoLdp1AA--.56829S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXF4UXw48tr13Jw48KrWfXwb_yoW5CF43pa
-	92yFW5WFWIgF1xCr9xXrs2qa4DAws5Aayj9w1UWryUKrWUAry2krsxtrW3Wr4xZw4UAw40
-	vFs3WFnFkFnxX3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U4WlgUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNAwwlWhrQKx8tgAA34
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jun 19, 2025 at 08:39:51AM +0200, Primoz Fiser wrote:
-> Add an overlay used for remote processor inter-core communication
-> between A55 and M33 cores on the phyCORE-i.MX93 SoM based boards.
-> 
-> Overlay adds the required reserved memory regions and enables the
-> mailbox unit and the M33 core for RPMsg (Remote Processor Messaging
-> Framework).
-> 
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> ---
->  arch/arm64/boot/dts/freescale/Makefile        |  4 ++
->  .../dts/freescale/imx93-phycore-rpmsg.dtso    | 60 +++++++++++++++++++
->  2 files changed, 64 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx93-phycore-rpmsg.dtso
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index 0b473a23d120..08a1de299538 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -324,6 +324,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-14x14-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
-> +
-> +imx93-phycore-rpmsg-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-segin.dtb imx93-phycore-rpmsg.dtbo
-> +dtb-$(CONFIG_ARCH_MXC) += imx93-phycore-rpmsg.dtb
-> +
->  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba91xxca.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxca.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
-> diff --git a/arch/arm64/boot/dts/freescale/imx93-phycore-rpmsg.dtso b/arch/arm64/boot/dts/freescale/imx93-phycore-rpmsg.dtso
-> new file mode 100644
-> index 000000000000..9200113c9ec3
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx93-phycore-rpmsg.dtso
-> @@ -0,0 +1,60 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2025 PHYTEC Messtechnik GmbH
-> + * Author: Primoz Fiser <primoz.fiser@norik.com>
-> + */
-> +
-> +/dts-v1/;
-> +/plugin/;
-> +
-> +&{/} {
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +
-> +		vdev0vring0: vdev0vring0@a4000000 {
-> +			reg = <0 0xa4000000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev0vring1: vdev0vring1@a4008000 {
-> +			reg = <0 0xa4008000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev1vring0: vdev1vring0@a4010000 {
-> +			reg = <0 0xa4010000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		vdev1vring1: vdev1vring1@a4018000 {
-> +			reg = <0 0xa4018000 0 0x8000>;
-> +			no-map;
-> +		};
-> +
-> +		rsc_table: rsc-table@2021e000 {
+Hi,
 
-Can we sort the node in order of unit-address?
+Am Mittwoch, 2. Juli 2025, 21:54:09 CEST schrieb Laurentiu Mihalcea:
+> On 7/2/2025 9:49 PM, Mark Brown wrote:
+> > On Tue, Jun 10, 2025 at 12:01:50PM -0400, Laurentiu Mihalcea wrote:
+> >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >>
+> >> AIPS5 is actually AIPSTZ5 as it offers some security-related
+> >> configurations. Since these configurations need to be applied before
+> >> accessing any of the peripherals on the bus, it's better to make AIPST=
+Z5
+> >> be their parent instead of keeping AIPS5 and adding a child node for
+> >> AIPSTZ5. Also, because of the security configurations, the address spa=
+ce
+> >> of the bus has to be changed to that of the configuration registers.
+> >>
+> >> Finally, since AIPSTZ5 belongs to the AUDIOMIX power domain, add the
+> >> missing 'power-domains' property. The domain needs to be powered on be=
+fore
+> >> attempting to configure the security-related registers.
+> > I'm seeing failures to probe the audio devices on the i.MX8MP Verdin
+> > system in -next which seem to bisect down to this commit,  I'm seeing
+> > separate boot failures on the EVK so haven't been able to confirm the
+> > status there.  There's no obvious logging, the dt selftest shows:
+> >
+> > # not ok 141 /sound
+> > # not ok 142 /sound-hdmi
+> >
+> > Full log at:
+> >
+> >   https://lava.sirena.org.uk/scheduler/job/1530197#L5119
+>=20
+> Hi Mark,
+>=20
+> Thanks for catching this!
+>=20
+> After browsing through the provided logs it would seem like no device und=
+er the
+> AIPSTZ bus gets probed. Right now, my guess is that the AIPSTZ driver is =
+not being
+> compiled since CONFIG_IMX_AIPSTZ might be set to 'n'.
+>=20
+> Which defconfig is the CI using? Is it arch/arm64/configs/defconfig?
 
-Shawn
+I'm also seeing audio problems starting with this commit. In my case I get
+the following error:
+fsl-asoc-card sound: failed to find CPU DAI device
+fsl-asoc-card sound: probe with driver fsl-asoc-card failed with error -22
 
-> +			reg = <0 0x2021e000 0 0x1000>;
-> +			no-map;
-> +		};
-> +
-> +		vdevbuffer: vdevbuffer@a4020000 {
-> +			compatible = "shared-dma-pool";
-> +			reg = <0 0xa4020000 0 0x100000>;
-> +			no-map;
-> +		};
-> +	};
-> +};
-> +
-> +&cm33 {
-> +	mbox-names = "tx", "rx", "rxdb";
-> +	mboxes = <&mu1 0 1>,
-> +		 <&mu1 1 1>,
-> +		 <&mu1 3 1>;
-> +	memory-region = <&vdevbuffer>, <&vdev0vring0>, <&vdev0vring1>,
-> +		 <&vdev1vring0>, <&vdev1vring1>, <&rsc_table>;
-> +	status = "okay";
-> +};
-> +
-> +&mu1 {
-> +	status = "okay";
-> +};
-> -- 
-> 2.34.1
-> 
+DAI device is sai5 aka /soc@0/bus@30df0000/spba-bus@30c00000/sai@30c50000.
+It turns out that the module snd_soc_fsl_sai is not even autoloaded. Loading
+manually doesn't have any effect. So I assume starting from this commit
+the subnodes (at least sai5) are not even populated.
+Reverting this commit fixes my setup.
+I've set CONFIG_IMX_AIPSTZ to both  'y' or 'm' and doesn't change anything.
+
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
