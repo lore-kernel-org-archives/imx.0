@@ -1,84 +1,121 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8511FBEAC
-	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 07:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8853F21FF5C
+	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 07:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751873869; cv=none; b=Q3yDvQeViLWRwm4leF25MKVWqXLWUAby6NskF6hFGBc7awa0q0V1rMkkuM2qlSxC3mrov8VLbmVuHi83D66FkRpIFxyFILux/+TMMxie8/gp6h9ndsUO9150IdPLrYYuZfQXgn/t0J79l9YVici0I/5W6IdH9QleKb4lsJJUEqw=
+	t=1751874264; cv=none; b=WYIMlvZPB9MKXFDhQ94whzgIlWFTj0KAvCg7E3z9Lw9Wp0COItw0n/6P/O5s2njhSIXjbaCuwdygLKr3+MGhfPP/hXtuncFd/+2BHoE/R3t0BSNq/OhY4p0stgEdPuOI4Hn8TTHWBE9t4VZDIXmcCv9evUmL+yqP3ve1DcDepRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751873869; c=relaxed/simple;
-	bh=n4UW7ZoSq762p2vsAB0ks/IJ++q46OJO7BcDrp5Hjvw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hei2mYdTEofdhtd/6Hvo6dxp01qeakhy5BxdP74fK20mAHGapz0n6H0i2EQyBsIhOySK17R0L/atFVMXLoHoxHJ0Zy/8ZYLcJRqDSAa1RLuuHGuBxlWyUylN5dMZSJN5FXpN4gkgB9mwmtBzP+96BddGkGnq4TeyhtnpETB6810=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=jJvp+wqE; arc=none smtp.client-ip=1.95.21.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1751874264; c=relaxed/simple;
+	bh=a/aBuw6eSYxUiqduVM8v7MQHhm9JI8Hc4Nzy/q2H5zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Vk51ZGD96OFmOoDvCpfWXZ8uzVl8HXXgQwPs88PddKNz0Bi/CD7Q40+t9qeFyKrSbzj0fKhRjkq2M/wu1oWMvuCgKd7EvEZzr1UZP9oAcmiBibmpxAn5xYWzLIuXMBGowg5ORIbw7nEfRCRhvyY25sKwiINN3lMYUSQPsMaoHdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=azegFk9B; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="jJvp+wqE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=7346OZHTuSrLm7WiDgkYI1AvDhjuIewBzgFjJ+P/eQs=;
-	b=jJvp+wqEORUgf5bHI7laU///x9HXRZv0yPGdDonkb2PfI/m+wW2621MG6aroIJ
-	Kr4+4P1HtNHIWtDcpf4AwEH5H5l8e/nEtXa1POqi+x82vT19GmWgjOezD2gS3oiQ
-	fuKB6fl6IjvNJctcq+BxQgOBtYzmROYohhwbvKeTdst/E=
-Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDXX_YmeWtoME88AA--.37050S3;
-	Mon, 07 Jul 2025 15:37:12 +0800 (CST)
-Date: Mon, 7 Jul 2025 15:37:10 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="azegFk9B"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-453643020bdso20546195e9.1
+        for <imx@lists.linux.dev>; Mon, 07 Jul 2025 00:44:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1751874261; x=1752479061; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9ywzRjmVlyGLID/ZIJbfZI0O4b8LZWe/3Tlbj+llTQg=;
+        b=azegFk9Bov4PJ4Wr8k1AtL7rYODPFH2pxvTMnEfI9nNn7yhslEGESW4/jbtJgxzCfH
+         iEv4X2EMQpXp/qUUA/g2MEZ4XgpSdbDRy4IFhkC/8+0caVA+qUsyMjUMo4Fj2slM1HGg
+         MNWgdmppdnOh0si2DVmZ6+FHkCHFhnN2W5da1Am7MB7TQ59wfPBf7Yk6aix+kwygddQa
+         rhKSxLIFW18VgfEOC9/Dnb/8XY9KrAX6SpYZfjKSqrMmW0fsaxF9j3iDlfRQNsU21bpm
+         7cDSivfHl72zQ0K5ekd3aBgqyc1d6mk/wr4/FoOAimkwolE6RHV2IlvuwDodwLENQHH1
+         LTKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751874261; x=1752479061;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9ywzRjmVlyGLID/ZIJbfZI0O4b8LZWe/3Tlbj+llTQg=;
+        b=Ja1P0f5ZMh6AZrRPAZ3ayGIc8qpWFc980EZuBGliFe0ftQQF5A5ZJsRRhgtCyuiLJV
+         qeFhVgMuHZqkPjGC1hOgrM8QLCvqeVbry5ogI4XNuo+reGhyOmhxeaOFKUjuHSne9fsM
+         8aAERYW7RkhQ8MK2LdNc3MWZklNfkHoQ9E/m+RRYKX/ebTLhYTgDj3GoEOu/rWlfUIOi
+         bhVqIeB+iL9Tm7EpOeJPBqZX89IM7l5nn8+vOIW5ElHe/mfSi1MZR97sul+mYLvXERPh
+         hPrXeRqzC2UQYUb/eVueu3exe5f87s94y1/jWvW0g8KJPre+YSETV7QKR9tVpWCMaPlE
+         y0Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ95x2ciM7A7joYIv6AKSs7Yr+gWJbdsbf+plhcALHnd8diT25C/HMta9CDh6A1D4EmXU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwdQW9OzdxWj4mkZ1PKqCNu0PdJfj5OzuY6ogPnXypVSaqhAC0B
+	S4XG039YQHI02rwWjXEyM8X79z2eDU6PS7dr/Z9PjpB3T3AhCVHQOzh3pl8kFqruC3A=
+X-Gm-Gg: ASbGncsz1BTR/jCAy+XZ6aXe3c2ycjaHKMEdCzwFUi1GmqjspC0wabKc6JIdghyBYV9
+	2M3kATDzcm/0It/4zanJ/mAIMqoKJwdhd4VKDxkHGWMclscQXzQgnUNG7u1BrszShX29dJSlNjP
+	+uZrHEnphrbdZteyv6++HCxg/+plrt1W0Yi5fJ1+tBiLAyckCPW6cJeW38Ne2AHjWXDaTQFeLIR
+	DdL4JbhXTpFDqX/QvwQpyBbqjJ0HCDIanHJDuvpo7m8OsMicNDhlObJJjkefOYRDlWjzqSQHtDz
+	NTXMA94kAOb8zwmL3645c/HwbNnte6M3vNwv/sZ7avVoW/1NVtwpu2aq6fe6a5M=
+X-Google-Smtp-Source: AGHT+IHTukiObLm9v3Qws0DGAdo+R1EltNu3P4uRttEma+tA+Aqku3e4Jro5pb0JFOVJRpGK9M86QQ==
+X-Received: by 2002:a05:600c:c109:b0:442:f482:c421 with SMTP id 5b1f17b1804b1-454bc5c2fbcmr36096125e9.22.1751874260966;
+        Mon, 07 Jul 2025 00:44:20 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:3cf3:a61f:85ed:69db])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454b1628d60sm102884855e9.13.2025.07.07.00.44.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Jul 2025 00:44:20 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1] arm64: dts: freescale: imx8mm-verdin: Keep LDO5
- always on
-Message-ID: <aGt5JoocafXbX1cX@dragon>
-References: <20250623132545.111619-1-francesco@dolcini.it>
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 0/8] gpio: move generic GPIO chip fields out of the top-level gpio_chip struct
+Date: Mon,  7 Jul 2025 09:44:17 +0200
+Message-ID: <175187425322.11592.10235201169353837001.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250702-gpio-mmio-rework-v2-0-6b77aab684d8@linaro.org>
+References: <20250702-gpio-mmio-rework-v2-0-6b77aab684d8@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250623132545.111619-1-francesco@dolcini.it>
-X-CM-TRANSID:Mc8vCgDXX_YmeWtoME88AA--.37050S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZF4rur4rAFWUXryftFyDGFg_yoWDtwc_CF
-	ySqr4xWw1xGFWjy3yqkF4UZFW8Kas3tr97tayIgrZxJF9xZay3XFWktFn5ZrnxGanxur98
-	Zw13t3saq3s7WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUj7DGUUUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIAhdwmhreSi2IQAA3y
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 23, 2025 at 03:25:45PM +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+
+On Wed, 02 Jul 2025 11:22:07 +0200, Bartosz Golaszewski wrote:
+> The conversion of GPIO drivers to using the new line value setters is
+> moving nicely along and we're on track to have all the existing
+> providers converted upstream after the next merge window. There's
+> another piece of technical debt that bothers me - the fact that struct
+> gpio_chip contains a bunch of fields that are only relevant to the
+> generic GPIO chip implementation from gpio-mmio.c.
 > 
-> LDO5 regulator is used to power the i.MX8MM NVCC_SD2 I/O supply, that is
-> used for the SD2 card interface and also for some GPIOs.
-> 
-> When the SD card interface is not enabled the regulator subsystem could
-> turn off this supply, since it is not used anywhere else, however this
-> will also remove the power to some other GPIOs, for example one I/O that
-> is used to power the ethernet phy, leading to a non working ethernet
-> interface.
-> 
-> [   31.820515] On-module +V3.3_1.8_SD (LDO5): disabling
-> [   31.821761] PMIC_USDHC_VSELECT: disabling
-> [   32.764949] fec 30be0000.ethernet end0: Link is Down
-> 
-> Fix this keeping the LDO5 supply always on.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
-> Fixes: f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5")
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> [...]
 
 Applied, thanks!
 
+[1/8] gpio: generic: add new generic GPIO chip API
+      https://git.kernel.org/brgl/linux/c/8595375e4fded27de24b189c692c2c50051a7b3b
+[2/8] gpio: mxc: use lock guards for the generic GPIO chip lock
+      https://git.kernel.org/brgl/linux/c/ba441322c7aac4735d78fc6781e497a01fb8eac7
+[3/8] gpio: mxc: use new generic GPIO chip API
+      https://git.kernel.org/brgl/linux/c/1f129b15c2dea84ce12ee3120c7fffdb7bfc7395
+[4/8] gpio: clps711x: use new generic GPIO chip API
+      https://git.kernel.org/brgl/linux/c/fd0f0d1a1e71d736deed3593470b3b03f8e76df7
+[5/8] gpio: cadence: use lock guards
+      https://git.kernel.org/brgl/linux/c/76045e90400b7ecc60a33526a505124b0cce1d7a
+[6/8] gpio: cadence: use new generic GPIO chip API
+      https://git.kernel.org/brgl/linux/c/47ecff3839cac71c6b7f89b7860f6f76a4c07b65
+[7/8] gpio: 74xx-mmio: use new generic GPIO chip API
+      https://git.kernel.org/brgl/linux/c/bd9a0dec2d49836e7d186642600e0f668fab33ed
+[8/8] gpio: en7523: use new generic GPIO chip API
+      https://git.kernel.org/brgl/linux/c/34c029c20300b9b3072f40875b899ef9c40e69cc
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
