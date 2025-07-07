@@ -1,103 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFB01D6187;
-	Mon,  7 Jul 2025 19:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871B93597A;
+	Mon,  7 Jul 2025 20:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751916859; cv=none; b=kaJWLYcqj6cjc7Pyk+0ng5TbOJcAha43mONcC39IW41iQbW0ifTMpIVuPrE1sbqSFDz+yEmaRFzgOP/cfT93FOvDC2uD2yhyKXQ6suG1/H3WAvGhhiAgWzqsGEzwh1jHyYqj+t0f0qz7eYLHXsdz2fW7xjB3WQniIOIviysVBqk=
+	t=1751921595; cv=none; b=gK+GqgL6AFszAuqlWu8NyN71D9yG51Tb6hQ4Jw6B8tysdeHhSFFEtugdSmm5+dUzCSDkdXUHTE0vMLUvndoi0wgdAyBpkgL+QdJB0oAmlmNVcktWZA5U+kGlT0ZC6tcj1hdr3K2NO3bGp8t5q31Ca7RN6hIB+k/6PDORpINg3tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751916859; c=relaxed/simple;
-	bh=q4Un9UMyAO/m5V5UCHaW8IYs1wCaLRO9F9XqUTWH3xE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=iSaquByRJ/1cpConJZtVqBIGYuoCydkq6j6oHv+X3hjeAc9hgmeC6f24BFtjnI8uCM7BVYkMwcUZqrV/ujlaqVNPNHFqor63GbF8Dim/ITxB4hHTv/WjX/KScJ68Jgp4cS9eVMC4aUR7Q5v0x0nxmyksTA7puJNPqOCNnh5Lqp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=olvyWCrK; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="olvyWCrK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF8EC4CEE3;
-	Mon,  7 Jul 2025 19:34:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751916857;
-	bh=q4Un9UMyAO/m5V5UCHaW8IYs1wCaLRO9F9XqUTWH3xE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=olvyWCrKA61vFemOq86pVptJUU70apmXkO1jxlJM/MIPixuIzFTpCaEOnxAvPAIN+
-	 XPZ+T0AMf1zFyP5Ax8dCgixUzT+l4ErYyinB5XaNIvo2oUvj3bj3OHQV0Hu8v4Aacd
-	 rki8Y/zvnAsFt9rAzExc2W8ZCKotFSsp4ETOJGnaffLAN8NtX/c6AIgv9mTT4xnU1i
-	 fbWMeRaoNbYy2H5JcYaIngnm7EwkZGqU9HoRjwOPsXehuh4GHnfb2t7srYQkNzxpn7
-	 sTneFKW+7gU2MCU33a6o5cMT3X8OQezYF97b0Mtf0xYjRDj2PwGuR/oHxuopGppRxw
-	 /Tbcb0SDmJ7dw==
-Date: Mon, 7 Jul 2025 14:34:15 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] PCI: imx6: Correct the epc_features of i.MX8M chips
-Message-ID: <20250707193415.GA2095765@bhelgaas>
+	s=arc-20240116; t=1751921595; c=relaxed/simple;
+	bh=mJMkveb2/cNKWBYAnuHOdf6Rm4p3JAFtb17gRdWcwU8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AEOIC0skafjDe2pZ+Iej5ADuUWbLUcjqRSnwg9/okh19FtqzJIi+UC2Ycptlsp0rXeNuftyk8beNDAAekEi9GL1i7Y4V3WkZDBrVUarSKpGmCUcKQ3tlz+3oz7sN8XoQQ+7KElVTQCJvkaKroc+hyRu7KeOgA2656gbkZjHuGvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+	by finn.localdomain with esmtp (Exim 4.95)
+	(envelope-from <tharvey@gateworks.com>)
+	id 1uYsGw-008ZxD-UQ;
+	Mon, 07 Jul 2025 20:17:07 +0000
+From: Tim Harvey <tharvey@gateworks.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tim Harvey <tharvey@gateworks.com>
+Subject: [PATCH 3/7] arm64: dts: imx8mm-venice-gw7901: Increase HS400 USDHC clock speed
+Date: Mon,  7 Jul 2025 13:16:58 -0700
+Message-Id: <20250707201702.2930066-3-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250707201702.2930066-1-tharvey@gateworks.com>
+References: <20250707201702.2930066-1-tharvey@gateworks.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250617073441.3228400-1-hongxing.zhu@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 17, 2025 at 03:34:41PM +0800, Richard Zhu wrote:
-> i.MX8MQ PCIes have three 64-bit BAR0/2/4 capable and programmable BARs.
-> But i.MX8MM and i.MX8MP PCIes only have BAR0/BAR2 64bit programmable
-> BARs, and one 256 bytes size fixed BAR4.
-> 
-> Correct the epc_features for i.MX8MM and i.MX8MP PCIes here. i.MX8MQ is
-> the same as i.MX8QXP, so set i.MX8MQ's epc_features to
-> imx8q_pcie_epc_features.
-> 
-> Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+The IMX8M reference manuals indicate in the USDHC Clock generator section
+that the clock rate for DDR is 1/2 the input clock therefore HS400 rates
+clocked at 200Mhz require a 400Mhz SDHC clock.
 
-"Correct the epc_features" doesn't include any specific information,
-and it's hard to extract the changes for a device from the commit log.
+This showed about a 1.5x improvement in read performance for the eMMC's
+used on the various imx8m{m,n,p}-venice boards.
 
-This is really two fixes that should be separated so the commit logs
-can be specific:
+Fixes: 2b1649a83afc ("arm64: dts: imx: Add i.mx8mm Gateworks gw7901 dts support")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  - For IMX8MQ_EP, use imx8q_pcie_epc_features (64-bit BARs 0, 2, 4)
-    instead of imx8m_pcie_epc_features (64-bit BARs 0, 2).
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
+index d8b67e12f7d7..272c2b223d16 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7901.dts
+@@ -833,6 +833,8 @@ &usdhc3 {
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
++	assigned-clock-rates = <400000000>;
+ 	bus-width = <8>;
+ 	non-removable;
+ 	status = "okay";
+-- 
+2.25.1
 
-  - For IMX8MM_EP and IMX8MP_EP, add fixed 256-byte BAR 4 in
-    imx8m_pcie_epc_features.
-
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index 5a38cfaf989b..9754cc6e09b9 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1385,6 +1385,8 @@ static const struct pci_epc_features imx8m_pcie_epc_features = {
->  	.msix_capable = false,
->  	.bar[BAR_1] = { .type = BAR_RESERVED, },
->  	.bar[BAR_3] = { .type = BAR_RESERVED, },
-> +	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = SZ_256, },
-> +	.bar[BAR_5] = { .type = BAR_RESERVED, },
->  	.align = SZ_64K,
->  };
->  
-> @@ -1912,7 +1914,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
->  		.mode_mask[0] = IMX6Q_GPR12_DEVICE_TYPE,
->  		.mode_off[1] = IOMUXC_GPR12,
->  		.mode_mask[1] = IMX8MQ_GPR12_PCIE2_CTRL_DEVICE_TYPE,
-> -		.epc_features = &imx8m_pcie_epc_features,
-> +		.epc_features = &imx8q_pcie_epc_features,
->  		.init_phy = imx8mq_pcie_init_phy,
->  		.enable_ref_clk = imx8mm_pcie_enable_ref_clk,
->  	},
-> -- 
-> 2.37.1
-> 
