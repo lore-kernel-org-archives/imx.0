@@ -1,61 +1,63 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F03192580
-	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 23:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E69228D8EA
+	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 23:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751932002; cv=none; b=QaC7hsozCP9S+vupnmi9l6f3qCt2/4gsHjOSE/cLwCqJ90VUXSmArHznNHrSbrSbf6Pk30SLrUtI2LbBrhDcngnYgVJv6GShxOPKzss85VWkH1ah9QcJV6Y7UyV52yyeDUkNCY9CMhfSz1KWVeVQy6Fn1vgpWBJPBb5PbPoX4h0=
+	t=1751932005; cv=none; b=U3DmA1dqIUaxxMZ0X2T0tZM5fKYxRxccFgCmhXKiRyT2ureADGANLOo6W/dTbjWCI/1yjEBuAgAaLz0gNE0YmMXd3O54qxOeSSpLLia3H2IvwZrLnMq/PtCNkcIY7MxItS9wtZf7g1HeWo1lFYdkr4xr6JytBCbz4/WAutCzRoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751932002; c=relaxed/simple;
-	bh=l8PSFBASLdJut+GU1aFbNRoDFl03raPJNhniXdjfRfo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uPoukofPIjPnO5qtXa7F4lwM1N0d5xJiEwfV7iP+zUT93zbkWtoHdhY7ib/ULmfnuloKnB161ijDtdI7Ww4vDWXVym0tV9aoeyZk+pBvyYzfCfkuFuvPJzXPpnWppvn3n7dhKXHMT6SQeu1ojU51IHjuWeUO0/9eajB/ikrAiFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DohQA/mz; arc=none smtp.client-ip=209.85.218.48
+	s=arc-20240116; t=1751932005; c=relaxed/simple;
+	bh=KJpdRf6NMnf6Rt2dZ0cJp/N9YNrV0YJHu/s2iy7Kdmg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FWU8rrhSkWNVGw4XadMdRQrg3aQ1vURohikmtE3Xy6tOrSdsdFWMNJ+V1M7ivlDum/G5l+sETn7+se+GQN0YAxqTCMa1AEgtTEpvsT/Dbah9vRT+SOycbznKxVSwO1vVO07lBYM+pb0TrEBcl67tOmQUslVIsze17eSweCovDws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uvt/Bnth; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DohQA/mz"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ae0de1c378fso572004866b.3
-        for <imx@lists.linux.dev>; Mon, 07 Jul 2025 16:46:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uvt/Bnth"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ae36dc91dc7so644208566b.2
+        for <imx@lists.linux.dev>; Mon, 07 Jul 2025 16:46:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751931999; x=1752536799; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1fi5w0DR+FyqjgkZcHHsVS9qWZcL5DthmO8OzA77qp0=;
-        b=DohQA/mzA2uxw31NamsGh+t2YR8Dw/yPCyCF3SMck8uow0z9uDSZeMf7YV4zC2Yrjz
-         N5AiyyyzfAce6Y1ANfiZrK2GhCR0RwajAM4v19Ghouf6kcEyv5JYKhFeRRFkvopnqRz9
-         WXR2f2flNz8jwVRJHyX7BCGzqtjvkc38KEgIF2Hhu2OWF969+0Ymkb/rUvjauuM01eOp
-         ZdejfPpkx6SWxhLwtX2Vj7PGoVi6hMjWcgNI+bwrSXSwlzcIxKcMU6nnsdDdcmLfujux
-         OCavGP9UraXlMfWt36Gj5WhdKn3OCCTfEerUvq2QCVGxoMRhXXX95FrGbinfrJXlOgfo
-         OekQ==
+        d=gmail.com; s=20230601; t=1751932002; x=1752536802; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nR7QgFUkw7RoWN72KVKLvsWt9CALHQJ4apvzKDpFkZI=;
+        b=Uvt/BnthoepF1GrHobfWqkK/mEaKIwNKgat7ss2TzXjd8pRIRmrNLoY+y8jYpOY+Zj
+         3ctRI8K9w0htMivePzGE6SwNyK8MoV56Izo4feZyQm6x0gDYS8xAs3t/gnE+93uEvh9P
+         MO5IpbiW+0sOIkNCor89KY0/Fa0qM4zwT1eVOML3CUllB7K9/QzbLVO8DsKczpwYFOvX
+         /hDK3ILdZw2TLlNQKa+xlUfpZfYF5wLh9zIV8dnI4R6AknawNc/bb0CY9tHDMI8rbRft
+         r65V2/hciOpxIMWyaVU3Qryf/ROT/hu7Fh7ueryPQiJ9wxhbtO46qxipA4C0rKK1vFo6
+         hdsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751931999; x=1752536799;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1fi5w0DR+FyqjgkZcHHsVS9qWZcL5DthmO8OzA77qp0=;
-        b=Gb3M2vwH3Pc6h1XwH0kLvzRrqubHtl4e5lrXfy+0OtufewKXq7FmpVcaHvA3oLdzEb
-         615WqIFxX9CBp5WuJcFjzvnMT8/kf13DoXwnB0ogHQG2swh4+bsl0Kc5fK+l/C8vUkgb
-         uJTQ69dRyira6Satx6Dfg9Z36hYvUN/CoaYk5/+ooeAoN8I5vSjS5KQXVnGuj0FmUOHM
-         bmACUMCeimi4NWtbpBY1IWgHs1VMfLdNx5isy+K2XDPBkLJ64b0Vl8eC+pzilumDYvGM
-         Sy8uNQbj3npllTDTNKSENXtoD2GsR17roojO0cA9U7R5otfsrL47AOZx/h6rPehB8Urz
-         4j4g==
-X-Forwarded-Encrypted: i=1; AJvYcCWq03PnPYxd9Aq6BONfazQMw0jNZF7oUdTEvtgHyKiGfnaVHOEEhpw538bfM6Wu7tnyguQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxnOnyEfl6Du8y3OhU085YmtsipLxrD8+84BnPvHgzmtg1xlZoX
-	gmvyKGQQKFeqO2PEd7vxz5ywzYtWT3XyTJ9C2dR20mDO1WomUonkiXiF
-X-Gm-Gg: ASbGncu0/O4oLfgoqw8XF4EA5Lmb6R3hYpwFO0fmEIkK4hbFJJX8i7bLzUHJResOWDC
-	p6TUJ7oe3oY5s2rkCZuheO84GYVnkc4Y/wKrDM5lawey7VsTFAbndAGcUb96pf+jJI0Vrt4H9Vk
-	d6Ozu0tTXVR4DzCFspBgiU3gjyVPDZoCS1kfyxWydmofJoQgqSSjPmEEyxNPXgvRjNphBqk+NUb
-	t0uXtA9ls19avqgeTswCKZSEZD5DH8yyAm3V4AR0XTqFgUlFqA/vaKxqP/FCxkZ5V56UE4HirJe
-	j713tffxvofMXK3gAZlVLX7XbXVKCILJK0SeEOHyRCbVjRdBdQCEN4rSda1GDgueJonXd0g5upN
-	8o2ZDTo0+cRfC2ZsnS9Cm9JU=
-X-Google-Smtp-Source: AGHT+IG8IzAN5Gc72bWerrOtzcRkbpj2JL0dKhrGlpVZA2c4kmwm79VJMsV+AFaKrJkxF9i66kiHGw==
-X-Received: by 2002:a17:907:3f0d:b0:ae0:db23:e3e3 with SMTP id a640c23a62f3a-ae3fbc56f54mr1529856766b.16.1751931999299;
-        Mon, 07 Jul 2025 16:46:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751932002; x=1752536802;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nR7QgFUkw7RoWN72KVKLvsWt9CALHQJ4apvzKDpFkZI=;
+        b=XgZNl5k8knEDNZZsoyDaz1oXtrRueB/gFtN/yBTMLRw520nKAz909hqGCxnY2FVQd8
+         w1SJAWSSnkGMHlQJt2edpah4T8Q7RrFSbZM9P+/JoymdtMottYl4iJGY1Oo/yStYKGXK
+         WrTE4usb26uSdElBRrM5BcCOysAVidINR9FaWVlrfe2soBnoVYCB7MzjBDepz5A4jKOK
+         bySs4bOoAmJpohjD9AQ7kkgYJFrHaU+usM3oik7xeSEj2WJ1R9hqM2ZjlgJ+UdBQXMzu
+         7lJERS8wnD2HP064iySKkyjMfViMRxK41h3LJ9rcdXUBoeePt4sqCWae7/eh1dN2L3mu
+         gNbw==
+X-Forwarded-Encrypted: i=1; AJvYcCVmxrwiRRLXiHz+AOt1WV2Mm5Es+DaANcKdKZcLn5t5N7DNSGPK7Tyk3NthVucyCRKOJWo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwjaPimJZPnMfZnnkMiZ0dpzgdpQmphT5NRjiEQHH8CDg+1tqyS
+	B0CgzZXA8VYYtf5WxJllGycwAR8Pt9w123UG1pvvV8AJiv5TdyRcBnao9q4zXg==
+X-Gm-Gg: ASbGnctlW9Dw3ak10ACXc+NKJDqOwobNmIv+Vkhfi7Yg8jLxdFWdyQccRf1+hG+lpQB
+	/e41TAsnAELYQ+bNd2Qze5Z/GXEInPNR3cfWPG0MECg7wvCEeU70Z8JXlA/Y6j6iAvQeqHLd5MS
+	Tt7oWOXSS5CiX8WWxE8Xe+Q5j4wHi2x80OlG3wE5qxLyLzWXrV9eySSFWoqOoJWKgniRo6uWuf9
+	HS2UBylOAzc5XDhZhyYkH4EYrDPtM2/jYvxiLr4rYO/AXKZMYoReoNH4CxixzlP3M59kZmMAtus
+	i7K4kzgqJWb4X4+Os1dX/boQ2TVfsCbqwj+40K4+N4sJsWTT3a8xCwCU2UAK3QU8KZfP+uyyu5y
+	cqMveWvy8jIs5QrC5nQs9SXU=
+X-Google-Smtp-Source: AGHT+IFbP5MkFe5LRHOPeI/e7qFg5vW/o+B53HDzNs80P8WQiqFztlyxMrGhQsVTbOFiRGtjwCCOMQ==
+X-Received: by 2002:a17:907:608e:b0:ae3:bd9e:589f with SMTP id a640c23a62f3a-ae3fe7b4b5dmr1450488566b.38.1751932002093;
+        Mon, 07 Jul 2025 16:46:42 -0700 (PDT)
 Received: from playground.localdomain ([82.79.237.69])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f66d1ae3sm781539266b.7.2025.07.07.16.46.38
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f66d1ae3sm781539266b.7.2025.07.07.16.46.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Jul 2025 16:46:38 -0700 (PDT)
+        Mon, 07 Jul 2025 16:46:41 -0700 (PDT)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Shawn Guo <shawnguo@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
@@ -68,10 +70,12 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev
-Subject: [PATCH 0/2] bus: imx-aipstz: fix probe-related issues
-Date: Mon,  7 Jul 2025 19:46:26 -0400
-Message-Id: <20250707234628.164151-1-laurentiumihalcea111@gmail.com>
+Subject: [PATCH 1/2] bus: imx-aipstz: allow creating pdevs for child buses
+Date: Mon,  7 Jul 2025 19:46:27 -0400
+Message-Id: <20250707234628.164151-2-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250707234628.164151-1-laurentiumihalcea111@gmail.com>
+References: <20250707234628.164151-1-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,32 +86,67 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Since the introduction of the i.MX AIPSTZ bridge driver via commit
-796cba2dd4d9 ("bus: add driver for IMX AIPSTZ bridge"), a couple of
-problems have been reported by Mark Brown and Alexander Stein. Namely:
+devm_of_platform_populate() passes a NULL as the bus OF match table
+to the underlying of_platform_populate(), meaning child bus devices
+of the AIPSTZ bridge will not have its children devices created. Since
+some SoCs (e.g. i.MX8MP) use this particular setup (e.g. SPBA bus, which
+is a child of AIPSTZ5 and has multiple child nodes), the driver needs to
+support it.
 
-	1) The driver doesn't get compiled when using the ARM64
-	defconfig [1].
-	2) The children of the SPBA bus do not get probed [2].
+Therefore, replace devm_of_platform_populate() with of_platform_populate()
+and pass a reference to the bus OF match table to it. For now, the only
+possible child buses are simple buses.
 
-These issues are addressed here by:
+Since the usage of devres is dropped, the complementary operation of
+of_platform_populate() needs to be called during the driver's removal.
 
-	1) Enabling the driver config option in the ARM64 defconfig.
-	2) Replacing devm_of_platform_populate() with
-	of_platform_populate() and passing a reference to the bus OF
-	match table to it.
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+Fixes: 796cba2dd4d9 ("bus: add driver for IMX AIPSTZ bridge")
+Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Closes: https://lore.kernel.org/lkml/5029548.31r3eYUQgx@steina-w/#t
+---
+ drivers/bus/imx-aipstz.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-[1]: https://lore.kernel.org/lkml/ac1daf6b-ee06-4076-b86f-b436ca0acd6d@sirena.org.uk/
-[2]: https://lore.kernel.org/lkml/5029548.31r3eYUQgx@steina-w/#t
-
-Laurentiu Mihalcea (2):
-  bus: imx-aipstz: allow creating pdevs for child buses
-  arm64: defconfig: enable i.MX AIPSTZ driver
-
- arch/arm64/configs/defconfig |  1 +
- drivers/bus/imx-aipstz.c     | 14 +++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
-
+diff --git a/drivers/bus/imx-aipstz.c b/drivers/bus/imx-aipstz.c
+index 6610251f41c7..5fdf377f5d06 100644
+--- a/drivers/bus/imx-aipstz.c
++++ b/drivers/bus/imx-aipstz.c
+@@ -26,6 +26,11 @@ static void imx_aipstz_apply_default(struct imx_aipstz_data *data)
+ 	writel(data->default_cfg->mpr0, data->base + IMX_AIPSTZ_MPR0);
+ }
+ 
++static const struct of_device_id imx_aipstz_match_table[] = {
++	{ .compatible = "simple-bus", },
++	{ }
++};
++
+ static int imx_aipstz_probe(struct platform_device *pdev)
+ {
+ 	struct imx_aipstz_data *data;
+@@ -49,7 +54,13 @@ static int imx_aipstz_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(&pdev->dev);
+ 	devm_pm_runtime_enable(&pdev->dev);
+ 
+-	return devm_of_platform_populate(&pdev->dev);
++	return of_platform_populate(pdev->dev.of_node, imx_aipstz_match_table,
++				    NULL, &pdev->dev);
++}
++
++static void imx_aipstz_remove(struct platform_device *pdev)
++{
++	of_platform_depopulate(&pdev->dev);
+ }
+ 
+ static int imx_aipstz_runtime_resume(struct device *dev)
+@@ -83,6 +94,7 @@ MODULE_DEVICE_TABLE(of, imx_aipstz_of_ids);
+ 
+ static struct platform_driver imx_aipstz_of_driver = {
+ 	.probe = imx_aipstz_probe,
++	.remove = imx_aipstz_remove,
+ 	.driver = {
+ 		.name = "imx-aipstz",
+ 		.of_match_table = imx_aipstz_of_ids,
 -- 
 2.34.1
 
