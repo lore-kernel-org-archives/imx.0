@@ -1,110 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755A0293B55;
-	Mon,  7 Jul 2025 10:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A3228F94E
+	for <imx@lists.linux.dev>; Mon,  7 Jul 2025 15:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751885486; cv=none; b=uREPV+u23hbcLWV4iPpZfuJs6T4RNcePhyw2ZMntkFee2FFzAqOQtjWaqupC/julecpSzgQ/4O0QwGjlDmvwYV91Y0YLUAmH8auiurW1gC/3NHzNIbWvLO+4tKDSalWhw72W6drehzzCek3s9yWyjI/hb2ITOJE3ddahhufgoXs=
+	t=1751901568; cv=none; b=YIzWNZc7ce4C7NrTEO8ftyXMRT7oDczzSqARmi46qm50cAjt9KXBwQ4+Dxxg1ghcu/nIPL7N5BhqPzMbpRegqP0yGmdiJYQQCrkrh6Mvi/Ak6zNIfo41hMJtpzB1pjZhrHoQ1O7AJDrwZ4Ba6lZxtCDTMbgxpRstfnHweImJETI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751885486; c=relaxed/simple;
-	bh=slOPMNTVA3FLhW65MdVR4aR/1OsxKkcOkNICbnYATJA=;
+	s=arc-20240116; t=1751901568; c=relaxed/simple;
+	bh=tpkTBLlGyBed8stpAJAlUgzSTNIlCkTBXutlqDe25tA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P6SVUtDLNN07XL4Lvi5gIR8tJIOEkWklg0U481LHUatnwagWxMjUdLUosrelIgzlA3cFKjTpPZkqZUEwXnTY4rRubOWYH7SW2wLrZN4naFrQc7MZDcPEg0MC1vb9hpjbO/kG7hDEvQrBDxif5dy3dXyzi8OeqCY2jJ1qqH/yVGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U2gp0c+K; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=gvhxayO4wPpjab/3DgBFz9J6ayEfGOMvu/Waer7nNyMOnG3o+aGxBQt+9hIuhVKnzT7xuHeB68aq9OKsU35WAvxIAGC0Gv9kQW6T06wbbYPN0KXav/XGhAvcuHDVhf6wagXOdW1tgoq/Np6YuubbEHaoEdGuAhTP0TSk2Tf1CcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=mnUIlcp6; arc=none smtp.client-ip=208.88.110.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U2gp0c+K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE75C4CEE3;
-	Mon,  7 Jul 2025 10:51:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751885486;
-	bh=slOPMNTVA3FLhW65MdVR4aR/1OsxKkcOkNICbnYATJA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U2gp0c+Kgl9cK3ut2JrE9CJJHpRfc/LdGEG/KOkwFoNM2tzjS6Gpgtdl0j73+sA3l
-	 LZwsIIdjoZpSq9M+0BVFvIwGKR1JqPaoR7U9MHGaE/emID7fM7KE/PBaFsrAorSWeY
-	 JN4P/OYiUOkcrxwVcCKv5sxcle9qFoAB20AsVcPG7kFGveEiY3GOpd//CRrMONQQV0
-	 uqHvM6G2urwFfMYi6kzPuvAZG0PHBfjO5h9Y9skbuZNTVec/17yQeJIujj30IJ2ubj
-	 XcnvVsZaaVaAjIN3T4DxdS1Tds+5rN/lI7K9YHC19wsPJuzl7GRUxNhWK/YwleTjFf
-	 /vtjzlcW+4Rjw==
-Date: Mon, 7 Jul 2025 11:51:20 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.Li@nxp.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 4/6] arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
-Message-ID: <a5c902f4-6f10-4a1f-8d57-b232583e4556@sirena.org.uk>
-References: <20250610160152.1113930-1-laurentiumihalcea111@gmail.com>
- <20250610160152.1113930-5-laurentiumihalcea111@gmail.com>
- <ac1daf6b-ee06-4076-b86f-b436ca0acd6d@sirena.org.uk>
- <c3deef24-fed7-4405-9953-804bff118c11@gmail.com>
- <8ef60a13-015f-4228-b834-799592342ae6@sirena.org.uk>
- <225eb39b-958c-4e40-96be-272a8dc9ce12@gmail.com>
+	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="mnUIlcp6"
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 94C1F3D87636;
+	Mon,  7 Jul 2025 11:10:19 -0400 (EDT)
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id RXGVUZCcsYqL; Mon,  7 Jul 2025 11:10:19 -0400 (EDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.savoirfairelinux.com (Postfix) with ESMTP id 124E33D8763B;
+	Mon,  7 Jul 2025 11:10:19 -0400 (EDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 124E33D8763B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
+	t=1751901019; bh=0aLD43uKvFCDnAlmsPAwmEzg9CJOxrOo22s1hwxDcjw=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=mnUIlcp6yxDLXPETEAONZ2EVz5p5fLXqjxrXOiWPta2jbFMcubESKsE2/R+IyF3aa
+	 W+4l/Qk/adEJGyDl+Ov/smsRqzG1g4YuUVbc0IJaJf3qAWAWkALcZh2gV3NiTxyinU
+	 gpe5GbOGgYBWNLrQVVfDt2pYxPQQUD/rGLxZf1M/xRok9SvFRcmvhDT4KYHQiIW1di
+	 Yy9Opts23Qz/XKXy85OGek8kFuGy7PiW587OuUbNLVZHIpwydeB9bzMFgqVKBtL9Xa
+	 0lLSSJWS1ieY6JbbTYjkZ0svSGo9PGW8lnqRP/YlC6usjwacNmhZOggiJcgyWHN5Mi
+	 4tX4lAjPBHhYQ==
+X-Virus-Scanned: amavis at mail.savoirfairelinux.com
+Received: from mail.savoirfairelinux.com ([127.0.0.1])
+ by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id wZubokswAwAj; Mon,  7 Jul 2025 11:10:18 -0400 (EDT)
+Received: from fedora (unknown [192.168.51.254])
+	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id B11DE3D87636;
+	Mon,  7 Jul 2025 11:10:18 -0400 (EDT)
+Date: Mon, 7 Jul 2025 11:10:17 -0400
+From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+To: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Frank Li <Frank.li@nxp.com>, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-pm@vger.kernel.org,
+	Abel Vesa <abelvesa@kernel.org>, Abel Vesa <abelvesa@linux.com>,
+	Robin Gong <b38343@freescale.com>, Robin Gong <yibin.gong@nxp.com>,
+	Enric Balletbo i Serra <eballetbo@gmail.com>
+Subject: Re: [PATCH v7 5/6] power: supply: pf1550: add battery charger support
+Message-ID: <aGvjWbd9FRTuqWNN@fedora>
+References: <20250612-pf1550-v7-0-0e393b0f45d7@savoirfairelinux.com>
+ <20250612-pf1550-v7-5-0e393b0f45d7@savoirfairelinux.com>
+ <xgwx65axwiebh27hrq7rluuf7jynb7v4o77mf2zztsf64bx3bw@iagwzeumk2su>
+ <aFwFhYoaWoSXcFdR@fedora>
+ <i7qehdo46eegyj7ebp4hetr7jtwkxceoate6tqw6aukw4cbgsl@pl6lgh4k5m4o>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6IZozApVFuUcVoyp"
-Content-Disposition: inline
-In-Reply-To: <225eb39b-958c-4e40-96be-272a8dc9ce12@gmail.com>
-X-Cookie: We are what we are.
-
-
---6IZozApVFuUcVoyp
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <i7qehdo46eegyj7ebp4hetr7jtwkxceoate6tqw6aukw4cbgsl@pl6lgh4k5m4o>
 
-On Sat, Jul 05, 2025 at 05:41:17PM +0300, Laurentiu Mihalcea wrote:
-> On 7/3/2025 6:25 PM, Mark Brown wrote:
+On Mon, Jul 07, 2025 at 01:33:36AM +0200, Sebastian Reichel wrote:
+> Hello Samuel,
+> 
+> On Wed, Jun 25, 2025 at 10:19:49AM -0400, Samuel Kayode wrote:
+> > The pf1550 charger receives a VBUS power input which can be provided either by
+> > an AC adapter or a USB bus. A depleted battery is charged using the VBUS power
+> > input (VBUSIN). When no power is supplied to VBUSIN, the pf1550 switches the
+> > load to the connected non-depleted battery.
+> > 
+> > I could have two power_supply_desc, one for battery and one for the external
+> > power?
+> 
+> That's acceptable. But don't you have a fuel-gauge for the battery?
+> If you register two POWER_SUPPLY_TYPE_BATTERY devices, then your
+> board should have two batteries. If you have a fuel-gauge it will
+> very likely provide much better battery data then anything you get
+> out of pf1550.
 
-> > This also appears to be the source of the boot issues I mentioned on the
-> > EVK, affecting ramdisk only boots:
+The PMIC unfortunately does not include a fuel-gauge.
 
-> >    https://lava.sirena.org.uk/scheduler/job/1533032
+I intend on having POWER_SUPPLY_TYPE_MAINS for the external power supply
+(AC adapter or USB bus) and POWER_SUPPLY_TYPE_BATTERY for the battery.
 
-> > as well as NFS.  The board seems to get to userspace but then not
-> > respond to serial input, it looks like it's hit something while loading
-> > modules and locked up but ICBW.
-
-> OK, this is very odd. I've tried the ramdisk boot using the files from the CI job: Image,
-> modules, CPIO and my own flash.bin (u-boot and ATF hashes match those shown in
-> the CI job) on an EVK board and so far no hang.
-
-It may not actually be hung, it may just be hitting long timeouts in
-userspace (I notice that all the boots with a NFS root are doing module
-autoloading, and the ramdisk ones have tried to bring up the network).
-
-> What I've noticed though is that the bridge does indeed not get probed. So, for now,
-> I think I'm going to submit a patch to enable the driver config in the defconfig so
-> we can get the Verdin failures out of the way.
-
-If the driver is now required then it does need to be enabled.
-
---6IZozApVFuUcVoyp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhrpqcACgkQJNaLcl1U
-h9Dwlgf+KcOwF5vR7PuxEJNsgZjoa9GnoGnVh+0CPAuGUe3yEo9/PeR8jVAdVjyO
-gdI8ymNYVm+xOaeRJiIgxFxA/CocttzXKGcw23uB5cM9hwaVkAmOaoqLVE+ef9xn
-hNu96YXWRPNskp5mB5d5WQcT/rfid/iaAzpCWktqFMLvZmzjaTdnSDDdJ1eqbUqL
-kgpSxE12xPns8/o8SPVU9rB7ShPuc16AdOJ5phCrMNnfnu0IAVTTpQJpr8LZhV9M
-MavTiyLgRI7EMXGXfQrxgRl8mbCIAe08ESsIjjNf+UB4nwXFZIAg00h9xqHt2LXp
-6sqF82kfizbNMybb9BmMbzXehQoUCA==
-=xYTV
------END PGP SIGNATURE-----
-
---6IZozApVFuUcVoyp--
+Thanks,
+Sam
