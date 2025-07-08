@@ -1,149 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C54720B1F4
-	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 11:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22BD1E9B2D;
+	Tue,  8 Jul 2025 11:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751973067; cv=none; b=NnQANlD0n8DHAgqX2UserzZlIn+cgM11zZT2vJoW4evEZ1d+9FgyumJsfq9LX6c2A4NPgjOLGgQEn7lqZd2oQb0+WitJYy/rdOWLfzdubktS2SN0ky/07x9QVi4jK62kdoi9tdMJRUUfQi5TzlxVgZcwoywwmbKSSG0/PQV9+uA=
+	t=1751973131; cv=none; b=iCOE6GgJUueYc6UV6SmhgAsh93ABHI04CdjO0t6ln+ZV8yHjwdxTkaOAlp1ugB7veROSA5LUbna2dY9oVh00Pb7HQvzRda+c5/tdeLfHdCX0xvskW0Rw48ksohTL/CY3Eh2pQrebpu7q6t6o6q5McgIZ88dN3F1/ILjDTixnFCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751973067; c=relaxed/simple;
-	bh=I3YlaLMNbIntcC3nHGYxd3PhL0m1vzFc22REJONgU9c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q260MVYThcJ23ErAwLv8ELV1DWDr3ORUWO4uTTh0vzGaRZ9RKhpawGqTZmZuLrS64SU/5oC7BxnfxuEZWGetxXPZcdReXSBciA7xMGc94+OfmhzZWiKy5rknDVMQbrl6TekBjiybd5DFTMxnlypEqkyMOXFUPh9nBD4TuuW+3XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FcEHS417; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1751973131; c=relaxed/simple;
+	bh=qYlJIQBZZw0QX7Jkhi3+cl9CFM1ZAaSQYY9DTNGZLoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W3iP7VsSLRl8AidoIXyh1foWJdurSU4UomGIQXYMhJkgOQPJ9FaLxm6Zzm4E4i0BZi72WqUPuTpTOR8uo2mCrUJ4Ihh+wNSGR9I+Gc1Qjk18Xd+sc9LFjeJ3F8Yl6zh/WSjIJ961cmumboEvdN+/PjeOzO4BfFaBoIOzirRrUsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uMvJNSSX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FcEHS417"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751973064;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VCCSM5EGfPIeP6kZ4qXJFewXUNSwRA78to6oWgtBl/o=;
-	b=FcEHS4177XoJyPOLjEsJkt8pgUqZ2Yv+oyW+tJySWGlljKoyH9mt/eARJUv4korqU/AIKd
-	H/Lj5N/m9hFTpiza265qL7g35sC/ibifu2gUtK5C5Ehb6CTVl6pXdDAL9Q1WRn86GH2Rot
-	rRZ/3Qw7jWJWucA00NOJ3b360BkSTZ8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-WfG_CIoMOzav3SgqgQv6oA-1; Tue, 08 Jul 2025 07:10:58 -0400
-X-MC-Unique: WfG_CIoMOzav3SgqgQv6oA-1
-X-Mimecast-MFC-AGG-ID: WfG_CIoMOzav3SgqgQv6oA_1751973057
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-450db029f2aso19540075e9.3
-        for <imx@lists.linux.dev>; Tue, 08 Jul 2025 04:10:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751973057; x=1752577857;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VCCSM5EGfPIeP6kZ4qXJFewXUNSwRA78to6oWgtBl/o=;
-        b=NP2fYk6fzBoV0BPN6Pf/U8dQ6CjCCdkq08WDYsywFK+AS6MYSsIuVwh43OOkepUSZm
-         j7A4cn92s+whDIZBeDqw9ouzi/PunMW7N2IxJtceaEUBNmE9kkH8SzzJprTKZbJ8fMlm
-         4Ax+M5QhJ9u9M6/ZS0eyCs6NTEhVbjmNoTcud6SZ8pCybMlP0irm0TWL/3paIG8w1e2p
-         42THyfsbmOXc2PLl4aatGJZoenhN7CURYe9KPMwDMBbipeJr5l2JwTCCsV9Z+AOTnw2z
-         VNlQ6l2YxR4xTlvHtNH6NEQ5NPrVcM3g+dpOPE8kfkwLae5uIHERD6Q985QAhUOz5m+z
-         4J2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU/pZh0SR+TKTjH32NGqeKCFGpozgdcqbLZ6DXRvL4YbaXfLGosyzTBfazQZ1cNrCfTbAw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxPLSnQlzf0aoY7UJD779hYsTy6PAzO+fraMotnjHh4CtH1Fi5n
-	PUYfHNWCCBhStXhhPJQbA7sDG9VW5tPQM49nB0hOxguOo1f7MU0wwQLmeLIBAlMh19dkTED6i5m
-	JK2zhQltO2tYVSB+DOwbsSHxtyEu5V02JotYXyGZv747WWGm+O2Ml3A==
-X-Gm-Gg: ASbGncssi+3NTSkl60CiKfyYB7TN5egK1dUiaEmwSd/QRIC3sU0VW2+M08F3tJ3jHJn
-	W4rU0Hg8sFrALVf/zjXSGHyjOZbS9J8ChzUyZs1Ob212pps/8bImAtvhEQex52uzRE8PWYPInKV
-	4aIzqmxPGJi3oJED4uNe7XxBRkhugrTLngW8dFLEtQ9hWiaKyRsb9XtzLQ8KHI9ZLy2v/wyvH/F
-	/gfKjW8SUZ9LpfvPPgPbYabJ5Vo7OZgyd+iHsJDLZkr7j1839eMUxH+1a8i9HtwvDUUWRMkvocB
-	AVA4OoJpQMmGFt4zVv8UX645vKHm4bsoq8ksT8ioHUb/+Bcj3by4Uzre7V4LMec03xRIgw==
-X-Received: by 2002:a05:600c:1d8d:b0:440:9b1a:cd78 with SMTP id 5b1f17b1804b1-454ccc7ffc5mr42390565e9.10.1751973056826;
-        Tue, 08 Jul 2025 04:10:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHaNulokkynI0xWQ9J9Q5uhDXLP6/QZtP79j6yK8Ti/Akkv8f7oR/DstuNuGnFQRRxDD3e+uQ==
-X-Received: by 2002:a05:600c:1d8d:b0:440:9b1a:cd78 with SMTP id 5b1f17b1804b1-454ccc7ffc5mr42389995e9.10.1751973056363;
-        Tue, 08 Jul 2025 04:10:56 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2717:8910:b663:3b86:247e:dba2? ([2a0d:3344:2717:8910:b663:3b86:247e:dba2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454cd3dd1aasm18697345e9.39.2025.07.08.04.10.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Jul 2025 04:10:55 -0700 (PDT)
-Message-ID: <617d064e-99e4-491c-8fe7-d74d8174d9fb@redhat.com>
-Date: Tue, 8 Jul 2025 13:10:53 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uMvJNSSX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4C9C4CEED;
+	Tue,  8 Jul 2025 11:12:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751973131;
+	bh=qYlJIQBZZw0QX7Jkhi3+cl9CFM1ZAaSQYY9DTNGZLoI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uMvJNSSXJZOQ97hxkJGqHTHq1gJrmB7LR5lJL3TkMi189Qmdm08zr3t2Efa3Koyby
+	 T5l+dbsvTuMBgRM79wxfqrpEvk5iZzWMRbEJ7xFmzqRjGouYk1x9GJUs5kfagP7f8m
+	 2I1d4YhhcJCJSOdXpuytA/B2zMnsucdBmWpUav9YjZRP2+i1GhJDB2pmTjQcQ/+7Bd
+	 owIDZ1wQWEviozdtHSW9OAsqYaYzL79b6dozKfFJu4y3aIrJnNJaYXn6nnI7lc3WCX
+	 +ISVSm3kghRa12AMF9Oz6wolGPTad+/YAOKXw34JI+rfaFhl+zXampKZ3etHS30PcP
+	 Vv7jEdahtlRvg==
+Date: Tue, 8 Jul 2025 13:12:02 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, Kishon Vijay Abraham I <kishon@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Shuah Khan <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	dlemoal@kernel.org, jdmason@kudzu.us, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v19 00/10] PCI: EP: Add RC-to-EP doorbell with platform
+ MSI controller
+Message-ID: <aGz9ApsBD-gQ50pf@ryzen>
+References: <20250609-ep-msi-v19-0-77362eaa48fa@nxp.com>
+ <roskp2zsjohrgll464u4jtbulzjid523u3yvgciifwiuoygv5t@7f7cj4wfy2y7>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v14 04/12] net: mtip: The L2 switch driver for imx287
-To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>
-References: <20250701114957.2492486-1-lukma@denx.de>
- <20250701114957.2492486-5-lukma@denx.de>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250701114957.2492486-5-lukma@denx.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: RlzHf-gVOduyhSSijN0oUReh_DtTx7JNApnaWXINsHk_1751973057
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <roskp2zsjohrgll464u4jtbulzjid523u3yvgciifwiuoygv5t@7f7cj4wfy2y7>
 
-On 7/1/25 1:49 PM, Lukasz Majewski wrote:
-> Changes for v14:
-> - Increase the maximal received frame size to 1536 (for VLAN)
-> - Use spin_{un}lock_irq{save|restore} when altering dynamic table of the
->   switch and mtip_adjust_link() as both cannot be done when switch IRQ is
->   potentially enabled
+On Wed, Jul 02, 2025 at 06:57:23PM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Jun 09, 2025 at 12:34:12PM GMT, Frank Li wrote:
+> 
+> Frank, thanks for your persistence in pushing this series, really appreciated!
+> I've left some comments, but no real blocker.
+> 
+> Unfortunately, I don't have access to my endpoint setup right now. So I'll go
+> ahead with the Tested-by tag from Niklas once my comments are addressed.
 
-Why?
+(snip)
 
- (the previous one alters entries in switching table
->   the latter one may reset the whole IP block)
+> > Changes in v6:
+> > - add Niklas's test by tag
 
-What really matters is the scope (process/atomic, bh, hardirq) of the
-relevant callers (the functions that do acquire the given locks).
+My Tested-by tag was added on v6, now it is v19 :)
+
+To be comfortable of still having my Tested-by tag here,
+I decided to test v19.
+
+However I got this:
+
+[ 3255.257047] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000040
+[ 3255.257824] Mem abort info:
+[ 3255.258069]   ESR = 0x0000000096000004
+[ 3255.258398]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 3255.258862]   SET = 0, FnV = 0
+[ 3255.259147]   EA = 0, S1PTW = 0
+[ 3255.259423]   FSC = 0x04: level 0 translation fault
+[ 3255.259849] Data abort info:
+[ 3255.260102]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[ 3255.260580]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[ 3255.261020]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[ 3255.261483] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000100a03000
+[ 3255.262045] [0000000000000040] pgd=0000000000000000, p4d=0000000000000000
+[ 3255.262639] Internal error: Oops: 0000000096000004 [#1]  SMP
+[ 3255.263132] Modules linked in: rk805_pwrkey hantro_vpu v4l2_jpeg v4l2_vp9 v4l2_h264 v4l2_mem2mem videobuf2_v4l2 videobuf2_dma_contig videobuf2_memops videobuf2_common vidf
+[ 3255.265357] CPU: 5 UID: 0 PID: 213 Comm: ln Not tainted 6.16.0-rc1+ #233 PREEMPT 
+[ 3255.266009] Hardware name: Radxa ROCK 5B (DT)
+[ 3255.266388] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 3255.266995] pc : pci_epf_bind+0x160/0x240
+[ 3255.267350] lr : pci_epf_bind+0x40/0x240
+[ 3255.267694] sp : ffff800081593c30
+[ 3255.267983] x29: ffff800081593c30 x28: ffff0001024b2300 x27: ffff000102fc2800
+[ 3255.268606] x26: ffff00010191e000 x25: ffff000100504098 x24: ffff000107b8ec80
+[ 3255.269228] x23: ffff000104cf3578 x22: 0000000000000000 x21: 0000000000000000
+[ 3255.269850] x20: ffff000104cf3000 x19: ffff000104cf3578 x18: 0000000000000000
+[ 3255.270472] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[ 3255.271093] x14: 0000000000000000 x13: ffff00010245c037 x12: ffff800081593b94
+[ 3255.271715] x11: 0000000528aa6179 x10: 0000000000000002 x9 : ffffa2593ce92b30
+[ 3255.272336] x8 : 00000031636e7566 x7 : 00000000ffffbe12 x6 : 0000000000000003
+[ 3255.272958] x5 : ffff000102413f78 x4 : ffff000102413f08 x3 : 0000000000000000
+[ 3255.273580] x2 : ffff0001024b2300 x1 : 0000000000000000 x0 : ffff000104cf3000
+[ 3255.274201] Call trace:
+[ 3255.274416]  pci_epf_bind+0x160/0x240 (P)
+[ 3255.274767]  pci_epc_epf_link+0x54/0xb0
+[ 3255.275104]  configfs_symlink+0x208/0x540
+[ 3255.275457]  vfs_symlink+0x158/0x1e0
+[ 3255.275770]  do_symlinkat+0x8c/0x138
+[ 3255.276083]  __arm64_sys_symlinkat+0x7c/0xc8
+[ 3255.276455]  invoke_syscall.constprop.0+0x48/0x100
+[ 3255.276874]  el0_svc_common.constprop.0+0x40/0xe8
+[ 3255.277285]  do_el0_svc+0x24/0x38
+[ 3255.277575]  el0_svc+0x34/0x100
+[ 3255.277852]  el0t_64_sync_handler+0x10c/0x140
+[ 3255.278233]  el0t_64_sync+0x198/0x1a0
+[ 3255.278554] Code: a9446bf9 394ff280 b902aa80 aa1403e0 (f94022a1) 
+[ 3255.279085] ---[ end trace 0000000000000000 ]---
 
 
-> +/* dynamicms MAC address table learn and migration */
-> +static void
-> +mtip_atable_dynamicms_learn_migration(struct switch_enet_private *fep,
-> +				      int curr_time, unsigned char *mac,
-> +				      u8 *rx_port)
-> +{
-> +	u8 port = MTIP_PORT_FORWARDING_INIT;
-> +	struct mtip_port_info *port_info;
-> +	u32 rx_mac_lo = 0, rx_mac_hi = 0;
-> +	unsigned long flags;
-> +	int index;
-> +
-> +	spin_lock_irqsave(&fep->learn_lock, flags);
+Seems to be from patch 1/10:
 
-If the _irqsave() part is needed (and I don't see why??!) than all the
-other `learn_lock` users should also use such variant, unless already in
-hardirq scope.
+(gdb) l *(pci_epf_bind+0x160)
+0xffff800080892c50 is in pci_epf_bind (drivers/pci/endpoint/pci-epf-core.c:132).
+127                             goto ret;
+128                     epf_vf->is_bound = true;
+129             }
+130
+131             epf->dev.id = PCI_EPF_DEVID(epf->func_no, 0);
+132             device_set_of_node_from_dev(&epf->dev, epc->dev.parent);
+133             ret = epf->driver->ops->bind(epf);
+134             if (ret)
+135                     goto ret;
+136             epf->is_bound = true;
 
-[...]
-> +static void mtip_adjust_link(struct net_device *dev)
-> +{
-> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
-> +	struct switch_enet_private *fep = priv->fep;
-> +	struct phy_device *phy_dev;
-> +	int status_change = 0, idx;
-> +	unsigned long flags;
-> +
-> +	spin_lock_irqsave(&fep->hw_lock, flags);
 
-Same here.
+I can see that there is a lot of discussion on patch 1/10 already,
+but please drop my Tested-by tag until this has been fixed.
 
-/P
+Feel free to CC me on v20 of this series, if the problem is fixed,
+I will provide my Tested-by tag once again.
 
+
+Kind regards,
+Niklas
