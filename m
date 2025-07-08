@@ -1,90 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F3429824E;
-	Tue,  8 Jul 2025 07:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7532929A308
+	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 07:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751960883; cv=none; b=diRwiIUyH5YVfs9IZcaXu58gYP9HsK2E6YTxk6xaMAAFWTKGyGporECTjxHnSIHMyuorSnB4vk4WQCFikpuraxYFiM9t5zaOkFHpYrvvH1iQxKQvWkiA2kJfcBfxIc3PQ0pfKX3XQ4BEQREExeOhAG7mzOlVuARaaHr7NYtbVJM=
+	t=1751960991; cv=none; b=Bkh3zrO5hHUmdzYAeaLeab4iEU26svPpcUu0WuuxiIiGpDpfHFwfHPE1LcKRaxWZawq+rpTsjKF1J4snDHPA81jcI16ZodWyQeltFOuHFDZ1cUX0XSMCu7PwYx3vW5DQklP5YkNin0UfmpnszAN7ifXWyXtPeBdpy3vPRngd5og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751960883; c=relaxed/simple;
-	bh=9Q5CXN9O5qwDOk34kVlNTKgsb2m3mLtmtiu6Wi3LFeU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jtyl5sHcfr5TzX4vICeiG/WOR49h2EuqG9oJo5HD78i75CTgHn1K6wo32+qB0XvtoUZGJ4ME99F4Vk3MdIUUW5u1lqfDPXX9tXuxCkAeZH/bEWOR5un+rbT6yUqKvxdP4ZOSN6iu4q9G3ozsyGjseeTUBi3Ogawssfa36FHuCPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mSb46+oP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751960991; c=relaxed/simple;
+	bh=IJMN1sqs3Tru7AgnyhfhZso36RYZ+I0PaO5xH/w/vHk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=aZzLfzxj3coFfSd90wUeSVFEGq8NftfU7+GUvMWIvVJzCRlDlk2RIIILS+3ZZEKCpncEOSTf0nEIZUtSUywQFUWLBjjpOxiDMDD1Q9WlPx7+P0Wsrc1Tck/wCBKfAkx83AJ+MDhx9O/AzZnVGHq+7/wh2t+7iCYIjA/ppZn8Trc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=CNaM7Y/S; arc=none smtp.client-ip=220.197.32.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mSb46+oP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF64FC4CEED;
-	Tue,  8 Jul 2025 07:47:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751960883;
-	bh=9Q5CXN9O5qwDOk34kVlNTKgsb2m3mLtmtiu6Wi3LFeU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mSb46+oPCqcoSm83lDKYIiFXtSEU5ju6qkNzXxvK0zNaFIV3c3yK6gHdmp/goOiyB
-	 UdhV32c8l3Zbf3fIlRqKhPBVlLCjFfPd6NQ6IVAhC8BE0+aR00NsNuVC2E8kpro/YD
-	 0rFM96z9LxDLKKubisu4JMuwNZXcCRET+BaMpo3t7gqhk0yoWtskBOZuCuhCJWVjow
-	 tEWs0iUp25u9cD2oxo28HpSxeJdqty7BFS0XDBCGU/bm5/fJPtI8JZZY0yUt+WRNX7
-	 W4hXStNtBIWd5yj0LGeQuWXBLbChJhGTnRRrU4LUAiJU3kfi+dqa8iKD0GKwG/5XMd
-	 eIvryi7xptaag==
-Date: Tue, 8 Jul 2025 13:17:53 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] PCI: imx6: Align EP link start behavior with
- documentation
-Message-ID: <klduv5ytcsxzs6nugiorajwxq4mwqfpmhkifl5wtjy6jiq4mha@mf4732u2xrtw>
-References: <20250616085742.2684742-1-hongxing.zhu@nxp.com>
- <20250616085742.2684742-3-hongxing.zhu@nxp.com>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="CNaM7Y/S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=kq+SB51IWx4bYSOte+h2bEHJqLVRzmFO3MooWcUuZaE=;
+	b=CNaM7Y/SdBHvNuv3PZy9ah15cz/PUXZqtNyfTl0xaF4B/9JOQekha/EI2PV0ml
+	0wEN1Cuk1ymEQdK6Fw/7TNdGEkoSOeWpkHVXVJYoDPmzoOjjJzp8t5HMmy4D20le
+	LMkCJLdyLsU3FFSZNJggmS7jPVmJtyCyecsvkAIKAHTbo=
+Received: from dragon (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgDHpsR5zWxowR9NAA--.48928S3;
+	Tue, 08 Jul 2025 15:49:15 +0800 (CST)
+Date: Tue, 8 Jul 2025 15:49:13 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: soc@kernel.org, arm@kernel.org
+Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	kernel@pengutronix.de, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] i.MX fixes for 6.16
+Message-ID: <aGzNeZ7KtsRsUkZT@dragon>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250616085742.2684742-3-hongxing.zhu@nxp.com>
+X-CM-TRANSID:Mc8vCgDHpsR5zWxowR9NAA--.48928S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr1fGFyfKw18Gw4kAF47urg_yoW8tw1UpF
+	43CrZFgr15Jrs5GrnxXrs7t3s8tw4rJF45Ar17Cry8KrW5ur9xXr15GryrWrZFvrWxuw4Y
+	yF1kXryqg345XaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jc0eLUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIRvGLGhszXt6qwAA3z
 
-On Mon, Jun 16, 2025 at 04:57:42PM GMT, Richard Zhu wrote:
-> According to PCI/endpoint/pci-endpoint-cfs.rst, the endpoint (EP) should
-> only link up after `echo 1 > start` is executed.
-> 
-> To match the documented behavior, do not start the link automatically
-> when adding the EP controller.
-> 
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+The following changes since commit 19272b37aa4f83ca52bdf9c16d5d81bdd1354494:
 
-Fixes tag?
+  Linux 6.16-rc1 (2025-06-08 13:44:43 -0700)
 
-- Mani
+are available in the Git repository at:
 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pci-imx6.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-> index f5f2ac638f4b..fda03512944d 100644
-> --- a/drivers/pci/controller/dwc/pci-imx6.c
-> +++ b/drivers/pci/controller/dwc/pci-imx6.c
-> @@ -1468,9 +1468,6 @@ static int imx_add_pcie_ep(struct imx_pcie *imx_pcie,
->  
->  	pci_epc_init_notify(ep->epc);
->  
-> -	/* Start LTSSM. */
-> -	imx_pcie_ltssm_enable(dev);
-> -
->  	return 0;
->  }
->  
-> -- 
-> 2.37.1
-> 
+  git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.16
 
--- 
-மணிவண்ணன் சதாசிவம்
+for you to fetch changes up to fbe94be09fa81343d623a86ec64a742759b669b3:
+
+  arm64: dts: freescale: imx8mm-verdin: Keep LDO5 always on (2025-07-07 15:36:41 +0800)
+
+----------------------------------------------------------------
+i.MX fixes for 6.16:
+
+- Keep LDO5 always on for imx8mm-verdin to fix broken Ethernet support
+- Add big-endian property back for LS1046A watchdog, as the removal was
+  an accident
+- Fix DMA interrupter number of i.MX95 pcie0_ep device
+- A set of changes from Tim Harvey to fix TPM SPI frequency on
+  imx8mp-venice devices
+- A couple of changes from Wei Fang to fix NETC overshoot issue on
+  i.MX95 EVK boards
+
+----------------------------------------------------------------
+Francesco Dolcini (1):
+      arm64: dts: freescale: imx8mm-verdin: Keep LDO5 always on
+
+Meng Li (1):
+      arm64: dts: add big-endian property back into watchdog node
+
+Richard Zhu (1):
+      arm64: dts: imx95: Correct the DMA interrupter number of pcie0_ep
+
+Tim Harvey (4):
+      arm64: dts: imx8mp-venice-gw71xx: fix TPM SPI frequency
+      arm64: dts: imx8mp-venice-gw72xx: fix TPM SPI frequency
+      arm64: dts: imx8mp-venice-gw73xx: fix TPM SPI frequency
+      arm64: dts: imx8mp-venice-gw74xx: fix TPM SPI frequency
+
+Wei Fang (2):
+      arm64: dts: imx95-19x19-evk: fix the overshoot issue of NETC
+      arm64: dts: imx95-15x15-evk: fix the overshoot issue of NETC
+
+ arch/arm64/boot/dts/freescale/fsl-ls1046a.dtsi       |  3 ++-
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi     |  1 +
+ .../boot/dts/freescale/imx8mp-venice-gw71xx.dtsi     |  2 +-
+ .../boot/dts/freescale/imx8mp-venice-gw72xx.dtsi     |  2 +-
+ .../boot/dts/freescale/imx8mp-venice-gw73xx.dtsi     |  2 +-
+ .../boot/dts/freescale/imx8mp-venice-gw74xx.dts      |  2 +-
+ arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts    | 20 ++++++++++----------
+ arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts    | 12 ++++++------
+ arch/arm64/boot/dts/freescale/imx95.dtsi             |  2 +-
+ 9 files changed, 24 insertions(+), 22 deletions(-)
+
