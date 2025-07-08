@@ -1,135 +1,232 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D4A219EB;
-	Tue,  8 Jul 2025 06:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591FE4D8D1
+	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 06:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751956080; cv=none; b=GTVeT4XnnJ6Q04/6yfIdeJw9YptzvlOdTAEm76eWLSaxqqllXVennNkY+IiFZKtoVC/RAJk8AUAfZ/FimUeyW6kgII0WlnAaKBlXq6M4WTApz8D/mHYEMN2Zukw9fEczTq1swEgTGQaiZaCFl+zVJdgXu5zkUtrs2Bkt428bcDg=
+	t=1751956243; cv=none; b=V8LmGz6PvKYqQkPPa+Z6w8ePhU13PQACO5KY3CMGd9G30Fawpa/3nAy8x0sL/AW9crQveJuNBvWPjxlfV3pJWV8/IVw6JZQr8ja/WpiuRXMFhI2VtMRNKhRGxYxhNk03IEDKwemdN3J79oS8L2YzEId22GMRmwJz2io1DeHizr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751956080; c=relaxed/simple;
-	bh=qi7j6qGBz5fO3sHdD7LICPSFNL5jFr91cIZy5C8dRzA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ViT75gmXOSNdzY3v8SsdtcRL7J0gBqDcCOGrIvVlPAOh4o4RXnD5w6ZW4NjluqWP5AnN0AHvz+CHau8D9UwGe2hnajtIq8xxDPTJUVX+6eav5lSYHvxS/tOcltlA6w1XhzbZaWho2CWBFrP7vs1dYKZ8VJGeiQn2DIvainqfV8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l8BZlyM6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751956243; c=relaxed/simple;
+	bh=P9QvZUpF/LJOw9fOYyRONt8KXGdUMhir9fRjkIe5LZg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YmtaD8nYcIvJFSRTocAzh8PT8167XxZTV6QItlJkll5RqYxiSCjctY5EthBAh+bQObzd7tzPbmkgA7vIKs3oyiUjPR6ifV/LwTecdotEaLTB/4rnLVcxZv5N4H2771PcCGF4hbsGHjHn6UI+n9o4F6cEY4tkg0YCt8ueHyhMDQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=H6rmEwnO; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l8BZlyM6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A190DC4CEED;
-	Tue,  8 Jul 2025 06:27:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751956079;
-	bh=qi7j6qGBz5fO3sHdD7LICPSFNL5jFr91cIZy5C8dRzA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=l8BZlyM6QZ27m2RsOLpJOu+YVVx8AE7306cWuauSZDjyZVCnivcLpugyyt1hA5Q+H
-	 67M1c4nPFxyYMUfmSJuU6QoBRc/uvEP8KnSIVmUB+WhC4D1GJoZL8hMkUyse2VG1C4
-	 wl/uOnHWYx8GCyT5g0/5hxLgrNv3seRfAj4j/JuLlpbcwtLP07Nx0k83tb06E4jl38
-	 NaH7cXxfbIdX14jPz1ACghVdHc/N3YLwZrKFdhVbmPkYXB46+XHTS5Nan5xJoQt5oi
-	 wslzXyjaw+DXaiRtq5EUfGq05FEnJ1lKsXqhfrsPMEkaoGAlPj/413E2z+UKC/XaAe
-	 6PRLS1DxgeJ/Q==
-Message-ID: <4f2f2f95-d0f4-4d2f-8873-b1026340a8c9@kernel.org>
-Date: Tue, 8 Jul 2025 08:27:50 +0200
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="H6rmEwnO"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0345D1039729E;
+	Tue,  8 Jul 2025 08:30:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1751956231; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=LmJDJSLxx1my+mfQ4+domzBvSClDWTc3E/feWX0CoU0=;
+	b=H6rmEwnOMrbwf3zurMHZ/ogFdVgjJ6whlG+B/JKdz0gBfNLGfa7uVUTbRQSfUBZOl3aZ/H
+	eQJoqexOd6PLoJ9l7HdWKUZnjXh17iWhuNVhcNrxhQ+G8Gc6sTvG3NlTILVpPhQoGMz+Qr
+	uL5x4SF39qt+rrE+YLu+NzwywUQJrj08vqUdhII/HqEiQK1/i25ttehwdXqZiB28A7mPO3
+	l5rgDDQCuJGJnJHPlJSXqnfydwFEZn+48eyCj7N+FykRluC8CMmqrdSSXoeYIeXfAx5V+7
+	jZ4hd1EhgAehHzWHnh4vKbfB+InV3Cajc8jcG78SYPG59oIPcTXq9l1innF2NA==
+Date: Tue, 8 Jul 2025 08:30:20 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Richard
+ Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
+Subject: Re: [net-next v14 00/12] net: mtip: Add support for MTIP imx287 L2
+ switch driver
+Message-ID: <20250708083020.0d2a73cd@wsk>
+In-Reply-To: <20250701114957.2492486-1-lukma@denx.de>
+References: <20250701114957.2492486-1-lukma@denx.de>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] arm64: dts: freescale: Add Mettler-Toledo
- Snowflake V2 support
-To: Shawn Guo <shawnguo2@yeah.net>, Wojciech Dubowik <Wojciech.Dubowik@mt.com>
-Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Kees Cook <kees@kernel.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, Alexander Stein <alexander.stein@ew.tq-group.com>,
- Marek Vasut <marex@denx.de>, Frank Li <Frank.Li@nxp.com>,
- Markus Niebel <Markus.Niebel@tq-group.com>,
- =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
- Frieder Schrempf <frieder.schrempf@kontron.de>,
- Michael Walle <mwalle@kernel.org>, Heiko Schocher <hs@denx.de>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Max Merchel <Max.Merchel@ew.tq-group.com>,
- Primoz Fiser <primoz.fiser@norik.com>, Tim Harvey <tharvey@gateworks.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Heiko Stuebner <heiko@sntech.de>, Caleb James DeLisle <cjd@cjdns.fr>,
- Junhao Xie <bigfoot@classfun.cn>, Andre Przywara <andre.przywara@arm.com>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- Kever Yang <kever.yang@rock-chips.com>,
- Manivannan Sadhasivam <mani@kernel.org>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-hardening@vger.kernel.org, Tobias Graemer <Tobias.Graemer@mt.com>
-References: <20250624110408.128283-1-Wojciech.Dubowik@mt.com>
- <20250624110408.128283-4-Wojciech.Dubowik@mt.com> <aGy4qy1kN3RZ6nas@dragon>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aGy4qy1kN3RZ6nas@dragon>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/4lMkzAC5LI8uGc9.ud9OWwI";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 08/07/2025 08:20, Shawn Guo wrote:
->> +
->> +	backlight: backlight {
->> +		compatible = "pwm-backlight";
->> +		pwms = <&pwm1 0 500000 0>;
->> +		power-supply = <&reg_5v>;
->> +		brightness-levels = <0 100>;
->> +		num-interpolated-steps = <100>;
->> +		default-brightness-level = <100>;
->> +		status = "okay";
-> 
-> We usually use "okay" status to enable "disabled" devices.  It doesn't
-> seem to be needed here.
+--Sig_/4lMkzAC5LI8uGc9.ud9OWwI
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I already asked for this in v2. Changelog claims it was done, but I
-believe nothing here improved and they just sent the same patchset
-wasting review effort.
+Dear Community,
+
+> This patch series adds support for More Than IP's L2 switch driver
+> embedded in some NXP's SoCs. This one has been tested on imx287, but
+> is also available in the vf610.
+>=20
+> In the past there has been performed some attempts to upstream this
+> driver:
+>=20
+> 1. The 4.19-cip based one [1]
+> 2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a
+> DSA switch with NO tag appended.
+> 3. The extension for FEC driver for 5.12 [3] - the trick here was to
+> fully reuse FEC when the in-HW switching is disabled. When bridge
+> offloading is enabled, the driver uses already configured MAC and PHY
+> to also configure PHY.
+>=20
+> All three approaches were not accepted as eligible for upstreaming.
+>=20
+> The driver from this series has floowing features:
+>=20
+> 1. It is fully separated from fec_main - i.e. can be used
+> interchangeable with it. To be more specific - one can build them as
+> modules and if required switch between them when e.g. bridge
+> offloading is required.
+>=20
+>    To be more specific:
+>         - Use FEC_MAIN: When one needs support for two ETH ports with
+> separate uDMAs used for both and bridging can be realized in SW.
+>=20
+>         - Use MTIPL2SW: When it is enough to support two ports with
+> only uDMA0 attached to switch and bridging shall be offloaded to HW.=20
+>=20
+> 2. This driver uses MTIP's L2 switch internal VLAN feature to provide
+> port separation at boot time. Port separation is disabled when
+> bridging is required.
+>=20
+> 3. Example usage:
+>         Configuration:
+>         ip link set lan0 up; sleep 1;
+>         ip link set lan1 up; sleep 1;
+>         ip link add name br0 type bridge;
+>         ip link set br0 up; sleep 1;
+>         ip link set lan0 master br0;
+>         ip link set lan1 master br0;
+>         bridge link;
+>         ip addr add 192.168.2.17/24 dev br0;
+>         ping -c 5 192.168.2.222
+>=20
+>         Removal:
+>         ip link set br0 down;
+>         ip link delete br0 type bridge;
+>         ip link set dev lan1 down
+>         ip link set dev lan0 down
+>=20
+> 4. Limitations:
+>         - Driver enables and disables switch operation with learning
+> and ageing.
+>         - Missing is the advanced configuration (e.g. adding entries
+> to FBD). This is on purpose, as up till now we didn't had consensus
+> about how the driver shall be added to Linux.
+>=20
+> 5. Clang build:
+> 	make LLVM_SUFFIX=3D-19 LLVM=3D1 mrproper
+> 	cp ./arch/arm/configs/mxs_defconfig .config
+> 	make ARCH=3Darm LLVM_SUFFIX=3D-19 LLVM=3D1 W=3D1 menuconfig
+> 	make ARCH=3Darm LLVM_SUFFIX=3D-19 LLVM=3D1 W=3D1 -j8
+> LOADADDR=3D0x40008000 uImage dtbs
+>=20
+>         make LLVM_SUFFIX=3D-19 LLVM=3D1 mrproper
+>         make LLVM_SUFFIX=3D-19 LLVM=3D1 allmodconfig
+>         make LLVM_SUFFIX=3D-19 LLVM=3D1 W=3D1
+> drivers/net/ethernet/freescale/mtipsw/ | tee llvm_build.log make
+> LLVM_SUFFIX=3D-19 LLVM=3D1 W=3D1 -j8 | tee llvm_build.log
+>=20
+> 6. Kernel compliance checks:
+> 	make coccicheck MODE=3Dreport J=3D4
+> M=3Ddrivers/net/ethernet/freescale/mtipsw/
+> ~/work/src/smatch/smatch_scripts/kchecker
+> drivers/net/ethernet/freescale/mtipsw/
+>=20
+> 7. GCC
+>         make mrproper
+>         make allmodconfig
+>         make W=3D1 drivers/net/ethernet/freescale/mtipsw/
+>=20
+
+Gentle ping on this driver's patch set ...
+
+> Links:
+> [1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+> [2] -
+> https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-ups=
+tream-RFC_v1
+> [3] -
+> https://source.denx.de/linux/linux-imx28-l2switch/-/tree/imx28-v5.12-L2-u=
+pstream-switchdev-RFC_v1?ref_type=3Dheads
+>=20
+>=20
+> Lukasz Majewski (12):
+>   dt-bindings: net: Add MTIP L2 switch description
+>   ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2 switch description
+>   ARM: dts: nxp: mxs: Adjust XEA board's DTS to support L2 switch
+>   net: mtip: The L2 switch driver for imx287
+>   net: mtip: Add buffers management functions to the L2 switch driver
+>   net: mtip: Add net_device_ops functions to the L2 switch driver
+>   net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
+>   net: mtip: Extend the L2 switch driver with management operations
+>   net: mtip: Extend the L2 switch driver for imx287 with bridge
+>     operations
+>   ARM: mxs_defconfig: Enable CONFIG_NFS_FSCACHE
+>   ARM: mxs_defconfig: Update mxs_defconfig to 6.16-rc1
+>   ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2
+>     switch
+>=20
+>  .../bindings/net/nxp,imx28-mtip-switch.yaml   |  150 ++
+>  MAINTAINERS                                   |    7 +
+>  arch/arm/boot/dts/nxp/mxs/imx28-xea.dts       |   56 +
+>  arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |    9 +-
+>  arch/arm/configs/mxs_defconfig                |   13 +-
+>  drivers/net/ethernet/freescale/Kconfig        |    1 +
+>  drivers/net/ethernet/freescale/Makefile       |    1 +
+>  drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+>  .../net/ethernet/freescale/mtipsw/Makefile    |    4 +
+>  .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 1958
+> +++++++++++++++++ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |
+> 654 ++++++ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  120 +
+>  .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  443 ++++
+>  13 files changed, 3418 insertions(+), 11 deletions(-)
+>  create mode 100644
+> Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+> create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+> create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+> create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+> create mode 100644
+> drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c create mode
+> 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
+>=20
+
+
+
 
 Best regards,
-Krzysztof
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH,      Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/4lMkzAC5LI8uGc9.ud9OWwI
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhsuvwACgkQAR8vZIA0
+zr18FAgAugcPdC55UMMKk5rfZiswE8C+zfajggnswPx6CsyMLd9VC+fQ0vLCEQVF
+50g00sQ138COO+I9mkbqjK3LAQFHuMVsuy7SBQqADQ9F2LjzSpt5Y/PiEOL0FQom
+bKpFJWGh9b6krGTT9gZcfnVEPDTJ1VRuWoQ1az1gXvGJBH/sHRBvuOqrDb+lVZKl
+pkRYXD/cKasueLGPk6GAjalN05PuLtL6wTRQWG2W6AdJcYamaflrDoVRnf1fCn2z
+K8fpqZbo91HS38hpjqa4sCQZAlQiHo5xv6nC7glH7Ffwo1PqPOFr4DIKFjkODEIT
+JLl4jELD21yMDPVJKxhCH/6sBJhb8Q==
+=xtyg
+-----END PGP SIGNATURE-----
+
+--Sig_/4lMkzAC5LI8uGc9.ud9OWwI--
