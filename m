@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D25221579;
-	Tue,  8 Jul 2025 06:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D4A219EB;
+	Tue,  8 Jul 2025 06:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751955889; cv=none; b=qbKCb6d7yd9rC8fk5b+lZiCxkEFxj3XGLjqZG9IL7TRN94sFu7nQJSvpZG2gBEfTXylAdt9KjODXsOXguT+Tu868UJZq3jAMfLKVlSDA+os586DXAT5fI0bGK5eGMlrMuAXnniEePH4P5T4PhCBAHWdqtdZcFuGfL32ZOMEsIOg=
+	t=1751956080; cv=none; b=GTVeT4XnnJ6Q04/6yfIdeJw9YptzvlOdTAEm76eWLSaxqqllXVennNkY+IiFZKtoVC/RAJk8AUAfZ/FimUeyW6kgII0WlnAaKBlXq6M4WTApz8D/mHYEMN2Zukw9fEczTq1swEgTGQaiZaCFl+zVJdgXu5zkUtrs2Bkt428bcDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751955889; c=relaxed/simple;
-	bh=W7dr38TTbkBwVMkT/BjGuMxoRLbvyVvHHrx/scViG4g=;
+	s=arc-20240116; t=1751956080; c=relaxed/simple;
+	bh=qi7j6qGBz5fO3sHdD7LICPSFNL5jFr91cIZy5C8dRzA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oh6Wf1I3MA9eOC0r0TC6nmMQktk18mCkJtTnWeiZiscC3xWkUAxHFRvdN+JccyowhZAsxl8Z+gPJlv98JzuccGrAzb7b6Sh7UPUVnuWuaQ6KTKPgky59M4lyS7Xmu5Q3AaQUc2jDcoIRP47GRXLfqVdarC6TI3g1L3W3atvFjDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p+QgBC1+; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=ViT75gmXOSNdzY3v8SsdtcRL7J0gBqDcCOGrIvVlPAOh4o4RXnD5w6ZW4NjluqWP5AnN0AHvz+CHau8D9UwGe2hnajtIq8xxDPTJUVX+6eav5lSYHvxS/tOcltlA6w1XhzbZaWho2CWBFrP7vs1dYKZ8VJGeiQn2DIvainqfV8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l8BZlyM6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p+QgBC1+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB07C4CEED;
-	Tue,  8 Jul 2025 06:24:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l8BZlyM6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A190DC4CEED;
+	Tue,  8 Jul 2025 06:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751955888;
-	bh=W7dr38TTbkBwVMkT/BjGuMxoRLbvyVvHHrx/scViG4g=;
+	s=k20201202; t=1751956079;
+	bh=qi7j6qGBz5fO3sHdD7LICPSFNL5jFr91cIZy5C8dRzA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=p+QgBC1+dL7DZ24gZ/o623L04leYDqNgP2j0o3nIEyRmm49BqJe3vaSMgPWNnRss1
-	 X3a91ndSeT6Xpbc1ZazDSyBJTVGBAeWMCvXeldqTX7vm+dWiuhSpCrS55Sd5hUAUfc
-	 TFoQ1CopVWsjsJAhB+xVXNuSkULZbP7ZzC20WAYxPEgO6VyhRS+48iNSL0q/+pDwak
-	 JHbgvKkSjS50vtyYpwr4uINkgrdL2lLXmu6dsx5qXhnaAT12+g60XkZh5hBwGVIJFQ
-	 XIRLhVRZtTiNYg35Uyfu0y/6bbzT3uTAPxjIfDunDHPOD5kgVtXfYmEns/a0bZsggm
-	 M+q1ftx+1LrLQ==
-Message-ID: <0c4316d8-7d4a-4a81-9694-30dd8f5f2f54@kernel.org>
-Date: Tue, 8 Jul 2025 08:24:42 +0200
+	b=l8BZlyM6QZ27m2RsOLpJOu+YVVx8AE7306cWuauSZDjyZVCnivcLpugyyt1hA5Q+H
+	 67M1c4nPFxyYMUfmSJuU6QoBRc/uvEP8KnSIVmUB+WhC4D1GJoZL8hMkUyse2VG1C4
+	 wl/uOnHWYx8GCyT5g0/5hxLgrNv3seRfAj4j/JuLlpbcwtLP07Nx0k83tb06E4jl38
+	 NaH7cXxfbIdX14jPz1ACghVdHc/N3YLwZrKFdhVbmPkYXB46+XHTS5Nan5xJoQt5oi
+	 wslzXyjaw+DXaiRtq5EUfGq05FEnJ1lKsXqhfrsPMEkaoGAlPj/413E2z+UKC/XaAe
+	 6PRLS1DxgeJ/Q==
+Message-ID: <4f2f2f95-d0f4-4d2f-8873-b1026340a8c9@kernel.org>
+Date: Tue, 8 Jul 2025 08:27:50 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,23 +35,35 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] dt-bindings: media: add i.MX parallel csi support
-To: Frank Li <Frank.li@nxp.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+Subject: Re: [PATCH v3 3/4] arm64: dts: freescale: Add Mettler-Toledo
+ Snowflake V2 support
+To: Shawn Guo <shawnguo2@yeah.net>, Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+Cc: linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
- Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- linux-media@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, Alice Yuan <alice.yuan@nxp.com>
-References: <20250703-imx8qxp_pcam-v2-0-188be85f06f1@nxp.com>
- <20250703-imx8qxp_pcam-v2-1-188be85f06f1@nxp.com>
- <20250707-mustard-avocet-of-success-e68cbf@krzk-bin>
- <aGvx74Bw8gcugUpv@lizhi-Precision-Tower-5810>
+ Fabio Estevam <festevam@gmail.com>, Kees Cook <kees@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
+ <gpiccoli@igalia.com>, Alexander Stein <alexander.stein@ew.tq-group.com>,
+ Marek Vasut <marex@denx.de>, Frank Li <Frank.Li@nxp.com>,
+ Markus Niebel <Markus.Niebel@tq-group.com>,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+ Frieder Schrempf <frieder.schrempf@kontron.de>,
+ Michael Walle <mwalle@kernel.org>, Heiko Schocher <hs@denx.de>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ Max Merchel <Max.Merchel@ew.tq-group.com>,
+ Primoz Fiser <primoz.fiser@norik.com>, Tim Harvey <tharvey@gateworks.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Heiko Stuebner <heiko@sntech.de>, Caleb James DeLisle <cjd@cjdns.fr>,
+ Junhao Xie <bigfoot@classfun.cn>, Andre Przywara <andre.przywara@arm.com>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+ Kever Yang <kever.yang@rock-chips.com>,
+ Manivannan Sadhasivam <mani@kernel.org>, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-hardening@vger.kernel.org, Tobias Graemer <Tobias.Graemer@mt.com>
+References: <20250624110408.128283-1-Wojciech.Dubowik@mt.com>
+ <20250624110408.128283-4-Wojciech.Dubowik@mt.com> <aGy4qy1kN3RZ6nas@dragon>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -97,24 +109,27 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <aGvx74Bw8gcugUpv@lizhi-Precision-Tower-5810>
+In-Reply-To: <aGy4qy1kN3RZ6nas@dragon>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 07/07/2025 18:12, Frank Li wrote:
->>> +examples:
->>> +  - |
->>> +    #include <dt-bindings/clock/imx93-clock.h>
->>> +    #include <dt-bindings/power/fsl,imx93-power.h>
->>> +
->>> +    pcif@4ac10070 {
->>
->> That's a CPI bus from MIPI so cpi@, no?
+On 08/07/2025 08:20, Shawn Guo wrote:
+>> +
+>> +	backlight: backlight {
+>> +		compatible = "pwm-backlight";
+>> +		pwms = <&pwm1 0 500000 0>;
+>> +		power-supply = <&reg_5v>;
+>> +		brightness-levels = <0 100>;
+>> +		num-interpolated-steps = <100>;
+>> +		default-brightness-level = <100>;
+>> +		status = "okay";
 > 
-> It is not MIPI.  It is old camera interface, which use D0..7 and VSYNC ...
-> signal.
-Hm? I did not say it is MIPI. MIPI is a organization. I said this is
-CPI. pcif is the name of NXP block, not the name of the bus.
+> We usually use "okay" status to enable "disabled" devices.  It doesn't
+> seem to be needed here.
+
+I already asked for this in v2. Changelog claims it was done, but I
+believe nothing here improved and they just sent the same patchset
+wasting review effort.
 
 Best regards,
 Krzysztof
