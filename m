@@ -1,202 +1,165 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88373205E25
-	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 04:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2D81E3DCF
+	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 05:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751948539; cv=none; b=AdIVyLCCAgtIoIMUmUs0nwTu9WALP7Yr4ykXthkNseXaKjO0dQNwk3KQ7i+CfHgyL+80ZzE+0NrZYCJboRJKo9501rvenw6TF47d96uzA6nKkVN4tA7PXzayo3NDzyKFP9YiLs0Wx7QBpaC9HhEkXwwbXXdDDMqXGhF9syb6ayc=
+	t=1751953368; cv=none; b=Fzx7KfQZbD2XWT2/tOmRMjwqX1gViJIGt7O3lM5LOlC5SiRAv1N1PnuW2UchEYRnhFjejnV1kr91godEKNrSg2vP1lZvlEiEEeA2PHzXEuf4U/U6SSB9g3FHqbj8GXvmPOYDDA1r7M3MO0QTGQ6T4JxvG/WEpadwbX+kMLccEFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751948539; c=relaxed/simple;
-	bh=ulZevYqiH1chwMsT0/3qmn16lJZY3s37WSKTXbOGwDI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p0J4EPqTAolyab9YplGiLShorLrhYjTlpiFF/2eNvoG5TpiwYRN79nndnRivQSYkw1EQZyqxedxoMUfGI3U8E+UpoR6EmOfgQsKg05dsUUWKQgRkYod2PstSJtvnbxQ2ghxjTdvS7rLuMimJnHbC51dByMnruOpbgNcNcrzDFEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=N3dsEHbk; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	s=arc-20240116; t=1751953368; c=relaxed/simple;
+	bh=3jcIvRz/64vaLlE9f3ifS9mjbukbBwJ2fIUNnmNWkLU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hRDivRMYK7BMYfj3CIccl9dm7d/MouNZgm2wgl8hYKMupqmc6LuBoLsVtvM6PHxzuEGS37H9NFo+erv5bfNYNtCCdXKA0IrsBOXF133HrO/YgJU2g2YFNtc4yC+3OTzXcdP6Z2ZL6vi/msE0AfLOxBfdzXvKBjKjteInrHMEmOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=lxr5bmWu; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=FA4FCOkg reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="N3dsEHbk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=TethFMbUHgsgVKgaCK7+OTC1UjdHwcUm63F7FiACyH4=; b=N3dsEHbkPG/fFzLgOrnZTEzAOh
-	NoGliEKeMzxwiVXoTM5i7umz4HxknR/N/gkoQ+MGpGHb43lg2KYQ4ANl+W5faFVkYOy5c8aEiB8dr
-	sf5yh72YfpPNTJRlpgelh6U9gND4rNKDTIqhcXe1wR34J4aXcOPIF99AS5gGMSx7IjGdwJJKKEiK7
-	oS5IWAWH2p9394mB2nDyeyfh05WJOwQsNbUNoHPPtodoizZi8IhCjrAmg2KoZUToeDVJdqWzPWLSi
-	1BWcpAlcp83/y6iAu9RKvuhRFppA31Nx2DhAicqwjByO/Do4iibfOMp8wStOu0dncH2MkttRdXqFy
-	L2OcG/7w==;
-Received: from [89.212.21.243] (port=45388 helo=localhost.localdomain)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1uYzqK-00GO9H-1z;
-	Tue, 08 Jul 2025 06:22:07 +0200
-From: Primoz Fiser <primoz.fiser@norik.com>
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="lxr5bmWu";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="FA4FCOkg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1751953365; x=1783489365;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dvdZlbFLOSBCY4Q+zQ5tbPvu2hRNVALGGd8gtRrbH20=;
+  b=lxr5bmWuhkmE0DfRbj4d6wYPYcZ5uWpMzCqrvvShRetTfCrs8wyJtzyB
+   kSas7/D+5YlJk/0Oqlsi+aw553znyED6P5O5Jfrh8k1ms2u2QagutplDc
+   Y3Nhr3wWnWVRmEDsKVrJL3AYl7lNdNm8nZ0lDFVAvjeRN0oJAbvszB/JW
+   tUmAeHDG19quFcpMv/uEpa2prD5YajqdzknGS6E/uh6eqHF+VNEbY41MT
+   BZPlcQLFwTzYMHv3kfUBD5S0PsNQ14qZsiOgZZxU2YiD598IXZQc0tLMO
+   jTo254MImxMWW2Vm0NMestEVR9MNiJPjqk+1lAFe0R0vHEhLPnBncupAz
+   w==;
+X-CSE-ConnectionGUID: Yty2a/IFR5uTPnZ2V+JqOQ==
+X-CSE-MsgGUID: q/MyEStvROGTY0KNcv0DwA==
+X-IronPort-AV: E=Sophos;i="6.16,296,1744063200"; 
+   d="scan'208";a="45074462"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 08 Jul 2025 07:42:37 +0200
+X-CheckPoint: {686CAFCD-17-B791C630-E7A1546C}
+X-MAIL-CPID: E002399BF6E21CDA14271D361A9972B7_2
+X-Control-Analysis: str=0001.0A006399.686CAFF4.003D,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C7F09165CE8;
+	Tue,  8 Jul 2025 07:42:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1751953353;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dvdZlbFLOSBCY4Q+zQ5tbPvu2hRNVALGGd8gtRrbH20=;
+	b=FA4FCOkggEqJexNoCfYbgVEUeqWSYLw17WBBOatPcWtuFupyU9vNDPsMu0P412fQnRKPJv
+	N7Ua713dS9QyNVT3OVhjYeJ/BC6WDUQLfLze01bmtGRKH/dX55N4jzMyxbY5DRZDiLLaUV
+	iIiAE8WK2ksuzqHFv1HkgNd1Tw42fTWWhIDELjqBNsUayRKttJeqBgVLNcYhyPyh/msNTQ
+	/eNUJoV/TAJ8dsWK+V9nR+HclQBpb+8AoGDAQ1MOymKbKf631JAbksRto+6yfBQwESsP+I
+	7/nEyxU0ayhJlRyv4N5XL6fZFXbdWY8jXhK2dB18OKxOIZO/D62FbtcAtusvBw==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de
-Subject: [PATCH v3 4/4] arm64: dts: imx93-phyboard-nash: Add PEB-WLBT-07 overlay
-Date: Tue,  8 Jul 2025 06:22:06 +0200
-Message-Id: <20250708042206.329208-5-primoz.fiser@norik.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250708042206.329208-1-primoz.fiser@norik.com>
-References: <20250708042206.329208-1-primoz.fiser@norik.com>
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Mark Brown <broonie@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>,
+ Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev
+Subject: Re: [PATCH 1/2] bus: imx-aipstz: allow creating pdevs for child buses
+Date: Tue, 08 Jul 2025 07:42:31 +0200
+Message-ID: <22762518.EfDdHjke4D@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20250707234628.164151-2-laurentiumihalcea111@gmail.com>
+References:
+ <20250707234628.164151-1-laurentiumihalcea111@gmail.com>
+ <20250707234628.164151-2-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add overlay to support PHYTEC PEB-WLBT-07 WiFi/Bluetooth evaluation
-adapter on phyBOARD-Nash-i.MX93 board. Adapter uses the u-blox MAYA-W2
-module (IW612 chipset) which is capable of Wi-Fi 6 and Bluetooth 5.4 LE.
+Hi,
 
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
----
-Changes in v3:
-- fix license to match base dts
-- add Reviewed-by tag
+Am Dienstag, 8. Juli 2025, 01:46:27 CEST schrieb Laurentiu Mihalcea:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>=20
+> devm_of_platform_populate() passes a NULL as the bus OF match table
+> to the underlying of_platform_populate(), meaning child bus devices
+> of the AIPSTZ bridge will not have its children devices created. Since
+> some SoCs (e.g. i.MX8MP) use this particular setup (e.g. SPBA bus, which
+> is a child of AIPSTZ5 and has multiple child nodes), the driver needs to
+> support it.
+>=20
+> Therefore, replace devm_of_platform_populate() with of_platform_populate()
+> and pass a reference to the bus OF match table to it. For now, the only
+> possible child buses are simple buses.
+>=20
+> Since the usage of devres is dropped, the complementary operation of
+> of_platform_populate() needs to be called during the driver's removal.
+>=20
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> Fixes: 796cba2dd4d9 ("bus: add driver for IMX AIPSTZ bridge")
+> Reported-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> Closes: https://lore.kernel.org/lkml/5029548.31r3eYUQgx@steina-w/#t
 
- arch/arm64/boot/dts/freescale/Makefile        |  2 +
- .../imx93-phyboard-nash-peb-wlbt-07.dtso      | 88 +++++++++++++++++++
- 2 files changed, 90 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx93-phyboard-nash-peb-wlbt-07.dtso
+Thanks, with this SAI devices are probed again.
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 3166684ab558..699c3b1d80b2 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -325,9 +325,11 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
- 
-+imx93-phyboard-nash-peb-wlbt-07-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-nash-peb-wlbt-07.dtbo
- imx93-phyboard-segin-peb-eval-01-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-eval-01.dtbo
- imx93-phyboard-segin-peb-wlbt-05-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-wlbt-05.dtbo
- imx93-phycore-rpmsg-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-segin.dtb imx93-phycore-rpmsg.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash-peb-wlbt-07.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-eval-01.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-wlbt-05.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phycore-rpmsg.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash-peb-wlbt-07.dtso b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash-peb-wlbt-07.dtso
-new file mode 100644
-index 000000000000..7381b87444e8
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash-peb-wlbt-07.dtso
-@@ -0,0 +1,88 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
-+ * Author: Primoz Fiser <primoz.fiser@norik.com>
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include "imx93-pinfunc.h"
-+
-+&{/} {
-+	usdhc3_pwrseq: usdhc3-pwrseq {
-+		compatible = "mmc-pwrseq-simple";
-+		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
-+	};
-+};
-+
-+&lpuart5 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart5>;
-+	status = "okay";
-+
-+	bluetooth {
-+		compatible = "nxp,88w8987-bt";
-+	};
-+};
-+
-+/*
-+ * NOTE: When uSDHC3 port is multiplexed on GPIO_IO[27:22] pads, it only
-+ * supports 50 MHz mode, due to introduction of potential variations in
-+ * trace impedance, drive strength, and timing skew. Refer to i.MX 93
-+ * Application Processors Data Sheet, Rev. 3, page 60 for more details.
-+ */
-+&usdhc3 {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_usdhc3>, <&pinctrl_wlbt>;
-+	pinctrl-1 = <&pinctrl_usdhc3_sleep>, <&pinctrl_wlbt>;
-+	mmc-pwrseq = <&usdhc3_pwrseq>;
-+	bus-width = <4>;
-+	keep-power-in-suspend;
-+	non-removable;
-+	wakeup-source;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_uart5: uart5grp {
-+		fsl,pins = <
-+			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX	0x31e
-+			MX93_PAD_DAP_TDI__LPUART5_RX		0x31e
-+			MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B	0x31e
-+			MX93_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B	0x31e
-+		>;
-+	};
-+
-+	/* need to config the SION for data and cmd pad, refer to ERR052021 */
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO22__USDHC3_CLK		0x179e
-+			MX93_PAD_SD3_CMD__USDHC3_CMD 		0x4000178e
-+			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x4000138e
-+			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x4000138e
-+			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x4000138e
-+			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x4000138e
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_sleep: usdhc3sleepgrp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO22__USDHC3_CLK		0x31e
-+			MX93_PAD_SD3_CMD__USDHC3_CMD 		0x31e
-+			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x31e
-+			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x31e
-+			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x31e
-+			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x31e
-+		>;
-+	};
-+
-+	pinctrl_wlbt: wlbtgrp {
-+		fsl,pins = <
-+			MX93_PAD_CCM_CLKO2__GPIO3_IO27		0x31e	/* WAKE_DEV */
-+			MX93_PAD_CCM_CLKO3__GPIO4_IO28		0x31e	/* WAKE_HOST */
-+			MX93_PAD_CCM_CLKO4__GPIO4_IO29		0x31e	/* PDn */
-+		>;
-+	};
-+};
--- 
-2.34.1
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+
+> ---
+>  drivers/bus/imx-aipstz.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/bus/imx-aipstz.c b/drivers/bus/imx-aipstz.c
+> index 6610251f41c7..5fdf377f5d06 100644
+> --- a/drivers/bus/imx-aipstz.c
+> +++ b/drivers/bus/imx-aipstz.c
+> @@ -26,6 +26,11 @@ static void imx_aipstz_apply_default(struct imx_aipstz=
+_data *data)
+>  	writel(data->default_cfg->mpr0, data->base + IMX_AIPSTZ_MPR0);
+>  }
+> =20
+> +static const struct of_device_id imx_aipstz_match_table[] =3D {
+> +	{ .compatible =3D "simple-bus", },
+> +	{ }
+> +};
+> +
+>  static int imx_aipstz_probe(struct platform_device *pdev)
+>  {
+>  	struct imx_aipstz_data *data;
+> @@ -49,7 +54,13 @@ static int imx_aipstz_probe(struct platform_device *pd=
+ev)
+>  	pm_runtime_set_active(&pdev->dev);
+>  	devm_pm_runtime_enable(&pdev->dev);
+> =20
+> -	return devm_of_platform_populate(&pdev->dev);
+> +	return of_platform_populate(pdev->dev.of_node, imx_aipstz_match_table,
+> +				    NULL, &pdev->dev);
+> +}
+> +
+> +static void imx_aipstz_remove(struct platform_device *pdev)
+> +{
+> +	of_platform_depopulate(&pdev->dev);
+>  }
+> =20
+>  static int imx_aipstz_runtime_resume(struct device *dev)
+> @@ -83,6 +94,7 @@ MODULE_DEVICE_TABLE(of, imx_aipstz_of_ids);
+> =20
+>  static struct platform_driver imx_aipstz_of_driver =3D {
+>  	.probe =3D imx_aipstz_probe,
+> +	.remove =3D imx_aipstz_remove,
+>  	.driver =3D {
+>  		.name =3D "imx-aipstz",
+>  		.of_match_table =3D imx_aipstz_of_ids,
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
