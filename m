@@ -1,111 +1,306 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B8B220F5A
-	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 09:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4B1235063
+	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 09:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751966421; cv=none; b=Rs4OyeknTsspIENLnbfSHcdOT0/OtExpjlIO2TLUkls1SqjLiOPrSvyDNAubbRvVu6WVWKZBCVxgiHy51mhdwgpAoVyUUp58QFx6S9pL9Hoo95S1aN3kNtLARvADKb7jLshHB84QcRNikVGT4B11S5t8oMBcj64g9qeK3h+T4GE=
+	t=1751968335; cv=none; b=p6S2r7BweT6eMHeDF/SlZj7zR3bg+BMyUaEnqGLnuZBPD64EfJR3ydzIJuCv9FdTa1cNbNbOy1pTl7HXDPpPj5anaZBO6frval++sWkgZrsk2Tx2X6Mqn/Afx6diTZOn/fOOzj7nC3AHDzR4vrOEMM7ozto6+0EDpyiZ+dLEpPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751966421; c=relaxed/simple;
-	bh=tTnkj9/iMWnXfZ8wbeIpbX5DCcf2AwFFVw7LzOLB13I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lrysr2qi7lyhNHxIt47gGfucXF3BGkOpc07iUuuw9JBME6OGSrzfORWhnKHRJlRgw65PIUREh+U6lSf9ei8YCkmMTy74iPrjP88eOaPQwWGR2HIiSLq6owDdsVoR/+zuW2L20A+x9XA0At/WoJ1tZwgU1DUeX8oeUJUcrXGOyZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TzdxhTjG; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1751968335; c=relaxed/simple;
+	bh=/0Y1Y7OTqONCmx1m/8TUQikKpKzMmzQI4UbNLHxksNA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QfPmAuyTWSV/qSzM1amOLbf4OgAwm9grhD1TP+ZQCHu2Lgrc7gjZYLio+7gEzZskkEbdbsgRCQTHUuSQXvpA+QKuHnLGsOwtJgzxLG/Cjh6PTmbHYatH60h0e8teT8aWWLVUD0go+EDoFbMCJn6fFhYsJSP5WbLhShWRoKJfTmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FCIIW5hR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TzdxhTjG"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ae0dad3a179so711802566b.1
-        for <imx@lists.linux.dev>; Tue, 08 Jul 2025 02:20:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1751966418; x=1752571218; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qde20GPEW8GrZb6i2zWlEkGphLDMaxaujFgrrC5mKsw=;
-        b=TzdxhTjGYwUwYWNjfLxO+ElgoEw+VjVEygYVsaMuF7aOUb/GIPRPuJq6XS90QGLvwk
-         rP5glP5Q5lThh2TWZNihswHz0V5/p8dIvbOztkYY8Jxo/immPigl3yOV7ONcQvGUtUTH
-         uxsfMa2O9WtndF4Pyc2j7PeSeMU3OsCQXA4QUU4MTy1dAzoEd0jS1phtGs1v8mec9+B4
-         iT/G1hdLFHBLTFy72V+bdrrBCydKzuThfwLKq0whZqQAnNun2T4o3+Cd3oBNwyDF7KKC
-         u6OsurlfChULPzRu3+hCjBHcNb8vTPwg/9InZ47wqFXnzhpOGswzR9mK4bIBNm3E6+5P
-         1Vcg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FCIIW5hR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751968332;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2X5BK60lt8yHW2mcPT6pFw1X0evw7hr2NRoNEBvx6z8=;
+	b=FCIIW5hRlKDl0aaxY2Cv4PSpWMxf2T0AB1LjFG9bVejd68fIHNeUQo7422OTdF1vwFDo7W
+	iOeErN4c71i/Sq+tNapUhzMJfy6P7232G2RjP33K9vH8t8D0w+CD+rlj44feKhYhEnY/fZ
+	26qvTgEljZWmMHGIjfQ6TdlQWNd3rLQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-460-QQuGZ_54OFyR7Ghi7voWSw-1; Tue, 08 Jul 2025 05:52:11 -0400
+X-MC-Unique: QQuGZ_54OFyR7Ghi7voWSw-1
+X-Mimecast-MFC-AGG-ID: QQuGZ_54OFyR7Ghi7voWSw_1751968330
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45311704d1fso27349165e9.1
+        for <imx@lists.linux.dev>; Tue, 08 Jul 2025 02:52:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751966418; x=1752571218;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qde20GPEW8GrZb6i2zWlEkGphLDMaxaujFgrrC5mKsw=;
-        b=GLbSCM1qB1l9/ho3zGQAU1hOyuxq02oHUtDpIdaMYyZ7etIjFlCRiDFBIpzYHOJz3u
-         dPTbpPgA1VftCmXEBCrX0CkjYzrrq0U+neXABLIvfHeKMjb8wTAIu0Z/7jlpAfJdKmrR
-         Fxc3aXrBhfLsdGUSXfQyDicrjUWV7Wnv8LkHd5hW7DKFS/Mjm76o1rw4rUIzAgISF+Ya
-         tAhS7Fxzf6voGSOpkQuuA6Ka1ir+4ZKkTrcIIxb0LP8YSTzH9+eUeMZ8Yj62LBt21Bxn
-         333gVBEMi9svDQckpneRuB9rHeyuCl8sZuCwS77n6l/Q4IX740VsWR4S9znCPAb85Bjm
-         2VoA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLo8XDXlZ9PARXaSLk4RdNjAj5aKBUDdrKT2NwJ3MMrb7u8GFIuWSCt/ClVWly9tfM7sM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywg5eDTLuiXgLzFmU9Z1rkdCF11fTGFIG92T7/Yy2DZrASc4p9K
-	lcYwWOxMm08iw08LAnVIXG8IFWWCIa/1ZWmU8z4f/ds71kitZVnNonWao6Sf9H4DJZI=
-X-Gm-Gg: ASbGncsC/h/kDW+JtLrPv2h5c5FsITyE1ff3B31cpTC2lRGHADA60uOVs5IAGAmnOjL
-	7Efe17vumr7N01iKOsaqrYet6GoH1ydhuzOZcR2Wgioq60LtLaKAwhjat/fcZJX6uszSVWOapdc
-	J4x28JD4amu7J4rRfOlBq+X9wH37EVPkgfHQS4yJO+Uax71tN/Tqq62BcHOI0qzRTT27+ZM7uU4
-	R4S1d6Ue0GiIsp/I8XxHx/pouimqu0CepJLTtUn6yt9ViLG2CqGWz64DYOpkmlx1pEOasC0TUy5
-	CiIsINgQoR+uMrWiEalav5EjCeLqLG+QWL884Z0xOgzcRnJi33/RBkBSpc4=
-X-Google-Smtp-Source: AGHT+IHP/+5wQx+82Xsq93Q+p1ivWxiCeoN5FhCTp6b5wZJQBNJcP3y1aTVdV3ogaf3T1uMqF+NcPg==
-X-Received: by 2002:a17:906:f592:b0:ae0:a351:49b with SMTP id a640c23a62f3a-ae6b06f2722mr201059366b.34.1751966417914;
-        Tue, 08 Jul 2025 02:20:17 -0700 (PDT)
-Received: from linaro.org ([82.79.186.23])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f66e7d4asm840670366b.23.2025.07.08.02.20.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jul 2025 02:20:16 -0700 (PDT)
-Date: Tue, 8 Jul 2025 12:20:15 +0300
-From: Abel Vesa <abel.vesa@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
-	Frank Li <frank.li@nxp.com>, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Sandor Yu <Sandor.yu@nxp.com>
-Subject: Re: [PATCH v3 0/6] clock: imx95: Add LVDS/DISPLAY CSR for i.MX94
-Message-ID: <aGzizyLX8HDWsWWm@linaro.org>
-References: <20250707-imx95-blk-ctl-7-1-v3-0-c1b676ec13be@nxp.com>
+        d=1e100.net; s=20230601; t=1751968330; x=1752573130;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2X5BK60lt8yHW2mcPT6pFw1X0evw7hr2NRoNEBvx6z8=;
+        b=Q0fdj01T4EihiK8ze/EWBzSFoJkl522/GdG3d1G6NFzVkGkPg4+DXndidDAeJxHXCS
+         v5XAIDJcNBHyP1XrBlERQcRY4DKvBRcLjvogVP/Ek/f2TvgasuS1y8JsEjpZ0P5OFaG6
+         5GHB8WN1IkZbeAcn9unS6d8noQcFsDOAAgUGO23lAonsGnCnHfkqLWNy2CN6E2XhqRGL
+         j+Lt+Ca6XhX68e79T6XCwl3Ic2a5vuAtWKEq18iC1+ErwZfWR1PQhQ0MWeQmvJ8ghXoD
+         mrZWJHrlKlyupTrHfM5Qh50jvy+a+ucoUCySOnS+en4sk3o+qoI774gBUX8anYuC5gIw
+         KW8g==
+X-Forwarded-Encrypted: i=1; AJvYcCVCt+RRdpXkSvMWzr2Zhf0ccAYQgIttSp5+55Opres6yHdbz5Tv/sE9dMUW3Gvm3RtNgZc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxEZDOGvCSXustW0RcmxEo2ERE0UP2/JupomM8zbRsZcUi5SvXN
+	+B4gxumufrH6mrP/GzcSNy+LaJhR603b6SX8ujRnqmXnxADFk4lJvdA4dY/BfDYNERfOqtejbxJ
+	fMczi7n5FWJsfXB4EuEV7jy0v0wktiyXwdipypTKMUIut1iM2G/1X7Q==
+X-Gm-Gg: ASbGncvit4RA4vZ8oyVWqVCpnuKuSLBW5ThP/IUwi1wKoW+P+XWGcQ9CEoF3xhuqnI7
+	n/E20wmcdOy+QvJW0Ib2o7bUs0CwTeGWai6aM0K8Tl83tC0mbOhh7dI+oIZC9qT/93TY33qsdKd
+	3rVVumxQwv7i+5n/84Bbj0uQ30GZkU3OOMOVIZ+mGP6wkNXXxqEw/yiDpvYLYQMaB8o3dt44qu+
+	kTsviC9FiGNy6EyS9C6u2vIfjK3ajeZJmgQLPQTsnHGWlfjvozDIB/FYtS3S6C12MhMIXQh1xQ+
+	pFJ+kjaZXhMRlpMGK5DKpso0xOKHCJmwXPWy0tP7smYTK1VsewGIFNhYrmsTBUda9iWgqg==
+X-Received: by 2002:a05:600c:190c:b0:442:f482:c42d with SMTP id 5b1f17b1804b1-454c6531885mr70789295e9.9.1751968329690;
+        Tue, 08 Jul 2025 02:52:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMDOBH0qBMZ6iN2OTX9dqvc0LhZZ2FR75EoU2J03ehS7fOg9IG4eoFaiP/Vpy/EZIcQItAhw==
+X-Received: by 2002:a05:600c:190c:b0:442:f482:c42d with SMTP id 5b1f17b1804b1-454c6531885mr70788875e9.9.1751968329162;
+        Tue, 08 Jul 2025 02:52:09 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2717:8910:b663:3b86:247e:dba2? ([2a0d:3344:2717:8910:b663:3b86:247e:dba2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454cd45957fsm16437885e9.17.2025.07.08.02.52.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Jul 2025 02:52:08 -0700 (PDT)
+Message-ID: <d51a84c7-d534-44cc-88bc-73db8721e50e@redhat.com>
+Date: Tue, 8 Jul 2025 11:52:00 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250707-imx95-blk-ctl-7-1-v3-0-c1b676ec13be@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next v14 07/12] net: mtip: Add mtip_switch_{rx|tx} functions
+ to the L2 switch driver
+To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
+References: <20250701114957.2492486-1-lukma@denx.de>
+ <20250701114957.2492486-8-lukma@denx.de>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250701114957.2492486-8-lukma@denx.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: iL51fe9eWh9wgaendEnVe5rDfcxatiggsJWq72w7b4M_1751968330
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 25-07-07 10:24:36, Peng Fan wrote:
-> Similar to i.MX95, i.MX94 also has LVDS/DISPLAY CSR to provide
-> clock gate for LVDS and DISPLAY Controller. So following same approach
-> to add the support, as what have been done for i.MX95.
-> 
-> Patch 1 is to add the binding doc.
-> Patch 2 is fixes when supporting i.MX94, but the issues are
-> also exposed to i.MX95 even not triggered. No need to rush the
-> two patches for 6.16.
-> Patch 3 and 4 is to add the clk driver. Patch 3 is almost picked from
-> NXP downstream with a minor update. Patch 4 is modified from NXP
-> downstream with a few minor patches merged and updated.
-> Patch 5 is the dts part to give reviewer a whole view on how it is used.
-> 
-> Thanks for Frank Li helping do NXP internal review for the patchset.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+On 7/1/25 1:49 PM, Lukasz Majewski wrote:
+> diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> index 63afdf2beea6..b5a82748b39b 100644
+> --- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> @@ -228,6 +228,39 @@ struct mtip_port_info *mtip_portinfofifo_read(struct switch_enet_private *fep)
+>  	return info;
+>  }
+>  
+> +static void mtip_atable_get_entry_port_number(struct switch_enet_private *fep,
+> +					      unsigned char *mac_addr, u8 *port)
+> +{
+> +	int block_index, block_index_end, entry;
+> +	u32 mac_addr_lo, mac_addr_hi;
+> +	u32 read_lo, read_hi;
+> +
+> +	mac_addr_lo = (u32)((mac_addr[3] << 24) | (mac_addr[2] << 16) |
+> +			    (mac_addr[1] << 8) | mac_addr[0]);
+> +	mac_addr_hi = (u32)((mac_addr[5] << 8) | (mac_addr[4]));
+> +
+> +	block_index = GET_BLOCK_PTR(crc8_calc(mac_addr));
+> +	block_index_end = block_index + ATABLE_ENTRY_PER_SLOT;
+> +
+> +	/* now search all the entries in the selected block */
+> +	for (entry = block_index; entry < block_index_end; entry++) {
+> +		mtip_read_atable(fep, entry, &read_lo, &read_hi);
+> +		*port = MTIP_PORT_FORWARDING_INIT;
+> +
+> +		if (read_lo == mac_addr_lo &&
+> +		    ((read_hi & 0x0000FFFF) ==
+> +		     (mac_addr_hi & 0x0000FFFF))) {
+> +			/* found the correct address */
+> +			if ((read_hi & (1 << 16)) && (!(read_hi & (1 << 17))))
+> +				*port = FIELD_GET(AT_PORT_MASK, read_hi);
+> +			break;
+> +		}
+> +	}
+> +
+> +	dev_dbg(&fep->pdev->dev, "%s: MAC: %pM PORT: 0x%x\n", __func__,
+> +		mac_addr, *port);
+> +}
+> +
+>  /* Clear complete MAC Look Up Table */
+>  void mtip_clear_atable(struct switch_enet_private *fep)
+>  {
+> @@ -825,11 +858,217 @@ static irqreturn_t mtip_interrupt(int irq, void *ptr_fep)
+>  
+>  static void mtip_switch_tx(struct net_device *dev)
+>  {
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	unsigned short status;
+> +	struct sk_buff *skb;
+> +	struct cbd_t *bdp;
+> +
+> +	spin_lock(&fep->hw_lock);
+> +	bdp = fep->dirty_tx;
+> +
+> +	while (((status = bdp->cbd_sc) & BD_ENET_TX_READY) == 0) {
+> +		if (bdp == fep->cur_tx && fep->tx_full == 0)
+> +			break;
+> +
+> +		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
+> +				 MTIP_SWITCH_TX_FRSIZE, DMA_TO_DEVICE);
+> +		bdp->cbd_bufaddr = 0;
+> +		skb = fep->tx_skbuff[fep->skb_dirty];
+> +		/* Check for errors */
+> +		if (status & (BD_ENET_TX_HB | BD_ENET_TX_LC |
+> +				   BD_ENET_TX_RL | BD_ENET_TX_UN |
+> +				   BD_ENET_TX_CSL)) {
+> +			dev->stats.tx_errors++;
+> +			if (status & BD_ENET_TX_HB)  /* No heartbeat */
+> +				dev->stats.tx_heartbeat_errors++;
+> +			if (status & BD_ENET_TX_LC)  /* Late collision */
+> +				dev->stats.tx_window_errors++;
+> +			if (status & BD_ENET_TX_RL)  /* Retrans limit */
+> +				dev->stats.tx_aborted_errors++;
+> +			if (status & BD_ENET_TX_UN)  /* Underrun */
+> +				dev->stats.tx_fifo_errors++;
+> +			if (status & BD_ENET_TX_CSL) /* Carrier lost */
+> +				dev->stats.tx_carrier_errors++;
+> +		} else {
+> +			dev->stats.tx_packets++;
+> +		}
+> +
+> +		if (status & BD_ENET_TX_READY)
+> +			dev_err(&fep->pdev->dev,
+> +				"Enet xmit interrupt and TX_READY.\n");
+> +
+> +		/* Deferred means some collisions occurred during transmit,
+> +		 * but we eventually sent the packet OK.
+> +		 */
+> +		if (status & BD_ENET_TX_DEF)
+> +			dev->stats.collisions++;
+> +
+> +		/* Free the sk buffer associated with this last transmit */
+> +		dev_consume_skb_irq(skb);
+> +		fep->tx_skbuff[fep->skb_dirty] = NULL;
+> +		fep->skb_dirty = (fep->skb_dirty + 1) & TX_RING_MOD_MASK;
+> +
+> +		/* Update pointer to next buffer descriptor to be transmitted */
+> +		if (status & BD_ENET_TX_WRAP)
+> +			bdp = fep->tx_bd_base;
+> +		else
+> +			bdp++;
+> +
+> +		/* Since we have freed up a buffer, the ring is no longer
+> +		 * full.
+> +		 */
+> +		if (fep->tx_full) {
+> +			fep->tx_full = 0;
+> +			if (netif_queue_stopped(dev))
+> +				netif_wake_queue(dev);
+> +		}
+> +	}
+> +	fep->dirty_tx = bdp;
+> +	spin_unlock(&fep->hw_lock);
+>  }
+>  
+> +/* During a receive, the cur_rx points to the current incoming buffer.
+> + * When we update through the ring, if the next incoming buffer has
+> + * not been given to the system, we just set the empty indicator,
+> + * effectively tossing the packet.
+> + */
+>  static int mtip_switch_rx(struct net_device *dev, int budget, int *port)
+>  {
+> -	return -ENOMEM;
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	u8 *data, rx_port = MTIP_PORT_FORWARDING_INIT;
+> +	struct switch_enet_private *fep = priv->fep;
+> +	unsigned short status, pkt_len;
+> +	struct net_device *pndev;
+> +	struct ethhdr *eth_hdr;
+> +	int pkt_received = 0;
+> +	struct sk_buff *skb;
+> +	struct cbd_t *bdp;
+> +	struct page *page;
+> +
+> +	/* First, grab all of the stats for the incoming packet.
+> +	 * These get messed up if we get called due to a busy condition.
+> +	 */
+> +	bdp = fep->cur_rx;
+> +
+> +	while (!((status = bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
+> +		if (pkt_received >= budget)
+> +			break;
+> +
+> +		pkt_received++;
+> +
+> +		if (!fep->usage_count)
+> +			goto rx_processing_done;
+> +
+> +		status ^= BD_ENET_RX_LAST;
+> +		/* Check for errors. */
+> +		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH | BD_ENET_RX_NO |
+> +			      BD_ENET_RX_CR | BD_ENET_RX_OV | BD_ENET_RX_LAST |
+> +			      BD_ENET_RX_CL)) {
+> +			dev->stats.rx_errors++;
+> +			if (status & BD_ENET_RX_OV) {
+> +				/* FIFO overrun */
+> +				dev->stats.rx_fifo_errors++;
+> +				goto rx_processing_done;
+> +			}
+> +			if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH
+> +				      | BD_ENET_RX_LAST)) {
+> +				/* Frame too long or too short. */
+> +				dev->stats.rx_length_errors++;
+> +				if (status & BD_ENET_RX_LAST)
+> +					netdev_err(dev, "rcv is not +last\n");
+> +			}
+> +			if (status & BD_ENET_RX_CR)	/* CRC Error */
+> +				dev->stats.rx_crc_errors++;
+> +
+> +			/* Report late collisions as a frame error. */
+> +			if (status & (BD_ENET_RX_NO | BD_ENET_RX_CL))
+> +				dev->stats.rx_frame_errors++;
+> +			goto rx_processing_done;
+> +		}
+> +
+> +		/* Get correct RX page */
+> +		page = fep->page[bdp - fep->rx_bd_base];
+> +		/* Process the incoming frame */
+> +		pkt_len = bdp->cbd_datlen;
+> +		data = (__u8 *)__va(bdp->cbd_bufaddr);
+> +
+> +		dma_sync_single_for_cpu(&fep->pdev->dev, bdp->cbd_bufaddr,
+> +					pkt_len, DMA_FROM_DEVICE);
+> +		net_prefetch(page_address(page));
 
-For some reason, this doesn't apply cleanly.
+Both `__va(bdp->cbd_bufaddr)` and `page_address(page)` should point to
+the same same memory. Please use constantly one _or_ the other  - likely
+page_address(page) is the best option.
 
-Can you rebase on 6.16-rc1 and resend?
+> +
+> +		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
+> +			swap_buffer(data, pkt_len);
+> +
+> +		if (data) {
 
-Thanks,
-Abel
+The above check is not needed. If data is null swap_buffer will still
+unconditionally dereference it.
+
+Also it looks like it can't be NULL.
+
+/P
 
