@@ -1,173 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC2426B749
-	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 10:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6904E267732
+	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 10:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751969226; cv=none; b=D7sHHd3cl+zX8Q3LtrJsL8k8jhFibu7qhFqVAhs1C4yNx/fcDOnEZotO1SkZuNdEKFzGFD5Zegfyy4P7kvN8T/fZYvTiwLxUw4c0YnEINQOZgZ3N8G+JS4YIOkkIhTYeB3oETOhc3OT36NizULzcqVST0S21MT1Kk2JcyJLA3B8=
+	t=1751969561; cv=none; b=eP2wd4r8aNH+HZcVQ7HrNLUUzriFYNNkmsGwGohAfs7PA4Lpz2Ic4HMQqBVn+0HqwdULUX+5xi2t08Wf0W/O0jtAiEZHDJXN6WzEW7Is1DK8HbgTTksC4KcuIOGsZr2F9ZhjSay9X/poK8tAcuQ+FZZcz/aQ55cs3+miWTIhfdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751969226; c=relaxed/simple;
-	bh=fYyHl23C7iOML4Y3XMKrYo2vQEq5oT1hriKpsmH1Ugk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EILeVuHaJ93aVEQC0hax0F0E9gROoQO9QbQcGihVz9/dIcpHR7E3xks0PAbtJlxn/NkB6jn60Pnw0JMTB4PFn4BkupevHv0vn5LkmmcPVEVolYHbnBccMTTzVOoI2DqO33p4xYwId6NXb3FILxlpjIcol1jUkk+t6ebj/AQpkq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=freOrkbw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1751969561; c=relaxed/simple;
+	bh=lIdIuh0O/t3n7LtVB2cUksJC30jNSXA/jpebYB6unRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tpgQR8LNxA5+ns3HQAE5RCEykcohxdCMSrEby2aM51/J+Hir6DSl3fS4YlSjBHdkChJDs9+1xiW6tnUkCg2/ptMpAG7T9jiMOrv0/IBU3G3wTBVyQThxRfxUFBfe9PGUGdT6ib62u4G5LWDWLvpBQRfkAfRksNrSgN2OtRL2p9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de; spf=pass smtp.mailfrom=innosonix.de; dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b=HhZgq5mZ; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innosonix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="freOrkbw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751969223;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=58D8nthEMttD8EOjkycPcqwbL7GCEdeTDZ0Fg2Jn8PI=;
-	b=freOrkbwKv7La195Q1fK8fA6gKnwc7hmLTSnFoiN7nZ1AqkMaxtRB94LwscZf2rjp/4LvJ
-	i7Gx8Lc7H1/3pzCo32mK3so58ee9H+K9DfQ51xGrG7ASi2AKafqiRhQfcr/D2VxzRYiXQg
-	FrTllqqRRcdWoHCJlqbNEdKPG9bbySY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-dXpavUWfPTuBKFs-x6frnA-1; Tue, 08 Jul 2025 06:07:02 -0400
-X-MC-Unique: dXpavUWfPTuBKFs-x6frnA-1
-X-Mimecast-MFC-AGG-ID: dXpavUWfPTuBKFs-x6frnA_1751969221
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a503f28b09so2377235f8f.0
-        for <imx@lists.linux.dev>; Tue, 08 Jul 2025 03:07:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b="HhZgq5mZ"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a524caf77eso582061f8f.3
+        for <imx@lists.linux.dev>; Tue, 08 Jul 2025 03:12:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=innosonix.de; s=google; t=1751969557; x=1752574357; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gmX1zBN33lB4gzLUkNPqUBTAn0Dd9jMDbw1KtlNeu0A=;
+        b=HhZgq5mZU7HzKsWbf0mktwIKe9ZC60dbRFrI6Z5e0NzbF8AepyQ4njPpdXnr2+Obpz
+         cza7k+6VrB+hsCFI3cysPaSR2Etajz9hbe8Mvk31ZAPg2SqlHBZf2szC1mU8abj6clet
+         a7Z1A2sqUbfc08t9hNkTrDenja8Y+GhayTEolf34hEUBzrL2FWXpE1zEZKcJFbhtzl7+
+         DpqQauRwxGu/xkLE0XfV0Ki9JnI9+rpWtf+apCqbFGXxvy3QKA2ZP0mDvWLfa91oQev2
+         d+P8VXbQGovQKulDb22AsCTtD99NtURObuhsbTslV+eWSTG8RfJArUNQMdVK/F8gbIeU
+         Sgag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751969221; x=1752574021;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=58D8nthEMttD8EOjkycPcqwbL7GCEdeTDZ0Fg2Jn8PI=;
-        b=ZmPil7gZ/M8z4avsbOTRHkxqBi26AsprPFjdMg/7qp1DEa/VPCUz+JP18Fmc5UidjC
-         e7msC4gYSC0y8XuRJei15NsnRPCfMQtGg5ROaOzX8lN8Bi5KhHyOHdDhzPiHUJIBfuZG
-         jNrH6pWiGjNwb+G/t4MXMJ6wxEq1QwM7ZHoEHmZDkK66QdsuUO5Gp3cfLvaX7PQGdEnU
-         RKVLihsG9pyj1tQ68NwQW+QOM5Ra/gvI/pnBEO/DOW2DfCowiyuQ+EUJkYKMBYbL8Ins
-         FOSH01vD2sXD3HHMa6nqAhbXyR1ToTJF0ThiU/HmkgkthEhXUXNqw+REPIT7P6eAD6Ec
-         hgVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVzZ4maTmfq8pGaHXSfUM9C27d/5JTZB8G+oQmenkFumRosUIJYbyRzJH8jIAgWoo9RjJc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyiQN8D/5vbQaeC7VnWDwsBIqztrYuYqdKGJw1tl0xuy98aTO2C
-	arGpLXVXTgUksYfXOtvkJc2crePXlnI11dZ/1fQfH99AT5MKfVsqAz5qKmwG4MJabk62h+b0bW4
-	GQCxncP1CaaU7dbdcANU9zEnD+Qz2wyiH7qAZ7nz3JDoNxB74MiEuuQ==
-X-Gm-Gg: ASbGnctFF8Mbjn425XxeTEmf440n0V7SYmfOU0/G92t3HHEd50jwDcxcyjNXa7362gD
-	UBZci1p5cV2eWh1Y9CMn80nhxq2dyUMtwYeCIAcSwJDYGIyesSugAW5LQUkTEc1MmL3xTPEZfpK
-	rNBGO61XuqIZ0wXM+EILDJsEIwQeQQIpalPJbtjzZq0CLBmFJblDkpj/iRP7QDbSznTUiJ6sQD5
-	Gs6LRnNqX6+c+nSFlunBV3JdftbNN0IEfaKelhZHwZkixEKZxsuKBJYmWVt6wC2W4w2jj32opUe
-	yW/d6Tgwc/jEJvr93P8r8EMUxWnK3m3O9WLB8onObq5AU74djYlULjnJ6aSyyZyxGnd44A==
-X-Received: by 2002:a05:6000:2303:b0:3a5:271e:c684 with SMTP id ffacd0b85a97d-3b5de020c32mr1949617f8f.24.1751969220728;
-        Tue, 08 Jul 2025 03:07:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEtcYA73nlyPh3UUGiVwYijbG3S+DSKY5ccoYHAENjNZ6YmMjCSlj1e9xUsxHKnSmrtDCa3pg==
-X-Received: by 2002:a05:6000:2303:b0:3a5:271e:c684 with SMTP id ffacd0b85a97d-3b5de020c32mr1949573f8f.24.1751969220180;
-        Tue, 08 Jul 2025 03:07:00 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2717:8910:b663:3b86:247e:dba2? ([2a0d:3344:2717:8910:b663:3b86:247e:dba2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454cd2e7e89sm18221965e9.0.2025.07.08.03.06.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Jul 2025 03:06:59 -0700 (PDT)
-Message-ID: <b68a06a1-076a-4345-bbb4-7dda1cd73591@redhat.com>
-Date: Tue, 8 Jul 2025 12:06:45 +0200
+        d=1e100.net; s=20230601; t=1751969557; x=1752574357;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gmX1zBN33lB4gzLUkNPqUBTAn0Dd9jMDbw1KtlNeu0A=;
+        b=V949mlSgl7VxrhmSNmTEzA+GFuoMSSPVSdLNg2vEbpq3oHRAFY2XeCoQ9DzP33EwuM
+         8oMk68DDGrTlCHQvrk2HNpSpZrW8uKM9a825EGBWrUbd8X1tpSaqeeZH5kRSezBpRi1a
+         dm2i+qkYrbJvx1m/dyAYUVOLfeG3PnZCjbIgXhHbqUCIHFDhG6w3KCRmoGfiHKphq5Bh
+         WwMOxv5uNS1D7nm8gk+VCQY8gg+HmJ1p2eZJko2s2R3sogPdA1YrftyfYzqVJCc2Hbtd
+         w1dYkuZtFW4Nwz/pYNgYxRrSj8brMcMMsRzxXD2ANOXhh3fSYVTLGZ+/hHZ1PwaNX/1c
+         Fw8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWZIlyZWIKP6cyS/Qfy+tBZX0S0cEiPtwEZIWnd96pjInoYqKtDLfbQgT5OmYjAewoR9VI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz0wWZnla/FBU1xacMn7DAT65xT7LEKuILNVfv2ebDCzfkSU+aJ
+	gp7Vqs13eiFriOJQ/kFOtkgx73SGhVgINx88dF/3Fe1MtalI7pTHeDsNA92VjUI2i1zFT71CXZ2
+	SO0JcRTxwHiP27KqrSBvE+IeAu6beU960bk9mzyNv8JY+uHc=
+X-Gm-Gg: ASbGnctnU29BQWVKqQp0S/+WgM20IZzjozf9RVLVGIWrKtpSm/CBWjqXNaxsCr3RRY/
+	6eKkSIkQ/6MuNYPBfeeISlBnrVHWmXKJdwBahCQBQYHUUsf/8GK1cwjPCQtm35w4fen2dSs2p9b
+	SYuK2Y0TB5XRMfFLg7t0C2oVzW3HR49X5yblDvxtJDLtJHXukjQQgBAjXIWSpEiiCCF+ciQhieV
+	zlYaNAD4AYQR4MuiN58WwcbwsSOMYLZehWkkPYkkFtwt+6nIi9zFfWynQdun1Vx4dikwd8/1d6J
+	ZN98QgbpCpXwfYfz3b7lmBI+HCyNbp+Qzey4NPp2BLOuB9ef0tOXusyFySijbcvJOSDgD4fN67Z
+	n/0v580t+VKufjP28wjh5pw==
+X-Google-Smtp-Source: AGHT+IED26y+n9j+5pBqdocpELjkLG6eOq39ZrvJ+qRhatVN4TQ5wRzgtBzDH16tDXGPwRZX5wMJRA==
+X-Received: by 2002:a05:6000:310a:b0:3a6:d30e:6fd3 with SMTP id ffacd0b85a97d-3b4965ffca6mr4118923f8f.10.1751969556510;
+        Tue, 08 Jul 2025 03:12:36 -0700 (PDT)
+Received: from steffen-linux.. (p57b79c3d.dip0.t-ipconnect.de. [87.183.156.61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47225a2e8sm12558121f8f.75.2025.07.08.03.12.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Jul 2025 03:12:35 -0700 (PDT)
+From: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>
+To: 
+Cc: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
+	stable@vger.kernel.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4] nvmem: imx-ocotp: fix MAC address byte length
+Date: Tue,  8 Jul 2025 12:12:00 +0200
+Message-ID: <20250708101206.70793-1-steffen@innosonix.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next v14 04/12] net: mtip: The L2 switch driver for imx287
-To: Lukasz Majewski <lukma@denx.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- Stefan Wahren <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>
-References: <20250701114957.2492486-1-lukma@denx.de>
- <20250701114957.2492486-5-lukma@denx.de>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250701114957.2492486-5-lukma@denx.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: F4k8rLZJ3xzJJ47tHaX1LHHCB1mqaKStyrfqtg0zF4I_1751969221
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/1/25 1:49 PM, Lukasz Majewski wrote:
-> +static int mtip_sw_probe(struct platform_device *pdev)
-> +{
-> +	struct device_node *np = pdev->dev.of_node;
-> +	const struct mtip_devinfo *dev_info;
-> +	struct switch_enet_private *fep;
-> +	int ret;
-> +
-> +	fep = devm_kzalloc(&pdev->dev, sizeof(*fep), GFP_KERNEL);
-> +	if (!fep)
-> +		return -ENOMEM;
-> +
-> +	dev_info = of_device_get_match_data(&pdev->dev);
-> +	if (dev_info)
-> +		fep->quirks = dev_info->quirks;
-> +
-> +	fep->pdev = pdev;
-> +	platform_set_drvdata(pdev, fep);
-> +
-> +	fep->enet_addr = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(fep->enet_addr))
-> +		return PTR_ERR(fep->enet_addr);
-> +
-> +	fep->irq = platform_get_irq_byname(pdev, "enet_switch");
-> +	if (fep->irq < 0)
-> +		return fep->irq;
-> +
-> +	ret = mtip_parse_of(fep, np);
-> +	if (ret < 0)
-> +		return dev_err_probe(&pdev->dev, ret,
-> +				     "OF parse error\n");
-> +
-> +	/* Create an Ethernet device instance.
-> +	 * The switch lookup address memory starts at 0x800FC000
-> +	 */
-> +	fep->hwp_enet = fep->enet_addr;
-> +	fep->hwp = fep->enet_addr + ENET_SWI_PHYS_ADDR_OFFSET;
-> +	fep->hwentry = (struct mtip_addr_table __iomem *)
-> +		(fep->hwp + MCF_ESW_LOOKUP_MEM_OFFSET);
-> +
-> +	ret = devm_regulator_get_enable_optional(&pdev->dev, "phy");
-> +	if (ret)
-> +		return dev_err_probe(&pdev->dev, ret,
-> +				     "Unable to get and enable 'phy'\n");
-> +
-> +	fep->clk_ipg = devm_clk_get_enabled(&pdev->dev, "ipg");
-> +	if (IS_ERR(fep->clk_ipg))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(fep->clk_ipg),
-> +				     "Unable to acquire 'ipg' clock\n");
-> +
-> +	fep->clk_ahb = devm_clk_get_enabled(&pdev->dev, "ahb");
-> +	if (IS_ERR(fep->clk_ahb))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(fep->clk_ahb),
-> +				     "Unable to acquire 'ahb' clock\n");
-> +
-> +	fep->clk_enet_out = devm_clk_get_optional_enabled(&pdev->dev,
-> +							  "enet_out");
-> +	if (IS_ERR(fep->clk_enet_out))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(fep->clk_enet_out),
-> +				     "Unable to acquire 'enet_out' clock\n");
-> +
-> +	/* setup MII interface for external switch ports */
-> +	mtip_enet_init(fep, 1);
-> +	mtip_enet_init(fep, 2);
-> +
-> +	spin_lock_init(&fep->learn_lock);
-> +	spin_lock_init(&fep->hw_lock);
-> +	spin_lock_init(&fep->mii_lock);
+The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
+extension of the "mac-address" cell from 6 to 8 bytes due to word_size
+of 4 bytes. This led to a required byte swap of the full buffer length,
+which caused truncation of the mac-address when read.
 
-`mii_lock` is apparently unused in the whole series.
+Previously, the mac-address was incorrectly truncated from=20
+70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14.
 
-/P
+Fix the issue by swapping only the first 6 bytes to correctly pass the
+mac-address to the upper layers.
 
+Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
+Cc: stable@vger.kernel.org
+Signed-off-by: Steffen B=C3=A4tz <steffen@innosonix.de>
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+v4:
+- Adopted the commit message wording recommended by=20
+Frank.li@nxp.com to improve clarity.
+- Simplified byte count determination by using min() instead of an=20
+explicit conditional statement.
+- Kept the Tested-by tag from the previous patch as the change=20
+remains trivial but tested.
+v3:
+- replace magic number 6 with ETH_ALEN
+- Fix misleading indentation and properly group 'mac-address' statements
+v2:
+- Add Cc: stable@vger.kernel.org as requested by Greg KH's patch bot
+ drivers/nvmem/imx-ocotp-ele.c | 5 ++++-
+ drivers/nvmem/imx-ocotp.c     | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+index ca6dd71d8a2e..7807ec0e2d18 100644
+--- a/drivers/nvmem/imx-ocotp-ele.c
++++ b/drivers/nvmem/imx-ocotp-ele.c
+@@ -12,6 +12,7 @@
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
++#include <linux/if_ether.h>	/* ETH_ALEN */
+=20
+ enum fuse_type {
+ 	FUSE_FSB =3D BIT(0),
+@@ -118,9 +119,11 @@ static int imx_ocotp_cell_pp(void *context, const char=
+ *id, int index,
+ 	int i;
+=20
+ 	/* Deal with some post processing of nvmem cell data */
+-	if (id && !strcmp(id, "mac-address"))
++	if (id && !strcmp(id, "mac-address")) {
++		bytes =3D min(bytes, ETH_ALEN);
+ 		for (i =3D 0; i < bytes / 2; i++)
+ 			swap(buf[i], buf[bytes - i - 1]);
++	}
+=20
+ 	return 0;
+ }
+diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
+index 79dd4fda0329..7bf7656d4f96 100644
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -23,6 +23,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/delay.h>
++#include <linux/if_ether.h>	/* ETH_ALEN */
+=20
+ #define IMX_OCOTP_OFFSET_B0W0		0x400 /* Offset from base address of the
+ 					       * OTP Bank0 Word0
+@@ -227,9 +228,11 @@ static int imx_ocotp_cell_pp(void *context, const char=
+ *id, int index,
+ 	int i;
+=20
+ 	/* Deal with some post processing of nvmem cell data */
+-	if (id && !strcmp(id, "mac-address"))
++	if (id && !strcmp(id, "mac-address")) {
++		bytes =3D min(bytes, ETH_ALEN);
+ 		for (i =3D 0; i < bytes / 2; i++)
+ 			swap(buf[i], buf[bytes - i - 1]);
++	}
+=20
+ 	return 0;
+ }
+--=20
+2.43.0
+
+
+--=20
+
+
+*innosonix GmbH*
+Hauptstr. 35
+96482 Ahorn
+central: +49 9561 7459980
+www.innosonix.de <http://www.innosonix.de>
+
+innosonix GmbH
+Gesch=C3=A4ftsf=C3=BChrer:=20
+Markus B=C3=A4tz, Steffen B=C3=A4tz
+USt.-IdNr / VAT-Nr.: DE266020313
+EORI-Nr.:=20
+DE240121536680271
+HRB 5192 Coburg
+WEEE-Reg.-Nr. DE88021242
