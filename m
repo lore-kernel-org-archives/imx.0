@@ -1,30 +1,32 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8F71EBA19
-	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 12:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C141C5499
+	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 12:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751979167; cv=none; b=ZFhbwz2r8vumzfIVSnZmKcc4nWGlaMPvUU4sz2llg7cwsSL+Zl0WEZ5WcWV3d5B3IlkrxZFLI+t78ziYFm6yfGuulX0jJfx3AbzsBF9U50jRfZqZAK4GBlcG6BjwSO+QqjzDsBV8yuCvpXfD/La73JMIIQcv4Z/iz6mjU1Tm4qM=
+	t=1751979170; cv=none; b=Z6efoHGbe3+2OTX+BScrm/MKMb3dtDkaEeJZWAGcX+6vwz+0s66UPfZWd1LI3UOn7HMrHBejAgBkdR5f/Igln5qhUxQ3SmiDJAX33MQWj6TdZEApR7S0o8mqO6vEkhLgpWR67z+DeBPbbpEV7y6XKBjlJsFOw/3IEA8UXM6hXMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751979167; c=relaxed/simple;
-	bh=6y+Q7KZFsFLM5YEqkhjl5z1wHIu1iVSAO1omoXTtY+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L10L59U5vMfAx8OOwTUjbVNvqNpFfNZ27Faqh3LCLAtl76KPO6kjUsJzgoGlfn9WRe2DIjt5jIW0IHkeXR3wAULhfJKPCatYcP+JKBqXgZP/q2yEM2EwRbJYt8sHRijDP8wKEdIWec/dJ4MwDLo1tf+csojtKKtul41aW4DkRyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=tXfE8Rx8; arc=none smtp.client-ip=116.203.77.234
+	s=arc-20240116; t=1751979170; c=relaxed/simple;
+	bh=CiA1jrG9LwkeJYSaa/v+CECdJD+KXsEAYeCH/S3jCC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tk42scRmrt7kiQ7geiLKUkq4ScZ5I1rm2iqBf4g2uYXQJ2+moekOtGUta9hhm3D4yfwvZEPaix23LDlqceu3BaVbJzGUkTKeULinm8MQkRmdDg4t0JNxbvPlBzgC81QaW1deMpqnS0PUnxfvS33b3n2+aqvET2lJD2G1UOAB/Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=kDD3+HrY; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="tXfE8Rx8"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D203EC74C3;
-	Tue,  8 Jul 2025 14:52:42 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="kDD3+HrY"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C329BC74CA;
+	Tue,  8 Jul 2025 14:52:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
-	t=1751979163; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=Jn2Xlp+2akFaaeJ83XxhNPE3FBCl8lq/XPhKJygyha8=;
-	b=tXfE8Rx8lljzbmemNB0GyBrPStbNTi6vd+V8QymbyjqJdZaIIrbJxFXHmc4KRbVsVdN+Kr
-	uo7F4HM2JJbkHZioS8r269JyWt02r59NUT6P+BqUh4tBAxqZBaKso6h0ySEq/zWozmAvWn
-	sfxB+pD+dbsiFf8obYLW85ZUVTQDXFsengQt6+7RQwVGffwFozTUYX4qgBzYJxupwbt3dS
-	a/AeeRQMcfkTpaaQBbtBrn/F+VLb8U1acd6YLVa1WDjrCYrjHvFoM5DUAFMe7vowFs9wxQ
-	gdDjIBQvuWdy+EBMq3czNZkKbaS3RkZ0YsAPx/FX53ZzU915TgAg3igO1mwAxw==
+	t=1751979165; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ROBugoCgtg8KTg0qSPqwqigBv5vvES5FsJmkjJRkVMo=;
+	b=kDD3+HrYHWGZygMBWqUAUb6qKiNytx5CbulCNjt99ED3r+vQShaIoYR7r6g5sa9gPdTVwX
+	sN0HMeT3xmK4MK1yDErxen7E3QRFo4FxrbOY0wn7iBu0eCaLI5qKfJnKjnrZDT3Z5qa+M6
+	zgv51ymH+LJ+WIEpKOczqzpA7vCmJ+YfLRyYaymirjvzdLz+3byj4S2Wb9DRVmo7b+ssUf
+	5kZee/N6ReqHjXriOaDIQHZJ3uFC6wtm7v3+/7Y3u7PwGWOUdCSDmsLrCiv81IsS17ePAl
+	2VBX5n8+FUmtGmvzx1FX2GzItTgfLfkd4Rs3DDgiv4W4yiQSdgjHf5k5p950lA==
 From: Frieder Schrempf <frieder@fris.de>
 To: linux-arm-kernel@lists.infradead.org,
 	Conor Dooley <conor+dt@kernel.org>,
@@ -35,14 +37,16 @@ To: linux-arm-kernel@lists.infradead.org,
 	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>
-Cc: Eberhard Stoll <eberhard.stoll@kontron.de>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Eberhard Stoll <eberhard.stoll@kontron.de>,
 	Fabio Estevam <festevam@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH 1/2] ARM: dts: imx6ul-kontron-sl-common: Add SPI NOR partitions
-Date: Tue,  8 Jul 2025 14:52:16 +0200
-Message-ID: <20250708125219.63813-1-frieder@fris.de>
+Subject: [PATCH 2/2] ARM: dts: imx6ul-kontron-sl-common: Fix QSPI NAND node name
+Date: Tue,  8 Jul 2025 14:52:17 +0200
+Message-ID: <20250708125219.63813-2-frieder@fris.de>
 X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250708125219.63813-1-frieder@fris.de>
+References: <20250708125219.63813-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,49 +56,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-From: Eberhard Stoll <eberhard.stoll@kontron.de>
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Describe the partitions for the bootloader and the environment
-on the SPI NOR.
+Rename QSPI NAND node to 'flash@0' in order to fix the following
+dt-schema warning:
 
-Signed-off-by: Stoll, Eberhard <eberhard.stoll@kontron.de>
+spi-flash@0 (spi-nand): $nodename:0: 'spi-flash@0' does not match '^(flash|.*sram|nand)(@.*)?$'
+
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- .../dts/nxp/imx/imx6ul-kontron-sl-common.dtsi | 21 +++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi
-index dcf88f6103466..ab149c40a9cc1 100644
+index ab149c40a9cc1..793c95d44c7d0 100644
 --- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi
 +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi
-@@ -28,6 +28,27 @@ flash@0 {
- 		compatible = "mxicy,mx25v8035f", "jedec,spi-nor";
- 		spi-max-frequency = <50000000>;
- 		reg = <0>;
-+
-+		partitions {
-+			compatible = "fixed-partitions";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			partition@0 {
-+				label = "u-boot";
-+				reg = <0x0 0xf0000>;
-+			};
-+
-+			partition@f0000 {
-+				label = "env";
-+				reg = <0xf0000 0x8000>;
-+			};
-+
-+			partition@f8000 {
-+				label = "env_redundant";
-+				reg = <0xf8000 0x8000>;
-+			};
-+		};
- 	};
- };
+@@ -82,7 +82,7 @@ &qspi {
+ 	pinctrl-0 = <&pinctrl_qspi>;
+ 	status = "okay";
  
+-	spi-flash@0 {
++	flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "spi-nand";
 -- 
 2.50.0
 
