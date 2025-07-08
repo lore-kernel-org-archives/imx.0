@@ -1,98 +1,77 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522E82E4274
-	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 15:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180BB2DAFCE;
+	Tue,  8 Jul 2025 16:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751989749; cv=none; b=F6RAL+y5GxqxFkHD/u+ZnIwgaj+3GzGahABV1FqKHehgBHD+wdvK3CrQE/WAJHEN57dZTbTm8H1P8CFy7cXDSkm8qsfk3VL9rLXXYN/E+0o7glCZfhtAH1KPgmgMk2r0jJXARDfCDmBmIr5BKNPoWJbYnI3ebfv+CtLKV2gxuTg=
+	t=1751990527; cv=none; b=g5vFpbwZ06KoaIUH0zz0rx6vWijj108p3qvHu2X1NcpHKd7vuijXwG6WvYzn1DvgxVcDfiLlcl1R2JFkhqX6771feTGfA6JWKFQ6eCB4oGp7mj8DQwmsgF88HQD/B5K9xOZqpKe+w4NIIQQNso5Dzpn8ZVzsxliZBO8g+EKVEjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751989749; c=relaxed/simple;
-	bh=TjYyJX9/ix0ggD5G2o6vYO53UVrd9enmDUtE5lxC6RU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aqHzzid5lrmmjp45bp1KKrF3ZPa6cVJEPWwlCYGyluS1ErJlahMK9PrLs9VRc9li/hJhMz8c/rPcyfVpy+FFuPKByefyZfJuX020g9IC0Ss1qWp5kkA4JqqLHLN7ggD90mAuXu03rZQPOvJvMjFPfzTEg0IRSb8B822sAP0we9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BXSh7Znc; arc=none smtp.client-ip=217.70.183.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1751990527; c=relaxed/simple;
+	bh=GNssoeP2Eso0gHBb8ybVVDWbqf17VrAwWGD5GrJmy6w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q42vinRfrUmakxqULwuIPKX+evSoJe18hp5byPdJi/5wbfDN+JH2ybEwLhSDu9VQkDDP3t1MyRZsG0bBfEfiFelUrsDHe6DbHYlgYpScxoa3f9msnqMNKDGthlhFHbXWO7DgrapebVXbs6BRP56NsVpFhtXZn7ip2eebrWGNtz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UgFHf4Yk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BXSh7Znc"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C8273443DB;
-	Tue,  8 Jul 2025 15:49:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751989745;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aMTC3QBYrvHq48KBEug8vTKLT7GUjwQuXIH7m4QRt9o=;
-	b=BXSh7ZncQLt1GPp5+9IWJMftTVyDqk+oHjMrg2Ul9NKZxOtveZ8gYlS/Bdas2RbSXlqxba
-	Lii5zQ9IE1YbOiEHO9dCkYbmg1KrEvsldh8BcNw0qLchDMbNdqeT+LBjpPDhko6FeGrRR2
-	lRUdvjoE6qE+j/NkBbhc+aoeJHLQ1YHxu6z1Ck3Ur+mBokDA9dhHSpV6NQdY8V9uOngix4
-	jJc2mNMysccVdwNh6cvDCaSZtXfl95j4jAI2FZFzIoO2k7xLyx59IbujMp1x7xhGyp0MVE
-	vimiYZN8HKvYw+BWnpDFze3iK+KfIfqTVjg84OXEEPbvJtqBLLimRRX4NgahAA==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Tue, 08 Jul 2025 17:48:22 +0200
-Subject: [PATCH v9 5/5] drm/probe-helper: put the bridge returned by
- drm_bridge_chain_get_first_bridge()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UgFHf4Yk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED3EC4CEED;
+	Tue,  8 Jul 2025 16:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751990526;
+	bh=GNssoeP2Eso0gHBb8ybVVDWbqf17VrAwWGD5GrJmy6w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UgFHf4YkTtH7jJRKpaadTtG8MfzhmmyzbI6KBFyBYEKq2PZqG+lO9LdAhSQtgRfj2
+	 cIXlU9PoqkKgjEB/bVrnUnERYfWu+rFhZvvOdDa8bwLvsqwUuOsgR9qlOVtzpVdKki
+	 rsVwSBbMxHArKhaLO/FmM6Y3WPbDjrzG9oyl4ZPA8jwxV0byIqz6m8258b/NiOm115
+	 SsGtlepgoMPPixVBnk8Y3Dp+T4Lf10VwB3tXF45P627YUhyf/blh3km8lUJ1GNURyj
+	 7BrZ4SoHO0/bLQcnp5Pfzv/o7+rH3ejyCNGjM1QjKwNY/fumYSMqqiC+/Uenl6SZn6
+	 b9Ij2dPC0+UhA==
+Date: Tue, 8 Jul 2025 11:02:04 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, imx@lists.linux.dev,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>
+Subject: Re: [PATCH v2 1/1] dt-bindings: input: convert lpc32xx-key.txt to
+ yaml format
+Message-ID: <175199052372.494550.3218968445396297857.robh@kernel.org>
+References: <20250630163232.2839067-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250708-drm-bridge-alloc-getput-drm_bridge_chain_get_first_bridge-v9-5-db1ba3df7f58@bootlin.com>
-References: <20250708-drm-bridge-alloc-getput-drm_bridge_chain_get_first_bridge-v9-0-db1ba3df7f58@bootlin.com>
-In-Reply-To: <20250708-drm-bridge-alloc-getput-drm_bridge_chain_get_first_bridge-v9-0-db1ba3df7f58@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Liu Ying <victor.liu@nxp.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.14.2
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefhedtkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpefnuhgtrgcuvegvrhgvshholhhiuceolhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepieeiuedvffetgfeuudelheeutefggfejieettdetteekueeuueeukeevvedvueevnecukfhppeekjedruddvtddrvddukedrvddtjeenucevlhhushhtvghrufhiiigvpeefnecurfgrrhgrmhepihhnvghtpeekjedruddvtddrvddukedrvddtjedphhgvlhhopegludelvddrudeikedruddrudefngdpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvhedprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprhgtphhtthhopegurhhiqdguvghvvghlsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtoheplhhutggrrdgtvghrvghsohhlihessghoohhtlhhinhdrtghomhdprhgtphhtt
- hhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjvghrnhgvjhdrshhkrhgrsggvtgesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-Sasl: luca.ceresoli@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250630163232.2839067-1-Frank.Li@nxp.com>
 
-The bridge returned by drm_bridge_chain_get_first_bridge() is
-refcounted. Put it when done.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
+On Mon, 30 Jun 2025 12:32:31 -0400, Frank Li wrote:
+> Convert lpc32xx-key.txt to yaml format.
+> 
+> Additional changes:
+> - set maximum of key-row(column) to 4.
+> - add ref to matrix-keymap.yaml.
+> 
+> Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v2
+> - add ref to matrix-keymap.yaml.
+> - remove properties, which already defined in matrix-keymap.yaml.
+> - Add Vladimir Zapolskiy review tag
+> ---
+>  .../devicetree/bindings/input/lpc32xx-key.txt | 34 -----------
+>  .../bindings/input/nxp,lpc3220-key.yaml       | 61 +++++++++++++++++++
+>  2 files changed, 61 insertions(+), 34 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/input/lpc32xx-key.txt
+>  create mode 100644 Documentation/devicetree/bindings/input/nxp,lpc3220-key.yaml
+> 
 
-This patch was added in v7.
----
- drivers/gpu/drm/drm_probe_helper.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/gpu/drm/drm_probe_helper.c b/drivers/gpu/drm/drm_probe_helper.c
-index 6b3541159c0ffdd6dc05b6a2324ec0de9d1c5474..09b12c30df69d44f099f119739b8d5d2f77907d5 100644
---- a/drivers/gpu/drm/drm_probe_helper.c
-+++ b/drivers/gpu/drm/drm_probe_helper.c
-@@ -119,6 +119,7 @@ drm_mode_validate_pipeline(struct drm_display_mode *mode,
- 		*status = drm_bridge_chain_mode_valid(bridge,
- 						      &connector->display_info,
- 						      mode);
-+		drm_bridge_put(bridge);
- 		if (*status != MODE_OK) {
- 			/* There is also no point in continuing for crtc check
- 			 * here. */
-
--- 
-2.50.0
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
