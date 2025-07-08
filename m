@@ -1,1075 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011024.outbound.protection.outlook.com [52.101.65.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB412E5B12;
-	Tue,  8 Jul 2025 17:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751996968; cv=none; b=MQw/qjAwnWYX1UN2xeluq2zJR5Fr3z1rU7YgvxRoMkaASgGeUsq5AmlyNDGVp0IzxB/VNz8TW05bMajOT+rO5vQ1e+PYjCMOMbxQxio4K9JcFf+XjPbv5esgKQGDo3Q3D99ZUHX066kTouOUlm7rhVTUrkke/1HFqLRaVEOVpY8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751996968; c=relaxed/simple;
-	bh=QXAJWjll6ukWoUikG+0QyFUQi4MuOc3jW/3Eue+H0DA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lU42YSYcYIZ4YIxJD0/WzUoXvoyIhtdSFqoTM7ata4WtujQ0n/CgXEHA2pRBAHiOKLGbo47FFPXNJoZDuTAmAnKX4oFHh51YKxd6/i+6WU9z7ywT9vAMnaIY5Mm7gIe1mlBSTjtU9rdo8kxIs/130lGQjrmj30wXdYXjjUzNxqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jw2mv/3H; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4259019D8A8
+	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 17:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751997331; cv=fail; b=THYTMSWfzTaspcsN7lFup+Ro9kRy2BUOg0N8cnUpjCaWehXZDG66Qu5zd3Ck6RdqpZPlwhj4aF9/yqRz1iN5s4hiGnjS4Vmpae8B5ErGxgJejaeuR7wy8HN7DHkpp+xmBIZf1i35ZK1b9sozwDTbk2i91AJOTtsxOIlU9XqlLD8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751997331; c=relaxed/simple;
+	bh=QGKPy3SiDwXOY5HiH05SHsJgDIP33W8v3gUMPxbNAwo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DsuNQeA3oj7B47d/JuDYyOshU40XVf0XKyW64AN9Zkwwq6d/8YTRdutGXVZGnz5G9uJelANL8YER0Df5DxZcDBO0IgFRE9UKli5WJUYYOGEzdVNAbE7jiT0sw6IpXrTOsB8ZIl+Bz/sVOyUnWYTKZTwP/hyC/2mqVISNFgAOFH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=O44mnGdX; arc=fail smtp.client-ip=52.101.65.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jw2mv/3H"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 70F20C4CEF0;
-	Tue,  8 Jul 2025 17:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751996967;
-	bh=QXAJWjll6ukWoUikG+0QyFUQi4MuOc3jW/3Eue+H0DA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Jw2mv/3HzW4fRpQThz3w4/qrSAhjKyP5kgeVKIzUnFcgIg7x/Kq0sINB3MsI44EG7
-	 AOpxuRXFP+Pzl6YMYvN/DiM+Xp3ydYG7C+kTEk28i2Qikg47xwU+rB3QYQuqSUVCDH
-	 PEVB+3atDIs3iUzQogGSXpfAVeu4LI4f8CaI5Rz/yqfbXv8jIHQqI2AoPIOA93u4zq
-	 0OmHfuttrhx3W9dbR0/zx764TQmna7W06d6vkVWguhJ06oo6e6AdH5JL7U2ctlIDdY
-	 76XzZZvR/5UCTbka/+4Zl4L9KpPLwHorS/PeVY9v6yK5g4H7spcFSKksZVa6YhlPCL
-	 BBjA6EgoILFBQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6149EC83F12;
-	Tue,  8 Jul 2025 17:49:27 +0000 (UTC)
-From: Frank Li via B4 Relay <devnull+Frank.Li.nxp.com@kernel.org>
-Date: Tue, 08 Jul 2025 13:48:43 -0400
-Subject: [PATCH v3 2/4] media: nxp: add V4L2 subdev driver for camera
- parallel interface (CPI)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="O44mnGdX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q6Eofo2REbs/T+OueIJ3OZwtXbR/345WF6Cfj2NJG+3knJ+P1AkuuAD1OUQu2lKe/OBgs3we6ZoZmx/1QXlezy2Xg1CVQsnbFWnsIcFVc313IBANntYKh6LSLOgFs1pyeNgm31o0aowHdeYqQF4sIQ9jx5TH6AvZvRjhAE05E7BRitIMYldgwmdNrRZJOmRuonoI5W/wlpl9wPhoC27d0JYRxW2o7o1C5RD2utIQaktKkxl/vjIAjj8DWXA0WVGpZ7X1Q0csm2STjnyWsU6ZxUOGaSR1HCjZpYTDRb6XH9sZa4EGHKtIhya/Qrs+wutJ4w6p49hkT9KodrnRi5GrYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XAOTt1W07arGNB4YgSmARkjoOYgz2lD3jk3TTdJ0w98=;
+ b=yttbsEPJAwwn4TGQ/OQTPNE8/j5sueFq6HujijtLEHgu96dupOQfWOrOObkNujOaoEssGCAvp7vE5tkquxHr6iq39dW9+6JEGXEpVbp6xg2ou0EAIAj+JVA3GZU5eUUR1Zqp4ZbB3Zr4DIAxGDfI0II2LoY8ft85Tn5mdvdAolBHUqgCLdE+01/7Zgat6yClDlHHX1zKJn7ODH03Rkx34fX7lPZAko64xVQq5mPtkPLlAB6LDIuyxG8gVNVyUbIkosVrNAyUtpujjr/6muOHYGQU1W0G7tQe83Wsm0IM+o9a+VU1lO3Lb7UGYRkQqomzZT0f1wO+HRTDCjLo3Hv7qw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XAOTt1W07arGNB4YgSmARkjoOYgz2lD3jk3TTdJ0w98=;
+ b=O44mnGdXhLxI2/l9owcYyoK3uR4SWtkFdQnJs9cKcxihvrOWg646hQFrGwXbfyV+mPOy6p/VrLsecNNm2bJ4TcgblsIlLtHgQqQXLuPG6ZzBfSDrAPSyncCGbHc8b11EYQm1Vl+v1o0NEvcF/viJ64QmeYz8WrM2XL5ZCYOdh6TgN6lcR04QP4pHFSLYFRtXkkg5k2elKsO9MD1OUEA6Q18XD0Tjf6zrWFhYlT0tzmjjP6X8n5L9E7Tfyl8GN84K3CEsi2V+uw7Y4IsND05Ta1MGIeyIIHRqvXzI1zPUX4iXQtne+VUmxeIgy+rGd+F1DdKW2L6084ZIwXquTtkbwA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by GV1PR04MB10453.eurprd04.prod.outlook.com (2603:10a6:150:1d2::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Tue, 8 Jul
+ 2025 17:55:22 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8901.023; Tue, 8 Jul 2025
+ 17:55:22 +0000
+Date: Tue, 8 Jul 2025 13:55:17 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Frieder Schrempf <frieder@fris.de>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Eberhard Stoll <eberhard.stoll@kontron.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH v2 2/2] ARM: dts: imx6ul-kontron-sl-common: Fix QSPI NAND
+ node name
+Message-ID: <aG1bhbwV85GcjFaE@lizhi-Precision-Tower-5810>
+References: <20250708125607.66113-1-frieder@fris.de>
+ <20250708125607.66113-2-frieder@fris.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250708125607.66113-2-frieder@fris.de>
+X-ClientProxiedBy: AM0PR02CA0112.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28c::9) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250708-imx8qxp_pcam-v3-2-c8533e405df1@nxp.com>
-References: <20250708-imx8qxp_pcam-v3-0-c8533e405df1@nxp.com>
-In-Reply-To: <20250708-imx8qxp_pcam-v3-0-c8533e405df1@nxp.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rui Miguel Silva <rmfrfs@gmail.com>, 
- Martin Kepplinger <martink@posteo.de>, Purism Kernel Team <kernel@puri.sm>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, 
- Alice Yuan <alice.yuan@nxp.com>, Robert Chiras <robert.chiras@nxp.com>, 
- Zhipeng Wang <zhipeng.wang_1@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1751996966; l=29488;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=PT5CmasCdt7/8cm5icNCPffFevunYzPoz9WN27ZyTKk=;
- b=aYWwIJo+D9heWz2KQGXj75N1d0KUF2vwL1UNR95Fk0Cvr1zLcT+PHWu3jBOzIDIeciPUhvm7j
- r0cEHzjHaCFDJqKGNDzmSY8iB8/9/VCtoy+vWFj7pg+UZgoCtWdMsoR
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-Endpoint-Received: by B4 Relay for Frank.Li@nxp.com/20240130 with
- auth_id=121
-X-Original-From: Frank Li <Frank.Li@nxp.com>
-Reply-To: Frank.Li@nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GV1PR04MB10453:EE_
+X-MS-Office365-Filtering-Correlation-Id: 604bc02c-fcaf-4e35-68b1-08ddbe489c2e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|19092799006|376014|7416014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?wA1kziHpaMhrJBVAxJulG3eMJW5xOomdBaQasdDSKgTDl/dw5U18JjQuV6if?=
+ =?us-ascii?Q?EKSLxe37jsZV3lhUbvL2Qp4Ob0rp6uMPc5V1JG1TCUcZZpE83tjFZf8cNK86?=
+ =?us-ascii?Q?W1WePAKHQehjIk1rpHLwWCeviFudN9nznHoM8precJYby1SwxbRWvPj3jEqT?=
+ =?us-ascii?Q?lwrpXmo+BJgeTnr6plz6UAQkaYp//Z/wHAGEuhupsVMtG/pJ+ZMFXleikCeI?=
+ =?us-ascii?Q?hzOMWEBstJHnmQ+uBmgHhw05XzlN85DvXFUdg1kS2u4S8HmD38MLnFVPqdCb?=
+ =?us-ascii?Q?YGEqBWwn8l6fsPFPkadDsJTEMeKzK5ViQnHDWs+efA86l5opBge4UgsNigly?=
+ =?us-ascii?Q?F7L+U4wEHxuG7Esu3MBSny8jIdhGBUqlrsNgJX9dF3TYKTq+bpiN3tj5OpCj?=
+ =?us-ascii?Q?8x4HDBqqQoA2hWkbo7pVDSm3pq8tJfIGgGoWh4ddHuDLyA9OBM4YnVD0yVe/?=
+ =?us-ascii?Q?4KU3SRs73pTDmBiUU3Jkec2FTyglUwFVKDGqePPbBc2lV7gfQ/Ojzm6f/5Pz?=
+ =?us-ascii?Q?g/J1rKiFmPcAdZOgSeco8XpZdUY+2L590ei5NzMvVQdf3CteWnXLUbD3YUrV?=
+ =?us-ascii?Q?5XnjN1jQYZQjC5NrMR38l+3StMJnB+qeoayVN+VlHzOVzhViJRTmDhWcMkaI?=
+ =?us-ascii?Q?qYk7KVgBcQaSVjvuWo4cojshnyuxGFBSzvCnHC9ISfoNSwxN0DFHunTb0psL?=
+ =?us-ascii?Q?kKgGoWvraw45ZeyKzNXVVocHCXLLbgUPsPh2LlEsugXjKjo/miCT75g6Cr/C?=
+ =?us-ascii?Q?mIp265pLqHoI44KFW1lb9CbznADu+c8AGPXUmgMd4qncthQNkr9w7em8CFHd?=
+ =?us-ascii?Q?whQ5+gBd66zhmplFi9Pu4GUoQpOUssSRw8EqgrJLj78zY1Fc+4Wv5SOve2F/?=
+ =?us-ascii?Q?Y3ixZwV7CNsFNs+8VG4ch7FNBL2eSl4tJooOmP+7zgg60O2NhYWSapj0lSTj?=
+ =?us-ascii?Q?8zSVpE3P8UwUpSjYbRquVKv4UKMdLP1tvDX7dNHShHS8q/Xl3Tu/zgenyYMv?=
+ =?us-ascii?Q?cWYUXktBjTF0wYCdGbY/ZpPp9H1tUbCQKYxIHpYFfL/vhJk10SBB4/iLplVD?=
+ =?us-ascii?Q?ujcWGTCyVkWewFcBojDwzf+DL/6kriEk+I5AMwB1cO7XhiZtyfJqdEOGmqlB?=
+ =?us-ascii?Q?KL2WibeGvgQB5jVbRG7O1KrFtgukYjpLWSt7JGkAc1hdYB5/sAwy0OUHiEFM?=
+ =?us-ascii?Q?VmnIXIm8Gf5+LD1DjqOVSLPGCVQ/YohzF8WWVezVPoXTlXsPVQO90ZSAtq0g?=
+ =?us-ascii?Q?5AMBJ1cIa25De2c/7v/qP9mHEnRJF5TqdlawXgfr2iGe5G88eQX1rWAk++Cx?=
+ =?us-ascii?Q?2WKhl9CFY0Fl85Qqomy9jiz9X+l9NVmVxY3/JtWeizhGasrW7jMXbdyMtm0l?=
+ =?us-ascii?Q?Kht+KwH9PADOG079eOsp8M/bBmpFcSJXFKEwVxxcL4EDh2XKKUUmtDJhLjkb?=
+ =?us-ascii?Q?QBGu0zT/1ijWcmnj3JFIuaxk9QYD9QoSj58pD0Mp1ZzLyFWKTszS6w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(19092799006)(376014)(7416014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?y4T7Os2C57P2wyg9tqnk2qrES4AvAl2u1AJEJzSOnYKTNQzpFD4in27rv+ZJ?=
+ =?us-ascii?Q?8obYCvWZkSNQW3CRPB/xb0sSJtBM8iS/1YHhZfA9+3Z7ZYFQhu56r6+wPmW3?=
+ =?us-ascii?Q?M2fDkoevdqStQEDaCWaIgWfPZKrtvRPRareqEJIIOTdTO48JR/jcYfii0q3l?=
+ =?us-ascii?Q?fg6TCgu4DpGCJHWWK1cm/wE81UaKq3k8MhGDm4HSvfXurS9G3Xwb74X4uev3?=
+ =?us-ascii?Q?0odsEZJWqs4/EUY8nrehjFVeolJkEZkljpBGHhO2IcIWuGN2JlG2IxZrkXss?=
+ =?us-ascii?Q?A08KqqbtMT5rduIJZqIUU4HBQJbqcvN9yGwva0ZMIshpOgm858txzFcOeXgR?=
+ =?us-ascii?Q?BoEUjwSjlzy13cq/gsLTAhWpqIfUg8bgK1QfYL4Z3aP7SC6j8YiRZgTC4O/P?=
+ =?us-ascii?Q?CulMpmVGydpu0btblxTbecpoyt7Rcinvuqsix3b5ckX8JexawLaOq1NFQTFh?=
+ =?us-ascii?Q?N9jzAUxDArYUERt+2yitYXAJE5pUS1wUsKEF324CphzfYav0teG0u/r085eV?=
+ =?us-ascii?Q?b3eyHs9gbGNix4x0f/o2k/Zeej9C5u3DEbuJ4xXuTHWksFOhmXqKyLVxUDD0?=
+ =?us-ascii?Q?vYBAMOoXj3btrcKK6BnxaLPDbzmttmZhqd617a7l2IrDMQvoHy2TRIP8Icef?=
+ =?us-ascii?Q?hrGwaQnSZA0usq/s9o42NqdSCxh+w8EndsNSKlM2yQ8smP9393sWB5Y1PuMn?=
+ =?us-ascii?Q?2n8m+1bBIcda0I+Pawx66LT+obhM8eIGNhReStZGK89DrwSRRs2QwX1Kcsdq?=
+ =?us-ascii?Q?unYYNB1w20fyhurZucvkN8y2X5DrnX+sbwMz8uT5+NB90xdchNxyDNS2bHUf?=
+ =?us-ascii?Q?5fCwFPCv8G1UlsmbNAx/ynJC7uItp87DuxI6XQJihOVkZj9Z//OZBx6Tidqs?=
+ =?us-ascii?Q?3g5QbhoQughNAkghHW8QEBEwpTSpVaZcI82/j5CUkwS2ic4lEpZHouDrvZGa?=
+ =?us-ascii?Q?damZW9h8ax96O9iWQWTmMmMa8iC4qe5t0hRKLHXw7kZmFVCIcI3QXzRsJnfM?=
+ =?us-ascii?Q?har4pgJay0qs3KJyCS0GmvqUNX1pUM7bCD7NQkJuuuJFhjrS2wNI4fdaEFF1?=
+ =?us-ascii?Q?z62ZAJZ6csLHI9LG1kiS3JuTISvnuMZaHHWQXOFNjxbbNuOTK1uQGN6+mUAA?=
+ =?us-ascii?Q?DbJYbzmfKxY0r0dbzIbGre6hGMpsXtLRYKFhlKaZq9H/eoYSYuC2AwdCq/ZL?=
+ =?us-ascii?Q?ano8tFLYxXgru5Y5YPSmrZd/fF22SdJNmTnFCteTY9Es58FFusH2DrH/WXWQ?=
+ =?us-ascii?Q?lbHCuENUqzUlY0KdFGppklu2gLbXoUQZEo+wYanYD0V0+LsGPyE1RK4eoJLJ?=
+ =?us-ascii?Q?bgpudnjWlJYDwFuTKF58fC9K/rGTovtsd7iryZK3tIqYVIScXKwRGGLjs9dS?=
+ =?us-ascii?Q?fg1jHWpvhxnOXGWT76O3iQA1ebrIL77c43TR3ANHROpeyn6ccj07mqSD5edD?=
+ =?us-ascii?Q?LIi74r3h2sDbM6q/e4PGtCLxibHT0sercjKCo41LAy3i4IaoZ3FVaH3+bsM8?=
+ =?us-ascii?Q?O+agYUVDC97AP/uWzmCSb43FNFiJi1S7hU3PyF6rGUe0bCnmO6ECYxlXQfka?=
+ =?us-ascii?Q?rCex/AgAEunpuX8cgi7pamwqa4C58F6F1rY60pAJ?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 604bc02c-fcaf-4e35-68b1-08ddbe489c2e
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 17:55:22.5292
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fRcz5r9TuVlkmxrcCVw9LgSrKBz7RbKM9CEKhw/V2bM1ryTRDsmEkQ7ui/KsIRKSoaijnfKUUtTIV4lzWqrb+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10453
 
-From: Alice Yuan <alice.yuan@nxp.com>
+On Tue, Jul 08, 2025 at 02:56:05PM +0200, Frieder Schrempf wrote:
+> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+>
+> Rename QSPI NAND node to 'flash@0' in order to fix the following
+> dt-schema warning:
+>
+> spi-flash@0 (spi-nand): $nodename:0: 'spi-flash@0' does not match '^(flash|.*sram|nand)(@.*)?$'
+>
+> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+> ---
 
-Add a V4L2 sub-device driver for the CPI controller found on i.MX8QXP,
-i.MX8QM, and i.MX93 SoCs. This controller supports parallel camera sensors
-and enables image data capture through a parallel interface.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Signed-off-by: Alice Yuan <alice.yuan@nxp.com>
-Signed-off-by: Robert Chiras <robert.chiras@nxp.com>
-Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-change in v3
-- replace csi with cpi
-- use __free(fwnode_handle) to simpilfy code
-- remove imx91 driver data, which is the same as imx93
-
-change in v2
-- remove MODULE_ALIAS
-- use devm_pm_runtime_enable() and cleanup remove function
-- change output format to 1x16. controller convert 2x8 to 1x16 format
----
- MAINTAINERS                                   |   1 +
- drivers/media/platform/nxp/Kconfig            |  11 +
- drivers/media/platform/nxp/Makefile           |   1 +
- drivers/media/platform/nxp/imx-parallel-cpi.c | 920 ++++++++++++++++++++++++++
- 4 files changed, 933 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8ae0667d2bb41fb6a1549bd3b2b33f326cbd1303..14842a3b860a6f23846f12a684eedcbb9eb69e19 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15112,6 +15112,7 @@ F:	Documentation/devicetree/bindings/media/nxp,imx-mipi-csi2.yaml
- F:	Documentation/devicetree/bindings/media/nxp,imx7-csi.yaml
- F:	Documentation/devicetree/bindings/media/nxp,imx8mq-mipi-csi2.yaml
- F:	drivers/media/platform/nxp/imx-mipi-csis.c
-+F:	drivers/media/platform/nxp/imx-parallel-cpi.c
- F:	drivers/media/platform/nxp/imx7-media-csi.c
- F:	drivers/media/platform/nxp/imx8mq-mipi-csi2.c
- 
-diff --git a/drivers/media/platform/nxp/Kconfig b/drivers/media/platform/nxp/Kconfig
-index 40e3436669e213fdc5da70821dc0b420e1821f4f..504ae1c6494f331c16124a224421ac7acd433ba5 100644
---- a/drivers/media/platform/nxp/Kconfig
-+++ b/drivers/media/platform/nxp/Kconfig
-@@ -39,6 +39,17 @@ config VIDEO_IMX_MIPI_CSIS
- 	  Video4Linux2 sub-device driver for the MIPI CSI-2 CSIS receiver
- 	  v3.3/v3.6.3 found on some i.MX7 and i.MX8 SoCs.
- 
-+config VIDEO_IMX_PARALLEL_CPI
-+	tristate "NXP i.MX9/i.MX8 Parallel CPI Driver"
-+	depends on ARCH_MXC || COMPILE_TEST
-+	depends on VIDEO_DEV
-+	select MEDIA_CONTROLLER
-+	select V4L2_FWNODE
-+	select VIDEO_V4L2_SUBDEV_API
-+	help
-+	  Video4Linux2 sub-device driver for PARALLEL CPI receiver found
-+	  on some iMX8 and iMX9 SoCs.
-+
- source "drivers/media/platform/nxp/imx8-isi/Kconfig"
- 
- # mem2mem drivers
-diff --git a/drivers/media/platform/nxp/Makefile b/drivers/media/platform/nxp/Makefile
-index 4d90eb71365259ebdda84ea58483e1c4131d3ac7..5346919d2f1083b51ec99b66981c5d38b3df960c 100644
---- a/drivers/media/platform/nxp/Makefile
-+++ b/drivers/media/platform/nxp/Makefile
-@@ -7,5 +7,6 @@ obj-y += imx8-isi/
- obj-$(CONFIG_VIDEO_IMX7_CSI) += imx7-media-csi.o
- obj-$(CONFIG_VIDEO_IMX8MQ_MIPI_CSI2) += imx8mq-mipi-csi2.o
- obj-$(CONFIG_VIDEO_IMX_MIPI_CSIS) += imx-mipi-csis.o
-+obj-$(CONFIG_VIDEO_IMX_PARALLEL_CPI) += imx-parallel-cpi.o
- obj-$(CONFIG_VIDEO_IMX_PXP) += imx-pxp.o
- obj-$(CONFIG_VIDEO_MX2_EMMAPRP) += mx2_emmaprp.o
-diff --git a/drivers/media/platform/nxp/imx-parallel-cpi.c b/drivers/media/platform/nxp/imx-parallel-cpi.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..718f02bf70c4d0ae74ecf842c1ecb1a1afbcdd45
---- /dev/null
-+++ b/drivers/media/platform/nxp/imx-parallel-cpi.c
-@@ -0,0 +1,920 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * i.MX Parallel CPI receiver driver.
-+ *
-+ * Copyright 2019-2025 NXP
-+ *
-+ */
-+
-+#include <linux/bits.h>
-+#include <linux/clk.h>
-+#include <linux/debugfs.h>
-+#include <linux/delay.h>
-+#include <linux/errno.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/mfd/syscon.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
-+#include <linux/pm_domain.h>
-+#include <linux/pm_runtime.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/reset.h>
-+#include <linux/spinlock.h>
-+
-+#include <media/v4l2-common.h>
-+#include <media/v4l2-device.h>
-+#include <media/v4l2-event.h>
-+#include <media/v4l2-fwnode.h>
-+#include <media/v4l2-mc.h>
-+#include <media/v4l2-subdev.h>
-+
-+#define IMX_CPI_DEF_MBUS_CODE			MEDIA_BUS_FMT_UYVY8_2X8
-+#define IMX_CPI_DEF_PIX_WIDTH			1920
-+#define IMX_CPI_DEF_PIX_HEIGHT			1080
-+
-+#define IMX_CPI_MAX_PIX_WIDTH			0xffff
-+#define IMX_CPI_MAX_PIX_HEIGHT			0xffff
-+
-+#define IMX_CPI_PAD_SINK			0
-+#define IMX_CPI_PAD_SOURCE			1
-+#define IMX_CPI_PADS_NUM			2
-+
-+/* CI_PI INTERFACE CONTROL */
-+#define IF_CTRL_REG_PL_ENABLE			BIT(0)
-+#define IF_CTRL_REG_PL_VALID			BIT(1)
-+#define IF_CTRL_REG_DATA_TYPE_SEL		BIT(8)
-+#define IF_CTRL_REG_DATA_TYPE(x)		FIELD_PREP(GENMASK(13, 9), (x))
-+
-+#define DATA_TYPE_OUT_NULL			0x00
-+#define DATA_TYPE_OUT_RGB			0x04
-+#define DATA_TYPE_OUT_YUV444			0x08
-+#define DATA_TYPE_OUT_YYU420_ODD		0x10
-+#define DATA_TYPE_OUT_YYU420_EVEN		0x12
-+#define DATA_TYPE_OUT_YYY_ODD			0x18
-+#define DATA_TYPE_OUT_UYVY_EVEN			0x1a
-+#define DATA_TYPE_OUT_RAW			0x1c
-+
-+#define IF_CTRL_REG_IF_FORCE_HSYNV_OVERRIDE	0x4
-+#define IF_CTRL_REG_IF_FORCE_VSYNV_OVERRIDE	0x2
-+#define IF_CTRL_REG_IF_FORCE_DATA_ENABLE_OVERRIDE	0x1
-+
-+/* CPI INTERFACE CONTROL REG */
-+#define CPI_CTRL_REG_CPI_EN			BIT(0)
-+#define CPI_CTRL_REG_PIXEL_CLK_POL		BIT(1)
-+#define CPI_CTRL_REG_HSYNC_POL			BIT(2)
-+#define CPI_CTRL_REG_VSYNC_POL			BIT(3)
-+#define CPI_CTRL_REG_DE_POL			BIT(4)
-+#define CPI_CTRL_REG_PIXEL_DATA_POL		BIT(5)
-+#define CPI_CTRL_REG_CCIR_EXT_VSYNC_EN		BIT(6)
-+#define CPI_CTRL_REG_CCIR_EN			BIT(7)
-+#define CPI_CTRL_REG_CCIR_VIDEO_MODE		BIT(8)
-+#define CPI_CTRL_REG_CCIR_NTSC_EN		BIT(9)
-+#define CPI_CTRL_REG_CCIR_VSYNC_RESET_EN	BIT(10)
-+#define CPI_CTRL_REG_CCIR_ECC_ERR_CORRECT_EN	BIT(11)
-+#define CPI_CTRL_REG_HSYNC_FORCE_EN		BIT(12)
-+#define CPI_CTRL_REG_VSYNC_FORCE_EN		BIT(13)
-+#define CPI_CTRL_REG_GCLK_MODE_EN		BIT(14)
-+#define CPI_CTRL_REG_VALID_SEL			BIT(15)
-+#define CPI_CTRL_REG_RAW_OUT_SEL		BIT(16)
-+#define CPI_CTRL_REG_HSYNC_OUT_SEL		BIT(17)
-+#define CPI_CTRL_REG_HSYNC_PULSE(x)		FIELD_PREP(GENMASK(21, 19), (x))
-+#define CPI_CTRL_REG_UV_SWAP_EN			BIT(22)
-+#define CPI_CTRL_REG_DATA_TYPE_IN(x)		FIELD_PREP(GENMASK(26, 23), (x))
-+#define CPI_CTRL_REG_MASK_VSYNC_COUNTER(x)	FIELD_PREP(GENMASK(28, 27), (x))
-+#define CPI_CTRL_REG_SOFTRST			BIT(31)
-+
-+/* CPI INTERFACE STATUS */
-+#define CPI_STATUS_FIELD_TOGGLE			BIT(0)
-+#define CPI_STATUS_ECC_ERROR			BIT(1)
-+
-+/* CPI INTERFACE CONTROL REG1 */
-+#define CPI_CTRL_REG1_PIXEL_WIDTH(v)		FIELD_PREP(GENMASK(15, 0), (v))
-+#define CPI_CTRL_REG1_VSYNC_PULSE(v)		FIELD_PREP(GENMASK(31, 16), (v))
-+
-+/* Need match field DATA_TYPE_IN definition at CPI CTRL register */
-+enum cpi_in_data_type {
-+	CPI_IN_DT_UYVY_BT656_8 = 0x0,
-+	CPI_IN_DT_UYVY_BT656_10,
-+	CPI_IN_DT_RGB_8,
-+	CPI_IN_DT_BGR_8,
-+	CPI_IN_DT_YVYU_8 = 0x5,
-+	CPI_IN_DT_YUV_8,
-+	CPI_IN_DT_RAW_8 = 0x9,
-+	CPI_IN_DT_RAW_10,
-+};
-+
-+enum {
-+	PI_MODE_INIT,
-+	PI_GATE_CLOCK_MODE,
-+	PI_CCIR_MODE,
-+};
-+
-+enum {
-+	PI_V1,
-+	PI_V2,
-+};
-+
-+static const char *const imx_cpi_clk_id[] = {
-+	"pixel",
-+	"ipg",
-+};
-+
-+#define PCPIDEV_NUM_CLKS   ARRAY_SIZE(imx_cpi_clk_id)
-+
-+struct imx_cpi_plat_data {
-+	u32 version;
-+	u32 if_ctrl_reg;
-+	u32 interface_status;
-+	u32 interface_ctrl_reg;
-+	u32 interface_ctrl_reg1;
-+	u8 def_hsync_pol;
-+	u8 def_vsync_pol;
-+	u8 def_pixel_clk_pol;
-+	u8 def_cpi_in_data_type;
-+};
-+
-+struct cpi_pm_domain {
-+	struct device *dev;
-+	struct device_link *link;
-+};
-+
-+struct imx_cpi_device {
-+	struct device *dev;
-+	void __iomem *regs;
-+	struct reset_control *mrst;
-+	struct regulator *pcpi_phy_regulator;
-+	struct clk_bulk_data clks[PCPIDEV_NUM_CLKS];
-+
-+	struct v4l2_subdev sd;
-+	struct media_pad pads[IMX_CPI_PADS_NUM];
-+	struct v4l2_async_notifier notifier;
-+
-+	struct v4l2_mbus_framefmt format;
-+	const struct imx_cpi_plat_data *pdata;
-+	struct imx_cpi_pix_format const *pcpidev_fmt;
-+
-+	struct {
-+		struct v4l2_subdev *sd;
-+		const struct media_pad *pad;
-+	} source;
-+
-+	struct cpi_pm_domain pm_domains[2];
-+
-+	u8 mode;
-+	u8 uv_swap;
-+};
-+
-+struct imx_cpi_pix_format {
-+	u32 code;
-+	u32 output;
-+	u32 data_type;
-+	u8 width;
-+};
-+
-+static const struct imx_cpi_pix_format imx_cpi_formats[] = {
-+	/* YUV formats. */
-+	{
-+		.code = MEDIA_BUS_FMT_UYVY8_2X8,
-+		.output = MEDIA_BUS_FMT_UYVY8_1X16,
-+		.data_type = CPI_IN_DT_YVYU_8,
-+		.width = 16,
-+	}, {
-+		.code = MEDIA_BUS_FMT_YUYV8_2X8,
-+		.output = MEDIA_BUS_FMT_YUYV8_1X16,
-+		.data_type = CPI_IN_DT_YVYU_8,
-+		.width = 16,
-+	},
-+};
-+
-+static const struct imx_cpi_plat_data imx8qxp_pdata = {
-+	.version = PI_V1,
-+	.if_ctrl_reg = 0x0,
-+	.interface_status = 0x20,
-+	.interface_ctrl_reg = 0x10,
-+	.interface_ctrl_reg1 = 0x30,
-+	.def_hsync_pol = 1,
-+	.def_vsync_pol = 0,
-+	.def_pixel_clk_pol = 0,
-+	.def_cpi_in_data_type = CPI_IN_DT_UYVY_BT656_8,
-+};
-+
-+static const struct imx_cpi_plat_data imx93_pdata = {
-+	.version = PI_V2,
-+	.if_ctrl_reg = 0x0,
-+	.interface_status = 0x4,
-+	.interface_ctrl_reg = 0x8,
-+	.interface_ctrl_reg1 = 0xc,
-+	.def_hsync_pol = 0,
-+	.def_vsync_pol = 1,
-+	.def_pixel_clk_pol = 0,
-+	.def_cpi_in_data_type = CPI_IN_DT_YVYU_8,
-+};
-+
-+static void imx_cpi_regs_dump(struct imx_cpi_device *pcpidev)
-+{
-+	struct device *dev = pcpidev->dev;
-+	const struct imx_cpi_plat_data *pdata = pcpidev->pdata;
-+	u32 i;
-+
-+	struct {
-+		u32 offset;
-+		const char *const name;
-+	} registers[] = {
-+		{ pdata->if_ctrl_reg, "HW_IF_CTRL_REG" },
-+		{ pdata->interface_ctrl_reg, "HW_CPI_CTRL_REG" },
-+		{ pdata->interface_status, "HW_CPI_STATUS" },
-+		{ pdata->interface_ctrl_reg1, "HW_CPI_CTRL_REG1" },
-+
-+	};
-+
-+	for (i = 0; i < ARRAY_SIZE(registers); i++) {
-+		u32 reg = readl(pcpidev->regs + registers[i].offset);
-+
-+		dev_dbg(dev, "%20s[0x%.2x]: 0x%.8x\n",
-+			registers[i].name, registers[i].offset, reg);
-+	}
-+}
-+
-+static const struct imx_cpi_pix_format *find_imx_cpi_format(u32 code)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(imx_cpi_formats); i++)
-+		if (code == imx_cpi_formats[i].code)
-+			return &imx_cpi_formats[i];
-+
-+	return NULL;
-+}
-+
-+static void imx_cpi_sw_reset(struct imx_cpi_device *pcpidev)
-+{
-+	const struct imx_cpi_plat_data *pdata = pcpidev->pdata;
-+	u32 val;
-+
-+	/* Softwaret Reset */
-+	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
-+	val |= CPI_CTRL_REG_SOFTRST;
-+	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
-+
-+	usleep_range(500, 1000);
-+	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
-+	val &= ~CPI_CTRL_REG_SOFTRST;
-+	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
-+}
-+
-+static void imx_cpi_hw_config(struct imx_cpi_device *pcpidev)
-+{
-+	const struct imx_cpi_plat_data *pdata = pcpidev->pdata;
-+	u32 val;
-+
-+	/* Software Reset */
-+	imx_cpi_sw_reset(pcpidev);
-+
-+	/* Config PL Data Type */
-+	val = readl(pcpidev->regs + pdata->if_ctrl_reg);
-+	val |= IF_CTRL_REG_DATA_TYPE(DATA_TYPE_OUT_YUV444);
-+	writel(val, pcpidev->regs + pdata->if_ctrl_reg);
-+
-+	/* Enable sync Force */
-+	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
-+	val |= (CPI_CTRL_REG_HSYNC_FORCE_EN | CPI_CTRL_REG_VSYNC_FORCE_EN);
-+	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
-+
-+	/* Enable Pixel Link */
-+	val = readl(pcpidev->regs + pdata->if_ctrl_reg);
-+	val |= IF_CTRL_REG_PL_ENABLE;
-+	writel(val, pcpidev->regs + pdata->if_ctrl_reg);
-+
-+	/* Enable Pixel Link */
-+	val = readl(pcpidev->regs + pdata->if_ctrl_reg);
-+	val |= IF_CTRL_REG_PL_VALID;
-+	writel(val, pcpidev->regs + pdata->if_ctrl_reg);
-+
-+	/* Config CTRL REG */
-+	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
-+
-+	val |= (CPI_CTRL_REG_DATA_TYPE_IN(pdata->def_cpi_in_data_type) |
-+		FIELD_PREP(CPI_CTRL_REG_HSYNC_POL, pdata->def_hsync_pol) |
-+		FIELD_PREP(CPI_CTRL_REG_VSYNC_POL, pdata->def_vsync_pol) |
-+		FIELD_PREP(CPI_CTRL_REG_PIXEL_CLK_POL, pdata->def_pixel_clk_pol) |
-+		CPI_CTRL_REG_MASK_VSYNC_COUNTER(3) |
-+		CPI_CTRL_REG_HSYNC_PULSE(2));
-+
-+	if (pcpidev->uv_swap)
-+		val |= CPI_CTRL_REG_UV_SWAP_EN;
-+
-+	if (pcpidev->mode & PI_GATE_CLOCK_MODE) {
-+		val |= CPI_CTRL_REG_GCLK_MODE_EN;
-+	} else if (pcpidev->mode & PI_CCIR_MODE) {
-+		val |= (CPI_CTRL_REG_CCIR_EN |
-+			CPI_CTRL_REG_CCIR_VSYNC_RESET_EN |
-+			CPI_CTRL_REG_CCIR_EXT_VSYNC_EN |
-+			CPI_CTRL_REG_CCIR_ECC_ERR_CORRECT_EN);
-+	}
-+
-+	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
-+}
-+
-+static int get_interface_ctrl_reg1_param(struct imx_cpi_device *pcpidev,
-+					 u32 *pixel_width, u32 *vsync_pulse,
-+					 const struct v4l2_mbus_framefmt *format)
-+{
-+	u32 version = pcpidev->pdata->version;
-+
-+	switch (version) {
-+	case PI_V1:
-+		*pixel_width = format->width - 1;
-+		*vsync_pulse = format->width << 1;
-+		break;
-+	case PI_V2:
-+		*pixel_width = format->width << 3;
-+		*vsync_pulse = format->width - 1;
-+		break;
-+	default:
-+		dev_err(pcpidev->dev, "Not support PI version %d\n", version);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static void imx_cpi_config_ctrl_reg1(struct imx_cpi_device *pcpidev,
-+				     const struct v4l2_mbus_framefmt *format)
-+{
-+	const struct imx_cpi_plat_data *pdata = pcpidev->pdata;
-+	struct device *dev = pcpidev->dev;
-+	u32 pixel_width;
-+	u32 vsync_pulse;
-+	u32 val;
-+	int ret;
-+
-+	dev_dbg(dev, "%s %dx%d, fmt->code:0x%0x\n", __func__,
-+		format->width, format->height, format->code);
-+
-+	if (format->width <= 0 || format->height <= 0) {
-+		dev_err(dev, "%s width/height invalid\n", __func__);
-+		return;
-+	}
-+
-+	ret = get_interface_ctrl_reg1_param(pcpidev, &pixel_width,
-+					    &vsync_pulse, format);
-+	if (ret < 0)
-+		return;
-+
-+	val = (CPI_CTRL_REG1_PIXEL_WIDTH(pixel_width) |
-+	       CPI_CTRL_REG1_VSYNC_PULSE(vsync_pulse));
-+	writel(val, pcpidev->regs + pdata->interface_ctrl_reg1);
-+}
-+
-+static void imx_cpi_enable(struct imx_cpi_device *pcpidev)
-+{
-+	const struct imx_cpi_plat_data *pdata = pcpidev->pdata;
-+	u32 val;
-+
-+	/* Enable CPI */
-+	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
-+	val |= CPI_CTRL_REG_CPI_EN;
-+	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
-+
-+	/* Disable SYNC Force */
-+	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
-+	val &= ~(CPI_CTRL_REG_HSYNC_FORCE_EN | CPI_CTRL_REG_VSYNC_FORCE_EN);
-+	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
-+}
-+
-+static void imx_cpi_disable(struct imx_cpi_device *pcpidev)
-+{
-+	const struct imx_cpi_plat_data *pdata = pcpidev->pdata;
-+	u32 val;
-+
-+	/* Enable Sync Force */
-+	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
-+	val |= (CPI_CTRL_REG_HSYNC_FORCE_EN | CPI_CTRL_REG_VSYNC_FORCE_EN);
-+	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
-+
-+	/* Disable CPI */
-+	val = readl(pcpidev->regs + pdata->interface_ctrl_reg);
-+	val &= ~CPI_CTRL_REG_CPI_EN;
-+	writel(val, pcpidev->regs + pdata->interface_ctrl_reg);
-+
-+	/* Disable Pixel Link */
-+	val = readl(pcpidev->regs + pdata->if_ctrl_reg);
-+	val &= ~(IF_CTRL_REG_PL_VALID | IF_CTRL_REG_PL_ENABLE);
-+	writel(val, pcpidev->regs + pdata->if_ctrl_reg);
-+}
-+
-+static void imx_cpi_start_stream(struct imx_cpi_device *pcpidev,
-+				 const struct v4l2_mbus_framefmt *format,
-+				 const struct imx_cpi_pix_format *pcpidev_fmt)
-+{
-+	if (pcpidev_fmt->code == MEDIA_BUS_FMT_YUYV8_2X8 ||
-+	    pcpidev_fmt->code == MEDIA_BUS_FMT_UYVY8_2X8)
-+		pcpidev->uv_swap = 1;
-+
-+	imx_cpi_hw_config(pcpidev);
-+	imx_cpi_config_ctrl_reg1(pcpidev, format);
-+	imx_cpi_enable(pcpidev);
-+	imx_cpi_regs_dump(pcpidev);
-+}
-+
-+static void imx_cpi_stop_stream(struct imx_cpi_device *pcpidev)
-+{
-+	imx_cpi_regs_dump(pcpidev);
-+	imx_cpi_disable(pcpidev);
-+}
-+
-+/* -----------------------------------------------------------------------------
-+ * Async subdev notifier
-+ */
-+
-+static struct imx_cpi_device *
-+notifier_to_imx_cpi_device(struct v4l2_async_notifier *n)
-+{
-+	return container_of(n, struct imx_cpi_device, notifier);
-+}
-+
-+static struct imx_cpi_device *
-+sd_to_imx_cpi_device(struct v4l2_subdev *sdev)
-+{
-+	return container_of(sdev, struct imx_cpi_device, sd);
-+}
-+
-+static int imx_cpi_notify_bound(struct v4l2_async_notifier *notifier,
-+				struct v4l2_subdev *sd,
-+				struct v4l2_async_connection *asd)
-+{
-+	struct imx_cpi_device *pcpidev = notifier_to_imx_cpi_device(notifier);
-+	struct media_pad *sink = &pcpidev->sd.entity.pads[IMX_CPI_PAD_SINK];
-+
-+	return v4l2_create_fwnode_links_to_pad(sd, sink, 0);
-+}
-+
-+static const struct v4l2_async_notifier_operations imx_cpi_notify_ops = {
-+	.bound = imx_cpi_notify_bound,
-+};
-+
-+static int imx_cpi_async_register(struct imx_cpi_device *pcpidev)
-+{
-+	struct v4l2_fwnode_endpoint vep = {
-+		.bus_type = V4L2_MBUS_PARALLEL,
-+	};
-+	struct v4l2_async_connection *asd;
-+	struct fwnode_handle *ep __free(fwnode_handle) = NULL;
-+	int ret;
-+
-+	v4l2_async_subdev_nf_init(&pcpidev->notifier, &pcpidev->sd);
-+
-+	ep = fwnode_graph_get_endpoint_by_id(dev_fwnode(pcpidev->dev), 0, 0,
-+					     FWNODE_GRAPH_ENDPOINT_NEXT);
-+	if (!ep)
-+		return -ENOTCONN;
-+
-+	ret = v4l2_fwnode_endpoint_parse(ep, &vep);
-+	if (ret)
-+		return ret;
-+
-+	asd = v4l2_async_nf_add_fwnode_remote(&pcpidev->notifier, ep,
-+					      struct v4l2_async_connection);
-+	if (IS_ERR(asd))
-+		return PTR_ERR(asd);
-+
-+	pcpidev->notifier.ops = &imx_cpi_notify_ops;
-+	ret = v4l2_async_nf_register(&pcpidev->notifier);
-+	if (ret)
-+		return ret;
-+
-+	return v4l2_async_register_subdev(&pcpidev->sd);
-+}
-+
-+/* -----------------------------------------------------------------------------
-+ * Media entity operations
-+ */
-+
-+static int imx_cpi_link_setup(struct media_entity *entity,
-+			      const struct media_pad *local_pad,
-+			      const struct media_pad *remote_pad,
-+			      u32 flags)
-+{
-+	struct v4l2_subdev *sd = media_entity_to_v4l2_subdev(entity);
-+	struct imx_cpi_device *pcpidev = sd_to_imx_cpi_device(sd);
-+	struct v4l2_subdev *remote_sd;
-+
-+	dev_dbg(pcpidev->dev, "link setup %s -> %s", remote_pad->entity->name,
-+		local_pad->entity->name);
-+
-+	/* We only care about the link to the source. */
-+	if (!(local_pad->flags & MEDIA_PAD_FL_SINK))
-+		return 0;
-+
-+	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
-+	if (flags & MEDIA_LNK_FL_ENABLED) {
-+		if (pcpidev->source.sd)
-+			return -EBUSY;
-+
-+		pcpidev->source.sd = remote_sd;
-+		pcpidev->source.pad = remote_pad;
-+	} else {
-+		pcpidev->source.sd = NULL;
-+		pcpidev->source.pad = NULL;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct media_entity_operations imx_cpi_entity_ops = {
-+	.link_setup = imx_cpi_link_setup,
-+	.link_validate = v4l2_subdev_link_validate,
-+	.get_fwnode_pad = v4l2_subdev_get_fwnode_pad_1_to_1,
-+};
-+
-+static int imx_cpi_set_fmt(struct v4l2_subdev *sd,
-+			   struct v4l2_subdev_state *sd_state,
-+			   struct v4l2_subdev_format *sdformat)
-+{
-+	struct imx_cpi_pix_format const *pcpidev_fmt;
-+	struct imx_cpi_device *pcpidev = sd_to_imx_cpi_device(sd);
-+	struct device *dev = pcpidev->dev;
-+	struct v4l2_mbus_framefmt *fmt;
-+	unsigned int align;
-+
-+	/*
-+	 * The Parallel cpi can't transcode in any way, the source format
-+	 * can't be modified.
-+	 */
-+	if (sdformat->pad == IMX_CPI_PAD_SOURCE)
-+		return v4l2_subdev_get_fmt(sd, sd_state, sdformat);
-+
-+	/*
-+	 * Validate the media bus code and clamp and align the size.
-+	 *
-+	 * The total number of bits per line must be a multiple of 8. We thus
-+	 * need to align the width for formats that are not multiples of 8
-+	 * bits.
-+	 */
-+	pcpidev_fmt = find_imx_cpi_format(sdformat->format.code);
-+	if (!pcpidev_fmt)
-+		pcpidev_fmt = &imx_cpi_formats[0];
-+
-+	switch (pcpidev_fmt->width % 8) {
-+	case 0:
-+		align = 0;
-+		break;
-+	case 4:
-+		align = 1;
-+		break;
-+	case 2:
-+	case 6:
-+		align = 2;
-+		break;
-+	default:
-+		/* 1, 3, 5, 7 */
-+		align = 3;
-+		break;
-+	}
-+
-+	v4l_bound_align_image(&sdformat->format.width, 1,
-+			      IMX_CPI_MAX_PIX_WIDTH, align,
-+			      &sdformat->format.height, 1,
-+			      IMX_CPI_MAX_PIX_HEIGHT, 0, 0);
-+
-+	fmt = v4l2_subdev_state_get_format(sd_state, sdformat->pad);
-+	if (!fmt)
-+		return -EINVAL;
-+
-+	fmt->code = pcpidev_fmt->code;
-+	fmt->width = sdformat->format.width;
-+	fmt->height = sdformat->format.height;
-+	fmt->field = V4L2_FIELD_NONE;
-+	fmt->colorspace = sdformat->format.colorspace;
-+	fmt->quantization = sdformat->format.quantization;
-+	fmt->xfer_func = sdformat->format.xfer_func;
-+	fmt->ycbcr_enc = sdformat->format.ycbcr_enc;
-+
-+	sdformat->format = *fmt;
-+
-+	/* Propagate the format from sink to source. */
-+	fmt = v4l2_subdev_state_get_format(sd_state, IMX_CPI_PAD_SOURCE);
-+	*fmt = sdformat->format;
-+
-+	/* The format on the source pad might change due to unpacking. */
-+	fmt->code = pcpidev_fmt->output;
-+
-+	dev_dbg(dev, "%s: fmt_code:0x%0x, %dx%d\n", __func__,
-+		fmt->code, fmt->width, fmt->height);
-+	return 0;
-+}
-+
-+static const struct v4l2_mbus_framefmt imx_cpi_default_fmt = {
-+	.code = IMX_CPI_DEF_MBUS_CODE,
-+	.width = IMX_CPI_DEF_PIX_WIDTH,
-+	.height = IMX_CPI_DEF_PIX_HEIGHT,
-+	.field = V4L2_FIELD_NONE,
-+	.colorspace = V4L2_COLORSPACE_SMPTE170M,
-+	.xfer_func = V4L2_MAP_XFER_FUNC_DEFAULT(V4L2_COLORSPACE_SMPTE170M),
-+	.ycbcr_enc = V4L2_MAP_YCBCR_ENC_DEFAULT(V4L2_COLORSPACE_SMPTE170M),
-+	.quantization = V4L2_QUANTIZATION_LIM_RANGE,
-+};
-+
-+static int imx_cpi_init_state(struct v4l2_subdev *sd,
-+			      struct v4l2_subdev_state *sd_state)
-+{
-+	struct v4l2_subdev_format fmt = {
-+		.pad = IMX_CPI_PAD_SINK,
-+	};
-+
-+	fmt.format.code = imx_cpi_formats[0].code;
-+	fmt.format.width = IMX_CPI_DEF_PIX_WIDTH;
-+	fmt.format.height = IMX_CPI_DEF_PIX_HEIGHT;
-+
-+	fmt.format.colorspace = V4L2_COLORSPACE_SMPTE170M;
-+	fmt.format.xfer_func =
-+	    V4L2_MAP_XFER_FUNC_DEFAULT(fmt.format.colorspace);
-+	fmt.format.ycbcr_enc =
-+	    V4L2_MAP_YCBCR_ENC_DEFAULT(fmt.format.colorspace);
-+	fmt.format.quantization =
-+	    V4L2_MAP_QUANTIZATION_DEFAULT(false,
-+					  fmt.format.colorspace,
-+					  fmt.format.ycbcr_enc);
-+
-+	return imx_cpi_set_fmt(sd, sd_state, &fmt);
-+}
-+
-+static int imx_cpi_s_stream(struct v4l2_subdev *sd, int enable)
-+{
-+	struct imx_cpi_device *pcpidev = sd_to_imx_cpi_device(sd);
-+	const struct v4l2_mbus_framefmt *format;
-+	const struct imx_cpi_pix_format *pcpidev_fmt;
-+	struct v4l2_subdev_state *state;
-+	int ret;
-+
-+	if (!enable) {
-+		v4l2_subdev_disable_streams(pcpidev->source.sd,
-+					    pcpidev->source.pad->index, BIT(0));
-+
-+		imx_cpi_stop_stream(pcpidev);
-+
-+		pm_runtime_put(pcpidev->dev);
-+
-+		return 0;
-+	}
-+
-+	state = v4l2_subdev_lock_and_get_active_state(sd);
-+	format = v4l2_subdev_state_get_format(state, IMX_CPI_PAD_SINK);
-+	pcpidev_fmt = find_imx_cpi_format(format->code);
-+
-+	ret = pm_runtime_resume_and_get(pcpidev->dev);
-+	if (ret < 0)
-+		goto err_unlock;
-+
-+	imx_cpi_start_stream(pcpidev, format, pcpidev_fmt);
-+
-+	ret = v4l2_subdev_enable_streams(pcpidev->source.sd,
-+					 pcpidev->source.pad->index, BIT(0));
-+	if (ret < 0)
-+		goto err_stop;
-+
-+	v4l2_subdev_unlock_state(state);
-+
-+	return 0;
-+
-+err_stop:
-+	imx_cpi_stop_stream(pcpidev);
-+	pm_runtime_put(pcpidev->dev);
-+err_unlock:
-+	v4l2_subdev_unlock_state(state);
-+	return ret;
-+}
-+
-+static int imx_cpi_enum_mbus_code(struct v4l2_subdev *sd,
-+				  struct v4l2_subdev_state *sd_state,
-+				  struct v4l2_subdev_mbus_code_enum *code)
-+{
-+	/*
-+	 * The PARALLEL CPI can't transcode in any way, the source format
-+	 * is identical to the sink format.
-+	 */
-+	if (code->pad == IMX_CPI_PAD_SOURCE) {
-+		struct v4l2_mbus_framefmt *fmt;
-+
-+		if (code->index > 0)
-+			return -EINVAL;
-+
-+		fmt = v4l2_subdev_state_get_format(sd_state, code->pad);
-+		code->code = fmt->code;
-+		return 0;
-+	}
-+
-+	if (code->pad != IMX_CPI_PAD_SINK)
-+		return -EINVAL;
-+
-+	if (code->index >= ARRAY_SIZE(imx_cpi_formats))
-+		return -EINVAL;
-+
-+	code->code = imx_cpi_formats[code->index].code;
-+
-+	return 0;
-+}
-+
-+static int imx_cpi_get_frame_desc(struct v4l2_subdev *sd,
-+				  unsigned int pad,
-+				  struct v4l2_mbus_frame_desc *fd)
-+{
-+	struct v4l2_mbus_frame_desc_entry *entry = &fd->entry[0];
-+	const struct imx_cpi_pix_format *pcpidev_fmt;
-+	const struct v4l2_mbus_framefmt *fmt;
-+	struct v4l2_subdev_state *state;
-+
-+	if (pad != IMX_CPI_PAD_SOURCE)
-+		return -EINVAL;
-+
-+	state = v4l2_subdev_lock_and_get_active_state(sd);
-+	fmt = v4l2_subdev_state_get_format(state, IMX_CPI_PAD_SOURCE);
-+	pcpidev_fmt = find_imx_cpi_format(fmt->code);
-+	v4l2_subdev_unlock_state(state);
-+
-+	if (!pcpidev_fmt)
-+		return -EPIPE;
-+
-+	fd->type = V4L2_MBUS_FRAME_DESC_TYPE_PARALLEL;
-+	fd->num_entries = 1;
-+
-+	entry->flags = 0;
-+	entry->pixelcode = pcpidev_fmt->code;
-+
-+	return 0;
-+}
-+
-+static const struct v4l2_subdev_video_ops imx_cpi_video_ops = {
-+	.s_stream = imx_cpi_s_stream,
-+};
-+
-+static const struct v4l2_subdev_pad_ops imx_cpi_pad_ops = {
-+	.enum_mbus_code = imx_cpi_enum_mbus_code,
-+	.get_fmt = v4l2_subdev_get_fmt,
-+	.set_fmt = imx_cpi_set_fmt,
-+	.get_frame_desc = imx_cpi_get_frame_desc,
-+};
-+
-+static const struct v4l2_subdev_ops imx_cpi_subdev_ops = {
-+	.pad = &imx_cpi_pad_ops,
-+	.video = &imx_cpi_video_ops,
-+};
-+
-+static const struct v4l2_subdev_internal_ops imx_cpi_internal_ops = {
-+	.init_state = imx_cpi_init_state,
-+};
-+
-+static int imx_cpi_clk_get(struct imx_cpi_device *pcpidev)
-+{
-+	unsigned int i;
-+	int ret = 0;
-+
-+	for (i = 0; i < PCPIDEV_NUM_CLKS; i++)
-+		pcpidev->clks[i].id = imx_cpi_clk_id[i];
-+
-+	ret = devm_clk_bulk_get(pcpidev->dev, PCPIDEV_NUM_CLKS, pcpidev->clks);
-+
-+	return ret;
-+}
-+
-+/* ----------------------------------------------------------------------
-+ * Suspend/resume
-+ */
-+static int __maybe_unused imx_cpi_runtime_suspend(struct device *dev)
-+{
-+	struct v4l2_subdev *sd = dev_get_drvdata(dev);
-+	struct imx_cpi_device *pcpidev = sd_to_imx_cpi_device(sd);
-+
-+	clk_bulk_disable_unprepare(PCPIDEV_NUM_CLKS, pcpidev->clks);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused imx_cpi_runtime_resume(struct device *dev)
-+{
-+	struct v4l2_subdev *sd = dev_get_drvdata(dev);
-+	struct imx_cpi_device *pcpidev = sd_to_imx_cpi_device(sd);
-+
-+	return clk_bulk_prepare_enable(PCPIDEV_NUM_CLKS, pcpidev->clks);
-+}
-+
-+static const struct dev_pm_ops imx_cpi_pm_ops = {
-+	RUNTIME_PM_OPS(imx_cpi_runtime_suspend, imx_cpi_runtime_resume, NULL)
-+};
-+
-+static int imx_cpi_subdev_init(struct imx_cpi_device *pcpidev)
-+{
-+	struct v4l2_subdev *sd = &pcpidev->sd;
-+	int ret;
-+
-+	v4l2_subdev_init(sd, &imx_cpi_subdev_ops);
-+
-+	sd->internal_ops = &imx_cpi_internal_ops;
-+	sd->owner = THIS_MODULE;
-+	snprintf(sd->name, sizeof(sd->name), "parallel-%s",
-+		 dev_name(pcpidev->dev));
-+
-+	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
-+	sd->ctrl_handler = NULL;
-+
-+	sd->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
-+	sd->entity.ops = &imx_cpi_entity_ops;
-+
-+	sd->dev = pcpidev->dev;
-+
-+	pcpidev->pads[IMX_CPI_PAD_SINK].flags = MEDIA_PAD_FL_SINK | MEDIA_PAD_FL_MUST_CONNECT;
-+	pcpidev->pads[IMX_CPI_PAD_SOURCE].flags = MEDIA_PAD_FL_SOURCE |
-+						       MEDIA_PAD_FL_MUST_CONNECT;
-+
-+	ret = media_entity_pads_init(&sd->entity, IMX_CPI_PADS_NUM, pcpidev->pads);
-+	if (ret)
-+		return ret;
-+
-+	ret = v4l2_subdev_init_finalize(sd);
-+	if (ret)
-+		media_entity_cleanup(&sd->entity);
-+
-+	return ret;
-+}
-+
-+static void imx_cpi_cleanup(void *data)
-+{
-+	struct imx_cpi_device *pcpidev = data;
-+
-+	v4l2_subdev_cleanup(&pcpidev->sd);
-+	media_entity_cleanup(&pcpidev->sd.entity);
-+	v4l2_async_nf_unregister(&pcpidev->notifier);
-+	v4l2_async_nf_cleanup(&pcpidev->notifier);
-+	v4l2_async_unregister_subdev(&pcpidev->sd);
-+}
-+
-+static int imx_cpi_probe(struct platform_device *pdev)
-+{
-+	struct imx_cpi_device *pcpidev;
-+	struct device *dev = &pdev->dev;
-+	int ret = 0;
-+
-+	pcpidev = devm_kzalloc(dev, sizeof(*pcpidev), GFP_KERNEL);
-+	if (!pcpidev)
-+		return -ENOMEM;
-+
-+	pcpidev->dev = dev;
-+	platform_set_drvdata(pdev, pcpidev);
-+
-+	pcpidev->pdata = of_device_get_match_data(dev);
-+
-+	pcpidev->regs = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(pcpidev->regs))
-+		return dev_err_probe(dev, PTR_ERR(pcpidev->regs),
-+				     "Failed to get regs\n");
-+
-+	ret = imx_cpi_clk_get(pcpidev);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = imx_cpi_subdev_init(pcpidev);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, imx_cpi_cleanup, pcpidev);
-+	if (ret)
-+		return ret;
-+
-+	pcpidev->mode = PI_GATE_CLOCK_MODE;
-+
-+	platform_set_drvdata(pdev, &pcpidev->sd);
-+
-+	ret = imx_cpi_async_register(pcpidev);
-+	if (ret < 0)
-+		return ret;
-+
-+	devm_pm_runtime_enable(dev);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id imx_cpi_of_match[] = {
-+	{.compatible = "fsl,imx8qxp-pcif", .data = &imx8qxp_pdata },
-+	{.compatible = "fsl,imx93-pcif", .data = &imx93_pdata },
-+	{ },
-+};
-+
-+MODULE_DEVICE_TABLE(of, imx_cpi_of_match);
-+
-+static struct platform_driver _driver = {
-+	.probe = imx_cpi_probe,
-+	.driver = {
-+		.of_match_table = imx_cpi_of_match,
-+		.name = "imx-parallel-cpi",
-+		.pm = pm_ptr(&imx_cpi_pm_ops),
-+	},
-+};
-+
-+module_platform_driver(_driver);
-+
-+MODULE_DESCRIPTION("i.MX9 Parallel CPI receiver driver");
-+MODULE_LICENSE("GPL");
-
--- 
-2.34.1
-
-
+> Changes for v2:
+> * None
+> ---
+>  arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi
+> index ab149c40a9cc1..793c95d44c7d0 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi
+> @@ -82,7 +82,7 @@ &qspi {
+>  	pinctrl-0 = <&pinctrl_qspi>;
+>  	status = "okay";
+>
+> -	spi-flash@0 {
+> +	flash@0 {
+>  		#address-cells = <1>;
+>  		#size-cells = <1>;
+>  		compatible = "spi-nand";
+> --
+> 2.50.0
+>
