@@ -1,46 +1,50 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497A12DAFCE
-	for <imx@lists.linux.dev>; Tue,  8 Jul 2025 15:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFC72E175E;
+	Tue,  8 Jul 2025 15:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751989102; cv=none; b=npqBOYdTmlYr53Q35Obr93QLfwmQD86RssVOxW8Mm8BGIIw12/pi/4w/3OKBrf56yhhNWnWC9pprkNTScJpVmvsRW28suaTJ5jtx5NVPD+kIwJZp42wmixlPAi6cGRqo8tpW7a5fslKUHoUkFD+asFiFaOU3leAQo4JCtzNqCrQ=
+	t=1751989692; cv=none; b=gvrugipCgxEAKlEzXbl7ic79rPC9PrlfaiPyfmN36EdFWh2OX4V6zuUUtoLRYHR51bW2NLfqOdxio1UbL/BRKNt7pJmJoGO5Mp4KuFCT/41oEBEJcHVyxcAjba8CSjvXxWvKoeinN68lGrjBRIFhaPPNB+3MTZcddPN1li4wQyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751989102; c=relaxed/simple;
-	bh=9kYA5q14bvYkui25OvnWTMQwCQ8rj9WTIA6GWK59h9M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S6B64ja5Je9+e+LdmWUUn79p7ZF3gxCX1sD6XLFOAWOrOAEB3CYZWVgQHudoNHxgD3OLRJSeNg48WzIAYSIE+XJqllgdv9kw9ekcbWtSA0K4mRngIs6iC/O7ADGVCk9E+857bI6ut40Bt7dRSxCgNFROy2nYATmg/PwsFq7ef/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 44D92153B;
-	Tue,  8 Jul 2025 08:38:03 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C9F603F738;
-	Tue,  8 Jul 2025 08:38:12 -0700 (PDT)
-Date: Tue, 8 Jul 2025 16:38:10 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Chuck Cannon <chuck.cannon@nxp.com>,
-	Souvik Chakravarty <souvik.chakravarty@arm.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, <arm-scmi@vger.kernel.org>,
-	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/7] firmware: arm_scmi: imx: Support discovering
- buildinfo of MISC protocol
-Message-ID: <20250708-spirited-pelican-of-renovation-f4218d@sudeepholla>
-References: <20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com>
- <20250627-sm-misc-api-v1-v1-2-2b99481fe825@nxp.com>
- <aGVOhMr7vg9Sl7Z2@bogus>
- <20250704051204.GB4525@nxa18884-linux>
- <aGeX5NQycd5WFxZ8@bogus>
- <20250708161006.GA13177@nxa18884-linux>
+	s=arc-20240116; t=1751989692; c=relaxed/simple;
+	bh=tWWxXLhF9k7Gu3NnvmZwkqT4bKHY1QLga2J8AkBZ/3w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=RFM4xd2H04RSq8Z6HW9LOz9Bf/N4NslWG8yBvSbRBBU33xH7kEGwN+2UsZ67R8vxywOIcekQqTfzuhnJw1yPkB+E/N4OMWnKMQyasVeH5+PjGnxq4DHAHu6pQTBT+ZexkDb6CKopZYXEYEpudMo2wkQbPVgEYZcBL0Kdz+Np80Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tqXXvbp0; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tqXXvbp0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E8CC4CEEF;
+	Tue,  8 Jul 2025 15:48:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751989692;
+	bh=tWWxXLhF9k7Gu3NnvmZwkqT4bKHY1QLga2J8AkBZ/3w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=tqXXvbp0KH/w5rcpoNORi5g5+PyEHhFyUHHZP8tDIPYN1h9/SGeJ8I5Yaom8l/T2A
+	 y05ApmDsitoAxyNH4XqRnH2Bs/teWZbQBYhm4rCX2GJZhcvR0ZtRuC3N8dVsFH6COw
+	 vlpD9IvbSlg6YBD8FOcYEhBSEJtwknVxKDPoafk0Qj3OXy/8G87lTO3eofRHdtMKZH
+	 akMURjHkH0Nsiy4hzJ8pC93lHDT0HgI6IH/+vvGUL4d0GHTjYqP6JHANdsUXb9s2ly
+	 WVo0jLOC9Z9fRYLoh18Me/oKsQxk1Q7k5N7Q20as7CDTYas48NrGzB2Xos1ZkdzWyF
+	 +gIUGMSE1qMUA==
+Date: Tue, 8 Jul 2025 10:48:10 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: "mani@kernel.org" <mani@kernel.org>, Frank Li <frank.li@nxp.com>,
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] PCI: imx6: Correct the epc_features of i.MX8M chips
+Message-ID: <20250708154810.GA2146917@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,82 +53,44 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250708161006.GA13177@nxa18884-linux>
+In-Reply-To: <AS8PR04MB8676B8D14A5C54E8C32025BD8C4EA@AS8PR04MB8676.eurprd04.prod.outlook.com>
 
-On Wed, Jul 09, 2025 at 12:10:06AM +0800, Peng Fan wrote:
-> Hi Sudeep,
-> 
-> Sorry for late reply.
-> On Fri, Jul 04, 2025 at 09:59:16AM +0100, Sudeep Holla wrote:
-> >On Fri, Jul 04, 2025 at 01:12:04PM +0800, Peng Fan wrote:
-> >> Hi Sudeep,
-> >> 
-> >> On Wed, Jul 02, 2025 at 04:21:40PM +0100, Sudeep Holla wrote:
-> >> >On Fri, Jun 27, 2025 at 02:03:45PM +0800, Peng Fan wrote:
-> >> >> MISC protocol supports discovering the System Manager(SM) build
-> >> >> information including build commit, build time and etc. Add the API
-> >> >> for user to retrieve the information from SM.
-> >> >> 
-> >> >> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> >> >> ---
-> >> >>  .../firmware/arm_scmi/vendors/imx/imx-sm-misc.c    | 35 ++++++++++++++++++++++
-> >> >>  include/linux/scmi_imx_protocol.h                  | 12 ++++++++
-> >> >>  2 files changed, 47 insertions(+)
-> >> >> 
-> >> >> diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> >> >> index a8915d3b4df518719d56bfff38922625ad9b70f6..1b24d070c6f4856b92f515fcdba5836fd6498ce6 100644
-> >> >> --- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> >> >> +++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-> >> >> @@ -25,6 +25,7 @@
-> >> >>  enum scmi_imx_misc_protocol_cmd {
-> >> >>  	SCMI_IMX_MISC_CTRL_SET	= 0x3,
-> >> >>  	SCMI_IMX_MISC_CTRL_GET	= 0x4,
-> >> >> +	SCMI_IMX_MISC_DISCOVER_BUILDINFO = 0x6,
-> >> >
-> >> >I clearly missed to raise this point when the documentation for this command
-> >> >was added. Anyways I assume, you had explored all the options before adding
-> >> >this as generic tools may not be able to pick this up. Instead, I would have
-> >> >just stuck with vendor version in the standard protocol with build number
-> >> >embedded into it. The date and other info must be implicit from the build.
-> >> >
-> >> >I try to be more cautious and ask questions in the future as I don't want
-> >> >vendor extensions to be dumping ground for really random things like this.
-> >> 
-> >> +Souvik
-> >> 
-> >> And Loop our firmware owner to help comment. I just add what the firmware
-> >> supports here and allow linux to see the information when the firmware
-> >> does not have uart output in some builds.
-> >> 
-> >> From SCMI spec, it does not restrict what vendor extensions should be like
-> >> as I know. So I am not sure what we should do when we define vendor
-> >> extensions and what I should do next for this patch.
-> >> 
-> >
-> >Just to be clear, I am not against vendor extensions. I am just saying
-> >this interface is not strictly needed. The vendor version could encode
-> >this nicely and you could have a map. The only and main concern is having
-> >such extensions will not help generic tools as these are very vendor specific.
-> >
-> >It is good to have firmware version and other related details in a standard
-> >format that anyone can understand without the need to dig deeper into vendor
-> >specific extensions.
-> >
-> >Again I am not saying to drop these interfaces, but you will get questioned
-> >for its use in the kernel if that doesn't seem like the right approach.
-> 
-> This is mostly for debug purpose to export the build information to linux,
-> such as firmware commit hash.
-> 
-> Should I still keep current patch, or do you have any suggestions
-> with current SM API?  I think there is little chance to update SM to encode
-> vendor version to include build date, build num, and commit hash.
-> 
+On Tue, Jul 08, 2025 at 07:34:57AM +0000, Hongxing Zhu wrote:
+> > -----Original Message-----
+> > From: Bjorn Helgaas <helgaas@kernel.org>
+> ...
+> > On Tue, Jun 17, 2025 at 03:34:41PM +0800, Richard Zhu wrote:
+> > > i.MX8MQ PCIes have three 64-bit BAR0/2/4 capable and
+> > > programmable BARs.  But i.MX8MM and i.MX8MP PCIes only have
+> > > BAR0/BAR2 64bit programmable BARs, and one 256 bytes size fixed
+> > > BAR4.
+> > >
+> > > Correct the epc_features for i.MX8MM and i.MX8MP PCIes here.
+> > > i.MX8MQ is the same as i.MX8QXP, so set i.MX8MQ's epc_features
+> > > to imx8q_pcie_epc_features.
+> > >
+> > > Fixes: 75c2f26da03f ("PCI: imx6: Add i.MX PCIe EP mode support")
+> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > 
+> > "Correct the epc_features" doesn't include any specific
+> > information, and it's hard to extract the changes for a device
+> > from the commit log.
+> > 
+> > This is really two fixes that should be separated so the commit
+> > logs can be specific:
+>
+> Yes, it's right.
+> Since it's just one line change for i.MX8MQ. So, I combine the changes into
+> this commit for i.MX8M chips.
 
-I am against using this in the way you are doing in 7/7(i.e. exposing to
-the userspace). Just dump the info on the serial port from the init code.
-You don't need to expose it scmi_imx_misc_proto_ops as well.
+I want to split them to make it easy for users to understand which
+changes are relevant to them.  E.g., I have an i.MX8MQ system; do I
+need this change and what does it mean for me?  Is it going to fix a
+problem I've been seeing?
 
--- 
-Regards,
-Sudeep
+> >   - For IMX8MQ_EP, use imx8q_pcie_epc_features (64-bit BARs 0, 2, 4)
+> >     instead of imx8m_pcie_epc_features (64-bit BARs 0, 2).
+> > 
+> >   - For IMX8MM_EP and IMX8MP_EP, add fixed 256-byte BAR 4 in
+> >     imx8m_pcie_epc_features.
