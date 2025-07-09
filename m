@@ -1,99 +1,93 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E483E270559
-	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 07:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAE721D3C6
+	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 07:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752045388; cv=none; b=sn34RL07CqmvKb4LeVm9IyqsULmeB/fMPkhNaVQ9Gus5NtCJHX6yNiPIv1YJIq65QLTDDqexRehwyh+kVGfMbMYK2fAjPRfBDTflX4E3c5vMZ3gkJh9vXF1q5fFO3KrXP7sxT26c0FHAJTFk+GqHe9JabfjnCpMqc6bv4jVWGCw=
+	t=1752045395; cv=none; b=m/cfkrCs0D4fbHIYbtNHNKGuGfxjP5uNNDdABzOhtx5kIP/5CEldjfEAYt8oa7TfAG7IIv9KlsD06fztiLSAWFLoDiUk3+ouf8wxu4f9zFCmpc7i3090jkDOoZ8+/pC11uPwtVZeb2erVav0QgCezDLXE1YPbq7LlNSSQpimQ3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752045388; c=relaxed/simple;
-	bh=rxn+o/fYVdBBDL9xtmjY1WUe0QN8BAwGFVnmr8XjEKs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=svX+D0fUaYEyaksQUo/RIGzuOzuhSLV7SRsuxzABKUFB5jW6Zzdxb+hvOjH9Gn52eAoUtgniB5NM5NfdXO03vnrP921RdY6KwtMbAnWHlOwvr8fMxNHO2L2yD59Og/UWY20PC6hr+LVqErScCwoqxLBvrhdCFQYjXXHUTQmfQHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=YOpLxbPB; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1752045395; c=relaxed/simple;
+	bh=Zy3phdcKvw4NI5hudzaAjZVwv0QpZo35Naaby45lfbs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FtFGouKzpdLKQIm8Nl6IojR0RiYAoE0RsUqKbQv3U1QgIPHfuo7cBtNWNtUcD0pStFy7e5TqQ3+ypoxcuKvjZtDeQ0TNbocUFvEz7JoLdI1IMl2Vn79FctJ9bTVBCbNIubdHPRTJm8vOID+THQrbdAdd+jMHuctJEKG7B4jvCjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=HqDS+lIr; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="YOpLxbPB"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id DC37BA0A58;
-	Wed,  9 Jul 2025 09:16:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=IFXNzZgsIkYiG7MwBsHn
-	psXKT3JPGcxCmEcZuEJEixk=; b=YOpLxbPBy2sB/nRcqt71Dov82gF3X8WjyXPt
-	wRe479PuI8GNgFnakhy0wJ7b1xqjOD5JkDnkCWdouEAL6Tfqjc5zAf564Bw9ucdz
-	pIsvic96F2/mJXPQJN3VfH/r2aStQfXRQZT30a3NIbcx99ET5FAL7j4NbZ6IwjVy
-	7y4e9scKOpy+72Wu1JlTwFdAGH6c0cpnHAdW6eb9sJGAA8xnb/M3qzfmp8QCBtFV
-	jEaWsrUD3QW9tpY3jJypm1yd5cF/8q5CiwZqMF2zy/HXDJ73ebiNlQ1mDSG9hO2i
-	kY0ubMMiSocsf72JszPYgSTDrnn9ziiQw5ywSeeoiAkNlVAWokN5ChSktMMfex9R
-	Hq+/MeQP9mxzP+8ovSoEqmijP0yyamFyXfMimoFUrYUC9Zi/IfBpH8cZcAuaL/rO
-	KG0WGUj77KdRKWqyYt1UZfcHSRgT1hZ8WjUeiF/IgyRbaNS+1IGxDay+dkRuCzES
-	qwVGonZlz2Gh8LyazjU7DJ2ze0tD5iOtDIPvHyYy4sVvrWgnf55mfLLyswh2Lxlt
-	WT8GQqqr+PxhoOiBrtOlsLBz23kUr+iUZWI+6qPvjIGMCnpOVqhdQ8iscQVql4RH
-	AZ4VjCsuBzz6fXJyAz5BSGwWGaaDZiYHRGLXEOUbgkl8oIZqwXa0VaoHJ0H7DvqO
-	nhCaqTs=
-From: =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-Date: Wed, 9 Jul 2025 09:16:08 +0200
-Subject: [PATCH v2 2/2] ARM: dts: imx51-ts4800: Replace license text
- comment with SPDX identifier
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="HqDS+lIr"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C7BEBC74CE;
+	Wed,  9 Jul 2025 09:16:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=dkim;
+	t=1752045392; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=53mmWhWTBcWWhTmzkcxS1iBXeRIgZB0MRCCtHtk+9xs=;
+	b=HqDS+lIrVuhhhvL68VSssy6wxt+Q2sfqX4C7tZqOYipGltc7cMqzfGhGHidapDFH/dqpO0
+	OJpsNy2hvrp6FxPY1JRCt9HPri7fYoCWUYlWP428AIpa6K0rVdDgngcZG0by7wvifDv6lb
+	fCwMDpDSuKnDYqZVton8R31IKmNvir5+8SruaDObyR9HuafaZ7pW38eyqOdwVF2Y7+3A60
+	+yw8IF1InqBar/5RG7LG9Tho65XIuQxEAfACWPPz97hy5nYM+MVXqYLH++P6xRa6BOoFxZ
+	obPmjkHoYMX/LOgRnA6zpdSWs8FuKoWHLZxrPcFUG0uPxJuC9HsV249HO/7g0w==
+From: Frieder Schrempf <frieder@fris.de>
+To: linux-arm-kernel@lists.infradead.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Eberhard Stoll <eberhard.stoll@kontron.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH v3 2/2] ARM: dts: imx6ul-kontron-sl-common: Fix QSPI NAND node name
+Date: Wed,  9 Jul 2025 09:15:55 +0200
+Message-ID: <20250709071557.20602-2-frieder@fris.de>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250709071557.20602-1-frieder@fris.de>
+References: <20250709071557.20602-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-ID: <20250709-tsx9x0-dts-lic-v2-2-b9b7d056728b@prolan.hu>
-References: <20250709-tsx9x0-dts-lic-v2-0-b9b7d056728b@prolan.hu>
-In-Reply-To: <20250709-tsx9x0-dts-lic-v2-0-b9b7d056728b@prolan.hu>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	=?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, Damien Riegel
-	<damien.riegel@savoirfairelinux.com>, <contact@savoirfairelinux.com>
-X-Mailer: b4 0.13.0
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1752045369;VERSION=7994;MC=1191366156;ID=156413;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A296767155E657160
+X-Last-TLS-Session-Version: TLSv1.3
 
-Replace verbatim license text with a `SPDX-License-Identifier`.
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-The license is specified as "X11", but as other TSxxxx boards mis-attribute
-MIT as X11, this is probably the case here as well. Savoir-Faire Linux
-will have to confirm this.
+Rename QSPI NAND node to 'flash@0' in order to fix the following
+dt-schema warning:
 
-Cc: Damien Riegel <damien.riegel@savoirfairelinux.com>
-Cc: contact@savoirfairelinux.com
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+spi-flash@0 (spi-nand): $nodename:0: 'spi-flash@0' does not match '^(flash|.*sram|nand)(@.*)?$'
+
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Changes for v3:
+* Add Frank's R-b tag (thanks!)
+Changes for v2:
+* None
+---
+ arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts b/arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts
-index 079bd3d14999..aa7298e34a10 100644
---- a/arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx51-ts4800.dts
-@@ -1,9 +1,8 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
- /*
-  * Copyright 2015 Savoir-faire Linux
-  *
-  * This device tree is based on imx51-babbage.dts
-- *
-- * Licensed under the X11 license or the GPL v2 (or later)
-  */
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi
+index 779723b04575a..4c0ac4d4df686 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-sl-common.dtsi
+@@ -82,7 +82,7 @@ &qspi {
+ 	pinctrl-0 = <&pinctrl_qspi>;
+ 	status = "okay";
  
- /dts-v1/;
-
+-	spi-flash@0 {
++	flash@0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "spi-nand";
 -- 
-2.43.0
-
+2.50.0
 
