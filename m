@@ -1,193 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DF128852B;
-	Wed,  9 Jul 2025 10:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A762BE7D6
+	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 11:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752057253; cv=none; b=CRavCuJCqwk430JijETThK0KBtYzhOyHvWPGntDTgR1m6EDCJ60Tk5uHsuqYK82Yx92O46PygzjQqEl/fHvVv5GB1SSFAyPWk7vGyC2/i9wYe1tEbZ0MY3Mm2qpv9Jez0UjLHHKM4h4OSikZ6PdQ4rgSI3KEMQCiNuq1zKBopZg=
+	t=1752059823; cv=none; b=htG3ZgZn+lwSjQ5VkAP/FpQHtpPLx0wVlb9pe9qruCOI80oATPKfjf9bD8xuZrvT7+aXvdzYDbXFZ0qu6WhFLghhRwzlBjbGlI7MD1G+F8OO/RXcpBvLCztj7MnRLo1H33ECxxIuELpDnOaAUozSsCmN0uokbPHEFXGGetW47sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752057253; c=relaxed/simple;
-	bh=RrMs7jb9Owzmd41VYTEMBPmljFB7+r5sQc9aQn/1l+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f9HAmI1sXiQAMNmfVb+urAdDfhXHjTFYAM97qud2QhYfr7NCTNNzkG6ghTycEnBqlTwV1gTtYtXbbSF+EE0ylR8f8DalxwltKWSE08f4YcDhuycVi86ZrLyEaee/ZSMyF5gFZzYICXypbP4wQwRLNS57x6nM14k0IWWK1FOiTx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ja+kjQ3L; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752059823; c=relaxed/simple;
+	bh=4kWrX6sfCJUuN2vXbr68Zhu993cH/l/81QTPNlOuOAI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DIC+pddwuuFSQJ1jtwpBuYXaZnTVjTv+UoYgAr4o1DtiMG31s72W4Inj34mB82kGQoelHftv2eSfB9WwECXuUuTBY56rN/09qEwGJJpc+PdJl/8tY/YIZT1Us6upQ1zVlXb2MFcc3LobxFtollq9JaV2VKINpePgfH34ISNJwyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=EQPCISu9; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ja+kjQ3L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0859DC4CEEF;
-	Wed,  9 Jul 2025 10:34:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752057253;
-	bh=RrMs7jb9Owzmd41VYTEMBPmljFB7+r5sQc9aQn/1l+A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ja+kjQ3Lc9ztkPibgFI8EvyOzBXUbDXpI0q5qPudQ0sTTuOvKafWyrT1IMlmCsEQh
-	 YJiF4j2u/czhenhFarj61pcOUQOVRHRRohoumonJJtTlTa7IBAcehOYpa4inipHw0T
-	 ILhw9rrOymaM2AyLf9lDJ4OEb1YBqutqE34npym9PBUjPiq5KjL0/524LxG9w/51DU
-	 QNRzSM+D9Erbm966L9QJkMU4GDz5avVUkIf4Q0MPsXuM1e22RNtAjNnnOcH4DMF3YW
-	 q1dNvpXI+EZ7soF5lM4wl//kVpkRbSYfFfxCsj4Ou3f3KKbc5xXvPP8lNKcSx+ZUJd
-	 Pbl1wxGGzijgg==
-Date: Wed, 9 Jul 2025 16:03:57 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>, 
-	Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Niklas Cassel <cassel@kernel.org>, dlemoal@kernel.org, jdmason@kudzu.us, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
-Subject: Re: [PATCH v19 01/10] PCI: endpoint: Set ID and of_node for function
- driver
-Message-ID: <3aq4qqx6ip2f567f6vjraojqcgvoo6t4impyhlbovb2zo5ptxq@5x3g5zdbhxgo>
-References: <20250609-ep-msi-v19-0-77362eaa48fa@nxp.com>
- <20250609-ep-msi-v19-1-77362eaa48fa@nxp.com>
- <ne5yrjtdevmndqds4uwo2ppq6gay2wuwjouyf33lqr5g3nfkwr@lkwqlwqjqbmx>
- <aGVE6veZm3bL0mVJ@lizhi-Precision-Tower-5810>
- <75opnvi46fbmsnmykjwn3gmir7r3uqhzp7tfoua42cado6aopu@dmos2v2qd3jn>
- <aGVN/5yoLumfmlDv@lizhi-Precision-Tower-5810>
- <aGv4slE8/kmxHvlU@lizhi-Precision-Tower-5810>
- <jx3nhhyj3dh5ivga6i3va35rz7n4disz33dtbwvbs4raqb4iww@q6m73lnwkjsf>
- <aG1sGgQ4EYC2D8Wc@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="EQPCISu9"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4A026103972A7;
+	Wed,  9 Jul 2025 13:16:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1752059818; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=ZlieK/cQd1tQM5wheLqNTa+x9MmB1DmBV4uYwDd6FPY=;
+	b=EQPCISu9IUIpn41IpH56igNNxb+zl7xu3O7CJcvRfljgmmuBw+zQp1ve/8sHhWLw2tC9aP
+	qRLIyULgMRqX8uUG4Vzi5bpQpuab/7cM87KkCck2PnSYJynqDrJSeZgD4fH/+vxzObIYZ/
+	9IA+6yabN2KYvRhdZmQOSKm3xbHTBHLrjNejYPkmTAjp4/bcGXZ7rbBQZCRpR9quD/SOC/
+	TMl1zqcsgmXbxA6Zj4FLTJtkEk5nnEHbGqMWXRjWLkLz7/1aqAXMIYxfDSzD2aUuJTqsGm
+	Rm79++WpyhFB+Gkt5+RlxDjhK1vkTdMOB/5iFvWI0lOm7Og7w7KlUBpX0mDzUQ==
+Date: Wed, 9 Jul 2025 13:16:51 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v14 04/12] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250709131651.391e11c5@wsk>
+In-Reply-To: <617d064e-99e4-491c-8fe7-d74d8174d9fb@redhat.com>
+References: <20250701114957.2492486-1-lukma@denx.de>
+	<20250701114957.2492486-5-lukma@denx.de>
+	<617d064e-99e4-491c-8fe7-d74d8174d9fb@redhat.com>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aG1sGgQ4EYC2D8Wc@lizhi-Precision-Tower-5810>
+Content-Type: multipart/signed; boundary="Sig_/mg/nfqRTFJ+kss8tYJWDWg=";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Jul 08, 2025 at 03:06:02PM GMT, Frank Li wrote:
-> On Tue, Jul 08, 2025 at 04:51:55PM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Jul 07, 2025 at 12:41:22PM GMT, Frank Li wrote:
-> > > On Wed, Jul 02, 2025 at 11:19:36AM -0400, Frank Li wrote:
-> > > > On Wed, Jul 02, 2025 at 08:25:17PM +0530, Manivannan Sadhasivam wrote:
-> > > > > On Wed, Jul 02, 2025 at 10:40:53AM GMT, Frank Li wrote:
-> > > > > > On Wed, Jul 02, 2025 at 04:30:48PM +0530, Manivannan Sadhasivam wrote:
-> > > > > > > On Mon, Jun 09, 2025 at 12:34:13PM GMT, Frank Li wrote:
-> > > > > > > > Set device ID as 'vfunc_no << 3 | func_no' and use
-> > > > > > > > 'device_set_of_node_from_dev()' to set 'of_node' the same as the EPC parent
-> > > > > > > > device.
-> > > > > > > >
-> > > > > > > > Currently, EPF 'of_node' is NULL, but many functions depend on 'of_node'
-> > > > > > > > settings, such as DMA, IOMMU, and MSI. At present, all DMA allocation
-> > > > > > > > functions use the EPC's device node, but they should use the EPF one.
-> > > > > > > > For multiple function drivers, IOMMU/MSI should be different for each
-> > > > > > > > function driver.
-> > > > > > > >
-> > > > > > >
-> > > > > > > We don't define OF node for any function, so device_set_of_node_from_dev() also
-> > > > > > > ends up reusing the EPC node. So how can you make use of it in multi EPF setup?
-> > > > > >
-> > > > > > In mfd devices, children devices reuse parent's of_node
-> > > > > > drivers/gpio/gpio-adp5585.c
-> > > > > > drivers/input/keyboard/adp5589-keys.c
-> > > > > > drivers/pwm/pwm-adp5585.c
-> > > > > >
-> > > > > > multi EPF should be similar to create multi children devices of mfd.
-> > > > > >
-> > > > >
-> > > > > No, they are not similar. MFD are real physical devices, but EPFs are (so far)
-> > > > > software based entities.
-> > > > >
-> > > > > > > I don't understand.
-> > > > > >
-> > > > > > >
-> > > > > > > > If multiple function devices share the same EPC device, there will be
-> > > > > > > > no isolation between them. Setting the ID and 'of_node' prepares for
-> > > > > > > > proper support.
-> > > > > >
-> > > > > > Only share the same of_node.
-> > > > > >
-> > > > > > Actually pci host bridge have similar situation, all pci ep devices reuse
-> > > > > > bridge's of node. framework use rid to distringuish it. EPF can use device::id
-> > > > > > to do similar things.
-> > > > > >
-> > > > > > Actually iommu face the similar problem. So far, there are not EP device enable
-> > > > > > iommu yet, because it needs special mapping.
-> > > > > >
-> > > > > > Prevously, I consider create dymatic of_node for each EPF and copy iommu/msi
-> > > > > > information to each children. But when I see adp5585 case, I think direct
-> > > > > > use parent's of_node should be simple and good enough.
-> > > > > >
-> > > > > > In future, I suggest add children dt binding for it. For example: EPF provide
-> > > > > > a mailbox interface. how other dts node to refer to this mailbox's phandle?
-> > > > > >
-> > > > >
-> > > > > As I said above, EPFs are not real devices. There is currently only one
-> > > > > exception, MHI, which is backed by a hardware entity. So we cannot add
-> > > > > devicetree nodes for EPF, unless each EPF is a hardware entity.
-> > > >
-> > > > But how resolve this problem, if a DT device need phandle to a EPF? anyway
-> > > > this is off topic. let go back this doorbell.
-> > > >
-> > > > It needs an of_node for EPF device, I tried many method before.
-> > > >
-> > > > Create dymatic of_node for it? MSI framework still go through to parent
-> > > > of_node to get such information. not big differnece as my view.
-> > >
-> > > Actually, DMA have simular issues, just 'workaround' it now.
-> > >
-> > > pci_epf_test_read() {
-> > > 	...
-> > > 	struct device *dma_dev = epf->epc->dev.parent;
-> > > 	...
-> > > 	dst_phys_addr = dma_map_single(dma_dev, buf, map_size,
-> > >                                                        DMA_FROM_DEVICE);
-> > > 					^^^ [1]
-> > > 	...
-> > > }
-> > >
-> > > [1] here direct use epc->dev.parent's of node implicy. If IOMMU enable,
-> > > two EPF will share one IOMMU space without isolation. If add of_node(may
-> > > dyamatic create one). we should resolve this problem by use epf device
-> > > here. Difference EPF will use difference IOMMU space like MSI.
-> > >
-> >
-> > Unless your platform comes up with a hardware based EPF, we are not going to
-> > have DT node for any EPF. So all EPFs have to share the same DT node of the EPC.
-> > So right now, it doesn't make a difference if you use a dynamic of_node or copy
-> > the EPC node.
-> >
-> > Just reuse the EPC node for now.
-> 
-> It is show-stop issue. The closest version like
-> https://lore.kernel.org/all/20241204-ep-msi-v10-2-87c378dbcd6d@nxp.com/
-> 
-> Or we just support one EPF. There are not good way to pass down epf ID to MSI
-> controller.
-> 
-> [1]: Add DOMAIN_BUS_DEVICE_PCI_EP_MSI (like PCI RC bus),
-> https://lore.kernel.org/all/20250211-ep-msi-v15-0-bcacc1f2b1a9@nxp.com/
-> rejected by irq mantainer, they think it is too similar with platform msi.
-> 
-> The key problem is MSI controller need known both EPF's ID and EPC's MSI
-> domain information.
-> 
-> If use EPC, there are no way to pass down EPF's ID. as above dma example,
-> use EPC devices, dma_map_single() can't distringiush difference EPF. It is
-> not big issue all EPF share a IO space. but can't do that for MSI. the
-> different devices can't share the MSI space.
-> 
-> software managed dt property already used in many devices.
-> 
+--Sig_/mg/nfqRTFJ+kss8tYJWDWg=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-You need not just a property, but a whole new DT node. This won't fly with the
-DT maintainers, so it is not my call.
+Hi Paolo,
 
-I'd suggest that we merge this initial implementation that supports only one EPF
-for doorbell and tackle the multi-EPF implementation in future patches. I do not
-want this series to be in a limbo for another 5-6 releases.
+> On 7/1/25 1:49 PM, Lukasz Majewski wrote:
+> > Changes for v14:
+> > - Increase the maximal received frame size to 1536 (for VLAN)
+> > - Use spin_{un}lock_irq{save|restore} when altering dynamic table
+> > of the switch and mtip_adjust_link() as both cannot be done when
+> > switch IRQ is potentially enabled =20
+>=20
+> Why?
+>=20
+>  (the previous one alters entries in switching table
+> >   the latter one may reset the whole IP block) =20
+>=20
+> What really matters is the scope (process/atomic, bh, hardirq) of the
+> relevant callers (the functions that do acquire the given locks).
+>=20
 
-- Mani
+Maybe I will explain the problem here case (function) by case:
+- mtip_adjust_link()
+  This function is called when link change is detected (speed, duplex,
+  up/down link).
 
--- 
-மணிவண்ணன் சதாசிவம்
+  The problem here is that:
+	1. It is called for both MTIP ports (as both are managed by
+	this driver)
+
+	2. NXP's "legacy" driver advises reset of the whole IP block
+	when such change is detected.=20
+
+	Considering the above - interrupts shall be disabled as we may
+	end up in undefined state of the IP block - especially that
+	re-configuration of switch requires interrupts initialization.
+
+
+- mtip_atable_dynamicms_learn_migration() - update of the switching
+  table
+
+	Can be called from:
+	1. function triggered when timer fires (once per 100ms)
+
+	2. mtip_switch_rx() which is called from mtip_rx_napi() callback
+	  (which is protected by net core).
+
+	It looks like the _irqsave/_irqrestore is an overkill here.
+	Both above contexts seems to not require IRQs disabled. I can
+	confirm that use of plain spin_{un}lock() functions works.
+
+>=20
+> > +/* dynamicms MAC address table learn and migration */
+> > +static void
+> > +mtip_atable_dynamicms_learn_migration(struct switch_enet_private
+> > *fep,
+> > +				      int curr_time, unsigned char
+> > *mac,
+> > +				      u8 *rx_port)
+> > +{
+> > +	u8 port =3D MTIP_PORT_FORWARDING_INIT;
+> > +	struct mtip_port_info *port_info;
+> > +	u32 rx_mac_lo =3D 0, rx_mac_hi =3D 0;
+> > +	unsigned long flags;
+> > +	int index;
+> > +
+> > +	spin_lock_irqsave(&fep->learn_lock, flags); =20
+>=20
+> If the _irqsave() part is needed (and I don't see why??!) than all the
+> other `learn_lock` users should also use such variant, unless already
+> in hardirq scope.
+>=20
+> [...]
+> > +static void mtip_adjust_link(struct net_device *dev)
+> > +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	struct phy_device *phy_dev;
+> > +	int status_change =3D 0, idx;
+> > +	unsigned long flags;
+> > +
+> > +	spin_lock_irqsave(&fep->hw_lock, flags); =20
+>=20
+> Same here.
+
+Please see the explanation above.
+
+>=20
+> /P
+>=20
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH, Managing Director: Johanna Denk,
+Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
+Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/mg/nfqRTFJ+kss8tYJWDWg=
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhuT6MACgkQAR8vZIA0
+zr2sMQgAmeWdQ83p6ZlFKroGNRoittaX6hv52A6/sPC741/r5Bs6bSXR0SiYIWIQ
+oLqi0K6s1yin/VW7PCgSlxjez6pG1ZLVU0VbdU32bBZPO7cZN/gwP/9SkitR8gkB
+2LViAZYDJpPSl98Z0CL+YEgPeZ6t7si0/xJTGs0sogpDqKnCZXhebCGmWAxfKPV2
+jtf5EtJwnPezHuv1g5vLxpmZQku3LDXR6seg7M2pIOcMXWjMjulvSySvhWEjFsRx
+KHZf5seGJqEj5KXSx3LAOrzf8kGqUpXzXLzPJnnsbnLVFbRJftYLKiBPfWztFr7a
+1NJjD6ATeHM08A+mASs69xXk4XxveA==
+=fJbi
+-----END PGP SIGNATURE-----
+
+--Sig_/mg/nfqRTFJ+kss8tYJWDWg=--
