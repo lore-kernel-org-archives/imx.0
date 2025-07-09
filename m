@@ -1,42 +1,42 @@
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1958926FA56
-	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 07:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BC526F45A
+	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 07:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752046012; cv=none; b=eLMbVKIkzZwHbszgmuxQdjiBRcbib6n7+PKYM3rfag+IdxcY0dpqtUsxDZ0njW4Zb8uyB5hWgTPMfi5CxmmzptheskISXurmt9Cm5GPgNpDRQPDp8Tq07ht8zYPhu3cbLqx6mzUr6BGZRO0X1e9Gm72pLiP3zQN0bj7ptai1mhA=
+	t=1752046113; cv=none; b=Hz/OPxvj/dXQ39+2oiJzOJ3Q5SzxPfBa/TIWlkV58OKr3bHBPwuu4pbt6GqLgCCO3Fkc++IlyKi6jkNgbdtFSZklbtLnDrlJ/m54fXhGjaLlCKtPN6f3nL1TEMznm6KEF9sjdnZmnINZCNEX/nwsbkgX2qWQfpa1Arxh7NnghTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752046012; c=relaxed/simple;
-	bh=Qg8BbHM82X01TFwv5qfRp9b+xFwPAL8sudVDQWcIgg8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=cmX1VQ+W8HLFjC8Jzs7AoTwTz+SFV/iSRzyIuNsckp4LUmzXzcVB0mmHg7rU/AjrohYuwQGhM4yqaNtBeXpLBsrQT18JF8RUsy+Oo8HbSGm0k7ekLvfLLjKYyu51wmrqHmhcxFYppNmydUQMfdRzkoJYOjbvnJ72BnsWzZcmlFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=hzMzNH8O; arc=none smtp.client-ip=193.68.50.107
+	s=arc-20240116; t=1752046113; c=relaxed/simple;
+	bh=w32Do/nnUS2P6W20aXjsBm8pTYi/qn/40HH0V493Rg0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=LUN03xpsxWMLaEtv0coSckQw3Fsc2uXJG9IYAiXaBQX2nhNtvc/s10sq5HWJowVpHKDICT1k9flcpV0iimdLC9Y1wiveTsZe2i38VwM0bH3LV6ZpMdY3fBRq2bs0KdOHhNAotxnZG1+ydozHMJcelidv9fcYH3lSpSKOEnzQmLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=cJMkStkO; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="hzMzNH8O"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="cJMkStkO"
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 61C5FA09FF;
-	Wed,  9 Jul 2025 09:26:47 +0200 (CEST)
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 6B94AA09FF;
+	Wed,  9 Jul 2025 09:28:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=IHaV2BrRGxtRyHzgGIcRbtLSuDhywT1PwY7+3vPsdCM=; b=
-	hzMzNH8OSeoIYTzDHDe0gpFHQpnWlJa2//2KU+w93GFOqoPK8ynEhhhlcENUUD4n
-	anBmxiTf4tkTOmG+KQpNyFMX7oIPYqBj3tCOVSlTl2sX56F80fAAKy2tkaWa7c66
-	ldXv0oxEIg54DhyIBbgf93ShlzODWg5Ljy9iHbX8b81y6wyA+6BUsXNQDFW5gIo0
-	382onTBlzytxhL550D+VtBtuYLnrJYI2EjiX9AsPCU9om1ZV8SvIa1rCggFe+6vF
-	SCktE+xoiuAnTG4lQz0kMNMEG+aIgtLc9DdwsF3IsnNHDOTg8KCanAl/Ct0HOq5P
-	deJoLoGbS08OwEBRiNE/QZwXWHQHzUh9xfk+iMGs4kfdIc8T4//yOtU+UJl026zU
-	jEBkStrBP9kQnifh7bdwGGB0VEdqem6cGhNM5kcUpyoGgYWJBg9TY40YlbOjCq2f
-	4TSOzgRqGTLThyIBfTvKBas4brSdWDU15vnyAfjAMqlXmtA7LTgnUextW65uz+Ps
-	xtih59CXVeQ9DNiUDkQGnor9dgD1406cZs305YcvAJNnRBdmNZXB7U9kagMFTTNR
-	wPN1mqD7YadAgp6WW9vN0USVFS0QidS9kiFVVmz1kadc1JqFbEE85V/FfOsfcEJP
-	7I6DQgoRpdFU9WBGTxqyMDFY5zFAsraaAHHHweUpX+c=
+	:to; s=mail; bh=8WBV1VMoImVMC56kgaNdNAD+LptopVcFhDJuuTcKgbw=; b=
+	cJMkStkONQGSf03y9xnaOelcD0NIkuF3me7xqW4SOD/uGBD/EmPkEakKMQGT7KCm
+	KjTg1NJ+r62eODzbBsVWaA42byOUd6+0mmf0lTmj9qgVkQluxLPrib9paAJxPpn8
+	q9ItmhPADB4nqYJDgPg3Qgc38DdrL7LwNmrm2aTVLfn6iAKy1pKscZZ6VNNnuL5T
+	pXtNSOZTpOW55uoAMU+/6cqJn35ZhTRHrl817FPcGpoboY/A1i/2k6RXXRTROvVK
+	8DG7VT1vciuyfaKhSUqQ+Wyh4l/hICVyNGY2UhvB62Yn1WNqJGjSnQLo9PQJ1B+y
+	Jsn/YS/gwN45uIX8YQ717NQ1CYLCfb23tQM1G99xxkjrNazgevFd5JRCKtfr7tPA
+	IeGxRKIfVygMfwokaPvb8C+vtXMDWp1P1MCpoo/WJS5rbJR91ubCqxLE3wv95rKK
+	EyYn5/OoXxj1FjWjZSq0ARywbZdvwHRRebUXOk0T8bcxUqowLN9H++toriNqrjRJ
+	0zl8rTUKQX/WT9/Z6j5aepZlhek2xFhJslBIvj/Wxw/ULxmW5BGuUVLddaSZTOvl
+	FFMQMO/Hj/lF1mnk9eGqXmmwKaG7S90Eww/pVbmQpS7ZJoYSPhsOW4Hn8tQn/lYQ
+	EFwnIaOP1SIDNcGjS5Z+YpCx1Z92HFdaXv1o3PXIl5c=
 From: =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-Date: Wed, 9 Jul 2025 09:26:41 +0200
-Subject: [PATCH v2] ARM: dts: imx6-gw: Replace license text comment with
- SPDX identifier
+Date: Wed, 9 Jul 2025 09:28:12 +0200
+Subject: [PATCH v2] ARM: dts: imx6-hummingboard: Replace license text
+ comment with SPDX identifier
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,26 +45,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-ID: <20250709-gw-dts-lic-v2-1-ac3b697f65d5@prolan.hu>
-X-B4-Tracking: v=1; b=H4sIALAZbmgC/02NwQ6CMBAFf4Xs2TVtFSme/A/DobSFboItaRE1h
- H+3kJh4nGTevAWSjWQTXIsFop0pUfAZxKEA7ZTvLZLJDIKJklWMY/9CMyUcSGN1klKbuuxqfoE
- 8GKPt6L3H7k3mViWLbVReuy3xUGmycRMdpSnEz346803/9cV/f+bIsVJKC8PYWcruNsYwKH90T
- 2jWdf0C4gC+rr0AAAA=
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Message-ID: <20250709-hb-dts-lic-v2-1-a168bd9d24bd@prolan.hu>
+X-B4-Tracking: v=1; b=H4sIAAsabmgC/22NQQ6CMBBFr0K6dkxbxCauvIdhMS2DnQQL6SDRE
+ O5uYe3yJe+/vyqhzCTqVq0q08LCYypgT5UKEdOTgLvCymrbaKctRA/dLDBwgIB41aE2dW2sKoM
+ pU8+fI/ZoC3sUAp8xhbgnXigz5V2MLPOYv8fpYnb9b38xYMD3pgka3aVx7j7lccB0jm/Vbtv2A
+ 3jql5a9AAAA
+To: Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>
 CC: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>, "Tim
- Harvey" <tharvey@gateworks.com>, =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?=
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	Rabeeh Khoury <rabeeh@solid-run.com>, =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?=
 	<csokas.bence@prolan.hu>
 X-Mailer: b4 0.13.0
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1752046003;VERSION=7994;MC=3736621438;ID=98227;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1752046104;VERSION=7994;MC=3971285088;ID=156501;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
 X-ESET-Antispam: OK
 X-EsetResult: clean, is OK
-X-EsetId: 37303A2998FD515E657160
+X-EsetId: 37303A296767155E657160
 
-Replace verbatim license text with a `SPDX-License-Identifier`.
+Replace verbatim license text with a `SPDX-License-Identifier`
 
 The comment header mis-attributes this license to be "X11", but the
 license text does not include the last line "Except as contained in this
@@ -74,41 +75,47 @@ without prior written authorization from the X Consortium.". Therefore,
 this license is actually equivalent to the SPDX "MIT" license (confirmed
 by text diffing).
 
-Cc: Tim Harvey <tharvey@gateworks.com>
+On top, half of the files have the fragment "either version 2 of the
+License" for some reason, and not follow up with "or any later version".
+So the resulting SPDX license is still "GPL-2.0-only".
+
+Cc: Rabeeh Khoury <rabeeh@solid-run.com>
 Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
 ---
-Fix up Device Tree files by replacing the license text in comment blocks
-by a `SPDX-License-Identifier`.
----
 Changes in v2:
+- Also patch files that have Rabeeh's address in parens instead of <>
+- Also patch imx6qdl-hummingboard.dtsi authored by Russell
 - Fix msg
-- Link to v1: https://lore.kernel.org/r/20250702-gw-dts-lic-v1-1-7aac2d00488f@prolan.hu
+- Link to v1: https://lore.kernel.org/r/20250702-hb-dts-lic-v1-1-bf15c0a74577@prolan.hu
 ---
- arch/arm/boot/dts/nxp/imx/imx6dl-gw551x.dts   | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6dl-gw553x.dts   | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6dl-gw560x.dts   | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6dl-gw5903.dts   | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6dl-gw5904.dts   | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6q-gw551x.dts    | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6q-gw553x.dts    | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6q-gw560x.dts    | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6q-gw5903.dts    | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6q-gw5904.dts    | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi | 44 +--------------------------
- arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi | 44 +--------------------------
- 15 files changed, 15 insertions(+), 645 deletions(-)
+ .../nxp/imx/imx6dl-hummingboard-emmc-som-v15.dts   | 38 +--------------------
+ .../dts/nxp/imx/imx6dl-hummingboard-som-v15.dts    | 38 +--------------------
+ arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard.dts  | 38 +--------------------
+ .../nxp/imx/imx6dl-hummingboard2-emmc-som-v15.dts  | 39 +---------------------
+ .../dts/nxp/imx/imx6dl-hummingboard2-som-v15.dts   | 39 +---------------------
+ arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2.dts | 38 +--------------------
+ arch/arm/boot/dts/nxp/imx/imx6dl-solidsense.dts    | 38 +--------------------
+ .../nxp/imx/imx6q-hummingboard-emmc-som-v15.dts    | 38 +--------------------
+ .../dts/nxp/imx/imx6q-hummingboard-som-v15.dts     | 38 +--------------------
+ arch/arm/boot/dts/nxp/imx/imx6q-hummingboard.dts   | 38 +--------------------
+ .../nxp/imx/imx6q-hummingboard2-emmc-som-v15.dts   | 39 +---------------------
+ .../dts/nxp/imx/imx6q-hummingboard2-som-v15.dts    | 39 +---------------------
+ arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2.dts  | 38 +--------------------
+ arch/arm/boot/dts/nxp/imx/imx6q-solidsense.dts     | 38 +--------------------
+ .../arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi | 38 +--------------------
+ .../dts/nxp/imx/imx6qdl-hummingboard2-emmc.dtsi    | 39 +---------------------
+ .../boot/dts/nxp/imx/imx6qdl-hummingboard2.dtsi    | 38 +--------------------
+ 17 files changed, 17 insertions(+), 634 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-gw551x.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-gw551x.dts
-index 82d5f85722ea..50dd3df9dd04 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-gw551x.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-gw551x.dts
-@@ -1,48 +1,6 @@
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard-emmc-som-v15.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard-emmc-som-v15.dts
+index a63f742f20d9..5cd76c9ff531 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard-emmc-som-v15.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard-emmc-som-v15.dts
+@@ -1,43 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2014 Gateworks Corporation
+  * Copyright (C) 2014 Rabeeh Khoury (rabeeh@solid-run.com)
+  * Based on dt work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -116,19 +123,13 @@ index 82d5f85722ea..50dd3df9dd04 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -153,16 +154,17 @@ index 82d5f85722ea..50dd3df9dd04 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-gw553x.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-gw553x.dts
-index 59b8afc36e66..8ca5b6b8da07 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-gw553x.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-gw553x.dts
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard-som-v15.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard-som-v15.dts
+index 66a06cf3cdf3..a4d1b21a895f 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard-som-v15.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard-som-v15.dts
+@@ -1,43 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2016 Gateworks Corporation
+  * Copyright (C) 2014 Rabeeh Khoury (rabeeh@solid-run.com)
+  * Based on dt work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -170,19 +172,13 @@ index 59b8afc36e66..8ca5b6b8da07 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -207,16 +203,17 @@ index 59b8afc36e66..8ca5b6b8da07 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-gw560x.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-gw560x.dts
-index 21bdfaf8df53..b94455406a57 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-gw560x.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-gw560x.dts
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard.dts
+index cbd02eb486e1..9a23bd68d890 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard.dts
+@@ -1,43 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2017 Gateworks Corporation
+  * Copyright (C) 2014 Rabeeh Khoury (rabeeh@solid-run.com)
+  * Based on dt work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -224,19 +221,13 @@ index 21bdfaf8df53..b94455406a57 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -261,16 +252,18 @@ index 21bdfaf8df53..b94455406a57 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-gw5903.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-gw5903.dts
-index 103261ea9334..dd978105b42f 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-gw5903.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-gw5903.dts
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2-emmc-som-v15.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2-emmc-som-v15.dts
+index 80313c13bcdb..71cf5ce84a99 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2-emmc-som-v15.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2-emmc-som-v15.dts
+@@ -1,45 +1,8 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2017 Gateworks Corporation
+  * Device Tree file for SolidRun HummingBoard2
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
+  * Based on work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -279,25 +272,20 @@ index 103261ea9334..dd978105b42f 100644
 - *
 - *  a) This file is free software; you can redistribute it and/or
 - *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License.
 - *
-- *     This file is distributed in the hope that it will be useful,
+- *     This file is distributed in the hope that it will be useful
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
 - *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
-- *
-- * Or, alternatively,
+- * Or, alternatively
 - *
 - *  b) Permission is hereby granted, free of charge, to any person
 - *     obtaining a copy of this software and associated documentation
 - *     files (the "Software"), to deal in the Software without
-- *     restriction, including without limitation the rights to use,
+- *     restriction, including without limitation the rights to use
 - *     copy, modify, merge, publish, distribute, sublicense, and/or
 - *     sell copies of the Software, and to permit persons to whom the
 - *     Software is furnished to do so, subject to the following
@@ -306,25 +294,27 @@ index 103261ea9334..dd978105b42f 100644
 - *     The above copyright notice and this permission notice shall be
 - *     included in all copies or substantial portions of the Software.
 - *
-- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- *     THE SOFTWARE IS PROVIDED , WITHOUT WARRANTY OF ANY KIND
 - *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 - *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 - *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
 - *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-gw5904.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-gw5904.dts
-index 9c6d3cd3d6a7..172dad423639 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-gw5904.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-gw5904.dts
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2-som-v15.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2-som-v15.dts
+index e61ef1156f8b..fed260a9fdc4 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2-som-v15.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2-som-v15.dts
+@@ -1,45 +1,8 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2017 Gateworks Corporation
+  * Device Tree file for SolidRun HummingBoard2
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
+  * Based on work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -333,25 +323,20 @@ index 9c6d3cd3d6a7..172dad423639 100644
 - *
 - *  a) This file is free software; you can redistribute it and/or
 - *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License.
 - *
-- *     This file is distributed in the hope that it will be useful,
+- *     This file is distributed in the hope that it will be useful
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
 - *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
-- *
-- * Or, alternatively,
+- * Or, alternatively
 - *
 - *  b) Permission is hereby granted, free of charge, to any person
 - *     obtaining a copy of this software and associated documentation
 - *     files (the "Software"), to deal in the Software without
-- *     restriction, including without limitation the rights to use,
+- *     restriction, including without limitation the rights to use
 - *     copy, modify, merge, publish, distribute, sublicense, and/or
 - *     sell copies of the Software, and to permit persons to whom the
 - *     Software is furnished to do so, subject to the following
@@ -360,25 +345,26 @@ index 9c6d3cd3d6a7..172dad423639 100644
 - *     The above copyright notice and this permission notice shall be
 - *     included in all copies or substantial portions of the Software.
 - *
-- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- *     THE SOFTWARE IS PROVIDED , WITHOUT WARRANTY OF ANY KIND
 - *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 - *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 - *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
 - *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-gw551x.dts b/arch/arm/boot/dts/nxp/imx/imx6q-gw551x.dts
-index 2c7feeef1b0e..44d1871ac666 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-gw551x.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-gw551x.dts
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2.dts
+index b12cd87f3f94..4e176db56840 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-hummingboard2.dts
+@@ -1,43 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2014 Gateworks Corporation
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
+  * Based on dt work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -386,19 +372,13 @@ index 2c7feeef1b0e..44d1871ac666 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -423,16 +403,17 @@ index 2c7feeef1b0e..44d1871ac666 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-gw553x.dts b/arch/arm/boot/dts/nxp/imx/imx6q-gw553x.dts
-index e9c224cea752..22842f2ef685 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-gw553x.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-gw553x.dts
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-solidsense.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-solidsense.dts
+index 2a3699adbed0..fdced9daec4d 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6dl-solidsense.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6dl-solidsense.dts
+@@ -1,43 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2016 Gateworks Corporation
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
+  * Based on dt work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -440,19 +421,13 @@ index e9c224cea752..22842f2ef685 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -477,16 +452,17 @@ index e9c224cea752..22842f2ef685 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-gw560x.dts b/arch/arm/boot/dts/nxp/imx/imx6q-gw560x.dts
-index 735f2bbf1439..c69fdd064e2f 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-gw560x.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-gw560x.dts
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard-emmc-som-v15.dts b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard-emmc-som-v15.dts
+index c51b4e4fd71e..1e21df2e01bb 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard-emmc-som-v15.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard-emmc-som-v15.dts
+@@ -1,43 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2017 Gateworks Corporation
+  * Copyright (C) 2014 Rabeeh Khoury (rabeeh@solid-run.com)
+  * Based on dt work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -494,19 +470,13 @@ index 735f2bbf1439..c69fdd064e2f 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -531,16 +501,17 @@ index 735f2bbf1439..c69fdd064e2f 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-gw5903.dts b/arch/arm/boot/dts/nxp/imx/imx6q-gw5903.dts
-index a182e4cb0e6e..a9a33eeb9712 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-gw5903.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-gw5903.dts
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard-som-v15.dts b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard-som-v15.dts
+index e4132d62ffa2..cb78db0135ae 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard-som-v15.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard-som-v15.dts
+@@ -1,43 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2017 Gateworks Corporation
+  * Copyright (C) 2014 Rabeeh Khoury (rabeeh@solid-run.com)
+  * Based on dt work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -548,19 +519,13 @@ index a182e4cb0e6e..a9a33eeb9712 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -585,16 +550,17 @@ index a182e4cb0e6e..a9a33eeb9712 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-gw5904.dts b/arch/arm/boot/dts/nxp/imx/imx6q-gw5904.dts
-index ca1e2ae3341e..25a93cd4e5f5 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-gw5904.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-gw5904.dts
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard.dts b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard.dts
+index 8c9e94e648a7..130dcdc81abc 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard.dts
+@@ -1,43 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2017 Gateworks Corporation
+  * Copyright (C) 2014 Rabeeh Khoury (rabeeh@solid-run.com)
+  * Based on dt work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -602,19 +568,13 @@ index ca1e2ae3341e..25a93cd4e5f5 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -639,16 +599,18 @@ index ca1e2ae3341e..25a93cd4e5f5 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
- 
  /dts-v1/;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi
-index 29960d1cf6a0..009a9d56757c 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw551x.dtsi
-@@ -1,48 +1,6 @@
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2-emmc-som-v15.dts b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2-emmc-som-v15.dts
+index 1998ebfa0fe0..af458873b893 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2-emmc-som-v15.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2-emmc-som-v15.dts
+@@ -1,45 +1,8 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2014 Gateworks Corporation
+  * Device Tree file for SolidRun HummingBoard2
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
+  * Based on work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -657,18 +619,113 @@ index 29960d1cf6a0..009a9d56757c 100644
 - *
 - *  a) This file is free software; you can redistribute it and/or
 - *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License.
+- *
+- *     This file is distributed in the hope that it will be useful
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- * Or, alternatively
+- *
+- *  b) Permission is hereby granted, free of charge, to any person
+- *     obtaining a copy of this software and associated documentation
+- *     files (the "Software"), to deal in the Software without
+- *     restriction, including without limitation the rights to use
+- *     copy, modify, merge, publish, distribute, sublicense, and/or
+- *     sell copies of the Software, and to permit persons to whom the
+- *     Software is furnished to do so, subject to the following
+- *     conditions:
+- *
+- *     The above copyright notice and this permission notice shall be
+- *     included in all copies or substantial portions of the Software.
+- *
+- *     THE SOFTWARE IS PROVIDED , WITHOUT WARRANTY OF ANY KIND
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+  */
+ /dts-v1/;
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2-som-v15.dts b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2-som-v15.dts
+index d3ad7329cd6d..509724df7f82 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2-som-v15.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2-som-v15.dts
+@@ -1,45 +1,8 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+ /*
+  * Device Tree file for SolidRun HummingBoard2
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
+  * Based on work by Russell King
+- *
+- * This file is dual-licensed: you can use it either under the terms
+- * of the GPL or the X11 license, at your option. Note that this dual
+- * licensing only applies to this file, and not this project as a
+- * whole.
+- *
+- *  a) This file is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License as
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License.
+- *
+- *     This file is distributed in the hope that it will be useful
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
+- *
+- * Or, alternatively
+- *
+- *  b) Permission is hereby granted, free of charge, to any person
+- *     obtaining a copy of this software and associated documentation
+- *     files (the "Software"), to deal in the Software without
+- *     restriction, including without limitation the rights to use
+- *     copy, modify, merge, publish, distribute, sublicense, and/or
+- *     sell copies of the Software, and to permit persons to whom the
+- *     Software is furnished to do so, subject to the following
+- *     conditions:
+- *
+- *     The above copyright notice and this permission notice shall be
+- *     included in all copies or substantial portions of the Software.
+- *
+- *     THE SOFTWARE IS PROVIDED , WITHOUT WARRANTY OF ANY KIND
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+  */
+ /dts-v1/;
+ 
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2.dts b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2.dts
+index 5249f53dcdbc..704ba5b91efa 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-hummingboard2.dts
+@@ -1,43 +1,7 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+ /*
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
+  * Based on dt work by Russell King
+- *
+- * This file is dual-licensed: you can use it either under the terms
+- * of the GPL or the X11 license, at your option. Note that this dual
+- * licensing only applies to this file, and not this project as a
+- * whole.
+- *
+- *  a) This file is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -693,16 +750,17 @@ index 29960d1cf6a0..009a9d56757c 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
+ /dts-v1/;
  
- #include <dt-bindings/gpio/gpio.h>
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-index c6e231de674a..e3b677384a22 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw553x.dtsi
-@@ -1,48 +1,6 @@
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-solidsense.dts b/arch/arm/boot/dts/nxp/imx/imx6q-solidsense.dts
+index 0e6a325df363..d929f131ff41 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-solidsense.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-solidsense.dts
+@@ -1,43 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2016 Gateworks Corporation
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
+  * Based on dt work by Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -710,19 +768,13 @@ index c6e231de674a..e3b677384a22 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -747,16 +799,16 @@ index c6e231de674a..e3b677384a22 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
+ /dts-v1/;
  
- #include <dt-bindings/gpio/gpio.h>
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
-index d0f648938cae..ce1d49a9e0cd 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw560x.dtsi
-@@ -1,48 +1,6 @@
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi
+index 54d4bced2395..6ac8af8ce784 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard.dtsi
+@@ -1,42 +1,6 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2017 Gateworks Corporation
+  * Copyright (C) 2013,2014 Russell King
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -764,19 +816,13 @@ index d0f648938cae..ce1d49a9e0cd 100644
 - * whole.
 - *
 - *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
 - *
 - * Or, alternatively,
 - *
@@ -801,16 +847,17 @@ index d0f648938cae..ce1d49a9e0cd 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
+ #include <dt-bindings/sound/fsl-imx-audmux.h>
  
- #include <dt-bindings/gpio/gpio.h>
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
-index 71911df881cc..50b484998c49 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5903.dtsi
-@@ -1,48 +1,6 @@
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard2-emmc.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard2-emmc.dtsi
+index c3efb001c515..87b41d770e80 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard2-emmc.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard2-emmc.dtsi
+@@ -1,44 +1,7 @@
 +// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
  /*
-  * Copyright 2017 Gateworks Corporation
+  * Device Tree file for SolidRun HummingBoard2
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
 - *
 - * This file is dual-licensed: you can use it either under the terms
 - * of the GPL or the X11 license, at your option. Note that this dual
@@ -819,18 +866,61 @@ index 71911df881cc..50b484998c49 100644
 - *
 - *  a) This file is free software; you can redistribute it and/or
 - *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
+- *     published by the Free Software Foundation; either version 2 of the
+- *     License.
 - *
 - *     This file is distributed in the hope that it will be useful,
 - *     but WITHOUT ANY WARRANTY; without even the implied warranty of
 - *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - *     GNU General Public License for more details.
 - *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
+- * Or, alternatively,
+- *
+- *  b) Permission is hereby granted, free of charge, to any person
+- *     obtaining a copy of this software and associated documentation
+- *     files (the "Software"), to deal in the Software without
+- *     restriction, including without limitation the rights to use
+- *     copy, modify, merge, publish, distribute, sublicense, and/or
+- *     sell copies of the Software, and to permit persons to whom the
+- *     Software is furnished to do so, subject to the following
+- *     conditions:
+- *
+- *     The above copyright notice and this permission notice shall be
+- *     included in all copies or substantial portions of the Software.
+- *
+- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+- *     OTHER DEALINGS IN THE SOFTWARE.
+  */
+ 
+ &iomuxc {
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard2.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard2.dtsi
+index 3069e1738ba2..1e41e6fdd5b4 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard2.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-hummingboard2.dtsi
+@@ -1,42 +1,6 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
+ /*
+  * Copyright (C) 2015 Rabeeh Khoury <rabeeh@solid-run.com>
+- *
+- * This file is dual-licensed: you can use it either under the terms
+- * of the GPL or the X11 license, at your option. Note that this dual
+- * licensing only applies to this file, and not this project as a
+- * whole.
+- *
+- *  a) This file is free software; you can redistribute it and/or
+- *     modify it under the terms of the GNU General Public License
+- *     version 2 as published by the Free Software Foundation.
+- *
+- *     This file is distributed in the hope that it will be useful,
+- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *     GNU General Public License for more details.
 - *
 - * Or, alternatively,
 - *
@@ -855,66 +945,12 @@ index 71911df881cc..50b484998c49 100644
 - *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 - *     OTHER DEALINGS IN THE SOFTWARE.
   */
+ #include <dt-bindings/sound/fsl-imx-audmux.h>
  
- #include <dt-bindings/gpio/gpio.h>
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
-index 716c324a7458..3125cd04d4ea 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-gw5904.dtsi
-@@ -1,48 +1,6 @@
-+// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
- /*
-  * Copyright 2017 Gateworks Corporation
-- *
-- * This file is dual-licensed: you can use it either under the terms
-- * of the GPL or the X11 license, at your option. Note that this dual
-- * licensing only applies to this file, and not this project as a
-- * whole.
-- *
-- *  a) This file is free software; you can redistribute it and/or
-- *     modify it under the terms of the GNU General Public License as
-- *     published by the Free Software Foundation; either version 2 of
-- *     the License, or (at your option) any later version.
-- *
-- *     This file is distributed in the hope that it will be useful,
-- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *     GNU General Public License for more details.
-- *
-- *     You should have received a copy of the GNU General Public
-- *     License along with this file; if not, write to the Free
-- *     Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,
-- *     MA 02110-1301 USA
-- *
-- * Or, alternatively,
-- *
-- *  b) Permission is hereby granted, free of charge, to any person
-- *     obtaining a copy of this software and associated documentation
-- *     files (the "Software"), to deal in the Software without
-- *     restriction, including without limitation the rights to use,
-- *     copy, modify, merge, publish, distribute, sublicense, and/or
-- *     sell copies of the Software, and to permit persons to whom the
-- *     Software is furnished to do so, subject to the following
-- *     conditions:
-- *
-- *     The above copyright notice and this permission notice shall be
-- *     included in all copies or substantial portions of the Software.
-- *
-- *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-- *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-- *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-- *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-- *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-- *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-- *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-- *     OTHER DEALINGS IN THE SOFTWARE.
-  */
- 
- #include <dt-bindings/gpio/gpio.h>
 
 ---
 base-commit: 66701750d5565c574af42bef0b789ce0203e3071
-change-id: 20250701-gw-dts-lic-7388cd95f916
+change-id: 20250702-hb-dts-lic-caa60c313312
 
 Best regards,
 -- 
