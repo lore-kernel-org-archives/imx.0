@@ -1,164 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012064.outbound.protection.outlook.com [52.101.66.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A5E2E62B5;
-	Wed,  9 Jul 2025 14:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752073026; cv=none; b=FbkMmtS+FUSQxySLfgoO9NqNZq+H7CewDVovc9WEJGZWRAvSNy7WB6a8kNpdy0ggqqa7a0uZgC8+qf2x0DBujN1fgF+XABwpFAi8B7N/4XV0Ew6c99yUcp9i4TCGG/79j1F/esgSs3zwczFkSw//71UrqrlwCHpeZRSQ2Nb1hck=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752073026; c=relaxed/simple;
-	bh=ImDgPg2/JzwFt9Jc7QkkgiYZwTTl0nxtFtgT+n58JK0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WFkl6WGCgMAsLLGfuzRiPm6kg2d6A6x/M96KyrcIOysfpQ0aJbPzpWsVM3P50VBWwiOLPs3VKrPw51lTj79bfKYq4oobOyhCCwRcfISasv8Kd30vsNakW9z8G8TRgbbNQ/dd2tpG0Ot5W4YJh3RA05IOQk/DFvmb0IZGczZDcss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QlDlTYK7; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448A828BAA1
+	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 15:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752073284; cv=fail; b=U/b078icmtQaX03zdxsffPCFKEaMWmKB66NUnRIzyNU3uSfMigqByjPuU3WPJZQC3puPm2+zS9q9uX48jzOCo3MxBLDhpNkDQDf739U3MXxArI4cP5i/oA3dEvtPv4C132NwHqZ7DJE+ZrSpcl7g1A7Z9wGUbxSK8ckrTpN5z6k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752073284; c=relaxed/simple;
+	bh=lK0XYQ6jvZ0z1I7LMCEQqUJd8PSf3fvdJRjw210vfuo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ViZZBUCRBBojxClwA+vydmlsabk8ZzrLq5TQwFi/2x1qFnOo516npQxuVBpQNh+A1+qP3Bo/iVQnRoog9zLzjWoJ8w/Ia+yLl4+Foii6pXopue3iS1LhbaJW51o7MgVrC72ERlPfiXQGPlAM7p8MavF2uGPTfskUQxPef5EWKZI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=X9dPx7k6; arc=fail smtp.client-ip=52.101.66.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QlDlTYK7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 792ABC4CEF6;
-	Wed,  9 Jul 2025 14:57:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1752073025; bh=ImDgPg2/JzwFt9Jc7QkkgiYZwTTl0nxtFtgT+n58JK0=;
-	h=From:Date:Subject:To:Cc:From;
-	b=QlDlTYK78/m7h0W9zCuXakttEwJ4FExS/ua3FN9f+h1A42bYAo3ELPzHB6CxMOWzG
-	 EjQbsaq94wwzqjzvuZ97YWzPP03J2CnaXPvSWwfRCDw7tDRj0fffW9I14f7WJH7UhL
-	 XzdgA6OeO8uu66VIEDvn9NnRqaUWHWq7z4DDvO+o=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B0ADC83F0A;
-	Wed,  9 Jul 2025 14:57:05 +0000 (UTC)
-From: Richard Leitner <richard.leitner@linux.dev>
-Date: Wed, 09 Jul 2025 16:57:03 +0200
-Subject: [PATCH] media: nxp: imx8-isi: fix streaming cleanup on release
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="X9dPx7k6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oxAaQhXxDDbgbo8Qldxv7uyHxRbxm0HAcyaqNr7ajSeXiOEwn9Qy23Ec6jI4A9JoO8Lpz0Tmy7MaqvxtQ4TrIX14VaA5M8oQVu+iUbOTpeRROv6X10mSZOD9jxxBhrO5HEtV9JuouelOiaFkvdjSlJuPWz8xhXNdyJQUjq8TiJVUPJAzXGF28Bhsa0kjio7/TmyoZJiN3kxcqe2mL7/AcrnbS09g/tF2gZncLIVVbURlS4OHjLrG3vQueZ36KBf4V7UbmIKhJ1EZMPku63ONi+VL6xjekV48uyi/sftaPYhyumQY4CmmvBLsYeSfG7pGGBkFBnIKcUSsj8+kVFthQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lK0XYQ6jvZ0z1I7LMCEQqUJd8PSf3fvdJRjw210vfuo=;
+ b=YARnqA4KwbFPSqOZOh9CLGmEcZ/pRYeBhTCszOdSIE+FzXsnrOULtBVaJhTTDqHIg3oj5K8WegFnS4qeg9yLHLXa+6+2z1TKgiWkRm6Sx3hbHkRUiyEqTh83DEyhKOJ8JMy+Zls/OBF5JqwrRGZKJUWQGYAH3SUXFTSO8UxQbmW11GgETR3FumRcoubr7tAONquDIDud9oLMR4IqbekxMmRhj2yQ3DDmu5fd6XVn+Ck+UbDm60cbqmiYC8AvxihZZ9S1ESOJ1sQegpZQrljBWl5mleLZ4sRGGXfN8XtaDqCammREAIQbaoqdeFv65PI7p99eFk+w3AY7guT3+4SXmA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lK0XYQ6jvZ0z1I7LMCEQqUJd8PSf3fvdJRjw210vfuo=;
+ b=X9dPx7k6ZYk9QswgtFBhKXLgZ70rjwvNPttTtRK02UEE2ftDl21W6CzXgEcAasYIOBCG3Kbk0EooEmp0ZEikjorDq+So4W4V1b5UCqPR7sLMZJctKHZnp5y+ZKLxTEyXeTuEKA8TfSitMAOjcq5L/L7L4KVs2a2oD74ZhwWIsaLOICfBJDAf5x9XemBS+RzjHick93AETf5hCWbZ7xO3Lc8zCVlPLCvRnCaVYM4B2hAr39xP53BLuAXsFuo2IICTg0CjVSH9OwTXMNs0IX++j+SVX/pGBzm6rsgoVaR7OWmqQa/XOR3Z3s/ftreWe4gFKDaKo3hjWbe5PW80By2C/w==
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by AS8PR04MB8577.eurprd04.prod.outlook.com (2603:10a6:20b:424::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.28; Wed, 9 Jul
+ 2025 15:01:18 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.8901.024; Wed, 9 Jul 2025
+ 15:01:18 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>, "Peng Fan (OSS)"
+	<peng.fan@oss.nxp.com>
+CC: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Frank Li <frank.li@nxp.com>, Daniel Baluta
+	<daniel.baluta@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>,
+	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v3 2/5] remoteproc: imx_rproc: Add support for System
+ Manager API
+Thread-Topic: [PATCH v3 2/5] remoteproc: imx_rproc: Add support for System
+ Manager API
+Thread-Index: AQHb5XhqrU2uErlDjUCS0UsOxf6UCbQogN8AgAEUl4CAAFxWAIAABj0g
+Date: Wed, 9 Jul 2025 15:01:18 +0000
+Message-ID:
+ <PAXPR04MB8459C04A38CAB6A50C11CB198849A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References: <20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com>
+ <20250625-imx95-rproc-1-v3-2-699031f5926d@nxp.com> <aG1IIk42q8OmGsQH@p14s>
+ <20250709090231.GB14535@nxa18884-linux> <aG59nOSfMuFbJvoK@p14s>
+In-Reply-To: <aG59nOSfMuFbJvoK@p14s>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|AS8PR04MB8577:EE_
+x-ms-office365-filtering-correlation-id: 2585af7b-6c46-4d12-37ab-08ddbef9759d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|7416014|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?nt118zwGfWfXRICs1z7vlstQi8zZcXQWqBYPXKF+OzIYeEOrAm+EnYG4ELfG?=
+ =?us-ascii?Q?m3kZfuFWw6Ppp+J2AbcXcCs7UCvNWUOZ8dq/VniF8H03VT8WVS90kHeBfbhY?=
+ =?us-ascii?Q?5op5HHLaLaPlrHZ1+I6oOMw+Dc7ccWMVIL5/ot/Vr+qZ8s/H9zi1azE/7NlJ?=
+ =?us-ascii?Q?aqp4+IVXngnj/a+z3jyjfKt/gEiIdfCQlkDWib8L+/EytmX5BTkWRTaA5ifO?=
+ =?us-ascii?Q?xTnJyBE52ZbYGyay2xhWUhbGESL9UnH4+Y4ksRRjl5mOZ7iVT60YVAJBR3rL?=
+ =?us-ascii?Q?xg4SRLwgfKrr6+/mYg7vC9MTxNdEVmCoPgdtW7B968KLYgc8FSZqYPsUMCa1?=
+ =?us-ascii?Q?AT1ISZBOq0hlZwwU3qagyy4MlJJtBe4Dak9YpOZKBOtf/ioUl1emTr/fCrVM?=
+ =?us-ascii?Q?y3F29iLd0pcc8JO8+Qjne1C0IIw5MCOZwKMXpFnr0JHh119KB9BV2IahKHBb?=
+ =?us-ascii?Q?Sfxw8ijldXcI+763PfbGMG+FSGzG110L0PTM0kBimBIDn2Me5h8395tI4mUq?=
+ =?us-ascii?Q?H9LXD4G9NyvqBShYGU0mcglJtvGhKxT5idBKzuFwnKAxvcdO0gsO9EUyCd5F?=
+ =?us-ascii?Q?h9k89Z35emzltygFRB0K+CVAj+LEuItfNu1gdc5Ml2oJ3Zu8WWJasxDGqLcN?=
+ =?us-ascii?Q?H062symvvrUhdH+/9FUG3HtP6nRZBks2pCdEBDNIFsrK6ZB8dfyx2+pr4dXU?=
+ =?us-ascii?Q?924VfXmZsn2QJCBtFgoZ1Vu3Jk3OEAq9CSN9ayg8WqiZkFInUTNhD42vah1u?=
+ =?us-ascii?Q?YwfpRddv/npUU5VHTV5gSG6jXtlB++dR0iviQZnE+0y/B97fsaqey36D4/uH?=
+ =?us-ascii?Q?KCS7LZbBf+a7nX5an5uqICA0nDOkYFPwCSn4OcQEvYKpspjxOmlVoZ8shls8?=
+ =?us-ascii?Q?7H79UEnecZUbAbiR7j8gfXjgmT9cBe3szH6bjLnJjIK95pwKG5PWXOO8yXVU?=
+ =?us-ascii?Q?jT6ZB/LwH60ApqYVrtye8RxSOHUhUwFs2gmFhdXLVvySf/uRMut76PIjlA0j?=
+ =?us-ascii?Q?/hJqZeeP+WdyQuJXCk8R9OUZYz/Pfea2E3yPxrg4Eg64dlVVL3DCBPpXp7Z+?=
+ =?us-ascii?Q?3PmW/R/M3/hLn+A1QtLIpm0H1SZTSI4dj3qKT+BcBbRkKvyBhn4kwBjotCd6?=
+ =?us-ascii?Q?Xx3wikt8wKprdH79Lm3+zOTgbIe4A5aaSr7r22K4IglYkRxgTegNhNj52VIk?=
+ =?us-ascii?Q?5lvvg86hMQv3TUlSxuza7h0D/P1m8CsBNLANbhb7Om1KB+WDmVMA218+bi0D?=
+ =?us-ascii?Q?n1Z/7rwQUYAEo3wOkR2UgjSV0pYUNP+S4/a0XzcYO9+iLt1sfJJz6vGcUOQm?=
+ =?us-ascii?Q?CKgiwCRs80cLYoMVJGzx1gINQ3FFVDjWh/Sg8rph04+PZPWcS74reAXJMW8g?=
+ =?us-ascii?Q?p2NzZO5gvEgTywejSlHhXuAezqB1VJm2aq2G5AV6l6ZgyP/7Mg10s0uzruzM?=
+ =?us-ascii?Q?vmUTBiP0bKLLt7nKrU+RHJn8npOGXjnLctRaCIACwmu/mXnsjMvyjw=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?zFfL9kOTVAfxChYH8snHn6qU+qMFpkF+lKqbISTzH2iDnSYOfH2vC4PuShIg?=
+ =?us-ascii?Q?1gDcuJdUIt9I0cuBmYHIf+ukrSmCdv8Xj1aQbzUoNcBISQW4JTXtp5xtRNcF?=
+ =?us-ascii?Q?ml+04ARlKmpYnSgj6l/LizqbOYknVE6qZ62sVNksrYHPszaDgpL6ZtAstcpW?=
+ =?us-ascii?Q?0/8E1xaP7ePeltdVchksMnUWTEt+aC8l6OzppQ72uW0DburgXdJVIKh+uhGA?=
+ =?us-ascii?Q?1uBer/MiGmRcEF+dCaVV5MyNSOJ0XOlX/g3yCczWL0zi19IXQ3cjXDSyrK3O?=
+ =?us-ascii?Q?LJ8p4r+xqRKtn9e8iJFAUUYFd82TMgbhbDSePiRxg9ldmb3wHUQw/zkzjhPv?=
+ =?us-ascii?Q?o3jypim/Utf5DhODMG/z+BtPrHGPRQymJP4f5X0C33TgnKqgbAHrphhp5XgQ?=
+ =?us-ascii?Q?gV8+XOIRYzDVfUyfVcZ2Avmtn36btJXN0O9sIjfvUK2+Vb9Ld2QNu19r+QJJ?=
+ =?us-ascii?Q?C+mIDHwdsm9G1mX48QetEUFT+KFfY+g1OA8K0+YiOqR4KBHn1qMR6wZgLyHi?=
+ =?us-ascii?Q?UoYpC2teYGYFunYB/rfHgEy9tlBbaMPSSHUkBHHqJ2YBNzmIIQQVl8iKlnF3?=
+ =?us-ascii?Q?YNJuxdMOJ8Jpx3cp+gVo6Umk8m0lTs0ntnZVySSN1q5MNtzH0UFAh7V+dNBb?=
+ =?us-ascii?Q?Zf5z67f/jw5SSU6ogYPzrsyrzTuRaqn0Ri1j0VBmS0M+rHFoUsXEXOthtU+W?=
+ =?us-ascii?Q?HGAhGTBOUJ+5l2iZZznxFJ13xtxerVVmcfj+6wjO/zcxsLiIW6lrPrsHA5hq?=
+ =?us-ascii?Q?Z1m2c+H2lpREIflLVQiYQaSwY2CYeURtMoX4K+Xm/2RKl8/GIfTzs8lUMcdV?=
+ =?us-ascii?Q?wosD6bxI2sCiqGyBioELU4Kvx177BZdUid1LD8dLtl4J/tgBJkVPKBC0hpx0?=
+ =?us-ascii?Q?LH1eIXsy/Kzu69OBylqsk8i2/v0KJofXNt4IDlPwfip5Wd7OQZPAGO3muoXT?=
+ =?us-ascii?Q?U+ZC+UAE8gAzRbzingnF/BMFklo/xcIcvvjWYTLoYSn4uYntpGQnRrrdMcA4?=
+ =?us-ascii?Q?q3ofvftDoNii+hof0xTH1rMWxbFTJlpJc5wuvc8ShL2F9NfNB0GkzWqZaspa?=
+ =?us-ascii?Q?/adCAKjIbek9Y1U4Y3VzEy9QBzkrorRaNzRwbhU2C875kkbdNAAAktr3UWQN?=
+ =?us-ascii?Q?QDz8nztfDLu+ctEFxM/YkjuBYa+4FD0CtRhLd1fe2mnh8G9KXBbz1SR8MoS0?=
+ =?us-ascii?Q?kp2CoVEZCQA/V+mr7jRdP3EGPr2H4PRhvU9jSbbG5hi6uDgAYw/VQuPwmdBy?=
+ =?us-ascii?Q?f7IdeMYtG5f0bg7a828DObsGpAiMfYD3ilqpkNG7qHG7Cdjp9vAtWAGG6oGR?=
+ =?us-ascii?Q?p+Q9P2VsvTD/9Ut7xLxesNyAPC7yjku11bos0MR6GsO4lpsJWg04IFnqDo+X?=
+ =?us-ascii?Q?a/d5U9RBlSPZkCvjNTc0XPSFkInHJdxXabZTAypdwWTCsEAJVhgJLraaBt9B?=
+ =?us-ascii?Q?iWLeAhM/YfG7ThM4L+LBnRzmn+a1KmrTcUxSHr7b5Eex1YAkBahq4l9Ix1Ra?=
+ =?us-ascii?Q?EMZyeTpJABlitYGq+e6XFOyZ2S96xBuFAz3QAZYiuFJ1Ce3q/6AHdKEUCy8F?=
+ =?us-ascii?Q?RnMw5Phcb7OF6gQCGLA=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250709-imx8-isi-release-fix-v1-1-c47c659ce1a6@linux.dev>
-X-B4-Tracking: v=1; b=H4sIAD6DbmgC/x2MSQqAMBAEvyJzdiBGxOhXxEPQVgfcSEACkr87e
- Kymul6KCIJIffFSwCNRrlOhKguaNn+uYJmVyRrbmNZ0LEdyrBoH7PARvEjiylnMgPOoLen1DtD
- 5zw5jzh9kkIZNZgAAAA==
-X-Change-ID: 20250709-imx8-isi-release-fix-182edee8ae32
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Richard Leitner <richard.leitner@linux.dev>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1752073024; l=4824;
- i=richard.leitner@linux.dev; s=20250225; h=from:subject:message-id;
- bh=ImDgPg2/JzwFt9Jc7QkkgiYZwTTl0nxtFtgT+n58JK0=;
- b=xYpJrqbKcrpcFVR42vsMBBvZHktNZ2HTww5a6d9d96WIinoHhl+FZ6V5LlsrBlCwq+jXpVqOo
- sbtEDW9DqJKC6DhWybn+Eu35EWd9BGUYz7ZFQ1AKZ6Mg2gC2kayKxHP
-X-Developer-Key: i=richard.leitner@linux.dev; a=ed25519;
- pk=8hZNyyyQFqZ5ruVJsSGBSPIrmJpfDm5HwHU4QVOP1Pk=
-X-Endpoint-Received: by B4 Relay for richard.leitner@linux.dev/20250225
- with auth_id=350
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2585af7b-6c46-4d12-37ab-08ddbef9759d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2025 15:01:18.5558
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /i7BYbfgvgh/1tS0+NLAvio+FPRNCKPT81KgUqLvroDVvFEnE/yE6O2vusIh/kR4cXwwSetp3rtLrT53Y3eiVg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8577
 
-The current implementation unconditionally calls
-mxc_isi_video_cleanup_streaming() in mxc_isi_video_release(). This can
-lead to situations where any release call (like from a simple
-"v4l2-ctl -l") may release a currently streaming queue when called on
-such a device.
+> Subject: Re: [PATCH v3 2/5] remoteproc: imx_rproc: Add support for
+> System Manager API
+>=20
+...
+> > >
+> > >This is set all the time imx_rproc_prepare() is called - isn't there
+> > >a way to set it once at initialisation time?
+> >
+> > Yeah. Moving this to probe path should be ok, such as in
+> imx_rproc_detect_mode.
+> > The drawback is M7 logical machine will be left in powered up state if
+> > moving to probe path before user starts M7 LM. Leaving in here
+> means
+> > M7 logcal machine will be only powered up when user does "echo
+> start >
+> > /xx/remoteproc-y/state", but needs to set
+> IMX_RPROC_FLAGS_SM_LMM_AVAIL
+> > flags each time do preparing.
+> >
+> > If you prefer moving this logic to probe, I could give a try to move
+> > to imx_rproc_detect_mode which is probe path.
+> >
+> > How do you think?
+>=20
+> Just leave it where it is.
 
-Address this issue by calling mxc_isi_video_cleanup_streaming() only if
-the queue owner is NULL (which is set by vb2_fop_release() when called
-by the current owner).
+ok. I will just put this piece code in a separate function as you
+commented in last reply and leave the function being invoked
+in imx_rproc_prepare.
 
-This was reproducible on an i.MX8MP board by streaming from an ISI
-capture device using gstreamer:
+I will send out v4 with above change after test. It should
+tomorrow.
 
-	gst-launch-1.0 -v v4l2src device=/dev/videoX ! \
-	    video/x-raw,format=GRAY8,width=1280,height=800,framerate=1/120 ! \
-	    fakesink
-
-While this stream is running, querying the caps of the same device
-provokes the error state:
-
-	v4l2-ctl -l -d /dev/videoX
-
-This resulted in the following trace:
-
-[  155.452152] ------------[ cut here ]------------
-[  155.452163] WARNING: CPU: 0 PID: 1708 at /drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c:713 mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
-[  157.004248] Modules linked in: cfg80211 rpmsg_ctrl rpmsg_char rpmsg_tty virtio_rpmsg_bus rpmsg_ns rpmsg_core rfkill nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables mcp251x6
-[  157.053499] CPU: 0 UID: 0 PID: 1708 Comm: python3 Not tainted 6.15.4-00114-g1f61ca5cad76 #1 PREEMPT
-[  157.064369] Hardware name: imx8mp_board_01 (DT)
-[  157.068205] pstate: 400000c5 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  157.075169] pc : mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
-[  157.081195] lr : mxc_isi_pipe_irq_handler+0x38/0x1b0 [imx8_isi]
-[  157.087126] sp : ffff800080003ee0
-[  157.090438] x29: ffff800080003ee0 x28: ffff0000c3688000 x27: 0000000000000000
-[  157.097580] x26: 0000000000000000 x25: ffff0000c1e7ac00 x24: ffff800081b5ad50
-[  157.104723] x23: 00000000000000d1 x22: 0000000000000000 x21: ffff0000c25e4000
-[  157.111866] x20: 0000000060000200 x19: ffff80007a0608d0 x18: 0000000000000000
-[  157.119008] x17: ffff80006a4e3000 x16: ffff800080000000 x15: 0000000000000000
-[  157.126146] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-[  157.133287] x11: 0000000000000040 x10: ffff0000c01445f0 x9 : ffff80007a053a38
-[  157.140425] x8 : ffff0000c04004b8 x7 : 0000000000000000 x6 : 0000000000000000
-[  157.147567] x5 : ffff0000c0400490 x4 : ffff80006a4e3000 x3 : ffff0000c25e4000
-[  157.154706] x2 : 0000000000000000 x1 : ffff8000825c0014 x0 : 0000000060000200
-[  157.161850] Call trace:
-[  157.164296]  mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi] (P)
-[  157.170319]  __handle_irq_event_percpu+0x58/0x218
-[  157.175029]  handle_irq_event+0x54/0xb8
-[  157.178867]  handle_fasteoi_irq+0xac/0x248
-[  157.182968]  handle_irq_desc+0x48/0x68
-[  157.186723]  generic_handle_domain_irq+0x24/0x38
-[  157.191346]  gic_handle_irq+0x54/0x120
-[  157.195098]  call_on_irq_stack+0x24/0x30
-[  157.199027]  do_interrupt_handler+0x88/0x98
-[  157.203212]  el0_interrupt+0x44/0xc0
-[  157.206792]  __el0_irq_handler_common+0x18/0x28
-[  157.211328]  el0t_64_irq_handler+0x10/0x20
-[  157.215429]  el0t_64_irq+0x198/0x1a0
-[  157.219009] ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
----
- drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-index 8654150728a8692b480cfbfebdc0f2596c172a00..bf1b6bd42ef77c98fdacba7bff3b5dd6c048883f 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
-@@ -1207,6 +1207,11 @@ static int mxc_isi_video_streamon(struct file *file, void *priv,
- 	return ret;
- }
- 
-+/*
-+ * Stop streaming, discard buffers and release the pipeline without further
-+ * checking if we are or there is any queue owner. This function asserts the
-+ * &video->lock is held.
-+ */
- static void mxc_isi_video_cleanup_streaming(struct mxc_isi_video *video)
- {
- 	lockdep_assert_held(&video->lock);
-@@ -1333,7 +1338,11 @@ static int mxc_isi_video_release(struct file *file)
- 		dev_err(video->pipe->isi->dev, "%s fail\n", __func__);
- 
- 	mutex_lock(&video->lock);
--	mxc_isi_video_cleanup_streaming(video);
-+	/* cleanup streaming if there's no queue owner (if we were queue
-+	 * owner this was cleaned already by vb2_fop_release())
-+	 */
-+	if (!video->vdev.queue->owner)
-+		mxc_isi_video_cleanup_streaming(video);
- 	mutex_unlock(&video->lock);
- 
- 	pm_runtime_put(video->pipe->isi->dev);
-
----
-base-commit: 733923397fd95405a48f165c9b1fbc8c4b0a4681
-change-id: 20250709-imx8-isi-release-fix-182edee8ae32
-
-Best regards,
--- 
-Richard Leitner <richard.leitner@linux.dev>
-
-
+Thanks,
+Peng.
