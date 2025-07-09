@@ -1,108 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010066.outbound.protection.outlook.com [52.101.84.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3231426A0FD;
-	Wed,  9 Jul 2025 06:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752041108; cv=none; b=VClECMLQoXy0GZkOj25v4g1rCucGo/GdQr4aQV/l6pfmPbXDSJiLRks/sRKPasN0QKLA9VCnIEegdusjWHDWE8CMTby49UjOlmUDJLUds+VXA5sV+prlK5DSzMbTH418koPEEuXfRcU5Vi+XBW31w5qoruLIqXAqWdGw3BGGLxU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752041108; c=relaxed/simple;
-	bh=SzD8fsHU7duvdSUQLYizw2PuJGQ8kvETIYaho9kNf10=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H0C2z9BqF8gsL9v1Xyu/SO1+4L8Pyk+aVX5Tm8+aTbRl+cGbotgoBIT55UaqTGxzFlpBLd3xGvNgoMjviJJh2X9IuBlHkrnAfoLemL5P/bVm7DTGv+BksktU2tIGp5/SV341BBvubQgoEX8z4I3/tcGtMo5gGRHK/riITkDm6O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nTmO4pte; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CACB26B759
+	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 06:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752043181; cv=fail; b=XU9+MLwE/Kq71kGClDeEJnFPQEIlFWmBOB/aGTjmRClvT4UnMRDanyz39HTFQJZcsirGD26i6Bkuitbp6A2/wwX8rgyUEX2mNKnrB9LSHoelA7OZMvQRHEc0TxDzv0fd5B71UNLhiERgMFJy4kKkSjTDabkW0jZj7j+rpFseDRw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752043181; c=relaxed/simple;
+	bh=rRqHoD4+jWn/weHGl7+eVHD1YdVT8Pikrhq//JPEwx4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=OEfku/x2skTn2w0W1NrT9HNC26E1Pl2EzQd0tzb2ZRvVOgU614Ae9fYHa6R2IXBezRxPEaWrDHdV+22dEDZ+Zkl4jNzORZJ7DhXtDyiRL7CRKXiZwcktMD44XINt8EhRnq6dydL4akAX6tFNV79s8i+SAyfytsLE4f/+WdRtU6U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=FfQ4jwzZ; arc=fail smtp.client-ip=52.101.84.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nTmO4pte"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181DEC4CEF0;
-	Wed,  9 Jul 2025 06:05:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752041107;
-	bh=SzD8fsHU7duvdSUQLYizw2PuJGQ8kvETIYaho9kNf10=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nTmO4pteY97Kik7iPXm2GrBZ2k+ytY/51/0hYrDwr8tP2BmdFndwlFWeZJ02QxayF
-	 bP+HnMSYmzi23Ssn6wqpMjW78n5yCy71sUQpG/ByD9rmbRjp8Fu1Heb65xhY55ftCw
-	 SDCLTBwk04U+kQNIs3WyqmvuHvX6xTPHpLoFa3EpXJbaOKvntBEDo4W74kkRIxM5ZC
-	 APgtU64n1gCyVeFJ6pKTAuAFtUiX6uBc/ibClllYw6J2knt2vAIU8q8j36W0B8tkCM
-	 6DmMOv3mlUPoWFKtffaP6SoZFfBTKshsy7Mxoh3gt5cvUrUHnAE19vck0OwvLYdO6V
-	 dov1haKVEqIpw==
-Date: Wed, 9 Jul 2025 08:05:04 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	linux-pwm@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Subject: Re: [PATCH] pwm: imx-tpm: reset counter if CMOD is 0
-Message-ID: <xo56zato6pgqqttdriskfgh4kdt2g6q5eg5jxte56uddkdfr63@sa7coeifbsmy>
-References: <20250701220147.1007786-1-laurentiumihalcea111@gmail.com>
- <vwozlwajisjw5qomwtmnfdklmucevyxncsxl2cdmixn2yixxrk@x6j3r2lrl5qz>
- <a1b6039e-7020-4d17-8186-d40ac17ba730@gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="FfQ4jwzZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gNm68ofDpMkTzJ2jLRoL3a+ItFIsrA9aYXVe59Vy6S4FskmTHYSeJDE9kOJ2lSb5pDMj+Bw7Jsj5foGDUJO93BafZaILuz4JEEyID16VKHSMhUTk35Td89KK8oz/SZ86eTod/8nsF6ytzGO4yybgnPAXDnpgeEZTDvPyAijofA3pSqjaZIMg+pgyVH8BxEplUq09wULaKIpLKMMMzWe2DeMpfgN7cpdmTSoiPnVFMjeMdrRFDrsjtjNcthKKPoDW6BK24kSUadKJ1xvUPT26qFrQqUdqmGvHl/TmiJnXVKDR9kLASeSyWxDQBWamOhqE88529wFMBOgRZibSP9jAWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8d8g0SYKmOr4v166dBx5Whp4pPSDxdmFAdP9l6JJIss=;
+ b=mUyVxoovKJdUunDdfGiGqx6qgr9buKMTgcHUjJ33IogG/w2E1sOIiFlqQJkxv0yTDQNHxmPnraQVtdXlHOzX57gbhlCsVRKrS0/a2k0q43BG6CJvoZPHDZg9IDd3Fho+ahdpATHRGp+J551qZKwa0bB3Pk2DH7kFVZK5FqgLo+JzGgn8G83DmZvLe9wna3uigXSEH4p43MiZrJLxPLAq06S0r2R/Y9hrMgKRMwN45zuMF4ZrD/A1xRDMpPOrYK16KQW1W5atpkKyIa1Sa0PEoL4Ba3FR09voVvBIdQXp9qA0NkKA/q9Ag9WzicGu+xl5WU/3pC/KuQiqViokFs7/zw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8d8g0SYKmOr4v166dBx5Whp4pPSDxdmFAdP9l6JJIss=;
+ b=FfQ4jwzZbLI8w/3uu0UYk8h87GmGeWnjz9oKs5HavTz8DTW1yVbx5q2W/daFvqucP8SBY25d87JDgc36G3h8kgz6eb3XdiRjSegIqm9UGN37N3E3PRttZjQa/pl5PPEY1F3xXtMahsCzHwiJO8UtfmZqytimpwEm+cMSbXtlHACLt0jCeoEFrLy/Qjgq1aoDniXsZd9HfFobnBYWDH/jt4IY9uk9YBh/erSz+WjVJTx+mN0IJ0FuUlL19W3gxjAcHrAFV6gf+yJIDXjhB/PatUw1xsiYg3tKXqvYZr69l5VYNL5cDeRX+tkGhv83tVglFc6FK/ZasvsBRin1VQv68g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
+ by GVXPR04MB9736.eurprd04.prod.outlook.com (2603:10a6:150:11c::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Wed, 9 Jul
+ 2025 06:39:34 +0000
+Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
+ ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
+ ([fe80::b1b9:faa9:901b:c197%5]) with mapi id 15.20.8901.024; Wed, 9 Jul 2025
+ 06:39:34 +0000
+Date: Wed, 9 Jul 2025 15:49:40 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v3 3/5] remoteproc: imx_rproc: Add support for i.MX95
+Message-ID: <20250709074940.GA14535@nxa18884-linux>
+References: <20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com>
+ <20250625-imx95-rproc-1-v3-3-699031f5926d@nxp.com>
+ <aG1J2_nK-LkLQVRj@p14s>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aG1J2_nK-LkLQVRj@p14s>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-ClientProxiedBy: MA0PR01CA0018.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:80::18) To DB9PR04MB8461.eurprd04.prod.outlook.com
+ (2603:10a6:10:2cf::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lxvmazlbdrmpdgwa"
-Content-Disposition: inline
-In-Reply-To: <a1b6039e-7020-4d17-8186-d40ac17ba730@gmail.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|GVXPR04MB9736:EE_
+X-MS-Office365-Filtering-Correlation-Id: de55fc6c-45e4-4a03-9eae-08ddbeb35e04
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|19092799006|7416014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?bkTqu2QBkCCY+shdRyeWCFv/uWa0hDsjZqB2zi1335hGxXGxYaEgJOQVrub9?=
+ =?us-ascii?Q?Xi6qqi4459Mot2NXTgo4FgEj8faAHc3MpPRc8I+VvT/ey14szl/NHV/kQgIu?=
+ =?us-ascii?Q?3iCsfKDcrPE4A7WEbu5ifG4qulo0umNLQ5s2S1iIjoyDw66X3q11tInZ/W3K?=
+ =?us-ascii?Q?50t+3RCtv/AiVpxgO8MBsyH9SfD0x66LRrkQQvWgEnQVu1jFHVRSFfD3D8kY?=
+ =?us-ascii?Q?CJqgaofCOKv3xC11SPsxTpz1GzzZAjqFpFoVjiW6K/Z2It4J+H1bjlD8N/CV?=
+ =?us-ascii?Q?5tT8DZSAuVCZiYej9MKCrS1UupZ6WOleUWaKmZd+Hu64WKdG/GAhdjnQLNm5?=
+ =?us-ascii?Q?JJCtLzKFIUg6Lv0RhILWU/SDmMdI8MddtLpk+hbrHFwDYGl6ApfqmkY8pBKf?=
+ =?us-ascii?Q?5O39r9OICY020MKgfR8uDaUyxcyLdIp4+lt1COmdEjGvjNLqsxvFFULUg37F?=
+ =?us-ascii?Q?9DnSaCOu6l5wcWlzf2Cw+Zui+C0KGyrp/sdFCcZvvCdx9PjeKHSkSelYEl41?=
+ =?us-ascii?Q?JzMQWyCbd7zpECmZIdTioM7WEhRU+OEQGyfX+gscUXEF+Isku07mtKB32G7T?=
+ =?us-ascii?Q?LrQ9gewPX/xHhFGd/In1IQG4uqip8fpnNIrGGJwcq4kBBN4MiQc3ocz3TqjW?=
+ =?us-ascii?Q?pzld2Qo7sBAfGyooZPIYk9bB/70ORKXCt2fsQFtmlCj2KjmRjhltnvhfhjSu?=
+ =?us-ascii?Q?MUdy1ypIAzjjg6K+zWj9+TCVyTIYiIJLeVhCqLr5N3scNnbiu8qYNGRrSCyW?=
+ =?us-ascii?Q?9K/fyK331zSgevAhV3WLtnVYIvpkoymABviKUdp1tStUZz3vDngjtvsm9ntl?=
+ =?us-ascii?Q?ZdoxOQwsYynz+W59A4iCuqwiDQe2aKxtdGHt5Chl0WAonfowZwfUDaAOtxH1?=
+ =?us-ascii?Q?H8748IVx5gNg3KKURgjqpShBTcP8zKcFjXP4aCH6cOW6JdxQQcqEbuWnFNlK?=
+ =?us-ascii?Q?8emEIaSFS5rxhd9R/BwesCv28Fr17vrulMaxbFe1Dcg20wX28v7sT1hXVwVF?=
+ =?us-ascii?Q?fFIUtBgNuKpWVUHT2/nI6/HDzcyCeHd/jbUbxIsdCVubCa4iFYAWtEZl2+Hp?=
+ =?us-ascii?Q?wLdZ/bj4vCNX6oaL068aAElX/zc0rRvnk5XVP2Lm3C3QF18uFjnB8ulMIKhm?=
+ =?us-ascii?Q?744jZd+V+9sc5uq9+9uTWle/BxhWCNGJJE1T6R3oRvfox63cnY6n7QTr9MVx?=
+ =?us-ascii?Q?FKke1LaLPX+MOBIORyMF54ooPNXTp1XC0CjXbfRa/qzB8LcqPcnHrZiS/gHB?=
+ =?us-ascii?Q?wcb3IyLAgAvKS4fA+YuQ084cOuOAnQTynCFJHkogQLrDXu+gjhmVxON22BQ0?=
+ =?us-ascii?Q?8WmS8/7YoSQcW+3/U6t95PKIdaXUsYDqeQ2JgQ+xW8acQAkO4A/S2ByQc0Dw?=
+ =?us-ascii?Q?8R1qP9hQdURLWAhUCuUsDeNfp7dzdrPa4PovKEA3dd3WI2nbQmLsJy7VIrsD?=
+ =?us-ascii?Q?r8Sp0Xdo/1Imp8FdfcoeXZF1P1ZKfB1Qi2DHA5zUaynmQijtG8uOsA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(19092799006)(7416014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?eVUyc3G8p8hGUoHpJV5Xw1xE5lAj6NYpzZpJ88hzgaqfpeAoiRALa/XcR6UP?=
+ =?us-ascii?Q?oZfLem/Coxvaqh3eACUcw1agJxg6VlhugqrD6wAECZl1CgEEo3WLOOl1e/VB?=
+ =?us-ascii?Q?THllu0FTsl3wZWa1QnY75sRNSM86aTkbcCxjL2DBVTdI07ks4ImjhiAK8fmd?=
+ =?us-ascii?Q?Tck2/JniFoKu9UJmoec9QAaHKBokgfXLMaM8SjZ0BS4WNxl5fY80FCCxcufL?=
+ =?us-ascii?Q?4oEoKenaEnCk+UKrSHtDtUcbCAaj8w3rc/oK4CggGcy1VPRyJ92Q6zCr+emC?=
+ =?us-ascii?Q?yB3NkxJQRAeInPayU9TquE3L2/eCdAKBFMGCbk8fktgbyB/gC1aavT72WfA9?=
+ =?us-ascii?Q?90IFy/9daBEuvmOIrMbj5BN6m1fUAolWexo1i4AMcP6Elr7hEOFX/XC32LQ8?=
+ =?us-ascii?Q?ISinZw7tqTUw1/2KcWgKJ7H3tvpvKDo+gkZy2YT3z4eSErKJ9Ws7FcgDwYK2?=
+ =?us-ascii?Q?j0J83QjhFky3hkh1kziHwbhPzJsXJGE1QO17uKSYl/lRue5yi1ivG1QyGbx3?=
+ =?us-ascii?Q?3djarnb9LoFuNJMo29NwF0z5RTg+N2kDnerjgiPEiCTa1e9BSeYF2BPyFwSB?=
+ =?us-ascii?Q?84rqXx7OnwnhTZ10FLeWYUHbWJJt+BHY3D43qRkBkOIh/EXo1/rJvO3akPMk?=
+ =?us-ascii?Q?7ibOAPlzXB+IRDJahmWV911HAS61GBKtFTceAq84LpRQKQoR9rLDuVO7zWcn?=
+ =?us-ascii?Q?j47+GC8NVetJQOxkqcBCjQrKNW50S2DajbkD9qVdZGrOUwayIAjsXKQJDQk+?=
+ =?us-ascii?Q?+5M7Xbfs7m82pOqrKmvbWL1uh+Q3FNa1TVrJ6l6UpHd4JyrDHyAC5fXqhr6m?=
+ =?us-ascii?Q?aPBNTgiVSckKkOmwE6vn2qZVFLmb6I6D4ppfb6b9cI6v9jRtuuFhLg+rM6mX?=
+ =?us-ascii?Q?O3Mv/KiGCmS6qncZZE/kO7ThYEJ9HpB78Xr1hIg3tSHw368kNST9xdJwG8zi?=
+ =?us-ascii?Q?C5ghVmIYz+8Ympfe+JMhG9emactwQsNYpZv+9mDGxik7HWQeqI48/8gEbnYp?=
+ =?us-ascii?Q?DeXXJLGdSA2/CxUi9yGOa/4FRuSOwviCU92NC+V+Hs1ZoVsOgoHKoouCBIWk?=
+ =?us-ascii?Q?UIIuz0dH2lxJ7yWKDyQf9JZf8If78d7pR/x4YLNPhSRgxZdhtV9kwWEGp93p?=
+ =?us-ascii?Q?WcFk0Ok+o7gLxlKtnxs4MXxm3byGBXU8ex45J1t/3vFZL6uOd720P1pR2CU+?=
+ =?us-ascii?Q?U+7H22FHUi4Va/3mSYiQRfJAIOnCVRzgfk6Vs8pH01z7lHomVfmj1UfoEX8k?=
+ =?us-ascii?Q?ljH7ji74AcwsfBzhVDQrN3iH5PQY19iyKLaGWuk/DWvgFr+ANU8KYIv2tCY4?=
+ =?us-ascii?Q?2H922rBKizEcmOLmQmtXEmyQa0VX0ChT03D2ice0gCEpUorxbpZGaxuQdXW7?=
+ =?us-ascii?Q?zoJkxjrgRWKS0t3UUmVi2I/vuDxVdLFXu1kKyqATAess8b3pvCALwaq0lNT7?=
+ =?us-ascii?Q?40wBBdLMLqNGHubVGhgHe2vs/6PT8rXb46eAZ8Sack4ThTVazCNRNyjawEtg?=
+ =?us-ascii?Q?q8asmkz1POBYT2M5a0/XzTnFDvQNSMXxOZq9RHTFQGfbkarIFL59qe5pZ/Lg?=
+ =?us-ascii?Q?f9DDq4nSYgJPcaZzb7y9zzfvvF4P/wi4LqSfNyAI?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: de55fc6c-45e4-4a03-9eae-08ddbeb35e04
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 06:39:34.5709
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Gqk4Gzk54ZCgyoC5rGMnFg0EY4dDSfi9qfDtyDMU79sfLIIRIln9bujWkkcWXGSInzjPAQlepE9QcbFFnY379A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9736
+
+Hi Mathieu,
+
+On Tue, Jul 08, 2025 at 10:39:55AM -0600, Mathieu Poirier wrote:
+>On Wed, Jun 25, 2025 at 10:23:29AM +0800, Peng Fan (OSS) wrote:
+>> From: Peng Fan <peng.fan@nxp.com>
+>> 
+>> Add imx_rproc_cfg_imx95_m7 and address(TCM and DDR) mapping.
+>> Add i.MX95 of_device_id entry.
+>> 
+>> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+>> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>> ---
+>>  drivers/remoteproc/imx_rproc.c | 25 +++++++++++++++++++++++++
+>>  1 file changed, 25 insertions(+)
+>> 
+>> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+>> index b1a117ca5e5795554b67eb7092db2a25fc7de13b..c226f78c84ad180c69804116d6cfcab19db6aaa5 100644
+>> --- a/drivers/remoteproc/imx_rproc.c
+>> +++ b/drivers/remoteproc/imx_rproc.c
+>> @@ -73,6 +73,10 @@
+>>  
+>>  #define IMX_SC_IRQ_GROUP_REBOOTED	5
+>>  
+>> +/* Must align with System Manager Firmware */
+>> +#define IMX95_M7_CPUID			1
+>> +#define IMX95_M7_LMID			1
+>
+>Any reason those aren't set in the device tree?
+
+Krzysztof rejected to introduce the IDs to devicetree.
+
+From IRC:
+"To me this makes no sense in current explanayton - you have 8 cores, but only
+one can be put there, so what happens with the rest?
+And I don't think we care about something like remote and local ID - it is
+the same. CPUs have single number. So this looks like copy paste downstream
+and thus solve it internally first"
 
 
---lxvmazlbdrmpdgwa
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] pwm: imx-tpm: reset counter if CMOD is 0
-MIME-Version: 1.0
+In System Manager Firmware, CPUID is fixed and will not change.
+LMID is also fixed as of now, we not expect customer to change LMID.
 
-Hello Laurentiu,
+So with "fsl,imx95-m7", we could know the CPUID and LMID for M7, so 
+it does not make sense to introduce new property saying "fsl,imx95-lmid"
+and "fsl,imx95-cpuid". This should be the main concern that DT maintainers
+reject to add properties for the IDs.
 
-On Wed, Jul 02, 2025 at 11:31:28AM +0300, Laurentiu Mihalcea wrote:
-> On 7/2/2025 8:51 AM, Uwe Kleine-K=F6nig wrote:
-> > On Tue, Jul 01, 2025 at 06:01:47PM -0400, Laurentiu Mihalcea wrote:
-> >> +		 * MOD will NOT reset the value of the TPM counter.
-> >> +		 *
-> >> +		 * Therefore, if CNT.COUNT > MOD.MOD, the counter will reset
-> >> +		 * after UINT32_MAX - CNT.COUNT + MOD.MOD cycles, which is
-> >> +		 * incorrect.
-> >> +		 *
-> >> +		 * To avoid this, we need to force a reset of the
-> >> +		 * counter before writing the new MOD value.
-> >> +		 */
-> > Without the reference manual at hand or a deeper understanding of the
-> > hardware this isn't understandable. What is MOD? What is CMOD?
->=20
-> so, MOD is the reference value for the counter. The counter needs to
-> count until this value is reached, at which point the counter value
-> gets reset to 0 and the output signal is driven HIGH or LOW (depends
-> on the configured polarity). This value is used to define the period
-> of the PWM.
->=20
-> CMOD, on the other hand, is a clocking-related configuration option.
-> I'd say what we're most interested in here is the fact that if CMOD is
-> 0 then the counter will be disabled. Otherwise, it will be enabled.
+Thanks,
+Peng
 
-JFTR: I marked your patch as "changes requested" now in patchwork and my
-inbox and expect an updated patch, but without holding my breath :-)
-
-Best regards
-Uwe
-
---lxvmazlbdrmpdgwa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhuBo0ACgkQj4D7WH0S
-/k6dsgf/RheRWtMwEqe7uWfXT5aywFTiqSMVTEDTy8ZWFhJ977cgY7pWfCCqtk2U
-RYLXoc+cp5FIhb0yBfk25qK5cHIzwVxE6p0H07itNWXjKlP2NYssB3ozzCv2Cer9
-WNO/rZKF4TYaYI7cd6eqM0+HJZMABZuOBvJnMG7xGds3ktFG4OHkYUSQfcDIBUqg
-Ty6LOq2LQMXKsT8IXzYYGlqGk8BblLKfgVyOing2W3+eKJCqI5R5G43S5dH5SZBR
-1EAAEEfmzVviiRbe2hpYVSrRoTgfQjCPjX42QmIDH0lsgoGtzhHllP7l+hlImesh
-RbFkCkmk8Aw6dTWrBeaF+89ovOg8lA==
-=k8wj
------END PGP SIGNATURE-----
-
---lxvmazlbdrmpdgwa--
+>
+>Thanks,
+>Mathieu
+>
