@@ -1,249 +1,164 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483E52E5411
-	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 14:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A5E2E62B5;
+	Wed,  9 Jul 2025 14:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752071585; cv=none; b=g4YmkBKgpTcHN4y2++6ASLqH/OQB0zxFqIpammK2Wnnu5zrr2gOWyS+uepnhcPAopPvYKfqvPI4qUN1euL2FePp8isQqUw60/Ss35nmVkoLeGCf91zgYyv+oZy8T/TXkKCm7g/DPCE2Q5tms9AcbZJHTDHBTz/9k/n9ewOT9OVc=
+	t=1752073026; cv=none; b=FbkMmtS+FUSQxySLfgoO9NqNZq+H7CewDVovc9WEJGZWRAvSNy7WB6a8kNpdy0ggqqa7a0uZgC8+qf2x0DBujN1fgF+XABwpFAi8B7N/4XV0Ew6c99yUcp9i4TCGG/79j1F/esgSs3zwczFkSw//71UrqrlwCHpeZRSQ2Nb1hck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752071585; c=relaxed/simple;
-	bh=C2wCAxa5FvH06O82029Gnip2a4XtLbwPFts3mlei39U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dprZFv+GrfnCPkEr0stpq3jbzrcwdUlNmR+LD/RZjtSuOMZnwtCbBaRzlpGuf4DCzSzlDF2OtF9NQmGEBllomG28m+HesmaSjYX/KEgvw8l1TzgtXQ5gPPWCb+pr+eQKm9n42a8tL1byFaV8b5LnUQTmd4mKEDxwSsuBzFPq4A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bIxkCFSJ; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1752073026; c=relaxed/simple;
+	bh=ImDgPg2/JzwFt9Jc7QkkgiYZwTTl0nxtFtgT+n58JK0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WFkl6WGCgMAsLLGfuzRiPm6kg2d6A6x/M96KyrcIOysfpQ0aJbPzpWsVM3P50VBWwiOLPs3VKrPw51lTj79bfKYq4oobOyhCCwRcfISasv8Kd30vsNakW9z8G8TRgbbNQ/dd2tpG0Ot5W4YJh3RA05IOQk/DFvmb0IZGczZDcss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QlDlTYK7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bIxkCFSJ"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-748f5a4a423so3324571b3a.1
-        for <imx@lists.linux.dev>; Wed, 09 Jul 2025 07:33:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752071583; x=1752676383; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w6DigU3ijEN37mFImpuvJY0cN+hiwAZNGwYyYKGr+K0=;
-        b=bIxkCFSJYFQxWGG27jnKlw1DSS7W09i1ogH1UgixonPPE/FswgS7Sl/E1V7xNg2XU8
-         19oXBJmnIBIWDKxxK1NURoaDFsJN4I8JbGKbL0C5UElI/PGUse+3Kg0bznAkgot/7M22
-         ln0TlFUYqv6K37NV5O6XxJK+Y98Q+c9oYyqyWCOp00XBK/dXmzVbwtSYzCanolcWi9jb
-         y9q51J4wr3r/tQ2Rd2BqIkSqhSRjDd77kj4n7JGmjV01DSUibqDHOt+NsjS9cwy9pJ5h
-         uGc0Zd35a0yqktnGXxXNt548k8B2qPZkpHK3U7QJ9kDHCN6JKNL8TesABWl1PZABGtu6
-         ci4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752071583; x=1752676383;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w6DigU3ijEN37mFImpuvJY0cN+hiwAZNGwYyYKGr+K0=;
-        b=Rb2omfO5CQQRMYHz600OrSv7s2r7j+lcve67xAxbTTPe+82wYoAn0xTBd8X7atwx2V
-         J/XSjf22OspOdM2hA8Y9j1aJ+bL8Y5BF5MtPrSlk6DJQWYqS6bLLUlhI1+Xg+QPDuDCU
-         irHzZO/CudIYbYq9Cahqp847PT/OAyjV7DArkkidybwU2LmmB6nQKuCyZj82hLNWiscc
-         JZRGAoHgN7s4gByGQw/3DInl3jjocFavYmgkiqoxQZ2TeNXQcvJOJb1UQhSQBqddUSwO
-         es9epGFENkir6AaGow9/FvKr6dCGFxy+G2IPnikMk+pByzjDKaeYahxkk9FGvo6fCmyZ
-         dLSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUe8iTcUm6bY9KO9Fmq/+Xa/K4yuN6Y0yS62zIjOyDFnLatk5PKMx+FVOrB5g7DmksZuEk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwmMyC4Mb9AD9twqejVkADIoBK5/UOXzVq1mpfGcpUnywLDgYYs
-	svIqpbxMl+sUDISd2OxTtGqEH5x1MlqdvfStprMwJL1PvskuNyQUdy9OXbc35KRHtEM=
-X-Gm-Gg: ASbGncuM27Hlg2yBFRorBU4BZ5oXkUddTzpgNlU1+wGEGtBGHxOIQOVY2569vPkz+Uh
-	bNZKdDj+MddmTbrj/Y24SIvSxFQoFTQI5bKXO6RL5mgBDdSVVHzqkr3rDWt5jU1Mw2ZHx8gTQJv
-	ZQJ3xf1b3HU6Sile6S5qrRZxIf6yEzBotFrjkYsFOV1dLhLl76ebFFuj7GadWuAFZJMB02E6raJ
-	TLLGU33wu0Rvyrf49tI4Tl8YGQbaFDeC8eRQ1oobgAgVnVtmfuxDSWt0SftXHXtYv5FJs3X1js2
-	nWdSYgSO1OQIDDNsS84SjIVsfWf4EGsD5HNqs2u/mNDLeBOZfTbDIh7Vkooo3Xtw
-X-Google-Smtp-Source: AGHT+IHb9rJ94x6uyCZzHp4gJ6jJr9aNTPeUN/jkP+tdN5uFfkn31SfgFUorIkoUWVXUVDc9nNaEcg==
-X-Received: by 2002:a05:6a00:1742:b0:74e:a560:dd23 with SMTP id d2e1a72fcca58-74ea669d187mr4911450b3a.21.1752071583252;
-        Wed, 09 Jul 2025 07:33:03 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:433:ec07:c2cb:e3e8])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b38f879d040sm13455576a12.44.2025.07.09.07.33.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jul 2025 07:33:02 -0700 (PDT)
-Date: Wed, 9 Jul 2025 08:33:00 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v3 2/5] remoteproc: imx_rproc: Add support for System
- Manager API
-Message-ID: <aG59nOSfMuFbJvoK@p14s>
-References: <20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com>
- <20250625-imx95-rproc-1-v3-2-699031f5926d@nxp.com>
- <aG1IIk42q8OmGsQH@p14s>
- <20250709090231.GB14535@nxa18884-linux>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QlDlTYK7"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 792ABC4CEF6;
+	Wed,  9 Jul 2025 14:57:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
+	t=1752073025; bh=ImDgPg2/JzwFt9Jc7QkkgiYZwTTl0nxtFtgT+n58JK0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=QlDlTYK78/m7h0W9zCuXakttEwJ4FExS/ua3FN9f+h1A42bYAo3ELPzHB6CxMOWzG
+	 EjQbsaq94wwzqjzvuZ97YWzPP03J2CnaXPvSWwfRCDw7tDRj0fffW9I14f7WJH7UhL
+	 XzdgA6OeO8uu66VIEDvn9NnRqaUWHWq7z4DDvO+o=
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B0ADC83F0A;
+	Wed,  9 Jul 2025 14:57:05 +0000 (UTC)
+From: Richard Leitner <richard.leitner@linux.dev>
+Date: Wed, 09 Jul 2025 16:57:03 +0200
+Subject: [PATCH] media: nxp: imx8-isi: fix streaming cleanup on release
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250709090231.GB14535@nxa18884-linux>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250709-imx8-isi-release-fix-v1-1-c47c659ce1a6@linux.dev>
+X-B4-Tracking: v=1; b=H4sIAD6DbmgC/x2MSQqAMBAEvyJzdiBGxOhXxEPQVgfcSEACkr87e
+ Kymul6KCIJIffFSwCNRrlOhKguaNn+uYJmVyRrbmNZ0LEdyrBoH7PARvEjiylnMgPOoLen1DtD
+ 5zw5jzh9kkIZNZgAAAA==
+X-Change-ID: 20250709-imx8-isi-release-fix-182edee8ae32
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Richard Leitner <richard.leitner@linux.dev>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752073024; l=4824;
+ i=richard.leitner@linux.dev; s=20250225; h=from:subject:message-id;
+ bh=ImDgPg2/JzwFt9Jc7QkkgiYZwTTl0nxtFtgT+n58JK0=;
+ b=xYpJrqbKcrpcFVR42vsMBBvZHktNZ2HTww5a6d9d96WIinoHhl+FZ6V5LlsrBlCwq+jXpVqOo
+ sbtEDW9DqJKC6DhWybn+Eu35EWd9BGUYz7ZFQ1AKZ6Mg2gC2kayKxHP
+X-Developer-Key: i=richard.leitner@linux.dev; a=ed25519;
+ pk=8hZNyyyQFqZ5ruVJsSGBSPIrmJpfDm5HwHU4QVOP1Pk=
+X-Endpoint-Received: by B4 Relay for richard.leitner@linux.dev/20250225
+ with auth_id=350
 
-On Wed, Jul 09, 2025 at 05:02:31PM +0800, Peng Fan wrote:
-> Hi Mathieu,
-> 
-> On Tue, Jul 08, 2025 at 10:32:34AM -0600, Mathieu Poirier wrote:
-> >Good day,
-> 
-> Thanks, good day.
-> 
-> >
-> >On Wed, Jun 25, 2025 at 10:23:28AM +0800, Peng Fan (OSS) wrote:
-> >> From: Peng Fan <peng.fan@nxp.com>
-> >> 
-> >> i.MX95 features a Cortex-M33 core, six Cortex-A55 cores, and
-> >> one Cortex-M7 core. The System Control Management Interface(SCMI)
-> >> firmware runs on the M33 core. The i.MX95 SCMI firmware named System
-> >> Manager(SM) includes vendor extension protocols, Logical Machine
-> >> Management(LMM) protocol and CPU protocol and etc.
-> >> 
-> >> There are three cases for M7:
-> >>  (1) M7 in a separate Logical Machine(LM) that Linux can't control it.
-> >>  (2) M7 in a separate Logical Machine that Linux can control it using
-> >>      LMM protocol
-> >>  (3) M7 runs in same Logical Machine as A55, so Linux can control it
-> >>      using CPU protocol
-> >> 
-> >> So extend the driver to using LMM and CPU protocol to manage the M7 core.
-> >>  - Add IMX_RPROC_SM to indicate the remote core runs on a SoC that
-> >>    has System Manager.
-> >>  - Compare linux LM ID(got using scmi_imx_lmm_info) and M7 LM ID(the ID
-> >>    is fixed as 1 in SM firmware if M7 is in a seprate LM),
-> >>    if Linux LM ID equals M7 LM ID(linux and M7 in same LM), use CPU
-> >>    protocol to start/stop. Otherwise, use LMM protocol to start/stop.
-> >>    Whether using CPU or LMM protocol to start/stop, the M7 status
-> >>    detection could use CPU protocol to detect started or not. So
-> >>    in imx_rproc_detect_mode, use scmi_imx_cpu_started to check the
-> >>    status of M7.
-> >>  - For above case 1 and 2, Use SCMI_IMX_LMM_POWER_ON to detect whether
-> >>    the M7 LM is under control of A55 LM.
-> >>
-> >
-> >Thanks for the context, it really helps.
-> 
-> Glad that helps.
-> 
-> >
-> 
-> [....]
-> 
-> >> @@ -592,6 +637,38 @@ static int imx_rproc_prepare(struct rproc *rproc)
-> >>  		rproc_add_carveout(rproc, mem);
-> >>  	}
-> >>  
-> >> +	switch (dcfg->method) {
-> >> +	case IMX_RPROC_SM:
-> >> +		if (!(priv->flags & IMX_RPROC_FLAGS_SM_LMM_OP))
-> >> +			break;
-> >> +		/*
-> >> +		 * Power on the Logical Machine to make sure TCM is available.
-> >> +		 * Also serve as permission check. If in different Logical
-> >> +		 * Machine, and linux has permission to handle the Logical
-> >> +		 * Machine, set IMX_RPROC_FLAGS_SM_LMM_AVAIL.
-> >> +		 */
-> >> +		ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_POWER_ON, 0);
-> >> +		if (ret == 0) {
-> >> +			dev_info(priv->dev, "lmm(%d) powered on\n", dcfg->lmid);
-> >> +			priv->flags |= IMX_RPROC_FLAGS_SM_LMM_AVAIL;
-> >
-> >This is set all the time imx_rproc_prepare() is called - isn't there a way to
-> >set it once at initialisation time?
-> 
-> Yeah. Moving this to probe path should be ok, such as in imx_rproc_detect_mode.
-> The drawback is M7 logical machine will be left in powered up state if
-> moving to probe path before user starts M7 LM. Leaving in here means M7 logcal
-> machine will be only powered up when user does
-> "echo start > /xx/remoteproc-y/state", but needs to set
-> IMX_RPROC_FLAGS_SM_LMM_AVAIL flags each time do preparing.
-> 
-> If you prefer moving this logic to probe, I could give a try to move
-> to imx_rproc_detect_mode which is probe path.
-> 
-> How do you think?
+The current implementation unconditionally calls
+mxc_isi_video_cleanup_streaming() in mxc_isi_video_release(). This can
+lead to situations where any release call (like from a simple
+"v4l2-ctl -l") may release a currently streaming queue when called on
+such a device.
 
-Just leave it where it is.
+Address this issue by calling mxc_isi_video_cleanup_streaming() only if
+the queue owner is NULL (which is set by vb2_fop_release() when called
+by the current owner).
 
-Mathieu
+This was reproducible on an i.MX8MP board by streaming from an ISI
+capture device using gstreamer:
 
-> 
-> >
-> >> +		} else if (ret == -EACCES) {
-> >> +			dev_info(priv->dev, "lmm(%d) not under Linux Control\n", dcfg->lmid);
-> >> +			/*
-> >> +			 * If remote cores boots up in detached mode, continue;
-> >> +			 * else linux has no permission, return -EACCES.
-> >> +			 */
-> >> +			if (priv->rproc->state != RPROC_DETACHED)
-> >> +				return -EACCES;
-> >> +		} else if (ret) {
-> >> +			dev_err(priv->dev, "Failed to power on lmm(%d): %d\n", ret, dcfg->lmid);
-> >> +			return ret;
-> >> +		}
-> >> +
-> >> +		break;
-> >> +	default:
-> >> +		break;
-> >> +	};
-> >> +
-> >
-> >Please put this in a function and get rid of the switch{}.
-> 
-> ok. Fix in v4
-> 
-> >
-> >>  	return  0;
-> >>  }
-> >>  
-> >> @@ -911,13 +988,41 @@ static int imx_rproc_detect_mode(struct imx_rproc *priv)
-> >>  	struct regmap_config config = { .name = "imx-rproc" };
-> >>  	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
-> >>  	struct device *dev = priv->dev;
-> >> +	struct scmi_imx_lmm_info info;
-> >>  	struct regmap *regmap;
-> >>  	struct arm_smccc_res res;
-> >> +	bool started = false;
-> >>  	int ret;
-> >>  	u32 val;
-> >>  	u8 pt;
-> >>  
-> >>  	switch (dcfg->method) {
-> >> +	case IMX_RPROC_SM:
-> >> +		/* Get current Linux Logical Machine ID */
-> >> +		ret = scmi_imx_lmm_info(LMM_ID_DISCOVER, &info);
-> >> +		if (ret) {
-> >> +			dev_err(dev, "Failed to get current LMM ID err: %d\n", ret);
-> >> +			return ret;
-> >> +		}
-> >> +
-> >> +		/*
-> >> +		 * Check whether remote processor is in same Logical Machine as Linux.
-> >> +		 * If no, need use Logical Machine API to manage remote processor, and
-> >> +		 * set IMX_RPROC_FLAGS_SM_LMM_OP.
-> >> +		 * If yes, use CPU protocol API to manage remote processor.
-> >> +		 */
-> >> +		if (dcfg->lmid != info.lmid) {
-> >> +			priv->flags |= IMX_RPROC_FLAGS_SM_LMM_OP;
-> >> +			dev_info(dev, "Using LMM Protocol OPS\n");
-> >> +		} else {
-> >> +			dev_info(dev, "Using CPU Protocol OPS\n");
-> >> +		}
-> >> +
-> >> +		scmi_imx_cpu_started(dcfg->cpuid, &started);
-> >
-> >Function scmi_imx_cpu_started() returns a value that is not taken into account.
-> >
-> >> +		if (started)
-> 
-> I will update to "if (started || ret)" in v4, with ret assigned the return
-> value of scmi_imx_cpu_started.
-> 
-> Thanks,
-> Peng
+	gst-launch-1.0 -v v4l2src device=/dev/videoX ! \
+	    video/x-raw,format=GRAY8,width=1280,height=800,framerate=1/120 ! \
+	    fakesink
+
+While this stream is running, querying the caps of the same device
+provokes the error state:
+
+	v4l2-ctl -l -d /dev/videoX
+
+This resulted in the following trace:
+
+[  155.452152] ------------[ cut here ]------------
+[  155.452163] WARNING: CPU: 0 PID: 1708 at /drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c:713 mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
+[  157.004248] Modules linked in: cfg80211 rpmsg_ctrl rpmsg_char rpmsg_tty virtio_rpmsg_bus rpmsg_ns rpmsg_core rfkill nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables mcp251x6
+[  157.053499] CPU: 0 UID: 0 PID: 1708 Comm: python3 Not tainted 6.15.4-00114-g1f61ca5cad76 #1 PREEMPT
+[  157.064369] Hardware name: imx8mp_board_01 (DT)
+[  157.068205] pstate: 400000c5 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  157.075169] pc : mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi]
+[  157.081195] lr : mxc_isi_pipe_irq_handler+0x38/0x1b0 [imx8_isi]
+[  157.087126] sp : ffff800080003ee0
+[  157.090438] x29: ffff800080003ee0 x28: ffff0000c3688000 x27: 0000000000000000
+[  157.097580] x26: 0000000000000000 x25: ffff0000c1e7ac00 x24: ffff800081b5ad50
+[  157.104723] x23: 00000000000000d1 x22: 0000000000000000 x21: ffff0000c25e4000
+[  157.111866] x20: 0000000060000200 x19: ffff80007a0608d0 x18: 0000000000000000
+[  157.119008] x17: ffff80006a4e3000 x16: ffff800080000000 x15: 0000000000000000
+[  157.126146] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[  157.133287] x11: 0000000000000040 x10: ffff0000c01445f0 x9 : ffff80007a053a38
+[  157.140425] x8 : ffff0000c04004b8 x7 : 0000000000000000 x6 : 0000000000000000
+[  157.147567] x5 : ffff0000c0400490 x4 : ffff80006a4e3000 x3 : ffff0000c25e4000
+[  157.154706] x2 : 0000000000000000 x1 : ffff8000825c0014 x0 : 0000000060000200
+[  157.161850] Call trace:
+[  157.164296]  mxc_isi_pipe_irq_handler+0x19c/0x1b0 [imx8_isi] (P)
+[  157.170319]  __handle_irq_event_percpu+0x58/0x218
+[  157.175029]  handle_irq_event+0x54/0xb8
+[  157.178867]  handle_fasteoi_irq+0xac/0x248
+[  157.182968]  handle_irq_desc+0x48/0x68
+[  157.186723]  generic_handle_domain_irq+0x24/0x38
+[  157.191346]  gic_handle_irq+0x54/0x120
+[  157.195098]  call_on_irq_stack+0x24/0x30
+[  157.199027]  do_interrupt_handler+0x88/0x98
+[  157.203212]  el0_interrupt+0x44/0xc0
+[  157.206792]  __el0_irq_handler_common+0x18/0x28
+[  157.211328]  el0t_64_irq_handler+0x10/0x20
+[  157.215429]  el0t_64_irq+0x198/0x1a0
+[  157.219009] ---[ end trace 0000000000000000 ]---
+
+Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
+---
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+index 8654150728a8692b480cfbfebdc0f2596c172a00..bf1b6bd42ef77c98fdacba7bff3b5dd6c048883f 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+@@ -1207,6 +1207,11 @@ static int mxc_isi_video_streamon(struct file *file, void *priv,
+ 	return ret;
+ }
+ 
++/*
++ * Stop streaming, discard buffers and release the pipeline without further
++ * checking if we are or there is any queue owner. This function asserts the
++ * &video->lock is held.
++ */
+ static void mxc_isi_video_cleanup_streaming(struct mxc_isi_video *video)
+ {
+ 	lockdep_assert_held(&video->lock);
+@@ -1333,7 +1338,11 @@ static int mxc_isi_video_release(struct file *file)
+ 		dev_err(video->pipe->isi->dev, "%s fail\n", __func__);
+ 
+ 	mutex_lock(&video->lock);
+-	mxc_isi_video_cleanup_streaming(video);
++	/* cleanup streaming if there's no queue owner (if we were queue
++	 * owner this was cleaned already by vb2_fop_release())
++	 */
++	if (!video->vdev.queue->owner)
++		mxc_isi_video_cleanup_streaming(video);
+ 	mutex_unlock(&video->lock);
+ 
+ 	pm_runtime_put(video->pipe->isi->dev);
+
+---
+base-commit: 733923397fd95405a48f165c9b1fbc8c4b0a4681
+change-id: 20250709-imx8-isi-release-fix-182edee8ae32
+
+Best regards,
+-- 
+Richard Leitner <richard.leitner@linux.dev>
+
+
