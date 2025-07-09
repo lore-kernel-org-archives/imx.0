@@ -1,195 +1,131 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011002.outbound.protection.outlook.com [52.101.70.2])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3464E1C84D5
-	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 10:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752055457; cv=fail; b=IGQdB5vFqkW9XlH41BEU4+8LsrpcHLrb4R2Gyl7TqTltOHDRPAGhVrqLNzugdJ3BhyxCIhg6WMMgTN9S0Ll6pzFMGxsYM/56jr0qxtDgvRHaEVutVZ/syrc6KqiHXK9ngXtAzaFUSx94hDSj8w+FDLGXGGowHaGQbN/IZYPm/Lc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752055457; c=relaxed/simple;
-	bh=l33apMaNeTe3Wrr/AbJAKrxI+bkxSwRH7YCctQopk0U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O/WgZveWJNI41H6D7lq0K1cWK+Ri5RBeG9wemZbVlycwcz1viB9duFcvM7NdbZANEbFUcQ4f80cIiCkS2Cgb5dg9Hkr0Eyc4YdMcn5T7d4lfwfR4KROaEvUdH1pWb4esbCF1neXu76NdMw+GFVp2FNVIEnIFKmTDtmqxlD45WLA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mt.com; spf=fail smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=kkvQGU4H; arc=fail smtp.client-ip=52.101.70.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=mt.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EF228A1DE
+	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 10:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752055706; cv=none; b=INjOdasfwC75uD5G37D+bWBmDl5xzHE3j6GP9HLdJPrZ+nR3rYerhOE0AoZKPAo+Ij7VBy1hrTF4/l8a1hGV6F+MREBN3M1CAs97FbSzj7olfYggDRGmFsWOlR6Px+zj6a9dBCfbw9OFF8xjR7CKtikH7gB/Y9P9yCXc+RDN4Zg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752055706; c=relaxed/simple;
+	bh=n4/DC3bhdUZoFTEoFep2p7ibhgZD9ZHc56z5gU/C1Bs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CD/auQ331q0qnZKW6P8uwELIqeBP+L5wRpXYbCuRApBuRFm517YikDaSuQWGkgEcR63L4mUSSapMAYRbe7iS4mfv/tINts+ljx28cc/GRPOHQSDaUP1WNdUgkRnTKjz7Xmyi3JqU1Di/JkYQWoPqiFLOeB8z8apn87PMo8HoxnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ZOFR5QYJ; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="kkvQGU4H"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gsMlOSnFdYxdUd6Pz4YtaCq/qwu9zx51s/EwKZc8XS7OOliwGbPR9JPjz0mi0eRzlxfS4r+WzdU8vywoNW6flLQ+A4wqQWbmjwqTwhUlrR+37yTYUjjWTpAuKGFLqJJQjis7pF+sByyCr7BMbx96xC8bWeEMoIYwZTyse5AjkZduQYzwpJahiDh5v5SimeQsMA6jO7UElcfZUvmoSq1PULv8l1j892ZKVVfTwsZhuPURsVL1NcHjMMuURHBBhCNASrk1UbNV8vGAc7PFUSTcPdLxmy923elcf1I9/yX1UPXEaaf/ZrLEqzSd1GtpOxi2jWTZkGSvw9R7+yUiIix8rw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3uCI4mPKjQBAieTfQagcNSYu/bNjtgGw/vVNwN4evkU=;
- b=rQzVGwDD9JV6veNy81BV2uvemHSVRRXwcYJdFbPd2E7ErIDdURg+qvynMeRaxy8KR7p0o7C9BGe1QRwwbZ4YraRCsUjpkfT7Zv9neMzrC/GmG53Jf0ieQRnEirNRBlYGB68CmlsCvr58823auVs5i/BOSKtC6BKMkbvcCb7V2+FFZMZYmR1ISaWi2dpGky2gMtuo/U796+PyeMtQ9v/RwwS590LRW5opE2VbbupqomJFQur1RGV38ykvRplUmFbAbxEh/efkN4eceN5MZZMhdA3pf+00dYtaMFzZPFZQt5oy+2XAiCLXJNdqM2WvI3QJ25vWKAmXhxfiVnG8c7MYLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
- header.d=mt.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3uCI4mPKjQBAieTfQagcNSYu/bNjtgGw/vVNwN4evkU=;
- b=kkvQGU4HwF4fz+8lQt7JGofyFEpkYAef+MSQjegOsYPvVhmY82XoukqAZm+QIrE4+Sk0X93UCYCQpcsRcySx62mqb8tFl1Yu6GF2WDKkbm37g8TXVlL6ucfxszUHM76H9WPYIh5VSHonvHNcVdlCjLDqqImjiSfk0RLTlOH+H3WBM86tC7cwwy1eZo6OESCulA/KS2RBrk8U/ddlu9fOKtzC0zMati8ObAo2UpIWseiG8Y4xwNyfhIpb/Gz8z2fIHTyTw5iHuo4yghWaYBOK/zfpyqjEIQlhHLcQZAvmcNCAL3GR8HMJD/jDJwNW5b8f1RSc34obnn2q87GoWobIQQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mt.com;
-Received: from DU2PR03MB8123.eurprd03.prod.outlook.com (2603:10a6:10:2f2::12)
- by GV1PR03MB10584.eurprd03.prod.outlook.com (2603:10a6:150:204::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Wed, 9 Jul
- 2025 10:04:05 +0000
-Received: from DU2PR03MB8123.eurprd03.prod.outlook.com
- ([fe80::a4:d971:86e0:ff72]) by DU2PR03MB8123.eurprd03.prod.outlook.com
- ([fe80::a4:d971:86e0:ff72%4]) with mapi id 15.20.8901.024; Wed, 9 Jul 2025
- 10:04:05 +0000
-From: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
-To: linux-kernel@vger.kernel.org
-Cc: Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Wojciech Dubowik <wojciech.dubowik@mt.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Marek Vasut <marex@denx.de>,
-	Tim Harvey <tharvey@gateworks.com>,
-	Markus Niebel <Markus.Niebel@tq-group.com>,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Heiko Schocher <hs@denx.de>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Max Merchel <Max.Merchel@ew.tq-group.com>,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Caleb James DeLisle <cjd@cjdns.fr>,
-	Junhao Xie <bigfoot@classfun.cn>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Kever Yang <kever.yang@rock-chips.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 4/4] MAINTAINERS: Add entry for METTLER TOLEDO BOARD SUPPORT
-Date: Wed,  9 Jul 2025 12:03:27 +0200
-Message-ID: <20250709100341.1492456-5-Wojciech.Dubowik@mt.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250709100341.1492456-1-Wojciech.Dubowik@mt.com>
-References: <20250709100341.1492456-1-Wojciech.Dubowik@mt.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZR2P278CA0014.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:50::20) To DU2PR03MB8123.eurprd03.prod.outlook.com
- (2603:10a6:10:2f2::12)
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ZOFR5QYJ"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 86578103972A7;
+	Wed,  9 Jul 2025 12:08:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1752055701; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=FsxQbQPIJsaYTNOu6ABUMe0d1muypWFSA2FGjsr9hv4=;
+	b=ZOFR5QYJmEImw0t8AqiKiZi5hRhUsSDtDlUVGIS/tUYksC4yoQ27YObM0jcDNKmO4vuUnH
+	pdj8Z7iZN+40EH8d9HeL2x7deLr2PBODbaRgerSiLocF5B6C8AnLAYlY6ZQXoFIXeNHmM4
+	PDk8LbWwrGlZmWNFtFU7x/BTVfF/ZHH/f8RuBrLOUkkoUbWZTP2Ew2nJki3o2zoRaQb86W
+	3YE44lWolkv7qhe8wPGRebTXD4bzsyYaTFmZsAx1vjvn46ZzK1g/vFBfoDSHbKiyd0cdLe
+	0EsKGZENUVrx6pJbJQ8lGmKaW6ruKtHDitD3pifYamAk7ljyesoF3NGy6pRD1w==
+Date: Wed, 9 Jul 2025 12:08:16 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
+Subject: Re: [net-next v14 06/12] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <20250709120817.5b2f631a@wsk>
+In-Reply-To: <ea22a546-9381-48c3-8bb6-258fdd784ca3@redhat.com>
+References: <20250701114957.2492486-1-lukma@denx.de>
+	<20250701114957.2492486-7-lukma@denx.de>
+	<ea22a546-9381-48c3-8bb6-258fdd784ca3@redhat.com>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR03MB8123:EE_|GV1PR03MB10584:EE_
-X-MS-Office365-Filtering-Correlation-Id: e9d75736-5c32-4e67-f296-08ddbecfefd4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VnO2126Hbt+ZNbD5Iyu2LVcGqonYX5xzg3iFDjqgXY6O2w322y/82nToyk1X?=
- =?us-ascii?Q?MlN/yk8DeNG1i0914da+DXd8HDc53PSKXKyK3TmX2SpicUfyierBDExYwaZA?=
- =?us-ascii?Q?OlDmJHvcKh0TXMGo2+KyxHYP/OlgRwZGWyAWjwvTlZhI9lzS/c1mEoFH+V9e?=
- =?us-ascii?Q?5F5CAMqdx5oHJJlelddijym53H4VzLVwPitAgc2Wq40LkCEPQ+HvRz1hD8zF?=
- =?us-ascii?Q?anwRjYnzrmS7OPI44tXOXk55CyA4UCR3cDgaKnN2geuFeKTMq2TwZGYu7uaY?=
- =?us-ascii?Q?WGdmAg4zxdmsq35PuzH74gPEKNpaMxzJhSD29GnBx9qkehiN26x8uq79ti9Q?=
- =?us-ascii?Q?MzFRyRtw1HHtPo13M0SL+1cjbrzTszdRLSR3ScT2blLsQ/7Q0T9XkVY+6xwK?=
- =?us-ascii?Q?Mn4SQH+sBQteyyn+u+48awZBe7xf50fFnDy8Mng08KggW8G7TXrVwuI9IaMj?=
- =?us-ascii?Q?aJTmdtcP0CyvG0iNSzSlS1/WBGPCKnjKQaGSi8tRdGOWBXZC/gH9OCqRx7Qk?=
- =?us-ascii?Q?uIsDL4Xmv3/iEQ4F9yzDov5mauenbrhpqALiN8h9WXgfmr7eG05njWUJxk5j?=
- =?us-ascii?Q?6lGXCM4Cw8UIj2drDpMaLjDD3CtgA3/Vax09C71jRCzl+DxdvXo6DRM+/JXm?=
- =?us-ascii?Q?K3UTGGB6pfHd8djBG9l+zQaVBUMKEsydWBt7hlHbBuq4IBfVqSpEpAsme4uL?=
- =?us-ascii?Q?rooNsMDtOThODjrMQFJeTMqrj0d+UnwKffqAdKkLmb06kMNdqUjgf+Hxx3zw?=
- =?us-ascii?Q?tSQByXjTIpr+s4hYyJovcOMJWVmM01JUrNmsZCycbzchG8+OvHSSpkILMcnO?=
- =?us-ascii?Q?4bZlcIsquRLWWmQmseNzQynkaYY9J2sG1kqSCAc8ec3zv1TVRzMb22EVsBnZ?=
- =?us-ascii?Q?w9TbtqFIwBrRc4jqbh7ohITXjJfWITs4HzyYdQWSAsA7i5P2OksgPeot3Gso?=
- =?us-ascii?Q?jfcBosdbMXOYNVYC2c50QgkzrovWDrCwmvB4loFGcXQ43ZftSqvbBv29fztq?=
- =?us-ascii?Q?7C0Z+BxSSQ/vx6Eppla8qQTd3/+WLsgWDvuEakQbO/tJBIp7Og4MwVgcZOk/?=
- =?us-ascii?Q?M9Dc99KbYnhYd9nLc3U6PF9aULu2iRP/YsiTqbGwNLemgXtGI1e9vZrp312Q?=
- =?us-ascii?Q?9e53exa3O49Xh5bbY7ZWx6siqJrXMf5v46GvDMcnlCSIhy1YuynPJuYmpHs3?=
- =?us-ascii?Q?2smxRAGzA7zKP5AaXXXo9AbzytwQ2qNuQiksNzrK8TJuK+Hn8StNI+VzUqn4?=
- =?us-ascii?Q?PvpOAAEfmAt0JI97mgLTaoXG9Aa8gvgGj5bmnfuRepCwy56yTRWuVW2g9SXX?=
- =?us-ascii?Q?3glPA3SPi5EP81NKvsAtawadAFFFEHHNsLRDBTbuwXwGr5epB2rQ3qQ5Dvgu?=
- =?us-ascii?Q?GUbMQU7dAcaSZ+H7G8GJztU5C95LbWDZnZbitmfYoOcHJGu3aISSlh7t2Odj?=
- =?us-ascii?Q?4GjLnxDJPmNtIB6ceZj46bLwRiUaS+vcves9Erq26zFfqR5nWRyY+w=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR03MB8123.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CCL4iX5vcPeSALxpes2PbdI/Px5fS6HkIPMvJNCyX0vtvbcPc1Ah3RtN9WA1?=
- =?us-ascii?Q?m5fQVepLeibX0XkBCwjJoXBiNNsWVoHCleiCwWqL95HGl5mBKkQzfbhKsvYG?=
- =?us-ascii?Q?NnMfPMsEUtymPzZmxTYVSLndmdHFa23kY3FUE6oIe+Q9WikTYRwFYWaojFhC?=
- =?us-ascii?Q?3+i8AcMdRC4NcF7pKe4Ofhwv/jtP9Ii65eLuhAQiPvsWGgEJDrGFDe82CHex?=
- =?us-ascii?Q?y8d9yUpjBdtsnfasH911MkyvnUuewarkj582g/lJ+66iOFqBOf269/cZV97N?=
- =?us-ascii?Q?+yrHXdI6sx7tZzs88983jNeuyMOjBRitAtoJTpuerpWeGLmsYOdds/j1S/18?=
- =?us-ascii?Q?R7PnjcHZibG2k8dHv67trBKAqLGpcoiA8bGAQa3gCYtk/TD7oZ2q2eptOYWB?=
- =?us-ascii?Q?kJCG4cOnofAolthqqbYphqTRazHvEkm40qLq79fLDRqcsVEQVlLQ3qmJSQ7V?=
- =?us-ascii?Q?2hhU85AwGhk8EvErSFE2Se9PSIow9Dm4Ik50U96DiubwnXwWq7NJoc4sZyR+?=
- =?us-ascii?Q?9rq+4L+ZXBPrfdQ0gvzKLu+WPKJeYpoNM4kpmzbXTQQO0OFOR43NbvAbdUB2?=
- =?us-ascii?Q?dNpkImsH6EGYT4D+tGNBw2IRHO6jTNcH9XJbLXXOdaJsUZI7Pk+bYg/EEtIJ?=
- =?us-ascii?Q?d6QS/BfinLO+QOAPuCPJq360laWr/sFHdEUOEj11/TtuB/FyT4foHM91evJH?=
- =?us-ascii?Q?mGbaqS4mN0rJoe1Xk0+WTvxU5l+58dzELedrUwVE3HZt6ioVNC2GVM9sWXEv?=
- =?us-ascii?Q?AMRUkMxM/Ey99qDpOwEQYtCJk0YWWZ1flTSO0EEeRG4MJ8NyGI1oconkmz+y?=
- =?us-ascii?Q?VtUj8bIZOtGzf6YnSr/ExgYlu91CR4RIw1sCSDOQrWRMTQkjFjsfDlTLY6/A?=
- =?us-ascii?Q?Xgc/XAl8gAgPQ1/5akPEdsmFSRB5ZJxH7LYDHzGY/uQ40LWSV+NKbgFfW8LV?=
- =?us-ascii?Q?nejldEdwsvqMJKAcGcrprhJ4/dzvewtKjLhb0sJQefblmXiyxMvpObKh06uj?=
- =?us-ascii?Q?DYlQ1N4lG/GG0fMOOs6N+HX03MNb3TSniSHHmd9Qtbn5vwQN4m27Q1tmUvy/?=
- =?us-ascii?Q?TM4LkelxGe4SxmVesYMCsIfZvlPXklhNJWV64gCkpZu5NlF6TAv3Au8TasT2?=
- =?us-ascii?Q?7qQMIClEOqSFUsSPvYjFgomIhMyS0sIkvr01Cr9zz4NhEybif+5xO/WX+8MO?=
- =?us-ascii?Q?SJGbOFU6RJP9xyCDs9RZY4UeLGhI8lwmTZl9DGKwqMpsV2de2Yyo5Lztz7IR?=
- =?us-ascii?Q?CnR1ZlKksaNwuNCdlAAl9fJXyiki/Uz5MqjnXhhslVI2nNtERX5No9NQrKIT?=
- =?us-ascii?Q?LES5AeUpZ0aX4vCCD3xDoyCEtEyJP3RQE+CjZ+qLzkzMlU7wnNi0VVr/xI8K?=
- =?us-ascii?Q?iybQMG3DmbWhYLrFuhnf0GtBARABbwG248GSh2W9bn++irCxFI8z+Sgl3PlR?=
- =?us-ascii?Q?brVWZV+IraO+tPuEEYG1ytNu67oiT9Rw8lr3aQ+P4ZQo+DAz0IqpTweO4od3?=
- =?us-ascii?Q?Y2w8vb6/mtT77k7TcUVwAoX3Qojflfpb8vxaKMRMxEvUnvzD2xzCgck/koGY?=
- =?us-ascii?Q?SZqp0cXTeA4Bia2peIDDUHH2cfsJib77linhUAaK?=
-X-OriginatorOrg: mt.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9d75736-5c32-4e67-f296-08ddbecfefd4
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR03MB8123.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 10:04:04.9228
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ngjayvc0aD6SUvOeeh5Jz57WMM58Fa/+xPN/hcFkiUGhJmKbXAAT2/YxM2nk28iv/Z0XDhgb2PdQsX+NobnHJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR03MB10584
+Content-Type: multipart/signed; boundary="Sig_/kSh+3R=zs/0/CbqzphcKx.b";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add a new MAINTAINERS section for the METTLER TOLEDO BOARD
-SUPPORT covering imx8mm-mt-* device tree files.
+--Sig_/kSh+3R=zs/0/CbqzphcKx.b
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+Hi Paolo,
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 240793fbe64b..eab5597e659e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16149,6 +16149,11 @@ S:	Maintained
- F:	arch/arm64/boot/dts/marvell/armada-3720-eDPU.dts
- F:	arch/arm64/boot/dts/marvell/armada-3720-uDPU.*
- 
-+METTLER TOLEDO BOARD SUPPORT
-+M:	Wojciech Dubowik <wojciech.dubowik@mt.com>
-+S:	Maintained
-+F:	arch/arm64/boot/dts/freescale/imx8mm-mt-*
-+
- MHI BUS
- M:	Manivannan Sadhasivam <mani@kernel.org>
- L:	mhi@lists.linux.dev
--- 
-2.47.2
+> On 7/1/25 1:49 PM, Lukasz Majewski wrote:
+> > +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
+> > +					struct net_device *dev,
+> > int port) +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	unsigned short status;
+> > +	struct cbd_t *bdp;
+> > +	void *bufaddr;
+> > +
+> > +	spin_lock(&fep->hw_lock); =20
+>=20
+> mtip_start_xmit_port() runs with BH disabled. The above lock variant
+> is inconsistent with what you use in patch 4.
 
+I've looked into the fec_main.c driver. They use for TX path
+__netif_tx_lock(nq, cpu); which is a simple spin_lock(). I've followed
+the same approach (as _irqsave() seems to be an overkill).
+
+This function (mtip_start_xmit_port()) is call as a callback from:
+.ndo_start_xmit (member of struct net_device_ops).
+
+IIRC net core code provides locking on this call anyway.
+
+> Please be sure to run
+> tests vs the next iteration with CONFIG_PROVE_LOCKING enabled.
+
+This is already enabled. Locking in this driver is a bit special, as
+one uDMA is used for both ports... (unlikely as in fec_main.c).
+
+>=20
+> /P
+>=20
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH, Managing Director: Johanna Denk,
+Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
+Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/kSh+3R=zs/0/CbqzphcKx.b
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhuP5EACgkQAR8vZIA0
+zr2DCAgAxD7rrFXIyi+rHYv1bwydkkv0xAPwNNg4ilaG0hVeKYG1argzJUIBwp1E
+Oo/EvG2HUoBs/I83nrGq+Uk5SX6R4zqDIx/iYu+/V/9hll06UV6MmtdNW772+LRD
+slkfHgqjAAiVSfGvE1iUPZc8nkR7+0foXlv/dIeQWaYoROg2dQtK/p+X8SUMe914
+ojjlmPsxPPIbfIclJc+lIqQgrJbme2z4EYldIjK+aTfjiRtAFdnMdnCUjtqw5slO
+MpSrlAYs00wS4RS+KH+Zlp12ief5Zaw4h5H2vfX65p/2pV84RBAT9E6SL7ZC2rsh
+TYfU75uh2iv8ow1RM40r+MrWqaOCNg==
+=f3nq
+-----END PGP SIGNATURE-----
+
+--Sig_/kSh+3R=zs/0/CbqzphcKx.b--
