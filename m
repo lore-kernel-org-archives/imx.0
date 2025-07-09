@@ -1,131 +1,87 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EF228A1DE
-	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 10:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435DC1C84D5;
+	Wed,  9 Jul 2025 10:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752055706; cv=none; b=INjOdasfwC75uD5G37D+bWBmDl5xzHE3j6GP9HLdJPrZ+nR3rYerhOE0AoZKPAo+Ij7VBy1hrTF4/l8a1hGV6F+MREBN3M1CAs97FbSzj7olfYggDRGmFsWOlR6Px+zj6a9dBCfbw9OFF8xjR7CKtikH7gB/Y9P9yCXc+RDN4Zg=
+	t=1752055968; cv=none; b=qUh3TTNmHp10jwt3Urix7DOOddeBbzikMX3oJDylxvLNcH94IkwurRbd2TkcR0udk0hwSFwG5RwtDmDHGXOy7FI/7U1i5E43p046PceaqXDLvgrrKJycXGApgh5N1HqCUllPW13Uk0TmsPppdZG2EY/O2q2HOVpycfDXk4L2nYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752055706; c=relaxed/simple;
-	bh=n4/DC3bhdUZoFTEoFep2p7ibhgZD9ZHc56z5gU/C1Bs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CD/auQ331q0qnZKW6P8uwELIqeBP+L5wRpXYbCuRApBuRFm517YikDaSuQWGkgEcR63L4mUSSapMAYRbe7iS4mfv/tINts+ljx28cc/GRPOHQSDaUP1WNdUgkRnTKjz7Xmyi3JqU1Di/JkYQWoPqiFLOeB8z8apn87PMo8HoxnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ZOFR5QYJ; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1752055968; c=relaxed/simple;
+	bh=m0kYMK0yCrqfQlb4xvdKgoherQ8t98N5/gOCQakTYm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JDTZ++y/ipz2LSNwn3qijHG+bMEe4KL7OwkFRaht5a5Xu1wasgpBE2s42iUm6JIblPmlexud/n0hRpF1xzrRuwUaqw5c+a3BIWQO7VjV6iUSK3hPeYqQnZrkMObMABwVjnvV/j6ldhYnbP439MsVxV6z37GniR+P9o/q4KmorGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxP762nW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ZOFR5QYJ"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 86578103972A7;
-	Wed,  9 Jul 2025 12:08:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1752055701; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=FsxQbQPIJsaYTNOu6ABUMe0d1muypWFSA2FGjsr9hv4=;
-	b=ZOFR5QYJmEImw0t8AqiKiZi5hRhUsSDtDlUVGIS/tUYksC4yoQ27YObM0jcDNKmO4vuUnH
-	pdj8Z7iZN+40EH8d9HeL2x7deLr2PBODbaRgerSiLocF5B6C8AnLAYlY6ZQXoFIXeNHmM4
-	PDk8LbWwrGlZmWNFtFU7x/BTVfF/ZHH/f8RuBrLOUkkoUbWZTP2Ew2nJki3o2zoRaQb86W
-	3YE44lWolkv7qhe8wPGRebTXD4bzsyYaTFmZsAx1vjvn46ZzK1g/vFBfoDSHbKiyd0cdLe
-	0EsKGZENUVrx6pJbJQ8lGmKaW6ruKtHDitD3pifYamAk7ljyesoF3NGy6pRD1w==
-Date: Wed, 9 Jul 2025 12:08:16 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>
-Subject: Re: [net-next v14 06/12] net: mtip: Add net_device_ops functions to
- the L2 switch driver
-Message-ID: <20250709120817.5b2f631a@wsk>
-In-Reply-To: <ea22a546-9381-48c3-8bb6-258fdd784ca3@redhat.com>
-References: <20250701114957.2492486-1-lukma@denx.de>
-	<20250701114957.2492486-7-lukma@denx.de>
-	<ea22a546-9381-48c3-8bb6-258fdd784ca3@redhat.com>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxP762nW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46981C4CEF0;
+	Wed,  9 Jul 2025 10:12:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752055967;
+	bh=m0kYMK0yCrqfQlb4xvdKgoherQ8t98N5/gOCQakTYm8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SxP762nWXfF/1YFF0BUywJwgj0icoVdmnhopJoF6KsWbx+2jnKUxHs5ollJrZIVQy
+	 CWp2/4dsgOYmsaU4IvbHmkIakqfjDMpnnrFQnZS77FT9Ub1YJlVe2he22DeYUz0owL
+	 YcC+n01eE3VMNnp0ugeYhyuEw5031bwaX13EOUCo=
+Date: Wed, 9 Jul 2025 12:12:45 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Hans de Goede <hansg@kernel.org>
+Cc: Xu Yang <xu.yang_2@nxp.com>, ezequiel@vanguardiasur.com.ar,
+	mchehab@kernel.org, laurent.pinchart@ideasonboard.com,
+	hdegoede@redhat.com, mingo@kernel.org, tglx@linutronix.de,
+	andriy.shevchenko@linux.intel.com, viro@zeniv.linux.org.uk,
+	thomas.weissschuh@linutronix.de, linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	imx@lists.linux.dev, jun.li@nxp.com
+Subject: Re: [PATCH v5 0/3] add dma noncoherent API
+Message-ID: <2025070932-stifle-squabble-6042@gregkh>
+References: <20250704095751.73765-1-xu.yang_2@nxp.com>
+ <78b86f34-6477-436a-b59c-b0ae5371f581@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/kSh+3R=zs/0/CbqzphcKx.b";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <78b86f34-6477-436a-b59c-b0ae5371f581@kernel.org>
 
---Sig_/kSh+3R=zs/0/CbqzphcKx.b
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Mon, Jul 07, 2025 at 12:02:41PM +0200, Hans de Goede wrote:
+> Hi all,
+> 
+> On 4-Jul-25 11:57, Xu Yang wrote:
+> > On architectures where there is no coherent caching such as ARM it's
+> > proved that using dma_alloc_noncontiguous API and handling manually
+> > the cache flushing will significantly improve performance.
+> > 
+> > Refer to:
+> > commit 20e1dbf2bbe2 ("media: uvcvideo: Use dma_alloc_noncontiguous API")
+> > commit 68d0c3311ec1 ("media: stk1160: use dma_alloc_noncontiguous API")
+> > 
+> > However, it's obvious that there is significant code duplication between
+> > these two commits. Besides, a potential user USB Monitor may read outdated
+> > data before the driver do DMA sync for CPU which will make the data
+> > unreliable.
+> > 
+> > To reduce code duplication and avoid USB Monitor result unreliable, this
+> > series will introduce DMA noncoherent API to USB core. And the USB core
+> > layer will manage synchronization itself.
+> > 
+> > Then the last 2 patches have used the API.
+> > 
+> > I have tested uvcvideo driver. But I haven't tested stk1160 driver as I
+> > don't have such boards. @Ezequiel Garcia, @Dafna Hirschfeld do you have
+> > time to test it? Your support on this would be greatly appreciated.
+> 
+> It seems that patches 1 + 2 are ready for merging now
+> (for patch 3 we should probably wait for testing).
+> 
+> I think that it would be best for both patches 1 + 2 to
+> be merged through the USB tree. The changed code in the UVC
+> driver is not touched that often so I do not expect any
+> conflicts.
 
-Hi Paolo,
+Ok, thanks, I'll take them through the USB tree now.
 
-> On 7/1/25 1:49 PM, Lukasz Majewski wrote:
-> > +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
-> > +					struct net_device *dev,
-> > int port) +{
-> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > +	struct switch_enet_private *fep =3D priv->fep;
-> > +	unsigned short status;
-> > +	struct cbd_t *bdp;
-> > +	void *bufaddr;
-> > +
-> > +	spin_lock(&fep->hw_lock); =20
->=20
-> mtip_start_xmit_port() runs with BH disabled. The above lock variant
-> is inconsistent with what you use in patch 4.
-
-I've looked into the fec_main.c driver. They use for TX path
-__netif_tx_lock(nq, cpu); which is a simple spin_lock(). I've followed
-the same approach (as _irqsave() seems to be an overkill).
-
-This function (mtip_start_xmit_port()) is call as a callback from:
-.ndo_start_xmit (member of struct net_device_ops).
-
-IIRC net core code provides locking on this call anyway.
-
-> Please be sure to run
-> tests vs the next iteration with CONFIG_PROVE_LOCKING enabled.
-
-This is already enabled. Locking in this driver is a bit special, as
-one uDMA is used for both ports... (unlikely as in fec_main.c).
-
->=20
-> /P
->=20
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH, Managing Director: Johanna Denk,
-Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
-Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/kSh+3R=zs/0/CbqzphcKx.b
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhuP5EACgkQAR8vZIA0
-zr2DCAgAxD7rrFXIyi+rHYv1bwydkkv0xAPwNNg4ilaG0hVeKYG1argzJUIBwp1E
-Oo/EvG2HUoBs/I83nrGq+Uk5SX6R4zqDIx/iYu+/V/9hll06UV6MmtdNW772+LRD
-slkfHgqjAAiVSfGvE1iUPZc8nkR7+0foXlv/dIeQWaYoROg2dQtK/p+X8SUMe914
-ojjlmPsxPPIbfIclJc+lIqQgrJbme2z4EYldIjK+aTfjiRtAFdnMdnCUjtqw5slO
-MpSrlAYs00wS4RS+KH+Zlp12ief5Zaw4h5H2vfX65p/2pV84RBAT9E6SL7ZC2rsh
-TYfU75uh2iv8ow1RM40r+MrWqaOCNg==
-=f3nq
------END PGP SIGNATURE-----
-
---Sig_/kSh+3R=zs/0/CbqzphcKx.b--
+greg k-h
