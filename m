@@ -1,87 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435DC1C84D5;
-	Wed,  9 Jul 2025 10:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9A9289369
+	for <imx@lists.linux.dev>; Wed,  9 Jul 2025 10:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752055968; cv=none; b=qUh3TTNmHp10jwt3Urix7DOOddeBbzikMX3oJDylxvLNcH94IkwurRbd2TkcR0udk0hwSFwG5RwtDmDHGXOy7FI/7U1i5E43p046PceaqXDLvgrrKJycXGApgh5N1HqCUllPW13Uk0TmsPppdZG2EY/O2q2HOVpycfDXk4L2nYw=
+	t=1752056099; cv=none; b=rBVi9ZnAiIdfIjPZJBk5jRSB5PIchtim2cWjh7T4sOcZG6ahLl0bWRiBFsmz9sfQespjITwT3PaKBQq4kmUHGSapB08fQD1Bmhj+xeQETuxA4izIIZJzyk9vCmJPGzHSsbEvVX1h3TFVedM1ZTpEV5jELvBFw1kz8+mp6DcTmh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752055968; c=relaxed/simple;
-	bh=m0kYMK0yCrqfQlb4xvdKgoherQ8t98N5/gOCQakTYm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JDTZ++y/ipz2LSNwn3qijHG+bMEe4KL7OwkFRaht5a5Xu1wasgpBE2s42iUm6JIblPmlexud/n0hRpF1xzrRuwUaqw5c+a3BIWQO7VjV6iUSK3hPeYqQnZrkMObMABwVjnvV/j6ldhYnbP439MsVxV6z37GniR+P9o/q4KmorGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxP762nW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752056099; c=relaxed/simple;
+	bh=es2bSzdV9IWpvgGFtHgvwYGWojC9fZkC/kNW3Hp+Xvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VIlZlA3A+wL1671dv3A17JztMvhLtnPCnAFvD0sC1YKdaoLXm/3hxM833KDd0k3P1dAMltO7eo0W8DRgBrVzv7nFZJ4X4awyjdQyf6ocJuXxbDMcmRI68v3XUHr2MYCD+3rKTdpp6Zet2frY5FR6kv45f7rpyj0PqmrtC8F81Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=c4xztTZu; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxP762nW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46981C4CEF0;
-	Wed,  9 Jul 2025 10:12:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752055967;
-	bh=m0kYMK0yCrqfQlb4xvdKgoherQ8t98N5/gOCQakTYm8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SxP762nWXfF/1YFF0BUywJwgj0icoVdmnhopJoF6KsWbx+2jnKUxHs5ollJrZIVQy
-	 CWp2/4dsgOYmsaU4IvbHmkIakqfjDMpnnrFQnZS77FT9Ub1YJlVe2he22DeYUz0owL
-	 YcC+n01eE3VMNnp0ugeYhyuEw5031bwaX13EOUCo=
-Date: Wed, 9 Jul 2025 12:12:45 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Hans de Goede <hansg@kernel.org>
-Cc: Xu Yang <xu.yang_2@nxp.com>, ezequiel@vanguardiasur.com.ar,
-	mchehab@kernel.org, laurent.pinchart@ideasonboard.com,
-	hdegoede@redhat.com, mingo@kernel.org, tglx@linutronix.de,
-	andriy.shevchenko@linux.intel.com, viro@zeniv.linux.org.uk,
-	thomas.weissschuh@linutronix.de, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev, jun.li@nxp.com
-Subject: Re: [PATCH v5 0/3] add dma noncoherent API
-Message-ID: <2025070932-stifle-squabble-6042@gregkh>
-References: <20250704095751.73765-1-xu.yang_2@nxp.com>
- <78b86f34-6477-436a-b59c-b0ae5371f581@kernel.org>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="c4xztTZu"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 57904103972A7;
+	Wed,  9 Jul 2025 12:14:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1752056094; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=ArIGCW5Bhq1y2eO/gihtnGd36bGdErSTiYHxyyM2NBo=;
+	b=c4xztTZuzEmC1w0jFD5JIzskfaeJ9Kuw87IZn0mEp30P3ef4cAo0RNNUPFV8mF+tj7sc1l
+	wC9uo6NzlEdIuVz8mVxbe6R1lsU70LUPb1CWeYW15Xguh+joIfcph1z/aboaqKC32Aney0
+	EaYFAyGCbgrSIenh5ltO4KiGVIx9pZIngqSLRyjxdaa04TgiDkuCtVzdrdlFD69x+/4rAB
+	0hMiMOsv10s8YTYMvV4ZkjmuoV3GuCnLcRHBdIZEGNfUGjaB5ss7PkkN+0Vsr8Syd6KUqf
+	g5NtmhCPPUBtGNpiuuxEXrFh9nVZYPnIzyS18FC1Ag+rKDVf+3i3NFCx7D0bQw==
+Date: Wed, 9 Jul 2025 12:14:47 +0200
+From: Lukasz Majewski <lukma@denx.de>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v14 04/12] net: mtip: The L2 switch driver for imx287
+Message-ID: <20250709121447.7cc2cd19@wsk>
+In-Reply-To: <b68a06a1-076a-4345-bbb4-7dda1cd73591@redhat.com>
+References: <20250701114957.2492486-1-lukma@denx.de>
+	<20250701114957.2492486-5-lukma@denx.de>
+	<b68a06a1-076a-4345-bbb4-7dda1cd73591@redhat.com>
+Organization: denx.de
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78b86f34-6477-436a-b59c-b0ae5371f581@kernel.org>
+Content-Type: multipart/signed; boundary="Sig_/zvP9KrePMHi5Vk1C5hBLMkR";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Jul 07, 2025 at 12:02:41PM +0200, Hans de Goede wrote:
-> Hi all,
-> 
-> On 4-Jul-25 11:57, Xu Yang wrote:
-> > On architectures where there is no coherent caching such as ARM it's
-> > proved that using dma_alloc_noncontiguous API and handling manually
-> > the cache flushing will significantly improve performance.
-> > 
-> > Refer to:
-> > commit 20e1dbf2bbe2 ("media: uvcvideo: Use dma_alloc_noncontiguous API")
-> > commit 68d0c3311ec1 ("media: stk1160: use dma_alloc_noncontiguous API")
-> > 
-> > However, it's obvious that there is significant code duplication between
-> > these two commits. Besides, a potential user USB Monitor may read outdated
-> > data before the driver do DMA sync for CPU which will make the data
-> > unreliable.
-> > 
-> > To reduce code duplication and avoid USB Monitor result unreliable, this
-> > series will introduce DMA noncoherent API to USB core. And the USB core
-> > layer will manage synchronization itself.
-> > 
-> > Then the last 2 patches have used the API.
-> > 
-> > I have tested uvcvideo driver. But I haven't tested stk1160 driver as I
-> > don't have such boards. @Ezequiel Garcia, @Dafna Hirschfeld do you have
-> > time to test it? Your support on this would be greatly appreciated.
-> 
-> It seems that patches 1 + 2 are ready for merging now
-> (for patch 3 we should probably wait for testing).
-> 
-> I think that it would be best for both patches 1 + 2 to
-> be merged through the USB tree. The changed code in the UVC
-> driver is not touched that often so I do not expect any
-> conflicts.
+--Sig_/zvP9KrePMHi5Vk1C5hBLMkR
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Ok, thanks, I'll take them through the USB tree now.
+Hi Paolo,
 
-greg k-h
+> On 7/1/25 1:49 PM, Lukasz Majewski wrote:
+> > +static int mtip_sw_probe(struct platform_device *pdev)
+> > +{
+> > +	struct device_node *np =3D pdev->dev.of_node;
+> > +	const struct mtip_devinfo *dev_info;
+> > +	struct switch_enet_private *fep;
+> > +	int ret;
+> > +
+> > +	fep =3D devm_kzalloc(&pdev->dev, sizeof(*fep), GFP_KERNEL);
+> > +	if (!fep)
+> > +		return -ENOMEM;
+> > +
+> > +	dev_info =3D of_device_get_match_data(&pdev->dev);
+> > +	if (dev_info)
+> > +		fep->quirks =3D dev_info->quirks;
+> > +
+> > +	fep->pdev =3D pdev;
+> > +	platform_set_drvdata(pdev, fep);
+> > +
+> > +	fep->enet_addr =3D devm_platform_ioremap_resource(pdev, 0);
+> > +	if (IS_ERR(fep->enet_addr))
+> > +		return PTR_ERR(fep->enet_addr);
+> > +
+> > +	fep->irq =3D platform_get_irq_byname(pdev, "enet_switch");
+> > +	if (fep->irq < 0)
+> > +		return fep->irq;
+> > +
+> > +	ret =3D mtip_parse_of(fep, np);
+> > +	if (ret < 0)
+> > +		return dev_err_probe(&pdev->dev, ret,
+> > +				     "OF parse error\n");
+> > +
+> > +	/* Create an Ethernet device instance.
+> > +	 * The switch lookup address memory starts at 0x800FC000
+> > +	 */
+> > +	fep->hwp_enet =3D fep->enet_addr;
+> > +	fep->hwp =3D fep->enet_addr + ENET_SWI_PHYS_ADDR_OFFSET;
+> > +	fep->hwentry =3D (struct mtip_addr_table __iomem *)
+> > +		(fep->hwp + MCF_ESW_LOOKUP_MEM_OFFSET);
+> > +
+> > +	ret =3D devm_regulator_get_enable_optional(&pdev->dev,
+> > "phy");
+> > +	if (ret)
+> > +		return dev_err_probe(&pdev->dev, ret,
+> > +				     "Unable to get and enable
+> > 'phy'\n"); +
+> > +	fep->clk_ipg =3D devm_clk_get_enabled(&pdev->dev, "ipg");
+> > +	if (IS_ERR(fep->clk_ipg))
+> > +		return dev_err_probe(&pdev->dev,
+> > PTR_ERR(fep->clk_ipg),
+> > +				     "Unable to acquire 'ipg'
+> > clock\n"); +
+> > +	fep->clk_ahb =3D devm_clk_get_enabled(&pdev->dev, "ahb");
+> > +	if (IS_ERR(fep->clk_ahb))
+> > +		return dev_err_probe(&pdev->dev,
+> > PTR_ERR(fep->clk_ahb),
+> > +				     "Unable to acquire 'ahb'
+> > clock\n"); +
+> > +	fep->clk_enet_out =3D
+> > devm_clk_get_optional_enabled(&pdev->dev,
+> > +
+> > "enet_out");
+> > +	if (IS_ERR(fep->clk_enet_out))
+> > +		return dev_err_probe(&pdev->dev,
+> > PTR_ERR(fep->clk_enet_out),
+> > +				     "Unable to acquire 'enet_out'
+> > clock\n"); +
+> > +	/* setup MII interface for external switch ports */
+> > +	mtip_enet_init(fep, 1);
+> > +	mtip_enet_init(fep, 2);
+> > +
+> > +	spin_lock_init(&fep->learn_lock);
+> > +	spin_lock_init(&fep->hw_lock);
+> > +	spin_lock_init(&fep->mii_lock); =20
+>=20
+> `mii_lock` is apparently unused in the whole series.
+
+Thanks for spotting it.
+
+Indeed this shall have been removed when I added support for MII
+operations' polling.
+
+>=20
+> /P
+>=20
+
+
+
+
+Best regards,
+
+Lukasz Majewski
+
+--
+
+DENX Software Engineering GmbH, Managing Director: Johanna Denk,
+Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
+Groebenzell, Germany
+Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+
+--Sig_/zvP9KrePMHi5Vk1C5hBLMkR
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhuQRcACgkQAR8vZIA0
+zr1dEwf+IV70eUIk6GwhBJxy3PxgfnLpjKQlItzlkVVtQfjTSQmIlMCucw9/SW04
+2xsHcqT7V5sFWnhAViFyOtG0dRiaNToW8GdvWqwc9N4LKHYn3AkFUHmfD3lRXlqy
+Ajwsjuv4q+2yGBlQ1Uzb7/MqnWQTtk82SBhyZXtxpCO5PhQ5qiKdUD/HHyFTkpNw
+gpAqRHHk3WLxz9wCg4Kj8O/exiyLsqoiH7gNuQAAvx7OvnGaAt2O8hToAbfBdOzN
+cw1od/9oksCZqf8YKXx99bE5lVfg3s+njPD7a0c7cAFIGPlARPoVjDg/2/DYEY0H
+zc8GeKgDX8nsKtenNU09INlXdabZzg==
+=lGVH
+-----END PGP SIGNATURE-----
+
+--Sig_/zvP9KrePMHi5Vk1C5hBLMkR--
