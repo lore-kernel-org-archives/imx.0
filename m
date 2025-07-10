@@ -1,71 +1,81 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013071.outbound.protection.outlook.com [40.107.162.71])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011014.outbound.protection.outlook.com [52.101.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C14D274FDE
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 15:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CE8198E9B
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 16:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.14
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752162570; cv=fail; b=kBeTj95y3yJrj5elM9bHfIYTE8w2b4Abj3itk01qHW5BxGOHB3xn/GjsirRna6N0/KdSOlBVamSUKN+r7QQ+qjZjiMlqRHCQazOvDZPk9QVaJhOsQ5/ddz7AqrmubsIEdToM+TmKgiBkAfGAtVQFs6ZYazDOtBusRQPehiCzEI4=
+	t=1752163624; cv=fail; b=bbYfz5KVG4dhRg27k/Uo0HjOkokY1cjx+mMszfFCTRPIeOGDgIuIbNlDgVvB7va/Hx+Ua0tVh5RImd6+lD/x9UB6ayCCOYE3qtUFQZ8NKUz2QYf0b2ZU1fRS6EyfvUCPSNgSBYy2ne3KiY4KeG9e/33XHOs0pm9cVSWIxQt8ohA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752162570; c=relaxed/simple;
-	bh=h6Pez4dufnU6MoPu7N+4If4IatQSDEImUdT1KK4J1xQ=;
+	s=arc-20240116; t=1752163624; c=relaxed/simple;
+	bh=u16O43YT0cKvq99wqmTKPaEBSRCFqTZHDIymud3Zu/A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kQMphIDoZBeNn3ToHwjR0c2T3xBgg4ZBav9Sa4OuCzbrkA1Z2zBEJoqZ94S3VPhjrJFqcLbhANr0saRnKHRMMfM8vTYagb7j09ev/zO74znkSqrnjJPPiyG6elb83e89ZGMGerDF8K7mVA9YL/Oi12xilvLzO3xBUADxRmhI4d4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YpBD8kvZ; arc=fail smtp.client-ip=40.107.162.71
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FNX2phpNj1nvOMb+YzUMrxdre8pgDNFau6a5m8grHMZwcuIE1Q96V+EnIG/ZzVKctLKMXaJgRnbb7mIo8q/Jv+otVbwTBM/LWy+oel6Zl6qVVKAvMjotffzJDuP2YzZJxmChX5f1gZHGS34Efw3Uge7fXd5lDWD+id3QE6CoOWI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GQsgERL8; arc=fail smtp.client-ip=52.101.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YpBD8kvZ"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GQsgERL8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UEEIx+TVjgohHPDC0w7KXQF6ixZ50y4qya8jcPgluN4dP3L18q8PDTNwiCU1xZfSC1FlY51i2b7MSMbwunfUDy2N+AVS5q2Ju7+EsyH9hWRdgFzhHnZ3HaWZHJnDvV6X6ywtnpZoM/aFvgqswyiM1x/SnfiiXk4G36xKWdVzTOSSYtdfoGds8+aV2+DE6grbqskdw8uUv+9jLYQ+tRzEZRemk7eWT0WFOcQYq2kq0lFiUI6wZGDw5+OgaEoy6zhYzikaSQ8NtEYvm2CNMu5jsIjUeHXPTo9iL7x4lStIsm0BQOFtjWDwRlmrZPyrKHIIpqdBHppkudoz0hybfXjmcQ==
+ b=WBKIw/of3lsVdqDg9ij8o8lVLZNtiyGiPKzrqb/ST5wRnNQIa1aNCropyEQLtWcIpdCIP2VJSTPDKl4t4WIydU20YQx6CL+T2Z/ip8e+3IaB/HUhixo0Ni/GBHPw0rsPaWBVRPvRkfQgqRsdxcGw4wV0GDxS554HbOrufUTHXPnlHE7kbTBOm4n+AuLRGPsSW+UsuDI6udtfD4wrwIFqw5DS9M0I4KFJidsMS8HMOSpAao475lbgxOEIVYOSMs7x7pW8NIljnBdYkr/Tg/BBZ1PGJIEdeyiu5x2R6XxgIJTop+OpMDND+1eahvtP61DZra4wdjyO4wqbUpfALOmkFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fNGXUYMmONep2xWPuHlCbwloYqogd4P+tyoJ7VQHyT8=;
- b=gFFPc3Et88mT4t7NMzA56trBUKaQKfK+AZSqQeIH5rEDqWkEunD4lLxVOOGKcyIPO60AzpXaFc6NV0YcztipGdEqVjIh6CH9z87O7DHKCYIafI0PuSWsl67Vb+I2GPLfLkUcDqij0qjMUIdK7ISPERpaZN/rj14T8/b2oIARrNEtTXARgS2Qb41nEL+qetKVzLn42N2UHbpSukQ7pUdFUSvQgMV1yB2iWN3tLEhXTIj3RPz9GgxZMgUdiIPy9exefuz9mwGortjLajo3LRBpAbziPp+3I2w6ejFmqHKeiuDP0Pg1Z4zJ/ERysPLjVyKKJQWSNjepPqIIH5EWXA9cVw==
+ bh=Kt05uIgwetaXwYDwJG3akXamgFNRAZiiBy+CrKT9hqs=;
+ b=mHigO5Ciw1rG+jai73ksdBZ82s8ahhRyV9VKkq1ZTIePtNLWYEnw+ctVDI58wlLU6wuw/hqPkq/00pJZ0o09fBP9JavbSlB0aYXrryhUiXWprzxnNFdSrHQ5baXNv7v6LWz3haDoDZfGkcUfaLaYCGoWPhign7881Hzixh8iaV8zjZKZxdSaLoPYxxejD0Hjp6O9HqMqWpzFSWZZ1VzHQUxq2DyfxTO/aAX/X9qfbUwR1dp/nCsnYMagU8fX1Lf8M6yAgztAky2b4qhC4GbY1H2nBWdgzaMqj/hBohcxCa3e4Fb6+GKraFhcevO4Q2YQMw2XP3oC15HHMoOIigShug==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fNGXUYMmONep2xWPuHlCbwloYqogd4P+tyoJ7VQHyT8=;
- b=YpBD8kvZbZsmne64NU484irxxDEkZ07+xbSYK0lPwN10ABSOt+2sVxhTAQ4R2pokNTYyW16Sa4j3tIWfY3iJ/9QjPoCFc4ER8aXhRLs+qqhG+QJV7EakZNJxVby0EB/+XCw6ulWwFKpDUxtqC3R2ztAz0lJYWisYvPlKL2nr+HDqMBu4iF/QwSUayUzlTFHjB/uoXoEYU/yZ37ydn5f2g1NN06DyfmGJmFecjPnfQtPFTIiCMvmHYWWOmfLKbxX26VX1MRVkW3H0LQoe/iynXedkPfouGBJ1A3aFZ8RLPFisgw4fyykh5MA0ykCZdB48umQXYV3rmxLAKXKZFHpJyw==
+ bh=Kt05uIgwetaXwYDwJG3akXamgFNRAZiiBy+CrKT9hqs=;
+ b=GQsgERL8jzrjYleIbFvzTMAYZakiAP6W5mS+/JcOD74f8DId4CnfftaNlYG3nOJnayvQJNE9DzcYYQ5jb2yXzZ7Bqa3I/B+fJkWAJgmM4bJhcC+IHk1eGg7gjqco4RjusSshiJAwluFjclyCvbl+Zc7ZqANYNKVl3fUyfGIVkIErRptf59GwzdtJoLw3esN+pEzjtzMa9vqx+jqVldHjF8AnnJR/EjoKwnHU4qKOtJOw8BL3L8xLkgsxdTmfiumwFpTAvKLcaeWfjBrNTD84lZ9c214niuYayqa4+N88VGfLruMrlWDxVaZxjdSTwp7bql5Iqv5igCP0cW9PNujvHg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBAPR04MB7223.eurprd04.prod.outlook.com (2603:10a6:10:1a4::22) with
+ by OSKPR04MB11317.eurprd04.prod.outlook.com (2603:10a6:e10:99::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.24; Thu, 10 Jul
- 2025 15:49:25 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Thu, 10 Jul
+ 2025 16:06:59 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8901.023; Thu, 10 Jul 2025
- 15:49:25 +0000
-Date: Thu, 10 Jul 2025 11:49:18 -0400
+ 16:06:59 +0000
+Date: Thu, 10 Jul 2025 12:06:51 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, chester62515@gmail.com,
-	mbrugger@suse.com, Ghennadi.Procopciuc@nxp.com,
-	larisa.grigore@nxp.com, lee@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, festevam@gmail.com, aisheng.dong@nxp.com,
-	ping.bai@nxp.com, gregkh@linuxfoundation.org, rafael@kernel.org,
-	srini@kernel.org, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, s32@nxp.com,
-	clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com,
-	echanude@redhat.com, kernel@pengutronix.de, imx@lists.linux.dev,
-	vincent.guittot@linaro.org
-Subject: Re: [PATCH v7 01/12] dt-bindings: mfd: add support for the NXP SIUL2
- module
-Message-ID: <aG/g/ngHCN76FX8v@lizhi-Precision-Tower-5810>
-References: <20250710142038.1986052-1-andrei.stefanescu@oss.nxp.com>
- <20250710142038.1986052-2-andrei.stefanescu@oss.nxp.com>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Shuah Khan <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	dlemoal@kernel.org, jdmason@kudzu.us, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v20 0/9] PCI: EP: Add RC-to-EP doorbell with platform MSI
+ controller
+Message-ID: <aG/lG2r4U4rPrEeB@lizhi-Precision-Tower-5810>
+References: <20250709-ep-msi-v20-0-43d56f9bd54a@nxp.com>
+ <aG-mqWtUu9-CD43U@ryzen>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250710142038.1986052-2-andrei.stefanescu@oss.nxp.com>
-X-ClientProxiedBy: AM0PR07CA0026.eurprd07.prod.outlook.com
- (2603:10a6:208:ac::39) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <aG-mqWtUu9-CD43U@ryzen>
+X-ClientProxiedBy: AS4PR09CA0018.eurprd09.prod.outlook.com
+ (2603:10a6:20b:5d4::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,276 +84,240 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBAPR04MB7223:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac19d53c-6340-4791-6ae3-08ddbfc95896
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|OSKPR04MB11317:EE_
+X-MS-Office365-Filtering-Correlation-Id: a9465d7e-a754-46de-99f1-08ddbfcbcc88
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|7416014|376014|366016|1800799024|38350700014;
+	BCL:0;ARA:13230040|19092799006|52116014|376014|7416014|1800799024|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YN6UAi8Xd1m/imxRqo/9J59fYH9FtvmlrCsdD0Mzna0PG88zNoR2cTiaP4xq?=
- =?us-ascii?Q?4eKgHx/IIiOv+hvzAIN4eUI6G243nhoWNNAqOIieYgJSXVCiSSVjuKpvUp3c?=
- =?us-ascii?Q?YT+ewqgKLPoClOw9yZWznXQTsayzXnNDsyNJ6n4lZ7RrIR8lP5wjmxM6vUdz?=
- =?us-ascii?Q?l2SM4ANlzoay4K4Hx6eRtsCOu+vzHlDmWGyibkP8fMeH9F+QsLfZ1QD0xnAa?=
- =?us-ascii?Q?o04AM8mJCO1rMYtMyRJXE6FVIPTYil+G//5VVLhGQEoeaFBOod4weRUwwSIL?=
- =?us-ascii?Q?JzG/P5tojrLu7cpBL+pF4TKmAiJfnleFSZ2kHvSgzuffRwN6VcgIlWbd4WnK?=
- =?us-ascii?Q?50Er6BMvYjucpUXbph6NOsjSPrfp8xV5zh7Yv+O9T991kEf2L7m0P/Q23eRs?=
- =?us-ascii?Q?oOuORpwyx3TRc55GbAZwOxI8ppYuLIIgQP2tK+Ci4WXM48uXdGa/AqQF8xfU?=
- =?us-ascii?Q?YYkTxwJrEJQz61kxPriTxiEQJDk/+NFQtFdfFeMMHzFwTr1gNtjBZ2/3SdgO?=
- =?us-ascii?Q?Fo0oC9dEEwiLc4K3jiShQgkPOMOH0u5hplzF1aGFj4QlBbE+Uuc6h8GR56xl?=
- =?us-ascii?Q?EZFkWJD2qqcedrkEPQ5+0f9LC4jrjGGS2Vyk3G09vpQTZw4GRQpNgAWYxKCP?=
- =?us-ascii?Q?PIeEU582MHv4Vv1l+7wFahwl9KrFbRUJm7shgQqhaGSoU5Nd/U77ZMQ0gmaE?=
- =?us-ascii?Q?vSIsCZl6cgdrzcXiwFOaywPxjgkcMTZOWt6ODoUkuXPthJ68+tLO/Wja55qX?=
- =?us-ascii?Q?E1Evl3QeftaE/0vWCheGflE865k3o2afLT7T23cnZBmAtP7ejCRNTSSIY9WL?=
- =?us-ascii?Q?97F3Hm03DzN1uMBC1isPpxecP+AFDs2zb7m8xJgC0W268F6PghIobvFuGGWR?=
- =?us-ascii?Q?t2FTBj1yyJmgUD4do0s+zaNY31YGi9/AboYdTldreRuQMIQtbNRl+uGcDAy3?=
- =?us-ascii?Q?AKlLpDUr8scpFwuNVqBNKmbHFu9o4vMgayPRQ4kgTHR+5uYLrf0Yb+x4/SNW?=
- =?us-ascii?Q?/kAdhYQdbR2yXWNOLOhGuk6dwoj3H1Z0yDUHIXt5vnuWV65tvjd645UMAxoe?=
- =?us-ascii?Q?95HLDED8UpZdFrBEwwVaOlZzy5t52NZmKv6wZnbOHDNeWwwxvos+lOyjHQbL?=
- =?us-ascii?Q?a9QZs0hN+fYdoIGLKxCZ9g79mfTXRSFFZ2uCI5L5vDR8yWaTGJQ4znE3FUns?=
- =?us-ascii?Q?Q52GjEke4waNBxHgxP1qJRf71vNKI1UHOcWpGVLFcTnASJsykWXkvmvNrFBc?=
- =?us-ascii?Q?Hna4G4cKOfUhHpWai+vWoWIqG+PT6e6K0yX2mez8uIJ0E3JUGRgFdo3+U+hY?=
- =?us-ascii?Q?wXWyXLJfuGrZZRjWcs3mAbOxdquKm4npSLv6sm5+IznBpXCcBVPO/vWVJpcy?=
- =?us-ascii?Q?ubJghJlZj3vx4qtQQo90az3KpiumknxCSrJuuSO/90p7/v+eV9hDQSwAse1r?=
- =?us-ascii?Q?Pc0qwibQra4=3D?=
+	=?us-ascii?Q?VXe82JHdmzsDp11m9odwHG/tnQo7jhkjCq7eDDvUg9vMT3L8GXsu2Z15NdbI?=
+ =?us-ascii?Q?nQ2NZyIaqqT3v724vSqvYWJf/xtReF4ARoQpcT1qCy1clnPzgu9CLNiDKdt1?=
+ =?us-ascii?Q?lygnfNGom+VvkpIKDR4FLmNYUx9zSH9enyEw/KYJEiqhxvo6o8E6PO5RlTwA?=
+ =?us-ascii?Q?dljtEfJCSSfe8Gu02a6pvCGneJn9R/DakGxp0GfOh2BxKlzdFCxMLHXUw5iC?=
+ =?us-ascii?Q?DZtFKqd7c7hto9u/DEZPvyY28VYdxnD/CSp+XvJ/CChBn8bVD1nBuIUZYgJZ?=
+ =?us-ascii?Q?BVmY58rf2PUxNqix8BXBxKeErmip7o+gxWST5wOhyjx5JY5PXtTmHcCbeprl?=
+ =?us-ascii?Q?YxcbOr8/1nnlC80NPCBzy0PHJ2XieGf7SbjoYjpX9f/M2lTqvpvkJ8N4j+gE?=
+ =?us-ascii?Q?Bejqd60aV158YrOGb7byX5oqzEStBhoDw7kXF+JjKqF304flnNooFKoxyeti?=
+ =?us-ascii?Q?bJHVxMd+nH3krcCwQWtvx2kvebgEZ+GJAsAopdA4IGhNKNLkEeezzP2m2I0g?=
+ =?us-ascii?Q?12Hv6VOJ/b5vClLZBYKcgmOegCFZlEJI5KRtMbdJ14YldsOinpysx3Pttxn7?=
+ =?us-ascii?Q?yVLbV5Ykhl1/f0Q5UMJ22dztUVE6Ztqgesc4Hz+75qbr6L/wNxZMzKMU2XKn?=
+ =?us-ascii?Q?67Mhr9iLH/tOwDgchfolbdW0jTSIED6jsVgtVV4LXGDy3gJfg0YSiiNuy6a1?=
+ =?us-ascii?Q?pmEv7O2rOBb3gxAi7AX//rN8TNQ0CPwmRtJgZJqGmYvj/foWOVxR2B5VEXvR?=
+ =?us-ascii?Q?ZhFtWLZY9zr6YlzE4h7fbgCQ+VjfyDOT/WVJuHG8T/lgjhIyDlqMDuGgX11j?=
+ =?us-ascii?Q?JqBelTVa92ZYSUPAmX7LmsrgBRYRwWtLcEx2yEvb4XTXzBT5ZsXNj/fdU/BI?=
+ =?us-ascii?Q?SZX7haU3+aYJNg8bD8iwYG/JmdbfetybluKq4ydRRg48KGfDyR5Mdr5+L8dn?=
+ =?us-ascii?Q?jUx4vp4UZjyKGVbpq+JJBpxUc4IwWvtjxD11ijg5UOKZ9N55nFrVXDQ1MAQL?=
+ =?us-ascii?Q?kwYqDaunEzsDCXPomdWAogZMY/9x28bxL91rzA74zbnkvErwkwvMjv/H/DP4?=
+ =?us-ascii?Q?tQogEnzxzST+bOaMyTWKSpEDxQXdp2PBHwT6kNqEMRePcbjpD0ieojwL+3G0?=
+ =?us-ascii?Q?xgEmgULhqcd1BRZy88lk/FSxyMGEHoSIm3Lwhh/Y0JJRXW2ho+AqJKFjBN4j?=
+ =?us-ascii?Q?WF2XMNnv3UJ3p3q8/vF3Rf2G0ypi1TtcYIO4gynYD+CRl5vcxIpvAe3V0Y9K?=
+ =?us-ascii?Q?18nm94haeqd1KiwzK9cRXqiQ4/m13Q2v8B5r9m6uujCkD0rScJwHo/p4KATK?=
+ =?us-ascii?Q?xJU7SwHgBROPVlCEtRQyWN6Rwm9VZqdXlNNfxwY0wV/Suq9TcryzP9jG4kMj?=
+ =?us-ascii?Q?psBBGD+96Umw8mqDTx25Q/6g5G6Myz4V5fEOX6Fo5ePdfEK38Zlzdd1WwfSN?=
+ =?us-ascii?Q?xVZPyYleW2hJfZeQdXdW2txXgrT5XyHa8LcAEECM403IZsdTIrEEFK4qcP/q?=
+ =?us-ascii?Q?vNNA4MI2gIzfhD8=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(7416014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Z0fcf88ABTsqcmaWqPJqmEVA+UNCkosdFyoDPzBwx/0KtEc2fDsSo/xtb3oO?=
- =?us-ascii?Q?9zilOkejUV4Jayc51flgx+FFargduLhLtAvAq+e3I49WWrT2MuFOFDubz3GE?=
- =?us-ascii?Q?Z3h+asJq0FL8CJpXV+dT5EYTyabGHsnDpO6cT0Mo46iA3bnVwW0C/J2qZ6vN?=
- =?us-ascii?Q?lS1JAJEEByZoAGb34j6hvpiDfLkKVqYcjqoN8sJ0+rJBntorbXGj51K04ZhB?=
- =?us-ascii?Q?dJa2MO5oGu7HZ+DoVzeaM/TV35zWB8XVSh+mPs2+YaiysZh9b4lUX2/oYsTs?=
- =?us-ascii?Q?LSul0zjYKtBrI6Yo2xXfr0u3DkM34+FBhkaZMLO2mlfJMSuiybLbrSpIlebs?=
- =?us-ascii?Q?nTuTPRnPXqLubMjA7QFUf7vyI95ufRaAsuCCdB3G2SRmOBWBdRvVCk0uatL3?=
- =?us-ascii?Q?ePZW5Cb0qsoEFxTDjzCF20EGNtmV7GSeO2UIES30uQnRyHH2aeFo74Lft5yZ?=
- =?us-ascii?Q?YEQaO9liFDo/weiaZc/kQumvF/9nZ8o5DjDHDkMJUD9cbo6ujM+9WLwgIwsE?=
- =?us-ascii?Q?LGX2lylgVBRxoqa6p/VpgPxvkflv/gwsv9dvWZz7/rIQSq5/MCDptbiGWxVc?=
- =?us-ascii?Q?D1wrccQwF2k6wY75VgjREDF7xtV0+HL0gaZ4wLfIh8lDo7PB5fyzt0zf362s?=
- =?us-ascii?Q?v6+/vObqt12DmlvGcLgwQnTmKhNEXW4p70doW2IeYci+/tzl+GPoQMVrlYYw?=
- =?us-ascii?Q?5hQBLRkyxGUtgPjvwRjr0uQGNenuT6xBb9SBV5/0vAAlrM5JBn/cp5hHI4An?=
- =?us-ascii?Q?lugLj6vTF9tnw75BaDfkXkhww7b19435Lcd5XFigW9sKgc/dyKtuRP07IbeF?=
- =?us-ascii?Q?eHPmqs059J54wvvTKDhCB9TTXgOSHC0d6eZrB4Sx2i/zTFCvmyarO2tibPyG?=
- =?us-ascii?Q?diI6eup8+Cl9gz3D6oGuk682oWClu3oUxc04a9pZyOCotYyRQ7LwLI4NtWX0?=
- =?us-ascii?Q?iCBSnZrsWJeYlqnwtkiLiTPFvYs7cr3+2pkrFI11VaS2KUGSGi6FTkJlDDxO?=
- =?us-ascii?Q?fKHcygFAlFgVr4lK8C1ZIC3eM8ZvAV/5lG/R6YXGSFCIWlXMx+xxKwkdmUiE?=
- =?us-ascii?Q?5EFz9nSXGE24A7bk8Ofhwbxd222yUKmK69Ytp9vwWxSnUUamAYLRL/8WNl6E?=
- =?us-ascii?Q?zzrRCA3evgiXMwrAg1TEoZ4PTgaYnP9Rx4zljNz5vGlhKuBdHmNztSQKdTCT?=
- =?us-ascii?Q?093mk2TVrn0Z++HYOosr2fN3xxNNOhlJWycZq0le4Y+mbNUWj/m/FAFjk8i+?=
- =?us-ascii?Q?CPYaHXwbPVuJtaEx6/SVa3wXNiQmG8jgRMqRvlBvsmXmvjBRJquNgyKXtJYA?=
- =?us-ascii?Q?v+Wl6C0w1UJXjeBgW/+rZLnp+g1T1YHqlR7KiH8kxhM//kmmqZ49VaIHDaWq?=
- =?us-ascii?Q?6HIqYYnNkMTd5CnQcK7rdzrAS+msNZIQSSioK1brafJ10Ui0Ke22PIey9S1r?=
- =?us-ascii?Q?fffV3eHABd//zTozS+6aka6C5rp270Z7HCGbRb380nmLhwiWTifemxAjAlCm?=
- =?us-ascii?Q?UNXTfGFqCUz2ypw7LhniUJkgsYhBxfUvfpskxuXWu5eIKoMUWgcq3nJO8UDG?=
- =?us-ascii?Q?+lsNo7J3VwMyJ5lX7AuvenhnYkEnok5oKX5Ia3pM?=
+	=?us-ascii?Q?aaZ+OSq4tU27s+wwx4yU2sGJ9rpnIlV+rdkUiOhztruIaldjimzy7TF7rQAY?=
+ =?us-ascii?Q?Tug3YPVTe77vuZITN8xAIKYD0YEFkVwWu49jHuDBsxIISz+FJbyTQH99koAb?=
+ =?us-ascii?Q?mhj5wNzOpFz7BSm7mFWq6UaZswwvX7SToB+D8pFdY8aT8kEu0j5t0w+phY54?=
+ =?us-ascii?Q?NhcQyUvVLMAluq4VkfaRmdHWeg/ztVy8iBXGgITt66PExEnt9DG9XDlFSmIQ?=
+ =?us-ascii?Q?I2F1VdyRaNZgYsPuuTqZedn8V6xU709rc0mNoUWQW8ZFJR+TcGFHWQvUADuv?=
+ =?us-ascii?Q?KpqYmoH1vnUaCQKnE1n7Q2y3CQW6SAAET/z4QmCN2AhBttoBASyG7q+ZgPqD?=
+ =?us-ascii?Q?ovb4/V0sB24m/nGeoFRTYrb0La18FJyNTNlySTzPu5wXge1VpJpwckvm/XSx?=
+ =?us-ascii?Q?NNWaCOW8UsDl4G+gqrU29ux0+/Ct+rYSd3vmJlYvcfZgqhx9L1ingfIZgYAy?=
+ =?us-ascii?Q?Mtnn7ukmamYtP0NH+8HUPh2kfvIAnJfUt6olUCZYIfLPRMYgozM5IVIpDpa1?=
+ =?us-ascii?Q?OwEiFjJDWsDI/siKEZplVvt7Nx0Atd4To2sg3LgghZf0tZOMLYULcTiia9mB?=
+ =?us-ascii?Q?ymcrdG3y61Njy3WDGGYBuw/Z4WwDQ5qnbso0kMt9pn9ZaMuQqi91kABqaidN?=
+ =?us-ascii?Q?U8BzMlXq3Z5o3cuCAmgfSQI2MkQrIen6GGOsl+T3RBZIe3hCLKThW2VgbXfn?=
+ =?us-ascii?Q?qUEk79WskkTB0dhG4dkJsO2HDMBYc5srdJHK/XrQoPEjuDh4j7h5Xz7jpWdD?=
+ =?us-ascii?Q?SfAks5eOaXsfLJ7Y3480d78ds05fHg4BnK2D7xGexwYMVFhtQ3JxPjlPBUnH?=
+ =?us-ascii?Q?0pcF+7cp9PVLMy3P63jdZkCY+1xRqvj9lGjg2A4YvwqMAzYGnBh/RYxLUr4Y?=
+ =?us-ascii?Q?8eT+tXCtdMjqEKyf9MWllhrqdtI2V/wGB/4FleJgcCQ4jC/nvm22uqIiY8/L?=
+ =?us-ascii?Q?kF/tJZzrGzaQB8Ok1rxHJSGd7jhgHZ7ZIiEBNOLyHcDkE645c2H1cJv7C3Zp?=
+ =?us-ascii?Q?CnKDCH4KXp+RGgurIrC4veTMKkjHmFZa5obDd+g2lyAxUXHShCOXxDJpvYb0?=
+ =?us-ascii?Q?qTEkEICX8LRFw8T4gbndNzOwh0SBZXY+5Z2JgpEf6ZDP8dAsUle6Hot+Zame?=
+ =?us-ascii?Q?REaRGKqUtZynfkMUq0UxY/8GyhYwtxMhlePU6ahH73TcNDNdVP6zMQrixRro?=
+ =?us-ascii?Q?rpZZ+8DqMt3HPE3a7Uv+yb9ZUw431g1PRmg32LwqRErX+LaCsn6czeN98iN2?=
+ =?us-ascii?Q?aDB9V+ysmZbdl88wkm/QptMdDBX6bYqDBOKDlxP5xEqg7ytT+J0d/ijdqbFd?=
+ =?us-ascii?Q?dnepvCssagqSEdo4xv3GOEs9mEPCSYATK/v2j2JPSmqrHKnNxmsD68lbwqjx?=
+ =?us-ascii?Q?mc1AJTWgWNFUA/OhuL36dCJN3KYfcfI4oi1cAK9DqBcVQT7E1uiPdOfaW1HV?=
+ =?us-ascii?Q?PmOX11ZJEUiqwcnxGrgqH229rOx/PxnvV5xIp6t9vMPvh+Oewg9/JpoqfY0s?=
+ =?us-ascii?Q?ndnlY1R5wJhr9fBDmeOpnzBbwimheDH4pAD8dvEb7VL42TdC+k+uEMVxOVuA?=
+ =?us-ascii?Q?IuzWClD8w5U3ic03z8p09QA3gppgiywd5+Gfi6xm?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac19d53c-6340-4791-6ae3-08ddbfc95896
+X-MS-Exchange-CrossTenant-Network-Message-Id: a9465d7e-a754-46de-99f1-08ddbfcbcc88
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 15:49:25.5155
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 16:06:59.0729
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nD95uKYRmBH+vYyvOChtUEWVUrFDg2UZfv9alcSNvlVm2uTXEM1sbaDv78AIpA858MoTwpGnf0bZKjgaTEI+gg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7223
+X-MS-Exchange-CrossTenant-UserPrincipalName: FC7HlmIiK5TXG82U82KNXyY9lew3MefCZJfTtEQfN0uO/Mn4Xsjb9mRKK7mj8b89KLwNvgCGxUN8IOrUhWuYig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSKPR04MB11317
 
-On Thu, Jul 10, 2025 at 05:20:24PM +0300, Andrei Stefanescu wrote:
-> Add the dt-bindings for the NXP SIUL2 module which is a multi
-> function device. It can export information about the SoC, configure
-> the pinmux&pinconf for pins and it is also a GPIO controller with
-> interrupt capability.
-
-wrap at 75 chars.
-
+On Thu, Jul 10, 2025 at 01:40:25PM +0200, Niklas Cassel wrote:
+> Hello Frank,
 >
-> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
-> ---
->  .../bindings/mfd/nxp,s32g2-siul2.yaml         | 163 ++++++++++++++++++
->  1 file changed, 163 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
+> I tested v20 of your series, but unfortunately, it still doesn't work.
 >
-> diff --git a/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml b/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
-> new file mode 100644
-> index 000000000000..8ae185b4bc78
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
-> @@ -0,0 +1,163 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2024 NXP
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP S32 System Integration Unit Lite2 (SIUL2)
-> +
-> +maintainers:
-> +  - Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
-> +
-> +description: |
-> +  SIUL2 is a hardware block which implements pinmuxing,
-> +  pinconf, GPIOs (some with interrupt capability) and
-> +  registers which contain information about the SoC.
-> +  There are generally two SIUL2 modules whose functionality
-> +  is grouped together. For example interrupt configuration
-> +  registers are part of SIUL2_1 even though interrupts are
-> +  also available for SIUL2_0 pins.
-> +
-> +  The following register types are exported by SIUL2:
-> +    - MIDR (MCU ID Register) - information related to the SoC
-> +    - interrupt configuration registers
-> +    - MSCR (Multiplexed Signal Configuration Register) - pinmuxing and pinconf
-> +    - IMCR (Input Multiplexed Signal Configuration Register)- pinmuxing
-> +    - PGPDO (Parallel GPIO Pad Data Out Register) - GPIO output value
-> +    - PGPDI (Parallel GPIO Pad Data In Register) - GPIO input value
-> +
-> +  Most registers are 32bit wide with the exception of PGPDO/PGPDI which are
-> +  16bit wide.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - const: nxp,s32g2-siul2
-> +      - items:
-> +          - enum:
-> +              - nxp,s32g3-siul2
-> +          - const: nxp,s32g2-siul2
-> +
-> +  reg:
-> +    minItems: 2
-> +
-> +  reg-names:
-> +    items:
-> +      - const: siul20
-> +      - const: siul21
-> +
-> +  gpio-controller: true
-> +
-> +  "#gpio-cells":
-> +    const: 2
-> +
-> +  gpio-ranges:
-> +    maxItems: 2
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  interrupt-controller: true
-> +
-> +  "#interrupt-cells":
-> +    const: 2
-> +
-> +  nvmem-layout:
-> +    $ref: /schemas/nvmem/layouts/nvmem-layout.yaml#
-> +    description:
-> +      This container may reference an NVMEM layout parser.
-> +
-> +patternProperties:
-> +  "-hog(-[0-9]+)?$":
-> +    required:
-> +      - gpio-hog
-> +
-> +  "-pins$":
-> +    type: object
-> +    additionalProperties: false
-> +
-> +    patternProperties:
-> +      "-grp[0-9]$":
-> +        type: object
-> +        allOf:
-> +          - $ref: /schemas/pinctrl/pinmux-node.yaml#
-> +          - $ref: /schemas/pinctrl/pincfg-node.yaml#
-> +        description:
-> +          Pinctrl node's client devices specify pin muxes using subnodes,
-> +          which in turn use the standard properties below.
-> +
-> +        properties:
-> +          bias-disable: true
-> +          bias-high-impedance: true
-> +          bias-pull-up: true
-> +          bias-pull-down: true
-> +          drive-open-drain: true
-> +          input-enable: true
-> +          output-enable: true
+> When enabling the doorbell, the programming of the inbound iATU fails:
+>
+> ## pci_epf_test_enable_doorbell()
+> ## keeps the BAR size, and BAR type of a BAR that has already been configured,
+> ## but changes the address translation for this BAR to redirect to the GIC ITS
+> ## rather than to the memory allocated by pci_epf_alloc_space()
+> ## (does not free the memory allocated by pci_epf_alloc_space())
+>
+> [   39.347502] pci_epf_test_enable_doorbell: msg hi: 0x0 msg low: 0xfe670040
+> [   39.348103] pci_epf_test_enable_doorbell: base: 0xfe670000 off: 0x40
+> [   39.348658] dw_pcie_ep_inbound_atu index: 1 parent_bus_addr: 0xfe670000 bar: 1 size: 0x100000
+> [   39.349403] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xfe670000 pci->region_align: 0x10000 IS_ALIGNED: 1
+> [   39.350260] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xfe670000 size: 0x100000 IS_ALIGNED: 0
+> [   39.351028] rockchip-dw-pcie a40000000.pcie-ep: Failed to program IB window
+>
+> ## pci_epf_test_disable_doorbell()
+> ## changes the address translation for this BAR to redirect to the memory
+> ## allocated by pci_epf_alloc_space() (which was never freed when enabling the
+> ## doorbell)
+>
+> [   39.351656] dw_pcie_ep_inbound_atu index: 1 parent_bus_addr: 0xa2e00000 bar: 1 size: 0x100000
+> [   39.352401] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xa2e00000 pci->region_align: 0x10000 IS_ALIGNED: 1
+> [   39.353257] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xa2e00000 size: 0x100000 IS_ALIGNED: 1
+>
+>
+> The reason why pci_epf_test_enable_doorbell() fails is because of this check:
+> https://github.com/torvalds/linux/blob/v6.16-rc5/drivers/pci/controller/dwc/pcie-designware.c#L663
+>
+> If you want to understand why this very important check is there, it is
+> because the DWC controller requires that the physical address programmed in
+> the iATU is aligned to the size of the BAR (BAR_MASK+1), see this commit:
+> https://github.com/torvalds/linux/commit/129f6af747b2
+>
+>
+> Applying the following patch on top of your v20 series makes things work as
+> intended and makes the pcie_ep_doorbell.DOORBELL_TEST selftest pass for me:
+>
+> diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+> index dfdd25cfc003..7d356b0201ae 100644
+> --- a/drivers/pci/endpoint/functions/pci-epf-test.c
+> +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+> @@ -738,9 +738,9 @@ static void pci_epf_test_enable_doorbell(struct pci_epf_test *epf_test,
+>  	reg->doorbell_bar = cpu_to_le32(bar);
+>
+>  	msg = &epf->db_msg[0].msg;
+> -	ret = pci_epf_align_inbound_addr(epf, bar, ((u64)msg->address_hi << 32) | msg->address_lo,
+> +	ret = pci_epf_align_inbound_addr(epf, epf->bar[bar].size,
+> +					((u64)msg->address_hi << 32) | msg->address_lo,
+>  					&epf_test->db_bar.phys_addr, &offset);
+> -
+>  	if (ret)
+>  		goto err_doorbell;
+>
+> diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
+> index c21d8e786eb3..b3d4117182e2 100644
+> --- a/drivers/pci/endpoint/pci-epf-core.c
+> +++ b/drivers/pci/endpoint/pci-epf-core.c
+> @@ -478,44 +478,36 @@ struct pci_epf *pci_epf_create(const char *name)
+>  EXPORT_SYMBOL_GPL(pci_epf_create);
+>
+>  /**
+> - * pci_epf_align_inbound_addr() - Align the given address based on the BAR
+> - *				 alignment requirement
+> + * pci_epf_align_inbound_addr() - Align the given address based on the BAR size
+> + *
+>   * @epf: the EPF device
+> + * @bar_size: the current BAR size
+>   * @addr: inbound address to be aligned
+> - * @bar: the BAR number corresponding to the given addr
+> - * @base: base address matching the @bar alignment requirement.
+> + * @base: base address matching the @bar_size alignment requirement.
+>   * @off: offset to be added to the @base address.
+>   *
+> - * Helper function to align input 'addr' to base and offset, which match
+> - * BAR's alignment requirement.
+> + * Helper function to align input 'addr' to base and offset, when dynamically
+> + * changing a BAR.
+>   *
+>   * The pci_epf_alloc_space() function already accounts for alignment. This is
+>   * primarily intended for use with other memory regions not allocated by
+>   * pci_epf_alloc_space(), such as peripheral register spaces or the trigger
+>   * address for a platform MSI controller.
+> + *
+> + * Since this function is only used when dynamically changing a BAR (i.e. when
+> + * calling set_bar() twice, without ever calling clear_bar(), as calling
+> + * clear_bar() would clear the BAR's PCI address assigned by the host), this
+> + * function must align to the current BAR size, since we are not clearing the
+> + * BAR configuration.
+>   */
+> -int pci_epf_align_inbound_addr(struct pci_epf *epf, enum pci_barno bar,
+> -			      u64 addr, dma_addr_t *base, size_t *off)
+> +int pci_epf_align_inbound_addr(struct pci_epf *epf, size_t bar_size, u64 addr,
+> +			      dma_addr_t *base, size_t *off)
+>  {
+> -	const struct pci_epc_features *epc_features;
+> -	u64 align;
+> -
+> -	if (!base || !off)
+> +	if (!base || !off || !bar_size)
+>  		return -EINVAL;
+>
+> -	epc_features = pci_epc_get_features(epf->epc, epf->func_no, epf->vfunc_no);
+> -	if (!epc_features) {
+> -		dev_err(&epf->dev, "epc_features not implemented\n");
+> -		return -EOPNOTSUPP;
+> -	}
+> -
+> -	align = epc_features->align;
+> -	align = align ? align : 128;
+> -	if (epc_features->bar[bar].type == BAR_FIXED)
+> -		align = max(epc_features->bar[bar].fixed_size, align);
+> -
+> -	*base = round_down(addr, align);
+> -	*off = addr & (align - 1);
+> +	*base = round_down(addr, bar_size);
+> +	*off = addr & (bar_size - 1);
+>
+>  	return 0;
+>  }
+> diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
+> index 0ca08f0d05d7..bcc8184325d2 100644
+> --- a/include/linux/pci-epf.h
+> +++ b/include/linux/pci-epf.h
+> @@ -242,8 +242,8 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
+>  void pci_epf_free_space(struct pci_epf *epf, void *addr, enum pci_barno bar,
+>  			enum pci_epc_interface_type type);
+>
+> -int pci_epf_align_inbound_addr(struct pci_epf *epf, enum pci_barno bar,
+> -			      u64 addr, dma_addr_t *base, size_t *off);
+> +int pci_epf_align_inbound_addr(struct pci_epf *epf, size_t bar_size, u64 addr,
+> +			      dma_addr_t *base, size_t *off);
+>  int pci_epf_bind(struct pci_epf *epf);
+>  void pci_epf_unbind(struct pci_epf *epf);
+>  int pci_epf_add_vepf(struct pci_epf *epf_pf, struct pci_epf *epf_vf);
+>
+>
+>
+>
+> However, the more I think about it, considering that this alignment requirement
+> is inherent to the DWC controller (other controllers might not have this
+> requirement), perhaps pci_epf_align_inbound_addr() should not be a function in
+> pci-epf-core.c, perhaps this function would be better suited to live in
+> drivers/pci/controller/dwc/pcie-designware-ep.c ?
 
-I remember you needn't mark these as true, default it should be true if use
-"unevaluatedProperties: false".
+I think align to bar size is quite make sense now. Even other controllers
+have not such requirement, align to bar size still work.
 
-Can you check if pass dt_binding_check if remove these property?
-
-> +
-> +          pinmux:
-> +            description: |
-> +              An integer array for representing pinmux configurations of
-> +              a device. Each integer consists of a PIN_ID and a 4-bit
-> +              selected signal source(SSS) as IOMUX setting, which is
-> +              calculated as: pinmux = (PIN_ID << 4 | SSS)
-
-Do you have include file to define it? otherwise hex value is not easy
-understand.
+Anyways, it need be align. We still pass down bar number, get bar size
+in pci_epf_align_inbound_addr(). So we can fine tune algorithm in future,
+such as add field in epc_features.
 
 Frank
-> +
-> +          slew-rate:
-> +            description: Supported slew rate based on Fmax values (MHz)
-> +            enum: [83, 133, 150, 166, 208]
-> +        required:
-> +          - pinmux
-> +
-> +        unevaluatedProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - gpio-controller
-> +  - "#gpio-cells"
-> +  - gpio-ranges
-> +  - interrupts
-> +  - interrupt-controller
-> +  - "#interrupt-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    pinctrl@4009c000 {
-> +      compatible = "nxp,s32g2-siul2";
-> +      reg = <0x4009c000 0x179c>,
-> +            <0x44010000 0x17b0>;
-> +      reg-names = "siul20", "siul21";
-> +      gpio-controller;
-> +      #gpio-cells = <2>;
-> +      gpio-ranges = <&siul2 0 0 102>, <&siul2 112 112 79>;
-> +      interrupt-controller;
-> +      #interrupt-cells = <2>;
-> +      interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
-> +
-> +      jtag-pins {
-> +        jtag-grp0 {
-> +          pinmux = <0x0>;
-> +          input-enable;
-> +          bias-pull-up;
-> +          slew-rate = <166>;
-> +        };
-> +      };
-> +
-> +      nvmem-layout {
-> +        compatible = "fixed-layout";
-> +        #address-cells = <1>;
-> +        #size-cells = <1>;
-> +
-> +        soc-major@0 {
-> +          reg = <0 0x4>;
-> +        };
-> +      };
-> +    };
-> +...
-> --
-> 2.45.2
 >
+>
+> Kind regards,
+> Niklas
