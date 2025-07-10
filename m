@@ -1,114 +1,171 @@
-Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920CC2F0E2A
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 17:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738B42F0C73
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 17:43:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752168591; cv=none; b=qKCoo1cCed/sk7ermw9LSEKv68i+3pocTg8OLE6vq1MTXYRy2BHsxpJluK6doPR9QNhCOUtYlplHiXfF1hmuO5tYflhaJuDp38Py5YeYJkQ5JQv5UjLtVeDiHKfTqDotz6nbKcMgSUL3O8f+I6Lohrxko/bHRlP6GATlfZKKHho=
+	t=1752169405; cv=none; b=hwIHQ/LJRmrJqaZ8HAS2yF/S4OaNm9x3oSwUJiFWakYRiovlnXOhIV9PhRzMlwMh0svFFA3FVJvkLVJ4W1wvARIM7IeLMMiVpQhL85MBrxSE0mWiv6O9qpHCy6JuDRDA6IJmTQZYMQGHpOH9orPs9q4MDAdQktx5HgVz4Ek22iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752168591; c=relaxed/simple;
-	bh=Y2QU6dhIoCpkxMjvh48d0GgwnQJLBzZYTZ+dfijuhDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YObu1UNzblpxzi/rNqx+68j4SyyiJjTUl6b9388eQTxpxE1wy1Sawn2QxnOV+LjoGRnLjjPDyB2d/kJXa0FVoqHFAfpuvGysFQOkGJZ7PIlPC+B6NQ1mX2BU8tqwNqDBoJWows4JJVG4bwhxupmLRmkpeF7NDVCF6L2F2KtABTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=l0joj5Ns; arc=none smtp.client-ip=208.88.110.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
+	s=arc-20240116; t=1752169405; c=relaxed/simple;
+	bh=JMQuzI07hiKrV1ATnFggAmht1J6rMxSCqpxpi2ExgQM=;
+	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
+	 To:Cc:Content-Type; b=jt/3o2WVzCqAl574wH9jLmWPdJTL7gtRBLjcz2UQcIg3bloRm06Ac/BUk6lSyj4L9QJHzMvMycNZhuPZ2cA1lKl4kAApNqF5TGBiJvLZO1+YhLXxDZCgPIoszDjbBYl7uvyiIyl8+HpA4ekir8AIT5/W7fGSxZ6qtWDyI0cLmfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B+6OjqfQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="l0joj5Ns"
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id 228F13D8759F;
-	Thu, 10 Jul 2025 13:29:48 -0400 (EDT)
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
- with ESMTP id VJ1AFnWBo4HP; Thu, 10 Jul 2025 13:29:47 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id 7C6603D87659;
-	Thu, 10 Jul 2025 13:29:47 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com 7C6603D87659
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
-	t=1752168587; bh=AlTPeyZEbvVpCppEtdbUfk6jkGSiu5jkvaQOyebiU3E=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=l0joj5NsGdhr4JzqNjXvyxIreXuCOJjtQYI2Bt4pPPUhjZ17z5+4hbo/irHByVcIe
-	 o7mESkkRCA+K4mSLqMSeRS+i24hWWYAE5lFGAyNvq5k+GIc1BOpnsRs3Y5xMMy0nri
-	 fg/4jzhW/adwz+L+BPOW0KBuwSIs6MkxEHH5qdJgm46F26mdZQ+wp+Rdz56JK5muwD
-	 AJXx33bQ7Txb24+9KsF+CZL3kqggz9+NPATcPNI9O88PZUD0jtNdK91Of1C4yzBP3l
-	 H3wJoFkb131aWPwl4JCYCLXln0qXsYGCwptbem4aI+7DMY/CrLu/8o2d886rqhuLad
-	 WvfTfvdfcjPbg==
-X-Virus-Scanned: amavis at mail.savoirfairelinux.com
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
- with ESMTP id 0VqTtdVW9Imo; Thu, 10 Jul 2025 13:29:47 -0400 (EDT)
-Received: from fedora (unknown [192.168.51.254])
-	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id 0DBA83D8759F;
-	Thu, 10 Jul 2025 13:29:47 -0400 (EDT)
-Date: Thu, 10 Jul 2025 13:29:45 -0400
-From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>,
-	Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>,
-	Robin Gong <yibin.gong@nxp.com>,
-	Enric Balletbo i Serra <eballetbo@gmail.com>
-Subject: Re: [PATCH v8 3/6] regulator: pf1550: add support for regulator
-Message-ID: <aG_4ic277eGBgQb0@fedora>
-References: <20250707-pf1550-v8-0-6b6eb67c03a0@savoirfairelinux.com>
- <20250707-pf1550-v8-3-6b6eb67c03a0@savoirfairelinux.com>
- <ni3bmj4ye3dp3opolk466r2ayx7iuk6hhyx4pdikydizqykfx7@nc5qdok32hsm>
- <aG_x8VELlUvLxezY@fedora>
- <ff3c3r336qgnlwfheelm6hjypnkjhw3txmeztv7mz2y6xdoxld@ecgifcvuihr3>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B+6OjqfQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752169402;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uSQAcfejxg7NhusLP2Sc0sAULtF+i3/IlJefnecYrRg=;
+	b=B+6OjqfQc7p8lwXolVXwYI/sb1mmSew49ZKRY/KEFppN5CIQOX2tXqR15/HBHj8Iyhiy/w
+	zPjmigVnLuQuNw8K+YqgZwb4FkLf9h76UTuRQVA41ahpiwjgsdo6BcLdBctGGtqYANHUlm
+	R6LGc/pNG5eddjJzwH+hFdoOer6ePn8=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-404-SxCNb0HRPmi4YFqYV4qP5Q-1; Thu, 10 Jul 2025 13:43:21 -0400
+X-MC-Unique: SxCNb0HRPmi4YFqYV4qP5Q-1
+X-Mimecast-MFC-AGG-ID: SxCNb0HRPmi4YFqYV4qP5Q_1752169401
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6fb3487d422so19527896d6.0
+        for <imx@lists.linux.dev>; Thu, 10 Jul 2025 10:43:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752169401; x=1752774201;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uSQAcfejxg7NhusLP2Sc0sAULtF+i3/IlJefnecYrRg=;
+        b=leF5HVz22e7dAaTm6Wg8gjzPboNWglIFW3hO2HKw80Fp0XSsTdLkMVXoY71SKA804X
+         h77wTMdD+65Fgh5EkxLUhn24sjhZmzfyjSmdULkqnSXDnn0kgIporAsvU8OyZq/38qul
+         09vI9DxBR4KmtL9ApVSm97j/6XTVNhQxIMWcZGARil6WvCl/5MlrepQ/53TbtwDARVO6
+         T1EbilRmJfU7IzwOvPfk4dg/AQiRaMRlDGMWoU0yVRyLzgMsri1KC5rf481baWToj6hw
+         l9L7e1VFGBU/erToL8PZ2TBi/3A4YXW+l3U0unb1+w+6/nkG8kOXXKveUKD26FpQk3IJ
+         Ie9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXxo5XTKjZOLFQocuD0ZpmDqtClo3rugr2eod/pFFxcF6S9NfhZQktygzNr6sl8Ivard+I=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzjAth1qpe0sPeoezHkXYJopTnNNnx4K3k3twAl6eZ7mcwUZ/ue
+	jqM2kqrrjm/z7xQrsnmugoouRP2S87yv/6TnzOnsXOBHZ7MKjbGecMNs/flCiEJ9r6vhvNwcZbQ
+	NB7p2LzX4WshIRHJQY9syvmBAlh1I66W0b00Iy2pAjITvyZBYIR8qlQ==
+X-Gm-Gg: ASbGncvxaNILR3ykdHyE2HdXmiONj0JEi4i8RUt1G5ufgXfolmV2O5deYRieyqVvndQ
+	tVOkrDNtVRk4SeMUdk1B0sWTZG43TObYZM/FX059pGwwDrVot7oottkazOekve3xp0n49SJ92RX
+	I4T7d9byG3mPvEBmrjUtslHBoH8ijw7tSicyF2NHxu/CXNkVz/bzNU695rY9IZHQRg/F1YXpYTg
+	84o6qLWUYND+Ep2fLwmYkzcJpfqX07x2RW8naK6VKZznE1AdO84/R7UVQ90uzR6j8w18gaC0O/+
+	/7c1ATOp+Kr+s9d8imoJ/nNugw67S+cNYLODcgx9RYqeMLQMhkBW1MmFFeLC
+X-Received: by 2002:ad4:576f:0:b0:702:ca9e:dba6 with SMTP id 6a1803df08f44-704a40f3f86mr2464586d6.16.1752169400833;
+        Thu, 10 Jul 2025 10:43:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGneFeZHD+R2IlA/RJ8povEc4F9IjcKH8Fgp0p4dCYgtfr/rKSizrHDLTlvLp9E8FfSRTeZdQ==
+X-Received: by 2002:ad4:576f:0:b0:702:ca9e:dba6 with SMTP id 6a1803df08f44-704a40f3f86mr2464046d6.16.1752169400264;
+        Thu, 10 Jul 2025 10:43:20 -0700 (PDT)
+Received: from [192.168.1.3] (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497d71419sm10652876d6.86.2025.07.10.10.43.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 10:43:19 -0700 (PDT)
+From: Brian Masney <bmasney@redhat.com>
+Date: Thu, 10 Jul 2025 13:43:02 -0400
+Subject: [PATCH 1/9] drm/imx/ipuv3/imx-tve: convert from round_rate() to
+ determine_rate()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ff3c3r336qgnlwfheelm6hjypnkjhw3txmeztv7mz2y6xdoxld@ecgifcvuihr3>
+Message-Id: <20250710-drm-clk-round-rate-v1-1-601b9ea384c3@redhat.com>
+References: <20250710-drm-clk-round-rate-v1-0-601b9ea384c3@redhat.com>
+In-Reply-To: <20250710-drm-clk-round-rate-v1-0-601b9ea384c3@redhat.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Rob Clark <robin.clark@oss.qualcomm.com>, 
+ Dmitry Baryshkov <lumag@kernel.org>, 
+ Abhinav Kumar <abhinav.kumar@linux.dev>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Yannick Fertre <yannick.fertre@foss.st.com>, 
+ Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>, 
+ Philippe Cornu <philippe.cornu@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Stephen Boyd <sboyd@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ freedreno@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-sunxi@lists.linux.dev, Brian Masney <bmasney@redhat.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752169393; l=1689;
+ i=bmasney@redhat.com; s=20250528; h=from:subject:message-id;
+ bh=JMQuzI07hiKrV1ATnFggAmht1J6rMxSCqpxpi2ExgQM=;
+ b=2cWi9RxWr4DG/uT+Adfe1rLsJLWqf/HsK4V1CHvsD1HqS0tzYLionTpIhnP/uRurPd7gfFmll
+ 2lm+LwJba1xA78TVoaKVn+hJWZX7dEn9fhckaPz4uGeZs+gsOpWRugK
+X-Developer-Key: i=bmasney@redhat.com; a=ed25519;
+ pk=x20f2BQYftANnik+wvlm4HqLqAlNs/npfVcbhHPOK2U=
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: EYsCTPPuX1zye5gXsEFfz152rnLsnXEBv4DkLkqCYbo_1752169401
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 10, 2025 at 05:11:14PM +0000, Sean Nyekjaer wrote:
-> > > > +	for (i = 0; i < ARRAY_SIZE(pf1550_regulators); i++) {
-> > > > +		struct regulator_desc *desc;
-> > > > +
-> > > > +		desc = &info->regulator_descs[i].desc;
-> > > > +
-> > > > +		if (desc->id == PF1550_SW2 && pf1550->dvs_enb) {
-> > >
-> > > We should enter here if dvs_enb == false.
-> > > My A6 variant reported 0.625V instead of the correct 1.35V
-> > >
-> > Yeah, that would happen with the current if statement.
-> > 
-> > Since dvs_enb is true when DVS is enabled (OTP_SW2_DVS_ENB == 0), I should
-> > modify the if statment to:
-> > (desc->id == PF1550_SW2 && !pf1550->dvs_enb) /* OTP_SW2_DVS_ENB == 1 */
-> 
-> -		if (desc->id == PF1550_SW2 && pf1550->dvs_enb) {
-> +		if (desc->id == PF1550_SW2 && !pf1550->dvs_enb) {
-> 
-> Yes that's what I have been running my tests with :)
-> 
-> I will continue with testing the onkey and battery charger
->
-Thanks for testing!
-> > 
-> > I think that would be a more readable solution.
-> > > > +			/* OTP_SW2_DVS_ENB == 1? */
-> > > > +			desc->volt_table = pf1550_sw12_volts;
-> > > > +			desc->n_voltages = ARRAY_SIZE(pf1550_sw12_volts);
-> > > > +			desc->ops = &pf1550_sw1_ops;
-> > > > +		}
-> > > >
+The round_rate() clk ops is deprecated, so migrate this driver from
+round_rate() to determine_rate() using the Coccinelle semantic patch
+on the cover letter of this series.
 
-Thanks,
-Sam
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+---
+ drivers/gpu/drm/imx/ipuv3/imx-tve.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-tve.c b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+index c5629e155d25aef5b43445bc18c6c90039c99974..63f23b821b0be66a8e8a379e1375ffd98552e72f 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-tve.c
++++ b/drivers/gpu/drm/imx/ipuv3/imx-tve.c
+@@ -368,17 +368,20 @@ static unsigned long clk_tve_di_recalc_rate(struct clk_hw *hw,
+ 	return 0;
+ }
+ 
+-static long clk_tve_di_round_rate(struct clk_hw *hw, unsigned long rate,
+-				  unsigned long *prate)
++static int clk_tve_di_determine_rate(struct clk_hw *hw,
++				     struct clk_rate_request *req)
+ {
+ 	unsigned long div;
+ 
+-	div = *prate / rate;
++	div = req->best_parent_rate / req->rate;
+ 	if (div >= 4)
+-		return *prate / 4;
++		req->rate = req->best_parent_rate / 4;
+ 	else if (div >= 2)
+-		return *prate / 2;
+-	return *prate;
++		req->rate = req->best_parent_rate / 2;
++	else
++		req->rate = req->best_parent_rate;
++
++	return 0;
+ }
+ 
+ static int clk_tve_di_set_rate(struct clk_hw *hw, unsigned long rate,
+@@ -409,7 +412,7 @@ static int clk_tve_di_set_rate(struct clk_hw *hw, unsigned long rate,
+ }
+ 
+ static const struct clk_ops clk_tve_di_ops = {
+-	.round_rate = clk_tve_di_round_rate,
++	.determine_rate = clk_tve_di_determine_rate,
+ 	.set_rate = clk_tve_di_set_rate,
+ 	.recalc_rate = clk_tve_di_recalc_rate,
+ };
+
+-- 
+2.50.0
+
