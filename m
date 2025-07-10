@@ -1,94 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70487231A21;
-	Thu, 10 Jul 2025 06:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF8C2877F1;
+	Thu, 10 Jul 2025 07:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752130198; cv=none; b=hL95bPm90AKd705wJlIz7CkFbxyf/SuCW3ny9dIX/RCmS3uhs4odZO42+Mw3knN23s+YLQPEsVHUzj0mXGglR8I/19PlnPq++aV70asP5gLNZ3JbE6OfUn6vArsp6osp+nNLtnHf7U2M0QDp/b5cK1bgiQYYospbK3oQLqGBvCE=
+	t=1752131522; cv=none; b=D06g3nDbEj0kxCRwqmuD5F9+XyVhZ+XmchFBu6o6okBcXCi3DUJ6cRSX+hS/d5QWQvsvGiKSH1CoaIG888lM+3mHZgbF9VxSBIiOVfffSjDa6hMleihszDmAoTLcUSFtAwgHRAereCCdJQww+Joe4umqni/cagkIghVW9wtZ/7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752130198; c=relaxed/simple;
-	bh=SVNRURW7mpHDd03yiBO4hzyqJyZHZgozC/0qPz7n+lE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AgmkLga7GpY1655YzOQBzFY2QLbbaWrE9ncWYyM+gIp8LPsMAd3kjkjj/z90Xbjes6dG0+xbjIuKAqrk/DeSgVgkhjpGOuKZK2Wkd+0gju6SdQ52o8/NYrSZa04KGAiDf9x9wX7qwOs7lN6ExFbSGVbCLBX6FY3Bx92ABOnZRWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s1W/3He3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752131522; c=relaxed/simple;
+	bh=aIQhENoNro5iEInnHFbG9/vXa6r2JKB29IlUxVOoRHw=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=fwKQy4OEEos8ULEaZz7Yal3497JXtTVjkmV3RNzlvjDnuv3qbGUpDRdtlIBZE7QCeEVBe9FBjbX+kEq4riItqwdA9HO1IsFDj+/0Y7vmPRWeHlM9rL+uC1cpObZigItEjDRqWVwOc5DRC+dqgXhbg+IfNNVJ9Vdi1wUbxYbbsAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3kePT4j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s1W/3He3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0A0C4CEE3;
-	Thu, 10 Jul 2025 06:49:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3kePT4j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1ECCC4CEE3;
+	Thu, 10 Jul 2025 07:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752130198;
-	bh=SVNRURW7mpHDd03yiBO4hzyqJyZHZgozC/0qPz7n+lE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s1W/3He31SVNhKvl70+xMMi1Fdmys3eUZB88yA6pKfZL01RP+sYseLaJMVwqJdyO9
-	 uiJ0c8fR3W8tcOY2VexSK0EUI0KRswqKn2gbnoCVvz9v/FZCoN4rZQ4U11HgFzc0r1
-	 80Tul8XKx4MOy9Nvsfl96LRsEJejEAax4X9v6SJRRIkdkwAkF3nffHFY05yEt75knP
-	 uLVsN6VuHtRuyVzvLeBNsSGWzmYU8v0DXu2iGw/6eZrwkiKvwKAZTEGeSndky8SuO/
-	 FubUi9CwWr/xPAO5l09Ub5b18E9kvXCtfCwQgBI1yKwelBZaPu6/7ekWS3pLVWzjl3
-	 F1LtCLbaz+4OQ==
-Date: Thu, 10 Jul 2025 08:49:55 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	linux-pwm@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Subject: Re: [PATCH] pwm: imx-tpm: reset counter if CMOD is 0
-Message-ID: <vqqcxkefrzp25jjirwqbpmu4ytevt57mwd6fylmywlydjxvfiu@fs4xludzaurl>
-References: <20250701220147.1007786-1-laurentiumihalcea111@gmail.com>
- <vwozlwajisjw5qomwtmnfdklmucevyxncsxl2cdmixn2yixxrk@x6j3r2lrl5qz>
- <a1b6039e-7020-4d17-8186-d40ac17ba730@gmail.com>
- <xo56zato6pgqqttdriskfgh4kdt2g6q5eg5jxte56uddkdfr63@sa7coeifbsmy>
- <907a40d6-7d55-4bdf-b16b-01c71b5f4104@gmail.com>
+	s=k20201202; t=1752131521;
+	bh=aIQhENoNro5iEInnHFbG9/vXa6r2JKB29IlUxVOoRHw=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=I3kePT4jqdjWj9P8opXGWsukdze0SOAzcPVjDhWJR2/uxCnkwbvsak9tsnDQFjOFd
+	 422pW5tVF4fiAKGuRxLSuobbHLYg9sZEmlHUnVRMp2APdrfigh9K0KZuiInswpnJrV
+	 Kf6Wo4xDGIFkqeyTvpC0HD/+noeRuXtIsHND5j/u9uxuTZ1U+IZMQjnfkpFlpf78ql
+	 u2PYF1s1JWv3t+M/aqwvxaunKdxF8cNu2Kanc2RlHFs5XFEFOn4Ob3EyIhMrhxnPyZ
+	 ntJFn+t/4tfg4tAdbCNY5BvCRJMb/b8aRhZHcMdDGpODp+1j5yBH5fiuZn8nJMvCm4
+	 DPe0Uig86NFmA==
+Message-ID: <4826eea327c406d55dc88f5553a94b62@kernel.org>
+Date: Thu, 10 Jul 2025 07:11:58 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 2/9] drm/bridge: add drm_bridge_chain_get_last_bridge()
+In-Reply-To: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-2-48920b9cf369@bootlin.com>
+References: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-2-48920b9cf369@bootlin.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Andrzej
+ Hajda" <andrzej.hajda@intel.com>, "David Airlie" <airlied@gmail.com>, "Fabio
+ Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Jernej
+ Skrabec" <jernej.skrabec@gmail.com>, "Jonas Karlman" <jonas@kwiboo.se>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Liu Ying" <victor.liu@nxp.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>, "Neil
+ Armstrong" <neil.armstrong@linaro.org>, "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Philipp
+ Zabel" <p.zabel@pengutronix.de>, "Robert Foss" <rfoss@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, "Simona
+ Vetter" <simona@ffwll.ch>, "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nmq3mzfo6amvxnbe"
-Content-Disposition: inline
-In-Reply-To: <907a40d6-7d55-4bdf-b16b-01c71b5f4104@gmail.com>
 
+On Wed, 9 Jul 2025 18:48:01 +0200, Luca Ceresoli wrote:
+> Add an equivalent of drm_bridge_chain_get_first_bridge() to get the last
+> bridge.
+> 
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
---nmq3mzfo6amvxnbe
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] pwm: imx-tpm: reset counter if CMOD is 0
-MIME-Version: 1.0
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
 
-Hello Laurentiu,
-
-On Wed, Jul 09, 2025 at 11:29:16AM +0300, Laurentiu Mihalcea wrote:
-> On 7/9/2025 9:05 AM, Uwe Kleine-K=F6nig wrote:
-> > JFTR: I marked your patch as "changes requested" now in patchwork and my
-> > inbox and expect an updated patch, but without holding my breath :-)
->=20
-> Sorry for the long delay! Got this on my TODO list. Busy week :(
-
-No need to hurry for me, I'm not busy waiting and we won't be able to
-stop Linus releasting 6.16 anyhow :-)
-
-I prefer well considered patches over patches in quick succession anyhow.
-
-So it's ok to take your time
-Uwe
-
---nmq3mzfo6amvxnbe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhvYpAACgkQj4D7WH0S
-/k7Bzgf/UmJuQUOMJzEA55s8ZtGd4ndkFp63PO8tRbJYvIX9IBIoaoLRUOWbuAO+
-XR6KNfcB4DKlMqMQxR+ULXdTpH8Ph2VbgNSi4JzaMUL3j5BI8aoF0/rvZgDG3Agq
-0ZiDQ8aZ8+Y5KWEHdbD73HrJUV7QwzWZ7Ji+5TNlLy5sQwgznzCZCHgkj23bUEC4
-yXtpK+XnN4DhQnXLdEkA6/76LWfH7XNsIjphu9RYweLSJQs1NBOwD2hvP0HjhImV
-II81sKub/Z3mIbg8kElfsEgi2h7Zk2YwjFUEno7rnjLcmLQPyTXla36I0pfasTFp
-uVNinr3DXmMXDPoZuO3WOiKiaJ2T/w==
-=TuF/
------END PGP SIGNATURE-----
-
---nmq3mzfo6amvxnbe--
+Thanks!
+Maxime
