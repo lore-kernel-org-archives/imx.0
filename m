@@ -1,205 +1,142 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADF218FDAF
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 21:04:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE6B2FD886
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 21:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752181472; cv=none; b=EV6uFQ98JQ3oLyotAN4+GO5clqaZhTBjYFD9yx71Tw0l3wmC/nFMF4y/EXpJkN9rbrLyU6J4nYt7hlzk6rGmvufiyofi09umeBPuq5jnn9AFkAJdlPYCTHQUxU3P1T82Hu8huzE4mZpjolfyrINrBmnOnV5cC3FL3AUYVWV0cfA=
+	t=1752181884; cv=none; b=eE/2FwYfH3yqTdIBQoiEKjcm0vM9mKDuWSpKTNCZUsfvd4JFgFl5LKmqogdNXJOgEFPcsDIB7bmwNmPZSd/j8IdXVm20Qu0bq9B5PKJsuAkpqt4v8TlIW4/EplvXg30khLBs56/Uqf5yPYuikAVR7toC6yckglGBJqDeloW/kQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752181472; c=relaxed/simple;
-	bh=X3w/Lmb4tCjm3BYfefbohBWkasM97PEphdqhUzf90po=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OJupyKXY5oIhPD3Ke9buEixHJByI/EQeIWIeccmHZmfI4RztKXqx4zC3P5JXdVwgzQ/P5Ip9LuPjHHjXcD76Ku2t5cofqWzNegPoRZ07YwIF5TjJEg6XBy9AI7oDUHdiBR8xVtZlVhfYrXqOezI3s2s5VF9rcj4LWCrNuWwrVao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=NKoAhR2n; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1752181884; c=relaxed/simple;
+	bh=W9rMxhG+HCQaTapcDP0EemGdUyiHL/4QZlLhjcozpqg=;
+	h=From:Date:Subject:MIME-Version:Message-Id:References:In-Reply-To:
+	 To:Cc:Content-Type; b=YGLDWdyNA6A0bNGHzKOXr3JyyPvSjjRUs5Ed34Bk/kON05nzKBQ6M+x6pAzBybC5chFjzoPU9k4jLoH5JN4Y2QsS/zHJZWVe+JFkGzTHIDQ/1X2gFZqB0LdEk+znU06XUpz8oxC11lWwOukC5bzsRM1dfIT4J4HxsTE627XxZGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MrkyeE1m; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="NKoAhR2n"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9D96210380104;
-	Thu, 10 Jul 2025 23:04:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1752181460; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=hEznsWOa6dCQ6qINcx3pqCiUfEhxMJkXZwCwsLHg0BI=;
-	b=NKoAhR2nPBFfkuYKVaXMV1hlVbbaBvMMsxgB4L8meNIyaawoWY+qb/m/YnbvrBbzZt/5qh
-	91ANS8GhzV4ryPkjFmdSUoLDd10tWu/XC1iVwBzeR+IotLoRDcKBMRQ7NtgJFCEsEs9zhr
-	rLmMFB08IS99ST23K3z4MmigurNJEcztPB6G1qGHRyCqzOT9zbE0RNTHMJyM7vB1LNgOPU
-	vZcOCZeJjMS7dGKtkETAJjL2gY0PmEOkTRblnC0N8UOm6CIXkNX4QyjRUbQS9cQqRw+iO8
-	EbuvR2DBv739MI8UDnsCOnlxMPfxSBIQ5gV9mVjVigKWICFeC8Mywd5TohJbKQ==
-Date: Thu, 10 Jul 2025 23:04:13 +0200
-From: Lukasz Majewski <lukma@denx.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [net-next v14 04/12] net: mtip: The L2 switch driver for imx287
-Message-ID: <20250710230413.3b6798f7@wsk>
-In-Reply-To: <20250709131651.391e11c5@wsk>
-References: <20250701114957.2492486-1-lukma@denx.de>
-	<20250701114957.2492486-5-lukma@denx.de>
-	<617d064e-99e4-491c-8fe7-d74d8174d9fb@redhat.com>
-	<20250709131651.391e11c5@wsk>
-Organization: denx.de
-X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MrkyeE1m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752181882;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IMHMdgb5Ozof1oVF3d9/wmVqM+1K8QcysVII+1gO/dg=;
+	b=MrkyeE1mK5l3arpR/iuDYR2KHMZa2lonV2q9/dsSP5XGq2wrjVAkJAzq6svazQLS02pFLE
+	33mYQajQOg+6ABKVjv8/FP8jCNdcQVsgS+ktN14rXh7aFazI3r7Tdm7i8G+a3SA0cJ95BJ
+	VumRkbWp/UczRhCtMruBq/DgcRZAjaY=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-190-5XnrVrNiOWyS8M2DKYa5Jw-1; Thu, 10 Jul 2025 17:11:21 -0400
+X-MC-Unique: 5XnrVrNiOWyS8M2DKYa5Jw-1
+X-Mimecast-MFC-AGG-ID: 5XnrVrNiOWyS8M2DKYa5Jw_1752181880
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-235c897d378so14345055ad.1
+        for <imx@lists.linux.dev>; Thu, 10 Jul 2025 14:11:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752181880; x=1752786680;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IMHMdgb5Ozof1oVF3d9/wmVqM+1K8QcysVII+1gO/dg=;
+        b=DRsOruE1caYt9RWUdJ7b+EtP+nRwqhNbAVaU3eVkAeX+CltLAwx5jIk7R4xVL1SCAb
+         0brXPofmeE70logdS3YdXgISa+dgVmUAY012ne+dzI3G0ERbo/0vR3FA1IYHnN9/5TNu
+         2TSMVEza46jhSeECgGqhNG2kr4beAF7OSXrnSQXV2WM+sVEp7J552anrhANL6sNwvngT
+         nA7omGPxjS+I+gfhvp3LSkWI5uOvT/TtKLJzN/6axVySfejj9HLXedRLFy8wkkiVfWy4
+         XZHwCR86pBD9Y6mI2nTwcbVGoQKdSIh6jzBeg9R6LqC+GG7I8GULn7MWyJ53x57lZdrt
+         1FFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPyiRUJyPWVP27ovciJCtAA+zCYC2vx/9Hb58a1vouvmROt+Fk/KGYRD7jpiMFGn5ahLY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyMi9TkRDg1mnUIj7aTmWpVFp/OPAw1IJrszMM22obu2QwryHSx
+	yGh8wQFiDVARe15q2QiTvA8uduD1kcPiC4NcR5CRm7j1T8qw6VpTXfKlel2OALC1lQs2VGUmjM0
+	OA9GY/3Z+vRXmA+0az5cAy2fmcVQPGwF3bDDTB5uh3uHFFSBvtYttQw==
+X-Gm-Gg: ASbGncvE8bAY9vNmb67J3Jh4LpmFav2NM0p4YAexrh6tiSNJpTmcr2F9Zj6PUR7K3xi
+	mOpVz2xZLJkMCgGUQlaJvpL7VF0tJao5jsIG+TrmRRuD9MHJD4tUeJAzoIfCEsbHwRnoOcKDae+
+	McrVWclxndgw3WfYs9ZvAeGqirSygtUXFmZgCNnCv1iDj9XmIS9nhsqr3ELUBgWwEgLzWBKOXi5
+	hM2GGq7a73CUemqoYjg34uPFSSjFt7AzkMYOsSpUxge8g/gdtM4M0PMnwGoWTZ8FzQ8ku4qciAF
+	KLsF/hzCiRAHY/Ex/QFrJyF8e/2aWX+7mewIRDzVAxXHmg==
+X-Received: by 2002:a17:903:4291:b0:236:6f5f:caaf with SMTP id d9443c01a7336-23dede396bbmr7262205ad.15.1752181879789;
+        Thu, 10 Jul 2025 14:11:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHNiFYs8CFWRvSPbrkmIE4I8ntC8YkoPHeEDzjwj0c3EHunXltU+7bpHWVRTS4Tk67n9W2tA==
+X-Received: by 2002:a17:903:4291:b0:236:6f5f:caaf with SMTP id d9443c01a7336-23dede396bbmr7261905ad.15.1752181879329;
+        Thu, 10 Jul 2025 14:11:19 -0700 (PDT)
+Received: from [10.144.155.224] ([2600:382:7716:65ad:9491:c054:6f2d:80ed])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de433e51asm27790595ad.180.2025.07.10.14.11.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 14:11:18 -0700 (PDT)
+From: Brian Masney <bmasney@redhat.com>
+Date: Thu, 10 Jul 2025 17:10:34 -0400
+Subject: [PATCH 02/13] clk: imx: composite-93: remove round_rate() in favor
+ of determine_rate()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/bvMryEMKXN67+shfLzzO8Cd";
- protocol="application/pgp-signature"; micalg=pgp-sha512
-X-Last-TLS-Session-Version: TLSv1.3
+Message-Id: <20250710-clk-imx-round-rate-v1-2-5726f98e6d8d@redhat.com>
+References: <20250710-clk-imx-round-rate-v1-0-5726f98e6d8d@redhat.com>
+In-Reply-To: <20250710-clk-imx-round-rate-v1-0-5726f98e6d8d@redhat.com>
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Maxime Ripard <mripard@kernel.org>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Brian Masney <bmasney@redhat.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752181866; l=1593;
+ i=bmasney@redhat.com; s=20250528; h=from:subject:message-id;
+ bh=W9rMxhG+HCQaTapcDP0EemGdUyiHL/4QZlLhjcozpqg=;
+ b=p2JvBhXGzB9Q3sTJCTzm0qM4XowHtLIbgUuGE85J8qpMRH1G/aHuClA7A/B83bKS/w2DVERZJ
+ SrV4qAgn3aMDET2A7EtLIFuerX32CaXdZX7mJGyO9y00Vbcn4xmkqzv
+X-Developer-Key: i=bmasney@redhat.com; a=ed25519;
+ pk=x20f2BQYftANnik+wvlm4HqLqAlNs/npfVcbhHPOK2U=
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 1NVh4oVaNunGcyJJ-eLnioeRaH7Ol_9s0WTwKz09gCI_1752181880
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
---Sig_/bvMryEMKXN67+shfLzzO8Cd
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+This driver implements both the determine_rate() and round_rate() clk
+ops, and the round_rate() clk ops is deprecated. When both are defined,
+clk_core_determine_round_nolock() from the clk core will only use the
+determine_rate() clk ops, so let's remove the round_rate() clk ops since
+it's unused.
 
-Hi Paolo,
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+---
+ drivers/clk/imx/clk-composite-93.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-> Hi Paolo,
->=20
-> > On 7/1/25 1:49 PM, Lukasz Majewski wrote: =20
-> > > Changes for v14:
-> > > - Increase the maximal received frame size to 1536 (for VLAN)
-> > > - Use spin_{un}lock_irq{save|restore} when altering dynamic table
-> > > of the switch and mtip_adjust_link() as both cannot be done when
-> > > switch IRQ is potentially enabled   =20
-> >=20
-> > Why?
-> >=20
-> >  (the previous one alters entries in switching table =20
-> > >   the latter one may reset the whole IP block)   =20
-> >=20
-> > What really matters is the scope (process/atomic, bh, hardirq) of
-> > the relevant callers (the functions that do acquire the given
-> > locks).=20
->=20
-> Maybe I will explain the problem here case (function) by case:
-> - mtip_adjust_link()
->   This function is called when link change is detected (speed, duplex,
->   up/down link).
->=20
->   The problem here is that:
-> 	1. It is called for both MTIP ports (as both are managed by
-> 	this driver)
->=20
-> 	2. NXP's "legacy" driver advises reset of the whole IP block
-> 	when such change is detected.=20
->=20
-> 	Considering the above - interrupts shall be disabled as we may
-> 	end up in undefined state of the IP block - especially that
-> 	re-configuration of switch requires interrupts initialization.
->=20
->=20
-> - mtip_atable_dynamicms_learn_migration() - update of the switching
->   table
->=20
-> 	Can be called from:
-> 	1. function triggered when timer fires (once per 100ms)
->=20
-> 	2. mtip_switch_rx() which is called from mtip_rx_napi()
-> callback (which is protected by net core).
->=20
-> 	It looks like the _irqsave/_irqrestore is an overkill here.
-> 	Both above contexts seems to not require IRQs disabled. I can
-> 	confirm that use of plain spin_{un}lock() functions works.
->=20
-> >  =20
-> > > +/* dynamicms MAC address table learn and migration */
-> > > +static void
-> > > +mtip_atable_dynamicms_learn_migration(struct switch_enet_private
-> > > *fep,
-> > > +				      int curr_time, unsigned
-> > > char *mac,
-> > > +				      u8 *rx_port)
-> > > +{
-> > > +	u8 port =3D MTIP_PORT_FORWARDING_INIT;
-> > > +	struct mtip_port_info *port_info;
-> > > +	u32 rx_mac_lo =3D 0, rx_mac_hi =3D 0;
-> > > +	unsigned long flags;
-> > > +	int index;
-> > > +
-> > > +	spin_lock_irqsave(&fep->learn_lock, flags);   =20
-> >=20
-> > If the _irqsave() part is needed (and I don't see why??!) than all
-> > the other `learn_lock` users should also use such variant, unless
-> > already in hardirq scope.
-> >=20
-> > [...] =20
-> > > +static void mtip_adjust_link(struct net_device *dev)
-> > > +{
-> > > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
-> > > +	struct switch_enet_private *fep =3D priv->fep;
-> > > +	struct phy_device *phy_dev;
-> > > +	int status_change =3D 0, idx;
-> > > +	unsigned long flags;
-> > > +
-> > > +	spin_lock_irqsave(&fep->hw_lock, flags);   =20
-> >=20
-> > Same here. =20
->=20
-> Please see the explanation above.
->=20
+diff --git a/drivers/clk/imx/clk-composite-93.c b/drivers/clk/imx/clk-composite-93.c
+index 6c6c5a30f3282d4d128751147714bf24b64c52f3..513d74a39d3bd391c61db2e9a5b7752af611d3b0 100644
+--- a/drivers/clk/imx/clk-composite-93.c
++++ b/drivers/clk/imx/clk-composite-93.c
+@@ -98,12 +98,6 @@ imx93_clk_composite_divider_recalc_rate(struct clk_hw *hw, unsigned long parent_
+ 	return clk_divider_ops.recalc_rate(hw, parent_rate);
+ }
+ 
+-static long
+-imx93_clk_composite_divider_round_rate(struct clk_hw *hw, unsigned long rate, unsigned long *prate)
+-{
+-	return clk_divider_ops.round_rate(hw, rate, prate);
+-}
+-
+ static int
+ imx93_clk_composite_divider_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
+ {
+@@ -141,7 +135,6 @@ static int imx93_clk_composite_divider_set_rate(struct clk_hw *hw, unsigned long
+ 
+ static const struct clk_ops imx93_clk_composite_divider_ops = {
+ 	.recalc_rate = imx93_clk_composite_divider_recalc_rate,
+-	.round_rate = imx93_clk_composite_divider_round_rate,
+ 	.determine_rate = imx93_clk_composite_divider_determine_rate,
+ 	.set_rate = imx93_clk_composite_divider_set_rate,
+ };
 
-Is the explanation enough (and from other e-mails), so I can proceed
-with next version of this patch set?
+-- 
+2.50.0
 
-> >=20
-> > /P
-> >  =20
->=20
->=20
->=20
->=20
-> Best regards,
->=20
-> Lukasz Majewski
->=20
-> --
->=20
-> DENX Software Engineering GmbH, Managing Director: Johanna Denk,
-> Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
-> Groebenzell, Germany
-> Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email:
-> lukma@denx.de
-
-
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH, Managing Director: Johanna Denk,
-Tabea Lutz HRB 165235 Munich, Office: Kirchenstr.5, D-82194
-Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/bvMryEMKXN67+shfLzzO8Cd
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAmhwKs0ACgkQAR8vZIA0
-zr2/Vgf8CAqpAWYmJVhTy2njCpyqUymWCFVNmNXK6Gllt/Zw6SkfkIq7Mi1felFl
-EJkW8NkrKNvDxmLEuj95mjwk8ICa449UxTacaOTIGSx7cf2NaHuHZ/C3uaPE7qXO
-JRczFT5e/V94lznm06bF+Msp5anCRiP51OB8T3CT5jPuA3lBe3rv9Kib9QmqF/9y
-8scAsy79+4aVtbsGcsghx7sxi/en9c2j2XkrJstKEJhpbYlRq3m/lUlKYzVLdkfq
-YynjGqmcQJMdO4uyORkyyk0D9IqRrVhLKvrWjs7FzcBA+yjjz9XL1GjznewUqfM4
-9GPDqpw9n7gaQxIB+WQj1EhhaJorrA==
-=okWF
------END PGP SIGNATURE-----
-
---Sig_/bvMryEMKXN67+shfLzzO8Cd--
