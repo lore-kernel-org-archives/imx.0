@@ -1,110 +1,158 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A3D273D96
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 14:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3567274B52
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 14:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752158952; cv=none; b=TgKIcW2+Ol4zL7Cy1RD3k9r2dAuJMT3Pjul9wXveLIRA06AzQmdKYaUvR1PSchkl44fVCg/Y2Cf+CShLVdlrERSahTGwhH1iAVaiaa/AeP4YDNbrLDLweRlocjlNtT6bk/e3gbNKiakAczuY3aTUZSDxaInb+JkfcHt+UGtsQXc=
+	t=1752158974; cv=none; b=VzkyUTcvGMRetBXULMuQ72XU1/oHmB+y+CZgOgttGF8oSmO06hh5qjPFqoKBtR8VO1mPWqHonRWbdIrBdWDYiRItDMUQtKsRNFuv6PctILZaRPBJH5GnRKIhh9sLBNtR+9eFJdqjLouRGnWX78OaOKDAIzO0cHgIOqLTp3SQ1wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752158952; c=relaxed/simple;
-	bh=m4ghKtwKJrUsSVXZHTvI5Ps+AMXUxsLNPsCHx2vmZI8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o6AF68I1D/bmvzqCJ7aGxtqNvFMps28otR48jhSgmhNqI3dcQn6Mu4v+Dhb9AROR2sC+N0MQSzR77XydNWCSNV0rSDesddEsMDEYp11CcfZdUuWek1uddkPSXs8Ss9H/qilWLmC7mrzBKqMxFda816x35vGr6nm0df3UGcIcVVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EGDggbiR; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1752158974; c=relaxed/simple;
+	bh=isscTgcBZAVVEBwnse1MUKIvJL0xJ/IuXJKT2AqzWlQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=crtSA6QVG/QNScXdBLnnh6pdCi39PqZJGydxGzoLvB45XwD58aGhHwDL97EkLzsNSzJJYsJ5np3Y31JODdZzdeoYDwjqW5VAtZKO5o1kL0vm88WHrR/jIAvkSv1ouHE28gInKgyAyY6yZCsQe4itz4FedJW1cmy47Wgs818Xwx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=lT5EKIeC; arc=none smtp.client-ip=185.70.43.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EGDggbiR"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-237e6963f63so6861765ad.2
-        for <imx@lists.linux.dev>; Thu, 10 Jul 2025 07:49:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752158950; x=1752763750; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wYtWRzzzlhSnP5KUQl4NFLAveNS15FrK/s5SwIAgVgk=;
-        b=EGDggbiR2VL3MEis6YmTMv/U5OXztnfDQ+eQxEH9UeT5Q1ZUByg5lC7mLMDZGdaWvQ
-         p//rlg5Rwv1l3sqqjxra0FvnxtYzlhexInBCPrADKF1AOGgJXEbyG9aPbNXl0nnNYhaK
-         fvAXlA5Io3IyxSycAdpp9vzNpdXpm2ZWMb2KBXMoMwrxbJJc/DZaLsjna91/6CEOomGg
-         JE9/GcZDMbgB8fc42p/LHXFUmPobQTXysd8yhOpvoE2ba5rhZQtlakLXff5vdI6fGook
-         W/mo9oItZc5R9HtKAx3tNT8N6TqXYG3lkvyU8iMa4KkCOMonfN2ugPWB0fXpCZHkXqAK
-         VIcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752158950; x=1752763750;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wYtWRzzzlhSnP5KUQl4NFLAveNS15FrK/s5SwIAgVgk=;
-        b=IfMIg9sY+RLCUyIMsTLmOlD2UME7X8zurJU7NWn3l7IAklkQgT9B7FN5H1z/U7fXGz
-         wEy9csmbCMErf9SbH3cp4XwB15jeKZUUykXPzZiNGd+rbSB2h5huhx8jlL32FP8konk8
-         s1VLZldDjrcdzJJxfzIewnacjt+ROCEkoX3v/TEhZO3pTXubGubXzMN4oXhWMXVj/Cw3
-         SadNlvvb49zSgS042J7uMKHiwqHO48QzdOxKi4TRsjgNqi42ulMHfO0rJfMYsyH7NYBX
-         XYY86j9/NgYYS0dZE7YP6iw93Uc7T8kii+yCi/tMo2bfy4sZmdZ2m5lcRuhwCr7/3Fe9
-         NuXw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8bJ95rIFEYJKTv6iE8ImRShulp1+msyreQhrCEYYaux3FjPXdBn2N9bp8XvrrMbnNBFE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyv80cYjSVZPoZ8+eg823OaGayhHjf+jFtP12+0ZoSbv2l4Et+f
-	mahPS2xpDQoFOifxxYUosRUFpF2onjGKPn6fxuvDwELUTJThh3ZDnnACZI1dTr2j2QY=
-X-Gm-Gg: ASbGncvC+c2eAKysB+Vlpq29stonr1WBbvzFRaNcCzO2JOV4J4Z3dr5vVL93mLBlcw5
-	6FsHejAD+r2Y62bojx3SB4qeW4hbAt46b0UQ1/BY9+v52+tSHwqrh1+U1GCdyWV9pDaC/luW/HD
-	0tDvwG3O+QyBPMf3vAIS04LFFeFu/vI1kf5xmumq30LyIZk0q9oAFqWipv0HQklOeHntZzaBgHa
-	5eg2g2CC9U25xL0IK4g7PzPz0mLTlHlZedujK0rNweWRA9YgvMro1YPMof07uv0vfVxKFN2+baQ
-	q8KvBViDL4TjI9w6iCYcHODKBEV+KlNSAqOVXxAIVzqQoszgwlKBvsXPQRZksRjy
-X-Google-Smtp-Source: AGHT+IHLOaTbeIxYAUR/yv9JVTQenD6oK2Ov/QMFGUQSqoTLIPq/eEsamfgUWhDnHyTHM/izk94ISw==
-X-Received: by 2002:a17:902:e84a:b0:235:eb71:a386 with SMTP id d9443c01a7336-23de48b620bmr42210185ad.50.1752158950381;
-        Thu, 10 Jul 2025 07:49:10 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:3c1:4dff:9df5:b97c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c301a8862sm5390817a91.37.2025.07.10.07.49.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 07:49:09 -0700 (PDT)
-Date: Thu, 10 Jul 2025 08:49:07 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: andersson@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] remoteproc: imx_dsp_rproc: Add support of coredump
-Message-ID: <aG_S4xA1uwbwVimP@p14s>
-References: <20250704052529.1040602-1-shengjiu.wang@nxp.com>
- <20250704052529.1040602-3-shengjiu.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="lT5EKIeC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail; t=1752158968; x=1752418168;
+	bh=5I8flEWvmqDd6x+t/g5P7dZT4ROh7WF5XE11abOETzc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=lT5EKIeCBMtt/STEPtaaBBeEB1Ix3xKS6p/qK1e+XbiIrgZ+30aQ1UfrdWVs2hf/l
+	 MiaUkMt3xSoq3Iyi5qDZPu+IQxVHCbmG/SwaFRvbem0dTi8vN6c7YOXJMzsZBJAFUu
+	 +MUolG1J5OoHT0ShW5AJHttVv46gKg8OYpb4MLnOpXbqX6ebq9NR6/ChE2nSC9GRoC
+	 /cD/5toabjPu34pjkG3hIEcRwdk77h+Cmg8N8O9GFVo05Czdq5a/icKUNTBtRV65Nh
+	 d3Sd9SdU9gUe/+Z7jR0Hp7Ra5rVKGBofrOF+Eog9zu6OoKT6RTJn9G9rd7ATftnP1W
+	 V3TLsRm8mUyug==
+Date: Thu, 10 Jul 2025 14:49:21 +0000
+To: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+From: Sean Nyekjaer <sean@geanix.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>, imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>, Robin Gong <yibin.gong@nxp.com>, Enric Balletbo i Serra <eballetbo@gmail.com>
+Subject: Re: [PATCH v8 3/6] regulator: pf1550: add support for regulator
+Message-ID: <ni3bmj4ye3dp3opolk466r2ayx7iuk6hhyx4pdikydizqykfx7@nc5qdok32hsm>
+In-Reply-To: <20250707-pf1550-v8-3-6b6eb67c03a0@savoirfairelinux.com>
+References: <20250707-pf1550-v8-0-6b6eb67c03a0@savoirfairelinux.com> <20250707-pf1550-v8-3-6b6eb67c03a0@savoirfairelinux.com>
+Feedback-ID: 134068486:user:proton
+X-Pm-Message-ID: 11f257d26d96d1d079ba2b2c2800d3b5475e57b2
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250704052529.1040602-3-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 04, 2025 at 01:25:29PM +0800, Shengjiu Wang wrote:
-> Add call rproc_coredump_set_elf_info() to initialize the elf info for
-> coredump, otherwise coredump will report error "ELF class is not set".
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  drivers/remoteproc/imx_dsp_rproc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index ba764fc55686..6e78a01755c7 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -1205,6 +1205,8 @@ static int imx_dsp_rproc_probe(struct platform_device *pdev)
->  		goto err_detach_domains;
->  	}
->  
-> +	rproc_coredump_set_elf_info(rproc, ELFCLASS32, EM_XTENSA);
+Hi Samuel,
+
+On Mon, Jul 07, 2025 at 05:37:22PM +0100, Samuel Kayode wrote:
+> Add regulator support for the pf1550 PMIC.
+>=20
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Reviewed-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+
+[...]
+
+> diff --git a/drivers/regulator/pf1550-regulator.c b/drivers/regulator/pf1=
+550-regulator.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..fa8c4b17270e750e64fef9107=
+4727951511d14f3
+> --- /dev/null
+> +++ b/drivers/regulator/pf1550-regulator.c
+
+[...]
+
+> +
+> +#define PF_SW1(_chip, match, _name, mask, voltages)=09{=09\
+> +=09.desc =3D {=09\
+> +=09=09.name =3D #_name,=09\
+> +=09=09.of_match =3D of_match_ptr(match),=09\
+> +=09=09.regulators_node =3D of_match_ptr("regulators"),=09\
+> +=09=09.n_voltages =3D ARRAY_SIZE(voltages),=09\
+> +=09=09.ops =3D &pf1550_sw1_ops,=09\
+> +=09=09.type =3D REGULATOR_VOLTAGE,=09\
+> +=09=09.id =3D _chip ## _ ## _name,=09\
+> +=09=09.owner =3D THIS_MODULE,=09\
+> +=09=09.volt_table =3D voltages,=09\
+> +=09=09.vsel_reg =3D _chip ## _PMIC_REG_ ## _name ## _VOLT, \
+> +=09=09.vsel_mask =3D (mask),=09\
+> +=09},=09\
+> +=09.stby_reg =3D _chip ## _PMIC_REG_ ## _name ## _STBY_VOLT,=09\
+> +=09.stby_mask =3D (mask),=09\
+> +}
+
+This is unused.
+
+> +
+> +#define PF_SW3(_chip, match, _name, min, max, mask, step)=09{=09\
+
+[...]
+
+> +
+> +static struct pf1550_desc pf1550_regulators[] =3D {
+> +=09PF_SW3(PF1550, "sw1", SW1, 600000, 1387500, 0x3f, 12500),
+> +=09PF_SW3(PF1550, "sw2", SW2, 600000, 1387500, 0x3f, 12500),
+> +=09PF_SW3(PF1550, "sw3", SW3, 1800000, 3300000, 0xf, 100000),
+
+Seems weird they all use the PF_SW3 macro.
+
+> +=09PF_VREF(PF1550, "vrefddr", VREFDDR, 1200000),
+> +=09PF_LDO1(PF1550, "ldo1", LDO1, 0x1f, pf1550_ldo13_volts),
+> +=09PF_LDO2(PF1550, "ldo2", LDO2, 0xf, 1800000, 3300000, 100000),
+> +=09PF_LDO1(PF1550, "ldo3", LDO3, 0x1f, pf1550_ldo13_volts),
+> +};
 > +
 
-The previous patch is small enough that this should be folded in it.
+[...]
 
-Thanks,
-Mathieu
+> +
+> +static int pf1550_regulator_probe(struct platform_device *pdev)
+> +{
+> +=09const struct pf1550_ddata *pf1550 =3D dev_get_drvdata(pdev->dev.paren=
+t);
+> +=09struct regulator_config config =3D { };
+> +=09struct pf1550_regulator_info *info;
+> +=09int i, irq =3D -1, ret =3D 0;
+> +
+> +=09info =3D devm_kzalloc(&pdev->dev, sizeof(*info), GFP_KERNEL);
+> +=09if (!info)
+> +=09=09return -ENOMEM;
+> +
+> +=09config.regmap =3D dev_get_regmap(pf1550->dev, NULL);
+> +=09if (!config.regmap)
+> +=09=09return dev_err_probe(&pdev->dev, -ENODEV,
+> +=09=09=09=09     "failed to get parent regmap\n");
+> +
+> +=09config.dev =3D pf1550->dev;
+> +=09config.regmap =3D pf1550->regmap;
+> +=09info->dev =3D &pdev->dev;
+> +=09info->pf1550 =3D pf1550;
+> +
+> +=09memcpy(info->regulator_descs, pf1550_regulators,
+> +=09       sizeof(info->regulator_descs));
+> +
+> +=09for (i =3D 0; i < ARRAY_SIZE(pf1550_regulators); i++) {
+> +=09=09struct regulator_desc *desc;
+> +
+> +=09=09desc =3D &info->regulator_descs[i].desc;
+> +
+> +=09=09if (desc->id =3D=3D PF1550_SW2 && pf1550->dvs_enb) {
 
->  	pm_runtime_enable(dev);
->  
->  	return 0;
-> -- 
-> 2.34.1
-> 
+We should enter here if dvs_enb =3D=3D false.
+My A6 variant reported 0.625V instead of the correct 1.35V
+
+> +=09=09=09/* OTP_SW2_DVS_ENB =3D=3D 1? */
+> +=09=09=09desc->volt_table =3D pf1550_sw12_volts;
+> +=09=09=09desc->n_voltages =3D ARRAY_SIZE(pf1550_sw12_volts);
+> +=09=09=09desc->ops =3D &pf1550_sw1_ops;
+> +=09=09}
+>
+
+/Sean
+
