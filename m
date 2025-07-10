@@ -1,98 +1,85 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABC023F41A
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 20:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B003728C5D7;
+	Thu, 10 Jul 2025 20:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752179694; cv=none; b=hETpjzslk1CSaD94NQAmVvvJOBFxdbhZntybArAYEstjqgDanLbVvf4h0IlUStVU7jl6b6Qt5T4HbBLNY52p5a9m2wv8B1fNpKspz96gXVKTPiGFn50478+jp8QGe70bonz7S0lIiqtAQBBImqhET8In21idPwYipAV9RLUxHzY=
+	t=1752180594; cv=none; b=UZwyqbfmL+gy1wcHAlYxPnllWm+ZOl8JHX7La8oMonQh/fKxEi/aEhoJYSLdgJBOa//6FP9ZOnZouMZFUAGJ4/k1gMCqu3rR58I4gZEsPSslPemunAN/qS6+FYkiFdPINGq1/N9txCAz6RPCalgs5scaEtDn8EXctIE4u4H1c+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752179694; c=relaxed/simple;
-	bh=gwm/BETqS9ZCGKtb3EIYk1BW28Lo76No90DkH2szew8=;
+	s=arc-20240116; t=1752180594; c=relaxed/simple;
+	bh=R7alaaCPHt1AUC5EDQMaWx/LazeRtOK9h/LtGYLubzc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cwnZsa12o0yT9x03g/64loqtoJjXOT8Al3OVjh1K4j6TaO/URyLeLQp48dMGbkAMr+BENYcco7Dtjbp4QVTghOmn6ytdA9ap32kZqCcG2Kde0TzFhtFSA36tuvK+37opUEFceThYWHRtvHd10EDCuPAOXr/iIsgQUO7iBinCfCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=L81CRFpj; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=nWhSvfjZe2LrvpM3In6r2w5oMcKpJPPuwcAeOuouTN58eTMwDIVvjDz3Nlctgctj9gWARXzyCtVDHbSs51F25Zu1SqnyXzNQaD7yPhuh3MqPkEVIi0ODkwQBbl5WHjB64QQImJMHStm416QGv3Xr5pi0R3+NCPnl4xITfd9n9Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6fyEEN4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="L81CRFpj"
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 4F13D1A9A;
-	Thu, 10 Jul 2025 22:34:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1752179662;
-	bh=gwm/BETqS9ZCGKtb3EIYk1BW28Lo76No90DkH2szew8=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6fyEEN4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2068FC4CEF4;
+	Thu, 10 Jul 2025 20:49:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752180594;
+	bh=R7alaaCPHt1AUC5EDQMaWx/LazeRtOK9h/LtGYLubzc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L81CRFpj5oL8/FjSvjjDbUsSOOXdnHVu8kack2zW22u7nofbm1lEVF5x0eiTUFDjt
-	 WLg3cH2TO2Qa4TdTTkClKVP7yRjU6EDKQhTngYG+aG+Thfc/ajYbTVncCSbxiFsk0v
-	 3SMEKP2/pfKNiWYlE89bTpRajJdUBDbe2BL9fW/s=
-Date: Thu, 10 Jul 2025 23:34:21 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: linux-media@vger.kernel.org,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 06/72] ARM: dts: nxp: imx6qdl-wandboard: Replace
- clock-frequency in camera sensor node
-Message-ID: <20250710203421.GC22436@pendragon.ideasonboard.com>
-References: <20250710174808.5361-1-laurent.pinchart@ideasonboard.com>
- <20250710174808.5361-7-laurent.pinchart@ideasonboard.com>
- <aHAgHygUe6rWB/TA@lizhi-Precision-Tower-5810>
+	b=h6fyEEN4OVF3X4z4T6olPNkDshuKXL14P1ZPQgpydfMFcwR9gfB/GOgMD4XCHMsaT
+	 imvTz7KUSeoR1/jaC3kgG9uR9g+XUykWN4fqfF0+nqa4G5qvdeRbBc9MnFG6JPwpxC
+	 ox4Ky8S7mPhrBIne33gDYoUD0T/ERZI7PD7fw9WWgjzVEj37q6CWRlQMB9b2NLWezl
+	 pJUcn55+qsWr3Y3mSb6HfxYvVxDKlTeiX2xva/VTcEnydxdor+JtVDcKnaLMw8YBlC
+	 yvnIRSbvTfsVnfz3DHpgDKlZWNaOUzIt2YJhwLMQOWTEF/SJIDs2dY6X2jqzlqJK3p
+	 Bvxnwb3KGLDBg==
+Date: Thu, 10 Jul 2025 22:49:49 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Elie Morisse <syniurge@gmail.com>, 
+	Shyam Sundar S K <shyam-sundar.s-k@amd.com>, Codrin Ciubotariu <codrin.ciubotariu@microchip.com>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Michal Simek <michal.simek@amd.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Jarkko Nikula <jarkko.nikula@linux.intel.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Jan Dabros <jsd@semihalf.com>, Jean Delvare <jdelvare@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Oleksij Rempel <o.rempel@pengutronix.de>, 
+	Gregory CLEMENT <gregory.clement@bootlin.com>, Ajay Gupta <ajayg@nvidia.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Vignesh R <vigneshr@ti.com>, Loic Poulain <loic.poulain@oss.qualcomm.com>, 
+	Robert Foss <rfoss@kernel.org>, Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>, 
+	Viken Dadhaniya <quic_vdadhani@quicinc.com>, Chris Brandt <chris.brandt@renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Orson Zhai <orsonzhai@gmail.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>, 
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 23/80] i2c: Remove redundant pm_runtime_mark_last_busy()
+ calls
+Message-ID: <sj24iciugqjrof6672tvlnxjfvgperdliftfa47cquyfe6g22c@s5e7twdtjhsj>
+References: <20250704075225.3212486-1-sakari.ailus@linux.intel.com>
+ <20250704075415.3218608-1-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aHAgHygUe6rWB/TA@lizhi-Precision-Tower-5810>
+In-Reply-To: <20250704075415.3218608-1-sakari.ailus@linux.intel.com>
 
-Hi Frank,
+Hi Sakari,
 
-On Thu, Jul 10, 2025 at 04:18:39PM -0400, Frank Li wrote:
-> On Thu, Jul 10, 2025 at 08:47:02PM +0300, Laurent Pinchart wrote:
-> > The clock-frequency for camera sensors has been deprecated in favour of
-> > the assigned-clocks and assigned-clock-rates properties. Replace it in
-> > the device tree.
-> >
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > ---
-> >  arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi
-> > index 26489eccd5fb..e5ac78ffb31c 100644
-> > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi
-> > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-wandboard.dtsi
-> > @@ -136,8 +136,11 @@ camera@3c {
-> >  		pinctrl-names = "default";
-> >  		pinctrl-0 = <&pinctrl_ov5645>;
-> >  		reg = <0x3c>;
-> > +
+On Fri, Jul 04, 2025 at 10:54:15AM +0300, Sakari Ailus wrote:
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
 > 
-> unnecessary empty line here
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-There's often a blank line after the reg property. I don't mind dropping
-it here if that's preferred. Same for the other patch you reviewed.
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
 
-> >  		clocks = <&clks IMX6QDL_CLK_CKO2>;
-> > -		clock-frequency = <24000000>;
-> > +		assigned-clocks = <&clks IMX6QDL_CLK_CKO2>;
-> > +		assigned-clock-rates = <24000000>;
-> > +
-> >  		vdddo-supply = <&reg_1p8v>;
-> >  		vdda-supply = <&reg_2p8v>;
-> >  		vddd-supply = <&reg_1p5v>;
-
--- 
-Regards,
-
-Laurent Pinchart
+Thanks,
+Andi
