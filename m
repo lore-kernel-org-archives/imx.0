@@ -1,211 +1,225 @@
-Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011001.outbound.protection.outlook.com [52.101.65.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E423289809
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 07:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752133156; cv=none; b=Nt5NqvU0kY1xPCCJS5jGtEaXtk/aGkgA4lrGkSCpmVTOx46CoOZYPPQdZ48LOkwX6hqOTV9uW98df9prmkLQB/u4aB+WEGzeL4TE1q9GNwgXdMvRub8hHclDR+GW6crvlaSDcvb6rilPfE+L9/lcjsRICVLujOsd7pvYkTbvVno=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752133156; c=relaxed/simple;
-	bh=ASbDXvYEpvpA3dhPyIfiJOtn/utMb4WWmHLLlbdNe7M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fc5Mtu96TwBH6zo8OHesShHqXkSp1znIEN4HWEeUoHntb8SV7l28tLRH5RdU7mSfAK8oAVXVXpTHZBJv7Am06zaKimvYajMAamHq6jVDAHDiOoM9mKvcEVwkNF0Qe0URf5YxkkPgvoyFw4o02HTATobM3yMnK4UOxKaPA79quaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=p5XXN1fi; arc=none smtp.client-ip=46.19.9.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150E827FB31
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 08:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752136529; cv=fail; b=KJYzTc6sku3GRepLfqVmwD0TzaRR94OOaF7vpuTqYNsV8e4yhMoaowSuyIjA+FVltw/LWoMOwwKk7U/nRxr30f0ylR3TLCtYVWFoIm45a/SR5Y5zmHRlFFOp6YPrwSG4fkH6efxaiZntyG+jo3LjSV+6pNaMJ2H73qSB1Gx1rGg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752136529; c=relaxed/simple;
+	bh=8webyB4E6TCv2JNw9JWwUrInVpNtjFgLVpgJz+X/kh4=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=bObQVYHVm3u9/eNMI+9bx/tiKVbsQ+d+OWDX19yy/APNM1+/7oyd/9SlpaOgQq332uKBDj8D4ph0W+wiy/tTAKzQLpg9oCSxpu9jU906cMp1UwvKWFnVGKV9e2zrF2tLjD5rZI+nvs/uuhZZWyCyt+XWu6MLz3UqUdGH15gIZeg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FM2n2stq; arc=fail smtp.client-ip=52.101.65.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="p5XXN1fi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=7kVCapFGdG0gRHQhSRUGUM3fGitSOZCS1rMndaGOheE=; b=p5XXN1fiONAQE6w4z3DXP0epP3
-	W+0AnvD6kwo2+3JjLjBxGY2ZrvM47itZ94wu+zku2xmM+4D6/vm4TXUrKSb2vXZfCC++9LgTPxlu7
-	sdnw8HXmtXvnJg6IEjUkrfcrocttP/kyWabdAUk39VKA2jbvUkSQp+4JLp2bx8AuPNg+nmL7672Nq
-	BjxBJpWBc86PA5La/Vh9VTAIO3Rp5lq/YwnJLbJ6NM/p4ZmXyjBM4h2JokBH3C8qfFO1LcoBlnSPX
-	dWNPrFbMPwzQdVQDAddi2AScEMrk6sluM2CbzgTQleOJ1NpzapCXPyQUWdXCTuZPbTLy9T75I0kiG
-	nmfSMtug==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:48064 helo=localhost.localdomain)
-	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1uZls3-006IV5-1A;
-	Thu, 10 Jul 2025 09:39:06 +0200
-From: Primoz Fiser <primoz.fiser@norik.com>
-To: Haibo Chen <haibo.chen@nxp.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: linux-iio@vger.kernel.org,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de,
-	andrej.picej@norik.com
-Subject: [PATCH 2/2] iio: adc: imx93: Make calibration parameters configurable
-Date: Thu, 10 Jul 2025 09:39:04 +0200
-Message-Id: <20250710073905.1105417-3-primoz.fiser@norik.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250710073905.1105417-1-primoz.fiser@norik.com>
-References: <20250710073905.1105417-1-primoz.fiser@norik.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FM2n2stq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HvS646Nj8jHq+3kpqubgn+wcFayYXx8JLbRLR1hdcPVRWZVASHwO90t2egEJc3iltcwX3wQ7M6qaA5yq/XjLN7aLQuYfrTidzm24SEr8eIfeCihU2Cvc0a9DIV+JnK0La0kY4Fa7qSYX/fzB3lQdkoeg6mhGsViZOU2CeJDHNcb+ujPmWxJhsnY+IkN7jSUEZb25vQldMSZGoSBioIVAoAvHxJBv5azMR6DMoibi6DJfjawwuhv8jZPi/EzmQbXFH1kSsFEVjiDUc0eIW1MQuqAyQrlrNONEvnidjXzVuQYY4EUcEhJnObuSIEv2pF8amLGMzsaQS9Wfelx+cKX1HQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dgEUh0SbJboNmRYgJ4YLouXa9NpT5Rrejtnatpc9JyQ=;
+ b=N8qSnjQBlWOO3CxY0gFY4VK7SCo7FnOy3SGgAT0gDCJpS+FE7YyU4xSPlMJuFDZ42h9UO5D6k4F0+ecoMR6AIek6Dxn10KcvCPI7fl0YbAaFrYKWPuFDeWeF1pwspkIBnSzfjpiTOO0jeu26OAYMYZhgCD/M99aiEItOsk2f2Xj0klG3cH+wNrgnB8Cf7vpPMBgxK/Q9EQ2wrG25A6Ro8Yb0GXnx28UmTVVSAf2/6XPWIkw66tjiDc/AVZ+jR9afrd6ODWP60dnSxtAswt7dCE8GE/OhiwnPRKpKwCtsCsK73HMWLHP7xw6+cegWrOl07T7lfTZU0GKn7RgPLPpkaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dgEUh0SbJboNmRYgJ4YLouXa9NpT5Rrejtnatpc9JyQ=;
+ b=FM2n2stqLLplR+P8/Hz6QPDNI0RhMko/jrgH+JXeqrA1uPs8L8tda6iN4MB5Em76eIikes1fb4ONzQaNaEvwtAF/uyEhZwXrAU8gxjPJPNNLgGipSUSmyFd4YkvoBp1VQn/vLuBTqnr8+EfakufjEOAuqQpEBM/wggiUp7MS5/EjRw5bzOVdssshfwA3VY88iFE3j+o2PdAHEAwGk7TxB3uwQUlDdw0KUb7cFSm8oTKOxGJjn2vlbATqOfvEuXizBbpm9sc2o5UBxMjpnM/cpi4J+twrWs9znwOmo0iOuD+GB0JeQpqNfJg9KejPD+gGdUkPU23jmjDeH8ON8FZg8Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by DB9PR04MB11512.eurprd04.prod.outlook.com (2603:10a6:10:5e1::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Thu, 10 Jul
+ 2025 08:35:22 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.8901.028; Thu, 10 Jul 2025
+ 08:35:22 +0000
+From: Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v2 0/6] firmware: arm_scmi: imx: Dump syslog and
+ system_info
+Date: Thu, 10 Jul 2025 16:33:25 +0800
+Message-Id: <20250710-sm-misc-api-v1-v2-0-c3e953e34be6@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANV6b2gC/3WMwQ7CIBBEf6XZs2sApaU9+R+mh4rU7qFAwJCah
+ n937d1k5vAmmbdDdolchqHZIblCmYJnUKcG7DL5l0N6MoMSSotWdZhXXClbnCJhkWi0FRdh244
+ LfIrJzbQdwvvIvFB+h/Q5/EX+1r8qjkD16PurkbMzSt/8Fs82rDDWWr9Q/R/+qgAAAA==
+X-Change-ID: 20250627-sm-misc-api-v1-85c030c670c6
+To: Sudeep Holla <sudeep.holla@arm.com>, 
+ Cristian Marussi <cristian.marussi@arm.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: arm-scmi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Peng Fan <peng.fan@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752136418; l=2119;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=8webyB4E6TCv2JNw9JWwUrInVpNtjFgLVpgJz+X/kh4=;
+ b=UCq0aRKh5agVyaDdJ0iNZrDEmio2jcqK5cYF7B1QVfyzk0pcGoAybsQlouNFm/D4+gYEzBD2S
+ LpEuYaI5De9CgYSWzhqbL7S/z5eFoDOMdUdY5WbDOntUGC1VWn63YQK
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: MA0PR01CA0088.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ae::13) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB9PR04MB11512:EE_
+X-MS-Office365-Filtering-Correlation-Id: 00fcf71a-485f-4aa1-b004-08ddbf8cb5ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|366016|376014|19092799006|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WEwrY21GdEhrYXF4N1VrOTVONllLWnk2bmpsSWRYM3k3TkdKeTNTd0xXWm5W?=
+ =?utf-8?B?V0wrRFI2MlpCVnUyeUp4Mnlma0JUQmVrZmp4Rkp4NE9oT3BsNXA5Wng0LzR5?=
+ =?utf-8?B?dnI0QTVZd0Q5ZW9sSWNDMEUrM1Q3WmR4ZllQajhnVXVxbENVQlBwVzlSRjlT?=
+ =?utf-8?B?cUY0d1p3dm9wcm03Z2tndXpIVUpGL1ZqNjJpQUpJL2VsSG5wKzRTNnNjYXdh?=
+ =?utf-8?B?U0h5V1FwQWl2K3JYVTJkTXZmamhQUUU1WnhlRjQ1Y3ZpRnh0OFlQUS9XWDU3?=
+ =?utf-8?B?WndKS3crYUZCMUpqQ3YreWhHVVpSL1AyMXA4Nk5TTjNJZE1vL3pZdmlvZ1Nz?=
+ =?utf-8?B?a2lMbDhZUXdubVFtMlFzblJieU1FVWk3MUluZzIzT3FwM1ZURHRWcElTK3dr?=
+ =?utf-8?B?MGc0YjU4UlhSWU9WNyt1a1FRdStQcHRIbjNOdVZVZnVoVFJuTytPWlFHb3Br?=
+ =?utf-8?B?MEh6VE1Rbmprbndad29iNGJVanl5N3R1a25vWEl5Y0x2aTdRUzFTYzFQRnpF?=
+ =?utf-8?B?dzJEZW5XZnRMcTF6ZEdUL01oenFQUzVtTnRYZHErT0t4dmtqNHRsd1dvbjhE?=
+ =?utf-8?B?Q3pkZkxwRGkrczlNZFVNUFN1VlhZZmxoSzdkR2N4SXR0OW1NNDl2TXp5MExJ?=
+ =?utf-8?B?elR2RHp4dng1VVdXc0hQcFZCdW9ubkRjbHhIWTh3WGpGbmdyWmh0Z1ZsL0ND?=
+ =?utf-8?B?eWxFL2FYTzB5K0VKMnltd3cyOU1PN2d5M0JYbTl3Y3hrekFMTW5nTTVSam1l?=
+ =?utf-8?B?Mk5BTTVrVG1nK0QvWXNlVWV6OWZBWFBiRU9oYVJ3Rm9Za3haeVhlY28zUW9r?=
+ =?utf-8?B?Qk9SOVF4VkUreVJKVUY2Rm1oazRacUF4bGVqWUpiWCtiVDlqY2pOTVloNEZo?=
+ =?utf-8?B?UnI1blh4Mm1iVzEwd3BSV2oxQ2dVdXB0ajNMcmVlMVVKU2k3QUZyL2p4ZTB3?=
+ =?utf-8?B?YVlKWjJEamd6Y2RvVUtqUERPYkQyZHVQUVBXTDc1MVNkYUxPV2NXVnptNXF2?=
+ =?utf-8?B?R0J5TDFrMWMyR1BTMDFkcFNOc1R5WERjeDJrazVKQmcvWTQyMnZrYjlmL0dT?=
+ =?utf-8?B?MnFhSE9wVmo0MWNFL3ZLV25WVEUvN0ZuZXFqL3k1dG9WME9Eb21QZXc5cnU1?=
+ =?utf-8?B?TEVCaWF6STR4VnBtSkxWQ09GWU13NDYwdTBXQjVNWkxrMWZ1MlNvWllwZVdM?=
+ =?utf-8?B?bDBqcHJBYnZxZ01iRkVvVWFnelFyWElUcU4vWmhpOS9nOFdGWjNuNHdxMUlv?=
+ =?utf-8?B?ejlGZVcrR245Sk9BMUhLeXFpQmJHWXNUTHBUaCtFaVRsVDd2cXB4WGFTYVht?=
+ =?utf-8?B?bEpLQUNtdGVmMjR4V2ZPODgwdmRtNHBzVXlmTTY4Rmg2SGdEQWdkOWRCODVK?=
+ =?utf-8?B?MkE1eUFwcFEvcDdYc2dtT0d2aE9GQTBpTDJ5cXA4bWRSSStnRWZVUjJUNiti?=
+ =?utf-8?B?eEtXNVJyMEcraUJWL3JhZFEzcDFOMytVNk9HT21OanZDQWk3R0R2LzNoQ0lp?=
+ =?utf-8?B?WmVHQjg3bW16ZVFDUVc0aDBzS0JqVGVQd3hMcDFhM1Vua3R1RTduUWlCdUg5?=
+ =?utf-8?B?VFYvOXpFcW9KUDZiZWhGZnhKOUhrNHlvTlZibWlmdmd2M3JGb2w1Z2pOdUNR?=
+ =?utf-8?B?a2cxaVE5cGttRkt1MjRncEF6QlE3SVZpSzJkSDZmcnJLWTgzODhpNmNsL0Vx?=
+ =?utf-8?B?RkRJaSs2cDVxSHUyUVpBY1lNejlrR0pVamtkckZNbnAzVDZOU0dubXBNRGhC?=
+ =?utf-8?B?TUFVNkhhYUVQOFdJckJjMHZCaXhzSkhESDREalEyQlRuTGFCMzFDaUpTdWlV?=
+ =?utf-8?B?OXk1dUp2RDVLU0d0UzBrUG9BeVdMVjRZUndBUThZakxIZUx0WCtlUUtJZXVW?=
+ =?utf-8?B?ZnFaQktOaktKa0NReGpneEMyNUFBTk8xR3o2WHJWckZBbDZIZm5EQkZKdFFm?=
+ =?utf-8?B?dEJzczAyeHNnZmJTd0g0L0I1MWtUdWcraWd4eGdPQ082b21UQTNtZ29Vckl6?=
+ =?utf-8?Q?p9HK/wY3lSj8uZk+8UDgsRPVmZrRcQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(366016)(376014)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QTRva01mVzBPMFQ5K3BLNGM1VitVOXNrZStLd1pFTTVnOTY2b1BVU0ErdE5z?=
+ =?utf-8?B?Qk9LNytHRlV2MzZWQU9BenltMmZYdFkrc2RMV3VLelhENVJheUNMRkZNT2Zu?=
+ =?utf-8?B?UUsxYXpERVhmNFpvWWxIQVJGQmtrbGZyZFlRc2Q5Z1U1L0dPcHhGeW44VTNt?=
+ =?utf-8?B?ZDh3ems3QTBoMWpqRmtLV2NDWi9ncDNCcWc4V3F6ZURxWDF6Wmlvd0ZCT21w?=
+ =?utf-8?B?Zkk3VS85T21NL0FZUFQ0N3JVblJRMXd3bWJ0VjJSeU51cGFHV1RheFRCT3Z2?=
+ =?utf-8?B?enJ2bW8zYmhmS202dGxCSG1xWlk2YnBNdHkySmt3Qzk0ZmI0NnYwRFAxQ3Av?=
+ =?utf-8?B?RWFqa3R1SFNiTkE1OTc0ZFVjV1R0L2pHTFFheGZmV3hoVjE1S014dCs5cmd6?=
+ =?utf-8?B?NTUxTkdHcEVQcjVKdDNZUmRERzVDYUpPZi9uakllcU03dWJXUnhJNDQ2RU5O?=
+ =?utf-8?B?Y1h4VzdhMDVqcjdyMDFqRU9HUlg0UGJjQzVIbk1MaTQ2ZUNnSDU4MzI1NElm?=
+ =?utf-8?B?VzVxekVrNDRXK1FpbVNBMU5kNk16a09MRjczdzNHVVgwQUF2ai9wVWU2eHRz?=
+ =?utf-8?B?dlF2TVRCYXJadkhQc0MxUWhCV3RSWHlHMXVKY3FSYUdEekhWWUo3Smg3UkFi?=
+ =?utf-8?B?UzVySVJ2VjVTaEN1MjMwcXVHRXU3Q0RZSkpjdzBDcU80dDJpYTNnU09hQ1o3?=
+ =?utf-8?B?WGU5VFAwanhxR2hlbjg2SVUvd2s4SzNzMmhmb2FEeGNvMktkdEpJeGRBcTlJ?=
+ =?utf-8?B?SVV4QlFscmFDbHhVYm9ENGZZSUxKZkFQbTlMc1J5eTZQZ0RvWmVWTDgrNkRH?=
+ =?utf-8?B?a1hTLzdVNEFhTmMvOURnMWJzR29DZjZGbmJyVXBnWXMrRE9RS2JzZDJRMnBk?=
+ =?utf-8?B?L09nSXhOeDlRc2dhazZoWW5FS0pZQldYeXUxWU1zLzR6a2Y2RFMveERzR21S?=
+ =?utf-8?B?YmpJUzlkWDBTOHR6cnNNY3BQajZ4NVp3Q2FZSWQ3cWVSVzh2NkhOZm1CWm1K?=
+ =?utf-8?B?MTRPR2ljT2hOL0E0dWc0Rnovb1lkdERqTVJlMmxWRFhmQXpKVWhCSlQ1dU1C?=
+ =?utf-8?B?VVNsMzVmcGVkS3JJM3o0d1ZKWGdpY0VrUWZLYTk3RlRqT2pCTDF0MG1GVExv?=
+ =?utf-8?B?K2NScy8rdXd2Mk1RTXl2Tnk1bnltNlRMeHBPMTE0YkkxNFNJNG5xSGJzdTNG?=
+ =?utf-8?B?aEpPZExkbmY0NWI4NlNmV2tMWkhCcFQ2bkdLQjhZZjh4OFVIL2FrSWY1MElu?=
+ =?utf-8?B?SFJ6cGQvYXlhWGh4TzE3UytzUnpyRVJvSWljeVhmSjdqN1NFSkxSUU9VaXRi?=
+ =?utf-8?B?Z0tIejdOM203Mnd1bWFjTHM5cmM1MVpEblZQYjBGM25ETjZiT25zcUdkaGR5?=
+ =?utf-8?B?TlV6MkJxSEVPQTZCUWNuRHhWZld6YkJHUmpiVHc2a3hVKzI0L0xoZ0x3TFRm?=
+ =?utf-8?B?ZHlodENjZFM5OVFsY2VDS3kzbEpTbllqMGIwdlNZNnI3TGZnZUZYVUMyWG4v?=
+ =?utf-8?B?V0gvU0xpNDA3NVZHM2ptR2ZsZDI5U29ENkxmeW0vL2tnd042dkEyTVZlNTBj?=
+ =?utf-8?B?eVJIbTlMQzJFRmlwaWJJbmNXK3VqUlBIN3VFNlhLQkJBY3AvekVBVUhQSjRu?=
+ =?utf-8?B?TlF1S0owUHEzaEJlWHNYQjhibE1PNXRsUGxDdG5qM0gyL3hXZXZianB2aThV?=
+ =?utf-8?B?dEI3RG9McnE1TG9EMk1Oclc4MkVibDhiZWdlVHZLb3Z2K0xUNTV0T2xwSGU0?=
+ =?utf-8?B?N3NTM3R6emV4RHNJMjlkcFVRVWtZek5ISWlEa2dXVDNUNzMvNnNWaEw4VFJ6?=
+ =?utf-8?B?Q1NUbFpBVlhlajhyYWpFZlJUQVVOaEwzdHc5Q2R0RUJXQTdrZUlKc09KWUxD?=
+ =?utf-8?B?OVoxR2lYQjlkczlSRVRHRHVLL1RzUm53bm4xbjkyS0FXajU1WE15cUp0KzhR?=
+ =?utf-8?B?TlBXZm43NWVUUGlERmp6RTIxZzczYW9pd3RsUlZ2TndLdDFzS1h3d3NDblZC?=
+ =?utf-8?B?T2M3MG5zM3h0OWdXQTg4eEFGcU4wT2VWQ2VVWFdVV2JTaGZkMllwMnNTa3Jo?=
+ =?utf-8?B?TmNmZXowckdGK21jQlF1cDlmUERyd2VSazA5TUVhRUE0dU54YWFtZ0tkODB0?=
+ =?utf-8?Q?47C2qPF0LY/H1x1r0ZwuYTCS6?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00fcf71a-485f-4aa1-b004-08ddbf8cb5ec
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 08:35:22.6619
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mqogHa80Lbrf8F4kZOP8ELsZomkllzSV8QpPzyxqng0B9xNlm1y5DO3MCHkPVfzHoWY56cyWyMgGX1GoKNV63A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11512
 
-From: Andrej Picej <andrej.picej@norik.com>
+Cristian,
+  I only kept your R-b for patch 1, dropped your other R-b tags, because
+  there are some changes to address the comments from Sudeep. Most changes
+  are only to dump the information in probe phase, update to single sysfs
+  single value for syslog.
 
-Make i.MX93 ADC calibration parameters:
- - AVGEN: Enable calibration averaging function,
- - NRSMPL: Select number of calibration samples,
- - TSAMP: Select sample time of calibration conversions,
+Sudeep,
+  I saw you sent out PR to Arnd for 6.17, so no rush now for this patchset.
+  Take your time.
 
-in the MCR register configurable with the corresponding device-tree
-properties:
- - nxp,calib-avg-en,
- - nxp,calib-nr-samples and
- - nxp,calib-t-sample.
+Hope I not miss any comments from V1.
 
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Thanks,
+Peng
+
+System Manager firmware provides API to dump board, silicon, firmware
+information. It also provides API to dump system sleep, wakeup
+information. So add the interface for Linux to retrieve the information:
+
+patch 1 is to add doc for board information which was missed before.
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 ---
- drivers/iio/adc/imx93_adc.c | 75 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 70 insertions(+), 5 deletions(-)
+Changes in v2:
+- Add more info in patch 1 for documentation(attribute is reserved for
+  future use, boardname may not align with the board name in device tree)
+- Drop dump silicon revision API
+- Update discover build info, cfg info, board info API to be only used in probe phase
+- Update to use single sysfs single value for syslog.
+- Link to v1: https://lore.kernel.org/r/20250627-sm-misc-api-v1-v1-0-2b99481fe825@nxp.com
 
-diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-index 7feaafd2316f..da9b5c179240 100644
---- a/drivers/iio/adc/imx93_adc.c
-+++ b/drivers/iio/adc/imx93_adc.c
-@@ -18,6 +18,7 @@
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/property.h>
- 
- #define IMX93_ADC_DRIVER_NAME	"imx93-adc"
- 
-@@ -43,6 +44,9 @@
- #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
- #define IMX93_ADC_MCR_NSTART_MASK		BIT(24)
- #define IMX93_ADC_MCR_CALSTART_MASK		BIT(14)
-+#define IMX93_ADC_MCR_AVGEN_MASK		BIT(13)
-+#define IMX93_ADC_MCR_NRSMPL_MASK		GENMASK(12, 11)
-+#define IMX93_ADC_MCR_TSAMP_MASK		GENMASK(10, 9)
- #define IMX93_ADC_MCR_ADCLKSE_MASK		BIT(8)
- #define IMX93_ADC_MCR_PWDN_MASK			BIT(0)
- #define IMX93_ADC_MSR_CALFAIL_MASK		BIT(30)
-@@ -145,7 +149,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
- 
- static int imx93_adc_calibration(struct imx93_adc *adc)
- {
--	u32 mcr, msr;
-+	u32 mcr, msr, val, reg;
- 	int ret;
- 
- 	/* make sure ADC in power down mode */
-@@ -156,12 +160,73 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
- 	mcr &= ~FIELD_PREP(IMX93_ADC_MCR_ADCLKSE_MASK, 1);
- 	writel(mcr, adc->regs + IMX93_ADC_MCR);
- 
--	imx93_adc_power_up(adc);
--
- 	/*
--	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
--	 * can add the setting of these bit if need in future.
-+	 * Optionally configure desired ADC calibration settings in MCR
-+	 * - MCR[AVGEN]: Enable/disable calibration averaging function (default: on)
-+	 * - MCR[NRSMPL]: Select the number of calibration samples (default: 512)
-+	 * - MCR[TSAMP]: Select sample time of calibration conversions (default: 22)
- 	 */
-+	ret = device_property_read_u32(adc->dev, "nxp,calib-avg-en", &val);
-+	if (!ret) {
-+		if (val != 0 && val != 1) {
-+			dev_err(adc->dev, "invalid nxp,calib-avg-en: %d\n", val);
-+			return -EINVAL;
-+		}
-+		reg = val;
-+		mcr &= ~IMX93_ADC_MCR_AVGEN_MASK;
-+		mcr |= FIELD_PREP(IMX93_ADC_MCR_AVGEN_MASK, reg);
-+	}
-+
-+	ret = device_property_read_u32(adc->dev, "nxp,calib-nr-samples", &val);
-+	if (!ret) {
-+		switch (val) {
-+		case 16:
-+			reg = 0x0;
-+			break;
-+		case 32:
-+			reg = 0x1;
-+			break;
-+		case 128:
-+			reg = 0x2;
-+			break;
-+		case 512:
-+			reg = 0x3;
-+			break;
-+		default:
-+			dev_err(adc->dev, "invalid nxp,calib-nr-samples: %d\n", val);
-+			return -EINVAL;
-+		}
-+		mcr &= ~IMX93_ADC_MCR_NRSMPL_MASK;
-+		mcr |= FIELD_PREP(IMX93_ADC_MCR_NRSMPL_MASK, reg);
-+	}
-+
-+	ret = device_property_read_u32(adc->dev, "nxp,calib-t-sample", &val);
-+	if (!ret) {
-+		switch (val) {
-+		case 8:
-+			reg = 0x1;
-+			break;
-+		case 16:
-+			reg = 0x2;
-+			break;
-+		case 22:
-+			reg = 0x0;
-+			break;
-+		case 32:
-+			reg = 0x3;
-+			break;
-+		default:
-+			dev_err(adc->dev, "invalid nxp,calib-t-sample: %d\n", val);
-+			return -EINVAL;
-+		}
-+		mcr &= ~IMX93_ADC_MCR_TSAMP_MASK;
-+		mcr |= FIELD_PREP(IMX93_ADC_MCR_TSAMP_MASK, reg);
-+	}
-+
-+	/* write calibration settings to MCR */
-+	writel(mcr, adc->regs + IMX93_ADC_MCR);
-+
-+	imx93_adc_power_up(adc);
- 
- 	/* run calibration */
- 	mcr = readl(adc->regs + IMX93_ADC_MCR);
+---
+Peng Fan (6):
+      firmware: arm_scmi: imx: Add documentation for MISC_BOARD_INFO
+      firmware: arm_scmi: imx: Support discovering buildinfo of MISC protocol
+      firmware: arm_scmi: imx: Support getting cfg info of MISC protocol
+      firmware: arm_scmi: imx: Support getting board info of MISC protocol
+      firmware: arm_scmi: imx: Support getting syslog of MISC protocol
+      firmware: imx: sm-misc: Dump syslog info
+
+ .../firmware/arm_scmi/vendors/imx/imx-sm-misc.c    | 190 +++++++++++++++++++++
+ drivers/firmware/arm_scmi/vendors/imx/imx95.rst    |  22 +++
+ drivers/firmware/imx/sm-misc.c                     | 178 +++++++++++++++++++
+ include/linux/scmi_imx_protocol.h                  |  19 +++
+ 4 files changed, 409 insertions(+)
+---
+base-commit: e88d17c7335a917e98b7c65776cbe3358210e8ab
+change-id: 20250627-sm-misc-api-v1-85c030c670c6
+
+Best regards,
 -- 
-2.34.1
+Peng Fan <peng.fan@nxp.com>
 
