@@ -1,117 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB5E2877FB;
-	Thu, 10 Jul 2025 07:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FEB288C2A;
+	Thu, 10 Jul 2025 07:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752131630; cv=none; b=bacArZdS+2uR2ATtdROWTOV+Gc7YD+j0Xbktt+bykTY+hC9oy7XTO8NJvhxm8KpcNKEHIgwn9mMSkbLIPWZUbWam14mWMllTC4Eiz6LSisl8vpPK0WUtvOW0IqFGNca8GYQKHKGLoX92SeAQECwj6h6K0ogLXlp4hNbeUiNy64o=
+	t=1752131648; cv=none; b=PIu+NIklWj+IsyssSXGCArlbvOMI50j7mixbCywm1BKmzOBw04HNVF8XgOrQAg5huxxB6NoVxkZeSq6gAuvQj8Vy9WcBn+g58xVcCGb80je7iM8MiEbhURpmEKPVNHxSlr4YKgInTjJrL3txKE1NDBx6FycQvFyFvK/YUw4UEos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752131630; c=relaxed/simple;
-	bh=1PZ5SYT8dRkcymT3/gj366sIXjNSe/oKNBKj+FH3zao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sWyi41tkjdPIHHDrOELfvF0rp4Dr8e6wfp4ZdrDdoRhfRAGzlsh4bAgwSoQvo482quCYRppqmZIbyhsamk5oEyRDHzk4JmlBInZ3jQ6Hb5nGzLvTttLUowdhZMe3kcILGeNelDhd/EEMx2lwmvERn3Xm04uGBrKJVK7/Ip3okcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7liWRLK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752131648; c=relaxed/simple;
+	bh=5fQOMq6JhnmsvgxFUq50HdHYFmRTYxKZ4vzuLcA43T8=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=O5Z9w4rU2kDiI/AwlMGCZexrMr3twdzHopTShTTyIAQsNsD1UCofUp/2g2yEmqvMw7jGvqbBUGxl76Y2n19woB1M3/9tnfMZFTdmeTIT8oKCxozkOOGf1lUzVp3hU/uiTWbLLNloA5jxfvQFRI0+E/+0Q+1JIj4Ga0TqusAjtWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PyoHTKL6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7liWRLK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D023C4CEE3;
-	Thu, 10 Jul 2025 07:13:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PyoHTKL6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7351C4CEF6;
+	Thu, 10 Jul 2025 07:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752131629;
-	bh=1PZ5SYT8dRkcymT3/gj366sIXjNSe/oKNBKj+FH3zao=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f7liWRLKF+YRv9KHpnqXc8KJJfHiKxyOMTbrf4C4eZLOzV18t8Z8ofdOCIkIpSfjd
-	 QjwwFAS/CPeAASRC1DoCC2k8C9ZEtSRB60GCwhZk9OQJFhR8W3CglMyxGmmESsoRIL
-	 UzSxbYpbOICcCujzD1mfSJKvQ++TcK5Ena+0BrPt/h/6JOuLAhzGIDeL+vjhYOWgXI
-	 2xjCaIuea75KvEb/UOKsQrKc3AA4OlEehzaF5nmVyEB6hX7XZGil98DEUJPffpX4Rb
-	 D32VrK3JfP3LBa27Efxq5OpODdxs0hx27s31b6i7QJcLxVSy5yXr2KZHuc/5iZlIZi
-	 yJAKt7lEuWJVA==
-Date: Thu, 10 Jul 2025 09:13:46 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 4/9] drm/omapdrm: use drm_bridge_chain_get_last_bridge()
-Message-ID: <20250710-daffy-mini-booby-574fca@houat>
-References: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-0-48920b9cf369@bootlin.com>
- <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-4-48920b9cf369@bootlin.com>
+	s=k20201202; t=1752131648;
+	bh=5fQOMq6JhnmsvgxFUq50HdHYFmRTYxKZ4vzuLcA43T8=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=PyoHTKL6leJ/3r46CMvcb9x3yEkmOgmD0iPkLzmdxI8nr11KCQmcZjZnyHeLlCgUY
+	 T9RyJxG1XNbav/TcKr39X//7FmHctBpGz5p4/57EpAaCZEzi1lqiyoXEkXzqXlg4MZ
+	 jfWweMXOlVzX7SU2fpK8iqmglVC9892dJUWkIrRe5DEX39IFmxBNi+RbhO5nSglO0K
+	 A7Tg1Fclz9vB/gB5T2fBHd1Hv1hqfE6PO+ZBfKdczCmdH7XZSrTj3TqKtvCr8BCm08
+	 vbfPmauCLRQAe4yQhJsjHeubM2HPPsnjkGUQuH/i/l2wLF+NbgnUIf90BtecgLVQBe
+	 4VdKBFc6Shl5Q==
+Message-ID: <ad4f5b60c0fa5c2936713c93a9c17591@kernel.org>
+Date: Thu, 10 Jul 2025 07:14:05 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 5/9] drm/bridge: add drm_bridge_is_last()
+In-Reply-To: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-5-48920b9cf369@bootlin.com>
+References: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-5-48920b9cf369@bootlin.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Andrzej
+ Hajda" <andrzej.hajda@intel.com>, "David Airlie" <airlied@gmail.com>, "Fabio
+ Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Jernej
+ Skrabec" <jernej.skrabec@gmail.com>, "Jonas Karlman" <jonas@kwiboo.se>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Liu Ying" <victor.liu@nxp.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>, "Neil
+ Armstrong" <neil.armstrong@linaro.org>, "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Philipp
+ Zabel" <p.zabel@pengutronix.de>, "Robert Foss" <rfoss@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, "Simona
+ Vetter" <simona@ffwll.ch>, "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="ksuiit4bl62avew6"
-Content-Disposition: inline
-In-Reply-To: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-4-48920b9cf369@bootlin.com>
 
-
---ksuiit4bl62avew6
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 4/9] drm/omapdrm: use drm_bridge_chain_get_last_bridge()
-MIME-Version: 1.0
-
-On Wed, Jul 09, 2025 at 06:48:03PM +0200, Luca Ceresoli wrote:
-> Use drm_bridge_chain_get_last_bridge() instead of open coding a loop with
-> two invocations of drm_bridge_get_next_bridge() per iteration.
+On Wed, 9 Jul 2025 18:48:04 +0200, Luca Ceresoli wrote:
+> Some code needing to know whether a bridge is the last in a chain current=
+ly
+> call drm_bridge_get_next_bridge(). However drm_bridge_get_next_bridge()
+> will soon increment the refcount of the returned bridge, which would make
+> such code more annoying to write.
 >=20
-> Besides being cleaner and more efficient, this change is necessary in
-> preparation for drm_bridge_get_next_bridge() to get a reference to the
-> returned bridge.
 >=20
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
->  drivers/gpu/drm/omapdrm/omap_drv.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm=
-/omap_drv.c
-> index 054b71dba6a75b8c42198c4b102a093f43a675a2..3bbcec01428a6f290afdfa40e=
-f6f79629539a584 100644
-> --- a/drivers/gpu/drm/omapdrm/omap_drv.c
-> +++ b/drivers/gpu/drm/omapdrm/omap_drv.c
-> @@ -378,12 +378,12 @@ static int omap_display_id(struct omap_dss_device *=
-output)
->  	struct device_node *node =3D NULL;
-> =20
->  	if (output->bridge) {
-> -		struct drm_bridge *bridge =3D output->bridge;
-> -
-> -		while (drm_bridge_get_next_bridge(bridge))
-> -			bridge =3D drm_bridge_get_next_bridge(bridge);
-> +		struct drm_bridge *bridge =3D
-> +			drm_bridge_chain_get_last_bridge(output->bridge->encoder);
-> =20
->  		node =3D bridge->of_node;
-> +
-> +		drm_bridge_put(bridge);
+> [ ... ]
 
-Any reason you're not using __free(drm_bridge_put) here?
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
 
+Thanks!
 Maxime
-
---ksuiit4bl62avew6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaG9oKgAKCRAnX84Zoj2+
-dv+SAYD8WXoxdQImd1WsoY8Qa7eR03ok/mPvEvPAbyHoymKSL55M0Dxyg3aTw6DJ
-SBzQpokBgJjlL8l44Tp0J8chUUsawNg8WYvr0GQO++AMrH0GWH7vZttF78pb1xGe
-YlVI2cDkew==
-=+6FN
------END PGP SIGNATURE-----
-
---ksuiit4bl62avew6--
