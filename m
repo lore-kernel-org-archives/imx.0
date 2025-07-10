@@ -1,204 +1,273 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013062.outbound.protection.outlook.com [40.107.159.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F792274B3F
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 15:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752161599; cv=fail; b=dMZXNz+mVUmiC//daQ+dFsTLES+ipXB9jR4GqiWb4LVKnSHThIDW3m1ivdB4CXpxBMLkG2l3wj3+mL5FWWKvI7xdF8t74QvSDAFKkVqn9w/9vH/mpVFHrIGyZ1Lyi9dT9/7WAJZW7+OmXgjJsFv5OxcQBvD3IinN6AjrDcZhc+k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752161599; c=relaxed/simple;
-	bh=DqJg6hXPEJstLrctYfeBUeZ+/CGVUlgS0+HollXB1vU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=h50mtQ4XeYHH7TXuszNbv8CBwtggW2cUfsPIEASMuyCzn+Nm8XIUi1Nj4+8sNgo//ry/7M2LpAdyJZ1peD+zKaZB3MKvjpjMEEJ6vNy5whC6fMQEq74wDJoRFlHbP18dYniNkJmcydZVenk2HXb2nfE7BVYUP9B2CU4cHaUDuk0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oDt3CBFZ; arc=fail smtp.client-ip=40.107.159.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBB623ABA6
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 15:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752162409; cv=none; b=KpEUVrAr//I6sod5lnoQWTvhYym8/BJJOWnLIHXyUpEJCBAvLF4zaVhPQF2MFIjU45cMedD8cniWon1setapA7aC5m4FWXs7+zc5t1xg5K2SL8m/FZ//yhOv42kLepGBJSpR0jAIBueqW5DUJW03aEu+a/GFVMrRt9JfsAwIMPA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752162409; c=relaxed/simple;
+	bh=Meep8S48rXAr1IiHgTpdK/u6t6UuePEWQ1OMpVBq18U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J3cqetN19CkKdrePNOywdnTRL8WNGmyiLNz7Lxna1uuvbQVny7k2r5id/O7BmsalG9LmTm8zN9va8DdgyfZgS5c7FlyGgu4vAeiIU+kgjhEUhyqf4qmp2LRc1qwyhUw3bW6VDH2NcueO3p38W/MTogLLGt4Je/TDliaMBiGM+Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DToSyxNT; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oDt3CBFZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X3pKsqlEd0EpgRh6lpTTSfYSBvpA9ka9rFGaoAkd06xkm0lu/b7IYQ6V/nkAKF4Z+ezQkivyzPaOVO0ZLVVqKvZSaIaa+N7kP+FcvNlJEeLgxqAD+7gxIhw8KCzMm7UACm8PvzEQgGichL5urQ+MbTorhiCTjCHKB9ZT4zeYx/5kZNSE1frFXoUwhct+7K7AJ6kE0YjpfnDd9Bq2g266dNxCE3fdnVkBqss999GWqZdHkZJJMJUqEOSFuswprCbTaHZW7hpK4s1n71z+uEN9Yq/MUTCMm6a3vliL9YunhjTU5Ugnt5vka2BWzhgfj9qW1bIhs7SjRRkDEFY6ZawSTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AuTxwu4xty9p6t27whopZPjxkLn2qL+WIqfB8e8v1Bw=;
- b=cRxecToZLhv8EyfDOE8/YDNhxXIu2m/eFCGsK15P7PBvC4W5LGs6qs8ILmtDii52Vpf1ThFWo42TLHOUM0swqInBimqxvhXe2S7cEMVGpVeRZvWrbtESGxK0dZRtMyaLh13slBBwHKUbOU0Q2EuAGZMtM792UgXmKyUFub5MnByDi2sO0KnbNLexjkMVH50LMJ5qwxg+PffvnG9U5WGK5a5LTNYI/8DyGFy+ITmA7Mw8ihqKeHKcHkH88C+62Elw5Ac67CFFdBJjLrJgZ+mDVd8F0fTFfPWuxUYkX89JjoOQUKKPqsrJM6tOyVEuDZwRgF6POQyIafI/KyykKCb/rg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AuTxwu4xty9p6t27whopZPjxkLn2qL+WIqfB8e8v1Bw=;
- b=oDt3CBFZegyJhtkzdqmeqP42oboyWzuaCh+WoMDoSzzl9SdkVSzXVN4YMdus0IlGmSHwXD2kY1F2PzUvJ7XfrcUwykj+0Wy9wKTTq0aaiJIg5ryyNaYm7MBbe/j+U+ZR3bKvfeDhROXGKDWcEpEkR7mxYmbLw4BqToFG8L/MTG/GgFe+d9yxUuZ/txAc1iGiKl6apxEEAZRCg4rUsahF7bSw7VKHMLzDq+E1sZbKRenmMc2AGArZ45e9P40nk4fb4PkJcAlQLwLCqflgvzTyRgpae/wxSsKbfuA5Fgqg3rSnPUG4gJSAY2YEfUmoxKBNJ69oQVYvrcepHFqtVfYqLA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VI0PR04MB10781.eurprd04.prod.outlook.com (2603:10a6:800:26c::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Thu, 10 Jul
- 2025 15:33:13 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8901.023; Thu, 10 Jul 2025
- 15:33:13 +0000
-Date: Thu, 10 Jul 2025 11:33:07 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DToSyxNT"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-234c5b57557so12479275ad.3
+        for <imx@lists.linux.dev>; Thu, 10 Jul 2025 08:46:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752162407; x=1752767207; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=d8s8aI5nykbObjyK4zFELHxY4NnJWT0iSTl57boBPsE=;
+        b=DToSyxNTHT3kSns5iU3QHLaIcbTUYC+x0hO2ixCPEqBjl1r0HEmJkz+SRyJp97VsiO
+         3dg7B8hQ3fROQsh3RN9IXWaWkOnXBW3lTxZzpCWeNt1dQv1NsIYBoBbkQaxhN7ewKLYX
+         oeNDOX8GFAyRv/NDf3gkjrxJ3utq+KKTbyVmksEmEBwVCZi8jFUyEjDe8J3Rh9+0YlXe
+         RFTEYiymWS2j4545eVEjg/ukO6Nl/z2QNYhewLsl3lAdK2YIzcnyDsJtOaTOhtUBnUaP
+         Fz5gESZ/qd8daAcuoPRmuAH+i0UBsfNxoSafIymuaoZR+6mqCGiSm9Epq4Hm7HcNZej6
+         /XXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752162407; x=1752767207;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d8s8aI5nykbObjyK4zFELHxY4NnJWT0iSTl57boBPsE=;
+        b=d30ZpdH4WDT9seMG/ObkF+jg4fLlVu9acNgKeVEX5x5i8gLLOTfyP33d0JOpKSyKWM
+         F1GwZeLeBDyQGd8Iw/QP07LhVNjFwCjZJCYjHKDWDujN725L5eI373nThJf4P9BJes/h
+         fGWxoVMg2o0joWRk1hzdCSCOes36eBe54jzdZT4I7wVIXhCmoEK7i/nP/w/uMtOJ6qHA
+         SCldTJAqHmQnm/RbDg2/0plawh+yVzttau4+1BkGY6j5ymjoOybJRR8TaWRABH1sBmpW
+         vwuK4wonaaSnRrLsQ1CmtnzI1Mv6g4hIT5Hd4oMmMu4aqplTw3MYt6+rr+aryhu/0OeS
+         qoTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPSJfAFfnDg7+QRKCyc00n6notxGbsvpPpYPTR3YbiPaBw4/eUPyWjxIu3tIGBUglVSjk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy8VuRS96mbcM5jbcd5FSCqfmM6EqyJl4chpEkFHw411QoR98hp
+	lxd0JDRaC4i+8YwX3WFgf2GrRPebNnx2EZZQzm3V/yF4MmZE5bFSj9F2
+X-Gm-Gg: ASbGnct0r8o04GsL9Xh2ls8bRjXonMN6nhMnjUOt/h6DBOSdoxzr5J+APk5Flj9HBjE
+	BVBzElnBFf3Y29B08rJLUflMBdBumFt+UOrLyu4GE//WTZCAJrPJTJvspPOgZLGeIH3SM1TdpUk
+	kNzMcYlo5qMooiQREM8qN0IL0nX+AZ84Wno01LZukpp9Xx78eOMcWepgpLXhl/9bzsAF8iRB+SY
+	UMzrezRpWQ7VFQAkRLBKn8gJFyWpcUsQVOGEFYXtff1YMJCtzWYQc4Ux2iPmfd1mRqgYO3LSIJK
+	Xuj6pqwDIXa63S5c3JtrnzC8bTzo5bYkqSjlXTJbQ7wmobeoUVGocsMDrBM=
+X-Google-Smtp-Source: AGHT+IEqqSp2Bx4H9HZGWjwyRbPvR+vWlgwLlpuGUtnloA4G9XjlM92Y9Stck87gfHrX+jJIWpVO8w==
+X-Received: by 2002:a17:902:ec88:b0:235:225d:30a2 with SMTP id d9443c01a7336-23de2512cecmr66021745ad.48.1752162406466;
+        Thu, 10 Jul 2025 08:46:46 -0700 (PDT)
+Received: from hiagonb ([67.159.246.222])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4365b10sm23794255ad.240.2025.07.10.08.46.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 08:46:45 -0700 (PDT)
+Date: Thu, 10 Jul 2025 12:46:39 -0300
+From: Hiago De Franco <hiagofranco@gmail.com>
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de, andrej.picej@norik.com
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration
- properties
-Message-ID: <aG/dM1G30FDfd6hC@lizhi-Precision-Tower-5810>
-References: <20250710073905.1105417-1-primoz.fiser@norik.com>
- <20250710073905.1105417-2-primoz.fiser@norik.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250710073905.1105417-2-primoz.fiser@norik.com>
-X-ClientProxiedBy: AM0PR02CA0196.eurprd02.prod.outlook.com
- (2603:10a6:20b:28e::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Ritesh Kumar <ritesh.kumar@toradex.com>
+Subject: Re: [PATCH] remoteproc: imx_rproc: merge ITCM and DTCM regions
+Message-ID: <20250710154639.hmbmzpaizhxqodqk@hiagonb>
+References: <20250703130831.18830-1-hiagofranco@gmail.com>
+ <aGgAbwToGhsc5VV9@p14s>
+ <20250704190816.kth7bdf34ufc2ht6@hiagonb>
+ <aGvyDp36iWv5UQ19@p14s>
+ <20250708172953.rbsvk6gy4xuxo42l@hiagonb>
+ <20250709082652.GA15057@nxa18884-linux>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI0PR04MB10781:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1a12265-f047-446d-5091-08ddbfc7150e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|7416014|52116014|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c5DcHGn1hMN4yWgSsP8vxMMZn1PmnqyQuZR7R9qv6d8d0K92DCurTlpWeOEa?=
- =?us-ascii?Q?wXy8VwSjoKYnVfckVQUpj2v/KvKICk3w/Ns9h6IJqOAN2nXGZQhsTzPDplXh?=
- =?us-ascii?Q?i8oMIe4hlr3sGEWIq67L0l12H6OIAVKmYXAq34QcQh7gJD0BdoQC9kvy6POK?=
- =?us-ascii?Q?B9KB0zmcR5ksiRckdTn2bQlIlIam21nSRfzrpCcC61xM/nx+VqHRMe+eCqVT?=
- =?us-ascii?Q?1bFxnsRylKYqQLtMJy+SMsznucgIwSKCxONhkI+7TXnGefspEwaFL9552Afb?=
- =?us-ascii?Q?IMflsrAGu2yZKuFGqG+nI/bT/1lshEp3lHeo2t0g/vwNGTVvtaYbxOG0zynr?=
- =?us-ascii?Q?W535CHE/IiwRG7MsE3xK2wdoBr6+kX+q4KWWeoKcatLD4mHBzcnu2PwQEgUZ?=
- =?us-ascii?Q?UjzajArBScdUPdLA+g44GCD0fX3VLI21E5yrQzffY67jKuyzUtLsANVTatul?=
- =?us-ascii?Q?F1xD4nWVEJEAZ+coJfeMhiIIz9juRm4icWn0CAxi0RzFGzdNFr9B5IdhCPWq?=
- =?us-ascii?Q?xLODwXpZ+4ptnOz40NOIPb25FxM0icZUPv3cR+ULb/JdaeQ+sxcp8d9GYIna?=
- =?us-ascii?Q?WKa/B5FcTsk3wURmsLyzh4Cb5KFry8d+mT4EJXKOxV5BEDip+fk+Vsm+ipK6?=
- =?us-ascii?Q?xak5RaVfyPyjlAfMlhGPT5lnCNoZqw+uiGmcqQiEEedVUONibF4/vsLXz/yG?=
- =?us-ascii?Q?L5b7/ZKCEwWijc0bEC2olBT9w0y6tN1F3CbdZoRHZWE+k7/WLicRBkP6x5QJ?=
- =?us-ascii?Q?UX7aI3SGwekBXs/xgL7gA03pDp8YBomVWzl/fCm1SlCSmCuF1ZPh8P/0KH+E?=
- =?us-ascii?Q?ow4ISBH3B70g4ZyYUU3+mdSZ/ZOMwtEa4qMK5CxCt1tX2weegf7JhPpaV/gu?=
- =?us-ascii?Q?IsZecYTTI91dt+58MIb8M6MmOYuwgjRgFIk3sKzvGHoNeE/NiLMDAW34BZG1?=
- =?us-ascii?Q?MheTBdUWQd7+REKONrEFqAZ6adLBKLTe3fqln1wtEGF/GpYIA4K5O53fRTzg?=
- =?us-ascii?Q?iO0kCM95qxfxoD4FtoQHi62JGYbh4y53SY7eSa8VcjZQTuvxeCvcECwL8EIC?=
- =?us-ascii?Q?eezDKEwDZ0o0ogF4cImEAGm7ad54jO/EumL1azwl3VKHtcTPD+LIz+QIj/am?=
- =?us-ascii?Q?qdgYgUlLSL+RuGotm28yvZ20UV98Xy79umcjvcHwCTJY+NOBn2YoxS8PIO5g?=
- =?us-ascii?Q?X90eUCMAu+8J7t3pupx4x9h9r/iZWXrT8/O0j5lQO3xzbxjnG03JZbSOBSQy?=
- =?us-ascii?Q?JNMTsuNSgGYmGQitMRvequycXwvoCSl/NHfCYJPHeHH8zxw9du6iJn+Tb4Io?=
- =?us-ascii?Q?JFbOWo/vuPYzVeXsP0/P/DvOgPLWY1CUgCL5EVhs21NHnjw0Odae1W1CN/Rv?=
- =?us-ascii?Q?JD4V4g5rUAX6WV6q8Zmmybq/PxD1h9NDj+kUO6j3uBRoMoGHZROTE0s1BQak?=
- =?us-ascii?Q?rRgSf+ycGAW+H/jj33cRt4f8Zmb8BJkGQdynijIT4CF/tWg6wZlXLA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(7416014)(52116014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NmQaC+aA67mLdc0e2kQLNCH8ur8PvBRk6ejmcS2lbakYoeLh6brkQxSiq0FP?=
- =?us-ascii?Q?mYcJ7bMDRx70ghxoTZOUxbMaYAMfM3u6NDU31SDb/H4fsB299EpE2apEYkSd?=
- =?us-ascii?Q?NtAhmH7M/PCK1gIPfbFapPO9plPujYWh5MZCTSA9UILbyC/zZmPgEaRgGIxv?=
- =?us-ascii?Q?w+nqNFiZ5GQVXza4h1fCyb4df28SPCMZ4dtSl+WXnfevNysy4shbq49h63ks?=
- =?us-ascii?Q?1K3XcLywfwpjq4x/CvNzZc/FHY5juZjsHhaixku4pWjLLLxx2j+4WO0wMT+L?=
- =?us-ascii?Q?grqGQUrXBGVj7HD9LCbX7RgGsgFxpGMIXhoQMhupgvr+k6It7EoHdOZyVH41?=
- =?us-ascii?Q?30w46G/ERLilvMlk8roKLOHDt8ZTzlUh6Fr71mh86+um7rlwaeWgWcEbjpoD?=
- =?us-ascii?Q?AT6Ps7BdYFjKSAKsUc1hjnZw8xCJQmGWZ5tS5vuGQNz/UvSmnV9hpThTjqqA?=
- =?us-ascii?Q?FdcZMmswS6naqTfz0nmmbxSKUgu5rwm7FxHEG26O6aYy6zOUhxkIsiIqv2WF?=
- =?us-ascii?Q?tGYEPKIRXtOAQXkXQct+R2jDJgvG3p3bKX2XXEgfiPPQAxunwxlysj5j9G7c?=
- =?us-ascii?Q?UPmo/7yWY9Bcd8+6W74AhgNkrJRhDgYJkknaVFI2sF302kTQ3QmY9HqBCkBa?=
- =?us-ascii?Q?rdVahD2qzK3prDG6uBJ/wYnXfCTO7RAMl1vODzi1f61kKJa0CrsfyJ+OrumI?=
- =?us-ascii?Q?ebC1hBEsJqjHV3h3Q/Y04SgDimK6+WA9edpiDI9ujgPZ+9gwg0B84d0vcNcL?=
- =?us-ascii?Q?LeuAnw2ossMZKX0pcg5VKgsjjrIdezwNyt8an/mv9ZWduP62xwnIg1ZB6G9e?=
- =?us-ascii?Q?AsPxNd8whMxw/RN7hUtO+NrZ6txP76LSQYE5+IVEjTQhW0ugkiLh//GMcgWL?=
- =?us-ascii?Q?cdr9/SLK9/qO/sqGCPgU0uLt7qobACV7Viq+xImuJgeIlzAyA/x73zgoWPss?=
- =?us-ascii?Q?bMtQE9sEb3gAH09WrS23olL9wc78ybSRz85knuu7/HNuSJyeiuNpiJGz9lhU?=
- =?us-ascii?Q?XgCPf+3Y5SBW1Q7e/g0x7Q7Tm2v1byOGnXLTNTyTKmcC/Gai2WbGopH2OCSO?=
- =?us-ascii?Q?VWM8bqaM09/pM7WarFWdFCo32gc7xd4fRNrprztF2X5JViCABTcKR1WvSSUE?=
- =?us-ascii?Q?aH/oL3Sj5kPCKY5P5Ioc6kExT1ic0mMnXuad/oinwxxuk+0uA2HrXm67We2p?=
- =?us-ascii?Q?40FeFjKmzi1sH09MGiFFTuklSjXiXidevyU3ur80iz3vKNypGxiUMYr1U5cC?=
- =?us-ascii?Q?knG4ncZyJUfbByQZp0MPWbEIih/bzfbkb0M2VK4hoR5tMjbb/jdHKEhwiJ4F?=
- =?us-ascii?Q?y46HYlfU58DQxvHPywgs0IdlEngzclRimjIJbTfr5m7lvCtkf4PkT5cdHnZl?=
- =?us-ascii?Q?VpnY2+9at/R5ynlNDos3RV88pmsYmJ94G06Oh3DQBJfmt1gBxo16kUn6PY+s?=
- =?us-ascii?Q?DlBZsUVhN3C7YaQY/KhsFJkdbjA0k/WAeeFDqKKlCrt7yFKjkQ4dvMVFBeuI?=
- =?us-ascii?Q?35LB7z0k6AXq1S1CwRSRqf+DFCgM79gv2NYFeU3/hoEWme+Wi8FJIljivSC2?=
- =?us-ascii?Q?e0WmrBP6YIrnppITaWVF6h/pAd790fPrV1CsWBY9?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1a12265-f047-446d-5091-08ddbfc7150e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 15:33:13.0729
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xWJ8AWRsgmmok4MYg0x3dTZPP46rLlVMDmOpz0VR6dfKDw0uLfALrzmbxpvWfJuNHVyGTq6lQqW2BT0b1AONCg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10781
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250709082652.GA15057@nxa18884-linux>
 
-On Thu, Jul 10, 2025 at 09:39:03AM +0200, Primoz Fiser wrote:
-> From: Andrej Picej <andrej.picej@norik.com>
->
-> Document i.MX93 ADC calibration properties and how to set them.
->
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-> ---
->  .../bindings/iio/adc/nxp,imx93-adc.yaml       | 21 +++++++++++++++++++
->  1 file changed, 21 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> index c2e5ff418920..d1c04cf85fe6 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> @@ -52,6 +52,27 @@ properties:
->    "#io-channel-cells":
->      const: 1
->
-> +  nxp,calib-avg-en:
-> +    default: 1
-> +    description:
-> +      Enable or disable calibration averaging function (AVGEN).
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 0, 1 ]
+On Wed, Jul 09, 2025 at 04:26:52PM +0800, Peng Fan wrote:
+> On Tue, Jul 08, 2025 at 02:29:53PM -0300, Hiago De Franco wrote:
+> >Hi Peng, Mathieu,
+> >
+> >On Mon, Jul 07, 2025 at 10:13:02AM -0600, Mathieu Poirier wrote:
+> >> On Fri, Jul 04, 2025 at 04:08:16PM -0300, Hiago De Franco wrote:
+> >> > Hi Mathieu,
+> >> > 
+> >> > On Fri, Jul 04, 2025 at 10:25:19AM -0600, Mathieu Poirier wrote:
+> >> > > Good morning,
+> >> > > 
+> >> > > On Thu, Jul 03, 2025 at 10:08:31AM -0300, Hiago De Franco wrote:
+> >> > > > From: Hiago De Franco <hiago.franco@toradex.com>
+> >> > > > 
+> >> > > > Merge the contiguous ITCM and DTCM regions into a single region to
+> >> > > > prevent failures when loading ELF files with large sections:
+> >> > > > 
+> >> > > > remoteproc remoteproc0: powering up imx-rproc
+> >> > > > remoteproc remoteproc0: Booting fw image rproc-imx-rproc-fw, size 151824
+> >> > > > imx-rproc imx8mp-cm7: Translation failed: da = 0x1f48 len = 0x1fcb0
+> >> > > > remoteproc remoteproc0: bad phdr da 0x1f48 mem 0x1fcb0
+> >> > > > remoteproc remoteproc0: Failed to load program segments: -22
+> >> > > > remoteproc remoteproc0: Boot failed: -22
+> >> > > > 
+> >> > > > This approach is the same as commit 8749919defb8 ("remoteproc:
+> >> > > > imx_rproc: Merge TCML/U").
+> >> > > > 
+> >> > > > Suggested-by: Ritesh Kumar <ritesh.kumar@toradex.com>
+> >> > > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+> >> > > > ---
+> >> > > > Hi,
+> >> > > > 
+> >> > > > The ELF I tested had the following data section:
+> >> > > > 
+> >> > > > Memory region         Used Size  Region Size  %age Used
+> >> > > >     m_interrupts:         680 B         1 KB     66.41%
+> >> > > >           m_text:        6984 B       127 KB      5.37%
+> >> > > >           m_data:      130224 B       128 KB     99.35%
+> >> > > >          m_data2:          0 GB        16 MB      0.00%
+> >> > > > [100%] Built target hello_world_cm7.elf
+> >> > > > 
+> >> > > > Which triggered the error. After this patch, remoteproc was able to boot
+> >> > > > and work fine. Thanks!
+> >> > > > ---
+> >> > > >  drivers/remoteproc/imx_rproc.c | 6 ++----
+> >> > > >  1 file changed, 2 insertions(+), 4 deletions(-)
+> >> > > > 
+> >> > > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> >> > > > index 74299af1d7f1..bbf089ef48ee 100644
+> >> > > > --- a/drivers/remoteproc/imx_rproc.c
+> >> > > > +++ b/drivers/remoteproc/imx_rproc.c
+> >> > > > @@ -166,8 +166,8 @@ static const struct imx_rproc_att imx_rproc_att_imx8qxp[] = {
+> >> > > >  
+> >> > > >  static const struct imx_rproc_att imx_rproc_att_imx8mn[] = {
+> >> > > >  	/* dev addr , sys addr  , size	    , flags */
+> >> > > > -	/* ITCM   */
+> >> > > > -	{ 0x00000000, 0x007E0000, 0x00020000, ATT_OWN | ATT_IOMEM },
+> >> > > > +	/* D/ITCM */
+> >> > > > +	{ 0x00000000, 0x007E0000, 0x00040000, ATT_OWN | ATT_IOMEM },
+> >> > > >  	/* OCRAM_S */
+> >> > > >  	{ 0x00180000, 0x00180000, 0x00009000, 0 },
+> >> > > >  	/* OCRAM */
+> >> > > > @@ -180,8 +180,6 @@ static const struct imx_rproc_att imx_rproc_att_imx8mn[] = {
+> >> > > >  	{ 0x08000000, 0x08000000, 0x08000000, 0 },
+> >> > > >  	/* DDR (Code) - alias */
+> >> > > >  	{ 0x10000000, 0x40000000, 0x0FFE0000, 0 },
+> >> > > > -	/* DTCM */
+> >> > > > -	{ 0x20000000, 0x00800000, 0x00020000, ATT_OWN | ATT_IOMEM },
+> >> > > 
+> >> > > In commit 8749919defb8 "dev addr" and "sys addr" were both contiguous, but in
+> >> > > this patch "dev addr" is not.  How will this work with new kernel that use old
+> >> > > FW images?  Am I missing something?
+> >> > 
+> >> > No, you are correct, I think the use case I tested was not good enough.
+> >> > 
+> >> > If I understand correctly, this will break older firmware expecting
+> >> > .data at 0x20000000 because dev_addr is no longer mapped for DTCM entry.
+> >> > 
+> >> 
+> >> Correct.  Older firmware would still expect DTCM at 0x20000000.
+> >> 
+> >> 
+> >> > Do you think it is possible (or reccomend) another approach to fix this
+> >> > issue? In this case to keep using the TCM, instead of going to OCRAM or
+> >> > DDR.
+> >> >
+> >> 
+> >> To me the best way to proceed is understand why using the current mapping is a
+> >> problem.  The changelog describes a failure condition when dealing with large
+> >> sections but does not indicate _why_ that is happening.  I think that's what
+> >> needs to be fixed rather than trying to move mappings around.
+> >
+> >Thanks for the information you both provided, sorry for the noise, so
+> >please Mathieu ignore this patch. I will work around this in a different
+> >way.
+> >
+> >By the way, Peng, I noticed the DDR linker from MCUXpresso does not work
+> >if the firmware is larger than 128KB, since the .data is placed right
+> >after .text and loaded later to DDR. The imx_rproc driver should instead
+> >have a way to do the other way around: starting from the firwmare inside
+> >DDR, we could set PC and stack from M7 to point to DDR and start the
+> >execution. Probably will be slower, but it would make the DDR case
+> >possible.
+> 
+> I am not aware of the size limitation if image is built to run in DDR.
+> It maybe MCUXpresso team just reuse the linker script for TCM and only
+> update the link address.
+> 
+> You could update the linker script to build larger image.
+> 
+> In final elf, .data is put just after .text, but the related section
+> loading address should be specified as my understanding. See below,
+> .data is at 0x20000000 for M7.
+> 
+> xx-gcc -S imx8mn_m7_TCM_rpmsg_lite_str_echo_rtos.elf
+> There are 20 section headers, starting at offset 0xc998:
+> 
+> Section Headers:
+>   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+>   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+>   [ 1] .interrupts       PROGBITS        00000000 001000 000240 00   A  0   0  4
+>   [ 2] .resource_table   PROGBITS        00000240 001240 000058 00   A  0   0  1
+>   [ 3] .text             PROGBITS        000002a0 0012a0 0046b0 00  AX  0   0 16
+>   [ 4] .ARM              ARM_EXIDX       00004950 005950 000008 00  AL  3   0  4
+>   [ 5] .init_array       INIT_ARRAY      00004958 005958 000004 04  WA  0   0  4
+>   [ 6] .fini_array       FINI_ARRAY      0000495c 00595c 000004 04  WA  0   0  4
+>   [ 7] .data             PROGBITS        20000000 006000 00000c 00  WA  0   0  4
+>   [ 8] .ncache.init      PROGBITS        80000000 00600c 000000 00   W  0   0  1
+>   [ 9] .ncache           PROGBITS        80000000 00600c 000000 00   W  0   0  1
+>   [10] .bss              NOBITS          2000000c 00600c 00a4ac 00  WA  0   0  4
+>   [11] .heap             NOBITS          2000a4b8 00600c 000400 00  WA  0   0  1
+>   [12] .stack            NOBITS          2000a8b8 00600c 000400 00  WA  0   0  1
+>   [13] .ARM.attributes   ARM_ATTRIBUTES  00000000 00600c 000030 00      0   0  1
+>   [14] .debug_line_str   PROGBITS        00000000 00603c 0002b1 01  MS  0   0  1
+>   [15] .comment          PROGBITS        00000000 0062ed 000055 01  MS  0   0  1
+>   [16] .debug_frame      PROGBITS        00000000 006344 000260 00      0   0  4
+>   [17] .symtab           SYMTAB          00000000 0065a4 003cd0 10     18 586  4
+>   [18] .strtab           STRTAB          00000000 00a274 002664 00      0   0  1
+>   [19] .shstrtab         STRTAB          00000000 00c8d8 0000bd 00      0   0  1
+> 
+> >
+> >Correct me if I am wrong, but as my current understanding the DDR linker
+> >is broken without this change to the driver. Anyway, maybe something for
+> >a future patch.
+> 
+> If you wanna image in DDR, you could specifiy the address of data section
+> in your linker script.
+> 
+> But for support ddr elf file, you need patches as below:
+> https://lore.kernel.org/linux-arm-kernel/CAEnQRZC5t=qmo+OJLW+dqZg4gH9cAN=paWDSGbrJb2AvkKBqxg@mail.gmail.com/T/#ec54c42b70416b002936a643b44b79661dd2a8483
+> This patchset was rejected, because we need to get stack/pc from .interrupts
+> section and store to ITCM.
+> 
+> Latest NXP m7 demo has included a new section for stack/pc, but
+> this will only be public in 2025 Q3 release, for pre-2025-Q3 releases,
+> still need the upper patchset.
 
-bool type should be enough
+Great, thanks for all the information Peng. I will inform my team here.
 
-> +
-> +  nxp,calib-nr-samples:
-> +    default: 512
-> +    description:
-> +      Selects number of samples (NRSMPL) to be used during calibration.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 16, 32, 128, 512 ]
-> +
-> +  nxp,calib-t-sample:
-> +    default: 22
-> +    description:
-> +      Selects sample time (TSAMP) of calibration conversions in ADC clock cycles
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 8, 16, 22, 32 ]
+Best regards,
+Hiago.
 
-Need some judgement in commit message, such as difference board need
-difference nxp,calib-nr-samples value.
-
-Frank
-> +
->  required:
->    - compatible
->    - reg
-> --
-> 2.34.1
->
+> 
+> Regards,
+> Peng
+> 
+> >
+> >Thanks,
+> >Hiago.
+> >
+> >>  
+> >> > Thanks,
+> >> > Hiago.
+> >> > 
+> >> > > 
+> >> > > Thanks,
+> >> > > Mathieu
+> >> > > 
+> >> > > >  	/* OCRAM_S - alias */
+> >> > > >  	{ 0x20180000, 0x00180000, 0x00008000, ATT_OWN },
+> >> > > >  	/* OCRAM */
+> >> > > > -- 
+> >> > > > 2.39.5
+> >> > > > 
