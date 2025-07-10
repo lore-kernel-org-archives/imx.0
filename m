@@ -1,81 +1,70 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011014.outbound.protection.outlook.com [52.101.65.14])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011033.outbound.protection.outlook.com [52.101.65.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CE8198E9B
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 16:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C6A27A131
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 16:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.33
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752163624; cv=fail; b=bbYfz5KVG4dhRg27k/Uo0HjOkokY1cjx+mMszfFCTRPIeOGDgIuIbNlDgVvB7va/Hx+Ua0tVh5RImd6+lD/x9UB6ayCCOYE3qtUFQZ8NKUz2QYf0b2ZU1fRS6EyfvUCPSNgSBYy2ne3KiY4KeG9e/33XHOs0pm9cVSWIxQt8ohA=
+	t=1752164446; cv=fail; b=mS2hZSHM6YotqwlgswmZIzgLs7TPvM6GU2m2ancPOcpIMrJWfoqeA+MWGcmWxlPfDRCynSMZH6AZdWJNusFUErRDwq1ntoYc5u+C0Ln/B9Jx6hW04lkiWephKn6usldKwZE25IW/6X/pWb2yg/hIawbX/pNSA0YHvmbbWe1bBeE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752163624; c=relaxed/simple;
-	bh=u16O43YT0cKvq99wqmTKPaEBSRCFqTZHDIymud3Zu/A=;
+	s=arc-20240116; t=1752164446; c=relaxed/simple;
+	bh=sNMxvDmagsqyemeuy1nVcZ7VxPAfEEafoad4kAweVDk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=FNX2phpNj1nvOMb+YzUMrxdre8pgDNFau6a5m8grHMZwcuIE1Q96V+EnIG/ZzVKctLKMXaJgRnbb7mIo8q/Jv+otVbwTBM/LWy+oel6Zl6qVVKAvMjotffzJDuP2YzZJxmChX5f1gZHGS34Efw3Uge7fXd5lDWD+id3QE6CoOWI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GQsgERL8; arc=fail smtp.client-ip=52.101.65.14
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QO0kJHpptwUJpnMuGVTN1FUMd5Y4Xy5DAM7sClEw5qnI21RnB+kNmr/xF9sGJdKViIcWsP5Y8GIFyUwtNHhuIiAypWTaZOmz1u3FDFKagOtMvrm7SE2GhWSv/FJF5tLfo0a5vVpyJyjB482qmdptIiJG9w5FAkBInbZGmxinGZw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hQsyNjW6; arc=fail smtp.client-ip=52.101.65.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GQsgERL8"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hQsyNjW6"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WBKIw/of3lsVdqDg9ij8o8lVLZNtiyGiPKzrqb/ST5wRnNQIa1aNCropyEQLtWcIpdCIP2VJSTPDKl4t4WIydU20YQx6CL+T2Z/ip8e+3IaB/HUhixo0Ni/GBHPw0rsPaWBVRPvRkfQgqRsdxcGw4wV0GDxS554HbOrufUTHXPnlHE7kbTBOm4n+AuLRGPsSW+UsuDI6udtfD4wrwIFqw5DS9M0I4KFJidsMS8HMOSpAao475lbgxOEIVYOSMs7x7pW8NIljnBdYkr/Tg/BBZ1PGJIEdeyiu5x2R6XxgIJTop+OpMDND+1eahvtP61DZra4wdjyO4wqbUpfALOmkFw==
+ b=uy/xkIl28aU80+rOxzcqC0LTPxdn1pfuWrZlxscobdWd3w1hw4WnKeBrIJfzM534spP0tfi1QNmaaWVc4yo45lgUFXt5G99RLF1wKKVpjhMHg8BGZZzF1AzuN5HuBWbx45h9wHIoWDEuhi5yT1ksVcUkPORilpAUTMwodB5qxwAoljBUAwJ/UuLYmPddThkFyHgZTYVPmv+scjs6U/rme3TzkVukplH/4FeYwlBPsStUnII5W10Wzj1Mt1lPsZf81Ischb1nXuOaWj0/M92OWFcFjkLjgW3SUjQnOGlLqB5sy9YvA18Jp4bKIXeqqlGSbPGOWY+2yBYYO7HxdynIlg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Kt05uIgwetaXwYDwJG3akXamgFNRAZiiBy+CrKT9hqs=;
- b=mHigO5Ciw1rG+jai73ksdBZ82s8ahhRyV9VKkq1ZTIePtNLWYEnw+ctVDI58wlLU6wuw/hqPkq/00pJZ0o09fBP9JavbSlB0aYXrryhUiXWprzxnNFdSrHQ5baXNv7v6LWz3haDoDZfGkcUfaLaYCGoWPhign7881Hzixh8iaV8zjZKZxdSaLoPYxxejD0Hjp6O9HqMqWpzFSWZZ1VzHQUxq2DyfxTO/aAX/X9qfbUwR1dp/nCsnYMagU8fX1Lf8M6yAgztAky2b4qhC4GbY1H2nBWdgzaMqj/hBohcxCa3e4Fb6+GKraFhcevO4Q2YQMw2XP3oC15HHMoOIigShug==
+ bh=Kv6rY7fgyqRQjWObwWToC2PW+1Tddtrj1Pe5VTTOlt0=;
+ b=BooVwm4m/oR41fcJi6T0CwhQGriV5/LsVLvsk4Qg/2k91e7Uf+r/X+xV/+tQzHClrvm2YtinhUQ/AVSPzElwZb8LN0WcoLTkCy1VCm+XW0ldZZzYYgZZ29afbZxp8iZG3s+8gERDmAJDVEe8TlDV3pp4c1uXr5Yses/KThBNwvx7/1oc9mcTXqOoJo3HkAj5SJydXRbeYa6hUXJubjMliocqOU95O1ZWsBY8P82WmceDuLAzcmW5aKIfXnZS+fEwk/wMkbaV8uHwDJYQPHcnp4B6suuD2tvyPgdfpd0rTKlkq8I8AYb+ApHAQ48ZMKEhKplBqK0z2jGgDLyDJtmviQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Kt05uIgwetaXwYDwJG3akXamgFNRAZiiBy+CrKT9hqs=;
- b=GQsgERL8jzrjYleIbFvzTMAYZakiAP6W5mS+/JcOD74f8DId4CnfftaNlYG3nOJnayvQJNE9DzcYYQ5jb2yXzZ7Bqa3I/B+fJkWAJgmM4bJhcC+IHk1eGg7gjqco4RjusSshiJAwluFjclyCvbl+Zc7ZqANYNKVl3fUyfGIVkIErRptf59GwzdtJoLw3esN+pEzjtzMa9vqx+jqVldHjF8AnnJR/EjoKwnHU4qKOtJOw8BL3L8xLkgsxdTmfiumwFpTAvKLcaeWfjBrNTD84lZ9c214niuYayqa4+N88VGfLruMrlWDxVaZxjdSTwp7bql5Iqv5igCP0cW9PNujvHg==
+ bh=Kv6rY7fgyqRQjWObwWToC2PW+1Tddtrj1Pe5VTTOlt0=;
+ b=hQsyNjW6eu1jDtXYxbi+Azxycd4Z8/wPV1KJvrl6tM5vJAjn1d06MHBz6+NpwdqMAOCnfClcVi4pOs5k9amPaLvCCY29JtFreuDfYJ1dj+jJAAClUzpXSWZOxhTSRTlNdgV5O+AwVxKinZiU2S6pzjdfLxV77qXDxRk6vonQLwMx1OTATi6LaslaIswE9eutUlqpOSUackjQW6Zu6Y1QERj+D7GhUFFyVNETBlxYzVTLsKtddTTB2vO26LYcv4s/0/+5Lt0RNv/u7PWdNDKoIIzXwIgRcAE3Y2bczPVKQ00aE94F1x7A9zfHz36DM7v712cLa288vAD0J6B/cSagug==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by OSKPR04MB11317.eurprd04.prod.outlook.com (2603:10a6:e10:99::19) with
+ by AS8PR04MB7943.eurprd04.prod.outlook.com (2603:10a6:20b:2a1::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Thu, 10 Jul
- 2025 16:06:59 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.29; Thu, 10 Jul
+ 2025 16:20:40 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8901.023; Thu, 10 Jul 2025
- 16:06:59 +0000
-Date: Thu, 10 Jul 2025 12:06:51 -0400
+ 16:20:40 +0000
+Date: Thu, 10 Jul 2025 12:20:33 -0400
 From: Frank Li <Frank.li@nxp.com>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Shuah Khan <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	dlemoal@kernel.org, jdmason@kudzu.us, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v20 0/9] PCI: EP: Add RC-to-EP doorbell with platform MSI
- controller
-Message-ID: <aG/lG2r4U4rPrEeB@lizhi-Precision-Tower-5810>
-References: <20250709-ep-msi-v20-0-43d56f9bd54a@nxp.com>
- <aG-mqWtUu9-CD43U@ryzen>
+To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, chester62515@gmail.com,
+	mbrugger@suse.com, Ghennadi.Procopciuc@nxp.com,
+	larisa.grigore@nxp.com, lee@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com, aisheng.dong@nxp.com,
+	ping.bai@nxp.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	srini@kernel.org, linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, s32@nxp.com,
+	clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com,
+	echanude@redhat.com, kernel@pengutronix.de, imx@lists.linux.dev,
+	vincent.guittot@linaro.org
+Subject: Re: [PATCH v7 02/12] mfd: nxp-siul2: add support for NXP SIUL2
+Message-ID: <aG/oUTQAyRwc3/ia@lizhi-Precision-Tower-5810>
+References: <20250710142038.1986052-1-andrei.stefanescu@oss.nxp.com>
+ <20250710142038.1986052-3-andrei.stefanescu@oss.nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aG-mqWtUu9-CD43U@ryzen>
-X-ClientProxiedBy: AS4PR09CA0018.eurprd09.prod.outlook.com
- (2603:10a6:20b:5d4::6) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20250710142038.1986052-3-andrei.stefanescu@oss.nxp.com>
+X-ClientProxiedBy: AS4P192CA0045.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:658::25) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -84,240 +73,650 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|OSKPR04MB11317:EE_
-X-MS-Office365-Filtering-Correlation-Id: a9465d7e-a754-46de-99f1-08ddbfcbcc88
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AS8PR04MB7943:EE_
+X-MS-Office365-Filtering-Correlation-Id: 030eda1e-f339-45ba-8d82-08ddbfcdb631
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|376014|7416014|1800799024|366016|38350700014;
+	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|19092799006|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?VXe82JHdmzsDp11m9odwHG/tnQo7jhkjCq7eDDvUg9vMT3L8GXsu2Z15NdbI?=
- =?us-ascii?Q?nQ2NZyIaqqT3v724vSqvYWJf/xtReF4ARoQpcT1qCy1clnPzgu9CLNiDKdt1?=
- =?us-ascii?Q?lygnfNGom+VvkpIKDR4FLmNYUx9zSH9enyEw/KYJEiqhxvo6o8E6PO5RlTwA?=
- =?us-ascii?Q?dljtEfJCSSfe8Gu02a6pvCGneJn9R/DakGxp0GfOh2BxKlzdFCxMLHXUw5iC?=
- =?us-ascii?Q?DZtFKqd7c7hto9u/DEZPvyY28VYdxnD/CSp+XvJ/CChBn8bVD1nBuIUZYgJZ?=
- =?us-ascii?Q?BVmY58rf2PUxNqix8BXBxKeErmip7o+gxWST5wOhyjx5JY5PXtTmHcCbeprl?=
- =?us-ascii?Q?YxcbOr8/1nnlC80NPCBzy0PHJ2XieGf7SbjoYjpX9f/M2lTqvpvkJ8N4j+gE?=
- =?us-ascii?Q?Bejqd60aV158YrOGb7byX5oqzEStBhoDw7kXF+JjKqF304flnNooFKoxyeti?=
- =?us-ascii?Q?bJHVxMd+nH3krcCwQWtvx2kvebgEZ+GJAsAopdA4IGhNKNLkEeezzP2m2I0g?=
- =?us-ascii?Q?12Hv6VOJ/b5vClLZBYKcgmOegCFZlEJI5KRtMbdJ14YldsOinpysx3Pttxn7?=
- =?us-ascii?Q?yVLbV5Ykhl1/f0Q5UMJ22dztUVE6Ztqgesc4Hz+75qbr6L/wNxZMzKMU2XKn?=
- =?us-ascii?Q?67Mhr9iLH/tOwDgchfolbdW0jTSIED6jsVgtVV4LXGDy3gJfg0YSiiNuy6a1?=
- =?us-ascii?Q?pmEv7O2rOBb3gxAi7AX//rN8TNQ0CPwmRtJgZJqGmYvj/foWOVxR2B5VEXvR?=
- =?us-ascii?Q?ZhFtWLZY9zr6YlzE4h7fbgCQ+VjfyDOT/WVJuHG8T/lgjhIyDlqMDuGgX11j?=
- =?us-ascii?Q?JqBelTVa92ZYSUPAmX7LmsrgBRYRwWtLcEx2yEvb4XTXzBT5ZsXNj/fdU/BI?=
- =?us-ascii?Q?SZX7haU3+aYJNg8bD8iwYG/JmdbfetybluKq4ydRRg48KGfDyR5Mdr5+L8dn?=
- =?us-ascii?Q?jUx4vp4UZjyKGVbpq+JJBpxUc4IwWvtjxD11ijg5UOKZ9N55nFrVXDQ1MAQL?=
- =?us-ascii?Q?kwYqDaunEzsDCXPomdWAogZMY/9x28bxL91rzA74zbnkvErwkwvMjv/H/DP4?=
- =?us-ascii?Q?tQogEnzxzST+bOaMyTWKSpEDxQXdp2PBHwT6kNqEMRePcbjpD0ieojwL+3G0?=
- =?us-ascii?Q?xgEmgULhqcd1BRZy88lk/FSxyMGEHoSIm3Lwhh/Y0JJRXW2ho+AqJKFjBN4j?=
- =?us-ascii?Q?WF2XMNnv3UJ3p3q8/vF3Rf2G0ypi1TtcYIO4gynYD+CRl5vcxIpvAe3V0Y9K?=
- =?us-ascii?Q?18nm94haeqd1KiwzK9cRXqiQ4/m13Q2v8B5r9m6uujCkD0rScJwHo/p4KATK?=
- =?us-ascii?Q?xJU7SwHgBROPVlCEtRQyWN6Rwm9VZqdXlNNfxwY0wV/Suq9TcryzP9jG4kMj?=
- =?us-ascii?Q?psBBGD+96Umw8mqDTx25Q/6g5G6Myz4V5fEOX6Fo5ePdfEK38Zlzdd1WwfSN?=
- =?us-ascii?Q?xVZPyYleW2hJfZeQdXdW2txXgrT5XyHa8LcAEECM403IZsdTIrEEFK4qcP/q?=
- =?us-ascii?Q?vNNA4MI2gIzfhD8=3D?=
+	=?us-ascii?Q?3vlOYVQuPpJ8oIDe8qghuWxAxZ/xRjvvlOD17uP8iDMubD2HdwDbm678u6XY?=
+ =?us-ascii?Q?AGu2MLFTUmjwmPu0PB4joBV74v1yUJikCfgEyl8wotHwlXKAPCM1Kk9/2vDh?=
+ =?us-ascii?Q?diWUJUJRW5L6jzGXRVmu8RFnJNeoPZnhCRcxDSIAd5LCtMYqd/yUXixoZ3c3?=
+ =?us-ascii?Q?Y2+QeqaXXVShrLfc9exgqDFZuEyi1mzkJ3a+Eny+exmgPHBnqm0wBm3Mk9Ee?=
+ =?us-ascii?Q?SYv85EPuYuO9RZ0CI509J4s5BRWsrAjSoJFNOXcs79bKx84P90dxHQX0lAFE?=
+ =?us-ascii?Q?dYkcFEmS+gc+Z5s+aVLCC2eiz+cBeTiWLKmzJ9XtRutZe1yBicgcNQ3oD4OO?=
+ =?us-ascii?Q?9dSwaJh8oka16l3ia1Xj5txSbtzTWec3OJ14js0QZQLp6Ln0eecGgkm4cFSn?=
+ =?us-ascii?Q?tocmA6laRwNBHNz4fj9tZpCDDrUhhi9Bl404sD7AolB4/EvK8wmFZzhtpDWI?=
+ =?us-ascii?Q?XgP0PV9mj1ih28SdZtE+j99wvYKLdwAxwdUDiCtdFDFuLgyHsrL4arboI/Mm?=
+ =?us-ascii?Q?N+uW+u9utr2UFbE1SeYyo46VSqU5L80bzdL3oVorfoaQZesdjGcJAWSOAAo1?=
+ =?us-ascii?Q?PiX+ZjC0U0Xhz5aPNwfMfMn0Bpyow4OxzQQXEczE6k229UvO8AWLNrWfQF5S?=
+ =?us-ascii?Q?kvYD/0aMaAJnAwhwg5Y45Fptklr6Uc+09I4g34YkQvR6vcJeT9UfKRfj6Gb8?=
+ =?us-ascii?Q?kXRKGZG9sLiKDMYHmk4Gocxrr0xUMtoP2/6BHC3dhv80mLKRRRZMDYKktKwp?=
+ =?us-ascii?Q?HG0fqF7agAVAC6b+IMqtoX0TdY55KiQAFQmtl6vBTX20fCBxYtReKGRyRkCm?=
+ =?us-ascii?Q?eT+R3VRQnRRX7W9VdP0j5lTjCnJTpuU+l+HfNbGvTnbNdxAdNxbl0WSR00Ws?=
+ =?us-ascii?Q?xt6m+N/wyN5WA4wCuhVmQbkFwj5Hs0HXEJz/i5is/rrBhYi6JsQeqXCxRNlq?=
+ =?us-ascii?Q?K2+TAGYCvDL5+eZUjUqqsHuFaMaNMeIzRzUBOSu7FrkHuLhVQvSB8ssO+qV5?=
+ =?us-ascii?Q?a6uHUvi6qlptv0rQs26TAi9mELFmcVxuv3pWKvl0zHGy355fvS8qhacyq3kh?=
+ =?us-ascii?Q?soRASvi+jIkrETYCjod0zF+q5ogmVpwjxyoiSGQ/diaapnBIdqeW7Gt8z/Oz?=
+ =?us-ascii?Q?ml4mPmp7XHbZmUlu+JJGkpQP00JV9atMzSRvnjJRkPU1R6zVf41d8Anjy/f5?=
+ =?us-ascii?Q?FSEaj4g0I9gB7hkaPBZukTgu0nVqnoN9KMcVK3z/VfuqhF7TxuqXtnfuEJAR?=
+ =?us-ascii?Q?gdmvbEdq7q4ubvJegWGbUc06RIwSKWMfo0dUh1g7dmE+0B98uokzU/JeMUcE?=
+ =?us-ascii?Q?lIKRiMsCYVkCkne0ukwnaXngWtXGttIdA7cGGGGhFYUVNE1sCGbg2kFej3Tx?=
+ =?us-ascii?Q?U2SpXU7CSCt5GJCCzuD+877lpPawuiynOiAkSZWV6lszpSDTcEbnpxIBXa/u?=
+ =?us-ascii?Q?+yLkpeLC5joKLCWaZVo/sGV/4p97P13ZvHMaE9ZfmfxEwZfH4qnjZw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(7416014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(19092799006)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aaZ+OSq4tU27s+wwx4yU2sGJ9rpnIlV+rdkUiOhztruIaldjimzy7TF7rQAY?=
- =?us-ascii?Q?Tug3YPVTe77vuZITN8xAIKYD0YEFkVwWu49jHuDBsxIISz+FJbyTQH99koAb?=
- =?us-ascii?Q?mhj5wNzOpFz7BSm7mFWq6UaZswwvX7SToB+D8pFdY8aT8kEu0j5t0w+phY54?=
- =?us-ascii?Q?NhcQyUvVLMAluq4VkfaRmdHWeg/ztVy8iBXGgITt66PExEnt9DG9XDlFSmIQ?=
- =?us-ascii?Q?I2F1VdyRaNZgYsPuuTqZedn8V6xU709rc0mNoUWQW8ZFJR+TcGFHWQvUADuv?=
- =?us-ascii?Q?KpqYmoH1vnUaCQKnE1n7Q2y3CQW6SAAET/z4QmCN2AhBttoBASyG7q+ZgPqD?=
- =?us-ascii?Q?ovb4/V0sB24m/nGeoFRTYrb0La18FJyNTNlySTzPu5wXge1VpJpwckvm/XSx?=
- =?us-ascii?Q?NNWaCOW8UsDl4G+gqrU29ux0+/Ct+rYSd3vmJlYvcfZgqhx9L1ingfIZgYAy?=
- =?us-ascii?Q?Mtnn7ukmamYtP0NH+8HUPh2kfvIAnJfUt6olUCZYIfLPRMYgozM5IVIpDpa1?=
- =?us-ascii?Q?OwEiFjJDWsDI/siKEZplVvt7Nx0Atd4To2sg3LgghZf0tZOMLYULcTiia9mB?=
- =?us-ascii?Q?ymcrdG3y61Njy3WDGGYBuw/Z4WwDQ5qnbso0kMt9pn9ZaMuQqi91kABqaidN?=
- =?us-ascii?Q?U8BzMlXq3Z5o3cuCAmgfSQI2MkQrIen6GGOsl+T3RBZIe3hCLKThW2VgbXfn?=
- =?us-ascii?Q?qUEk79WskkTB0dhG4dkJsO2HDMBYc5srdJHK/XrQoPEjuDh4j7h5Xz7jpWdD?=
- =?us-ascii?Q?SfAks5eOaXsfLJ7Y3480d78ds05fHg4BnK2D7xGexwYMVFhtQ3JxPjlPBUnH?=
- =?us-ascii?Q?0pcF+7cp9PVLMy3P63jdZkCY+1xRqvj9lGjg2A4YvwqMAzYGnBh/RYxLUr4Y?=
- =?us-ascii?Q?8eT+tXCtdMjqEKyf9MWllhrqdtI2V/wGB/4FleJgcCQ4jC/nvm22uqIiY8/L?=
- =?us-ascii?Q?kF/tJZzrGzaQB8Ok1rxHJSGd7jhgHZ7ZIiEBNOLyHcDkE645c2H1cJv7C3Zp?=
- =?us-ascii?Q?CnKDCH4KXp+RGgurIrC4veTMKkjHmFZa5obDd+g2lyAxUXHShCOXxDJpvYb0?=
- =?us-ascii?Q?qTEkEICX8LRFw8T4gbndNzOwh0SBZXY+5Z2JgpEf6ZDP8dAsUle6Hot+Zame?=
- =?us-ascii?Q?REaRGKqUtZynfkMUq0UxY/8GyhYwtxMhlePU6ahH73TcNDNdVP6zMQrixRro?=
- =?us-ascii?Q?rpZZ+8DqMt3HPE3a7Uv+yb9ZUw431g1PRmg32LwqRErX+LaCsn6czeN98iN2?=
- =?us-ascii?Q?aDB9V+ysmZbdl88wkm/QptMdDBX6bYqDBOKDlxP5xEqg7ytT+J0d/ijdqbFd?=
- =?us-ascii?Q?dnepvCssagqSEdo4xv3GOEs9mEPCSYATK/v2j2JPSmqrHKnNxmsD68lbwqjx?=
- =?us-ascii?Q?mc1AJTWgWNFUA/OhuL36dCJN3KYfcfI4oi1cAK9DqBcVQT7E1uiPdOfaW1HV?=
- =?us-ascii?Q?PmOX11ZJEUiqwcnxGrgqH229rOx/PxnvV5xIp6t9vMPvh+Oewg9/JpoqfY0s?=
- =?us-ascii?Q?ndnlY1R5wJhr9fBDmeOpnzBbwimheDH4pAD8dvEb7VL42TdC+k+uEMVxOVuA?=
- =?us-ascii?Q?IuzWClD8w5U3ic03z8p09QA3gppgiywd5+Gfi6xm?=
+	=?us-ascii?Q?Lg3WARU9zhUBtbk/ATfBDNNxoXiq/SjOUJrpxCZSVv7pBcP+MjY+Og68gqDY?=
+ =?us-ascii?Q?diNL070iZ7YGXyETzbvR05s9yeXpusqIflbw4SrbWUeBD4oR7s+WX2Y4ZLRx?=
+ =?us-ascii?Q?wQsOCIqWA1vkNnELJKwP65H6OYFE272FT1wVgU0QHZ48MnKNmIIRZkSfSqqc?=
+ =?us-ascii?Q?EQZmGjE8BPwm2LXdQyRrhR76oCF8032MXWjJrmKY5TfyYAVSy2Yq23Fj2WDt?=
+ =?us-ascii?Q?dtDrH9htRL8z4mbfm0PIPrMjGJsmGycOuPVAGtH8XZaCdSbTqhSDbnpjSKor?=
+ =?us-ascii?Q?/rYIDn5rPUsHQEY9fnxXgrcMzBhlcDeLR7ELkqe+sR1+iHtjZQL0gm5Ou27j?=
+ =?us-ascii?Q?pndW6IpNJCNpYlBy6LdYDKVMVCJEn+FMIq9VhYKnEb6l8GcocqPfdwikpik8?=
+ =?us-ascii?Q?iNoZbISzrcqeEYrjWqx4elU9wTWdcFxO0bb4QKeosch0WONm5JcgvbVqsbYp?=
+ =?us-ascii?Q?Drxiy3yqLLNbfLF/Qqb0Um1ZW8CnjS/LfnBkWal4ncc1matjO4Gu0aHnJ6zt?=
+ =?us-ascii?Q?b0ezeMdl+0Ym1ytyjupwVpH/Avk+mcsuTD2CKRmdDkSWm6XbznMx0qSZeuc4?=
+ =?us-ascii?Q?59WTpph6dNyXHRNQpb+MdypGqzYqlBU78iWO1NYkKAF8CzqGWJuKjUCrhwYH?=
+ =?us-ascii?Q?TuZlsXa4QyCf4sd4vnnA/n6s+zqAX5fI/crv3OyNioJjFuIxCSsMIleAAqXM?=
+ =?us-ascii?Q?69SUcFv/eq3GZXUaYbKYrmpxQjfcfshLF+XHafpnB4WM/2893GUPcGyPFnq3?=
+ =?us-ascii?Q?QzuQnV0POTlCk3Gxv3QO3DkwXl9FoXyysYCJWsml9Ch2RFItiEHSj7T8aPWz?=
+ =?us-ascii?Q?4pMXgZfKCEsUIZft7Rmyuv81h8/rEuex6Bk2f+0mrA6d/4DGw1JIUktFXwQQ?=
+ =?us-ascii?Q?U1MdJZfgweRrBuhmxlALGC9qbvMbFNB2/gUDQRlCEn98wWYKNS8IwR7hzH7l?=
+ =?us-ascii?Q?blbGHLAmlXvRPJwHXdTlxUvj9hWUoMdEvqBZJb3/XUvRxlAZs8mmQIo7r9gq?=
+ =?us-ascii?Q?HA9qFZFunDHDzU2YbRf3T86UgOCPeOLXtRrJOYO1GYP5M5x9J/knCqxhuFff?=
+ =?us-ascii?Q?Hkfx61oAR4owzmUjEh/oj/QbMoBLIzV2uq478W5n/klP4tKkvcaiHpd5rPkm?=
+ =?us-ascii?Q?Ens2L9+FCnD/DQXcTDW69Svphuc3ye1ErzFKw9+BpgN1KtEZxPcQ6w/u4yEH?=
+ =?us-ascii?Q?zTN1T9bqsKsXssIHQtwRrxiWgWf0LRuNyBmg5Ti/T9PPOR7d4ic+Cohkd4kw?=
+ =?us-ascii?Q?CZbNf69cnX7xFjgFQ9r8nwgo5gxL1EAGOz5R0mYC9hIIyv44aRPEXqLyVqSw?=
+ =?us-ascii?Q?+jQHNYDOO/ajm6KMipq79pDVSAu/+NhNn782e+zv8TatbaseTCPQUAlNdLFn?=
+ =?us-ascii?Q?YFDMQ0gn6zrBug+NWWaCmg2xBtHXvaQVLbXETeqSeVAtzitWxvrUgdgLmGZ0?=
+ =?us-ascii?Q?XpzCjUMCFt/1EUMsHwJoUbj1oH/Etb66+F99GVNS13a7M6clCHHWMh/7/+hk?=
+ =?us-ascii?Q?HjQDOgzxvCQYULMASwwvg2l4qGhMJeesZXp4nUQKNuu8mDoVn4zZC7Eeh1RJ?=
+ =?us-ascii?Q?E/8d8JjdAaK+cWNoruC6atsQkrkj8XjAFcLWNrkN?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9465d7e-a754-46de-99f1-08ddbfcbcc88
+X-MS-Exchange-CrossTenant-Network-Message-Id: 030eda1e-f339-45ba-8d82-08ddbfcdb631
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 16:06:59.0729
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 16:20:40.5621
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FC7HlmIiK5TXG82U82KNXyY9lew3MefCZJfTtEQfN0uO/Mn4Xsjb9mRKK7mj8b89KLwNvgCGxUN8IOrUhWuYig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSKPR04MB11317
+X-MS-Exchange-CrossTenant-UserPrincipalName: CmluExrU/9RKhnckWS/C0XBzX3CdIkUorcZgGz7+CHsM/JCLSGfvNIYhixKu0qLG/f7K6k6ahE6EMwkKOhPBXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7943
 
-On Thu, Jul 10, 2025 at 01:40:25PM +0200, Niklas Cassel wrote:
-> Hello Frank,
+On Thu, Jul 10, 2025 at 05:20:25PM +0300, Andrei Stefanescu wrote:
+> This commit will add support for the NXP SIUL2 module as an MFD device.
+
+Needn't "this commit", just
+
+Add support ....
+
 >
-> I tested v20 of your series, but unfortunately, it still doesn't work.
+> SIUL2 (System Integration Unit Lite) is a hardware module which
+> implements various functionalities:
+> - reading SoC information
+> - pinctrl
+> - GPIO (including interrupts)
 >
-> When enabling the doorbell, the programming of the inbound iATU fails:
+> This commit only adds support for pinctrl&GPIO(one cell). Further
+
+Add support ...
+
+> commits will add nvmem functionality(a second cell).
 >
-> ## pci_epf_test_enable_doorbell()
-> ## keeps the BAR size, and BAR type of a BAR that has already been configured,
-> ## but changes the address translation for this BAR to redirect to the GIC ITS
-> ## rather than to the memory allocated by pci_epf_alloc_space()
-> ## (does not free the memory allocated by pci_epf_alloc_space())
+> There are multiple register types in the SIUL2 module:
+> - MIDR (MCU ID Register)
+> 	* contains information about the SoC.
+> - Interrupt related registers
+> 	* There are 32 interrupts named EIRQ. An EIRQ
+> 	  may be routed to one or more GPIOs. Not all
+> 	  GPIOs have EIRQs associated with them
+> - MSCR (Multiplexed Signal Configuration Register)
+> 	* handle pinmuxing and pinconf
+> - IMCR (Input Multiplexed Signal Configuration Register)
+> 	* are part of pinmuxing
+> - PGPDO/PGPDI (Parallel GPIO Pad Data Out/In Register)
+> 	* Write/Read the GPIO value
 >
-> [   39.347502] pci_epf_test_enable_doorbell: msg hi: 0x0 msg low: 0xfe670040
-> [   39.348103] pci_epf_test_enable_doorbell: base: 0xfe670000 off: 0x40
-> [   39.348658] dw_pcie_ep_inbound_atu index: 1 parent_bus_addr: 0xfe670000 bar: 1 size: 0x100000
-> [   39.349403] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xfe670000 pci->region_align: 0x10000 IS_ALIGNED: 1
-> [   39.350260] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xfe670000 size: 0x100000 IS_ALIGNED: 0
-> [   39.351028] rockchip-dw-pcie a40000000.pcie-ep: Failed to program IB window
+> There are two SIUL2 modules in the S32G SoC. This driver handles
+> both because functionality is shared between them. For example:
+> some GPIOs in SIUL2_0 have interrupt capability but the registers
+> configuring this are in SIUL2_1.
 >
-> ## pci_epf_test_disable_doorbell()
-> ## changes the address translation for this BAR to redirect to the memory
-> ## allocated by pci_epf_alloc_space() (which was never freed when enabling the
-> ## doorbell)
+> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> ---
+>  drivers/mfd/Kconfig           |  12 +
+>  drivers/mfd/Makefile          |   1 +
+>  drivers/mfd/nxp-siul2.c       | 410 ++++++++++++++++++++++++++++++++++
+>  include/linux/mfd/nxp-siul2.h |  55 +++++
+>  4 files changed, 478 insertions(+)
+>  create mode 100644 drivers/mfd/nxp-siul2.c
+>  create mode 100644 include/linux/mfd/nxp-siul2.h
 >
-> [   39.351656] dw_pcie_ep_inbound_atu index: 1 parent_bus_addr: 0xa2e00000 bar: 1 size: 0x100000
-> [   39.352401] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xa2e00000 pci->region_align: 0x10000 IS_ALIGNED: 1
-> [   39.353257] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xa2e00000 size: 0x100000 IS_ALIGNED: 1
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index 6fb3768e3d71..e6634e05091e 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -1143,6 +1143,18 @@ config MFD_NTXEC
+>  	  certain e-book readers designed by the original design manufacturer
+>  	  Netronix.
 >
->
-> The reason why pci_epf_test_enable_doorbell() fails is because of this check:
-> https://github.com/torvalds/linux/blob/v6.16-rc5/drivers/pci/controller/dwc/pcie-designware.c#L663
->
-> If you want to understand why this very important check is there, it is
-> because the DWC controller requires that the physical address programmed in
-> the iATU is aligned to the size of the BAR (BAR_MASK+1), see this commit:
-> https://github.com/torvalds/linux/commit/129f6af747b2
->
->
-> Applying the following patch on top of your v20 series makes things work as
-> intended and makes the pcie_ep_doorbell.DOORBELL_TEST selftest pass for me:
->
-> diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-> index dfdd25cfc003..7d356b0201ae 100644
-> --- a/drivers/pci/endpoint/functions/pci-epf-test.c
-> +++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-> @@ -738,9 +738,9 @@ static void pci_epf_test_enable_doorbell(struct pci_epf_test *epf_test,
->  	reg->doorbell_bar = cpu_to_le32(bar);
->
->  	msg = &epf->db_msg[0].msg;
-> -	ret = pci_epf_align_inbound_addr(epf, bar, ((u64)msg->address_hi << 32) | msg->address_lo,
-> +	ret = pci_epf_align_inbound_addr(epf, epf->bar[bar].size,
-> +					((u64)msg->address_hi << 32) | msg->address_lo,
->  					&epf_test->db_bar.phys_addr, &offset);
-> -
->  	if (ret)
->  		goto err_doorbell;
->
-> diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
-> index c21d8e786eb3..b3d4117182e2 100644
-> --- a/drivers/pci/endpoint/pci-epf-core.c
-> +++ b/drivers/pci/endpoint/pci-epf-core.c
-> @@ -478,44 +478,36 @@ struct pci_epf *pci_epf_create(const char *name)
->  EXPORT_SYMBOL_GPL(pci_epf_create);
->
->  /**
-> - * pci_epf_align_inbound_addr() - Align the given address based on the BAR
-> - *				 alignment requirement
-> + * pci_epf_align_inbound_addr() - Align the given address based on the BAR size
+> +config MFD_NXP_SIUL2
+> +	tristate "NXP SIUL2 MFD driver"
+> +	select MFD_CORE
+> +	select REGMAP_MMIO
+> +	depends on ARCH_S32 || COMPILE_TEST
+> +	help
+> +	  Select this to get support for the NXP SIUL2 (System Integration
+> +	  Unit Lite) module. This hardware block contains registers for
+> +	  SoC information, pinctrl and GPIO functionality. This will
+> +	  probe a MFD driver which will contain cells for a combined
+> +	  pinctrl&GPIO driver and nvmem drivers for the SoC information.
+> +
+>  config MFD_RETU
+>  	tristate "Nokia Retu and Tahvo multi-function device"
+>  	select MFD_CORE
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index 79495f9f3457..02e3cc0a2303 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -224,6 +224,7 @@ obj-$(CONFIG_MFD_INTEL_PMC_BXT)	+= intel_pmc_bxt.o
+>  obj-$(CONFIG_MFD_PALMAS)	+= palmas.o
+>  obj-$(CONFIG_MFD_VIPERBOARD)    += viperboard.o
+>  obj-$(CONFIG_MFD_NTXEC)		+= ntxec.o
+> +obj-$(CONFIG_MFD_NXP_SIUL2) 	+= nxp-siul2.o
+>  obj-$(CONFIG_MFD_RC5T583)	+= rc5t583.o rc5t583-irq.o
+>  obj-$(CONFIG_MFD_RK8XX)		+= rk8xx-core.o
+>  obj-$(CONFIG_MFD_RK8XX_I2C)	+= rk8xx-i2c.o
+> diff --git a/drivers/mfd/nxp-siul2.c b/drivers/mfd/nxp-siul2.c
+> new file mode 100644
+> index 000000000000..904f41b3c61b
+> --- /dev/null
+> +++ b/drivers/mfd/nxp-siul2.c
+> @@ -0,0 +1,410 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * SIUL2(System Integration Unit Lite) MFD driver
 > + *
->   * @epf: the EPF device
-> + * @bar_size: the current BAR size
->   * @addr: inbound address to be aligned
-> - * @bar: the BAR number corresponding to the given addr
-> - * @base: base address matching the @bar alignment requirement.
-> + * @base: base address matching the @bar_size alignment requirement.
->   * @off: offset to be added to the @base address.
->   *
-> - * Helper function to align input 'addr' to base and offset, which match
-> - * BAR's alignment requirement.
-> + * Helper function to align input 'addr' to base and offset, when dynamically
-> + * changing a BAR.
->   *
->   * The pci_epf_alloc_space() function already accounts for alignment. This is
->   * primarily intended for use with other memory regions not allocated by
->   * pci_epf_alloc_space(), such as peripheral register spaces or the trigger
->   * address for a platform MSI controller.
+> + * Copyright 2025 NXP
+> + */
+> +#include <linux/init.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/mfd/nxp-siul2.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +
+> +#define S32G_NUM_SIUL2 2
+> +
+> +#define S32_REG_RANGE(start, end, name, access)		\
+> +	{						\
+> +		.reg_name = (name),			\
+> +		.reg_start_offset = (start),		\
+> +		.reg_end_offset = (end),		\
+> +		.reg_access = (access),			\
+> +		.valid = true,				\
+> +	}
+> +
+> +#define S32_INVALID_REG_RANGE		\
+> +	{				\
+> +		.reg_name = NULL,	\
+> +		.reg_access = NULL,	\
+> +		.valid = false,		\
+> +	}
+> +
+> +static const struct mfd_cell nxp_siul2_devs[] = {
+> +	{
+> +		.name = "s32g-siul2-pinctrl",
+
+I think you can add full list here.
+
+> +	}
+> +};
+> +
+> +/**
+> + * struct nxp_siul2_reg_range_info: a register range in SIUL2
+> + * @reg_name: the name for the register range
+> + * @reg_access: the read/write access tables if not NULL
+> + * @reg_start_offset: the first valid register offset
+> + * @reg_end_offset: the last valid register offset
+> + * @valid: whether the register range is valid or not
+> + */
+> +struct nxp_siul2_reg_range_info {
+> +	const char *reg_name;
+> +	const struct regmap_access_table *reg_access;
+> +	unsigned int reg_start_offset;
+> +	unsigned int reg_end_offset;
+> +	bool valid;
+> +};
+> +
+> +static const struct regmap_range s32g2_siul2_0_imcr_reg_ranges[] = {
+> +	/* IMCR0 - IMCR1 */
+> +	regmap_reg_range(0, 4),
+> +	/* IMCR3 - IMCR61 */
+> +	regmap_reg_range(0xC, 0xF4),
+> +	/* IMCR68 - IMCR83 */
+> +	regmap_reg_range(0x110, 0x14C)
+> +};
+> +
+> +static const struct regmap_access_table s32g2_siul2_0_imcr = {
+> +	.yes_ranges = s32g2_siul2_0_imcr_reg_ranges,
+> +	.n_yes_ranges = ARRAY_SIZE(s32g2_siul2_0_imcr_reg_ranges)
+> +};
+> +
+> +static const struct regmap_range s32g2_siul2_0_pgpd_reg_ranges[] = {
+> +	/* PGPD*0 - PGPD*5 */
+> +	regmap_reg_range(0, 0xA),
+> +	/* PGPD*6 - PGPD*6 */
+> +	regmap_reg_range(0xE, 0xE),
+> +};
+> +
+> +static const struct regmap_access_table s32g2_siul2_0_pgpd = {
+> +	.yes_ranges = s32g2_siul2_0_pgpd_reg_ranges,
+> +	.n_yes_ranges = ARRAY_SIZE(s32g2_siul2_0_pgpd_reg_ranges)
+> +};
+> +
+> +static const struct regmap_range s32g2_siul2_1_irq_reg_ranges[] = {
+> +	/* DISR0 */
+> +	regmap_reg_range(0x10, 0x10),
+> +	/* DIRER0 */
+> +	regmap_reg_range(0x18, 0x18),
+> +	/* DIRSR0 */
+> +	regmap_reg_range(0x20, 0x20),
+> +	/* IREER0 */
+> +	regmap_reg_range(0x28, 0x28),
+> +	/* IFEER0 */
+> +	regmap_reg_range(0x30, 0x30),
+> +};
+> +
+> +static const struct regmap_access_table s32g2_siul2_1_irq = {
+> +	.yes_ranges = s32g2_siul2_1_irq_reg_ranges,
+> +	.n_yes_ranges = ARRAY_SIZE(s32g2_siul2_1_irq_reg_ranges),
+> +};
+> +
+> +static const struct regmap_range s32g2_siul2_1_irq_volatile_reg_range[] = {
+> +	/* DISR0 */
+> +	regmap_reg_range(0x10, 0x10)
+> +};
+> +
+> +static const struct regmap_access_table s32g2_siul2_1_irq_volatile = {
+> +	.yes_ranges = s32g2_siul2_1_irq_volatile_reg_range,
+> +	.n_yes_ranges = ARRAY_SIZE(s32g2_siul2_1_irq_volatile_reg_range),
+> +};
+> +
+> +static const struct regmap_range s32g2_siul2_1_mscr_reg_ranges[] = {
+> +	/* MSCR112 - MSCR122 */
+> +	regmap_reg_range(0, 0x28),
+> +	/* MSCR144 - MSCR190 */
+> +	regmap_reg_range(0x80, 0x138)
+> +};
+> +
+> +static const struct regmap_access_table s32g2_siul2_1_mscr = {
+> +	.yes_ranges = s32g2_siul2_1_mscr_reg_ranges,
+> +	.n_yes_ranges = ARRAY_SIZE(s32g2_siul2_1_mscr_reg_ranges),
+> +};
+> +
+> +static const struct regmap_range s32g2_siul2_1_imcr_reg_ranges[] = {
+> +	/* IMCR119 - IMCR121 */
+> +	regmap_reg_range(0, 8),
+> +	/* IMCR128 - IMCR129 */
+> +	regmap_reg_range(0x24, 0x28),
+> +	/* IMCR143 - IMCR151 */
+> +	regmap_reg_range(0x60, 0x80),
+> +	/* IMCR153 - IMCR161 */
+> +	regmap_reg_range(0x88, 0xA8),
+> +	/* IMCR205 - IMCR212 */
+> +	regmap_reg_range(0x158, 0x174),
+> +	/* IMCR224 - IMCR225 */
+> +	regmap_reg_range(0x1A4, 0x1A8),
+> +	/* IMCR233 - IMCR248 */
+> +	regmap_reg_range(0x1C8, 0x204),
+> +	/* IMCR273 - IMCR274 */
+> +	regmap_reg_range(0x268, 0x26C),
+> +	/* IMCR278 - IMCR281 */
+> +	regmap_reg_range(0x27C, 0x288),
+> +	/* IMCR283 - IMCR286 */
+> +	regmap_reg_range(0x290, 0x29C),
+> +	/* IMCR288 - IMCR294 */
+> +	regmap_reg_range(0x2A4, 0x2BC),
+> +	/* IMCR296 - IMCR302 */
+> +	regmap_reg_range(0x2C4, 0x2DC),
+> +	/* IMCR304 - IMCR310 */
+> +	regmap_reg_range(0x2E4, 0x2FC),
+> +	/* IMCR312 - IMCR314 */
+> +	regmap_reg_range(0x304, 0x30C),
+> +	/* IMCR316 */
+> +	regmap_reg_range(0x314, 0x314),
+> +	/* IMCR 318 */
+> +	regmap_reg_range(0x31C, 0x31C),
+> +	/* IMCR322 - IMCR340 */
+> +	regmap_reg_range(0x32C, 0x374),
+> +	/* IMCR343 - IMCR360 */
+> +	regmap_reg_range(0x380, 0x3C4),
+> +	/* IMCR363 - IMCR380 */
+> +	regmap_reg_range(0x3D0, 0x414),
+> +	/* IMCR383 - IMCR393 */
+> +	regmap_reg_range(0x420, 0x448),
+> +	/* IMCR398 - IMCR433 */
+> +	regmap_reg_range(0x45C, 0x4E8),
+> +	/* IMCR467 - IMCR470 */
+> +	regmap_reg_range(0x570, 0x57C),
+> +	/* IMCR473 - IMCR475 */
+> +	regmap_reg_range(0x588, 0x590),
+> +	/* IMCR478 - IMCR480*/
+> +	regmap_reg_range(0x59C, 0x5A4),
+> +	/* IMCR483 - IMCR485 */
+> +	regmap_reg_range(0x5B0, 0x5B8),
+> +	/* IMCR488 - IMCR490 */
+> +	regmap_reg_range(0x5C4, 0x5CC),
+> +	/* IMCR493 - IMCR495 */
+> +	regmap_reg_range(0x5D8, 0x5E0),
+> +};
+> +
+> +static const struct regmap_access_table s32g2_siul2_1_imcr = {
+> +	.yes_ranges = s32g2_siul2_1_imcr_reg_ranges,
+> +	.n_yes_ranges = ARRAY_SIZE(s32g2_siul2_1_imcr_reg_ranges)
+> +};
+> +
+> +static const struct regmap_range s32g2_siul2_1_pgpd_reg_ranges[] = {
+> +	/* PGPD*7 */
+> +	regmap_reg_range(0xC, 0xC),
+> +	/* PGPD*9 */
+> +	regmap_reg_range(0x10, 0x10),
+> +	/* PDPG*10 - PGPD*11 */
+> +	regmap_reg_range(0x14, 0x16),
+> +};
+> +
+> +static const struct regmap_access_table s32g2_siul2_1_pgpd = {
+> +	.yes_ranges = s32g2_siul2_1_pgpd_reg_ranges,
+> +	.n_yes_ranges = ARRAY_SIZE(s32g2_siul2_1_pgpd_reg_ranges)
+> +};
+> +
+> +static const struct nxp_siul2_reg_range_info
+> +s32g2_reg_ranges[S32G_NUM_SIUL2][SIUL2_NUM_REG_TYPES] = {
+> +	/* SIUL2_0 */
+> +	{
+> +		[SIUL2_MIDR] = S32_REG_RANGE(4, 8, "SIUL2_0_MIDR", NULL),
+> +		/* Interrupts are to be controlled from SIUL2_1 */
+> +		[SIUL2_IRQ] = S32_INVALID_REG_RANGE,
+> +		[SIUL2_MSCR] = S32_REG_RANGE(0x240, 0x3D4, "SIUL2_0_MSCR",
+> +					     NULL),
+> +		[SIUL2_IMCR] = S32_REG_RANGE(0xA40, 0xB8C, "SIUL2_0_IMCR",
+> +					     &s32g2_siul2_0_imcr),
+> +		[SIUL2_PGPDO] = S32_REG_RANGE(0x1700, 0x170E,
+> +					      "SIUL2_0_PGPDO",
+> +					      &s32g2_siul2_0_pgpd),
+> +		[SIUL2_PGPDI] = S32_REG_RANGE(0x1740, 0x174E,
+> +					      "SIUL2_0_PGPDI",
+> +					      &s32g2_siul2_0_pgpd),
+> +	},
+> +	/* SIUL2_1 */
+> +	{
+> +		[SIUL2_MIDR] = S32_REG_RANGE(4, 8, "SIUL2_1_MIDR", NULL),
+> +		[SIUL2_IRQ] = S32_REG_RANGE(0x10, 0xC0, "SIUL2_1_IRQ",
+> +					    &s32g2_siul2_1_irq),
+> +		[SIUL2_MSCR] = S32_REG_RANGE(0x400, 0x538, "SIUL2_1_MSCR",
+> +					     &s32g2_siul2_1_mscr),
+> +		[SIUL2_IMCR] = S32_REG_RANGE(0xC1C, 0x11FC, "SIUL2_1_IMCR",
+> +					     &s32g2_siul2_1_imcr),
+> +		[SIUL2_PGPDO] = S32_REG_RANGE(0x1700, 0x1716,
+> +					      "SIUL2_1_PGPDO",
+> +					      &s32g2_siul2_1_pgpd),
+> +		[SIUL2_PGPDI] = S32_REG_RANGE(0x1740, 0x1756,
+> +					      "SIUL2_1_PGPDI",
+> +					      &s32g2_siul2_1_pgpd),
+> +	},
+> +};
+> +
+> +static const struct regmap_config nxp_siul2_regmap_irq_conf = {
+> +	.val_bits = 32,
+> +	.val_format_endian = REGMAP_ENDIAN_LITTLE,
+> +	.reg_bits = 32,
+> +	.reg_stride = 4,
+> +	.cache_type = REGCACHE_FLAT,
+> +	.use_raw_spinlock = true,
+> +	.volatile_table = &s32g2_siul2_1_irq_volatile,
+> +};
+> +
+> +static const struct regmap_config nxp_siul2_regmap_generic_conf = {
+> +	.val_bits = 32,
+> +	.val_format_endian = REGMAP_ENDIAN_LITTLE,
+> +	.reg_bits = 32,
+> +	.reg_stride = 4,
+> +	.cache_type = REGCACHE_FLAT,
+> +	.use_raw_spinlock = true,
+> +};
+> +
+> +static const struct regmap_config nxp_siul2_regmap_pgpdo_conf = {
+> +	.val_bits = 16,
+> +	.val_format_endian = REGMAP_ENDIAN_LITTLE,
+> +	.reg_bits = 32,
+> +	.reg_stride = 2,
+> +	.cache_type = REGCACHE_FLAT,
+> +	.use_raw_spinlock = true,
+> +};
+> +
+> +static const struct regmap_config nxp_siul2_regmap_pgpdi_conf = {
+> +	.val_bits = 16,
+> +	.val_format_endian = REGMAP_ENDIAN_LITTLE,
+> +	.reg_bits = 32,
+> +	.reg_stride = 2,
+> +	.cache_type = REGCACHE_NONE,
+> +	.use_raw_spinlock = true,
+> +};
+> +
+> +static int nxp_siul2_init_regmap(struct platform_device *pdev,
+> +				 void __iomem *base, unsigned int siul)
+> +{
+> +	const struct regmap_config *regmap_configs[SIUL2_NUM_REG_TYPES] = {
+> +		[SIUL2_MIDR]	= &nxp_siul2_regmap_generic_conf,
+> +		[SIUL2_IRQ]	= &nxp_siul2_regmap_irq_conf,
+> +		[SIUL2_MSCR]	= &nxp_siul2_regmap_generic_conf,
+> +		[SIUL2_IMCR]	= &nxp_siul2_regmap_generic_conf,
+> +		[SIUL2_PGPDO]	= &nxp_siul2_regmap_pgpdo_conf,
+> +		[SIUL2_PGPDI]	= &nxp_siul2_regmap_pgpdi_conf,
+> +	};
+> +	const struct nxp_siul2_reg_range_info *tmp_range;
+> +	struct regmap_config tmp_conf;
+> +	struct nxp_siul2_info *info;
+> +	struct nxp_siul2_mfd *priv;
+> +	void __iomem *reg_start;
+> +	int i;
+> +
+> +	priv = platform_get_drvdata(pdev);
+> +	info = &priv->siul2[siul];
+> +
+> +	for (i = 0; i < SIUL2_NUM_REG_TYPES; i++) {
+> +		if (!s32g2_reg_ranges[siul][i].valid)
+> +			continue;
+> +
+> +		tmp_range = &s32g2_reg_ranges[siul][i];
+> +		tmp_conf = *regmap_configs[i];
+> +		tmp_conf.name = tmp_range->reg_name;
+> +		tmp_conf.max_register =
+> +			tmp_range->reg_end_offset - tmp_range->reg_start_offset;
+> +
+> +		if (tmp_conf.cache_type != REGCACHE_NONE)
+> +			tmp_conf.num_reg_defaults_raw =
+> +				1 + tmp_conf.max_register / tmp_conf.reg_stride;
+> +
+> +		if (tmp_range->reg_access) {
+> +			tmp_conf.wr_table = tmp_range->reg_access;
+> +			tmp_conf.rd_table = tmp_range->reg_access;
+> +		}
+> +
+> +		reg_start = base + tmp_range->reg_start_offset;
+> +		info->regmaps[i] = devm_regmap_init_mmio(&pdev->dev, reg_start,
+> +							 &tmp_conf);
+> +		if (IS_ERR(info->regmaps[i]))
+> +			return dev_err_probe(&pdev->dev,
+> +					     PTR_ERR(info->regmaps[i]),
+> +					     "regmap %d init failed: %ld\n", i,
+> +					     PTR_ERR(info->regmaps[i]));
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int nxp_siul2_parse_dtb(struct platform_device *pdev)
+> +{
+> +	struct device_node *np = pdev->dev.of_node;
+> +	struct of_phandle_args pinspec;
+> +	struct nxp_siul2_mfd *priv;
+> +	void __iomem *base;
+> +	char reg_name[16];
+> +	int i, ret;
+> +
+> +	priv = platform_get_drvdata(pdev);
+> +
+> +	for (i = 0; i < priv->num_siul2; i++) {
+> +		ret = snprintf(reg_name, ARRAY_SIZE(reg_name), "siul2%d", i);
+> +		if (ret < 0 || ret >= ARRAY_SIZE(reg_name))
+> +			return ret;
+> +
+> +		base = devm_platform_ioremap_resource_byname(pdev, reg_name);
+> +		if (IS_ERR(base))
+> +			return dev_err_probe(&pdev->dev, PTR_ERR(base),
+> +					     "Failed to get MEM resource: %s\n",
+> +					     reg_name);
+> +
+> +		ret = nxp_siul2_init_regmap(pdev, base, i);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = of_parse_phandle_with_fixed_args(np, "gpio-ranges", 3,
+> +						       i, &pinspec);
+> +		if (ret)
+> +			return ret;
+> +
+> +		of_node_put(pinspec.np);
+> +
+> +		if (pinspec.args_count != 3)
+> +			return dev_err_probe(&pdev->dev, -EINVAL,
+> +					     "Invalid pinspec count: %d\n",
+> +					     pinspec.args_count);
+> +
+> +		priv->siul2[i].gpio_base = pinspec.args[1];
+> +		priv->siul2[i].gpio_num = pinspec.args[2];
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int nxp_siul2_probe(struct platform_device *pdev)
+> +{
+> +	struct nxp_siul2_mfd *priv;
+> +	int ret;
+> +
+> +	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	priv->num_siul2 = S32G_NUM_SIUL2;
+> +	priv->siul2 = devm_kcalloc(&pdev->dev, priv->num_siul2,
+> +				   sizeof(*priv->siul2), GFP_KERNEL);
+> +	if (!priv->siul2)
+> +		return -ENOMEM;
+> +
+> +	platform_set_drvdata(pdev, priv);
+> +	ret = nxp_siul2_parse_dtb(pdev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_AUTO,
+> +				    nxp_siul2_devs, ARRAY_SIZE(nxp_siul2_devs),
+> +				    NULL, 0, NULL);
+> +}
+> +
+> +static const struct of_device_id nxp_siul2_dt_ids[] = {
+> +	{ .compatible = "nxp,s32g2-siul2" },
+> +	{ .compatible = "nxp,s32g3-siul2" },
+
+in binding doc "nxp,s32g3-siul2" fallback to "nxp,s32g2-siul2".
+
+needn't nxp,s32g3-siul2 here.
+
+> +	{ /* sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, nxp_siul2_dt_ids);
+> +
+> +static struct platform_driver nxp_siul2_mfd_driver = {
+> +	.driver = {
+> +		.name		= "nxp-siul2-mfd",
+> +		.of_match_table	= nxp_siul2_dt_ids,
+> +	},
+> +	.probe = nxp_siul2_probe,
+> +};
+> +
+> +module_platform_driver(nxp_siul2_mfd_driver);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("NXP SIUL2 MFD driver");
+> +MODULE_AUTHOR("Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>");
+> diff --git a/include/linux/mfd/nxp-siul2.h b/include/linux/mfd/nxp-siul2.h
+> new file mode 100644
+> index 000000000000..4603a97e40e4
+> --- /dev/null
+> +++ b/include/linux/mfd/nxp-siul2.h
+> @@ -0,0 +1,55 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later
 > + *
-> + * Since this function is only used when dynamically changing a BAR (i.e. when
-> + * calling set_bar() twice, without ever calling clear_bar(), as calling
-> + * clear_bar() would clear the BAR's PCI address assigned by the host), this
-> + * function must align to the current BAR size, since we are not clearing the
-> + * BAR configuration.
->   */
-> -int pci_epf_align_inbound_addr(struct pci_epf *epf, enum pci_barno bar,
-> -			      u64 addr, dma_addr_t *base, size_t *off)
-> +int pci_epf_align_inbound_addr(struct pci_epf *epf, size_t bar_size, u64 addr,
-> +			      dma_addr_t *base, size_t *off)
->  {
-> -	const struct pci_epc_features *epc_features;
-> -	u64 align;
-> -
-> -	if (!base || !off)
-> +	if (!base || !off || !bar_size)
->  		return -EINVAL;
+> + * S32 SIUL2 core definitions
+> + *
+> + * Copyright 2025 NXP
+> + */
+> +
+> +#ifndef __DRIVERS_MFD_NXP_SIUL2_H
+> +#define __DRIVERS_MFD_NXP_SIUL2_H
+> +
+> +#include <linux/regmap.h>
+> +
+> +/**
+> + * enum nxp_siul2_reg_type - an enum for SIUL2 reg types
+> + * @SIUL2_MIDR - SoC info
+> + * @SIUL2_IRQ - IRQ related registers, only valid in SIUL2_1
+> + * @SIUL2_MSCR - used for pinmuxing and pinconf
+> + * @SIUL2_IMCR - used for pinmuxing
+> + * @SIUL2_PGPDO - writing the GPIO value
+> + * @SIUL2_PGPDI - reading the GPIO value
+> + */
+> +enum nxp_siul2_reg_type {
+> +	SIUL2_MIDR,
+> +	SIUL2_IRQ,
+> +	SIUL2_MSCR,
+> +	SIUL2_IMCR,
+> +	SIUL2_PGPDO,
+> +	SIUL2_PGPDI,
+> +
+> +	SIUL2_NUM_REG_TYPES
+> +};
+> +
+> +/**
+> + * struct nxp_siul2_info - details about one SIUL2 hardware instance
+> + * @regmaps: the regmaps for each register type for a SIUL2 hardware instance
+> + * @gpio_base: the first GPIO in this SIUL2 module
+> + * @gpio_num: the number of GPIOs in this SIUL2 module
+> + */
+> +struct nxp_siul2_info {
+> +	struct regmap *regmaps[SIUL2_NUM_REG_TYPES];
+> +	u32 gpio_base;
+> +	u32 gpio_num;
+> +};
+> +
+> +/**
+> + * struct nxp_siul2_mfd - driver data
+> + * @siul2: info about the SIUL2 modules present
+> + * @num_siul2: number of siul2 modules
+> + */
+> +struct nxp_siul2_mfd {
+> +	struct nxp_siul2_info *siul2;
+> +	u8 num_siul2;
+> +};
+> +
+> +#endif /* __DRIVERS_MFD_NXP_SIUL2_H */
+> --
+> 2.45.2
 >
-> -	epc_features = pci_epc_get_features(epf->epc, epf->func_no, epf->vfunc_no);
-> -	if (!epc_features) {
-> -		dev_err(&epf->dev, "epc_features not implemented\n");
-> -		return -EOPNOTSUPP;
-> -	}
-> -
-> -	align = epc_features->align;
-> -	align = align ? align : 128;
-> -	if (epc_features->bar[bar].type == BAR_FIXED)
-> -		align = max(epc_features->bar[bar].fixed_size, align);
-> -
-> -	*base = round_down(addr, align);
-> -	*off = addr & (align - 1);
-> +	*base = round_down(addr, bar_size);
-> +	*off = addr & (bar_size - 1);
->
->  	return 0;
->  }
-> diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
-> index 0ca08f0d05d7..bcc8184325d2 100644
-> --- a/include/linux/pci-epf.h
-> +++ b/include/linux/pci-epf.h
-> @@ -242,8 +242,8 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
->  void pci_epf_free_space(struct pci_epf *epf, void *addr, enum pci_barno bar,
->  			enum pci_epc_interface_type type);
->
-> -int pci_epf_align_inbound_addr(struct pci_epf *epf, enum pci_barno bar,
-> -			      u64 addr, dma_addr_t *base, size_t *off);
-> +int pci_epf_align_inbound_addr(struct pci_epf *epf, size_t bar_size, u64 addr,
-> +			      dma_addr_t *base, size_t *off);
->  int pci_epf_bind(struct pci_epf *epf);
->  void pci_epf_unbind(struct pci_epf *epf);
->  int pci_epf_add_vepf(struct pci_epf *epf_pf, struct pci_epf *epf_vf);
->
->
->
->
-> However, the more I think about it, considering that this alignment requirement
-> is inherent to the DWC controller (other controllers might not have this
-> requirement), perhaps pci_epf_align_inbound_addr() should not be a function in
-> pci-epf-core.c, perhaps this function would be better suited to live in
-> drivers/pci/controller/dwc/pcie-designware-ep.c ?
-
-I think align to bar size is quite make sense now. Even other controllers
-have not such requirement, align to bar size still work.
-
-Anyways, it need be align. We still pass down bar number, get bar size
-in pci_epf_align_inbound_addr(). So we can fine tune algorithm in future,
-such as add field in epc_features.
-
-Frank
->
->
-> Kind regards,
-> Niklas
