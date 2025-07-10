@@ -1,90 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57573288C2F;
-	Thu, 10 Jul 2025 07:28:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C029A2192EF
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 07:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752132500; cv=none; b=OEc8gINJ3JgWBmAnDcf5ZtWljVfSwyOfs/O9XJuCTdO0Pzw/CZCfYDzJJNXsSPPhkUoVGlHc5qgsk+PY3au0mbQG4Cp2PX/dn/NajzM06o68zKTCwoUpNLA+U55FZEh9zqtY98jJm6ev7G7islslIHeIwMFbIIBDDBfYAkuJ+nY=
+	t=1752133155; cv=none; b=Ug+vtAYlHk4EO2ioI/UKHG1x5/bmpPUmbdtyoJ+DDDHLRch+jziX674FLZPop9onONl7KnH0Id7uYuoRe089O6Ytpq5INR+fZgt8Uk0nbBhjo+CDuqVujza8E3vPA0rJ0xq5xcx/cRxN32lgRHjv9Gz3r+mfBsuoEP3KQSw67fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752132500; c=relaxed/simple;
-	bh=hdXjeCliRyJZCw75XF5LZkP9DunbKaTwr/NS/YNlOm0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oEu+MecyFMtdJPSl6fvAvOkQ84E+LD9G+TpP8wBQ49ID/8jJuie0rGPc0A9KwbdsqHqN8DLStZ7huRhlrRWhGrQo0A6z5QDze28zad76hzaX4Cd5W+HtbVsS6Gr6b92Ek21fjluvbdMgDNBkPFWhGFaPfqmfVqZyR8k2p76LCHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZeI8/VKQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752133155; c=relaxed/simple;
+	bh=w4taWM7GTvBGEd88jMF9XlMxryMoUI3FMR86s6vtuo4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=faDWn14I5FeDK0bYwET2Xzi8LN4muHGzZnPbrkEUUlvMbcxcvIInCOpZ2mDdjINAGwCKLnOXNLExPh9hFpxTCXLrSK6M8waKMZfxCdJ0EvGRf6BPeMVSSf2wkSUadBsgC82euKHS3Epy3rdRXMZw9tKxW/GjHqprokEo/0Y2Bbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=JvP0dPmF; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZeI8/VKQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76868C4CEE3;
-	Thu, 10 Jul 2025 07:28:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752132500;
-	bh=hdXjeCliRyJZCw75XF5LZkP9DunbKaTwr/NS/YNlOm0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZeI8/VKQ537VmiYeHP0ZLXzBPqlrlyjylv5W7wUsHSWpYtHGVaIBqg6l6kKPGtv+l
-	 WTGESYCudcBEy6Vj4g5+7Mj93flVBEhf2P9CVsPyB6X984Fotx5ddKzOzPe9STOA2y
-	 sjbiQqPfX0xGiHit7XfBjif2Gplod4TliLjXUlzwqlhK4G9eQgERHD77DE2fQer7Rz
-	 dXYaQtKpEV97iE+ZSNvTrgBwrE689dTDnV8tJb3L+ZpFt0a5Qiv1B95uoD9E6ydZX6
-	 50IFww7wcn26Lpv6QZa2FBjdVNxhX4nrBOhE6guCoMQjop8A9ufVZgtOAY95+1IBIe
-	 KxTwI2QQLSj6Q==
-Date: Thu, 10 Jul 2025 09:28:17 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 9/9] drm/imx: parallel-display: put the bridge returned
- by drm_bridge_get_next_bridge()
-Message-ID: <20250710-dashing-origami-ara-ef9fc1@houat>
-References: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-0-48920b9cf369@bootlin.com>
- <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-9-48920b9cf369@bootlin.com>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="JvP0dPmF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=/c6PpFZxX2IwuD64HEN0TwJd8WKn9bagu6C1XSQwuQA=; b=JvP0dPmFYZUVUdl1wgJrXB1SaD
+	rRq2WFj+DH4ZNfKSIRp0zp/79ug8oz9hbuSi4nyKqqLXaa4aQE7cMf+bOPYJPsfDwRrZnp3RDShkQ
+	pY+qc2LaEf+EyKhEOlps0nX9O6gltrDNihJW7sh+u4zp+FrFN11Rp/CJyKW6rhg35QC+93xK+ezdE
+	qmuMM400DBI0SJzzOrDYFgjA/h5uEdPs3gfnoGP8YjEwfZrtUtT03u5jI4CNZGZGi/s/DwGz7qSSi
+	q8o0YT37TG+LC9rLLMM/FY9AtN+zPZc+JHNJPH/wQlIW7UK90m3fyuEZF0mHFd4fEgJAB87BpBKj2
+	5aCntzRA==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:48064 helo=localhost.localdomain)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1uZls3-006IV5-08;
+	Thu, 10 Jul 2025 09:39:06 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Haibo Chen <haibo.chen@nxp.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-iio@vger.kernel.org,
+	imx@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de,
+	andrej.picej@norik.com
+Subject: [PATCH 0/2] Make i.MX 93 ADC calibration params configurable
+Date: Thu, 10 Jul 2025 09:39:02 +0200
+Message-Id: <20250710073905.1105417-1-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="6tqwawwu3nnorjig"
-Content-Disposition: inline
-In-Reply-To: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-9-48920b9cf369@bootlin.com>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+
+The i.MX 93 ADC calibration parameters are configurable in the MCR
+(Main Configuration Register). One can tweak bits:
+
+ - MCR[AVGEN]: Enable calibration averaging function,
+ - MCR[NRSMPL]: Select number of calibration samples,
+ - MCR[TSAMP]: Select sample time of calibration conversions, 
+
+Make it possible to configure those parameters via the corresponding
+device-tree properties.
+
+This patch series is based on the one we submitted in March 2024:
+https://lore.kernel.org/linux-arm-kernel/20240320100407.1639082-1-andrej.picej@norik.com/
+
+Changes since the original submission:
+- rebase on linux-next
+- reorder patches (bindings before users)
+- fix checkpatch errors
+- reword commit subject & body
+- implement feedback from reviewers
 
 
---6tqwawwu3nnorjig
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 9/9] drm/imx: parallel-display: put the bridge returned
- by drm_bridge_get_next_bridge()
-MIME-Version: 1.0
+Andrej Picej (2):
+  dt-bindings: iio: adc: imx93: Add calibration properties
+  iio: adc: imx93: Make calibration parameters configurable
 
-On Wed, Jul 09, 2025 at 06:48:08PM +0200, Luca Ceresoli wrote:
-> The bridge returned by drm_bridge_get_next_bridge() is refcounted. Put it
-> when done.
->=20
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+ .../bindings/iio/adc/nxp,imx93-adc.yaml       | 21 ++++++
+ drivers/iio/adc/imx93_adc.c                   | 75 +++++++++++++++++--
+ 2 files changed, 91 insertions(+), 5 deletions(-)
 
-Same comments than on the previous patch here.
+-- 
+2.34.1
 
-Maxime
-
---6tqwawwu3nnorjig
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaG9rkAAKCRAnX84Zoj2+
-dnTtAYDyf/Yxt9bmEdmMUGLXyfbD9i2hhDEJkGJ8L01jt7ghkn+L5uWiwnMPQKFR
-XgUd/r8BgJt8+q4jJcV+k0qVy9a+O6Na5wzUPuLCVbN5rC+8KA4NNINmo7vDm9ob
-Wf/nc0V2xw==
-=dhT/
------END PGP SIGNATURE-----
-
---6tqwawwu3nnorjig--
