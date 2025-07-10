@@ -1,249 +1,81 @@
-Received: from mail.savoirfairelinux.com (mail.savoirfairelinux.com [208.88.110.44])
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4C82701AE
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 14:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.88.110.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA1C267732
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 14:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752156510; cv=none; b=qCWAeizTtd+qkZUmp2LJsy0etyn4fC9jVnC3b6pmAjKilU3wo+HhDAGRDUi0YtjWpQ9iW28kLzYa4DhWnOzuDivUHKa4UxDy/7XZQByD68S4weClwcJjUATJ9G04X9T+FKu3QL3+446pXPLaocwLGF399BxWpksJib7u+cyE/aY=
+	t=1752157007; cv=none; b=kuqiGJgvLCLwp0Eco5ZocyjGY6bXT4mhLqErCKnQ1xR5Ltq6WTtuCqiogfva5TZ0XlhE6aBskF6OmHpNeqFCY22SYkWCK01uHUgpb218Ue0/cHbnaXao2s/ayrKBMnN7W6uP6e6fZBOWi0XRYOGjy4+m5FQ7O5VyFM6LtxIAsHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752156510; c=relaxed/simple;
-	bh=6+V6b48EzWgWG8MSnsUjJWAfwO4HcQ599pAv9PMWIe4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KEooHY4I0loC4OLJosVJ7Zl7qbUfzWZSpRTQoHDg6yy05re1y9nPzrJ5VZ6U5IvcNdMylpZ/Bm4huJ0ZT2dV0A9Vg4doeQpvSAxsppPXmz8TxOdaCixe41VUhIQye7ca42mLFRLP4LAvL8d1C7UlW5EPm+pLVHkuLZoMCIFWW74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com; spf=pass smtp.mailfrom=savoirfairelinux.com; dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b=eiI5L9tx; arc=none smtp.client-ip=208.88.110.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=savoirfairelinux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=savoirfairelinux.com
+	s=arc-20240116; t=1752157007; c=relaxed/simple;
+	bh=mPp5H/pNukYa5NUBq0aQh0anhclyiXfY7vE1nPk0VTc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pKFSO+ZWD7v2fCkOl0G0yjq1ogy3/b+D3RHqfHL2mv/A8FyJY6SYbbglkEK8Dpl7ikNCZw1EWTiBixet/mBCvL9ghF6EPfoTdU6R9UZy3c2EIjFM3q5Y2Jq+hv4GynkGRvzc6CurNizL9nDNxuwuh+OAxtSz9dN/XY7PQT/UG+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=f0TLvDl8; arc=none smtp.client-ip=217.70.178.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=savoirfairelinux.com header.i=@savoirfairelinux.com header.b="eiI5L9tx"
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id 807163D8570F;
-	Thu, 10 Jul 2025 10:08:20 -0400 (EDT)
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10032)
- with ESMTP id O8O26kgwxypV; Thu, 10 Jul 2025 10:08:19 -0400 (EDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.savoirfairelinux.com (Postfix) with ESMTP id A7AE33D875E7;
-	Thu, 10 Jul 2025 10:08:19 -0400 (EDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.savoirfairelinux.com A7AE33D875E7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=savoirfairelinux.com; s=DFC430D2-D198-11EC-948E-34200CB392D2;
-	t=1752156499; bh=EhdCuuk3MsnvKWneuePEB9v7psFEpBgaIrswFJsCaTM=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=eiI5L9txRHCopE2fnkP0oI2iR09ru1hhSxhD72AiJph9EmOfBFWozobaGPW96AJCg
-	 y20ij65cW9KEn2XjyNQOPE65m6uIniR/s4iYaKCdfJmx+WkBXOV0mJHBnMZNmXNFqn
-	 epC8zeVa3dGaPk/5jGzdzupceRde0cG3neSQFZD44FYUdaxnZL97VZMQyaDZ+xJgyq
-	 +ywApD4UlTpFGG9/xevR+agtU/kSNGNvivGQ4lmfljx85CsIKXQb37kR2gM8JKOJGk
-	 JrfZVByyinDxo4geIA6o8I951StEPiElJvF6PUPXhR2EPrUYt3jTwEE/8Sk3pRe0mJ
-	 3ZzcN5cTuFweQ==
-X-Virus-Scanned: amavis at mail.savoirfairelinux.com
-Received: from mail.savoirfairelinux.com ([127.0.0.1])
- by localhost (mail.savoirfairelinux.com [127.0.0.1]) (amavis, port 10026)
- with ESMTP id 8J66NYaKQAMU; Thu, 10 Jul 2025 10:08:19 -0400 (EDT)
-Received: from fedora (unknown [192.168.51.254])
-	by mail.savoirfairelinux.com (Postfix) with ESMTPSA id 595523D8570F;
-	Thu, 10 Jul 2025 10:08:19 -0400 (EDT)
-Date: Thu, 10 Jul 2025 10:08:18 -0400
-From: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: devnull+samuel.kayode.savoirfairelinux.com@kernel.org, Frank.li@nxp.com,
-	abelvesa@kernel.org, abelvesa@linux.com, b38343@freescale.com,
-	broonie@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
-	dmitry.torokhov@gmail.com, eballetbo@gmail.com, imx@lists.linux.dev,
-	krzk+dt@kernel.org, lee@kernel.org, lgirdwood@gmail.com,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org, robh@kernel.org, sre@kernel.org,
-	yibin.gong@nxp.com
-Subject: Re: [PATCH v8 2/6] mfd: pf1550: add core driver
-Message-ID: <aG_JUhEQaiYQfJmz@fedora>
-References: <20250707-pf1550-v8-0-6b6eb67c03a0@savoirfairelinux.com>
- <20250707-pf1550-v8-2-6b6eb67c03a0@savoirfairelinux.com>
- <0406698c-6534-4aca-8994-e8a69ecee2b2@wanadoo.fr>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="f0TLvDl8"
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id 8AE75583C98
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 13:53:37 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 52526442CD;
+	Thu, 10 Jul 2025 13:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1752155610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q6oPPvEhp8Ik88bxmQPhOVUx66A2onWuiWPh0/keNbk=;
+	b=f0TLvDl8TkFp5jnGtNAUkwSy9+3bIfhFHYDZbLYKP1NfCaEZkNFScTJTgycSw/TwQpVGAu
+	mH98japgMA+4ClBT4sJqAHIMozhaI6Pf3cR8A8IIH/1RnQ3DqrvU5xudSGv6btyCfxhwbT
+	o49jZKx86u+dB5f7PSHzhCFTJVuIM++gpA8ULCZs6jfxTaWaa7i3CpBTGAjRkB5MLjlxXH
+	wvxSb4DipFL2b91Eov/r4dwM0mf7CBcxomhF7Pzzj5Rgo8hcqpTZAu9p4+qNmLDt4/tpQ8
+	8u3dwtK4M57NeMUI3IBH2pGWiuJYfWhcR1m39kuXsh4QY8G9yZ7ve/uWBXqZzQ==
+Date: Thu, 10 Jul 2025 15:53:28 +0200
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev
+Subject: Re: [PATCH net-next 2/3] net: fec: add more macros for bits of
+ FEC_ECR
+Message-ID: <20250710155328.5d5b54b4@fedora>
+In-Reply-To: <20250710090902.1171180-3-wei.fang@nxp.com>
+References: <20250710090902.1171180-1-wei.fang@nxp.com>
+	<20250710090902.1171180-3-wei.fang@nxp.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <0406698c-6534-4aca-8994-e8a69ecee2b2@wanadoo.fr>
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegtdeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepofgrgihimhgvucevhhgvvhgrlhhlihgvrhcuoehmrgigihhmvgdrtghhvghvrghllhhivghrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegveeltddvveeuhefhvefhlefhkeevfedtgfeiudefffeiledttdfgfeeuhfeukeenucfkphepvdgrtddumegtsgduleemkegugeehmeegledttdemieehieekmedvlegsudemlegvfhehmegvkegtjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudelmeekugegheemgeeltddtmeeiheeikeemvdelsgdumeelvghfheemvgektgejpdhhvghlohepfhgvughorhgrpdhmrghilhhfrhhomhepmhgrgihimhgvrdgthhgvvhgrlhhlihgvrhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddupdhrtghpthhtohepfigvihdrfhgrnhhgsehngihprdgtohhmpdhrtghpthhtohepshhhvghnfigvihdrfigrnhhgsehngihprdgtohhmpdhrtghpthhtohepgihirghonhhinhhgrdifrghnghesnhigphdrtghomhdprhgtphhtthhop
+ egrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhm
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-On Tue, Jul 08, 2025 at 08:46:48PM +0200, Christophe JAILLET wrote:
-> Le 07/07/2025 =E0 23:37, Samuel Kayode via B4 Relay a =E9crit=A0:
-> > From: Samuel Kayode <samuel.kayode-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@p=
-ublic.gmane.org>
-> >=20
-> > Add the core driver for pf1550 PMIC. There are 3 subdevices for which=
- the
-> > drivers will be added in subsequent patches.
-> >=20
-> > Reviewed-by: Frank Li <Frank.Li-3arQi8VN3Tc@public.gmane.org>
-> > Signed-off-by: Samuel Kayode <samuel.kayode-4ysUXcep3aM1wj+D4I0NRVaTQ=
-e2KTcn/@public.gmane.org>
->=20
-> Hi,
->=20
-> some nitpicks and a few real questions.
->=20
-> CJ
->=20
-> ...
->=20
-> > +	/* Add top level interrupts */
-> > +	ret =3D devm_regmap_add_irq_chip(pf1550->dev, pf1550->regmap, pf155=
-0->irq,
-> > +				       IRQF_ONESHOT | IRQF_SHARED |
-> > +				       IRQF_TRIGGER_FALLING,
-> > +				       0, &pf1550_irq_chip,
-> > +				       &pf1550->irq_data);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Add regulator */
-> > +	irq =3D regmap_irq_get_virq(pf1550->irq_data, PF1550_IRQ_REGULATOR)=
-;
->=20
-> Same as above.
->=20
-> > +	if (irq < 0)
-> > +		return dev_err_probe(pf1550->dev, irq,
-> > +				     "Failed to get parent vIRQ(%d) for chip %s\n",
-> > +				     PF1550_IRQ_REGULATOR, pf1550_irq_chip.name);
-> > +
-> > +	ret =3D devm_regmap_add_irq_chip(pf1550->dev, pf1550->regmap, irq,
-> > +				       IRQF_ONESHOT | IRQF_SHARED |
-> > +				       IRQF_TRIGGER_FALLING, 0,
-> > +				       &pf1550_regulator_irq_chip,
-> > +				       &pf1550->irq_data_regulator);
-> > +	if (ret)
-> > +		return dev_err_probe(pf1550->dev, ret,
-> > +				     "Failed to add %s IRQ chip\n",
-> > +				     pf1550_regulator_irq_chip.name);
-> > +
-> > +	domain =3D regmap_irq_get_domain(pf1550->irq_data_regulator);
-> > +
-> > +	ret =3D  devm_mfd_add_devices(pf1550->dev, PLATFORM_DEVID_NONE, reg=
-ulator,
->=20
-> 2 spaces after =3D
->
-Will drop.
-> > +				    1, NULL, 0, domain);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Add onkey */
-> > +	irq =3D regmap_irq_get_virq(pf1550->irq_data, PF1550_IRQ_ONKEY);
->=20
-> Same
->=20
-> > +	if (irq < 0)
-> > +		return dev_err_probe(pf1550->dev, irq,
-> > +				     "Failed to get parent vIRQ(%d) for chip %s\n",
-> > +				     PF1550_IRQ_ONKEY, pf1550_irq_chip.name);
-> > +
-> > +	ret =3D devm_regmap_add_irq_chip(pf1550->dev, pf1550->regmap, irq,
-> > +				       IRQF_ONESHOT | IRQF_SHARED |
-> > +				       IRQF_TRIGGER_FALLING, 0,
-> > +				       &pf1550_onkey_irq_chip,
-> > +				       &pf1550->irq_data_onkey);
-> > +	if (ret)
-> > +		return dev_err_probe(pf1550->dev, ret,
-> > +				     "Failed to add %s IRQ chip\n",
-> > +				     pf1550_onkey_irq_chip.name);
-> > +
-> > +	domain =3D regmap_irq_get_domain(pf1550->irq_data_onkey);
-> > +
-> > +	ret =3D  devm_mfd_add_devices(pf1550->dev, PLATFORM_DEVID_NONE, onk=
-ey, 1,
->=20
-> 2 spaces after =3D
->=20
-Will drop.
-> > +				    NULL, 0, domain);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Add battery charger */
-> > +	irq =3D regmap_irq_get_virq(pf1550->irq_data, PF1550_IRQ_CHG);
->=20
-> This calls irq_create_mapping().
-> Should irq_dispose_mapping() or another helper be called in the error
-> handling path and in the remove function, or is it already handled by a
-> devm_ function?
->=20
-This creates a mapping for the allocated `irq_data` runtime controller by
-devm_regmap_add_irq. The `irq_data` is for the top level interrupts. Sinc=
-e it
-was allocated with a devm_, I think irq_dispose_mapping is called during =
-a
-remove.
-> > +	if (irq < 0)
-> > +		return dev_err_probe(pf1550->dev, irq,
-> > +				     "Failed to get parent vIRQ(%d) for chip %s\n",
-> > +				     PF1550_IRQ_CHG, pf1550_irq_chip.name);
-> > +
-> > +	ret =3D devm_regmap_add_irq_chip(pf1550->dev, pf1550->regmap, irq,
-> > +				       IRQF_ONESHOT | IRQF_SHARED |
-> > +				       IRQF_TRIGGER_FALLING, 0,
-> > +				       &pf1550_charger_irq_chip,
-> > +				       &pf1550->irq_data_charger);
-> > +	if (ret)
-> > +		return dev_err_probe(pf1550->dev, ret,
-> > +				     "Failed to add %s IRQ chip\n",
-> > +				     pf1550_charger_irq_chip.name);
-> > +
-> > +	domain =3D regmap_irq_get_domain(pf1550->irq_data_charger);
-> > +
-> > +	return devm_mfd_add_devices(pf1550->dev, PLATFORM_DEVID_NONE, charg=
-er,
-> > +				    1, NULL, 0, domain);
-> > +}
-> > +
-> > +static int pf1550_suspend(struct device *dev)
-> > +{
-> > +	struct pf1550_ddata *pf1550 =3D dev_get_drvdata(dev);
-> > +
-> > +	if (device_may_wakeup(dev)) {
-> > +		enable_irq_wake(pf1550->irq);
-> > +		disable_irq(pf1550->irq);
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int pf1550_resume(struct device *dev)
-> > +{
-> > +	struct pf1550_ddata *pf1550 =3D dev_get_drvdata(dev);
-> > +
-> > +	if (device_may_wakeup(dev)) {
-> > +		disable_irq_wake(pf1550->irq);
-> > +		enable_irq(pf1550->irq);
->=20
-> Should this 2 lines be inverted?
->=20
-I don't think it matters. disable_irq_wake is 'completely orthogonal' to =
-the
-enable/disable(irq). See function irq_set_irq_wake.
-> > +	}
-> > +
-> > +	return 0;
-> > +}
->=20
-> ...
->=20
-> > +#define PF1550_CHG_LINEAR_ONLY		12
-> > +#define PF1550_CHG_SNS_MASK		0xf
-> > +#define PF1550_CHG_INT_MASK             0x51
->=20
-> Space vs tab
->=20
-Will make changes.
-> > +
-> > +#define PF1550_BAT_NO_VBUS		0
-> > +#define PF1550_BAT_LOW_THAN_PRECHARG	1
+On Thu, 10 Jul 2025 17:09:01 +0800
+Wei Fang <wei.fang@nxp.com> wrote:
 
-Thanks,
-Sam
+> There are also some RCR bits that are not defined but are used by the
+> driver, so add macro definitions for these bits to improve readability
+> and maintainability.
+> 
+> In addition, although FEC_RCR_HALFDPX has been defined, it is not used
+> in the driver. According to the description of FEC_RCR[1] in RM, it is
+> used to disable receive on transmit. Therefore, it is more appropriate
+> to redefine FEC_RCR[1] as FEC_RCR_DRT.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
