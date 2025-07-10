@@ -1,66 +1,124 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEE92877FB;
-	Thu, 10 Jul 2025 07:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F318F5E;
+	Thu, 10 Jul 2025 07:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752131684; cv=none; b=UyVrk3+gdCvlERcYoI37hITbBeT83ort7vAIFrUb7QHa3LGrCLk3TIvIkeeqiixwjAJNNzBKPdQ6yEByrtjN59rEpAJ6DINRwB4n3OqH8uoPm22irE00TVmK9j8qqNqJRq2uTxahgMXj4cRb7Nm1rWF4brUbBR2OCC7vt33hs2w=
+	t=1752132432; cv=none; b=mrTod6CFMsGnyuL1eCo/B1fR0jAB2jOkrimXK5x/jtPJiuRpmKaSHJF/DUDtJN4v8MrrRiMpATaQOhYEJIrU/yIsiTxdL6ouN5QwwBQn4dcoHF7FoIghE+2ZS4v/iO+V39ZftSjjglIl1i0SLFqyKgtQH+9jSBmnXyMpQPxdrJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752131684; c=relaxed/simple;
-	bh=FvFyBYxEpy9Sn7Einro160cdlw9VKDe5feG5m85a5bA=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=XC7Os5x4CZ8JmPo6ZT8xIug/ioHNKuOuhpliVb4pcWbvSs7e/nie0L6KlAMguTGr3rbXb04z5ind0aZwyTWaxZrP9QZS3N3jr/Z8Xbff6t8Ex52C8rUu8LDeEoBkc7HKJY8PXMYMt7OQtojknRPR5sB+/y9n3L/SYCYfSiZ66Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KhXAvlda; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752132432; c=relaxed/simple;
+	bh=yR1yt72iESvtf706LR6VBiJOb+AEKItKxPYtLvUPyhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ciVlXGtRAZsgKs5RzQCcOr+S1V7y2+Yy9FvNvlennueyXdE815SsZPl36wVJtJti4uQA9YKlVHPkyen2RT7SMRT5JJF6Pet2mxbw2ea74WpAAfgadF80nJ3lkRPflCuOJV2z7KCLg1iwv36NW5Q/HIHZuADm9t3jDcV3AAGcGRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tYCfigXh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KhXAvlda"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3DAC4CEE3;
-	Thu, 10 Jul 2025 07:14:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tYCfigXh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A971C4CEE3;
+	Thu, 10 Jul 2025 07:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752131684;
-	bh=FvFyBYxEpy9Sn7Einro160cdlw9VKDe5feG5m85a5bA=;
-	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=KhXAvlda8kGZUzTXYkhLg3om+Qo32HaFYb14lK9fV4FGNBGD7XebP+umP0MEXay13
-	 lw5BeT46/tqhFmHXABvGhETF8s/yPBhXwqA3TleECzaorb2joMVovTZ42Rkf3Mso/q
-	 hFrDdruiJnJ28JfKbla+Ypq4zDGsG7UTp6+ICk997Kbn0lP4vp1j+8Bk9yAdGoMLh5
-	 HZLvuTNeU2gMoi4s1BdRRojbsK2wv3btMSk0QthDZ6wyoF4Sdflh7Y5Hf35p/SvcVc
-	 rxlgxw0D+4DTo95e8qolkjude05rg1SvTWBPS1W5IhDc4JuuseQqp2ilnPJae14MiF
-	 F0YUPxTzxf6pw==
-Message-ID: <966d844a84836a47ddcc49da0c779633@kernel.org>
-Date: Thu, 10 Jul 2025 07:14:41 +0000
-From: "Maxime Ripard" <mripard@kernel.org>
-To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 7/9] drm/bridge: get the bridge returned by
+	s=k20201202; t=1752132431;
+	bh=yR1yt72iESvtf706LR6VBiJOb+AEKItKxPYtLvUPyhE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tYCfigXhEmpMraXE+SzXg57pc60PfyVnaArkCqeGznlOXwQ/Y9NhpkO+Ca38NVEvl
+	 iQGVB9QNpqZ7usSvT5+8Mni8RdimYhCSzk++msnaC58io7HbuMjZ5FRIgW80PKpBG1
+	 ee8QPhmOLACZGKx3Q3u8NBqvRQIHHi6J/Hi75YTp/9ocEBaHACMI17Md1M7DIpIJGz
+	 KRWDV+pjp1AG8XJrHBu9crlyo98Ay7Ksg0CcVwvb85nncbsYUzkN4vuUCMSiUSMMyZ
+	 YXghCMXRjORlRJbbZzsYmX1XvdoP8gUON9ZxsBNxnTAiUFbKyPG4BaxF5oicIIRVZb
+	 2Vvp3osNZJsNw==
+Date: Thu, 10 Jul 2025 09:27:09 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Liu Ying <victor.liu@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Hui Pu <Hui.Pu@gehealthcare.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 8/9] drm/bridge: put the bridge returned by
  drm_bridge_get_next_bridge()
-In-Reply-To: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-7-48920b9cf369@bootlin.com>
-References: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-7-48920b9cf369@bootlin.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Andrzej
- Hajda" <andrzej.hajda@intel.com>, "David Airlie" <airlied@gmail.com>, "Fabio
- Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Jernej
- Skrabec" <jernej.skrabec@gmail.com>, "Jonas Karlman" <jonas@kwiboo.se>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Liu Ying" <victor.liu@nxp.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Philipp
- Zabel" <p.zabel@pengutronix.de>, "Robert Foss" <rfoss@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, "Simona
- Vetter" <simona@ffwll.ch>, "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas
- Zimmermann" <tzimmermann@suse.de>, "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <20250710-classic-bouncy-caiman-8e2045@houat>
+References: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-0-48920b9cf369@bootlin.com>
+ <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-8-48920b9cf369@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="3v6clpzuhyggvmrg"
+Content-Disposition: inline
+In-Reply-To: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-8-48920b9cf369@bootlin.com>
 
-On Wed, 9 Jul 2025 18:48:06 +0200, Luca Ceresoli wrote:
-> drm_bridge_get_next_bridge() returns a bridge pointer that the
-> caller could hold for a long time. Increment the refcount of the returned
-> bridge and document it must be put by the caller.
+
+--3v6clpzuhyggvmrg
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 8/9] drm/bridge: put the bridge returned by
+ drm_bridge_get_next_bridge()
+MIME-Version: 1.0
+
+Hi,
+
+On Wed, Jul 09, 2025 at 06:48:07PM +0200, Luca Ceresoli wrote:
+> The bridge returned by drm_bridge_get_next_bridge() is refcounted. Put it
+> when done.
 >=20
 > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+
+You should really expand a bit more your commit logs, and provide the
+context of why you think putting drm_bridge_put where you do is a good idea.
+
+> ---
+>  drivers/gpu/drm/drm_bridge.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >=20
-> [ ... ]
+> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+> index 0b450b334afd82e0460f18fdd248f79d0a2b153d..05e85457099ab1e0a23ea7842=
+c9654c9a6881dfb 100644
+> --- a/drivers/gpu/drm/drm_bridge.c
+> +++ b/drivers/gpu/drm/drm_bridge.c
+> @@ -1147,6 +1147,8 @@ drm_atomic_bridge_propagate_bus_flags(struct drm_br=
+idge *bridge,
+>  	} else {
+>  		next_bridge_state =3D drm_atomic_get_new_bridge_state(state,
+>  								next_bridge);
+> +		drm_bridge_put(next_bridge);
+> +
+>  		/*
+>  		 * No bridge state attached to the next bridge, just leave the
+>  		 * flags to 0.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
+In particular, I don't think it is here.
 
-Thanks!
+You still have a variable in scope after that branch that you would have
+given up the reference for, which is pretty dangerous.
+
+Also, the bridge state lifetime is shorter than the bridge lifetime
+itself, so we probably want to have the drm_bridge_put after we're done
+with next_bridge_state too.
+
+Overall, I think using __free here is probably the most robust solution.
+
 Maxime
+
+--3v6clpzuhyggvmrg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaG9rTAAKCRAnX84Zoj2+
+dr15AYCUDUXM2027tbhyBFNnTMDtHivlc5bgpEwgheOP8GXxP7YFX/QLF0BkDV7V
+DnRK0VQBfAsNfigLg8ct5uD7iCc3b1OYcgl8hgrtM7STVo7OZSQpRSJyWJv9Amo6
+YYUahgkEQw==
+=3R2K
+-----END PGP SIGNATURE-----
+
+--3v6clpzuhyggvmrg--
