@@ -1,136 +1,169 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD0C28BAB3
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 09:22:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D562D5A18
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 10:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752139377; cv=none; b=JT9WZTnR/mjDpm9csPzoNdjIND00v2By6iNIlKeXz7Plo3JHs57b+1XZnnGNhcxTr1K35zYkJQ8WXmZJJBs9mVv54cdq0MivwLUPCY2KD2iag8kenc7j+fkKcsnUbGVQ7TWgAk49iBYEFP02ckdbQhWrjV698c76zFW1GyA0OQg=
+	t=1752143044; cv=none; b=DNVGJfqJ6wiw8NpZKcfI3KluP4JAWuxlrB6/BgDTtTuLxpr+RL//jsEndhamk4W1ecjH4FCi0SnuRRZeItWjg3BBqoJwjhD/4A7r4Fz4QrKn6oTBuQKEVaYCdfAtV4BESTWlI+gUiT06aoscGpY51j5ZUICaKqF/g5FaursGuwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752139377; c=relaxed/simple;
-	bh=oMuEnzSiV/0zGJRZTSJdmYqP9+3hpJC5wE7fsmK9ILg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P/4qsTkJJJJIiJtNOSOyJmiPolmDdH7BcIBQUiE5qkCGNvBuzQaFXe/rqY6B0NOkjUdjmtlwFQvg31zh4AT99sK3MAdfd5LTWmOTtNmiUH8rQ9wfzDxYf5m8z4z1sDOoVANWZydHHpZ6LgyHqmxH0K96/SgpbxCJXw4kKM/egHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BmzIcBKJ; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1752143044; c=relaxed/simple;
+	bh=AQ/J9THDUl9sKXMswle0non7KDNpXUkQiO4AwVVqe/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uzj8C2d/UjD7ycHfeQKe5J7guMWbSL7nOdT++PUiqyqRN/81V1ZDe80QE3C0+LJnMTzpVxVietHPzX+5FgVbenqtK/qoS7/GC8eVF2gevFr8Oe3VSeMoLcw64DnrxrWFbHiumUbFU64V5bEBO7SoL+u1ceNypnQCHrJekvl/tOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=jKqujF+X; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BmzIcBKJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752139376; x=1783675376;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oMuEnzSiV/0zGJRZTSJdmYqP9+3hpJC5wE7fsmK9ILg=;
-  b=BmzIcBKJSPDWUEkbTuIvHCW2odvvx5Wu0HF8fPcfTwm0SUsuMIEtFU+t
-   1YeMVnSkoU6+jV1IPe2roXLwDD/y3Z9nlrmiJD/RmimhR+igG5UijrxdN
-   sQn9jJkSYlphb49pu7WsZewwuG8GxWsR0clSXwIFhHil2WymTxtlaRHtj
-   i1etWdnFyDOEapCkpTf2T5MMormHL0zkgQc7+9kkb+z8/TXDIozaiZqoc
-   p7XcLIWEPf41yoKpGi9DpndJJGWNphYQnZwOFQarZwPUxq003ve6Om3jv
-   NVedamKmIg+y4yp4Em3JtbmVpBQkeEPO1DdzwTOfcmZpgdV80ZC5y/sOs
-   A==;
-X-CSE-ConnectionGUID: NCqHbEurSVuHaeLAG3CUYA==
-X-CSE-MsgGUID: ZsFA6N82Q5eJSkS7ofv43w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11489"; a="54130104"
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="54130104"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 02:22:56 -0700
-X-CSE-ConnectionGUID: p0j4cVbgRGuYdUOREp4FBQ==
-X-CSE-MsgGUID: hsWdMsaBR2aaOXEUBxOdGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,300,1744095600"; 
-   d="scan'208";a="186994717"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2025 02:22:51 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1uZnUN-0000000E9eg-1XWN;
-	Thu, 10 Jul 2025 12:22:47 +0300
-Date: Thu, 10 Jul 2025 12:22:46 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Primoz Fiser <primoz.fiser@norik.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	upstream@lists.phytec.de, andrej.picej@norik.com
-Subject: Re: [PATCH 2/2] iio: adc: imx93: Make calibration parameters
- configurable
-Message-ID: <aG-GZqhABwErcEyM@smile.fi.intel.com>
-References: <20250710073905.1105417-1-primoz.fiser@norik.com>
- <20250710073905.1105417-3-primoz.fiser@norik.com>
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="jKqujF+X"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=rqsAZLGhFuNxn7FEmeaLa9mYFTex/7gLFWe6hyGIPKg=; b=jKqujF+X2Dw/rtWVGBaKfu3a2c
+	0sZYm8fqmDUF6PRcNTVEg03N2Vx4GSBjyRPAWFsnXEDmJII6K3P74CTupU8W/43I2XYARDDOwW6es
+	0mOvatHxA/RNFPNe41Y/dN8ftUx+fYtI2bEoLljz/iDnQUURpNmpWxdxHFbbIl10Pg8zc4qpookFQ
+	pQZwrjo3P5+pXBiJsoRy0ezcVjkMMR1z+N0auJNcNh8iH7WkVSYkMfk0/BkP8eCQzYye2I1hd5h15
+	r+XU0k+eHVek857nvRAydXiEGHsPbYq6R8VlX+RL2KSGTRjneHabEVVlZa+Kzo9d4SkOesfbSATgH
+	PH0q47Yw==;
+Received: from [89.212.21.243] (port=48522 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1uZoRc-006kdW-1b;
+	Thu, 10 Jul 2025 12:24:00 +0200
+Message-ID: <42dd658e-555a-43f7-a7bf-e5365d508f4a@norik.com>
+Date: Thu, 10 Jul 2025 12:23:58 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250710073905.1105417-3-primoz.fiser@norik.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: adc: imx93: Make calibration parameters
+ configurable
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Haibo Chen <haibo.chen@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
+ David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
+ imx@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ upstream@lists.phytec.de, andrej.picej@norik.com
+References: <20250710073905.1105417-1-primoz.fiser@norik.com>
+ <20250710073905.1105417-3-primoz.fiser@norik.com>
+ <aG-GZqhABwErcEyM@smile.fi.intel.com>
+Content-Language: en-US
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <aG-GZqhABwErcEyM@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Thu, Jul 10, 2025 at 09:39:04AM +0200, Primoz Fiser wrote:
+Hi Andy,
+
+On 10. 07. 25 11:22, Andy Shevchenko wrote:
+> On Thu, Jul 10, 2025 at 09:39:04AM +0200, Primoz Fiser wrote:
+>>
+>> Make i.MX93 ADC calibration parameters:
+>>  - AVGEN: Enable calibration averaging function,
+>>  - NRSMPL: Select number of calibration samples,
+>>  - TSAMP: Select sample time of calibration conversions,
+>>
+>> in the MCR register configurable with the corresponding device-tree
+>> properties:
+>>  - nxp,calib-avg-en,
+>>  - nxp,calib-nr-samples and
+>>  - nxp,calib-t-sample.
 > 
-> Make i.MX93 ADC calibration parameters:
->  - AVGEN: Enable calibration averaging function,
->  - NRSMPL: Select number of calibration samples,
->  - TSAMP: Select sample time of calibration conversions,
+> ...
 > 
-> in the MCR register configurable with the corresponding device-tree
-> properties:
->  - nxp,calib-avg-en,
->  - nxp,calib-nr-samples and
->  - nxp,calib-t-sample.
+>>  #include <linux/platform_device.h>
+>>  #include <linux/pm_runtime.h>
+>>  #include <linux/regulator/consumer.h>
+>> +#include <linux/property.h>
+> 
+> Keep it in order.
 
-...
+OK. Will fix for v2.
 
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/regulator/consumer.h>
-> +#include <linux/property.h>
+> 
+> ...
+> 
+>> +	ret = device_property_read_u32(adc->dev, "nxp,calib-avg-en", &val);
+>> +	if (!ret) {
+>> +		if (val != 0 && val != 1) {
+>> +			dev_err(adc->dev, "invalid nxp,calib-avg-en: %d\n", val);
+>> +			return -EINVAL;
+>> +		}
+>> +		reg = val;
+>> +		mcr &= ~IMX93_ADC_MCR_AVGEN_MASK;
+>> +		mcr |= FIELD_PREP(IMX93_ADC_MCR_AVGEN_MASK, reg);
+>> +	}
+> 
+> Please, since it's optional, do other way around.
+> 
+> 	val = $DEFAUTL;
+> 	device_property_read_u32(adc->dev, "nxp,calib-avg-en", &val);
+> 	FIELD_MODIFY(...)
+> 
+> Similar approach may be used for the other properties.
 
-Keep it in order.
+OK, I guess I could implement it like you suggested to explicitly set
+the default parameter values.
 
-...
+But in current implementation MCR values are read at the beginning of
+imx93_adc_calibration(), meaning calibration parameters are register POR
+defaults. With you suggestion, we put defaults in software rather than
+reading them from the hw directly.
 
-> +	ret = device_property_read_u32(adc->dev, "nxp,calib-avg-en", &val);
-> +	if (!ret) {
-> +		if (val != 0 && val != 1) {
-> +			dev_err(adc->dev, "invalid nxp,calib-avg-en: %d\n", val);
-> +			return -EINVAL;
-> +		}
-> +		reg = val;
-> +		mcr &= ~IMX93_ADC_MCR_AVGEN_MASK;
-> +		mcr |= FIELD_PREP(IMX93_ADC_MCR_AVGEN_MASK, reg);
-> +	}
+> 
+> ...
+> 
+>> +	/* write calibration settings to MCR */
+>> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
+> 
+> Please, factor out this to the function, so we won't see the direct IO in the
+> ->probe().
 
-Please, since it's optional, do other way around.
+Sorry I don't understand this part.
 
-	val = $DEFAUTL;
-	device_property_read_u32(adc->dev, "nxp,calib-avg-en", &val);
-	FIELD_MODIFY(...)
+What do you mean by factoring out this writel()?
 
-Similar approach may be used for the other properties.
+Do you perhaps suggest to implement function
+imx93_adc_configure_calibration() and put all our changes into it?
 
-...
+But we are already in imx93_adc_calibration() which is separate from
+probe().
 
-> +	/* write calibration settings to MCR */
-> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
+Please explain.
 
-Please, factor out this to the function, so we won't see the direct IO in the
-->probe().
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+BR,
+Primoz
 
