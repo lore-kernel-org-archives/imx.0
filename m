@@ -1,218 +1,260 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011070.outbound.protection.outlook.com [40.107.130.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336961A841A;
-	Thu, 10 Jul 2025 11:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752147634; cv=none; b=d62n12+GsyjaoOpyLatAxy9zHxdcfZoVJxOmg6349A4wNs9SFoKBHP2qH9+wiFwvbvdrKmc4XMCwmXZes5Lj1CvD/oTNXH/0301bHpY1v//bBSmJLrKepBQA2tgh17SRrLXlTZ31CJlU6Sj4dqRhZV11IQ7Nmk49lp1XAH4ujtE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752147634; c=relaxed/simple;
-	bh=1RsuIHRRAuqcGHCQF+P/OS8tKhDFc+7jVpMSz2Nnvvg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LVUucYLg3frz5TsGRUdQqFgvddySbx3PY2cQaNVRFBs3ZrSmAKI5QTrkf/0bK0cWL16BGQJyBNLZtg6K+z0Niat77NWAcpNdQBONRqijJ5uYFCyTI/gSXumQQCn5TgGtFVa1ejLSftxCjhEUF8VXuihxuRMCZClthmK+5VKeYCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZwbafXNw; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B614A23C4F4
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 12:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752149406; cv=fail; b=YlBvY7vbogz1Qevq0HWn1qcDy/WjMEsTkX/eyrPOrRUdkX/4vFgTOcRelbH9AEu8lr+ZzVjpHHONAfxmeO9183OEBB0D8aHJT25/Xir3SIO5E+3NeaeIFEmqcDrv3CT4l9Xv3aS5zE7HSdHMp4NKBbAdro5CKnM1i0Q0uJAu0kM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752149406; c=relaxed/simple;
+	bh=AV3ayQxSYUqLvsZfiHPcCkMrjC5yA6aBeTlFcs0SfLA=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=oJA5CbJ2bnd7AzWQz5XgA61GXYOzJ50JXOuJxPmRVCZIP/mh7rymHuEfTGLamCwWT5N9Ftlrgm4Ad1nDITlfPAUT1QfhRetWwbtdbbCtKLYxeRI/SNV1QfO0fJ9PuBu4hLnK2EHICy6cbuTfSFyCfA3PAVIxdhbOcSYCkig6PTg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CSzuf6tc; arc=fail smtp.client-ip=40.107.130.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZwbafXNw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF30BC4CEE3;
-	Thu, 10 Jul 2025 11:40:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752147633;
-	bh=1RsuIHRRAuqcGHCQF+P/OS8tKhDFc+7jVpMSz2Nnvvg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZwbafXNwxIffsI5cFE+wVdo3GwQzgD9et58i9iA2Vhcrd3NamfBHDIsmyd8vhOn3/
-	 OKbc+3lMPdFOQz0+WHd3/rGT0eVDw1o6yAf0POqKsQq3WU78mY3N/3/PLEoIUpeHo5
-	 gIgReOW9YRwWW/beO4KmTdcOwixMvtzRsdfdtsu4mocg7q0eniBRLs0VsZAiYvo40A
-	 vHoP8yYegdn0seT9UVUMTV8IMTOMwAwmgRcE9vVT9D7v2OV+nW70R2D1OeUX9q2w9N
-	 v6ceJ8uA1clmxy+gXhMW2NuYJk48/l8YXAXBSzOFKC7B9per0ONphmupfawihauGOz
-	 AJ1j7GFoXCyWA==
-Date: Thu, 10 Jul 2025 13:40:25 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank.Li@nxp.com
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anup Patel <apatel@ventanamicro.com>, Marc Zyngier <maz@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Shuah Khan <shuah@kernel.org>, Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	dlemoal@kernel.org, jdmason@kudzu.us, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v20 0/9] PCI: EP: Add RC-to-EP doorbell with platform MSI
- controller
-Message-ID: <aG-mqWtUu9-CD43U@ryzen>
-References: <20250709-ep-msi-v20-0-43d56f9bd54a@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CSzuf6tc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wU1eBQnAl4WmkMf/KbvzfixWXuYNfVSClIPnhPAJ3oS4bXKTqVe09JckWxyLPm16FsUwpfIMZSI63TRr/3eVpXteZcMe8AqKcWETQnr4YNpjv298Vh3nx06H6iKYKZEc483hT6r/c5nglepR5tZPSIMvfTqQVDISbJI7sTaPBnuu8RMljzj1QVcWx7Wx0ZNB78QMiejZnCPq81HPUNtxDbHy1fH1/yMIZQAPPl1daJ6al/la9HB3O9+0yJQM7P3H97fCNWMIZHiHgV5Su157Py6ahetVqohnfJS8xFGxaveD8teFBeT91F83PFjo/5BAC4BUKZpE6XS83jY3d4ZPpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A4yjRrGCsTXRUEDPiyGLIYzCrOPRJ/twtp/vFWH7H20=;
+ b=h3/lCqAAc6+8xMzzrGeztecrjKF02EQX59joJlwhVJuEO1nNFF5LUl7UXx9u0zHLA4Zt8aqEOs3sG+6cW5w/OHu2+qh6n3HUHMlD+A8KnAaOEnGiFKQ3GtPDsJvCURjYZLqbz01DhCylnDyKPa22TCypYHxUPbTVc5JUGRC7NcrJHOelNe8OMVnvgqVoMv3bKzeVBeQyDDV6rxWr3tu60QmGHJTgrUxxDsWkN3hAJEYxHgR8aCb1N/zPHxBGbfwKQy7WDzCBC6lVWvJgwWDulJsKqr6/e3+DWLI3TuP/5sPaabN56RF14vWOzbHBuEvhqsZ8TtKQWd3Gm/JfKqCr4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A4yjRrGCsTXRUEDPiyGLIYzCrOPRJ/twtp/vFWH7H20=;
+ b=CSzuf6tciZ48qumJnBPjHQPYcjmGkuMrSkGEVSW1NaU7p479ZP/EDkL3y/wsSqflx219jUXPbgsb9mDHiOKLWPvAW5p9N31ImYQCpk/lLZqNhtLATK/CR657tt7x6tNySxro0yQuayaDsk1Kf1LcmIliBfSPhNvQkQ87daXhO0bIViNoNUCmdIPXKDq7iGSgYnaHrwQZCgjlTV87myBo/I+EvhQGFa+m96CosX75RICJt8FcCzoQDLU8LfXywj5QK6qZ3X5CRvbBRlb3fUuz4HGU8umgA48/tOo9KW5jfPxTGa5JZAva2eVcbcr4+C66Gx94d2YUF0c95t15Ug/Vgw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by DB9PR04MB8395.eurprd04.prod.outlook.com (2603:10a6:10:247::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Thu, 10 Jul
+ 2025 12:09:59 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%7]) with mapi id 15.20.8901.028; Thu, 10 Jul 2025
+ 12:09:59 +0000
+From: Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH v4 0/5] remoteproc: imx_rproc: Support i.MX95
+Date: Thu, 10 Jul 2025 20:08:00 +0800
+Message-Id: <20250710-imx95-rproc-1-v4-0-a7123e857dfb@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACCtb2gC/23Nyw6CMBCF4VchXVvTTjvFuvI9jAt60y4EUgzBG
+ N7dglHxsjyTfP/cSOdT9B3ZFjeSfB+72NR5yFVB7Kmqj55GlzcBBsgQkMbzoJGmNjWWcgrMmFI
+ 6ZzdVINm0yYc4zL39Ie9T7C5Nus75nk/XR0kx+VXqOWW0Uh4DcigFt7t6aNe2OZOp08PSqm8Lk
+ wXjlJRiY7z+tGJh4eevyFYaZQNnJfLSveyqeBr8Z5TWTPCAGtTbHMZxvANO5OjaVAEAAA==
+X-Change-ID: 20250525-imx95-rproc-1-20bb74ddc8af
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, 
+ Iuliana Prodan <iuliana.prodan@nxp.com>
+Cc: linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>, 
+ Frank Li <Frank.Li@nxp.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752149291; l=3619;
+ i=peng.fan@nxp.com; s=20230812; h=from:subject:message-id;
+ bh=AV3ayQxSYUqLvsZfiHPcCkMrjC5yA6aBeTlFcs0SfLA=;
+ b=gIlsuxag7hz72hj1o50xxkHquE4PGYggRGsoI7nOz/2accy1prHjRQXewUKjNe79RN/DvSz3h
+ mA71MnJQ1oiCqSGaJL/AF7+y2KBP/BS9QE3Sb/qM6Zx4FP8C6KYRFYn
+X-Developer-Key: i=peng.fan@nxp.com; a=ed25519;
+ pk=I4sJg7atIT1g63H7bb5lDRGR2gJW14RKDD0wFL8TT1g=
+X-ClientProxiedBy: MA0PR01CA0071.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ad::11) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250709-ep-msi-v20-0-43d56f9bd54a@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB9PR04MB8395:EE_
+X-MS-Office365-Filtering-Correlation-Id: d0c01d41-d785-4052-4b5d-08ddbfaab11c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|376014|7416014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dGFldW4vVzZMWjM2RWV0TTdOdGRIVHBPOTFUbko2WXlXWjBnOXBXdWROY2hZ?=
+ =?utf-8?B?NThSM2hxbzhPc3V1K293UFNuVWdjMHVSa1pEMUZVY0FYLzZjNUFveTRBYUpF?=
+ =?utf-8?B?M25VdjZ5YXdINzBvdjdPWlNDZTIvOVBWTE5TNHByM2NydXQrMG9waWYyMEc4?=
+ =?utf-8?B?ZHJMR2RPRXY2d1A5ZndkY3AxQ1creFBlR1luSWllVlBObVFkTFVGU0h5emhh?=
+ =?utf-8?B?bXBJVHd3b3ZyQzFxR3RqYzlLWTdtdjVFN1h3ZEtXTFhZNk0zbzZadEN3bWgz?=
+ =?utf-8?B?MlJiUEZWUW01QjUyaVkwWWlIUnRGVDhTYllONXg1VytwanRLYVpxalJLeVV2?=
+ =?utf-8?B?R3RnK0hoQU9iVTkzeDcrVUhUVVhEbENzTlo2M1REcUFYTFR6dnEyMTUxUmZh?=
+ =?utf-8?B?czFJZW1ieDh4UnpYZjcrWDFsRGxRQXc2NEJZNGxRSUJGWFBpTU9EMnlkMjJs?=
+ =?utf-8?B?bkNyTFFpUjBRcE9VcWwzd1djazNHVnlzcVNkdnVucnFVb25OV3g2M2RsS1pJ?=
+ =?utf-8?B?TVhKUUN3Q1d1cHRLbjluQ2dDdklVTWk5NWtMMzhrOHJoaGV1ZzZLd25GQUh4?=
+ =?utf-8?B?NVo1cjBoOHExMERWN2VQeE5FUmtBNityUCtlWURvVmI2RWpQNkFhTXZNQTJ3?=
+ =?utf-8?B?YlFFZjN0SnRkUUFZSzVmQ2RMU1JiRWg3aHdCZElGbzdCY2w4c0pRdHlsclNw?=
+ =?utf-8?B?MHpUOEVBV1VnbHJPWlpDT0dieGNFUmljb0lOYmhEdUttVytzL21iMkJHRDA0?=
+ =?utf-8?B?NVl1OEV5WFFlYUo0dituV3JiK0gwVjBJazBoQTVjOTJHUFhJcGRrWFFxSHc1?=
+ =?utf-8?B?QWZxUVNlNm1udUQzVjRWeWVCNzVKRlZaK0lIaEJtS3JPQ2ZGdGhZSUoyTndm?=
+ =?utf-8?B?dDc0R2tpa0ZzNTFtZk5zd0ZGQmxCYlNXZVNndys5dEYwaGpYeld3WjBJNGdO?=
+ =?utf-8?B?KzMzZU5ZQk9kRXorSk9PWnZqdVNiM3JLTEZaNU9zeGJWYlNYbFhoNlplZnpv?=
+ =?utf-8?B?SE14RjdlQjdOU1ZzQVQ3QUtMVzlrTGg1Nk5NRUljMXFKaVZEUHI5QUloZnZt?=
+ =?utf-8?B?b0lxWU9kVkN4TW1HSzZFVVB5QXQwVDZLL3E2RzRPdnFOMzRmWmsraUFFc2g0?=
+ =?utf-8?B?bnRjb0RucHhJY2xheXJYWFFINHhJa3VlQXFvRmFFcnNSZ2tZZGFCYWZPKzB6?=
+ =?utf-8?B?YkpnRTVud1hvOXI1VkhZR3NRQkZIbXZPc3VrcmVIYldCb0pDcEIxdTFocjNV?=
+ =?utf-8?B?MEM0Ym42YXZtNldYU003Smx1UzlzNElsL2FkM3ZMUkNBcUNxVlJoNTVXOGdF?=
+ =?utf-8?B?Sk5DWjAzWi9ZaGo1akZwOXUzWVNVVVFuRktoUlN0a0xpOHo2K05Vekk4U0Zz?=
+ =?utf-8?B?VU84UnN3dFRLTFVoeFptQmY1UkpXYlBSa1JQTU4yWWVISEk1ZWFnN0lEU3Zl?=
+ =?utf-8?B?Vkhob1FWTVZQa1Q1UkFBakFybm15MlFwZnI5bXh0MXNtRzk0NmQ4V0VaTTNp?=
+ =?utf-8?B?UUcvck1NSWdWOUxhZktacGhSSnBXSzVMV3l0STlhcTRPNC90SzNrK3JiMUZp?=
+ =?utf-8?B?S0JPa0MwWnBJcWVUNmMxeDVTRjlqWmNOZjd4dkIyb2lSWmh0Y1c1MmNUQmR1?=
+ =?utf-8?B?SHV4TFNGWWx2c1FJcm1sa3VrcEd5eFppV1JueVlaZHJTTE1RR25EODNKVWRk?=
+ =?utf-8?B?UWhOZWMrZFBBK3AvZ1AvS3M2aktXV29VVUtxcFp6TkZacFJjWXBEcXBzRnZG?=
+ =?utf-8?B?dFJqTFAyR0hUSC9nT1MycmduL2dnRmdBS2F4aDJnYWpiSERUL0gxTW8rNDZq?=
+ =?utf-8?B?NVNsYkd5VEppOXBnZmxMWUloN2ZpeExMZXBlZ2F4cmc0TDQ5ZHJGeFJ2RXhP?=
+ =?utf-8?B?Sk44cW9nTy9GeGFtRE5aSmQxa2pkOU0xbVVEMmIyQzQrOU1nUCtJOUI5dS93?=
+ =?utf-8?B?N1VHN2dNRGErU3JlSFE3WFIvalpWV0ZFNUVmaEg5aEFrcW9sZDM0UCs1VWhM?=
+ =?utf-8?B?UHd5UFRBdTZDdkZ6eVhLdVB3KzVwZytvWTNRSXF2UzF4MDdVWVdEdFpRUmVX?=
+ =?utf-8?Q?NM8iFs?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(376014)(7416014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T0czMTBPR3g0aFBxcy9MOEJuMDR6U0pVUE9CeHAzbmg2K0o3d2hLS1RFNU5D?=
+ =?utf-8?B?SklVdnVLMlR3cy9hZWhUOVBqUllraEhNS0lwMmRiZi9xekUzZ0gzVFJWTk5t?=
+ =?utf-8?B?a2oycmlTQnVkQzRsWXo5WWhwS3ZERU1oVm1IeWxaSEkwN3BoTG1VRWVIVFpp?=
+ =?utf-8?B?SlZBaGhqZWE2LzVLdm9NZDgzMXhmTkFUNlBaNVNmTnlxRjFVdlFTMmdyK0c0?=
+ =?utf-8?B?YnVobW1hckV1Tzl4NzYraXdFS0QxZlZERzFrYnBXcEc5RVJNMExjQ1dCaWo2?=
+ =?utf-8?B?ait5UWNjTXBzM1cxK09VQVZhenJUSnNQeTZzSDYwaU5USlljMTdPWGNCbDkw?=
+ =?utf-8?B?U2dNUWxwZmRGdzBZWk53ZG13bVduMWI1RzlMZ2ZMRmNDZGMrUU9qbDMwZUJu?=
+ =?utf-8?B?b0M2dFB6QVFVNTVlRVZ5V2U0eG1ZcGpxYmNsZE02b3ExRGMzVjV1R3d0ZVFN?=
+ =?utf-8?B?OUVvbXBFNXFzcUVkNHppMHN6S0hJemtGS1pWUkNLRFVGK0Zqa01Qd3QvejBl?=
+ =?utf-8?B?bzdCOExMa0VDY3FZbnExSERrWWptUlBtOHYzMHF2dkZLdVl5R1JWUEhvQjFy?=
+ =?utf-8?B?Qm5aSGJUandnTFJVRldYUytLSXdkRzJjU0lQZzlBbGtZN2lBUWdQM1hWQnI2?=
+ =?utf-8?B?Sm5lU2lQdzdrd1VKbFhlRDBFS0dQcCtpR2VseElzSFZ2VFA2dXJQWUd4dGh4?=
+ =?utf-8?B?TW5Qbk5aK3ZxYVYvWTNtblhuSno1N3hLbHVndWY4dDQ0Zk5MQ0k0VGt3azc3?=
+ =?utf-8?B?RmxZMXc5cE0xTDhhNCsrNUJUTzg5aEVyNG42OGdMbVF2cXowZDFDd0FhMFhB?=
+ =?utf-8?B?QjJGZTlGK05OYmd6YS9YMS90VktrY1lidU5EVDZsei8wTDNoSkRZbE84K3dn?=
+ =?utf-8?B?QW54L0drZ0ExYkdSZStFV0tsd1QwcExPdXpSUHFyY0REdDRkMVJPZEViU0M2?=
+ =?utf-8?B?N1dpZDk5U0ptSldJclFWM094aTNtaUxneHNKUnJxaHRaZU5KZEwvUURiYlNm?=
+ =?utf-8?B?UVhlZmFBWENPc0lZWUU3SHJJeW0zcGtWRmtuWGVPcElGNEl4QXY0anhKWGVl?=
+ =?utf-8?B?STdQaXUxOSs2R010WWp2dEpjTmM0b1VJTXN3b1l1Y25jQy9vbzBva1ZJVXV4?=
+ =?utf-8?B?VmxURVVhZlpnYzZhbHFreVlzUkU4TjNCK1ZiT3V6T0tlR0tDZnJDR3VaSExo?=
+ =?utf-8?B?L1NMWXVXWWxjY1VQbHlRRnlpNjYrMHFkLzZBbzI3VUpRVmdJZ09VUGZxdGpm?=
+ =?utf-8?B?N3MwdUNmcXc4NlVweVkrbkhyU2dlWDN3b0ZnaVlrWTNhVG5sRWhOZFRtRDlq?=
+ =?utf-8?B?U3NXR1RCTkt2TkF5UExHQVUxNGhxT1JVekJsaFEvQkxKZHRNOFZmRDcyMldi?=
+ =?utf-8?B?S3RrdU5yeWdVV0VjdUNZU05MZkFhOVFYWFRhR0NSeXY1dCtLb2ZkSHZaNEMy?=
+ =?utf-8?B?M1JxaXRub0YzbndMT0pvV2NESEJUT1pEVEozZW0rYzNWdnhWb3gzd2taK3J6?=
+ =?utf-8?B?UzBpQUpSSEE0cDFKOTYvaldiMDlnMFU2aThLVWVlUkVocmJMZDZFakNOV1ls?=
+ =?utf-8?B?VVU2MlhNcmpVY2l0bG5JcWFWaE56UGRNRFF3YlVkMXg2TjBwamd3M2ptQmNq?=
+ =?utf-8?B?MHNZNDVqUkVqZWJPdFBpT0xVNHNiUDg1cmxjempiRFBxMU9vS0I3Yy9TZXQy?=
+ =?utf-8?B?TmNuWjYxZUVkbDNMbzVHUXNDYjdCa0UrdWpmMHJ4WURTVGlZOHg5UjB4WFRR?=
+ =?utf-8?B?MmtrN1dnTFVIdXJVUDlXaGY2ZGhUR0g4UVg5VUpJdmpSaW9QNFJsWnZuOUFQ?=
+ =?utf-8?B?WlREZUpHYVV2RzBYU1cxRXN0VlpSSlg3L3ZoYUpnUjcrKzY1amNGSjlIVUtx?=
+ =?utf-8?B?V1pyOStXRzJRcE1lSkhVcS81T3ZlT2RvS3l2MWlYeUd5aE1mMlNlWEE3d1JE?=
+ =?utf-8?B?SFlxWEpzNUlhU2FqUWo2Wi9UZllJODd5bWNpTnZrOFJtUG5iVnV4NGFUbDY0?=
+ =?utf-8?B?R0dCT3RDcit5VkdZcDBBSFR1UXF2ZjErK2Z1S3d1YjdOR3BvUzdZbEdVL1JT?=
+ =?utf-8?B?MmJiV3hBOEFUZzYzdWVzemRWRzVlNEo5SDhvYjZXLzFlSTJWMnIvakY2eEsz?=
+ =?utf-8?Q?U9WVwuXvyMkOwwT/NxL8h3qSq?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0c01d41-d785-4052-4b5d-08ddbfaab11c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 12:09:59.6527
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /DgEPzBrE9DC36EBkQ7PZQI7NPDVyEA4fdl51NpV0TMps4a1iSpAOeVCG994hPdEau+S3RI22Ifh9ZWe1j/E3g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8395
 
-Hello Frank,
+i.MX95 features a Cortex-M33 core, six Cortex-A55 cores, and
+one Cortex-M7 core. The System Control Management Interface(SCMI)
+firmware runs on the M33 core. The i.MX95 SCMI firmware named System
+Manager(SM) includes vendor extension protocols, Logical Machine
+Management(LMM) protocol and CPU protocol and etc.
 
-I tested v20 of your series, but unfortunately, it still doesn't work.
+There are three cases for M7:
+(1) M7 in a separate Logical Machine(LM) that Linux couldn't control it.
+(2) M7 in a separate Logical Machine that Linux could control it using
+    LMM protocol
+(3) M7 runs in same Logical Machine as A55, so Linux could control it
+    using CPU protocol
 
-When enabling the doorbell, the programming of the inbound iATU fails:
+In patch 2, Use LMM and CPU protocol to manage M7. More info could be
+found in the patch commit log
 
-## pci_epf_test_enable_doorbell()
-## keeps the BAR size, and BAR type of a BAR that has already been configured,
-## but changes the address translation for this BAR to redirect to the GIC ITS
-## rather than to the memory allocated by pci_epf_alloc_space()
-## (does not free the memory allocated by pci_epf_alloc_space())
+Current setup relies on pre-Linux software(U-Boot) to do
+M7 TCM ECC initialization. In future, we could add the support in Linux
+to decouple U-Boot and Linux.
 
-[   39.347502] pci_epf_test_enable_doorbell: msg hi: 0x0 msg low: 0xfe670040
-[   39.348103] pci_epf_test_enable_doorbell: base: 0xfe670000 off: 0x40
-[   39.348658] dw_pcie_ep_inbound_atu index: 1 parent_bus_addr: 0xfe670000 bar: 1 size: 0x100000
-[   39.349403] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xfe670000 pci->region_align: 0x10000 IS_ALIGNED: 1
-[   39.350260] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xfe670000 size: 0x100000 IS_ALIGNED: 0
-[   39.351028] rockchip-dw-pcie a40000000.pcie-ep: Failed to program IB window
+Patchset was tested with below boot images when the patchset based on next-20250526:
+imx-boot-variant-rpmsg-imx95-19x19-lpddr5-evk-sd.bin-flash_lpboot_sm_a55 (Use LMM protocol)
+imx-boot-variant-alt-imx95-19x19-lpddr5-evk-sd.bin-flash_alt (Use CPU protocol)
+imx-boot-imx95-19x19-lpddr5-evk-sd.bin-flash_a55 (M7 not under A55 control)
+imx-boot-imx95-19x19-lpddr5-evk-sd.bin-flash_all (M7 not under A55 control)
 
-## pci_epf_test_disable_doorbell()
-## changes the address translation for this BAR to redirect to the memory
-## allocated by pci_epf_alloc_space() (which was never freed when enabling the
-## doorbell)
+Patchset was tested again with rebase on next-20250623
+Patchset was tested again with rebase on next-20250710
 
-[   39.351656] dw_pcie_ep_inbound_atu index: 1 parent_bus_addr: 0xa2e00000 bar: 1 size: 0x100000
-[   39.352401] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xa2e00000 pci->region_align: 0x10000 IS_ALIGNED: 1
-[   39.353257] dw_pcie_prog_ep_inbound_atu parent_bus_addr: 0xa2e00000 size: 0x100000 IS_ALIGNED: 1
+Patchset is re-based on next-20250603.
 
+Thanks for Daniel/Frank helping review the patchset before posting out to list.
 
-The reason why pci_epf_test_enable_doorbell() fails is because of this check:
-https://github.com/torvalds/linux/blob/v6.16-rc5/drivers/pci/controller/dwc/pcie-designware.c#L663
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+Changes in v4:
+- Move the lmm permission check code to a separate
+  function(imx_rproc_sm_lmm_prepare) in patch 3.
+- Check return value of scmi_imx_cpu_started in patch 3
+- Rebased to next-20250710 and tested on i.MX95-19x19-EVK
+- Add R-b from Frank for patch 1-4 and A-b from Krzysztof for patch 1
+- Drop mu7 from patch 5, because mu7 status was already okay.
+- Link to v3: https://lore.kernel.org/r/20250625-imx95-rproc-1-v3-0-699031f5926d@nxp.com
 
-If you want to understand why this very important check is there, it is
-because the DWC controller requires that the physical address programmed in
-the iATU is aligned to the size of the BAR (BAR_MASK+1), see this commit:
-https://github.com/torvalds/linux/commit/129f6af747b2
+Changes in v3:
+- Drop fsl,lmm-id and fsl,cpu-id for binding in patch 1
+- Add lmid and cpuid in driver patch 2.
+- Add i.MX95 lmid and cpuid in patch 3
+- Rebased to linux-next-6-23 and tested with this new rebased version
+- Add dtsi/dts patch 4,5 to give people a view on how it is used per Krzysztof
+- Daniel's R-b are still kept after talk with Daniel
+- Link to v2: https://lore.kernel.org/r/20250606-imx95-rproc-1-v2-0-a2bd64438be9@nxp.com
 
+Changes in v2:
+- Typo fix in patch 2 commit message
+- Move the m7 address mapping array from patch 2 to patch 3
+- Add R-b from Daniel to patch 3
+- Link to v1: https://lore.kernel.org/r/20250604-imx95-rproc-1-v1-0-a6e5f512731c@nxp.com
 
-Applying the following patch on top of your v20 series makes things work as
-intended and makes the pcie_ep_doorbell.DOORBELL_TEST selftest pass for me:
+---
+Peng Fan (5):
+      dt-bindings: remoteproc: fsl,imx-rproc: Add support for i.MX95
+      remoteproc: imx_rproc: Add support for System Manager API
+      remoteproc: imx_rproc: Add support for i.MX95
+      arm64: dts: imx95: Add SCMI LMM/CPU nodes
+      arm64: dts: imx95-19x19-evk: Add CM7 nodes and vdev related memory regions
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index dfdd25cfc003..7d356b0201ae 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -738,9 +738,9 @@ static void pci_epf_test_enable_doorbell(struct pci_epf_test *epf_test,
- 	reg->doorbell_bar = cpu_to_le32(bar);
- 
- 	msg = &epf->db_msg[0].msg;
--	ret = pci_epf_align_inbound_addr(epf, bar, ((u64)msg->address_hi << 32) | msg->address_lo,
-+	ret = pci_epf_align_inbound_addr(epf, epf->bar[bar].size,
-+					((u64)msg->address_hi << 32) | msg->address_lo,
- 					&epf_test->db_bar.phys_addr, &offset);
--
- 	if (ret)
- 		goto err_doorbell;
- 
-diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
-index c21d8e786eb3..b3d4117182e2 100644
---- a/drivers/pci/endpoint/pci-epf-core.c
-+++ b/drivers/pci/endpoint/pci-epf-core.c
-@@ -478,44 +478,36 @@ struct pci_epf *pci_epf_create(const char *name)
- EXPORT_SYMBOL_GPL(pci_epf_create);
- 
- /**
-- * pci_epf_align_inbound_addr() - Align the given address based on the BAR
-- *				 alignment requirement
-+ * pci_epf_align_inbound_addr() - Align the given address based on the BAR size
-+ *
-  * @epf: the EPF device
-+ * @bar_size: the current BAR size
-  * @addr: inbound address to be aligned
-- * @bar: the BAR number corresponding to the given addr
-- * @base: base address matching the @bar alignment requirement.
-+ * @base: base address matching the @bar_size alignment requirement.
-  * @off: offset to be added to the @base address.
-  *
-- * Helper function to align input 'addr' to base and offset, which match
-- * BAR's alignment requirement.
-+ * Helper function to align input 'addr' to base and offset, when dynamically
-+ * changing a BAR.
-  *
-  * The pci_epf_alloc_space() function already accounts for alignment. This is
-  * primarily intended for use with other memory regions not allocated by
-  * pci_epf_alloc_space(), such as peripheral register spaces or the trigger
-  * address for a platform MSI controller.
-+ *
-+ * Since this function is only used when dynamically changing a BAR (i.e. when
-+ * calling set_bar() twice, without ever calling clear_bar(), as calling
-+ * clear_bar() would clear the BAR's PCI address assigned by the host), this
-+ * function must align to the current BAR size, since we are not clearing the
-+ * BAR configuration.
-  */
--int pci_epf_align_inbound_addr(struct pci_epf *epf, enum pci_barno bar,
--			      u64 addr, dma_addr_t *base, size_t *off)
-+int pci_epf_align_inbound_addr(struct pci_epf *epf, size_t bar_size, u64 addr,
-+			      dma_addr_t *base, size_t *off)
- {
--	const struct pci_epc_features *epc_features;
--	u64 align;
--
--	if (!base || !off)
-+	if (!base || !off || !bar_size)
- 		return -EINVAL;
- 
--	epc_features = pci_epc_get_features(epf->epc, epf->func_no, epf->vfunc_no);
--	if (!epc_features) {
--		dev_err(&epf->dev, "epc_features not implemented\n");
--		return -EOPNOTSUPP;
--	}
--
--	align = epc_features->align;
--	align = align ? align : 128;
--	if (epc_features->bar[bar].type == BAR_FIXED)
--		align = max(epc_features->bar[bar].fixed_size, align);
--
--	*base = round_down(addr, align);
--	*off = addr & (align - 1);
-+	*base = round_down(addr, bar_size);
-+	*off = addr & (bar_size - 1);
- 
- 	return 0;
- }
-diff --git a/include/linux/pci-epf.h b/include/linux/pci-epf.h
-index 0ca08f0d05d7..bcc8184325d2 100644
---- a/include/linux/pci-epf.h
-+++ b/include/linux/pci-epf.h
-@@ -242,8 +242,8 @@ void *pci_epf_alloc_space(struct pci_epf *epf, size_t size, enum pci_barno bar,
- void pci_epf_free_space(struct pci_epf *epf, void *addr, enum pci_barno bar,
- 			enum pci_epc_interface_type type);
- 
--int pci_epf_align_inbound_addr(struct pci_epf *epf, enum pci_barno bar,
--			      u64 addr, dma_addr_t *base, size_t *off);
-+int pci_epf_align_inbound_addr(struct pci_epf *epf, size_t bar_size, u64 addr,
-+			      dma_addr_t *base, size_t *off);
- int pci_epf_bind(struct pci_epf *epf);
- void pci_epf_unbind(struct pci_epf *epf);
- int pci_epf_add_vepf(struct pci_epf *epf_pf, struct pci_epf *epf_vf);
+ .../bindings/remoteproc/fsl,imx-rproc.yaml         |   1 +
+ arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts  |  41 ++++++
+ arch/arm64/boot/dts/freescale/imx95.dtsi           |   8 ++
+ drivers/remoteproc/imx_rproc.c                     | 147 ++++++++++++++++++++-
+ drivers/remoteproc/imx_rproc.h                     |   5 +
+ 5 files changed, 199 insertions(+), 3 deletions(-)
+---
+base-commit: 78863a3617803fcc11f7f7432efc9f74d4ca3105
+change-id: 20250525-imx95-rproc-1-20bb74ddc8af
 
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
 
-
-
-However, the more I think about it, considering that this alignment requirement
-is inherent to the DWC controller (other controllers might not have this
-requirement), perhaps pci_epf_align_inbound_addr() should not be a function in
-pci-epf-core.c, perhaps this function would be better suited to live in
-drivers/pci/controller/dwc/pcie-designware-ep.c ?
-
-
-Kind regards,
-Niklas
