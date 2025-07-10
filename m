@@ -1,273 +1,139 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBB623ABA6
-	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 15:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60707244688
+	for <imx@lists.linux.dev>; Thu, 10 Jul 2025 15:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752162409; cv=none; b=KpEUVrAr//I6sod5lnoQWTvhYym8/BJJOWnLIHXyUpEJCBAvLF4zaVhPQF2MFIjU45cMedD8cniWon1setapA7aC5m4FWXs7+zc5t1xg5K2SL8m/FZ//yhOv42kLepGBJSpR0jAIBueqW5DUJW03aEu+a/GFVMrRt9JfsAwIMPA=
+	t=1752162411; cv=none; b=D5t/XyM9BYBqKzyrhPBO2KrmOsiGL3AnxhU1AfR4llSLi2Y1lsQNhenN9euL6qQoMPkgUkxKIgWTbfs/27Jq9IIu6GX0Zy8xbhDRSD8U7x/fDRtW4xsF2nbmjghA1xscj0Jx1N/UsKai4ULBineYpxK5uYnJ164OuHf526cN+8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752162409; c=relaxed/simple;
-	bh=Meep8S48rXAr1IiHgTpdK/u6t6UuePEWQ1OMpVBq18U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J3cqetN19CkKdrePNOywdnTRL8WNGmyiLNz7Lxna1uuvbQVny7k2r5id/O7BmsalG9LmTm8zN9va8DdgyfZgS5c7FlyGgu4vAeiIU+kgjhEUhyqf4qmp2LRc1qwyhUw3bW6VDH2NcueO3p38W/MTogLLGt4Je/TDliaMBiGM+Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DToSyxNT; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752162411; c=relaxed/simple;
+	bh=sk5MkTgT33G126yLu0cU6kvmDkC6SSCYrqJIAgQRCfE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VwTMoaVe5zoNIeRIjTrvtoRMhhNxAnnFgDxB0Ae2EX6fFzT66Z2E16k4130/NJtBcatEV4DuPLjtcEra55d1z3XdWTR3nGrjpqUH9kL2DTpBjoejTCMoGQpiTlz0r5GsHo1GfriPsgt6OP5iUcVrXJ+SYqIBtVym3PN4LaM+/h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tlHfMZYy; arc=none smtp.client-ip=209.85.160.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DToSyxNT"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-234c5b57557so12479275ad.3
-        for <imx@lists.linux.dev>; Thu, 10 Jul 2025 08:46:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tlHfMZYy"
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-2ea65f5a0easo802950fac.1
+        for <imx@lists.linux.dev>; Thu, 10 Jul 2025 08:46:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752162407; x=1752767207; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=d8s8aI5nykbObjyK4zFELHxY4NnJWT0iSTl57boBPsE=;
-        b=DToSyxNTHT3kSns5iU3QHLaIcbTUYC+x0hO2ixCPEqBjl1r0HEmJkz+SRyJp97VsiO
-         3dg7B8hQ3fROQsh3RN9IXWaWkOnXBW3lTxZzpCWeNt1dQv1NsIYBoBbkQaxhN7ewKLYX
-         oeNDOX8GFAyRv/NDf3gkjrxJ3utq+KKTbyVmksEmEBwVCZi8jFUyEjDe8J3Rh9+0YlXe
-         RFTEYiymWS2j4545eVEjg/ukO6Nl/z2QNYhewLsl3lAdK2YIzcnyDsJtOaTOhtUBnUaP
-         Fz5gESZ/qd8daAcuoPRmuAH+i0UBsfNxoSafIymuaoZR+6mqCGiSm9Epq4Hm7HcNZej6
-         /XXw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1752162407; x=1752767207; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SxqC0ATm8XXXx24MpZdy05ScJSWmhlnLQqeCjqghw20=;
+        b=tlHfMZYyQwKuIa1nS07q2579MiBInrHinMq0txDoC+V7LfxyaQvFB12SofarhgwXYp
+         3cGUjLmeXWv2p5TiEmXLrZCYHKeytxG55H46mJxVhlbhe78MgW+e3g3XJwim8GqVpSkJ
+         lnkQ74t5SCX4eUVctF18w8RiAWSbYzQryCmg29nqiGccV5pGLzFUGeb3fmOrAG8b/K3Y
+         qq3W77uWwcMbWXwTSNVB0wl5SYHmr/rwHAc4pWICM8H8XTdYs7bvTFLrCbnuXhU1DGB/
+         oyP52WQlvTgHNt0V/c+pQOzklNW7qP5bMFUc0dS2maosfh4WkdFObI0MXdQ3W7rijJXo
+         6WDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1752162407; x=1752767207;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d8s8aI5nykbObjyK4zFELHxY4NnJWT0iSTl57boBPsE=;
-        b=d30ZpdH4WDT9seMG/ObkF+jg4fLlVu9acNgKeVEX5x5i8gLLOTfyP33d0JOpKSyKWM
-         F1GwZeLeBDyQGd8Iw/QP07LhVNjFwCjZJCYjHKDWDujN725L5eI373nThJf4P9BJes/h
-         fGWxoVMg2o0joWRk1hzdCSCOes36eBe54jzdZT4I7wVIXhCmoEK7i/nP/w/uMtOJ6qHA
-         SCldTJAqHmQnm/RbDg2/0plawh+yVzttau4+1BkGY6j5ymjoOybJRR8TaWRABH1sBmpW
-         vwuK4wonaaSnRrLsQ1CmtnzI1Mv6g4hIT5Hd4oMmMu4aqplTw3MYt6+rr+aryhu/0OeS
-         qoTw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPSJfAFfnDg7+QRKCyc00n6notxGbsvpPpYPTR3YbiPaBw4/eUPyWjxIu3tIGBUglVSjk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy8VuRS96mbcM5jbcd5FSCqfmM6EqyJl4chpEkFHw411QoR98hp
-	lxd0JDRaC4i+8YwX3WFgf2GrRPebNnx2EZZQzm3V/yF4MmZE5bFSj9F2
-X-Gm-Gg: ASbGnct0r8o04GsL9Xh2ls8bRjXonMN6nhMnjUOt/h6DBOSdoxzr5J+APk5Flj9HBjE
-	BVBzElnBFf3Y29B08rJLUflMBdBumFt+UOrLyu4GE//WTZCAJrPJTJvspPOgZLGeIH3SM1TdpUk
-	kNzMcYlo5qMooiQREM8qN0IL0nX+AZ84Wno01LZukpp9Xx78eOMcWepgpLXhl/9bzsAF8iRB+SY
-	UMzrezRpWQ7VFQAkRLBKn8gJFyWpcUsQVOGEFYXtff1YMJCtzWYQc4Ux2iPmfd1mRqgYO3LSIJK
-	Xuj6pqwDIXa63S5c3JtrnzC8bTzo5bYkqSjlXTJbQ7wmobeoUVGocsMDrBM=
-X-Google-Smtp-Source: AGHT+IEqqSp2Bx4H9HZGWjwyRbPvR+vWlgwLlpuGUtnloA4G9XjlM92Y9Stck87gfHrX+jJIWpVO8w==
-X-Received: by 2002:a17:902:ec88:b0:235:225d:30a2 with SMTP id d9443c01a7336-23de2512cecmr66021745ad.48.1752162406466;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SxqC0ATm8XXXx24MpZdy05ScJSWmhlnLQqeCjqghw20=;
+        b=WCLA8g14vZ1oEp5PEp9/Z2z2ffoPGZ+Imhxqm5Wa7heuO8f7kwr7DtdXoHZoBJQ2Gd
+         Su3n907d1WqPpZ/ENvDxf3VuMEiaB1SwSeZWnGTRfaCmPLShDP6tyd6hpHPxYkI+i5Yx
+         QaNwqea+DFka6CeM3YE7Jlc69azLsocyAXTzqA1lhQEHG5U2cAjfFVgApAcoFlZ5gps/
+         NGQbe/pRFhUhZ3alLUS9L9LCzNORnBnf37yAcD+pNT+GGmu5SIVaEP9sv/nuYmAXKEAv
+         CafvTbd5JLDLqNaZfqfKEZ9B93UMBz8/a6B/9jHsTpwzeGtWshVrTvuOMxNBanJhD/+m
+         ZGeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVHy84XjosF65nnjyjzBkilAaHMdpVOgeq8SDNaJxDi/cW1mUX1WBKjaSkWzrjx6jm80mA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxyOX5fEAGsZHhrgWHsVSQ2krhACKOp7XHf+G2k1gtvJ4Et8yEv
+	zK96+z8+mk7BrF9/rVWN2HE2ALJz+57TIVBcY3+RFqHoVDAHcHZEGdWLDSNU7evqVoU=
+X-Gm-Gg: ASbGncuhP8+D6iCkAaP82dWb8y7ZFPLGZGc07L5OXhG0h30H13Xt861icXUYyAXVee0
+	aHPEvysPjHQyrL4VDKE1HIYPnCD9cXRuriGxYCXc7uxPFQlbyqn7Z+5TYnwexI8pP5WONQSF8uM
+	kh+CyGU8rdPrS4DF3jKOoyHut+hlDXfRjJFQ71QGAjqMBxida6Qw76dyg5/JLMhFKx7e1I4HCvi
+	jbs+jNH88TjiFh0RqiPf7vu1DouuT+oR3EE4jDMzUGMfenHdxNkc68WdS5NAVuBukpZCQzJ5RRO
+	R1vpUEySE5PBuCE8BqkJ4GcqnmrH+9+RXUaWMBhWljhwHaqqLZYmKEJTiyLXYnwHuvspBXbMeD7
+	agN7DozKggs2MTfKFQGpHgS1AewQkYgTKBySoug8=
+X-Google-Smtp-Source: AGHT+IGGnNYbfg3tRijwYJsTHxFrHe4ec9V4WbLcn63Mw2V3gA0rhenSRI8xr6ktDmmz0UyeTDfVCg==
+X-Received: by 2002:a05:6870:7053:10b0:2eb:9fe5:d06c with SMTP id 586e51a60fabf-2ff0c5af786mr2100280fac.3.1752162407230;
+        Thu, 10 Jul 2025 08:46:47 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7? ([2600:8803:e7e4:1d00:6f38:cf8f:abb1:34f7])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ff116dd664sm343870fac.42.2025.07.10.08.46.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
         Thu, 10 Jul 2025 08:46:46 -0700 (PDT)
-Received: from hiagonb ([67.159.246.222])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4365b10sm23794255ad.240.2025.07.10.08.46.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 08:46:45 -0700 (PDT)
-Date: Thu, 10 Jul 2025 12:46:39 -0300
-From: Hiago De Franco <hiagofranco@gmail.com>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Hiago De Franco <hiago.franco@toradex.com>,
-	Ritesh Kumar <ritesh.kumar@toradex.com>
-Subject: Re: [PATCH] remoteproc: imx_rproc: merge ITCM and DTCM regions
-Message-ID: <20250710154639.hmbmzpaizhxqodqk@hiagonb>
-References: <20250703130831.18830-1-hiagofranco@gmail.com>
- <aGgAbwToGhsc5VV9@p14s>
- <20250704190816.kth7bdf34ufc2ht6@hiagonb>
- <aGvyDp36iWv5UQ19@p14s>
- <20250708172953.rbsvk6gy4xuxo42l@hiagonb>
- <20250709082652.GA15057@nxa18884-linux>
+Message-ID: <2bcd758b-c2d0-488a-8ead-ec7fb39f93e2@baylibre.com>
+Date: Thu, 10 Jul 2025 10:46:44 -0500
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250709082652.GA15057@nxa18884-linux>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration
+ properties
+To: Primoz Fiser <primoz.fiser@norik.com>, Haibo Chen <haibo.chen@nxp.com>,
+ Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-iio@vger.kernel.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, upstream@lists.phytec.de,
+ andrej.picej@norik.com
+References: <20250710073905.1105417-1-primoz.fiser@norik.com>
+ <20250710073905.1105417-2-primoz.fiser@norik.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250710073905.1105417-2-primoz.fiser@norik.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 09, 2025 at 04:26:52PM +0800, Peng Fan wrote:
-> On Tue, Jul 08, 2025 at 02:29:53PM -0300, Hiago De Franco wrote:
-> >Hi Peng, Mathieu,
-> >
-> >On Mon, Jul 07, 2025 at 10:13:02AM -0600, Mathieu Poirier wrote:
-> >> On Fri, Jul 04, 2025 at 04:08:16PM -0300, Hiago De Franco wrote:
-> >> > Hi Mathieu,
-> >> > 
-> >> > On Fri, Jul 04, 2025 at 10:25:19AM -0600, Mathieu Poirier wrote:
-> >> > > Good morning,
-> >> > > 
-> >> > > On Thu, Jul 03, 2025 at 10:08:31AM -0300, Hiago De Franco wrote:
-> >> > > > From: Hiago De Franco <hiago.franco@toradex.com>
-> >> > > > 
-> >> > > > Merge the contiguous ITCM and DTCM regions into a single region to
-> >> > > > prevent failures when loading ELF files with large sections:
-> >> > > > 
-> >> > > > remoteproc remoteproc0: powering up imx-rproc
-> >> > > > remoteproc remoteproc0: Booting fw image rproc-imx-rproc-fw, size 151824
-> >> > > > imx-rproc imx8mp-cm7: Translation failed: da = 0x1f48 len = 0x1fcb0
-> >> > > > remoteproc remoteproc0: bad phdr da 0x1f48 mem 0x1fcb0
-> >> > > > remoteproc remoteproc0: Failed to load program segments: -22
-> >> > > > remoteproc remoteproc0: Boot failed: -22
-> >> > > > 
-> >> > > > This approach is the same as commit 8749919defb8 ("remoteproc:
-> >> > > > imx_rproc: Merge TCML/U").
-> >> > > > 
-> >> > > > Suggested-by: Ritesh Kumar <ritesh.kumar@toradex.com>
-> >> > > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
-> >> > > > ---
-> >> > > > Hi,
-> >> > > > 
-> >> > > > The ELF I tested had the following data section:
-> >> > > > 
-> >> > > > Memory region         Used Size  Region Size  %age Used
-> >> > > >     m_interrupts:         680 B         1 KB     66.41%
-> >> > > >           m_text:        6984 B       127 KB      5.37%
-> >> > > >           m_data:      130224 B       128 KB     99.35%
-> >> > > >          m_data2:          0 GB        16 MB      0.00%
-> >> > > > [100%] Built target hello_world_cm7.elf
-> >> > > > 
-> >> > > > Which triggered the error. After this patch, remoteproc was able to boot
-> >> > > > and work fine. Thanks!
-> >> > > > ---
-> >> > > >  drivers/remoteproc/imx_rproc.c | 6 ++----
-> >> > > >  1 file changed, 2 insertions(+), 4 deletions(-)
-> >> > > > 
-> >> > > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> >> > > > index 74299af1d7f1..bbf089ef48ee 100644
-> >> > > > --- a/drivers/remoteproc/imx_rproc.c
-> >> > > > +++ b/drivers/remoteproc/imx_rproc.c
-> >> > > > @@ -166,8 +166,8 @@ static const struct imx_rproc_att imx_rproc_att_imx8qxp[] = {
-> >> > > >  
-> >> > > >  static const struct imx_rproc_att imx_rproc_att_imx8mn[] = {
-> >> > > >  	/* dev addr , sys addr  , size	    , flags */
-> >> > > > -	/* ITCM   */
-> >> > > > -	{ 0x00000000, 0x007E0000, 0x00020000, ATT_OWN | ATT_IOMEM },
-> >> > > > +	/* D/ITCM */
-> >> > > > +	{ 0x00000000, 0x007E0000, 0x00040000, ATT_OWN | ATT_IOMEM },
-> >> > > >  	/* OCRAM_S */
-> >> > > >  	{ 0x00180000, 0x00180000, 0x00009000, 0 },
-> >> > > >  	/* OCRAM */
-> >> > > > @@ -180,8 +180,6 @@ static const struct imx_rproc_att imx_rproc_att_imx8mn[] = {
-> >> > > >  	{ 0x08000000, 0x08000000, 0x08000000, 0 },
-> >> > > >  	/* DDR (Code) - alias */
-> >> > > >  	{ 0x10000000, 0x40000000, 0x0FFE0000, 0 },
-> >> > > > -	/* DTCM */
-> >> > > > -	{ 0x20000000, 0x00800000, 0x00020000, ATT_OWN | ATT_IOMEM },
-> >> > > 
-> >> > > In commit 8749919defb8 "dev addr" and "sys addr" were both contiguous, but in
-> >> > > this patch "dev addr" is not.  How will this work with new kernel that use old
-> >> > > FW images?  Am I missing something?
-> >> > 
-> >> > No, you are correct, I think the use case I tested was not good enough.
-> >> > 
-> >> > If I understand correctly, this will break older firmware expecting
-> >> > .data at 0x20000000 because dev_addr is no longer mapped for DTCM entry.
-> >> > 
-> >> 
-> >> Correct.  Older firmware would still expect DTCM at 0x20000000.
-> >> 
-> >> 
-> >> > Do you think it is possible (or reccomend) another approach to fix this
-> >> > issue? In this case to keep using the TCM, instead of going to OCRAM or
-> >> > DDR.
-> >> >
-> >> 
-> >> To me the best way to proceed is understand why using the current mapping is a
-> >> problem.  The changelog describes a failure condition when dealing with large
-> >> sections but does not indicate _why_ that is happening.  I think that's what
-> >> needs to be fixed rather than trying to move mappings around.
-> >
-> >Thanks for the information you both provided, sorry for the noise, so
-> >please Mathieu ignore this patch. I will work around this in a different
-> >way.
-> >
-> >By the way, Peng, I noticed the DDR linker from MCUXpresso does not work
-> >if the firmware is larger than 128KB, since the .data is placed right
-> >after .text and loaded later to DDR. The imx_rproc driver should instead
-> >have a way to do the other way around: starting from the firwmare inside
-> >DDR, we could set PC and stack from M7 to point to DDR and start the
-> >execution. Probably will be slower, but it would make the DDR case
-> >possible.
+On 7/10/25 2:39 AM, Primoz Fiser wrote:
+> From: Andrej Picej <andrej.picej@norik.com>
 > 
-> I am not aware of the size limitation if image is built to run in DDR.
-> It maybe MCUXpresso team just reuse the linker script for TCM and only
-> update the link address.
+> Document i.MX93 ADC calibration properties and how to set them.
 > 
-> You could update the linker script to build larger image.
+> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> ---
+>  .../bindings/iio/adc/nxp,imx93-adc.yaml       | 21 +++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 > 
-> In final elf, .data is put just after .text, but the related section
-> loading address should be specified as my understanding. See below,
-> .data is at 0x20000000 for M7.
-> 
-> xx-gcc -S imx8mn_m7_TCM_rpmsg_lite_str_echo_rtos.elf
-> There are 20 section headers, starting at offset 0xc998:
-> 
-> Section Headers:
->   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
->   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
->   [ 1] .interrupts       PROGBITS        00000000 001000 000240 00   A  0   0  4
->   [ 2] .resource_table   PROGBITS        00000240 001240 000058 00   A  0   0  1
->   [ 3] .text             PROGBITS        000002a0 0012a0 0046b0 00  AX  0   0 16
->   [ 4] .ARM              ARM_EXIDX       00004950 005950 000008 00  AL  3   0  4
->   [ 5] .init_array       INIT_ARRAY      00004958 005958 000004 04  WA  0   0  4
->   [ 6] .fini_array       FINI_ARRAY      0000495c 00595c 000004 04  WA  0   0  4
->   [ 7] .data             PROGBITS        20000000 006000 00000c 00  WA  0   0  4
->   [ 8] .ncache.init      PROGBITS        80000000 00600c 000000 00   W  0   0  1
->   [ 9] .ncache           PROGBITS        80000000 00600c 000000 00   W  0   0  1
->   [10] .bss              NOBITS          2000000c 00600c 00a4ac 00  WA  0   0  4
->   [11] .heap             NOBITS          2000a4b8 00600c 000400 00  WA  0   0  1
->   [12] .stack            NOBITS          2000a8b8 00600c 000400 00  WA  0   0  1
->   [13] .ARM.attributes   ARM_ATTRIBUTES  00000000 00600c 000030 00      0   0  1
->   [14] .debug_line_str   PROGBITS        00000000 00603c 0002b1 01  MS  0   0  1
->   [15] .comment          PROGBITS        00000000 0062ed 000055 01  MS  0   0  1
->   [16] .debug_frame      PROGBITS        00000000 006344 000260 00      0   0  4
->   [17] .symtab           SYMTAB          00000000 0065a4 003cd0 10     18 586  4
->   [18] .strtab           STRTAB          00000000 00a274 002664 00      0   0  1
->   [19] .shstrtab         STRTAB          00000000 00c8d8 0000bd 00      0   0  1
-> 
-> >
-> >Correct me if I am wrong, but as my current understanding the DDR linker
-> >is broken without this change to the driver. Anyway, maybe something for
-> >a future patch.
-> 
-> If you wanna image in DDR, you could specifiy the address of data section
-> in your linker script.
-> 
-> But for support ddr elf file, you need patches as below:
-> https://lore.kernel.org/linux-arm-kernel/CAEnQRZC5t=qmo+OJLW+dqZg4gH9cAN=paWDSGbrJb2AvkKBqxg@mail.gmail.com/T/#ec54c42b70416b002936a643b44b79661dd2a8483
-> This patchset was rejected, because we need to get stack/pc from .interrupts
-> section and store to ITCM.
-> 
-> Latest NXP m7 demo has included a new section for stack/pc, but
-> this will only be public in 2025 Q3 release, for pre-2025-Q3 releases,
-> still need the upper patchset.
+> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> index c2e5ff418920..d1c04cf85fe6 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> @@ -52,6 +52,27 @@ properties:
+>    "#io-channel-cells":
+>      const: 1
+>  
+> +  nxp,calib-avg-en:
+> +    default: 1
+> +    description:
+> +      Enable or disable calibration averaging function (AVGEN).
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [ 0, 1 ]
+> +
+> +  nxp,calib-nr-samples:
+> +    default: 512
+> +    description:
+> +      Selects number of samples (NRSMPL) to be used during calibration.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [ 16, 32, 128, 512 ]
+> +
+> +  nxp,calib-t-sample:
+> +    default: 22
+> +    description:
+> +      Selects sample time (TSAMP) of calibration conversions in ADC clock cycles
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [ 8, 16, 22, 32 ]
+> +
+>  required:
+>    - compatible
+>    - reg
 
-Great, thanks for all the information Peng. I will inform my team here.
+This seem like things that should be set at runtime rather than
+in the devicetree. Unless there is some justification on why
+these values depend on how the chip is wired up?
 
-Best regards,
-Hiago.
-
-> 
-> Regards,
-> Peng
-> 
-> >
-> >Thanks,
-> >Hiago.
-> >
-> >>  
-> >> > Thanks,
-> >> > Hiago.
-> >> > 
-> >> > > 
-> >> > > Thanks,
-> >> > > Mathieu
-> >> > > 
-> >> > > >  	/* OCRAM_S - alias */
-> >> > > >  	{ 0x20180000, 0x00180000, 0x00008000, ATT_OWN },
-> >> > > >  	/* OCRAM */
-> >> > > > -- 
-> >> > > > 2.39.5
-> >> > > > 
