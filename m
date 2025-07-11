@@ -1,186 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012054.outbound.protection.outlook.com [52.101.66.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED5814884C;
-	Thu, 10 Jul 2025 22:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752185939; cv=none; b=qdAQfclRTh9qlMz8uWPAJmGP8LdcLQ5pM33biX/pU3+tnAIGo/ItjRWIalR3SMeyOtwzCA3C8SGS7e2A8+wsOvKOiOLEFAGIGiNYfrV4/TNbxltfLHy/0FD9aZfttD51x6LktjUHC0XDNQreQTAXfglDJkcwuZQqLvhCQOZkAFQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752185939; c=relaxed/simple;
-	bh=RxVBwyXBv5LWziR/6/tS4iFFqMsUTBajjCGOPP5GU5w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tPwsIVBDk+ghHYHsbZtaz3Ui+S8jeC295atNC075tlAphWQkFAwYlsOyyX4QaQfcnDH0lnI438LeOM8SxKy0OrP+unb43uqeCPtnUpLHH1nz6bvrZpVyBIQTfMHc2m1gJQHIhdaSKzzRqlnmcAumBsBwLpTpk6K5BQkneigsvTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qa6aYs06; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A11E6F073
+	for <imx@lists.linux.dev>; Fri, 11 Jul 2025 01:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752197322; cv=fail; b=LFzKXVE/SqGfy9HaIcaX8bM95+1eo79CslUzvD2TSKtZQAz2axkeJNoVfoGCsduBPs9V5wuXCTvg9GzJ/+/FjOwE11+zQ8q2R93IeCFJF30GZTai8jjxyJTVstApAjgvumv2TjtK2udFSNTtGRx+RPsKpWqFE0UX9U+KBOqL9vE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752197322; c=relaxed/simple;
+	bh=Sp9H51qd7Uw1bGoRthwVYJzdOAXf3FrHNVLTnzEP4PY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LuSoyFVDKMaEoMnU2knhwbmGkFDWa0WQOr0APqn9GbLg8noi3kFcQ6vHSg7vW3e5nQE2WgwV27INBEHErE6bvo3Fc1wY0mZBjZwEyUkR/JDmPUDuqUKSOSQ7p+Xsr7UhYjAgEZrNhBxTRJhkbE2n6HUjDehcLx+gAjQK1f3F5nI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=R3lkARQX; arc=fail smtp.client-ip=52.101.66.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qa6aYs06"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B35C4CEE3;
-	Thu, 10 Jul 2025 22:18:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752185938;
-	bh=RxVBwyXBv5LWziR/6/tS4iFFqMsUTBajjCGOPP5GU5w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qa6aYs06ohrcMbMTOjTn2wKTdl/OLauQ6W1uuk6tcOhc/BzKbdCpMfuwzcJbPXGvz
-	 P70J1etQPpq76UkNWWKPVIKYg259eOEdLiuqqWDn+teo3D1j2qLpziXm0g6CxYO+j2
-	 Oli1odsGQatjX0+3xt5fsJdbkCJ66eIUc4IXqQQzxgMvDcjlOOYk5s+01tosaHUdCO
-	 6WpwAhy3v6gZ3+L6vzB8RqjQ6a0K//jzWxb1pK/GwQnO1+5hYNtW0f+bWjQGtu2SV8
-	 Ee1Zzmar2RDnXFfwBe9NrKV0nkjJM7CT2+1yBqlZAHLBsmYejYBfWfHGkHcZieUkkP
-	 zA/U6VhCqVUeQ==
-Date: Thu, 10 Jul 2025 17:18:55 -0500
-From: Rob Herring <robh@kernel.org>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: imx@lists.linux.dev, Philipp Zabel <p.zabel@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/8] dt-bindings: display: imx: Add bindings for i.MX94
- DCIF
-Message-ID: <20250710221855.GA4126646-robh@kernel.org>
-References: <20250709122332.2874632-1-laurentiu.palcu@oss.nxp.com>
- <20250709122332.2874632-6-laurentiu.palcu@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="R3lkARQX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K1S9aPfCP2l/hHrzCkIQagJoXiJewjr0rXQ7LdHc2ynxoJpgRFY25Hacu9BIO8k6VByygs4gmVa9sJ8yb2+w4Xgx3n6Zm92KjduDWS8hKFCjn3PdqgBToPeENC+F1X/ZcvpGm3sNsN6wYoFF9xTq/8D8tDLspuLbIyYx0SefVPd5rNKegtILkAK2ow9iZD1POcMb/uqsQYcDmE5kWJDE9W5UkqNDjNMrYP3urx29MFEhYS/TbCmaeTaVaOFBpAQgU7MfOYc1Mq84S8i5QdNZv6KKaQOOK6ebwjtAC2iXiIECPavYqAYC6+mZGS07Ra5g017HMBEl300WhQXzttg3uQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sDYdBf43mYUxRqHVjLVTl6C2u7X6Iqyk9wELvPHs3EM=;
+ b=LBkYccB87+y9RY00nvYH0rS9odaCT/xBfCW/Cj1cEY7KJl14fCFFf9q9RZfjFlwWKf3BeX23c0ZwcLjmLoEVR4uh6CyUOBwg8eCaBdGR9i+Pn5Cuplot56tKA65WhFaATk6GoYtAHYAXpQYVTSwNQOuXN2ADzMmf2p9Pfmf7+RMLGQ5RkgAXMKbRfjNDfcpg8ijULbTGWMslakKAEbDj+lBCPrg0QvpD+VgO6yNbja43FKc6K4GaM4vVOwXZw4RIhG4pYyteRgl03k1DOkqvUfgvpOVq3KztXDfW7J1z/9v8NEdvRC8hgS2A47Dw6dVFBM4PDdXiNcZ4+B1oks9Aog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sDYdBf43mYUxRqHVjLVTl6C2u7X6Iqyk9wELvPHs3EM=;
+ b=R3lkARQXhGTi3kTx/HdGaYycp7N5TqFca3gCWOCZQlEemYOXZd+nKohCNfnyB9YkB3EsD+koWcfMt9lyzCYljN3sUe5/P4c9yIcdFAcBB222goy9rgcUHWwW26vnJBxiClY/5TNLrcjOsxN42wb8jBbvdTSgYN+wbxcBLin9v5lmvnm826McPrRn/fmWhoy7epQqfvJvxE0/w4VD7AWvtg9G9ZiJBNiTDJc5TgeUCG3a1vv8ewoa9QLhDjMutiQmd8fvw8hEIJPMCszN4BIYDx1urPkn6xequ5UB1P8BOZVgDZkNxCyj9GP/6PjIqmnvgrl6tKQEVArF6m/qDGnxDg==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by FRWPR04MB11103.eurprd04.prod.outlook.com (2603:10a6:d10:172::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.26; Fri, 11 Jul
+ 2025 01:28:36 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8901.024; Fri, 11 Jul 2025
+ 01:28:36 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>
+CC: Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: RE: [PATCH net-next 3/3] net: fec: add fec_set_hw_mac_addr() helper
+ function
+Thread-Topic: [PATCH net-next 3/3] net: fec: add fec_set_hw_mac_addr() helper
+ function
+Thread-Index: AQHb8Xnxc+j2NvBYlky63M6AFIGtdbQrYjAAgAAOvACAALIc4A==
+Date: Fri, 11 Jul 2025 01:28:36 +0000
+Message-ID:
+ <PAXPR04MB85103180D6EA605BCEB2735C884BA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250710090902.1171180-1-wei.fang@nxp.com>
+ <20250710090902.1171180-4-wei.fang@nxp.com> <20250710155728.363bcfd6@fedora>
+ <c7c297de-d19c-4861-af85-b43b15f43d1a@lunn.ch>
+In-Reply-To: <c7c297de-d19c-4861-af85-b43b15f43d1a@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|FRWPR04MB11103:EE_
+x-ms-office365-filtering-correlation-id: cc436588-802d-4b21-cd12-08ddc01a4213
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|366016|1800799024|376014|7416014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?a/UQY6Z2ILOYbkyTdtRaud+fj4gw/uCxOVNjiZqY3lkOlYD2GJwyXQ/vlQpl?=
+ =?us-ascii?Q?F4LnXZjD/0+TBLkSJ0Y1FJz9KwaGuDa5KfzxZEUbhhpBlOp0ibOjUkjTMxyi?=
+ =?us-ascii?Q?NHYW091pE2LOGK9JYZSi8rSPvLqDK1fo+HPkVxPsGt418YWCKOmxNsR8q2wp?=
+ =?us-ascii?Q?FSEihjnckkrdUCGaPzyqZX8/ufXhd2U6RWgO6NP5GUH0gEHTf/KBaKjfFB1s?=
+ =?us-ascii?Q?LcLoir5XacIT5jVsVQMMjUVfyaIjlzX6c4ki+TOvf+ouZ0+FsTHB/Sft7A2F?=
+ =?us-ascii?Q?rD8BVnSzOjFNDJgBB/K4YDOUuMXdWXHDUy22e6uJ5hFzM2Y28c59hpdvzxqv?=
+ =?us-ascii?Q?+T2KXP5dFXKCuHU76EtnjnJcKbSBPW4Zp5DcC8LJTCLHKhnnIjhPXWE5CR0N?=
+ =?us-ascii?Q?6QZ+eXClwsE/LJe2yC/1GB98kIdJhwR/+yZj+KfDhS3NOyp3R2q15m1MgQoy?=
+ =?us-ascii?Q?xXuh/Skh3wXrjwk33u0aKvhtLCTMGDYrrDXK99NFF872n4y8xXmouVOeq6YB?=
+ =?us-ascii?Q?H84sefwxB9v1SZoILmasLQNuZRb/LeLH8i+3TcuohGopCQGpd1ahM5dEX8GY?=
+ =?us-ascii?Q?D/Sp5XEN6MID1cS7UTgqlWIKFyx40JrmoxRqT77O6kZ8BmiOxuEjdZM9aqPg?=
+ =?us-ascii?Q?3LY1ZuhwsuZ/FUS9bqyclply+mBP0jzt4XyIVHFvZcZQEY+bd2SmXXR1cdw/?=
+ =?us-ascii?Q?eEd8G+RvirXryT6nuPjBvey7gOfJwlCDmNER1TI3LKZdcOW+Wa4koio+EFdE?=
+ =?us-ascii?Q?70WOJPspZRe1592JPYmIKG0bki6QRgVVj6SKoJvSayVAUB3U00xEdkZD3b4H?=
+ =?us-ascii?Q?KQi4HBpl1/mf5BEUiUApe3sfglw+JTJM4kaXRy3X06ZZeq+vptCJidahP1hS?=
+ =?us-ascii?Q?S8vi3JUtr6cdSw/VYZS1us8742rqXTv9ALcKaUj8PlwBlIiPIrlvM3Xi7Ju1?=
+ =?us-ascii?Q?gIFDwXQ7Pjs+SHMNraSoRrk5MPWx8U5Nz/DCJrpG265hYtGNgk3G56MxPYh4?=
+ =?us-ascii?Q?MppSkll6oWWw3SVSGoH9c3Y0sT1PpPxgBe/S07XmlWNK0daa8SbHNyH9UqXP?=
+ =?us-ascii?Q?n1fROy3/gTEEF2MpC07faIFKLd9nFSRrli09FXoYUAozZb4PL60CtMfa+lWX?=
+ =?us-ascii?Q?MozoNGdGC3iOgCoQ3BvZo0XWepCJ0JDgQKbMyjPWY//9oOXIB5u4hLHwHZyw?=
+ =?us-ascii?Q?m3xY6YTQBLTLNxMmHrkkDRuwybTcJE8OeVGAhCMmSIi0Nm0w/qrEkYYaAy7i?=
+ =?us-ascii?Q?mqPD7MMpFpjiQZxLzIje/YkjBgz7jfwML8D6lTXtkBCaKLvu+rALunGsW0WN?=
+ =?us-ascii?Q?12+G2zObzQfdD2XF4Qzhom/5ZpN1xLzDcwO7lLdvap06cyQQvlvrn4mtcvbF?=
+ =?us-ascii?Q?pDQIkvJ5CQqGUJokeypB+5gxdHlbe8ZRiYopV/0Fnejc45CQtL+0Pk7P6WEC?=
+ =?us-ascii?Q?B5TbdoyA3oBcgzIPV/jRpusXko1kNhzctBp7sYK+Yq3tN1SqNhMvDQ=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?XE5hcHuHAF09wQeY8alAv/GUIjZkCU/a7FfG6KJFSUoRYXUEHdSNC6rtqdnU?=
+ =?us-ascii?Q?BIzJy0473GaiM2DHfhKToElaHObZ2zHY4562rImG+5ndDbFj1flKk0oSKL2s?=
+ =?us-ascii?Q?TjPC1uNurWDgPxE8tXEOqo1VQohnaGiaASpKN4ATad3BZMd5fJAiGcbAb+gK?=
+ =?us-ascii?Q?VudTPWfwQMcqFtvkZJ9MYDDjl9dTpNPQ1bmDAyTTkSR4KXkYwJapdphQpu5x?=
+ =?us-ascii?Q?muq+6ctOH/7pouuxYCaWoJwtzoB1rWehKsQUIMA0t7LFJ15FS/Swa+r30QJ7?=
+ =?us-ascii?Q?xL6RMKoY5U6onMHtI8b2fR/H/27mEv/cBIonr0NMpY3UW4614Tpb/V/n6wRR?=
+ =?us-ascii?Q?3YDdLdnlbxmwSCzDTo0L5yBvqDqkVC4f6CsbjgSv7OcXeQVPtI4alGQEs3HN?=
+ =?us-ascii?Q?+lcGDyw96LcMSCT7a1g6hpv4TOVxs7/qx8il099lXtonwo49auzsBb+ak5vJ?=
+ =?us-ascii?Q?R6AsFerkGOtigPI9dTjZ05pm3fPlHi9XwN/5y7j2vhUVQ4/ktpgfcDiKjMUt?=
+ =?us-ascii?Q?NOOndPChq/rK3JnB27YOusmC3btDUw3dDPthTUx85zVSpsZ74m1xuhBHezUU?=
+ =?us-ascii?Q?xIf2Rc9vbZ+PTqNRoG6Gp3jvP3qQWNonriULDBO9Pikjx3cEthFR66ukg8cr?=
+ =?us-ascii?Q?fPm8nJxoKBOmQ9M/hB6xcNjHx7GlfixXCdAl3zSjQ1B/Jhkqb4TbxXdCbc0p?=
+ =?us-ascii?Q?9T2npxJCYFlcvTRmJQFOd0m4bQbHqcEIpcOX5QhQK1szuM9gGm2+fy7pubn5?=
+ =?us-ascii?Q?wZYdPPRpyV3q6JjRKJzegavd76Yzdu2emtR43kfPVS4uwHpxAfRSHNfWkcsY?=
+ =?us-ascii?Q?0UMBbeJ0sEP/WNpjXQgDACmBQat6vDQKXzkAK9Y9rqMSnoFIMGVge3qwa6Qg?=
+ =?us-ascii?Q?lJHEBapCDN6UdScJ9kZVF9zufhvYbekpAzFAK6X32gBdGILyZKp+3b1WbyqA?=
+ =?us-ascii?Q?POS33++VNbqSTsMgp2He9KMtKwAi8Cx1WPs24N6/yVE3pWhrq2uNSIq2oy8t?=
+ =?us-ascii?Q?BgNoDcY6Q5GItmEn0saWkIrBalyiBkSbp5r3wD0WT6aTUyKhKZJS/2ofEbg8?=
+ =?us-ascii?Q?d1DIyZS3uAN+vkfDUoIrfTYPsHYMfy8lXkNzXLS3Rh+x69bLfgCoZQoKoueE?=
+ =?us-ascii?Q?GeRig18CfquLLTJeLzYatXX9NWaV17RGHVYZ6ryId5lBDkQr/ejDpasEnfja?=
+ =?us-ascii?Q?xVABVVH5CfOeiJaEnK2xnor6SXv0DNoBM6jxABFeevFwkzxDhnED3SyXav2u?=
+ =?us-ascii?Q?McspWlj3ZgGb8CpTyz0Fv4adWlBKgiW7NwKutX+DefCiT2QI20Ob5H0bB4bl?=
+ =?us-ascii?Q?E66d/EVaAYY1FCbUulklv7PUCpBwSJSh0c1qa6kF0rrPisrHNrz1RHLni9FJ?=
+ =?us-ascii?Q?Gg0jVEmRKOoHtZy2NE0sVrricM4XpJ3JHpaR+B2VOY04FkmYHFmZWIuLQg1Y?=
+ =?us-ascii?Q?PLrBhGexbA+9eBrFkLwrpnarAwMLPfhuHu2ZUMWzRDCnarDa2/E+GJz7sIhy?=
+ =?us-ascii?Q?EWaHvQYWgukYBZpe7tjJWakZQHM3QXyWiPredjL5Zhepgcn7I1GddVqsc/A/?=
+ =?us-ascii?Q?K4qcEMUfTH/WfjUJLwA=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250709122332.2874632-6-laurentiu.palcu@oss.nxp.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc436588-802d-4b21-cd12-08ddc01a4213
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jul 2025 01:28:36.6381
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tb9g/MdNNjXgmAXESKaBtKdU9kOJn3kuMZHwJsqXNmLqW29LQFGtc/DNU9LNWAlYImdq2RVkc6tpnO21o++7fw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRWPR04MB11103
 
-On Wed, Jul 09, 2025 at 03:23:24PM +0300, Laurentiu Palcu wrote:
-> DCIF is the i.MX94 Display Controller Interface which is used to
-> drive a TFT LCD panel or connects to a display interface depending
-> on the chip configuration.
+> > > -	writel(ndev->dev_addr[3] | (ndev->dev_addr[2] << 8) |
+> > > -		(ndev->dev_addr[1] << 16) | (ndev->dev_addr[0] << 24),
+> > > -		fep->hwp + FEC_ADDR_LOW);
+> > > -	writel((ndev->dev_addr[5] << 16) | (ndev->dev_addr[4] << 24),
+> > > -		fep->hwp + FEC_ADDR_HIGH);
+> > > +	fec_set_hw_mac_addr(ndev);
+> >
+> > It's more of a personal preference, but I find this implementation to
+> > be much more readable than the one based on
+> >
+> >   writel((__force u32)cpu_to_be32(temp_mac[...]), ...);
+>=20
+> It also avoids the __force, which is good.
+>=20
 
-Drop 'bindings for' in the subject. You already said 'bindings' once.
+Thanks, I will improve it.
 
-> 
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> ---
->  .../bindings/display/imx/nxp,imx94-dcif.yaml  | 101 ++++++++++++++++++
->  1 file changed, 101 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml b/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
-> new file mode 100644
-> index 0000000000000..e4cab43c77ebc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
-> @@ -0,0 +1,101 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2025 NXP
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/imx/nxp,imx94-dcif.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: i.MX94 Display Control Interface (DCIF)
-> +
-> +maintainers:
-> +  - Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> +
-> +description:
-> +  The Display Control Interface(DCIF) is a system master that fetches graphics
-> +  stored in memory and displays them on a TFT LCD panel or connects to a
-> +  display interface depending on the chip configuration.
-> +
-> +properties:
-> +  compatible:
-> +    const: nxp,imx94-dcif
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    items:
-> +      - description:
-> +          Interrupt output for CPU domain 0 (controlled by common registers group).
-> +      - description:
-> +          Interrupt output for CPU domain 1 (controlled by background layer registers group).
-> +      - description:
-> +          Interrupt output for CPU domain 2 (controlled by foreground layer registers group).
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: common
-> +      - const: bg_layer
-> +      - const: fg_layer
-> +
-> +  clocks:
-> +    items:
-> +      - description: APB bus clock
-> +      - description: AXI bus clock
-> +      - description: Pixel clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: apb
-> +      - const: axi
-> +      - const: pix
-> +
-> +  assigned-clocks:
-> +    description: Reference to DISPLAYMIX CSR clock mux.
-> +    maxItems: 1
-> +
-> +  assigned-clock-parents:
-> +    description: Parent of the clock mux.
-> +    maxItems: 1
-
-You don't have to document assigned-clocks. Allowed anywhere with 
-'clocks'.
-
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  nxp,blk-ctrl:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: A phandle which points to NXP displaymix blk-ctrl.
-> +
-> +  port:
-> +    $ref: /schemas/graph.yaml#/properties/port
-> +    description: Display Pixel Interface(DPI) output port
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    soc {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +
-> +        display-controller@4b120000 {
-> +            compatible = "nxp,imx94-dcif";
-> +            reg = <0x0 0x4b120000 0x0 0x300000>;
-> +            interrupts = <GIC_SPI 377 IRQ_TYPE_LEVEL_HIGH>,
-> +                         <GIC_SPI 378 IRQ_TYPE_LEVEL_HIGH>,
-> +                         <GIC_SPI 379 IRQ_TYPE_LEVEL_HIGH>;
-> +            interrupt-names = "common", "bg_layer", "fg_layer";
-> +            clocks = <&scmi_clk 69>, <&scmi_clk 70>, <&dispmix_csr 0>;
-> +            clock-names = "apb", "axi", "pix";
-> +            assigned-clocks = <&dispmix_csr 0>;
-> +            assigned-clock-parents = <&ldb_pll_pixel>;
-> +            power-domains = <&scmi_devpd 11>;
-> +            nxp,blk-ctrl = <&dispmix_csr>;
-> +
-> +            port {
-> +                dcif_out: endpoint {
-> +                    remote-endpoint = <&ldb_in>;
-> +                };
-> +            };
-> +        };
-> +    };
-> -- 
-> 2.46.1
-> 
