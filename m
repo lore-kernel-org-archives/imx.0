@@ -1,84 +1,86 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4317.protonmail.ch (mail-4317.protonmail.ch [185.70.43.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC2A287245
-	for <imx@lists.linux.dev>; Fri, 11 Jul 2025 10:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA800283FCF
+	for <imx@lists.linux.dev>; Fri, 11 Jul 2025 10:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752229225; cv=none; b=Gz2moIUvNMrj+2yePwov1RsRqq2opVKoTnWrkP2lC8K93+SH0gB7YNk3Upg++hUl5KRriKbgI4I5eHUzA9YsDo/3tZVjxTq9AetM/KPNaCAbvHO6MvomUJPPZ4NfzhMoVnExJzs7rkHQmnlyd9zbk8anrIRkX7nulUjd3fS+pTA=
+	t=1752229806; cv=none; b=fgEK5fsteoNZTmxEgErFZNNQxQAuYyTA8yOl7O5aRHT/VyvmBkTdno/gsnCDjJGjBcGqJW3We4uO2kf9zSQgQ/XGwKRQDkuBJtpVKFiO2i7n/Bmo+lTMpfAEgIBx0uN7oEGx4aG1jhWYptYU70Vw+EUO+bQNKnkDzbTF5SozJWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752229225; c=relaxed/simple;
-	bh=ZLLmIKtHD32BHKSjrmb27QgNt/hb6BAJ7uNG1ceFDyw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=apL5q2JetLZ+nDFSWsrF7AR3HZGPr5KdS5xtIUHCF+zdLivFLZfoZZrpMGZb0oM0VkDApsi1BO1+aK/OF29hUsrDyerKB3Bn8mrxg27YRAX1/cdCNO982ju3LN+Y2oo0OSoX380pwkQjoi0LgXgNabTA+NKUXUPu7izHayVI3bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hYHsgsPf; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752229806; c=relaxed/simple;
+	bh=BlZYGeLVk6sKZh/Cirv9qZuN+C8hZCxVFfQI+hk+eAk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KHx37jREezjbjM0xaNPf4zj9Dhc3ONqZAiTC8pPyGEiZc7teQkGFnfUBbXasXpOnbjE76rpDkdVlsM7HeY3jYP5e4CPQ+RN8D3M1TZz0Jrg6TllnJivq8dDUC+0d3BXp/UWtSguGIuZdQPBnIBKu3z5BxGeARq3YjxtOz5R3ErM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=c3q3XBJM; arc=none smtp.client-ip=185.70.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hYHsgsPf"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b31f0ef5f7aso1202084a12.3
-        for <imx@lists.linux.dev>; Fri, 11 Jul 2025 03:20:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752229223; x=1752834023; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4PxmmoD8ljBsL9GD+gzuD61HLwRQpZlooMbeZ6fygS8=;
-        b=hYHsgsPfQaL7F4y1DdmWCCsMfaDQxJSb4JoDNAVScy544X1OxelvrijUCwhVJMdNJ3
-         Evw+EKeMkMn1yIJx+uj5gjpOe3FbcXdUc9YWh+/wxbeow8qd8DYN7Amk+DaIvl8BQiO8
-         wt91WKs3cta8bDyWnKPddJZOi5elmOp8OwPXk2k/h4WOZ8ModXtDeHbsx10QGRBhqGm3
-         j27qnH8mFtyflTagMxawuofuzC9VoZOIACcvHl4Xv9g70XixZNKYj+pOPIGf7lZg9UAp
-         WhWqPvW64rt70lt9wNYTdvmXOjYuJsRfLF8BTKp4JC9qPgVn1hx27FPXgdK7t4E3/zry
-         Cxrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752229223; x=1752834023;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4PxmmoD8ljBsL9GD+gzuD61HLwRQpZlooMbeZ6fygS8=;
-        b=Ze9ql/EmQYbqXxtAAi8gs6jDbng2+kuQMEueBT9jUdCmQoPwOVG/brGqsuHPi/YlY1
-         WxOQji7JrgkziXDmnpHDi4hXYkWKLfPuBY7Xnv3Gmx8XG+gC7uq51ivVsKBY/zrIxy1g
-         U27tcmi/GcproIkZp7MZ1eeaFSfAJ6txO7fdtBAB7jOw9dKuUUcjLO6F13q7kI+EZCCN
-         8ftUWYwqY3nbRO9FLG7JfyN+XUKyVB//PCoVwVIWjM2B44pmQVTgBZGSRrxzTLpl1bXL
-         2RMqv9QjLl4eluUmmeDm6s7JK6DToATsocHV4+6A8DlWfhk2zr1X9b6hQoeudrtv+W11
-         AHCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJzrdBzuNJQFZc6+xfzsEaX3O4Yb8lu6Z4vGpfzvC/5QDHp1031janK7XUelF02fb+UiU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwzQ3EuEXVKh51uXvKR1oBYraEnVvVpaXlOV/G275R2p2aJSf3w
-	3kMpfst84PVSTY3WQy/mh2cHEbDzaRcv8j+c5MpI3OvC11+gv6LblKt3+LTa5DqQmPljj7AfPYm
-	65ccGiMvo3Kdkn79sibgMrSkJ8uMbrxI=
-X-Gm-Gg: ASbGncsBeL04wZUERJXpL6Iw+RvxvdKWI4DLseER32zx0FYTJqKeAkGobWd6TzOueG4
-	BN/BrdDbN6kQ+wNuXqifzbKWawxONVSXAS04bFuim3kzTVVS6sc0c8KdMFeY/89uQy9dU7px55r
-	974cPTe0IJwlJY9pao+vQqcGQEeutlWix1thRpK+3MPgdkqgMRMDoIu0k9Phm7TaAgYPMVvHIgv
-	4du
-X-Google-Smtp-Source: AGHT+IGcUF2IeFq5d6oOuNzBnemSIDWy3XN/AET4pna7uIiA0s1d9ETHya4xD6sh/N4FeyNQJ2PHRpWfbJp7eAqc7/0=
-X-Received: by 2002:a17:90b:280c:b0:315:6f2b:ce5a with SMTP id
- 98e67ed59e1d1-31c4f4ca9ccmr3107104a91.11.1752229223013; Fri, 11 Jul 2025
- 03:20:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="c3q3XBJM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail; t=1752229800; x=1752489000;
+	bh=drFRM/G04HIxCGh+rRvAHzr+XceHmwxYmN2UfeW7nY0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=c3q3XBJM1keQo1n12nbNO1um3iFv2g3RXN8Y/MTH+qfFdPowVIVCjBeeejq7/fxL6
+	 uz47R0YX9KGRNJ//4S7+C70G9hUjv2iAPdl6iO1xdMERBL7qnrjhpDwnsCoSACxNRd
+	 Xjh+Ai/2yP6xZE1jz+MjxONQaC93WxOTe/WX9lnJdISlC16CyksWFPRp5nc0Ely6o5
+	 FiKBM3sBE3Fnqev14euFnKm/uP36GcGDBmucVPQUVfvpXYaY8w4iJm3oZ41MzaJ3J/
+	 Zr9FFhS2tQ6qxAWwQnzMJmeRkMEPcEjXyggRHXDP8iFTUTBbewiaCqCFusWUSZD0mT
+	 ngDF90DzOpT1g==
+Date: Fri, 11 Jul 2025 10:29:59 +0000
+To: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+From: Sean Nyekjaer <sean@geanix.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.li@nxp.com>, imx@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-input@vger.kernel.org, linux-pm@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, Abel Vesa <abelvesa@linux.com>, Robin Gong <b38343@freescale.com>, Robin Gong <yibin.gong@nxp.com>, Enric Balletbo i Serra <eballetbo@gmail.com>
+Subject: Re: [PATCH v8 4/6] input: pf1550: add onkey support
+Message-ID: <wlbsl36wju4kehhqtoprrcdaqlgkrmapp5ecw44jcnfv4fy7wk@m3wrnbl7yoqq>
+In-Reply-To: <20250707-pf1550-v8-4-6b6eb67c03a0@savoirfairelinux.com>
+References: <20250707-pf1550-v8-0-6b6eb67c03a0@savoirfairelinux.com> <20250707-pf1550-v8-4-6b6eb67c03a0@savoirfairelinux.com>
+Feedback-ID: 134068486:user:proton
+X-Pm-Message-ID: 3c555c7164f1d3f06d86bcc31b47c53ec776aca3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250704052529.1040602-1-shengjiu.wang@nxp.com>
- <20250704052529.1040602-2-shengjiu.wang@nxp.com> <aG_SosukEqUxrHvH@p14s>
-In-Reply-To: <aG_SosukEqUxrHvH@p14s>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 11 Jul 2025 13:22:24 +0300
-X-Gm-Features: Ac12FXz1oAWR7AzXrdUqZkykZa3V1NEpvtctgewTWRCMsKsQX5xRmXpD9W21dGo
-Message-ID: <CAEnQRZB9r8-HqSJAJJc6iebZcen0CrpWL3n5YXPJOZr=-SZrqg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] remoteproc: imx_dsp_rproc: Add support of recovery process
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, iuliana.prodan@nxp.com, daniel.baluta@nxp.com, 
-	andersson@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-remoteproc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> This is a much better approach.  During my last review I said that I would not
-> move forward with this work until Daniel or Iuliana provide their R-B and yet,
-> they have not been added to the recipient list.
+On Mon, Jul 07, 2025 at 05:37:23PM +0100, Samuel Kayode wrote:
+> Add support for the onkey of the pf1550 PMIC.
+>=20
+> Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Samuel Kayode <samuel.kayode@savoirfairelinux.com>
+> ---
 
-Thanks Mathieu, we will have a look at this asap.
+[...]
 
-We are part of imx@lists.linux.dev so we got the mail.
+> +
+> +static int pf1550_onkey_probe(struct platform_device *pdev)
+> +{
+> +=09struct onkey_drv_data *onkey;
+> +=09struct input_dev *input;
+> +=09int i, irq, error;
+> +
+> +=09onkey =3D devm_kzalloc(&pdev->dev, sizeof(*onkey), GFP_KERNEL);
+> +=09if (!onkey)
+> +=09=09return -ENOMEM;
+> +
+> +=09onkey->dev =3D &pdev->dev;
+> +
+> +=09onkey->pf1550 =3D dev_get_drvdata(pdev->dev.parent);
+> +=09if (!onkey->pf1550->regmap)
+> +=09=09return dev_err_probe(&pdev->dev, -ENODEV,
+> +=09=09=09=09     "failed to get regmap\n");
+> +
+> +=09onkey->wakeup =3D device_property_read_bool(pdev->dev.parent,
+> +=09=09=09=09=09=09  "wakeup-source");
+> +
+
+I would like support for ONKEY_RST_EN enable or disable via a
+devicetree option.
+
+/Sean
+
