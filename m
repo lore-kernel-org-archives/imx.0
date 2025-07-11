@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F761F0985;
-	Fri, 11 Jul 2025 07:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D363D1F0E24;
+	Fri, 11 Jul 2025 07:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752219601; cv=none; b=SZ0cbzYxtQUFjUQc5q/qGuVH2ccnfgzHGmWsNeOyEO87pRU0+MdO6OpqJP4PAKj3LizdEQmQB5slbbEaUn/7NtQKlUT8kc5QukoDVRX9yCpHHHLEqkgxf8+0K9zHM9vd+76vd29eBHmUTHjJ1D/17PqvwpV4QKnRM8LskGJenCU=
+	t=1752219862; cv=none; b=qyTzjjYjdgrhOahVUyguQ3gkI1ml0cOtkNEhE61Bsr34klXAPTG3HJGqxzpnQ65Hdb3w/JJ9npmyf+bO2EaomHqaRMvCzVVioH/Y3gqXSf7Ld8/FDAMpSVj3mgEGpkblhWsagvdBNod5FKv0a674mM/pAbfkV7sjkso8f9XNFNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752219601; c=relaxed/simple;
-	bh=v1UKmxLgqeJQ99ZtIwzdfNnTf17LbvFnV7H8H/rBmII=;
+	s=arc-20240116; t=1752219862; c=relaxed/simple;
+	bh=mJ8f0o4lu7/7z2kky8W5rnqHSfBhvDECmO3dfujPoko=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fTlBUd5uo71HYwF937jcLz9HAipyOr/AF4MCD33PviVc7R9/L0stNRwMFBiY4/Awxe1kHsTCJerxdna4GptjoPoT9DNx5PGhYNTR3VzqQRUCNIQQZjePgtpotPw2choFL5ffg+LVhg3pVMzxJWemwBUcQ93RTiVRq5B0dpnYXkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B59pt+FB; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=FDnesCb6FQvctXkL8M3KmbOMuR8ehmPKsWWB3aDK8bEk+CXqvRZp/N1qJ1DYhyRQbchlS0a4v4QfqUMXPUCUq5jogWJHbq8blsoFFa20uYHOC5Uo77vNoGLrnK58qK0YdXcLV5hMYTrKFV1HY0hIGZa2sQ0aSsobWdCZAVAGlHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K577jTrm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B59pt+FB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C18BC4CEED;
-	Fri, 11 Jul 2025 07:40:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K577jTrm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DB7C4CEED;
+	Fri, 11 Jul 2025 07:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752219601;
-	bh=v1UKmxLgqeJQ99ZtIwzdfNnTf17LbvFnV7H8H/rBmII=;
+	s=k20201202; t=1752219861;
+	bh=mJ8f0o4lu7/7z2kky8W5rnqHSfBhvDECmO3dfujPoko=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B59pt+FBc4SVitZEEflQkbZNoMBo9iDvTidx1AFsec47Vzgp/aG3u+fnOvxg2nMVQ
-	 a/PJNdf/I7OrxIBSRjQ4/02rOG77wMSmtRTCr8LenaXpIMsAe4sEAQ79fV4RLzJs8/
-	 wALzB/zSRV+Y4lgU7iAq+C0EezzPbt/ItCuVkkGc5HgrpB5JpRmyL4qigo2+YZbx6W
-	 CoVbCOuO4GvdPIQjwP9WqoIJcJc5EAjgJLaVdNsSebl0HebeQRUZZ62jYPncNa4eSq
-	 o1FvJ1v9YIxSAzCV5GwHGwC6RFpuCzbLtPHpjYDEa9nsTcDVdQV748GiZSHQych1uR
-	 hKrdP0Mn0Q2JQ==
-Date: Fri, 11 Jul 2025 09:39:58 +0200
+	b=K577jTrmkOxDdg3Tnq0u8ziyEvFSwFZMaHhSd1j+ngRE/JDj6+K15g4c+5VMx56Bx
+	 WS1jufZqmt3z94c/LrQuyxIMjzGE55ioQl+ofJPsLPOObRIa8/VipCbc42GRG2pKfK
+	 cC78IdNJSvS3XAWWxC6FTQjycJomYzCFcLBzGqkXJY7YFQCSnlRXneWsxdWq4IpYwr
+	 wFdEEJgTI35efM+LTgFw0GfmWo3sgg+14J1FztUcTki6KCm4KrohC6ivf255CNTFw6
+	 Q960jQGwIaKXKjCRZTuB1AumE5T33HX7fFA3KwmIxWVc1AnoV6JM8pN7D2XhYNkuHR
+	 FfOUwBedIQA6g==
+Date: Fri, 11 Jul 2025 09:44:18 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
 Cc: linus.walleij@linaro.org, brgl@bgdev.pl, robh@kernel.org, 
@@ -38,11 +38,11 @@ Cc: linus.walleij@linaro.org, brgl@bgdev.pl, robh@kernel.org,
 	linux-arm-kernel@lists.infradead.org, s32@nxp.com, clizzi@redhat.com, aruizrui@redhat.com, 
 	eballetb@redhat.com, echanude@redhat.com, kernel@pengutronix.de, imx@lists.linux.dev, 
 	vincent.guittot@linaro.org
-Subject: Re: [PATCH v7 01/12] dt-bindings: mfd: add support for the NXP SIUL2
- module
-Message-ID: <20250711-enchanted-blond-manul-f8bd3d@krzk-bin>
+Subject: Re: [PATCH v7 06/12] dt-bindings: pinctrl: deprecate SIUL2 pinctrl
+ bindings
+Message-ID: <20250711-inquisitive-dainty-foxhound-6feeb4@krzk-bin>
 References: <20250710142038.1986052-1-andrei.stefanescu@oss.nxp.com>
- <20250710142038.1986052-2-andrei.stefanescu@oss.nxp.com>
+ <20250710142038.1986052-7-andrei.stefanescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,74 +51,31 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250710142038.1986052-2-andrei.stefanescu@oss.nxp.com>
+In-Reply-To: <20250710142038.1986052-7-andrei.stefanescu@oss.nxp.com>
 
-On Thu, Jul 10, 2025 at 05:20:24PM +0300, Andrei Stefanescu wrote:
-> Add the dt-bindings for the NXP SIUL2 module which is a multi
-> function device. It can export information about the SoC, configure
-> the pinmux&pinconf for pins and it is also a GPIO controller with
-> interrupt capability.
+On Thu, Jul 10, 2025 at 05:20:29PM +0300, Andrei Stefanescu wrote:
+> The existing SIUL2 pinctrl bindings don't correctly describe the
+> hardware. The SIUL2 module also offers GPIO control and exposes some
+> registers which contain information about the SoC. Adding drivers for
+> these functionalities would result in incorrect bindings with a lot of
+> carved out regions for registers. For more details see the discussions
+> on the community [1] and [2].
 > 
-> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
-> ---
->  .../bindings/mfd/nxp,s32g2-siul2.yaml         | 163 ++++++++++++++++++
->  1 file changed, 163 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
+> The existing SIUL2 pinctrl dt-bindings will be deprecated. The new SIUL2
+> MFD dt-bindings are to be used from now on.
 > 
-> diff --git a/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml b/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
-> new file mode 100644
-> index 000000000000..8ae185b4bc78
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
-> @@ -0,0 +1,163 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2024 NXP
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP S32 System Integration Unit Lite2 (SIUL2)
-> +
-> +maintainers:
-> +  - Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
-> +
-> +description: |
-> +  SIUL2 is a hardware block which implements pinmuxing,
-> +  pinconf, GPIOs (some with interrupt capability) and
-> +  registers which contain information about the SoC.
-> +  There are generally two SIUL2 modules whose functionality
-> +  is grouped together. For example interrupt configuration
-> +  registers are part of SIUL2_1 even though interrupts are
-> +  also available for SIUL2_0 pins.
-> +
-> +  The following register types are exported by SIUL2:
-> +    - MIDR (MCU ID Register) - information related to the SoC
-> +    - interrupt configuration registers
-> +    - MSCR (Multiplexed Signal Configuration Register) - pinmuxing and pinconf
-> +    - IMCR (Input Multiplexed Signal Configuration Register)- pinmuxing
-> +    - PGPDO (Parallel GPIO Pad Data Out Register) - GPIO output value
-> +    - PGPDI (Parallel GPIO Pad Data In Register) - GPIO input value
-> +
-> +  Most registers are 32bit wide with the exception of PGPDO/PGPDI which are
-> +  16bit wide.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - const: nxp,s32g2-siul2
-> +      - items:
-> +          - enum:
-> +              - nxp,s32g3-siul2
-> +          - const: nxp,s32g2-siul2
-> +
-> +  reg:
-> +    minItems: 2
+> [1] -
+> https://lore.kernel.org/linux-gpio/20241003-overall-unblended-7139b17eae23@spud/
+> [2] -
+> https://lore.kernel.org/all/a924bbb6-96ec-40be-9d82-a76b2ab73afd@oss.nxp.com/
 
-Eh, and after reading your deprecated patch I went back here and see
-this changed... Why? Why are you making random changes?
+After fast glance I see only nvmem is outside and missing in these
+bindings. I don't see a problem nvmem being a separate device node, so I
+don't see justification for dropping old bindings.
 
-I retract my review, I was too hasty.
+Anyway, bring the full raltionale here - describe the memory layout
+proving that you cannot add nvmem and GPIO in your system without
+breaking ABI or without making this binding unreadable.
 
 Best regards,
 Krzysztof
