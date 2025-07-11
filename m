@@ -1,222 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011061.outbound.protection.outlook.com [52.101.65.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BDC2874E2;
-	Fri, 11 Jul 2025 10:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752231208; cv=none; b=rCL/X1icK3Q41t0XiXeFB4A67mmzMI/A+h6OXXfpsjrh1MK3g+w8cALuw+e1/H4gkLYknhctJ6eG3ukXS/Lw2pgn7EKYuNJj/SC7dHxVCp/vP6FXTBrpq64/HV6dbH8x1TVQZsFZW4nkeIOJAvMgM12xH/r6Gr8ffr9QO5dwfOw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752231208; c=relaxed/simple;
-	bh=NKjZXYzGtEShTrNsUOMFTyUQto5qPC0hnUCpk+UVNUM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cuy1jLiC4nxwlJYZ3HiXPwo+rzzEPyaGRs4GNJf06yklgRRGulZ9Xl+VanzpX3ubP7Du5sKC0mBL3UTS7QK0+G7HJG84LyksHiDl7vY0d7SttVhraZx91CEJjhCAcZNIX9fT/TSzzqG/3MfdSkH+Uufne5HXHtn82Juxh7V7czc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iQUdT5o2; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E729C283C97
+	for <imx@lists.linux.dev>; Fri, 11 Jul 2025 12:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752235297; cv=fail; b=c+n03LUmwTruRgqCA+n6yQ3rXj0ZLiiAFADJw9B915e4hbFzxvUuI39x9fN+uCCV2oeMQCMZDqhVwI9SroE0SP/LibdcYw8VGOCj8cwg7U1ir3ksS+CEg6hZj0/5wOuApx/4hckuUfzZawEHkTtiQ7a43whACCi0ZI4jVe+qKQA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752235297; c=relaxed/simple;
+	bh=JK1YU7vrA4jzIzkmhhrn/QsxdsaSkSX2s+X4Jf9xBvo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TAA9pgY40up50v4Dwgyf5/XXKRZlg12BnkV1ErhjS0bBxbzRFxKG7fHfnsraM60IeJAgN1nbYARhhL9zW81kVXRXVJChjHFrB8GabZMgtjJ9BJCDFnv0LWHtf5NwE3WO905BmCfQQVOJHWsYZQ/G/MSouTlB1UjR3og8OFrYiWQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=AS5tKXc5; arc=fail smtp.client-ip=52.101.65.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iQUdT5o2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1752231207; x=1783767207;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NKjZXYzGtEShTrNsUOMFTyUQto5qPC0hnUCpk+UVNUM=;
-  b=iQUdT5o2Ukri/F7Xrbot3Nbzi3lvI4gRbPWi1rej/gzwcNMmLwTfQzsd
-   pcSG7crgkUhIusRSw+b62fTWSr+GNKeEl1kEl8B1GULqVQE3kwWKlxghh
-   492PVo4Ju0GAQXFomNUkG3E8xj2+gOwqiQ+pSwDHQz7HaVE9O06YadNy0
-   CLhWrIlmo7zNefleZyIriPB59CMB5We/fRPudhMMd2m3scVAWaXqDx9p7
-   zxHLhbH9pQ79MUpy6t1rZxm6ZrjqZV8Jujt3Y+WioOPKDDRn6vGh8+IGf
-   NKj+eYnbEul/KxSfNezcIiGtTRvgXKgOLRh2+4EzaJgrjgzWL71bsjoY4
-   A==;
-X-CSE-ConnectionGUID: Ew0AHzyBQAeru2Y0r7zUpA==
-X-CSE-MsgGUID: 4PooOJhwT4OsHiLggOD67A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11490"; a="65878123"
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
-   d="scan'208";a="65878123"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2025 03:53:26 -0700
-X-CSE-ConnectionGUID: uDkLSuGCQA2GbayCqIqCZg==
-X-CSE-MsgGUID: hiHa3BqjQUOBkOIVrGFYfA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,303,1744095600"; 
-   d="scan'208";a="180040729"
-Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 11 Jul 2025 03:53:19 -0700
-Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uaBNU-0006HL-32;
-	Fri, 11 Jul 2025 10:53:16 +0000
-Date: Fri, 11 Jul 2025 18:52:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>,
-	linus.walleij@linaro.org, brgl@bgdev.pl, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, chester62515@gmail.com,
-	mbrugger@suse.com, Ghennadi.Procopciuc@nxp.com,
-	larisa.grigore@nxp.com, lee@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, festevam@gmail.com, aisheng.dong@nxp.com,
-	ping.bai@nxp.com, gregkh@linuxfoundation.org, rafael@kernel.org,
-	srini@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, s32@nxp.com,
-	clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com,
-	echanude@redhat.com, kernel@pengutronix.de, imx@lists.linux.dev,
-	vincent.guittot@linaro.org
-Subject: Re: [PATCH v7 07/12] pinctrl: s32g2: change the driver to also be
- probed as an MFD cell
-Message-ID: <202507111841.QdQ2DVpT-lkp@intel.com>
-References: <20250710142038.1986052-8-andrei.stefanescu@oss.nxp.com>
+	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="AS5tKXc5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BgyEHny30ZPOjqW3qS2F1ht0piZJIQvRKfmFmtg0H9ZehupatdTRMYT4MnzGFGpbklBQhbqBALcTKd7zSEe7FWJ/FGTQ+mjb65xjx1sueRbeamZ4TOuBTLl5fONcmKDMdgcPzZgHIBYhx8l+y6PItioxrysFv3WuR0OC0ssck7F5F+j9ylHDhT/NkKQ2vz07ju96M6utg/xs9S6mVZVOi2keEueknDBXKA69AIHcyeoECp6tThBz0gLSKjcX0gI/+y7BmH+jv+VNErd9/vwamzYcaC3omnAwjLlyob6lp0GhZOc9Jza2w1lKd4mZ7cAT0kM+yMh5D/Ls3yRoNoI+PA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JK1YU7vrA4jzIzkmhhrn/QsxdsaSkSX2s+X4Jf9xBvo=;
+ b=iSBywuRe+NKUHVUxVmURWD6Cl9QuS8t23ACYkir/do59cs3d7V0PTVzQUVzCXoCF/KVfj3YsSeToouZT7YI0jFcuuooQIrfHJjCa3DaPBM8RL98bpNHoLYzCRnD0gSqlaVoI3uC8ubA4rZMMSGJswXukRqIhDQYugG1ouejoeMPZw+7QKZdqS8mcgl3mqLKPLGdQGPB0WLvqUcbTUtDdvOXmDRSRnNB9ZLtSbFItyjAwOe5xACdoTXlW5kfbAmACexKIW5NaHpNbG18kSW69J2oFysdr0H8ydAtbm+c9mC/NgtRV8PpuvHvh9zQeMw3DlTPOKTXO7KvLqsksNaRzoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 217.111.95.7) smtp.rcpttodomain=kernel.org smtp.mailfrom=arri.de; dmarc=fail
+ (p=none sp=none pct=100) action=none header.from=arri.de; dkim=none (message
+ not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JK1YU7vrA4jzIzkmhhrn/QsxdsaSkSX2s+X4Jf9xBvo=;
+ b=AS5tKXc59BTuA0GOQ13D0i851g7DFFDPoOcDoTaU2x/kdHqrk4cPNXVc938o/gV1S4DTVq7jlln3NpZQz6aIEsX0iBa+mpQuaciYvbIa3tcBBCIsAgxQgKggjQfjIxf2R77ytXDDgetoZdPcZXMrr4dXNWB/iJUNmIXSEb6hpBs=
+Received: from DU6P191CA0062.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:53e::11)
+ by DB3PR0302MB8941.eurprd03.prod.outlook.com (2603:10a6:10:43b::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Fri, 11 Jul
+ 2025 12:01:31 +0000
+Received: from DB3PEPF0000885F.eurprd02.prod.outlook.com
+ (2603:10a6:10:53e:cafe::a0) by DU6P191CA0062.outlook.office365.com
+ (2603:10a6:10:53e::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.25 via Frontend Transport; Fri,
+ 11 Jul 2025 12:01:31 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
+ smtp.mailfrom=arri.de; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=arri.de;
+Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
+ designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
+ client-ip=217.111.95.7; helo=mta.arri.de;
+Received: from mta.arri.de (217.111.95.7) by
+ DB3PEPF0000885F.mail.protection.outlook.com (10.167.242.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8922.22 via Frontend Transport; Fri, 11 Jul 2025 12:01:30 +0000
+Received: from N9W6SW14.arri.de (192.168.54.39) by mta.arri.de (10.10.18.5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.38; Fri, 11 Jul
+ 2025 14:01:29 +0200
+From: Christian Eggers <ceggers@arri.de>
+To: Srinivas Kandagatla <srini@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Dmitry Baryshkov <lumag@kernel.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+CC: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha
+ Levin <sashal@kernel.org>, <imx@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 0/2] nvmem: Fix reading MAC address from OCOTP on i.MX
+Date: Fri, 11 Jul 2025 13:55:46 +0200
+Message-ID: <20250711120110.12885-1-ceggers@arri.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250710142038.1986052-8-andrei.stefanescu@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB3PEPF0000885F:EE_|DB3PR0302MB8941:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0498dbd7-bf44-4e34-aa03-08ddc072ac71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|36860700013|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WmgxQXlIZCtlRklTbGk2MzdqaS9jd3ZQZGFmU1JBMkgvWm4wcmRjcDlLaUli?=
+ =?utf-8?B?c1B6cHovZGhrMk10czRNcUtja2RBV3M2ZkRxdExPeWRRR2RvZDVuUXlZUk5N?=
+ =?utf-8?B?TFVmQ3R6WDdUaHo3aGU4MmZDeE96aWxKcFRRWE8xWVA5eXZaR0grRE9CclA2?=
+ =?utf-8?B?TkkzakFCRDQwOTBwb0wvOEJROGpuU2xLeG1ubVptS3lSOFE0OTJrbmEySitp?=
+ =?utf-8?B?VjRwa3NJQzdnSmhrVGdIVlZjZDlVbWVMNDQxOWVRU3oyT2ZEZWhMMDNRYkN5?=
+ =?utf-8?B?cndQUnY2SkJ6aVJ0OWw5OWhqSzJOYkg2OHJWdFgwaEw3TFAyVFdOblpaM01I?=
+ =?utf-8?B?UjJtMWQvNDdHMlFRTjhQejVkSkNnTng2SUhHR1pHYTlZS05idVB3T0ptYVFk?=
+ =?utf-8?B?MG1Tb1NkVmo4OW5MVE05eDgxS0ZVeTFIL1M1M2F3QzVNeGNSSXhzdEowZE1V?=
+ =?utf-8?B?a21sQkR5RlFDT2dmR1lxUnpTeTZkQzFvOEFUM3RIZ2U3S0ZzSUU4dmZtL0xz?=
+ =?utf-8?B?Qkc5RzJRUkJnYlBnMktFOW8vN2x5dFJtOXREK0lKWVIxWnIzVWlrVE1yanZt?=
+ =?utf-8?B?eUNmYy9aQ2E4WENiY2pjczV4WVVia3ZTTnNGdFZHbjBkWkg5Lyt4bmZMVzlV?=
+ =?utf-8?B?ZmpoS3RaUWREN0tTTStkSzZXOWt4UXNTOHhueEFnd3ZTUU42YUZkVGcrcjVK?=
+ =?utf-8?B?dFg4ODYrQ3RtOUNRVEhkN0JYREl5Z293WUJJUVJQWG1tUVV4UXhZcDVBTFYw?=
+ =?utf-8?B?UXRWZElQT0lwMjFYNTB4VnJ2cmRFMlQrRWYrU0tSU3lJd0NBenBDT0pKY1Fu?=
+ =?utf-8?B?Qzcxb24rNlJyS0JXaUVzb3dyeU9kMnZIS0VHdFArbmhRNURXQ3plSXhhajlO?=
+ =?utf-8?B?N3dvVmgxNlRuSFZXQTBpWTlYNnNKM1dtbXdqbTRJN1ZnZHY5RmZaazZmRGVo?=
+ =?utf-8?B?ekZrRVhvZ0NVbTB0Nlc5eHBrZ3JSLzU2dHVKSEdjaDZsSTZBeXdIK0hrbWgv?=
+ =?utf-8?B?dWUvRGtPZ0ZETU1PaEtqOHpBSTJKRVUvSlRZS3V5U21YQUJ0dDJRcVdvckRw?=
+ =?utf-8?B?ZnIwTFFPb0xON3IwdG5RUk5meWo0ZTlITEx1c2Z2Q2M1OGZNMmVhOHAvK3Nv?=
+ =?utf-8?B?dklhNHNFL1l2N0xZSS84dFJlcXlPNFYwNWdtUTJRaVcxWE1NV3Q4WTdPNHI1?=
+ =?utf-8?B?cmhTSWF2NGI2KzFVanZoMERXV2x2RzRRZzI2WDhTYWxhUVZQNHFqUm92bG1H?=
+ =?utf-8?B?bklKOWhQWmxwTlM2QVFVbDE0TjZWQjZ5UzgzZnlJcndxdzBZZG5XNFhLa0sx?=
+ =?utf-8?B?bUpSbW9DWFRCb1IvSnFIUkpBdFZkQWlNS1JSMk80bVZIcjMyV2xURzdqOTFm?=
+ =?utf-8?B?ZWJ2L1hzbUVmeXdIaU9hZUlDbkFmNmw4U1NYVStkRDVzQXo5QzNZQVM4eXli?=
+ =?utf-8?B?SjZ0VVgwcXpEQU45VG05UWRvRjQvcTg4RHVzZHhWMWtIVTBESDBRcVpvZ016?=
+ =?utf-8?B?cHY2ODh4OWt3RitzTVFzQW4rbmx2SzJiOW1HK3FsOFpBaTltekI2a2FxN3lB?=
+ =?utf-8?B?eTZ4eHhwN2srMDFhbkpoS3JmM29zQ0VkbTkxRDV4OUcwelBDNzVRYTZPUStR?=
+ =?utf-8?B?TkNyUG5HYzJvdnBiaDlzempXaHh5S0NGd2RGVG5ySHRWYVUweGpVcU1qZGJT?=
+ =?utf-8?B?SzN3ekZmWExhVmNYMWNQY1hvZFRZbmtjdERYZXdUc0MraFA3VHhRaWNtWFNS?=
+ =?utf-8?B?MDVzZnZMTVIwdWg5dktxSE1HaVRwVUt6TmxtNko4dTNVRjUrWVZyOW9sQW5M?=
+ =?utf-8?B?WlZlTmJ0WnQxSnVDcGlPVVhuT040aE1iU21tcFIvQVRHQkd3bTFnNDNaUmJC?=
+ =?utf-8?B?OWsrdWFWT1EwS0NMcXNsdklvNWZOQUJmVk5XdU5JZGN3VUFsM0lHbGNOMU9j?=
+ =?utf-8?B?VVEvTWZZZkRjNnRMOWFQZFVrWGRwUWNEeDJONzUwdHFPaFdMMFl4MUVxbEJG?=
+ =?utf-8?B?bkhNaDFuODd3S0d6VGs5VTA1aDVHYzJTNzE1eFdadlByeU9odHBTMWZ1ZkhY?=
+ =?utf-8?Q?gzEwNC?=
+X-Forefront-Antispam-Report:
+	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arri.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2025 12:01:30.7699
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0498dbd7-bf44-4e34-aa03-08ddc072ac71
+X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF0000885F.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0302MB8941
 
-Hi Andrei,
+There is a (minor?) regression (also propagated via -stable series)
+which causes wrong Ethernet MAC addresses read from internal OTP.
 
-kernel test robot noticed the following build warnings:
+Probably this doesn't affect many system as usually the MAC address is
+already read from OTP (called OCOTP on i.MX) by the boot loader and
+then passed verbatim to the kernel via device tree fixups. Only if the
+MAC isn't present in the device tree, the kernel reads it from the OTP
+itself.
 
-[auto build test WARNING on linusw-pinctrl/devel]
-[also build test WARNING on linusw-pinctrl/for-next lee-mfd/for-mfd-next lee-mfd/for-mfd-fixes linus/master v6.16-rc5]
-[cannot apply to shawnguo/for-next next-20250710]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrei-Stefanescu/dt-bindings-mfd-add-support-for-the-NXP-SIUL2-module/20250710-222538
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git devel
-patch link:    https://lore.kernel.org/r/20250710142038.1986052-8-andrei.stefanescu%40oss.nxp.com
-patch subject: [PATCH v7 07/12] pinctrl: s32g2: change the driver to also be probed as an MFD cell
-config: arm64-randconfig-003-20250711 (https://download.01.org/0day-ci/archive/20250711/202507111841.QdQ2DVpT-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 12.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250711/202507111841.QdQ2DVpT-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507111841.QdQ2DVpT-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/linux/bits.h:32,
-                    from include/linux/bitops.h:6,
-                    from drivers/pinctrl/nxp/pinctrl-s32cc.c:10:
-   drivers/pinctrl/nxp/pinctrl-s32cc.c: In function 'to_s32_pinctrl':
-   include/linux/container_of.h:20:54: error: 'struct s32_pinctrl' has no member named 'gc'
-      20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                                                      ^~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:20:9: note: in expansion of macro 'static_assert'
-      20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:20:23: note: in expansion of macro '__same_type'
-      20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   drivers/pinctrl/nxp/pinctrl-s32cc.c:706:16: note: in expansion of macro 'container_of'
-     706 |         return container_of(chip, struct s32_pinctrl, gc);
-         |                ^~~~~~~~~~~~
-   include/linux/compiler_types.h:503:27: error: expression in static assertion is not an integer
-     503 | #define __same_type(a, b) __builtin_types_compatible_p(typeof(a), typeof(b))
-         |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:78:56: note: in definition of macro '__static_assert'
-      78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
-         |                                                        ^~~~
-   include/linux/container_of.h:20:9: note: in expansion of macro 'static_assert'
-      20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |         ^~~~~~~~~~~~~
-   include/linux/container_of.h:20:23: note: in expansion of macro '__same_type'
-      20 |         static_assert(__same_type(*(ptr), ((type *)0)->member) ||       \
-         |                       ^~~~~~~~~~~
-   drivers/pinctrl/nxp/pinctrl-s32cc.c:706:16: note: in expansion of macro 'container_of'
-     706 |         return container_of(chip, struct s32_pinctrl, gc);
-         |                ^~~~~~~~~~~~
-   In file included from include/uapi/linux/posix_types.h:5,
-                    from include/uapi/linux/types.h:14,
-                    from include/linux/types.h:6,
-                    from include/linux/kasan-checks.h:5,
-                    from include/asm-generic/rwonce.h:26,
-                    from arch/arm64/include/asm/rwonce.h:67,
-                    from include/linux/compiler.h:390,
-                    from include/linux/build_bug.h:5:
-   include/linux/stddef.h:16:33: error: 'struct s32_pinctrl' has no member named 'gc'
-      16 | #define offsetof(TYPE, MEMBER)  __builtin_offsetof(TYPE, MEMBER)
-         |                                 ^~~~~~~~~~~~~~~~~~
-   include/linux/container_of.h:23:28: note: in expansion of macro 'offsetof'
-      23 |         ((type *)(__mptr - offsetof(type, member))); })
-         |                            ^~~~~~~~
-   drivers/pinctrl/nxp/pinctrl-s32cc.c:706:16: note: in expansion of macro 'container_of'
-     706 |         return container_of(chip, struct s32_pinctrl, gc);
-         |                ^~~~~~~~~~~~
-   drivers/pinctrl/nxp/pinctrl-s32cc.c: In function 'legacy_s32_pinctrl_regmap_init':
->> drivers/pinctrl/nxp/pinctrl-s32cc.c:873:44: warning: variable 'soc_data' set but not used [-Wunused-but-set-variable]
-     873 |         const struct s32_pinctrl_soc_data *soc_data;
-         |                                            ^~~~~~~~
-   drivers/pinctrl/nxp/pinctrl-s32cc.c: In function 's32_pinctrl_mfd_regmap_init':
-   drivers/pinctrl/nxp/pinctrl-s32cc.c:920:44: warning: variable 'soc_data' set but not used [-Wunused-but-set-variable]
-     920 |         const struct s32_pinctrl_soc_data *soc_data;
-         |                                            ^~~~~~~~
-   drivers/pinctrl/nxp/pinctrl-s32cc.c: At top level:
-   drivers/pinctrl/nxp/pinctrl-s32cc.c:704:28: warning: 'to_s32_pinctrl' defined but not used [-Wunused-function]
-     704 | static struct s32_pinctrl *to_s32_pinctrl(struct gpio_chip *chip)
-         |                            ^~~~~~~~~~~~~~
-
-
-vim +/soc_data +873 drivers/pinctrl/nxp/pinctrl-s32cc.c
-
-   868	
-   869	static int legacy_s32_pinctrl_regmap_init(struct platform_device *pdev,
-   870						  struct s32_pinctrl *ipctl)
-   871	{
-   872		struct s32_pinctrl_soc_info *info = ipctl->info;
- > 873		const struct s32_pinctrl_soc_data *soc_data;
-   874		unsigned int mem_regions;
-   875		struct resource *res;
-   876		struct regmap *map;
-   877		void __iomem *base;
-   878		u32 i = 0;
-   879	
-   880		soc_data = info->soc_data;
-   881	
-   882		mem_regions = info->soc_data->mem_regions;
-   883		if (mem_regions == 0 || mem_regions >= 10000)
-   884			return dev_err_probe(&pdev->dev, -EINVAL,
-   885					     "mem_regions is invalid: %u\n",
-   886					     mem_regions);
-   887	
-   888		for (i = 0; i < mem_regions; i++) {
-   889			base = devm_platform_get_and_ioremap_resource(pdev, i, &res);
-   890			if (IS_ERR(base))
-   891				return PTR_ERR(base);
-   892	
-   893			snprintf(ipctl->regions[i].name,
-   894				 sizeof(ipctl->regions[i].name), "map%u", i);
-   895	
-   896			s32_regmap_config.name = ipctl->regions[i].name;
-   897			s32_regmap_config.max_register = resource_size(res) -
-   898							 s32_regmap_config.reg_stride;
-   899	
-   900			map = devm_regmap_init_mmio(&pdev->dev, base,
-   901						    &s32_regmap_config);
-   902			if (IS_ERR(map)) {
-   903				dev_err(&pdev->dev, "Failed to init regmap[%u]\n", i);
-   904				return PTR_ERR(map);
-   905			}
-   906	
-   907			ipctl->regions[i].map = map;
-   908			ipctl->regions[i].pin_range = &info->soc_data->mem_pin_ranges[i];
-   909		}
-   910	
-   911		return 0;
-   912	}
-   913	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
