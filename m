@@ -1,197 +1,107 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010031.outbound.protection.outlook.com [52.101.69.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835CB29008F
-	for <imx@lists.linux.dev>; Fri, 11 Jul 2025 12:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752235316; cv=fail; b=bXWrFTnLY3Xk/WmwrCSWAAL7V/7dxBDzDULDVUPGJdP5gNKs05XB3VWBYqiJBtDStRBG1EHhs7itKslAATuYIgzD0AIjwHI/Y0c/q0rXgM9jAMNelJ9KqEARSvKeP8KKte5QWTUC6lquHl2VY/6RPYQudeX+FtQ46nCP/Rw0Sp4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752235316; c=relaxed/simple;
-	bh=pnqvu0IrAkdV+gmWR0LZSkRQQT4YKe9W5OS2jXVWjic=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ix8Xtow0BYaM9vbwZann2zMvlZKbfK671oe8I8cmi/w28ytoeAsJrsJQnfaYCDW4t/WOKy2kS8RQ3uJOpW30lmIRtBF9qClA8TMPJfbXrXzu6oMSopUJq2Swvx0k9/N2n5bmkFnigN48KLddlLdfWK0HCr/FqTNSVCguxTeLERI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=XUTDNfBh; arc=fail smtp.client-ip=52.101.69.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F22227E07B
+	for <imx@lists.linux.dev>; Fri, 11 Jul 2025 12:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752235531; cv=none; b=tmiY+kGhxUpHpqVwjh64ScOeIIotsbtNpTyS6h/Dh715U/JPdVa3x8GScCzsfIfaUnjchG3JKhy5iLEDPXdFbhPYKiJ4r0IEyfK4/l0vLxYrAELewy+aLIdeRRB7hdXtmFD9OZxmRl5mYEn4yBc5L/t447ONtFBnBup0CgRwoBE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752235531; c=relaxed/simple;
+	bh=2AEASaq5CDzhb6ktnTbfQ22tIfOZRPSGaJHgFyQUuec=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tYmtD9oprLp4UhdH3BqtDemrJ0cBMd3EPoQxWnfqrKErl/J8w3rNlwhOWYNKhoYExJ6E9AuQ09z21MwYQ7QtTE7v4kwKk6F3Kug5hwbxjHpGDc6Ze8qyXZ6afTjoqtTc3E7VsvopmesntAnt+Ic/erXkxwJnlKeYmFNiEUE5XsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PDTX0B9H; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="XUTDNfBh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pQThHdpofwtDsXZs+MsQ58jbtkYUuaB+6wfZA3DLxnIjOn4Eu67AjIqsZinKBMAcoy1/ZbSkzs/MIh0GyYvwH3LQsMpX3AZr2wz5TzgWL4QGboPDopxJdC5gKUhCHlRbgs/lpaBSkE0D92ZZUyfNXihpYpLHHwYuR9/8gkh1bK234q79a6R0UrBdAM3oWsj95ncT3fLiwiGUuUmW7QlMxl8BXttr3KWENOl9JF/b5eTK8qxMNPTw4Guclu9PxPer60+w5CXPw6EuuqqB97Twd36vVupYzc0triEEOzxEuWk5YQyxqXLiZF3KOufzA3hcRXGAhv6HTF8S71Vu6zhXAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+McHn7DalzcIgymFaZSpYE2KY4wWUGqal/hKL4lE/Vk=;
- b=nlzATvy/6qUbU4Ibx5DsoSzJIKp4HIgmXGuaQpU6z76R13OK+eEzONbtzT7+EMXUWQAR5Sh3Q6DGfKqMPbyiBmuNBJuGXt/ipvUL7tiBozJfccxnf/45Qi6CM3oOIS4OpeAv7MoRMnGV6TpXzScKTAEciC3c5Ax6XqgTGXas//k0c13wjY1UcLwlRWn7Aiz3UzJ3LKGMRWJvJDhwADbycZombKlpQ8EBBmG/nm3PlCzbrIrciEdJWjA5BrW/J8EGRT3JsoP5q23HDg1LcwdBRr9t2gaJXsrkxT+YJYLYoflnJVgjGzhmpAJKriGJfyid87IwTU4fSdOVr2IMt3w/dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 217.111.95.7) smtp.rcpttodomain=kernel.org smtp.mailfrom=arri.de; dmarc=fail
- (p=none sp=none pct=100) action=none header.from=arri.de; dkim=none (message
- not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+McHn7DalzcIgymFaZSpYE2KY4wWUGqal/hKL4lE/Vk=;
- b=XUTDNfBhnSDtsDBP2GWoF4wJSOJGJa5j9QzEJLLn0GqU0iuARVhtd1014fJxzLoNurhtYkXv7FOHH5zlQc8Kd4qDsuIVX94QE9dPPlcrunq/Ht6aUc3LC67p2e9xrxapAHKLBlnmtnNjUpexzO6hQ3AolaMmN+8ZCqTck/el6tQ=
-Received: from DUZPR01CA0035.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:468::13) by DB3PR0302MB9205.eurprd03.prod.outlook.com
- (2603:10a6:10:429::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Fri, 11 Jul
- 2025 12:01:48 +0000
-Received: from DB3PEPF0000885E.eurprd02.prod.outlook.com
- (2603:10a6:10:468:cafe::95) by DUZPR01CA0035.outlook.office365.com
- (2603:10a6:10:468::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.26 via Frontend Transport; Fri,
- 11 Jul 2025 12:02:09 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
- smtp.mailfrom=arri.de; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=arri.de;
-Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
- designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
- client-ip=217.111.95.7; helo=mta.arri.de;
-Received: from mta.arri.de (217.111.95.7) by
- DB3PEPF0000885E.mail.protection.outlook.com (10.167.242.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8922.22 via Frontend Transport; Fri, 11 Jul 2025 12:01:48 +0000
-Received: from N9W6SW14.arri.de (192.168.54.39) by mta.arri.de (10.10.18.5)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.38; Fri, 11 Jul
- 2025 14:01:47 +0200
-From: Christian Eggers <ceggers@arri.de>
-To: Srinivas Kandagatla <srini@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Dmitry Baryshkov <lumag@kernel.org>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
-CC: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Sasha
- Levin" <sashal@kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	Christian Eggers <ceggers@arri.de>, <stable@vger.kernel.org>
-Subject: [PATCH 2/2] nvmem: imx: Swap only the first 6 bytes of the MAC address
-Date: Fri, 11 Jul 2025 13:55:48 +0200
-Message-ID: <20250711120110.12885-3-ceggers@arri.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250711120110.12885-1-ceggers@arri.de>
-References: <20250711120110.12885-1-ceggers@arri.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PDTX0B9H"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-555024588a8so1795354e87.0
+        for <imx@lists.linux.dev>; Fri, 11 Jul 2025 05:05:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752235528; x=1752840328; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2AEASaq5CDzhb6ktnTbfQ22tIfOZRPSGaJHgFyQUuec=;
+        b=PDTX0B9H3mhN4fTjJhXw8f6tLakSP4gdG6zJBe8bEnwAaxMzBoA21Fh5XBx1xNuaGh
+         filNsdq8dNI8Yuc4522G4giz1odCiAJsNJUmoCFvbVJHJsZ9R9eiDBTil//iaRKhXvrz
+         1LOiCO1cJg83zg8A1rhmpM/0IgHYJYiHcN5px+IzaagmT4l9IbqBWIUp+D//sl6d2Mfc
+         FjQiotPne7RZZAF+Ocl8azdBbEOgABIrQloN/lX0+pRsoi80JVpDALxKvxpdr28GtpOb
+         BRQvLEpR5fLN16T1z5G/Jji2bp/TkTvQLZsCCgkcthQwRdIpBrzJRR7Qx7sSR8WNhdgS
+         zyiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752235528; x=1752840328;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2AEASaq5CDzhb6ktnTbfQ22tIfOZRPSGaJHgFyQUuec=;
+        b=UF1Rfjn8xT+J7HmQX4/TG5tebJ9juz+c0xOgnUAINeLYDA2IRctvwlgxNlvfCYJEvP
+         OcTgGMMqNJb76+SfQoTzJ6w0YOEN6AwzxXo9qvOfuwYBzBlDQc0tSmUr9HFSG4EJvHpX
+         +NWNlGOiwDAIL6G76uRiQBSGIjbbExzS1VgTcfdhIG5MSvbFxnSq5lduhkML0XOQfQ8d
+         BfAR0YhfZzn+INIOr7QjGIaY51KqUwNaQE27bxHIGYqI16EVqy9DIeHnaFlaJWnFKYR+
+         YXsa2oz4qRXnGE72C7JlDMGYrPH2ZKqn2687GFCDp83yjreSDJfux21Cg4E+fXpHMrfL
+         npvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV04zOgS53IQ0JRkg+394kyc7bCkMCJwGHOXe1FoDeBq6yUZDxKpN0ERdM5lzvKfkmyweo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyDrxI1WAEtiDTYbeJF/lBtny4SAbEgZCC6lp/qyHaGRr1SeJeF
+	q+nfm6otlpYqoo9lMlEpWRL9p+DzJSWZcEZUE8WMBFt/16jx6Y2UbG95H4g3uzCraGse9ZmC4xB
+	chwlXJDzWckM5r/2ToO5H9R/wadyymSM=
+X-Gm-Gg: ASbGncsLSDyCrZw9ZkoUDJ7o2jHBO2VZHFnA9gNgsxjyiMcwtjLdUyyYtQmo/vG37Y1
+	0rW7ry7vst+tOQSrbBywaPZmXc+CPS8Oep7UN411PC+0m6sdf88YTS8w/pJIEbM0WLXHwQaYLEj
+	pmRxxSVBsZROJDZjo+klHU1LNWpqm7iH31D92jrQx4b5wJrHBKqGAfAAiLcE7efj2ZYz6443V/8
+	dtdCzHFKpdOLnQD8FATYPmIljTyaOS2waORxaw=
+X-Google-Smtp-Source: AGHT+IFl+IoLWuIaEOcASJ3YDYcH5iOQ7KM94YNp90zKqQwivksqlWt3cmzdDFclUAJWq5ZCcUCbfLJPflKvNsW1j6Q=
+X-Received: by 2002:a05:6512:234f:b0:553:2645:4e90 with SMTP id
+ 2adb3069b0e04-55a046448c7mr1047920e87.52.1752235527861; Fri, 11 Jul 2025
+ 05:05:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB3PEPF0000885E:EE_|DB3PR0302MB9205:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f2b530f-8218-4ede-9fbb-08ddc072b6d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UoSWV1gOseHX7y6xKQr+fh605K1pMtmd7w4uBcCiNbwx07idvarmXAodQjAp?=
- =?us-ascii?Q?qiCTmY6MwRx+rT5RyiQhaIP0oeH1DMqZjms/4numrrFl97Y81KWRaPMH50vR?=
- =?us-ascii?Q?hzwABq8XPxGbKQzvMeZebkG+k9Du/8wrMNdRiL0kYVbQnUJAY9MKwHe5Azxl?=
- =?us-ascii?Q?xB8q7/UxrbPojqetQoc/QfBo5fEBh4s3NqMtEjCxk9cPOnfTWmDzhU4zSC4H?=
- =?us-ascii?Q?jx9bya0eglQDh/B30R/buDygqok9/6Loey8tGAsZNTXrjIUgVlDFjcMMtC5D?=
- =?us-ascii?Q?HOKLIG3bOkunZTuvyx+dIfWafp8vlrVVHpp/0b/cWCBQGz9N3Hykoes8p3kb?=
- =?us-ascii?Q?2vU6aRwZeKY0e79zgqO4Fl1oe709x8jR+GSEg9MHQYP9WumJFvoP7haxwau6?=
- =?us-ascii?Q?ReXvIq8earlLuMt/4rxyiiV/pZVi8yy2Hn2HGKqDjxiMIgzKaCw2iEfvlt4v?=
- =?us-ascii?Q?wGjA7QbNskZyii7WynZUFMtaKdRNTk7rF6jNSDHdpT9GVpWbQ0c4YndHCvZG?=
- =?us-ascii?Q?9fXlRfXyGvIeShtwNR06P4ymlsd/ldvv4/ck838XvWAR8trdlVy+ONLlnvlk?=
- =?us-ascii?Q?t1bItFQ53Za86ImFs79SEXE+VSp+C6V96/UxIesmIjajfk7MPTgwVRKbF1dI?=
- =?us-ascii?Q?TwaR27/chqqbuxV739Rh9bJAlMxFE/WppyRrTjL63MRzB1NT2fo21mEQZc07?=
- =?us-ascii?Q?IZq6HmI8vgFxUNbpqzVd30zbp66nrdhmG91uXQ3qAnQCd8ClJH/YKFVYzOEi?=
- =?us-ascii?Q?mrNUKINnPKtBO9EnWjpU8vXtYFoybB9OQCctBv/vAT/Wrjf7yWUw65en9QYy?=
- =?us-ascii?Q?zTwl1/jTo8y1tnxPYndX/AWt1ERB2bkUn7LQXfpRzP2OVEDAXwZLKTbi6Nlv?=
- =?us-ascii?Q?3f36WMdtN/0/PNRK5QhwR1OBf+MhzWO2qKEfsS/H0q8FZl6RadSdFGXyXAFn?=
- =?us-ascii?Q?b34t+XufsVeHLWCmvr44GTg3ldA87wHQKU7S9KxtB7u8m20M2kWURUOkatXP?=
- =?us-ascii?Q?iwsNrYUXqrcSlxUA4ncRJwpHTngw6uBly49fx9LTV9XjdRRtjOudRVe2AHVA?=
- =?us-ascii?Q?Ug+RdVsyW6GEuVVA4eA38HEAmpOgmh2qg+ngz0CRBoNOM/SplFyQ+tK+EQym?=
- =?us-ascii?Q?aK0wUFkt/0D09ofpPSybuvIrmeXwiIuGzb//WUrTDccm+MnUs07vpFkFzru9?=
- =?us-ascii?Q?Wci8Ny2hKaX787tVYTr3Y/Y6ISFgQD7PI1xrVK6bPzAGVfTGDgdF0HHmWgqe?=
- =?us-ascii?Q?1uRUOZPrxzS++uVe1zj0wZc+jnLy/Py3mWH2x40ikStqBAzjlkwqX5DP7EoA?=
- =?us-ascii?Q?ZncmM5WUzD3CMflui0wpjxw7pLaWxV1Huql3pZqGSH1AUVbC/iKKn8jSF3eP?=
- =?us-ascii?Q?SVzBi+cTgPmKE/xGW2HNTNOU0QwX0v1TrXmqcQ9tD8kb7aNFnzHqCQNGXf3t?=
- =?us-ascii?Q?nLEssVX7uX+RRBhf+MW1hZf78vbSwlbgSCiAWbN1ef18luxt4f0lUA49b/vS?=
- =?us-ascii?Q?+POBTaaN0UHfbU6VIZkyeugsX1oHoJPKcwJu?=
-X-Forefront-Antispam-Report:
-	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arri.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2025 12:01:48.1855
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f2b530f-8218-4ede-9fbb-08ddc072b6d3
-X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB3PEPF0000885E.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0302MB9205
+References: <20250711120110.12885-1-ceggers@arri.de> <20250711120110.12885-3-ceggers@arri.de>
+In-Reply-To: <20250711120110.12885-3-ceggers@arri.de>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Fri, 11 Jul 2025 09:05:16 -0300
+X-Gm-Features: Ac12FXxXhUl0pWyBQ1-EtucR0saC40xWMP_mrTY-Vw0EB65wy0G0ZSkmB17HgQ4
+Message-ID: <CAOMZO5BNgGao-+B_K8+7juBXTHVKr72NCRRk5NMpr2ew=t0+aQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] nvmem: imx: Swap only the first 6 bytes of the MAC address
+To: Christian Eggers <ceggers@arri.de>, =?UTF-8?Q?Steffen_B=C3=A4tz?= <steffen@innosonix.de>
+Cc: Srinivas Kandagatla <srini@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Dmitry Baryshkov <lumag@kernel.org>, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since commit 55d4980ce55b ("nvmem: core: support specifying both: cell
-raw data & post read lengths"), the aligned length (e.g. '8' instead of
-'6') is passed to the read_post_process callback. This causes that the 2
-bytes following the MAC address in the ocotp are swapped to the
-beginning of the address. As a result, an invalid MAC address is
-returned and to make it even worse, this address can be equal on boards
-with the same OUI vendor prefix.
+Hi Christian,
 
-Fixes: 55d4980ce55b ("nvmem: core: support specifying both: cell raw data & post read lengths")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Cc: stable@vger.kernel.org
----
-Tested on i.MX6ULL, but I assume that this is also required for.
-imx-ocotp-ele.c (i.MX93).
+On Fri, Jul 11, 2025 at 9:01=E2=80=AFAM Christian Eggers <ceggers@arri.de> =
+wrote:
+>
+> Since commit 55d4980ce55b ("nvmem: core: support specifying both: cell
+> raw data & post read lengths"), the aligned length (e.g. '8' instead of
+> '6') is passed to the read_post_process callback. This causes that the 2
+> bytes following the MAC address in the ocotp are swapped to the
+> beginning of the address. As a result, an invalid MAC address is
+> returned and to make it even worse, this address can be equal on boards
+> with the same OUI vendor prefix.
+>
+> Fixes: 55d4980ce55b ("nvmem: core: support specifying both: cell raw data=
+ & post read lengths")
+> Signed-off-by: Christian Eggers <ceggers@arri.de>
+> Cc: stable@vger.kernel.org
+> ---
+> Tested on i.MX6ULL, but I assume that this is also required for.
+> imx-ocotp-ele.c (i.MX93).
 
- drivers/nvmem/imx-ocotp-ele.c | 5 +++--
- drivers/nvmem/imx-ocotp.c     | 5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+Steffen has recently sent a similar fix:
 
-diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index 83617665c8d7..07830785ebf1 100644
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/device.h>
-+#include <linux/if_ether.h>
- #include <linux/io.h>
- #include <linux/module.h>
- #include <linux/nvmem-provider.h>
-@@ -119,8 +120,8 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
- 
- 	/* Deal with some post processing of nvmem cell data */
- 	if (id && !strcmp(id, "mac-address"))
--		for (i = 0; i < bytes / 2; i++)
--			swap(buf[i], buf[bytes - i - 1]);
-+		for (i = 0; i < ETH_ALEN / 2; i++)
-+			swap(buf[i], buf[ETH_ALEN - i - 1]);
- 
- 	return 0;
- }
-diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-index 22cc77908018..4dd3b0f94de2 100644
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -16,6 +16,7 @@
- 
- #include <linux/clk.h>
- #include <linux/device.h>
-+#include <linux/if_ether.h>
- #include <linux/io.h>
- #include <linux/module.h>
- #include <linux/nvmem-provider.h>
-@@ -228,8 +229,8 @@ static int imx_ocotp_cell_pp(void *context, const char *id, int index,
- 
- 	/* Deal with some post processing of nvmem cell data */
- 	if (id && !strcmp(id, "mac-address"))
--		for (i = 0; i < bytes / 2; i++)
--			swap(buf[i], buf[bytes - i - 1]);
-+		for (i = 0; i < ETH_ALEN / 2; i++)
-+			swap(buf[i], buf[ETH_ALEN - i - 1]);
- 
- 	return 0;
- }
--- 
-2.43.0
+https://lore.kernel.org/linux-arm-kernel/20250708101206.70793-1-steffen@inn=
+osonix.de/
 
+Does this work for you?
