@@ -1,68 +1,72 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3201EC018
-	for <imx@lists.linux.dev>; Fri, 11 Jul 2025 07:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA5D1EE7A1;
+	Fri, 11 Jul 2025 07:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752219071; cv=none; b=Oo01Q9dgEtFAOA+HjMDl1vDQWXe9o91HAPlYFpKR2wHNqxIohhC5SOeY8KCAyQ0vDhB1zdReTKHfJyePghVxHj83K9NEaJn6h+Qfp3mOIwwENlKsazCikQRyz1hjN5gY7pDd29ToGFlLK4OxEMYxlP8Z/hxG5pNgDArMCpGpQaQ=
+	t=1752219404; cv=none; b=A4LFswNRR5dkEH0GDUgZoVTZygSMZA14iM3+OKa8KRMy6D0R9bhgZJ8KXqyzDY1IWFFaUZp3btttyhAPNLiquP9vbcopMs8OvL3F+Dp3bOwWkfv8+J0BQPYVav6677XxmtmLExjkftzOHjnYl6i/m2wh1U9kA6gAEvMFL1fOnQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752219071; c=relaxed/simple;
-	bh=PzAlFYF97tmH4Q1sB1fM6SfqzavHRnm7smVxl6tRI7Q=;
+	s=arc-20240116; t=1752219404; c=relaxed/simple;
+	bh=a0wdQROj3hyxjpHmI3TPp1B/1v9dnKkpod7Q3zxg27o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c2wAfcvJEuMI7c06I3NC9LgwJABHNLubgeJPR+jVSqMh5DRoQkqxqq4lctbuXv2rh+inPgVqCVdrLCVJ9Wx64qPAorhXQDAfDZ/Y0WvAegJMdW1qaH1kS9f13iuTEHkHoHUax31OSlBVOFkavcyqo8o0Wz8xPmhlaDv5h7SAe0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=fequOfXY; arc=none smtp.client-ip=220.197.32.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=ou7dClAW4i9Etu2VgHSC9yQFojiHxF+gUrjk9t7xwG/H1PCZakEJn0wlOz4U1hL4/1qP05Rfg/DiVT+ycojZ1cXrxVdiHEh/FP1mYTCbb4DhvEKDWj+3QyMsVjUGApTCaPy2cqIo6evkDqdY4kPyVFT4Z6mNdOhkqMj255Z9Tqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pDiyKLTj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="fequOfXY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=JNeAFkTOa1f+sfeTOkNeMLDbT4+cizlqIq1w2Nummzw=;
-	b=fequOfXY2pAeMgEV0LiAITGHkYg5DOCykh/xML6CvDMa6d/8Qv1Ec/kwTOS0up
-	satE6eN2Q6cSJ2EY6c0PLGWWbjt9h064/2WEGYFXO98aigN0TNt6hxZ5uQh7JQhM
-	BXzd3Z0W6E3s+RknH+6Lk3Sqk3FZQScaaefG2HeLI7O7A=
-Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgDnzyKbvXBoKrdSAA--.57380S3;
-	Fri, 11 Jul 2025 15:30:37 +0800 (CST)
-Date: Fri, 11 Jul 2025 15:30:35 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Yannic Moog <y.moog@phytec.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, upstream@lists.phytec.de,
-	Benjamin Hahn <b.hahn@phytec.de>,
-	Teresa Remmet <t.remmet@phytec.de>,
-	Yashwanth Varakala <y.varakala@phytec.de>,
-	Jan Remmet <j.remmet@phytec.de>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v3 0/2] Add new imx imx95-libra-rdk-fpsc SBC
-Message-ID: <aHC9m2iHKhjjXKjI@dragon>
-References: <20250611-wip-y-moog-phytec-de-imx95-libra-v3-0-c8d09f1bdbf0@phytec.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pDiyKLTj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A59FC4CEED;
+	Fri, 11 Jul 2025 07:36:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752219404;
+	bh=a0wdQROj3hyxjpHmI3TPp1B/1v9dnKkpod7Q3zxg27o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pDiyKLTj2+sXbOPoA09zNCj+YoGUJjOjlVrtsiy2CXqLzoOX57nGU7EqPOQre5vS5
+	 SA9h4C+3e0Itmc0CPM/zi7oX76RjAbolfE8D1d8V6CHKfAbiXJnudy5TmDfu2QMuNP
+	 y5L9Ese8GdUsfdKg9WekbMeczMdcyvsPUBBsN9boSbSzQovZVqAsCBRiWoINqgINJ7
+	 vYFi2Pexu7Sl1acSNEPKZiYH/RUIQjzmcNmIxTcnDXIiZM28G/+QHuqjpiEmKSpvqR
+	 QzR9ipvKvQR7nUJh2Sq2wINeUPQO3Y0XtsJGgt20qywberxIUO1y6y8sXM93YskG9H
+	 2d+YQDEjcDTZg==
+Date: Fri, 11 Jul 2025 09:36:41 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, chester62515@gmail.com, mbrugger@suse.com, 
+	Ghennadi.Procopciuc@nxp.com, larisa.grigore@nxp.com, lee@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, festevam@gmail.com, aisheng.dong@nxp.com, ping.bai@nxp.com, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, srini@kernel.org, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, s32@nxp.com, clizzi@redhat.com, aruizrui@redhat.com, 
+	eballetb@redhat.com, echanude@redhat.com, kernel@pengutronix.de, imx@lists.linux.dev, 
+	vincent.guittot@linaro.org
+Subject: Re: [PATCH v7 01/12] dt-bindings: mfd: add support for the NXP SIUL2
+ module
+Message-ID: <20250711-fluorescent-malamute-of-glory-b1c585@krzk-bin>
+References: <20250710142038.1986052-1-andrei.stefanescu@oss.nxp.com>
+ <20250710142038.1986052-2-andrei.stefanescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250611-wip-y-moog-phytec-de-imx95-libra-v3-0-c8d09f1bdbf0@phytec.de>
-X-CM-TRANSID:Ms8vCgDnzyKbvXBoKrdSAA--.57380S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU7lksDUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIR3MMmhwvZ1PAAAA31
+In-Reply-To: <20250710142038.1986052-2-andrei.stefanescu@oss.nxp.com>
 
-On Wed, Jun 11, 2025 at 03:05:29PM +0200, Yannic Moog wrote:
-> Yannic Moog (2):
->       dt-bindings: add imx95-libra-rdk-fpsc
->       arm64: dts: add imx95-libra-rdk-fpsc board
+On Thu, Jul 10, 2025 at 05:20:24PM +0300, Andrei Stefanescu wrote:
+> Add the dt-bindings for the NXP SIUL2 module which is a multi
+> function device. It can export information about the SoC, configure
+> the pinmux&pinconf for pins and it is also a GPIO controller with
+> interrupt capability.
+> 
+> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> ---
+>  .../bindings/mfd/nxp,s32g2-siul2.yaml         | 163 ++++++++++++++++++
+>  1 file changed, 163 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
 
-Applied both, thanks!
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
