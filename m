@@ -1,141 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from novek.ru (unknown [31.204.180.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E35320F;
-	Sat, 12 Jul 2025 11:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33A745009
+	for <imx@lists.linux.dev>; Sat, 12 Jul 2025 11:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.204.180.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752318175; cv=none; b=PbWjwMhRFtbsSLbcA+ppkOIcU6zC8bfhYIXRUFQ0RI5/9g/cvVuerLDJLc5dttTCkrKeQ5m/GdYjex/VXhjB3lBeO2CPS0FgIJ8xTbPlGelYMDcN9XXEXY4vvI/TobjplO1jjOzMV7Pl5AzdV/ajYbYgdQx7fubgTSVUhQnmgx8=
+	t=1752319771; cv=none; b=rRYhVMSsUB9g15GI8fHzCIDede+I0kkb5U+qFyYfV+Ck2Jr8rAm6m8RnE3d/ooIP6xTYr/I0DNofWr9uP+9UBEGfR5OYznIB7h/2MT6zj8R5ZpwSxK0XcDgpb4rN6F1sDfRdo7CebnkpmW18FAvZb9u/LrdEt8VuUHdCXErJsW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752318175; c=relaxed/simple;
-	bh=jzMQOv6iAdvYpHha5k/NLNgXonjVTEht8vlZgL3t88s=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MGOy5Kt6B87JSaEmFG41BH1ccowvRtG6jNa1Y16/HShFgISW6XUczc3SAbXpgcyQ0hLXgIUr1yZhm8LKSVe8VKLIY+mjOf2FLURdpwBGpbATMgWhqUppuD5ucTjXriIRAOKDw7qczQid4WkZSG4R/XKrXKawrYDNg9zGq8jYh/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CcOB1mT7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752319771; c=relaxed/simple;
+	bh=A68MIpu2o+3aP80ishkA6hIBQc7sAGWI/79FDp800YY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PVHzj/fd2qrjcv+SJrw0OCIf8qUpy6QXU8bj+M4dKIz//S6dGl92R/H1mCNden+I52nDodMiZvYFA9LwK67YNkKtUXazdffSQl7DhHltRogP+jIpPZHRIda2DMjLfBqVpDZIliAnO24Z3c9VvVuJrPexKrtnQuOIe7MIRI7rj2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=novek.ru; spf=pass smtp.mailfrom=novek.ru; dkim=permerror (0-bit key) header.d=novek.ru header.i=@novek.ru header.b=XFdUpPCs; arc=none smtp.client-ip=31.204.180.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=novek.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=novek.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CcOB1mT7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4064C4CEEF;
-	Sat, 12 Jul 2025 11:02:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752318173;
-	bh=jzMQOv6iAdvYpHha5k/NLNgXonjVTEht8vlZgL3t88s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CcOB1mT7v+VIyTjxEWq0QBlFYvrwN8MSsuWw87TGYM0lqVdcqqq/QEM6ZW0FO7vGU
-	 kWnc0DgrKvkKAGQ7orW/8hnyMVS4QsbEsrEVphRBnfL+wj9FGZEToxM33UQ6SWCx4k
-	 H/Kn+seJcwGE87CrR9LpzRc0XiHz5/hMKuS4GG8EaRvWFgLQquSTq/LqmzGUefvWDM
-	 JF4+OOGcirhW8Ekfe9cOFhUSOhlvmmlYA9SqJB/jjgIHae6l7/x4oIqg/oNFzHsCWJ
-	 eoDRkrdWB76z1uno8/rozEwqtDE1pH/Kldqdup2r4D0vxlk8NI8wFTwfxUowhYeSbq
-	 fstC3/DkN8Pcg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1uaY0J-00F6gZ-Cg;
-	Sat, 12 Jul 2025 12:02:51 +0100
-Date: Sat, 12 Jul 2025 12:02:51 +0100
-Message-ID: <864ivhacys.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Aisheng Dong <aisheng.dong@nxp.com>,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] irqchip/imx-irqsteer: Fix irq handling if an error occurs in imx_irqsteer_irq_handler()
-In-Reply-To: <a0e9473f-81a4-4933-aa63-e66fbeaf0824@wanadoo.fr>
-References: <ad6514c771fef0ac2d1b3c050c6db5d5e0fd034d.1731842478.git.christophe.jaillet@wanadoo.fr>
-	<a0e9473f-81a4-4933-aa63-e66fbeaf0824@wanadoo.fr>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=permerror (0-bit key) header.d=novek.ru header.i=@novek.ru header.b="XFdUpPCs"
+Received: from [10.57.205.117] (unknown [161.12.70.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by novek.ru (Postfix) with ESMTPSA id 69E595070E3;
+	Sat, 12 Jul 2025 14:39:19 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 novek.ru 69E595070E3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=novek.ru; s=mail;
+	t=1752320362; bh=A68MIpu2o+3aP80ishkA6hIBQc7sAGWI/79FDp800YY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XFdUpPCsinUlxK2zAsbzp7ctaH2+owaFXSxcuvzdeC+SHbE/U3TStfX/G1rCamVZD
+	 cTMTWKdSOFr4+W77Bs5OwwfIlBwHf9DGbK6hChPSe1X2APwmO8wp9ONLCTkAGC4ObW
+	 BwxUKa5ZGRQvF3mHKrKFk5uIVsH+OinUt5CplaN8=
+Message-ID: <4379893b-387c-4d39-b5a9-006e1298b583@novek.ru>
+Date: Sat, 12 Jul 2025 12:29:12 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: christophe.jaillet@wanadoo.fr, tglx@linutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, l.stach@pengutronix.de, aisheng.dong@nxp.com, linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 10/12] net: enetc: remove unnecessary
+ CONFIG_FSL_ENETC_PTP_CLOCK check
+Content-Language: en-US
+To: Wei Fang <wei.fang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, richardcochran@gmail.com, claudiu.manoil@nxp.com,
+ vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Cc: fushi.peng@nxp.com, devicetree@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+References: <20250711065748.250159-1-wei.fang@nxp.com>
+ <20250711065748.250159-11-wei.fang@nxp.com>
+From: Vadim Fedorenko <vfedorenko@novek.ru>
+In-Reply-To: <20250711065748.250159-11-wei.fang@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: **
 
-On Sat, 12 Jul 2025 10:58:35 +0100,
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
->=20
-> Le 17/11/2024 =C3=A0 12:21, Christophe JAILLET a =C3=A9crit=C2=A0:
-> > chained_irq_enter(() should be paired with a corresponding
-> > chained_irq_exit().
-> >=20
-> > Here, if (hwirq < 0), a early return occurs and chained_irq_exit() is n=
-ot
-> > called.
->=20
-> After several month without any feedback, this is a polite ping.
-> Is this patch correct?
+On 11.07.2025 07:57, Wei Fang wrote:
+> The ENETC_F_RX_TSTAMP flag of priv->active_offloads can only be set when
+> CONFIG_FSL_ENETC_PTP_CLOCK is enabled. Similarly, rx_ring->ext_en can
+> only be set when CONFIG_FSL_ENETC_PTP_CLOCK is enabled as well. So it is
+> safe to remove unnecessary CONFIG_FSL_ENETC_PTP_CLOCK check.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>   drivers/net/ethernet/freescale/enetc/enetc.c | 3 +--
+>   drivers/net/ethernet/freescale/enetc/enetc.h | 4 ++--
+>   2 files changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index ef002ed2fdb9..4325eb3d9481 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -1411,8 +1411,7 @@ static void enetc_get_offloads(struct enetc_bdr *rx_ring,
+>   		__vlan_hwaccel_put_tag(skb, tpid, le16_to_cpu(rxbd->r.vlan_opt));
+>   	}
+>   
+> -	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK) &&
+> -	    (priv->active_offloads & ENETC_F_RX_TSTAMP))
+> +	if (priv->active_offloads & ENETC_F_RX_TSTAMP)
+>   		enetc_get_rx_tstamp(rx_ring->ndev, rxbd, skb);
+>   }
+>   
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+> index ce3fed95091b..c65aa7b88122 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.h
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+> @@ -226,7 +226,7 @@ static inline union enetc_rx_bd *enetc_rxbd(struct enetc_bdr *rx_ring, int i)
+>   {
+>   	int hw_idx = i;
+>   
+> -	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK) && rx_ring->ext_en)
+> +	if (rx_ring->ext_en)
+>   		hw_idx = 2 * i;
+>   
+>   	return &(((union enetc_rx_bd *)rx_ring->bd_base)[hw_idx]);
+> @@ -240,7 +240,7 @@ static inline void enetc_rxbd_next(struct enetc_bdr *rx_ring,
+>   
+>   	new_rxbd++;
+>   
+> -	if (IS_ENABLED(CONFIG_FSL_ENETC_PTP_CLOCK) && rx_ring->ext_en)
+> +	if (rx_ring->ext_en)
+>   		new_rxbd++;
+>   
+>   	if (unlikely(++new_index == rx_ring->bd_count)) {
 
-An untested patch is unlikely to make a lot of forward progress, to
-be honest.
-
->=20
-> CJ
->=20
->=20
-> >=20
-> > Add a new label and a goto for fix it.
-> >=20
-> > Fixes: 28528fca4908 ("irqchip/imx-irqsteer: Add multi output interrupts=
- support")
-> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> > ---
-> > Compile tested only.
-> >=20
-> > Review with care, irq handling is sometimes tricky...
-> > ---
-> >   drivers/irqchip/irq-imx-irqsteer.c | 3 ++-
-> >   1 file changed, 2 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-i=
-mx-irqsteer.c
-> > index 75a0e980ff35..59abe5a8beb8 100644
-> > --- a/drivers/irqchip/irq-imx-irqsteer.c
-> > +++ b/drivers/irqchip/irq-imx-irqsteer.c
-> > @@ -135,7 +135,7 @@ static void imx_irqsteer_irq_handler(struct irq_des=
-c *desc)
-> >   	if (hwirq < 0) {
-> >   		pr_warn("%s: unable to get hwirq base for irq %d\n",
-> >   			__func__, irq);
-> > -		return;
-> > +		goto out;
-> >   	}
-> >     	for (i =3D 0; i < 2; i++, hwirq +=3D 32) {
-> > @@ -153,6 +153,7 @@ static void imx_irqsteer_irq_handler(struct irq_des=
-c *desc)
-> >   			generic_handle_domain_irq(data->domain, pos + hwirq);
-> >   	}
-> >   +out:
-> >   	chained_irq_exit(irq_desc_get_chip(desc), desc);
-> >   }
-
-The real question is *how* do you end-up in this situation.
-
-To trigger this case, you need a mux interrupt that is handled by
-imx_irqsteer_irq_handler(), but for which you haven't got a
-translation from DT the first place. Do you see the chicken and egg
-problem?
-
-In summary, this driver is checking for conditions that can't possibly
-happen, and this check should simply be deleted instead of being
-blindly "fixed".
-
-	M.
-
---=20
-Without deviation from the norm, progress is not possible.
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
