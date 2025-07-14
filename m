@@ -1,149 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFDD233D8E;
-	Mon, 14 Jul 2025 09:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD720212B0A;
+	Mon, 14 Jul 2025 09:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752484468; cv=none; b=VuxrF1LYmPBgP9O4eDt9MwDOOLfpWB0VfF1NEb4BWn9q4KVzHd1HGope1oURRIixdnJbxBo57wv5sSttBgzDDnBktVQi8CIXSa/JnJQPpdZp4RNp1TMBMNRsv6Q7NUxcIYLsLbPJwaGaYPJQEu994i1LBJA7bvO/FMyPPll6Css=
+	t=1752485266; cv=none; b=OtmD7WeRyvIJaT07+I1JQfqHLX4FPbXJn5aPbUKF7lVoX8RKN2/qc5EYL8TLGXbT86Kgneej1RJjG40Td+EeD3sVUd3QYqxCcJWmF70scoNDl0iNNlhDqSnTN/6yjJNkqVkU70kySEh/B8pWz5xJg++wu0J+z9mQmaGCUgkyQk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752484468; c=relaxed/simple;
-	bh=rR2asAjUmIht+hQ2CnpxlQ91dM4Dz9yFrrfz3ReVTEg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NxVdcBJBfJ6tASIxrPwlGMNiGj9RpQ90zSspYx/tKRJSzCuc2SWMFslqdc9Yd2XinZq4FISBmvYa+mImiSkA5XFY4GGEAs/C3ue9IWBsd1cEkBs0XF2pLPTxtYSAb9dbIR8QQ2EjEtJGJhC3se1FtQZlvf+1zFXvyCVcGyd5/Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3YGNx0b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752485266; c=relaxed/simple;
+	bh=5QEo+31r+QQcGaG1a0uZQId2YA6YKOSQ6ZqkzlyZfCY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U7i2NTxLEm/IE+qsZrhC8JY5bugJlzEf63nWL73rgCottbN2qzPnHc8d1ULvF0+veAPYiWEbBUdbsOTHBVZfm/AlX8wohMBFeSZszETGWWxs+FqRsCK1weM7uIaXqDbVQ56pyqnBYKrfyCpRe5Fm6SyJLMqWoCFIl7KPKWxTWX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=NThgDigU; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3YGNx0b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98690C4CEED;
-	Mon, 14 Jul 2025 09:14:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752484467;
-	bh=rR2asAjUmIht+hQ2CnpxlQ91dM4Dz9yFrrfz3ReVTEg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=P3YGNx0bWiGiMdAyep/5Y5cjG8h+W1nfcMznEfjcFoSJr9w9Sin7SeAcAAx2TdIrl
-	 mMTiGAHwrVH5VACUijFnGbymfHYXhp7GBZ7EaLD2jj9CyhSu/NAaGg3Djlig+8y3/u
-	 /tLJesDUjE8q1aMJLvjEmMVMJdDrLSBfjeSdC7NidxhqOR/tQJ9Xitw8cY5I8JU599
-	 JJXMq68Rkmg81Mm00ccx/K6H8oHgxTEqZ35jO0dTgKZ7vKyr/ZmRmg4gFVUUVGG5BT
-	 8BCFgawuscyNxEnj2WdQhc6C3h5+dzrmV8VRk8TN/aNtXbjw9V/nlGDH1igW2cj7pI
-	 +5pWlBkvDbTSw==
-Message-ID: <169e742f-778e-4d42-b301-c954ecec170a@kernel.org>
-Date: Mon, 14 Jul 2025 11:14:20 +0200
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="NThgDigU"
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56E9RdfL2580996;
+	Mon, 14 Jul 2025 04:27:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1752485259;
+	bh=ktMQqynFW+/QzXvHfJwgbMkxyxoj9fRUidRb2qHVSSo=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=NThgDigU/IZApE4m/Zhzs8lWe8DMQ4fVS40O8wIpW3eKMGgTgdnCZkLRUCDt7hgX6
+	 OcE4X3ehySrPA7PqhfSIa45qPP7zZnF+o9tJx7Yb8ZIhGUSkDDoW/qDDAwo1DSCfmc
+	 Rc7uo6QRG7ldZ1YWt2yVSENGwVyZJ/OE3kqzzchE=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56E9Rdw01571157
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Mon, 14 Jul 2025 04:27:39 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 14
+ Jul 2025 04:27:39 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Mon, 14 Jul 2025 04:27:39 -0500
+Received: from abhilash-HP.dhcp.ti.com (abhilash-hp.dhcp.ti.com [172.24.227.115])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56E9RPVh279945;
+	Mon, 14 Jul 2025 04:27:35 -0500
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+To: <nm@ti.com>, <vigneshr@ti.com>
+CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <vaishnav.a@ti.com>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <u-kumar1@ti.com>, <y-abhilashchandra@ti.com>
+Subject: [PATCH 1/7] arm64: dts: ti: k3-j721s2-main: Add interrupts property
+Date: Mon, 14 Jul 2025 14:57:02 +0530
+Message-ID: <20250714092708.3944641-2-y-abhilashchandra@ti.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250714092708.3944641-1-y-abhilashchandra@ti.com>
+References: <20250714092708.3944641-1-y-abhilashchandra@ti.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
- Timer
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "F.S. Peng" <fushi.peng@nxp.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
- <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "richardcochran@gmail.com" <richardcochran@gmail.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Clark Wang
- <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "edumazet@google.com" <edumazet@google.com>,
- "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-References: <20250711065748.250159-1-wei.fang@nxp.com>
- <20250711065748.250159-2-wei.fang@nxp.com>
- <ce7e7889-f76b-461f-8c39-3317bcbdb0b3@kernel.org>
- <PAXPR04MB8510C8823F5F229BC78EB4B38854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <61e6c90d-3811-41c2-853d-d93d9db38f21@kernel.org>
- <PAXPR04MB85109EE6F29A1D80CF3F367A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <PAXPR04MB85109EE6F29A1D80CF3F367A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 14/07/2025 11:11, Wei Fang wrote:
->>>>> +  nxp,pps-channel:
->>>>> +    $ref: /schemas/types.yaml#/definitions/uint8
->>>>> +    default: 0
->>>>> +    description:
->>>>> +      Specifies to which fixed interval period pulse generator is
->>>>> +      used to generate PPS signal.
->>>>> +    enum: [0, 1, 2]
->>>>
->>>> Cell phandle tells that. Drop property.
->>>
->>> Sorry, I do not understand what you mean, could you explain it in more
->>> detail?
->>
->> Use phandle cells for that - look at other PTP bindings.
-> 
-> Sorry, I did not find a reference in other PTP bindings. If I understand
-> correctly, you mean I should add a specific cells property to this doc
-> as follows, correct?
-> 
-> "#nxp,pps-channel-cells":
->     description: |
->       Specifies to which fixed interval period pulse generator is
->       used to generate PPS signal.
->     $ref: /schemas/types.yaml#/definitions/uint32
->     const: 1
-> 
+Add interrupts property for CDNS CSI2RX. Interrupt IDs are taken from the
+J721S2 TRM [0].
 
+Interrupt Line      | Source Interrupt
+--------------------|----------------------------
+GIC500SS_SPI_IN_153 | CSI_RX_IF1_CSI_ERR_IRQ_0
+GIC500SS_SPI_IN_152 | CSI_RX_IF1_CSI_IRQ_0
+GIC500SS_SPI_IN_157 | CSI_RX_IF2_CSI_ERR_IRQ_0
+GIC500SS_SPI_IN_156 | CSI_RX_IF2_CSI_IRQ_0
 
-No. Is this a timestamper device? You really did not find a TXT document
-describing this, in the same directory? Well, maybe it is not a
-timestamper device, how do I know, your description should be clear here.
+[0]: https://www.ti.com/lit/zip/spruj28
 
-How does the other consumer - ethernet - reference this one here? Paste
-complete DTS of this and users, otherwise it is just ping-pong
-discussion where you put just a little effort to bounce back my question.
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+---
+ arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
+diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+index 62f45377a2c9..6f32a2b0c40c 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
+@@ -1248,6 +1248,9 @@ ti_csi2rx0: ticsi2rx@4500000 {
+ 		cdns_csi2rx0: csi-bridge@4504000 {
+ 			compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
+ 			reg = <0x00 0x04504000 0x00 0x1000>;
++			interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 152 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "error_irq", "irq";
+ 			clocks = <&k3_clks 38 3>, <&k3_clks 38 1>, <&k3_clks 38 3>,
+ 				<&k3_clks 38 3>, <&k3_clks 38 4>, <&k3_clks 38 4>;
+ 			clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
+@@ -1301,6 +1304,9 @@ ti_csi2rx1: ticsi2rx@4510000 {
+ 		cdns_csi2rx1: csi-bridge@4514000 {
+ 			compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
+ 			reg = <0x00 0x04514000 0x00 0x1000>;
++			interrupts = <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 156 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "error_irq", "irq";
+ 			clocks = <&k3_clks 39 3>, <&k3_clks 39 1>, <&k3_clks 39 3>,
+ 				<&k3_clks 39 3>, <&k3_clks 39 4>, <&k3_clks 39 4>;
+ 			clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
+-- 
+2.34.1
 
-Best regards,
-Krzysztof
