@@ -1,120 +1,105 @@
-Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838EC4315F
-	for <imx@lists.linux.dev>; Mon, 14 Jul 2025 10:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE41244661
+	for <imx@lists.linux.dev>; Mon, 14 Jul 2025 10:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752489174; cv=none; b=Z9al8Tm2OBy7dQFPwoTML+mzbJKgZd7iQov2B+vTtxREHqk8Ihipm/yYe7WPQPKiMBXmgdISkPEXvbgqE3iWTDiYHA81OvdKDcAyLJDfdQBFcjQ1bNOBf/4RrL8BWrqhbBRKBS95MZs5Wl3oKn3XaFX59UdEzJIPmish+u4gH3Q=
+	t=1752489390; cv=none; b=gyNevmfCHMs9Vk5QKT1dAu6RTlABlqQDH1QtTTkWVU3L5Ry56QahThSSOi/NkVMWcUhtGm/gnqPs2AIJBQtluVrJ/Bi+gV9JCl7K54rOImQ6qzSaUPj96KIcs+uULbUFn+cWK1nN5Za5+aKcZgjcWpO+B5pUaG5zeF37CoAM9sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752489174; c=relaxed/simple;
-	bh=QffSL3TfF1zjaW22KH4kGBcPxS1hroQimLDvpcRqTkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e8wocY6UcORbE2ookwb431iC/j+9ChFQwgvMmXOt9c8NUgnsa+gEX2VnLsYy1rITFv1a+cOI3yWm0odfIePYyAkzx+w9Qj9wzqO2RwQM028k8ibfYTky791yDlgSLfW1LTAYOTazUsWKT8rc6aRkl6LdqnVbcLW+7wpAzJ87b2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ptl6aTRU; arc=none smtp.client-ip=217.70.178.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1752489390; c=relaxed/simple;
+	bh=eihv/WLKuds+ejTS4D7IiQymipLVGEz4ktuYQiXfyOs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cQ1QoZzkmK+L9EvdlfXUJ2KT4M7LrLBRBt6cj1lqToWmBYUhFUVxv0oU3fblWaPsiZIjUPQmJXND4sQjcXEgrJShz1VWNAueD/qta4QTci0DjbwUp60XVwAlzS6p7T7fKraD/l3UO7Kd6nHbT2RsNgv5d4jzYDSiDLo/8uml7Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=Sth0hU4N; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ptl6aTRU"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DF62543190;
-	Mon, 14 Jul 2025 10:32:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1752489165;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VwUUlthEB0GL/tkuBikSXADM+QDOu8qT0EBANwcGFUY=;
-	b=ptl6aTRU6q2sZbmunyCwSMALBSosgd8KoJVbC3EzqraKunIc8Bw4Tpl7qUSwGsyZvAJpaX
-	nxMpym+ISlifa6M9yfjJNuBfLLdo8NnAo486ZnY4IyX534YPVR9/7GeHoutnlRUe8eCYoB
-	xuOKJ8T3tP2c1OnpGLpDazsGB18BEKP0R0S1NdNt+nk8q7ZsE3QZ5jucNavPk/ZPUX1Yzi
-	cyhzvnlezCJPyP3rz6Itw/IFMPyCvo9ivUjCAWMKzL+KgIdlSHKnXBbeUaOD7/p7zNvCWh
-	KsDCZ4A9j6u5VXp4d0KbE/LFj1zKX/F4YKG3yWpau0gvUZeMVJ8cajQgbuMF/A==
-Date: Mon, 14 Jul 2025 12:32:40 +0200
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, Laurent
- Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
- <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Liu Ying <victor.liu@nxp.com>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Philipp Zabel
- <p.zabel@pengutronix.de>, Hui Pu <Hui.Pu@gehealthcare.com>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 4/9] drm/omapdrm: use drm_bridge_chain_get_last_bridge()
-Message-ID: <20250714123240.16d8dcb1@booty>
-In-Reply-To: <20250710-daffy-mini-booby-574fca@houat>
-References: <20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-0-48920b9cf369@bootlin.com>
-	<20250709-drm-bridge-alloc-getput-drm_bridge_get_next_bridge-v1-4-48920b9cf369@bootlin.com>
-	<20250710-daffy-mini-booby-574fca@houat>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="Sth0hU4N"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=5RnWE8Ygsf6YGJd0DVniDSNOEKXVvEcC+0NZbP3MQSw=; b=Sth0hU4N6oWEa4M7hiRQG5QKuA
+	ncVTUQvfjHf4pVE4tEXM2Im5wgae3XOaSfumAzZzUAe9uMkbdDziWeNCIRg6qWzJKsm5L1z/IwQdg
+	ZY0OKwH4gnGXc/v+8QG+CjoUk6Go2WNYaDHboSo5yg8IcEItnmgvIJTS/aBOw7i47hn/NqeMTSOaF
+	+6XJjaykSXJmDxgKYzMPmLOoJvdQeD61EOYWyxYoz+sYsljz/47CJUhZmAXD/+qNdI6CZMe9Q3DEv
+	OCfOqEmj6wEA/9v8spnp3503TFP1sFhrPdgBsnnaCxAAHRT9LBVlSN+fWdtHWuC63vi0buSyblnBg
+	D/GXzmpA==;
+Received: from [89.212.21.243] (port=57634 helo=localhost.localdomain)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1ubGXp-001ATQ-1V;
+	Mon, 14 Jul 2025 12:36:25 +0200
+From: Primoz Fiser <primoz.fiser@norik.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH] arm64: dts: freescale: imx93-phyboard-nash: Add current sense amplifier
+Date: Mon, 14 Jul 2025 12:36:24 +0200
+Message-Id: <20250714103624.857493-1-primoz.fiser@norik.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehudejvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthejredtredtvdenucfhrhhomhepnfhutggrucevvghrvghsohhlihcuoehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeglefffefghefhtddvfeeufeeiveekgffgleekieduteekkeetvdehudekgfdvvdenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeeijedtmedvtddvtdemvggrtddumegsvgegudemleehvgejmeefgeefmeeludefvgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtvdemieejtdemvddtvddtmegvrgdtudemsggvgedumeelhegvjeemfeegfeemledufegvpdhhvghlohepsghoohhthidpmhgrihhlfhhrohhmpehluhgtrgdrtggvrhgvshholhhisegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvgedprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhiivghjrdhhrghjuggrsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghro
- hdrohhrghdprhgtphhtthhopehrfhhoshhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopefnrghurhgvnhhtrdhpihhntghhrghrthesihguvggrshhonhgsohgrrhgurdgtohhmpdhrtghpthhtohepjhhonhgrsheskhifihgsohhordhsvgdprhgtphhtthhopehjvghrnhgvjhdrshhkrhgrsggvtgesghhmrghilhdrtghomhdprhgtphhtthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgtohhm
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi Maxime,
+There is a current sensing circuitry on the phyBOARD-Nash-i.MX93 capable
+of measuring input current consumption of the phyCORE-i.MX93 SoM @ 3.3V.
+Circuity consists of MAX4372 current-sense amplifier (50V/V) with two 70
+mOhm shunts resistors in parallel configuration (effective R = 35 mOhm)
+connected to the SoC internal 12-bit ADC channel #1 (Vref = 1.8V) via
+voltage divider with ratio of 1/2. This results in a current scaling
+factor of 0.502232142 mA/LSB.
 
-On Thu, 10 Jul 2025 09:13:46 +0200
-Maxime Ripard <mripard@kernel.org> wrote:
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+---
+ arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-> On Wed, Jul 09, 2025 at 06:48:03PM +0200, Luca Ceresoli wrote:
-> > Use drm_bridge_chain_get_last_bridge() instead of open coding a loop with
-> > two invocations of drm_bridge_get_next_bridge() per iteration.
-> > 
-> > Besides being cleaner and more efficient, this change is necessary in
-> > preparation for drm_bridge_get_next_bridge() to get a reference to the
-> > returned bridge.
-> > 
-> > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > ---
-> >  drivers/gpu/drm/omapdrm/omap_drv.c | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
-> > index 054b71dba6a75b8c42198c4b102a093f43a675a2..3bbcec01428a6f290afdfa40ef6f79629539a584 100644
-> > --- a/drivers/gpu/drm/omapdrm/omap_drv.c
-> > +++ b/drivers/gpu/drm/omapdrm/omap_drv.c
-> > @@ -378,12 +378,12 @@ static int omap_display_id(struct omap_dss_device *output)
-> >  	struct device_node *node = NULL;
-> >  
-> >  	if (output->bridge) {
-> > -		struct drm_bridge *bridge = output->bridge;
-> > -
-> > -		while (drm_bridge_get_next_bridge(bridge))
-> > -			bridge = drm_bridge_get_next_bridge(bridge);
-> > +		struct drm_bridge *bridge =
-> > +			drm_bridge_chain_get_last_bridge(output->bridge->encoder);
-> >  
-> >  		node = bridge->of_node;
-> > +
-> > +		drm_bridge_put(bridge);  
-> 
-> Any reason you're not using __free(drm_bridge_put) here?
-
-Just because the code is simple enough that an explicit
-drm_bridge_put() is clearly sufficient.
-
-Do you think __free() should be used even in such trivial cases?
-
-Luca
-
+diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
+index 00143f201876..8de7e174976f 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts
+@@ -28,6 +28,14 @@ chosen {
+ 		stdout-path = &lpuart1;
+ 	};
+ 
++	current-sense {
++		compatible = "current-sense-amplifier";
++		io-channels = <&adc1 1>;
++		sense-gain-div = <2>;
++		sense-gain-mult = <50>;
++		sense-resistor-micro-ohms = <35000>;
++	};
++
+ 	flexcan1_tc: can-phy0 {
+ 		compatible = "ti,tcan1042";
+ 		#phy-cells = <0>;
 -- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
+
