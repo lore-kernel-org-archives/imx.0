@@ -1,275 +1,225 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010015.outbound.protection.outlook.com [52.101.84.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C682405F9
-	for <imx@lists.linux.dev>; Mon, 14 Jul 2025 09:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752486102; cv=none; b=ZCYB4Ynxc4cXHETUZhqGyDTnr8DvY11WHWLe3JEPzVl6Y+jxyQHnkfpyaA2kWZGojOi0bdJiHYSP+oKstebe+AWDCMJ1+CVACefgjSOVdOyAGNtoNIRBc7tG8t8UxCIQCTe8LK4vCaIIPYI5D2xfDrH1cw6yly1NBKRcSzW0CWI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752486102; c=relaxed/simple;
-	bh=6mRCvjwCfLagynd1sjkcntn7eKszJwBRLGvb55f1L8s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qakCbO5h45V8Agq9X1SOlOFuLkEqL+0NLvGdxP8+zTtcjz8ED2i5gWTkc427uGZWJJEZJl+7gzSDgMCoupwfNcd7AGf5ys1/ldcSeFG35J8U5GCJCMMCPYQKom93l/tcOWA6d8lIbWF+OkhY1RCSHhdBWI+Rg62p4lr+v/Ys2Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ubFgb-0007Iu-0P; Mon, 14 Jul 2025 11:41:25 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ubFga-008OJ7-1b;
-	Mon, 14 Jul 2025 11:41:24 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1ubFga-0006RZ-1F;
-	Mon, 14 Jul 2025 11:41:24 +0200
-Date: Mon, 14 Jul 2025 11:41:24 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [EXT] Re: [PATCH v18 3/7] firmware: imx: add driver for NXP
- EdgeLock Enclave
-Message-ID: <20250714094124.e6fnkrocnqagbm22@pengutronix.de>
-References: <20250619-imx-se-if-v18-0-c98391ba446d@nxp.com>
- <20250619-imx-se-if-v18-3-c98391ba446d@nxp.com>
- <20250625105546.pxuatcnfpe7mssgs@pengutronix.de>
- <AM9PR04MB8604611B8D91B5526C9704E69545A@AM9PR04MB8604.eurprd04.prod.outlook.com>
- <20250627084653.6vgwnm3llf3zknlp@pengutronix.de>
- <b02055bb-0995-4fd8-99f3-4ca5146eedd4@kontron.de>
- <20250630121722.wviidlggt7hguyt7@pengutronix.de>
- <087b8689-7443-4720-a94c-160edd31a5da@kontron.de>
- <AM9PR04MB8604C05882605EDB4913DA089549A@AM9PR04MB8604.eurprd04.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B857923BF9F
+	for <imx@lists.linux.dev>; Mon, 14 Jul 2025 09:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752486994; cv=fail; b=NUix3r/qMXQp+dCKrZuiIyu9JI9en4iAD91Vs7SCdRAf8WlOsHQbXx1FbMGzmd9oRvpthB+Ukj+tgvkmWXCzsQN5GW1GcRddyGE+rTx6+Lqg0A6xSXnx081K4mIqQ3C1YWIskFZGZ8MXBDcBoSiKerapElsZwpTFU0+ctn180lQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752486994; c=relaxed/simple;
+	bh=mF/335JBWAXvDt7512m012hsGdLNFQJTzCr9lgmZVvU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LdPKJU+eQpiyMSyg0Pt7HmFcMqIzDuLNFtYQhelju6OALCOiGp1QNovCU1nP5N1eXD9btlCAW9AGIw3+mUJ7J/TzTs77sULEI56LLTHv0UgCLz+QKhTVSBCOqXnD/cHHDaa4g+fU7tql+XEsSyoSYP6G0VN6lSeaaLyvFeCY7pM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jzRjH1pn; arc=fail smtp.client-ip=52.101.84.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jzRjH1pn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eD1f7nrq1/SFGBCjaiyDG6zQOEce4k67VSjQ3wsz7tCT2MJ3VY+QHkSRHzo6v1DbYjpm5hMqhsoELmDfQyH37urR0ADFWFD1wQB99lKuDgof4BT9q487yIEoEpKWTgo5F9CgQ3/KKQSFhttl421ppRDt7+RC9mNpkWbjK+/DKYw7YMkTT+19ABlroyTfi7jofKJqNLoB1Pd9qDgWr0hXj9xKfnCHiWY3LORM32aBsfn5MxkLI89eufheJj3088kzBl4bYPMIUOSfwZeAkIF8KdahGka6CrkFFHAcl0C9TyF/cc1G2bWjrNzbViW3Liee2lHLk26crVG3CQVNNQXCeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mF/335JBWAXvDt7512m012hsGdLNFQJTzCr9lgmZVvU=;
+ b=G1A2WVMbbYWaIkabvjCQ5m6YIyWnbj9tls9k0IZMiH8tJX6RyUqUxapnYxqIFtK0obfvLYNNLLBSbEtfVl+k/HvGcQfGwdWG/Oe9qdf2qoYAkpzu4rVgsEnro3kd3qdYetHoo8e2q4lWVwTgLZWK5m0T463ODZGinxokF0oSKfdkTch/qs/pzhm1Bz137IoV5yCZARZt5ZeRPo+4DcvUrqqdpvtlAOfrRecvq2Zaz9Lem8WiUsVJeZb4STsP2d0ykP7mWJzZf860Nnw8w4EfVBA7Fbt++paNPV7QYmaRRmE1GmWMLhrxIAG3sISpb9AdWzcsV9J6876E7/niLnA4gA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mF/335JBWAXvDt7512m012hsGdLNFQJTzCr9lgmZVvU=;
+ b=jzRjH1pnSVnOz7fI+mRQtMFpHWfisw+ydDVe6qMO46wQ0MFk3/xLlntcc/kY/WOyn1e6r2FlMw5vW5yv5tjTMNjQVQ+W8uJ+UKOaa/slR7NvFHE6bqaUeU/4F3TRWRBdCMqFLZZ+Ssa6/N/FUSW8rgaQhblf5IvH3e2ZbGhziccXAHmednPDe0fEN1qVdBIgXLZkMfPUcxRrhBQ4L1geIAnCBHq73AhR6+lmxGfuovjBgs10C6SpVHHcy+oKiZpMqZzCNSOSVX2KFjJ3Lqx3VQhgfp4pDWtlkHrqHPIyU6FrDCYh4GwFPvw6JfyvSb2WlM8AirssAXH7jmFEQFQToQ==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AS8PR04MB9510.eurprd04.prod.outlook.com (2603:10a6:20b:44a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Mon, 14 Jul
+ 2025 09:56:28 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Mon, 14 Jul 2025
+ 09:56:27 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: "F.S. Peng" <fushi.peng@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>, Claudiu Manoil
+	<claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+Subject: RE: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
+ Timer
+Thread-Topic: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
+ Timer
+Thread-Index:
+ AQHb8jPWk5neHXUn3Eeo02nqDOVTYbQxImMAgAATMMCAAAm6gIAAFX1wgAAGKwCAAAFaQA==
+Date: Mon, 14 Jul 2025 09:56:27 +0000
+Message-ID:
+ <PAXPR04MB85107A7E7EB7141BC8F2518A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250711065748.250159-1-wei.fang@nxp.com>
+ <20250711065748.250159-2-wei.fang@nxp.com>
+ <ce7e7889-f76b-461f-8c39-3317bcbdb0b3@kernel.org>
+ <PAXPR04MB8510C8823F5F229BC78EB4B38854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <61e6c90d-3811-41c2-853d-d93d9db38f21@kernel.org>
+ <PAXPR04MB85109EE6F29A1D80CF3F367A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <169e742f-778e-4d42-b301-c954ecec170a@kernel.org>
+In-Reply-To: <169e742f-778e-4d42-b301-c954ecec170a@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB9510:EE_
+x-ms-office365-filtering-correlation-id: fcd31cb3-8b0f-4168-c0fe-08ddc2bcb384
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|19092799006|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?bjlCVW9nenFnV0RQdnluZ0FsakJrejVCRzNtL2MzZ2tid21Uc0doWis1dkxI?=
+ =?utf-8?B?UUNvSXpBd3VnREQ4Unk1aElqZFFpREF4ckRicmgwSStSTnV5UXlIanAraXZz?=
+ =?utf-8?B?VkYxSzZHWmZNeDU1YTl6MG83VjFZTE0xbk5JQ1RUZVNaUEl1dWE0TkgxM0RP?=
+ =?utf-8?B?RUJBNmswTHJUekRJR29wOFlVekQ3WEluV3ZQNjFnc0NyTUowazZMd0xIN1I1?=
+ =?utf-8?B?NFdkOTdMSlAxamc1TUV2bEE4MzAxMldLRTExOVhmSVllQnh0djh4cExoREMy?=
+ =?utf-8?B?QktQWE5zcGdXVkFabHJTWjdVQ2d3WE15cmtOUFUwU05FL29EUTRxcXQwL1p3?=
+ =?utf-8?B?N0N2NEpCbmQ4ajkyWHZjbDVYQ1hibDd3emFNenY0MnMrdVQzUFZBN1Nvdm5y?=
+ =?utf-8?B?RDRTTzNNQXRSMk5ZdGpFOWF5K2lySVA1VU5vTzFQY0RSa2RlVTFBWFBlNXly?=
+ =?utf-8?B?SmMwTkxFSXVNQ1RmOEZPWHBDZ2FIa1FGK2tobEFWUWV0am1TeWV3bHBtZWFu?=
+ =?utf-8?B?QkxjdUUzRWgwdkl5bnJFQ3FZNUZ1QTlXYS8xb0hvZlBOOFhUb20yeC9FOVAw?=
+ =?utf-8?B?Sm1UeVVFRm94V2ZsRTl4T1g3QXM1K1VzV0FwbDkwKzlGZ3A5M0FDVmlNVjh6?=
+ =?utf-8?B?OVpNWk8yTlZUeWtaSk5Kb2dMR3dIWVF3VC80c2hqTnJtSlkyNkc2SGI4N1Zq?=
+ =?utf-8?B?bGFXL2VOZnBZQmlwWjRKR0ZvaVhIUTUrQmZLLzczUHFTOWNpVysvWVhENG9s?=
+ =?utf-8?B?TUM5MU5ZYjB2MmxWcEduVm82RjB5eHJwZGlJZ3RvSklteUNDMkZYZU1nYWp2?=
+ =?utf-8?B?ajhPb3BkWDIzRFBPdmdmT1lCZkVQQkRKcE1LQlJVMTdGbTNOZG9GbTc1cFFP?=
+ =?utf-8?B?TG9uM0ZXOXVjRjJMbnd4TUdRWm5ENVVFSThMLzNCaFpWdHdnVGovc2dyRGg3?=
+ =?utf-8?B?MHpZb2FqS0J6TVd6NUcvSlFiRzJlMWFIQkVJYUlvWU5oMGpaSHVJQUpQTEpM?=
+ =?utf-8?B?K1lUVzNqSjR6S1ljVUs4RTFrVVUyVXVpdlRSZ0VhMmFjYVdyTkdzenQ0Tmtj?=
+ =?utf-8?B?UVVTalY0SS9qbmV4L2I3dCtNYW0rVGNwUEdiLytSMit1VUJDQlhkMXgyZ0hj?=
+ =?utf-8?B?eE1sSHptRW1WSE51Z1pGdit6UkNrNTVyYmdLb242N1YyZ25DQVM2cFdlNE5p?=
+ =?utf-8?B?SjFZSG82Uk5uakVDZXdtOFFWMXZLbU5FMmxjTDhFU2dGa3U1S1NraHVUb2wv?=
+ =?utf-8?B?V28rK1prbVpTS1NRa0JQeGRHR0VJVSttYTlRK2Vnbzh0Mkc4aFVCaXZWT1Ex?=
+ =?utf-8?B?VURFM2ZSSjZVZ0xxOEZRUEdhWFpIR2xTTU9ocmF4bXA2SjNBZzVnV1dBWmZv?=
+ =?utf-8?B?SzZ4QWsyMXVhR1p5bnRKNjhJT0lQL1RKRWhxVFBaUXNoMXQ3d0x2ZkpORWRw?=
+ =?utf-8?B?UmdlOXRKTlV3UWtyWXNHZFlTY0lLTEVRNWxaTytNUklWQTR5ZzNQa3BUT1Ir?=
+ =?utf-8?B?V0U3YTdUelRZTEFkSDgvSEs3dHZaR1ZhbUREeHduVG14OFdoQnVxMW01K0JS?=
+ =?utf-8?B?NklzVFliaytnK3ZWOE91Ni9xZEhlMEdiK2NoUUFIc2dITmp0aWJvd1ZJS2Vy?=
+ =?utf-8?B?U2hkYWJ1blpGWlBiZEs5Z3B5V2xxWlM2T3FqTXg2MlhmcWNaVDJnT2hYOTYw?=
+ =?utf-8?B?MWw2VlFDaGR2ZjJRYWpHb3JZSGJlbjVwdkZFNS93QmMydTB5S0pnN3hpY2Na?=
+ =?utf-8?B?WEtET01QWFJpRXRnVnA1R2hPVnNaaW52WTY4R0p1MnhqVS82b010VCtBUU5l?=
+ =?utf-8?B?Rk9Fd0wxK0lnZW1nQVR1OVM3NVprVFBVNXJlQlZBbVVpcHpzQzcwUXY2V3ZP?=
+ =?utf-8?B?OENYTW11dGZNVUp6WFFCOWI3WXhrSXovV3p2UzZWWkVYMGJ6SUFxZjJZbDN0?=
+ =?utf-8?B?MlBBQXRNMm5kdVorSTVoRklXQXNoUG82TSt6UU9SM0Q5V29wUGd0TEY1L01u?=
+ =?utf-8?B?QTEvV3FMRUVBPT0=?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?S09qZDVKRTh2cU5OaUVBek54YXBnZW1lVktJeTVhSTYvaFRaZ3Y0RElVWlZW?=
+ =?utf-8?B?bWtmNDNHeXlKaWlaR0UzSm9HaUFyNlU1V0FtUEV1OG5xWUhrNzVieklNbVNj?=
+ =?utf-8?B?b0lhUGFjOHdVbzYzRmZDMmp1OWQybGZxL1RtcSswSW1QcGdQV2YwcjlJb3RL?=
+ =?utf-8?B?YjVPQk1uK2t0UzZ1UmVRdjExNit5RjZ2K1Q2MmZMQkVmWUIwdy83NmF0S3Zt?=
+ =?utf-8?B?cmIwTlRydTRlNzVPTWhxTXBZMHA3SXlCOVlJbDNXTEtEVWhCQ3FvTUN6RFpV?=
+ =?utf-8?B?MmsySFJablJHSVBXNFR5ODRPMTFRbWE1Z0ZHd2ZyYWpjd1JlV3o1ZmZXckpD?=
+ =?utf-8?B?ZE9NWklrL0hnTHQ3UVJMVW9NekxqTzBoNG1McE1sOFZGaVRwR1ZUeEpySmdF?=
+ =?utf-8?B?KzdWT3o0aHFRQjBjczlBenF5bGdYZkUrNnlGcTV0QlZPS2JiczlxUDJiNWRj?=
+ =?utf-8?B?emQxVnF3L2JDUGtuWTJ1WWZGQXFSMzQrQldOa1FSSmhYMnQ2QW9rMGhGM3d5?=
+ =?utf-8?B?WkVUVlN4bHFIdUhKWVNzUUpEOUVBa3JaRlRQNDlmNlhpeHhxQ1N2emJEMzhv?=
+ =?utf-8?B?U2VaQ0MyNXJYSHRKOVZzY1FiVEI0WEw0eTJPYU9zeEI5elcweE02UXRvVSsz?=
+ =?utf-8?B?VUdYNnVheGZoSEd5Smd4YW92aXlnUDBvdkVkVEpkNWxxOGNuOU9oR3JFK1Zl?=
+ =?utf-8?B?MGVmaWFWcUdXUmZnNUEvRjRiWEdpQ09Fc1ZzNjhudjlxb2puNEFrYm9mTE82?=
+ =?utf-8?B?UWwzZ0VLZzFWYUNVT1JhbVdkMzRZL2RVMWRjQkFyV285WktiSXNHR3ExSlBk?=
+ =?utf-8?B?MHFybmc0eDJCVDNiY25HSDRDSVMzbEZ1K21ISHZ1dlVYSDJhVVhjZmFYZGdD?=
+ =?utf-8?B?VmpwU1pSTGVNL2FSS0RqRlNRQnFnZ3MwVEZpMTdjb1h5cTJvOUxkMys3ZGdU?=
+ =?utf-8?B?cVlHaExXTWFGclNhcG1mVDdOamc1OXJqN3BGbnZZRzlWUjBYcDlZN1JpRGdw?=
+ =?utf-8?B?eE5JVkJrWWgwVGxRRXZSNHMxL0RvMnlzWEV2ZitSUzJXelZaalhmbXVvTDQz?=
+ =?utf-8?B?QVo4RXA3TlRWYjRFVkxCR3FZck04MFpkazhvcElTdEV1ckhjdjBxYTByTEc4?=
+ =?utf-8?B?M1FZcEp1T1J3TGVtMXhkV1JGMEhGRXB4S0RpYStET0gydDJVenNYSHovRHNX?=
+ =?utf-8?B?bWdJd2ppcFRzbERtWHl2ZkFSTlRPbmdScjBQcmsvdDJzNzd3OGxweEtSZ21p?=
+ =?utf-8?B?YWtNS0E4K3krNTBQelh1Z2RrcUpHbm5BUEVzMDduY29Cais5dU1tdzk1a3R1?=
+ =?utf-8?B?OFcxeDA0VHhJaDBmT01QeGJnRy92WDk4ZnNJOXJGeU41TEtTV2duZTVSczAz?=
+ =?utf-8?B?WXZ3SjNhSGNxbzNaaVE2RVJkZWVxTkFuZldSTHBJWEZtNVNrQWFTM0daZDNV?=
+ =?utf-8?B?K2pwcUYzbDJST3MvZnFIZmtGU1lVdUJQMVRlZ25uWkVCeU1DM0tqemhuUkI5?=
+ =?utf-8?B?Ri9oUXE3SGhUbis3eHM0TzY5bVo4dFVwQXdtTTg1NjllaGFuemtqVVFkSldw?=
+ =?utf-8?B?SHM5TTZ2VFp5aERheGRWblFVd05ZUStJck1ueU1yY1ZRTnl6eXphd3hQNVdp?=
+ =?utf-8?B?ajQwcDMxTVV0VkVoeEZjcWpTK1dqdkFtVCtWYk41N1RoT0RDYktWOGp6blRj?=
+ =?utf-8?B?aDRWUElWUG1jejh3VGJia2JSQ2FtYm1vVWVSMTZRbzdrbG5tdzIzQnVsc282?=
+ =?utf-8?B?TFRvc0VMOHdGcVZQZm5EMEFoaXpZU1crTURLZ2pxbHQrRXQ3MDAyNmpPeDI5?=
+ =?utf-8?B?L1hSMmRIRU1jRThVbTdTcktQQnplRGIreUZkZXVWd3pWclZ6V3lUbm0rekRX?=
+ =?utf-8?B?aG9SV0drVjdWWEgzU0cwWUc5ZjRrRXlmdzRaV1pHU1VqeCttNDF4VHloRklN?=
+ =?utf-8?B?QjQ4eVo4TFhRSTZoWVJydVBmdHhwM1prenBZM1c2bGc5Q1BTNWJHUkRmb0NJ?=
+ =?utf-8?B?VEExRUxiZml4L2htZEZHWit4MlJ0djRCMGpjRHh3QzNKOU45UUh6eUkya09T?=
+ =?utf-8?B?aU9GQlExMWxkVWtwQU9jdFhvM3JRcDU5ZU41K003QUV1Qk14WTZsUk9xOVlY?=
+ =?utf-8?Q?zrQs=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AM9PR04MB8604C05882605EDB4913DA089549A@AM9PR04MB8604.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcd31cb3-8b0f-4168-c0fe-08ddc2bcb384
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2025 09:56:27.7831
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: clAmUmXWSaozbapBNFbuUzVhJ+CLb/X/EF5xjrIlSJWCAEcKp+v1DDICuXbLtQ4E2tiSzzaG9mi1RiV23emBTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9510
 
-On 25-07-09, Pankaj Gupta wrote:
-> > Am 30.06.25 um 14:17 schrieb Marco Felsch:
-> >> Hi Frieder,
-> >>
-> >> On 25-06-30, Frieder Schrempf wrote:
-> >>> Hi Marco,
-> >>>
-> >>> Am 27.06.25 um 10:46 schrieb Marco Felsch:
-> >>>> Hi,
-> >>>>
-> >>>> your e-mail configuration mixed my e-mail with your answer, which 
-> >>>> makes it hard to read. Can you please check the quoting next time :)
-> >>>>
-> >>>> On 25-06-27, Pankaj Gupta wrote:
-> >>>>>>> Add driver for enabling MU based communication interface to
-> >>>>> secure-enclave.
-> >>>>>>
-> >>>>>>> NXP hardware IP(s) for secure-enclaves like Edgelock 
-> >>>>>>> Enclave(ELE), are embedded in the SoC to support the features 
-> >>>>>>> like HSM, SHE & V2X, using message based communication interface.
-> >>>>>>>
-> >>>>>>> The secure enclave FW communicates with Linux over single or 
-> >>>>>>> multiple dedicated messaging unit(MU) based interface(s).
-> >>>>>>> Exists on i.MX SoC(s) like i.MX8ULP, i.MX93, i.MX95 etc.
-> >>>>>
-> >>>>>> You write single or multiple MUs are possible. I'm aware that the 
-> >>>>>> i.MX93 has two MUs one for the secure and one for the non-secure 
-> >>>>>> world. But I'm really concerned about the fact that both MUs can't 
-> >>>>>> be used at the same time from both world:
-> >>>>>
-> >>>>> Yes, you are correct.
-> >>>>>
-> >>>>> Fix is still work in progress.
-> >>>>
-> .>>> So after ~6 months no fix is available :(
-> >>>>
-> >>>>>> Also how is the secure and non-secure world talking to the ELE if 
-> >>>>>> there is only one MU as you have written?
-> >>>>>
-> >>>>> Till the fix is WIP, either Linux or OPTEE can use the ELE, at one 
-> >>>>> point in time.
-> >>>>
-> >>>> That has nothing to do with the fix. The fix is for platforms/SoCs 
-> >>>> which do have 2-MUs, but you also have written that there are 
-> >>>> platforms with only 1-MU.
-> >>>>
-> >>>> This MU can't be shared between secure and non-secure world.
-> >>>>
-> >>>>>> IMHO it makes much more sense to put the complete ELE 
-> >>>>>> communication into (OP-)TEE and let the secure OS taking care of 
-> >>>>>> it. All non-secure world requests are passed via (OP-)TEE to the ELE.
-> >>>>>> This involves:
-> >>>>>> - eFuse access (done via OP-TEE i.MX specific PTA)
-> >>>>>> - ELE 23h59m ping (kernel SMC WDG driver, requires OP-TEE watchdog 
-> >>>>>> driver)
-> >>>>>> - HW-RNG (kernel OP-TEE HWRNG driver + OP-TEE HWRNG PTA)
-> >>>>>
-> >>>>> There is a dedicated MU "trusted-MU" for OPTEE-OS. The idea to 
-> >>>>> converge to a
-> >>>>
-> >>>> Yes for systems with 2-MUs there is a "trusted-MU" and a 
-> >>>> "non-trusted-MU". As of now, there is no fix available for using 
-> >>>> both MUs at the same time. Furhtermore there are platforms/SoCs with 
-> >>>> only 1-MU, as you have written in your commit message. This 1-MU 
-> >>>> system can have the MU either trusted or non-trusted.
-> >>>>
-> >>>>> single path via OPTEE-OS, is good. But it will impact the 
-> >>>>> performance of the features at Linux side.
-> >>>>
-> >>>> Performance? We are talking about a ping every 23h59m (I still don't 
-> >>>> know if this is a feature or bug), eFuse write/read, and the HW-RNG 
-> >>>> which can seed the Linux PRNG.
-> >>>>
-> >>>>> Since the fix is still WIP. Let's wait till then.
-> >>>>
-> >>>> The fix is for the 2-MUs SoCs but not the 1-MU case.
-> >>>>
-> >>>> I would like to have a system design which doesn't differ too much 
-> >>>> between SoCs which are equipped with the ELE engine.
-> >>>
-> >>> Do we really want to depend on OP-TEE to be available for having 
-> >>> things like OTP fuse access and HWRNG? Personally I'd like to be able 
-> >>> to build systems with OTP access and HWRNG but without OP-TEE. 
-> >>> Requiring OP-TEE only to make the ELE available to the kernel in 
-> >>> cases where the secure world isn't used for anything else seems to be
-> >>> unnecessarily complex.
-> >>
-> >> I understand your point. I don't like pulling in more FW neither but 
-> >> we need to the face the following facts:
-> >>
-> >>  - OTP eFuse R/W access after doing the LOCK_DOWN fuse is no longer
-> >>    possible without OP-TEE. This involves general purpose (GP) eFuses
-> >>    too. We faced this limitation in a current project.
-> 
-> > Ok, interesting. Where do find information about the LOCK_DOWN fuse? I
-> > don't see it mentioned in the (Security) Reference Manual of the i.MX93.
-> 
-> From i.MX9x & onwards, SoC(s) has at least one dedicated ELE MU(s) for each
-> world - Linux(one or more) and OPTEE-OS (one or more).
-
-Okay, please re-phrase your commit message than, since this wasn't clear
-to me.
-
-> As mentioned earlier, the fix for the issue of using OPTEE-OS dedicated MU
-> on i.MX93, is identified & under testing.
-
-I get this but there is still no fix available after ~6 months, so it's
-still no possible to use a TEE and REE in parallel.
-
-> Other point on whether OTP effuse are R/W access, after LOCK_DOWN fuse?
-> Not sure about how "doing the LOCK_DOWN fuse"?
-> Please elaborate more on this.
-
-Lockdown: For a verified boot setup you need to burn an eFuse at some
-point, to tell the bootROM to boot only correct verified firmware
-images.
-
-After this lockdown it's no longer possible to burn eFuses from the REE
-albeit the production line setup still requires the support.
-
-> >>  - With new regulations like the EU CRA I think we need some sort of
-> >>    secure-enclave anyway.
-> 
-> > Probably some sort of, yes. But not necessarily in the form of TEE or
-> > TrustZone, I guess.
-> To use ELE features through Linux, there is no dependency on OPTEE-OS.
-
-Once again, still no fix available and if your system requires a TEE
-you're forced to move the ELE communication into the TEE (at least until
-now).
-
-Also the eFuse R/W access is not possible from the REE/Linux after doing
-the device lockdown.
-
-> >>  - Making it optional cause more paths of potential errors e.g. by not
-> >>    including the correct "secure.dtsi". Multiple paths also require more
-> >>    maintain- and testing effort. IMHO I do think that one of the paths
-> >>    get unmaintened at some point but we would need to keep it for
-> >>    backward compatibility.
-> >>
-> >>    Having one implementation eliminates this since.
-> >>
-> >>  - All above points assume that the ELE-FW and -HW is capable of talking
-> >>    to both world, which is not the case. As we learned NXP doesn't have
-> >>    a fix for the 2-MUs ELE yet and even more important there are 1-MU
-> >>    ELE-IPs.
->
-> For i.MX9x SoC(s) there is at least one dedicated ELE MU(s) for each world -
-> Linux(one or more) and OPTEE-OS (one or more), that needs to be shared
-> between them.
-
-Please mention this within your commit message.
-
-> As mentioned earlier, there is an issue of using MUs simultaneously, from
-> both worlds. Fix is in progress.
-
-So until now no fix available and i.MX93 based products which do use a
-TEE are forced to move the communication into OP-TEE.
-
-> >> I do see the (minimal) drawback of having +1 FW but I think this is 
-> >> more an integration problem.
-> >> Speaking of FW files, for the new i.MX9* you already have plenty fo
-> >> them: bootloader, TF-A, ele-fw, scu-fw (i.MX95). So your integation 
-> >> needs to handle multiple firmware files already.
-> 
-> > Sure, but I really like to keep the complexity and therefore the number of
-> > FW files as low as possible. I'm not sure what has more weight in terms of
-> > security: shipping an additional firmware and therefore increasing the
-> > attack surface or maintaining an additional code-path.
-> 
-> There is no +1 firmware in case of i.MX93.
-> 
-> >>
-> >>> Anyway, I see your point of having a single implementation for the 
-> >>> ELE API in the "right" place. But as far as I know other platforms 
-> >>> like
-> >>> STM32MP1 also implement both ways for the HWRNG, secure access via 
-> >>> OPTEE and non-secure access via kernel directly.
-> >>
-> >> I'm not a STM32MP1 expert but here you have this setup with the 
-> >> *-scmi.dtsi. So you have two code paths which needs to be maintained 
-> >> and tested. Also if one customer of yours want to use OP-TEE you need 
-> >> the integration anyway, so you (Kontron) needs to maintain multiple 
-> >> configuration as well. I don't see the added value.
-> >>
-> >> I think for STM32MP1 the *-scmi.dtsi support was added later because 
-> >> it required a lot effort to support it. This is not the case for the 
-> >> i.MX9* series.
-> 
-> > Anyway, thanks for elaborating. Your points are all valid and basically I
-> agree. I'm fine with either way. But I'm afraid that implementing the ELE
-> API in OP-TEE only will cause another tremendous delay for having ELE access
-> in the kernel, especially seeing how slow NXP seems to be working on these
-> topics right now.
-> 
-> To use ELE features through Linux, there is no dependency on OPTEE-OS.
-
-How exactly do you provide the eFuse write access after the device was
-locked down?
-
-Regards,
-  Marco
+PiBPbiAxNC8wNy8yMDI1IDExOjExLCBXZWkgRmFuZyB3cm90ZToNCj4gPj4+Pj4gKyAgbnhwLHBw
+cy1jaGFubmVsOg0KPiA+Pj4+PiArICAgICRyZWY6IC9zY2hlbWFzL3R5cGVzLnlhbWwjL2RlZmlu
+aXRpb25zL3VpbnQ4DQo+ID4+Pj4+ICsgICAgZGVmYXVsdDogMA0KPiA+Pj4+PiArICAgIGRlc2Ny
+aXB0aW9uOg0KPiA+Pj4+PiArICAgICAgU3BlY2lmaWVzIHRvIHdoaWNoIGZpeGVkIGludGVydmFs
+IHBlcmlvZCBwdWxzZSBnZW5lcmF0b3IgaXMNCj4gPj4+Pj4gKyAgICAgIHVzZWQgdG8gZ2VuZXJh
+dGUgUFBTIHNpZ25hbC4NCj4gPj4+Pj4gKyAgICBlbnVtOiBbMCwgMSwgMl0NCj4gPj4+Pg0KPiA+
+Pj4+IENlbGwgcGhhbmRsZSB0ZWxscyB0aGF0LiBEcm9wIHByb3BlcnR5Lg0KPiA+Pj4NCj4gPj4+
+IFNvcnJ5LCBJIGRvIG5vdCB1bmRlcnN0YW5kIHdoYXQgeW91IG1lYW4sIGNvdWxkIHlvdSBleHBs
+YWluIGl0IGluIG1vcmUNCj4gPj4+IGRldGFpbD8NCj4gPj4NCj4gPj4gVXNlIHBoYW5kbGUgY2Vs
+bHMgZm9yIHRoYXQgLSBsb29rIGF0IG90aGVyIFBUUCBiaW5kaW5ncy4NCj4gPg0KPiA+IFNvcnJ5
+LCBJIGRpZCBub3QgZmluZCBhIHJlZmVyZW5jZSBpbiBvdGhlciBQVFAgYmluZGluZ3MuIElmIEkg
+dW5kZXJzdGFuZA0KPiA+IGNvcnJlY3RseSwgeW91IG1lYW4gSSBzaG91bGQgYWRkIGEgc3BlY2lm
+aWMgY2VsbHMgcHJvcGVydHkgdG8gdGhpcyBkb2MNCj4gPiBhcyBmb2xsb3dzLCBjb3JyZWN0Pw0K
+PiA+DQo+ID4gIiNueHAscHBzLWNoYW5uZWwtY2VsbHMiOg0KPiA+ICAgICBkZXNjcmlwdGlvbjog
+fA0KPiA+ICAgICAgIFNwZWNpZmllcyB0byB3aGljaCBmaXhlZCBpbnRlcnZhbCBwZXJpb2QgcHVs
+c2UgZ2VuZXJhdG9yIGlzDQo+ID4gICAgICAgdXNlZCB0byBnZW5lcmF0ZSBQUFMgc2lnbmFsLg0K
+PiA+ICAgICAkcmVmOiAvc2NoZW1hcy90eXBlcy55YW1sIy9kZWZpbml0aW9ucy91aW50MzINCj4g
+PiAgICAgY29uc3Q6IDENCj4gPg0KPiANCj4gDQo+IE5vLiBJcyB0aGlzIGEgdGltZXN0YW1wZXIg
+ZGV2aWNlPyBZb3UgcmVhbGx5IGRpZCBub3QgZmluZCBhIFRYVCBkb2N1bWVudA0KPiBkZXNjcmli
+aW5nIHRoaXMsIGluIHRoZSBzYW1lIGRpcmVjdG9yeT8gV2VsbCwgbWF5YmUgaXQgaXMgbm90IGEN
+Cj4gdGltZXN0YW1wZXIgZGV2aWNlLCBob3cgZG8gSSBrbm93LCB5b3VyIGRlc2NyaXB0aW9uIHNo
+b3VsZCBiZSBjbGVhciBoZXJlLg0KDQpJIHRob3VnaHQgSSBzaG91bGQgZmluZCB0aGUgcmVmZXJl
+bmNlIGZyb20gWUFNTCBkb2NzLiBTbyBJIGRpZCBub3QgbG9vayBhdA0KdGhlIFRYVCBkb2NzLg0K
+DQo+IA0KPiBIb3cgZG9lcyB0aGUgb3RoZXIgY29uc3VtZXIgLSBldGhlcm5ldCAtIHJlZmVyZW5j
+ZSB0aGlzIG9uZSBoZXJlPyBQYXN0ZQ0KPiBjb21wbGV0ZSBEVFMgb2YgdGhpcyBhbmQgdXNlcnMs
+IG90aGVyd2lzZSBpdCBpcyBqdXN0IHBpbmctcG9uZw0KPiBkaXNjdXNzaW9uIHdoZXJlIHlvdSBw
+dXQganVzdCBhIGxpdHRsZSBlZmZvcnQgdG8gYm91bmNlIGJhY2sgbXkgcXVlc3Rpb24uDQoNCkJl
+bG93IGlzIHRoZSBEVFMgbm9kZSBvZiBlbmV0YyAoZXRoZXJuZXQgZGV2aWNlKSBhbmQgdGltZXIg
+bm9kZS4NCg0KZW5ldGNfcG9ydDA6IGV0aGVybmV0QDAsMCB7DQoJY29tcGF0aWJsZSA9ICJwY2kx
+MTMxLGUxMDEiOw0KCXJlZyA9IDwweDAwMDAwMCAwIDAgMCAwPjsNCglwaW5jdHJsLW5hbWVzID0g
+ImRlZmF1bHQiOw0KCXBpbmN0cmwtMCA9IDwmcGluY3RybF9lbmV0YzA+Ow0KCXBoeS1oYW5kbGUg
+PSA8JmV0aHBoeTA+Ow0KCXBoeS1tb2RlID0gInJnbWlpLWlkIjsNCglzdGF0dXMgPSAib2theSI7
+DQp9Ow0KDQpuZXRjX3RpbWVyOiBldGhlcm5ldEAxOCwwIHsNCgljb21wYXRpYmxlID0gInBjaTEx
+MzEsZWUwMiI7DQoJcmVnID0gPDB4MDBjMDAwIDAgMCAwIDA+Ow0KCWNsb2NrcyA9IDwmbmV0Y19z
+eXN0ZW0zMzNtPjsNCgljbG9jay1uYW1lcyA9ICJzeXN0ZW0iOw0KfTsNCg0KQ3VycmVudGx5LCB0
+aGUgZW5ldGMgZHJpdmVyIHVzZXMgdGhlIFBDSWUgZGV2aWNlIG51bWJlciBhbmQgZnVuY3Rpb24g
+bnVtYmVyDQpvZiB0aGUgVGltZXIgdG8gb2J0YWluIHRoZSBUaW1lciBkZXZpY2UsIHNvIHRoZXJl
+IGlzIG5vIHJlbGF0ZWQgYmluZGluZyBpbiBEVFMuDQpJbiB0aGUgZnV0dXJlLCB3ZSBwbGFuIHRv
+IGFkZCBwaGFuZGxlIHRvIHRoZSBlbmV0YyBkb2N1bWVudCB0byBiaW5kIGVuZXRjDQphbmQgVGlt
+ZXIsIGJlY2F1c2UgdGhlcmUgd2lsbCBiZSBtdWx0aXBsZSBUaW1lciBpbnN0YW5jZXMgb24gc3Vi
+c2VxdWVudA0KcGxhdGZvcm1zLg0KDQpCdXQgd2hhdCBJIHdhbnQgdG8gc2F5IGlzIHRoYXQgIm54
+cCxwcHMtY2hhbm5lbCIgaXMgdXNlZCB0byBzcGVjaWZ5IHdoaWNoDQpjaGFubmVsL3BpbiB0aGUg
+TkVUQyBUaW1lciBkZXZpY2UgdXNlcyB0byBvdXRwdXQgdGhlIFB1bHNlIFBlciBTZWNvbmQNCihQ
+UFMpIHNpZ25hbC4gVGhpcyBmdW5jdGlvbiBpcyBpbmRlcGVuZGVudCBvZiBlbmV0YyAoRXRoZXJu
+ZXQgZGV2aWNlKSwgc28gaXQNCml0IGlzIG5vdCB1c2VkIGJ5IGVuZXRjLg0KDQo=
