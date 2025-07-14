@@ -1,469 +1,243 @@
-Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazon11022074.outbound.protection.outlook.com [40.107.75.74])
+Received: from AS8PR03CU001.outbound.protection.outlook.com (mail-westeuropeazon11012012.outbound.protection.outlook.com [52.101.71.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B15C226D10
-	for <imx@lists.linux.dev>; Mon, 14 Jul 2025 07:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.75.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75376227B8E
+	for <imx@lists.linux.dev>; Mon, 14 Jul 2025 07:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.71.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752477494; cv=fail; b=MNoprRO4qfxIRd95GI9xx7HbhDtFvY8YuxBTaAg+mbs0Ob0mgLcd8/uVxlsV6UHU1BFo/3lI8H2VrnBVYhll0sT/PeyI95ADGl7P0po14I3jcJaPWu4oBerrxyXIsRC9qYXRnErm11dSAegSbPjwuDEDxquSUUCXSnWOOf6WE8Y=
+	t=1752478371; cv=fail; b=gRGifbO/FZIIOxrnprMq6Q4ebC71g2zNvcbv3sag2U3dQO8+KRQ/kbw3q3Dp5Qs0UolTGCSLfUAgCFmTRf7dAjTsDDX33Bxc8a3lAilGL1M5FKEuqe/lqap5Ywkgn4qt+k4JYEO33H6G82exMbj7UyFYVLT/8g9iniUT9G2Tp0o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752477494; c=relaxed/simple;
-	bh=+v2I2W6BDs5Yt1HXoStYgQWk3jD3pBjPhtDRRudLU6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=W7APUtfZAXWrt1FGMQn08skdfqE24a6QQFX+Gjzrp21lQtKxVDfQq+XLydwWcU1Csz+viKEJ+9mrUnCuJdzeNnpL88pQ+CTNYAdySeW89D6iWaH0G8fPfEDO7cbAirXPyRBqdFEFz740hd9e4FG1UkHTfL+G1CQbwoo8nnuyAyI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=technexion.com; spf=pass smtp.mailfrom=technexion.com; dkim=pass (1024-bit key) header.d=technexion.onmicrosoft.com header.i=@technexion.onmicrosoft.com header.b=2fAW3blX; arc=fail smtp.client-ip=40.107.75.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=technexion.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=technexion.com
+	s=arc-20240116; t=1752478371; c=relaxed/simple;
+	bh=E3TItuBbGBGKcu0WB/xFW1NADb/DAIezgTRUM063rnQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ef2W7lZLsvJlrStfWPQx68fKAJzW/TYEwKYz6YNtmFRTaKnM49VSICaUdBakmvZST6w2Bu7PRjHXvAw8QK8ECoyUDsaQBb8zX4qEwR20OwVebpAd7M2NSnXjY1SOa1rlebkdDkCFUseVwTpDmQ7u8uw1875h2IBEDhc5Cbp4/P0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IXyPpOIq; arc=fail smtp.client-ip=52.101.71.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=technexion.onmicrosoft.com header.i=@technexion.onmicrosoft.com header.b="2fAW3blX"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IXyPpOIq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IrlT+uCMXBeRir3gR2WYE3w330yrzI888f8LZmNz9yGrecoTyF6ujhi9i8mJXZGLgzHXT2qRPB2RL+EidnRgZGgChNN3ytmhFpqX6j6fk0iWxVqjRNVlr8QNcf9k2iC9NO+oSX9lA7CFv6e7rhEgd05u5aGxOv4AP3yHFe27+dcNfVYqf4q39/a3UEQfnKHQg3bB16RZTpvANFwXZuS0m5/OijRqNH7TSssEyKr0yVMAZ7VcP7gVXFiMEkX7nQ/yAenOMl/62ytIfvv8txsBczLZR8lLdHaT6D2btQ+Zy04hOs0GcBq1dkzaL1msaaQ3mAJtfeu155JT9RNqXK8BsA==
+ b=p9ADSiWywbn+6nCPJQMSSb1hR3SQt6K6Lcbxiy4kUkQo/rFewsO9zfss7a10aQ+6V/TgiJVei7yyglZlGDJDiMd8YM4zBulv41FEO+4mryTEzlKRzP0eBP30PuY18/6vuG9iQb1dn1v3P1/jkSx0CwaggxSvbXNtUhZLRjzFf2m+MybSoXXUBD/NN7+gpdbPRMHrzC1neejr05kltsDP6UW79j8wdkFqchbgJpPfCtpeozdiiQ24YlXZ41OKs+pO1LZ2wbvUPX5+C2Ithxvh8XlnHIgyrN5BAc9xu9Z/6rJi+zHFJDmNdplcqgftabkFuhmW2roQm0gGFnMpksdnZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=30EL6wxzSs//PEaPQj8tpMERf1htR7z8kJqF8TynsjM=;
- b=rpluB+Cu76EHdExgqXJslKaO01Xz7PQvoKCL2N/mFylLB+7BEOklkIQ8zWIy82TRkOu68njFFPyn2inikkgDJ60PyeQ0mtGEVfblFgLYeaN4ZR5rE3pbJht58sBWS3W/LGIrFZjth917npkBgVZ9MDf3M5BJdBa6AMC5GhCSzJ1a4fPEr8EN/4ih0827w1U/SqN5QPhZoLKoIV9SgEj6iN9vmxqFJDC+K5R6RmkQqzqHoKubK8z/Pn+RneM52wo48r7NUzl93x9yliNT45v6HeTEYG98erxcVSWIkjgHMwo62X/IXBHdecEgP0qnWdry2JqoEH+IRoaUcQwkagIP1g==
+ bh=uY7cLQC2yktLZgt8Puf8j7lNP2KdQaa4sBn35lk63So=;
+ b=VnvF5Ia6rbO0Yqhdd8Sss+IywjwBRXn1BD4lsV8RXgA71alctJwVlzfMtrwX3Hn7MqPw8KKabgPCUM0IDrjoke8O3DPR9p+AeT60cMkFTvYX8xAyat7Jkbiud34YQTGB784jVrVnk/tGYUCjXXuLWLBhMLvU8R2yC0okr6aqqTGD3vnCE5kaiv6nobqT90JQV+I0RvJMbHG+/Am8tHwFa8rdneOYSNgjstTTcFgMH+g6pGlb+XRPo0niahGJqWMja7Nyj3rB+L2iYlmjUWFHpyZ2WYFTg8lEyfwcmw2qbC5njB6nxVm1mxugFmgLYDJTF6SAoGJ89sqIstWKU/9eTw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=technexion.com; dmarc=pass action=none
- header.from=technexion.com; dkim=pass header.d=technexion.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=technexion.onmicrosoft.com; s=selector2-technexion-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=30EL6wxzSs//PEaPQj8tpMERf1htR7z8kJqF8TynsjM=;
- b=2fAW3blXWMLdCVjJ0A+ZtMNApeRQ+NViseyJKzT2vjZVk+ydSCHECzF7i8s/ouj49ev0j2XOANrhn4Sbnwb6QwX6D9S3V9zwkFwG7GF+mHvE5Sjk02bJ5m+Foe94A/8PHulves4H7NJTDsmJMJS71epL0S5VgrksRf21Jmf9S24=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=technexion.com;
-Received: from KL1PR03MB7454.apcprd03.prod.outlook.com (2603:1096:820:ed::7)
- by SEYPR03MB7142.apcprd03.prod.outlook.com (2603:1096:101:d7::9) with
+ bh=uY7cLQC2yktLZgt8Puf8j7lNP2KdQaa4sBn35lk63So=;
+ b=IXyPpOIqMKsNdEAV50CgFDRH7r7/r+zdUV1o+OIs/ohn8PSfcb052/XQ2jpCjlJyC7ZjcT/hufWyYYOmv6nlObE0skUELAliy4byBO90BsC/1+B5bN5gPq+UeOTO/LelkHkxmbgwJc7pY0bxCpXSyretYzGbTbQhfaqrWHCItsdnoUOP7pDKfJtyVw2kjMIzANdfiAcqrw3QnbuuRLIs0AME+qGkDBUuOFi8bDFzCMeE4FnQrzb9Wz87R5Erq9irp0VI6RAQHfJbWWQNJ88KVJpKsCZ7bD1+RBJWTToR3BN46wmGxs5JU5YSVWex8I7YTfsE9xN//5tukBRqNtob8Q==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AS1PR04MB9335.eurprd04.prod.outlook.com (2603:10a6:20b:4dd::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.28; Mon, 14 Jul
- 2025 07:18:03 +0000
-Received: from KL1PR03MB7454.apcprd03.prod.outlook.com
- ([fe80::5ac3:4497:4694:db94]) by KL1PR03MB7454.apcprd03.prod.outlook.com
- ([fe80::5ac3:4497:4694:db94%6]) with mapi id 15.20.8901.024; Mon, 14 Jul 2025
- 07:18:03 +0000
-Date: Mon, 14 Jul 2025 15:17:58 +0800
-From: Richard Hu <richard.hu@technexion.com>
-To: Shawn Guo <shawnguo2@yeah.net>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Ray Chang <ray.chang@technexion.com>
-Subject: Re: [PATCH v3 2/2] arm64: dts: imx8mp: Add TechNexion
- EDM-G-IMX8M-PLUS SOM on WB-EDM-G carrier board
-Message-ID: <aHSvJv6zbndPx72h@vm>
-References: <20250709-add-technexion-edm-g-imx8m-plus-som-v3-0-721d198ce20b@technexion.com>
- <20250709-add-technexion-edm-g-imx8m-plus-som-v3-2-721d198ce20b@technexion.com>
- <aHDJJNVOsX7K-m4d@dragon>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aHDJJNVOsX7K-m4d@dragon>
-X-ClientProxiedBy: TPYP295CA0052.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:8::18) To KL1PR03MB7454.apcprd03.prod.outlook.com
- (2603:1096:820:ed::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Mon, 14 Jul
+ 2025 07:32:44 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Mon, 14 Jul 2025
+ 07:32:44 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: "F.S. Peng" <fushi.peng@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>, Claudiu Manoil
+	<claudiu.manoil@nxp.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+Subject: RE: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
+ Timer
+Thread-Topic: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
+ Timer
+Thread-Index: AQHb8jPWk5neHXUn3Eeo02nqDOVTYbQxImMAgAATMMA=
+Date: Mon, 14 Jul 2025 07:32:44 +0000
+Message-ID:
+ <PAXPR04MB8510C8823F5F229BC78EB4B38854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250711065748.250159-1-wei.fang@nxp.com>
+ <20250711065748.250159-2-wei.fang@nxp.com>
+ <ce7e7889-f76b-461f-8c39-3317bcbdb0b3@kernel.org>
+In-Reply-To: <ce7e7889-f76b-461f-8c39-3317bcbdb0b3@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS1PR04MB9335:EE_
+x-ms-office365-filtering-correlation-id: ac64bcb0-3ba8-4f55-e49e-08ddc2a89fd4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|19092799006|7416014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?XFUKb+l14pa68ti0Y6Qg9YBLILv3EKfjBvL6gX9xb1+JGIO+J7wYxs97k6C4?=
+ =?us-ascii?Q?exAxuYZpl9Ckk2Teys8PD5kskOFJNBleah1B5PTl0xWqL6vGtPhakJsMm2RZ?=
+ =?us-ascii?Q?pplU1lQp4y7AqWhgx40ORNyun0JGklqIhb47F46y7TYVbU/ulA2Ul/UVBp4J?=
+ =?us-ascii?Q?TVhjqbmFfkpUg95DSlEKrs6Ni2BK99OprbUqxh60p7y/iHmmnx76llLp6b0F?=
+ =?us-ascii?Q?UyutvWpc54dExH4REt6++hLNoirW6mJH1Fe7ptJZF5pHP0+p/hv1qRM/W27f?=
+ =?us-ascii?Q?h0LPRq6jCEw1ZRxi9NYBcX9od5Y1P9dhGKVd+b5rvRbD8IHi0wHr9AedluZu?=
+ =?us-ascii?Q?B61JgdeMvemZio8aebmJZgpPpYJlwJOhpllaq7tgznZLc9HNInQqIaHwXcQ3?=
+ =?us-ascii?Q?zY6qHBDCjrQ6CVxsAaBqKgnNCeWHWJWpM/MvrgRSCb5QtgRen9QEylUDX2Nc?=
+ =?us-ascii?Q?nsiRz71BWj987vHbYzNXSx6M68SiM/vRbQWMvhf89lMsDab+NDK6x8iQRYPn?=
+ =?us-ascii?Q?KFZ/7QLjnyj2rirzyjMqmdMqaACY1CKOHXICGh5Rr9ZG/EPwA0Iw27wtrBUu?=
+ =?us-ascii?Q?Q2wKeNKdjt+n7x8VUE7XDqYHZ4f09VY+PBh1wLNXZFoyupUHUIlF3KZjgG8d?=
+ =?us-ascii?Q?Txj1sOw7S0YVsB/uhDbXLb0AAxtkQthkwbH2KMuNFGL7xw7vPcoxWsUXJs1O?=
+ =?us-ascii?Q?3zInhtjerZ90HKbykyT9b0enobox2ccic/O+gUkAe877YGfNOqlygUKcekTt?=
+ =?us-ascii?Q?6epn4MI/i8jhfBr9IXb2O4XuiopAVtaH+gM51PkDkFq+LWE0C3HvmfcSSgFU?=
+ =?us-ascii?Q?CmTOaN2pzW0hsoAfCeOpSyvVRXvE6EtYP5YTY207fqTJrFnwSFR2PzfFUHX2?=
+ =?us-ascii?Q?wypxknCcLqiN8arCM/exYvk2yqWDnDAELKt5tlrtnCZtyFg9FJyR7UAUGjtE?=
+ =?us-ascii?Q?t9l+4j9Q1cCHK8U3MUgVTzzuNqDKH90YPaSHfOEHo32Gqva47OkIbuJHCw80?=
+ =?us-ascii?Q?xVMBnO3Zo3KNwCCsy1bMlmxxJt7TdwYlIEu5HZ87MBsDfiGkLIVPItCKF1ze?=
+ =?us-ascii?Q?30jn268vpHj9LUvDu3KrNKZ1d+mFwHVNw9ypC2p1Cu9wzaRaKof2IbPjyr4S?=
+ =?us-ascii?Q?4gSyC5UQtK8k56GATsRuY/6aYEtBZeZpKdteylwA13S/OvV2p1s0fnogeMGb?=
+ =?us-ascii?Q?EiwQUOId19W1atw6wKeP69pUQjYP2USEUl527ufHPA0xyS21wXexsj78w0yj?=
+ =?us-ascii?Q?/DdITxntIFsvdEA33EBWXWHpSw8iwoS+Yylof3DkGm1xMh9dvsPirgyZCP1w?=
+ =?us-ascii?Q?aXMxSFnzJacVqZQZoewKNTeC7aHgDw2sPa4VYeRBgY6P5vplEAaEikxx2nWk?=
+ =?us-ascii?Q?xMpYM3B2xkrDEHABUqFM/S1GnQm6IdqXOMd+qMps8V855v4OxJADUA8Xngi6?=
+ =?us-ascii?Q?UTcXDftfMK8=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(19092799006)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?SNQHd6Zo6meZEtXItekJZ29PommF6RJCxGvNtXRUOmQYLiXLMdrg9SeF90D/?=
+ =?us-ascii?Q?Q1MVm+OWMy8AkXLdGe/GBazhHAcN/+s8ebj9nuvkfHUdp3HjRQ41nTd7lA6b?=
+ =?us-ascii?Q?nVZRAWyOCjr6pJQVNhVago8xjEZMtTTwqw/GP9YskuOpHX3WirFJt1DwaD+c?=
+ =?us-ascii?Q?fo4/pmN5drsqiW4Vjzhz7SwBpOAyv8XxEp/RYLXKnS86qrTFHaFryVyC6Sp8?=
+ =?us-ascii?Q?XGv9lSQmd4nvm0msYG6p50ks+RE2AbcSziBYYwWg+HdMUwAHfVwKrZUGKnx9?=
+ =?us-ascii?Q?yOV/LczyxdAnwPeTzEj4N81SKuE/Ph+aqdKi9HK+Klm8rICZQaMDqFf0Wgtu?=
+ =?us-ascii?Q?VNpwOtNR9INQ3r1YOjBP1wTt5GZPfCtLYWlQ0rYgacumYsKMIIDuJbgSa85W?=
+ =?us-ascii?Q?43bD4ddsD2JrDnKmuKyrT+wTBt8C6ZJovxH1iJ3L8zWGfdb/T9S4kR1Fbx1r?=
+ =?us-ascii?Q?h31/bGmSjQov1l4N6cUi0imdnCnGFE2ROPHjrbrtgf5yXaWb8aj/YdpJVEWf?=
+ =?us-ascii?Q?TEZm4ckqUY4LPu4WcFKuiG39QI3azPXROe2rPtEHf/vOZW5pSujbBF1rO24S?=
+ =?us-ascii?Q?7oRiFBk5OpHIHieyirn+CBE8AqjulZKCqB28woGiF0UI8jgcGRJaeiAayvj+?=
+ =?us-ascii?Q?h+zShfxiQOmhIpiNsNRdTXz56i2oLK0uBtIVX9Kp73MKZmPB+dAOdWk6m917?=
+ =?us-ascii?Q?Ta6X7X3aEQHf+zIrJDAt7tVaontlKmfGni934fRwtiUQRXzcvXc/DUEljuW5?=
+ =?us-ascii?Q?Tda4ILcao6jnMDqDdGvWCk/SoXZklYDzskU4Yf8yLzwJRUJA+pn1RIS4FeiV?=
+ =?us-ascii?Q?k54Y7zx0qz014ZOdCXq5f6RXs+FmG7Y9Bd96EERx2lYCB8YhqVuwTuHT00db?=
+ =?us-ascii?Q?QqJfFv7zzCoGNio1tnRVh/vvO3DiBv+14uKwDzL6dQwcNneOD8QukD5XQG1e?=
+ =?us-ascii?Q?6aA5ghnC9CDXaVgnDQZ+KVp+dETaHt0V8f2j746mBnC9RqrROOq35ecE4e0W?=
+ =?us-ascii?Q?BjVfdxxFdHwFmq2mekbF/Gd4ksiI0KjfpEFYVj5g586Hul4/UCkjvVKFpIzJ?=
+ =?us-ascii?Q?S2+OtVSGNO8SAM6berIIAR1D61nK8IL2jm3rYy2YgUZm6zckxDZ8Y/yLyEk5?=
+ =?us-ascii?Q?auhQBvM5Fla3GrCA+JexfxFMY6h8U8Mlc7HQg14ylIWcbDt60fIIB2DHEBv3?=
+ =?us-ascii?Q?ze3ZzWmtnXulTrs1iaHyamZf1XGesYuF/Ej71rYl8bN+kIje5Z5Y9M1mpf3B?=
+ =?us-ascii?Q?c3LDpRZAlCmn9MA2EiBLNheyXRo00tNyBc7Mubqw//XLUO53iL27acmxP4bm?=
+ =?us-ascii?Q?4Mk0+hxD7wxIaQPIInMbNAGmDudEfLNNORzil4Vi8XniqEk8zZhxKxvDZikd?=
+ =?us-ascii?Q?N0dcdohkHXBz7/eq8vO4d41p5g34dKySNyOs/aD2yckWksgowbrz7ugAI/sv?=
+ =?us-ascii?Q?6ks3DYCd3wTcvRfdVKDpK684YwtrAljNrOya4Zjfm/U3xEtqFSpBxzNe2v9b?=
+ =?us-ascii?Q?CKlZZ6Np1YJ+xPN0aJqbswkxiWy0R9Lw6BGC+OWpUSR91S3Yi14B0Uj9d8ep?=
+ =?us-ascii?Q?AMvDO6JjLAvuv0fV89A=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: KL1PR03MB7454:EE_|SEYPR03MB7142:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19f803ea-ee19-4ce9-6656-08ddc2a691f8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?sYH3Ix0kywfKI2KyaDMeGq78stQz3e0qOLgKwZ58oSyp5xSWsgZsy4wu21Uo?=
- =?us-ascii?Q?TtiX/YJWPzQhKKzJ08WGF91fpMLZFp7G5Lv/5jBSzNxw04irCJm1+1sy5o/m?=
- =?us-ascii?Q?EL+c9yjKgURIWUQXyDsTsersFq2eboDH/7I4ITBM4k/nacWCvimG2hJN7dgb?=
- =?us-ascii?Q?GeaTxi0BVfFTrfm3ttBLTPHjCjoZs2IXxUk6WX1HYcF36R6SKWX0x7zfFk7P?=
- =?us-ascii?Q?Jc2Elnw0Qku8H84AwQG+V70SbDlm4bcS/qvzh+aCTysd9T2AafSdt71Gf/9F?=
- =?us-ascii?Q?odNozYUMlDFc/z6SHfBJyegpTwNpiHZdEJObvwQ1Diqoo3E77uQlyj8xyiyt?=
- =?us-ascii?Q?rx+MGI76vOm6wGMr2Zab36/jlMbu+T2+PmeAgDdN7io3D/gwLnr6OfPTKd07?=
- =?us-ascii?Q?FNdnMke/HUA1boOJjuXBPzuYe8z/9CHqlT9qhHBHis4Yw8kTwzmvBslg4sGo?=
- =?us-ascii?Q?52qh+csQQMKkm0tCH7nS6pxmxltE3+FDp4aWgHzXdDzfs5oBKWokp26NOo2K?=
- =?us-ascii?Q?E0hl+efOC0F7ERMqh9M4drDl6KCmQwHUQL82tAELi+TJlJVmkdkZmFplciq+?=
- =?us-ascii?Q?zonb12gKPc2lVfMFnxQkWmZTpCd82mXi/XMcsCZz4yzXqCSwIgbZ6A0CnV+X?=
- =?us-ascii?Q?ewX00FHivZPAjgYDgwiE8R2d/C0HyVrKwGDKM82a5Qv3pBUww/1B/HrWUml/?=
- =?us-ascii?Q?YDnO76A6Bd6MS+T9yyGwftG1UEIwqQx4NXvfhWzKYxyd7f6dFqmM/XnPUjQm?=
- =?us-ascii?Q?ZRcGrcSA47CYWJQJZm0PSNOXhAuHTF36iB0vHNnTGxC2kIGdfBiwoMopEKNw?=
- =?us-ascii?Q?NjlrZYuedoJJDKvivJgeXrd3vZIGd2izdqPjRLQj5/jrvtW+iPSV06E/kQEl?=
- =?us-ascii?Q?wd22TFJMa6j2xRImDTjv3BZr1AwvDGp1QD9MjARPfOhrpwyQOTtH0GkaX7To?=
- =?us-ascii?Q?nrwe99kTvEFAkXaEZtI3c3BuMYstPCPQnF9jsUkS/rGoCB+ofjft8Tx1otM2?=
- =?us-ascii?Q?buploU0GOHHFnJZlFFACSj8CHu/3mp+lushv5Bh08kN+rKRCfNqpq75SAoeu?=
- =?us-ascii?Q?tnwiiU75aLm8F3Y3rP+moqqGSe7POpZ863M0825dRyMnf6x/jGICIkIaYUPP?=
- =?us-ascii?Q?RQ7KsX9ouFp/ucJCQ/LSn2WzirlJRzEpxrcOV/MkU8jiPih8UEiReZP+0kNK?=
- =?us-ascii?Q?1KPegYxuSVNRaHrbkk/aO3ZvLptoWQ7fdQhsie9KgyTwJwodsUJbgUvG3W6q?=
- =?us-ascii?Q?ctlPUZTIGWLTDVPcJfcgrs18UtmD+ApAGTHjNJHZWqneHo1K14hmqpbWRo+n?=
- =?us-ascii?Q?yD9nMmidGyxEK2DCPXhEV4N9aqri4ozVz3Jhw6OLu/XJp5vY0W0NnSl31qkL?=
- =?us-ascii?Q?tna0oiNzq/yDP/IFOt3ZrpHgi18ouckMdB8mmsi/31iSm6KTJNqO45t2qa5s?=
- =?us-ascii?Q?w2rbe4TEMdXJqEwzQ0ZmQt7ltK/rYURNZKuPf8nfcLmehQkDEY+yBg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR03MB7454.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LOu9Bna+Pe43/9GLSY+45PbCRvF8exeAQ+BFd96jAH3oQ+mBO9YKwq/1c8ng?=
- =?us-ascii?Q?nAxIfNE2bfkQT/TTfCoO7+UmwlTY7r479TCRhpIwWNM+V45V4N1BA7g6KkS3?=
- =?us-ascii?Q?kZJgTMxGBrQeXXgU7alQ/h7m5+aVZUrQ5uAV4AcJP/c7C9vULmQ6GgDPHolF?=
- =?us-ascii?Q?A9glYuTRZaUbsfp83ZqRiyGMe3XkPCu+k43w18hvPP1SF0wBB13q9/2LfHbJ?=
- =?us-ascii?Q?uq3jlh24mfnEGr4Rf54Sqa2BwazknxbB2E5hIHx0/9neMT18sB/ITqHk3x+1?=
- =?us-ascii?Q?LIMpLhBP08KUt+6xX8LkuKRZwSwcvoh+sXrK+CFeXRRhpUd43+ug5LWRsZ3m?=
- =?us-ascii?Q?+tXCGCmuzvuGwqgcZBnBQT/0YQZNFi79S5VNRSKrvPNBau6HMWDJPKMkYb+s?=
- =?us-ascii?Q?1J4GqTfhNI55ipn6S6iLsLw2dWikzSmJQRwL9KATf+q5YwYjlUDmldD8Y6So?=
- =?us-ascii?Q?oooDP+1Sqv+HvGHnmQhyRzG+UmX+JkgjLr8iqZAY1B1aBPFApaU1vwo7eUs9?=
- =?us-ascii?Q?+2Shp2FE3dXkW7K1G7CjlVPYvs4o/b77Gy9up6hvKu/xKNZH3oTwMc5bUFHQ?=
- =?us-ascii?Q?5uGAmBSL3KYL/Jcje0hfD9YYuMoLhuNFEtY07KfKYl86Dm0uEIrl+b3SaNfp?=
- =?us-ascii?Q?czE/mlgwhzkLqMC6Wh/d8rampvxHxTnvbTZQ6aSCI9WBT+N/magL3g3ay1TM?=
- =?us-ascii?Q?wZrRfw5QdXvYr058MHL/tpCd2eQwhEIHr4ok5c/NjrfggWsy3BxNT23XcczG?=
- =?us-ascii?Q?A/gCYBqWyJMa7yZD8TKetILqNVPwHhSxRCylcnxnfAePHU70btqhOhJDfi2e?=
- =?us-ascii?Q?d8vRQBUDV4ueDuzhQVu2NAW0xW0f0cUAbNj5zNczRSWgyxegwz0NXTu8H06Y?=
- =?us-ascii?Q?n8hK851KchSFlJsN3mYkVJbNCYRGYSiXrz0YrC8BdHezwej+kj5xGL8qEoOR?=
- =?us-ascii?Q?MggAPOJ9YDnUFVa1eC/Puz/YaNxcgZ2wbrrDvgqWn51kWodY9jg1ChuyvceR?=
- =?us-ascii?Q?nOMmW+e1aUYaWKK6h9LI4QNiqBrIh2lftv6XB+APjNXT/kdbX2WvnKi/Tk0U?=
- =?us-ascii?Q?++s8JuX3YkJcA4Bx2NfrnJMPGzRSm+lbEfuxKE2AezbH3CiW/VhXEGWCFWBS?=
- =?us-ascii?Q?NDFJ9tXFgfx3dwmRUZosBgxCVGkgwvtzUpnlq0EeP1o8CKAXBHSOWigJRVwn?=
- =?us-ascii?Q?v4Eim9ilQVcLaZPyIWJdjHWW/40XOZb0ndyc1jGU+5DFDMh+HzzFo6RAtjmF?=
- =?us-ascii?Q?eYIZxGDFZ++R6Gfcy9pnI+i1Ay8jZw9eejoiHs9mBDZeVU3/D2xtuFoMM3ik?=
- =?us-ascii?Q?ldcJCZwIr7a+CQp1Kp+Mup+q2mewXZEm5z/xMZvYzXogfonuj1giiGilxxZm?=
- =?us-ascii?Q?vpFTjC6XYtlJViYO3lSuBp+E8WY7BefDpICWQy49etKMbaBzf1pQhHu0tAer?=
- =?us-ascii?Q?S8OQ2X5bNNhbMU4+Haavt8Vm1MLoWarLdYE6VZ9w76YxMVjqFmgwaE1YaByi?=
- =?us-ascii?Q?yFmSgJ3eyew6frSkML5DiS1qX+jGyGQvtNrNvlBDoqFFs9anjghbnmYg2IvE?=
- =?us-ascii?Q?kP2rpMrPivjiUMEWiEM0QgPs9zrdGEHhMSHyS7HtvaEiwUwve0IMXibOGEGG?=
- =?us-ascii?Q?5w=3D=3D?=
-X-OriginatorOrg: technexion.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19f803ea-ee19-4ce9-6656-08ddc2a691f8
-X-MS-Exchange-CrossTenant-AuthSource: KL1PR03MB7454.apcprd03.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2025 07:18:03.2991
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac64bcb0-3ba8-4f55-e49e-08ddc2a89fd4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2025 07:32:44.8142
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5ee19679-b9a6-4497-8ed2-1eda849e753b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +Ju7v8ucH0FzOxR+FoPhRQI3Cl0AxH+JGJIlGyWaANl92hKwRCR4h1ZRb7Ugx28AGiLEcT85HaWhutPNopb38FV39C5Ijjgke+NecMeYTKc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR03MB7142
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: lVuqaN7wPqLtTrPxIrnBue3oKQsAUSlrbWelEYWN+jcOfptPaJtan6oYGbitIcW5d/kCiFUYDfWv/UzFPloksA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9335
 
-On Fri, Jul 11, 2025 at 04:19:48PM +0800, Shawn Guo wrote:
-> On Wed, Jul 09, 2025 at 01:47:45PM +0800, Richard Hu wrote:
-> > Add support for TechNexion EDM-G-IMX8M-PLUS SOM and WB-EDM-G carrier board.
-> > Key interfaces include:
-> > - Gigabit Ethernet
-> > - USB 3.0
-> > - I2S, UART, SPI, I2C, PWM, GPIO
-> > 
-> > Signed-off-by: Richard Hu <richard.hu@technexion.com>
-> > Signed-off-by: Ray Chang <ray.chang@technexion.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/Makefile            |   1 +
-> >  arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts | 373 ++++++++++
-> >  arch/arm64/boot/dts/freescale/imx8mp-edm-g.dtsi   | 806 ++++++++++++++++++++++
-> >  3 files changed, 1180 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> > index 0b473a23d120..b56c866d4a9d 100644
-> > --- a/arch/arm64/boot/dts/freescale/Makefile
-> > +++ b/arch/arm64/boot/dts/freescale/Makefile
-> > @@ -201,6 +201,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-drc02.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk2.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk3.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-picoitx.dtb
-> > +dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-icore-mx8mp-edimm2.2.dtb
-> >  dtb-$(CONFIG_ARCH_MXC) += imx8mp-iota2-lumpy.dtb
-> > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
-> > new file mode 100644
-> > index 000000000000..0e5c7bf219b0
-> > --- /dev/null
-> > +++ b/arch/arm64/boot/dts/freescale/imx8mp-edm-g-wb.dts
-> > @@ -0,0 +1,373 @@
-> > +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> > +/*
-> > + * Copyright 2024 TechNexion Ltd.
-> > + *
-> > + * Author: Ray Chang <ray.chang@technexion.com>
-> > + */
-> > +
-> > +/dts-v1/;
-> > +
-> > +#include "imx8mp-edm-g.dtsi"
-> > +
-> > +/ {
-> > +	compatible = "technexion,edm-g-imx8mp-wb", "technexion,edm-g-imx8mp", "fsl,imx8mp";
-> > +	model = "TechNexion EDM-G-IMX8MP SOM on WB-EDM-G";
-> > +
-> > +	connector {
-> > +		compatible = "usb-c-connector";
-> > +		data-role = "dual";
-> > +		label = "USB-C";
-> > +
-> > +		ports {
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +
-> > +			port@0 {
-> > +				reg = <0>;
-> 
-> Have a newline between properties and child node.
+> On 11/07/2025 08:57, Wei Fang wrote:
+> > Add device tree binding doc for the PTP clock based on NETC Timer.
+>=20
+>=20
+> A nit, subject: drop second/last, redundant "bindings for". The "dt-bindi=
+ngs"
+> prefix is already stating that these are bindings.
 
-Thanks for pointing this out. You're right, I'll add the newline to fix this.
+Okay, I will fix it, thanks
 
-> > +				hs_ep: endpoint {
-> > +					remote-endpoint = <&usb3_hs_ep>;
-> > +				};
-> > +			};
 > > +
-> > +			port@1 {
-> > +				reg = <1>;
-> > +				ss_ep: endpoint {
-> > +					remote-endpoint = <&hd3ss3220_in_ep>;
-> > +				};
-> > +			};
-> > +		};
-> > +	};
-> > +
-> > +	gpio-leds {
-> > +		compatible = "gpio-leds";
-> > +
-> > +		led {
-> > +			default-state = "on";
-> > +			gpios = <&expander2 1 GPIO_ACTIVE_HIGH>;
-> > +			label = "gpio-led";
-> > +		};
-> > +	};
-> > +
-> > +	lvds_backlight: lvds-backlight {
-> > +		compatible = "pwm-backlight";
-> > +		brightness-levels = <0 36 72 108 144 180 216 255>;
-> > +		default-brightness-level = <6>;
-> > +		pwms = <&pwm2 0 50000 0>;
-> > +		status = "disabled";
-> 
-> Just out of curiosity, why is it disabled?
+> > +title: NXP NETC Timer PTP clock
+>=20
+> What is NETC?
+>=20
 
-That's a good question. We disabled the backlight because the LVDS panel is an optional accessory.
-We were planning to enable this lvds_backlight node in the overlay,
-but would you recommend we move the node definition itself entirely into the overlay file?
-We're happy to follow the best practice here.
+NETC means Ethernet Controller, it is a multi-function PCIe Root Complex
+Integrated Endpoint (RCiEP), Timer is one of its PCIe functions.
 
-> > +	};
 > > +
-> > +	native-hdmi-connector {
-> > +		compatible = "hdmi-connector";
-> > +		label = "HDMI OUT";
-> > +		type = "a";
+> > +description:
+> > +  NETC Timer provides current time with nanosecond resolution,
+> > +precise
+> > +  periodic pulse, pulse on timeout (alarm), and time capture on
+> > +external
+> > +  pulse support. And it supports time synchronization as required for
+> > +  IEEE 1588 and IEEE 802.1AS-2020.
 > > +
-> > +		port {
-> > +			hdmi_in: endpoint {
-> > +				remote-endpoint = <&hdmi_tx_out>;
-> > +			};
-> > +		};
-> > +	};
+> > +maintainers:
+> > +  - Wei Fang <wei.fang@nxp.com>
+> > +  - Clark Wang <xiaoning.wang@nxp.com>
 > > +
-> > +	pcie0_refclk: pcie0-refclk {
-> > +		compatible = "fixed-clock";
-> > +		#clock-cells = <0>;
-> > +		clock-frequency = <100000000>;
-> > +	};
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - pci1131,ee02
 > > +
-> > +	reg_pcie0: regulator-pcie {
-> > +		compatible = "regulator-fixed";
-> > +		regulator-max-microvolt = <3300000>;
-> > +		regulator-min-microvolt = <3300000>;
-> > +		regulator-name = "PCIE_CLKREQ_N";
-> > +		gpio = <&gpio1 13 GPIO_ACTIVE_LOW>;
-> > +	};
+> > +  reg:
+> > +    maxItems: 1
 > > +
-> > +	reg_pwr_3v3: regulator-pwr-3v3 {
-> > +		compatible = "regulator-fixed";
-> > +		regulator-always-on;
-> > +		regulator-boot-on;
-> > +		regulator-max-microvolt = <3300000>;
-> > +		regulator-min-microvolt = <3300000>;
-> > +		regulator-name = "pwr-3v3";
-> > +	};
+> > +  clocks:
+> > +    maxItems: 1
 > > +
-> > +	reg_pwr_5v: regulator-pwr-5v {
-> > +		compatible = "regulator-fixed";
-> > +		regulator-always-on;
-> > +		regulator-boot-on;
-> > +		regulator-max-microvolt = <5000000>;
-> > +		regulator-min-microvolt = <5000000>;
-> > +		regulator-name = "pwr-5v";
-> > +	};
-> > +
-> > +	sound-hdmi {
-> > +		compatible = "fsl,imx-audio-hdmi";
-> > +		audio-cpu = <&aud2htx>;
-> > +		hdmi-out;
-> > +		model = "audio-hdmi";
-> > +	};
-> > +
-> > +	sound-wm8960 {
-> > +		compatible = "simple-audio-card";
-> > +		simple-audio-card,bitclock-master = <&cpudai>;
-> > +		simple-audio-card,format = "i2s";
-> > +		simple-audio-card,frame-master = <&cpudai>;
-> > +		simple-audio-card,name = "wm8960-audio";
-> > +		simple-audio-card,routing = "Headphone Jack", "HP_L",
-> > +			"Headphone Jack", "HP_R",
-> > +			"External Speaker", "SPK_LP",
-> > +			"External Speaker", "SPK_LN",
-> > +			"External Speaker", "SPK_RP",
-> > +			"External Speaker", "SPK_RN",
-> > +			"LINPUT1", "Mic Jack",
-> > +			"RINPUT1", "Mic Jack",
-> > +			"Mic Jack", "MICB";
-> > +		simple-audio-card,widgets = "Headphone", "Headphone Jack",
-> > +			"Speaker", "External Speaker",
-> > +			"Microphone", "Mic Jack";
-> > +
-> > +		simple-audio-card,codec {
-> > +			sound-dai = <&wm8960>;
-> > +		};
-> > +
-> > +		cpudai: simple-audio-card,cpu {
-> > +			sound-dai = <&sai3>;
-> > +		};
-> > +	};
-> > +};
-> > +
-> > +&aud2htx {
-> > +	status = "okay";
-> > +};
-> > +
-> > +&flexcan1 {
-> > +	status = "okay";
-> > +};
-> > +
-> > +&gpio1 {
-> > +	gpio-line-names = \
-> 
-> Hmm, not sure "\" is necessary.
+> > +  clock-names:
+> > +    oneOf:
+>=20
+> Why oneOf? Drop
+>=20
+> > +      - enum:
+> > +          - system
+> > +          - ccm_timer
+> > +          - ext_1588
+>=20
+> Why is this flexible?
+>=20
 
-You're right, it's not needed. I'll remove the unnecessary backslashes from the gpio-line-names properties.
+The NETC Timer has 3 reference clock sources, we need to select one
+of them as the reference clock. Set TMR_CTRL[CK_SEL] by parsing the
+clock name to tell the hardware which clock is currently being used.
+Otherwise, we need to add another property to select the clock source.
 
-> > +		"", "", "", "", "", "", "DSI_RST", "",	\
-> > +		"", "", "", "", "", "", "", "",	\
-> > +		"", "", "", "", "", "", "", "",	\
-> > +		"", "", "", "", "", "", "", "";
-> > +	pinctrl-0 = <&pinctrl_gpio1>;
-> > +};
 > > +
-> > +&gpio4 {
-> > +	gpio-line-names = \
-> > +		"", "", "", "", "", "", "GPIO_P249", "GPIO_P251",	\
-> > +		"", "GPIO_P255", "", "", "", "", "", "",	\
-> > +		"DSI_BL_EN", "DSI_VDDEN", "", "", "", "", "", "",	\
-> > +		"", "", "", "", "", "", "", "";
-> > +	pinctrl-0 = <&pinctrl_gpio4>;
-> > +};
-> > +
-> > +&hdmi_pvi {
-> > +	status = "okay";
-> > +};
-> > +
-> > +&hdmi_tx {
-> > +	pinctrl-0 = <&pinctrl_hdmi>;
-> > +	pinctrl-names = "default";
-> > +	status = "okay";
-> > +
-> > +	ports {
-> > +		port@1 {
-> > +			hdmi_tx_out: endpoint {
-> > +				remote-endpoint = <&hdmi_in>;
-> > +			};
-> > +		};
-> > +	};
-> > +};
-> > +
-> > +&hdmi_tx_phy {
-> > +	status = "okay";
-> > +};
-> > +
-> > +&i2c2 {
-> > +	status = "okay";
-> > +
-> > +	wm8960: codec@1a {
-> 
-> audio-codec for the node name.
+> > +  nxp,pps-channel:
+> > +    $ref: /schemas/types.yaml#/definitions/uint8
+> > +    default: 0
+> > +    description:
+> > +      Specifies to which fixed interval period pulse generator is
+> > +      used to generate PPS signal.
+> > +    enum: [0, 1, 2]
+>=20
+> Cell phandle tells that. Drop property.
 
-Got it. I will rename the node from codec@1a to audio-codec@1a to follow the standard convention.
+Sorry, I do not understand what you mean, could you explain it in more
+detail?
 
-> > +		compatible = "wlf,wm8960";
-> > +		reg = <0x1a>;
-> > +		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_MCLK1>;
-> > +		clock-names = "mclk";
-> > +		#sound-dai-cells = <0>;
-> > +		AVDD-supply = <&reg_pwr_3v3>;
-> > +		DBVDD-supply = <&reg_pwr_3v3>;
-> > +		DCVDD-supply = <&reg_pwr_3v3>;
-> > +		SPKVDD1-supply = <&reg_pwr_5v>;
-> > +		SPKVDD2-supply = <&reg_pwr_5v>;
-> > +		wlf,hp-cfg = <2 2 3>;
-> > +		wlf,shared-lrclk;
-> > +	};
-> > +
-> > +	expander1: gpio@21 {
-> > +		compatible = "nxp,pca9555";
-> > +		reg = <0x21>;
-> > +		#gpio-cells = <2>;
-> > +		gpio-controller;
-> > +		gpio-line-names = "EXPOSURE_TRIG_IN1", "FLASH_OUT1",
-> > +				  "INFO_TRIG_IN1", "CAM_SHUTTER1", "XVS1",
-> > +				  "PWR1_TIME0", "PWR1_TIME1", "PWR1_TIME2",
-> > +				  "EXPOSURE_TRIG_IN2", "FLASH_OUT2",
-> > +				  "INFO_TRIG_IN2", "CAM_SHUTTER2", "XVS2",
-> > +				  "PWR2_TIME0", "PWR2_TIME1", "PWR2_TIME2";
-> > +	};
-> > +
-> > +	expander2: gpio@23 {
-> > +		compatible = "nxp,pca9555";
-> > +		reg = <0x23>;
-> > +		#interrupt-cells = <2>;
-> > +		interrupt-controller;
-> > +		interrupt-parent = <&gpio4>;
-> > +		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-> > +		#gpio-cells = <2>;
-> > +		gpio-controller;
-> > +		gpio-line-names = "M2_DISABLE_N", "LED_EN", "", "",
-> > +				  "", "", "", "USB_OTG_OC",
-> > +				  "EXT_GPIO8", "EXT_GPIO9", "", "",
-> > +				  "", "CSI1_PDB", "CSI2_PDB", "PD_FAULT";
-> > +		pinctrl-0 = <&pinctrl_expander2_irq>;
-> > +		pinctrl-names = "default";
-> > +	};
-> > +
-> > +	usb_typec: usb-typec@67 {
-> > +		compatible = "ti,hd3ss3220";
-> > +		reg = <0x67>;
-> > +		interrupt-parent = <&gpio4>;
-> > +		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
-> > +		pinctrl-0 = <&pinctrl_hd3ss3220_irq>;
-> > +		pinctrl-names = "default";
-> > +
-> > +		ports {
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +
-> > +			port@0 {
-> > +				reg = <0>;
-> 
-> Have a newline between properties and child node.
+This property is similar to the "fsl,ptp-channel" which has been added
+to fsl,fec.yaml
+https://elixir.bootlin.com/linux/v6.16-rc5/source/Documentation/devicetree/=
+bindings/net/fsl,fec.yaml#L186
 
-Okay, I'll add a newline for better readability as suggested.
+The NETC Timer has three 3 PPS generators, and each corresponding
+to an output pin, but these pins are multiplexed with other devices,
+so the pin of the PPS output depends on the design of the board. This
+property is used to tell the driver which PPS generator/pin the board
+uses.
 
-> Shawn
-
-
-Thank you!
-
-
-Best regards
-
-Richard
