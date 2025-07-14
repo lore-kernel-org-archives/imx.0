@@ -1,136 +1,223 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012014.outbound.protection.outlook.com [52.101.66.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3920E215F69
-	for <imx@lists.linux.dev>; Mon, 14 Jul 2025 12:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752496695; cv=none; b=VlvXJTBNwDKJZwgVx08IyoXkaKY34B7KMZgCPQFCVwPpx4Die2nQHAZJXkx3DnwTPozDPSvx6UeLCHMslNAjwiCQJV9wJG92CWUg+HkIsly9LM84XHQhWRgOIX4mPa8bUwS1xYYOpULgQZZDADp+/iAL8sDTnjUlw3L0cIWXecU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752496695; c=relaxed/simple;
-	bh=ZXxvfm5ACdHaOgBMK2E/ks9Mq0FoiGqE0kZ5+r0itYQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Qba+zawZz81RvPFnf/t3we8U5m/pAzEK1M4UJFtp74IWu/i1fTlxjP0d0Nf+/64+8sw1q3XfSUiXGddNIWzo5iFJbD+Dc/xtq6jdDOS42mCdIvQw418M0RLlqvBKdM6hNRtiBvZiW2KcXZQUOaYjph57GFTPFhJHFn+ha6SPHz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DN2upFgh; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223F525393C
+	for <imx@lists.linux.dev>; Mon, 14 Jul 2025 13:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752499377; cv=fail; b=to3ZS4L/thbrzWwJEXUQGRWdTl0ywtQTGT4dp6zJGCMLJKSsq49bw//I/eamWm3wBuK2VEpYrHuKTL47NeA1w2dGNCZY4dgEZT7non6v6QTpP+MVsLzxyS8rhCmpeqRXtKBwWSU0sYeayAVUSIIcbLKX/wGZ/uYjfTqEqzWA2tk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752499377; c=relaxed/simple;
+	bh=lGqa6Z2goylAfib7ZnAMeIA7SFpxv/cWms68axMV+OY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=H8OPBqDCTeirmTuJTwxMC5PzgyyFza0Eqxm0qiExjIpGb6OVrM9frF6H6//ZKBwZ3c4CwruaoImq8tqckONZJ1ld3suhnWl3ggkSP1FdmOiVSagJDvResh9Jvie6pJGvhE2u4EsX/awiAT3hdRO5OH2hD16NeqwcZhvG5k/ZxGY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ghmlNNbh; arc=fail smtp.client-ip=52.101.66.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DN2upFgh"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-60dffae17f3so6439072a12.1
-        for <imx@lists.linux.dev>; Mon, 14 Jul 2025 05:38:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752496691; x=1753101491; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EY/NG2nHnV92BHijz9klsk+toPjE4xsvjwjRWHy7y+0=;
-        b=DN2upFghQ2gavVheCRq8QPwy4UfwjKWG6yLDNKCr5yQjNPGqHF+B79s07sgcC4ro5U
-         0Bb5pXJPgdjdyS8MFgaaeIzordL0+bk6Rh2KS0SzUDyhtVMkL54xU/2yJscRVfvG7KV9
-         nlpZPvfhsZIqz5A9kmJYE6Aca0wC5hR94ce4nkJBEpyr/vrR+1d3qM5Pq+QuCQKwMkHE
-         oz4QT6ZZQoQqfe8XsmkQcgpGhlI0eXIWLPwV7ixkL+GwTw7DibaITDRSDgXyXdoOcLUi
-         swg4tlFm3/9rbu+wNcijMdjWpjfRe5uE7osivkBGEftHDzN4WaMiSwLfSgmaNOv87dvr
-         eyTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752496691; x=1753101491;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EY/NG2nHnV92BHijz9klsk+toPjE4xsvjwjRWHy7y+0=;
-        b=s6rZTGNUKZIuo5nHJQEgmQpmey+catvXpgHtwQvzzEk86jObV+njLHsNzodfHklq6j
-         +I3QpsQXu2LvAHJ5TUh15ayHlIP0v7JcSMXl2LnNy9+b4NGSyppDh9ELQuGKvMTZH1Zc
-         vc4MYpCO97GX4nZYYiuboEzMW0O8Yr1zFBPuzFlTUapv2QE/8AEMIkgfc/1AuMQ57lqF
-         0AddXBF6vGLGoevxdl6kI5uUoGCpax8gEBjRpOjffkEU/gXfMvXCVTAjAxMAbXgfp+Gp
-         coLFuxwtA6f4vpiBIs5ZkC+D7iyQQ8EOwXs03Ok9rdSksNm/5sOvh6V05EzMaYcYH/cR
-         7PPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpdMP8L2HbGioU00OtEzOcEBqdECsesJ+nCZCOIM8D9+C224kXgrHk63cBGyroGK3qzvc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwxzVu9ZCEOGtQl7CGxi+lZ1ZVow/pFNsmhDZO4EUM+7xHV3+on
-	N9F6o/L+9VENc5o1WMAyN/mCKJbIjNRFoOEJVNT6p+I7tvIjXNizJKh2
-X-Gm-Gg: ASbGnctlEwabvnL+znADW6BEQSNp9AaDTTU/FQOc1dP9EI/hNJHoTPMoXaabDvSJhca
-	1izwr/3R6C1bX5dF/Xa2+dLmNokXxgG7VNROPfrlx0Kr2OEHJjS8YYPwygdoVYF+66Eyxfb42oW
-	9Pio1/9GA/qoMz9lQjjwa07B3TgfNo9rugnv6ePWzi1rF4lQ/1RvtiTi6OHVeF5/+YHN520GPt7
-	hCzhypZfJjfOyJ2l2IByIwI0LeV67SJ2/FMVew9SUPcdMhLefbOsv57xs46m3hQBPKTf8GXLvOb
-	oXxldtVApHgRp5g84ZgAMyrxIqzm/NGSqQgS2O25YflXiicEIeDextWZOzTqZPaNQd/ByUDnL1p
-	Jy8a3ZR8P0CW0p56ns8DbgugcQE5bkosQD0JRNLatBze+/xSKjelDSwwY
-X-Google-Smtp-Source: AGHT+IFJP4cB80pxWE0x40njp9Ls1ssVpAFwjW00zYJz8lfNZnZohc3hO+AUezRssWB3NbpYRZaVBQ==
-X-Received: by 2002:a17:907:930c:b0:ae6:a8c1:c633 with SMTP id a640c23a62f3a-ae6fc1fae79mr1276473766b.34.1752496691220;
-        Mon, 14 Jul 2025 05:38:11 -0700 (PDT)
-Received: from playground.localdomain ([92.120.5.7])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e829402asm805005266b.121.2025.07.14.05.38.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 05:38:10 -0700 (PDT)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-pwm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] pwm: imx-tpm: reset counter if CMOD is 0
-Date: Mon, 14 Jul 2025 08:36:34 -0400
-Message-Id: <20250714123634.6442-1-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ghmlNNbh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gq6VFUIgRqFBbOW9TONMRapLOmA61mgcjc/puAfyplP1Xw96vXXAwi8pdMje62aO7bx9yf1aS/QWgtsgLbNE6H0isq5u0CbUzsHbL2LfGVe2rCRG5Nf8rskFE2PwfOkyBCI0p8KYMpw1RLqJsVsVH0VlMIHIyDKHa60n6mTU9FWC3f4wvh7OBiWBrz0/2In44hunMzyhnbX8201w7p9LI6+luNATudgZ/v/tfPIxQIkojZd6D+dn0ngv7jZ/IlOBPxOOApj6QAQjoFozKYzAaFhSgjW5p8hX4UQ11ZXfoGKb9GCx6o6cNgeI4PNsb4Z/5pN4LsJwqcLlw4kozMMk/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lGqa6Z2goylAfib7ZnAMeIA7SFpxv/cWms68axMV+OY=;
+ b=wWsmdDgROvn7mCPr3EF43aPLSv5Gwt2aVJ8KAoHxEmydLHXo8CxG97ONuM0FRuwc6RawQLNEn98NCqlDepDgVOuNYeuTCSkYoCT7FGVx09czGpBDNMjjEJZ/+Sk5J2TOLgoWrXxxVb6Y7bHIuafElJTCm9UoOBrCQnGbkWAnD1HHovKeV6Q9lgxGFHgu+szubiJEskfj549tMGxv7wIqmgAhZp+rPsKR4OP9k7O+8pHHCcBCkZQzAALgvDb2Q9WVsaJ2CPbtXYIvqN5eUu22ioxdmbrEhaFyMq9IWUuh8ELJ1uxgFPbVB4oOu+BxXJaQRC0MDhDkj81Flwnt5kkQ9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lGqa6Z2goylAfib7ZnAMeIA7SFpxv/cWms68axMV+OY=;
+ b=ghmlNNbhHrEXlg4SSAN4UyxqA47n/zxlY0iTWvE9boVKVXKA1IieIfjTz3w/KPrvzk8JaAImDMvnhSg0Nr9iGevMHS+92s8d8d/VuO1SF6hYONdViYNqiLELP2+Bupw2uY2E8XbI3EwjZn6JXOoV58NrZcmx6UsixbbtJLo90+s4D/eKCvYi1mGMcgJ9zoBnB4eAMI77+75MuQuZ9PXUaPOjyg5jia9oaxBcHhak1HEVRXPT2CXyt7Ubz+q20bNRNNMO8TvVFXd8FtHIc8DPXNWrYgn269RTcJ9kqzRuhM05zc+A8bisImn1we9t5V241wUK/GMIpIcdCn9NM86VJg==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PAXPR04MB9277.eurprd04.prod.outlook.com (2603:10a6:102:2b9::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.25; Mon, 14 Jul
+ 2025 13:22:52 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Mon, 14 Jul 2025
+ 13:22:51 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Krzysztof Kozlowski <krzk@kernel.org>, "F.S. Peng" <fushi.peng@nxp.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "robh@kernel.org"
+	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "richardcochran@gmail.com"
+	<richardcochran@gmail.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+Subject: RE: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
+ Timer
+Thread-Topic: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
+ Timer
+Thread-Index:
+ AQHb8jPWk5neHXUn3Eeo02nqDOVTYbQxImMAgAATMMCAAAm6gIAAFX1wgAAGKwCAAAFaQIAADfuAgAACM8CAAAPoAIAAAqbQgAAP8QCAABcf0A==
+Date: Mon, 14 Jul 2025 13:22:51 +0000
+Message-ID:
+ <PAXPR04MB851072E7E1C9F7D5E54440EC8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <ce7e7889-f76b-461f-8c39-3317bcbdb0b3@kernel.org>
+ <PAXPR04MB8510C8823F5F229BC78EB4B38854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <61e6c90d-3811-41c2-853d-d93d9db38f21@kernel.org>
+ <PAXPR04MB85109EE6F29A1D80CF3F367A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <169e742f-778e-4d42-b301-c954ecec170a@kernel.org>
+ <PAXPR04MB85107A7E7EB7141BC8F2518A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <836c9f0b-2b73-4b36-8105-db1ae59b799c@kernel.org>
+ <PAXPR04MB8510CCEA719F8A6DADB8566A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250714103104.vyrkxke7cmknxvqj@skbuf>
+ <PAXPR04MB85105A933CBD5BE38F08EB018854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250714113736.cegd3jh5tsb5rprf@skbuf>
+In-Reply-To: <20250714113736.cegd3jh5tsb5rprf@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PAXPR04MB9277:EE_
+x-ms-office365-filtering-correlation-id: 7110bb17-e243-4e9d-5a53-08ddc2d9890c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|19092799006|7416014|376014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?NQOSwWApCr4yXp4K4xqm8MujHJitPAmThEVXOzNb/S6tz9PNc+U19UYtUTna?=
+ =?us-ascii?Q?ggMQZ3YArNzBUkur7U8LABOFrZ3jUzKsVu9jiujj+HbIGaE+dqsk/HwHDj9O?=
+ =?us-ascii?Q?q7lskLBpeANdW5NPsIYZu96L3lCziS7+Aule+rzAvIGjBzf6EPJUY+rVLw6p?=
+ =?us-ascii?Q?otfW/H5bhxo6iKwdgG+W/a/wuPabI4jZdrUAxguXwkedbmm+0bhoCrBsjoG4?=
+ =?us-ascii?Q?ksFd6o1ieE5EoRmQL2EJGFUlIbbE1gJOZfcoCe+djumjyds2BYmUwgUuOWiH?=
+ =?us-ascii?Q?yEbDpkTackoAiRRH6fj9m1hwhbL0yGGkolUP8H5/9zHasTpEdIKuaJdtbuTU?=
+ =?us-ascii?Q?jshugWSutEm8fwb6xyfTjjAinP++VSJSvHObi2HnRgJ3kHIGK1CBJqciu+pn?=
+ =?us-ascii?Q?3EGEfsdXvVxmmSOYWX76AhNxzRuUKPrpD2Vyem3SL1uQEUpiYWukufIbp7KV?=
+ =?us-ascii?Q?v4aCaXX/hPbWrt/xzQKq/ltTjWkfn7IKLOJxMnc5Hw8uKrU9aNTPnGv2rY3j?=
+ =?us-ascii?Q?tGrko1hAtThqLLIDT0Py79ws7LCSYSzFqBGtG09vzR+P5V/V5MoVBzgpSura?=
+ =?us-ascii?Q?JviDJV/QBjgy68l/biMYTYSgzLBjOBK7jXdlOeh+tUgGPxe4nMXoH0H4xY62?=
+ =?us-ascii?Q?2/YmiPgI4m+zMQFViFSpxg0Eu1pE3tF1rIUiz4/DfnprAoZW/skvzpLavJka?=
+ =?us-ascii?Q?y7Wzfu+B2ZarHQ0OM73u3gaTq0CVtQ6/2GSCkSmkovLXFEwqhquCLgTFfhff?=
+ =?us-ascii?Q?eIVhEG4HUeNeeckZOL9ZEnxlXO3J36pMSrv7/EMmTOwqPKOKpUXLMyUKo/1v?=
+ =?us-ascii?Q?G+URW6cVWipgQFEXkpmW0IsI7X60qtMoCRYO/56IkkTpHjb7IrrZnIVelREh?=
+ =?us-ascii?Q?5RYoNuhAOKKRdMY241z9oTbf7COK/JITYHGUikVv4DMyTL40xv3ZCOI/jzcL?=
+ =?us-ascii?Q?LMExS4cI16kjKgBWrQe6rmeJ5+up+PF2JpAm1XjLU+1O2l4B2tk0TrFY7+Wy?=
+ =?us-ascii?Q?w37or0wWtdeNLFi3FStDpYeohygx6PwaYHB1vTJsCtfGdFlzbtcKgC1rOCC0?=
+ =?us-ascii?Q?DoIyULmwIh7a4lQqdtWVIH7QQHVrMR29XkSB81C/IUZejv3Z2HXdTGGSTCt2?=
+ =?us-ascii?Q?huy9V4uO61JncObk2ibPe9NMa8GWbLU0+PoqVqCy9VGZByRfTWa51ENOgLN0?=
+ =?us-ascii?Q?Ett3NZ/CvQx5Sumy1aZfqKxW/edLJ22q/SA2pHc6y/P9HVu0ilM2VmXq0vfc?=
+ =?us-ascii?Q?CppQBJhj5xeZej93qiXfHaNGH9Z7O20TrpBo26LQsUijZoOE8uZ3GK7/qbnJ?=
+ =?us-ascii?Q?ZXdXSQt+zZ/OCD5rgRCMy/Yko8PCj+XCb7pl9AcVQyf395Eg4G57rq3XGucz?=
+ =?us-ascii?Q?85/xCWcXQDxjI5avWHoOg5EOA0UhoLm78oOJew/cf1pRJ40tnuc3Vv55iwy4?=
+ =?us-ascii?Q?JMTIjbk7fQ7ibJ3VWwDn/kpWBIqeZmi19s5z8bCIu2njs7nS7OhH4A=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(7416014)(376014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?JGGXwRxkEYmcfENgrt1A5R8QJLA9aqL2pGD8ctls0bPisdjEUsOja0uQR1BB?=
+ =?us-ascii?Q?DtZMyUf/I3p73IktF0lYaZe6MbsIrhXiWeImGFJgf/rxFZVX2BnOMUeQd0NT?=
+ =?us-ascii?Q?bbs5Jb9w1R3PlbHmSD9UC44WPD+evluJ3rT4wWDBcY7iyBsOJj1RJgefctaa?=
+ =?us-ascii?Q?O1sPjGqdNzC2kGPpJ56mXctYFNXAxh/Sxpyz4rKsza35wHHHqc8pQPagno8B?=
+ =?us-ascii?Q?tMZnMWomNaRxOjNcI7SWO7rTjY+WLbVjnVEzUJkE+NtisrABIBvK6mDoXmtK?=
+ =?us-ascii?Q?tmv+oHiJtMhsTAITOyfkSrphlYc/UmF9FgPcNDCHtL+XRVQWnKDLrSRaDY8O?=
+ =?us-ascii?Q?o3iw/YLQrhpxFFYgxB2LNlEkRToksYQeMvokniRo2wtfaCAGHI6dzKaa2kLQ?=
+ =?us-ascii?Q?8TK0kE+l1Ua0+eNoct9Bt59Sr+AD2I7spyGpr2t5Z9nnXgXECgYGEt76f6tg?=
+ =?us-ascii?Q?Nf0JNyMjSwb8hPePGTplBj3n5qDuAX4cp9qXG9/k7DWoD6otQcFeu8OlSvR8?=
+ =?us-ascii?Q?b/z+KHXiee8R4dD4yPuwmgo+QhwKas3YOFajL8qQR8y6P48h2DsY+6yr/b6s?=
+ =?us-ascii?Q?ZEDoSNxSpkMC9nBt+8R3kJjra/NQZ5iMFqhYh88YHgjT1W2xPVOjWueyc7RR?=
+ =?us-ascii?Q?CjIovfFSDiS9vVPWqND2CF8hjtq3WAcJr71taA8eXTz67JNYA2K71h25nEsH?=
+ =?us-ascii?Q?AYEUz5UQ5wzvruu2XyeVfOQcIHxqMS1QMFdRcdmBtqRcm0S5z8TcjpciAYjD?=
+ =?us-ascii?Q?w2qMZaHkOL8z+aGVFIDwlK10TdXSBddDqnWdk9bbpZOfoo+wdvVHE7j5o9nP?=
+ =?us-ascii?Q?lhYJTZVzUdOCmn2/m/ntaFGY9YasCDbgNLQG93cyDZXjYihR30+Bmz06QJaj?=
+ =?us-ascii?Q?2fJ85OEEw3FGqepTRyyhDuNrvkFUAeIbapLznmrJmZMr/WKNPP+e2tWsWI72?=
+ =?us-ascii?Q?hToidfCuFsG9aY29simL0He5Dv1Wyq+xbjp7uWwgn8p5V0X0YcCARLrSGT4Y?=
+ =?us-ascii?Q?+89RlHxzbB22Nc1Y80k0ZWmftrVNdNlNkVViTOYyJ2/GcqyzHeRgm6gUxGpe?=
+ =?us-ascii?Q?asFhebCd36CW+S3yxp1lAUkoZw3ccU6Ai04aKxtSyTwjG5QqULM1tAGKil8G?=
+ =?us-ascii?Q?eQ4UBPy+w/g8Hp+G1eTkcAWQXIj8XWHjq4naoaX9MDO+4rve7b4ggCgHUa5q?=
+ =?us-ascii?Q?wnP7xxrGDxKUOWLk7vrRzgJrtMfVmZL/cEmNWjSONJOneeWCG8VQPuEaapOD?=
+ =?us-ascii?Q?5DtLyHAXwqHLvMopIubKa0eKsYbboe0QIX2k88AyiDtEQZs85JtqQ5fG6ar1?=
+ =?us-ascii?Q?IBTknm+pBDp3MgmyjY1VU+vNJNfZPdbuTdaBHYfZ7Dtxi8RqWenCrWByH4pm?=
+ =?us-ascii?Q?KlKMOaYfic3MVzb28wD0nWeNtrcWNUBC/3PiEEAE62R2gGkWS9ZT4JCh7S1e?=
+ =?us-ascii?Q?qhisrHgbAQkTYPEwlAiIhWamPbUmYwMp9na5DWYPbdzuhuZgFuEGsQEK9KsS?=
+ =?us-ascii?Q?tGmtbKoI1shv+hVtexxj3PPNkMqV1oYngwXIis13kYTyUbc7ToGbiR+gWjVH?=
+ =?us-ascii?Q?AeQIKMjWyBq+ExN6rrU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7110bb17-e243-4e9d-5a53-08ddc2d9890c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2025 13:22:51.9179
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Ty5ngmoe5CAIu1JT1OdV3qMIHdz11qsWvm06xV9LIBuqqAR0dF9sCVxny7RFxEHArVYXws7J2Qe5zrRYhGvUxg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9277
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> On Mon, Jul 14, 2025 at 01:43:49PM +0300, Wei Fang wrote:
+> > > On Mon, Jul 14, 2025 at 01:28:04PM +0300, Wei Fang wrote:
+> > > > I do not understand, the property is to indicate which pin the boar=
+d is
+> > > > used to out PPS signal, as I said earlier, these pins are multiplex=
+ed with
+> > > > other devices, so different board design may use different pins to =
+out
+> > > > this PPS signal.
+> > >
+> > > Did you look at the 'pins' API in ptp, as used by other drivers, to s=
+et
+> > > a function per pin?
+> >
+> > ptp_set_pinfunc()?
+>=20
+> You're in the right area, but ptp_set_pinfunc() is an internal function.
+> I was specifically referring to struct ptp_clock_info :: pin_config, the
+> verify() function, etc.
 
-As per the i.MX93 TRM, section 67.3.2.1 "MOD register update", the value
-of the TPM counter does NOT get updated when writing MOD.MOD unless
-SC.CMOD != 0. Therefore, with the current code, assuming the following
-sequence:
+I don't think these can meet customer's requirement, the PPS pin depends
+on the board design. If I understand correctly, these can only indicate
+whether the specified pin index is in range, or whether the pin is already
+occupied by another PTP function.
 
-	1) pwm_disable()
-	2) pwm_apply_might_sleep() /* period is changed here */
-	3) pwm_enable()
+However, these pins are multiplexed with other devices, such as FLEXIO,
+CAN, etc. If the board is designed to assign this pin to other devices, the=
+n
+this pin cannot output the PPS signal. For for this use case, we need to
+specify a PPS pin which can output PPS signal.
 
-and assuming only one channel is active, if CNT.COUNT is higher than the
-MOD.MOD value written during the pwm_apply_might_sleep() call then, when
-re-enabling the PWM during pwm_enable(), the counter will end up resetting
-after UINT32_MAX - CNT.COUNT + MOD.MOD cycles instead of MOD.MOD cycles as
-normally expected.
+>=20
+> > > > The PPS interface (echo x > /sys/class/ptp/ptp0/pps_enable) provide=
+d
+> > > > by the current PTP framework only supports enabling or disabling th=
+e
+> > > > PPS signal. This is obviously limited for PTP devices with multiple
+> channels.
+> > >
+> > > For what we call "PPS" I think you should be looking at the periodic
+> > > output (perout) function. "PPS" is to emit events towards the local
+> > > system.
+> >
+> > The driver supports both PPS and PEROUT.
+>=20
+> Ok, I noticed patch 3 but missed patch 4. Anyway, the role of
+> PTP_CLK_REQ_PPS is to emit events which can be monitored on the
+> /dev/ppsN char device. It shouldn't have anything to do with external
+> pins.
 
-Fix this problem by forcing a reset of the TPM counter before MOD.MOD is
-written.
+Is there a doc to stating that PTP_CLK_REQ_PPS is not used for external
+pins? As far as I know, some customers/users use PTP_CLK_REQ_PPS to
+output PPS signal to sync with other timer devices, for example, a similar
+property "fsl,pps-channel" was added to fec.yaml by others before.
 
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
----
-Changes in v2:
-  - dropped the "VERY IMPORTANT" bit as per Uwe's suggestion.
-  - Link to v1: https://lore.kernel.org/lkml/20250701220147.1007786-1-laurentiumihalcea111@gmail.com/
 
- drivers/pwm/pwm-imx-tpm.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-index 7ee7b65b9b90..b15c22796ba9 100644
---- a/drivers/pwm/pwm-imx-tpm.c
-+++ b/drivers/pwm/pwm-imx-tpm.c
-@@ -204,6 +204,19 @@ static int pwm_imx_tpm_apply_hw(struct pwm_chip *chip,
- 		val |= FIELD_PREP(PWM_IMX_TPM_SC_PS, p->prescale);
- 		writel(val, tpm->base + PWM_IMX_TPM_SC);
- 
-+		/*
-+		 * if CMOD is set to 0 then writing MOD will NOT reset the
-+		 * value of the TPM counter.
-+		 *
-+		 * Therefore, if CNT.COUNT > MOD.MOD, the counter will reset
-+		 * after UINT32_MAX - CNT.COUNT + MOD.MOD cycles, which is
-+		 * incorrect.
-+		 *
-+		 * To avoid this, we need to force a reset of the
-+		 * counter before writing the new MOD value.
-+		 */
-+		if (!cmod)
-+			writel(0x0, tpm->base + PWM_IMX_TPM_CNT);
- 		/*
- 		 * set period count:
- 		 * if the PWM is disabled (CMOD[1:0] = 2b00), then MOD register
--- 
-2.34.1
 
