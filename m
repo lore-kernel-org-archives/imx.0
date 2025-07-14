@@ -1,98 +1,275 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583FA242D62;
-	Mon, 14 Jul 2025 09:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C682405F9
+	for <imx@lists.linux.dev>; Mon, 14 Jul 2025 09:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752485294; cv=none; b=PjR0meAbn+V85fv6DYH+kVwIZNK03v78NVV5OkbAL+qVzdxNKH8P1dqaiS2eFaLkjaLWyNbTDLgzDvh2wcl1AxaefknVqgaYEKs2xmDdhILetHh7ynQ5MqK0eG4EyF3VNyupJGgYNe7nTS7z4ZPqR+NlZ2RAFLWZrBjzZxmI4A0=
+	t=1752486102; cv=none; b=ZCYB4Ynxc4cXHETUZhqGyDTnr8DvY11WHWLe3JEPzVl6Y+jxyQHnkfpyaA2kWZGojOi0bdJiHYSP+oKstebe+AWDCMJ1+CVACefgjSOVdOyAGNtoNIRBc7tG8t8UxCIQCTe8LK4vCaIIPYI5D2xfDrH1cw6yly1NBKRcSzW0CWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752485294; c=relaxed/simple;
-	bh=LQtUAvfBPLjCe7ViHwC9DAka4jHaq/eIxtBNY0RtcdE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=POs7kBVs/ylH7TIzGS+dvBOsijLdqJeC/W2x1aspx9vxHxIe55oW8tkicVrgsME0TKyxhO4M08A9kWPPDOJfyu71MX9VYtWtesnkQH6xa4OauoloP1y3Oe4ZV50ooID4pHMsY0KVIHoZYoLvhVnEO81uRrtiPEgQ4PfN4Nxt+b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=MBiOHSRH; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="MBiOHSRH"
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 56E9S8Dc2623168;
-	Mon, 14 Jul 2025 04:28:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1752485288;
-	bh=nNLFgaA4dixxgbMIkbjU6rqc6g19Sr9bWZbPhKxkNRU=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=MBiOHSRH4ULBHuN7TLQJysG/DLd5zBojzxAXDP6RT4XNxerXbUypOa4aMMCabQk4c
-	 VjYDyQgwDEj7T3YJEITrjt6gUpeksO5VOETBppR7s+NdHeVc/QzxQjQ2uEv9QNi0Sf
-	 fOqwzNvZMPcDZDO26w7dZHwxqNSqrSrWO4qWzFiA=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 56E9S8UF3170577
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 14 Jul 2025 04:28:08 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 14
- Jul 2025 04:28:08 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Mon, 14 Jul 2025 04:28:08 -0500
-Received: from abhilash-HP.dhcp.ti.com (abhilash-hp.dhcp.ti.com [172.24.227.115])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 56E9RPVn279945;
-	Mon, 14 Jul 2025 04:28:05 -0500
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-To: <nm@ti.com>, <vigneshr@ti.com>
-CC: <kristo@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <vaishnav.a@ti.com>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <imx@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <u-kumar1@ti.com>, <y-abhilashchandra@ti.com>
-Subject: [PATCH 7/7] arm64: dts: ti: k3-am62a-main: Add interrupts property
-Date: Mon, 14 Jul 2025 14:57:08 +0530
-Message-ID: <20250714092708.3944641-8-y-abhilashchandra@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250714092708.3944641-1-y-abhilashchandra@ti.com>
-References: <20250714092708.3944641-1-y-abhilashchandra@ti.com>
+	s=arc-20240116; t=1752486102; c=relaxed/simple;
+	bh=6mRCvjwCfLagynd1sjkcntn7eKszJwBRLGvb55f1L8s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qakCbO5h45V8Agq9X1SOlOFuLkEqL+0NLvGdxP8+zTtcjz8ED2i5gWTkc427uGZWJJEZJl+7gzSDgMCoupwfNcd7AGf5ys1/ldcSeFG35J8U5GCJCMMCPYQKom93l/tcOWA6d8lIbWF+OkhY1RCSHhdBWI+Rg62p4lr+v/Ys2Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1ubFgb-0007Iu-0P; Mon, 14 Jul 2025 11:41:25 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1ubFga-008OJ7-1b;
+	Mon, 14 Jul 2025 11:41:24 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1ubFga-0006RZ-1F;
+	Mon, 14 Jul 2025 11:41:24 +0200
+Date: Mon, 14 Jul 2025 11:41:24 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	Frank Li <frank.li@nxp.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [EXT] Re: [PATCH v18 3/7] firmware: imx: add driver for NXP
+ EdgeLock Enclave
+Message-ID: <20250714094124.e6fnkrocnqagbm22@pengutronix.de>
+References: <20250619-imx-se-if-v18-0-c98391ba446d@nxp.com>
+ <20250619-imx-se-if-v18-3-c98391ba446d@nxp.com>
+ <20250625105546.pxuatcnfpe7mssgs@pengutronix.de>
+ <AM9PR04MB8604611B8D91B5526C9704E69545A@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20250627084653.6vgwnm3llf3zknlp@pengutronix.de>
+ <b02055bb-0995-4fd8-99f3-4ca5146eedd4@kontron.de>
+ <20250630121722.wviidlggt7hguyt7@pengutronix.de>
+ <087b8689-7443-4720-a94c-160edd31a5da@kontron.de>
+ <AM9PR04MB8604C05882605EDB4913DA089549A@AM9PR04MB8604.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM9PR04MB8604C05882605EDB4913DA089549A@AM9PR04MB8604.eurprd04.prod.outlook.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add interrupts property for CDNS CSI2RX. Interrupt IDs are taken from the
-AM62A TRM [0].
+On 25-07-09, Pankaj Gupta wrote:
+> > Am 30.06.25 um 14:17 schrieb Marco Felsch:
+> >> Hi Frieder,
+> >>
+> >> On 25-06-30, Frieder Schrempf wrote:
+> >>> Hi Marco,
+> >>>
+> >>> Am 27.06.25 um 10:46 schrieb Marco Felsch:
+> >>>> Hi,
+> >>>>
+> >>>> your e-mail configuration mixed my e-mail with your answer, which 
+> >>>> makes it hard to read. Can you please check the quoting next time :)
+> >>>>
+> >>>> On 25-06-27, Pankaj Gupta wrote:
+> >>>>>>> Add driver for enabling MU based communication interface to
+> >>>>> secure-enclave.
+> >>>>>>
+> >>>>>>> NXP hardware IP(s) for secure-enclaves like Edgelock 
+> >>>>>>> Enclave(ELE), are embedded in the SoC to support the features 
+> >>>>>>> like HSM, SHE & V2X, using message based communication interface.
+> >>>>>>>
+> >>>>>>> The secure enclave FW communicates with Linux over single or 
+> >>>>>>> multiple dedicated messaging unit(MU) based interface(s).
+> >>>>>>> Exists on i.MX SoC(s) like i.MX8ULP, i.MX93, i.MX95 etc.
+> >>>>>
+> >>>>>> You write single or multiple MUs are possible. I'm aware that the 
+> >>>>>> i.MX93 has two MUs one for the secure and one for the non-secure 
+> >>>>>> world. But I'm really concerned about the fact that both MUs can't 
+> >>>>>> be used at the same time from both world:
+> >>>>>
+> >>>>> Yes, you are correct.
+> >>>>>
+> >>>>> Fix is still work in progress.
+> >>>>
+> .>>> So after ~6 months no fix is available :(
+> >>>>
+> >>>>>> Also how is the secure and non-secure world talking to the ELE if 
+> >>>>>> there is only one MU as you have written?
+> >>>>>
+> >>>>> Till the fix is WIP, either Linux or OPTEE can use the ELE, at one 
+> >>>>> point in time.
+> >>>>
+> >>>> That has nothing to do with the fix. The fix is for platforms/SoCs 
+> >>>> which do have 2-MUs, but you also have written that there are 
+> >>>> platforms with only 1-MU.
+> >>>>
+> >>>> This MU can't be shared between secure and non-secure world.
+> >>>>
+> >>>>>> IMHO it makes much more sense to put the complete ELE 
+> >>>>>> communication into (OP-)TEE and let the secure OS taking care of 
+> >>>>>> it. All non-secure world requests are passed via (OP-)TEE to the ELE.
+> >>>>>> This involves:
+> >>>>>> - eFuse access (done via OP-TEE i.MX specific PTA)
+> >>>>>> - ELE 23h59m ping (kernel SMC WDG driver, requires OP-TEE watchdog 
+> >>>>>> driver)
+> >>>>>> - HW-RNG (kernel OP-TEE HWRNG driver + OP-TEE HWRNG PTA)
+> >>>>>
+> >>>>> There is a dedicated MU "trusted-MU" for OPTEE-OS. The idea to 
+> >>>>> converge to a
+> >>>>
+> >>>> Yes for systems with 2-MUs there is a "trusted-MU" and a 
+> >>>> "non-trusted-MU". As of now, there is no fix available for using 
+> >>>> both MUs at the same time. Furhtermore there are platforms/SoCs with 
+> >>>> only 1-MU, as you have written in your commit message. This 1-MU 
+> >>>> system can have the MU either trusted or non-trusted.
+> >>>>
+> >>>>> single path via OPTEE-OS, is good. But it will impact the 
+> >>>>> performance of the features at Linux side.
+> >>>>
+> >>>> Performance? We are talking about a ping every 23h59m (I still don't 
+> >>>> know if this is a feature or bug), eFuse write/read, and the HW-RNG 
+> >>>> which can seed the Linux PRNG.
+> >>>>
+> >>>>> Since the fix is still WIP. Let's wait till then.
+> >>>>
+> >>>> The fix is for the 2-MUs SoCs but not the 1-MU case.
+> >>>>
+> >>>> I would like to have a system design which doesn't differ too much 
+> >>>> between SoCs which are equipped with the ELE engine.
+> >>>
+> >>> Do we really want to depend on OP-TEE to be available for having 
+> >>> things like OTP fuse access and HWRNG? Personally I'd like to be able 
+> >>> to build systems with OTP access and HWRNG but without OP-TEE. 
+> >>> Requiring OP-TEE only to make the ELE available to the kernel in 
+> >>> cases where the secure world isn't used for anything else seems to be
+> >>> unnecessarily complex.
+> >>
+> >> I understand your point. I don't like pulling in more FW neither but 
+> >> we need to the face the following facts:
+> >>
+> >>  - OTP eFuse R/W access after doing the LOCK_DOWN fuse is no longer
+> >>    possible without OP-TEE. This involves general purpose (GP) eFuses
+> >>    too. We faced this limitation in a current project.
+> 
+> > Ok, interesting. Where do find information about the LOCK_DOWN fuse? I
+> > don't see it mentioned in the (Security) Reference Manual of the i.MX93.
+> 
+> From i.MX9x & onwards, SoC(s) has at least one dedicated ELE MU(s) for each
+> world - Linux(one or more) and OPTEE-OS (one or more).
 
-Interrupt Line             | Source Interrupt
----------------------------|-------------------------
-GICSS0_COMMON_0_SPI_IN_175 | CSI_RX_IF0_COMMON_0_CSI_ERR_IRQ_0
-GICSS0_COMMON_0_SPI_IN_173 | CSI_RX_IF0_COMMON_0_CSI_IRQ_0
+Okay, please re-phrase your commit message than, since this wasn't clear
+to me.
 
-[0]: https://www.ti.com/lit/pdf/spruj16
+> As mentioned earlier, the fix for the issue of using OPTEE-OS dedicated MU
+> on i.MX93, is identified & under testing.
 
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
----
- arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+I get this but there is still no fix available after ~6 months, so it's
+still no possible to use a TEE and REE in parallel.
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-index 63e097ddf988..39c27eb29e17 100644
---- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-@@ -1041,6 +1041,9 @@ ti_csi2rx0: ticsi2rx@30102000 {
- 		cdns_csi2rx0: csi-bridge@30101000 {
- 			compatible = "ti,j721e-csi2rx", "cdns,csi2rx";
- 			reg = <0x00 0x30101000 0x00 0x1000>;
-+			interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "error_irq", "irq";
- 			clocks = <&k3_clks 182 0>, <&k3_clks 182 3>, <&k3_clks 182 0>,
- 				<&k3_clks 182 0>, <&k3_clks 182 4>, <&k3_clks 182 4>;
- 			clock-names = "sys_clk", "p_clk", "pixel_if0_clk",
--- 
-2.34.1
+> Other point on whether OTP effuse are R/W access, after LOCK_DOWN fuse?
+> Not sure about how "doing the LOCK_DOWN fuse"?
+> Please elaborate more on this.
 
+Lockdown: For a verified boot setup you need to burn an eFuse at some
+point, to tell the bootROM to boot only correct verified firmware
+images.
+
+After this lockdown it's no longer possible to burn eFuses from the REE
+albeit the production line setup still requires the support.
+
+> >>  - With new regulations like the EU CRA I think we need some sort of
+> >>    secure-enclave anyway.
+> 
+> > Probably some sort of, yes. But not necessarily in the form of TEE or
+> > TrustZone, I guess.
+> To use ELE features through Linux, there is no dependency on OPTEE-OS.
+
+Once again, still no fix available and if your system requires a TEE
+you're forced to move the ELE communication into the TEE (at least until
+now).
+
+Also the eFuse R/W access is not possible from the REE/Linux after doing
+the device lockdown.
+
+> >>  - Making it optional cause more paths of potential errors e.g. by not
+> >>    including the correct "secure.dtsi". Multiple paths also require more
+> >>    maintain- and testing effort. IMHO I do think that one of the paths
+> >>    get unmaintened at some point but we would need to keep it for
+> >>    backward compatibility.
+> >>
+> >>    Having one implementation eliminates this since.
+> >>
+> >>  - All above points assume that the ELE-FW and -HW is capable of talking
+> >>    to both world, which is not the case. As we learned NXP doesn't have
+> >>    a fix for the 2-MUs ELE yet and even more important there are 1-MU
+> >>    ELE-IPs.
+>
+> For i.MX9x SoC(s) there is at least one dedicated ELE MU(s) for each world -
+> Linux(one or more) and OPTEE-OS (one or more), that needs to be shared
+> between them.
+
+Please mention this within your commit message.
+
+> As mentioned earlier, there is an issue of using MUs simultaneously, from
+> both worlds. Fix is in progress.
+
+So until now no fix available and i.MX93 based products which do use a
+TEE are forced to move the communication into OP-TEE.
+
+> >> I do see the (minimal) drawback of having +1 FW but I think this is 
+> >> more an integration problem.
+> >> Speaking of FW files, for the new i.MX9* you already have plenty fo
+> >> them: bootloader, TF-A, ele-fw, scu-fw (i.MX95). So your integation 
+> >> needs to handle multiple firmware files already.
+> 
+> > Sure, but I really like to keep the complexity and therefore the number of
+> > FW files as low as possible. I'm not sure what has more weight in terms of
+> > security: shipping an additional firmware and therefore increasing the
+> > attack surface or maintaining an additional code-path.
+> 
+> There is no +1 firmware in case of i.MX93.
+> 
+> >>
+> >>> Anyway, I see your point of having a single implementation for the 
+> >>> ELE API in the "right" place. But as far as I know other platforms 
+> >>> like
+> >>> STM32MP1 also implement both ways for the HWRNG, secure access via 
+> >>> OPTEE and non-secure access via kernel directly.
+> >>
+> >> I'm not a STM32MP1 expert but here you have this setup with the 
+> >> *-scmi.dtsi. So you have two code paths which needs to be maintained 
+> >> and tested. Also if one customer of yours want to use OP-TEE you need 
+> >> the integration anyway, so you (Kontron) needs to maintain multiple 
+> >> configuration as well. I don't see the added value.
+> >>
+> >> I think for STM32MP1 the *-scmi.dtsi support was added later because 
+> >> it required a lot effort to support it. This is not the case for the 
+> >> i.MX9* series.
+> 
+> > Anyway, thanks for elaborating. Your points are all valid and basically I
+> agree. I'm fine with either way. But I'm afraid that implementing the ELE
+> API in OP-TEE only will cause another tremendous delay for having ELE access
+> in the kernel, especially seeing how slow NXP seems to be working on these
+> topics right now.
+> 
+> To use ELE features through Linux, there is no dependency on OPTEE-OS.
+
+How exactly do you provide the eFuse write access after the device was
+locked down?
+
+Regards,
+  Marco
