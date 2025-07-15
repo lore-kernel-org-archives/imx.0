@@ -1,393 +1,563 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010030.outbound.protection.outlook.com [52.101.69.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5BD21FF47
-	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 12:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752581142; cv=fail; b=bqAAkyiqyQGcnugZgAsfJa4V8/pGsRAfOa5ZctsSrrnaLM/lVu0XUO3UENsLLY8XTjtiZ51mHmi47GgrqI/IjNJgnsbfrwLI/gDSFzWE4+nBhSyWfQ1/aeUZILa/pUKCCTwMtbbVNAJzEDOxe9RhAxHkLv+8wd/0Q9YWl3AC8sc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752581142; c=relaxed/simple;
-	bh=YSLnIUfw/bUmzdZ+tXbt+h7MEQAczUWieL8zLwtd6O0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nObbIoUVJIW7f1hfQAD6rRJzkHn9dUFrxp3MXEC9dhCGLF0YO9mQGy/CUJj9j6JwBbnL3xQnyo/j69Ptmr0DKlTmYaRyaVCTGHgu9JtrnCRxeKwz3bbXNP94Urc81o1hNYJILx8/zpqVY2xGApMOicouSeU3AAm1COPFAfnOF5Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=V309nRwZ; arc=fail smtp.client-ip=52.101.69.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="V309nRwZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wy1uphBpOAWUeNZt3rsaNMoKtB43NfchGZ64r4W8WK040me8lz41hZ5kCf/PTXX6E081Fm1e1ycERbFaHYaCtaFda0sAsIu6S+GwEyUS+AcMcm0K9hnKHb0Mc4OqBIoVu9x4Kiruqx2B0njKiwyC3h23IGk/G12/I16y/HJZElp/wsnkvXSpiMJQIVwznFtf/DIv9ChFrSpD/b92iyt8R322nqKH5ZFXLXOAR3zCQAIK9JhRxcDLkzvHD1yzRxVLxwd7/RynU54aOOxt9D7PfbPDETXRkfAKqwhoyieIS5Rq/BR7mpDoEAN+jarwUr0Dlryh8ccICno7Ss6Z1kBUhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KTF1K21fv02XDvlt6RHumfAyNPbI+ch2IvAlumzfFUA=;
- b=hwqKWLK3AhQlCJ+QGY6Kx5d9lBQsHm+V9J2Q0KoNGSCblqqIiTsBftgvKn3CmJiT7D1wjvcWha7tfwmeBtkgVLsoZkZzQ5vIzq5iYO5xNGSllPTiWCagMY+mhmxLn5Zntzhc3f+cd2dVJDUMozUmExIr7NzFalyMsUyKg61w1PzifpeD3ggVfPqfHCLyg5Z/3vf0GQfjJeR4mpk5tlrIdl//nZvPMGGwZio3+kEV4eHxX6+r21OzLCFgUNrGhSOww+Qe0udnffbYCU7fIgZuCRCk5Jgg7Gq5HUJrkny8lkQ61rnYbXJKExJyu0vQfv9yzt4iORh6nSd42V3px1cmaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KTF1K21fv02XDvlt6RHumfAyNPbI+ch2IvAlumzfFUA=;
- b=V309nRwZ+i31Zidxd44f7Lf7xfXPfkTCscvsf51+YbnKAW0E0owOsI/8ha804Mx7IivslR6JF8ocDw9jRh5PJ5HRyhuMQzoEJXuqz8HhxsuXycAtZopyt7Z+60Q7QElN60x9IOaJ8ANslB1SyDozf1vhDyzbFJHV+pPWw7X9Z1qw8ktbjfeSLJdLLf4SdMbXvRrPTTG2yFJDwVwUSA9d0OD2GofmIenkkqRXDsQzwr3rfP6qBQNQeZ/nHmT9uFpwCA4X0daWBhwtbi2h3OO1psFt5ksEdo7i18CaU95sQY9eOutbWjV+CeYQeEn7bLPIl5acLYGkhPZp2znir0oQbw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS4PR04MB9576.eurprd04.prod.outlook.com (2603:10a6:20b:4fe::12)
- by PA1PR04MB10527.eurprd04.prod.outlook.com (2603:10a6:102:442::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Tue, 15 Jul
- 2025 12:05:37 +0000
-Received: from AS4PR04MB9576.eurprd04.prod.outlook.com
- ([fe80::9cf2:8eae:c3d1:2f30]) by AS4PR04MB9576.eurprd04.prod.outlook.com
- ([fe80::9cf2:8eae:c3d1:2f30%4]) with mapi id 15.20.8901.021; Tue, 15 Jul 2025
- 12:05:37 +0000
-Date: Tue, 15 Jul 2025 15:05:33 +0300
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: imx@lists.linux.dev, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/8] arm64: dts: imx943-evk: Add support for DCIF and LVDS
-Message-ID: <xmhc243pyjxrjcxyf3vdodfakk67ukwjqgmqxouvkrjrwo3icu@t65rlpoqspny>
-References: <20250709122332.2874632-1-laurentiu.palcu@oss.nxp.com>
- <20250709122332.2874632-8-laurentiu.palcu@oss.nxp.com>
- <aHCb+nj2qb8+P5Mp@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aHCb+nj2qb8+P5Mp@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: FR4P281CA0019.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c9::16) To AS4PR04MB9576.eurprd04.prod.outlook.com
- (2603:10a6:20b:4fe::12)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E44F1EDA09
+	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 12:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752581728; cv=none; b=Q9AmK1AzM6kjk+bYXQxHGJw+eW+Ggp3VEm7Lwa4whLfjoiW8NKEQqaA2G4qex3a2Igj2/JXG8f9+Orr/C7hEyo4a31jRBbOCiBllOsakwT8/Gcg1n/tIXsOQixLHzkY9zFYCprvaqtJzxFW8iwNo7b0RDFrvTNQiooruBDvYfHg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752581728; c=relaxed/simple;
+	bh=Q/hA7e5gr8BegXfMQnugkbRei6D5fiWRxNylYflXa3M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l0c8q34fncYLp0km8x6KHA/lR0TkmIj4YxniiQ81+opVikZzzJNpBRjebXEh3ZJLUNUmO1SitRhXkHZKqBhaRDx8hXoGRoIAF2/RO9szcr/IrKRjqQn76Hrj7Z3Ev/GKue53rUwgpHsI4JrTTCklk7NafisKX9J7iGfYWl9io8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A331D25DE
+	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 05:15:16 -0700 (PDT)
+Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0772E3F694
+	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 05:15:24 -0700 (PDT)
+Date: Tue, 15 Jul 2025 13:14:15 +0100
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Douglas Anderson <dianders@chromium.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Russell King <linux+etnaviv@armlinux.org.uk>,
+	Christian Gmeiner <christian.gmeiner@gmail.com>,
+	Inki Dae <inki.dae@samsung.com>,
+	Seung-Woo Kim <sw0312.kim@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Qiang Yu <yuq825@gmail.com>,
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Jyri Sarha <jyri.sarha@iki.fi>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	=?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>,
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Ayushi Makhija <quic_amakhija@quicinc.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Chen-Yu Tsai <wenst@chromium.org>, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, etnaviv@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+	imx@lists.linux.dev, lima@lists.freedesktop.org,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] drivers: drm: Remove redundant
+ pm_runtime_mark_last_busy() calls
+Message-ID: <aHZGF9WxYrpJ1SGp@e110455-lin.cambridge.arm.com>
+References: <20250715095322.1883056-1-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9576:EE_|PA1PR04MB10527:EE_
-X-MS-Office365-Filtering-Correlation-Id: 046376b2-e0e9-4e73-fe8c-08ddc397e8c4
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|19092799006;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zJRg73qymLlq6RlEhjqnK4Xg/WQMbhSEzSUid0JNb9hUKDkSGvHkyL2Yp8pB?=
- =?us-ascii?Q?vEdisz6fJtv4HCmtzGfgU65mWMhEyvrTwnhv9JZeoKiNB5YPk5zQUB0K/tql?=
- =?us-ascii?Q?czQe/aCW+qACKlKy838cUx7M6i8lw6LSf/1UCXOukuRvD+G4B4S5js9fMMPH?=
- =?us-ascii?Q?9rpg0XdGPSUJi8ezWbt7taQeKKD5Bmojz2tVI7uWA33eieMCt6gaUwanwrh0?=
- =?us-ascii?Q?4Nm5j7h66LZ9HtNGDLkY49NFTTRiYCEVsOr00u1EqmgppODejtH2/n48nIJ+?=
- =?us-ascii?Q?7gjZve6yuUk/vaM2SuhqbDLixcL8gbopJHz9Jr9tnzQkzb0TCN40uY3cXL7Q?=
- =?us-ascii?Q?CpvC7vqtLuKHOBN5sA9VPVFauuozwu4gu6o5WCwKOzzZWNQEBfh2kyjgNQis?=
- =?us-ascii?Q?6LnaGFqOCr5e0PwOQtpBqo7RsrysBBDRt+1WJfo6aLzGY72RwjER11apnPsw?=
- =?us-ascii?Q?JMntBd97oCy3l1RnQ2+Cof9Bm5C4QOUqVbALoezvXpowOsYveSaOvFPo2D1y?=
- =?us-ascii?Q?Q6ervQhhjnN7Ji6Ns1xcz+2S64sgv4X27r7Mp3kQ8cUhvu1zL57kiLuKkK4J?=
- =?us-ascii?Q?lUk9kCIx1o8ZA6MbOsl+LFN7QKACj5C47FexjP1jk7vWZ4JQlzNFPt9bjYeW?=
- =?us-ascii?Q?CHZ39dNQcvItL6Ggkn9OJ3LCIqSGnFKVhI3LU+WFm+EFqea3jg58GqDK68Yk?=
- =?us-ascii?Q?upuqwNxgnpDgItc32/sd8WUfi4REV0ny3YQsCPHlSrtbidOtw1SF9k2stshm?=
- =?us-ascii?Q?jiZ5z2j/BV+yKsnAhnmS413lGatp9e8DnqHy589RBCWkrfXEvSpZBd/WQ1GZ?=
- =?us-ascii?Q?rgzOIxs1SRCgQIK6RkLrHXKWiRXOitYU2gfHGAJ0BGjCYtR4Wnweu0F8a2cf?=
- =?us-ascii?Q?CDXlJlz3Xx7xTz5mCRx709QnnE0O1ww4b60XXEWR9QB1ZLewWKFVoZqEP3NW?=
- =?us-ascii?Q?pW8GOW50sIdlEK9QORLx4NoaR0F8Fhm9lTu2i593YepkMpCwknePZBOelF6x?=
- =?us-ascii?Q?/RaxvEiqEBCm/t6A+jjVjSaBNUErB8zSh63hZw+PtsPVSNEzkPYsmYqgc5tW?=
- =?us-ascii?Q?Gc2GMH7NBc21D6qomIcBCYXoo+rFqOLu6z7yhqMhfMm8qaO9iWQRahx3JJqs?=
- =?us-ascii?Q?LDsi9kA6oUq3rnnqGPIJcu0j7AE5Uoqdpxpv6E5zuomIZqG18xwU4snAIvEC?=
- =?us-ascii?Q?EWEBSuhiKQpyItcN2RnnoLhnhgWgRZWuf+WB7YRxl5PGR/znXVygiLpQfbrk?=
- =?us-ascii?Q?ONCZdjH02ULhTKAJzqkFyAtPa8gP5VS4tn3JcASNgOVB2ExlGHXyOeCR54du?=
- =?us-ascii?Q?i4H0d9wyPbyDVCf2zBJBCV2wxoxmqOrDvV9y739RVI3SV/D726XkLvEVjSYa?=
- =?us-ascii?Q?4leloeUuGeAsrmZd0z09tCx3Qv460Zz1JS9J2NFNPD1ysIxxdIUTHjqd6Dv6?=
- =?us-ascii?Q?1I4YtPKA0wU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9576.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(19092799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DWb1nUtbuRMuyO7t2aSwEwOSWPwoI7Boq+6dKl7IpMSrG2W0AzujDnDgCUpO?=
- =?us-ascii?Q?POQspIj+Tkp3OgahDJbJ+czx4oYhgchsJSxH+eI0WW5Q8cCoOhfL0wJyioXp?=
- =?us-ascii?Q?vmwhkmVyBlYQHOtlhvA1Z0sx0Vx07+gwLwPDWSPNgt+FWFGvmcZ3FCFhD4B7?=
- =?us-ascii?Q?d+J6yxQ8O4dARNE3DWnK0m3pmlSs0OkvQqN2KByyWgmhNzwzRdjb1HXbsTvi?=
- =?us-ascii?Q?i3Tik+0C2lOvgscVQ+fc1C4Mkeujx6+th1yefjSuddhu2KJ5xKb5gqrwkQKm?=
- =?us-ascii?Q?WumJqbaX5JSlyPeLWyjeXhR1vKpnWYtFfOdgqOOeYrQDC5BcX1tMtCVpidV6?=
- =?us-ascii?Q?g+0SN76/R1AYsIzyJxoyZhcK+jN1Nvf8iq048LBqAu1J+9rdhz0wjqb9YQ0l?=
- =?us-ascii?Q?dCtpn3MurH27DwrmuPsczP6TrR2b2a0cKg5/+eIVTHwEx+0SyZZgke80Rgc3?=
- =?us-ascii?Q?wmbgnn28xa8NFmkdLAlYLTbaKNlGADMn0gqyg/BdbbaJGdv4b1cbECCYiBJ9?=
- =?us-ascii?Q?gfsue+8bxf6yKmUFI/R3gemWSWWk1/dmtvQquLDXdF7N5t7jS43YUZCcFf9/?=
- =?us-ascii?Q?fbuaXieLOPcx1SSVMc7wGxpuVirfdf4JIs/naHHStj0SOvekajRZc/NhRrhE?=
- =?us-ascii?Q?oNgGSXwsfuEWmX+/BsLiNKSDDl+KqgeJISkCTayeqqPNGOleBLVCAqNYRZ/Z?=
- =?us-ascii?Q?/PjONTR+qey2I3auZkVpmB78XZvWP0d2qk6jwe4Rp0CO9BdM3rnNLyMC9PmB?=
- =?us-ascii?Q?wp2zr982gwsYmZ47EPy28IX2SKvroK+20FMW0JmaKlA0MYuvoDsj48Cv6M/D?=
- =?us-ascii?Q?9k8vIuKQ5/g5cDHBfINujyIF1C7pgElI4Z+6p9Pfs+EEsI1OCPqQaLib7mf2?=
- =?us-ascii?Q?7YJVK7MlTQmknoxiCahjolbiGjJfrQynv6qpkmZ7wGYNjKI4P/GiCHOJK/u8?=
- =?us-ascii?Q?RteW+O1/hb0KwfTzmDh91U0/lCI+qzuQAgnHjKZElGK0qGF3XvPTkLNF0KKc?=
- =?us-ascii?Q?TAu8VO1SXM6+dCMMAsHLe7eTqY+uxaZOwXG1ZJH98fnPQTjwZ0EO5RWAyDne?=
- =?us-ascii?Q?Cds7N59+0K3iRLpV/pa0Q+qmPZv1zgxrB9z6xQ5dUuIupMR7OA+BRF5l9k0l?=
- =?us-ascii?Q?xqj7TToP1Lulb6Fy1A7CNwORJNlE9annBsYaZ1QqiVBdwJtzH2WDmI5HU3EK?=
- =?us-ascii?Q?eAe9PoT676IDRrUgeAOR67TXxnX9ydnIRe2GAFjUExzm3pipozGnwzW+fVp6?=
- =?us-ascii?Q?JOj39laq3HfMExj39EIlXVL6aCr7dG4xeNErjIRzH8o0dbGSsuhHzP48ZsOH?=
- =?us-ascii?Q?Y7QRdCWeSu6E4k0NzxBpMDusvIvRsIhSHX4BPEbuItLvzS2d5Y6yUt9yVKm1?=
- =?us-ascii?Q?Tmegu7aj9jrVIwjkHkF01+8gLFhTvZQlY6nc04gWVW6RlvgNtSkwRgMBIMm2?=
- =?us-ascii?Q?3HMZSpywZiIAoXu1FgIPY/6bnBBDtMy8eRIY0wIG/BVFDLYY/xmE4+shCZse?=
- =?us-ascii?Q?rq3GsfXTqAdpOIblyJIj/jeIU2eiD1cp9QbDjUD4JB5bqJyddS1Maqd5By4d?=
- =?us-ascii?Q?8YW3Pkv2fyRHXe/Qm2zJRDT+zVX1rprlckDemCFj8iYGQpI8GDwToV5+Yn5W?=
- =?us-ascii?Q?YQ=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 046376b2-e0e9-4e73-fe8c-08ddc397e8c4
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9576.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 12:05:37.1214
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lpwxde+kok035rQ8PFWKHmWwSZjC3/Qd+j5bfFdkRZGTXEU6WpD5v8kc/MHNChaSJW+6zAIqKNs7rKUWvao3og==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10527
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250715095322.1883056-1-sakari.ailus@linux.intel.com>
 
-Hi Frank,
-
-On Fri, Jul 11, 2025 at 01:07:06AM -0400, Frank Li wrote:
-> On Wed, Jul 09, 2025 at 03:23:26PM +0300, Laurentiu Palcu wrote:
-> > Add DT nodes for DCIF and LVDS in imx943.dtsi and activate them in
-> > imx943-evk.dts.
-> >
-> > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> > ---
-> >  arch/arm64/boot/dts/freescale/imx943-evk.dts | 126 +++++++++++++++++++
+On Tue, Jul 15, 2025 at 12:53:22PM +0300, Sakari Ailus wrote:
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
 > 
-> Shawn require board dts need sperate patch.
-
-Ok, I'll create a patch for each file.
-
-Thanks,
-Laurentiu
-
+> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Acked-by: Jani Nikula <jani.nikula@intel.com>
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Acked-by: Thierry Reding <treding@nvidia.com>
+> Reviewed-by: Steven Price <steven.price@arm.com> # for panthor
+> Reviewed-by: Maíra Canal <mcanal@igalia.com> # for vc4
+> Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+> since v1 (<20250704075413.3218307-1-sakari.ailus@linux.intel.com>):
 > 
-> >  arch/arm64/boot/dts/freescale/imx943.dtsi    |  56 ++++++++-
-> >  2 files changed, 181 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx943-evk.dts b/arch/arm64/boot/dts/freescale/imx943-evk.dts
-> > index c8c3eff9df1a2..e7de7ba406407 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx943-evk.dts
-> > +++ b/arch/arm64/boot/dts/freescale/imx943-evk.dts
-> > @@ -125,6 +125,132 @@ memory@80000000 {
-> >  		reg = <0x0 0x80000000 0x0 0x80000000>;
-> >  		device_type = "memory";
-> >  	};
-> > +
-> > +	hdmi-connector {
-> > +		compatible = "hdmi-connector";
-> > +		label = "hdmi";
-> > +		type = "a";
-> > +
-> > +		port {
-> > +			hdmi_connector_in: endpoint {
-> > +				remote-endpoint = <&it6263_out>;
-> > +			};
-> > +		};
-> > +	};
-> > +};
-> > +
-> > +&dcif {
-> > +	status = "okay";
-> > +};
-> > +
-> > +&ldb {
-> > +	assigned-clocks = <&scmi_clk IMX94_CLK_LDBPLL_VCO>,
-> > +			  <&scmi_clk IMX94_CLK_LDBPLL>;
-> > +	assigned-clock-rates = <4158000000>, <1039500000>;
-> > +	status = "okay";
-> > +
-> > +	ports {
-> > +		#address-cells = <1>;
-> > +		#size-cells = <0>;
+> - Remove redundant label fail in etnaviv_gpu_init().
 > 
-> imx94.dts already set it
+> - Remove redundant braces in vc4_v3d_pm_put().
+>  
+>  .../gpu/drm/bridge/analogix/analogix_dp_core.c  |  2 --
+>  drivers/gpu/drm/bridge/analogix/anx7625.c       |  2 --
+>  drivers/gpu/drm/bridge/parade-ps8640.c          |  2 --
+>  drivers/gpu/drm/bridge/ti-sn65dsi86.c           |  1 -
+>  drivers/gpu/drm/etnaviv/etnaviv_gpu.c           | 17 ++++++-----------
+>  drivers/gpu/drm/exynos/exynos_drm_fimc.c        |  2 --
+>  drivers/gpu/drm/exynos/exynos_drm_g2d.c         |  2 --
+>  drivers/gpu/drm/exynos/exynos_drm_gsc.c         |  2 --
+>  drivers/gpu/drm/exynos/exynos_drm_rotator.c     |  1 -
+>  drivers/gpu/drm/exynos/exynos_drm_scaler.c      |  1 -
+>  drivers/gpu/drm/i915/intel_runtime_pm.c         |  2 --
+>  drivers/gpu/drm/imx/dcss/dcss-crtc.c            |  1 -
+>  drivers/gpu/drm/lima/lima_sched.c               |  1 -
+>  drivers/gpu/drm/panel/panel-edp.c               |  3 ---
+>  .../gpu/drm/panel/panel-samsung-atna33xc20.c    |  2 --
+>  drivers/gpu/drm/panel/panel-simple.c            |  2 --
+>  drivers/gpu/drm/panthor/panthor_sched.c         |  2 --
+
+For Panthor:
+
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+
+Best regards,
+Liviu
+
+>  drivers/gpu/drm/tegra/submit.c                  |  1 -
+>  drivers/gpu/drm/tidss/tidss_drv.c               |  2 --
+>  drivers/gpu/drm/vc4/vc4_v3d.c                   |  4 +---
+>  20 files changed, 7 insertions(+), 45 deletions(-)
 > 
-> Frank
-> > +
-> > +		port@1 {
-> > +			reg = <1>;
-> > +
-> > +			lvds_out: endpoint {
-> > +				remote-endpoint = <&it6263_in>;
-> > +			};
-> > +		};
-> > +	};
-> > +};
-> > +
-> > +&lpi2c3 {
-> > +	clock-frequency = <400000>;
-> > +	pinctrl-0 = <&pinctrl_lpi2c3>;
-> > +	pinctrl-names = "default";
-> > +	status = "okay";
-> > +
-> > +	pca9548_i2c3: i2c-mux@77 {
-> > +		compatible = "nxp,pca9548";
-> > +		reg = <0x77>;
-> > +		#address-cells = <1>;
-> > +		#size-cells = <0>;
-> > +
-> > +		i2c@0 {
-> > +			reg = <0>;
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +		};
-> > +
-> > +		i2c@1 {
-> > +			reg = <1>;
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +		};
-> > +
-> > +		i2c@2 {
-> > +			reg = <2>;
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +		};
-> > +
-> > +		i2c@3 {
-> > +			reg = <3>;
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +
-> > +			lvds-to-hdmi-bridge@4c {
-> > +				compatible = "ite,it6263";
-> > +				reg = <0x4c>;
-> > +				data-mapping = "jeida-24";
-> > +				reset-gpios = <&pcal6416_i2c3_u171 8 GPIO_ACTIVE_HIGH>;
-> > +
-> > +				ports {
-> > +					#address-cells = <1>;
-> > +					#size-cells = <0>;
-> > +
-> > +					port@0 {
-> > +						reg = <0>;
-> > +
-> > +						it6263_in: endpoint {
-> > +							remote-endpoint = <&lvds_out>;
-> > +						};
-> > +					};
-> > +
-> > +					port@2 {
-> > +						reg = <2>;
-> > +
-> > +						it6263_out: endpoint {
-> > +							remote-endpoint = <&hdmi_connector_in>;
-> > +						};
-> > +					};
-> > +				};
-> > +			};
-> > +		};
-> > +
-> > +		i2c@4 {
-> > +			reg = <4>;
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +		};
-> > +
-> > +		i2c@5 {
-> > +			reg = <5>;
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +		};
-> > +
-> > +		i2c@6 {
-> > +			reg = <6>;
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +		};
-> > +
-> > +		i2c@7 {
-> > +			reg = <7>;
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +		};
-> > +	};
-> >  };
-> >
-> >  &lpi2c3 {
-> > diff --git a/arch/arm64/boot/dts/freescale/imx943.dtsi b/arch/arm64/boot/dts/freescale/imx943.dtsi
-> > index 657c81b6016f2..db00a94812e18 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx943.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx943.dtsi
-> > @@ -148,7 +148,7 @@ l3_cache: l3-cache {
-> >  		};
-> >  	};
-> >
-> > -	clock-ldb-pll-div7 {
-> > +	clock_ldb_pll_div7: clock-ldb-pll-div7 {
-> >  		compatible = "fixed-factor-clock";
-> >  		#clock-cells = <0>;
-> >  		clocks = <&scmi_clk IMX94_CLK_LDBPLL>;
-> > @@ -173,10 +173,64 @@ dispmix_csr: syscon@4b010000 {
-> >
-> >  		lvds_csr: syscon@4b0c0000 {
-> >  			compatible = "nxp,imx94-lvds-csr", "syscon";
-> > +			#address-cells = <1>;
-> > +			#size-cells = <1>;
-> >  			reg = <0x0 0x4b0c0000 0x0 0x10000>;
-> >  			clocks = <&scmi_clk IMX94_CLK_DISPAPB>;
-> >  			#clock-cells = <1>;
-> >  			power-domains = <&scmi_devpd IMX94_PD_DISPLAY>;
-> > +
-> > +			ldb: ldb@4 {
-> > +				compatible = "fsl,imx94-ldb";
-> > +				#address-cells = <1>;
-> > +				#size-cells = <0>;
-> > +				reg = <0x4 0x4>, <0x8 0x4>;
-> > +				reg-names = "ldb", "lvds";
-> > +				clocks = <&lvds_csr IMX94_CLK_DISPMIX_LVDS_CLK_GATE>;
-> > +				clock-names = "ldb";
-> > +				status = "disabled";
-> > +
-> > +				ports {
-> > +					#address-cells = <1>;
-> > +					#size-cells = <0>;
-> > +
-> > +					port@0 {
-> > +						reg = <0>;
-> > +
-> > +						lvds_in: endpoint {
-> > +							remote-endpoint = <&dcif_out>;
-> > +						};
-> > +					};
-> > +
-> > +					port@1 {
-> > +						reg = <1>;
-> > +					};
-> > +				};
-> > +			};
-> > +		};
-> > +
-> > +		dcif: display-controller@4b120000 {
-> > +			compatible = "nxp,imx94-dcif";
-> > +			reg = <0x0 0x4b120000 0x0 0x300000>;
-> > +			interrupts = <GIC_SPI 377 IRQ_TYPE_LEVEL_HIGH>,
-> > +				     <GIC_SPI 378 IRQ_TYPE_LEVEL_HIGH>,
-> > +				     <GIC_SPI 379 IRQ_TYPE_LEVEL_HIGH>;
-> > +			interrupt-names = "common", "bg_layer", "fg_layer";
-> > +			clocks = <&scmi_clk IMX94_CLK_DISPAPB>,
-> > +				 <&scmi_clk IMX94_CLK_DISPAXI>,
-> > +				 <&dispmix_csr IMX94_CLK_DISPMIX_CLK_SEL>;
-> > +			clock-names = "apb", "axi", "pix";
-> > +			assigned-clocks = <&dispmix_csr IMX94_CLK_DISPMIX_CLK_SEL>;
-> > +			assigned-clock-parents = <&clock_ldb_pll_div7>;
-> > +			power-domains = <&scmi_devpd IMX94_PD_DISPLAY>;
-> > +			nxp,blk-ctrl = <&dispmix_csr>;
-> > +			status = "disabled";
-> > +
-> > +			port {
-> > +				dcif_out: endpoint {
-> > +					remote-endpoint = <&lvds_in>;
-> > +				};
-> > +			};
-> >  		};
-> >  	};
-> >  };
-> > --
-> > 2.46.1
-> >
+> diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+> index a1bc3e96dd35..2f815e2e02ca 100644
+> --- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+> +++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+> @@ -1452,7 +1452,6 @@ static ssize_t analogix_dpaux_transfer(struct drm_dp_aux *aux,
+>  
+>  	ret = analogix_dp_transfer(dp, msg);
+>  out:
+> -	pm_runtime_mark_last_busy(dp->dev);
+>  	pm_runtime_put_autosuspend(dp->dev);
+>  
+>  	return ret;
+> @@ -1472,7 +1471,6 @@ static int analogix_dpaux_wait_hpd_asserted(struct drm_dp_aux *aux, unsigned lon
+>  	ret = readx_poll_timeout(analogix_dp_get_plug_in_status, dp, val, !val,
+>  				 wait_us / 100, wait_us);
+>  
+> -	pm_runtime_mark_last_busy(dp->dev);
+>  	pm_runtime_put_autosuspend(dp->dev);
+>  
+>  	return ret;
+> diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+> index 0ac4a82c5a6e..9577409a2eb2 100644
+> --- a/drivers/gpu/drm/bridge/analogix/anx7625.c
+> +++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+> @@ -1520,7 +1520,6 @@ static int anx7625_wait_hpd_asserted(struct drm_dp_aux *aux,
+>  
+>  	pm_runtime_get_sync(dev);
+>  	ret = _anx7625_hpd_polling(ctx, wait_us);
+> -	pm_runtime_mark_last_busy(dev);
+>  	pm_runtime_put_autosuspend(dev);
+>  
+>  	return ret;
+> @@ -1770,7 +1769,6 @@ static ssize_t anx7625_aux_transfer(struct drm_dp_aux *aux,
+>  	if (!ret)
+>  		ret = anx7625_aux_trans(ctx, msg->request, msg->address,
+>  					msg->size, msg->buffer);
+> -	pm_runtime_mark_last_busy(dev);
+>  	pm_runtime_put_autosuspend(dev);
+>  	mutex_unlock(&ctx->aux_lock);
+>  
+> diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
+> index 825777a5758f..4f46ce2c908e 100644
+> --- a/drivers/gpu/drm/bridge/parade-ps8640.c
+> +++ b/drivers/gpu/drm/bridge/parade-ps8640.c
+> @@ -198,7 +198,6 @@ static int ps8640_wait_hpd_asserted(struct drm_dp_aux *aux, unsigned long wait_u
+>  	 */
+>  	pm_runtime_get_sync(dev);
+>  	ret = _ps8640_wait_hpd_asserted(ps_bridge, wait_us);
+> -	pm_runtime_mark_last_busy(dev);
+>  	pm_runtime_put_autosuspend(dev);
+>  
+>  	return ret;
+> @@ -353,7 +352,6 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
+>  		goto exit;
+>  	}
+>  	ret = ps8640_aux_transfer_msg(aux, msg);
+> -	pm_runtime_mark_last_busy(dev);
+>  	pm_runtime_put_autosuspend(dev);
+>  
+>  exit:
+> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+> index db5cc4030238..fc100d4a6276 100644
+> --- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+> @@ -587,7 +587,6 @@ static ssize_t ti_sn_aux_transfer(struct drm_dp_aux *aux,
+>  
+>  exit:
+>  	mutex_unlock(&pdata->comms_mutex);
+> -	pm_runtime_mark_last_busy(pdata->dev);
+>  	pm_runtime_put_autosuspend(pdata->dev);
+>  
+>  	if (ret)
+> diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+> index cf0d9049bcf1..ede6288e94d6 100644
+> --- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+> +++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+> @@ -826,7 +826,7 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+>  	ret = etnaviv_gpu_reset_deassert(gpu);
+>  	if (ret) {
+>  		dev_err(gpu->dev, "GPU reset deassert failed\n");
+> -		goto fail;
+> +		goto pm_put;
+>  	}
+>  
+>  	etnaviv_hw_identify(gpu);
+> @@ -834,7 +834,7 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+>  	if (gpu->identity.model == 0) {
+>  		dev_err(gpu->dev, "Unknown GPU model\n");
+>  		ret = -ENXIO;
+> -		goto fail;
+> +		goto pm_put;
+>  	}
+>  
+>  	if (gpu->identity.nn_core_count > 0)
+> @@ -846,7 +846,7 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+>  	    gpu->identity.features & chipFeatures_FE20) {
+>  		dev_info(gpu->dev, "Ignoring GPU with VG and FE2.0\n");
+>  		ret = -ENXIO;
+> -		goto fail;
+> +		goto pm_put;
+>  	}
+>  
+>  	/*
+> @@ -862,18 +862,18 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+>  	ret = etnaviv_hw_reset(gpu);
+>  	if (ret) {
+>  		dev_err(gpu->dev, "GPU reset failed\n");
+> -		goto fail;
+> +		goto pm_put;
+>  	}
+>  
+>  	ret = etnaviv_iommu_global_init(gpu);
+>  	if (ret)
+> -		goto fail;
+> +		goto pm_put;
+>  
+>  	/* Create buffer: */
+>  	ret = etnaviv_cmdbuf_init(priv->cmdbuf_suballoc, &gpu->buffer, SZ_4K);
+>  	if (ret) {
+>  		dev_err(gpu->dev, "could not create command buffer\n");
+> -		goto fail;
+> +		goto pm_put;
+>  	}
+>  
+>  	/*
+> @@ -916,13 +916,10 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+>  	etnaviv_gpu_hw_init(gpu);
+>  	mutex_unlock(&gpu->lock);
+>  
+> -	pm_runtime_mark_last_busy(gpu->dev);
+>  	pm_runtime_put_autosuspend(gpu->dev);
+>  
+>  	return 0;
+>  
+> -fail:
+> -	pm_runtime_mark_last_busy(gpu->dev);
+>  pm_put:
+>  	pm_runtime_put_autosuspend(gpu->dev);
+>  
+> @@ -1109,7 +1106,6 @@ int etnaviv_gpu_debugfs(struct etnaviv_gpu *gpu, struct seq_file *m)
+>  
+>  	ret = 0;
+>  
+> -	pm_runtime_mark_last_busy(gpu->dev);
+>  pm_put:
+>  	pm_runtime_put_autosuspend(gpu->dev);
+>  
+> @@ -1509,7 +1505,6 @@ void etnaviv_gpu_recover_hang(struct etnaviv_gem_submit *submit)
+>  	etnaviv_gpu_hw_init(gpu);
+>  
+>  	mutex_unlock(&gpu->lock);
+> -	pm_runtime_mark_last_busy(gpu->dev);
+>  pm_put:
+>  	pm_runtime_put_autosuspend(gpu->dev);
+>  }
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimc.c b/drivers/gpu/drm/exynos/exynos_drm_fimc.c
+> index 09e33a26caaf..13ce35443206 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_fimc.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_fimc.c
+> @@ -967,7 +967,6 @@ static irqreturn_t fimc_irq_handler(int irq, void *dev_id)
+>  		struct exynos_drm_ipp_task *task = ctx->task;
+>  
+>  		ctx->task = NULL;
+> -		pm_runtime_mark_last_busy(ctx->dev);
+>  		pm_runtime_put_autosuspend(ctx->dev);
+>  		exynos_drm_ipp_task_done(task, 0);
+>  	}
+> @@ -1119,7 +1118,6 @@ static void fimc_abort(struct exynos_drm_ipp *ipp,
+>  		struct exynos_drm_ipp_task *task = ctx->task;
+>  
+>  		ctx->task = NULL;
+> -		pm_runtime_mark_last_busy(ctx->dev);
+>  		pm_runtime_put_autosuspend(ctx->dev);
+>  		exynos_drm_ipp_task_done(task, -EIO);
+>  	}
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_g2d.c b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
+> index d32f2474cbaa..58a830ffdcd7 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_g2d.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_g2d.c
+> @@ -881,7 +881,6 @@ static void g2d_runqueue_worker(struct work_struct *work)
+>  	g2d->runqueue_node = NULL;
+>  
+>  	if (runqueue_node) {
+> -		pm_runtime_mark_last_busy(g2d->dev);
+>  		pm_runtime_put_autosuspend(g2d->dev);
+>  
+>  		complete(&runqueue_node->complete);
+> @@ -1009,7 +1008,6 @@ static void g2d_wait_finish(struct g2d_data *g2d, struct drm_file *file)
+>  	 * the IRQ which triggers the PM runtime put().
+>  	 * So do this manually here.
+>  	 */
+> -	pm_runtime_mark_last_busy(dev);
+>  	pm_runtime_put_autosuspend(dev);
+>  
+>  	complete(&runqueue_node->complete);
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+> index e6d516e1976d..3b02126b7174 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+> @@ -1053,7 +1053,6 @@ static irqreturn_t gsc_irq_handler(int irq, void *dev_id)
+>  		struct exynos_drm_ipp_task *task = ctx->task;
+>  
+>  		ctx->task = NULL;
+> -		pm_runtime_mark_last_busy(ctx->dev);
+>  		pm_runtime_put_autosuspend(ctx->dev);
+>  		exynos_drm_ipp_task_done(task, err);
+>  	}
+> @@ -1156,7 +1155,6 @@ static void gsc_abort(struct exynos_drm_ipp *ipp,
+>  		struct exynos_drm_ipp_task *task = ctx->task;
+>  
+>  		ctx->task = NULL;
+> -		pm_runtime_mark_last_busy(ctx->dev);
+>  		pm_runtime_put_autosuspend(ctx->dev);
+>  		exynos_drm_ipp_task_done(task, -EIO);
+>  	}
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_rotator.c b/drivers/gpu/drm/exynos/exynos_drm_rotator.c
+> index 7b0f4a98a70a..06a064f5d8b4 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_rotator.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_rotator.c
+> @@ -107,7 +107,6 @@ static irqreturn_t rotator_irq_handler(int irq, void *arg)
+>  		struct exynos_drm_ipp_task *task = rot->task;
+>  
+>  		rot->task = NULL;
+> -		pm_runtime_mark_last_busy(rot->dev);
+>  		pm_runtime_put_autosuspend(rot->dev);
+>  		exynos_drm_ipp_task_done(task,
+>  			irq_status == ROT_IRQ_STATUS_COMPLETE ? 0 : -EINVAL);
+> diff --git a/drivers/gpu/drm/exynos/exynos_drm_scaler.c b/drivers/gpu/drm/exynos/exynos_drm_scaler.c
+> index c8a1b6b0a29c..b59fa9973beb 100644
+> --- a/drivers/gpu/drm/exynos/exynos_drm_scaler.c
+> +++ b/drivers/gpu/drm/exynos/exynos_drm_scaler.c
+> @@ -438,7 +438,6 @@ static irqreturn_t scaler_irq_handler(int irq, void *arg)
+>  		struct exynos_drm_ipp_task *task = scaler->task;
+>  
+>  		scaler->task = NULL;
+> -		pm_runtime_mark_last_busy(scaler->dev);
+>  		pm_runtime_put_autosuspend(scaler->dev);
+>  		exynos_drm_ipp_task_done(task, scaler_task_done(val));
+>  	}
+> diff --git a/drivers/gpu/drm/i915/intel_runtime_pm.c b/drivers/gpu/drm/i915/intel_runtime_pm.c
+> index 7ce3e6de0c19..8e95afced2ce 100644
+> --- a/drivers/gpu/drm/i915/intel_runtime_pm.c
+> +++ b/drivers/gpu/drm/i915/intel_runtime_pm.c
+> @@ -305,7 +305,6 @@ static void __intel_runtime_pm_put(struct intel_runtime_pm *rpm,
+>  
+>  	intel_runtime_pm_release(rpm, wakelock);
+>  
+> -	pm_runtime_mark_last_busy(kdev);
+>  	pm_runtime_put_autosuspend(kdev);
+>  }
+>  
+> @@ -383,7 +382,6 @@ void intel_runtime_pm_enable(struct intel_runtime_pm *rpm)
+>  	dev_pm_set_driver_flags(kdev, DPM_FLAG_NO_DIRECT_COMPLETE);
+>  
+>  	pm_runtime_set_autosuspend_delay(kdev, 10000); /* 10s */
+> -	pm_runtime_mark_last_busy(kdev);
+>  
+>  	/*
+>  	 * Take a permanent reference to disable the RPM functionality and drop
+> diff --git a/drivers/gpu/drm/imx/dcss/dcss-crtc.c b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+> index af91e45b5d13..7ad8dfd4367f 100644
+> --- a/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+> +++ b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+> @@ -154,7 +154,6 @@ static void dcss_crtc_atomic_disable(struct drm_crtc *crtc,
+>  
+>  	drm_crtc_vblank_off(crtc);
+>  
+> -	pm_runtime_mark_last_busy(dcss->dev);
+>  	pm_runtime_put_autosuspend(dcss->dev);
+>  }
+>  
+> diff --git a/drivers/gpu/drm/lima/lima_sched.c b/drivers/gpu/drm/lima/lima_sched.c
+> index 954f4325b859..267d5b68031d 100644
+> --- a/drivers/gpu/drm/lima/lima_sched.c
+> +++ b/drivers/gpu/drm/lima/lima_sched.c
+> @@ -197,7 +197,6 @@ static void lima_pm_idle(struct lima_device *ldev)
+>  	lima_devfreq_record_idle(&ldev->devfreq);
+>  
+>  	/* GPU can do auto runtime suspend */
+> -	pm_runtime_mark_last_busy(ldev->dev);
+>  	pm_runtime_put_autosuspend(ldev->dev);
+>  }
+>  
+> diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+> index 3796c41629cc..2de51e3ccca2 100644
+> --- a/drivers/gpu/drm/panel/panel-edp.c
+> +++ b/drivers/gpu/drm/panel/panel-edp.c
+> @@ -613,7 +613,6 @@ static int panel_edp_get_modes(struct drm_panel *panel,
+>  			}
+>  		}
+>  
+> -		pm_runtime_mark_last_busy(panel->dev);
+>  		pm_runtime_put_autosuspend(panel->dev);
+>  	}
+>  
+> @@ -825,7 +824,6 @@ static int generic_edp_panel_probe(struct device *dev, struct panel_edp *panel)
+>  	}
+>  
+>  exit:
+> -	pm_runtime_mark_last_busy(dev);
+>  	pm_runtime_put_autosuspend(dev);
+>  
+>  	return 0;
+> @@ -917,7 +915,6 @@ static int panel_edp_probe(struct device *dev, const struct panel_desc *desc,
+>  	if (!panel->base.backlight && panel->aux) {
+>  		pm_runtime_get_sync(dev);
+>  		err = drm_panel_dp_aux_backlight(&panel->base, panel->aux);
+> -		pm_runtime_mark_last_busy(dev);
+>  		pm_runtime_put_autosuspend(dev);
+>  
+>  		/*
+> diff --git a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
+> index 20ec27d2d6c2..34a90ea4ba7b 100644
+> --- a/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
+> +++ b/drivers/gpu/drm/panel/panel-samsung-atna33xc20.c
+> @@ -236,7 +236,6 @@ static int atana33xc20_get_modes(struct drm_panel *panel,
+>  
+>  	num = drm_edid_connector_add_modes(connector);
+>  
+> -	pm_runtime_mark_last_busy(panel->dev);
+>  	pm_runtime_put_autosuspend(panel->dev);
+>  
+>  	return num;
+> @@ -306,7 +305,6 @@ static int atana33xc20_probe(struct dp_aux_ep_device *aux_ep)
+>  
+>  	pm_runtime_get_sync(dev);
+>  	ret = drm_panel_dp_aux_backlight(&panel->base, aux_ep->aux);
+> -	pm_runtime_mark_last_busy(dev);
+>  	pm_runtime_put_autosuspend(dev);
+>  
+>  	/*
+> diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+> index 3333d4a07504..d6bdee56b32f 100644
+> --- a/drivers/gpu/drm/panel/panel-simple.c
+> +++ b/drivers/gpu/drm/panel/panel-simple.c
+> @@ -320,7 +320,6 @@ static int panel_simple_unprepare(struct drm_panel *panel)
+>  {
+>  	int ret;
+>  
+> -	pm_runtime_mark_last_busy(panel->dev);
+>  	ret = pm_runtime_put_autosuspend(panel->dev);
+>  	if (ret < 0)
+>  		return ret;
+> @@ -389,7 +388,6 @@ static int panel_simple_get_modes(struct drm_panel *panel,
+>  
+>  		num += drm_edid_connector_add_modes(connector);
+>  
+> -		pm_runtime_mark_last_busy(panel->dev);
+>  		pm_runtime_put_autosuspend(panel->dev);
+>  	}
+>  
+> diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+> index a2248f692a03..f635f26a23f4 100644
+> --- a/drivers/gpu/drm/panthor/panthor_sched.c
+> +++ b/drivers/gpu/drm/panthor/panthor_sched.c
+> @@ -2446,7 +2446,6 @@ static void tick_work(struct work_struct *work)
+>  
+>  out_unlock:
+>  	mutex_unlock(&sched->lock);
+> -	pm_runtime_mark_last_busy(ptdev->base.dev);
+>  	pm_runtime_put_autosuspend(ptdev->base.dev);
+>  
+>  out_dev_exit:
+> @@ -3203,7 +3202,6 @@ queue_run_job(struct drm_sched_job *sched_job)
+>  
+>  out_unlock:
+>  	mutex_unlock(&sched->lock);
+> -	pm_runtime_mark_last_busy(ptdev->base.dev);
+>  	pm_runtime_put_autosuspend(ptdev->base.dev);
+>  
+>  	return done_fence;
+> diff --git a/drivers/gpu/drm/tegra/submit.c b/drivers/gpu/drm/tegra/submit.c
+> index 2430fcc97448..5e0e76ebc5be 100644
+> --- a/drivers/gpu/drm/tegra/submit.c
+> +++ b/drivers/gpu/drm/tegra/submit.c
+> @@ -502,7 +502,6 @@ static void release_job(struct host1x_job *job)
+>  	kfree(job_data->used_mappings);
+>  	kfree(job_data);
+>  
+> -	pm_runtime_mark_last_busy(client->base.dev);
+>  	pm_runtime_put_autosuspend(client->base.dev);
+>  }
+>  
+> diff --git a/drivers/gpu/drm/tidss/tidss_drv.c b/drivers/gpu/drm/tidss/tidss_drv.c
+> index a1b12e52aca4..e7e02d6017b4 100644
+> --- a/drivers/gpu/drm/tidss/tidss_drv.c
+> +++ b/drivers/gpu/drm/tidss/tidss_drv.c
+> @@ -45,8 +45,6 @@ void tidss_runtime_put(struct tidss_device *tidss)
+>  
+>  	dev_dbg(tidss->dev, "%s\n", __func__);
+>  
+> -	pm_runtime_mark_last_busy(tidss->dev);
+> -
+>  	r = pm_runtime_put_autosuspend(tidss->dev);
+>  	WARN_ON(r < 0);
+>  }
+> diff --git a/drivers/gpu/drm/vc4/vc4_v3d.c b/drivers/gpu/drm/vc4/vc4_v3d.c
+> index bb09df5000bd..f899cb9ef513 100644
+> --- a/drivers/gpu/drm/vc4/vc4_v3d.c
+> +++ b/drivers/gpu/drm/vc4/vc4_v3d.c
+> @@ -152,10 +152,8 @@ vc4_v3d_pm_put(struct vc4_dev *vc4)
+>  		return;
+>  
+>  	mutex_lock(&vc4->power_lock);
+> -	if (--vc4->power_refcount == 0) {
+> -		pm_runtime_mark_last_busy(&vc4->v3d->pdev->dev);
+> +	if (--vc4->power_refcount == 0)
+>  		pm_runtime_put_autosuspend(&vc4->v3d->pdev->dev);
+> -	}
+>  	mutex_unlock(&vc4->power_lock);
+>  }
+>  
+> -- 
+> 2.39.5
+> 
+
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
