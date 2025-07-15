@@ -1,199 +1,227 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010062.outbound.protection.outlook.com [52.101.69.62])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F3D2609C4
-	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 07:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752563504; cv=fail; b=ZIVgsm9XeKJpeFHYV6c7TgvJ4xeOomf4unfmTLmzZL7d0pHYWeOn3KQSLRHPv2YJJRWhxivf46UU3KyRbzbWRNnZERutEtTfJHibMY2gQC9sRbRwdEShdsHfe/IVEJLwkZpH9D0VN4fpNzJkZijQsdf06FBzU6rI/wVnqjonzQg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752563504; c=relaxed/simple;
-	bh=IrQaQykGjj3dB/3nVu8v+dK34oLNaImDrN9lEaKIOlw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=K6D6ELMyvle8c7aX0O2rFLrc1mL47ZyWzp0V6O3mjgd1AYfVE9N/cp5PMTqErEsu+agXtHTDIPmVkjLxdgClwwtkrOW9Y7OjG0dSnQtwuD5rznVRUynXuTuz5Kx1DTQDW5FFYPU3LdKWDoNqsiK/4u0xCXmBmMX8+50iMGr5zzU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dgZdcNeH; arc=fail smtp.client-ip=52.101.69.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667BE26D4F2
+	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 07:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752565932; cv=none; b=FHtgtCGcs1AJewa5YpJHJMoSqIIbPgmb92eh1tKcLHSM6XzTH3gj42PBcYEQ8h/+jKA3yF4B+L+u7Eo3v5XYQvD35VtX/RG2vkgouGIdLih7K33966Vik/uK9smpKlgufnTkVD+HOuq6wQF3DsuXpj4mJwyYpll/vZEXAnHStWY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752565932; c=relaxed/simple;
+	bh=9kafQ4EvbyNb+0AXntVH1c17Mp47HMZ46/b+y7UAQjc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KDT6jIp6ajW+Sz0ushsH8QBAkaNYJHM6IcQUmRbD4JdDjVlPTf4Vo56jV7rsthWizz0egRcp/egNOiHdPaNqb+D13UMpEuArfbm7vpMj/J3uOdTP0aGiO9S71kWRXNr8Z1FZma7z9EYnXkJaixu6WyU1qQH3w+NfkwWTQZtDA+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=K2ZBOvpC; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dgZdcNeH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Eglal1HvPDa3zPKdextzqNb65JLIuIEdL4bz9JNT9j0+tu53TqiASqC4UMNcBBlXePDVN2E221en6J9Ban9MvMkJLz68jCoh8N+S0o5hT8BohBd8IPMn0fX26q4hQgTwOeVYOvj25kTls8doosYXWVNmtmZ96xHLdHoRnB1rtJUUbN0oeL5yezEgSj64NhjnvJDHxAYdtfUbGNR8oVd56M2eBHaZiAgk41R7EjYPzN+YHbNzA9ZsPe1bXuIbQSiFSCaQem58ZEBSafv/4JpofY/l2BifNWZzzt/YxNPjUxW2pjmfv5HycJsVDIWxHUO0IB4Y5Esk66GKm1OvmR7F+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IrQaQykGjj3dB/3nVu8v+dK34oLNaImDrN9lEaKIOlw=;
- b=DMy968+N15HIpaxAmVNRVHSP3HieRFo76JFZ3nE6JwctU3Bpq5hrq7eOpaN/GYjcOiKFKohrV7omQLS2eDQt+Rb02KWuamFAuGaBv6yYHR3z9Iwux5q73y4iNOR7eOVC6mRg02pxMP/Y1pBXTAN1HuUZL5gVh4mql68/YRh1IKgvDm/2yv+GNqAC4Azv3k+JVM/VK0gN2Bsc+ZMWUd87cTz/yzp9ilmCSiIFt2W/t2nHz67kIqkZMJpa7cPdJQyb0OmbQVlxcnU19q/yoMXPWG1oBT8Qaa996mPMf8DhRxotZGkL1ePzPLxW5QJy7hh3nndJoeAp6ED6Wij+/oTPdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IrQaQykGjj3dB/3nVu8v+dK34oLNaImDrN9lEaKIOlw=;
- b=dgZdcNeHRZIlcCkGmHFJZbwnMrbbwb835TOLeK3GA1pXx18EOwwx489mBRWLAYIVcLJCfrcqPQJt7fQXJV7Pcl5MXMuErTyEQGAteSR+P4/Fh5sZdeqWMNkTlGgWsuxKYxa0XoP4J5JkubVpnjsaUsHJJj4yOHXQwxxX4mj5cJB9j5xxOzCzAVLZoTKixUIETNMkklHciQX6ToHcV5lEhLplpgc36+hK4CXGZ4H+Bkjcf8+DZeJzLEh7pyk0hEKHVBV0UXiRrsGfREoJizpMMQKg5TDSdXOW9ypFxKPwuoREI6CeMLhiJ0dsGSqx3VyXWw3hUh06Tg+a6VFruo0Apg==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA4PR04MB8063.eurprd04.prod.outlook.com (2603:10a6:102:ba::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Tue, 15 Jul
- 2025 07:11:39 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Tue, 15 Jul 2025
- 07:11:39 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Krzysztof Kozlowski <krzk@kernel.org>, "F.S. Peng" <fushi.peng@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "robh@kernel.org"
-	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-Subject: RE: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
- Timer
-Thread-Topic: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
- Timer
-Thread-Index:
- AQHb8jPWk5neHXUn3Eeo02nqDOVTYbQxImMAgAATMMCAAAm6gIAAFX1wgAAGKwCAAAFaQIAADfuAgAACM8CAAAPoAIAAAqbQgAAP8QCAABcf0IAAD72AgADTHvCAAEudAIAAAbog
-Date: Tue, 15 Jul 2025 07:11:39 +0000
-Message-ID:
- <PAXPR04MB8510633DE93F043A0CD09F5B8857A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <169e742f-778e-4d42-b301-c954ecec170a@kernel.org>
- <PAXPR04MB85107A7E7EB7141BC8F2518A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <836c9f0b-2b73-4b36-8105-db1ae59b799c@kernel.org>
- <PAXPR04MB8510CCEA719F8A6DADB8566A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250714103104.vyrkxke7cmknxvqj@skbuf>
- <PAXPR04MB85105A933CBD5BE38F08EB018854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250714113736.cegd3jh5tsb5rprf@skbuf>
- <PAXPR04MB851072E7E1C9F7D5E54440EC8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250714135641.uwe3jlcv7hcjyep2@skbuf>
- <PAXPR04MB8510FFE0A5DA2F3A94E9CB7E8857A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250715070256.ce6a3insjihjtpzj@skbuf>
-In-Reply-To: <20250715070256.ce6a3insjihjtpzj@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PA4PR04MB8063:EE_
-x-ms-office365-filtering-correlation-id: 8542babe-f2db-4816-c55f-08ddc36ed80c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|19092799006|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?VQFDKVhbeJCP+ib/C4tyUsJCNFYbGLxHDWa+ymjDmF9xZ6Uy1rNSjBSbGZnU?=
- =?us-ascii?Q?/wjM3am+044qQrLN5bTFHw+vkXcEZjy7qCFXOqNwrYYQa5nd68mZS/FKa7/O?=
- =?us-ascii?Q?6DsUmmIddna6RhlOr2j3FZQRy0dlXm6bOqNsixWr62HN8TrOIndLu/YLFlif?=
- =?us-ascii?Q?ldw5SEYltVS5yi/kmoohDnEijJ5mGPMwDbDVUjOufkfFA+VWqRmyadW5hQjO?=
- =?us-ascii?Q?ZMQ/eD6AkW3b3kiqK0gQwpXdyvsdjS5fR5qaKl/Grlv6/ra/O/7EQBsqFzLl?=
- =?us-ascii?Q?SJT/JDDUsxiCq3PDTD57A+svi9VcXLZuDdR+wf7hChZ9RtdwE0lQ2WunyiLr?=
- =?us-ascii?Q?R4hB1i+EnUNqHRbtVLPSAOcQMgT4DO4k/94cnr4jAUaXcAdq4AaVVVbSB+JS?=
- =?us-ascii?Q?/gATb6rZ29V5pVFZL1+mxZRfmRFeU4+4/66yoruuj0WpMUi4a0hpuA923oHr?=
- =?us-ascii?Q?AJzFWO6Umucbvtx9/IqEmbUIfqIwAMUSM8kDw8QHCK6yE6egnGswp0kNO4/s?=
- =?us-ascii?Q?p+E8bAGm8WICuN9UCgOmeL1d7F42P1/oanOZno1QBvarBeqwyrVITqO8y9A0?=
- =?us-ascii?Q?b4Eh+1sOAnsdYTp8US+xXHBiNHqd1jAdRO8XAi/zLhIIU2DSB9eIwYcmUnOw?=
- =?us-ascii?Q?pN8/lF3Bqtjxj0YQV7zp6I1lTHTZ/ZH1TTAgRrGGE7OrtI6CcxB9VG2p801C?=
- =?us-ascii?Q?nhK2fMaqqVlcjOswULKx3anQzStC6Ro0tvMLXbhrW80C0sFkualwJAYvNLwi?=
- =?us-ascii?Q?w80fFRjfa7V4HskOjYSL9KRAdnzr7MS3o5b5QSBI5RIsOTcb8uhqKd3HTTQ8?=
- =?us-ascii?Q?jd1o/15quXIQnXwxrWFD5IfgNlBVNHCIl7stQnwZJMebS84QHEf+LsR4G0DZ?=
- =?us-ascii?Q?5E6xivS+1rIeRhe/k2TEOwrJjqf02pfQxT/BUEFD2Z5OK1DnYIfiFjNeIyaq?=
- =?us-ascii?Q?xcvGUeyikDai2D14u5qB53LWq0lFnC2D5ot/VJCIH/S4M8hjWokGPsmDFgWF?=
- =?us-ascii?Q?/wjuGOhu1vg3llElD1N+WxHrclnsizMKyFlq559HyOqvgiqlJGqQoJXDJZXm?=
- =?us-ascii?Q?78yu9G2PEV+bw2ghNv48pVHRWGFG7+qtEvAQXdP+/nZVOq/UhYuMdMpk+4KJ?=
- =?us-ascii?Q?Bk5K8swUYEOMNqON2XbUi2AwolpcM+HB2Dxr2lHXYx1xfmXBifllV0qlqyj+?=
- =?us-ascii?Q?5d27u4sGzk5VKIwv/Xw9ASH2Du2NJxgtwSisz+cXBFIMnSCqSDlRYpN0rYmr?=
- =?us-ascii?Q?K/LPPc+FOnRo1MFThnvjeXms57gSIAmDrXUdhg7LG7CN3OlYwr22ulANug8b?=
- =?us-ascii?Q?e1ZkTdhJlElzTEreSrZejraK4sheHafx9k+uNGZNaTYN6vvouNgJWhVCeYKz?=
- =?us-ascii?Q?hIE0mdTzsMShQkbeM1cZ8iY/ANAKNdxcxP98YUj2E1tkCUb7u1pPdMtf4woR?=
- =?us-ascii?Q?uWde+ImktWoF88FwC1u5en4FxQXTgBBj+5LfpYiQ+XvXSq9576VNrQ=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(19092799006)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?5+mEFiyIT30awct9VSVLxfVk+N2KwhoTAHmCGoKTJAC/IAbugQ8SfTBkAB3p?=
- =?us-ascii?Q?137l3hPJRVBZaTTnT7RcnXFyn0YGFX7osaIft+1wJOqz7aS6s+XjrpV4qphg?=
- =?us-ascii?Q?+dtMLVS96xuM3iYn7SUquhXpsEGqA+tRcpM6ENxsVFCqkJMpDz9/6nshYUh9?=
- =?us-ascii?Q?W7A/7CzDNN8wgNV8eZuR4jHn0BdNMWgiD/chK1PrrLtwqLioVG1vnRbnYZSj?=
- =?us-ascii?Q?7Wd3V8JBy+JngYWp5IWHkpQPRdRONkQ0LHo7Kqm3Ynht70myp2O11kNuSEr+?=
- =?us-ascii?Q?XJ+epQDVeh312I9Ti+B2qy0tBMzdng49G7+G+uWJOiHmgAVtG96MW/qxLLHr?=
- =?us-ascii?Q?HT8jll8vN5Fm3xCEXI4vOQU2V+R12qmwMqnO6VjHLtripU3Ig+yTbFN+ONfN?=
- =?us-ascii?Q?CvySMtIeNF2RPIZb7NrAC1ULbLI22uY7iBckuvI4NH46Okj7pGkiy4kP++4s?=
- =?us-ascii?Q?fXnNb74Y38cvHyRrHoiSjT4TChogy74zGUI4AyPbuvhz0/NxjSwAeghHIWsO?=
- =?us-ascii?Q?gLLPzxnjUfM4ncYNj2zra+OuW9aWiL6WijT4QKDutqUnKk5oB8hQzBJJkO5H?=
- =?us-ascii?Q?Wyou1Jg0X9qG28Q9zElxMeEAOP6LwCjD4mdBfy7eB23opVUoXrgmP1X+XXg6?=
- =?us-ascii?Q?PH3G1cl0LC+pDFAFOk/CrTy6pCYWa0sQ+A4olH5ElOc5MI9qzIQ63VzVN63B?=
- =?us-ascii?Q?iSBNFr7JwMrt9bfu/2fMKf0ByGDkpy10BRQecUsYO8bTqj6kotwsVCaKXWoI?=
- =?us-ascii?Q?sJWnUPZejkHHrNbRNBY7ohofe6/jortrPQNjfNkDFghLPEZWeDKfMpdEYYT/?=
- =?us-ascii?Q?C54qA6Q7qMpcMGtFN5iCg3O2aX/dSFTfKi8HYXAilN4Jiz3z1apNNc9n1lVY?=
- =?us-ascii?Q?hGs89Y1UqKQAe8cvuClF6mVYQWXGQisY4TGt1U1idxFcXH0GCN5NkzeiDpga?=
- =?us-ascii?Q?F6CoL3ZfeLJnIdiuwU8wmuw3uVEz5OJW6ocOcz57nRKxqKWen0pehXauZgOU?=
- =?us-ascii?Q?gAiBcfjc+Ov4ldu4Hq/OeT8lqNUHxEmXj6OChE3pBkclX1KkoHvSOA+/5pUu?=
- =?us-ascii?Q?zJPQHnTFILbGe9VUfIEq4MBYqj5ARjC4CC+zMM5xidDPopvGtqqwJleWJ727?=
- =?us-ascii?Q?BkzWFyKK9TKXXgV/IacBFuyBuNrsagVq+K5PoB8O2XC8daFVpABn5De4OcYF?=
- =?us-ascii?Q?qrdYviDMNbxrjrrRjw1Esi2t7jOpRnBK3SrRzLTfp9L3XbpzVjTcc3H+5iXJ?=
- =?us-ascii?Q?/Et97fv9VQNPFughqAEGs4aOHAzymdqUjm7CQepYwR+HOZzqGxyS3vNzxiMH?=
- =?us-ascii?Q?aKcVjA4lVs5kn8POcAoC3O/7SjzUbB0Lf/9DmLXPlOB2C3nWXoHCmkA3jr3b?=
- =?us-ascii?Q?GBPBc1Vp+Gx3286qnOn3z7VdrsJfeq2WrTMaUAphcjL9539D/QFYMhz2NLoM?=
- =?us-ascii?Q?p5p0Sx5QPPP6WQF6wrd9i2TviphMlucwv0Aq1JbrEguT9onnWsPojt7qF4OB?=
- =?us-ascii?Q?5o0Dfuy8Vww4qUMVsOUZ1gqJvCF4MuPdo+nVD3LwC5E5+PkQxfaA69cOXEm5?=
- =?us-ascii?Q?OIfejx5EhsZmpM3TiSc=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="K2ZBOvpC"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 15E884430B;
+	Tue, 15 Jul 2025 07:52:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1752565927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=M1C4N9WQ5rgNkJxYdso36BOZpEKSkeehMURg6RF2AZs=;
+	b=K2ZBOvpCK+DfbORKkUB96qZGojQMOpxKddXHomukQBEYBIN0+lWkj1YulbBi+zfeCRljce
+	ttBunNrQzmnhlqdvoJbaUegatps4qvodXqUHBZkfHJL+5voqtr1E8uuAGwzADYFEH7FiUv
+	pWMHI2VPjx0aq+v9NotfmbpIiBWLLYL7iCLnS9n3yx6Mv/TuPYng8bkmj4mw489w22m1Jh
+	jMqSVGWUuQLOuwffNXsCwGnXjUHX1LAbH3NLppNQIhnxhMVvm0DC1sKPw4Lw5QG7yER/0y
+	iG/DOx+uuN7YWl+GRAg7T3C+vCELR/4CaTsXl+WJvZzjKfmB+yM0p0i0Ygz9tg==
+Date: Tue, 15 Jul 2025 09:52:01 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Derek
+ Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>,
+ Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Mark Brown <broonie@kernel.org>, Len
+ Brown <lenb@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Wolfram Sang <wsa@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Davidlohr Bueso
+ <dave@stgolabs.net>, Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 05/28] bus: simple-pm-bus: Populate child nodes at
+ probe
+Message-ID: <20250715095201.1bcb4ab7@bootlin.com>
+In-Reply-To: <CAL_JsqLnPxUKXo3+Qdv-C1kXa6zbL1zMKDQsg1--08EY4TwsKw@mail.gmail.com>
+References: <20250613134817.681832-1-herve.codina@bootlin.com>
+	<20250613134817.681832-6-herve.codina@bootlin.com>
+	<20250627155200.GB3234475-robh@kernel.org>
+	<20250703093302.4f7743ea@bootlin.com>
+	<20250704105725.50cb72b9@bootlin.com>
+	<CAL_JsqLnPxUKXo3+Qdv-C1kXa6zbL1zMKDQsg1--08EY4TwsKw@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8542babe-f2db-4816-c55f-08ddc36ed80c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jul 2025 07:11:39.4552
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qg4sMMLYIPoVScXc/WHODM/jGHAI3gqCONyqyL0xEz+AwfnSAh+syCKgvWtUkEqhZVHx+ecQbbxuhbcmi+uX/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB8063
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgedvjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepvdgrtddumegvtdgrmedvkeehmegsleektdemvgegtdgtmeeitgegfeemsgehsggsmegrgedvkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgdtrgemvdekheemsgelkedtmegvgedttgemiegtgeefmegshegssgemrgegvdekpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgeekpdhrtghpthhtoheprhhosghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgp
+ dhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhnvghlsehpvghnghhuthhrohhnihigrdguvg
+X-GND-Sasl: herve.codina@bootlin.com
 
-> On Tue, Jul 15, 2025 at 05:52:33AM +0300, Wei Fang wrote:
-> > > You seem to imply that the "nxp,pps-channel" property affects the
-> > > function of the SoC pads, which may be connected to the NETC 1588 tim=
-er
-> > > block or to some other IP. Nothing in the code I saw suggested this
-> > > would be the case, and I still don't see how this is the case - but
-> > > anyway, my bad.
-> > >
-> > > In this case, echoing Krzysztof's comments: How come it isn't the sys=
-tem
-> > > pinmux driver the one concerned with connecting the SoC pads to the N=
-ETC
-> > > 1588 timer or to FlexIO, CAN etc? The pinmux driver controls the pads=
-,
-> > > the NETC timer controls its block's pins, regardless of how they are
-> > > routed further.
+Hi Rob,
+
+On Mon, 14 Jul 2025 12:44:22 -0500
+Rob Herring <robh@kernel.org> wrote:
+
+> On Fri, Jul 4, 2025 at 3:57 AM Herve Codina <herve.codina@bootlin.com> wrote:
 > >
-> > pinmux can select which device to use this pin for, but this is the
-> > configuration inside SoC. For the outside, depending on the design
-> > of the board, for example, pin0 is connected to a CAN-related device,
-> > then in fact this pin can only be used by CAN.
->=20
-> Ok, but I fail to see the relevance here? Do you just mean to say 'there
-> are multiple FIPER outputs from the 1588 timer block, and they may not
-> all be pinmuxed to SoC pads, so I intended "nxp,pps-channel" as a way
-> for the device tree writer to select one of the FIPER outputs which is
-> multiplexed to an SoC pad, rather than arbitrarily choosing one of the
-> FIPER channels in the driver'? If so, I believe the case is settled and
-> this property will disappear in v2.
+> > Hi Rob,
+> >
+> > On Thu, 3 Jul 2025 09:33:02 +0200
+> > Herve Codina <herve.codina@bootlin.com> wrote:
+> >  
+> > > Hi Rob,
+> > >
+> > > On Fri, 27 Jun 2025 10:52:00 -0500
+> > > Rob Herring <robh@kernel.org> wrote:
+> > >  
+> > > > On Fri, Jun 13, 2025 at 03:47:45PM +0200, Herve Codina wrote:  
+> > > > > The simple-pm-bus driver handles several simple busses. When it is used
+> > > > > with busses other than a compatible "simple-pm-bus", it doesn't populate
+> > > > > its child devices during its probe.
+> > > > >
+> > > > > This confuses fw_devlink and results in wrong or missing devlinks.
+> > > > >
+> > > > > Once a driver is bound to a device and the probe() has been called,
+> > > > > device_links_driver_bound() is called.
+> > > > >
+> > > > > This function performs operation based on the following assumption:
+> > > > >     If a child firmware node of the bound device is not added as a
+> > > > >     device, it will never be added.
+> > > > >
+> > > > > Among operations done on fw_devlinks of those "never be added" devices,
+> > > > > device_links_driver_bound() changes their supplier.
+> > > > >
+> > > > > With devices attached to a simple-bus compatible device, this change
+> > > > > leads to wrong devlinks where supplier of devices points to the device
+> > > > > parent (i.e. simple-bus compatible device) instead of the device itself
+> > > > > (i.e. simple-bus child).
+> > > > >
+> > > > > When the device attached to the simple-bus is removed, because devlinks
+> > > > > are not correct, its consumers are not removed first.
+> > > > >
+> > > > > In order to have correct devlinks created, make the simple-pm-bus driver
+> > > > > compliant with the devlink assumption and create its child devices
+> > > > > during its probe.  
+> > > >
+> > > > IIRC, skipping child nodes was because there were problems with
+> > > > letting the driver handle 'simple-bus'. How does this avoid that now?  
+> > >
+> > > I don't know about the specific issues related to those problems. Do you
+> > > have some pointers about them?
+> > >  
+> > > >
+> > > > The root of_platform_populate() that created the simple-bus device that
+> > > > gets us to the probe here will continue descending into child nodes.
+> > > > Meanwhile, the probe here is also descending into those same child
+> > > > nodes. Best case, that's just redundant. Worst case, won't you still
+> > > > have the same problem if the first of_platform_populate() creates the
+> > > > devices first?
+> > > >  
+> > >
+> > > Maybe we could simply avoid of_platform_populate() to be recursive when a
+> > > device populate by of_platform_populate() is one of devices handled by
+> > > the simple-bus driver and let the simple-bus driver do the job.
+> > >
+> > > of_platform_populate will handle the first level. It will populate children
+> > > of the node given to of_platform_populate() and the children of those
+> > > children will be populate by the simple-bus driver.
+> > >
+> > > I could try a modification in that way. Do you think it could be a correct
+> > > solution?
+> > >  
+> >
+> > I have started to look at this solution and it's going to be more complex
+> > than than I thought.
+> >
+> > Many MFD drivers uses a compatible of this kind (the same exist for bus
+> > driver with "simple-bus"):
+> >   compatible = "foo,bar", "simple-mfd";
+> >
+> > Usually the last compatible string ("simple-mfd" here) is a last fallback
+> > and the first string is the more specific one.
+> >
+> > In the problematic case, "foo,bar" has a specific driver and the driver
+> > performs some operations at probe() but doesn't call of_platform_populate()
+> > and relies on the core to do the device creations (recursively) based on
+> > the "simple,mfd" string present in the compatible property.
+> >
+> > Some other calls of_platform_populate() in they probe (which I think is
+> > correct) and in that case, the child device creation can be done at two
+> > location: specific driver probe() and core.
+> >
+> > You pointed out that the core could create devices before the specific
+> > driver is probed. In that case, some of existing drivers calling
+> > of_platform_populate() are going to have issues.
+> >
+> > I can try to modify existing MFD and bus drivers (compatible fallback to
+> > simple-mfd, simple-bus, ...) in order to have them call of_platform_populate()
+> > in they probe() and after all problematic drivers are converted, the
+> > recursive creation of devices done in the core could be removed.  
+> 
+> The problem is how does a bus driver know if there is a specific MFD
+> driver or not? It doesn't. The MFD driver could be a module and loaded
+> any time later. We'd really need some sort of unbind the generic
+> driver and re-bind to a more specific driver when and if that driver
+> appears. We could perhaps have a list of devices with a driver because
+> in theory that should be a short list as the (broken) promise of
+> simple-mfd is the child nodes have no dependency on the parent node
+> which implies the parent doesn't have a driver. The specific
+> compatible is there in case that assumption turns out wrong.
+> 
 
-Yeah, now I'm clear that PTP_CLK_REQ_PPS is not used to output PPS
-to external pins, so this property will be dropped.
+Hum, I see.
 
+In my use case, I don't use MFD drivers but only simple-bus compatible.
+I think your point is also relevant with simple-bus. Indeed how does a
+parent bus driver know if there is a specific bus driver that handles
+the child simple-bus compatible one in case of 'simple-bus' used as
+fallback.
+
+Related to your proposal related to the "list of devices with a driver",
+what do you mean? I don't see how to set this kind of list. Can you give
+me some pointers?
+
+If I understood the discussion, the issue seems that 'simple-bus' can't
+populate unconditionally children at his probe. The possible recursion
+in creating devices done by of_platform_populate() should be kept and
+'simple-bus' should rely on that.
+
+The other solution that fixes my use case is to use an other compatible
+string. Would you accept a new compatible string: "simple-platform-bus"?
+
+In simple-pm-bus.c, this compatible would populate children at probe.
+In fact, it will act the same way as 'simple-pm-bus' without looking at
+clocks nor handling pm_runtime.
+
+Best regards,
+Hervé
