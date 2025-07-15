@@ -1,232 +1,221 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010061.outbound.protection.outlook.com [52.101.84.61])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3742D367
-	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 02:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752547959; cv=fail; b=MPw6NvRehcmD8BvLjQSMSZphDFP5lX8KizXX4PDsDn9CgVlfTOb5xyKgWjmRo9wkrQWtHo8m8j+GMzJMrmfjb2698lQKbiFwWEktavska1mD/zfvxt4My3HUEOfKq0tIqn0BZfSHrbkr5zhZCxRZRRUOAwrlUKlAOLc18edLR1E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752547959; c=relaxed/simple;
-	bh=wMQMKA1MEWOhX9+XuSDDH06+0M1ZY/kFOq3wKSlAX/4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Qurr2MMIc6ZLOuftXDGkUvgM+Y+ydDRzfT9WDuQlR4hkHFN5+BAK5k08z7MbOP95wC90o8o6f1c788Qtj0VrntDUugFVgWwGLVm7GXWuDicIvJTTk0S8nEIcYwdyGpKh7WD+7lA0SxPtGaPYq6XAL75K3EVVRTqod8DChUZD2Y4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=btC3buht; arc=fail smtp.client-ip=52.101.84.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8546A262A6
+	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 05:46:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752558409; cv=none; b=iieMsmJKtK+abmNq1ID//hLt9EBsbXolrRe0sZZB+0Fg8t5N+col9CYFMSRfqwS6WheBkDolb59FXa9tcKiFsn2te/VAl9gx0fWiWsuhZe3yKvWYxCHCHAMh3odKLCYxrIuY+adsbfzocyTAkqsGSUHpqc5EGTZ5OHrrfRINSWc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752558409; c=relaxed/simple;
+	bh=g8ObzbtsLMh6hIRHoS8hWGgVk9t7E1qWN/EE5RDZ0Ec=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kmOjYlFOg3+jhDWe1ES2u4t+PL1zuuaUB1+7522wt+cMbvWpeZsbQi0WjaPNAjzu1tyzu5UYu1kHyJvgz5Qe29Cp9ti1Xo9xzPe4SFsJPgHTWU/tD1UmpTQMfs17WYNX5rQsk62Drqa/G8RWsh0gQ0yiK4hdJ5cZVIYYu6wAoWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=aIH7JRcB; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="btC3buht"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mkYRHsIAmXtZpjbhDpH4WJurzD1TgT5LqUJvxPjbpw3CHU5l48DEQ1Zqju2xKp0CVC2nGF2cQBtqG2pWIVWaPNaz1cY5YWq0B6nd8g6EU4PL0qacaJrA83jBzp6/w+YHBSI46D2/JDrSfJcDyMZsqdExCCVwG0NuVq0oJWe0fkDSGYbOR+tDc5qLhDMCdakoOembcQ/eHcM4eglhvMaocTas0Fj2gtrlVFMZyjaghO/NXwnrqevrIlw4jwLs3uqXuAPA2QnyKBk0deMqv7HBAiNCwjtpey1awpZmg4wQq50u39jgGDRpdJu4uthx9i8J6hGbSpf0HW3UUhxQcoZ+/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ehb6NlibqJ/MMoOvWTWC9rF41eQgZUOhlCYIXreqbU8=;
- b=WN24RvhaBJpS+bq67PfjgkZtetQaHm0LFUv7fiikM25aWOQm0KyxTccdBcvoJPzWprxR/JeAkxezomuH18Tu0RzJ7PhF9vO3PUqKQazV2XZmCwl6lxXakGsu+IA7SnyunnhVIROUltlIcre2Veqom/u1h4fQ3LuhbTVsHCi+NliFsDdTlK2PxV+LfXrRn0zbomUZm8K/hEfxoCl4vxR9gocYv3dFSNUPlkZJckr7d2nEF2YtqUtuQ0lbaeZlfFG1ftgLwzp5/Cb3Ce+Jd2gRtEZLXYDNUmYkeLC3l4m/6FApu9MFwkMzRcNcpx8oWHEbxNpqhffFQczTBBgGQ3X+fA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ehb6NlibqJ/MMoOvWTWC9rF41eQgZUOhlCYIXreqbU8=;
- b=btC3buhtuN1sV/mTLSn8hwuJ52ArEgiiB8q7oNGjsFcXQYbVpp8I2yMfl7RqnMigYWuE5OEXoNaCmRgk4Khb2enHYhNVKs55+ps4+Ae9q/vAVROQr9tuZWLxJ/bjktFicM2aBt3ixGu9w8VmTSVYj2+y2bWmZh8dcGewWYnvLhLGBioXwe6heX1POKYkcb3yTAmuOpuDFRENmrt+/jjennKrzsE0+A3D/UahoJxZvYRT0IUDyYRYRYex4fhoZTk6YG6RN0mOLBX6Xgl4frSh1gYOL+tUwAcLkpr5Qoom/9/ma2YM9zodsW1pd5hpm4mpXX3AprcWNNtGjdUSEUUuTA==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI2PR04MB10545.eurprd04.prod.outlook.com (2603:10a6:800:270::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Tue, 15 Jul
- 2025 02:52:34 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Tue, 15 Jul 2025
- 02:52:33 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Krzysztof Kozlowski <krzk@kernel.org>, "F.S. Peng" <fushi.peng@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "robh@kernel.org"
-	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>, "richardcochran@gmail.com"
-	<richardcochran@gmail.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
-Subject: RE: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
- Timer
-Thread-Topic: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
- Timer
-Thread-Index:
- AQHb8jPWk5neHXUn3Eeo02nqDOVTYbQxImMAgAATMMCAAAm6gIAAFX1wgAAGKwCAAAFaQIAADfuAgAACM8CAAAPoAIAAAqbQgAAP8QCAABcf0IAAD72AgADTHvA=
-Date: Tue, 15 Jul 2025 02:52:33 +0000
-Message-ID:
- <PAXPR04MB8510FFE0A5DA2F3A94E9CB7E8857A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <61e6c90d-3811-41c2-853d-d93d9db38f21@kernel.org>
- <PAXPR04MB85109EE6F29A1D80CF3F367A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <169e742f-778e-4d42-b301-c954ecec170a@kernel.org>
- <PAXPR04MB85107A7E7EB7141BC8F2518A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <836c9f0b-2b73-4b36-8105-db1ae59b799c@kernel.org>
- <PAXPR04MB8510CCEA719F8A6DADB8566A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250714103104.vyrkxke7cmknxvqj@skbuf>
- <PAXPR04MB85105A933CBD5BE38F08EB018854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250714113736.cegd3jh5tsb5rprf@skbuf>
- <PAXPR04MB851072E7E1C9F7D5E54440EC8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20250714135641.uwe3jlcv7hcjyep2@skbuf>
-In-Reply-To: <20250714135641.uwe3jlcv7hcjyep2@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI2PR04MB10545:EE_
-x-ms-office365-filtering-correlation-id: 2f087046-6c22-4987-7640-08ddc34aa613
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Yc/FI0hEU2fROTbMuRh9wlmXlB3X1kRkHqVnj05eis4xtaWLfrLzxwBRYe5x?=
- =?us-ascii?Q?YHMgaTsZByaqveJn+2dHY3Mo5hnj6LZqd4bswpz0YSy3GUV4rHSbe74uy1KZ?=
- =?us-ascii?Q?q2UJJH1IihfWPiCpoURPZioRGUSXsU+xVLzZjwermv9Q60qzqUs9G9ihQ0ag?=
- =?us-ascii?Q?p8GgCLBZ6CofRDEQ2be7wa8CUa0x/vsQNA02/rMt47Q0Go9YjVi+HrHlYeLH?=
- =?us-ascii?Q?wexTxsYUGHWL/fFVyxZnafeFhdSruab4FEMKcVB6IRFoXzRWqEKe6pbamex/?=
- =?us-ascii?Q?qvVHatvLkUrroy/+7JnjXh0nrj2c+n8CO0jwIkbShaGRssG3nsdRn5uBuBhT?=
- =?us-ascii?Q?XSS1GZuxDaztz9K6KgQq6iXKRJDuP75YOg4ncDPvKduGdAlelay0l0vvNhIU?=
- =?us-ascii?Q?8LvFIq/w8o8Cjwxunyo/tDTapX11QDMXExTbfUEmupAsqV1EjN5l8vwhsi+3?=
- =?us-ascii?Q?W5jLNRW5hU0M4leacl16Q3RMw2XdjgXEeNbDXtPnAMz49zHYlk9cQnl4P/dv?=
- =?us-ascii?Q?eHDLDPYK5HWFyfYf9zDM6rqfP9x2B2ZyaAMDZFa5KEzzNEV30b2lKqC8xNWI?=
- =?us-ascii?Q?pKk3E3d5l/xGQi8O5qXMwEQigbO7QEGm6a/19zhTyyl1S/MnkahLDvL149Dt?=
- =?us-ascii?Q?R9QePox01Dt4wfhJN4pF8fjUi2F4NOpaR7AK+snQ+n+zC44Ak9SmYg6pwsft?=
- =?us-ascii?Q?fgIayc9xaNnBf27kIDbLAKAfi2Fryaj76GimQQ16pksrznEQVzMrZUv6v2xO?=
- =?us-ascii?Q?2sqidoJ3qKf7kOLgOMjAbm9dljCvOGsoePxps4TzDjBya7x0IIwTALtbWbPu?=
- =?us-ascii?Q?9QJh4mN7cjxDyNLObqmglwilaG9BeU+6c3bvJRA9QUIYvVXIg3rNcNtFSiG2?=
- =?us-ascii?Q?yNhvlNdkgw3GXkxgZPLeMm+Vk5stASQsRIvFeRmCbua3s94w8Zf3j/WgW+SK?=
- =?us-ascii?Q?Fz9uD3WNEpiTjV1R8yrSoyBj82Cpl+EsDG/8p+EEg+0iXAHx2tsUCc/lo4KE?=
- =?us-ascii?Q?ote7OWnBhSk1cHyt4Pl2DXx13VMsYuIHEhRnffdIrnoYzUMtxHlotOkvwGZG?=
- =?us-ascii?Q?w3SQkchH7vKKcRYCVCNjoUfwvD9kzgad5Lm0VBxRrLnEN8pIpPN4WVj88NVK?=
- =?us-ascii?Q?lhSZT5Zgte4vNokL9P6rKMbnUecawWaksiPB4WInyojfYkCvnxKC8WZetREK?=
- =?us-ascii?Q?CNuUYIW0u2HxadjfpmdeZSf2dqUN162lVno8OSHIG9HrCtLP5gyaYsgPo6S6?=
- =?us-ascii?Q?HtyMqfxRfRx2Fu+XGNMUnNDb8Io6JeK6LdXzKUDeDtWfhiBAxD3G2aY/acbR?=
- =?us-ascii?Q?9CUcW1bjtghX+0qQYf5RqkuG2pvwWH+s1Q4lpGJ5wp9n6V5HTgQpTAQF9ocy?=
- =?us-ascii?Q?Lj9pv+Ne6d8O7tppltvIiq/EKlMfMxFKjqbqK9rFnquUeGswMcai71CJ/Lbg?=
- =?us-ascii?Q?q1GyvH6jc81JnfzT/cbaTjSBIdGYRbCx38queHNOehjOJFpb1MF0rA=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?70uI2aW56bNULwsiL/9E7S5R5E0IxxfCDAPCIx5O0K9+OXUP9bLxQDwGFJq3?=
- =?us-ascii?Q?bJmCVVvDa1r+dOSafAo81WMESkEqVL5mHW5nBNhnH8BaOsi1eVFWQweYF21k?=
- =?us-ascii?Q?OYdVUuz4Q/RdHxyy/a42k/5DRDYtc9LTwHGk9CFeKy4lMSO0fie6Gk4dhgyS?=
- =?us-ascii?Q?5zB1eysWWxkEHnGP10klCsZQZZalORhcNDYAFXVvQH7wPWSa9a6zBSUMVYtJ?=
- =?us-ascii?Q?duA/2ve/6aZJTttumjBoEzaa4T1AXQa0OQq7wHIBd3kX6DgqqagtExZiIrck?=
- =?us-ascii?Q?vrErdqLHjFBEHBB1VdkrPeDwEguXaUXWTXyZefWHV6aMe9J2YfZIYSwUtvSi?=
- =?us-ascii?Q?38DWmCcsPWgkY1Ehy6fkREYWqqIh19hFAeZThZAPyqAMR6H8sPr+EPLSQ/BB?=
- =?us-ascii?Q?z7EULRl45V10EnHGTWPH6uTetkGonbgdZ5ohPW7ex6cY6wjXJnlFQEaicvWk?=
- =?us-ascii?Q?htFnYikTI1a/34shnC3OuxcGJmDCAu/jvt/uAH68UOyqRRjBQOZlzOjSDLCJ?=
- =?us-ascii?Q?QrT60zwjSM3ixLvFInRCcrZIWwxtzygUvc+HqAnctPO0feGNid0GMGlY2rwJ?=
- =?us-ascii?Q?lUZu5MYRywBksJss2ERpSFI6tsAanZefjiW90m1nVnqSCAyQYM/c7LLfbBTJ?=
- =?us-ascii?Q?oM9qASNbSRnvrHEviqXyly86Bkx6SAQUFBSHseitEafPFdZCnIiowsUbq6Dj?=
- =?us-ascii?Q?4Xt10Wlj/IkpT8k6Ba7a/WChE9nJLmIyf8YFA5HudUkfgymy0pMBFufahEuk?=
- =?us-ascii?Q?6ZsoazhxZocgvFcuLMlS8SDsckzU91jZ/Bnfg/8hDv9wQR5IasWPT5p8T6tK?=
- =?us-ascii?Q?cCHrx0p3r7PQeDKYke//ZMl1IzeKjJ5XPDkvBUb/X5+o98aBbNP5WnTGkt0+?=
- =?us-ascii?Q?tzt3dI4C0+v0oQlXt2r7jwXWBozpveG+fM5HgdtukIXB0n3uyn1Dq3dK8N0y?=
- =?us-ascii?Q?Y044YA4oIFy1WKdhWZbgYthlzZNLDz9zpr0amVglh1G8YkyauB1uJ2wSZ92X?=
- =?us-ascii?Q?Q6OxKJ74w/ofMgsWpeGwztJJFRTWsyiUvYIoeHe/nDGwM8Gb+yGsl3d1nYt3?=
- =?us-ascii?Q?+SfkDIiZ3/irxDaKIbG7QN9l8aJ29jjW3cTMpKizJzwj/yaTrQnkuVWN9Ltl?=
- =?us-ascii?Q?lgMOyuDBi8LS1E6oelF6+kbLRZU6cZsUf5vKP2HUnYDCXApijyTCKSyYa6n6?=
- =?us-ascii?Q?H1dvbTmB/jD2RV0phKDGIl51kaqspRE1JeTzWPsXTdj08eiONa+Kf91O7+YF?=
- =?us-ascii?Q?/lbnF0ioKym5ZZMM9iapjEJgL/MjoXbCaoC9siQZ4YYQgY5TsNg+3vLvgmE1?=
- =?us-ascii?Q?RICrJEBOTY3/JOLNJ4sGEYfXAjuSXha9Zt86H6roVK2p6eiVrORdNp+xaUgk?=
- =?us-ascii?Q?TjdiCkTSpSVw/OSDNPUkVkAMJlugxTYCFvuiFxUGEZRCu05HtABPiYXsKR0H?=
- =?us-ascii?Q?N9BNEyVG3HQ6saTIjO8YEde1cXU48phj6+ln/ChiUaKDi08RH30u666/WNZ6?=
- =?us-ascii?Q?7Wcux0l2HfzjFX9+mqbBu1wQr3LBr7zL1h2jGCM7R9jWu0NKspdsj2pM27Rx?=
- =?us-ascii?Q?oV7lFRdESYn9TOJw8Qg=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="aIH7JRcB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kB2cLJNy4hPYhqXCKFroTjovGqdHkjo6jWxolFG5Rks=; b=aIH7JRcBnFaTDYDYU0B/+YjYO1
+	Z1AivAp6BGemuHi/coTdiNbfy5cJLpV80/vxnQiEqnMSTvkkJqIAMxBpM1ubIIIBCNWRyWJm/j3Kr
+	FYsMoE4rw7HBQah/RnPQkcXpw+W1lhUwBfLQkCBDkd8ysFhki0gnEhPhvHKxcOz0Wb8eidC9oACAn
+	47bAUJsrC5VhNd5s+jyYorwO5ORVD/q+r4muR10gIJDNLaf0xWK44U3yMN4QMJNr6qq7c0rDnNpU+
+	JiC+D+ly8vSZTQSs4iUnTb8EOu16nB9YCO5fwHkkTPiotPsWIyFkpQlsmUTSb4S4LjKorw/+YafA2
+	LChQLk2A==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:33050 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1ubYV3-003pbU-2v;
+	Tue, 15 Jul 2025 07:46:45 +0200
+Message-ID: <c9d17343-e4a5-49ab-9a3e-b6da9d591195@norik.com>
+Date: Tue, 15 Jul 2025 07:46:44 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f087046-6c22-4987-7640-08ddc34aa613
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jul 2025 02:52:33.7571
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JFdkWvV6cUKj4x/NZSY7UgIg7FX/UcXj3jDqBAPI/TWF/D9AkO1HhRjQ2oArXVtyMFRhwS+qzkJxCu8+wjWmag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10545
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: Add calibration
+ properties
+To: Jonathan Cameron <jic23@kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Haibo Chen <haibo.chen@nxp.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+Cc: Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-iio@vger.kernel.org,
+ imx@lists.linux.dev, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ upstream@lists.phytec.de, andrej.picej@norik.com
+References: <20250710073905.1105417-1-primoz.fiser@norik.com>
+ <20250710073905.1105417-2-primoz.fiser@norik.com>
+ <2bcd758b-c2d0-488a-8ead-ec7fb39f93e2@baylibre.com>
+ <20250713160247.0f22bbfe@jic23-huawei>
+ <de2c8e15-14e9-4c61-9a13-97ef1ec567a4@norik.com>
+ <6b32118a13e9e28b7cf12152af33642c76367c34.camel@gmail.com>
+Content-Language: en-US
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <6b32118a13e9e28b7cf12152af33642c76367c34.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-> > I don't think these can meet customer's requirement, the PPS pin depend=
-s
-> > on the board design. If I understand correctly, these can only indicate
-> > whether the specified pin index is in range, or whether the pin is alre=
-ady
-> > occupied by another PTP function.
-> >
-> > However, these pins are multiplexed with other devices, such as FLEXIO,
-> > CAN, etc. If the board is designed to assign this pin to other devices,=
- then
-> > this pin cannot output the PPS signal. For for this use case, we need t=
-o
-> > specify a PPS pin which can output PPS signal.
->=20
-> Ok, apologies if I misunderstood the purpose of this device tree property
-> as affecting the function of the NETC 1588 timer IP pins. You gave me
-> this impression because I followed the code and I saw that "nxp,pps-chann=
-el"
-> is used to select in the PTP driver which FIPER block gets configured to
-> emit PPS. And I commented that maybe you don't need "nxp,pps-channel" at =
-all,
-> because:
-> - PTP_CLK_REQ_PPS doesn't do what you think it does
-> - PTP_CLK_REQ_PEROUT does use the pin API to describe that one of the
->   1588 timer block's pins can be used for the periodic output function
->=20
+Hi Nuno,
 
-Yes, you are right, PTP_CLK_REQ_PPS is input into the kernel PPS subsystem,
-is not used to out PPS signal on external pins. I have found the kernel doc=
-.
-I thought PTP_CLK_REQ_PPS can be used to output PPS signal, but now it
-seems that many people use it wrongly.
+On 14. 07. 25 18:11, Nuno Sá wrote:
+> On Mon, 2025-07-14 at 07:56 +0200, Primoz Fiser wrote:
+>> Hi all,
+>>
+>> On 13. 07. 25 17:02, Jonathan Cameron wrote:
+>>> On Thu, 10 Jul 2025 10:46:44 -0500
+>>> David Lechner <dlechner@baylibre.com> wrote:
+>>>
+>>>> On 7/10/25 2:39 AM, Primoz Fiser wrote:
+>>>>> From: Andrej Picej <andrej.picej@norik.com>
+>>>>>
+>>>>> Document i.MX93 ADC calibration properties and how to set them.
+>>>>>
+>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+>>>>> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+>>>>> ---
+>>>>>  .../bindings/iio/adc/nxp,imx93-adc.yaml       | 21 +++++++++++++++++++
+>>>>>  1 file changed, 21 insertions(+)
+>>>>>
+>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-
+>>>>> adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>> index c2e5ff418920..d1c04cf85fe6 100644
+>>>>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>> @@ -52,6 +52,27 @@ properties:
+>>>>>    "#io-channel-cells":
+>>>>>      const: 1
+>>>>>  
+>>>>> +  nxp,calib-avg-en:
+>>>>> +    default: 1
+>>>>> +    description:
+>>>>> +      Enable or disable calibration averaging function (AVGEN).
+>>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>>>> +    enum: [ 0, 1 ]
+>>>>> +
+>>>>> +  nxp,calib-nr-samples:
+>>>>> +    default: 512
+>>>>> +    description:
+>>>>> +      Selects number of samples (NRSMPL) to be used during calibration.
+>>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>>>> +    enum: [ 16, 32, 128, 512 ]
+>>>
+>>> Allow 1 as a value and drop the enabled above.   Averaging over 1 sample
+>>> is same as no averaging and gives simpler binding.
+>>>
+>>>>> +
+>>>>> +  nxp,calib-t-sample:
+>>>>> +    default: 22
+>>>>> +    description:
+>>>>> +      Selects sample time (TSAMP) of calibration conversions in ADC
+>>>>> clock cycles
+>>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>>>> +    enum: [ 8, 16, 22, 32 ]
+>>>>> +
+>>>>>  required:
+>>>>>    - compatible
+>>>>>    - reg  
+>>>>
+>>>> This seem like things that should be set at runtime rather than
+>>>> in the devicetree. Unless there is some justification on why
+>>>> these values depend on how the chip is wired up?
+>>
+>> It depends how ADC 1.8V Vref is wired up, especially how noisy it is.
+>>
+>>>
+>>> Further to that, I'd like to see some explanation of why we care
+>>> to change it at all. Is it ever a bad idea to enable averaging and
+>>> pick a large number of samples for calibration?
+>>
+>> This is a snippet from the i.MX93 TRM, chapter Analog-to-Digital
+>> Converter (SAR_ADC) describing calibration steps:
+>>
+>> 1. Wait for deassertion of functional reset.
+>> 2. Configure SAR controller operating clock (MCR[ADCLKSE] = 0).
+>> 3. Bring ADC out of Power-down state (MCR[PWDN] = 0).
+>> 4. Configure desired calibration settings (default values kept for
+>> highest accuracy maximum time).
+>> • MCR[TSAMP]: Sample time for calibration conversion
+>> • MCR[NRSMPL]: Number of samples in averaging
+>> • MCR[AVGEN]: Averaging function enable in calibration
+>> 5. Run calibration by writing a one to MCR[CALSTART].
+>> 6. Check calibration run status in MSR[CALBUSY]—wait until MSR[CALBUSY]
+>> = 0; alternatively, MSR[ADCSTAT] can be
+>> used to check status.
+>> 7. Check calibration pass/fail status in MSR[CALFAIL] field. If
+>> MSR[CALFAIL] = 1 then calibration failed. Detailed status
+>> can be checked in CALSTAT.
+>>
+>>
+>> See point 4).
+>>
+>> Not sure why would there be an option to configure i.MX93 ADC
+>> calibration parameters if one use-case (max accuracy max time) to rule
+>> them all?
+>>
+> 
+> Sometimes HW guys just want to give you some options. Does not mean we have to
+> use them all :).
+> 
+> I guess what Jonathan is interested in, is to understand in what conditions the
+> defaults are no good for the calibration? If we can have a set of values that
+> should pretty much always work, no need to further complicate the bindings or
+> the driver.
 
-commit d04a53b1c48766665806eb75b73137734abdaa95
-Author: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date:   Tue Nov 17 22:38:26 2020 +0100
+In case you have a noisy Vref you can adjust the parameters to pass the
+calibration and have a working ADC.
 
-ptp: document struct ptp_clock_request members
+The trade-off is a less precise ADC but at least a working one.
 
-It's arguable most people interested in configuring a PPS signal
-want it as external output, not as kernel input. PTP_CLK_REQ_PPS
-is for input though. Add documentation to nudge readers into
-the correct direction.
+In ideal case you would have Vref supplied by the dedicated LDO and tons
+of decoupling caps, but in real-world you have it connected to a noisy
+SMPS and you need to adjust the parameters accordingly.
 
-> You seem to imply that the "nxp,pps-channel" property affects the
-> function of the SoC pads, which may be connected to the NETC 1588 timer
-> block or to some other IP. Nothing in the code I saw suggested this
-> would be the case, and I still don't see how this is the case - but
-> anyway, my bad.
->=20
-> In this case, echoing Krzysztof's comments: How come it isn't the system
-> pinmux driver the one concerned with connecting the SoC pads to the NETC
-> 1588 timer or to FlexIO, CAN etc? The pinmux driver controls the pads,
-> the NETC timer controls its block's pins, regardless of how they are
-> routed further.
->=20
+That's it :)
 
-pinmux can select which device to use this pin for, but this is the
-configuration inside SoC. For the outside, depending on the design
-of the board, for example, pin0 is connected to a CAN-related device,
-then in fact this pin can only be used by CAN.
+BR,
+Primoz
 
-> (reductio ad absurdum) Among the other devices which are muxed to these
-> SoC pads, why is the NETC 1588 timer responsible of controlling the
-> muxing, and not FlexIO or CAN? Something is illogical.
-
+-- 
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
