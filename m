@@ -1,210 +1,232 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98544288533
-	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 01:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752543411; cv=none; b=kBuG3tSFoKE03oxS29NKZOEI82kcjaRBU/yNtr409Ts3PnNEjXG6GeF7X6X1cD4EkAqbIL0FSxudLt9AyQe1v2ODHjqiOcDEBQD1OQBdNrob940jf+LAEJrEwJd3QwnagWja1IZ5KukVFff7M7tBgdQ6vCWtzh9am1SdIlQzbcw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752543411; c=relaxed/simple;
-	bh=rjv9ebF1tIJq2t2V5hyW1X90P8nhO4gHfYr1e/VsC3g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fmCN6zcnCPOTcexus7AkKsFsemrSadF2OysugGz1lbT7DjnNlnDX6Q8PPrh/AAUmInCKwP9eIum6rlQEPqYgTzb8tIXfYIJRliadcIKcrbNUFt6gXYrTQkMhIE+Fkl14XIBsnUZJwxYjsiKy2DHxiTvOT5PcCNVTkKUy1luugRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-cc-6875b0a2a86a
-Date: Tue, 15 Jul 2025 10:36:26 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, ilias.apalodimas@linaro.org,
-	harry.yoo@oracle.com, akpm@linux-foundation.org,
-	andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com,
-	david@redhat.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
-	xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, sgoutham@marvell.com,
-	gakula@marvell.com, sbhatta@marvell.com, hkelam@marvell.com,
-	bbhushan2@marvell.com, tariqt@nvidia.com, ast@kernel.org,
-	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
-	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
-	mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org,
-	nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com, sean.wang@mediatek.com,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	aleksander.lobakin@intel.com, horms@kernel.org, m-malladi@ti.com,
-	krzysztof.kozlowski@linaro.org, matthias.schiffer@ew.tq-group.com,
-	robh@kernel.org, imx@lists.linux.dev,
-	intel-wired-lan@lists.osuosl.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v10 02/12] netmem: use netmem_desc instead of
- page to access ->pp in __netmem_get_pp()
-Message-ID: <20250715013626.GA49874@system.software.com>
-References: <20250714120047.35901-1-byungchul@sk.com>
- <20250714120047.35901-3-byungchul@sk.com>
- <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
- <CAHS8izNh7aCJOb1WKTx7CXNDPv_UBqFyq2XEHHhqHH=5JPmJCQ@mail.gmail.com>
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010061.outbound.protection.outlook.com [52.101.84.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3742D367
+	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 02:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752547959; cv=fail; b=MPw6NvRehcmD8BvLjQSMSZphDFP5lX8KizXX4PDsDn9CgVlfTOb5xyKgWjmRo9wkrQWtHo8m8j+GMzJMrmfjb2698lQKbiFwWEktavska1mD/zfvxt4My3HUEOfKq0tIqn0BZfSHrbkr5zhZCxRZRRUOAwrlUKlAOLc18edLR1E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752547959; c=relaxed/simple;
+	bh=wMQMKA1MEWOhX9+XuSDDH06+0M1ZY/kFOq3wKSlAX/4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Qurr2MMIc6ZLOuftXDGkUvgM+Y+ydDRzfT9WDuQlR4hkHFN5+BAK5k08z7MbOP95wC90o8o6f1c788Qtj0VrntDUugFVgWwGLVm7GXWuDicIvJTTk0S8nEIcYwdyGpKh7WD+7lA0SxPtGaPYq6XAL75K3EVVRTqod8DChUZD2Y4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=btC3buht; arc=fail smtp.client-ip=52.101.84.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="btC3buht"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mkYRHsIAmXtZpjbhDpH4WJurzD1TgT5LqUJvxPjbpw3CHU5l48DEQ1Zqju2xKp0CVC2nGF2cQBtqG2pWIVWaPNaz1cY5YWq0B6nd8g6EU4PL0qacaJrA83jBzp6/w+YHBSI46D2/JDrSfJcDyMZsqdExCCVwG0NuVq0oJWe0fkDSGYbOR+tDc5qLhDMCdakoOembcQ/eHcM4eglhvMaocTas0Fj2gtrlVFMZyjaghO/NXwnrqevrIlw4jwLs3uqXuAPA2QnyKBk0deMqv7HBAiNCwjtpey1awpZmg4wQq50u39jgGDRpdJu4uthx9i8J6hGbSpf0HW3UUhxQcoZ+/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ehb6NlibqJ/MMoOvWTWC9rF41eQgZUOhlCYIXreqbU8=;
+ b=WN24RvhaBJpS+bq67PfjgkZtetQaHm0LFUv7fiikM25aWOQm0KyxTccdBcvoJPzWprxR/JeAkxezomuH18Tu0RzJ7PhF9vO3PUqKQazV2XZmCwl6lxXakGsu+IA7SnyunnhVIROUltlIcre2Veqom/u1h4fQ3LuhbTVsHCi+NliFsDdTlK2PxV+LfXrRn0zbomUZm8K/hEfxoCl4vxR9gocYv3dFSNUPlkZJckr7d2nEF2YtqUtuQ0lbaeZlfFG1ftgLwzp5/Cb3Ce+Jd2gRtEZLXYDNUmYkeLC3l4m/6FApu9MFwkMzRcNcpx8oWHEbxNpqhffFQczTBBgGQ3X+fA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ehb6NlibqJ/MMoOvWTWC9rF41eQgZUOhlCYIXreqbU8=;
+ b=btC3buhtuN1sV/mTLSn8hwuJ52ArEgiiB8q7oNGjsFcXQYbVpp8I2yMfl7RqnMigYWuE5OEXoNaCmRgk4Khb2enHYhNVKs55+ps4+Ae9q/vAVROQr9tuZWLxJ/bjktFicM2aBt3ixGu9w8VmTSVYj2+y2bWmZh8dcGewWYnvLhLGBioXwe6heX1POKYkcb3yTAmuOpuDFRENmrt+/jjennKrzsE0+A3D/UahoJxZvYRT0IUDyYRYRYex4fhoZTk6YG6RN0mOLBX6Xgl4frSh1gYOL+tUwAcLkpr5Qoom/9/ma2YM9zodsW1pd5hpm4mpXX3AprcWNNtGjdUSEUUuTA==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI2PR04MB10545.eurprd04.prod.outlook.com (2603:10a6:800:270::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Tue, 15 Jul
+ 2025 02:52:34 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Tue, 15 Jul 2025
+ 02:52:33 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Krzysztof Kozlowski <krzk@kernel.org>, "F.S. Peng" <fushi.peng@nxp.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "robh@kernel.org"
+	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "richardcochran@gmail.com"
+	<richardcochran@gmail.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>
+Subject: RE: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
+ Timer
+Thread-Topic: [PATCH net-next 01/12] dt-bindings: ptp: add bindings for NETC
+ Timer
+Thread-Index:
+ AQHb8jPWk5neHXUn3Eeo02nqDOVTYbQxImMAgAATMMCAAAm6gIAAFX1wgAAGKwCAAAFaQIAADfuAgAACM8CAAAPoAIAAAqbQgAAP8QCAABcf0IAAD72AgADTHvA=
+Date: Tue, 15 Jul 2025 02:52:33 +0000
+Message-ID:
+ <PAXPR04MB8510FFE0A5DA2F3A94E9CB7E8857A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <61e6c90d-3811-41c2-853d-d93d9db38f21@kernel.org>
+ <PAXPR04MB85109EE6F29A1D80CF3F367A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <169e742f-778e-4d42-b301-c954ecec170a@kernel.org>
+ <PAXPR04MB85107A7E7EB7141BC8F2518A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <836c9f0b-2b73-4b36-8105-db1ae59b799c@kernel.org>
+ <PAXPR04MB8510CCEA719F8A6DADB8566A8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250714103104.vyrkxke7cmknxvqj@skbuf>
+ <PAXPR04MB85105A933CBD5BE38F08EB018854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250714113736.cegd3jh5tsb5rprf@skbuf>
+ <PAXPR04MB851072E7E1C9F7D5E54440EC8854A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20250714135641.uwe3jlcv7hcjyep2@skbuf>
+In-Reply-To: <20250714135641.uwe3jlcv7hcjyep2@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI2PR04MB10545:EE_
+x-ms-office365-filtering-correlation-id: 2f087046-6c22-4987-7640-08ddc34aa613
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?Yc/FI0hEU2fROTbMuRh9wlmXlB3X1kRkHqVnj05eis4xtaWLfrLzxwBRYe5x?=
+ =?us-ascii?Q?YHMgaTsZByaqveJn+2dHY3Mo5hnj6LZqd4bswpz0YSy3GUV4rHSbe74uy1KZ?=
+ =?us-ascii?Q?q2UJJH1IihfWPiCpoURPZioRGUSXsU+xVLzZjwermv9Q60qzqUs9G9ihQ0ag?=
+ =?us-ascii?Q?p8GgCLBZ6CofRDEQ2be7wa8CUa0x/vsQNA02/rMt47Q0Go9YjVi+HrHlYeLH?=
+ =?us-ascii?Q?wexTxsYUGHWL/fFVyxZnafeFhdSruab4FEMKcVB6IRFoXzRWqEKe6pbamex/?=
+ =?us-ascii?Q?qvVHatvLkUrroy/+7JnjXh0nrj2c+n8CO0jwIkbShaGRssG3nsdRn5uBuBhT?=
+ =?us-ascii?Q?XSS1GZuxDaztz9K6KgQq6iXKRJDuP75YOg4ncDPvKduGdAlelay0l0vvNhIU?=
+ =?us-ascii?Q?8LvFIq/w8o8Cjwxunyo/tDTapX11QDMXExTbfUEmupAsqV1EjN5l8vwhsi+3?=
+ =?us-ascii?Q?W5jLNRW5hU0M4leacl16Q3RMw2XdjgXEeNbDXtPnAMz49zHYlk9cQnl4P/dv?=
+ =?us-ascii?Q?eHDLDPYK5HWFyfYf9zDM6rqfP9x2B2ZyaAMDZFa5KEzzNEV30b2lKqC8xNWI?=
+ =?us-ascii?Q?pKk3E3d5l/xGQi8O5qXMwEQigbO7QEGm6a/19zhTyyl1S/MnkahLDvL149Dt?=
+ =?us-ascii?Q?R9QePox01Dt4wfhJN4pF8fjUi2F4NOpaR7AK+snQ+n+zC44Ak9SmYg6pwsft?=
+ =?us-ascii?Q?fgIayc9xaNnBf27kIDbLAKAfi2Fryaj76GimQQ16pksrznEQVzMrZUv6v2xO?=
+ =?us-ascii?Q?2sqidoJ3qKf7kOLgOMjAbm9dljCvOGsoePxps4TzDjBya7x0IIwTALtbWbPu?=
+ =?us-ascii?Q?9QJh4mN7cjxDyNLObqmglwilaG9BeU+6c3bvJRA9QUIYvVXIg3rNcNtFSiG2?=
+ =?us-ascii?Q?yNhvlNdkgw3GXkxgZPLeMm+Vk5stASQsRIvFeRmCbua3s94w8Zf3j/WgW+SK?=
+ =?us-ascii?Q?Fz9uD3WNEpiTjV1R8yrSoyBj82Cpl+EsDG/8p+EEg+0iXAHx2tsUCc/lo4KE?=
+ =?us-ascii?Q?ote7OWnBhSk1cHyt4Pl2DXx13VMsYuIHEhRnffdIrnoYzUMtxHlotOkvwGZG?=
+ =?us-ascii?Q?w3SQkchH7vKKcRYCVCNjoUfwvD9kzgad5Lm0VBxRrLnEN8pIpPN4WVj88NVK?=
+ =?us-ascii?Q?lhSZT5Zgte4vNokL9P6rKMbnUecawWaksiPB4WInyojfYkCvnxKC8WZetREK?=
+ =?us-ascii?Q?CNuUYIW0u2HxadjfpmdeZSf2dqUN162lVno8OSHIG9HrCtLP5gyaYsgPo6S6?=
+ =?us-ascii?Q?HtyMqfxRfRx2Fu+XGNMUnNDb8Io6JeK6LdXzKUDeDtWfhiBAxD3G2aY/acbR?=
+ =?us-ascii?Q?9CUcW1bjtghX+0qQYf5RqkuG2pvwWH+s1Q4lpGJ5wp9n6V5HTgQpTAQF9ocy?=
+ =?us-ascii?Q?Lj9pv+Ne6d8O7tppltvIiq/EKlMfMxFKjqbqK9rFnquUeGswMcai71CJ/Lbg?=
+ =?us-ascii?Q?q1GyvH6jc81JnfzT/cbaTjSBIdGYRbCx38queHNOehjOJFpb1MF0rA=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?70uI2aW56bNULwsiL/9E7S5R5E0IxxfCDAPCIx5O0K9+OXUP9bLxQDwGFJq3?=
+ =?us-ascii?Q?bJmCVVvDa1r+dOSafAo81WMESkEqVL5mHW5nBNhnH8BaOsi1eVFWQweYF21k?=
+ =?us-ascii?Q?OYdVUuz4Q/RdHxyy/a42k/5DRDYtc9LTwHGk9CFeKy4lMSO0fie6Gk4dhgyS?=
+ =?us-ascii?Q?5zB1eysWWxkEHnGP10klCsZQZZalORhcNDYAFXVvQH7wPWSa9a6zBSUMVYtJ?=
+ =?us-ascii?Q?duA/2ve/6aZJTttumjBoEzaa4T1AXQa0OQq7wHIBd3kX6DgqqagtExZiIrck?=
+ =?us-ascii?Q?vrErdqLHjFBEHBB1VdkrPeDwEguXaUXWTXyZefWHV6aMe9J2YfZIYSwUtvSi?=
+ =?us-ascii?Q?38DWmCcsPWgkY1Ehy6fkREYWqqIh19hFAeZThZAPyqAMR6H8sPr+EPLSQ/BB?=
+ =?us-ascii?Q?z7EULRl45V10EnHGTWPH6uTetkGonbgdZ5ohPW7ex6cY6wjXJnlFQEaicvWk?=
+ =?us-ascii?Q?htFnYikTI1a/34shnC3OuxcGJmDCAu/jvt/uAH68UOyqRRjBQOZlzOjSDLCJ?=
+ =?us-ascii?Q?QrT60zwjSM3ixLvFInRCcrZIWwxtzygUvc+HqAnctPO0feGNid0GMGlY2rwJ?=
+ =?us-ascii?Q?lUZu5MYRywBksJss2ERpSFI6tsAanZefjiW90m1nVnqSCAyQYM/c7LLfbBTJ?=
+ =?us-ascii?Q?oM9qASNbSRnvrHEviqXyly86Bkx6SAQUFBSHseitEafPFdZCnIiowsUbq6Dj?=
+ =?us-ascii?Q?4Xt10Wlj/IkpT8k6Ba7a/WChE9nJLmIyf8YFA5HudUkfgymy0pMBFufahEuk?=
+ =?us-ascii?Q?6ZsoazhxZocgvFcuLMlS8SDsckzU91jZ/Bnfg/8hDv9wQR5IasWPT5p8T6tK?=
+ =?us-ascii?Q?cCHrx0p3r7PQeDKYke//ZMl1IzeKjJ5XPDkvBUb/X5+o98aBbNP5WnTGkt0+?=
+ =?us-ascii?Q?tzt3dI4C0+v0oQlXt2r7jwXWBozpveG+fM5HgdtukIXB0n3uyn1Dq3dK8N0y?=
+ =?us-ascii?Q?Y044YA4oIFy1WKdhWZbgYthlzZNLDz9zpr0amVglh1G8YkyauB1uJ2wSZ92X?=
+ =?us-ascii?Q?Q6OxKJ74w/ofMgsWpeGwztJJFRTWsyiUvYIoeHe/nDGwM8Gb+yGsl3d1nYt3?=
+ =?us-ascii?Q?+SfkDIiZ3/irxDaKIbG7QN9l8aJ29jjW3cTMpKizJzwj/yaTrQnkuVWN9Ltl?=
+ =?us-ascii?Q?lgMOyuDBi8LS1E6oelF6+kbLRZU6cZsUf5vKP2HUnYDCXApijyTCKSyYa6n6?=
+ =?us-ascii?Q?H1dvbTmB/jD2RV0phKDGIl51kaqspRE1JeTzWPsXTdj08eiONa+Kf91O7+YF?=
+ =?us-ascii?Q?/lbnF0ioKym5ZZMM9iapjEJgL/MjoXbCaoC9siQZ4YYQgY5TsNg+3vLvgmE1?=
+ =?us-ascii?Q?RICrJEBOTY3/JOLNJ4sGEYfXAjuSXha9Zt86H6roVK2p6eiVrORdNp+xaUgk?=
+ =?us-ascii?Q?TjdiCkTSpSVw/OSDNPUkVkAMJlugxTYCFvuiFxUGEZRCu05HtABPiYXsKR0H?=
+ =?us-ascii?Q?N9BNEyVG3HQ6saTIjO8YEde1cXU48phj6+ln/ChiUaKDi08RH30u666/WNZ6?=
+ =?us-ascii?Q?7Wcux0l2HfzjFX9+mqbBu1wQr3LBr7zL1h2jGCM7R9jWu0NKspdsj2pM27Rx?=
+ =?us-ascii?Q?oV7lFRdESYn9TOJw8Qg=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHS8izNh7aCJOb1WKTx7CXNDPv_UBqFyq2XEHHhqHH=5JPmJCQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sf1DTdRjH7/P98dmXxbwvC/OjZN1NzaJLKb3ruYuM669v3XXleVdXeuYu
-	vrbRQBuMH51dE8YVmEiBnpuzRgwEZo6GwKKBNEhROoGBOAUGghkgaKEsBou1wXnx3+t5nvc9
-	r89z9+Fo+W94HadOyxC1aUqNAksZ6XR02QvltTpVwvGRBDDbz2LoeVDGgm0uG86MOFnwVBP4
-	pXuOAnNNA4KHgQEJOAoGaXjQfglDeZmfhkDtUQbMXQYGZu3zNPxxcVQCHe5/GbA53oLhyjsM
-	uL5spKFtdhOMHuvAcNSwQIPRl48hdHOBhebAPQnkOqsoaL5bL4HuhiIWSucraGjUj4RdY/0s
-	9DaZMfTm9SDwnQ2xcMcdFk5VDUqgyGZC4L5QjSHXsA2m6h9K4K/j7TQMFyXB4slMuGh5Avyd
-	UwgGKq5REHI5JXDVd46FdnsjBX23AjT4vz6NoXD6GIJrxiYKfj9dy4K1s48Kv2MX9IeCFJR4
-	LBjGDMMIPG2jDJw6XITA3uJl4W9X+OSFOTNOel1om7pPC84hKxLOV9+ghPHiRUrwtlyhhJ9N
-	QxLB4tAJdVXxQrlrghIKvR5acNQUYMEx861EGOx3YaHj5AIj1Fm/EMbrjOid9R9IE5NFjTpT
-	1G7dsU+q+jN4FR/0bcz+yvCqHtU+WYiiOMJvJ7crmthHrD9xno4ww28i4+2zVIQxv5l4vYGl
-	fiz/HLG2fBPOSzmat3JkotmJIsUqfoYmnbOdTCT1OK8jP9zyLrGMBzKWX8BEQnL+PiJHnAF2
-	eRBDLhtvL4XosCL4nSes4MIcR84scsvtp0le/aklcxS/k/zovYcjvJrfQFobLlGRnYTPlRJb
-	3jRePmEt+bXKyxQjuWmFwrRCYfpfYVqhsCCmBsnVaZmpSrVm+xZVTpo6e8tHB1IdKPy5Kz8P
-	7naime5dbsRzSBEtg8kMlZxVZqbnpLoR4WhFrGxySKuSy5KVOZ+J2gMfanUaMd2N4jhGsUb2
-	kj8rWc5/rMwQPxHFg6L20ZTiotbp0aHLJRbfnqD/+hrjZl3vu3e3lea8kaKwlV/vmohPeWW+
-	RlOyz/5p6tZF2d7px64EVYkbSrNi9O+/9tNEUtL8qt3Jlmcqb9IlfW0XYvb2eJ468WZr/mG8
-	Py5rrW3jy9Gt+vdCRwaKd6y+MXLuH/uhgcnnE7pSfNr9alz8dvf36xPde2L7nlUw6Srli/G0
-	Nl35H/YfORbYAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0xTZxiH853v3GhWd9ahfsFdkk5cRjJ02UzeZNO56LKTZTNzI/G2RJtx
-	sjZcZC0lYHZBKYHWiTLcBrUwwMrVja4IdK6iaQmXdXNShBy5CohDAd2EEitI12KW8d/zvu8v
-	v+f74+OxqpKN4XWp6ZI+VZOsZhW0YufrOS9XOozaTVVyPNgazrHQPVvBQP2DTKi+4WLAX0vg
-	16sPKLDVNSOYCw5w4DQPYpht62DhTMU8hqDjOA22P000BBoeYphoH+Og0/OIhnrn+zBSdYsG
-	d14LBm8gFsZOdLJw3LSAoWQ4l4VQ/wIDF4N3OTjqqqHAW9oVHqeaOLjaXMDAqYdnMbRk3wgL
-	x/sY6LlgY6EnpxvB8LkQA7c8Yet0zSAHBfVWBJ5LtSwcNb0K001zHPz9bRuGkYJtsFScAe3l
-	a2DeN41g4GwvBSG3i4Mrwz8x0NbQQsG10SCG+a9LWbDMnEDQW3KBgt9LHQzYfdeo8Ds+gr7Q
-	IgVF/nIWxk0jCPzeMRpOHylA0NAqM/CP20Rv2y56p+9h0TVkR+L52uuUOHlyiRLl1t8o8Rfr
-	ECeWO41iY02ceMZ9mxItsh+LzjozKzrvf8OJg31uVuwsXqDFRvtX4mRjCfrguX2KNxKlZF2G
-	pN+49aBC+9fiFTZteH1mvmlLNnI8Y0FRPBFeI9nfnccRpoVYMtkWoCLMCi8SWQ4u76OFl4i9
-	tZCxIAWPBTtPbl90ociwSriPiS/goyOppwUjqRyVl1kpABnPNdORkEq4h8gxV5B5fHiKdJXc
-	XA7hsGKxzB9W8GFeR6qX+Mfr50lO0+llc5Swi/wo32UjvFp4gVxu7qBOoietK5qsK5qs/zdZ
-	VzSVI7oORetSM1I0uuTN8YYkbVaqLjP+k0MpThT+uVVfLBa60FzPOx4k8Ej9hBLupGtVjCbD
-	kJXiQYTH6mjlnSG9VqVM1GQdlvSHDuiNyZLBg9bxtHqt8t3d0kGV8KkmXUqSpDRJ/9+V4qNi
-	spH3SP6X0TuqO8z1e+17PlP3LiRtLWqxzuYdqFjz+UTCsQ3EkLg2dkdQnrB9vOqH/W+mp+Q9
-	2/4IJWw0HvZ9GI97ft5smyrcUJRws2N0on8+7o/tpe1dA6auJEug+K2ZtPd2vu3tL5sJmddf
-	cg/szbr8/VT3/i1ljnzn7pxN9OqY3LHrp9S0Qat5JQ7rDZp/AaLKAyC1AwAA
-X-CFilter-Loop: Reflected
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f087046-6c22-4987-7640-08ddc34aa613
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jul 2025 02:52:33.7571
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JFdkWvV6cUKj4x/NZSY7UgIg7FX/UcXj3jDqBAPI/TWF/D9AkO1HhRjQ2oArXVtyMFRhwS+qzkJxCu8+wjWmag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10545
 
-On Mon, Jul 14, 2025 at 12:58:15PM -0700, Mina Almasry wrote:
-> On Mon, Jul 14, 2025 at 12:37 PM Mina Almasry <almasrymina@google.com> wrote:
+> > I don't think these can meet customer's requirement, the PPS pin depend=
+s
+> > on the board design. If I understand correctly, these can only indicate
+> > whether the specified pin index is in range, or whether the pin is alre=
+ady
+> > occupied by another PTP function.
 > >
-> > On Mon, Jul 14, 2025 at 5:01 AM Byungchul Park <byungchul@sk.com> wrote:
-> > >
-> > > To eliminate the use of the page pool fields in struct page, the page
-> > > pool code should use netmem descriptor and APIs instead.
-> > >
-> > > However, __netmem_get_pp() still accesses ->pp via struct page.  So
-> > > change it to use struct netmem_desc instead, since ->pp no longer will
-> > > be available in struct page.
-> > >
-> > > While at it, add a helper, pp_page_to_nmdesc(), that can be used to
-> > > extract netmem_desc from page only if it's pp page.  For now that
-> > > netmem_desc overlays on page, it can be achieved by just casting.
-> > >
-> > > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > > ---
-> > >  include/net/netmem.h | 13 ++++++++++++-
-> > >  1 file changed, 12 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > > index 535cf17b9134..2b8a7b51ac99 100644
-> > > --- a/include/net/netmem.h
-> > > +++ b/include/net/netmem.h
-> > > @@ -267,6 +267,17 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
-> > >         return (struct net_iov *)((__force unsigned long)netmem & ~NET_IOV);
-> > >  }
-> > >
-> > > +static inline struct netmem_desc *pp_page_to_nmdesc(struct page *page)
-> > > +{
-> > > +       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page));
-> > > +
-> > > +       /* XXX: How to extract netmem_desc from page must be changed,
-> > > +        * once netmem_desc no longer overlays on page and will be
-> > > +        * allocated through slab.
-> > > +        */
-> > > +       return (struct netmem_desc *)page;
-> > > +}
-> > > +
-> >
-> > Same thing. Do not create a generic looking pp_page_to_nmdesc helper
-> > which does not check that the page is the correct type. The
-> > DEBUG_NET... is not good enough.
-> >
-> > You don't need to add a generic helper here. There is only one call
-> > site. Open code this in the callsite. The one callsite is marked as
-> > unsafe, only called by code that knows that the netmem is specifically
-> > a pp page. Open code this in the unsafe callsite, instead of creating
-> > a generic looking unsafe helper and not even documenting it's unsafe.
-> >
-> 
-> On second read through the series, I actually now think this is a
-> great idea :-) Adding this helper has simplified the series greatly. I
-> did not realize you were converting entire drivers to netmem just to
-> get rid of page->pp accesses. Adding a pp_page_to_nmdesc helper makes
-> the entire series simpler.
-> 
-> You're also calling it only from code paths like drivers that already
-> assumed that the page is a pp page and did page->pp deference without
-> a check, so this should be safe.
-> 
-> Only thing I would change is add a comment explaining that the calling
-> code needs to check the page is pp page or know it's a pp page (like a
-> driver that supports pp).
-> 
-> 
-> > >  /**
-> > >   * __netmem_get_pp - unsafely get pointer to the &page_pool backing @netmem
-> > >   * @netmem: netmem reference to get the pointer from
-> > > @@ -280,7 +291,7 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
-> > >   */
-> > >  static inline struct page_pool *__netmem_get_pp(netmem_ref netmem)
-> > >  {
-> > > -       return __netmem_to_page(netmem)->pp;
-> > > +       return pp_page_to_nmdesc(__netmem_to_page(netmem))->pp;
-> > >  }
-> >
-> > This makes me very sad. Casting from netmem -> page -> nmdesc...
-> >
-> > Instead, we should be able to go from netmem directly to nmdesc. I
-> > would suggest rename __netmem_clear_lsb to netmem_to_nmdesc and have
-> > it return netmem_desc instead of net_iov. Then use it here.
-> >
-> > We could have an unsafe version of netmem_to_nmdesc which converts the
-> > netmem to netmem_desc without clearing the lsb and mark it unsafe.
-> >
-> 
-> This, I think, we should address to keep some sanity in the code and
-> reduce the casts and make it a bit more maintainable.
+> > However, these pins are multiplexed with other devices, such as FLEXIO,
+> > CAN, etc. If the board is designed to assign this pin to other devices,=
+ then
+> > this pin cannot output the PPS signal. For for this use case, we need t=
+o
+> > specify a PPS pin which can output PPS signal.
+>=20
+> Ok, apologies if I misunderstood the purpose of this device tree property
+> as affecting the function of the NETC 1588 timer IP pins. You gave me
+> this impression because I followed the code and I saw that "nxp,pps-chann=
+el"
+> is used to select in the PTP driver which FIPER block gets configured to
+> emit PPS. And I commented that maybe you don't need "nxp,pps-channel" at =
+all,
+> because:
+> - PTP_CLK_REQ_PPS doesn't do what you think it does
+> - PTP_CLK_REQ_PEROUT does use the pin API to describe that one of the
+>   1588 timer block's pins can be used for the periodic output function
+>=20
 
-I will reflect your suggestions.  To summarize:
+Yes, you are right, PTP_CLK_REQ_PPS is input into the kernel PPS subsystem,
+is not used to out PPS signal on external pins. I have found the kernel doc=
+.
+I thought PTP_CLK_REQ_PPS can be used to output PPS signal, but now it
+seems that many people use it wrongly.
 
-   1) The current implementation of pp_page_to_nmdesc() is good enough
-      to keep, but add a comment on it like "Check if the page is a pp
-      page before calling this function or know it's a pp page.".
+commit d04a53b1c48766665806eb75b73137734abdaa95
+Author: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date:   Tue Nov 17 22:38:26 2020 +0100
 
-   2) Introduce the unsafe version, __netmem_to_nmdesc(), and use it in
-      __netmem_get_pp().
+ptp: document struct ptp_clock_request members
 
-   3) Rename __netmem_clear_lsb() to netmem_to_nmdesc(), and return
-      netmem_desc, and use it in all users of __netmem_clear_lsb().
+It's arguable most people interested in configuring a PPS signal
+want it as external output, not as kernel input. PTP_CLK_REQ_PPS
+is for input though. Add documentation to nudge readers into
+the correct direction.
 
-Anything else?
+> You seem to imply that the "nxp,pps-channel" property affects the
+> function of the SoC pads, which may be connected to the NETC 1588 timer
+> block or to some other IP. Nothing in the code I saw suggested this
+> would be the case, and I still don't see how this is the case - but
+> anyway, my bad.
+>=20
+> In this case, echoing Krzysztof's comments: How come it isn't the system
+> pinmux driver the one concerned with connecting the SoC pads to the NETC
+> 1588 timer or to FlexIO, CAN etc? The pinmux driver controls the pads,
+> the NETC timer controls its block's pins, regardless of how they are
+> routed further.
+>=20
 
-	Byungchul
-> 
-> --
-> Thanks,
-> Mina
+pinmux can select which device to use this pin for, but this is the
+configuration inside SoC. For the outside, depending on the design
+of the board, for example, pin0 is connected to a CAN-related device,
+then in fact this pin can only be used by CAN.
+
+> (reductio ad absurdum) Among the other devices which are muxed to these
+> SoC pads, why is the NETC 1588 timer responsible of controlling the
+> muxing, and not FlexIO or CAN? Something is illogical.
+
