@@ -1,234 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA8A273802
-	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 22:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E0526FD8E
+	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 22:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752617162; cv=none; b=S0Y23llWXKkJP5w8ZPT0UUq7uw3W53LpVeYlg9hd0sRvd0ueMX22dU0GZwEMI2YfLBhP50xqSeeo2K/7uq5By388BbxrNHnQy5te/o+NMS7i7cvony6du7cKYGdY4y9lQoo5GCHtA8YCKkJiEwWIyxBq4mjBI1W1SNp3fb0aBB8=
+	t=1752617825; cv=none; b=oFm3WN4h7Q2xJKiAlaIfSysws6GBDhCdMm2vsb76fGpes0YpFvFap8r0lHAMM01/nhFTUMyZsLkWUyS5qRVcxgdWppHYIIwlnDBf3vwf2H0XOPRUnJtZ8DuXdaG34zgyBwDp0gI2sqRjoNlerqi3PPGx4s0tXtfQ4HEi1eNUAmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752617162; c=relaxed/simple;
-	bh=fjHrp1hi2e7lQl5EJbxV1CIVLNPqYf16ns4CV/R8u8c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tgkCKD2UJ5dtOmg/LMoTJSChuAgkw+7slvgJoCnZeiie5l87btl0ax8LWFez0jHMrATOfTzliHeapUwA0/KPx+CEdH0JNk6YFgvF/uJWeVhUHWLh0e1RuRe7EQulbigobo0/9IzudNyr/7Gc7VhcUSW2q8mfl5MohKeDzS6Tq5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E50JgfO8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752617825; c=relaxed/simple;
+	bh=tMdoZBivQy3B+NItaHwOMyR9RE2Vd3YaDfvRU31vZT4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tb2o1I8a1BFg+OF5wMvm1CVXLULooBoI5raTr0svrJQpROobR6SmfndU3nqkrbsKexTlUE/ZIfdcchQPaxEIuLINiI4ERfSScb8brVUBkvDLihSoEJ3RQWmvtnONL8d4/k31Tyb8vTdwp+GjK2gkt0QwlmUKRfv1oxbX/HNMIIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=c3NmuSVo; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E50JgfO8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9171FC4CEF7
-	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 22:06:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752617162;
-	bh=fjHrp1hi2e7lQl5EJbxV1CIVLNPqYf16ns4CV/R8u8c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=E50JgfO8QZ6XUBe7EESU/9O3jjaflXeCB8qS4f1NgNpzZc7mgtPshvbxbkQOV/gkn
-	 XjKBXEyNRbefdyN5p10gOM38FQ/gdurSNWLV69gFtv6C23pr1tlWRV9SKMkYGEw/O2
-	 5rewty4ior3rsYvAcXQR33KSx0CWxPmQNcrxMHpvYEpZ/pLAGbiIrOUMqOEFWZ9gcW
-	 2H+ACb3DRYK/OQu5ZJKDkUeaZO4zGZDDpSCB504G8aKCfB4olKN8RhElw1+72FLDL2
-	 WxoWATmHK4ax0A0/k9kOwy4ibiKkoRtr2WXAdwJU/3hC4Z9oZ2QmdV4hJd4S4lav9x
-	 FbK/oXkHv4Z+Q==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-604bff84741so11261801a12.2
-        for <imx@lists.linux.dev>; Tue, 15 Jul 2025 15:06:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUxnq4iR40Pgpxk++OVKCJeSTl7+WpuZWGfXUG0tH2F+CF1pTKrEgHXgd97Uo8oVcc2a9w=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx3i4Y+jLuBFxT5MeTdUcoUDIJPa3dSowXh5WGT3/kZ2EfBxGWt
-	iFcWMwUgdAi6K99Mb4dlcTmWyP9k6M3moNpIEuV+ewUnn+LIsx7FXklm8aduOkldKLA9Jt+JNxr
-	J01dJUuygk4GFKcMYm9ry/dKiH8/F+Q==
-X-Google-Smtp-Source: AGHT+IF3THyGxSpDJB2zcxXCRHWbO25l/G12eksSmO/uYuzWLaYP8QlRX+UYFpPVo8hKh5sovlhTnoBBmJLvznwlKqM=
-X-Received: by 2002:a17:906:794c:b0:ad8:a4a8:103a with SMTP id
- a640c23a62f3a-ae9c9959522mr111997866b.4.1752617161059; Tue, 15 Jul 2025
- 15:06:01 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="c3NmuSVo"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-748e81d37a7so3636213b3a.1
+        for <imx@lists.linux.dev>; Tue, 15 Jul 2025 15:17:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1752617823; x=1753222623; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=T/kIrHiKONJdy5Cuneuwy/QdepmnycAhgTTDDzUGMMs=;
+        b=c3NmuSVobx23h8/KKva8XHKewh6S9xg2Yh/ebnufgF0TiQJ3Hs0pJdt44muDxTi1Hu
+         P775m5X7y3tyDJTxvaKrn7VHTzTUHDTsuqRCgc7uVXc/WqtC2+fO3rWjVClORdP5mWJc
+         ZqQezOW3EkSdO1HXUluQZMzintV9ZuIaVTScU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752617823; x=1753222623;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T/kIrHiKONJdy5Cuneuwy/QdepmnycAhgTTDDzUGMMs=;
+        b=C4gT3K4dKJxuBNdMbBhWG0n83QBHP09dDlvUWoNsrMZR3i1/qpMZTYNeclgt99gsWC
+         6dHinSXPr0QKwLt880wG+zdfcuupCNbxn1vGtEsEYgLuryA4EDov3tciN+HdVaGKX03K
+         U3cu0lDylj7ms2nf3ZcVRrVgEhvoTYsfHrixJ3eV9oJUUVF1y+gMYosQRQKRn2Tznj4o
+         67BuOWK9UmZJziqNPxeam6l7YqaIZzEdHFgGF4GoaE7o4nQJURe1nYjjGIngJM02n1N8
+         TtYp4YLJBqgCiJDp1aBmhgIu0Mpa3mmWHS26B1KVGwLdai49kwyofaN+Sn2tx7slPNXy
+         4fUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKnj8P4vOzMbS4uOvL+7AglfcOxIOwtTnYzesKaX6yr+l/IAs81BwDHCdVBUWjan/my18=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJxKXv8vag9uZbqpJrPNIRu4Zenj9V3hEQ2+jDTOtU74pke0ZP
+	i9Lp0sxxSR8zv+84S2rWutgKL+I6+E26avXh6TB5eLuqD0cQUpJ/h1ILtyzoS1MKZg==
+X-Gm-Gg: ASbGncsW9pji/g+SU+HAeK/nZ7ixcznefAxHIcxJbtO9wyy0CvTF6gUP7fEuyrZQnD8
+	7uYfY8vMDewzrrmI+Kcm8RbDxBtSv+6194FouNVRy+vm2KXK9CPD2batOQejhW39V37Wq4CluwY
+	5tdVzyzeeYNK1dNVnZDtJStP7pXEreMZgdxB7OHJRGhuZVR6Mh112YkVxtDxh6kokWTi1BIR9k0
+	z65w8T/Pah7BQKrxDtiCLuF+V//LehNjlqVrTR6lWtYHHRQ9iCUjpec1GXB+HOKDLYx7PG0akEE
+	zFxpDoGy6upMdzSEfOXez6cmZOyJv3ydpcntxpFECZ5Yb3sMPWRUAXYIP0yf94gY1s0WAD25d4W
+	NsubKao5UQR6q65cDNwbCAOOoP7+Ye7Qs3Q/z8gRL1Up3GaCAc0aElzRxo+Xf
+X-Google-Smtp-Source: AGHT+IEi35Q/9L2R45q9+Ckvy4VlsxjWRECWaXaVKZkJ79j9LtzQTdHiPF2AYMs8Ki3dyCacVtaadQ==
+X-Received: by 2002:a17:903:1c1:b0:23c:8f17:7f45 with SMTP id d9443c01a7336-23e24f70e34mr8439895ad.50.1752617823417;
+        Tue, 15 Jul 2025 15:17:03 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:3478:49c2:f75d:9f32])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-23de43352b5sm114969135ad.165.2025.07.15.15.17.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Jul 2025 15:17:02 -0700 (PDT)
+Date: Tue, 15 Jul 2025 15:17:00 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
+	Rob Herring <robh+dt@kernel.org>, imx@lists.linux.dev,
+	linux-pci@vger.kernel.org
+Subject: Re: Does dwc/pci-layerscape.c support AER?
+Message-ID: <aHbTXCYXbxLSQhgK@google.com>
+References: <20250702223841.GA1905230@bhelgaas>
+ <aGW8NnHUlfv1NO3g@lizhi-Precision-Tower-5810>
+ <aGXEcHTfT2k2ayAj@google.com>
+ <aGc666o3EgtXQMGN@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <aGLRbiqT8qVdG40z@lizhi-Precision-Tower-5810> <20250630183041.GA17697@pendragon.ideasonboard.com>
- <20250715195404.GA1794419-robh@kernel.org> <20250715213603.GO20231@pendragon.ideasonboard.com>
-In-Reply-To: <20250715213603.GO20231@pendragon.ideasonboard.com>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 15 Jul 2025 17:05:48 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLUj2h1OxUokOGFL34czroJnJ33cpvn9jO8b8=cu8Fz0g@mail.gmail.com>
-X-Gm-Features: Ac12FXyxIIs_HYhTopUrR7-09MWaLsy_6FCW2sFDo64hGN05P4tIBsNB1NbkmgY
-Message-ID: <CAL_JsqLUj2h1OxUokOGFL34czroJnJ33cpvn9jO8b8=cu8Fz0g@mail.gmail.com>
-Subject: Re: Compatible vs onnn,model at ap1302 binding
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Frank Li <Frank.li@nxp.com>, devicetree@vger.kernel.org, 
-	inux-media@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aGc666o3EgtXQMGN@lizhi-Precision-Tower-5810>
 
-On Tue, Jul 15, 2025 at 4:36=E2=80=AFPM Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> Hi Rob,
->
-> On Tue, Jul 15, 2025 at 02:54:04PM -0500, Rob Herring wrote:
-> > On Mon, Jun 30, 2025 at 09:30:41PM +0300, Laurent Pinchart wrote:
-> > > On Mon, Jun 30, 2025 at 02:04:21PM -0400, Frank Li wrote:
-> > > > Hi Rob:
-> > > >
-> > > > There are long discussion about AP1302 support.
-> > > >
-> > > > https://lore.kernel.org/imx/20250623-ap1302-v3-0-c9ca5b791494@nxp.c=
-om/T/#m9ecad9fcbfd1ac1c59b3aa5737e3860a64db2eb4
-> > > > previous thread
-> > > > https://lore.kernel.org/linux-media/1631091372-16191-1-git-send-ema=
-il-anil.mamidala@xilinx.com/
-> > > >
-> > > > Let me summary the key points.
-> > >
-> > > Thanks for the summary.
-> > >
-> > > > AP1302 is I2C ISP processor, which can connect to some RAW sensors.=
- such as
-> > > > AR0144. AR0144 can work alone, a RFC upstreaming at
-> > > > https://lore.kernel.org/linux-devicetree/20240630141802.15830-2-lau=
-rent.pinchart@ideasonboard.com/
-> > > >
-> > > > When AR0144 connect to AP1302, it is not 100% transparents for soft=
-ware,
-> > > > It needs power supplies for it.
-> > > >
-> > > > The basically there are two methods now.
-> > > >
-> > > > Method 1 ( Laurent Pinchart purposed ):
-> > > >
-> > > > use a vendor's specific property like model
-> > > >
-> > > > camera@3c {
-> > > >         compatible =3D "onnn,ap1302";
-> > > >         ...
-> > > >         sensors {
-> > > >                 onnn,model =3D "onnn,ar0144";
-> > > >                 ^^^^
-> >
-> > Why is this outside the sensor node?
->
-> Because when the AP1302 is used with two sensors, it requires both of
-> them to be identical. The property could go to the sensor nodes, but it
-> would then be redundant, and would make it possible to write incorrect
-> DT. When designing APIs, one of my goals is to make them difficult to
-> use incorrectly, so I think the property is better placed here.
+Hi Frank,
 
-Okay, makes sense.
+Thanks for the response.
 
-> This being said, it won't cause lots of issues if we moved the property
-> to the sensor nodes. I think it's suboptimal with no benefit, but if
-> that's the only contention point, I can compromise :-)
->
-> > > >                 sensor@0 {
-> > > >                         reg =3D <0>;
-> > > >                         vdd-supply =3D <&mt6358_vcamd_reg>;
-> > > >                         vaa-supply =3D <&mt6358_vcama1_reg>;
-> > > >                         vddio-supply =3D <&reg_1p8v_ext>;
-> > > >         ....
-> > > >
-> > > >
-> > > > Method 2 ( suggested by Rob at 2021 ):
-> > > >
-> > > > use compatible string:
-> > > >
-> > > > camera@3c {
-> > > >         compatible =3D "onnn,ap1302";
-> > > >         ...
-> > > >         ports {
-> > > >                 port@0 {
-> > > >                         compatible =3D "onnn,ar0144";
-> > > >                         ^^^^
-> > > >                         reg =3D <0>;
-> > > >                         vaa-supply =3D <&vaa_regulator>;
-> >
-> > Please don't hijack the graph binding (ports and port nodes).
-> >
-> > > >
-> > > >         ...
-> > > >
-> > > >
-> > > >                Method 2                              Mathod 1
-> > > > The same hardware should use the         There are not driver to ma=
-tch onnn,ar0144.
-> > > > same binding regardless connect to       AR0144 is not visilable fr=
-om host point.
-> > > > which bus/devices
-> > > >
-> > > >                                          compatible means software =
-comaptible, but
-> > > >                                          there are not driver for i=
-t at this case.
-> > > >
-> > > > reg in difference spi/i2c also have      reg is i2c's address, but =
-here is port or
-> > > > difference means.                        sensor index.
-> > > >
-> > > > Similar case for spi and i2c devices.    There are difference set o=
-f mandatory properties
-> > > >                                          when connect to ISP or SoC=
-.
-> > > >
-> > > >
-> > > > Rob and Laurent Pinchart:
-> > > >
-> > > >         Need a direction to move forwards!
-> > >
-> > > There are two things to consider here. One is the DT property we want=
- to
-> > > use to identify the sensor model. It can be argued that the "compatib=
-le"
-> > > property is widely used for this purpose. This is true, but the
-> > > "compatible" property is meant to indicate compatibility from an
-> > > operating system software point of view (regardless of which operatin=
-g
-> > > system is used). As a result, it serves as the central piece around
-> > > which drivers are bound to devices, and therefore is also used to mat=
-ch
-> > > DT schemas for the device.
-> > >
-> > > What we need here is to identify the sensor model, first and foremost=
- to
-> > > load the corresponding AP1302 firmware, and to know which power suppl=
-ies
-> > > the AP1302 driver needs to control for the sensor. Note that it would=
- be
-> > > entirely feasible for the sensor power supplies to be connected to GP=
-IOs
-> > > of the AP1302 and entirely controlled by the AP1302 firmware, but on
-> > > some designs those power supplies are connected to GPIOs of the main
-> > > SoC, and therefore need to be controlled by the AP1302 driver.
-> > >
-> > > While I think a custom property is better, I could live with
-> > > "compatible" *iif* it does not imply at the corresponding DT schema f=
-or
-> > > the sensor is pulled in. The DT binding for the sensor when controlle=
-d
-> > > from the main SoC describe the properties of the sensor that are
-> > > required for that use case, and those only overlap slightly with the
-> > > properties of the sensor needed by the AP1302. Using "compatible" in
-> > > such a case would in my opinion be misleading as it would imply
-> > > compatibility with the sensor DT binding.
-> >
-> > Why not a new compatible (e.g. onnn,ar0144-isp)? Seems to me there woul=
-d
-> > be at least some overlap. If there are supplies, then the names should
-> > be the same, right?
->
-> Would that be a top-level compatible for the AP1302, or am I
-> misunderstanding something ? Or maybe a compatible =3D "onnn,ar0144-isp"
-> for the sensor node, not the AP1302 ? The AR0144 could be used with
-> other ISPs (I recently upstreamed support for the THP7312 external ISP
-> from THine for instance, which could work with the AR0144 from onsemi),
-> so the "compatible" property in the sensor node needs to be evaluated in
-> the context of its parent, not in isolation. I think that departs enough
-> from the compatible model to be better served by a different property,
-> instead of introducing usage of "compatible" with a semantics (both from
-> the point of view of the OS, and from the point of view of the DT
-> binding validator).
->
-> > If you really want onnn,model, then that's fine. Probably there's not
-> > enough different sensors for me to really care...
->
-> The AP1302 is typically used with a subset of the onsemi sensors in my
-> experience, so I indeed don't think we'll have scaling issues.
+On Thu, Jul 03, 2025 at 10:22:35PM -0400, Frank Li wrote:
+> I saw AER and PME irq registed. But I have not seen irq increased. I am not
+> sure how to inject an error to test it.
 
-Okay, then stick with onnn,model.
+I've tested AER-like conditions via one of two ways:
 
-Rob
+1. force asserting PERST#, and then try to read a config register. This
+   should generate Complection Timeouts at least, and possibly other
+   errors. This method may not necessarily yield AER logs, as it may
+   also reset the error reporting registers that the Linux AER driver
+   would expect to read. But it probably should still trigger an
+   interrupt.
+   This depends on having access to PERST#; many SoCs provide this as a
+   GPIO which you could potentially control, although I don't see this
+   in the layerscape driver at the moment.
+2. asserting HOT RESET in the DWC controller. This is especially
+   implementation specific, as it depends on how (if at all) the hot
+   reset signal is connected into your SoC.
+
+Not sure if any of that helps you for testing. And maybe you want to
+wire up your platform IRQs anyway.
+
+Brian
