@@ -1,242 +1,166 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE4E2BE053
-	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 19:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B18719F464;
+	Tue, 15 Jul 2025 19:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752606589; cv=none; b=YAwG99nwEwSdV0oCktz+gzMjbt82NXUlgXGY2HXnd0lNoALBVf+kMfLALP49e08SNdQkywjVS0vekA4eZv5Rcx6aDicw9QC0skckHs5CKbnEHgQ5IGb4z/GnZGuLDVQzpqBYZkTdTvlW1SmAL7xUywuXJgKwTR1upXZMXXCqgAw=
+	t=1752609246; cv=none; b=tnAXxlR9O+ozoovIiS/dRWOyKefw69rYVikiHTfK34gYitrUIYXE2MDb9GwRPdi5y121gnLzyf8r1ExHR2ERy5OtIvij1SEjvy+yo6ltYulCvy2wXAimcHwQ6Ckqw1xLA1p3ujDRM7gHzavEoRF+TE7vsaKIP7ToaRWCbt59nDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752606589; c=relaxed/simple;
-	bh=JCtOsb4/1xLFL0OaeWa5hxSLQvuTC3ONZEmrZqYPr94=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K/pY4CDQ/i9+BUOg9jo4OnrHxqwZaDQF+dqEy3LYIHa5sOJCKUxF/ifh3wRH0Gbqw7X6coKYRQ9w4FY4ydIe+5BqSe9ibcOOXEeD/pef6gqKP92cElvcT8z1o8hG+QHSP08LseCrZLTjlGpXm4Is01uNJwpta2hl7PfmvuTnAe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SJ74vft3; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752609246; c=relaxed/simple;
+	bh=PffrbzQclI2RfRJLEDqJfXeDdnGsTFj67Fv5wf1WCBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AUqNGwio8mMx9oDV6cFF4DO8LOSWKLWkI2S0srMyAaRR+oIf8rvk4zujd+CLKEYC0JYvGUd//98rpTV0laN7vWBpJCVCz73J6Vbrhfwu5boOBlAP8O7dIKCHo0hlBv2XlIQEmiM/DUfF3ayAhYl6a5qwSiz+kuamwMkBOC6FH8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwXzRXnY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SJ74vft3"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-237f18108d2so47305ad.0
-        for <imx@lists.linux.dev>; Tue, 15 Jul 2025 12:09:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752606587; x=1753211387; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YLN2gDZ9onoCs+NlWLd/HaKyjjBalP3C26bllNaupd8=;
-        b=SJ74vft32sRzR/t4hAnNeMFYDOYdtUvBBXQG3XhQj5rrZPjDdac3xrcYDLnsinTd8R
-         p05kuuReEaHg/7pHkAvdaNLAWzlHa8hR5ZhFnfD+36QumddyiI6+F7m12I4Gyha53Emb
-         ksCUubQaX6l5NY1Oa8jwoosRSnPpQmf3DRMg2h/e0rQeYnqkCIUP4G68dA9iRmdMbBNj
-         MvaqHGvfngNHuo3JrsHDpTDp7k/64MATHkuXgSZjQzwyGZj4clBWh7O9sz9PbSYulzHD
-         YswNijx0VF80B/N1ow4+9gwsrhYWQf1y8J0zP58eudD5z7zSdIVDk050zxDHYf8gYntT
-         cJAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752606587; x=1753211387;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YLN2gDZ9onoCs+NlWLd/HaKyjjBalP3C26bllNaupd8=;
-        b=g3pKfEnlvYa+jFClSZQ/lmUiU93YA66SWEsy1v9AhvZL9PeW/xLeNMD7gnn2xIesPN
-         T4DHP7I3xH195ey86xXnVTENukhAvb5O04GOazTr/5+s92hcPDFiPIWsZrqbNUK8VZjX
-         xtR3tIScv7zKVYzGqhv3frO6Xh7/oJNXIIt8dFcsNOgpK6oejS0720+wZr2Bp4usIPM0
-         7SPnux1HCN2FEvwQpGuvl+xgujcreI7FMQKsE7yGKUqgW0oQ6chgdE3t+yayK0cu9+mj
-         auff82wSW54isPbXuT7YBGFvJjJbl6R2v41j6olKHvKIlrbcwrgrygkFyc1OQB9/dpey
-         hN6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWFY/ptBf+XXtXReKMfbVzHCJhPxo6lkf8W5gTeQwum2DYyixbqPANr8iFvDFN8TSK7y60=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyrf21nQzng84VgAM2CFaa1Vh/FDT5m7XR6Bt3cMK3qCrgfF/FC
-	/XTmExtJnbS3ZOLP+Jq4lNS44Fy4jqcqUYd07G0+0bK1uHTzVINrlgFkHK0J8NPFiRa2KwsiHdB
-	pkiZovet/Ih4KtuaFss75mv+Xd1yeuWWXaqw6Soo5
-X-Gm-Gg: ASbGncsq+bR5isvVX70rRqRRe4Pe/UPZm4oOM0O6J4GUhqJ9C/QgEVHyjxeYyUHF5rl
-	nqFanQnA3eSfNYnSybexzfDhuQFk0kpxUWFc8LoZzPuRwbUbtnC5DW+gZp3ZTPHMilEYBcmCXzY
-	ElCt+qF7L5YPHReuA0/+3NEW0i/duIBOUmVyL3DSxvFM10s5PUj0QPHJYx+S9pZUf8LXfqR16f9
-	9jqm02iQTjfLyrSa3tmza7R0DWQgVcSifFLJQ==
-X-Google-Smtp-Source: AGHT+IHowErSnvUulW5JXQBN4+fmG2zXgFSZ6eFQ/lioc5t7yVKoRiNFwd450XUTKcqJXTXwlIEmOQ0Irhzeefb0YRs=
-X-Received: by 2002:a17:903:4b50:b0:234:48b2:fd63 with SMTP id
- d9443c01a7336-23e24d874edmr256525ad.21.1752606586807; Tue, 15 Jul 2025
- 12:09:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwXzRXnY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9702C4CEE3;
+	Tue, 15 Jul 2025 19:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752609245;
+	bh=PffrbzQclI2RfRJLEDqJfXeDdnGsTFj67Fv5wf1WCBo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KwXzRXnYrwr+P0zGo7sETEYDwci+hBZNdMt7qouZgxN5K7UOgnJPKkTuALkYU3bnf
+	 omItG7VZD+mQG9d0rOqphDVURMzAj+Hepqv5zUA7gY3Hwq+dkoeXmhZXtTBH0lvS6B
+	 0gWAfErCYoWUbU0nIaRD0wM3Y8DeDBD9ZNgtT3dPcferAwBqP0y9cnPZRfWNuBK43r
+	 8yXtDoJqk3rC0oK45izLlxHqJwGnLjiR7cLqyLYHC5QUyjBMDXFto2psp0dVFmTZrk
+	 jcYoO0D6qvFO4upI18GaU369pQGwM2010/hJAG2rIIDC7g27fJ6xtE4jEhT3AD/D0Y
+	 9Oko3mXvVx9jQ==
+Date: Tue, 15 Jul 2025 14:54:04 -0500
+From: Rob Herring <robh@kernel.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Frank Li <Frank.li@nxp.com>, devicetree@vger.kernel.org,
+	inux-media@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: Compatible vs onnn,model at ap1302 binding
+Message-ID: <20250715195404.GA1794419-robh@kernel.org>
+References: <aGLRbiqT8qVdG40z@lizhi-Precision-Tower-5810>
+ <20250630183041.GA17697@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250714120047.35901-1-byungchul@sk.com> <20250714120047.35901-3-byungchul@sk.com>
- <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
- <CAHS8izNh7aCJOb1WKTx7CXNDPv_UBqFyq2XEHHhqHH=5JPmJCQ@mail.gmail.com> <20250715013626.GA49874@system.software.com>
-In-Reply-To: <20250715013626.GA49874@system.software.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 15 Jul 2025 12:09:34 -0700
-X-Gm-Features: Ac12FXzmAscmFtXN7b2_Y3o9_BpXC5L5KXyNze-SOzs8SCUx-lkKZEIKcXC8OLg
-Message-ID: <CAHS8izNgfrN-MimH1uv349AqNudvQJoeOsyHpoBT_QokF3Zv=w@mail.gmail.com>
-Subject: Re: [PATCH net-next v10 02/12] netmem: use netmem_desc instead of
- page to access ->pp in __netmem_get_pp()
-To: Byungchul Park <byungchul@sk.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, kernel_team@skhynix.com, ilias.apalodimas@linaro.org, 
-	harry.yoo@oracle.com, akpm@linux-foundation.org, andrew+netdev@lunn.ch, 
-	asml.silence@gmail.com, toke@redhat.com, david@redhat.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
-	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com, 
-	jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com, 
-	xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com, 
-	przemyslaw.kitszel@intel.com, sgoutham@marvell.com, gakula@marvell.com, 
-	sbhatta@marvell.com, hkelam@marvell.com, bbhushan2@marvell.com, 
-	tariqt@nvidia.com, ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, 
-	mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org, nbd@nbd.name, 
-	lorenzo@kernel.org, ryder.lee@mediatek.com, shayne.chen@mediatek.com, 
-	sean.wang@mediatek.com, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, aleksander.lobakin@intel.com, 
-	horms@kernel.org, m-malladi@ti.com, krzysztof.kozlowski@linaro.org, 
-	matthias.schiffer@ew.tq-group.com, robh@kernel.org, imx@lists.linux.dev, 
-	intel-wired-lan@lists.osuosl.org, linux-arm-kernel@lists.infradead.org, 
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250630183041.GA17697@pendragon.ideasonboard.com>
 
-On Mon, Jul 14, 2025 at 6:36=E2=80=AFPM Byungchul Park <byungchul@sk.com> w=
-rote:
->
-> On Mon, Jul 14, 2025 at 12:58:15PM -0700, Mina Almasry wrote:
-> > On Mon, Jul 14, 2025 at 12:37=E2=80=AFPM Mina Almasry <almasrymina@goog=
-le.com> wrote:
-> > >
-> > > On Mon, Jul 14, 2025 at 5:01=E2=80=AFAM Byungchul Park <byungchul@sk.=
-com> wrote:
-> > > >
-> > > > To eliminate the use of the page pool fields in struct page, the pa=
-ge
-> > > > pool code should use netmem descriptor and APIs instead.
-> > > >
-> > > > However, __netmem_get_pp() still accesses ->pp via struct page.  So
-> > > > change it to use struct netmem_desc instead, since ->pp no longer w=
-ill
-> > > > be available in struct page.
-> > > >
-> > > > While at it, add a helper, pp_page_to_nmdesc(), that can be used to
-> > > > extract netmem_desc from page only if it's pp page.  For now that
-> > > > netmem_desc overlays on page, it can be achieved by just casting.
-> > > >
-> > > > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > > > ---
-> > > >  include/net/netmem.h | 13 ++++++++++++-
-> > > >  1 file changed, 12 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > > > index 535cf17b9134..2b8a7b51ac99 100644
-> > > > --- a/include/net/netmem.h
-> > > > +++ b/include/net/netmem.h
-> > > > @@ -267,6 +267,17 @@ static inline struct net_iov *__netmem_clear_l=
-sb(netmem_ref netmem)
-> > > >         return (struct net_iov *)((__force unsigned long)netmem & ~=
-NET_IOV);
-> > > >  }
-> > > >
-> > > > +static inline struct netmem_desc *pp_page_to_nmdesc(struct page *p=
-age)
-> > > > +{
-> > > > +       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page));
-> > > > +
-> > > > +       /* XXX: How to extract netmem_desc from page must be change=
-d,
-> > > > +        * once netmem_desc no longer overlays on page and will be
-> > > > +        * allocated through slab.
-> > > > +        */
-> > > > +       return (struct netmem_desc *)page;
-> > > > +}
-> > > > +
-> > >
-> > > Same thing. Do not create a generic looking pp_page_to_nmdesc helper
-> > > which does not check that the page is the correct type. The
-> > > DEBUG_NET... is not good enough.
-> > >
-> > > You don't need to add a generic helper here. There is only one call
-> > > site. Open code this in the callsite. The one callsite is marked as
-> > > unsafe, only called by code that knows that the netmem is specificall=
-y
-> > > a pp page. Open code this in the unsafe callsite, instead of creating
-> > > a generic looking unsafe helper and not even documenting it's unsafe.
-> > >
-> >
-> > On second read through the series, I actually now think this is a
-> > great idea :-) Adding this helper has simplified the series greatly. I
-> > did not realize you were converting entire drivers to netmem just to
-> > get rid of page->pp accesses. Adding a pp_page_to_nmdesc helper makes
-> > the entire series simpler.
-> >
-> > You're also calling it only from code paths like drivers that already
-> > assumed that the page is a pp page and did page->pp deference without
-> > a check, so this should be safe.
-> >
-> > Only thing I would change is add a comment explaining that the calling
-> > code needs to check the page is pp page or know it's a pp page (like a
-> > driver that supports pp).
-> >
-> >
-> > > >  /**
-> > > >   * __netmem_get_pp - unsafely get pointer to the &page_pool backin=
-g @netmem
-> > > >   * @netmem: netmem reference to get the pointer from
-> > > > @@ -280,7 +291,7 @@ static inline struct net_iov *__netmem_clear_ls=
-b(netmem_ref netmem)
-> > > >   */
-> > > >  static inline struct page_pool *__netmem_get_pp(netmem_ref netmem)
-> > > >  {
-> > > > -       return __netmem_to_page(netmem)->pp;
-> > > > +       return pp_page_to_nmdesc(__netmem_to_page(netmem))->pp;
-> > > >  }
-> > >
-> > > This makes me very sad. Casting from netmem -> page -> nmdesc...
-> > >
-> > > Instead, we should be able to go from netmem directly to nmdesc. I
-> > > would suggest rename __netmem_clear_lsb to netmem_to_nmdesc and have
-> > > it return netmem_desc instead of net_iov. Then use it here.
-> > >
-> > > We could have an unsafe version of netmem_to_nmdesc which converts th=
-e
-> > > netmem to netmem_desc without clearing the lsb and mark it unsafe.
-> > >
-> >
-> > This, I think, we should address to keep some sanity in the code and
-> > reduce the casts and make it a bit more maintainable.
->
-> I will reflect your suggestions.  To summarize:
->
->    1) The current implementation of pp_page_to_nmdesc() is good enough
->       to keep, but add a comment on it like "Check if the page is a pp
->       page before calling this function or know it's a pp page.".
->
+On Mon, Jun 30, 2025 at 09:30:41PM +0300, Laurent Pinchart wrote:
+> Hi Frank,
+> 
+> On Mon, Jun 30, 2025 at 02:04:21PM -0400, Frank Li wrote:
+> > Hi Rob:
+> > 
+> > There are long discussion about AP1302 support.
+> > 
+> > https://lore.kernel.org/imx/20250623-ap1302-v3-0-c9ca5b791494@nxp.com/T/#m9ecad9fcbfd1ac1c59b3aa5737e3860a64db2eb4
+> > previous thread
+> > https://lore.kernel.org/linux-media/1631091372-16191-1-git-send-email-anil.mamidala@xilinx.com/
+> > 
+> > Let me summary the key points.
+> 
+> Thanks for the summary.
+> 
+> > AP1302 is I2C ISP processor, which can connect to some RAW sensors. such as
+> > AR0144. AR0144 can work alone, a RFC upstreaming at
+> > https://lore.kernel.org/linux-devicetree/20240630141802.15830-2-laurent.pinchart@ideasonboard.com/
+> > 
+> > When AR0144 connect to AP1302, it is not 100% transparents for software,
+> > It needs power supplies for it.
+> > 
+> > The basically there are two methods now.
+> > 
+> > Method 1 ( Laurent Pinchart purposed ):
+> > 
+> > use a vendor's specific property like model
+> > 
+> > camera@3c {
+> >         compatible = "onnn,ap1302";
+> >         ...
+> >         sensors {
+> >                 onnn,model = "onnn,ar0144";
+> >                 ^^^^
 
-Yes please.
+Why is this outside the sensor node?
 
->    2) Introduce the unsafe version, __netmem_to_nmdesc(), and use it in
->       __netmem_get_pp().
->
+> >                 sensor@0 {
+> >                         reg = <0>;
+> >                         vdd-supply = <&mt6358_vcamd_reg>;
+> >                         vaa-supply = <&mt6358_vcama1_reg>;
+> >                         vddio-supply = <&reg_1p8v_ext>;
+> >         ....
+> > 
+> > 
+> > Method 2 ( suggested by Rob at 2021 ):
+> > 
+> > use compatible string:
+> > 
+> > camera@3c {
+> >         compatible = "onnn,ap1302";
+> >         ...
+> >         ports {
+> >                 port@0 {
+> >                         compatible = "onnn,ar0144";
+> >                         ^^^^
+> >                         reg = <0>;
+> >                         vaa-supply = <&vaa_regulator>;
 
-No need following Pavel's feedback. We can just delete
-__netmem_get_pp. If we do find a need in the future to extract the
-netmem_desc from a netmem_ref, I would rather we do a straight cast
-from netmem_ref to netmem_desc rather than netmem_ref -> pages/net_iov
--> netmem_desc.
+Please don't hijack the graph binding (ports and port nodes). 
 
-But that seems unnecessary for this series.
+> > 
+> >         ...
+> > 
+> > 
+> >                Method 2                              Mathod 1
+> > The same hardware should use the         There are not driver to match onnn,ar0144.
+> > same binding regardless connect to       AR0144 is not visilable from host point.
+> > which bus/devices
+> > 
+> >                                          compatible means software comaptible, but
+> >                                          there are not driver for it at this case.
+> > 
+> > reg in difference spi/i2c also have      reg is i2c's address, but here is port or
+> > difference means.                        sensor index.
+> > 
+> > Similar case for spi and i2c devices.    There are difference set of mandatory properties
+> >                                          when connect to ISP or SoC.
+> > 
+> > 
+> > Rob and Laurent Pinchart:
+> > 
+> >         Need a direction to move forwards!
+> 
+> There are two things to consider here. One is the DT property we want to
+> use to identify the sensor model. It can be argued that the "compatible"
+> property is widely used for this purpose. This is true, but the
+> "compatible" property is meant to indicate compatibility from an
+> operating system software point of view (regardless of which operating
+> system is used). As a result, it serves as the central piece around
+> which drivers are bound to devices, and therefore is also used to match
+> DT schemas for the device.
+> 
+> What we need here is to identify the sensor model, first and foremost to
+> load the corresponding AP1302 firmware, and to know which power supplies
+> the AP1302 driver needs to control for the sensor. Note that it would be
+> entirely feasible for the sensor power supplies to be connected to GPIOs
+> of the AP1302 and entirely controlled by the AP1302 firmware, but on
+> some designs those power supplies are connected to GPIOs of the main
+> SoC, and therefore need to be controlled by the AP1302 driver.
+> 
+> While I think a custom property is better, I could live with
+> "compatible" *iif* it does not imply at the corresponding DT schema for
+> the sensor is pulled in. The DT binding for the sensor when controlled
+> from the main SoC describe the properties of the sensor that are
+> required for that use case, and those only overlap slightly with the
+> properties of the sensor needed by the AP1302. Using "compatible" in
+> such a case would in my opinion be misleading as it would imply
+> compatibility with the sensor DT binding.
 
+Why not a new compatible (e.g. onnn,ar0144-isp)? Seems to me there would 
+be at least some overlap. If there are supplies, then the names should 
+be the same, right?
 
->    3) Rename __netmem_clear_lsb() to netmem_to_nmdesc(), and return
->       netmem_desc, and use it in all users of __netmem_clear_lsb().
->
+If you really want onnn,model, then that's fine. Probably there's not 
+enough different sensors for me to really care...
 
-Following Pavel's comment, this I think also is not necessary for this
-series. Cleaning up the return value of __netmem_clear_lsb is good
-work I think, but we're already on v10 of this and I think it would
-unnecessary to ask for added cleanups. We can do the cleanup on top.
-
-> Anything else?
-
-Thank you very much :-)
-
---=20
-Thanks,
-Mina
+Rob
