@@ -1,156 +1,323 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013035.outbound.protection.outlook.com [40.107.159.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88492DAFB9
-	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 11:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752580221; cv=none; b=bOr49oOkuSL9vMcH7v+k4piK/EDABwkqbHgNYT97k8J5lJjrK4gHsx+zJjq8JN8JH58id+mG0luMFjndj8erm5KMZ9SNsDrJqS/0eWkdimq4PdVVWyMP5CyP/o/C8z7tyH9HnhYEZXz1fIG/5vIux/wmob7HwllloNwsZ10W5mg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752580221; c=relaxed/simple;
-	bh=QNcCDmqQ5Df7rSq9TtFAWYVAUpPVzmHMgnOLyE7lX6E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i0oFdGWos3KB42wr+dhbX/2M36ocdqFAr8CJ21w3TW39SJP5ZTolC5oW9OKqzbg0Z+x6lX+qI8O7SsrixisusuV9CGW4Grj/ar1j/Dujqx9J8tvSttWwo1NN7n4BqhSeETa9KN50NgWpR+mgJqxmf4q6ctjiuUnMH24Qga/Ipa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=luRzSdH3; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2414C18E1F
+	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 12:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752581048; cv=fail; b=LnYhUMAmXq4gcPVsjCCGE0YvVp+aTQLJhvnk43fxqhC15LPXdm3NzZuERxHKmXPgcAV4NYifYfdRmF5BdsUU8fIHPBU3oKDb8xbWYk1PEh9bcKcWt+YyBkO7c9zBWabXTolqPEURhfTPqN9vKDhiTmRmtCAbLZGpD+1aUQYyWeQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752581048; c=relaxed/simple;
+	bh=zsgO5DxNszOLxloYqtVRLzOufsUeevsv7q7zmqK/Kbs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=kcrOtVrwj5UiE7BiWqlt1jMtayAUZnXpktaLYP9YGekh7n6hgK5vAVNoLV2kshstjSDjsS05PGD1ytfY/TXC0kuc8J54uBh+Mp+CFcR0UlaGaNGNPcH3mW+t+Vpp82+ikwCvUcwdX539a/aqdDLfA1Xl5vzrnJK6nmTqddOIZac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=J9natSFj; arc=fail smtp.client-ip=40.107.159.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="luRzSdH3"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-711a3dda147so57229167b3.2
-        for <imx@lists.linux.dev>; Tue, 15 Jul 2025 04:50:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752580219; x=1753185019; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4wNySUjatYeI6OvV2zA4z/a1VqMlHoZrAYnvby/JKWM=;
-        b=luRzSdH3wbK3UJjU8b8aIovM4Z8sXWRm96XRyHcDZB6KBuGAqISxD3xIVQkk0Us+70
-         64N2pP1vGLZVx6NLGgdoDfwvDBtrLMXZLM2DnigVEmdewhEeo/ZGaFjsve2qRfvEDVYQ
-         oaVRxu+OByMKZr2SsfVzNaz05yIY/b7RQ1NmCTAqdXL6I3Ss3KzQwj/7le0NveUXPPbr
-         /M/peIJIGqkRXYDUGqhwNfs8BT73AQ3IpbX+0RKmKxkTdY0QC+AAlt8CZXbMIddYgV6n
-         RIDNGWZNhOVzNn/FIvzDKl5GvQcW3UzKCweN5vtsuhcoq2Qk4SJuABcw2ZYILifDvPrO
-         MgUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752580219; x=1753185019;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4wNySUjatYeI6OvV2zA4z/a1VqMlHoZrAYnvby/JKWM=;
-        b=ieeEiHrNbBMor2dD6c2mdvG5LITgnr4qr31OjNZ5mq0FEB+QdY8EzmKXD6R0SBNCA+
-         Wwkkj8mU7S7PqC8gH+GIqCpokBqjWuiTnGRs10NTejyMxc49g/K9fgsOhBIxn9o/+k3o
-         UMJEf22nlH98gVWhilnarQLbdA9K++CMTTp8NPc+GE2puHeO/o1x+BY2CALJOsXUC0xg
-         qbf8x4m80TuEg7r16BXuczgD9ZvWeRZbIzbVa69vdV88MXLGfNEdBfN3w6VhPEjGBC9N
-         is18+n4zv8mxxLa9zUTikUggUa5LsoQiqYvkc8vvAamI6ik10kOAWGVYjolGTj38F9Qx
-         +6Cw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7EXqDW3aE0Bq36dng0VF7OINSlUOV/ilT2wPfGBpliuy0N8t9yEoDdKBlMkObqEHjtbM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx8Nyw+fD3rfDbvXa0L+BN7OTJ7iTyBJlp1GDQvXVOOqOklRmc6
-	DyMTSPv58VkyR8B3269V7LLLH/e8NZWhQH8XJb1VHLtfjpXLpr41GNOztUru6+AJhbBARwtmzTr
-	mwiRpX5gID+YLyp1EIR9agTnwk2s9AtNrTUZo2Vg13Q==
-X-Gm-Gg: ASbGncuEUZOi7ifz+HodPCmnCAZZ7P4yLMILsoYJ+iKkoCdrqrFRy9N3KKPHunZ6UHU
-	1pPiw+6AUybhJP7FHY89aljlOPN+MlbQi/IjPQv3+aGoOGPqrRIz1jtI7cOwfW2+4VR3NNCf0bw
-	z4KLssK14M7FH11oGG6sd/M4Aqgzjs/G2ZPnIifsZm3NaACi4SlDxx54C0Wl1VPtNC3TBfVd/el
-	eCKPV6X
-X-Google-Smtp-Source: AGHT+IF/K38yeveYq70L/mHAPtfjeL+GIee4NoKApQPc4/AmworpqftrKbu0K7Q7h4oLInJZL2btkmXzEuBJtreqbG4=
-X-Received: by 2002:a05:690c:7483:b0:716:3dc5:a35f with SMTP id
- 00721157ae682-717d5e94ad5mr256657057b3.19.1752580218628; Tue, 15 Jul 2025
- 04:50:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="J9natSFj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nwMJBQSFnCh/7q+J6e8vJBq3zSg2OAg4ud1u8NK9rAN6HzXJ8ijfAwx7siHN/Qc8aDDTvhBsHTyM7rE347wSebJIFt5S0o9aRc/Uk3/hLX/cm7TYK3+3wNbm3LBMNLCcFidzeRcCrkjeUiFOJPBeXg+upTOqgGdRr6lMYLNdFtXhxgx8FJMlS6QTfZzWlaV2pAOIgAYueLyxF7ezhNYphCzoPD905VDA/3SL+bc68ohS6swLuKtr6sOx2VBRpZXSpw6M3SCtDC69NuSTEEPFeIiSedYN6OSfezBR8LD6WIKlmZF9/3kR8OhQC0FVlo6o/N5lCN+2OWoB2xmPJax3Zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aAHN3EcAWjm97f5hJ2pnTmZHL11Upc31bl/dAVYvIFw=;
+ b=J9AQxIhvnF3vTZKKz2doZ7ntRhCg+Ql4tY8K+J5nFZNG0TH9XDxrwmNkVe1S6VqTKT2YJyuK6k4ZIJNKkIdn34ATG/hU5PGWqZFCbeLRXSXGesPQMtiiaQk6e83SN8QsNT+iX26kAcDftrqTzINx9DE/C1k9gx0qUbRGVA782lNG5G/l9P5D5NZqzsSdqjs5qZ/wicZN2qCwSERyHV7LVlLLgI+SDBpXvuayd4F5bW4urUi3G6g3YQrPHU622cD9MU+EF+Qb2ZE48nKaPevkQ15WbLPt3+d2356uVQF3Hj584dMdvqBpR+OM1qZsGvjaotBt/udyrLauNnf2cCEElA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aAHN3EcAWjm97f5hJ2pnTmZHL11Upc31bl/dAVYvIFw=;
+ b=J9natSFjtlRUhGajgxOixr50AdH7QvC0zERBXooBB0RYV85pKZ0AlJOCTIrvNi/QW27bM1yoyt+srjDE8N3F9irrE3llMcT3zO2JuD+5UsEv1vLh88XbhLVtV4VSFHijKDMr15bmisC1Ps1hnCjYpEZfQiS9mZy3e8Qhlp1dJmp18EPRqzjjfVsO4ggdvRh3lQRLa+q1zsqNMd7WOxSyEgt7hy5GF9lK04h26wmyJ3jBm+4KReefAPzu7DO3E8VlsJYGDvc6haDgXIZFOF/BzBHWX4Uix9o/j2lve9hcwVdRBe8S7FCtI1sl0ZzKkbbpyEhTOxQOBdTQlDEtBtlqvg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com (2603:10a6:20b:4fe::12)
+ by AS4PR04MB9267.eurprd04.prod.outlook.com (2603:10a6:20b:4e2::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Tue, 15 Jul
+ 2025 12:04:01 +0000
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30]) by AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30%4]) with mapi id 15.20.8901.021; Tue, 15 Jul 2025
+ 12:04:01 +0000
+Date: Tue, 15 Jul 2025 15:03:57 +0300
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: imx@lists.linux.dev, Abel Vesa <abelvesa@kernel.org>, 
+	Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org, 
+	Abel Vesa <abel.vesa@linaro.org>, linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/8] clk: imx95-blk-ctl: Cache registers when RPM
+ routines are called
+Message-ID: <uqkh54tsbv7pyfgfwm6i22xsnevzokyrv253bju5hbhypbckfl@qy7aqlaylp3w>
+References: <20250709122332.2874632-1-laurentiu.palcu@oss.nxp.com>
+ <20250709122332.2874632-2-laurentiu.palcu@oss.nxp.com>
+ <aHCNCokZxIRNPgT6@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aHCNCokZxIRNPgT6@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: FR4P281CA0101.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cb::16) To AS4PR04MB9576.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4fe::12)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250629172512.14857-1-hiagofranco@gmail.com> <aGazjaJQXl03HUJE@p14s>
-In-Reply-To: <aGazjaJQXl03HUJE@p14s>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 15 Jul 2025 13:49:42 +0200
-X-Gm-Features: Ac12FXwJ5N_wrB84X7RLvjAxpSUj8wCAKwcHpPhNOwV7kx7yjVIlAOOax7yXEA4
-Message-ID: <CAPDyKFpUF+S8EqVsHct7TFZGupq71Bu7eL3t2Sr=ibhZ518nsQ@mail.gmail.com>
-Subject: Re: [PATCH v7 0/3] remoteproc: imx_rproc: allow attaching to running
- core kicked by the bootloader
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Hiago De Franco <hiagofranco@gmail.com>, linux-pm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Bjorn Andersson <andersson@kernel.org>, 
-	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
-	"Rafael J . Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9576:EE_|AS4PR04MB9267:EE_
+X-MS-Office365-Filtering-Correlation-Id: f6483eb4-297b-4af7-a868-08ddc397afbb
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?yYk/a5gm7pem2j+drZ3JtnPgl5rL4rVUZUXdK8v/SuvGoMmoyB73aNqINAWw?=
+ =?us-ascii?Q?24qFhSmI2U8bPMvzCkjLZ5/ZikVWcm189DY7D/R1JrfvWZkVPslWz2ZEJwEf?=
+ =?us-ascii?Q?99fzI9I9wPv/3H5PLuIAXcrQ6G9+szxP0M+Bk/SB2eJORwnEonBr7UzrAghS?=
+ =?us-ascii?Q?Z1F0Jp6v6X5e5vu4HRnD5MSdXg3a+qNIolhP857PqCiR6sTVgkuzEJxcPCsy?=
+ =?us-ascii?Q?1VXTTczK0rkWsC3us7gxE3dlY7nHW+gSD8eWmQ0XZJKSG9JpQ04IMuAqV3Kq?=
+ =?us-ascii?Q?5WMWI98CZ8hJpFm8rflACdV8wTfT0X+CS5LWykTVhBvpzjg0W0xFhn4Gl0/+?=
+ =?us-ascii?Q?FsgNyLhbSOIWkYP3j89vUWXCOTCTSfKvmlRvhqKbJYSv0Hstt1l4pq0M1M1N?=
+ =?us-ascii?Q?BRpvRnuM/4nzBeI3TgEhNZUGczcbRvE1/pgA/yWVUevGxwE2kF4WzDHGr/FZ?=
+ =?us-ascii?Q?LY1YJu14rc/85HY9I6zgGNRc0t0yDSfVn7zLM9LaoE+7sKMW9zxUstqLyBfR?=
+ =?us-ascii?Q?eq77aA/QVavNEFxn+b/PxomlDfVxhksuh8LicgzpjpDLIDUmPDq9zi+h0fkl?=
+ =?us-ascii?Q?5ZpdYMPfO8bafMR+bROw/jp1FNSUBpb0Zp85KJX1oai+y9Mwz9HRfcsDq/0D?=
+ =?us-ascii?Q?5KHBaCyk/olnYFjgVJ/rZFRCMaiGvbVlXz6wGDjDsjVSwrsWM1iVt6UEYDD1?=
+ =?us-ascii?Q?fhkmV9bVWLPpoFIupdxmWDylfhibRNuDL/3I1tG2WHI40MA+GUMVLRZ535Qc?=
+ =?us-ascii?Q?DAFqgP9xYqvb5dTCC8vuZV4cRSJwy3R/b8gncgUwf4LO/Qp4QwqI/JZpV7lk?=
+ =?us-ascii?Q?4SUn+l1w2mUOlS0b9vf2jW8LArwg6JFUM4isbwipxgGO8pGnz4XLwZ9oDvz2?=
+ =?us-ascii?Q?sCjKwqlK9U49CLYCVnMKejUxTOsT3nSm9y7DAsCvcZlhLxRi1gw8l1KCAWYr?=
+ =?us-ascii?Q?h9jyq/3ZNbrSAHb6/gUz26j+y0282WiwVwQWlZQbz9J0vGlDPUMHSbghJCZy?=
+ =?us-ascii?Q?0sCUu5EWn8hixzKXbHaEHrJvPl/QOsjTEaDlVGFOsH009/UgDdmWMpk058MW?=
+ =?us-ascii?Q?YI0FaT8P8eOZZ1wL4IL33IO2t8msqYMAlZbNhdsH+zVtvhlv01ULSJyWmA22?=
+ =?us-ascii?Q?xeFL1hldB6+YPUjAVvdl68QVtUcdh9Ks8Adt3MP2Z8TheAiB6267BIVFP2UX?=
+ =?us-ascii?Q?WfMzmUkzkJ9skTlWKcls/jXLBpy+dXYYR9VOAnHgot0F/GfbccW+y7OujfNX?=
+ =?us-ascii?Q?mX5b4KLCXVIO5BkmC5C2HLQ28C7Gv7anr+T3yOVkmkisfCGAkwkTo4AAoh1t?=
+ =?us-ascii?Q?uzZ6RtIyEJrryHAmpvYHdU6tW2StmYRvjB5NIC8c3BPnNifdE5akhYoA6Nto?=
+ =?us-ascii?Q?k3Sy0YxuCVHX90D1x5L2PIuEe7JwJgW45P6X3k+qSbMc/3cr2kpq1ij2pe3T?=
+ =?us-ascii?Q?2g5iRLCrUgY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9576.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RnIZTbcG8S4keFw0yEdDuHzFwgCivZtCeNswD8Od2Ms4qxRpscXyTKyJG2n1?=
+ =?us-ascii?Q?YioOwVyP/tJa9nYMZWgzZXlRxyf8m90DdAJxhQ/YRl1pwlZgE+zKUZpSCOCT?=
+ =?us-ascii?Q?T+w4khGaAq/8SG+KeBd/t+qFbe7OXUJWQNOvUA0BK8b0/Trrbc6QX05KtlJo?=
+ =?us-ascii?Q?KlalH9iJrYgSLjIIDD+4E0iP8pzXtDj7Xglp0jLeEuSof6ph1wJUPyRvH1TX?=
+ =?us-ascii?Q?jPLlM4+MtXH848xDrS92kUlec8XKP5k30Ko0qq+dHt7xfccccl46NaOW94xJ?=
+ =?us-ascii?Q?f5v4PO6geTV0MuzbR8qe9utGYcUMdz5TCLMQECcVVGsuw5TvspzIFF3bW1Zu?=
+ =?us-ascii?Q?eEzodU6cGEDf/ZIdQrw9mOrBp0YxlT6m5j0bjLXQtyAuQhzsePc641X+zG8B?=
+ =?us-ascii?Q?vnMFrhdCC+ToYvV2l+YeZVkzQqAS2o721Ks4ewMOQS2Esn9ObmdK5sRZNoYW?=
+ =?us-ascii?Q?/3AbY7pUzuDBaoyqoB48SZa1yOeJHurynCoZExdkivup8ZYEWEG5uxxGtlPB?=
+ =?us-ascii?Q?Tu9oklbXWTUgG82CVpNODHEZ3xZvtYMWC0vY3/9/CK4BH2j1RxbyL6pgoJlu?=
+ =?us-ascii?Q?zNg5pXH9a7+Ww4d05R4ylaowJ6zRy9rSLfgSn7FlCveTaFXB+ku/pyr6Cp/L?=
+ =?us-ascii?Q?lXg8WJLkJIkaTzd56eGTAV3iYQ3lAZIb0hdr9cl8TIAQK5y1w13W6v3y9pY8?=
+ =?us-ascii?Q?FAK8peYpniGXsskGD0wrTRQvkXwTk0wzfw5TJuuMLzKw5ClFBeyZqImgpxTD?=
+ =?us-ascii?Q?FWCo9W7MzpK+Gb8egJMIKB8oxkJ/auHtB6pLEsO4F3TFkZIOGQ4H8ezKxlZi?=
+ =?us-ascii?Q?lx//hQr4I3IDbmHT47JNjpV5L52NR0JdoXnV3Stq7Xr0b4fErQin1SNkuupn?=
+ =?us-ascii?Q?6k7MGo9kOUoUuotvkXwnrQ3RQ94VUad422NM62GfGa/OcRBBTb+8g4wPmY62?=
+ =?us-ascii?Q?rpZz5d9bCryv50xIJRP+KsdYviuKZO6AMX5DvBQFqWODLuBds2LWy0ETfqfr?=
+ =?us-ascii?Q?vYuCbDl3rtOCk2X5PZ9C4MLkejx1ElG/oOCbtwwE/vpjdMMyskX3XPy1dMo1?=
+ =?us-ascii?Q?2aM4Bf4qvZu9fs+MOVIMGZ/svVFhO9GhWIol8aoE4jn0mZJN07T1RXLVEgja?=
+ =?us-ascii?Q?gvS4I8SZoQSdUow4mBq0juhnwv2g4WsAAPFSyrnaZ3JaGGSvQl5igfoiukGU?=
+ =?us-ascii?Q?1svh4RiKqNH10Q1qkbculk/+MDQToohid/gX7RKBZSTr3LWshQfxxlPtV4g0?=
+ =?us-ascii?Q?iTbUTvGs6jlbcfGQkHC9LWsyRkabWlj7x9FbNGBw5iNmvDY9UXZxKiAM5ICQ?=
+ =?us-ascii?Q?bXOaeYx4TDWM8p8blWJDeuGZE5BQDOvTjMNDDErGs6Lj1s8dMqF0VAOKfK8I?=
+ =?us-ascii?Q?9GEPT4oJ6w97m6z6VfTE4/PIQehAW5HJPhvY9++qOLCMhcGSbxzeI/8VS7Oh?=
+ =?us-ascii?Q?sjxspUnmV64HZ0tqFT/mo7QqWyfJvRyxr3xsbDRm08ZXRXaYSXzbGS0YhWf4?=
+ =?us-ascii?Q?9yiviG6TdtaAnO28rWl8ROuiKJH7XqsS9vVRkYJeXUn+Wh7rdqrBu1caUocb?=
+ =?us-ascii?Q?PuEPsessFhOdEdtf3qctiJaxr8tfnvA0noMPrABR75F/D7mY0nSxEpumuwin?=
+ =?us-ascii?Q?kg=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6483eb4-297b-4af7-a868-08ddc397afbb
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9576.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2025 12:04:01.6741
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +0FOkOI7IdTTSrZ20W7XlJYehWbnTAz1Bn505j88t50o6q2e1eMykuoj1LzUOnTh44hXldZafsvipLvHoDWRXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9267
 
-Hi Mathieu,
+Hi Frank,
 
-On Thu, 3 Jul 2025 at 18:45, Mathieu Poirier <mathieu.poirier@linaro.org> wrote:
->
-> Hi Hiago,
->
-> Many thanks for re-working the changelog and comments in this patchset, things
-> are much clearer now.
->
-> Thanks,
-> Mathieu
->
-> On Sun, Jun 29, 2025 at 02:25:09PM -0300, Hiago De Franco wrote:
-> > From: Hiago De Franco <hiago.franco@toradex.com>
+On Fri, Jul 11, 2025 at 12:03:22AM -0400, Frank Li wrote:
+> Subject:
+> save and store registers at suspend()/resume() function
+> 
+> On Wed, Jul 09, 2025 at 03:23:20PM +0300, Laurentiu Palcu wrote:
+> > If runtime PM is used for the clock providers and they're part of a
+> > power domain, then the power domain supply will be cut off when runtime
+> > suspended. That means all BLK CTL registers belonging to that power
+> > domain will be reset. Hence, the clock settings will revert to default
+> > values messing up the consumer clock settings.
+> 
+> Needn't "hence ..."
+> 
+> Save/restore register value at suspend/resume functions to fix this problem.
+> 
 > >
-> > This patch series depends on Ulf's patches that are currently under
-> > review, "pmdomain: Add generic ->sync_state() support to genpd" [1].
-> > Without them, this series is not going to work.
+> > Also, fix the suspend/resume routines as well, as the clock was left ON
+> > when going to suspend.
+> 
+> Do you means fix the problem clock left ON after suspend?
+> 
+> Pomain cut off, why clock can left on?
 
-The series above have been queued for v6.17 in my pmdomain tree.
+I'm referring to the BLK_CTL clock supplier here. We need to call
+clk_disable_unprepare() in suspend() too.
 
-Do I have your ack to pick $subject series via my pmdomain tree for
-v6.17 too or do you think it's better to postpone to v6.18?
+> 
+> >
+> > Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
+> > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> > ---
+> >  drivers/clk/imx/clk-imx95-blk-ctl.c | 55 ++++++++++++++++++-----------
+> >  1 file changed, 34 insertions(+), 21 deletions(-)
+> >
+> > diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
+> > index 7e88877a62451..7f9bbca517284 100644
+> > --- a/drivers/clk/imx/clk-imx95-blk-ctl.c
+> > +++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+> > @@ -448,12 +448,36 @@ static int imx95_bc_probe(struct platform_device *pdev)
+> >  	return ret;
+> >  }
+> >
+> > +static void __maybe_unused imx95_bc_save_reg(struct imx95_blk_ctl *bc)
+> > +{
+> > +	const struct imx95_blk_ctl_dev_data *bc_data;
+> > +
+> > +	bc_data = of_device_get_match_data(bc->dev);
+> > +	if (!bc_data)
+> > +		return;
+> > +
+> > +	bc->clk_reg_restore = readl(bc->base + bc_data->clk_reg_offset);
+> > +}
+> > +
+> > +static void __maybe_unused imx95_bc_restore_reg(struct imx95_blk_ctl *bc)
+> > +{
+> > +	const struct imx95_blk_ctl_dev_data *bc_data;
+> > +
+> > +	bc_data = of_device_get_match_data(bc->dev);
+> 
+> Generally, bc_data should in imx95_blk_ctl_dev_data and set once at probe.
+> 
+> So imx95_bc_save_reg() and imx95_bc_restore_reg() will be simpfied.
 
-Kind regards
-Uffe
+Agree, I'll do this in a separate patch though for easier review.
 
+> 
+> > +	if (!bc_data)
+> > +		return;
+> > +
+> > +	writel(bc->clk_reg_restore, bc->base + bc_data->clk_reg_offset);
+> > +}
+> > +
+> >  #ifdef CONFIG_PM
+> >  static int imx95_bc_runtime_suspend(struct device *dev)
+> >  {
+> >  	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
 > >
-> > For the i.MX8X and i.MX8 family SoCs, currently when the remotecore is
-> > started by the bootloader and the M core and A core are in the same
-> > partition, the driver is not capable to detect the remote core and
-> > report the correct state of it.
+> > +	imx95_bc_save_reg(bc);
+> 
+> this help function just one line. direct use
+> 
+> writel(bc->clk_reg_restore, bc->base + bc->bc_data->clk_reg_offset);
+
+ok.
+
+> 
+> >  	clk_disable_unprepare(bc->clk_apb);
+> > +
+> >  	return 0;
+> >  }
 > >
-> > This patch series implement a new function, dev_pm_genpd_is_on(), which
-> > returns the power status of a given power domain (M core power domains
-> > IMX_SC_R_M4_0_PID0 and IMX_SC_R_M4_0_MU_1A in this case). If it is
-> > already powered on, the driver will attach to it.
+> > @@ -461,7 +485,10 @@ static int imx95_bc_runtime_resume(struct device *dev)
+> >  {
+> >  	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
 > >
-> > Finally, the imx_rproc_clk_enable() function was also changed to make it
-> > return before dev_clk_get() is called, as it currently generates an SCU
-> > fault reset if the remote core is already running and the kernel tries
-> > to enable the clock again. These changes are a follow up from a v1 sent
-> > to imx_rproc [2] and from a reported regression [3].
+> > -	return clk_prepare_enable(bc->clk_apb);
+> > +	clk_prepare_enable(bc->clk_apb);
+> 
+> Need check ret value;
+> 
+> > +	imx95_bc_restore_reg(bc);
+> > +
+> > +	return 0;
+> >  }
+> >  #endif
 > >
-> > [1] https://lore.kernel.org/all/20250523134025.75130-1-ulf.hansson@linaro.org/
-> > [2] https://lore.kernel.org/lkml/20250423155131.101473-1-hiagofranco@gmail.com/
-> > [3] https://lore.kernel.org/lkml/20250404141713.ac2ntcsjsf7epdfa@hiago-nb/
+> > @@ -469,22 +496,12 @@ static int imx95_bc_runtime_resume(struct device *dev)
+> >  static int imx95_bc_suspend(struct device *dev)
+> >  {
+> >  	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
+> > -	const struct imx95_blk_ctl_dev_data *bc_data;
+> > -	int ret;
 > >
-> > v7:
-> > - Added Peng reviewed-by.
-> > v6:
-> > - https://lore.kernel.org/all/20250626215911.5992-1-hiagofranco@gmail.com/
-> > v5:
-> > - https://lore.kernel.org/all/20250617193450.183889-1-hiagofranco@gmail.com/
-> > v4:
-> > - https://lore.kernel.org/lkml/20250602131906.25751-1-hiagofranco@gmail.com/
-> > v3:
-> > - https://lore.kernel.org/all/20250519171514.61974-1-hiagofranco@gmail.com/
-> > v2:
-> > - https://lore.kernel.org/lkml/20250507160056.11876-1-hiagofranco@gmail.com/
-> > v1:
-> > - https://lore.kernel.org/lkml/20250505154849.64889-1-hiagofranco@gmail.com/
+> > -	bc_data = of_device_get_match_data(dev);
+> > -	if (!bc_data)
+> > +	if (pm_runtime_suspended(dev))
+> >  		return 0;
 > >
-> > Hiago De Franco (3):
-> >   pmdomain: core: introduce dev_pm_genpd_is_on()
-> >   remoteproc: imx_rproc: skip clock enable when M-core is managed by the
-> >     SCU
-> >   remoteproc: imx_rproc: detect and attach to pre-booted remote cores
+> > -	if (bc_data->rpm_enabled) {
+> > -		ret = pm_runtime_get_sync(bc->dev);
+> > -		if (ret < 0) {
+> > -			pm_runtime_put_noidle(bc->dev);
+> > -			return ret;
+> > -		}
+> > -	}
+> > -
+> > -	bc->clk_reg_restore = readl(bc->base + bc_data->clk_reg_offset);
+> > +	imx95_bc_save_reg(bc);
+> > +	clk_disable_unprepare(bc->clk_apb);
 > >
-> >  drivers/pmdomain/core.c        | 33 +++++++++++++++++++++++++++
-> >  drivers/remoteproc/imx_rproc.c | 41 ++++++++++++++++++++++++++++------
-> >  include/linux/pm_domain.h      |  6 +++++
-> >  3 files changed, 73 insertions(+), 7 deletions(-)
+> >  	return 0;
+> >  }
+> > @@ -492,16 +509,12 @@ static int imx95_bc_suspend(struct device *dev)
+> >  static int imx95_bc_resume(struct device *dev)
+> >  {
+> >  	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
+> > -	const struct imx95_blk_ctl_dev_data *bc_data;
 > >
+> > -	bc_data = of_device_get_match_data(dev);
+> > -	if (!bc_data)
+> > +	if (pm_runtime_suspended(dev))
+> >  		return 0;
+> >
+> > -	writel(bc->clk_reg_restore, bc->base + bc_data->clk_reg_offset);
+> > -
+> > -	if (bc_data->rpm_enabled)
+> > -		pm_runtime_put(bc->dev);
+> > +	clk_prepare_enable(bc->clk_apb);
+> > +	imx95_bc_restore_reg(bc);
+> >
+> >  	return 0;
+> >  }
+> 
+> look like imx95_bc_suspend(resume) is simple enough
+> 
+> Can you use DEFINE_RUNTIME_DEV_PM_OPS?
+
+Not really. Some clocks provided by BLK_CTL use RPM, others don't. If we
+use DEFINE_RUNTIME_DEV_PM_OPS, then suspend()/resume() routines will
+never be called when rpm_enable is false.
+
+Thanks,
+Laurentiu
+
+> 
+> Frank
+> 
 > > --
-> > 2.39.5
+> > 2.46.1
 > >
