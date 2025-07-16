@@ -1,274 +1,225 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011069.outbound.protection.outlook.com [52.101.70.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C215C29ACFC
-	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 18:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752691245; cv=fail; b=IkYFzuZWJPpr9AFpsD3mpXjL6DKAUY94qrbekXJ8ATkSCgyP8rxSMBx2pM/cSHE0vooEdsSxcLiZQcZiOFTe9+3uBzsg3nyCB/q96rcyobMYBV26hhpLawNPBVXO9TNd8vsBTbYpiSQTJtYs4yycyvFxXsJRk7vERRVIHXLRJGA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752691245; c=relaxed/simple;
-	bh=fBntJdmAqnt00KnTPeF4w3bHh6hbQ4GxLMlsbrDfraM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ZaDIHp6z+iztHSeSoToJWDo6BV+YFwGW6qiM54Ztb/hd2UCSsdNf6enjwxrk6mThfA/MTjRi+Tz8mYHBi+jo7bRKkoPWlKPuzVx8RUp9jWgiBkGQvE3rY/KgD4WvOESHiiGHjvvU483/GcdKy9FsZQpUoO/K/HsAQ6s0GkbOqsc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FH+1nZQd; arc=fail smtp.client-ip=52.101.70.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322822AE6A
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 18:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752692240; cv=none; b=TZmL3TZo7qZrLWB2KsIuVsV27iS7CFxPfI+lwWcJ4Eukl3Ic5om/LLkkB+N1aUqc2YDZYw01/KR5rGUGXZgl83sBV4K0/Vrk985wjKcWMIw5yY9x4Ywpwf7xo6syJCr1ovXgNqE9MF+AEljI11+6eFwBp16w8++5eBL61nCIU/c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752692240; c=relaxed/simple;
+	bh=cTuuVg1/aMuU3ILHXxP31OocPr0xkzrGZp0svRgx/9U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tKxjGpTXslyK6EJeD4YKf17BgnG9uwoqL/VCioznxRufqR4/DU4AZLuFpQTwlasDRhkTPdD5vdJzLI+l7m61qyZ1sPIxQl4IUO9L3D9tWprfKt8L8LQu3q39oWmaXp3huhbsYEY1ShTdMEFGz8/zPk2bqTPJaeLKzvG8L/yjp08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=C6R+znIu; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FH+1nZQd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HtHgLBdqxrvPp328P1W4En4OBh9ybaOJiBrIeg6CBwv1IANldh1GsnefWhS/deWT8E7ybZLw1dxsO5N7Ag0sBD6psPZBqMANWUzTc2IRxLNiceg+EWTZ9yjI1Q2/it78Bm5l+kzzoLlNSD5LN850dJcNvypVDa56bXcV/5dsse3ftTQattFkFB5letQWiUfuak4nKQ0m6uy85FjL37Ifej6A7Df7uk7wEOLsw7/zd5tPtcGLvIbqOugcBkOCVbSWXfLItDXPL0msdaG7eTVodvaQqoye17BamWjjGvE++A2E1HQDX+Rnd4jVqbtGQoMy0rwEKwT5pWE0HX8Y6+tdxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TV9sFRoKiJrwWF2LFa1rO8fhtoEYjqgpztwMubnrhLo=;
- b=x2KF+mQF+e3vmGuMpJBbZrzULRwfUVfXBKuq001yapbbI+/S64DpWZG84efhIuUH2TFCAedZEVfv1CgAH/w1ZoNvDYC2EhWjqiCpPkQCyxnOCldEB+kUiqyr1bqFzcN/E4ykRBp5/9DaVzHmz3paysRmG8mWU/rLsLO2OgekCqaJ6q7gLxE6URas2w/h9MOoHHMr8+nZLOgtwI/GawnTWyG6QKzDwlfxyJNY3jyUM+Pm3gfoXat2F3yrZSw8L1ybVOfohkir0/TKLtJfmeSlKv3heLpiLSmQsDvQIlI65PZ5MrowWNv45M59P7+ai7SCWwNrPZ7sAGfddNj4Grp44Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TV9sFRoKiJrwWF2LFa1rO8fhtoEYjqgpztwMubnrhLo=;
- b=FH+1nZQd37Gurr8sznFejkqUzs7UQ8zp60Ctao+VdadfnJjjqFy9hYaJloiyuoD+n4fKZeIF6Nd5opcho5+CwuutSvnsu1O7xfXKzbZkxXDiO0KSWkz3il0Ga/js88WdPbWG4Fhc8sAkx2642bcdeyTNal5pnlspkFtBlF1MQJmoLhLDYkmiYqR8aR62T+3Br38Vy0MXlJ+p/h1hHNbnHebsBPtufZ3M4RfZ1H4hkChjCZ1DnkXqovsomYsFb3SgXzbFHNzOUZ3LX6pPXFOoDC/Cm5LsmuufhYYh0YjFsG06Gh6dNopR3AOFbRdwANB5AYeuxzdXYcP/YAxB6Et72g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GVXPR04MB10897.eurprd04.prod.outlook.com (2603:10a6:150:215::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Wed, 16 Jul
- 2025 18:40:38 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8922.028; Wed, 16 Jul 2025
- 18:40:38 +0000
-Date: Wed, 16 Jul 2025 14:40:32 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Cc: imx@lists.linux.dev, Philipp Zabel <p.zabel@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 06/10] dt-bindings: display: imx: Add bindings for
- i.MX94 DCIF
-Message-ID: <aHfyIGchYEfOgG4h@lizhi-Precision-Tower-5810>
-References: <20250716081519.3400158-1-laurentiu.palcu@oss.nxp.com>
- <20250716081519.3400158-7-laurentiu.palcu@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250716081519.3400158-7-laurentiu.palcu@oss.nxp.com>
-X-ClientProxiedBy: AM0PR03CA0074.eurprd03.prod.outlook.com
- (2603:10a6:208:69::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="C6R+znIu"
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e7d9d480e6cso192627276.2
+        for <imx@lists.linux.dev>; Wed, 16 Jul 2025 11:57:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1752692237; x=1753297037; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5T3sOAWKCWrDJApaHZ5HeOfhtiegcEV08YGf9/b2PFE=;
+        b=C6R+znIupZem7TO2bm03Q78K490Jq0ppBvVF5MUEg6OjlSnu91LUweb783+34tyv3z
+         JKw/swFOJsm+e2mFYJ4Itee6W2WHoOXMfkN7ulz98bcuYlGSr4GelbGkZF256kq6WFUt
+         cwbdCswlGPkOg0AItSVAMwYmNqb0sjtHJ1hrBzuJJ06b+x/1wZuNuaqvb6xLbgzmsYtD
+         5YCTdcbacfbK7UFLSfGxwWhLwJQavk9Ccr/kxmGskFrgBkdlpAB1icC7QtkrYbFC8UnL
+         HTMtaeFJsynRkvw2r9aD7T+3+zaois1guZtOIHqnbjcqt4tf6RPBwTWWv3ki5WgNND4u
+         z1gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752692237; x=1753297037;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5T3sOAWKCWrDJApaHZ5HeOfhtiegcEV08YGf9/b2PFE=;
+        b=JE80JKzzCpoexA9Z0da7tpoVnyPxW/I16DC8RkoeL+lf0hk/cIpzwntLnmYjiEXzk1
+         Q9Cn3hs/v8/ddxq59Nka8KXpqZOlYSe9xCq8WfzvwL83pSSvZNsl9En6WqURUyD2xzLd
+         6+xxCyTdjkJlnKOcEyYH8bzXPi6Rof7508uk1tHNJ2Yt5l1H2Z6EnYKW8NhJXJ8v25g7
+         03/wsMlT64cLeRJgD6X8iXdd+bA7i7De18N9rmGjO2ud5vE9hEvRQqqFkP1jhAIY+YK5
+         r2FtWOlxZQpOJpjoO1qs3YvWVcRkerteF2J9YsJ5ZxjOn/nAzaH8rX7UVoethfP5hanB
+         jcEw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8hKDqBhHt30yNOjYrEEW96qs79xUUjW2voOSVXZDHW4RwfODSAT/FKSW7ZIkqLCJrOvA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzzTHuCOOm8LiMKOM1no0WxEqHUVxmGfvATOM9e43tppJ+vlu3B
+	Spq+PffJ+MiJ2Ej4/IF/gG0wwobbaouq/IZpiTn6EJsXZ9OoXDNRKzUIGSCnHeOKeirKVjtQGNi
+	xgq2xsdHBcsieo80hJfYLg4bkXOeGmZE3dLbTEHjVLQ==
+X-Gm-Gg: ASbGncvgjnyDwwUVH2TbSJ4QN+vtWks8SDcZEYIfuAqUXTiOerwyA/pHGOV4Amb0Ljg
+	eqUQQ8mEy7L9OaHXxPIibIOPVy1OgzH/mjSwp+YsJe6tBhCB9kyCJy+xAETRr8EBYH9VZ3hzqtT
+	Lsbis/ZvBp/JtAKSfqYPBarQQQCaEPRqpXO7i9KrhAHjAPCcHCHhGhfeJ2cwBWiHOHdoF6XoXBr
+	TjaT2t4LH8m+qjQpHk=
+X-Google-Smtp-Source: AGHT+IFboyjGqtZEq5f82RSPNSJDrHYTW3q6drCPtrarFDu2PZ57yVAHJp5U1uDDb/JP+QL0UnyG2hOvxRBeY7szQew=
+X-Received: by 2002:a05:690c:6aca:b0:712:e333:d3a6 with SMTP id
+ 00721157ae682-7183733e627mr44145087b3.19.1752692237085; Wed, 16 Jul 2025
+ 11:57:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10897:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ad31700-2ca1-43cc-6f11-08ddc4984253
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|376014|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bzabGNxu5j33pRyo6E1kIkMNw1hPLIBeJLMw+0XsCpUIQVFOy9Tlg287yasI?=
- =?us-ascii?Q?mni1VdhfIhlU3aNpDgZSX64Gl2lqq7eGFUclT0/4eMFg9d3MX0vccNVP/0Lq?=
- =?us-ascii?Q?HKhFdFHeEeYhEVd7ByScpcOzQLmrzbY4fHd4t0BYj2mbGTYrp1AFEN4eTknZ?=
- =?us-ascii?Q?8+WWc1WQyZEndQBYy6PsKtVv/JucCXkenhY2WOtjSHlgtmZyYZNVM9q9KjQw?=
- =?us-ascii?Q?gHzzdjrf5evP5uSGxsGc6xrPDC/QPMD+diveyQdbGYbqW9AzvYbQnlSxjxz3?=
- =?us-ascii?Q?XPbyaTne8anMRDX+3NyW7rl4YXhfZP+nxoHrPCYpfpRvuVZMd8DOtp14oAd5?=
- =?us-ascii?Q?DlC0SI2/ECUV2WGpnyw64dGDQFr6nmVumc2Atq3sepJmpBcm3ckkrys/GYcU?=
- =?us-ascii?Q?Fmqm9Qcwq7pnj9+HdD78GYwtdF50GwyXAz1ahA399kDCNdgQtqqaMijAdT2D?=
- =?us-ascii?Q?J+066q39v4FO5YAOMdM9AwKu3+aktWd2y/uIdtZtPKZoaX2zaqgJvlKwxWz3?=
- =?us-ascii?Q?N+wh3LTtDKlySYzth6xLGzbu5gzs7Lq8XTGYV66Nc0s/JnLpVmn+hl2eH3EG?=
- =?us-ascii?Q?P7Ec0STKGoaW5yaDfMrb2J4syM/OscoTVYFskAH9on+/D9N5KK13uOBuBfg+?=
- =?us-ascii?Q?nD9sC6GTA6Z/PNMyACbMqFC6e+OJAMkBEQCaz+gGG1thXvJQoHzkeoAiRd7R?=
- =?us-ascii?Q?XmKtBxrxLCK2H8/x/YzWKkX6qWBKEr1MP/u4MroQ87IWAgHpe+Fn18r/H8Jk?=
- =?us-ascii?Q?6o82TytyaD5TqWVV/taBBInWu0WW19xf9BU2vq2K4WvKgBhvPMmiJ2diKM5c?=
- =?us-ascii?Q?0RRUHxlv4F/Jv/YiZaSK8lMn/uJrgw0rK9dzS69ZR0dmgZIXs2rpD8rRwae5?=
- =?us-ascii?Q?HjZVk/mJJz9jYiS1QRc+i6kd3aA3M6V9XHd2ntKNauEJKAKlxu7rWcy6IGF/?=
- =?us-ascii?Q?VEzqgbn7Mb9+KQUjFCDUUbrH2pQ0kIH6JZJQkGj5+gNex1WQ27Bm+GRAkcTX?=
- =?us-ascii?Q?acI66LrGh/0gRZ7MHQodRQWahp+ZjZdCz1u+C9/+5moo2Qg+UZ+2qfomX+7q?=
- =?us-ascii?Q?AXli+Ob85p90RGVnFFDIPfqvK1/bigPoMywj5czFmD2uCgGloCvyHdGJ8K0N?=
- =?us-ascii?Q?OvdJUbg5to5uWnpYT4M3Ap8UThnlKT+U0ZPYmbz3tE3AJUC7xzzRuYjWhMru?=
- =?us-ascii?Q?ZzVZOU4PEA0RrVBng6BGhRdCb2NxEoj/uYqIVmKjwAgvn0vcwbkgtQM2su06?=
- =?us-ascii?Q?7Ddbm/++MzPV7MmeBhf7MIa9bIdxAPZzgEDgZEE+AA3SahmcBf8BfDJFJFku?=
- =?us-ascii?Q?OlLPC8mlXRPrnV2lXccSHyjXmTmLQxvJEnYeguS7SZzhVdNETHbWMQ8XF7lM?=
- =?us-ascii?Q?z4aKNAHbseMWZ2d206SVAvr6Hx0f6uKdZgvYOOMJ1XIRLs3RGSUjK1/dVJ1o?=
- =?us-ascii?Q?qKQruY1LFbZwommB/3lpm5xkCtIWapjL?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(376014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?i2mMknQkfC4cG+AtXNyL6QrGTFycKD4N0oPoqgmAlcHVqFOCqo0n1zygV6Ns?=
- =?us-ascii?Q?mzUkw+g8E1lmBT6IX4FwZPCPDgzdVCS2TIQsHIESec2g1vTijJj2AE/u3a5D?=
- =?us-ascii?Q?UWPE1/DzDzqc0BLJcNvCSJ0gogQXnz8mX2mctLssK8v09HMWHvSE6xGj5kqv?=
- =?us-ascii?Q?VbPCBodDlyn4uEQJQYx2J8OT4zi4pNJ+amOc4kZOBWzytaZz5QtulDUHBfpB?=
- =?us-ascii?Q?THaYBAaThRZQM/CziOSX/Vpf/3dvwer25b4ALmC5GvXcbU+AR1PiHwFJL6zx?=
- =?us-ascii?Q?SfBxHQR8LN4PRPCD7jd09KxL4e1g6s5SbxacX3WEE7BzdCi0kxmJjhKbly1F?=
- =?us-ascii?Q?kub0//x/lQvLXGbpGAFMcPESZBFCpbJArzWHX8Ed/+sw3gLKUgjKrfa/q9Ec?=
- =?us-ascii?Q?SAiQ6mi3iZwEXKkri7BXSRxPx66eGvk/F7W0ce63CQrLYgQKYBsmBB3YmJug?=
- =?us-ascii?Q?uAtOxrsEKrGDRHecyGoos2rToVrcmTOtI7E2QmO8Aowu2jklL9BkheZKRNcV?=
- =?us-ascii?Q?h7lXzMZqHhvLKhXP+DwY9MNPhWW0a149vywKOCUe3uGwtQmxCljmJSTQ2Aff?=
- =?us-ascii?Q?Fu+2ZOu3KAMSAadJZHwrGPbYVfXH8gdi/xzRsIyFMgdfBcwdfghqauHNY36R?=
- =?us-ascii?Q?FK71wP9HjXXU0iRL45KzRRxgwTS/RVAcCRUD3kWslAD+gIUtVaTn5vgOWezw?=
- =?us-ascii?Q?tF06rgfDqI/WnMMMD+tyglDPTxbvpFDQSp7quR433ixJrj3fE16y2fqqWQCY?=
- =?us-ascii?Q?t8SWLqrjOQ7OeR13JmaCDfGadZDAWhF9H/DCxTgCDUiByLCKtaJPPmhL4TPM?=
- =?us-ascii?Q?koQKUCKJhPszthQhvuhZD7kfEBbwEEyQz8wyMpJ7PjjOfHss+EWagxVPaSZ4?=
- =?us-ascii?Q?ExS9JoEsixj3lHZ8RAS/W6drwkur9vsS6B0cVBXetO+pH/dmf205Qi9YtrLC?=
- =?us-ascii?Q?4d796V0c/sQQYOmpg6WhGK+4PcmrMgGrusMWNfTDdz54sPKcwrlPHSvG0jec?=
- =?us-ascii?Q?lT1koStmTwixsUvkmXIzgE1+A45S533TH92xjmxtSorL4ijCkJQKIp4I2lSG?=
- =?us-ascii?Q?iJVID1hdJwP7LMRWbvtHAnx00xd6eUVefgieFYkLGBKRNuvf9NkfAgY4nujd?=
- =?us-ascii?Q?tRZQu/nRNSPu2ah5nwgjPJ158d2JqvPzGm+pdLic8zMsZ2sR0w/mcGv2Wp3w?=
- =?us-ascii?Q?jP6kh99fvaO+5U7QbdKBtq+OxSB0YCu5//ID7gVGS0vPMOJySappDc3E1blv?=
- =?us-ascii?Q?y/WuE8Uk+OAnT0nFb748O/xcAVSaC9sKKzy3HlgsNGtnBuFsa8lHk2CH3CRb?=
- =?us-ascii?Q?ZLkKp1tN1XFSzLZtEMwv3rBH8R7JbaLX0vE79iur6uk4PxE4Ze41jinK1XJg?=
- =?us-ascii?Q?wAafPjSEihzq6eVlDBKhgqq3pYLtvxtRALTbWsr6PyNFQ4hhfXGBrdIF7Df0?=
- =?us-ascii?Q?HI/bvoYbZpX6C0ulpauoWm6K9GZs0TG8qGX/a6F3DOrJTRfirf6k3vraR4N9?=
- =?us-ascii?Q?RXnMHCMgke6rFxRhWPcvMGHdmkDP2Q6t9CX3U4umus+ZocZ9VhzD0BtzEwbn?=
- =?us-ascii?Q?2P/hJ+P7EcgDTor9las=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ad31700-2ca1-43cc-6f11-08ddc4984253
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 18:40:38.5223
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gCpX5RALez4l5Q9u7jwlx4oAAR9E70vnkgpWPvBTAVfe5j2Dsz5dQfOzyaU8dCAf+TnlR89fxFwvdIvSdHTzaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10897
+References: <aHZ0nK4ZZShAr6Xz@p14s> <CAPDyKFrWng0CY-ayKoEbnS_yanghSqogxfuizxEVbVogJ4DT=g@mail.gmail.com>
+ <20250716132552.bra37ucw4fcjwril@hiagonb> <aHfYQFvkJcdfq9K_@p14s> <20250716172308.lzh3aak24d6mt4cs@hiagonb>
+In-Reply-To: <20250716172308.lzh3aak24d6mt4cs@hiagonb>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 16 Jul 2025 20:56:37 +0200
+X-Gm-Features: Ac12FXyGrszMr34Yekpq1kAdjmt5gaU__KNEwdTbqqWzif98sMQ9MbYF1-XPcj4
+Message-ID: <CAPDyKFr8eYiyj5s7wGsru8GJ+CS6h-o+a+BOV-nvCdSzWM0bSw@mail.gmail.com>
+Subject: Re: [PATCH v7 3/3] remoteproc: imx_rproc: detect and attach to
+ pre-booted remote cores
+To: Hiago De Franco <hiagofranco@gmail.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, linux-pm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Bjorn Andersson <andersson@kernel.org>, 
+	Hiago De Franco <hiago.franco@toradex.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@oss.nxp.com>, daniel.baluta@nxp.com, iuliana.prodan@oss.nxp.com, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jul 16, 2025 at 11:15:10AM +0300, Laurentiu Palcu wrote:
-> DCIF is the i.MX94 Display Controller Interface which is used to
-> drive a TFT LCD panel or connects to a display interface depending
-> on the chip configuration.
+On Wed, 16 Jul 2025 at 19:23, Hiago De Franco <hiagofranco@gmail.com> wrote:
 >
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> ---
->  .../bindings/display/imx/nxp,imx94-dcif.yaml  | 93 +++++++++++++++++++
->  1 file changed, 93 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
+> On Wed, Jul 16, 2025 at 10:50:08AM -0600, Mathieu Poirier wrote:
+> > On Wed, Jul 16, 2025 at 10:25:52AM -0300, Hiago De Franco wrote:
+> > > Hi Mathieu, Ulf,
+> > >
+> > > On Tue, Jul 15, 2025 at 09:32:44AM -0600, Mathieu Poirier wrote:
+> > > > On Sun, Jun 29, 2025 at 02:25:12PM -0300, Hiago De Franco wrote:
+> > > > > From: Hiago De Franco <hiago.franco@toradex.com>
+> > > > >
+> > > > > When the Cortex-M remote core is started and already running before
+> > > > > Linux boots (typically by the Cortex-A bootloader using a command like
+> > > > > bootaux), the current driver is unable to attach to it. This is because
+> > > > > the driver only checks for remote cores running in different SCFW
+> > > > > partitions. However in this case, the M-core is in the same partition as
+> > > > > Linux and is already powered up and running by the bootloader.
+> > > > >
+> > > > > This patch adds a check using dev_pm_genpd_is_on() to verify whether the
+> > > > > M-core's power domains are already on. If all power domain devices are
+> > > > > on, the driver assumes the M-core is running and proceed to attach to
+> > > > > it.
+> > > > >
+> > > > > To accomplish this, we need to avoid passing any attach_data or flags to
+> > > > > dev_pm_domain_attach_list(), allowing the platform device become a
+> > > > > consumer of the power domain provider without changing its current
+> > > > > state.
+> > > > >
+> > > > > During probe, also enable and sync the device runtime PM to make sure
+> > > > > the power domains are correctly managed when the core is controlled by
+> > > > > the kernel.
+> > > > >
+> > > > > Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > > > > Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+> > > > > Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> > > > > Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+> > > > > ---
+> > > > > v6 -> v7:
+> > > > >  - Added Peng reviewed-by.
+> > > > > v5 -> v6:
+> > > > >  - Commit description improved, as suggested. Added Ulf Hansson reviewed
+> > > > >    by. Comment on imx-rproc.c improved.
+> > > > > v4 -> v5:
+> > > > >  - pm_runtime_get_sync() removed in favor of
+> > > > >    pm_runtime_resume_and_get(). Now it also checks the return value of
+> > > > >    this function.
+> > > > >  - Added pm_runtime_disable() and pm_runtime_put() to imx_rproc_remove()
+> > > > >    function.
+> > > > > v3 -> v4:
+> > > > >  - Changed to use the new dev_pm_genpd_is_on() function instead, as
+> > > > >    suggested by Ulf. This will now get the power status of the two
+> > > > >    remote cores power domains to decided if imx_rpoc needs to attach or
+> > > > >    not. In order to do that, pm_runtime_enable() and
+> > > > >    pm_runtime_get_sync() were introduced and pd_data was removed.
+> > > > > v2 -> v3:
+> > > > >  - Unchanged.
+> > > > > v1 -> v2:
+> > > > >  - Dropped unecessary include. Removed the imx_rproc_is_on function, as
+> > > > >    suggested.
+> > > > > ---
+> > > > >  drivers/remoteproc/imx_rproc.c | 37 +++++++++++++++++++++++++++++-----
+> > > > >  1 file changed, 32 insertions(+), 5 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> > > > > index 627e57a88db2..24597b60c5b0 100644
+> > > > > --- a/drivers/remoteproc/imx_rproc.c
+> > > > > +++ b/drivers/remoteproc/imx_rproc.c
+> > > > > @@ -18,6 +18,7 @@
+> > > > >  #include <linux/of_reserved_mem.h>
+> > > > >  #include <linux/platform_device.h>
+> > > > >  #include <linux/pm_domain.h>
+> > > > > +#include <linux/pm_runtime.h>
+> > > > >  #include <linux/reboot.h>
+> > > > >  #include <linux/regmap.h>
+> > > > >  #include <linux/remoteproc.h>
+> > > > > @@ -890,10 +891,8 @@ static int imx_rproc_partition_notify(struct notifier_block *nb,
+> > > > >  static int imx_rproc_attach_pd(struct imx_rproc *priv)
+> > > > >  {
+> > > > >         struct device *dev = priv->dev;
+> > > > > -       int ret;
+> > > > > -       struct dev_pm_domain_attach_data pd_data = {
+> > > > > -               .pd_flags = PD_FLAG_DEV_LINK_ON,
+> > > > > -       };
+> > > > > +       int ret, i;
+> > > > > +       bool detached = true;
+> > > > >
+> > > > >         /*
+> > > > >          * If there is only one power-domain entry, the platform driver framework
+> > > > > @@ -902,7 +901,22 @@ static int imx_rproc_attach_pd(struct imx_rproc *priv)
+> > > > >         if (dev->pm_domain)
+> > > > >                 return 0;
+> > > > >
+> > > > > -       ret = dev_pm_domain_attach_list(dev, &pd_data, &priv->pd_list);
+> > > > > +       ret = dev_pm_domain_attach_list(dev, NULL, &priv->pd_list);
+> > > > > +       /*
+> > > > > +        * If all the power domain devices are already turned on, the remote
+> > > > > +        * core is already powered up and running when the kernel booted (e.g.,
+> > > > > +        * started by U-Boot's bootaux command). In this case attach to it.
+> > > > > +        */
+> > > > > +       for (i = 0; i < ret; i++) {
+> > > > > +               if (!dev_pm_genpd_is_on(priv->pd_list->pd_devs[i])) {
+> > > > > +                       detached = false;
+> > > > > +                       break;
+> > > > > +               }
+> > > > > +       }
+> > > >
+> > > > I was doing one final review of this work when I noticed the return code for
+> > > > dev_pm_domain_attach_list() is never checked for error.
+> > >
+> > > As Ulf pointed out, the 'return' a few lines below will return the
+> > > negative value to the caller of 'imx_rproc_attach_pd', which ultimately
+> > > will fail 'imx_rproc_detect_mode' and fail the probe of imx_rproc.
+> > >
+> > > Please notice that even tough 'dev_pm_domain_attach_list' fails, the
+> > > rproc->state will still be set as RPROC_DETACHED because we are starting
+> > > 'detached' as true, but I am not seeing this as an issue because as
+> > > mentioned above the probe will fail anyway. Please let me know if you
+> > > see this as an issue.
+> >
+> > Two things to consider here:
+> >
+> > (1) It is only a matter of time before someone with a cleaver coccinelle script
+> > sends me a patch that adds the missing error check.
+> >
+> > (2) I think that @rproc->state being changed on error conditions is a bug
+> > waiting to happen.  This kind of implicit error handling is difficult to
+> > maintain and even more difficult for people to make enhancements to the driver.
+> >
+> > Adding a simple error check will make sure neither of the above will happen.  It
+> > is a simple change and we are at rc6 - this work can still go in the merge
+> > window.
 >
-> diff --git a/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml b/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
-> new file mode 100644
-> index 0000000000000..207ddf0f550df
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
-> @@ -0,0 +1,93 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2025 NXP
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/imx/nxp,imx94-dcif.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: i.MX94 Display Control Interface (DCIF)
-> +
-> +maintainers:
-> +  - Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-> +
-> +description:
-> +  The Display Control Interface(DCIF) is a system master that fetches graphics
-> +  stored in memory and displays them on a TFT LCD panel or connects to a
-> +  display interface depending on the chip configuration.
-> +
-> +properties:
-> +  compatible:
-> +    const: nxp,imx94-dcif
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    items:
-> +      - description:
-> +          Interrupt output for CPU domain 0 (controlled by common registers group).
-> +      - description:
-> +          Interrupt output for CPU domain 1 (controlled by background layer registers group).
-> +      - description:
-> +          Interrupt output for CPU domain 2 (controlled by foreground layer registers group).
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: common
-> +      - const: bg_layer
-> +      - const: fg_layer
-> +
-> +  clocks:
-> +    items:
-> +      - description: APB bus clock
-> +      - description: AXI bus clock
-> +      - description: Pixel clock
+> Sure, I can submit a new revision with this error check. Sorry I did not
+> see this before, I only had a close look at this '->state' now that you
+> asked on the previous email.
 
-dupicated information with clock-names.
+Alright. To avoid having you to resend patch1 and patch2 I have
+applied them on my next branch and added Mathieu's ack for patch2.
 
-	maxItems: 3
+Note that my vacation is around the corner, so if you want patch3 for
+v6.17 you better be quick. :-)
 
-If clock-names provided, clocks genernally just need maxItems except description
-can provide more information than clock names.
+[...]
 
-Frank
-> +
-> +  clock-names:
-> +    items:
-> +      - const: apb
-> +      - const: axi
-> +      - const: pix
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  nxp,blk-ctrl:
-> +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description: A phandle which points to NXP displaymix blk-ctrl.
-> +
-> +  port:
-> +    $ref: /schemas/graph.yaml#/properties/port
-> +    description: Display Pixel Interface(DPI) output port
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    soc {
-> +        #address-cells = <2>;
-> +        #size-cells = <2>;
-> +
-> +        display-controller@4b120000 {
-> +            compatible = "nxp,imx94-dcif";
-> +            reg = <0x0 0x4b120000 0x0 0x300000>;
-> +            interrupts = <GIC_SPI 377 IRQ_TYPE_LEVEL_HIGH>,
-> +                         <GIC_SPI 378 IRQ_TYPE_LEVEL_HIGH>,
-> +                         <GIC_SPI 379 IRQ_TYPE_LEVEL_HIGH>;
-> +            interrupt-names = "common", "bg_layer", "fg_layer";
-> +            clocks = <&scmi_clk 69>, <&scmi_clk 70>, <&dispmix_csr 0>;
-> +            clock-names = "apb", "axi", "pix";
-> +            assigned-clocks = <&dispmix_csr 0>;
-> +            assigned-clock-parents = <&ldb_pll_pixel>;
-> +            power-domains = <&scmi_devpd 11>;
-> +            nxp,blk-ctrl = <&dispmix_csr>;
-> +
-> +            port {
-> +                dcif_out: endpoint {
-> +                    remote-endpoint = <&ldb_in>;
-> +                };
-> +            };
-> +        };
-> +    };
-> --
-> 2.34.1
->
+Thanks and kind regards
+Uffe
