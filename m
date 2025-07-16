@@ -1,138 +1,240 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011028.outbound.protection.outlook.com [52.101.65.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3322E3715
-	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 17:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752686766; cv=none; b=OCjS34BiJbsKNlcHSUP9m1JHrwC4+Z//GZZAVSDyR5I5pSl2ZKUTueleQGcD7mv0lO9tVJkChkz6bRpAdrt+ahzYaeL7FU0+k71mGj+559j1YDk3dSsmmOs6GALjXUJbrZnyKWIKy+sQdMP0AdLRWjGMjCYIeeEgWrMdk/Gxqn8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752686766; c=relaxed/simple;
-	bh=GUfyf2plKo8rHN85YZhesmhtOC7FETZyXicnE7/kB64=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gKoTqcVFfaqHjsYjH+RFbF1cEjd1YnlfA+IO+MnGd8zos8D7QLApSOnP8/6DFh0TB9+DIniWxk9klK73eRr24/8cbTkPZeYCpYlEfBe0Bb/nbQ/DmTOXlFu+AaM9GDuQSeF8uhKt0K8t8mTwvLOfennHepEV1rbUq5QZKzYNF24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=G/vDAYa1; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B919928EA6E
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 18:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752690552; cv=fail; b=opKuRWg7kSSa5T7TC5KYON3FH9Co9KtyzB1EhQ50azYo5VSj/kbEAiFhh8KnXXekzlnHC+3gfRJ+XpyE0LhjqmPSHbVxBJEmRV6/q+PzRyHq8RzZ3AV+NeAcMMzC+2uTyQ0UhcRL0R/dCnz7PIOlrTgn+sQOA+khTGk4A7IZ7gA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752690552; c=relaxed/simple;
+	bh=1xGjA4u9k8SxS+96WKDe2plg9FczDoekgaiROyeQBHs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pdzTGp0AGOY4rNWJEPhHKv3tuxY1Ya1faamYdeGIG9ezscSETK5EVHAoT9DDJeqYjzfNERG0roHfamTe7Kcd//wwW4y0fhoC+va2Ks2RMUaxSQyaMA96VR9pk1WMCcf9jkrpFLGmGk6WZcSJKxwIe8hxfXhtqlwFxqcY2Ru1Jo4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=A/XeN4Is; arc=fail smtp.client-ip=52.101.65.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="G/vDAYa1"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-31c38e75dafso158186a91.2
-        for <imx@lists.linux.dev>; Wed, 16 Jul 2025 10:26:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1752686760; x=1753291560; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8kHHeE2kJpSMXJOVTToRq3RMoJpv6Fr2i3DdKBabil8=;
-        b=G/vDAYa1cb8BEw1teFRW6B74dl0sorUG1EVujWl41eNpW+yxzZvuAaIUuHuE5G5yxn
-         qHIeef2xUIT8bbROXn2QGGJxg4VoOKjUmal+FqAPNi0PNTQuOmnOf/5Iu3ML2fUWxTvf
-         9dseRohoahCw1eOZ3Us5IC3jKHR1PBYltw7mE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752686760; x=1753291560;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8kHHeE2kJpSMXJOVTToRq3RMoJpv6Fr2i3DdKBabil8=;
-        b=jH3JJ3ph8ZiWLSg3VPSiqVe5CxGMToPcItutdNfw0Ne7gUBoP8KY5+OaQqUMF3RT1i
-         L5y42qSNRmi7y89PBut0tIoY0x42Q1ps9YSmd7c3A2MZbR3SEnUuq0Dg+LyU8LK8LBzG
-         tWpC22rYm3tyHz13XlGNqXzRRtcI+6IPBX1dWJBZu4gD309meMrR0eJiUy0BEiqxQZnu
-         6sEx60dHKgptLs8cmaURW2M3BddYPN+pYJeiO6kGpfTCudC+7IT7hxkr6QpCr7lSrqQX
-         sTPui+bBPhhUK3Ix8rmx5uWHCV7bb8FIu6cP/s4XSwg1Zu7/sjIh5Pj6pIyaTgUqK5Db
-         BVqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXyjryMgNYdbkFj9cHGigTuwsJ9J1DGXkIk2hFiu/zPR6qAoDRqcRzBcN7ultuRgo9H794=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy6gMdJQ1Zcrmz/lJkvyVNsD7hvlNFeuUOubNeNcaVYkdEAJZWM
-	RY2p1HkM4T/ku4/yQO9N8b+0J559xinr9dpjTnoEjw65XXuhd8mJxH+PJ2MMGmGvSg==
-X-Gm-Gg: ASbGnctLa28dJKpUq+OK4I8cRwVkcu2thChuRCK/NvEIKMTtdHB4S4nJv0/ZwHBXnAp
-	rd3+dpzjlwmnKg2+Sqx3cEA0SMSPTsIyk3G7eOug02SnubOjPRdXAwtAFdWz6qbHrVX5XQF1e37
-	M50GqRpl5HiE0Uxv29/CCNM3e53txgT3UHgNQRzUJDEnTYluMjEYt81JIDrSpubD9BB0H8Kjr6f
-	ZKmPeAr96BX+F/WCeYa0tmPhwLopI+P7QLC+u91DysRnRGOzegrlErqby7H28oHcnF1cSeSEb9i
-	iiA6j6irZuAwkVerhOYmxRiZRDR2kDHacLiIkPwIOwtdVJCk5qfyAYP3PZbXN8yt+TTyp4GgvYA
-	r9T9jUy8/NpgSl1sLskeEaZ0VeRrJoqPkRB5d8Oljvsw6JnznND/BYv+hbk7E
-X-Google-Smtp-Source: AGHT+IEgRxwzuEwrC/bSIJHQuOCIp213H3FKeMYHG1zJUSxzvhkFVK3NOkI8LhIaYo9Dg+UiGLCMDQ==
-X-Received: by 2002:a17:90b:3c06:b0:311:b0ec:135f with SMTP id 98e67ed59e1d1-31c9f459f8bmr4342453a91.30.1752686760162;
-        Wed, 16 Jul 2025 10:26:00 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:17f8:90f2:a7bc:b439])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-31c9f287be2sm1788951a91.23.2025.07.16.10.25.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Jul 2025 10:25:59 -0700 (PDT)
-Date: Wed, 16 Jul 2025 10:25:57 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Frank Li <Frank.li@nxp.com>, Bjorn Helgaas <helgaas@kernel.org>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-	Rob Herring <robh+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Subject: Re: Does dwc/pci-layerscape.c support AER?
-Message-ID: <aHfgpWsC1GlQUIEm@google.com>
-References: <20250702223841.GA1905230@bhelgaas>
- <aGW8NnHUlfv1NO3g@lizhi-Precision-Tower-5810>
- <aGXEcHTfT2k2ayAj@google.com>
- <tikcdb63ti6hbpypusxdiaoattpuez5rgpsglzllagnqfm5voa@5eornv77pl4i>
- <aHfDRm2S8N8Qus_m@google.com>
- <vatnozecxmzh5bwrapkjcucnfusjz7ugpx2upbwihoioxbf2ko@ydwd65l4peju>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="A/XeN4Is"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hv/0jxTHgs5h4FRkeDodTZGWGU8Fisgq9gbehAildo/MqYQfWnJbE4qhlyuZVAOyyIZ2ZdNj7YnQgl+kbk3SHAynXKXdd3DJoEch8hcOj8upLSOZOgvw/nRalYtyoI3xAzaU4hyggAbptfyKW4g6PfVxfV6Y/+0VNSI/OVYucbCw/SznwfqLhz06tHt33sN6ssspzdGBqaMMGPDSBDyadPWhhPUnBo2P1a+xdJi73+Vxx9BWPJCZC2WdjbceBgG54g71Mc2K6XezvuNKbZDo4o3jm/2unFwdYx5OBs93j/mKorO3BaKwk0vCOXDzjXEjoSOcdHgZAckPs9aozp7/tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3MvPeDxnQIKzouYRxth6crNBcHsftrEYqwDcR1H/Zd4=;
+ b=eGFcw42iQMC6Yi5FnF6AFBi6chAl2KX3emm1cEn4UJbmKuyBxSo9AUSZc2VwThBWesIMX6wu806kx7rJD3bUNKyvxOvUEI4/AQUV7pGHCKYUykpApDjB+r4dDoPu9DKxlITuTv1XM35PxkTEF8tX7Nl5v7M/hZW1yHC9b5fSKNPDN/7uIymDo54MsXDbaz2C/iIk1EEQC+I5gEnjBSMqtWAdpelmx8HJyeO4Db+KAq7+6fEUmkue+3iMyX9eVoXWKelEdvICKsfeiuGNuEfRqPDtrvRmyFMYYJ+1xe0EYzSgm67K9Cmps8hLMQK54Haryt/VfBbACsN9fWZbIwUF1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3MvPeDxnQIKzouYRxth6crNBcHsftrEYqwDcR1H/Zd4=;
+ b=A/XeN4IsfbetJFTWrK5qo4/wNGW/XxEdOUQ7uO3NFYR/6dUm78ObNV1TvfjdhlYk1bEXK0u+uFbiS+KYrDqbW5xw9Ld0yoqo8649OvzV7MQzpinUm2qO+XpN1sr0FeQU0ERvTm1bGoNLpqzHfvoZWuqWvLf9ATx23RNjFHKnNir5k4L/7eq6tLUIw9JZ+O2Jkzp+yE8ePoiA1MJjmO8KXDgajNFsDTc3i5oyL8/lWuDxo5CJgHKgByWwyJOM/jVyKXSKHUK8u+JtV+aU4INpt+i8PCvFKb8b1x9PwOglRlnBYQGoO06eyZJZg0Mf26vzwQPNVNgDYwZ30dqc3nX+Tg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DUZPR04MB9919.eurprd04.prod.outlook.com (2603:10a6:10:4d9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Wed, 16 Jul
+ 2025 18:29:07 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8922.028; Wed, 16 Jul 2025
+ 18:29:06 +0000
+Date: Wed, 16 Jul 2025 14:29:01 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Cc: imx@lists.linux.dev, Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
+	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 02/10] clk: imx95-blk-ctl: Save/restore registers when
+ RPM routines are called
+Message-ID: <aHfvbTpQ4LmexJpA@lizhi-Precision-Tower-5810>
+References: <20250716081519.3400158-1-laurentiu.palcu@oss.nxp.com>
+ <20250716081519.3400158-3-laurentiu.palcu@oss.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250716081519.3400158-3-laurentiu.palcu@oss.nxp.com>
+X-ClientProxiedBy: AS4P251CA0029.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d3::19) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <vatnozecxmzh5bwrapkjcucnfusjz7ugpx2upbwihoioxbf2ko@ydwd65l4peju>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DUZPR04MB9919:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2abe7ba-c142-45f8-e305-08ddc496a606
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|52116014|1800799024|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?iAk4BQP5wP/xZwrJy7CvHZq72ZgFtOmrv69P4N5fNu9U/SVwpC1XI0TD2Enx?=
+ =?us-ascii?Q?3FScKVurGMe6pNEUMxPwXlhu/BSgwKMrIINM+LsOpZqLNNZFiz7IU4Vi6r7l?=
+ =?us-ascii?Q?ygp79cB9N5zM/dxVikWQ1iquwHRFkEqL834SZ0mULoBS+HfujkKP/7hRpi5i?=
+ =?us-ascii?Q?PpCxir/CHycjid7fAYDseG9iEo9IiApMjTTXAvLZEqFuOba0reIP8/Xh+vpC?=
+ =?us-ascii?Q?EIaJxZ4J/u819/PKG6tyO6QM2vB5UxBxSeecn/PU/+k0I+q5NssNaid3nZkC?=
+ =?us-ascii?Q?0TCdAUJ6clQr5BPRGs4/zbxpZQBVZn1Kwm9OXLIAw05CbH/qvryH+xCgOZp8?=
+ =?us-ascii?Q?4Y7jDpDdEx6CGSCAqzuokuiyql0Ms+613YlGn6HikNT5K+7DwoXLTEiXLmfl?=
+ =?us-ascii?Q?j3pXVn7l+moOmDhjDLEgN1MV2v/TASZ+G6cTCqVNnqqNDOPtpmkHaB974sLA?=
+ =?us-ascii?Q?i7d8tKIJA5Gp3ko3nZ8QxYkbgHK3CWUoUXmNKNjW2LfvTLEmlQuMcJRm1oSI?=
+ =?us-ascii?Q?8D43JE3IOZvsAGqiEbObph0T/DN59htg6fkDND+IRn7PoG694OZiPC+8g4l9?=
+ =?us-ascii?Q?cHQedyL9cG3+QNQ6uYo9qiVOLEIk6xJwYk36SmGouJeBWGdvAUmyzhQP0q7j?=
+ =?us-ascii?Q?T/VxX58kqBY+vBiJCZRiffj9q06yDpVECQZEe0Hq0wiAyATl61Bxew6eMmWX?=
+ =?us-ascii?Q?g9t118rlJfFuqof7mUgQlwOabJQD/Hq5xLrGTnmXlkJjoG6F3sE9+kIxTCVN?=
+ =?us-ascii?Q?8nW9Mi+Dvu34jklgIPI17+PKZ6eubQVU3wnzjKKfPSQEbSkZUdQsN5BxjdnX?=
+ =?us-ascii?Q?ezRLkDv6jsockAbYAZQO4IeYw2t3Z6KPZ85FCB4qgUoolikRbC8ka9o1uD6b?=
+ =?us-ascii?Q?IMd9QUu9t2jFCpwaq7qykFdbX8xMRm+SyLGFezEqCVWTCQy7Cvi4SZnMpN0y?=
+ =?us-ascii?Q?ojX0sLNs9F8ZF7QKW/bfJLhSmumcCYVfYKgzDVixPkOOd+VFH2rt4i5Kk74/?=
+ =?us-ascii?Q?H4GnkgcZQuXAO89TfZQ7OXfjpcC4J2LmzAPyPqXvwyOPw9peSwJK24OSeB89?=
+ =?us-ascii?Q?gOHm16CHV+5EpTB57tQLM8FcVS77MbdQsUo+m38WPPhdkeHLNZOWHKoULYox?=
+ =?us-ascii?Q?CpzBKXeDOEZtsQqUiRnP20LCiLcNmqVUUU15JzUlLKwo6NdSPOyPW6BppRmN?=
+ =?us-ascii?Q?IjjahRLzL6jGKT8V8fEUP37DlfewiqXB6MB0G+3BfaDC3Pn3zX++D5hyHWtb?=
+ =?us-ascii?Q?xd59IbEpTDS670uUGqBdf8/x5/6LgcwyUbeGpuJnK8o2S9olz6IGxTOVZl8B?=
+ =?us-ascii?Q?Eo1F8S6bVnKG0OG6LZ86sAwyf6ss0U64sh6/J/iX/tRHstPHJfjZ83ENf7QF?=
+ =?us-ascii?Q?yhDEfrDE2Ab+1kWvQZhLs/GV+p3DluwhhGAKjNnx4BijPPh3ebAHQjZk1vgv?=
+ =?us-ascii?Q?trsnagDtWYsbGCA96QtZ68t9O9cKhJo228EFbFrHRC0xGMqNwv3fQA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(52116014)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bBHms3Au/We2mrx1RCfgwwDwKVZlTl9TfJAHAIpscZH8y5Y3FLKus8dvuOVY?=
+ =?us-ascii?Q?JhvRAG0pxASAjRJmX1w8ppcUKWdbFlSuc5V/cCwmVVldKQRHrgM9Va03ZW/0?=
+ =?us-ascii?Q?EytbC9y8sx/sRFUSXZNNWDpsWuKM1b268urJUw8QiYkROvr94nM0dr9w9YoJ?=
+ =?us-ascii?Q?VNi6P3li0oCMK8LgL1D1uLRggMoUC5WTA2gvOOhtMpamUSQxHsMcfgGbq2kG?=
+ =?us-ascii?Q?wA6goHd9D3S3cXQ9Yzd6odas0y0B5h6tSmSk4F3vY8JxeJHkBV2rO4glT0ut?=
+ =?us-ascii?Q?yRZWPG2/Ru/TDIklvEHwlvk7nWYpV3ulalTvtkOXHvFgJL7gXxsN6fw3eqwb?=
+ =?us-ascii?Q?xPVEedzOEh1uNwYnjYy5xwt8G9cvdHrSgBHNAO9lQM7UcjEKcIH2YqFKMrzC?=
+ =?us-ascii?Q?p6lNW1e8kCzfzCPUESB9b9K2CunJ22C8Nw5U/Wu1d30emw0NjQgi+R8Gdwib?=
+ =?us-ascii?Q?okuH7CCaNzjrqMyBiMcHitz+n1eHvgaK6gT5dU487qEBWfgBgaM25hSMOI/Y?=
+ =?us-ascii?Q?RLVlQTrP5QiZyenogoSit7nsWF8gKPfYP7+uGN45zF2GyF5gqIwqn1Bv7v42?=
+ =?us-ascii?Q?K8mi6YSLo6eB2XSwC1AnNjJ75R5R02cSRTj2dlB4vGP/Mkg+/lUEIDINLpBa?=
+ =?us-ascii?Q?AlIe3gImIfSlulH7atMCn7mv9VOI9Gwr2EelqXdRujm70Q4EZWxKTJdf5730?=
+ =?us-ascii?Q?b2FSPETdZP778nYcuZ7PEc+D5x5tYBFT1OOcJCI+TDD9+5yiiqh15RmtQswi?=
+ =?us-ascii?Q?DU0k234JXumjmFd3PVDoaRHjiXv/xyFXkyOPa3lMufo3mKgL6Gomm9BFEueU?=
+ =?us-ascii?Q?Pevhjza4cfR+5QqFLDNA0w6EHHujS18HX0JeDC/vj+3MxfHqOHaD6cJafnUR?=
+ =?us-ascii?Q?fN1CpxblgfinYu6RkhgBPV9F343/ytBzkkpI5XpqjZ6nWWuaXOfCy8ugeuYx?=
+ =?us-ascii?Q?T5oaYY+VpaLU0WOLNKlXE1uezSAK/xJAGxgXuO0zPuK90YlFjusoqpTZPBnL?=
+ =?us-ascii?Q?/Uq0OdXgwqPUOYOXGRBf3yjVSzZ+FX+ATt5jTYbAL3vyuNbqWq7P0jslDhzz?=
+ =?us-ascii?Q?XF8HIOwL1Q4IerXFt3N2ad4ELwD7oz46aC64xBEFzbcFyYJQQ6iZZUTA7em/?=
+ =?us-ascii?Q?tDdmqjgJqhsHftL3sQ0+nKEGPJbdDXJquwtx6vuXzdL5QpgiWcKlO1M9rQHp?=
+ =?us-ascii?Q?Lgzimp0vV9r1VUj27o7uFKTyND8WH52sZw+Sr7qKuNij2x7BHrVbtz8jRGxc?=
+ =?us-ascii?Q?cJSooD2RaHzXkQdBPaZWFHP/LVb725sunTh1/f5GgmO8IhveA8SyPTvDbq7k?=
+ =?us-ascii?Q?VaCcAZwsETXF7IZ6oCDbi66fE3gMdd3thr0F6bX/j+9A4Ojovi4eyXZ5n3sX?=
+ =?us-ascii?Q?rWYH7VQhtPESLvNO2BjguR0BgCdwOjinrAkp5TCvoyeDkkj9oYT1cbb0zXqS?=
+ =?us-ascii?Q?YL5TTIPJQ2IA+R6XcYsUOhL3DRuz3K69l3nOntiMniAqEFGRl6wBC0Vr3dFn?=
+ =?us-ascii?Q?Gmb6U//cIUJW8lrXroxaBdHNWus+kWhb5RRqquHNUHGBi9Lk5deudyDGLmj2?=
+ =?us-ascii?Q?PsZQfIMWklMkTmgOTcQ=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2abe7ba-c142-45f8-e305-08ddc496a606
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 18:29:06.7923
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aQ0ddrDMB4tIDA78Xm/YhOwBx40HyVvZDi8Hd63SrTlOVwRDoGftufW1QKqDW6UnLvC9s9ZajWfvEAy6OjUqjQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9919
 
-On Wed, Jul 16, 2025 at 09:35:38PM +0530, Manivannan Sadhasivam wrote:
-> On Wed, Jul 16, 2025 at 08:20:38AM GMT, Brian Norris wrote:
-> > On Wed, Jul 16, 2025 at 12:47:10PM +0530, Manivannan Sadhasivam wrote:
-> > > On Wed, Jul 02, 2025 at 04:44:48PM GMT, Brian Norris wrote:
-> > > > On Wed, Jul 02, 2025 at 07:09:42PM -0400, Frank Li wrote:
-> > > > OTOH, I do also believe there are SoCs where DWC PCIe is available, but
-> > > > there is no external MSI controller, and so that same problem still may
-> > > > exist. I may even have such SoCs available...
-> > > > 
-> > > 
-> > > Yes, pretty much all Qcom SoCs without GIC-v3 ITS suffer from this limitation.
-> > > And the same should be true for other vendors also.
-> > > 
-> > > Interestingly, the Qcom SoCs route the AER/PME via 'global' SPI interrupt, which
-> > > is only handled by the controller driver. This is similar to the 'aer' SPI
-> > > interrupt in layerscape platforms.
-> > 
-> > Yeah, I have some SoCs like this as well. But I also believe that I have
-> > INTx available, and that even when MSI doesn't work for AER/PME, INTx
-> > might.
-> > 
-> > Do Qcom SoCs route INTx?
-> > 
-> 
-> Yes, they do. But currently, we can only use it by booting with pcie_pme=nomsi
-> cmdline parameter.
+On Wed, Jul 16, 2025 at 11:15:06AM +0300, Laurentiu Palcu wrote:
+> If runtime PM is used for the clock providers and they're part of a
+> power domain, then the power domain supply will be cut off when runtime
+> suspended. That means all BLK CTL registers belonging to that power
+> domain will be reset. Save the registers, then, before entering suspend
+> and restore them in resume.
+>
+> Also, fix the suspend/resume routines and make sure we disable/enable
+> the clock correctly.
+>
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+> ---
+>  drivers/clk/imx/clk-imx95-blk-ctl.c | 25 +++++++++++++------------
+>  1 file changed, 13 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
+> index c72debaf3a60b..3f6bcc33bbe99 100644
+> --- a/drivers/clk/imx/clk-imx95-blk-ctl.c
+> +++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+> @@ -453,7 +453,9 @@ static int imx95_bc_runtime_suspend(struct device *dev)
+>  {
+>  	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
+>
+> +	bc->clk_reg_restore = readl(bc->base + bc->pdata->clk_reg_offset);
+>  	clk_disable_unprepare(bc->clk_apb);
+> +
+>  	return 0;
+>  }
+>
+> @@ -461,7 +463,10 @@ static int imx95_bc_runtime_resume(struct device *dev)
+>  {
+>  	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
+>
+> -	return clk_prepare_enable(bc->clk_apb);
+> +	clk_prepare_enable(bc->clk_apb);
 
-Cool, so it sounds like you might be in a better spot than layerscape,
-based on the explanations I've seen from them. They seem to require
-multiplexing multiple platform-specific interrupts, which isn't as easy
-to pretend is a proper INTx line.
+Need check clk_prepare_enable()'s return value!
 
-> > > So I think there is an incentive in allowing the AER driver to work with vendor
-> > > specific IRQs.
-> > 
-> > Yeah, I suppose even if my SoC (and Qcom, depending on the above answer)
-> > might work with INTx, it really does seem like an arbitrary decision
-> > about what SoC makers connected which DWC signals, so I suspect this is
-> > true.
-> > 
-> 
-> Maybe we should be able to extend the dmi quirk in portdrv.c to allow Root Ports
-> or host bridge to use INT-X instead of forcing them to use cmdline params.
+> +	writel(bc->clk_reg_restore, bc->base + bc->pdata->clk_reg_offset);
+> +
+> +	return 0;
+>  }
+>  #endif
+>
+> @@ -469,17 +474,12 @@ static int imx95_bc_runtime_resume(struct device *dev)
+>  static int imx95_bc_suspend(struct device *dev)
+>  {
+>  	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
+> -	int ret;
+>
+> -	if (bc->pdata->rpm_enabled) {
+> -		ret = pm_runtime_get_sync(bc->dev);
+> -		if (ret < 0) {
+> -			pm_runtime_put_noidle(bc->dev);
+> -			return ret;
+> -		}
+> -	}
+> +	if (pm_runtime_suspended(dev))
+> +		return 0;
+>
+>  	bc->clk_reg_restore = readl(bc->base + bc->pdata->clk_reg_offset);
+> +	clk_disable_unprepare(bc->clk_apb);
+>
+>  	return 0;
+>  }
+> @@ -488,10 +488,11 @@ static int imx95_bc_resume(struct device *dev)
+>  {
+>  	struct imx95_blk_ctl *bc = dev_get_drvdata(dev);
+>
+> -	writel(bc->clk_reg_restore, bc->base + bc->pdata->clk_reg_offset);
+> +	if (pm_runtime_suspended(dev))
+> +		return 0;
+>
+> -	if (bc->pdata->rpm_enabled)
+> -		pm_runtime_put(bc->dev);
+> +	clk_prepare_enable(bc->clk_apb);
+> +	writel(bc->clk_reg_restore, bc->base + bc->pdata->clk_reg_offset);
+>
+>  	return 0;
+>  }
 
-Yeah, it sounds like that would be sufficient for non-ITS Qualcomm PCIe,
-and also for my SoCs. It's also necessary (but maybe not sufficient) for
-Layerscape too.
+Look like needn't imx95_bc_resume() and imx95_bc_suspend()
 
-One complexity: this is not exclusively a "host bridge" quirk. It's also
-a quirk of the MSI provider. So for example, looking at
-arch/arm64/boot/dts/qcom/x1e80100.dtsi, you have 2 controllers without
-GIC ITS, and 2 with GIC ITS, all using the "same" type of bridge.
-IIUC, only the former 2 would need to fall back to INTx.
+DEFINE_RUNTIME_DEV_PM_OPS() will use pm_runtime_force_suspend(), which
+do similar things with above logic.
 
-Brian
+Frank
+
+
+> --
+> 2.34.1
+>
