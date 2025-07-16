@@ -1,75 +1,78 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FB2288C1C
-	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 22:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE99C2EE966
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 22:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752705990; cv=none; b=GdBDRAuAFeLoaWR5rs4WnHZF4gz5xscBbdSZPoIsjiAeSLzYNIng3hByRgvaKx8xpOi0LG7tjz/BNL5R0zlbJOBos9eAt0kstScOZ4oAnBMvzUK9lygD8TdI6EtK6AlR/F6PtYelIjrPfpl6ooz8XEODBAfPLUMv82dtqADTUpY=
+	t=1752705996; cv=none; b=kR4HGqw1DGokaDiVJ1NosqspVMbM22ttx0lqSJ2bxzph6ix8dUql6apH5JlfDbC1pWk458OKzls1Lj4tR898eHfv6rm1wjpJ3Gx0nPhmAJS/eejTJqW0qGq1w3iDrgycYjV0RkojfW/1I9aQ7tDoswRd4q/ROo1E/Y3r/u4ORBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752705990; c=relaxed/simple;
-	bh=R+Lhq1vCYha2kVC/gKYBwgMh0PCi0r6MdFv+dfqI1y4=;
+	s=arc-20240116; t=1752705996; c=relaxed/simple;
+	bh=/e5+cFEH9w4+GZ0QyMKM7a9cjJ6N+Un3FjPHBIJln9o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aYVGk+iu9QJ7E+U/xSLe3h5AijGmdz1iX3j9P9GBZpokI7Oa97EjjOF0KNl8+dbLt3aOMMCw++hd3nK4vZzbiMFCpzi9KKFozA1gMSnLczOrarqcLq3V7GqxpsaDBZdKF0ZBnuoYbDuQihrr9+k09cZIJa4mVVbP8KA2AClCsRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=W5ItkrHl; arc=none smtp.client-ip=209.85.160.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=OSV52TME4O+M4D3jWknA4xY7oBzyqLCT1jAsU7cckSP+mJxflrHCrG/K1v6qxrTWvQR5L1/cPq8lkiVWQv7Fji+3cgDjVjodF8TcwEuLvyESaP9NQFMaEQugBKPiDJQGiKxMuhB34Um6FxuT1micsCxHFXtSo/Y+lolXCLCk7pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zCE7Y7ac; arc=none smtp.client-ip=209.85.160.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="W5ItkrHl"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2ff1ed124deso245580fac.0
-        for <imx@lists.linux.dev>; Wed, 16 Jul 2025 15:46:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zCE7Y7ac"
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2ebb72384dbso179489fac.1
+        for <imx@lists.linux.dev>; Wed, 16 Jul 2025 15:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752705988; x=1753310788; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1752705994; x=1753310794; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LiiyQhkDqEe/y4fMk89A/2LpiKkeCtnb83PrX3E9ODQ=;
-        b=W5ItkrHl9/G71xfE3bphEzo8e98e0u17U6THO6BZMFAMUtpZSBWSvQZQdz2pQHzVJL
-         zH/KG0Jj6z1HEANX2vM42tw0G2c0HPnuv0jtSB2D5G/gyEhgMkSinfHmVkX26Yt8zJXc
-         0N6GPlMrM43gh5xbKR1umqdYktA95xCkAc0p3Fn8ufPFCnHfDSzLhAV/HwG71iKDzCfH
-         hQjiOvroffvA9SnTh5qM0+D8go3B6RgbHgEZQWULPpMK3Co/UOX8UVZFrfnricXZF2Wp
-         hb+rSS7yYtUWSzAW2IECXSppvbez1AJIZpNLYSRehYib7uEFZ5e5AzjkRmZzPjBdirsz
-         KJuA==
+        bh=r+9WkLvKxCVNjpjJMT0iDzPKr8AA3uiZWqAZX0UYmVw=;
+        b=zCE7Y7ac+xgkjao15U6zvcFI/s7LRqcHxtGtkoSa67XY1+vxR2+ESroWbP+lYy7CYT
+         /tPLAW/jLcRjFKYvLbGrft1nscfjLk6GIzyvhRt7Mt3+nPxvXBn8VsLXT4rnLR7Mqb+7
+         kadeHiHS7RfgKdXx5CuBCjkHSa9ELWof/9t9mNte4hBojoGOq6DDcnc3peggw1JuvwNv
+         jfLtm387oCsZUFcX+kDmfTktjpYk5vivweE1PbZ+nCB28pQ7bVP3OTC8vhCkjXa7gxZK
+         ohe6AdenVnu9vC5W4s6IF1e8uZSkQcV53KFKpWWGhZKhDcvdqYWhd87N1Yp6X3/Nk7Rh
+         cEDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752705988; x=1753310788;
+        d=1e100.net; s=20230601; t=1752705994; x=1753310794;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LiiyQhkDqEe/y4fMk89A/2LpiKkeCtnb83PrX3E9ODQ=;
-        b=wHcv/kysiFJHmq1nwTyag8RJDD1DA2sd5Auht7OAx4DV3IneJytS+1Ita1Kc6lL1Lw
-         qGwIpjuoXLDywjYE691pxh0DiW0bxGfWhgSUsPNz86Dl1mIDEJYsYAVTHi4A2rEyzT7c
-         2ilYotz1f5VCJwgvgeKKe73NEovQQxnyV70gAqTQdzuRqSa+LfvAygBZQEL7P/SOOg41
-         vxGNu0j4ni5ZHYGFfSHFLQgYKrMsp2OXb82MltgKAHSTIxdfwIGWD/2RolfuQIbUa1ZS
-         6Es4qmWkgHfpb7lONAKNRp9ckJftagVjGyILiYdMgSmNX9QIlzqa9mR2DjtldjPQPxJz
-         +9pA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWuqxpbwqc9GfUKZfljghYJ4p9Vnv9yNTO5hxJIFSHJ/EpT2ugTFy0ONXDZrXXvZ/XT9Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyuU4Wn9v5oAgiy4gh5E+5u4IF3MpUn/nOgUrCQJOkxhCrxcLfu
-	G3PWDKM4vBoH8opqnfkuuThcDLklewJ9PJJjMpY8YeGm8iVDVbmMzxEu/D5KkdPnAUY=
-X-Gm-Gg: ASbGncuPTOVi1mkFwphsMtLL0ncs0fLJvHpigHPiV257Sw/tFXUOaLtGxX3baMBTgYR
-	K43wirigRH7B1Ea0DHam4Qgu75QnHr4CGivooP/wpcMrs/CGYB9K5vih3WLTxCO1qF4+N5afSj0
-	jnfj0c28VXy7rcS79WJ7mMDMO5R7ZH2fcZj/QKqH94pA3nhGdAZWxq5m5MnyhSWuCGN/Kvvye2M
-	1SS8xtNTi0IX1MLFMmKED3J7YrPiC4GFwyQ34qJHAie8rhmvTulqGHEz92P6RbSwiSKlrkLb3pY
-	Byh+q2DplvP2uQy6cFutMiZaEqsNEYXFYVLdF9pkZlRFEWhgMOg/fSMJjlGi+DybCJX1Acgattt
-	Z5mNqzFfcdE9wBhxoXVaklQVkw6+htg==
-X-Google-Smtp-Source: AGHT+IFOGaMrw9AqIgbXe/jwkCHgKj22Wqht7XROv3FQmVROEgsFQIi2GM+MArU/0+grsGQkVTtJVQ==
-X-Received: by 2002:a05:6870:e412:b0:2ff:a860:3402 with SMTP id 586e51a60fabf-2ffb229c2b2mr3886783fac.12.1752705988172;
-        Wed, 16 Jul 2025 15:46:28 -0700 (PDT)
+        bh=r+9WkLvKxCVNjpjJMT0iDzPKr8AA3uiZWqAZX0UYmVw=;
+        b=tsrzi2MBPkT5mzcLGRP/fXwoLJNcfK4mZHSPms+xT3TIT02xsJDAtHu25xw18yf2/x
+         sDxjd1TcSlMdIWhNEpcwu0/lrmzoc2gwAWzXWTBxY0vGx2RoGuJBpYPj/zLpfFrBprhw
+         o79vtgawwW6uQhX91CYL02etN7nuDmGD5EU0o8mIa2poQR3C4OhjUDSuEd9NxMjvvURA
+         lPXvEifbunQkcjscIz0amDOWPT4ZqqDrfKWhWgD2Zpci13RLr4FD9p6BrFVVmuJXG9AO
+         925/pu4qLsRlKuCAQ3a/9nSnmKk0bBTXw//xFDbsZLoW8GZp2oyBSQyOrIGf1f7SxbJ+
+         Tisg==
+X-Forwarded-Encrypted: i=1; AJvYcCUsrBaIoZpabDdW+2bekcVZsV+EbAmHUL/FG5n1t31u6r0CKBzSzNfSSu+B2krDnIDPHiU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwH8/CjM1jKIo74u1hwQyovbkXjVIlmOhOrfJJDj7VXBv2bw8qF
+	Ewz0S9cQ8AJg2lWfEuHvRQ7LUVuJSmGxHB3rE6OwXaUvZxZHmQUFgLwskgaKGOSS6nk=
+X-Gm-Gg: ASbGnctxBv75m++0nn6cH1Z65RgcIOvtXoIixZm03hvl77ETX3FINY324V9dFEF/Ck/
+	BEJB55V6g+iEfUtd4J2aNQ+8bolLw64tzHRtCEaKm82DaI9TZOEmXGdDocdOyVtj1HFjSM8zQkM
+	FuOrvXujkdGasbx0aBA8k55h7qxQZwvx5Vznf8TZKaN/zSg41/bIShQ1v2QtXwS95PS1vLzraZ2
+	uVCTrc3NEDXI75K5vrRlLE57dHmK7H01mSTL7NU/FxphY+czvQgl4Y/owKnCzOrfNzaUMZArd6x
+	+0KCxbkA4bs/IGgeQp33AmZIIViqyYsTD606eDHsoYXG6pI1W5SxJiVVNJNtat4i9gWVubDxr/z
+	D3ScalqIsopsqm/kEPz45DIol4CNcrA==
+X-Google-Smtp-Source: AGHT+IF0LmgLP0/FrplToo3zBIOwwv/f/5ChaEptepbpq2yLyxK0fU0sEf+7Lt3bCWvy4wpyOrIgrQ==
+X-Received: by 2002:a05:6871:60c9:b0:2ef:e245:c65a with SMTP id 586e51a60fabf-2ffaf6002b4mr4420295fac.38.1752705993846;
+        Wed, 16 Jul 2025 15:46:33 -0700 (PDT)
 Received: from localhost ([2603:8080:b800:f700:3f28:4161:2162:7ea2])
-        by smtp.gmail.com with UTF8SMTPSA id 586e51a60fabf-2ff11681bcdsm3928163fac.32.2025.07.16.15.46.27
+        by smtp.gmail.com with UTF8SMTPSA id 586e51a60fabf-2ff9ff853b8sm1651683fac.23.2025.07.16.15.46.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 15:46:27 -0700 (PDT)
-Date: Wed, 16 Jul 2025 17:46:26 -0500
+        Wed, 16 Jul 2025 15:46:33 -0700 (PDT)
+Date: Wed, 16 Jul 2025 17:46:31 -0500
 From: Dan Carpenter <dan.carpenter@linaro.org>
 To: Xu Yang <xu.yang_2@nxp.com>
-Cc: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+Cc: Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-usb@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] usb: chipidea: imx: Add a missing blank line
-Message-ID: <36d1c961-319e-4457-bdc1-69f8b6bed33e@sabinyo.mountain>
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 2/3] arm64: dts: s32g3: Fix whitespace issue in device tree
+Message-ID: <52960eb1-4432-436b-89aa-d50fc7da2c3a@sabinyo.mountain>
 References: <cover.1752703107.git.dan.carpenter@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -81,27 +84,59 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1752703107.git.dan.carpenter@linaro.org>
 
-Fix a checkpatch warning:
-CHECK: Please use a blank line after function/struct/union/enum declarations
+Checkpatch points out that this should use spaces instead of tabs.
+"ERROR: code indent should use tabs where possible".
 
 Reported-by: Xu Yang <xu.yang_2@nxp.com>
+Closes: https://lore.kernel.org/all/u7glt7mn33lbdeskbr4ily6tjjifvffy64llwpi5b2rrhx5tnv@y2h2y3oz3xc4/
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- drivers/usb/chipidea/usbmisc_imx.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/freescale/s32g3.dtsi | 32 ++++++++++++------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
-index 0b8b980409bc..3d20c5e76c6a 100644
---- a/drivers/usb/chipidea/usbmisc_imx.c
-+++ b/drivers/usb/chipidea/usbmisc_imx.c
-@@ -1118,6 +1118,7 @@ static int usbmisc_imx6sx_power_lost_check(struct imx_usbmisc_data *data)
- 	else
- 		return 0;
- }
-+
- static int usbmisc_s32g_power_lost_check(struct imx_usbmisc_data *data)
- {
- 	return 1;
+diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+index 68c11ebd405f..e80144e33efb 100644
+--- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+@@ -489,22 +489,22 @@ usbmisc: usbmisc@44064200 {
+ 			reg = <0x44064200 0x200>;
+ 		};
+ 
+-                usbotg: usb@44064000 {
+-                        compatible = "nxp,s32g3-usb", "nxp,s32g2-usb";
+-                        reg = <0x44064000 0x200>;
+-                        interrupt-parent = <&gic>;
+-                        interrupts = <GIC_SPI 211 IRQ_TYPE_LEVEL_HIGH>, /* OTG Core */
+-                                     <GIC_SPI 212 IRQ_TYPE_LEVEL_HIGH>; /* OTG Wakeup */
+-                        clocks = <&clks 94>, <&clks 95>;
+-                        fsl,usbmisc = <&usbmisc 0>;
+-                        ahb-burst-config = <0x3>;
+-                        tx-burst-size-dword = <0x10>;
+-                        rx-burst-size-dword = <0x10>;
+-                        phy_type = "ulpi";
+-                        dr_mode = "host";
+-                        maximum-speed = "high-speed";
+-                        status = "disabled";
+-                };
++		usbotg: usb@44064000 {
++			compatible = "nxp,s32g3-usb", "nxp,s32g2-usb";
++			reg = <0x44064000 0x200>;
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SPI 211 IRQ_TYPE_LEVEL_HIGH>, /* OTG Core */
++				     <GIC_SPI 212 IRQ_TYPE_LEVEL_HIGH>; /* OTG Wakeup */
++			clocks = <&clks 94>, <&clks 95>;
++			fsl,usbmisc = <&usbmisc 0>;
++			ahb-burst-config = <0x3>;
++			tx-burst-size-dword = <0x10>;
++			rx-burst-size-dword = <0x10>;
++			phy_type = "ulpi";
++			dr_mode = "host";
++			maximum-speed = "high-speed";
++			status = "disabled";
++		};
+ 
+ 		i2c0: i2c@401e4000 {
+ 			compatible = "nxp,s32g3-i2c",
 -- 
 2.47.2
 
