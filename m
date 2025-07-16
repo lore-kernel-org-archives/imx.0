@@ -1,63 +1,63 @@
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE99C2EE966
-	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 22:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6592E2EF29B
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 22:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752705996; cv=none; b=kR4HGqw1DGokaDiVJ1NosqspVMbM22ttx0lqSJ2bxzph6ix8dUql6apH5JlfDbC1pWk458OKzls1Lj4tR898eHfv6rm1wjpJ3Gx0nPhmAJS/eejTJqW0qGq1w3iDrgycYjV0RkojfW/1I9aQ7tDoswRd4q/ROo1E/Y3r/u4ORBQ=
+	t=1752705999; cv=none; b=F0WRMsITmaGM5XxdofUePid+Kz+4OYlIhdc6iGzL2Y1Ys+YyX4w4pAkv1hGdMcKlDMfxQjVv1BimescUZocaLHMGJZYOExi0R18So9n+HGyOrbXsVatNYtUNYWgtNt1t6+NaJf9vPMecpff9q8P65qLLsceiU66KkGpEjf9KlvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752705996; c=relaxed/simple;
-	bh=/e5+cFEH9w4+GZ0QyMKM7a9cjJ6N+Un3FjPHBIJln9o=;
+	s=arc-20240116; t=1752705999; c=relaxed/simple;
+	bh=S7zflZfckkjVA+Sb60lAmOii8syH0HQaukr1eAjN8hY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OSV52TME4O+M4D3jWknA4xY7oBzyqLCT1jAsU7cckSP+mJxflrHCrG/K1v6qxrTWvQR5L1/cPq8lkiVWQv7Fji+3cgDjVjodF8TcwEuLvyESaP9NQFMaEQugBKPiDJQGiKxMuhB34Um6FxuT1micsCxHFXtSo/Y+lolXCLCk7pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zCE7Y7ac; arc=none smtp.client-ip=209.85.160.43
+	 Content-Type:Content-Disposition:In-Reply-To; b=cEqJWk6WNMEglIStIrrniO1DuAziXibUIbdS/zST7xsZ2mWJUaRRaHg6rckjfBHCyqNJAHFWqSb4N6m67kcj3PWYE/6Q3ggyy7+XKIsHiTkakC19M/f9bAlPbAg3Rd4jpOK4/p6xWPdgig63X4gm+pvsLUgpmOfBvomonUx/PYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=w+TBuw2c; arc=none smtp.client-ip=209.85.167.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zCE7Y7ac"
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2ebb72384dbso179489fac.1
-        for <imx@lists.linux.dev>; Wed, 16 Jul 2025 15:46:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w+TBuw2c"
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-401c43671ecso239468b6e.0
+        for <imx@lists.linux.dev>; Wed, 16 Jul 2025 15:46:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1752705994; x=1753310794; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1752705997; x=1753310797; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=r+9WkLvKxCVNjpjJMT0iDzPKr8AA3uiZWqAZX0UYmVw=;
-        b=zCE7Y7ac+xgkjao15U6zvcFI/s7LRqcHxtGtkoSa67XY1+vxR2+ESroWbP+lYy7CYT
-         /tPLAW/jLcRjFKYvLbGrft1nscfjLk6GIzyvhRt7Mt3+nPxvXBn8VsLXT4rnLR7Mqb+7
-         kadeHiHS7RfgKdXx5CuBCjkHSa9ELWof/9t9mNte4hBojoGOq6DDcnc3peggw1JuvwNv
-         jfLtm387oCsZUFcX+kDmfTktjpYk5vivweE1PbZ+nCB28pQ7bVP3OTC8vhCkjXa7gxZK
-         ohe6AdenVnu9vC5W4s6IF1e8uZSkQcV53KFKpWWGhZKhDcvdqYWhd87N1Yp6X3/Nk7Rh
-         cEDQ==
+        bh=0u/YC913AnORCbk7RT9GNyXowu0h11qkd01RjAkHwZc=;
+        b=w+TBuw2ci1WcUG+K6wPv1Nf5k+eTgFea2ohouY/GuSfSQD4+VD1XpmQlLG6j+9RCYI
+         dNldQaCIpkHxpHUTCsTOwwOxnql4EapCmZ94+h4Hvzdtz+LMDmU00bU39FkgkcWbVem3
+         v1IbiA5rxlFBJplz+qA/Xb8wlPsPwfqPNTtJCLlmBxgrXVVOjWP3hHwvhJ65iNzeI434
+         eiSphGdXzL+9/CxTrXYxgo2enKzS6wAOtBBj08j+zkvNV3szuifZfVEQkTKfFLRJkbLr
+         vnFvdl/Nl60qxTD3qg2W/7uTHiEm9KoEgAf2IUD8cXYW7fDDdPhtveP5Jm2GgvJPFpfh
+         0JKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752705994; x=1753310794;
+        d=1e100.net; s=20230601; t=1752705997; x=1753310797;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r+9WkLvKxCVNjpjJMT0iDzPKr8AA3uiZWqAZX0UYmVw=;
-        b=tsrzi2MBPkT5mzcLGRP/fXwoLJNcfK4mZHSPms+xT3TIT02xsJDAtHu25xw18yf2/x
-         sDxjd1TcSlMdIWhNEpcwu0/lrmzoc2gwAWzXWTBxY0vGx2RoGuJBpYPj/zLpfFrBprhw
-         o79vtgawwW6uQhX91CYL02etN7nuDmGD5EU0o8mIa2poQR3C4OhjUDSuEd9NxMjvvURA
-         lPXvEifbunQkcjscIz0amDOWPT4ZqqDrfKWhWgD2Zpci13RLr4FD9p6BrFVVmuJXG9AO
-         925/pu4qLsRlKuCAQ3a/9nSnmKk0bBTXw//xFDbsZLoW8GZp2oyBSQyOrIGf1f7SxbJ+
-         Tisg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsrBaIoZpabDdW+2bekcVZsV+EbAmHUL/FG5n1t31u6r0CKBzSzNfSSu+B2krDnIDPHiU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwH8/CjM1jKIo74u1hwQyovbkXjVIlmOhOrfJJDj7VXBv2bw8qF
-	Ewz0S9cQ8AJg2lWfEuHvRQ7LUVuJSmGxHB3rE6OwXaUvZxZHmQUFgLwskgaKGOSS6nk=
-X-Gm-Gg: ASbGnctxBv75m++0nn6cH1Z65RgcIOvtXoIixZm03hvl77ETX3FINY324V9dFEF/Ck/
-	BEJB55V6g+iEfUtd4J2aNQ+8bolLw64tzHRtCEaKm82DaI9TZOEmXGdDocdOyVtj1HFjSM8zQkM
-	FuOrvXujkdGasbx0aBA8k55h7qxQZwvx5Vznf8TZKaN/zSg41/bIShQ1v2QtXwS95PS1vLzraZ2
-	uVCTrc3NEDXI75K5vrRlLE57dHmK7H01mSTL7NU/FxphY+czvQgl4Y/owKnCzOrfNzaUMZArd6x
-	+0KCxbkA4bs/IGgeQp33AmZIIViqyYsTD606eDHsoYXG6pI1W5SxJiVVNJNtat4i9gWVubDxr/z
-	D3ScalqIsopsqm/kEPz45DIol4CNcrA==
-X-Google-Smtp-Source: AGHT+IF0LmgLP0/FrplToo3zBIOwwv/f/5ChaEptepbpq2yLyxK0fU0sEf+7Lt3bCWvy4wpyOrIgrQ==
-X-Received: by 2002:a05:6871:60c9:b0:2ef:e245:c65a with SMTP id 586e51a60fabf-2ffaf6002b4mr4420295fac.38.1752705993846;
-        Wed, 16 Jul 2025 15:46:33 -0700 (PDT)
+        bh=0u/YC913AnORCbk7RT9GNyXowu0h11qkd01RjAkHwZc=;
+        b=U4M09SquvFaOJiya4zys31P3rJeiq5SkWO/KLmaGaOsFLNslYSwxeAOGZAp3UYbOmK
+         cx9RJdmAYZImb1Y5xS8aKXkgZIz/Zvh9Q/JOSWb4TfomwLjnYgps9RvWr9P6/PUfcnq2
+         1n8Bdd1VnYIQzgcZkIKutQy/p+0ncuPKnQlcymHEkTvaM/ZWag2rJm+BFAyiflUbjmvI
+         jenmTAKpT8OvsJyF7KVI1iiePwBN3EjA4fMzlpjXmGG2TA1DP5Epj1d9ZqAvShNqzB6F
+         sJdCaNI0kHV+gYNHw3ifA8HiUtHsRlWF7Qbhk5JfYojB4qzqGQL0YHjXpr9JzLivmS+T
+         RQgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcKEEjOc4Xv8S6XSStnty0jnZPVM0PG4ILaVCMcNTN1bf8jmEqhol/msG+kSMg49bs92I=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxot57zvA+CQTHJZRN2YHIMPa9kbVd5gYA2EeZ6qHR7XiBELMDm
+	AOkGrq7iVdYOXOdP5U5KPbYRDtWMfECIVqFB9v8ssp8TILO0pYkXjTV0esfHg5HyQEA=
+X-Gm-Gg: ASbGncvgvs6pyK/IFzwl8Ac0XakKK9rSERBSLnVdxyF4VEjvqwElFt9aI6cc0s+db+V
+	XOO2mNjScXw1mmoUN3lTw1DQD5zU8n97a0QDSSTo97+EnjBreeOSNFb8AbUUiny1nfi93+gh56a
+	R/H3vpox14kb+4nU/HV4Psv5PjDg/nSEhj3IYzxF7AIYUnxhTuxc0l3iS9eyyaAoN4fYYtkntom
+	q8B3Vni+Jv/AbwCqqcOJyGWQCsBSUlUclpIixRCE6yivHSi8cwcrU24C9uaF4eAS/OteM9gyWJ2
+	wIx3WORpP/T/tKQ+bj4dl2jqjxF20l+6Gcl8uPc44NIbyVx6wPJ6Lp2FKZ52tlKOMZ86hOCAGLM
+	BLJwsfdUegasJ+nQQv2eRbFskS0S7uA==
+X-Google-Smtp-Source: AGHT+IHW7jvGVN1nZDNV19D23iLay5SH3FruLv6n11izEuEkrlyk9Tea64PpmwgpUO6OAQQLBc1AXA==
+X-Received: by 2002:a05:6808:50ab:b0:41b:2876:a93b with SMTP id 5614622812f47-41e26d2426dmr821249b6e.6.1752705997476;
+        Wed, 16 Jul 2025 15:46:37 -0700 (PDT)
 Received: from localhost ([2603:8080:b800:f700:3f28:4161:2162:7ea2])
-        by smtp.gmail.com with UTF8SMTPSA id 586e51a60fabf-2ff9ff853b8sm1651683fac.23.2025.07.16.15.46.32
+        by smtp.gmail.com with UTF8SMTPSA id 5614622812f47-41dcf3be2a7sm466494b6e.23.2025.07.16.15.46.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 15:46:33 -0700 (PDT)
-Date: Wed, 16 Jul 2025 17:46:31 -0500
+        Wed, 16 Jul 2025 15:46:37 -0700 (PDT)
+Date: Wed, 16 Jul 2025 17:46:35 -0500
 From: Dan Carpenter <dan.carpenter@linaro.org>
 To: Xu Yang <xu.yang_2@nxp.com>
 Cc: Chester Lin <chester62515@gmail.com>,
@@ -71,8 +71,8 @@ Cc: Chester Lin <chester62515@gmail.com>,
 	Conor Dooley <conor+dt@kernel.org>,
 	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/3] arm64: dts: s32g3: Fix whitespace issue in device tree
-Message-ID: <52960eb1-4432-436b-89aa-d50fc7da2c3a@sabinyo.mountain>
+Subject: [PATCH 3/3] arm64: dts: s32g2: Re-order usbmisc device tree section
+Message-ID: <14d3cfde-57bd-452e-afa6-8a468281e5e7@sabinyo.mountain>
 References: <cover.1752703107.git.dan.carpenter@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -84,59 +84,29 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <cover.1752703107.git.dan.carpenter@linaro.org>
 
-Checkpatch points out that this should use spaces instead of tabs.
-"ERROR: code indent should use tabs where possible".
+The compatible line is supposed to be first.
 
 Reported-by: Xu Yang <xu.yang_2@nxp.com>
 Closes: https://lore.kernel.org/all/u7glt7mn33lbdeskbr4ily6tjjifvffy64llwpi5b2rrhx5tnv@y2h2y3oz3xc4/
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- arch/arm64/boot/dts/freescale/s32g3.dtsi | 32 ++++++++++++------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ arch/arm64/boot/dts/freescale/s32g2.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-index 68c11ebd405f..e80144e33efb 100644
---- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-@@ -489,22 +489,22 @@ usbmisc: usbmisc@44064200 {
+diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+index 089f54415571..6f700085dec2 100644
+--- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+@@ -424,8 +424,8 @@ spi2: spi@401dc000 {
+ 		};
+ 
+ 		usbmisc: usbmisc@44064200 {
+-			#index-cells = <1>;
+ 			compatible = "nxp,s32g2-usbmisc";
++			#index-cells = <1>;
  			reg = <0x44064200 0x200>;
  		};
  
--                usbotg: usb@44064000 {
--                        compatible = "nxp,s32g3-usb", "nxp,s32g2-usb";
--                        reg = <0x44064000 0x200>;
--                        interrupt-parent = <&gic>;
--                        interrupts = <GIC_SPI 211 IRQ_TYPE_LEVEL_HIGH>, /* OTG Core */
--                                     <GIC_SPI 212 IRQ_TYPE_LEVEL_HIGH>; /* OTG Wakeup */
--                        clocks = <&clks 94>, <&clks 95>;
--                        fsl,usbmisc = <&usbmisc 0>;
--                        ahb-burst-config = <0x3>;
--                        tx-burst-size-dword = <0x10>;
--                        rx-burst-size-dword = <0x10>;
--                        phy_type = "ulpi";
--                        dr_mode = "host";
--                        maximum-speed = "high-speed";
--                        status = "disabled";
--                };
-+		usbotg: usb@44064000 {
-+			compatible = "nxp,s32g3-usb", "nxp,s32g2-usb";
-+			reg = <0x44064000 0x200>;
-+			interrupt-parent = <&gic>;
-+			interrupts = <GIC_SPI 211 IRQ_TYPE_LEVEL_HIGH>, /* OTG Core */
-+				     <GIC_SPI 212 IRQ_TYPE_LEVEL_HIGH>; /* OTG Wakeup */
-+			clocks = <&clks 94>, <&clks 95>;
-+			fsl,usbmisc = <&usbmisc 0>;
-+			ahb-burst-config = <0x3>;
-+			tx-burst-size-dword = <0x10>;
-+			rx-burst-size-dword = <0x10>;
-+			phy_type = "ulpi";
-+			dr_mode = "host";
-+			maximum-speed = "high-speed";
-+			status = "disabled";
-+		};
- 
- 		i2c0: i2c@401e4000 {
- 			compatible = "nxp,s32g3-i2c",
 -- 
 2.47.2
 
