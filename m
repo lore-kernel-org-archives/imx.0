@@ -1,141 +1,60 @@
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23A72F7CE0
-	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 21:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5C026A0DF;
+	Wed, 16 Jul 2025 22:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752702506; cv=none; b=duvIfibAjvMVMXW1Pm65sX1A9oTETVH+vxf3XV4byh4VGnRJasfEzpkwEerYcNic9HvIHpC5mrCkc2LIweEpsQJtQPIsgboIpRkJJgEGeic9yv1aWdASQz2ha5/N6lvLycycIDIZXHmPsi2mUvjqocIecv7JQwf+KRKdEHGPDBQ=
+	t=1752704793; cv=none; b=HoBInxrL3EaQf7rOGZGj0ZdkO6MqY7XuzwOFcr4EHQt2p7cB3KZpam6QxVQfqkxzZ8vL4bmk2JXwMkR226hl01fUPnNRLfsQUy7pjdpfbEiYe7JyBis/Sw/V8ucPnVsAe7Z97dL3Mcvz4rumrXANrKvO+N4jcsos9OlqG/oKMzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752702506; c=relaxed/simple;
-	bh=0+n5Embocqw42sUOJ4/qmt6xV9FiCcaBn+Mt3eSqSO0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RAp5oCmFYV+IsOlJNxEEL81e9UCaDyGqRDHvhy9RjQkVSGXcJunnr4FkVM5iQaukEz6Fu13iAqwZqCfkMsV2PjvqsQuDXQHlTcYrj0lxA7wFe5vgMU3MgJVdhnHv0Dv9YDRSFUDmmlVCsUsCvoGXomXABXl/nJGja7nlYkNXr1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=UMSVOsCe; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+	s=arc-20240116; t=1752704793; c=relaxed/simple;
+	bh=JOJeLyCECI7amC2TB9K36NzTKnzUeHZ0ARDaQeBa6so=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CJQgE6Ly3ptbRLqehJpv9nr5YXrGJdj9+YQ3eeZbDG3SrnPIo5r/vKOqkdlwbmUB1uxk2148wSmp3v4q7kGfob19uZEqOQpYoBn7+At7tY2aqYCeAwP+e6faoadjgZhMnMHLnSVhDHcKkqt8KJMy/sgBe8KV9FwoxZXXmd0Ht3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LdlymgH6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="UMSVOsCe"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7EC421027237A;
-	Wed, 16 Jul 2025 23:48:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1752702503; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=s2DfqW82djDYJjCtd3S1pybxFvtPzvR2qq/Td8hSX/o=;
-	b=UMSVOsCe/68yJ8vPnKWNaK4S5V69ZOPaEY56taOxCnwvp6RCpcWu4qzYE91rbj0WnCVPUO
-	r8XoCL1VXWf4RkmwuixhQJLKbxTcMw1QBj8uUEH5naoQMT5lTc+Yzgrr/14Kw9fveNOUDr
-	YHMhUCAKfkisqJT0u/vurXzX6YoD5OH4p7gbh2FvyeWxE7IvsbviR93Zt76oFZIZ5olySO
-	R/DofHblEpAmyZtZXxNLNz+D6ZFiLOmMqw2UYRkKDR0cKk18CNgg+0JOMUNxNvp/HCk77Z
-	t7bJK7fRhFxTso0xnVnqJ0Sso04aBhCU98RvLlcStJTT4aYrJ3g4S+B6Vm84Bw==
-From: Lukasz Majewski <lukma@denx.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukma@denx.de>
-Subject: [net-next v15 12/12] ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2 switch
-Date: Wed, 16 Jul 2025 23:47:31 +0200
-Message-Id: <20250716214731.3384273-13-lukma@denx.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250716214731.3384273-1-lukma@denx.de>
-References: <20250716214731.3384273-1-lukma@denx.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LdlymgH6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46704C4CEE7;
+	Wed, 16 Jul 2025 22:26:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752704791;
+	bh=JOJeLyCECI7amC2TB9K36NzTKnzUeHZ0ARDaQeBa6so=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LdlymgH6c/n11Ay4TjcMGaQ/JWnaQnUPc6NHyikP7ZNFd+Z1y9zW4Tt51Phu9lQX8
+	 esLs4b9Fr9P+UZ+IWelguH0ZKvp4A053jlvcFwHfhNZeJgBQvkneoWOlPMUYJLeJgi
+	 iETUpGG/qcNNtpmUkZlx3HSwr3wKWnVw5oIvSs9Ph1lgRhtGMX4zO4WHgsVqjNpWwt
+	 Q3kqy0a1ds+wuEOBc/YITMkNetEOuR60rOuCqTshnwq1iRdq2khiBDNKo84Hozi7DK
+	 OrJ1D6LJ2SGWde6eQD2D+PQ2O0eXA3NoJIeiL80yYZYqnGlTdL73B9AxMifFzQS3SG
+	 nk9OToyrbKVVQ==
+Date: Thu, 17 Jul 2025 00:26:27 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Yuesong Li <liyuesong@vivo.com>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, opensource.kernel@vivo.com
+Subject: Re: [PATCH v1] i2c: lpi2c: convert to use secs_to_jiffies()
+Message-ID: <qe5s4q5pabhbdbvtvxogmcbcchmnqwj556defrlxxhebhgan35@toxghkobdevv>
+References: <20250613110649.3283336-1-liyuesong@vivo.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250613110649.3283336-1-liyuesong@vivo.com>
 
-This patch enables support for More Than IP L2 switch available on some
-imx28[7] devices.
+Hi Yuesong,
 
-Moreover, it also enables CONFIG_SWITCHDEV and CONFIG_BRIDGE required
-by this driver for correct operation.
+On Fri, Jun 13, 2025 at 07:06:38PM +0800, Yuesong Li wrote:
+> Since secs_to_jiffies()(commit:b35108a51cf7) has been introduced, we can
+> use it to avoid scaling the time to msec.
+> 
+> Signed-off-by: Yuesong Li <liyuesong@vivo.com>
 
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
----
-Changes for v4:
-- New patch
+merged to i2c/i2c-host.
 
-Changes for v5:
-- Apply this patch on top of patch, which updates mxs_defconfig to
-  v6.15-rc1
-- Add more verbose commit message with explanation why SWITCHDEV and
-  BRIDGE must be enabled as well
-
-Changes for v6:
-- None
-
-Changes for v7:
-- None
-
-Changes for v8:
-- None
-
-Changes for v9:
-- None
-
-Changes for v10:
-- None
-
-Changes for v11:
-- None
-
-Changes for v12:
-- None
-
-Changes for v13:
-- None
-
-Changes for v14:
-- None
-
-Changes for v15:
-- None
----
- arch/arm/configs/mxs_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
-index b1a31cb914c8..ef4556222274 100644
---- a/arch/arm/configs/mxs_defconfig
-+++ b/arch/arm/configs/mxs_defconfig
-@@ -34,6 +34,8 @@ CONFIG_IP_PNP_DHCP=y
- CONFIG_SYN_COOKIES=y
- # CONFIG_INET_DIAG is not set
- # CONFIG_IPV6 is not set
-+CONFIG_BRIDGE=y
-+CONFIG_NET_SWITCHDEV=y
- CONFIG_CAN=m
- # CONFIG_WIRELESS is not set
- CONFIG_DEVTMPFS=y
-@@ -52,6 +54,7 @@ CONFIG_EEPROM_AT24=y
- CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
- CONFIG_NETDEVICES=y
-+CONFIG_FEC_MTIP_L2SW=y
- CONFIG_ENC28J60=y
- CONFIG_ICPLUS_PHY=y
- CONFIG_MICREL_PHY=y
--- 
-2.39.5
-
+Thanks,
+Andi
