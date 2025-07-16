@@ -1,257 +1,164 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ACC2222AF
-	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 04:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752641496; cv=none; b=RO7hXNzwt5LGY3wHX2IR5xAIVfoLgE1GGG8u57HvQ/Ap2nnEa6YpmOvdJwiTGZBt+/eVqfWVri4i/+A0G/PLS0PbmezyGd9bKHlVxJu8bZeYgM/XQFT0nwzDv4II2W7i7cX90GEZhSPtTt0rwD/UWZR9pEUC6DPxZhz8WFwXbA4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752641496; c=relaxed/simple;
-	bh=cnWvurfSEIowWEmeKeCClSAuxFNBnx6JPkdMlHA8QMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iKFTrARvQrlHWJPiLZp/8c0NSmR8QowKYUyJOZAyyKFmU8zY/j/JfNPKEgH+J3n0q9NWLPQUl1kTM/UUKzNNHeaBRl/d6RV+XRNhucK4lsV5m4rSKeKEt9+GEz8e26pFL/I5B/M1akr6RA2Ubb885Sji+k3qRpMNrSdoNvmTPB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-669ff7000002311f-e0-68772fd17b46
-Date: Wed, 16 Jul 2025 13:51:24 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: willy@infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, ilias.apalodimas@linaro.org,
-	harry.yoo@oracle.com, akpm@linux-foundation.org,
-	andrew+netdev@lunn.ch, asml.silence@gmail.com, toke@redhat.com,
-	david@redhat.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
-	xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com, sgoutham@marvell.com,
-	gakula@marvell.com, sbhatta@marvell.com, hkelam@marvell.com,
-	bbhushan2@marvell.com, tariqt@nvidia.com, ast@kernel.org,
-	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
-	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
-	mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org,
-	nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com, sean.wang@mediatek.com,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	aleksander.lobakin@intel.com, horms@kernel.org, m-malladi@ti.com,
-	krzysztof.kozlowski@linaro.org, matthias.schiffer@ew.tq-group.com,
-	robh@kernel.org, imx@lists.linux.dev,
-	intel-wired-lan@lists.osuosl.org,
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010001.outbound.protection.outlook.com [52.101.69.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB7D2E8DE6
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 06:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752646301; cv=fail; b=sQuu+jaanZ2bmL7hrEDAa7uKQE31SI3rC5Z+PBiTZED5eRdAqa8VYmHbLkf4B6HrNQYpyU/Uv6w5reMPOsdxZ1nMRgVpKllaZZuwe7iHrLPopeONGokrLTQ7SULCfWEP7LGkw+/QALhXXrldcEUdMiE85yj6EgBNB0+hMr7iDpc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752646301; c=relaxed/simple;
+	bh=faDR3ovRSeAlN3RoQityFgeEA7CzNxk/3lu9gT5B+Wg=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=FkgBGrnXnBDN+bGr/v/1WCibTybIOdSUfmG0jSSuClsynTSQFHkmgRfhjuaOFS4poUUukmptzopgg0Em9QEhlro+Djpb6menea3j6eJ/6dzUPMGClJhmTGPwAEElDqNyD1c2xXaBDCbuVY6SUSYx5y/191ZW51pxeVckZwCUCsQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LPznFnYH; arc=fail smtp.client-ip=52.101.69.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LPznFnYH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X81Gfjt3JtNEVWB7gA8sQ/8zAqlsXCogOQRNgnVd1qM4vhmk18Cc6DgwEBOkrwCmfFgyjkCLjySsi2cNfYDdOXH8h0WevnLf50wE53kkFAoQiGDnkmSUZrN16dX6DD0H2hfZLuvdCRX1/YnihaaBDlWiJzxLYsg9UEKyKrLX8xWsjhds6x5RfB/2lH7/2JD8Sv7AzNzJ1AclDcgfI7OfwNetCeUrzJkUQThO7VmuI+TUe7Uz5ToDiTl5y851OBbfafspjn7TMWXemSqCuOnGJsi16hZOQXhpycX6dppjuFd1CAoTqNUgW5U6TtZNRueBevwf+eEIFHjeSYIgOxUELA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=to5RvcyFwR/MGzI1XSZQq01guvLpNy3Rz0ToSTeBf4Q=;
+ b=DC5iMPru6vockwV4F3aSwGAB32HCyMV9NT18eOP/ahDLSY9Vt5snZVRgLPTniIq/IjmuctVRFFnTiCTEw5B8ZdNtdhTxiJ4eRy7R+kT4gQ2cPoB93s80fe6WhOlklT3PJryHmcvFdVSO7rzdb9zRrTWTEJI+UEi09y3+WuFqsA36WkhW8SWjmxVpikjaKWiIKVJv2WFALRcH4qnEAJK0++2Dpe3s6h3gI+rm6hpokUpppTha0WbEmT0aRsu0WjgzaTZLmHxnH5r6EiDuvVDiFCsw2NCMAVq0kfxPm+DFACRRi3O3/NidZzRV3g2sSadMpKxIdN3nfHjsWKIbdJAvjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=to5RvcyFwR/MGzI1XSZQq01guvLpNy3Rz0ToSTeBf4Q=;
+ b=LPznFnYH4CUD7hqqF989FB7AVoEQr8VSpto705LW0tdXHgWTVqdGQlfzze/OHLXMWaxVY2JFUMHDMOe3d/J+MykDNIALTSpo4WsQvkMD45VwYDnMNXmFW5Ilru0KikZ0yjGOgHSG0xPATTON0UScV2qq6V+TCcXaAkwcrSmYSJqBo/Jc99ZXTCb+AWgzGaZuAZgDuq3/eF7d4uSr7A38UPKqKKPCuxE5MbnfCKooHftt98uOrgUMoimPp5jy4AmM2xCCd+5QQ9Z+ZszQvh+OsyyiEQ2q9XkLmX5pxqDsOuBhRbZIE0mQEPlv6/EM7eriGaxorGg+H6wPioK2jRX5EQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by VI0PR04MB10102.eurprd04.prod.outlook.com (2603:10a6:800:249::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.35; Wed, 16 Jul
+ 2025 06:11:35 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891%5]) with mapi id 15.20.8922.028; Wed, 16 Jul 2025
+ 06:11:35 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v10 02/12] netmem: use netmem_desc instead of
- page to access ->pp in __netmem_get_pp()
-Message-ID: <20250716045124.GB12760@system.software.com>
-References: <20250714120047.35901-1-byungchul@sk.com>
- <20250714120047.35901-3-byungchul@sk.com>
- <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
- <CAHS8izNh7aCJOb1WKTx7CXNDPv_UBqFyq2XEHHhqHH=5JPmJCQ@mail.gmail.com>
- <20250715013626.GA49874@system.software.com>
- <CAHS8izNgfrN-MimH1uv349AqNudvQJoeOsyHpoBT_QokF3Zv=w@mail.gmail.com>
+	linux-kernel@vger.kernel.org,
+	shengjiu.wang@gmail.com
+Subject: [PATCH 0/3] arm64: dts: imx8m: support more sample rates
+Date: Wed, 16 Jul 2025 14:11:11 +0800
+Message-Id: <20250716061114.2405272-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA0PR01CA0031.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:b8::18) To AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHS8izNgfrN-MimH1uv349AqNudvQJoeOsyHpoBT_QokF3Zv=w@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUyTZxDA87zfdHZ517HtGWwhlpExkonbMLkpMWTJklcTFhf/MJsxrpNu
-	7VYQi5SPaAZY58BR3KpGSjFVqxRqVlIEOlfY1hJAMXxUYB3yIaBEszInSqFS2rV1Zvz3u7vc
-	/e6S40hJN5PAKfMOytV5MpWUEVGi+XXn3x5KL1JsPHksFYy2ywwMPTpHg3W5GBpuO2jwNGL4
-	ZXCZAGNTG4LHgVss2CvHSXjU1cPAhXN+EgLN1RQYB7QULNqekHC3e4aFXtcqBVZ7NkxdmqPA
-	eaydBPdiCszU9DJQrV0hoXbyKAPhsRUaOgJ/s1DhsBDQ8VcrC4NtOhpOPrlIQnvZ7YhrdpSG
-	m1eNDNw8MoRg8nKYhjlXROizjLOgsxoQuH5tZKBC+x74Wh+z8M+pLhKmdFkQOqOBbtPL4O/z
-	Ibh1cYSAsNPBQv/kTzR02doJGJ4OkOD/vp6BqvkaBCO1Vwm4Ud9Mg7lvmIjssRNGw0EC9B4T
-	A7PaKQQe9wwFdeU6BLZOLw0PnZGTV5aNTNYHgtv3gBQcE2YkXGn8kxDunQgRgrfzOiH8bJhg
-	BZO9UGixpAkXnPcJocrrIQV7UyUj2Bd+ZIXxUScj9J5ZoYQW8zfCvZZatOP1T0WZOXKVUiNX
-	p2/9TKQo7x9A+S2biiuDVqYMzaVWoTgO8xn4j7kbxDMeHdFTUab4FDygHWOizPBvYq83QEY5
-	nn8Lmzt/oKuQiCN5M4fvdzhQNHieXyBx32JfrPtFvhCfn/bGWMwD9k0/jHVI+LsEXr1z9r/C
-	C/ha7Z0YkxFF8KwnouAinIgbQtzTdBI+0loXM8fxH+Ol/lNslF/ik/FvbT1EdCbmQ3H4evMS
-	+/SEV/HvFi91AkkMaxSGNQrD/wrDGoUJUU1IoszT5MqUqowNipI8ZfGGfftz7Sjy3ZcOB3c7
-	0MLgThfiOSRdJ3Zs0SgktExTUJLrQpgjpfFivSeSEufISkrl6v171YUqeYELJXKU9BXxu/6i
-	HAn/peyg/Gu5PF+uflYluLiEMpT1RWnH0idU8nO7eqqlZMMW+Ha3R5O2bdOBCu3n6Qd0w6e3
-	+muGutZb9hzatv0jiXX1tc2hTvfxfNv0vpTTh79LPZqgXf9VWSYrbZ13q97YfMUW70qse7Ax
-	vD1zh774WryEmCmqNNXPFmYH2ePlHybR3WNJ+uSM98erxYccronsklIpVaCQvZNGqgtk/wLy
-	0C982QMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTZxSH8973ftHQedd1eqPJtnQxm2bCzCA7kcW4LNlulmjYR+Z0W7CB
-	q+0sYFopZQsZSreFZgKOudgKBKXKRw01ZUDViq4UxGFAirAqCEKVaNbBlA8tlLLbbsv47znn
-	5Pye88dhsaKWXstqcw6K+hy1TkXLSNmOtOJN/cn5mteLLyZApfMsDf0zJylwPDVB3V03Bf4G
-	Hi7eeEpAZWMrgtnwMAOukhEMM76rNNSenMcQPneEhMo+MwlzzgUM97smGOj2LpHgcG2HsTOT
-	JHi+b8PQMbceJsq6aThiXsRgHf2WhuXbixRcCk8xcNhdT0BH1TWp/KOFgRutpRT8tHAaQ1vR
-	XUkYHKJg4EIlDQPF/QhGzy5TMOmVrKH6EQZKHTYE3ssNNBw2vwGhllkG/jrmwzBWug2ix43Q
-	VbMa5ntCCIZPDxKw7HEz0DvaRIHP2UbAzfEwhvkfqmiw/FmGYNB6gYDrVecosPfcJKQ7PoKh
-	5QgBFf4aGoLmMQT+jgkSThwqReBsD1DwyGMmt70jdISmseC+Y0fCLw23COFBeZQQAu2/EcJ5
-	2x1GqHHlCc31G4Vaz0NCsAT8WHA1ltCC6/GPjDAy5KGF7uOLpNBs/0Z40GxF6S/slr2VJeq0
-	RlGfvHWPTHOotw8daE41lUQcdBGafNWCElieS+GHBivIGJPcer7PfJuOMc29wgcCYRxjJbeB
-	t7cfpSxIxmLOzvIPL7lRrHiGe4z5nrme+PZzXB5/ajwQZzkHfGj8UXxDwd0n+KV71f8OnuWv
-	We/FGUuKSLVfUrASr+Prouw/7Rf54pYTcXMC9wH/pPcYE+PnuZf5K61XiXK0yrYiybYiyfZ/
-	km1FUg0iG5FSm2PMVmt1qUmG/ZqCHK0pKTM324Wk1z1TGDnqRrMD73kRxyJVotydZtQoKLXR
-	UJDtRTyLVUp5hV9qybPUBV+J+twMfZ5ONHjROpZUrZG/v1Pco+D2qQ+K+0XxgKj/b0qwCWuL
-	0Lity5SfWOKJDFdkfPlpelNGSzRzc9umr2dm1rx0vZrbu6Wq/JPXzFm5vsxdhWllCx8v/dye
-	8hkd7Ew2WhLzrBqf81d7cMdW/GHS9pTv0nftnFr9JNkiV+iappXvTm3xd1pvKUbT3nTsK/uC
-	fbtOmTppMnxe+Pv0qnQfaepsCEbzT6lIg0a9eSPWG9R/Ay6goT22AwAA
-X-CFilter-Loop: Reflected
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|VI0PR04MB10102:EE_
+X-MS-Office365-Filtering-Correlation-Id: 30e2fe95-7035-4d4b-24fb-08ddc42f9dc6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|52116014|376014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Baa1rkPse2tBF+VOBWOoTYXbRrfxSDJ5wrR1jUZsiP4EGwh/Bxz2N6iHq25G?=
+ =?us-ascii?Q?BVwRwoiSPby3LxppjlA5pIL8aTxH1ADx8ErPxr0HqXHEG6XqrdvTvicTIJLh?=
+ =?us-ascii?Q?i3WP7k8oSXd3Y6KHeYH2VxsjK7DB5y0JSk50IhQoy1x79iosIFgAE45qc9lV?=
+ =?us-ascii?Q?LmvqJeYKgVx8jmD0scu+GgDA99LItEJuNlU3qMeWhLM6fAxKcDcP1SvsoJ0V?=
+ =?us-ascii?Q?k/kIiLeZ6893rA1uxxb10xU81PBlZhWUHsbby+LNf1P1NyOc/N4MBdjRxw4/?=
+ =?us-ascii?Q?WrsVob8MJtnVH2ZeEflLyZc5D5AIBPcaLDKomXJR42d4VCGdrfGju89bSIOI?=
+ =?us-ascii?Q?/pS2Wz7lZIvBMmBe5yJYTYk+WSJ6NuepmoYdEUqxTmZZetLANxMhWYYLLcm5?=
+ =?us-ascii?Q?Sq9S07aYsaYWhZtccSZqz1bdQTiSDMjiRtgvL7g9jk96U6IKgdN+NcR0X1+U?=
+ =?us-ascii?Q?3uiqlIkx81rZb3NqmRahjCLHoO+EFml2BCf4jW4v4wqsOD5ggrpPTQQqRrj3?=
+ =?us-ascii?Q?HdEOxMXLI7xAetkI5TCX5EjS10zXY8oO6Yb5K6yAOQW5DsSHAuAZh9ccYWK4?=
+ =?us-ascii?Q?RFrGDymuFuGR8Gbf8eTfcTkrq7lEliDB7iWKDCy6tfVCcxDx9OU3FKwNiIlI?=
+ =?us-ascii?Q?YOKfRhS69Z4crTo1G3FCRu71RFY7uCK4oxKRIiCB2zKArF14jx57aax2n5Sk?=
+ =?us-ascii?Q?0hLEUGvBbr8KBTcvQ3LHOqWLNEHigu/YF8vLd75ds5NgM9S8By7UIG1Yw/1e?=
+ =?us-ascii?Q?09E4xSil8JymGGTuyJtoiLKfeNSSgptvOXcPynE/682roFtVin0o2tItGNA9?=
+ =?us-ascii?Q?4NvOgZN6lVTUGtbVMlrK/g9V57qy/AKGFdg6GHvU44SdO+LiEUujRK/VKcA1?=
+ =?us-ascii?Q?n/eD2f1sXU8FU6zI0MT9yvEoKRtn5APfjAD23yOCUmxr4HPrmyVHzaP18EjT?=
+ =?us-ascii?Q?4/L+ww1dxzuv/8Ye/ZHNDwSZXYCvwX0xO/7Z/RsJ/XtTtir/lbdc/kfKG+EE?=
+ =?us-ascii?Q?vMvr07/VE9T6Xx4AjjEYjnTfbqitV1Fk8gCTDRdQLEwJsKhrm1rQlPfiZ8gY?=
+ =?us-ascii?Q?ZSZHUvNQHamBulBf3IG6svaok5zpR3WikB2w1YWQNybhnwjPNsdXpeapMtcz?=
+ =?us-ascii?Q?j90+Jmk5b5MV7tXmi+3MMNCbI24erPOnhVzuWKborX1bk655fbRcAjso5Prg?=
+ =?us-ascii?Q?7J1FgK3H3Y1G3XmaR3H++d1u6hiU+nQhngqrYLC98V9YnWIEhaq5+F26bOfs?=
+ =?us-ascii?Q?yKPlY6X+prrdGKPI1eNQcFW+O0rjgmd2oiZ0W7wNAEdnYIdqFIcYgFsysVg9?=
+ =?us-ascii?Q?30GVLbJ5DME5DciQ3SQGLFbLHXL6Awz4rT/RUemZ8QRgl8q99ZA11GSYNmVP?=
+ =?us-ascii?Q?VBjltvWMEyoVBqU4EwM6diTOEH70g+ABSCXYckbpzyws3pTv5C6cpGwLhiA9?=
+ =?us-ascii?Q?/KWgDujopR76DdfMhezgxGP0KWR2usm9RaYSLh61Z5M22svh/8eTi1YOZ63w?=
+ =?us-ascii?Q?34lgn+oZIg5COdA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(52116014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JcxVnWCVYPgGXkL7KSfg41K+5kqob3fC6fkyJUYInGj9ynoLGXy/17K0lSEU?=
+ =?us-ascii?Q?8PmC/mRBJDQh4YUqbxunMJfI3Q9Xlcdn5SZTCgu0Yhh1jM8uSXGeYO2HQKWr?=
+ =?us-ascii?Q?J7SJo6Z4T9xsfNHPAfCnKYv9tLqCI/deaMICkXCLtbh8CmWBXoYy6g8SQZWT?=
+ =?us-ascii?Q?+4JI97FRXyY4XJ5gGRovS0GhNRUFBZV+/dYAAUKyov0G9KQRjEnd1IY0TAS9?=
+ =?us-ascii?Q?ueTUP5B133cD5QwEu+BzpN8/D8vLvYZLkNh7+D2KLznBvWR4Ruo/C1Q9Vozx?=
+ =?us-ascii?Q?qEYJaDykY9nasjK0+ZqDVljWw900otJYb02/PKuEtpPowmBGmIRA/bUHBx2Q?=
+ =?us-ascii?Q?YhmVx7uF8v1kw+9G7DwMkIUk1ClsvJwygdSedZEkA0alnVGugUm2Zs3Djjmo?=
+ =?us-ascii?Q?/FmsORmLi97nyPaEFFoabYZe1g8Ye94SVapCyjUbRJvQOnjCd3cNuJjCb9O2?=
+ =?us-ascii?Q?MUMq1pzIv44ToyGMQtRnf2Wv31GWoQWwUmXI4SRd9MBqnxt4IVebmze66JcB?=
+ =?us-ascii?Q?W0WoJbkCPww/9mPj2SeR5FP678kslTiUi54kdpy4MQsuxT9mJGHTN6lCPMqR?=
+ =?us-ascii?Q?ETHYb3r4yRcd/e00VvQfl6cJMSPteBxsdQX5NsFZNHge3F8I0f1sYwjTHFZ7?=
+ =?us-ascii?Q?q/0SvmJL9qy/wyac4bdkCH+VwGrgkgvmF56/vuG6yrV+TzgLFcpczX7Q3pmm?=
+ =?us-ascii?Q?+TN5RD1yRd2Nsqwa8i2wBXIW/ckMUwD3CB9yQXMgSOhVx3CWEGYWi9zXTO2o?=
+ =?us-ascii?Q?lpqr0JSrIeSvK3M3FOXd6KAEJ2WBsTv0jAnfWsKi8vZRUa0cCdTNE0hMC9OA?=
+ =?us-ascii?Q?NFdINKSFR8SG22jrsXYMGAwxPFW60ogXfUlQD/EUEzUXUENDA5QW4eM08UtB?=
+ =?us-ascii?Q?VRk0MmySc7kGCs9sKDEMDZ7D7dMvJpmIZPYA4KYm7crI6Gi2XjbuoSlOKC+0?=
+ =?us-ascii?Q?yvoz4wCnykl+aJYAZnjGgXyyfCFv87WhJrPTRoZlRyLD6gYIUD8R97DL306p?=
+ =?us-ascii?Q?pEXWJsociXTJAyIzGsLC9nA+LLD+mgTDOZ27fYTzaiW1zkCFZ3u/VWHJXNgq?=
+ =?us-ascii?Q?t1O5vqoWvG+Fm60Ua51tpoastK8i/qJAbIda5Zu5b+10UKP2BA72NeF61V47?=
+ =?us-ascii?Q?UOyNnBQ+W0pUYsYv5ATM6pJdiJ5b0e03IvYoQK97LsyDofnDLTdDfvNSe0HM?=
+ =?us-ascii?Q?tvBtXdq/3BY3/TR9LmMzD/CvMeYeQH4WPnv1WIYr5IMd2JsZ3NSRF6rJ2Wmv?=
+ =?us-ascii?Q?hwA8vmI3VOBMu60dJjMbYeVXMBsBhNrUGgexxCy3Ifyfo7zEsPX94NEDwoyq?=
+ =?us-ascii?Q?qwmSQ8zqOQh0PYsGoMtx3H/+ZzG6IborqEgmUOe+d6KHigA5kYGErwuCHL0l?=
+ =?us-ascii?Q?NTKlg8orBkuNo9oBrZyGyVAptWAUuu7Eqv50Vgmls44vRcha/cA/OzK8RJmo?=
+ =?us-ascii?Q?PXVKKVi51TWNuWPHk8Ss3V+S5Sy5mpIRQ2mYfLLK/VOVk1swywqlMXQ84IJu?=
+ =?us-ascii?Q?DtRQIb65VExqyq7tpN/bTDaRumkGp7tpQ13p0STdYBysGHBqOs81ycrbIO8G?=
+ =?us-ascii?Q?QLBfT3qoJvQnwhk+CpG2gTTknljO1hFM4enY7X9h?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30e2fe95-7035-4d4b-24fb-08ddc42f9dc6
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 06:11:34.9172
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: op12LNp6o44ia1rdP/+87q/9vn6p+KE60ROjKfr1LbaYoer24DWCRvU/+MY3WaC/YXy3AafwEOEst0AtgDpK8A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10102
 
-On Tue, Jul 15, 2025 at 12:09:34PM -0700, Mina Almasry wrote:
-> On Mon, Jul 14, 2025 at 6:36 PM Byungchul Park <byungchul@sk.com> wrote:
-> >
-> > On Mon, Jul 14, 2025 at 12:58:15PM -0700, Mina Almasry wrote:
-> > > On Mon, Jul 14, 2025 at 12:37 PM Mina Almasry <almasrymina@google.com> wrote:
-> > > >
-> > > > On Mon, Jul 14, 2025 at 5:01 AM Byungchul Park <byungchul@sk.com> wrote:
-> > > > >
-> > > > > To eliminate the use of the page pool fields in struct page, the page
-> > > > > pool code should use netmem descriptor and APIs instead.
-> > > > >
-> > > > > However, __netmem_get_pp() still accesses ->pp via struct page.  So
-> > > > > change it to use struct netmem_desc instead, since ->pp no longer will
-> > > > > be available in struct page.
-> > > > >
-> > > > > While at it, add a helper, pp_page_to_nmdesc(), that can be used to
-> > > > > extract netmem_desc from page only if it's pp page.  For now that
-> > > > > netmem_desc overlays on page, it can be achieved by just casting.
-> > > > >
-> > > > > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > > > > ---
-> > > > >  include/net/netmem.h | 13 ++++++++++++-
-> > > > >  1 file changed, 12 insertions(+), 1 deletion(-)
-> > > > >
-> > > > > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > > > > index 535cf17b9134..2b8a7b51ac99 100644
-> > > > > --- a/include/net/netmem.h
-> > > > > +++ b/include/net/netmem.h
-> > > > > @@ -267,6 +267,17 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
-> > > > >         return (struct net_iov *)((__force unsigned long)netmem & ~NET_IOV);
-> > > > >  }
-> > > > >
-> > > > > +static inline struct netmem_desc *pp_page_to_nmdesc(struct page *page)
-> > > > > +{
-> > > > > +       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page));
-> > > > > +
-> > > > > +       /* XXX: How to extract netmem_desc from page must be changed,
-> > > > > +        * once netmem_desc no longer overlays on page and will be
-> > > > > +        * allocated through slab.
-> > > > > +        */
-> > > > > +       return (struct netmem_desc *)page;
-> > > > > +}
-> > > > > +
-> > > >
-> > > > Same thing. Do not create a generic looking pp_page_to_nmdesc helper
-> > > > which does not check that the page is the correct type. The
-> > > > DEBUG_NET... is not good enough.
-> > > >
-> > > > You don't need to add a generic helper here. There is only one call
-> > > > site. Open code this in the callsite. The one callsite is marked as
-> > > > unsafe, only called by code that knows that the netmem is specifically
-> > > > a pp page. Open code this in the unsafe callsite, instead of creating
-> > > > a generic looking unsafe helper and not even documenting it's unsafe.
-> > > >
-> > >
-> > > On second read through the series, I actually now think this is a
-> > > great idea :-) Adding this helper has simplified the series greatly. I
-> > > did not realize you were converting entire drivers to netmem just to
-> > > get rid of page->pp accesses. Adding a pp_page_to_nmdesc helper makes
-> > > the entire series simpler.
-> > >
-> > > You're also calling it only from code paths like drivers that already
-> > > assumed that the page is a pp page and did page->pp deference without
-> > > a check, so this should be safe.
-> > >
-> > > Only thing I would change is add a comment explaining that the calling
-> > > code needs to check the page is pp page or know it's a pp page (like a
-> > > driver that supports pp).
-> > >
-> > >
-> > > > >  /**
-> > > > >   * __netmem_get_pp - unsafely get pointer to the &page_pool backing @netmem
-> > > > >   * @netmem: netmem reference to get the pointer from
-> > > > > @@ -280,7 +291,7 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
-> > > > >   */
-> > > > >  static inline struct page_pool *__netmem_get_pp(netmem_ref netmem)
-> > > > >  {
-> > > > > -       return __netmem_to_page(netmem)->pp;
-> > > > > +       return pp_page_to_nmdesc(__netmem_to_page(netmem))->pp;
-> > > > >  }
-> > > >
-> > > > This makes me very sad. Casting from netmem -> page -> nmdesc...
-> > > >
-> > > > Instead, we should be able to go from netmem directly to nmdesc. I
-> > > > would suggest rename __netmem_clear_lsb to netmem_to_nmdesc and have
-> > > > it return netmem_desc instead of net_iov. Then use it here.
-> > > >
-> > > > We could have an unsafe version of netmem_to_nmdesc which converts the
-> > > > netmem to netmem_desc without clearing the lsb and mark it unsafe.
-> > > >
-> > >
-> > > This, I think, we should address to keep some sanity in the code and
-> > > reduce the casts and make it a bit more maintainable.
-> >
-> > I will reflect your suggestions.  To summarize:
-> >
-> >    1) The current implementation of pp_page_to_nmdesc() is good enough
-> >       to keep, but add a comment on it like "Check if the page is a pp
-> >       page before calling this function or know it's a pp page.".
-> >
-> 
-> Yes please.
-> 
-> >    2) Introduce the unsafe version, __netmem_to_nmdesc(), and use it in
-> >       __netmem_get_pp().
-> >
-> 
-> No need following Pavel's feedback. We can just delete
-> __netmem_get_pp. If we do find a need in the future to extract the
-> netmem_desc from a netmem_ref, I would rather we do a straight cast
-> from netmem_ref to netmem_desc rather than netmem_ref -> pages/net_iov
-> -> netmem_desc.
-> 
-> But that seems unnecessary for this series.
+The wm8524 codec is connected to the SAI interface. There are two audio
+plls on i.MX8MQ, i.MX8MM, i.MX8MN, one pll can be the clock source of
+44kHz series rates, another pll can be clock source of 48kHz series rates.
 
-No.  The series should remove accessing ->pp through page.
+Shengjiu Wang (3):
+  arm64: dts: imx8mm-evk: support more sample rates for wm8524 card
+  arm64: dts: imx8mq-evk: support more sample rates for wm8524 card
+  arm64: dts: imx8mn-evk: support more sample rates for wm8524 card
 
-I will kill __netmem_get_pp() as you and I prefer.  However,
-__netmem_get_pp() users e.i. libeth_xdp_return_va() and
-libeth_xdp_tx_fill_buf() should be altered.  I will modify the code like:
+ arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi | 17 +++++++++++++----
+ arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi |  5 +++++
+ arch/arm64/boot/dts/freescale/imx8mq-evk.dts  |  8 +++++++-
+ 3 files changed, 25 insertions(+), 5 deletions(-)
 
-as is: __netmem_get_pp(netmem)
-to be: __netmem_nmdesc(netmem)->pp
+-- 
+2.34.1
 
-Is it okay with you?
-
-> >    3) Rename __netmem_clear_lsb() to netmem_to_nmdesc(), and return
-> >       netmem_desc, and use it in all users of __netmem_clear_lsb().
-> >
-> 
-> Following Pavel's comment, this I think also is not necessary for this
-> series. Cleaning up the return value of __netmem_clear_lsb is good
-> work I think, but we're already on v10 of this and I think it would
-> unnecessary to ask for added cleanups. We can do the cleanup on top.
-
-However, I still need to include 'introduce __netmem_nmdesc() helper'
-in this series since it should be used to remove __netmem_get_pp() as I
-described above.  I think I'd better add netmem_nmdesc() too while at it.
-
-I assume __netmem_nmdesc() is an unsafe version not clearing lsb.  The
-safe version, netmem_nmdesc() needs an additional operation clearing lsb.
-If you are fine with it, I will add these two helpers in the next spin.
-Or I could add __netmem_nmdesc() only.  Thoughts?  
-
-> > Anything else?
-> 
-> Thank you very much :-)
-
-I rather apprecisate your feedbacks.
-
-	Byungchul
-
-> --
-> Thanks,
-> Mina
