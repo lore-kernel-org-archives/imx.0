@@ -1,125 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010023.outbound.protection.outlook.com [52.101.84.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333902459E5;
-	Wed, 16 Jul 2025 07:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752650244; cv=none; b=AmxG3bSWtTlpyng/KTlkucDMA9R1C/o6Tbmk8z9rkthlgiOCvSuWX2okhE9r0fAi3w8keDuqzHaYUb6SuKvG9K0QAhAfa1atOEJmoojElSpuOIaK3nHiiicOAYuxxe+aO7I305TdKbTGFJRNGz/izvjcJNC1Va3RhhOlNhiX/n4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752650244; c=relaxed/simple;
-	bh=vJTQesx+suD0QBepzarzrrknitZ0ytPnsI8U4eBlM1A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AMv2jVRAUSEtvzPP+brjIWOCtRvtkw7SHCgKWl5gznHeVLnKhEffreW94HXEhIv9cLSAx+E1myxkdrtMen+5COKahjYdNG/wRdviebEM+SP2VvTXdnwUL7pSDv8ZqPfuo181oBUvGODUV1nHDOhvxVRQXxDBtJKbwBa8uEoMRhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJjTmG8B; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BA421C195
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 07:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752652262; cv=fail; b=GB7cjMGEFjimZQR9upd1IlFF8RAqqEBPgaR86XsCVlzLg2pe7n+6a2zxRgVzjxxMX5B6EFXsTGAu1uu9GvwciDtIAHELgYPgqspvrn4gpCCiDp0fN4f3SOaDnFe6xWO9dIErqd8eOvUewTdSkYYuH9WNUyGWMIWLW+8BO7LPs8A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752652262; c=relaxed/simple;
+	bh=dC8MR3VeUHqHHk8XDjJkoMaG5X3ywzi3vFrkAW/xUt4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Bvum8FcWoOk5H2yXUIoWhPQH/Uin0RxbKLkd7z7HLzrZ98o2deKGNTTnew/73GfZZbsgqBdUtMJ3mNTSumsaDqTAZYa36+drFwkcwGQHcVvZ39mxw6Gg3Fl4ZTHFrv6v3gIbm5MGS4APNTUlWTd9abANgoFZ3uGPAxGsCEnTESk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LGTsYc3H; arc=fail smtp.client-ip=52.101.84.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJjTmG8B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FD8C4CEF5;
-	Wed, 16 Jul 2025 07:17:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752650243;
-	bh=vJTQesx+suD0QBepzarzrrknitZ0ytPnsI8U4eBlM1A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dJjTmG8BlCNs6X7QOqUZZCSP/msTa6RS4Mz+riP4hCZRWO2PltbQ//fqG6tZ6OkUJ
-	 tlaQwkEvfg7gd+sbGTTME2ykQx7dkE4xtbdDlWzMAFtQLy636n0Mvk+oHWhRRFg/MJ
-	 3KCZlLyaaBYQbzUKGppsVST+RkV4qYqnxH93a7akO1lhwAfODcin8LbyzALwWkt6H4
-	 k0IytbiUnD/AATPZ4G9Kp4LalD0nW6eDFMc2YrU6RKuNSHVpHJ2FTDC9eYa2wW4gdL
-	 +mMhxwdeRnaW5PEDA6pvmv7u31MHU0dLke6ofo2FkNiej0eUpX/40dc/6s2zBGkm9s
-	 H7LGebotSevUg==
-Date: Wed, 16 Jul 2025 12:47:10 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Frank Li <Frank.li@nxp.com>, Bjorn Helgaas <helgaas@kernel.org>, 
-	Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, 
-	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, Rob Herring <robh+dt@kernel.org>, imx@lists.linux.dev, 
-	linux-pci@vger.kernel.org
-Subject: Re: Does dwc/pci-layerscape.c support AER?
-Message-ID: <tikcdb63ti6hbpypusxdiaoattpuez5rgpsglzllagnqfm5voa@5eornv77pl4i>
-References: <20250702223841.GA1905230@bhelgaas>
- <aGW8NnHUlfv1NO3g@lizhi-Precision-Tower-5810>
- <aGXEcHTfT2k2ayAj@google.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LGTsYc3H"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bc437x5BgVmepBsYoyXsCmtaXAcZlUDS9rTMdWXKFfwWooagFBi7iQameXZzKfCdVNidqgslAEtrySUlsWBae0IQg6TGWIE7wW4CcjAq1aQGhm4cy4QIPb1h3YGW7NtNhylJOXBfk7GeAWqrpb8b+X5sCdpCFp2b37xxHWWy/+VJJ9U2V9HR3TlOWZTFy+tbV5iVDTGhgpgWF14DEkmCoA1OH9Ddhb9A5qOB7WzFv7SQmzw/GfsqiEUejI/EB4qyzsiLWZvKRvSBq3WKsiFipGVkPDbMhbDB2Ztug8yhYbmooEvEas8SJ4ozxz4Cgoyn0d4unuo8iAJeiLKwpeuKRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=31mKZHTk1k0FTlQQ2Gtp0qLtjF0Q/uhZSTFWj5JKkx0=;
+ b=Yze7SRZcpJMiDqlFrUhlXqi+Equ739pjOtP8LSDRGrdN7v/01o3RuONx+SKV19YUf8lhXUh/3zVdFxIEwI/P9jDnKr+xq3eg3w55XjtGM7Ocx3XLJw6SQk17kTpFZNkcOG4ELOPUmPEu+QqQu+7F0CHgwcXJOBZHkjFHAN7S95tQf4YSvn+jMdQFKQW3yvtWwLlvSa3sUJq8mstbdnpCuTxlbXYPwbVvUp0PmoDPbROoVjJ7vSOeEInfbR4DxUBI7DpWHdhyf5JRPYsGPjSNA/tMoGPsH/SZwpAW4+I04xRTn4HKgIqrcQNkeJ5HlkTLeABRAqAbLlg7IVe0P0PeKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=31mKZHTk1k0FTlQQ2Gtp0qLtjF0Q/uhZSTFWj5JKkx0=;
+ b=LGTsYc3HsoVTBWLcViPF4XWlsdYVIiaTnaVEJkxvUfyW00LBjk6sxOv/qIbRQjMbHGdkE6gL1ffJtg+f0f9iXwZqwpf00KIkdil0FwUwq8XG9FLKHVs7qhHm1lXwqgxCOYNsGHqOlTbO1GZUvzvDjP55WXqjZZaCwjx+VEsLNeD7VGcPSv7q0k9j0+FkKDQHda5++9V6jiCGeyVJjs8AwshGrvFN5HPAqaRMT/3Gr0O0AoGuk+dbuFe3p6DYoLZr23cD2yBjcCRmz0XTA+KPUGdWQ6l7MB0bH4+1zDXo5RfLzXS9nhx+ATxBqbIofh43UB1vaDSe0QVvIIIdtbiNVA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DBBPR04MB7708.eurprd04.prod.outlook.com (2603:10a6:10:20d::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Wed, 16 Jul
+ 2025 07:50:58 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8922.028; Wed, 16 Jul 2025
+ 07:50:57 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	richardcochran@gmail.com,
+	claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	Frank.Li@nxp.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com
+Cc: fushi.peng@nxp.com,
+	devicetree@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de
+Subject: [PATCH v2 net-next 00/14] Add NETC Timer PTP driver and add PTP support for i.MX95
+Date: Wed, 16 Jul 2025 15:30:57 +0800
+Message-Id: <20250716073111.367382-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA0P287CA0004.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:d9::14) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aGXEcHTfT2k2ayAj@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DBBPR04MB7708:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8eb0bc22-99e2-4912-93fd-08ddc43d7ff2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|366016|7416014|52116014|376014|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?BEoQdkN5wa43ZrEuwW0Q3m9oiUhmfKhPN7/AxVtGSCACzxluRwn3Kj5wBKsm?=
+ =?us-ascii?Q?saTrg+1WII19LOC+UWnSlWwI+HhxZabOCmCx8x8f8YePw5xo9myOBbcymIMJ?=
+ =?us-ascii?Q?IUNhqzCwEyvtiJ4BdobfbE/gPOUJkVkFJ4CsD8poH61y7EgQH5agPJK44D0m?=
+ =?us-ascii?Q?YA/S6DmC9dJ1OckgHirizr2hHqZkbmmvA0qZxT/xkjfH7UbsBB8raoH+gv3x?=
+ =?us-ascii?Q?5H2helgPGKH/IAWCeLRbyEwiUByDTd/76uJT9xGkNrT2YK3Gjmh/eMw3r2nz?=
+ =?us-ascii?Q?k/+2aWPFR3U3YgBK53hXXEVE0Zo1gc8OqWBqH0O2Mj2JxDBqy1Cqr1IhYGZ5?=
+ =?us-ascii?Q?YKzBKh1J2pJA/6wSQnskJpn7H5QVp9rh9XzfdpAE07Q1S4SoB8D3tGSUOqUY?=
+ =?us-ascii?Q?OAOXNqSWBVxx99k8OIe47AkNBXOfv/hSBJTnz2MsZB0eNgDQrONGTHJPVxBU?=
+ =?us-ascii?Q?eKPNHG0i/tBEh1BLiyImoj4OQETD3pHsy8RcC3Dk0sYwG9KgEY1ugqXZPxgr?=
+ =?us-ascii?Q?QTNjcC2ypljO/9UQc1OkzbpuELX+O1PeFI3WvVr0Z5Ff+mfnIpsVk2AT63t5?=
+ =?us-ascii?Q?4bDDIkpGcmwQEhjWQ8hXSt33N/jy5MybrmbrsI2UU9ue0Mr4HuoUOC1vioD6?=
+ =?us-ascii?Q?KQlxF+bFbqxDg/j1nuezZ0o1LapobSBzB6iqMXK9J/MYHD+oSUsVz70Zvzhb?=
+ =?us-ascii?Q?TnRQ0SGkzly2feAQF/kpi/Mb13IgPn60+Fql1ltBF30OO2wIn7+mx5vgwa32?=
+ =?us-ascii?Q?DUJkna0WRO9jVfVZ+NAcOJF18B+0qtNlIy0LfKrpuWy4fb6XFZ1Z3JZdf+Up?=
+ =?us-ascii?Q?YROBPuiDLs01wr3JyN0n/QE4JgFe3eyLW4r4QRUDFb8urlefk3E/AHHdcre6?=
+ =?us-ascii?Q?nrMlAaAVvn5HksQPP3Vw1HT07usUX6j5OhUX4tBDH9sr0vo98Wxsz1IuEe7X?=
+ =?us-ascii?Q?AHUHKsOw5EUzbEop/QhGRuw30TWisVEyXJ1XYxLKmDigIRJwix4Cl9I8Oo+I?=
+ =?us-ascii?Q?Q6E+Oj6SzyGFTqFVesJwAk6rw1R6OR1/hL8LiK1fGESzhtlJLB6yc8CpLn5I?=
+ =?us-ascii?Q?b9IelZfWLnwSnsQanzkzogp8ojdNYpDwcVYNPH+80tJUfSgOksaCpGQ3wrs2?=
+ =?us-ascii?Q?dXOM/kByvMmb+Vl4NzqaSa2gIJ4CEDbksjPoJkL/1T5JFn25dsbC28ZknL68?=
+ =?us-ascii?Q?g/6evcWFn3qtIbGHRtmGuNQgowS2VVsJMMJDHSLq7iIU2+nsB5fw5Co+559X?=
+ =?us-ascii?Q?104kg7qVngvAHtmSFsnNaBVXpiVBnYrr8IUQn2Ghfr7hvZNZctUBhnveNqsd?=
+ =?us-ascii?Q?g7bp4I7nSzzUUykHUXey9VkgKhf/XHdKtGhliQ+Ark/My6ollI+6xbtRx/cV?=
+ =?us-ascii?Q?jAHTEb48wcWSoQ4/fHdfrikSpHKmFgUFCG2KqQVOPXVfgwlNe7fCPQy6LNlW?=
+ =?us-ascii?Q?0g3rtc9ohTz4Umz9tWClZgJcfPvj75V8c+4RJF+ncudiIJqSldpX97pYXz9X?=
+ =?us-ascii?Q?twbYBVCnVFFmIXM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(7416014)(52116014)(376014)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RxOTKHdj7ErUGXinhV3ngwozmNKywVJBAmmBoByn4DsyOzz5cYyax1PFFrlP?=
+ =?us-ascii?Q?ofNX2bP1cSqG5b8qy6oKZoDR+PkIlOMLge5prQyk8zMU9373E+U9yWlz8EyD?=
+ =?us-ascii?Q?+CXMmFQd70yiIcnHj76oOmOCVfMjSCa6BCRdh+IwXo1U/yS8dkP4F76yrH42?=
+ =?us-ascii?Q?oVSUvtcbxQA6Fj3NGe/6MxifkZOJsO9eTukK3z0DZpD8L9C3s7wBLzDxtZyi?=
+ =?us-ascii?Q?70Zvi/fnbJJCGo2sQAXeat6Kmf5GYzuoMtK3HFbgTDmR+Xmbesid1qOh2M8b?=
+ =?us-ascii?Q?GPwZMHDreQ7erPNg9idI9o8/riAO3OZrI/99ziRq/eaUsLd7NGq3YdzdlXVy?=
+ =?us-ascii?Q?u2GpKJigFxDiO6Xez5SVwpNLr+czRtOZX3KAC1afDo+G5KGV0sfdTuQs5Ixd?=
+ =?us-ascii?Q?6vd78UjixCyCNUwGJ7gnFYvhrmeNPSmGsu769X+XX2Huedg7u7INuyISPEpq?=
+ =?us-ascii?Q?BVTtyi8Xb/wa9q5w5kGGYIfvzI/txV3XOLQKOA25ad/KoM38t7nHhgrV6eMA?=
+ =?us-ascii?Q?2sfEkSoeuPduji7I4DK5bQ7N6whJXdAOUhZ6cRliLsGMT5HGUH8KC+suZWqL?=
+ =?us-ascii?Q?+UwMsrTSYkoRmnJtsUm2K/iQXEEom/QnzOB8qU22ZL8XYWdg281wJrNRQdMV?=
+ =?us-ascii?Q?VTfXiAhqdHK1Yfee4wyk2uQSg6ZFJ6rh/p1PNI5L18QF3UYPkTNCP7RnzfRz?=
+ =?us-ascii?Q?DMEchlfAuKoQ3RYv+eDjSaAN+ZSX1cIaVrCtmxciqPVMULZ1UrTjy3NV6TaB?=
+ =?us-ascii?Q?0ZU46fAy4o1I1Eyu9hCTIoe8L/p0SyJmmCA9dg/IKfBbzjeh5ZCjkNUctOqo?=
+ =?us-ascii?Q?gMOu5oyFbcwKCSSAXRgsoe44NdwHq89HhIJeVxJUAjqyan9/nMNxyBFXrjLm?=
+ =?us-ascii?Q?XxcPjbV943bgKg2YGqDyQy8T1V67onxyUtflUKCkTT1SwRgdYLfbblNNtGfS?=
+ =?us-ascii?Q?cSrAIePfPPsob1MK3gTDv1NAHh03Myp5e7QusWVndBF5Ws1CQXDxsTja436T?=
+ =?us-ascii?Q?1kX5jWqmd0524WfnkesV/UlPp0LiFrsIIWrElLShZrKIwnSDIdPlsbyD1FXr?=
+ =?us-ascii?Q?RzdwRRXI1L5XWfaLDo9dfD62wwJ8WRbib8cuoLW5+8oCAHlhr50e3/i90Z0v?=
+ =?us-ascii?Q?bSb/8l/3bVnadqRR3CzuuQBB4fD1z0+ZDQGfCqz5Bgd/SWI+nEa4bFd5zbQF?=
+ =?us-ascii?Q?+K2+rNwC2Gla7+uXj1jD+kkfdg9zshV51i0IOLnxDkoV67/YOceCM2qnOWgR?=
+ =?us-ascii?Q?t8QYdFxegKn1Snigm+RbUhMDFEtlxSUSSiXTIa3uRjgP568I0kDNl0hoZVW8?=
+ =?us-ascii?Q?xl5tpVLQghpTy25zvZNWHkMZl26lrebUUahBNoiroAG0VmbmtO8T+kmd06xM?=
+ =?us-ascii?Q?wfTAs2GvqELInmGwCeVk252Te5FLx8c/SNUPXCoBw/qthAMX4wx5teBHbkLH?=
+ =?us-ascii?Q?dLdzisyRPN4X37/SQ8rmWn6adgYRWfPY+kHrKQoyQRJpyHpJGp7A0V/ih8ol?=
+ =?us-ascii?Q?eSenFPVWWkptz0wT6CYk+joCPKKMbac3a6IHnEqYYZUkFoSvLgPUfttUb6po?=
+ =?us-ascii?Q?ifCzz0V+5MUotCWI7QgWtxFzT4LWJOu+kTEeokei?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8eb0bc22-99e2-4912-93fd-08ddc43d7ff2
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 07:50:57.8276
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7CyM93RP6tFHGg+tIkidUeGozeEH8hZ9rc/zn1rwk5LHUuQpd2K3DIVFmrYyX5wQifzA8Gc60VhEc60KNcW0/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7708
 
-On Wed, Jul 02, 2025 at 04:44:48PM GMT, Brian Norris wrote:
+This series adds NETC Timer PTP clock driver, which supports precise
+periodic pulse, time capture on external pulse and PTP synchronization.
+It also adds PTP support to the enetc v4 driver for i.MX95 and optimizes
+the PTP-related code in the enetc driver.
 
-Sorry for jumping late into this thread. I missed it completely as I was not
-CCed.
+---
+v1 link: https://lore.kernel.org/imx/20250711065748.250159-1-wei.fang@nxp.com/
+---
 
-> Hi Frank,
-> 
-> On Wed, Jul 02, 2025 at 07:09:42PM -0400, Frank Li wrote:
-> > > Does the AER driver actually work on these platforms?
-> ...
-> > There are several attempts to upstream customer Aer irq support in past years.
-> > 
-> > For example:
-> >   https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1161848.html
-> > 
-> > some change port drivers.
-> > 
-> > If you think it is valuable to support customer AER IRQ support, I can restart
-> > this work.
-> 
-> Interesting thread. I read through it, but I'm still not convinced about
-> one detail:
-> 
-> Are you sure that AER can't possibly work over MSI? Even today, the
-> Synopsys manuals say that their integrated MSI receiver "terminate[s]
-> inbound MSI requests (received on the RX wire)" and after terminating,
-> "an interrupt is signaled locally through the msi_ctrl_int output."
-> 
-> That means that their msi_ctrl_int signal only handles MSI requests from
-> downstream functions, and it implies that the default
-> drivers/pci/controller/dwc/pcie-designware-host.c
-> dw_pcie_msi_domain_info implementation will not actually see MSIs from
-> the root port (such as PME and AER). So yes, it *appears* that AER does
-> not work over MSI.
-> 
-> But crucially, it does *not* mean that the port will not generate valid
-> MSI requests, if you have some kind of logic that will receive it. So
-> for instance, I pointed out in another reply that some SoCs choose to
-> hook up GIC ITS:
-> 
->  commit 9c4cd0aef259 ("arm64: dts: qcom: x1e80100: enable GICv3 ITS for
->  PCIe")
-> 
-> """
->     Note that using the GIC ITS on x1e80100 will cause Advanced Error
->     Reporting (AER) interrupts to be received on errors unlike when using
->     the internal MSI controller. Consequently, notifications about
->     (correctable) errors may now be logged for errors that previously went
->     unnoticed.
-> """
-> 
-> And in fact, your arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi seems
-> to be doing the same. I'd be surprised if these port MSIs still don't
-> work after that.
-> 
-> OTOH, I do also believe there are SoCs where DWC PCIe is available, but
-> there is no external MSI controller, and so that same problem still may
-> exist. I may even have such SoCs available...
-> 
+F.S. Peng (1):
+  ptp: netc: add external trigger stamp support
 
-Yes, pretty much all Qcom SoCs without GIC-v3 ITS suffer from this limitation.
-And the same should be true for other vendors also.
+Wei Fang (13):
+  dt-bindings: ptp: add NETC Timer PTP clock
+  dt-bindings: net: add nxp,netc-timer property
+  ptp: netc: add NETC Timer PTP driver support
+  ptp: netc: add PTP_CLK_REQ_PPS support
+  ptp: netc: add periodic pulse output support
+  ptp: netc: add debugfs support to loop back pulse signal
+  MAINTAINERS: add NETC Timer PTP clock driver section
+  net: enetc: save the parsed information of PTP packet to skb->cb
+  net: enetc: Add enetc_update_ptp_sync_msg() to process PTP sync packet
+  net: enetc: remove unnecessary CONFIG_FSL_ENETC_PTP_CLOCK check
+  net: enetc: add PTP synchronization support for ENETC v4
+  net: enetc: don't update sync packet checksum if checksum offload is
+    used
+  arm64: dts: imx95: Add NETC Timer support
 
-Interestingly, the Qcom SoCs route the AER/PME via 'global' SPI interrupt, which
-is only handled by the controller driver. This is similar to the 'aer' SPI
-interrupt in layerscape platforms.
-
-So I think there is an incentive in allowing the AER driver to work with vendor
-specific IRQs.
-
-- Mani
+ .../devicetree/bindings/net/fsl,enetc.yaml    |   23 +
+ .../devicetree/bindings/ptp/nxp,ptp-netc.yaml |   67 +
+ MAINTAINERS                                   |    9 +
+ .../boot/dts/freescale/imx95-19x19-evk.dts    |    4 +
+ arch/arm64/boot/dts/freescale/imx95.dtsi      |    1 +
+ drivers/net/ethernet/freescale/enetc/enetc.c  |  209 +--
+ drivers/net/ethernet/freescale/enetc/enetc.h  |   21 +-
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |    6 +
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  |    3 +
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |   92 +-
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |    1 +
+ drivers/ptp/Kconfig                           |   11 +
+ drivers/ptp/Makefile                          |    1 +
+ drivers/ptp/ptp_netc.c                        | 1193 +++++++++++++++++
+ include/linux/fsl/netc_global.h               |   12 +-
+ 15 files changed, 1551 insertions(+), 102 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/ptp/nxp,ptp-netc.yaml
+ create mode 100644 drivers/ptp/ptp_netc.c
 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.34.1
+
