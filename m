@@ -1,90 +1,361 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010044.outbound.protection.outlook.com [52.101.84.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92DF2C15B5;
-	Wed, 16 Jul 2025 20:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752698529; cv=none; b=bOAPFhFsL4U39/4J9ReOm+hpK0ZcUBHS60mbLOe2WJJzT62N1cCtb/ZT+uopekobgb72e0vDo2stV186K9e7DkYzhS9gXksb3t4+c27ZJGpOJc3hniRxvkaLpwZnrBsEj0cAsTpwHdmcIG2ZYxMO1xkdkqOYhzQLZvC+EbhCTm4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752698529; c=relaxed/simple;
-	bh=bOjYuzw7/nV/QXztvKR/9wxevijYcmuDZGg6FJsuCdY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Fjuth+KqV1OWVrLViCugPw5SjExUk6GO/DF3qHdL2Rl1Pb7NXDMBny55kTk7xyfZh4LmPFufppAHi4d41MjxFaefLR44AjMvfDpExVdHSfK0PY9AvPfNicasTN1YEo06lyR6TKdeNiC0z0SEpzc/kzAWmY9NZIY9WeHLxIsZtFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGCYj5/m; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B1C4A06
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 20:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752698780; cv=fail; b=pRxg+a8dbQry0sfD7GTdz+gxIUpBufQGm8kcUuP6SGu45mT9vUtRt8AXFOAUvT0nNV4svfC9+bjvndW+eHff96RAbVhoUv5AwhCz1/oKm/dBHaXIed+wmV83hropL5nDiHBd12SQ8BABVxuwPw9D3FiCDskxzHvJ2WY4Vtmi840=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752698780; c=relaxed/simple;
+	bh=VWJXuCPYZYYgBOB5vlXHO2GlQZRZwgqY2CzWSl2TFvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FwwlU49DMlnjGqvx59s4SjoDIXVgDVF9cWEgXh66p9OWl5trfkWiV+Yl/drkOM04CeGUnebmNAg6kfh7sWjh0H0HhZfiZRx5NumGUxpmS3YnZRBtgZSpTIaifq4OLFWpkpvVmPl3iyEO8Zfsk4lI3nkvoNXtX8rHFZXhijyjUg8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CV5LG6JA; arc=fail smtp.client-ip=52.101.84.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGCYj5/m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C73BC4CEF1;
-	Wed, 16 Jul 2025 20:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752698529;
-	bh=bOjYuzw7/nV/QXztvKR/9wxevijYcmuDZGg6FJsuCdY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=RGCYj5/m+8BGAP7nMkjg2jJ+YpnyXiPgaxbWv29MtsTmYhud95FUdhQNlOz6l1A3r
-	 m1XADHbovkwVcHNjocbsXSTs9shcPHmN6zxS2EokcyMl7NBCg/7J6aw3QWJXxjZo8Y
-	 e5wH4ODW8L9Bg39rIFcnPAIv6eQQaSsJxYRJkVVbO38BJ6IPSQHRFlg+v34h0IQWcE
-	 W183v4bZSuH+kTajqgSiZBHQj3ijmz3YOduuPyQIVL3X4ioY/jkwBXjVNkRrLpSCb1
-	 9Ze26cXgdTeUx/q4jHEjDPurI3PuG+lQ82q3rU4sS7TD21pPNOJK6/I0cnNlgL4HBD
-	 IH2jJiPafr6Ww==
-Date: Wed, 16 Jul 2025 15:42:07 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Frank Li <Frank.li@nxp.com>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-	Rob Herring <robh+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Subject: Re: Does dwc/pci-layerscape.c support AER?
-Message-ID: <20250716204207.GA2554240@bhelgaas>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CV5LG6JA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Lns0w/g/0KUmFbOeIpcetdO3V7CrfraJVILN92LLWtLpDlGd1UTdqr/bympmWd2m5MIXP+ZNkifBQNe+WD0hxXwKUEx0qpwkjD2YS8y0vk3n4bCX+swGyQZUN+n81Vok9Qvv9CTvdO7xfbpxGSiUJR/TfUbhU80XxZ5EITq+addU0kulcfOKu2SWjOPg0Hb5pnbejd8YPuIMS4jdIkXzl5b79DwVnVD6UzzXYwofskpwvmhgFYlxpnplFochVRGlHrRPBvMhpJH7mRL46eP6K5v2rVyRRlKQNm3KGUFcdbSkvyFlwpMtCLN+exe5FkB9uTFbvJIJPY7mA0bGG4P5Pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0KZBm3hCTnx2Qqvs8ymoMYdgWGrfzvQjmd4nHp0SC18=;
+ b=SOapuC+GnFX5pyQEEDobX6H7Vf+uzE8X/puN95qGWzQLS5dnHEHFZWw94jSe4KPOr0Io/Zzz5smiOCLWlerhO0EQ7cN2b3RwQDzLLg8wIBV1FPLn7lhYJY4cw8xUKHtXaSUZZq9JFxQROwMGIWyPl2lCmw/qsHzSfSmUGVwlAgb7dg7FBBVSbfOpGLqnAdl+aU1mzJlYx7gfgQ59jeFDJHPcFOvcuVyyLlW1yOkCZzyD35Lc2TbNA6qKM74ea392YvR/y3OdUZMVZheHoGrMYBRguP9S15wO5n/md2iiJEXwTnvzxy06gcY5ed72u9Wr3thM9J0lEkNaKJy1y8WTrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0KZBm3hCTnx2Qqvs8ymoMYdgWGrfzvQjmd4nHp0SC18=;
+ b=CV5LG6JA7H998ja80sV+/ZukZvsjRA0l65U0xT+cY1wSnk3kDaAWnIo2gG6LdniPmEaNF+pZ/v93VcdL1xgEWt0Rj4PshqFdoA3pG/AkVqvmyIbSmXL3Bf7TEnzHaZoE/wRArLj/VTs0FvGkcoKhtdme3pPMpiXNNGjJHvDIL3zZR5b5L0XG5FV3EB5EFPV1nviAVnKUBLkk1QcohVquRxdcMQwDlhzYgLBqaUZMqSBesf7Arv0HQToxva7c/ZacxR5hNzGBdr4Y+fcCpWgbkJgbVH0A8s/bLKEP/QuXpVzhcP4hkDtng5z6kDFEVmG5gOIm3xKNU0NtdduicubOlA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by VI2PR04MB10192.eurprd04.prod.outlook.com (2603:10a6:800:229::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Wed, 16 Jul
+ 2025 20:46:13 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8922.028; Wed, 16 Jul 2025
+ 20:46:13 +0000
+Date: Wed, 16 Jul 2025 16:46:07 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	richardcochran@gmail.com, claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	fushi.peng@nxp.com, devicetree@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, kernel@pengutronix.de
+Subject: Re: [PATCH v2 net-next 09/14] net: enetc: save the parsed
+ information of PTP packet to skb->cb
+Message-ID: <aHgPjwiIWfhYnPyC@lizhi-Precision-Tower-5810>
+References: <20250716073111.367382-1-wei.fang@nxp.com>
+ <20250716073111.367382-10-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250716073111.367382-10-wei.fang@nxp.com>
+X-ClientProxiedBy: AM0PR01CA0106.eurprd01.prod.exchangelabs.com
+ (2603:10a6:208:10e::47) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aHfgpWsC1GlQUIEm@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VI2PR04MB10192:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c23634e-6e94-4800-9a97-08ddc4a9cd70
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|52116014|19092799006|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?uzka39FxRJEzjb8FDHfipFfNQSnvl9xoUUsbeIrRcLEgZllO5QoU3n5B51uG?=
+ =?us-ascii?Q?cLMtAkFN+PZ5UmSXPYMww+KJcOhnjfAUBHirTpDDAJlZ+vdcnyyNisusXceP?=
+ =?us-ascii?Q?TY6TIAlYd5NXfoHyI8hsV19GGq+wEqF02KGMo1UzhD+abrmOlNoRZA0cq/63?=
+ =?us-ascii?Q?Xvw5ifkl15IVFhSFtZkJDNeIe6me+K1Ih1HWTPS1I6E28K7MjvrNW0RgJU3D?=
+ =?us-ascii?Q?2OFQDzNMjzcnPMshSWAcofI00Q1t64Z/mRwgsGEZgHwJHe6b3qzxSYtaMQxQ?=
+ =?us-ascii?Q?rTqZmso8cZFKSIAebqtRA+9OJRwfV2wZWRX2dTgBnzXNC91QUPGnFCurDwI3?=
+ =?us-ascii?Q?Rd0q4PjPKYGcR+UflIrN3xqhzsLEMS2cl0MN5Rqh0jSZMtfnwgch+kAJYyq5?=
+ =?us-ascii?Q?KGsfM5jFClPD2t5oFNeJZK+uc4/CizLp1gaxsxw7xQSuKO97VIhKJYEjqqPI?=
+ =?us-ascii?Q?77hKJSKOzJXTGm0b3L1YYTGZunrftPHD2whD+51Zo4OFfunETEqfBcAGFVeI?=
+ =?us-ascii?Q?txDIMQZeLhQrv3X1GpHlYQSVzjGgecanyb75pqWGAfMRvZENiqeCL/FNa8e2?=
+ =?us-ascii?Q?ct8lT6vdxV2q5ffX0yEha+tO11cYoAR650vUbAXOgnRgzTaMNkHpyz8W3K17?=
+ =?us-ascii?Q?CKVN6nWJ/20QgOW+HYcFNbagbEY7wLv8r2ykZc/JJbl5+EPr8nmFBwZuO2hy?=
+ =?us-ascii?Q?irYzgB9gk24B3MTz+pL7X4aUoQJr3cHNgxJi3Cv1J0CwKnndO6o81keJabDp?=
+ =?us-ascii?Q?NKpaEFvyAAK0399UPQxWrKGweqPd9W51BQJK2LYRuFp9sQsHIbiJ/J6Xf3j3?=
+ =?us-ascii?Q?LA6r3jyZ4sAKP5HwwaLXHUxAiYccbt61WtW+HE3mcZP8+TVmKgZUnQbsVTW/?=
+ =?us-ascii?Q?r1sHtyP3ayFU76xVewJX9KsVA9KjO8WD1IJ+1O/MNLFHg55zTsWYlBW0Gr2M?=
+ =?us-ascii?Q?WrBl6Y5SW49NR+/uWMobJa9rCGJRiQA7PoCXDhlEiCZ+F3JT40eXuMLcrrN2?=
+ =?us-ascii?Q?S6y5x5z8a032Q20W/B1v1UsoRs/3JMZtIWMNYj4pE0ifr3fyvNFNd8B23n5l?=
+ =?us-ascii?Q?J4FyIKoWe4bskgHxFcHKVRy2HLi0S6lfmsuveDUIAx5MFuxMY7mJOF30x3mQ?=
+ =?us-ascii?Q?NDgU8poRgni+rXbVtHhuVei3wow5WKSHh5aSDcqSCXR30i4rIr84PUWfpnvs?=
+ =?us-ascii?Q?Pvvy4TAhMEAchTocn9iKo2FczJYWhMzXrGP2frCAMvoi4x+nLob4R9leKTv6?=
+ =?us-ascii?Q?3Fb7x/Qt5iKyCt1NXnjrH5YunmCB1TGMkhWxPJ+PY6DSgvJsJz+TUkShfHGQ?=
+ =?us-ascii?Q?UGZn+JkPOLHSkRkWR5IFAGKzVheVsuBFyJAAZbJGDLWYUOmEa9iRciSf90dR?=
+ =?us-ascii?Q?rz+GDYg5Ete08n5+9SiBFfFznAcnMFn4w0v8HyfvoMXdmQYeHaFTntPlV9Mq?=
+ =?us-ascii?Q?7IksYZgjygiDqBuMpwBk8CBrtoZEwz+D4T1wcePGPYDHqqRoL14Z1w=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(52116014)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Nzm6jcGLJxyvwW+cOVPwQzC/5fawx08qk+0h1ge5MJhFIYIfOeovFEFPbXk2?=
+ =?us-ascii?Q?Q+8IbSdlxWOxwK+CeLnpNHDvTSqAmwY6M5Al6LrVgPejuVK24Bxc5e8AI4aK?=
+ =?us-ascii?Q?WofsEL6U5yhB6zV3/Z9dmtok2C7EPrw9S1UAPtJtfmH6IXgMDu/z+TFIx7Di?=
+ =?us-ascii?Q?8gLq6UVE11WL2E9Myd7+vkuO9lKcFS6oCCP15fCLLt4s3CzMj1fhWediCWz6?=
+ =?us-ascii?Q?I/gzgs4h1aNfwczXYt2h+LASqEOQIwIUWGfstnzB1BdwPKC6bbfTEftdLGrz?=
+ =?us-ascii?Q?I1AJOq3ZrCCPMDBdCZpm3qviYLXvi72P9p4J5vJMddifQpK8aVxQcNS/Fhy3?=
+ =?us-ascii?Q?IOvrYx5YD8CMh+9OEgbBh7m00U2/W4sq+FBFnEgrnnGNOZwae44NSUyFx9f3?=
+ =?us-ascii?Q?H/soJ8ZynZxVabAw7UKfCaVP84URk3z42yhuBtg5eX+1BL/eipt5a37/KQ6I?=
+ =?us-ascii?Q?hYAp8oMo/r3irN4YLGtdFBth00SijGNBbU/WH4l3GTSKNme45GZj1pSVE8ZK?=
+ =?us-ascii?Q?HMLIs1SYloHYZIRamNJjGSd5v7y18tgNW+X88DTKhfO6jKiwMFf/22U8DALR?=
+ =?us-ascii?Q?Wz/aGXTmMjbyg+PTgHZ4L8Dn04TaMEwqhnfDpDxJvGR2MHORkFqBBvMSHrQt?=
+ =?us-ascii?Q?JxR0KwJumcVbJq3nurIPynTOc6gB0VJBbhl6bVxcusGRGx6A5ukmW+GDrmcr?=
+ =?us-ascii?Q?bLAUGVM+6jKgsZPfZ3nTlsPMcO1odvmoq5KewYXvXJCV+h7hFRPuKd2t2/To?=
+ =?us-ascii?Q?ginEZe1g5HGf4f7iz6n9lxFXxnOoQwxVVEuaCAuJaBBhbYefCjUj3DzlOV71?=
+ =?us-ascii?Q?v3Pbq5YtohA7yiHMtjKmzxrtk6/8gIE2kaMVlSZYYbp0L+cjCYASQWERIYb8?=
+ =?us-ascii?Q?HSb7i0tbajTHPjIeDMRA2IrDz7EuUteQNcQW0H8BoZgsWABQN2svNr7uEOCo?=
+ =?us-ascii?Q?Gd6hGFZ9mkufoIeH74CCFTMUgBjlwzM1P0BT8gwaNwSHmey0cTVdku7Mgx8Z?=
+ =?us-ascii?Q?450w68NlDGc43mD0qgf7nwzhDOwwK4gKHNrMAAtrp8hUQHrI7tsAOG89UC12?=
+ =?us-ascii?Q?k+sDav9Vx1QRaTBqvMlcS1npouven1quQgAXFC7ET80+KK1yN1cO+e4n/AXs?=
+ =?us-ascii?Q?rE5oHbWy7h0VzaVaGP9ghsDh4Qc8nJFFKudSkLVhGM0yUnwxkGiOQGmdVCJ2?=
+ =?us-ascii?Q?112BM+0SzvMQaUZUUl22iMrsQ+QWXof0rWhPSKDseuoobGikbOOzey66hWla?=
+ =?us-ascii?Q?X8p4l1hVK5+WdAi09KomLONLNuTUJvTWAqOYY8FTF4odgj8vGTMXU2q0T9Dk?=
+ =?us-ascii?Q?cTE0lnr+NycQ4BamlZy1ExdHP0YPQOJYTRh67RvETU1nJTVKqnO2CswOY3z+?=
+ =?us-ascii?Q?dgp+ZwIgG1itXKOtUamdsHtLlrekjYAsQm03Pzw80jWPT3IjWmUDBoJeOrQH?=
+ =?us-ascii?Q?WSqP7sMEvinT9meBw3hZkCRKlwBM0YRrHfey1KSY0pJrfmX3TOQ4mD7gEj4G?=
+ =?us-ascii?Q?FGN/ebwGw7zXy8UHr2Fw8lZxCPwQDxG+uo6/ZGs14zhqkvCYVXfgfHzvVwbv?=
+ =?us-ascii?Q?czGlEcq1VDxjiPG5N1P2r2nnLhaYmHBYyigCTqQN?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c23634e-6e94-4800-9a97-08ddc4a9cd70
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 20:46:13.4913
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LuLE4Jz+D11rg8DIlVYrkZLGZW7Uv7esif2p6/mU4cV0VSVBk/9LlaIFgojpV3kfRFPFd8f2TEgJ2FvS36At2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10192
 
-On Wed, Jul 16, 2025 at 10:25:57AM -0700, Brian Norris wrote:
-> On Wed, Jul 16, 2025 at 09:35:38PM +0530, Manivannan Sadhasivam wrote:
-> > On Wed, Jul 16, 2025 at 08:20:38AM GMT, Brian Norris wrote:
-> > > On Wed, Jul 16, 2025 at 12:47:10PM +0530, Manivannan Sadhasivam wrote:
-> > > > On Wed, Jul 02, 2025 at 04:44:48PM GMT, Brian Norris wrote:
-> > > > > On Wed, Jul 02, 2025 at 07:09:42PM -0400, Frank Li wrote:
-> > > > > OTOH, I do also believe there are SoCs where DWC PCIe is
-> > > > > available, but there is no external MSI controller, and so
-> > > > > that same problem still may exist. I may even have such SoCs
-> > > > > available...
-> > > > 
-> > > > Yes, pretty much all Qcom SoCs without GIC-v3 ITS suffer from
-> > > > this limitation.  And the same should be true for other
-> > > > vendors also.
-> > > > 
-> > > > Interestingly, the Qcom SoCs route the AER/PME via 'global'
-> > > > SPI interrupt, which is only handled by the controller driver.
-> > > > This is similar to the 'aer' SPI interrupt in layerscape
-> > > > platforms.
-> > > 
-> > > Yeah, I have some SoCs like this as well. But I also believe
-> > > that I have INTx available, and that even when MSI doesn't work
-> > > for AER/PME, INTx might.
-> > > 
-> > > Do Qcom SoCs route INTx?
-> > 
-> > Yes, they do. But currently, we can only use it by booting with
-> > pcie_pme=nomsi cmdline parameter.
+On Wed, Jul 16, 2025 at 03:31:06PM +0800, Wei Fang wrote:
+> Currently, the Tx PTP packets are parsed twice in the enetc driver, once
+> in enetc_xmit() and once in enetc_map_tx_buffs(). The latter is duplicate
+> and is unnecessary, since the parsed information can be saved to skb->cb
+> so that enetc_map_tx_buffs() can get the previously parsed data from
+> skb->cb. Therefore, we add struct enetc_skb_cb as the format of the data
+> in the skb->cb buffer to save the parsed information of PTP packet.
 
-Ugh.  I think these controllers might be out of spec (or maybe we're
-not configuring MSI/MSI-X correctly for them).  Per PCIe r7.0, sec
-6.1.4.3:
+Add struct enetc_skb_cb as the format of the data in the skb-cb buffer to
+save the parsed information of PTP packet.
 
-  While enabled for MSI or MSI-X operation, a Function is prohibited
-  from using INTx interrupts (if implemented) to request service (MSI,
-  MSI-X, and INTx are mutually exclusive).
+Use saved information in enetc_map_tx_buffs() to avoid parse data again.
 
-If the controller advertises MSI or MSI-X, I think we will enable it
-and expect AER, PME, hotplug, etc. to use it.
+>
+> In addition, the variables offset1 and offset2 in enetc_map_tx_buffs()
+> are renamed to corr_off and tstamp_off to make them easier to understand.
 
-Bjorn
+Also, rename variables offset1 and offset2 in enetc_map_tx_buffs() to
+corr_off and tstamp_off for better readability.
+
+>
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>
+> ---
+> v2 changes:
+> 1. Add description of offset1 and offset2 being renamed in the commit
+> message.
+> ---
+>  drivers/net/ethernet/freescale/enetc/enetc.c | 65 ++++++++++----------
+>  drivers/net/ethernet/freescale/enetc/enetc.h |  9 +++
+>  2 files changed, 43 insertions(+), 31 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index e4287725832e..c1373163a096 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -225,13 +225,12 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+>  {
+>  	bool do_vlan, do_onestep_tstamp = false, do_twostep_tstamp = false;
+>  	struct enetc_ndev_priv *priv = netdev_priv(tx_ring->ndev);
+> +	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
+>  	struct enetc_hw *hw = &priv->si->hw;
+>  	struct enetc_tx_swbd *tx_swbd;
+>  	int len = skb_headlen(skb);
+>  	union enetc_tx_bd temp_bd;
+> -	u8 msgtype, twostep, udp;
+>  	union enetc_tx_bd *txbd;
+> -	u16 offset1, offset2;
+>  	int i, count = 0;
+>  	skb_frag_t *frag;
+>  	unsigned int f;
+> @@ -280,16 +279,10 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+>  	count++;
+>
+>  	do_vlan = skb_vlan_tag_present(skb);
+> -	if (skb->cb[0] & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
+> -		if (enetc_ptp_parse(skb, &udp, &msgtype, &twostep, &offset1,
+> -				    &offset2) ||
+> -		    msgtype != PTP_MSGTYPE_SYNC || twostep)
+> -			WARN_ONCE(1, "Bad packet for one-step timestamping\n");
+> -		else
+> -			do_onestep_tstamp = true;
+> -	} else if (skb->cb[0] & ENETC_F_TX_TSTAMP) {
+> +	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP)
+> +		do_onestep_tstamp = true;
+> +	else if (enetc_cb->flag & ENETC_F_TX_TSTAMP)
+>  		do_twostep_tstamp = true;
+> -	}
+>
+>  	tx_swbd->do_twostep_tstamp = do_twostep_tstamp;
+>  	tx_swbd->qbv_en = !!(priv->active_offloads & ENETC_F_QBV);
+> @@ -333,6 +326,8 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+>  		}
+>
+>  		if (do_onestep_tstamp) {
+> +			u16 tstamp_off = enetc_cb->origin_tstamp_off;
+> +			u16 corr_off = enetc_cb->correction_off;
+>  			__be32 new_sec_l, new_nsec;
+>  			u32 lo, hi, nsec, val;
+>  			__be16 new_sec_h;
+> @@ -362,32 +357,32 @@ static int enetc_map_tx_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb)
+>  			new_sec_h = htons((sec >> 32) & 0xffff);
+>  			new_sec_l = htonl(sec & 0xffffffff);
+>  			new_nsec = htonl(nsec);
+> -			if (udp) {
+> +			if (enetc_cb->udp) {
+>  				struct udphdr *uh = udp_hdr(skb);
+>  				__be32 old_sec_l, old_nsec;
+>  				__be16 old_sec_h;
+>
+> -				old_sec_h = *(__be16 *)(data + offset2);
+> +				old_sec_h = *(__be16 *)(data + tstamp_off);
+>  				inet_proto_csum_replace2(&uh->check, skb, old_sec_h,
+>  							 new_sec_h, false);
+>
+> -				old_sec_l = *(__be32 *)(data + offset2 + 2);
+> +				old_sec_l = *(__be32 *)(data + tstamp_off + 2);
+>  				inet_proto_csum_replace4(&uh->check, skb, old_sec_l,
+>  							 new_sec_l, false);
+>
+> -				old_nsec = *(__be32 *)(data + offset2 + 6);
+> +				old_nsec = *(__be32 *)(data + tstamp_off + 6);
+>  				inet_proto_csum_replace4(&uh->check, skb, old_nsec,
+>  							 new_nsec, false);
+>  			}
+>
+> -			*(__be16 *)(data + offset2) = new_sec_h;
+> -			*(__be32 *)(data + offset2 + 2) = new_sec_l;
+> -			*(__be32 *)(data + offset2 + 6) = new_nsec;
+> +			*(__be16 *)(data + tstamp_off) = new_sec_h;
+> ++			*(__be32 *)(data + tstamp_off + 2) = new_sec_l;
+> ++			*(__be32 *)(data + tstamp_off + 6) = new_nsec;
+
+strange why there are two ++ here.
+
+>
+>  			/* Configure single-step register */
+>  			val = ENETC_PM0_SINGLE_STEP_EN;
+> -			val |= ENETC_SET_SINGLE_STEP_OFFSET(offset1);
+> -			if (udp)
+> +			val |= ENETC_SET_SINGLE_STEP_OFFSET(corr_off);
+> +			if (enetc_cb->udp)
+>  				val |= ENETC_PM0_SINGLE_STEP_CH;
+>
+>  			enetc_port_mac_wr(priv->si, ENETC_PM0_SINGLE_STEP,
+> @@ -938,12 +933,13 @@ static int enetc_map_tx_tso_buffs(struct enetc_bdr *tx_ring, struct sk_buff *skb
+>  static netdev_tx_t enetc_start_xmit(struct sk_buff *skb,
+>  				    struct net_device *ndev)
+>  {
+> +	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
+>  	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+>  	struct enetc_bdr *tx_ring;
+>  	int count;
+>
+>  	/* Queue one-step Sync packet if already locked */
+> -	if (skb->cb[0] & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
+> +	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
+>  		if (test_and_set_bit_lock(ENETC_TX_ONESTEP_TSTAMP_IN_PROGRESS,
+>  					  &priv->flags)) {
+>  			skb_queue_tail(&priv->tx_skbs, skb);
+> @@ -1005,24 +1001,29 @@ static netdev_tx_t enetc_start_xmit(struct sk_buff *skb,
+>
+>  netdev_tx_t enetc_xmit(struct sk_buff *skb, struct net_device *ndev)
+>  {
+> +	struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
+>  	struct enetc_ndev_priv *priv = netdev_priv(ndev);
+>  	u8 udp, msgtype, twostep;
+>  	u16 offset1, offset2;
+>
+> -	/* Mark tx timestamp type on skb->cb[0] if requires */
+> +	/* Mark tx timestamp type on enetc_cb->flag if requires */
+>  	if ((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
+> -	    (priv->active_offloads & ENETC_F_TX_TSTAMP_MASK)) {
+> -		skb->cb[0] = priv->active_offloads & ENETC_F_TX_TSTAMP_MASK;
+> -	} else {
+> -		skb->cb[0] = 0;
+> -	}
+> +	    (priv->active_offloads & ENETC_F_TX_TSTAMP_MASK))
+> +		enetc_cb->flag = priv->active_offloads & ENETC_F_TX_TSTAMP_MASK;
+> +	else
+> +		enetc_cb->flag = 0;
+>
+>  	/* Fall back to two-step timestamp if not one-step Sync packet */
+> -	if (skb->cb[0] & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
+> +	if (enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP) {
+>  		if (enetc_ptp_parse(skb, &udp, &msgtype, &twostep,
+>  				    &offset1, &offset2) ||
+> -		    msgtype != PTP_MSGTYPE_SYNC || twostep != 0)
+> -			skb->cb[0] = ENETC_F_TX_TSTAMP;
+> +		    msgtype != PTP_MSGTYPE_SYNC || twostep != 0) {
+> +			enetc_cb->flag = ENETC_F_TX_TSTAMP;
+> +		} else {
+> +			enetc_cb->udp = !!udp;
+> +			enetc_cb->correction_off = offset1;
+> +			enetc_cb->origin_tstamp_off = offset2;
+> +		}
+>  	}
+>
+>  	return enetc_start_xmit(skb, ndev);
+> @@ -1214,7 +1215,9 @@ static bool enetc_clean_tx_ring(struct enetc_bdr *tx_ring, int napi_budget)
+>  		if (xdp_frame) {
+>  			xdp_return_frame(xdp_frame);
+>  		} else if (skb) {
+> -			if (unlikely(skb->cb[0] & ENETC_F_TX_ONESTEP_SYNC_TSTAMP)) {
+> +			struct enetc_skb_cb *enetc_cb = ENETC_SKB_CB(skb);
+> +
+> +			if (unlikely(enetc_cb->flag & ENETC_F_TX_ONESTEP_SYNC_TSTAMP)) {
+>  				/* Start work to release lock for next one-step
+>  				 * timestamping packet. And send one skb in
+>  				 * tx_skbs queue if has.
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+> index 62e8ee4d2f04..ce3fed95091b 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.h
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+> @@ -54,6 +54,15 @@ struct enetc_tx_swbd {
+>  	u8 qbv_en:1;
+>  };
+>
+> +struct enetc_skb_cb {
+> +	u8 flag;
+> +	bool udp;
+> +	u16 correction_off;
+> +	u16 origin_tstamp_off;
+> +};
+> +
+> +#define ENETC_SKB_CB(skb) ((struct enetc_skb_cb *)((skb)->cb))
+> +
+>  struct enetc_lso_t {
+>  	bool	ipv6;
+>  	bool	tcp;
+> --
+> 2.34.1
+>
