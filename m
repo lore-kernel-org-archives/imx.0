@@ -1,110 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612E62E92B7;
-	Wed, 16 Jul 2025 21:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7451C5D5A
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 21:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752701449; cv=none; b=iAXPbFMu7mBxi08DmhIvJ2LfVY4l1VGVfk7uMXZVbnEVKtz9HvcCHgYo2eE+yP4UJNZOkvIuv+L17MAtoeDriaZsN6axlQtFUe8BHntlAphRKVT2+yOKZjlkFM7Kzh5io796QMk7k7FdU1T7uK4454JeqOIUFetxNzvaXyItjVA=
+	t=1752702488; cv=none; b=XR883n/JGWfudCkyeb1y++H3v6mH9l94kAyTC0M8BF/21KWUEkgRaRZwuKuEg0sVMBmjTV2dCHy/cIjcEQLyHs7WbORoaWG5yRjWfKe4GAl5ElXk0Cb5WMc1v243FJjIYDD+p3Z0UdTZ5LbaSWNT0jFDwOoTnEqkRo8PHUPHhIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752701449; c=relaxed/simple;
-	bh=BSLPBj7eWsQAUCWWMBF2EIBNVs39iTAgC8ZhnuDmoAY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dic9nXW049mt8Xslas8o42354LVSdj2WcNDM+riZpotqNtOWYyqJm7O4HDDfIOyUOwNTAbrHIIcAygygYYQh28S+wjDJi7GhLMhAvrrDOruaAJ8f48f4eI+nDmWClv+Ct8LSJCSS1C2kELEA8Ifa0mpgZY1CzIf35yUp055+I3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBpfZuE+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752702488; c=relaxed/simple;
+	bh=5W9odRPwPu6c7/C9A28PtxyP9EFeJKPjgf6UhMdGZUU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DfuSqBG265pz2Fy7k94r5fMvca9p5majPaDY0ygSig+QC61jmY7jv8uxyGn7oC/F4w89FRhG+jy4Xml+DvjW3kEcdhUo6CakvNZC1wahj6WD1Tz2EMqEhgV6TAZV1xQgnxG8kRVBnQ6ogJHqq+LWD/ZTLDTbvlnP2IdJYjaizsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=fCctXadL; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBpfZuE+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB341C4CEE7;
-	Wed, 16 Jul 2025 21:30:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752701449;
-	bh=BSLPBj7eWsQAUCWWMBF2EIBNVs39iTAgC8ZhnuDmoAY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=NBpfZuE+SSOciTziOy3Z1TLjySQniSDIUsjoNZCB5YzUGu0ccWbQJ8rvWBPr4E6Mj
-	 DM6JCmaxBoeU2iChEt/I+M64kpbg7Zj5e7Ow+b2ejqp/lG0twVwg/z3tpZ8yjzdSqI
-	 u9Ge8kTczqT02NjqFsC3UPO5fferSr1G60JVyX/KP4+xSD/vShyt9JS+pj7PLnjR8d
-	 3Q5InsjktbI5ffC9kCYlNg/f2Xh4jWXWcMMJB7NC7AKgsKbJwhgnhy7WVoEMghEL9L
-	 9uR3esYUpnREdGwbQWKyNRSY3fylCNWrKsuFpBqqpVUuC7gZW4KC7vnpb8kknHsjxL
-	 DQTV4c0/m1Nlw==
-Date: Wed, 16 Jul 2025 16:30:47 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-	Rob Herring <robh+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Subject: Re: Does dwc/pci-layerscape.c support AER?
-Message-ID: <20250716213047.GA2558388@bhelgaas>
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="fCctXadL"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4854E10397286;
+	Wed, 16 Jul 2025 23:47:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1752702475; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=fAmbroP5DianhCtrLpE3Fuaj5ZpEDwaVPcszCKwu8ZA=;
+	b=fCctXadLnfWppgxvWur4O0+msuqvRzmUIIGG0Bme6kVKb4L6iryWOfue/9SHO56e7Pnprq
+	cjCpBe6BAbzJKSKpOXn2fX0MQY3YSVARRs8aJTtl4ZvDXepsCnaf+Ix6g8UDf+SrAmz+12
+	Wxw+7xOlHZq6rfQLmIAzmqrPX+580DlC8xy0wLbZCZoUCxmqoc7gzCLM5YQ2PPOptxTi5S
+	WnqXncLk7EPk4TjaOF7ocU5rDAbaCBJoEU6rypr8TS2tFrSRBe4LzVspuZkggm4pANM/JS
+	De52fufp1U/ebrPPde+0/NsE+sFIc90QQuwLSgUUGEFPS5T1xBoC6neOduFGVg==
+From: Lukasz Majewski <lukma@denx.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Lukasz Majewski <lukasz.majewski@mailbox.org>
+Subject: [net-next v15 00/12] net: mtip: Add support for MTIP imx287 L2 switch driver
+Date: Wed, 16 Jul 2025 23:47:19 +0200
+Message-Id: <20250716214731.3384273-1-lukma@denx.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aHgYMmjZzpVSAf0c@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jul 16, 2025 at 05:22:58PM -0400, Frank Li wrote:
-> On Wed, Jul 16, 2025 at 03:42:07PM -0500, Bjorn Helgaas wrote:
-> > On Wed, Jul 16, 2025 at 10:25:57AM -0700, Brian Norris wrote:
-> > > On Wed, Jul 16, 2025 at 09:35:38PM +0530, Manivannan Sadhasivam wrote:
-> > > > On Wed, Jul 16, 2025 at 08:20:38AM GMT, Brian Norris wrote:
-> > > > > On Wed, Jul 16, 2025 at 12:47:10PM +0530, Manivannan Sadhasivam wrote:
-> > > > > > On Wed, Jul 02, 2025 at 04:44:48PM GMT, Brian Norris wrote:
-> > > > > > > On Wed, Jul 02, 2025 at 07:09:42PM -0400, Frank Li wrote:
-> > > > > > > OTOH, I do also believe there are SoCs where DWC PCIe is
-> > > > > > > available, but there is no external MSI controller, and so
-> > > > > > > that same problem still may exist. I may even have such SoCs
-> > > > > > > available...
-> > > > > >
-> > > > > > Yes, pretty much all Qcom SoCs without GIC-v3 ITS suffer from
-> > > > > > this limitation.  And the same should be true for other
-> > > > > > vendors also.
-> > > > > >
-> > > > > > Interestingly, the Qcom SoCs route the AER/PME via 'global'
-> > > > > > SPI interrupt, which is only handled by the controller driver.
-> > > > > > This is similar to the 'aer' SPI interrupt in layerscape
-> > > > > > platforms.
-> > > > >
-> > > > > Yeah, I have some SoCs like this as well. But I also believe
-> > > > > that I have INTx available, and that even when MSI doesn't work
-> > > > > for AER/PME, INTx might.
-> > > > >
-> > > > > Do Qcom SoCs route INTx?
-> > > >
-> > > > Yes, they do. But currently, we can only use it by booting with
-> > > > pcie_pme=nomsi cmdline parameter.
-> >
-> > Ugh.  I think these controllers might be out of spec (or maybe we're
-> > not configuring MSI/MSI-X correctly for them).  Per PCIe r7.0, sec
-> > 6.1.4.3:
-> >
-> >   While enabled for MSI or MSI-X operation, a Function is prohibited
-> >   from using INTx interrupts (if implemented) to request service (MSI,
-> >   MSI-X, and INTx are mutually exclusive).
-> >
-> > If the controller advertises MSI or MSI-X, I think we will enable it
-> > and expect AER, PME, hotplug, etc. to use it.
-> 
-> I think it is controller implement problem, which route AER irq to
-> INTx or other irq line in SOC. Consider many users have similar
-> issues, can you add workaround or quirk for this type
-> implementation.
+From: Lukasz Majewski <lukasz.majewski@mailbox.org>
 
-I think the spec allows the AER interrupt to be routed to INTx, but
-only if the Root Port doesn't advertise MSI or MSI-X support or the OS
-decides not to enable MSI/MSI-X.
+This patch series adds support for More Than IP's L2 switch driver embedded
+in some NXP's SoCs. This one has been tested on imx287, but is also available
+in the vf610.
 
-Since there's no generic way to say "MSI/MSI-X works on this Root
-Port, but only for certain interrupts, not including AER," there's no
-way for Linux to figure out that it shouldn't enable MSI/MSI-X.
+In the past there has been performed some attempts to upstream this driver:
 
-*Somebody* can add some kind of quirk for this; not me because I don't
-have the hardware.  It needs to be generic so the same solution works
-for all these devices.
+1. The 4.19-cip based one [1]
+2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
+   with NO tag appended.
+3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
+   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
+   the driver uses already configured MAC and PHY to also configure PHY.
 
-Bjorn
+All three approaches were not accepted as eligible for upstreaming.
+
+The driver from this series has floowing features:
+
+1. It is fully separated from fec_main - i.e. can be used interchangeable
+   with it. To be more specific - one can build them as modules and
+   if required switch between them when e.g. bridge offloading is required.
+
+   To be more specific:
+        - Use FEC_MAIN: When one needs support for two ETH ports with separate
+          uDMAs used for both and bridging can be realized in SW.
+
+        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
+          attached to switch and bridging shall be offloaded to HW. 
+
+2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
+   separation at boot time. Port separation is disabled when bridging is
+   required.
+
+3. Example usage:
+        Configuration:
+        ip link set lan0 up; sleep 1;
+        ip link set lan1 up; sleep 1;
+        ip link add name br0 type bridge;
+        ip link set br0 up; sleep 1;
+        ip link set lan0 master br0;
+        ip link set lan1 master br0;
+        bridge link;
+        ip addr add 192.168.2.17/24 dev br0;
+        ping -c 5 192.168.2.222
+
+        Removal:
+        ip link set br0 down;
+        ip link delete br0 type bridge;
+        ip link set dev lan1 down
+        ip link set dev lan0 down
+
+4. Limitations:
+        - Driver enables and disables switch operation with learning and ageing.
+        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
+          on purpose, as up till now we didn't had consensus about how the driver
+          shall be added to Linux.
+
+5. Clang build:
+	make LLVM_SUFFIX=-19 LLVM=1 mrproper
+	cp ./arch/arm/configs/mxs_defconfig .config
+	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 menuconfig
+	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 -j8 LOADADDR=0x40008000 uImage dtbs
+
+        make LLVM_SUFFIX=-19 LLVM=1 mrproper
+        make LLVM_SUFFIX=-19 LLVM=1 allmodconfig
+        make LLVM_SUFFIX=-19 LLVM=1 W=1 drivers/net/ethernet/freescale/mtipsw/ | tee llvm_build.log
+        make LLVM_SUFFIX=-19 LLVM=1 W=1 -j8 | tee llvm_build.log
+
+6. Kernel compliance checks:
+	make coccicheck MODE=report J=4 M=drivers/net/ethernet/freescale/mtipsw/
+	~/work/src/smatch/smatch_scripts/kchecker drivers/net/ethernet/freescale/mtipsw/
+
+7. GCC
+        make mrproper
+        make allmodconfig
+        make W=1 drivers/net/ethernet/freescale/mtipsw/
+
+Links:
+[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
+[3] - https://source.denx.de/linux/linux-imx28-l2switch/-/tree/imx28-v5.12-L2-upstream-switchdev-RFC_v1?ref_type=heads
+
+
+Lukasz Majewski (12):
+  dt-bindings: net: Add MTIP L2 switch description
+  ARM: dts: nxp: mxs: Adjust the imx28.dtsi L2 switch description
+  ARM: dts: nxp: mxs: Adjust XEA board's DTS to support L2 switch
+  net: mtip: The L2 switch driver for imx287
+  net: mtip: Add buffers management functions to the L2 switch driver
+  net: mtip: Add net_device_ops functions to the L2 switch driver
+  net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
+  net: mtip: Extend the L2 switch driver with management operations
+  net: mtip: Extend the L2 switch driver for imx287 with bridge
+    operations
+  ARM: mxs_defconfig: Enable CONFIG_NFS_FSCACHE
+  ARM: mxs_defconfig: Update mxs_defconfig to 6.16-rc5
+  ARM: mxs_defconfig: Enable CONFIG_FEC_MTIP_L2SW to support MTIP L2
+    switch
+
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   |  150 ++
+ MAINTAINERS                                   |    7 +
+ arch/arm/boot/dts/nxp/mxs/imx28-xea.dts       |   56 +
+ arch/arm/boot/dts/nxp/mxs/imx28.dtsi          |    9 +-
+ arch/arm/configs/mxs_defconfig                |   13 +-
+ drivers/net/ethernet/freescale/Kconfig        |    1 +
+ drivers/net/ethernet/freescale/Makefile       |    1 +
+ drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+ .../net/ethernet/freescale/mtipsw/Makefile    |    4 +
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 1953 +++++++++++++++++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  652 ++++++
+ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  120 +
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  443 ++++
+ 13 files changed, 3411 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
+
+-- 
+2.39.5
+
