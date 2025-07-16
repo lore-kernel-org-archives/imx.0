@@ -1,102 +1,250 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011063.outbound.protection.outlook.com [52.101.65.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA4B28DF3F
-	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 07:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752652425; cv=none; b=GB1EfIn1xJEtP7qNw+z/JbByyjaOMnESN/gIn6gUZsHd9I0ASbc5SaJXWJMYhsK2i4qHdQWHRLvtPvyiziiLy+l6hB7AItZdYmekEEE80FSY2pBIVoddOKFWPWJf+PUazWxvJlrdDdpZmARIItPHeZQNAB4bWwKHNLenP4llE1E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752652425; c=relaxed/simple;
-	bh=yQ8W4tKOBbaufyGXUPlSLQSpRGy76Xnn+ki5/AS1c7M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IPcIy8h2odml/m2syBt6gR9O/AHZr2UWtzJqSWQ65r0tGic+ya1tQOih8UqeXk9ztgtmvUulL+CJuyVgc5ZfSV8iUOBWzUEfQWrvp3+O30tx1Yj6CQ6XCt2bTHjaICwQ6qt7p335l0ewf2nVTENS6l2muL0pEIbrtR4a7JLBi7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qz2YxSOX; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFAE28C03C
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 08:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752653747; cv=fail; b=HGlhYd7sAI15PrJh5ZrFi+YJrYTZKWXug7e0PXmH0afsY7wCZHE60Akj2SSq6laZhyXjcp7DbvVgGhYXxL6FZUqwdZRazaQwYv8n9UfYXPPVk1aprO+7kqup0wMLOi40BSu+bGDbjjkUOdft5jBTzrQNSewRFAWaTRk4GySdC9k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752653747; c=relaxed/simple;
+	bh=tYf3JR2Km3p3KzUjs8S0D68gCrlq9iZoAxu0ehN382w=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=E3P6MYE92I+nKBpw9xAD1f0WG9RofHdyR7fW2FpwUinx3xOpkgyE6aIUCL41JnqXkn1k6W1ONh2WPxHiZHgHjL6YPQ3Y/cFcPL4XVdc8i6fyb7N5pDeQZoWybkGnDWSf+/zv5uxAJzW1jO4rYiPVOOROLBBtOR/G4lwU+P+zs1g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=vHNivX5c; arc=fail smtp.client-ip=52.101.65.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qz2YxSOX"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b3aa2a0022cso6404928a12.1
-        for <imx@lists.linux.dev>; Wed, 16 Jul 2025 00:53:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752652424; x=1753257224; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2mQSIMibFZ/TMYlkn3NP86VdyjZyUtByzAEI5AQ5uT8=;
-        b=Qz2YxSOXZJzefJFNt7KwfLLZwlXtvzykHbX5P4DnsBxqoPaOR4J3TmklmVKYWSZE+r
-         tRmTbdq3+S1p18C6uoGyDGZGCj/p2bc0t5Xncn0fyYPeYjOYjW2BJY52Non248K9xFsG
-         bpFuj6TGLNrbIs31GRP2Cpwzmd/dlVeQlkZ129L396RhtgUjdxtP08+eckWdxKwTaAU3
-         C4YY6tBc0iJC3fSOWHWde70b9M9Zcs8bPtHRO4QwcjJY1lpZS9qTUdij9zLePcNFuafC
-         BtKHYHcrYY4F+CCotMo/nQEdss+HAv1Xr+dxdUVH1x0W8Vqy7RbHp97fB9eqFJXUGBKV
-         2CcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752652424; x=1753257224;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2mQSIMibFZ/TMYlkn3NP86VdyjZyUtByzAEI5AQ5uT8=;
-        b=HwSo8C74FsbPjKISOx7aPFjnEbdssHNvpcHL+j2P8scmhT2BQnJw0bgTt9+jj4wB86
-         UDzSeSsdxIv5KD0XV+DfMgiEQmul5W4SQ5OqrYk7ONQ9YygEcwBHA8TgfgH39S++e/qR
-         s0yIkGTq3e2g/B2fTZesmxWqO8KJXjP0vB3TTDFv8hP4+6LPkzRh3gSqQ37HoLDXEfd7
-         DCqWM/ayaU2PT41y13TcQAc92peW84LW0hoQWI23RoDSBsEAuUg/d2DTR+0JyxZJse9h
-         06bfeKSIn8phnaxsu8Fx11jQUNVMjsY9KBTGqg5O7bsVstb3qc5003ZHJnrHFFCvOB74
-         9PCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXrSiLqqK8b5tmY5ck0T2KgiTEeAhZlJ12yLk6KrBBjb8cjHLIX9oJrp44Hw/bRcVPdC10=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyoh+XpyNiN3t2E4MQQgBRrvmxYDEmBjjHnWlC5e7FO/7y+K15M
-	l4MF/oaaJxmpMl5ddLbCzurWd0dYGyY4Yzh2X6e5LQvXKE9br5rdRnrNp6BIc3VyRadD+rVZGb4
-	QDS6Mqmvb8C3+xnawzyCyAo4pG/dNGIz9k4WbXLE=
-X-Gm-Gg: ASbGnctIqlkjhWQZUNTz6BaC8oBgUbwJ6MJSaBauunj0Li2LW7ztPXgGQLEuIoeHLNT
-	Gm1GLGHLLq1yDoYONHPTsJ1uiDKBC1v94xZ8Y6ngw5lDOerFvdPP6OZoYt7PoidVnxm38LZoAF6
-	uKV+1yBmUg53ME9g86yA3D53xzP3qhGdV8bgcEi7CUh8HJpxzp8HCAqAMfAf1jDsrSy/DfBDPyI
-	5oq
-X-Google-Smtp-Source: AGHT+IEXwgMmdV6xEntZIOiDCK4p/KU6t+w3ykBD7q7iq7lKJ8kq6kVxuuaWbxPblQ1N02rsyHmz1iURll1P3lWiuoI=
-X-Received: by 2002:a17:90b:1fc3:b0:311:e5b2:356b with SMTP id
- 98e67ed59e1d1-31c9f3fbc0emr2790269a91.11.1752652423706; Wed, 16 Jul 2025
- 00:53:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="vHNivX5c"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rfXUkNy+eBsSDpKhUBP/ZkvVW+3RXuK57rpXhwFMTqIZhDchxxFAB8JZcEjV/38oLPMRX+iKWbVcAhFNXId71GbnIjsPL8N+IBjgsazvOZ2PLs/5yhWczWOUvEGEAZiTQIP/PcgZLVgLmt5i0AmzYFGNroUKEvNuFHQ1PdgZVl6CLXH9KqEYWYlYYzLS2Efwg07E2j+iuugX8ngIEFH21+7yB5m6IUrXhOYhWM6E4u8wCjrESrLfkN5gU4C9NNGbCtuT0IXJOFJ2x35YjddweX1WVhHuINsgjG6Wki75uXJ1MDaflFuyHax1znngt7GitdD2k7QOZ4lIjVPong78nQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UbEk3r1qacDMzNMTWHkheKY5RFowGhyVFL59+k42kK4=;
+ b=jFzzI+B174bu8b6eS+Fk2vJmSG1Q9FyJVmj0GzwhYEoDNfnaNz2TWk5S0Z/VIUFcKdbXGra4dorTwN7PAdtsojiHs65NJ4sHW2vwgMOI8rmXGEwx3CyNhCdzEsrORVfk/s/dpIqpvaanzBzuPzychzQBFI004W/FgbGAjDu5V96fdhq0WnywKhQuhBhx8GIDNyoboLG048qCxbPzxvtse4IsRVdUfWGSzJU3JNWX/D+B3FrGFmx13iPynAr6SeO4GGk+aUhlD0+222IT+ce88DD9Tg1/nBIK/ADSBeeuS8Dpufdxu1QK7LhTuteiWb0VPmE53Sqi3x7ufqeRLVeJmg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UbEk3r1qacDMzNMTWHkheKY5RFowGhyVFL59+k42kK4=;
+ b=vHNivX5c7u3JLOXIsFyPyPGCSStpOztxjW7rhfUlSHCtQPBC81y+yziVS0Nd1zmGoxdNOq7vD8ew0KpKo2YOb6keerepNgUdnr7eRPb8LJEG7lneBnNZYd6EySCP5YzpVMMCQdVHIY72N6z8oHCkKK1V1JgWJorZFTYGiSklgPkuP96Z/b8Ucd7mA93+FoxxkFjqDDXGixQxpiQw4pPpxitpQ2znQwVh2IyakeTNPCQw50Pktme3PglGweg8sdqpmKRo7nMfDJO/JjBF0b8Gu2mj8HwOUQuDGoLYIrAkG3RItXLJI6yLv4P63qxVBwVgJp9bFDWPJQ7Pon5YoqPZAg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com (2603:10a6:20b:4fe::12)
+ by DBBPR04MB7820.eurprd04.prod.outlook.com (2603:10a6:10:1ec::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Wed, 16 Jul
+ 2025 08:15:41 +0000
+Received: from AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30]) by AS4PR04MB9576.eurprd04.prod.outlook.com
+ ([fe80::9cf2:8eae:c3d1:2f30%4]) with mapi id 15.20.8901.021; Wed, 16 Jul 2025
+ 08:15:41 +0000
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+To: imx@lists.linux.dev,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Marek Vasut <marex@denx.de>
+Cc: dri-devel@lists.freedesktop.org,
+	Frank Li <frank.li@nxp.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH v2 00/10] Add support for i.MX94 DCIF
+Date: Wed, 16 Jul 2025 11:15:04 +0300
+Message-Id: <20250716081519.3400158-1-laurentiu.palcu@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0206.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e5::10) To AS4PR04MB9576.eurprd04.prod.outlook.com
+ (2603:10a6:20b:4fe::12)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250716061114.2405272-1-shengjiu.wang@nxp.com>
-In-Reply-To: <20250716061114.2405272-1-shengjiu.wang@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 16 Jul 2025 10:55:49 +0300
-X-Gm-Features: Ac12FXz2s0GqTrCwZD5uR0yMTDXd0dpIYCyNX1v8FM1fPc4DXQYF5RSC8ANNnPs
-Message-ID: <CAEnQRZC=qApo9C0zBDQoxpV56atLeXpoxZdyBuQ=o2y59YJEqA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] arm64: dts: imx8m: support more sample rates
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	shengjiu.wang@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9576:EE_|DBBPR04MB7820:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99f3bb3e-fb1f-4da7-2814-08ddc440f42f
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|19092799006|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?6niJzhGwsTzFMu/nzLkPBG5ID14L0He4S6hhKSJ2YTdYgWzs9db/Kbs5GVek?=
+ =?us-ascii?Q?w1W2Sf/yAOsyTezX7Eh08ESRWY/kNiL+9NL9vi04lSOQ/la/EQmUi6nFLe5A?=
+ =?us-ascii?Q?5E1vZM03f6kqgZy+RkBO+ngN8hEJ9hFnoc67z43ED9QzhqUOCRvy59tuOSgD?=
+ =?us-ascii?Q?UHywxWdzW/u6ltgmUDETwJtHe4mgTnY116s3Twn6MXFp+zwpdPmRHvuJSD7D?=
+ =?us-ascii?Q?sunTEHwJ6t28Sn6ftvDsvurpNNGA/KxQ8xynwGoatWl57P7/fm8fbJaHWf8j?=
+ =?us-ascii?Q?loRimI6PC45qWkOPNMNkZf1kwWiA+zuMhd8ci7GKf47fBOc7XkUEOcF9s8y1?=
+ =?us-ascii?Q?8ngL1VynvqSaTZ8d6EVLcVLgeNsdutTrzaEvFXJkeBB7sArmEoSsthAstPIi?=
+ =?us-ascii?Q?WpzdOK9yT9GPIdUs5Lz10dOD41mqltUK/gtC1ov0FQAqHFEkjwT1lksb7bPD?=
+ =?us-ascii?Q?t+Dus5ULcNcmcXkHSjJ4nUg6XDnTxpNLXQeBjXcHgUpyQP2jQMbgif2ODc5F?=
+ =?us-ascii?Q?yTSgJUbaCw1PlZyBJygOygJ6EXXZTDBiPggUuj48C1XG9FUzC+jMWqiFax/q?=
+ =?us-ascii?Q?pRp/1LPln9RIKQnefZF3LVuiiT6cSZk19UI3xKmBrpPSbd1/N5iIrdPUC3ff?=
+ =?us-ascii?Q?c2VKb3VBm5WLuNH8GkeONGY2RkzdSig3qaOTPKp0ZXGGop8rV063DeaoMCnC?=
+ =?us-ascii?Q?wKkev0VNLaGLqXB9KlW6q/+XugzHIP0gP+2TQ2QtQWLi4L60v0tt8xl6hRt3?=
+ =?us-ascii?Q?5Dfb93McVsL6LLBRXU6+6f521DfsEH6UGjbr30Zx+WG2q3hZlpyXhso3rah2?=
+ =?us-ascii?Q?sK3sFf9VBtTVgIwnAiWLkbWRlheEYwCmEs0F07VtoipIUEuTesdIGYNOrBUk?=
+ =?us-ascii?Q?6rFZ77jD+YVRa6inSRC2aQZQzHQ39Gbk/Cjmph+U1u+uAxglpdtbOMG5kgNn?=
+ =?us-ascii?Q?Q+yugwJsVjrbea2Z/GNsOXJ/zRBpu+tdogv5no+F+fFbsfwc7K+zcucHzjx7?=
+ =?us-ascii?Q?79VkGGgUWM/L52ggMjnGi5iLn5qdB/TVUPsJoUk1vWFGx1VIzvjvtN8N1y/G?=
+ =?us-ascii?Q?gAisx4h1sf3l+c5DzBr7Pv1+jy4/mn7XkL1utQln4Bqfkz9Zybn0crAmsoeI?=
+ =?us-ascii?Q?R1F+e/Qqz2C5VTr+vxJe4bf6mUw2GU9EN0HcP1Hq1/FCC679GVt2Q3LJxIye?=
+ =?us-ascii?Q?Y6p6KDodQceuOvDayymm7V5qWCxdfpcGINI87JmRhU6XEoXxGbHuiUgePpFu?=
+ =?us-ascii?Q?KgsYcbZ3E5CR+3JZpG0fbZ57JrtuiTix8++CB+n5Xq2tmBVN3oEA2oKjSDxD?=
+ =?us-ascii?Q?WtzpW8KbRgxkoyxYkEYimI54512HLn3H3yBjv8HtDSx5PC57YSoDspzXSUuc?=
+ =?us-ascii?Q?ZWVO8Ai+b7sDP/V1Yi3r/dxMVwG5xlNJXOhp36k8nb1Dx84cd2jLUvKE6Ge/?=
+ =?us-ascii?Q?wEtRVSrIvOiBmLnaN5UbtpUQdlrFSi+trPipgjlgC6wqIbBrdEt0IYkGXaD6?=
+ =?us-ascii?Q?nE8XqgO0uIgDHxk=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9576.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(19092799006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?AfjWv1NcxX1KcrY+U8O4kGHX/9LBz0oZwpzRysnOs8S1LJYlmatIMTm7C9q3?=
+ =?us-ascii?Q?1ibOB6eaYv3SosdC+ulwpkZTY3r/wlb0R7ZR0RwJYEfT33viK3yX3uHbBHdI?=
+ =?us-ascii?Q?BkINFcItFwo6mDLHaPM6wqG18IN2/12yZILAGN4iEx3YMzzCRhDsfljPa5qG?=
+ =?us-ascii?Q?gq9dgOyE3Jecph857ZVSEq6E+VfJ7bzGAEIGdU4Dbqsn+vULt9qoVidObrET?=
+ =?us-ascii?Q?m4xG2R7Z6uJ5QL2T2eD82F86dBHXFSfG0GRF/JPQeRz7LYISk0bo1Oxoz1cX?=
+ =?us-ascii?Q?A5Jq1OD9mKSNz4jh38WabsXRpnOaa/mX8tITvxqzWPyKc+hEP4h/RRBXRFP/?=
+ =?us-ascii?Q?lDXIqUmvwwWZFQ4kqQjN215D/6JGsTmSdTA0qp5ltgdKpG43qZ0fFjk73LaP?=
+ =?us-ascii?Q?gfN7+gdVpcvEhukWHWStgJ2qM6BKj+B6mQCMEXXxTzb0FtNvmr30y6q75cHk?=
+ =?us-ascii?Q?lKzmc4HWN3cDrYwEk+naK+zzRKRsBv4Wx/twQFZHWx97i6UjgzkC4Dh9qtmF?=
+ =?us-ascii?Q?hS6p2LRoxcs2OYYk6xo6AhbsnyCTbdWhbiDq0hcKb6AoTygbn9lf4GqnsO2d?=
+ =?us-ascii?Q?L05sYb36LYNmACYZ2FklfS0q8RgS8zlsdQoo2P/fMwdMb9pqkrurOay3vdO2?=
+ =?us-ascii?Q?VYf0YU7L9gWac0Ged+iIgweS3CqVCxyrxIz+ZLOlDM4CpnmT5KhxbfAyNQLt?=
+ =?us-ascii?Q?X16mNGVHVEbbJLoIKuz1x37ikT/OxIrTKYeRQ+LyyFQeNJPBzQchXvrkJxmO?=
+ =?us-ascii?Q?ZVki9iJwHvOk8Pj9ntYcXAi9NHFaGmD2uyUOcC9prwg7871KHmnX5ovmwbY7?=
+ =?us-ascii?Q?Rz18yIB52o/BY1QfB0hp3UwEYAte+9GtUu1hmV0WJyALWi+oGsJP8jVaIKhp?=
+ =?us-ascii?Q?+1RWusTQmJxUzq8aOMwM8aZA2VgqX1n37VyVpfTMWxii6uRcdLSH4TLgl4Jj?=
+ =?us-ascii?Q?hUFduUNaRHoYoSIepu6DU48QsUy64QqUmMyoeR6aJ52uchxieHsp5/OWnX3I?=
+ =?us-ascii?Q?C/jJnGXaaj4SvU8WkGFmw0zhyqVWuqVBHBEcI8hsDd2RUx3XLaurS23OF+Nx?=
+ =?us-ascii?Q?yTjOUKL/GYY6M9OmwFTrGXAAJApjaoG55ZUdfZtMr9Q52G+P57jaVUvqHzaU?=
+ =?us-ascii?Q?o2noA8U/jRD7wb82SYM92yjOtro17J2TkGf4KZ5ieTE6Twt+zJtUJKqCnP3m?=
+ =?us-ascii?Q?DzLB8PsWw7RKD4O+U2GRAFBZ8g64pLgspdjEBeu/zQAD9IxBtCUB7wZftSYX?=
+ =?us-ascii?Q?X8vFSb9MfDn8WDlFd8bgmfqIkXUsjCZB+TcCJLdSApfUIvMZAn1OlPE6UKHK?=
+ =?us-ascii?Q?ZFxSLRX12gu2EGBBz8f3+/DqXTflawQUnclEDztzkGZZk3e/aAfoqPdm51Zk?=
+ =?us-ascii?Q?OWOWvlvwEViKaZ2yOvduW67Tb68qR+5ffkiBcYHYeTzrgE/pI66MfqIutuYQ?=
+ =?us-ascii?Q?JkjmeksCK4IKJNTV07ulR9IESw+HPEUHHUtWdIr/WByjIa2QtIcYOMPsWUE0?=
+ =?us-ascii?Q?cr0ftbIfWucwKFNU4FHY063c92oDyhKSgqYWLBVHZGmDOBo0SGURyJHgue3J?=
+ =?us-ascii?Q?Zpqbt1l863dHmlR5mMiWP1cQYTNFo5XFfi2MaBUD/VQmI/pVkmFKXtKrvtZ7?=
+ =?us-ascii?Q?KQ=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99f3bb3e-fb1f-4da7-2814-08ddc440f42f
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9576.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 08:15:41.5672
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JJ/AMD7cG467OTOhhLbO5h6cStO8el0MxYgZWPpg10ucPadz3sObokxqKPC6EI+okIH/Q53PbwPA3xfBtNeUdA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7820
 
-On Wed, Jul 16, 2025 at 9:11=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.co=
-m> wrote:
->
-> The wm8524 codec is connected to the SAI interface. There are two audio
-> plls on i.MX8MQ, i.MX8MM, i.MX8MN, one pll can be the clock source of
-> 44kHz series rates, another pll can be clock source of 48kHz series rates=
-.
->
-> Shengjiu Wang (3):
->   arm64: dts: imx8mm-evk: support more sample rates for wm8524 card
->   arm64: dts: imx8mq-evk: support more sample rates for wm8524 card
->   arm64: dts: imx8mn-evk: support more sample rates for wm8524 card
+Hi,
 
-Hi Shengjiu,
+This patch-set adds support for the i.MX94 Display Control Interface.
+It applies on top of Peng Fan's BLK_CTL patches: [1].
 
-I think it would be useful to specify which are the current supported rates
-and which will be the ones supported after your patch  (in the commit messa=
-ges).
+Also, included in the patch-set are a few extra patches that the DCIF
+driver depends on for functioning properly:
+ * 1/10 - 2/10 : BLK_CTL driver fixes;
+ * 3/10 - 5/10 : add support for i.MX94 to fsl-ldb driver. It also
+			     contains a patch (4/8) from Liu Ying that was already reviewed
+			     and was part of another patch-set ([2]), but was never merged;
 
-On NXP BSP you can run:
+v2:
+ * reworked the BLK_CTL patch and split in 2 to make it easier for
+   review;
+ * split the dts and dtsi patch in 2 separate ones;
+ * addressed Frank's comments in DCIF driver;
+ * addressed Rob's comments for the bindings files;
+ * addressed a couple of checkpatch issues;
 
-../../unit_tests/Audio/mxc_alsa_hw_params.out hw:X,Y p r
+Thanks,
+Laurentiu
 
-to get the rates.
+[1] https://lkml.org/lkml/2025/7/7/78
+[2] https://lkml.org/lkml/2024/11/14/262
+
+Laurentiu Palcu (8):
+  clk: imx95-blk-ctl: Save platform data in imx95_blk_ctl structure
+  clk: imx95-blk-ctl: Save/restore registers when RPM routines are
+    called
+  dt-bindings: display: fsl,ldb: Add i.MX94 LDB
+  drm/bridge: fsl-ldb: Add support for i.MX94
+  dt-bindings: display: imx: Add bindings for i.MX94 DCIF
+  arm64: dts: imx943: Add display pipeline nodes
+  arm64: dts: imx943-evk: Add display support using IT6263
+  MAINTAINERS: Add entry for i.MX94 DCIF driver
+
+Liu Ying (1):
+  drm/bridge: fsl-ldb: Get the next non-panel bridge
+
+Sandor Yu (1):
+  drm/imx: Add support for i.MX94 DCIF
+
+ .../bindings/display/bridge/fsl,ldb.yaml      |   2 +
+ .../bindings/display/imx/nxp,imx94-dcif.yaml  |  93 +++
+ MAINTAINERS                                   |   9 +
+ arch/arm64/boot/dts/freescale/imx943-evk.dts  | 123 ++++
+ arch/arm64/boot/dts/freescale/imx943.dtsi     |  56 +-
+ drivers/clk/imx/clk-imx95-blk-ctl.c           |  51 +-
+ drivers/gpu/drm/bridge/fsl-ldb.c              |  47 +-
+ drivers/gpu/drm/imx/Kconfig                   |   1 +
+ drivers/gpu/drm/imx/Makefile                  |   1 +
+ drivers/gpu/drm/imx/dcif/Kconfig              |  15 +
+ drivers/gpu/drm/imx/dcif/Makefile             |   5 +
+ drivers/gpu/drm/imx/dcif/dcif-crc.c           | 211 ++++++
+ drivers/gpu/drm/imx/dcif/dcif-crc.h           |  52 ++
+ drivers/gpu/drm/imx/dcif/dcif-crtc.c          | 695 ++++++++++++++++++
+ drivers/gpu/drm/imx/dcif/dcif-drv.c           | 282 +++++++
+ drivers/gpu/drm/imx/dcif/dcif-drv.h           |  87 +++
+ drivers/gpu/drm/imx/dcif/dcif-kms.c           | 101 +++
+ drivers/gpu/drm/imx/dcif/dcif-plane.c         | 269 +++++++
+ drivers/gpu/drm/imx/dcif/dcif-reg.h           | 266 +++++++
+ 19 files changed, 2314 insertions(+), 52 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/imx/nxp,imx94-dcif.yaml
+ create mode 100644 drivers/gpu/drm/imx/dcif/Kconfig
+ create mode 100644 drivers/gpu/drm/imx/dcif/Makefile
+ create mode 100644 drivers/gpu/drm/imx/dcif/dcif-crc.c
+ create mode 100644 drivers/gpu/drm/imx/dcif/dcif-crc.h
+ create mode 100644 drivers/gpu/drm/imx/dcif/dcif-crtc.c
+ create mode 100644 drivers/gpu/drm/imx/dcif/dcif-drv.c
+ create mode 100644 drivers/gpu/drm/imx/dcif/dcif-drv.h
+ create mode 100644 drivers/gpu/drm/imx/dcif/dcif-kms.c
+ create mode 100644 drivers/gpu/drm/imx/dcif/dcif-plane.c
+ create mode 100644 drivers/gpu/drm/imx/dcif/dcif-reg.h
+
+-- 
+2.34.1
+
