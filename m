@@ -1,108 +1,173 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E0526FD8E
-	for <imx@lists.linux.dev>; Tue, 15 Jul 2025 22:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319E22566
+	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 04:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752617825; cv=none; b=oFm3WN4h7Q2xJKiAlaIfSysws6GBDhCdMm2vsb76fGpes0YpFvFap8r0lHAMM01/nhFTUMyZsLkWUyS5qRVcxgdWppHYIIwlnDBf3vwf2H0XOPRUnJtZ8DuXdaG34zgyBwDp0gI2sqRjoNlerqi3PPGx4s0tXtfQ4HEi1eNUAmc=
+	t=1752640055; cv=none; b=LOI383soLGhguaJz8BZTAzlAJWdIAqZ08e6oZ0GU8S3R2alu14vDoaWZcvRInNiivRh49BL1TgCs6cB1oyR6bLk9nfAC3eT7wiA9/gQW7HKiqfPthnNYrCh+HW5dYgK/Xxeht/ys5RfbEy9+1fjuy2cWqEfr791BrGHG5HMygjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752617825; c=relaxed/simple;
-	bh=tMdoZBivQy3B+NItaHwOMyR9RE2Vd3YaDfvRU31vZT4=;
+	s=arc-20240116; t=1752640055; c=relaxed/simple;
+	bh=gYSJxs1CnBdNF+UKOy6bV8DYyOv8fBWKv4zRjZwmbRI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tb2o1I8a1BFg+OF5wMvm1CVXLULooBoI5raTr0svrJQpROobR6SmfndU3nqkrbsKexTlUE/ZIfdcchQPaxEIuLINiI4ERfSScb8brVUBkvDLihSoEJ3RQWmvtnONL8d4/k31Tyb8vTdwp+GjK2gkt0QwlmUKRfv1oxbX/HNMIIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=c3NmuSVo; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="c3NmuSVo"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-748e81d37a7so3636213b3a.1
-        for <imx@lists.linux.dev>; Tue, 15 Jul 2025 15:17:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1752617823; x=1753222623; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T/kIrHiKONJdy5Cuneuwy/QdepmnycAhgTTDDzUGMMs=;
-        b=c3NmuSVobx23h8/KKva8XHKewh6S9xg2Yh/ebnufgF0TiQJ3Hs0pJdt44muDxTi1Hu
-         P775m5X7y3tyDJTxvaKrn7VHTzTUHDTsuqRCgc7uVXc/WqtC2+fO3rWjVClORdP5mWJc
-         ZqQezOW3EkSdO1HXUluQZMzintV9ZuIaVTScU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752617823; x=1753222623;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T/kIrHiKONJdy5Cuneuwy/QdepmnycAhgTTDDzUGMMs=;
-        b=C4gT3K4dKJxuBNdMbBhWG0n83QBHP09dDlvUWoNsrMZR3i1/qpMZTYNeclgt99gsWC
-         6dHinSXPr0QKwLt880wG+zdfcuupCNbxn1vGtEsEYgLuryA4EDov3tciN+HdVaGKX03K
-         U3cu0lDylj7ms2nf3ZcVRrVgEhvoTYsfHrixJ3eV9oJUUVF1y+gMYosQRQKRn2Tznj4o
-         67BuOWK9UmZJziqNPxeam6l7YqaIZzEdHFgGF4GoaE7o4nQJURe1nYjjGIngJM02n1N8
-         TtYp4YLJBqgCiJDp1aBmhgIu0Mpa3mmWHS26B1KVGwLdai49kwyofaN+Sn2tx7slPNXy
-         4fUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKnj8P4vOzMbS4uOvL+7AglfcOxIOwtTnYzesKaX6yr+l/IAs81BwDHCdVBUWjan/my18=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzJxKXv8vag9uZbqpJrPNIRu4Zenj9V3hEQ2+jDTOtU74pke0ZP
-	i9Lp0sxxSR8zv+84S2rWutgKL+I6+E26avXh6TB5eLuqD0cQUpJ/h1ILtyzoS1MKZg==
-X-Gm-Gg: ASbGncsW9pji/g+SU+HAeK/nZ7ixcznefAxHIcxJbtO9wyy0CvTF6gUP7fEuyrZQnD8
-	7uYfY8vMDewzrrmI+Kcm8RbDxBtSv+6194FouNVRy+vm2KXK9CPD2batOQejhW39V37Wq4CluwY
-	5tdVzyzeeYNK1dNVnZDtJStP7pXEreMZgdxB7OHJRGhuZVR6Mh112YkVxtDxh6kokWTi1BIR9k0
-	z65w8T/Pah7BQKrxDtiCLuF+V//LehNjlqVrTR6lWtYHHRQ9iCUjpec1GXB+HOKDLYx7PG0akEE
-	zFxpDoGy6upMdzSEfOXez6cmZOyJv3ydpcntxpFECZ5Yb3sMPWRUAXYIP0yf94gY1s0WAD25d4W
-	NsubKao5UQR6q65cDNwbCAOOoP7+Ye7Qs3Q/z8gRL1Up3GaCAc0aElzRxo+Xf
-X-Google-Smtp-Source: AGHT+IEi35Q/9L2R45q9+Ckvy4VlsxjWRECWaXaVKZkJ79j9LtzQTdHiPF2AYMs8Ki3dyCacVtaadQ==
-X-Received: by 2002:a17:903:1c1:b0:23c:8f17:7f45 with SMTP id d9443c01a7336-23e24f70e34mr8439895ad.50.1752617823417;
-        Tue, 15 Jul 2025 15:17:03 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:3478:49c2:f75d:9f32])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-23de43352b5sm114969135ad.165.2025.07.15.15.17.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Jul 2025 15:17:02 -0700 (PDT)
-Date: Tue, 15 Jul 2025 15:17:00 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>,
-	Minghuan Lian <minghuan.Lian@nxp.com>,
-	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
-	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
-	Rob Herring <robh+dt@kernel.org>, imx@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Subject: Re: Does dwc/pci-layerscape.c support AER?
-Message-ID: <aHbTXCYXbxLSQhgK@google.com>
-References: <20250702223841.GA1905230@bhelgaas>
- <aGW8NnHUlfv1NO3g@lizhi-Precision-Tower-5810>
- <aGXEcHTfT2k2ayAj@google.com>
- <aGc666o3EgtXQMGN@lizhi-Precision-Tower-5810>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bn2RP3TZfCgjtgGconwhsJwQCLXJ0xtYPlwjLSo4fKVuAK6rSWM0AI45d9Ga67UCrtwDJ+ZP7TI/SMjKE2zWF51gJd+rOX+Sq1aN5S4Nxem2roMQSEQHlyJ+sqKLpoDMq67MfwmhJaBIXY+VsqxCxCF6EEAySf+Ni5aNuTYOLxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-669ff7000002311f-fe-68772a2f6dda
+Date: Wed, 16 Jul 2025 13:27:22 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: Mina Almasry <almasrymina@google.com>, willy@infradead.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kernel_team@skhynix.com,
+	ilias.apalodimas@linaro.org, harry.yoo@oracle.com,
+	akpm@linux-foundation.org, andrew+netdev@lunn.ch, toke@redhat.com,
+	david@redhat.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+	vishal.moola@gmail.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	jackmanb@google.com, wei.fang@nxp.com, shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com, sgoutham@marvell.com,
+	gakula@marvell.com, sbhatta@marvell.com, hkelam@marvell.com,
+	bbhushan2@marvell.com, tariqt@nvidia.com, ast@kernel.org,
+	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
+	mbloch@nvidia.com, danishanwar@ti.com, rogerq@kernel.org,
+	nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com, sean.wang@mediatek.com,
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+	aleksander.lobakin@intel.com, horms@kernel.org, m-malladi@ti.com,
+	krzysztof.kozlowski@linaro.org, matthias.schiffer@ew.tq-group.com,
+	robh@kernel.org, imx@lists.linux.dev,
+	intel-wired-lan@lists.osuosl.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net-next v10 02/12] netmem: use netmem_desc instead of
+ page to access ->pp in __netmem_get_pp()
+Message-ID: <20250716042722.GA12760@system.software.com>
+References: <20250714120047.35901-1-byungchul@sk.com>
+ <20250714120047.35901-3-byungchul@sk.com>
+ <CAHS8izO393X_BDJxnX2d-auhTwrUZK5wYdoAh_tJc0GBf0AqcQ@mail.gmail.com>
+ <9bed2f6e-6251-4d0c-ad1e-f1b8625a0a10@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aGc666o3EgtXQMGN@lizhi-Precision-Tower-5810>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9bed2f6e-6251-4d0c-ad1e-f1b8625a0a10@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUyTVxTHc5/3dm3y2Dl3lZhl3UTHNpnOZCd7CyNZ8vhhyab7MrfomrWj
+	zQqaIhVMNhl0WyCKRDQppWjRIi0Yq2V9mRTUwpQpm1igqxSogmNMimwopKUM1paY8e2X/7nn
+	/M5NDkfKPMw6TlOwX6UrUGjljJgST0kaXs3OOqB+bT66BcyOcwzcftRAQ0usGJruemkI2DG0
+	9cYIMDe7ETyOh1lwVgyR8KjrOgNnGuZIiF84QoH5loGCWcc8CX9cG2Wh2/8vBS3ODyBydpwC
+	3w8eEjpnN8Do0W4GjhgSJNSOfMfA0mCChvb4QxbKvDYC2iddLPS6q2g4Pt9Igqf0btI1FqSh
+	75KZgb7y2whGzi3RMO5PCqO2IRaqWkwI/JftDJQZXoeo6zELf5/oIiFSlQOLRj1cs6yBuZtR
+	BOHGAQKWfF4Wfhs5T0OXw0NA/704CXOH6xmonDqKYKD2EgE99RdosN7sJ5J77ITg0gIBNQEL
+	A2OGCIJA5ygFdd9WIXB0hGj4x5f8ciJmZnJyhc7oNCl4h61I+NF+hxAmqhcJIdRxgxB+Mg2z
+	gsVZJLTasoQzvr8IoTIUIAVncwUjOGeOscJQ0McI3cYEJbRaDwkTrbXow/W7xG8rVVqNXqXL
+	fvdzsbrj1J/0vlJcHEtoStGArBKJOMxvw7GJq8wTdlhOpJniN+A7MzaUYobfiEOhOJni1fzL
+	ePJ3P1uJxBzJN0qws95DpQpP80X49L1QmqU8YINhMt0s48MI91k2Leer8C+199NvyOTQhZOB
+	5FAuyRm4aZFbjp/D5a66tEvEv4NdZQ+JFD/Dv4CvuK8TKS/mZ0R4uqeUWF56Lb5qC1HVaJVp
+	hcK0QmH6X2FaobAgqhnJNAX6fIVGu22zuqRAU7z5i735TpQ857NfL3zqRTO9O/2I55BcIvW+
+	pVfLaIW+sCTfjzBHyldLawLJSKpUlBxU6fbu0RVpVYV+lMFR8melW+cOKGV8nmK/6iuVap9K
+	96RKcKJ1pcia+WB0Vpubt2vP/QdBYVhysfuNNsWv26vh2PqePLu95vm1p7xPRSYG14Tf049/
+	PPb+0JubKozHRcVTmfzBSeUrkZL+nKbz7T5jblCyMTrodp+2ugDteMl3kj9sfPEjVvx9+ZUO
+	bjozY+utz8KHsnfr6768Eb38c/v2TyxK9psK1CanCtWKLVmkrlDxH0J4lOfKAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUxTVxiHd+65XzTU3FXEI2Zb7OYkED8WNHkTcSHbMu+27CNbsi3GRBu5
+	2mqpri2Vmpgx6FwgE93AhFZwdXxYwFhzEehcZa4QxckmtsCqfGlR5wI6kUooIOwWs4z/nvN7
+	z3l+7x+Hx5oyNoU3mKyS2aQzalkVrfpgY+HqtWn79eui/UuhwnuahevjJxlomMyDU7d8DATr
+	CPzcNUlBRX0zgmisjwO5qB/DePtlFqpOTmCInT1MQ8U1Bw1PvFMY7l6KcNAReEpDg/w+DNXe
+	o8H/TQuGticrIXKkg4XDjmkMzsGvWZi7Oc3AhdhDDgp8HgraKq8ox5EmDrqaSxgom6rB0JJ/
+	Sykc7mUgdL6ChVDhdQSDp+cYuBdQWkc9/RyUNLgQBH6pY6HAkQGjTVEOHh1rxzBUkgWz5Ta4
+	5E6GiaujCPpqeiiY8/s4+GPwDAPt3hYKum/HMEx8W8lC8YMjCHqc5ynorDzLQPXVbkrZ4xPo
+	nZuhoDToZmHYMYQg2Bah4fhXJQi8rWEGxvwOOutNsW30Hyz6BqqReK7uBiXePzpLieHW3yjx
+	J9cAJ7rlXLHRkyZW+f+mxOJwEItyfREryo+/58T+Xj8rdpRP02Jj9Zfi/UYn+ujFLarMbMlo
+	sEnmta9vV+lbf/iL2ZdP8ianDfmoR1OMEngirCde9zE2zrSwktx47EFxZoVVJByO4TgnCelk
+	5M8AV4xUPBZqEolc2ULHB4uFXPLj7fA8qwUgDsfI/GON0IdIyJ36LH+eXHHemb+DFenMiaAi
+	5RVeTk7N8s/il0hh0/H5rgRhE2kqeEjFeYnwMrnYfJk6iha5FphcC0yu/02uBSY3outRksFk
+	y9EZjBvWWPbo7SZD3pode3NkpPzV2oMz3/lQNLQ5gAQeaRPVvo02vYbR2Sz2nAAiPNYmqUuD
+	SqTO1tkPSOa928y5RskSQMt5WrtU/e5n0naNsEtnlfZI0j7J/N+U4hNS8pGVHX70+ZYZ3QhV
+	68ObMvyryj1Vb4ecv+7Yf3Aq/c6KVGvDh/VlznGjnPhG5oD9i+e6yQpTZ7bbcPFAbU80JWqW
+	TW+ZF1nVO0ufjm0NLDux+b2IPTMjOakrMnmNXUc+TX91YNmSVzp3bsgae8H9sb0oVdx9SJ91
+	ZnXp+oR3Dl34PfmBlrboda+lYbNF9y8C3OucpwMAAA==
+X-CFilter-Loop: Reflected
 
-Hi Frank,
+On Tue, Jul 15, 2025 at 11:37:45AM +0100, Pavel Begunkov wrote:
+> On 7/14/25 20:37, Mina Almasry wrote:
+> > On Mon, Jul 14, 2025 at 5:01 AM Byungchul Park <byungchul@sk.com> wrote:
+> ...>> +static inline struct netmem_desc *pp_page_to_nmdesc(struct page *page)
+> > > +{
+> > > +       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(page));
+> > > +
+> > > +       /* XXX: How to extract netmem_desc from page must be changed,
+> > > +        * once netmem_desc no longer overlays on page and will be
+> > > +        * allocated through slab.
+> > > +        */
+> > > +       return (struct netmem_desc *)page;
+> > > +}
+> > > +
+> > 
+> > Same thing. Do not create a generic looking pp_page_to_nmdesc helper
+> > which does not check that the page is the correct type. The
+> > DEBUG_NET... is not good enough.
+> > 
+> > You don't need to add a generic helper here. There is only one call
+> > site. Open code this in the callsite. The one callsite is marked as
+> > unsafe, only called by code that knows that the netmem is specifically
+> > a pp page. Open code this in the unsafe callsite, instead of creating
+> > a generic looking unsafe helper and not even documenting it's unsafe.
+> > 
+> > >   /**
+> > >    * __netmem_get_pp - unsafely get pointer to the &page_pool backing @netmem
+> > >    * @netmem: netmem reference to get the pointer from
+> > > @@ -280,7 +291,7 @@ static inline struct net_iov *__netmem_clear_lsb(netmem_ref netmem)
+> > >    */
+> > >   static inline struct page_pool *__netmem_get_pp(netmem_ref netmem)
+> > >   {
+> > > -       return __netmem_to_page(netmem)->pp;
+> > > +       return pp_page_to_nmdesc(__netmem_to_page(netmem))->pp;
+> > >   }
+> > 
+> > This makes me very sad. Casting from netmem -> page -> nmdesc...
+> 
+> The function is not used, and I don't think the series adds any
 
-Thanks for the response.
+That's whay I'd been keeping the patch, 'netmem: remove __netmem_get_pp()'
+until v6 [1].
 
-On Thu, Jul 03, 2025 at 10:22:35PM -0400, Frank Li wrote:
-> I saw AER and PME irq registed. But I have not seen irq increased. I am not
-> sure how to inject an error to test it.
+[1] https://lore.kernel.org/all/20250620041224.46646-7-byungchul@sk.com/
 
-I've tested AER-like conditions via one of two ways:
+However, as the following change log described [2], I excluded the patch
+from v7 since __netmem_get_pp() started to be used again by libeth.
 
-1. force asserting PERST#, and then try to read a config register. This
-   should generate Complection Timeouts at least, and possibly other
-   errors. This method may not necessarily yield AER logs, as it may
-   also reset the error reporting registers that the Linux AER driver
-   would expect to read. But it probably should still trigger an
-   interrupt.
-   This depends on having access to PERST#; many SoCs provide this as a
-   GPIO which you could potentially control, although I don't see this
-   in the layerscape driver at the moment.
-2. asserting HOT RESET in the DWC controller. This is especially
-   implementation specific, as it depends on how (if at all) the hot
-   reset signal is connected into your SoC.
+[2] https://lore.kernel.org/all/20250625043350.7939-1-byungchul@sk.com/
 
-Not sure if any of that helps you for testing. And maybe you want to
-wire up your platform IRQs anyway.
+> new users? It can be killed then. It's a horrible function anyway,
+> would be much better to have a variant taking struct page * if
+> necessary.
+> 
+> > Instead, we should be able to go from netmem directly to nmdesc. I
+> > would suggest rename __netmem_clear_lsb to netmem_to_nmdesc and have
+> > it return netmem_desc instead of net_iov. Then use it here.
+> 
+> Glad you liked the diff I suggested :) In either case, seems
+> like it's not strictly necessary for this iteration as
+> __netmem_get_pp() should be killed, and the rest of patches work
+> directly with pages.
 
-Brian
+Killing __netmem_get_pp() would be the best I think.
+
+	Byungchul
+> 
+> 
+> > We could have an unsafe version of netmem_to_nmdesc which converts the
+> > netmem to netmem_desc without clearing the lsb and mark it unsafe.
+> > 
+> 
+> --
+> Pavel Begunkov
