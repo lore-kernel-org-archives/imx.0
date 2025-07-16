@@ -1,226 +1,169 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013025.outbound.protection.outlook.com [40.107.159.25])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0295C29CB54
-	for <imx@lists.linux.dev>; Wed, 16 Jul 2025 19:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752694111; cv=fail; b=EqCW1wjmNA7Pi2a1PooFnN33RNGvOtXdviyhsxMDYDzIn8Jz6nYDTsw1n4xzWhmv6dC/cCm8DIm+ELFBNjYsGPWiURBgpCniWUTyownD1YFTEMqSJi7mgLLn9FI1+U7GOV2xgb3EcbsjAHgQZH17+BXiTVllXRCweODQkL3kEVg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752694111; c=relaxed/simple;
-	bh=7Z9AM10fAOA/5764v/NUqJiwpL/xYXwYgUIHjYhQppU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=c3ik7F8bVlBA3H3RdRdDsfnrRNB7hSHy92Ju+73q2VpFZmqHkJaG0cOuRWzVTt11PkXe8AMql+8DO8D6KZMl8dh7oGAFWr40ywcC0vvzix2AW5YUGlXz2ZNF86bHoRNQ6wvn137UsNxoPW4DJZVL9eZWVNEUKCU9Ka8w7qalXHk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=buJTPI9T; arc=fail smtp.client-ip=40.107.159.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C8A2BDC2F;
+	Wed, 16 Jul 2025 19:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752694863; cv=none; b=HwbrNPj2RwPg7CNZ37HwMUSW2iSMq5pM9g/52kC+Ad7HhudE6yyciZHctU2mcOLHVkYBva0sYP0uonnD468wwl7kqfzBYbLlXyXwQFKFurgEXhry+Pi0tGKGCacpj41R20WvU+8PjcD1QSOecKcn8YI3aanel6v2x5qxPNj7wVE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752694863; c=relaxed/simple;
+	bh=M2KuzF6vIbgB5dXebMK4tiV/bNRjr4BLnLT0FT7VmS0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gckmI0DbEEk0s552sRHTMpbmbcR5wCk4PxycWXhOOve29Vn0X+A/Ol9RbFTxHU2WtaeToY7SB5Vy0Mcc2/KwpycnEsxy+iHLq79iYSXV85A8c8+3IXFdirRXtpPAfTlWFEZou/tvp1Ts2JBMBWS4FOaE9HiKhSDRi/10A8clIQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XamKL9rm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="buJTPI9T"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Db+MiDqudUsoxAerVsjV48UN20VDrRDHybL5CKt6J4csDqsUz1f8fWyRcvFH+k8tfuZWB5RgsDuYy/rCJi+i5SpImiOZ7iumUrgpI/k8Fui0AhuSMp+nUTzINjKgmmeP8hBlXmO97p9xuev9t4HIkzX2eILW/AE9XOcsya0vmjDhicQBOrCJfbDC2S729w4Q5DteIOwGFHzV8WANfjef62L+c1LMterIhn6mKyHLgA8VBOowB9m6lJVw+HEsjPvncB5meZAX0m57Pu3a7knbuW81u3ByYpTMwAa5svAhtJVclaj5brAjS1QR6hUZdi1AOvgZVZqusymdMoQ2phjJGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vDxKg1c4cwCtfQb1Ki5h6PYtrIdWfZLJNsRVOBE2c0E=;
- b=I1uLxK1CihgvoS1Ee50we7ffzeFXg7csr9hsj/TwC+clUeZ7Zn+kr6Gsr9NNgkZA6ybXpXZdwCXb61PngSSjeTehTjtmQ7RVk2peYAc4Df5NwL7XYvxNxZRIC8Zwx6p0QeBEUn2PWz+XraWl8AksA2KJT5mZ9c3Lx0YaF9R6PmsHRjMj48y1jjRdzg2GZLj9g9vEpFfzHQTM4Ya0X4W38CylTduorTQ2tX92Bt6r2+rDf8K0/+i+gm+kgZJRH1T/ps8qViUDs5Jak4AHWK34KzHQVN3OvqJZ0h4Elygo3Qpt0reNF33KfCkOzPd/pQA9DrPO6KUCVabDTApHlnVG+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vDxKg1c4cwCtfQb1Ki5h6PYtrIdWfZLJNsRVOBE2c0E=;
- b=buJTPI9Th/3bpqhIwA6zAlFiOI1tEmH3yWtJJqtWAz2IYpN5wf3ylq0Z0PeViu2pkzdxr0dlTMo3ns4SjNC5Uu078goP3tWoCWXyn8sxTie1QdBuzZoxIzDRVcGcmrUEDmEWmmNDh++XJefqJmye8M5Mr7m5z2PFnvrJbin7/VsSpNv5bEob1bT8zt+okhIMFDsE0c1cOgDAwJ/4xMahgRuI2G18MqSE+a/XVnPk6q2F/yAjjsWZbdVpAhSXjcg+xNpGbsN7ylCGCmwBMHctyhIl6gC4nr3FkI/JDH+UQ/EE60we0TVxwvG83+W/dS8GKxUIaIs3U+wi/GPB97bNoA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by GVXPR04MB10022.eurprd04.prod.outlook.com (2603:10a6:150:11a::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Wed, 16 Jul
- 2025 19:28:24 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8922.028; Wed, 16 Jul 2025
- 19:28:24 +0000
-Date: Wed, 16 Jul 2025 15:28:17 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	richardcochran@gmail.com, claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	fushi.peng@nxp.com, devicetree@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, kernel@pengutronix.de
-Subject: Re: [PATCH v2 net-next 02/14] dt-bindings: net: add nxp,netc-timer
- property
-Message-ID: <aHf9UfUQggd/Oxh/@lizhi-Precision-Tower-5810>
-References: <20250716073111.367382-1-wei.fang@nxp.com>
- <20250716073111.367382-3-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250716073111.367382-3-wei.fang@nxp.com>
-X-ClientProxiedBy: AM0PR02CA0022.eurprd02.prod.outlook.com
- (2603:10a6:208:3e::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XamKL9rm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FABC4CEF1;
+	Wed, 16 Jul 2025 19:40:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752694862;
+	bh=M2KuzF6vIbgB5dXebMK4tiV/bNRjr4BLnLT0FT7VmS0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XamKL9rmdcIW/EAJ4YAqEzfiVfEqMTRi0giaWE09F0iyy+2s6PclCdyDAgO12tPFe
+	 MUUkdy7Cj/M4iEbItuOBdvDhj/+iRvb3iKRa7bBmQyo+WhC8f+qup6WQemR7F8arRj
+	 NkMGc3xTmAKjf8OaBIGNU9Q32BJWJRqWilqN4grXJXFHmzDgZp6LqaizJnDMl8M3Yy
+	 jkLHTicWQhEWuBzMhQc/XD9dxCLKRx9WcvNuS4hUZzU0xGFxyd3Y3p+zNJZu0ywP//
+	 Ko1gvP/W4PkAsQfdBgeYrLUZ1HbWae6USIMtOL3P+cQUWpXIFO/wMMhqxfSxCPp9RA
+	 OfyO4Y+NI7ZJA==
+Message-ID: <35207b9f-fe61-4e6f-8eb8-26a6d1477596@kernel.org>
+Date: Wed, 16 Jul 2025 21:40:56 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|GVXPR04MB10022:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6956d8b7-fb66-4e6a-fd66-08ddc49eee44
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|52116014|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hEXXrfOgKrgQqSQps4x7RaOOK29zReKAeXjrq0Bc7WrfqVJaVTOin+lAVytP?=
- =?us-ascii?Q?sgJTJ7dt6FNgXyEohg5dQujpBEI2UD4AALcb+aXv5d1nRSZGwldmsGTp45Is?=
- =?us-ascii?Q?I6TjSMTc39Wma4IbN4dy9JPH19Mjd7mwGf1Zb1qndNAkzG10wqLyF+zFRzUq?=
- =?us-ascii?Q?CRVRgy+B3jW7Cq3Ja7mdALGE3o4/p7p2RRCwgMsu/m01fALhoroGfKJJnL1s?=
- =?us-ascii?Q?mR6sU4tGFMkfWwxb0bPj7a7iLPyC5mzjYYPy0jSW3wlrPJVjmNowkeyWZbiZ?=
- =?us-ascii?Q?rAeA04RtAkLBy5hCVM0spa90alhr//BiNRTgLElnXGbxIM4h+C2VRkqHN4/y?=
- =?us-ascii?Q?6dkobRPVtp0njP4JZjVSlcIPu8mDtGSChj4v96sf0Ma86l7XiXK73zm98/V1?=
- =?us-ascii?Q?/Cm3X5bQxGgm103/Kwy+NVV4if8RWm1zyJiebKvGGCeRWXSURTsLLiqGlvjB?=
- =?us-ascii?Q?kPrPGUiQowuc7p/hdzYqSdIzZW0TIYP93efE6Jtqn2GsXQBbjrch+R4yK42t?=
- =?us-ascii?Q?KYi8bccyaPmtCXN37HySK7fi9so8sEbiU0vj+IsgNMVBVALFMOaE3ZwF9dEe?=
- =?us-ascii?Q?7vfVRZRdAtUztijHgYz0Mudsv/OalCT57pBCtTWWHTSnAWSBJUgm8WuCO/y0?=
- =?us-ascii?Q?a9NfX95e3Rg1xQ2hw4bmGCWIA8gpQMeMO+lFmHVvDbu2D4MrW1oDuHyAVDx5?=
- =?us-ascii?Q?dc5QwY4VnhGVDwa1iv4xXPSa66wYXwBSRN5eL6NooWu3aZcyOewXLIeQSlnf?=
- =?us-ascii?Q?57u8uE+zr/dS/lUYqotndTcwGwHW69gtJLIgom7uCI3qbJ4ni0ZBgp9HDwcP?=
- =?us-ascii?Q?Yc67VPqcvo5VcgnJZhaxU+gfG63BEHJ6HXUUzkIwiHh9zr/viyYvEGnKn62J?=
- =?us-ascii?Q?bWW+qYN+bgSXpvDLlR9HIfirZz/4gJ1zjACCvPyh883dub1Wh/5RSoNTpF+a?=
- =?us-ascii?Q?Lk1teuNxicwxMjAZ9mpWreyb552Jja0ymDdc1BGbEQdFMlNouzfwSYn8TEz8?=
- =?us-ascii?Q?OZ2EWNp39KpFBlisMCHsDFFegpCdT1s35q0jn0uUDsVvoLLqYnxQ2RVR6vdt?=
- =?us-ascii?Q?2mM4I7peFFi9eEZZe2YJ/Z2v3cvyguIJz72cvjNJmt9UDqBL2sBrX0TQ0ucb?=
- =?us-ascii?Q?8miN8y8VCvN/0NJAEJb2+yp3g0UOXvDxTb0Pa5CBP1H9x0IrHL7CYTnK6Z74?=
- =?us-ascii?Q?idxNHDBtw4In4TOOVkTxWr+dD3BezU1ZhTLFth0EFMlmQyUug9RUiupPBxWp?=
- =?us-ascii?Q?AIE/1DpS2ugAhET75rTBdfdrkn33OPkmnYdooh+ytWDbnjloib8Y3XG/7HTD?=
- =?us-ascii?Q?s5L5rzMcGRJF6ikyZioWD0PuLuVoWycB0VitD7po+VB4yH1WIV02vfCGi36t?=
- =?us-ascii?Q?cWeSGUu7u+IkSmG/Z4xUwKo/yHs5ph7ms3fHvFuuJyJfo+Cy5mcLic8pF0DI?=
- =?us-ascii?Q?X7MQTgOcNJ2b2Yd/thkJOr05ZSzlbDzHYpQmJUS/5mByqHAhOUHbtA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kVXlebX2iFpm5MPAvsD9Wmg5rnPvuaLisZAbx80GRrRkiK7fpnRJxYzN6HdA?=
- =?us-ascii?Q?T92dZjAYAOPYqLzGAteqkneDZ+xANYcyiLUUKaOI/GIUXN7zEvopK4Qp6MmT?=
- =?us-ascii?Q?2hT3B3Iv1mgpy5SzMGFYELTWKjESWC7NqvBiwwbh/iC/XwPHU3LQUcsGpKv0?=
- =?us-ascii?Q?DJHzV722I3yB3evPIf9Jrj8nFL4mGwSiHccEnQKpQs8bME6T9sLWUBzCYQSC?=
- =?us-ascii?Q?mQx1NL72TP/AKtE21+FnUBIlHTgiANWddCDQQlXEU7Mc522tiNVawOg7/jmM?=
- =?us-ascii?Q?ixYd8tiJIlkp1blPQsMyX6r4A07WA+9LOfLxTpCfvX8cA3Oftet63Djsiv7B?=
- =?us-ascii?Q?G7rCC4AEpMj7qOPyVo9i8uEU8s2oiqYlXvXIpdrZxVzJEOCpKI+Edo+TCrcr?=
- =?us-ascii?Q?sLgSRqmY/jscnK3bKx0v2OeD9knMpK7DPNN+74Qv7lOASvtj3UJB0K/Xs1tl?=
- =?us-ascii?Q?ztWo7f8GWgUgrTm2xWChIeIiWHQvEV9PzgBdsDSNmnmKln5QNjDNPK56JyNS?=
- =?us-ascii?Q?yy7dqkq3PmlprbRHj1RAUegcWdlgehYv9Si8eREgK8UrLsImh2OTe3AoW5j+?=
- =?us-ascii?Q?BkIYFKZ3f+ADmhAH0xqzRS6+wQLCA9cLU7GYBy/qxJ0lHWI/OozSYa+Samu+?=
- =?us-ascii?Q?N7jAMdivqL6xiHgWPxEp4cuXF7NOPH+JAQtE55pOPSQ51YfHyjKBGjBkbTx0?=
- =?us-ascii?Q?8PRp86HyfuSGWSwUoVMnAGzELy2d41Z3ov6AqxR9c78JFytoEbLFHzYICSUj?=
- =?us-ascii?Q?dDKUC1JYYI0AyZl+f4PS2tjDEU9v+cs2ENQ3JIGoCs/ESGv90SZ4mQoup/ew?=
- =?us-ascii?Q?lbyFPI0dqCsoJySpJLBPXNfwEo48RoFpa04OXk4gtNo1698+EN0DHIrpKfL+?=
- =?us-ascii?Q?CpgcyFhtlDmcrV2lwgExsAtmFQhvFTFdpQ98xxPPHREU9WlBs66cCXlctMvR?=
- =?us-ascii?Q?tMBAQCVIKNpzt/Xexz+zxwqQ6LK/XM73G0eng/W29KpI7XVrFjFlre0Umu29?=
- =?us-ascii?Q?x1pcvdY0T5Ow+R8bFg+VeHSzgqQ0eqSt8y3GRl76kNhCFVm46ZdOvJl+fxyM?=
- =?us-ascii?Q?PY0ja2jst9Gq0rRRnP5YkS8jETTJF7FSnZhhl8QBDz3iU2exVEuyg374ZjSS?=
- =?us-ascii?Q?Q/4YfCkLoGhJeBfbsGyBOy0WaakTn3SGQbBVdMsbxs9dEzT2yKddmnxqpYDL?=
- =?us-ascii?Q?sYW7IJvK8bwKYk2vrPKsvD+Owv8oAsE3BDUBol0mF14E4clA66AcqrwnbUZc?=
- =?us-ascii?Q?/Cd57l6HmnnI4cOAKpq1LNzVrAQAWgHlOmL1huBqAGAo/k8BiiYIzH7sGnhz?=
- =?us-ascii?Q?WqwMOn+Kp3PJkyZ2kYvtRbOij5GBanmxd5JDLn3nnLqEln6irCpKd47GALzn?=
- =?us-ascii?Q?+qZyzZgtnxI6GyURJG6Q/ImrG23eVKFMuH8CsdZgSS1q853nFQ+6WLXor+56?=
- =?us-ascii?Q?xjuNRkdAEAlzj7IZQl9l51lduJTkJ9KRTlqwwrsaSFmZN9avS+MqvwkB0/6H?=
- =?us-ascii?Q?p7IWRU4YGzBfjNRRr5P2yAo2RH3Utx9ftFLjf9sku4OHp2VNGHPeosgnuoUP?=
- =?us-ascii?Q?d0wQFgSOc1wp07sb0F2132WXYwC6vmcMZmehcvXC?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6956d8b7-fb66-4e6a-fd66-08ddc49eee44
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 19:28:23.9952
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x00aB8nda0pfUVPfn1Vd3Qr3BqvW3hmiZfSqX0zNVPUZuNTbwNR7DYknEW2EVunzN8lNtozQ0IJwBAvvEpaZEQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10022
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/10] dt-bindings: display: imx: Add bindings for
+ i.MX94 DCIF
+To: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>, imx@lists.linux.dev,
+ Philipp Zabel <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, Frank Li <frank.li@nxp.com>,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250716081519.3400158-1-laurentiu.palcu@oss.nxp.com>
+ <20250716081519.3400158-7-laurentiu.palcu@oss.nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250716081519.3400158-7-laurentiu.palcu@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 16, 2025 at 03:30:59PM +0800, Wei Fang wrote:
-> NETC is a multi-function PCIe Root Complex Integrated Endpoint (RCiEP)
-> that contains multiple PCIe functions, such as ENETC and Timer. Timer
-> provides PTP time synchronization functionality and ENETC provides the
-> NIC functionality.
->
-> For some platforms, such as i.MX95, it has only one timer instance, so
-> the binding relationship between Timer and ENETC is fixed. But for some
-> platforms, such as i.MX943, it has 3 Timer instances, by setting the
-> EaTBCR registers of the IERB module, we can specify any Timer instance
-> to be bound to the ENETC instance.
->
-> Therefore, add "nxp,netc-timer" property to bind ENETC instance to a
-> specified Timer instance so that ENETC can support PTP synchronization
-> through Timer.
->
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
->
-> ---
-> v2 changes:
-> new patch
-> ---
->  .../devicetree/bindings/net/fsl,enetc.yaml    | 23 +++++++++++++++++++
->  1 file changed, 23 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/net/fsl,enetc.yaml b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> index ca70f0050171..ae05f2982653 100644
-> --- a/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> +++ b/Documentation/devicetree/bindings/net/fsl,enetc.yaml
-> @@ -44,6 +44,13 @@ properties:
->      unevaluatedProperties: false
->      description: Optional child node for ENETC instance, otherwise use NETC EMDIO.
->
-> +  nxp,netc-timer:
+On 16/07/2025 10:15, Laurentiu Palcu wrote:
+> DCIF is the i.MX94 Display Controller Interface which is used to
+> drive a TFT LCD panel or connects to a display interface depending
+> on the chip configuration.
+> 
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+
+
+...
+
+> +
+> +  interrupts:
+> +    items:
+> +      - description:
+> +          Interrupt output for CPU domain 0 (controlled by common registers group).
+> +      - description:
+> +          Interrupt output for CPU domain 1 (controlled by background layer registers group).
+> +      - description:
+> +          Interrupt output for CPU domain 2 (controlled by foreground layer registers group).
+
+
+Keep these in one line with description, by dropping redundant part
+"Interrupt output for".
+
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: common
+> +      - const: bg_layer
+> +      - const: fg_layer
+> +
+> +  clocks:
+> +    items:
+> +      - description: APB bus clock
+> +      - description: AXI bus clock
+> +      - description: Pixel clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: apb
+> +      - const: axi
+> +      - const: pix
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +  nxp,blk-ctrl:
 > +    $ref: /schemas/types.yaml#/definitions/phandle
-> +    description:
-> +      Specifies a reference to a node representing a NETC Timer device,
-> +      which provides time synchronization as required for IEEE 1588 and
-> +      IEEE 802.1AS-2020.
+> +    description: A phandle which points to NXP displaymix blk-ctrl.
+
+
+Describe for what purpose (from hardware point of view)
+
+With these improvements:
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+> +
+> +  port:
+> +    $ref: /schemas/graph.yaml#/properties/port
+> +    description: Display Pixel Interface(DPI) output port
 > +
 
-I think it is quite common. add ptp-timer ethernet-controller.yaml?
 
-Frank
-
->  required:
->    - compatible
->    - reg
-> @@ -62,6 +69,7 @@ allOf:
->        properties:
->          clocks: false
->          clock-names: false
-> +        nxp,netc-timer: false
->
->  unevaluatedProperties: false
->
-> @@ -86,3 +94,18 @@ examples:
->              };
->          };
->      };
-> +  - |
-> +    pcie {
-> +      #address-cells = <3>;
-> +      #size-cells = <2>;
-> +
-> +      ethernet@0,0 {
-> +          compatible = "pci1131,e101";
-> +          reg = <0x000000 0 0 0 0>;
-> +          clocks = <&scmi_clk 102>;
-> +          clock-names = "ref";
-> +          nxp,netc-timer = <&netc_timer>;
-> +          phy-handle = <&ethphy0>;
-> +          phy-mode = "rgmii-id";
-> +      };
-> +    };
-> --
-> 2.34.1
->
+Best regards,
+Krzysztof
